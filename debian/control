@@ -14,6 +14,7 @@ Replaces: gnocatan-data
 Description: Gnocatan client - a game for Gnome
  Gnocatan is an emulation of the Settlers of Catan board game which
  can be played over the internet.
+ .
  This is the game client which displays the board and interacts with a
  player. It connects to a game server that can be local or on a remote
  host.
@@ -27,6 +28,7 @@ Replaces: gnocatan-server
 Description: Gnocatan server - a game for Gnome
  Gnocatan is an emulation of the Settlers of Catan board game which
  can be played over the internet.
+ .
  This package contains the Gnocatan game server for the console which
  accepts local or remote clients. One server instance must be running
  per game. The game parameters are selected via command line options.
@@ -49,9 +51,10 @@ Package: gnocatan-server-data
 Architecture: all
 Conflicts: gnocatan-server
 Replaces: gnocatan-server
-Description: Data required by the Gnocatan client
+Description: Data required by the Gnocatan server
  Gnocatan is an emulation of the Settlers of Catan board game which
  can be played over the internet.
+ .
  The data package contains architecture independent data needed for the game
  client. 
 
@@ -61,6 +64,7 @@ Depends: gnocatan-server-console, ${shlibs:Depends}
 Description: Gnocatan meta server - a game for Gnome
  Gnocatan is an emulation of the Settlers of Catan board game which
  can be played over the internet.
+ .
  This meta server for Gnocatan accepts requests by clients to create new
  game servers, and keeps a list of running servers one can connect to.
 
@@ -70,6 +74,7 @@ Depends: ${shlibs:Depends}
 Description: Gnocatan computer player - a game for Gnome
  Gnocatan is an emulation of the Settlers of Catan board game which
  can be played over the internet.
+ .
  This package contains an AI player implementation that can take part in
  Gnocatan games. It still isn't perfect...
 
@@ -78,5 +83,6 @@ Architecture: all
 Description: Online help for the Gnocatan client
  Gnocatan is an emulation of the Settlers of Catan board game which
  can be played over the internet.
+ .
  This help package contains a good HTML documentation for the Gnocatan
  client.
