@@ -27,7 +27,7 @@
 	* client/gtk/resource.c(resource_build_panel): Resource panel
 	resizable.
 	
-2004-09-03  Jeff Breidenbach  <jbreiden@rode.parc.com>
+2004-09-03  Jeff Breidenbach  <jab@debian.org>
 
 	* debian/changelog: sync Debian & upstream versioning.
 
@@ -42,7 +42,7 @@
 	frontend_resource_change): Fixed size of resource counter to 2
 	positions.
 	
-2004-08-21  Jeff Breidenbach  <jbreiden@rode.parc.com>
+2004-08-21  Jeff Breidenbach  <jab@debian.org>
 
 	* debian/control: added yelp dependency for gnocatan-help
 	* Released as Debian package, 0.8.1-6.
@@ -413,7 +413,7 @@
 	* client/gtk/name.c (name_create_dlg): Remove scrolling from name
 	change dialog.
 
-2003-12-25  Jeff Breidenbach  <jbreiden@rode.parc.com>
+2003-12-25  Jeff Breidenbach  <jab@debian.org>
 
 	* docs/Makefile.am: registered gnocatanai manpage
 
