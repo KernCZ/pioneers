@@ -9,6 +9,7 @@
 #include <limits.h>
 #include <glib.h>
 
+#include "driver.h"
 #include "game.h"
 #include "cards.h"
 #include "map.h"
@@ -17,6 +18,8 @@
 #include "buildrec.h"
 #include "server.h"
 #include "meta.h"
+
+#include "glib-driver.h"
 
 #define GNOCATAN_DIR_DEFAULT	"/usr/share/gnocatan"
 
@@ -36,13 +39,6 @@ static gboolean register_server;
 static gint server_port = 5556;
 
 static gchar *gnocatan_dir;
-
-void init( void )
-{
-	gnocatan_dir = (gchar *) getenv( "GNOCATAN_DIR" );
-	if( !gnocatan_dir )
-		gnocatan_dir = GNOCATAN_DIR_DEFAULT;
-}
 
 void cfg_set_num_players( gint num_players )
 {
@@ -138,9 +134,29 @@ static void load_game_types()
 	free(fname);
 }
 
+/* initialize the server */
+void init( void )
+{
+	gnocatan_dir = (gchar *) getenv( "GNOCATAN_DIR" );
+	if( !gnocatan_dir )
+		gnocatan_dir = GNOCATAN_DIR_DEFAULT;
+	
+	load_game_types();
+}
+
 int main( int argc, char *argv[] )
 {
+	GMainLoop *event_loop;
+
+	/* set the UI driver to Glib_Driver, since we're using glib */
+	set_ui_driver( &Glib_Driver );
+	
 	init();
+	/* server_startup(params, server_port, register_server); */
+	
+	event_loop = g_main_new(0);
+	g_main_run( event_loop );
+	g_main_destroy( event_loop );
 	
 	return 0;
 }

@@ -32,7 +32,9 @@ gnocatan_server_SOURCES = \
 	gnocatan-server.c
 
 gnocatan_server_console_SOURCES = \
-	gnocatan-server-console.c
+	gnocatan-server-console.c \
+	glib-driver.c \
+	glib-driver.h
 
 gnocatan_server_LDADD = \
 	libgnocatan_server.a \

@@ -1,4 +1,20 @@
 2000-05-17  Bibek Sahu <scorpio@dodds.net>
+	* server/Makefile.am
+	Added glib-driver.c and glib-driver.h, which are used by the console
+	server.
+
+	* server/glib-driver.c server/glib-driver.h
+	Functions necessary for the console server.
+	
+	* server/gnocatan-server-console.c
+	Added some muscle to the skeleton: Implemented some of the stuff
+	necessary for a console server.
+
+	* server/server.h
+	Added some headers that it depended on, so it didn't scream at me
+	when I tried to include it just for the Player structure.
+
+2000-05-17  Bibek Sahu <scorpio@dodds.net>
 	* configure.in: added GLIB configuration.
 
 	* common/common_gtk.c, common/driver.h
