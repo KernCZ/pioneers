@@ -330,6 +330,7 @@ static GtkWidget *splash_build_page()
 	gtk_viewport_set_shadow_type(GTK_VIEWPORT(viewport), GTK_SHADOW_NONE);
 	gtk_widget_show(viewport);
 	pm = gtk_pixmap_new(splash_pix, NULL);
+	gtk_widget_set_usize(pm, 1, 1);
 	gtk_widget_show(pm);
 	gtk_container_add(GTK_CONTAINER(viewport), pm);
 	return viewport;

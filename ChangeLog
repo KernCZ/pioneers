@@ -2,6 +2,7 @@
 	* server/player.c: Bugfix.
 	* server/buildutil.c: Fixed bug #817465.
 	* server/gold.c: Removed debugging statement.
+	* client/gui.c: Inserted startsize patch (fixes bug #722641).
 
 2003-10-03  Bas Wijnen <b.wijnen@phys.rug.nl>
 	* server/player.c: Bugfix.
