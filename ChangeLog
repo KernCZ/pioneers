@@ -1,3 +1,8 @@
+2000-05-30  Bibek Sahu <scorpio@dodds.net>
+
+	* server/gnocatan-server.c: Fixed a minor bug where the game was no
+	longer being set to the first one loaded.
+
 2000-05-30  Steve Langasek <vorlon@dodds.net>
 
 	* acconfig.h, configure.in, common/map.[ch], server/server.c:

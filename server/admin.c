@@ -42,6 +42,7 @@ void game_list_add_item( GameParams *item )
 {
 	if( !_game_list ) {
 		_game_list = g_hash_table_new( g_str_hash, g_str_equal );
+		params = item;
 	}
 
 	g_hash_table_insert( _game_list, item->title, item );
