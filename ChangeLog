@@ -8,6 +8,11 @@
 	dir (looks better). Delay signal_connect calls for language
 	buttons to avoid gtk assertation failures.
 
+	* client/Makefile.am: omit CVS dirs for theme file installing and
+	exporting
+
+	* client/help/C/Makefile.am: $(DESTDIR) was missing
+
 2002-07-09  Roman Hodek  <roman@hodek.net>
 
 	* ai/greedy.c: Introduce better, situation-related chat messages.

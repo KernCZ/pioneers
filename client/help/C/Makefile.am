@@ -22,16 +22,16 @@ dist-hook:
 
 # No-op if db2html failed
 install-data-local: index.html
-	$(mkinstalldirs) $(helpdir)/images
+	$(mkinstalldirs) $(DESTDIR)$(helpdir)/images
 	files=`echo $(srcdir)/gnocatan/*.html`; \
 	if test "$$files" != '$(srcdir)/gnocatan/*.html'; then \
 	  for file in $$files; do \
 	    basefile=`echo $$file | sed -e 's,^.*/,,'`; \
-	    $(INSTALL_DATA) $$file $(helpdir)/$$basefile; \
+	    $(INSTALL_DATA) $$file $(DESTDIR)$(helpdir)/$$basefile; \
 	  done; \
 	fi
 	-for file in $(srcdir)/images/*.gif; do \
-	$(INSTALL_DATA) $(srcdir)/$$file $(helpdir)/images;\
+	$(INSTALL_DATA) $(srcdir)/$$file $(DESTDIR)$(helpdir)/images;\
 	done
 
 gnocatan.ps: gnocatan.sgml

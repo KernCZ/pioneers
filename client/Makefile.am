@@ -106,12 +106,17 @@ Games_DATA = gnocatan.desktop
 EXTRA_DIST = \
 	$(appicon_DATA) \
 	$(pixmap_DATA) \
-	$(Games_DATA) \
-	$(wildcard themes/*)
+	$(Games_DATA)
+
+dist-hook:
+	tar -c -f - themes | tar -x -f - -C $(distdir)
+	find $(distdir)/themes -name CVS | xargs rm -rf
 
 install-data-hook:
-	cp -pr themes/* $(DESTDIR)$(pixmapdir)
-	chmod -R u+w,ugo+rX $(DESTDIR)$(pixmapdir)
+	mkdir -p $(DESTDIR)$(pixmapdir)/themes
+	tar -c -f - -C themes . | \
+	tar -x -f - --mode=u+w,ugo+rX --no-same-owner -C $(DESTDIR)$(pixmapdir)/themes
+	find $(DESTDIR)$(pixmapdir)/themes -name CVS | xargs rm -rf
 
 # We don't need this, do we?  -- egnor
 # install-data-local:
