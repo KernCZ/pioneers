@@ -27,7 +27,7 @@
 static GtkWidget *name_entry;
 static GtkWidget *dlg;
 
-static void change_name_cb(GtkDialog *dlg, int response_id, gpointer user_data)
+static void change_name_cb(GtkDialog *dlg, int response_id, UNUSED(gpointer user_data))
 {
 	if (response_id == GTK_RESPONSE_OK)
 		cb_name_change (gtk_entry_get_text(GTK_ENTRY(name_entry)));

@@ -1,6 +1,7 @@
 /*
  * Gnocatan: a fun game.
  * (C) 1999 the Free Software Foundation
+ * (C) 2003 Bas Wijnen <b.wijnen@phys.rug.nl>
  *
  * Author: Tim Martin
  *
@@ -26,7 +27,7 @@
 #include "cost.h"
 #include "client.h"
 
-static gchar *resource_types[] = {
+static const gchar *resource_types[] = {
 	"brick",
 	"grain",
 	"ore",
@@ -546,7 +547,7 @@ static Edge *traverse_out(Node *n, int mynum, node_seen_set_t *set, float *score
  * Best road to a road
  *
  */
-static Edge *best_road_to_road_spot(Node *n, int mynum, float *score, 
+static Edge *best_road_to_road_spot(Node *n, UNUSED(int mynum), float *score, 
 				    resource_values_t *resval)
 {
     int bscore = -1.0;
@@ -875,7 +876,7 @@ void_settlement(Map *map, int mynum)
  * Game setup
  * Build one house and one road
  */
-static char *
+static const char *
 greedy_setup_house(Map *map, int mynum)
 {
     Node *node;
@@ -896,7 +897,7 @@ greedy_setup_house(Map *map, int mynum)
  * Game setup
  * Build one house and one road
  */
-static char *
+static const char *
 greedy_setup_road(Map *map, int mynum)
 {
     Node *node;
@@ -932,7 +933,7 @@ greedy_setup_road(Map *map, int mynum)
  *
  */
 
-static char *
+static const char *
 greedy_turn(Map *map, int mynum, gint assets[NO_RESOURCE], 
 	    int curr_turn, gboolean built_or_bought)
 {
@@ -1101,71 +1102,72 @@ greedy_turn(Map *map, int mynum, gint assets[NO_RESOURCE],
 		return n < numElem(chat_##array) ? chat_##array[n] : NULL;		\
 	} while(0)
 
-static char *chat_turn_start[] = {
+static const char *chat_turn_start[] = {
 	_("Ok, let's go!"),
 	_("I'll beat you all now! ;)"),
 	_("Now for another try..."),
 };
-static char *chat_receive_one[] = {
+static const char *chat_receive_one[] = {
 	_("At least I get something..."),
 	_("One is better than none..."),
 };
-static char *chat_receive_many[] = {
+static const char *chat_receive_many[] = {
 	_("Wow!"),
 	_("Ey, I'm becoming rich ;)"),
 	_("This is really a good year!"),
 };
-static char *chat_other_receive_many[] = {
+static const char *chat_other_receive_many[] = {
 	_("You really don't deserve that much!"),
 	_("You don't know what to do with that many resources ;)"),
 	_("Ey, wait for my robber and lose all this again!"),
 };
-static char *chat_self_moved_robber[] = {
+static const char *chat_self_moved_robber[] = {
 	_("Hehe!"),
 	_("Go, robber, go!"),
 };
-static char *chat_moved_robber_to_me[] = {
+static const char *chat_moved_robber_to_me[] = {
 	_("You bastard!"),
 	_("Can't you move that robber somewhere else?!"),
 	_("Why always me??"),
 };
-static char *chat_discard_self[] = {
+static const char *chat_discard_self[] = {
 	_("Oh no!"),
 	_("Grrr!"),
 	_("Who the hell rolled that 7??"),
 	_("Why always me?!?"),
 };
-static char *chat_discard_other[] = {
+static const char *chat_discard_other[] = {
 	_("Say good bye to your cards... :)"),
 	_("*evilgrin*"),
 	_("/me says farewell to your cards ;)"),
 	_("That's the price for being rich... :)"),
 };
-static char *chat_stole_from_me[] = {
+static const char *chat_stole_from_me[] = {
 	_("Ey! Where's that card gone?"),
 	_("Thieves! Thieves!!"),
 	_("Wait for my revenge..."),
 };
-static char *chat_monopoly_other[] = {
+static const char *chat_monopoly_other[] = {
 	_("Oh no :("),
 	_("Must this happen NOW??"),
 	_("Args"),
 };
-static char *chat_largestarmy_self[] = {
+static const char *chat_largestarmy_self[] = {
 	_("Hehe, my soldiers rule!"),
 };
-static char *chat_largestarmy_other[] = {
+static const char *chat_largestarmy_other[] = {
 	_("First robbing us, then grabbing the points..."),
 };
-static char *chat_longestroad_self[] = {
+static const char *chat_longestroad_self[] = {
 	_("See that road!"),
 };
-static char *chat_longestroad_other[] = {
+static const char *chat_longestroad_other[] = {
 	_("Pf, you won't win with roads alone..."),
 };
 	
-static char *
-greedy_chat(chat_t occasion, void *param, gboolean self, gint other_player)
+static const char *
+greedy_chat(chat_t occasion, void *param, gboolean self,
+		UNUSED(gint other_player))
 {
 	int *resparam = (int *)param;
 	Hex *hexparam = (Hex *)param;
@@ -1311,7 +1313,7 @@ static float score_hex_hurt_opponents(int mynum, Hex *hex)
  * Find the best (worst for opponents) place to put the robber
  *
  */
-static char *
+static const char *
 greedy_place_robber(Map *map, int mynum)
 {
     int i, j;
@@ -1361,7 +1363,7 @@ greedy_place_robber(Map *map, int mynum)
  *
  */
 
-static char *
+static const char *
 greedy_free_road(Map *map, int mynum)
 {
     Edge *e;
@@ -1397,7 +1399,7 @@ greedy_free_road(Map *map, int mynum)
  * We played a year of plenty card. pick the two resources we most need
  */
 
-static char *
+static const char *
 greedy_year_of_plenty(Map *map, int mynum, gint assets[NO_RESOURCE])
 {
     char want[NO_RESOURCE];
@@ -1518,7 +1520,7 @@ static int resource_desire_least(gint my_assets[NO_RESOURCE], resource_values_t 
  * A seven was rolled. we need to discard some resources :(
  *
  */
-static char *
+static const char *
 greedy_discard(Map *map, int mynum, gint assets[NO_RESOURCE], int num)
 {
     int res;
@@ -1611,7 +1613,7 @@ static int trade_desired(Map *map, int mynum,
     return 0;
 }
 
-static gchar *
+static const gchar *
 greedy_consider_quote(Map *map, int mynum,
 		      gint my_assets[NO_RESOURCE],
 		      gint we_receive[NO_RESOURCE],
@@ -1657,7 +1659,8 @@ greedy_consider_quote(Map *map, int mynum,
 
 /* function for checking if the map contains gold, so the ai can
  * exit if it does */
-static gboolean greedy_check_gold (Map *map, Hex *hex, void *unused)
+static gboolean greedy_check_gold (UNUSED(Map *map), Hex *hex,
+		UNUSED(void *unused))
 {
 	return hex->terrain == GOLD_TERRAIN;
 }

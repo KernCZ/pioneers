@@ -2,6 +2,7 @@
  *   Go buy a copy.
  *
  * Copyright (C) 1999 the Free Software Foundation
+ * Copyright (C) 2003 Bas Wijnen <b.wijnen@phys.rug.nl>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,39 +25,39 @@
 #include "glib-driver.h"
 
 /* callbacks for the server */
-void srv_glib_player_added(void *data)
+void srv_glib_player_added(UNUSED(void *data))
 {
-	Player *player = (Player *)data;
 #ifdef PRINT_INFO
+	Player *player = (Player *)data;
 	g_print( "Player %d added: %s (from host %s)\n", 
 		player->num, player->name, player->location );
 #endif
 }
 
-void srv_glib_player_renamed(void *data)
+void srv_glib_player_renamed(UNUSED(void *data))
 {
-	Player *player = (Player *)data;
 #ifdef PRINT_INFO
+	Player *player = (Player *)data;
 	g_print( "Player %d renamed to %s (at host %s)\n", 
 		player->num, player->name, player->location );
 #endif
 }
 
-void srv_player_removed(void *data)
+void srv_player_removed(UNUSED(void *data))
 {
-	Player *player = (Player *)data;
 #ifdef PRINT_INFO
+	Player *player = (Player *)data;
 	g_print( "Player %d removed: %s (at host %s)\n", 
 		player->num, player->name, player->location );
 #endif
 }
 
 
-void srv_player_change(void *data)
+void srv_player_change(UNUSED(void *data))
 {
+#ifdef PRINT_INFO
 	GList *current;
  	Game *game = (Game *)data;
-#ifdef PRINT_INFO
 	g_print( "Players connected:\n");
 	playerlist_inc_use_count(game);
 	for (current = game->player_list; current != NULL; current = g_list_next(current)) {

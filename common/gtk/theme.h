@@ -2,6 +2,7 @@
  *   Go buy a copy.
  *
  * Copyright (C) 1999 the Free Software Foundation
+ * Copyright (C) 2003 Bas Wijnen <b.wijnen@phys.rug.nl>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -87,11 +88,11 @@ typedef enum {
 
 typedef struct _MapTheme {
 	struct _MapTheme *next;
-	gchar      *name;
-	gchar      *subdir;
+	gchar *name;
+	gchar *subdir;
 	SCALEMODE  scaling;
-	gchar      *terrain_tile_names[TERRAIN_TILE_MAX];
-	gchar      *port_tile_names[PORT_TILE_MAX];
+	const gchar *terrain_tile_names[TERRAIN_TILE_MAX];
+	const gchar *port_tile_names[PORT_TILE_MAX];
 	GdkPixmap  *terrain_tiles[TERRAIN_TILE_MAX];
 	GdkPixmap  *port_tiles[PORT_TILE_MAX];
 	TScaleData scaledata[TERRAIN_TILE_MAX];
@@ -99,7 +100,6 @@ typedef struct _MapTheme {
 	TColor     ovr_colors[TC_MAX_OVRTILE][TC_MAX_OVERRIDE];
 } MapTheme;
 
-void init_themes(void);
 void theme_rescale(int radius);
 void set_theme(MapTheme *t);
 MapTheme *get_theme(void);

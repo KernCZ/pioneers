@@ -2,6 +2,7 @@
  *   Go buy a copy.
  *
  * Copyright (C) 1999 the Free Software Foundation
+ * Copyright (C) 2003 Bas Wijnen <b.wijnen@phys.rug.nl>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -214,7 +215,7 @@ static void write_ready(Session *ses)
 	}
 }
 
-void net_write(Session *ses, gchar *data)
+void net_write(Session *ses, const gchar *data)
 {
 	if (!ses || ses->fd < 0)
 		return;
@@ -250,7 +251,7 @@ void net_write(Session *ses, gchar *data)
 	}
 }
 
-void net_printf(Session *ses, gchar *fmt, ...)
+void net_printf(Session *ses, const gchar *fmt, ...)
 {
 	char buff[4096];
 	va_list ap;

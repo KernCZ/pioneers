@@ -24,13 +24,8 @@
 GHashTable *frontend_widgets;
 gboolean frontend_waiting_for_network;
 
-void frontend_wait_for_netword (gboolean is_waiting)
-{
-	frontend_waiting_for_network = is_waiting;
-	frontend_gui_update ();
-}
-
-static void set_sensitive (void *key, GuiWidgetState *gui, void *user_data)
+static void set_sensitive (UNUSED(void *key), GuiWidgetState *gui,
+		UNUSED(void *user_data))
 {
 	if (gui->destroy_only)
 		/* Do not modify sensitivity on destroy only events
@@ -98,17 +93,17 @@ static void gui_free (GuiWidgetState *gui)
 	g_free(gui);
 }
 
-static void route_event (void *widget, GuiWidgetState *gui)
+static void route_event (UNUSED(void *widget), GuiWidgetState *gui)
 {
 	route_gui_event (gui->id);
 }
 
-static void destroy_event_cb (void *widget, GuiWidgetState *gui)
+static void destroy_event_cb (UNUSED(void *widget), GuiWidgetState *gui)
 {
 	gui_free(gui);
 }
 
-static void destroy_route_event_cb (void *widget, GuiWidgetState *gui)
+static void destroy_route_event_cb (UNUSED(void *widget), GuiWidgetState *gui)
 {
 	route_gui_event (gui->id);
 	gui_free (gui);
@@ -122,7 +117,7 @@ void frontend_gui_register_destroy (void *widget, gint id)
 			GTK_SIGNAL_FUNC(destroy_route_event_cb), gui);
 }
 
-void frontend_gui_register (void *widget, gint id, gchar *signal)
+void frontend_gui_register (void *widget, gint id, const gchar *signal)
 {
 	GuiWidgetState *gui = gui_new(widget, id);
 	gui->signal = signal;
@@ -135,7 +130,7 @@ void frontend_gui_register (void *widget, gint id, gchar *signal)
 			GTK_SIGNAL_FUNC(route_event), gui);
 }
 
-gint hotkeys_handler (GtkWidget *w, GdkEvent *e, gpointer data)
+gint hotkeys_handler (UNUSED(GtkWidget *w), GdkEvent *e, UNUSED(gpointer data))
 {
 	GuiWidgetState *gui;
 	gint arg = -1;

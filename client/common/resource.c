@@ -29,7 +29,7 @@
 #include "game.h"
 #include "map.h"
 
-static gchar *resource_names[][2] = {
+static const gchar *resource_names[][2] = {
 	{ N_("brick"), N_("Brick") },
 	{ N_("grain"), N_("Grain") },
 	{ N_("ore"), N_("Ore") },
@@ -41,7 +41,7 @@ static gchar *resource_names[][2] = {
 };
 
 
-static gchar *resource_lists[][2] = {
+static const gchar *resource_lists[][2] = {
    { N_("a brick card"),  N_("%d brick cards")  },
    { N_("a grain card"),  N_("%d grain cards")  },
    { N_("an ore card"),   N_("%d ore cards")    },
@@ -190,15 +190,6 @@ gint resource_asset(Resource type)
 const gchar *resource_name(Resource type, gboolean word_caps)
 {
 	return _(resource_names[type][word_caps ? 1 : 0]);
-}
-
-void resource_cmd(gchar *str, gchar *cmd, gint *resources)
-{
-	int idx;
-
-	strcpy(str, cmd);
-	for (idx = 0; idx < NO_RESOURCE; idx++)
-		sprintf(str + strlen(str), " %d", resources[idx]);
 }
 
 void resource_format_type(gchar *str, gint *resources)

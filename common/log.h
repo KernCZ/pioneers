@@ -2,6 +2,7 @@
  *   Go buy a copy.
  *
  * Copyright (C) 1999 the Free Software Foundation
+ * Copyright (C) 2003 Bas Wijnen <b.wijnen@phys.rug.nl>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -97,7 +98,7 @@ void log_set_func( LogFunc func );
 void log_set_func_default( void );
 
 /* Take a string of text and write it to the console. */
-void add_text_console(gchar *text, gchar *type_str);
+void add_text_console(gchar *text, const gchar *type_str);
 
 /* Write a message string to the console, adding a prefix depending on 
  *   its type.
@@ -113,6 +114,6 @@ void log_message_using_func( LogFunc logfunc, gint msg_type, gchar *fmt, ... );
  *   through LOG_FUNC_DEFAULT) after turning the params into a single
  *   string.
  */
-void log_message( gint msg_type, gchar *fmt, ... );
-void log_message_continue( gint msg_type, gchar *fmt, ... );
+void log_message( gint msg_type, const gchar *fmt, ... );
+void log_message_continue( gint msg_type, const gchar *fmt, ... );
 #endif /* __log_h */

@@ -143,7 +143,7 @@ Player *player_by_name(Game *game, char *name);
 Player *player_by_num(Game *game, gint num);
 void player_set_name(Player *player, gchar *name);
 Player *player_none(Game *game);
-void player_broadcast(Player *player, BroadcastType type, char *fmt, ...);
+void player_broadcast(Player *player, BroadcastType type, const char *fmt, ...);
 void player_remove(Player *player);
 void player_free(Player *player);
 void player_archive(Player *player);
@@ -168,7 +168,7 @@ gboolean resource_available(Player *player,
 void resource_maritime_trade(Player *player,
 			     Resource supply, Resource receive, gint ratio);
 void resource_start(Game *game);
-void resource_end(Game *game, gchar *action, gint mult);
+void resource_end(Game *game, const gchar *action, gint mult);
 void resource_spend(Player *player, gint *cost);
 void resource_refund(Player *player, gint *cost);
 
@@ -183,7 +183,7 @@ void stop_timeout(void);
 gint get_rand(gint range);
 Game *game_new(GameParams *params);
 void game_free(Game *game);
-gint new_computer_player(gchar *server, gchar *port);
+gint new_computer_player(const gchar *server, const gchar *port);
 gboolean server_startup(GameParams *params, gchar *port, gboolean meta);
 gboolean server_restart(void);
 gboolean server_stop(void);

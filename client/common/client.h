@@ -29,7 +29,6 @@
 /* variables */
 extern Map *map;
 extern GameParams *game_params;
-extern gint color_chat_enabled;
 
 /********* client.c ***********/
 /* client initialization */
@@ -69,7 +68,7 @@ gboolean mode_quote_delete_response(StateMachine *sm, gint event);
 void chat_parser (gint player_num, char *chat_str);
 
 /******* player.c **********/
-void player_reset ();
+void player_reset (void);
 void player_set_my_num(gint player_num);
 void player_reset_statistic(void);
 void player_modify_statistic(gint player_num, StatisticType type, gint num);
@@ -104,9 +103,9 @@ void build_move (gint sx, gint sy, gint spos, gint dx, gint dy, gint dpos,
 		gint isundo);
 void build_add(BuildType type, gint x, gint y, gint pos, gint *cost,
 		gboolean newbuild);
-gboolean build_can_undo();
-gboolean build_is_valid();
-gboolean have_built();
+gboolean build_can_undo(void);
+gboolean build_is_valid(void);
+gboolean have_built(void);
 gboolean build_can_setup_road(Edge *edge, gboolean double_setup);
 gboolean build_can_setup_ship(Edge *edge, gboolean double_setup);
 gboolean build_can_setup_bridge(Edge *edge, gboolean double_setup);
@@ -123,7 +122,7 @@ void develop_played(gint player_num, gint card_idx, DevelType type);
 void monopoly_player(gint player_num, gint victim_num, gint num, Resource type);
 void road_building_begin (void);
 void develop_begin_turn (void);
-gboolean have_bought_develop();
+gboolean have_bought_develop(void);
 
 /********** stock.c **********/
 void stock_init(void);

@@ -117,6 +117,9 @@ static void help_legend_cb(GtkWidget *widget, void *user_data);
 static void help_histogram_cb(GtkWidget *widget, void *user_data);
 static void help_settings_cb(GtkWidget *widget, void *user_data);
 
+/* put this in non-const memory, because GNOMEUIINFO_HELP doesn't want a
+ * const pointer. */
+static gchar app_name[] = "gnocatan";
 static GnomeUIInfo help_menu[] = {
 	{ GNOME_APP_UI_ITEM, N_("_Legend"), N_("Terrain legend and building costs"),
 	  help_legend_cb, NULL, NULL, GNOME_APP_PIXMAP_STOCK,
@@ -133,7 +136,7 @@ static GnomeUIInfo help_menu[] = {
 
 	GNOMEUIINFO_SEPARATOR,
 
-	GNOMEUIINFO_HELP("gnocatan"),
+	GNOMEUIINFO_HELP(app_name),
 	GNOMEUIINFO_END
 };
 
@@ -156,7 +159,7 @@ static GnomeUIInfo main_menu[] = {
 
 #define GNOCATAN_PIXMAP_SPLASH "gnocatan/splash.png"
 
-static gchar *gnocatan_pixmaps[] = {
+static const gchar *gnocatan_pixmaps[] = {
 	GNOCATAN_PIXMAP_DICE,
 	GNOCATAN_PIXMAP_TRADE,
 	GNOCATAN_PIXMAP_ROAD,
@@ -206,7 +209,11 @@ static GnomeUIInfo toolbar_uiinfo[] = {
 	  route_widget_event, (gpointer)GUI_BUY_DEVELOP, NULL,
 	  GNOME_APP_PIXMAP_STOCK, GNOCATAN_PIXMAP_DEVELOP, 0, 0, NULL },
 
-	{ GNOME_APP_UI_ENDOFINFO }
+	  /* Only the first field matters.  Fill the whole struct with some
+	   * values anyway, to get rid of a compiler warning. */
+	{ GNOME_APP_UI_ENDOFINFO, NULL, NULL,
+	  NULL, NULL, NULL,
+	  GNOME_APP_PIXMAP_STOCK, NULL, 0, 0, NULL }
 };
 
 GtkWidget *gui_get_dialog_button(GtkDialog *dlg, gint button)
@@ -287,8 +294,8 @@ void gui_highlight_chits(gint roll)
 		guimap_highlight_chits(gmap, roll);
 }
 
-static gint expose_map_cb(GtkWidget *area,
-			  GdkEventExpose *event, gpointer user_data)
+static gint expose_map_cb(GtkWidget *area, GdkEventExpose *event,
+		UNUSED(gpointer user_data))
 {
 	if (area->window == NULL || map == NULL)
 		return FALSE;
@@ -310,8 +317,8 @@ static gint expose_map_cb(GtkWidget *area,
 	return FALSE;
 }
 
-static gint configure_map_cb(GtkWidget *area,
-			     GdkEventConfigure *event, gpointer user_data)
+static gint configure_map_cb(GtkWidget *area, UNUSED(GdkEventConfigure *event),
+		UNUSED(gpointer user_data))
 {
 	if (area->window == NULL || map == NULL)
 		return FALSE;
@@ -328,8 +335,8 @@ static gint configure_map_cb(GtkWidget *area,
 	return FALSE;
 }
 
-static gint motion_notify_map_cb(GtkWidget *area,
-				 GdkEventMotion *event, gpointer user_data)
+static gint motion_notify_map_cb(GtkWidget *area, GdkEventMotion *event,
+		UNUSED(gpointer user_data))
 {
 	gint x;
 	gint y;
@@ -351,8 +358,8 @@ static gint motion_notify_map_cb(GtkWidget *area,
 	return TRUE;
 }
 
-static gint button_press_map_cb(GtkWidget *area,
-				GdkEventButton *event, gpointer user_data)
+static gint button_press_map_cb(GtkWidget *area, GdkEventButton *event,
+		UNUSED(gpointer user_data))
 {
 	if (area->window == NULL || map == NULL
 	    || event->button != 1)
@@ -363,7 +370,7 @@ static gint button_press_map_cb(GtkWidget *area,
 	return TRUE;
 }
 
-static GtkWidget *build_map_area()
+static GtkWidget *build_map_area(void)
 {
 	gmap->area = gtk_drawing_area_new();
 
@@ -388,7 +395,7 @@ static GtkWidget *build_map_area()
 	return gmap->area;
 }
 
-static GtkWidget *build_messages_panel()
+static GtkWidget *build_messages_panel(void)
 {
 	GtkWidget *frame;
 	GtkWidget *scroll_win;
@@ -450,7 +457,7 @@ void gui_show_splash_page(gboolean show)
 		gtk_widget_hide(splash_page);
 }
 
-static GtkWidget *splash_build_page()
+static GtkWidget *splash_build_page(void)
 {
 	GtkWidget *pm;
 	GtkWidget *viewport;
@@ -477,7 +484,7 @@ static GtkWidget *splash_build_page()
 	return viewport;
 }
 
-static GtkWidget *build_map_panel()
+static GtkWidget *build_map_panel(void)
 {
 	GtkWidget *lbl;
 
@@ -553,14 +560,14 @@ void gui_prompt_hide()
         gtk_notebook_set_page(GTK_NOTEBOOK(develop_notebook), 0);
 }
 
-static GtkWidget *prompt_build_page()
+static GtkWidget *prompt_build_page(void)
 {
 	prompt_lbl = gtk_label_new("");
 	gtk_widget_show(prompt_lbl);
 	return prompt_lbl;
 }
 
-static GtkWidget *build_develop_panel()
+static GtkWidget *build_develop_panel(void)
 {
 	develop_notebook = gtk_notebook_new();
 	gtk_notebook_set_show_tabs(GTK_NOTEBOOK(develop_notebook), FALSE);
@@ -579,7 +586,7 @@ static GtkWidget *build_develop_panel()
 	return develop_notebook;
 }
 
-static GtkWidget *build_main_interface()
+static GtkWidget *build_main_interface(void)
 {
 	GtkWidget *vbox;
 	GtkWidget *hbox;
@@ -623,12 +630,13 @@ static GtkWidget *build_main_interface()
 	return hbox;
 }
 
-static void quit_cb(GtkWidget *widget, void *data)
+static void quit_cb(UNUSED(GtkWidget *widget), UNUSED(void *data))
 {
 	gtk_main_quit();
 }
 
-static void settings_apply_cb(GnomePropertyBox *prop_box, gint page, gpointer data)
+static void settings_apply_cb(UNUSED(GnomePropertyBox *prop_box), gint page,
+		UNUSED(gpointer data))
 {
 	BonoboDockItem *dock_item;
 	GtkWidget *toolbar;
@@ -750,12 +758,12 @@ static void settings_apply_cb(GnomePropertyBox *prop_box, gint page, gpointer da
 	return;
 }
 
-static void settings_activate_cb(GtkWidget *widget, void *prop_box)
+static void settings_activate_cb(UNUSED(GtkWidget *widget), void *prop_box)
 {
 	gnome_property_box_changed( GNOME_PROPERTY_BOX(prop_box) );
 }
 
-static void menu_settings_cb(GtkWidget *widget, void *user_data)
+static void menu_settings_cb(UNUSED(GtkWidget *widget), UNUSED(void *user_data))
 {
 	GtkWidget *settings;
 	GtkWidget *page0_table;
@@ -993,12 +1001,12 @@ static void menu_settings_cb(GtkWidget *widget, void *user_data)
 	gtk_widget_show( settings );
 }
 
-static void route_widget_event (GtkWidget *w, gpointer data)
+static void route_widget_event (UNUSED(GtkWidget *w), gpointer data)
 {
 	route_gui_event ( (GuiEvent)data);
 }
 
-static void help_about_cb(GtkWidget *widget, void *user_data)
+static void help_about_cb(UNUSED(GtkWidget *widget), UNUSED(void *user_data))
 {
 	GtkWidget *about;
 	const gchar *authors[] = {
@@ -1017,17 +1025,18 @@ static void help_about_cb(GtkWidget *widget, void *user_data)
 	gtk_widget_show(about);
 }
 
-static void help_legend_cb(GtkWidget *widget, void *user_data)
+static void help_legend_cb(UNUSED(GtkWidget *widget), UNUSED(void *user_data))
 {
 	legend_create_dlg();
 }
 
-static void help_histogram_cb(GtkWidget *widget, void *user_data)
+static void help_histogram_cb(UNUSED(GtkWidget *widget),
+		UNUSED(void *user_data))
 {
 	histogram_create_dlg();
 }
 
-static void help_settings_cb(GtkWidget *widget, void *user_data)
+static void help_settings_cb(UNUSED(GtkWidget *widget), UNUSED(void *user_data))
 {
 	settings_create_dlg();
 }
@@ -1088,7 +1097,7 @@ void gui_set_game_params(const GameParams *params)
 	gui_set_vp_target_value( params->victory_points );
 }
 
-static GtkWidget *build_status_bar()
+static GtkWidget *build_status_bar(void)
 {
 	GtkWidget *vsep;
 
@@ -1121,7 +1130,7 @@ static GtkWidget *build_status_bar()
 	return app_bar;
 }
 
-static void register_gnocatan_pixmaps()
+static void register_gnocatan_pixmaps(void)
 {
 	gint idx;
 

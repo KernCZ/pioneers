@@ -1,6 +1,7 @@
 /*
  * Gnocatan: a fun game.
  * (C) 1999 the Free Software Foundation
+ * (C) 2003 Bas Wijnen <b.wijnen@phys.rug.nl>
  *
  * Author: Dave Cole.
  *
@@ -74,7 +75,7 @@ static void copy_player_name(gchar *name);
 /* Create the client state machine.  Currently in a nasty global
  * variable - have to fix this sometime.
  */
-static StateMachine *SM()
+static StateMachine *SM(void)
 {
 	if (state_machine == NULL) {
 		state_machine = sm_new(NULL);
@@ -87,7 +88,8 @@ static StateMachine *SM()
 /*----------------------------------------------------------------------
  * Entry point for the client state machine
  */
-void client_start(char *server, char *port, char *username, char *ai, int waittime, int chatty)
+void client_start(const char *server, const char *port, const char *username,
+		const char *ai, int waittime, int chatty)
 {
     copy_player_name(strdup(username));
 
@@ -213,7 +215,7 @@ void client_change_my_name(gchar *name)
  */
 void client_chat(chat_t occasion, void *param, gboolean self, gint other)
 {
-	gchar *tmp;
+	const gchar *tmp;
 
 	if (computer_funcs.chatty &&
 		(tmp = computer_funcs.chat(occasion, param, self, other)) &&
@@ -226,7 +228,7 @@ void client_changed_cb()
 	sm_changed_cb(SM());
 }
 
-void client_event_cb(GtkWidget *widget, gint event)
+void client_event_cb(UNUSED(GtkWidget *widget), gint event)
 {
 	sm_event_cb(SM(), event);
 }
@@ -273,7 +275,7 @@ static gboolean check_other_players(StateMachine *sm)
 	gint turn_num, discard_num, num, ratio, die1, die2, x, y, pos;
 	gint resource_list[NO_RESOURCE];
 	gint sx, sy, spos, dx, dy, dpos;
-	char *tmp;
+	const char *tmp;
 
 	if (check_chat_or_name(sm))
 		return TRUE;
@@ -719,7 +721,7 @@ static gboolean mode_setup_done_response(StateMachine *sm, gint event)
 
 static gboolean mode_setup(StateMachine *sm, gint event)
 {
-	char *tmp;
+	const char *tmp;
 
 	sm_state_name(sm, "mode_setup");
 	switch (event) {
@@ -813,12 +815,11 @@ static gboolean mode_idle(StateMachine *sm, gint event)
 		}
 		if (sm_recv(sm, "player %d domestic-trade call supply %R receive %R",
 			    &player_num, they_supply, they_receive)) {
-			gchar *tmp;
+			const gchar *tmp;
 			quote_begin(player_num, they_supply, they_receive);
-			tmp = computer_funcs.consider_quote(map, my_player_num(),
-												my_assets,
-												they_supply,
-												they_receive);
+			tmp = computer_funcs.consider_quote(map,
+					my_player_num(), my_assets,
+					they_supply, they_receive);
 			sm_send(sm, tmp);
 			sm_push(sm, mode_domestic_quote);
 			sm_goto(sm, strstr(tmp, "finish") ?
@@ -903,7 +904,7 @@ static void place_robber_cb(Hex *hex, gint player_num)
  */
 static gboolean mode_robber(StateMachine *sm, gint event)
 {
-    char *tmp;
+    const char *tmp;
 
 	sm_state_name(sm, "mode_robber");
 	switch (event) {
@@ -981,7 +982,7 @@ static gboolean mode_road_building_done_response(StateMachine *sm, gint event)
 
 static gboolean mode_road_building(StateMachine *sm, gint event)
 {
-	char *tmp;
+	const char *tmp;
 
 	sm_state_name(sm, "mode_road_building");
 	switch (event) {
@@ -1079,7 +1080,7 @@ static gboolean mode_year_of_plenty_response(StateMachine *sm, gint event)
 
 static gboolean mode_year_of_plenty(StateMachine *sm, gint event)
 {
-    char *tmp;
+    const char *tmp;
         gint plenty[NO_RESOURCE];
 
 	sm_state_name(sm, "mode_year_of_plenty");
@@ -1165,7 +1166,7 @@ static gboolean mode_discard(StateMachine *sm, gint event)
 {
 	gint resource_list[NO_RESOURCE];
 	gint player_num, discard_num;
-	char *tmp;
+	const char *tmp;
 
 	sm_state_name(sm, "mode_discard");
 	switch (event) {
@@ -1264,7 +1265,7 @@ static gboolean mode_turn(StateMachine *sm, gint event)
 		usleep(computer_funcs.waittime*1000);
 		return TRUE;
 	    } else {
-		char *tmp;
+		const char *tmp;
 
 		tmp = computer_funcs.turn(map, my_player_num(), my_assets, turn_num(), built_or_bought);
 		sm_send(sm, tmp);
@@ -1623,15 +1624,13 @@ static gboolean check_quoting(StateMachine *sm)
 	}
 	if (sm_recv(sm, "domestic-trade call supply %R receive %R",
 		    they_supply, they_receive)) {
-		gchar *tmp;
+		const gchar *tmp;
 		client_chat(CHAT_DOMESTIC_TRADE_CALL, NULL,
 					player_num == my_player_num(), 0);
 		quote_begin_again(player_num, they_supply, they_receive);
 		quote_begin(player_num, they_supply, they_receive);
 		tmp = computer_funcs.consider_quote(map, my_player_num(),
-											my_assets,
-											they_supply,
-											they_receive);
+				my_assets, they_supply, they_receive);
 		sm_send(sm, tmp);
 		sm_goto(sm, strstr(tmp, "finish") ?
 				mode_quote_finish_response :

@@ -27,6 +27,7 @@
 #include <dirent.h>
 #include <sys/stat.h>
 
+#include "frontend.h"
 #include "game.h"
 #include "guimap.h"
 #include "theme.h"
@@ -85,13 +86,16 @@
 #define TCOL_INIT(r,g,b)	{ TRUE, FALSE, FALSE, { 0, r, g, b } }
 #define TCOL_TRANSP()		{ TRUE, TRUE, FALSE, { 0, 0, 0, 0 } }
 #define TCOL_UNSET()		{ FALSE, FALSE, FALSE, { 0, 0, 0, 0 } }
-#define TSCALE				{ NULL, 0, 0.0 }
+#define TSCALE				{ NULL, NULL, 0, 0.0 }
+
+static gchar default_name[] = "Default";
+static gchar default_subdir[] = "";
 
 static MapTheme default_theme = {
 	/* next, name, and subdir */
 	NULL,
-	"Default",
-	"",
+	default_name,
+	default_subdir,
 	NEVER,
 	/* terrain tile names */
 	{ "hill.png", "field.png", "mountain.png", "pasture.png", "forest.png",
@@ -99,10 +103,14 @@ static MapTheme default_theme = {
 	/* port tile names */
 	{ "hill.png", "field.png", "mountain.png", "pasture.png", "forest.png",
 	  NULL },
+	/* terrain tile pixmaps */
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL },
+	/* port tile pixmaps */
 	{ NULL, NULL, NULL, NULL, NULL, NULL },
+	/* terrain tile scale data */
 	{ TSCALE, TSCALE, TSCALE, TSCALE, TSCALE, TSCALE, TSCALE, TSCALE,
 		TSCALE },
+	/* colours */
 	{
 		TCOL_INIT(0xff00, 0xda00, 0xb900),
 		TCOL_INIT(0, 0, 0),
@@ -116,6 +124,7 @@ static MapTheme default_theme = {
 		TCOL_INIT(0xff00, 0xff00, 0xff00),
 		TCOL_INIT(0xff00, 0xda00, 0xb900),
 	},
+	/* colours per tile */
 	{
 		{ TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET() }, /* Hill */
 		{ TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET() }, /* Field */
@@ -182,7 +191,6 @@ void init_themes(void)
 		}
 	}
 	if (!t) {
-		g_free(user_theme);
 		user_theme = g_strdup("Default");
 		t = &default_theme;
 	}
@@ -352,7 +360,7 @@ void theme_rescale(int new_width)
 typedef enum { STR, COL, SCMODE } vartype;
 
 static struct tvars {
-	char     *name;
+	const char     *name;
 	vartype  type;
 	int      override;
 	size_t   offset;
@@ -453,7 +461,7 @@ static char *getval(char **p, gchar *filename, int lno)
 	return q;
 }
 
-static gboolean checkend(char *p, gchar *filename, int lno)
+static gboolean checkend(char *p, UNUSED(gchar *filename), UNUSED(int lno))
 {
 	p += strspn(p, " \t");
 	return !*p || *p == '\n';
@@ -520,8 +528,7 @@ static MapTheme *theme_config_parse(char *name, gchar *filename)
 	if (!(f = fopen(filename, "r")))
 		return NULL;
 
-	t = g_malloc(sizeof(MapTheme));
-	memset(t, 0, sizeof(MapTheme));
+	t = g_malloc0(sizeof(MapTheme));
 	t->name = g_strdup(name);
 	t->subdir = g_strconcat(name, G_DIR_SEPARATOR_S, NULL);
 

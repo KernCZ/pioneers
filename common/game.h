@@ -28,6 +28,12 @@
 
 #define numElem(a) (sizeof(a)/sizeof(a[0]))
 
+#ifdef __GNUC__
+	#define UNUSED(var) var __attribute__ ((unused))
+#else
+	#define UNUSED(var) var
+#endif
+
 typedef enum {
 	DEVEL_ROAD_BUILDING,
 	DEVEL_MONOPOLY,
@@ -79,7 +85,7 @@ typedef struct {
 	gint points;	/* number of points */
 } Points;
 
-typedef void (*WriteLineFunc)(gpointer user_data, gchar *);
+typedef void (*WriteLineFunc)(gpointer user_data, const gchar *);
 
 GameParams *params_new(void);
 GameParams *params_copy(GameParams *params);
@@ -87,6 +93,4 @@ void params_free(GameParams *params);
 void params_write_lines(GameParams *params, WriteLineFunc func, gpointer user_data);
 void params_load_line(GameParams *params, gchar *line);
 void params_load_finish(GameParams *params);
-
-extern UIDriver *driver;
 #endif

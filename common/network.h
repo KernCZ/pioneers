@@ -2,6 +2,7 @@
  *   Go buy a copy.
  *
  * Copyright (C) 1999 the Free Software Foundation
+ * Copyright (C) 2003 Bas Wijnen <b.wijnen@phys.rug.nl>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -62,7 +63,7 @@ gboolean net_connected(Session *ses);
 void net_close(Session *ses);
 void net_close_when_flushed(Session *ses);
 void net_wait_for_close(Session *ses);
-void net_printf(Session *ses, gchar *fmt, ...);
-void net_write(Session *ses, gchar *data);
+void net_printf(Session *ses, const gchar *fmt, ...);
+void net_write(Session *ses, const gchar *data);
 
 #endif

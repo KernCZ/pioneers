@@ -52,7 +52,7 @@ GdkPixmap *guimap_terrain(Terrain terrain)
 	return get_theme()->terrain_tiles[terrain];
 }
 
-void load_pixmap(gchar *name, GdkPixmap **pixmap_return,
+void load_pixmap(const gchar *name, GdkPixmap **pixmap_return,
                         GdkBitmap **mask_return)
 {
 	GdkPixbuf *pixbuf;
@@ -320,7 +320,7 @@ void guimap_settlement_polygon(GuiMap *gmap, Node *node, Polygon *poly)
 	calc_node_poly(gmap, node, &settlement_poly, poly);
 }
 
-void guimap_robber_polygon(GuiMap *gmap, Hex *hex, Polygon *poly)
+static void guimap_robber_polygon(GuiMap *gmap, Hex *hex, Polygon *poly)
 {
 	GdkPoint *poly_point, *robber_point;
 	double scale;
@@ -349,7 +349,7 @@ void guimap_robber_polygon(GuiMap *gmap, Hex *hex, Polygon *poly)
 }
 
 
-void guimap_pirate_polygon(GuiMap *gmap, Hex *hex, Polygon *poly)
+static void guimap_pirate_polygon(GuiMap *gmap, Hex *hex, Polygon *poly)
 {
 	GdkPoint *poly_point, *pirate_point;
 	double scale;
@@ -488,7 +488,7 @@ static gboolean display_hex(Map *map, Hex *hex, GuiMap *gmap)
 	/* Draw ports
 	 */
 	if (hex->resource != NO_RESOURCE) {
-		gchar *str = "";
+		const gchar *str = "";
 		gint lbearing, rbearing, width, ascent, descent;
 		int tileno = hex->resource == ANY_RESOURCE ?
 					 ANY_PORT_TILE : hex->resource;
@@ -1316,7 +1316,8 @@ static void draw_robber_cursor(GuiMap *gmap)
 	gtk_widget_draw(gmap->area, &rect);
 }
 
-static gboolean highlight_chits(Map *map, Hex *hex, HighlightInfo *closure)
+static gboolean highlight_chits(UNUSED(Map *map), Hex *hex,
+		HighlightInfo *closure)
 {
 	GuiMap *gmap = closure->gmap;
 	GdkPoint points[6];

@@ -29,7 +29,7 @@
 
 static GtkWidget *chat_entry;	/* messages text widget */
 
-static void chat_cb(GtkEditable *editable, gpointer user_data)
+static void chat_cb(GtkEditable *editable, UNUSED(gpointer user_data))
 {
 	const gchar *text = gtk_entry_get_text(GTK_ENTRY(editable));
 

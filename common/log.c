@@ -2,6 +2,7 @@
  *   Go buy a copy.
  *
  * Copyright (C) 1999 the Free Software Foundation
+ * Copyright (C) 2003 Bas Wijnen <b.wijnen@phys.rug.nl>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -55,7 +56,7 @@ void log_set_func_default( void )
 }
 
 /* Take a string of text and write it to the console. */
-void add_text_console(gchar *text, gchar *type_str)
+void add_text_console(gchar *text, const gchar *type_str)
 {
 	if( type_str )
 		fprintf( stderr, "%s%s", type_str, text );
@@ -68,7 +69,7 @@ void add_text_console(gchar *text, gchar *type_str)
  */
 void log_message_string_console( gint msg_type, gchar *text )
 {
-	gchar *prefix;
+	const gchar *prefix;
 	
 	switch( msg_type ) {
 		case MSG_ERROR:	prefix = _("*ERROR* ");
@@ -106,7 +107,7 @@ void log_message_using_func(LogFunc logfunc, gint msg_type, gchar *fmt, ...)
  *   then through LOG_FUNC_DEFAULT) after turning the params into a single
  *   string.
  */
-void log_message_continue(gint msg_type, gchar *fmt, ...)
+void log_message_continue(gint msg_type, const gchar *fmt, ...)
 {
 	gchar text[1024];
 	va_list ap;
@@ -121,7 +122,7 @@ void log_message_continue(gint msg_type, gchar *fmt, ...)
 		LOG_FUNC_DEFAULT( msg_type, text );
 }
 
-void log_message(gint msg_type, gchar *fmt, ...)
+void log_message(gint msg_type, const gchar *fmt, ...)
 {
 	gchar text[1024];
 	gchar timestamp[1024];

@@ -298,7 +298,7 @@ gboolean is_bridge_valid(Edge *edge, gint owner)
  * restrictions.  The server will enfore correct placement at the end
  * of the setup phase.
  */
-gboolean can_road_be_setup(Edge *edge, gint owner)
+gboolean can_road_be_setup(Edge *edge, UNUSED(gint owner))
 {
 	return edge->owner < 0
 		&& is_edge_on_land(edge);
@@ -317,7 +317,7 @@ gboolean can_road_be_setup(Edge *edge, gint owner)
  * restrictions.  The server will enfore correct placement at the end
  * of the setup phase.
  */
-gboolean can_ship_be_setup(Edge *edge, gint owner)
+gboolean can_ship_be_setup(Edge *edge, UNUSED(gint owner))
 {
 	return edge->owner < 0
 		&& is_edge_on_sea(edge);
@@ -336,7 +336,7 @@ gboolean can_ship_be_setup(Edge *edge, gint owner)
  * restrictions.  The server will enfore correct placement at the end
  * of the setup phase.
  */
-gboolean can_bridge_be_setup(Edge *edge, gint owner)
+gboolean can_bridge_be_setup(Edge *edge, UNUSED(gint owner))
 {
 	return edge->owner < 0
 		&& !is_edge_on_land(edge);
@@ -456,7 +456,7 @@ gboolean can_bridge_be_built(Edge *edge, gint owner)
  * restrictions.  The server will enfore correct placement at the end
  * of the setup phase.
  */
-gboolean can_settlement_be_setup(Node *node, gint owner)
+gboolean can_settlement_be_setup(Node *node, UNUSED(gint owner))
 {
 	return !node->no_setup
 		&& node->owner < 0
@@ -529,7 +529,7 @@ gboolean can_city_be_built(Node *node, gint owner)
  * 0).  We cannot move the robber to the same hex it is already on.
  * Also check if pirate can be moved.
  */
-gboolean can_robber_or_pirate_be_moved(Hex *hex, gint owner)
+gboolean can_robber_or_pirate_be_moved(Hex *hex, UNUSED(gint owner))
 {
 	if (hex->terrain == SEA_TERRAIN)
 		return (hex->map->has_pirate) && (hex != hex->map->pirate_hex);
@@ -539,7 +539,7 @@ gboolean can_robber_or_pirate_be_moved(Hex *hex, gint owner)
 
 /* Iterator function for map_can_place_road() query
  */
-static gboolean can_place_road_check(Map *map, Hex *hex, gint *owner)
+static gboolean can_place_road_check(UNUSED(Map *map), Hex *hex, gint *owner)
 {
 	gint idx;
 
@@ -551,7 +551,7 @@ static gboolean can_place_road_check(Map *map, Hex *hex, gint *owner)
 
 /* Iterator function for map_can_place_ship() query
  */
-static gboolean can_place_ship_check(Map *map, Hex *hex, gint *owner)
+static gboolean can_place_ship_check(UNUSED(Map *map), Hex *hex, gint *owner)
 {
 	gint idx;
 
@@ -563,7 +563,7 @@ static gboolean can_place_ship_check(Map *map, Hex *hex, gint *owner)
 
 /* Iterator function for map_can_place_bridge() query
  */
-static gboolean can_place_bridge_check(Map *map, Hex *hex, gint *owner)
+static gboolean can_place_bridge_check(UNUSED(Map *map), Hex *hex, gint *owner)
 {
 	gint idx;
 
@@ -605,7 +605,7 @@ gboolean map_can_place_bridge(Map *map, gint owner)
 
 /* Iterator function for map_can_place_settlement() query
  */
-static gboolean can_place_settlement_check(Map *map, Hex *hex, gint *owner)
+static gboolean can_place_settlement_check(UNUSED(Map *map), Hex *hex, gint *owner)
 {
 	gint idx;
 
@@ -627,7 +627,7 @@ gboolean map_can_place_settlement(Map *map, gint owner)
 
 /* Iterator function for map_can_upgrade_settlement() query
  */
-static gboolean can_upgrade_settlement_check(Map *map, Hex *hex, gint *owner)
+static gboolean can_upgrade_settlement_check(UNUSED(Map *map), Hex *hex, gint *owner)
 {
 	gint idx;
 
@@ -673,7 +673,7 @@ gboolean map_building_spacing_ok(Map *map, gint owner,
 
 /* Ignoring building spacing, check if the building connects to a road.
  */
-gboolean map_building_connect_ok(Map *map, gint owner, BuildType type,
+gboolean map_building_connect_ok(Map *map, gint owner, UNUSED(BuildType type),
 				 gint x, gint y, gint pos)
 {
 	Node *node = map_node(map, x, y, pos);
@@ -948,7 +948,7 @@ static gint find_longest_road_recursive (Edge *edge)
 	return len + 1;
 }
 
-static gboolean find_longest_road(Map *map, Hex *hex, gint *lengths)
+static gboolean find_longest_road(UNUSED(Map *map), Hex *hex, gint *lengths)
 {
 	gint idx;
 	for (idx = 0; idx < numElem(hex->edges); idx++) {
@@ -966,7 +966,7 @@ static gboolean find_longest_road(Map *map, Hex *hex, gint *lengths)
 
 /* Zero the visited attribute for all edges and nodes.
  */
-static gboolean zero_visited(Map *map, Hex *hex, void *closure)
+static gboolean zero_visited(UNUSED(Map *map), Hex *hex, UNUSED(void *closure))
 {
 	gint idx;
 
@@ -995,7 +995,7 @@ void map_longest_road(Map *map, gint *lengths, gint num_players)
 
 /* Determine the maritime trading capabilities for the specified player
  */
-static gboolean find_maritime(Map *map, Hex *hex, MaritimeInfo *info)
+static gboolean find_maritime(UNUSED(Map *map), Hex *hex, MaritimeInfo *info)
 {
 	if (hex->terrain != SEA_TERRAIN || hex->resource == NO_RESOURCE)
 		return FALSE;

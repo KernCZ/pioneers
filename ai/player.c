@@ -1,6 +1,7 @@
 /*
  * Gnocatan: a fun game.
  * (C) 1999 the Free Software Foundation
+ * (C) 2003 Bas Wijnen <b.wijnen@phys.rug.nl>
  *
  * Author: Dave Cole.
  *
@@ -105,8 +106,9 @@ void player_modify_statistic(gint player_num, StatisticType type, gint num)
 	gchar desc[128];
 	gchar points[16];
 	gchar *row_data[3];
+	gchar empty[1] = "";
 
-	row_data[0] = "";
+	row_data[0] = empty;
 	row_data[1] = desc;
 	row_data[2] = points;
 
@@ -131,16 +133,6 @@ void player_modify_statistic(gint player_num, StatisticType type, gint num)
 			strcpy(points, "");
 	}
 }
-
-#if 0 /* unused */
-static int calc_summary_row(player_num)
-{
-	if (player_num == 0)
-		return 0;
-
-	return 0;
-}
-#endif
 
 void player_change_name(gint player_num, gchar *name)
 {
@@ -170,7 +162,7 @@ void player_change_name(gint player_num, gchar *name)
 
 }
 
-void player_has_quit(gint player_num)
+void player_has_quit(UNUSED(gint player_num))
 {
 }
 
@@ -221,7 +213,7 @@ void player_longest_road(gint player_num)
 /* Get the top and bottom row for player summary and make sure player
  * is visible
  */
-void player_show_summary(gint player_num)
+void player_show_summary(UNUSED(gint player_num))
 {
 }
 
@@ -232,7 +224,7 @@ void player_set_current(gint player_num)
 	/*gdk_beep();*/
 }
 
-void player_set_total_num(gint num)
+void player_set_total_num(UNUSED(gint num))
 {
 }
 
@@ -482,7 +474,7 @@ void player_build_remove(gint player_num,
 	}
 }
 
-void player_resource_action(gint player_num, gchar *action,
+void player_resource_action(gint player_num, const gchar *action,
 			    gint *resource_list, gint mult)
 {
 	resource_log_list(player_num, action, resource_list);

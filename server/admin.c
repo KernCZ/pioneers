@@ -2,6 +2,7 @@
  *   Go buy a copy.
  *
  * Copyright (C) 1999 the Free Software Foundation
+ * Copyright (C) 2003 Bas Wijnen <b.wijnen@phys.rug.nl>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -63,7 +64,8 @@ GameParams *params = NULL;
 
 static gint sort_function(gconstpointer a, gconstpointer b)
 {
-return (strcmp(((GameParams*)a)->title, ((GameParams*)b)->title));
+	return (strcmp(((const GameParams*)a)->title,
+				((const GameParams*)b)->title));
 }
 
 static void game_list_add_item( GameParams *item )
@@ -122,7 +124,7 @@ GameParams *load_game_desc(gchar *fname)
 	return params;
 }
 
-void load_game_types( gchar *path )
+void load_game_types( const gchar *path )
 {
 	DIR *dir;
 	gchar *fname;
@@ -248,7 +250,7 @@ gboolean start_server( gchar *port, gboolean register_server )
 	return server_startup( params, port, register_server );
 }
 
-static void handle_sigpipe (int signum)
+static void handle_sigpipe (UNUSED(int signum))
 {
 	/* reset the signal handler */
 	signal (SIGPIPE, handle_sigpipe);
@@ -257,9 +259,9 @@ static void handle_sigpipe (int signum)
 }
 
 /* server initialization */
-void server_init( gchar *default_gnocatan_dir )
+void server_init( const gchar *default_gnocatan_dir )
 {
-	gchar *gnocatan_dir = (gchar *) getenv( "GNOCATAN_DIR" );
+	const gchar *gnocatan_dir = getenv( "GNOCATAN_DIR" );
 	if( !gnocatan_dir )
 		gnocatan_dir = default_gnocatan_dir;
 

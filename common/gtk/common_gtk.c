@@ -20,6 +20,8 @@
  */
 
 #include <gtk/gtk.h>
+#include <string.h>
+#include "game.h"
 #include "network.h"
 #include "state.h"
 #include "common_gtk.h"
@@ -210,7 +212,8 @@ GtkWidget *message_window_set_text(GtkWidget *txt)
 	return old_txt;
 }
 
-static void check_gtk_widget(gpointer key, WidgetState *gui, StateMachine *sm)
+static void check_gtk_widget(UNUSED(gpointer key), WidgetState *gui,
+		StateMachine *sm)
 {
 	if (sm->is_dead)
 		return;
@@ -271,7 +274,7 @@ static void gui_free(WidgetState *gui)
 	g_free(gui);
 }
 
-static void route_event_cb(void *widget, WidgetState *gui)
+static void route_event_cb(UNUSED(void *widget), WidgetState *gui)
 {
 	StateMachine *sm = gui->sm;
 
@@ -282,13 +285,13 @@ static void route_event_cb(void *widget, WidgetState *gui)
 	sm_dec_use_count(sm);
 }
 
-static void destroy_event_cb(void *widget, WidgetState *gui)
+static void destroy_event_cb(UNUSED(void *widget), WidgetState *gui)
 {
 	gui_free(gui);
 }
                                                       
 
-static void destroy_route_event_cb(void *widget, WidgetState *gui)
+static void destroy_route_event_cb(UNUSED(void *widget), WidgetState *gui)
 {
 	StateMachine *sm = gui->sm;
 
@@ -322,7 +325,8 @@ void sm_gui_register(StateMachine *sm,
 				   GTK_SIGNAL_FUNC(route_event_cb), gui);
 }
 
-static void free_gtk_widget(gpointer key, WidgetState *gui, StateMachine *sm)
+static void free_gtk_widget(UNUSED(gpointer key), WidgetState *gui,
+		UNUSED(StateMachine *sm))
 {
 	if (gui->destroy_only) {
 		/* Destroy only notification
@@ -364,5 +368,6 @@ UIDriver GTK_Driver = {
 	/* callbacks for the server; NULL for now -- let the server set them */
 	NULL,	/* player added */
 	NULL,	/* player renamed */
-	NULL	/* player removed */
+	NULL,	/* player removed */
+	NULL	/* player renamed */
 };

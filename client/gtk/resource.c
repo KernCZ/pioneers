@@ -130,7 +130,7 @@ GtkWidget *resource_build_panel()
 	return frame;
 }
 
-void frontend_resource_change (Resource type, gint num)
+void frontend_resource_change (Resource type, UNUSED(gint num))
 {
 	if (type < NO_RESOURCE) {
 		char buff[16];

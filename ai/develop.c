@@ -1,6 +1,7 @@
 /*
  * Gnocatan: a fun game.
  * (C) 1999 the Free Software Foundation
+ * (C) 2003 Bas Wijnen <b.wijnen@phys.rug.nl>
  *
  * Author: Dave Cole.
  *
@@ -25,7 +26,7 @@ static gboolean played_develop; /* already played a non-victory card? */
 static gboolean bought_develop; /* have we bought a development card? */
 
 static struct {
-	gchar *name;
+	const gchar *name;
 	gboolean is_unique;
 } devel_cards[] = {
 	{ N_("Road Building"), FALSE },
@@ -112,7 +113,7 @@ void develop_bought(gint player_num)
 
 void develop_bought_card(DevelType type)
 {
-	gchar *text[1];
+	const gchar *text[1];
 
 	/* Cannot undo build after buying a development card
 	 */

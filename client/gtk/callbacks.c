@@ -39,13 +39,13 @@ static void frontend_network_wait (gboolean is_waiting)
 	frontend_gui_update ();
 }
 
-static void frontend_init_game ()
+static void frontend_init_game (void)
 {
 	gui_set_game_params (get_game_params () );
 	frontend_gui_update ();
 }
 
-static void frontend_start_game ()
+static void frontend_start_game (void)
 {
 	set_num_players (num_players () );
 	frontend_gui_update ();
@@ -69,7 +69,7 @@ static void frontend_draw_hex (Hex *hex)
 	frontend_gui_update ();
 }
 
-static void frontend_update_stock ()
+static void frontend_update_stock (void)
 {
 	identity_draw ();
 	frontend_gui_update ();
@@ -77,20 +77,20 @@ static void frontend_update_stock ()
 
 static void frontend_player_turn (gint player)
 {
-	player_show_current ();
+	player_show_current (player);
 }
 
-static void frontend_trade ()
+static void frontend_trade (void)
 {
 	frontend_gui_update ();
 }
 
-static void frontend_robber_moved (Hex *old, Hex *new)
+static void frontend_robber_moved (UNUSED(Hex *old), UNUSED(Hex *new))
 {
 	gui_prompt_hide ();
 }
 
-static void frontend_error (gchar *message)
+static void frontend_error (UNUSED(gchar *message))
 {
 }
 

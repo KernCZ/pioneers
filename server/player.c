@@ -49,8 +49,6 @@ static gboolean mode_game_is_over(Player *player, gint event);
 static gboolean mode_global(Player *player, gint event);
 static gboolean mode_unhandled(Player *player, gint event);
 
-extern void start_timeout(void);
-
 static gint next_player_num(Game *game, gboolean force_viewer)
 {
 	gint idx = game->params->num_players;
@@ -442,7 +440,7 @@ void player_revive(Player *newp, char *name)
 {
 	Game *game = newp->game;
 	GList *current = NULL;
-	Player *p;
+	Player *p = NULL;
 
 	/* first see if a player with the given name exists */
 	if (name) {
@@ -570,7 +568,7 @@ gboolean mode_viewer (Player *player, gint event)
 			sm_send (sm, "ERR game-full");
 			return TRUE;
 		}
-	} else if (sm_recv (sm, "play %d", num) ) {
+	} else if (sm_recv (sm, "play %d", &num) ) {
 		/* try to be the specified player number */
 		if (num >= game->params->num_players
 				|| !player_by_num (game, num)->disconnected) {
@@ -819,7 +817,7 @@ Player *player_none(Game *game)
  * +  = prepend 'player %d' to the message
  * -  = don't alter the message
  */
-void player_broadcast(Player *player, BroadcastType type, char *fmt, ...)
+void player_broadcast(Player *player, BroadcastType type, const char *fmt, ...)
 {
 	Game *game = player->game;
 	char buff[4096];

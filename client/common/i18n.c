@@ -2,6 +2,7 @@
  *   Go buy a copy.
  *
  * Copyright (C) 1999 the Free Software Foundation
+ * Copyright (C) 2003 Bas Wijnen <b.wijnen@phys.rug.nl>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +29,9 @@
 #include "i18n.h"
 #include "config-gnome.h"
 
+/* Needed below for a dirty trick */
+extern int _nl_msg_cat_cntr;
+
 lang_desc languages[] = {
 	/* language names not translated intentionally! */
 	{ "en", "English",  "en_US", TRUE,  NULL },
@@ -36,11 +40,11 @@ lang_desc languages[] = {
 /*	{ "it", "Italiano", "it_IT", FALSE, NULL }, */
 	{ "es", "Español",  "es_ES", FALSE, NULL },
 	{ "nl", "Nederlands",  "nl_NL", FALSE, NULL },
-	{ NULL, NULL }
+	{ NULL, NULL, NULL, FALSE, NULL }
 };
 gchar *current_language = NULL;
 
-static lang_desc *find_lang_desc(gchar *code)
+static lang_desc *find_lang_desc(const gchar *code)
 {
 	lang_desc *ld;
 
@@ -56,9 +60,9 @@ void init_nls(void)
 	gchar *linguas;
 	gchar *p;
 	lang_desc *ld;
-	gchar *saved_lang;
+	const gchar *saved_lang;
 	gint novar;
-	gchar *set_locale;
+	const gchar *set_locale;
 
 	/* mark languages supported from ALL_LINGUAS (+English) */
 	linguas = g_strdup(ALL_LINGUAS);
@@ -104,8 +108,6 @@ void init_nls(void)
 
 gboolean change_nls(lang_desc *ld)
 {
-	extern int _nl_msg_cat_cntr;
-
 	if (!setlocale(LC_ALL, ld->localedef)) {
 		/* args */
 		fprintf(stderr, "Locale %s not supported by C library!\n",

@@ -37,26 +37,26 @@ static gboolean have_turn = FALSE;
 /* for ship movement, store the position where to move from */
 static Edge *ship_from;
 
-static void frontend_state_idle (GuiEvent event)
+static void frontend_state_idle (UNUSED(GuiEvent event))
 {
 	/* don't react on any event when idle. */
 	/* (except of course chat and name change events, but they are
 	 * handled in route_event) */
 }
 
-void build_road_cb (Edge *edge, gint player_num)
+void build_road_cb (Edge *edge, UNUSED(gint player_num))
 {
 	gui_cursor_none();
 	cb_build_road (edge);
 }
 
-void build_ship_cb (Edge *edge, gint player_num)
+void build_ship_cb (Edge *edge, UNUSED(gint player_num))
 {
 	gui_cursor_none();
 	cb_build_ship (edge);
 }
 
-void do_move_ship_cb (Edge *edge, gint player_num)
+static void do_move_ship_cb (Edge *edge, UNUSED(gint player_num))
 {
 	gui_cursor_none();
 	cb_move_ship (ship_from, edge);
@@ -72,18 +72,18 @@ void do_move_ship_cb (Edge *edge, gint player_num)
  * This function is not in common/map_query.c, but here, because it needs
  * ship_from, which isn't (and shouldn't be) global.
  */
-gboolean can_ship_be_moved_to(Edge *edge, gint owner)
+static gboolean can_ship_be_moved_to(Edge *edge, UNUSED(gint owner))
 {
 	return can_move_ship (ship_from, edge);
 }
 
-void build_bridge_cb (Edge *edge, gint player_num)
+void build_bridge_cb (Edge *edge, UNUSED(gint player_num))
 {
 	gui_cursor_none();
 	cb_build_bridge (edge);
 }
 
-void move_ship_cb (Edge *edge, gint player_num)
+void move_ship_cb (Edge *edge, UNUSED(gint player_num))
 {
 	ship_from = edge;
 	gui_cursor_set(SHIP_CURSOR,
@@ -92,13 +92,13 @@ void move_ship_cb (Edge *edge, gint player_num)
 			NULL);
 }
 
-void build_settlement_cb (Node *node, gint player_num)
+void build_settlement_cb (Node *node, UNUSED(gint player_num))
 {
 	gui_cursor_none();
 	cb_build_settlement (node);
 }
 
-void build_city_cb (Node *node, gint player_num)
+void build_city_cb (Node *node, UNUSED(gint player_num))
 {
 	gui_cursor_none();
 	cb_build_city (node);
@@ -168,7 +168,7 @@ void frontend_trade_player_end (gint player_num)
 	frontend_gui_update ();
 }
 
-void frontend_state_quote (GuiEvent event)
+static void frontend_state_quote (GuiEvent event)
 {
 	switch (event) {
 	case GUI_UPDATE:
@@ -375,7 +375,7 @@ static void frontend_state_roadbuilding (GuiEvent event)
 	}
 }
 
-void frontend_roadbuilding (gint num_roads)
+void frontend_roadbuilding (UNUSED(gint num_roads))
 {
 	if (get_gui_state () == frontend_state_roadbuilding) return;
 	set_gui_state (frontend_state_roadbuilding);
@@ -559,19 +559,19 @@ static void place_robber (Hex *hex, gint victim)
 	set_gui_state (previous_state);
 }
 
-static void rob_building(Node *node, gint player_num, Hex *hex)
+static void rob_building(Node *node, UNUSED(gint player_num), Hex *hex)
 {
 	gui_cursor_none();
 	place_robber (hex, node->owner);
 }
 
-static void rob_edge(Edge *edge, gint player_num, Hex *hex)
+static void rob_edge(Edge *edge, UNUSED(gint player_num), Hex *hex)
 {
 	gui_cursor_none();
 	place_robber (hex, edge->owner);
 }
 
-gboolean can_building_be_robbed(Node *node, int owner)
+gboolean can_building_be_robbed(Node *node, UNUSED(int owner))
 {
 	gint idx;
 
@@ -592,7 +592,7 @@ gboolean can_building_be_robbed(Node *node, int owner)
 	return player_get(node->owner)->statistics[STAT_RESOURCES] > 0;
 }
 
-gboolean can_edge_be_robbed(Edge *edge, int owner)
+gboolean can_edge_be_robbed(Edge *edge, UNUSED(int owner))
 {
 	gint idx;
 
@@ -615,7 +615,7 @@ gboolean can_edge_be_robbed(Edge *edge, int owner)
 
 /* User just placed the robber
  */
-static void place_robber_or_pirate_cb(Hex *hex, gint player_num)
+static void place_robber_or_pirate_cb(Hex *hex, UNUSED(gint player_num))
 {
 	gint victim_list[6];
 	robber_hex = hex;
@@ -669,7 +669,7 @@ void frontend_robber ()
 	frontend_gui_update ();
 }
 
-void frontend_mode_setup (GuiEvent event)
+static void frontend_mode_setup (GuiEvent event)
 {
 	switch (event) {
 	case GUI_UPDATE:
@@ -733,7 +733,8 @@ void frontend_mode_setup (GuiEvent event)
 	}
 }
 
-void frontend_setup (unsigned num_settlements, unsigned num_roads)
+void frontend_setup (UNUSED(unsigned num_settlements),
+		UNUSED(unsigned num_roads))
 {
 	if (get_gui_state () == frontend_mode_setup) {
 		frontend_gui_update ();

@@ -43,7 +43,7 @@ static void add_setting_desc(GtkWidget *table, gint row, gint col, gchar *desc)
 }
 
 static void add_setting_val(GtkWidget *table, gint row, gint col, gint type,
-			    gint int_val, gchar *char_val)
+			    gint int_val, const gchar *char_val)
 {
 	GtkWidget *label;
 	gchar label_var[50];

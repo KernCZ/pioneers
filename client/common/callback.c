@@ -23,7 +23,6 @@
 #include "callback.h"
 #include "state.h"
 #include "client.h"
-#include "modes.h"
 #include "cost.h"
 
 /* callbacks is a pointer to an array of function pointers.
@@ -391,7 +390,7 @@ gboolean turn_can_trade()
 		|| can_trade_domestic ();
 }
 
-static gboolean really_try_move_ship (Map *map, Hex *hex, Edge *from)
+static gboolean really_try_move_ship (UNUSED(Map *map), Hex *hex, Edge *from)
 {
 	gint idx;
 	for (idx = 0; idx < numElem (hex->edges); ++idx) {

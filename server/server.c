@@ -2,6 +2,7 @@
  *   Go buy a copy.
  *
  * Copyright (C) 1999 the Free Software Foundation
+ * Copyright (C) 2003 Bas Wijnen <b.wijnen@phys.rug.nl>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -58,7 +59,7 @@ typedef union {
 static Game *curr_game;
 gint no_player_timeout = 0;
 
-void timed_out(int signum)
+void timed_out(UNUSED(int signum))
 {
 	g_print( "Was hanging around for too long without players... bye.\n" );
 	exit(5);
@@ -92,7 +93,7 @@ gint open_listen_socket( char *port )
 	int err;
 	struct addrinfo hints, *ai, *aip;
 	int yes;
-	gint fd;
+	gint fd = -1;
 
 
 	memset(&hints, 0, sizeof(hints));
@@ -226,7 +227,7 @@ gint accept_connection( gint in_fd, gchar **location)
 	return fd;
 }
 
-gint new_computer_player(gchar *server, gchar *port)
+gint new_computer_player(const gchar *server, const gchar *port)
 {
     pid_t pid, pid2;
     

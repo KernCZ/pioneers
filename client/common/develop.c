@@ -37,7 +37,7 @@ static gboolean played_develop; /* already played a non-victory card? */
 static gboolean bought_develop; /* have we bought a development card? */
 
 static struct {
-	gchar *name;
+	const gchar *name;
 	gboolean is_unique;
 } devel_cards[] = {
 	{ N_("Road Building"), FALSE },

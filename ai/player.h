@@ -1,6 +1,7 @@
 /*
  * Gnocatan: a fun game.
  * (C) 1999 the Free Software Foundation
+ * (C) 2003 Bas Wijnen <b.wijnen@phys.rug.nl>
  *
  * Author: Dave Cole.
  *
@@ -28,8 +29,8 @@ typedef enum {
 } StatisticType;
 
 typedef struct {
-	gchar *singular;
-	gchar *plural;
+	const gchar *singular;
+	const gchar *plural;
 	gint victory_mult;
 } Statistic;
 
@@ -70,7 +71,7 @@ void player_build_remove(gint player_num,
 			 BuildType type, gint x, gint y, gint pos);
 void player_build_move(gint player_num, gint sx, gint sy, gint spos,
 		gint dx, gint dy, gint dpos, gint isundo);
-void player_resource_action(gint player_num, gchar *action,
+void player_resource_action(gint player_num, const gchar *action,
 			    gint *resource_list, gint mult);
 
 int player_get_num_resource(gint player_num);

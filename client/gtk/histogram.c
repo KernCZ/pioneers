@@ -81,8 +81,8 @@ gint dice_histogram(gint cmd, gint roll)
  *
  */
 
-static gint expose_chip_cb(GtkWidget *area,
-			   GdkEventExpose *event, gint n)
+static gint expose_chip_cb(GtkWidget *area, UNUSED(GdkEventExpose *event),
+		gint n)
 {
 	static GdkGC *chip_gc;
 	gint wh;
@@ -97,8 +97,8 @@ static gint expose_chip_cb(GtkWidget *area,
 	return FALSE;
 }
 
-static gint expose_histogram_cb(GtkWidget *area,
-			    GdkEventExpose *event, GdkPixmap *pixmap)
+static gint expose_histogram_cb(GtkWidget *area, UNUSED(GdkEventExpose *event),
+		GdkPixmap *pixmap)
 {
 	static GdkGC *histogram_gc;
 	gint w = area->allocation.width;

@@ -2,6 +2,7 @@
  *   Go buy a copy.
  *
  * Copyright (C) 1999 the Free Software Foundation
+ * Copyright (C) 2003 Bas Wijnen <b.wijnen@phys.rug.nl>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,7 +45,7 @@ extern GameParams *params;
 GameParams *game_list_find_item( const gchar *title );
 void game_list_foreach( GFunc func, gpointer user_data );
 GameParams *load_game_desc(gchar *fname);
-void load_game_types( gchar *path );
+void load_game_types( const gchar *path );
 
 /**** callbacks to set parameters ****/
 void cfg_set_num_players( gint num_players );
@@ -60,7 +61,7 @@ void cfg_set_timeout( gint to );
 gboolean start_server( gchar *port, gboolean register_server );
 
 /* initialize the server */
-void server_init( gchar *default_gnocatan_dir );
+void server_init( const gchar *default_gnocatan_dir );
 
 /**** backend functions for network administration of the server ****/
 

@@ -316,7 +316,7 @@ static void call_domestic(Player *player, gint *supply, gint *receive)
 
 	/* Check that the player actually has the specified resources
 	 */
-	num_supply = 0;
+	num_supply = num_receive = 0;
 	for (idx = 0; idx < NO_RESOURCE; idx++) {
 		if (supply[idx]) {
 			if (player->assets[idx] == 0) {

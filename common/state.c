@@ -66,12 +66,12 @@ static gint compare_int(gconstpointer a, gconstpointer  b)
     return a == b;
 }
 
-gchar *sm_current_name(StateMachine *sm)
+const gchar *sm_current_name(StateMachine *sm)
 {
 	return sm->current_state;
 }
 
-void sm_state_name(StateMachine *sm, gchar *name)
+void sm_state_name(StateMachine *sm, const gchar *name)
 {
 	sm->current_state = name;
 }
@@ -219,7 +219,7 @@ static gint get_num(gchar *str, gint *num)
 	return len;
 }
 
-static gchar *resource_types[] = {
+static const gchar *resource_types[] = {
 	"brick",
 	"grain",
 	"ore",
@@ -227,7 +227,7 @@ static gchar *resource_types[] = {
 	"lumber"
 };
 
-static gint try_recv(StateMachine *sm, gchar *fmt, va_list ap)
+static gint try_recv(StateMachine *sm, const gchar *fmt, va_list ap)
 {
 	gint offset = 0;
 	gchar *line = sm->line + sm->line_offset;
@@ -306,7 +306,7 @@ static gint try_recv(StateMachine *sm, gchar *fmt, va_list ap)
 		case 'r': /* resource type */
 			resource = va_arg(ap, Resource*);
 			for (idx = 0; idx < NO_RESOURCE; idx++) {
-				gchar *type = resource_types[idx];
+				const gchar *type = resource_types[idx];
 				len = strlen(type);
 				if (strncmp(line + offset, type,len) == 0) {
 					offset += len;
@@ -324,7 +324,7 @@ static gint try_recv(StateMachine *sm, gchar *fmt, va_list ap)
 	return offset;
 }
 
-gboolean sm_recv(StateMachine *sm, gchar *fmt, ...)
+gboolean sm_recv(StateMachine *sm, const gchar *fmt, ...)
 {
 	va_list ap;
 	gint offset;
@@ -336,7 +336,7 @@ gboolean sm_recv(StateMachine *sm, gchar *fmt, ...)
 	return offset > 0 && sm->line[sm->line_offset + offset] == '\0';
 }
 
-gboolean sm_recv_prefix(StateMachine *sm, gchar *fmt, ...)
+gboolean sm_recv_prefix(StateMachine *sm, const gchar *fmt, ...)
 {
 	va_list ap;
 	gint offset;
@@ -351,7 +351,7 @@ gboolean sm_recv_prefix(StateMachine *sm, gchar *fmt, ...)
 	return TRUE;
 }
 
-static gint buff_append(gchar *buff, gint len, gint offset, gchar *str)
+static gint buff_append(gchar *buff, gint len, gint offset, const gchar *str)
 {
 	gint str_len = strlen(str);
 
@@ -360,7 +360,7 @@ static gint buff_append(gchar *buff, gint len, gint offset, gchar *str)
 	return offset + str_len;
 }
 
-void sm_vnformat(gchar *buff, gint len, gchar *fmt, va_list ap)
+void sm_vnformat(gchar *buff, gint len, const gchar *fmt, va_list ap)
 {
 	gint offset = 0;
 
@@ -442,12 +442,12 @@ void sm_vnformat(gchar *buff, gint len, gchar *fmt, va_list ap)
 	buff[offset] = '\0';
 }
 
-void sm_write(StateMachine *sm, gchar *str)
+void sm_write(StateMachine *sm, const gchar *str)
 {
 	net_write(sm->ses, str);
 }
 
-void sm_send(StateMachine *sm, gchar *fmt, ...)
+void sm_send(StateMachine *sm, const gchar *fmt, ...)
 {
 	va_list ap;
 	gchar buff[512];

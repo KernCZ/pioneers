@@ -84,7 +84,7 @@ extern GdkColor red;
 extern GdkColor green;
 extern GdkColor blue;
 
-void load_pixmap(gchar *name, GdkPixmap **pixmap, GdkBitmap **mask);
+void load_pixmap(const gchar *name, GdkPixmap **pixmap, GdkBitmap **mask);
 
 GuiMap *guimap_new(void);
 GdkPixmap *guimap_terrain(Terrain terrain);
@@ -94,7 +94,6 @@ void guimap_ship_polygon(GuiMap *gmap, Edge *edge, Polygon *poly);
 void guimap_bridge_polygon(GuiMap *gmap, Edge *edge, Polygon *poly);
 void guimap_city_polygon(GuiMap *gmap, Node *node, Polygon *poly);
 void guimap_settlement_polygon(GuiMap *gmap, Node *node, Polygon *poly);
-void guimap_robber_polygon(GuiMap *gmap, Hex *hex, Polygon *poly);
 
 void draw_dice_roll(GdkPixmap *pixmap, GdkGC *gc,
 		    gint x_offset, gint y_offset, gint radius,

@@ -58,7 +58,7 @@ static GSList *add_resource_btn(GtkWidget *vbox,
 	return grp;
 }
 
-static gboolean ignore_close(GtkWidget *widget, gpointer user_data)
+static gboolean ignore_close(UNUSED(GtkWidget *widget), UNUSED(gpointer user_data))
 {
 	return TRUE;
 }

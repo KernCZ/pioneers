@@ -70,7 +70,7 @@ gboolean player_is_viewer (gint num)
 	return num < 0 || num >= num_total_players;
 }
 
-Viewer *viewer_get (num)
+Viewer *viewer_get (gint num)
 {
 	GList *list;
 	for (list = viewers; list != NULL; list = g_list_next (list) ) {

@@ -81,7 +81,7 @@ enum {
 	PLAYER_COLUMN_LAST
 };
 
-static void quit_cb(GtkWidget *widget, void *data)
+static void quit_cb(UNUSED(GtkWidget *widget), UNUSED(void *data))
 {
 	gtk_main_quit();
 }
@@ -94,7 +94,7 @@ static GnomeUIInfo file_menu[] = {
 	GNOMEUIINFO_END
 };
 
-static void help_about_cb(GtkWidget *widget, void *data)
+static void help_about_cb(UNUSED(GtkWidget *widget), UNUSED(void *data))
 {
 	GtkWidget *about;
 	const gchar *authors[] = {
@@ -114,6 +114,9 @@ static void help_about_cb(GtkWidget *widget, void *data)
 	gtk_widget_show(about);
 }
 
+/* put this in non-const memory, because GNOMEUIINFO_HELP wants a non-const
+ * pointer */
+static gchar app_name[] = "gnocatan-server";
 static GnomeUIInfo help_menu[] = {
 	{ GNOME_APP_UI_ITEM,
 	  N_("_About Gnocatan Server"),
@@ -123,7 +126,7 @@ static GnomeUIInfo help_menu[] = {
 
 	GNOMEUIINFO_SEPARATOR,
 
-	GNOMEUIINFO_HELP("gnocatan-server"),
+	GNOMEUIINFO_HELP(app_name),
 	GNOMEUIINFO_END
 };
 
@@ -133,7 +136,8 @@ static GnomeUIInfo main_menu[] = {
 	GNOMEUIINFO_END
 };
 
-static void port_entry_changed_cb(GtkWidget* widget, gpointer user_data)
+static void port_entry_changed_cb(UNUSED(GtkWidget* widget),
+		UNUSED(gpointer user_data))
 {
 	const gchar *text;
 
@@ -144,7 +148,7 @@ static void port_entry_changed_cb(GtkWidget* widget, gpointer user_data)
 	server_port[sizeof(server_port)-1] = 0;
 }
 
-static void register_toggle_cb(GtkToggleButton *toggle, gpointer user_data)
+static void register_toggle_cb(GtkToggleButton *toggle, UNUSED(gpointer user_data))
 {
 	GtkWidget *label = GTK_BIN(toggle)->child;
 
@@ -155,7 +159,7 @@ static void register_toggle_cb(GtkToggleButton *toggle, gpointer user_data)
 	gtk_widget_set_sensitive(hostname_entry, register_server);
 }
 
-static void show_terrain()
+static void show_terrain(void)
 {
 	GtkWidget *label;
 	gboolean f;
@@ -171,19 +175,19 @@ static void show_terrain()
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(terrain_toggle),f);
 }
 
-static void players_spin_changed_cb(GtkWidget* widget, gpointer user_data)
+static void players_spin_changed_cb(GtkWidget* widget, UNUSED(gpointer user_data))
 {
 	cfg_set_num_players( gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(widget)) );
 }
 
-static void victory_spin_changed_cb(GtkWidget* widget, gpointer user_data)
+static void victory_spin_changed_cb(GtkWidget* widget, UNUSED(gpointer user_data))
 {
 	cfg_set_victory_points( gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(widget)) );
 }
 
 static void sevens_rule_changed_cb(GtkWidget *radio, gpointer user_data);
 
-static void update_game_settings()
+static void update_game_settings(void)
 {
 	if (params != NULL) {
 		show_terrain();
@@ -212,7 +216,7 @@ static void update_game_settings()
 	}
 }
 
-static void game_select_cb(GtkWidget *list, gpointer user_data)
+static void game_select_cb(UNUSED(GtkWidget *list), UNUSED(gpointer user_data))
 {
 	params = game_list_find_item(gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (game_combo)->entry)));
 	update_game_settings();
@@ -220,7 +224,8 @@ static void game_select_cb(GtkWidget *list, gpointer user_data)
 
 /* this function MUST NOT use its arguments, for it can be called with
  * NULL, NULL */
-static void sevens_rule_changed_cb(GtkWidget *radio, gpointer user_data)
+static void sevens_rule_changed_cb(UNUSED(GtkWidget *radio),
+		UNUSED(gpointer user_data))
 {
 	gint rule_value = 0;
 
@@ -235,7 +240,8 @@ static void sevens_rule_changed_cb(GtkWidget *radio, gpointer user_data)
 	cfg_set_sevens_rule(rule_value);
 }
 
-static void terrain_toggle_cb(GtkToggleButton *toggle, gpointer user_data)
+static void terrain_toggle_cb(GtkToggleButton *toggle,
+		UNUSED(gpointer user_data))
 {
 	cfg_set_terrain_type( gtk_toggle_button_get_active(toggle) );
 	show_terrain();
@@ -252,7 +258,8 @@ void gui_ui_enable(gint sensitive)
 	gtk_widget_set_sensitive(addcomputer_btn, !sensitive);
 }
 
-static void start_clicked_cb(GtkWidget *start_btn, gpointer user_data)
+static void start_clicked_cb(UNUSED(GtkWidget *start_btn),
+		UNUSED(gpointer user_data))
 {
 	if (ui_enabled) {
 		if ( start_server(server_port, register_server) ) {
@@ -275,7 +282,8 @@ static void start_clicked_cb(GtkWidget *start_btn, gpointer user_data)
 	}
 }
 
-static void addcomputer_clicked_cb(GtkWidget *start_btn, gpointer user_data)
+static void addcomputer_clicked_cb(UNUSED(GtkWidget *start_btn),
+		UNUSED(gpointer user_data))
 {
   new_computer_player(NULL, server_port);
 }
@@ -350,7 +358,8 @@ static gchar *getmyhostname(void)
        return strdup(hp->h_name);
 }
 
-static void hostname_changed_cb(GtkWidget *widget, gpointer user_data)
+static void hostname_changed_cb(UNUSED(GtkWidget *widget),
+		UNUSED(gpointer user_data))
 {
 	const gchar *text;
 
@@ -361,7 +370,8 @@ static void hostname_changed_cb(GtkWidget *widget, gpointer user_data)
 	hostname = g_strdup (text);
 }
 
-static void meta_server_changed_cb(GtkWidget *widget, gpointer user_data)
+static void meta_server_changed_cb(UNUSED(GtkWidget *widget),
+		UNUSED(gpointer user_data))
 {
 	const gchar *text;
 
@@ -515,8 +525,8 @@ static GtkWidget *build_game_settings(GtkWidget *parent)
 	return frame;
 }
 
-void
-my_cell_player_viewer_to_text (GtkTreeViewColumn *tree_column,
+static void
+my_cell_player_viewer_to_text (UNUSED(GtkTreeViewColumn *tree_column),
 	                GtkCellRenderer   *cell,
                         GtkTreeModel      *tree_model,
 	                GtkTreeIter       *iter,
@@ -533,7 +543,7 @@ my_cell_player_viewer_to_text (GtkTreeViewColumn *tree_column,
 
 
 
-static GtkWidget *build_interface()
+static GtkWidget *build_interface(void)
 {
 	GtkWidget *vbox;
 	GtkWidget *vbox_settings;
@@ -541,7 +551,6 @@ static GtkWidget *build_interface()
 	GtkWidget *frame;
 	GtkWidget *table;
 	GtkWidget *label;
-	GtkObject *adj;
 	GtkWidget *scroll_win;
 	GtkWidget *message_text;
           gint novar;

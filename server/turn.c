@@ -276,7 +276,7 @@ typedef struct {
 	int roll;
 } GameRoll;
 
-static gboolean distribute_resources(Map *map, Hex *hex, GameRoll *data)
+static gboolean distribute_resources(UNUSED(Map *map), Hex *hex, GameRoll *data)
 {
 	int idx;
 
@@ -308,7 +308,7 @@ static gboolean distribute_resources(Map *map, Hex *hex, GameRoll *data)
 	return FALSE;
 }
 
-static gboolean exit_func(gpointer data)
+static gboolean exit_func(UNUSED(gpointer data))
 {
     exit(0);
 }
@@ -476,7 +476,7 @@ gboolean mode_turn(Player *player, gint event)
 
 /* Player should be idle - I will tell them when to do something
  */
-gboolean mode_idle(Player *player, gint event)
+gboolean mode_idle(Player *player, UNUSED(gint event))
 {
 	StateMachine *sm = player->sm;
         sm_state_name(sm, "mode_idle");

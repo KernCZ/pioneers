@@ -2,6 +2,7 @@
  *   Go buy a copy.
  *
  * Copyright (C) 1999 the Free Software Foundation
+ * Copyright (C) 2003 Bas Wijnen <b.wijnen@phys.rug.nl>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,9 +26,9 @@
 #include <glib.h>
 
 typedef struct {
-	char *code;
-	char *name;
-	char *localedef;
+	const char *code;
+	const char *name;
+	const char *localedef;
 	gboolean supported;
 	void *widget;
 } lang_desc;

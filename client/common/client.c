@@ -33,7 +33,6 @@
 #include "callback.h"
 #include "buildrec.h"
 #include "quoteinfo.h"
-#include "modes.h"
 
 static enum callback_mode previous_mode;
 GameParams *game_params;
@@ -111,16 +110,16 @@ static void waiting_for_network(gboolean is_waiting)
 	callbacks.network_wait (is_waiting);
 }
 
-static void do_nothing ()
+static void do_nothing (void)
 {
 }
 
 /*----------------------------------------------------------------------
  * Entry point for the client state machine
  */
-void client_init ()
+void client_init (void)
 {
-	typedef void (*nothing_cast)();
+	typedef void (*nothing_cast)(void);
 
 	/* first set everything to 0, so we are sure it segfaults if
 	 * someone forgets to update this when adding a new callback */
@@ -990,7 +989,7 @@ gboolean mode_done_response(StateMachine *sm, gint event)
 	return FALSE;
 }
 
-static char *setup_msg()
+static char *setup_msg(void)
 {
 	static char msg[1024];
 	char *msg_end;

@@ -1,6 +1,7 @@
 /*
  * Gnocatan: a fun game.
  * (C) 1999 the Free Software Foundation
+ * (C) 2003 Bas Wijnen <b.wijnen@phys.rug.nl>
  *
  * Author: Tim Martin
  *
@@ -22,9 +23,9 @@
 #include "gnocatan-path.h"
 
 
-static char *get_gnocatan_dir(void)
+static const char *get_gnocatan_dir(void)
 {
-    gchar *gnocatan_dir = (gchar *) getenv( "GNOCATAN_DIR" );
+    const gchar *gnocatan_dir = (gchar *) getenv( "GNOCATAN_DIR" );
     if( !gnocatan_dir )
 	gnocatan_dir = GNOCATAN_DIR_DEFAULT;
     
@@ -35,7 +36,7 @@ static char *
 random_name(void)
 {
     char filename[MAXPATHLEN];
-    char *gnopath = get_gnocatan_dir();
+    const char *gnopath = get_gnocatan_dir();
     FILE *stream;
     char line[512];
     static char name[512];
@@ -66,7 +67,7 @@ random_name(void)
     return name;
 }
 
-void ai_chat (char *message)
+void ai_chat (const char *message)
 {
 	/* TODO: chat a chat message */
 	log_message (MSG_INFO, message);
@@ -93,10 +94,10 @@ int main(int argc, char *argv[])
 {
 	GMainLoop *event_loop;
 	int c;
-	char *server = "127.0.0.1";
-	char *port = "5556";
-	char *name = NULL;
-	char *ai = "default";
+	const char *server = "127.0.0.1";
+	const char *port = "5556";
+	const char *name = NULL;
+	const char *ai = "default";
 	int waittime = 1000;
 	int chatty = 1;
 

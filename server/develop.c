@@ -2,6 +2,7 @@
  *   Go buy a copy.
  *
  * Copyright (C) 1999 the Free Software Foundation
+ * Copyright (C) 2003 Bas Wijnen <b.wijnen@phys.rug.nl>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,12 +39,6 @@
 #include "cost.h"
 #include "log.h"
 #include "server.h"
-
-/* Local function prototypes */
-gboolean mode_road_building(Player *player, gint event);
-gboolean mode_plenty_resources(Player *player, gint event);
-gboolean mode_monopoly(Player *player, gint event);
-
 
 void develop_shuffle(Game *game)
 {

@@ -124,7 +124,7 @@ gboolean trade_valid_selection()
 	return is_good_quote(selected_quote);
 }
 
-static void load_pixmaps()
+static void load_pixmaps(void)
 {
 	if (cross_pixmap != NULL)
 		return;
@@ -201,7 +201,7 @@ static void update_row(TradeRow *row)
 	gtk_entry_set_text(GTK_ENTRY(row->curr), str);
 }
 
-static void less_resource_cb(void *widget, TradeRow *row)
+static void less_resource_cb(UNUSED(void *widget), TradeRow *row)
 {
 	row->num--;
 	if (row->num == 0)
@@ -211,7 +211,7 @@ static void less_resource_cb(void *widget, TradeRow *row)
 	update_row(row);
 }
 
-static void more_resource_cb(void *widget, TradeRow *row)
+static void more_resource_cb(UNUSED(void *widget), TradeRow *row)
 {
 	row->num++;
 	if (row->is_we_supply && row->num == resource_asset(row->resource))
@@ -221,7 +221,7 @@ static void more_resource_cb(void *widget, TradeRow *row)
 	update_row(row);
 }
 
-void trade_format_maritime(QuoteInfo *quote, gchar *desc)
+static void trade_format_maritime(QuoteInfo *quote, gchar *desc)
 {
 	sprintf(desc, _("%d:1 %s for %s"),
 		quote->var.m.ratio,
@@ -235,7 +235,8 @@ static void add_maritime_trade(gint ratio, Resource receive, Resource supply)
 	QuoteInfo *prev;
 	gint row;
 	gchar quote_desc[128];
-	gchar *row_data[3] = { "", "", quote_desc };
+	gchar empty[1] = "";
+	gchar *row_data[3] = { empty, empty, quote_desc };
 
 	for (quote = quotelist_first(quote_list);
 	     quote != NULL; quote = quotelist_next(quote))
@@ -277,7 +278,11 @@ static void add_reject_row(gint player_num)
 	Player *player = player_get(player_num);
 	gint row = gtk_clist_find_row_from_data(GTK_CLIST(clist), player);
 	QuoteInfo *quote;
-	gchar *row_data[3] = { "", "", _("Rejected trade") };
+	gchar empty[1] = "";
+	gchar *row_data[3];
+	row_data[0] = empty;
+	row_data[1] = empty;
+	row_data[2] = g_strdup (_("Rejected trade") );
 
 	if (row >= 0)
 		return;
@@ -299,6 +304,7 @@ static void add_reject_row(gint player_num)
 	gtk_clist_set_row_data(GTK_CLIST(clist), row, player);
 	gtk_clist_set_pixmap(GTK_CLIST(clist), row, 0, player->user_data, NULL);
 	gtk_clist_set_selectable(GTK_CLIST(clist), row, FALSE);
+	g_free (row_data[2]);
 }
 
 void trade_remove_reject_rows()
@@ -339,7 +345,7 @@ static void remove_quote_update_pixmap(QuoteInfo *quote)
 	quotelist_delete(quote_list, quote);
 }
 
-static void check_maritime_trades()
+static void check_maritime_trades(void)
 {
 	QuoteInfo *quote;
 	gint idx;
@@ -534,8 +540,8 @@ void trade_perform_maritime(gint ratio, Resource supply, Resource receive)
 	cb_maritime (ratio, supply, receive);
 }
 
-void trade_perform_domestic(gint player_num, gint partner_num, gint quote_num,
-			    gint *they_supply, gint *they_receive)
+void trade_perform_domestic(UNUSED(gint player_num), gint partner_num,
+		gint quote_num, gint *they_supply, gint *they_receive)
 {
 	QuoteInfo *quote;
 
@@ -548,46 +554,6 @@ void trade_perform_domestic(gint player_num, gint partner_num, gint quote_num,
 	}
 }
 
-void trade_refine_domestic(gint *we_supply, gint *we_receive)
-{
-	QuoteInfo *quote;
-	gint idx;
-
-	trade_remove_reject_rows();
-	quote = quotelist_first(quote_list);
-	while (quote != NULL) {
-		QuoteInfo *curr = quote;
-
-		quote = quotelist_next(quote);
-		if (!curr->is_domestic)
-			continue;
-
-		/* Is the current quote valid?
-		 */
-		for (idx = 0; idx < NO_RESOURCE; idx++) {
-			if (!we_receive[idx] && curr->var.d.supply[idx] != 0)
-				break;
-			if (!we_supply[idx] && curr->var.d.receive[idx] != 0)
-				break;
-		}
-		if (idx < NO_RESOURCE)
-			remove_quote_update_pixmap(curr);
-		else {
-			gint row;
-
-			load_pixmaps();
-			row = gtk_clist_find_row_from_data(GTK_CLIST(clist),
-							   curr);
-			if (is_good_quote(curr))
-				gtk_clist_set_pixmap(GTK_CLIST(clist), row, 1,
-						     tick_pixmap, tick_mask);
-			else
-				gtk_clist_set_pixmap(GTK_CLIST(clist), row, 1,
-						     cross_pixmap, cross_mask);
-		}
-	}
-}
-
 void trade_add_quote(gint player_num,
 		     gint quote_num, gint *supply, gint *receive)
 {
@@ -596,7 +562,8 @@ void trade_add_quote(gint player_num,
 	gint row;
 	gboolean is_first_quote;
 	gchar quote_desc[128];
-	gchar *row_data[3] = { "", "", quote_desc };
+	gchar empty[1] = "";
+	gchar *row_data[3] = { empty, empty, quote_desc };
 
 	if (quotelist_find_domestic(quote_list, player_num, quote_num) != NULL)
 		return;
@@ -715,8 +682,8 @@ void trade_begin()
 	gui_show_trade_page(TRUE);
 }
 
-static void select_quote_cb(GtkWidget *clist, gint row, gint column,
-			    GdkEventButton* event, gpointer user_data)
+static void select_quote_cb(GtkWidget *clist, gint row, UNUSED(gint column),
+		UNUSED(GdkEventButton* event), UNUSED(gpointer user_data))
 {
 	selected_quote = gtk_clist_get_row_data(GTK_CLIST(clist), row);
 	frontend_gui_update ();

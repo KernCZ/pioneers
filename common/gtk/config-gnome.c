@@ -2,6 +2,7 @@
  *   Go buy a copy.
  *
  * Copyright (C) 2000 the Free Software Foundation
+ * Copyright (C) 2003 Bas Wijnen <b.wijnen@phys.rug.nl>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -75,7 +76,7 @@ on the surface.
  * prefixes depending on what's relevant for said arch.
  */
 void
-config_init( gchar *path_prefix )
+config_init( const gchar *path_prefix )
 {
 	gnome_config_push_prefix( path_prefix );
 }
@@ -86,7 +87,7 @@ config_init( gchar *path_prefix )
  * is returned, set *default_used to 1.
  */
 gchar *
-config_get_string( gchar* path, gboolean* default_used )
+config_get_string( const gchar* path, gboolean* default_used )
 {
 	/* gnome_config takes care of setting *default_used */
 	return gnome_config_get_string_with_default( path, default_used );
@@ -96,14 +97,14 @@ config_get_string( gchar* path, gboolean* default_used )
  * default is returned, set *default_used to 1.
  */
 gint
-config_get_int( gchar* path, gboolean* default_used )
+config_get_int( const gchar* path, gboolean* default_used )
 {
 	/* gnome_config takes care of setting *default_used */
 	return gnome_config_get_int_with_default( path, default_used );
 }
 
 /* get an integer.  If the setting is not found, return the default value */
-gint config_get_int_with_default( gchar* path, gint default_value )
+gint config_get_int_with_default( const gchar* path, gint default_value )
 {
 	gchar temp[256];
 	gboolean default_used;
@@ -117,7 +118,7 @@ gint config_get_int_with_default( gchar* path, gint default_value )
 
 /* set a string; make sure the configuration set is sync'd afterwards. */
 void
-config_set_string( gchar* path, const gchar* value )
+config_set_string( const gchar* path, const gchar* value )
 {
 	gnome_config_set_string( path, value );
 	gnome_config_sync();
@@ -125,7 +126,7 @@ config_set_string( gchar* path, const gchar* value )
 
 /* set an int; make sure the configuration set is sync'd afterwards. */
 void
-config_set_int( gchar* path, gint value )
+config_set_int( const gchar* path, gint value )
 {
 	gnome_config_set_int( path, value );
 	gnome_config_sync();

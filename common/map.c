@@ -189,7 +189,7 @@ static ChainPart node_chain[] = {
 
 /* Build ring of nodes and edges around the current hex
  */
-static gboolean build_network(Map *map, Hex *hex, void *closure)
+static gboolean build_network(Map *map, Hex *hex, UNUSED(void *closure))
 {
 	Hex *adjacent[6];
 	gint idx;
@@ -256,7 +256,7 @@ static ChainConnect node_connect[] = {
 };
 /* Connect the the ring of nodes and edges to each other
  */
-static gboolean connect_network(Map *map, Hex *hex, void *closure)
+static gboolean connect_network(Map *map, Hex *hex, UNUSED(void *closure))
 {
 	Hex *adjacent[6];
 	gint idx;
@@ -481,7 +481,7 @@ static Hex *copy_hex(Map *map, Hex *hex)
 	return copy;
 }
 
-static gboolean set_nosetup_nodes (Map *map, Hex *hex, Map *copy)
+static gboolean set_nosetup_nodes (UNUSED(Map *map), Hex *hex, Map *copy)
 {
 	gint idx;
 	for (idx = 0; idx < numElem(hex->nodes); ++idx) {
@@ -762,7 +762,7 @@ void map_set_chits(Map *map, GArray *chits)
 
 /* Disconnect a hex from all nodes and edges that it does not "own"
  */
-static gboolean disconnect_hex(Map *map, Hex *hex, void *closure)
+static gboolean disconnect_hex(UNUSED(Map *map), Hex *hex, UNUSED(void *closure))
 {
 	gint idx;
 
@@ -781,7 +781,7 @@ static gboolean disconnect_hex(Map *map, Hex *hex, void *closure)
 
 /* Free a node and all of the hexes and nodes that it is connected to.
  */
-static gboolean free_hex(Map *map, Hex *hex, void *closure)
+static gboolean free_hex(UNUSED(Map *map), Hex *hex, UNUSED(void *closure))
 {
 	gint idx;
 

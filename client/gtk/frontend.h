@@ -32,7 +32,7 @@ typedef struct {
 	void *widget;           /* the GTK widget */
 	gint id;                /* widget id */
 	gboolean destroy_only;  /* react to destroy signal */
-	gchar *signal;          /* signal attached */
+	const gchar *signal;    /* signal attached */
 	gboolean current;       /* is widget currently sensitive? */
 	gboolean next;          /* should widget be sensitive? */
 } GuiWidgetState;
@@ -78,7 +78,7 @@ extern GHashTable *frontend_widgets;
 extern gboolean frontend_waiting_for_network;
 
 /* set all widgets to their programmed state. */
-void frontend_gui_update ();
+void frontend_gui_update (void);
 
 /* program the state of a widget for when frontend_gui_update is called. */
 void frontend_gui_check (GuiEvent event, gboolean sensitive);
@@ -87,7 +87,7 @@ void frontend_gui_check (GuiEvent event, gboolean sensitive);
 void frontend_gui_register_destroy (void *widget, gint id);
 
 /* register a new "normal" widget. */
-void frontend_gui_register (void *widget, gint id, gchar *signal);
+void frontend_gui_register (void *widget, gint id, const gchar *signal);
 
 /* route an event to the gui event function */
 void frontend_gui_route_event (GuiEvent event);
@@ -228,12 +228,12 @@ GtkWidget *player_build_summary (void);
 GtkWidget *player_build_turn_area (void);
 void player_init (void);
 GdkColor *player_color (gint player_num);
-void player_show_current (void);
+void player_show_current (gint player_num);
 void set_num_players (gint num);
 
 /* chat.c */
 GtkWidget *chat_build_panel (void);
-void chat_set_focus();
+void chat_set_focus(void);
 
 /* name.c */
 void name_create_dlg (void);

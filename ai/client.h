@@ -1,6 +1,7 @@
 /*
  * Gnocatan: a fun game.
  * (C) 1999 the Free Software Foundation
+ * (C) 2003 Bas Wijnen <b.wijnen@phys.rug.nl>
  *
  * Author: Dave Cole.
  *
@@ -23,10 +24,11 @@ extern Map *map;		/* the map */
 extern gint no_resource_card[NO_RESOURCE]; /* used for trading */
 
 /* ai.c */
-void ai_chat (char *message);
+void ai_chat (const char *message);
 
 /* client.c */
-void client_start(char *server, char *port, char *username, char *ai, int waittime, int chatty);
+void client_start(const char *server, const char *port, const char *username,
+		const char *ai, int waittime, int chatty);
 void client_change_my_name(gchar *name);
 void client_chat(chat_t occasion, void *param, gboolean self, gint other);
 gboolean client_connected(void);
@@ -95,7 +97,7 @@ void plenty_destroy_dlg(void);
 
 /* resource.c */
 gboolean can_afford(gint *cost);
-gchar *resource_name(Resource type, gboolean word_caps);
+const gchar *resource_name(Resource type, gboolean word_caps);
 gint resource_asset(Resource type);
 void resource_cmd(gchar *str, gchar *cmd, gint *resources);
 gchar *resource_cards(gint num, Resource type);
@@ -104,7 +106,7 @@ void resource_modify(Resource type, gint num);
 gint resource_count(gint *resources);
 void resource_format_type(gchar *str, gint *resources);
 void resource_format_num(gchar *str, guint len, gint *resources);
-void resource_log_list(gint player_num, gchar *action, gint *resources);
+void resource_log_list(gint player_num, const gchar *action, gint *resources);
 void resource_apply_list(gint player_num, gint *resources, gint mult);
 #ifdef FIND_STUPID_RESOURCE_BUG
 void resource_check(gint player_num, gint *resources);
@@ -145,12 +147,6 @@ void stock_use_develop(void);
 void trade_perform_maritime(gint ratio, Resource supply, Resource receive);
 void trade_perform_domestic(gint player_num, gint partner_num, gint quote_num,
 							gint *they_supply, gint *they_receive);
-gint quote_next_num();
-void quote_begin(gint player_num, gint *we_receive, gint *we_supply);
-void quote_begin_again(gint player_num, gint *we_receive, gint *we_supply);
-void quote_add_quote(gint player_num,
-					 gint quote_num, gint *we_supply, gint *we_receive);
-void quote_delete_quote(gint player_num, gint quote_num);
 
 /* turn.c */
 gint turn_num(void);
@@ -182,7 +178,5 @@ void quote_delete_quote(gint player_num, gint quote_num);
 void quote_player_finish(gint player_num);
 void quote_perform_domestic(gint player_num, gint partner_num, gint quote_num,
 			    gint *they_supply, gint *they_receive);
-
-extern Map *map;		/* the map */
 
 #endif

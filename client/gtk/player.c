@@ -38,8 +38,8 @@ static GdkColor ps_development = { 0, 0xc600, 0xc600, 0x1300 };
 static GdkColor ps_building    = { 0, 0x0b00, 0xed00, 0x8900 };
 
 typedef struct {
-	gchar *singular;
-	gchar *plural;
+	const gchar *singular;
+	const gchar *plural;
 	gint victory_mult;
 	GdkColor *textcolor;
 } Statistic;
@@ -155,9 +155,10 @@ static gint player_insert_summary_row_before (gint row, gchar *name,
 		gchar *points, void *data, GdkColor *colour, gboolean new)
 {
 	gchar *row_data[3];
+	gchar empty[1] = "";
 	GtkStyle *current_style;
 
-	row_data[0] = "";
+	row_data[0] = empty;
 	row_data[1] = name;
 	row_data[2] = points;
 	
@@ -185,7 +186,7 @@ static gint player_insert_summary_row_before (gint row, gchar *name,
 	return row;
 }
 
-void frontend_new_statistics (gint player_num, StatisticType type, gint num)
+void frontend_new_statistics (gint player_num, StatisticType type, UNUSED(gint num))
 {
 	Player *player = player_get (player_num);
 	gint value;
@@ -233,7 +234,7 @@ void frontend_new_statistics (gint player_num, StatisticType type, gint num)
 	frontend_gui_update ();
 }
 
-static int calc_summary_row(player_num)
+static int calc_summary_row(gint player_num)
 {
 	gint row;
 	gint idx;
@@ -272,43 +273,17 @@ static int calc_summary_row(player_num)
 	return 0;
 }
 
-/* this function updates the points in the summary window.  It only adds
- * points, removing is done when the points are still available
- * (that is, before their memory is freed) */
-void player_update_points (gint num)
-{
-	Player *player = player_get (num);
-	GList *list;
-	gint last_row, row;
-	last_row = calc_summary_row (num);
-	for (list = player->points; list != NULL; list = g_list_next (list) ) {
-		gchar buff[20];
-		gboolean new;
-		Points *points = list->data;
-		snprintf (buff, sizeof (buff), "%d", points->points);
-		row = gtk_clist_find_row_from_data(GTK_CLIST(summary_clist),
-						   points);
-		if (row < 0) {
-			/* the row doesn't exist, create it */
-			new = TRUE;
-			row = last_row + 1;
-		} else
-			new = FALSE;
-		last_row = player_insert_summary_row_before (row, points->name,
-				buff, points, &black, new);
-	}
-}
-
 static gint player_create_summary_row (gint num, void *data)
 {
 	gchar *row_data[3];
+	gchar empty[1] = "";
 	GtkStyle *score_style;
 	gint row;
 
 	row = calc_summary_row(num);
-	row_data[0] = "";
-	row_data[1] = "";
-	row_data[2] = "";
+	row_data[0] = empty;
+	row_data[1] = empty;
+	row_data[2] = empty;
 	gtk_clist_insert(GTK_CLIST(summary_clist), row, row_data);
 	score_style = gtk_clist_get_row_style(GTK_CLIST(summary_clist), row);
 	if (!score_style) {
@@ -321,7 +296,7 @@ static gint player_create_summary_row (gint num, void *data)
 	return row;
 }
 
-void frontend_player_name(gint player_num, const gchar *name)
+void frontend_player_name(gint player_num, UNUSED(const gchar *name))
 {
 	Player *player;
 	gint row;
@@ -394,7 +369,7 @@ static void player_show_connected_at_row(gint player_num, gboolean connected,
 /* Get the top and bottom row for player summary and make sure player
  * is visible
  */
-void player_show_summary(gint player_num)
+static void player_show_summary(gint player_num)
 {
 	gint top_row;
 	gint bottom_row;
@@ -440,8 +415,8 @@ GtkWidget *player_build_summary()
 	return frame;
 }
 
-static gint expose_turn_area_cb(GtkWidget *area,
-				GdkEventExpose *event, gpointer user_data)
+static gint expose_turn_area_cb(GtkWidget *area, UNUSED(GdkEventExpose *event),
+		UNUSED(gpointer user_data))
 {
 	static GdkGC *turn_gc;
 	gint offset;
@@ -498,7 +473,8 @@ void set_num_players (gint num)
 	gtk_widget_set_usize(turn_area, 30 * num, -1);
 }
 
-void player_show_current ()
+void player_show_current (gint player_num)
 {
 	gtk_widget_draw(turn_area, NULL);
+	player_show_summary (player_num);
 }

@@ -36,7 +36,7 @@ typedef enum {
 } ParamType;
 
 typedef struct {
-	gchar *name;
+	const gchar *name;
 	ParamType type;
 	int offset;
 } Param;
@@ -103,7 +103,7 @@ static gchar *skip_space(gchar *str)
 	return str;
 }
 
-static gboolean match_word(gchar **str, gchar *word)
+static gboolean match_word(gchar **str, const gchar *word)
 {
 	gint word_len;
 
@@ -140,7 +140,8 @@ static void build_int_list(GArray *array, char *str)
 	}
 }
 
-static void format_int_list(gchar *name, GArray *array, char *str, int len)
+static void format_int_list(const gchar *name, GArray *array, char *str,
+		int len)
 {
 	int idx;
 
@@ -181,7 +182,7 @@ struct nosetup_t {
 	gpointer user_data;
 };
 
-static gboolean find_no_setup (Map *map, Hex *hex, struct nosetup_t *data)
+static gboolean find_no_setup (UNUSED(Map *map), Hex *hex, struct nosetup_t *data)
 {
 	gint idx;
 	for (idx = 0; idx < numElem (hex->nodes); ++idx) {

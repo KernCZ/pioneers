@@ -34,7 +34,7 @@ static GtkWidget *develop_clist; /* development cards */
 static GtkWidget *play_develop_btn;
 
 static struct {
-	gchar *name;
+	const gchar *name;
 	gboolean is_unique;
 } devel_cards[] = {
 	{ N_("Road Building"), FALSE },
@@ -55,8 +55,9 @@ gint develop_current_idx()
 	return selected_card_idx;
 }
 
-static void select_develop_cb(GtkWidget *clist, gint row, gint column,
-			      GdkEventButton* event, gpointer user_data)
+static void select_develop_cb(UNUSED(GtkWidget *clist), gint row,
+		UNUSED(gint column), UNUSED(GdkEventButton* event),
+		UNUSED(gpointer user_data))
 {
 	selected_card_idx = row;
 	frontend_gui_update ();
@@ -107,14 +108,15 @@ GtkWidget *develop_build_page (void)
 	return frame;
 }
 
-void frontend_bought_develop (DevelType type, gboolean this_turn)
+void frontend_bought_develop (DevelType type, UNUSED(gboolean this_turn))
 {
 	gchar *text[1];
 	text[0] = gettext(devel_cards[type].name);
         gtk_clist_append(GTK_CLIST(develop_clist), text);
 }
 
-void frontend_played_develop (gint player_num, gint card_idx, DevelType type)
+void frontend_played_develop (gint player_num, gint card_idx,
+		UNUSED(DevelType type))
 {
 	if (player_num == my_player_num () )
 		gtk_clist_remove(GTK_CLIST(develop_clist), card_idx);

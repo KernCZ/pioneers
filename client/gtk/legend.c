@@ -28,7 +28,7 @@
 /* The order of the terrain_names is EXTREMELY important!  The order
  * must match the enum Terrain.
  */
-static gchar *terrain_names[] = {
+static const gchar *terrain_names[] = {
         N_("Hill"),
         N_("Field"),
         N_("Mountain"),
@@ -40,7 +40,7 @@ static gchar *terrain_names[] = {
 };
 
 static gint expose_legend_cb(GtkWidget *area,
-			     GdkEventExpose *event, Terrain terrain)
+			     UNUSED(GdkEventExpose *event), Terrain terrain)
 {
 	static GdkGC *legend_gc;
 
@@ -163,7 +163,7 @@ GtkWidget *legend_create_content()
 	num_rows = 4;
 	if (have_ships () )
 	    num_rows++;
-	if (have_bridges () );
+	if (have_bridges () )
 	    num_rows++;
 	table = gtk_table_new(num_rows, 2, FALSE);
 	gtk_widget_show(table);

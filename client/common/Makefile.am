@@ -41,7 +41,6 @@ libgnocatanclient_a_SOURCES = \
 	gnocatan.c \
 	i18n.c \
 	i18n.h \
-	modes.h \
 	player.c \
 	resource.c \
 	robber.c \

@@ -2,6 +2,7 @@
  *   Go buy a copy.
  *
  * Copyright (C) 1999 the Free Software Foundation
+ * Copyright (C) 2003 Bas Wijnen <b.wijnen@phys.rug.nl>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +20,7 @@
  */
 
 #include <glib.h>
+#include "game.h"
 #include "driver.h"
 
 typedef struct {
@@ -37,8 +39,8 @@ void evl_glib_input_remove( guint tag );
 
 
 /* event-loop related functions */
-static gboolean evl_glib_call_func( GIOChannel *source, GIOCondition condition,
-                                    gpointer data )
+static gboolean evl_glib_call_func( UNUSED(GIOChannel *source),
+		UNUSED(GIOCondition condition), gpointer data )
 {
 	evl_io_func *io_func = (evl_io_func *)data;
 	io_func->func( io_func->param );
@@ -114,5 +116,6 @@ UIDriver Glib_Driver = {
 
 	NULL,                     /* player just added */
 	NULL,                     /* player just renamed */
-	NULL                      /* player just removed */
+	NULL,                     /* player just removed */
+	NULL                      /* player just renamed */
 };

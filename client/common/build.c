@@ -152,17 +152,17 @@ gint build_count(BuildType type)
 	return buildrec_count_type(build_list, type);
 }
 
-gboolean build_is_valid()
+gboolean build_is_valid(void)
 {
 	return buildrec_is_valid(build_list, map, my_player_num());
 }
 
-gboolean build_can_undo()
+gboolean build_can_undo(void)
 {
 	return build_list != NULL;
 }
 
-gboolean have_built()
+gboolean have_built(void)
 {
 	return built;
 }

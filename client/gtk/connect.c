@@ -97,7 +97,7 @@ static gchar *row_data[] = {
 	server_title
 };
 
-static void query_meta_server(gchar *server, gchar *port);
+static void query_meta_server(const gchar *server, const gchar *port);
 static void show_waiting_box(gchar *message, const gchar *server, const gchar *port);
 static void close_waiting_box(void);
 
@@ -128,7 +128,8 @@ static void add_game_to_combo( gchar *name )
 	gtk_container_add(GTK_CONTAINER(((GtkCombo *)game_combo)->list), item);
 }
 
-static void meta_gametype_notify(NetEvent event, void *user_data, char *line)
+static void meta_gametype_notify(NetEvent event, UNUSED(void *user_data),
+		char *line)
 {
 	switch (event) {
 	case NET_CONNECT:
@@ -176,7 +177,8 @@ static void get_meta_server_games_types(gchar *server, gchar *port)
 
 /* -------------------- create game server -------------------- */
 
-static void meta_create_notify(NetEvent event, void *user_data, char *line)
+static void meta_create_notify(NetEvent event, UNUSED(void *user_data),
+		char *line)
 {
 	switch (event) {
 	case NET_CONNECT:
@@ -224,7 +226,8 @@ static void meta_create_notify(NetEvent event, void *user_data, char *line)
 
 /* -------------------- get running servers info -------------------- */
 
-static gboolean check_str_info(gchar *line, gchar *prefix, gchar *data)
+static gboolean check_str_info(const gchar *line, const gchar *prefix,
+		gchar *data)
 {
 	gint len = strlen(prefix);
 
@@ -234,7 +237,8 @@ static gboolean check_str_info(gchar *line, gchar *prefix, gchar *data)
 	return TRUE;
 }
 
-static gboolean check_int_info(gchar *line, gchar *prefix, gchar *data)
+static gboolean check_int_info(const gchar *line, const gchar *prefix,
+		gchar *data)
 {
 	gint len = strlen(prefix);
 
@@ -244,7 +248,7 @@ static gboolean check_int_info(gchar *line, gchar *prefix, gchar *data)
 	return TRUE;
 }
 
-static void server_start()
+static void server_start(void)
 {
 	gint idx;
 
@@ -252,13 +256,13 @@ static void server_start()
 		strcpy(row_data[idx], "");
 }
 
-static void server_end()
+static void server_end(void)
 {
 	if (server_clist)
 		gtk_clist_append(GTK_CLIST(server_clist), row_data);
 }
 
-static void meta_notify(NetEvent event, void *user_data, char *line)
+static void meta_notify(NetEvent event, UNUSED(void *user_data), char *line)
 {
 	switch (event) {
 	case NET_CONNECT:
@@ -342,26 +346,36 @@ static void meta_notify(NetEvent event, void *user_data, char *line)
 				server_start();
 			else if (strcmp(line, "end") == 0)
 				server_end();
-			else if (check_str_info(line, "host=", server_host)
-				 || check_str_info(line, "port=", server_port)
-				 || check_str_info(line, "version=", server_version)
-				 || check_int_info(line, "max=", server_max)
-				 || check_int_info(line, "curr=", server_curr)
-				 || check_str_info(line, "vpoints=", server_vpoints)
-				 || check_str_info(line, "sevenrule=", server_sevenrule)
-				 || check_str_info(line, "terrain=", server_terrain)
-				 || check_str_info(line, "title=", server_title)
+			else if (check_str_info(line, "host=", server_host) )
+				break;
+			else if (check_str_info(line, "port=", server_port) )
+				break;
+			else if (check_str_info(line, "version=", server_version) )
+				break;
+			else if (check_int_info(line, "max=", server_max) )
+				break;
+			else if (check_int_info(line, "curr=", server_curr) )
+				break;
+			else if (check_str_info(line, "vpoints=", server_vpoints) )
+				break;
+			else if (check_str_info(line, "sevenrule=", server_sevenrule) )
+				break;
+			else if (check_str_info(line, "terrain=", server_terrain) )
+				break;
+			else if (check_str_info(line, "title=", server_title) )
+				break;
 				 /* meta-protocol 0 compat */
-				 || check_str_info(line, "map=", server_terrain)
-				 || check_str_info(line, "comment=", server_title))
-					;
+			else if (check_str_info(line, "map=", server_terrain) )
+				break;
+			else if (check_str_info(line, "comment=", server_title) )
+				break;
 			break;
 		}
 		break;
 	}
 }
 
-static void query_meta_server(gchar *server, gchar *port)
+static void query_meta_server(const gchar *server, const gchar *port)
 {
 	if (num_redirects > 0)
 		log_message( MSG_INFO, _("Redirected to meta-server at %s, port %s\n"),
@@ -379,19 +393,7 @@ static void query_meta_server(gchar *server, gchar *port)
 
 /* -------------------- create server dialog -------------------- */
 
-/*static*/ void start_clicked_cb(GtkWidget *start_btn, gpointer user_data)
-{
-	log_message( MSG_INFO, _("Requesting new game server\n"));
-	
-	create_ses = net_new(meta_create_notify, NULL);
-	if (net_connect(create_ses, meta_server, meta_port))
-		create_mode = MODE_SIGNON;
-	else {
-		net_free(&create_ses);
-	}
-}
-
-static void show_terrain()
+static void show_terrain(void)
 {
 	GtkWidget *label;
 
@@ -405,22 +407,22 @@ static void show_terrain()
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(terrain_toggle),cfg_terrain);
 }
 
-static void players_spin_changed_cb(GtkWidget* widget, gpointer user_data)
+static void players_spin_changed_cb(GtkWidget* widget, UNUSED(gpointer user_data))
 {
 	cfg_num_players = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(widget));
 }
 
-static void victory_spin_changed_cb(GtkWidget* widget, gpointer user_data)
+static void victory_spin_changed_cb(GtkWidget* widget, UNUSED(gpointer user_data))
 {
 	cfg_victory_points = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(widget));
 }
 
-static void aiplayers_spin_changed_cb(GtkWidget* widget, gpointer user_data)
+static void aiplayers_spin_changed_cb(GtkWidget* widget, UNUSED(gpointer user_data))
 {
 	cfg_ai_players = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(widget));
 }
 
-static void game_select_cb(GtkWidget *list, gpointer user_data)
+static void game_select_cb(GtkWidget *list, UNUSED(gpointer user_data))
 {
 	GList *selected = GTK_LIST(list)->selection;
 
@@ -428,13 +430,13 @@ static void game_select_cb(GtkWidget *list, gpointer user_data)
 		cfg_gametype = gtk_object_get_data(GTK_OBJECT(selected->data), "params");
 }
 
-static void terrain_toggle_cb(GtkToggleButton *toggle, gpointer user_data)
+static void terrain_toggle_cb(GtkToggleButton *toggle, UNUSED(gpointer user_data))
 {
 	cfg_terrain = gtk_toggle_button_get_active(toggle);
 	show_terrain();
 }
 
-static void sevens_rule_select_cb(GtkWidget *list, gpointer user_data)
+static void sevens_rule_select_cb(GtkWidget *list, UNUSED(gpointer user_data))
 {
 	GList *selected = GTK_LIST(list)->selection;
 
@@ -444,8 +446,13 @@ static void sevens_rule_select_cb(GtkWidget *list, gpointer user_data)
 
 
 
-static GtkWidget *build_create_interface()
+static GtkWidget *build_create_interface(void)
 {
+	/* Put this data in a non-const variable, because gtk_boject_set_data
+	 * wants a non-const pointer. */
+	static char label_data0[2] = "0";
+	static char label_data1[2] = "1";
+	static char label_data2[2] = "2";
 	GtkWidget *vbox;
 	GtkWidget *hbox;
 	GtkWidget *frame;
@@ -531,15 +538,15 @@ static GtkWidget *build_create_interface()
 			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
 
 	item = items[0] = gtk_list_item_new_with_label(_("Normal"));
-	gtk_object_set_data(GTK_OBJECT(item), "params", "0");
+	gtk_object_set_data(GTK_OBJECT(item), "params", &label_data0);
 	gtk_widget_show(item);
 	gtk_container_add(GTK_CONTAINER(((GtkCombo *)sevens_combo)->list), item);
 	item = items[1] = gtk_list_item_new_with_label(_("Reroll on 1st 2 turns"));
-	gtk_object_set_data(GTK_OBJECT(item), "params", "1");
+	gtk_object_set_data(GTK_OBJECT(item), "params", &label_data1);
 	gtk_widget_show(item);
 	gtk_container_add(GTK_CONTAINER(((GtkCombo *)sevens_combo)->list), item);
 	item = items[2] = gtk_list_item_new_with_label(_("Reroll all 7s"));
-	gtk_object_set_data(GTK_OBJECT(item), "params", "2");
+	gtk_object_set_data(GTK_OBJECT(item), "params", &label_data2);
 	gtk_widget_show(item);
 	gtk_container_add(GTK_CONTAINER(((GtkCombo *)sevens_combo)->list), item);
 	gtk_list_select_child(GTK_LIST(((GtkCombo *)sevens_combo)->list),
@@ -598,7 +605,7 @@ static GtkWidget *build_create_interface()
 	return vbox;
 }
 
-static void create_server_dlg_cb(GtkDialog *dlg, gint arg1, gpointer user_data)
+static void create_server_dlg_cb(GtkDialog *dlg, gint arg1, UNUSED(gpointer user_data))
 {
 	gtk_widget_destroy(GTK_WIDGET(dlg)); /* Always destroy this window, when either OK or Cancel is pressed */
 	switch (arg1) {
@@ -647,8 +654,9 @@ static void create_server_dlg(GtkWindow *parent)
 
 /* -------------------- select server dialog -------------------- */
 
-static void select_server_cb(GtkWidget *clist, gint row, gint column,
-			     GdkEventButton* event, gpointer user_data)
+static void select_server_cb(GtkWidget *clist, gint row, UNUSED(gint column),
+			     UNUSED(GdkEventButton* event),
+			     UNUSED(gpointer user_data))
 {
 	gchar *text;
 
@@ -659,7 +667,7 @@ static void select_server_cb(GtkWidget *clist, gint row, gint column,
 	gtk_dialog_set_response_sensitive(GTK_DIALOG(meta_dlg), GTK_RESPONSE_OK, TRUE);
 }
 
-static void meta_dlg_cb(GtkDialog *dlg, gint arg1, gpointer userdata)
+static void meta_dlg_cb(GtkDialog *dlg, gint arg1, UNUSED(gpointer userdata))
 {
 	switch (arg1) {
 		case GTK_RESPONSE_ACCEPT: /* Add a server */
@@ -677,7 +685,7 @@ static void meta_dlg_cb(GtkDialog *dlg, gint arg1, gpointer userdata)
 	}
 }
 
-static void create_meta_dlg(GtkWidget *widget, GtkWidget *parent)
+static void create_meta_dlg(UNUSED(GtkWidget *widget), GtkWidget *parent)
 {
 	GtkWidget *dlg_vbox;
 	GtkWidget *vbox;
@@ -785,14 +793,16 @@ static void create_meta_dlg(GtkWidget *widget, GtkWidget *parent)
 	query_meta_server(meta_server, meta_port);
 }
 
-gboolean connect_valid_params()
+#if 0
+gboolean connect_valid_params(void)
 {
 	const gchar *server = connect_get_server();
 
 	return server != NULL && strlen(server) > 0 && connect_get_port() > 0;
 }
+#endif
 
-const gchar *connect_get_name()
+const gchar *connect_get_name(void)
 {
 	const gchar *text;
 
@@ -804,7 +814,7 @@ const gchar *connect_get_name()
 	return text;
 }
 
-const gchar *connect_get_server()
+const gchar *connect_get_server(void)
 {
 	const gchar *text;
 
@@ -816,7 +826,7 @@ const gchar *connect_get_server()
 	return text;
 }
 
-const gchar *connect_get_meta_server()
+const gchar *connect_get_meta_server(void)
 {
 	const gchar *text;
 
@@ -828,14 +838,14 @@ const gchar *connect_get_meta_server()
 	return text;
 }
 
-gint connect_get_port()
+gint connect_get_port(void)
 {
 	if (port_entry == NULL)
 		return 0;
 	return atoi(gtk_entry_get_text(GTK_ENTRY(port_entry)));
 }
 
-const gchar *connect_get_port_str()
+const gchar *connect_get_port_str(void)
 {
 	const gchar *text;
 
@@ -847,7 +857,8 @@ const gchar *connect_get_port_str()
 	return text;
 }
 
-static void host_list_select_cb(GtkWidget *widget, gpointer user_data) {
+static void host_list_select_cb(UNUSED(GtkWidget *widget), gpointer user_data)
+{
 	GtkWidget *item;
 	gchar *host, *str1, *str2, *str3;
 	gchar temp[150];
@@ -868,13 +879,13 @@ static void host_list_select_cb(GtkWidget *widget, gpointer user_data) {
 	}
 }
 
-static void connect_destroyed_cb(void *widget, gpointer user_data)
+static void connect_destroyed_cb(UNUSED(void *widget), UNUSED(gpointer user_data))
 {
 	if (meta_dlg != NULL)
 		gtk_widget_destroy(meta_dlg);
 }
 
-void connect_create_dlg()
+void connect_create_dlg(void)
 {
 	GtkWidget *dlg;
 	GtkWidget *dlg_vbox;
@@ -888,30 +899,38 @@ void connect_create_dlg()
 	GtkWidget *host_item;
 	GtkWidget *host_menu;
 	
-	gchar     *saved_server;
- 	gchar     *saved_meta_server;
-	gchar     *saved_port;
-	gchar     *saved_name;
-	gint      i;
+	gchar *saved_server;
+ 	gchar *saved_meta_server;
+	gchar *saved_port;
+	gchar *saved_name;
+	gint i;
 	gchar host_name[150], host_port[150], host_user[150], temp_str[150];
 	gboolean default_returned;
 
+	/* initialize server value */
 	saved_server = config_get_string("connect/server=localhost",&default_returned);
+
+	/* initialize meta server value */
  	default_returned = FALSE;
  	saved_meta_server = config_get_string("connect/meta-server",&default_returned);
  	if (default_returned) {
- 		if (!(saved_meta_server = g_strdup(getenv("GNOCATAN_META_SERVER"))))
- 			saved_meta_server = g_strdup(DEFAULT_META_SERVER);
+		g_free (saved_meta_server);
+ 		if (!(saved_meta_server = g_strdup (getenv("GNOCATAN_META_SERVER"))))
+ 			saved_meta_server = g_strdup (DEFAULT_META_SERVER);
  	} else if (!strcmp(saved_meta_server,OLD_META_SERVER)) {
-		g_free(saved_meta_server);
- 		if (!(saved_meta_server = g_strdup(getenv("GNOCATAN_META_SERVER"))))
- 			saved_meta_server = g_strdup(DEFAULT_META_SERVER);
+		g_free (saved_meta_server);
+ 		if (!(saved_meta_server = g_strdup (getenv("GNOCATAN_META_SERVER"))))
+ 			saved_meta_server = g_strdup (DEFAULT_META_SERVER);
 	}
+
+	/* initialize port value */
 	saved_port = config_get_string("connect/port=5556", &default_returned);
+
+	/* initialize name value */
 	default_returned = FALSE;
 	saved_name = config_get_string("connect/name", &default_returned);
 	if (default_returned) {
-		saved_name = g_strdup(g_get_user_name());
+		saved_name = g_strdup (g_get_user_name() );
 	}
 
 	dlg = gtk_dialog_new_with_buttons(
@@ -1092,8 +1111,8 @@ void connect_create_dlg()
 			"clicked",
 			G_CALLBACK(gtk_widget_destroy), GTK_OBJECT(dlg));
 
-	g_free(saved_name);
-	g_free(saved_port);
-	g_free(saved_server);
-	g_free(saved_meta_server);
+	g_free (saved_server);
+ 	g_free (saved_meta_server);
+	g_free (saved_port);
+	g_free (saved_name);
 }

@@ -242,7 +242,11 @@ static void add_reject_row(gint player_num)
 	Player *player = player_get(player_num);
 	gint row = gtk_clist_find_row_from_data(GTK_CLIST(clist), player);
 	QuoteInfo *quote;
-	gchar *row_data[3] = { "", N_("Rejected trade") };
+	gchar *row_data[3];
+	gchar empty[1] = "";
+	row_data[0] = empty;
+	row_data[1] = g_strdup (_("Rejected trade") );
+	row_data[2] = empty;
 
 	if (row >= 0)
 		return;
@@ -264,9 +268,10 @@ static void add_reject_row(gint player_num)
 	gtk_clist_set_row_data(GTK_CLIST(clist), row, player);
 	gtk_clist_set_pixmap(GTK_CLIST(clist), row, 0, player->user_data, NULL);
 	gtk_clist_set_selectable(GTK_CLIST(clist), row, FALSE);
+	g_free (row_data[1]);
 }
 
-static void remove_reject_rows()
+static void remove_reject_rows(void)
 {
 	gint idx;
 
@@ -287,7 +292,8 @@ void quote_add_quote(gint player_num,
 	gint row;
 	gboolean is_first_quote;
 	gchar quote_desc[128];
-	gchar *row_data[2] = { "", quote_desc };
+	gchar empty[1] = "";
+	gchar *row_data[2] = { empty, quote_desc };
 
 	if (quotelist_find_domestic(quote_list, player_num, quote_num) != NULL)
 		return;
@@ -408,7 +414,7 @@ void quote_begin(gint player_num, gint *we_receive, gint *we_supply)
 	gui_show_quote_page(TRUE);
 }
 
-static void less_resource_cb(void *widget, QuoteRow *row)
+static void less_resource_cb(UNUSED(void *widget), QuoteRow *row)
 {
 	row->num--;
 	if (row->num == 0)
@@ -420,7 +426,7 @@ static void less_resource_cb(void *widget, QuoteRow *row)
 	frontend_gui_update ();
 }
 
-static void more_resource_cb(void *widget, QuoteRow *row)
+static void more_resource_cb(UNUSED(void *widget), QuoteRow *row)
 {
 	row->num++;
 	if (row->num == game_resources ()
@@ -493,8 +499,8 @@ static void add_quote_row(GtkWidget *table, QuoteRow* row,
 	gtk_widget_set_usize(entry, 30, -2);
 }
 
-static gint expose_desc_area_cb(GtkWidget *area,
-				GdkEventExpose *event, gpointer user_data)
+static gint expose_desc_area_cb(GtkWidget *area, UNUSED(GdkEventExpose *event),
+		UNUSED(gpointer user_data))
 {
 	static GdkGC *desc_gc;
 
@@ -516,8 +522,9 @@ static gint expose_desc_area_cb(GtkWidget *area,
 	return FALSE;
 }
 
-static void select_quote_cb(GtkWidget *clist, gint row, gint column,
-			    GdkEventButton* event, gpointer user_data)
+static void select_quote_cb(GtkWidget *clist, gint row, UNUSED(gint column),
+			    UNUSED(GdkEventButton* event),
+			    UNUSED(gpointer user_data))
 {
 	selected_quote = gtk_clist_get_row_data(GTK_CLIST(clist), row);
 	frontend_gui_update ();
@@ -644,8 +651,9 @@ GtkWidget *quote_build_page (void)
 	return panel_vbox;
 }
 
-void frontend_quote_trade (gint player_num, gint partner_num, gint quote_num,
-		gint *they_supply, gint *they_receive)
+void frontend_quote_trade (UNUSED(gint player_num), gint partner_num,
+		gint quote_num, UNUSED(gint *they_supply),
+		UNUSED(gint *they_receive))
 {
 	/* a quote has been accepted, remove it from the list. */
 	QuoteInfo *quote;

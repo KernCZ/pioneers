@@ -1,3 +1,24 @@
+/* Gnocatan - Implementation of the excellent Settlers of Catan board game.
+ *   Go buy a copy.
+ *
+ * Copyright (C) 1999 the Free Software Foundation
+ * Copyright (C) 2003 Bas Wijnen <b.wijnen@phys.rug.nl>
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -79,7 +100,7 @@ static fd_set write_fds;
 static int accept_fd;
 static gint max_fd;
 
-static void client_printf(Client *client, char *fmt, ...);
+static void client_printf(Client *client, const char *fmt, ...);
 
 #define MINUTE 60
 #define HOUR (60 * MINUTE)
@@ -126,7 +147,7 @@ static void debug(gchar *fmt, ...)
 }
 #endif
 
-static void find_new_max_fd()
+static void find_new_max_fd(void)
 {
 	GList *list;
 
@@ -250,7 +271,7 @@ static void client_do_write(Client *client)
 	set_client_event_at(client);
 }
 
-static void client_printf(Client *client, char *fmt, ...)
+static void client_printf(Client *client, const char *fmt, ...)
 {
 	gchar buff[10240];
 	va_list ap;
@@ -331,7 +352,7 @@ static GList *load_game_desc(gchar *fname, GList *titles)
 	return titles;
 }
 
-static GList *load_game_types( gchar *path )
+static GList *load_game_types( const gchar *path )
 {
 	DIR *dir;
 	gchar *fname;
@@ -362,7 +383,7 @@ static GList *load_game_types( gchar *path )
 static void client_list_types(Client *client)
 {
 	GList *list;
-	gchar *gnocatan_dir = (gchar *) getenv( "GNOCATAN_DIR" );
+	const gchar *gnocatan_dir = getenv( "GNOCATAN_DIR" );
 	if( !gnocatan_dir )
 		gnocatan_dir = GNOCATAN_DIR_DEFAULT;
 	
@@ -381,7 +402,7 @@ static void client_create_new_server(Client *client, gchar *line)
 	int pid, fd, yes=1;
 	struct sockaddr_in sa;
 	char port[20];
-	char *console_server;
+	const char *console_server;
 
 	line += strspn(line, " \t");
 	terrain = line;
@@ -493,7 +514,7 @@ static void client_create_new_server(Client *client, gchar *line)
 	client_printf(client, "Badly formatted request\n");
 }
 
-static gboolean check_str_info(gchar *line, gchar *prefix, gchar **data)
+static gboolean check_str_info(gchar *line, const gchar *prefix, gchar **data)
 {
 	gint len = strlen(prefix);
 
@@ -505,7 +526,7 @@ static gboolean check_str_info(gchar *line, gchar *prefix, gchar **data)
 	return TRUE;
 }
 
-static gboolean check_int_info(gchar *line, gchar *prefix, gint *data)
+static gboolean check_int_info(gchar *line, const gchar *prefix, gint *data)
 {
 	gint len = strlen(prefix);
 
@@ -530,7 +551,10 @@ static void try_make_server_complete(Client *client)
 	}
 
 	if (client->host != NULL
-	    && client->port > 0
+	    /* FIXME: client->port is a gchar *, because it should be possible
+	     * to give the name of a service instead of a port.  atoi obviously
+	     * doesn't allow this */
+	    && atoi (client->port) > 0
 	    && client->version != NULL
 	    && client->max >= 0
 	    && client->curr >= 0
@@ -719,7 +743,7 @@ static void client_do_read(Client *client)
 	set_client_event_at(client);
 }
 
-static void accept_new_client()
+static void accept_new_client(void)
 {
 	int fd;
 	sockaddr_t addr;
@@ -754,7 +778,7 @@ static void accept_new_client()
 	set_client_event_at(client);
 }
 
-static struct timeval *find_next_delay()
+static struct timeval *find_next_delay(void)
 {
 	GList *list;
 	static struct timeval timeout;
@@ -779,7 +803,7 @@ static struct timeval *find_next_delay()
 	return &timeout;
 }
 
-static void reap_children()
+static void reap_children(void)
 {
 	int dummy;
 	
@@ -787,7 +811,7 @@ static void reap_children()
 		;
 }
 
-static void check_timeouts()
+static void check_timeouts(void)
 {
 	time_t now = time(NULL);
 	GList *list;
@@ -806,7 +830,7 @@ static void check_timeouts()
 	}
 }
 
-static void select_loop()
+static void select_loop(void)
 {
 	for (;;) {
 		fd_set read_res;
@@ -863,7 +887,7 @@ static void select_loop()
 	}
 }
 
-static gboolean setup_accept_sock(gchar *port)
+static gboolean setup_accept_sock(const gchar *port)
 {
 	int err;
 	struct addrinfo hints, *ai, *aip;
@@ -925,7 +949,7 @@ static gboolean setup_accept_sock(gchar *port)
 	return TRUE;
 }
 
-static void convert_to_daemon()
+static void convert_to_daemon(void)
 {
 	pid_t pid;
 

@@ -89,7 +89,7 @@ static void update_recent_servers_list (void)
 	} while (!done);
 }
 
-static void frontend_offline_start_connect_cb ()
+static void frontend_offline_start_connect_cb (void)
 {
 	connect_create_dlg();
 	have_dlg = TRUE;
@@ -166,7 +166,7 @@ static gint compare_int(gconstpointer a, gconstpointer  b)
 }
 
 /* this function is called to let the frontend initialize itself. */
-void frontend_init (int argc, char **argv)
+void frontend_init (UNUSED(int argc), UNUSED(char **argv))
 {
 	GtkWidget *app;
 

@@ -179,7 +179,7 @@ struct StateMachine {
 	StateFunc unhandled;	/* global state - process unhandled states */
 	StateFunc stack[16];	/* handle sm_push() to save context */
 	gint stack_ptr;		/* stack index */
-	gchar *current_state;	/* name of current state */
+	const gchar *current_state;	/* name of current state */
 
 	gchar *line;		/* line passed in from nextwork event */
 	gint line_offset;	/* line prefix handling */
@@ -191,14 +191,14 @@ struct StateMachine {
 
 StateMachine* sm_new(gpointer user_data);
 void sm_free(StateMachine *sm);
-gchar *sm_current_name(StateMachine *sm);
-void sm_state_name(StateMachine *sm, gchar *name);
-gboolean sm_recv(StateMachine *sm, gchar *fmt, ...);
-gboolean sm_recv_prefix(StateMachine *sm, gchar *fmt, ...);
+const gchar *sm_current_name(StateMachine *sm);
+void sm_state_name(StateMachine *sm, const gchar *name);
+gboolean sm_recv(StateMachine *sm, const gchar *fmt, ...);
+gboolean sm_recv_prefix(StateMachine *sm, const gchar *fmt, ...);
 void sm_cancel_prefix(StateMachine *sm);
-void sm_vnformat(gchar *buff, gint len, gchar *fmt, va_list ap);
-void sm_write(StateMachine *sm, gchar *str);
-void sm_send(StateMachine *sm, gchar *fmt, ...);
+void sm_vnformat(gchar *buff, gint len, const gchar *fmt, va_list ap);
+void sm_write(StateMachine *sm, const gchar *str);
+void sm_send(StateMachine *sm, const gchar *fmt, ...);
 void sm_goto(StateMachine *sm, StateFunc new_state);
 void sm_push(StateMachine *sm, StateFunc new_state);
 void sm_pop(StateMachine *sm);

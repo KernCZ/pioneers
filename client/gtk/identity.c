@@ -103,7 +103,7 @@ static void show_die(GdkGC *gc, GtkWidget *area, gint x_offset, gint num)
 }
 				   
 static gint expose_identity_area_cb(GtkWidget *area,
-				    GdkEventExpose *event, gpointer user_data)
+		UNUSED(GdkEventExpose *event), UNUSED(gpointer user_data))
 {
 	static GdkGC *identity_gc;
 	static GuiMap bogus_map;

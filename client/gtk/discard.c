@@ -73,7 +73,7 @@ static void format_info(DiscardInfo *info)
 	gtk_entry_set_text(GTK_ENTRY(info->discard_entry), buff);
 }
 
-static void check_total()
+static void check_total(void)
 {
 	gint idx;
 	gint total;
@@ -99,7 +99,7 @@ static void check_total()
 	frontend_gui_update ();
 }
 
-static void less_resource_cb(void *widget, DiscardInfo *info)
+static void less_resource_cb(UNUSED(void *widget), DiscardInfo *info)
 {
 	info->discard--;
 	format_info(info);
@@ -107,7 +107,7 @@ static void less_resource_cb(void *widget, DiscardInfo *info)
 	check_total();
 }
 
-static void more_resource_cb(void *widget, DiscardInfo *info)
+static void more_resource_cb(UNUSED(void *widget), DiscardInfo *info)
 {
 	info->discard++;
 	format_info(info);
@@ -172,7 +172,8 @@ static void add_resource_table_row(GtkWidget *table,
 	format_info(info);
 }
 
-static gboolean ignore_close(GtkWidget *widget, gpointer user_data)
+static gboolean ignore_close(UNUSED(GtkWidget *widget),
+		UNUSED(gpointer user_data))
 {
 	return TRUE;
 }
@@ -278,12 +279,14 @@ gint *discard_get_list()
 	return discards;
 }
 
-gint discard_num_remaining()
+#if 0
+gint discard_num_remaining(void)
 {
 	return GTK_CLIST(discard_clist)->rows;
 }
+#endif
 
-void discard_player_did(gint player_num, gint *resources)
+void discard_player_did(gint player_num, UNUSED(gint *resources))
 {
 	gint row;
 
@@ -307,9 +310,10 @@ void discard_player_must(gint player_num, gint num)
 	gint row;
 	gchar *row_data[3];
 	gchar buff[16];
+	gchar empty[1] = "";
 
 	sprintf(buff, "%d", num);
-	row_data[0] = "";
+	row_data[0] = empty;
 	row_data[1] = player_name(player_num, TRUE);
 	row_data[2] = buff;
 

@@ -342,7 +342,8 @@ gboolean buildrec_can_setup_bridge(GList *list, Map *map,
 
 /* Check if we can place this settlement with 0 existing edges during setup
  */
-static gboolean can_setup_settlement_0(GList *list, Map *map, Node *node)
+static gboolean can_setup_settlement_0(UNUSED(GList *list), UNUSED(Map *map),
+		UNUSED(Node *node))
 {
 	return TRUE;
 }

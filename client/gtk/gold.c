@@ -56,7 +56,7 @@ static void format_info(GoldInfo *info)
 	gtk_label_set_text(GTK_LABEL(info->bank_entry), buff);
 }
 
-static void check_total()
+static void check_total(void)
 {
 	gint idx;
 	gint total;
@@ -81,14 +81,14 @@ static void check_total()
 	frontend_gui_update ();
 }
 
-static void less_resource_cb(void *widget, GoldInfo *info)
+static void less_resource_cb(UNUSED(void *widget), GoldInfo *info)
 {
 	--info->take;
 	format_info(info);
 	check_total();
 }
 
-static void more_resource_cb(void *widget, GoldInfo *info)
+static void more_resource_cb(UNUSED(void *widget), GoldInfo *info)
 {
 	++info->take;
 	format_info(info);
@@ -161,7 +161,8 @@ static void add_resource_table_row(GtkWidget *table,
 	format_info(info);
 }
 
-static gboolean ignore_close(GtkWidget *widget, gpointer user_data)
+static gboolean ignore_close(UNUSED(GtkWidget *widget),
+		UNUSED(gpointer user_data))
 {
 	return TRUE;
 }
@@ -276,9 +277,10 @@ void gold_choose_player_prepare(gint player_num, gint num)
 	gint row;
 	gchar *row_data[3];
 	gchar buff[16];
+	gchar empty[1] = "";
 
 	sprintf(buff, "%d", num);
-	row_data[0] = "";
+	row_data[0] = empty;
 	row_data[1] = player_name(player_num, TRUE);
 	row_data[2] = buff;
 
@@ -289,7 +291,7 @@ void gold_choose_player_prepare(gint player_num, gint num)
 			     player_get(player_num)->user_data, NULL);
 }
 
-void gold_choose_player_did(gint player_num, gint *resources) {
+void gold_choose_player_did(gint player_num, UNUSED(gint *resources)) {
 	gint row;
 
 	row = gtk_clist_find_row_from_data(GTK_CLIST(gold_choose_clist),

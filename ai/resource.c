@@ -1,6 +1,7 @@
 /*
  * Gnocatan: a fun game.
  * (C) 1999 the Free Software Foundation
+ * (C) 2003 Bas Wijnen <b.wijnen@phys.rug.nl>
  *
  * Author: Dave Cole.
  *
@@ -16,7 +17,7 @@
 #include "cost.h"
 #include "log.h"
 
-static gchar *resource_names[][2] = {
+static const gchar *resource_names[][2] = {
         { N_("brick"), N_("Brick") },
         { N_("grain"), N_("Grain") },
         { N_("ore"), N_("Ore") },
@@ -31,7 +32,7 @@ gboolean can_afford(gint *cost)
 	return cost_can_afford(cost, my_assets);
 }
 
-gchar *resource_name(Resource type, gboolean word_caps)
+const gchar *resource_name(Resource type, gboolean word_caps)
 {
 	if (word_caps)
 		return resource_names[type][1];
@@ -80,7 +81,7 @@ gint resource_count(gint *resources)
 gchar *resource_cards(gint num, Resource type)
 {
 	static gchar buff[64];
-	gchar *name = resource_name(type, FALSE);
+	const gchar *name = resource_name(type, FALSE);
 
 	if (num != 1)
 		sprintf(buff, "%d %s cards", num, name);
@@ -96,7 +97,7 @@ gchar *resource_cards(gint num, Resource type)
 gchar *resource_num(gint num, Resource type)
 {
 	static gchar buff[64];
-	gchar *name = resource_name(type, FALSE);
+	const gchar *name = resource_name(type, FALSE);
 
 	if (num > 1)
 		sprintf(buff, "%d %s", num, name);
@@ -203,7 +204,7 @@ void resource_format_num(gchar *str, guint len, gint *resources)
 	}
 }
 
-void resource_log_list(gint player_num, gchar *action, gint *resources)
+void resource_log_list(gint player_num, const gchar *action, gint *resources)
 {
 	char buff[512];
 

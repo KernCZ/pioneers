@@ -1,3 +1,11 @@
+2004-01-01 0.8.1.9  Bas Wijnen <b.wijnen@phys.rug.nl>
+	* (nearly) all files: Removed compiler warnings when compiling with
+	-Wall -W -Wpointer-arith -Wcast-qual -Wno-sign-compare
+	-Waggregate-return -Wstrict-prototypes -Wmissing-prototypes
+	-Wmissing-declarations -Wredundant-decls -Wnested-externs
+	-Wwrite-strings.
+	* client/common/modes.h: Removed
+	
 2003-12-30 0.8.1.8  Bas Wijnen <b.wijnen@phys.rug.nl>
 
 	* client/common/build.c, client/common/callback.h,

@@ -46,7 +46,7 @@ static void format_info(PlentyInfo *info)
 	gtk_entry_set_text(GTK_ENTRY(info->num_entry), buff);
 }
 
-static void check_total()
+static void check_total(void)
 {
 	gint idx;
 	gint limit;
@@ -78,7 +78,7 @@ static void check_total()
 			total == limit);
 }
 
-static void less_resource_cb(void *widget, PlentyInfo *info)
+static void less_resource_cb(UNUSED(void *widget), PlentyInfo *info)
 {
 	info->num--;
 	format_info(info);
@@ -86,7 +86,7 @@ static void less_resource_cb(void *widget, PlentyInfo *info)
 	check_total();
 }
 
-static void more_resource_cb(void *widget, PlentyInfo *info)
+static void more_resource_cb(UNUSED(void *widget), PlentyInfo *info)
 {
 	info->num++;
 	format_info(info);
@@ -143,7 +143,7 @@ static void add_resource_table_row(GtkWidget *table, gint row,
 	format_info(info);
 }
 
-static gboolean ignore_close(GtkWidget *widget, gpointer user_data)
+static gboolean ignore_close(UNUSED(GtkWidget *widget), UNUSED(gpointer user_data))
 {
 	return TRUE;
 }
