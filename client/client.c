@@ -185,8 +185,12 @@ static gboolean global_unhandled(StateMachine *sm, gint event)
 			log_message( MSG_ERROR, "Error (%s): %s\n", sm_current_name(sm), str);
 			return TRUE;
 		}
+		if (sm_recv(sm, "NOTE %S", str)) {
+			log_message( MSG_ERROR, "Notice: %s\n", str);
+			return TRUE;
+		}
 		if (sm_recv(sm, "%S", str)) {
-			log_message( MSG_ERROR, "Error (%s): %s\n", sm_current_name(sm), str);
+			log_message( MSG_ERROR, "Unknown message in %s: %s\n", sm_current_name(sm), str);
 			return TRUE;
 		}
 		break;
