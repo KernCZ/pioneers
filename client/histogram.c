@@ -8,6 +8,7 @@
  * buy a copy.
  */
 #include <gnome.h>
+#include <math.h>
 
 #include "game.h"
 #include "cost.h"
@@ -16,6 +17,10 @@
 #include "client.h"
 #include "histogram.h"
 #include "assert.h"
+
+#define BAR_H 200
+#define BAR_W 40
+#define BAR_S 3
 
 /*
  *
@@ -82,15 +87,55 @@ static gint expose_histogram_cb(GtkWidget *area,
 	return FALSE;
 }
 
+static gint expose_curve_cb(GtkWidget *area,
+			    GdkEventExpose *event, GdkPixmap *pixmap)
+{
+	static GdkGC *curve_gc;
+	gint w, h, x, y, px = -1, py = -1;
+	float yf;
+	gint total = dice_histogram(DICE_HISTOGRAM_TOTAL, 2);
+	gint max = dice_histogram(DICE_HISTOGRAM_MAX, 2);
+	
+	if (area->window == NULL)
+		return FALSE;
+
+	if (curve_gc == NULL) {
+		curve_gc = gdk_gc_new(area->window);
+		gdk_gc_set_line_attributes(curve_gc, 1, GDK_LINE_SOLID,
+					   GDK_CAP_NOT_LAST, GDK_JOIN_MITER);
+	}
+
+	gdk_gc_set_foreground(curve_gc, &red);
+	w = area->allocation.width;
+	h = area->allocation.height;
+	for (x = 0; x <= w; x += 5) {
+	    float sx = ((float)x-BAR_W/2)/(BAR_W+BAR_S) - 5;
+	    float v = total/6.0*exp(-(sx*sx/14));
+	    y = h - (int)(v*h/max + 0.5);
+	    if (px >= 0)
+		gdk_draw_line(area->window, curve_gc, px, py, x, y);
+	    px = x;
+	    py = y;
+	}
+	
+	gdk_gc_set_foreground(curve_gc, &blue);
+	for (yf = 0.0; yf <= 1.0; yf += 0.25) {
+	    y = yf*h;
+	    gdk_draw_line(area->window, curve_gc, 0, y, w, y);
+	}
+
+	return FALSE;
+}
+
 static void add_histogram_bars(GtkWidget *table, Terrain terrain)
 {
-	GtkWidget *area;
-	GtkWidget *label;
+	GtkWidget *area, *align;
+	GtkWidget *label, *sep;
 	int i, n, max, total;
 	int set_height;
 	char s[30];
-	const int bar_height = 200;
-	float percentage;
+	const int bar_height = BAR_H;
+	float percentage, f;
 
 	max = dice_histogram(DICE_HISTOGRAM_MAX, 2);
 
@@ -98,21 +143,39 @@ static void add_histogram_bars(GtkWidget *table, Terrain terrain)
 
 	for (i = 2; i <= 12; i++) {
 		n = dice_histogram(DICE_HISTOGRAM_RETRIEVE, i);
+		align = gtk_alignment_new(0.5, 1.0, 0.0, 0.0);
 		area = gtk_drawing_area_new();
-		gtk_widget_show(area);
-		gtk_table_attach(GTK_TABLE(table), area,
-				i - 1, i, 0, 1, 0, 0, 0, 0);
 		if (max == 0) {
 			set_height = 0;
 		} else {
 			set_height = bar_height * ((float)n/(float)max);
 		}
-		gtk_widget_set_usize(area, 30, set_height);
+		gtk_widget_set_usize(area, BAR_W, set_height);
 		gtk_signal_connect(GTK_OBJECT(area), "expose_event",
 				GTK_SIGNAL_FUNC(expose_histogram_cb),
 				guimap_terrain(terrain));
+		gtk_container_add(GTK_CONTAINER(align), area);
+		gtk_table_attach(GTK_TABLE(table), align,
+				 i - 1, i, 0, 1,
+				 0, (GtkAttachOptions)GTK_FILL,
+				 0, 0);
+		gtk_widget_show(area);
+		gtk_widget_show(align);
 	}
 
+	/* curve area */
+	area = gtk_drawing_area_new();
+	gtk_signal_connect(GTK_OBJECT(area), "expose_event",
+			   GTK_SIGNAL_FUNC(expose_curve_cb),
+			   NULL);
+	gtk_widget_set_usize(area, 11*(BAR_W+BAR_S)-BAR_S, bar_height);
+	gtk_table_attach(GTK_TABLE(table), area,
+			 1, 12, 0, 1,
+			 (GtkAttachOptions)GTK_FILL,
+			 (GtkAttachOptions)GTK_FILL,
+			 0, 0);
+	gtk_widget_show(area);
+	
 	/* label the bars */
 
 	total = dice_histogram(DICE_HISTOGRAM_TOTAL, 2);
@@ -138,10 +201,16 @@ static void add_histogram_bars(GtkWidget *table, Terrain terrain)
 	gtk_table_attach(GTK_TABLE(table), label,
 			0, 1, 1, 2, 0, 0, 0, 0);
 
-	label = gtk_label_new("Graphs");
-	gtk_widget_show(label);
-	gtk_table_attach(GTK_TABLE(table), label,
-			0, 1, 0, 1, 0, 0, 0, 0);
+	/* vertical scale */
+	
+	for (f = 0.0; f <= 1.0; f += 0.25) {
+	    sprintf(s, "%.2f", max*f);
+	    label = gtk_label_new(s);
+	    gtk_widget_show(label);
+	    gtk_table_attach(GTK_TABLE(table), label,
+			     0, 1, 0, 1, 0, (GtkAttachOptions)GTK_FILL, 0, 0);
+	    gtk_misc_set_alignment(GTK_MISC(label), 0.0, 1.0-f);
+	}
 }
 
 GtkWidget *histogram_create_dlg()
@@ -180,7 +249,7 @@ GtkWidget *histogram_create_dlg()
 	gtk_container_add(GTK_CONTAINER(frame), table);
 	gtk_container_border_width(GTK_CONTAINER(table), 5);
 	gtk_table_set_row_spacings(GTK_TABLE(table), 3);
-	gtk_table_set_col_spacings(GTK_TABLE(table), 5);
+	gtk_table_set_col_spacings(GTK_TABLE(table), BAR_S);
 
 	add_histogram_bars(table, SEA_TERRAIN);
 
