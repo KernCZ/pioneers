@@ -720,7 +720,7 @@ static gint calc_longest_fork(Node *node, gint owner)
 		Edge *edge = node->edges[idx];
 		gint len;
 
-		if (edge->owner != owner || edge->visited == 2)
+		if (!edge || edge->owner != owner || edge->visited == 2)
 			continue;
 		len = calc_road_length(edge);
 		if (len > max_len)
@@ -778,7 +778,7 @@ static GList *node_find_tail_edges(Node *node, gint owner)
 	for (idx = 0; idx < numElem(node->edges); idx++) {
 		Edge *edge = node->edges[idx];
 
-		if (edge->owner != owner || edge->visited)
+		if (!edge || edge->owner != owner || edge->visited)
 			continue;
 		tails = g_list_concat(tails, find_tail_edges(edge));
 	}
@@ -791,7 +791,8 @@ static gboolean node_has_other_edges(Node *node, Edge *edge)
 	gint idx;
 
 	for (idx = 0; idx < numElem(node->edges); idx++)
-		if (node->edges[idx] != edge
+		if (node->edges[idx]
+			&& node->edges[idx] != edge
 		    && node->edges[idx]->owner == edge->owner)
 			return TRUE;
 	return FALSE;

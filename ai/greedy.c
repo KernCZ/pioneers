@@ -275,7 +275,7 @@ static void reevaluate_iterator(Node *n, int mynum, void *rock)
 	    
 	    if (n->type == BUILD_CITY) mult = 2.0;
 	    
-	    if (h->terrain < NO_RESOURCE) {
+	    if (h && h->terrain < NO_RESOURCE) {
 		produce[h->terrain] += mult * default_score_resource(h->terrain) * dice_prob(h->roll);
 	    }
 	    
@@ -508,6 +508,9 @@ static Edge *traverse_out(Node *n, int mynum, node_seen_set_t *set, float *score
 	Node *othernode;
 	float cur_score;
 
+	if (!e)
+	    continue;
+	
 	othernode = other_node(e, n);
 	
 	/* if our road traverse it */

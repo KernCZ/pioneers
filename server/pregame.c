@@ -138,7 +138,7 @@ static void allocate_resources(Player *player, BuildRec *rec)
 	resource_start(game);
 	for (idx = 0; idx < numElem(node->hexes); idx++) {
 		Hex *hex = node->hexes[idx];
-		if (hex->roll > 0)
+		if (hex && hex->roll > 0)
 			player->assets[hex->terrain]++;
 	}
 	resource_end(game, "receives", 1);
