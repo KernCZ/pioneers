@@ -52,19 +52,38 @@ static gboolean mode_domestic_quote(StateMachine *sm, gint event);
 static gboolean mode_domestic_monitor(StateMachine *sm, gint event);
 static gboolean mode_game_over(StateMachine *sm, gint event);
 
-static void report_net_status(StateMachine *sm, gboolean in_response)
+static void waiting_for_network(gboolean is_waiting)
 {
-	if (in_response)
+	if (is_waiting)
 		gui_set_net_status(_("Waiting"));
 	else
 		gui_set_net_status(_("Idle"));
+}
+
+static void resp_handler(StateMachine *sm,
+			 StateMode new_state,
+			 StateMode ok_state, StateMode err_state)
+{
+	waiting_for_network(TRUE);
+	sm_resp_handler(sm, new_state, ok_state, err_state);
+}
+
+static void resp_ok(StateMachine *sm)
+{
+	waiting_for_network(FALSE);
+	sm_resp_ok(sm);
+}
+
+static void resp_err(StateMachine *sm)
+{
+	waiting_for_network(FALSE);
+	sm_resp_err(sm);
 }
 
 static StateMachine *SM()
 {
 	if (state_machine == NULL) {
 		state_machine = sm_new(NULL);
-		sm_resphook_set(state_machine, report_net_status);
 		sm_global_set(state_machine, mode_global);
 		sm_unhandled_set(state_machine, handle_errors);
 	}
@@ -515,12 +534,12 @@ static gboolean resp_build(StateMachine *sm, gint event)
 	sm_state_name(sm, "resp_build");
 	if (sm_recv(sm, "built %B %d %d %d", &build_type, &x, &y, &pos)) {
 		build_add(build_type, x, y, pos, NULL);
-		sm_resp_ok(sm);
+		resp_ok(sm);
 		return TRUE;
 	}
 	if (check_other_players(sm))
 		return TRUE;
-	sm_resp_err(sm);
+	resp_err(sm);
 	return FALSE;
 }
 
@@ -534,12 +553,12 @@ static gboolean resp_setup_undo(StateMachine *sm, gint event)
 	sm_state_name(sm, "resp_build_undo");
 	if (sm_recv(sm, "remove %B %d %d %d", &build_type, &x, &y, &pos)) {
 		build_remove(build_type, x, y, pos);
-		sm_resp_ok(sm);
+		resp_ok(sm);
 		return TRUE;
 	}
 	if (check_other_players(sm))
 		return TRUE;
-	sm_resp_err(sm);
+	resp_err(sm);
 	return FALSE;
 }
 
@@ -550,12 +569,12 @@ static gboolean resp_setup_done(StateMachine *sm, gint event)
 	sm_state_name(sm, "resp_setup_done");
 	if (sm_recv(sm, "OK")) {
 		build_clear();
-		sm_resp_ok(sm);
+		resp_ok(sm);
 		return TRUE;
 	}
 	if (check_other_players(sm))
 		return TRUE;
-	sm_resp_err(sm);
+	resp_err(sm);
 	return FALSE;
 }
 
@@ -569,7 +588,7 @@ static void build_road_cb(Edge *edge, gint player_num)
 {
 	gui_cursor_none();
 	sm_send(SM(), "build road %d %d %d\n", edge->x, edge->y, edge->pos);
-	sm_resp_handler(SM(), resp_build, NULL, NULL);
+	resp_handler(SM(), resp_build, NULL, NULL);
 }
 
 /* This is called when the user presses the left-mouse-button on a
@@ -579,7 +598,7 @@ static void build_ship_cb(Edge *edge, gint player_num)
 {
 	gui_cursor_none();
 	sm_send(SM(), "build ship %d %d %d\n", edge->x, edge->y, edge->pos);
-	sm_resp_handler(SM(), resp_build, NULL, NULL);
+	resp_handler(SM(), resp_build, NULL, NULL);
 }
 
 /* This is called when the user presses the left-mouse-button on a
@@ -589,14 +608,14 @@ static void build_bridge_cb(Edge *edge, gint player_num)
 {
 	gui_cursor_none();
 	sm_send(SM(), "build bridge %d %d %d\n", edge->x, edge->y, edge->pos);
-	sm_resp_handler(SM(), resp_build, NULL, NULL);
+	resp_handler(SM(), resp_build, NULL, NULL);
 }
 
 static void build_settlement_cb(Node *node, gint player_num)
 {
 	gui_cursor_none();
 	sm_send(SM(), "build settlement %d %d %d\n", node->x, node->y, node->pos);
-	sm_resp_handler(SM(), resp_build, NULL, NULL);
+	resp_handler(SM(), resp_build, NULL, NULL);
 }
 
 static char *setup_msg()
@@ -700,7 +719,7 @@ static gboolean mode_setup(StateMachine *sm, gint event)
 		 * can reeturn to us by using sm_previous() to pick
 		 * the mode off the top of stack.
 		 */
-		sm_resp_handler(sm, resp_setup_undo, NULL, NULL);
+		resp_handler(sm, resp_setup_undo, NULL, NULL);
 		return TRUE;
 	case GUI_ROAD:
 		/* User pressed "Build Road", set the map cursor;
@@ -739,7 +758,7 @@ static gboolean mode_setup(StateMachine *sm, gint event)
 		return TRUE;
 	case GUI_FINISH:
 		sm_send(sm, "done\n");
-		sm_resp_handler(sm, resp_setup_done, mode_idle, NULL);
+		resp_handler(sm, resp_setup_done, mode_idle, NULL);
 		return TRUE;
 	default:
 		break;
@@ -805,14 +824,14 @@ static gboolean resp_roll(StateMachine *sm, gint event)
 	sm_state_name(sm, "resp_roll");
 	if (sm_recv(sm, "rolled %d %d", &die1, &die2)) {
 		turn_rolled_dice(my_player_num(), die1, die2);
-		sm_resp_ok(sm);
+		resp_ok(sm);
 		if (die1 + die2 == 7)
 			sm_push(sm, mode_wait_for_robber);
 		return TRUE;
 	}
 	if (check_other_players(sm))
 		return TRUE;
-	sm_resp_err(sm);
+	resp_err(sm);
 	return FALSE;
 }
 
@@ -847,12 +866,12 @@ static gboolean resp_road_building_undo(StateMachine *sm, gint event)
 	sm_state_name(sm, "resp_road_building_undo");
 	if (sm_recv(sm, "remove %B %d %d %d", &build_type, &x, &y, &pos)) {
 		build_remove(build_type, x, y, pos);
-		sm_resp_ok(sm);
+		resp_ok(sm);
 		return TRUE;
 	}
 	if (check_other_players(sm))
 		return TRUE;
-	sm_resp_err(sm);
+	resp_err(sm);
 	return FALSE;
 }
 
@@ -863,12 +882,12 @@ static gboolean resp_road_building_done(StateMachine *sm, gint event)
 	sm_state_name(sm, "resp_road_building_done");
 	if (sm_recv(sm, "OK")) {
 		build_clear();
-		sm_resp_ok(sm);
+		resp_ok(sm);
 		return TRUE;
 	}
 	if (check_other_players(sm))
 		return TRUE;
-	sm_resp_err(sm);
+	resp_err(sm);
 	return FALSE;
 }
 
@@ -899,7 +918,7 @@ static gboolean mode_road_building(StateMachine *sm, gint event)
 		rec = build_last();
 		sm_send(sm, "remove %B %d %d %d\n",
 			rec->type, rec->x, rec->y, rec->pos);
-		sm_resp_handler(sm, resp_road_building_undo, NULL, NULL);
+		resp_handler(sm, resp_road_building_undo, NULL, NULL);
 		return TRUE;
 	case GUI_ROAD:
 		gui_cursor_set(ROAD_CURSOR,
@@ -921,7 +940,7 @@ static gboolean mode_road_building(StateMachine *sm, gint event)
 		return TRUE;
 	case GUI_FINISH:
 		sm_send(sm, "done\n");
-		sm_resp_handler(sm, resp_road_building_done, sm_previous(sm), NULL);
+		resp_handler(sm, resp_road_building_done, sm_previous(sm), NULL);
 		return TRUE;
 	default:
 		break;
@@ -936,12 +955,12 @@ static gboolean resp_monopoly(StateMachine *sm, gint event)
 	sm_state_name(sm, "resp_monpoly");
 	if (sm_recv(sm, "OK")) {
 		monopoly_destroy_dlg();
-		sm_resp_ok(sm);
+		resp_ok(sm);
 		return TRUE;
 	}
 	if (check_other_players(sm))
 		return TRUE;
-	sm_resp_err(sm);
+	resp_err(sm);
 	return FALSE;
 }
 
@@ -958,7 +977,7 @@ static gboolean mode_monopoly(StateMachine *sm, gint event)
 		break;
 	case GUI_MONOPOLY:
 		sm_send(sm, "monopoly %r\n", monopoly_type());
-		sm_resp_handler(sm, resp_monopoly, sm_previous(sm), NULL);
+		resp_handler(sm, resp_monopoly, sm_previous(sm), NULL);
 		return TRUE;
 	default:
 		break;
@@ -973,12 +992,12 @@ static gboolean resp_year_of_plenty(StateMachine *sm, gint event)
 	sm_state_name(sm, "resp_year_of_plenty");
 	if (sm_recv(sm, "OK")) {
 		plenty_destroy_dlg();
-		sm_resp_ok(sm);
+		resp_ok(sm);
 		return TRUE;
 	}
 	if (check_other_players(sm))
 		return TRUE;
-	sm_resp_err(sm);
+	resp_err(sm);
 	return FALSE;
 }
 
@@ -1002,7 +1021,7 @@ static gboolean mode_year_of_plenty(StateMachine *sm, gint event)
 	case GUI_PLENTY:
 		plenty_resources(plenty);
 		sm_send(sm, "plenty %R\n", plenty);
-		sm_resp_handler(sm, resp_year_of_plenty, sm_previous(sm), NULL);
+		resp_handler(sm, resp_year_of_plenty, sm_previous(sm), NULL);
 		return TRUE;
 	default:
 		break;
@@ -1020,20 +1039,20 @@ static gboolean resp_robber(StateMachine *sm, gint event)
 	if (sm_recv(sm, "moved-robber %d %d", &x, &y)) {
 		robber_moved(my_player_num(), x, y);
 		gui_prompt_hide();
-		sm_resp_ok(sm);
+		resp_ok(sm);
 		return TRUE;
 	}
 	if (check_other_players(sm))
 		return TRUE;
 	gui_prompt_hide();
-	sm_resp_err(sm);
+	resp_err(sm);
 	return FALSE;
 }
 
 static void move_robber(gint x, gint y, gint victim_num)
 {
 	sm_send(SM(), "move-robber %d %d %d\n", x, y, victim_num);
-	sm_resp_handler(SM(), resp_robber, sm_previous(SM()), NULL);
+	resp_handler(SM(), resp_robber, sm_previous(SM()), NULL);
 }
 
 static void rob_building(Node *node, gint player_num, Hex *hex)
@@ -1100,7 +1119,7 @@ static gboolean resp_play_develop(StateMachine *sm, gint event)
 	sm_state_name(sm, "resp_play_develop");
 	if (sm_recv(sm, "play-develop %d %D", &card_idx, &card_type)) {
 		build_clear();
-		sm_resp_ok(sm);
+		resp_ok(sm);
 		develop_played(my_player_num(), card_idx, card_type);
 		switch (card_type) {
 		case DEVEL_ROAD_BUILDING:
@@ -1128,7 +1147,7 @@ static gboolean resp_play_develop(StateMachine *sm, gint event)
 	}
 	if (check_other_players(sm))
 		return TRUE;
-	sm_resp_err(sm);
+	resp_err(sm);
 	return FALSE;
 }
 
@@ -1188,11 +1207,11 @@ static gboolean mode_turn(StateMachine *sm, gint event)
 		break;
 	case GUI_ROLL:
 		sm_send(sm, "roll\n");
-		sm_resp_handler(sm, resp_roll, mode_turn_rolled, NULL);
+		resp_handler(sm, resp_roll, mode_turn_rolled, NULL);
 		return TRUE;
 	case GUI_PLAY_DEVELOP:
 		sm_send(sm, "play-develop %d\n", develop_current_idx());
-		sm_resp_handler(sm, resp_play_develop, NULL, NULL);
+		resp_handler(sm, resp_play_develop, NULL, NULL);
 		return TRUE;
 	default:
 		break;
@@ -1209,12 +1228,12 @@ static gboolean resp_buy_develop(StateMachine *sm, gint event)
 	sm_state_name(sm, "resp_buy_develop");
 	if (sm_recv(sm, "bought-develop %D", &card_type)) {
 		develop_bought_card(card_type);
-		sm_resp_ok(sm);
+		resp_ok(sm);
 		return TRUE;
 	}
 	if (check_other_players(sm))
 		return TRUE;
-	sm_resp_err(sm);
+	resp_err(sm);
 	return FALSE;
 }
 
@@ -1228,12 +1247,12 @@ static gboolean resp_turn_undo(StateMachine *sm, gint event)
 	sm_state_name(sm, "resp_turn_undo");
 	if (sm_recv(sm, "remove %B %d %d %d", &build_type, &x, &y, &pos)) {
 		build_remove(build_type, x, y, pos);
-		sm_resp_ok(sm);
+		resp_ok(sm);
 		return TRUE;
 	}
 	if (check_other_players(sm))
 		return TRUE;
-	sm_resp_err(sm);
+	resp_err(sm);
 	return FALSE;
 }
 
@@ -1241,7 +1260,7 @@ static void build_city_cb(Node *node, gint player_num)
 {
 	gui_cursor_none();
 	sm_send(SM(), "build city %d %d %d\n", node->x, node->y, node->pos);
-	sm_resp_handler(SM(), resp_build, NULL, NULL);
+	resp_handler(SM(), resp_build, NULL, NULL);
 }
 
 /* Response to an "done" during turn
@@ -1251,12 +1270,12 @@ static gboolean resp_turn_done(StateMachine *sm, gint event)
 	sm_state_name(sm, "resp_turn_done");
 	if (sm_recv(sm, "OK")) {
 		build_clear();
-		sm_resp_ok(sm);
+		resp_ok(sm);
 		return TRUE;
 	}
 	if (check_other_players(sm))
 		return TRUE;
-	sm_resp_err(sm);
+	resp_err(sm);
 	return FALSE;
 }
 
@@ -1289,7 +1308,7 @@ static gboolean mode_turn_rolled(StateMachine *sm, gint event)
 		rec = build_last();
 		sm_send(sm, "remove %B %d %d %d\n",
 			rec->type, rec->x, rec->y, rec->pos);
-		sm_resp_handler(sm, resp_turn_undo, NULL, NULL);
+		resp_handler(sm, resp_turn_undo, NULL, NULL);
 		return TRUE;
 	case GUI_ROAD:
 		gui_cursor_set(ROAD_CURSOR,
@@ -1327,15 +1346,15 @@ static gboolean mode_turn_rolled(StateMachine *sm, gint event)
 		return TRUE;
 	case GUI_PLAY_DEVELOP:
 		sm_send(sm, "play-develop %d\n", develop_current_idx());
-		sm_resp_handler(sm, resp_play_develop, NULL, NULL);
+		resp_handler(sm, resp_play_develop, NULL, NULL);
 		return TRUE;
 	case GUI_BUY_DEVELOP:
 		sm_send(sm, "buy-develop\n");
-		sm_resp_handler(sm, resp_buy_develop, NULL, NULL);
+		resp_handler(sm, resp_buy_develop, NULL, NULL);
 		return TRUE;
 	case GUI_FINISH:
 		sm_send(sm, "done\n");
-		sm_resp_handler(sm, resp_turn_done, mode_idle, NULL);
+		resp_handler(sm, resp_turn_done, mode_idle, NULL);
 		return TRUE;
 	default:
 		break;
@@ -1381,12 +1400,12 @@ static gboolean resp_trade_call(StateMachine *sm, gint event)
 	sm_state_name(sm, "resp_trade_call");
 	if (sm_recv(sm, "domestic-trade call supply %R receive %R",
 		    we_supply, we_receive)) {
-		sm_resp_ok(sm);
+		resp_ok(sm);
 		return TRUE;
 	}
 	if (check_trading(sm) || check_other_players(sm))
 		return TRUE;
-	sm_resp_err(sm);
+	resp_err(sm);
 	return FALSE;
 }
 
@@ -1402,12 +1421,12 @@ static gboolean resp_trade_maritime(StateMachine *sm, gint event)
 	if (sm_recv(sm, "maritime-trade %d supply %r receive %r",
 		    &ratio, &we_supply, &we_receive)) {
 		trade_perform_maritime(ratio, we_supply, we_receive);
-		sm_resp_ok(sm);
+		resp_ok(sm);
 		return TRUE;
 	}
 	if (check_trading(sm) || check_other_players(sm))
 		return TRUE;
-	sm_resp_err(sm);
+	resp_err(sm);
 	return FALSE;
 }
 
@@ -1429,14 +1448,14 @@ static gboolean mode_maritime_trade(StateMachine *sm, gint event)
 	case GUI_TRADE_CALL:
 		sm_send(sm, "domestic-trade call supply %R receive %R\n",
 			trade_we_supply(), trade_we_receive());
-		sm_resp_handler(sm, resp_trade_call, mode_domestic_trade, NULL);
+		resp_handler(sm, resp_trade_call, mode_domestic_trade, NULL);
 		return TRUE;
 	case GUI_TRADE_ACCEPT:
 		quote = trade_current_quote();
                 sm_send(sm, "maritime-trade %d supply %r receive %r\n",
 			quote->var.m.ratio,
 			quote->var.m.supply, quote->var.m.receive);
-		sm_resp_handler(sm, resp_trade_maritime, NULL, NULL);
+		resp_handler(sm, resp_trade_maritime, NULL, NULL);
 		return TRUE;
 	case GUI_TRADE_FINISH:
 		trade_finish();
@@ -1459,12 +1478,12 @@ static gboolean resp_trade_call_again(StateMachine *sm, gint event)
 	if (sm_recv(sm, "domestic-trade call supply %R receive %R",
 		    we_supply, we_receive)) {
 		trade_refine_domestic(we_supply, we_receive);
-		sm_resp_ok(sm);
+		resp_ok(sm);
 		return TRUE;
 	}
 	if (check_trading(sm) || check_other_players(sm))
 		return TRUE;
-	sm_resp_err(sm);
+	resp_err(sm);
 	return FALSE;
 }
 
@@ -1482,12 +1501,12 @@ static gboolean resp_trade_domestic(StateMachine *sm, gint event)
 		    &partner_num, &quote_num, &they_supply, &they_receive)) {
 		trade_perform_domestic(my_player_num(), partner_num, quote_num,
 				       they_supply, they_receive);
-		sm_resp_ok(sm);
+		resp_ok(sm);
 		return TRUE;
 	}
 	if (check_trading(sm) || check_other_players(sm))
 		return TRUE;
-	sm_resp_err(sm);
+	resp_err(sm);
 	return FALSE;
 }
 
@@ -1498,12 +1517,12 @@ static gboolean resp_domestic_finish(StateMachine *sm, gint event)
 	sm_state_name(sm, "resp_domestic_finish");
 	if (sm_recv(sm, "domestic-trade finish")) {
 		trade_finish();
-		sm_resp_ok(sm);
+		resp_ok(sm);
 		return TRUE;
 	}
 	if (check_trading(sm) || check_other_players(sm))
 		return TRUE;
-	sm_resp_err(sm);
+	resp_err(sm);
 	return FALSE;
 }
 
@@ -1525,7 +1544,7 @@ static gboolean mode_domestic_trade(StateMachine *sm, gint event)
 	case GUI_TRADE_CALL:
 		sm_send(sm, "domestic-trade call supply %R receive %R\n",
 			trade_we_supply(), trade_we_receive());
-		sm_resp_handler(sm, resp_trade_call_again, NULL, NULL);
+		resp_handler(sm, resp_trade_call_again, NULL, NULL);
 		return TRUE;
 	case GUI_TRADE_ACCEPT:
 		quote = trade_current_quote();
@@ -1534,17 +1553,17 @@ static gboolean mode_domestic_trade(StateMachine *sm, gint event)
 				quote->var.d.player_num,
 				quote->var.d.quote_num,
 				quote->var.d.supply, quote->var.d.receive);
-			sm_resp_handler(sm, resp_trade_domestic, NULL, NULL);
+			resp_handler(sm, resp_trade_domestic, NULL, NULL);
 		} else {
 			sm_send(sm, "maritime-trade %d supply %r receive %r\n",
 				quote->var.m.ratio,
 				quote->var.m.supply, quote->var.m.receive);
-			sm_resp_handler(sm, resp_trade_maritime, NULL, NULL);
+			resp_handler(sm, resp_trade_maritime, NULL, NULL);
 		}
 		return TRUE;
 	case GUI_TRADE_FINISH:
 		sm_send(sm, "domestic-trade finish\n");
-		sm_resp_handler(sm, resp_domestic_finish, mode_turn_rolled, NULL);
+		resp_handler(sm, resp_domestic_finish, mode_turn_rolled, NULL);
 		return TRUE;
 	default:
 		break;
@@ -1604,12 +1623,12 @@ static gboolean resp_quote_finish(StateMachine *sm, gint event)
 {
 	sm_state_name(sm, "resp_quote_finish");
 	if (sm_recv(sm, "domestic-quote finish")) {
-		sm_resp_ok(sm);
+		resp_ok(sm);
 		return TRUE;
 	}
 	if (check_quoting(sm) || check_other_players(sm))
 		return TRUE;
-	sm_resp_err(sm);
+	resp_err(sm);
 	return FALSE;
 }
 
@@ -1626,12 +1645,12 @@ static gboolean resp_quote_submit(StateMachine *sm, gint event)
 		    &quote_num, we_supply, we_receive)) {
 		quote_add_quote(my_player_num(),
 				quote_num, we_supply, we_receive);
-		sm_resp_ok(sm);
+		resp_ok(sm);
 		return TRUE;
 	}
 	if (check_quoting(sm) || check_other_players(sm))
 		return TRUE;
-	sm_resp_err(sm);
+	resp_err(sm);
 	return FALSE;
 }
 
@@ -1644,12 +1663,12 @@ static gboolean resp_quote_delete(StateMachine *sm, gint event)
 	sm_state_name(sm, "resp_quote_delete");
 	if (sm_recv(sm, "domestic-quote delete %d", &quote_num)) {
 		quote_delete_quote(my_player_num(), quote_num);
-		sm_resp_ok(sm);
+		resp_ok(sm);
 		return TRUE;
 	}
 	if (check_quoting(sm) || check_other_players(sm))
 		return TRUE;
-	sm_resp_err(sm);
+	resp_err(sm);
 	return FALSE;
 }
 
@@ -1674,16 +1693,16 @@ static gboolean mode_domestic_quote(StateMachine *sm, gint event)
 		sm_send(sm, "domestic-quote quote %d supply %R receive %R\n",
 			quote_next_num(),
 			quote_we_supply(), quote_we_receive());
-		sm_resp_handler(sm, resp_quote_submit, NULL, NULL);
+		resp_handler(sm, resp_quote_submit, NULL, NULL);
 		return TRUE;
 	case GUI_QUOTE_DELETE:
 		quote = quote_current_quote();
 		sm_send(sm, "domestic-quote delete %d\n", quote->var.d.quote_num);
-		sm_resp_handler(sm, resp_quote_delete, NULL, NULL);
+		resp_handler(sm, resp_quote_delete, NULL, NULL);
 		return TRUE;
 	case GUI_QUOTE_REJECT:
 		sm_send(sm, "domestic-quote finish\n");
-		sm_resp_handler(sm, resp_quote_finish, mode_domestic_monitor, NULL);
+		resp_handler(sm, resp_quote_finish, mode_domestic_monitor, NULL);
 		return TRUE;
 	default:
 		break;

@@ -1,3 +1,10 @@
+2000-05-11  Dave Cole <dave@dccs.com.au>
+
+	* client/client.c, common/state.[ch]: Removed all of the resphook
+	from the state machine API code and replaced it with some wrappers
+	to sm_resp_{ok,err,handler}() in client.c.  First stage in
+	reducing the client state machine complexity.
+	
 2000-05-10  Steve Langasek <vorlon@dodds.net>
 
         * common/buildrec.c, common/cards.c, common/cost.c, common/game.c,

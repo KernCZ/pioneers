@@ -139,7 +139,6 @@ typedef struct StateMachine StateMachine;
 /* All state functions look like this
  */
 typedef gboolean (*StateMode)(StateMachine *sm, gint event);
-typedef void (*RespHook)(StateMachine *sm, gboolean in_response);
 
 /* Information about the current state
  */
@@ -166,7 +165,6 @@ struct StateMachine {
 	gpointer user_data;	/* paramter for mode functions */
 	GHashTable *widgets;	/* widget state information */
 
-	RespHook resphook;	/* called when response entered / exited */
 	StateInfo global;	/* global state - test after current state */
 	StateInfo unhandled;	/* global state - process unhandled states */
 	StateInfo stack[16];	/* handle sm_push() to save context */
@@ -206,7 +204,6 @@ void sm_gui_register_destroy(StateMachine *sm, GtkWidget *widget, gint id);
 void sm_gui_register(StateMachine *sm, GtkWidget *widget, gint id, gchar *signal);
 void sm_gui_check(StateMachine *sm, gint id, gboolean sensitive);
 void sm_end(StateMachine *sm);
-void sm_resphook_set(StateMachine *sm, RespHook hook);
 void sm_global_set(StateMachine *sm, StateMode state);
 void sm_unhandled_set(StateMachine *sm, StateMode state);
 

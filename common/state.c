@@ -459,11 +459,6 @@ void sm_send(StateMachine *sm, gchar *fmt, ...)
 	net_write(sm->ses, buff);
 }
 
-void sm_resphook_set(StateMachine *sm, RespHook hook)
-{
-	sm->resphook = hook;
-}
-
 void sm_global_set(StateMachine *sm, StateMode state)
 {
 	sm->global.state = state;
@@ -649,9 +644,6 @@ void sm_resp_handler(StateMachine *sm,
 	curr->is_response = TRUE;
 	curr->ok_state = ok_state;
 	curr->err_state = err_state;
-
-	if (sm->resphook != NULL)
-		sm->resphook(sm, TRUE);
 }
 
 static void pop_no_check(StateMachine *sm)
@@ -664,9 +656,6 @@ void sm_resp_err(StateMachine *sm)
 {
 	StateMode new_state;
 
-	if (sm->resphook != NULL)
-		sm->resphook(sm, FALSE);
-
 	while (!curr_state(sm)->is_response)
 		sm_pop(sm);
 	new_state = curr_state(sm)->err_state;
@@ -677,9 +666,6 @@ void sm_resp_err(StateMachine *sm)
 void sm_resp_ok(StateMachine *sm)
 {
 	StateMode new_state;
-
-	if (sm->resphook != NULL)
-		sm->resphook(sm, FALSE);
 
 	while (!curr_state(sm)->is_response)
 		pop_no_check(sm);
