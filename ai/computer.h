@@ -7,6 +7,27 @@
 
 #include "map.h"
 
+typedef enum {
+	CHAT_TURN_START,
+	CHAT_ROLLED,
+	CHAT_RECEIVES,
+	CHAT_BUILT,
+	CHAT_BOUGHT,
+	CHAT_PLAY_DEVELOP,
+	CHAT_DISCARD,
+	CHAT_STOLE,
+	CHAT_MONOPOLY,
+	CHAT_LARGEST_ARMY,
+	CHAT_LONGEST_ROAD,
+	CHAT_WON,
+	CHAT_MARITIME_TRADE,
+	CHAT_DOMESTIC_TRADE_CALL,
+	CHAT_DOMESTIC_TRADE_QUOTE,
+	CHAT_DOMESTIC_TRADE_ACCEPT,
+	CHAT_DOMESTIC_TRADE_FINISH,
+	CHAT_MOVED_ROBBER
+} chat_t;
+
 typedef struct computer_funcs_s {
 
     int waittime;
@@ -25,7 +46,7 @@ typedef struct computer_funcs_s {
     
     char *(*discard)(Map *map, int mynum, gint assets[NO_RESOURCE], int discard_num);
 
-    char *(*chat)(Map *map, int mynum, gint assets[NO_RESOURCE], int turn, gboolean built_or_bought);
+    char *(*chat)(chat_t occasion, void *param, gboolean self, gint player);
 
 	char *(*consider_quote)(Map *map, int mynum, gint my[NO_RESOURCE], gint supply[NO_RESOURCE], gint receive[NO_RESOURCE]);
 	

@@ -196,11 +196,16 @@ void client_change_my_name(gchar *name)
 		sm_send(SM(), "anonymous\n");
 }
 
-/* When the user changes enters some text in the chat field.
+/* Check if computer player wants to send a chat string
  */
-void client_chat(gchar *text)
+void client_chat(chat_t occasion, void *param, gboolean self, gint other)
 {
-	sm_send(SM(), "chat %s\n", text);
+	gchar *tmp;
+
+	if (computer_funcs.chatty &&
+		(tmp = computer_funcs.chat(occasion, param, self, other)) &&
+		strlen(tmp) > 0)
+		sm_send(SM(), "chat %s\n", tmp);
 }
 
 void client_changed_cb()
@@ -263,6 +268,8 @@ static gboolean check_other_players(StateMachine *sm)
 
 	if (sm_recv(sm, "built %B %d %d %d", &build_type, &x, &y, &pos)) {
 	    player_build_add(player_num, build_type, x, y, pos);
+		client_chat(CHAT_BUILT, (void *)build_type,
+					player_num == my_player_num(), 0);
 	    return TRUE;
 	}
 	if (sm_recv(sm, "remove %B %d %d %d", &build_type, &x, &y, &pos)) {
@@ -272,6 +279,8 @@ static gboolean check_other_players(StateMachine *sm)
 	if (sm_recv(sm, "receives %R", resource_list)) {
 		player_resource_action(player_num, _("receives"),
 				       resource_list, 1);
+		client_chat(CHAT_RECEIVES, (void *)resource_list,
+					player_num == my_player_num(), 0);
 		return TRUE;
 	}
 	if (sm_recv(sm, "spent %R", resource_list)) {
@@ -286,25 +295,32 @@ static gboolean check_other_players(StateMachine *sm)
 	}
 	if (sm_recv(sm, "bought-develop")) {
 		develop_bought(player_num);
+		client_chat(CHAT_BOUGHT, NULL, player_num == my_player_num(), 0);
 		return TRUE;
 	}
 	if (sm_recv(sm, "play-develop %d %D", &card_idx, &devel_type)) {
 		develop_played(player_num, card_idx, devel_type);
+		client_chat(CHAT_PLAY_DEVELOP, (void *)devel_type,
+					player_num == my_player_num(), 0);
 		return TRUE;
 	}
 	if (sm_recv(sm, "turn %d", &turn_num)) {
+		client_chat(CHAT_TURN_START, (void *)turn_num,
+					player_num == my_player_num(), 0);
 		turn_begin(player_num, turn_num);
 		return TRUE;
 	}
 	if (sm_recv(sm, "rolled %d %d", &die1, &die2)) {
 		turn_rolled_dice(player_num, die1, die2);
+		client_chat(CHAT_ROLLED, (void *)(die1+die2),
+					player_num == my_player_num(), 0);
 		return TRUE;
 	}
 	if (sm_recv(sm, "must-discard %d", &discard_num)) {
 		discard_begin();
 		discard_player_must(player_num, discard_num);
-
-		printf("must discard %d %d\n",my_player_num(), player_num);
+		client_chat(CHAT_DISCARD, (void *)discard_num,
+					player_num == my_player_num(), 0);
 
 		if (my_player_num() ==  player_num) {
 		    tmp = computer_funcs.discard(map, my_player_num(), my_assets, discard_num);
@@ -324,22 +340,32 @@ static gboolean check_other_players(StateMachine *sm)
 	}
 	if (sm_recv(sm, "stole from %d", &victim_num)) {
 		player_stole_from(player_num, victim_num, NO_RESOURCE);
+		client_chat(CHAT_STOLE, (void *)NO_RESOURCE,
+					player_num == my_player_num(), victim_num);
 		return TRUE;
 	}
 	if (sm_recv(sm, "stole %r from %d", &resource_type, &victim_num)) {
 		player_stole_from(player_num, victim_num, resource_type);
+		client_chat(CHAT_STOLE, (void *)resource_type,
+					player_num == my_player_num(), victim_num);
 		return TRUE;
 	}
 	if (sm_recv(sm, "monopoly %d %r from %d", &num, &resource_type, &victim_num)) {
 		monopoly_player(player_num, victim_num, num, resource_type);
+		client_chat(CHAT_MONOPOLY, (void *)num,
+					player_num == my_player_num(), victim_num);
 		return TRUE;
 	}
 	if (sm_recv(sm, "largest-army")) {
                 player_largest_army(player_num);
+		client_chat(CHAT_LARGEST_ARMY, NULL,
+					player_num == my_player_num(), 0);
 		return TRUE;
 	}
 	if (sm_recv(sm, "longest-road")) {
                 player_longest_road(player_num);
+		client_chat(CHAT_LONGEST_ROAD, NULL,
+					player_num == my_player_num(), 0);
 		return TRUE;
 	}
         if (sm_recv(sm, "setup")) {
@@ -351,6 +377,7 @@ static gboolean check_other_players(StateMachine *sm)
 	    return TRUE;
         }
 	if (sm_recv(sm, "won with %d", &num)) {
+		client_chat(CHAT_WON, NULL, player_num == my_player_num(), 0);
 		sm_pop_all(sm);
 		sm_goto(sm, mode_game_over);
 		return TRUE;
@@ -363,6 +390,8 @@ static gboolean check_other_players(StateMachine *sm)
 	if (sm_recv(sm, "maritime-trade %d supply %r receive %r",
 		    &ratio, &supply_type, &receive_type)) {
 		player_maritime_trade(player_num, ratio, supply_type, receive_type);
+		client_chat(CHAT_MARITIME_TRADE, (void *)ratio,
+					player_num == my_player_num(), 0);
 		return TRUE;
 	}
 
@@ -748,12 +777,15 @@ static gboolean mode_idle(StateMachine *sm, gint event)
 		    return TRUE;
 		}
 		if (sm_recv(sm, "turn %d", &num)) {
+			client_chat(CHAT_TURN_START, (void *)num, TRUE, 0);
 			turn_begin(my_player_num(), num);
 			sm_goto(sm, mode_turn);
 			return TRUE;
 		}
 		if (sm_recv(sm, "player %d moved-robber %d %d",
 			    &player_num, &x, &y)) {
+			client_chat(CHAT_MOVED_ROBBER, (void *)map_hex(map, x, y),
+						player_num == my_player_num(), 0);
 			robber_moved(player_num, x, y);
 			return TRUE;
 		}
@@ -801,6 +833,8 @@ static gboolean mode_robber_response(StateMachine *sm, gint event)
 
 		if (sm_recv(sm, "moved-robber %d %d", &x, &y)) {
 			robber_moved(my_player_num(), x, y);
+			client_chat(CHAT_MOVED_ROBBER, (void *)map_hex(map, x, y),
+						TRUE, 0);
 			sm_goto(sm, mode_turn);
 			return TRUE;
 		}
@@ -1168,6 +1202,7 @@ static gboolean mode_roll_response(StateMachine *sm, gint event)
 	case SM_RECV:
 		if (sm_recv(sm, "rolled %d %d", &die1, &die2)) {
 			turn_rolled_dice(my_player_num(), die1, die2);
+			client_chat(CHAT_ROLLED, (void *)(die1+die2), TRUE, 0);
 
 			if (die1 + die2 == 7) {
 			    sm_goto(sm, mode_wait_for_robber);
@@ -1208,16 +1243,6 @@ static gboolean mode_turn(StateMachine *sm, gint event)
 	    } else {
 		char *tmp;
 
-		if (rolled == 1) {
-		    rolled++;
-		    tmp = computer_funcs.chat(map, my_player_num(), my_assets, turn_num(), built_or_bought);
-		    if (strlen(tmp)>0) {
-			sm_send(sm, tmp);
-			sm_goto(sm, mode_turn);
-			return FALSE;
-		    }
-
-		}
 		tmp = computer_funcs.turn(map, my_player_num(), my_assets, turn_num(), built_or_bought);
 		sm_send(sm, tmp);
 
@@ -1356,6 +1381,8 @@ static gboolean check_trading(StateMachine *sm)
 	}
 	if (sm_recv(sm, "domestic-quote quote %d supply %R receive %R",
 		    &quote_num, they_supply, they_receive)) {
+		client_chat(CHAT_DOMESTIC_TRADE_QUOTE, (void *)they_supply,
+					player_num == my_player_num(), 0);
 		return TRUE;
 	}
 	if (sm_recv(sm, "domestic-quote delete %d", &quote_num)) {
@@ -1478,6 +1505,8 @@ static gboolean mode_trade_domestic_response(StateMachine *sm, gint event)
 	case SM_RECV:
 		if (sm_recv(sm, "domestic-trade accept player %d quote %d supply %R receive %R",
 			    &partner_num, &quote_num, &they_supply, &they_receive)) {
+			client_chat(CHAT_DOMESTIC_TRADE_ACCEPT, (void *)they_supply,
+						FALSE, partner_num);
 			trade_perform_domestic(my_player_num(), partner_num, quote_num,
 					       they_supply, they_receive);
 			sm_goto(sm, mode_domestic_trade);
@@ -1501,6 +1530,7 @@ static gboolean mode_domestic_finish_response(StateMachine *sm, gint event)
 		break;
 	case SM_RECV:
 		if (sm_recv(sm, "domestic-trade finish")) {
+			client_chat(CHAT_DOMESTIC_TRADE_FINISH, NULL, TRUE, partner_num);
 			sm_pop(sm);
 			return TRUE;
 		}
@@ -1548,6 +1578,8 @@ static gboolean check_quoting(StateMachine *sm)
 	}
 	if (sm_recv(sm, "domestic-quote quote %d supply %R receive %R",
 		    &quote_num, they_supply, they_receive)) {
+		client_chat(CHAT_DOMESTIC_TRADE_QUOTE, (void *)they_supply,
+					player_num == my_player_num(), 0);
 		quote_add_quote(player_num, quote_num,
 				they_supply, they_receive);
 		return TRUE;
@@ -1559,6 +1591,8 @@ static gboolean check_quoting(StateMachine *sm)
 	if (sm_recv(sm, "domestic-trade call supply %R receive %R",
 		    they_supply, they_receive)) {
 		gchar *tmp;
+		client_chat(CHAT_DOMESTIC_TRADE_CALL, NULL,
+					player_num == my_player_num(), 0);
 		quote_begin_again(player_num, they_supply, they_receive);
 		quote_begin(player_num, they_supply, they_receive);
 		tmp = computer_funcs.consider_quote(map, my_player_num(),
@@ -1575,6 +1609,8 @@ static gboolean check_quoting(StateMachine *sm)
 		    &partner_num, &quote_num, they_supply, they_receive)) {
 		quote_perform_domestic(player_num, partner_num, quote_num,
 				       they_supply, they_receive);
+		client_chat(CHAT_DOMESTIC_TRADE_ACCEPT, (void *)they_supply,
+					player_num == my_player_num(), partner_num);
 		return TRUE;
 	}
 	if (sm_recv(sm, "domestic-trade finish")) {
@@ -1598,6 +1634,7 @@ static gboolean mode_quote_finish_response(StateMachine *sm, gint event)
 		break;
 	case SM_RECV:
 		if (sm_recv(sm, "domestic-quote finish")) {
+			client_chat(CHAT_DOMESTIC_TRADE_FINISH, NULL, TRUE, 0);
 			sm_goto(sm, mode_domestic_monitor);
 			return TRUE;
 		}
@@ -1624,6 +1661,8 @@ static gboolean mode_quote_submit_response(StateMachine *sm, gint event)
 	case SM_RECV:
 		if (sm_recv(sm, "domestic-quote quote %d supply %R receive %R",
 			    &quote_num, we_supply, we_receive)) {
+			client_chat(CHAT_DOMESTIC_TRADE_QUOTE, (void *)we_receive,
+						TRUE, 0);
 			quote_add_quote(my_player_num(),
 					quote_num, we_supply, we_receive);
 			sm_goto(sm, mode_domestic_quote);

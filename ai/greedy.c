@@ -1085,23 +1085,172 @@ greedy_turn(Map *map, int mynum, gint assets[NO_RESOURCE],
     return ret;
 }
 
+#define randchat(array,nochat_percent)									\
+	do {																\
+		int p = (numElem(chat_##array)*1000/nochat_percent);			\
+		int n = (rand() % p) / 10;										\
+		return n < numElem(chat_##array) ? chat_##array[n] : NULL;		\
+	} while(0)
+
+static char *chat_turn_start[] = {
+	_("Ok, let's go!"),
+	_("I'll beat you all now! ;)"),
+	_("Now for another try..."),
+};
+static char *chat_receive_one[] = {
+	_("At least I get something..."),
+	_("One is better than none..."),
+};
+static char *chat_receive_many[] = {
+	_("Wow!"),
+	_("Ey, I'm becoming rich ;)"),
+	_("This is really a good year!"),
+};
+static char *chat_other_receive_many[] = {
+	_("You really don't deserve that much!"),
+	_("You don't know anywhat what to do with that much resources ;)"),
+	_("Ey, wait for my robber and loose all this again!"),
+};
+static char *chat_self_moved_robber[] = {
+	_("Hehe!"),
+	_("Go, robber, go!"),
+};
+static char *chat_moved_robber_to_me[] = {
+	_("You bastard!"),
+	_("Can't you move that robber somewhere else?!"),
+	_("Why always me??"),
+};
+static char *chat_discard_self[] = {
+	_("Oh no!"),
+	_("Grrr!"),
+	_("Who the hell rolled that 7??"),
+	_("Why always me?!?"),
+};
+static char *chat_discard_other[] = {
+	_("Say good bye to your cards... :)"),
+	_("*evilgrin*"),
+	_("/me says farewell to your cards ;)"),
+	_("That's the price for being rich... :)"),
+};
+static char *chat_stole_from_me[] = {
+	_("Ey! Where's that card gone?"),
+	_("Thieves! Thieves!!"),
+	_("Wait for my revenge..."),
+};
+static char *chat_monopoly_other[] = {
+	_("Oh no :("),
+	_("Must this happen NOW??"),
+	_("Args"),
+};
+static char *chat_largestarmy_self[] = {
+	_("Hehe, my soldiers rule!"),
+};
+static char *chat_largestarmy_other[] = {
+	_("First robbing us, them grabbing the points..."),
+};
+static char *chat_longestroad_self[] = {
+	_("See that road!"),
+};
+static char *chat_longestroad_other[] = {
+	_("Pf, you won't win with roads alone..."),
+};
+	
 static char *
-greedy_chat(Map *map, int mynum, gint assets[NO_RESOURCE], 
-	    int curr_turn, gboolean built_or_bought)
+greedy_chat(chat_t occasion, void *param, gboolean self, gint other_player)
 {
-    static char ret[1024];
-    char *tmp = greedy_turn(map, mynum, assets, curr_turn, built_or_bought);
+	int iparam = (int)param;
+	int *resparam = (int *)param;
+	DevelType develparam = (DevelType)param;
+	Hex *hexparam = (Hex *)param;
 
-    strcpy(ret,"");
+    char *ret = NULL;
 
-    if (rand() % 2 == 0) {
-	if (strstr(tmp,"done")) {
-	    snprintf(ret,sizeof(ret)-1,"chat feh\n");
-	} else {
-	    snprintf(ret,sizeof(ret)-1,"chat oh yeah, watch this\n");
-	}
+    switch(occasion) {
+      case CHAT_TURN_START:
+		if (self)
+			randchat(turn_start, 70);
+		break;
+      case CHAT_ROLLED:
+		break;
+      case CHAT_RECEIVES:
+		if (self) {
+			int i, sum = 0;
+			for(i = 0; i < NO_RESOURCE; ++i) {
+				sum += resparam[i];
+			}
+			if (sum == 1)
+				randchat(receive_one,60);
+			else if (sum <= 3)
+				/*randchat(receive_some,4)*/;
+			else
+				randchat(receive_many,20);
+		}
+		else {
+			int i, sum = 0;
+			for(i = 0; i < NO_RESOURCE; ++i) {
+				sum += resparam[i];
+			}
+			if (sum > 2)
+				randchat(other_receive_many,30);
+		}
+		break;
+	  case CHAT_MOVED_ROBBER:
+		if (self)
+			randchat(self_moved_robber,15);
+		else {
+			int idx;
+			gboolean iam_affected = FALSE;
+			for (idx = 0; idx < numElem(hexparam->nodes); idx++) {
+				if (hexparam->nodes[idx]->owner == my_player_num())
+					iam_affected = TRUE;
+			}
+			if (iam_affected)
+				randchat(moved_robber_to_me,20);
+		}
+		break;
+      case CHAT_DISCARD:
+		if (self)
+			randchat(discard_self,10);
+		else
+			randchat(discard_other,10);
+		break;
+      case CHAT_STOLE:
+		if (!self)
+			randchat(stole_from_me,15);
+		break;
+      case CHAT_MONOPOLY:
+		if (!self)
+			randchat(monopoly_other,20);
+		break;
+      case CHAT_LARGEST_ARMY:
+		if (self)
+			randchat(largestarmy_self,10);
+		else
+			randchat(largestarmy_other,10);
+		break;
+      case CHAT_LONGEST_ROAD:
+		if (self)
+			randchat(longestroad_self,10);
+		else
+			randchat(longestroad_other,10);
+		break;
+      case CHAT_WON:
+		if (self)
+			return _("Yippie!");
+		else
+			return _("My congratulations");
+      case CHAT_BUILT:
+      case CHAT_BOUGHT:
+      case CHAT_PLAY_DEVELOP:
+      case CHAT_MARITIME_TRADE:
+      case CHAT_DOMESTIC_TRADE_CALL:
+      case CHAT_DOMESTIC_TRADE_QUOTE:
+      case CHAT_DOMESTIC_TRADE_ACCEPT:
+      case CHAT_DOMESTIC_TRADE_FINISH:
+		/* nothing to chat */
+		break;
     }
-
+    
     return ret;
 }
 

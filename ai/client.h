@@ -14,6 +14,7 @@
 #include "buildrec.h"
 #include "quoteinfo.h"
 #include "cards.h"
+#include "computer.h"
 
 /*#define FIND_STUPID_RESOURCE_BUG*/
 
@@ -28,7 +29,7 @@ GtkWidget *chat_build_panel(void);
 /* client.c */
 void client_start(char *server, char *port, char *username, char *ai, int waittime, int chatty);
 void client_change_my_name(gchar *name);
-void client_chat(gchar *text);
+void client_chat(chat_t occasion, void *param, gboolean self, gint other);
 gboolean client_connected(void);
 void client_changed_cb(void);
 void client_event_cb(GtkWidget *widget, gint event);
