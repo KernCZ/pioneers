@@ -1,3 +1,9 @@
+gnocatan (0.8.1-1) unstable; urgency=low
+
+  * New upstream version
+
+ -- Jeff Breidenbach <jab@debian.org>  Fri, 16 Jan 2004 14:05:25 -0800
+
 gnocatan (0.8.0-4) unstable; urgency=low
 
   * Snapshot from upstream CVS.

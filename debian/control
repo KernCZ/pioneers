@@ -78,7 +78,7 @@ Description: Gnocatan computer player - a game for Gnome
  can be played over the internet.
  .
  This package contains an AI player implementation that can take part in
- Gnocatan games. It still isn't perfect...
+ Gnocatan games.
 
 Package: gnocatan-help
 Architecture: all
@@ -87,5 +87,5 @@ Description: Online help for the Gnocatan client
  Gnocatan is an emulation of the Settlers of Catan board game which
  can be played over the internet.
  .
- This help package contains a good HTML documentation for the Gnocatan
+ This help package contains HTML documentation for the Gnocatan
  client.
