@@ -1,3 +1,21 @@
+CVS Snapshot release 0.8.1.37
+
+What's new/fixed:
+* Gnocatan can now build the console-only applications if GNOME2/Gtk+ is not 
+  found
+* Several cosmetic changes in the client
+* Fixed a bug in the ai when playing too many soldier cards
+* Server-gtk remembers the previous map
+* Quick fix applied for crash after pressing 'Reject Trade'
+* Italian translation added
+* Removed a few memory leaks
+
+Some known issues (see also SourceForge)
+* Reconnect works badly. Workaround: Try to reconnect only when the game is 'idle'.
+* Longest road sometimes not noticed/given to wrong player
+* Client can crash after playing/moving the robber in the last turn.
+* Playing several games with the same client will retain some things from previous games.
+
 Release 0.8.1.30
 
 What's new/fixed:
@@ -11,14 +29,6 @@ What's new/fixed:
 * Connection as viewer in a game with more than 8 players+viewers is possible
 * Updated the log in the console
 * Minor user interface issues 
-
-Some known issues (see also SourceForge)
-* Reconnect works badly. Workaround: Try to reconnect only when the game is 'idle'.
-* Longest road sometimes not noticed/given to wrong player
-* Client can crash after playing/moving the robber in the last turn.
-* Server will crash if pressing 'Reject Trade' more than once. Workaround: press only once.
-* Playing several games with the same client will retain some things from previous games.
-* Server-gtk will start a 'Default' game, unless the game is explicitly chosen again.
 
 Release 0.8.1.16
 
