@@ -541,6 +541,12 @@ void player_revive(Player *newp, char *name)
 
 	sm_push(newp->sm, (StateFunc)mode_pre_game);
 
+	/* Copy longest road and largest army */
+	if (game->longest_road == p)
+		game->longest_road = newp;
+	if (game->largest_army == p)
+		game->largest_army = newp;
+
 	p->num = -1; /* prevent the number of players
 		        from getting decremented */
 

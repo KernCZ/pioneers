@@ -15,6 +15,7 @@
 	click building
 	* common/log.c, common/log.h, common/gtk/common_gtk.c,
 	common/gtk/common_gtk.h: Log uses less memory
+	* server/player.c: Fix for lost longest road on reconnect
 
 2004-10-08  0.8.1.38  Roland Clobus <rclobus@bigfoot.com>
 	* All *.c: Added #include "config.h"
