@@ -1094,7 +1094,7 @@ static gboolean mode_year_of_plenty(StateMachine *sm, gint event)
 		break;
 	case SM_RECV:
 		if (sm_recv(sm, "plenty %R", plenty)) {
-			tmp = computer_funcs.year_of_plenty(map, my_player_num(), my_assets);
+			tmp = computer_funcs.year_of_plenty(map, my_player_num(), my_assets, plenty);
 			sm_send(sm, tmp);
 			sm_goto(sm, mode_year_of_plenty_response);
 		    return TRUE;

@@ -63,7 +63,7 @@ typedef struct computer_funcs_s {
     
     const char *(*free_road)(Map *map, int mynum);
 
-    const char *(*year_of_plenty)(Map *map, int mynum, gint assets[NO_RESOURCE]);
+    const char *(*year_of_plenty)(Map *map, int mynum, gint assets[NO_RESOURCE], gint bank[NO_RESOURCE]);
     
     const char *(*discard)(Map *map, int mynum, gint assets[NO_RESOURCE], int discard_num);
 

@@ -1400,7 +1400,7 @@ greedy_free_road(Map *map, int mynum)
  */
 
 static const char *
-greedy_year_of_plenty(Map *map, int mynum, gint assets[NO_RESOURCE])
+greedy_year_of_plenty(Map *map, int mynum, gint assets[NO_RESOURCE], gint bank[NO_RESOURCE])
 {
     char want[NO_RESOURCE];
     int i;
@@ -1410,20 +1410,31 @@ greedy_year_of_plenty(Map *map, int mynum, gint assets[NO_RESOURCE])
 
     for (i = 0; i < NO_RESOURCE; i++)
 	want[i] = 0;
-
     /* what two resources do we desire most */
     reevaluate_resources(map, mynum, &resval);
 
     r1 = resource_desire(assets, &resval, NO_RESOURCE, 0);
 
+    /* If we don't desire anything anymore, ask for a road.
+     * This happens if we have at least 2 of each resource
+     */
+    if (r1 == NO_RESOURCE) r1 = BRICK_RESOURCE;
+    
     assets[r1]++;
 
     reevaluate_resources(map, mynum, &resval);
 
     r2 = resource_desire(assets, &resval, NO_RESOURCE, 0);
 
+    if (r2 == NO_RESOURCE) r2 = LUMBER_RESOURCE;
     assets[r1]--;
 
+    /* If we want something that is not in the bank, request something else */
+    /* WARNING: This code can cause a lockup if the bank is empty, but
+     * then the year of plenty must not have been playable */
+    while (bank[r1] < 1) r1 = (r1 + 1) % NO_RESOURCE;
+    while (bank[r2] < (r1==r2 ? 2 : 1)) r2 = (r2 + 1) % NO_RESOURCE;
+    
     want[r1]++;
     want[r2]++;
 

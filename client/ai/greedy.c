@@ -1291,33 +1291,49 @@ static void greedy_free_road(void)
  * We played a year of plenty card. pick the two resources we most need
  */
 
-static void greedy_year_of_plenty(gint assets[NO_RESOURCE])
+static void greedy_year_of_plenty(gint bank[NO_RESOURCE])
 {
     gint want[NO_RESOURCE];
+    gint assets[NO_RESOURCE];
     int i;
     int r1, r2;
     resource_values_t resval;
 
     ai_wait ();
-    for (i = 0; i < NO_RESOURCE; i++)
+    for (i = 0; i < NO_RESOURCE; i++) {
 	want[i] = 0;
+	assets[i] = resource_asset(i);
+	}
 
     /* what two resources do we desire most */
     reevaluate_resources(&resval);
 
     r1 = resource_desire(assets, &resval, NO_RESOURCE, 0);
 
+    /* If we don't desire anything anymore, ask for a road.
+     * This happens if we have at least 2 of each resource
+     */
+    if (r1 == NO_RESOURCE) r1 = BRICK_RESOURCE;
+    
     assets[r1]++;
 
     reevaluate_resources(&resval);
 
     r2 = resource_desire(assets, &resval, NO_RESOURCE, 0);
 
+    if (r2 == NO_RESOURCE) r2 = LUMBER_RESOURCE;
+    
     assets[r1]--;
 
+    /* If we want something that is not in the bank, request something else */
+    /* WARNING: This code can cause a lockup if the bank is empty, but
+     * then the year of plenty must not have been playable */
+    while (bank[r1] < 1) r1 = (r1 + 1) % NO_RESOURCE;
+    while (bank[r2] < (r1==r2 ? 2 : 1)) r2 = (r2 + 1) % NO_RESOURCE;
+    
     want[r1]++;
     want[r2]++;
-
+    
     cb_choose_plenty (want);
 }
 

@@ -1,3 +1,9 @@
+2004-05-30 0.8.1.28  Roland Clobus <rclobus@bigfoot.com>
+	* client/ai/greedy.c (greedy_year_of_plenty), ai/client.h
+	(mode_year_of_plenty), ai/computer.h, ai/greedy.c
+	(greedy_year_of_plenty): Fix year of plenty bug, AI will now always
+	choose available resources
+	
 2004-05-26  Jeff Breidenbach  <jab@debian.org>
 
 	* 0.8.1.27 Released as Debian package, 0.8.1-3.
