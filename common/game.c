@@ -314,5 +314,6 @@ void params_load_finish(GameParams *params)
 	    && params->map != NULL) {
 		map_set_chits(params->map, params->chits);
 		map_parse_finish(params->map);
+		params->map->have_bridges = params->num_build_type[BUILD_BRIDGE] > 0;
 	}
 }
