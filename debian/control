@@ -6,7 +6,7 @@ Standards-Version: 2.5.0
 
 Package: gnocatan-client
 Architecture: any
-Depends: gnocatan-data (>= 0.5.0), ${shlibs:Depends}
+Depends: gnocatan-data (>= 0.5.1), ${shlibs:Depends}
 Suggests: gnocatan-help
 Recommends: gnocatan-server
 Description: Gnocatan client - a game for Gnome

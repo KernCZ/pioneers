@@ -1,6 +1,6 @@
 Summary: 	Playable implementation of the Settlers of Catan 
 Name: 		gnocatan
-Version: 	0.5.0
+Version: 	0.5.1
 Release: 	1
 Group: 		X11/Games
 Copyright: 	GPL
@@ -123,6 +123,8 @@ make install prefix=$RPM_BUILD_ROOT/usr bindir=$RPM_BUILD_ROOT/usr/games \
 
 %changelog
 
+* Sun May 07 2000 Dave Cole <adve@dccs.com.au>
+- Removed ship building development card
 * Mon May 01 2000 Andy Heroff <aheroff@mediaone.net>
 - SourceForge release version 0.5.0
 * Fri Sep 03 1999 Dave Cole <dave@dccs.com.au>

@@ -10,7 +10,7 @@
 #ifndef __game_h
 #define __game_h
 
-#define VERSION "0.5.0"
+#define VERSION "0.5.1"
 
 #define numElem(a) (sizeof(a)/sizeof(a[0]))
 
