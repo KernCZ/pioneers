@@ -312,13 +312,14 @@ gboolean mode_turn(Player *player, gint event)
 	gint quote_num, partner_num, idx, ratio;
 	Resource supply_type, receive_type;
 	gint supply[NO_RESOURCE], receive[NO_RESOURCE];
-	gint done;
+	gboolean done;
 	gint sx, sy, spos, dx, dy, dpos, isundo;
 
 	sm_state_name(sm, "mode_turn");
 	if (event != SM_RECV)
 		return FALSE;
 	if (sm_recv(sm, "roll")) {
+		GList *list;
 		GameRoll data;
 		gint roll;
 
@@ -327,7 +328,7 @@ gboolean mode_turn(Player *player, gint event)
 			return TRUE;
 		}
 
-		done = 0;
+		done = FALSE;
 
 		do {
 			game->die1 = get_rand(6) + 1;
@@ -337,14 +338,14 @@ gboolean mode_turn(Player *player, gint event)
 			
 			if (game->params->sevens_rule == 1) {
 				if (roll != 7 || game->curr_turn > 2) {
-					done = 1;
+					done = TRUE;
 				}			
 			} else if (game->params->sevens_rule == 2) {
 				if (roll != 7) {
-					done = 1;
+					done = TRUE;
 				}
 			} else {
-				done = 1;
+				done = TRUE;
 			}
 			
 		} while(!done);
@@ -356,12 +357,7 @@ gboolean mode_turn(Player *player, gint event)
 			/* Find all players with more than 7 cards -
 			 * they must discard half (rounded down)
 			 */
-			if (discard_resources(player))
-				return TRUE;
-			/* No-one had more than 7 cards, move the
-			 * robber immediately
-			 */
-			robber_place(player);
+			discard_resources(game);
 			return TRUE;
 		}
 		resource_start(game);
@@ -369,7 +365,7 @@ gboolean mode_turn(Player *player, gint event)
 		data.roll = roll;
 		map_traverse(map, (HexFunc)distribute_resources, &data);
 		/* distribute resources and gold (includes resource_end) */
-		distribute_first (player, FALSE);
+		distribute_first (list_from_player (player) );
 		return TRUE;
 	}
 	if (sm_recv(sm, "done")) {
@@ -386,6 +382,8 @@ gboolean mode_turn(Player *player, gint event)
 		}
 		sm_send(sm, "OK\n");
 		ship_moved = FALSE;
+		/* pop the state machine back to idle */
+		sm_pop (sm);
 		turn_next_player(game);
 		return TRUE;
 	}
@@ -449,44 +447,44 @@ gboolean mode_idle(Player *player, gint event)
 void turn_next_player(Game *game)
 {
 	Player *player = NULL;
+	GList *list = NULL;
 
-	do {
+	/* the first time this is called there is no curr_player yet */
 	if (game->curr_player)
 	{
 		player = player_by_name(game, game->curr_player);
 		game->curr_player = NULL;
-		if (player)
-		{
-			gint nextplayer = player->num + 1;
-			gint numplayers = player->game->num_players;
-			if (nextplayer < numplayers)
-			{
-				player = player_by_num(game, nextplayer);
-				if (player)
-				{
-					game->curr_player = player->name;
-				}
-			}
+		if (!player) {
+			log_message( MSG_ERROR, _("incorrect current player.\n") );
+			exit (1);
 		}
+		/* next player */
+		list = player_next_real (list_from_player (player) );
 	}
 
-	if (game->curr_player == NULL) {
-		GList *next;
+	/* See if it's the first player's turn again */
+	if (list == NULL) {
+		list = player_first_real (game);
 		game->curr_turn++;
-		next = player_first_real(game);
-		if (next && next->data)
-		{
-		   player = (Player *)next->data;
-		   game->curr_player = player->name;
-		}
 	}
-	} while (player->num < 0);
 
-	player_broadcast(player, PB_RESPOND, "turn %d\n", game->curr_turn);
+	/* sanity check */
+	if (!list || !list->data) {
+		log_message( MSG_ERROR, _("unable to find players.\n") );
+		exit (1);
+	}
+
+	/* reset variables */
+	player = list->data;
+	game->curr_player = player->name;
 	game->rolled_dice = FALSE;
 	game->played_develop = FALSE;
 	game->bought_develop = FALSE;
 	player->build_list = buildrec_free(player->build_list);
 
-	sm_goto(player->sm, (StateFunc)mode_turn);
+	/* tell everyone what's happening */
+	player_broadcast(player, PB_RESPOND, "turn %d\n", game->curr_turn);
+
+	/* put the player in the right state */
+	sm_push(player->sm, (StateFunc)mode_turn);
 }

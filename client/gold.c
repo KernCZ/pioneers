@@ -35,7 +35,6 @@ static struct {
 	GtkWidget *total_entry;
 	GoldInfo res[NO_RESOURCE];
 	gint target;
-	gboolean myturn; /* is it my turn to choose gold already */
 } gold;
 
 static void format_info(GoldInfo *info)
@@ -45,8 +44,10 @@ static void format_info(GoldInfo *info)
 	gtk_entry_set_text(GTK_ENTRY(info->current_entry), buff);
 	sprintf(buff, "%d", info->take);
 	gtk_entry_set_text(GTK_ENTRY(info->take_entry), buff);
-	sprintf(buff, "%d", info->bank - info->take);
-	gtk_entry_set_text(GTK_ENTRY(info->bank_entry), buff);
+	if (info->bank_entry) {
+		sprintf(buff, "%d", info->bank - info->take);
+		gtk_entry_set_text(GTK_ENTRY(info->bank_entry), buff);
+	}
 }
 
 static void check_total()
@@ -76,14 +77,14 @@ static void check_total()
 
 static void less_resource_cb(void *widget, GoldInfo *info)
 {
-	info->take--;
+	--info->take;
 	format_info(info);
 	check_total();
 }
 
 static void more_resource_cb(void *widget, GoldInfo *info)
 {
-	info->take++;
+	++info->take;
 	format_info(info);
 	check_total();
 }
@@ -98,19 +99,25 @@ static void add_resource_table_row(GtkWidget *table,
 	info = &gold.res[resource];
 	info->num = resource_asset(resource);
 	info->take = 0;
+	/* label with resource name */
 	lbl = gtk_label_new(resource_name(resource, TRUE));
 	gtk_widget_show(lbl);
 	gtk_table_attach(GTK_TABLE(table), lbl, 0, 1, row, row + 1,
 		(GtkAttachOptions)GTK_EXPAND | GTK_FILL,
 		(GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(lbl), 1, 0.5);
-	entry = info->bank_entry = gtk_entry_new();
-	gtk_widget_show(entry);
-	gtk_table_attach(GTK_TABLE(table), entry, 1, 2, row, row + 1,
-		(GtkAttachOptions)GTK_FILL,
-		(GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
-	gtk_widget_set_usize(entry, 30, -1);
-	gtk_entry_set_editable(GTK_ENTRY(entry), FALSE);
+	/* entry with current bank value */
+	if (info->bank <= gold.target) {
+		/* show the bank, for it can be emptied */
+		entry = info->bank_entry = gtk_entry_new();
+		gtk_widget_show(entry);
+		gtk_table_attach(GTK_TABLE(table), entry, 1, 2, row, row + 1,
+			(GtkAttachOptions)GTK_FILL,
+			(GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
+		gtk_widget_set_usize(entry, 30, -1);
+		gtk_entry_set_editable(GTK_ENTRY(entry), FALSE);
+	} else info->bank_entry = NULL;
+	/* less arrow */
 	arrow = info->less = gtk_button_new_with_label(_("<less"));
 	gtk_widget_set_sensitive(arrow, FALSE);
 	gtk_signal_connect(GTK_OBJECT(arrow), "clicked",
@@ -120,6 +127,7 @@ static void add_resource_table_row(GtkWidget *table,
 	gtk_table_attach(GTK_TABLE(table), arrow, 2, 3, row, row + 1,
 		(GtkAttachOptions)GTK_FILL,
 		(GtkAttachOptions)GTK_EXPAND, 0, 0);
+	/* more arrow */
 	arrow = info->more = gtk_button_new_with_label(_("more>"));
 	gtk_widget_set_sensitive(arrow, info->bank > 0);
 	gtk_signal_connect(GTK_OBJECT(arrow), "clicked",
@@ -129,18 +137,21 @@ static void add_resource_table_row(GtkWidget *table,
 	gtk_table_attach(GTK_TABLE(table), arrow, 3, 4, row, row + 1,
 		(GtkAttachOptions)GTK_FILL,
 		(GtkAttachOptions)GTK_EXPAND, 0, 0);
+	/* take entry */
 	entry = info->take_entry = gtk_entry_new();
 	gtk_widget_show(entry);
 	gtk_table_attach(GTK_TABLE(table), entry, 4, 5, row, row + 1,
 		(GtkAttachOptions)GTK_FILL,
 		(GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_widget_set_usize(entry, 30, -1);
+	/* current assets entry */
 	entry = info->current_entry = gtk_entry_new();
 	gtk_widget_show(entry);
 	gtk_table_attach(GTK_TABLE(table), entry, 5, 6, row, row + 1,
 		(GtkAttachOptions)GTK_FILL,
 		(GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_widget_set_usize(entry, 30, -1);
+	/* show this line */
 	format_info(info);
 }
 
@@ -149,32 +160,23 @@ static gboolean ignore_close(GtkWidget *widget, gpointer user_data)
 	return TRUE;
 }
 
-gint *choose_gold_get_list()
+/* fill an array with the current choice, to send to the server */
+gint *choose_gold_get_list(gint *choice)
 {
-	static gint choice[NO_RESOURCE];
 	gint idx;
-	GoldInfo *info;
-
-	memset(choice, 0, sizeof(choice));
 	if (gold.dlg != NULL)
-		for (idx = 0, info = gold.res; idx < numElem(gold.res);
-		     idx++, info++)
-			choice[idx] = info->take;
-
+		for (idx = 0; idx < numElem(gold.res); idx++)
+			choice[idx] = gold.res[idx].take;
 	return choice;
 }
 
-gint gold_choose_num_remaining()
-{
-	        return GTK_CLIST(gold_choose_clist)->rows;
-}
-
-static GtkWidget *gold_choose_create_dlg(gint num, gint *bank)
+void gold_choose_player_must (gint num, gint *bank)
 {
 	GtkWidget *dlg_vbox;
 	GtkWidget *vbox;
 	GtkWidget *lbl;
 	GtkWidget *table;
+	gint idx;
 	char buff[128];
 
 	gold.target = num;
@@ -211,12 +213,20 @@ static GtkWidget *gold_choose_create_dlg(gint num, gint *bank)
 	gtk_table_set_row_spacings(GTK_TABLE(table), 3);
 	gtk_table_set_col_spacings(GTK_TABLE(table), 5);
 
-	lbl = gtk_label_new(_("Resources in bank"));
-	gtk_widget_show(lbl);
-	gtk_table_attach(GTK_TABLE(table), lbl, 0, 3, 0, 1,
-			 (GtkAttachOptions)GTK_FILL,
-			 (GtkAttachOptions) GTK_EXPAND | GTK_FILL, 0, 0);
-	gtk_misc_set_alignment(GTK_MISC(lbl), 0, 0.5);
+	/* fill the bank entry with its correct values */
+	for (idx = 0; idx < NO_RESOURCE; ++idx) gold.res[idx].bank = bank[idx];
+
+	/* tell about the bank only if there is at least one entry */
+	for (idx = 0; idx < NO_RESOURCE; ++idx)
+		if (bank[idx] <= gold.target) break;
+	if (idx < NO_RESOURCE) {
+		lbl = gtk_label_new(_("Resources in bank"));
+		gtk_widget_show(lbl);
+		gtk_table_attach(GTK_TABLE(table), lbl, 0, 3, 0, 1,
+				(GtkAttachOptions)GTK_FILL,
+				(GtkAttachOptions) GTK_EXPAND | GTK_FILL, 0, 0);
+		gtk_misc_set_alignment(GTK_MISC(lbl), 0, 0.5);
+	}
 
 	lbl = gtk_label_new(_("Take"));
 	gtk_widget_show(lbl);
@@ -257,33 +267,13 @@ static GtkWidget *gold_choose_create_dlg(gint num, gint *bank)
 		   GUI_CHOOSE_GOLD, "clicked");
         gtk_widget_show(gold.dlg);
 	check_total();
-
-	return gold.dlg;
 }
 
-void gold_choose_player_must(gint player_num, gint num, gint *bank,
-		gboolean myturn)
+void gold_choose_player_prepare(gint player_num, gint num)
 {
 	gint row, idx;
 	gchar *row_data[3];
 	gchar buff[16];
-
-	if (player_num == my_player_num () ) gold.myturn = myturn;
-
-	if (gold.dlg != NULL) {
-		for (idx = 0; idx < NO_RESOURCE; ++idx) {
-			if (bank[idx] != gold.res[idx].bank) {
-				gold.res[idx].bank = bank[idx];
-				format_info (&gold.res[idx]);
-			}
-		}
-		if (player_num == my_player_num () ) gold.target = num;
-		check_total ();
-	}
-
-	row = gtk_clist_find_row_from_data(GTK_CLIST(gold_choose_clist),
-			player_get(player_num));
-	if (row >= 0) return;
 
 	sprintf(buff, "%d", num);
 	row_data[0] = "";
@@ -295,11 +285,6 @@ void gold_choose_player_must(gint player_num, gint num, gint *bank,
 			       row, player_get(player_num));
 	gtk_clist_set_pixmap(GTK_CLIST(gold_choose_clist), row, 0,
 			     player_get(player_num)->pixmap, NULL);
-
-	if (player_num != my_player_num())
-		return;
-
-	gold_choose_create_dlg(num, bank);
 }
 
 void gold_choose_player_did(gint player_num, gint *resources) {
@@ -316,18 +301,6 @@ void gold_choose_player_did(gint player_num, gint *resources) {
 		gold.dlg = NULL;
 		return;
 	}
-	if (gold.dlg != NULL) {
-		gint num = 0, idx;
-		for (idx = 0; idx < NO_RESOURCE; ++idx) {
-			gold.res[idx].bank -= resources[idx];
-			if (gold.res[idx].take > gold.res[idx].bank)
-				gold.res[idx].take = gold.res[idx].bank;
-			num += gold.res[idx].bank;
-			format_info (&gold.res[idx]);
-		}
-		if (num < gold.target) gold.target = num;
-		check_total ();
-	}
 }
 
 void gold_choose_begin () {
@@ -336,7 +309,14 @@ void gold_choose_begin () {
 }
 
 void gold_choose_end () {
+	gtk_clist_clear(GTK_CLIST(gold_choose_clist));
 	gui_gold_hide ();
+	if (gold.dlg != NULL) { /* shouldn't happen */
+		gtk_signal_disconnect_by_func(GTK_OBJECT(gold.dlg),
+		GTK_SIGNAL_FUNC(ignore_close), NULL);
+		gnome_dialog_close(GNOME_DIALOG(gold.dlg));
+		gold.dlg = NULL;
+	}
 }
 
 GtkWidget *gold_build_page() {
@@ -373,7 +353,6 @@ GtkWidget *gold_build_page() {
 
 gboolean can_choose_gold () {
 	gint total, idx;
-	if (gold.dlg == NULL || gold.myturn == FALSE) return FALSE;
 	total = 0;
 	for (idx = 0; idx < NO_RESOURCE; ++idx)
 		total += gold.res[idx].take;

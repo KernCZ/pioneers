@@ -102,7 +102,7 @@ gboolean mode_plenty_resources(Player *player, gint event);
 gboolean mode_monopoly(Player *player, gint event);
 
 /* discard.c */
-gboolean discard_resources(Player *player);
+void discard_resources(Game *player);
 gboolean mode_discard_resources(Player *player, gint event);
 gboolean mode_wait_others_place_robber(Player *player, gint event);
 gboolean mode_discard_resources_place_robber(Player *player, gint event);
@@ -136,9 +136,12 @@ void player_archive(Player *player);
 void player_revive(Player *newp, char *name);
 GList *player_first_real(Game *game);
 GList *player_next_real(GList *last);
+GList *list_from_player (Player *player);
+GList *next_player_loop (GList *current, Player *first);
 
 /* pregame.c */
 gboolean mode_pre_game(Player *player, gint event);
+gboolean mode_setup(Player *player, gint event);
 gboolean send_gameinfo(Map *map, Hex *hex, StateMachine *sm);
 void next_setup_player (Game *game);
 
@@ -198,6 +201,6 @@ void gui_player_rename(void *player);
 void gui_ui_enable(gint sensitive);
 
 /* gold.c */
-void distribute_first (Player *player, gboolean setup);
+void distribute_first (GList *list);
 
 #endif

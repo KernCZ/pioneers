@@ -1,0 +1,85 @@
+docs/README.states - information about docs/{client,server}_states.fig
+
+client_states.fig and server_states.fig are an attempt to visualize the
+state machines of gnocatan.  Read this file before trying to interpret them.
+
+
+State machines
+==============
+The center of gnocatan is the state machine.  The client program has one,
+the server has one for every client.  The idea is to simplify programming
+because only things that are sensible in the context have to be implemented.
+Functions also become more readable once you understand how they work.
+
+A state machine is a stack of state function pointers.  The current state
+is the top of stack.  If something happens, the current state is asked
+(e.g. the function is called) to do something with it.  If it didn't do
+anything with it, the program may do some state-independant things, like
+telling the user that it received unexpected input.
+
+There are three main interface functions on a state machine:
+- goto: Change the current state to some other state.
+- push: Put a new state on the stack.  The previous state is preserved, but the
+	new one is called when an event occurs.
+- pop: Remove the top op stack, and reenter the new top of stack.  This is the
+	state from which the push was executed.
+
+The names of the functions are sm_goto, sm_push and sm_pop.  They are defined
+in common/state.c.  They all take a state machine as an argument.  goto and
+push also take a state function pointer, containing the new state.
+
+
+The diagrams
+============
+What the diagrams mean:
+- Yellow blocks are logically connected states.  There is no technical binding
+between them.
+- black arrows are goto calls.
+- red arrows are push calls.
+- boxes with text are state functions.
+- blue state functions can pop.
+- black state functions cannot pop.
+
+In both diagrams, I made mode_idle a yellow block of its own.  This mode can
+be seen as the base state.  Setup ends when the state machine enters mode_idle.
+From there, everything is pushed on the stack and it is popped again when it
+is finished.  After setup, the lowest state on a state machine is always
+mode_idle.
+
+
+The client states
+=================
+The client diagram has a green block.  The black blocks in there aren't states,
+they are functions.  However, they can be called from any state which has a
+green arrow to the block.  They then push the blue blocks in there (which are
+states).  When they pop, the state machine is back in the state that called
+the function in the green block.  All the green arrows should really be red
+arrows to the states in the block, but that would make the diagram very
+complex.
+
+
+The server states
+=================
+The server diagram seems much simpler than that of the client, but in fact it
+isn't.  As stated above, the server has a state machine for every player.  Some
+states can change the state machine of other players.  That is not shown in
+the diagram.
+
+In fact, the mode_idle state doesn't do anything, it waits for other players
+to push a state on the state machine.
+
+There are two things which are shown incorrectly on the diagram, but they
+work the same as drawn.  These are discard and choose_gold.  In fact, when
+any of these states should be called, all players' state machines get a
+mode_idle pushed to them, so they cannot do anything anymore.  Then, the
+players who should get a mode_choose_gold or mode_discard pushed on top of
+that.  When the last player has popped that off, all players' idle states are
+popped off their state machine and the game can continue.
+
+
+More information
+================
+Before hacking anything in the code, I advise to read common/state.h.  It
+documents the interface of the state machine.  It talks about "top of stack"
+as the state the will be current when a pop is executed, this is different
+from how I use it above (I say the current state _is_ the top of stack).

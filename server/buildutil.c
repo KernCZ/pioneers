@@ -68,15 +68,12 @@ static void check_longest_road(Game *game)
 		if (road_len[player->num] < 5)
 			continue;
 
-		if (new_longest == NULL) {
+		if (new_longest == NULL
+			|| road_len[player->num] > road_len[new_longest->num]) {
 			new_longest = player;
 			num_have_longest = 1;
 		} else if (road_len[player->num] == road_len[new_longest->num])
 			num_have_longest++;
-		else if (road_len[player->num] > road_len[new_longest->num]) {
-			new_longest = player;
-			num_have_longest = 1;
-		}
 	}
 
 	if (new_longest == NULL) {
@@ -114,7 +111,7 @@ static void check_longest_road(Game *game)
 		 * or his road was cut.
 		 */
 		if (game->longest_road->road_len < new_longest->road_len
-		    && was_cut) {
+		    || was_cut) {
 			player_broadcast(player_none(game), PB_ALL, "longest-road\n");
 			game->longest_road = NULL;
 #ifdef DEBUG_LONGEST

@@ -909,10 +909,18 @@ static gint find_longest_road_recursive (Edge *edge)
 	gint len = 0;
 	gint nodeidx, edgeidx;
 	edge->visited = 1;
+	/* check all nodes to see which one make the longer road. */
 	for (nodeidx = 0; nodeidx < numElem(edge->nodes); nodeidx++) {
 		Node *node = edge->nodes[nodeidx];
+		/* don't go back to where we came from */
+		if (node->visited) continue;
+		/* don't let other go back here */
+		node->visited = TRUE;
+		/* don't continue counting if someone else's building is on
+		 * the node. */
 		if (node->type != BUILD_NONE && node->owner != edge->owner)
 			continue;
+		/* try all edges */
 		for (edgeidx = 0; edgeidx < numElem(node->edges); edgeidx++) {
 			Edge *here = node->edges[edgeidx];
 			if (here && !here->visited
@@ -922,10 +930,13 @@ static gint find_longest_road_recursive (Edge *edge)
 				if (node->type != BUILD_NONE ||
 					here->type == edge->type) {
 					gint thislen = find_longest_road_recursive (here);
+					/* take the maximum of all paths */
 					if (thislen > len) len = thislen;
 				}
 			}
 		}
+		/* Allow other roads to use this node again. */
+		node->visited = FALSE;
 	}
 	edge->visited = 0;
 	return len + 1;

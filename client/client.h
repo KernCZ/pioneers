@@ -128,13 +128,12 @@ GtkWidget *discard_build_page(void);
 GtkWidget *gameover_create_dlg(gint player_num, gint num_points);
 
 /* gold.c */
-void gold_choose_player_must(gint player_num, gint num, gint *bank,
-		gboolean myturn);
+void gold_choose_player_prepare(gint player_num, gint num);
+void gold_choose_player_must(gint num, gint *bank);
 void gold_choose_player_did(gint player_num, gint *resource_list);
 void gold_choose_begin (void);
 void gold_choose_end (void);
-gint *choose_gold_get_list (void);
-gint gold_choose_num_remaining (void);
+gint *choose_gold_get_list (gint *choice);
 GtkWidget *gold_build_page(void);
 gboolean can_choose_gold (void);
 

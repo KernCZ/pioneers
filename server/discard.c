@@ -27,84 +27,25 @@
 #include "log.h"
 #include "server.h"
 
-gboolean mode_discard_resources(Player *player, gint event);
-
-/* Wait for all other players to discard resources, then place the
- * robber
- */
-gboolean mode_wait_others_place_robber(Player *player, gint event)
+static void check_finished_discard (Game *game)
 {
-	StateMachine *sm = player->sm;
-        sm_state_name(sm, "mode_wait_others_place_robber");
-	return FALSE;
-}
-
-/* Wait for the player to discard discard_num resources, then place
- * the robber.
- */
-gboolean mode_discard_resources_place_robber(Player *player, gint event)
-{
-	/* This mode behaves exactly the same as discard_resources
-	 * except that once the discard process is complete, the player
-	 * that was in either discard_resources_place_robber, or
-	 * wait_others_place_robber, will automatically be placed into
-	 * place_robber - confusing huh?
-	 */
-	return mode_discard_resources(player, event);
-}
-
-/* A player has discarded their resources, determine if all players
- * have discarded their resources, then act accordingly
- */
-static void check_finished_discard(Player *player)
-{
-	StateMachine *sm = player->sm;
-	Game *game = player->game;
 	GList *list;
-
+	/* is everyone finished yet? */
 	for (list = player_first_real(game); 
 	     list != NULL; list = player_next_real(list))
 		if (((Player*)list->data)->discard_num > 0)
 			break;
-	if (list != NULL) {
-		/* Discard is not complete.  If the player was just
-		 * discarding resources, set the player mode to idle,
-		 * otherwise set the mode to wait_others_place_robber
-		 */
-		if (sm_current(sm) == (StateFunc)mode_discard_resources)
-			sm_goto(sm, (StateFunc)mode_idle);
-		else
-			sm_goto(sm, (StateFunc)mode_wait_others_place_robber);
-		return;
-	}
+	if (list != NULL) return;
 
-	/* Discard is complete!  Find the player who needs to place
-	 * the robber
-	 */
-	if (sm_current(sm) == (StateFunc)mode_discard_resources_place_robber) {
-		/* The specified player was the last one to discard
-		 * resources - go to place_robber
-		 */
-		robber_place(player);
-		return;
-	}
-
-	/* The specified player is not the one waiting to place the
-	 * robber.  Set it idle and find the player who is waiting.
-	 */
-	sm_goto(sm, (StateFunc)mode_idle);
-	for (list = player_first_real(game);
+	/* everyone is done discarding, pop all the state machines to their
+	 * original state and push the robber to whoever wants it. */
+	for (list = player_first_real(game); 
 	     list != NULL; list = player_next_real(list)) {
 		Player *scan = list->data;
-		if (sm_current(scan->sm) == (StateFunc)mode_wait_others_place_robber) {
-			robber_place(scan);
-			return;
-		}
+		sm_pop (scan->sm);
+		if (sm_current (scan->sm) == (StateFunc)mode_turn)
+			robber_place (scan);
 	}
-
-	/* We have serious problems if we get here!
-	 */
-	log_message( MSG_ERROR, "Could not find player to place robber\n");
 }
 
 gboolean mode_discard_resources(Player *player, gint event)
@@ -137,19 +78,19 @@ gboolean mode_discard_resources(Player *player, gint event)
 	resource_start(game);
 	cost_buy(discards, player->assets);
 	resource_end(game, "discarded", -1);
-
-	check_finished_discard(player);
+	/* wait for other to finish discarding too.  The state will be
+	 * popped from check_finished_discard. */
+	sm_goto(sm, (StateFunc)mode_idle);
+	check_finished_discard (game);
 	return TRUE;
 }
 
 /* Find all players that have exceeded the 7 resource card limit and
  * get them to discard.
  */
-gboolean discard_resources(Player *player)
+void discard_resources(Game *game)
 {
-	Game *game = player->game;
 	GList *list;
-	gboolean wait_for_discard = FALSE;
 
 	for (list = player_first_real(game);
 	     list != NULL; list = player_next_real(list)) {
@@ -161,24 +102,23 @@ gboolean discard_resources(Player *player)
 		for (idx = 0; idx < numElem(scan->assets); idx++)
 			num += scan->assets[idx];
 		if (num > 7) {
-			sm_goto(scan->sm, (StateFunc)mode_discard_resources);
 			scan->discard_num = num / 2;
+			sm_push(scan->sm, (StateFunc)mode_discard_resources);
 			player_broadcast(scan, PB_ALL, "must-discard %d\n",
 					 scan->discard_num);
-			wait_for_discard = TRUE;
-		} else
+		} else {
 			scan->discard_num = 0;
+			/* nothing to do, but we need to push, because there
+			 * will be a pop in check_finished_discard.
+			 * The reason we cannot leave out both is that there
+			 * really is nothing to do, so it shouldn't react
+			 * on input.  mode_idle does just that.  All players
+			 * except the one whose turn it is were idle anyway,
+			 * so it only changes things for that player (he cannot
+			 * just start playing, which is good). */
+			sm_push(scan->sm, (StateFunc)mode_idle);
+		}
 	}
-
-	if (wait_for_discard) {
-		StateMachine *sm = player->sm;
-
-		if (player->discard_num > 0)
-			sm_goto(sm, (StateFunc)mode_discard_resources_place_robber);
-		else
-			sm_goto(sm, (StateFunc)mode_wait_others_place_robber);
-	}
-
-	return wait_for_discard;
+	check_finished_discard (game);
 }
 

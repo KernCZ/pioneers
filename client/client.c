@@ -261,6 +261,10 @@ static gboolean check_chat_or_name(StateMachine *sm)
 		player_change_name(player_num, str);
 		return TRUE;
 	}
+	if (sm_recv(sm, "ERR name-already-used%S", str, sizeof (str))) {
+		log_message (MSG_ERROR, _("That name is already in use, autogenerating your name\n"));
+		return TRUE;
+	}
 	return FALSE;
 }
 
@@ -333,10 +337,9 @@ static gboolean check_other_players(StateMachine *sm)
 		sm_push(sm, mode_discard);
 		return TRUE;
 	}
-	if (sm_recv(sm, "prepare-gold %d %R", &gold_num, resource_list)) {
+	if (sm_recv(sm, "prepare-gold %d", &gold_num)) {
 		gold_choose_begin ();
-		gold_choose_player_must (player_num, gold_num, resource_list,
-				FALSE);
+		gold_choose_player_prepare (player_num, gold_num);
 		sm_push(sm, mode_choose_gold);
 		return TRUE;
 	}
@@ -1121,7 +1124,7 @@ static gboolean mode_setup_done_response(StateMachine *sm, gint event)
 		if (sm_recv(sm, "OK")) {
 			build_clear();
 			waiting_for_network(FALSE);
-			sm_goto(sm, mode_idle);
+			sm_pop(sm);
 			return TRUE;
 		}
 		if (check_other_players(sm))
@@ -1291,17 +1294,17 @@ static gboolean mode_idle(StateMachine *sm, gint event)
 	case SM_RECV:
 		if (sm_recv(sm, "setup")) {
 			setup_begin(my_player_num());
-			sm_goto(sm, mode_setup);
+			sm_push(sm, mode_setup);
 			return TRUE;
 		}
 		if (sm_recv(sm, "setup-double")) {
 			setup_begin_double(my_player_num());
-			sm_goto(sm, mode_setup);
+			sm_push(sm, mode_setup);
 			return TRUE;
 		}
 		if (sm_recv(sm, "turn %d", &num)) {
 			turn_begin(my_player_num(), num);
-			sm_goto(sm, mode_turn);
+			sm_push(sm, mode_turn);
 			return TRUE;
 		}
 		if (sm_recv(sm, "player %d moved-robber %d %d",
@@ -1957,7 +1960,7 @@ static gboolean mode_turn_done_response(StateMachine *sm, gint event)
 		if (sm_recv(sm, "OK")) {
 			build_clear();
 			waiting_for_network(FALSE);
-			sm_goto(sm, mode_idle);
+			sm_pop(sm);
 			return TRUE;
 		}
 		if (check_other_players(sm))
@@ -2761,6 +2764,8 @@ static void recover_from_disconnect(StateMachine *sm,
  * changes to list all players who must choose resources.  This is
  * important because if during our turn we do not receive gold, but others
  * do, the list tells us which players have still not chosen resources.
+ * Only the top player in the list can actually choose, the rest is waiting
+ * for their turn.
  */
 static gboolean mode_choose_gold(StateMachine *sm, gint event)
 {
@@ -2773,30 +2778,29 @@ static gboolean mode_choose_gold(StateMachine *sm, gint event)
 		sm_gui_check(sm, GUI_CHOOSE_GOLD, can_choose_gold () );
 		break;
 	case GUI_CHOOSE_GOLD:
-		sm_send(sm, "choose-gold %R\n", choose_gold_get_list());
+		sm_send(sm, "chose-gold %R\n",
+				choose_gold_get_list(resource_list));
 		return TRUE;
 	case SM_RECV:
-		if (sm_recv(sm, "player %d prepare-gold %d %R", &player_num,
-					&gold_num, bank)) {
-			gold_choose_player_must (player_num, gold_num, bank,
-				FALSE);
+		if (sm_recv(sm, "player %d prepare-gold %d", &player_num,
+					&gold_num)) {
+			gold_choose_player_prepare (player_num, gold_num);
 			return TRUE;
 		}
-		if (sm_recv(sm, "player %d receive-gold %d %R", &player_num,
-					&gold_num, &bank)) {
-			gold_choose_player_must(player_num, gold_num, bank,
-					TRUE);
+		if (sm_recv(sm, "choose-gold %d %R", &gold_num, &bank)) {
+			gold_choose_player_must(gold_num, bank);
 			return TRUE;
 		}
-		if (sm_recv(sm, "player %d chose-gold %R",
+		if (sm_recv(sm, "player %d receive-gold %R",
 			    &player_num, resource_list)) {
 			player_resource_action(player_num, _("%s takes %s.\n"),
 					       resource_list, 1);
 			gold_choose_player_did(player_num, resource_list);
-			if (gold_choose_num_remaining() == 0) {
-				gold_choose_end();
-				sm_pop(sm);
-			}
+			return TRUE;
+		}
+		if (sm_recv(sm, "gold-done") ) {
+			gold_choose_end ();
+			sm_pop(sm);
 			return TRUE;
 		}
 		if (check_other_players(sm))

@@ -260,13 +260,12 @@ void player_archive(Player *player)
 		current = g_list_next(current);
 	}
 
-	/* Next, if the player was in the middle of a trade, move
-	   him to mode_turn or mode_idle and inform others as
-	   necessary */
+	/* Next, if the player was in the middle of a trade, pop the state
+	   machine and inform others as necessary */
 	state = sm_current(player->sm);
 	if (state == (StateFunc)mode_wait_quote_exit)
 	{
-		sm_goto(player->sm, (StateFunc)mode_idle);
+		sm_pop(player->sm);
 	} 
 	else if (state == (StateFunc)mode_domestic_quote)
 	{
@@ -280,7 +279,7 @@ void player_archive(Player *player)
 		}
 		player_broadcast(player, PB_RESPOND, "domestic-quote finish\n");
 
-		sm_goto(player->sm, (StateFunc)mode_idle);
+		sm_pop(player->sm);
 	}
 	else if (state == (StateFunc)mode_domestic_initiate)
 	{
@@ -641,7 +640,7 @@ void player_set_name(Player *player, gchar *name)
 	if (player->name == NULL) {
 		gchar tmp[20]; /* max player is 8, so this should be enough */
 		gint i;
-		sprintf(tmp, "Player%d", player->num);
+		sprintf(tmp, "Player %d", player->num);
 		/* since there are at most 8 players, the loop will always
 		 * be ended by a break.  However, if it magically isn't then
 		 * there is a bug: it expects to have a unique name then,
@@ -649,7 +648,7 @@ void player_set_name(Player *player, gchar *name)
 		for (i = strlen (tmp); i < sizeof (tmp) - 1; ++i) {
 			if (player_by_name (game, tmp) == NULL) break;
 			tmp[i] = '_';
-			tmp[++i] = 0;
+			tmp[i + 1] = 0;
 		}
 		player->name = g_strdup(tmp);
 	}
@@ -668,4 +667,22 @@ void player_remove(Player *player)
 
 	driver->player_removed(player);
 	game->player_list = g_list_remove(game->player_list, player);
+}
+
+GList *list_from_player (Player *player)
+{
+	GList *list;
+	for (list = player_first_real (player->game); list != NULL;
+			list = player_next_real (list) )
+		if (list->data == player) break;
+	g_assert (list != NULL);
+	return list;
+}
+
+GList *next_player_loop (GList *current, Player *first)
+{
+	current = player_next_real (current);
+	if (current == NULL) current = player_first_real (first->game);
+	if (current->data == first) return NULL;
+	return current;
 }

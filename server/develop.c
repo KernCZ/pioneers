@@ -165,7 +165,7 @@ gboolean mode_road_building(Player *player, gint event)
 		 */
 		sm_send(sm, "OK\n");
 		check_victory(game);
-		sm_goto(sm, (StateFunc)mode_turn);
+		sm_pop(sm);
 		return TRUE;
 	}
 
@@ -252,7 +252,7 @@ gboolean mode_plenty_resources(Player *player, gint event)
 	cost_refund(plenty, player->assets);
 	resource_end(game, "receives", 1);
 	sm_send(sm, "OK\n");
-	sm_goto(sm, (StateFunc)mode_turn);
+	sm_pop(sm);
 	return TRUE;
 }
 
@@ -291,7 +291,7 @@ gboolean mode_monopoly(Player *player, gint event)
 		scan->assets[type] = 0;
 	}
 
-	sm_goto(sm, (StateFunc)mode_turn);
+	sm_pop(sm);
 	return TRUE;
 }
 
@@ -367,14 +367,14 @@ void develop_play(Player *player, gint idx)
         case DEVEL_ROAD_BUILDING:
 		/* Place 2 new roads as if you had just built them.
 		 */
-		sm_goto(sm, (StateFunc)mode_road_building);
+		sm_push(sm, (StateFunc)mode_road_building);
 		break;
         case DEVEL_MONOPOLY:
 		/* When you play this card, announce one type of
 		 * resource.  All other players must give you all
 		 * their resource cards of that type.
 		 */
-		sm_goto(sm, (StateFunc)mode_monopoly);
+		sm_push(sm, (StateFunc)mode_monopoly);
 		break;
         case DEVEL_YEAR_OF_PLENTY:
 		/* Take any 2 resource cards from the bank and add
@@ -383,7 +383,7 @@ void develop_play(Player *player, gint idx)
 		 * immediately be used to build.
 		 */
 		sm_send(sm, "plenty %R\n", game->bank_deck);
-		sm_goto(sm, (StateFunc)mode_plenty_resources);
+		sm_push(sm, (StateFunc)mode_plenty_resources);
 		break;
         case DEVEL_CHAPEL:
         case DEVEL_UNIVERSITY_OF_CATAN:
@@ -420,9 +420,9 @@ void develop_play(Player *player, gint idx)
 		/* Move the robber. Steal one resource card from the
 		 * owner of an adjacent settlement or city.
 		 */
-		robber_place(player);
 		player->num_soldiers++;
 		check_largest_army(game);
+		robber_place(player);
 		break;
 	}
 }

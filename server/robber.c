@@ -145,12 +145,12 @@ gboolean mode_place_robber(Player *player, gint event)
 	if (num_victims == 0) {
 		/* No one to steal from - resume turn
 		 */
-		sm_goto(sm, (StateFunc)mode_turn);
+		sm_pop(sm);
 		return TRUE;
 	}
 	if (victim_ok) {
 		steal_card_from(player, player_by_num(game, victim_num));
-		sm_goto(sm, (StateFunc)mode_turn);
+		sm_pop(sm);
 		return TRUE;
 	}
 	sm_send(sm, "ERR bad-player\n");
@@ -161,5 +161,5 @@ void robber_place(Player *player)
 {
 	player_broadcast(player, PB_OTHERS, "is-robber\n");
 	sm_send(player->sm, "you-are-robber\n");
-	sm_goto(player->sm, (StateFunc)mode_place_robber);
+	sm_push(player->sm, (StateFunc)mode_place_robber);
 }

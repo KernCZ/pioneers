@@ -1,3 +1,17 @@
+2003-09-28  Bas Wijnen <b.wijnen@phys.rug.nl>
+	* ai/ai.c, ai/client.h, ai/greedy.c: Chat when aborting a game with
+	gold.  Function is not actually implemented yet.
+	* client/client.c, client/client.h, client/gold.c: Fixed bugs in
+	gold and changed some states from goto to push/pop.
+	* common/buildrec.h: Preparing to fix longest road undo bug.
+	* common/map_query.c, server/buildutil.c: Fixed longest road bug.
+	* server/develop.c, server/discard.c, server/gold.c, server/player.c,
+	server/pregame.c, server/robber.c, server/server.h, server/trade.c,
+	server/turn.c: Fixed bugs and changed most states from goto to
+	push/pop.
+	* docs/server_states.fig, docs/client_states.fig, docs/README.states:
+	New files documenting the (new) state model of server and client.
+
 2003-09-26  Bas Wijnen <b.wijnen@phys.rug.nl>
 	* ai/client.c, ai/computer.h, ai/greedy.c: AI crashed when there
 	was gold in the game.  Now it exits gracefully.
@@ -60,7 +74,7 @@
 	of the game.
 	
 2003-08-03  Roland Clobus  <rclobus@bigfoot.com>
-        * client/client.c, client/client.h, client/develop.c, client/player.c,
+	* client/client.c, client/client.h, client/develop.c, client/player.c,
 	client/player.h, client/resource.c: Fixed bug 600765. The client can
 	now play several consecutive games, restart is not needed anymore.
 
@@ -1400,7 +1414,7 @@
 	
 2000-05-10  Steve Langasek <vorlon@dodds.net>
 
-        * common/buildrec.c, common/cards.c, common/cost.c, common/game.c,
+	* common/buildrec.c, common/cards.c, common/cost.c, common/game.c,
 	common/map.c, common/map_query.c, common/network.c, common/quoteinfo.c,
 	common/state.c, server/buildutil.c, server/develop.c, server/discard.c,
 	server/meta.c, server/player.c, server/pregame.c, server/resource.c,
@@ -1545,7 +1559,7 @@
 
 	* server/STATES: Attempt at documenting the server state machine.
 
-        * server/trade.c: Fixed? a possible trade race condition.  Actually, 
+	* server/trade.c: Fixed? a possible trade race condition.  Actually, 
 	the fix was already there, I just think it wasn't quite right, since 
 	it didn't reset the player's state properly.  This should be reviewed.
 
@@ -1579,7 +1593,7 @@
 
 	* Added .cvsignore files to kill those pesky ?'s.
 
-        * client/player.c: Beep when it's your turn.  Is this a good idea?
+	* client/player.c: Beep when it's your turn.  Is this a good idea?
 	I know I'm often distracted and don't notice when my turn comes up.
 	It should probably be an option, but I hate to get into the business
 	of having "gnocatan preferences"...

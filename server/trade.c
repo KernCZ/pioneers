@@ -100,14 +100,14 @@ gboolean mode_wait_quote_exit(Player *player, gint event)
 		return FALSE;
 
 	if (sm_recv(sm, "domestic-quote exit")) {
-		sm_goto(sm, (StateFunc)mode_idle);
+		sm_pop(sm);
 		return TRUE;
 	}
 	if (sm_recv(sm, "domestic-quote finish")) {
 		/* Trap race condition where initiating player and
 		 * quoting player both finish at the same time.
 		 */
-		sm_goto(sm, (StateFunc)mode_idle); /* added -- egnor */
+		sm_pop(sm);
 		return TRUE;
 	}
 	return FALSE;
@@ -192,7 +192,7 @@ void trade_finish_domestic(Player *player)
 	GList *list;
 
 	player_broadcast(player, PB_RESPOND, "domestic-trade finish\n");
-	sm_goto(sm, (StateFunc)mode_turn);
+	sm_pop(sm);
 	for (list = player_first_real(game);
 	     list != NULL; list = player_next_real(list)) {
 		Player *scan = list->data;
@@ -285,7 +285,7 @@ static void process_call_domestic(Player *player, gint *supply, gint *receive)
 	     list != NULL; list = player_next_real(list)) {
 		Player *scan = list->data;
 		if (scan != player)
-			sm_goto(scan->sm, (StateFunc)mode_domestic_quote);
+			sm_push(scan->sm, (StateFunc)mode_domestic_quote);
 	}
 }
 
@@ -384,7 +384,7 @@ void trade_begin_domestic(Player *player, gint *supply, gint *receive)
 {
 	Game *game = player->game;
 
-	sm_goto(player->sm, (StateFunc)mode_domestic_initiate);
+	sm_push(player->sm, (StateFunc)mode_domestic_initiate);
 	if (game->quotes != NULL)
 		quotelist_free(game->quotes);
 	game->quotes = quotelist_new();

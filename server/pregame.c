@@ -28,8 +28,6 @@
 #include "cost.h"
 #include "server.h"
 
-static gboolean mode_setup(Player *player, gint event);
-
 static void build_add(Player *player, BuildType type, gint x, gint y, gint pos)
 {
 	StateMachine *sm = player->sm;
@@ -133,6 +131,7 @@ static void allocate_resources(Player *player, BuildRec *rec)
 	Map *map = game->params->map;
 	Node *node;
 	gint idx;
+	GList *list;
 
 	node = map_node(map, rec->x, rec->y, rec->pos);
 
@@ -146,11 +145,12 @@ static void allocate_resources(Player *player, BuildRec *rec)
 				++player->assets[hex->terrain];
 		}
 	}
-	distribute_first (player, TRUE);
+	/* give out the gold */
+	distribute_first (list_from_player (player) );
+	return;
 }
 
-/* Player tried to finish setup mode
- */
+/* Player tried to finish setup mode */
 static void try_setup_done(Player *player)
 {
 	StateMachine *sm = player->sm;
@@ -179,26 +179,31 @@ static void try_setup_done(Player *player)
 	 * settlement
 	 */
 	sm_send(sm, "OK\n");
-	sm_goto(sm, (StateFunc)mode_idle);
 
 	if (game->double_setup)
 		allocate_resources(player, buildrec_get(player->build_list, BUILD_SETTLEMENT, 1));
 	else if (game->reverse_setup)
 		allocate_resources(player, buildrec_get(player->build_list, BUILD_SETTLEMENT, 0));
-	/* if the state machine changed, then wait for the gold to be taken */
-	if (sm_current (sm) == (StateFunc)mode_idle) next_setup_player (game);
+	else {
+		sm_goto(sm, (StateFunc)mode_idle);
+		next_setup_player (game);
+	}
 }
 
-/* find next player to do setup.  This is also called after gold distribution */
+/* find next player to do setup. */
 void next_setup_player (Game *game)
 {
 	if (game->reverse_setup) {
 		/* Going back for second setup phase
 		 */
+		GList *prev = NULL, *list;
+		for (list = player_first_real (game); list != NULL;
+				list = player_next_real (list) ) {
+			if (list == game->setup_player) break;
+			prev = list;
+		}
+		game->setup_player = prev;
 		game->double_setup = FALSE;
-		do {
-			game->setup_player = g_list_previous(game->setup_player);
-		} while (game->setup_player && ((Player *)game->setup_player->data)->num == -1);
 		if (game->setup_player_name)
 			g_free(game->setup_player_name);
 		if (game->setup_player != NULL) {
@@ -213,15 +218,16 @@ void next_setup_player (Game *game)
 	} else {
 		/* First setup phase
 		 */
-		do {
-			game->setup_player = g_list_next(game->setup_player);
-		} while (game->setup_player && ((Player *)game->setup_player->data)->num == -1);
+		Player *player;
+		game->setup_player = player_next_real (game->setup_player);
+		player = game->setup_player->data;
 		if (game->setup_player_name)
 			g_free(game->setup_player_name);
-		game->setup_player_name = g_strdup(((Player *)game->setup_player->data)->name);
+		game->setup_player_name = g_strdup(player->name);
 		/* Last player gets double setup
 		 */
-		game->double_setup = (g_list_next(game->setup_player) == NULL);
+		game->double_setup
+			= player_next_real (game->setup_player) == NULL;
 		/* Prepare to go backwards next time
 		 */
 		game->reverse_setup = game->double_setup;
@@ -276,10 +282,6 @@ static void try_start_game(Game *game)
 		if (sm_current(player->sm) == (StateFunc)mode_turn ||
 		    sm_current(player->sm)
                      == (StateFunc)mode_discard_resources ||
-		    sm_current(player->sm)
-                     == (StateFunc)mode_wait_others_place_robber ||
-		    sm_current(player->sm)
-                     == (StateFunc)mode_discard_resources_place_robber ||
 		    sm_current(player->sm)
                      == (StateFunc)mode_place_robber ||
 		    sm_current(player->sm)
@@ -504,14 +506,10 @@ gboolean mode_pre_game(Player *player, gint event)
 					}
 				}
 			}
-			else if (state == (StateFunc)mode_discard_resources ||
-			         state == (StateFunc)mode_discard_resources_place_robber)
-			{
+			else if (state == (StateFunc)mode_discard_resources) {
 				sprintf(prevstate, "DISCARD %d",
 					player->discard_num);
 			}
-			else if (state == (StateFunc)mode_wait_others_place_robber)
-				strcpy(prevstate, "WAIT_OTHERS_PLACE_ROBBER");
 			else if (state == (StateFunc)mode_place_robber)
 				strcpy(prevstate, "YOUAREROBBER");
 			else if (state == (StateFunc)mode_road_building)

@@ -27,60 +27,21 @@
 #include "log.h"
 #include "server.h"
 
-/* the current gold choosing player (the only one allowed to choose) */
-static Player *gold_chooser;
-
-static gboolean mode_receive_gold (Player *player, gint event);
-static gboolean mode_receive_gold_turn (Player *player, gint event);
-static gboolean mode_wait_receive_gold (Player *player, gint event);
-static gboolean mode_receive_gold_setup (Player *player, gint event);
-
-/* all players have chosen their gold: resume */
-static void  gold_done (Game *game) {
-	GList *list;
-	/* find player whose turn it is */
-	for (list = player_first_real (game); list != NULL;
-			list = player_next_real (list) ) {
-		Player *player = list->data;
-		/* no gold was given out, no changes need to be made */
-		if (sm_current(player->sm) == (StateFunc)mode_turn)
-			return;
-		/* someone received gold, wake the player */
-		if (sm_current(player->sm)
-				== (StateFunc)mode_wait_receive_gold) {
-			sm_goto (player->sm, (StateFunc)mode_turn);
-			return;
-		}
-		if (sm_current(player->sm)
-				== (StateFunc)mode_receive_gold_setup) {
-			sm_goto (player->sm, (StateFunc)mode_idle);
-			next_setup_player (player->game);
-			return;
-		}
-	}
-	/* This really shouldn't happen: all players received their gold and
-	 * all of them are idle */
-	log_message(MSG_ERROR, "Could not resume game after giving out gold\n");
-}
+static gboolean mode_choose_gold (Player *player, gint event);
 
 /* this function distributes resources until someone who receives gold is
  * found.  It is called again when that person chose his/her gold and
  * continues the distribution */
-static void distribute_next (Player *player) {
+static void distribute_next (GList *list, gboolean someone_wants_gold) {
+	Player *player = list->data;
 	Game *game = player->game;
-	GList *list;
 	gboolean wait_for_gold = FALSE;
 	gint num, idx;
+	gboolean in_setup = FALSE;
 
-	/* find player in list */
-	list = player_first_real (game);
-	while (list->data != player) {
-		if (list == NULL) return; /* shouldn't happen */
-		list = player_next_real (list);
-	}
 	/* give resources until someone should choose gold */
-	while (TRUE) {
-		gint resource[NO_RESOURCE];
+	for (;list != NULL; list = next_player_loop (list, player) ) {
+		gint resource[NO_RESOURCE], emptybank[NO_RESOURCE];
 		gboolean send_message = FALSE;
 		Player *scan = list->data;
 		/* calculate what resources to give */
@@ -93,6 +54,10 @@ static void distribute_next (Player *player) {
 					= scan->prev_assets[idx] + num;
 			}
 			game->bank_deck[idx] -= num;
+			/* tell the player if she can empty the bank */
+			if (game->bank_deck[idx] <= scan->gold)
+				emptybank[idx] = game->bank_deck[idx];
+			else emptybank[idx] = scan->gold + 1;
 			resource[idx] = num;
 			/* don't let a player receive the resources twice */
 			scan->prev_assets[idx] = scan->assets[idx];
@@ -107,36 +72,47 @@ static void distribute_next (Player *player) {
 			num += game->bank_deck[idx];
 		/* give out only as much as there is if the bank is empty */
 		if (scan->gold > num) scan->gold = num;
-		/* give out gold (and return so gold_done is not called) */
+		/* give out gold (and return so gold-done is not broadcast) */
 		if (scan->gold > 0) {
-			player_broadcast (scan, PB_ALL, "receive-gold %d %R\n",
-					scan->gold, game->bank_deck);
-			gold_chooser = scan;
+			sm_send (scan->sm, "choose-gold %d %R\n",
+					scan->gold, emptybank);
+			sm_push (scan->sm, (StateFunc)mode_choose_gold);
 			return;
 		}
 		/* no gold was given out, give resources to next player */
-		list = player_next_real (list);
-		if (!list) list = player_first_real (game);
-		if (list->data == player) break;
+	} /* end while */
+	/* tell everyone the gold is finished, except if there was no gold */
+	if (someone_wants_gold)
+		player_broadcast (player, PB_SILENT, "gold-done\n");
+	/* pop everyone back to the state before we started giving out
+	 * resources */
+	for (list = player_first_real (game); list != NULL;
+			list = player_next_real (list) ) {
+		Player *p = list->data;
+		sm_pop (p->sm);
+		/* this is a hack to get the next setup player.  I'd like to
+		 * do it differently, but I don't know how. */
+		if (sm_current (p->sm) == (StateFunc)mode_setup) {
+			sm_goto (p->sm, (StateFunc)mode_idle);
+			in_setup = TRUE;
+		}
 	}
-	gold_done (game);
+	if (in_setup) next_setup_player (game);
 }
 
-/* this function is used by two states below to let players get gold */
-static gboolean receive_gold_function (Player *player, gint event,
-		gchar *state_name) {
+static gboolean mode_choose_gold (Player *player, gint event) {
 	StateMachine *sm = player->sm;
 	Game *game = player->game;
 	gint resources[NO_RESOURCE];
 	gint idx, num;
+	GList *list;
 	
-	sm_state_name (sm, state_name);
+	sm_state_name (sm, "mode_choose_gold");
 	if (event != SM_RECV)
 		return FALSE;
-	if (!sm_recv(sm, "choose-gold %R", resources) )
+	if (!sm_recv(sm, "chose-gold %R", resources) )
 		return FALSE;
-	if (gold_chooser != player)
-		return FALSE;
+	/* check if the bank can take it */
 	num = 0;
 	for (idx = 0; idx < NO_RESOURCE; ++idx) {
 		num += resources[idx];
@@ -145,6 +121,7 @@ static gboolean receive_gold_function (Player *player, gint event,
 			return FALSE;
 		}
 	}
+	/* see if the right amount was taken */
 	if (num != player->gold) {
 		sm_send(sm, "ERR wrong-gold\n");
 		return FALSE;
@@ -158,58 +135,40 @@ static gboolean receive_gold_function (Player *player, gint event,
 		/* take it out of the bank */
 		game->bank_deck[idx] -= resources[idx];
 	}
-	player_broadcast (player, PB_ALL, "chose-gold %R\n", resources);
-	if (sm_current (sm) == (StateFunc)mode_receive_gold)
-		sm_goto (sm, (StateFunc)mode_idle);
-	/* don't do anything to the state during setup: gold_done will take
-	 * care of it (it will be called from distribute_next) */
-	else if (sm_current (sm) != (StateFunc)mode_receive_gold_setup)
-		sm_goto (sm, (StateFunc)mode_wait_receive_gold);
-	distribute_next (player);
+	player_broadcast (player, PB_ALL, "receive-gold %R\n", resources);
+	/* pop back to mode_idle */
+	sm_pop (sm);
+	list = next_player_loop (list_from_player (player), player);
+	distribute_next (list, TRUE);
 	return TRUE;
-}
-
-/* recieve gold while idle */
-static gboolean mode_receive_gold (Player *player, gint event) {
-	return receive_gold_function (player, event, "mode_receive_gold");
-}
-
-/* recieve gold in own turn */
-static gboolean mode_receive_gold_turn (Player *player, gint event) {
-	return receive_gold_function (player, event, "mode_receive_gold_turn");
-}
-
-/* receive gold in setup */
-static gboolean mode_receive_gold_setup (Player *player, gint event) {
-	return receive_gold_function (player, event, "mode_receive_gold_setup");
-}
-
-/* wait for others recieving gold in own turn */
-static gboolean mode_wait_receive_gold (Player *player, gint event) {
-	sm_state_name (player->sm, "mode_wait_receive_gold");
-	return FALSE;
 }
 
 /* this function is called by mode_turn to let resources and gold be
  * distributed */
-void distribute_first (Player *player, gboolean setup) {
-	GList *list;
+void distribute_first (GList *list) {
+	GList *looper;
+	Player *player = list->data;
 	Game *game = player->game;
-	gold_chooser = NULL;
-	for (list = player_first_real (game); list != NULL;
-			list = player_next_real (list) ) {
-		Player *scan = list->data;
-		if (scan->gold) {
-			if (scan == player)
-				sm_goto (scan->sm, setup ?
-					(StateFunc)mode_receive_gold_setup
-					: (StateFunc)mode_receive_gold_turn);
-			else
-				sm_goto (scan->sm,
-					(StateFunc)mode_receive_gold);
-			player_broadcast (scan, PB_ALL, "prepare-gold %d %R\n",
-					scan->gold, game->bank_deck);
+	gint idx;
+	gboolean someone_wants_gold = FALSE;
+	/* tell everybody who's receiving gold */
+	for (looper = list; looper != NULL;
+			looper = next_player_loop (looper, player) ) {
+		Player *scan = looper->data;
+		if (scan->gold > 0) {
+			player_broadcast (scan, PB_ALL, "prepare-gold %d\n",
+					scan->gold);
+			someone_wants_gold = TRUE;
 		}
+		/* push everyone to idle, so nothing happens while giving out
+		 * gold after the distribution of resources is done, they are
+		 * all popped off again.  This does not matter for most
+		 * players, since they were idle anyway, but it can matter for
+		 * the player who has the turn or is setting up.
+		 */
+		log_message (MSG_INFO, "pushing idle\n");
+		sm_push (scan->sm, (StateFunc)mode_idle);
 	}
-	distribute_next (player);
+	/* start giving out resources */
+	distribute_next (list, someone_wants_gold);
 }

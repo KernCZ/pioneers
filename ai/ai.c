@@ -66,6 +66,12 @@ random_name(void)
     return name;
 }
 
+void ai_chat (char *message)
+{
+	/* TODO: chat a chat message */
+	log_message (MSG_INFO, message);
+}
+
 static void
 usage(void)
 {
