@@ -5,6 +5,11 @@
 	  debian/gnocatan-server-gtk.files, debian/rules: add 
 	  preliminary manpages.	  
 
+	* debian/gnocatan-server-console.undocumented, 
+	  debian/gnocatan-server-gtk.undocumented,
+	  debian/gnocatan-client.undocumented:
+	  Not undocumented anymore.
+
 2003-01-09  Steve Langasek  <vorlon@debian.org>
 	* AUTHORS, client/Makefile.am, client/gui.c, po/gnocatan.pot,
 	  po/de.po: bring the AUTHORS file up-to-date, and autogenerate
