@@ -1,5 +1,8 @@
 2000-05-17  Steve Langasek <vorlon@dodds.net>
 
+	* common/driver.h: Fixed prototypes within the UI driver to use
+	guint in place of gint.
+
 	* common/common_gtk.h: Changed __common_gui_h to __common_gtk_h.
 
 	* server/glib-driver.c: Used the G_PRIORITY_DEFAULT define in
