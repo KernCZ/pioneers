@@ -22,6 +22,8 @@
 #ifndef __theme_h
 #define __theme_h
 
+#include <gtk/gtk.h>
+
 typedef struct {
 	gboolean set : 1;
 	gboolean transparent : 1;

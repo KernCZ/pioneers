@@ -22,9 +22,11 @@
 
 #include "config.h"
 #include <ctype.h>
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
-#include "frontend.h"
+#include "game.h"
 #include "theme.h"
 #include "config-gnome.h"
 
