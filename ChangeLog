@@ -1,3 +1,6 @@
+2005-03-31  Brian Wellington <bwelling@xbill.org>
+	* client/ai/ai.c: The AI should not stay in a game if it is full.
+
 2005-03-28  Brian Wellington <bwelling@xbill.org>
 	* client/gtk/connect.c, client/gtk/gui.c, client/gtk/theme.c,
 	client/gtk/theme.h, common/gtk/select-game.c,

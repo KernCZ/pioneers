@@ -155,6 +155,11 @@ static void ai_offline(void)
 
 static void ai_start_game(void)
 {
+	if (player_is_viewer(my_player_num())) {
+		cb_chat(N_("The game is already full. I'm leaving."));
+		exit(1);
+	}
+
 	/** @todo choose which ai implementation to use */
 	greedy_init(local_argc, local_argv);
 }
