@@ -294,7 +294,6 @@ static void try_start_game(Game *game)
 	/* All players have connected, and are ready to begin
 	 */
 	meta_start_game();
-	game->is_game_full = TRUE;
 	game->setup_player = game->player_list;
 	if (!game->setup_player_name)
 		g_free(game->setup_player_name);

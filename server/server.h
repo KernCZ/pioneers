@@ -65,7 +65,6 @@ struct Game {
 	GList *setup_player;
 	gchar *setup_player_name;
 
-	gboolean is_game_full;	/* is the game full? */
 	gboolean is_game_over;	/* is the game over? */
 	Player *longest_road;	/* who holds longest road */
 	Player *largest_army;	/* who has largest army */
