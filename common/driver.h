@@ -10,6 +10,8 @@
 #ifndef __driver_h
 #define __driver_h
 
+#include "state.h"
+
 typedef struct {
 	/* function for freeing a widget */
 	void (*widget_free)(gpointer key, WidgetState *gui, StateMachine *sm);

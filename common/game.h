@@ -15,6 +15,7 @@
 #define numElem(a) (sizeof(a)/sizeof(a[0]))
 
 #include "map.h"
+#include "driver.h"
 
 typedef enum {
 	DEVEL_ROAD_BUILDING,
@@ -64,4 +65,5 @@ void params_write_lines(GameParams *params, WriteLineFunc func, gpointer user_da
 void params_load_line(GameParams *params, gchar *line);
 void params_load_finish(GameParams *params);
 
+extern UIDriver *driver;
 #endif

@@ -1,5 +1,9 @@
 2000-05-12  Steve Langasek <vorlon@dodds.net>
 
+	* common/driver.h, common/game.h, common/state.h: Fixed some
+	header files so that they automatically include headers on which
+	they depend, instead of expecting the c file to take care of it all.
+
 	* common/driver.h, common_gtk.h: Began creating the structure for
 	independent interface drivers (GTK, console).
 

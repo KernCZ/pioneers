@@ -10,6 +10,8 @@
 #ifndef __state_h
 #define __state_h
 
+#include "network.h"
+
 /* sm_ API:
  *
  * The server output is handled one line at a time.  For each line
