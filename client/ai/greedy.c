@@ -1375,7 +1375,8 @@ static void greedy_free_road(void)
 	return;
 	
     } else {
-	printf("error finding road to build\n");
+	log_message (MSG_ERROR, "unable to find spot to build free road\n");
+	cb_disconnect ();
     }
 }
 
@@ -1655,9 +1656,10 @@ static void greedy_setup (unsigned num_settlements, unsigned num_roads)
 static void greedy_roadbuilding (gint num_roads)
 {
 	ai_wait ();
-	while (num_roads--)
+	if (num_roads > 0)
 		greedy_free_road ();
-	cb_end_turn ();
+	else
+		cb_end_turn ();
 }
 
 static void greedy_discard_add (gint player_num, gint discard_num)
