@@ -125,6 +125,8 @@ install-data-hook:
 	tar -x -f - --mode=u+w,ugo+rX --no-same-owner -C $(DESTDIR)$(imagedir)
 	find $(DESTDIR)$(imagedir) -name CVS | xargs rm -rf
 
+gui.o:	authors.h
+
 authors.h: ../AUTHORS
 	echo -n "#define AUTHORLIST " > authors.h
 	sed -e's/ <.*//; s/$$/", \\/; s/^/"/; /^"[[:space:]]*", \\$$/d' ../AUTHORS >> authors.h

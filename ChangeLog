@@ -1,3 +1,7 @@
+2003-01-14  Steve Langasek  <vorlon@debian.org>
+	* client/Makefile.am: add an explicit dependency on authors.h to
+	  make sure it's generated when we need it.
+
 2003-01-12  Jeff Breidenbach  <jab@debian.org>
 
 	* AUTHORS: adjust my email
