@@ -1,6 +1,8 @@
 2000-05-17  Steve Langasek <vorlon@dodds.net>
 
-	 * common/Makefile.am: Added common_glib.c, common_glib.h to file list.
+	* server/server.h: Polished the include list to eliminate redundancies.
+
+	* common/Makefile.am: Added common_glib.c, common_glib.h to file list.
 
 	* common/common_glib.[ch]:  Added generic glib driver for common
 	code.

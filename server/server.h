@@ -10,21 +10,11 @@
 #ifndef __server_h
 #define __server_h
 
-#ifndef __game_h
 #include "game.h"
-#endif
-#ifndef __cards_h
 #include "cards.h"
-#endif
-#ifndef __map_h
 #include "map.h"
-#endif
-#ifndef __quoteinfo_h
 #include "quoteinfo.h"
-#endif
-#ifndef __state_h
 #include "state.h"
-#endif
 
 typedef struct Game Game;
 typedef struct {
