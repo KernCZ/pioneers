@@ -56,6 +56,6 @@ AM_GNU_GETTEXT(use-libtool)
 AC_LINK_FILES($nls_cv_header_libgt, $nls_cv_header_intl)
 AC_DEFINE_UNQUOTED(ALL_LINGUAS, "$ALL_LINGUAS", [Available languages])
 
-AC_CONFIG_FILES([Makefile po/Makefile.in intl/Makefile macros/Makefile common/Makefile client/Makefile client/help/Makefile client/help/C/Makefile server/Makefile meta-server/Makefile ai/Makefile stamp.h])
+AC_CONFIG_FILES([Makefile po/Makefile.in intl/Makefile macros/Makefile common/Makefile client/Makefile client/help/Makefile client/help/C/Makefile server/Makefile meta-server/Makefile ai/Makefile docs/Makefile stamp.h])
 dnl AC_CONFIG_COMMANDS([default],[sed -e "/POTFILES =/r po/POTFILES" po/Makefile.in > po/Makefile])
 AC_OUTPUT

@@ -1,0 +1,119 @@
+.TH Gnocatan-server-console 6 "January 10, 2003" "gnocatan"
+.SH NAME
+Gnocatan-server-console \- command-line game server for Settlers of Catan
+
+.SH SYNOPSIS
+.B gnocatan-server-console
+[
+.BI \-a " port"
+] [
+.BI \-c " AI count"
+] [
+.BI \-g " game name"
+]
+.if n .ti +5n
+[
+.BI \-k " seconds"
+] [
+.BI \-m " metaserver"
+] [
+.BI \-P " player count"
+]
+.if n .ti +5n
+[
+.BI \-p " port"
+] [
+.BI \-R " [0|1|2]"
+] [
+.BI \-r
+] [
+.BI \-s
+] [
+.BI \-t " minutes"
+]
+.if n .ti +5n
+[
+.BI \-T " [0|1]"
+] [
+.BI \-v " points"
+] [
+.BI \-x
+]
+
+.SH DESCRIPTION
+This manual page documents briefly the
+.B gnocatan-server-console
+command.
+.PP
+.B Gnocatan
+is an implementation of the popular, award-winning "Settlers of Catan"
+board game for the GNOME desktop environment.  It uses a client/server
+model for networked play of between two and eight players.  This program
+provides a console-only server that \fBgnocatan\fP clients can connect
+to.
+
+.SH OPTIONS
+.TP 12
+.BI \-a " port"
+Listen for administrative commands on port \fIport\fP.
+.TP
+.BI \-c " num"
+Start up \fInum\fP computer players.
+.TP
+.BI \-g " name"
+Load the ruleset specified by \fIname\fP.
+.TP
+.BI \-k " secs"
+Automatically stop the server if no one has connected after \fIsecs\fP
+seconds.
+.TP
+.BI \-m " metaserver"
+Register this server with the metaserver at the specified address.
+.TP
+.BI \-P " num"
+Start a game for \fInum\fP total players (including computer players).
+.TP
+.BI \-p " port"
+Use port \fIport\fP for player connections.
+.TP
+.B \-R [0|1|2]
+"Sevens rule": Specify gameplay behavior when a player rolls a seven.  A
+value of \fI0\fP (the default) means that rolling a seven always moves
+the robber.  A value of \fI1\fP requires the player to re-roll if a
+seven is rolled on the first two turns.  A value of \fI2\fP means the
+player always re-rolls.
+.TP
+.B \-r
+Register with a meta server.  The meta server to use can be overriden
+with the
+.B \-m
+option.
+.TP
+.B \-s
+Don't start the game immediately; wait for a command on the admin port
+.RB ( \-a )
+instead.
+.TP
+.B -T [0|1]
+Choose a terrain type: \fI0\fP for the default, or \fI1\fP for random
+terrain.
+.TP
+.BI \-t " mins"
+Tournament mode: add AI players after \fImins\fP minutes.
+.TP
+.BI \-v " points"
+Specify the number of "victory points" required to win the game.
+.TP
+.B \-x
+Automatically exit after a player has won.
+
+.SH AUTHOR
+This manual page was written by Steve Langasek <vorlon@debian.org>.
+Gnocatan was written by Dave Cole <dave@dccs.com.au>, Andy Heroff
+<aheroff@mediaone.net>, and Roman Hodek <roman@hodek.net>, with
+contributions from many other developers on the Internet; see the
+AUTHORS file in the gnocatan distribution for a complete list of
+contributing authors.
+
+.SH SEE ALSO
+.BR gnocatan(6) ", " gnocatan-server-gtk(6) ", " gnocatan-ai(6)

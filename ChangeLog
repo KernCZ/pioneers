@@ -1,3 +1,10 @@
+2003-01-10  Steve Langasek  <vorlon@debian.org>
+	* docs/Makefile.am, docs/gnocatan.6, docs/gnocatan-server-gtk.6,
+	  docs/gnocatan-server-console.6, Makefile.am, configure.in,
+	  docs/.cvsignore, debian/gnocatan-server-console.files,
+	  debian/gnocatan-server-gtk.files, debian/rules: add 
+	  preliminary manpages.	  
+
 2003-01-09  Steve Langasek  <vorlon@debian.org>
 	* AUTHORS, client/Makefile.am, client/gui.c, po/gnocatan.pot,
 	  po/de.po: bring the AUTHORS file up-to-date, and autogenerate

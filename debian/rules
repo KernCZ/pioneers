@@ -12,7 +12,7 @@ build-stamp:
 	dh_testdir
 
 	# Add here commands to compile the package.
-	./autogen.sh --prefix=/usr --bindir=/usr/games
+	./autogen.sh --prefix=/usr --bindir=/usr/games --mandir=/usr/share/man
 	$(MAKE)
 	cp ChangeLog changelog
 	touch build-stamp
@@ -38,7 +38,9 @@ install-stamp: build-stamp
 	dh_installdirs
 
 	# Add here commands to install the package into debian/tmp.
-	$(MAKE) install prefix=`pwd`/debian/tmp/usr install bindir=`pwd`/debian/tmp/usr/games datadir=`pwd`/debian/tmp/usr/share
+	$(MAKE) prefix=`pwd`/debian/tmp/usr bindir=`pwd`/debian/tmp/usr/games \
+	        datadir=`pwd`/debian/tmp/usr/share \
+	        mandir=`pwd`/debian/tmp/usr/share/man install
 	install -m644 server/*.game debian/tmp/usr/share/games/gnocatan
 
 	dh_movefiles
