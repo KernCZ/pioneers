@@ -1,3 +1,6 @@
+2003-08-15  Roland Clobus <rclobus@bigfoot.com>
+	* client/legend.c: fixed text-display for gold in legend-dialog
+
 2003-09-25  Bas Wijnen <b.wijnen@phys.rug.nl>
 	* ai/client.c: Let ai prefer 2:1 trade.
 

@@ -16,15 +16,18 @@
 #include "gui.h"
 #include "client.h"
 
+/* The order of the terrain_names is EXTREMELY important!  The order
+ * must match the enum Terrain.
+ */
 static gchar *terrain_names[] = {
         N_("Hill"),
         N_("Field"),
         N_("Mountain"),
         N_("Pasture"),
         N_("Forest"),
-	N_("Gold"),
         N_("Desert"),
-        N_("Sea")
+        N_("Sea"),
+        N_("Gold")
 };
 
 static gint expose_legend_cb(GtkWidget *area,
