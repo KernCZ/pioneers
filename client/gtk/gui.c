@@ -282,8 +282,7 @@ void gui_draw_node(const Node *node)
 
 void gui_highlight_chits(gint roll)
 {
-	if (gmap->pixmap != NULL)
-		guimap_highlight_chits(gmap, roll);
+	guimap_highlight_chits(gmap, roll);
 }
 
 static gint expose_map_cb(GtkWidget *area, GdkEventExpose *event,

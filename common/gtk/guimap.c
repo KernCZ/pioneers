@@ -1409,7 +1409,8 @@ void guimap_highlight_chits(GuiMap *gmap, gint roll)
 	closure.gmap = gmap;
 	closure.old_highlight = gmap->highlight_chit;
 	gmap->highlight_chit = roll;
-	map_traverse(gmap->map, (HexFunc)highlight_chits, &closure);
+	if (gmap->pixmap != NULL)
+		map_traverse(gmap->map, (HexFunc)highlight_chits, &closure);
 }
 
 void guimap_draw_edge(GuiMap *gmap, const Edge *edge)
