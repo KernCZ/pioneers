@@ -34,11 +34,6 @@ debug_includes = \
 	-ggdb3 \
 	-O \
 	-DDEBUG \
-## This define tricks gtk into thinking one of its header files was already
-## included.  We don't need the header file, but if it is included, it produces
-## a warning (from -Wstrict-prototypes.)  This is intentional, so this seems to
-## be the only solution.
-	-D__GTK_ITEM_FACTORY_H__
 else
 debug_includes =
 endif

@@ -9,6 +9,9 @@
 	(score_hex_hurt_opponents): AI does not try to move the robber onto
 	water
 	* NEWS: Updated to reflect the release on SF
+	* rules.make: removed GTK_ITEM_FACTORY define, it will no longer work
+	with Gtk 2.4
+	* po/nl.po: Updated some translations
 
 2004-07-02  Jeff Breidenbach  <jab@debian.org>
 

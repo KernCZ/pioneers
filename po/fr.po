@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnocatan 0.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-05-23 15:28+0200\n"
+"POT-Creation-Date: 2004-07-08 22:15+0200\n"
 "PO-Revision-Date: 2003-11-20 16:00-0600\n"
 "Last-Translator: Arnaud MALON <moko@geumeuleu.com>\n"
 "Language-Team: Français <LL@li.org>\n"
@@ -40,7 +40,7 @@ msgstr "%2s est remboursé de %1s\n"
 msgid "%s discarded %s\n"
 msgstr "%s jete %s\n"
 
-#: ai/client.c:1780
+#: ai/client.c:1779
 msgid "The game is over.\n"
 msgstr "La partie est terminée.\n"
 
@@ -261,11 +261,11 @@ msgstr "Youpi!"
 msgid "My congratulations"
 msgstr "Félicitations"
 
-#: ai/greedy.c:1640
+#: ai/greedy.c:1654
 msgid "Rejecting trade.\n"
 msgstr "Offre rejetée.\n"
 
-#: ai/greedy.c:1673
+#: ai/greedy.c:1687
 msgid "Sorry, I do not know how to play with gold.\n"
 msgstr "Désolé, je sais pas jouer avec l'or.\n"
 
@@ -556,22 +556,22 @@ msgstr " pour "
 msgid "Trading started by %s\n"
 msgstr "%s propose des échanges.\n"
 
-#: ai/trade.c:121
+#: ai/trade.c:119
 #, c-format
 msgid "Trading restarted by %s\n"
 msgstr "%s repropose des échanges.\n"
 
-#: ai/trade.c:140
+#: ai/trade.c:138
 #, c-format
 msgid "Quote from player %d: %s.\n"
 msgstr "Offre du joueur %d: %s.\n"
 
-#: ai/trade.c:153
+#: ai/trade.c:151
 #, c-format
 msgid "Removed quote from player %d: %s\n"
 msgstr "Offre annulée du joueur %d: %s\n"
 
-#: ai/trade.c:168 ai/trade.c:173
+#: ai/trade.c:166 ai/trade.c:172
 msgid "Trading finished.\n"
 msgstr "Fin des échanges.\n"
 
@@ -607,7 +607,7 @@ msgstr "En attente"
 msgid "Idle"
 msgstr "Absent"
 
-#: client/common/client.c:220 client/common/client.c:586 client/gtk/gui.c:1115
+#: client/common/client.c:220 client/common/client.c:586 client/gtk/gui.c:1118
 msgid "Offline"
 msgstr "Déconnecté"
 
@@ -698,11 +698,11 @@ msgstr "C'est à toi."
 msgid "Sorry, %s available.\n"
 msgstr "Désolé, %s indisponible.\n"
 
-#: client/common/client.c:2002
+#: client/common/client.c:2001
 msgid "The game is over."
 msgstr "La partie est finie."
 
-#: client/common/client.c:2198
+#: client/common/client.c:2197
 #, c-format
 msgid "%s takes %s.\n"
 msgstr "%s prends %s.\n"
@@ -897,7 +897,7 @@ msgstr ""
 msgid "Double setup for %s.\n"
 msgstr ""
 
-#: client/gtk/chat.c:55
+#: client/gtk/chat.c:58
 msgid "Chat"
 msgstr "Chat"
 
@@ -1153,13 +1153,13 @@ msgstr "Jouer la carte"
 
 #. less arrow
 #: client/gtk/discard.c:145 client/gtk/gold.c:116 client/gtk/plenty.c:116
-#: client/gtk/quote.c:473 client/gtk/trade.c:469
+#: client/gtk/quote.c:472
 msgid "<less"
 msgstr "<moins"
 
 #. more arrow
 #: client/gtk/discard.c:155 client/gtk/gold.c:135 client/gtk/plenty.c:126
-#: client/gtk/quote.c:483 client/gtk/trade.c:479
+#: client/gtk/quote.c:482
 msgid "more>"
 msgstr "plus>"
 
@@ -1270,11 +1270,13 @@ msgid "Gnocatan client settings"
 msgstr "Paramètres client Gnocatan"
 
 #: client/gtk/gui.c:106 server/gnocatan-server-gtk.c:78
-msgid "E_xit"
-msgstr "_Quitter"
+#, fuzzy
+msgid "_Quit"
+msgstr "Offre"
 
 #: client/gtk/gui.c:106 server/gnocatan-server-gtk.c:78
-msgid "Exit the program"
+#, fuzzy
+msgid "Quit the program"
 msgstr "Quitter le programme"
 
 #: client/gtk/gui.c:123
@@ -1401,105 +1403,105 @@ msgstr "Pts requis pour gagner: %i"
 msgid "Messages"
 msgstr "Messages"
 
-#: client/gtk/gui.c:494
+#: client/gtk/gui.c:497
 msgid "Map"
 msgstr "Carte"
 
-#: client/gtk/gui.c:499
+#: client/gtk/gui.c:502
 msgid "Trade"
 msgstr "Echanges"
 
-#: client/gtk/gui.c:506 client/gtk/quote.c:611
+#: client/gtk/gui.c:509 client/gtk/quote.c:610
 msgid "Quote"
 msgstr "Offre"
 
-#: client/gtk/gui.c:513 client/gtk/legend.c:201
+#: client/gtk/gui.c:516 client/gtk/legend.c:201
 msgid "Legend"
 msgstr "Légende"
 
-#: client/gtk/gui.c:521
+#: client/gtk/gui.c:524
 msgid "Welcome to Gnocatan"
 msgstr "Bienvenue à Gnocatan"
 
-#: client/gtk/gui.c:797
+#: client/gtk/gui.c:800
 msgid "Appearance"
 msgstr "Apparence"
 
-#: client/gtk/gui.c:799
+#: client/gtk/gui.c:802
 msgid "Show Toolbar As"
 msgstr "Montrer la barre d'outils comme"
 
-#: client/gtk/gui.c:803
+#: client/gtk/gui.c:806
 msgid "Text Only"
 msgstr "Seulement du texte"
 
-#: client/gtk/gui.c:804
+#: client/gtk/gui.c:807
 msgid "Icons Only"
 msgstr "Seulement des icônes"
 
-#: client/gtk/gui.c:805
+#: client/gtk/gui.c:808
 msgid "Both Icons and Text"
 msgstr "Des icônes et du texte"
 
-#: client/gtk/gui.c:807
+#: client/gtk/gui.c:810
 msgid "Display legend as page besides map?"
 msgstr "Afficher la légende en dessous de la carte?"
 
-#: client/gtk/gui.c:811
+#: client/gtk/gui.c:814
 msgid "Theme:"
 msgstr "Thème:"
 
-#: client/gtk/gui.c:845
+#: client/gtk/gui.c:848
 msgid "Color Settings"
 msgstr "Jeu de couleurs"
 
-#: client/gtk/gui.c:849
+#: client/gtk/gui.c:852
 msgid "Display messages in colors?"
 msgstr "Afficher les messages en couleur?"
 
-#: client/gtk/gui.c:850
+#: client/gtk/gui.c:853
 msgid "Display chat messages in user's color?"
 msgstr "Afficher les messages du chat dans les couleurs des utilisateurs?"
 
-#: client/gtk/gui.c:851
+#: client/gtk/gui.c:854
 msgid "Display player summary with colors?"
 msgstr "Afficher le résumé des joueurs en couleur?"
 
-#: client/gtk/gui.c:868
+#: client/gtk/gui.c:871
 msgid "Language"
 msgstr "Langue"
 
-#: client/gtk/gui.c:889
+#: client/gtk/gui.c:892
 msgid "Language setting takes full effect only after client restart!"
 msgstr "Le changement de langue prendra effet seulement après un redémarrage!"
 
-#: client/gtk/gui.c:1015
+#: client/gtk/gui.c:1018
 msgid "The Gnocatan Game"
 msgstr "Le jeu Gnocatan"
 
-#: client/gtk/gui.c:1016 server/gnocatan-server-gtk.c:621
+#: client/gtk/gui.c:1019 server/gnocatan-server-gtk.c:621
 msgid "(C) 2002 the Free Software Foundation"
 msgstr "(C) 2002 Free Software Foundation"
 
-#: client/gtk/gui.c:1017 server/gnocatan-server-gtk.c:622
+#: client/gtk/gui.c:1020 server/gnocatan-server-gtk.c:622
 msgid "Gnocatan is based upon the excellent Settlers of Catan board game"
 msgstr ""
 
-#: client/gtk/gui.c:1107
+#: client/gtk/gui.c:1110
 msgid " "
 msgstr " "
 
-#: client/gtk/gui.c:1127
+#: client/gtk/gui.c:1130
 msgid "Welcome to Gnocatan!"
 msgstr "Bienvenue à Gnocatan!"
 
-#: client/gtk/gui.c:1158 client/gtk/gui.c:1194
+#: client/gtk/gui.c:1161 client/gtk/gui.c:1197
 #: server/gnocatan-server-gtk.c:680
 #, c-format
 msgid "Warning: pixmap not found: %s\n"
 msgstr ""
 
-#: client/gtk/gui.c:1182
+#: client/gtk/gui.c:1185
 msgid "Gnocatan"
 msgstr "Gnocatan"
 
@@ -1542,25 +1544,25 @@ msgstr "Bois"
 msgid "3:1"
 msgstr "3:1"
 
-#: client/gtk/histogram.c:219 client/gtk/histogram.c:231
+#: client/gtk/histogram.c:222
 msgid "Dice Histogram"
 msgstr "Histogramme des lancers de dés"
 
-#: client/gtk/interface.c:636
+#: client/gtk/interface.c:637
 #, fuzzy
 msgid "Select the ship to steal from."
 msgstr "Choisis où voler."
 
-#: client/gtk/interface.c:637
+#: client/gtk/interface.c:638
 #, fuzzy
 msgid "Select the ship to steal from"
 msgstr "Choisis où voler"
 
-#: client/gtk/interface.c:653
+#: client/gtk/interface.c:654
 msgid "Select the building to steal from."
 msgstr "Choisis où voler."
 
-#: client/gtk/interface.c:654
+#: client/gtk/interface.c:655
 msgid "Select the building to steal from"
 msgstr "Choisis où voler"
 
@@ -1697,32 +1699,32 @@ msgstr "Bibliothèque"
 msgid "Markets"
 msgstr "Marché"
 
-#: client/gtk/player.c:413
+#: client/gtk/player.c:418
 msgid "Player Summary"
 msgstr "Résumé des joueurs"
 
-#: client/gtk/quote.c:249 client/gtk/trade.c:291
+#: client/gtk/quote.c:249 client/gtk/trade.c:428
 msgid "Rejected trade"
 msgstr "Offre refusée"
 
-#: client/gtk/quote.c:368
+#: client/gtk/quote.c:369
 #, c-format
 msgid "%s has %s, and is looking for %s"
 msgstr "%s a %s et cherche %s"
 
-#: client/gtk/quote.c:573 client/gtk/trade.c:731
+#: client/gtk/quote.c:572 client/gtk/trade.c:803
 msgid "I Want"
 msgstr "Je voudrais"
 
-#: client/gtk/quote.c:590 client/gtk/trade.c:748
+#: client/gtk/quote.c:589 client/gtk/trade.c:817
 msgid "Give Them"
 msgstr "Accepter"
 
-#: client/gtk/quote.c:616
+#: client/gtk/quote.c:615
 msgid "Delete"
 msgstr "Effacer"
 
-#: client/gtk/quote.c:647
+#: client/gtk/quote.c:646
 #, fuzzy
 msgid "Reject Domestic Trade"
 msgstr "Offre refuser"
@@ -1908,36 +1910,57 @@ msgstr ""
 msgid "Theme %s not loaded due to errors\n"
 msgstr ""
 
-#: client/gtk/trade.c:177
+#: client/gtk/trade.c:269
 #, c-format
 msgid "ask for %s for free"
 msgstr "demande %s gratuitement"
 
-#: client/gtk/trade.c:181
+#: client/gtk/trade.c:273
 #, c-format
 msgid "give %s for free"
 msgstr "donne %s gratuitement"
 
-#: client/gtk/trade.c:185
+#: client/gtk/trade.c:277
 #, c-format
 msgid "give %s for %s"
 msgstr "donne %s contre %s"
 
-#: client/gtk/trade.c:232
+#: client/gtk/trade.c:286
 #, c-format
 msgid "%d:1 %s for %s"
 msgstr "%d:1 %s pour %s"
 
-#: client/gtk/trade.c:769
-msgid "Call For Quotes"
+#: client/gtk/trade.c:454
+#, c-format
+msgid "I want %s, and give them %s"
+msgstr ""
+
+#: client/gtk/trade.c:834
+#, fuzzy
+msgid "_Call for Quotes"
 msgstr "Appel d'offre"
 
-#: client/gtk/trade.c:801
-msgid "Accept Quote"
+#. tooltips = gtk_tooltips_new();
+#. gtk_tooltips_set_tip(tooltips, label,
+#. _("Shows all players and viewers connected to the server"), NULL);
+#. Now create columns
+#: client/gtk/trade.c:877 server/gnocatan-server-gtk.c:371
+msgid "Player"
+msgstr "Joueur"
+
+#: client/gtk/trade.c:887
+#, fuzzy
+msgid "Quotes"
+msgstr "Offre"
+
+#: client/gtk/trade.c:900
+#, fuzzy
+msgid "_Accept Quote"
 msgstr "Accepter l'offre"
 
-#: client/gtk/trade.c:806
-msgid "Finish Trading"
+#: client/gtk/trade.c:905
+#, fuzzy
+msgid "_Finish Trading"
 msgstr "Fin des échanges"
 
 #: common/log.c:76
@@ -2037,22 +2060,22 @@ msgstr "Joueur"
 msgid "** UNKNOWN MESSAGE TYPE ** "
 msgstr "** TYPE DE MESSAGE INCONNU ** "
 
-#: common/network.c:164
+#: common/network.c:160
 #, c-format
 msgid "Error checking connect status: %s\n"
 msgstr ""
 
-#: common/network.c:169
+#: common/network.c:165
 #, c-format
 msgid "Error connecting to host '%s': %s\n"
 msgstr ""
 
-#: common/network.c:195
+#: common/network.c:191
 #, c-format
 msgid "Error writing socket: %s\n"
 msgstr ""
 
-#: common/network.c:241
+#: common/network.c:237
 #, c-format
 msgid "Error writing to socket: %s\n"
 msgstr ""
@@ -2062,41 +2085,41 @@ msgstr ""
 #. * reading. Assume something has gone wrong and
 #. * disconnect
 #.
-#: common/network.c:289
+#: common/network.c:285
 msgid "Read buffer overflow - disconnecting\n"
 msgstr ""
 
-#: common/network.c:299
+#: common/network.c:295
 #, c-format
 msgid "Error reading socket: %s\n"
 msgstr ""
 
-#: common/network.c:388
+#: common/network.c:384
 #, c-format
 msgid "Cannot resolve %s port %s: %s\n"
 msgstr ""
 
-#: common/network.c:392
+#: common/network.c:388
 #, c-format
 msgid "Cannot resolve %s port %s: host not found\n"
 msgstr ""
 
-#: common/network.c:399
+#: common/network.c:395
 #, c-format
 msgid "Error creating socket: %s\n"
 msgstr ""
 
-#: common/network.c:403
+#: common/network.c:399
 #, c-format
 msgid "Error setting socket close-on-exec: %s\n"
 msgstr ""
 
-#: common/network.c:410 server/server.c:139
+#: common/network.c:406 server/server.c:139
 #, c-format
 msgid "Error setting socket non-blocking: %s\n"
 msgstr ""
 
-#: common/network.c:423
+#: common/network.c:419
 #, c-format
 msgid "Error connecting to %s: %s\n"
 msgstr ""
@@ -2168,10 +2191,6 @@ msgstr "Paramètres du jeu"
 #: server/gnocatan-server-gtk.c:371
 msgid "Viewer"
 msgstr "Spectateur"
-
-#: server/gnocatan-server-gtk.c:371
-msgid "Player"
-msgstr "Joueur"
 
 #: server/gnocatan-server-gtk.c:407
 msgid "Server Parameters"
@@ -2339,6 +2358,9 @@ msgstr ""
 #: server/server.c:330
 msgid "Preparing game"
 msgstr ""
+
+#~ msgid "E_xit"
+#~ msgstr "_Quitter"
 
 #~ msgid "Random"
 #~ msgstr "Au hazard"
