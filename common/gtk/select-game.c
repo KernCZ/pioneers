@@ -128,7 +128,7 @@ void select_game_add(SelectGame * sg, const gchar * game_title)
 					 sg->game_names->len - 1);
 }
 
-static void select_game_item_changed(GtkWidget *widget, SelectGame *sg)
+static void select_game_item_changed(UNUSED(GtkWidget *widget), SelectGame *sg)
 {
 	g_signal_emit(G_OBJECT(sg), select_game_signals[ACTIVATE], 0);
 }
