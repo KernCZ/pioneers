@@ -1,7 +1,7 @@
 Name: 		gnocatan
 Summary: 	Playable implementation of the Settlers of Catan 
-Version: 	0.8.0
-Release: 	2
+Version: 	0.8.1
+Release: 	53
 Group: 		Amusements/Games
 License: 	GPL
 Url: 		http://gnocatan.sourceforge.net/
@@ -116,9 +116,12 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gnome/apps/Games/gnocatan.desktop
 %{_datadir}/pixmaps/gnome-gnocatan.png
 %{_datadir}/pixmaps/gnocatan/*
-%{_datadir}/games/gnocatan/images/*
+%{_datadir}/games/gnocatan/themes/*
 %{_datadir}/locale/es/LC_MESSAGES/gnocatan.mo
 %{_datadir}/locale/de/LC_MESSAGES/gnocatan.mo
+%{_datadir}/locale/fr/LC_MESSAGES/gnocatan.mo
+%{_datadir}/locale/it/LC_MESSAGES/gnocatan.mo
+%{_datadir}/locale/nl/LC_MESSAGES/gnocatan.mo
 
 %files help
 %defattr(-,root,root)
@@ -136,6 +139,7 @@ if which scrollkeeper-update>/dev/null 2>&1; then scrollkeeper-update -q; fi
 %files ai
 %defattr(-,root,root)
 %doc AUTHORS COPYING ChangeLog INSTALL README NEWS 
+%doc /usr/man/man6/gnocatanai.6.gz
 %{_bindir}/gnocatanai
 %{_datadir}/games/gnocatan/computer_names
 
@@ -159,5 +163,6 @@ if which scrollkeeper-update>/dev/null 2>&1; then scrollkeeper-update -q; fi
 
 %files meta-server
 %defattr(-,root,root)
+%doc /usr/man/man6/gnocatan-meta-server.6.gz
 %doc AUTHORS COPYING ChangeLog INSTALL README NEWS 
 %{_bindir}/gnocatan-meta-server

@@ -2,6 +2,9 @@
 	* server/gnocatan-server.c, meta-server/gnocatan-meta-server.c: Forgot
 	the NULL termination of g_build_filename, pointed out by bwelling.
 
+2005-02-05 <bwelling@users.sourceforge.net>
+	* gnocatan.spec: Updated to version 0.8.1
+
 2005-02-03  0.8.1.52  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/gui.c, server/gtk/gnocatan-server-gtk.c: Fix for crash in
 	about dialog. Also reintroduces the version number.
