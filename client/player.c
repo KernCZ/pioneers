@@ -51,6 +51,9 @@ static GdkColor token_colors[] = {
 	{ 0, 0x0000, 0xEE00, 0x7600 } /* green */
 };
 
+static GdkColor player_bg = { 0, 0xB000, 0xB000, 0xB000 };
+static GdkColor player_fg = { 0, 0x0000, 0x0000, 0xFF00 };
+
 void player_init()
 {
 	gint idx;
@@ -136,7 +139,9 @@ static void refresh_victory_point_total(int player_num)
 
 	row = gtk_clist_find_row_from_data(GTK_CLIST(summary_clist), player);
 	if (row >= 0)
+	{
 		gtk_clist_set_text(GTK_CLIST(summary_clist), row, 2, points);
+	}
 }
 
 void player_modify_statistic(gint player_num, StatisticType type, gint num)
@@ -240,6 +245,9 @@ void player_change_name(gint player_num, gchar *name)
 	row = gtk_clist_find_row_from_data(GTK_CLIST(summary_clist), player);
 	if (row < 0) {
 		gchar *row_data[3];
+		GtkStyle *score_style;
+		GtkStyle  score_style_r;
+		GdkColor *color_p;
 
 		if (summary_gc == NULL)
 			summary_gc = gdk_gc_new(summary_clist->window);
@@ -259,6 +267,8 @@ void player_change_name(gint player_num, gchar *name)
 		row_data[1] = "";
 		row_data[2] = "";
 		gtk_clist_insert(GTK_CLIST(summary_clist), row, row_data);
+		gtk_clist_set_foreground(GTK_CLIST(summary_clist), row, &player_fg);
+		gtk_clist_set_background(GTK_CLIST(summary_clist), row, &player_bg);
 		gtk_clist_set_row_data(GTK_CLIST(summary_clist), row, player);
 		gtk_clist_set_pixmap(GTK_CLIST(summary_clist), row, 0,
 				     player->pixmap, NULL);
