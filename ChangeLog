@@ -1,3 +1,7 @@
+2000-08-06  Jeff Breidenbach <jeff@alum.mit.edu>
+
+	* debian/control: Tweak build dependencies (Debian bug #68516)
+
 2000-08-01  Andy Heroff  <aheroff@mediaone.net>
 
 	* client/gui.c: Quick change to VP target text to make less
