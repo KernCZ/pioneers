@@ -99,7 +99,7 @@ void client_start(const char *server, const char *port, const char *username,
 
     if (sm_connect(SM(), server, port)) {
 	if (sm_is_connected(SM()))
-	    sm_goto(SM(), mode_start)
+	    sm_goto(SM(), mode_start);
 	else
 	    sm_goto(SM(), mode_connecting);
     } else {
