@@ -382,8 +382,8 @@ void quote_begin_again(gint player_num, gint *we_receive, gint *we_supply)
 	remove_reject_rows();
 	/* check if existing quotes are still valid */
 	check_domestic_quotes(we_receive, we_supply);
-	/* don't call just quote_update, because it doesn't set/unset
-	 * the sesitivity of the delete button. */
+	/* update everything */
+	quote_update ();
 	frontend_gui_update ();
 }
 
