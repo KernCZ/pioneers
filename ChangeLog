@@ -1,5 +1,12 @@
 2000-05-27  Bibek Sahu <scorpio@dodds.net>
 
+	* server/Makefile.am, server/gnocatan-server.c,
+	server/gnocatan-server.h, server/gnocatan-server-gtk.c,
+	server/gnocatan-server-console.c: Made as much code as possible
+	common between the two servers.
+
+2000-05-27  Bibek Sahu <scorpio@dodds.net>
+
 	* server/Makefile.am: removed line where console server was being
 	linked against common gtk code.
 

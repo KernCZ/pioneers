@@ -2,5 +2,5 @@ Makefile.in
 Makefile
 .deps
 .libs
-gnocatan-server
+gnocatan-server-gtk
 gnocatan-server-console
