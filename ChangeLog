@@ -1,6 +1,18 @@
+2003-10-28  Roman Hodek  <roman@hodek.net>
+
+	* server/gnocatan-server-console.c (main): New option -n to set
+	hostname reported to meta server (analogous field in GTK server).
+	* meta-server/README.protocol: updated
+
 2003-10-26  Jeff Breidenbach  <jab@debian.org>
 
 	* docs/gnocatan*.6: added gnocatanai man page
+
+2003-10-25  Roman Hodek  <roman@hodek.net>
+
+	* server/meta.c (meta_send_details): send PROTOCOL_VERSION, not
+	program VERSION.
+	* meta-server/README.protocol: new file
 
 2003-10-25  Roland Clobus <rclobus@bigfoot.com>
 	* gnocatan.spec: Applied patch 829404 by Daniel Jensen
