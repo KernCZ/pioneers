@@ -511,7 +511,7 @@ static void settings_apply_cb(GnomePropertyBox *prop_box, gint page, gpointer da
 		                      legend_page );
 
 		theme = gtk_object_get_user_data(
-		    GTK_OBJECT(gtk_menu_get_active(theme_menu)));
+		    GTK_OBJECT(gtk_menu_get_active(GTK_MENU(theme_menu))));
 		if (theme != get_theme()) {
 		    gnome_config_set_string("/gnocatan/settings/theme",
 					    theme->name);
@@ -646,10 +646,10 @@ static void menu_settings_cb(GtkWidget *widget, void *user_data)
 		gtk_object_set_user_data(GTK_OBJECT(item), (gpointer)theme);
 		gtk_widget_show(item);
 		gtk_menu_append(GTK_MENU(theme_menu), item);
-		gtk_signal_connect(GTK_OBJECT(item), "activate",
-						   settings_activate_cb, (gpointer)settings);
 		if (theme == get_theme())
 			gtk_menu_set_active(GTK_MENU(theme_menu), i);
+		gtk_signal_connect(GTK_OBJECT(item), "activate",
+						   settings_activate_cb, (gpointer)settings);
 	}
 	gtk_option_menu_set_menu(GTK_OPTION_MENU(theme_list), theme_menu);
 	
@@ -661,13 +661,13 @@ static void menu_settings_cb(GtkWidget *widget, void *user_data)
 	gtk_container_add( GTK_CONTAINER(frame_texticons), vbox_texticons );
 
 	gtk_table_attach( GTK_TABLE(page0_table), frame_texticons, 0, 2, 0, 1,
-	                  GTK_FILL, GTK_FILL, 0, 0 );
+	                  GTK_FILL|GTK_EXPAND, GTK_FILL, 0, 0 );
 	gtk_table_attach( GTK_TABLE(page0_table), check_legend_page, 0, 2, 1, 2,
-	                  GTK_FILL, GTK_FILL, 0, 0 );
+	                  GTK_FILL|GTK_EXPAND, GTK_FILL, 0, 0 );
 	gtk_table_attach( GTK_TABLE(page0_table), theme_label, 0, 1, 2, 3,
-	                  GTK_FILL, GTK_FILL, 0, 0 );
+	                  GTK_FILL|GTK_EXPAND, GTK_FILL, 0, 5 );
 	gtk_table_attach( GTK_TABLE(page0_table), theme_list, 1, 2, 2, 3,
-	                  GTK_FILL, GTK_FILL, 0, 0 );
+	                  GTK_FILL|GTK_EXPAND, GTK_FILL, 0, 5 );
 	                  
 
 	page1_table = gtk_table_new( 1, 1, FALSE );
@@ -684,15 +684,16 @@ static void menu_settings_cb(GtkWidget *widget, void *user_data)
 	gtk_box_pack_start_defaults( GTK_BOX(vbox_colors), check_color_summary );
 
 	gtk_table_attach( GTK_TABLE(page1_table), vbox_colors, 0, 1, 0, 1,
-	                  GTK_FILL, GTK_FILL, 0, 0 );
+	                  GTK_FILL|GTK_EXPAND, GTK_FILL, 0, 0 );
 
 	gnome_property_box_append_page( GNOME_PROPERTY_BOX(settings),
 	                                page0_table, page0_label );
+	gtk_notebook_set_page(GTK_NOTEBOOK(GNOME_PROPERTY_BOX(settings)->notebook), 0);
 	gnome_property_box_append_page( GNOME_PROPERTY_BOX(settings),
 	                                page1_table, page1_label );
 
 #if ENABLE_NLS
-	page2_table = gtk_table_new( 2, 2, FALSE );
+	page2_table = gtk_table_new( 1, 2, FALSE );
 	page2_label = gtk_label_new( _("Language") );
 	vbox_linguas = gtk_vbox_new( TRUE, 2 );
 
@@ -705,24 +706,27 @@ static void menu_settings_cb(GtkWidget *widget, void *user_data)
 			radio_lang = gtk_radio_button_new_with_label_from_widget(
 				GTK_RADIO_BUTTON(radio_lang_prev), ld->name);
 		gtk_box_pack_start_defaults(GTK_BOX(vbox_linguas), radio_lang);
-		if (strcmp(current_language, ld->code) == 0)
-			gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(radio_lang), TRUE);
-		if (!ld->supported)
-			gtk_widget_set_sensitive(GTK_WIDGET(radio_lang), FALSE);
-		else
-			gtk_signal_connect(GTK_OBJECT(radio_lang), "clicked",
-							   settings_activate_cb, (gpointer)settings );
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(radio_lang),
+									 strcmp(current_language, ld->code) == 0);
 		gtk_widget_show(radio_lang);
 
 		ld->widget = radio_lang;
 		radio_lang_prev = radio_lang;
 	}
 	gtk_table_attach( GTK_TABLE(page2_table), vbox_linguas, 0, 1, 0, 1,
-	                  GTK_FILL, GTK_FILL, 0, 0 );
+	                  GTK_FILL|GTK_EXPAND, GTK_FILL, 0, 0 );
 	radio_lang = gtk_label_new(_("Language setting takes full effect only after client restart!"));
 	gtk_widget_show(radio_lang);
 	gtk_table_attach( GTK_TABLE(page2_table), radio_lang, 0, 1, 1, 2,
-	                  GTK_FILL, GTK_FILL, 0.5, 0.5 );
+	                  GTK_FILL|GTK_EXPAND, GTK_FILL, 0, 0 );
+	
+	for(ld = languages; ld->code; ++ld) {
+		if (!ld->supported)
+			gtk_widget_set_sensitive(GTK_WIDGET(ld->widget), FALSE);
+		else
+			gtk_signal_connect(GTK_OBJECT(ld->widget), "clicked",
+							   settings_activate_cb, (gpointer)settings );
+	}
 	
 	gnome_property_box_append_page( GNOME_PROPERTY_BOX(settings),
 	                                page2_table, page2_label );
