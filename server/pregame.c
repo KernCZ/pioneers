@@ -57,7 +57,21 @@ static void build_add(Player *player, BuildType type, gint x, gint y, gint pos)
 			sm_send(sm, "ERR bad-pos\n");
 			return;
 		}
-		road_add(player, x, y, pos, FALSE);
+		edge_add(player, BUILD_ROAD, x, y, pos, FALSE);
+		return;
+	}
+
+	if (type == BUILD_BRIDGE) {
+		/* Building a bridge, make sure it is next to a
+		 * settlement/road
+		 */
+		if (!buildrec_can_setup_bridge(player->build_list, map,
+					       map_edge(map, x, y, pos),
+					       game->double_setup)) {
+			sm_send(sm, "ERR bad-pos\n");
+			return;
+		}
+		edge_add(player, BUILD_BRIDGE, x, y, pos, FALSE);
 		return;
 	}
 
@@ -71,7 +85,7 @@ static void build_add(Player *player, BuildType type, gint x, gint y, gint pos)
 			sm_send(sm, "ERR bad-pos\n");
 			return;
 		}
-		ship_add(player, x, y, pos, FALSE);
+		edge_add(player, BUILD_SHIP, x, y, pos, FALSE);
 		return;
 	}
 
@@ -144,8 +158,7 @@ static void try_setup_done(Player *player)
 	/* Make sure we have built the right number of
 	 * settlements/roads
 	 */
-	if ((buildrec_count_type(player->build_list, BUILD_ROAD) +
-	     buildrec_count_type(player->build_list, BUILD_SHIP)) != num_allowed
+	if (buildrec_count_edges(player->build_list) != num_allowed
 	    || buildrec_count_type(player->build_list, BUILD_SETTLEMENT) != num_allowed) {
 		sm_send(sm, "ERR expected-build-or-remove\n");
 		return;
