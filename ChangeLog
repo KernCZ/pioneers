@@ -1,3 +1,8 @@
+2002-03-10  Steve Langasek <vorlon@dodds.net>
+
+	* clean up the SGML handling so that it matches the behavior of 
+	  the Debian tools (which everyone seems to be using).
+
 2002-03-10  Andy Heroff <aheroff@ameritech.net>
 
 	* Modified call to execv, as per SF bug 482743.
