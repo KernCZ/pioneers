@@ -44,10 +44,11 @@ static void format_info(GoldInfo *info)
 	gtk_entry_set_text(GTK_ENTRY(info->current_entry), buff);
 	sprintf(buff, "%d", info->take);
 	gtk_entry_set_text(GTK_ENTRY(info->take_entry), buff);
-	if (info->bank_entry) {
-		sprintf(buff, "%d", info->bank - info->take);
-		gtk_entry_set_text(GTK_ENTRY(info->bank_entry), buff);
-	}
+	if (info->bank <= gold.target) /* The bank can be emptied */
+	 	sprintf(buff, "%d", info->bank - info->take);
+	else
+		sprintf(buff, "++"); /* The bank cannot be emptied */
+	gtk_label_set_text(GTK_LABEL(info->bank_entry), buff);
 }
 
 static void check_total()
@@ -106,17 +107,6 @@ static void add_resource_table_row(GtkWidget *table,
 		(GtkAttachOptions)GTK_EXPAND | GTK_FILL,
 		(GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(lbl), 1, 0.5);
-	/* entry with current bank value */
-	if (info->bank <= gold.target) {
-		/* show the bank, for it can be emptied */
-		entry = info->bank_entry = gtk_entry_new();
-		gtk_widget_show(entry);
-		gtk_table_attach(GTK_TABLE(table), entry, 1, 2, row, row + 1,
-			(GtkAttachOptions)GTK_FILL,
-			(GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
-		gtk_widget_set_usize(entry, 30, -1);
-		gtk_entry_set_editable(GTK_ENTRY(entry), FALSE);
-	} else info->bank_entry = NULL;
 	/* less arrow */
 	arrow = info->less = gtk_button_new_with_label(_("<less"));
 	gtk_widget_set_sensitive(arrow, FALSE);
@@ -124,9 +114,18 @@ static void add_resource_table_row(GtkWidget *table,
 		GTK_SIGNAL_FUNC(less_resource_cb),
 		&gold.res[resource]);
 	gtk_widget_show(arrow);
-	gtk_table_attach(GTK_TABLE(table), arrow, 2, 3, row, row + 1,
+	gtk_table_attach(GTK_TABLE(table), arrow, 1, 2, row, row + 1,
 		(GtkAttachOptions)GTK_FILL,
 		(GtkAttachOptions)GTK_EXPAND, 0, 0);
+
+	/* entry with maximum bank value */
+	entry = info->bank_entry = gtk_label_new("");
+	gtk_widget_show(entry);
+	gtk_table_attach(GTK_TABLE(table), entry, 2, 3, row, row + 1,
+		(GtkAttachOptions)GTK_FILL,
+		(GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_widget_set_usize(entry, 30, -1);
+
 	/* more arrow */
 	arrow = info->more = gtk_button_new_with_label(_("more>"));
 	gtk_widget_set_sensitive(arrow, info->bank > 0);
@@ -144,6 +143,7 @@ static void add_resource_table_row(GtkWidget *table,
 		(GtkAttachOptions)GTK_FILL,
 		(GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_widget_set_usize(entry, 30, -1);
+	gtk_entry_set_editable(GTK_ENTRY(entry), FALSE); /* TODO: Or add a keystroke handler */
 	/* current assets entry */
 	entry = info->current_entry = gtk_entry_new();
 	gtk_widget_show(entry);
@@ -151,6 +151,7 @@ static void add_resource_table_row(GtkWidget *table,
 		(GtkAttachOptions)GTK_FILL,
 		(GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_widget_set_usize(entry, 30, -1);
+	gtk_entry_set_editable(GTK_ENTRY(entry), FALSE);
 	/* show this line */
 	format_info(info);
 }
@@ -177,6 +178,7 @@ void gold_choose_player_must (gint num, gint *bank)
 	GtkWidget *lbl;
 	GtkWidget *table;
 	gint idx;
+	gint row;
 	char buff[128];
 
 	gold.target = num;
@@ -185,9 +187,9 @@ void gold_choose_player_must (gint num, gint *bank)
 			       GTK_DIALOG_DESTROY_WITH_PARENT,
 			       GTK_STOCK_OK, GTK_RESPONSE_OK,
 			       NULL);
-        gtk_signal_connect(GTK_OBJECT(gold.dlg), "close",
+	gtk_signal_connect(GTK_OBJECT(gold.dlg), "close",
 			   GTK_SIGNAL_FUNC(ignore_close), NULL);
-        gtk_signal_connect(GTK_OBJECT(gold.dlg), "destroy",
+	gtk_signal_connect(GTK_OBJECT(gold.dlg), "destroy",
 			   GTK_SIGNAL_FUNC(gtk_widget_destroyed), &gold.dlg);
 	gtk_widget_realize(gold.dlg);
 	gdk_window_set_functions(gold.dlg->window, GDK_FUNC_MOVE);
@@ -207,7 +209,7 @@ void gold_choose_player_must (gint num, gint *bank)
 	gtk_box_pack_start(GTK_BOX(vbox), lbl, FALSE, TRUE, 0);
 	gtk_misc_set_alignment(GTK_MISC(lbl), 0, 0.5);
 
-	table = gtk_table_new(7, 7, FALSE);
+	table = gtk_table_new(7, 6, FALSE);
 	gtk_widget_show(table);
 	gtk_box_pack_start(GTK_BOX(vbox), table, FALSE, TRUE, 0);
 	gtk_container_border_width(GTK_CONTAINER(table), 3);
@@ -217,48 +219,42 @@ void gold_choose_player_must (gint num, gint *bank)
 	/* fill the bank entry with its correct values */
 	for (idx = 0; idx < NO_RESOURCE; ++idx) gold.res[idx].bank = bank[idx];
 
-	/* tell about the bank only if there is at least one entry */
-	for (idx = 0; idx < NO_RESOURCE; ++idx)
-		if (bank[idx] <= gold.target) break;
-	if (idx < NO_RESOURCE) {
-		lbl = gtk_label_new(_("Resources in bank"));
-		gtk_widget_show(lbl);
-		gtk_table_attach(GTK_TABLE(table), lbl, 0, 3, 0, 1,
-				(GtkAttachOptions)GTK_FILL,
-				(GtkAttachOptions) GTK_EXPAND | GTK_FILL, 0, 0);
-		gtk_misc_set_alignment(GTK_MISC(lbl), 0, 0.5);
-	}
+	row = 1;
+	lbl = gtk_label_new(_("Max"));
+	gtk_widget_show(lbl);
+	gtk_table_attach(GTK_TABLE(table), lbl, 2, 3, row, row+1,
+			(GtkAttachOptions)GTK_FILL,
+			(GtkAttachOptions) GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_misc_set_alignment(GTK_MISC(lbl), 0, 0.5);
 
 	lbl = gtk_label_new(_("Take"));
 	gtk_widget_show(lbl);
-	gtk_table_attach(GTK_TABLE(table), lbl, 4, 6, 0, 1,
+	gtk_table_attach(GTK_TABLE(table), lbl, 4, 5, row, row+1,
 			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL,
 			 (GtkAttachOptions) GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(lbl), 0, 0.5);
 
 	lbl = gtk_label_new(_("Hand"));
 	gtk_widget_show(lbl);
-	gtk_table_attach(GTK_TABLE(table), lbl, 6, 7, 0, 1,
+	gtk_table_attach(GTK_TABLE(table), lbl, 5, 6, row, row+1,
 			 (GtkAttachOptions)GTK_FILL,
 			 (GtkAttachOptions) GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(lbl), 0, 0.5);
 
-	add_resource_table_row(table, 1, BRICK_RESOURCE);
-	add_resource_table_row(table, 2, GRAIN_RESOURCE);
-	add_resource_table_row(table, 3, ORE_RESOURCE);
-	add_resource_table_row(table, 4, WOOL_RESOURCE);
-	add_resource_table_row(table, 5, LUMBER_RESOURCE);
+	row++;
+	for (idx = 0; idx < NO_RESOURCE; ++idx)
+		add_resource_table_row(table, row++, idx);
 
 	lbl = gtk_label_new(_("Total resources"));
 	gtk_widget_show(lbl);
-	gtk_table_attach(GTK_TABLE(table), lbl, 0, 4, 6, 7,
+	gtk_table_attach(GTK_TABLE(table), lbl, 0, 4, row, row+1,
 			 (GtkAttachOptions)GTK_FILL,
 			 (GtkAttachOptions) GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(lbl), 1, 0.5);
 
 	gold.total_entry = gtk_entry_new();
 	gtk_widget_show(gold.total_entry);
-	gtk_table_attach(GTK_TABLE(table), gold.total_entry, 4, 5, 6, 7,
+	gtk_table_attach(GTK_TABLE(table), gold.total_entry, 4, 5, row, row+1,
 			 (GtkAttachOptions)GTK_FILL,
 			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_widget_set_usize(gold.total_entry, 30, -1);
