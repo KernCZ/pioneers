@@ -1,3 +1,8 @@
+2000-06-19  Dave Cole <dave@dccs.com.au>
+
+	* client/connect.c (connect_create_dlg): Removed code which forced
+	uppercase first character on gnome config player name.
+	
 2000-06-18  Andy Heroff <aheroff@mediaone.net>
 
 	* Version 0.6.0 released for general consumption!

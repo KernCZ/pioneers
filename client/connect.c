@@ -340,7 +340,6 @@ GtkWidget *connect_create_dlg()
 	if (novar) {
 		saved_name = g_strdup(g_get_user_name());
 	}
-	saved_name[0] = toupper(saved_name[0]);
 
 	dlg = gnome_dialog_new(_("Connect to Gnocatan server"),
 			       GNOME_STOCK_BUTTON_OK, NULL);
