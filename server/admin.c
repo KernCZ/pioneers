@@ -53,6 +53,7 @@ static GSList *_game_list = NULL; /* The sorted list of game titles */
 gboolean register_server = FALSE;
 gchar server_port[NI_MAXSERV] = GNOCATAN_DEFAULT_GAME_PORT;
 gchar server_admin_port[NI_MAXSERV] = GNOCATAN_DEFAULT_ADMIN_PORT;
+gboolean random_order = FALSE;
 extern gint no_player_timeout;
 
 GameParams *params = NULL;
@@ -241,7 +242,8 @@ gboolean start_server( const gchar *hostname, const gchar *port,
         return FALSE;
 	}
 	
-	return server_startup( params, hostname, port, register_server );
+	return server_startup( params, hostname, port, register_server,
+			       random_order);
 }
 
 static void handle_sigpipe (UNUSED(int signum))

@@ -52,9 +52,22 @@ static gint next_player_num(Game *game, gboolean force_viewer)
 		}
 		playerlist_dec_use_count(game);
 
-		for (idx = 0; idx < game->params->num_players; idx++)
-			if (!players[idx])
-				break;
+		if (game->params->random_order)
+		{
+			gint empty = 0, skip;
+			for (idx = 0; idx < game->params->num_players; idx++)
+				if (!players[idx])
+					empty++;
+			skip = get_rand(empty);
+			for (idx = 0; idx < game->params->num_players; idx++)
+				if (!players[idx] && skip-- == 0)
+					break;
+		}
+		else {
+			for (idx = 0; idx < game->params->num_players; idx++)
+				if (!players[idx])
+					break;
+		}
 	}
 	if (idx == game->params->num_players)
 		while (player_by_num (game, idx) != NULL) ++idx;

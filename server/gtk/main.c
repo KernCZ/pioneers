@@ -51,6 +51,7 @@ static GtkWidget *register_toggle; /* register with meta server? */
 static GtkWidget *meta_entry;      /* name of meta server */
 static GtkWidget *hostname_entry;  /* name of server (allows masquerading) */
 static GtkWidget *port_entry;      /* server port */
+static GtkWidget *random_toggle;   /* randomize seating order? */
 static GtkWidget *addcomputer_btn; /* button to add computer players */
 
 static GtkWidget *start_btn;       /* start/stop the server */
@@ -119,6 +120,15 @@ static void register_toggle_cb(GtkToggleButton *toggle, UNUSED(gpointer user_dat
 			   register_server ?  _("Yes") :  _("No"));
 	gtk_widget_set_sensitive(meta_entry, register_server);
 	gtk_widget_set_sensitive(hostname_entry, register_server);
+}
+
+static void random_toggle_cb(GtkToggleButton *toggle, UNUSED(gpointer user_data))
+{
+	GtkWidget *label = GTK_BIN(toggle)->child;
+
+	random_order = gtk_toggle_button_get_active(toggle);
+	gtk_label_set_text(GTK_LABEL(label),
+			   random_order ?  _("Yes") :  _("No"));
 }
 
 /* The server does not need to respond to changed game settings directly
@@ -479,6 +489,23 @@ static GtkWidget *build_interface(void)
 			 GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_tooltips_set_tip(tooltips, hostname_entry,
 			_("The public name of this computer (needed when playing behind a firewall)"), NULL);
+
+	label = gtk_label_new(_("Random Turn Order"));
+	gtk_widget_show(label);
+	gtk_table_attach(GTK_TABLE(table), label, 0, 1, 4, 5,
+		GTK_FILL,
+		GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+
+	random_toggle = gtk_toggle_button_new_with_label(_("No"));
+	gtk_widget_show(random_toggle);
+	gtk_table_attach(GTK_TABLE(table), random_toggle, 1, 2, 4, 5,
+			 GTK_FILL,
+			 GTK_EXPAND | GTK_FILL, 0, 0);
+	g_signal_connect(G_OBJECT(random_toggle), "toggled",
+			G_CALLBACK(random_toggle_cb), NULL);
+	gtk_tooltips_set_tip(tooltips, random_toggle,
+			_("Randomize turn order"), NULL);
 
           /* Initialize server-settings */
 	strncpy(server_port, config_get_string("server/port=" GNOCATAN_DEFAULT_GAME_PORT, &novar), sizeof(server_port));

@@ -184,8 +184,8 @@ gint get_rand(gint range);
 Game *game_new(GameParams *params);
 void game_free(Game *game);
 gint new_computer_player(const gchar *server, const gchar *port);
-gboolean server_startup(GameParams *params, const gchar *hostname, 
-		const gchar *port, gboolean meta);
+gboolean server_startup(GameParams *params, const gchar *hostname,
+		const gchar *port, gboolean meta, gboolean random_order);
 gboolean server_stop(void);
 gboolean server_is_running(void);
 gint accept_connection(gint in_fd, gchar **location);

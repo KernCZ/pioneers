@@ -37,6 +37,7 @@ typedef struct _comm_info {
 extern gboolean register_server;
 extern gchar server_port[NI_MAXSERV];
 extern gchar server_admin_port[NI_MAXSERV];
+extern gboolean random_order;
 
 extern GameParams *params;
 

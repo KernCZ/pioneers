@@ -321,7 +321,7 @@ static void try_start_game(Game *game)
 	/* All players have connected, and are ready to begin
 	 */
 	meta_start_game();
-	game->setup_player = game->player_list;
+	game->setup_player = player_first_real(game);
 	while (((Player *)game->setup_player->data)->num < 0)
 		game->setup_player = game->setup_player->next;
 	game->double_setup = game->reverse_setup = FALSE;

@@ -301,7 +301,7 @@ static gboolean game_server_start(Game *game)
 }
 
 gboolean server_startup(GameParams *params, const gchar *hostname,
-		const gchar *port, gboolean meta)
+		const gchar *port, gboolean meta, gboolean random_order)
 {
 	/* The mt_seed needs a gulong, g_rand_new_with_seed needs a guint32
 	 * The compiler will promote the datatypes if necessary
@@ -329,6 +329,7 @@ gboolean server_startup(GameParams *params, const gchar *hostname,
 	curr_game->params->server_port = g_strdup(port);
 	curr_game->params->register_server = meta;
 	curr_game->hostname = g_strdup(hostname);
+	curr_game->params->random_order = random_order;
 	if (game_server_start(curr_game))
 		return TRUE;
 	game_free(curr_game);
