@@ -113,10 +113,10 @@ dist-hook:
 	find $(distdir)/themes -name CVS | xargs rm -rf
 
 install-data-hook:
-	mkdir -p $(DESTDIR)$(pixmapdir)/themes
+	mkdir -p $(DESTDIR)$(pixmapdir)
 	tar -c -f - -C themes . | \
-	tar -x -f - --mode=u+w,ugo+rX --no-same-owner -C $(DESTDIR)$(pixmapdir)/themes
-	find $(DESTDIR)$(pixmapdir)/themes -name CVS | xargs rm -rf
+	tar -x -f - --mode=u+w,ugo+rX --no-same-owner -C $(DESTDIR)$(pixmapdir)
+	find $(DESTDIR)$(pixmapdir) -name CVS | xargs rm -rf
 
 # We don't need this, do we?  -- egnor
 # install-data-local:
