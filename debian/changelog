@@ -1,3 +1,9 @@
+gnocatan (0.7.1-2) unstable; urgency=low
+
+  * Build tweak
+
+ -- Jeff Breidenbach <jab@debian.org>  Thu, 25 Jul 2002 00:19:47 -0700
+
 gnocatan (0.7.1-1) unstable; urgency=low
 
   * New upstream version.
