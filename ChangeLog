@@ -1,3 +1,7 @@
+2001-03-03  Dave Cole <dave@dccs.com.au>
+
+	* client/client.c: Fixed bad explanation in comment.
+
 2001-03-02  Matt Waggoner  <matt@waggoner.com>
 
 	* client/connect.c: fixed a minor bug with the server MRU list.

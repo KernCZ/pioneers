@@ -377,7 +377,7 @@ static gboolean check_other_players(StateMachine *sm)
  *   state machine code calls the current state function with an
  *   SM_INIT event.  The state function must enable all controls which
  *   should be sensitive.  Any controls registered with the state
- *   machine API that are set sensitive via sm_gui_check() will be
+ *   machine API that are not set sensitive via sm_gui_check() will be
  *   made insensitive.  This means that we only have to worry about
  *   controls that are relevant to the current mode, everything else
  *   will be disabled automatically.
@@ -386,7 +386,7 @@ static gboolean check_other_players(StateMachine *sm)
  *   The state machine API allows code to register GUI controls.  When
  *   registering a control, an event is specified which will be
  *   delivered to the current state function whenever the control
- *   emits a signal.  The idea of the state machine API is to allow
+ *   emits a signal.  The idea of the state machine API is to handle
  *   all events, be they GUI or network related, in the same way.
  *
  * SM_RECV:
