@@ -1,3 +1,7 @@
+2002-06-07  Jeff Breidenbach  <jab@debian.org>
+
+	* debian/contol: merge debian packaging update
+
 2002-06-06  Roman Hodek  <roman@hodek.net>
 
 	* configure.in, acconfig.h: export ALL_LINGUAS to config.h

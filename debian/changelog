@@ -1,3 +1,9 @@
+gnocatan (0.7.0-3) unstable; urgency=low
+
+  * restore original server/metaserver name resolution
+
+  * adjust package recommendations, closes: #149144
+
 gnocatan (0.7.0-2) unstable; urgency=low
 
   * a little post-release touchup paint

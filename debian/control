@@ -8,8 +8,7 @@ Standards-Version: 3.5.6.0
 Package: gnocatan-client
 Architecture: any
 Depends: ${shlibs:Depends}
-Suggests: gnocatan-help
-Recommends: gnocatan-server
+Recommends: gnocatan-help, gnocatan-server-gtk, gnocatan-server-console
 Conflicts: gnocatan-data
 Replaces: gnocatan-data
 Description: Gnocatan client - a game for Gnome
