@@ -1,5 +1,8 @@
 2000-05-25  Steve Langasek <vorlon@dodds.net>
 
+	* configure.in, acconfig.h: Set up for the use of glib's grand()
+	function as a better PRNG.
+
 	* client/client.c: Squashed that nasty robber bug.  If it comes
 	back to life, we know it's a roach.
 
