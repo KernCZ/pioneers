@@ -105,11 +105,14 @@ static MapTheme default_theme = {
 		TCOL_INIT(0xff00, 0xda00, 0xb900),
 	},
 	{
-		{ TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET() },
-		{ TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET() },
-		{ TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET() },
-		{ TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET() },
-		{ TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET() },
+		{ TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET() }, /* Hill */
+		{ TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET() }, /* Field */
+		{ TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET() }, /* Mountain */
+		{ TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET() }, /* Pasture */
+		{ TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET() }, /* Forest */
+		{ TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET() }, /* unused: desert */
+		{ TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET() }, /* unused: sea */
+		{ TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET() }  /* Gold */
 	}
 };
 
@@ -221,7 +224,7 @@ static void theme_initialize(MapTheme *t)
 			t->terrain_tile_names[i] ?
 			g_strconcat(t->subdir, t->terrain_tile_names[i], NULL) :
 			g_strdup(default_theme.terrain_tile_names[i]);
-		if (t->scaling == NEVER) {
+		if ((t->scaling == NEVER) || (i == BOARD_TILE)) {
 			/* don't bother to fill scaledata if it won't be used
 			 * anyway */
 			load_pixmap(fname, &(t->terrain_tiles[i]), NULL);
@@ -316,6 +319,7 @@ void theme_rescale(int new_width)
 	if (new_width == 0) new_width = 1;
 
 	for(i = 0; i < numElem(current_theme->terrain_tiles); ++i) {
+		if (i == BOARD_TILE) continue; /* Don't scale the board-tile */
 		/* rescale the pixbuf */
 		gdk_pixbuf_unref(current_theme->scaledata[i].image);
 		current_theme->scaledata[i].image = gdk_pixbuf_scale_simple(
@@ -341,21 +345,21 @@ static struct tvars {
 	int      override;
 	size_t   offset;
 } theme_vars[] = {
-	{ "hill-tile",			STR, 0,  offs(terrain_tile_names[0]) },
-	{ "field-tile",			STR, 1,  offs(terrain_tile_names[1]) },
-	{ "mountain-tile",		STR, 2,  offs(terrain_tile_names[2]) },
-	{ "pasture-tile",		STR, 3,  offs(terrain_tile_names[3]) },
-	{ "forest-tile",		STR, 4,  offs(terrain_tile_names[4]) },
-	{ "desert-tile",		STR, -1, offs(terrain_tile_names[5]) },
-	{ "sea-tile",			STR, -1, offs(terrain_tile_names[6]) },
-	{ "gold-tile",			STR, 5,  offs(terrain_tile_names[7]) },
-	{ "board-tile",			STR, -1, offs(terrain_tile_names[8]) },
-	{ "brick-port-tile",		STR, -1, offs(port_tile_names[0]) },
-	{ "grain-port-tile",		STR, -1, offs(port_tile_names[1]) },
-	{ "ore-port-tile",		STR, -1, offs(port_tile_names[2]) },
-	{ "wool-port-tile",		STR, -1, offs(port_tile_names[3]) },
-	{ "lumber-port-tile",		STR, -1, offs(port_tile_names[4]) },
-	{ "nores-port-tile",		STR, -1, offs(port_tile_names[5]) },
+	{ "hill-tile",			STR, HILL_TILE,  offs(terrain_tile_names[HILL_TILE]) },
+	{ "field-tile",			STR, FIELD_TILE,  offs(terrain_tile_names[FIELD_TILE]) },
+	{ "mountain-tile",		STR, MOUNTAIN_TILE,  offs(terrain_tile_names[MOUNTAIN_TILE]) },
+	{ "pasture-tile",		STR, PASTURE_TILE,  offs(terrain_tile_names[PASTURE_TILE]) },
+	{ "forest-tile",		STR, FOREST_TILE,  offs(terrain_tile_names[FOREST_TILE]) },
+	{ "desert-tile",		STR, -1, offs(terrain_tile_names[DESERT_TILE]) },
+	{ "sea-tile",			STR, -1, offs(terrain_tile_names[SEA_TILE]) },
+	{ "gold-tile",			STR, GOLD_TILE,  offs(terrain_tile_names[GOLD_TILE]) },
+	{ "board-tile",			STR, -1, offs(terrain_tile_names[BOARD_TILE]) },
+	{ "brick-port-tile",		STR, -1, offs(port_tile_names[HILL_PORT_TILE]) },
+	{ "grain-port-tile",		STR, -1, offs(port_tile_names[FIELD_PORT_TILE]) },
+	{ "ore-port-tile",		STR, -1, offs(port_tile_names[MOUNTAIN_PORT_TILE]) },
+	{ "wool-port-tile",		STR, -1, offs(port_tile_names[PASTURE_PORT_TILE]) },
+	{ "lumber-port-tile",		STR, -1, offs(port_tile_names[FOREST_PORT_TILE]) },
+	{ "nores-port-tile",		STR, -1, offs(port_tile_names[ANY_PORT_TILE]) },
 	{ "chip-bg-color",		COL, -1, offs(colors[TC_CHIP_BG]) },
 	{ "chip-fg-color",		COL, -1, offs(colors[TC_CHIP_FG]) },
 	{ "chip-bd-color",		COL, -1, offs(colors[TC_CHIP_BD]) },

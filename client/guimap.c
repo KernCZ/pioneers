@@ -380,10 +380,10 @@ void draw_dice_roll(GdkPixmap *pixmap, GdkGC *gc,
 	TColor *tcol;
 
 #define col_or_ovr(ter,cno)												\
-	((terrain < TC_MAX_OVERRIDE && theme->ovr_colors[ter][cno].set) ?	\
+	((terrain < TC_MAX_OVRTILE && theme->ovr_colors[ter][cno].set) ?	\
 	 &(theme->ovr_colors[ter][cno]) :									\
 	 &(theme->colors[cno]))
-	
+
 	gdk_gc_set_fill(gc, GDK_SOLID);
 	col = highlight ? TC_CHIP_H_BG : TC_CHIP_BG;
 	tcol = col_or_ovr(terrain, col);

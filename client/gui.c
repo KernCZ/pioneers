@@ -546,7 +546,7 @@ static void settings_apply_cb(GnomePropertyBox *prop_box, gint page, gpointer da
 				g_free (gmap->pixmap);
 				gmap->pixmap = NULL;
 			}
-			theme_rescale (gmap->width);
+			theme_rescale(2*gmap->x_point);
 			r.x = 0;
 			r.y = 0;
 			r.width = gmap->width;

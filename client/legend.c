@@ -31,7 +31,7 @@ static gchar *terrain_names[] = {
 };
 
 static gint expose_legend_cb(GtkWidget *area,
-			     GdkEventExpose *event, GdkPixmap *pixmap)
+			     GdkEventExpose *event, Terrain terrain)
 {
 	static GdkGC *legend_gc;
 
@@ -42,11 +42,10 @@ static gint expose_legend_cb(GtkWidget *area,
 		legend_gc = gdk_gc_new(area->window);
 
 	gdk_gc_set_fill(legend_gc, GDK_TILED);
-	gdk_gc_set_tile(legend_gc, pixmap);
+	gdk_gc_set_tile(legend_gc, guimap_terrain(terrain));
 	gdk_draw_rectangle(area->window, legend_gc, TRUE, 0, 0,
 			   area->allocation.width,
 			   area->allocation.height);
-
 	return FALSE;
 }
 
@@ -65,7 +64,7 @@ static void add_legend_terrain(GtkWidget *table, gint row, gint col,
 	gtk_widget_set_usize(area, 30, 20);
 	gtk_signal_connect(GTK_OBJECT(area), "expose_event",
 			   GTK_SIGNAL_FUNC(expose_legend_cb),
-			   guimap_terrain(terrain));
+			   (gpointer)terrain);
 
 	label = gtk_label_new(gettext(terrain_names[terrain]));
 	gtk_widget_show(label);

@@ -1,4 +1,17 @@
 2003-12-02  Roland Clobus <rclobus@bigfoot.com>
+
+	* client/gui.c, client/guimap.c: When applying a new theme, the tiles
+	were not scaled correctly.
+	* legend.c: When showing the legend tabpage, the client would crash when
+	a scaled theme was active.
+	* client/theme.c: the extra colors of the tile for gold were not
+	correctly used.
+	* client/theme.c: the board tile in the theme is never scaled, but
+	tiled.
+	* client/theme.h: the size of arrays in the struct MapTheme was
+	defined by digits, not by constants in variable names.
+
+2003-12-02  Roland Clobus <rclobus@bigfoot.com>
 	* seafarers.game, seafarers-gold.game: removed unknown keyword.
 	* Cube.game, Another_swimming_in_the_wall.game, Evil_square.game,
 

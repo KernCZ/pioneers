@@ -40,18 +40,22 @@ typedef enum {
 } THEME_COLOR;
 #define TC_MAX_OVERRIDE (TC_CHIP_H_FG+1)
 
+/* The order of the TERRAIN_TILES enum is EXTREMELY important!  The order
+ * must match the resources indicated in enum Terrain.
+ */
 typedef enum {
 	HILL_TILE = 0,
 	FIELD_TILE,
 	MOUNTAIN_TILE,
 	PASTURE_TILE,
 	FOREST_TILE,
-	GOLD_TILE,
 	DESERT_TILE,
 	SEA_TILE,
+	GOLD_TILE,
 	BOARD_TILE,
+	TERRAIN_TILE_MAX
 } TERRAIN_TILES;
-#define TC_MAX_OVRTILE (FOREST_TILE+1)
+#define TC_MAX_OVRTILE (GOLD_TILE+1)
 
 typedef enum {
 	HILL_PORT_TILE = 0,
@@ -60,6 +64,7 @@ typedef enum {
 	PASTURE_PORT_TILE,
 	FOREST_PORT_TILE,
 	ANY_PORT_TILE,
+	PORT_TILE_MAX
 } PORT_TILES;
 
 typedef enum {
@@ -74,11 +79,11 @@ typedef struct _MapTheme {
 	gchar      *name;
 	gchar      *subdir;
 	SCALEMODE  scaling;
-	gchar      *terrain_tile_names[9];
-	gchar      *port_tile_names[6];
-	GdkPixmap  *terrain_tiles[9];
-	GdkPixmap  *port_tiles[6];
-	TScaleData scaledata[9];
+	gchar      *terrain_tile_names[TERRAIN_TILE_MAX];
+	gchar      *port_tile_names[PORT_TILE_MAX];
+	GdkPixmap  *terrain_tiles[TERRAIN_TILE_MAX];
+	GdkPixmap  *port_tiles[PORT_TILE_MAX];
+	TScaleData scaledata[TERRAIN_TILE_MAX];
 	TColor     colors[TC_MAX];
 	TColor     ovr_colors[TC_MAX_OVRTILE][TC_MAX_OVERRIDE];
 } MapTheme;
