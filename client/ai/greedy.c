@@ -26,11 +26,11 @@
  *
  * What it does _NOT_ do:
  *
- * -Play with gold.  FIXME: in fact it crashes.  It should abort with an error.
+ * -Play with gold.  It aborts with an error.
  * -Play monopoly development card
  * -Make roads explicitly to get the longest road card
  * -Trade with other players
- * -Do anything seafarers (I don't know the rules :) )
+ * -Do anything seafarers
  *
  */
 
@@ -1194,8 +1194,9 @@ static float score_hex_hurt_opponents(Hex *hex)
 
     if (hex == NULL) return -1000;
 
-    /* secord arg is the player moving the pirate.  It isn't used. */
-    if (!can_robber_or_pirate_be_moved(hex, 0) && hex->terrain != SEA_TERRAIN)
+    /* secord arg in can_robber_or_pirate_be_moved is not used.
+       don't move the pirate. */
+    if (!can_robber_or_pirate_be_moved(hex, 0) || hex->terrain == SEA_TERRAIN)
 		return -1000;
 
     for (i = 0; i < 6; i++) {
@@ -1560,7 +1561,7 @@ static void greedy_consider_quote(UNUSED (gint partner),
 }
 
 /* function for checking if the map contains gold, so the ai can
- * exit if it does */
+ * quit if it does */
 static gboolean greedy_check_gold (UNUSED (Map *map), Hex *hex,
 		UNUSED (void *unused) )
 {
@@ -1609,7 +1610,7 @@ static void greedy_error (gchar *message)
 {
 	gchar buffer[1000];
 	snprintf (buffer, sizeof (buffer),
-			_("Received error from server: %s.  Exiting\n"),
+			_("Received error from server: %s.  Quitting\n"),
 			message);
 	cb_chat (buffer);
 	cb_disconnect ();
@@ -1693,7 +1694,7 @@ void greedy_init (UNUSED (int argc), UNUSED (char **argv) )
 {
 	map = get_map ();
 
-	/* ai cannot handle gold: exit if the board contains it */
+	/* ai cannot handle gold: quit if the board contains it */
 	if (map_traverse (map, &greedy_check_gold, NULL) == TRUE) {
 		cb_chat (_("Sorry, I do not know how to play with gold.\n") );
 		exit (1);

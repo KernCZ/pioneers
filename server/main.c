@@ -67,7 +67,7 @@
 			    "'mins' minutes\n"
 	    "  -T 0|1    --  select terrain type, 0=default 1=random\n"
  	    "  -v points --  Number of points needed to win\n"
- 	    "  -x        --  Exit after a player has won\n"
+ 	    "  -x        --  Quit after a player has won\n"
  	    );
      
     exit(1);
@@ -84,7 +84,7 @@ int main( int argc, char *argv[] )
 	gboolean disable_game_start = FALSE;
 	GMainLoop *event_loop;
 	gint tournament_time = -1;
- 	gboolean exit_when_done = FALSE;
+ 	gboolean quit_when_done = FALSE;
 
 	/* set the UI driver to Glib_Driver, since we're using glib */
 	set_ui_driver( &Glib_Driver );
@@ -179,7 +179,7 @@ int main( int argc, char *argv[] )
 			num_points = atoi(optarg);
 			break;
 		case 'x':
-			exit_when_done = TRUE;
+			quit_when_done = TRUE;
 			break;
 		case 'h':
 		default:
@@ -212,8 +212,8 @@ int main( int argc, char *argv[] )
 	        cfg_set_tournament_time(tournament_time);
 	}
 
-	if (exit_when_done) {
-	        cfg_set_exit(exit_when_done);
+	if (quit_when_done) {
+	        cfg_set_quit(quit_when_done);
 	}
 	
 	if (terrain != -1) {

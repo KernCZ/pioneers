@@ -103,7 +103,7 @@ static GnomeUIInfo game_menu[] = {
 	{ GNOME_APP_UI_ITEM, N_("_Settings"), N_("Gnocatan client settings"),
 	  menu_settings_cb, NULL, NULL, GNOME_APP_PIXMAP_STOCK,
 	  GNOME_STOCK_BLANK, 's', GDK_CONTROL_MASK, NULL },
-	{ GNOME_APP_UI_ITEM, N_("E_xit"), N_("Exit the program"),
+	{ GNOME_APP_UI_ITEM, N_("_Quit"), N_("Quit the program"),
 	  route_widget_event, (gpointer)GUI_QUIT, NULL,
 	  GNOME_APP_PIXMAP_STOCK, GTK_STOCK_QUIT,
 	  'q', GDK_CONTROL_MASK, NULL },

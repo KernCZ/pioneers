@@ -168,7 +168,7 @@ gboolean mode_road_building(Player *player, gint event)
 			g_list_free_1( rb_build_rec );
 		}
 
-		/* Send ack to client, check for victory, and exit.
+		/* Send ack to client, check for victory, and quit.
 		 */
 		sm_send(sm, "OK\n");
 		check_victory(player);

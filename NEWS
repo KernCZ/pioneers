@@ -1,0 +1,25 @@
+Release 0.8.1.30
+
+What's new/fixed:
+* Fixed many bugs regarding the 'Trade Page'
+* Fixed AI losing resources when offering a trade
+* Fixed AI choosing unavailable resources when playing the Year of Plenty card
+* New connection scheme
+* Added tooltips in the server-gtk
+* New image for the splash screen, provided by Tobias Jakobs
+* Fixed bugs regarding the Road Building card
+* Connection as viewer in a game with more than 8 players+viewers is possible
+* Updated the log in the console
+* Minor user interface issues 
+
+Some known issues (see also SourceForge)
+* Reconnect works badly. Workaround: Try to reconnect only when the game is 'idle'.
+* Longest road sometimes not noticed/given to wrong player
+* Client can crash after playing/moving the robber in the last turn.
+* Server will crash if pressing 'Reject Trade' more than once. Workaround: press only once.
+* Playing several games with the same client will retain some things from previous games.
+* Server-gtk will start a 'Default' game, unless the game is explicitly chosen again.
+
+Release 0.8.1.16
+
+Previous release on SF

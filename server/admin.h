@@ -54,7 +54,7 @@ void cfg_set_victory_points( gint victory_points );
 void cfg_set_game( const gchar *game );
 void cfg_set_terrain_type( gint terrain_type );
 void cfg_set_tournament_time( gint tournament_time );
-void cfg_set_exit( gboolean exitdone);
+void cfg_set_quit( gboolean quitdone);
 void cfg_set_timeout( gint to );
 
 /* callbacks related to server starting / stopping */

@@ -75,7 +75,7 @@ enum {
 };
 
 static GnomeUIInfo file_menu[] = {
-	{ GNOME_APP_UI_ITEM, N_("E_xit"), N_("Exit the program"),
+	{ GNOME_APP_UI_ITEM, N_("_Quit"), N_("Quit the program"),
 	  quit_cb, NULL, NULL, GNOME_APP_PIXMAP_STOCK, GTK_STOCK_QUIT,
 	  'q', GDK_CONTROL_MASK, NULL },
 

@@ -209,13 +209,13 @@ void cfg_set_tournament_time( gint tournament_time )
 		params->tournament_time = tournament_time;
 }
 
-void cfg_set_exit( gboolean exitdone)
+void cfg_set_quit( gboolean quitdone)
 {
 #ifdef PRINT_INFO
-    g_print("cfg_set_exit: %d\n", exitdone);
+    g_print("cfg_set_quit: %d\n", quitdone);
 #endif
 	if( params )
-		params->exit_when_done = exitdone;
+		params->quit_when_done = quitdone;
 }
 
 void cfg_set_timeout( gint to )
@@ -239,7 +239,7 @@ gboolean start_server( gchar *port, gboolean register_server )
 		g_print( "victory points: %d\n", params->victory_points );
 		g_print( "terrain type: %s\n", (params->random_terrain) ? "random" : "default" );
 		g_print( "Tournament time: %d\n", params->tournament_time );
-		g_print( "Exit when done: %d\n", params->exit_when_done);
+		g_print( "Quit when done: %d\n", params->quit_when_done);
 #endif
 
 	} else {

@@ -364,7 +364,7 @@ GameParams *params_copy(GameParams *params)
 		}
 	}
 
-	copy->exit_when_done = params->exit_when_done;
+	copy->quit_when_done = params->quit_when_done;
 	return copy;
 }
 

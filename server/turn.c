@@ -340,8 +340,8 @@ void check_victory(Player *player)
 			sm_pop_all_and_goto (scan->sm, (StateFunc)mode_idle);
 		}
 
-		/* exit in ten seconds if configured */
-		if (game->params->exit_when_done) {
+		/* quit in ten seconds if configured */
+		if (game->params->quit_when_done) {
 		    g_timeout_add(10*1000,
 				  &exit_func,
 				  NULL);

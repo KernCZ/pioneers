@@ -1295,8 +1295,9 @@ static float score_hex_hurt_opponents(int mynum, Hex *hex)
 
     if (hex == NULL) return -1000;
 
-    /* xxx secord arg? */
-    if (!can_robber_or_pirate_be_moved(hex, 0) && hex->terrain != SEA_TERRAIN)
+    /* secord arg in can_robber_or_pirate_be_moved is not used.
+       don't move the pirate. */
+    if (!can_robber_or_pirate_be_moved(hex, 0) || hex->terrain == SEA_TERRAIN)
 		return -1000;
 
     for (i = 0; i < 6; i++) {
@@ -1671,7 +1672,7 @@ greedy_consider_quote(Map *map, int mynum,
 }
 
 /* function for checking if the map contains gold, so the ai can
- * exit if it does */
+ * quit if it does */
 static gboolean greedy_check_gold (UNUSED(Map *map), Hex *hex,
 		UNUSED(void *unused))
 {
@@ -1680,9 +1681,9 @@ static gboolean greedy_check_gold (UNUSED(Map *map), Hex *hex,
 
 static void greedy_start_game (GameParams *params)
 {
-	/* ai cannot handle gold: exit if the board contains it */
+	/* ai cannot handle gold: quit if the board contains it */
 	if (map_traverse (params->map, &greedy_check_gold, NULL) == TRUE) {
-		log_message(MSG_INFO, "AI does not support gold.  Exiting.\n");
+		log_message(MSG_INFO, "AI does not support gold.  Quitting.\n");
 		ai_chat (_("Sorry, I do not know how to play with gold.\n"));
 		exit (1);
 	}

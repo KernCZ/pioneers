@@ -110,7 +110,7 @@ void client_start(const char *server, const char *port, const char *username,
 static void
 client_exit(void)
 {
-    printf("Exiting\n");
+    printf("Quitting\n");
     exit(0);
 }
 

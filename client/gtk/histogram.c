@@ -20,7 +20,7 @@
  */
 
 #include "config.h"
-#include <gnome.h>
+#include <gtk/gtk.h>
 
 #include "frontend.h"
 #include "histogram.h"
@@ -30,12 +30,15 @@ static const int DIALOG_WIDTH = 450;
 static const int GRID_DIVISIONS = 4;
 static const int CHIT_RADIUS = 15;
 static const int BAR_SEPARATION = 3;
+static const int CHIT_DIAGRAM_SEPARATION = 3;
+static const int SPACING_AROUND = 6;
 
-static void histogram_update(void);
+static void histogram_update(gint roll);
 
 static GtkWidget *histogram_dlg;
 static GtkWidget *histogram_area;
 static GdkGC *histogram_gc;
+static gint last_roll;
 
 static int histogram[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
@@ -51,7 +54,7 @@ void histogram_dice_rolled(gint roll, UNUSED(gint playernum))
 
 	++histogram[roll];
 	if (histogram_dlg && GTK_WIDGET_VISIBLE(histogram_dlg))
-		histogram_update();
+		histogram_update(roll);
 }
 
 static gint histogram_dice_retrieve(gint roll)
@@ -128,27 +131,28 @@ static gboolean expose_histogram_cb(GtkWidget *area, UNUSED(GdkEventExpose *even
 	if (label_width + CHIT_RADIUS * 2 * 11 > w) draw_labels_and_chits = FALSE;
 	if (label_height * 5 + CHIT_RADIUS * 2 > h) draw_labels_and_chits = FALSE;
 
-	grid_offset_x = (draw_labels_and_chits ? label_width : 0);
-	grid_width = w - grid_offset_x;
+	grid_offset_x = (draw_labels_and_chits ? label_width : 0) + SPACING_AROUND;
+	grid_width = w - grid_offset_x - SPACING_AROUND;
 	grid_offset_y = (draw_labels_and_chits ? label_height : 0);
-	grid_height = h - grid_offset_y - (draw_labels_and_chits ? 2 * CHIT_RADIUS : 0);
+	grid_height = h - grid_offset_y - (draw_labels_and_chits ? 2 * CHIT_RADIUS : 0) - CHIT_DIAGRAM_SEPARATION;
 
 	/* horizontal grid */
 	for (i=0; i <= GRID_DIVISIONS; ++i) {
 		gint y = grid_offset_y + grid_height - i * grid_height / GRID_DIVISIONS;
 		gdk_gc_set_foreground(histogram_gc, &lightblue);
-		gdk_draw_line(area->window, histogram_gc, grid_offset_x, y - 1, w, y - 1);
+		gdk_draw_line(area->window, histogram_gc, grid_offset_x, y - 1, w - SPACING_AROUND, y - 1);
 
 		if (draw_labels_and_chits) {
 			sprintf(buff, "%d", i * max / GRID_DIVISIONS);
 			pango_layout_set_text(layout, buff, -1);
 			pango_layout_get_pixel_size(layout, &width, &height);
 			gdk_gc_set_foreground(histogram_gc, &black);
-			gdk_draw_layout(area->window, histogram_gc, label_width - width, y - height, layout);
+			gdk_draw_layout(area->window, histogram_gc, label_width - width + SPACING_AROUND, y - height, layout);
 		}
 	}
 
-	bar_width = (grid_width - 10 * BAR_SEPARATION) / 11;
+	bar_width = (grid_width - 12 * BAR_SEPARATION) / 11;
+	grid_offset_x += BAR_SEPARATION;
 
 	/* histogram bars */
 	gdk_gc_set_fill(histogram_gc, GDK_TILED);
@@ -170,7 +174,7 @@ static gboolean expose_histogram_cb(GtkWidget *area, UNUSED(GdkEventExpose *even
 					x + (bar_width - width) / 2,
 					grid_height + grid_offset_y - bh - height, layout);
 
-			draw_dice_roll(area->window, histogram_gc, x + bar_width / 2, h - CHIT_RADIUS, CHIT_RADIUS - 1, i, SEA_TERRAIN, i == 7);
+			draw_dice_roll(area->window, histogram_gc, x + bar_width / 2, h - CHIT_RADIUS, CHIT_RADIUS - 1, i, SEA_TERRAIN, i == last_roll);
 		}
 	}
 
@@ -209,7 +213,6 @@ static void histogram_destroyed_cb(GtkWidget *widget, gpointer arg)
 GtkWidget *histogram_create_dlg()
 {
 	GtkWidget *dlg_vbox;
-	GtkWidget *frame;
 
 	if (histogram_dlg != NULL) {
 		return histogram_dlg;
@@ -226,30 +229,26 @@ GtkWidget *histogram_create_dlg()
 	gtk_window_set_default_size(GTK_WINDOW(histogram_dlg), DIALOG_WIDTH, DIALOG_HEIGHT);
 
 	dlg_vbox = GTK_DIALOG(histogram_dlg)->vbox;
-	gtk_widget_show(dlg_vbox);
-
-	frame = gtk_frame_new(_("Dice Histogram"));
-	gtk_widget_show(frame);
-	gtk_box_pack_start(GTK_BOX(dlg_vbox), frame, TRUE, TRUE, 0);
 
 	histogram_area = gtk_drawing_area_new();
 	g_signal_connect(G_OBJECT(histogram_area), "expose_event",
 			G_CALLBACK(expose_histogram_cb),
 			guimap_terrain(SEA_TERRAIN));
-	gtk_container_add(GTK_CONTAINER(frame), histogram_area);
+	gtk_box_pack_start(GTK_BOX(dlg_vbox), histogram_area, TRUE, TRUE, SPACING_AROUND);
 	gtk_widget_show(histogram_area);
 
 	gtk_widget_show(histogram_dlg);
 	g_signal_connect(histogram_dlg, "response",
 			G_CALLBACK(gtk_widget_destroy), NULL);
 
-	histogram_update();
+	histogram_update(0);
 
 	return histogram_dlg;
 }
 
-static void histogram_update(void)
+static void histogram_update(gint roll)
 {
+	last_roll = roll;
 	gtk_widget_queue_draw(histogram_area);
 }
 
@@ -259,5 +258,5 @@ void histogram_init(void)
 	for (i = 2; i <= 12; ++i)
 		histogram[i] = 0;	
 	if (histogram_dlg && GTK_WIDGET_VISIBLE(histogram_dlg))
-		histogram_update();
+		histogram_update(0);
 }
