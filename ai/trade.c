@@ -93,8 +93,6 @@ gint quote_next_num()
 
 void quote_begin(gint player_num, gint *we_receive, gint *we_supply)
 {
-	gint idx;
-
 	log_message(MSG_INFO, _("Trading started by %s\n"),
 				player_name(player_num, TRUE));
 

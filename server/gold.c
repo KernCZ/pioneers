@@ -45,7 +45,6 @@
 static void distribute_next (GList *list, gboolean someone_wants_gold) {
 	Player *player = list->data;
 	Game *game = player->game;
-	gboolean wait_for_gold = FALSE;
 	gint num, idx;
 	gboolean in_setup = FALSE;
 
@@ -199,7 +198,6 @@ void distribute_first (GList *list) {
 	GList *looper;
 	Player *player = list->data;
 	Game *game = player->game;
-	gint idx;
 	gboolean someone_wants_gold = FALSE;
 	/* tell everybody who's receiving gold */
 	for (looper = list; looper != NULL;

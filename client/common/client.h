@@ -104,6 +104,13 @@ void build_move (gint sx, gint sy, gint spos, gint dx, gint dy, gint dpos,
 		gint isundo);
 void build_add(BuildType type, gint x, gint y, gint pos, gint *cost,
 		gboolean newbuild);
+gboolean build_can_undo();
+gboolean build_is_valid();
+gboolean have_built();
+gboolean build_can_setup_road(Edge *edge, gboolean double_setup);
+gboolean build_can_setup_ship(Edge *edge, gboolean double_setup);
+gboolean build_can_setup_bridge(Edge *edge, gboolean double_setup);
+gboolean build_can_setup_settlement(Node *node, gboolean double_setup);
 
 /********** develop.c **********/
 void develop_init(void);
@@ -116,6 +123,7 @@ void develop_played(gint player_num, gint card_idx, DevelType type);
 void monopoly_player(gint player_num, gint victim_num, gint num, Resource type);
 void road_building_begin (void);
 void develop_begin_turn (void);
+gboolean have_bought_develop();
 
 /********** stock.c **********/
 void stock_init(void);

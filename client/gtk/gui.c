@@ -452,7 +452,6 @@ void gui_show_splash_page(gboolean show)
 
 static GtkWidget *splash_build_page()
 {
-	GdkPixmap *splash_pix;
 	GtkWidget *pm;
 	GtkWidget *viewport;
 	gchar *filename;

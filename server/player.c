@@ -30,6 +30,7 @@
 #include <errno.h>
 #include <string.h>
 #include <glib.h>
+#include <unistd.h>
 
 #include "game.h"
 #include "cards.h"
@@ -121,7 +122,6 @@ static gboolean mode_global(Player *player, gint event)
 static gboolean mode_unhandled (Player *player, gint event)
 {
 	StateMachine *sm = player->sm;
-	Game *game = player->game;
 	gchar text[512];
 
 	switch (event) {
@@ -393,7 +393,6 @@ void player_free(Player *player)
 
 void player_archive(Player *player)
 {
-	GList *current = NULL;
 	StateFunc state;
 	Game *game = player->game;
 

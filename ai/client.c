@@ -272,7 +272,7 @@ static gboolean check_other_players(StateMachine *sm)
 	gint player_num, victim_num, card_idx;
 	gint turn_num, discard_num, num, ratio, die1, die2, x, y, pos;
 	gint resource_list[NO_RESOURCE];
-	gint sx, sy, spos, dx, dy, dpos, isundo;
+	gint sx, sy, spos, dx, dy, dpos;
 	char *tmp;
 
 	if (check_chat_or_name(sm))

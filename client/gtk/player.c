@@ -155,10 +155,13 @@ static gint player_insert_summary_row_before (gint row, gchar *name,
 		gchar *points, void *data, GdkColor *colour, gboolean new)
 {
 	gchar *row_data[3];
+	GtkStyle *current_style;
+
 	row_data[0] = "";
 	row_data[1] = name;
 	row_data[2] = points;
-	GtkStyle *current_style = gtk_style_new();
+	
+	current_style = gtk_style_new();
 	current_style->fg[0] = *colour;
 	current_style->bg[0] = player_bg;
 	if (new) {
@@ -361,8 +364,10 @@ void frontend_viewer_quit(gint player_num)
 static void player_show_connected_at_row(gint player_num, gboolean connected,
 		gint row)
 {
+	Player *player;
+
 	if (player_is_viewer (player_num) ) return;
-	Player *player = player_get (player_num);
+	player = player_get (player_num);
 
 /* Assume row is within the valid range */
 	if (summary_gc == NULL)

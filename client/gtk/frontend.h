@@ -92,9 +92,6 @@ void frontend_gui_register (void *widget, gint id, gchar *signal);
 /* route an event to the gui event function */
 void frontend_gui_route_event (GuiEvent event);
 
-/* set all the callbacks */
-void set_callbacks (void);
-
 /* callbacks */
 void frontend_init (void);
 void frontend_new_statistics (gint player_num, StatisticType type, gint num);
@@ -236,6 +233,7 @@ void set_num_players (gint num);
 
 /* chat.c */
 GtkWidget *chat_build_panel (void);
+void chat_set_focus();
 
 /* name.c */
 void name_create_dlg (void);

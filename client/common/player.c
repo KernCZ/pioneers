@@ -189,6 +189,7 @@ void player_change_name(gint player_num, const gchar *name)
 void player_has_quit(gint player_num)
 {
 	Player *player;
+	Viewer *viewer;
 
 	if (player_num < 0)
 		return;
@@ -200,7 +201,7 @@ void player_has_quit(gint player_num)
 	if (player_num >= num_total_players) {
 		/* a viewer has quit */
 		callbacks.viewer_quit (player_num);
-		Viewer *viewer = viewer_get (player_num);
+		viewer = viewer_get (player_num);
 		g_free (viewer->name);
 		viewers = g_list_remove (viewers, viewer);
 		return;

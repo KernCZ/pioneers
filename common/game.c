@@ -24,6 +24,7 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <glib.h>
+#include <stdio.h>
 
 #include "game.h"
 

@@ -163,7 +163,6 @@ static void allocate_resources(Player *player, BuildRec *rec)
 	Map *map = game->params->map;
 	Node *node;
 	gint idx;
-	GList *list;
 
 	node = map_node(map, rec->x, rec->y, rec->pos);
 
@@ -383,7 +382,6 @@ static void send_game_line(Player *player, gchar *str)
 gboolean send_gameinfo(Map *map, Hex *hex, Player *player)
 {
 	StateMachine *sm = player->sm;
-	Game *game = player->game;
 	gint i;
 	for (i = 0; i < numElem (hex->nodes); i++)
 	{

@@ -1167,9 +1167,7 @@ static char *chat_longestroad_other[] = {
 static char *
 greedy_chat(chat_t occasion, void *param, gboolean self, gint other_player)
 {
-	int iparam = (int)param;
 	int *resparam = (int *)param;
-	DevelType develparam = (DevelType)param;
 	Hex *hexparam = (Hex *)param;
 
     char *ret = NULL;
@@ -1621,7 +1619,6 @@ greedy_consider_quote(Map *map, int mynum,
 {
     static char ret[1024];
     gint give, take, ntake;
-    resource_values_t *resval;
     
     for (give = 0; give < NO_RESOURCE; give++) {
 	if (!we_supply[give])

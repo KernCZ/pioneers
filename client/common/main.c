@@ -26,7 +26,7 @@
 #include "i18n.h"
 #include "callback.h"
 #include <glib.h>
-
+#include "config-gnome.h"
 
 static void run_main (void)
 {
