@@ -1,3 +1,9 @@
+2000-07-30  Jeff Breidenbach  <jeff@alum.mit.edu>
+
+	* debian/rules: Explicitly clean client/help/C/gnocatan to
+	fix Debian bug #67287 (problem with the debian build of
+	gnocatan-help). This is a non-beautiful solution.
+
 2000-07-19  Bibek Sahu  <scorpio@dodds.net>
 
 	* client/client.c, client/config-gnome.c, client/config-gnome.h,
