@@ -1,4 +1,5 @@
 configdir=$(datadir)/gnocatan
+Gamesdir=$(datadir)/gnome/apps/Games
 
 bin_PROGRAMS = gnocatan-server-gtk gnocatan-server-console
 
@@ -65,8 +66,11 @@ config_DATA = \
 	star.game \
 	x.game
 
+Games_DATA = gnocatan-server.desktop
+
 EXTRA_DIST = \
-	$(config_DATA)
+	$(config_DATA) \
+	$(Games_DATA)
 
 # We don't need this, do we?  -- egnor
 # install-data-local:

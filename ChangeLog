@@ -3,6 +3,10 @@
 	* client/theme.c: use a more portable variadic macro
 	  syntax, to address OS X concerns
 
+	* server/gnocatan-server.desktop, server/Makefile.am: add a
+	  GNOME desktop entry for the GTK server, so it's easier to
+	  start from the menu.
+
 2003-01-01  Jeff Breidenbach  <jab@debian.org>
 
 	* debian/gnocatan-meta-server.init: privilige reduction

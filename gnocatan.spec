@@ -139,6 +139,7 @@ make install prefix=$RPM_BUILD_ROOT/usr
 %defattr(-,root,root)
 %doc AUTHORS COPYING ChangeLog INSTALL README NEWS 
 /usr/bin/gnocatan-server-gtk
+/usr/share/gnome/apps/Games/gnocatan-server.desktop
 
 %files server-data
 %defattr(-,root,root)
