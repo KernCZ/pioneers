@@ -42,6 +42,7 @@ Replaces: gnocatan-server
 Description: Gnocatan server - a game for Gnome
  Gnocatan is an emulation of the Settlers of Catan board game which
  can be played over the internet.
+ .
  This package contains the GTK-based Gnocatan game server which
  accepts local or remote clients. One server instance must be running
  per game. Game parameters can be selected in a GUI dialog, and you
@@ -56,7 +57,7 @@ Description: Data required by the Gnocatan server
  can be played over the internet.
  .
  The data package contains architecture independent data needed for the game
- client. 
+ server. 
 
 Package: gnocatan-meta-server
 Architecture: any
