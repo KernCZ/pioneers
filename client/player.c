@@ -61,7 +61,7 @@ static GdkColor token_colors[] = {
 };
 
 static GdkColor player_bg = { 0, 0xB000, 0xB000, 0xB000 };
-static GdkColor player_fg = { 0, 0xFF00, 0xFF00, 0xFF00 };
+static GdkColor player_fg = { 0, 0x0000, 0x0000, 0x0000 };
 
 void player_init()
 {
