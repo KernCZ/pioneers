@@ -19,6 +19,7 @@
  */
 
 #include "frontend.h"
+#include <gnome.h>
 
 static void frontend_network_status (gchar *description)
 {
@@ -85,8 +86,22 @@ static void frontend_robber_moved (Hex *old, Hex *new)
 }
 
 /* set all the callbacks. */
-void set_callbacks ()
+void frontend_set_callbacks (int argc, char **argv)
 {
+	/* this should really not be done here.  It should be in
+	 * frontend_init.  However, i18n needs it to be done before
+	 * frontend_init is called, so it must be done here.  Please fix
+	 * this if you know how.  See alse client/gui/offline.c and
+	 * client/common/gnocatan.c */
+	gnome_program_init (PACKAGE, VERSION,
+		LIBGNOMEUI_MODULE,
+		argc, argv,
+		GNOME_PARAM_POPT_TABLE, NULL,
+		GNOME_PARAM_APP_DATADIR, DATADIR,
+		NULL);
+
+	/* set the callbacks */
+	callbacks.init = &frontend_init;
 	callbacks.network_status = &frontend_network_status;
 	callbacks.instructions = &frontend_instructions;
 	callbacks.network_wait = &frontend_network_wait;

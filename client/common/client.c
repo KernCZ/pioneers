@@ -176,6 +176,7 @@ void client_init ()
 
 void client_start ()
 {
+	callbacks.init ();
 	sm_goto(SM(), mode_offline);
 }
 

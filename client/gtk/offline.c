@@ -166,20 +166,23 @@ static gint compare_int(gconstpointer a, gconstpointer  b)
 }
 
 /* this function is called to let the frontend initialize itself. */
-void frontend_init (int argc, char *argv[])
+void frontend_init ()
 {
 	GtkWidget *app;
 
 	frontend_widgets = g_hash_table_new (hash_int, compare_int);
-	set_callbacks ();
 
 	set_ui_driver( &GTK_Driver );
+	/* this should really be done here, but i18n can't live without it.
+	 * Therefore this is moved to set_callbacks, which is called before
+	 * i18n initialization
 	gnome_program_init (PACKAGE, VERSION,
 		LIBGNOMEUI_MODULE,
 		argc, argv,
 		GNOME_PARAM_POPT_TABLE, NULL,
 		GNOME_PARAM_APP_DATADIR, DATADIR,
 		NULL);
+	*/
 
 	/* Create the application window
 	 */

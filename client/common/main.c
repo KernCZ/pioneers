@@ -40,12 +40,12 @@ int main(int argc, char *argv[])
 	config_init( "/gnocatan/" );
 	client_init ();
 	callbacks.mainloop = &run_main;
-	frontend_init (argc, argv);
+	frontend_set_callbacks (argc, argv);
 
-	/* this should really be done before frontend_init, but it needs
-	 * gnome_program_init, which is done in frontend_init.  If someone
-	 * knows how to fix this (so we can do without gnome), then please
-	 * do so. */
+	/* this should really be done before frontend_set_callbacks, but it
+	 * needs gnome_program_init, which is done in frontend_set_callbacks.
+	 * If someone knows how to fix this (so we can do without gnome),
+	 * then please do so. */
 #if ENABLE_NLS
 	init_nls();
 #endif
