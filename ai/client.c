@@ -130,7 +130,10 @@ static gboolean global_filter(StateMachine *sm, gint event)
 	case SM_INIT:
 		break;
 	case SM_NET_CLOSE:
-		break;
+		log_message( MSG_ERROR, _("We have been kicked out of the game.\n"));
+		sm_pop_all(sm);
+		client_exit();
+		return TRUE;
 	default:
 		break;
 	}

@@ -1,5 +1,11 @@
 2002-05-20  Roman Hodek  <roman@hodek.net>
 
+	* ai/client.c (global_filter): if net connection was close, print
+	message and exit.
+	
+	* client/client.c (global_filter): likewise, but set status to
+	offline.
+
 	* client/histogram.c: added y axis labelling, draw normal
 	distribution
 

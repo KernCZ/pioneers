@@ -153,6 +153,9 @@ static gboolean global_filter(StateMachine *sm, gint event)
 		sm_gui_check(sm, GUI_QUIT, TRUE);
 		break;
 	case SM_NET_CLOSE:
+		log_message( MSG_ERROR, _("We have been kicked out of the game.\n"));
+		sm_pop_all(sm);
+		sm_goto(sm, mode_offline);
 		gui_set_net_status(_("Offline"));
 		break;
 	case GUI_CHANGE_NAME:
