@@ -1,3 +1,7 @@
+2000-06-06  Roderick Schertler <roderick@argon.org>
+
+	* client/resource.c: add a 'total' field to your list of resources.
+
 2000-06-04  Steve Langasek <vorlon@dodds.net>
 
 	* server/into-the-desert.map, server/greater-catan.map:

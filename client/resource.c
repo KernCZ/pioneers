@@ -26,6 +26,7 @@ static gchar *resource_names[][2] = {
 };
 
 static GtkWidget *asset_labels[NO_RESOURCE]; /* label widgets showing resources */
+static GtkWidget *asset_total_label;	/* 'total' label widget */
 static gint my_assets[NO_RESOURCE];	/* my resources */
 
 gboolean can_afford(gint *cost)
@@ -63,6 +64,9 @@ void resource_modify(Resource type, gint num)
 		my_assets[type] += num;
 		sprintf(buff, "%d", my_assets[type]);
 		gtk_label_set_text(GTK_LABEL(asset_labels[type]), buff);
+
+		sprintf(buff, "%d", resource_count(my_assets));
+		gtk_label_set_text(GTK_LABEL(asset_total_label), buff);
 	}
 }
 
@@ -352,6 +356,20 @@ GtkWidget *resource_build_panel()
 	asset_labels[ORE_RESOURCE] = label = gtk_label_new("0");
 	gtk_widget_show(label);
 	gtk_table_attach(GTK_TABLE(table), label, 1, 2, 2, 3,
+			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL,
+			 (GtkAttachOptions)GTK_FILL, 0, 0);
+	gtk_misc_set_alignment(GTK_MISC(label), 1, 0.5);
+
+	label = gtk_label_new(N_("Total"));
+	gtk_widget_show(label);
+	gtk_table_attach(GTK_TABLE(table), label, 2, 3, 2, 3,
+			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL,
+			 (GtkAttachOptions)GTK_FILL, 0, 0);
+	gtk_misc_set_alignment(GTK_MISC(label), 1, 0.5);
+
+	asset_total_label = label = gtk_label_new("0");
+	gtk_widget_show(label);
+	gtk_table_attach(GTK_TABLE(table), label, 3, 4, 2, 3,
 			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL,
 			 (GtkAttachOptions)GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(label), 1, 0.5);
