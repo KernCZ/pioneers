@@ -19,6 +19,8 @@
 	1.1. New keyword: capability. When 'create games' is sent, the
 	metaserver is capable of locally creating new game. Updated the
 	documentation to reflect the change.
+	* server/gtk/gnocatan-server-gtk.c(game_activate): Disabled the 'Add
+	Computer Player' button when gnocatanai is not installed.
 	
 2005-01-25  0.8.1.51  Roland Clobus <rclobus@bigfoot.com>
 	* common/gtk/common_gtk.c: Added stub for gtk_alignment_set_padding,

@@ -162,6 +162,8 @@ static void game_activate(GtkWidget *widget, UNUSED(gpointer user_data))
 
 static void gui_ui_enable(gboolean sensitive)
 {
+	gboolean addcomputer_btn_enabled = !sensitive;
+
 	ui_enabled = sensitive;
 	
 	gtk_widget_set_sensitive(game_frame, sensitive);
@@ -170,8 +172,16 @@ static void gui_ui_enable(gboolean sensitive)
 		_("Start server") : _("Stop server"));
 	gtk_tooltips_set_tip(tooltips, start_btn, ui_enabled ?
 		_("Start the server") : _("Stop the server"), NULL);
-		
-	gtk_widget_set_sensitive(addcomputer_btn, !ui_enabled);
+	
+	if (addcomputer_btn_enabled) {
+		gchar *fullname = g_find_program_in_path(GNOCATAN_AI_PATH);
+		if (fullname) {
+			g_free(fullname);
+		} else {
+			addcomputer_btn_enabled = FALSE;
+		}
+	}
+	gtk_widget_set_sensitive(addcomputer_btn, addcomputer_btn_enabled);
 }
 
 static void start_clicked_cb(UNUSED(GtkButton *start_btn),
