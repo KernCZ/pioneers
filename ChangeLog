@@ -1,3 +1,10 @@
+2002-05-06  Roman Hodek  <roman@hodek.net>
+
+	* Added new games in server/, contributed by <piman@sacredchao.net>:
+	  canyon.game conquest.game  pond.game square.game star.game x.game
+          And one extended by me to have ports:
+	  conquest+ports.game 
+	
 2002-03-10  Steve Langasek <vorlon@dodds.net>
 
 	* clean up the SGML handling so that it matches the behavior of 
