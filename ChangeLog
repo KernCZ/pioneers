@@ -1,3 +1,19 @@
+2001-05-29  David Fallon <davef@tetsubo.com>
+
+	* Added Geoff Hanson's <gwhizz@usa.net> reconnect patch. The short version
+		of how this works is when someone disconnects, instead of the usual
+		cleanup, player_archive is called which saves the names of the
+		disconnected individuals. On all connects, the player name is
+		searched for to see if this is a player that has been archived,
+		and if so, the player_revive function is called to bring them back.
+		There's also a new gameinfo struct that is used to pass the game
+		state back to the client. Note, if we ever have a gnocatan
+		tournament, we'll have some security problems, but that's okay as
+		there's no other security anyways. 
+	* Changed client/build.c, client.c, client.h, develop.c, player.c, player.h
+	* Changed server/develop.c, discard.c, player.c, pregame.c, robber.c,
+		server.h, trade.c, turn.c
+
 2001-03-09  Matt Waggoner  <matt@waggoner.com>
 
 	* One of the official rule variants for Settlers of Catan is
@@ -70,7 +86,7 @@
 		was rolled, percentage of the time each value was rolled, and
 		text labels along the left side.
 
-2001-02-22  David Fallon  <davef@getacard.com>
+2001-02-22  David Fallon  <davef@tetsubo.com>
 
 	* Added walrusmonkey's port background patch. (SF Patch #103768)
 		I like this patch... One change might be to make the port icons
@@ -87,7 +103,7 @@
 	* Added a chat window message when someone wins.
 		In shiny purple!
 
-2001-02-16  David Fallon  <davef@getacard.com>
+2001-02-16  David Fallon  <davef@tetsubo.com>
 
 	* Added Jeff Breidenbach's <jeff@alum.mit.edu> histogram patch.
 		(SF Patch # 103459, 103460, 103461)
@@ -130,7 +146,7 @@
 	* client/resource.c: changed MSG_INFO to MSG_RESOURCE
 	* client/turn.c: changed MSG_INFO to MSG_DICE
 
-2001-02-16  David Fallon  <davef@getacard.com>
+2001-02-16  David Fallon  <davef@tetsubo.com>
 
 	* client/build.c: Fixed SF Bug #108981
 
