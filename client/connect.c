@@ -849,7 +849,11 @@ GtkWidget *connect_create_dlg()
  	if (novar) {
  		if (!(saved_meta_server = g_strdup(getenv("GNOCATAN_META_SERVER"))))
  			saved_meta_server = g_strdup(DEFAULT_META_SERVER);
- 	}
+ 	} else if (!strcmp(saved_meta_server,OLD_META_SERVER)) {
+		g_free(saved_meta_server);
+ 		if (!(saved_meta_server = g_strdup(getenv("GNOCATAN_META_SERVER"))))
+ 			saved_meta_server = g_strdup(DEFAULT_META_SERVER);
+	}
 	saved_port = config_get_string("connect/port=5556", &novar);
 	novar = 0;
 	saved_name = config_get_string("connect/name", &novar);

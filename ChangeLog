@@ -1,3 +1,9 @@
+2003-01-23  Steve Langasek  <vorlon@debian.org>
+
+	* client/connect.c, common/meta.h: automatically upgrade the
+	  metaserver setting to one that works if the old metaserver is
+	  saved in the client settings.
+
 2003-01-21  Steve Langasek  <vorlon@debian.org>
 
 	* client/client.h, client/resource.c, client/monopoly.c,

@@ -11,6 +11,7 @@
 #define __meta_h
 
 #define DEFAULT_META_SERVER "gnocatan.debian.net"
+#define OLD_META_SERVER "term1.dccs.com.au"
 #define META_PORT "5557"
 
 #endif
