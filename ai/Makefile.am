@@ -33,9 +33,7 @@ gnocatanai_SOURCES = \
 gnocatanai_LDADD = \
 	../common/libgnocatan.a \
 	../common/libgnocatan_gtk.a \
-	$(GNOME_LIBDIR) \
-	$(GNOMEUI_LIBS)
-
+	$(GLIB_LIBS)
 
 config_DATA = \
 	computer_names

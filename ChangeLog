@@ -1,3 +1,7 @@
+2003-01-12  Steve Langasek  <vorlon@debian.org>
+	* ai/Makefile.am: don't link GNOME libs for a binary that has
+	  no gui.
+
 2003-01-11  Steve Langasek  <vorlon@debian.org>
 	* client/Makefile.am, client/guimap.c, client/theme.c,
 	  debian/rules: further refine the placement of image files.
