@@ -3,7 +3,7 @@ Section: games
 Priority: optional
 Maintainer: Jeff Breidenbach <jab@debian.org>
 Uploaders: Steve Langasek <vorlon@debian.org>, Roman Hodek <roman@debian.org>
-Build-Depends: debhelper, docbook-utils, libgnome-dev, libzvt-dev, automake1.7, libtool, gettext, autoconf, libgnomeui-dev, scrollkeeper
+Build-Depends: debhelper, libgnome-dev, libzvt-dev, automake1.7, libtool, gettext, autoconf, libgnomeui-dev, scrollkeeper
 Standards-Version: 3.6.1
 
 Package: gnocatan-client
