@@ -1,3 +1,7 @@
+2004-07-02  Jeff Breidenbach  <jab@debian.org>
+
+	* Released as Debian package, 0.8.1-4.
+
 2004-07-01  Roland Clobus <rclobus@bigfoot.com>
 	* server/pregame.c, ai/client.c: Oops, forgot a ;
 	

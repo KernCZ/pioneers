@@ -1,3 +1,11 @@
+gnocatan (0.8.1-4) unstable; urgency=low
+
+  * snapshot from upstream CVS.
+    - New trade window design (Closes: #201100)
+    - AI trade/crash bug fixed (Closes: #243827)
+  
+ -- Jeff Breidenbach <jab@debian.org>  Fri,  2 Jul 2004 17:54:04 -0700
+
 gnocatan (0.8.1-3) unstable; urgency=low
 
   * snapshot from upstream CVS. Can now build on gtk2.4.
@@ -6,7 +14,7 @@ gnocatan (0.8.1-3) unstable; urgency=low
 
 gnocatan (0.8.1-2) unstable; urgency=low
 
-  * napshot from upstream CVS.
+  * snapshot from upstream CVS.
 
  -- Jeff Breidenbach <jab@debian.org>  Sun, 25 Apr 2004 22:35:18 -0700
 
