@@ -375,7 +375,7 @@ static void client_list_types(Client *client)
 
 static void client_create_new_server(Client *client, gchar *line)
 {
-	char *terrain, *numplayers, *points, *sevens_rule, *type;
+	char *terrain, *numplayers, *points, *sevens_rule, *numai, *type;
 	char *envent = "GNOCATAN_META_SERVER=localhost";
 	char *newenv[2] = { envent, NULL };
 	int pid, fd, yes=1;
@@ -403,6 +403,12 @@ static void client_create_new_server(Client *client, gchar *line)
 	*line++ = 0;
 	line += strspn(line, " \t");
 	sevens_rule = line;
+	line += strspn(line, "0123456789");
+	if (line == points)
+		goto bad;
+	*line++ = 0;
+	line += strspn(line, " \t");
+	numai = line;
 	line += strspn(line, "0123456789");
 	if (line == points)
 		goto bad;
@@ -461,6 +467,7 @@ static void client_create_new_server(Client *client, gchar *line)
 				"-R", sevens_rule,
 				"-T", terrain,
 				"-p", port,
+				"-c", numai,
 				"-k", "1200",
 				"-x",
 				"-r",
