@@ -1,3 +1,14 @@
+2001-02-28  Matt Waggoner  <matt@waggoner.com>
+
+	* Changed client/connect.c and client/client.c to add a "Recent
+		Servers" drop-box to the connection dialog.  It saves the last
+		100 servers connected to, moving the most recently used one
+		to the top of the list.  There's not currently any way to
+		delete an entry from the list, but you can manually edit your
+		~/.gnome/gnocatan file if you feel so inclined.  Only servers
+		that you actually successfully connect to, will be added to
+		the MRU list.
+		
 2001-02-27  Matt Waggoner  <matt@waggoner.com>
 
 	* Changed client/gui.c to have the Game > Settings dialog box

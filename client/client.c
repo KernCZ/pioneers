@@ -424,6 +424,61 @@ static gboolean mode_offline(StateMachine *sm, gint event)
 	return FALSE;
 }
 
+/* Updates the saved user settings so that the connected-to
+ * server becomes the first one on the list, and all the others
+ * shift down to fill its space.
+ */
+void update_recent_servers_list(void) {
+	gchar temp_str1[150], temp_str2[150];
+	gchar temp_name[150] = "", temp_port[150] = "";
+	gchar cur_name[150], cur_port[150];
+	gchar conn_name[150], conn_port[150];
+	gboolean default_used;
+	gint done, i;
+
+	done = 0;
+	i = 0;
+
+	strcpy(conn_name, connect_get_server());
+	strcpy(conn_port, connect_get_port_str());
+
+	strcpy(temp_name, conn_name);
+	strcpy(temp_port, conn_port);
+
+	do {
+		sprintf(temp_str1, "favorites/server%dname=", i);
+		sprintf(temp_str2, "favorites/server%dport=", i);
+		strcpy(cur_name, config_get_string(temp_str1, &default_used));
+		strcpy(cur_port, config_get_string(temp_str2, &default_used));
+
+		if (strlen(temp_name)) {
+			sprintf(temp_str1, "favorites/server%dname", i);
+			sprintf(temp_str2, "favorites/server%dport", i);
+			config_set_string(temp_str1, temp_name);
+			config_set_string(temp_str2, temp_port);
+		} else {
+			break;
+		}
+
+		if (strlen(cur_name) == 0) {
+			break;
+		}
+
+		if (!strcmp(cur_name, conn_name) && !strcmp(cur_port, conn_port)) {
+			strcpy(temp_name, "");
+			strcpy(temp_port, "");
+		} else {
+			strcpy(temp_name, cur_name);
+			strcpy(temp_port, cur_port);
+		}
+
+		i++;
+		if (i > 100) {
+			done = 1;
+		}
+	} while (!done);
+}
+
 static gboolean mode_connect(StateMachine *sm, gint event)
 {
 	sm_state_name(sm, "mode_connect");
@@ -447,7 +502,6 @@ static gboolean mode_connect(StateMachine *sm, gint event)
 					connect_get_port_str());
 		config_set_string("connect/name",
 					connect_get_name());
-		
 		
 		copy_player_name(connect_get_name());
 		if (sm_connect(sm, connect_get_server(), connect_get_port())) {
@@ -489,6 +543,9 @@ static gboolean mode_start(StateMachine *sm, gint event)
 	gchar version[512];
 
 	sm_state_name(sm, "mode_start");
+
+	update_recent_servers_list();
+		
 	if (event == SM_ENTER)
 	{
 		gui_set_net_status(_("Loading"));

@@ -315,6 +315,20 @@ gchar *connect_get_port_str()
 	return text;
 }
 
+static void host_list_select_cb(GtkWidget *widget, gpointer user_data) {
+	GtkWidget *item;
+	gchar *host, *str1, *str2;
+	gchar temp[150];
+	
+	item = GTK_WIDGET(user_data);
+	gtk_label_get(GTK_LABEL(item), &host);
+	strcpy(temp, host);
+	str1 = strtok(temp, ":");
+	str2 = strtok(NULL, "");
+	gtk_entry_set_text(GTK_ENTRY(server_entry), str1);
+	gtk_entry_set_text(GTK_ENTRY(port_entry), str2);
+}
+
 static void connect_destroyed_cb(void *widget, gpointer user_data)
 {
 	if (meta_dlg != NULL)
@@ -329,10 +343,17 @@ GtkWidget *connect_create_dlg()
 	GtkWidget *lbl;
 	GtkWidget *hbox;
 	GtkWidget *btn;
+
+	GtkWidget *host_list;
+	GtkWidget *host_item;
+	GtkWidget *host_menu;
+	
 	gchar     *saved_server;
 	gchar     *saved_port;
 	gchar     *saved_name;
-	gint      novar;
+	gint      novar, i;
+	gchar host_name[150], host_port[150], temp_str[150];
+	gboolean default_returned;
 
 	saved_server = config_get_string("connect/server=localhost",&novar);
 	saved_port = config_get_string("connect/port=5556", &novar);
@@ -354,7 +375,7 @@ GtkWidget *connect_create_dlg()
 	dlg_vbox = GNOME_DIALOG(dlg)->vbox;
 	gtk_widget_show(dlg_vbox);
 
-	table = gtk_table_new(3, 4, FALSE);
+	table = gtk_table_new(4, 4, FALSE);
 	gtk_widget_show(table);
 	gtk_box_pack_start(GTK_BOX(dlg_vbox), table, FALSE, TRUE, 0);
 	gtk_container_border_width(GTK_CONTAINER(table), 5);
@@ -367,6 +388,55 @@ GtkWidget *connect_create_dlg()
 			 (GtkAttachOptions)GTK_FILL,
 			 (GtkAttachOptions)GTK_EXPAND, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(lbl), 0, 0.5);
+
+/***********************************/
+/* Recently Used Servers list box  */
+/***********************************/
+
+	host_list = gtk_option_menu_new();
+	host_menu = gtk_menu_new();
+
+	gtk_widget_show(host_list);
+	gtk_widget_show(host_menu);
+
+	for (i = 0; i < 10; i++) {
+		sprintf(temp_str, "/gnocatan/favorites/server%dname=", i);
+		strcpy(host_name, config_get_string(temp_str, &default_returned));
+		sprintf(temp_str, "/gnocatan/favorites/server%dport=", i);
+		strcpy(host_port, config_get_string(temp_str, &default_returned));
+
+		if (default_returned == 1) {
+			break;
+		}
+
+		sprintf(temp_str, "%s:%s", host_name, host_port);
+
+		host_item = gtk_menu_item_new();
+		lbl = gtk_label_new(temp_str);
+		gtk_container_add(GTK_CONTAINER(host_item), lbl);
+		gtk_signal_connect (GTK_OBJECT (host_item), "activate",
+												GTK_SIGNAL_FUNC (host_list_select_cb), lbl);
+		gtk_widget_show(lbl);
+		gtk_misc_set_alignment(GTK_MISC(lbl), 0, 0.5);
+		gtk_widget_show(host_item);
+
+		gtk_menu_append(GTK_MENU(host_menu), host_item);
+	}
+
+	gtk_option_menu_set_menu(GTK_OPTION_MENU(host_list), host_menu);
+	
+	gtk_table_attach(GTK_TABLE(table), host_list, 1, 3, 3, 4, GTK_FILL, GTK_FILL, 0, 0);
+
+	lbl = gtk_label_new("Recent Servers");
+	gtk_widget_show(lbl);
+	gtk_table_attach(GTK_TABLE(table), lbl, 0, 1, 3, 4,
+			 (GtkAttachOptions)GTK_FILL,
+			 (GtkAttachOptions)GTK_EXPAND, 0, 0);
+	gtk_misc_set_alignment(GTK_MISC(lbl), 0, 0.5);
+
+/***********************************/
+/* End Recently Used Servers list  */
+/***********************************/
 
 	server_entry = gtk_entry_new();
 	gtk_signal_connect_after(GTK_OBJECT(server_entry), "changed",

@@ -75,6 +75,7 @@ void client_changed_cb(void);
 void client_event_cb(GtkWidget *widget, gint event);
 void client_gui(GtkWidget *widget, gint event, gchar *signal);
 void client_gui_destroy(GtkWidget *widget, gint event);
+void update_recent_servers_list(void);
 
 /* connect.c */
 gboolean connect_valid_params(void);
