@@ -1,4 +1,11 @@
-2004-12-03  0.8.1.45  Roland Clobus <rclobus@bigfoot.com>
+2004-12-19  Etan Reisner <deryni@eden.rutgers.edu>
+	* ai/client.c, common/gtk/select-game.c,
+	meta-server/gnocatan-meta-server.c, server/gtk/gnocatan-server-gtk.c:
+	Using g_strdup instead of strdup
+	* client/common/callback.c, server/gnocatan-server-console.c: Removing
+	unused/duplicate #include lines
+
+004-12-03  0.8.1.45  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/resource-table.c, client/gtk/resource-table.h,
 	client/gtk/Makefile.am: Added a simple way to add a selection for
 	resources in the client.

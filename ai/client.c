@@ -95,7 +95,7 @@ static StateMachine *SM(void)
 void client_start(const char *server, const char *port, const char *username,
 		const char *ai, int waittime, int chatty)
 {
-    copy_player_name(strdup(username));
+    copy_player_name(g_strdup(username));
 
     computer_init(ai, &computer_funcs, waittime, chatty);
 

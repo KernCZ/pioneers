@@ -273,7 +273,7 @@ static gchar *getmyhostname(void)
                herror("gnocatan-meta-server");
                return NULL;
        }
-       return strdup(hp->h_name);
+	return g_strdup(hp->h_name);
 }
 
 static void hostname_changed_cb(GtkEntry *widget,

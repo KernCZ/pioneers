@@ -26,7 +26,6 @@
 #include <string.h>
 #include <sys/types.h>
 #include <unistd.h>
-#include <dirent.h>
 #include <limits.h>
 #ifdef HAVE_GETOPT_H
 #include <getopt.h>

@@ -341,7 +341,7 @@ static GList *load_game_desc(gchar *fname, GList *titles)
 		if (strncmp(line, "title ", 6) == 0) {
 			title = line+6;
 			title += strspn(title, " \t");
-			titles = g_list_insert_sorted(titles, strdup(title),
+			titles = g_list_insert_sorted(titles, g_strdup(title),
 										  (GCompareFunc)strcmp);
 			break;
 		}
@@ -990,7 +990,7 @@ static void setmyhostname( void )
 		herror("gnocatan-meta-server");
 		return;
 	}
-	myhostname = strdup(hp->h_name);
+	myhostname = g_strdup(hp->h_name);
 }
 
 int main(int argc, char *argv[])

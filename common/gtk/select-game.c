@@ -95,8 +95,8 @@ static void select_game_init(SelectGame *sg)
 			GTK_TABLE(sg), sg->option_menu,
 			0, 1, 0, 1);
 	gtk_option_menu_set_menu(GTK_OPTION_MENU(sg->option_menu), sg->menu);
-	sg->default_game = strdup("Default");
-	sg->active_game = strdup(sg->default_game);
+	sg->default_game = g_strdup("Default");
+	sg->active_game = g_strdup(sg->default_game);
 }
 
 /* Create a new instance of the widget */
@@ -118,7 +118,7 @@ void select_game_set_default(SelectGame *sg, const gchar *game_title)
 {
 	if (sg->default_game)
 		g_free(sg->default_game);
-	sg->default_game = strdup(game_title);
+	sg->default_game = g_strdup(game_title);
 }
 
 /* Add a game title to the list.
@@ -140,7 +140,7 @@ void select_game_add(SelectGame *sg, const gchar *game_title)
 				GTK_OPTION_MENU(sg->option_menu), 0);
 		if (sg->active_game)
 			g_free(sg->active_game);
-		sg->active_game = strdup(game_title);
+		sg->active_game = g_strdup(game_title);
 	} else {
 		gtk_menu_shell_append(GTK_MENU_SHELL(sg->menu), item);
 	}
@@ -153,7 +153,7 @@ static void select_game_item_activate(GtkWidget *widget, SelectGame *sg)
 	GtkWidget *child = gtk_bin_get_child(GTK_BIN(widget));
 	if (sg->active_game)
 		g_free(sg->active_game);
-	sg->active_game = strdup(gtk_label_get_label(GTK_LABEL(child)));	
+	sg->active_game = g_strdup(gtk_label_get_label(GTK_LABEL(child)));	
 	g_signal_emit(G_OBJECT(sg), select_game_signals[ACTIVATE], 0);
 }
 

@@ -20,7 +20,6 @@
 
 #include "config.h"
 #include <stdio.h>
-#include "config.h"
 #include "callback.h"
 #include "state.h"
 #include "client.h"
