@@ -1,9 +1,13 @@
+
+include $(top_srcdir)/rules.make
+
 bin_PROGRAMS = gnocatan-meta-server
 
 INCLUDES = \
 	-I$(srcdir)/../common -I. \
 	-I$(includedir) \
-	$(GNOME2_CFLAGS)
+	$(GNOME2_CFLAGS) \
+	$(debug_includes)
 
 
 gnocatan_meta_server_SOURCES = \

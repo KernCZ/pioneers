@@ -18,6 +18,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+include $(top_srcdir)/rules.make
+
 SUBDIRS = data
 
 themedir  =$(datadir)/games/gnocatan/themes
@@ -53,7 +55,8 @@ INCLUDES = \
 	-DDATADIR=\"$(datadir)\" \
 	$(ADMIN_GTK) \
         -I$(includedir) \
-	$(GNOME2_CFLAGS) 
+	$(GNOME2_CFLAGS)  \
+	$(debug_includes)
 
 EXTRA_gnocatan_SOURCES = $(ADMIN_GTK_FILES_INACTIVE)
 

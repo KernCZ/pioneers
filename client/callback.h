@@ -126,11 +126,9 @@ struct callbacks {
 	void (*gold_done)(void);
 	/* the game is over, someone won. */
 	void (*game_over)(gint player_num, gint points);
-	/* A callback, mostly meant for AI players, when the game is loaded.
-	 * An AI can see if it knows how to play with the given tiles, or
-	 * make a choice which personality it should have. */
+	/* The game is about to (re)start, nothing is known about the new game */
 	void (*init_game)(void);
-	/* the game starts. */
+	/* The game is about to start, all rules are known. */
 	void (*start_game)(void);
 	/* You must setup.  Num_* is the number of settlements/roads that
 	 * should still be built. */

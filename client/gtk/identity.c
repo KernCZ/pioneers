@@ -3,6 +3,7 @@
  *
  * Copyright (C) 1999 the Free Software Foundation
  * Copyright (C) 2003 Bas Wijnen <b.wijnen@phys.rug.nl>
+ * Copyright (C) 2004 Roland Clobus <rclobus@bigfoot.com>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,26 +20,29 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <math.h>
-#include <ctype.h>
 #include <gnome.h>
 
 #include "frontend.h"
-#include "cards.h"
 
 static GtkWidget *identity_area;
+static GuiMap bogus_map;
+static GdkGC *identity_gc;
 
 static int die1_num;
 static int die2_num;
+
+static int fixedwidth;    /* Size of fixed part (digits + spacing) */
+static int variablewidth; /* Size of variable part (polygons) */
 
 static int draw_building_and_count(GdkGC *gc, GtkWidget *area, gint offset,
 				   Polygon *poly, gint num)
 {
 	GdkRectangle rect;
 	char buff[10];
-	gint lbearing, rbearing, width, ascent, descent;
-
-	poly_bound_rect(poly, 1, &rect);
+	gint width, height;
+	PangoLayout *layout;
+	
+	poly_bound_rect(poly, 0, &rect);
 	poly_offset(poly,
 		    offset - rect.x,
 		    area->allocation.height - 5 - rect.y - rect.height);
@@ -47,14 +51,15 @@ static int draw_building_and_count(GdkGC *gc, GtkWidget *area, gint offset,
 	offset += 5 + rect.width;
 
 	sprintf(buff, "%d", num);
-	gdk_text_extents(gtk_style_get_font(area->style), buff, strlen(buff),
-			 &lbearing, &rbearing, &width, &ascent, &descent);
-	gdk_draw_text(area->window, gtk_style_get_font(area->style), gc,
-		      offset, area->allocation.height - 5,
-		      buff, strlen(buff));
+	layout = gtk_widget_create_pango_layout (area, buff);
+	pango_layout_get_pixel_size (layout, &width, &height);
+	gdk_draw_layout(area->window, gc, offset, area->allocation.height - height - 5, layout);
+	g_object_unref (layout);
 
 	offset += 5 + width;
 
+	fixedwidth += width + 10;
+	variablewidth += rect.width;
 	return offset;
 }
 
@@ -105,23 +110,18 @@ static void show_die(GdkGC *gc, GtkWidget *area, gint x_offset, gint num)
 static gint expose_identity_area_cb(GtkWidget *area,
 		UNUSED(GdkEventExpose *event), UNUSED(gpointer user_data))
 {
-	static GdkGC *identity_gc;
-	static GuiMap bogus_map;
 	GdkPoint points[MAX_POINTS];
 	Polygon poly = { points, numElem(points) };
 	gint offset;
 	GdkColor *colour;
 	const GameParams *game_params;
+	gint new_radius;
 
 	if (area->window == NULL || my_player_num() < 0)
 		return FALSE;
 
 	if (identity_gc == NULL)
 		identity_gc = gdk_gc_new(area->window);
-	if (bogus_map.hex_radius == 0)
-		/* 38 seems to give a good result :-)
-		 */
-		guimap_scale_with_radius(&bogus_map, 38);
 
 	if (player_is_viewer (my_player_num () ) )
 		colour = &black;
@@ -139,8 +139,12 @@ static gint expose_identity_area_cb(GtkWidget *area,
 
 	game_params = get_game_params ();
 	if (game_params == NULL)
-		return FALSE;
+		return TRUE;
 	offset = 5;
+
+	fixedwidth = 0;
+	variablewidth = 0;
+
 	if (game_params->num_build_type[BUILD_ROAD] > 0) {
 		poly.num_points = MAX_POINTS;
 		guimap_road_polygon(&bogus_map, NULL, &poly);
@@ -172,6 +176,13 @@ static gint expose_identity_area_cb(GtkWidget *area,
 						 &poly, stock_num_cities());
 	}
 
+	new_radius = bogus_map.hex_radius * (area->allocation.width - 75 - fixedwidth) / variablewidth;
+	if (new_radius < bogus_map.hex_radius) {
+		guimap_scale_with_radius(&bogus_map, new_radius);
+		/* Appearance changed -> draw again */
+		gtk_widget_queue_draw(area);
+	}
+
 	if (die1_num > 0 && die2_num > 0) {
 		show_die(identity_gc, area, area->allocation.width - 35,
 			 die1_num);
@@ -179,28 +190,36 @@ static gint expose_identity_area_cb(GtkWidget *area,
 			 die2_num);
 	}
 
-	return FALSE;
+	return TRUE;
 }
 
 void identity_draw()
 {
-	gtk_widget_draw(identity_area, NULL);
+	gtk_widget_queue_draw(identity_area);
 }
 
 void identity_set_dice(gint die1, gint die2)
 {
 	die1_num = die1;
 	die2_num = die2;
-	gtk_widget_draw(identity_area, NULL);
+	gtk_widget_queue_draw(identity_area);
 }
 
 GtkWidget* identity_build_panel()
 {
 	identity_area = gtk_drawing_area_new();
-	gtk_signal_connect(GTK_OBJECT(identity_area), "expose_event",
-			   GTK_SIGNAL_FUNC(expose_identity_area_cb), NULL);
-	gtk_widget_set_usize(identity_area, -1, 40);
+	g_signal_connect(G_OBJECT(identity_area), "expose_event",
+			G_CALLBACK(expose_identity_area_cb), NULL);
+	gtk_widget_set_size_request(identity_area, -1, 40);
+	identity_reset();
 	gtk_widget_show(identity_area);
-
 	return identity_area;
+}
+
+void identity_reset()
+{
+	die1_num = 0;
+	die2_num = 0;
+	/* 50 seems to give a good upper limit */
+	guimap_scale_with_radius(&bogus_map, 50);
 }

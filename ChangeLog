@@ -1,3 +1,32 @@
+2004-01-02 0.8.1.12  Roland Clobus <rclobus@bigfoot.com>
+
+	* client/callback.h (struct callbacks), client/common/client.c
+	(mode_start, mode_load_game, mode_load_gameinfo, mode_start_response),
+	client/common/client.h, client/common/player.c (player_reset,
+	player_reset_statistic), client/gtk/callbacks.c (frontend_init_game,
+	forntend_start_game), client/gtk/frontend.h, client/gtk/player.c
+	(player_clear_summary): Fix bug #866431: Play several games with same
+	client.
+	* client/gtk/callbacks.c (frontend_start_game), client/gtk/frontend.h,
+	client/gtk/identity.c (top level, draw_building_and_count,
+	expose_identity_area_cb, identity_draw, identity_set_dice,
+	identity_build_panel, identity_reset): Fixed bug #824624: Polygons in
+	identity panel disappear under dice.
+
+2004-01-02 0.8.1.12  Bas Wijnen <b.wijnen@phys.rug.nl>
+
+	* configure.in, Makefile.am, ai/Makefile.am, client/Makefile.am,
+	client/common/Makefile.am, client/gtk/Makefile.am,
+	client/gtk/data/Makefile.am, client/gtk/data/themes/Makefile.am,
+	client/gtk/data/themes/FreeCIV-like/Makefile.am,
+	client/gtk/data/themes/Iceland/Makefile.am,
+	client/gtk/data/themes/Tiny/Makefile.am, client/help/Makefile.am,
+	client/help/C/Makefile.am, common/Makefile.am, docs/Makefile.am,
+	macros/Makefile.am, meta-server/Makefile.am, server/Makefile.am,
+	rules.make (new file): Added support for --enable-debug to autogen.sh.
+	* common/network.c, client/gtk/state.c: Give debugging output when
+	--enable-debug is specified.
+
 2004-01-02 0.8.1.11  Bas Wijnen <b.wijnen@phys.rug.nl>
 	
 	* common/Makefile.am, common/Makefile.am, common/authors.h: 

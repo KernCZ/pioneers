@@ -19,6 +19,8 @@
 
 # see http://developer.gnome.org/dotplan/porting/ar01s06.html
 
+include $(top_srcdir)/rules.make
+
 figdir = images
 docname = gnocatan
 lang = C

@@ -70,7 +70,6 @@ void chat_parser (gint player_num, char *chat_str);
 /******* player.c **********/
 void player_reset (void);
 void player_set_my_num(gint player_num);
-void player_reset_statistic(void);
 void player_modify_statistic(gint player_num, StatisticType type, gint num);
 void player_change_name(gint player_num, const gchar *name);
 void player_has_quit(gint player_num);

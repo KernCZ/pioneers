@@ -18,9 +18,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+include $(top_srcdir)/rules.make
+
 SUBDIRS = po intl common client server meta-server ai docs
 
-EXTRA_DIST = autogen.sh gnocatan.spec xmldocs.make omf.make
+EXTRA_DIST = autogen.sh gnocatan.spec xmldocs.make omf.make rules.make
 
 dist-hook:
 	mkdir $(distdir)/debian

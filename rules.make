@@ -1,8 +1,7 @@
 # Gnocatan - Implementation of the excellent Settlers of Catan board game.
 #   Go buy a copy.
 #
-# Copyright (C) 1999 the Free Software Foundation
-# Copyright (C) 2003 Bas Wijnen <b.wijnen@phys.rug.nl>
+# Copyright (C) 2004 Bas Wijnen <b.wijnen@phys.rug.nl>
 # 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,37 +17,28 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-include $(top_srcdir)/rules.make
-
-noinst_LIBRARIES = libgnocatanclient.a
-
-libgnocatanclient_a_DEPENDENCIES = ../../common/libgnocatan.a
-
-INCLUDES = \
-	-I$(srcdir)/.. \
-	-I$(srcdir)/../.. \
-	-I$(srcdir)/../../common \
-        -I$(includedir) \
-	-DLOCALEDIR=\""$(datadir)/locale"\" \
-	$(GLIB2_CFLAGS) \
-	$(GNOME2_CFLAGS) \
-	$(debug_includes)
-
-libgnocatanclient_a_SOURCES = \
-	build.c \
-	callback.c \
-	chat.c \
-	client.c \
-	client.h \
-	develop.c \
-	gnocatan.c \
-	i18n.c \
-	player.c \
-	resource.c \
-	robber.c \
-	setup.c \
-	stock.c \
-	turn.c
-
-libgnocatanclient_a_LIBADD = \
-	../../common/libgnocatan.a
+if DEBUG
+debug_includes = \
+	-Wall \
+	-W \
+	-Wpointer-arith \
+	-Wcast-qual \
+	-Wwrite-strings \
+	-Wno-sign-compare \
+	-Waggregate-return \
+	-Wstrict-prototypes \
+	-Wmissing-prototypes \
+	-Wmissing-declarations \
+	-Wredundant-decls \
+	-Wnested-externs \
+	-ggdb3 \
+	-O \
+	-DDEBUG \
+## This define tricks gtk into thinking one of its header files was already
+## included.  We don't need the header file, but if it is included, it produces
+## a warning (from -Wstrict-prototypes.)  This is intentional, so this seems to
+## be the only solution.
+	-D__GTK_ITEM_FACTORY_H__
+else
+debug_includes =
+endif

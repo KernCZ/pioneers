@@ -18,13 +18,16 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+include $(top_srcdir)/rules.make
+
 noinst_LIBRARIES = libgnocatan.a libgnocatan_gtk.a
 
 noinst_HEADERS = authors.h
 
 INCLUDES = \
 	-DGNOMELOCALEDIR=\""$(datadir)/locale"\" \
-        -I$(includedir) $(GNOME2_CFLAGS)
+        -I$(includedir) $(GNOME2_CFLAGS) \
+	$(debug_includes)
 
 libgnocatan_a_SOURCES = \
 	buildrec.c \

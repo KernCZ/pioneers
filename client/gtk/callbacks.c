@@ -41,13 +41,14 @@ static void frontend_network_wait (gboolean is_waiting)
 
 static void frontend_init_game (void)
 {
-	gui_set_game_params (get_game_params () );
-	frontend_gui_update ();
+	player_clear_summary();
 }
 
 static void frontend_start_game (void)
 {
+	gui_set_game_params (get_game_params () );
 	set_num_players (num_players () );
+	identity_reset();
 	frontend_gui_update ();
 }
 

@@ -537,6 +537,7 @@ gboolean mode_start(StateMachine *sm, gint event)
 	{
 		callbacks.network_status (_("Loading"));
 		player_reset();
+		callbacks.init_game ();
 	}		
 
 	if (event != SM_RECV)
@@ -631,7 +632,6 @@ static gboolean mode_load_game(StateMachine *sm, gint event)
 		develop_init();
 		sm_send(sm, "gameinfo\n");
 		sm_goto(sm, mode_load_gameinfo);
-		callbacks.init_game ();
 		return TRUE;
 	}
 	if (check_other_players(sm))
@@ -681,6 +681,7 @@ static gboolean mode_load_gameinfo(StateMachine *sm, gint event)
 		return TRUE;
 	}
 	if (sm_recv(sm, "end")) {
+		callbacks.start_game ();
 		if (disconnected)
 		{
 			recover_from_disconnect(sm, &rinfo);
@@ -891,7 +892,6 @@ static gboolean mode_start_response(StateMachine *sm, gint event)
 	if (sm_recv(sm, "OK")) {
 		sm_goto(sm, mode_idle);
 		callbacks.network_status (_("Idle"));
-		callbacks.start_game ();
 		return TRUE;
 	}
 	return check_other_players(sm);

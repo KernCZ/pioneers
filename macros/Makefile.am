@@ -1,3 +1,5 @@
+include $(top_srcdir)/rules.make
+
 ## Please update this variable if any new macros are created
 MACROS=						\
   aclocal-include.m4				\

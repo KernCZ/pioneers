@@ -25,6 +25,9 @@ static GuiState current_state;
 
 void set_gui_state (GuiState state)
 {
+#ifdef DEBUG
+	log_message (MSG_INFO, "state %p -> %p\n", current_state, state);
+#endif
 	current_state = state;
 	frontend_gui_update ();
 }

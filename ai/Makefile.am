@@ -2,6 +2,8 @@ configdir=$(datadir)/games/gnocatan
 
 bin_PROGRAMS = gnocatanai
 
+include $(top_srcdir)/rules.make
+
 gnocatanai_DEPENDENCIES = ../common/libgnocatan.a ../common/libgnocatan_gtk.a
 
 INCLUDES = \
@@ -9,7 +11,8 @@ INCLUDES = \
 	-DGNOMELOCALEDIR=\""$(datadir)/locale"\" \
 	$(ADMIN_GTK) \
         -I$(includedir) \
-	$(GNOME2_CFLAGS)
+	$(GNOME2_CFLAGS) \
+	$(debug_includes)
 
 gnocatanai_SOURCES = \
 	ai.c \

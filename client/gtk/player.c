@@ -478,3 +478,8 @@ void player_show_current (gint player_num)
 	gtk_widget_draw(turn_area, NULL);
 	player_show_summary (player_num);
 }
+
+void player_clear_summary()
+{
+	gtk_clist_clear(GTK_CLIST(summary_clist));
+}

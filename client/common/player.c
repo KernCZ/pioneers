@@ -40,7 +40,8 @@ static gint num_total_players = 4; /* total number of players in the game */
  * previous game. */
 void player_reset ()
 {
-	gint i;
+	gint i, idx;
+
 	/* remove all viewers */
 	while (viewers != NULL)
 		viewers = g_list_remove (viewers, viewers->data);
@@ -57,6 +58,8 @@ void player_reset ()
 			players[i].points = g_list_remove (players[i].points,
 					points);
 		}
+		for (idx = 0; idx < numElem(players[i].statistics); ++idx)
+			players[i].statistics[idx] = 0;
 	}
 }
 
@@ -120,19 +123,6 @@ gint num_players ()
 void player_set_my_num(gint player_num)
 {
 	my_player_id = player_num;
-}
-
-void player_reset_statistic(void)
-{
-	gint idx,player_num;
-	Player *player;
-
-	for (player_num = 0; player_num < numElem(players); player_num++) {
-		player = player_get (player_num);
-		for (idx = 0; idx < numElem(player->statistics); idx++) {
-			player->statistics[idx] = 0;
-		}
-	}
 }
 
 void player_modify_statistic(gint player_num, StatisticType type, gint num)

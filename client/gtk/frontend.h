@@ -219,6 +219,7 @@ void gold_choose_end (void);
 GtkWidget *identity_build_panel (void);
 void identity_draw (void);
 void identity_set_dice (gint die1, gint die2);
+void identity_reset(void);
 
 /* resource.c */
 GtkWidget *resource_build_panel (void);
@@ -226,6 +227,7 @@ GtkWidget *resource_build_panel (void);
 /* player.c */
 GtkWidget *player_build_summary (void);
 GtkWidget *player_build_turn_area (void);
+void player_clear_summary(void);
 void player_init (void);
 GdkColor *player_color (gint player_num);
 void player_show_current (gint player_num);

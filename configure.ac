@@ -23,7 +23,7 @@ AC_PREREQ(2.50)
 AC_CONFIG_SRCDIR([client])
 
 AM_CONFIG_HEADER(config.h)
-AM_INIT_AUTOMAKE([gnocatan], [0.8.1.11])
+AM_INIT_AUTOMAKE([gnocatan], [0.8.1.12])
 
 PROTOCOL_VERSION="\"0.8.0\""
 META_PROTOCOL_VERSION="\"1.0\""
@@ -50,6 +50,15 @@ AC_ARG_ENABLE([admin-gtk],
   *)   admin_gtk_support=false ;;
 esac], [admin_gtk_support=false])
 AM_CONDITIONAL(ADMIN_GTK_SUPPORT, [test x$admin_gtk_support = xtrue])
+
+AC_ARG_ENABLE([debug],
+[  --enable-debug          Compile with lots of warnings and have verbose logging.],
+[case "${enableval}" in
+  yes) debug_support=true  ;;
+  "")  debug_support=true  ;;
+  *)   debug_support=false ;;
+esac], [debug_support=false])
+AM_CONDITIONAL(DEBUG, [test x$debug_support = xtrue])
 
 AC_CHECK_HEADERS([getopt.h])
 AC_SUBST(CFLAGS)

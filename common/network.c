@@ -217,6 +217,9 @@ static void write_ready(Session *ses)
 
 void net_write(Session *ses, const gchar *data)
 {
+#ifdef DEBUG
+	log_message (MSG_INFO, "net_write (%p): %s", ses, data);
+#endif
 	if (!ses || ses->fd < 0)
 		return;
 	if (ses->write_queue != NULL || !net_connected(ses)) {
@@ -331,6 +334,9 @@ static void read_ready(Session *ses)
 
 #ifdef LOG
 		debug("read_ready: line [%s]\n", line);
+#endif
+#ifdef DEBUG
+		log_message (MSG_INFO, "read_ready(%p): %s\n", ses, line);
 #endif
 		notify(ses, NET_READ, line);
 	}
