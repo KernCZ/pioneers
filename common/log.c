@@ -9,6 +9,8 @@
  */
 
 #include <stdio.h>
+#include <time.h>
+#include <string.h>
 
 #include "log.h"
 #include "driver.h"
@@ -82,12 +84,40 @@ void log_message_using_func(LogFunc logfunc, gint msg_type, gchar *fmt, ...)
 void log_message(gint msg_type, gchar *fmt, ...)
 {
 	gchar text[1024];
+	gchar timestamp[1024];
 	va_list ap;
-
+	time_t t;
+	struct tm *alpha;
+	gchar thour[3], tmin[3], tsec[3];
+	
 	va_start(ap, fmt);
 	g_vsnprintf(text, sizeof(text), fmt, ap);
 	va_end(ap);
-	
+
+	if (log_timestamp == 1) {
+		t = time(NULL);
+		alpha = localtime(&t);
+
+		if (alpha->tm_hour < 10) sprintf(thour, "0%d", alpha->tm_hour);
+		else sprintf(thour, "%d", alpha->tm_hour);
+		
+		if (alpha->tm_min < 10) sprintf(tmin, "0%d", alpha->tm_min);
+		else sprintf(tmin, "%d", alpha->tm_min);
+
+		if (alpha->tm_sec < 10) sprintf(tsec, "0%d", alpha->tm_sec);
+		else sprintf(tsec, "%d", alpha->tm_sec);
+
+		sprintf(timestamp, "%s:%s:%s ", thour, tmin, tsec);
+
+		if( driver->log_write )
+			driver->log_write( MSG_INFO, timestamp );
+		else
+			LOG_FUNC_DEFAULT( MSG_INFO, timestamp );
+			
+	} else {
+		log_timestamp = 1;
+	}
+
 	if( driver->log_write )
 		driver->log_write( msg_type, text );
 	else

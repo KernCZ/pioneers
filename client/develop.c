@@ -102,7 +102,7 @@ void develop_begin_turn()
 
 void develop_bought(gint player_num)
 {
-	log_message( MSG_INFO, _("%s bought a development card.\n"),
+	log_message( MSG_DEVCARD, _("%s bought a development card.\n"),
 		 player_name(player_num, TRUE));
 
 	player_modify_statistic(player_num, STAT_DEVELOPMENT, 1);
@@ -119,10 +119,10 @@ void develop_bought_card(DevelType type)
 	bought_develop = TRUE;
 	deck_card_add(develop_deck, type, turn_num());
 	if (devel_cards[type].is_unique)
-		log_message( MSG_INFO, _("You bought the %s development card.\n"),
+		log_message( MSG_DEVCARD, _("You bought the %s development card.\n"),
 			 devel_cards[type].name);
 	else
-		log_message( MSG_INFO, _("You bought a %s development card.\n"),
+		log_message( MSG_DEVCARD, _("You bought a %s development card.\n"),
 			 devel_cards[type].name);
 	player_modify_statistic(my_player_num(), STAT_DEVELOPMENT, 1);
 	stock_use_develop();
@@ -142,11 +142,11 @@ void develop_played(gint player_num, gint card_idx, DevelType type)
 	}
 
 	if (devel_cards[type].is_unique)
-		log_message( MSG_INFO, _("%s played the %s development card.\n"),
+		log_message( MSG_DEVCARD, _("%s played the %s development card.\n"),
 			 player_name(player_num, TRUE),
 			 devel_cards[type].name);
 	else
-		log_message( MSG_INFO, _("%s played a %s development card.\n"),
+		log_message( MSG_DEVCARD, _("%s played a %s development card.\n"),
 			 player_name(player_num, TRUE),
 			 devel_cards[type].name);
 

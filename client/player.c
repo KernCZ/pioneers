@@ -17,19 +17,28 @@
 #include "player.h"
 #include "log.h"
 
+static GdkColor ps_settlement  = { 0, 0xbb00, 0x0000, 0x0000 };
+static GdkColor ps_city        = { 0, 0xff00, 0x0000, 0x0000 };
+static GdkColor ps_largest     = { 0, 0x1300, 0xc600, 0xba00 };
+static GdkColor ps_longest     = { 0, 0x1300, 0xc600, 0xba00 };
+static GdkColor ps_soldier     = { 0, 0xe500, 0x8f00, 0x1600 };
+static GdkColor ps_resource    = { 0, 0x0000, 0x0000, 0xFF00 };
+static GdkColor ps_development = { 0, 0xc600, 0xc600, 0x1300 };
+static GdkColor ps_building    = { 0, 0x0b00, 0xed00, 0x8900 };
+
 static Statistic statistics[] = {
-	{ N_("Settlement"), N_("Settlements"), 1 },
-	{ N_("City"), N_("Cities"), 2 },
-	{ N_("Largest Army"), NULL, 2 },
-	{ N_("Longest Road"), NULL, 2 },
-	{ N_("Chapel"), NULL, 1 },
-	{ N_("University of Gnocatan"), NULL, 1 },
-	{ N_("Governor's House"), NULL, 1 },
-	{ N_("Library"), NULL, 1 },
-	{ N_("Market"), NULL, 1 },
-	{ N_("Soldier"), N_("Soldiers"), 0 },
-	{ N_("Resource card"), N_("Resource cards"), 0 },
-	{ N_("Development card"), N_("Development cards"), 0 }
+	{ N_("Settlement"), N_("Settlements"), 1, &ps_settlement },
+	{ N_("City"), N_("Cities"), 2, &ps_city },
+	{ N_("Largest Army"), NULL, 2, &ps_largest },
+	{ N_("Longest Road"), NULL, 2, &ps_largest },
+	{ N_("Chapel"), NULL, 1, &ps_building },
+	{ N_("University of Gnocatan"), NULL, 1, &ps_building },
+	{ N_("Governor's House"), NULL, 1, &ps_building },
+	{ N_("Library"), NULL, 1, &ps_building },
+	{ N_("Market"), NULL, 1, &ps_building },
+	{ N_("Soldier"), N_("Soldiers"), 0, &ps_soldier },
+	{ N_("Resource card"), N_("Resource cards"), 0, &ps_resource },
+	{ N_("Development card"), N_("Development cards"), 0, &ps_development }
 };
 
 static Player players[MAX_PLAYERS];
@@ -152,6 +161,8 @@ void player_modify_statistic(gint player_num, StatisticType type, gint num)
 	gchar desc[128];
 	gchar points[16];
 	gchar *row_data[3];
+	GtkStyle *current_style = gtk_style_new();
+	static GdkColor temp1x;
 
 	row_data[0] = "";
 	row_data[1] = desc;
@@ -181,15 +192,28 @@ void player_modify_statistic(gint player_num, StatisticType type, gint num)
 			strcpy(points, "");
 		row = gtk_clist_find_row_from_data(GTK_CLIST(summary_clist),
 						   &player->statistics[type]);
+
+		current_style->fg[0] = *statistics[type].textcolor;
+		current_style->bg[0] = player_bg;
+
 		if (row < 0) {
 			row = calc_statistic_row(player_num, type);
 			gtk_clist_insert(GTK_CLIST(summary_clist),
 					 row, row_data);
+			gtk_clist_set_cell_style(GTK_CLIST(summary_clist), row, 1, current_style);
+			gtk_clist_set_cell_style(GTK_CLIST(summary_clist), row, 2, current_style);
 			gtk_clist_set_row_data(GTK_CLIST(summary_clist), row,
 					       &player->statistics[type]);
 			gtk_clist_set_selectable(GTK_CLIST(summary_clist),
 						 row, FALSE);
+			gtk_clist_set_text(GTK_CLIST(summary_clist),
+					   row, 1, desc);
+			gtk_clist_set_text(GTK_CLIST(summary_clist),
+					   row, 2, points);
 		} else {
+			gtk_clist_set_cell_style(GTK_CLIST(summary_clist), row, 1, current_style);
+			gtk_clist_set_cell_style(GTK_CLIST(summary_clist), row, 2, current_style);
+
 			gtk_clist_set_text(GTK_CLIST(summary_clist),
 					   row, 1, desc);
 			gtk_clist_set_text(GTK_CLIST(summary_clist),
@@ -229,15 +253,15 @@ void player_change_name(gint player_num, gchar *name)
 	if (name == NULL) {
 		player->name = NULL;
 		if (old_name == NULL)
-			log_message( MSG_INFO, _("Player %d is now anonymous.\n"), player_num);
+			log_message( MSG_NAMEANON, _("Player %d is now anonymous.\n"), player_num);
 		else
-			log_message( MSG_INFO, _("%s is now anonymous.\n"), old_name);
+			log_message( MSG_NAMEANON, _("%s is now anonymous.\n"), old_name);
 	} else {
 		player->name = g_strdup(name);
 		if (old_name == NULL)
-			log_message( MSG_INFO, _("Player %d is now %s.\n"), player_num, name);
+			log_message( MSG_NAMEANON, _("Player %d is now %s.\n"), player_num, name);
 		else
-			log_message( MSG_INFO, _("%s is now %s.\n"), old_name, name);
+			log_message( MSG_NAMEANON, _("%s is now %s.\n"), old_name, name);
 	}
 	if (old_name != NULL)
 		g_free(old_name);
@@ -304,9 +328,9 @@ void player_largest_army(gint player_num)
 	gint idx;
 
 	if (player_num < 0)
-		log_message( MSG_INFO, _("There is no largest army.\n"));
+		log_message( MSG_LARGESTARMY, _("There is no largest army.\n"));
 	else
-		log_message( MSG_INFO, _("%s has the largest army.\n"),
+		log_message( MSG_LARGESTARMY, _("%s has the largest army.\n"),
 			 player_name(player_num, TRUE));
 
 	for (idx = 0; idx < game_params->num_players; idx++) {
@@ -326,9 +350,9 @@ void player_longest_road(gint player_num)
 	gint idx;
 
 	if (player_num < 0)
-		log_message( MSG_INFO, _("There is no longest road.\n"));
+		log_message( MSG_LONGESTROAD, _("There is no longest road.\n"));
 	else
-		log_message( MSG_INFO, _("%s has the longest road.\n"),
+		log_message( MSG_LONGESTROAD, _("%s has the longest road.\n"),
 			 player_name(player_num, TRUE));
 
 	for (idx = 0; idx < game_params->num_players; idx++) {
@@ -485,23 +509,26 @@ void player_stole_from(gint player_num, gint victim_num, Resource resource)
 	if (resource == NO_RESOURCE) {
 		/* We are not in on the action
 		 */
-		log_message( MSG_INFO, _("%s stole a resource from "),
+		log_message( MSG_STEAL, _("%s"),
 			 player_name(player_num, TRUE));
-		log_message( MSG_INFO, "%s.\n", player_name(victim_num, FALSE));
+		log_timestamp = 0;
+		log_message( MSG_STEAL, _(" stole a resource from "));
+		log_timestamp = 0;
+		log_message( MSG_STEAL, "%s.\n", player_name(victim_num, FALSE));
 		return;
 	}
 
 	if (player_num == my_player_num()) {
 		/* We stole a card :-)
 		 */
-		log_message( MSG_INFO, _("You stole %s from %s.\n"),
+		log_message( MSG_STEAL, _("You stole %s from %s.\n"),
 			 resource_cards(1, resource),
 			 player_name(victim_num, FALSE));
 		resource_modify(resource, 1);
 	} else {
 		/* Someone stole our card :-(
 		 */
-		log_message( MSG_INFO, _("%s stole %s from you.\n"),
+		log_message( MSG_STEAL, _("%s stole %s from you.\n"),
 			 player_name(player_num, TRUE),
 			 resource_cards(1, resource));
 		resource_modify(resource, -1);
@@ -533,26 +560,26 @@ void player_domestic_trade(gint player_num, gint partner_num,
 
 	if (!resource_count(supply)) {
 		if (!resource_count(receive)) {
-			log_message( MSG_INFO, _("%s gave %s nothing!?\n"),
+			log_message( MSG_TRADE, _("%s gave %s nothing!?\n"),
 				 player_name(player_num, TRUE),
 				 player_name(partner_num, FALSE));
 		} else {
 			resource_format_num(receive_desc, receive);
-			log_message( MSG_INFO, _("%s gave %s %s for free.\n"),
+			log_message( MSG_TRADE, _("%s gave %s %s for free.\n"),
 				 player_name(player_num, TRUE),
 				 player_name(partner_num, FALSE),
 				 receive_desc);
 		}
 	} else if (!resource_count(receive)) {
 		resource_format_num(supply_desc, supply);
-		log_message( MSG_INFO, _("%s gave %s %s for free.\n"),
+		log_message( MSG_TRADE, _("%s gave %s %s for free.\n"),
 			 player_name(partner_num, TRUE),
 			 player_name(player_num, FALSE),
 			 supply_desc);
 	} else {
 		resource_format_num(supply_desc, supply);
 		resource_format_num(receive_desc, receive);
-		log_message( MSG_INFO, _("%s gave %s %s in exchange for %s.\n"),
+		log_message( MSG_TRADE, _("%s gave %s %s in exchange for %s.\n"),
 			 player_name(player_num, TRUE),
 			 player_name(partner_num, FALSE),
 			 receive_desc, supply_desc);
@@ -568,7 +595,7 @@ void player_maritime_trade(gint player_num,
 		resource_modify(receive, 1);
 	}
 
-	log_message( MSG_INFO, _("%s exchanged %s for %s.\n"),
+	log_message( MSG_TRADE, _("%s exchanged %s for %s.\n"),
 		 player_name(player_num, TRUE),
 		 resource_num(ratio, supply), resource_cards(1, receive));
 }
@@ -585,7 +612,7 @@ void player_build_add(gint player_num,
 		edge->owner = player_num;
 		edge->type = BUILD_ROAD;
 		gui_draw_edge(edge);
-		log_message( MSG_INFO, _("%s built a road.\n"),
+		log_message( MSG_BUILD, _("%s built a road.\n"),
 			 player_name(player_num, TRUE));
 		if (player_num == my_player_num())
 			stock_use_road();
@@ -595,7 +622,7 @@ void player_build_add(gint player_num,
 		edge->owner = player_num;
 		edge->type = BUILD_SHIP;
 		gui_draw_edge(edge);
-		log_message( MSG_INFO, _("%s built a ship.\n"),
+		log_message( MSG_BUILD, _("%s built a ship.\n"),
 			 player_name(player_num, TRUE));
 		if (player_num == my_player_num())
 			stock_use_ship();
@@ -605,7 +632,7 @@ void player_build_add(gint player_num,
 		node->type = BUILD_SETTLEMENT;
 		node->owner = player_num;
 		gui_draw_node(node);
-		log_message( MSG_INFO, _("%s built a settlement.\n"),
+		log_message( MSG_BUILD, _("%s built a settlement.\n"),
 			 player_name(player_num, TRUE));
 		player_modify_statistic(player_num, STAT_SETTLEMENTS, 1);
 		if (player_num == my_player_num())
@@ -622,7 +649,7 @@ void player_build_add(gint player_num,
 		node->type = BUILD_CITY;
 		node->owner = player_num;
 		gui_draw_node(node);
-		log_message( MSG_INFO, _("%s built a city.\n"),
+		log_message( MSG_BUILD, _("%s built a city.\n"),
 			 player_name(player_num, TRUE));
 		player_modify_statistic(player_num, STAT_CITIES, 1);
 		if (player_num == my_player_num())
@@ -651,7 +678,7 @@ void player_build_remove(gint player_num,
 		edge->owner = -1;
 		gui_draw_edge(edge);
 		edge->type = BUILD_NONE;
-		log_message( MSG_INFO, _("%s removed a road.\n"),
+		log_message( MSG_BUILD, _("%s removed a road.\n"),
 			 player_name(player_num, TRUE));
 		if (player_num == my_player_num())
 			stock_replace_road();
@@ -661,7 +688,7 @@ void player_build_remove(gint player_num,
 		edge->owner = -1;
 		gui_draw_edge(edge);
 		edge->type = BUILD_NONE;
-		log_message( MSG_INFO, _("%s removed a ship.\n"),
+		log_message( MSG_BUILD, _("%s removed a ship.\n"),
 			 player_name(player_num, TRUE));
 		if (player_num == my_player_num())
 			stock_replace_ship();
@@ -671,7 +698,7 @@ void player_build_remove(gint player_num,
 		node->type = BUILD_NONE;
 		node->owner = -1;
 		gui_draw_node(node);
-		log_message( MSG_INFO, _("%s removed a settlement.\n"),
+		log_message( MSG_BUILD, _("%s removed a settlement.\n"),
 			 player_name(player_num, TRUE));
 		player_modify_statistic(player_num, STAT_SETTLEMENTS, -1);
 		if (player_num == my_player_num())
@@ -682,7 +709,7 @@ void player_build_remove(gint player_num,
 		node->type = BUILD_SETTLEMENT;
 		node->owner = player_num;
 		gui_draw_node(node);
-		log_message( MSG_INFO, _("%s removed a city.\n"),
+		log_message( MSG_BUILD, _("%s removed a city.\n"),
 			 player_name(player_num, TRUE));
 		player_modify_statistic(player_num, STAT_SETTLEMENTS, 1);
 		player_modify_statistic(player_num, STAT_CITIES, -1);

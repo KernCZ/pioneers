@@ -15,9 +15,24 @@
 
 static GtkWidget *message_txt;
 static GdkColor black = { 0, 0, 0, 0 };
+static GdkColor light_red = { 0, 0xff00, 0x9900, 0x9900 };
 static GdkColor red = { 0, 0xff00, 0, 0 };
+static GdkColor red_dark = { 0, 0xbb00, 0, 0 };
 static GdkColor green = { 0, 0, 0xff00, 0 };
+static GdkColor green_dark = { 0, 0, 0xaa00, 0 };
+static GdkColor green_darker = { 0, 0, 0x6600, 0 };
 static GdkColor blue = { 0, 0, 0, 0xff00 };
+static GdkColor msgcol_player1 = { 0, 0xCD00, 0x0000, 0x0000 }; /* red */
+static GdkColor msgcol_player2 = { 0, 0x1E00, 0x9000, 0xFF00 }; /* blue */
+static GdkColor msgcol_player3 = { 0, 0xA800, 0xA800, 0xA800 }; /* white */
+static GdkColor msgcol_player4 = { 0, 0xFF00, 0x7F00, 0x0000 }; /* orange */
+static GdkColor msgcol_player5 = { 0, 0xAE00, 0xAE00, 0x0000 }; /* yellow */
+static GdkColor msgcol_player6 = { 0, 0x8E00, 0xB500, 0xBE00 }; /* cyan */
+static GdkColor msgcol_player7 = { 0, 0xD100, 0x5F00, 0xBE00 }; /* magenta */
+static GdkColor msgcol_player8 = { 0, 0x0000, 0xBE00, 0x7600 }; /* green */
+static GdkColor purplish = { 0, 0xA600, 0x1300, 0xC600 };
+static GdkColor medium_gold = { 0, 0xC600, 0xC600, 0x1300 };
+static GdkColor medium_cyan = { 0, 0x1300, 0xC600, 0xba00 };
 
 /* Local function prototypes */
 static void gtk_event_cleanup(void);
@@ -44,6 +59,57 @@ void message_window_log_message_string( gint msg_type, gchar *text )
 						break;
 		
 		case MSG_CHAT:	color = &blue;
+						break;
+		
+		case MSG_RESOURCE:	color = &blue;
+						break;
+		
+		case MSG_BUILD:	color = &red_dark;
+						break;
+		
+		case MSG_DICE:	color = &green_dark;
+						break;
+		
+		case MSG_STEAL:	color = &purplish;
+						break;
+		
+		case MSG_TRADE:	color = &green_darker;
+						break;
+		
+		case MSG_NAMEANON:	color = &light_red;
+						break;
+		
+		case MSG_DEVCARD:	color = &medium_gold;
+						break;
+		
+		case MSG_LARGESTARMY:	color = &medium_cyan;
+						break;
+		
+		case MSG_LONGESTROAD:	color = &medium_cyan;
+						break;
+		
+		case MSG_PLAYER1:	color = &msgcol_player1;
+						break;
+
+		case MSG_PLAYER2:	color = &msgcol_player2;
+						break;
+
+		case MSG_PLAYER3:	color = &msgcol_player3;
+						break;
+
+		case MSG_PLAYER4:	color = &msgcol_player4;
+						break;
+
+		case MSG_PLAYER5:	color = &msgcol_player5;
+						break;
+
+		case MSG_PLAYER6:	color = &msgcol_player6;
+						break;
+
+		case MSG_PLAYER7:	color = &msgcol_player7;
+						break;
+
+		case MSG_PLAYER8:	color = &msgcol_player8;
 						break;
 		
 		default:		color = &green;

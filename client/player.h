@@ -31,6 +31,7 @@ typedef struct {
 	gchar *singular;
 	gchar *plural;
 	gint victory_mult;
+	GdkColor *textcolor;
 } Statistic;
 
 typedef struct {

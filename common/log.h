@@ -10,6 +10,8 @@
 #ifndef __log_h
 #define __log_h
 
+int log_timestamp;
+
 /* Only define if not already defined. */
 #ifndef N_
 #ifdef ENABLE_NLS
@@ -51,6 +53,23 @@ typedef void (*LogFunc)( gint msg_type, gchar *text );
 #define MSG_ERROR	1
 #define MSG_INFO	2
 #define MSG_CHAT	3
+#define MSG_RESOURCE	4
+#define MSG_BUILD	5
+#define MSG_DICE	6
+#define MSG_STEAL	7
+#define MSG_TRADE	8
+#define MSG_NAMEANON	9
+#define MSG_DEVCARD	10
+#define MSG_LARGESTARMY	11
+#define MSG_LONGESTROAD	12
+#define MSG_PLAYER1	101
+#define MSG_PLAYER2	102
+#define MSG_PLAYER3	103
+#define MSG_PLAYER4	104
+#define MSG_PLAYER5	105
+#define MSG_PLAYER6	106
+#define MSG_PLAYER7	107
+#define MSG_PLAYER8	108
 
 /* Pointer to the function to use to do the actual logging, by default.
  * This can be overridden using log_message_using_func.  If it is NULL,

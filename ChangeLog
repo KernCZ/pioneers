@@ -1,3 +1,32 @@
+2001-02-16  Matt Waggoner  <matt@waggoner.com
+
+	* A whole bunch of changes to various files, implementing
+		multiple message colors (i.e. resource gain messages are
+		now blue), chat messages are in the player's color,
+		a timestamp before each message in the window, and the
+		player summary box has each line in a different color
+		now!  
+
+		Also note that because SourceForge is broken at the moment,
+		I was not able to make these commits using my regular account
+		(dirtside), which is why they show up under dfallon.
+		
+		List of files changed:
+	* common/log.h: added several new MSG_* defines and a global
+		log_timestamp variable
+	* common/log.c: added a timestamp to each log message
+	* common/common_gtk.c: added many new colors and associated
+		those colors with the new MSG types defined in log.h
+	* client/develop.c: changed several MSG_INFO to MSG_DEVCARD
+	* client/player.h: changed the definition of the statistics struct
+		to contain a pointer to a GdkColor object
+	* client/player.c: added several new color types, associated those
+		colors with items in the statistics array, made the statistic
+		update function use the colors, and also changed many many
+		MSG_INFO messages to various other MSG types
+	* client/resource.c: changed MSG_INFO to MSG_RESOURCE
+	* client/turn.c: changed MSG_INFO to MSG_DICE
+
 2001-02-16  David Fallon  <davef@getacard.com>
 
 	* client/build.c: Fixed SF Bug #108981
