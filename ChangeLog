@@ -1,3 +1,7 @@
+2005-04-06  Stephen Jacob <sjacob@sjacob.org>
+	* common/gtk/common-gtk.c: Change the text color of player 3's
+	messages, since light gray on white is really hard to read.
+
 2005-04-06  0.9.6 Roland Clobus <rclobus@bigfoot.com>
 	* configure.ac, common/network.c, common/network.h,
 	meta-server/gnocatan-meta-server.c, server/gnocatan-server-console.c,

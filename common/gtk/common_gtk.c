@@ -199,7 +199,7 @@ void message_window_set_text(GtkWidget * textWidget)
 	gtk_text_buffer_create_tag(buffer, "player2", "foreground",
 				   "#1E90FF", NULL);
 	gtk_text_buffer_create_tag(buffer, "player3", "foreground",
-				   "#A8A8A8", NULL);
+				   "#808080", NULL);
 	gtk_text_buffer_create_tag(buffer, "player4", "foreground",
 				   "#FF7F00", NULL);
 	gtk_text_buffer_create_tag(buffer, "player5", "foreground",
