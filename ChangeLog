@@ -1,4 +1,8 @@
 2003-08-14  Bas Wijnen <b.wijnen@phys.rug.nl>
+	* server/pregame.c server/gold.c server/server.h: gold is now also
+	given out in setup phase.
+
+2003-08-14  Bas Wijnen <b.wijnen@phys.rug.nl>
 	* client/themes/Iceland/theme.cfg: Made the Iceland theme use its gold
 	tile.
 

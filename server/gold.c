@@ -33,18 +33,28 @@ static Player *gold_chooser;
 static gboolean mode_receive_gold (Player *player, gint event);
 static gboolean mode_receive_gold_turn (Player *player, gint event);
 static gboolean mode_wait_receive_gold (Player *player, gint event);
+static gboolean mode_receive_gold_setup (Player *player, gint event);
 
 /* all players have chosen their gold: resume */
 static void  gold_done (Game *game) {
 	GList *list;
+	/* find player whose turn it is */
 	for (list = player_first_real (game); list != NULL;
 			list = player_next_real (list) ) {
 		Player *player = list->data;
+		/* no gold was given out, no changes need to be made */
 		if (sm_current(player->sm) == (StateFunc)mode_turn)
 			return;
+		/* someone received gold, wake the player */
 		if (sm_current(player->sm)
 				== (StateFunc)mode_wait_receive_gold) {
 			sm_goto (player->sm, (StateFunc)mode_turn);
+			return;
+		}
+		if (sm_current(player->sm)
+				== (StateFunc)mode_receive_gold_setup) {
+			sm_goto (player->sm, (StateFunc)mode_idle);
+			next_setup_player (player->game);
 			return;
 		}
 	}
@@ -62,15 +72,18 @@ static void distribute_next (Player *player) {
 	gboolean wait_for_gold = FALSE;
 	gint num, idx;
 
+	/* find player in list */
 	list = player_first_real (game);
 	while (list->data != player) {
 		if (list == NULL) return; /* shouldn't happen */
 		list = player_next_real (list);
 	}
+	/* give resources until someone should choose gold */
 	while (TRUE) {
 		gint resource[NO_RESOURCE];
 		gboolean send_message = FALSE;
 		Player *scan = list->data;
+		/* calculate what resources to give */
 		for (idx = 0; idx < NO_RESOURCE; ++idx) {
 			gint num;
 			num = scan->assets[idx] - scan->prev_assets[idx];
@@ -88,16 +101,20 @@ static void distribute_next (Player *player) {
 		if (send_message)
 			player_broadcast(scan, PB_ALL, "receives %R\n",
 					resource);
+		/* count number of cards left in the bank */
 		num = 0;
 		for (idx = 0; idx < NO_RESOURCE; ++idx)
 			num += game->bank_deck[idx];
+		/* give out only as much as there is if the bank is empty */
 		if (scan->gold > num) scan->gold = num;
+		/* give out gold (and return so gold_done is not called) */
 		if (scan->gold > 0) {
 			player_broadcast (scan, PB_ALL, "receive-gold %d %R\n",
 					scan->gold, game->bank_deck);
 			gold_chooser = scan;
 			return;
 		}
+		/* no gold was given out, give resources to next player */
 		list = player_next_real (list);
 		if (!list) list = player_first_real (game);
 		if (list->data == player) break;
@@ -140,7 +157,9 @@ static gboolean receive_gold_function (Player *player, gint event,
 	player_broadcast (player, PB_ALL, "chose-gold %R\n", resources);
 	if (sm_current (sm) == (StateFunc)mode_receive_gold)
 		sm_goto (sm, (StateFunc)mode_idle);
-	else
+	/* don't do anything to the state during setup: gold_done will take
+	 * care of it (it will be called from distribute_next) */
+	else if (sm_current (sm) != (StateFunc)mode_receive_gold_setup)
 		sm_goto (sm, (StateFunc)mode_wait_receive_gold);
 	distribute_next (player);
 	return TRUE;
@@ -156,6 +175,11 @@ static gboolean mode_receive_gold_turn (Player *player, gint event) {
 	return receive_gold_function (player, event, "mode_receive_gold_turn");
 }
 
+/* receive gold in setup */
+static gboolean mode_receive_gold_setup (Player *player, gint event) {
+	return receive_gold_function (player, event, "mode_receive_gold_setup");
+}
+
 /* wait for others recieving gold in own turn */
 static gboolean mode_wait_receive_gold (Player *player, gint event) {
 	sm_state_name (player->sm, "mode_wait_receive_gold");
@@ -164,7 +188,7 @@ static gboolean mode_wait_receive_gold (Player *player, gint event) {
 
 /* this function is called by mode_turn to let resources and gold be
  * distributed */
-void distribute_first (Player *player) {
+void distribute_first (Player *player, gboolean setup) {
 	GList *list;
 	gold_chooser = NULL;
 	Game *game = player->game;
@@ -173,8 +197,9 @@ void distribute_first (Player *player) {
 		Player *scan = list->data;
 		if (scan->gold) {
 			if (scan == player)
-				sm_goto (scan->sm,
-					(StateFunc)mode_receive_gold_turn);
+				sm_goto (scan->sm, setup ?
+					(StateFunc)mode_receive_gold_setup
+					: (StateFunc)mode_receive_gold_turn);
 			else
 				sm_goto (scan->sm,
 					(StateFunc)mode_receive_gold);

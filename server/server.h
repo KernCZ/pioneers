@@ -140,6 +140,7 @@ GList *player_next_real(GList *last);
 /* pregame.c */
 gboolean mode_pre_game(Player *player, gint event);
 gboolean send_gameinfo(Map *map, Hex *hex, StateMachine *sm);
+void next_setup_player (Game *game);
 
 /* resource.c */
 gboolean resource_available(Player *player,
@@ -197,6 +198,6 @@ void gui_player_rename(void *player);
 void gui_ui_enable(gint sensitive);
 
 /* gold.c */
-void distribute_first (Player *player);
+void distribute_first (Player *player, gboolean setup);
 
 #endif

@@ -139,10 +139,14 @@ static void allocate_resources(Player *player, BuildRec *rec)
 	resource_start(game);
 	for (idx = 0; idx < numElem(node->hexes); idx++) {
 		Hex *hex = node->hexes[idx];
-		if (hex && hex->roll > 0)
-			player->assets[hex->terrain]++;
+		if (hex && hex->roll > 0) {
+			if (hex->terrain == GOLD_TERRAIN)
+				++player->gold;
+			else
+				++player->assets[hex->terrain];
+		}
 	}
-	resource_end(game, "receives", 1);
+	distribute_first (player, TRUE);
 }
 
 /* Player tried to finish setup mode
@@ -181,7 +185,13 @@ static void try_setup_done(Player *player)
 		allocate_resources(player, buildrec_get(player->build_list, BUILD_SETTLEMENT, 1));
 	else if (game->reverse_setup)
 		allocate_resources(player, buildrec_get(player->build_list, BUILD_SETTLEMENT, 0));
+	/* if the state machine changed, then wait for the gold to be taken */
+	if (sm_current (sm) == (StateFunc)mode_idle) next_setup_player (game);
+}
 
+/* find next player to do setup.  This is also called after gold distribution */
+void next_setup_player (Game *game)
+{
 	if (game->reverse_setup) {
 		/* Going back for second setup phase
 		 */

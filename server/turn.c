@@ -369,7 +369,7 @@ gboolean mode_turn(Player *player, gint event)
 		data.roll = roll;
 		map_traverse(map, (HexFunc)distribute_resources, &data);
 		/* distribute resources and gold (includes resource_end) */
-		distribute_first (player);
+		distribute_first (player, FALSE);
 		return TRUE;
 	}
 	if (sm_recv(sm, "done")) {
