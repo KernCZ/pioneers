@@ -35,6 +35,7 @@
 #include "server.h"
 #include "meta.h"
 #include "mt_rand.h"
+#include "gnocatan-path.h"
 
 typedef union {
 	struct sockaddr sa;
@@ -211,10 +212,13 @@ gint accept_connection( gint in_fd, gchar **location)
 	return fd;
 }
 
-gint new_computer_player(gchar *server_port)
+gint new_computer_player(gchar *server, gchar *port)
 {
     pid_t pid;
-
+    
+    if (!server)
+	server = "localhost";
+    
     pid = fork();
     if (pid < 0) {
 	/* error */
@@ -222,30 +226,24 @@ gint new_computer_player(gchar *server_port)
 
     } else if (pid == 0) {
 	/* child */
-	char *args[10];
-	int num = 0;
+	int i;
+	for( i = 0; i < 255; ++i ) close(i);
+	open("/dev/null",O_RDONLY);
+	open("/dev/null",O_WRONLY);
+	open("/dev/null",O_RDWR);
 
-	/* first arg needs to be the program name */
-	args[num++] = "gnocatanai";
+	execl(GNOCATAN_AI_PATH, GNOCATAN_AI_PATH,
+	      "-s", server,
+	      "-p", port,
+	      NULL);
 
-	/* give the port */
-	args[num++] = "-p";
-	args[num++] = server_port;
-
-	printf("port = %s\n",server_port);
-
-	args[num] = NULL;
-	execvp("gnocatanai",args);
-
-	printf("Error exec'ing gnocatanai\n");
-	exit(1);
-
+	log_message(MSG_ERROR, "Error starting gnocatanai: %s",
+		    strerror(errno));
+	exit(2);
     } else {
 	/* parent */
 	return 0;
     }
-
-
 }
 
 

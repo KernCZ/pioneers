@@ -158,7 +158,7 @@ void stop_timeout(void);
 gint get_rand(gint range);
 Game *game_new(GameParams *params);
 void game_free(Game *game);
-gint new_computer_player(gchar *server_port);
+gint new_computer_player(gchar *server, gchar *port);
 gboolean server_startup(GameParams *params, gchar *port, gboolean meta);
 gboolean server_restart(void);
 gint accept_connection(gint in_fd, gchar **location);

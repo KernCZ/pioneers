@@ -223,7 +223,7 @@ static void start_clicked_cb(GtkWidget *start_btn, gpointer user_data)
 
 static void addcomputer_clicked_cb(GtkWidget *start_btn, gpointer user_data)
 {
-  new_computer_player(server_port);
+  new_computer_player(NULL, server_port);
 }
 
 

@@ -120,7 +120,7 @@ static gboolean tournament_start_cb(gpointer data)
 
     /* add computer players to start game */
     for (i = game->num_players; i < game->params->num_players; i++) {	
-	new_computer_player(game->params->server_port);
+	new_computer_player(NULL, game->params->server_port);
     }
 
     return FALSE;
