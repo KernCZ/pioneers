@@ -20,6 +20,7 @@
  */
 
 #include "config.h"
+#include <string.h>
 #include "computer.h"
 #include "greedy.h"
 

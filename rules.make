@@ -40,6 +40,7 @@ debug_includes = \
 	-ggdb3 \
 	-O \
 	-DGDK_DISABLE_DEPRECATED \
+	-DGNOME_DISABLE_DEPRECATED \
 	-DDEBUG \
 	-pedantic
 else

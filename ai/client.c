@@ -11,6 +11,7 @@
 #include "config.h"
 #include <ctype.h>
 #include <gnome.h>
+#include <string.h>
 
 #include "game.h"
 #include "cards.h"

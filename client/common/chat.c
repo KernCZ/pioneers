@@ -84,8 +84,10 @@ void chat_parser( gint player_num, char chat_str[MAX_CHAT] )
 			break;
 	}
 
-	if (color_chat_enabled == 1) {
-		switch( player_num )
+	if (color_chat_enabled) {
+		if (player_is_viewer(player_num))
+			tempchatcolor = MSG_VIEWER_CHAT;
+		else switch( player_num )
 		{
 			case 0:
 				tempchatcolor = MSG_PLAYER1;
@@ -110,6 +112,9 @@ void chat_parser( gint player_num, char chat_str[MAX_CHAT] )
 				break;
 			case 7:
 				tempchatcolor = MSG_PLAYER8;
+				break;
+			default:
+				g_assert_not_reached();
 				break;
 		}
 	} else {

@@ -80,6 +80,7 @@ typedef void (*LogFunc)( gint msg_type, gchar *text );
 #define MSG_PLAYER6	106
 #define MSG_PLAYER7	107
 #define MSG_PLAYER8	108
+#define MSG_VIEWER_CHAT	199
 
 /* Set the default logging function to 'func'. */
 void log_set_func( LogFunc func );

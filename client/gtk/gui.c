@@ -35,13 +35,11 @@
 #include "config-gnome.h"
 #include "frontend.h"
 
+static GtkWidget *preferences_dlg;
 GtkWidget *app_window;		/* main application window */
 
 #define MAP_WIDTH 550		/* default map width */
 #define MAP_HEIGHT 400		/* default map height */
-
-#define COLOR_CHAT_YES 1
-#define COLOR_CHAT_NO  0
 
 #define GNOCATAN_ICON_FILE	"gnome-gnocatan.png"
 
@@ -70,44 +68,38 @@ static GtkWidget *app_bar;
 static GtkWidget *net_status;
 static GtkWidget *vp_target_status;
 
-/* Settings dialog widgets (Only those needed for apply callback) */
-static GtkWidget *radio_style_text;
-static GtkWidget *radio_style_icons;
-static GtkWidget *radio_style_both;
-static GtkWidget *theme_menu;
-
-static GtkWidget *check_color_chat;
-static GtkWidget *check_color_messages;
-static GtkWidget *check_color_summary;
-static GtkWidget *check_legend_page;
-
-static void settings_activate_cb(GtkWidget *widget, void *prop_box);
-static void menu_settings_cb(GtkWidget *widget, void *user_data);
+static void preferences_cb(GtkWidget *widget, void *user_data);
 static void route_widget_event (GtkWidget *w, gpointer data);
 
 static GnomeUIInfo game_menu[] = {
-	{ GNOME_APP_UI_ITEM, N_("_Connect"), N_("Connect to Gnocatan server"),
+	{ GNOME_APP_UI_ITEM, N_("_New game"), N_("Start a new game"),
 	  (gpointer)route_widget_event, (gpointer)GUI_CONNECT, NULL,
-	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_BLANK,
-	  'c', GDK_CONTROL_MASK, NULL },
+	  GNOME_APP_PIXMAP_STOCK, GTK_STOCK_NEW,
+	  'n', GDK_CONTROL_MASK, NULL },
 #ifdef ADMIN_GTK
 	{ GNOME_APP_UI_ITEM, N_("_Admin"), N_("Administer Gnocatan server"),
 	  (gpointer)show_admin_interface, NULL, NULL,
 	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_BLANK,
 	  'a', GDK_CONTROL_MASK, NULL },
 #endif /* ADMIN_GTK */
-	{ GNOME_APP_UI_ITEM, N_("Player _Name"), N_("Change your player name"),
+	GNOMEUIINFO_SEPARATOR,
+	{ GNOME_APP_UI_ITEM, N_("_Player name"), N_("Change your player name"),
 	  (gpointer)route_widget_event, (gpointer)GUI_CHANGE_NAME, NULL,
 	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_BLANK,
-	  'n', GDK_CONTROL_MASK, NULL },
-	{ GNOME_APP_UI_ITEM, N_("_Settings"), N_("Gnocatan client settings"),
-	  (gpointer)menu_settings_cb, NULL, NULL, GNOME_APP_PIXMAP_STOCK,
-	  GNOME_STOCK_BLANK, 's', GDK_CONTROL_MASK, NULL },
+	  'p', GDK_CONTROL_MASK, NULL },
+	GNOMEUIINFO_SEPARATOR,
 	{ GNOME_APP_UI_ITEM, N_("_Quit"), N_("Quit the program"),
 	  (gpointer)route_widget_event, (gpointer)GUI_QUIT, NULL,
 	  GNOME_APP_PIXMAP_STOCK, GTK_STOCK_QUIT,
 	  'q', GDK_CONTROL_MASK, NULL },
 
+	GNOMEUIINFO_END
+};
+
+static GnomeUIInfo settings_menu[] = {
+	{ GNOME_APP_UI_ITEM, N_("Prefere_nces"), N_("Configure the application"),
+	  (gpointer)preferences_cb, NULL, NULL, GNOME_APP_PIXMAP_STOCK,
+	  GTK_STOCK_PREFERENCES, 0, 0, NULL },
 	GNOMEUIINFO_END
 };
 
@@ -122,13 +114,13 @@ static gchar app_name[] = "gnocatan";
 static GnomeUIInfo help_menu[] = {
 	{ GNOME_APP_UI_ITEM, N_("_Legend"), N_("Terrain legend and building costs"),
 	  (gpointer)help_legend_cb, NULL, NULL, GNOME_APP_PIXMAP_STOCK,
-	  GTK_STOCK_INDEX, 0, 0, NULL },
+	  GTK_STOCK_DIALOG_INFO, 0, 0, NULL },
 	{ GNOME_APP_UI_ITEM, N_("_Game Settings"), N_("Settings for the current game"),
 	  (gpointer)help_settings_cb, NULL, NULL, GNOME_APP_PIXMAP_STOCK,
-	  GTK_STOCK_INDEX, 0, 0, NULL },
+	  GTK_STOCK_DIALOG_INFO, 0, 0, NULL },
 	{ GNOME_APP_UI_ITEM, N_("_Dice Histogram"), N_("Histogram of dice rolls"),
 	  (gpointer)help_histogram_cb, NULL, NULL, GNOME_APP_PIXMAP_STOCK,
-	  GTK_STOCK_INDEX, 0, 0, NULL },
+	  GTK_STOCK_DIALOG_INFO, 0, 0, NULL },
 	{ GNOME_APP_UI_ITEM, N_("_About Gnocatan"), N_("Information about Gnocatan"),
 	  (gpointer)help_about_cb, NULL, NULL, GNOME_APP_PIXMAP_STOCK,
 	  GNOME_STOCK_ABOUT, 0, 0, NULL },
@@ -141,6 +133,7 @@ static GnomeUIInfo help_menu[] = {
 
 static GnomeUIInfo main_menu[] = {
 	GNOMEUIINFO_SUBTREE(N_("_Game"), game_menu),
+	GNOMEUIINFO_SUBTREE(N_("_Settings"), settings_menu),
 	GNOMEUIINFO_SUBTREE(N_("_Help"), help_menu),
 	GNOMEUIINFO_END
 };
@@ -246,6 +239,7 @@ void gui_set_vp_target_value( gint vp )
 {
 	gchar vp_text[30];
 	
+	/* Victory points target in statusbar */
 	g_snprintf( vp_text, sizeof(vp_text), _("Points Needed to Win: %i"), vp );
 	
 	gtk_label_set_text( GTK_LABEL(vp_target_status), vp_text );
@@ -404,6 +398,7 @@ static GtkWidget *build_messages_panel(void)
 	GtkWidget *frame;
 	GtkWidget *scroll_win;
 
+	/* Frame name for messages */
 	frame = gtk_frame_new(_("Messages"));
 	gtk_widget_show(frame);
 
@@ -499,11 +494,13 @@ static GtkWidget *build_map_panel(void)
 	gtk_notebook_set_tab_pos(GTK_NOTEBOOK(map_notebook), GTK_POS_TOP);
 	gtk_widget_show(map_notebook);
 
+	/* Tab page name */
 	lbl = gtk_label_new(_("Map"));
 	gtk_widget_show(lbl);
 	gtk_notebook_insert_page(GTK_NOTEBOOK(map_notebook),
 				 build_map_area(), lbl, MAP_PAGE);
 
+	/* Tab page name */
 	lbl = gtk_label_new(_("Trade"));
 	gtk_widget_show(lbl);
 	trade_page = trade_build_page();
@@ -511,6 +508,7 @@ static GtkWidget *build_map_panel(void)
 				 trade_page, lbl, TRADE_PAGE);
 	gtk_widget_hide(trade_page);
 
+	/* Tab page name */
 	lbl = gtk_label_new(_("Quote"));
 	gtk_widget_show(lbl);
 	quote_page = quote_build_page();
@@ -518,6 +516,7 @@ static GtkWidget *build_map_panel(void)
 				 quote_page, lbl, QUOTE_PAGE);
 	gtk_widget_hide(quote_page);
 
+	/* Tab page name */
 	lbl = gtk_label_new(_("Legend"));
 	gtk_widget_show(lbl);
 	legend_page = legend_create_content();
@@ -526,6 +525,7 @@ static GtkWidget *build_map_panel(void)
 	if (!legend_page_enabled)
 		gui_show_legend_page(FALSE);
 
+	/* Tab page name, shown for the splash screen */
 	lbl = gtk_label_new(_("Welcome to Gnocatan"));
 	gtk_widget_show(lbl);
 	splash_page = splash_build_page();
@@ -640,296 +640,176 @@ static void quit_cb(UNUSED(GtkWidget *widget), UNUSED(void *data))
 	gtk_main_quit();
 }
 
-static void settings_apply_cb(UNUSED(GnomePropertyBox *prop_box), gint page,
-		UNUSED(gpointer data))
-{
-	BonoboDockItem *dock_item;
-	GtkWidget *toolbar;
-	gint toolbar_style;
-	gint color_chat;
-	gint color_messages;
-	gint color_summary;
-	gint legend_page;
-	MapTheme *theme;
-
-	switch(page) {
-	case 0:
-		if(GTK_TOGGLE_BUTTON(radio_style_text)->active) {
-			toolbar_style = GTK_TOOLBAR_TEXT;
-		} else if (GTK_TOGGLE_BUTTON(radio_style_icons)->active)
-		{
-			toolbar_style = GTK_TOOLBAR_ICONS;
-		} else {
-			toolbar_style = GTK_TOOLBAR_BOTH;
+static void theme_change_cb(UNUSED(GtkMenuItem *widget), gpointer user_data) {
+	MapTheme *theme = user_data;
+	if (theme != get_theme()) {
+		config_set_string("settings/theme", theme->name);
+		set_theme(theme);
+		if (gmap->pixmap != NULL) {
+			g_object_unref(gmap->pixmap);
+			gmap->pixmap = NULL;
 		}
-		
-		/* Allow auto-shrink in case toolbar is shrunk */
-		gtk_window_set_policy( GTK_WINDOW(app_window), TRUE, TRUE, TRUE );
-		
-		dock_item = gnome_app_get_dock_item_by_name( GNOME_APP(app_window),
-		                                             GNOME_APP_TOOLBAR_NAME );
-		toolbar = bonobo_dock_item_get_child( dock_item );
-		
-		config_set_int( "settings/toolbar_style", toolbar_style );
-		gtk_toolbar_set_style( GTK_TOOLBAR(toolbar), toolbar_style );
-		
-		/* Turn auto-shrink off */
-		gtk_window_set_policy( GTK_WINDOW(app_window), TRUE, TRUE, FALSE );
-
-		if (GTK_TOGGLE_BUTTON(check_legend_page)->active) {
-			legend_page = TRUE;
-		} else {
-			legend_page = FALSE;
-		}
-		legend_page_enabled = legend_page;
-		gui_show_legend_page(legend_page_enabled);
-
-		config_set_int( "settings/legend_page", legend_page );
-
-		theme = gtk_object_get_user_data(
-		    GTK_OBJECT(gtk_menu_get_active(GTK_MENU(theme_menu))));
-		if (theme != get_theme()) {
-			config_set_string("settings/theme", theme->name);
-			set_theme(theme);
-			if (gmap->pixmap != NULL) {
-				g_object_unref(gmap->pixmap);
-				gmap->pixmap = NULL;
-			}
-			theme_rescale(2*gmap->x_point);
-			gtk_widget_draw(gmap->area, NULL);
-			legend_create_content();
-		}
-		
-		break;
-		
-	case 1:
-		if (GTK_TOGGLE_BUTTON(check_color_chat)->active) {
-			color_chat = COLOR_CHAT_YES;
-		} else {
-			color_chat = COLOR_CHAT_NO;
-		}
-		
-		if (GTK_TOGGLE_BUTTON(check_color_messages)->active) {
-			color_messages = TRUE;
-		} else {
-			color_messages = FALSE;
-		}
-		
-		if (GTK_TOGGLE_BUTTON(check_color_summary)->active) {
-			color_summary = TRUE;
-		} else {
-			color_summary = FALSE;
-		}
-		
-		config_set_int( "settings/color_chat", color_chat );
-		color_chat_enabled = color_chat;
-
-		config_set_int( "settings/color_messages", color_messages );
-		color_messages_enabled = color_messages;
-		log_set_func_message_color_enable(color_messages);
-		
-		config_set_int( "settings/color_summary", color_summary );
-		set_color_summary(color_summary);
-
-		break;
-
-	default:
-		break;
+		theme_rescale(2*gmap->x_point);
+		gtk_widget_queue_draw_area(gmap->area, 0, 0, gmap->width, gmap->height);
+		gtk_widget_queue_draw(legend_page);
 	}
-	return;
 }
 
-static void settings_activate_cb(UNUSED(GtkWidget *widget), void *prop_box)
-{
-	gnome_property_box_changed( GNOME_PROPERTY_BOX(prop_box) );
+static void show_legend_cb(GtkToggleButton *widget, UNUSED(gpointer user_data)) {
+	legend_page_enabled = gtk_toggle_button_get_active(widget);
+	gui_show_legend_page(legend_page_enabled);
+	config_set_int("settings/legend_page", legend_page_enabled);
 }
 
-static void menu_settings_cb(UNUSED(GtkWidget *widget), UNUSED(void *user_data))
+static void message_color_cb(GtkToggleButton *widget, UNUSED(gpointer user_data)) {
+	color_messages_enabled = gtk_toggle_button_get_active(widget);
+	config_set_int("settings/color_messages", color_messages_enabled);
+	log_set_func_message_color_enable(color_messages_enabled);
+}
+
+static void chat_color_cb(GtkToggleButton *widget, UNUSED(gpointer user_data)) {
+	color_chat_enabled = gtk_toggle_button_get_active(widget);
+	config_set_int("settings/color_chat", color_chat_enabled);
+}
+
+static void summary_color_cb(GtkToggleButton *widget, UNUSED(gpointer user_data)) {
+	gboolean color_summary = gtk_toggle_button_get_active(widget);
+	config_set_int("settings/color_summary", color_summary);
+	set_color_summary(color_summary);
+}
+
+static void preferences_cb(UNUSED(GtkWidget *widget), UNUSED(void *user_data))
 {
-	GtkWidget *settings;
-	GtkWidget *page0_table;
-	GtkWidget *page0_label;
-	GtkWidget *page1_table;
-	GtkWidget *page1_label;
-	GtkWidget *frame_texticons;
-	GtkWidget *vbox_texticons;
-	GtkWidget *vbox_colors;
+	GtkWidget *dlg_vbox;
 	GtkWidget *theme_label;
 	GtkWidget *theme_list;
+	GtkWidget *theme_menu;
+	GtkWidget *layout;
+	GtkTooltips *tooltips;
 
-	gint toolbar_style;
-	gint color_chat;
-	gint color_messages;
+	gint row;
 	gint color_summary;
-	gint legend_page;
 	MapTheme *theme;
 	int i;
+
+	if (preferences_dlg != NULL) {
+		gtk_window_present(GTK_WINDOW(preferences_dlg));
+		return;
+	};
+
+	preferences_dlg = gtk_dialog_new_with_buttons(
+			/* Caption of preferences dialog */
+			_("Gnocatan Preferences"),
+			GTK_WINDOW(app_window),
+			GTK_DIALOG_DESTROY_WITH_PARENT,
+			GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE,
+			NULL);
+	gtk_dialog_set_default_response(GTK_DIALOG(preferences_dlg), GTK_RESPONSE_CLOSE);
+	g_signal_connect(G_OBJECT(preferences_dlg), "destroy",
+			G_CALLBACK(gtk_widget_destroyed), &preferences_dlg);
+	g_signal_connect(G_OBJECT(preferences_dlg), "response",
+			G_CALLBACK(gtk_widget_destroy), NULL);
+	gtk_widget_show(preferences_dlg);
 	
-	/* Create stuff */
-	settings = gnome_property_box_new();
+	tooltips = gtk_tooltips_new();
 
-	page0_table = gtk_table_new( 2, 3, FALSE );
-	page0_label = gtk_label_new( _("Appearance") );
+	dlg_vbox = GTK_DIALOG(preferences_dlg)->vbox;
+	gtk_widget_show(dlg_vbox);
 
-	frame_texticons = gtk_frame_new( _("Show Toolbar As") );
+	layout = gtk_table_new(6, 2, FALSE);
+	gtk_widget_show(layout);
+	gtk_box_pack_start(GTK_BOX(dlg_vbox), layout, FALSE, TRUE, 0);
+	gtk_container_set_border_width(GTK_CONTAINER(layout), 5);
 
-	vbox_texticons = gtk_vbox_new( TRUE, 2 );
-
-	radio_style_text = gtk_radio_button_new_with_label(NULL, _("Text Only"));
-	radio_style_icons = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(radio_style_text), _("Icons Only") );
-	radio_style_both = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(radio_style_icons), _("Both Icons and Text") );
-
-	check_legend_page = gtk_check_button_new_with_label( _("Display legend as page besides map?") );
+	row = 0;
 
 	theme_list = gtk_option_menu_new();
 	theme_menu = gtk_menu_new();
+	/* Label for changing the theme, in the preferences dialog */
 	theme_label = gtk_label_new(_("Theme:"));
+	gtk_misc_set_alignment(GTK_MISC(theme_label), 0, 0.5);
 	gtk_widget_show(theme_menu);
 	gtk_widget_show(theme_list);
 	gtk_widget_show(theme_label);
 	
 	for(i = 0, theme = first_theme(); theme; ++i, theme = next_theme(theme)) {
 		GtkWidget *item = gtk_menu_item_new_with_label(theme->name);
-		gtk_object_set_user_data(GTK_OBJECT(item), (gpointer)theme);
 		gtk_widget_show(item);
 		gtk_menu_append(GTK_MENU(theme_menu), item);
 		if (theme == get_theme())
 			gtk_menu_set_active(GTK_MENU(theme_menu), i);
-		gtk_signal_connect(GTK_OBJECT(item), "activate", (GtkSignalFunc)settings_activate_cb, (gpointer)settings);
+		g_signal_connect(G_OBJECT(item), "activate", 
+			G_CALLBACK(theme_change_cb), theme);
 	}
 	gtk_option_menu_set_menu(GTK_OPTION_MENU(theme_list), theme_menu);
 	
-	/* Put things in other things */
-	gtk_box_pack_start_defaults( GTK_BOX(vbox_texticons), radio_style_text );
-	gtk_box_pack_start_defaults( GTK_BOX(vbox_texticons), radio_style_icons );
-	gtk_box_pack_start_defaults( GTK_BOX(vbox_texticons), radio_style_both );
-	
-	gtk_container_add( GTK_CONTAINER(frame_texticons), vbox_texticons );
+	gtk_table_attach_defaults(GTK_TABLE(layout), theme_label, 
+			0, 1, row, row + 1);
+	gtk_table_attach_defaults(GTK_TABLE(layout), theme_list, 
+			1, 2, row, row + 1);
+	gtk_tooltips_set_tip(tooltips, theme_list,
+			/* Tooltip for changing the theme in the preferences dialog */
+			_("Choose one of the themes"), NULL);
+	row++;
 
-	gtk_table_attach( GTK_TABLE(page0_table), frame_texticons, 0, 2, 0, 1,
-	                  GTK_FILL|GTK_EXPAND, GTK_FILL, 0, 0 );
-	gtk_table_attach( GTK_TABLE(page0_table), check_legend_page, 0, 2, 1, 2,
-	                  GTK_FILL|GTK_EXPAND, GTK_FILL, 0, 0 );
-	gtk_table_attach( GTK_TABLE(page0_table), theme_label, 0, 1, 2, 3,
-	                  0, GTK_FILL, 0, 5 );
-	gtk_table_attach( GTK_TABLE(page0_table), theme_list, 1, 2, 2, 3,
-	                  GTK_FILL|GTK_EXPAND, GTK_FILL, 0, 5 );
-	                  
+	widget = gtk_check_button_new_with_label(
+			/* Label for the option to show the legend */
+			_("Show legend"));
+	gtk_widget_show(widget);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), 
+			legend_page_enabled);
+	g_signal_connect(G_OBJECT(widget), "toggled",
+			G_CALLBACK(show_legend_cb), NULL);
+	gtk_table_attach_defaults(GTK_TABLE(layout), widget, 
+			0, 2, row, row + 1);
+	gtk_tooltips_set_tip(tooltips, widget,
+			/* Tooltip for the option to show the legend */
+			_("Show the legend as a page beside the map"), NULL);
+	row++;
 
-	page1_table = gtk_table_new( 1, 1, FALSE );
-	page1_label = gtk_label_new( _("Color Settings") );
+	widget = gtk_check_button_new_with_label(
+			/* Label for the option to display log messages in color */
+			_("Messages with color"));
+	gtk_widget_show(widget);
+	gtk_table_attach_defaults(GTK_TABLE(layout), widget, 
+			0, 2, row, row + 1);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), 
+			color_messages_enabled);
+	g_signal_connect(G_OBJECT(widget), "toggled",
+			G_CALLBACK(message_color_cb), NULL);
+	gtk_tooltips_set_tip(tooltips, widget,
+			/* Tooltip for the option to display log messages in color */
+			_("Show new messages with color"), NULL);
+	row++;
 
-	vbox_colors = gtk_vbox_new( TRUE, 2 );
+	widget = gtk_check_button_new_with_label(
+			/* Label for the option to display chat in color of player */
+			_("Chat in color of player"));
+	gtk_widget_show(widget);
+	gtk_table_attach_defaults(GTK_TABLE(layout), widget, 
+			0, 2, row, row + 1);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), color_chat_enabled);
+	g_signal_connect(G_OBJECT(widget), "toggled",
+			G_CALLBACK(chat_color_cb), NULL);
+	gtk_tooltips_set_tip(tooltips, widget,
+			/* Tooltip for the option to display chat in color of player */
+			_("Show new chat messages in the color of the player"), NULL);
+	row++;
 
-	check_color_messages = gtk_check_button_new_with_label( _("Display messages in colors?") );
-	check_color_chat = gtk_check_button_new_with_label( _("Display chat messages in user's color?") );
-	check_color_summary = gtk_check_button_new_with_label( _("Display player summary with colors?") );
-
-	gtk_box_pack_start_defaults( GTK_BOX(vbox_colors), check_color_messages );
-	gtk_box_pack_start_defaults( GTK_BOX(vbox_colors), check_color_chat );
-	gtk_box_pack_start_defaults( GTK_BOX(vbox_colors), check_color_summary );
-
-	gtk_table_attach( GTK_TABLE(page1_table), vbox_colors, 0, 1, 0, 1,
-	                  GTK_FILL|GTK_EXPAND, GTK_FILL, 0, 0 );
-
-	gnome_property_box_append_page( GNOME_PROPERTY_BOX(settings),
-	                                page0_table, page0_label );
-	gtk_notebook_set_current_page(GTK_NOTEBOOK(GNOME_PROPERTY_BOX(settings)->notebook), 0);
-	gnome_property_box_append_page( GNOME_PROPERTY_BOX(settings),
-	                                page1_table, page1_label );
-	
-	/* Set the default text/icons state */
-	toolbar_style = config_get_int_with_default("settings/toolbar_style", GTK_TOOLBAR_BOTH);
-
-	switch(toolbar_style) {
-	case GTK_TOOLBAR_TEXT:
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(radio_style_text),
-		                             TRUE);
-		break;
-	case GTK_TOOLBAR_ICONS:
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(radio_style_icons),
-		                             TRUE);
-		break;
-	default:
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(radio_style_both),
-		                             TRUE);
-		break;
-	}
-
-	/* Set the default color chat state */
-	color_chat = config_get_int_with_default("settings/color_chat", COLOR_CHAT_YES);
-	color_messages = config_get_int_with_default("settings/color_messages", TRUE);
+	widget = gtk_check_button_new_with_label(
+			/* Label for the option to display the summary with colors */
+			_("Summary with color"));
+	gtk_widget_show(widget);
+	gtk_table_attach_defaults(GTK_TABLE(layout), widget, 
+			0, 2, row, row + 1);
 	color_summary = config_get_int_with_default("settings/color_summary", TRUE);
-
-
-	switch(color_chat) {
-	case COLOR_CHAT_NO:
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(check_color_chat), FALSE);
-		break;
-	default:
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(check_color_chat), TRUE);
-		break;
-	}
-	switch(color_messages) {
-	case FALSE:
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(check_color_messages), FALSE);
-		break;
-	default:
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(check_color_messages), TRUE);
-		break;
-	}
-	switch(color_summary) {
-	case FALSE:
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(check_color_summary), FALSE);
-		break;
-	default:
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(check_color_summary), TRUE);
-		break;
-	}
-
-	legend_page = config_get_int_with_default("settings/legend_page", FALSE);
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(check_legend_page), !!legend_page);
-
-
-	
-	/* Signal Connections */
-	gtk_signal_connect( GTK_OBJECT(radio_style_text), "clicked",
-		(GtkSignalFunc)settings_activate_cb, (gpointer)settings );
-	gtk_signal_connect( GTK_OBJECT(radio_style_icons), "clicked",
-		(GtkSignalFunc)settings_activate_cb, (gpointer)settings );
-	gtk_signal_connect( GTK_OBJECT(radio_style_both), "clicked",
-		(GtkSignalFunc)settings_activate_cb, (gpointer)settings );
-	gtk_signal_connect( GTK_OBJECT(check_color_chat), "clicked",
-		(GtkSignalFunc)settings_activate_cb, (gpointer)settings );
-	gtk_signal_connect( GTK_OBJECT(check_color_messages), "clicked",
-		(GtkSignalFunc)settings_activate_cb, (gpointer)settings );
-	gtk_signal_connect( GTK_OBJECT(check_color_summary), "clicked",
-		(GtkSignalFunc)settings_activate_cb, (gpointer)settings );
-	gtk_signal_connect( GTK_OBJECT(check_legend_page), "clicked",
-		(GtkSignalFunc)settings_activate_cb, (gpointer)settings );
-	gtk_signal_connect( GTK_OBJECT(settings), "apply",
-		(GtkSignalFunc)settings_apply_cb, NULL );
-	
-	/* Show me the widgets! */
-	gtk_widget_show( radio_style_text );
-	gtk_widget_show( radio_style_icons );
-	gtk_widget_show( radio_style_both );
-
-	gtk_widget_show( check_color_messages );
-	gtk_widget_show( check_color_chat );
-	gtk_widget_show( check_color_summary );
-
-	gtk_widget_show( check_legend_page );
-
-	gtk_widget_show( vbox_texticons );
-	gtk_widget_show( vbox_colors );
-
-	gtk_widget_show( frame_texticons );
-
-	gtk_widget_show( page0_table );
-	gtk_widget_show( page1_table );
-	
-	gtk_widget_show( settings );
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), color_summary); /* @todo RC use correct variable */
+	g_signal_connect(G_OBJECT(widget), "toggled",
+			G_CALLBACK(summary_color_cb), NULL);
+	gtk_tooltips_set_tip(tooltips, widget,
+			/* Tooltip for the option to display the summary with colors */
+			_("Use colors in the player summary"), NULL);
+	row++;
 }
 
 static void route_widget_event (UNUSED(GtkWidget *w), gpointer data)
@@ -944,15 +824,19 @@ static void help_about_cb(UNUSED(GtkWidget *widget), UNUSED(void *user_data))
 		AUTHORLIST
 	};
 
-	about = gnome_about_new(_("The Gnocatan Game"), VERSION,
-				_("(C) 2002 the Free Software Foundation"),
-				_("Gnocatan is based upon the excellent"
-				" Settlers of Catan board game"),
-				authors,
-				NULL, /* documenters */
-				NULL, /* translators */
-				NULL  /* logo */
-				);
+	about = gnome_about_new(
+			/* About title */
+			_("The Gnocatan Game"), VERSION,
+			/* About copyright */
+			_("(C) 2002 the Free Software Foundation"),
+			/* About description */
+			_("Gnocatan is based upon the excellent"
+			  " Settlers of Catan board game"),
+			authors,
+			NULL, /* documenters */
+			NULL, /* translators */
+			NULL  /* logo */
+			);
 	gtk_widget_show(about);
 }
 
@@ -1035,7 +919,7 @@ static GtkWidget *build_status_bar(void)
 	gnome_app_set_statusbar(GNOME_APP(app_window), app_bar);
 	gnome_app_install_menu_hints(GNOME_APP(app_window), main_menu);
 
-	vp_target_status = gtk_label_new(N_(" "));
+	vp_target_status = gtk_label_new(" ");
 	gtk_widget_show(vp_target_status);
 	gtk_box_pack_start(GTK_BOX(app_bar), vp_target_status, FALSE, TRUE, 0);
 
@@ -1043,7 +927,9 @@ static GtkWidget *build_status_bar(void)
 	gtk_widget_show(vsep);
 	gtk_box_pack_start(GTK_BOX(app_bar), vsep, FALSE, TRUE, 0);
 
-	net_status = gtk_label_new(_("Offline"));
+	net_status = gtk_label_new(
+			/* Network status: offline */
+			_("Offline"));
 	gtk_widget_show(net_status);
 	gtk_box_pack_start(GTK_BOX(app_bar), net_status, FALSE, TRUE, 0);
 
@@ -1054,8 +940,9 @@ static GtkWidget *build_status_bar(void)
 	gtk_box_pack_start(GTK_BOX(app_bar),
 			   player_build_turn_area(), FALSE, TRUE, 0);
 
-	gnome_appbar_set_status(GNOME_APPBAR(app_bar),
-				_("Welcome to Gnocatan!"));
+	gui_set_instructions(
+			/* Initial text in status bar */
+			_("Welcome to Gnocatan!"));
 
 	return app_bar;
 }
@@ -1086,6 +973,7 @@ static void register_gnocatan_pixmaps(void)
 			gtk_icon_set_add_source(icon, source);
 		}
 		else {
+			/* Missing pixmap */
 			fprintf(stderr, _("Warning: pixmap not found: %s\n"),
 					gnocatan_pixmaps[idx]);
 		}
@@ -1100,9 +988,6 @@ static void register_gnocatan_pixmaps(void)
 
 GtkWidget* gui_build_interface()
 {
-	gint toolbar_style;
-	BonoboDockItem *dock_item;
-	GtkWidget *toolbar;
 	gchar *icon_file;
 
 	player_init();
@@ -1110,8 +995,9 @@ GtkWidget* gui_build_interface()
 	gmap = guimap_new();
 
 	register_gnocatan_pixmaps();
-	app_window = gnome_app_new("gnocatan", _("Gnocatan"));
-	gtk_window_set_policy(GTK_WINDOW(app_window), TRUE, TRUE, TRUE);
+	app_window = gnome_app_new("gnocatan", 
+			/* The name of the application */
+			_("Gnocatan"));
 
 	icon_file = gnome_program_locate_file(NULL,
 			GNOME_FILE_DOMAIN_APP_PIXMAP,
@@ -1122,19 +1008,17 @@ GtkWidget* gui_build_interface()
 		g_free(icon_file);
 	}
 	else {
+		/* Missing pixmap, main icon file */
 		fprintf(stderr, _("Warning: pixmap not found: %s\n"),
 				GNOCATAN_ICON_FILE);
 	}
 	
 	gtk_widget_realize(app_window);
-	gtk_signal_connect(GTK_OBJECT(app_window), "delete_event",
-			   GTK_SIGNAL_FUNC(quit_cb), NULL);
+	g_signal_connect(G_OBJECT(app_window), "delete_event",
+			G_CALLBACK(quit_cb), NULL);
 	
-	toolbar_style = 
-	    config_get_int_with_default("settings/toolbar_style", GTK_TOOLBAR_BOTH);
-
 	color_chat_enabled = 
-	    config_get_int_with_default("settings/color_chat", COLOR_CHAT_YES);
+	    config_get_int_with_default("settings/color_chat", TRUE);
 
 	color_messages_enabled = 
 	    config_get_int_with_default("settings/color_messages", TRUE);
@@ -1148,21 +1032,11 @@ GtkWidget* gui_build_interface()
 	gnome_app_create_menus(GNOME_APP(app_window), main_menu);
 	gnome_app_create_toolbar(GNOME_APP(app_window), toolbar_uiinfo);
         
-        /* Get the toolbar (I wish there was a Gnome function for this...)
-           and set its style from what was saved. */
-        dock_item = gnome_app_get_dock_item_by_name( GNOME_APP(app_window),
-                                                     GNOME_APP_TOOLBAR_NAME );
-        toolbar = bonobo_dock_item_get_child( dock_item );
-        gtk_toolbar_set_style( GTK_TOOLBAR(toolbar), toolbar_style );
-
-	/* Allow grow and shrink, but don't auto-shrink */
-	gtk_window_set_policy( GTK_WINDOW(app_window), TRUE, TRUE, FALSE );
-
 	gnome_app_set_contents(GNOME_APP(app_window), build_main_interface());
 	build_status_bar();
 
-	gtk_signal_connect(GTK_OBJECT(app_window), "key_press_event",
-			   GTK_SIGNAL_FUNC(hotkeys_handler), NULL);
+	g_signal_connect(G_OBJECT(app_window), "key_press_event",
+			G_CALLBACK(hotkeys_handler), NULL);
 
 	gtk_widget_show(app_window);
 

@@ -4,6 +4,17 @@
 	* common/common_glib.c, common/common_glib.h, common/driver.h,
 	common/network.c, server/gnocatan-server.c, server/server.c: Using the
 	new typedef InputFunc
+	* rules.make: When compiling with --enable-debug,
+	GNOME_DISABLE_DEPRECATED can be used
+	* ai/ai.c, ai/client.c, ai/computer.c, ai/player.c, ai/resource.c,
+	ai/trade.c: gnome.h previously included string.h, now we must do it
+	ourselves
+	* client/gtk/gui.c: Rewrite of Preference dialog. It uses
+	instant-apply. Toolbar settings removed, because GNOME already saves
+	it
+	* client/common/chat.c, common/log.c, common/log.h,
+	common/gtk/common_gtk.c: Chat color separate from use of color of
+	messages
 	
 2004-10-24  0.8.1.40  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/gui.c, client/gtk/gui.h, client/gtk/trade.c: Removed the

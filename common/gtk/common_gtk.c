@@ -57,21 +57,10 @@ void message_window_log_message_string( gint msg_type, gchar *text )
 	if (message_txt == NULL)
 		return; /* No widget set */
 
-	if (!msg_colors)
-		tagname = "black";
-	else switch( msg_type ) {
-		case MSG_ERROR: tagname = "red"; break;
-		case MSG_INFO: tagname = "info"; break;
-		case MSG_CHAT: tagname = "chat"; break;
-		case MSG_RESOURCE: tagname = "resource"; break;
-		case MSG_BUILD: tagname = "build"; break;
-		case MSG_DICE: tagname = "dice"; break;
-		case MSG_STEAL: tagname = "steal"; break;
-		case MSG_TRADE: tagname = "trade"; break;
-		case MSG_DEVCARD: tagname = "devcard"; break;
-		case MSG_LARGESTARMY: tagname = "largest"; break;
-		case MSG_LONGESTROAD: tagname = "longest"; break;
-		case MSG_BEEP: tagname = "beep"; break;
+	/* First determine if the requested color is for chat.
+	 * Chat colors are separately turned on/off
+	 */
+	switch (msg_type) {
 		case MSG_PLAYER1: tagname = "player1"; break;
 		case MSG_PLAYER2: tagname = "player2"; break;
 		case MSG_PLAYER3: tagname = "player3"; break;
@@ -80,7 +69,29 @@ void message_window_log_message_string( gint msg_type, gchar *text )
 		case MSG_PLAYER6: tagname = "player6"; break;
 		case MSG_PLAYER7: tagname = "player7"; break;
 		case MSG_PLAYER8: tagname = "player8"; break;
-		default: tagname = "green";
+		default:
+			/* Not chat related, check whether other messages
+			 * use color
+			 */
+		if (!msg_colors)
+			tagname = "black";
+		else switch( msg_type ) {
+			case MSG_ERROR: tagname = "red"; break;
+			case MSG_INFO: tagname = "info"; break;
+			case MSG_CHAT: tagname = "chat"; break;
+			case MSG_VIEWER_CHAT: tagname = "chat"; break;
+			case MSG_RESOURCE: tagname = "resource"; break;
+			case MSG_BUILD: tagname = "build"; break;
+			case MSG_DICE: tagname = "dice"; break;
+			case MSG_STEAL: tagname = "steal"; break;
+			case MSG_TRADE: tagname = "trade"; break;
+			case MSG_DEVCARD: tagname = "devcard"; break;
+			case MSG_LARGESTARMY: tagname = "largest"; break;
+			case MSG_LONGESTROAD: tagname = "longest"; break;
+			case MSG_BEEP: tagname = "beep"; break;
+			default: tagname = "green";
+		};
+		break;
 	}
 
 	buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(message_txt));

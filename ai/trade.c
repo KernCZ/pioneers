@@ -21,6 +21,7 @@
 
 #include "config.h"
 #include <gnome.h>
+#include <string.h>
 
 #include "game.h"
 #include "cost.h"
