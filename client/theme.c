@@ -147,7 +147,7 @@ void init_themes(void)
 			continue;
 		fname = g_strconcat(IMAGEDIR "/", de->d_name, NULL);
 		if (stat(fname, &st) == 0 && S_ISDIR(st.st_mode)) {
-			path = g_strconcat(fname, G_DIR_SEPARATOR_S, "theme.cfg");
+			path = g_strconcat(fname, G_DIR_SEPARATOR_S, "theme.cfg", NULL);
 			if ((t = theme_config_parse(de->d_name, path))) {
 				theme_add(t);
 				theme_initialize(t);

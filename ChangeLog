@@ -1,3 +1,7 @@
+2003-01-15  Jeff Breidenbach  <jab@debian.org>
+
+	* themes.c: incorporate string terminator patch from Hal Eisen
+
 2003-01-15  Steve Langasek  <vorlon@debian.org>
 	* gnocatan.spec: RPM packaging updates from Daniel Jensen
 
