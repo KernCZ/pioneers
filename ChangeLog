@@ -1,3 +1,6 @@
+2004-11-05  0.8.1.42  Roland Clobus <rclobus@bigfoot.com>
+	* client/gtk/resource.c: Translation was not active
+	
 2004-10-27  0.8.1.41  Roland Clobus <rclobus@bigfoot.com>
 	* client/common/client.c: Added dummy callsbacks to remove compiler
 	warnings
