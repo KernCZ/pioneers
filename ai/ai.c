@@ -85,19 +85,19 @@ UIDriver Glib_Driver;
 int main(int argc, char *argv[])
 {
 	GMainLoop *event_loop;
-	char c;
+	int c;
 	char *server = "127.0.0.1";
 	char *port = "5556";
 	char *name = NULL;
 	char *ai = "default";
 	int waittime = 1000;
-	int chatty = 0;
+	int chatty = 1;
 
 	while ((c = getopt(argc, argv, "s:p:n:a:t:c")) != EOF)
 	{
 		switch (c) {
 		case 'c':
-		    chatty = 1;
+		    chatty = 0;
 		    break;
 		case 's':
 		    server = optarg;
