@@ -27,7 +27,6 @@
 #include <unistd.h>		/* For usleep */
 #include <errno.h>
 #include <fcntl.h>
-#include <sys/wait.h>
 
 #include "frontend.h"
 #include "network.h"
@@ -693,48 +692,25 @@ static void create_server_dlg_cb(GtkDialog * dlg, gint arg1,
 static void launch_server_gtk(UNUSED(GtkWidget * widget),
 			      UNUSED(GtkWindow * parent))
 {
-	pid_t pid, pid2;
+	gchar *child_argv[3];
+	GSpawnFlags flags = G_SPAWN_STDOUT_TO_DEV_NULL |
+			    G_SPAWN_STDERR_TO_DEV_NULL;
+	GError *error;
+	gint i;
 
-	pid = fork();
-	if (pid < 0) {
+	child_argv[0] = g_strdup(GNOCATAN_SERVER_GTK_PATH);
+	child_argv[1] = g_strdup(GNOCATAN_SERVER_GTK_PATH);
+	child_argv[2] = NULL;
+	if (!g_spawn_async(NULL, child_argv, NULL, flags, NULL, NULL, NULL,
+			   &error)) {
+		/* Error message when program %1 is started, reason is %2 */
 		log_message(MSG_ERROR,
-			    /* Error message when program %1 is started, reason is %2 */
 			    _("Error starting %s: %s"),
-			    GNOCATAN_SERVER_GTK_PATH, strerror(errno));
-	} else if (pid == 0) {
-		/* child */
-		int i;
-
-		/* Don't show any logs in the console */
-		for (i = 0; i < 256; ++i)
-			close(i);
-		open("/dev/null", O_RDONLY);
-		open("/dev/null", O_WRONLY);
-		open("/dev/null", O_RDWR);
-
-		/* start a second child to avoid zombies */
-		pid2 = fork();
-		if (pid2 < 0) {
-			log_message(MSG_ERROR, _("Error starting %s: %s"),
-				    GNOCATAN_SERVER_GTK_PATH,
-				    strerror(errno));
-			exit(1);
-		} else if (pid2 == 0) {
-			execl(GNOCATAN_SERVER_GTK_PATH,
-			      GNOCATAN_SERVER_GTK_PATH, NULL);
-			log_message(MSG_ERROR, _("Error starting %s: %s"),
-				    GNOCATAN_SERVER_GTK_PATH,
-				    strerror(errno));
-			exit(2);
-		} else {
-			/* parent */
-			_exit(0);
-		}
-	} else {
-		/* parent */
-		int stat;
-		waitpid(pid, &stat, 0);
+			    GNOCATAN_SERVER_GTK_PATH, error->message);
+		g_error_free(error);
 	}
+	for (i = 0; child_argv[i] != NULL; i++)
+		g_free(child_argv[i]);
 }
 
 static void create_server_dlg(UNUSED(GtkWidget * widget),

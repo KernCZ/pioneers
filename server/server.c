@@ -25,7 +25,6 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/socket.h>
-#include <sys/wait.h>
 #include <netdb.h>
 #include <errno.h>
 #include <string.h>
@@ -234,58 +233,33 @@ gint accept_connection(gint in_fd, gchar ** location)
 
 gint new_computer_player(const gchar * server, const gchar * port)
 {
-	pid_t pid, pid2;
+	gchar *child_argv[7];
+	GError *error;
+	gint ret = 0;
+	gint i;
 
 	if (!server)
 		server = GNOCATAN_DEFAULT_GAME_HOST;
 
-	pid = fork();
-	if (pid < 0) {
-		log_message(MSG_ERROR, "Error starting gnocatanai: %s",
-			    strerror(errno));
-		return -1;
-	} else if (pid == 0) {
-		/* child */
-		int i;
+	child_argv[0] = g_strdup(GNOCATAN_AI_PATH);
+	child_argv[1] = g_strdup(GNOCATAN_AI_PATH);
+	child_argv[2] = g_strdup("-s");
+	child_argv[3] = g_strdup(server);
+	child_argv[4] = g_strdup("-p");
+	child_argv[5] = g_strdup(port);
+	child_argv[6] = NULL;
 
-		/* Show AI logs on the console */
-		for (i = 3; i < 256; ++i)
-			close(i);
-		close(0);
-		open("/dev/null", O_RDONLY);
-
-		/* Don't show any AI logs */
-		/*
-		   for( i = 0; i < 255; ++i ) close(i);
-		   open("/dev/null",O_RDONLY);
-		   open("/dev/null",O_WRONLY);
-		   open("/dev/null",O_RDWR);
-		 */
-
-		/* start a second child to avoid zombies */
-		pid2 = fork();
-		if (pid2 < 0) {
-			log_message(MSG_ERROR,
-				    "Error starting gnocatanai: %s",
-				    strerror(errno));
-			exit(1);
-		} else if (pid2 == 0) {
-			execl(GNOCATAN_AI_PATH, GNOCATAN_AI_PATH,
-			      "-s", server, "-p", port, NULL);
-			log_message(MSG_ERROR,
-				    "Error starting gnocatanai: %s",
-				    strerror(errno));
-			exit(2);
-		} else {
-			/* parent */
-			_exit(0);
-		}
-	} else {
-		/* parent */
-		int stat;
-		waitpid(pid, &stat, 0);
-		return 0;
+	if (!g_spawn_async(NULL, child_argv, NULL, 0, NULL, NULL,
+			   NULL, &error)) {
+		log_message(MSG_ERROR,
+			    _("Error starting %s: %s"),
+			    GNOCATAN_AI_PATH, error->message);
+		g_error_free(error);
+		ret = -1;
 	}
+	for (i = 0; child_argv[i] != NULL; i++)
+		g_free(child_argv[i]);
+	return ret;
 }
 
 

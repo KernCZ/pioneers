@@ -423,13 +423,18 @@ static const gchar *get_server_path(void)
 static void client_create_new_server(Client * client, gchar * line)
 {
 	char *terrain, *numplayers, *points, *sevens_rule, *numai, *type;
-	int pid, fd, port_used;
+	int fd, port_used;
 	gboolean found_used = TRUE;
 	socklen_t yes = 1;
 	struct sockaddr_in sa;
 	char port[20];
 	const char *console_server;
+	unsigned int n;
 	GList *list;
+	GSpawnFlags spawn_flags = G_SPAWN_STDOUT_TO_DEV_NULL |
+				  G_SPAWN_STDERR_TO_DEV_NULL;
+	gchar *child_argv[32];
+	GError *error;
 
 	line += strspn(line, " \t");
 	terrain = line;
@@ -524,32 +529,42 @@ static void client_create_new_server(Client * client, gchar * line)
 	}
 	sprintf(port, "%d", sa.sin_port);
 
-	if ((pid = fork()) == -1) {
-		client_printf(client, "fork failed\n");
-	} else if (pid == 0) {
-		int i;
-		for (i = 0; i < 255; ++i)
-			close(i);
-		open("/dev/null", O_RDONLY);
-		open("/dev/null", O_WRONLY);
-		open("/dev/null", O_RDWR);
-		execl(console_server, console_server,
-		      "-g", type,
-		      "-P", numplayers,
-		      "-v", points,
-		      "-R", sevens_rule,
-		      "-T", terrain,
-		      "-p", port,
-		      "-c", numai,
-		      "-k", "1200",
-		      "-m", myhostname,
-		      "-n", myhostname, "-x", "-r", NULL);
+	n = 0;
+	child_argv[n++] = g_strdup(console_server);
+	child_argv[n++] = g_strdup(console_server);
+	child_argv[n++] = g_strdup("-g");
+	child_argv[n++] = g_strdup(type);
+	child_argv[n++] = g_strdup("-P");
+	child_argv[n++] = g_strdup(numplayers);
+	child_argv[n++] = g_strdup("-v");
+	child_argv[n++] = g_strdup(points);
+	child_argv[n++] = g_strdup("-R");
+	child_argv[n++] = g_strdup(sevens_rule);
+	child_argv[n++] = g_strdup("-T");
+	child_argv[n++] = g_strdup(terrain);
+	child_argv[n++] = g_strdup("-p");
+	child_argv[n++] = g_strdup(port);
+	child_argv[n++] = g_strdup("-c");
+	child_argv[n++] = g_strdup(numai);
+	child_argv[n++] = g_strdup("-k");
+	child_argv[n++] = g_strdup("1200");
+	child_argv[n++] = g_strdup("-m");
+	child_argv[n++] = g_strdup(myhostname);
+	child_argv[n++] = g_strdup("-n");
+	child_argv[n++] = g_strdup(myhostname);
+	child_argv[n++] = g_strdup("-x");
+	child_argv[n++] = g_strdup("-r");
+	child_argv[n] = NULL;
+	g_assert(n < 32);
+
+	if (!g_spawn_async(NULL, child_argv, NULL, spawn_flags, NULL, NULL,
+			   NULL, &error)) {
 		syslog(LOG_ERR, "cannot exec %s: %s", console_server,
-		       strerror(errno));
-		exit(2);
-	} else {
-		close(fd);
+		       error->message);
+		g_error_free(error);
 	}
+	for (n = 0; child_argv[n] != NULL; n++)
+		g_free(child_argv[n]);
 
 	client_printf(client, "host=%s\n", myhostname);
 	client_printf(client, "port=%s\n", port);
