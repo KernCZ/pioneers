@@ -1,7 +1,7 @@
 Summary: 	Playable implementation of the Settlers of Catan 
 Name: 		gnocatan
-Version: 	0.6.0
-Release: 	3
+Version: 	0.6.1
+Release: 	1
 Group: 		X11/Games
 Copyright: 	GPL
 Url: 		http://www.gnome.org/gnocatan/
@@ -129,6 +129,9 @@ make install prefix=$RPM_BUILD_ROOT/usr
 /usr/share/gnome/help/gnocatan/C/images/*
 
 %changelog
+
+* Sun Aug 27 2000 Steve Langasek <vorlon@dodds.net>
+- 0.6.1 released
 
 * Tue Jun 20 2000 Steve Langasek <vorlon@dodds.net>
 - updated version number
