@@ -1,5 +1,10 @@
 2000-05-17  Steve Langasek <vorlon@dodds.net>
 
+	* common/driver.c, server/glib-driver.c: Finished moving glib
+	driver to the common/ subdirectory.
+
+	* common/common_gtk.c: Removed gdk-dependent input functions.
+
 	* server/gnocatan-server-console.c: Moved some initialization code
 	for the console server's UI driver into the main loop.
 
