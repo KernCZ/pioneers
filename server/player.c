@@ -640,6 +640,7 @@ void player_set_name(Player *player, gchar *name)
 
 	if (player->name == NULL) {
 		gchar tmp[20]; /* max player is 8, so this should be enough */
+		gint i;
 		sprintf(tmp, "Player%d", player->num);
 		/* since there are at most 8 players, the loop will always
 		 * be ended by a break.  However, if it magically isn't then

@@ -1,4 +1,7 @@
 2003-09-25  Bas Wijnen <b.wijnen@phys.rug.nl>
+	* server/player.c: fixed bug.
+
+2003-09-25  Bas Wijnen <b.wijnen@phys.rug.nl>
 	* ai/greedy.c: Fixed bug.
 	* server/player.c, client/player.c, client/client.c: Fixed bug.
 
