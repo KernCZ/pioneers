@@ -1,3 +1,19 @@
+2003-01-19  Roman Hodek  <roman@hodek.net>
+
+	* po/gnocatan.pot: rebuilt
+
+	* po/de.po, po/es.po: updated from new .pot; de is fixed already
+	(not many changes...), es still needs more translations
+	
+	* ai/greedy.c: AI chat spelling fixes by Tril <tril@tunes.org>
+
+	* client/trade.c (is_domestic_trade_allowed): patch by Tril
+	<tril@tunes.org>: allow trade even if nobody has the resource in
+	question, in case somebody wants to give away for free :)
+
+	* gnocatan.spec: applied patch by Daniel Jensen
+	<jensend@iname.com>, adding manpages and fixing images (release 3)
+
 2003-01-16  Steve Langasek  <vorlon@debian.org>
 	* common/meta.h, meta-server/meta-report: change to using
 	  gnocatan.debian.net as the default metaserver instead of
