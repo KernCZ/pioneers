@@ -1,6 +1,13 @@
 gnocatan (0.7.1.90-3) unstable; urgency=low
 
   * Test snapshot.
+  * shuffle files around, to comply with the FHS (closes: #143972).
+  * add a GNOME menu entry for the GTK server (closes: #169667).
+  * add manpages as needed (closes: #67271, #67272).
+  * fix gnocatanai to not use GNOME libs, since it has no GUI (closes:
+    #176205).
+  * Adjust build script so we only run './configure' instead of
+    './autogen.sh' for the package build.
 
  -- Jeff Breidenbach <jab@debian.org>  Fri, 21 Feb 2003 00:20:58 -0800
 
