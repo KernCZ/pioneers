@@ -598,7 +598,7 @@ void sm_pop(StateMachine *sm)
 	sm->stack_ptr--;
 	route_event(sm, SM_ENTER);
 #ifdef STACK_DEBUG
-	log_info("sm_pop  -> %d:%s\n", sm->stack_ptr, sm->current_state);
+	log_message( MSG_INFO, "sm_pop  -> %d:%s\n", sm->stack_ptr, sm->current_state);
 #endif
 	route_event(sm, SM_INIT);
 
