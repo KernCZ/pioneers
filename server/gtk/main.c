@@ -406,10 +406,11 @@ static GtkWidget *build_game_settings(GtkWidget *parent)
 	adj = gtk_adjustment_new(0, 2, MAX_PLAYERS, 1, 1, 1);
 	players_spin = gtk_spin_button_new(GTK_ADJUSTMENT(adj), 1, 0);
 	gtk_widget_show(players_spin);
+	gtk_spin_button_set_numeric(GTK_SPIN_BUTTON(players_spin), TRUE);
 	gtk_table_attach(GTK_TABLE(table), players_spin, 1, 2, 2, 3,
 			 (GtkAttachOptions)GTK_FILL,
 			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
-	gtk_signal_connect(GTK_OBJECT(players_spin), "changed",
+	gtk_signal_connect(GTK_OBJECT(players_spin), "value-changed",
 			   GTK_SIGNAL_FUNC(players_spin_changed_cb), NULL);
 
 	label = gtk_label_new(_("Victory Point Target"));
@@ -422,10 +423,11 @@ static GtkWidget *build_game_settings(GtkWidget *parent)
 	adj = gtk_adjustment_new(10, 3, 20, 1, 1, 1);
 	victory_spin = gtk_spin_button_new(GTK_ADJUSTMENT(adj), 1, 0);
 	gtk_widget_show(victory_spin);
+	gtk_spin_button_set_numeric(GTK_SPIN_BUTTON(victory_spin), TRUE);
 	gtk_table_attach(GTK_TABLE(table), victory_spin, 1, 2, 3, 4,
 			 (GtkAttachOptions)GTK_FILL,
 			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
-	gtk_signal_connect(GTK_OBJECT(victory_spin), "changed",
+	gtk_signal_connect(GTK_OBJECT(victory_spin), "value-changed",
 			   GTK_SIGNAL_FUNC(victory_spin_changed_cb), NULL);
 
 	label = gtk_label_new(_("Sevens Rule"));

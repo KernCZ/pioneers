@@ -1,4 +1,7 @@
 2003-11-05  Roland Clobus <rclobus@bigfoot.com>
+	* server/gnocatan-server-gtk.c: Fixed bug 816848
+	
+2003-11-05  Roland Clobus <rclobus@bigfoot.com>
 	* client/chat.c, client/player.c, common/log.c, common/log.h: Bug
 	#826894: First message is not time stamped.
 	
