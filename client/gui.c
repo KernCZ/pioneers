@@ -30,6 +30,9 @@ GtkWidget *app_window;		/* main application window */
 #define MAP_WIDTH 550		/* default map width */
 #define MAP_HEIGHT 450		/* default map height */
 
+#define COLOR_CHAT_YES 1
+#define COLOR_CHAT_NO  0
+
 static GuiMap *gmap;		/* handle to map drawing code */
 
 enum {
@@ -55,6 +58,8 @@ static GtkWidget *vp_target_status;
 static GtkWidget *radio_style_text;
 static GtkWidget *radio_style_icons;
 static GtkWidget *radio_style_both;
+
+static GtkWidget *check_color_chat;
 
 
 GtkWidget *gnome_dialog_get_button(GnomeDialog *dlg, gint button)
@@ -398,6 +403,7 @@ static void settings_apply_cb(GnomePropertyBox *prop_box, gint page, gpointer da
 	GnomeDockItem *dock_item;
 	GtkWidget *toolbar;
 	gint toolbar_style;
+	gint color_chat;
 
 	switch(page)
 	{
@@ -420,12 +426,23 @@ static void settings_apply_cb(GnomePropertyBox *prop_box, gint page, gpointer da
 		
 		gnome_config_set_int( "/gnocatan/settings/toolbar_style",
 		                      toolbar_style );
-		gnome_config_sync();
 		gtk_toolbar_set_style( GTK_TOOLBAR(toolbar), toolbar_style );
 		
 		/* Turn auto-shrink off */
 		gtk_window_set_policy( GTK_WINDOW(app_window), TRUE, TRUE, FALSE );
 		
+		if (GTK_TOGGLE_BUTTON(check_color_chat)->active) {
+			color_chat = COLOR_CHAT_YES;
+		} else {
+			color_chat = COLOR_CHAT_NO;
+		}
+		
+		gnome_config_set_int( "/gnocatan/settings/color_chat",
+		                      color_chat );
+
+		color_chat_enabled = color_chat;
+
+		gnome_config_sync();
 		break;
 	default:
 		break;
@@ -441,35 +458,61 @@ static void settings_activate_cb(GtkWidget *widget, void *prop_box)
 static void menu_settings_cb(GtkWidget *widget, void *user_data)
 {
 	GtkWidget *settings;
-	GtkWidget *pg0_table;
-	GtkWidget *pg0_label;
-	GtkWidget *frame_style;
-	GtkWidget *vbox_style;
+	GtkWidget *page0_table;
+	GtkWidget *page0_label;
+	GtkWidget *frame_texticons;
+	GtkWidget *frame_colors;
+	GtkWidget *vbox_texticons;
+	GtkWidget *vbox_colors;
 	gboolean default_returned;
 	gint toolbar_style;
+	gint color_chat;
 	
 	/* Create stuff */
 	settings = gnome_property_box_new();
-	pg0_table = gtk_table_new( 1, 1, FALSE );
-	pg0_label = gtk_label_new( "General" );
-	frame_style = gtk_frame_new( "Show Toolbar As" );
-	vbox_style = gtk_vbox_new( TRUE, 2 );
-	radio_style_text = gtk_radio_button_new_with_label(NULL, "Text Only");
-	radio_style_icons = 
-	    gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(radio_style_text),
-	                                                "Icons Only" );
-	radio_style_both =
-	    gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(radio_style_icons),
-	                                                "Both Icons and Text" );
 
-	/* Set the default button state */
+	page0_table = gtk_table_new( 1, 1, FALSE );
+	page0_label = gtk_label_new( "General" );
+
+	frame_texticons = gtk_frame_new( "Show Toolbar As" );
+	frame_colors = gtk_frame_new( "Color Settings" );
+
+	vbox_texticons = gtk_vbox_new( TRUE, 2 );
+	vbox_colors = gtk_vbox_new( TRUE, 2 );
+
+	radio_style_text = gtk_radio_button_new_with_label(NULL, "Text Only");
+	radio_style_icons = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(radio_style_text), "Icons Only" );
+	radio_style_both = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(radio_style_icons), "Both Icons and Text" );
+
+	check_color_chat = gtk_check_button_new_with_label( "Display chat messages in user's color?" );
+
+	/* Put things in other things */
+	gtk_box_pack_start_defaults( GTK_BOX(vbox_texticons), radio_style_text );
+	gtk_box_pack_start_defaults( GTK_BOX(vbox_texticons), radio_style_icons );
+	gtk_box_pack_start_defaults( GTK_BOX(vbox_texticons), radio_style_both );
+	
+	gtk_box_pack_start_defaults( GTK_BOX(vbox_colors), check_color_chat );
+
+	gtk_container_add( GTK_CONTAINER(frame_texticons), vbox_texticons );
+	gtk_container_add( GTK_CONTAINER(frame_colors), vbox_colors );
+
+	gtk_table_attach( GTK_TABLE(page0_table), frame_texticons, 0, 1, 0, 1,
+	                  GTK_FILL, GTK_FILL, 5, 5 );
+	gtk_table_attach( GTK_TABLE(page0_table), frame_colors, 1, 2, 0, 1,
+	                  GTK_FILL, GTK_FILL, 5, 5 );
+	                  
+	gnome_property_box_append_page( GNOME_PROPERTY_BOX(settings),
+	                                page0_table, page0_label );
+	
+	/* Set the default text/icons state */
 	toolbar_style = gnome_config_get_int_with_default("/gnocatan/settings/toolbar_style=0",
 	                                                  &default_returned );
+
 	if(default_returned) {
 		toolbar_style = GTK_TOOLBAR_BOTH;
 	}
-	switch(toolbar_style)
-	{
+
+	switch(toolbar_style) {
 	case GTK_TOOLBAR_TEXT:
 		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(radio_style_text),
 		                             TRUE);
@@ -484,20 +527,31 @@ static void menu_settings_cb(GtkWidget *widget, void *user_data)
 		break;
 	}
 
-	/* Put things in other things */
-	gtk_box_pack_start_defaults( GTK_BOX(vbox_style), radio_style_text );
-	gtk_box_pack_start_defaults( GTK_BOX(vbox_style), radio_style_icons );
-	gtk_box_pack_start_defaults( GTK_BOX(vbox_style), radio_style_both );
-	gtk_container_add( GTK_CONTAINER(frame_style), vbox_style );
-	gtk_table_attach( GTK_TABLE(pg0_table), frame_style, 0, 1, 0, 1,
-	                  GTK_FILL, GTK_FILL, 5, 5 );
-	                  
+	/* Set the default color chat state */
+	color_chat = gnome_config_get_int_with_default("/gnocatan/settings/color_chat=1",
+	                                                  &default_returned );
+
+	if(default_returned) {
+		color_chat = COLOR_CHAT_YES;
+	}
+
+	switch(color_chat) {
+	case COLOR_CHAT_NO:
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(check_color_chat), FALSE);
+		break;
+	default:
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(check_color_chat), TRUE);
+		break;
+	}
+
 	/* Signal Connections */
 	gtk_signal_connect( GTK_OBJECT(radio_style_text), "clicked",
 	                    settings_activate_cb, (gpointer)settings );
 	gtk_signal_connect( GTK_OBJECT(radio_style_icons), "clicked",
 	                    settings_activate_cb, (gpointer)settings );
 	gtk_signal_connect( GTK_OBJECT(radio_style_both), "clicked",
+	                    settings_activate_cb, (gpointer)settings );
+	gtk_signal_connect( GTK_OBJECT(check_color_chat), "clicked",
 	                    settings_activate_cb, (gpointer)settings );
 	gtk_signal_connect( GTK_OBJECT(settings), "apply",
 	                    settings_apply_cb, NULL );
@@ -506,12 +560,16 @@ static void menu_settings_cb(GtkWidget *widget, void *user_data)
 	gtk_widget_show( radio_style_text );
 	gtk_widget_show( radio_style_icons );
 	gtk_widget_show( radio_style_both );
-	gtk_widget_show( vbox_style );
-	gtk_widget_show( frame_style );
-	gtk_widget_show( pg0_table );
-	
-	gnome_property_box_append_page( GNOME_PROPERTY_BOX(settings),
-	                                pg0_table, pg0_label );
+
+	gtk_widget_show( check_color_chat );
+
+	gtk_widget_show( vbox_texticons );
+	gtk_widget_show( vbox_colors );
+
+	gtk_widget_show( frame_texticons );
+	gtk_widget_show( frame_colors );
+
+	gtk_widget_show( page0_table );
 	
 	gtk_widget_show( settings );
 }
@@ -777,6 +835,13 @@ GtkWidget* gui_build_interface()
 	                                      &default_returned );
 	if(default_returned) {
 		toolbar_style = GTK_TOOLBAR_BOTH;
+	}
+
+	color_chat_enabled = 
+	    gnome_config_get_int_with_default("/gnocatan/settings/color_chat=1",
+	                                      &default_returned );
+	if(default_returned) {
+		color_chat_enabled = COLOR_CHAT_YES;
 	}
 
 	gnome_app_create_menus(GNOME_APP(app_window), main_menu);

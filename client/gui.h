@@ -12,6 +12,8 @@
 
 #include "guimap.h"
 
+gint color_chat_enabled;
+
 typedef enum {
 	MODE_IDLE,		/* not allowed to do anything */
 	MODE_TURN,		/* normal play */

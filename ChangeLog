@@ -1,3 +1,10 @@
+2001-02-27  Matt Waggoner  <matt@waggoner.com>
+
+	* Changed client/gui.c to have the Game > Settings dialog box
+		include an option regarding whether or not each user's chat
+		text appears in their text color.  Added a global config var
+		to client/gui.h and appropriate checking code to client/chat.c.
+
 2001-02-23  Matt Waggoner  <matt@waggoner.com>
 
 	* Changed client/chat.c to intercept chat text that begins with a

@@ -74,32 +74,36 @@ void chat_parser( gint player_num, char chat_str[MAX_CHAT] )
 			break;
 	}
 
-	switch( player_num )
-	{
-		case 0:
-			tempchatcolor = MSG_PLAYER1;
-			break;
-		case 1:
-			tempchatcolor = MSG_PLAYER2;
-			break;
-		case 2:
-			tempchatcolor = MSG_PLAYER3;
-			break;
-		case 3:
-			tempchatcolor = MSG_PLAYER4;
-			break;
-		case 4:
-			tempchatcolor = MSG_PLAYER5;
-			break;
-		case 5:
-			tempchatcolor = MSG_PLAYER6;
-			break;
-		case 6:
-			tempchatcolor = MSG_PLAYER7;
-			break;
-		case 7:
-			tempchatcolor = MSG_PLAYER8;
-			break;
+	if (color_chat_enabled == 1) {
+		switch( player_num )
+		{
+			case 0:
+				tempchatcolor = MSG_PLAYER1;
+				break;
+			case 1:
+				tempchatcolor = MSG_PLAYER2;
+				break;
+			case 2:
+				tempchatcolor = MSG_PLAYER3;
+				break;
+			case 3:
+				tempchatcolor = MSG_PLAYER4;
+				break;
+			case 4:
+				tempchatcolor = MSG_PLAYER5;
+				break;
+			case 5:
+				tempchatcolor = MSG_PLAYER6;
+				break;
+			case 6:
+				tempchatcolor = MSG_PLAYER7;
+				break;
+			case 7:
+				tempchatcolor = MSG_PLAYER8;
+				break;
+		}
+	} else {
+		tempchatcolor = MSG_CHAT;
 	}
 	
 	log_timestamp = 0;
