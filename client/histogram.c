@@ -215,6 +215,13 @@ static void add_histogram_bars(GtkWidget *table, Terrain terrain)
 static GtkWidget *frame;
 static GtkWidget *table = NULL;
 
+static void histogram_destroyed_cb(GtkWidget *widget, gpointer arg)
+{
+	histogram_dlg = NULL;
+	table = NULL;
+	gtk_widget_destroyed(widget, arg);
+}
+
 GtkWidget *histogram_create_dlg()
 {
 	GtkWidget *dlg_vbox;
@@ -229,7 +236,7 @@ GtkWidget *histogram_create_dlg()
 	gnome_dialog_set_parent(GNOME_DIALOG(histogram_dlg),
 			GTK_WINDOW(app_window));
 	gtk_signal_connect(GTK_OBJECT(histogram_dlg), "destroy",
-			GTK_SIGNAL_FUNC(gtk_widget_destroyed), &histogram_dlg);
+			GTK_SIGNAL_FUNC(histogram_destroyed_cb), &histogram_dlg);
 
 	dlg_vbox = GNOME_DIALOG(histogram_dlg)->vbox;
 	gtk_widget_show(dlg_vbox);
