@@ -1,6 +1,6 @@
 Summary: 	Playable implementation of the Settlers of Catan 
 Name: 		gnocatan
-Version: 	0.5.1
+Version: 	0.5.3
 Release: 	1
 Group: 		X11/Games
 Copyright: 	GPL
@@ -68,18 +68,19 @@ This package contains the help files.
 %setup
 
 %build
-./autogen.sh --prefix=/usr --bindir=/usr/games --datadir=/usr/share
+./autogen.sh --prefix=/usr
 make 
 
 %install
 rm -rf $RPM_BUILD_ROOT
-make install prefix=$RPM_BUILD_ROOT/usr bindir=$RPM_BUILD_ROOT/usr/games \
-	datadir=$RPM_BUILD_ROOT/usr/share
+make install prefix=$RPM_BUILD_ROOT/usr
 
 %files server
 %defattr(-,root,root)
 %doc AUTHORS COPYING ChangeLog INSTALL README NEWS 
-/usr/games/gnocatan-server
+/usr/bin/gnocatan-server-gtk
+/usr/bin/gnocatan-server-console
+/usr/bin/gnocatan-meta-server
 /usr/share/gnocatan/default.game
 /usr/share/gnocatan/four-islands.game
 /usr/share/gnocatan/seafarers.game
@@ -88,7 +89,7 @@ make install prefix=$RPM_BUILD_ROOT/usr bindir=$RPM_BUILD_ROOT/usr/games \
 %files client
 %defattr(-,root,root)
 %doc AUTHORS COPYING ChangeLog INSTALL README NEWS 
-/usr/games/gnocatan
+/usr/bin/gnocatan
 /usr/share/gnome/apps/Games/gnocatan.desktop
 /usr/share/pixmaps/gnome-gnocatan.png
 
@@ -119,17 +120,29 @@ make install prefix=$RPM_BUILD_ROOT/usr bindir=$RPM_BUILD_ROOT/usr/games \
 %files help
 %defattr(-,root,root)
 %doc AUTHORS COPYING ChangeLog INSTALL README NEWS 
+%dir /usr/share/gnome/help/gnocatan/
+%dir /usr/share/gnome/help/gnocatan/C
+%dir /usr/share/gnome/help/gnocatan/C/images
 /usr/share/gnome/help/gnocatan/C/*
+/usr/share/gnome/help/gnocatan/C/images/*
 
 %changelog
 
+* Thu Jun 01 2000 Steve Langasek <vorlon@dodds.net>
+- Updated to behave more like the filesystem standard tells us to (and
+  more like configure expects us to)
+
 * Sun May 07 2000 Dave Cole <adve@dccs.com.au>
 - Removed ship building development card
+
 * Mon May 01 2000 Andy Heroff <aheroff@mediaone.net>
 - SourceForge release version 0.5.0
+
 * Fri Sep 03 1999 Dave Cole <dave@dccs.com.au>
 - Modifications to build 0.4.0
+
 * Sun May 23 1999 Preben Randhol <randhol@pvv.org>
 - Building version 0.31
+
 * Wed May 12 1999 Preben Randhol <randhol@pvv.org>
 - First try at making the packages

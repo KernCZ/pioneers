@@ -1,3 +1,8 @@
+2000-06-01  Steve Langasek <vorlon@dodds.net>
+
+	* gnocatan.spec: RPM layout fixed up to conform with the rest
+	of Gnome packages.
+
 2000-05-30  Bibek Sahu <scorpio@dodds.net>
 
 	* server/gnocatan-server.c: Fixed a minor bug where the game was no
