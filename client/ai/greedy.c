@@ -1102,12 +1102,12 @@ static const char *chat_turn_start[] = {
 	_("I'll beat you all now! ;)"),
 	_("Now for another try..."),
 };
-/*
+
 static const char *chat_receive_one[] = {
 	_("At least I get something..."),
 	_("One is better than none..."),
 };
-*/
+
 static const char *chat_receive_many[] = {
 	_("Wow!"),
 	_("Ey, I'm becoming rich ;)"),
@@ -1139,7 +1139,6 @@ static const char *chat_discard_other[] = {
 	_("/me says farewell to your cards ;)"),
 	_("That's the price for being rich... :)"),
 };
-/*
 static const char *chat_stole_from_me[] = {
 	_("Ey! Where's that card gone?"),
 	_("Thieves! Thieves!!"),
@@ -1162,43 +1161,6 @@ static const char *chat_longestroad_self[] = {
 static const char *chat_longestroad_other[] = {
 	_("Pf, you won't win with roads alone..."),
 };
-*/
-
-#if 0
-This is left in here so those chat occasions can be reimplemented.
-It seems they would need extra callbacks though.
-
-      case CHAT_RECEIVES:
-		if (self) {
-			int i, sum = 0;
-			for(i = 0; i < NO_RESOURCE; ++i) {
-				sum += resparam[i];
-			}
-			if (sum == 1)
-				randchat (receive_one, 60);
-			else if (sum <= 3)
-				/*randchat (receive_some, 4)*/;
-      case CHAT_STOLE:
-		if (!self)
-			randchat (stole_from_me, 15);
-		break;
-      case CHAT_MONOPOLY:
-		if (!self)
-			randchat (monopoly_other, 20);
-		break;
-      case CHAT_LARGEST_ARMY:
-		if (self)
-			randchat (largestarmy_self, 10);
-		else
-			randchat (largestarmy_other, 10);
-		break;
-      case CHAT_LONGEST_ROAD:
-		if (self)
-			randchat (longestroad_self, 10);
-		else
-			randchat (longestroad_other, 10);
-		break;
-#endif
 
 static float score_node_hurt_opponents(Node *node)
 {
@@ -1652,16 +1614,6 @@ static void greedy_player_turn (gint player)
 		randchat (chat_turn_start, 70);
 }
 
-static void greedy_new_statistics (gint player, StatisticType type, gint num)
-{
-	if (type != STAT_RESOURCES || num < 3)
-		return;
-	if (player == my_player_num () )
-		randchat (chat_receive_many, 20);
-	else
-		randchat (chat_other_receive_many, 30);
-}
-
 static void greedy_robber_moved (UNUSED (Hex *old), Hex *new)
 {
 	int idx;
@@ -1672,6 +1624,52 @@ static void greedy_robber_moved (UNUSED (Hex *old), Hex *new)
 	}
 	if (iam_affected)
 		randchat (chat_moved_robber_to_me, 20);
+}
+
+static void greedy_player_robbed (UNUSED (gint robber_num), gint victim_num,
+		UNUSED (Resource resource) )
+{
+	if (victim_num == my_player_num () )
+		randchat (chat_stole_from_me, 15);
+}
+
+static void greedy_get_rolled_resources (gint player_num, const gint *resources)
+{
+	gint total = 0, i;
+	for (i = 0; i < NO_RESOURCE; ++i)
+		total += resources[i];
+	if (player_num == my_player_num () ) {
+		if (total == 1)
+			randchat (chat_receive_one, 60);
+		else if (total >= 3)
+			randchat (chat_receive_many, 20);
+	} else if (total >= 3)
+		randchat (chat_other_receive_many, 30);
+}
+
+static void greedy_played_develop (gint player_num, UNUSED (gint card_idx),
+		DevelType type)
+{
+	if (player_num != my_player_num () && type == DEVEL_MONOPOLY)
+		randchat (chat_monopoly_other, 20);
+}
+
+static void greedy_new_statistics (gint player_num, StatisticType type,
+		gint num)
+{
+	if (num != 1)
+		return;
+	if (type == STAT_LONGEST_ROAD) {
+		if (player_num == my_player_num () )
+			randchat (chat_longestroad_self, 10);
+		else
+			randchat (chat_longestroad_other, 10);
+	} else if (type == STAT_LARGEST_ARMY) {
+		if (player_num == my_player_num () )
+			randchat (chat_largestarmy_self, 10);
+		else
+			randchat (chat_largestarmy_other, 10);
+	}
 }
 
 void greedy_init (UNUSED (int argc), UNUSED (char **argv) )
@@ -1697,7 +1695,10 @@ void greedy_init (UNUSED (int argc), UNUSED (char **argv) )
 
 	/* chatting */
 	callbacks.player_turn = &greedy_player_turn;
-	callbacks.new_statistics = &greedy_new_statistics;
 	callbacks.robber_moved = &greedy_robber_moved;
 	callbacks.discard = &greedy_discard_start;
+	callbacks.player_robbed = &greedy_player_robbed;
+	callbacks.get_rolled_resources = &greedy_get_rolled_resources;
+	callbacks.played_develop = &greedy_played_develop;
+	callbacks.new_statistics = &greedy_new_statistics;
 }

@@ -1,3 +1,14 @@
+2004-04-25 0.8.1.25  Bas Wijnen <b.wijnen@phys.rug.nl>
+
+	* client/callback.h (struct callbacks), client/common/client.c
+	(client_init, check_other_players), client/common/player.c
+	(player_stole_from), client/ai/greedy.c (greedy_new_statistics,
+	greedy_player_robbed, greedy_get_rolled_resources,
+	greedy_played_develop, greedy_init): added and used new callbacks for
+	ai chatting.
+	* client/gtk/callbacks.c (frontend_error, frontend_set_callbacks): gtk
+	client callback cleanup.
+
 2004-03-28 0.8.1.24  Roland Clobus <rclobus@bigfoot.com>
 	* ai/client.c (mode_play_develop_response), ai/develop.c
 	(can_play_develop), client/common/client.c

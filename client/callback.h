@@ -204,6 +204,18 @@ struct callbacks {
 	void (*robber)(void);
 	/* Someone moved the robber */
 	void (*robber_moved)(Hex *old, Hex *new);
+	/* Someone has been robbed.  The frontend should allow player_num to
+	 * be negative, meaning noone was robbed.  This is not implemented
+	 * yet. */
+	void (*player_robbed)(gint robber_num, gint victim_num,
+			Resource resource);
+	/* The dice have been rolled, and resources are being distributed.
+	 * This is called once for every player receiving resources.  The
+	 * frontend should also be able to handle players not getting any
+	 * resources, because it may be called for all players in the future
+	 * The value of the resources has already been updated, and there has
+	 * been a call to resource_change when this is called. */
+	void (*get_rolled_resources)(gint player_num, const gint *resources);
 	/* Something happened to someones stats.  As with resource_change,
 	 * the value must not be updated by the frontend, it has already been
 	 * done by the client. */

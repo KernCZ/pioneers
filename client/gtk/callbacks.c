@@ -101,10 +101,6 @@ static void frontend_new_bank (const gint *new_bank)
 #endif
 }
 
-static void frontend_error (UNUSED(gchar *message))
-{
-}
-
 /* set all the callbacks. */
 void frontend_set_callbacks (int argc, char **argv)
 {
@@ -175,6 +171,5 @@ void frontend_set_callbacks (int argc, char **argv)
 	callbacks.player_quit = &frontend_player_quit;
 	callbacks.viewer_quit = &frontend_viewer_quit;
 	callbacks.new_bank = &frontend_new_bank;
-	callbacks.error = &frontend_error;
 };
 

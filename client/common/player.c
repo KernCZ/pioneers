@@ -281,23 +281,23 @@ void player_stole_from(gint player_num, gint victim_num, Resource resource)
 		log_message( MSG_STEAL, _("%s stole a resource from %s.\n"),
 			player_name(player_num, TRUE),
 			player_name(victim_num, FALSE));
-		return;
-	}
-
-	resource_cards(1, resource, buf, sizeof(buf));
-	if (player_num == my_player_num()) {
-		/* We stole a card :-)
-		 */
-		log_message( MSG_STEAL, _("You stole %s from %s.\n"),
-			 buf, player_name(victim_num, FALSE));
-		resource_modify(resource, 1);
 	} else {
-		/* Someone stole our card :-(
-		 */
-		log_message( MSG_STEAL, _("%s stole %s from you.\n"),
-			 player_name(player_num, TRUE), buf);
-		resource_modify(resource, -1);
+		resource_cards(1, resource, buf, sizeof(buf));
+		if (player_num == my_player_num()) {
+			/* We stole a card :-)
+			 */
+			log_message( MSG_STEAL, _("You stole %s from %s.\n"),
+				 buf, player_name(victim_num, FALSE));
+			resource_modify(resource, 1);
+		} else {
+			/* Someone stole our card :-(
+			 */
+			log_message( MSG_STEAL, _("%s stole %s from you.\n"),
+				 player_name(player_num, TRUE), buf);
+			resource_modify(resource, -1);
+		}
 	}
+	callbacks.player_robbed(player_num, victim_num, resource);
 }
 
 void player_domestic_trade(gint player_num, gint partner_num,

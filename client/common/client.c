@@ -173,6 +173,8 @@ void client_init (void)
 	(nothing_cast)callbacks.update_stock = &do_nothing;
 	(nothing_cast)callbacks.robber = &do_nothing;
 	(nothing_cast)callbacks.robber_moved = &do_nothing;
+	(nothing_cast)callbacks.player_robbed = &do_nothing;
+	(nothing_cast)callbacks.get_rolled_resources = &do_nothing;
 	(nothing_cast)callbacks.new_statistics = &do_nothing;
 	(nothing_cast)callbacks.viewer_name = &do_nothing;
 	(nothing_cast)callbacks.player_name = &do_nothing;
@@ -345,6 +347,7 @@ static gboolean check_other_players(StateMachine *sm)
 	if (sm_recv(sm, "receives %R", resource_list)) {
 		player_resource_action(player_num, _("%s receives %s.\n"),
 				       resource_list, 1);
+		callbacks.get_rolled_resources (player_num, resource_list);
 		return TRUE;
 	}
 	if (sm_recv(sm, "spent %R", resource_list)) {
