@@ -111,13 +111,15 @@ static gboolean mode_global(Player *player, gint event)
 static gboolean tournament_start_cb(gpointer data)
 {
     int i;
-    Game *game = (Game *)data;
+    Player *player = (Player *)data;
+    Game *game = player->game;
 
     /* if game already started */
-    /*if (game->started) return FALSE;*/
+    if (game->is_game_full)
+	return FALSE;
 
-    printf("ADDING COMPUTER PLAYERS\n");
-
+    player_broadcast(player, PB_SILENT,
+		     "NOTE Game starts, adding computer players\n");
     /* add computer players to start game */
     for (i = game->num_players; i < game->params->num_players; i++) {	
 	new_computer_player(NULL, game->params->server_port);
@@ -133,17 +135,21 @@ static gboolean tournament_start_cb(gpointer data)
 static gboolean talk_about_tournament_cb(gpointer data)
 {
     Player *player = (Player *)data;
+    Game *game = player->game;
 
     /* if game already started */
-    /*if (player->game->started) return FALSE;*/
+    if (game->is_game_full)
+	return FALSE;
 
-    player->game->params->tournament_time--;
-
-    player_broadcast(player, PB_ALL, "chat (System) Game starting in %d minutes\n",player->game->params->tournament_time+1);
-
-    g_timeout_add(1000*60,
-		  &talk_about_tournament_cb,
-		  player);    
+    player_broadcast(player, PB_SILENT, "NOTE Game starts in %d minute%s\n",
+		     game->params->tournament_time,
+		     game->params->tournament_time != 1 ? "s" : "");
+    game->params->tournament_time--;
+    
+    if (game->params->tournament_time > 0)
+	g_timeout_add(1000*60,
+		      &talk_about_tournament_cb,
+		      player);
 
     return FALSE;
 }
@@ -172,7 +178,7 @@ Player *player_new(Game *game, int fd, gchar *location)
 	if ((game->num_players == 0) && (game->params->tournament_time > 0)) {
 	    g_timeout_add(game->params->tournament_time*60*1000+500,
 			  &tournament_start_cb,
-			  game);
+			  player);
 	    g_timeout_add(1000,
 			  &talk_about_tournament_cb,
 			  player);
@@ -608,7 +614,7 @@ void player_broadcast(Player *player, BroadcastType type, char *fmt, ...)
 	for (list = player_first_real(game);
 	     list != NULL; list = player_next_real(list)) {
 		Player *scan = list->data;
-		if (scan == player && type == PB_RESPOND)
+		if (type == PB_SILENT || (scan == player && type == PB_RESPOND))
 			sm_write(scan->sm, buff);
 		else if (scan != player || type == PB_ALL)
 			sm_send(scan->sm, "player %d %s", player->num, buff);
