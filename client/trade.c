@@ -64,6 +64,7 @@ gboolean is_domestic_trade_allowed()
 	if (idx == NO_RESOURCE)
 		return FALSE;
 
+#if 0
 	/* We must be able to find a trading partner
 	 */
 	for (idx = 0; idx < game_params->num_players; idx++) {
@@ -73,6 +74,11 @@ gboolean is_domestic_trade_allowed()
 			break;
 	}
 	return idx < game_params->num_players;
+#else
+	/* We do not have to find a trading partner, since we might
+	   want to give resources away for free.  Allow trade */
+	return TRUE;
+#endif
 }
 
 gboolean is_maritime_trade_allowed()
