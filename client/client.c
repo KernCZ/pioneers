@@ -927,6 +927,10 @@ static gboolean mode_load_gameinfo(StateMachine *sm, gint event)
 		robber_move_on_map(x, y);
 		return TRUE;
 	}
+	if (sm_recv(sm, "P%d,%d", &x, &y)) {
+		pirate_move_on_map(x, y);
+		return TRUE;
+	}
 	if (sm_recv(sm, "S%d,%d,%d,%d", &x, &y, &pos, &owner)) {
 		player_build_add(owner, BUILD_SETTLEMENT, x, y, pos,
 		                 FALSE);

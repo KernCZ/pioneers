@@ -145,7 +145,7 @@ gboolean mode_viewer (Player *player, gint event);
 /* pregame.c */
 gboolean mode_pre_game(Player *player, gint event);
 gboolean mode_setup(Player *player, gint event);
-gboolean send_gameinfo(Map *map, Hex *hex, StateMachine *sm);
+gboolean send_gameinfo(Map *map, Hex *hex, Player *sm);
 void next_setup_player (Game *game);
 
 /* resource.c */

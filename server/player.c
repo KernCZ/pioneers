@@ -362,7 +362,7 @@ void player_free(Player *player)
 		g_free(player->client_version);
 	if (player->devel != NULL)
 		deck_free(player->devel);
-	if (player->num >= 0) {
+	if (player->num >= 0 && player->num < game->params->num_players) {
 		game->num_players--;
 		meta_report_num_players(game->num_players);
 	}

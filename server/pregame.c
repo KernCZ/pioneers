@@ -333,10 +333,10 @@ static void send_player_list(Player *player)
 	GList *list;
 
 	sm_send(sm, "players follow\n");
-	for (list = player_first_real(game);
-	     list != NULL; list = player_next_real(list)) {
+	for (list = game->player_list; list != NULL;
+			list = g_list_next (list) ) {
 		Player *scan = list->data;
-		if (player == scan) continue;
+		if (player == scan || scan->num < 0) continue;
 		sm_send(sm, "player %d is %s\n", scan->num, scan->name);
 	}
 	sm_send(sm, ".\n");
@@ -350,8 +350,10 @@ static void send_game_line(Player *player, gchar *str)
 	sm_send(sm, "%s\n", str);
 }
 
-gboolean send_gameinfo(Map *map, Hex *hex, StateMachine *sm)
+gboolean send_gameinfo(Map *map, Hex *hex, Player *player)
 {
+	StateMachine *sm = player->sm;
+	Game *game = player->game;
 	gint i;
 	for (i = 0; i < numElem (hex->nodes); i++)
 	{
@@ -411,6 +413,11 @@ gboolean send_gameinfo(Map *map, Hex *hex, StateMachine *sm)
 		sm_send(sm, "RO%d,%d\n", hex->x, hex->y);
 	}
 
+	if (hex == map->pirate_hex)
+	{
+		sm_send(sm, "P%d,%d\n", hex->x, hex->y);
+	}
+
 	return FALSE;
 }
 
@@ -457,7 +464,7 @@ gboolean mode_pre_game(Player *player, gint event)
 		}
 		if (sm_recv(sm, "gameinfo")) {
 			sm_send(sm, "gameinfo\n");
-			map_traverse(map, (HexFunc)send_gameinfo, sm);
+			map_traverse(map, (HexFunc)send_gameinfo, player);
 			sm_send(sm, ".\n");
 
 			/* now, send state info */
@@ -573,29 +580,28 @@ gboolean mode_pre_game(Player *player, gint event)
 			        (player->num == longestroadpnum),
 			        (player->num == largestarmypnum));
 			/* send info about other players */
-			for (next = game->player_list;
-			     next != NULL; next = g_list_next(next))
+			for (next = player_first_real (game); next != NULL;
+					next = player_next_real (next))
 			{
 				Player *p = (Player *)next->data;
-				if (p->num != player->num)
-				{
-					gint numassets = 0;
-					for (i = 0; i < NO_RESOURCE; i++) {
-						numassets += p->assets[i];
-					}
-					sm_send(sm, "otherplayerinfo: %d %d %d %d %d %d %d %d %d %d %d\n",
-					        p->num, numassets, p->devel->num_cards,
-					        p->num_soldiers, p->chapel_played,
-						p->univ_played, p->gov_played,
-						p->libr_played, p->market_played,
-					        (p->num == longestroadpnum),
-					        (p->num == largestarmypnum));
+				gint numassets = 0;
+				if (p->num == player->num)
+					continue;
+				for (i = 0; i < NO_RESOURCE; i++) {
+					numassets += p->assets[i];
 				}
+				sm_send(sm, "otherplayerinfo: %d %d %d %d %d %d %d %d %d %d %d\n",
+				        p->num, numassets, p->devel->num_cards,
+				        p->num_soldiers, p->chapel_played,
+					p->univ_played, p->gov_played,
+					p->libr_played, p->market_played,
+				        (p->num == longestroadpnum),
+				        (p->num == largestarmypnum));
 			}
 
 			/* send discard info for all players */
-			for (next = game->player_list;
-			     next != NULL; next = g_list_next(next))
+			for (next = player_first_real (game); next != NULL;
+					next = player_next_real (next))
 			{
 				Player *p = (Player *)next->data;
 				if (p->discard_num > 0) {

@@ -1,3 +1,9 @@
+2003-10-13  Bas Wijnen <b.wijnen@phys.rug.nl>
+	* client/client.c, server/pregame.c: Added pirate position to
+	reconnect info.
+	* common/game.c, server/player.c, server/pregame.c, server/server.h:
+	Bugfixes.
+
 2003-10-12  Roland Clobus <rclobus@bigfoot.com>
 	* client/admin_gtk.c, client/connect.c, common/network.c,
 	common/network.h, common/state.c, meta-server/gnocatan-meta-server.c,

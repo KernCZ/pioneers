@@ -174,7 +174,6 @@ static gboolean find_no_setup (Map *map, Hex *hex, struct nosetup_t *data)
 	for (idx = 0; idx < numElem (hex->nodes); ++idx) {
 		Node *node = hex->nodes[idx];
 		if (node->no_setup) {
-			log_message (MSG_INFO, "test\n");
 			if (node->x != hex->x || node->y != hex->y) continue;
 			gchar buff[512];
 			snprintf (buff, sizeof(buff), "nosetup %d %d %d\n",
@@ -283,7 +282,6 @@ void params_load_line(GameParams *params, gchar *line)
 		g_assert (params->map != NULL);
 		sscanf (line, "%d %d %d", &x, &y, &pos);
 		map_node (params->map, x, y, pos)->no_setup = TRUE;
-		log_message (MSG_INFO, "nosetup on %d %d %d\n", x, y, pos);
 		return;
 	}
 
