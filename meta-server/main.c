@@ -407,7 +407,6 @@ static const gchar *get_server_path(void)
 static void client_create_new_server(Client *client, gchar *line)
 {
 	char *terrain, *numplayers, *points, *sevens_rule, *numai, *type;
-	char *newenv[2] = { NULL, NULL };
 	int pid, fd;
 	socklen_t yes=1;
 	struct sockaddr_in sa;
@@ -481,10 +480,6 @@ static void client_create_new_server(Client *client, gchar *line)
 	}
 	sprintf(port, "%d", sa.sin_port);
 
-	newenv[0] = g_malloc(strlen("GNOCATAN_META_SERVER=")+strlen(myhostname)+1);
-	strcpy(newenv[0], "GNOCATAN_META_SERVER=");
-	strcat(newenv[0], myhostname);
-
 	if ((pid = fork()) == -1) {
 		client_printf(client, "fork failed\n");
 	}
@@ -494,7 +489,7 @@ static void client_create_new_server(Client *client, gchar *line)
 		open("/dev/null",O_RDONLY);
 		open("/dev/null",O_WRONLY);
 		open("/dev/null",O_RDWR);
-		execle( console_server, console_server,
+		execl( console_server, console_server,
 				"-g", type,
 				"-P", numplayers,
 				"-v", points,
@@ -503,10 +498,11 @@ static void client_create_new_server(Client *client, gchar *line)
 				"-p", port,
 				"-c", numai,
 				"-k", "1200",
+				"-m", myhostname,
+				"-n", myhostname,
 				"-x",
 				"-r",
-				NULL,
-				newenv );
+				NULL);
 		syslog(LOG_ERR, "cannot exec %s: %m", console_server);
 		exit(2);
 	}

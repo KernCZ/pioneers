@@ -9,10 +9,14 @@
 	More consistent use of the environment variables GNOCATAN_DIR,
 	GNOCATAN_META_SERVER, GNOCATAN_SERVER_CONSOLE and
 	GNOCATAN_SERVER_NAME. Moved common code to common/network.c.
-	* gnocatan-meta-server.6, gnocatan-server-console.6,
-	gnocatan-server-gtk.6, gnocatan.6, gnocatanai.6: Added ENVIRONMENT
-	section and FILES section. Added documentation of some new commandline
-	options.
+	* docs/gnocatan-meta-server.6, docs/gnocatan-server-console.6,
+	docs/gnocatan-server-gtk.6, docs/gnocatan.6, docs/gnocatanai.6: Added
+	ENVIRONMENT section and FILES section. Added documentation of some new
+	commandline options.
+	* meta-server/gnocatan-meta-server.c (client_create_new_server): Use
+	-m and -n commandline options instead of the environment variable. The
+	server-console started from the meta-server will use the same hostname
+	as the meta-server.
 	
 2005-03-02  0.8.1.54  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/interface.c: Reversal of the patch in 0.8.1.48, because
