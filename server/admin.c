@@ -37,6 +37,7 @@ gboolean register_server = FALSE;
 gchar server_port[NI_MAXSERV] = "5556";
 gint server_port_int = 5556;
 gchar server_admin_port[NI_MAXSERV] = "5555";
+extern gint no_player_timeout;
 
 GameParams *params = NULL;
 
@@ -163,6 +164,12 @@ void cfg_set_exit( gboolean exitdone)
 {
     g_print("cfg_set_exit: %d\n", exitdone);
     params->exit_when_done = exitdone;
+}
+
+void cfg_set_timeout( gint to )
+{
+	g_print( "cfg_set_timeout: %d\n", to );
+	no_player_timeout = to;
 }
 
 gboolean start_server( gchar *port, gboolean register_server )
