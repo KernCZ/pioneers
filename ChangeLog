@@ -1,3 +1,6 @@
+2005-03-24  Brian Wellington <bwelling@xbill.org>
+	* client/gtk/connect.c: Remove static buffers.
+
 2005-03-23  Brian Wellington <bwelling@xbill.org>
 	* client/ai/greedy.c: Add gold support to the AI.
 	* server/player.c: The patch to enable random seating ordered

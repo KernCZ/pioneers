@@ -1337,7 +1337,7 @@ static void connect_private_dialog(UNUSED(GtkWidget * widget),
 	gchar *saved_server;
 	gchar *saved_port;
 	gint i;
-	gchar host_name[150], host_port[150], temp_str[150];
+	gchar *host_name, *host_port, *host_name_port, temp_str[150];
 	gboolean default_returned;
 
 	if (connect_private_dlg) {
@@ -1429,21 +1429,26 @@ static void connect_private_dialog(UNUSED(GtkWidget * widget),
 
 	for (i = 0; i < PRIVATE_GAME_HISTORY_SIZE; i++) {
 		sprintf(temp_str, "favorites/server%dname=", i);
-		strcpy(host_name,
-		       config_get_string(temp_str, &default_returned));
-		if (default_returned || !strlen(host_name))
+		host_name = config_get_string(temp_str, &default_returned);
+		if (default_returned || !strlen(host_name)) {
+			g_free(host_name);
 			break;
+		}
 
 		sprintf(temp_str, "favorites/server%dport=", i);
-		strcpy(host_port,
-		       config_get_string(temp_str, &default_returned));
-		if (default_returned || !strlen(host_port))
+		host_port = config_get_string(temp_str, &default_returned);
+		if (default_returned || !strlen(host_port)) {
+			g_free(host_name);
+			g_free(host_port);
 			break;
+		}
 
-		sprintf(temp_str, "%s:%s", host_name, host_port);
+		host_name_port = g_strconcat(host_name, ":", host_port, NULL);
+		g_free(host_name);
+		g_free(host_port);
 
 		host_item = gtk_menu_item_new();
-		lbl = gtk_label_new(temp_str);
+		lbl = gtk_label_new(host_name_port);
 		gtk_container_add(GTK_CONTAINER(host_item), lbl);
 		g_signal_connect(G_OBJECT(host_item), "activate",
 				 G_CALLBACK(host_list_select_cb), lbl);
@@ -1453,6 +1458,7 @@ static void connect_private_dialog(UNUSED(GtkWidget * widget),
 
 		gtk_menu_shell_append(GTK_MENU_SHELL(host_menu),
 				      host_item);
+		g_free(host_name_port);
 	}
 
 	gtk_option_menu_set_menu(GTK_OPTION_MENU(host_list), host_menu);
