@@ -1,3 +1,9 @@
+gnocatan (0.8.0-4) unstable; urgency=low
+
+  * Snapshot from upstream CVS.
+
+ -- Jeff Breidenbach <jab@debian.org>  Sat, 15 Nov 2003 15:40:27 -0800
+
 gnocatan (0.8.0-3) unstable; urgency=low
 
   * Better documentation packaging.
