@@ -19,6 +19,8 @@
 #include "client.h"
 #include "common_gtk.h"
 #include "config-gnome.h"
+#include "i18n.h"
+
 
 int main(int argc, char *argv[])
 {
@@ -26,15 +28,11 @@ int main(int argc, char *argv[])
 
 	set_ui_driver( &GTK_Driver );
 
-#ifdef ENABLE_NLS
-	gnome_i18n_init();
-	setlocale(LC_ALL, "");
-	bindtextdomain(PACKAGE, GNOMELOCALEDIR);
-	textdomain(PACKAGE);
-#endif
-
 	gnome_init(PACKAGE, VERSION, argc, argv);
 	config_init( "/gnocatan/" );
+#if ENABLE_NLS
+	init_nls();
+#endif
 
 	/* Create the application window
 	 */

@@ -50,6 +50,7 @@ dnl GNOME_SUPPORT_CHECKS
 ALL_LINGUAS="de"
 AM_GNU_GETTEXT
 AC_LINK_FILES($nls_cv_header_libgt, $nls_cv_header_intl)
+AC_DEFINE_UNQUOTED(ALL_LINGUAS, "$ALL_LINGUAS")
 
 AC_OUTPUT([
 Makefile

@@ -24,6 +24,8 @@
 #include "log.h"
 #include "common_gtk.h"
 #include "histogram.h"
+#include "i18n.h"
+#include "config-gnome.h"
 
 Map *map;			/* handle to map drawing code */
 GtkWidget *app_window;		/* main application window */
@@ -311,7 +313,7 @@ static GtkWidget *splash_build_page()
 	/* The viewport avoids that the pixmap is drawn up into the tab area if
 	 * it's too large for the space provided. */
 	viewport = gtk_viewport_new(NULL, NULL);
-	gtk_viewport_set_shadow_type(viewport, GTK_SHADOW_NONE);
+	gtk_viewport_set_shadow_type(GTK_VIEWPORT(viewport), GTK_SHADOW_NONE);
 	gtk_widget_show(viewport);
 	pm = gtk_pixmap_new(splash_pix, NULL);
 	gtk_widget_show(pm);
@@ -493,7 +495,20 @@ static void settings_apply_cb(GnomePropertyBox *prop_box, gint page, gpointer da
 		
 		/* Turn auto-shrink off */
 		gtk_window_set_policy( GTK_WINDOW(app_window), TRUE, TRUE, FALSE );
+
+		if (GTK_TOGGLE_BUTTON(check_legend_page)->active) {
+			legend_page = TRUE;
+		} else {
+			legend_page = FALSE;
+		}
+		legend_page_enabled = legend_page;
+		gui_show_legend_page(legend_page_enabled);
 		
+		gnome_config_set_int( "/gnocatan/settings/legend_page",
+		                      legend_page );
+		break;
+		
+	case 1:
 		if (GTK_TOGGLE_BUTTON(check_color_chat)->active) {
 			color_chat = COLOR_CHAT_YES;
 		} else {
@@ -526,22 +541,28 @@ static void settings_apply_cb(GnomePropertyBox *prop_box, gint page, gpointer da
 		color_summary_enabled = color_summary;
 		player_modify_statistic(0, STAT_SETTLEMENTS, 0);
 
-		if (GTK_TOGGLE_BUTTON(check_legend_page)->active) {
-			legend_page = TRUE;
-		} else {
-			legend_page = FALSE;
-		}
-		legend_page_enabled = legend_page;
-		gui_show_legend_page(legend_page_enabled);
-		
-		gnome_config_set_int( "/gnocatan/settings/legend_page",
-		                      legend_page );
-
-		gnome_config_sync();
 		break;
+
+#if ENABLE_NLS
+	case 2:
+	{
+		lang_desc *ld;
+
+		for(ld = languages; ld->code; ++ld) {
+			if (ld->supported && GTK_TOGGLE_BUTTON(ld->widget)->active)
+				break;
+		}
+		if (ld->code) {
+			if (change_nls(ld))
+			    config_set_string( "settings/language", current_language);
+		}
+		break;
+	}
+#endif
 	default:
 		break;
 	}
+	gnome_config_sync();
 	return;
 }
 
@@ -555,12 +576,19 @@ static void menu_settings_cb(GtkWidget *widget, void *user_data)
 	GtkWidget *settings;
 	GtkWidget *page0_table;
 	GtkWidget *page0_label;
+	GtkWidget *page1_table;
+	GtkWidget *page1_label;
+	GtkWidget *page2_table;
+	GtkWidget *page2_label;
 	GtkWidget *frame_texticons;
-	GtkWidget *frame_colors;
-	GtkWidget *frame_other;
 	GtkWidget *vbox_texticons;
 	GtkWidget *vbox_colors;
-	GtkWidget *vbox_other;
+#if ENABLE_NLS
+	GtkWidget *vbox_linguas;
+	GtkWidget *radio_lang;
+	GtkWidget *radio_lang_prev;
+	lang_desc *ld;
+#endif
 	gboolean default_returned;
 	gint toolbar_style;
 	gint color_chat;
@@ -571,24 +599,17 @@ static void menu_settings_cb(GtkWidget *widget, void *user_data)
 	/* Create stuff */
 	settings = gnome_property_box_new();
 
-	page0_table = gtk_table_new( 2, 2, FALSE );
-	page0_label = gtk_label_new( _("General") );
+	page0_table = gtk_table_new( 1, 2, FALSE );
+	page0_label = gtk_label_new( _("Appearance") );
 
 	frame_texticons = gtk_frame_new( _("Show Toolbar As") );
-	frame_colors = gtk_frame_new( _("Color Settings") );
-	frame_other = gtk_frame_new( _("Other Settings") );
 
 	vbox_texticons = gtk_vbox_new( TRUE, 2 );
-	vbox_colors = gtk_vbox_new( TRUE, 2 );
-	vbox_other = gtk_vbox_new( TRUE, 2 );
 
 	radio_style_text = gtk_radio_button_new_with_label(NULL, _("Text Only"));
 	radio_style_icons = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(radio_style_text), _("Icons Only") );
 	radio_style_both = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(radio_style_icons), _("Both Icons and Text") );
 
-	check_color_messages = gtk_check_button_new_with_label( _("Display messages in colors?") );
-	check_color_chat = gtk_check_button_new_with_label( _("Display chat messages in user's color?") );
-	check_color_summary = gtk_check_button_new_with_label( _("Display player summary with colors?") );
 	check_legend_page = gtk_check_button_new_with_label( _("Display legend as page besides map?") );
 
 	/* Put things in other things */
@@ -596,25 +617,71 @@ static void menu_settings_cb(GtkWidget *widget, void *user_data)
 	gtk_box_pack_start_defaults( GTK_BOX(vbox_texticons), radio_style_icons );
 	gtk_box_pack_start_defaults( GTK_BOX(vbox_texticons), radio_style_both );
 	
+	gtk_container_add( GTK_CONTAINER(frame_texticons), vbox_texticons );
+
+	gtk_table_attach( GTK_TABLE(page0_table), frame_texticons, 0, 1, 0, 1,
+	                  GTK_FILL, GTK_FILL, 5, 5 );
+	gtk_table_attach( GTK_TABLE(page0_table), check_legend_page, 0, 1, 1, 2,
+	                  GTK_FILL, GTK_FILL, 5, 5 );
+	                  
+
+	page1_table = gtk_table_new( 1, 1, FALSE );
+	page1_label = gtk_label_new( _("Color Settings") );
+
+	vbox_colors = gtk_vbox_new( TRUE, 2 );
+
+	check_color_messages = gtk_check_button_new_with_label( _("Display messages in colors?") );
+	check_color_chat = gtk_check_button_new_with_label( _("Display chat messages in user's color?") );
+	check_color_summary = gtk_check_button_new_with_label( _("Display player summary with colors?") );
+
 	gtk_box_pack_start_defaults( GTK_BOX(vbox_colors), check_color_messages );
 	gtk_box_pack_start_defaults( GTK_BOX(vbox_colors), check_color_chat );
 	gtk_box_pack_start_defaults( GTK_BOX(vbox_colors), check_color_summary );
 
-	gtk_box_pack_start_defaults( GTK_BOX(vbox_other), check_legend_page );
+	gtk_table_attach( GTK_TABLE(page1_table), vbox_colors, 0, 1, 0, 1,
+	                  GTK_FILL, GTK_FILL, 5, 5 );
 
-	gtk_container_add( GTK_CONTAINER(frame_texticons), vbox_texticons );
-	gtk_container_add( GTK_CONTAINER(frame_colors), vbox_colors );
-	gtk_container_add( GTK_CONTAINER(frame_other), vbox_other );
-
-	gtk_table_attach( GTK_TABLE(page0_table), frame_texticons, 0, 1, 0, 1,
-	                  GTK_FILL, GTK_FILL, 5, 5 );
-	gtk_table_attach( GTK_TABLE(page0_table), frame_colors, 1, 2, 0, 1,
-	                  GTK_FILL, GTK_FILL, 5, 5 );
-	gtk_table_attach( GTK_TABLE(page0_table), frame_other, 0, 2, 1, 2,
-	                  GTK_FILL, GTK_FILL, 5, 5 );
-	                  
 	gnome_property_box_append_page( GNOME_PROPERTY_BOX(settings),
 	                                page0_table, page0_label );
+	gnome_property_box_append_page( GNOME_PROPERTY_BOX(settings),
+	                                page1_table, page1_label );
+
+#if ENABLE_NLS
+	page2_table = gtk_table_new( 2, 2, FALSE );
+	page2_label = gtk_label_new( _("Language") );
+	vbox_linguas = gtk_vbox_new( TRUE, 2 );
+
+	radio_lang_prev = NULL;
+	for(ld = languages; ld->code; ++ld) {
+		if (!radio_lang_prev)
+			radio_lang = gtk_radio_button_new_with_label(
+				NULL, ld->name);
+		else
+			radio_lang = gtk_radio_button_new_with_label_from_widget(
+				GTK_RADIO_BUTTON(radio_lang_prev), ld->name);
+		gtk_box_pack_start_defaults(GTK_BOX(vbox_linguas), radio_lang);
+		if (strcmp(current_language, ld->code) == 0)
+			gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(radio_lang), TRUE);
+		if (!ld->supported)
+			gtk_widget_set_sensitive(GTK_WIDGET(radio_lang), FALSE);
+		else
+			gtk_signal_connect(GTK_OBJECT(radio_lang), "clicked",
+							   settings_activate_cb, (gpointer)settings );
+		gtk_widget_show(radio_lang);
+
+		ld->widget = radio_lang;
+		radio_lang_prev = radio_lang;
+	}
+	gtk_table_attach( GTK_TABLE(page2_table), vbox_linguas, 0, 1, 0, 1,
+	                  GTK_FILL, GTK_FILL, 5, 5 );
+	radio_lang = gtk_label_new(_("Language setting takes full effect only after client restart!"));
+	gtk_widget_show(radio_lang);
+	gtk_table_attach( GTK_TABLE(page2_table), radio_lang, 0, 1, 1, 2,
+	                  GTK_FILL, GTK_FILL, 0.5, 0.5 );
+	
+	gnome_property_box_append_page( GNOME_PROPERTY_BOX(settings),
+	                                page2_table, page2_label );
+#endif
 	
 	/* Set the default text/icons state */
 	toolbar_style = gnome_config_get_int_with_default("/gnocatan/settings/toolbar_style=0",
@@ -722,13 +789,15 @@ static void menu_settings_cb(GtkWidget *widget, void *user_data)
 
 	gtk_widget_show( vbox_texticons );
 	gtk_widget_show( vbox_colors );
-	gtk_widget_show( vbox_other );
 
 	gtk_widget_show( frame_texticons );
-	gtk_widget_show( frame_colors );
-	gtk_widget_show( frame_other );
 
 	gtk_widget_show( page0_table );
+	gtk_widget_show( page1_table );
+#if ENABLE_NLS
+	gtk_widget_show( vbox_linguas );
+	gtk_widget_show( page2_table );
+#endif
 	
 	gtk_widget_show( settings );
 }

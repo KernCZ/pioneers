@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnocatan 0.7.1\n"
-"POT-Creation-Date: 2002-05-31 21:59+0200\n"
+"POT-Creation-Date: 2002-06-06 22:59+0200\n"
 "PO-Revision-Date: 2002-05-26 15:39+0200\n"
 "Last-Translator: Roman Hodek <roman@hodek.net>\n"
 "Language-Team: de <de@li.org>\n"
@@ -29,11 +29,11 @@ msgstr "zahlt"
 msgid "is refunded"
 msgstr "erhält zurück"
 
-#: ai/client.c:1132 client/client.c:1662
+#: ai/client.c:1130 client/client.c:1672
 msgid "discarded"
 msgstr "legt ab:"
 
-#: ai/client.c:1710 client/client.c:2379
+#: ai/client.c:1700 client/client.c:2401
 msgid "The game is over.\n"
 msgstr "Ende des Spiels.\n"
 
@@ -132,7 +132,7 @@ msgstr "%s nahm %s von"
 msgid " %s.\n"
 msgstr " %s.\n"
 
-#: ai/player.c:20 client/gui.c:860 client/legend.c:172 client/player.c:33
+#: ai/player.c:20 client/gui.c:947 client/legend.c:172 client/player.c:33
 msgid "Settlement"
 msgstr "Siedlung"
 
@@ -140,7 +140,7 @@ msgstr "Siedlung"
 msgid "Settlements"
 msgstr "Siedlungen"
 
-#: ai/player.c:21 client/gui.c:863 client/legend.c:173 client/player.c:34
+#: ai/player.c:21 client/gui.c:950 client/legend.c:173 client/player.c:34
 msgid "City"
 msgstr "Stadt"
 
@@ -482,7 +482,7 @@ msgstr "Server starten"
 msgid "Players Connected"
 msgstr "Verbundene Spieler"
 
-#: client/admin-gtk.c:347 client/gui.c:247 server/gnocatan-server-gtk.c:519
+#: client/admin-gtk.c:347 client/gui.c:249 server/gnocatan-server-gtk.c:519
 msgid "Messages"
 msgstr "Nachrichten"
 
@@ -503,7 +503,7 @@ msgstr "%s hat dich angepiepst.\n"
 msgid "%s"
 msgstr "%s"
 
-#: client/chat.c:69 client/gui.c:934 client/settingscreen.c:56
+#: client/chat.c:69 client/gui.c:1021 client/settingscreen.c:56
 msgid " "
 msgstr " "
 
@@ -524,7 +524,7 @@ msgid "Idle"
 msgstr "Untätig"
 
 #: client/client.c:160 client/client.c:626 client/client.c:635
-#: client/gui.c:942
+#: client/gui.c:1029
 msgid "Offline"
 msgstr "Offline"
 
@@ -544,55 +544,55 @@ msgstr "Versionsfehler"
 msgid "Game is full"
 msgstr "Spiel ist voll"
 
-#: client/client.c:1071
+#: client/client.c:1074
 msgid "Build two settlements, each with a connecting"
 msgstr "Baue zwei Siedlungen mit je einer verbundenen"
 
-#: client/client.c:1073
+#: client/client.c:1076
 msgid "Build a settlement with a connecting"
 msgstr "Baue eine Siedlung mit einer verbundenen"
 
-#: client/client.c:1076
+#: client/client.c:1079
 msgid "road"
 msgstr "Straße"
 
-#: client/client.c:1078
+#: client/client.c:1081
 msgid "bridge"
 msgstr "Brücke"
 
-#: client/client.c:1080
+#: client/client.c:1083
 msgid "ship"
 msgstr "Schiff"
 
-#: client/client.c:1195
+#: client/client.c:1198
 msgid "Waiting for your turn"
 msgstr "Warte auf deinen Zug"
 
-#: client/client.c:1298
+#: client/client.c:1303
 msgid "Select the building to steal from."
 msgstr "Wähle das Gebäude, von dem gestohlen werden soll."
 
-#: client/client.c:1299
+#: client/client.c:1304
 msgid "Select the building to steal from"
 msgstr "Wähle das Gebäude, von dem gestohlen werden soll"
 
-#: client/client.c:1311 client/client.c:1338
+#: client/client.c:1316 client/client.c:1343
 msgid "Place the robber"
 msgstr "Setze den Räuber"
 
-#: client/client.c:1420
+#: client/client.c:1427
 msgid "Build two road segments."
 msgstr "Baue zwei Straßen."
 
-#: client/client.c:1422
+#: client/client.c:1429
 msgid "Build a road segment."
 msgstr "Baue eine Straße."
 
-#: client/client.c:1718 client/client.c:1841
+#: client/client.c:1729 client/client.c:1855
 msgid "It is your turn."
 msgstr "Du bist am Zug."
 
-#: client/client.c:2372
+#: client/client.c:2394
 msgid "The game is over."
 msgstr "Das Spiel ist zuende."
 
@@ -613,7 +613,7 @@ msgid "finished.\n"
 msgstr "fertig.\n"
 
 #: client/connect.c:143 client/connect.c:194 client/connect.c:274
-#: server/meta.c:145
+#: server/meta.c:166
 msgid "Meta-server kicked us off\n"
 msgstr "Metaserver hat die Verbindung beendet.\n"
 
@@ -622,11 +622,11 @@ msgstr "Metaserver hat die Verbindung beendet.\n"
 msgid "New game server started on %s port %s\n"
 msgstr "Neuer Spielserver auf %s Port %s gestartet.\n"
 
-#: client/connect.c:291 server/meta.c:112
+#: client/connect.c:291 server/meta.c:133
 msgid "Too many meta-server redirects\n"
 msgstr "Zu viele Metaserver-Weiterleitungen\n"
 
-#: client/connect.c:304 server/meta.c:118
+#: client/connect.c:304 server/meta.c:139
 #, c-format
 msgid "Bad redirect line: %s\n"
 msgstr "Fehlerhafte Weiterleitungszeile: %s\n"
@@ -636,7 +636,7 @@ msgstr "Fehlerhafte Weiterleitungszeile: %s\n"
 msgid "Meta server too old to create servers (version %d.%d)\n"
 msgstr "Metaserver zu alt, um Spielserver zu starten (Version %d.%d)\n"
 
-#: client/connect.c:362 server/meta.c:158
+#: client/connect.c:362 server/meta.c:179
 #, c-format
 msgid "Redirected to meta-server at %s, port %s\n"
 msgstr "Weitergeleitet zu Metaserver auf %s, Port %s\n"
@@ -714,7 +714,7 @@ msgstr "Aktuelle Gnocatan-Server"
 msgid "Create New Server"
 msgstr "Neuen Gnocatan-Server starten"
 
-#: client/connect.c:860 client/gui.c:730
+#: client/connect.c:860 client/gui.c:817
 msgid "Connect to Gnocatan server"
 msgstr "Verbinden zu einem Gnocatan-Server"
 
@@ -804,197 +804,201 @@ msgstr "%s hat das Spiel mit %d Punkten gewonnen!\n"
 msgid "All praise %s, Lord of All Gnocatan!"
 msgstr "Glückwunsch %s, Herrscher von ganz Gnocatan!"
 
-#: client/gui.c:99
+#: client/gui.c:101
 #, c-format
 msgid "Points Needed to Win: %i"
 msgstr "Punkte zum Sieg: %i"
 
-#: client/gui.c:323
+#: client/gui.c:332
 msgid "Map"
 msgstr "Karte"
 
-#: client/gui.c:328 client/gui.c:848
+#: client/gui.c:337 client/gui.c:935
 msgid "Trade"
 msgstr "Handel"
 
-#: client/gui.c:335 client/quote.c:603
+#: client/gui.c:344 client/quote.c:603
 msgid "Quote"
 msgstr "Angebot"
 
-#: client/gui.c:342 client/legend.c:191
+#: client/gui.c:351 client/legend.c:191
 msgid "Legend"
 msgstr "Erklärung"
 
-#: client/gui.c:350
+#: client/gui.c:359
 msgid "Welcome to Gnocatan"
 msgstr "Willkommen zu Gnocatan"
 
-#: client/gui.c:568
-msgid "General"
-msgstr "Allgemein"
+#: client/gui.c:614
+msgid "Appearance"
+msgstr "Anzeige"
 
-#: client/gui.c:570
+#: client/gui.c:616
 msgid "Show Toolbar As"
 msgstr "Werkzeugleiste"
 
-#: client/gui.c:571
-msgid "Color Settings"
-msgstr "Farbeinstellungen"
-
-#: client/gui.c:572
-msgid "Other Settings"
-msgstr "Weitere Einstellungen"
-
-#: client/gui.c:578
+#: client/gui.c:620
 msgid "Text Only"
 msgstr "Nur Text"
 
-#: client/gui.c:579
+#: client/gui.c:621
 msgid "Icons Only"
 msgstr "Nur Bilder"
 
-#: client/gui.c:580
+#: client/gui.c:622
 msgid "Both Icons and Text"
 msgstr "Text und Bilder"
 
-#: client/gui.c:582
+#: client/gui.c:624
+msgid "Display legend as page besides map?"
+msgstr "Erklärung als eigene Seite neben der Karte anzeigen?"
+
+#: client/gui.c:640
+msgid "Color Settings"
+msgstr "Farbeinstellungen"
+
+#: client/gui.c:644
 msgid "Display messages in colors?"
 msgstr "Nachrichten mit Farben anzeigen?"
 
-#: client/gui.c:583
+#: client/gui.c:645
 msgid "Display chat messages in user's color?"
 msgstr "Chatnachrichten in Spielerfarben anzeigen?"
 
-#: client/gui.c:584
+#: client/gui.c:646
 msgid "Display player summary with colors?"
 msgstr "Spielerübersicht mit Farben anzeigen?"
 
-#: client/gui.c:585
-msgid "Display legend as page besides map?"
-msgstr "Legende als eigene Seite neben der Karte anzeigen?"
+#: client/gui.c:662
+msgid "Language"
+msgstr "Sprache"
 
-#: client/gui.c:730
+#: client/gui.c:688
+msgid "Language setting takes full effect only after client restart!"
+msgstr "Spracheinstellungen werden erst nach einem Neustart voll übernommen!"
+
+#: client/gui.c:817
 msgid "_Connect"
 msgstr "_Verbinden"
 
-#: client/gui.c:735
+#: client/gui.c:822
 msgid "_Admin"
 msgstr "_Administration"
 
-#: client/gui.c:735
+#: client/gui.c:822
 msgid "Administer Gnocatan server"
 msgstr "Gnocatan-Server verwalten"
 
-#: client/gui.c:740
+#: client/gui.c:827
 msgid "Player _Name"
 msgstr "_Spielername"
 
-#: client/gui.c:740
+#: client/gui.c:827
 msgid "Change your player name"
 msgstr "Ändern des Spielernamens"
 
-#: client/gui.c:744
+#: client/gui.c:831
 msgid "_Settings"
 msgstr "_Einstellungen"
 
-#: client/gui.c:744
+#: client/gui.c:831
 msgid "Gnocatan client settings"
 msgstr "Gnocatan Einstellungen"
 
-#: client/gui.c:747 server/gnocatan-server-gtk.c:42
+#: client/gui.c:834 server/gnocatan-server-gtk.c:42
 msgid "E_xit"
 msgstr "_Beenden"
 
-#: client/gui.c:747 server/gnocatan-server-gtk.c:42
+#: client/gui.c:834 server/gnocatan-server-gtk.c:42
 msgid "Exit the program"
 msgstr "Verlassen des Programms"
 
-#: client/gui.c:772
+#: client/gui.c:859
 msgid "The Gnocatan Game"
 msgstr "Das Gnocatan-Spiel"
 
-#: client/gui.c:773 server/gnocatan-server-gtk.c:58
+#: client/gui.c:860 server/gnocatan-server-gtk.c:58
 msgid "(C) 2002 the Free Software Foundation"
 msgstr "(C) 2002 Free Software Foundation"
 
-#: client/gui.c:775 server/gnocatan-server-gtk.c:60
+#: client/gui.c:862 server/gnocatan-server-gtk.c:60
 msgid "Gnocatan is based upon the excellent Settlers of Catan board game"
 msgstr ""
 "Gnocatan basiert auf dem exzellenten Brettspiel 'Die Siedler von Catan'"
 
-#: client/gui.c:797
+#: client/gui.c:884
 msgid "_Legend"
 msgstr "_Erklärung"
 
-#: client/gui.c:797
+#: client/gui.c:884
 msgid "Terrain legend and building costs"
 msgstr "Geländeerklärung und Gebäudekosten"
 
-#: client/gui.c:800
+#: client/gui.c:887
 msgid "_Game Settings"
 msgstr "_Spieleinstellungen"
 
-#: client/gui.c:800
+#: client/gui.c:887
 msgid "Settings for the current game"
 msgstr "Einstellungen des aktuellen Spiels"
 
-#: client/gui.c:803
+#: client/gui.c:890
 msgid "_Dice Histogram"
 msgstr "_Würfelhistogramm"
 
-#: client/gui.c:803
+#: client/gui.c:890
 msgid "Histogram of dice rolls"
 msgstr "Histogramm der Würfelergebnisse"
 
-#: client/gui.c:806
+#: client/gui.c:893
 msgid "_About Gnocatan"
 msgstr "_Über Gnocatan"
 
-#: client/gui.c:806
+#: client/gui.c:893
 msgid "Information about Gnocatan"
 msgstr "Informationen über Gnocatan"
 
-#: client/gui.c:817
+#: client/gui.c:904
 msgid "_Game"
 msgstr "_Spiel"
 
-#: client/gui.c:818 server/gnocatan-server-gtk.c:81
+#: client/gui.c:905 server/gnocatan-server-gtk.c:81
 msgid "_Help"
 msgstr "_Hilfe"
 
-#: client/gui.c:845
+#: client/gui.c:932
 msgid "Roll Dice"
 msgstr "Würfeln"
 
-#: client/gui.c:851 client/legend.c:165
+#: client/gui.c:938 client/legend.c:165
 msgid "Road"
 msgstr "Straße"
 
-#: client/gui.c:854 client/legend.c:168
+#: client/gui.c:941 client/legend.c:168
 msgid "Ship"
 msgstr "Schiff"
 
-#: client/gui.c:857 client/legend.c:171
+#: client/gui.c:944 client/legend.c:171
 msgid "Bridge"
 msgstr "Brücke"
 
-#: client/gui.c:866
+#: client/gui.c:953
 msgid "Develop"
 msgstr "Entw.karte"
 
-#: client/gui.c:869
+#: client/gui.c:956
 msgid "Undo"
 msgstr "Rückgängig"
 
-#: client/gui.c:872
+#: client/gui.c:959
 msgid "Finish"
 msgstr "Beenden"
 
-#: client/gui.c:954
+#: client/gui.c:1041
 msgid "Welcome to Gnocatan!"
 msgstr "Wilkommen zu Gnocatan!"
 
-#: client/gui.c:987
+#: client/gui.c:1074
 msgid "Gnocatan"
 msgstr "Gnocatan"
 
@@ -1011,7 +1015,7 @@ msgstr ""
 "Würfe\n"
 "Anteil"
 
-#: client/histogram.c:228 client/histogram.c:243
+#: client/histogram.c:235 client/histogram.c:250
 msgid "Dice Histogram"
 msgstr "Würfelhistogramm"
 
@@ -1469,7 +1473,7 @@ msgstr "Gnocatan-Server"
 msgid "Missing game directory"
 msgstr "Spielverzeichnis fehlt"
 
-#: server/meta.c:161
+#: server/meta.c:182
 #, c-format
 msgid "Register with meta-server at %s, port %s\n"
 msgstr "Registriere bei Metaserver %s Port %s\n"
@@ -1502,3 +1506,9 @@ msgstr "Fehler beim Holen des Namens des Kommunikationspartners: %s\n"
 #: server/server.c:200 server/server.c:208
 msgid "unknown"
 msgstr "unbekannt"
+
+#~ msgid "General"
+#~ msgstr "Allgemein"
+
+#~ msgid "Other Settings"
+#~ msgstr "Weitere Einstellungen"

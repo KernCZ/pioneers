@@ -7,3 +7,6 @@
 /* Protocol version used by the meta server */
 #undef META_PROTOCOL_VERSION
 
+/* Available languages */
+#undef ALL_LINGUAS
+

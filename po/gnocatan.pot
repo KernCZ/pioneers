@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2002-05-31 21:59+0200\n"
+"POT-Creation-Date: 2002-06-06 22:59+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,11 +30,11 @@ msgstr ""
 msgid "is refunded"
 msgstr ""
 
-#: ai/client.c:1132 client/client.c:1662
+#: ai/client.c:1130 client/client.c:1672
 msgid "discarded"
 msgstr ""
 
-#: ai/client.c:1710 client/client.c:2379
+#: ai/client.c:1700 client/client.c:2401
 msgid "The game is over.\n"
 msgstr ""
 
@@ -133,7 +133,7 @@ msgstr ""
 msgid " %s.\n"
 msgstr ""
 
-#: ai/player.c:20 client/gui.c:860 client/legend.c:172 client/player.c:33
+#: ai/player.c:20 client/gui.c:947 client/legend.c:172 client/player.c:33
 msgid "Settlement"
 msgstr ""
 
@@ -141,7 +141,7 @@ msgstr ""
 msgid "Settlements"
 msgstr ""
 
-#: ai/player.c:21 client/gui.c:863 client/legend.c:173 client/player.c:34
+#: ai/player.c:21 client/gui.c:950 client/legend.c:173 client/player.c:34
 msgid "City"
 msgstr ""
 
@@ -483,7 +483,7 @@ msgstr ""
 msgid "Players Connected"
 msgstr ""
 
-#: client/admin-gtk.c:347 client/gui.c:247 server/gnocatan-server-gtk.c:519
+#: client/admin-gtk.c:347 client/gui.c:249 server/gnocatan-server-gtk.c:519
 msgid "Messages"
 msgstr ""
 
@@ -504,7 +504,7 @@ msgstr ""
 msgid "%s"
 msgstr ""
 
-#: client/chat.c:69 client/gui.c:934 client/settingscreen.c:56
+#: client/chat.c:69 client/gui.c:1021 client/settingscreen.c:56
 msgid " "
 msgstr ""
 
@@ -525,7 +525,7 @@ msgid "Idle"
 msgstr ""
 
 #: client/client.c:160 client/client.c:626 client/client.c:635
-#: client/gui.c:942
+#: client/gui.c:1029
 msgid "Offline"
 msgstr ""
 
@@ -545,55 +545,55 @@ msgstr ""
 msgid "Game is full"
 msgstr ""
 
-#: client/client.c:1071
+#: client/client.c:1074
 msgid "Build two settlements, each with a connecting"
 msgstr ""
 
-#: client/client.c:1073
+#: client/client.c:1076
 msgid "Build a settlement with a connecting"
 msgstr ""
 
-#: client/client.c:1076
+#: client/client.c:1079
 msgid "road"
 msgstr ""
 
-#: client/client.c:1078
+#: client/client.c:1081
 msgid "bridge"
 msgstr ""
 
-#: client/client.c:1080
+#: client/client.c:1083
 msgid "ship"
 msgstr ""
 
-#: client/client.c:1195
+#: client/client.c:1198
 msgid "Waiting for your turn"
 msgstr ""
 
-#: client/client.c:1298
+#: client/client.c:1303
 msgid "Select the building to steal from."
 msgstr ""
 
-#: client/client.c:1299
+#: client/client.c:1304
 msgid "Select the building to steal from"
 msgstr ""
 
-#: client/client.c:1311 client/client.c:1338
+#: client/client.c:1316 client/client.c:1343
 msgid "Place the robber"
 msgstr ""
 
-#: client/client.c:1420
+#: client/client.c:1427
 msgid "Build two road segments."
 msgstr ""
 
-#: client/client.c:1422
+#: client/client.c:1429
 msgid "Build a road segment."
 msgstr ""
 
-#: client/client.c:1718 client/client.c:1841
+#: client/client.c:1729 client/client.c:1855
 msgid "It is your turn."
 msgstr ""
 
-#: client/client.c:2372
+#: client/client.c:2394
 msgid "The game is over."
 msgstr ""
 
@@ -614,7 +614,7 @@ msgid "finished.\n"
 msgstr ""
 
 #: client/connect.c:143 client/connect.c:194 client/connect.c:274
-#: server/meta.c:145
+#: server/meta.c:166
 msgid "Meta-server kicked us off\n"
 msgstr ""
 
@@ -623,11 +623,11 @@ msgstr ""
 msgid "New game server started on %s port %s\n"
 msgstr ""
 
-#: client/connect.c:291 server/meta.c:112
+#: client/connect.c:291 server/meta.c:133
 msgid "Too many meta-server redirects\n"
 msgstr ""
 
-#: client/connect.c:304 server/meta.c:118
+#: client/connect.c:304 server/meta.c:139
 #, c-format
 msgid "Bad redirect line: %s\n"
 msgstr ""
@@ -637,7 +637,7 @@ msgstr ""
 msgid "Meta server too old to create servers (version %d.%d)\n"
 msgstr ""
 
-#: client/connect.c:362 server/meta.c:158
+#: client/connect.c:362 server/meta.c:179
 #, c-format
 msgid "Redirected to meta-server at %s, port %s\n"
 msgstr ""
@@ -715,7 +715,7 @@ msgstr ""
 msgid "Create New Server"
 msgstr ""
 
-#: client/connect.c:860 client/gui.c:730
+#: client/connect.c:860 client/gui.c:817
 msgid "Connect to Gnocatan server"
 msgstr ""
 
@@ -805,196 +805,200 @@ msgstr ""
 msgid "All praise %s, Lord of All Gnocatan!"
 msgstr ""
 
-#: client/gui.c:99
+#: client/gui.c:101
 #, c-format
 msgid "Points Needed to Win: %i"
 msgstr ""
 
-#: client/gui.c:323
+#: client/gui.c:332
 msgid "Map"
 msgstr ""
 
-#: client/gui.c:328 client/gui.c:848
+#: client/gui.c:337 client/gui.c:935
 msgid "Trade"
 msgstr ""
 
-#: client/gui.c:335 client/quote.c:603
+#: client/gui.c:344 client/quote.c:603
 msgid "Quote"
 msgstr ""
 
-#: client/gui.c:342 client/legend.c:191
+#: client/gui.c:351 client/legend.c:191
 msgid "Legend"
 msgstr ""
 
-#: client/gui.c:350
+#: client/gui.c:359
 msgid "Welcome to Gnocatan"
 msgstr ""
 
-#: client/gui.c:568
-msgid "General"
+#: client/gui.c:614
+msgid "Appearance"
 msgstr ""
 
-#: client/gui.c:570
+#: client/gui.c:616
 msgid "Show Toolbar As"
 msgstr ""
 
-#: client/gui.c:571
-msgid "Color Settings"
-msgstr ""
-
-#: client/gui.c:572
-msgid "Other Settings"
-msgstr ""
-
-#: client/gui.c:578
+#: client/gui.c:620
 msgid "Text Only"
 msgstr ""
 
-#: client/gui.c:579
+#: client/gui.c:621
 msgid "Icons Only"
 msgstr ""
 
-#: client/gui.c:580
+#: client/gui.c:622
 msgid "Both Icons and Text"
 msgstr ""
 
-#: client/gui.c:582
-msgid "Display messages in colors?"
-msgstr ""
-
-#: client/gui.c:583
-msgid "Display chat messages in user's color?"
-msgstr ""
-
-#: client/gui.c:584
-msgid "Display player summary with colors?"
-msgstr ""
-
-#: client/gui.c:585
+#: client/gui.c:624
 msgid "Display legend as page besides map?"
 msgstr ""
 
-#: client/gui.c:730
-msgid "_Connect"
+#: client/gui.c:640
+msgid "Color Settings"
 msgstr ""
 
-#: client/gui.c:735
-msgid "_Admin"
+#: client/gui.c:644
+msgid "Display messages in colors?"
 msgstr ""
 
-#: client/gui.c:735
-msgid "Administer Gnocatan server"
+#: client/gui.c:645
+msgid "Display chat messages in user's color?"
 msgstr ""
 
-#: client/gui.c:740
-msgid "Player _Name"
+#: client/gui.c:646
+msgid "Display player summary with colors?"
 msgstr ""
 
-#: client/gui.c:740
-msgid "Change your player name"
+#: client/gui.c:662
+msgid "Language"
 msgstr ""
 
-#: client/gui.c:744
-msgid "_Settings"
-msgstr ""
-
-#: client/gui.c:744
-msgid "Gnocatan client settings"
-msgstr ""
-
-#: client/gui.c:747 server/gnocatan-server-gtk.c:42
-msgid "E_xit"
-msgstr ""
-
-#: client/gui.c:747 server/gnocatan-server-gtk.c:42
-msgid "Exit the program"
-msgstr ""
-
-#: client/gui.c:772
-msgid "The Gnocatan Game"
-msgstr ""
-
-#: client/gui.c:773 server/gnocatan-server-gtk.c:58
-msgid "(C) 2002 the Free Software Foundation"
-msgstr ""
-
-#: client/gui.c:775 server/gnocatan-server-gtk.c:60
-msgid "Gnocatan is based upon the excellent Settlers of Catan board game"
-msgstr ""
-
-#: client/gui.c:797
-msgid "_Legend"
-msgstr ""
-
-#: client/gui.c:797
-msgid "Terrain legend and building costs"
-msgstr ""
-
-#: client/gui.c:800
-msgid "_Game Settings"
-msgstr ""
-
-#: client/gui.c:800
-msgid "Settings for the current game"
-msgstr ""
-
-#: client/gui.c:803
-msgid "_Dice Histogram"
-msgstr ""
-
-#: client/gui.c:803
-msgid "Histogram of dice rolls"
-msgstr ""
-
-#: client/gui.c:806
-msgid "_About Gnocatan"
-msgstr ""
-
-#: client/gui.c:806
-msgid "Information about Gnocatan"
+#: client/gui.c:688
+msgid "Language setting takes full effect only after client restart!"
 msgstr ""
 
 #: client/gui.c:817
+msgid "_Connect"
+msgstr ""
+
+#: client/gui.c:822
+msgid "_Admin"
+msgstr ""
+
+#: client/gui.c:822
+msgid "Administer Gnocatan server"
+msgstr ""
+
+#: client/gui.c:827
+msgid "Player _Name"
+msgstr ""
+
+#: client/gui.c:827
+msgid "Change your player name"
+msgstr ""
+
+#: client/gui.c:831
+msgid "_Settings"
+msgstr ""
+
+#: client/gui.c:831
+msgid "Gnocatan client settings"
+msgstr ""
+
+#: client/gui.c:834 server/gnocatan-server-gtk.c:42
+msgid "E_xit"
+msgstr ""
+
+#: client/gui.c:834 server/gnocatan-server-gtk.c:42
+msgid "Exit the program"
+msgstr ""
+
+#: client/gui.c:859
+msgid "The Gnocatan Game"
+msgstr ""
+
+#: client/gui.c:860 server/gnocatan-server-gtk.c:58
+msgid "(C) 2002 the Free Software Foundation"
+msgstr ""
+
+#: client/gui.c:862 server/gnocatan-server-gtk.c:60
+msgid "Gnocatan is based upon the excellent Settlers of Catan board game"
+msgstr ""
+
+#: client/gui.c:884
+msgid "_Legend"
+msgstr ""
+
+#: client/gui.c:884
+msgid "Terrain legend and building costs"
+msgstr ""
+
+#: client/gui.c:887
+msgid "_Game Settings"
+msgstr ""
+
+#: client/gui.c:887
+msgid "Settings for the current game"
+msgstr ""
+
+#: client/gui.c:890
+msgid "_Dice Histogram"
+msgstr ""
+
+#: client/gui.c:890
+msgid "Histogram of dice rolls"
+msgstr ""
+
+#: client/gui.c:893
+msgid "_About Gnocatan"
+msgstr ""
+
+#: client/gui.c:893
+msgid "Information about Gnocatan"
+msgstr ""
+
+#: client/gui.c:904
 msgid "_Game"
 msgstr ""
 
-#: client/gui.c:818 server/gnocatan-server-gtk.c:81
+#: client/gui.c:905 server/gnocatan-server-gtk.c:81
 msgid "_Help"
 msgstr ""
 
-#: client/gui.c:845
+#: client/gui.c:932
 msgid "Roll Dice"
 msgstr ""
 
-#: client/gui.c:851 client/legend.c:165
+#: client/gui.c:938 client/legend.c:165
 msgid "Road"
 msgstr ""
 
-#: client/gui.c:854 client/legend.c:168
+#: client/gui.c:941 client/legend.c:168
 msgid "Ship"
 msgstr ""
 
-#: client/gui.c:857 client/legend.c:171
+#: client/gui.c:944 client/legend.c:171
 msgid "Bridge"
 msgstr ""
 
-#: client/gui.c:866
+#: client/gui.c:953
 msgid "Develop"
 msgstr ""
 
-#: client/gui.c:869
+#: client/gui.c:956
 msgid "Undo"
 msgstr ""
 
-#: client/gui.c:872
+#: client/gui.c:959
 msgid "Finish"
 msgstr ""
 
-#: client/gui.c:954
+#: client/gui.c:1041
 msgid "Welcome to Gnocatan!"
 msgstr ""
 
-#: client/gui.c:987
+#: client/gui.c:1074
 msgid "Gnocatan"
 msgstr ""
 
@@ -1009,7 +1013,7 @@ msgid ""
 "Percentage"
 msgstr ""
 
-#: client/histogram.c:228 client/histogram.c:243
+#: client/histogram.c:235 client/histogram.c:250
 msgid "Dice Histogram"
 msgstr ""
 
@@ -1465,7 +1469,7 @@ msgstr ""
 msgid "Missing game directory"
 msgstr ""
 
-#: server/meta.c:161
+#: server/meta.c:182
 #, c-format
 msgid "Register with meta-server at %s, port %s\n"
 msgstr ""

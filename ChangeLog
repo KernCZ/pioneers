@@ -1,3 +1,22 @@
+2002-06-06  Roman Hodek  <roman@hodek.net>
+
+	* configure.in, acconfig.h: export ALL_LINGUAS to config.h
+
+	* client/i18n.[ch]: new files for language setting handling
+	handles available languages, initializing NLS from saved setting
+	or environment, and changing language
+
+	* client/Makefile.am: added i18n.[ch]
+
+	* client/gnocatan.c (main): call init_nls() instead of doing stuff
+	itself
+
+	* client/gui.c: make settings dialog have separate pages, now that
+	the number of setting grows...
+	new page for language setting (TODO: dynamic GUI switch!)
+
+	* po/de.po: updated
+
 2002-06-03  Roman Hodek  <roman@hodek.net>
 
 	* client/gui.c (splash_build_page): use a viewport widget around
