@@ -1,3 +1,10 @@
+2004-05-04  Roland Clobus <rclobus@bigfoot.com>
+	* po/de.po, po/es.po, po/nl.po, po/fr.po, po/gnocatan.pot: Updated
+	translation files to reflect current texts. (No changes to translated
+	texts)
+
+2004-04-25 0.8.1.26 Released as Debian package, 0.8.1-2
+
 2004-04-25 0.8.1.26  Roland Clobus <rclobus@bigfoot.com>
 	* client/common/build.c (build_add), client/common/client.c
 	(mode_load_gameinfo), client/common/client.h (build_add),
