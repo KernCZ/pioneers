@@ -3,6 +3,7 @@ config.sub
 ltconfig
 ltmain.sh
 aclocal.m4
+autom4te.cache
 config.h.in
 stamp-h.in
 Makefile.in
