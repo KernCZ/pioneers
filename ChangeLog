@@ -1,3 +1,7 @@
+2005-01-15  Roland Clobus <rclobus@bigfoot.com>
+	* INSTALL, .cvsignore: Removed INSTALL from CVS. It is generated
+	* README: Added information from the old INSTALL
+	
 2005-01-15  0.8.1.49  Daniel <dgun@umpire.com>
 	* common/map.c, common/map.h: Patch #1100340: Added the option to mark
 	a tile such that it will never be shuffled, by adding a + (plus) after

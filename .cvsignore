@@ -25,3 +25,4 @@ missing
 depcomp
 mkinstalldirs
 acinclude.m4
+INSTALL
