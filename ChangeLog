@@ -1,3 +1,7 @@
+2001-02-16  David Fallon  <davef@getacard.com>
+
+	* client/build.c: Fixed SF Bug #108981
+
 2000-09-03  Jeff Breidenbach  <jeff@alum.mit.edu>
 
 	* debian/gnocatan-server.menu: Fix Debian bug #70831

@@ -126,5 +126,10 @@ void build_remove(BuildType type, gint x, gint y, gint pos)
 		 && rec->pos == pos);
 	g_free(rec);
 
+	/* If the build_list is now empty (no more items to undo), clear built flag
+	   so trading is reallowed with strict-trade */
+	if (build_list == NULL)
+		built = FALSE;
+
 	player_build_remove(my_player_num(), type, x, y, pos);
 }
