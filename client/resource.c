@@ -95,15 +95,18 @@ gint resource_count(gint *resources)
 
 gchar *resource_cards(gint num, Resource type)
 {
-	static gchar buff[64];
-
+	static gchar buff[2][64];
+	static int bcnt = 0;
+	gchar *pbuff = buff[bcnt];
+	bcnt = (bcnt+1)%2;
+	
 	/* FIXME: this should be touched up to take advantage of the
 	   GNU ngettext API */
 	if (num != 1)
-		sprintf(buff, resource_list(type, RESOURCE_MULTICARD), num);
+		sprintf(pbuff, resource_list(type, RESOURCE_MULTICARD), num);
 	else
-		strcpy(buff, resource_list(type, RESOURCE_SINGLECARD));
-	return buff;
+		strcpy(pbuff, resource_list(type, RESOURCE_SINGLECARD));
+	return pbuff;
 }
 
 void resource_format_type(gchar *str, gint *resources)
