@@ -19,6 +19,8 @@
 	client/gtk/trade.c: Preparations for 'Leave Game', added some
 	constness, chat disabled when offline, frontend_gui_register_* can
 	handle more than one widget, removed toolbar hack (not needed anymore)
+	* client/gtk/guimap.c: Removed compiler warnings when compiling with
+	--pedantic
 	
 2004-11-12 Roland Clobus <rclobus@bigfoot.com>
 	* Actually updated the build number to 0.8.1.42
