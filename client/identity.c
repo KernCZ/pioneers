@@ -39,9 +39,9 @@ static int draw_building_and_count(GdkGC *gc, GtkWidget *area, gint offset,
 	offset += 5 + rect.width;
 
 	sprintf(buff, "%d", num);
-	gdk_text_extents(area->style->font, buff, strlen(buff),
+	gdk_text_extents(gtk_style_get_font(area->style), buff, strlen(buff),
 			 &lbearing, &rbearing, &width, &ascent, &descent);
-	gdk_draw_text(area->window, area->style->font, gc,
+	gdk_draw_text(area->window, gtk_style_get_font(area->style), gc,
 		      offset, area->allocation.height - 5,
 		      buff, strlen(buff));
 

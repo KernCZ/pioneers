@@ -362,7 +362,7 @@ gboolean net_connected(Session *ses)
 	return ses->fd >= 0 && !ses->connect_in_progress;
 }
 
-gboolean net_connect(Session *ses, char *host, gchar *port)
+gboolean net_connect(Session *ses, const gchar *host, const gchar *port)
 {
 	int err;
 	struct addrinfo hints, *ai, *aip;

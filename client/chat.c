@@ -117,7 +117,7 @@ void chat_parser( gint player_num, char chat_str[MAX_CHAT] )
 
 static void chat_cb(GtkEditable *editable, gpointer user_data)
 {
-	gchar *text = gtk_entry_get_text(GTK_ENTRY(editable));
+	const gchar *text = gtk_entry_get_text(GTK_ENTRY(editable));
 
 	if (text[0] != '\0') {
 		gchar buff[MAX_CHAT];

@@ -178,9 +178,10 @@ static void start_clicked_cb(GtkWidget *start_btn, gpointer user_data)
 void show_admin_interface()
 {
 	GtkWidget *admin_if;
-	GnomeDialog *dialog;
+	GtkDialog *dialog;
 	
-	dialog = gnome_dialog_new( "Administration" );
+	dialog = gtk_dialog_new();
+	gtk_window_set_title( "Administration" );
 	admin_if = build_admin_interface( dialog->vbox );
 	gtk_widget_show_all( dialog );
 	admin_open_session();

@@ -152,45 +152,35 @@ void message_window_log_message_string( gint msg_type, gchar *text )
 /* write a text message to the message window in the specified color. */
 void message_window_add_text(gchar *text, GdkColor *color)
 {
-	GtkAdjustment* adj;
+	GtkTextTag *text_tag;
+	GtkTextBuffer *buffer;
+	GtkTextIter iter;
+	GtkTextMark *end_mark;
 
 	if (message_txt == NULL)
 		return;
 
-	adj = GTK_ADJUSTMENT(GTK_TEXT(message_txt)->vadj);
+	/* create an anonymous tag for the indicated color */
+	buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(message_txt));
+	text_tag = gtk_text_buffer_create_tag(buffer, NULL,
+			"foreground-gdk", color, NULL);
 
-	gtk_widget_realize(message_txt);
-	gtk_text_freeze(GTK_TEXT(message_txt));
-#if MAX_LINES > 0
-	n_lines++;
-	if (n_lines > MAX_LINES) {
-	     /* find the first new-line */
-	     gint nl = 0;
-	     gchar c;
-	     while ( (c = GTK_TEXT_INDEX(GTK_TEXT(message_txt), nl)) ) {
-		  if (c == '\n') break;
-		  nl++;
-	     }
-	     /* Delete from the beginning to that new-line */
-	     gtk_text_set_point(GTK_TEXT(message_txt),0);
-	     gtk_text_forward_delete(GTK_TEXT(message_txt), nl+1);
-	     /* Hack: recount the number of new-lines. I don't understand
-		why I can't just decrement n_lines */
-	     n_lines = 0;
-	     nl = 0;
-	     while ( (c = GTK_TEXT_INDEX(GTK_TEXT(message_txt), nl)) ) {
-		  if (c == '\n') n_lines++;
-		  nl++;
-	     }
-	     /* Move to the end of the text, before inserting the message */
-	     gtk_text_set_point(GTK_TEXT(message_txt),
-				gtk_text_get_length(GTK_TEXT(message_txt)));
+	/* insert text at the end */
+	gtk_text_buffer_get_end_iter(buffer, &iter);
+	gtk_text_buffer_insert_with_tags(buffer, &iter, text, strlen(text),
+			text_tag, NULL);
+
+	/* move cursor to the end */
+	gtk_text_buffer_get_end_iter(buffer, &iter);
+	gtk_text_buffer_place_cursor(buffer, &iter);
+
+	end_mark = gtk_text_buffer_get_mark(buffer, "end-mark");
+	if (end_mark == NULL) {
+		end_mark = gtk_text_buffer_create_mark(buffer, "end-mark",
+				&iter, FALSE);
 	}
-#endif
-	gtk_text_insert(GTK_TEXT(message_txt), NULL, color, NULL, text, -1);
-	gtk_text_thaw(GTK_TEXT(message_txt));
-
-	gtk_adjustment_set_value(adj, adj->upper - adj->page_size);
+	gtk_text_view_scroll_to_mark(GTK_TEXT_VIEW(message_txt), end_mark,
+			0.0, FALSE, 0.0, 0.0);
 }
 
 /* set the text in the message window to the specified color. */

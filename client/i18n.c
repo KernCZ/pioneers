@@ -56,7 +56,6 @@ void init_nls(void)
 	}
 	g_free(linguas);
 
-	gnome_i18n_init();
  	saved_lang = config_get_string("settings/language",&novar);
 	if (!novar && (ld = find_lang_desc(saved_lang)))
 		saved_lang = ld->localedef;
@@ -67,6 +66,9 @@ void init_nls(void)
 		set_locale = "C";
 	bindtextdomain(PACKAGE, GNOMELOCALEDIR);
 	textdomain(PACKAGE);
+
+	/* have gettext return strings in UTF-8 */
+	bind_textdomain_codeset(PACKAGE, "UTF-8");
 
 	/* determine language setting after setlocale()
 	 * empty setting, "C", or "POSIX" are treated as English

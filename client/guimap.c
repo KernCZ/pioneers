@@ -43,20 +43,37 @@ GdkPixmap *guimap_terrain(Terrain terrain)
 	return get_theme()->terrain_tiles[terrain];
 }
 
-void load_pixmap(gchar *name, GdkPixmap **pixmap, GdkBitmap **mask)
+void load_pixmap(gchar *name, GdkPixmap **pixmap_return,
+                        GdkBitmap **mask_return)
 {
-        gchar *file = g_strconcat(IMAGEDIR "/", name, NULL);
+	GdkPixbuf *pixbuf;
+	gchar *file;
 
-        if (!g_file_exists(file)) {
-                g_error(_("Could not find \'%s\' pixmap file.\n"), file);
-                exit(1);
-        }
-	gdk_imlib_load_file_to_pixmap(file, pixmap, mask);
-	if (!*pixmap) {
-                g_error(_("Could not load \'%s\' pixmap file.\n"), file);
-                exit(1);
-        }
-        g_free(file);
+	g_return_if_fail(name != NULL);
+	g_return_if_fail(pixmap_return != NULL);
+
+	/* check that file exists */
+	file = g_strconcat(IMAGEDIR "/", name, NULL);
+	if (!g_file_exists(file)) {
+		g_error(_("Could not find \'%s\' pixmap file.\n"), file);
+		exit(1);
+	}
+
+	/* load pixmap/mask */
+	pixbuf = gdk_pixbuf_new_from_file(file, NULL);
+	if (pixbuf != NULL) {
+		*pixmap_return = NULL;
+		gdk_pixbuf_render_pixmap_and_mask(pixbuf,
+				pixmap_return, mask_return, 1);
+		gdk_pixbuf_unref(pixbuf);
+	}
+
+	/* check result */
+	if (pixbuf == NULL || *pixmap_return == NULL) {
+		g_error(_("Could not load \'%s\' pixmap file.\n"), file);
+		exit(1);
+	}
+	g_free(file);
 }
 
 GuiMap *guimap_new()
@@ -620,9 +637,10 @@ void guimap_scale_with_radius(GuiMap *gmap, gint radius)
 	if (map->shrink_right)
 		gmap->width -= gmap->x_point;
 
-	if (gmap->gc != NULL)
+	if (gmap->gc != NULL) {
 		gdk_gc_unref(gmap->gc);
-	gmap->gc = NULL;
+		gmap->gc = NULL;
+	}
 	if (gmap->hex_region != NULL) {
 		gdk_region_destroy(gmap->hex_region);
 		gmap->hex_region = NULL;
@@ -1048,6 +1066,10 @@ static void redraw_node(GuiMap *gmap, Node *node, Polygon *poly)
 	int idx;
 
 	if (node == NULL)
+		return;
+
+	/* don't do anything if pixmap is not ready */
+	if (gmap->pixmap == NULL)
 		return;
 
 	poly_bound_rect(poly, 1, &rect);

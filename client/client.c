@@ -210,20 +210,21 @@ static gboolean global_unhandled(StateMachine *sm, gint event)
 /*----------------------------------------------------------------------
  * Hooks for GUI events that can happen at almost any time
  */
-static void copy_player_name(gchar *name)
+static void copy_player_name(const gchar *name)
 {
+	char *tmp = g_strdup (name);
 	if (saved_name != NULL) {
 		g_free(saved_name);
 		saved_name = NULL;
 	}
-	name = g_strstrip(name);
-	if (*name != '\0')
-		saved_name = g_strdup(name);
+	tmp = g_strstrip(tmp);
+	if (*tmp != '\0')
+		saved_name = g_strdup(tmp);
 }
 
 /* When the user changes name via the Player Name dialog
  */
-void client_change_my_name(gchar *name)
+void client_change_my_name(const gchar *name)
 {
 	copy_player_name(name);
 	if (saved_name != NULL)

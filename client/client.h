@@ -80,7 +80,7 @@ void chat_set_focus(void);
 
 /* client.c */
 void client_start(void);
-void client_change_my_name(gchar *name);
+void client_change_my_name(const gchar *name);
 void client_chat(gchar *text);
 gboolean client_connected(void);
 void client_changed_cb(void);
@@ -92,11 +92,11 @@ void update_recent_servers_list(void);
 /* connect.c */
 gboolean connect_valid_params(void);
 GtkWidget *connect_create_dlg(void);
-gchar *connect_get_name(void);
-gchar *connect_get_server(void);
-gchar *connect_get_meta_server(void);
+const gchar *connect_get_name(void);
+const gchar *connect_get_server(void);
+const gchar *connect_get_meta_server(void);
 gint connect_get_port(void);
-gchar* connect_get_port_str(void);
+const gchar* connect_get_port_str(void);
 
 /* develop.c */
 void develop_init(void);

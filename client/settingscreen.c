@@ -85,15 +85,20 @@ GtkWidget *settings_create_dlg()
 	if (settings_dlg != NULL)
 		return settings_dlg;
 
-	settings_dlg = gnome_dialog_new(_("Current Game Settings"),
-				      GNOME_STOCK_BUTTON_CLOSE, NULL);
-        gnome_dialog_set_parent(GNOME_DIALOG(settings_dlg),
-				GTK_WINDOW(app_window));
+	settings_dlg = gtk_dialog_new_with_buttons(
+			_("Current Game Settings"),
+			GTK_WINDOW(app_window),
+			GTK_DIALOG_DESTROY_WITH_PARENT,
+			GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE,
+			NULL);
         gtk_signal_connect(GTK_OBJECT(settings_dlg), "destroy",
 			   GTK_SIGNAL_FUNC(gtk_widget_destroyed), &settings_dlg);
 
-	dlg_vbox = GNOME_DIALOG(settings_dlg)->vbox;
+	dlg_vbox = GTK_DIALOG(settings_dlg)->vbox;
 	gtk_widget_show(dlg_vbox);
+
+	g_signal_connect(settings_dlg, "response",
+			G_CALLBACK(gtk_widget_destroy), NULL);
 
 	if( game_params == NULL )
 	{
@@ -101,7 +106,6 @@ GtkWidget *settings_create_dlg()
 		gtk_box_pack_start(GTK_BOX(dlg_vbox), label, TRUE, TRUE, 0);
 		gtk_widget_show(label);
 	        gtk_widget_show(settings_dlg);
-		gnome_dialog_set_close(GNOME_DIALOG(settings_dlg), TRUE);
 		
 		return settings_dlg;
 	}
@@ -209,7 +213,6 @@ GtkWidget *settings_create_dlg()
 	add_setting_val(table, 8, 1, TYPE_NUM, game_params->num_develop_type[DEVEL_SOLDIER], NULL);
 
         gtk_widget_show(settings_dlg);
-	gnome_dialog_set_close(GNOME_DIALOG(settings_dlg), TRUE);
 
 	return settings_dlg;
 }

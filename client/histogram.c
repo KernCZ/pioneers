@@ -232,14 +232,16 @@ GtkWidget *histogram_create_dlg()
 		return histogram_dlg;
 	}
 
-	histogram_dlg = gnome_dialog_new(_("Dice Histogram"),
-			GNOME_STOCK_BUTTON_CLOSE, NULL);
-	gnome_dialog_set_parent(GNOME_DIALOG(histogram_dlg),
-			GTK_WINDOW(app_window));
+	histogram_dlg = gtk_dialog_new_with_buttons(
+			_("Dice Histogram"),
+			GTK_WINDOW(app_window),
+			GTK_DIALOG_DESTROY_WITH_PARENT,
+			GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE,
+			NULL);
 	gtk_signal_connect(GTK_OBJECT(histogram_dlg), "destroy",
 			GTK_SIGNAL_FUNC(histogram_destroyed_cb), &histogram_dlg);
 
-	dlg_vbox = GNOME_DIALOG(histogram_dlg)->vbox;
+	dlg_vbox = GTK_DIALOG(histogram_dlg)->vbox;
 	gtk_widget_show(dlg_vbox);
 
 	vbox = gtk_vbox_new(FALSE, 5);
@@ -254,7 +256,8 @@ GtkWidget *histogram_create_dlg()
 	histogram_update();
 
 	gtk_widget_show(histogram_dlg);
-	gnome_dialog_set_close(GNOME_DIALOG(histogram_dlg), TRUE);
+	g_signal_connect(histogram_dlg, "response",
+			G_CALLBACK(gtk_widget_destroy), NULL);
 
 	return histogram_dlg;
 }

@@ -199,7 +199,7 @@ void sm_unhandled_set(StateMachine *sm, StateFunc state);
 
 void sm_net_event(StateMachine *sm, NetEvent event, gchar *line);
 gboolean sm_is_connected(StateMachine *sm);
-gboolean sm_connect(StateMachine *sm, gchar *host, gchar *port);
+gboolean sm_connect(StateMachine *sm, const gchar *host, const gchar *port);
 void sm_use_fd(StateMachine *sm, gint fd);
 void sm_changed_cb(StateMachine *sm);
 void sm_event_cb(StateMachine *sm, gint event);

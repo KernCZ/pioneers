@@ -166,7 +166,7 @@ static void net_event(NetEvent event, StateMachine *sm, gchar *line)
 	dec_use_count(sm);
 }
 
-gboolean sm_connect(StateMachine *sm, gchar *host, gchar *port)
+gboolean sm_connect(StateMachine *sm, const gchar *host, const gchar *port)
 {
 	if (sm->ses != NULL)
 		net_free(sm->ses);

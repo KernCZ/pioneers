@@ -75,13 +75,19 @@ static GtkWidget *check_color_summary;
 static GtkWidget *check_legend_page;
 
 
-GtkWidget *gnome_dialog_get_button(GnomeDialog *dlg, gint button)
+GtkWidget *gui_get_dialog_button(GtkDialog *dlg, gint button)
 {
+	GtkBox *hbox;
 	GList *list;
 
-	list = g_list_nth(dlg->buttons, button);
-	if (list != NULL)
-		return list->data;
+	g_return_val_if_fail(dlg != NULL, NULL);
+	g_assert(dlg->action_area != NULL);
+
+	list = g_list_nth(GTK_BOX(dlg->action_area)->children, button);
+	if (list != NULL) {
+		g_assert(list->data != NULL);
+		return ((GtkBoxChild *) list->data)->widget;
+	}
 	return NULL;
 }
 
@@ -126,22 +132,26 @@ void gui_cursor_set(CursorType type,
 
 void gui_draw_hex(Hex *hex)
 {
-	guimap_draw_hex(gmap, hex);
+	if (gmap->pixmap != NULL)
+		guimap_draw_hex(gmap, hex);
 }
 
 void gui_draw_edge(Edge *edge)
 {
-	guimap_draw_edge(gmap, edge);
+	if (gmap->pixmap != NULL)
+		guimap_draw_edge(gmap, edge);
 }
 
 void gui_draw_node(Node *node)
 {
-	guimap_draw_node(gmap, node);
+	if (gmap->pixmap != NULL)
+		guimap_draw_node(gmap, node);
 }
 
 void gui_highlight_chits(gint roll)
 {
-	guimap_highlight_chits(gmap, roll);
+	if (gmap->pixmap != NULL)
+		guimap_highlight_chits(gmap, roll);
 }
 
 static gint expose_map_cb(GtkWidget *area,
@@ -181,6 +191,7 @@ static gint configure_map_cb(GtkWidget *area,
 			     area->allocation.width,
 			     area->allocation.height);
 
+	gtk_widget_queue_draw(area);
 	return FALSE;
 }
 
@@ -260,7 +271,7 @@ static GtkWidget *build_messages_panel()
 				       GTK_POLICY_AUTOMATIC,
 				       GTK_POLICY_AUTOMATIC);
 
-	messages_txt = gtk_text_new(NULL, NULL);
+	messages_txt = gtk_text_view_new();
 	gtk_widget_show(messages_txt);
 	gtk_container_add(GTK_CONTAINER(scroll_win), messages_txt);
 
@@ -477,7 +488,7 @@ static void quit_cb(GtkWidget *widget, void *data)
 
 static void settings_apply_cb(GnomePropertyBox *prop_box, gint page, gpointer data)
 {
-	GnomeDockItem *dock_item;
+	BonoboDockItem *dock_item;
 	GtkWidget *toolbar;
 	gint toolbar_style;
 	gint color_chat;
@@ -488,6 +499,7 @@ static void settings_apply_cb(GnomePropertyBox *prop_box, gint page, gpointer da
 
 	switch(page)
 	{
+		GdkEventExpose e;
 	case 0:
 		if(GTK_TOGGLE_BUTTON(radio_style_text)->active) {
 			toolbar_style = GTK_TOOLBAR_TEXT;
@@ -503,7 +515,7 @@ static void settings_apply_cb(GnomePropertyBox *prop_box, gint page, gpointer da
 		
 		dock_item = gnome_app_get_dock_item_by_name( GNOME_APP(app_window),
 		                                             GNOME_APP_TOOLBAR_NAME );
-		toolbar = gnome_dock_item_get_child( dock_item );
+		toolbar = bonobo_dock_item_get_child( dock_item );
 		
 		gnome_config_set_int( "/gnocatan/settings/toolbar_style",
 		                      toolbar_style );
@@ -529,12 +541,22 @@ static void settings_apply_cb(GnomePropertyBox *prop_box, gint page, gpointer da
 		    gnome_config_set_string("/gnocatan/settings/theme",
 					    theme->name);
 		    set_theme(theme);
+		if (gmap->pixmap != NULL) {
+			g_free (gmap->pixmap);
+			gmap->pixmap = NULL;
+		}
+		e.area.x = 0;
+		e.area.y = 0;
+		e.area.width = gmap->width;
+		e.area.height = gmap->height;
+		expose_map_cb (gmap->area, &e, NULL);
+		gtk_widget_draw (gmap->area, NULL);
 
-		    gdk_draw_pixmap(gmap->area->window,
-				    gmap->area->style->fg_gc[GTK_WIDGET_STATE(gmap->area)],
-				    gmap->pixmap,
-				    0, 0, 0, 0,
-				    gmap->width, gmap->height);
+		gdk_draw_pixmap(gmap->area->window,
+			gmap->area->style->fg_gc[GTK_WIDGET_STATE(gmap->area)],
+			gmap->pixmap,
+			0, 0, 0, 0,
+			gmap->width, gmap->height);
 		}
 		
 		break;
@@ -661,8 +683,7 @@ static void menu_settings_cb(GtkWidget *widget, void *user_data)
 		gtk_menu_append(GTK_MENU(theme_menu), item);
 		if (theme == get_theme())
 			gtk_menu_set_active(GTK_MENU(theme_menu), i);
-		gtk_signal_connect(GTK_OBJECT(item), "activate",
-						   settings_activate_cb, (gpointer)settings);
+		gtk_signal_connect(GTK_OBJECT(item), "activate", (GtkSignalFunc)settings_activate_cb, (gpointer)settings);
 	}
 	gtk_option_menu_set_menu(GTK_OPTION_MENU(theme_list), theme_menu);
 	
@@ -737,8 +758,7 @@ static void menu_settings_cb(GtkWidget *widget, void *user_data)
 		if (!ld->supported)
 			gtk_widget_set_sensitive(GTK_WIDGET(ld->widget), FALSE);
 		else
-			gtk_signal_connect(GTK_OBJECT(ld->widget), "clicked",
-							   settings_activate_cb, (gpointer)settings );
+			gtk_signal_connect(GTK_OBJECT(ld->widget), "clicked", (GtkSignalFunc)settings_activate_cb, (gpointer)settings );
 	}
 	
 	gnome_property_box_append_page( GNOME_PROPERTY_BOX(settings),
@@ -824,21 +844,21 @@ static void menu_settings_cb(GtkWidget *widget, void *user_data)
 	
 	/* Signal Connections */
 	gtk_signal_connect( GTK_OBJECT(radio_style_text), "clicked",
-	                    settings_activate_cb, (gpointer)settings );
+		(GtkSignalFunc)settings_activate_cb, (gpointer)settings );
 	gtk_signal_connect( GTK_OBJECT(radio_style_icons), "clicked",
-	                    settings_activate_cb, (gpointer)settings );
+		(GtkSignalFunc)settings_activate_cb, (gpointer)settings );
 	gtk_signal_connect( GTK_OBJECT(radio_style_both), "clicked",
-	                    settings_activate_cb, (gpointer)settings );
+		(GtkSignalFunc)settings_activate_cb, (gpointer)settings );
 	gtk_signal_connect( GTK_OBJECT(check_color_chat), "clicked",
-	                    settings_activate_cb, (gpointer)settings );
+		(GtkSignalFunc)settings_activate_cb, (gpointer)settings );
 	gtk_signal_connect( GTK_OBJECT(check_color_messages), "clicked",
-	                    settings_activate_cb, (gpointer)settings );
+		(GtkSignalFunc)settings_activate_cb, (gpointer)settings );
 	gtk_signal_connect( GTK_OBJECT(check_color_summary), "clicked",
-	                    settings_activate_cb, (gpointer)settings );
+		(GtkSignalFunc)settings_activate_cb, (gpointer)settings );
 	gtk_signal_connect( GTK_OBJECT(check_legend_page), "clicked",
-	                    settings_activate_cb, (gpointer)settings );
+		(GtkSignalFunc)settings_activate_cb, (gpointer)settings );
 	gtk_signal_connect( GTK_OBJECT(settings), "apply",
-	                    settings_apply_cb, NULL );
+		(GtkSignalFunc)settings_apply_cb, NULL );
 	
 	/* Show me the widgets! */
 	gtk_widget_show( radio_style_text );
@@ -901,10 +921,13 @@ static void help_about_cb(GtkWidget *widget, void *user_data)
 
 	about = gnome_about_new(_("The Gnocatan Game"), VERSION,
 				_("(C) 2002 the Free Software Foundation"),
-				authors,
 				_("Gnocatan is based upon the excellent"
 				" Settlers of Catan board game"),
-				NULL);
+				authors,
+				NULL, /* documenters */
+				NULL, /* translators */
+				NULL  /* logo */
+				);
 	gtk_widget_show(about);
 }
 
@@ -1099,16 +1122,23 @@ static void register_gnocatan_pixmaps()
 {
 	gint idx;
 
-	for (idx = 0; idx < numElem(gnocatan_pixmaps); idx++) {
-		GnomeStockPixmapEntryPath *entry;
+	GtkIconFactory *factory = gtk_icon_factory_new();
 
-		entry = g_malloc0(sizeof(*entry));
-		entry->type = GNOME_STOCK_PIXMAP_TYPE_PATH;
-		entry->pathname = gnome_pixmap_file(gnocatan_pixmaps[idx]);
-		gnome_stock_pixmap_register(gnocatan_pixmaps[idx],
-					    GNOME_STOCK_PIXMAP_REGULAR,
-					    (GnomeStockPixmapEntry *)entry);
+	for (idx = 0; idx < numElem(gnocatan_pixmaps); idx++) {
+		GtkIconSource *source;
+		GtkIconSet *icon;
+
+		source = gtk_icon_source_new();
+		gtk_icon_source_set_filename(source,
+				gnome_pixmap_file(gnocatan_pixmaps[idx]));
+		icon = gtk_icon_set_new();
+		gtk_icon_set_add_source(icon, source);
+		gtk_icon_factory_add(factory,
+				gnocatan_pixmaps[idx],
+				icon);
 	}
+
+	gtk_icon_factory_add_default(factory);
 }
 
 static gint hotkeys_handler (GtkWidget *w, GdkEvent *e, gpointer data)
@@ -1165,7 +1195,7 @@ GtkWidget* gui_build_interface()
 {
 	gint toolbar_style;
 	gboolean default_returned;
-	GnomeDockItem *dock_item;
+	BonoboDockItem *dock_item;
 	GtkWidget *toolbar;
 
 	player_init();
@@ -1222,7 +1252,7 @@ GtkWidget* gui_build_interface()
            and set its style from what was saved. */
         dock_item = gnome_app_get_dock_item_by_name( GNOME_APP(app_window),
                                                      GNOME_APP_TOOLBAR_NAME );
-        toolbar = gnome_dock_item_get_child( dock_item );
+        toolbar = bonobo_dock_item_get_child( dock_item );
         gtk_toolbar_set_style( GTK_TOOLBAR(toolbar), toolbar_style );
 
 	/* Allow grow and shrink, but don't auto-shrink */

@@ -25,13 +25,16 @@ GtkWidget *gameover_create_dlg(gint player_num, gint num_points)
 	GtkWidget *lbl;
 	char buff[512];
 
-	dlg = gnome_dialog_new(_("Game over"),
-			       GNOME_STOCK_BUTTON_OK, NULL);
-        gnome_dialog_set_parent(GNOME_DIALOG(dlg), GTK_WINDOW(app_window));
+	dlg = gtk_dialog_new_with_buttons(
+			_("Game over"),
+			GTK_WINDOW(app_window),
+			GTK_DIALOG_DESTROY_WITH_PARENT,
+			GTK_STOCK_OK, GTK_RESPONSE_OK,
+			NULL);
 	gtk_widget_realize(dlg);
 	gdk_window_set_functions(dlg->window, GDK_FUNC_MOVE | GDK_FUNC_CLOSE);
 
-	dlg_vbox = GNOME_DIALOG(dlg)->vbox;
+	dlg_vbox = GTK_DIALOG(dlg)->vbox;
 	gtk_widget_show(dlg_vbox);
 
 	vbox = gtk_vbox_new(FALSE, 50);
@@ -54,7 +57,8 @@ GtkWidget *gameover_create_dlg(gint player_num, gint num_points)
 	gtk_box_pack_start(GTK_BOX(vbox), lbl, FALSE, TRUE, 0);
 
         gtk_widget_show(dlg);
-	gnome_dialog_set_close(GNOME_DIALOG(dlg), TRUE);
+	g_signal_connect(dlg, "response",
+			G_CALLBACK(gtk_widget_destroy), NULL);
 
 	return dlg;
 }

@@ -2,7 +2,7 @@ noinst_LIBRARIES = libgnocatan.a libgnocatan_gtk.a
 
 INCLUDES = \
 	-DGNOMELOCALEDIR=\""$(datadir)/locale"\" \
-        -I$(includedir) $(GNOME_INCLUDEDIR)
+        -I$(includedir) $(GNOME2_CFLAGS)
 
 libgnocatan_a_SOURCES = \
 	buildrec.c \

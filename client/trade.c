@@ -502,7 +502,7 @@ static void add_trade_row(GtkWidget *table, TradeRow* row,
 	col++;
 
 	row->chk = chk = gtk_check_button_new_with_label("");
-	gtk_signal_connect(GTK_OBJECT(chk), "toggled", toggled_cb, row);
+	gtk_signal_connect(GTK_OBJECT(chk), "toggled", (GtkSignalFunc)toggled_cb, row);
 	gtk_widget_show(chk);
 	gtk_table_attach(GTK_TABLE(table), chk,
 			 col, col + 1, resource, resource + 1,

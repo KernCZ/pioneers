@@ -57,10 +57,13 @@ static void help_about_cb(GtkWidget *widget, void *data)
 
 	about = gnome_about_new(_("The Gnocatan Game Server"), VERSION,
 				_("(C) 2002 the Free Software Foundation"),
-				authors,
 				_("Gnocatan is based upon the excellent"
 				" Settlers of Catan board game"),
-				NULL);
+				authors,
+				NULL, /* documenters */
+				NULL, /* translators */
+				NULL  /* logo */
+				);
 	gtk_widget_show(about);
 }
 
@@ -316,7 +319,7 @@ static gchar *getmyhostname(void)
 
 static void hostname_changed_cb(GtkWidget *widget, gpointer user_data)
 {
-	gchar *text;
+	const gchar *text;
 
 	text = gtk_entry_get_text(GTK_ENTRY(hostname_entry));
 	while (*text != '\0' && isspace(*text))
@@ -327,7 +330,7 @@ static void hostname_changed_cb(GtkWidget *widget, gpointer user_data)
 
 static void meta_server_changed_cb(GtkWidget *widget, gpointer user_data)
 {
-	gchar *text;
+	const gchar *text;
 
 	text = gtk_entry_get_text(GTK_ENTRY(meta_entry));
 	while (*text != '\0' && isspace(*text))
@@ -599,7 +602,7 @@ static GtkWidget *build_interface()
 				       GTK_POLICY_AUTOMATIC,
 				       GTK_POLICY_AUTOMATIC);
 
-	message_text = gtk_text_new(NULL, NULL);
+	message_text = gtk_text_view_new();
 	gtk_widget_show(message_text);
 	gtk_container_add(GTK_CONTAINER(scroll_win), message_text);
 	message_window_set_text(message_text);
@@ -621,10 +624,14 @@ int main(int argc, char *argv[])
 	driver->player_removed = gui_player_remove;
 
 #ifdef ENABLE_NLS
-	gnome_i18n_init();
+	/* FIXME: do I need to initialize i18n for Gnome2? */
+	/*gnome_i18n_init();*/
 	setlocale(LC_ALL, "");
 	bindtextdomain(PACKAGE, GNOMELOCALEDIR);
 	textdomain(PACKAGE);
+
+	/* tell gettext to return UTF-8 strings */
+	bind_textdomain_codeset(PACKAGE, "UTF-8");
 #endif
 	gnome_init("gnocatan-server", VERSION, argc, argv);
 

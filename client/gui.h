@@ -33,7 +33,7 @@ typedef enum {
 	MODE_GAME_OVER		/* game is over */
 } GuiMode;
 
-GtkWidget *gnome_dialog_get_button(GnomeDialog *dlg, gint button);
+GtkWidget *gui_get_dialog_button(GtkDialog *dlg, gint button);
 
 void gui_set_instructions(gchar *fmt, ...);
 void gui_set_vp_target_value( gint vp );

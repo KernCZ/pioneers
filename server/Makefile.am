@@ -8,7 +8,8 @@ noinst_LIBRARIES = libgnocatan_server.a
 INCLUDES = \
 	-I$(srcdir)/../common -I. \
 	-DGNOMELOCALEDIR=\""$(datadir)/locale"\" \
-	-I$(includedir) $(GNOME_INCLUDEDIR)
+	-I$(includedir) \
+	$(GNOME2_CFLAGS)
 
 gnocatan_server_gtk_DEPENDENCIES = libgnocatan_server.a \
 	../common/libgnocatan.a ../common/libgnocatan_gtk.a
@@ -45,13 +46,12 @@ gnocatan_server_gtk_LDADD = \
 	libgnocatan_server.a \
 	../common/libgnocatan.a \
 	../common/libgnocatan_gtk.a \
-	$(GNOME_LIBDIR) \
-	$(GNOMEUI_LIBS)
+	$(GNOME2_LIBS)
 
 gnocatan_server_console_LDADD = \
 	libgnocatan_server.a \
 	../common/libgnocatan.a \
-	$(GLIB_LIBS)
+	$(GLIB2_LIBS)
 
 config_DATA = \
 	default.game \

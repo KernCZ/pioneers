@@ -70,10 +70,12 @@ GtkWidget *monopoly_create_dlg()
 	GtkWidget *frame;
 	GSList *monop_grp = NULL;
 
-	monop_dlg = gnome_dialog_new(_("Monopoly"),
-				     GNOME_STOCK_BUTTON_OK, NULL);
-        gnome_dialog_set_parent(GNOME_DIALOG(monop_dlg),
-				GTK_WINDOW(app_window));
+	monop_dlg = gtk_dialog_new_with_buttons(
+			_("Monopoly"),
+			GTK_WINDOW(app_window),
+			GTK_DIALOG_DESTROY_WITH_PARENT,
+			GTK_STOCK_OK, GTK_RESPONSE_OK,
+			NULL);
         gtk_signal_connect(GTK_OBJECT(monop_dlg), "close",
 			   GTK_SIGNAL_FUNC(ignore_close), NULL);
         gtk_signal_connect(GTK_OBJECT(monop_dlg), "destroy",
@@ -81,7 +83,7 @@ GtkWidget *monopoly_create_dlg()
 	gtk_widget_realize(monop_dlg);
 	gdk_window_set_functions(monop_dlg->window, GDK_FUNC_MOVE);
 
-	dlg_vbox = GNOME_DIALOG(monop_dlg)->vbox;
+	dlg_vbox = GTK_DIALOG(monop_dlg)->vbox;
 	gtk_widget_show(dlg_vbox);
 
 	vbox = gtk_vbox_new(FALSE, 5);
@@ -113,7 +115,7 @@ GtkWidget *monopoly_create_dlg()
 	monop_grp = add_resource_btn(vbox, monop_grp, WOOL_RESOURCE);
 	monop_grp = add_resource_btn(vbox, monop_grp, LUMBER_RESOURCE);
 
-	client_gui(gnome_dialog_get_button(GNOME_DIALOG(monop_dlg), 0),
+	client_gui(gui_get_dialog_button(GTK_DIALOG(monop_dlg), 0),
 		   GUI_MONOPOLY, "clicked");
         gtk_widget_show(monop_dlg);
 	return monop_dlg;
@@ -126,7 +128,7 @@ void monopoly_destroy_dlg()
 
 	gtk_signal_disconnect_by_func(GTK_OBJECT(monop_dlg),
 				      GTK_SIGNAL_FUNC(ignore_close), NULL);
-	gnome_dialog_close(GNOME_DIALOG(monop_dlg));
+	gtk_widget_destroy(monop_dlg);
 	monop_dlg = NULL;
 }
 

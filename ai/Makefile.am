@@ -8,7 +8,8 @@ INCLUDES = \
 	-I$(srcdir)/../common -I. \
 	-DGNOMELOCALEDIR=\""$(datadir)/locale"\" \
 	$(ADMIN_GTK) \
-        -I$(includedir) $(GNOME_INCLUDEDIR)
+        -I$(includedir) \
+	$(GNOME2_CFLAGS)
 
 gnocatanai_SOURCES = \
 	ai.c \
@@ -33,7 +34,7 @@ gnocatanai_SOURCES = \
 gnocatanai_LDADD = \
 	../common/libgnocatan.a \
 	../common/libgnocatan_gtk.a \
-	$(GLIB_LIBS)
+	$(GLIB2_LIBS)
 
 config_DATA = \
 	computer_names

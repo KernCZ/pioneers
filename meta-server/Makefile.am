@@ -1,13 +1,16 @@
 bin_PROGRAMS = gnocatan-meta-server
 
 INCLUDES = \
-        -I$(includedir) -I$(srcdir)/../common $(GNOME_INCLUDEDIR)
+	-I$(srcdir)/../common -I. \
+	-I$(includedir) \
+	$(GNOME2_CFLAGS)
+
 
 gnocatan_meta_server_SOURCES = \
 	gnocatan-meta-server.c
 
 gnocatan_meta_server_LDADD = \
-	$(GLIB_LIBS)
+	$(GLIB2_LIBS)
 
 # We don't need this, do we?  -- egnor
 # install-data-local:

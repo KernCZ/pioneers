@@ -18,9 +18,13 @@
 static GtkWidget *name_entry;
 static GtkWidget *dlg;
 
-static void change_name_cb(void *widget, gpointer user_data)
+static void change_name_cb(GtkDialog *dlg, int response_id, gpointer user_data)
 {
-	client_change_my_name(gtk_entry_get_text(GTK_ENTRY(name_entry)));
+	if (response_id == GTK_RESPONSE_OK) {
+		client_change_my_name(
+				gtk_entry_get_text(GTK_ENTRY(name_entry)));
+	}
+	gtk_widget_destroy(GTK_WIDGET(dlg));
 }
 
 GtkWidget *name_create_dlg()
@@ -31,16 +35,21 @@ GtkWidget *name_create_dlg()
 
 	if (dlg != NULL)
 		return dlg;
-	dlg = gnome_dialog_new(_("Change player name"),
-			       GNOME_STOCK_BUTTON_OK, NULL);
+	dlg = gtk_dialog_new_with_buttons(
+			_("Change player name"),
+			GTK_WINDOW(app_window),
+			GTK_DIALOG_DESTROY_WITH_PARENT,
+			GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+			GTK_STOCK_OK, GTK_RESPONSE_OK,
+			NULL);
+	gtk_dialog_set_default_response(GTK_DIALOG(dlg), GTK_RESPONSE_OK);
         gtk_signal_connect(GTK_OBJECT(dlg), "destroy",
 			   GTK_SIGNAL_FUNC(gtk_widget_destroyed), &dlg);
-        gnome_dialog_set_parent(GNOME_DIALOG(dlg), GTK_WINDOW(app_window));
 	gtk_widget_realize(dlg);
 	gdk_window_set_functions(dlg->window,
 				 GDK_FUNC_MOVE | GDK_FUNC_CLOSE);
 
-	dlg_vbox = GNOME_DIALOG(dlg)->vbox;
+	dlg_vbox = GTK_DIALOG(dlg)->vbox;
 	gtk_widget_show(dlg_vbox);
 
 	hbox = gtk_hbox_new(FALSE, 5);
@@ -59,12 +68,11 @@ GtkWidget *name_create_dlg()
 	gtk_box_pack_start(GTK_BOX(hbox), name_entry, FALSE, TRUE, 0);
 	gtk_widget_set_usize(name_entry, 60, -1);
 
-	gnome_dialog_editable_enters(GNOME_DIALOG(dlg),
-				     GTK_EDITABLE(name_entry));
+	gtk_entry_set_activates_default(GTK_ENTRY(name_entry), TRUE);
 
-	gnome_dialog_set_close(GNOME_DIALOG(dlg), TRUE);
-        gnome_dialog_button_connect(GNOME_DIALOG(dlg), 0,
-				    GTK_SIGNAL_FUNC(change_name_cb), NULL);
+	/* destroy dialog when OK button gets clicked */
+	g_signal_connect(dlg, "response",
+			G_CALLBACK(change_name_cb), NULL);
         gtk_widget_show(dlg);
 	gtk_widget_grab_focus(name_entry);
 

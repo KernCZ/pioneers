@@ -179,10 +179,12 @@ static GtkWidget *discard_create_dlg(gint num)
 	char buff[128];
 
 	discard.target = num;
-	discard.dlg = gnome_dialog_new(_("Discard resources"),
-			       GNOME_STOCK_BUTTON_OK, NULL);
-        gnome_dialog_set_parent(GNOME_DIALOG(discard.dlg),
-				GTK_WINDOW(app_window));
+	discard.dlg = gtk_dialog_new_with_buttons(
+			_("Discard resources"),
+			GTK_WINDOW(app_window),
+			GTK_DIALOG_DESTROY_WITH_PARENT,
+			GTK_STOCK_OK, GTK_RESPONSE_OK,
+			NULL);
         gtk_signal_connect(GTK_OBJECT(discard.dlg), "close",
 			   GTK_SIGNAL_FUNC(ignore_close), NULL);
         gtk_signal_connect(GTK_OBJECT(discard.dlg), "destroy",
@@ -190,7 +192,7 @@ static GtkWidget *discard_create_dlg(gint num)
 	gtk_widget_realize(discard.dlg);
 	gdk_window_set_functions(discard.dlg->window, GDK_FUNC_MOVE);
 
-	dlg_vbox = GNOME_DIALOG(discard.dlg)->vbox;
+	dlg_vbox = GTK_DIALOG(discard.dlg)->vbox;
 	gtk_widget_show(dlg_vbox);
 
 	vbox = gtk_vbox_new(FALSE, 5);
@@ -246,7 +248,7 @@ static GtkWidget *discard_create_dlg(gint num)
 	gtk_widget_set_usize(discard.total_entry, 30, -1);
 	gtk_entry_set_editable(GTK_ENTRY(discard.total_entry), FALSE);
 
-	client_gui(gnome_dialog_get_button(GNOME_DIALOG(discard.dlg), 0),
+	client_gui(gui_get_dialog_button(GTK_DIALOG(discard.dlg), 0),
 		   GUI_DISCARD, "clicked");
         gtk_widget_show(discard.dlg);
 	check_total();
@@ -285,7 +287,7 @@ void discard_player_did(gint player_num, gint *resources)
 	if (player_num == my_player_num()) {
 		gtk_signal_disconnect_by_func(GTK_OBJECT(discard.dlg),
 					      GTK_SIGNAL_FUNC(ignore_close), NULL);
-		gnome_dialog_close(GNOME_DIALOG(discard.dlg));
+		gtk_widget_destroy(discard.dlg);
 		discard.dlg = NULL;
 	}
 }

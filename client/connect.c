@@ -94,10 +94,13 @@ static void show_waiting_box(GtkWidget *parent)
 {
 	GtkWidget *label, *vbox;
 
-	server_waiting_dlg = gnome_dialog_new(_("Receiving Data"), NULL);
-	gnome_dialog_set_parent(GNOME_DIALOG(server_waiting_dlg), GTK_WINDOW(parent));
+	server_waiting_dlg = gtk_dialog_new();
+	gtk_window_set_title(GTK_WINDOW(server_waiting_dlg),
+			_("Receiving Data"));
+	gtk_window_set_transient_for(GTK_WINDOW(server_waiting_dlg),
+			GTK_WINDOW(parent));
 	gtk_widget_realize(server_waiting_dlg);
-	vbox = GNOME_DIALOG(server_waiting_dlg)->vbox;
+	vbox = GTK_DIALOG(server_waiting_dlg)->vbox;
 	gtk_widget_show(vbox);
 	gtk_container_border_width(GTK_CONTAINER(vbox), 5);
 	label = gtk_label_new(_("Receiving data from meta server..."));
@@ -215,7 +218,9 @@ static void meta_create_notify(NetEvent event, void *user_data, char *line)
 			    log_message( MSG_INFO, _("New game server started on %s port %s\n"),
 					 gtk_entry_get_text(GTK_ENTRY(server_entry)),
 					 gtk_entry_get_text(GTK_ENTRY(port_entry)));
-			    gtk_widget_destroy(cserver_dlg);
+                            /* cserver_dlg should already be deleted at this
+                             * point */
+			    /*gtk_widget_destroy(cserver_dlg);*/
 			    gtk_widget_destroy(meta_dlg);
 			}
 			else
@@ -603,15 +608,18 @@ static void create_server_dlg(GtkWidget *widget, GtkWidget *parent)
 	GtkWidget *dlg_vbox;
 	GtkWidget *vbox;
 
-	cserver_dlg = gnome_dialog_new(_("Create New Gnocatan Server"),
-				       GNOME_STOCK_BUTTON_CANCEL,
-				       GNOME_STOCK_BUTTON_OK, NULL);
-	gnome_dialog_set_parent(GNOME_DIALOG(cserver_dlg), GTK_WINDOW(parent));
+	cserver_dlg = gtk_dialog_new_with_buttons(
+			_("Create New Gnocatan Server"),
+			GTK_WINDOW(parent),
+			0,
+			GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+			GTK_STOCK_OK, GTK_RESPONSE_OK,
+			NULL);
 	gtk_signal_connect(GTK_OBJECT(cserver_dlg), "destroy",
 			   GTK_SIGNAL_FUNC(gtk_widget_destroyed), &cserver_dlg);
 	gtk_widget_realize(cserver_dlg);
 
-	dlg_vbox = GNOME_DIALOG(cserver_dlg)->vbox;
+	dlg_vbox = GTK_DIALOG(cserver_dlg)->vbox;
 	gtk_widget_show(dlg_vbox);
 
 	vbox = build_create_interface();
@@ -619,9 +627,18 @@ static void create_server_dlg(GtkWidget *widget, GtkWidget *parent)
 	gtk_box_pack_start(GTK_BOX(dlg_vbox), vbox, TRUE, TRUE, 0);
 	gtk_container_border_width(GTK_CONTAINER(vbox), 5);
 
-	gnome_dialog_button_connect(GNOME_DIALOG(cserver_dlg), 1,
-				    start_clicked_cb, NULL);
-	gnome_dialog_set_close(GNOME_DIALOG(cserver_dlg), TRUE);
+	g_signal_connect(gui_get_dialog_button(GTK_DIALOG(cserver_dlg), 1),
+			"clicked", G_CALLBACK(start_clicked_cb), NULL);
+
+	/* destroy dialog box if either button gets clicked */
+	g_signal_connect_swapped(
+			gui_get_dialog_button(GTK_DIALOG(cserver_dlg), 0),
+			"clicked",
+			G_CALLBACK(gtk_widget_destroy), cserver_dlg);
+	g_signal_connect_swapped(
+			gui_get_dialog_button(GTK_DIALOG(cserver_dlg), 1),
+			"clicked",
+			G_CALLBACK(gtk_widget_destroy), cserver_dlg);
 	gtk_widget_show(cserver_dlg);
 }
 
@@ -643,15 +660,18 @@ static void create_meta_dlg(GtkWidget *widget, GtkWidget *parent)
 	GtkWidget *dlg_vbox;
 	GtkWidget *vbox;
 	GtkWidget *scroll_win;
-
+	/* meta_server is not const, so it cannot be used to read the entry
+	 * text in */
+	const gchar *meta_tmp;
 	static gchar *titles[9];
 
-	meta_server = gtk_entry_get_text(GTK_ENTRY(meta_server_entry));
-	if (!meta_server) {
-		if (!(meta_server = getenv("GNOCATAN_META_SERVER")))
-			meta_server = DEFAULT_META_SERVER;
-		gtk_entry_set_text(GTK_ENTRY(meta_server_entry), meta_server);
+	meta_tmp = gtk_entry_get_text(GTK_ENTRY(meta_server_entry));
+	if (!meta_tmp) {
+		if (!(meta_tmp = getenv("GNOCATAN_META_SERVER")))
+			meta_tmp = DEFAULT_META_SERVER;
+		gtk_entry_set_text(GTK_ENTRY(meta_server_entry), meta_tmp);
 	}
+	meta_server = g_strdup (meta_tmp);
 	if (!meta_port)
 		meta_port = META_PORT;
 	
@@ -676,14 +696,20 @@ static void create_meta_dlg(GtkWidget *widget, GtkWidget *parent)
 		titles[8] = _("Map Name");
 	}
 
-	meta_dlg = gnome_dialog_new(_("Current Gnocatan Servers"),
-				    GNOME_STOCK_BUTTON_CLOSE, NULL);
-        gnome_dialog_set_parent(GNOME_DIALOG(meta_dlg), GTK_WINDOW(parent));
+	meta_dlg = gtk_dialog_new_with_buttons(
+			_("Current Gnocatan Servers"),
+			GTK_WINDOW(parent),
+			0,
+			GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE,
+			NULL);
+	g_signal_connect_swapped(GTK_OBJECT(meta_dlg), "response",
+			G_CALLBACK(gtk_widget_destroy),
+			meta_dlg);
         gtk_signal_connect(GTK_OBJECT(meta_dlg), "destroy",
 			   GTK_SIGNAL_FUNC(gtk_widget_destroyed), &meta_dlg);
 	gtk_widget_realize(meta_dlg);
 
-	dlg_vbox = GNOME_DIALOG(meta_dlg)->vbox;
+	dlg_vbox = GTK_DIALOG(meta_dlg)->vbox;
 	gtk_widget_show(dlg_vbox);
 
 	vbox = gtk_vbox_new(FALSE, 3);
@@ -717,8 +743,6 @@ static void create_meta_dlg(GtkWidget *widget, GtkWidget *parent)
 	gtk_signal_connect(GTK_OBJECT(server_clist), "select_row",
 			   GTK_SIGNAL_FUNC(select_server_cb), NULL);
 
-	gnome_dialog_set_close(GNOME_DIALOG(meta_dlg), TRUE);
-
 	meta_create_button = gtk_button_new_with_label(_("Create New Server"));
 	gtk_signal_connect(GTK_OBJECT(meta_create_button), "clicked",
 			   GTK_SIGNAL_FUNC(create_server_dlg), meta_dlg);
@@ -734,14 +758,14 @@ static void create_meta_dlg(GtkWidget *widget, GtkWidget *parent)
 
 gboolean connect_valid_params()
 {
-	gchar *server = connect_get_server();
+	const gchar *server = connect_get_server();
 
 	return server != NULL && strlen(server) > 0 && connect_get_port() > 0;
 }
 
-gchar *connect_get_name()
+const gchar *connect_get_name()
 {
-	gchar *text;
+	const gchar *text;
 
 	if (name_entry == NULL)
 		return NULL;
@@ -751,9 +775,9 @@ gchar *connect_get_name()
 	return text;
 }
 
-gchar *connect_get_server()
+const gchar *connect_get_server()
 {
-	gchar *text;
+	const gchar *text;
 
 	if (server_entry == NULL)
 		return NULL;
@@ -763,9 +787,9 @@ gchar *connect_get_server()
 	return text;
 }
 
-gchar *connect_get_meta_server()
+const gchar *connect_get_meta_server()
 {
-	gchar *text;
+	const gchar *text;
 
 	if (meta_server_entry == NULL)
 		return NULL;
@@ -782,9 +806,9 @@ gint connect_get_port()
 	return atoi(gtk_entry_get_text(GTK_ENTRY(port_entry)));
 }
 
-gchar *connect_get_port_str()
+const gchar *connect_get_port_str()
 {
-	gchar *text;
+	const gchar *text;
 
 	if (port_entry == NULL)
 		return NULL;
@@ -818,7 +842,7 @@ static void host_list_select_cb(GtkWidget *widget, gpointer user_data) {
 static void connect_destroyed_cb(void *widget, gpointer user_data)
 {
 	if (meta_dlg != NULL)
-		gnome_dialog_close(GNOME_DIALOG(meta_dlg));
+		gtk_widget_destroy(meta_dlg);
 }
 
 GtkWidget *connect_create_dlg()
@@ -861,16 +885,21 @@ GtkWidget *connect_create_dlg()
 		saved_name = g_strdup(g_get_user_name());
 	}
 
-	dlg = gnome_dialog_new(_("Connect to Gnocatan server"),
-			       GNOME_STOCK_BUTTON_OK, NULL);
-        gnome_dialog_set_parent(GNOME_DIALOG(dlg), GTK_WINDOW(app_window));
-        gtk_signal_connect(GTK_OBJECT(dlg), "destroy",
-			   GTK_SIGNAL_FUNC(connect_destroyed_cb), NULL);
+	dlg = gtk_dialog_new_with_buttons(
+			_("Connect to Gnocatan server"),
+			GTK_WINDOW(app_window),
+			0,
+			GTK_STOCK_OK, GTK_RESPONSE_OK,
+			NULL);
+	gtk_dialog_set_default_response(GTK_DIALOG(dlg), GTK_RESPONSE_OK);
+	gtk_signal_connect(GTK_OBJECT(dlg), "destroy",
+			GTK_SIGNAL_FUNC(connect_destroyed_cb), NULL);
+
 	gtk_widget_realize(dlg);
 	gdk_window_set_functions(dlg->window,
 				 GDK_FUNC_MOVE | GDK_FUNC_CLOSE);
 
-	dlg_vbox = GNOME_DIALOG(dlg)->vbox;
+	dlg_vbox = GTK_DIALOG(dlg)->vbox;
 	gtk_widget_show(dlg_vbox);
 
 	table = gtk_table_new(7, 2, FALSE);
@@ -920,8 +949,8 @@ GtkWidget *connect_create_dlg()
 	server_entry = gtk_entry_new();
 	gtk_signal_connect_after(GTK_OBJECT(server_entry), "changed",
 				 GTK_SIGNAL_FUNC(client_changed_cb), NULL);
-        gtk_signal_connect(GTK_OBJECT(server_entry), "destroy",
-			   GTK_SIGNAL_FUNC(gtk_widget_destroyed), &server_entry);
+	gtk_signal_connect(GTK_OBJECT(server_entry), "destroy",
+			GTK_SIGNAL_FUNC(gtk_widget_destroyed), &server_entry);
 	gtk_widget_show(server_entry);
 	gtk_table_attach(GTK_TABLE(table), server_entry, 1, 2, 3, 4,
 			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL,
@@ -1018,22 +1047,21 @@ GtkWidget *connect_create_dlg()
 			 (GtkAttachOptions)GTK_EXPAND, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(lbl), 0, 0.5);
 
-	gnome_dialog_editable_enters(GNOME_DIALOG(dlg),
-				     GTK_EDITABLE(server_entry));
-	gnome_dialog_editable_enters(GNOME_DIALOG(dlg),
-				     GTK_EDITABLE(port_entry));
-	gnome_dialog_editable_enters(GNOME_DIALOG(dlg),
-				     GTK_EDITABLE(name_entry));
-	gnome_dialog_editable_enters(GNOME_DIALOG(dlg),
-				     GTK_EDITABLE(meta_server_entry));
+	gtk_entry_set_activates_default(GTK_ENTRY(server_entry), TRUE);
+	gtk_entry_set_activates_default(GTK_ENTRY(port_entry), TRUE);
+	gtk_entry_set_activates_default(GTK_ENTRY(name_entry), TRUE);
+	gtk_entry_set_activates_default(GTK_ENTRY(meta_server_entry), TRUE);
 
-	gnome_dialog_set_close(GNOME_DIALOG(dlg), TRUE);
-
-	client_gui(gnome_dialog_get_button(GNOME_DIALOG(dlg), 0),
+	client_gui(gui_get_dialog_button(GTK_DIALOG(dlg), 0),
 		   GUI_CONNECT_TRY, "clicked");
 	client_gui_destroy(dlg, GUI_CONNECT_CANCEL);
         gtk_widget_show(dlg);
 	gtk_widget_grab_focus(server_entry);
+
+	/* destroy dialog when OK button gets clicked */
+	g_signal_connect_swapped(gui_get_dialog_button(GTK_DIALOG(dlg), 0),
+			"clicked",
+			G_CALLBACK(gtk_widget_destroy), GTK_OBJECT(dlg));
 
 	g_free(saved_name);
 	g_free(saved_port);

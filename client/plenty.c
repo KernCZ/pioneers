@@ -65,8 +65,9 @@ static void check_total()
 					 info->num < info->bank
 					 && total < limit);
 	}
-	gnome_dialog_set_sensitive(GNOME_DIALOG(plenty.dlg), 0,
-				   total == limit);
+	gtk_widget_set_sensitive(
+			gui_get_dialog_button(GTK_DIALOG(plenty.dlg), 0),
+			total == limit);
 }
 
 static void less_resource_cb(void *widget, PlentyInfo *info)
@@ -157,10 +158,12 @@ GtkWidget *plenty_create_dlg(gint *bank)
 	GtkWidget *table;
 	int idx;
 
-	plenty.dlg = gnome_dialog_new(_("Year of Plenty"),
-				      GNOME_STOCK_BUTTON_OK, NULL);
-        gnome_dialog_set_parent(GNOME_DIALOG(plenty.dlg),
-				GTK_WINDOW(app_window));
+	plenty.dlg = gtk_dialog_new_with_buttons(
+			_("Year of Plenty"),
+			GTK_WINDOW(app_window),
+			GTK_DIALOG_DESTROY_WITH_PARENT,
+			GTK_STOCK_OK, GTK_RESPONSE_OK,
+			NULL);
         gtk_signal_connect(GTK_OBJECT(plenty.dlg), "close",
 			   GTK_SIGNAL_FUNC(ignore_close), NULL);
         gtk_signal_connect(GTK_OBJECT(plenty.dlg), "destroy",
@@ -168,7 +171,7 @@ GtkWidget *plenty_create_dlg(gint *bank)
 	gtk_widget_realize(plenty.dlg);
 	gdk_window_set_functions(plenty.dlg->window, GDK_FUNC_MOVE);
 
-	dlg_vbox = GNOME_DIALOG(plenty.dlg)->vbox;
+	dlg_vbox = GTK_DIALOG(plenty.dlg)->vbox;
 	gtk_widget_show(dlg_vbox);
 
 	vbox = gtk_vbox_new(FALSE, 5);
@@ -231,7 +234,7 @@ GtkWidget *plenty_create_dlg(gint *bank)
 	gtk_widget_set_usize(plenty.total_entry, 30, -1);
 	gtk_entry_set_editable(GTK_ENTRY(plenty.total_entry), FALSE);
 
-	client_gui(gnome_dialog_get_button(GNOME_DIALOG(plenty.dlg), 0),
+	client_gui(gui_get_dialog_button(GTK_DIALOG(plenty.dlg), 0),
 		   GUI_PLENTY, "clicked");
         gtk_widget_show(plenty.dlg);
 
@@ -246,6 +249,6 @@ void plenty_destroy_dlg()
 		return;
 	gtk_signal_disconnect_by_func(GTK_OBJECT(plenty.dlg),
 				      GTK_SIGNAL_FUNC(ignore_close), NULL);
-	gnome_dialog_close(GNOME_DIALOG(plenty.dlg));
+	gtk_widget_destroy(plenty.dlg);
 	plenty.dlg = NULL;
 }

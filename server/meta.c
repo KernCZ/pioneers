@@ -30,7 +30,7 @@
 #include "log.h"
 #include "server.h"
 
-gchar *meta_server_name = NULL;
+const gchar *meta_server_name = NULL;
 gchar *hostname = NULL;
 
 static Session *ses;
@@ -156,7 +156,7 @@ static void meta_event(NetEvent event, Game *game, char *line)
 	}
 }
 
-void meta_register(gchar *server, gchar *port, Game *game)
+void meta_register(const gchar *server, const gchar *port, Game *game)
 {
 	if (num_redirects > 0)
 		log_message( MSG_INFO, _("Redirected to meta-server at %s, port %s\n"),

@@ -225,24 +225,27 @@ static void theme_initialize(MapTheme *t)
 			load_pixmap(fname, &(t->terrain_tiles[i]), NULL);
 		}
 		else {
-			GdkImlibImage *im;
+			GdkPixbuf *pixbuf, *pixbuf_copy;
 			gchar *file = g_strconcat(IMAGEDIR "/", fname, NULL);
 			
 			if (!g_file_exists(file)) {
                 g_error(_("Could not find \'%s\' pixmap file.\n"), file);
                 exit(1);
 			}
-			;
-			if (!(im = gdk_imlib_load_image(file))) {
+			pixbuf = gdk_pixbuf_new_from_file(file, NULL);
+			pixbuf_copy = gdk_pixbuf_copy(pixbuf);
+			if (pixbuf == NULL || pixbuf_copy == NULL) {
                 g_error(_("Could not load \'%s\' pixmap file.\n"), file);
 				exit(1);
 			}
 			g_free(file);
-			t->scaledata[i].image = im;
-			t->scaledata[i].native_width = im->rgb_width;
-			t->scaledata[i].aspect = (float)im->rgb_width / im->rgb_height;
-			gdk_imlib_render(im, im->rgb_width, im->rgb_height);
-			t->terrain_tiles[i] = gdk_imlib_move_image(im);
+			t->scaledata[i].image = pixbuf;
+			t->scaledata[i].native_image = pixbuf_copy;
+			t->scaledata[i].native_width = gdk_pixbuf_get_width(pixbuf);
+			t->scaledata[i].aspect = (float)gdk_pixbuf_get_width(pixbuf)
+					/ gdk_pixbuf_get_height(pixbuf);
+			gdk_pixbuf_render_pixmap_and_mask(pixbuf,
+					&t->terrain_tiles[i], NULL, 1);
 		}
 		g_free(fname);
 	}
@@ -306,12 +309,21 @@ void theme_rescale(int new_width)
 		break;
 	}
 
+	/* if the size is 0, gdk_pixbuf_scale_simple fails */
+	if (new_width == 0) new_width = 1;
+
 	for(i = 0; i < numElem(current_theme->terrain_tiles); ++i) {
-		gdk_imlib_render(current_theme->scaledata[i].image,
-						 new_width,
-						 new_width/current_theme->scaledata[i].aspect);
-		current_theme->terrain_tiles[i] =
-			gdk_imlib_move_image(current_theme->scaledata[i].image);
+		/* rescale the pixbuf */
+		gdk_pixbuf_unref(current_theme->scaledata[i].image);
+		current_theme->scaledata[i].image = gdk_pixbuf_scale_simple(
+				current_theme->scaledata[i].native_image,
+				new_width,
+				new_width / current_theme->scaledata[i].aspect,
+				GDK_INTERP_BILINEAR);
+
+		/* render a new pixmap */
+		gdk_pixmap_unref(current_theme->terrain_tiles[i]);
+		gdk_pixbuf_render_pixmap_and_mask(current_theme->scaledata[i].image, &current_theme->terrain_tiles[i], NULL, 1);
 	}
 }
 

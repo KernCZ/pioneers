@@ -64,7 +64,6 @@ on the surface.
 */
 
 #include <glib.h>
-#include <libgnome/gnome-defs.h>
 #include <libgnome/gnome-config.h>
 #include "config-gnome.h"
 
@@ -107,7 +106,7 @@ config_get_int( gchar* path, gboolean* default_used )
 
 /* set a string; make sure the configuration set is sync'd afterwards. */
 void
-config_set_string( gchar* path, gchar* value )
+config_set_string( gchar* path, const gchar* value )
 {
 	gnome_config_set_string( path, value );
 	gnome_config_sync();

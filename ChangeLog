@@ -1,3 +1,40 @@
+2003-09-30  Bas Wijnen <b.wijnen@phys.rug.nl>
+	* many files, didn't record which: Fixed const<->non-const warnings
+	introduced by previous 2 patches.
+	* client/theme.c: Bugfixes in scaling tiles.
+	* client/guimap.c: Improved code.
+	* client/gui.c: Fixed settings update bug.
+
+2003-08-17  Jason Long  <jasonlong@users.sourceforge.net>
+	* client/admin-gtk.c, client/connect.c, client/discard.c,
+	client/gameover.c, client/gui.c, client/histogram.c,
+	client/legend.c, client/monopoly.c, client/name.c,
+	client/plenty.c, client/settingscreen.c: use GtkDialog
+	instead of deprecated GnomeDialog
+
+2003-08-17  Jason Long  <jasonlong@users.sourceforge.net>
+	* configure.in: remove references to macros directory and
+	add checks for Gnome2
+	* client/Makefile.am, common/Makefile.am, server/Makefile.am,
+	ai/Makefile.am, meta-server/Makefile.am:
+	use GNOME2_CFLAGS and GNOME2_LIBS or GLIB2_LIBS for INCLUDES
+	and LDADD
+	* client/connect.c: don't destroy cserver_dlg a second time
+	* client/gui.c (gui_draw_hex, gui_draw_edge, gui_highlight_chits,
+	expose_map_cb), client/guimap.c (redraw_node): fixed some
+	drawing issues (Gnocatan was trying to draw to the backing
+	store before it was created)
+	* client/gui.c (build_messages_panel), common/common_gtk.c,
+	server/gnocatan-server-gtk.c (build_interface): use
+	GtkTextView instead of deprecated GtkText
+	* client/gui.c (register_gnocatan_pixmaps): use GtkIconFactory
+	instead of deprecated gnome_stock_pixmap_register
+	* client/guimap.c (guimap_terrain), client/theme.c: use
+	GdkPixbuf instead of Imlib
+	* client/config-gnome.c, client/gui.c, client/i18n.c,
+	client/identity.c, server/gnocatan-server-gtk.c: miscellaneous
+	changes for Gnome2
+
 2003-09-29  Bas Wijnen <b.wijnen@phys.rug.nl>
 	* ai/client.c, client/client.c, server/turn.c: made ship move back
 	more logical in protocol.

@@ -18,7 +18,8 @@ typedef struct {
 } TColor;
 
 typedef struct {
-	GdkImlibImage *image;
+	GdkPixbuf     *image;
+	GdkPixbuf     *native_image;
 	gint          native_width;
 	float         aspect;
 } TScaleData;

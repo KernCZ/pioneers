@@ -180,10 +180,11 @@ void gold_choose_player_must (gint num, gint *bank)
 	char buff[128];
 
 	gold.target = num;
-	gold.dlg = gnome_dialog_new(_("Choose resources"),
-			       GNOME_STOCK_BUTTON_OK, NULL);
-        gnome_dialog_set_parent(GNOME_DIALOG(gold.dlg),
-				GTK_WINDOW(app_window));
+	gold.dlg = gtk_dialog_new_with_buttons(_("Choose resources"),
+			       GTK_WINDOW(app_window),
+			       GTK_DIALOG_DESTROY_WITH_PARENT,
+			       GTK_STOCK_OK, GTK_RESPONSE_OK,
+			       NULL);
         gtk_signal_connect(GTK_OBJECT(gold.dlg), "close",
 			   GTK_SIGNAL_FUNC(ignore_close), NULL);
         gtk_signal_connect(GTK_OBJECT(gold.dlg), "destroy",
@@ -191,7 +192,7 @@ void gold_choose_player_must (gint num, gint *bank)
 	gtk_widget_realize(gold.dlg);
 	gdk_window_set_functions(gold.dlg->window, GDK_FUNC_MOVE);
 
-	dlg_vbox = GNOME_DIALOG(gold.dlg)->vbox;
+	dlg_vbox = GTK_DIALOG(gold.dlg)->vbox;
 	gtk_widget_show(dlg_vbox);
 
 	vbox = gtk_vbox_new(FALSE, 5);
@@ -263,7 +264,7 @@ void gold_choose_player_must (gint num, gint *bank)
 	gtk_widget_set_usize(gold.total_entry, 30, -1);
 	gtk_entry_set_editable(GTK_ENTRY(gold.total_entry), FALSE);
 
-	client_gui(gnome_dialog_get_button(GNOME_DIALOG(gold.dlg), 0),
+	client_gui(gui_get_dialog_button(GTK_DIALOG(gold.dlg), 0),
 		   GUI_CHOOSE_GOLD, "clicked");
         gtk_widget_show(gold.dlg);
 	check_total();
@@ -297,7 +298,7 @@ void gold_choose_player_did(gint player_num, gint *resources) {
 	if (player_num == my_player_num()) {
 		gtk_signal_disconnect_by_func(GTK_OBJECT(gold.dlg),
 		GTK_SIGNAL_FUNC(ignore_close), NULL);
-		gnome_dialog_close(GNOME_DIALOG(gold.dlg));
+		gtk_widget_destroy(gold.dlg);
 		gold.dlg = NULL;
 		return;
 	}

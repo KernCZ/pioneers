@@ -193,21 +193,26 @@ GtkWidget *legend_create_dlg()
 	if (legend_dlg != NULL)
 		return legend_dlg;
 
-	legend_dlg = gnome_dialog_new(_("Legend"),
-				      GNOME_STOCK_BUTTON_CLOSE, NULL);
-        gnome_dialog_set_parent(GNOME_DIALOG(legend_dlg),
-				GTK_WINDOW(app_window));
+	legend_dlg = gtk_dialog_new_with_buttons(
+			_("Legend"),
+			GTK_WINDOW(app_window),
+			GTK_DIALOG_DESTROY_WITH_PARENT,
+			GTK_STOCK_OK, GTK_RESPONSE_OK,
+			NULL);
         gtk_signal_connect(GTK_OBJECT(legend_dlg), "destroy",
 			   GTK_SIGNAL_FUNC(gtk_widget_destroyed), &legend_dlg);
 
-	dlg_vbox = GNOME_DIALOG(legend_dlg)->vbox;
+	dlg_vbox = GTK_DIALOG(legend_dlg)->vbox;
 	gtk_widget_show(dlg_vbox);
 
 	vbox = legend_create_content();
 	gtk_box_pack_start(GTK_BOX(dlg_vbox), vbox, TRUE, TRUE, 0);
 
 	gtk_widget_show(legend_dlg);
-	gnome_dialog_set_close(GNOME_DIALOG(legend_dlg), TRUE);
+
+	/* destroy dialog when OK is clicked */
+	g_signal_connect(legend_dlg, "response",
+			G_CALLBACK(gtk_widget_destroy), NULL);
 
 	return legend_dlg;
 }

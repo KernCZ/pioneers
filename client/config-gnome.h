@@ -64,7 +64,7 @@ config_get_int( gchar* path, gboolean* default_used );
 
 /* set a string; make sure the configuration set is sync'd afterwards. */
 void
-config_set_string( gchar* path, gchar* value );
+config_set_string( gchar* path, const gchar* value );
 
 /* set an int; make sure the configuration set is sync'd afterwards. */
 void

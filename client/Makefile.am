@@ -3,8 +3,6 @@ appicondir=$(datadir)/pixmaps
 pixmapdir =$(datadir)/pixmaps/gnocatan
 Gamesdir=$(datadir)/gnome/apps/Games
 
-CPPFLAGS += -DIMAGEDIR=\"$(imagedir)\"
-
 SUBDIRS = help
 
 bin_PROGRAMS = gnocatan
@@ -26,8 +24,10 @@ endif
 INCLUDES = \
 	-I$(srcdir)/../common -I. \
 	-DGNOMELOCALEDIR=\""$(datadir)/locale"\" \
+	-DIMAGEDIR=\"$(imagedir)\" \
 	$(ADMIN_GTK) \
-        -I$(includedir) $(GNOME_INCLUDEDIR)
+        -I$(includedir) \
+	$(GNOME2_CFLAGS)
 
 EXTRA_gnocatan_SOURCES = $(ADMIN_GTK_FILES_INACTIVE)
 
@@ -78,8 +78,7 @@ gnocatan_SOURCES = \
 gnocatan_LDADD = \
 	../common/libgnocatan.a \
 	../common/libgnocatan_gtk.a \
-	$(GNOME_LIBDIR) \
-	$(GNOMEUI_LIBS)
+	$(GNOME2_LIBS)
 
 appicon_DATA = gnome-gnocatan.png
 
