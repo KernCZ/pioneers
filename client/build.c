@@ -19,6 +19,7 @@
 #include "client.h"
 #include "cost.h"
 #include "log.h"
+#include "buildrec.h"
 
 static GList *build_list;
 static gboolean built;	/* have we buld road / settlement / city? */

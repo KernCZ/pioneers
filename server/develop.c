@@ -28,6 +28,12 @@
 #include "log.h"
 #include "server.h"
 
+/* Local function prototypes */
+static gboolean mode_road_building(Player *player, gint event);
+static gboolean mode_plenty_resources(Player *player, gint event);
+static gboolean mode_monopoly(Player *player, gint event);
+
+
 void develop_shuffle(Game *game)
 {
 	GameParams *params;
@@ -104,7 +110,7 @@ void develop_buy(Player *player)
 	sm_send(player->sm, "bought-develop %d\n", card);
 }
 
-gboolean mode_road_building(Player *player, gint event)
+static gboolean mode_road_building(Player *player, gint event)
 {
 	StateMachine *sm = player->sm;
 	Game *game = player->game;
@@ -193,7 +199,7 @@ gboolean mode_road_building(Player *player, gint event)
 	return FALSE;
 }
 
-gboolean mode_plenty_resources(Player *player, gint event)
+static gboolean mode_plenty_resources(Player *player, gint event)
 {
 	StateMachine *sm = player->sm;
 	Game *game = player->game;
@@ -235,7 +241,7 @@ gboolean mode_plenty_resources(Player *player, gint event)
 
 /* monopoly <resource-type>
  */
-gboolean mode_monopoly(Player *player, gint event)
+static gboolean mode_monopoly(Player *player, gint event)
 {
 	StateMachine *sm = player->sm;
 	Game *game = player->game;

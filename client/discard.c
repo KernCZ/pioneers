@@ -34,6 +34,10 @@ static struct {
 	gint target;
 } discard;
 
+/* Local function prototypes */
+static GtkWidget *discard_create_dlg(gint num);
+
+
 gboolean can_discard()
 {
 	gint total;
@@ -165,7 +169,7 @@ static gboolean ignore_close(GtkWidget *widget, gpointer user_data)
 	return TRUE;
 }
 
-GtkWidget *discard_create_dlg(gint num)
+static GtkWidget *discard_create_dlg(gint num)
 {
 	GtkWidget *dlg_vbox;
 	GtkWidget *vbox;

@@ -36,6 +36,11 @@ typedef struct {
 	gint old_highlight;
 } HighlightInfo;
 
+/* Local function prototypes */
+static void calc_edge_poly(GuiMap *gmap, Edge *edge, Polygon *shape, Polygon *poly);
+static void calc_node_poly(GuiMap *gmap, Node *node, Polygon *shape, Polygon *poly);
+
+
 GdkPixmap *guimap_terrain(Terrain terrain)
 {
 	return terrain_tiles[terrain];
@@ -181,7 +186,8 @@ static void get_hex_polygon(GuiMap *gmap, Polygon *poly, gboolean draw)
 	points[5].y = gmap->y_point;
 }
 
-void calc_edge_poly(GuiMap *gmap, Edge *edge, Polygon *shape, Polygon *poly)
+static void calc_edge_poly(GuiMap *gmap, Edge *edge, Polygon *shape,
+                           Polygon *poly)
 {
 	gint idx;
 	GdkPoint *poly_point, *shape_point;
@@ -227,7 +233,8 @@ void calc_edge_poly(GuiMap *gmap, Edge *edge, Polygon *shape, Polygon *poly)
 	}
 }
 
-void calc_node_poly(GuiMap *gmap, Node *node, Polygon *shape, Polygon *poly)
+static void calc_node_poly(GuiMap *gmap, Node *node, Polygon *shape,
+                           Polygon *poly)
 {
 	gint idx;
 	GdkPoint *poly_point, *shape_point;
@@ -1087,6 +1094,12 @@ static void draw_building_cursor(GuiMap *gmap)
 	node = gmap->cursor;
 	gmap->cursor_owner = node->owner;
 	switch (node->type) {
+	case BUILD_ROAD:
+	case BUILD_SHIP:
+	case BUILD_BRIDGE:
+		/* TODO: If our type is any of the above, then we have a
+		   serious internal consistency problem. Warn us in this
+		   case. */
 	case BUILD_NONE:
 		/* oops - do nothing
 		 */

@@ -30,5 +30,8 @@ gboolean buildrec_can_setup_ship(GList *list, Map *map,
 				 Edge *edge, gboolean is_double);
 gboolean buildrec_can_setup_settlement(GList *list, Map *map,
 				       Node *node, gboolean is_double);
+gboolean buildrec_can_setup_bridge(GList *list, Map *map,
+                                   Edge *edge, gboolean is_double);
+gint buildrec_count_edges(GList *list);
 
 #endif

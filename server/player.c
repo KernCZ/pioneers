@@ -9,6 +9,7 @@
  */
 #include <fcntl.h>
 #include <ctype.h>
+#include <stdio.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -16,7 +17,6 @@
 #include <netdb.h>
 #include <errno.h>
 #include <string.h>
-
 #include <glib.h>
 
 #include "game.h"
@@ -28,7 +28,10 @@
 #include "log.h"
 #include "server.h"
 
+/* Local function prototypes */
 static gboolean mode_game_full(Player *player, gint event);
+static gboolean mode_global(Player *player, gint event);
+
 
 static gint next_player_num(Game *game)
 {
@@ -53,7 +56,7 @@ static gint next_player_num(Game *game)
 	return idx;
 }
 
-gboolean mode_global(Player *player, gint event)
+static gboolean mode_global(Player *player, gint event)
 {
 	StateMachine *sm = player->sm;
 	Game *game = player->game;

@@ -36,12 +36,12 @@ void gui_set_net_status(gchar *text);
 void gui_show_trade_page(gboolean show);
 void gui_show_quote_page(gboolean show);
 
-void gui_discard_show();
-void gui_discard_hide();
+void gui_discard_show(void);
+void gui_discard_hide(void);
 void gui_prompt_show(gchar *message);
-void gui_prompt_hide();
+void gui_prompt_hide(void);
 
-void gui_cursor_none();
+void gui_cursor_none(void);
 void gui_cursor_set(CursorType type,
 		    CheckFunc check_func, SelectFunc select_func,
 		    void *user_data);
@@ -55,7 +55,7 @@ void gui_double_setup_mode(gint player_num);
 void gui_new_turn(gint player_num);
 void gui_highlight_chits(gint roll);
 
-GtkWidget *gui_build_interface();
+GtkWidget *gui_build_interface(void);
 
 extern Map *map;		/* the map */
 extern GtkWidget *app_window;	/* main application window */

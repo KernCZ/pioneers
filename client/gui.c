@@ -21,6 +21,7 @@
 #include "state.h"
 #include "cost.h"
 #include "log.h"
+#include "common_gtk.h"
 
 Map *map;			/* handle to map drawing code */
 GtkWidget *app_window;		/* main application window */

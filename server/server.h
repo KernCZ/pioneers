@@ -91,7 +91,7 @@ gboolean discard_resources(Player *player);
 
 /* meta.c */
 void meta_register(gchar *server, gint port, GameParams *params);
-void meta_start_game();
+void meta_start_game(void);
 void meta_report_num_players(gint num_players);
 void meta_send_details(GameParams *params);
 
@@ -134,7 +134,10 @@ gint get_rand(gint range);
 Game *game_new(GameParams *params);
 void game_free(Game *game);
 gboolean server_startup(GameParams *params, gint port, gboolean meta);
-gboolean server_restart();
+gboolean server_restart(void);
+gint accept_connection(gint in_fd, gchar **location);
+gint open_listen_socket(gint port);
+
 
 /* trade.c */
 void trade_perform_maritime(Player *player,
@@ -150,12 +153,12 @@ gboolean mode_turn(Player *player, gint event);
 void turn_next_player(Game *game);
 
 /* gnocatan-server.c */
-gint gui_victory_target();
-gint gui_max_players();
-gboolean gui_is_terrain_random();
-void gui_player_add(Player *player);
-void gui_player_remove(Player *player);
-void gui_player_rename(Player *player);
+gint gui_victory_target(void);
+gint gui_max_players(void);
+gboolean gui_is_terrain_random(void);
+void gui_player_add(void *player);
+void gui_player_remove(void *player);
+void gui_player_rename(void *player);
 void gui_ui_enable(gint sensitive);
 
 #endif

@@ -218,7 +218,11 @@ void edge_add(Player *player, BuildType type, int x, int y, int pos, gboolean pa
 		case BUILD_ROAD: rec->cost = cost_road(); break;
 		case BUILD_SHIP: rec->cost = cost_ship(); break;
 		case BUILD_BRIDGE: rec->cost = cost_bridge(); break;
-		default: break;
+		case BUILD_SETTLEMENT:
+		case BUILD_CITY:
+		case BUILD_NONE:
+			/* TODO: This is an error condition... */
+			break;
 		}
 		resource_spend(player, rec->cost);
 	}

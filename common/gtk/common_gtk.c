@@ -19,6 +19,10 @@ static GdkColor red = { 0, 0xff00, 0, 0 };
 static GdkColor green = { 0, 0, 0xff00, 0 };
 static GdkColor blue = { 0, 0, 0, 0xff00 };
 
+/* Local function prototypes */
+static void gtk_event_cleanup(void);
+
+
 /* Set the default logging function to write to the message window. */
 void log_set_func_message_window( void )
 {
@@ -194,7 +198,7 @@ static void free_gtk_widget(gpointer key, WidgetState *gui, StateMachine *sm)
 	g_free(gui);
 }
 
-void gtk_event_cleanup()
+static void gtk_event_cleanup()
 {
 	while (gtk_events_pending())
 		gtk_main_iteration();

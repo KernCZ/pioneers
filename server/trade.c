@@ -16,7 +16,6 @@
 #include <netdb.h>
 #include <errno.h>
 #include <string.h>
-
 #include <glib.h>
 
 #include "game.h"
@@ -27,6 +26,10 @@
 #include "cost.h"
 #include "quoteinfo.h"
 #include "server.h"
+
+/* Local function prototypes */
+static void trade_finish_domestic(Player *player);
+
 
 void trade_perform_maritime(Player *player,
 			    gint ratio, Resource supply, Resource receive)
@@ -186,7 +189,7 @@ static gboolean mode_domestic_quote(Player *player, gint event)
 
 /* Initiating player wants to end domestic trade
  */
-void trade_finish_domestic(Player *player)
+static void trade_finish_domestic(Player *player)
 {
 	StateMachine *sm = player->sm;
 	Game *game = player->game;

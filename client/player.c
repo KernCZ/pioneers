@@ -610,6 +610,10 @@ void player_build_add(gint player_num,
 		if (player_num == my_player_num())
 			stock_use_city();
 		break;
+	case BUILD_NONE:
+		log_message( MSG_ERROR, _("player_build_add called with BUILD_NONE for user %s\n"),
+			 player_name(player_num, TRUE));
+		break;
 	}
 }
 
@@ -664,6 +668,10 @@ void player_build_remove(gint player_num,
 			stock_use_settlement();
 			stock_replace_city();
 		}
+		break;
+	case BUILD_NONE:
+		log_message( MSG_ERROR, _("player_build_remove called with BUILD_NONE for user %s\n"),
+			 player_name(player_num, TRUE));
 		break;
 	}
 }

@@ -40,9 +40,9 @@ typedef struct {
 	GdkPixmap *pixmap;	/* used in summary and discard list */
 } Player;
 
-void player_init();
-gboolean have_rolled_dice();
-gint my_player_num();
+void player_init(void);
+gboolean have_rolled_dice(void);
+gint my_player_num(void);
 Player *player_get(gint num);
 gchar *player_name(gint player_num, gboolean word_caps);
 GdkColor *player_color(gint player_num);
@@ -53,8 +53,8 @@ void player_has_quit(gint player_num);
 void player_largest_army(gint player_num);
 void player_longest_road(gint player_num);
 void player_show_summary(gint num);
-GtkWidget *player_build_summary();
-GtkWidget *player_build_turn_area();
+GtkWidget *player_build_summary(void);
+GtkWidget *player_build_turn_area(void);
 void player_rolled_dice(gint player_num, gint die1, gint die2);
 void player_set_current(gint player_num);
 void player_set_total_num(gint num);

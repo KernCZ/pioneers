@@ -4,9 +4,9 @@
 #include "server.h"
 #include "driver.h"
 
-void srv_glib_player_added(Player *player);
-void srv_glib_player_renamed(Player *player);
-void srv_player_removed(Player *player);
+void srv_glib_player_added(void *data);
+void srv_glib_player_renamed(void *data);
+void srv_player_removed(void *data);
 
 extern UIDriver Glib_Driver;
 

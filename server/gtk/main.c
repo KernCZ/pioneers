@@ -27,6 +27,10 @@
 
 static GtkWidget *app;
 
+/* Local function prototypes */
+static void add_game_to_combo( gpointer name, gpointer params, gpointer combo );
+
+
 static void quit_cb(GtkWidget *widget, void *data)
 {
 	gtk_main_quit();
@@ -192,7 +196,7 @@ static void start_clicked_cb(GtkWidget *start_btn, gpointer user_data)
 	}
 }
 
-void gui_player_add(Player *player)
+void gui_player_add(void *player)
 {
 	gint row;
 	gchar *data[2];
@@ -200,14 +204,14 @@ void gui_player_add(Player *player)
 	if ((row = gtk_clist_find_row_from_data(GTK_CLIST(clist), player)) >= 0)
 		return;
 
-	data[0] = player_name(player);
-	data[1] = player->location;
+	data[0] = player_name((Player *)player);
+	data[1] = ((Player *)player)->location;
 
 	row = gtk_clist_append(GTK_CLIST(clist), data);
 	gtk_clist_set_row_data(GTK_CLIST(clist), row, player);
 }
 
-void gui_player_remove(Player *player)
+void gui_player_remove(void *player)
 {
 	gint row;
 
@@ -216,23 +220,23 @@ void gui_player_remove(Player *player)
 	gtk_clist_remove(GTK_CLIST(clist), row);
 }
 
-void gui_player_rename(Player *player)
+void gui_player_rename(void *player)
 {
 	gint row;
 
 	if ((row = gtk_clist_find_row_from_data(GTK_CLIST(clist), player)) < 0)
 		return;
-	gtk_clist_set_text(GTK_CLIST(clist), row, 0, player_name(player));
+	gtk_clist_set_text(GTK_CLIST(clist), row, 0, player_name((Player *)player));
 }
 
-void add_game_to_combo( gchar *name, GameParams *params, GtkCombo* combo )
+static void add_game_to_combo( gpointer name, gpointer params, gpointer combo )
 {
-		GtkWidget *item;
-		
-		item = gtk_list_item_new_with_label(params->title);
-		gtk_object_set_data(GTK_OBJECT(item), "params", params);
-		gtk_widget_show(item);
-		gtk_container_add(GTK_CONTAINER(combo->list), item);
+	GtkWidget *item;
+
+	item = gtk_list_item_new_with_label((gchar *)name);
+	gtk_object_set_data(GTK_OBJECT(item), "params", params);
+	gtk_widget_show(item);
+	gtk_container_add(GTK_CONTAINER(((GtkCombo *)combo)->list), item);
 }
 
 static GtkWidget *build_interface()

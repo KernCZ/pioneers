@@ -14,6 +14,7 @@
 #include "map.h"
 #include "gui.h"
 #include "player.h"
+#include "client.h"
 
 GtkWidget *gameover_create_dlg(gint player_num, gint num_points)
 {

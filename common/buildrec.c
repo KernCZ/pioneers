@@ -17,12 +17,8 @@
 #include "buildrec.h"
 
 /* Local function prototypes. */
-gint buildrec_count_edges(GList *list);
-gboolean buildrec_can_setup_edge(GList *list, Map *map,
-				 Edge *edge, gboolean is_double);
-gboolean buildrec_can_setup_bridge(GList *list, Map *map,
-				   Edge *edge, gboolean is_double);
-
+static gboolean buildrec_can_setup_edge(GList *list, Map *map,
+					Edge *edge, gboolean is_double);
 
 
 GList *buildrec_free(GList *list)
@@ -274,8 +270,8 @@ static gboolean can_setup_edge_2(GList *list, Map *map, Edge *edge)
 		return is_edge_adjacent_to_node(edge, other_node);
 }
 
-gboolean buildrec_can_setup_edge(GList *list, Map *map,
-				 Edge *edge, gboolean is_double)
+static gboolean buildrec_can_setup_edge(GList *list, Map *map,
+					Edge *edge, gboolean is_double)
 {
 	if (!is_double) {
 		BuildRec *rec = buildrec_get(list, BUILD_SETTLEMENT, 0);

@@ -73,7 +73,7 @@ extern GdkColor blue;
 
 void load_pixmap(gchar *name, GdkPixmap **pixmap, GdkBitmap **mask);
 
-GuiMap *guimap_new();
+GuiMap *guimap_new(void);
 GdkPixmap *guimap_terrain(Terrain terrain);
 
 void guimap_road_polygon(GuiMap *gmap, Edge *edge, Polygon *poly);
