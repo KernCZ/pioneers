@@ -144,7 +144,6 @@ static struct tvars *getvar(char **p, const gchar * filename, int lno);
 static char *getval(char **p, const gchar * filename, int lno);
 static gboolean parsecolor(char *p, TColor * tc, const gchar * filename,
 			   int lno);
-static gushort parsehex(char *p, int len);
 static MapTheme *theme_config_parse(const gchar * themename,
 				    const gchar * filename);
 static gboolean theme_load_pixmap(const gchar * file,
@@ -171,7 +170,7 @@ static gint theme_insert_sorted(gconstpointer new, gconstpointer first)
 	return strcmp(newTheme->name, firstTheme->name);
 }
 
-void init_themes(void)
+void themes_init(void)
 {
 	GDir *dir;
 	const gchar *dirname;
@@ -232,29 +231,19 @@ void init_themes(void)
 	current_theme = t;
 }
 
-void set_theme(MapTheme * t)
+void theme_set_current(MapTheme * t)
 {
 	current_theme = t;
 }
 
-MapTheme *get_theme(void)
+MapTheme *theme_get_current(void)
 {
 	return current_theme;
 }
 
-GList *first_theme(void)
+GList *theme_get_list(void)
 {
 	return theme_list;
-}
-
-GList *next_theme(GList * p)
-{
-	return p ? p->next : NULL;
-}
-
-MapTheme *get_theme_nth(gint n)
-{
-	return g_list_nth(theme_list, n)->data;
 }
 
 /** Load a pixbuf, its pixmap and its mask.
@@ -616,53 +605,19 @@ static gboolean checkend(const char *p)
 static gboolean parsecolor(char *p, TColor * tc, const gchar * filename,
 			   int lno)
 {
-	int l;
-
 	if (strcmp(p, "none") == 0 || strcmp(p, "transparent") == 0) {
 		tc->set = TRUE;
 		tc->transparent = TRUE;
 		return TRUE;
 	}
 	tc->transparent = FALSE;
-
-	if (*p != '#') {
-		ERR1(_("color must be 'none' or start with '#': %s"), p);
+	if (!gdk_color_parse(p, &tc->color)) {
+		ERR1(_("invalid color: %s"), p);
 		return FALSE;
 	}
 
-	++p;
-	l = strlen(p);
-	if (strspn(p, "0123456789abcdefABCDEF") != l) {
-		ERR1(_("color value contains non-hex character '%c'"), *p);
-		return FALSE;
-	}
-
-	if (l < 3 || l % 3 != 0 || l > 12) {
-		ERR1(_
-		     ("bits per color component must be 4, 8, 12, or 16: #%s"),
-		     p);
-		return FALSE;
-	}
-
-	l /= 3;
 	tc->set = TRUE;
-	tc->color.red = parsehex(p, l);
-	tc->color.green = parsehex(p + l, l);
-	tc->color.blue = parsehex(p + 2 * l, l);
 	return TRUE;
-}
-
-static gushort parsehex(char *p, int len)
-{
-	gushort v = 0;
-	int shift = 12;
-
-	while (len--) {
-		v |= (*p <=
-		      '9' ? *p - '0' : tolower(*p) - 'a' + 10) << shift;
-		shift -= 4;
-	}
-	return v;
 }
 
 static MapTheme *theme_config_parse(const gchar * themename,

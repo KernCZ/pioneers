@@ -103,10 +103,8 @@ typedef struct _MapTheme {
 } MapTheme;
 
 void theme_rescale(int radius);
-void set_theme(MapTheme * t);
-MapTheme *get_theme(void);
-GList *first_theme(void);
-GList *next_theme(GList * p);
-MapTheme *get_theme_nth(gint n);
-void init_themes(void);
+void theme_set_current(MapTheme * t);
+MapTheme *theme_get_current(void);
+GList *theme_get_list(void);
+void themes_init(void);
 #endif

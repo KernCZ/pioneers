@@ -1,3 +1,8 @@
+2005-04-02  Brian Wellington <bwelling@xbill.org>
+	* client/gtk/gui.c, client/gtk/guimap.c, client/gtk/legend.c,
+	client/gtk/offline.c, client/gtk/theme.c, client/gtk/theme.h: Cleanups
+	to the theme code.
+
 2005-04-02  0.9.4  Roland Clobus <rclobus@bigfoot.com>
 	* client/ai/greedy.c: When receiving gold, the AI must choose
 	something, even when it has enough resources.

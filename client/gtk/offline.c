@@ -153,7 +153,7 @@ void frontend_init(int argc, char **argv)
 
 	/* Create the application window
 	 */
-	init_themes();
+	themes_init();
 	app = gui_build_interface();
 
 	callbacks.mainloop = &gtk_main;

@@ -58,7 +58,7 @@ static gint sqr(gint a)
 
 GdkPixmap *guimap_terrain(Terrain terrain)
 {
-	return get_theme()->terrain_tiles[terrain];
+	return theme_get_current()->terrain_tiles[terrain];
 }
 
 GuiMap *guimap_new()
@@ -374,7 +374,7 @@ void draw_dice_roll(PangoLayout * layout, GdkPixmap * pixmap, GdkGC * gc,
 	gint width;
 	gint x, y;
 	gint idx;
-	MapTheme *theme = get_theme();
+	MapTheme *theme = theme_get_current();
 	THEME_COLOR col;
 	TColor *tcol;
 	gint width_sqr;
@@ -432,7 +432,7 @@ static gboolean display_hex(const Map * map, const Hex * hex,
 	GdkPoint points[MAX_POINTS];
 	Polygon poly;
 	int idx;
-	const MapTheme *theme = get_theme();
+	const MapTheme *theme = theme_get_current();
 
 	calc_hex_pos(gmap, hex->x, hex->y, &x_offset, &y_offset);
 
@@ -827,7 +827,8 @@ void guimap_display(GuiMap * gmap)
 	build_hex_region(gmap);
 
 	gdk_gc_set_fill(gmap->gc, GDK_TILED);
-	gdk_gc_set_tile(gmap->gc, get_theme()->terrain_tiles[BOARD_TILE]);
+	gdk_gc_set_tile(gmap->gc,
+			theme_get_current()->terrain_tiles[BOARD_TILE]);
 	gdk_draw_rectangle(gmap->pixmap, gmap->gc, TRUE, 0, 0,
 			   gmap->width, gmap->height);
 
@@ -1087,7 +1088,8 @@ static void redraw_edge(GuiMap * gmap, const Edge * edge,
 
 	poly_bound_rect(poly, 1, &rect);
 	gdk_gc_set_fill(gmap->gc, GDK_TILED);
-	gdk_gc_set_tile(gmap->gc, get_theme()->terrain_tiles[BOARD_TILE]);
+	gdk_gc_set_tile(gmap->gc,
+			theme_get_current()->terrain_tiles[BOARD_TILE]);
 	gdk_draw_rectangle(gmap->pixmap, gmap->gc, TRUE,
 			   rect.x, rect.y, rect.width, rect.height);
 
@@ -1227,7 +1229,8 @@ static void redraw_node(GuiMap * gmap, const Node * node,
 
 	poly_bound_rect(poly, 1, &rect);
 	gdk_gc_set_fill(gmap->gc, GDK_TILED);
-	gdk_gc_set_tile(gmap->gc, get_theme()->terrain_tiles[BOARD_TILE]);
+	gdk_gc_set_tile(gmap->gc,
+			theme_get_current()->terrain_tiles[BOARD_TILE]);
 	gdk_draw_rectangle(gmap->pixmap, gmap->gc, TRUE,
 			   rect.x, rect.y, rect.width, rect.height);
 

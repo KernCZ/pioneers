@@ -41,6 +41,7 @@ static gint expose_legend_cb(GtkWidget * area,
 			     UNUSED(GdkEventExpose * event),
 			     Terrain terrain)
 {
+	MapTheme *theme = theme_get_current();
 	static GdkGC *legend_gc;
 	GdkPixbuf *p;
 	gint height;
@@ -55,9 +56,8 @@ static gint expose_legend_cb(GtkWidget * area,
 	gdk_gc_set_tile(legend_gc, guimap_terrain(terrain));
 
 	height =
-	    area->allocation.width /
-	    get_theme()->scaledata[terrain].aspect;
-	p = gdk_pixbuf_scale_simple(get_theme()->scaledata[terrain].
+	    area->allocation.width / theme->scaledata[terrain].aspect;
+	p = gdk_pixbuf_scale_simple(theme->scaledata[terrain].
 				    native_image, area->allocation.width,
 				    height, GDK_INTERP_BILINEAR);
 

@@ -666,10 +666,10 @@ static void quit_cb(UNUSED(GtkWidget * widget), UNUSED(void *data))
 static void theme_change_cb(GtkWidget * widget, UNUSED(void *data))
 {
 	gint index = gtk_combo_box_get_active(GTK_COMBO_BOX(widget));
-	MapTheme *theme = get_theme_nth(index);
-	if (theme != get_theme()) {
+	MapTheme *theme = g_list_nth_data(theme_get_list(), index);
+	if (theme != theme_get_current()) {
 		config_set_string("settings/theme", theme->name);
-		set_theme(theme);
+		theme_set_current(theme);
 		if (gmap->pixmap != NULL) {
 			g_object_unref(gmap->pixmap);
 			gmap->pixmap = NULL;
@@ -724,7 +724,7 @@ static void preferences_cb(UNUSED(GtkWidget * widget),
 
 	gint row;
 	gint color_summary;
-	GList *theme;
+	GList *theme_elt;
 	int i;
 
 	if (preferences_dlg != NULL) {
@@ -769,12 +769,13 @@ static void preferences_cb(UNUSED(GtkWidget * widget),
 	gtk_widget_show(theme_list);
 	gtk_widget_show(theme_label);
 
-	for (i = 0, theme = first_theme(); theme;
-	     ++i, theme = next_theme(theme)) {
-		const gchar *theme_name = ((MapTheme *) theme->data)->name;
+	for (i = 0, theme_elt = theme_get_list();
+	     theme_elt != NULL;
+	     ++i, theme_elt = g_list_next(theme_elt)) {
+		MapTheme *theme = theme_elt->data;
 		gtk_combo_box_append_text(GTK_COMBO_BOX(theme_list),
-					  theme_name);
-		if (theme->data == get_theme())
+					  theme->name);
+		if (theme == theme_get_current())
 			gtk_combo_box_set_active(GTK_COMBO_BOX(theme_list),
 						 i);
 	}
