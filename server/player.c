@@ -94,6 +94,51 @@ static gboolean mode_global(Player *player, gint event)
 	return FALSE;
 }
 
+/* Called to start the game (if it hasn't been yet). Add computer
+ * players to fill any empty spots
+ * 
+ */
+static gboolean tournament_start_cb(gpointer data)
+{
+    int i;
+    Game *game = (Game *)data;
+
+    /* if game already started */
+    /*if (game->started) return FALSE;*/
+
+    printf("ADDING COMPUTER PLAYERS\n");
+
+    /* add computer players to start game */
+    for (i = game->num_players; i < game->params->num_players; i++) {	
+	new_computer_player(game->params->server_port);
+    }
+
+    return FALSE;
+}
+
+/*
+ * Keep players notified about when the tournament game is going to start
+ *
+ */
+static gboolean talk_about_tournament_cb(gpointer data)
+{
+    int i;
+    Player *player = (Player *)data;
+
+    /* if game already started */
+    /*if (player->game->started) return FALSE;*/
+
+    player->game->params->tournament_time--;
+
+    player_broadcast(player, PB_ALL, "chat (System) Game starting in %d minutes\n",player->game->params->tournament_time+1);
+
+    g_timeout_add(1000*60,
+		  &talk_about_tournament_cb,
+		  player);    
+
+    return FALSE;
+}
+
 Player *player_new(Game *game, int fd, gchar *location)
 {
 	Player *player = g_malloc0(sizeof(*player));
@@ -107,6 +152,16 @@ Player *player_new(Game *game, int fd, gchar *location)
 	player->devel = deck_new(game->params);
 	game->player_list = g_list_append(game->player_list, player);
 	player->num = -1;
+
+	/* if first player in and this is a tournament start the timer */
+	if ((game->num_players == 0) && (game->params->tournament_time > 0)) {
+	    g_timeout_add(game->params->tournament_time*60*1000+500,
+			  &tournament_start_cb,
+			  game);
+	    g_timeout_add(1000,
+			  &talk_about_tournament_cb,
+			  player);
+	}
 	
 	sm_goto(sm, (StateFunc)mode_check_version);
 	

@@ -86,6 +86,8 @@ static GtkWidget *victory_spin;	/* victory point target */
 static GtkWidget *players_spin;	/* number of players */
 static GtkWidget *register_toggle; /* register with meta server? */
 static GtkWidget *port_spin;	/* server port */
+static GtkWidget *addcomputer_btn; /* button to add computer players */
+  
 static GtkWidget *radio_sevens_normal; /* radio button for normal sevens rule */
 static GtkWidget *radio_sevens_2_turns; /* radio button for reroll on first 2 turns */
 static GtkWidget *radio_sevens_reroll; /* radio button for reroll all 7s */
@@ -210,12 +212,19 @@ static void start_clicked_cb(GtkWidget *start_btn, gpointer user_data)
 		gtk_widget_set_sensitive(register_toggle, FALSE);
 		gtk_widget_set_sensitive(port_spin, FALSE);
 		gtk_widget_set_sensitive(start_btn, FALSE);
+		gtk_widget_set_sensitive(addcomputer_btn, TRUE);
 		gtk_widget_set_sensitive(radio_sevens_normal, FALSE);
 		gtk_widget_set_sensitive(radio_sevens_2_turns, FALSE);
 		gtk_widget_set_sensitive(radio_sevens_reroll, FALSE);
 		gui_ui_enable(FALSE);
 	}
 }
+
+static void addcomputer_clicked_cb(GtkWidget *start_btn, gpointer user_data)
+{
+  new_computer_player(server_port);
+}
+
 
 void gui_player_add(void *player)
 {
@@ -436,7 +445,17 @@ static GtkWidget *build_interface()
 
 	start_btn = gtk_button_new_with_label(_("Start Server"));
 	gtk_widget_show(start_btn);
-	gtk_table_attach(GTK_TABLE(table), start_btn, 0, 2, 7, 8,
+	addcomputer_btn = gtk_button_new_with_label(_("Add Computer Player"));
+	gtk_widget_show(addcomputer_btn);
+        gtk_table_attach(GTK_TABLE(table), addcomputer_btn, 0, 2, 7, 8,
+                         (GtkAttachOptions)GTK_FILL,
+                         (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
+        gtk_signal_connect(GTK_OBJECT(addcomputer_btn), "clicked",
+                           GTK_SIGNAL_FUNC(addcomputer_clicked_cb), NULL);
+        gtk_widget_set_sensitive(addcomputer_btn, FALSE);
+ 
+
+	gtk_table_attach(GTK_TABLE(table), start_btn, 0, 2, 8, 9,
 			 (GtkAttachOptions)GTK_FILL,
 			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_signal_connect(GTK_OBJECT(start_btn), "clicked",

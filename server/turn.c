@@ -200,6 +200,11 @@ static gboolean distribute_resources(Map *map, Hex *hex, GameRoll *data)
 	return FALSE;
 }
 
+static gboolean exit_func(gpointer data)
+{
+    exit(0);
+}
+
 void check_victory(Game *game)
 {
 	GList *list;
@@ -221,6 +226,14 @@ void check_victory(Game *game)
 		if (points >= game->params->victory_points) {
 			player_broadcast(player, PB_ALL, "won with %d\n", points);
 			game->is_game_over = TRUE;
+
+			/* exit in ten seconds if configured */
+			if (game->params->exit_when_done) {
+			    g_timeout_add(10*1000,
+					  &exit_func,
+					  NULL);
+			}
+
 			return;
 		}
 	}

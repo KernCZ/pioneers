@@ -162,6 +162,46 @@ gint accept_connection( gint in_fd, gchar **location)
 	return fd;
 }
 
+gint new_computer_player(gint server_port)
+{
+    pid_t pid;
+
+    pid = fork();
+    if (pid < 0) {
+	/* error */
+	return -1;
+
+    } else if (pid == 0) {
+	/* child */
+	char *args[10];
+	int num = 0;
+	char portstr[10];
+
+	/* first arg needs to be the program name */
+	args[num++] = "gnocatanai";
+
+	/* give the port */
+	snprintf(portstr,sizeof(portstr)-1,"%d",server_port);
+	args[num++] = "-p";
+	args[num++] = portstr;
+
+	printf("port = %d\n",server_port);
+
+	args[num] = NULL;
+	execv("gnocatanai",args);
+
+	printf("Error exec'ing gnocatanai\n");
+	exit(1);
+
+    } else {
+	/* parent */
+	return 0;
+    }
+
+
+}
+
+
 static void player_connect(Game *game)
 {
 	gchar *location;

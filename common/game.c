@@ -56,7 +56,8 @@ static Param game_params[] = {
 	{ PARAM_V(develop-soldier, PARAM_INT, num_develop_type[DEVEL_SOLDIER]) },
 	{ PARAM(chits, PARAM_INT_LIST) },
 	{ PARAM_V(register-server, PARAM_BOOL, register_server) },
-	{ PARAM_V(server-port, PARAM_INT, server_port) }
+	{ PARAM_V(server-port, PARAM_INT, server_port) },
+	{ PARAM_V(tournament-time, PARAM_INT, tournament_time) }
 };
 
 GameParams *params_new()

@@ -151,6 +151,18 @@ void cfg_set_terrain_type( gint terrain_type )
 	params->random_terrain = (terrain_type == TERRAIN_RANDOM) ? 1 : 0;
 }
 
+void cfg_set_tournament_time( gint tournament_time )
+{
+    g_print("cfg_set_tournament_time: %d\n", tournament_time);
+    params->tournament_time = tournament_time;
+}
+
+void cfg_set_exit( gboolean exitdone)
+{
+    g_print("cfg_set_exit: %d\n", exitdone);
+    params->exit_when_done = exitdone;
+}
+
 gboolean start_server( gint port, gboolean register_server )
 {
 	if( !params ) {
@@ -162,6 +174,9 @@ gboolean start_server( gint port, gboolean register_server )
 		g_print( "num players: %d\n", params->num_players );
 		g_print( "victory points: %d\n", params->victory_points );
 		g_print( "terrain type: %s\n", (params->random_terrain) ? "random" : "default" );
+		g_print( "Tournament time: %d\n", params->tournament_time );
+		g_print( "Exit when done: %d\n", params->exit_when_done);
+
 	} else {
 		g_error( "critical: params not set!" );
 	}

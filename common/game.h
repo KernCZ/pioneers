@@ -56,6 +56,8 @@ typedef struct {
 	GArray *chits;		/* chit sequence */
 	Map *map;		/* the game map */
 	gboolean parsing_map;	/* currently parsing map? */
+        gint tournament_time;   /* time to start tournament time in minutes */
+        gboolean exit_when_done;  /* server exits after someone wins */    
 } GameParams;
 
 typedef void (*WriteLineFunc)(gpointer user_data, gchar *);

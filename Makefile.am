@@ -1,4 +1,4 @@
-SUBDIRS = macros common client server meta-server
+SUBDIRS = macros common client server meta-server ai
 
 ## to automatically rebuild aclocal.m4 if any of the macros in
 ## `macros/' change

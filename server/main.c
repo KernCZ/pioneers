@@ -26,12 +26,33 @@
 
 #include "gnocatan-server.h"
 
+  static void usage(void)
+  {
+    fprintf(stderr,
+ 	    "Usage: gnocatan-server-console [options]\n"
+ 	    "  -a port   --  Server port to listen on\n"
+ 	    "  -g game   --  Game file to use\n"
+ 	    "  -P num    --  Set Number of players\n"
+ 	    "  -r        --  Register server\n"
+ 	    "  -s ?\n"
+ 	    "  -t mins   --  Tournament mode\n"
+ 	    "  -v points --  Number of points needed to win\n"
+ 	    "  -x        --  Exit after a player has won\n"
+ 	    );
+     
+    exit(1);
+  }
+ 
+
+
 int main( int argc, char *argv[] )
 {
 	int c;
 	gint num_players = 0, num_points = 0, port = 0, admin_port = 0, sevens_rule = 0;
 	gboolean disable_game_start = FALSE;
 	GMainLoop *event_loop;
+	gint tournament_time = -1;
+ 	gboolean exit_when_done = FALSE;
 
 	/* set the UI driver to Glib_Driver, since we're using glib */
 	set_ui_driver( &Glib_Driver );
@@ -41,7 +62,7 @@ int main( int argc, char *argv[] )
 
 	server_init( GNOCATAN_DIR_DEFAULT );
 
-	while ((c = getopt(argc, argv, "a:g:P:p:r:R:sv:")) != EOF)
+	while ((c = getopt(argc, argv, "a:g:P:p:r:R:st:v:x")) != EOF)
 	{
 		switch (c) {
 		case 'a':
@@ -81,16 +102,29 @@ int main( int argc, char *argv[] )
 			register_server = TRUE;
 			break;
 		case 's':
-			disable_game_start = TRUE;
+		        disable_game_start = TRUE;
+			break;
 		/* TODO: terrain type? */
+			
+		case 't':
+			if (!optarg) {
+			    usage();
+			}
+		        tournament_time = atoi(optarg);
+		        break;
+		        
 		case 'v':
 			if (!optarg) {
-				break;
+			    usage();
 			}
 			num_points = atoi(optarg);
 			break;
+		case 'x':
+		    exit_when_done = TRUE;
+		    break;
 		default:
-			/* Handle erroneous args here. Usage() ? */
+		        usage();
+
 			break;
 		}
 	}
@@ -113,6 +147,14 @@ int main( int argc, char *argv[] )
 
 	if (num_points) {
 		cfg_set_victory_points(num_points);
+	}
+
+	if (tournament_time!=-1) {
+	        cfg_set_tournament_time(tournament_time);
+	}
+
+	if (exit_when_done) {
+	        cfg_set_exit(exit_when_done);
 	}
 	
 	admin_listen( server_admin_port );

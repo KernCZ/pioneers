@@ -61,6 +61,7 @@ client/help/Makefile
 client/help/C/Makefile
 server/Makefile
 meta-server/Makefile
+ai/Makefile
 stamp.h)
 
 dnl ## internationalization support
