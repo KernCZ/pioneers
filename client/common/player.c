@@ -593,7 +593,8 @@ void player_resource_action(gint player_num, const gchar * action,
 }
 
 /* get a new point */
-void player_get_point(gint player_num, gint id, const gchar * str, gint num)
+void player_get_point(gint player_num, gint id, const gchar * str,
+		      gint num)
 {
 	Player *player = player_get(player_num);
 	/* create the memory and fill it */

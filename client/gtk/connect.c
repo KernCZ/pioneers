@@ -218,8 +218,9 @@ static void show_waiting_box(const gchar * message, const gchar * server,
 			     const gchar * port)
 {
 	if (meta_dlg) {
-		gchar *s = g_strdup_printf(
-			_("Meta-server at %s, port %s"), server, port);
+		gchar *s =
+		    g_strdup_printf(_("Meta-server at %s, port %s"),
+				    server, port);
 		gtk_label_set_text(GTK_LABEL(server_status), s);
 		g_free(s);
 	}
@@ -424,7 +425,8 @@ static void meta_notify(NetEvent event, UNUSED(void *user_data),
 					port = GNOCATAN_DEFAULT_META_PORT;
 					if (split_result[2])
 						port = split_result[2];
-					metaserver_info.port = g_strdup(port);
+					metaserver_info.port =
+					    g_strdup(port);
 					query_meta_server(metaserver_info.
 							  server,
 							  metaserver_info.
@@ -1443,7 +1445,8 @@ static void connect_private_dialog(UNUSED(GtkWidget * widget),
 			break;
 		}
 
-		host_name_port = g_strconcat(host_name, ":", host_port, NULL);
+		host_name_port =
+		    g_strconcat(host_name, ":", host_port, NULL);
 		g_free(host_name);
 		g_free(host_port);
 

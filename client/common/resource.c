@@ -173,7 +173,8 @@ void resource_format_num(gchar * str, guint len, gint * resources)
 	}
 }
 
-void resource_log_list(gint player_num, const gchar * action, gint * resources)
+void resource_log_list(gint player_num, const gchar * action,
+		       gint * resources)
 {
 	char buff[512];
 
