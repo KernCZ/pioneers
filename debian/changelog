@@ -1,3 +1,9 @@
+gnocatan (0.7.1.90-1) unstable; urgency=low
+
+  * Test snapshot.
+
+ -- Roman Hodek <roman@hodek.net>  Wed, 25 Dec 2002 17:52:51 +0100
+
 gnocatan (0.7.1-2) unstable; urgency=low
 
   * Build tweak

@@ -2,14 +2,28 @@
 
 	* configure.in: Some changes to make it work with autoconf2.50 and
 	automake-1.7.
+	Set version to 0.7.1.90 [internal snapshot]
 
-	* depcomp: new
+	* depcomp, po/ChangeLog: new
 
 	* acconfig.h: removed obsolete file
 
 	* Makefile.am (distclean-local): remove some more stuff
 
 	* gnocatan.spec: applied patch by Brian Wellington
+
+	* client/player.c (player_has_quit): remove player also from
+	internal list for a more meaningful message on reconnection.
+
+	* server/player.c, server/pregame.c, server/server.h: remove
+	redundant is_game_full variable and replace by
+	game->num_players == game->params->num_players
+	
+	* server/player.c (player_revive): send an explicit note to
+	players that a reconnection has happened
+
+	* server/player.c (player_set_name): explicitly tell if name was
+	already in use and so why one is 'anonymous'
 
 2002-07-22  Roman Hodek  <roman@hodek.net>
 
