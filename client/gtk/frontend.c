@@ -64,10 +64,6 @@ void frontend_gui_update ()
 {
 	route_gui_event (GUI_UPDATE);
 	g_hash_table_foreach (frontend_widgets, (GHFunc)set_sensitive, NULL);
-	/* also update the trading pages if they are visible.  If they aren't,
-	 * they're only hiding, so updating the information is no problem. */
-	trade_update ();
-	quote_update ();
 }
 
 void frontend_gui_check (GuiEvent event, gboolean sensitive)

@@ -194,7 +194,7 @@ static void set_row_sensitive(QuoteRow *row, gint sensitive)
 		gtk_entry_set_text(GTK_ENTRY(row->entry), "");
 }
 
-void quote_update ()
+static void quote_update (void)
 {
 	gint idx;
 
@@ -660,5 +660,6 @@ void frontend_quote_trade (UNUSED(gint player_num), gint partner_num,
 	QuoteInfo *quote;
 	quote = quotelist_find_domestic(quote_list, partner_num, quote_num);
 	remove_quote_update_pixmap (quote);
+	quote_update ();
 	frontend_gui_update ();
 }

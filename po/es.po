@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnocatan 0.7.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-01-02 19:07+0100\n"
+"POT-Creation-Date: 2004-01-11 20:40+0100\n"
 "PO-Revision-Date: 2003-01-25 00:08-0600\n"
 "Last-Translator: Steve Langasek <vorlon@dodds.net>\n"
 "Language-Team: Spanish <debian-l10n-spanish@lists.debian.org>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ai/client.c:142 ai/client.c:161 client/common/client.c:208
+#: ai/client.c:142 ai/client.c:161 client/common/client.c:210
 msgid "We have been kicked out of the game.\n"
 msgstr "Has sido expulsado del partido.\n"
 
@@ -35,12 +35,12 @@ msgstr "%s gasta %s\n"
 msgid "%s is refunded %s\n"
 msgstr "Se reembolsa %2s a %1s\n"
 
-#: ai/client.c:1193
+#: ai/client.c:358 ai/client.c:1198
 #, c-format
 msgid "%s discarded %s\n"
 msgstr "%s desecha %s\n"
 
-#: ai/client.c:1779
+#: ai/client.c:1784
 msgid "The game is over.\n"
 msgstr "El partido ha terminado.\n"
 
@@ -598,97 +598,97 @@ msgstr ""
 msgid "Waiting"
 msgstr "Esperando"
 
-#: client/common/client.c:108 client/common/client.c:894
+#: client/common/client.c:108 client/common/client.c:896
 msgid "Idle"
 msgstr ""
 
-#: client/common/client.c:211 client/common/client.c:576 client/gtk/gui.c:1115
+#: client/common/client.c:213 client/common/client.c:578 client/gtk/gui.c:1115
 msgid "Offline"
 msgstr ""
 
-#: client/common/client.c:339
+#: client/common/client.c:341
 #, c-format
 msgid "%s receives %s.\n"
 msgstr "%s recibe %s.\n"
 
-#: client/common/client.c:344
+#: client/common/client.c:346
 #, c-format
 msgid "%s spent %s.\n"
 msgstr "%s gasta %s.\n"
 
-#: client/common/client.c:349
+#: client/common/client.c:351
 #, c-format
 msgid "%s is refunded %s.\n"
 msgstr "Se reembolsa %2s a %1s.\n"
 
-#: client/common/client.c:377
+#: client/common/client.c:379
 #, c-format
 msgid "%s discarded %s.\n"
 msgstr "%s desecha %s.\n"
 
-#: client/common/client.c:538
+#: client/common/client.c:540
 msgid "Loading"
 msgstr ""
 
-#: client/common/client.c:577
+#: client/common/client.c:579
 msgid "Version mismatch"
 msgstr ""
 
-#: client/common/client.c:1001
+#: client/common/client.c:1003
 msgid "Build two settlements, each with a connecting"
 msgstr ""
 
-#: client/common/client.c:1003
+#: client/common/client.c:1005
 msgid "Build a settlement with a connecting"
 msgstr ""
 
-#: client/common/client.c:1006
+#: client/common/client.c:1008
 msgid "road"
 msgstr ""
 
-#: client/common/client.c:1008
+#: client/common/client.c:1010
 msgid "bridge"
 msgstr ""
 
-#: client/common/client.c:1010
+#: client/common/client.c:1012
 msgid "ship"
 msgstr ""
 
-#: client/common/client.c:1017
+#: client/common/client.c:1019
 #, fuzzy
 msgid " or"
 msgstr "minerales"
 
-#: client/common/client.c:1071
+#: client/common/client.c:1073
 msgid "Waiting for your turn"
 msgstr "Esperando tu turno"
 
-#: client/common/client.c:1162 client/common/client.c:1187
+#: client/common/client.c:1164 client/common/client.c:1189
 msgid "Place the robber"
 msgstr "Coloca el ladrón"
 
-#: client/common/client.c:1215
+#: client/common/client.c:1217
 msgid "Build two road segments."
 msgstr "Construyir dos trechos de camino"
 
-#: client/common/client.c:1217
+#: client/common/client.c:1219
 msgid "Build a road segment."
 msgstr "Construyir un trecho de camino"
 
-#: client/common/client.c:1468 client/common/client.c:1555
+#: client/common/client.c:1470 client/common/client.c:1557
 msgid "It is your turn."
 msgstr "Te toca a tí."
 
-#: client/common/client.c:1650
+#: client/common/client.c:1652
 #, c-format
 msgid "Sorry, %s available.\n"
 msgstr ""
 
-#: client/common/client.c:1965
+#: client/common/client.c:1970
 msgid "The game is over."
 msgstr ""
 
-#: client/common/client.c:2160
+#: client/common/client.c:2165
 #, fuzzy, c-format
 msgid "%s takes %s.\n"
 msgstr "%s gasta %s.\n"
@@ -1064,13 +1064,13 @@ msgstr "Servidores recientes"
 
 #. less arrow
 #: client/gtk/discard.c:145 client/gtk/gold.c:116 client/gtk/plenty.c:116
-#: client/gtk/quote.c:473 client/gtk/trade.c:461
+#: client/gtk/quote.c:473 client/gtk/trade.c:469
 msgid "<less"
 msgstr "<menos"
 
 #. more arrow
 #: client/gtk/discard.c:155 client/gtk/gold.c:135 client/gtk/plenty.c:126
-#: client/gtk/quote.c:483 client/gtk/trade.c:471
+#: client/gtk/quote.c:483 client/gtk/trade.c:479
 msgid "more>"
 msgstr "más>"
 
@@ -1596,7 +1596,7 @@ msgstr "Recurso a tomar"
 msgid "Player Summary"
 msgstr "Resumen de jugadores"
 
-#: client/gtk/quote.c:249 client/gtk/trade.c:285
+#: client/gtk/quote.c:249 client/gtk/trade.c:291
 msgid "Rejected trade"
 msgstr ""
 
@@ -1605,11 +1605,11 @@ msgstr ""
 msgid "%s has %s, and is looking for %s"
 msgstr "%s tiene %s y quiere %s"
 
-#: client/gtk/quote.c:573 client/gtk/trade.c:709
+#: client/gtk/quote.c:573 client/gtk/trade.c:731
 msgid "I Want"
 msgstr "Quiero..."
 
-#: client/gtk/quote.c:590 client/gtk/trade.c:726
+#: client/gtk/quote.c:590 client/gtk/trade.c:748
 msgid "Give Them"
 msgstr "Dales..."
 
@@ -1790,35 +1790,35 @@ msgstr ""
 msgid "Theme %s not loaded due to errors\n"
 msgstr "No hay un camino más largo.\n"
 
-#: client/gtk/trade.c:173
+#: client/gtk/trade.c:177
 #, fuzzy, c-format
 msgid "ask for %s for free"
 msgstr "pide %s"
 
-#: client/gtk/trade.c:177
+#: client/gtk/trade.c:181
 #, c-format
 msgid "give %s for free"
 msgstr "ofrece %s gratis"
 
-#: client/gtk/trade.c:181
+#: client/gtk/trade.c:185
 #, c-format
 msgid "give %s for %s"
 msgstr "ofrece %s por %s"
 
-#: client/gtk/trade.c:226
+#: client/gtk/trade.c:232
 #, c-format
 msgid "%d:1 %s for %s"
 msgstr "%d:1 %s por %s"
 
-#: client/gtk/trade.c:747
+#: client/gtk/trade.c:769
 msgid "Call For Quotes"
 msgstr "Pedir presupuestos"
 
-#: client/gtk/trade.c:779
+#: client/gtk/trade.c:801
 msgid "Accept Quote"
 msgstr ""
 
-#: client/gtk/trade.c:784
+#: client/gtk/trade.c:806
 msgid "Finish Trading"
 msgstr ""
 

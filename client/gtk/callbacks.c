@@ -137,6 +137,8 @@ void frontend_set_callbacks (int argc, char **argv)
 	callbacks.trade_player_end = &frontend_trade_player_end;
 	callbacks.trade_add_quote = &frontend_trade_add_quote;
 	callbacks.trade_remove_quote = &frontend_trade_remove_quote;
+	callbacks.trade_domestic = &frontend_trade_domestic;
+	callbacks.trade_maritime = &frontend_trade_maritime;
 	callbacks.quote_player_end = &frontend_quote_player_end;
 	callbacks.quote_add = &frontend_quote_add;
 	callbacks.quote_remove = &frontend_quote_remove;

@@ -26,12 +26,16 @@
 #include "cost.h"
 #include "gui.h"
 
+static void trade_update (void);
+
 typedef struct {
 	GtkWidget *chk;
 	GtkWidget *curr;
+#ifdef EXACT_TRADE
 	GtkWidget *less_btn;
 	GtkWidget *more_btn;
 	GtkWidget *entry;
+#endif
 	gboolean is_we_supply;
 	Resource resource;
 	gboolean enabled;
@@ -201,6 +205,7 @@ static void update_row(TradeRow *row)
 	gtk_entry_set_text(GTK_ENTRY(row->curr), str);
 }
 
+#ifdef EXACT_TRADE
 static void less_resource_cb(UNUSED(void *widget), TradeRow *row)
 {
 	row->num--;
@@ -220,6 +225,7 @@ static void more_resource_cb(UNUSED(void *widget), TradeRow *row)
 	gtk_widget_set_sensitive(row->less_btn, TRUE);
 	update_row(row);
 }
+#endif
 
 static void trade_format_maritime(QuoteInfo *quote, gchar *desc)
 {
@@ -414,7 +420,7 @@ static void check_maritime_trades(void)
 static void toggled_cb(GtkWidget *widget, TradeRow *row)
 {
 	row->enabled = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget));
-	check_maritime_trades();
+	trade_update ();
 	frontend_gui_update ();
 }
 
@@ -423,7 +429,9 @@ static void add_trade_row(GtkWidget *table, TradeRow* row,
 {
 	GtkWidget *lbl;
 	GtkWidget *chk;
+#ifdef EXACT_TRADE
 	GtkWidget *btn;
+#endif
 	GtkWidget *entry;
 	gint col;
 
@@ -456,8 +464,8 @@ static void add_trade_row(GtkWidget *table, TradeRow* row,
 			 col, col + 1, resource, resource + 1,
 			 (GtkAttachOptions)GTK_FILL,
 			 (GtkAttachOptions)GTK_FILL, 0, 0);
+#ifdef EXACT_TRADE
 	col++;
-
 	row->less_btn = btn = gtk_button_new_with_label(_("<less"));
 	gtk_signal_connect(GTK_OBJECT(btn), "clicked",
 			   GTK_SIGNAL_FUNC(less_resource_cb), row);
@@ -486,6 +494,7 @@ static void add_trade_row(GtkWidget *table, TradeRow* row,
 			 (GtkAttachOptions)GTK_FILL,
 			 (GtkAttachOptions)GTK_FILL, 0, 0);
 	gtk_widget_set_usize(entry, 30, -2);
+#endif
 }
 
 static void set_row_sensitive(TradeRow *row, gint sensitive)
@@ -497,25 +506,24 @@ static void set_row_sensitive(TradeRow *row, gint sensitive)
 				 sensitive
 				 && (!row->is_we_supply
 				     || resource_asset(row->resource) > 0));
-	gtk_widget_set_sensitive(row->less_btn, FALSE);
 #ifdef EXACT_TRADE
+	gtk_widget_set_sensitive(row->less_btn, FALSE);
 	gtk_widget_set_sensitive(row->more_btn,
 				 sensitive
 				 && (!row->is_we_supply
 				     || resource_asset(row->resource) > 0));
 	gtk_widget_set_sensitive(row->entry, sensitive);
-#else
-	gtk_widget_set_sensitive(row->more_btn, FALSE);
-	gtk_widget_set_sensitive(row->entry, FALSE);
 #endif
 
 	if (sensitive)
 		update_row(row);
+#ifdef EXACT_TRADE
 	else
 		gtk_entry_set_text(GTK_ENTRY(row->entry), "");
+#endif
 }
 
-void trade_update ()
+static void trade_update (void)
 {
 	gint idx;
 
@@ -533,6 +541,19 @@ void trade_update ()
 		set_row_sensitive(we_receive_rows + idx, TRUE);
 	}
 	check_maritime_trades();
+}
+
+void frontend_trade_domestic (UNUSED (gint partner_num),
+		UNUSED (gint quote_num),
+		UNUSED (gint *we_supply), UNUSED (gint *we_receive) )
+{
+	trade_update ();
+}
+
+void frontend_trade_maritime (UNUSED (gint ratio), UNUSED (Resource we_supply),
+		UNUSED (Resource we_receive) )
+{
+	trade_update ();
 }
 
 void trade_perform_maritime(gint ratio, Resource supply, Resource receive)
@@ -650,6 +671,7 @@ void trade_finish()
 void trade_begin()
 {
 	gint idx;
+	selected_quote = NULL;
 
 	map_maritime_info(map, &maritime_info, my_player_num());
 

@@ -354,6 +354,11 @@ static gboolean check_other_players(StateMachine *sm)
 		sm_push(sm, mode_discard);
 		return TRUE;
 	}
+	if (sm_recv(sm, "discarded %R", resource_list)) {
+		player_resource_action(player_num, _("%s discarded %s\n"),
+				       resource_list, -1);
+		return TRUE;
+	}
 	if (sm_recv(sm, "is-robber")) {
 		robber_begin_move(player_num);
 		return TRUE;

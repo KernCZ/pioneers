@@ -1,6 +1,7 @@
 # Gnocatan - Implementation of the excellent Settlers of Catan board game.
 #   Go buy a copy.
 #
+# Copyright (C) 1999 the Free Software Foundation
 # Copyright (C) 2003 Bas Wijnen <b.wijnen@phys.rug.nl>
 # 
 # This program is free software; you can redistribute it and/or modify
@@ -19,6 +20,33 @@
 
 include $(top_srcdir)/rules.make
 
-SUBDIRS = common help gtk ai
+pixmapdir =$(datadir)/pixmaps/gnocatan
+Gamesdir=$(datadir)/gnome/apps/Games
 
-noinst_HEADERS = callback.h
+noinst_PROGRAMS = gnocatanai
+
+gnocatanai_DEPENDENCIES = \
+	../common/libgnocatanclient.a \
+	../../common/libgnocatan.a \
+	../../common/libgnocatan_gtk.a
+
+INCLUDES = \
+	-I$(srcdir)/.. \
+	-I$(srcdir)/../.. \
+	-I$(srcdir)/../../common \
+	-DGNOMELOCALEDIR=\""$(datadir)/locale"\" \
+        -I$(includedir) \
+	-DDATADIR=\"$(datadir)\" \
+	$(GNOME2_CFLAGS) \
+	$(debug_includes)
+
+gnocatanai_SOURCES = \
+	ai.h \
+	ai.c \
+	greedy.c
+
+gnocatanai_LDADD = \
+	../common/libgnocatanclient.a \
+	../../common/libgnocatan.a \
+	../../common/libgnocatan_gtk.a \
+	$(GNOME2_LIBS)

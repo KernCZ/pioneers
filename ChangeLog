@@ -1,3 +1,15 @@
+2004-01-11  Bas Wijnen <b.wijnen@phys.rug.nl>
+	* client/callback.h, client/common/client.c, client/gtk/callbacks.c,
+	client/gtk/frontend.c, client/gtk/ftontend.h, client/gtk/trade.c:
+	Fixes bug with maritime trade
+	* client/common/callback.c, client/gtk/offline.c: Fix for unknown host
+	bug
+	* ai/client.c: AI can handle auto-discard
+	* configure.in, client/Makefile.am, client/callback.h,
+	client/common/callback.c, client/ai/Makefile.am, client/ai/ai.c,
+	client/ai/ai.h, client/ai/greedy.c: Added first version of the AI in
+	the new structure.
+	
 2004-01-02 0.8.1.12  Roland Clobus <rclobus@bigfoot.com>
 
 	* client/callback.h (struct callbacks), client/common/client.c

@@ -45,6 +45,8 @@ void cb_connect (const gchar *server, const gchar *port)
 		} else {
 			sm_goto(SM(), mode_connecting);
 		}
+	} else {
+		callbacks.offline ();
 	}
 }
 
@@ -242,7 +244,7 @@ void cb_end_quote ()
 	sm_goto(SM(), mode_quote_finish_response);
 }
 
-void cb_chat (gchar *text)
+void cb_chat (const gchar *text)
 {
 	/* chat a message */
 	g_assert (callback_mode != MODE_INIT);

@@ -140,8 +140,8 @@ static void frontend_offline_gui (GuiEvent event)
 /* this function is called when offline mode is entered. */
 void frontend_offline ()
 {
-	if (have_dlg) return;
 	connectable = TRUE;
+	if (have_dlg) return;
 	/* set the callback for gui events */
 	set_gui_state (frontend_offline_gui);
 	/* temporary function call until new startup scheme is completed:

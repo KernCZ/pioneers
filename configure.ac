@@ -23,7 +23,7 @@ AC_PREREQ(2.50)
 AC_CONFIG_SRCDIR([client])
 
 AM_CONFIG_HEADER(config.h)
-AM_INIT_AUTOMAKE([gnocatan], [0.8.1.12])
+AM_INIT_AUTOMAKE([gnocatan], [0.8.1.13])
 
 PROTOCOL_VERSION="\"0.8.0\""
 META_PROTOCOL_VERSION="\"1.0\""
@@ -98,6 +98,7 @@ AC_CONFIG_FILES([
 	client/gtk/data/themes/FreeCIV-like/Makefile
 	client/gtk/data/themes/Iceland/Makefile
 	client/gtk/data/themes/Tiny/Makefile
+	client/ai/Makefile
         client/help/Makefile
         client/help/C/Makefile
         server/Makefile

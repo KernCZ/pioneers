@@ -166,7 +166,10 @@ void trade_remove_reject_rows (void);
 void trade_perform_maritime(gint ratio, Resource supply, Resource receive);
 void trade_perform_domestic(gint player_num, gint partner_num, gint quote_num,
 			    gint *they_supply, gint *they_receive);
-void trade_update (void);
+void frontend_trade_domestic (gint partner_num, gint quote_num, gint *we_supply,
+		gint *we_receive);
+void frontend_trade_maritime (gint ratio, Resource we_supply,
+		Resource we_receive);
 
 /* quote.c */
 GtkWidget *quote_build_page (void);
@@ -184,7 +187,6 @@ void quote_add_quote (gint player_num, gint quote_num,
 void quote_delete_quote (gint player_num, gint quote_num);
 void quote_player_finish (gint player_num);
 void quote_finish (void);
-void quote_update (void);
 void frontend_quote_trade (gint player_num, gint partner_num, gint quote_num,
 		gint *they_supply, gint *they_receive);
 

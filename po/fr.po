@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnocatan 0.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-01-02 19:07+0100\n"
+"POT-Creation-Date: 2004-01-11 20:40+0100\n"
 "PO-Revision-Date: 2003-11-20 16:00-0600\n"
 "Last-Translator: Arnaud MALON <moko@geumeuleu.com>\n"
 "Language-Team: Français <LL@li.org>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ai/client.c:142 ai/client.c:161 client/common/client.c:208
+#: ai/client.c:142 ai/client.c:161 client/common/client.c:210
 msgid "We have been kicked out of the game.\n"
 msgstr "Nous avons été explusé de la partie!\n"
 
@@ -35,12 +35,12 @@ msgstr "%s dépense %s\n"
 msgid "%s is refunded %s\n"
 msgstr "%2s est remboursé de %1s\n"
 
-#: ai/client.c:1193
+#: ai/client.c:358 ai/client.c:1198
 #, c-format
 msgid "%s discarded %s\n"
 msgstr "%s jete %s\n"
 
-#: ai/client.c:1779
+#: ai/client.c:1784
 msgid "The game is over.\n"
 msgstr "La partie est terminée.\n"
 
@@ -596,97 +596,97 @@ msgstr " dit: "
 msgid "Waiting"
 msgstr "En attente"
 
-#: client/common/client.c:108 client/common/client.c:894
+#: client/common/client.c:108 client/common/client.c:896
 msgid "Idle"
 msgstr "Absent"
 
-#: client/common/client.c:211 client/common/client.c:576 client/gtk/gui.c:1115
+#: client/common/client.c:213 client/common/client.c:578 client/gtk/gui.c:1115
 msgid "Offline"
 msgstr "Déconnecté"
 
-#: client/common/client.c:339
+#: client/common/client.c:341
 #, c-format
 msgid "%s receives %s.\n"
 msgstr "%s reçois %s.\n"
 
-#: client/common/client.c:344
+#: client/common/client.c:346
 #, c-format
 msgid "%s spent %s.\n"
 msgstr "%s dépense %s.\n"
 
-#: client/common/client.c:349
+#: client/common/client.c:351
 #, c-format
 msgid "%s is refunded %s.\n"
 msgstr "%s est remboursé de %s.\n"
 
-#: client/common/client.c:377
+#: client/common/client.c:379
 #, c-format
 msgid "%s discarded %s.\n"
 msgstr "%s jete %s.\n"
 
-#: client/common/client.c:538
+#: client/common/client.c:540
 msgid "Loading"
 msgstr "Chargement"
 
-#: client/common/client.c:577
+#: client/common/client.c:579
 msgid "Version mismatch"
 msgstr "Versions incompatibles"
 
-#: client/common/client.c:1001
+#: client/common/client.c:1003
 msgid "Build two settlements, each with a connecting"
 msgstr "Construire deux colonies avec une route pour chacune"
 
-#: client/common/client.c:1003
+#: client/common/client.c:1005
 msgid "Build a settlement with a connecting"
 msgstr "Construire une colonie et sa route"
 
-#: client/common/client.c:1006
+#: client/common/client.c:1008
 msgid "road"
 msgstr "route"
 
-#: client/common/client.c:1008
+#: client/common/client.c:1010
 msgid "bridge"
 msgstr "pont"
 
-#: client/common/client.c:1010
+#: client/common/client.c:1012
 msgid "ship"
 msgstr "bateau"
 
-#: client/common/client.c:1017
+#: client/common/client.c:1019
 #, fuzzy
 msgid " or"
 msgstr " ou"
 
-#: client/common/client.c:1071
+#: client/common/client.c:1073
 msgid "Waiting for your turn"
 msgstr "Attends ton tour!"
 
-#: client/common/client.c:1162 client/common/client.c:1187
+#: client/common/client.c:1164 client/common/client.c:1189
 msgid "Place the robber"
 msgstr "Déplace le voleur"
 
-#: client/common/client.c:1215
+#: client/common/client.c:1217
 msgid "Build two road segments."
 msgstr "Construis deux segments de route"
 
-#: client/common/client.c:1217
+#: client/common/client.c:1219
 msgid "Build a road segment."
 msgstr "Construis un segment de route."
 
-#: client/common/client.c:1468 client/common/client.c:1555
+#: client/common/client.c:1470 client/common/client.c:1557
 msgid "It is your turn."
 msgstr "C'est à toi."
 
-#: client/common/client.c:1650
+#: client/common/client.c:1652
 #, c-format
 msgid "Sorry, %s available.\n"
 msgstr "Désolé, %s indisponible.\n"
 
-#: client/common/client.c:1965
+#: client/common/client.c:1970
 msgid "The game is over."
 msgstr "La partie est finie."
 
-#: client/common/client.c:2160
+#: client/common/client.c:2165
 #, c-format
 msgid "%s takes %s.\n"
 msgstr "%s prends %s.\n"
@@ -1062,13 +1062,13 @@ msgstr "Serveurs récents"
 
 #. less arrow
 #: client/gtk/discard.c:145 client/gtk/gold.c:116 client/gtk/plenty.c:116
-#: client/gtk/quote.c:473 client/gtk/trade.c:461
+#: client/gtk/quote.c:473 client/gtk/trade.c:469
 msgid "<less"
 msgstr "<moins"
 
 #. more arrow
 #: client/gtk/discard.c:155 client/gtk/gold.c:135 client/gtk/plenty.c:126
-#: client/gtk/quote.c:483 client/gtk/trade.c:471
+#: client/gtk/quote.c:483 client/gtk/trade.c:479
 msgid "more>"
 msgstr "plus>"
 
@@ -1588,7 +1588,7 @@ msgstr "Ressource à prendrer"
 msgid "Player Summary"
 msgstr "Résumé des joueurs"
 
-#: client/gtk/quote.c:249 client/gtk/trade.c:285
+#: client/gtk/quote.c:249 client/gtk/trade.c:291
 msgid "Rejected trade"
 msgstr "Offre refusée"
 
@@ -1597,11 +1597,11 @@ msgstr "Offre refusée"
 msgid "%s has %s, and is looking for %s"
 msgstr "%s a %s et cherche %s"
 
-#: client/gtk/quote.c:573 client/gtk/trade.c:709
+#: client/gtk/quote.c:573 client/gtk/trade.c:731
 msgid "I Want"
 msgstr "Je voudrais"
 
-#: client/gtk/quote.c:590 client/gtk/trade.c:726
+#: client/gtk/quote.c:590 client/gtk/trade.c:748
 msgid "Give Them"
 msgstr "Accepter"
 
@@ -1783,35 +1783,35 @@ msgstr ""
 msgid "Theme %s not loaded due to errors\n"
 msgstr ""
 
-#: client/gtk/trade.c:173
+#: client/gtk/trade.c:177
 #, c-format
 msgid "ask for %s for free"
 msgstr "demande %s gratuitement"
 
-#: client/gtk/trade.c:177
+#: client/gtk/trade.c:181
 #, c-format
 msgid "give %s for free"
 msgstr "donne %s gratuitement"
 
-#: client/gtk/trade.c:181
+#: client/gtk/trade.c:185
 #, c-format
 msgid "give %s for %s"
 msgstr "donne %s contre %s"
 
-#: client/gtk/trade.c:226
+#: client/gtk/trade.c:232
 #, c-format
 msgid "%d:1 %s for %s"
 msgstr "%d:1 %s pour %s"
 
-#: client/gtk/trade.c:747
+#: client/gtk/trade.c:769
 msgid "Call For Quotes"
 msgstr "Appel d'offre"
 
-#: client/gtk/trade.c:779
+#: client/gtk/trade.c:801
 msgid "Accept Quote"
 msgstr "Accepter l'offre"
 
-#: client/gtk/trade.c:784
+#: client/gtk/trade.c:806
 msgid "Finish Trading"
 msgstr "Fin des échanges"
 

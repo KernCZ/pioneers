@@ -154,6 +154,12 @@ struct callbacks {
 			gint *they_supply, gint *they_receive);
 	/* while you're trading, someone revokes a quote */
 	void (*trade_remove_quote)(gint player_num, gint quote_num);
+	/* you're trading, and a trade has just been performed. */
+	void (*trade_domestic)(gint partner_num, gint quote_num,
+			gint *we_supply, gint *we_receive);
+	/* you're trading, and a trade has just been performed. */
+	void (*trade_maritime)(gint ratio, Resource we_supply,
+			Resource we_receive);
 	/* while someone else is trading, a player rejects the trade */
 	void (*quote_player_end)(gint player_num);
 	/* while someone else is trading, a player makes a quote */
@@ -264,7 +270,7 @@ void cb_end_trade (void);
 void cb_quote (gint num, gint *supply, gint *receive);
 void cb_delete_quote (gint num);
 void cb_end_quote (void);
-void cb_chat (gchar *text);
+void cb_chat (const gchar *text);
 void cb_name_change (const gchar *name);
 void cb_discard (gint *resources);
 void cb_choose_gold (gint *resources);
@@ -275,7 +281,7 @@ void cb_choose_gold (gint *resources);
 gboolean have_rolled_dice (void);
 gboolean can_buy_develop (void);
 gboolean can_play_develop (int card);
-gboolean can_play_any_develop (void); /* TODO: This code should be called */
+gboolean can_play_any_develop (void);
 Player *player_get (gint num);
 gboolean player_is_viewer (gint num);
 Viewer *viewer_get (gint num);
@@ -334,8 +340,8 @@ gboolean have_bridges (void);
 const GameParams *get_game_params (void);
 int pirate_count_victims (Hex *hex, gint *victim_list);
 int robber_count_victims (Hex *hex, gint *victim_list);
-gint *get_bank (void); /* TODO: This code should be called */
-DevelDeck *get_devel_deck (void); /* TODO: This code should be called */
-Map *get_map (void); /* TODO: This code should be called */
+gint *get_bank (void);
+DevelDeck *get_devel_deck (void);
+Map *get_map (void);
 
 #endif

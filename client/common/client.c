@@ -150,6 +150,8 @@ void client_init (void)
 	(nothing_cast)callbacks.trade_player_end = &do_nothing;
 	(nothing_cast)callbacks.trade_add_quote = &do_nothing;
 	(nothing_cast)callbacks.trade_remove_quote = &do_nothing;
+	(nothing_cast)callbacks.trade_domestic = &do_nothing;
+	(nothing_cast)callbacks.trade_maritime = &do_nothing;
 	(nothing_cast)callbacks.quote_player_end = &do_nothing;
 	(nothing_cast)callbacks.quote_add = &do_nothing;
 	(nothing_cast)callbacks.quote_remove = &do_nothing;
@@ -1658,6 +1660,7 @@ gboolean mode_trade_maritime_response(StateMachine *sm, gint event)
 					we_supply, we_receive);
 			waiting_for_network(FALSE);
 			sm_pop(sm);
+			callbacks.trade_maritime (ratio, we_supply, we_receive);
 			return TRUE;
 		}
 		if (check_trading(sm) || check_other_players(sm))
@@ -1718,6 +1721,8 @@ gboolean mode_trade_domestic_response(StateMachine *sm, gint event)
 			player_domestic_trade (my_player_num (), partner_num,
 					they_supply, they_receive);
 			waiting_for_network(FALSE);
+			callbacks.trade_domestic (partner_num, quote_num,
+					they_receive, they_supply);
 			sm_pop(sm);
 			return TRUE;
 		}
