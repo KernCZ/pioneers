@@ -1,3 +1,8 @@
+2000-05-12  Bibek Sahu <scorpio@dodds.net>
+	* common/common_gui.[ch], common/common_gtk.[ch]: Renamed
+	common/common_gui.[ch] -> common/common_gtk.[ch] per Steve's
+	request.  More appropriate, considering its function.
+
 2000-05-12  Steve Langasek <vorlon@dodds.net>
 
 	* common/state.[ch], server/buildutil.c, server/develop.c,
