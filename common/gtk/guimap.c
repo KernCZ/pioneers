@@ -1589,6 +1589,8 @@ void guimap_cursor_set(GuiMap *gmap, CursorType cursor_type, gint owner,
 		       const MapElement *user_data, gboolean set_by_single_click)
 {
 	single_click_build_active = set_by_single_click;
+	if (cursor_type != NO_CURSOR)
+		g_assert(owner >= 0);
 	gmap->cursor_owner = owner;
 	gmap->check_func = check_func;
 	gmap->check_select = check_select;

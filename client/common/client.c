@@ -2086,8 +2086,8 @@ static void recover_from_disconnect(StateMachine *sm,
 	StateFunc modeturn;
 	GList *next;
 
+	turn_begin(rinfo->playerturn, rinfo->turnnum);
 	if (rinfo->rolled_dice) {
-		turn_begin(rinfo->playerturn, rinfo->turnnum);
 		turn_rolled_dice(rinfo->playerturn, rinfo->die1, rinfo->die2);
 	}
 	else if (rinfo->die1 + rinfo->die2 > 1) {
