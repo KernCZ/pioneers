@@ -1286,7 +1286,7 @@ static float score_hex_hurt_opponents(Hex *hex)
 
     if (hex == NULL) return -1000;
 
-    /* xxx secord arg? */
+    /* secord arg is the player moving the pirate.  It isn't used. */
     if (!can_robber_or_pirate_be_moved(hex, 0) && hex->terrain != SEA_TERRAIN)
 		return -1000;
 
@@ -1664,9 +1664,15 @@ static void greedy_error (gchar *message)
 {
 	gchar buffer[1000];
 	snprintf (buffer, sizeof (buffer),
-			"Received error from server: %s.  Exiting\n", message);
+			_("Received error from server: %s.  Exiting\n"),
+			message);
 	cb_chat (buffer);
-	exit (1);
+	cb_disconnect ();
+}
+
+static void greedy_game_over (UNUSED (gint player_num), UNUSED (gint points) )
+{
+	cb_disconnect ();
 }
 
 void greedy_init (UNUSED (int argc), UNUSED (char **argv) )
@@ -1687,5 +1693,6 @@ void greedy_init (UNUSED (int argc), UNUSED (char **argv) )
 	callbacks.discard_add = &greedy_discard_add;
 	callbacks.quote_start = &greedy_quote_start;
 	callbacks.quote = &greedy_consider_quote;
+	callbacks.game_over = &greedy_game_over;
 	callbacks.error = &greedy_error;
 }
