@@ -83,6 +83,10 @@ void guimap_city_polygon(GuiMap *gmap, Node *node, Polygon *poly);
 void guimap_settlement_polygon(GuiMap *gmap, Node *node, Polygon *poly);
 void guimap_robber_polygon(GuiMap *gmap, Hex *hex, Polygon *poly);
 
+void draw_dice_roll(GdkPixmap *pixmap, GdkGC *gc,
+		    gint x_offset, gint y_offset, gint radius,
+		    gint n, gboolean highlight);
+
 void guimap_scale_with_radius(GuiMap *gmap, gint radius);
 void guimap_scale_to_size(GuiMap *gmap, gint width, gint height);
 void guimap_display(GuiMap *gmap);
