@@ -4,8 +4,8 @@ use Time::Local;
 use Socket;
 
 $ENV{PATH} = '/bin:/usr/bin:/usr/sbin';
-
-my $iaddr = gethostbyname('term1.dccs.com.au');
+my $server = $ARGV[1] || $ENV{'GNOCATAN_META_SERVER'} || 'term1.dccs.com.au';
+my $iaddr = gethostbyname($server);
 my $meta_addr = sockaddr_in(5557, $iaddr);
 my $proto = getprotobyname('tcp');
 
@@ -14,46 +14,15 @@ socket(SOCK, PF_INET, SOCK_STREAM, $proto) || die "socket: $!\n";
 connect(SOCK, $meta_addr) || die "Could not connect to meta-server: $!\n";
 my $old = select(SOCK); $| = 1; select($old);
 
+my $req = $ARGV[0] || "client";
+my $vers = $ARGV[2] || "1.0";
 scalar <SOCK>;
-print SOCK "client\n";
 
-#
-# The server will now list all of the servers in the following format:
-#
-# server\n
-# host=%s\n
-# port=%d\n
-# version=%s\n
-# max=%d\n
-# curr=%d\n
-# map=%s\n
-# comment=%s\n
-# end\n
-#
-my (%info);
+print SOCK "version $vers\n";
+print SOCK "$req\n";
 while (<SOCK>) {
-    chomp;
-    if ($_ eq 'server') {
-	undef %info;
-	next;
-    }
-    if ($_ eq 'end') {
-	print <<EOF;
-  <tr class="info">
-    <td>$info{'host'}</td>
-    <td>$info{'port'}</td>
-    <td>$info{'version'}</td>
-    <td>$info{'curr'}</td>
-    <td>$info{'max'}</td>
-    <td>$info{'map'}</td>
-    <td>$info{'comment'}</td>
-  </tr>
-EOF
-	next;
-    }
-    $info{$1} = $2 if (/([^=]+)=(.*)/);
+	print;
 }
-
 close(SOCK);
 
 exit 0;
