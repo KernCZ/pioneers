@@ -1,3 +1,9 @@
+gnocatan (0.8.1.42-1) unstable; urgency=low
+
+  * try to fix the packaging catastrophe from 0.8.1.41-1 
+
+ -- Jeff Breidenbach <jab@debian.org>  Fri, 12 Nov 2004 13:39:57 -0800
+
 gnocatan (0.8.1.41-1) unstable; urgency=low
 
   * snapshot from upstream CVS (basically 0.8.1.42, but
