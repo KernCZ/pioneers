@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.8.1.32\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-06 07:41+0200\n"
+"POT-Creation-Date: 2004-09-15 21:17+0200\n"
 "PO-Revision-Date: 2004-01-26 16:51+0100\n"
 "Last-Translator: Roland Clobus <rclobus@bigfoot.com>\n"
 "Language-Team: Bas Wijnen <b.wijnen@phys.rug.nl> Roland Clobus "
@@ -143,7 +143,7 @@ msgstr "Wow!"
 
 #: ai/greedy.c:1116
 msgid "Ey, I'm becoming rich ;)"
-msgstr "Ha, ik wordt rijk ;-)"
+msgstr "Ha, ik word rijk ;-)"
 
 #: ai/greedy.c:1117
 msgid "This is really a good year!"
@@ -847,26 +847,6 @@ msgstr ", en %s"
 msgid "%s, "
 msgstr "%s, "
 
-#: client/common/resource.c:285
-#, c-format
-msgid "player %d resource count wrong: server=%d, me=%d"
-msgstr ""
-"Server en client zijn het niet eens over grondstoffen van speler %d.\n"
-"Server zegt %d, client zegt %d."
-
-#: client/common/resource.c:298
-msgid "resources wrong:"
-msgstr "foute grondstoffen:"
-
-#: client/common/resource.c:302
-#, c-format
-msgid ""
-"\n"
-"%s: server=%d, me=%d"
-msgstr ""
-"\n"
-"%s: server zegt %d, client zegt %d"
-
 #: client/common/robber.c:57
 #, c-format
 msgid "%s moved the robber.\n"
@@ -1060,7 +1040,7 @@ msgstr "Computer"
 msgid "Host of the game"
 msgstr "Spel server"
 
-#: client/gtk/connect.c:837
+#: client/gtk/connect.c:837 client/gtk/offline.c:112
 msgid "Port"
 msgstr "Poort"
 
@@ -1669,9 +1649,24 @@ msgstr "Verander naam"
 msgid "Player Name:"
 msgstr "Naam:"
 
-#: client/gtk/offline.c:46
+#: client/gtk/offline.c:47
 msgid "Connecting"
 msgstr "Bezig verbinding te maken"
+
+#: client/gtk/offline.c:111
+#, fuzzy
+msgid "Server"
+msgstr "Metaserver"
+
+#: client/gtk/offline.c:113
+#, fuzzy
+msgid "Player name"
+msgstr "Naam"
+
+#: client/gtk/offline.c:114
+#, fuzzy
+msgid "Quit the game after game over"
+msgstr "Registreer dit spel bij de metaserver"
 
 #: client/gtk/plenty.c:190
 msgid "Please take two resources from the bank"
@@ -2171,7 +2166,7 @@ msgstr "Fout bij het maken van een netwerkverbinding: %s\n"
 msgid "Error setting socket close-on-exec: %s\n"
 msgstr "Fout bij het instellen van netwerkverbinding op close-on-exec: %s\n"
 
-#: common/network.c:406 server/server.c:139
+#: common/network.c:406 server/server.c:136
 #, c-format
 msgid "Error setting socket non-blocking: %s\n"
 msgstr "Fout bij het instellen van netwerkverbinding op non-blocking: %s\n"
@@ -2353,7 +2348,7 @@ msgstr "De Gnocatan server"
 msgid "Gnocatan Server"
 msgstr "Gnocatan server"
 
-#: server/gnocatan-server.c:135
+#: server/gnocatan-server.c:134
 msgid "Missing game directory\n"
 msgstr "Spellenmap niet gevonden\n"
 
@@ -2380,39 +2375,54 @@ msgstr "NOTE speler %d (%s) is weer terug.\n"
 msgid "Sorry, game is over."
 msgstr "Helaas, het spel is al afgelopen."
 
-#: server/server.c:107
+#: server/server.c:104
 #, c-format
 msgid "Error creating struct addrinfo: %s"
 msgstr "Fout bij het maken van struct addrinfo: %s"
 
-#: server/server.c:134
+#: server/server.c:131
 #, c-format
 msgid "Error creating listening socket: %s\n"
 msgstr "Fout bij het opzetten van de netwerkverbinding: %s\n"
 
-#: server/server.c:146
+#: server/server.c:143
 #, c-format
 msgid "Error during listen on socket: %s\n"
 msgstr "Fout bij het wachten op verbindingen: %s\n"
 
-#: server/server.c:203
+#: server/server.c:200
 #, c-format
 msgid "Error accepting connection: %s\n"
 msgstr "Fout bij het accepteren van een verbinding: %s\n"
 
-#: server/server.c:211
+#: server/server.c:208
 #, c-format
 msgid "Error getting peer name: %s\n"
 msgstr "Fout bij het opzoeken van de computernaam: %s\n"
 
-#: server/server.c:213 server/server.c:221
+#: server/server.c:210 server/server.c:218
 msgid "unknown"
 msgstr "onbekend"
 
 #. Server: preparing game #.....
-#: server/server.c:330
+#: server/server.c:327
 msgid "Preparing game"
 msgstr "Voorbereiden spel"
+
+#~ msgid "player %d resource count wrong: server=%d, me=%d"
+#~ msgstr ""
+#~ "Server en client zijn het niet eens over grondstoffen van speler %d.\n"
+#~ "Server zegt %d, client zegt %d."
+
+#~ msgid "resources wrong:"
+#~ msgstr "foute grondstoffen:"
+
+#~ msgid ""
+#~ "\n"
+#~ "%s: server=%d, me=%d"
+#~ msgstr ""
+#~ "\n"
+#~ "%s: server zegt %d, client zegt %d"
 
 #~ msgid "E_xit"
 #~ msgstr "_Afsluiten"

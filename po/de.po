@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnocatan 0.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-06 07:41+0200\n"
+"POT-Creation-Date: 2004-09-15 21:17+0200\n"
 "PO-Revision-Date: 2003-10-29 23:13+0100\n"
 "Last-Translator: Roman Hodek <roman@hodek.net>\n"
 "Language-Team: de <de@li.org>\n"
@@ -849,24 +849,6 @@ msgstr " und %s"
 msgid "%s, "
 msgstr "%s, "
 
-#: client/common/resource.c:285
-#, c-format
-msgid "player %d resource count wrong: server=%d, me=%d"
-msgstr "Rohstoffanzahl bei Spieler %d falsch: server=%d, hier=%d"
-
-#: client/common/resource.c:298
-msgid "resources wrong:"
-msgstr "Rohstoffe falsch:"
-
-#: client/common/resource.c:302
-#, c-format
-msgid ""
-"\n"
-"%s: server=%d, me=%d"
-msgstr ""
-"\n"
-"%s: server=%d, hier=%d"
-
 #: client/common/robber.c:57
 #, c-format
 msgid "%s moved the robber.\n"
@@ -1061,7 +1043,7 @@ msgstr "Rechner"
 msgid "Host of the game"
 msgstr ""
 
-#: client/gtk/connect.c:837
+#: client/gtk/connect.c:837 client/gtk/offline.c:112
 msgid "Port"
 msgstr "Port"
 
@@ -1677,9 +1659,24 @@ msgstr "Spielernamen ändern"
 msgid "Player Name:"
 msgstr "Spielername"
 
-#: client/gtk/offline.c:46
+#: client/gtk/offline.c:47
 msgid "Connecting"
 msgstr "Verbinde"
+
+#: client/gtk/offline.c:111
+#, fuzzy
+msgid "Server"
+msgstr "Metaserver"
+
+#: client/gtk/offline.c:113
+#, fuzzy
+msgid "Player name"
+msgstr "Spielername"
+
+#: client/gtk/offline.c:114
+#, fuzzy
+msgid "Quit the game after game over"
+msgstr "Empfange Spielenamen vom Metaserver...\n"
 
 #: client/gtk/plenty.c:190
 msgid "Please take two resources from the bank"
@@ -2205,7 +2202,7 @@ msgstr "Fehler beim Anlegen eines Sockets: %s\n"
 msgid "Error setting socket close-on-exec: %s\n"
 msgstr "Fehler beim Setzen von close-on-exec beim Socket: %s\n"
 
-#: common/network.c:406 server/server.c:139
+#: common/network.c:406 server/server.c:136
 #, c-format
 msgid "Error setting socket non-blocking: %s\n"
 msgstr "Fehler, den Socket nicht-blockierend zu machen: %s\n"
@@ -2395,7 +2392,7 @@ msgstr "Der Gnocatan-Spielserver"
 msgid "Gnocatan Server"
 msgstr "Gnocatan-Server"
 
-#: server/gnocatan-server.c:135
+#: server/gnocatan-server.c:134
 msgid "Missing game directory\n"
 msgstr "Spielverzeichnis fehlt\n"
 
@@ -2423,39 +2420,52 @@ msgstr ""
 msgid "Sorry, game is over."
 msgstr "Das Spiel ist beendet."
 
-#: server/server.c:107
+#: server/server.c:104
 #, c-format
 msgid "Error creating struct addrinfo: %s"
 msgstr "Fehler beim Erzeugen einer struct addrinfo: %s"
 
-#: server/server.c:134
+#: server/server.c:131
 #, c-format
 msgid "Error creating listening socket: %s\n"
 msgstr "Fehler beim Anlegen des annehmenden Sockets: %s\n"
 
-#: server/server.c:146
+#: server/server.c:143
 #, c-format
 msgid "Error during listen on socket: %s\n"
 msgstr "Fehler beim Versetzen des Sockets in Annahme-Zustand: %s\n"
 
-#: server/server.c:203
+#: server/server.c:200
 #, c-format
 msgid "Error accepting connection: %s\n"
 msgstr "Fehler beim Annehmen einer Verbindung: %s\n"
 
-#: server/server.c:211
+#: server/server.c:208
 #, c-format
 msgid "Error getting peer name: %s\n"
 msgstr "Fehler beim Holen des Namens des Kommunikationspartners: %s\n"
 
-#: server/server.c:213 server/server.c:221
+#: server/server.c:210 server/server.c:218
 msgid "unknown"
 msgstr "unbekannt"
 
 #. Server: preparing game #.....
-#: server/server.c:330
+#: server/server.c:327
 msgid "Preparing game"
 msgstr ""
+
+#~ msgid "player %d resource count wrong: server=%d, me=%d"
+#~ msgstr "Rohstoffanzahl bei Spieler %d falsch: server=%d, hier=%d"
+
+#~ msgid "resources wrong:"
+#~ msgstr "Rohstoffe falsch:"
+
+#~ msgid ""
+#~ "\n"
+#~ "%s: server=%d, me=%d"
+#~ msgstr ""
+#~ "\n"
+#~ "%s: server=%d, hier=%d"
 
 #~ msgid "E_xit"
 #~ msgstr "_Beenden"

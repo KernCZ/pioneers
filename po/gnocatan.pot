@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-06 07:41+0200\n"
+"POT-Creation-Date: 2004-09-15 21:17+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -846,22 +846,6 @@ msgstr ""
 msgid "%s, "
 msgstr ""
 
-#: client/common/resource.c:285
-#, c-format
-msgid "player %d resource count wrong: server=%d, me=%d"
-msgstr ""
-
-#: client/common/resource.c:298
-msgid "resources wrong:"
-msgstr ""
-
-#: client/common/resource.c:302
-#, c-format
-msgid ""
-"\n"
-"%s: server=%d, me=%d"
-msgstr ""
-
 #: client/common/robber.c:57
 #, c-format
 msgid "%s moved the robber.\n"
@@ -1051,7 +1035,7 @@ msgstr ""
 msgid "Host of the game"
 msgstr ""
 
-#: client/gtk/connect.c:837
+#: client/gtk/connect.c:837 client/gtk/offline.c:112
 msgid "Port"
 msgstr ""
 
@@ -1636,8 +1620,20 @@ msgstr ""
 msgid "Player Name:"
 msgstr ""
 
-#: client/gtk/offline.c:46
+#: client/gtk/offline.c:47
 msgid "Connecting"
+msgstr ""
+
+#: client/gtk/offline.c:111
+msgid "Server"
+msgstr ""
+
+#: client/gtk/offline.c:113
+msgid "Player name"
+msgstr ""
+
+#: client/gtk/offline.c:114
+msgid "Quit the game after game over"
 msgstr ""
 
 #: client/gtk/plenty.c:190
@@ -2138,7 +2134,7 @@ msgstr ""
 msgid "Error setting socket close-on-exec: %s\n"
 msgstr ""
 
-#: common/network.c:406 server/server.c:139
+#: common/network.c:406 server/server.c:136
 #, c-format
 msgid "Error setting socket non-blocking: %s\n"
 msgstr ""
@@ -2317,7 +2313,7 @@ msgstr ""
 msgid "Gnocatan Server"
 msgstr ""
 
-#: server/gnocatan-server.c:135
+#: server/gnocatan-server.c:134
 msgid "Missing game directory\n"
 msgstr ""
 
@@ -2344,36 +2340,36 @@ msgstr ""
 msgid "Sorry, game is over."
 msgstr ""
 
-#: server/server.c:107
+#: server/server.c:104
 #, c-format
 msgid "Error creating struct addrinfo: %s"
 msgstr ""
 
-#: server/server.c:134
+#: server/server.c:131
 #, c-format
 msgid "Error creating listening socket: %s\n"
 msgstr ""
 
-#: server/server.c:146
+#: server/server.c:143
 #, c-format
 msgid "Error during listen on socket: %s\n"
 msgstr ""
 
-#: server/server.c:203
+#: server/server.c:200
 #, c-format
 msgid "Error accepting connection: %s\n"
 msgstr ""
 
-#: server/server.c:211
+#: server/server.c:208
 #, c-format
 msgid "Error getting peer name: %s\n"
 msgstr ""
 
-#: server/server.c:213 server/server.c:221
+#: server/server.c:210 server/server.c:218
 msgid "unknown"
 msgstr ""
 
 #. Server: preparing game #.....
-#: server/server.c:330
+#: server/server.c:327
 msgid "Preparing game"
 msgstr ""

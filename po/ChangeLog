@@ -1,0 +1,6 @@
+2004-09-15 Arjen Schrijver <a.schrijver@skydec.nl>
+	* nl.po: fixing a typo
+	
+2004-09-15 Roland Clobus <rclobus@bigfoot.com>
+	* ChangeLog: Added the ChangeLog again, it is required for 
+	'make distcheck' and automake-1.7
