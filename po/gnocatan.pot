@@ -1,12 +1,13 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Free Software Foundation, Inc.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2002-07-21 14:39+0200\n"
+"POT-Creation-Date: 2002-12-25 17:37+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -325,7 +326,7 @@ msgstr ""
 msgid "Development cards"
 msgstr ""
 
-#: ai/player.c:50 client/player.c:94 server/player.c:504
+#: ai/player.c:50 client/player.c:94 server/player.c:512
 #, c-format
 msgid "Player %d"
 msgstr ""
@@ -355,20 +356,20 @@ msgstr ""
 msgid "%s is now %s.\n"
 msgstr ""
 
-#: ai/player.c:182 client/player.c:334
+#: ai/player.c:182 client/player.c:343
 msgid "There is no largest army.\n"
 msgstr ""
 
-#: ai/player.c:184 client/player.c:336
+#: ai/player.c:184 client/player.c:345
 #, c-format
 msgid "%s has the largest army.\n"
 msgstr ""
 
-#: ai/player.c:204 client/player.c:356
+#: ai/player.c:204 client/player.c:365
 msgid "There is no longest road.\n"
 msgstr ""
 
-#: ai/player.c:206 client/player.c:358
+#: ai/player.c:206 client/player.c:367
 #, c-format
 msgid "%s has the longest road.\n"
 msgstr ""
@@ -382,84 +383,84 @@ msgstr ""
 
 #. We stole a card :-)
 #.
-#: ai/player.c:256 client/player.c:527
+#: ai/player.c:256 client/player.c:536
 #, c-format
 msgid "You stole %s from %s.\n"
 msgstr ""
 
 #. Someone stole our card :-(
 #.
-#: ai/player.c:263 client/player.c:534
+#: ai/player.c:263 client/player.c:543
 #, c-format
 msgid "%s stole %s from you.\n"
 msgstr ""
 
-#: ai/player.c:295 client/player.c:566
+#: ai/player.c:295 client/player.c:575
 #, c-format
 msgid "%s gave %s nothing!?\n"
 msgstr ""
 
-#: ai/player.c:300 ai/player.c:307 client/player.c:571 client/player.c:578
+#: ai/player.c:300 ai/player.c:307 client/player.c:580 client/player.c:587
 #, c-format
 msgid "%s gave %s %s for free.\n"
 msgstr ""
 
-#: ai/player.c:314 client/player.c:585
+#: ai/player.c:314 client/player.c:594
 #, c-format
 msgid "%s gave %s %s in exchange for %s.\n"
 msgstr ""
 
-#: ai/player.c:330 client/player.c:601
+#: ai/player.c:330 client/player.c:610
 #, c-format
 msgid "%s exchanged %s for %s.\n"
 msgstr ""
 
-#: ai/player.c:346 client/player.c:621
+#: ai/player.c:346 client/player.c:630
 #, c-format
 msgid "%s built a road.\n"
 msgstr ""
 
-#: ai/player.c:355 client/player.c:634
+#: ai/player.c:355 client/player.c:643
 #, c-format
 msgid "%s built a ship.\n"
 msgstr ""
 
-#: ai/player.c:364 client/player.c:647
+#: ai/player.c:364 client/player.c:656
 #, c-format
 msgid "%s built a settlement.\n"
 msgstr ""
 
-#: ai/player.c:380 client/player.c:667
+#: ai/player.c:380 client/player.c:676
 #, c-format
 msgid "%s built a city.\n"
 msgstr ""
 
-#: ai/player.c:387 client/player.c:675
+#: ai/player.c:387 client/player.c:684
 #, c-format
 msgid "player_build_add called with BUILD_NONE for user %s\n"
 msgstr ""
 
-#: ai/player.c:408 client/player.c:697
+#: ai/player.c:408 client/player.c:706
 #, c-format
 msgid "%s removed a road.\n"
 msgstr ""
 
-#: ai/player.c:417 client/player.c:707
+#: ai/player.c:417 client/player.c:716
 #, c-format
 msgid "%s removed a ship.\n"
 msgstr ""
 
-#: ai/player.c:426 client/player.c:717
+#: ai/player.c:426 client/player.c:726
 #, c-format
 msgid "%s removed a settlement.\n"
 msgstr ""
 
-#: ai/player.c:436 client/player.c:728
+#: ai/player.c:436 client/player.c:737
 #, c-format
 msgid "%s removed a city.\n"
 msgstr ""
 
-#: ai/player.c:446 client/player.c:738
+#: ai/player.c:446 client/player.c:747
 #, c-format
 msgid "player_build_remove called with BUILD_NONE for user %s\n"
 msgstr ""
@@ -638,7 +639,7 @@ msgstr ""
 
 #. We are not in on the action
 #.
-#: client/chat.c:62 client/player.c:515
+#: client/chat.c:62 client/player.c:524
 #, c-format
 msgid "%s"
 msgstr ""
@@ -1274,21 +1275,21 @@ msgstr ""
 msgid "Player Name:"
 msgstr ""
 
-#: client/player.c:326
+#: client/player.c:331
 #, c-format
 msgid "%s has quit\n"
 msgstr ""
 
-#: client/player.c:401
+#: client/player.c:410
 msgid "Player Summary"
 msgstr ""
 
-#: client/player.c:492
+#: client/player.c:501
 #, c-format
 msgid "Waiting for %s."
 msgstr ""
 
-#: client/player.c:518
+#: client/player.c:527
 msgid " stole a resource from "
 msgstr ""
 
