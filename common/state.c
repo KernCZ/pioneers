@@ -244,8 +244,8 @@ static gint try_recv(StateMachine *sm, gchar *fmt, va_list ap)
 		case 'S': /* string from current position to end of line */
 			str = va_arg(ap, gchar*);
 			len = va_arg(ap, gint);
-			strncpy(str, line + offset, len - offset - 1);
-			str[len - offset - 1] = '\0';
+			strncpy(str, line + offset, len - 1);
+			str[len - 1] = '\0';
 			offset += strlen(str);
 			break;
 		case 'd': /* integer */
