@@ -1,3 +1,6 @@
+2003-10-19  Roland Clobus <rclobus@bigfoot.com>
+	* client/gui.c: Added word wrap to client messages window.
+
 2003-10-17  Roland Clobus <rclobus@bigfoot.com>
 	* ai/player.c, client/player.c, po/de.po, po/es.po, po/gnocatan.pot:
 	Updated german translations.
