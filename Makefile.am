@@ -17,3 +17,7 @@ dist-hook:
 	cp -p $(srcdir)/debian/*.menu $(distdir)/debian
 	cp -p $(srcdir)/debian/*.undocumented $(distdir)/debian
 	cp -p $(srcdir)/debian/*.init $(distdir)/debian
+
+distclean-local:
+	rm -f *~
+	rm -rf autom4te.cache
