@@ -4,6 +4,9 @@
 	connections.  The queueing logic was already there; just fixed that
 	bit of logic.
 
+	* client/admin-gtk.c: made the system clean up after a failed
+	admin connection (same code as closing an admin connection).
+
 2000-06-07  Steve Langasek <vorlon@dodds.net>
 
 	* common/game.h: Removed redundant 'VERSION' define in header.

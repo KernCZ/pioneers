@@ -49,14 +49,6 @@ admin_net_event( NetEvent event, Session *admin_session, gchar *line )
 				g_print( "admin_event: NET_READ: line = '%s'\n", line );
 				break;
 		
-		case NET_CLOSE:
-				/* connection has been closed */
-				
-				g_print( "admin_event: NET_CLOSE\n" );
-				net_free( admin_session );
-				_admin_session = NULL;
-				break;
-		
 		case NET_CONNECT:
 				/* connect() succeeded */
 				
@@ -66,7 +58,16 @@ admin_net_event( NetEvent event, Session *admin_session, gchar *line )
 		case NET_CONNECT_FAIL:
 				/* connect() failed */
 				
-				g_print( "admin_event: NET_CONNECT_FAIL\n" );
+				g_print( "admin_event: NET_CONNECT_FAIL (falling through to NET_CLOSE...)\n" );
+				
+				/* fall through to NET_CLOSE */
+		
+		case NET_CLOSE:
+				/* connection has been closed */
+				
+				g_print( "admin_event: NET_CLOSE\n" );
+				net_free( admin_session );
+				_admin_session = NULL;
 				break;
 		
 		default:
