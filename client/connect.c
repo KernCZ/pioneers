@@ -591,12 +591,6 @@ static GtkWidget *build_create_interface()
 	gtk_signal_connect(GTK_OBJECT(aiplayers_spin), "changed",
 			   GTK_SIGNAL_FUNC(aiplayers_spin_changed_cb), NULL);
 
-	start_btn = gtk_button_new_with_label(_("Start Server"));
-	gtk_widget_show(start_btn);
-	gtk_container_add(GTK_CONTAINER(vbox), start_btn);
-	gtk_signal_connect(GTK_OBJECT(start_btn), "clicked",
-			   GTK_SIGNAL_FUNC(start_clicked_cb), NULL);
-
 	get_meta_server_games_types(meta_server, meta_port);
 
 	return vbox;
@@ -608,7 +602,8 @@ static void create_server_dlg(GtkWidget *widget, GtkWidget *parent)
 	GtkWidget *vbox;
 
 	cserver_dlg = gnome_dialog_new(_("Create New Gnocatan Server"),
-				    GNOME_STOCK_BUTTON_CLOSE, NULL);
+				       GNOME_STOCK_BUTTON_CANCEL,
+				       GNOME_STOCK_BUTTON_OK, NULL);
 	gnome_dialog_set_parent(GNOME_DIALOG(cserver_dlg), GTK_WINDOW(parent));
 	gtk_signal_connect(GTK_OBJECT(cserver_dlg), "destroy",
 			   GTK_SIGNAL_FUNC(gtk_widget_destroyed), &cserver_dlg);
@@ -622,6 +617,8 @@ static void create_server_dlg(GtkWidget *widget, GtkWidget *parent)
 	gtk_box_pack_start(GTK_BOX(dlg_vbox), vbox, TRUE, TRUE, 0);
 	gtk_container_border_width(GTK_CONTAINER(vbox), 5);
 
+	gnome_dialog_button_connect(GNOME_DIALOG(cserver_dlg), 1,
+				    start_clicked_cb, NULL);
 	gnome_dialog_set_close(GNOME_DIALOG(cserver_dlg), TRUE);
 	gtk_widget_show(cserver_dlg);
 }
