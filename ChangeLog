@@ -1,3 +1,9 @@
+2000-07-17  Andy Heroff  <aheroff@mediaone.net>
+
+	* server/turn.c, server/develop.c, server/server.h: Fixed bug in
+	  which the server would not check for a player victory after a
+	  road building card had been played.
+
 2000-07-09  Jeff Breidenbach  <jeff@alum.mit.edu>
 
 	* debian/control: First pass at Build-Depends: field. (presumably

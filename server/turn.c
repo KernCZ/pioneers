@@ -200,7 +200,7 @@ static gboolean distribute_resources(Map *map, Hex *hex, GameRoll *data)
 	return FALSE;
 }
 
-static void check_victory(Game *game)
+void check_victory(Game *game)
 {
 	GList *list;
 
@@ -300,6 +300,9 @@ gboolean mode_turn(Player *player, gint event)
 	}
 	if (sm_recv(sm, "play-develop %d", &idx, &devel_type)) {
 		develop_play(player, idx);
+		/* 7/17/00 AJH - I don't think develop_play ever returns.
+		 *  All functions seem to call sm_goto...
+		 */
 		check_victory(game);
 		return TRUE;
 	}

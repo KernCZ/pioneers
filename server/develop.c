@@ -148,6 +148,7 @@ static gboolean mode_road_building(Player *player, gint event)
 		/* Player has finished road building
 		 */
 		sm_send(sm, "OK\n");
+		check_victory(game);
 		sm_goto(sm, (StateFunc)mode_turn);
 		return TRUE;
 	}

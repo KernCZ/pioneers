@@ -152,6 +152,7 @@ void trade_begin_domestic(Player *player, gint *supply, gint *receive);
 gboolean mode_idle(Player *player, gint event);
 gboolean mode_turn(Player *player, gint event);
 void turn_next_player(Game *game);
+void check_victory(Game *game);
 
 /* gnocatan-server.c */
 gint gui_victory_target(void);
