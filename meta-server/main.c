@@ -473,7 +473,7 @@ static void client_create_new_server(Client *client, gchar *line)
 				"-c", numai,
 				"-k", "1200",
 				"-x",
-				"-r"
+				"-r",
 				NULL,
 				newenv );
 		syslog(LOG_ERR, "cannot exec %s: %m", console_server);
