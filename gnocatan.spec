@@ -1,12 +1,12 @@
 Summary: 	Playable implementation of the Settlers of Catan 
 Name: 		gnocatan
 Version: 	0.6.1
-Release: 	1
+Release: 	2
 Group: 		X11/Games
 Copyright: 	GPL
-Url: 		http://www.gnome.org/gnocatan/
+Url: 		http://gnocatan.sourceforge.net/
 Packager: 	Steve Langasek <vorlon@dodds.net>
-Source: 	http://www.gnome.org/gnocatan/%{name}-%{version}.tar.gz
+Source: 	http://download.sourceforge.net/gnocatan/%{name}-%{version}.tar.gz
 BuildRoot: 	/var/tmp/%{name}_root
 
 
