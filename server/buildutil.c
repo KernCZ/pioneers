@@ -27,6 +27,8 @@
 #include "log.h"
 #include "server.h"
 
+#define DEBUG_LONGEST
+
 static void check_longest_road(Game *game)
 {
 	Map *map = game->params->map;
@@ -44,6 +46,16 @@ static void check_longest_road(Game *game)
 	for (list = player_first_real(game);
 	     list != NULL; list = player_next_real(list)) {
 		Player *player = list->data;
+
+#ifdef DEBUG_LONGEST
+		log_info("%s", player_name(player));
+		if (game->longest_road == player)
+			log_info("(current)");
+		log_info("=%d", road_len[player->num]);
+		if (player->road_len != road_len[player->num])
+			log_info("(was %d)", player->road_len);
+		log_info(" ");
+#endif
 
 		if (player->road_len > road_len[player->num]
 		    && game->longest_road == player)
@@ -73,9 +85,16 @@ static void check_longest_road(Game *game)
 		if (game->longest_road != NULL) {
 			/* Ouch! Lost longest road
 			 */
-			player_broadcast(game->longest_road, PB_ALL, "longest-road\n");
+#ifdef DEBUG_LONGEST
+			log_info("lost longest road\n");
+#endif
+			player_broadcast(player_none(game), PB_ALL, "longest-road\n");
 			game->longest_road = NULL;
+			return;
 		}
+#ifdef DEBUG_LONGEST
+		log_info("no longest road\n");
+#endif
 		return;
 	}
 
@@ -84,20 +103,30 @@ static void check_longest_road(Game *game)
 	 * road, we can only take it away.
 	 */
 	if (num_have_longest > 1) {
-		if (game->longest_road == NULL)
+		if (game->longest_road == NULL) {
 			/* No one had longest road, no one gets it
 			 */
+#ifdef DEBUG_LONGEST
+			log_info("multiple longest road; no one gets it\n");
+#endif
 			return;
+		}
 		/* The current longest road owner only loses the
 		 * longest road if he no longer has the longest road,
 		 * or his road was cut.
 		 */
 		if (game->longest_road->road_len < new_longest->road_len
 		    && was_cut) {
-			player_broadcast(game->longest_road, PB_ALL, "longest-road\n");
+			player_broadcast(player_none(game), PB_ALL, "longest-road\n");
 			game->longest_road = NULL;
+#ifdef DEBUG_LONGEST
+			log_info("multiple longest road; no one gets it\n");
+#endif
 			return;
 		}
+#ifdef DEBUG_LONGEST
+		log_info("multiple longest road; no change in owner\n");
+#endif
 		return;
 	}
 
@@ -106,6 +135,9 @@ static void check_longest_road(Game *game)
 	if (game->longest_road == NULL) {
 		game->longest_road = new_longest;
 		player_broadcast(game->longest_road, PB_ALL, "longest-road\n");
+#ifdef DEBUG_LONGEST
+		log_info("%s has longest road\n", player_name(new_longest));
+#endif
 		return;
 	}
 	/* Did longest road owner change?
@@ -114,7 +146,13 @@ static void check_longest_road(Game *game)
 	    && road_len[new_longest->num] > road_len[game->longest_road->num]) {
 		game->longest_road = new_longest;
 		player_broadcast(game->longest_road, PB_ALL, "longest-road\n");
+#ifdef DEBUG_LONGEST
+		log_info("%s has longest road\n", player_name(new_longest));
+#endif
 	}
+#ifdef DEBUG_LONGEST
+	log_info("no change\n");
+#endif
 }
 
 void node_add(Player *player,

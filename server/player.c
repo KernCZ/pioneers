@@ -210,6 +210,17 @@ Player *player_by_num(Game *game, gint num)
 	return NULL;
 }
 
+Player *player_none(Game *game)
+{
+	static Player player;
+
+	if (player.game == NULL) {
+		player.game = game;
+		player.num = -1;
+	}
+	return &player;
+}
+
 /* Broadcast a message to all players - prepend "player %d " to all
  * players except the one generating the message.
  */

@@ -107,6 +107,7 @@ gchar *player_name(Player *player);
 Player *player_by_name(Game *game, char *name);
 Player *player_by_num(Game *game, gint num);
 void player_set_name(Player *player, gchar *name);
+Player *player_none(Game *game);
 void player_broadcast(Player *player, BroadcastType type, char *fmt, ...);
 void player_remove(Player *player);
 void player_free(Player *player);
