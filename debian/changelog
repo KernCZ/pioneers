@@ -4,6 +4,8 @@ gnocatan (0.7.0-3) unstable; urgency=low
 
   * adjust package recommendations, closes: #149144
 
+ -- Jeff Breidenbach <jab@debian.org>  Wed,  5 Jun 2002 15:48:49 -0700
+
 gnocatan (0.7.0-2) unstable; urgency=low
 
   * a little post-release touchup paint
