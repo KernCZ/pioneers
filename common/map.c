@@ -620,7 +620,7 @@ void map_format_line(Map * map, gboolean write_secrets, gchar * line,
 		if (write_secrets && !hex->shuffle) {
 			*line++ = '+';
 		}
-	*/}
+	}
 	*line = '\0';
 }
 

@@ -201,7 +201,7 @@ static gboolean find_no_setup(UNUSED(Map * map), Hex * hex,
 	return FALSE;
 }
 
-void params_write_lines(GameParams * params, gboolean write_secrerts,
+void params_write_lines(GameParams * params, gboolean write_secrets,
 			WriteLineFunc func, gpointer user_data)
 {
 	gint idx;
