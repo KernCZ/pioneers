@@ -137,7 +137,7 @@ GtkWidget* resource_table_new(
 {
 	ResourceTable *rt;
 
-	gchar temp[256]; /* @TODO Fixed length?? */
+	gchar *temp;
 	GtkWidget *widget;
 	gint i;
 	gint row;
@@ -154,9 +154,10 @@ GtkWidget* resource_table_new(
 	gtk_table_set_row_spacings(GTK_TABLE(rt), 3);
 	gtk_table_set_col_spacings(GTK_TABLE(rt), 5);
 
-	sprintf(temp, "<b>%s</b>", title);
+	temp = g_strconcat("<b>", title, "</b>", NULL);
 	widget = gtk_label_new(NULL);
 	gtk_label_set_markup(GTK_LABEL(widget), temp);
+	g_free(temp);
 	gtk_widget_show(widget);
 	gtk_table_attach_defaults(GTK_TABLE(rt), widget, 
 			0, 5 + rt->bank_offset, 0, 1);
