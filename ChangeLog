@@ -1,3 +1,43 @@
+2003-08-02  Bas Wijnen  <b.wijnen@phys.rug.nl>
+
+	* new files client/gold.c, client/gold.png, server/gold.c,
+	server/seafarers-gold.game; configure.in, client/Makefile.am,
+	client/admin-gtk.c, client/client.c, client/client.h, client/gui.c,
+	client/gui.h, client/guimap.c, client/legend.c, client/resource.c,
+	client/theme.c, client/theme.h, common/map.c, common/map.h,
+	common/network.h, po/Makefile.in.in, server/Makefile.am,
+	server/glib-driver.c, server/gnocatan-server.c, server/player.c,
+	server/pregame.c, server/resource.c, server/server.h, server/turn.c: 
+	Some bugfixes, added support for gold terrain.  Set version to 0.8.0
+	due to changes in the protocol.
+
+2003-07-26  Bas Wijnen  <b.wijnen@phys.rug.nl>
+
+	* ai/client.c, ai/player.c, ai/player.h, client/build.c,
+	client/client.c, client/client.h, client/gui.c, client/guimap.c,
+	client/player.c, client/player.h, client/turn.c, common/buildrec.c,
+	common/map.h, common/map_query.c, common/state.c, server/buildutil.c,
+	server/server.h, server/turn.c: Added sailing of ships.
+
+	* Fixed bug that ships may disappear on reconnect.
+
+2003-07-19  Bas Wijnen  <b.wijnen@phys.rug.nl>
+
+	* ai/greedy.c: Fixed ai building bug 772865
+	
+	* server/gnocatan-server-gtk.c, server/meta.c, server/server.h:
+	Added "Send hostname" for metaserver to allow masqueraded hosts to
+	show correctly (they need a forwarded port).
+
+	* server/player.c, server/pregame.c: Fixed bug 770314.
+
+	* common/map_query.c: New longest road algorithm, fixes bugs
+	  #762927 and #774107.
+
+2003-07-04  Bas Wijnen  <b.wijnen@phys.rug.nl>
+
+	* client/gui.c: Added hotkey support for standard actions
+
 2003-05-31  Jeff Breidenbach  <jab@debian.org>
 
 	* Security fixes courtesy of Bas Wijnen
