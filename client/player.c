@@ -272,19 +272,11 @@ void player_change_name(gint player_num, gchar *name)
 
 	player = players + player_num;
 	old_name = player->name;
-	if (name == NULL) {
-		player->name = NULL;
-		if (old_name == NULL)
-			log_message( MSG_NAMEANON, _("Player %d is now anonymous.\n"), player_num);
-		else
-			log_message( MSG_NAMEANON, _("%s is now anonymous.\n"), old_name);
-	} else {
-		player->name = g_strdup(name);
-		if (old_name == NULL)
-			log_message( MSG_NAMEANON, _("Player %d is now %s.\n"), player_num, name);
-		else
-			log_message( MSG_NAMEANON, _("%s is now %s.\n"), old_name, name);
-	}
+	player->name = g_strdup(name);
+	if (old_name == NULL)
+		log_message( MSG_NAMEANON, _("Player %d is now %s.\n"), player_num, name);
+	else
+		log_message( MSG_NAMEANON, _("%s is now %s.\n"), old_name, name);
 	if (old_name != NULL)
 		g_free(old_name);
 

@@ -638,10 +638,21 @@ void player_set_name(Player *player, gchar *name)
 	else if (name != NULL)
 		sm_send(player->sm, "ERR name-already-used '%s'\n", name);
 
-	if (player->name == NULL)
-		player_broadcast(player, PB_ALL, "is anonymous\n");
-	else
-		player_broadcast(player, PB_ALL, "is %s\n", player->name);
+	if (player->name == NULL) {
+		gchar tmp[20]; /* max player is 8, so this should be enough */
+		sprintf(tmp, "Player%d", player->num);
+		/* since there are at most 8 players, the loop will always
+		 * be ended by a break.  However, if it magically isn't then
+		 * there is a bug: it expects to have a unique name then,
+		 * while it doesn't. */
+		for (i = strlen (tmp); i < sizeof (tmp) - 1; ++i) {
+			if (player_by_name (game, tmp) == NULL) break;
+			tmp[i] = '_';
+			tmp[++i] = 0;
+		}
+		player->name = g_strdup(tmp);
+	}
+	player_broadcast(player, PB_ALL, "is %s\n", player->name);
 
 	if (playeriscurrent) {
 		game->curr_player = player->name;

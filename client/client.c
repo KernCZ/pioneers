@@ -257,10 +257,6 @@ static gboolean check_chat_or_name(StateMachine *sm)
 		*/
 		return TRUE;
 	}
-	if (sm_recv(sm, "player %d is anonymous", &player_num)) {
-		player_change_name(player_num, NULL);
-		return TRUE;
-	}
 	if (sm_recv(sm, "player %d is %S", &player_num, str, sizeof (str))) {
 		player_change_name(player_num, str);
 		return TRUE;

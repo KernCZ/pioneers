@@ -1,3 +1,11 @@
+2003-09-25  Bas Wijnen <b.wijnen@phys.rug.nl>
+	* ai/greedy.c: Fixed bug.
+	* server/player.c, client/player.c, client/client.c: Fixed bug.
+
+2003-08-15  Yusei <yusei@ragondux.com>
+	* server/player.c: fixed a bug with anonymous players that caused the
+	first player to get their turn.
+
 2003-08-15  Roland Clobus <rclobus@bigfoot.com>
 	* client/legend.c: fixed text-display for gold in legend-dialog
 
