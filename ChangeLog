@@ -1,4 +1,9 @@
 2003-10-15  Bas Wijnen <b.wijnen@phys.rug.nl>
+	* README: Changed version number.
+	* client/player.c: bugfix.
+	* po/de.po, po/es.po, po/gnocatan.pot: updated.
+
+2003-10-15  Bas Wijnen <b.wijnen@phys.rug.nl>
 	* ai/client.c: Use new disconnect protocol.
 	* client/build.c: Fixed ship move undo bug.
 	* server/gold.c, server/robber.c, server/trade.c: Fixed viewer bugs.
