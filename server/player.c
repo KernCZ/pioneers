@@ -264,19 +264,20 @@ void player_setup(Player *player, int playernum, gchar *name)
 		if (player_by_name (game, namep) != NULL) {
 			gint i;
 			/* put the name in the buffer, so it is editable */
-			if (namep != nm)
+			if (namep != nm) {
 				strncpy (nm, namep, sizeof (nm) );
-			namep = nm;
+				namep = nm;
+			}
+			/* add underscores until the name is unique */
 			for (i = strlen (nm); i < numElem (nm) - 1; ++i) {
 				if (player_by_name (game, nm) == NULL) break;
 				nm[i] = '_';
 				nm[i + 1] = 0;
 			}
-			if (i == numElem (name) - 1) {
+			if (i == numElem (nm) - 1) {
 				/* This should never happen */
 				/* use the connection name */
 				strncpy (nm, player->name, sizeof (nm) );
-				g_assert (player_by_name (game, nm) == NULL);
 			}
 		}
 		/* copy the (possibly new) name to dynamic memory */
