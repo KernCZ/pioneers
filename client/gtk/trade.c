@@ -931,15 +931,13 @@ GtkWidget *trade_build_page(void)
 			 G_CALLBACK(quote_select_cb), NULL);
 
 	/* Now create columns */
-	column = gtk_tree_view_column_new_with_attributes(
-								 /* Table header: Player who trades */
-								 _
-								 ("Player"),
-								 gtk_cell_renderer_pixbuf_new
-								 (),
-								 "pixbuf",
-								 TRADE_COLUMN_PLAYER,
-								 NULL);
+
+	/* Table header: Player who trades */
+	column = gtk_tree_view_column_new_with_attributes(_("Player"),
+							  gtk_cell_renderer_pixbuf_new
+							  (), "pixbuf",
+							  TRADE_COLUMN_PLAYER,
+							  NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(quotes), column);
 
 	column = gtk_tree_view_column_new_with_attributes("",
@@ -949,15 +947,12 @@ GtkWidget *trade_build_page(void)
 							  NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(quotes), column);
 
-	column = gtk_tree_view_column_new_with_attributes(
-								 /* Table header: Quote */
-								 _
-								 ("Quotes"),
-								 gtk_cell_renderer_text_new
-								 (),
-								 "text",
-								 TRADE_COLUMN_DESCRIPTION,
-								 NULL);
+	/* Table header: Quote */
+	column = gtk_tree_view_column_new_with_attributes(_("Quotes"),
+							  gtk_cell_renderer_text_new
+							  (), "text",
+							  TRADE_COLUMN_DESCRIPTION,
+							  NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(quotes), column);
 	gtk_widget_show(quotes);
 
@@ -966,18 +961,14 @@ GtkWidget *trade_build_page(void)
 	gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, TRUE, 0);
 	gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox), GTK_BUTTONBOX_END);
 
-	accept_btn = gtk_button_new_with_mnemonic(
-							 /* Button text: Trade page, accept selected quote */
-							 _
-							 ("_Accept Quote"));
+	/* Button text: Trade page, accept selected quote */
+	accept_btn = gtk_button_new_with_mnemonic(_("_Accept Quote"));
 	frontend_gui_register(accept_btn, GUI_TRADE_ACCEPT, "clicked");
 	gtk_widget_show(accept_btn);
 	gtk_container_add(GTK_CONTAINER(bbox), accept_btn);
 
-	finish_btn = gtk_button_new_with_mnemonic(
-							 /* Button text: Trade page, finish trading */
-							 _
-							 ("_Finish Trading"));
+	/* Button text: Trade page, finish trading */
+	finish_btn = gtk_button_new_with_mnemonic(_("_Finish Trading"));
 	frontend_gui_register(finish_btn, GUI_TRADE_FINISH, "clicked");
 	gtk_widget_show(finish_btn);
 	gtk_container_add(GTK_CONTAINER(bbox), finish_btn);
