@@ -39,7 +39,6 @@ gnocatan_SOURCES = \
 	quote.c \
 	resource.c \
 	road_building.c \
-	ship_building.c \
 	robber.c \
 	setup.c \
 	stock.c \
