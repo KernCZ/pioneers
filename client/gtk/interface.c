@@ -32,6 +32,7 @@ static GuiState previous_state;
 
 static Hex *robber_hex;
 static gboolean gold_busy = FALSE, discard_busy = FALSE, robber_busy = FALSE;
+static gboolean have_turn = FALSE;
 
 /* for ship movement, store the position where to move from */
 static Edge *ship_from;
@@ -307,6 +308,7 @@ static void frontend_state_turn (GuiEvent event)
 		cb_buy_develop ();
 		return;
 	case GUI_FINISH:
+		have_turn = FALSE;
 		cb_end_turn ();
 		set_gui_state (frontend_state_idle);
 		return;
@@ -317,7 +319,15 @@ static void frontend_state_turn (GuiEvent event)
 
 void frontend_turn ()
 {
-	if (get_gui_state () == frontend_state_turn) return;
+	/* if it already is our turn, just update the gui (maybe something
+	 * happened), but don't beep */
+	if (have_turn) {
+		/* this is in the if, because it gets called from set_gui_state
+		 * anyway. */
+		frontend_gui_update ();
+		return;
+	}
+	have_turn = TRUE;
 	set_gui_state (frontend_state_turn);
 	gdk_beep ();
 }
@@ -723,10 +733,12 @@ void frontend_mode_setup (GuiEvent event)
 	}
 }
 
-void frontend_setup (unsigned num, const gchar *msg)
+void frontend_setup (unsigned num_settlements, unsigned num_roads)
 {
-	if (get_gui_state () == frontend_mode_setup) return;
-	gui_set_instructions (msg);
+	if (get_gui_state () == frontend_mode_setup) {
+		frontend_gui_update ();
+		return;
+	}
 	set_gui_state (frontend_mode_setup);
 	gdk_beep ();
 }

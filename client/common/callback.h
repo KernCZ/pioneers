@@ -132,9 +132,9 @@ struct callbacks {
 	void (*init_game)(void);
 	/* the game starts. */
 	void (*start_game)(void);
-	/* You must setup.  Num is the number of settlements + roads that
-	 * should be built.  message can be displayed to the user. */
-	void (*setup)(unsigned num, const gchar *message);
+	/* You must setup.  Num_* is the number of settlements/roads that
+	 * should still be built. */
+	void (*setup)(unsigned num_settlements, unsigned num_roads);
 	/* Someone did a call for quotes */
 	void (*quote)(gint player_num, gint *they_supply, gint *they_receive);
 	/* you played a roadbuilding development card, so start building. */
@@ -261,7 +261,7 @@ void cb_choose_gold (gint *resources);
 gboolean have_rolled_dice (void);
 gboolean can_buy_develop (void);
 gboolean can_play_develop (int card);
-gboolean can_play_any_develop (); /* TODO: This code should be called */
+gboolean can_play_any_develop (void); /* TODO: This code should be called */
 Player *player_get (gint num);
 gboolean player_is_viewer (gint num);
 Viewer *viewer_get (gint num);
@@ -270,6 +270,7 @@ gint my_player_num (void);
 gint num_players (void);
 gint current_player (void);
 gint build_count_edges (void);
+gint build_count_settlements(void);
 gint build_count (BuildType type);
 gint stock_num_roads (void);
 gint stock_num_ships (void);

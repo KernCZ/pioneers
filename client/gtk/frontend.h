@@ -108,7 +108,7 @@ void frontend_gold_add (gint player_num, gint gold_num);
 void frontend_gold_remove (gint player_num, gint *resources);
 void frontend_gold_choose (gint gold_num, gint *bank);
 void frontend_gold_done (void);
-void frontend_setup (unsigned num, const gchar *msg);
+void frontend_setup (unsigned num_settlements, unsigned num_roads);
 void frontend_quote (gint player_num, gint *they_supply, gint *they_receive);
 void frontend_roadbuilding (gint num_roads);
 void frontend_monopoly (void);

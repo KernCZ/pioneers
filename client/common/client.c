@@ -1030,11 +1030,15 @@ static char *setup_msg()
 
 static gboolean mode_setup(StateMachine *sm, gint event)
 {
+	unsigned total;
 	sm_state_name(sm, "mode_setup");
 	switch (event) {
 	case SM_ENTER:
 		callback_mode = MODE_SETUP;
-		callbacks.setup (is_setup_double () ? 2 : 1, setup_msg () );
+		callbacks.instructions (setup_msg () );
+		total = is_setup_double () ? 2 : 1;
+		callbacks.setup (total - build_count_settlements (),
+				total - build_count_edges () );
 		break;
 	case SM_RECV:
 		/* When a line of text comes in from the network, the

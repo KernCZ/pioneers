@@ -31,10 +31,12 @@
 
 static GList *build_list;
 static gboolean built;	/* have we buld road / settlement / city? */
+static gint num_edges, num_settlements;
 
 void build_clear()
 {
 	build_list = buildrec_free(build_list);
+	num_edges = num_settlements = 0;
 }
 
 void build_new_turn()
@@ -58,6 +60,19 @@ void build_remove(BuildType type, gint x, gint y, gint pos)
 		 && rec->y == y
 		 && rec->pos == pos);
 	g_free(rec);
+
+	switch (type) {
+	case BUILD_SETTLEMENT:
+		--num_settlements;
+		break;
+	case BUILD_ROAD:
+	case BUILD_SHIP:
+	case BUILD_BRIDGE:
+		--num_edges;
+		break;
+	default:
+		break;
+	}
 
 	/* If the build_list is now empty (no more items to undo), clear built flag
 	   so trading is reallowed with strict-trade */
@@ -104,6 +119,19 @@ void build_add(BuildType type, gint x, gint y, gint pos, gint *cost,
 	build_list = g_list_append(build_list, rec);
 	built = TRUE;
 
+	switch (type) {
+	case BUILD_SETTLEMENT:
+		++num_settlements;
+		break;
+	case BUILD_ROAD:
+	case BUILD_SHIP:
+	case BUILD_BRIDGE:
+		++num_edges;
+		break;
+	default:
+		break;
+	}
+
 	if (newbuild) {
 		player_build_add(my_player_num(), type, x, y, pos, TRUE);
 	}
@@ -111,7 +139,12 @@ void build_add(BuildType type, gint x, gint y, gint pos, gint *cost,
 
 gint build_count_edges()
 {
-    return buildrec_count_edges(build_list);
+    return num_edges;
+}
+
+gint build_count_settlements()
+{
+    return num_settlements;
 }
 
 gint build_count(BuildType type)
@@ -161,13 +194,3 @@ gboolean build_can_setup_settlement(Node *node, gboolean double_setup)
 {
 	return buildrec_can_setup_settlement(build_list, map, node, double_setup);
 }
-
-#if 0
-BuildRec *build_last()
-{
-	GList *list = g_list_last(build_list);
-	if (list != NULL)
-		return list->data;
-	return NULL;
-}
-#endif

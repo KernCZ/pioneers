@@ -43,12 +43,12 @@ gboolean setup_can_build_road()
 	if (double_setup) {
 		if (build_count_edges() == 2)
 			return FALSE;
-		return build_count(BUILD_SETTLEMENT) < 2
+		return build_count_settlements() < 2
 			|| map_can_place_road(map, my_player_num());
 	} else {
 		if (build_count_edges() == 1)
 			return FALSE;
-		return build_count(BUILD_SETTLEMENT) < 1
+		return build_count_settlements() < 1
 			|| map_can_place_road(map, my_player_num());
 	}
 }
@@ -60,12 +60,12 @@ gboolean setup_can_build_ship()
 	if (double_setup) {
 		if (build_count_edges() == 2)
 			return FALSE;
-		return build_count(BUILD_SETTLEMENT) < 2
+		return build_count_settlements() < 2
 			|| map_can_place_ship(map, my_player_num());
 	} else {
 		if (build_count_edges() == 1)
 			return FALSE;
-		return build_count(BUILD_SETTLEMENT) < 1
+		return build_count_settlements() < 1
 			|| map_can_place_ship(map, my_player_num());
 	}
 }
@@ -77,12 +77,12 @@ gboolean setup_can_build_bridge()
 	if (double_setup) {
 		if (build_count_edges() == 2)
 			return FALSE;
-		return build_count(BUILD_SETTLEMENT) < 2
+		return build_count_settlements() < 2
 			|| map_can_place_bridge(map, my_player_num());
 	} else {
 		if (build_count_edges() == 1)
 			return FALSE;
-		return build_count(BUILD_SETTLEMENT) < 1
+		return build_count_settlements() < 1
 			|| map_can_place_bridge(map, my_player_num());
 	}
 }
@@ -92,20 +92,20 @@ gboolean setup_can_build_settlement ()
 	if (game_params->num_build_type[BUILD_SETTLEMENT] == 0)
 		return FALSE;
 	if (double_setup)
-		return build_count(BUILD_SETTLEMENT) < 2;
+		return build_count_settlements() < 2;
 	else
-		return build_count(BUILD_SETTLEMENT) < 1;
+		return build_count_settlements() < 1;
 }
 
 gboolean setup_can_finish()
 {
 	if (double_setup)
 		return build_count_edges() == 2
-			&& build_count(BUILD_SETTLEMENT) == 2
+			&& build_count_settlements() == 2
 			&& build_is_valid();
 	else
 		return build_count_edges() == 1
-			&& build_count(BUILD_SETTLEMENT) == 1
+			&& build_count_settlements() == 1
 			&& build_is_valid();
 }
 
