@@ -22,7 +22,6 @@
 #include "cost.h"
 #include "log.h"
 #include "common_gtk.h"
-#include "config-gnome.h"
 
 Map *map;			/* handle to map drawing code */
 GtkWidget *app_window;		/* main application window */
@@ -83,7 +82,7 @@ void gui_set_vp_target_value( gint vp )
 {
 	gchar *vp_text;
 	
-	g_snprintf( vp_text, 25, "VP Needed to Win: %i", vp );
+	g_snprintf( vp_text, 30, "Points Needed to Win: %i", vp );
 	
 	gtk_label_set_text( GTK_LABEL(vp_target_status), vp_text );
 }
@@ -418,8 +417,9 @@ static void settings_apply_cb(GnomePropertyBox *prop_box, gint page, gpointer da
 		                                             GNOME_APP_TOOLBAR_NAME );
 		toolbar = gnome_dock_item_get_child( dock_item );
 		
-		config_set_int( "settings/toolbar_style",
+		gnome_config_set_int( "/gnocatan/settings/toolbar_style",
 		                      toolbar_style );
+		gnome_config_sync();
 		gtk_toolbar_set_style( GTK_TOOLBAR(toolbar), toolbar_style );
 		
 		/* Turn auto-shrink off */
@@ -462,7 +462,7 @@ static void menu_settings_cb(GtkWidget *widget, void *user_data)
 	                                                "Both Icons and Text" );
 
 	/* Set the default button state */
-	toolbar_style = config_get_int("settings/toolbar_style=0",
+	toolbar_style = gnome_config_get_int_with_default("/gnocatan/settings/toolbar_style=0",
 	                                                  &default_returned );
 	if(default_returned) {
 		toolbar_style = GTK_TOOLBAR_BOTH;
@@ -755,7 +755,7 @@ GtkWidget* gui_build_interface()
 			   GTK_SIGNAL_FUNC(quit_cb), NULL);
 	
 	toolbar_style = 
-	    config_get_int("settings/toolbar_style=0",
+	    gnome_config_get_int_with_default("/gnocatan/settings/toolbar_style=0",
 	                                      &default_returned );
 	if(default_returned) {
 		toolbar_style = GTK_TOOLBAR_BOTH;

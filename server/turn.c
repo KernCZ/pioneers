@@ -57,7 +57,7 @@ static void build_add(Player *player, BuildType type, gint x, gint y, gint pos)
 		/* Make sure that there are some roads left to use!
 		 */
 		if (player->num_roads == game->params->num_build_type[BUILD_ROAD]) {
-			sm_send(sm, "ERR too-many\n");
+			sm_send(sm, "ERR too-many road\n");
 			return;
 		}
 		edge_add(player, BUILD_ROAD, x, y, pos, TRUE);
@@ -82,7 +82,7 @@ static void build_add(Player *player, BuildType type, gint x, gint y, gint pos)
 		/* Make sure that there are some roads left to use!
 		 */
 		if (player->num_bridges == game->params->num_build_type[BUILD_BRIDGE]) {
-			sm_send(sm, "ERR too-many\n");
+			sm_send(sm, "ERR too-many bridge\n");
 			return;
 		}
 		edge_add(player, BUILD_BRIDGE, x, y, pos, TRUE);
@@ -107,7 +107,7 @@ static void build_add(Player *player, BuildType type, gint x, gint y, gint pos)
 		/* Make sure that there are some roads left to use!
 		 */
 		if (player->num_ships == game->params->num_build_type[BUILD_SHIP]) {
-			sm_send(sm, "ERR too-many\n");
+			sm_send(sm, "ERR too-many ship\n");
 			return;
 		}
 		edge_add(player, BUILD_SHIP, x, y, pos, TRUE);
@@ -133,7 +133,7 @@ static void build_add(Player *player, BuildType type, gint x, gint y, gint pos)
 		/* Make sure that there are some settlements left to use!
 		 */
 		if (player->num_settlements == game->params->num_build_type[BUILD_SETTLEMENT]) {
-			sm_send(sm, "ERR too-many\n");
+			sm_send(sm, "ERR too-many settlement\n");
 			return;
 		}
 		if (!cost_can_afford(cost_settlement(), player->assets)) {
@@ -144,7 +144,7 @@ static void build_add(Player *player, BuildType type, gint x, gint y, gint pos)
 		/* Make sure that there are some cities left to use!
 		 */
 		if (player->num_cities == game->params->num_build_type[BUILD_CITY]) {
-			sm_send(sm, "ERR too-many\n");
+			sm_send(sm, "ERR too-many city\n");
 			return;
 		}
 		if (can_settlement_be_upgraded(map_node(map, x, y, pos),
