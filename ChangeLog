@@ -1,3 +1,8 @@
+2000-05-10  Steve Langasek <vorlon@dodds.net>
+
+	* common/log.h: internationalization definitions handled internally,
+	so we don't have to include <gnome.h> to get them.
+
 2000-05-08  Dave Cole <dave@dccs.com.au>
 
 	* common/map.h: Changed the visited attribute in Edge and Node to
