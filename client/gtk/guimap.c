@@ -1505,7 +1505,7 @@ if (element->pointer) {
 		if (gmap->cursor.pointer != NULL)
 			mode->erase_cursor(gmap);
 		if (gmap->check_func == NULL
-		    || (element != NULL
+		    || (element->pointer != NULL
 			&& gmap->check_func(*element, gmap->cursor_owner, gmap->user_data))) {
 			gmap->cursor = *element;
 			mode->draw_cursor(gmap);

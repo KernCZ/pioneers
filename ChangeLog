@@ -2,6 +2,8 @@
 	* client/gtk/offline.c(frontend_offline): Game|Connect incorrectly
 	available when client is started with a commandline with server and
 	port
+	* client/gtk/guimap.c(guimap_cursor_move): Crash when leaving the map
+	with a cursor active
 	
 2004-11-12 Roland Clobus <rclobus@bigfoot.com>
 	* Actually updated the build number to 0.8.1.42
