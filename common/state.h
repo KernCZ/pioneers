@@ -201,5 +201,7 @@ gboolean sm_connect(StateMachine *sm, gchar *host, gint port);
 void sm_use_fd(StateMachine *sm, gint fd);
 void sm_changed_cb(StateMachine *sm);
 void sm_event_cb(StateMachine *sm, gint event);
+void dec_use_count(StateMachine *sm);
+void inc_use_count(StateMachine *sm);
 
 #endif
