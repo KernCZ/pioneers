@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2003-01-21 01:06-0600\n"
+"POT-Creation-Date: 2003-01-23 23:38-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -258,26 +258,26 @@ msgstr ""
 
 #. I get the cards!
 #.
-#: ai/monopoly.c:38 client/monopoly.c:141
+#: ai/monopoly.c:38 client/monopoly.c:144
 #, c-format
 msgid "You get %s from %s.\n"
 msgstr ""
 
 #. I lose the cards!
 #.
-#: ai/monopoly.c:47 client/monopoly.c:150
+#: ai/monopoly.c:47 client/monopoly.c:152
 #, c-format
 msgid "%s took %s from you.\n"
 msgstr ""
 
 #. I am a bystander
 #.
-#: ai/monopoly.c:55 client/monopoly.c:158
+#: ai/monopoly.c:55 client/monopoly.c:159
 #, c-format
 msgid "%s took %s from"
 msgstr ""
 
-#: ai/monopoly.c:57 client/monopoly.c:160
+#: ai/monopoly.c:57 client/monopoly.c:161
 #, c-format
 msgid " %s.\n"
 msgstr ""
@@ -383,84 +383,84 @@ msgstr ""
 
 #. We stole a card :-)
 #.
-#: ai/player.c:256 client/player.c:536
+#: ai/player.c:256 client/player.c:539
 #, c-format
 msgid "You stole %s from %s.\n"
 msgstr ""
 
 #. Someone stole our card :-(
 #.
-#: ai/player.c:263 client/player.c:543
+#: ai/player.c:263 client/player.c:545
 #, c-format
 msgid "%s stole %s from you.\n"
 msgstr ""
 
-#: ai/player.c:295 client/player.c:575
+#: ai/player.c:295 client/player.c:576
 #, c-format
 msgid "%s gave %s nothing!?\n"
 msgstr ""
 
-#: ai/player.c:300 ai/player.c:307 client/player.c:580 client/player.c:587
+#: ai/player.c:300 ai/player.c:307 client/player.c:581 client/player.c:588
 #, c-format
 msgid "%s gave %s %s for free.\n"
 msgstr ""
 
-#: ai/player.c:314 client/player.c:594
+#: ai/player.c:314 client/player.c:595
 #, c-format
 msgid "%s gave %s %s in exchange for %s.\n"
 msgstr ""
 
-#: ai/player.c:330 client/player.c:610
+#: ai/player.c:330 client/player.c:616
 #, c-format
 msgid "%s exchanged %s for %s.\n"
 msgstr ""
 
-#: ai/player.c:346 client/player.c:630
+#: ai/player.c:346 client/player.c:635
 #, c-format
 msgid "%s built a road.\n"
 msgstr ""
 
-#: ai/player.c:355 client/player.c:643
+#: ai/player.c:355 client/player.c:648
 #, c-format
 msgid "%s built a ship.\n"
 msgstr ""
 
-#: ai/player.c:364 client/player.c:656
+#: ai/player.c:364 client/player.c:661
 #, c-format
 msgid "%s built a settlement.\n"
 msgstr ""
 
-#: ai/player.c:380 client/player.c:676
+#: ai/player.c:380 client/player.c:681
 #, c-format
 msgid "%s built a city.\n"
 msgstr ""
 
-#: ai/player.c:387 client/player.c:684
+#: ai/player.c:387 client/player.c:689
 #, c-format
 msgid "player_build_add called with BUILD_NONE for user %s\n"
 msgstr ""
 
-#: ai/player.c:408 client/player.c:706
+#: ai/player.c:408 client/player.c:711
 #, c-format
 msgid "%s removed a road.\n"
 msgstr ""
 
-#: ai/player.c:417 client/player.c:716
+#: ai/player.c:417 client/player.c:721
 #, c-format
 msgid "%s removed a ship.\n"
 msgstr ""
 
-#: ai/player.c:426 client/player.c:726
+#: ai/player.c:426 client/player.c:731
 #, c-format
 msgid "%s removed a settlement.\n"
 msgstr ""
 
-#: ai/player.c:436 client/player.c:737
+#: ai/player.c:436 client/player.c:742
 #, c-format
 msgid "%s removed a city.\n"
 msgstr ""
 
-#: ai/player.c:446 client/player.c:747
+#: ai/player.c:446 client/player.c:752
 #, c-format
 msgid "player_build_remove called with BUILD_NONE for user %s\n"
 msgstr ""
@@ -859,31 +859,31 @@ msgstr ""
 msgid "Create New Server"
 msgstr ""
 
-#: client/connect.c:860 client/gui.c:858
+#: client/connect.c:864 client/gui.c:858
 msgid "Connect to Gnocatan server"
 msgstr ""
 
-#: client/connect.c:879
+#: client/connect.c:883
 msgid "Meta Server"
 msgstr ""
 
-#: client/connect.c:895
+#: client/connect.c:899
 msgid "Query Meta Server"
 msgstr ""
 
-#: client/connect.c:909
+#: client/connect.c:913
 msgid "Server Host"
 msgstr ""
 
-#: client/connect.c:927
+#: client/connect.c:931
 msgid "Server Port"
 msgstr ""
 
-#: client/connect.c:950
+#: client/connect.c:954
 msgid "Player Name"
 msgstr ""
 
-#: client/connect.c:1010
+#: client/connect.c:1014
 msgid "Recent Servers"
 msgstr ""
 
@@ -1297,7 +1297,7 @@ msgstr ""
 msgid "Waiting for %s."
 msgstr ""
 
-#: client/player.c:527
+#: client/player.c:529
 msgid " stole a resource from "
 msgstr ""
 
@@ -1383,37 +1383,37 @@ msgstr ""
 msgid "%d lumber cards"
 msgstr ""
 
-#: client/resource.c:178
+#: client/resource.c:183
 #, c-format
 msgid ", and %s"
 msgstr ""
 
-#: client/resource.c:180
+#: client/resource.c:186
 #, c-format
 msgid "%s, "
 msgstr ""
 
-#: client/resource.c:226
+#: client/resource.c:232
 #, c-format
 msgid "player %d resource count wrong: server=%d, me=%d"
 msgstr ""
 
-#: client/resource.c:239
+#: client/resource.c:245
 msgid "resources wrong:"
 msgstr ""
 
-#: client/resource.c:243
+#: client/resource.c:249
 #, c-format
 msgid ""
 "\n"
 "%s: server=%d, me=%d"
 msgstr ""
 
-#: client/resource.c:270
+#: client/resource.c:276
 msgid "Resources"
 msgstr ""
 
-#: client/resource.c:349
+#: client/resource.c:355
 msgid "Total"
 msgstr ""
 
@@ -1519,7 +1519,7 @@ msgid "University of Catan Cards:"
 msgstr ""
 
 #: client/settingscreen.c:202
-msgid "Governers House Cards:"
+msgid "Governor's House Cards:"
 msgstr ""
 
 #: client/settingscreen.c:204

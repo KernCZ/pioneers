@@ -12,9 +12,8 @@ build-stamp:
 	dh_testdir
 
 	# Add here commands to compile the package.
-	./autogen.sh --prefix=/usr --bindir=/usr/games --mandir=/usr/share/man
+	./configure --prefix=/usr --bindir=/usr/games --mandir=/usr/share/man
 	$(MAKE)
-	cp ChangeLog changelog
 	touch build-stamp
 
 clean:
@@ -24,10 +23,6 @@ clean:
 
 	# Add here commands to clean up after the build process.
 	-$(MAKE) distclean
-	# Some Makefile.in's are auto-generated, too
-	find . -name Makefile.in |\
-	grep -v -e po/Makefile.in -e intl/Makefile.in | xargs -r rm
-	rm -f changelog
 	dh_clean
 
 install: install-stamp
@@ -51,9 +46,9 @@ install-stamp: build-stamp
 binary-indep: build install
 	dh_testdir -i
 	dh_testroot -i
-	dh_installdocs -A changelog README
+	dh_installdocs -A README
 	dh_installmenu -i
-	dh_installchangelogs -i
+	dh_installchangelogs -i ChangeLog
 	dh_link -i
 	dh_compress -i
 	dh_fixperms -i
@@ -66,12 +61,12 @@ binary-indep: build install
 binary-arch: build install
 	dh_testdir -a
 	dh_testroot -a
-	dh_installdocs -A changelog README
+	dh_installdocs -A README
 	dh_undocumented -a
 	dh_installinit -a
 	dh_installexamples -a
 	dh_installmenu -a
-	dh_installchangelogs -a
+	dh_installchangelogs -a ChangeLog
 	dh_strip -a
 	dh_link -a
 	dh_compress -a

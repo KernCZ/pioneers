@@ -1,3 +1,15 @@
+2003-01-24  Steve Langasek  <vorlon@debian.org>
+
+	* client/settingscreen.c, po/gnocatan.pot, po/de.po: fix misspelling.
+
+	* po/es.po: translation improvements.  Although only 60% of the
+	  gettext strings are translated, the game is now almost
+	  completely playable in Spanish.
+
+	* debian/rules: tweak Debian build script so that we can skip
+	  certain developer-only tasks, and so we don't end up with an
+	  extra changelog in the directory.
+
 2003-01-23  Steve Langasek  <vorlon@debian.org>
 
 	* client/connect.c, common/meta.h: automatically upgrade the

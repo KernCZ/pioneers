@@ -199,7 +199,7 @@ GtkWidget *settings_create_dlg()
 	add_setting_val(table, 3, 1, TYPE_NUM, game_params->num_develop_type[DEVEL_CHAPEL], NULL);
 	add_setting_desc(table, 4, 0, _("University of Catan Cards:"));
 	add_setting_val(table, 4, 1, TYPE_NUM, game_params->num_develop_type[DEVEL_UNIVERSITY_OF_CATAN], NULL);
-	add_setting_desc(table, 5, 0, _("Governers House Cards:"));
+	add_setting_desc(table, 5, 0, _("Governor's House Cards:"));
 	add_setting_val(table, 5, 1, TYPE_NUM, game_params->num_develop_type[DEVEL_GOVERNORS_HOUSE], NULL);
 	add_setting_desc(table, 6, 0, _("Library Cards:"));
 	add_setting_val(table, 6, 1, TYPE_NUM, game_params->num_develop_type[DEVEL_LIBRARY], NULL);
