@@ -30,6 +30,7 @@ gint legend_page_enabled;
 
 GtkWidget *gui_get_dialog_button(GtkDialog *dlg, gint button);
 
+void gui_reset(void);
 void gui_set_instructions(const gchar *text);
 void gui_set_vp_target_value(gint vp);
 void gui_set_net_status(gchar *text);

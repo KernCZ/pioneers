@@ -8,6 +8,9 @@
 	server/player.c, server/pregame.c, server/server.c, server/server.h,
 	server/gtk/gnocatan-server-gtk.c: Add the ability to randomize
 	seating order.
+	* client/gtk/guimap.c, client/gtk/guimap.h, client/gtk/gui.c,
+	client/gtk/gui.h, client/gtk/callbacks.c: When starting a new game,
+	clear the highlighted chits, pointed out by Arjan Schrijver.
 
 	Gnocatan is joined by a new developer: Brain Wellington
 

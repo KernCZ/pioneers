@@ -228,6 +228,10 @@ GtkWidget *gui_get_dialog_button(GtkDialog *dlg, gint button)
 	return NULL;
 }
 
+void gui_reset(void) {
+	guimap_reset(gmap);
+}
+
 void gui_set_instructions(const gchar *text)
 {
 	gnome_appbar_set_status(GNOME_APPBAR(app_bar), text);

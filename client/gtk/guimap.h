@@ -90,6 +90,7 @@ extern GdkColor blue;
 extern GdkColor lightblue;
 
 GuiMap *guimap_new(void);
+void guimap_reset(GuiMap *gmap);
 GdkPixmap *guimap_terrain(Terrain terrain);
 
 void guimap_road_polygon(const GuiMap *gmap, const Edge *edge, Polygon *poly);

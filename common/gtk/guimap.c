@@ -80,6 +80,11 @@ GuiMap *guimap_new()
 	return gmap;
 }
 
+void guimap_reset(GuiMap *gmap)
+{
+	gmap->highlight_chit = -1;
+}
+
 static GdkPoint settlement_points[] = {
 	{  20, 20 }, { 20, -8 }, { 0, -28 }, { -20, -8 },
 	{ -20, 20 }, { 20, 20 }
