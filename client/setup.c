@@ -34,6 +34,8 @@ gboolean setup_can_undo()
 
 gboolean setup_can_build_road()
 {
+	if (game_params->num_build_type[BUILD_ROAD] == 0)
+		return FALSE;
 	if (double_setup) {
 		if (build_count_edges() == 2)
 			return FALSE;
@@ -49,6 +51,8 @@ gboolean setup_can_build_road()
 
 gboolean setup_can_build_ship()
 {
+	if (game_params->num_build_type[BUILD_SHIP] == 0)
+		return FALSE;
 	if (double_setup) {
 		if (build_count_edges() == 2)
 			return FALSE;
@@ -64,6 +68,8 @@ gboolean setup_can_build_ship()
 
 gboolean setup_can_build_bridge()
 {
+	if (game_params->num_build_type[BUILD_BRIDGE] == 0)
+		return FALSE;
 	if (double_setup) {
 		if (build_count_edges() == 2)
 			return FALSE;
@@ -79,6 +85,8 @@ gboolean setup_can_build_bridge()
 
 gboolean setup_can_build_settlement()
 {
+	if (game_params->num_build_type[BUILD_SETTLEMENT] == 0)
+		return FALSE;
 	if (double_setup)
 		return build_count(BUILD_SETTLEMENT) < 2;
 	else
