@@ -22,21 +22,55 @@ static GtkWidget *chat_entry;	/* messages text widget */
 
 void chat_parser( gint player_num, char chat_str[MAX_CHAT] )
 {
+	int tempchatcolor = MSG_INFO;
+
 	log_message( MSG_INFO, _("%s"), player_name(player_num, TRUE));
 	switch( chat_str[0] )
 	{
 	 case ':':
 		chat_str += 1;
+		log_timestamp = 0;
 		log_message( MSG_INFO, _(" "));
 		break;
 	 case ';':
 		chat_str += 1;
 		break;
 	 default:
+		log_timestamp = 0;
 		log_message( MSG_INFO, _(" said: "));
 		break;
 	}
-	log_message( MSG_CHAT, "%s\n", chat_str );
+
+	switch( player_num )
+	{
+		case 0:
+			tempchatcolor = MSG_PLAYER1;
+			break;
+		case 1:
+			tempchatcolor = MSG_PLAYER2;
+			break;
+		case 2:
+			tempchatcolor = MSG_PLAYER3;
+			break;
+		case 3:
+			tempchatcolor = MSG_PLAYER4;
+			break;
+		case 4:
+			tempchatcolor = MSG_PLAYER5;
+			break;
+		case 5:
+			tempchatcolor = MSG_PLAYER6;
+			break;
+		case 6:
+			tempchatcolor = MSG_PLAYER7;
+			break;
+		case 7:
+			tempchatcolor = MSG_PLAYER8;
+			break;
+	}
+	
+	log_timestamp = 0;
+	log_message( tempchatcolor, "%s\n", chat_str );
 	
 	return;
 }
