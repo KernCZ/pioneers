@@ -420,7 +420,7 @@ static GtkWidget *build_game_settings(GtkWidget *parent)
 			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 
-	adj = gtk_adjustment_new(10, 3, 20, 1, 1, 1);
+	adj = gtk_adjustment_new(10, 3, 99, 1, 1, 1);
 	victory_spin = gtk_spin_button_new(GTK_ADJUSTMENT(adj), 1, 0);
 	gtk_widget_show(victory_spin);
 	gtk_spin_button_set_numeric(GTK_SPIN_BUTTON(victory_spin), TRUE);

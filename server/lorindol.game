@@ -1,0 +1,57 @@
+title CentralEurope
+domestic-trade 
+num-players 4
+victory-points 40
+num-roads 80
+num-settlements 5
+num-cities 30
+num-ships 20
+resource-count 30
+develop-road 30
+develop-monopoly 2
+develop-plenty 30
+develop-soldier 30
+develop-market 5
+develop-chapel 5
+develop-university 5
+develop-governor 5
+chits 2,2,3,4,5,6,8,9,10,11,12
+register-server 0
+map
+s,f7,d,f8,sg3,s,s,s,s,s,s,s,sg5,f12,d,f3,d,f13,d,d,f122,d,s,d,d
+s,f11,f2,f163,s,s,s,s,s,s,s,s,f16,d,f17,s,d,f102,d,d,f150,sg0,f157,f154,d
+s,d,f5,s,s,s,s,s,s,s,s,s,f19,d,f20,s,d,f18,d,f125,d,s,d,d,f153
+s,s,s,s,s,s,s,s,s,s,s,f21,d,f4,f22,s,f23,d,s,f88,d,f148,d,f151,d
+s,s,s,s,s,s,f161,s,s,s,s,s,f24,d,f25,s,s,f162,s,d,f141,d,f149,d,d
+s,s,s,s,s,s,s,s,s,s,s,f26,d,f27,d,s,s,s,f28,d,f100,d,f152,d,d
+s,s,s,s,s,s,s,f29,s,s,s,s,s,s,d,d,s,s,d,d,d,d,d,d,f158
+s,s,s,s,sg5,s,s,f30,s,sg5,s,d,f31,s,f32,s,s,d,f33,f34,d,f107,d,f155,d
+s,s,s,s,s,f47,s,f36,d,s,f37,s,f38,s,s,s,s,d,f39,d,f40,d,d,d,s
+s,s,s,s,d,f41,s,f42,s,s,s,s,f43,s,s,f44,d,d,d,f45,d,f46,d,f156,d
+s,s,s,s,f35,f160,s,f55,d,s,s,f49,d,f50,s,f51,d,f52,d,d,f14,d,f53,d,d
+s,s,s,s,s,s,f54,d,f48,s,f56,d,f57,d,d,f58,d,d,d,d,f59,d,f60,f61,d
+s,s,s,s,s,s,sg1,s,s,s,f62,d,f63,d,f10,d,d,f64,d,f65,d,f66,d,d,f67
+s,s,s,s,s,s,d,f68,d,d,f69,f9,d,f70,f1,d,f71,d,f72,d,f73,d,f74,d,d
+s,s,s,s,s,s,f75,d,f76,d,f77,d,f78,d,f79,d,d,d,d,d,f81,d,d,s,f82
+s,s,s,s,s,s,s,d,f15,d,f83,d,f84,d,d,f85,d,d,f86,d,f87,s,s,sg1,s
+s,s,s,s,s,s,s,f89,d,f90,d,d,f91,d,d,f92,d,f93,d,f94,d,d,s,s,s
+s,s,s,s,s,s,s,d,f96,d,f97,d,f109,d,s,d,f98,d,d,d,d,f99,s,s,s
+s,s,s,s,f101,d,f116,d,d,f103,d,f104,d,d,d,s,f105,d,d,f124,f106,d,s,s,s
+s,s,s,f110,d,d,f135,d,s,s,s,s,s,f111,f80,s,s,f112,d,d,d,f113,s,d,f114
+s,s,s,f117,d,f118,d,d,f119,s,s,sg5,d,s,f120,d,s,s,f121,d,f159,s,s,f108,f123
+s,s,s,d,f6,d,f133,s,s,sg4,s,f136,d,s,d,f128,s,s,f129,d,s,f130,d,f131,f132
+s,s,s,sg0,f126,d,f134,s,s,f115,s,s,f127,s,s,f137,d,s,f138,d,f146,s,f140,d,f139
+s,s,s,s,s,s,s,s,s,sg5,f145,s,s,f142,d,s,f143,s,sg0,f144,d,s,sg2,s,s
+s,s,s,s,f164,f165,s,s,s,s,f147,d,s,s,s,s,s,s,s,s,f95,s,s,s,s
+.
+# CentralEurope
+# created 10/2003
+# by Martin Brotzeller <lorindol@cip.informatik.uni-wuerzburg.de>
+
+# This is a map of europe, cut down a bit at the eastern part because it
+# did not fit with the 0.7/0.8 servers. The only resource available is
+# grain, the only types of ports are grain ports. The reason, obviously, 
+# is to conquer a large-enough part of europe.
+
+# Strategy: Grab a harbor from the start of the game, and look out for
+# an area where you can connect fast to build your empire.

@@ -67,7 +67,14 @@ config_DATA = \
 	pond.game \
 	square.game \
 	star.game \
-	x.game
+	x.game \
+	Cube.game \
+	Another_swimming_pool_in_the_wall.game \
+	Evil_square.game \
+	GuerreDe100ans.game \
+	Mini_another_swimming_pool_in_the_wall.game \
+	henjes.game \
+	lorindol.game
 
 Games_DATA = gnocatan-server.desktop
 
