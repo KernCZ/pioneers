@@ -329,6 +329,7 @@ static gboolean display_hex(Map *map, Hex *hex, GuiMap *gmap)
 	GdkPoint points[6];
 	Polygon poly = { points, numElem(points) };
 	int idx;
+	const int radius = 15;
 
 	calc_hex_pos(gmap, hex->x, hex->y, &x_offset, &y_offset);
 
@@ -370,11 +371,13 @@ static gboolean display_hex(Map *map, Hex *hex, GuiMap *gmap)
 			gdk_gc_set_foreground(gmap->gc, &green);
 
 		gdk_draw_arc(gmap->pixmap, gmap->gc, TRUE,
-			     x_offset - 13, y_offset - 13, 26, 26,
+			     x_offset - radius, y_offset - radius,
+			     2 * radius, 2 * radius,
 			     0, 360 * 64);
 		gdk_gc_set_foreground(gmap->gc, &black);
 		gdk_draw_arc(gmap->pixmap, gmap->gc, FALSE,
-			     x_offset - 13, y_offset - 13, 26, 26,
+			     x_offset - radius, y_offset - radius,
+			     2 * radius, 2 * radius,
 			     0, 360 * 64);
 		sprintf(num, "%d", hex->roll);
 		gdk_text_extents(roll_font, num, strlen(num),
@@ -402,6 +405,8 @@ static gboolean display_hex(Map *map, Hex *hex, GuiMap *gmap)
 		gchar *str = "";
 		gint lbearing, rbearing, width, ascent, descent;
 
+		/* Draw lines from port to shore
+		 */
 		gdk_gc_set_foreground(gmap->gc, &white);
 		gdk_gc_set_line_attributes(gmap->gc, 1, GDK_LINE_ON_OFF_DASH,
 					   GDK_CAP_BUTT, GDK_JOIN_MITER);
@@ -412,34 +417,46 @@ static gboolean display_hex(Map *map, Hex *hex, GuiMap *gmap)
 		gdk_draw_line(gmap->pixmap, gmap->gc,
 			      x_offset, y_offset,
 			      points[hex->facing].x, points[hex->facing].y);
-
-		gdk_gc_set_foreground(gmap->gc, &roll_bg);
+		/* Fill/tile port indicator
+		 */
+		if (hex->resource == ANY_RESOURCE) {
+			gdk_gc_set_foreground(gmap->gc, &blue);
+		} else {
+			gdk_gc_set_fill(gmap->gc, GDK_TILED);
+			gdk_gc_set_tile(gmap->gc, terrain_tiles[hex->resource]);
+		}
 		gdk_draw_arc(gmap->pixmap, gmap->gc, TRUE,
-			     x_offset - 13, y_offset - 13, 26, 26,
+			     x_offset - radius, y_offset - radius,
+			     2 * radius, 2 * radius,
 			     0, 360 * 64);
-		if (hex->resource == ANY_RESOURCE)
+		gdk_gc_set_fill(gmap->gc, GDK_SOLID);
+		/* Outline port indicator
+		 */
+		gdk_gc_set_line_attributes(gmap->gc, 1, GDK_LINE_SOLID,
+					   GDK_CAP_BUTT, GDK_JOIN_MITER);
 			gdk_gc_set_foreground(gmap->gc, &black);
-		else
-			gdk_gc_set_foreground(gmap->gc, &white);
 		gdk_draw_arc(gmap->pixmap, gmap->gc, FALSE,
-			     x_offset - 13, y_offset - 13, 26, 26,
+			     x_offset - radius, y_offset - radius,
+			     2 * radius, 2 * radius,
 			     0, 360 * 64);
-		gdk_gc_set_foreground(gmap->gc, &black);
+		/* Print trading ratio
+		 */
+		gdk_gc_set_foreground(gmap->gc, &white);
 		switch (hex->resource) {
+		case BRICK_RESOURCE:
+		case GRAIN_RESOURCE:
+		case ORE_RESOURCE:
+		case WOOL_RESOURCE:
+		case LUMBER_RESOURCE: str = "2:1"; break;
+		case ANY_RESOURCE: str = "3:1"; break;
 		case NO_RESOURCE: str = ""; break;
-		case BRICK_RESOURCE: str = "B"; break;
-		case GRAIN_RESOURCE: str = "G"; break;
-		case ORE_RESOURCE: str = "O"; break;
-		case WOOL_RESOURCE: str = "W"; break;
-		case LUMBER_RESOURCE: str = "L"; break;
-		case ANY_RESOURCE: str = "?"; break;
 		}
 		gdk_text_extents(roll_font, str, strlen(str),
 				 &lbearing, &rbearing,
 				 &width, &ascent, &descent);
 		gdk_draw_text(gmap->pixmap, roll_font, gmap->gc,
-			      x_offset - width / 2,
-			      y_offset + (ascent + descent) / 2,
+			      x_offset - width / 2 + 1,
+			      y_offset + (ascent + descent) / 2 + 1,
 			      str, strlen(str));
 	}
 
