@@ -1,3 +1,10 @@
+2003-10-12  Roland Clobus <rclobus@bigfoot.com>
+	* client/admin_gtk.c, client/connect.c, common/network.c,
+	common/network.h, common/state.c, meta-server/gnocatan-meta-server.c,
+	server/gnocatan-server.c, server/meta.c: Changed net_free to NULLify
+	the session, changed the meta-server connection dialog, fixed bug
+	#717982, added meta-server redirections without port-number.
+
 2003-10-12  Bas Wijnen <b.wijnen@phys.rug.nl>
 	* AUTHORS: Added my name.
 	* Makefile.am: Fixed make distcheck bug.

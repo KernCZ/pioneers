@@ -432,11 +432,13 @@ gboolean net_connect(Session *ses, const gchar *host, const gchar *port)
 		return FALSE;
 }
 
-void net_free(Session *ses)
+/* Free and NULL-ity the session *ses */
+void net_free(Session **ses)
 {
-	net_close(ses);
+	net_close(*ses);
 
-	if (ses->host != NULL)
-		g_free(ses->host);
-	g_free(ses);
+	if ((*ses)->host != NULL)
+		g_free((*ses)->host);
+	g_free(*ses);
+	*ses = NULL;
 }

@@ -23,10 +23,15 @@
 #include "config-gnome.h"
 
 
-static GtkWidget *meta_create_button;
 static GtkWidget *meta_dlg;
 static GtkWidget *server_clist;
+static GtkWidget *server_status;
 static Session *ses;
+
+static struct {
+	gchar *server;
+	gchar *port;
+	} want_this_server_and_port;
 
 static GtkWidget *server_entry;
 static GtkWidget *port_entry;
@@ -87,37 +92,22 @@ static gchar *row_data[] = {
 };
 
 static void query_meta_server(gchar *server, gchar *port);
-static void show_waiting_box(GtkWidget *parent);
+static void show_waiting_box(gchar *message, const gchar *server, const gchar *port);
 static void close_waiting_box(void);
 
-static void show_waiting_box(GtkWidget *parent)
+static void show_waiting_box(gchar *message, const gchar *server, const gchar *port)
 {
-	GtkWidget *label, *vbox;
-
-	server_waiting_dlg = gtk_dialog_new();
-	gtk_window_set_title(GTK_WINDOW(server_waiting_dlg),
-			_("Receiving Data"));
-	gtk_window_set_transient_for(GTK_WINDOW(server_waiting_dlg),
-			GTK_WINDOW(parent));
-	gtk_widget_realize(server_waiting_dlg);
-	vbox = GTK_DIALOG(server_waiting_dlg)->vbox;
-	gtk_widget_show(vbox);
-	gtk_container_border_width(GTK_CONTAINER(vbox), 5);
-	label = gtk_label_new(_("Receiving data from meta server..."));
-	gtk_box_pack_start(GTK_BOX(vbox), label, TRUE, TRUE, 0);
-	gtk_widget_show(label);
-	gtk_widget_show(server_waiting_dlg);
-
-	log_message( MSG_INFO, _("Receiving data from meta server...\n"));
+	gchar s[256];
+	snprintf(s, sizeof(s), _("Meta-server at %s, port %s"), server, port);
+	if (server_status)
+		gtk_label_set_text(GTK_LABEL(server_status), s);
+	log_message( MSG_INFO, message);
 }
+
 
 static void close_waiting_box(void)
 {
-	if (server_waiting_dlg) {
-		gtk_widget_destroy(server_waiting_dlg);
-		log_message( MSG_INFO, _("finished.\n"));
-		server_waiting_dlg = NULL;
-	}
+	log_message( MSG_INFO, _("Finished.\n"));
 }
 
 /* -------------------- get game types -------------------- */
@@ -138,15 +128,13 @@ static void meta_gametype_notify(NetEvent event, void *user_data, char *line)
 	case NET_CONNECT:
 		break;
 	case NET_CONNECT_FAIL:
-		net_free(gametype_ses);
-		gametype_ses = NULL;
+		net_free(&gametype_ses);
 		break;
 	case NET_CLOSE:
 		if (gametype_mode == MODE_SIGNON)
 			log_message( MSG_ERROR, _("Meta-server kicked us off\n"));
-		net_free(gametype_ses);
+		net_free(&gametype_ses);
 		close_waiting_box();
-		gametype_ses = NULL;
 		break;
 	case NET_READ:
 		switch (gametype_mode) {
@@ -170,13 +158,12 @@ static void meta_gametype_notify(NetEvent event, void *user_data, char *line)
 
 static void get_meta_server_games_types(gchar *server, gchar *port)
 {
-	show_waiting_box(cserver_dlg);
+	show_waiting_box(_("Receiving game names from the meta server.\n"), server, port);
 	gametype_ses = net_new(meta_gametype_notify, NULL);
 	if (net_connect(gametype_ses, server, port))
 		gametype_mode = MODE_SIGNON;
 	else {
-		net_free(gametype_ses);
-		gametype_ses = NULL;
+		net_free(&gametype_ses);
 		close_waiting_box();
 	}
 }
@@ -189,14 +176,12 @@ static void meta_create_notify(NetEvent event, void *user_data, char *line)
 	case NET_CONNECT:
 		break;
 	case NET_CONNECT_FAIL:
-		net_free(create_ses);
-		create_ses = NULL;
+		net_free(&create_ses);
 		break;
 	case NET_CLOSE:
 		if (create_mode == MODE_SIGNON)
 			log_message( MSG_ERROR, _("Meta-server kicked us off\n"));
-		net_free(create_ses);
-		create_ses = NULL;
+		net_free(&create_ses);
 		break;
 	case NET_READ:
 		switch (create_mode) {
@@ -222,6 +207,7 @@ static void meta_create_notify(NetEvent event, void *user_data, char *line)
                              * point */
 			    /*gtk_widget_destroy(cserver_dlg);*/
 			    gtk_widget_destroy(meta_dlg);
+			    meta_dlg = NULL;
 			}
 			else
 			    log_message( MSG_ERROR, "Meta-server: %s\n", line);
@@ -262,7 +248,8 @@ static void server_start()
 
 static void server_end()
 {
-	gtk_clist_append(GTK_CLIST(server_clist), row_data);
+	if (server_clist)
+		gtk_clist_append(GTK_CLIST(server_clist), row_data);
 }
 
 static void meta_notify(NetEvent event, void *user_data, char *line)
@@ -270,16 +257,15 @@ static void meta_notify(NetEvent event, void *user_data, char *line)
 	switch (event) {
 	case NET_CONNECT:
 		break;
-	case NET_CONNECT_FAIL:
-		net_free(ses);
-		ses = NULL;
+	case NET_CONNECT_FAIL: /* Can't connect to the metaserver, don't show the GUI */
+		if (meta_dlg)
+			gtk_dialog_response(GTK_DIALOG(meta_dlg), GTK_RESPONSE_CANCEL); /* Close the dialog */
 		break;
 	case NET_CLOSE:
 		if (meta_mode == MODE_SIGNON)
 			log_message( MSG_ERROR, _("Meta-server kicked us off\n"));
 		close_waiting_box();
-		net_free(ses);
-		ses = NULL;
+		net_free(&ses);
 		break;
 	case NET_READ:
 		switch (meta_mode) {
@@ -291,7 +277,6 @@ static void meta_notify(NetEvent event, void *user_data, char *line)
 
 				meta_mode = MODE_REDIRECT;
 				net_close(ses);
-				ses = NULL;
 				if (num_redirects++ == 10) {
 					log_message( MSG_INFO, _("Too many meta-server redirects\n"));
 					return;
@@ -304,6 +289,15 @@ static void meta_notify(NetEvent event, void *user_data, char *line)
  					meta_server = g_strdup(server);
  					meta_port = g_strdup(port);
 					query_meta_server(server, port);
+				}
+				else if (sscanf(line, "goto %s", server) == 1) {
+ 					if (meta_server)
+ 						g_free(meta_server);
+ 					if (meta_port)
+ 						g_free(meta_port);
+ 					meta_server = g_strdup(server);
+ 					meta_port = g_strdup(META_PORT);
+					query_meta_server(server, META_PORT);
 				}
 				else
 					log_message( MSG_ERROR, _("Bad redirect line: %s\n"), line);
@@ -327,7 +321,8 @@ static void meta_notify(NetEvent event, void *user_data, char *line)
 							meta_server_version_minor);
 			}
 			else {
-				gtk_widget_set_sensitive(meta_create_button, TRUE);
+				if (meta_dlg)
+					gtk_dialog_set_response_sensitive(GTK_DIALOG(meta_dlg), GTK_RESPONSE_ACCEPT, TRUE);
 				net_printf(ses, "version %s\n", META_PROTOCOL_VERSION);
 			}
 			
@@ -362,20 +357,16 @@ static void meta_notify(NetEvent event, void *user_data, char *line)
 
 static void query_meta_server(gchar *server, gchar *port)
 {
-	show_waiting_box(meta_dlg);
 	if (num_redirects > 0)
 		log_message( MSG_INFO, _("Redirected to meta-server at %s, port %s\n"),
 			 server, port);
-	else
-		log_message( MSG_INFO, _("Querying meta-server at %s, port %s\n"),
-			 server, port);
+	show_waiting_box(_("Receiving a list of Gnocatan servers from the meta server.\n"), server, port);
 
 	ses = net_new(meta_notify, NULL);
 	if (net_connect(ses, server, port))
 		meta_mode = MODE_SIGNON;
 	else {
-		net_free(ses);
-		ses = NULL;
+		net_free(&ses);
 		close_waiting_box();
 	}
 }
@@ -390,8 +381,7 @@ static void start_clicked_cb(GtkWidget *start_btn, gpointer user_data)
 	if (net_connect(create_ses, meta_server, meta_port))
 		create_mode = MODE_SIGNON;
 	else {
-		net_free(create_ses);
-		create_ses = NULL;
+		net_free(&create_ses);
 	}
 }
 
@@ -603,15 +593,34 @@ static GtkWidget *build_create_interface()
 	return vbox;
 }
 
-static void create_server_dlg(GtkWidget *widget, GtkWidget *parent)
+static void create_server_dlg_cb(GtkDialog *dlg, gint arg1, gpointer user_data)
+{
+	gtk_widget_destroy(GTK_WIDGET(dlg)); /* Always destroy this window, when either OK or Cancel is pressed */
+	switch (arg1) {
+		case GTK_RESPONSE_OK:
+			log_message( MSG_INFO, _("Requesting new game server\n"));
+
+			create_ses = net_new(meta_create_notify, NULL);
+			if (net_connect(create_ses, meta_server, meta_port))
+				create_mode = MODE_SIGNON;
+			else
+				net_free(&create_ses);
+			break;
+		case GTK_RESPONSE_CANCEL:
+		default: /* For the compiler */
+			break;
+	};
+}
+
+static void create_server_dlg(GtkWindow *parent)
 {
 	GtkWidget *dlg_vbox;
 	GtkWidget *vbox;
 
 	cserver_dlg = gtk_dialog_new_with_buttons(
 			_("Create New Gnocatan Server"),
-			GTK_WINDOW(parent),
-			0,
+			parent,
+			GTK_DIALOG_DESTROY_WITH_PARENT,
 			GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 			GTK_STOCK_OK, GTK_RESPONSE_OK,
 			NULL);
@@ -627,18 +636,7 @@ static void create_server_dlg(GtkWidget *widget, GtkWidget *parent)
 	gtk_box_pack_start(GTK_BOX(dlg_vbox), vbox, TRUE, TRUE, 0);
 	gtk_container_border_width(GTK_CONTAINER(vbox), 5);
 
-	g_signal_connect(gui_get_dialog_button(GTK_DIALOG(cserver_dlg), 1),
-			"clicked", G_CALLBACK(start_clicked_cb), NULL);
-
-	/* destroy dialog box if either button gets clicked */
-	g_signal_connect_swapped(
-			gui_get_dialog_button(GTK_DIALOG(cserver_dlg), 0),
-			"clicked",
-			G_CALLBACK(gtk_widget_destroy), cserver_dlg);
-	g_signal_connect_swapped(
-			gui_get_dialog_button(GTK_DIALOG(cserver_dlg), 1),
-			"clicked",
-			G_CALLBACK(gtk_widget_destroy), cserver_dlg);
+	gtk_signal_connect(GTK_OBJECT(cserver_dlg), "response", GTK_SIGNAL_FUNC(create_server_dlg_cb), NULL);
 	gtk_widget_show(cserver_dlg);
 }
 
@@ -650,9 +648,28 @@ static void select_server_cb(GtkWidget *clist, gint row, gint column,
 	gchar *text;
 
 	gtk_clist_get_text(GTK_CLIST(clist), row, 0, &text);
-	gtk_entry_set_text(GTK_ENTRY(server_entry), text);
+	want_this_server_and_port.server = text;
 	gtk_clist_get_text(GTK_CLIST(clist), row, 1, &text);
-	gtk_entry_set_text(GTK_ENTRY(port_entry), text);
+	want_this_server_and_port.port = text;
+	gtk_dialog_set_response_sensitive(GTK_DIALOG(meta_dlg), GTK_RESPONSE_OK, TRUE);
+}
+
+static void meta_dlg_cb(GtkDialog *dlg, gint arg1, gpointer userdata)
+{
+	switch (arg1) {
+		case GTK_RESPONSE_ACCEPT: /* Add a server */
+			create_server_dlg(GTK_WINDOW(dlg));
+			break;
+		case GTK_RESPONSE_OK: /* Select this server */
+			gtk_entry_set_text(GTK_ENTRY(server_entry), want_this_server_and_port.server);
+			gtk_entry_set_text(GTK_ENTRY(port_entry), want_this_server_and_port.port);
+			/* Fall through */
+		case GTK_RESPONSE_CANCEL: /* Cancel */
+		default:
+			gtk_widget_destroy(GTK_WIDGET(dlg));
+			meta_dlg = NULL;
+			break;
+	}
 }
 
 static void create_meta_dlg(GtkWidget *widget, GtkWidget *parent)
@@ -664,21 +681,23 @@ static void create_meta_dlg(GtkWidget *widget, GtkWidget *parent)
 	 * text in */
 	const gchar *meta_tmp;
 	static gchar *titles[9];
+	gint idx;
 
 	meta_tmp = gtk_entry_get_text(GTK_ENTRY(meta_server_entry));
-	if (!meta_tmp) {
+	if (!meta_tmp || !strlen(meta_tmp)) {
 		if (!(meta_tmp = getenv("GNOCATAN_META_SERVER")))
 			meta_tmp = DEFAULT_META_SERVER;
 		gtk_entry_set_text(GTK_ENTRY(meta_server_entry), meta_tmp);
 	}
 	meta_server = g_strdup (meta_tmp);
 	if (!meta_port)
-		meta_port = META_PORT;
+		meta_port = g_strdup(META_PORT);
 	
 	if (meta_dlg != NULL) {
 		if (ses == NULL) {
 			num_redirects = 0;
-			gtk_clist_clear(GTK_CLIST(server_clist));
+			if (server_clist)
+				gtk_clist_clear(GTK_CLIST(server_clist));
 			query_meta_server(meta_server, meta_port);
 		}
 		return;
@@ -700,26 +719,34 @@ static void create_meta_dlg(GtkWidget *widget, GtkWidget *parent)
 			_("Current Gnocatan Servers"),
 			GTK_WINDOW(parent),
 			0,
-			GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE,
+			GTK_STOCK_ADD, GTK_RESPONSE_ACCEPT,
+			GTK_STOCK_OK, GTK_RESPONSE_OK,
+			GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 			NULL);
-	g_signal_connect_swapped(GTK_OBJECT(meta_dlg), "response",
-			G_CALLBACK(gtk_widget_destroy),
-			meta_dlg);
-        gtk_signal_connect(GTK_OBJECT(meta_dlg), "destroy",
-			   GTK_SIGNAL_FUNC(gtk_widget_destroyed), &meta_dlg);
+	gtk_signal_connect(GTK_OBJECT(meta_dlg), "response", GTK_SIGNAL_FUNC(meta_dlg_cb), NULL);
+	
+//	g_signal_connect_swapped(GTK_OBJECT(meta_dlg), "response",
+//			G_CALLBACK(gtk_widget_destroy),
+//			meta_dlg);
+//        gtk_signal_connect(GTK_OBJECT(meta_dlg), "destroy",
+//			   GTK_SIGNAL_FUNC(gtk_widget_destroyed), &meta_dlg);
 	gtk_widget_realize(meta_dlg);
 
 	dlg_vbox = GTK_DIALOG(meta_dlg)->vbox;
 	gtk_widget_show(dlg_vbox);
 
-	vbox = gtk_vbox_new(FALSE, 3);
+	vbox = gtk_vbox_new(FALSE, 2);
 	gtk_widget_show(vbox);
 	gtk_box_pack_start(GTK_BOX(dlg_vbox), vbox, TRUE, TRUE, 0);
 	gtk_container_border_width(GTK_CONTAINER(vbox), 5);
 
+	server_status = gtk_label_new("");
+	gtk_widget_show(server_status);
+	gtk_box_pack_start(GTK_BOX(vbox), server_status, FALSE, TRUE, 0);
+
 	scroll_win = gtk_scrolled_window_new(NULL, NULL);
 	gtk_widget_show(scroll_win);
-	gtk_widget_set_usize(scroll_win, 640, 150);
+	gtk_widget_set_usize(scroll_win, 660, 150);
 	gtk_box_pack_start(GTK_BOX(vbox), scroll_win, TRUE, TRUE, 0);
 	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scroll_win),
 				       GTK_POLICY_AUTOMATIC,
@@ -730,25 +757,22 @@ static void create_meta_dlg(GtkWidget *widget, GtkWidget *parent)
 			   GTK_SIGNAL_FUNC(gtk_widget_destroyed), &server_clist);
 	gtk_widget_show(server_clist);
 	gtk_container_add(GTK_CONTAINER(scroll_win), server_clist);
-	gtk_clist_set_column_width(GTK_CLIST(server_clist), 0, 120);
-	gtk_clist_set_column_width(GTK_CLIST(server_clist), 1, 45);
-	gtk_clist_set_column_width(GTK_CLIST(server_clist), 2, 45);
-	gtk_clist_set_column_width(GTK_CLIST(server_clist), 3, 25);
-	gtk_clist_set_column_width(GTK_CLIST(server_clist), 4, 25);
-	gtk_clist_set_column_width(GTK_CLIST(server_clist), 5, 45);
-	gtk_clist_set_column_width(GTK_CLIST(server_clist), 6, 60);
-	gtk_clist_set_column_width(GTK_CLIST(server_clist), 7, 70);
-	gtk_clist_set_column_width(GTK_CLIST(server_clist), 8, 100);
+
+	for (idx = 0; idx < 9; idx++)
+		gtk_clist_set_column_auto_resize(GTK_CLIST(server_clist), idx, TRUE);
+
+	gtk_clist_set_column_justification(GTK_CLIST(server_clist), 1, GTK_JUSTIFY_RIGHT); /* Port */
+	gtk_clist_set_column_justification(GTK_CLIST(server_clist), 3, GTK_JUSTIFY_RIGHT); /* Max */
+	gtk_clist_set_column_justification(GTK_CLIST(server_clist), 4, GTK_JUSTIFY_RIGHT); /* Curr */
+	gtk_clist_set_column_justification(GTK_CLIST(server_clist), 6, GTK_JUSTIFY_RIGHT); /* Vic. Points */
+	
+	
 	gtk_clist_column_titles_show(GTK_CLIST(server_clist));
 	gtk_signal_connect(GTK_OBJECT(server_clist), "select_row",
-			   GTK_SIGNAL_FUNC(select_server_cb), NULL);
+			   GTK_SIGNAL_FUNC(select_server_cb), &want_this_server_and_port);
+	gtk_dialog_set_response_sensitive(GTK_DIALOG(meta_dlg), GTK_RESPONSE_OK, FALSE);
 
-	meta_create_button = gtk_button_new_with_label(_("Create New Server"));
-	gtk_signal_connect(GTK_OBJECT(meta_create_button), "clicked",
-			   GTK_SIGNAL_FUNC(create_server_dlg), meta_dlg);
-	gtk_widget_set_sensitive(meta_create_button, FALSE);
-	gtk_widget_show(meta_create_button);
-	gtk_box_pack_start(GTK_BOX(vbox), meta_create_button, TRUE, TRUE, 0);
+	gtk_dialog_set_response_sensitive(GTK_DIALOG(meta_dlg), GTK_RESPONSE_ACCEPT, FALSE);
 
 	gtk_widget_show(meta_dlg);
 

@@ -119,8 +119,7 @@ static void route_event(StateMachine *sm, gint event)
 			sm->unhandled(user_data, event);
 		break;
 	case SM_NET_CLOSE:
-		net_free(sm->ses);
-		sm->ses = NULL;
+		net_free(&(sm->ses));
 	default:
 		curr_state(user_data, event);
 		if (!sm->is_dead && sm->global != NULL)
@@ -169,22 +168,21 @@ static void net_event(NetEvent event, StateMachine *sm, gchar *line)
 gboolean sm_connect(StateMachine *sm, const gchar *host, const gchar *port)
 {
 	if (sm->ses != NULL)
-		net_free(sm->ses);
+		net_free(&(sm->ses));
 
 	sm->ses = net_new((NetNotifyFunc)net_event, sm);
 	log_message( MSG_INFO, _("Connecting to %s, port %s\n"),  host, port);
 	if (net_connect(sm->ses, host, port))
 		return TRUE;
 
-	net_free(sm->ses);
-	sm->ses = NULL;
+	net_free(&(sm->ses));
 	return FALSE;
 }
 
 void sm_use_fd(StateMachine *sm, gint fd)
 {
 	if (sm->ses != NULL)
-		net_free(sm->ses);
+		net_free(&(sm->ses));
 
 	sm->ses = net_new((NetNotifyFunc)net_event, sm);
 	net_use_fd(sm->ses, fd);
@@ -587,8 +585,7 @@ StateMachine* sm_new(gpointer user_data)
 void sm_free(StateMachine *sm)
 {
 	if (sm->ses != NULL) {
-		net_free(sm->ses);
-		sm->ses = NULL;
+		net_free(&(sm->ses));
 	}
 	if (sm->widgets != NULL) {
 		if (driver != NULL && driver->widget_free != NULL)

@@ -25,6 +25,7 @@
 #include <glib.h>
 #include "config.h"
 #include "gnocatan-path.h"
+#include "meta.h"
 
 typedef enum {
 	META_UNKNOWN,
@@ -989,7 +990,7 @@ int main(int argc, char *argv[])
 		convert_to_daemon();
 
 	setmyhostname();
-	if (!setup_accept_sock("5557"))
+	if (!setup_accept_sock(META_PORT))
 		return 1;
 
 	syslog(LOG_INFO, "Gnocatan meta server started.");

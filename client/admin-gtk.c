@@ -77,8 +77,7 @@ admin_net_event( NetEvent event, Session *admin_session, gchar *line )
 #ifdef PRINT_INFO
 				g_print( "admin_event: NET_CLOSE\n" );
 #endif
-				net_free( admin_session );
-				_admin_session = NULL;
+				net_free( &admin_session );
 				break;
 		
 		default:

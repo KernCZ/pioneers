@@ -29,6 +29,7 @@
 #include "cost.h"
 #include "log.h"
 #include "server.h"
+#include "meta.h"
 
 const gchar *meta_server_name = NULL;
 gchar *hostname = NULL;
@@ -118,6 +119,8 @@ static void meta_event(NetEvent event, Game *game, char *line)
 				}
 				if (sscanf(line, "goto %s %s", server, port) == 2)
 					meta_register(server, port, game);
+				else if (sscanf(line, "goto %s", server) == 1)
+					meta_register(server, META_PORT, game);
 				else
 					log_message( MSG_ERROR, _("Bad redirect line: %s\n"), line);
 				break;
@@ -147,8 +150,7 @@ static void meta_event(NetEvent event, Game *game, char *line)
 	case NET_CLOSE:
 		if (meta_mode == MODE_SIGNON)
 			log_message( MSG_ERROR, _("Meta-server kicked us off\n"));
-		net_free(ses);
-		ses = NULL;
+		net_free(&ses);
 		break;
 	case NET_CONNECT:
 	case NET_CONNECT_FAIL:
@@ -172,7 +174,6 @@ void meta_register(const gchar *server, const gchar *port, Game *game)
 	if (net_connect(ses, server, port))
 		meta_mode = MODE_SIGNON;
 	else {
-		net_free(ses);
-		ses = NULL;
+		net_free(&ses);
 	}
 }

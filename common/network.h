@@ -42,7 +42,7 @@ struct _Session {
 };
 
 Session *net_new(NetNotifyFunc notify_func, void *user_data);
-void net_free(Session *ses);
+void net_free(Session **ses);
 
 void net_use_fd(Session *ses, int fd);
 gboolean net_connect(Session *ses, const gchar *host, const gchar *port);
