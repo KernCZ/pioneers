@@ -1,3 +1,11 @@
+2000-07-19  Bibek Sahu  <scorpio@dodds.net>
+
+	* client/client.c, client/config-gnome.c, client/config-gnome.h,
+	  client/connect.c, client/gnocatan.c, client/gui.c: Abstracted
+	  getting/setting configuration values to be platform-agnostic. 
+	  Still based on gnome-config, though; perhaps we want to stratify
+	  the 'config path' into its various components?
+
 2000-07-17  Andy Heroff  <aheroff@mediaone.net>
 
 	* server/turn.c, server/develop.c, server/server.h: Fixed bug in

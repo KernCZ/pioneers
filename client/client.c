@@ -21,6 +21,7 @@
 #include "client.h"
 #include "gui.h"
 #include "state.h"
+#include "config-gnome.h"
 
 GameParams *game_params;
 static gchar *saved_name;
@@ -440,13 +441,12 @@ static gboolean mode_connect(StateMachine *sm, gint event)
 		gui_set_net_status(_("Connecting"));
 		
 		/* Save connect dialogue entries */
-		gnome_config_set_string("/gnocatan/connect/server",
+		config_set_string("connect/server",
 					connect_get_server());
-		gnome_config_set_string("/gnocatan/connect/port",
+		config_set_string("connect/port",
 					connect_get_port_str());
-		gnome_config_set_string("/gnocatan/connect/name",
+		config_set_string("connect/name",
 					connect_get_name());
-		gnome_config_sync();
 		
 		
 		copy_player_name(connect_get_name());

@@ -18,6 +18,7 @@
 #include "client.h"
 #include "log.h"
 #include "state.h"
+#include "config-gnome.h"
 
 static GtkWidget *meta_dlg;
 static GtkWidget *server_clist;
@@ -333,10 +334,10 @@ GtkWidget *connect_create_dlg()
 	gchar     *saved_name;
 	gint      novar;
 
-	saved_server = gnome_config_get_string_with_default("/gnocatan/connect/server=localhost",&novar);
-	saved_port = gnome_config_get_string_with_default("/gnocatan/connect/port=5556", &novar);
+	saved_server = config_get_string("connect/server=localhost",&novar);
+	saved_port = config_get_string("connect/port=5556", &novar);
 	novar = 0;
-	saved_name = gnome_config_get_string_with_default("/gnocatan/connect/name", &novar);
+	saved_name = config_get_string("connect/name", &novar);
 	if (novar) {
 		saved_name = g_strdup(g_get_user_name());
 	}

@@ -24,6 +24,7 @@ int main(int argc, char *argv[])
 	set_ui_driver( &GTK_Driver );
 
 	gnome_init("gnocatan", VERSION, argc, argv);
+	config_init( "/gnocatan/" );
 
 	/* Create the application window
 	 */
