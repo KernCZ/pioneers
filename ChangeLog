@@ -1,0 +1,339 @@
+2000-05-02  Andy Heroff <aheroff@mediaone.net>
+
+	* Project imported into the SourceForge CVS server.
+
+	* INSTALL: Added 'simple' instructions for building Debian and Red
+	  Hat binary packages.
+
+	* Updated all version references to 0.5.0 for release.
+
+	* Released version 0.5.0.
+
+2000-04-28  Andy Heroff <aheroff@mediaone.net>
+
+	* client/connect.c, client/name.c: Added "<enter> closes dialog"
+	  functionality to both of the above files/dialogs.
+
+	* client/chat.c, client/client.c: Added chat parser with posing (:)
+	  and semi-posing (;) functionality.
+
+1999-12-22  Dan Egnor <egnor@ofb.net>
+
+	* server/STATES: Attempt at documenting the server state machine.
+
+        * server/trade.c: Fixed? a possible trade race condition.  Actually, 
+	the fix was already there, I just think it wasn't quite right, since 
+	it didn't reset the player's state properly.  This should be reviewed.
+
+	* server/5-6-player.game: New game file for 5/6 player expansion 
+	(from tlau@cs.washington.edu).
+
+	* client/turn.c, server/trade.c: Implemented option to remove 
+	build/trade order restriction, as per 5/6 player expansion rules 
+	(from tlau@cs.washington.edu).
+
+	* server/gnocatan-server.c, meta-server/gnocatan-meta-server.c:
+	Portability fixes (e.g. for Solaris).
+
+	* client/Makefile.am, meta-server/Makefile.am, server/Makefile.am:
+	Removed silly setgid "games" from install target.
+
+	* client/help/C/gnocatan.sgml: Fixed some errors in the SGML help-file 
+	source.  (Too bad this help file is getting out of date anyway...)
+
+	* macros/Makefile.in: removed from CVS, since it's generated.
+
+1999-12-16  Dan Egnor <egnor@ofb.net>
+
+	* Fixed bug which prevented anyone who didn't build a ship during setup
+	from building a ship later (the check to see if the user was out of ships
+	was incorrect).
+
+	* "make dist" works now, and has the right version number.
+
+	* Fixed bug #2 (the "domestic-trade delete" bug).
+
+	* Added .cvsignore files to kill those pesky ?'s.
+
+        * client/player.c: Beep when it's your turn.  Is this a good idea?
+	I know I'm often distracted and don't notice when my turn comes up.
+	It should probably be an option, but I hate to get into the business
+	of having "gnocatan preferences"...
+
+	* server/gnocatan-server.c: Fix some problems with the terrain
+	randomization toggle; clean up (?) the UI enable/disable logic some
+	(the UI is now fully disabled when you start a game).
+
+	* server/seafarers.game: Added chit placement numbers to the tiles.
+	Without this, there are no chits, which makes this map a little less
+	useful.  I'm pretty sure the numbers aren't in the right places
+	(there are lots of neighboring 8's and such); I'll get out our copy 
+	of Seafarers and do the right thing at some point.  At least this way 
+	we can start testing. 
+
+	* server/server.c: setsockopt(SO_REUSEADDR) *before* bind().
+
+1999-12-16  Dave Cole <dave@dccs.com.au>
+
+	* client/gui.c: Added gui_set_game_params() to notify gui code
+	when map is available, and to pass game parameters.  Hide toolbar
+	buttons that are not used in the game.
+
+	* client/identity.c: Do not display shapes that are not used in
+	the game.
+	
+1999-11-20  Dave Cole <dave@dccs.com.au>
+	* client/guimap.c: Replaced all of the bogus hand building of
+	ships, roads, settlements and cities with a single shape for each
+	which is scaled and rotated as required.
+
+	* client/chat.c: Small code reformat.
+	
+1999-09-04  Dave Cole <dave@dccs.com.au>
+	* gnocatan.spec, debian/gnocatan-server.files,
+	server/Makefile.am, server/small.game: Added small.game.
+
+	* server/gnocatan-server.c (build_interface): Call
+	load_game_types() to after creating all widgets.
+
+	* client/trade.c, common/game.c, common/game.h,
+	server/default.game, seafarers.game, server/trade.c,
+	server/turn.c: Added domestic_trade flag to allow domestic trading
+	to be disabled for in a game.  When disabled, the domestic trading
+	GUI is not shown.
+
+	* server/robber.c (mode_place_robber): Fixed core dump in games
+	where the robber is not initially displayed (small.game).
+
+	* client/client.c, client/client.h, client/develop.c: Dynamically
+	allocate the development card deck when the game parameters have
+	been received from the server.  Fixes bug where
+	DevelDeck.max_cards was not being initialised for player.
+
+	* server/develop.c, server/player.c, server/server.h: Dynamically
+	allocate the development card deck for each player when allocated.
+	Fixes bug where DevelDeck.max_cards was not being initialised for
+	player.
+	
+1999-09-03  Dave Cole <dave@dccs.com.au>
+	* common/game.[ch]: Added params_copy() to create an independant
+	copy of a GameParams structure.
+
+	* common/map.[ch]: Added map_copy() to create an independant copy
+	of a Map structure.
+
+	* server/buildutil.c, server/develop.c, server/player.c,
+	server/pregame.c, server/robber.c, server/server.c,
+	server/server.h, server/trade.c, server/turn.c: Changed
+	game->params into a pointer to a copy of the GameParams loaded
+	from the game file.  This enables the map to be reinitialised
+	properly on game restart.  Removed unused game->map and use
+	game->params->map instead.
+
+	* common/map.c (layout_chits): Fixed bug which assumed that the
+	number of terrain hexes equaled the number of chits in the layout
+	sequence.
+
+	* README: Updated version number to 0.4.0
+
+	* gnocatan.spec, client/Makefile.am, server/Makefile.am,
+	debian/changelog, debian/control, debian/gnocatan-server.files:
+	Updated to include new 0.4.0 files.
+	
+1999-09-02  Dave Cole <dave@dccs.com.au>
+	* client/client.c: Removed global Map @game_map and replaced it
+	with GameParams @game_params, which includes the game map.
+	Removed mode_map(), mode_map_load() and replaced them with
+	mode_load_game() which encapsulates the entire game loading.
+
+	* client/client.h: Removed global Map @game_map and replaced it
+	with GameParams @game_params, which includes the game map.
+
+	* client/develop.c, common/cards.[ch]: Renamed card_*() functions
+	to deck_card_*().
+
+	* client/develop.c (can_play_develop): Rearranged logic to improve
+	clarity.
+
+	* common/cards.[ch]: Added deck_new(), deck_free().  Development
+	card decks are now dynamically allocated.
+
+	* client/gui.c (gui_build_interface): Moved call to stock_init()
+	to client.c (mode_load_game).
+
+	* client/guimap.c (display_hex): Fixed inconsistent indentation.
+
+	* client/guimap.c, client/player.c, client/robber.c,
+	client/setup.c, common/buildrec.c, common/map_query.c,
+	server/buildutil.c, server/pregame.c, server/robber.c,
+	server/turn.c, common/game.h, common/map.h, server/server.h:
+	Removed EdgeType and Building enums, expanded BuildType enum to
+	describe all types of building.  Renamed Node.building to
+	Node.type to be consistent with Edge.type.
+
+	* client/guimap.c: Deleted find_ship(), build_ship_regions() as
+	they were identical to find_road(), build_road_regions().  Renamed
+	find_road(), build_road_regions() to find_edge(),
+	build_edge_regions().
+
+	* client/player.[ch], client/quote.c, client/trade.c: Replaced
+	max_players/num_players() with game_params->num_players.
+
+	* client/quote.c, common/game.h, server/server.c: Replaced
+	RESOURCE_LIMIT with game_params->resource_count.
+
+	* client/stock.c, common/game.h: Replaced DEF_MAX_ROADS,
+	DEF_MAX_SHIPS, DEF_MAX_SETTLEMENTS, DEF_MAX_CITIES with
+	game_params->num_build_type[BUILD_*]. Replaced NUM_DEVELOP with
+	total of game_params->num_develop_type[].
+
+	* common/Makefile.am: Added game.c.
+
+	* common/buildrec.c (ship_has_place_for_settlement): Added check
+	is_node_on_land().  Fixed formatting of a lot of code.
+
+	* common/buildrec.h, common/map.h: Moved enum BuildType, enum
+	Terrain, enum Resources to common/map.h
+
+	* common/game.h: Removed NUM_DEVELOP.  Expanded GameParams to make
+	all previously static game parameters dynamic.  Added params_*()
+	functions to encapsulate GameParams loading / saving / parsing.
+	
+	* server/develop.c, server/server.h: Replaced static description
+	of development card deck with dynamic description from
+	game_params.
+
+	* common/map.[ch]: Removed static chat_values[] chit layout
+	sequence and replaced it with dynamically defined sequence in
+	GameParams.  Added map_set_chits() to bind a chit sequence to a
+	map.
+
+	* server/buildutil.c, server/player.c, server/turn.c: Made
+	player->num_* count the number of each type that the player has
+	built, instead of store the number of each type the player has
+	left to build.
+
+	* server/gnocatan-server.c: Almost completely reworked GUI
+	handling code.
+
+	* server/pregame.c: Removed send_game_map() as this task is now
+	performed during GameParam transfer.
+
+	* server/resource.c, server/robber.c, server/server.h,
+	server/trade.c: Removed obsolete FIND_STUPID_RESOURCE_BUG code.
+
+1999-06-29  JT <jtraub@dragoncat.net>
+	* server/*.c: Made sure the server reset features were correct.
+
+1999-06-16  JT <jtraub@dragoncat.net>
+
+	* server/server.c (close_player): Fixed bug where server was
+	reporting to the meta-server, players leaving the game who had
+	never joined it.  It was possible to make the meta-server report
+	-ve player counts.
+	
+1999-06-08  Dave Cole <dave@dccs.com.au>
+
+	* Released 0.3.3
+	
+	* client/help/C/gnocatan.sgml: Updated help to include description
+	of the tick / cross in the trade list.
+
+	* client/help/C/images: Replaced trade.gif and quote.gif
+	
+	* gnocatan.spec: Bumped version number and added new pixmap files.
+	
+	* debian/control: Fixed bogus Recommend field to be Recommends.
+	Changed gnocatan-client to depend on gnocatan-data >= 0.3.3.
+
+	* client/tick.png, client/cross.png: Added new pixmaps for
+	domestic trade list.
+	
+	* client/guimap.[ch] (load_pixmap): Made function global and added
+	mask parameter to return pixmap mask from
+	gdk_imlib_load_file_to_pixmap().
+
+	* client/player.c (player_set_name): When changing player name,
+	report player by previous name when possible.
+
+	* client/quote.c (quote_finish): Do not clear quote_list, as we
+	need to be able to interpret quotes accepted even after we have
+	rejected domestic trade.
+
+	* client/quote.c (add_reject_row, remove_reject_rows): Pasted
+	these functions from trade.c.  Should clean up trading code for
+	0.4.x.
+
+	* client/trade.c (quote_trade_call, quote_trade_reject): Add
+	player rejected trade row to indicate that other players are
+	rejecting domestic trade.
+
+	* client/quote.c (quote_trade_accept): Monitor domestic trade
+	activity even after we have rejected trade.  This allows us to
+	maintain correct resource counts in the player summary.
+
+	* client/trade.c (is_good_quote, load_pixmaps,
+	check_domestic_trades, trade_domestic_quote): Added pixmaps for
+	tick and cross to indicate validity of each quote from other
+	players.
+
+	* common/game.h: Bumped version number to 0.3.3.
+
+	* server/server.c, server/server.h (get_rand): Modified random
+	number generation to match the technique described in the rand()
+	man page.
+	
+	* server/robber.c, server/turn.c: Use new get_rand() function for
+	all random numbers.
+
+1999-05-29  Dave Cole <dave@dccs.com.au>
+
+	* Released 0.3.2
+	
+1999-05-28  Dave Cole <dave@dccs.com.au>
+
+	* ChangeLog: Started on a real ChangeLog since I just received the
+	first code contribution.
+
+	* client/chat.c (chat_cb): Strip '\n' out of message text
+
+	* client/client.c (is_player_status), client.h, client/resource.c
+	(resource_player_check), server/develop.c (monopoly_mode),
+	server/resource.c (resource_debug, resource_maritime_trade,
+	resource_end), server/robber.c (steal_card_from), server/server.h,
+	server/trade.c (domestic_initiate_mode): Added debug code to check
+	that the client and server have the same resource counts for each
+	player.  This was to help find a reported bug, but no luck so far.
+
+	* client/connect.c (connect_create_dlg): Removed term1.dccs.com.au
+	as the default server host.  Set input focus to the server
+	textfield on initialisation.
+
+	* client/name.c (name_create_dlg): Set input focus to the name
+	textfield on initialisation.
+
+	* client/quote.c (more_resource_cb): Limit the number of resources
+	in a quote to RESOURCE_LIMIT.
+
+	* client/trade.c (mode_domestic_response, accept_trade_cb):
+	Eliminate the trade_quote static variable.
+
+	* common/game.h: Bumped game version to "0.3.2"
+
+	* debian/changelog: Bumped game version to 0.32-1
+
+	* gnocatan.spec: Changed homepage.  Bumped version to 0.32
+
+	* server/trade.c (domestic_initiate_mode): After a domestic trade
+	has been performed, remove all trades that the quoting player can
+	no longer accomodate.
+	
+1999-05-23  Thomas Koester <Thomas.Koester@rz.Uni-Osnabrueck.DE>
+
+	* client/player.c (player_domestic_trade): Fixed trading where one
+	party does not supply anything
+
+1999-05-23  Preben Randhol <randhol@pvv.org>
+
+	* gnocatan.spec: Sent file to Dave for integration with
+	distribution.

@@ -1,0 +1,2 @@
+?package(gnocatan-server):needs=X11 section=Games/Board\
+  title="Gnocatan Server" command="/usr/games/gnocatan-server"

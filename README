@@ -1,0 +1,28 @@
+Gnocatan 0.5.0
+
+Gnocatan is an Internet playable implementation of the Settlers of
+Catan board game.  The aim is to remain as faithful to the board game
+as is possible.
+
+Playing the Game
+================
+
+Gnocatan is a multi-player game.  Each player must run the Gnocatan
+client; gnocatan.  One of the players must also run the Gnocatan
+server; gnocatan-server.
+
+The server has a user interface in which you can customise the game
+parameters.  Customisation is fairly limited at the moment, but this
+should change in later versions.  Once you are happy with the game
+parameters, press the Start Server button, and the server will start
+listening for client connections.
+
+When you start the client program, it displays a connect dialog.  You
+must define the hostname and port where the server can be located.
+You can enter these manually, or press the Meta Server button.  The
+meta server maintains a list of all registered Gnocatan servers that
+are currently running a game.  This allows you to join a game anywhere
+on the Internet.
+
+The current version of Gnocatan works best with three or four players,
+but two players is still a fun game.

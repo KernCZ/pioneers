@@ -1,0 +1,15 @@
+bin_PROGRAMS = gnocatan-meta-server
+
+INCLUDES = \
+        -I$(includedir) $(GNOME_INCLUDEDIR)
+
+gnocatan_meta_server_SOURCES = \
+	gnocatan-meta-server.c
+
+gnocatan_meta_server_LDADD = \
+	$(GNOME_LIBDIR) \
+	$(GNOMEUI_LIBS)
+
+# We don't need this, do we?  -- egnor
+# install-data-local:
+#	-chgrp games $(bindir)/gnocatan-meta-server && chmod 2111 $(bindir)/gnocatan-meta-server
