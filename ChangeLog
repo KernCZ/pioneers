@@ -1,3 +1,8 @@
+2001-02-22  Matt Waggoner  <matt@waggoner.com>
+
+	* Added a chat window message when someone wins.
+		In shiny purple!
+
 2001-02-16  David Fallon  <davef@getacard.com>
 
 	* Added Jeff Breidenbach's <jeff@alum.mit.edu> histogram patch.
