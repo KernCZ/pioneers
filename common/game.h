@@ -58,7 +58,7 @@ typedef struct {
 
 typedef void (*WriteLineFunc)(gpointer user_data, gchar *);
 
-GameParams *params_new();
+GameParams *params_new(void);
 GameParams *params_copy(GameParams *params);
 void params_free(GameParams *params);
 void params_write_lines(GameParams *params, WriteLineFunc func, gpointer user_data);

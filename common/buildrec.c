@@ -16,6 +16,15 @@
 #include "map.h"
 #include "buildrec.h"
 
+/* Local function prototypes. */
+gint buildrec_count_edges(GList *list);
+gboolean buildrec_can_setup_edge(GList *list, Map *map,
+				 Edge *edge, gboolean is_double);
+gboolean buildrec_can_setup_bridge(GList *list, Map *map,
+				   Edge *edge, gboolean is_double);
+
+
+
 GList *buildrec_free(GList *list)
 {
 	while (list != NULL) {

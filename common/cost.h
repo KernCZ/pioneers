@@ -10,13 +10,13 @@
 #ifndef __cost_h
 #define __cost_h
 
-gint *cost_road();
-gint *cost_ship();
-gint *cost_bridge();
-gint *cost_settlement();
-gint *cost_upgrade_settlement();
-gint *cost_city();
-gint *cost_development();
+gint *cost_road(void);
+gint *cost_ship(void);
+gint *cost_bridge(void);
+gint *cost_settlement(void);
+gint *cost_upgrade_settlement(void);
+gint *cost_city(void);
+gint *cost_development(void);
 
 gboolean cost_buy(gint *cost, gint *assets);
 void cost_refund(gint *cost, gint *assets);

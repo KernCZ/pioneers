@@ -10,6 +10,11 @@ typedef struct {
 
 GHashTable *_evl_glib_hash = NULL;
 
+/* Local function prototypes. */
+guint evl_glib_input_add_read( gint fd, gpointer func, gpointer param );
+guint evl_glib_input_add_write( gint fd, gpointer func, gpointer param );
+void evl_glib_input_remove( guint tag );
+
 
 /* event-loop related functions */
 static gboolean evl_glib_call_func( GIOChannel *source, GIOCondition condition,

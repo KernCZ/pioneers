@@ -32,7 +32,7 @@ typedef struct {
 	GList *quotes;
 } QuoteList;
 
-QuoteList *quotelist_new();
+QuoteList *quotelist_new(void);
 void quotelist_free(QuoteList *list);
 QuoteInfo *quotelist_add_domestic(QuoteList *list, gint player_num,
 				  gint quote_num, gint *supply, gint *receive);

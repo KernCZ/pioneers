@@ -143,7 +143,7 @@ void map_shuffle_terrain(Map *map);
 Hex *map_robber_hex(Map *map);
 void map_move_robber(Map *map, gint x, gint y);
 
-Map *map_new();
+Map *map_new(void);
 Map *map_copy(Map *map);
 void map_format_line(Map *map, gchar *line, gint y);
 void map_parse_line(Map *map, char *line);
@@ -157,6 +157,7 @@ Map *map_load(char *name);
 /* simple checks */
 gboolean is_edge_adjacent_to_node(Edge *edge, Node *node);
 gboolean is_edge_on_land(Edge *edge);
+gboolean is_edge_on_sea(Edge *edge);
 gboolean is_node_on_land(Node *node);
 gboolean node_has_road_owned_by(Node *node, gint owner);
 gboolean node_has_ship_owned_by(Node *node, gint owner);

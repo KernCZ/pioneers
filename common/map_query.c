@@ -16,6 +16,13 @@
 #include "game.h"
 #include "map.h"
 
+/* Local function prototypes */
+gboolean node_has_edge_owned_by(Node *node, gint owner, BuildType type);
+gboolean is_road_valid(Edge *edge, gint owner);
+gboolean is_ship_valid(Edge *edge, gint owner);
+gboolean is_bridge_valid(Edge *edge, gint owner);
+
+
 /* This file is broken into a number of sections:
  *
  * Simple Checks:
