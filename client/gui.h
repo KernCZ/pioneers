@@ -56,6 +56,7 @@ void gui_new_turn(gint player_num);
 void gui_highlight_chits(gint roll);
 
 GtkWidget *gui_build_interface(void);
+void show_admin_interface( GtkWidget *vbox );
 
 extern Map *map;		/* the map */
 extern GtkWidget *app_window;	/* main application window */

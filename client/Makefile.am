@@ -14,6 +14,7 @@ INCLUDES = \
 gnocatan_DEPENDENCIES = ../common/libgnocatan.a ../common/libgnocatan_gtk.a
 
 gnocatan_SOURCES = \
+	admin-gtk.c \
 	build.c \
 	client.c \
 	client.h \

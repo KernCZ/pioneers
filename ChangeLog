@@ -1,3 +1,8 @@
+2000-05-28  Bibek Sahu <scorpio@dodds.net>
+	* client/Makefile.am client/gui.c client/gui.h client/admin-gtk.c
+	server/gnocatan-server.c: Added a basic network administration 
+	interface (stole the interface from the gtk server).  Needs work.
+
 2000-05-27  Steve Langasek <vorlon@dodds.net>
 
 	* common/map.c, server/server.c: Converted common/map.c to use the

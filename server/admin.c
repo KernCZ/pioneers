@@ -178,60 +178,54 @@ comm_info *_accept_info = NULL;
 void
 admin_run_command( Session *admin_session, gchar *line )
 {
-	gchar command[1024];
+	gchar command[100];
+	gchar value_str[100];
+	gint value_int;
+	
+	/* parse the line down into command and value */
+	sscanf( line, "admin %99s %99s", command, value_str );
+	value_int = atoi( value_str );
 	
 	/* set the GAME port */
-	if( !strncmp( line, "admin-set-port ", 15 ) ) {
-		gint tmp;
-		sscanf( line, "%s %d", command, &tmp );
-		if( tmp )
-			server_port = tmp;
+	if( !strcmp( command, "set-port" ) ) {
+		if( value_int )
+			server_port = value_int;
 	
 	/* start the server */
-	} else if( !strncmp( line, "admin-start-server", 18 ) ) {
+	} else if( !strcmp( command, "start-server" ) ) {
 		start_server( server_port, register_server );
 	
 	/* TODO: stop the server */
-	} else if( !strncmp( line, "admin-stop-server", 17 ) ) {
+	} else if( !strcmp( command, "stop-server" ) ) {
 		/* stop_server(); */
 	
 	/* set whether or not to register the server with a meta server */
-	} else if( !strncmp( line, "admin-set-register-server ", 26 ) ) {
-		gint tmp;
-		sscanf( line, "%s %d", command, &tmp );
-		if( tmp )
-			register_server = tmp;
+	} else if( !strcmp( command, "set-register-server" ) ) {
+		if( value_int )
+			register_server = value_int;
 	
 	/* set the number of players */
-	} else if( !strncmp( line, "admin-set-num-players ", 21 ) ) {
-		gint tmp;
-		sscanf( line, "%s %d", command, &tmp );
-		if( tmp )
-			cfg_set_num_players( tmp );
+	} else if( !strcmp( command, "set-num-players" ) ) {
+		if( value_int )
+			cfg_set_num_players( value_int );
 	
 	/* set the victory points */
-	} else if( !strncmp( line, "admin-set-victory-points ", 24 ) ) {
-		gint tmp;
-		sscanf( line, "%s %d", command, &tmp );
-		if( tmp )
-			cfg_set_victory_points( tmp );
+	} else if( !strcmp( command, "set-victory-points" ) ) {
+		if( value_int )
+			cfg_set_victory_points( value_int );
 	
 	/* set whether to use random terrain */
-	} else if( !strncmp( line, "admin-set-random-terrain ", 24 ) ) {
-		gint tmp;
-		sscanf( line, "%s %d", command, &tmp );
-		if( tmp )
-			cfg_set_terrain_type( tmp );
+	} else if( !strcmp( command, "set-random-terrain" ) ) {
+		if( value_int )
+			cfg_set_terrain_type( value_int );
 	
 	/* set the game type (by name) */
-	} else if( !strncmp( line, "admin-set-game ", 14 ) ) {
-		gchar tmp[64];
-		sscanf( line, "%s %s", command, tmp );
-		if( tmp )
-			cfg_set_game( tmp );
+	} else if( !strcmp( command, "set-game" ) ) {
+		if( value_str )
+			cfg_set_game( value_str );
 	
 	/* request to close the connection */
-	} else if( !strncmp( line, "quit", 4 ) ) {
+	} else if( !strcmp( command, "quit" ) ) {
 		net_close( admin_session );
 	
 	/* fallthrough -- unknown command */
