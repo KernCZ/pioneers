@@ -44,6 +44,11 @@ gboolean build_can_undo()
 	return build_list != NULL;
 }
 
+gint build_count_edges()
+{
+    return buildrec_count_edges(build_list);
+}
+
 gint build_count(BuildType type)
 {
 	return buildrec_count_type(build_list, type);
@@ -66,6 +71,13 @@ gboolean build_can_setup_road(Edge *edge, gboolean double_setup)
 gboolean build_can_setup_ship(Edge *edge, gboolean double_setup)
 {
 	return buildrec_can_setup_ship(build_list, map, edge, double_setup);
+}
+
+/* Place some restrictions on bridge placement during setup phase
+ */
+gboolean build_can_setup_bridge(Edge *edge, gboolean double_setup)
+{
+	return buildrec_can_setup_bridge(build_list, map, edge, double_setup);
 }
 
 /* Place some restrictions on road placement during setup phase

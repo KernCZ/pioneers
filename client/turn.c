@@ -68,6 +68,14 @@ gboolean turn_can_build_ship()
 		&& map_can_place_ship(map, my_player_num());
 }
 
+gboolean turn_can_build_bridge()
+{
+	return have_rolled_dice()
+		&& stock_num_bridges() > 0
+		&& can_afford(cost_bridge())
+		&& map_can_place_bridge(map, my_player_num());
+}
+
 gboolean turn_can_build_settlement()
 {
 	return have_rolled_dice()

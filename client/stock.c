@@ -71,6 +71,23 @@ void stock_replace_ship()
 	identity_draw();
 }
 
+gint stock_num_bridges()
+{
+	return num_bridges;
+}
+
+void stock_use_bridge()
+{
+	num_bridges--;
+	identity_draw();
+}
+
+void stock_replace_bridge()
+{
+	num_bridges++;
+	identity_draw();
+}
+
 gint stock_num_settlements()
 {
 	return num_settlements;

@@ -134,6 +134,12 @@ static gint expose_identity_area_cb(GtkWidget *area,
 		offset = draw_building_and_count(identity_gc, area, offset,
 						 &poly, stock_num_ships());
 	}
+	if (game_params->num_build_type[BUILD_BRIDGE] > 0) {
+		poly.num_points = MAX_POINTS;
+		guimap_bridge_polygon(&bogus_map, NULL, &poly);
+		offset = draw_building_and_count(identity_gc, area, offset,
+						 &poly, stock_num_bridges());
+	}
 	if (game_params->num_build_type[BUILD_SETTLEMENT] > 0) {
 		poly.num_points = MAX_POINTS;
 		guimap_settlement_polygon(&bogus_map, NULL, &poly);
