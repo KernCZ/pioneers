@@ -53,6 +53,10 @@ struct _Session {
 	NetNotifyFunc notify_func;
 };
 
+#ifdef DEBUG
+void debug(const gchar *fmt, ...);
+#endif
+
 Session *net_new(NetNotifyFunc notify_func, void *user_data);
 void net_free(Session **ses);
 

@@ -68,11 +68,10 @@ typedef void (*LogFunc)( gint msg_type, gchar *text );
 #define MSG_DICE	6
 #define MSG_STEAL	7
 #define MSG_TRADE	8
-#define MSG_NAMEANON	9
-#define MSG_DEVCARD	10
-#define MSG_LARGESTARMY	11
-#define MSG_LONGESTROAD	12
-#define MSG_BEEP	13
+#define MSG_DEVCARD	9
+#define MSG_LARGESTARMY	10
+#define MSG_LONGESTROAD	11
+#define MSG_BEEP	12
 #define MSG_PLAYER1	101
 #define MSG_PLAYER2	102
 #define MSG_PLAYER3	103

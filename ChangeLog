@@ -1,3 +1,21 @@
+2004-02-08 0.8.1.20  Bas Wijnen <b.wijnen@phys.rug.nl>
+	* client/common/player.c, client/gtk/gameover.c, common/common_gtk.c,
+	common/log.c, common/log.h: Removed MSG_NAMEANON, added prefixes to
+	log_message_string_console.
+	* client/common/develop.c: Removed selected_card_idx that was
+	originally used for the gtk interface.
+	* client/gtk/state.c, common/log.c, common/network.c,
+	common/network.h, common/state.c: Renamed LOG defines to DEBUG. Made
+	the log more readable.
+	* client/callback.h, client/common/client.c, client/gtk/callbacks.c,
+	client/gtk/frontend.h, client/gtk/player.c, client/common/player.c:
+	Added rename for viewers, viewers are shown in Player Summary again.
+	* client/callback.h, client/common/callback.c, client/common/client.c,
+	client/common/client.h, client/common/player.c,
+	client/common/resource.c, client/gtk/callbacks.c: Added support in the
+	client to count the resources in the bank.
+	* client/gtk/player.c: Added plurals for several development cards.
+	
 2004-02-08 0.8.1.19  Bas Wijnen <b.wijnen@phys.rug.nl>, Roland Clobus <rclobus@bigfoot.com>
 
 	* client/common/client.c (mode_road_building): Changed interpretation

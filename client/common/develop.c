@@ -32,7 +32,6 @@
 #include "state.h"
 #include "callback.h"
 
-static gint selected_card_idx;	/* currently selected development card */
 static gboolean played_develop; /* already played a non-victory card? */
 static gboolean bought_develop; /* have we bought a development card? */
 
@@ -203,7 +202,7 @@ gboolean can_play_develop(gint card)
 	    || !deck_card_playable(develop_deck, played_develop, card,
 		    turn_num()))
 		return FALSE;
-	switch (deck_card_type(develop_deck, selected_card_idx)) {
+	switch (deck_card_type(develop_deck, card)) {
 	case DEVEL_ROAD_BUILDING:
 		return (stock_num_roads() > 0
 			&& map_can_place_road(map, my_player_num()))
@@ -241,67 +240,3 @@ DevelDeck *get_devel_deck ()
 {
 	return develop_deck;
 }
-
-#if 0
-gint develop_current_idx()
-{
-	return selected_card_idx;
-}
-
-gboolean have_played_develop()
-{
-	return played_develop;
-}
-
-static void select_develop_cb(GtkWidget *clist, gint row, gint column,
-			      GdkEventButton* event, gpointer user_data)
-{
-	selected_card_idx = row;
-	client_changed_cb();
-}
-
-GtkWidget *develop_build_page()
-{
-	GtkWidget *frame;
-	GtkWidget *vbox;
-	GtkWidget *scroll_win;
-	GtkWidget *bbox;
-
-	frame = gtk_frame_new(_("Development Cards"));
-	gtk_widget_show(frame);
-
-	vbox = gtk_vbox_new(FALSE, 5);
-	gtk_widget_show(vbox);
-	gtk_container_add(GTK_CONTAINER(frame), vbox);
-	gtk_container_border_width(GTK_CONTAINER(vbox), 3);
-
-	scroll_win = gtk_scrolled_window_new(NULL, NULL);
-	gtk_widget_show(scroll_win);
-	gtk_widget_set_usize(scroll_win, -1, 100);
-	gtk_box_pack_start(GTK_BOX(vbox), scroll_win, TRUE, TRUE, 0);
-	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scroll_win),
-				       GTK_POLICY_AUTOMATIC,
-				       GTK_POLICY_AUTOMATIC);
-
-	develop_clist = gtk_clist_new(1);
-	gtk_signal_connect(GTK_OBJECT(develop_clist), "select_row",
-			   GTK_SIGNAL_FUNC(select_develop_cb), NULL);
-	gtk_widget_show(develop_clist);
-	gtk_container_add(GTK_CONTAINER(scroll_win), develop_clist);
-	gtk_clist_set_column_width(GTK_CLIST(develop_clist), 0, 120);
-	gtk_clist_set_selection_mode(GTK_CLIST(develop_clist),
-				     GTK_SELECTION_BROWSE);
-	gtk_clist_column_titles_hide(GTK_CLIST(develop_clist));
-
-	bbox = gtk_hbutton_box_new();
-	gtk_widget_show(bbox);
-	gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, TRUE, 0);
-
-	play_develop_btn = gtk_button_new_with_label(_("Play Card"));
-	client_gui(play_develop_btn, GUI_PLAY_DEVELOP, "clicked");
-	gtk_widget_show(play_develop_btn);
-	gtk_container_add(GTK_CONTAINER(bbox), play_develop_btn);
-
-	return frame;
-}
-#endif

@@ -153,14 +153,15 @@ void player_change_name(gint player_num, const gchar *name)
 			old_name = viewer->name;
 		}
 		if (old_name == NULL)
-			log_message( MSG_NAMEANON, _("New viewer: %s.\n"),
+			log_message( MSG_INFO, _("New viewer: %s.\n"),
 					name);
 		else
-			log_message( MSG_NAMEANON, _("%s is now %s.\n"),
+			log_message( MSG_INFO, _("%s is now %s.\n"),
 					old_name, name);
 		viewer->name = g_strdup (name);
 		if (old_name != NULL)
 			g_free (old_name);
+		callbacks.viewer_name (player_num, name);
 		return;
 	}
 
@@ -168,9 +169,9 @@ void player_change_name(gint player_num, const gchar *name)
 	old_name = player->name;
 	player->name = g_strdup(name);
 	if (old_name == NULL)
-		log_message( MSG_NAMEANON, _("Player %d is now %s.\n"), player_num, name);
+		log_message( MSG_INFO, _("Player %d is now %s.\n"), player_num, name);
 	else
-		log_message( MSG_NAMEANON, _("%s is now %s.\n"), old_name, name);
+		log_message( MSG_INFO, _("%s is now %s.\n"), old_name, name);
 	if (old_name != NULL)
 		g_free(old_name);
 	callbacks.player_name (player_num, name);
@@ -357,6 +358,14 @@ void player_maritime_trade(gint player_num,
 {
 	gchar buf_give[128];
 	gchar buf_receive[128];
+	gint resources[NO_RESOURCE];
+	gint idx;
+
+	for (idx = 0; idx < NO_RESOURCE; ++idx)
+		resources[idx] = 0;
+	resources[supply] = ratio;
+	resources[receive] = -1;
+	modify_bank (resources);
 
 	player_modify_statistic(player_num, STAT_RESOURCES, 1 - ratio);
 	if (player_num == my_player_num()) {

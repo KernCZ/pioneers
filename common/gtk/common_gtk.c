@@ -51,7 +51,6 @@ static GdkColor msg_dice_color =     { 0, 0,      0xaa00, 0      };
 static GdkColor msg_info_color =     { 0, 0,      0,      0      };
 static GdkColor msg_largest_color =  { 0, 0x1c00, 0xb500, 0xed00 };
 static GdkColor msg_longest_color =  { 0, 0x1c00, 0xb500, 0xed00 };
-static GdkColor msg_nameanon_color = { 0, 0x8700, 0x0000, 0x9900 };
 static GdkColor msg_resource_color = { 0, 0,      0,      0xff00 };
 static GdkColor msg_steal_color =    { 0, 0xa600, 0x1300, 0xc600 };
 static GdkColor msg_trade_color =    { 0, 0,      0x6600, 0      };
@@ -116,9 +115,6 @@ void message_window_log_message_string( gint msg_type, gchar *text )
 			break;
 		case MSG_TRADE:
 			color = &msg_trade_color;
-			break;
-		case MSG_NAMEANON:
-			color = &msg_nameanon_color;
 			break;
 		case MSG_DEVCARD:
 			color = &msg_devcard_color;

@@ -49,11 +49,12 @@ static Statistic statistics[] = {
 	{ N_("City"), N_("Cities"), 2, &ps_city },
 	{ N_("Largest Army"), NULL, 2, &ps_largest },
 	{ N_("Longest Road"), NULL, 2, &ps_largest },
-	{ N_("Chapel"), NULL, 1, &ps_building },
-	{ N_("University of Gnocatan"), NULL, 1, &ps_building },
-	{ N_("Governor's House"), NULL, 1, &ps_building },
-	{ N_("Library"), NULL, 1, &ps_building },
-	{ N_("Market"), NULL, 1, &ps_building },
+	{ N_("Chapel"), N_("Chapels"), 1, &ps_building },
+	{ N_("University of Gnocatan"), N_("Universities of Gnocatan"), 1,
+		&ps_building },
+	{ N_("Governor's House"), N_("Governor's Houses"), 1, &ps_building },
+	{ N_("Library"), N_("Libraries"), 1, &ps_building },
+	{ N_("Market"), N_("Markets"), 1, &ps_building },
 	{ N_("Soldier"), N_("Soldiers"), 0, &ps_soldier },
 	{ N_("Resource card"), N_("Resource cards"), 0, &ps_resource },
 	{ N_("Development card"), N_("Development cards"), 0, &ps_development }
@@ -311,6 +312,21 @@ void frontend_player_name(gint player_num, UNUSED(const gchar *name))
 	refresh_victory_point_total(player_num);
 	gtk_clist_set_text(GTK_CLIST(summary_clist), row, 1,
 			   player_name(player_num, TRUE));
+}
+
+void frontend_viewer_name(gint viewer_num, UNUSED(const gchar *name))
+{
+	Viewer *viewer;
+	gint row;
+
+	viewer = viewer_get (viewer_num);
+
+	row = gtk_clist_find_row_from_data(GTK_CLIST(summary_clist), viewer);
+	if (row < 0) {
+		row = player_create_summary_row (viewer_num, viewer);
+	}
+	gtk_clist_set_text(GTK_CLIST(summary_clist), row, 1,
+			   player_name(viewer_num, TRUE));
 }
 
 

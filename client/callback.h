@@ -208,12 +208,16 @@ struct callbacks {
 	 * the value must not be updated by the frontend, it has already been
 	 * done by the client. */
 	void (*new_statistics)(gint player_num, StatisticType type, gint num);
+	/* a viewer changed his/her name */
+	void (*viewer_name)(gint viewer_num, const gchar *name);
 	/* a player changed his/her name */
 	void (*player_name)(gint player_num, const gchar *name);
 	/* a player left the game */
 	void (*player_quit)(gint player_num);
 	/* a viewer left the game */
 	void (*viewer_quit)(gint player_num);
+	/* something changed in the bank. */
+	void (*new_bank)(const gint *new_bank);
 	/* some communication error occurred, and it has already been logged */
 	void (*error)(gchar *message);
 	/* mainloop.  This is initialized to run the glib main loop.  It can
@@ -341,7 +345,7 @@ gboolean have_bridges (void);
 const GameParams *get_game_params (void);
 int pirate_count_victims (Hex *hex, gint *victim_list);
 int robber_count_victims (Hex *hex, gint *victim_list);
-gint *get_bank (void);
+const gint *get_bank (void);
 DevelDeck *get_devel_deck (void);
 Map *get_map (void);
 

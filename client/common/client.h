@@ -145,6 +145,8 @@ gint resource_count (gint *resources);
 void resource_format_num (gchar *desc, guint desc_size, gint *resources);
 void resource_log_list (gint player_num, gchar *action, gint *resources);
 void resource_modify (Resource type, gint num);
+void set_bank (const gint *new_bank);
+void modify_bank (const gint *bank_change);
 
 /********** robber.c **********/
 void robber_move_on_map(gint x, gint y);

@@ -42,23 +42,13 @@
 #include "network.h"
 #include "log.h"
 
-/* #define LOG */
-#ifdef LOG
-static void debug(gchar *fmt, ...)
+#ifdef DEBUG
+void debug(const gchar *fmt, ...)
 {
-	static FILE *fp;
 	va_list ap;
-	gchar buff[16 *1024];
+	gchar buff[16 * 1024];
 	gint len;
 	gint idx;
-
-	if (fp == NULL) {
-		char name[64];
-		sprintf(name, "/tmp/gnocatan.%d", getpid());
-		fp = fopen(name, "w");
-	}
-	if (fp == NULL)
-		return;
 
 	va_start(ap, fmt);
 	len = g_vsnprintf(buff, sizeof(buff), fmt, ap);
@@ -66,15 +56,25 @@ static void debug(gchar *fmt, ...)
 
 	for (idx = 0; idx < len; idx++) {
 		if (isprint(buff[idx]) || idx == len - 1)
-			fputc(buff[idx], fp);
+			fputc(buff[idx], stderr);
 		else switch (buff[idx]) {
-		case '\n': fputc('\\', fp); fputc('n', fp); break;
-		case '\r': fputc('\\', fp); fputc('r', fp); break;
-		case '\t': fputc('\\', fp); fputc('t', fp); break;
-		default: fprintf(fp, "\\x%02x", buff[idx]); break;
+		case '\n':
+			fputc ('\\', stderr);
+			fputc ('n', stderr);
+			break;
+		case '\r':
+			fputc ('\\', stderr);
+			fputc ('r', stderr);
+			break;
+		case '\t':
+			fputc ('\\', stderr);
+			fputc ('t', stderr);
+			break;
+		default:
+			fprintf (stderr, "\\x%02x", buff[idx]);
+			break;
 		}
 	}
-	fflush(fp);
 }
 #endif
 
@@ -184,7 +184,7 @@ static void write_ready(Session *ses)
 		int len = strlen(data);
 
 		num = write(ses->fd, data, len);
-#ifdef LOG
+#ifdef DEBUG
 		debug("write_ready: write(%d, \"%.*s\", %d) = %d\n",
 			ses->fd, len, data, len, num);
 #endif
@@ -217,15 +217,12 @@ static void write_ready(Session *ses)
 
 void net_write(Session *ses, const gchar *data)
 {
-#ifdef DEBUG
-	log_message (MSG_INFO, "net_write (%p): %s", ses, data);
-#endif
 	if (!ses || ses->fd < 0)
 		return;
 	if (ses->write_queue != NULL || !net_connected(ses)) {
-		/* reassign the pointer, because the glib docs say it may change and
-		 * because if we're in the process of connecting the pointer may
-		 * currently be null. */
+		/* reassign the pointer, because the glib docs say it may
+		 * change and because if we're in the process of connecting the
+		 * pointer may currently be null. */
 		ses->write_queue = g_list_append(ses->write_queue, g_strdup(data));
 	} else {
 		int len;
@@ -233,13 +230,15 @@ void net_write(Session *ses, const gchar *data)
 
 		len = strlen(data);
 		num = write(ses->fd, data, len);
-#ifdef LOG
-		debug("net_write: write(%d, \"%.*s\", %d) = %d\n",
-		      ses->fd, len, data, len, num);
+#ifdef DEBUG
+		if (num > 0)
+			debug("(%d) --> %s\n", ses->fd, data);
+		else if (errno != EAGAIN)
+			debug ("(%d) --- Error writing to socket.\n", ses->fd);
 #endif
 		if (num < 0) {
 			if (errno != EAGAIN) {
-				log_message( MSG_ERROR, _("Error writing socket: %s\n"),
+				log_message( MSG_ERROR, _("Error writing to socket: %s\n"),
 					  g_strerror(errno));
 				close_and_callback(ses);
 				return;
@@ -294,14 +293,6 @@ static void read_ready(Session *ses)
 
 	num = read(ses->fd, ses->read_buff + ses->read_len,
 		   sizeof(ses->read_buff) - ses->read_len);
-#ifdef LOG
-	debug("read_ready: read(%d, %d) = %d",
-	      ses->fd, sizeof(ses->read_buff) - ses->read_len, num);
-	if (num > 0)
-		debug(", \"%.*s\"",
-		      num, ses->read_buff + ses->read_len);
-	debug("\n");
-#endif
 	if (num < 0) {
 		if (errno == EAGAIN)
 			return;
@@ -332,11 +323,8 @@ static void read_ready(Session *ses)
 		line[len] = '\0';
 		offset += len + 1;
 
-#ifdef LOG
-		debug("read_ready: line [%s]\n", line);
-#endif
 #ifdef DEBUG
-		log_message (MSG_INFO, "read_ready(%p): %s\n", ses, line);
+		debug("(%d) <-- %s\n", ses->fd, line);
 #endif
 		notify(ses, NET_READ, line);
 	}

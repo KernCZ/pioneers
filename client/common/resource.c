@@ -29,6 +29,8 @@
 #include "game.h"
 #include "map.h"
 
+static gint bank[NO_RESOURCE];
+
 static const gchar *resource_names[][2] = {
 	{ N_("brick"), N_("Brick") },
 	{ N_("grain"), N_("Grain") },
@@ -75,16 +77,19 @@ void resource_init()
 void resource_apply_list(gint player_num, gint *resources, gint mult)
 {
 	gint idx;
+	gint bank_change[NO_RESOURCE];
 
 	for (idx = 0; idx < NO_RESOURCE; idx++) {
 		gint num = resources[idx] * mult;
 
+		bank_change[idx] = -num;
 		if (num == 0)
 			continue;
 		player_modify_statistic(player_num, STAT_RESOURCES, num);
 		if (player_num == my_player_num())
 			resource_modify(idx, num);
 	}
+	modify_bank (bank_change);
 }
 
 void resource_cards(gint num, Resource type, gchar *buf, gint buflen)
@@ -236,6 +241,27 @@ void resource_format_type(gchar *str, gint *resources)
 		add_comma = TRUE;
 		str += strlen(str);
 	}
+}
+
+const gint *get_bank (void)
+{
+	return bank;
+}
+
+void set_bank (const gint *new_bank)
+{
+	gint idx;
+	for (idx = 0; idx < NO_RESOURCE; ++idx)
+		bank[idx] = new_bank[idx];
+	callbacks.new_bank (bank);
+}
+
+void modify_bank (const gint *bank_change)
+{
+	gint idx;
+	for (idx = 0; idx < NO_RESOURCE; ++idx)
+		bank[idx] += bank_change[idx];
+	callbacks.new_bank (bank);
 }
 
 #ifdef FIND_STUPID_RESOURCE_BUG

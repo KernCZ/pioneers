@@ -93,6 +93,14 @@ static void frontend_robber_moved (UNUSED(Hex *old), UNUSED(Hex *new))
 	gui_prompt_hide ();
 }
 
+static void frontend_new_bank (const gint *new_bank)
+{
+#ifdef DEBUG
+	debug ("New bank: %d %d %d %d %d\n", new_bank[0], new_bank[1],
+			new_bank[2], new_bank[3], new_bank[4]);
+#endif
+}
+
 static void frontend_error (UNUSED(gchar *message))
 {
 }
@@ -162,9 +170,11 @@ void frontend_set_callbacks (int argc, char **argv)
 	callbacks.robber = &frontend_robber;
 	callbacks.robber_moved = &frontend_robber_moved;
 	callbacks.new_statistics = &frontend_new_statistics;
+	callbacks.viewer_name = &frontend_viewer_name;
 	callbacks.player_name = &frontend_player_name;
 	callbacks.player_quit = &frontend_player_quit;
 	callbacks.viewer_quit = &frontend_viewer_quit;
+	callbacks.new_bank = &frontend_new_bank;
 	callbacks.error = &frontend_error;
 };
 

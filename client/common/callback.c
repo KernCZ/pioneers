@@ -531,19 +531,6 @@ int pirate_count_victims(Hex *hex, gint *victim_list)
 	return num_victims;
 }
 
-int *get_bank ()
-{
-	/* TODO: the bank should be known to the client.  Perhaps the server
-	 * should just send the bank after every change.  For now, we just
-	 * return that there always are enough resources, so it is broken if
-	 * that isn't the case, but it usually works. */
-	static gint bank[NO_RESOURCE];
-	int i;
-	for (i = 0; i < numElem (bank); ++i)
-		bank[i] = 100;
-	return bank;
-}
-
 Map *get_map ()
 {
 	return map;

@@ -549,7 +549,8 @@ static void do_push(StateMachine *sm, StateFunc new_state, gboolean enter)
 		route_event(sm, SM_ENTER);
 	route_event(sm, SM_INIT);
 #ifdef STACK_DEBUG
-	log_message( MSG_INFO, "sm_push -> %d:%s\n", sm->stack_ptr, sm->current_state);
+	debug ("sm_push -> %d:%s (enter=%d)\n", sm->stack_ptr,
+			sm->current_state, enter);
 #endif
 	sm_dec_use_count(sm);
 }
@@ -572,7 +573,7 @@ void sm_pop(StateMachine *sm)
 	sm->stack_ptr--;
 	route_event(sm, SM_ENTER);
 #ifdef STACK_DEBUG
-	log_message( MSG_INFO, "sm_pop  -> %d:%s\n", sm->stack_ptr, sm->current_state);
+	debug ("sm_pop  -> %d:%s\n", sm->stack_ptr, sm->current_state);
 #endif
 	route_event(sm, SM_INIT);
 	sm_dec_use_count(sm);
@@ -586,7 +587,7 @@ void sm_multipop(StateMachine *sm, gint depth)
 	sm->stack_ptr -= depth;
 	route_event(sm, SM_ENTER);
 #ifdef STACK_DEBUG
-	log_message( MSG_INFO, "sm_pop  -> %d:%s\n", sm->stack_ptr, sm->current_state);
+	debug ("sm_multipop  -> %d:%s\n", sm->stack_ptr, sm->current_state);
 #endif
 	route_event(sm, SM_INIT);
 

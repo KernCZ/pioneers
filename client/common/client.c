@@ -173,7 +173,10 @@ void client_init (void)
 	(nothing_cast)callbacks.robber = &do_nothing;
 	(nothing_cast)callbacks.robber_moved = &do_nothing;
 	(nothing_cast)callbacks.new_statistics = &do_nothing;
+	(nothing_cast)callbacks.viewer_name = &do_nothing;
 	(nothing_cast)callbacks.player_name = &do_nothing;
+	(nothing_cast)callbacks.player_quit = &do_nothing;
+	(nothing_cast)callbacks.viewer_quit = &do_nothing;
 	(nothing_cast)callbacks.error = &do_nothing;
 	resource_init ();
 }
@@ -540,7 +543,7 @@ gboolean mode_start(StateMachine *sm, gint event)
 		callbacks.network_status (_("Loading"));
 		player_reset();
 		callbacks.init_game ();
-	}		
+	}
 
 	if (event != SM_RECV)
 		return FALSE;
@@ -655,6 +658,7 @@ static gboolean mode_load_gameinfo(StateMachine *sm, gint event)
          = { "", -1, -1, -1, { -1, -1, -1, -1, -1 }, FALSE,
 	     -1, -1, FALSE, FALSE, -1, NULL, FALSE, -1 };
 	static gboolean disconnected = FALSE;
+	static gboolean have_bank = FALSE;
 	static gint devcardidx = -1;
 	static gint numdevcards = -1;
 	gint num_roads, num_bridges, num_ships, num_settlements,
@@ -669,10 +673,17 @@ static gboolean mode_load_gameinfo(StateMachine *sm, gint event)
 	gint cost[NO_RESOURCE];
 	gint resources[NO_RESOURCE];
 	gint sx, sy, spos, road;
+	gint tmp_bank[NO_RESOURCE];
 
 	sm_state_name(sm, "mode_load_gameinfo");
 	if (event == SM_ENTER) {
+		gint idx;
+
 		discarding = FALSE;
+		have_bank = FALSE;
+		for (idx = 0; idx < NO_RESOURCE; ++idx)
+			tmp_bank[idx] = game_params->resource_count;
+		set_bank (tmp_bank);
 	}
 	if (event != SM_RECV)
 		return FALSE;
@@ -694,6 +705,13 @@ static gboolean mode_load_gameinfo(StateMachine *sm, gint event)
 			sm_goto(sm, mode_start_response);
 		}
 		return TRUE;
+	}
+	/* TODO: The server does not send the bank yet. 
+	 * This extension should be sent before otherplayerinfo:
+	 * because the information about the bank is then needed */
+	if (sm_recv(sm, "extension bank %R", tmp_bank) ) {
+		set_bank(tmp_bank);
+		have_bank = TRUE;
 	}
 	if (sm_recv(sm, "turn num %d", &rinfo.turnnum)) {
 		return TRUE;
@@ -746,6 +764,11 @@ static gboolean mode_load_gameinfo(StateMachine *sm, gint event)
 	if (sm_recv(sm, "playerinfo: resources: %R", resources)) {
 		resource_init();
 		resource_apply_list(my_player_num(), resources, 1);
+		/* If the bank was copied from the server, it should not be
+		 * compensated for my own resources, because it was already
+		 * correct.  So we compensate it back. */
+		if (have_bank)
+			modify_bank (resources);
 		return TRUE;
 	}
 	if (sm_recv(sm, "playerinfo: numdevcards: %d", &numdevcards)) {
@@ -801,6 +824,8 @@ static gboolean mode_load_gameinfo(StateMachine *sm, gint event)
 		player_modify_statistic(opnum, STAT_RESOURCES, opnassets);
 		player_modify_statistic(opnum, STAT_DEVELOPMENT, opncards);
 		player_modify_statistic(opnum, STAT_SOLDIERS, opnsoldiers);
+		if (!have_bank && opnassets != 0)
+			log_message (MSG_ERROR, "Cannot determine bank, expect out of resource errors");
 		if (pchapel) {
 			player_modify_statistic(opnum, STAT_CHAPEL, 1);
 		}
