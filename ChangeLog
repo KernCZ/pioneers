@@ -1,4 +1,8 @@
 2003-10-12  Bas Wijnen <b.wijnen@phys.rug.nl>
+	* common/game.c, common/map.c, common/map.h, common/map_query.c: Added
+	support for nodes where setup is not allowed.
+
+2003-10-12  Bas Wijnen <b.wijnen@phys.rug.nl>
 	* client/client.c, client/player.c, client/player.h, common/game.h,
 	server/server.h: Added arbitrary point tokens.
 

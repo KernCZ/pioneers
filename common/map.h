@@ -96,6 +96,7 @@ struct _Node {
 	BuildType type;		/* type of node (if owner defined) */
 
 	gint visited;		/* used for longest road */
+	gboolean no_setup;	/* setup is not allowed on this node */
 };
 
 struct _Edge {

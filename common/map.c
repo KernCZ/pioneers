@@ -469,6 +469,20 @@ static Hex *copy_hex(Map *map, Hex *hex)
 	return copy;
 }
 
+static gboolean set_nosetup_nodes (Map *map, Hex *hex, Map *copy)
+{
+	gint idx;
+	for (idx = 0; idx < numElem(hex->nodes); ++idx) {
+		Node *node = hex->nodes[idx];
+		/* only handle nodes which are owned by the hex, to
+		 * prevent doing every node three times */
+		if (hex->x != node->x || hex->y != node->y) continue;
+		map_node (copy, node->x, node->y, node->pos)->no_setup
+			= node->no_setup;
+	}
+	return FALSE;
+}
+
 /* Make a copy of an existing map
  */
 Map *map_copy(Map *map)
@@ -484,7 +498,14 @@ Map *map_copy(Map *map)
 			copy->grid[y][x] = copy_hex(copy, map->grid[y][x]);
 	map_traverse(copy, build_network, NULL);
 	map_traverse(copy, connect_network, NULL);
+	map_traverse(map, (HexFunc)set_nosetup_nodes, copy);
 	copy->robber_hex = map->robber_hex;
+	copy->pirate_hex = map->pirate_hex;
+	copy->shrink_left = map->shrink_left;
+	copy->shrink_right = map->shrink_right;
+	copy->has_moved_ship = map->has_moved_ship;
+	copy->have_bridges = map->have_bridges;
+	copy->has_pirate = map->has_pirate;
 	copy->shrink_left = map->shrink_left;
 	copy->shrink_right = map->shrink_right;
 	/* chits is not owned by the map, i.e. not allocated / freed

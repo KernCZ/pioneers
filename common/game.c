@@ -163,6 +163,28 @@ static GArray *copy_int_list(GArray *array)
 	return copy;
 }
 
+struct nosetup_t {
+	WriteLineFunc func;
+	gpointer user_data;
+};
+
+static gboolean find_no_setup (Map *map, Hex *hex, struct nosetup_t *data)
+{
+	gint idx;
+	for (idx = 0; idx < numElem (hex->nodes); ++idx) {
+		Node *node = hex->nodes[idx];
+		if (node->no_setup) {
+			log_message (MSG_INFO, "test\n");
+			if (node->x != hex->x || node->y != hex->y) continue;
+			gchar buff[512];
+			snprintf (buff, sizeof(buff), "nosetup %d %d %d\n",
+					node->x, node->y, node->pos);
+			data->func (data->user_data, buff);
+		}
+	}
+	return FALSE;
+}
+
 void params_write_lines(GameParams *params, WriteLineFunc func, gpointer user_data)
 {
 	gint idx;
@@ -217,6 +239,12 @@ void params_write_lines(GameParams *params, WriteLineFunc func, gpointer user_da
 		func(user_data, buff);
 	}
 	func(user_data, ".");
+	if (params->map) {
+		struct nosetup_t tmp;
+		tmp.user_data = user_data;
+		tmp.func = func;
+		map_traverse (params->map, (HexFunc)find_no_setup, &tmp);
+	}
 	func(user_data, "end");
 }
 
@@ -225,9 +253,11 @@ void params_load_line(GameParams *params, gchar *line)
 	gint idx;
 
 	if (params->parsing_map) {
-		if (strcmp(line, ".") == 0)
+		if (strcmp(line, ".") == 0) {
 			params->parsing_map = FALSE;
-		else
+			map_set_chits(params->map, params->chits);
+			map_parse_finish(params->map);
+		} else
 			map_parse_line(params->map, line);
 		return;
 	}
@@ -245,6 +275,15 @@ void params_load_line(GameParams *params, gchar *line)
 	if (match_word(&line, "map")) {
 		params->map = map_new();
 		params->parsing_map = TRUE;
+		return;
+	}
+	if (match_word(&line, "nosetup")) {
+		gint x = 0, y = 0, pos = 0;
+		/* don't tolerate invalid game descriptions */
+		g_assert (params->map != NULL);
+		sscanf (line, "%d %d %d", &x, &y, &pos);
+		map_node (params->map, x, y, pos)->no_setup = TRUE;
+		log_message (MSG_INFO, "nosetup on %d %d %d\n", x, y, pos);
 		return;
 	}
 
@@ -315,10 +354,7 @@ GameParams *params_copy(GameParams *params)
 
 void params_load_finish(GameParams *params)
 {
-	if (params->chits != NULL
-	    && params->map != NULL) {
-		map_set_chits(params->map, params->chits);
-		map_parse_finish(params->map);
+	if (params->map != NULL) {
 		params->map->have_bridges = params->num_build_type[BUILD_BRIDGE] > 0;
 		params->map->has_pirate = params->use_pirate;
 	}

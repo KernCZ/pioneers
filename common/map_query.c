@@ -434,9 +434,10 @@ gboolean can_bridge_be_built(Edge *edge, gint owner)
  * the specified player during the setup phase.  Perform the following
  * checks:
  *
- * 1 - Node must be vacant.
- * 2 - Node must be adjacent to a land hex.
- * 3 - Node must not be within one node of another building.
+ * 1 - Node must not be in the no-setup list.
+ * 2 - Node must be vacant.
+ * 3 - Node must be adjacent to a land hex.
+ * 4 - Node must not be within one node of another building.
  *
  * The checks are not as strict as for normal play.  This allows the
  * player to try a few different configurations without layout
@@ -445,7 +446,8 @@ gboolean can_bridge_be_built(Edge *edge, gint owner)
  */
 gboolean can_settlement_be_setup(Node *node, gint owner)
 {
-	return node->owner < 0
+	return !node->no_setup
+		&& node->owner < 0
 		&& is_node_on_land(node)
 		&& is_node_spacing_ok(node);
 }
