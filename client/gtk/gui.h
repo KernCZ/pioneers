@@ -71,8 +71,8 @@ typedef void (*GuiState)(GuiEvent event);
 
 #ifdef DEBUG
 	#define set_gui_state(A) \
-		g_print("New GUI_state: %s\n", #A); \
-		set_gui_state_nomacro(A)
+		{ g_print("New GUI_state: %s\n", #A); \
+		set_gui_state_nomacro(A); }
 #else
 	#define set_gui_state(A) \
 		set_gui_state_nomacro(A)

@@ -1,3 +1,7 @@
+2004-11-28  0.8.1.44  Roland Clobus <rclobus@bigfoot.com>
+	* client/gtk/gui.h: Fix for the macro that would have bad side effects
+	when used in if statements
+
 2004-11-21  0.8.1.43  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/offline.c(frontend_offline): Game|Connect incorrectly
 	available when client is started with a commandline with server and
