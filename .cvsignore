@@ -15,3 +15,6 @@ config.status
 stamp-h
 Makefile
 stamp.h
+TAGS
+build-stamp
+install-stamp

@@ -36,38 +36,8 @@ static Player players[MAX_PLAYERS];
 static gint turn_player = -1;	/* whose turn is it */
 static gint my_player_id = -1;	/* what is my player number */
 
-static GdkColor token_colors[] = {
-	{ 0, 0xCD00, 0x0000, 0x0000 }, /* red */
-	{ 0, 0x1E00, 0x9000, 0xFF00 }, /* blue */
-	{ 0, 0xE800, 0xE800, 0xE800 }, /* white */
-	{ 0, 0xFF00, 0x7F00, 0x0000 }, /* orange */
-	{ 0, 0xEE00, 0xEE00, 0x0000 }, /* yellow */
-	{ 0, 0x8E00, 0xE500, 0xEE00 }, /* cyan */
-	{ 0, 0xD100, 0x5F00, 0xEE00 }, /* magenta */
-	{ 0, 0x0000, 0xEE00, 0x7600 } /* green */
-};
-
-#if 0 /* unused */
-static GdkColor player_bg = { 0, 0xB000, 0xB000, 0xB000 };
-static GdkColor player_fg = { 0, 0x0000, 0x0000, 0xFF00 };
-#endif
-
 void player_init()
 {
-	gint idx;
-	GdkColormap* cmap;
-
-	cmap = gdk_colormap_get_system();
-	for (idx = 0; idx < numElem(token_colors); idx++)
-		gdk_color_alloc(cmap, &token_colors[idx]);
-
-	for (idx = 0; idx < numElem(players); idx++)
-		players[idx].color = idx;
-}
-
-GdkColor *player_color(gint player_num)
-{
-	return &token_colors[players[player_num].color];
 }
 
 gchar *player_name(gint player_num, gboolean word_caps)

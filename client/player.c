@@ -7,6 +7,7 @@
  * Implementation of the excellent Settlers of Catan board game.  Go
  * buy a copy.
  */
+#include "config.h"
 #include <gnome.h>
 
 #include "game.h"
@@ -181,12 +182,12 @@ void player_modify_statistic(gint player_num, StatisticType type, gint num)
 		if (value == 1) {
 			if (statistics[type].plural != NULL)
 				sprintf(desc, "%d %s", value,
-					statistics[type].singular);
+					gettext(statistics[type].singular));
 			else
-				strcpy(desc, statistics[type].singular);
+				strcpy(desc, gettext(statistics[type].singular));
 		} else
 			sprintf(desc, "%d %s", value,
-				statistics[type].plural);
+				gettext(statistics[type].plural));
 		if (statistics[type].victory_mult > 0)
 			sprintf(points, "%d", value * statistics[type].victory_mult);
 		else
@@ -511,7 +512,7 @@ void player_stole_from(gint player_num, gint victim_num, Resource resource)
 	if (resource == NO_RESOURCE) {
 		/* We are not in on the action
 		 */
-		log_message( MSG_STEAL, _("%s"),
+		log_message( MSG_STEAL, N_("%s"),
 			 player_name(player_num, TRUE));
 		log_timestamp = 0;
 		log_message( MSG_STEAL, _(" stole a resource from "));

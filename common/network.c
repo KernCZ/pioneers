@@ -19,6 +19,7 @@
 #include <errno.h>
 #include <string.h>
 
+#include "config.h"
 /* FIXME: we should eliminate the dependency here on gtk and gnome, moving
    all of the graphics code to a separate file. */
 #include <glib.h>

@@ -7,6 +7,7 @@
  * Implementation of the excellent Settlers of Catan board game.  Go
  * buy a copy.
  */
+#include "config.h"
 #include <gnome.h>
 
 #include "game.h"
@@ -37,9 +38,9 @@ gboolean can_afford(gint *cost)
 gchar *resource_name(Resource type, gboolean word_caps)
 {
 	if (word_caps)
-		return resource_names[type][1];
+		return gettext(resource_names[type][1]);
 	else
-		return resource_names[type][0];
+		return gettext(resource_names[type][0]);
 }
 
 gint resource_asset(Resource type)
@@ -88,12 +89,12 @@ gchar *resource_cards(gint num, Resource type)
 	gchar *name = resource_name(type, FALSE);
 
 	if (num != 1)
-		sprintf(buff, "%d %s cards", num, name);
+		sprintf(buff, _("%d %s cards"), num, name);
 	else {
 		if (strchr("aeiou", name[0]) != NULL)
-			sprintf(buff, "an %s card", name);
+			sprintf(buff, _("an %s card"), name);
 		else
-			sprintf(buff, "a %s card", name);
+			sprintf(buff, _("a %s card"), name);
 	}
 	return buff;
 }
@@ -104,12 +105,12 @@ gchar *resource_num(gint num, Resource type)
 	gchar *name = resource_name(type, FALSE);
 
 	if (num > 1)
-		sprintf(buff, "%d %s", num, name);
+		sprintf(buff, _("%d %s"), num, name);
 	else {
 		if (strchr("aeiou", name[0]) != NULL)
-			sprintf(buff, "an %s", name);
+			sprintf(buff, _("an %s"), name);
 		else
-			sprintf(buff, "a %s", name);
+			sprintf(buff, _("a %s"), name);
 	}
 	return buff;
 }
@@ -185,11 +186,11 @@ void resource_format_num(gchar *str, gint *resources)
 			continue;
 
 		if (num_types == 1) {
-			sprintf(str, ", and %s", resource_cards(num, idx));
+			sprintf(str, _(", and %s"), resource_cards(num, idx));
 			str += strlen(str);
 		} else {
 			if (add_comma) {
-				strcpy(str, ", ");
+				strcpy(str, _(", "));
 				str += strlen(str);
 			}
 			sprintf(str, "%s", resource_num(num, idx));
@@ -205,7 +206,7 @@ void resource_log_list(gint player_num, gchar *action, gint *resources)
 	char buff[512];
 
 	resource_format_num(buff, resources);
-	log_message( MSG_RESOURCE, _("%s %s %s.\n"),
+	log_message( MSG_RESOURCE, N_("%s %s %s.\n"),
 		 player_name(player_num, TRUE), action, buff);
 }
 
@@ -237,7 +238,7 @@ void resource_check(gint player_num, gint *resources)
 		GtkWidget *dlg;
 
 		g_snprintf(buff, sizeof(buff),
-			   "player %d resource count wrong: server=%d, me=%d",
+			   _("player %d resource count wrong: server=%d, me=%d"),
 			   player_num,
 			   num, player->statistics[STAT_RESOURCES]);
 		dlg = gnome_message_box_new(buff,
@@ -250,11 +251,11 @@ void resource_check(gint player_num, gint *resources)
 	if (player_num == my_player_num()) {
 		gboolean oops = FALSE;
 
-		strcpy(buff, "resources wrong:");
+		strcpy(buff, _("resources wrong:"));
 		for (idx = 0; idx < NO_RESOURCE; idx++) {
 			if (resources[idx] != my_assets[idx]) {
 				sprintf(buff + strlen(buff),
-					"\n%s: server=%d, me=%d",
+					_("\n%s: server=%d, me=%d"),
 					resource_name(idx, FALSE),
 					resources[idx], my_assets[idx]);
 				oops = TRUE;
@@ -360,7 +361,7 @@ GtkWidget *resource_build_panel()
 			 (GtkAttachOptions)GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(label), 1, 0.5);
 
-	label = gtk_label_new(N_("Total"));
+	label = gtk_label_new(_("Total"));
 	gtk_widget_show(label);
 	gtk_table_attach(GTK_TABLE(table), label, 2, 3, 2, 3,
 			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL,

@@ -1,3 +1,25 @@
+2002-06-02  Roman Hodek  <roman@hodek.net>
+
+	* configure.in: bumped version to 0.7.1 (prelim.), enabled NLS
+
+	* client/chat.c (chat_set_focus): new function to grab focus for
+	chat entry window (to not have to type on it all the time...)
+	client/client.c: call chat_set_focus in various places
+
+	* everywhere: run gettextize to create po/ subdir, change
+	configure.in and Makefiles for gettext, created German
+	translation, add more _() marks in a bunch of places, include
+	config.h where needed before gnome.h
+
+	* ai/client.c: one more exit fix, remove some unnecessary printfs.
+
+	* ai/*.c: started to prepare AI player for domestic trade
+	
+	* client/histogram.c: Force histogram_dlg and table to NULL if
+	dialog is closed. 
+
+	* maintained */.cvsignore
+	
 2002-05-31  Roman Hodek  <roman@hodek.net>
 
 	* meta-server/gnocatan-meta-server.c (client_create_new_server): 

@@ -7,6 +7,7 @@
  * Implementation of the excellent Settlers of Catan board game.  Go
  * buy a copy.
  */
+#include "config.h"
 #include <gnome.h>
 
 #include "game.h"
@@ -48,7 +49,7 @@ GtkWidget *name_create_dlg()
 	gtk_container_border_width(GTK_CONTAINER(hbox), 5);
 	gtk_widget_set_usize(hbox, 200, -1);
 
-	lbl = gtk_label_new("Player Name:");
+	lbl = gtk_label_new(_("Player Name:"));
 	gtk_widget_show(lbl);
 	gtk_box_pack_start(GTK_BOX(hbox), lbl, TRUE, TRUE, 0);
         gtk_misc_set_alignment(GTK_MISC(lbl), 1, 0.5);

@@ -7,8 +7,10 @@
  * Implementation of the excellent Settlers of Catan board game.  Go
  * buy a copy.
  */
+#include "config.h"
 #include <math.h>
 #include <gnome.h>
+#include <locale.h>
 
 #include "game.h"
 #include "map.h"
@@ -24,7 +26,14 @@ int main(int argc, char *argv[])
 
 	set_ui_driver( &GTK_Driver );
 
-	gnome_init("gnocatan", VERSION, argc, argv);
+#ifdef ENABLE_NLS
+	gnome_i18n_init();
+	setlocale(LC_ALL, "");
+	bindtextdomain(PACKAGE, GNOMELOCALEDIR);
+	textdomain(PACKAGE);
+#endif
+
+	gnome_init(PACKAGE, VERSION, argc, argv);
 	config_init( "/gnocatan/" );
 
 	/* Create the application window

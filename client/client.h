@@ -66,6 +66,7 @@ void build_remove(BuildType type, gint x, gint y, gint pos);
 /* chat.c */
 void chat_parser(gint player_num, char chat_str[512]);
 GtkWidget *chat_build_panel(void);
+void chat_set_focus(void);
 
 /* client.c */
 void client_start(void);

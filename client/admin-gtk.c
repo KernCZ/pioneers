@@ -187,12 +187,15 @@ GtkWidget *build_admin_interface( GtkWidget *vbox )
 	GtkWidget *scroll_win;
 	GtkWidget *message_text;
 
-	static gchar *titles[] = {
-		N_("Name"), N_("Location")
-	};
+	static gchar *titles[2];
 
 	if( !vbox )
 		vbox = gtk_vbox_new(FALSE, 0);
+
+	if (!titles[0]) {
+		titles[0] = _("Name");
+		titles[1] = _("Location");
+	}
 	
 	gtk_widget_show(vbox);
 	gtk_container_border_width(GTK_CONTAINER(vbox), 5);
@@ -238,7 +241,7 @@ GtkWidget *build_admin_interface( GtkWidget *vbox )
 			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 
-	terrain_toggle = gtk_toggle_button_new_with_label(_(""));
+	terrain_toggle = gtk_toggle_button_new_with_label("");
 	gtk_widget_show(terrain_toggle);
 	gtk_table_attach(GTK_TABLE(table), terrain_toggle, 1, 2, 1, 2,
 			 (GtkAttachOptions)GTK_FILL,

@@ -142,25 +142,12 @@ gint stock_num_develop(void);
 void stock_use_develop(void);
 
 /* trade.c */
-gboolean is_domestic_trade_allowed(void);
-gboolean is_maritime_trade_allowed(void);
-gboolean can_call_for_quotes(void);
-gboolean trade_valid_selection(void);
-gint *trade_we_supply(void);
-gint *trade_we_receive(void);
-QuoteInfo *trade_current_quote(void);
-void trade_format_quote(QuoteInfo *quote, gchar *desc);
-void trade_add_quote(gint player_num,
-		     gint quote_num, gint *supply, gint *receive);
-void trade_delete_quote(gint player_num, gint quote_num);
-void trade_player_finish(gint player_num);
 void trade_perform_maritime(gint ratio, Resource supply, Resource receive);
 void trade_perform_domestic(gint player_num, gint partner_num, gint quote_num,
-			    gint *they_supply, gint *they_receive);
-GtkWidget *trade_build_page(void);
-void trade_begin(void);
-void trade_finish(void);
-void trade_refine_domestic(gint *we_supply, gint *we_receive);
+							gint *they_supply, gint *they_receive);
+void quote_add_quote(gint player_num,
+					 gint quote_num, gint *we_supply, gint *we_receive);
+void quote_delete_quote(gint player_num, gint quote_num);
 
 /* turn.c */
 gint turn_num(void);

@@ -7,6 +7,7 @@
  * Implementation of the excellent Settlers of Catan board game.  Go
  * buy a copy.
  */
+#include "config.h"
 #include <gnome.h>
 #include <math.h>
 
@@ -195,7 +196,7 @@ static void add_histogram_bars(GtkWidget *table, Terrain terrain)
 		gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 	}
 
-	label = gtk_label_new("Rolls\nPercentage");
+	label = gtk_label_new(_("Rolls\nPercentage"));
 	gtk_widget_show(label);
 	gtk_table_attach(GTK_TABLE(table), label,
 			0, 1, 2, 3, 0, 0, 0, 0);

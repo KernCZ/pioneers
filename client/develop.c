@@ -7,6 +7,7 @@
  * Implementation of the excellent Settlers of Catan board game.  Go
  * buy a copy.
  */
+#include "config.h"
 #include <math.h>
 #include <ctype.h>
 #include <gnome.h>
@@ -131,14 +132,14 @@ void develop_bought_card_turn(DevelType type, gint turnbought)
 	deck_card_add(develop_deck, type, turnbought);
 	if (devel_cards[type].is_unique)
 		log_message( MSG_DEVCARD, _("You bought the %s development card.\n"),
-			 devel_cards[type].name);
+			 gettext(devel_cards[type].name));
 	else
 		log_message( MSG_DEVCARD, _("You bought a %s development card.\n"),
-			 devel_cards[type].name);
+			 gettext(devel_cards[type].name));
 	player_modify_statistic(my_player_num(), STAT_DEVELOPMENT, 1);
 	stock_use_develop();
 
-	text[0] = devel_cards[type].name;
+	text[0] = gettext(devel_cards[type].name);
 	gtk_clist_append(GTK_CLIST(develop_clist), text);
 }
 
@@ -155,11 +156,11 @@ void develop_played(gint player_num, gint card_idx, DevelType type)
 	if (devel_cards[type].is_unique)
 		log_message( MSG_DEVCARD, _("%s played the %s development card.\n"),
 			 player_name(player_num, TRUE),
-			 devel_cards[type].name);
+			 gettext(devel_cards[type].name));
 	else
 		log_message( MSG_DEVCARD, _("%s played a %s development card.\n"),
 			 player_name(player_num, TRUE),
-			 devel_cards[type].name);
+			 gettext(devel_cards[type].name));
 
 	player_modify_statistic(player_num, STAT_DEVELOPMENT, -1);
 	switch (type) {

@@ -7,6 +7,7 @@
  * Implementation of the excellent Settlers of Catan board game.  Go
  * buy a copy.
  */
+#include "config.h"
 #include <sys/types.h>
 #include <dirent.h>
 #include <limits.h>
@@ -53,11 +54,11 @@ static void help_about_cb(GtkWidget *widget, void *data)
 		NULL
 	};
 
-	about = gnome_about_new("The Gnocatan Game Server", VERSION,
-				"(C) 1999 the Free Software Foundation",
+	about = gnome_about_new(_("The Gnocatan Game Server"), VERSION,
+				_("(C) 2002 the Free Software Foundation"),
 				authors,
-				"Gnocatan is based upon the excellent"
-				" Settlers of Catan board game",
+				_("Gnocatan is based upon the excellent"
+				" Settlers of Catan board game"),
 				NULL);
 	gtk_widget_show(about);
 }
@@ -296,10 +297,13 @@ static GtkWidget *build_interface()
 	GtkWidget *message_text;
 	GtkWidget *vbox_sevens;
 
-	static gchar *titles[] = {
-		N_("Name"), N_("Location")
-	};
+	static gchar *titles[2];
 
+	if (!titles[0]) {
+		titles[0] = _("Name");
+		titles[1] = _("Location");
+	}
+	
 	if (!(meta_server_name = getenv("GNOCATAN_META_SERVER")))
 	    meta_server_name = DEFAULT_META_SERVER;
 	
@@ -348,7 +352,7 @@ static GtkWidget *build_interface()
 			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 
-	terrain_toggle = gtk_toggle_button_new_with_label(_(""));
+	terrain_toggle = gtk_toggle_button_new_with_label("");
 	gtk_widget_show(terrain_toggle);
 	gtk_table_attach(GTK_TABLE(table), terrain_toggle, 1, 2, 1, 2,
 			 (GtkAttachOptions)GTK_FILL,
@@ -440,16 +444,16 @@ static GtkWidget *build_interface()
 	gtk_signal_connect(GTK_OBJECT(port_spin), "changed",
 			   GTK_SIGNAL_FUNC(port_spin_changed_cb), NULL);
 
-	label = gtk_label_new("Sevens Rule");
+	label = gtk_label_new(_("Sevens Rule"));
 	gtk_widget_show(label);
 	gtk_table_attach(GTK_TABLE(table), label, 0, 1, 7, 8,
 			 (GtkAttachOptions)GTK_FILL,
 			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 
-	radio_sevens_normal = gtk_radio_button_new_with_label(NULL, "Normal");
-	radio_sevens_2_turns = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(radio_sevens_normal), "Reroll on 1st 2 turns" );
-	radio_sevens_reroll = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(radio_sevens_2_turns), "Reroll all 7s" );
+	radio_sevens_normal = gtk_radio_button_new_with_label(NULL, _("Normal"));
+	radio_sevens_2_turns = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(radio_sevens_normal), _("Reroll on 1st 2 turns") );
+	radio_sevens_reroll = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(radio_sevens_2_turns), _("Reroll all 7s") );
 	
 	vbox_sevens = gtk_vbox_new( TRUE, 2 );
 
@@ -545,6 +549,12 @@ int main(int argc, char *argv[])
 	driver->player_renamed = gui_player_rename;
 	driver->player_removed = gui_player_remove;
 
+#ifdef ENABLE_NLS
+	gnome_i18n_init();
+	setlocale(LC_ALL, "");
+	bindtextdomain(PACKAGE, GNOMELOCALEDIR);
+	textdomain(PACKAGE);
+#endif
 	gnome_init("gnocatan-server", VERSION, argc, argv);
 
 	/* Create the application window

@@ -27,6 +27,8 @@ typedef struct computer_funcs_s {
 
     char *(*chat)(Map *map, int mynum, gint assets[NO_RESOURCE], int turn, gboolean built_or_bought);
 
+	char *(*consider_quote)();
+	
     /* xxx there should be more funcs than this but this is all greedy supports for now */
 
 } computer_funcs_t;

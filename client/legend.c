@@ -7,6 +7,7 @@
  * Implementation of the excellent Settlers of Catan board game.  Go
  * buy a copy.
  */
+#include "config.h"
 #include <gnome.h>
 
 #include "game.h"
@@ -62,7 +63,7 @@ static void add_legend_terrain(GtkWidget *table, gint row, gint col,
 			   GTK_SIGNAL_FUNC(expose_legend_cb),
 			   guimap_terrain(terrain));
 
-	label = gtk_label_new(terrain_names[terrain]);
+	label = gtk_label_new(gettext(terrain_names[terrain]));
 	gtk_widget_show(label);
 	gtk_table_attach(GTK_TABLE(table), label,
 			 col + 1, col + 2, row, row + 1,

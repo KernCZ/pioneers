@@ -6,7 +6,8 @@ noinst_LIBRARIES = libgnocatan_server.a
 
 INCLUDES = \
 	-I$(srcdir)/../common -I. \
-        -I$(includedir) $(GNOME_INCLUDEDIR)
+	-DGNOMELOCALEDIR=\""$(datadir)/locale"\" \
+	-I$(includedir) $(GNOME_INCLUDEDIR)
 
 gnocatan_server_gtk_DEPENDENCIES = libgnocatan_server.a \
 	../common/libgnocatan.a ../common/libgnocatan_gtk.a

@@ -2,7 +2,7 @@ AC_INIT(client)
 AC_PREFIX_DEFAULT(`gnome-config --prefix 2>/dev/null || echo /usr/local`)
 
 AM_CONFIG_HEADER(config.h)
-AM_INIT_AUTOMAKE(gnocatan, 0.7.0)
+AM_INIT_AUTOMAKE(gnocatan, 0.7.1)
 
 PROTOCOL_VERSION=\"0.7.0\"
 META_PROTOCOL_VERSION=\"1.0\"
@@ -46,16 +46,16 @@ AC_DEFINE_UNQUOTED(META_PROTOCOL_VERSION, $META_PROTOCOL_VERSION)
 
 dnl GNOME_SUPPORT_CHECKS
 
-dnl ## internationalization support
-dnl ALL_LINGUAS=""
-dnl AM_GNU_GETTEXT
-dnl AC_LINK_FILES($nls_cv_header_libgt, $nls_cv_header_intl)
+## internationalization support
+ALL_LINGUAS="de"
+AM_GNU_GETTEXT
+AC_LINK_FILES($nls_cv_header_libgt, $nls_cv_header_intl)
 
-AC_OUTPUT(
+AC_OUTPUT([
 Makefile
 dnl ## internationalization support
-dnl po/Makefile.in
-dnl intl/Makefile
+po/Makefile.in
+intl/Makefile
 macros/Makefile
 dnl support/Makefile
 common/Makefile
@@ -65,7 +65,4 @@ client/help/C/Makefile
 server/Makefile
 meta-server/Makefile
 ai/Makefile
-stamp.h)
-
-dnl ## internationalization support
-dnl stamp.h],[sed -e "/POTFILES =/r po/POTFILES" po/Makefile.in > po/Makefile])
+stamp.h],[sed -e "/POTFILES =/r po/POTFILES" po/Makefile.in > po/Makefile])

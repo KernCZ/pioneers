@@ -7,6 +7,7 @@
  * Implementation of the excellent Settlers of Catan board game.  Go
  * buy a copy.
  */
+#include "config.h"
 #include <math.h>
 #include <ctype.h>
 #include <assert.h>
@@ -95,7 +96,7 @@ void gui_set_vp_target_value( gint vp )
 {
 	gchar vp_text[30];
 	
-	g_snprintf( vp_text, sizeof(vp_text), "Points Needed to Win: %i", vp );
+	g_snprintf( vp_text, sizeof(vp_text), _("Points Needed to Win: %i"), vp );
 	
 	gtk_label_set_text( GTK_LABEL(vp_target_status), vp_text );
 }
@@ -299,12 +300,11 @@ void gui_show_splash_page(gboolean show)
 		gtk_widget_hide(splash_page);
 }
 
-
 static GtkWidget *splash_build_page()
 {
 	GdkPixmap *splash_pix;
 	GtkWidget *pm;
-	
+
 	load_pixmap("splash.png", &splash_pix, NULL);
 	pm = gtk_pixmap_new(splash_pix, NULL);
 	gtk_widget_show(pm);
@@ -564,24 +564,24 @@ static void menu_settings_cb(GtkWidget *widget, void *user_data)
 	settings = gnome_property_box_new();
 
 	page0_table = gtk_table_new( 2, 2, FALSE );
-	page0_label = gtk_label_new( "General" );
+	page0_label = gtk_label_new( _("General") );
 
-	frame_texticons = gtk_frame_new( "Show Toolbar As" );
-	frame_colors = gtk_frame_new( "Color Settings" );
-	frame_other = gtk_frame_new( "Other Settings" );
+	frame_texticons = gtk_frame_new( _("Show Toolbar As") );
+	frame_colors = gtk_frame_new( _("Color Settings") );
+	frame_other = gtk_frame_new( _("Other Settings") );
 
 	vbox_texticons = gtk_vbox_new( TRUE, 2 );
 	vbox_colors = gtk_vbox_new( TRUE, 2 );
 	vbox_other = gtk_vbox_new( TRUE, 2 );
 
-	radio_style_text = gtk_radio_button_new_with_label(NULL, "Text Only");
-	radio_style_icons = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(radio_style_text), "Icons Only" );
-	radio_style_both = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(radio_style_icons), "Both Icons and Text" );
+	radio_style_text = gtk_radio_button_new_with_label(NULL, _("Text Only"));
+	radio_style_icons = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(radio_style_text), _("Icons Only") );
+	radio_style_both = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(radio_style_icons), _("Both Icons and Text") );
 
-	check_color_messages = gtk_check_button_new_with_label( "Display messages in colors?" );
-	check_color_chat = gtk_check_button_new_with_label( "Display chat messages in user's color?" );
-	check_color_summary = gtk_check_button_new_with_label( "Display player summary with colors?" );
-	check_legend_page = gtk_check_button_new_with_label( "Display legend as page besides map?" );
+	check_color_messages = gtk_check_button_new_with_label( _("Display messages in colors?") );
+	check_color_chat = gtk_check_button_new_with_label( _("Display chat messages in user's color?") );
+	check_color_summary = gtk_check_button_new_with_label( _("Display player summary with colors?") );
+	check_legend_page = gtk_check_button_new_with_label( _("Display legend as page besides map?") );
 
 	/* Put things in other things */
 	gtk_box_pack_start_defaults( GTK_BOX(vbox_texticons), radio_style_text );
@@ -768,11 +768,11 @@ static void help_about_cb(GtkWidget *widget, void *user_data)
 		NULL
 	};
 
-	about = gnome_about_new("The Gnocatan Game", VERSION,
-				"(C) 2002 the Free Software Foundation",
+	about = gnome_about_new(_("The Gnocatan Game"), VERSION,
+				_("(C) 2002 the Free Software Foundation"),
 				authors,
-				"Gnocatan is based upon the excellent"
-				" Settlers of Catan board game",
+				_("Gnocatan is based upon the excellent"
+				" Settlers of Catan board game"),
 				NULL);
 	gtk_widget_show(about);
 }
@@ -930,7 +930,7 @@ static GtkWidget *build_status_bar()
 	gnome_app_set_statusbar(GNOME_APP(app_window), app_bar);
 	gnome_app_install_menu_hints(GNOME_APP(app_window), main_menu);
 
-	vp_target_status = gtk_label_new(_(" "));
+	vp_target_status = gtk_label_new(N_(" "));
 	gtk_widget_show(vp_target_status);
 	gtk_box_pack_start(GTK_BOX(app_bar), vp_target_status, FALSE, TRUE, 0);
 

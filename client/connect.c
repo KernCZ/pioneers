@@ -7,9 +7,10 @@
  * Implementation of the excellent Settlers of Catan board game.  Go
  * buy a copy.
  */
+#include "config.h"
 #include <ctype.h>
-#include <gnome.h>
 #include <netdb.h>
+#include <gnome.h>
 
 #include "meta.h"
 #include "game.h"
@@ -20,6 +21,7 @@
 #include "log.h"
 #include "state.h"
 #include "config-gnome.h"
+
 
 static GtkWidget *meta_create_button;
 static GtkWidget *meta_dlg;
@@ -498,7 +500,7 @@ static GtkWidget *build_create_interface()
 			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 
-	terrain_toggle = gtk_toggle_button_new_with_label(_(""));
+	terrain_toggle = gtk_toggle_button_new_with_label("");
 	gtk_widget_show(terrain_toggle);
 	gtk_table_attach(GTK_TABLE(table), terrain_toggle, 1, 2, 1, 2,
 			 (GtkAttachOptions)GTK_FILL,
@@ -509,7 +511,7 @@ static GtkWidget *build_create_interface()
 	if (cfg_terrain)
 		gtk_toggle_button_toggled(GTK_TOGGLE_BUTTON(terrain_toggle));
 
-	label = gtk_label_new("Sevens Rule");
+	label = gtk_label_new(_("Sevens Rule"));
 	gtk_widget_show(label);
 	gtk_table_attach(GTK_TABLE(table), label, 0, 1, 2, 3,
 			 (GtkAttachOptions)GTK_FILL,
@@ -528,15 +530,15 @@ static GtkWidget *build_create_interface()
 			 (GtkAttachOptions)GTK_FILL,
 			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
 
-	item = items[0] = gtk_list_item_new_with_label("Normal");
+	item = items[0] = gtk_list_item_new_with_label(_("Normal"));
 	gtk_object_set_data(GTK_OBJECT(item), "params", "0");
 	gtk_widget_show(item);
 	gtk_container_add(GTK_CONTAINER(((GtkCombo *)sevens_combo)->list), item);
-	item = items[1] = gtk_list_item_new_with_label("Reroll on 1st 2 turns");
+	item = items[1] = gtk_list_item_new_with_label(_("Reroll on 1st 2 turns"));
 	gtk_object_set_data(GTK_OBJECT(item), "params", "1");
 	gtk_widget_show(item);
 	gtk_container_add(GTK_CONTAINER(((GtkCombo *)sevens_combo)->list), item);
-	item = items[2] = gtk_list_item_new_with_label("Reroll all 7s");
+	item = items[2] = gtk_list_item_new_with_label(_("Reroll all 7s"));
 	gtk_object_set_data(GTK_OBJECT(item), "params", "2");
 	gtk_widget_show(item);
 	gtk_container_add(GTK_CONTAINER(((GtkCombo *)sevens_combo)->list), item);
@@ -642,17 +644,7 @@ static void create_meta_dlg(GtkWidget *widget, GtkWidget *parent)
 	GtkWidget *vbox;
 	GtkWidget *scroll_win;
 
-	static gchar *titles[] = {
-		N_("Host"),
-		N_("Port"),
-		N_("Version"),
-		N_("Max"),
-		N_("Curr"),
-		N_("Terrain"),
-		N_("Vic. Points"),
-		N_("Sevens Rule"),
-		N_("Map Name")
-	};
+	static gchar *titles[9];
 
 	meta_server = gtk_entry_get_text(GTK_ENTRY(meta_server_entry));
 	if (!meta_server) {
@@ -670,6 +662,18 @@ static void create_meta_dlg(GtkWidget *widget, GtkWidget *parent)
 			query_meta_server(meta_server, meta_port);
 		}
 		return;
+	}
+
+	if (!titles[0]) {
+		titles[0] = _("Host");
+		titles[1] = _("Port");
+		titles[2] = _("Version");
+		titles[3] = _("Max");
+		titles[4] = _("Curr");
+		titles[5] = _("Terrain");
+		titles[6] = _("Vic. Points");
+		titles[7] = _("Sevens Rule");
+		titles[8] = _("Map Name");
 	}
 
 	meta_dlg = gnome_dialog_new(_("Current Gnocatan Servers"),
@@ -715,7 +719,7 @@ static void create_meta_dlg(GtkWidget *widget, GtkWidget *parent)
 
 	gnome_dialog_set_close(GNOME_DIALOG(meta_dlg), TRUE);
 
-	meta_create_button = gtk_button_new_with_label("Create New Server");
+	meta_create_button = gtk_button_new_with_label(_("Create New Server"));
 	gtk_signal_connect(GTK_OBJECT(meta_create_button), "clicked",
 			   GTK_SIGNAL_FUNC(create_server_dlg), meta_dlg);
 	gtk_widget_set_sensitive(meta_create_button, FALSE);
@@ -872,7 +876,7 @@ GtkWidget *connect_create_dlg()
 	gtk_table_set_row_spacings(GTK_TABLE(table), 3);
 	gtk_table_set_col_spacings(GTK_TABLE(table), 5);
 
- 	lbl = gtk_label_new("Meta Server");
+ 	lbl = gtk_label_new(_("Meta Server"));
 	gtk_widget_show(lbl);
 	gtk_table_attach(GTK_TABLE(table), lbl, 0, 1, 0, 1,
 			 (GtkAttachOptions)GTK_FILL,
@@ -888,7 +892,7 @@ GtkWidget *connect_create_dlg()
  			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
  	gtk_entry_set_text(GTK_ENTRY(meta_server_entry), saved_meta_server);
  
- 	btn = gtk_button_new_with_label("Query Meta Server");
+ 	btn = gtk_button_new_with_label(_("Query Meta Server"));
  	gtk_signal_connect(GTK_OBJECT(btn), "clicked",
  			   GTK_SIGNAL_FUNC(create_meta_dlg), app_window);
  	gtk_widget_show(btn);
@@ -902,7 +906,7 @@ GtkWidget *connect_create_dlg()
  			 (GtkAttachOptions)GTK_FILL,
  			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 6);
  
- 	lbl = gtk_label_new("Server Host");
+ 	lbl = gtk_label_new(_("Server Host"));
  	gtk_widget_show(lbl);
  	gtk_table_attach(GTK_TABLE(table), lbl, 0, 1, 3, 4,
  			 (GtkAttachOptions)GTK_FILL,
@@ -920,7 +924,7 @@ GtkWidget *connect_create_dlg()
 			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_entry_set_text(GTK_ENTRY(server_entry), saved_server);
 
-	lbl = gtk_label_new("Server Port");
+	lbl = gtk_label_new(_("Server Port"));
 	gtk_widget_show(lbl);
 	gtk_table_attach(GTK_TABLE(table), lbl, 0, 1, 4, 5,
 			 (GtkAttachOptions)GTK_FILL,
@@ -943,7 +947,7 @@ GtkWidget *connect_create_dlg()
         gtk_box_pack_start(GTK_BOX(hbox), port_entry, FALSE, TRUE, 0);
 	gtk_entry_set_text(GTK_ENTRY(port_entry), saved_port);
 
-	lbl = gtk_label_new("Player Name");
+	lbl = gtk_label_new(_("Player Name"));
 	gtk_widget_show(lbl);
 	gtk_table_attach(GTK_TABLE(table), lbl, 0, 1, 5, 6,
 			 (GtkAttachOptions)GTK_FILL,
@@ -1003,7 +1007,7 @@ GtkWidget *connect_create_dlg()
 					 (GtkAttachOptions)GTK_FILL,
 					 (GtkAttachOptions)GTK_FILL, 0, 0);
 
-	lbl = gtk_label_new("Recent Servers");
+	lbl = gtk_label_new(_("Recent Servers"));
 	gtk_widget_show(lbl);
 	gtk_table_attach(GTK_TABLE(table), lbl, 0, 1, 6, 7,
 			 (GtkAttachOptions)GTK_FILL,

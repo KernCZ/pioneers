@@ -7,6 +7,7 @@
  * Implementation of the excellent Settlers of Catan board game.  Go
  * buy a copy.
  */
+#include "config.h"
 #include <ctype.h>
 #include <gnome.h>
 
@@ -944,6 +945,7 @@ static gboolean mode_build_response(StateMachine *sm, gint event)
 	switch (event) {
 	case SM_ENTER:
 		waiting_for_network(TRUE);
+		chat_set_focus();
 		break;
 	case SM_RECV:
 		if (sm_recv(sm, "built %B %d %d %d",
@@ -1015,6 +1017,7 @@ static gboolean mode_setup_undo_response(StateMachine *sm, gint event)
 	switch (event) {
 	case SM_ENTER:
 		waiting_for_network(TRUE);
+		chat_set_focus();
 		break;
 	case SM_RECV:
 		if (sm_recv(sm, "remove %B %d %d %d",
@@ -1041,6 +1044,7 @@ static gboolean mode_setup_done_response(StateMachine *sm, gint event)
 	switch (event) {
 	case SM_ENTER:
 		waiting_for_network(TRUE);
+		chat_set_focus();
 		break;
 	case SM_RECV:
 		if (sm_recv(sm, "OK")) {
@@ -1192,6 +1196,7 @@ static gboolean mode_idle(StateMachine *sm, gint event)
 	switch (event) {
 	case SM_ENTER:
 		gui_set_instructions(_("Waiting for your turn"));
+		chat_set_focus();
 		break;
 	case SM_RECV:
 		if (sm_recv(sm, "setup")) {
@@ -1243,6 +1248,7 @@ static gboolean mode_robber_response(StateMachine *sm, gint event)
 	switch (event) {
 	case SM_ENTER:
 		waiting_for_network(TRUE);
+		chat_set_focus();
 		break;
 	case SM_RECV:
 		if (sm_recv(sm, "moved-robber %d %d", &x, &y)) {
@@ -1365,6 +1371,7 @@ static gboolean mode_road_building_undo_response(StateMachine *sm, gint event)
 	switch (event) {
 	case SM_ENTER:
 		waiting_for_network(TRUE);
+		chat_set_focus();
 		break;
 	case SM_RECV:
 		if (sm_recv(sm, "remove %B %d %d %d",
@@ -1391,6 +1398,7 @@ static gboolean mode_road_building_done_response(StateMachine *sm, gint event)
 	switch (event) {
 	case SM_ENTER:
 		waiting_for_network(TRUE);
+		chat_set_focus();
 		break;
 	case SM_RECV:
 		if (sm_recv(sm, "OK")) {
@@ -1477,6 +1485,7 @@ static gboolean mode_monopoly_response(StateMachine *sm, gint event)
 	switch (event) {
 	case SM_ENTER:
 		waiting_for_network(TRUE);
+		chat_set_focus();
 		break;
 	case SM_RECV:
 		if (sm_recv(sm, "OK")) {
@@ -1527,6 +1536,7 @@ static gboolean mode_year_of_plenty_response(StateMachine *sm, gint event)
 	switch (event) {
 	case SM_ENTER:
 		waiting_for_network(TRUE);
+		chat_set_focus();
 		break;
 	case SM_RECV:
 		if (sm_recv(sm, "OK")) {
@@ -1587,6 +1597,7 @@ static gboolean mode_play_develop_response(StateMachine *sm, gint event)
 	switch (event) {
 	case SM_ENTER:
 		waiting_for_network(TRUE);
+		chat_set_focus();
 		break;
 	case SM_RECV:
 		if (sm_recv(sm, "play-develop %d %D", &card_idx, &card_type)) {
@@ -1690,6 +1701,7 @@ static gboolean mode_roll_response(StateMachine *sm, gint event)
 	switch (event) {
 	case SM_ENTER:
 		waiting_for_network(TRUE);
+		chat_set_focus();
 		break;
 	case SM_RECV:
 		if (sm_recv(sm, "rolled %d %d", &die1, &die2)) {
@@ -1752,6 +1764,7 @@ static gboolean mode_buy_develop_response(StateMachine *sm, gint event)
 	switch (event) {
 	case SM_ENTER:
 		waiting_for_network(TRUE);
+		chat_set_focus();
 		break;
 	case SM_RECV:
 		if (sm_recv(sm, "bought-develop %D", &card_type)) {
@@ -1780,6 +1793,7 @@ static gboolean mode_turn_undo_response(StateMachine *sm, gint event)
 	switch (event) {
 	case SM_ENTER:
 		waiting_for_network(TRUE);
+		chat_set_focus();
 		break;
 	case SM_RECV:
 		if (sm_recv(sm, "remove %B %d %d %d",
@@ -1813,6 +1827,7 @@ static gboolean mode_turn_done_response(StateMachine *sm, gint event)
 	switch (event) {
 	case SM_ENTER:
 		waiting_for_network(TRUE);
+		chat_set_focus();
 		break;
 	case SM_RECV:
 		if (sm_recv(sm, "OK")) {
@@ -1957,6 +1972,7 @@ static gboolean mode_trade_call_response(StateMachine *sm, gint event)
 	switch (event) {
 	case SM_ENTER:
 		waiting_for_network(TRUE);
+		chat_set_focus();
 		break;
 	case SM_RECV:
 		if (sm_recv(sm, "domestic-trade call supply %R receive %R",
@@ -1986,6 +2002,7 @@ static gboolean mode_trade_maritime_response(StateMachine *sm, gint event)
 	switch (event) {
 	case SM_ENTER:
 		waiting_for_network(TRUE);
+		chat_set_focus();
 		break;
 	case SM_RECV:
 		if (sm_recv(sm, "maritime-trade %d supply %r receive %r",
@@ -2052,6 +2069,7 @@ static gboolean mode_trade_call_again_response(StateMachine *sm, gint event)
 	switch (event) {
 	case SM_ENTER:
 		waiting_for_network(TRUE);
+		chat_set_focus();
 		break;
 	case SM_RECV:
 		if (sm_recv(sm, "domestic-trade call supply %R receive %R",
@@ -2083,6 +2101,7 @@ static gboolean mode_trade_domestic_response(StateMachine *sm, gint event)
 	switch (event) {
 	case SM_ENTER:
 		waiting_for_network(TRUE);
+		chat_set_focus();
 		break;
 	case SM_RECV:
 		if (sm_recv(sm, "domestic-trade accept player %d quote %d supply %R receive %R",
@@ -2110,6 +2129,7 @@ static gboolean mode_domestic_finish_response(StateMachine *sm, gint event)
 	switch (event) {
 	case SM_ENTER:
 		waiting_for_network(TRUE);
+		chat_set_focus();
 		break;
 	case SM_RECV:
 		if (sm_recv(sm, "domestic-trade finish")) {
@@ -2230,6 +2250,7 @@ static gboolean mode_quote_finish_response(StateMachine *sm, gint event)
 	switch (event) {
 	case SM_ENTER:
 		waiting_for_network(TRUE);
+		chat_set_focus();
 		break;
 	case SM_RECV:
 		if (sm_recv(sm, "domestic-quote finish")) {
@@ -2258,6 +2279,7 @@ static gboolean mode_quote_submit_response(StateMachine *sm, gint event)
 	switch (event) {
 	case SM_ENTER:
 		waiting_for_network(TRUE);
+		chat_set_focus();
 		break;
 	case SM_RECV:
 		if (sm_recv(sm, "domestic-quote quote %d supply %R receive %R",
@@ -2287,6 +2309,7 @@ static gboolean mode_quote_delete_response(StateMachine *sm, gint event)
 	switch (event) {
 	case SM_ENTER:
 		waiting_for_network(TRUE);
+		chat_set_focus();
 		break;
 	case SM_RECV:
 		if (sm_recv(sm, "domestic-quote delete %d", &quote_num)) {

@@ -7,6 +7,7 @@
  * Implementation of the excellent Settlers of Catan board game.  Go
  * buy a copy.
  */
+#include "config.h"
 #include <gnome.h>
 
 #include "log.h"
@@ -58,14 +59,14 @@ void chat_parser( gint player_num, char chat_str[MAX_CHAT] )
 		}
 	}
 
-	log_message( MSG_INFO, _("%s"), player_name(player_num, TRUE));
+	log_message( MSG_INFO, N_("%s"), player_name(player_num, TRUE));
 
 	switch( chat_str[0] )
 	{
 		case ':':
 			chat_str += 1;
 			log_timestamp = 0;
-			log_message( MSG_INFO, _(" "));
+			log_message( MSG_INFO, N_(" "));
 			break;
 		case ';':
 			chat_str += 1;
@@ -152,3 +153,7 @@ GtkWidget *chat_build_panel()
 	return frame;
 }
 
+void chat_set_focus(void)
+{
+	gtk_widget_grab_focus(GTK_WIDGET(chat_entry));
+}

@@ -1373,6 +1373,101 @@ greedy_discard(Map *map, int mynum, gint assets[NO_RESOURCE], int num)
     return ret;
 }
 
+/*
+ * Domestic Trade
+ *
+ */
+static int trade_resource_desire(gint supply[NO_RESOURCE],
+				 gint receive[NO_RESOURCE])
+{
+#if 0
+    int i;
+    int res = NO_RESOURCE;
+    float value = 0.0;
+    gint need[NO_RESOURCE];
+
+    /* make it as if we don't have what we're trading away */
+    if (trade != NO_RESOURCE) {
+	assets[trade] -= tradenum;
+    }
+
+    /* do i need just 1 more for something? */
+    if (!has_resources(assets, BUILD_CITY, need)) {
+	if (which_one(need)!=NO_RESOURCE) goto oneneed;
+    }
+    if (!has_resources(assets, BUILD_SETTLEMENT, need)) {
+	if (which_one(need)!=NO_RESOURCE) goto oneneed;
+    }
+    if (!has_resources(assets, BUILD_ROAD, need)) {
+	if (which_one(need)!=NO_RESOURCE) goto oneneed;
+    }
+    if (!has_resources(assets, DEVEL_CARD, need)) {
+	if (which_one(need)!=NO_RESOURCE) goto oneneed;
+    }
+
+    if (trade != NO_RESOURCE) {
+	assets[trade] += tradenum;
+    }
+
+    /* desire the one we don't produce the most */
+    for (i = 0; i < NO_RESOURCE; i++) {
+
+	if ((resval->value[i] > value) && (assets[i] < 2)) {
+	    res = i;
+	    value = resval->value[i];
+	}
+    }
+
+    /* don't do stupid trades :) */
+    if (res == trade) return NO_RESOURCE;
+
+    return res;
+
+ oneneed:
+    if (trade != NO_RESOURCE) {
+	assets[trade] += tradenum;
+    }    
+    res = which_one(need);
+
+    /* don't do stupid trades :) */
+    if (res == trade) return NO_RESOURCE;
+
+    return res;    
+#endif
+	return 0;
+}
+
+static gchar *
+greedy_consider_quote(gint we_receive[NO_RESOURCE],
+		      gint we_supply[NO_RESOURCE])
+{
+#if 0
+    static char ret[1024];
+    gint give, take;
+
+    for (give = 0; give < NO_RESOURCE; give++) {
+	if (!we_supply[give])
+	    continue;
+	if (!assets[give]) {
+	    printf("Dont't have %s\n", resource_types[give]);
+	    continue;
+	}
+	for (take = 0; take < NO_RESOURCE; take++) {
+	    if (!we_receive[take])
+		continue;
+	    if (trade_desired(give, we_supply[give], take, we_receive[take]))
+		goto doquote;
+	}
+    }
+#endif
+    
+    log_message(MSG_INFO, _("Rejecting trade.\n"));
+    return "domestic-quote finish\n";
+
+  doit:
+    
+}
+
 int greedy_init(computer_funcs_t *funcs)
 {
     funcs->setup_house = &greedy_setup_house;
@@ -1383,6 +1478,7 @@ int greedy_init(computer_funcs_t *funcs)
     funcs->year_of_plenty = &greedy_year_of_plenty;
     funcs->discard = &greedy_discard;
     funcs->chat = &greedy_chat;
+    funcs->consider_quote = &greedy_consider_quote;
 
     return 0;
 }

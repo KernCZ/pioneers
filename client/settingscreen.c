@@ -7,6 +7,7 @@
  * Implementation of the excellent Settlers of Catan board game.  Go
  * buy a copy.
  */
+#include "config.h"
 #include <gnome.h>
 
 #include "game.h"
@@ -52,7 +53,7 @@ static void add_setting_val(GtkWidget *table, gint row, gint col, gint type,
 		}
 		break;
 	case TYPE_STRING:
-		if( char_val == NULL ) { char_val = _(" "); }
+		if( char_val == NULL ) { char_val = N_(" "); }
 		g_snprintf(label_var, sizeof(label_var), "%s", char_val);
 		break;
 	
