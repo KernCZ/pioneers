@@ -9,6 +9,7 @@
  */
 #ifndef __buildrec_h
 #define __buildrec_h
+#include "map.h"
 
 /* information about building.  Used for undo */
 typedef struct {
@@ -18,7 +19,6 @@ typedef struct {
 	int y;			/* x-pos of hex of build action */
 	int pos;		/* location on hex of build action */
 	gint *cost;		/* resources spent */
-	/* the following fields are not used yet */
 	int prev_x;		/* moving ships only: previous x hex */
 	int prev_y;		/* moving ships only: previous y hex */
 	int prev_pos;		/* moving ships only: previous position */

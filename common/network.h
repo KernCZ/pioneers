@@ -16,7 +16,7 @@ typedef enum {
 	NET_CONNECT,
 	NET_CONNECT_FAIL,
 	NET_CLOSE,
-	NET_READ,
+	NET_READ
 } NetEvent;
 
 typedef void (*NetNotifyFunc)(NetEvent event, void *user_data, gchar *line);

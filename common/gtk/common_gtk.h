@@ -12,6 +12,8 @@
 
 #include "driver.h"
 #include "log.h"
+#include <gdk/gdk.h>
+#include <gtk/gtk.h>
 
 /* Set the default logging function to write to the message window. */
 void log_set_func_message_window( void );

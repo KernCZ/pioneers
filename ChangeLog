@@ -2,6 +2,12 @@
 	* ai/greedy.c: Fixed AI to build only on land.
 	* common/map_query.c: Fixed AI placing robber in water.
 
+2003-12-05  Bas Wijnen <b.wijnen@phys.rug.nl>
+	* common/build_rec.h, common/cards.h, common/common_gtk.h,
+	common/cost.h: Added some #include statements
+	* common/network.h, common/state.h: Removed the comma after the last
+	value in the enum.
+	
 2003-12-02  Roland Clobus <rclobus@bigfoot.com>
 	* seafarers.game, seafarers-gold.game: removed unknown keyword.
 	* Cube.game, Another_swimming_in_the_wall.game, Evil_square.game,

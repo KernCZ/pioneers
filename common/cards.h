@@ -10,6 +10,8 @@
 #ifndef __cards_h
 #define __cards_h
 
+#include "game.h"
+
 /* It is important to know which turn a development card was bought
  * in.  You cannot play a card in the same turn that it was bought.
  */

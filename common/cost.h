@@ -10,6 +10,8 @@
 #ifndef __cost_h
 #define __cost_h
 
+#include <glib.h>
+
 gint *cost_road(void);
 gint *cost_ship(void);
 gint *cost_bridge(void);
