@@ -1,5 +1,6 @@
 2004-09-26 Roland Clobus <rclobus@bigfoot.com>
 	* .cvsignore: Added Makefile.in.in, it is a generated file
+	* POTFILES.in: Added client/ai/greedy.c, server/turn.c
 	
 2004-09-15 Arjen Schrijver <a.schrijver@skydec.nl>
 	* nl.po: fixing a typo
