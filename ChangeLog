@@ -1,3 +1,9 @@
+2000-06-04  Steve Langasek <vorlon@dodds.net>
+
+	* server/into-the-desert.map, server/greater-catan.map:
+	Removed old-style .map files; these have been obsoleted by the
+	.game files.
+
 2000-06-01  Steve Langasek <vorlon@dodds.net>
 
 	* gnocatan.spec: RPM layout fixed up to conform with the rest
