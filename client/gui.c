@@ -438,6 +438,7 @@ static GnomeUIInfo main_menu[] = {
 #define GNOCATAN_PIXMAP_TRADE "gnocatan/trade.png"
 #define GNOCATAN_PIXMAP_ROAD "gnocatan/road.png"
 #define GNOCATAN_PIXMAP_SHIP "gnocatan/ship.png"
+#define GNOCATAN_PIXMAP_BRIDGE "gnocatan/bridge.png"
 #define GNOCATAN_PIXMAP_SETTLEMENT "gnocatan/settlement.png"
 #define GNOCATAN_PIXMAP_CITY "gnocatan/city.png"
 #define GNOCATAN_PIXMAP_DEVELOP "gnocatan/develop.png"
@@ -448,6 +449,7 @@ static gchar *gnocatan_pixmaps[] = {
 	GNOCATAN_PIXMAP_TRADE,
 	GNOCATAN_PIXMAP_ROAD,
 	GNOCATAN_PIXMAP_SHIP,
+	GNOCATAN_PIXMAP_BRIDGE,
 	GNOCATAN_PIXMAP_SETTLEMENT,
 	GNOCATAN_PIXMAP_CITY,
 	GNOCATAN_PIXMAP_DEVELOP,
@@ -467,6 +469,9 @@ static GnomeUIInfo toolbar_uiinfo[] = {
 	{ GNOME_APP_UI_ITEM, N_("Ship"), NULL,
 	  client_event_cb, (gpointer)GUI_SHIP, NULL,
 	  GNOME_APP_PIXMAP_STOCK, GNOCATAN_PIXMAP_SHIP, 0, 0, NULL },
+	{ GNOME_APP_UI_ITEM, N_("Bridge"), NULL,
+	  client_event_cb, (gpointer)GUI_BRIDGE, NULL,
+	  GNOME_APP_PIXMAP_STOCK, GNOCATAN_PIXMAP_BRIDGE, 0, 0, NULL },
 	{ GNOME_APP_UI_ITEM, N_("Settlement"), NULL,
 	  client_event_cb, (gpointer)GUI_SETTLEMENT, NULL,
 	  GNOME_APP_PIXMAP_STOCK, GNOCATAN_PIXMAP_SETTLEMENT, 0, 0, NULL },
@@ -525,7 +530,7 @@ void gui_set_game_params(GameParams *params)
 
 	show_uiinfo(GUI_ROAD, params->num_build_type[BUILD_ROAD] > 0);
 	show_uiinfo(GUI_SHIP, params->num_build_type[BUILD_SHIP] > 0);
-/*	show_uiinfo(GUI_BRIDGE, params->num_build_type[BUILD_BRIDGE] > 0);*/
+	show_uiinfo(GUI_BRIDGE, params->num_build_type[BUILD_BRIDGE] > 0);
 	show_uiinfo(GUI_SETTLEMENT, params->num_build_type[BUILD_SETTLEMENT] > 0);
 	show_uiinfo(GUI_CITY, params->num_build_type[BUILD_CITY] > 0);
 	identity_draw();
@@ -597,6 +602,7 @@ GtkWidget* gui_build_interface()
 	register_uiinfo(toolbar_uiinfo);
 
 	show_uiinfo(GUI_SHIP, FALSE);
+	show_uiinfo(GUI_BRIDGE, FALSE);
 
 	return app_window;
 }
