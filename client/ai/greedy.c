@@ -1486,22 +1486,23 @@ static int trade_desired(gint assets[NO_RESOURCE], gint give, gint take)
 	/* do i need something more for something? */
 	if (!has_resources(assets, BUILD_CITY, need)) {
 	    if ((res = which_resource(need)) == take && need[res] == n)
-		return n;
+		break;
 	}
 	if (!has_resources(assets, BUILD_SETTLEMENT, need)) {
 	    if ((res = which_resource(need)) == take && need[res] == n)
-		return n;
+		break;
 	}
 	if (!has_resources(assets, BUILD_ROAD, need)) {
 	    if ((res = which_resource(need)) == take && need[res] == n)
-		return n;
+		break;
 	}
 	if (!has_resources(assets, DEVEL_CARD, need)) {
 	    if ((res = which_resource(need)) == take && need[res] == n)
-		return n;
+		break;
 	}
     }
     assets[give] += 1;
+    if (n <= 3) return n;
 
     /* desire the one we don't produce the most */
     reevaluate_resources(&resval);

@@ -681,7 +681,7 @@ gboolean mode_pre_game(Player *player, gint event)
 			else
 			{
 				if (!player_is_viewer(game, player->num))
-					sm_goto(sm, (StateFunc)mode_idle);
+					sm_goto(sm, (StateFunc)mode_idle)
 				else
 					sm_goto (sm, (StateFunc)mode_viewer);
 			}

@@ -118,11 +118,12 @@ static void frontend_state_trade (GuiEvent event)
 		break;
 	case GUI_TRADE_CALL:
 		trading = TRUE;
-		trade_remove_reject_rows ();
+		trade_new_trade();
 		cb_domestic (trade_we_supply (), trade_we_receive () );
 		return;
 	case GUI_TRADE_ACCEPT:
 		quote = trade_current_quote();
+		g_assert(quote != NULL);
 		if (quote->is_domestic) {
 			trade_perform_domestic (my_player_num (),
 					quote->var.d.player_num,

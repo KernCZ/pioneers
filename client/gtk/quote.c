@@ -352,6 +352,7 @@ void quote_player_finish(gint player_num)
 
 void quote_finish()
 {
+	quotelist_free(&quote_list);
 	gui_show_quote_page(FALSE);
 }
 
@@ -393,9 +394,7 @@ void quote_begin(gint player_num, gint *we_receive, gint *we_supply)
 	/* show what is asked */
 	show_quote_params(player_num, we_receive, we_supply);
 	/* create a (new) quote list */
-	if (quote_list != NULL)
-		quotelist_free(quote_list);
-	quote_list = quotelist_new();
+	quotelist_new(&quote_list);
 	/* reset variables */
 	next_quote_num = 0;
 	selected_quote = NULL;

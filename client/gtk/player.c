@@ -67,7 +67,7 @@ static GdkGC *summary_gc;	/* for drawing in summary list */
 
 static GtkWidget *turn_area;	/* turn indicator in status bar */
 
-static GdkColor token_colors[] = {
+static GdkColor token_colors[MAX_PLAYERS] = {
 	{ 0, 0xCD00, 0x0000, 0x0000 }, /* red */
 	{ 0, 0x1E00, 0x9000, 0xFF00 }, /* blue */
 	{ 0, 0xE800, 0xE800, 0xE800 }, /* white */
@@ -89,9 +89,7 @@ void player_init()
 	cmap = gdk_colormap_get_system();
 	for (idx = 0; idx < numElem(token_colors); idx++) {
 		/* allocate colours for the players */
-		gdk_color_alloc(cmap, &token_colors[idx]);
-		/* give all the players their colour */
-		players[idx].color = idx;
+		gdk_colormap_alloc_color(cmap, &token_colors[idx], FALSE, TRUE);
 		/* initialize their pixmap to 0 so it isn't unref'd */
 		players[idx].user_data = NULL;
 	}
@@ -99,11 +97,18 @@ void player_init()
 
 GdkColor *player_color(gint player_num)
 {
-	if (player_is_viewer (player_num) ) {
+	g_assert(player_num >= 0);
+	g_assert(player_num < MAX_PLAYERS);
+	return &token_colors[player_num];
+}
+
+GdkColor *player_or_viewer_color(gint player_num)
+{
+	if (player_is_viewer(player_num)) {
 		/* viewer color is always black */
 		return &black;
 	}
-	return &token_colors[players[player_num].color];
+	return &token_colors[player_num];
 }
 
 static gint calc_statistic_row(gint player_num, StatisticType type)

@@ -161,7 +161,7 @@ void trade_delete_quote (int player_num, int quote_num);
 void trade_player_finish (gint player_num);
 void trade_begin (void);
 void trade_format_quote (QuoteInfo *quote, gchar *buffer);
-void trade_remove_reject_rows (void);
+void trade_new_trade(void);
 void trade_perform_maritime(gint ratio, Resource supply, Resource receive);
 void trade_perform_domestic(gint player_num, gint partner_num, gint quote_num,
 			    gint *they_supply, gint *they_receive);
@@ -230,12 +230,19 @@ GtkWidget *player_build_summary (void);
 GtkWidget *player_build_turn_area (void);
 void player_clear_summary(void);
 void player_init (void);
-GdkColor *player_color (gint player_num);
+/** The colour of the player, or viewer */
+GdkColor *player_or_viewer_color(gint player_num);
+/** The colour of the player */
+GdkColor *player_color(gint player_num);
 void player_show_current (gint player_num);
 void set_num_players (gint num);
 
 /* chat.c */
-GtkWidget *chat_build_panel (void);
+/** Create the chat widget */
+GtkWidget *chat_build_panel(void);
+/** Determine if the focus should be moved to the chat widget */
+void chat_set_grab_focus_on_update(gboolean grab); 
+/** Set the focus to the chat widget */
 void chat_set_focus(void);
 
 /* name.c */

@@ -25,6 +25,9 @@
 #define MAX_CHAT 512          /* maximum chat message size */
 
 static GtkWidget *chat_entry; /* messages text widget */
+static gboolean chat_grab_focus_on_update = FALSE; /**< Flag to indicate 
+ * whether the chat widget should grab the focus whenever a GUI_UPDATE is sent */
+
 
 static void chat_cb(GtkEditable *editable, UNUSED(gpointer user_data))
 {
@@ -65,9 +68,14 @@ GtkWidget *chat_build_panel()
 	return frame;
 }
 
+void chat_set_grab_focus_on_update(gboolean grab)
+{
+	chat_grab_focus_on_update = grab;
+}
+
 void chat_set_focus(void)
 {
-	if (!gtk_widget_is_focus(chat_entry)) {
+	if (chat_grab_focus_on_update && !gtk_widget_is_focus(chat_entry)) {
 		gtk_widget_grab_focus(chat_entry);
 		gtk_editable_set_position(GTK_EDITABLE(chat_entry), -1);
 	}

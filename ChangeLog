@@ -1,3 +1,20 @@
+2004-06-29  0.8.1.29  Roland Clobus <rclobus@bigfoot.com>
+	* ai/client.c, ai/trade.c, client/common/client.c,
+	client/gtk/frontend.h, client/gtk/interface.c, client/gtk/quote.c,
+	client/common/quoteinfo.c, common/quoteinfo.h, server/pregame.h:
+	Various changes. quotelist_new and quotelist_delete changed prototypes
+	to allow for checks on 'quote-leaks'.
+	* ai/greedy.c (trade_desired), client/ai/greedy.c (trade_desired): Fix
+	for AI losing resources during trade.
+	* client/callback.h, client/gtk/identity.c, client/gtk/player.c:
+	Removed unused color field, added player_or_viewer_color.
+	* client/gtk/chat.c, client/gtk/gui.c: Added flag to indicate whether
+	the focus can be grabbed.
+	* client/gtk/trade.c: Gtk2 widgets for trade page. Redesign.
+	* common/network.c: Removed an obsolete FIXME.
+	* server/trade.c: More informative error messages. Duplicate quote is
+	now a note, not an error.
+	
 2004-05-30 0.8.1.28  Roland Clobus <rclobus@bigfoot.com>
 	* client/ai/greedy.c (greedy_year_of_plenty), ai/client.h
 	(mode_year_of_plenty), ai/computer.h, ai/greedy.c

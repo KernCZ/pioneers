@@ -60,7 +60,7 @@ typedef struct {
 	gint gov_played;	/* number of Governors cards played */
 	gint libr_played;	/* number of Library cards played */
 	gint market_played;	/* number of Market cards played */
-	gboolean disconnected; 
+	gboolean disconnected;
 } Player;
 
 struct Game {

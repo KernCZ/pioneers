@@ -296,7 +296,7 @@ void gui_highlight_chits(gint roll)
 static gint expose_map_cb(GtkWidget *area, GdkEventExpose *event,
 		UNUSED(gpointer user_data))
 {
-	if (area->window == NULL || map == NULL)
+	if (area->window == NULL || map == NULL || gmap->map == NULL)
 		return FALSE;
 
 	if (gmap->pixmap == NULL) {
@@ -422,18 +422,20 @@ static GtkWidget *build_messages_panel(void)
 
 void gui_show_trade_page(gboolean show)
 {
+	chat_set_grab_focus_on_update(!show); /* Normal keyboard focus when visible */
 	if (show) {
 		gtk_widget_show(trade_page);
-		gtk_notebook_set_page(GTK_NOTEBOOK(map_notebook), TRADE_PAGE);
+		gtk_notebook_set_current_page(GTK_NOTEBOOK(map_notebook), TRADE_PAGE);
 	} else
 		gtk_widget_hide(trade_page);
 }
 
 void gui_show_quote_page(gboolean show)
 {
+	chat_set_grab_focus_on_update(!show); /* Normal keyboard focus when visible */
 	if (show) {
 		gtk_widget_show(quote_page);
-		gtk_notebook_set_page(GTK_NOTEBOOK(map_notebook), QUOTE_PAGE);
+		gtk_notebook_set_current_page(GTK_NOTEBOOK(map_notebook), QUOTE_PAGE);
 	} else
 		gtk_widget_hide(quote_page);
 }
@@ -442,16 +444,17 @@ void gui_show_legend_page(gboolean show)
 {
 	if (show) {
 		gtk_widget_show(legend_page);
-		gtk_notebook_set_page(GTK_NOTEBOOK(map_notebook), QUOTE_PAGE);
+		gtk_notebook_set_current_page(GTK_NOTEBOOK(map_notebook), LEGEND_PAGE);
 	} else
 		gtk_widget_hide(legend_page);
 }
 
 void gui_show_splash_page(gboolean show)
 {
+	chat_set_grab_focus_on_update(TRUE);
 	if (show) {
 		gtk_widget_show(splash_page);
-		gtk_notebook_set_page(GTK_NOTEBOOK(map_notebook), TRADE_PAGE);
+		gtk_notebook_set_current_page(GTK_NOTEBOOK(map_notebook), SPLASH_PAGE);
 	} else
 		gtk_widget_hide(splash_page);
 }
@@ -516,47 +519,47 @@ static GtkWidget *build_map_panel(void)
 	gtk_notebook_insert_page(GTK_NOTEBOOK(map_notebook),
 				 legend_page, lbl, LEGEND_PAGE);
 	if (!legend_page_enabled)
-		gtk_widget_hide(legend_page);
+		gui_show_legend_page(FALSE);
 
 	lbl = gtk_label_new(_("Welcome to Gnocatan"));
 	gtk_widget_show(lbl);
 	splash_page = splash_build_page();
 	gtk_notebook_insert_page(GTK_NOTEBOOK(map_notebook),
 				 splash_page, lbl, SPLASH_PAGE);
-	gtk_notebook_set_page(GTK_NOTEBOOK(map_notebook), SPLASH_PAGE);
+	gui_show_splash_page(TRUE);
 
 	return map_notebook;
 }
 
 void gui_discard_show()
 {
-        gtk_notebook_set_page(GTK_NOTEBOOK(develop_notebook), 1);
+        gtk_notebook_set_current_page(GTK_NOTEBOOK(develop_notebook), 1);
 }
 
 void gui_discard_hide()
 {
-        gtk_notebook_set_page(GTK_NOTEBOOK(develop_notebook), 0);
+        gtk_notebook_set_current_page(GTK_NOTEBOOK(develop_notebook), 0);
 }
 
 void gui_gold_show()
 {
-        gtk_notebook_set_page(GTK_NOTEBOOK(develop_notebook), 2);
+        gtk_notebook_set_current_page(GTK_NOTEBOOK(develop_notebook), 2);
 }
 
 void gui_gold_hide()
 {
-        gtk_notebook_set_page(GTK_NOTEBOOK(develop_notebook), 0);
+        gtk_notebook_set_current_page(GTK_NOTEBOOK(develop_notebook), 0);
 }
 
 void gui_prompt_show(gchar *message)
 {
 	gtk_label_set_text(GTK_LABEL(prompt_lbl), message);
-        gtk_notebook_set_page(GTK_NOTEBOOK(develop_notebook), 3);
+        gtk_notebook_set_current_page(GTK_NOTEBOOK(develop_notebook), 3);
 }
 
 void gui_prompt_hide()
 {
-        gtk_notebook_set_page(GTK_NOTEBOOK(develop_notebook), 0);
+        gtk_notebook_set_current_page(GTK_NOTEBOOK(develop_notebook), 0);
 }
 
 static GtkWidget *prompt_build_page(void)
@@ -859,7 +862,7 @@ static void menu_settings_cb(UNUSED(GtkWidget *widget), UNUSED(void *user_data))
 
 	gnome_property_box_append_page( GNOME_PROPERTY_BOX(settings),
 	                                page0_table, page0_label );
-	gtk_notebook_set_page(GTK_NOTEBOOK(GNOME_PROPERTY_BOX(settings)->notebook), 0);
+	gtk_notebook_set_current_page(GTK_NOTEBOOK(GNOME_PROPERTY_BOX(settings)->notebook), 0);
 	gnome_property_box_append_page( GNOME_PROPERTY_BOX(settings),
 	                                page1_table, page1_label );
 

@@ -1844,7 +1844,6 @@ static gboolean check_quoting(StateMachine *sm)
 	if (sm_recv(sm, "domestic-trade call supply %R receive %R",
 				they_supply, they_receive)) {
 		callbacks.quote (player_num, they_supply, they_receive);
-		sm_goto(sm, mode_domestic_quote);
 		return TRUE;
 	}
 	if (sm_recv(sm, "domestic-trade accept player %d quote %d supply %R receive %R",
@@ -2223,10 +2222,8 @@ gboolean can_trade_domestic (void)
 		return FALSE;
 	for (idx = 0; idx < NO_RESOURCE; idx++)
 		if (resource_asset(idx) > 0)
-			break;
-	if (idx == NO_RESOURCE)
-		return FALSE;
-	return TRUE;
+			return TRUE;
+	return FALSE;
 }
 
 gboolean can_trade_maritime (void)

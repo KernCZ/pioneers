@@ -43,8 +43,10 @@ typedef struct {
 	GList *quotes;
 } QuoteList;
 
-QuoteList *quotelist_new(void);
-void quotelist_free(QuoteList *list);
+/** Create a new quote list, and remove the old list if needed */
+void quotelist_new(QuoteList **list);
+/** Free the QuoteList (if needed), and set it to NULL */
+void quotelist_free(QuoteList **list);
 QuoteInfo *quotelist_add_domestic(QuoteList *list, gint player_num,
 				  gint quote_num, gint *supply, gint *receive);
 QuoteInfo *quotelist_add_maritime(QuoteList *list,

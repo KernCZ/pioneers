@@ -40,11 +40,11 @@ static const gchar *resource_types[] = {
  *
  * What it does _NOT_ do:
  *
- * -Play with gold.  FIXME: in fact it crashes.  It should abort with an error.
+ * -Play with gold.  It aborts with an error.
  * -Play monopoly development card
  * -Make roads explicitly to get the longest road card
  * -Trade with other players
- * -Do anything seafarers (I don't know the rules :) )
+ * -Do anything seafarers
  *
  */
 
@@ -1591,22 +1591,24 @@ static int trade_desired(Map *map, int mynum,
 	/* do i need something more for something? */
 	if (!has_resources(assets, BUILD_CITY, need)) {
 	    if ((res = which_resource(need)) == take && need[res] == n)
-		return n;
+		break;
 	}
 	if (!has_resources(assets, BUILD_SETTLEMENT, need)) {
 	    if ((res = which_resource(need)) == take && need[res] == n)
-		return n;
+		break;
 	}
 	if (!has_resources(assets, BUILD_ROAD, need)) {
 	    if ((res = which_resource(need)) == take && need[res] == n)
-		return n;
+		break;
 	}
 	if (!has_resources(assets, DEVEL_CARD, need)) {
 	    if ((res = which_resource(need)) == take && need[res] == n)
-		return n;
+		break;
 	}
     }
     assets[give] += 1;
+    if (n <= 3) return n;
+
 
     /* desire the one we don't produce the most */
     reevaluate_resources(map, mynum, &resval);

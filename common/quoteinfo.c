@@ -27,22 +27,24 @@
 #include "game.h"
 #include "quoteinfo.h"
 
-QuoteList *quotelist_new()
+void quotelist_new(QuoteList **list)
 {
-	QuoteList *list;
-
-	list = g_malloc0(sizeof(*list));
-	return list;
+	g_assert(*list == NULL);
+	quotelist_free(list);
+	*list = g_malloc0(sizeof(**list));
 }
 
-void quotelist_free(QuoteList *list)
+void quotelist_free(QuoteList **list)
 {
-	while (list->quotes != NULL) {
-		QuoteInfo *quote = list->quotes->data;
-		list->quotes = g_list_remove(list->quotes, quote);
+	if (*list == NULL) 
+		return; /* Already free */
+	while ((*list)->quotes != NULL) {
+		QuoteInfo *quote = (*list)->quotes->data;
+		(*list)->quotes = g_list_remove((*list)->quotes, quote);
 		g_free(quote);
 	}
-	g_free(list);
+	g_free(*list);
+	*list = NULL;
 }
 
 static gint sort_quotes(QuoteInfo *a, QuoteInfo *b)

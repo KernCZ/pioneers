@@ -99,7 +99,7 @@ void client_start(const char *server, const char *port, const char *username,
 
     if (sm_connect(SM(), server, port)) {
 	if (sm_is_connected(SM()))
-	    sm_goto(SM(), mode_start);
+	    sm_goto(SM(), mode_start)
 	else
 	    sm_goto(SM(), mode_connecting);
     } else {
@@ -1629,7 +1629,6 @@ static gboolean check_quoting(StateMachine *sm)
 		client_chat(CHAT_DOMESTIC_TRADE_CALL, NULL,
 					player_num == my_player_num(), 0);
 		quote_begin_again(player_num, they_supply, they_receive);
-		quote_begin(player_num, they_supply, they_receive);
 		tmp = computer_funcs.consider_quote(map, my_player_num(),
 				my_assets, they_supply, they_receive);
 		sm_send(sm, tmp);

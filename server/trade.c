@@ -56,7 +56,7 @@ void trade_perform_maritime(Player *player,
 	}
 
 	if (ratio < 2 || ratio > 4) {
-		sm_send(sm, "ERR bad-ratio\n");
+		sm_send(sm, "ERR trade bad-ratio\n");
 		return;
 	}
 
@@ -66,20 +66,20 @@ void trade_perform_maritime(Player *player,
 	switch (ratio) {
 	case 4:
 		if (player->assets[supply] < 4) {
-			sm_send(sm, "ERR bad-trade\n");
+			sm_send(sm, "ERR maritime trade, not 4 resources\n");
 			return;
 		}
 		break;
 	case 3:
 		if (!info.any_resource || player->assets[supply] < 3) {
-			sm_send(sm, "ERR bad-trade\n");
+			sm_send(sm, "ERR maritime trade, not 3 resources\n");
 			return;
 		}
 		break;
 	case 2:
 		if (!info.specific_resource[supply]
 		    || player->assets[supply] < 2) {
-			sm_send(sm, "ERR bad-trade\n");
+			sm_send(sm, "ERR maritime trade, not 2 resources\n");
 			return;
 		}
 		break;
@@ -147,6 +147,9 @@ gboolean mode_domestic_quote(Player *player, gint event)
 							player->num, -1);
 			if (quote == NULL)
 				break;
+			player_broadcast(player, PB_ALL, 
+					"domestic-quote delete %d\n", 
+					quote->var.d.quote_num);
 			quotelist_delete(game->quotes, quote);
 		}
 		player_broadcast(player, PB_RESPOND, "domestic-quote finish\n");
@@ -160,13 +163,14 @@ gboolean mode_domestic_quote(Player *player, gint event)
 		 */
 		QuoteInfo *quote;
 		quote = quotelist_find_domestic(game->quotes,
-						player->num, quote_num);
+				player->num, quote_num);
 		if (quote == NULL) {
-			sm_send(sm, "ERR bad-trade\n");
+			sm_send(sm, "ERR quote already deleted\n");
 			return TRUE;
 		}
 		quotelist_delete(game->quotes, quote);
-		player_broadcast(player, PB_RESPOND, "domestic-quote delete %d\n", quote_num);
+		player_broadcast(player, PB_RESPOND, 
+				"domestic-quote delete %d\n", quote_num);
 		return TRUE;
 	}
 
@@ -175,13 +179,13 @@ gboolean mode_domestic_quote(Player *player, gint event)
 		/* Make sure that quoting party can satisfy the trade
 		 */
 		if (!cost_can_afford(supply, player->assets)) {
-			sm_send(sm, "ERR bad-trade\n");
+			sm_send(sm, "ERR quote not enough resources\n");
 			return TRUE;
 		}
 		/* Make sure that the quote does not already exist
 		 */
 		if (quotelist_find_domestic(game->quotes, player->num, quote_num) != NULL) {
-			sm_send(sm, "ERR bad-trade\n");
+			sm_send(sm, "INFO duplicate quote\n");
 			return TRUE;
 		}
 
@@ -211,8 +215,7 @@ void trade_finish_domestic(Player *player)
 		if (scan != player && !player_is_viewer(game, scan->num))
 			sm_goto(scan->sm, (StateFunc)mode_wait_quote_exit);
 	}
-	quotelist_free(game->quotes);
-	game->quotes = NULL;
+	quotelist_free(&game->quotes);
 }
 
 void trade_accept_domestic(Player *player,
@@ -237,18 +240,18 @@ void trade_accept_domestic(Player *player,
 	 */
 	quote = quotelist_find_domestic(game->quotes, partner_num, quote_num);
 	if (quote == NULL) {
-		sm_send(sm, "ERR bad-trade\n");
+		sm_send(sm, "ERR quote not found\n");
 		return;
 	}
 	/* Make sure that both parties can satisfy the trade
 	 */
 	if (!cost_can_afford(quote->var.d.receive, player->assets)) {
-		sm_send(sm, "ERR bad-trade\n");
+		sm_send(sm, "ERR quote cannot afford\n");
 		return;
 	}
 	partner = player_by_num(game, partner_num);
 	if (!cost_can_afford(quote->var.d.supply, partner->assets)) {
-		sm_send(sm, "ERR bad-trade\n");
+		sm_send(sm, "ERR quote partner cannot afford\n");
 		return;
 	}
 
@@ -263,7 +266,8 @@ void trade_accept_domestic(Player *player,
 			 "domestic-trade accept player %d quote %d supply %R receive %R\n",
 			 partner_num, quote_num, supply, receive);
 
-	/* Remove the quote just processed
+	/* Remove the quote just processed.
+	 * The client should remove the quote too.
 	 */
 	quotelist_delete(game->quotes, quote);
 	/* Remove all other quotes from the partner that are no
@@ -310,6 +314,7 @@ static void call_domestic(Player *player, gint *supply, gint *receive)
 {
 	StateMachine *sm = player->sm;
 	Game *game = player->game;
+	Player *partner;
 	gint num_supply, num_receive;
 	gint idx;
 	QuoteInfo *quote;
@@ -320,7 +325,7 @@ static void call_domestic(Player *player, gint *supply, gint *receive)
 	for (idx = 0; idx < NO_RESOURCE; idx++) {
 		if (supply[idx]) {
 			if (player->assets[idx] == 0) {
-				sm_send(sm, "ERR bad-trade\n");
+				sm_send(sm, "ERR not enough resources for this quote\n");
 				return;
 			}
 			num_supply++;
@@ -328,7 +333,7 @@ static void call_domestic(Player *player, gint *supply, gint *receive)
 		if (receive[idx] > 0) ++num_receive;
 	}
 	if (num_supply == 0 && num_receive == 0) {
-		sm_send(sm, "ERR bad-trade\n");
+		sm_send(sm, "ERR empty quote\n");
 		return;
 	}
 	quote = quotelist_first(game->quotes);
@@ -347,8 +352,13 @@ static void call_domestic(Player *player, gint *supply, gint *receive)
 			if (!supply[idx] && curr->var.d.receive[idx] != 0)
 				break;
 		}
-		if (idx < NO_RESOURCE)
+		if (idx < NO_RESOURCE) {
+			partner = player_by_num(game, curr->var.d.player_num);
+			player_broadcast(partner, PB_ALL,
+					 "domestic-quote delete %d\n",
+			 		curr->var.d.quote_num);
 			quotelist_delete(game->quotes, curr);
+		}
 	}
 	process_call_domestic(player, supply, receive);
 }
@@ -404,9 +414,7 @@ void trade_begin_domestic(Player *player, gint *supply, gint *receive)
 	GList *list;
 
 	sm_push(player->sm, (StateFunc)mode_domestic_initiate);
-	if (game->quotes != NULL)
-		quotelist_free(game->quotes);
-	game->quotes = quotelist_new();
+	quotelist_new(&game->quotes);
 
 	/* push all others to quote mode.  process_call_domestic pops and
 	 * repushes them all, so this is needed to keep the state stack
