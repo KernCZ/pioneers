@@ -63,23 +63,22 @@ void name_create_dlg()
 	gtk_widget_show(hbox);
 	gtk_box_pack_start(GTK_BOX(dlg_vbox), hbox, FALSE, TRUE, 0);
 	gtk_container_border_width(GTK_CONTAINER(hbox), 5);
-	gtk_widget_set_usize(hbox, 200, -1);
 
 	lbl = gtk_label_new(_("Player Name:"));
 	gtk_widget_show(lbl);
-	gtk_box_pack_start(GTK_BOX(hbox), lbl, TRUE, TRUE, 0);
-        gtk_misc_set_alignment(GTK_MISC(lbl), 1, 0.5);
+	gtk_box_pack_start(GTK_BOX(hbox), lbl, FALSE, TRUE, 0);
+	gtk_misc_set_alignment(GTK_MISC(lbl), 1, 0.5);
 
 	name_entry = gtk_entry_new_with_max_length(30);
 	gtk_widget_show(name_entry);
-	gtk_box_pack_start(GTK_BOX(hbox), name_entry, FALSE, TRUE, 0);
-	gtk_widget_set_usize(name_entry, 60, -1);
+	gtk_box_pack_start(GTK_BOX(hbox), name_entry, TRUE, TRUE, 0);
+	gtk_entry_set_width_chars(GTK_ENTRY(name_entry), 30);
 
 	gtk_entry_set_activates_default(GTK_ENTRY(name_entry), TRUE);
 
 	/* destroy dialog when OK button gets clicked */
 	g_signal_connect(dlg, "response",
 			G_CALLBACK(change_name_cb), NULL);
-        gtk_widget_show(dlg);
+	gtk_widget_show(dlg);
 	gtk_widget_grab_focus(name_entry);
 }

@@ -117,7 +117,7 @@ static gint calc_statistic_row(gint player_num, StatisticType type)
 		if (row >= 0)
 			return row + 1;
 	}
-	if (player->points == NULL)
+	if (player_is_viewer(player_num) || (player->points == NULL))
 		return gtk_clist_find_row_from_data(GTK_CLIST(summary_clist),
 				player) + 1;
 	return gtk_clist_find_row_from_data (GTK_CLIST (summary_clist),

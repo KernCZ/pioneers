@@ -1,3 +1,11 @@
+2003-12-28 0.8.1.6  Roland Clobus <rclobus@bigfoot.com>
+
+	* client/common/player.c (player_has_quit): Fix for (null) receives...
+	(Bug #865870).
+	* clinet/gtk/player.c (calc_statistic_row): Fix for viewers.
+	* client/gtk/name.c (name_create_dlg): Remove scrolling from name
+	change dialog.
+
 2003-12-25  Jeff Breidenbach  <jbreiden@rode.parc.com>
 
 	* docs/Makefile.am: registered gnocatanai manpage
