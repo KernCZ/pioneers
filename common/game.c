@@ -206,6 +206,7 @@ void params_write_lines(GameParams *params, WriteLineFunc func, gpointer user_da
 	gint idx;
 	gint y;
 	gchar buff[512];
+	gchar *str;
 
 	func(user_data, "game");
 	switch (params->variant) {
@@ -224,9 +225,11 @@ void params_write_lines(GameParams *params, WriteLineFunc func, gpointer user_da
 
 		switch (param->type) {
 		case PARAM_STRING:
+			str = G_STRUCT_MEMBER(gchar*, params, param->offset);
+			if (!str)
+				continue;
 			g_snprintf(buff, sizeof(buff), "%s %s",
-				   param->name,
-				   G_STRUCT_MEMBER(gchar*, params, param->offset));
+				   param->name, str);
 			func(user_data, buff);
 			break;
 		case PARAM_INT:
@@ -351,6 +354,33 @@ void params_load_line(GameParams *params, gchar *line)
 	g_warning("Unknown keyword: %s", line);
 }
 
+GameParams *params_load_file(const gchar *fname)
+{
+        FILE *fp;
+        gchar line[512];
+        GameParams *params;
+
+        if ((fp = fopen(fname, "r")) == NULL) {
+                g_warning("could not open '%s'", fname);
+                return NULL;
+        }
+
+        params = params_new();
+        while (fgets(line, sizeof(line), fp) != NULL) {
+                gint len = strlen(line);
+
+                if (len > 0 && line[len - 1] == '\n')
+                        line[len - 1] = '\0';
+                params_load_line(params, line);
+        }
+        fclose(fp);
+        if (!params_load_finish(params)) {
+		params_free(params);
+		return NULL;
+	}
+	return params;
+}
+
 GameParams *params_copy(GameParams *params)
 {
 	GameParams *copy;
@@ -400,5 +430,26 @@ gboolean params_load_finish(GameParams *params)
 		return FALSE;
 	params->map->have_bridges = params->num_build_type[BUILD_BRIDGE] > 0;
 	params->map->has_pirate = params->use_pirate;
+	return TRUE;
+}
+
+static void write_one_line(gpointer user_data, const gchar *line)
+{
+	FILE *fp = user_data;
+	fprintf(fp, "%s\n", line);
+}
+
+gboolean params_write_file(GameParams *params, const gchar *fname)
+{
+	FILE *fp;
+
+	if ((fp = fopen(fname, "w")) == NULL) {
+		g_warning("could not open '%s'", fname);
+		return FALSE;
+	}
+	params_write_lines(params, write_one_line, fp);
+
+	fclose(fp);
+
 	return TRUE;
 }

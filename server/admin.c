@@ -111,28 +111,12 @@ void game_list_foreach( GFunc func, gpointer user_data )
 
 GameParams *load_game_desc(const gchar *fname)
 {
-	FILE *fp;
-	gchar line[512];
 	GameParams *params;
 
-	if ((fp = fopen(fname, "r")) == NULL) {
-		g_warning("could not open '%s'", fname);
-		return NULL;
-	}
-
-	params = params_new();
-	while (fgets(line, sizeof(line), fp) != NULL) {
-		gint len = strlen(line);
-
-		if (len > 0 && line[len - 1] == '\n')
-			line[len - 1] = '\0';
-		params_load_line(params, line);
-	}
-	fclose(fp);
-	if (params_load_finish(params))
-		return params;
-	g_warning("Skipping: %s", fname);
-	return NULL;
+	params = params_load_file(fname);
+	if (params == NULL)
+		g_warning("Skipping: %s", fname);
+	return params;
 }
 
 void load_game_types( const gchar *path )

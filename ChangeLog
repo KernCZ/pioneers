@@ -2,6 +2,8 @@
 	* common/gtk/aboutbox.c, common/gtk/aboutbox.h, common/gtk/Makefile.am,
 	client/gtk/gui.c, server/gtk/gnocatan-server-gtk.c: Add common code for
 	displaying about boxes; make the client and server use it.
+	* common/game.c, common/game.h, server/gnocatan-server.c: Add
+	params_load_file()/params_write_file() helper functions.
 
 2005-03-12  0.8.1.55  Roland Clobus <rclobus@bigfoot.com>
 	* configure.ac, added gnocatan.spec.in, removed gnocatan.spec: The

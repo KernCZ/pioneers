@@ -88,8 +88,10 @@ typedef void (*WriteLineFunc)(gpointer user_data, const gchar *);
 
 GameParams *params_new(void);
 GameParams *params_copy(GameParams *params);
+GameParams *params_load_file(const gchar *fname);
 void params_free(GameParams *params);
 void params_write_lines(GameParams *params, WriteLineFunc func, gpointer user_data);
+gboolean params_write_file(GameParams *params, const gchar *fname);
 void params_load_line(GameParams *params, gchar *line);
 gboolean params_load_finish(GameParams *params);
 #endif
