@@ -1,3 +1,24 @@
+2002-07-06  Roman Hodek  <roman@hodek.net>
+
+	* theme.c, theme.h: new files for theme handling
+
+	* client/Makefile.am: added theme.[ch], added hook for installing
+	theme data
+
+	* client/gnocatan.c: call init_themes()
+
+	* client/gui.c (menu_settings_cb, settings_apply_cb): new option
+	menu to select theme added to setting dialog
+
+	* client/guimap.c: in many places replace hardcoded pixmaps/colors
+	by what's defined in current theme
+
+	* client/guimap.h: New parameter 'terrain' for draw_dice_roll().
+
+	* client/histogram.c: pass new parameter to draw_dice_roll().
+
+	* po/de.po: updated
+
 2002-06-19  Jeff Breidenbach  <jeff@jab.org>
 
 	* debian/rules: adapt to non-temporary Makefile.in files
