@@ -1,3 +1,6 @@
+2004-10-17  0.8.1.39  Roland Clobus <rclobus@bigfoot.com>
+	* common/map.h, common/map_query.c: Fixed longest road detection
+	
 2004-10-08  0.8.1.38  Roland Clobus <rclobus@bigfoot.com>
 	* All *.c: Added #include "config.h"
 	* configure.in, ai/ai.c, client/ai/ai.c, client/gtk/connect.c,

@@ -767,147 +767,11 @@ gboolean map_bridge_connect_ok(Map *map, gint owner, gint x, gint y, gint pos)
 	return is_bridge_valid(edge, owner);
 }
 
-static gint calc_road_length(Edge *edge);
-
-/* Node has been visited via one edge, of the two remaining edges,
- * return the length of the longest unvisited path from the fork.
- */
-static gint calc_longest_fork(Node *node, gint owner)
-{
-	gint idx;
-	gint max_len;
-
-	/* Cannot go past node if it is occupied by another
-	 * player
-	 */
-	if (node->type != BUILD_NONE && node->owner != owner)
-		return 0;
-
-	node->visited = 2;
-
-	/* Try all roads adjacent to the node that we have not
-	 * visited yet
-	 */
-	max_len = 0;
-	for (idx = 0; idx < numElem(node->edges); idx++) {
-		Edge *edge = node->edges[idx];
-		gint len;
-
-		if (!edge || edge->owner != owner || edge->visited == 2)
-			continue;
-		len = calc_road_length(edge);
-		if (len > max_len)
-			max_len = len;
-	}
-
-	node->visited = 1;
-
-	return max_len;
-}
-
-/* Return the length of unvisited road connected to this edge
- * (including this edge).  We must only count edges in one direction
- * to protect against cycles.
- */
-static gint calc_road_length(Edge *edge)
-{
-	gint idx;
-	gint len = 0;
-
-	edge->visited = 2;
-
-	for (idx = 0; idx < numElem(edge->nodes); idx++) {
-		Node *node = edge->nodes[idx];
-
-		if (node->visited == 2)
-			continue;
-		len = calc_longest_fork(node, edge->owner);
-		if (len > 0)
-			break;
-	}
-
-	edge->visited = 1;
-
-	return 1 + len;
-}
-
-static GList *find_tail_edges(Edge *edge);
-
-static GList *node_find_tail_edges(Node *node, gint owner)
-{
-	gint idx;
-	GList *tails = NULL;
-
-	/* Cannot go past node if it is occupied by another
-	 * player
-	 */
-	if (node->type != BUILD_NONE && node->owner != owner)
-		return NULL;
-
-	node->visited = 1;
-	/* Try all roads adjacent to the node that we have not
-	 * visited yet
-	 */
-	for (idx = 0; idx < numElem(node->edges); idx++) {
-		Edge *edge = node->edges[idx];
-
-		if (!edge || edge->owner != owner || edge->visited)
-			continue;
-		tails = g_list_concat(tails, find_tail_edges(edge));
-	}
-
-	return tails;
-}
-
-static gboolean node_has_other_edges(Node *node, Edge *edge)
-{
-	gint idx;
-
-	for (idx = 0; idx < numElem(node->edges); idx++)
-		if (node->edges[idx]
-			&& node->edges[idx] != edge
-		    && node->edges[idx]->owner == edge->owner)
-			return TRUE;
-	return FALSE;
-}
-
-/* Return a list of tail edges that are in the same group as this one
- */
-static GList *find_tail_edges(Edge *edge)
-{
-	GList *tails = NULL;
-	gint idx;
-	gint num_exits;
-
-	edge->visited = 1;
-
-	/* Count the number of exits from this edge
-	 */
-	num_exits = 0;
-	for (idx = 0; idx < numElem(edge->nodes); idx++) {
-		Node *node = edge->nodes[idx];
-		if (node->type != BUILD_NONE && node->owner != edge->owner)
-			continue;
-		if (node_has_other_edges(node, edge))
-			num_exits++;
-	}
-	if (num_exits < 2)
-		/* This edge is either a singleton, or a tail.
-		 */
-		tails = g_list_prepend(NULL, edge);
-
-	/* Now traverse to all edges that are accessible from this one
-	 * and collect their tail lists.
-	 */
-	for (idx = 0; idx < numElem(edge->nodes); idx++) {
-		Node *node = edge->nodes[idx];
-		if (node->visited)
-			continue;
-		tails = g_list_concat(tails,
-				      node_find_tail_edges(node, edge->owner));
-	}
-
-	return tails;
+static BuildType bridge_as_road(BuildType type) {
+	if (type == BUILD_BRIDGE)
+		return BUILD_ROAD;
+	else
+		return type;
 }
 
 /* calculate the longest road */
@@ -915,18 +779,18 @@ static gint find_longest_road_recursive (Edge *edge)
 {
 	gint len = 0;
 	gint nodeidx, edgeidx;
-	edge->visited = 1;
+	edge->visited = TRUE;
 	/* check all nodes to see which one make the longer road. */
 	for (nodeidx = 0; nodeidx < numElem(edge->nodes); nodeidx++) {
 		Node *node = edge->nodes[nodeidx];
 		/* don't go back to where we came from */
 		if (node->visited) continue;
-		/* don't let other go back here */
-		node->visited = TRUE;
 		/* don't continue counting if someone else's building is on
 		 * the node. */
 		if (node->type != BUILD_NONE && node->owner != edge->owner)
 			continue;
+		/* don't let other go back here */
+		node->visited = TRUE;
 		/* try all edges */
 		for (edgeidx = 0; edgeidx < numElem(node->edges); edgeidx++) {
 			Edge *here = node->edges[edgeidx];
@@ -934,8 +798,9 @@ static gint find_longest_road_recursive (Edge *edge)
 				&& here->owner == edge->owner) {
 				/* don't allow ships to extend roads, except
 				 * if there is a construction in between */
+				/* bridges are treated as roads */
 				if (node->type != BUILD_NONE ||
-					here->type == edge->type) {
+					bridge_as_road(here->type) == bridge_as_road(edge->type)) {
 					gint thislen = find_longest_road_recursive (here);
 					/* take the maximum of all paths */
 					if (thislen > len) len = thislen;
@@ -945,7 +810,7 @@ static gint find_longest_road_recursive (Edge *edge)
 		/* Allow other roads to use this node again. */
 		node->visited = FALSE;
 	}
-	edge->visited = 0;
+	edge->visited = FALSE;
 	return len + 1;
 }
 
@@ -973,18 +838,18 @@ static gboolean zero_visited(UNUSED(Map *map), Hex *hex, UNUSED(void *closure))
 
 	for (idx = 0; idx < numElem(hex->edges); idx++) {
 		Edge *edge = hex->edges[idx];
-		edge->visited = 0;
+		edge->visited = FALSE;
 	}
 	for (idx = 0; idx < numElem(hex->nodes); idx++) {
 		Node *node = hex->nodes[idx];
-		node->visited = 0;
+		node->visited = FALSE;
 	}
 
 	return FALSE;
 }
 
 /* Finding the longest road:
- * 1 - set the visited attribute of all edges and nodes to 0
+ * 1 - set the visited attribute of all edges and nodes to FALSE
  * 2 - for every edge, find the longest road using this one as a tail
  */
 void map_longest_road(Map *map, gint *lengths, gint num_players)
