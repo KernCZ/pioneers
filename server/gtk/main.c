@@ -13,6 +13,7 @@
 #include <limits.h>
 #include <ctype.h>
 #include <gnome.h>
+#include <locale.h>
 
 #include "driver.h"
 #include "game.h"
