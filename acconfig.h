@@ -4,3 +4,6 @@
 /* Protocol version used by the program */
 #undef PROTOCOL_VERSION
 
+/* Protocol version used by the meta server */
+#undef META_PROTOCOL_VERSION
+
