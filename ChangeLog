@@ -1,4 +1,12 @@
 2000-05-17  Bibek Sahu <scorpio@dodds.net>
+	* server/gnocatan-server-console.c: removed game_list_item_t
+	structure.  The params structure stores a title, so just use that
+	instead.  Original filename is not all that relevant; if it becomes
+	relevant, we can add it to GameParams later.  Also added a function
+	to lookup parameters by title.  Changed hash table to store/lookup
+	by string, rather than pointer address.
+
+2000-05-17  Bibek Sahu <scorpio@dodds.net>
 
 	* server/gnocatan-server-console.c: filled in global variables, and 
 	added a function to stuff all the game types in a hash.  This will

@@ -26,28 +26,31 @@
 #define TERRAIN_DEFAULT	0
 #define TERRAIN_RANDOM	1
 
-struct game_list_item {
-	gchar *name;
-	GameParams *params;
-};
-typedef struct game_list_item game_list_item_t;
+static GHashTable *_game_list = NULL;
 
-static GHashTable *game_list = NULL;
-
-static GameParams *params;
-static gboolean register_server;
+static GameParams *params = NULL;
+static gboolean register_server = FALSE;
 static gint server_port = 5556;
 
-static gchar *gnocatan_dir;
+static gchar *gnocatan_dir = NULL;
 
-void game_list_add_item( game_list_item_t *item )
+void game_list_add_item( GameParams *item )
 {
 	if( !game_list ) {
-		game_list = g_hash_table_new( NULL, NULL );
+		_game_list = g_hash_table_new( g_str_hash, g_str_equal );
 		params = item->params;
 	}
 	
 	g_hash_table_insert( game_list, item->name, item );
+}
+
+GameParams *game_list_find_item( gchar *title )
+{
+	if( !_game_list ) {
+		return NULL;
+	}
+	
+	return g_hash_table_lookup( _game_list, title );
 }
 
 void cfg_set_num_players( gint num_players )
@@ -135,11 +138,7 @@ static void load_game_types()
 		g_snprintf(fname, fnamelen, "%s/%s", path, ent->d_name);
 		params = load_game_desc(fname);
 
-		item = g_malloc( sizeof(game_list_item_t) );
-		item->name = ent->d_name;
-		item->params = params;
-
-		game_list_add_item( item );
+		game_list_add_item( params );
 	}
 
 	closedir(dir);
