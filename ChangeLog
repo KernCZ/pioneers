@@ -5,6 +5,9 @@
 	Moved declaration of init_themes to theme.h
 	* server/player.c: Version check to only two digits. Added message
 	when version does not match.
+	* client/common/client.c, common/game.c, common/game.h, common/map.c,
+	common/map.h, server/pregame.c: Small protocol change, to avoid
+	sending unused data. Added option to send secrets of the map.
 
 2005-03-23  Bas Wijnen <shevek@fmf.nl>
 	* client/common/client.c, server/gold.c, server/pregame.c: Fixed race

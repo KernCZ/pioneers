@@ -168,7 +168,8 @@ void map_move_pirate(Map * map, gint x, gint y);
 
 Map *map_new(void);
 Map *map_copy(Map * map);
-void map_format_line(Map * map, gchar * line, gint y);
+void map_format_line(Map * map, gboolean write_secrets, gchar * line,
+		     gint y);
 void map_parse_line(Map * map, char *line);
 void map_parse_finish(Map * map);
 void map_set_chits(Map * map, GArray * chits);

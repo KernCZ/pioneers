@@ -201,8 +201,8 @@ static gboolean find_no_setup(UNUSED(Map * map), Hex * hex,
 	return FALSE;
 }
 
-void params_write_lines(GameParams * params, WriteLineFunc func,
-			gpointer user_data)
+void params_write_lines(GameParams * params, gboolean write_secrerts,
+			WriteLineFunc func, gpointer user_data)
 {
 	gint idx;
 	gint y;
@@ -261,7 +261,7 @@ void params_write_lines(GameParams * params, WriteLineFunc func,
 	}
 	func(user_data, "map");
 	for (y = 0; y < params->map->y_size; y++) {
-		map_format_line(params->map, buff, y);
+		map_format_line(params->map, write_secrets, buff, y);
 		func(user_data, buff);
 	}
 	func(user_data, ".");
@@ -471,7 +471,7 @@ gboolean params_write_file(GameParams * params, const gchar * fname)
 		g_warning("could not open '%s'", fname);
 		return FALSE;
 	}
-	params_write_lines(params, write_one_line, fp);
+	params_write_lines(params, TRUE, write_one_line, fp);
 
 	fclose(fp);
 

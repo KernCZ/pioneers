@@ -541,7 +541,8 @@ Map *map_copy(Map * map)
 /* Maps are sent from the server to the client a line at a time.  This
  * routine formats a line of a map for just that purpose.
  */
-void map_format_line(Map * map, gchar * line, gint y)
+void map_format_line(Map * map, gboolean write_secrets, gchar * line,
+		     gint y)
 {
 	gint x;
 
@@ -616,15 +617,10 @@ void map_format_line(Map * map, gchar * line, gint y)
 			sprintf(line, "%d", hex->chit_pos);
 			line += strlen(line);
 		}
-		/*
-		 * Needed only if, for some reason, maps can be uploaded
-		 * to the server by clients
-		 * @todo Enable this when protocol changes beyond 0.8.1
-		 if (hex->shuffle == FALSE) {
-		 *line++ = '+';
-		 }
-		 */
-	}
+		if (write_secrets && !hex->shuffle) {
+			*line++ = '+';
+		}
+	*/}
 	*line = '\0';
 }
 

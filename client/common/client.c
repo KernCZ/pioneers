@@ -886,7 +886,6 @@ static gboolean mode_load_gameinfo(StateMachine * sm, gint event)
 	DevelType devcard;
 	gint devcardturnbought;
 	BuildType btype;
-	BuildType prevbtype; /** @todo RC 2004-03-28 Protocol needs change for 0.9 This field should not be sent */
 	gint resources[NO_RESOURCE];
 	gint tmp_bank[NO_RESOURCE];
 
@@ -1062,10 +1061,7 @@ static gboolean mode_load_gameinfo(StateMachine * sm, gint event)
 		}
 		return TRUE;
 	}
-	if (sm_recv
-	    (sm, "buildinfo: %B %d %d %d %d", &btype, &prevbtype, &x, &y,
-	     &pos)) {
-							 /** @todo RC 2004-03-28 Protocol needs change for 0.9: prevbtype should not be sent */
+	if (sm_recv(sm, "buildinfo: %B %d %d %d", &btype, &x, &y, &pos)) {
 		BuildRec *rec;
 		rec = g_malloc0(sizeof(*rec));
 		rec->type = btype;

@@ -472,7 +472,7 @@ gboolean mode_pre_game(Player * player, gint event)
 			return TRUE;
 		}
 		if (sm_recv(sm, "game")) {
-			params_write_lines(game->params,
+			params_write_lines(game->params, FALSE,
 					   (WriteLineFunc) send_game_line,
 					   player);
 			return TRUE;
@@ -623,8 +623,8 @@ gboolean mode_pre_game(Player * player, gint event)
 			for (next = player->build_list;
 			     next != NULL; next = g_list_next(next)) {
 				BuildRec *build = (BuildRec *) next->data;
-				sm_send(sm, "buildinfo: %B %d %d %d %d\n",
-					build->type, BUILD_NONE, build->x,
+				sm_send(sm, "buildinfo: %B %d %d %d\n",
+					build->type, build->x,
 					build->y, build->pos);
 												  /** @todo RC 2004-03-28 Remove BUILD_NONE for 0.9 */
 			}
