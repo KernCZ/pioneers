@@ -431,7 +431,7 @@ gboolean can_move_ship (const Edge *from, const Edge *to)
 	owner = from->owner;
 	if (!can_ship_be_moved (from, owner) )
 		return FALSE;
-	ship_sailed_from_here = from; /* Copy to non-const pointer */
+	ship_sailed_from_here = map_edge(map, from->x, from->y, from->pos); /* Copy to non-const pointer */
 	ship_sailed_from_here->owner = -1;
 	ship_sailed_from_here->type = BUILD_NONE;
 	retval = can_ship_be_built (to, owner);

@@ -401,7 +401,7 @@ static gboolean can_setup_settlement_2(GList *list, Map *map, const Node *node)
 		 */
 		gboolean is_ok = FALSE;
 
-		try_build_here = node; /* Copy to non-const pointer */
+		try_build_here = map_node(map, node->x, node->y, node->pos); /* Copy to non-const pointer */
 		try_build_here->type = BUILD_SETTLEMENT;
 		try_build_here->owner = edge->owner;
 		if (is_edge_adjacent_to_node(edge, node)) {
