@@ -61,7 +61,32 @@ static void build_add(Player *player, BuildType type, gint x, gint y, gint pos)
 			sm_send(sm, "ERR too-many\n");
 			return;
 		}
-		road_add(player, x, y, pos, TRUE);
+		edge_add(player, BUILD_ROAD, x, y, pos, TRUE);
+		return;
+	}
+
+	if (type == BUILD_BRIDGE) {
+		/* Building a bridge, make sure it is next to a
+		 * settlement/city/road
+		 */
+		if (!map_road_vacant(map, x, y, pos)
+		    || !map_bridge_connect_ok(map, player->num, x, y, pos)) {
+			sm_send(sm, "ERR bad-pos\n");
+			return;
+		}
+		/* Make sure the player can afford the bridge
+		 */
+		if (!cost_can_afford(cost_bridge(), player->assets)) {
+			sm_send(sm, "ERR too-expensive\n");
+			return;
+		}
+		/* Make sure that there are some roads left to use!
+		 */
+		if (player->num_bridges == game->params->num_build_type[BUILD_BRIDGE]) {
+			sm_send(sm, "ERR too-many\n");
+			return;
+		}
+		edge_add(player, BUILD_BRIDGE, x, y, pos, TRUE);
 		return;
 	}
 
@@ -86,7 +111,7 @@ static void build_add(Player *player, BuildType type, gint x, gint y, gint pos)
 			sm_send(sm, "ERR too-many\n");
 			return;
 		}
-		ship_add(player, x, y, pos, TRUE);
+		edge_add(player, BUILD_SHIP, x, y, pos, TRUE);
 		return;
 	}
 
