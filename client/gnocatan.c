@@ -16,6 +16,7 @@
 #include "gui.h"
 #include "client.h"
 #include "common_gtk.h"
+#include "config-gnome.h"
 
 int main(int argc, char *argv[])
 {

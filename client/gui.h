@@ -33,6 +33,7 @@ typedef enum {
 GtkWidget *gnome_dialog_get_button(GnomeDialog *dlg, gint button);
 
 void gui_set_instructions(gchar *fmt, ...);
+void gui_set_vp_target_value( gint vp );
 void gui_set_net_status(gchar *text);
 
 void gui_show_trade_page(gboolean show);

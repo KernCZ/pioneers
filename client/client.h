@@ -214,6 +214,7 @@ gint *trade_we_supply(void);
 gint *trade_we_receive(void);
 QuoteInfo *trade_current_quote(void);
 void trade_format_quote(QuoteInfo *quote, gchar *desc);
+void trade_format_maritime(QuoteInfo *quote, gchar *desc);
 void trade_add_quote(gint player_num,
 		     gint quote_num, gint *supply, gint *receive);
 void trade_delete_quote(gint player_num, gint quote_num);
