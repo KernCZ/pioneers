@@ -72,6 +72,8 @@ int main( int argc, char *argv[] )
 	driver->player_renamed = srv_glib_player_renamed;
 	driver->player_removed = srv_player_removed;
 
+	driver->player_change = srv_player_change;
+
 	server_init( GNOCATAN_DIR_DEFAULT );
 
 	while ((c = getopt(argc, argv, "a:c:g:hk:m:n:P:p:rR:st:T:v:x")) != EOF)

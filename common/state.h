@@ -203,7 +203,7 @@ gboolean sm_connect(StateMachine *sm, const gchar *host, const gchar *port);
 void sm_use_fd(StateMachine *sm, gint fd);
 void sm_changed_cb(StateMachine *sm);
 void sm_event_cb(StateMachine *sm, gint event);
-void dec_use_count(StateMachine *sm);
-void inc_use_count(StateMachine *sm);
+void sm_dec_use_count(StateMachine *sm);
+void sm_inc_use_count(StateMachine *sm);
 
 #endif

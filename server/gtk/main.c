@@ -52,7 +52,7 @@ static GtkWidget *radio_sevens_reroll; /* radio button for reroll all 7s */
 
 static GtkWidget *start_btn;       /* start the server */
 
-static GtkWidget *clist;           /* currently connected players */
+static GtkListStore *store;        /* shows player connection status */
 
 static GList *title_list = NULL;   /* all game titles, for game_combo */
 static gboolean ui_enabled = FALSE; /* is the ui accessible? */
@@ -60,6 +60,14 @@ static gboolean ui_enabled = FALSE; /* is the ui accessible? */
 /* Local function prototypes */
 static void add_game_to_combo( gpointer name, gpointer default_name);
 
+enum {
+	PLAYER_COLUMN_CONNECTED,
+	PLAYER_COLUMN_NAME,
+	PLAYER_COLUMN_LOCATION,
+	PLAYER_COLUMN_NUMBER,
+	PLAYER_COLUMN_ISVIEWER,
+	PLAYER_COLUMN_LAST
+};
 
 static void quit_cb(GtkWidget *widget, void *data)
 {
@@ -261,39 +269,47 @@ static void addcomputer_clicked_cb(GtkWidget *start_btn, gpointer user_data)
 }
 
 
-void gui_player_add(void *player)
+void gui_player_add(void *data_in)
 {
-	gint row;
-	gchar *data[2];
-
-	if ((row = gtk_clist_find_row_from_data(GTK_CLIST(clist), player)) >= 0)
-		return;
-
-	data[0] = player_name((Player *)player);
-	data[1] = ((Player *)player)->location;
-
-	row = gtk_clist_append(GTK_CLIST(clist), data);
-	gtk_clist_set_row_data(GTK_CLIST(clist), row, player);
-	log_message( MSG_INFO, _("Player %s from %s entered\n"), player_name((Player*)player), ((Player*)player)->location);
+	Player *player = data_in;
+	log_message( MSG_INFO, _("Player %s from %s entered\n"), player->name, player->location);
 }
 
-void gui_player_remove(void *player)
+void gui_player_remove(void *data)
 {
-	gint row;
-
-	if ((row = gtk_clist_find_row_from_data(GTK_CLIST(clist), player)) < 0)
-		return;
-	gtk_clist_remove(GTK_CLIST(clist), row);
-	log_message( MSG_INFO, _("Player %s from %s left\n"), player_name((Player*)player), ((Player*)player)->location);
+	Player *player = data;
+	log_message( MSG_INFO, _("Player %s from %s left\n"), player->name, player->location);
 }
 
-void gui_player_rename(void *player)
+void gui_player_rename(void *data)
 {
-	gint row;
+	Player *player = data;
+	log_message( MSG_INFO, _("Player %d is now %s\n"), player->num, player->name);
+}
 
-	if ((row = gtk_clist_find_row_from_data(GTK_CLIST(clist), player)) < 0)
-		return;
-	gtk_clist_set_text(GTK_CLIST(clist), row, 0, player_name((Player *)player));
+void gui_player_change(void *data)
+{
+	Game *game = data;
+	GList *current; 
+
+	gtk_list_store_clear(store);
+	playerlist_inc_use_count(game);
+	for (current = game->player_list; current != NULL; current = g_list_next(current)) {
+	          GtkTreeIter iter;
+		Player *p = current->data;
+		gboolean isViewer;
+
+		isViewer = p->num >= p->game->params->num_players;
+		gtk_list_store_append(store, &iter);
+		gtk_list_store_set( store, &iter,
+			PLAYER_COLUMN_NAME, p->name,
+			PLAYER_COLUMN_LOCATION, p->location,
+			PLAYER_COLUMN_NUMBER, p->num,
+			PLAYER_COLUMN_CONNECTED, !p->disconnected,
+			PLAYER_COLUMN_ISVIEWER, isViewer,
+		-1);
+	}
+	playerlist_dec_use_count(game);
 }
 
 static void add_game_to_combo( gpointer name, gpointer default_name)
@@ -350,6 +366,9 @@ static GtkWidget *build_game_settings(GtkWidget *parent)
 	GtkWidget *label;
 	GtkObject *adj;
 	GtkWidget *vbox_sevens;
+	gboolean default_returned;
+	gchar *gamename;
+	gint temp;
 
 	frame = gtk_frame_new(_("Game Parameters"));
 	gtk_widget_show(frame);
@@ -464,14 +483,11 @@ static GtkWidget *build_game_settings(GtkWidget *parent)
 			   GTK_SIGNAL_FUNC(sevens_rule_changed_cb), NULL);
 
 	/* Fill the GUI with the saved settings */
-	gboolean default_returned;
-	gchar *gamename;
 	gamename  = config_get_string("game/name=Default", &default_returned);
 	game_list_foreach( add_game_to_combo, gamename );
 	gtk_combo_set_popdown_strings(GTK_COMBO(game_combo), title_list);
 
 	/* First the game has to be set, then the other parameters can be changed */
-	gint temp;
 
 	/* If a settings is not found, don't override the settings that came with the game */
 	temp = config_get_int("game/random-terrain", &default_returned);
@@ -487,6 +503,24 @@ static GtkWidget *build_game_settings(GtkWidget *parent)
 	return frame;
 }
 
+void
+my_cell_player_viewer_to_text (GtkTreeViewColumn *tree_column,
+	                GtkCellRenderer   *cell,
+                        GtkTreeModel      *tree_model,
+	                GtkTreeIter       *iter,
+                        gpointer           data)
+{
+  gboolean b;
+
+  /* Get the value from the model. */
+  gtk_tree_model_get (tree_model, iter, (gint)data, &b, -1);
+  /* Now we can format the value ourselves. */
+  g_object_set (cell, "text", b ? _("Viewer") : _("Player"), NULL);
+}
+
+
+
+
 static GtkWidget *build_interface()
 {
 	GtkWidget *vbox;
@@ -500,13 +534,9 @@ static GtkWidget *build_interface()
 	GtkWidget *message_text;
           gint novar;
 
-	static gchar *titles[2];
-
-	if (!titles[0]) {
-		titles[0] = _("Name");
-		titles[1] = _("Location");
-	}
-
+	GtkCellRenderer *renderer;
+	GtkTreeViewColumn *column;
+          
 	vbox = gtk_vbox_new(FALSE, 0);
 	gtk_widget_show(vbox);
 	gtk_container_border_width(GTK_CONTAINER(vbox), 5);
@@ -634,24 +664,48 @@ static GtkWidget *build_interface()
 	frame = gtk_frame_new(_("Players Connected"));
 	gtk_widget_show(frame);
 	gtk_box_pack_start(GTK_BOX(hbox), frame, TRUE, TRUE, 0);
-	gtk_widget_set_usize(frame, 250, -1);
 
 	scroll_win = gtk_scrolled_window_new(NULL, NULL);
 	gtk_widget_show(scroll_win);
 	gtk_container_add(GTK_CONTAINER(frame), scroll_win);
 	gtk_container_border_width(GTK_CONTAINER(scroll_win), 3);
-	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scroll_win),
-				       GTK_POLICY_AUTOMATIC,
-				       GTK_POLICY_AUTOMATIC);
+	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scroll_win), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
 
-	clist = gtk_clist_new_with_titles(2, titles);
-	gtk_widget_show(clist);
-	gtk_container_add(GTK_CONTAINER(scroll_win), clist);
-	gtk_clist_set_column_width(GTK_CLIST(clist), 0, 80);
-	gtk_clist_set_column_width(GTK_CLIST(clist), 1, 80);
-	gtk_clist_column_titles_show(GTK_CLIST(clist));
-	gtk_clist_column_titles_passive(GTK_CLIST(clist));
+	/* Create model */
+	store = gtk_list_store_new(PLAYER_COLUMN_LAST,
+		G_TYPE_BOOLEAN,
+		G_TYPE_STRING,
+		G_TYPE_STRING,
+		G_TYPE_INT,
+		G_TYPE_BOOLEAN);
 
+	/* Create graphical representation of the model */
+	label = gtk_tree_view_new_with_model(GTK_TREE_MODEL(store));
+	/* The theme should decide if hints are used */
+	/* gtk_tree_view_set_rules_hint(GTK_TREE_VIEW(label), TRUE); */
+	gtk_container_add(GTK_CONTAINER(scroll_win), label);
+
+	/* Now create columns */
+	column = gtk_tree_view_column_new_with_attributes( _("Connected"), gtk_cell_renderer_toggle_new(), "active", PLAYER_COLUMN_CONNECTED,  NULL);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(label), column);
+	column = gtk_tree_view_column_new_with_attributes( _("Name"), gtk_cell_renderer_text_new(), "text", PLAYER_COLUMN_NAME, NULL);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(label), column);
+	column = gtk_tree_view_column_new_with_attributes( _("Location"), gtk_cell_renderer_text_new(), "text", PLAYER_COLUMN_LOCATION, NULL);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(label), column);
+
+	renderer = gtk_cell_renderer_text_new();
+	column = gtk_tree_view_column_new_with_attributes( _("Number"), renderer, "text", PLAYER_COLUMN_NUMBER, NULL);
+	g_object_set(renderer, "xalign", 1.0f, NULL);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(label), column);
+
+	renderer = gtk_cell_renderer_text_new();
+	column = gtk_tree_view_column_new_with_attributes( _("Role"), renderer, NULL);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(label), column);
+
+	gtk_tree_view_column_set_cell_data_func (column, renderer, my_cell_player_viewer_to_text, (gpointer)PLAYER_COLUMN_ISVIEWER, NULL);
+
+	gtk_widget_show(label);
+	
 	frame = gtk_frame_new(_("Messages"));
 	gtk_widget_show(frame);
 	gtk_box_pack_start(GTK_BOX(vbox), frame, TRUE, TRUE, 0);
@@ -684,6 +738,7 @@ int main(int argc, char *argv[])
 	driver->player_added = gui_player_add;
 	driver->player_renamed = gui_player_rename;
 	driver->player_removed = gui_player_remove;
+	driver->player_change = gui_player_change;
 
 #ifdef ENABLE_NLS
 	/* FIXME: do I need to initialize i18n for Gnome2? */

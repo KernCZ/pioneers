@@ -31,6 +31,8 @@ typedef struct {
 	void (*player_added)(void *player);		/* these really should be ...*/
 	void (*player_renamed)(void *player);	/* ... `Player *player', but */
 	void (*player_removed)(void *player);	/* that requires more headers */
+
+	void (*player_change)(void *game);	/* Should be Game *game */
 	
 } UIDriver;
 

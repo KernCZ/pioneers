@@ -1,3 +1,24 @@
+2003-12-02  Roland Clobus <rclobus@bigfoot.com>
+	* seafarers.game, seafarers-gold.game: removed unknown keyword.
+	* Cube.game, Another_swimming_in_the_wall.game, Evil_square.game,
+
+2003-12-06  Roland Clobus <rclobus@bigfoot.com>
+	* client/client.c, client/player.c, common/common-gtk.c,
+	* common/driver.h, common/game.c, common/state.c, common/state.h,
+	* server/buildutil.c, server/glib-driver.c, server/glib-driver.h,
+	* server/gnocatan-server-console.c, server/gnocatan-server-gtk.c,
+	* server/gold.c, server/player.c, server/pregame.c, server/server.c,
+	* server/server.h, server/turn.c: Fixed reconnect (excluding gold),
+	client does not crash when added lots of viewers, some variable
+	declarations moved for gcc-2.95 compatibility, replace the clist
+	widget in server-gtk, removed calls to player_name, fixed server
+	crash when reconnecting, server now keeps the current player by
+	number, not by name.
+
+2003-12-02  Roland Clobus <rclobus@bigfoot.com>
+	* seafarers.game, seafarers-gold.game: removed unknown keyword.
+	* Cube.game, Another_swimming_in_the_wall.game, Evil_square.game,
+
 2003-12-11  Bas Wijnen <b.wijnen@phys.rug.nl>
 
 	* server/trade.c: Fixed bug #848386, state stack overflow.  Allow

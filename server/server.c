@@ -151,6 +151,7 @@ Game *game_new(GameParams *params)
 	game->is_game_over = FALSE;
 	game->params = params_copy(params);
 	game->orig_params = params;
+	game->curr_player = -1;
 
 	for (idx = 0; idx < numElem(game->bank_deck); idx++)
 		game->bank_deck[idx] = game->params->resource_count;
@@ -168,13 +169,12 @@ void game_free(Game *game)
 	if (game->accept_fd >= 0)
 		close(game->accept_fd);
 
+	g_assert(game->player_list_use_count==0);
 	while (game->player_list != NULL) {
 		Player *player = game->player_list->data;
 		player_remove(player);
-		game->player_list = g_list_remove (game->player_list, player);
 		player_free(player);
 	}
-
 	g_free(game);
 }
 
@@ -230,10 +230,20 @@ gint new_computer_player(gchar *server, gchar *port)
     } else if (pid == 0) {
 	/* child */
 	int i;
+
+	/* Show AI logs on the console */
 	for(i = 3; i < 256; ++i) close(i);
 	close(0);
 	open("/dev/null", O_RDONLY);
 
+	/* Don't show any AI logs */
+	/*
+	for( i = 0; i < 255; ++i ) close(i);
+		open("/dev/null",O_RDONLY);
+		open("/dev/null",O_WRONLY);
+		open("/dev/null",O_RDWR);
+	*/
+		
 	/* start a second child to avoid zombies */
 	pid2 = fork();
 	if (pid2 < 0) {

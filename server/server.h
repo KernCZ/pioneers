@@ -59,7 +59,8 @@ struct Game {
 	int accept_tag;		/* Gdk event tag for accept socket */
 
 	GList *player_list;	/* all players in the game */
-	GList *dead_players;	/* players who have disconnected */
+	GList *dead_players;	/* all players that should be removed when player_list_use_count == 0 */
+	gint player_list_use_count;	/* # functions is in use by */
 	gint num_players;	/* current number of players in the game */
 
 	gboolean double_setup;
@@ -73,7 +74,7 @@ struct Game {
 
 	QuoteList *quotes;	/* domestic trade quotes */
 
-	gchar *curr_player;	/* whose turn is it? */
+	gint curr_player;	/* whose turn is it? */
 	gint curr_turn;		/* current turn number */
 	gboolean rolled_dice;	/* has dice been rolled in turn yet? */
 	gint die1, die2;	/* latest dice values */
@@ -126,7 +127,6 @@ typedef enum {
 Player *player_new(Game *game, int fd, gchar *location);
 void player_setup(Player *player, int playernum, gchar *name, gboolean
 		force_viewer);
-gchar *player_name(Player *player);
 Player *player_by_name(Game *game, char *name);
 Player *player_by_num(Game *game, gint num);
 void player_set_name(Player *player, gchar *name);
@@ -141,6 +141,8 @@ GList *player_next_real(GList *last);
 GList *list_from_player (Player *player);
 GList *next_player_loop (GList *current, Player *first);
 gboolean mode_viewer (Player *player, gint event);
+void playerlist_inc_use_count(Game *game);
+void playerlist_dec_use_count(Game *game);
 
 /* pregame.c */
 gboolean mode_pre_game(Player *player, gint event);
@@ -202,9 +204,11 @@ gboolean gui_is_terrain_random(void);
 void gui_player_add(void *player);
 void gui_player_remove(void *player);
 void gui_player_rename(void *player);
+void gui_player_change(void *game);
 void gui_ui_enable(gint sensitive);
 
 /* gold.c */
 void distribute_first (GList *list);
+gboolean mode_choose_gold(Player *player, gint event);
 
 #endif

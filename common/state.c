@@ -39,12 +39,12 @@ static guint hash_int(gconstpointer key)
 	return hash_val;
 }
 
-void inc_use_count(StateMachine *sm)
+void sm_inc_use_count(StateMachine *sm)
 {
 	sm->use_count++;
 }
 
-void dec_use_count(StateMachine *sm)
+void sm_dec_use_count(StateMachine *sm)
 {
 	if (!--sm->use_count && sm->is_dead)
 		sm_free(sm);
@@ -135,7 +135,7 @@ void sm_cancel_prefix(StateMachine *sm)
 
 static void net_event(NetEvent event, StateMachine *sm, gchar *line)
 {
-	inc_use_count(sm);
+	sm_inc_use_count(sm);
 
 	switch (event) {
 	case NET_CONNECT:
@@ -155,14 +155,14 @@ static void net_event(NetEvent event, StateMachine *sm, gchar *line)
 		if (sm->stack_ptr != -1)
 		route_event(sm, SM_RECV);
 		else {
-			dec_use_count (sm);
+			sm_dec_use_count (sm);
 			return;
 		}
 		break;
 	}
 	route_event(sm, SM_INIT);
 
-	dec_use_count(sm);
+	sm_dec_use_count(sm);
 }
 
 gboolean sm_connect(StateMachine *sm, const gchar *host, const gchar *port)
@@ -441,6 +441,8 @@ void sm_send(StateMachine *sm, gchar *fmt, ...)
 	va_list ap;
 	gchar buff[512];
 
+	if (!sm->ses) return;
+
 	va_start(ap, fmt);
 	sm_vnformat(buff, sizeof(buff), fmt, ap);
 	va_end(ap);
@@ -460,21 +462,21 @@ void sm_unhandled_set(StateMachine *sm, StateFunc state)
 
 void sm_changed_cb(StateMachine *sm)
 {
-	inc_use_count(sm);
+	sm_inc_use_count(sm);
 
 	route_event(sm, SM_INIT);
 
-	dec_use_count(sm);
+	sm_dec_use_count(sm);
 }
 
 void sm_event_cb(StateMachine *sm, gint event)
 {
-	inc_use_count(sm);
+	sm_inc_use_count(sm);
 
 	route_event(sm, event);
 	route_event(sm, SM_INIT);
 
-	dec_use_count(sm);
+	sm_dec_use_count(sm);
 }
 
 static void push_new_state(StateMachine *sm)
@@ -486,7 +488,7 @@ static void push_new_state(StateMachine *sm)
 
 void sm_goto(StateMachine *sm, StateFunc new_state)
 {
-	inc_use_count(sm);
+	sm_inc_use_count(sm);
 
 	if (sm->stack_ptr < 0) {
 		/* Wait until the application window is fully
@@ -501,12 +503,12 @@ void sm_goto(StateMachine *sm, StateFunc new_state)
 	route_event(sm, SM_ENTER);
 	route_event(sm, SM_INIT);
 
-	dec_use_count(sm);
+	sm_dec_use_count(sm);
 }
 
 void sm_push(StateMachine *sm, StateFunc new_state)
 {
-	inc_use_count(sm);
+	sm_inc_use_count(sm);
 
 	push_new_state(sm);
 	sm->stack[sm->stack_ptr] = new_state;
@@ -515,13 +517,12 @@ void sm_push(StateMachine *sm, StateFunc new_state)
 	log_message( MSG_INFO, "sm_push -> %d:%s\n", sm->stack_ptr, sm->current_state);
 #endif
 	route_event(sm, SM_INIT);
-
-	dec_use_count(sm);
+	sm_dec_use_count(sm);
 }
 
 void sm_pop(StateMachine *sm)
 {
-	inc_use_count(sm);
+	sm_inc_use_count(sm);
 
 	g_assert(sm->stack_ptr >= 0);
 	sm->stack_ptr--;
@@ -530,8 +531,7 @@ void sm_pop(StateMachine *sm)
 	log_message( MSG_INFO, "sm_pop  -> %d:%s\n", sm->stack_ptr, sm->current_state);
 #endif
 	route_event(sm, SM_INIT);
-
-	dec_use_count(sm);
+	sm_dec_use_count(sm);
 }
 
 void sm_pop_all(StateMachine *sm)

@@ -190,7 +190,7 @@ static gint calc_statistic_row(gint player_num, StatisticType type)
 		if (row >= 0)
 			return row + 1;
 	}
-	if (player->points == NULL)
+	if ((player_num >= MAX_PLAYERS) || (player->points == NULL))
 		return gtk_clist_find_row_from_data(GTK_CLIST(summary_clist),
 				player) + 1;
 	return gtk_clist_find_row_from_data (GTK_CLIST (summary_clist),
@@ -243,10 +243,12 @@ static gint player_insert_summary_row_before (gint row, gchar *name,
 		gchar *points, void *data, GdkColor *colour, gboolean new)
 {
 	gchar *row_data[3];
+	GtkStyle *current_style;
+	
 	row_data[0] = "";
 	row_data[1] = name;
 	row_data[2] = points;
-	GtkStyle *current_style = gtk_style_new();
+	current_style = gtk_style_new();
 	current_style->fg[0] = *colour;
 	current_style->bg[0] = player_bg;
 	if (new) {

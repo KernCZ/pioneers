@@ -469,6 +469,11 @@ gboolean mode_pre_game(Player *player, gint event)
 		 * know how many players are in the game, and therefore if
 		 * he is a player of a viewer. */
 		player_broadcast(player, PB_ALL, "is %s\n", player->name);
+		if (player->disconnected) {
+			/* Disconnected players don't receive broadcasts.
+			 * Thus a reconnecting player doesn't receive his own name */
+			sm_send(sm, "player %d is %s\n", player->num, player->name);
+		}
 		break;
 
 	case SM_RECV:
@@ -487,10 +492,10 @@ gboolean mode_pre_game(Player *player, gint event)
 
 			/* now, send state info */
 			sm_send(sm, "turn num %d\n", game->curr_turn);
-			if (game->curr_player)
+			if (game->curr_player >=0)
 			{
 				Player *playerturn
-				 = player_by_name(game, game->curr_player);
+				 = player_by_num(game, game->curr_player);
 				sm_send(sm, "player turn: %d\n",
 				        playerturn->num);
 			}
@@ -549,6 +554,8 @@ gboolean mode_pre_game(Player *player, gint event)
 				strcpy(prevstate, "MONOPOLY");
 			else if (state == (StateFunc)mode_plenty_resources)
 				sprintf(prevstate, "PLENTY");
+			else if (state == (StateFunc)mode_choose_gold)
+				sprintf(prevstate, "GOLD");
 			else if (state == (StateFunc)mode_setup) {
 				/* reconstruct the setup_player list */
 				/* search for the player whose setup it
@@ -570,7 +577,12 @@ gboolean mode_pre_game(Player *player, gint event)
 			}
 			else
 				strcpy(prevstate, "PREGAME");
-			if (state == (StateFunc)mode_plenty_resources) {
+
+			/* Special processing of extra arguments */
+			if (state == (StateFunc)mode_choose_gold) {
+				sm_send(sm, "state GOLD %d %R\n", player->gold, game->bank_deck);
+			}
+			else if (state == (StateFunc)mode_plenty_resources) {
 				sm_send(sm, "state PLENTY %R\n", game->bank_deck);
 			}
 			else
@@ -651,6 +663,7 @@ gboolean mode_pre_game(Player *player, gint event)
 			if (player->disconnected)
 			{
 				player->disconnected = FALSE;
+				driver->player_change(game);
 				sm_pop(sm);
 			}
 			else

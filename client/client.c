@@ -40,6 +40,7 @@ struct recovery_info_t {
 	gboolean bought_develop;
 	gint robber_player;
 	GList *build_list;
+	gint numgold;
 };
 
 static gboolean global_unhandled(StateMachine *sm, gint event);
@@ -741,7 +742,7 @@ static gboolean mode_load_gameinfo(StateMachine *sm, gint event)
 	gint x, y, pos, owner;
 	static struct recovery_info_t rinfo
          = { "", -1, -1, -1, { -1, -1, -1, -1, -1 }, FALSE,
-	     -1, -1, FALSE, FALSE, -1, NULL };
+	     -1, -1, FALSE, FALSE, -1, NULL, -1};
 	static gboolean disconnected = FALSE;
 	static gint devcardidx = -1;
 	static gint numdevcards = -1;
@@ -803,6 +804,10 @@ static gboolean mode_load_gameinfo(StateMachine *sm, gint event)
 	if (sm_recv(sm, "bought develop", &rinfo.bought_develop)) {
 		rinfo.bought_develop = TRUE;
 		return TRUE;
+	}
+	if (sm_recv(sm, "state GOLD %d %R", &rinfo.numgold, rinfo.plenty)) {
+		strcpy(rinfo.prevstate, "GOLD");
+	 	return TRUE;
 	}
 	if (sm_recv(sm, "state DISCARD %d", &rinfo.numdiscards)) {
 		return TRUE;
@@ -2684,9 +2689,17 @@ static gboolean mode_recovery_wait_start_response(StateMachine *sm, gint event)
 	return FALSE;
 }
 
+/*@@RC TODO: Only GOLD
+ * Restoring reconnect functionality
+ * Currently the client reconnects correctly, except for GOLD.
+ * ISROBBER is untested/untestable: it occurs only if it is this player's
+ *   turn, he has rolled the dice, and someone else is the robber.
+ */
 static void recover_from_disconnect(StateMachine *sm,
                                     struct recovery_info_t *rinfo)
 {
+	StateFunc modeturn;
+	
 	GList *next;
 	if (rinfo->rolled_dice) {
 		turn_begin(rinfo->playerturn, rinfo->turnnum);
@@ -2697,11 +2710,20 @@ static void recover_from_disconnect(StateMachine *sm,
 		gui_highlight_chits(rinfo->die1 + rinfo->die2);
 	}
 
+	if (rinfo->rolled_dice)
+		modeturn = mode_turn_rolled;
+	else
+		modeturn = mode_turn;
+	
 	if (rinfo->played_develop || rinfo->bought_develop) {
 		develop_reset_have_played_bought(rinfo->played_develop, rinfo->bought_develop);
 	}
 
-	if (strcmp(rinfo->prevstate, "IDLE") == 0)
+	if (strcmp(rinfo->prevstate, "PREGAME") == 0)
+	{
+		sm_goto(sm, mode_idle);
+	}
+	else if (strcmp(rinfo->prevstate, "IDLE") == 0)
 	{
 		sm_goto(sm, mode_idle);
 	}
@@ -2714,31 +2736,20 @@ static void recover_from_disconnect(StateMachine *sm,
 		else {
 			setup_begin_double(my_player_num());
 		}
-		sm_goto(sm, mode_setup);
+		sm_goto(sm, mode_idle);
+		sm_push(sm, mode_setup);
 	}
 	else if (strcmp(rinfo->prevstate, "TURN") == 0)
 	{
-		gboolean gotoidle = TRUE;
-		if (my_player_num() == rinfo->playerturn)
-		{
-			if (rinfo->rolled_dice) {
-				sm_goto(sm, mode_turn_rolled);
-			}
-			else {
-				sm_goto(sm, mode_turn);
-			}
-			gotoidle = FALSE;
-		}
-
-		if (gotoidle)
-		{
-			sm_goto(sm, mode_idle);
-		}
+		g_assert(my_player_num() == rinfo->playerturn);
+		sm_goto(sm, mode_idle);
+		sm_push(sm, modeturn);
 	}
 	else if (strcmp(rinfo->prevstate, "YOUAREROBBER") == 0)
 	{
 		if (discard_num_remaining() == 0) {
-			sm_goto(sm, mode_turn_rolled);
+			sm_goto(sm, mode_idle);
+			sm_push(sm, modeturn);
 			sm_push(sm, mode_wait_for_robber);
 			sm_goto(sm, mode_robber);
 		}
@@ -2747,10 +2758,6 @@ static void recover_from_disconnect(StateMachine *sm,
 		turn_begin(rinfo->playerturn, rinfo->turnnum);
 		turn_rolled_dice(rinfo->playerturn, rinfo->die1, rinfo->die2);
 	}
-	else if (strcmp(rinfo->prevstate, "IDLE") == 0)
-	{
-		sm_goto(sm, mode_idle);
-	}
 	else if (strcmp(rinfo->prevstate, "ISROBBER") == 0)
 	{
 		sm_goto(sm, mode_idle);
@@ -2758,49 +2765,42 @@ static void recover_from_disconnect(StateMachine *sm,
 	}
 	else if (strcmp(rinfo->prevstate, "MONOPOLY") == 0)
 	{
+		sm_goto(sm, mode_idle); 
 		monopoly_create_dlg();
-		if (rinfo->rolled_dice) {
-			sm_goto(sm, mode_turn_rolled);
-		}
-		else {
-			sm_goto(sm, mode_turn);
-		}
+		sm_push(sm, modeturn);
 		sm_push(sm, mode_monopoly);
 	}
 	else if (strcmp(rinfo->prevstate, "PLENTY") == 0)
 	{
+		sm_goto(sm, mode_idle);
 		plenty_create_dlg(rinfo->plenty);
-		if (rinfo->rolled_dice) {
-			sm_goto(sm, mode_turn_rolled);
-		}
-		else {
-			sm_goto(sm, mode_turn);
-		}
+		sm_push(sm, modeturn);
 		sm_push(sm, mode_year_of_plenty);
+	}
+	else if (strcmp(rinfo->prevstate, "GOLD") == 0)
+	{
+		sm_goto(sm, mode_idle);
+		sm_push(sm, modeturn);
+		gold_choose_player_must(rinfo->numgold, rinfo->plenty);
+		sm_push(sm, mode_choose_gold);
 	}
 	else if (strcmp(rinfo->prevstate, "ROADBUILDING") == 0)
 	{
+		sm_goto(sm, mode_idle);
 		/* note: don't call road_building_begin() because it
 		         will clear the build list */
-		if (rinfo->rolled_dice) {
-			sm_goto(sm, mode_turn_rolled);
-		}
-		else {
-			sm_goto(sm, mode_turn);
-		}
+		sm_push(sm, modeturn);
 		sm_push(sm, mode_road_building);
 	}
 
 	if (discard_num_remaining() > 0) {
+		sm_goto(sm, mode_idle);
 		if (my_player_num() == rinfo->playerturn) {
-			sm_goto(sm, mode_turn_rolled);
+			sm_push(sm, mode_turn_rolled);
 			sm_push(sm, mode_wait_for_robber);
 		}
-		else {
-			sm_goto(sm, mode_idle);
-		}
 		sm_push(sm, mode_discard);
-		gui_discard_show(); /* reshow the discard dialog */
+//@@RC Test		gui_discard_show(); /* reshow the discard dialog */
 	}
 
 	if (rinfo->build_list) {

@@ -478,10 +478,10 @@ void turn_next_player(Game *game)
 	GList *list = NULL;
 
 	/* the first time this is called there is no curr_player yet */
-	if (game->curr_player)
+	if (game->curr_player >=0)
 	{
-		player = player_by_name(game, game->curr_player);
-		game->curr_player = NULL;
+		player = player_by_num(game, game->curr_player);
+		game->curr_player = -1;
 		g_assert (player != NULL);
 		list = list_from_player (player);
 	}
@@ -501,7 +501,7 @@ void turn_next_player(Game *game)
 	} while (player->disconnected);
 
 	/* reset variables */
-	game->curr_player = player->name;
+	game->curr_player = player->num;
 	game->rolled_dice = FALSE;
 	game->played_develop = FALSE;
 	game->bought_develop = FALSE;

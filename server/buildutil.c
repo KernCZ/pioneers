@@ -46,7 +46,7 @@ void check_longest_road(Game *game, gboolean can_cut)
 		Player *player = list->data;
 
 #ifdef DEBUG_LONGEST
-		log_message( MSG_INFO, "%s", player_name(player));
+		log_message( MSG_INFO, "%s", player->name);
 		if (game->longest_road == player)
 			log_message( MSG_INFO, "(current)");
 		log_message( MSG_INFO, "=%d", road_len[player->num]);
@@ -135,7 +135,7 @@ void check_longest_road(Game *game, gboolean can_cut)
 		game->longest_road = new_longest;
 		player_broadcast(game->longest_road, PB_ALL, "longest-road\n");
 #ifdef DEBUG_LONGEST
-		log_message( MSG_INFO, "%s has longest road\n", player_name(new_longest));
+		log_message( MSG_INFO, "%s has longest road\n", new_longest->name);
 #endif
 		return;
 	}
@@ -146,7 +146,7 @@ void check_longest_road(Game *game, gboolean can_cut)
 		game->longest_road = new_longest;
 		player_broadcast(game->longest_road, PB_ALL, "longest-road\n");
 #ifdef DEBUG_LONGEST
-		log_message( MSG_INFO, "%s has longest road\n", player_name(new_longest));
+		log_message( MSG_INFO, "%s has longest road\n", new_longest->name);
 #endif
 	}
 #ifdef DEBUG_LONGEST

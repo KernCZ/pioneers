@@ -27,8 +27,6 @@
 #include "log.h"
 #include "server.h"
 
-static gboolean mode_choose_gold (Player *player, gint event);
-
 /* this function distributes resources until someone who receives gold is
  * found.  It is called again when that person chose his/her gold and
  * continues the distribution */
@@ -140,7 +138,7 @@ static void distribute_next (GList *list, gboolean someone_wants_gold) {
 	if (in_setup) next_setup_player (game);
 }
 
-static gboolean mode_choose_gold (Player *player, gint event) {
+gboolean mode_choose_gold (Player *player, gint event) {
 	StateMachine *sm = player->sm;
 	Game *game = player->game;
 	gint resources[NO_RESOURCE];

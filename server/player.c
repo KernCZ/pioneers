@@ -46,6 +46,7 @@ static gint next_player_num(Game *game, gboolean force_viewer)
 		GList *list;
 		gboolean players[MAX_PLAYERS];
 		memset(players, 0, sizeof(players));
+		playerlist_inc_use_count(game);
 		for (list = game->player_list;
 		     list != NULL; list = g_list_next(list)) {
 			Player *player = list->data;
@@ -54,6 +55,7 @@ static gint next_player_num(Game *game, gboolean force_viewer)
 				&& !player->disconnected)
 					players[player->num] = TRUE;
 		}
+		playerlist_dec_use_count(game);
 
 		for (idx = 0; idx < game->params->num_players; idx++)
 			if (!players[idx])
@@ -76,16 +78,14 @@ static gboolean mode_global(Player *player, gint event)
 		player_remove(player);
 		if (player->num >= 0)
 		{
-			player->disconnected = TRUE;
-			player_broadcast(player, PB_ALL, "has quit\n");
+			player_broadcast(player, PB_OTHERS, "has quit\n");
 			player_archive(player);
 		}
 		else
 		{
-			game->player_list = g_list_remove (game->player_list,
-					player);
 			player_free(player);
 		}
+		driver->player_change(game);
 		return TRUE;
 	case SM_RECV:
 		if (sm_recv(sm, "chat %S", text, sizeof (text))) {
@@ -238,6 +238,7 @@ Player *player_new(Game *game, int fd, gchar *location)
 	
 	sm_goto(sm, (StateFunc)mode_check_version);
 	
+	driver->player_change(game);
 	return player;
 }
 
@@ -248,13 +249,8 @@ static void player_set_name_real(Player *player, gchar *name, gboolean public)
 {
 	StateMachine *sm = player->sm;
 	Game *game = player->game;
-	gboolean playeriscurrent = FALSE;
 
 	g_assert (name[0] != 0);
-
-	playeriscurrent
-		 = (game->curr_player != NULL) &&
-		   (strcmp(game->curr_player, player->name) == 0);
 
 	if (player_by_name(game, name) != NULL) {
 		/* make it a note, not an error, so nothing bad happens
@@ -272,11 +268,8 @@ static void player_set_name_real(Player *player, gchar *name, gboolean public)
 	if (public)
 		player_broadcast(player, PB_ALL, "is %s\n", player->name);
 
-	if (playeriscurrent) {
-		game->curr_player = player->name;
-	}
-
 	driver->player_renamed(player);
+	driver->player_change(game);
 }
 
 void player_setup(Player *player, int playernum, gchar *name,
@@ -350,6 +343,7 @@ void player_setup(Player *player, int playernum, gchar *name,
 
 	/* add the info in the output device */
 	driver->player_added(player);
+	driver->player_change(game);
 	if (playernum < 0)
 		sm_goto(sm, (StateFunc)mode_pre_game);
 }
@@ -357,6 +351,15 @@ void player_setup(Player *player, int playernum, gchar *name,
 void player_free(Player *player)
 {
 	Game *game = player->game;
+
+	if (game->player_list_use_count>0) {
+		game->dead_players = g_list_append(game->dead_players, player);
+		player->disconnected = TRUE;
+		return;
+	}
+
+	game->player_list = g_list_remove (game->player_list, player);
+	driver->player_change(game);
 
 	sm_free(player->sm);
 	if (player->name != NULL)
@@ -371,6 +374,8 @@ void player_free(Player *player)
 		game->num_players--;
 		meta_report_num_players(game->num_players);
 	}
+	g_list_free(player->build_list);
+	g_list_free(player->points);
 	g_free(player);
 }
 
@@ -382,8 +387,7 @@ void player_archive(Player *player)
 
 	/* If this was a viewer, forget about him */
 	if (player->num >= game->params->num_players) {
-		game->player_list = g_list_remove (game->player_list, player);
-		player_free (player);
+		player_free(player);
 		return;
 	}
 
@@ -419,33 +423,46 @@ void player_archive(Player *player)
 	meta_report_num_players(game->num_players);
 }
 
+/* Try to revive the player
+   newp: Player* attempt to revive this player
+   name: The player wants to have this name, if possible
+*/
 void player_revive(Player *newp, char *name)
 {
 	Game *game = newp->game;
 	GList *current = NULL;
 	Player *p;
+
 	/* first see if a player with the given name exists */
 	if (name) {
+		playerlist_inc_use_count(game);
 		for (current = game->player_list; current != NULL;
 				current = g_list_next (current) ) {
 			p = current->data;
-			if (strcmp (name, p->name) ) break;
+			if (!strcmp (name, p->name) )
+				if (p->disconnected && p != newp)
+					break;
 		}
-		if (!p->disconnected || p == newp) current = NULL;
+		playerlist_dec_use_count(game);
 	}
 	/* if not, see if any disconnected player exists */
 	if (current == NULL) {
+		playerlist_inc_use_count(game);
 		for (current = game->player_list; current != NULL;
 				current = g_list_next (current) ) {
 			p = current->data;
 			if (p->disconnected && p != newp) break;
 		}
+		playerlist_dec_use_count(game);
 	}
 	/* if still no player is found, do a normal setup */
 	if (current == NULL) {
 		player_setup (newp, -1, name, FALSE);
 		return;
 	}
+
+	/* remove the disconnected player from the player list, it's memory will be freed at the end of this routine */
+	game->player_list = g_list_remove (game->player_list, p);
 
 	/* initialize the player */
 	player_setup(newp, p->num, name, FALSE);
@@ -457,6 +474,7 @@ void player_revive(Player *newp, char *name)
 	   place */
 	if (newp->num < game->params->num_players - 1) {
 		game->player_list = g_list_remove(game->player_list, newp);
+		playerlist_inc_use_count(game);
 		for (currp = game->player_list;
 		     currp != NULL;
 		     currp = g_list_next(currp)) {
@@ -465,22 +483,18 @@ void player_revive(Player *newp, char *name)
 				break;
 			}
 		}
+		playerlist_dec_use_count(game);
 		if (!currp) {
 			game->player_list = g_list_append(game->player_list, newp);
 		}
+	driver->player_change(game);
 	}
 #endif
 
 	/* mark the player as a reconnect */
 	newp->disconnected = TRUE;
 
-	/* Use the old player's name pointer rather than
-	   the new one */
-	if (newp->name != NULL) {
-		g_free(newp->name);
-	}
-	newp->name = p->name;
-	p->name = NULL; /* prevent deletion */
+	/* Don't use the old player's name */
 
 	/* copy over all the data from p */
 	newp->build_list = p->build_list;
@@ -492,6 +506,8 @@ void player_revive(Player *newp, char *name)
 	newp->gold = p->gold;
 	newp->devel = p->devel;
 	p->devel = NULL; /* prevent deletion */
+	newp->points = p->points;
+	p->points = NULL; /* prevent deletion */
 	newp->discard_num = p->discard_num;
 	newp->num_roads = p->num_roads;
 	newp->num_bridges = p->num_bridges;
@@ -506,7 +522,8 @@ void player_revive(Player *newp, char *name)
 	newp->gov_played = p->gov_played;
 	newp->libr_played = p->libr_played;
 	newp->market_played = p->market_played;
-
+	/* Not copied: sm, game, location, num, client_version */
+	
 	/* copy over the state */
 	memcpy(newp->sm->stack, p->sm->stack,
 	       sizeof(newp->sm->stack));
@@ -517,9 +534,10 @@ void player_revive(Player *newp, char *name)
 
 	p->num = -1; /* prevent the number of players
 		        from getting decremented */
+
 	player_free(p);
 	player_broadcast(newp, PB_SILENT,
-			"NOTE player %d (%s) has reconnected\n",
+			_("NOTE player %d (%s) has reconnected.\n"),
 			 newp->num, newp->name);
 	return;
 }
@@ -682,20 +700,12 @@ static gboolean mode_check_status(Player *player, gint event)
 	return FALSE;
 }
 
-gchar *player_name(Player *player)
-{
-	static char name[64];
-
-	if (player->name != NULL)
-		return player->name;
-	sprintf(name, _("Player %d"), player->num);
-	return name;
-}
-
+/* Returns a GList* to player 0 */
 GList *player_first_real(Game *game)
 {
 	GList *list;
 	/* search for player 0 */
+	playerlist_inc_use_count(game);
 	for (list = game->player_list;
 	     list != NULL; list = g_list_next(list))
 	{
@@ -703,33 +713,38 @@ GList *player_first_real(Game *game)
 		if (player->num == 0)
 			break;
 	}
+	playerlist_dec_use_count(game);
 	return list;
 }
 
+/* Returns a GList * to a player with a number one higher than last */
 GList *player_next_real(GList *last)
 {
-	Player *player = last->data;
-	Game *game = player->game;
-	gint numplayers = game->params->num_players;
-	gint nextnum = player->num + 1;
+	Player *player;
+	Game *game;
+	gint numplayers;
+	gint nextnum;
 	GList *list;
 
 	if (!last)
-	{
 		return NULL;
-	}
-	nextnum = player->num + 1;
-	if (nextnum >= numplayers)
-	{
-		return NULL;
-	}
 
+	player = last->data;
+	game = player->game;
+	numplayers = game->params->num_players;
+	nextnum = player->num + 1;
+	
+	if (nextnum >= numplayers)
+		return NULL;
+
+	playerlist_inc_use_count(game);
 	for (list = game->player_list; list != NULL;
 			list = g_list_next (list) ) {
 		Player *scan = list->data;
 		if (scan->num == nextnum)
 			break;
 	}
+	playerlist_dec_use_count(game);
 	return list;
 }
 
@@ -737,13 +752,17 @@ Player *player_by_name(Game *game, char *name)
 {
 	GList *list;
 
+	playerlist_inc_use_count(game);
 	for (list = game->player_list;
 	     list != NULL; list = g_list_next(list)) {
 		Player *player = list->data;
 
-		if (player->name != NULL && strcmp(player->name, name) == 0)
+		if (player->name != NULL && strcmp(player->name, name) == 0) {
+		 	playerlist_dec_use_count(game);
 			return player;
+		}
 	}
+	playerlist_dec_use_count(game);
 
 	return NULL;
 }
@@ -752,30 +771,42 @@ Player *player_by_num(Game *game, gint num)
 {
 	GList *list;
 
+	playerlist_inc_use_count(game);
 	for (list = game->player_list;
 	     list != NULL; list = g_list_next(list)) {
 		Player *player = list->data;
 
-		if (player->num == num)
+		if (player->num == num) {
+		 	playerlist_dec_use_count(game);
 			return player;
+		}
 	}
+	playerlist_dec_use_count(game);
 
 	return NULL;
 }
 
+/* Returns a player that's not part of the game.
+ */
 Player *player_none(Game *game)
 {
 	static Player player;
 
-	if (player.game == NULL) {
-		player.game = game;
-		player.num = -1;
-	}
+	player.game = game;
+	player.num = -1;
+	player.disconnected = TRUE;
 	return &player;
 }
 
 /* Broadcast a message to all players and viewers - prepend "player %d " to all
  * players except the one generating the message.
+ *
+ *  send to  PB_SILENT PB_RESPOND PB_ALL PB_OTHERS
+ *  player      -           -       +        **
+ *  other       -           +       +        +
+ * ** = don't send to the player
+ * +  = prepend 'player %d' to the message
+ * -  = don't alter the message
  */
 void player_broadcast(Player *player, BroadcastType type, char *fmt, ...)
 {
@@ -788,6 +819,7 @@ void player_broadcast(Player *player, BroadcastType type, char *fmt, ...)
 	sm_vnformat(buff, sizeof(buff), fmt, ap);
 	va_end(ap);
 
+	playerlist_inc_use_count(game);
 	for (list = game->player_list; list != NULL;
 			list = g_list_next (list) ) {
 		Player *scan = list->data;
@@ -797,6 +829,7 @@ void player_broadcast(Player *player, BroadcastType type, char *fmt, ...)
 		else if (scan != player || type == PB_ALL)
 			sm_send(scan->sm, "player %d %s", player->num, buff);
 	}
+	playerlist_dec_use_count(game);
 }
 
 void player_set_name (Player *player, gchar *name)
@@ -806,8 +839,6 @@ void player_set_name (Player *player, gchar *name)
 
 void player_remove(Player *player)
 {
-	Game *game = player->game;
-
 	driver->player_removed(player);
 }
 
@@ -827,4 +858,26 @@ GList *next_player_loop (GList *current, Player *first)
 	if (current == NULL) current = player_first_real (first->game);
 	if (current->data == first) return NULL;
 	return current;
+}
+
+void playerlist_inc_use_count(Game *game)
+{
+	game->player_list_use_count++;
+}
+
+void playerlist_dec_use_count(Game *game)
+{
+	game->player_list_use_count--;
+	if (game->player_list_use_count == 0) {
+		GList *current;
+		GList *all_dead_players;
+		current = game->dead_players;
+		all_dead_players = game->dead_players; /* Remember this for g_list_free */
+		game->dead_players = NULL; /* Clear the list */
+		for (; current != NULL; current = g_list_next(current) ) {
+		 	Player *p = current->data;
+			player_free(p);
+		}
+		g_list_free(all_dead_players);
+	}
 }

@@ -263,11 +263,11 @@ static void route_event_cb(void *widget, WidgetState *gui)
 {
 	StateMachine *sm = gui->sm;
 
-	inc_use_count(sm);
+	sm_inc_use_count(sm);
 
 	sm_event_cb(gui->sm, gui->id);
 
-	dec_use_count(sm);
+	sm_dec_use_count(sm);
 }
 
 static void destroy_event_cb(void *widget, WidgetState *gui)
@@ -280,12 +280,12 @@ static void destroy_route_event_cb(void *widget, WidgetState *gui)
 {
 	StateMachine *sm = gui->sm;
 
-	inc_use_count(sm);
+	sm_inc_use_count(sm);
 
 	sm_event_cb(gui->sm, gui->id);
 	gui_free(gui);
 
-	dec_use_count(sm);
+	sm_dec_use_count(sm);
 }
 
 void sm_gui_register_destroy(StateMachine *sm, void *widget, gint id)
