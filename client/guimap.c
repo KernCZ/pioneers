@@ -45,19 +45,17 @@ GdkPixmap *guimap_terrain(Terrain terrain)
 
 void load_pixmap(gchar *name, GdkPixmap **pixmap, GdkBitmap **mask)
 {
-        gchar *file = g_strconcat("gnocatan/", name, NULL);
-	gchar *path = gnome_unconditional_pixmap_file(file);
+        gchar *file = g_strconcat(IMAGEDIR "/", name, NULL);
 
-        if (!g_file_exists(path)) {
-                g_error(_("Could not find \'%s\' pixmap file.\n"), path);
+        if (!g_file_exists(file)) {
+                g_error(_("Could not find \'%s\' pixmap file.\n"), file);
                 exit(1);
         }
-	gdk_imlib_load_file_to_pixmap(path, pixmap, mask);
+	gdk_imlib_load_file_to_pixmap(file, pixmap, mask);
 	if (!*pixmap) {
-                g_error(_("Could not load \'%s\' pixmap file.\n"), path);
+                g_error(_("Could not load \'%s\' pixmap file.\n"), file);
                 exit(1);
         }
-        g_free(path);
         g_free(file);
 }
 

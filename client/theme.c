@@ -230,19 +230,17 @@ static void theme_initialize(MapTheme *t)
 		}
 		else {
 			GdkImlibImage *im;
-			gchar *file = g_strconcat("gnocatan/", fname, NULL);
-			gchar *path = gnome_unconditional_pixmap_file(file);
+			gchar *file = g_strconcat(IMAGEDIR "/", fname, NULL);
 			
-			if (!g_file_exists(path)) {
-                g_error(_("Could not find \'%s\' pixmap file.\n"), path);
+			if (!g_file_exists(file)) {
+                g_error(_("Could not find \'%s\' pixmap file.\n"), file);
                 exit(1);
 			}
 			;
-			if (!(im = gdk_imlib_load_image(path))) {
-                g_error(_("Could not load \'%s\' pixmap file.\n"), path);
+			if (!(im = gdk_imlib_load_image(file))) {
+                g_error(_("Could not load \'%s\' pixmap file.\n"), file);
 				exit(1);
 			}
-			g_free(path);
 			g_free(file);
 			t->scaledata[i].image = im;
 			t->scaledata[i].native_width = im->rgb_width;

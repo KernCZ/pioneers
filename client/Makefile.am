@@ -1,6 +1,9 @@
-imagedir = $(datadir)/games/gnocatan/images
+imagedir  =$(datadir)/games/gnocatan/images
 appicondir=$(datadir)/pixmaps
+pixmapdir =$(datadir)/pixmaps/gnocatan
 Gamesdir=$(datadir)/gnome/apps/Games
+
+CPPFLAGS += -DIMAGEDIR=\"$(imagedir)\"
 
 SUBDIRS = help
 
@@ -81,25 +84,27 @@ appicon_DATA = gnome-gnocatan.png
 
 image_DATA = \
 	board.png \
-	bridge.png \
-	city.png \
 	cross.png \
 	desert.png \
-	develop.png \
-	dice.png \
 	field.png \
-	finish.png \
 	forest.png \
 	hill.png \
 	mountain.png \
 	pasture.png \
 	plain.png \
-	road.png \
 	sea.png \
+	splash.png \
+	tick.png
+
+pixmap_DATA = \
+	bridge.png \
+	city.png \
+	develop.png \
+	dice.png \
+	finish.png \
+	road.png \
 	settlement.png \
 	ship.png \
-	splash.png \
-	tick.png \
 	trade.png
 
 Games_DATA = gnocatan.desktop
@@ -107,6 +112,7 @@ Games_DATA = gnocatan.desktop
 EXTRA_DIST = \
 	$(appicon_DATA) \
 	$(image_DATA) \
+	$(pixmap_DATA) \
 	$(Games_DATA)
 
 dist-hook:
