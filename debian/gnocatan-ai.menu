@@ -1,2 +1,2 @@
-?package(gnocatan-ai):needs=text section=Games/Board\
+?package(gnocatan-ai):needs="text" section="Games/Board"\
   title="Gnocatan AI Player" command="/usr/games/gnocatanai"

@@ -1,3 +1,11 @@
+gnocatan (0.8.1-6) unstable; urgency=low
+
+  * added yelp dependency
+  * snapshot from upstream CVS. Minor bugfixes.
+  * fix some lintian warnings
+  
+ -- Jeff Breidenbach <jab@debian.org>  Sat, 21 Aug 2004 13:11:02 -0700
+
 gnocatan (0.8.1-5) unstable; urgency=low
 
   * snapshot from upstream CVS.

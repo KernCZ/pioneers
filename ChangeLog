@@ -1,3 +1,8 @@
+2004-08-21  Jeff Breidenbach  <jbreiden@rode.parc.com>
+
+	* debian/control: added yelp dependency for gnocatan-help
+	* Released as Debian package, 0.8.1-6.
+	
 2004-08-07  0.8.1.33  Roland Clobus <rclobus@bigfoot.com>
 	* common/game.c: changed server-port parameter to string, fixed memory
 	leak in params_free.

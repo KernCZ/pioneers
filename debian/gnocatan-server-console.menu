@@ -1,2 +1,2 @@
-?package(gnocatan-server-console):needs=text section=Games/Board\
+?package(gnocatan-server-console):needs="text" section="Games/Board"\
   title="Gnocatan Server Console" command="/usr/games/gnocatan-server-console"
