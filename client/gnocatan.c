@@ -29,7 +29,13 @@ int main(int argc, char *argv[])
 
 	set_ui_driver( &GTK_Driver );
 
-	gnome_init(PACKAGE, VERSION, argc, argv);
+	gnome_program_init (PACKAGE, VERSION,
+		LIBGNOMEUI_MODULE,
+		argc, argv,
+		GNOME_PARAM_POPT_TABLE, NULL,
+		GNOME_PARAM_APP_DATADIR, DATADIR,
+		NULL);
+
 	config_init( "/gnocatan/" );
 #if ENABLE_NLS
 	init_nls();

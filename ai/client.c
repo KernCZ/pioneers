@@ -512,6 +512,13 @@ static gboolean mode_start(StateMachine *sm, gint event)
 	} 
 	if (sm_recv(sm, "player %d of %d, welcome to gnocatan server %S",
 		    &player_num, &total_num, version, sizeof (version))) {
+		if (player_num >= total_num) {
+			/* Game is full, I am a viewer */
+			sm_pop_all(sm);
+			log_message (MSG_ERROR, "The game is already full.\n");
+			client_exit ();
+			return TRUE;
+		}
 		player_set_my_num(player_num);
 		player_set_total_num(total_num);
 		sm_send(sm, "players\n");
@@ -519,20 +526,13 @@ static gboolean mode_start(StateMachine *sm, gint event)
 
 		return TRUE;
 	}
-	if(sm_recv(sm, "sorry, version conflict"))
+	if(sm_recv(sm, "ERR sorry, version conflict"))
 	{
 		log_message( MSG_ERROR, "Connect Error: Version mismatch! Please make sure client and server are up to date.\n");
 		sm_pop_all(sm);
 		client_exit();
 
 
-		return TRUE;
-	}
-	if(sm_recv(sm, "sorry, game is full"))
-	{
-		sm_pop_all(sm);
-		log_message( MSG_ERROR, "Connect Error: This game is full." );
-		client_exit();
 		return TRUE;
 	}
 	return check_chat_or_name(sm);

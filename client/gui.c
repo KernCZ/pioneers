@@ -518,8 +518,7 @@ static void settings_apply_cb(GnomePropertyBox *prop_box, gint page, gpointer da
 		                                             GNOME_APP_TOOLBAR_NAME );
 		toolbar = bonobo_dock_item_get_child( dock_item );
 		
-		gnome_config_set_int( "/gnocatan/settings/toolbar_style",
-		                      toolbar_style );
+		config_set_int( "settings/toolbar_style", toolbar_style );
 		gtk_toolbar_set_style( GTK_TOOLBAR(toolbar), toolbar_style );
 		
 		/* Turn auto-shrink off */
@@ -533,14 +532,12 @@ static void settings_apply_cb(GnomePropertyBox *prop_box, gint page, gpointer da
 		legend_page_enabled = legend_page;
 		gui_show_legend_page(legend_page_enabled);
 
-		gnome_config_set_int( "/gnocatan/settings/legend_page",
-		                      legend_page );
+		config_set_int( "settings/legend_page", legend_page );
 
 		theme = gtk_object_get_user_data(
 		    GTK_OBJECT(gtk_menu_get_active(GTK_MENU(theme_menu))));
 		if (theme != get_theme()) {
-			gnome_config_set_string("/gnocatan/settings/theme",
-						theme->name);
+			config_set_string("settings/theme", theme->name);
 			set_theme(theme);
 			if (gmap->pixmap != NULL) {
 				g_free (gmap->pixmap);
@@ -576,17 +573,14 @@ static void settings_apply_cb(GnomePropertyBox *prop_box, gint page, gpointer da
 			color_summary = FALSE;
 		}
 		
-		gnome_config_set_int( "/gnocatan/settings/color_chat",
-		                      color_chat );
+		config_set_int( "settings/color_chat", color_chat );
 		color_chat_enabled = color_chat;
 
-		gnome_config_set_int( "/gnocatan/settings/color_messages",
-		                      color_messages );
+		config_set_int( "settings/color_messages", color_messages );
 		color_messages_enabled = color_messages;
 		log_set_func_message_color_enable(color_messages);
 		
-		gnome_config_set_int( "/gnocatan/settings/color_summary",
-		                      color_summary );
+		config_set_int( "settings/color_summary", color_summary );
 		color_summary_enabled = color_summary;
 		player_modify_statistic(0, STAT_SETTLEMENTS, 0);
 
@@ -611,7 +605,6 @@ static void settings_apply_cb(GnomePropertyBox *prop_box, gint page, gpointer da
 	default:
 		break;
 	}
-	gnome_config_sync();
 	return;
 }
 
@@ -695,7 +688,7 @@ static void menu_settings_cb(GtkWidget *widget, void *user_data)
 	gtk_table_attach( GTK_TABLE(page0_table), check_legend_page, 0, 2, 1, 2,
 	                  GTK_FILL|GTK_EXPAND, GTK_FILL, 0, 0 );
 	gtk_table_attach( GTK_TABLE(page0_table), theme_label, 0, 1, 2, 3,
-	                  GTK_FILL|GTK_EXPAND, GTK_FILL, 0, 5 );
+	                  0, GTK_FILL, 0, 5 );
 	gtk_table_attach( GTK_TABLE(page0_table), theme_list, 1, 2, 2, 3,
 	                  GTK_FILL|GTK_EXPAND, GTK_FILL, 0, 5 );
 	                  
@@ -762,12 +755,7 @@ static void menu_settings_cb(GtkWidget *widget, void *user_data)
 #endif
 	
 	/* Set the default text/icons state */
-	toolbar_style = gnome_config_get_int_with_default("/gnocatan/settings/toolbar_style=0",
-	                                                  &default_returned );
-
-	if(default_returned) {
-		toolbar_style = GTK_TOOLBAR_BOTH;
-	}
+	toolbar_style = config_get_int_with_default("settings/toolbar_style", GTK_TOOLBAR_BOTH);
 
 	switch(toolbar_style) {
 	case GTK_TOOLBAR_TEXT:
@@ -785,21 +773,9 @@ static void menu_settings_cb(GtkWidget *widget, void *user_data)
 	}
 
 	/* Set the default color chat state */
-	color_chat = gnome_config_get_int_with_default("/gnocatan/settings/color_chat=1",
-	                                                  &default_returned );
-	if(default_returned) {
-		color_chat = COLOR_CHAT_YES;
-	}
-	color_messages = gnome_config_get_int_with_default("/gnocatan/settings/color_messages=1",
-	                                                  &default_returned );
-	if(default_returned) {
-		color_messages = TRUE;
-	}
-	color_summary = gnome_config_get_int_with_default("/gnocatan/settings/color_summary=1",
-	                                                  &default_returned );
-	if(default_returned) {
-		color_summary = TRUE;
-	}
+	color_chat = config_get_int_with_default("settings/color_chat", COLOR_CHAT_YES);
+	color_messages = config_get_int_with_default("settings/color_messages", TRUE);
+	color_summary = config_get_int_with_default("settings/color_summary", TRUE);
 
 
 	switch(color_chat) {
@@ -827,14 +803,8 @@ static void menu_settings_cb(GtkWidget *widget, void *user_data)
 		break;
 	}
 
-	legend_page = gnome_config_get_int_with_default(
-		"/gnocatan/settings/legend_page=1",
-		&default_returned);
-	if(default_returned) {
-		legend_page = FALSE;
-	}
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(check_legend_page),
-								 !!legend_page);
+	legend_page = config_get_int_with_default("settings/legend_page", FALSE);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(check_legend_page), !!legend_page);
 
 
 	
@@ -1202,48 +1172,29 @@ GtkWidget* gui_build_interface()
 	register_gnocatan_pixmaps();
 	app_window = gnome_app_new("gnocatan", _("Gnocatan"));
 	gtk_window_set_policy(GTK_WINDOW(app_window), TRUE, TRUE, TRUE);
+	gtk_window_set_default_icon_from_file(gnome_pixmap_file("gnome-gnocatan.png"), NULL);
 	gtk_widget_realize(app_window);
 	gtk_signal_connect(GTK_OBJECT(app_window), "delete_event",
 			   GTK_SIGNAL_FUNC(quit_cb), NULL);
 	
 	toolbar_style = 
-	    gnome_config_get_int_with_default("/gnocatan/settings/toolbar_style=0",
-	                                      &default_returned );
-	if(default_returned) {
-		toolbar_style = GTK_TOOLBAR_BOTH;
-	}
+	    config_get_int_with_default("settings/toolbar_style", GTK_TOOLBAR_BOTH);
 
 	color_chat_enabled = 
-	    gnome_config_get_int_with_default("/gnocatan/settings/color_chat=1",
-	                                      &default_returned );
-	if(default_returned) {
-		color_chat_enabled = COLOR_CHAT_YES;
-	}
+	    config_get_int_with_default("settings/color_chat", COLOR_CHAT_YES);
 
 	color_messages_enabled = 
-	    gnome_config_get_int_with_default("/gnocatan/settings/color_messages=1",
-	                                      &default_returned );
-	if(default_returned) {
-		color_messages_enabled = TRUE;
-	}
+	    config_get_int_with_default("settings/color_messages", TRUE);
 	log_set_func_message_color_enable(color_messages_enabled);
 
 	color_summary_enabled = 
-	    gnome_config_get_int_with_default("/gnocatan/settings/color_summary=1",
-	                                      &default_returned );
-	if(default_returned) {
-		color_summary_enabled = TRUE;
-	}
+	    config_get_int_with_default("settings/color_summary", TRUE);
 
 	legend_page_enabled = 
-	    gnome_config_get_int_with_default("/gnocatan/settings/legend_page=1",
-	                                      &default_returned );
-	if(default_returned) {
-		legend_page_enabled = FALSE;
-	}
+	    config_get_int_with_default("settings/legend_page", FALSE);
 
 	gnome_app_create_menus(GNOME_APP(app_window), main_menu);
-        gnome_app_create_toolbar(GNOME_APP(app_window), toolbar_uiinfo);
+	gnome_app_create_toolbar(GNOME_APP(app_window), toolbar_uiinfo);
         
         /* Get the toolbar (I wish there was a Gnome function for this...)
            and set its style from what was saved. */

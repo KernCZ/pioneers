@@ -21,8 +21,8 @@ lang_desc languages[] = {
 	/* language names not translated intentionally! */
 	{ "en", N_("English"),  "en_US", TRUE,  NULL },
 	{ "de", N_("Deutsch"),  "de_DE", FALSE, NULL },
-	{ "fr", N_("Français"), "fr_FR", FALSE, NULL },
-	{ "it", N_("Italiano"), "it_IT", FALSE, NULL },
+/*	{ "fr", N_("Français"), "fr_FR", FALSE, NULL }, */
+/*	{ "it", N_("Italiano"), "it_IT", FALSE, NULL }, */
 	{ "es", N_("Espanol"),  "es_ES", FALSE, NULL },
 	{ NULL, NULL }
 };

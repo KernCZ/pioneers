@@ -6,25 +6,6 @@
  */
 
 /*
-[prophet: client]$ grep gnome_config *.c
-
-client.c:		gnome_config_set_string("/gnocatan/connect/server",
-client.c:		gnome_config_set_string("/gnocatan/connect/port",
-client.c:		gnome_config_set_string("/gnocatan/connect/name",
-client.c:		gnome_config_sync();
-connect.c:	saved_server = gnome_config_get_string_with_default("/gnocatan/connect/server=localhost",&novar);
-connect.c:	saved_port = gnome_config_get_string_with_default("/gnocatan/connect/port=5556", &novar);
-connect.c:	saved_name = gnome_config_get_string_with_default("/gnocatan/connect/name", &novar);
-gui.c:		gnome_config_set_int( "/gnocatan/settings/toolbar_style",
-gui.c:		gnome_config_sync();
-gui.c:	toolbar_style = gnome_config_get_int_with_default("/gnocatan/settings/toolbar_style=0",
-gui.c:	    gnome_config_get_int_with_default("/gnocatan/settings/toolbar_style=0",
-
-	// hrm... this could be messy for a non-gnome port.
-	// I know!  Let's make an API!  :-P
-
-----
-
 Functions that need mapping (so far):
 	// get
 	gnome_config_get_string_with_default( path, default_used_bool )
@@ -99,6 +80,16 @@ config_get_int( gchar* path, gboolean* default_used )
 {
 	/* gnome_config takes care of setting *default_used */
 	return gnome_config_get_int_with_default( path, default_used );
+}
+
+/* get an integer.  If the setting is not found, return the default value */
+gint config_get_int_with_default( gchar* path, gint default_value )
+{
+	gchar temp[256];
+	gboolean default_used;
+	
+	snprintf(temp, sizeof(temp), "%s=%d", path, default_value);
+	return gnome_config_get_int_with_default( temp, &default_used );
 }
 
 /* set configuration settings */

@@ -1,6 +1,6 @@
 SUBDIRS = po intl common client server meta-server ai docs
 
-EXTRA_DIST = autogen.sh gnocatan.spec
+EXTRA_DIST = autogen.sh gnocatan.spec xmldocs.make omf.make
 
 dist-hook:
 	mkdir $(distdir)/debian

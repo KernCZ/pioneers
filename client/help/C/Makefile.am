@@ -1,41 +1,9 @@
-helpdir = $(datadir)/gnome/help/gnocatan/C
+# see http://developer.gnome.org/dotplan/porting/ar01s06.html
 
-help_DATA = \
-	index.html \
-	topic.dat
-
-EXTRA_DIST = gnocatan.sgml $(help_DATA)
-
-all: index.html
-
-# No-op if db2html failed
-index.html: gnocatan/index.html
-	-cd $(srcdir) && cp gnocatan/index.html index.html
-
-gnocatan/index.html: gnocatan.sgml
-	-cd $(srcdir) && db2html gnocatan.sgml
-
-dist-hook:
-	-mkdir $(distdir)/gnocatan $(distdir)/images
-	cp $(srcdir)/gnocatan/*.html $(distdir)/gnocatan
-	cp $(srcdir)/images/*.gif $(distdir)/images
-
-# No-op if db2html failed
-install-data-local: index.html
-	$(mkinstalldirs) $(DESTDIR)$(helpdir)/images
-	files=`echo $(srcdir)/gnocatan/*.html`; \
-	if test "$$files" != '$(srcdir)/gnocatan/*.html'; then \
-	  for file in $$files; do \
-	    basefile=`echo $$file | sed -e 's,^.*/,,'`; \
-	    $(INSTALL_DATA) $$file $(DESTDIR)$(helpdir)/$$basefile; \
-	  done; \
-	fi
-	-for file in $(srcdir)/images/*.gif; do \
-	$(INSTALL_DATA) $(srcdir)/$$file $(DESTDIR)$(helpdir)/images;\
-	done
-
-gnocatan.ps: gnocatan.sgml
-	db2ps $<
-
-gnocatan.rtf: gnocatan.sgml
-	db2rtf $<
+figdir = images
+docname = gnocatan
+lang = C
+omffile = gnocatan-C.omf
+entities = legal.xml
+include $(top_srcdir)/xmldocs.make
+dist-hook: app-dist-hook

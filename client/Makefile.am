@@ -25,6 +25,7 @@ INCLUDES = \
 	-I$(srcdir)/../common -I. \
 	-DGNOMELOCALEDIR=\""$(datadir)/locale"\" \
 	-DIMAGEDIR=\"$(imagedir)\" \
+	-DDATADIR=\"$(datadir)\" \
 	$(ADMIN_GTK) \
         -I$(includedir) \
 	$(GNOME2_CFLAGS)

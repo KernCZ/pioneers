@@ -1,0 +1,1275 @@
+<?xml version="1.0"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
+    "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
+<!ENTITY legal SYSTEM "legal.xml">
+]>
+
+<article id="index" lang="en">
+  <title>Gnocatan player's guide</title>
+  <articleinfo>
+    <authorgroup>
+      <author>
+	<firstname>Dave</firstname>
+	<surname>Cole</surname>
+      </author>
+      <author>
+        <firstname>Andy</firstname>
+        <surname>Heroff</surname>
+      </author>
+    </authorgroup>
+    <releaseinfo>Documentation in progress</releaseinfo>
+    <copyright>
+      <year>2000</year> <holder>Andy Heroff</holder>
+    </copyright>
+    &legal;
+  </articleinfo>
+
+  <sect1 id="introduction">
+    <title>Introduction</title>
+
+    <sect2 id="bugs">
+      <title>Reporting Bugs</title>
+      <para>
+        Information on reporting bugs can be found on the Gnocatan project
+        webpage, hosted on SourceForge. The URL is:
+        <ulink url="http://sourceforge.net/projects/gnocatan/">
+         http://sourceforge.net/projects/gnocatan/
+        </ulink>
+      </para>
+    </sect2>
+
+    <sect2 id="Authors">
+      <title>Authors and History</title>
+      <para>
+        Gnocatan is a GNOME game based upon the board game Settlers of Catan
+        created by Mayfair Games. Gnocatan was originally authored by Dave
+        Cole in the spring and summer of 1999. Dave wanted to be able to
+        play the game without having to travel, so he developed a computer
+        implementation of the game. The Gnocatan project stalled in the late
+        summer of 1999 and saw little development until the early spring of
+        2000 when the project was taken over by Andy Heroff and moved to
+        SourceForge. Andy recruited several developers (including Dave) and
+        they are now working to improve upon the original game as well as
+        fix the bugs that have been found in older versions.
+      </para>
+    </sect2>
+  </sect1>
+
+  <sect1 id="gnocatan_ui">
+    <title>The Gnocatan user interface</title>
+
+    <para>When you start <symbol>Gnocatan</symbol>, the application
+      window is displayed.  The user interface is built up from a
+      number of panels.</para>
+
+      <figure id="gnocatan-FIG-clientui">
+	<title>The client user interface.</title>
+	<screenshot>
+	  <graphic fileref="images/client.png"></graphic>
+	</screenshot>
+      </figure>
+
+    <sect2 id="identity">
+      <title>The identity panel</title>
+
+      <para>Before you have connected to a server, this panel will not
+	be displayed.  Once you have connected, the panel is painted
+        with your player colour.  It also shows how many roads,
+        settlements, and cities are still available to be
+        built.</para>
+
+      <para>Once the game play starts, the last dice roll performed by
+        a player is also displayed.</para>
+
+      <figure id="gnocatan-FIG-identity">
+	<title>The identity panel.</title>
+	<screenshot>
+	  <graphic fileref="images/identity.png"></graphic>
+	</screenshot>
+      </figure>
+    </sect2>
+
+    <sect2 id="actions">
+      <title>The actions panel</title>
+
+      <sect3 id="waiting_prompt">
+        <title>The waiting prompt</title>
+
+	<para>When it is not your turn, a message is displayed in the
+	status line at the very bottom for whom the game is waiting.</para>
+	
+      </sect3>
+
+      <sect3 id="actions_buttons">
+        <title>The actions buttons</title>
+
+	<para>When it is your turn, one more more of the buttons in
+	  the action toolbar are active.
+	  Only the actions that you are allowed to perform will be
+	  enabled.</para>
+	
+	<figure id="gnocatan-FIG-actions">
+	  <title>The actions buttons</title>
+	  <screenshot>
+	    <graphic fileref="images/actions.png"></graphic>
+	  </screenshot>
+	</figure>
+
+	<table frame="none" id="gnocatan-TBL-actions">
+	  <title>Action panel buttons</title>
+	  <tgroup cols="2">
+	    <thead>
+	      <row>
+		<entry>Button</entry>
+		<entry>Description</entry>
+	      </row>
+	    </thead>
+	    <tbody>
+	      <row>
+		<entry>Roll Dice</entry>
+		<entry>Press this button to roll the dice during your
+		  turn.</entry>
+	      </row>
+	      <row>
+		<entry>Trade</entry>
+		<entry>Press this when you wish to perform trade with
+		  either the bank (maritime), or with other players
+		  (domestic).</entry>
+	      </row>
+	      <row>
+		<entry>Road</entry>
+		<entry>Press this when you wish to build a road
+		    segment.</entry>
+	      </row>
+	      <row>
+		<entry>Settlement</entry>
+		<entry>Press this when you wish to build a
+		    settlement.</entry>
+	      </row>
+	      <row>
+		<entry>City</entry>
+		<entry>Press this when you wish to build a city.</entry>
+	      </row>
+	      <row>
+		<entry> Develop</entry>
+		<entry>Press this when you wish to purchase a development
+		  card from the bank.</entry>
+	      </row>
+	      <row>
+		<entry>Undo</entry>
+		<entry>Using this button you can undo road, settlement,
+		  and city building that has just been performed.  As
+		  soon as you buy a development card, play a development
+		  card, or finish your turn, you will not be able to
+		  undo building.</entry>
+	      </row>
+	      <row>
+		<entry>Finish</entry>
+		<entry>Press this button to indicate that you have
+		  finished performing setup, your turn, or road
+		  building.</entry>
+	      </row>
+	    </tbody>
+	  </tgroup>
+	</table>
+      </sect3>
+
+      <sect3 id="robber_prompt">
+        <title>The robber prompt</title>
+
+	<para>If you roll 7 on the dice, all players who are holding
+	  more than 7 resources will be prompted to discard half of
+	  them.  While there are still players who have to discard
+	  resources, the actions panel will be replaced by a list of
+	  those players.  Next to each player name is the number of
+	  resources that they must discard.</para>
+	
+	<figure id="gnocatan-FIG-discards">
+	  <title>The discard list.</title>
+	  <screenshot>
+	    <graphic fileref="images/discards.png"></graphic>
+	  </screenshot>
+	</figure>
+      </sect3>
+
+      <sect3 id="place_robber_prompt">
+        <title>The place robber prompt</title>
+
+	<para>After all excess resources have been discarded, if you
+	  were the player who rolled 7 on the dice, you must place the
+	  robber on the map.  The actions panel is replaced by a
+	  prompt to that effect.</para>
+	
+	<para>When you play a soldier development card, you must place
+	  the robber on the map.  The actions panel is replaced by a
+	  prompt to that effect.</para>
+
+	<figure id="gnocatan-FIG-place-robber">
+	  <title>The place robber prompt.</title>
+	  <screenshot>
+	    <graphic fileref="images/place-robber.png"></graphic>
+	  </screenshot>
+	</figure>
+      </sect3>
+
+      <sect3 id="steal_prompt">
+        <title>The steal from prompt</title>
+
+	<para>If you ever place the robber on a hex which has
+	  buildings owned by more than one other player, and more than
+	  one of them is holding resources, you will need to select
+	  the player from which you wish to steal resources.  The
+	  actions panel will be replaced by a prompt which instructs
+	  you to chose the victim of the robber by selecting one of
+	  the buildings on the hex.</para>
+	
+	<figure id="gnocatan-FIG-steal-from">
+	  <title>The steal from prompt.</title>
+	  <screenshot>
+	    <graphic fileref="images/steal-from.png"></graphic>
+	  </screenshot>
+	</figure>
+      </sect3>
+    </sect2>
+
+    <sect2 id="resources">
+      <title>The resources panel</title>
+
+      <para>As the game progresses you will accumulate resources.  The
+	resources panel displays how many of each resource type you
+	are holding.</para>
+
+      <figure id="gnocatan-FIG-resources">
+	<title>The resources panel.</title>
+	<screenshot>
+	  <graphic fileref="images/resources.png"></graphic>
+	</screenshot>
+      </figure>
+    </sect2>
+
+    <sect2 id="develop-cards">
+      <title>The development cards panel</title>
+
+      <para>If you spend the right combination of resources, you can
+	purchase development cards from the bank.  All of the
+	development cards that you are currently holding are displayed
+	in this list.  Note that any cards in this list are not yet in
+	play.  Other players only know how many development cards you
+	are holding, not the types of those cards.  Once you play a
+	development card, it will be removed from this list.</para>
+
+      <figure id="gnocatan-FIG-develop-cards">
+	<title>The development cards panel.</title>
+	<screenshot>
+	  <graphic fileref="images/develop-cards.png"></graphic>
+	</screenshot>
+      </figure>
+    </sect2>
+
+    <sect2 id="player-summary">
+      <title>The player summary panel</title>
+
+      <para>This panel contains a summary of public statistics about
+	all players in the game.  Some of the rows in the summary have
+	a number displayed on the right.  This number represents the
+	number of victory points that have been earned by that
+	statistic.</para>
+
+      <para>If the panel grows too large to fit in the available
+	space, it will automatically scroll to display the summary
+	about the current player.</para>
+
+      <figure id="gnocatan-FIG-player-summary">
+	<title>The player summary panel.</title>
+	<screenshot>
+	  <graphic fileref="images/player-summary.png"></graphic>
+	</screenshot>
+      </figure>
+    </sect2>
+
+    <sect2 id="map">
+      <title>The Gnocatan map.</title>
+
+      <figure id="gnocatan-FIG-map">
+      	<title>The Gnocatan map.</title>
+      	<screenshot>
+      	  <graphic fileref="images/map.png"></graphic>
+      	</screenshot>
+      </figure>
+
+      <para>Gnocatan is played on a map which is built up from a grid
+        of terrain hexes.  Each hex on the map has a terrain type
+        which defines the resources, if any, that are produced by that
+        hex.</para>
+
+      <para>Settlements and cities are built on the corners of land
+        hexes, while roads are built along the edges of land
+        hexes.</para>
+
+      <para>In the centre of resource producing hexes, there is a
+        circle containing a number.  At the start of each turn, two
+        dice are rolled, all hexes that are labelled with a number
+        equalling the sum of the two dice will produce resources for
+        buildings on that hex.  Underneath the number in the circle
+        are some dots.  The number of dots is equal to the number of
+        different dice combinations that will generate this number.
+        To highlight the two most commonly rolled numbers, the 6 and 8
+        are displayed in red (there is no label with the number 7).
+        In addition, the hexes that produced resources this turn are
+        painted with a green background.</para>
+
+      <para>The sea hexes which have a circle in them have building
+        sites for ports where maritime trading can be performed. The
+        location of the building sites is indicated by a dashed line
+        drawn from the circle to a hex corner. The color of the circle
+        indicates the resource type which may be traded at the ports.
+        At the blue circles all resource types can be traded.</para>
+
+      <para>The black bottle shape is the robber.</para>
+
+      <para>The following table shows each terrain type, and the resources
+        produced by that terrain.</para>
+
+      <table frame="none" id="gnocatan-TBL-terrain-types">
+        <title>Gnocatan terrain types</title>
+	<tgroup cols="5">
+	  <thead>
+	    <row>
+	      <entry>Graphic</entry>
+	      <entry>Terrain</entry>
+	      <entry>Resource</entry>
+	      <entry>Description</entry>
+	    </row>
+	  </thead>
+	  <tbody>
+	    <row>
+	      <entry>
+	        <inlinegraphic fileref="images/hill.png"></inlinegraphic>
+	      </entry>
+	      <entry>Hill</entry>
+	      <entry>Brick</entry>
+	      <entry>Bricks are produced from the clay found in
+	        hills.</entry>
+	    </row>
+	    <row>
+	      <entry>
+	        <inlinegraphic fileref="images/field.png"></inlinegraphic>
+	      </entry>
+	      <entry>Field</entry>
+	      <entry>Grain</entry>
+	      <entry>Grain is produced by crops grown in
+	        fields.</entry>
+	    </row>
+	    <row>
+	      <entry>
+	        <inlinegraphic fileref="images/mountain.png"></inlinegraphic>
+	      </entry>
+	      <entry>Mountain</entry>
+	      <entry>Ore</entry>
+	      <entry>Ore is produced by quarries in mountains.</entry>
+	    </row>
+	    <row>
+	      <entry>
+	        <inlinegraphic fileref="images/pasture.png"></inlinegraphic>
+	      </entry>
+	      <entry>Pasture</entry>
+	      <entry>Wool</entry>
+	      <entry>Wool is produced by sheep in pastures.</entry>
+	    </row>
+	    <row>
+	      <entry>
+	        <inlinegraphic fileref="images/forest.png"></inlinegraphic>
+	      </entry>
+	      <entry>Forest</entry>
+	      <entry>Lumber</entry>
+	      <entry>Lumber is produced by trees in forests.</entry>
+	    </row>
+	    <row>
+	      <entry>
+	        <inlinegraphic fileref="images/desert.png"></inlinegraphic>
+	      </entry>
+	      <entry>Desert</entry>
+	      <entry></entry>
+	      <entry>No resources are produced in the desert.</entry>
+	    </row>
+	    <row>
+	      <entry>
+	        <inlinegraphic fileref="images/sea.png"></inlinegraphic>
+	      </entry>
+	      <entry>Sea</entry>
+	      <entry></entry>
+	      <entry>No resources are produced in the sea, but
+	        maritime trading may be performed at ports.</entry>
+	    </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </sect2>
+
+    <sect2 id="chat">
+      <title>The chat panel</title>
+
+      <para>Underneath the map is a textfield where you can enter
+	messages that will be broadcast to all other players.  When
+	you type a message and press <keycap>Return</keycap>, the
+	message will be broadcast to all players.</para>
+
+      <figure id="gnocatan-FIG-chat">
+	<title>The chat panel.</title>
+	<screenshot>
+	  <graphic fileref="images/chat.png"></graphic>
+	</screenshot>
+      </figure>
+
+      <para>Normally, text that you type will appear with your player
+	name, for example "<computeroutput>player1 said:
+	foo</computeroutput>". If you start your text with
+	"<userinput>:</userinput>" the output will omit the "said",
+	like "<computeroutput>player1 needs more
+	lumber</computeroutput>".</para>
+
+      <para>The chat also knows some special commands that start with
+      "<userinput>/</userinput>". The commands currently defined are:
+      <table frame="none" id="gnocatan-TBL-chatcommands">
+        <title>Chat Commands</title>
+	<tgroup cols="3">
+	  <thead>
+	    <row>
+	      <entry>Command</entry>
+	      <entry>Arguments</entry>
+	      <entry>Description</entry>
+	    </row>
+	  </thead>
+	  <tbody>
+	    <row>
+	      <entry><userinput>/me</userinput></entry>
+	      <entry>(anything)</entry>
+	      <entry>This is the same as the
+	      "<userinput>:</userinput>" described above, but IRC
+	      addicts might prefer this variant.</entry>
+	    </row>
+	    <row>
+	      <entry><userinput>/beep</userinput></entry>
+	      <entry><replaceable>username</replaceable></entry>
+	      <entry>Let <replaceable>username</replaceable>'s client
+	      beep.</entry>
+	    </row>
+	  </tbody>
+        </tgroup>
+      </table>
+      </para>
+    </sect2>
+
+    <sect2 id="messages">
+      <title>The messages panel</title>
+
+      <para>Underneath the chat panel is a message area where all
+        interesting game events are logged.</para>
+
+      <figure id="gnocatan-FIG-messages">
+	<title>The messages panel.</title>
+	<screenshot>
+	  <graphic fileref="images/messages.png"></graphic>
+	</screenshot>
+      </figure>
+    </sect2>
+
+    <sect2 id="statusbar">
+      <title>The status bar</title>
+
+      <para>The status bar is used for providing instructions about
+        the current state of the game.</para>
+
+      <para>To the right of the instructional message is an indicator
+        which shows when the client program is waiting for response to
+        a command sent to the server.  When packets are dropped
+        between the server and client, the indicator will display the
+        text &quot;Waiting&quot;, and the game will be temporarily
+        unresponsive.</para>
+
+      <para>Rightmost in the status bar is the turn indicator.  This
+        area identifies the player turn sequence.  The current player
+        is highlighted with a thick black border.</para>
+
+      <figure id="gnocatan-FIG-status">
+	<title>The status bar.</title>
+	<screenshot>
+	  <graphic fileref="images/status.png"></graphic>
+	</screenshot>
+      </figure>
+    </sect2>
+  </sect1>
+
+  <sect1 id="playing">
+    <title>Playing Gnocatan</title>
+
+    <sect2 id="joining">
+      <title>Joining a Gnocatan game.</title>
+
+      <para>The Gnocatan client program is
+        "<application>gnocatan</application>". When you run this
+        program, you will be presented with the connect dialog.</para>
+
+      <sect3 id="connect-dialog">
+        <title>The connect dialog</title>
+
+	<para>Using the connect dialog, you identify the game which
+          you wish to join.  This dialog is automatically invoked when
+          you start <symbol>gnocatan</symbol>.  If the initial
+          connection fails, you can invoke the dialog from the
+          <guimenu>Game</guimenu>/<guimenuitem>Connect</guimenuitem>
+          menu, or by using the
+          <keycombo><keycap>Ctrl</keycap><keycap>C</keycap></keycombo>
+          keyboard shortcut.</para>
+
+	<figure id="gnocatan-FIG-connect-dialog">
+	  <title>The connect dialog.</title>
+	  <screenshot>
+	    <graphic fileref="images/connect-dialog.png"></graphic>
+	  </screenshot>
+	</figure>
+
+	<para>You can manually specify the game that you wish to join
+          by entering the server host and port in the Server Host and
+          Server Port fields in the lower half. The client also
+          remembers server/port/username combinations you used
+          recently. You can recall them quickly with the Recent
+          Servers button at the bottom.</para>
+
+        <para>Alternatively, you can enter the name of a meta server
+          and press the Meta Server button, which will invoke the
+          servers dialog where you can locate games over the
+          Internet.</para>
+
+	<para>Using the Player Name field you can change the name that
+          will be used to identify you to other players.</para>
+
+	<para>Press the OK button to connect to the game.</para>
+      </sect3>
+
+      <sect3 id="server-dialog">
+        <title>The servers dialog</title>
+
+	<para>The servers dialog displays a list of Gnocatan games
+          that are currently running on the Internet.  When you select
+          a game from the list, the host and port fields in the
+          connect dialog will changed to point to that game.</para>
+
+	<figure id="gnocatan-FIG-servers-dialog">
+	  <title>The servers dialog.</title>
+	  <screenshot>
+	    <graphic fileref="images/servers-dialog.png"></graphic>
+	  </screenshot>
+	</figure>
+
+	<para>You join a game by selecting it and pressing the OK
+          button in the connect dialog. To obtain an updated list, you
+          must close the dialog and re-open it from the connect
+          dialog.</para>
+
+	<para>Recent meta servers also allow you to start new game
+	  servers on their host. If this is possible, the Create New
+	  Server button will be active and will bring you to the
+	  create server dialog.</para>
+
+      </sect3>
+
+      <sect3 id="server-create-dialog">
+        <title>The create server dialog</title>
+
+	<para>In this dialog, you can select various parameters for
+	  the new game: board name (available types will be retrieved
+	  from the meta-server), default or random terrain, which
+	  sevens rule to apply, the number of players, victory points
+	  to reach, and how many AI players should join the
+	  game.</para>
+
+	<figure id="gnocatan-FIG-server-create">
+	  <title>The create server dialog.</title>
+	  <screenshot>
+	    <graphic fileref="images/server-create.png"></graphic>
+	  </screenshot>
+	</figure>
+
+      <para>Once you're satisfied with your choices, press the Start
+        Server button. The create server and servers dialogs will pop
+        down, and server name and port will appear in the respective
+        fields of the connect dialog. The new server will of course
+        register to the meta server it was started from. You can see
+        it in the list if you press Query Meta Server again.</para>
+
+      <para>The server started remotely will terminate itself
+        automatically when the game is finished, or if sits around for
+        more than 20 minutes without any connected players. Please
+        also note that adding AI players will silently fail if the
+        <application>gnocatanai</application> program is not installed
+        on the meta server.</para>
+
+      </sect3>
+
+    </sect2>
+
+    <sect2 id="setup">
+      <title>Gnocatan setup phase.</title>
+
+      <para>Once you have successfully connected to a Gnocatan game
+        server, the game map will be downloaded from the server and
+        displayed in the map area of the display.  You will be
+        assigned a player color, which will be displayed in the
+        identity panel, the player summary, and in the status bar.  As
+        soon as all other players have connected to the server, the
+        setup phase will begin.</para>
+
+      <para>During the setup phase you must build one settlement and
+        one road segment on the map.  The settlement can be built on
+        any land hex, and the road must be built on a land edge
+        connected to the settlement.</para>
+
+      <para>Once you have built both your settlement and road, you
+        must press the Finish Setup button.  The next player will then
+        enter the setup phase.  The last player performs a double
+        setup, that is, they build two settlements, each with a
+        connecting road.  Once the last player has completed setup,
+        all other players perform a second setup in reverse
+        sequence.</para>
+
+      <para>Once the first player has completed their second setup,
+        the game will begin.</para>
+    </sect2>
+
+    <sect2 id="turn">
+      <title>Gnocatan turn sequence.</title>
+
+      <para>When it is your turn, the actions panel will show all of
+        the actions that you can perform.  Some care must be
+        exercised, as some actions can only be performed once per
+        turn, and other actions can only be performed in strict
+        sequence.</para>
+
+      <procedure id="gnocatan-turn-sequence">
+      	<title>Simplified turn sequence</title>
+      	<step>
+      	  <para>Roll the dice.</para>
+      	</step>
+      	<step>
+      	  <para>Optionally trade with the bank, or other
+      	    players.</para>
+      	</step>
+      	<step>
+      	  <para>Optionally build roads, settlements, and cities.
+      	    Optionally buy development cards.</para>
+      	</step>
+      	<step>
+      	  <para>Finish your turn.</para>
+      	</step>
+      </procedure>
+
+      <para>You may play one non-victory point development card at any
+        time during your turn, even before you roll the dice.  You
+        may play as many victory point cards as you like at any time
+        during your turn.</para>
+
+      <para>As soon as you have built a road, settlement, or city, you
+        will not be able to trade for the rest of the turn.  Likewise,
+        if you buy a development card, you will not be able to trade
+        for the rest of the turn.</para>
+
+      <sect3 id="gnocatan-dice-roll">
+        <title>Dice roll / resource collection</title>
+
+	<para>When the dice are rolled, they are added together,
+	  the total determines the resources that each player collects
+	  during that turn.  In the centre of each land hex (except
+	  for the desert) is a number.  Whenever the dice roll matches
+	  the number in the hex, all buildings on the corners of that
+	  hex will collect resources of the type generated by that
+	  hex.</para>
+
+	<para>Settlements collect one resource, and cities receive two
+	  resources.  If a player has multiple buildings on a hex,
+	  each of those buildings will collect resources.</para>
+
+	<para>The hex containing the robber never generates
+	  resources.</para>
+
+	<para>If you roll 7 on the dice, all players with excess
+	  resources must discard them, then you must move the
+	  robber.</para>
+      </sect3>
+
+      <sect3 id="discarding_resources">
+        <title>Discarding resources</title>
+
+	<para>If you roll 7 on the dice, all players holding more than
+	  7 resources must discard half of them.  The discard
+	  resources dialog will be displayed for all players who must
+	  discard.</para>
+
+	<figure id="gnocatan-FIG-discard-dialog">
+	  <title>The discard dialog.</title>
+	  <screenshot>
+	    <graphic fileref="images/discard-dialog.png"></graphic>
+	  </screenshot>
+	</figure>
+
+	<para>You must choose the resources to be given back to the
+	  bank.</para>
+
+	<para>Once all players have discarded their excess resources,
+	  the player who rolled the 7 will have to move the
+	  robber.</para>
+      </sect3>
+
+      <sect3 id="moving_robber">
+        <title>Moving the robber</title>
+
+	<para>The robber begins the game in the desert, but can never
+	  be moved back into the desert.</para>
+
+	<para>If you roll 7 on the dice, you must move the robber to a
+	  new location on the map.</para>
+
+	<para>Whenever you play a soldier development card, you must
+	  move the robber to a new location on the map.</para>
+
+	<para>Once you have moved the robber to a new hex, the robber
+	  will steal a random resource from another player who has a
+	  building on that hex.  If there are multiple potential
+	  victims for the robber, you will need to choose the victim
+	  by selecting one of the buildings on the hex.  When the
+	  robber steals the resource, only the players involved in the
+	  transaction will be told which resource was stolen.</para>
+      </sect3>
+    </sect2>
+
+      <sect2 id="trade">
+        <title>Trade</title>
+
+	<para>You may trade resources only after you have rolled the
+	  dice, but before you build anything, or buy a development
+	  card.  When you wish to trade resources, press the Trade
+	  button in the actions panel and the trade interface will be
+	  displayed.</para>
+	  
+	<figure id="gnocatan-FIG-trade">
+	  <title>The trade interface.</title>
+	  <screenshot>
+	    <graphic fileref="images/trade.png"></graphic>
+	  </screenshot>
+	</figure>
+
+	<para>On the left side of the interface are two frames; the
+	  top frame is where you specify which resources you wish to
+	  receive in a trade, and the bottom frame is where you
+	  optionally specify which resources you wish to give to other
+	  players during a trade.</para>
+
+	<para>Each frame contains a table, and each row of the table
+	  describes one resource.  From left to right, the columns
+	  are;</para>
+
+	<table frame="none" id="gnocatan-TBL-resource-controls">
+	  <title>Resource controls</title>
+	  <tgroup cols="2">
+	    <tbody>
+	      <row>
+	    	<entry>Name</entry>
+	    	<entry>The resource type.</entry>
+	      </row>
+	      <row>
+	    	<entry>In hand</entry>
+	    	<entry>Shows how many of each resource type you have
+	    	  in hand.</entry>
+	      </row>
+	      <row>
+	    	<entry>Check</entry>
+	    	<entry>Controls whether or not this resource will be
+	    	  involved in the trade.  Trade quotes submitted by
+	    	  either the bank or other players can only include
+	    	  resource types that are checked.</entry>
+	      </row>
+	      <row>
+	    	<entry>Less</entry>
+	    	<entry>Used later.</entry>
+	      </row>
+	      <row>
+	    	<entry>More</entry>
+	    	<entry>Used later.</entry>
+	      </row>
+	      <row>
+	    	<entry>Number to trade</entry>
+	    	<entry>Used later.</entry>
+	      </row>
+	    </tbody>
+	  </tgroup>
+	</table>
+
+	<para>The Call For Quotes button underneath the two tables is
+	  used to invite other players to trade resources with
+	  you.</para>
+
+	<para>To the right of the tables is the list where all quotes
+	  will be displayed.  The bank quotes are listed first,
+	  followed by all quotes supplied by other players. The first
+	  quote from each player is highlighted with an indicator.
+	  Next to each player quote is tick or cross which indicates
+	  whether or not you have the resources to perform the trade.
+	  As you select quotes from the list, the Accept Quote button
+	  sensitivity will also indicate whether or not you have the
+	  resources required to perform the trade.</para>
+
+	<para>To finish trading, press the Finish Trading button at
+	  the bottom right of the trading interface.</para>
+
+	<sect3 id="bank_trading">
+	  <title>Trading with the bank</title>
+	
+	  <para>Maritime trade is trade performed with the bank.  To
+	    perform maritime trading, check one or more resources in
+	    the I Want table.  If you have sufficient resources to
+	    perform maritime trading, the bank will quote for each
+	    possible trade.</para>
+
+	  <procedure id="gnocatan-bank-trading-procedure">
+	    <step>
+	      <para>Players who have built on a port with a resource
+	  	label may trade two identical resources of that type
+	  	for single resource of their choice.</para>
+	    </step>
+	    <step>
+	      <para>Players who have built on a port with the question
+	  	mark label may trade three identical resources of any
+	  	type for single resource of their choice.</para>
+	    </step>
+	    <step>
+	      <para>All players may trade four identical resources of
+	  	any type for a single resource of their choice.</para>
+	  	</step>
+	  </procedure>
+
+	  <para>Select the trade that you wish to perform, then press
+	    the Accept Quote button.</para>
+	</sect3>
+
+	<sect3 id="trading_players">
+	  <title>Trading with other players</title>
+
+	  <para>Domestic trade is trade performed with other players.
+	    To perform domestic trading, check one or more resources
+	    in the I Want table, and one or more resources in the Give
+	    Them table.  Once you have specified the resources that
+	    you wish to exchange in the trade, click the Call For
+	    Quotes button.  All other players will then use the quote
+	    interface to submit quotes within the trade parameters you
+	    have set.</para>
+
+	  <para>Select the trade that you wish to perform, then press
+	    the Accept Quote button.</para>
+	</sect3>
+
+	<sect3 id="trade_quote_submit">
+	  <title>Submitting trade quotes</title>
+
+	  <para>When another player presses the Call For Quotes button
+	    in the trade interface, the quote interface will be
+	    displayed.</para>
+
+	  <figure id="gnocatan-FIG-quote">
+	    <title>The quote interface.</title>
+	    <screenshot>
+	      <graphic fileref="images/quote.png"></graphic>
+	    </screenshot>
+	  </figure>
+
+	  <para>The top of the interface has an indicator to show
+	    which player initiated the trade.  It also describes the
+	    trade parameters.</para>
+
+	  <para>On the left side of the interface are two frames; the
+	    top frame is where you specify which resources you wish to
+	    receive in a trade, and the bottom frame is where you
+	    specify which resources you wish to give to the player who
+	    initiated the trade exchange.</para>
+	  
+	  <para>Each frame contains a table, and each row of the table
+	    describes one resource.  The player who initiated the
+	    trade controls which rows in each table can be used.  If
+	    the initiating player calls for a resource that you do not
+	    have, the corresponding row in the Give Them table will be
+	    disabled.  From left to right, the columns are;</para>
+	  
+	  <table frame="none" id="gnocatan-TBL-quote-controls">
+	    <title>Resource controls</title>
+	    <tgroup cols="2">
+	      <tbody>
+	  	<row>
+	  	  <entry>Name</entry>
+	  	  <entry>The resource type.</entry>
+	  	</row>
+	  	<row>
+	  	  <entry>In hand</entry>
+	  	  <entry>Shows how many of each resource type you will
+	  	    have in hand after performing trade.</entry>
+	  	</row>
+	  	<row>
+	  	  <entry>Less</entry>
+	  	  <entry>Press this to decrease the number of the
+	  	    resource you wish to receive / give.</entry>
+	  	</row>
+	  	<row>
+	  	  <entry>More</entry>
+	  	  <entry>Press this to increase the number of the
+	  	    resource you wish to receive / give.</entry>
+	  	</row>
+	  	<row>
+	  	  <entry>Number to trade</entry>
+	  	  <entry>Shows how many of the resource you wish to
+	  	    trade.</entry>
+	  	</row>
+	      </tbody>
+	    </tgroup>
+	  </table>
+
+	  <para>Underneath the tables are two buttons.  Press the
+	    Quote button to submit a new quote, or press the Delete
+	    button to retract a quote.  Note that the Quote button
+	    will be disabled if you have already submitted a matching
+	    quote.</para>
+
+	  <para>To the right of the tables is the list where all
+	    quotes will be displayed.  Quotes from all players are
+	    listed. The first quote from each player is highlighted
+	    with an indicator.</para>
+
+	  <para>To decline the offer to perform trading, press the
+	    Reject Domestic Trade button at the bottom right of the
+	    interface.</para>
+	</sect3>
+    </sect2>
+
+    <sect2 id="development">
+      <title>Development cards.</title>
+
+      <para>There are 25 development cards in the game, they are
+	shuffled at the start of the game.  When you buy a development
+	card from the bank, it is held secret in your hand.  Other
+	players only learn how many development cards you have, not
+	the types of those cards.</para>
+
+      <para>When you play a development card, all other players will
+	see the card.  There are victory point, and non victory point
+	development cards.  Victory point development cards earn you
+	one victory point as soon as you play them.  Non-victory point
+	development cards have special effects as described
+	below.</para>
+
+      <table frame="none" id="gnocatan-TBL-development-cards">
+	<title>Development cards</title>
+	<tgroup cols="4">
+	  <thead>
+	    <row>
+	      <entry>VP</entry>
+	      <entry>Card</entry>
+	      <entry>Number</entry>
+	      <entry>Description</entry>
+	    </row>
+	  </thead>
+	  <tbody>
+	    <row>
+	      <entry></entry>
+	      <entry>Road Building</entry>
+	      <entry>2</entry>
+	      <entry>When you play this card, you can build two road
+		segments for free.  The normal limits on road building
+		apply.</entry>
+	    </row>
+	    <row>
+	      <entry></entry>
+	      <entry>Monopoly</entry>
+	      <entry>2</entry>
+	      <entry>When you play this card, you choose a resource type
+		that you want to monopolise.  All resources of that type
+		that are held by other players will transferred to your
+		hand.</entry>
+	    </row>
+	    <row>
+	      <entry></entry>
+	      <entry>Year of Plenty</entry>
+	      <entry>2</entry>
+	      <entry>When you play this card you can take any two
+		resource cards from the bank.</entry>
+	    </row>
+	    <row>
+	      <entry></entry>
+	      <entry>Soldier</entry>
+	      <entry>14</entry>
+	      <entry>When you play this card, you must move the robber
+		to a new hex.  The first player to play three soldiers
+		will earn the largest army award.</entry>
+	    </row>
+	    <row>
+	      <entry>1</entry>
+	      <entry>Chapel</entry>
+	      <entry>1</entry>
+	      <entry>No special effects.</entry>
+	    </row>
+	    <row>
+	      <entry>1</entry>
+	      <entry>University of Gnocatan</entry>
+	      <entry>1</entry>
+	      <entry>No special effects.</entry>
+	    </row>
+	    <row>
+	      <entry>1</entry>
+	      <entry>Governors House</entry>
+	      <entry>1</entry>
+	      <entry>No special effects.</entry>
+	    </row>
+	    <row>
+	      <entry>1</entry>
+	      <entry>Library</entry>
+	      <entry>1</entry>
+	      <entry>No special effects.</entry>
+	    </row>
+	    <row>
+	      <entry>1</entry>
+	      <entry>Market</entry>
+	      <entry>1</entry>
+	      <entry>No special effects.</entry>
+	    </row>
+          </tbody>
+        </tgroup>
+      </table>
+
+      <sect3 id="monopolydlg">
+        <title>The monopoly dialog</title>
+
+	<para>When you play the monopoly development card, the
+	  monopoly dialog will be displayed.</para>
+
+	<figure id="gnocatan-FIG-monopoly-dialog">
+	  <title>The monopoly dialog.</title>
+	  <screenshot>
+	    <graphic fileref="images/monopoly-dialog.png"></graphic>
+	  </screenshot>
+	</figure>
+
+	<para>You must choose the resource type that you wish to
+	  monopolise.  When you press OK, all resources of the
+	  selected type held by other players will be transferred to
+	  your hand.</para>
+      </sect3>
+
+      <sect3 id="yearofplentydlg">
+        <title>The year of plenty dialog</title>
+
+	<para>When you play the year of plenty development card, the
+	  year of plenty dialog will be displayed.</para>
+
+	<figure id="gnocatan-FIG-plenty-dialog">
+	  <title>The year of plenty dialog.</title>
+	  <screenshot>
+	    <graphic fileref="images/plenty-dialog.png"></graphic>
+	  </screenshot>
+	</figure>
+
+	<para>You must select any two resource cards that you wish to
+	  take from the bank.</para>
+      </sect3>
+
+      <sect3 id="largest_army">
+        <title>Largest army</title>
+
+	<para>The first player to play three soldier cards will earn
+	  the largest army award.  This award is worth 2 victory
+	  points.</para>
+
+	<para>Only one player can have the largest army award at a
+	  time.</para>
+
+	<para>Ownership of the largest army award will change only
+	  when another player builds a larger army.</para>
+      </sect3>
+    </sect2>
+
+    <sect2 id="building">
+      <title>Building</title>
+
+      <para>By spending the right combination of resources, you can
+	build roads, settlements, and cities.  At any time during the
+	game you can check the resource cost of each type of building
+	by consulting the legend dialog.</para>
+
+      <figure id="gnocatan-FIG-legend-dialog">
+	<title>The legend dialog.</title>
+	<screenshot>
+	  <graphic fileref="images/legend-dialog.png"></graphic>
+	</screenshot>
+      </figure>
+
+      <para>At the start of the game, you have 15 road segments, five
+	settlements, and four cities available.  You will not be able
+	to build more of any item than you have available.  The
+	identity panel tells you how many of each item you currently
+	have available.</para>
+
+      <para>A city is built by upgrading a settlement.  When you
+	upgrade an existing settlement, that settlement is again
+	available for building somewhere else on the map.  If you have
+	sufficient resources, you can build a settlement and upgrade
+	it to a city in a single action, even when you do not have
+	settlements available.</para>
+
+      <para>Buildings must not be placed next to each other.  This
+	means that a hex can have at most, three buildings on it.
+	During game play, you can only place a building adjacent to
+	one of your road segments.</para>
+
+      <para>Roads must be placed adjacent to one of your buildings, or
+	one of your roads.  You cannot extend your road through a
+	building owned by another player.</para>
+
+      <sect3 id="longest_road">
+	<title>Longest road</title>
+	
+	<para>The first player to build a continuous path of five or
+	  more road segments will earn the longest road award.  The
+	  length of your road is measured by determining the greatest
+	  distance that can be travelled from one point on your road
+	  to another without travelling over the same segment more
+	  than once, and without backtracking.</para>
+	
+	<para>This award is worth 2 victory points.  Only one player
+	  can have the longest road award at a time.</para>
+	
+	<para>If another player builds a longer road, the longest road
+	  award will be transferred to that player.</para>
+	
+	<para>If the longest road is cut by a player placing a
+	  building which divides the road, the ownership of the
+	  longest road award is re-evaluated.  If after the longest
+	  road has been cut, and more than one player has the longest
+	  road, the award is temporarily removed from play.  If no
+	  player has a road of five or more segments, the award is
+	  temporarily removed from play.</para>
+      </sect3>
+    </sect2>
+
+    <sect2 id="objective">
+      <title>Game objective</title>
+
+      <para>The objective of the game is to achieve a certain number
+        of victory points before all other players.  There are several
+        ways to earn victory points.</para>
+
+      <itemizedlist mark="bullet">
+	<listitem>
+	  <para>For each settlement you have on the map, you earn 1
+	    victory point.</para>
+	</listitem>
+	<listitem>
+	  <para>For each city you have on the map, you earn 2
+	    victory points.</para>
+	</listitem>
+	<listitem>
+	  <para>The player with the longest road of five or more
+	    segments earns 2 victory points.</para>
+	</listitem>
+	<listitem>
+	  <para>The player with the largest number of soldiers in
+	    play (minimum of three) earns 2 victory points.</para>
+	</listitem>
+	<listitem>
+	  <para>There are a number of special development cards which
+	    when played are each worth 1 victory point.</para>
+	</listitem>
+      </itemizedlist>
+
+      <sect3 id="gameoverdlg">
+        <title>The game over dialog</title>
+
+	<para>Once you have won the game, all players will to notified
+	  of your glorious victory.</para>
+
+	<figure id="gnocatan-FIG-gameover-dialog">
+	  <title>The game over dialog.</title>
+	  <screenshot>
+	    <graphic fileref="images/gameover-dialog.png"></graphic>
+	  </screenshot>
+	</figure>
+      </sect3>
+    </sect2>
+  </sect1>
+
+  <sect1 id="ai">
+    <title>The AI Player</title>
+
+    <para>
+      Starting with version 0.7.0, Gnocatan comes with
+      <application>gnocatanai</application>, a computer player
+      implementation. This AI player isn't too bad at the moment, but
+      not finished yet. Most notably, it cannot take part in domenstic
+      trade yet.
+    </para>
+
+    <para>
+      <application>gnocatanai</application> is a terminal application
+      without GUI. Its command line options are:
+
+      <table frame="none" id="gnocatan-TBL-ai-options">
+	<title><application>gnocatanai</application> options</title>
+	<tgroup cols="3">
+	  <thead>
+	    <row>
+	      <entry>Option</entry>
+	      <entry>Arguments</entry>
+	      <entry>Description</entry>
+	    </row>
+	  </thead>
+	  <tbody>
+	    <row>
+	      <entry>-s</entry>
+	      <entry><replaceable>servername</replaceable></entry>
+	      <entry>Connect to <replaceable>servername</replaceable></entry>
+	    </row>
+	    <row>
+	      <entry>-p</entry>
+	      <entry><replaceable>port</replaceable></entry>
+	      <entry>Connect to port <replaceable>port</replaceable></entry>
+	    </row>
+	    <row>
+	      <entry>-n</entry>
+	      <entry><replaceable>name</replaceable></entry>
+	      <entry>Set the player name. If this option is absent, a
+	      random name will be choosen.</entry>
+	    </row>
+	    <row>
+	      <entry>-a</entry>
+	      <entry><replaceable>playertype</replaceable></entry>
+	      <entry>Choose the type of AI player. Currently, there is
+	      only one type <userinput>greedy</userinput>, which is
+	      obviously also the default.</entry>
+	    </row>
+	    <row>
+	      <entry>-t</entry>
+	      <entry><replaceable>milliseconds</replaceable></entry>
+	      <entry>Set time to wait between turns.</entry>
+	    </row>
+	    <row>
+	      <entry>-c</entry>
+	      <entry></entry>
+	      <entry>Stop the computer player from giving comments.</entry>
+	    </row>
+	  </tbody>
+	</tgroup>
+      </table>
+    </para>
+
+    <para>
+      However, most of the time you won't start
+      <application>gnocatanai</application> manually. Both game
+      servers offer ways to start a number of AI players.
+    </para>
+
+  </sect1>
+</article>

@@ -863,14 +863,14 @@ GtkWidget *connect_create_dlg()
  	gchar     *saved_meta_server;
 	gchar     *saved_port;
 	gchar     *saved_name;
-	gint      novar, i;
+	gint      i;
 	gchar host_name[150], host_port[150], host_user[150], temp_str[150];
 	gboolean default_returned;
 
-	saved_server = config_get_string("connect/server=localhost",&novar);
- 	novar = 0;
- 	saved_meta_server = config_get_string("connect/meta-server",&novar);
- 	if (novar) {
+	saved_server = config_get_string("connect/server=localhost",&default_returned);
+ 	default_returned = FALSE;
+ 	saved_meta_server = config_get_string("connect/meta-server",&default_returned);
+ 	if (default_returned) {
  		if (!(saved_meta_server = g_strdup(getenv("GNOCATAN_META_SERVER"))))
  			saved_meta_server = g_strdup(DEFAULT_META_SERVER);
  	} else if (!strcmp(saved_meta_server,OLD_META_SERVER)) {
@@ -878,10 +878,10 @@ GtkWidget *connect_create_dlg()
  		if (!(saved_meta_server = g_strdup(getenv("GNOCATAN_META_SERVER"))))
  			saved_meta_server = g_strdup(DEFAULT_META_SERVER);
 	}
-	saved_port = config_get_string("connect/port=5556", &novar);
-	novar = 0;
-	saved_name = config_get_string("connect/name", &novar);
-	if (novar) {
+	saved_port = config_get_string("connect/port=5556", &default_returned);
+	default_returned = FALSE;
+	saved_name = config_get_string("connect/name", &default_returned);
+	if (default_returned) {
 		saved_name = g_strdup(g_get_user_name());
 	}
 
@@ -1008,17 +1008,17 @@ GtkWidget *connect_create_dlg()
 	gtk_widget_show(host_menu);
 
 	for (i = 0; i < 10; i++) {
-		sprintf(temp_str, "/gnocatan/favorites/server%dname=", i);
+		sprintf(temp_str, "favorites/server%dname=", i);
 		strcpy(host_name, config_get_string(temp_str, &default_returned));
-		if (default_returned == 1 || !strlen(host_name)) break;
+		if (default_returned || !strlen(host_name)) break;
 
-		sprintf(temp_str, "/gnocatan/favorites/server%dport=", i);
+		sprintf(temp_str, "favorites/server%dport=", i);
 		strcpy(host_port, config_get_string(temp_str, &default_returned));
-		if (default_returned == 1 || !strlen(host_port)) break;
+		if (default_returned || !strlen(host_port)) break;
 
-		sprintf(temp_str, "/gnocatan/favorites/server%duser=", i);
+		sprintf(temp_str, "favorites/server%duser=", i);
 		strcpy(host_user, config_get_string(temp_str, &default_returned));
-		if (default_returned == 1) break;
+		if (default_returned) break;
 
 		sprintf(temp_str, "%s:%s - %s", host_name, host_port, host_user);
 

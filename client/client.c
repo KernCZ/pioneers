@@ -575,14 +575,10 @@ static gboolean mode_connect(StateMachine *sm, gint event)
 		gui_set_net_status(_("Connecting"));
 		
 		/* Save connect dialogue entries */
-		config_set_string("connect/server",
-					connect_get_server());
-		config_set_string("connect/port",
-					connect_get_port_str());
-		config_set_string("connect/meta-server",
-					connect_get_meta_server());
-		config_set_string("connect/name",
-					connect_get_name());
+		config_set_string("connect/server", connect_get_server());
+		config_set_string("connect/port", connect_get_port_str());
+		config_set_string("connect/meta-server", connect_get_meta_server());
+		config_set_string("connect/name", connect_get_name());
 		
 		copy_player_name(connect_get_name());
 		if (sm_connect(sm, connect_get_server(), connect_get_port_str())) {
@@ -662,22 +658,13 @@ static gboolean mode_start(StateMachine *sm, gint event)
 
 		return TRUE;
 	}
-	if(sm_recv(sm, "sorry, version conflict"))
+	if(sm_recv(sm, "ERR sorry, version conflict"))
 	{
 		sm_pop_all(sm);
 		sm_goto(sm, mode_offline);
 		gui_set_net_status(_("Offline"));
 		gui_set_instructions(_("Version mismatch"));
 		log_message( MSG_ERROR, "Connect Error: Version mismatch! Please make sure client and server are up to date.\n");
-		return TRUE;
-	}
-	if(sm_recv(sm, "sorry, game is full"))
-	{
-		sm_pop_all(sm);
-		sm_goto(sm, mode_offline);
-		gui_set_net_status(_("Offline"));
-		gui_set_instructions(_("Game is full"));
-		log_message( MSG_ERROR, "Connect Error: This game is full." );
 		return TRUE;
 	}
 	return check_chat_or_name(sm);

@@ -641,6 +641,7 @@ int main(int argc, char *argv[])
 	/* Create the application window
 	 */
 	app = gnome_app_new("gnocatan-server", _("Gnocatan Server"));
+	gtk_window_set_default_icon_from_file(gnome_pixmap_file("gnome-gnocatan.png"), NULL);
 	gtk_widget_realize(app);
 	gtk_signal_connect(GTK_OBJECT(app), "delete_event",
 			   GTK_SIGNAL_FUNC(quit_cb), NULL);
