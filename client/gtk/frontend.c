@@ -40,6 +40,25 @@ static void set_sensitive (UNUSED(void *key), GuiWidgetState *gui,
 
 	if (gui->widget != NULL && gui->next != gui->current) {
 		gtk_widget_set_sensitive(gui->widget, gui->next);
+		/* HACK Workaround for Gtk bug 157932, fixed in Gtk+-2.5.4
+		 * If mouse is over a toolbar button that becomes sensitive,
+		 * one can't click it without moving the mouse out and in
+		 * again. This bug is registered in Bugzilla as a Gtk bug.
+		 * The workaround tests if the
+		 * mouse is inside the currently sensitivized button, and if
+		 * yes calls button_enter(). */
+		if (gui->next && GTK_IS_BUTTON(gui->widget)) {
+			gint x, y, state;
+			gtk_widget_get_pointer(gui->widget, &x, &y);
+			state = GTK_WIDGET_STATE(gui->widget);
+			if (state == GTK_STATE_NORMAL &&
+				x >= 0 && y >= 0 &&
+				x < (gui->widget)->allocation.width &&
+				y < (gui->widget)->allocation.height) {
+				gtk_button_enter(GTK_BUTTON(gui->widget));
+				GTK_BUTTON(gui->widget)->in_button = TRUE;
+			}
+		}
 	}
 	gui->current = gui->next;
 	gui->next = FALSE;
