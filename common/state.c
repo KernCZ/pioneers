@@ -583,7 +583,7 @@ void sm_push(StateMachine *sm, StateFunc new_state)
 	sm->stack[sm->stack_ptr] = new_state;
 	route_event(sm, SM_ENTER);
 #ifdef STACK_DEBUG
-	log_info("sm_push -> %d:%s\n", sm->stack_ptr, sm->current_state);
+	log_message( MSG_INFO, "sm_push -> %d:%s\n", sm->stack_ptr, sm->current_state);
 #endif
 	route_event(sm, SM_INIT);
 
