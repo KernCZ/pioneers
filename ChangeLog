@@ -3,6 +3,8 @@
 	server/server.c, server/server.h: Move the register-server,
 	server-port, and random-order fields from the GameParams object to
 	the Game object.
+	* client/gtk/resource-table.c (resource_table_new): Removed the use of
+	a fixed-size buffer.
 
 2005-03-14  0.8.1.56  Brian Wellington <bwelling@xbill.org>
 	* common/gtk/aboutbox.c, common/gtk/aboutbox.h, common/gtk/Makefile.am,
