@@ -69,8 +69,6 @@ static Param game_params[] = {
 	{ PARAM_V(develop-market, PARAM_INT, num_develop_type[DEVEL_MARKET]) },
 	{ PARAM_V(develop-soldier, PARAM_INT, num_develop_type[DEVEL_SOLDIER]) },
 	{ PARAM(chits, PARAM_INT_LIST) },
-	{ PARAM_V(register-server, PARAM_BOOL, register_server) },
-	{ PARAM_V(server-port, PARAM_STRING, server_port) },
 	{ PARAM_V(tournament-time, PARAM_INT, tournament_time) },
 	{ PARAM_V(use-pirate, PARAM_BOOL, use_pirate) }
 };
@@ -90,8 +88,6 @@ void params_free(GameParams *params)
 
 	if (params->title != NULL)
 		g_free(params->title);
-	if (params->server_port != NULL)
-		g_free(params->server_port);
 	if (params->map != NULL)
 		map_free(params->map);
 	if (params->chits != NULL)

@@ -75,7 +75,7 @@ void meta_send_details(Game *game)
 		   "version=%s\n"
 		   "max=%d\n"
 		   "curr=%d\n",
-		   game->params->server_port, PROTOCOL_VERSION,
+		   game->server_port, PROTOCOL_VERSION,
 		   game->params->num_players, game->num_players);
 	/* Hostname is empty */
 	if (game->hostname && !strlen(game->hostname)) {

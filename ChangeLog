@@ -1,3 +1,9 @@
+2005-03-16  Brian Wellington <bwelling@xbill.org>
+	* common/game.c, common/game.h, server/meta.c, server/player.c,
+	server/server.c, server/server.h: Move the register-server,
+	server-port, and random-order fields from the GameParams object to
+	the Game object.
+
 2005-03-14  0.8.1.56  Brian Wellington <bwelling@xbill.org>
 	* common/gtk/aboutbox.c, common/gtk/aboutbox.h, common/gtk/Makefile.am,
 	client/gtk/gui.c, server/gtk/gnocatan-server-gtk.c: Add common code for

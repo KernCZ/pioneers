@@ -96,6 +96,10 @@ struct Game {
 	gint num_develop;	/* number of development cards */
 	gint *develop_deck;	/* development cards */
 	gint develop_next;	/* next development card to deal */
+
+	gboolean register_server; /* register game with meta-server? */
+	gchar *server_port;	/* port to run game on */
+	gboolean random_order;	/* is turn order randomized? */
 };
 
 /* buildutil.c */

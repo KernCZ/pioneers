@@ -174,6 +174,8 @@ void game_free(Game *game)
 		player_remove(player);
 		player_free(player);
 	}
+	if (game->server_port != NULL)
+		g_free(game->server_port);
 	g_free(game);
 }
 
@@ -288,14 +290,14 @@ static gboolean game_server_start(Game *game)
 		meta_server_name = get_meta_server_name(TRUE);
 	}
 	
-	game->accept_fd = open_listen_socket( game->params->server_port );
+	game->accept_fd = open_listen_socket( game->server_port );
 	if( game->accept_fd < 0 )
 		return FALSE;
 	
 	game->accept_tag = driver->input_add_read(game->accept_fd,
 			(InputFunc)player_connect, game);
 
-	if (game->params->register_server)
+	if (game->register_server)
 		meta_register(meta_server_name, GNOCATAN_DEFAULT_META_PORT, game);
 	return TRUE;
 }
@@ -325,11 +327,11 @@ gboolean server_startup(GameParams *params, const gchar *hostname,
 			get_rand(1000));
 
 	curr_game = game_new(params);
-	g_assert(curr_game->params->server_port == NULL);
-	curr_game->params->server_port = g_strdup(port);
-	curr_game->params->register_server = meta;
+	g_assert(curr_game->server_port == NULL);
+	curr_game->server_port = g_strdup(port);
+	curr_game->register_server = meta;
 	curr_game->hostname = g_strdup(hostname);
-	curr_game->params->random_order = random_order;
+	curr_game->random_order = random_order;
 	if (game_server_start(curr_game))
 		return TRUE;
 	game_free(curr_game);

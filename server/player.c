@@ -52,7 +52,7 @@ static gint next_player_num(Game *game, gboolean force_viewer)
 		}
 		playerlist_dec_use_count(game);
 
-		if (game->params->random_order)
+		if (game->random_order)
 		{
 			gint empty = 0, skip;
 			for (idx = 0; idx < game->params->num_players; idx++)
@@ -151,7 +151,7 @@ static gboolean tournament_start_cb(gpointer data)
 		     "NOTE Game starts, adding computer players\n");
     /* add computer players to start game */
     for (i = game->num_players; i < game->params->num_players; i++) {	
-	new_computer_player(NULL, game->params->server_port);
+	new_computer_player(NULL, game->server_port);
     }
 
     return FALSE;

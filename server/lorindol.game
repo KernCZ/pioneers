@@ -16,7 +16,6 @@ develop-chapel 5
 develop-university 5
 develop-governor 5
 chits 2,2,3,4,5,6,8,9,10,11,12
-register-server 0
 map
 s,f7,d,f8,sg3,s,s,s,s,s,s,s,sg5,f12,d,f3,d,f13,d,d,f122,d,s,d,d
 s,f11,f2,f163,s,s,s,s,s,s,s,s,f16,d,f17,s,d,f102,d,d,f150,sg0,f157,f154,d

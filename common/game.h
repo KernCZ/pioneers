@@ -68,9 +68,6 @@ typedef struct {
 	gint num_build_type[NUM_BUILD_TYPES]; /* number of each build type */
 	gint resource_count;	/* number of each resource */
 	gint num_develop_type[NUM_DEVEL_TYPES]; /* number of each development */
-	gboolean register_server; /* register game with meta-server? */
-	gchar *server_port;	/* port to run game on */
-	gboolean random_order;  /* is turn order randomized? */
 	GArray *chits;		/* chit sequence */
 	Map *map;		/* the game map */
 	gboolean parsing_map;	/* currently parsing map? */ /* Not in game_params[] */
