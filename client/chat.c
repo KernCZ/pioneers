@@ -65,15 +65,13 @@ void chat_parser( gint player_num, char chat_str[MAX_CHAT] )
 	{
 		case ':':
 			chat_str += 1;
-			log_timestamp = 0;
-			log_message( MSG_INFO, " ");
+			log_message_continue( MSG_INFO, " ");
 			break;
 		case ';':
 			chat_str += 1;
 			break;
 		default:
-			log_timestamp = 0;
-			log_message( MSG_INFO, _(" said: "));
+			log_message_continue( MSG_INFO, _(" said: "));
 			break;
 	}
 
@@ -109,8 +107,7 @@ void chat_parser( gint player_num, char chat_str[MAX_CHAT] )
 		tempchatcolor = MSG_CHAT;
 	}
 	
-	log_timestamp = 0;
-	log_message( tempchatcolor, "%s\n", chat_str );
+	log_message_continue( tempchatcolor, "%s\n", chat_str );
 	
 	return;
 }

@@ -96,6 +96,21 @@ void log_message_using_func(LogFunc logfunc, gint msg_type, gchar *fmt, ...)
  *   then through LOG_FUNC_DEFAULT) after turning the params into a single
  *   string.
  */
+void log_message_continue(gint msg_type, gchar *fmt, ...)
+{
+	gchar text[1024];
+	va_list ap;
+	
+	va_start(ap, fmt);
+	g_vsnprintf(text, sizeof(text), fmt, ap);
+	va_end(ap);
+
+	if( driver->log_write )
+		driver->log_write( msg_type, text );
+	else
+		LOG_FUNC_DEFAULT( msg_type, text );
+}
+
 void log_message(gint msg_type, gchar *fmt, ...)
 {
 	gchar text[1024];
@@ -103,26 +118,21 @@ void log_message(gint msg_type, gchar *fmt, ...)
 	va_list ap;
 	time_t t;
 	struct tm *alpha;
-	
+
 	va_start(ap, fmt);
 	g_vsnprintf(text, sizeof(text), fmt, ap);
 	va_end(ap);
 
-	if (log_timestamp == 1) {
-		t = time(NULL);
-		alpha = localtime(&t);
+	t = time(NULL);
+	alpha = localtime(&t);
 
-		sprintf(timestamp, "%02d:%02d:%02d ", alpha->tm_hour,
-				alpha->tm_min, alpha->tm_sec);
+	sprintf(timestamp, "%02d:%02d:%02d ", alpha->tm_hour,
+			alpha->tm_min, alpha->tm_sec);
 
-		if( driver->log_write )
-			driver->log_write( MSG_INFO, timestamp );
-		else
-			LOG_FUNC_DEFAULT( MSG_INFO, timestamp );
-			
-	} else {
-		log_timestamp = 1;
-	}
+	if( driver->log_write )
+		driver->log_write( MSG_INFO, timestamp );
+	else
+		LOG_FUNC_DEFAULT( MSG_INFO, timestamp );
 
 	if( driver->log_write )
 		driver->log_write( msg_type, text );

@@ -709,12 +709,12 @@ void player_stole_from(gint player_num, gint victim_num, Resource resource)
 	if (resource == NO_RESOURCE) {
 		/* We are not in on the action
 		 */
-		log_message( MSG_STEAL, "%s",
-			 player_name(player_num, TRUE));
-		log_timestamp = 0;
-		log_message( MSG_STEAL, _(" stole a resource from "));
-		log_timestamp = 0;
-		log_message( MSG_STEAL, "%s.\n", player_name(victim_num, FALSE));
+		 /* CHECK THIS: Since anonymous players (NULL) no longer exist,
+		  *  player_name doesn't use its static buffer anymore, and
+		  * two calls can be safely combined. If not: ai/player.c should also be fixed */
+		log_message( MSG_STEAL, _("%s stole a resource from %s.\n"),
+			player_name(player_num, TRUE),
+			player_name(victim_num, FALSE));
 		return;
 	}
 

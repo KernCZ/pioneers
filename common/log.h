@@ -10,8 +10,6 @@
 #ifndef __log_h
 #define __log_h
 
-int log_timestamp;
-
 /* Only define if not already defined. */
 #ifndef N_
 #ifdef ENABLE_NLS
@@ -105,5 +103,5 @@ void log_message_using_func( LogFunc logfunc, gint msg_type, gchar *fmt, ... );
  *   string.
  */
 void log_message( gint msg_type, gchar *fmt, ... );
-
+void log_message_continue( gint msg_type, gchar *fmt, ... );
 #endif /* __log_h */
