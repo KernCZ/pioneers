@@ -1,3 +1,10 @@
+2002-06-17  Roman Hodek  <roman@hodek.net>
+
+	* ai/ai.c (main): result of getopt must be stored in an int.
+
+	* client/connect.c (connect_create_dlg): saved_meta_server must be
+	strdup-ped if coming from env or fixed str.
+
 2002-06-12  Jeff Breidenbach  <jab@debian.org>
 
 	* debian/control: package description tweaks 
