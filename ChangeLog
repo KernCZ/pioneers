@@ -1,3 +1,8 @@
+2000-06-07  Steve Langasek <vorlon@dodds.net>
+
+	* common/game.h: Removed redundant 'VERSION' define in header.
+	We have config.h, let's start using it.
+
 2000-06-07  Dave Cole <dave@dccs.com.au>
 
 	* client/legend.c (legend_create_dlg): Fixed segfault

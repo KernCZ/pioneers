@@ -10,12 +10,11 @@
 #ifndef __game_h
 #define __game_h
 
-#define VERSION "0.5.5"
-
-#define numElem(a) (sizeof(a)/sizeof(a[0]))
-
+#include "config.h"
 #include "map.h"
 #include "driver.h"
+
+#define numElem(a) (sizeof(a)/sizeof(a[0]))
 
 typedef enum {
 	DEVEL_ROAD_BUILDING,
