@@ -3,6 +3,10 @@
 	it would set the client to the state turn when performing a maritime
 	trade. Added a reset of the have_turn flag when game over is reached.
 
+2005-03-02  Brian Wellington <bwelling@users.sourceforge.net>
+	* client/gtk/interface.c: Disable the reject button when the trade was
+	already rejected.
+
 2005-02-05  0.8.1.53  Roland Clobus <rclobus@bigfoot.com>
 	* server/gnocatan-server.c, meta-server/gnocatan-meta-server.c: Forgot
 	the NULL termination of g_build_filename, pointed out by Brian

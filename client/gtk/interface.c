@@ -171,7 +171,7 @@ static void frontend_state_quote (GuiEvent event)
 	case GUI_UPDATE:
 		frontend_gui_check(GUI_QUOTE_SUBMIT, can_submit_quote());
 		frontend_gui_check(GUI_QUOTE_DELETE, can_delete_quote());
-		frontend_gui_check(GUI_QUOTE_REJECT, TRUE);
+		frontend_gui_check(GUI_QUOTE_REJECT, !already_rejected);
 		break;
 	case GUI_QUOTE_SUBMIT:
 		cb_quote (quote_next_num (), quote_we_supply (),
