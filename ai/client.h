@@ -32,8 +32,6 @@ void client_start(const char *server, const char *port, const char *username,
 void client_change_my_name(gchar *name);
 void client_chat(chat_t occasion, void *param, gboolean self, gint other);
 gboolean client_connected(void);
-void client_changed_cb(void);
-void client_event_cb(GtkWidget *widget, gint event);
 void client_gui(GtkWidget *widget, gint event, gchar *signal);
 void client_gui_destroy(GtkWidget *widget, gint event);
 

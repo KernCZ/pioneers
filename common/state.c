@@ -37,19 +37,6 @@
 #include "state.h"
 #include "cost.h"
 
-/* All events are held in a hash table which is keyed by event id
- */
-static guint hash_int(gconstpointer key)
-{
-	guint hash_val = 0;
-	const char* ptr = (const char*)&key;
-	int idx;
-
-	for (idx = 0; idx < sizeof(key); idx++)
-		hash_val = hash_val * 33 + *ptr++;
-	return hash_val;
-}
-
 void sm_inc_use_count(StateMachine *sm)
 {
 	sm->use_count++;
@@ -59,11 +46,6 @@ void sm_dec_use_count(StateMachine *sm)
 {
 	if (!--sm->use_count && sm->is_dead)
 		sm_free(sm);
-}
-
-static gint compare_int(gconstpointer a, gconstpointer  b)
-{
-    return a == b;
 }
 
 const gchar *sm_current_name(StateMachine *sm)
@@ -81,17 +63,6 @@ gboolean sm_is_connected(StateMachine *sm)
 {
 	return sm->ses != NULL && net_connected(sm->ses);
 }
-
-static void check_sensitive(StateMachine *sm)
-{
-	if (sm->is_dead)
-		return;
-	if (driver != NULL && driver->check_widget != NULL) {
-		g_hash_table_foreach(sm->widgets,
-		                     (GHFunc)(driver->check_widget), sm);
-	}
-}
-
 
 static void route_event(StateMachine *sm, gint event)
 {
@@ -114,7 +85,6 @@ static void route_event(StateMachine *sm, gint event)
 		curr_state(user_data, event);
 		if (!sm->is_dead && sm->global != NULL)
 			sm->global(user_data, event);
-		check_sensitive(sm);
 		break;
 	case SM_RECV:
 		sm_cancel_prefix(sm);
@@ -472,25 +442,6 @@ void sm_unhandled_set(StateMachine *sm, StateFunc state)
 	sm->unhandled = state;
 }
 
-void sm_changed_cb(StateMachine *sm)
-{
-	sm_inc_use_count(sm);
-
-	route_event(sm, SM_INIT);
-
-	sm_dec_use_count(sm);
-}
-
-void sm_event_cb(StateMachine *sm, gint event)
-{
-	sm_inc_use_count(sm);
-
-	route_event(sm, event);
-	route_event(sm, SM_INIT);
-
-	sm_dec_use_count(sm);
-}
-
 static void push_new_state(StateMachine *sm)
 {
 	unsigned sp;
@@ -623,11 +574,6 @@ StateFunc sm_current(StateMachine *sm)
 	return sm->stack[sm->stack_ptr];
 }
 
-void sm_end(StateMachine *sm)
-{
-	sm_pop_all(sm);
-}
-
 /* Build a new state machine instance
  */
 StateMachine* sm_new(gpointer user_data)
@@ -635,7 +581,6 @@ StateMachine* sm_new(gpointer user_data)
 	StateMachine *sm = g_malloc0(sizeof(*sm));
 
 	sm->user_data = user_data;
-	sm->widgets = g_hash_table_new(hash_int, compare_int);
 	sm->stack_ptr = -1;
 
 	return sm;
@@ -647,15 +592,6 @@ void sm_free(StateMachine *sm)
 {
 	if (sm->ses != NULL) {
 		net_free(&(sm->ses));
-	}
-	if (sm->widgets != NULL) {
-		if (driver != NULL && driver->widget_free != NULL)
-		{
-			g_hash_table_foreach(sm->widgets,
-			                     (GHFunc)driver->widget_free, sm);
-		}
-		g_hash_table_destroy(sm->widgets);
-		sm->widgets = NULL;
 	}
 	if (sm->use_count > 0)
 		sm->is_dead = TRUE;

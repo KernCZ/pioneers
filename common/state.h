@@ -99,48 +99,6 @@
  *
  * sm_previous()
  *	Return the state at the top of the stack.
- *
- * It is very common for GUI actions to send a command to the server,
- * then take action based upon the server response to that command.
- * In effect, the action is a delayed state transition that has to be
- * confirmed by the server.  Since this structure is so common, there
- * is some API support provided which helps keep the state machine
- * complexity down.
- *
- * sm_resp_handler(new_state, ok_state, err_state)
- *	Push the current state onto the stack, set the current state
- *	to [new_state], and mark it as a response handler.  [ok_state]
- *	and [err_state] are states associated with the handler (see
- *	below).  If NULL is supplied for either [ok_state] or
- *	[err_state], the current state is substituted.
- *
- * sm_resp_err()
- *	Pop the state stack until a response handler is encountered,
- *	pop the response handler.  Set the current state to the error
- *	state that was defined by the response handler.
- *
- * sm_resp_ok()
- *	Pop the state stack until a response handler is encountered,
- *	pop the response handler.  Set the current state to the ok
- *	state that was defined by the response handler.
- *
- * One of the major reasons for providing the API is to unify network
- * and GUI event handling.  To automatically control widget
- * sensitivity and action handling, there are a couple functions.
- *
- * sm_gui_register(widget, id)
- *	Register a Gtk+ widget [widget] with the sm_ API, and assign
- *	it the identifier [id].
- *
- * sm_gui_check(id, sensitive)
- *	The current state is called with the SM_INIT event each time a
- *	new state is entered, and between other events.  This gives
- *	the program an opportunity to define which GUI actions are
- *	valid.  Any registered widget that is not explicitly set
- *	sensitive by this function will be made insensitive.
- *
- * sm_end()
- *	Exit the state machine.
  */
 
 typedef enum {
@@ -159,21 +117,13 @@ typedef struct StateMachine StateMachine;
  */
 typedef gboolean (*StateFunc)(StateMachine *sm, gint event);
 
-/* Information about a GUI component
- */
-typedef struct {
-	StateMachine *sm;	/* parent state machine */
-	void *widget;		/* the GTK widget */
-	gint id;		/* widget id */
-	gboolean destroy_only;	/* react to destroy signal */
-	gchar *signal;		/* signal attached */
-	gboolean current;	/* is widget currently sensitive? */
-	gboolean next;		/* should widget be sensitive? */
-} WidgetState;
-
 struct StateMachine {
-	gpointer user_data;	/* paramter for mode functions */
-	GHashTable *widgets;	/* widget state information */
+	gpointer user_data;	/* parameter for mode functions */
+				/* FIXME RC 2004-11-13 in practice: 
+				 * it is NULL or a Player*
+				 * the value is set by sm_new.
+				 * Why? Can the player not be bound to a 
+				 * StateMachine otherwise? */
 
 	StateFunc global;	/* global state - test after current state */
 	StateFunc unhandled;	/* global state - process unhandled states */
@@ -182,7 +132,7 @@ struct StateMachine {
 	gint stack_ptr;		/* stack index */
 	const gchar *current_state;	/* name of current state */
 
-	gchar *line;		/* line passed in from nextwork event */
+	gchar *line;		/* line passed in from network event */
 	gint line_offset;	/* line prefix handling */
 
 	Session *ses;		/* network session feeding state machine */
@@ -211,19 +161,12 @@ void sm_pop_all(StateMachine *sm);
 void sm_pop_all_and_goto(StateMachine *sm, StateFunc new_state);
 StateFunc sm_current(StateMachine *sm);
 StateFunc sm_previous(StateMachine *sm);
-void sm_gui_register_destroy(StateMachine *sm, void *widget, gint id);
-void sm_gui_register(StateMachine *sm, void *widget, gint id, gchar *signal);
-void sm_gui_check(StateMachine *sm, gint id, gboolean sensitive);
-void sm_end(StateMachine *sm);
 void sm_global_set(StateMachine *sm, StateFunc state);
 void sm_unhandled_set(StateMachine *sm, StateFunc state);
 
-void sm_net_event(StateMachine *sm, NetEvent event, gchar *line);
 gboolean sm_is_connected(StateMachine *sm);
 gboolean sm_connect(StateMachine *sm, const gchar *host, const gchar *port);
 void sm_use_fd(StateMachine *sm, gint fd);
-void sm_changed_cb(StateMachine *sm);
-void sm_event_cb(StateMachine *sm, gint event);
 void sm_dec_use_count(StateMachine *sm);
 void sm_inc_use_count(StateMachine *sm);
 

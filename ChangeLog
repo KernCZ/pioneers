@@ -21,7 +21,12 @@
 	handle more than one widget, removed toolbar hack (not needed anymore)
 	* client/gtk/guimap.c: Removed compiler warnings when compiling with
 	--pedantic
-	
+	* ai/client.c, ai/client.h: Removed dead code
+	* client/common/client.c, common/common_glib.c, common/driver.h,
+	common/state.c, common/state.h, common/gtk/common_gtk.c: Removed
+	reference to widget from StateMachine. The code was moved to the gtk
+	directory in 0.8.0
+		
 2004-11-12 Roland Clobus <rclobus@bigfoot.com>
 	* Actually updated the build number to 0.8.1.42
 	

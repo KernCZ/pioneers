@@ -227,16 +227,6 @@ void client_chat(chat_t occasion, void *param, gboolean self, gint other)
 		sm_send(SM(), "chat %s\n", tmp);
 }
 
-void client_changed_cb()
-{
-	sm_changed_cb(SM());
-}
-
-void client_event_cb(UNUSED(GtkWidget *widget), gint event)
-{
-	sm_event_cb(SM(), event);
-}
-
 /*----------------------------------------------------------------------
  * Server notifcations about player name changes and chat messages.
  * These can happen in any state (maybe this should be moved to

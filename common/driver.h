@@ -28,9 +28,7 @@
 typedef void (*InputFunc)(gpointer);
 
 typedef struct {
-	/* function for freeing a widget */
-	void (*widget_free)(gpointer key, WidgetState *gui, StateMachine *sm);
-	void (*check_widget)(gpointer key, WidgetState *gui, StateMachine *sm);
+	/* function for clearing the event queue */
 	void (*event_queue)(void);
 
 	/* Function to write logs and data to the system display */

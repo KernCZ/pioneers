@@ -105,8 +105,6 @@ void evl_glib_input_remove( guint tag )
 
 
 UIDriver Glib_Driver = {
-	NULL, /* widget_free */
-	NULL, /* check_widget */
 	NULL, /* event_queue */
 
 	log_message_string_console, /* log_write */

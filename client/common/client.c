@@ -529,12 +529,7 @@ static gboolean check_other_players(StateMachine *sm)
  * SM_INIT:
  *   When a state is entered, and every time an event is handled, the
  *   state machine code calls the current state function with an
- *   SM_INIT event.  The state function must enable all controls which
- *   should be sensitive.  Any controls registered with the state
- *   machine API that are not set sensitive via sm_gui_check() will be
- *   made insensitive.  This means that we only have to worry about
- *   controls that are relevant to the current mode, everything else
- *   will be disabled automatically.
+ *   SM_INIT event.
  *
  * SM_RECV:
  *   Indicates that a message has been received from the server.
