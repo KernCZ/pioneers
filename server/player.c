@@ -58,11 +58,16 @@ static gint next_player_num(Game * game, gboolean force_viewer)
 			     idx++)
 				if (!players[idx])
 					empty++;
-			skip = get_rand(empty);
-			for (idx = 0; idx < game->params->num_players;
-			     idx++)
-				if (!players[idx] && skip-- == 0)
-					break;
+			if (empty > 0) {
+				skip = get_rand(empty);
+				for (idx = 0;
+				     idx < game->params->num_players;
+				     idx++)
+					if (!players[idx] && skip-- == 0)
+						break;
+			} else {
+				idx = game->params->num_players;
+			}
 		} else {
 			for (idx = 0; idx < game->params->num_players;
 			     idx++)
