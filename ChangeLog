@@ -1,3 +1,24 @@
+2004-07-31  0.8.1.32  Roland Clobus <rclobus@bigfoot.com>
+	* common/game-settings.c: more specific include files.
+	* common/select-game.c (select_game_add), server/gnocatan-server-gtk.c
+	(start_clicked_cb): Fixed bug that 'Default' game would be started
+	instead of preselected game.
+	* client/common/player.c, client/gtk/trade.c, common/game-settings.c,
+	common/select-game.c, server/gnocatan-server-gtk.c, server/server.c:
+	Added comments for translations.
+	* common/game-settings.c(game_settings_init): Spin button right
+	aligns, this code is disabled until the build requires Gtk2.4
+	* po/POTFILES.in: enabled translation for common/game-settings and
+	commong/select-game.
+	* po/nl.po: Updated translations
+
+2004-07-31  Hans Fugal <fugalh@users.sourceforge.net>
+	* client/gtk/interface.c: Quick fix for 'Second click on reject trade
+	crashes the server'.
+	
+2004-07-31  Giancarlo Capella <giancarlo@comm.cc>
+	* po/it.po: Updated italian translation
+	
 2004-07-24  0.8.1.31  Roland Clobus <rclobus@bigfoot.com>
 	* configure.in, client/common/i18n.c: Enabled italian in the UI, made
 	some checks more strict.

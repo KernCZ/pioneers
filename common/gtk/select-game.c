@@ -87,6 +87,7 @@ static void select_game_init(SelectGame *sg)
 	
 	gtk_widget_show(sg->option_menu);
 	gtk_tooltips_set_tip(tooltips, sg->option_menu,
+			/* Tooltip for the list of games */
 			_("Select a game"), NULL);
 	gtk_table_resize(GTK_TABLE(sg), 1, 1);
 	gtk_table_attach_defaults(
@@ -136,6 +137,9 @@ void select_game_add(SelectGame *sg, const gchar *game_title)
 		gtk_menu_shell_prepend(GTK_MENU_SHELL(sg->menu), item);
 		gtk_option_menu_set_history(
 				GTK_OPTION_MENU(sg->option_menu), 0);
+		if (sg->active_game)
+			g_free(sg->active_game);
+		sg->active_game = strdup(game_title);
 	} else {
 		gtk_menu_shell_append(GTK_MENU_SHELL(sg->menu), item);
 	}

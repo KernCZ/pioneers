@@ -271,27 +271,26 @@ void player_stole_from(gint player_num, gint victim_num, Resource resource)
 	player_modify_statistic(victim_num, STAT_RESOURCES, -1);
 
 	if (resource == NO_RESOURCE) {
-		/* We are not in on the action
-		 */
 		 /* CHECK THIS: Since anonymous players (NULL) no longer exist,
 		  *  player_name doesn't use its static buffer anymore, and
 		  * two calls can be safely combined. If not: ai/player.c should also be fixed */
 		/* FIXME: in the client, anonymous players can exist.
 		 * I prefer changing that instead of this function */
-		log_message( MSG_STEAL, _("%s stole a resource from %s.\n"),
+		log_message( MSG_STEAL, 
+			/* We are not in on the action
+			   someone stole a resource from someone else */
+			_("%s stole a resource from %s.\n"),
 			player_name(player_num, TRUE),
 			player_name(victim_num, FALSE));
 	} else {
 		resource_cards(1, resource, buf, sizeof(buf));
 		if (player_num == my_player_num()) {
-			/* We stole a card :-)
-			 */
+			/* We stole a card :-) */
 			log_message( MSG_STEAL, _("You stole %s from %s.\n"),
 				 buf, player_name(victim_num, FALSE));
 			resource_modify(resource, 1);
 		} else {
-			/* Someone stole our card :-(
-			 */
+			/* Someone stole our card :-( */
 			log_message( MSG_STEAL, _("%s stole %s from you.\n"),
 				 player_name(player_num, TRUE), buf);
 			resource_modify(resource, -1);
@@ -585,7 +584,7 @@ void player_get_point (gint player_num, gint id, gchar *str, gint num)
 	point->points = num;
 	/* put the point in the list */
 	player->points = g_list_append (player->points, point);
-	/* tell the user */
+	/* tell the user that someone got something */
 	log_message (MSG_INFO, _("%s received %s.\n"), player->name, str);
 }
 
@@ -633,7 +632,7 @@ void player_take_point (gint player_num, gint id, gint old_owner)
 	/* move the point in memory */
 	victim->points = g_list_remove (victim->points, point);
 	player->points = g_list_append (player->points, point);
-	/* tell the user about it */
+	/* tell the user someone lost something to someone else */
 	log_message (MSG_INFO, _("%s lost %s to %s.\n"), victim->name,
 			point->name, player->name);
 }

@@ -1,7 +1,7 @@
 /* A custom widget for adjusting the game settings.
  *
  * The code is based on the TICTACTOE example
- * www.gtk.oorg/tutorial/app-codeexamples.html#SEC-TICTACTOE
+ * www.gtk.org/tutorial/app-codeexamples.html#SEC-TICTACTOE
  *
  * Adaptation for Gnocatan: 2004 Roland Clobus
  *
@@ -13,9 +13,11 @@
 #include <gtk/gtktooltips.h>
 #include <gtk/gtklabel.h>
 #include <gtk/gtktogglebutton.h>
+#include <gtk/gtkspinbutton.h>
+#include <gtk/gtkradiobutton.h>
+#include <gtk/gtkvbox.h>
 #include <string.h>
 #include <glib.h>
-#include <gnome.h> // Lazy!!
 
 #include "game-settings.h"
 
@@ -110,6 +112,7 @@ static void game_settings_init(GameSettings *gs)
 	gtk_table_set_row_spacings(GTK_TABLE(gs), 3);
 	gtk_table_set_col_spacings(GTK_TABLE(gs), 5);
 	
+	/* Label for customising a game */
 	label = gtk_label_new(_("Map Terrain"));
 	gtk_widget_show(label);
 	gtk_table_attach(GTK_TABLE(gs), label, 0, 1, 0, 1,
@@ -125,8 +128,10 @@ static void game_settings_init(GameSettings *gs)
 	g_signal_connect(G_OBJECT(gs->terrain_toggle), "toggled",
 			G_CALLBACK(game_settings_change_terrain), gs);
 	gtk_tooltips_set_tip(tooltips, gs->terrain_toggle, 
+			/* Tooltip for Map Terrain */
 			_("Default map or a random map"), NULL);
 
+	/* Label text for customising a game */
 	label = gtk_label_new(_("Number of Players"));
 	gtk_widget_show(label);
 	gtk_table_attach(GTK_TABLE(gs), label, 0, 1, 1, 2,
@@ -136,6 +141,8 @@ static void game_settings_init(GameSettings *gs)
 
 	adj = gtk_adjustment_new(0, 2, MAX_PLAYERS, 1, 1, 1);
 	gs->players_spin = gtk_spin_button_new(GTK_ADJUSTMENT(adj), 1, 0);
+	/** @todo RC 31-7-2004 Enable the next line when the build requires Gtk 2.4 */
+	/* gtk_entry_set_alignment(GTK_ENTRY(gs->players_spin), 1.0); */
 	gtk_widget_show(gs->players_spin);
 	gtk_spin_button_set_numeric(GTK_SPIN_BUTTON(gs->players_spin), TRUE);
 	gtk_table_attach(GTK_TABLE(gs), gs->players_spin, 1, 2, 1, 2,
@@ -144,8 +151,10 @@ static void game_settings_init(GameSettings *gs)
 	g_signal_connect(G_OBJECT(gs->players_spin), "value-changed",
 			G_CALLBACK(game_settings_change_players), gs);
 	gtk_tooltips_set_tip(tooltips, gs->players_spin, 
+			/* Tooltip for 'Number of Players' */
 			_("The number of players"), NULL);
 
+	/* Label for customising a game */
 	label = gtk_label_new(_("Victory Point Target"));
 	gtk_widget_show(label);
 	gtk_table_attach(GTK_TABLE(gs), label, 0, 1, 2, 3,
@@ -155,6 +164,8 @@ static void game_settings_init(GameSettings *gs)
 
 	adj = gtk_adjustment_new(10, 3, 99, 1, 1, 1);
 	gs->victory_spin = gtk_spin_button_new(GTK_ADJUSTMENT(adj), 1, 0);
+	/** @todo RC 31-7-2004 Enable the next line when the build requires Gtk 2.4 */
+	/* gtk_entry_set_alignment(GTK_ENTRY(gs->victory_spin), 1.0); */
 	gtk_widget_show(gs->victory_spin);
 	gtk_spin_button_set_numeric(GTK_SPIN_BUTTON(gs->victory_spin), TRUE);
 	gtk_table_attach(GTK_TABLE(gs), gs->victory_spin, 1, 2, 2, 3,
@@ -163,8 +174,10 @@ static void game_settings_init(GameSettings *gs)
 	g_signal_connect(G_OBJECT(gs->victory_spin), "value-changed",
 			G_CALLBACK(game_settings_change_victory_points), gs);
 	gtk_tooltips_set_tip(tooltips, gs->victory_spin, 
+			/* Tooltip for Victory Point Target */
 			_("The points needed to win the game"), NULL);
 
+	/* Label for customising a game */
 	label = gtk_label_new(_("Sevens Rule"));
 	gtk_widget_show(label);
 	gtk_table_attach(GTK_TABLE(gs), label, 0, 1, 3, 4,
@@ -173,22 +186,29 @@ static void game_settings_init(GameSettings *gs)
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 
 	gs->radio_sevens[0] = gtk_radio_button_new_with_label(
-			NULL, _("Normal"));
+			NULL, 
+			/* Sevens rule: normal */
+			_("Normal"));
 	gs->radio_sevens[1] = gtk_radio_button_new_with_label_from_widget(
 			GTK_RADIO_BUTTON(gs->radio_sevens[0]), 
+			/* Sevens rule: reroll on 1st 2 turns */
 			_("Reroll on 1st 2 turns") );
 	gs->radio_sevens[2] = gtk_radio_button_new_with_label_from_widget(
 			GTK_RADIO_BUTTON(gs->radio_sevens[0]), 
+			/* Sevens rule: reroll all 7s */
 			_("Reroll all 7s") );
 
 	vbox_sevens = gtk_vbox_new( TRUE, 2 );
 	gtk_widget_show(vbox_sevens);
 	gtk_tooltips_set_tip(tooltips, gs->radio_sevens[0], 
+			/* Tooltip for sevens rule normal */
 			_("All sevens move the robber or pirate"), NULL);
 	gtk_tooltips_set_tip(tooltips, gs->radio_sevens[1], 
+			/* Tooltip for sevens rule reroll on 1st 2 turns */
 			_("In the first two turns all sevens are rerolled"),
 			NULL);
 	gtk_tooltips_set_tip(tooltips, gs->radio_sevens[2], 
+			/* Tooltip for sevens rule reroll all */
 			_("All sevens are rerolled"), NULL);
 	
 
@@ -343,7 +363,11 @@ static void game_settings_update(GameSettings *gs)
 	label = GTK_BIN(gs->terrain_toggle)->child;
 	gtk_label_set_text(
 			GTK_LABEL(label),
-			gs->random_terrain ? _("Random") : _("Default"));
+			gs->random_terrain ? 
+				/* Button text: random terrain */
+				_("Random") : 
+				/* Button text: default terrain */
+				_("Default"));
 	gtk_toggle_button_set_active(
 			GTK_TOGGLE_BUTTON(gs->terrain_toggle),
 			gs->random_terrain);

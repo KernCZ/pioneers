@@ -327,6 +327,7 @@ gboolean server_startup(GameParams *params, gchar *port, gboolean meta)
 	mt_seed(randomseed);
 #endif
 	log_message(MSG_INFO, "%s #%" G_GUINT32_FORMAT ".%s.%03d\n",
+			/* Server: preparing game #..... */
 			_("Preparing game"),
 			randomseed,
 #ifdef HAVE_G_RAND_NEW_WITH_SEED

@@ -181,6 +181,9 @@ static void start_clicked_cb(UNUSED(GtkButton *start_btn),
 		UNUSED(gpointer user_data))
 {
 	if (ui_enabled) {
+		if (params->title)
+			g_free(params->title);
+		params->title = strdup(select_game_get_active(SELECTGAME(select_game)));
 		params->random_terrain = game_settings_get_terrain(GAMESETTINGS(game_settings));
 		params->num_players = game_settings_get_players(GAMESETTINGS(game_settings));
 		params->victory_points = game_settings_get_victory_points(GAMESETTINGS(game_settings));
@@ -367,8 +370,11 @@ my_cell_player_viewer_to_text (UNUSED(GtkTreeViewColumn *tree_column),
 
 	/* Get the value from the model. */
 	gtk_tree_model_get (tree_model, iter, GPOINTER_TO_INT(data), &b, -1);
-	/* Now we can format the value ourselves. */
-	g_object_set (cell, "text", b ? _("Viewer") : _("Player"), NULL);
+	g_object_set (cell, "text", b ? 
+			/* Role of the player: viewer */
+			_("Viewer") : 
+			/* Role of the player: player */
+			_("Player"), NULL);
 }
 
 static GtkWidget *build_interface(void)
@@ -666,7 +672,9 @@ int main(int argc, char *argv[])
 
 	/* Create the application window
 	 */
-	app = gnome_app_new(app_name, _("Gnocatan Server"));
+	app = gnome_app_new(app_name, 
+			/* Name in the titlebar of the server */
+			_("Gnocatan Server"));
  
  	icon_file = gnome_program_locate_file(NULL,
  			GNOME_FILE_DOMAIN_APP_PIXMAP,

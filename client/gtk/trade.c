@@ -266,14 +266,17 @@ void trade_format_quote(QuoteInfo *quote, gchar *desc)
 	gchar buf2[128];
 
 	if (empty_list(quote->var.d.supply)) {
+		/* trade: you ask for something for free */
 		format = _("ask for %s for free");
 		format_list(buf1, quote->var.d.receive);
 		sprintf(desc, format, buf1);
 	} else if (empty_list(quote->var.d.receive)) {
+		/* trade: you give something away for free */
 		format = _("give %s for free");
 		format_list(buf1, quote->var.d.supply);
 		sprintf(desc, format, buf1);
 	} else {
+		/* trade: you trade something for something else */
 		format = _("give %s for %s");
 		format_list(buf1, quote->var.d.supply);
 		format_list(buf2, quote->var.d.receive);
@@ -283,6 +286,8 @@ void trade_format_quote(QuoteInfo *quote, gchar *desc)
 
 static void trade_format_maritime(QuoteInfo *quote, gchar *desc)
 {
+	/* trade: maritime quote: %1 resources of type %2 for
+	 * one resource of type %3 */
 	sprintf(desc, _("%d:1 %s for %s"),
 		quote->var.m.ratio,
 		resource_name(quote->var.m.supply, FALSE),
@@ -425,6 +430,7 @@ static void add_reject_row(gint player_num)
 	gtk_list_store_set( store, &iter,
 			TRADE_COLUMN_PLAYER, player_pixbuf[player_num],
 			TRADE_COLUMN_POSSIBLE, cross_pixbuf,
+			/* Trade: a player has rejected trade */
 			TRADE_COLUMN_DESCRIPTION, _("Rejected trade"),
 			TRADE_COLUMN_QUOTE, NULL,
 			TRADE_COLUMN_REJECT, player,
@@ -451,6 +457,7 @@ void trade_new_trade()
 
 	resource_format_type(we_supply_desc, trade_we_supply());
 	resource_format_type(we_receive_desc, trade_we_receive());
+	/* I want some resources, and give them some resources */
 	g_snprintf(desc, sizeof(desc), _("I want %s, and give them %s"),
 		   we_receive_desc, we_supply_desc);
 	gtk_label_set_text(GTK_LABEL(active_quote_label), desc);
@@ -800,6 +807,7 @@ GtkWidget *trade_build_page (void)
 	gtk_widget_show(vbox);
 	gtk_box_pack_start(GTK_BOX(panel_hbox), vbox, FALSE, TRUE, 0);
 
+	/* Frame title, trade: I want to trade these resources */
 	frame = gtk_frame_new(_("I Want"));
 	gtk_widget_show(frame);
 	gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, TRUE, 0);
@@ -814,6 +822,7 @@ GtkWidget *trade_build_page (void)
 	for (idx = 0; idx < NO_RESOURCE; ++idx)
 		add_trade_row(table, we_receive_rows + idx, idx);
 
+	/* Frame title, trade: I want these resources in return */
 	we_receive_frame = gtk_frame_new(_("Give Them"));
 	gtk_widget_show(we_receive_frame);
 	gtk_box_pack_start(GTK_BOX(vbox), we_receive_frame, FALSE, TRUE, 0);
@@ -831,6 +840,7 @@ GtkWidget *trade_build_page (void)
 	gtk_widget_show(bbox);
 	gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, TRUE, 0);
 
+	/* Button text, trade: call for quotes from other players */
 	call_btn = gtk_button_new_with_mnemonic(_("_Call for Quotes"));
 	frontend_gui_register (call_btn, GUI_TRADE_CALL, "clicked");
 	gtk_widget_show(call_btn);
@@ -874,7 +884,9 @@ GtkWidget *trade_build_page (void)
 			//_("Shows all players and viewers connected to the server"), NULL);
 
 	/* Now create columns */
-	column = gtk_tree_view_column_new_with_attributes(_("Player"),
+	column = gtk_tree_view_column_new_with_attributes(
+			/* Table header: Player who trades */
+			_("Player"),
 			gtk_cell_renderer_pixbuf_new(), "pixbuf", 
 			TRADE_COLUMN_PLAYER, NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(quotes), column);
@@ -884,7 +896,9 @@ GtkWidget *trade_build_page (void)
 			TRADE_COLUMN_POSSIBLE, NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(quotes), column);
 
-	column = gtk_tree_view_column_new_with_attributes(_("Quotes"),
+	column = gtk_tree_view_column_new_with_attributes(
+			/* Table header: Quote */
+			_("Quotes"),
 			gtk_cell_renderer_text_new(), "text", 
 			TRADE_COLUMN_DESCRIPTION,  NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(quotes), column);
@@ -897,12 +911,16 @@ GtkWidget *trade_build_page (void)
 	gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, TRUE, 0);
 	gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox), GTK_BUTTONBOX_END);
 
-	accept_btn = gtk_button_new_with_mnemonic(_("_Accept Quote"));
+	accept_btn = gtk_button_new_with_mnemonic(
+			/* Button text: Trade page, accept selected quote */
+			_("_Accept Quote"));
 	frontend_gui_register (accept_btn, GUI_TRADE_ACCEPT, "clicked");
 	gtk_widget_show(accept_btn);
 	gtk_container_add(GTK_CONTAINER(bbox), accept_btn);
 
-	finish_btn = gtk_button_new_with_mnemonic(_("_Finish Trading"));
+	finish_btn = gtk_button_new_with_mnemonic(
+			/* Button text: Trade page, finish trading */
+			_("_Finish Trading"));
 	frontend_gui_register (finish_btn, GUI_TRADE_FINISH, "clicked");
 	gtk_widget_show(finish_btn);
 	gtk_container_add(GTK_CONTAINER(bbox), finish_btn);

@@ -54,9 +54,11 @@ client/gtk/settingscreen.c
 client/gtk/state.c
 client/gtk/theme.c
 client/gtk/trade.c
+common/game-settings.c
 common/log.c
 common/log.h
 common/network.c
+common/select-game.c
 common/state.c
 server/gnocatan-server-gtk.c
 server/gnocatan-server.c
