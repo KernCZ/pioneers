@@ -103,6 +103,7 @@ void frontend_offline ()
 
 	/* Commandline overrides the dialog */
 	if (port && server) {
+		connectable = FALSE;
 		gui_show_splash_page(FALSE);
 		cb_connect(server, port);
 		quit_when_offline = TRUE;
