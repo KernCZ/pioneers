@@ -48,12 +48,14 @@ static Statistic statistics[] = {
 };
 
 static Player players[MAX_PLAYERS];
+static GList *viewers;
 static GtkWidget *summary_clist; /* player summary */
 static GdkGC *summary_gc;	/* for drawing in summary list */
 
 static GtkWidget *turn_area;	/* turn indicator in status bar */
 static gint turn_player = -1;	/* whose turn is it */
 static gint my_player_id = -1;	/* what is my player number */
+static gint num_players = 4;	/* total number of players in the game */
 
 static GdkColor token_colors[] = {
 	{ 0, 0xCD00, 0x0000, 0x0000 }, /* red */
@@ -75,31 +77,64 @@ void player_init()
 	GdkColormap* cmap;
 
 	cmap = gdk_colormap_get_system();
+	/* allocate colours for the players */
 	for (idx = 0; idx < numElem(token_colors); idx++)
 		gdk_color_alloc(cmap, &token_colors[idx]);
 
+	/* give all the players their colour */
 	for (idx = 0; idx < numElem(players); idx++)
 		players[idx].color = idx;
 }
 
 GdkColor *player_color(gint player_num)
 {
+	if (player_num >= num_players) {
+		/* viewer color is always black */
+		return &black;
+	}
 	return &token_colors[players[player_num].color];
+}
+
+gboolean player_is_viewer (gint num)
+{
+	return num < 0 || num >= num_players;
+}
+
+Viewer *viewer_get (num)
+{
+	GList *list;
+	for (list = viewers; list != NULL; list = g_list_next (list) ) {
+		Viewer *viewer = list->data;
+		if (viewer->num == num) break;
+	}
+	if (list) return list->data;
+	return NULL;
 }
 
 gchar *player_name(gint player_num, gboolean word_caps)
 {
 	static gchar buff[256];
-
-	if (player_num < 0 || player_num >= numElem(players)
-	    || players[player_num].name == NULL) {
-		if (word_caps)
-			sprintf(buff, _("Player %d"), player_num);
-		else
-			sprintf(buff, _("player %d"), player_num);
-		return buff;
+	if (player_num >= num_players) {
+		/* this is about a viewer */
+		Viewer *viewer = viewer_get (player_num);
+		if (viewer != NULL)
+			return viewer->name;
+		else {
+			if (word_caps)
+				sprintf(buff, _("Viewer %d"), player_num);
+			else
+				sprintf(buff, _("viewer %d"), player_num);
+			return buff;
+		}
+	} else if (player_num >= 0) {
+		Player *player = player_get (player_num);
+		return player->name;
 	}
-	return players[player_num].name;
+	if (word_caps)
+		sprintf(buff, _("Player %d"), player_num);
+	else
+		sprintf(buff, _("player %d"), player_num);
+	return buff;
 }
 
 gint my_player_num()
@@ -119,7 +154,7 @@ Player *player_get(gint num)
 
 static gint calc_statistic_row(gint player_num, StatisticType type)
 {
-	Player *player = players + player_num;
+	Player *player = player_get (player_num);
 	gint idx;
 	gint row;
 
@@ -145,7 +180,7 @@ static void refresh_victory_point_total(int player_num)
 	if (player_num < 0 || player_num >= numElem(players))
 		return;
 
-	player = players + player_num;
+	player = player_get (player_num);
 	for (tot = 0, type = 0; type < numElem(statistics); type++) {
 		tot += statistics[type].victory_mult
 		    * player->statistics[type];
@@ -167,7 +202,7 @@ void player_reset_statistic(void)
 	gtk_clist_clear(GTK_CLIST(summary_clist));
 
 	for (player_num = 0; player_num < numElem(players); player_num++) {
-		player = players + player_num;
+		player = player_get (player_num);
 		for (idx = 0; idx < numElem(player->statistics); idx++) {
 			player->statistics[idx] = 0;
 		}
@@ -176,7 +211,7 @@ void player_reset_statistic(void)
 
 void player_modify_statistic(gint player_num, StatisticType type, gint num)
 {
-	Player *player = players + player_num;
+	Player *player = player_get (player_num);
 	gint value;
 	int row;
 	gchar desc[128];
@@ -254,11 +289,37 @@ static int calc_summary_row(player_num)
 
 	for (idx = player_num - 1; idx >= 0; idx--) {
 		row = gtk_clist_find_row_from_data(GTK_CLIST(summary_clist),
-						   players + idx);
+						   player_get (idx) );
 		if (row >= 0)
 			return calc_statistic_row(idx, numElem(statistics));
 	}
 	return 0;
+}
+
+static gint player_create_summary_row (gint num, void *data)
+{
+	gchar *row_data[3];
+	GtkStyle *score_style;
+	gint row;
+
+	row = calc_summary_row(num);
+	row_data[0] = "";
+	row_data[1] = "";
+	row_data[2] = "";
+	gtk_clist_insert(GTK_CLIST(summary_clist), row, row_data);
+	score_style = gtk_clist_get_row_style(GTK_CLIST(summary_clist), row);
+	if (!score_style) {
+		score_style = gtk_style_new();
+	}
+	score_style->fg[0] = player_fg;
+	score_style->bg[0] = player_bg;
+	gtk_clist_set_cell_style(GTK_CLIST(summary_clist), row, 2, score_style);
+#if 0
+	gtk_clist_set_foreground(GTK_CLIST(summary_clist), row, &player_fg);
+	gtk_clist_set_background(GTK_CLIST(summary_clist), row, &player_bg);
+#endif
+	gtk_clist_set_row_data(GTK_CLIST(summary_clist), row, data);
+	return row;
 }
 
 void player_change_name(gint player_num, gchar *name)
@@ -267,10 +328,38 @@ void player_change_name(gint player_num, gchar *name)
 	gchar *old_name;
 	gint row;
 
-	if (player_num < 0 || player_num >= numElem(players))
+	if (player_num < 0)
 		return;
+	if (player_num >= num_players) {
+		/* this is about a viewer */
+		Viewer *viewer = viewer_get (player_num);
+		if (viewer == NULL) {
+			/* there is a new viewer */
+			viewer = g_malloc0 (sizeof (*viewer) );
+			viewers = g_list_prepend (viewers, viewer);
+			viewer->num = player_num;
+			viewer->name = NULL;
+			row = player_create_summary_row (player_num, viewer);
+			old_name = NULL;
+		} else {
+			row = gtk_clist_find_row_from_data(GTK_CLIST(summary_clist), viewer);
+			old_name = viewer->name;
+		}
+		g_assert (row >= 0);
+		gtk_clist_set_text(GTK_CLIST(summary_clist), row, 1, name);
+		if (old_name == NULL)
+			log_message( MSG_NAMEANON, _("New viewer: %s.\n"),
+					name);
+		else
+			log_message( MSG_NAMEANON, _("%s is now %s.\n"),
+					old_name, name);
+		viewer->name = g_strdup (name);
+		if (old_name != NULL)
+			g_free (old_name);
+		return;
+	}
 
-	player = players + player_num;
+	player = player_get (player_num);
 	old_name = player->name;
 	player->name = g_strdup(name);
 	if (old_name == NULL)
@@ -280,28 +369,9 @@ void player_change_name(gint player_num, gchar *name)
 	if (old_name != NULL)
 		g_free(old_name);
 
-          row = gtk_clist_find_row_from_data(GTK_CLIST(summary_clist), player);
+	row = gtk_clist_find_row_from_data(GTK_CLIST(summary_clist), player);
 	if (row < 0) {
-		gchar *row_data[3];
-		GtkStyle *score_style;
-                    
-		row = calc_summary_row(player_num);
-		row_data[0] = "";
-		row_data[1] = "";
-		row_data[2] = "";
-		gtk_clist_insert(GTK_CLIST(summary_clist), row, row_data);
-		score_style = gtk_clist_get_row_style(GTK_CLIST(summary_clist), row);
-		if (!score_style) {
-			score_style = gtk_style_new();
-		}
-		score_style->fg[0] = player_fg;
-		score_style->bg[0] = player_bg;
-		gtk_clist_set_cell_style(GTK_CLIST(summary_clist), row, 2, score_style);
-#if 0
-		gtk_clist_set_foreground(GTK_CLIST(summary_clist), row, &player_fg);
-		gtk_clist_set_background(GTK_CLIST(summary_clist), row, &player_bg);
-#endif
-		gtk_clist_set_row_data(GTK_CLIST(summary_clist), row, player);
+		row = player_create_summary_row (player_num, player);
 	}
 	player_show_connected_at_row(player, TRUE, row);
 	refresh_victory_point_total(player_num);
@@ -309,23 +379,35 @@ void player_change_name(gint player_num, gchar *name)
 			   player_name(player_num, TRUE));
 }
 
+
 void player_has_quit(gint player_num)
 {
 	gint row;
 	Player *player;
+
+	if (player_num < 0)
+		return;
+
+	if (player_num >= num_players) {
+		/* a viewer has quit */
+		Viewer *viewer = viewer_get (player_num);
+		row = gtk_clist_find_row_from_data(GTK_CLIST(summary_clist),
+					   viewer);
+		gtk_clist_remove(GTK_CLIST(summary_clist), row);
+		g_free (viewer->name);
+		viewers = g_list_remove (viewers, viewer);
+		return;
+	}
 
 	row = gtk_clist_find_row_from_data(GTK_CLIST(summary_clist),
 					   player_get(player_num));
 	if (row < 0)
 		return;
 
-	if (player_num < 0 || player_num >= numElem(players))
-		return;
-	player = players + player_num;
-
-/*	gtk_clist_remove(GTK_CLIST(summary_clist), row); */
-          player_show_connected_at_row(player, FALSE, row);
-	log_message( MSG_ERROR, _("%s has quit\n"), player_name(player_num, TRUE));
+	player = player_get (player_num);
+	player_show_connected_at_row(player, FALSE, row);
+	log_message( MSG_ERROR, _("%s has quit\n"), player_name(player_num,
+				TRUE));
 	if (player->name != NULL) {
 		g_free(player->name);
 		player->name = NULL;
@@ -343,8 +425,8 @@ void player_show_connected_at_row(Player *player, gboolean connected, gint row)
 				 16, 16,
 				 gtk_widget_get_visual(summary_clist)->depth);
 
-          /* Cheating: don't want to pass player_color(player_num) */
-          gdk_gc_set_foreground(summary_gc, &token_colors[player->color]);
+	/* Cheating: don't want to pass player_color(player_num) */
+	gdk_gc_set_foreground(summary_gc, &token_colors[player->color]);
           
 	gdk_draw_rectangle(player->pixmap, summary_gc, TRUE,
 			   0, 0, 15, 14);
@@ -372,8 +454,8 @@ void player_largest_army(gint player_num)
 		log_message( MSG_LARGESTARMY, _("%s has the largest army.\n"),
 			 player_name(player_num, TRUE));
 
-	for (idx = 0; idx < game_params->num_players; idx++) {
-		Player *player = players + idx;
+	for (idx = 0; idx < num_players; idx++) {
+		Player *player = player_get (idx);
 
 		if (player->statistics[STAT_LARGEST_ARMY] != 0
 		    && idx != player_num)
@@ -394,8 +476,8 @@ void player_longest_road(gint player_num)
 		log_message( MSG_LONGESTROAD, _("%s has the longest road.\n"),
 			 player_name(player_num, TRUE));
 
-	for (idx = 0; idx < game_params->num_players; idx++) {
-		Player *player = players + idx;
+	for (idx = 0; idx < num_players; idx++) {
+		Player *player = player_get (idx);
 
 		if (player->statistics[STAT_LONGEST_ROAD] != 0
 		    && idx != player_num)
@@ -461,7 +543,6 @@ static gint expose_turn_area_cb(GtkWidget *area,
 	static GdkGC *turn_gc;
 	gint offset;
 	gint idx;
-	gint num_players;
 
 	if (area->window == NULL)
 		return FALSE;
@@ -470,10 +551,6 @@ static gint expose_turn_area_cb(GtkWidget *area,
 		turn_gc = gdk_gc_new(area->window);
 
 	offset = 0;
-	if (game_params == NULL)
-		num_players = 4;
-	else
-		num_players = game_params->num_players;
 	for (idx = 0; idx < num_players; idx++) {
 		gdk_gc_set_foreground(turn_gc, player_color(idx));
 		gdk_draw_rectangle(area->window, turn_gc, TRUE, 
@@ -504,15 +581,9 @@ static gint expose_turn_area_cb(GtkWidget *area,
 
 GtkWidget *player_build_turn_area()
 {
-	gint num_players;
-
 	turn_area = gtk_drawing_area_new();
 	gtk_signal_connect(GTK_OBJECT(turn_area), "expose_event",
 			   GTK_SIGNAL_FUNC(expose_turn_area_cb), NULL);
-	if (game_params == NULL)
-		num_players = 4;
-	else
-		num_players = game_params->num_players;
 	gtk_widget_set_usize(turn_area, 30 * num_players, -1);
 	gtk_widget_show(turn_area);
 
@@ -536,6 +607,7 @@ void player_set_current(gint player_num)
 
 void player_set_total_num(gint num)
 {
+	num_players = num;
 	gtk_widget_set_usize(turn_area, 30 * num, -1);
 	identity_draw();
 }

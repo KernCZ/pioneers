@@ -439,6 +439,11 @@ gboolean mode_pre_game(Player *player, gint event)
 	case SM_ENTER:
 		sm_send(sm, "player %d of %d, welcome to gnocatan server %s\n",
 			player->num, game->params->num_players, VERSION);
+		/* Tell the player that he exists.  This is not done in
+		 * player_set_name, because at that point the client doesn't
+		 * know how many players are in the game, and therefore if
+		 * he is a player of a viewer. */
+		player_broadcast(player, PB_ALL, "is %s\n", player->name);
 		break;
 
 	case SM_RECV:

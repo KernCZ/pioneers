@@ -102,6 +102,7 @@ static gint expose_identity_area_cb(GtkWidget *area,
 	GdkPoint points[MAX_POINTS];
 	Polygon poly = { points, numElem(points) };
 	gint offset;
+	GdkColor *colour;
 
 	if (area->window == NULL || my_player_num() < 0)
 		return FALSE;
@@ -113,11 +114,19 @@ static gint expose_identity_area_cb(GtkWidget *area,
 		 */
 		guimap_scale_with_radius(&bogus_map, 38);
 
-	gdk_gc_set_foreground(identity_gc, player_color(my_player_num()));
+	if (player_is_viewer (my_player_num () ) )
+		colour = &black;
+	else
+		colour = player_color (my_player_num () );
+	gdk_gc_set_foreground(identity_gc, colour);
 	gdk_draw_rectangle(area->window, identity_gc, TRUE, 0, 0,
 			   area->allocation.width, area->allocation.height);
 
-	gdk_gc_set_foreground(identity_gc, &black);
+	if (player_is_viewer (my_player_num () ) )
+		colour = &white;
+	else
+		colour = &black;
+	gdk_gc_set_foreground(identity_gc, colour);
 
 	if (game_params == NULL)
 		return FALSE;

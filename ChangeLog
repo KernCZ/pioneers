@@ -1,4 +1,9 @@
 2003-10-12  Bas Wijnen <b.wijnen@phys.rug.nl>
+	* client/identity.c, client/player.c, client/player.h,
+	server/player.c, server/pregame.c: Finished viewer support.
+	* common/map_query.c: Fixed bug with pirate.
+
+2003-10-12  Bas Wijnen <b.wijnen@phys.rug.nl>
 	* server/develop.c, server/player.c, server/server.h: Allowed multiple
 	development cards of the same type.
 	* client/client.c, server/discard.c, server/gold.c, server/robber.c,

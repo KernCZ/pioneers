@@ -75,8 +75,9 @@ static gboolean mode_global(Player *player, gint event)
 		player_remove(player);
 		if (player->num >= 0)
 		{
-			player_archive(player);
+			player->disconnected = TRUE;
 			player_broadcast(player, PB_ALL, "has quit\n");
+			player_archive(player);
 		}
 		else
 		{
@@ -235,6 +236,44 @@ Player *player_new(Game *game, int fd, gchar *location)
 	return player;
 }
 
+/* set the player name.  Most of the time, player_set_name is called instead,
+ * which calls this function with public set to TRUE.  Only player_setup calls
+ * this with public == FALSE, because it doesn't want the broadcast. */
+static void player_set_name_real(Player *player, gchar *name, gboolean public)
+{
+	StateMachine *sm = player->sm;
+	Game *game = player->game;
+	gboolean playeriscurrent = FALSE;
+
+	g_assert (name[0] != 0);
+
+	playeriscurrent
+		 = (game->curr_player != NULL) &&
+		   (strcmp(game->curr_player, player->name) == 0);
+
+	if (player_by_name(game, name) != NULL) {
+		/* make it a note, not an error, so nothing bad happens
+		 * (on error the AI would disconnect) */
+		sm_send (sm, "NOTE %s\n",
+			_("Name not changed: new name is already in use") );
+		return;
+	}
+
+	if (player->name != name) {
+		g_free (player->name);
+		player->name = g_strdup (name);
+	}
+
+	if (public)
+		player_broadcast(player, PB_ALL, "is %s\n", player->name);
+
+	if (playeriscurrent) {
+		game->curr_player = player->name;
+	}
+
+	driver->player_renamed(player);
+}
+
 void player_setup(Player *player, int playernum, gchar *name,
 		gboolean force_viewer)
 {
@@ -299,7 +338,10 @@ void player_setup(Player *player, int playernum, gchar *name,
 		}
 	}
 	/* copy the (possibly new) name to dynamic memory */
-	player_set_name (player, namep);
+	/* don't broadcast the name.  This is done by mode_pre_game, after
+	 * telling the user how many players are in the game.
+	 * That should keep things easier for the client. */
+	player_set_name_real (player, namep, FALSE);
 
 	/* add the info in the output device */
 	driver->player_added(player);
@@ -739,38 +781,9 @@ void player_broadcast(Player *player, BroadcastType type, char *fmt, ...)
 	}
 }
 
-void player_set_name(Player *player, gchar *name)
+void player_set_name (Player *player, gchar *name)
 {
-	StateMachine *sm = player->sm;
-	Game *game = player->game;
-	gboolean playeriscurrent = FALSE;
-
-	g_assert (name[0] != 0);
-
-	playeriscurrent
-		 = (game->curr_player != NULL) &&
-		   (strcmp(game->curr_player, player->name) == 0);
-
-	if (player_by_name(game, name) != NULL) {
-		/* make it a note, not an error, so nothing bad happens
-		 * (on error the AI would disconnect) */
-		sm_send (sm, "NOTE %s\n",
-			_("Name not changed: new name is already in use") );
-		return;
-	}
-
-	if (player->name != name) {
-		g_free (player->name);
-		player->name = g_strdup (name);
-	}
-
-	player_broadcast(player, PB_ALL, "is %s\n", player->name);
-
-	if (playeriscurrent) {
-		game->curr_player = player->name;
-	}
-
-	driver->player_renamed(player);
+	player_set_name_real (player, name, TRUE);
 }
 
 void player_remove(Player *player)

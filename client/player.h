@@ -41,9 +41,15 @@ typedef struct {
 	GdkPixmap *pixmap;	/* used in summary and discard list */
 } Player;
 
+typedef struct {
+	gchar *name;
+	gint num;
+} Viewer;
+
 void player_init(void);
 gboolean have_rolled_dice(void);
 gint my_player_num(void);
+gboolean player_is_viewer (gint num);
 Player *player_get(gint num);
 gchar *player_name(gint player_num, gboolean word_caps);
 GdkColor *player_color(gint player_num);
