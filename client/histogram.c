@@ -86,7 +86,7 @@ static gint expose_chip_cb(GtkWidget *area,
 		chip_gc = gdk_gc_new(area->window);
 
 	wh = area->allocation.width/2-1;
-	draw_dice_roll(area->window, chip_gc, wh, wh, wh, n, FALSE);
+	draw_dice_roll(area->window, chip_gc, wh, wh, wh, n, SEA_TERRAIN, FALSE);
 	return FALSE;
 }
 
