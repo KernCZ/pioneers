@@ -1,3 +1,7 @@
+2002-06-19  Jeff Breidenbach  <jeff@jab.org>
+
+	* debian/rules: adapt to non-temporary Makefile.in files
+
 2002-06-17  Roman Hodek  <roman@hodek.net>
 
 	* ai/ai.c (main): result of getopt must be stored in an int.

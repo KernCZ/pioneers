@@ -24,8 +24,10 @@ clean:
 
 	# Add here commands to clean up after the build process.
 	-$(MAKE) distclean
-	# Makefile.in's are auto-generated, too
-	find . -name Makefile.in | xargs -r rm
+	# Some Makefile.in's are auto-generated, too
+	find . -name Makefile.in |\
+	grep -v -e po/Makefile.in -e intl/Makefile.in |\
+	xargs -r rm
 
 	dh_clean
 
