@@ -35,6 +35,7 @@ static gboolean mode_game_full(Player *player, gint event);
 static gboolean mode_bad_version(Player *player, gint event);
 static gboolean mode_global(Player *player, gint event);
 
+extern void start_timeout(void);
 
 static gint next_player_num(Game *game)
 {
@@ -78,8 +79,10 @@ static gboolean mode_global(Player *player, gint event)
 			player_free(player);
 		}
 
-		if (game->num_players == 0)
+		if (game->num_players == 0) {
 			server_restart();
+			start_timeout();
+		}
 		return TRUE;
 	case SM_RECV:
 		if (sm_recv(sm, "chat %S", text)) {
@@ -220,6 +223,8 @@ void player_free(Player *player)
 		g_free(player->name);
 	if (player->location != NULL)
 		g_free(player->location);
+	if (player->client_version != NULL)
+		g_free(player->client_version);
 	if (player->devel != NULL)
 		deck_free(player->devel);
 	if (player->num >= 0) {
@@ -385,7 +390,7 @@ static gboolean mode_game_full(Player *player, gint event)
         sm_state_name(sm, "mode_game_full");
         switch (event) {
         case SM_ENTER:
-		sm_send(sm, "sorry, game is full\n");
+		sm_send(sm, "ERR sorry, game is full\n");
 		break;
 	}
 	return FALSE;
@@ -398,7 +403,7 @@ static gboolean mode_bad_version(Player *player, gint event)
 	sm_state_name(sm, "mode_bad_version");
 	switch (event) {
 	case SM_ENTER:
-		sm_send(sm, "sorry, version conflict\n");
+		sm_send(sm, "ERR sorry, version conflict\n");
 		break;
 	}
 	return FALSE;
@@ -406,20 +411,23 @@ static gboolean mode_bad_version(Player *player, gint event)
 
 static gboolean check_versions( gchar *client_version )
 {
-	guint len;
+	gchar *p, *v1, *v2;
+	gboolean rv;
 
-	len = strlen(PROTOCOL_VERSION);
-	/* If the two strings aren't the same length, they do NOT match! */
-	if (len != strlen(client_version)) {
-		return FALSE;
-	}
+	v1 = g_strdup(client_version);
+	v2 = g_strdup(PROTOCOL_VERSION);
+	/* ignore rightmost number (after last dot) in versions -- changes
+	 * in patchlevel shouldn't change protocol incompatibly */
+	if ((p = strrchr(v1, '.')))
+	    *p = '\0';
+	if ((p = strrchr(v2, '.')))
+	    *p = '\0';
+	
+	rv = strcmp(v1, v2) == 0;
 
-	if( strncmp( PROTOCOL_VERSION, client_version, len ) == 0 )
-	{
-		return TRUE;
-	} else {
-		return FALSE;
-	}
+	g_free(v1);
+	g_free(v2);
+	return rv;
 }
 
 static gboolean mode_check_version(Player *player, gint event)
@@ -436,6 +444,7 @@ static gboolean mode_check_version(Player *player, gint event)
 	case SM_RECV:
 		if( sm_recv(sm, "version %S", version ) )
 		{
+			player->client_version = g_strdup(version);
 			if( check_versions( version ) )
 			{
 				sm_goto(sm, (StateFunc)mode_check_status);
