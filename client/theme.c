@@ -130,7 +130,7 @@ void init_themes(void)
 	struct dirent *de;
 	struct stat st;
 	gchar *fname;
-	gchar *path, *path2;
+	gchar *path;
 	MapTheme *t;
 	gint novar;
 	gchar *user_theme;
@@ -139,28 +139,23 @@ void init_themes(void)
 	theme_initialize(&default_theme);
 	theme_add(&default_theme);
 	
-	/* scan gnocatan pixmap dir for theme descriptor files */
-	path2 = gnome_unconditional_pixmap_file("gnocatan" G_DIR_SEPARATOR_S "X");
-	path = g_dirname(path2);
-	g_free(path2);
-	
-	if (!(dir = opendir(path)))
+	/* scan gnocatan image dir for theme descriptor files */
+	if (!(dir = opendir(IMAGEDIR)))
 		return;
 	while( (de = readdir(dir)) ) {
 		if (strcmp(de->d_name, ".") == 0 || strcmp(de->d_name, "..") == 0)
 			continue;
-		fname = g_strconcat(path, G_DIR_SEPARATOR_S, de->d_name, NULL);
+		fname = g_strconcat(IMAGEDIR "/", de->d_name, NULL);
 		if (stat(fname, &st) == 0 && S_ISDIR(st.st_mode)) {
-			path2 = g_strconcat(fname, G_DIR_SEPARATOR_S, "theme.cfg");
-			if ((t = theme_config_parse(de->d_name, path2))) {
+			path = g_strconcat(fname, G_DIR_SEPARATOR_S, "theme.cfg");
+			if ((t = theme_config_parse(de->d_name, path))) {
 				theme_add(t);
 				theme_initialize(t);
 			}
-			g_free(path2);
+			g_free(path);
 		}
 	}
 	closedir(dir);
-	g_free(path);
 
 	t = NULL;
  	user_theme = config_get_string("settings/theme",&novar);
