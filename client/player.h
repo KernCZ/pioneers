@@ -47,6 +47,7 @@ typedef struct {
 	gint num;
 } Viewer;
 
+void player_reset(void);
 void player_init(void);
 gboolean have_rolled_dice(void);
 gint my_player_num(void);

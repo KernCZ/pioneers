@@ -216,6 +216,14 @@ gboolean start_server( gchar *port, gboolean register_server )
 	return server_startup( params, port, register_server );
 }
 
+static void handle_sigpipe (int signum)
+{
+	/* reset the signal handler */
+	signal (SIGPIPE, handle_sigpipe);
+	/* no need to actually handle anything, this will be done by 
+	 * write returning error */
+}
+
 /* server initialization */
 void server_init( gchar *default_gnocatan_dir )
 {
@@ -227,9 +235,8 @@ void server_init( gchar *default_gnocatan_dir )
 
 	/* Broken pipes can happen when multiple players disconnect
 	 * simultaneously.  This mostly happens to AI's, which disconnect
-	 * when the game is over.  The signal can be ignored, because the
-	 * connections will be nicely closed when they are polled again. */
-	signal (SIGPIPE, SIG_IGN);
+	 * when the game is over. */
+	signal (SIGPIPE, handle_sigpipe);
 }
 
 /* network administration functions */

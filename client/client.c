@@ -651,6 +651,7 @@ static gboolean mode_start(StateMachine *sm, gint event)
 	}
 	if (sm_recv(sm, "player %d of %d, welcome to gnocatan server %S",
 		    &player_num, &total_num, version, sizeof (version))) {
+		player_reset (); /* reset the gui */
 		player_set_my_num(player_num);
 		player_set_total_num(total_num);
 		sm_send(sm, "players\n");

@@ -137,7 +137,7 @@ static void close_and_callback(Session *ses)
 
 static void write_ready(Session *ses)
 {
-	if (!ses)
+	if (!ses || ses->fd < 0)
 		return;
 	if (ses->connect_in_progress) {
 		/* We were waiting to connect to server
@@ -179,8 +179,8 @@ static void write_ready(Session *ses)
 		if (num < 0) {
 			if (errno == EAGAIN)
 				break;
-			log_message( MSG_ERROR, _("Error writing socket: %s\n"),
-				  g_strerror(errno));
+			if (errno != EPIPE)
+				log_message( MSG_ERROR, _("Error writing socket: %s\n"), g_strerror(errno));
 			close_and_callback(ses);
 			return;
 		} else if (num == len) {
@@ -205,7 +205,7 @@ static void write_ready(Session *ses)
 
 void net_write(Session *ses, gchar *data)
 {
-	if (!ses)
+	if (!ses || ses->fd < 0)
 		return;
 	if (ses->write_queue != NULL || !net_connected(ses)) {
 		/* reassign the pointer, because the glib docs say it may change and

@@ -71,6 +71,32 @@ static GdkColor token_colors[] = {
 static GdkColor player_bg = { 0, 0xB000, 0xB000, 0xB000 };
 static GdkColor player_fg = { 0, 0x0000, 0x0000, 0x0000 };
 
+/* this function is called when the game starts, to clean up from the
+ * previous game. */
+void player_reset ()
+{
+	gint i;
+	/* remove all viewers */
+	while (viewers != NULL)
+		viewers = g_list_remove (viewers, viewers->data);
+	/* clear the summary */
+	gtk_clist_clear (GTK_CLIST (summary_clist) );
+	/* free player's memory */
+	for (i = 0; i < MAX_PLAYERS; ++i) {
+		if (players[i].name != NULL) {
+			g_free (players[i].name);
+			players[i].name = NULL;
+		}
+		while (players[i].points != NULL) {
+			Points *points = players[i].points->data;
+			g_free (points->name);
+			g_free (points);
+			players[i].points = g_list_remove (players[i].points,
+					points);
+		}
+	}
+}
+
 void player_init()
 {
 	gint idx;
