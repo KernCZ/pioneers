@@ -1,7 +1,11 @@
 2000-06-18  Bibek Sahu <scorpio@dodds.net>
 
-	* configure.in, client/Makefile.am, client/gui.c: made network
-	  administration code optional.
+	* configure.in, client/Makefile.am, client/gui.c: Made network
+	  administration code optional in client.
+
+	* server/gnocatan-server.[ch]: Code cleanups to remove warnings. 
+	  Also changed some comments in gnocatan-server.h to make section
+	  breaks stand out more.
 
 2000-06-18  Andy Heroff <aheroff@mediaone.net>
 
