@@ -25,6 +25,7 @@
 #include "common_gtk.h"
 #include "histogram.h"
 #include "i18n.h"
+#include "theme.h"
 #include "config-gnome.h"
 
 Map *map;			/* handle to map drawing code */
@@ -65,6 +66,7 @@ static GtkWidget *vp_target_status;
 static GtkWidget *radio_style_text;
 static GtkWidget *radio_style_icons;
 static GtkWidget *radio_style_both;
+static GtkWidget *theme_menu;
 
 static GtkWidget *check_color_chat;
 static GtkWidget *check_color_messages;
@@ -469,6 +471,7 @@ static void settings_apply_cb(GnomePropertyBox *prop_box, gint page, gpointer da
 	gint color_messages;
 	gint color_summary;
 	gint legend_page;
+	MapTheme *theme;
 
 	switch(page)
 	{
@@ -503,9 +506,24 @@ static void settings_apply_cb(GnomePropertyBox *prop_box, gint page, gpointer da
 		}
 		legend_page_enabled = legend_page;
 		gui_show_legend_page(legend_page_enabled);
-		
+
 		gnome_config_set_int( "/gnocatan/settings/legend_page",
 		                      legend_page );
+
+		theme = gtk_object_get_user_data(
+		    GTK_OBJECT(gtk_menu_get_active(theme_menu)));
+		if (theme != get_theme()) {
+		    gnome_config_set_string("/gnocatan/settings/theme",
+					    theme->name);
+		    set_theme(theme);
+
+		    gdk_draw_pixmap(gmap->area->window,
+				    gmap->area->style->fg_gc[GTK_WIDGET_STATE(gmap->area)],
+				    gmap->pixmap,
+				    0, 0, 0, 0,
+				    gmap->width, gmap->height);
+		}
+		
 		break;
 		
 	case 1:
@@ -583,6 +601,8 @@ static void menu_settings_cb(GtkWidget *widget, void *user_data)
 	GtkWidget *frame_texticons;
 	GtkWidget *vbox_texticons;
 	GtkWidget *vbox_colors;
+	GtkWidget *theme_label;
+	GtkWidget *theme_list;
 #if ENABLE_NLS
 	GtkWidget *vbox_linguas;
 	GtkWidget *radio_lang;
@@ -595,11 +615,13 @@ static void menu_settings_cb(GtkWidget *widget, void *user_data)
 	gint color_messages;
 	gint color_summary;
 	gint legend_page;
+	MapTheme *theme;
+	int i;
 	
 	/* Create stuff */
 	settings = gnome_property_box_new();
 
-	page0_table = gtk_table_new( 1, 2, FALSE );
+	page0_table = gtk_table_new( 2, 3, FALSE );
 	page0_label = gtk_label_new( _("Appearance") );
 
 	frame_texticons = gtk_frame_new( _("Show Toolbar As") );
@@ -612,6 +634,25 @@ static void menu_settings_cb(GtkWidget *widget, void *user_data)
 
 	check_legend_page = gtk_check_button_new_with_label( _("Display legend as page besides map?") );
 
+	theme_list = gtk_option_menu_new();
+	theme_menu = gtk_menu_new();
+	theme_label = gtk_label_new(_("Theme:"));
+	gtk_widget_show(theme_menu);
+	gtk_widget_show(theme_list);
+	gtk_widget_show(theme_label);
+	
+	for(i = 0, theme = first_theme(); theme; ++i, theme = next_theme(theme)) {
+		GtkWidget *item = gtk_menu_item_new_with_label(theme->name);
+		gtk_object_set_user_data(GTK_OBJECT(item), (gpointer)theme);
+		gtk_widget_show(item);
+		gtk_menu_append(GTK_MENU(theme_menu), item);
+		gtk_signal_connect(GTK_OBJECT(item), "activate",
+						   settings_activate_cb, (gpointer)settings);
+		if (theme == get_theme())
+			gtk_menu_set_active(GTK_MENU(theme_menu), i);
+	}
+	gtk_option_menu_set_menu(GTK_OPTION_MENU(theme_list), theme_menu);
+	
 	/* Put things in other things */
 	gtk_box_pack_start_defaults( GTK_BOX(vbox_texticons), radio_style_text );
 	gtk_box_pack_start_defaults( GTK_BOX(vbox_texticons), radio_style_icons );
@@ -619,10 +660,14 @@ static void menu_settings_cb(GtkWidget *widget, void *user_data)
 	
 	gtk_container_add( GTK_CONTAINER(frame_texticons), vbox_texticons );
 
-	gtk_table_attach( GTK_TABLE(page0_table), frame_texticons, 0, 1, 0, 1,
-	                  GTK_FILL, GTK_FILL, 5, 5 );
-	gtk_table_attach( GTK_TABLE(page0_table), check_legend_page, 0, 1, 1, 2,
-	                  GTK_FILL, GTK_FILL, 5, 5 );
+	gtk_table_attach( GTK_TABLE(page0_table), frame_texticons, 0, 2, 0, 1,
+	                  GTK_FILL, GTK_FILL, 0, 0 );
+	gtk_table_attach( GTK_TABLE(page0_table), check_legend_page, 0, 2, 1, 2,
+	                  GTK_FILL, GTK_FILL, 0, 0 );
+	gtk_table_attach( GTK_TABLE(page0_table), theme_label, 0, 1, 2, 3,
+	                  GTK_FILL, GTK_FILL, 0, 0 );
+	gtk_table_attach( GTK_TABLE(page0_table), theme_list, 1, 2, 2, 3,
+	                  GTK_FILL, GTK_FILL, 0, 0 );
 	                  
 
 	page1_table = gtk_table_new( 1, 1, FALSE );
@@ -639,7 +684,7 @@ static void menu_settings_cb(GtkWidget *widget, void *user_data)
 	gtk_box_pack_start_defaults( GTK_BOX(vbox_colors), check_color_summary );
 
 	gtk_table_attach( GTK_TABLE(page1_table), vbox_colors, 0, 1, 0, 1,
-	                  GTK_FILL, GTK_FILL, 5, 5 );
+	                  GTK_FILL, GTK_FILL, 0, 0 );
 
 	gnome_property_box_append_page( GNOME_PROPERTY_BOX(settings),
 	                                page0_table, page0_label );
@@ -673,7 +718,7 @@ static void menu_settings_cb(GtkWidget *widget, void *user_data)
 		radio_lang_prev = radio_lang;
 	}
 	gtk_table_attach( GTK_TABLE(page2_table), vbox_linguas, 0, 1, 0, 1,
-	                  GTK_FILL, GTK_FILL, 5, 5 );
+	                  GTK_FILL, GTK_FILL, 0, 0 );
 	radio_lang = gtk_label_new(_("Language setting takes full effect only after client restart!"));
 	gtk_widget_show(radio_lang);
 	gtk_table_attach( GTK_TABLE(page2_table), radio_lang, 0, 1, 1, 2,
@@ -758,6 +803,8 @@ static void menu_settings_cb(GtkWidget *widget, void *user_data)
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(check_legend_page),
 								 !!legend_page);
 
+
+	
 	/* Signal Connections */
 	gtk_signal_connect( GTK_OBJECT(radio_style_text), "clicked",
 	                    settings_activate_cb, (gpointer)settings );
