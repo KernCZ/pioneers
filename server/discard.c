@@ -71,17 +71,17 @@ static void check_finished_discard(Player *player)
 		 * discarding resources, set the player mode to idle,
 		 * otherwise set the mode to wait_others_place_robber
 		 */
-		if (sm_current(sm) == (StateMode)mode_discard_resources)
-			sm_goto(sm, (StateMode)mode_idle);
+		if (sm_current(sm) == (StateFunc)mode_discard_resources)
+			sm_goto(sm, (StateFunc)mode_idle);
 		else
-			sm_goto(sm, (StateMode)mode_wait_others_place_robber);
+			sm_goto(sm, (StateFunc)mode_wait_others_place_robber);
 		return;
 	}
 
 	/* Discard is complete!  Find the player who needs to place
 	 * the robber
 	 */
-	if (sm_current(sm) == (StateMode)mode_discard_resources_place_robber) {
+	if (sm_current(sm) == (StateFunc)mode_discard_resources_place_robber) {
 		/* The specified player was the last one to discard
 		 * resources - go to place_robber
 		 */
@@ -92,11 +92,11 @@ static void check_finished_discard(Player *player)
 	/* The specified player is not the one waiting to place the
 	 * robber.  Set it idle and find the player who is waiting.
 	 */
-	sm_goto(sm, (StateMode)mode_idle);
+	sm_goto(sm, (StateFunc)mode_idle);
 	for (list = player_first_real(game);
 	     list != NULL; list = player_next_real(list)) {
 		Player *scan = list->data;
-		if (sm_current(scan->sm) == (StateMode)mode_wait_others_place_robber) {
+		if (sm_current(scan->sm) == (StateFunc)mode_wait_others_place_robber) {
 			robber_place(scan);
 			return;
 		}
@@ -161,7 +161,7 @@ gboolean discard_resources(Player *player)
 		for (idx = 0; idx < numElem(scan->assets); idx++)
 			num += scan->assets[idx];
 		if (num > 7) {
-			sm_goto(scan->sm, (StateMode)mode_discard_resources);
+			sm_goto(scan->sm, (StateFunc)mode_discard_resources);
 			scan->discard_num = num / 2;
 			player_broadcast(scan, PB_ALL, "must-discard %d\n",
 					 scan->discard_num);
@@ -174,9 +174,9 @@ gboolean discard_resources(Player *player)
 		StateMachine *sm = player->sm;
 
 		if (player->discard_num > 0)
-			sm_goto(sm, (StateMode)mode_discard_resources_place_robber);
+			sm_goto(sm, (StateFunc)mode_discard_resources_place_robber);
 		else
-			sm_goto(sm, (StateMode)mode_wait_others_place_robber);
+			sm_goto(sm, (StateFunc)mode_wait_others_place_robber);
 	}
 
 	return wait_for_discard;

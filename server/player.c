@@ -93,7 +93,7 @@ Player *player_new(Game *game, int fd, gchar *location)
 	Player *player = g_malloc0(sizeof(*player));
 	StateMachine *sm = player->sm = sm_new(player);
 
-	sm_global_set(sm, (StateMode)mode_global);
+	sm_global_set(sm, (StateFunc)mode_global);
 	sm_use_fd(sm, fd);
 
 	player->game = game;
@@ -115,9 +115,9 @@ Player *player_new(Game *game, int fd, gchar *location)
 		player->num_cities = 0;
 
 		gui_player_add(player);
-		sm_goto(sm, (StateMode)mode_pre_game);
+		sm_goto(sm, (StateFunc)mode_pre_game);
 	} else
-		sm_goto(sm, (StateMode)mode_game_full);
+		sm_goto(sm, (StateFunc)mode_game_full);
 
 	return player;
 }

@@ -359,5 +359,5 @@ void turn_next_player(Game *game)
 	game->bought_develop = FALSE;
 	player->build_list = buildrec_free(player->build_list);
 
-	sm_goto(player->sm, (StateMode)mode_turn);
+	sm_goto(player->sm, (StateFunc)mode_turn);
 }

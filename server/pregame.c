@@ -122,7 +122,7 @@ static void start_setup_player(Player *player)
 	else
 		player_broadcast(player, PB_RESPOND, "setup\n");
 
-	sm_goto(player->sm, (StateMode)mode_setup);
+	sm_goto(player->sm, (StateFunc)mode_setup);
 }
 
 static void allocate_resources(Player *player, BuildRec *rec)
@@ -173,7 +173,7 @@ static void try_setup_done(Player *player)
 	 * settlement
 	 */
 	sm_send(sm, "OK\n");
-	sm_goto(sm, (StateMode)mode_idle);
+	sm_goto(sm, (StateFunc)mode_idle);
 
 	if (game->double_setup)
 		allocate_resources(player, buildrec_get(player->build_list, BUILD_SETTLEMENT, 1));
@@ -244,7 +244,7 @@ static void try_start_game(Game *game)
 	     list != NULL; list = player_next_real(list)) {
 		Player *player = list->data;
 
-		if (sm_current(player->sm) == (StateMode)mode_idle)
+		if (sm_current(player->sm) == (StateFunc)mode_idle)
 			num++;
 	}
 	if (num != game->params->num_players)
@@ -315,7 +315,7 @@ gboolean mode_pre_game(Player *player, gint event)
 		}
 		if (sm_recv(sm, "start")) {
 			sm_send(sm, "OK\n");
-			sm_goto(sm, (StateMode)mode_idle);
+			sm_goto(sm, (StateFunc)mode_idle);
 			try_start_game(game);
 			return TRUE;
 		}

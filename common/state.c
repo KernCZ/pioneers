@@ -91,58 +91,50 @@ static void check_sensitive(StateMachine *sm)
 	g_hash_table_foreach(sm->widgets, (GHFunc)check_widget, sm);
 }
 
-static StateInfo *curr_state(StateMachine *sm)
-{
-	return &sm->stack[sm->stack_ptr];
-}
-
 static void route_event(StateMachine *sm, gint event)
 {
-	StateInfo *curr;
+	StateFunc curr_state;
 	gpointer user_data;
 
 	if (sm->is_dead)
 		return;
 
-	curr = curr_state(sm);
+	curr_state = sm_current(sm);
 	user_data = sm->user_data;
 	if (user_data == NULL)
 		user_data = sm;
 
 	switch (event) {
 	case SM_ENTER:
-		if (!curr->is_response)
-			curr->state(user_data, event);
+		curr_state(user_data, event);
 		break;
 	case SM_INIT:
-		if (!curr->is_response)
-			curr->state(user_data, event);
-		if (!sm->is_dead && sm->global.state != NULL)
-			sm->global.state(user_data, event);
+		curr_state(user_data, event);
+		if (!sm->is_dead && sm->global != NULL)
+			sm->global(user_data, event);
 		check_sensitive(sm);
 		break;
 	case SM_RECV:
 		sm_cancel_prefix(sm);
-		if (curr->state(user_data, event))
+		if (curr_state(user_data, event))
 			break;
 		sm_cancel_prefix(sm);
-		if ( !sm->is_dead &&
-		     sm->global.state != NULL &&
-		     sm->global.state(user_data, event) )
+		if (!sm->is_dead
+		    && sm->global != NULL
+		    && sm->global(user_data, event))
 			break;
 		
 		sm_cancel_prefix(sm);
-		if (!sm->is_dead && sm->unhandled.state != NULL)
-			sm->unhandled.state(user_data, event);
+		if (!sm->is_dead && sm->unhandled != NULL)
+			sm->unhandled(user_data, event);
 		break;
 	case SM_NET_CLOSE:
 		net_free(sm->ses);
 		sm->ses = NULL;
 	default:
-		if (!curr->is_response)
-			curr->state(user_data, event);
-		if (!sm->is_dead && sm->global.state != NULL)
-			sm->global.state(user_data, event);
+		curr_state(user_data, event);
+		if (!sm->is_dead && sm->global != NULL)
+			sm->global(user_data, event);
 		break;
 	}
 }
@@ -460,14 +452,14 @@ void sm_send(StateMachine *sm, gchar *fmt, ...)
 	net_write(sm->ses, buff);
 }
 
-void sm_global_set(StateMachine *sm, StateMode state)
+void sm_global_set(StateMachine *sm, StateFunc state)
 {
-	sm->global.state = state;
+	sm->global = state;
 }
 
-void sm_unhandled_set(StateMachine *sm, StateMode state)
+void sm_unhandled_set(StateMachine *sm, StateFunc state)
 {
-	sm->unhandled.state = state;
+	sm->unhandled = state;
 }
 
 void sm_changed_cb(StateMachine *sm)
@@ -557,15 +549,12 @@ void sm_gui_register(StateMachine *sm,
 
 static void push_new_state(StateMachine *sm)
 {
-	StateInfo *curr;
-
 	sm->stack_ptr++;
 	g_assert(sm->stack_ptr < numElem(sm->stack));
-	curr = curr_state(sm);
-	memset(curr, 0, sizeof(*curr));
+	sm->stack[sm->stack_ptr] = NULL;
 }
 
-void sm_goto(StateMachine *sm, StateMode new_state)
+void sm_goto(StateMachine *sm, StateFunc new_state)
 {
 	inc_use_count(sm);
 
@@ -578,20 +567,23 @@ void sm_goto(StateMachine *sm, StateMode new_state)
 		push_new_state(sm);
 	}
 
-	curr_state(sm)->state = new_state;
+	sm->stack[sm->stack_ptr] = new_state;
 	route_event(sm, SM_ENTER);
 	route_event(sm, SM_INIT);
 
 	dec_use_count(sm);
 }
 
-void sm_push(StateMachine *sm, StateMode new_state)
+void sm_push(StateMachine *sm, StateFunc new_state)
 {
 	inc_use_count(sm);
 
 	push_new_state(sm);
-	curr_state(sm)->state = new_state;
+	sm->stack[sm->stack_ptr] = new_state;
 	route_event(sm, SM_ENTER);
+#ifdef STACK_DEBUG
+	log_info("sm_push -> %d:%s\n", sm->stack_ptr, sm->current_state);
+#endif
 	route_event(sm, SM_INIT);
 
 	dec_use_count(sm);
@@ -604,6 +596,9 @@ void sm_pop(StateMachine *sm)
 	g_assert(sm->stack_ptr >= 0);
 	sm->stack_ptr--;
 	route_event(sm, SM_ENTER);
+#ifdef STACK_DEBUG
+	log_info("sm_pop  -> %d:%s\n", sm->stack_ptr, sm->current_state);
+#endif
 	route_event(sm, SM_INIT);
 
 	dec_use_count(sm);
@@ -614,65 +609,18 @@ void sm_pop_all(StateMachine *sm)
 	sm->stack_ptr = -1;
 }
 
-StateMode sm_previous(StateMachine *sm)
+StateFunc sm_previous(StateMachine *sm)
 {
 	g_assert(sm->stack_ptr > 0);
 
-	return sm->stack[sm->stack_ptr - 1].state;
+	return sm->stack[sm->stack_ptr - 1];
 }
 
-StateMode sm_current(StateMachine *sm)
+StateFunc sm_current(StateMachine *sm)
 {
 	g_assert(sm->stack_ptr >= 0);
 
-	return sm->stack[sm->stack_ptr].state;
-}
-
-void sm_resp_handler(StateMachine *sm,
-		     StateMode new_state,
-		     StateMode ok_state, StateMode err_state)
-{
-	StateInfo *curr;
-
-	if (ok_state == NULL)
-		ok_state = curr_state(sm)->state;
-	if (err_state == NULL)
-		err_state = curr_state(sm)->state;
-
-	push_new_state(sm);
-	curr = curr_state(sm);
-	curr->state = new_state;
-	curr->is_response = TRUE;
-	curr->ok_state = ok_state;
-	curr->err_state = err_state;
-}
-
-static void pop_no_check(StateMachine *sm)
-{
-	g_assert(sm->stack_ptr >= 0);
-	sm->stack_ptr--;
-}
-
-void sm_resp_err(StateMachine *sm)
-{
-	StateMode new_state;
-
-	while (!curr_state(sm)->is_response)
-		sm_pop(sm);
-	new_state = curr_state(sm)->err_state;
-	pop_no_check(sm);
-	sm_goto(sm, new_state);
-}
-
-void sm_resp_ok(StateMachine *sm)
-{
-	StateMode new_state;
-
-	while (!curr_state(sm)->is_response)
-		pop_no_check(sm);
-	new_state = curr_state(sm)->ok_state;
-	pop_no_check(sm);
-	sm_goto(sm, new_state);
+	return sm->stack[sm->stack_ptr];
 }
 
 void sm_end(StateMachine *sm)

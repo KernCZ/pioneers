@@ -138,16 +138,7 @@ typedef struct StateMachine StateMachine;
 
 /* All state functions look like this
  */
-typedef gboolean (*StateMode)(StateMachine *sm, gint event);
-
-/* Information about the current state
- */
-typedef struct {
-	StateMode state;	/* state function */
-	gboolean is_response;	/* is this a response state */
-	StateMode ok_state;	/* is_response: goto state on sm_resp_ok() */
-	StateMode err_state;	/* is_response: goto state on sm_resp_err() */
-} StateInfo;
+typedef gboolean (*StateFunc)(StateMachine *sm, gint event);
 
 /* Information about a GUI component
  */
@@ -165,9 +156,9 @@ struct StateMachine {
 	gpointer user_data;	/* paramter for mode functions */
 	GHashTable *widgets;	/* widget state information */
 
-	StateInfo global;	/* global state - test after current state */
-	StateInfo unhandled;	/* global state - process unhandled states */
-	StateInfo stack[16];	/* handle sm_push() to save context */
+	StateFunc global;	/* global state - test after current state */
+	StateFunc unhandled;	/* global state - process unhandled states */
+	StateFunc stack[16];	/* handle sm_push() to save context */
 	gint stack_ptr;		/* stack index */
 	gchar *current_state;	/* name of current state */
 
@@ -189,23 +180,18 @@ void sm_cancel_prefix(StateMachine *sm);
 void sm_vnformat(gchar *buff, gint len, gchar *fmt, va_list ap);
 void sm_write(StateMachine *sm, gchar *str);
 void sm_send(StateMachine *sm, gchar *fmt, ...);
-void sm_goto(StateMachine *sm, StateMode new_state);
-void sm_push(StateMachine *sm, StateMode new_state);
+void sm_goto(StateMachine *sm, StateFunc new_state);
+void sm_push(StateMachine *sm, StateFunc new_state);
 void sm_pop(StateMachine *sm);
 void sm_pop_all(StateMachine *sm);
-StateMode sm_current(StateMachine *sm);
-StateMode sm_previous(StateMachine *sm);
-void sm_resp_handler(StateMachine *sm,
-		     StateMode new_state,
-		     StateMode ok_state, StateMode err_state);
-void sm_resp_err(StateMachine *sm);
-void sm_resp_ok(StateMachine *sm);
+StateFunc sm_current(StateMachine *sm);
+StateFunc sm_previous(StateMachine *sm);
 void sm_gui_register_destroy(StateMachine *sm, GtkWidget *widget, gint id);
 void sm_gui_register(StateMachine *sm, GtkWidget *widget, gint id, gchar *signal);
 void sm_gui_check(StateMachine *sm, gint id, gboolean sensitive);
 void sm_end(StateMachine *sm);
-void sm_global_set(StateMachine *sm, StateMode state);
-void sm_unhandled_set(StateMachine *sm, StateMode state);
+void sm_global_set(StateMachine *sm, StateFunc state);
+void sm_unhandled_set(StateMachine *sm, StateFunc state);
 
 void sm_net_event(StateMachine *sm, NetEvent event, gchar *line);
 gboolean sm_is_connected(StateMachine *sm);

@@ -1,3 +1,18 @@
+2000-05-12  Dave Cole <dave@dccs.com.au>
+
+	* client/client.c, common/state.c, common/state.h,
+	server/develop.c, server/discard.c, server/player.c,
+	server/pregame.c, server/robber.c, server/trade.c, server/turn.c:
+	Removed all of the sm_resp_{ok,err,handler}() API from the state
+	machine.  Simplified each entry on the state stack down to a
+	single StateFunc.  Modified client state machine to use simplified
+	state machine API.
+
+	* client/client.c, client/trade.c, client/turn.c: Fixed (untested)
+	bug where could not trade after playing road building card before
+	rolling dice.  Altered is_maritime_trade_allowed() to look at the
+	strict_trade flag.
+
 2000-05-11  Dave Cole <dave@dccs.com.au>
 
 	* client/client.c, common/state.[ch]: Removed all of the resphook

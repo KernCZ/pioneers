@@ -78,26 +78,6 @@ static void waiting_for_network(gboolean is_waiting)
 		gui_set_net_status(_("Idle"));
 }
 
-static void resp_handler(StateMachine *sm,
-			 StateMode new_state,
-			 StateMode ok_state, StateMode err_state)
-{
-	waiting_for_network(TRUE);
-	sm_resp_handler(sm, new_state, ok_state, err_state);
-}
-
-static void resp_ok(StateMachine *sm)
-{
-	waiting_for_network(FALSE);
-	sm_resp_ok(sm);
-}
-
-static void resp_err(StateMachine *sm)
-{
-	waiting_for_network(FALSE);
-	sm_resp_err(sm);
-}
-
 /*----------------------------------------------------------------------
  * External interface to hook GUI widgets into the client state machine.
  */
@@ -384,10 +364,6 @@ static gboolean check_other_players(StateMachine *sm)
 /*----------------------------------------------------------------------
  * State machine state functions.
  *
- * All of the state machine functions start with a mode_ prefix.  All
- * of the special states where the client is waiting for a response
- * from the server have a resp_ prefix.
- *
  * The state machine API works like this:
  *
  * SM_ENTER:
@@ -426,17 +402,6 @@ static gboolean check_other_players(StateMachine *sm)
  * complete.
  *
  * The state machine nesting can be used via sm_push() and sm_pop().
- *
- * Sometimes the state that we want to return to depends upon whether
- * the nested state machine has been "successful" or not.  Typically
- * we use this for sending commands to the server, then reacting to
- * the response returned from the server.  If the server responds that
- * the command was successful, we usually want to go to a different
- * state than if the server indicates that the command was an error.
- *
- * The nested state is entered via sm_resp_handler().  When we wish to
- * exit the nested state, we either call sm_resp_ok() to indicate
- * success, or sm_resp_err() on receiving a command failure response.
  */
 
 /*----------------------------------------------------------------------
@@ -636,20 +601,30 @@ static gboolean mode_start_response(StateMachine *sm, gint event)
 
 /* Handle response to build command
  */
-static gboolean resp_build(StateMachine *sm, gint event)
+static gboolean mode_build_response(StateMachine *sm, gint event)
 {
 	BuildType build_type;
 	gint x, y, pos;
 
-	sm_state_name(sm, "resp_build");
-	if (sm_recv(sm, "built %B %d %d %d", &build_type, &x, &y, &pos)) {
-		build_add(build_type, x, y, pos, NULL);
-		resp_ok(sm);
-		return TRUE;
+	sm_state_name(sm, "mode_build_response");
+	switch (event) {
+	case SM_ENTER:
+		waiting_for_network(TRUE);
+		break;
+	case SM_RECV:
+		if (sm_recv(sm, "built %B %d %d %d",
+			    &build_type, &x, &y, &pos)) {
+			build_add(build_type, x, y, pos, NULL);
+			waiting_for_network(FALSE);
+			sm_pop(sm);
+			return TRUE;
+		}
+		if (check_other_players(sm))
+			return TRUE;
+		waiting_for_network(FALSE);
+		sm_pop(sm);
+		break;
 	}
-	if (check_other_players(sm))
-		return TRUE;
-	resp_err(sm);
 	return FALSE;
 }
 
@@ -661,7 +636,7 @@ static void build_road_cb(Edge *edge, gint player_num)
 {
 	gui_cursor_none();
 	sm_send(SM(), "build road %d %d %d\n", edge->x, edge->y, edge->pos);
-	resp_handler(SM(), resp_build, NULL, NULL);
+	sm_push(SM(), mode_build_response);
 }
 
 /* This is called when the user presses the left-mouse-button on a
@@ -671,7 +646,7 @@ static void build_ship_cb(Edge *edge, gint player_num)
 {
 	gui_cursor_none();
 	sm_send(SM(), "build ship %d %d %d\n", edge->x, edge->y, edge->pos);
-	resp_handler(SM(), resp_build, NULL, NULL);
+	sm_push(SM(), mode_build_response);
 }
 
 /* This is called when the user presses the left-mouse-button on a
@@ -681,14 +656,14 @@ static void build_bridge_cb(Edge *edge, gint player_num)
 {
 	gui_cursor_none();
 	sm_send(SM(), "build bridge %d %d %d\n", edge->x, edge->y, edge->pos);
-	resp_handler(SM(), resp_build, NULL, NULL);
+	sm_push(SM(), mode_build_response);
 }
 
 static void build_settlement_cb(Node *node, gint player_num)
 {
 	gui_cursor_none();
 	sm_send(SM(), "build settlement %d %d %d\n", node->x, node->y, node->pos);
-	resp_handler(SM(), resp_build, NULL, NULL);
+	sm_push(SM(), mode_build_response);
 }
 
 /*----------------------------------------------------------------------
@@ -697,36 +672,55 @@ static void build_settlement_cb(Node *node, gint player_num)
 
 /* Response to "undo" during setup
  */
-static gboolean resp_setup_undo(StateMachine *sm, gint event)
+static gboolean mode_setup_undo_response(StateMachine *sm, gint event)
 {
 	BuildType build_type;
 	gint x, y, pos;
 
-	sm_state_name(sm, "resp_build_undo");
-	if (sm_recv(sm, "remove %B %d %d %d", &build_type, &x, &y, &pos)) {
-		build_remove(build_type, x, y, pos);
-		resp_ok(sm);
-		return TRUE;
+	sm_state_name(sm, "mode_setup_undo_response");
+	switch (event) {
+	case SM_ENTER:
+		waiting_for_network(TRUE);
+		break;
+	case SM_RECV:
+		if (sm_recv(sm, "remove %B %d %d %d",
+			    &build_type, &x, &y, &pos)) {
+			build_remove(build_type, x, y, pos);
+			waiting_for_network(FALSE);
+			sm_goto(sm, mode_setup);
+			return TRUE;
+		}
+		if (check_other_players(sm))
+			return TRUE;
+		waiting_for_network(FALSE);
+		sm_goto(sm, mode_setup);
+		break;
 	}
-	if (check_other_players(sm))
-		return TRUE;
-	resp_err(sm);
 	return FALSE;
 }
 
 /* Response to an "done" during setup
  */
-static gboolean resp_setup_done(StateMachine *sm, gint event)
+static gboolean mode_setup_done_response(StateMachine *sm, gint event)
 {
-	sm_state_name(sm, "resp_setup_done");
-	if (sm_recv(sm, "OK")) {
-		build_clear();
-		resp_ok(sm);
-		return TRUE;
+	sm_state_name(sm, "mode_setup_done_response");
+	switch (event) {
+	case SM_ENTER:
+		waiting_for_network(TRUE);
+		break;
+	case SM_RECV:
+		if (sm_recv(sm, "OK")) {
+			build_clear();
+			waiting_for_network(FALSE);
+			sm_goto(sm, mode_idle);
+			return TRUE;
+		}
+		if (check_other_players(sm))
+			return TRUE;
+		waiting_for_network(FALSE);
+		sm_goto(sm, mode_setup);
+		break;
 	}
-	if (check_other_players(sm))
-		return TRUE;
-	resp_err(sm);
 	return FALSE;
 }
 
@@ -801,7 +795,7 @@ static gboolean mode_setup(StateMachine *sm, gint event)
 		rec = build_last();
 		sm_send(sm, "remove %B %d %d %d\n",
 			rec->type, rec->x, rec->y, rec->pos);
-		resp_handler(sm, resp_setup_undo, NULL, NULL);
+		sm_goto(sm, mode_setup_undo_response);
 		return TRUE;
 	case GUI_ROAD:
 		/* User pressed "Build Road", set the map cursor;
@@ -840,7 +834,7 @@ static gboolean mode_setup(StateMachine *sm, gint event)
 		return TRUE;
 	case GUI_FINISH:
 		sm_send(sm, "done\n");
-		resp_handler(sm, resp_setup_done, mode_idle, NULL);
+		sm_goto(sm, mode_setup_done_response);
 		return TRUE;
 	default:
 		break;
@@ -889,7 +883,7 @@ static gboolean mode_idle(StateMachine *sm, gint event)
 		if (sm_recv(sm, "player %d domestic-trade call supply %R receive %R",
 			    &player_num, they_supply, they_receive)) {
 			quote_begin(player_num, they_supply, they_receive);
-			sm_goto(sm, mode_domestic_quote);
+			sm_push(sm, mode_domestic_quote);
 			return TRUE;
 		}
 		if (check_other_players(sm))
@@ -907,28 +901,37 @@ static gboolean mode_idle(StateMachine *sm, gint event)
 
 /* Handle response to move robber
  */
-static gboolean resp_robber(StateMachine *sm, gint event)
+static gboolean mode_robber_response(StateMachine *sm, gint event)
 {
 	gint x, y;
 
-	sm_state_name(sm, "resp_robber");
-	if (sm_recv(sm, "moved-robber %d %d", &x, &y)) {
-		robber_moved(my_player_num(), x, y);
+	sm_state_name(sm, "mode_robber_response");
+	switch (event) {
+	case SM_ENTER:
+		waiting_for_network(TRUE);
+		break;
+	case SM_RECV:
+		if (sm_recv(sm, "moved-robber %d %d", &x, &y)) {
+			robber_moved(my_player_num(), x, y);
+			gui_prompt_hide();
+			waiting_for_network(FALSE);
+			sm_pop(sm);
+			return TRUE;
+		}
+		if (check_other_players(sm))
+			return TRUE;
 		gui_prompt_hide();
-		resp_ok(sm);
-		return TRUE;
+		waiting_for_network(FALSE);
+		sm_pop(sm);
+		break;
 	}
-	if (check_other_players(sm))
-		return TRUE;
-	gui_prompt_hide();
-	resp_err(sm);
 	return FALSE;
 }
 
 static void move_robber(gint x, gint y, gint victim_num)
 {
 	sm_send(SM(), "move-robber %d %d %d\n", x, y, victim_num);
-	resp_handler(SM(), resp_robber, sm_previous(SM()), NULL);
+	sm_goto(SM(), mode_robber_response);
 }
 
 static void rob_building(Node *node, gint player_num, Hex *hex)
@@ -1012,38 +1015,61 @@ static gboolean mode_wait_for_robber(StateMachine *sm, gint event)
 	return FALSE;
 }
 
+/*----------------------------------------------------------------------
+ * Road building
+ */
+
 /* Response to "undo" during road building
  */
-static gboolean resp_road_building_undo(StateMachine *sm, gint event)
+static gboolean mode_road_building_undo_response(StateMachine *sm, gint event)
 {
 	gint x, y, pos;
 	BuildType build_type;
 
-	sm_state_name(sm, "resp_road_building_undo");
-	if (sm_recv(sm, "remove %B %d %d %d", &build_type, &x, &y, &pos)) {
-		build_remove(build_type, x, y, pos);
-		resp_ok(sm);
-		return TRUE;
+	sm_state_name(sm, "mode_road_building_undo_response");
+	switch (event) {
+	case SM_ENTER:
+		waiting_for_network(TRUE);
+		break;
+	case SM_RECV:
+		if (sm_recv(sm, "remove %B %d %d %d",
+			    &build_type, &x, &y, &pos)) {
+			build_remove(build_type, x, y, pos);
+			waiting_for_network(FALSE);
+			sm_goto(sm, mode_road_building);
+			return TRUE;
+		}
+		if (check_other_players(sm))
+			return TRUE;
+		waiting_for_network(FALSE);
+		sm_goto(sm, mode_road_building);
+		break;
 	}
-	if (check_other_players(sm))
-		return TRUE;
-	resp_err(sm);
 	return FALSE;
 }
 
 /* Response to "done" during road building
  */
-static gboolean resp_road_building_done(StateMachine *sm, gint event)
+static gboolean mode_road_building_done_response(StateMachine *sm, gint event)
 {
-	sm_state_name(sm, "resp_road_building_done");
-	if (sm_recv(sm, "OK")) {
-		build_clear();
-		resp_ok(sm);
-		return TRUE;
+	sm_state_name(sm, "mode_road_building_done_response");
+	switch (event) {
+	case SM_ENTER:
+		waiting_for_network(TRUE);
+		break;
+	case SM_RECV:
+		if (sm_recv(sm, "OK")) {
+			build_new_turn();
+			waiting_for_network(FALSE);
+			sm_pop(sm);
+			return TRUE;
+		}
+		if (check_other_players(sm))
+			return TRUE;
+		waiting_for_network(FALSE);
+		sm_goto(sm, mode_road_building);
+		break;
 	}
-	if (check_other_players(sm))
-		return TRUE;
-	resp_err(sm);
 	return FALSE;
 }
 
@@ -1074,7 +1100,7 @@ static gboolean mode_road_building(StateMachine *sm, gint event)
 		rec = build_last();
 		sm_send(sm, "remove %B %d %d %d\n",
 			rec->type, rec->x, rec->y, rec->pos);
-		resp_handler(sm, resp_road_building_undo, NULL, NULL);
+		sm_goto(sm, mode_road_building_undo_response);
 		return TRUE;
 	case GUI_ROAD:
 		gui_cursor_set(ROAD_CURSOR,
@@ -1096,7 +1122,7 @@ static gboolean mode_road_building(StateMachine *sm, gint event)
 		return TRUE;
 	case GUI_FINISH:
 		sm_send(sm, "done\n");
-		resp_handler(sm, resp_road_building_done, sm_previous(sm), NULL);
+		sm_goto(sm, mode_road_building_done_response);
 		return TRUE;
 	default:
 		break;
@@ -1104,19 +1130,32 @@ static gboolean mode_road_building(StateMachine *sm, gint event)
 	return FALSE;
 }
 
+/*----------------------------------------------------------------------
+ * Monopoly development card
+ */
+
 /* Response to "monopoly"
  */
-static gboolean resp_monopoly(StateMachine *sm, gint event)
+static gboolean mode_monopoly_response(StateMachine *sm, gint event)
 {
-	sm_state_name(sm, "resp_monpoly");
-	if (sm_recv(sm, "OK")) {
-		monopoly_destroy_dlg();
-		resp_ok(sm);
-		return TRUE;
+	sm_state_name(sm, "mode_monpoly_response");
+	switch (event) {
+	case SM_ENTER:
+		waiting_for_network(TRUE);
+		break;
+	case SM_RECV:
+		if (sm_recv(sm, "OK")) {
+			monopoly_destroy_dlg();
+			waiting_for_network(FALSE);
+			sm_pop(sm);
+			return TRUE;
+		}
+		if (check_other_players(sm))
+			return TRUE;
+		sm_goto(sm, mode_monopoly);
+		waiting_for_network(FALSE);
+		break;
 	}
-	if (check_other_players(sm))
-		return TRUE;
-	resp_err(sm);
 	return FALSE;
 }
 
@@ -1133,7 +1172,7 @@ static gboolean mode_monopoly(StateMachine *sm, gint event)
 		break;
 	case GUI_MONOPOLY:
 		sm_send(sm, "monopoly %r\n", monopoly_type());
-		resp_handler(sm, resp_monopoly, sm_previous(sm), NULL);
+		sm_goto(sm, mode_monopoly_response);
 		return TRUE;
 	default:
 		break;
@@ -1141,19 +1180,32 @@ static gboolean mode_monopoly(StateMachine *sm, gint event)
 	return FALSE;
 }
 
+/*----------------------------------------------------------------------
+ * Year of Plenty development card
+ */
+
 /* Response to "plenty"
  */
-static gboolean resp_year_of_plenty(StateMachine *sm, gint event)
+static gboolean mode_year_of_plenty_response(StateMachine *sm, gint event)
 {
-	sm_state_name(sm, "resp_year_of_plenty");
-	if (sm_recv(sm, "OK")) {
-		plenty_destroy_dlg();
-		resp_ok(sm);
-		return TRUE;
+	sm_state_name(sm, "mode_year_of_plenty_response");
+	switch (event) {
+	case SM_ENTER:
+		waiting_for_network(TRUE);
+		break;
+	case SM_RECV:
+		if (sm_recv(sm, "OK")) {
+			plenty_destroy_dlg();
+			waiting_for_network(FALSE);
+			sm_pop(sm);
+			return TRUE;
+		}
+		if (check_other_players(sm))
+			return TRUE;
+		waiting_for_network(FALSE);
+		sm_goto(sm, mode_year_of_plenty);
+		break;
 	}
-	if (check_other_players(sm))
-		return TRUE;
-	resp_err(sm);
 	return FALSE;
 }
 
@@ -1177,7 +1229,7 @@ static gboolean mode_year_of_plenty(StateMachine *sm, gint event)
 	case GUI_PLENTY:
 		plenty_resources(plenty);
 		sm_send(sm, "plenty %R\n", plenty);
-		resp_handler(sm, resp_year_of_plenty, sm_previous(sm), NULL);
+		sm_goto(sm, mode_year_of_plenty_response);
 		return TRUE;
 	default:
 		break;
@@ -1185,45 +1237,58 @@ static gboolean mode_year_of_plenty(StateMachine *sm, gint event)
 	return FALSE;
 }
 
+/*----------------------------------------------------------------------
+ * Nested state machine for handling development card play response
+ */
+
 /* Handle response to play develop card
  */
-static gboolean resp_play_develop(StateMachine *sm, gint event)
+static gboolean mode_play_develop_response(StateMachine *sm, gint event)
 {
 	gint card_idx;
 	DevelType card_type;
 
-	sm_state_name(sm, "resp_play_develop");
-	if (sm_recv(sm, "play-develop %d %D", &card_idx, &card_type)) {
-		build_clear();
-		resp_ok(sm);
-		develop_played(my_player_num(), card_idx, card_type);
-		switch (card_type) {
-		case DEVEL_ROAD_BUILDING:
-			if (stock_num_roads() > 0
-			    || stock_num_ships() > 0
-			    || stock_num_bridges() > 0) {
-				road_building_begin();
-				sm_push(sm, mode_road_building);
+	sm_state_name(sm, "mode_play_develop_response");
+	switch (event) {
+	case SM_ENTER:
+		waiting_for_network(TRUE);
+		break;
+	case SM_RECV:
+		if (sm_recv(sm, "play-develop %d %D", &card_idx, &card_type)) {
+			build_clear();
+			waiting_for_network(FALSE);
+			develop_played(my_player_num(), card_idx, card_type);
+			switch (card_type) {
+			case DEVEL_ROAD_BUILDING:
+				if (stock_num_roads() > 0
+				    || stock_num_ships() > 0
+				    || stock_num_bridges() > 0) {
+					road_building_begin();
+					sm_goto(sm, mode_road_building);
+				}
+				break;
+			case DEVEL_MONOPOLY:
+				monopoly_create_dlg();
+				sm_goto(sm, mode_monopoly);
+				break;
+			case DEVEL_YEAR_OF_PLENTY:
+				sm_goto(sm, mode_year_of_plenty);
+				break;
+			case DEVEL_SOLDIER:
+				sm_goto(sm, mode_wait_for_robber);
+				break;
+			default:
+				sm_pop(sm);
+				break;
 			}
-			break;
-		case DEVEL_MONOPOLY:
-			monopoly_create_dlg();
-			sm_push(sm, mode_monopoly);
-			break;
-		case DEVEL_YEAR_OF_PLENTY:
-			sm_push(sm, mode_year_of_plenty);
-			break;
-		case DEVEL_SOLDIER:
-			sm_push(sm, mode_wait_for_robber);
-			break;
-		default:
-			break;
+			return TRUE;
 		}
-		return TRUE;
+		if (check_other_players(sm))
+			return TRUE;
+		waiting_for_network(FALSE);
+		sm_pop(sm);
+		break;
 	}
-	if (check_other_players(sm))
-		return TRUE;
-	resp_err(sm);
 	return FALSE;
 }
 
@@ -1276,23 +1341,36 @@ static gboolean mode_discard(StateMachine *sm, gint event)
 	return FALSE;
 }
 
+/*----------------------------------------------------------------------
+ * Turn mode processing - before dice have been rolled
+ */
+
 /* Handle response to "roll dice"
  */
-static gboolean resp_roll(StateMachine *sm, gint event)
+static gboolean mode_roll_response(StateMachine *sm, gint event)
 {
 	gint die1, die2;
 
-	sm_state_name(sm, "resp_roll");
-	if (sm_recv(sm, "rolled %d %d", &die1, &die2)) {
-		turn_rolled_dice(my_player_num(), die1, die2);
-		resp_ok(sm);
-		if (die1 + die2 == 7)
-			sm_push(sm, mode_wait_for_robber);
-		return TRUE;
+	sm_state_name(sm, "mode_roll_response");
+	switch (event) {
+	case SM_ENTER:
+		waiting_for_network(TRUE);
+		break;
+	case SM_RECV:
+		if (sm_recv(sm, "rolled %d %d", &die1, &die2)) {
+			turn_rolled_dice(my_player_num(), die1, die2);
+			sm_goto(sm, mode_turn_rolled);
+			if (die1 + die2 == 7)
+				sm_push(sm, mode_wait_for_robber);
+			waiting_for_network(FALSE);
+			return TRUE;
+		}
+		if (check_other_players(sm))
+			return TRUE;
+		waiting_for_network(FALSE);
+		sm_goto(sm, mode_turn);
+		break;
 	}
-	if (check_other_players(sm))
-		return TRUE;
-	resp_err(sm);
 	return FALSE;
 }
 
@@ -1313,11 +1391,11 @@ static gboolean mode_turn(StateMachine *sm, gint event)
 		break;
 	case GUI_ROLL:
 		sm_send(sm, "roll\n");
-		resp_handler(sm, resp_roll, mode_turn_rolled, NULL);
+		sm_goto(sm, mode_roll_response);
 		return TRUE;
 	case GUI_PLAY_DEVELOP:
 		sm_send(sm, "play-develop %d\n", develop_current_idx());
-		resp_handler(sm, resp_play_develop, NULL, NULL);
+		sm_push(sm, mode_play_develop_response);
 		return TRUE;
 	default:
 		break;
@@ -1325,40 +1403,63 @@ static gboolean mode_turn(StateMachine *sm, gint event)
 	return FALSE;
 }
 
+/*----------------------------------------------------------------------
+ * Turn mode processing - after dice have been rolled
+ */
+
 /* Handle response to buy development card
  */
-static gboolean resp_buy_develop(StateMachine *sm, gint event)
+static gboolean mode_buy_develop_response(StateMachine *sm, gint event)
 {
 	DevelType card_type;
 
-	sm_state_name(sm, "resp_buy_develop");
-	if (sm_recv(sm, "bought-develop %D", &card_type)) {
-		develop_bought_card(card_type);
-		resp_ok(sm);
-		return TRUE;
+	sm_state_name(sm, "mode_buy_develop_response");
+	switch (event) {
+	case SM_ENTER:
+		waiting_for_network(TRUE);
+		break;
+	case SM_RECV:
+		if (sm_recv(sm, "bought-develop %D", &card_type)) {
+			develop_bought_card(card_type);
+			sm_goto(sm, mode_turn_rolled);
+			waiting_for_network(FALSE);
+			return TRUE;
+		}
+		if (check_other_players(sm))
+			return TRUE;
+		sm_goto(sm, mode_turn_rolled);
+		waiting_for_network(FALSE);
+		break;
 	}
-	if (check_other_players(sm))
-		return TRUE;
-	resp_err(sm);
 	return FALSE;
 }
 
 /* Response to "undo" during turn
  */
-static gboolean resp_turn_undo(StateMachine *sm, gint event)
+static gboolean mode_turn_undo_response(StateMachine *sm, gint event)
 {
 	BuildType build_type;
 	gint x, y, pos;
 
-	sm_state_name(sm, "resp_turn_undo");
-	if (sm_recv(sm, "remove %B %d %d %d", &build_type, &x, &y, &pos)) {
-		build_remove(build_type, x, y, pos);
-		resp_ok(sm);
-		return TRUE;
+	sm_state_name(sm, "mode_turn_undo_response");
+	switch (event) {
+	case SM_ENTER:
+		waiting_for_network(TRUE);
+		break;
+	case SM_RECV:
+		if (sm_recv(sm, "remove %B %d %d %d",
+			    &build_type, &x, &y, &pos)) {
+			build_remove(build_type, x, y, pos);
+			waiting_for_network(FALSE);
+			sm_goto(sm, mode_turn_rolled);
+			return TRUE;
+		}
+		if (check_other_players(sm))
+			return TRUE;
+		waiting_for_network(FALSE);
+		sm_goto(sm, mode_turn_rolled);
+		break;
 	}
-	if (check_other_players(sm))
-		return TRUE;
-	resp_err(sm);
 	return FALSE;
 }
 
@@ -1366,22 +1467,31 @@ static void build_city_cb(Node *node, gint player_num)
 {
 	gui_cursor_none();
 	sm_send(SM(), "build city %d %d %d\n", node->x, node->y, node->pos);
-	resp_handler(SM(), resp_build, NULL, NULL);
+	sm_push(SM(), mode_build_response);
 }
 
 /* Response to an "done" during turn
  */
-static gboolean resp_turn_done(StateMachine *sm, gint event)
+static gboolean mode_turn_done_response(StateMachine *sm, gint event)
 {
-	sm_state_name(sm, "resp_turn_done");
-	if (sm_recv(sm, "OK")) {
-		build_clear();
-		resp_ok(sm);
-		return TRUE;
+	sm_state_name(sm, "mode_turn_done_response");
+	switch (event) {
+	case SM_ENTER:
+		waiting_for_network(TRUE);
+		break;
+	case SM_RECV:
+		if (sm_recv(sm, "OK")) {
+			build_clear();
+			waiting_for_network(FALSE);
+			sm_goto(sm, mode_idle);
+			return TRUE;
+		}
+		if (check_other_players(sm))
+			return TRUE;
+		waiting_for_network(FALSE);
+		sm_goto(sm, mode_turn_rolled);
+		break;
 	}
-	if (check_other_players(sm))
-		return TRUE;
-	resp_err(sm);
 	return FALSE;
 }
 
@@ -1414,7 +1524,7 @@ static gboolean mode_turn_rolled(StateMachine *sm, gint event)
 		rec = build_last();
 		sm_send(sm, "remove %B %d %d %d\n",
 			rec->type, rec->x, rec->y, rec->pos);
-		resp_handler(sm, resp_turn_undo, NULL, NULL);
+		sm_goto(sm, mode_turn_undo_response);
 		return TRUE;
 	case GUI_ROAD:
 		gui_cursor_set(ROAD_CURSOR,
@@ -1448,25 +1558,30 @@ static gboolean mode_turn_rolled(StateMachine *sm, gint event)
 		return TRUE;
 	case GUI_TRADE:
 		trade_begin();
-		sm_goto(sm, mode_maritime_trade);
+		sm_push(sm, mode_maritime_trade);
 		return TRUE;
 	case GUI_PLAY_DEVELOP:
 		sm_send(sm, "play-develop %d\n", develop_current_idx());
-		resp_handler(sm, resp_play_develop, NULL, NULL);
+		sm_push(sm, mode_play_develop_response);
 		return TRUE;
 	case GUI_BUY_DEVELOP:
 		sm_send(sm, "buy-develop\n");
-		resp_handler(sm, resp_buy_develop, NULL, NULL);
+		sm_goto(sm, mode_buy_develop_response);
 		return TRUE;
 	case GUI_FINISH:
 		sm_send(sm, "done\n");
-		resp_handler(sm, resp_turn_done, mode_idle, NULL);
+		sm_goto(sm, mode_turn_done_response);
 		return TRUE;
 	default:
 		break;
 	}
 	return FALSE;
 }
+
+/*----------------------------------------------------------------------
+ * Trade processing - all trading done inside a nested state machine
+ * to allow trading to be invoked from multiple states.
+ */
 
 static gboolean check_trading(StateMachine *sm)
 {
@@ -1496,43 +1611,61 @@ static gboolean check_trading(StateMachine *sm)
 	return FALSE;
 }
 
-/* Handle response to call for quotes
+/* Handle response to call for domestic trade quotes
  */
-static gboolean resp_trade_call(StateMachine *sm, gint event)
+static gboolean mode_trade_call_response(StateMachine *sm, gint event)
 {
 	gint we_supply[NO_RESOURCE];
 	gint we_receive[NO_RESOURCE];
 
-	sm_state_name(sm, "resp_trade_call");
-	if (sm_recv(sm, "domestic-trade call supply %R receive %R",
-		    we_supply, we_receive)) {
-		resp_ok(sm);
-		return TRUE;
+	sm_state_name(sm, "mode_trade_call_response");
+	switch (event) {
+	case SM_ENTER:
+		waiting_for_network(TRUE);
+		break;
+	case SM_RECV:
+		if (sm_recv(sm, "domestic-trade call supply %R receive %R",
+			    we_supply, we_receive)) {
+			waiting_for_network(FALSE);
+			sm_goto(sm, mode_domestic_trade);
+			return TRUE;
+		}
+		if (check_trading(sm) || check_other_players(sm))
+			return TRUE;
+		waiting_for_network(FALSE);
+		sm_goto(sm, mode_maritime_trade);
+		break;
 	}
-	if (check_trading(sm) || check_other_players(sm))
-		return TRUE;
-	resp_err(sm);
 	return FALSE;
 }
 
 /* Handle response to maritime trade
  */
-static gboolean resp_trade_maritime(StateMachine *sm, gint event)
+static gboolean mode_trade_maritime_response(StateMachine *sm, gint event)
 {
 	gint ratio;
 	Resource we_supply;
 	Resource we_receive;
 
-	sm_state_name(sm, "resp_trade_maritime");
-	if (sm_recv(sm, "maritime-trade %d supply %r receive %r",
-		    &ratio, &we_supply, &we_receive)) {
-		trade_perform_maritime(ratio, we_supply, we_receive);
-		resp_ok(sm);
-		return TRUE;
+	sm_state_name(sm, "mode_trade_maritime_response");
+	switch (event) {
+	case SM_ENTER:
+		waiting_for_network(TRUE);
+		break;
+	case SM_RECV:
+		if (sm_recv(sm, "maritime-trade %d supply %r receive %r",
+			    &ratio, &we_supply, &we_receive)) {
+			trade_perform_maritime(ratio, we_supply, we_receive);
+			waiting_for_network(FALSE);
+			sm_pop(sm);
+			return TRUE;
+		}
+		if (check_trading(sm) || check_other_players(sm))
+			return TRUE;
+		waiting_for_network(FALSE);
+		sm_pop(sm);
+		break;
 	}
-	if (check_trading(sm) || check_other_players(sm))
-		return TRUE;
-	resp_err(sm);
 	return FALSE;
 }
 
@@ -1554,18 +1687,18 @@ static gboolean mode_maritime_trade(StateMachine *sm, gint event)
 	case GUI_TRADE_CALL:
 		sm_send(sm, "domestic-trade call supply %R receive %R\n",
 			trade_we_supply(), trade_we_receive());
-		resp_handler(sm, resp_trade_call, mode_domestic_trade, NULL);
+		sm_goto(sm, mode_trade_call_response);
 		return TRUE;
 	case GUI_TRADE_ACCEPT:
 		quote = trade_current_quote();
                 sm_send(sm, "maritime-trade %d supply %r receive %r\n",
 			quote->var.m.ratio,
 			quote->var.m.supply, quote->var.m.receive);
-		resp_handler(sm, resp_trade_maritime, NULL, NULL);
+		sm_push(sm, mode_trade_maritime_response);
 		return TRUE;
 	case GUI_TRADE_FINISH:
 		trade_finish();
-		sm_goto(sm, mode_turn_rolled);
+		sm_pop(sm);
 		return TRUE;
 	default:
 		break;
@@ -1575,60 +1708,87 @@ static gboolean mode_maritime_trade(StateMachine *sm, gint event)
 
 /* Handle response to call for quotes during domestic trade
  */
-static gboolean resp_trade_call_again(StateMachine *sm, gint event)
+static gboolean mode_trade_call_again_response(StateMachine *sm, gint event)
 {
 	gint we_supply[NO_RESOURCE];
 	gint we_receive[NO_RESOURCE];
 
-	sm_state_name(sm, "resp_trade_call_again");
-	if (sm_recv(sm, "domestic-trade call supply %R receive %R",
-		    we_supply, we_receive)) {
-		trade_refine_domestic(we_supply, we_receive);
-		resp_ok(sm);
-		return TRUE;
+	sm_state_name(sm, "mode_trade_call_again_response");
+	switch (event) {
+	case SM_ENTER:
+		waiting_for_network(TRUE);
+		break;
+	case SM_RECV:
+		if (sm_recv(sm, "domestic-trade call supply %R receive %R",
+			    we_supply, we_receive)) {
+			trade_refine_domestic(we_supply, we_receive);
+			waiting_for_network(FALSE);
+			sm_goto(sm, mode_domestic_trade);
+			return TRUE;
+		}
+		if (check_trading(sm) || check_other_players(sm))
+			return TRUE;
+		waiting_for_network(FALSE);
+		sm_goto(sm, mode_domestic_trade);
+		break;
 	}
-	if (check_trading(sm) || check_other_players(sm))
-		return TRUE;
-	resp_err(sm);
 	return FALSE;
 }
 
 /* Handle response to domestic trade
  */
-static gboolean resp_trade_domestic(StateMachine *sm, gint event)
+static gboolean mode_trade_domestic_response(StateMachine *sm, gint event)
 {
 	gint partner_num;
 	gint quote_num;
 	gint they_supply[NO_RESOURCE];
 	gint they_receive[NO_RESOURCE];
 
-	sm_state_name(sm, "resp_trade_domestic");
-	if (sm_recv(sm, "domestic-trade accept player %d quote %d supply %R receive %R",
-		    &partner_num, &quote_num, &they_supply, &they_receive)) {
-		trade_perform_domestic(my_player_num(), partner_num, quote_num,
-				       they_supply, they_receive);
-		resp_ok(sm);
-		return TRUE;
+	sm_state_name(sm, "mode_trade_domestic_response");
+	switch (event) {
+	case SM_ENTER:
+		waiting_for_network(TRUE);
+		break;
+	case SM_RECV:
+		if (sm_recv(sm, "domestic-trade accept player %d quote %d supply %R receive %R",
+			    &partner_num, &quote_num, &they_supply, &they_receive)) {
+			trade_perform_domestic(my_player_num(), partner_num, quote_num,
+					       they_supply, they_receive);
+			waiting_for_network(FALSE);
+			sm_goto(sm, mode_domestic_trade);
+			return TRUE;
+		}
+		if (check_trading(sm) || check_other_players(sm))
+			return TRUE;
+		waiting_for_network(FALSE);
+		sm_goto(sm, mode_domestic_trade);
+		break;
 	}
-	if (check_trading(sm) || check_other_players(sm))
-		return TRUE;
-	resp_err(sm);
 	return FALSE;
 }
 
 /* Handle response to domestic trade finish
  */
-static gboolean resp_domestic_finish(StateMachine *sm, gint event)
+static gboolean mode_domestic_finish_response(StateMachine *sm, gint event)
 {
-	sm_state_name(sm, "resp_domestic_finish");
-	if (sm_recv(sm, "domestic-trade finish")) {
-		trade_finish();
-		resp_ok(sm);
-		return TRUE;
+	sm_state_name(sm, "mode_domestic_finish_response");
+	switch (event) {
+	case SM_ENTER:
+		waiting_for_network(TRUE);
+		break;
+	case SM_RECV:
+		if (sm_recv(sm, "domestic-trade finish")) {
+			trade_finish();
+			waiting_for_network(FALSE);
+			sm_pop(sm);
+			return TRUE;
+		}
+		if (check_trading(sm) || check_other_players(sm))
+			return TRUE;
+		waiting_for_network(FALSE);
+		sm_goto(sm, mode_domestic_trade);
+		break;
 	}
-	if (check_trading(sm) || check_other_players(sm))
-		return TRUE;
-	resp_err(sm);
 	return FALSE;
 }
 
@@ -1650,7 +1810,7 @@ static gboolean mode_domestic_trade(StateMachine *sm, gint event)
 	case GUI_TRADE_CALL:
 		sm_send(sm, "domestic-trade call supply %R receive %R\n",
 			trade_we_supply(), trade_we_receive());
-		resp_handler(sm, resp_trade_call_again, NULL, NULL);
+		sm_goto(sm, mode_trade_call_again_response);
 		return TRUE;
 	case GUI_TRADE_ACCEPT:
 		quote = trade_current_quote();
@@ -1659,23 +1819,27 @@ static gboolean mode_domestic_trade(StateMachine *sm, gint event)
 				quote->var.d.player_num,
 				quote->var.d.quote_num,
 				quote->var.d.supply, quote->var.d.receive);
-			resp_handler(sm, resp_trade_domestic, NULL, NULL);
+			sm_goto(sm, mode_trade_domestic_response);
 		} else {
 			sm_send(sm, "maritime-trade %d supply %r receive %r\n",
 				quote->var.m.ratio,
 				quote->var.m.supply, quote->var.m.receive);
-			resp_handler(sm, resp_trade_maritime, NULL, NULL);
+			sm_push(sm, mode_trade_maritime_response);
 		}
 		return TRUE;
 	case GUI_TRADE_FINISH:
 		sm_send(sm, "domestic-trade finish\n");
-		resp_handler(sm, resp_domestic_finish, mode_turn_rolled, NULL);
+		sm_goto(sm, mode_domestic_finish_response);
 		return TRUE;
 	default:
 		break;
 	}
 	return FALSE;
 }
+
+/*----------------------------------------------------------------------
+ * Quote processing - all quoting done inside a nested state machine.
+ */
 
 static gboolean check_quoting(StateMachine *sm)
 {
@@ -1715,7 +1879,7 @@ static gboolean check_quoting(StateMachine *sm)
 	if (sm_recv(sm, "domestic-trade finish")) {
 		quote_finish();
 		sm_send(sm, "domestic-quote exit\n");
-		sm_goto(sm, mode_idle);
+		sm_pop(sm);
 		return TRUE;
 	}
 
@@ -1725,56 +1889,83 @@ static gboolean check_quoting(StateMachine *sm)
 
 /* Handle response to domestic quote finish
  */
-static gboolean resp_quote_finish(StateMachine *sm, gint event)
+static gboolean mode_quote_finish_response(StateMachine *sm, gint event)
 {
-	sm_state_name(sm, "resp_quote_finish");
-	if (sm_recv(sm, "domestic-quote finish")) {
-		resp_ok(sm);
-		return TRUE;
+	sm_state_name(sm, "mode_quote_finish_response");
+	switch (event) {
+	case SM_ENTER:
+		waiting_for_network(TRUE);
+		break;
+	case SM_RECV:
+		if (sm_recv(sm, "domestic-quote finish")) {
+			waiting_for_network(FALSE);
+			sm_goto(sm, mode_domestic_monitor);
+			return TRUE;
+		}
+		if (check_quoting(sm) || check_other_players(sm))
+			return TRUE;
+		waiting_for_network(FALSE);
+		sm_goto(sm, mode_domestic_quote);
+		break;
 	}
-	if (check_quoting(sm) || check_other_players(sm))
-		return TRUE;
-	resp_err(sm);
 	return FALSE;
 }
 
 /* Handle response to domestic quote submit
  */
-static gboolean resp_quote_submit(StateMachine *sm, gint event)
+static gboolean mode_quote_submit_response(StateMachine *sm, gint event)
 {
 	gint quote_num;
 	gint we_supply[NO_RESOURCE];
 	gint we_receive[NO_RESOURCE];
 
-	sm_state_name(sm, "resp_quote_submit");
-	if (sm_recv(sm, "domestic-quote quote %d supply %R receive %R",
-		    &quote_num, we_supply, we_receive)) {
-		quote_add_quote(my_player_num(),
-				quote_num, we_supply, we_receive);
-		resp_ok(sm);
-		return TRUE;
+	sm_state_name(sm, "mode_quote_submit_response");
+	switch (event) {
+	case SM_ENTER:
+		waiting_for_network(TRUE);
+		break;
+	case SM_RECV:
+		if (sm_recv(sm, "domestic-quote quote %d supply %R receive %R",
+			    &quote_num, we_supply, we_receive)) {
+			quote_add_quote(my_player_num(),
+					quote_num, we_supply, we_receive);
+			waiting_for_network(FALSE);
+			sm_goto(sm, mode_domestic_quote);
+			return TRUE;
+		}
+		if (check_quoting(sm) || check_other_players(sm))
+			return TRUE;
+		waiting_for_network(FALSE);
+		sm_goto(sm, mode_domestic_quote);
+		break;
 	}
-	if (check_quoting(sm) || check_other_players(sm))
-		return TRUE;
-	resp_err(sm);
 	return FALSE;
 }
 
 /* Handle response to domestic quote delete
  */
-static gboolean resp_quote_delete(StateMachine *sm, gint event)
+static gboolean mode_quote_delete_response(StateMachine *sm, gint event)
 {
 	gint quote_num;
 
-	sm_state_name(sm, "resp_quote_delete");
-	if (sm_recv(sm, "domestic-quote delete %d", &quote_num)) {
-		quote_delete_quote(my_player_num(), quote_num);
-		resp_ok(sm);
-		return TRUE;
+	sm_state_name(sm, "mode_quote_delete_response");
+	switch (event) {
+	case SM_ENTER:
+		waiting_for_network(TRUE);
+		break;
+	case SM_RECV:
+		if (sm_recv(sm, "domestic-quote delete %d", &quote_num)) {
+			quote_delete_quote(my_player_num(), quote_num);
+			waiting_for_network(FALSE);
+			sm_goto(sm, mode_domestic_quote);
+			return TRUE;
+		}
+		if (check_quoting(sm) || check_other_players(sm))
+			return TRUE;
+		waiting_for_network(FALSE);
+		sm_goto(sm, mode_domestic_quote);
+		break;
 	}
-	if (check_quoting(sm) || check_other_players(sm))
-		return TRUE;
-	resp_err(sm);
 	return FALSE;
 }
 
@@ -1799,16 +1990,16 @@ static gboolean mode_domestic_quote(StateMachine *sm, gint event)
 		sm_send(sm, "domestic-quote quote %d supply %R receive %R\n",
 			quote_next_num(),
 			quote_we_supply(), quote_we_receive());
-		resp_handler(sm, resp_quote_submit, NULL, NULL);
+		sm_goto(sm, mode_quote_submit_response);
 		return TRUE;
 	case GUI_QUOTE_DELETE:
 		quote = quote_current_quote();
 		sm_send(sm, "domestic-quote delete %d\n", quote->var.d.quote_num);
-		resp_handler(sm, resp_quote_delete, NULL, NULL);
+		sm_goto(sm, mode_quote_delete_response);
 		return TRUE;
 	case GUI_QUOTE_REJECT:
 		sm_send(sm, "domestic-quote finish\n");
-		resp_handler(sm, resp_quote_finish, mode_domestic_monitor, NULL);
+		sm_goto(sm, mode_quote_finish_response);
 		return TRUE;
 	default:
 		break;
@@ -1831,6 +2022,10 @@ static gboolean mode_domestic_monitor(StateMachine *sm, gint event)
 	}
 	return FALSE;
 }
+
+/*----------------------------------------------------------------------
+ * The game is over
+ */
 
 static gboolean mode_game_over(StateMachine *sm, gint event)
 {

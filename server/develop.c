@@ -141,7 +141,7 @@ gboolean mode_road_building(Player *player, gint event)
 		/* Player has finished road building
 		 */
 		sm_send(sm, "OK\n");
-		sm_goto(sm, (StateMode)mode_turn);
+		sm_goto(sm, (StateFunc)mode_turn);
 		return TRUE;
 	}
 
@@ -228,7 +228,7 @@ gboolean mode_plenty_resources(Player *player, gint event)
 	cost_refund(plenty, player->assets);
 	resource_end(game, "receives", 1);
 	sm_send(sm, "OK\n");
-	sm_goto(sm, (StateMode)mode_turn);
+	sm_goto(sm, (StateFunc)mode_turn);
 	return TRUE;
 }
 
@@ -267,7 +267,7 @@ gboolean mode_monopoly(Player *player, gint event)
 		scan->assets[type] = 0;
 	}
 
-	sm_goto(sm, (StateMode)mode_turn);
+	sm_goto(sm, (StateFunc)mode_turn);
 	return TRUE;
 }
 
@@ -343,14 +343,14 @@ void develop_play(Player *player, gint idx)
         case DEVEL_ROAD_BUILDING:
 		/* Place 2 new roads as if you had just built them.
 		 */
-		sm_goto(sm, (StateMode)mode_road_building);
+		sm_goto(sm, (StateFunc)mode_road_building);
 		break;
         case DEVEL_MONOPOLY:
 		/* When you play this card, announce one type of
 		 * resource.  All other players must give you all
 		 * their resource cards of that type.
 		 */
-		sm_goto(sm, (StateMode)mode_monopoly);
+		sm_goto(sm, (StateFunc)mode_monopoly);
 		break;
         case DEVEL_YEAR_OF_PLENTY:
 		/* Take any 2 resource cards from the bank and add
@@ -359,7 +359,7 @@ void develop_play(Player *player, gint idx)
 		 * immediately be used to build.
 		 */
 		sm_send(sm, "plenty %R\n", game->bank_deck);
-		sm_goto(sm, (StateMode)mode_plenty_resources);
+		sm_goto(sm, (StateFunc)mode_plenty_resources);
 		break;
         case DEVEL_CHAPEL:
         case DEVEL_UNIVERSITY_OF_CATAN:
