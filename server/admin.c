@@ -125,6 +125,13 @@ void cfg_set_num_players( gint num_players )
 		params->num_players = num_players;
 }
 
+void cfg_set_sevens_rule( gint sevens_rule )
+{
+	g_print( "cfg_set_sevens_rule: %d\n", sevens_rule );
+	if( params )
+		params->sevens_rule = sevens_rule;
+}
+
 void cfg_set_victory_points( gint victory_points )
 {
 	g_print( "cfg_set_victory_points: %d\n", victory_points );
@@ -210,7 +217,12 @@ admin_run_command( Session *admin_session, gchar *line )
 		if( value_int )
 			cfg_set_num_players( value_int );
 	
-	/* set the victory points */
+	/* set the sevens rule */
+	} else if( !strcmp( command, "set-sevens-rule" ) ) {
+		if( value_int )
+			cfg_set_sevens_rule( value_int );
+
+		/* set the victory points */
 	} else if( !strcmp( command, "set-victory-points" ) ) {
 		if( value_int )
 			cfg_set_victory_points( value_int );

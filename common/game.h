@@ -44,6 +44,9 @@ typedef struct {
 	gboolean strict_trade;	/* trade only before build/buy? */
 	gboolean domestic_trade; /* player trading allowed? */
 	gint num_players;	/* number of players in the game */
+	gint sevens_rule;	/* what to do when a seven is rolled */
+	/* 0 = normal, 1 = no 7s on first 2 turns (official rule variant),
+	 * 2 = all 7s rerolled */
 	gint victory_points;	/* target number of victory points */
 	gint num_build_type[NUM_BUILD_TYPES]; /* number of each build type */
 	gint resource_count;	/* number of each resource */

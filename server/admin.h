@@ -28,6 +28,7 @@ void load_game_types( gchar *path );
 
 /**** callbacks to set parameters ****/
 void cfg_set_num_players( gint num_players );
+void cfg_set_sevens_rule( gint sevens_rule );
 void cfg_set_victory_points( gint victory_points );
 void cfg_set_game( gchar *game );
 void cfg_set_terrain_type( gint terrain_type );

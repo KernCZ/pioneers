@@ -86,6 +86,9 @@ static GtkWidget *victory_spin;	/* victory point target */
 static GtkWidget *players_spin;	/* number of players */
 static GtkWidget *register_toggle; /* register with meta server? */
 static GtkWidget *port_spin;	/* server port */
+static GtkWidget *radio_sevens_normal; /* radio button for normal sevens rule */
+static GtkWidget *radio_sevens_2_turns; /* radio button for reroll on first 2 turns */
+static GtkWidget *radio_sevens_reroll; /* radio button for reroll all 7s */
 
 static GtkWidget *clist;	/* currently connected players */
 
@@ -148,6 +151,21 @@ static void game_select_cb(GtkWidget *list, gpointer user_data)
 	}
 }
 
+static void sevens_rule_changed_cb(GtkWidget *radio, gpointer user_data)
+{
+	gint rule_value = 0;
+
+	if (GTK_TOGGLE_BUTTON(radio_sevens_normal)->active) {
+		rule_value = 0;
+	} else if (GTK_TOGGLE_BUTTON(radio_sevens_2_turns)->active) {
+		rule_value = 1;
+	} else if (GTK_TOGGLE_BUTTON(radio_sevens_reroll)->active) {
+		rule_value = 2;
+	}
+
+	cfg_set_sevens_rule(rule_value);
+}
+
 static void terrain_toggle_cb(GtkToggleButton *toggle, gpointer user_data)
 {
 	cfg_set_terrain_type( gtk_toggle_button_get_active(toggle) );
@@ -192,6 +210,9 @@ static void start_clicked_cb(GtkWidget *start_btn, gpointer user_data)
 		gtk_widget_set_sensitive(register_toggle, FALSE);
 		gtk_widget_set_sensitive(port_spin, FALSE);
 		gtk_widget_set_sensitive(start_btn, FALSE);
+		gtk_widget_set_sensitive(radio_sevens_normal, FALSE);
+		gtk_widget_set_sensitive(radio_sevens_2_turns, FALSE);
+		gtk_widget_set_sensitive(radio_sevens_reroll, FALSE);
 		gui_ui_enable(FALSE);
 	}
 }
@@ -250,6 +271,7 @@ static GtkWidget *build_interface()
 	GtkWidget *start_btn;
 	GtkWidget *scroll_win;
 	GtkWidget *message_text;
+	GtkWidget *vbox_sevens;
 
 	static gchar *titles[] = {
 		N_("Name"), N_("Location")
@@ -267,7 +289,7 @@ static GtkWidget *build_interface()
 	gtk_widget_show(frame);
 	gtk_box_pack_start(GTK_BOX(hbox), frame, FALSE, TRUE, 0);
 
-	table = gtk_table_new(6, 3, FALSE);
+	table = gtk_table_new(7, 3, FALSE);
 	gtk_widget_show(table);
 	gtk_container_add(GTK_CONTAINER(frame), table);
 	gtk_container_border_width(GTK_CONTAINER(table), 3);
@@ -376,9 +398,45 @@ static GtkWidget *build_interface()
 	gtk_signal_connect(GTK_OBJECT(port_spin), "changed",
 			   GTK_SIGNAL_FUNC(port_spin_changed_cb), NULL);
 
+/** Begin Sevens Rule widgets **/
+
+	label = gtk_label_new("Sevens Rule");
+	gtk_widget_show(label);
+	gtk_table_attach(GTK_TABLE(table), label, 0, 1, 6, 7,
+			 (GtkAttachOptions)GTK_FILL,
+			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+
+	radio_sevens_normal = gtk_radio_button_new_with_label(NULL, "Normal");
+	radio_sevens_2_turns = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(radio_sevens_normal), "Reroll on 1st 2 turns" );
+	radio_sevens_reroll = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(radio_sevens_2_turns), "Reroll all 7s" );
+	
+	vbox_sevens = gtk_vbox_new( TRUE, 2 );
+
+	gtk_widget_show(radio_sevens_normal);
+	gtk_widget_show(radio_sevens_2_turns);
+	gtk_widget_show(radio_sevens_reroll);
+	gtk_widget_show(vbox_sevens);
+
+	gtk_box_pack_start_defaults( GTK_BOX(vbox_sevens), radio_sevens_normal );
+	gtk_box_pack_start_defaults( GTK_BOX(vbox_sevens), radio_sevens_2_turns );
+	gtk_box_pack_start_defaults( GTK_BOX(vbox_sevens), radio_sevens_reroll );
+	
+	gtk_table_attach(GTK_TABLE(table), vbox_sevens, 1, 2, 6, 7,
+			 (GtkAttachOptions)GTK_FILL,
+			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
+
+	gtk_signal_connect(GTK_OBJECT(radio_sevens_normal), "clicked",
+			   GTK_SIGNAL_FUNC(sevens_rule_changed_cb), NULL);
+	gtk_signal_connect(GTK_OBJECT(radio_sevens_2_turns), "clicked",
+			   GTK_SIGNAL_FUNC(sevens_rule_changed_cb), NULL);
+	gtk_signal_connect(GTK_OBJECT(radio_sevens_reroll), "clicked",
+			   GTK_SIGNAL_FUNC(sevens_rule_changed_cb), NULL);
+/** End Sevens Rule widgets **/
+
 	start_btn = gtk_button_new_with_label(_("Start Server"));
 	gtk_widget_show(start_btn);
-	gtk_table_attach(GTK_TABLE(table), start_btn, 0, 2, 6, 7,
+	gtk_table_attach(GTK_TABLE(table), start_btn, 0, 2, 7, 8,
 			 (GtkAttachOptions)GTK_FILL,
 			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_signal_connect(GTK_OBJECT(start_btn), "clicked",

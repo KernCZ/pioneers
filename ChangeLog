@@ -1,3 +1,13 @@
+2001-03-09  Matt Waggoner  <matt@waggoner.com>
+
+	* One of the official rule variants for Settlers of Catan is
+	to disallow rolling a 7 on the first two rounds.  This has been
+	added as a feature of gnocatan, as well as an additional variant:
+	always reroll 7s.  These are accessed from the console server
+	with the "-R n" parameter (n = 0 is normal, n = 1 is no 7s on first
+	2 turns, and n = 2 is reroll all 7s), and via radio buttons in
+	the GTK+ server.
+
 2001-03-06  Matt Waggoner  <matt@waggoner.com>
 
 	* Changed some more chat text colors; added a color for the

@@ -79,6 +79,7 @@ GtkWidget *settings_create_dlg()
 	GtkWidget *hbox;
 	GtkWidget *table;
 	GtkWidget *label;
+	gchar sevens_desc[50];
 
 	if (settings_dlg != NULL)
 		return settings_dlg;
@@ -117,7 +118,7 @@ GtkWidget *settings_create_dlg()
 	gtk_widget_show(frame);
 	gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, TRUE, 0);
 
-	table = gtk_table_new(6, 2, FALSE);
+	table = gtk_table_new(7, 2, FALSE);
 	gtk_widget_show(table);
 	gtk_container_add(GTK_CONTAINER(frame), table);
 	gtk_container_border_width(GTK_CONTAINER(table), 5);
@@ -136,6 +137,19 @@ GtkWidget *settings_create_dlg()
 	add_setting_val(table, 4, 1, TYPE_BOOL, game_params->strict_trade, NULL);
 	add_setting_desc(table, 5, 0, _("Amount of Each Resource:"));
 	add_setting_val(table, 5, 1, TYPE_NUM, game_params->resource_count, NULL);
+
+	if (game_params->sevens_rule == 0) {
+		strcpy(sevens_desc, "Normal");
+	} else if (game_params->sevens_rule == 1) {
+		strcpy(sevens_desc, "No 7s on\nfirst 2 turns");
+	} else if (game_params->sevens_rule == 2) {
+		strcpy(sevens_desc, "All 7s rerolled");
+	} else {
+		strcpy(sevens_desc, "Unknown!");
+	}
+	
+	add_setting_desc(table, 6, 0, _("Sevens Rule:"));
+	add_setting_val(table, 6, 1, TYPE_STRING, 0, sevens_desc);
 
 	frame = gtk_frame_new(_("Building Quotas"));
 	gtk_widget_show(frame);

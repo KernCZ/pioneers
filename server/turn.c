@@ -239,8 +239,9 @@ gboolean mode_turn(Player *player, gint event)
 	gint quote_num, partner_num, idx, ratio;
 	Resource supply_type, receive_type;
 	gint supply[NO_RESOURCE], receive[NO_RESOURCE];
+	gint done;
 
-        sm_state_name(sm, "mode_turn");
+	sm_state_name(sm, "mode_turn");
 	if (event != SM_RECV)
 		return FALSE;
 
@@ -253,11 +254,30 @@ gboolean mode_turn(Player *player, gint event)
 			sm_send(sm, "ERR already-rolled\n");
 			return TRUE;
 		}
-		die1 = get_rand(6) + 1;
-		die2 = get_rand(6) + 1;
+
+		done = 0;
+
+		do {
+			die1 = get_rand(6) + 1;
+			die2 = get_rand(6) + 1;
+			roll = die1 + die2;
+			game->rolled_dice = TRUE;
+			
+			if (game->params->sevens_rule == 1) {
+				if (roll != 7 || game->curr_turn > 2) {
+					done = 1;
+				}			
+			} else if (game->params->sevens_rule == 2) {
+				if (roll != 7) {
+					done = 1;
+				}
+			} else {
+				done = 1;
+			}
+			
+		} while(!done);
+		
 		player_broadcast(player, PB_RESPOND, "rolled %d %d\n", die1, die2);
-		roll = die1 + die2;
-		game->rolled_dice = TRUE;
 
 		if (roll == 7) {
 			/* Find all players with more than 7 cards -

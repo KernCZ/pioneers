@@ -29,7 +29,7 @@
 int main( int argc, char *argv[] )
 {
 	int c;
-	gint num_players = 0, num_points = 0, port = 0, admin_port = 0;
+	gint num_players = 0, num_points = 0, port = 0, admin_port = 0, sevens_rule = 0;
 	gboolean disable_game_start = FALSE;
 	GMainLoop *event_loop;
 
@@ -41,7 +41,7 @@ int main( int argc, char *argv[] )
 
 	server_init( GNOCATAN_DIR_DEFAULT );
 
-	while ((c = getopt(argc, argv, "a:g:P:p:r:sv:")) != EOF)
+	while ((c = getopt(argc, argv, "a:g:P:p:r:R:sv:")) != EOF)
 	{
 		switch (c) {
 		case 'a':
@@ -64,6 +64,15 @@ int main( int argc, char *argv[] )
 				break;
 			}
 			port = atoi(optarg);
+			break;
+		case 'R':
+			if (!optarg) {
+				break;
+			}
+			sevens_rule = atoi(optarg);
+			if (sevens_rule < 0 || sevens_rule > 2) {
+				sevens_rule = 0;
+			}
 			break;
 		case 'r':
 			if (!optarg) {
@@ -96,6 +105,10 @@ int main( int argc, char *argv[] )
 
 	if (num_players) {
 		cfg_set_num_players(num_players);		
+	}
+
+	if (sevens_rule) {
+		cfg_set_sevens_rule(sevens_rule);
 	}
 
 	if (num_points) {

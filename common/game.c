@@ -37,6 +37,7 @@ static Param game_params[] = {
 	{ PARAM_V(strict-trade, PARAM_BOOL, strict_trade) },
 	{ PARAM_V(domestic-trade, PARAM_BOOL, domestic_trade) },
 	{ PARAM_V(num-players, PARAM_INT, num_players) },
+	{ PARAM_V(sevens-rule, PARAM_INT, sevens_rule) },
 	{ PARAM_V(victory-points, PARAM_INT, victory_points) },
 	{ PARAM_V(num-roads, PARAM_INT, num_build_type[BUILD_ROAD]) },
 	{ PARAM_V(num-bridges, PARAM_INT, num_build_type[BUILD_BRIDGE]) },
