@@ -14,6 +14,7 @@
 #include "cost.h"
 #include "map.h"
 #include "gui.h"
+#include "guimap.h"
 #include "client.h"
 #include "histogram.h"
 #include "assert.h"
@@ -67,6 +68,22 @@ gint dice_histogram(gint cmd, gint roll)
  *
  */
 
+static gint expose_chip_cb(GtkWidget *area,
+			   GdkEventExpose *event, gint n)
+{
+	static GdkGC *chip_gc;
+	gint wh;
+
+	if (area->window == NULL)
+		return FALSE;
+	if (chip_gc == NULL)
+		chip_gc = gdk_gc_new(area->window);
+
+	wh = area->allocation.width/2-1;
+	draw_dice_roll(area->window, chip_gc, wh, wh, wh, n, FALSE);
+	return FALSE;
+}
+
 static gint expose_histogram_cb(GtkWidget *area,
 			GdkEventExpose *event, GdkPixmap *pixmap)
 {
@@ -91,10 +108,17 @@ static gint expose_curve_cb(GtkWidget *area,
 			    GdkEventExpose *event, GdkPixmap *pixmap)
 {
 	static GdkGC *curve_gc;
-	gint w, h, x, y, px = -1, py = -1;
-	float yf;
+	gint w = area->allocation.width;
+	gint h = area->allocation.height;
 	gint total = dice_histogram(DICE_HISTOGRAM_TOTAL, 2);
 	gint max = dice_histogram(DICE_HISTOGRAM_MAX, 2);
+	gint le = BAR_W/2;
+	gint mi = le + 5*(BAR_W+BAR_S);
+	gint ri = mi + 5*(BAR_W+BAR_S);
+	float by_36 = total*h/max/36;
+	gint low = h - by_36;
+	gint high = h - 6*by_36;
+	float yf;
 	
 	if (area->window == NULL)
 		return FALSE;
@@ -106,21 +130,12 @@ static gint expose_curve_cb(GtkWidget *area,
 	}
 
 	gdk_gc_set_foreground(curve_gc, &red);
-	w = area->allocation.width;
-	h = area->allocation.height;
-	for (x = 0; x <= w; x += 5) {
-	    float sx = ((float)x-BAR_W/2)/(BAR_W+BAR_S) - 5;
-	    float v = total/6.0*exp(-(sx*sx/14));
-	    y = h - (int)(v*h/max + 0.5);
-	    if (px >= 0)
-		gdk_draw_line(area->window, curve_gc, px, py, x, y);
-	    px = x;
-	    py = y;
-	}
+	gdk_draw_line(area->window, curve_gc, le, low, mi, high);
+	gdk_draw_line(area->window, curve_gc, mi, high, ri, low);
 	
 	gdk_gc_set_foreground(curve_gc, &blue);
 	for (yf = 0.0; yf <= 1.0; yf += 0.25) {
-	    y = yf*h;
+	    gint y = yf*h;
 	    gdk_draw_line(area->window, curve_gc, 0, y, w, y);
 	}
 
@@ -130,7 +145,7 @@ static gint expose_curve_cb(GtkWidget *area,
 static void add_histogram_bars(GtkWidget *table, Terrain terrain)
 {
 	GtkWidget *area, *align;
-	GtkWidget *label, *sep;
+	GtkWidget *label;
 	int i, n, max, total;
 	int set_height;
 	char s[30];
@@ -180,6 +195,15 @@ static void add_histogram_bars(GtkWidget *table, Terrain terrain)
 
 	total = dice_histogram(DICE_HISTOGRAM_TOTAL, 2);
 	for (i = 2; i <= 12; i++) {
+		area = gtk_drawing_area_new();
+		gtk_signal_connect(GTK_OBJECT(area), "expose_event",
+				   GTK_SIGNAL_FUNC(expose_chip_cb),
+				   (void *)i);
+		gtk_widget_set_usize(area, 28, 28);
+		gtk_table_attach(GTK_TABLE(table), area,
+				 i - 1, i, 1, 2, 0, 0, 0, 0);
+		gtk_widget_show(area);
+
 		n = dice_histogram(DICE_HISTOGRAM_RETRIEVE, i);
 		if (total == 0) {
 			percentage = 0;
@@ -187,19 +211,19 @@ static void add_histogram_bars(GtkWidget *table, Terrain terrain)
 			percentage = ((float)n / (float)total) * 100;
 		}
 
-		sprintf(s, "%d\n%d\n%.1f%%", i, n, percentage);
+		sprintf(s, "%d\n%.1f%%", n, percentage);
 
 		label = gtk_label_new(s);
 		gtk_widget_show(label);
 		gtk_table_attach(GTK_TABLE(table), label,
-				 i - 1, i, 1, 2, 0, 0, 0, 0);
+				 i - 1, i, 2, 3, 0, 0, 0, 0);
 		gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 	}
 
-	label = gtk_label_new("Value\nRolls\nPercentage");
+	label = gtk_label_new("Rolls\nPercentage");
 	gtk_widget_show(label);
 	gtk_table_attach(GTK_TABLE(table), label,
-			0, 1, 1, 2, 0, 0, 0, 0);
+			0, 1, 2, 3, 0, 0, 0, 0);
 
 	/* vertical scale */
 	
@@ -244,7 +268,7 @@ GtkWidget *histogram_create_dlg()
 	gtk_widget_show(frame);
 	gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, TRUE, 0);
 
-	table = gtk_table_new(4, 14, FALSE);
+	table = gtk_table_new(3, 14, FALSE);
 	gtk_widget_show(table);
 	gtk_container_add(GTK_CONTAINER(frame), table);
 	gtk_container_border_width(GTK_CONTAINER(table), 5);
