@@ -145,25 +145,29 @@ void cfg_set_victory_points( gint victory_points )
 void cfg_set_game( gchar *game )
 {
 	g_print( "cfg_set_game: %s\n", game );
-	params = game_list_find_item(game);
+	if( params )
+		params = game_list_find_item(game);
 }
 
 void cfg_set_terrain_type( gint terrain_type )
 {
 	g_print( "cfg_set_terrain_type: %d\n", terrain_type );
-	params->random_terrain = (terrain_type == TERRAIN_RANDOM) ? 1 : 0;
+	if( params )
+		params->random_terrain = (terrain_type == TERRAIN_RANDOM) ? 1 : 0;
 }
 
 void cfg_set_tournament_time( gint tournament_time )
 {
     g_print("cfg_set_tournament_time: %d\n", tournament_time);
-    params->tournament_time = tournament_time;
+	if( params )
+		params->tournament_time = tournament_time;
 }
 
 void cfg_set_exit( gboolean exitdone)
 {
     g_print("cfg_set_exit: %d\n", exitdone);
-    params->exit_when_done = exitdone;
+	if( params )
+		params->exit_when_done = exitdone;
 }
 
 void cfg_set_timeout( gint to )
