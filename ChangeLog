@@ -1,3 +1,7 @@
+2003-10-24  Jeff Breidenbach  <jab@debian.org>
+
+	* debian/*: More scrollkeeper packaging fixes.
+
 2003-10-20  Jeff Breidenbach  <jab@debian.org>
 
 	* debian/rules, debian/control: Better scrollkeeper-ing.
