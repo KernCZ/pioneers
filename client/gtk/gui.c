@@ -35,7 +35,6 @@
 #include "config-gnome.h"
 #include "frontend.h"
 
-Map *map;			/* handle to map drawing code */
 GtkWidget *app_window;		/* main application window */
 
 #define MAP_WIDTH 550		/* default map width */
@@ -299,7 +298,7 @@ void gui_highlight_chits(gint roll)
 static gint expose_map_cb(GtkWidget *area, GdkEventExpose *event,
 		UNUSED(gpointer user_data))
 {
-	if (area->window == NULL || map == NULL || gmap->map == NULL)
+	if (area->window == NULL || gmap->map == NULL)
 		return FALSE;
 
 	if (gmap->pixmap == NULL) {
@@ -322,7 +321,7 @@ static gint expose_map_cb(GtkWidget *area, GdkEventExpose *event,
 static gint configure_map_cb(GtkWidget *area, UNUSED(GdkEventConfigure *event),
 		UNUSED(gpointer user_data))
 {
-	if (area->window == NULL || map == NULL)
+	if (area->window == NULL || gmap->map == NULL)
 		return FALSE;
 
 	if (gmap->pixmap) {
@@ -346,7 +345,7 @@ static gint motion_notify_map_cb(GtkWidget *area, GdkEventMotion *event,
 	MapElement dummyElement;
 	g_assert(area != NULL);
 
-	if (area->window == NULL || map == NULL)
+	if (area->window == NULL || gmap->map == NULL)
 		return FALSE;
 
 	if (event->is_hint)
@@ -366,7 +365,7 @@ static gint motion_notify_map_cb(GtkWidget *area, GdkEventMotion *event,
 static gint button_press_map_cb(GtkWidget *area, GdkEventButton *event,
 		UNUSED(gpointer user_data))
 {
-	if (area->window == NULL || map == NULL
+	if (area->window == NULL || gmap->map == NULL
 	    || event->button != 1)
 		return FALSE;
 
@@ -1008,15 +1007,14 @@ static void show_uiinfo(EventType event, gboolean show)
 
 void gui_set_game_params(const GameParams *params)
 {
-	gmap->map = map = params->map;
+	gmap->map = params->map;
 	guimap_scale_to_size(gmap, MAP_WIDTH, MAP_HEIGHT);
 
 	if (gmap->area->window != NULL)
 		gdk_window_set_back_pixmap(gmap->area->window, NULL, FALSE);
 
-	gtk_drawing_area_size(GTK_DRAWING_AREA(gmap->area),
-			      gmap->width, gmap->height);
-	gtk_widget_draw(gmap->area, NULL);
+	gtk_widget_set_size_request(gmap->area, gmap->width, gmap->height);
+	gtk_widget_queue_draw_area(gmap->area, 0, 0, gmap->width, gmap->height);
 
 	show_uiinfo(GUI_ROAD, params->num_build_type[BUILD_ROAD] > 0);
 	show_uiinfo(GUI_SHIP, params->num_build_type[BUILD_SHIP] > 0);

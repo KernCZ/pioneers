@@ -65,7 +65,6 @@ void show_admin_interface( GtkWidget *vbox );
 
 gint hotkeys_handler (GtkWidget *w, GdkEvent *e, gpointer data);
 
-extern Map *map;		/* the map */
 extern GtkWidget *app_window;	/* main application window */
 
 /* gui states */

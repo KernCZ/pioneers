@@ -719,7 +719,7 @@ void trade_begin()
 {
 	gint idx;
 
-	map_maritime_info(map, &maritime_info, my_player_num());
+	map_maritime_info(get_map(), &maritime_info, my_player_num());
 
 	quotelist_new(&quote_list);
 
