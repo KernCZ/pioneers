@@ -429,10 +429,10 @@ static gboolean mode_offline(StateMachine *sm, gint event)
  * shift down to fill its space.
  */
 void update_recent_servers_list(void) {
-	gchar temp_str1[150], temp_str2[150];
-	gchar temp_name[150] = "", temp_port[150] = "";
-	gchar cur_name[150], cur_port[150];
-	gchar conn_name[150], conn_port[150];
+	gchar temp_str1[150], temp_str2[150], temp_str3[150];
+	gchar temp_name[150] = "", temp_port[150] = "", temp_user[150] = "";
+	gchar cur_name[150], cur_port[150], cur_user[150];
+	gchar conn_name[150], conn_port[150], conn_user[150];
 	gboolean default_used;
 	gint done, i;
 
@@ -441,21 +441,27 @@ void update_recent_servers_list(void) {
 
 	strcpy(conn_name, connect_get_server());
 	strcpy(conn_port, connect_get_port_str());
+	strcpy(conn_user, connect_get_name());
 
 	strcpy(temp_name, conn_name);
 	strcpy(temp_port, conn_port);
+	strcpy(temp_user, conn_user);
 
 	do {
 		sprintf(temp_str1, "favorites/server%dname=", i);
 		sprintf(temp_str2, "favorites/server%dport=", i);
+		sprintf(temp_str3, "favorites/server%duser=", i);
 		strcpy(cur_name, config_get_string(temp_str1, &default_used));
 		strcpy(cur_port, config_get_string(temp_str2, &default_used));
+		strcpy(cur_user, config_get_string(temp_str3, &default_used));
 
 		if (strlen(temp_name)) {
 			sprintf(temp_str1, "favorites/server%dname", i);
 			sprintf(temp_str2, "favorites/server%dport", i);
+			sprintf(temp_str3, "favorites/server%duser", i);
 			config_set_string(temp_str1, temp_name);
 			config_set_string(temp_str2, temp_port);
+			config_set_string(temp_str3, temp_user);
 		} else {
 			break;
 		}
@@ -464,12 +470,14 @@ void update_recent_servers_list(void) {
 			break;
 		}
 
-		if (!strcmp(cur_name, conn_name) && !strcmp(cur_port, conn_port)) {
+		if (!strcmp(cur_name, conn_name) && !strcmp(cur_port, conn_port) && !strcmp(cur_user, conn_user)) {
 			strcpy(temp_name, "");
 			strcpy(temp_port, "");
+			strcpy(temp_user, "");
 		} else {
 			strcpy(temp_name, cur_name);
 			strcpy(temp_port, cur_port);
+			strcpy(temp_user, cur_user);
 		}
 
 		i++;

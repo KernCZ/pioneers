@@ -317,16 +317,18 @@ gchar *connect_get_port_str()
 
 static void host_list_select_cb(GtkWidget *widget, gpointer user_data) {
 	GtkWidget *item;
-	gchar *host, *str1, *str2;
+	gchar *host, *str1, *str2, *str3;
 	gchar temp[150];
 	
 	item = GTK_WIDGET(user_data);
 	gtk_label_get(GTK_LABEL(item), &host);
 	strcpy(temp, host);
 	str1 = strtok(temp, ":");
-	str2 = strtok(NULL, "");
+	str2 = strtok(NULL, "(");
+	str3 = strtok(NULL, ")");
 	gtk_entry_set_text(GTK_ENTRY(server_entry), str1);
 	gtk_entry_set_text(GTK_ENTRY(port_entry), str2);
+	gtk_entry_set_text(GTK_ENTRY(name_entry), str3);
 }
 
 static void connect_destroyed_cb(void *widget, gpointer user_data)
@@ -352,7 +354,7 @@ GtkWidget *connect_create_dlg()
 	gchar     *saved_port;
 	gchar     *saved_name;
 	gint      novar, i;
-	gchar host_name[150], host_port[150], temp_str[150];
+	gchar host_name[150], host_port[150], host_user[150], temp_str[150];
 	gboolean default_returned;
 
 	saved_server = config_get_string("connect/server=localhost",&novar);
@@ -402,14 +404,17 @@ GtkWidget *connect_create_dlg()
 	for (i = 0; i < 10; i++) {
 		sprintf(temp_str, "/gnocatan/favorites/server%dname=", i);
 		strcpy(host_name, config_get_string(temp_str, &default_returned));
+		if (default_returned == 1 || !strlen(host_name)) break;
+
 		sprintf(temp_str, "/gnocatan/favorites/server%dport=", i);
 		strcpy(host_port, config_get_string(temp_str, &default_returned));
+		if (default_returned == 1 || !strlen(host_port)) break;
 
-		if (default_returned == 1) {
-			break;
-		}
+		sprintf(temp_str, "/gnocatan/favorites/server%duser=", i);
+		strcpy(host_user, config_get_string(temp_str, &default_returned));
+		if (default_returned == 1 || !strlen(host_user)) break;
 
-		sprintf(temp_str, "%s:%s", host_name, host_port);
+		sprintf(temp_str, "%s:%s (%s)", host_name, host_port, host_user);
 
 		host_item = gtk_menu_item_new();
 		lbl = gtk_label_new(temp_str);

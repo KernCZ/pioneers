@@ -1,3 +1,9 @@
+2001-03-01  Matt Waggoner  <matt@waggoner.com>
+
+	* client/connect.c and client/client.c: Changed the server MRU
+	list so that it also handles the user name, not just the server
+	and port values.
+
 2001-03-01  Dave Cole <dave@dccs.com.au>
 
 	* common/state.c (sm_vnformat): Caught a segfault which appeared
