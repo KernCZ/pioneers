@@ -1,3 +1,8 @@
+2005-03-28  0.9.3  Roland Clobus <rclobus@bigfoot.com>
+	* Makefile.am: Added target 'restorepo', to make it easier to remove
+	the changes to the *.po files when make distcheck has been used, but
+	no new translations have been added.
+
 2005-03-26  0.9.2  Roland Clobus <rclobus@bigfoot.com>
 	* client/callback.h, client/ai/greedy.c, client/common/client.c,
 	client/common/client.h, client/common/player.c,

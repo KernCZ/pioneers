@@ -47,3 +47,6 @@ distuninstallcheck_listfiles = find . -type f -print | grep -v '^\./var/scrollke
 # Reformat the code.
 indent:
 	find . -name '*.[ch]' -exec indent -kr -i8 '{}' ';'
+
+restorepo:
+	cvs update -C po/*.po po/gnocatan.pot
