@@ -1,3 +1,7 @@
+2003-10-17  Roland Clobus <rclobus@bigfoot.com>
+	* ai/player.c, client/player.c, po/de.po, po/es.po, po/gnocatan.pot:
+	Updated german translations.
+
 2003-10-17  Bas Wijnen <b.wijnen@phys.rug.nl>
 	* client/client.c, client/player.c, client/player.h: Fixed reconnect
 	bug.

@@ -413,7 +413,7 @@ void player_build_move(gint player_num, gint sx, gint sy, gint spos,
 	from->type = BUILD_NONE;
 	to->owner = player_num;
 	to->type = BUILD_SHIP;
-	if (isundo) log_message(MSG_INFO, _("%s moved a ship back.\n"),
+	if (isundo) log_message(MSG_INFO, _("%s has cancelled a ship's movement.\n"),
 				player_name (player_num, TRUE));
 	else log_message(MSG_INFO, _("%s moved a ship.\n"),
 			player_name (player_num, TRUE));

@@ -972,7 +972,7 @@ void player_build_move(gint player_num, gint sx, gint sy, gint spos,
 	to->owner = player_num;
 	to->type = BUILD_SHIP;
 	gui_draw_edge (to);
-	if (isundo) log_message(MSG_BUILD, _("%s moved a ship back.\n"),
+	if (isundo) log_message(MSG_BUILD, _("%s has cancelled a ship's movement.\n"),
 				player_name (player_num, TRUE));
 	else log_message(MSG_BUILD, _("%s moved a ship.\n"),
 			player_name (player_num, TRUE));
@@ -1016,7 +1016,7 @@ void player_lose_point (gint player_num, gint id)
 	}
 	/* communication error: the point doesn't exist */
 	if (list == NULL) {
-		log_message (MSG_ERROR, "server asks to lose invalid point.\n");
+		log_message (MSG_ERROR, _("server asks to lose invalid point.\n"));
 		return;
 	}
 	player->points = g_list_remove (player->points, point);
@@ -1048,7 +1048,7 @@ void player_take_point (gint player_num, gint id, gint old_owner)
 	}
 	/* communication error: the point doesn't exist */
 	if (list == NULL) {
-		log_message (MSG_ERROR, "server asks to move invalid point.\n");
+		log_message (MSG_ERROR, _("server asks to move invalid point.\n"));
 		return;
 	}
 	/* move the point in memory */

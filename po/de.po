@@ -6,9 +6,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gnocatan 0.7.1\n"
+"Project-Id-Version: gnocatan 0.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-10-17 15:25+0200\n"
+"POT-Creation-Date: 2003-10-17 18:57+0200\n"
 "PO-Revision-Date: 2003-09-25 17:27+0200\n"
 "Last-Translator: Roman Hodek <roman@hodek.net>\n"
 "Language-Team: de <de@li.org>\n"
@@ -40,7 +40,7 @@ msgstr "%s erhält zurück %s\n"
 msgid "%s discarded %s\n"
 msgstr "%s legt ab: %s\n"
 
-#: ai/client.c:1776 client/client.c:2658
+#: ai/client.c:1776 client/client.c:2659
 msgid "The game is over.\n"
 msgstr "Ende des Spiels.\n"
 
@@ -259,7 +259,7 @@ msgstr "Handel abgelehnt.\n"
 
 #: ai/greedy.c:1673
 msgid "Sorry, I do not know how to play with gold\n"
-msgstr ""
+msgstr "Entschuldiging, ich weiß nicht mit Gold zu spielen\n"
 
 #. I get the cards!
 #.
@@ -331,12 +331,12 @@ msgstr "Entwicklungskarte"
 msgid "Development cards"
 msgstr "Entwicklungskarten"
 
-#: ai/player.c:50 client/player.c:134 server/player.c:673
+#: ai/player.c:50 client/player.c:160 server/player.c:673
 #, c-format
 msgid "Player %d"
 msgstr "Spieler %d"
 
-#: ai/player.c:52 client/player.c:136
+#: ai/player.c:52 client/player.c:162
 #, c-format
 msgid "player %d"
 msgstr "Spieler %d"
@@ -351,30 +351,30 @@ msgstr "Spieler %d ist jetzt 'anonym'.\n"
 msgid "%s is now anonymous.\n"
 msgstr "%s ist jetzt 'anonym'.\n"
 
-#: ai/player.c:164 client/player.c:427
+#: ai/player.c:164 client/player.c:453
 #, c-format
 msgid "Player %d is now %s.\n"
 msgstr "Spieler %d heißt jetzt %s.\n"
 
-#: ai/player.c:166 client/player.c:415 client/player.c:429
+#: ai/player.c:166 client/player.c:441 client/player.c:455
 #, c-format
 msgid "%s is now %s.\n"
 msgstr "%s heißt jetzt %s.\n"
 
-#: ai/player.c:182 client/player.c:513
+#: ai/player.c:182 client/player.c:539
 msgid "There is no largest army.\n"
 msgstr "Es gibt keine größte Rittermacht.\n"
 
-#: ai/player.c:184 client/player.c:515
+#: ai/player.c:184 client/player.c:541
 #, c-format
 msgid "%s has the largest army.\n"
 msgstr "%s hat die größte Rittermacht.\n"
 
-#: ai/player.c:204 client/player.c:535
+#: ai/player.c:204 client/player.c:561
 msgid "There is no longest road.\n"
 msgstr "Es gibt keine längste Handelsstraße.\n"
 
-#: ai/player.c:206 client/player.c:537
+#: ai/player.c:206 client/player.c:563
 #, c-format
 msgid "%s has the longest road.\n"
 msgstr "%s hat die längste Handelsstraße.\n"
@@ -388,94 +388,94 @@ msgstr "%s hat eine Karte gestohlen von %s.\n"
 
 #. We stole a card :-)
 #.
-#: ai/player.c:256 client/player.c:699
+#: ai/player.c:256 client/player.c:725
 #, c-format
 msgid "You stole %s from %s.\n"
 msgstr "Du hast %s von %s gestohlen.\n"
 
 #. Someone stole our card :-(
 #.
-#: ai/player.c:263 client/player.c:705
+#: ai/player.c:263 client/player.c:731
 #, c-format
 msgid "%s stole %s from you.\n"
 msgstr "%s hat %s von dir gestohlen.\n"
 
-#: ai/player.c:295 client/player.c:736
+#: ai/player.c:295 client/player.c:762
 #, c-format
 msgid "%s gave %s nothing!?\n"
 msgstr "%s hat %s nichts gegeben!?\n"
 
-#: ai/player.c:301 ai/player.c:308 client/player.c:742 client/player.c:749
+#: ai/player.c:301 ai/player.c:308 client/player.c:768 client/player.c:775
 #, c-format
 msgid "%s gave %s %s for free.\n"
 msgstr "%s hat %s %s gratis gegeben.\n"
 
-#: ai/player.c:316 client/player.c:757
+#: ai/player.c:316 client/player.c:783
 #, c-format
 msgid "%s gave %s %s in exchange for %s.\n"
 msgstr "%s hat von %s %4$s für %3$s bekommen.\n"
 
-#: ai/player.c:332 client/player.c:778
+#: ai/player.c:332 client/player.c:804
 #, c-format
 msgid "%s exchanged %s for %s.\n"
 msgstr "%s hat %s gegen %s getauscht.\n"
 
-#: ai/player.c:348 client/player.c:797
+#: ai/player.c:348 client/player.c:823
 #, c-format
 msgid "%s built a road.\n"
 msgstr "%s hat eine Straße gebaut.\n"
 
-#: ai/player.c:357 client/player.c:810
+#: ai/player.c:357 client/player.c:836
 #, c-format
 msgid "%s built a ship.\n"
 msgstr "%s hat ein Schiff gebaut.\n"
 
-#: ai/player.c:366 client/player.c:823
+#: ai/player.c:366 client/player.c:849
 #, c-format
 msgid "%s built a settlement.\n"
 msgstr "%s hat eine Siedlung gebaut.\n"
 
-#: ai/player.c:382 client/player.c:843
+#: ai/player.c:382 client/player.c:869
 #, c-format
 msgid "%s built a city.\n"
 msgstr "%s hat eine Stadt gebaut.\n"
 
-#: ai/player.c:389 client/player.c:851
+#: ai/player.c:389 client/player.c:877
 #, c-format
 msgid "player_build_add called with BUILD_NONE for user %s\n"
 msgstr "player_build_add aufgerufen mit BUILD_NONE für Benutzer %s\n"
 
-#: ai/player.c:416 client/player.c:949
-#, fuzzy, c-format
-msgid "%s moved a ship back.\n"
-msgstr "%s hat ein Schiff entfernt.\n"
+#: ai/player.c:416 client/player.c:975
+#, c-format
+msgid "%s has cancelled a ship's movement.\n"
+msgstr "%s hat eine Bewegung eines Schiffes ungeschehen gemacht.\n"
 
-#: ai/player.c:418 client/player.c:951
-#, fuzzy, c-format
+#: ai/player.c:418 client/player.c:977
+#, c-format
 msgid "%s moved a ship.\n"
-msgstr "%s hat ein Schiff entfernt.\n"
+msgstr "%s hat ein Schiff verlegt.\n"
 
-#: ai/player.c:433 client/player.c:878
+#: ai/player.c:433 client/player.c:904
 #, c-format
 msgid "%s removed a road.\n"
 msgstr "%s hat eine Straße entfernt.\n"
 
-#: ai/player.c:442 client/player.c:888
+#: ai/player.c:442 client/player.c:914
 #, c-format
 msgid "%s removed a ship.\n"
 msgstr "%s hat ein Schiff entfernt.\n"
 
-#: ai/player.c:451 client/player.c:898
+#: ai/player.c:451 client/player.c:924
 #, c-format
 msgid "%s removed a settlement.\n"
 msgstr "%s hat eine Siedlung entfernt.\n"
 
-#: ai/player.c:461 client/player.c:909
+#: ai/player.c:461 client/player.c:935
 #, c-format
 msgid "%s removed a city.\n"
 msgstr "%s hat eine Stadt entfernt.\n"
 
-#: ai/player.c:471 client/player.c:919
+#: ai/player.c:471 client/player.c:945
 #, c-format
 msgid "player_build_remove called with BUILD_NONE for user %s\n"
 msgstr "player_build_remove aufgerufen mit BUILD_NONE für Benutzer %s\n"
@@ -660,11 +660,11 @@ msgstr "Chat"
 msgid "Waiting"
 msgstr "Warte"
 
-#: client/client.c:98 client/client.c:967
+#: client/client.c:98 client/client.c:968
 msgid "Idle"
 msgstr "Untätig"
 
-#: client/client.c:162 client/client.c:665 client/gui.c:1071
+#: client/client.c:162 client/client.c:666 client/gui.c:1071
 msgid "Offline"
 msgstr "Offline"
 
@@ -696,81 +696,80 @@ msgstr "Verbinde"
 msgid "Loading"
 msgstr "Lade"
 
-#: client/client.c:666
+#: client/client.c:667
 msgid "Version mismatch"
 msgstr "Versionsfehler"
 
-#: client/client.c:1193
+#: client/client.c:1194
 msgid "Build two settlements, each with a connecting"
 msgstr "Baue zwei Siedlungen mit je einer verbundenen"
 
-#: client/client.c:1195
+#: client/client.c:1196
 msgid "Build a settlement with a connecting"
 msgstr "Baue eine Siedlung mit einer verbundenen"
 
-#: client/client.c:1198
+#: client/client.c:1199
 msgid "road"
 msgstr "Straße"
 
-#: client/client.c:1200
+#: client/client.c:1201
 msgid "bridge"
 msgstr "Brücke"
 
-#: client/client.c:1202
+#: client/client.c:1203
 msgid "ship"
 msgstr "Schiff"
 
-#: client/client.c:1334
+#: client/client.c:1335
 msgid "Waiting for your turn"
 msgstr "Warte auf deinen Zug"
 
-#: client/client.c:1458 client/client.c:1476
+#: client/client.c:1459 client/client.c:1477
 msgid "Select the building to steal from."
 msgstr "Wähle das Gebäude, von dem gestohlen werden soll."
 
-#: client/client.c:1459 client/client.c:1477
+#: client/client.c:1460 client/client.c:1478
 msgid "Select the building to steal from"
 msgstr "Wähle das Gebäude, von dem gestohlen werden soll"
 
-#: client/client.c:1490 client/client.c:1517
+#: client/client.c:1491 client/client.c:1518
 msgid "Place the robber"
 msgstr "Setze den Räuber"
 
-#: client/client.c:1602
+#: client/client.c:1603
 msgid "Build two road segments."
 msgstr "Baue zwei Straßen."
 
-#: client/client.c:1604
+#: client/client.c:1605
 msgid "Build a road segment."
 msgstr "Baue eine Straße."
 
-#: client/client.c:1921 client/client.c:2057
+#: client/client.c:1922 client/client.c:2058
 msgid "It is your turn."
 msgstr "Du bist am Zug."
 
-#: client/client.c:2251
+#: client/client.c:2252
 #, c-format
 msgid "Sorry, %s available.\n"
-msgstr ""
+msgstr "Entschuldigung, %s benutzbar.\n"
 
-#: client/client.c:2650
+#: client/client.c:2651
 msgid "The game is over."
 msgstr "Das Spiel ist zuende."
 
-#: client/client.c:2863
-#, fuzzy, c-format
+#: client/client.c:2864
+#, c-format
 msgid "%s takes %s.\n"
-msgstr "%s zahlt %s.\n"
+msgstr "%s nimmt %s.\n"
 
 #: client/connect.c:101
-#, fuzzy, c-format
+#, c-format
 msgid "Meta-server at %s, port %s"
-msgstr "Anfrage bei Metaserver auf %s, Port %s\n"
+msgstr "Metaserver auf %s, Port %s"
 
 #: client/connect.c:110
-#, fuzzy
 msgid "Finished.\n"
-msgstr "fertig.\n"
+msgstr "Fertig.\n"
 
 #: client/connect.c:135 client/connect.c:183 client/connect.c:266
 #: server/meta.c:152
@@ -778,9 +777,8 @@ msgid "Meta-server kicked us off\n"
 msgstr "Metaserver hat die Verbindung beendet.\n"
 
 #: client/connect.c:161
-#, fuzzy
 msgid "Receiving game names from the meta server.\n"
-msgstr "Empfange Daten vom Metaserver...\n"
+msgstr "Empfange Spielenamen vom Metaserver...\n"
 
 #: client/connect.c:203
 #, c-format
@@ -807,9 +805,8 @@ msgid "Redirected to meta-server at %s, port %s\n"
 msgstr "Weitergeleitet zu Metaserver auf %s, Port %s\n"
 
 #: client/connect.c:363
-#, fuzzy
 msgid "Receiving a list of Gnocatan servers from the meta server.\n"
-msgstr "Empfange Daten vom Metaserver...\n"
+msgstr "Empfange eine Liste von Gnocatanservers vom Metaserver\n"
 
 #: client/connect.c:378 client/connect.c:601
 msgid "Requesting new game server\n"
@@ -1132,11 +1129,12 @@ msgid "_Help"
 msgstr "_Hilfe"
 
 #: client/gui.c:966
-#, fuzzy
 msgid ""
 "Roll Dice\n"
 "(F1)"
-msgstr "Würfeln"
+msgstr ""
+"Würfeln\n"
+"(F1)"
 
 #: client/gui.c:969
 #, fuzzy
@@ -1177,7 +1175,7 @@ msgstr "Schiff"
 msgid ""
 "Move Ship\n"
 "(F7)"
-msgstr ""
+msgstr "Schiff verlegen"
 
 #: client/gui.c:988
 #, fuzzy
@@ -1197,7 +1195,7 @@ msgstr "Siedlung"
 msgid ""
 "City\n"
 "(F10)"
-msgstr ""
+msgstr "Stadt"
 
 #: client/gui.c:998
 #, fuzzy
@@ -1299,7 +1297,7 @@ msgstr "Meer"
 
 #: client/legend.c:30 client/resource.c:29
 msgid "Gold"
-msgstr ""
+msgstr "Gold"
 
 #: client/legend.c:124
 msgid "Terrain Yield"
@@ -1365,56 +1363,64 @@ msgstr "Spielernamen ändern"
 msgid "Player Name:"
 msgstr "Spielername"
 
-#: client/player.c:124
+#: client/player.c:150
 #, c-format
 msgid "Viewer %d"
-msgstr ""
+msgstr "Zuschauer %d"
 
-#: client/player.c:126
+#: client/player.c:152
 #, c-format
 msgid "viewer %d"
-msgstr ""
+msgstr "Zuschauer %d"
 
-#: client/player.c:412
+#: client/player.c:438
 #, c-format
 msgid "New viewer: %s.\n"
-msgstr ""
+msgstr "Neue Zuschauer: %s.\n"
 
-#: client/player.c:470
+#: client/player.c:496
 #, c-format
 msgid "%s has quit\n"
 msgstr "%s hat das Spiel verlassen\n"
 
-#: client/player.c:580
+#: client/player.c:606
 msgid "Player Summary"
 msgstr "Spielerübersicht"
 
-#: client/player.c:660
+#: client/player.c:686
 #, c-format
 msgid "Waiting for %s."
 msgstr "Warte auf %s."
 
-#: client/player.c:689
+#: client/player.c:715
 msgid " stole a resource from "
 msgstr " hat eine Karte gestohlen von "
 
 #. tell the user
-#: client/player.c:974
-#, fuzzy, c-format
+#: client/player.c:1000
+#, c-format
 msgid "%s received %s.\n"
-msgstr "%s bekommt %s.\n"
+msgstr "%s hat %s bekommen.\n"
+
+#: client/player.c:1019
+msgid "server asks to lose invalid point.\n"
+msgstr ""
 
 #. tell the user the point is lost
-#: client/player.c:1002
-#, fuzzy, c-format
+#: client/player.c:1028
+#, c-format
 msgid "%s lost %s.\n"
-msgstr "%s zahlt %s.\n"
+msgstr "%s verlierte %s.\n"
+
+#: client/player.c:1051
+msgid "server asks to move invalid point.\n"
+msgstr ""
 
 #. tell the user about it
-#: client/player.c:1032
-#, fuzzy, c-format
+#: client/player.c:1058
+#, c-format
 msgid "%s lost %s to %s.\n"
-msgstr "%s heißt jetzt %s.\n"
+msgstr "%3$s hat %2$s gestohlen von %1$s.\n"
 
 #: client/plenty.c:182
 msgid "Please take two resources from the bank"
@@ -1454,27 +1460,24 @@ msgid "Delete"
 msgstr "Löschen"
 
 #: client/resource.c:27
-#, fuzzy
 msgid "no Resource (bug)"
-msgstr "Rohstoffe"
+msgstr "Kein Rohstoff (bug)"
 
 #: client/resource.c:27
-#, fuzzy
 msgid "No resource (bug)"
-msgstr "Insgesamt"
+msgstr "Kein Rohstoff (bug)"
 
 #: client/resource.c:28
-#, fuzzy
 msgid "any resource (bug)"
-msgstr "Insgesamt"
+msgstr "willekürliche Rohstoff (bug)"
 
 #: client/resource.c:28
 msgid "Any resource (bug)"
-msgstr ""
+msgstr "Willekürliche Rohstoff (bug)"
 
 #: client/resource.c:29
 msgid "gold"
-msgstr ""
+msgstr "Gold"
 
 #: client/resource.c:33
 msgid "a brick card"
@@ -1558,7 +1561,7 @@ msgid "Total"
 msgstr "Insgesamt"
 
 #: client/robber.c:166
-#, fuzzy, c-format
+#, c-format
 msgid "%s moved the robber.\n"
 msgstr "%s hat den Räuber gesetzt.\n"
 
@@ -1567,9 +1570,9 @@ msgid "Continue with your turn."
 msgstr "Fahre mit deinem Zug fort."
 
 #: client/robber.c:175
-#, fuzzy, c-format
+#, c-format
 msgid "%s moved the pirate.\n"
-msgstr "%s hat eine Stadt entfernt.\n"
+msgstr "%s hat den Pirat gesetzt.\n"
 
 #: client/robber.c:183
 #, c-format
@@ -1669,7 +1672,6 @@ msgid "University of Catan Cards:"
 msgstr "Universität-von-Gnocatan-Karten:"
 
 #: client/settingscreen.c:206
-#, fuzzy
 msgid "Governor's House Cards:"
 msgstr "Regierungsgebäude-Karten:"
 
@@ -1696,7 +1698,7 @@ msgid "Double setup for %s.\n"
 msgstr "Doppelte Gründungsphase für %s.\n"
 
 #: client/trade.c:229
-#, fuzzy, c-format
+#, c-format
 msgid "ask for %s"
 msgstr "will %s"
 
@@ -1753,7 +1755,7 @@ msgstr "Fehler beim Prüfen des Verbindungsstatus: %s\n"
 msgid "Error connecting to host '%s': %s\n"
 msgstr "Fehler beim Verbinden zum Rechner '%s': %s\n"
 
-#: common/network.c:182 common/network.c:227
+#: common/network.c:183 common/network.c:227
 #, c-format
 msgid "Error writing socket: %s\n"
 msgstr "Fehler beim Schreiben auf Socket: %s\n"
@@ -1834,9 +1836,8 @@ msgid "Gnocatan Server"
 msgstr "Gnocatan-Server"
 
 #: server/gnocatan-server.c:101
-#, fuzzy
 msgid "Missing game directory\n"
-msgstr "Spielverzeichnis fehlt"
+msgstr "Spielverzeichnis fehlt\n"
 
 #: server/meta.c:167
 #, c-format
@@ -1845,7 +1846,7 @@ msgstr "Registriere bei Metaserver %s Port %s\n"
 
 #: server/player.c:258
 msgid "Name not changed: new name is already in use"
-msgstr ""
+msgstr "Name nicht geändert: neue Name is schon benitzt"
 
 #: server/server.c:95
 #, c-format
