@@ -151,7 +151,7 @@ msgstr "C'est vraiment une bonne année!"
 
 #: ai/greedy.c:1121 client/ai/greedy.c:1111
 msgid "You really don't deserve that much!"
-msgstr "Tu n'en as pas besoin tant que ça!"
+msgstr "Tu n'as pas besoin de tout cela!"
 
 #: ai/greedy.c:1122 client/ai/greedy.c:1112
 msgid "You don't know what to do with that many resources ;)"
@@ -395,7 +395,7 @@ msgstr "%s vole une ressource à %s.\n"
 #: ai/player.c:250 client/common/player.c:289
 #, c-format
 msgid "You stole %s from %s.\n"
-msgstr "Tu vole %s à %s.\n"
+msgstr "Tu voles %s à %s.\n"
 
 #. Someone stole our card :-(
 #.
@@ -492,7 +492,7 @@ msgstr "argile"
 
 #: ai/resource.c:23 client/common/resource.c:35
 msgid "Brick"
-msgstr "argiles"
+msgstr "Argile"
 
 #: ai/resource.c:24 client/common/resource.c:36
 msgid "grain"
@@ -617,7 +617,7 @@ msgstr "Déconnecté"
 #: client/common/client.c:402
 #, c-format
 msgid "%s receives %s.\n"
-msgstr "%s reçois %s.\n"
+msgstr "%s reçoit %s.\n"
 
 #: client/common/client.c:408
 #, c-format
@@ -1039,7 +1039,6 @@ msgid "Sevens Rule"
 msgstr "La règle des septs"
 
 #: client/gtk/connect.c:825
-#, fuzzy
 msgid "Sevens rule"
 msgstr "La règle des septs"
 
@@ -1751,7 +1750,7 @@ msgstr "Je voudrais"
 #. Frame title, trade: I want these resources in return
 #: client/gtk/quote.c:589 client/gtk/trade.c:827
 msgid "Give Them"
-msgstr "Accepter"
+msgstr "Je propose"
 
 #: client/gtk/quote.c:615
 msgid "Delete"
@@ -1979,9 +1978,8 @@ msgstr ""
 
 #. Button text, trade: call for quotes from other players
 #: client/gtk/trade.c:845
-#, fuzzy
 msgid "_Call for Quotes"
-msgstr "Appel d'offre"
+msgstr "Demander"
 
 #. Table header: Player who trades
 #. Role of the player: player
