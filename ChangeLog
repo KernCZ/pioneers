@@ -1,5 +1,5 @@
 2003-10-03  Roland Clobus <rclobus@bigfoot.com>
-	* client/gui.c: Cosmetic change for the Choose Gold dialog.
+	* client/gold.c: Cosmetic change for the Choose Gold dialog.
 
 2003-10-03  Bas Wijnen <b.wijnen@phys.rug.nl>
 	* server/player.c: Bugfix.
