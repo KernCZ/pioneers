@@ -1,3 +1,9 @@
+2003-08-14  Yusei <yusei@ragondux.com>
+	* new file client/ship_move.c; common/game.c, client/gui.c,
+	client/Makefile.am, common/common_gtk.c: Fixed truncated long lines
+	from server, added a ship move icon, added possibility to make message
+	window a fifo.
+
 2003-08-09  Roland Clobus  <rclobus@bigfoot.com>
 	* client/player.c: Keep showing the names and scores of disconnected
 	players. Now you can see the scores of the other players at the end

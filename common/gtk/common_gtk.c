@@ -12,6 +12,15 @@
 #include "state.h"
 #include "common_gtk.h"
 
+/* Maximum number of lines in the buffer */
+#ifndef MAX_LINES /* allow this to be defined from Makefile */
+#define MAX_LINES 0 /* default is unlimited */
+#endif
+
+/* Used to count the number of lines in the buffer */
+#if MAX_LINES > 0
+static gint n_lines;
+#endif
 
 static GtkWidget *message_txt;
 static gboolean msg_colors = TRUE;
@@ -152,8 +161,35 @@ void message_window_add_text(gchar *text, GdkColor *color)
 
 	gtk_widget_realize(message_txt);
 	gtk_text_freeze(GTK_TEXT(message_txt));
+#if MAX_LINES > 0
+	n_lines++;
+	if (n_lines > MAX_LINES) {
+	     /* find the first new-line */
+	     gint nl = 0;
+	     gchar c;
+	     while ( (c = GTK_TEXT_INDEX(GTK_TEXT(message_txt), nl)) ) {
+		  if (c == '\n') break;
+		  nl++;
+	     }
+	     /* Delete from the beginning to that new-line */
+	     gtk_text_set_point(GTK_TEXT(message_txt),0);
+	     gtk_text_forward_delete(GTK_TEXT(message_txt), nl+1);
+	     /* Hack: recount the number of new-lines. I don't understand
+		why I can't just decrement n_lines */
+	     n_lines = 0;
+	     nl = 0;
+	     while ( (c = GTK_TEXT_INDEX(GTK_TEXT(message_txt), nl)) ) {
+		  if (c == '\n') n_lines++;
+		  nl++;
+	     }
+	     /* Move to the end of the text, before inserting the message */
+	     gtk_text_set_point(GTK_TEXT(message_txt),
+				gtk_text_get_length(GTK_TEXT(message_txt)));
+	}
+#endif
 	gtk_text_insert(GTK_TEXT(message_txt), NULL, color, NULL, text, -1);
 	gtk_text_thaw(GTK_TEXT(message_txt));
+
 	gtk_adjustment_set_value(adj, adj->upper - adj->page_size);
 }
 

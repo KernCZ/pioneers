@@ -953,6 +953,7 @@ static GnomeUIInfo main_menu[] = {
 #define GNOCATAN_PIXMAP_TRADE "gnocatan/trade.png"
 #define GNOCATAN_PIXMAP_ROAD "gnocatan/road.png"
 #define GNOCATAN_PIXMAP_SHIP "gnocatan/ship.png"
+#define GNOCATAN_PIXMAP_SHIP_MOVEMENT "gnocatan/ship_move.png"
 #define GNOCATAN_PIXMAP_BRIDGE "gnocatan/bridge.png"
 #define GNOCATAN_PIXMAP_SETTLEMENT "gnocatan/settlement.png"
 #define GNOCATAN_PIXMAP_CITY "gnocatan/city.png"
@@ -964,6 +965,7 @@ static gchar *gnocatan_pixmaps[] = {
 	GNOCATAN_PIXMAP_TRADE,
 	GNOCATAN_PIXMAP_ROAD,
 	GNOCATAN_PIXMAP_SHIP,
+	GNOCATAN_PIXMAP_SHIP_MOVEMENT,
 	GNOCATAN_PIXMAP_BRIDGE,
 	GNOCATAN_PIXMAP_SETTLEMENT,
 	GNOCATAN_PIXMAP_CITY,
@@ -993,7 +995,7 @@ static GnomeUIInfo toolbar_uiinfo[] = {
 	  GNOME_APP_PIXMAP_STOCK, GNOCATAN_PIXMAP_SHIP, 0, 0, NULL },
 	{ GNOME_APP_UI_ITEM, N_("Move Ship\n(F7)"), NULL,
 	  client_event_cb, (gpointer)GUI_MOVE_SHIP, NULL,
-	  GNOME_APP_PIXMAP_STOCK, GNOCATAN_PIXMAP_SHIP, 0, 0, NULL },
+	  GNOME_APP_PIXMAP_STOCK, GNOCATAN_PIXMAP_SHIP_MOVEMENT, 0, 0, NULL },
 	{ GNOME_APP_UI_ITEM, N_("Bridge\n(F8)"), NULL,
 	  client_event_cb, (gpointer)GUI_BRIDGE, NULL,
 	  GNOME_APP_PIXMAP_STOCK, GNOCATAN_PIXMAP_BRIDGE, 0, 0, NULL },

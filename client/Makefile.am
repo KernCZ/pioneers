@@ -107,6 +107,7 @@ pixmap_DATA = \
 	road.png \
 	settlement.png \
 	ship.png \
+	ship_move.png \
 	trade.png
 
 Games_DATA = gnocatan.desktop

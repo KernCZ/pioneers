@@ -166,7 +166,7 @@ void params_write_lines(GameParams *params, WriteLineFunc func, gpointer user_da
 {
 	gint idx;
 	gint y;
-	gchar buff[128];
+	gchar buff[512];
 
 	func(user_data, "game");
 	switch (params->variant) {
