@@ -148,6 +148,7 @@ Game *game_new(GameParams *params)
 
 	game = g_malloc0(sizeof(*game));
 
+	game->is_game_over = FALSE;
 	game->params = params_copy(params);
 	game->orig_params = params;
 
@@ -315,5 +316,13 @@ gboolean server_restart()
 	gboolean meta = curr_game->params->register_server;
 
 	game_free(curr_game);
+	curr_game = NULL;
 	return server_startup(orig_params, port, meta);
+}
+
+gboolean server_stop()
+{
+	game_free(curr_game);
+	curr_game = NULL;
+	return TRUE;
 }

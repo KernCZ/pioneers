@@ -17,14 +17,12 @@ typedef struct _comm_info {
 extern gboolean register_server;
 extern gchar server_port[NI_MAXSERV];
 extern gchar server_admin_port[NI_MAXSERV];
-extern gint server_port_int;
 
 extern GameParams *params;
 
 /**** game list control functions ****/
-void game_list_add_item( GameParams *item );
-GameParams *game_list_find_item( gchar *title );
-void game_list_foreach( GHFunc func, gpointer user_data );
+GameParams *game_list_find_item( const gchar *title );
+void game_list_foreach( GFunc func, gpointer user_data );
 GameParams *load_game_desc(gchar *fname);
 void load_game_types( gchar *path );
 
@@ -32,7 +30,7 @@ void load_game_types( gchar *path );
 void cfg_set_num_players( gint num_players );
 void cfg_set_sevens_rule( gint sevens_rule );
 void cfg_set_victory_points( gint victory_points );
-void cfg_set_game( gchar *game );
+void cfg_set_game( const gchar *game );
 void cfg_set_terrain_type( gint terrain_type );
 void cfg_set_tournament_time( gint tournament_time );
 void cfg_set_exit( gboolean exitdone);

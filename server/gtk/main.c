@@ -30,10 +30,35 @@
 
 #define GNOCATAN_ICON_FILE	"gnome-gnocatan.png"
 
+#include "config-gnome.h"
+
 static GtkWidget *app;
 
+static GtkWidget *game_frame;      /* the frame containing all settings regarding the game */
+static GtkWidget *game_combo;      /* select game type */
+static GtkWidget *terrain_toggle;  /* random terrain Yes/No */
+static GtkWidget *victory_spin;    /* victory point target */
+static GtkWidget *players_spin;    /* number of players */
+static GtkWidget *server_frame;    /* the frame containing all settings regarding the server */
+static GtkWidget *register_toggle; /* register with meta server? */
+static GtkWidget *meta_entry;      /* name of meta server */
+static GtkWidget *hostname_entry;  /* name of server (allows masquerading) */
+static GtkWidget *port_entry;      /* server port */
+static GtkWidget *addcomputer_btn; /* button to add computer players */
+
+static GtkWidget *radio_sevens_normal; /* radio button for normal sevens rule */
+static GtkWidget *radio_sevens_2_turns; /* radio button for reroll on first 2 turns */
+static GtkWidget *radio_sevens_reroll; /* radio button for reroll all 7s */
+
+static GtkWidget *start_btn;       /* start the server */
+
+static GtkWidget *clist;           /* currently connected players */
+
+static GList *title_list = NULL;   /* all game titles, for game_combo */
+static gboolean ui_enabled = FALSE; /* is the ui accessible? */
+
 /* Local function prototypes */
-static void add_game_to_combo( gpointer name, gpointer params, gpointer combo );
+static void add_game_to_combo( gpointer name, gpointer default_name);
 
 
 static void quit_cb(GtkWidget *widget, void *data)
@@ -88,26 +113,15 @@ static GnomeUIInfo main_menu[] = {
 	GNOMEUIINFO_END
 };
 
-static GtkWidget *game_combo;	/* select game type */
-static GtkWidget *terrain_toggle; /* random terrain Yes/No */
-static GtkWidget *victory_spin;	/* victory point target */
-static GtkWidget *players_spin;	/* number of players */
-static GtkWidget *register_toggle; /* register with meta server? */
-static GtkWidget *meta_entry; /* name of meta server */
-static GtkWidget *hostname_entry; /* name of server (allows masquerading) */
-static GtkWidget *port_spin;	/* server port */
-static GtkWidget *addcomputer_btn; /* button to add computer players */
-  
-static GtkWidget *radio_sevens_normal; /* radio button for normal sevens rule */
-static GtkWidget *radio_sevens_2_turns; /* radio button for reroll on first 2 turns */
-static GtkWidget *radio_sevens_reroll; /* radio button for reroll all 7s */
-
-static GtkWidget *clist;	/* currently connected players */
-
-static void port_spin_changed_cb(GtkWidget* widget, gpointer user_data)
+static void port_entry_changed_cb(GtkWidget* widget, gpointer user_data)
 {
-	server_port_int = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(widget));
-	snprintf(server_port, sizeof(server_port), "%d", server_port_int);
+	const gchar *text;
+
+	text = gtk_entry_get_text(GTK_ENTRY(port_entry));
+	while (*text != '\0' && isspace(*text))
+		text++;
+	strncpy(server_port, text, sizeof(server_port));
+	server_port[sizeof(server_port)-1] = 0;
 }
 
 static void register_toggle_cb(GtkToggleButton *toggle, gpointer user_data)
@@ -149,16 +163,11 @@ static void victory_spin_changed_cb(GtkWidget* widget, gpointer user_data)
 
 static void sevens_rule_changed_cb(GtkWidget *radio, gpointer user_data);
 
-static void game_select_cb(GtkWidget *list, gpointer user_data)
+static void update_game_settings()
 {
-	GList *selected = GTK_LIST(list)->selection;
-
-	params = NULL;
-	if (selected != NULL)
-		params = gtk_object_get_data(GTK_OBJECT(selected->data),
-					     "params");
-	show_terrain();
 	if (params != NULL) {
+		show_terrain();
+
 		if (players_spin != NULL)
 			gtk_spin_button_set_value(GTK_SPIN_BUTTON(players_spin),
 						  params->num_players);
@@ -181,6 +190,12 @@ static void game_select_cb(GtkWidget *list, gpointer user_data)
 		/* give it dummy arguments: it doesn't look at them anyway */
 		sevens_rule_changed_cb (NULL, NULL);
 	}
+}
+
+static void game_select_cb(GtkWidget *list, gpointer user_data)
+{
+	params = game_list_find_item(gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (game_combo)->entry)));
+	update_game_settings();
 }
 
 /* this function MUST NOT use its arguments, for it can be called with
@@ -206,51 +221,37 @@ static void terrain_toggle_cb(GtkToggleButton *toggle, gpointer user_data)
 	show_terrain();
 }
 
-/* I'm not sure what the deal with UI enable/disable is...
-
-   Originally, only register_toggle, port_spin, and start_btn were disabled when
-   the game was started.  However, changes to the other settings don't take effect
-   (as far as I can tell), so it makes sense to disable them.
-
-   Then we have gui_ui_enable(), which enabled or disabled three of the four other
-   controls (terrain_toggle, victory_spin, and players_spin).  It was only ever
-   called when a new player was added -- and it *enabled* those controls when that
-   happenned.  Since they were never disabled to begin with, this did nothing. 
-
-   Perhaps there were some plans here to allow changing server settings as long as
-   there aren't any players connected?  *shrug*
-
-   I modified gui_ui_enable() to add game_combo (the missing control), removed the
-   reference from the player-add logic, and changed start_clicked_cb to call
-   gui_ui_enable(FALSE).  That way everything goes grey when you start the game
-   ... which seems reasonable to me.
-
-   -- egnor
-*/
-
 void gui_ui_enable(gint sensitive)
 {
-	/* I added this... -- egnor */
-	gtk_widget_set_sensitive(game_combo, sensitive);
-
-	gtk_widget_set_sensitive(terrain_toggle, sensitive);
-	gtk_widget_set_sensitive(victory_spin, sensitive);
-	gtk_widget_set_sensitive(players_spin, sensitive);
+	ui_enabled = sensitive;
+	
+	gtk_widget_set_sensitive(game_frame, sensitive);
+	gtk_widget_set_sensitive(server_frame, sensitive);
+	gtk_button_set_label(GTK_BUTTON(start_btn), sensitive ?
+		_("Start server") : _("Stop server"));
+	gtk_widget_set_sensitive(addcomputer_btn, !sensitive);
 }
 
 static void start_clicked_cb(GtkWidget *start_btn, gpointer user_data)
 {
-	if ( start_server(server_port, register_server) ) {
-		gtk_widget_set_sensitive(register_toggle, FALSE);
-		gtk_widget_set_sensitive(meta_entry, FALSE);
-		gtk_widget_set_sensitive(hostname_entry, FALSE);
-		gtk_widget_set_sensitive(port_spin, FALSE);
-		gtk_widget_set_sensitive(start_btn, FALSE);
-		gtk_widget_set_sensitive(addcomputer_btn, TRUE);
-		gtk_widget_set_sensitive(radio_sevens_normal, FALSE);
-		gtk_widget_set_sensitive(radio_sevens_2_turns, FALSE);
-		gtk_widget_set_sensitive(radio_sevens_reroll, FALSE);
-		gui_ui_enable(FALSE);
+	if (ui_enabled) {
+		if ( start_server(server_port, register_server) ) {
+			gui_ui_enable(FALSE);
+			config_set_string("server/meta-server", meta_server_name);
+			config_set_string("server/port", server_port);
+			config_set_int("server/register", register_server);
+			config_set_string("server/hostname", hostname);
+
+			config_set_string("game/name", params->title);
+			config_set_int("game/random-terrain", params->random_terrain);
+			config_set_int("game/num-players", params->num_players);
+			config_set_int("game/victory-points", params->victory_points);
+			config_set_int("game/sevens-rule", params->sevens_rule);
+		}
+	}
+	else { /* UI was not enabled */
+		if (server_stop())
+			gui_ui_enable(TRUE);
 	}
 }
 
@@ -273,6 +274,7 @@ void gui_player_add(void *player)
 
 	row = gtk_clist_append(GTK_CLIST(clist), data);
 	gtk_clist_set_row_data(GTK_CLIST(clist), row, player);
+	log_message( MSG_INFO, _("Player %s from %s entered\n"), player_name((Player*)player), ((Player*)player)->location);
 }
 
 void gui_player_remove(void *player)
@@ -282,6 +284,7 @@ void gui_player_remove(void *player)
 	if ((row = gtk_clist_find_row_from_data(GTK_CLIST(clist), player)) < 0)
 		return;
 	gtk_clist_remove(GTK_CLIST(clist), row);
+	log_message( MSG_INFO, _("Player %s from %s left\n"), player_name((Player*)player), ((Player*)player)->location);
 }
 
 void gui_player_rename(void *player)
@@ -293,14 +296,14 @@ void gui_player_rename(void *player)
 	gtk_clist_set_text(GTK_CLIST(clist), row, 0, player_name((Player *)player));
 }
 
-static void add_game_to_combo( gpointer name, gpointer params, gpointer combo )
+static void add_game_to_combo( gpointer name, gpointer default_name)
 {
-	GtkWidget *item;
+	GameParams *a = (GameParams*)name;
 
-	item = gtk_list_item_new_with_label((gchar *)name);
-	gtk_object_set_data(GTK_OBJECT(item), "params", params);
-	gtk_widget_show(item);
-	gtk_container_add(GTK_CONTAINER(((GtkCombo *)combo)->list), item);
+	if (!strcmp(a->title, (gchar *)default_name))
+		title_list = g_list_prepend(title_list, a->title);
+	else
+		title_list = g_list_append(title_list, a->title);
 }
 
 static gchar *getmyhostname(void)
@@ -340,45 +343,19 @@ static void meta_server_changed_cb(GtkWidget *widget, gpointer user_data)
 	meta_server_name = text;
 }
 
-static GtkWidget *build_interface()
+static GtkWidget *build_game_settings(GtkWidget *parent)
 {
-	GtkWidget *vbox;
-	GtkWidget *hbox;
 	GtkWidget *frame;
 	GtkWidget *table;
 	GtkWidget *label;
 	GtkObject *adj;
-	GtkWidget *start_btn;
-	GtkWidget *scroll_win;
-	GtkWidget *message_text;
 	GtkWidget *vbox_sevens;
 
-	static gchar *titles[2];
-
-	if (!titles[0]) {
-		titles[0] = _("Name");
-		titles[1] = _("Location");
-	}
-	
-	if (!(meta_server_name = getenv("GNOCATAN_META_SERVER")))
-	    meta_server_name = DEFAULT_META_SERVER;
-
-       if (!(hostname = getenv("GNOCATAN_SERVER_NAME")))
-                       hostname = getmyhostname ();
-
-	vbox = gtk_vbox_new(FALSE, 0);
-	gtk_widget_show(vbox);
-	gtk_container_border_width(GTK_CONTAINER(vbox), 5);
-
-	hbox = gtk_hbox_new(FALSE, 5);
-	gtk_widget_show(hbox);
-	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);
-
-	frame = gtk_frame_new(_("Server Parameters"));
+	frame = gtk_frame_new(_("Game Parameters"));
 	gtk_widget_show(frame);
-	gtk_box_pack_start(GTK_BOX(hbox), frame, FALSE, TRUE, 0);
+	gtk_box_pack_start(GTK_BOX(parent), frame, FALSE, TRUE, 0);
 
-	table = gtk_table_new(10, 2, FALSE);
+	table = gtk_table_new(5, 2, FALSE);
 	gtk_widget_show(table);
 	gtk_container_add(GTK_CONTAINER(frame), table);
 	gtk_container_border_width(GTK_CONTAINER(table), 3);
@@ -418,7 +395,6 @@ static GtkWidget *build_interface()
 			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_signal_connect(GTK_OBJECT(terrain_toggle), "toggled",
 			   GTK_SIGNAL_FUNC(terrain_toggle_cb), NULL);
-	show_terrain();
 
 	label = gtk_label_new(_("Number of Players"));
 	gtk_widget_show(label);
@@ -443,7 +419,7 @@ static GtkWidget *build_interface()
 			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 
-	adj = gtk_adjustment_new(10, 5, 20, 1, 1, 1);
+	adj = gtk_adjustment_new(10, 3, 20, 1, 1, 1);
 	victory_spin = gtk_spin_button_new(GTK_ADJUSTMENT(adj), 1, 0);
 	gtk_widget_show(victory_spin);
 	gtk_table_attach(GTK_TABLE(table), victory_spin, 1, 2, 3, 4,
@@ -452,77 +428,9 @@ static GtkWidget *build_interface()
 	gtk_signal_connect(GTK_OBJECT(victory_spin), "changed",
 			   GTK_SIGNAL_FUNC(victory_spin_changed_cb), NULL);
 
-	label = gtk_label_new(_("Server Port"));
-	gtk_widget_show(label);
-	gtk_table_attach(GTK_TABLE(table), label, 0, 1, 4, 5,
-			 (GtkAttachOptions)GTK_FILL,
-			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
-	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
-
-       adj = gtk_adjustment_new(server_port_int, 1024, 32767, 1, 1, 1);
-       port_spin = gtk_spin_button_new(GTK_ADJUSTMENT(adj), 1, 0);
-       gtk_widget_show(port_spin);
-       gtk_table_attach(GTK_TABLE(table), port_spin, 1, 2, 4, 5,
-                        (GtkAttachOptions)GTK_FILL,
-                        (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
-       gtk_widget_set_usize(port_spin, 60, -1);
-       gtk_signal_connect(GTK_OBJECT(port_spin), "changed",
-                          GTK_SIGNAL_FUNC(port_spin_changed_cb), NULL);
-
-       label = gtk_label_new(_("Register Server"));
-       gtk_widget_show(label);
-       gtk_table_attach(GTK_TABLE(table), label, 0, 1, 5, 6,
-                        (GtkAttachOptions)GTK_FILL,
-                        (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
-       gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
-
- 	label = gtk_label_new("Meta Server");
- 	gtk_widget_show(label);
- 	gtk_table_attach(GTK_TABLE(table), label, 0, 1, 6, 7,
- 			 (GtkAttachOptions)GTK_FILL,
-			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
-	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
-
-	meta_entry = gtk_entry_new();
-	gtk_signal_connect_after(GTK_OBJECT(meta_entry), "changed",
-				 GTK_SIGNAL_FUNC(meta_server_changed_cb), NULL);
-	gtk_widget_show(meta_entry);
-	gtk_table_attach(GTK_TABLE(table), meta_entry, 1, 2, 6, 7,
-			 (GtkAttachOptions)GTK_FILL,
-			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
-	gtk_entry_set_text(GTK_ENTRY(meta_entry), meta_server_name);
-
-	label = gtk_label_new("Reported Hostname");
-	gtk_widget_show(label);
-	gtk_table_attach(GTK_TABLE(table), label, 0, 1, 7, 8,
-			 (GtkAttachOptions)GTK_FILL,
-			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
-	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
-
-	hostname_entry = gtk_entry_new();
-	gtk_signal_connect_after(GTK_OBJECT(hostname_entry), "changed",
-	GTK_SIGNAL_FUNC(hostname_changed_cb), NULL);
-	gtk_widget_show(hostname_entry);
-	gtk_table_attach(GTK_TABLE(table), hostname_entry, 1, 2, 7, 8,
-			 (GtkAttachOptions)GTK_FILL,
-			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
-	gtk_entry_set_text(GTK_ENTRY(hostname_entry), hostname);
-	
-	/* this seems to fit better before, but the callback requires
-	 * that meta_entry and hostname_entry are initialized */
-	register_toggle = gtk_toggle_button_new_with_label(_("No"));
-	gtk_widget_show(register_toggle);
-	gtk_table_attach(GTK_TABLE(table), register_toggle, 1, 2, 5, 6,
-			 (GtkAttachOptions)GTK_FILL,
-			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
-	gtk_signal_connect(GTK_OBJECT(register_toggle), "toggled",
-			   GTK_SIGNAL_FUNC(register_toggle_cb), NULL);
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(register_toggle), TRUE);
-	gtk_toggle_button_toggled(GTK_TOGGLE_BUTTON(register_toggle));
-
 	label = gtk_label_new(_("Sevens Rule"));
 	gtk_widget_show(label);
-	gtk_table_attach(GTK_TABLE(table), label, 0, 1, 8, 9,
+	gtk_table_attach(GTK_TABLE(table), label, 0, 1, 4, 5,
 			 (GtkAttachOptions)GTK_FILL,
 			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
@@ -530,7 +438,7 @@ static GtkWidget *build_interface()
 	radio_sevens_normal = gtk_radio_button_new_with_label(NULL, _("Normal"));
 	radio_sevens_2_turns = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(radio_sevens_normal), _("Reroll on 1st 2 turns") );
 	radio_sevens_reroll = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(radio_sevens_2_turns), _("Reroll all 7s") );
-	
+
 	vbox_sevens = gtk_vbox_new( TRUE, 2 );
 
 	gtk_widget_show(radio_sevens_normal);
@@ -541,8 +449,8 @@ static GtkWidget *build_interface()
 	gtk_box_pack_start_defaults( GTK_BOX(vbox_sevens), radio_sevens_normal );
 	gtk_box_pack_start_defaults( GTK_BOX(vbox_sevens), radio_sevens_2_turns );
 	gtk_box_pack_start_defaults( GTK_BOX(vbox_sevens), radio_sevens_reroll );
-	
-	gtk_table_attach(GTK_TABLE(table), vbox_sevens, 1, 2, 8, 9,
+
+	gtk_table_attach(GTK_TABLE(table), vbox_sevens, 1, 2, 4, 5,
 			 (GtkAttachOptions)GTK_FILL,
 			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
 
@@ -553,23 +461,173 @@ static GtkWidget *build_interface()
 	gtk_signal_connect(GTK_OBJECT(radio_sevens_reroll), "clicked",
 			   GTK_SIGNAL_FUNC(sevens_rule_changed_cb), NULL);
 
-	start_btn = gtk_button_new_with_label(_("Start Server"));
-	gtk_widget_show(start_btn);
-	addcomputer_btn = gtk_button_new_with_label(_("Add Computer Player"));
-	gtk_widget_show(addcomputer_btn);
-        gtk_table_attach(GTK_TABLE(table), addcomputer_btn, 0, 2, 9, 10,
-                         (GtkAttachOptions)GTK_FILL,
-                         (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
-        gtk_signal_connect(GTK_OBJECT(addcomputer_btn), "clicked",
-                           GTK_SIGNAL_FUNC(addcomputer_clicked_cb), NULL);
-        gtk_widget_set_sensitive(addcomputer_btn, FALSE);
- 
+	/* Fill the GUI with the saved settings */
+	gboolean default_returned;
+	gchar *gamename;
+	gamename  = config_get_string("game/name=Default", &default_returned);
+	game_list_foreach( add_game_to_combo, gamename );
+	gtk_combo_set_popdown_strings(GTK_COMBO(game_combo), title_list);
 
-	gtk_table_attach(GTK_TABLE(table), start_btn, 0, 2, 10, 11,
+	/* First the game has to be set, then the other parameters can be changed */
+	gint temp;
+
+	/* If a settings is not found, don't override the settings that came with the game */
+	temp = config_get_int("game/random-terrain", &default_returned);
+	if (!default_returned) cfg_set_terrain_type(temp);
+	temp = config_get_int("game/num-players", &default_returned);
+	if (!default_returned) cfg_set_num_players(temp);
+	temp = config_get_int("game/victory-points", &default_returned);
+	if (!default_returned) cfg_set_victory_points(temp);
+	temp = config_get_int("game/sevens-rule", &default_returned);
+	if (!default_returned) cfg_set_sevens_rule(temp);
+
+	update_game_settings();
+	return frame;
+}
+
+static GtkWidget *build_interface()
+{
+	GtkWidget *vbox;
+	GtkWidget *vbox_settings;
+	GtkWidget *hbox;
+	GtkWidget *frame;
+	GtkWidget *table;
+	GtkWidget *label;
+	GtkObject *adj;
+	GtkWidget *scroll_win;
+	GtkWidget *message_text;
+          gint novar;
+
+	static gchar *titles[2];
+
+	if (!titles[0]) {
+		titles[0] = _("Name");
+		titles[1] = _("Location");
+	}
+
+	vbox = gtk_vbox_new(FALSE, 0);
+	gtk_widget_show(vbox);
+	gtk_container_border_width(GTK_CONTAINER(vbox), 5);
+
+	hbox = gtk_hbox_new(FALSE, 5);
+	gtk_widget_show(hbox);
+	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);
+
+	vbox_settings = gtk_vbox_new(FALSE, 5);
+	gtk_widget_show(vbox_settings);
+	gtk_box_pack_start(GTK_BOX(hbox), vbox_settings, FALSE, TRUE, 0);
+                    
+	/*@@RC Game settings frame */
+	game_frame = build_game_settings(vbox_settings);
+
+	server_frame = gtk_frame_new(_("Server Parameters"));
+	gtk_widget_show(server_frame);
+	gtk_box_pack_start(GTK_BOX(vbox_settings), server_frame, FALSE, TRUE, 0);
+
+	table = gtk_table_new(6, 2, FALSE);
+	gtk_widget_show(table);
+	gtk_container_add(GTK_CONTAINER(server_frame), table);
+	gtk_container_border_width(GTK_CONTAINER(table), 3);
+	gtk_table_set_row_spacings(GTK_TABLE(table), 3);
+	gtk_table_set_col_spacings(GTK_TABLE(table), 5);
+
+	label = gtk_label_new(_("Server Port"));
+	gtk_widget_show(label);
+	gtk_table_attach(GTK_TABLE(table), label, 0, 1, 0, 1,
 			 (GtkAttachOptions)GTK_FILL,
 			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+
+	port_entry = gtk_entry_new();
+	gtk_signal_connect_after(GTK_OBJECT(port_entry), "changed",
+				 GTK_SIGNAL_FUNC(port_entry_changed_cb), NULL);
+	gtk_widget_show(port_entry);
+	gtk_table_attach(GTK_TABLE(table), port_entry, 1, 2, 0, 1,
+			(GtkAttachOptions)GTK_FILL,
+			(GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
+
+       label = gtk_label_new(_("Register Server"));
+       gtk_widget_show(label);
+       gtk_table_attach(GTK_TABLE(table), label, 0, 1, 1, 2,
+                        (GtkAttachOptions)GTK_FILL,
+                        (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
+       gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+
+	register_toggle = gtk_toggle_button_new_with_label(_("No"));
+	gtk_widget_show(register_toggle);
+	gtk_table_attach(GTK_TABLE(table), register_toggle, 1, 2, 1, 2,
+			 (GtkAttachOptions)GTK_FILL,
+			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_signal_connect(GTK_OBJECT(register_toggle), "toggled",
+			   GTK_SIGNAL_FUNC(register_toggle_cb), NULL);
+
+          label = gtk_label_new(_("Meta Server"));
+	gtk_widget_show(label);
+	gtk_table_attach(GTK_TABLE(table), label, 0, 1, 2, 3,
+			 (GtkAttachOptions)GTK_FILL,
+			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+
+	meta_entry = gtk_entry_new();
+	gtk_signal_connect_after(GTK_OBJECT(meta_entry), "changed",
+				 GTK_SIGNAL_FUNC(meta_server_changed_cb), NULL);
+	gtk_widget_show(meta_entry);
+	gtk_table_attach(GTK_TABLE(table), meta_entry, 1, 2, 2, 3,
+			 (GtkAttachOptions)GTK_FILL,
+			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
+
+	label = gtk_label_new(_("Reported Hostname"));
+	gtk_widget_show(label);
+	gtk_table_attach(GTK_TABLE(table), label, 0, 1, 3, 4,
+			 (GtkAttachOptions)GTK_FILL,
+			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+
+	hostname_entry = gtk_entry_new();
+	gtk_signal_connect_after(GTK_OBJECT(hostname_entry), "changed",
+	GTK_SIGNAL_FUNC(hostname_changed_cb), NULL);
+	gtk_widget_show(hostname_entry);
+	gtk_table_attach(GTK_TABLE(table), hostname_entry, 1, 2, 3, 4,
+			 (GtkAttachOptions)GTK_FILL,
+			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
+
+
+          /* Initialize server-settings */
+	strncpy(server_port, config_get_string("server/port=5556", &novar), sizeof(server_port));
+	server_port[sizeof(server_port)-1] = 0;
+	gtk_entry_set_text(GTK_ENTRY(port_entry), server_port);
+	
+	novar = 0;
+	meta_server_name = config_get_string("server/meta-server", &novar);
+	if (novar || !strlen(meta_server_name))
+		if (!(meta_server_name = g_strdup(getenv("GNOCATAN_META_SERVER"))))
+			meta_server_name = g_strdup(DEFAULT_META_SERVER);
+	gtk_entry_set_text(GTK_ENTRY(meta_entry), meta_server_name);
+
+	novar = 0;
+	hostname = config_get_string("server/hostname", &novar);
+	if (novar || !strlen(hostname))
+		if (!(hostname = getenv("GNOCATAN_SERVER_NAME")))
+			hostname = getmyhostname ();
+	gtk_entry_set_text(GTK_ENTRY(hostname_entry), hostname);
+
+	register_server = config_get_int_with_default("server/register", TRUE);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(register_toggle), register_server);
+	register_toggle_cb(GTK_TOGGLE_BUTTON(register_toggle), NULL);
+                     
+	start_btn = gtk_button_new_with_label(_("Start Server"));
+	gtk_widget_show(start_btn);
+ 
+	gtk_box_pack_start(GTK_BOX(vbox_settings), start_btn, FALSE, FALSE, 0);
 	gtk_signal_connect(GTK_OBJECT(start_btn), "clicked",
 			   GTK_SIGNAL_FUNC(start_clicked_cb), NULL);
+
+	addcomputer_btn = gtk_button_new_with_label(_("Add Computer Player"));
+	gtk_widget_show(addcomputer_btn);
+	gtk_box_pack_start(GTK_BOX(vbox_settings), addcomputer_btn, FALSE, FALSE, 0);
+	gtk_signal_connect(GTK_OBJECT(addcomputer_btn), "clicked",
+		GTK_SIGNAL_FUNC(addcomputer_clicked_cb), NULL);
+	gtk_widget_set_sensitive(addcomputer_btn, FALSE);
 
 	frame = gtk_frame_new(_("Players Connected"));
 	gtk_widget_show(frame);
@@ -609,8 +667,7 @@ static GtkWidget *build_interface()
 	gtk_container_add(GTK_CONTAINER(scroll_win), message_text);
 	message_window_set_text(message_text);
 
-	game_list_foreach( add_game_to_combo, GTK_COMBO(game_combo) );
-
+	gui_ui_enable(TRUE);
 	return vbox;
 }
 
@@ -625,9 +682,6 @@ int main(int argc, char *argv[])
 	driver->player_added = gui_player_add;
 	driver->player_renamed = gui_player_rename;
 	driver->player_removed = gui_player_remove;
-
-	/* send logging to the message window */
-	log_set_func_message_window();
 
 #ifdef ENABLE_NLS
 	/* FIXME: do I need to initialize i18n for Gnome2? */
@@ -648,6 +702,7 @@ int main(int argc, char *argv[])
  		GNOME_PARAM_POPT_TABLE, NULL,
  		GNOME_PARAM_APP_DATADIR, DATADIR,
  		NULL);
+	config_init("/gnocatan-server/");
 
 	/* Create the application window
 	 */
@@ -676,7 +731,11 @@ int main(int argc, char *argv[])
 
 	gtk_widget_show(app);
 
-	gtk_main();
+	/* in theory, all windows are created now...
+	 *   set logging to message window */
+	log_set_func_message_window();
+
+          gtk_main();
 
 	return 0;
 }

@@ -172,6 +172,7 @@ void game_free(Game *game);
 gint new_computer_player(gchar *server, gchar *port);
 gboolean server_startup(GameParams *params, gchar *port, gboolean meta);
 gboolean server_restart(void);
+gboolean server_stop(void);
 gint accept_connection(gint in_fd, gchar **location);
 gint open_listen_socket(gchar *port);
 

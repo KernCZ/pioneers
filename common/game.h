@@ -55,9 +55,9 @@ typedef struct {
 	gchar *server_port;	/* port to run game on */
 	GArray *chits;		/* chit sequence */
 	Map *map;		/* the game map */
-	gboolean parsing_map;	/* currently parsing map? */
-        gint tournament_time;   /* time to start tournament time in minutes */
-        gboolean exit_when_done;  /* server exits after someone wins */    
+	gboolean parsing_map;	/* currently parsing map? */ /* Not in game_params[] */
+	gint tournament_time;   /* time to start tournament time in minutes */
+	gboolean exit_when_done;  /* server exits after someone wins */ /* Not in game_params[] */
 	gboolean use_pirate;	/* is there a pirate in this game? */
 } GameParams;
 

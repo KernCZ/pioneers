@@ -32,26 +32,37 @@
 #define TERRAIN_RANDOM	1
 
 static GHashTable *_game_list = NULL;
+static GSList *_game_listS = NULL; /* The sorted list */
 
 gboolean register_server = FALSE;
 gchar server_port[NI_MAXSERV] = "5556";
-gint server_port_int = 5556;
 gchar server_admin_port[NI_MAXSERV] = "5555";
 extern gint no_player_timeout;
 
 GameParams *params = NULL;
 
-void game_list_add_item( GameParams *item )
+static gint sort_function(gconstpointer a, gconstpointer b)
 {
+return (strcmp(((GameParams*)a)->title, ((GameParams*)b)->title));
+}
+
+static void game_list_add_item( GameParams *item )
+{
+
 	if( !_game_list ) {
 		_game_list = g_hash_table_new( g_str_hash, g_str_equal );
 		params = item;
 	}
 
 	g_hash_table_insert( _game_list, item->title, item );
+
+	/*@@RC I know this is duplicate code,
+	* but I need both the accessibility of the hash,
+	* and the orderability of the list */
+	_game_listS = g_slist_insert_sorted(_game_listS, item, sort_function);
 }
 
-GameParams *game_list_find_item( gchar *title )
+GameParams *game_list_find_item( const gchar *title )
 {
 	if( !_game_list ) {
 		return NULL;
@@ -60,10 +71,10 @@ GameParams *game_list_find_item( gchar *title )
 	return g_hash_table_lookup( _game_list, title );
 }
 
-void game_list_foreach( GHFunc func, gpointer user_data )
+void game_list_foreach( GFunc func, gpointer user_data )
 {
-	if( _game_list ) {
-		g_hash_table_foreach( _game_list, func, user_data );
+	if (_game_listS ) {
+		g_slist_foreach( _game_listS, func, user_data );
 	}
 }
 
@@ -77,6 +88,7 @@ GameParams *load_game_desc(gchar *fname)
 		g_warning("could not open '%s'", fname);
 		return NULL;
 	}
+
 	params = params_new();
 	while (fgets(line, sizeof(line), fp) != NULL) {
 		gint len = strlen(line);
@@ -148,7 +160,7 @@ void cfg_set_victory_points( gint victory_points )
 		params->victory_points = victory_points;
 }
 
-void cfg_set_game( gchar *game )
+void cfg_set_game( const gchar *game )
 {
 #ifdef PRINT_INFO
 	g_print( "cfg_set_game: %s\n", game );

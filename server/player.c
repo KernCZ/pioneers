@@ -32,6 +32,7 @@
 static gboolean mode_check_version(Player *player, gint event);
 static gboolean mode_check_status(Player *player, gint event);
 static gboolean mode_bad_version(Player *player, gint event);
+static gboolean mode_game_is_over(Player *player, gint event);
 static gboolean mode_global(Player *player, gint event);
 static gboolean mode_unhandled(Player *player, gint event);
 
@@ -84,11 +85,6 @@ static gboolean mode_global(Player *player, gint event)
 			game->player_list = g_list_remove (game->player_list,
 					player);
 			player_free(player);
-		}
-
-		if (game->num_players == 0) {
-			server_restart();
-			start_timeout();
 		}
 		return TRUE;
 	case SM_RECV:
@@ -207,6 +203,15 @@ Player *player_new(Game *game, int fd, gchar *location)
 	sm_global_set(sm, (StateFunc)mode_global);
 	sm_unhandled_set(sm, (StateFunc)mode_unhandled);
 	sm_use_fd(sm, fd);
+
+	if (game->is_game_over) {
+		/* The game is over, don't accept new players */
+		sm_goto(sm, (StateFunc)mode_game_is_over);
+		log_message( MSG_INFO, _("Player from %s is refused: game is over\n"), location);
+		sm_free(sm);
+		close(fd);
+		return NULL;
+	}
 
 	player->game = game;
 	player->location = g_strdup(location);
@@ -569,6 +574,19 @@ static gboolean mode_bad_version(Player *player, gint event)
 	switch (event) {
 	case SM_ENTER:
 		sm_send(sm, "ERR sorry, version conflict\n");
+		break;
+	}
+	return FALSE;
+}
+
+static gboolean mode_game_is_over(Player *player, gint event)
+{
+	StateMachine *sm = player->sm;
+
+	sm_state_name(sm, "mode_game_is_over");
+	switch (event) {
+	case SM_ENTER:
+		sm_send(sm, "NOTE %s\n", _("Sorry, game is over."));
 		break;
 	}
 	return FALSE;

@@ -43,7 +43,9 @@ libgnocatan_a_DEPENDENCIES = \
 
 libgnocatan_gtk_a_SOURCES = \
 	common_gtk.c \
-	common_gtk.h
+	common_gtk.h \
+	config-gnome.c \
+	config-gnome.h
 
 gnocatan-path.h: gnocatan-path.h.in
 	rm -f $(<D)/$(@F)

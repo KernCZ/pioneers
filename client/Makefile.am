@@ -40,8 +40,6 @@ gnocatan_SOURCES = \
 	client.h \
 	chat.c \
 	connect.c \
-	config-gnome.c \
-	config-gnome.h \
 	develop.c \
 	discard.c \
 	gameover.c \

@@ -1,3 +1,15 @@
+2003-11-05  Roland Clobus <rclobus@bigfoot.com>
+	* ai/client.c, server/player.c, server/server.c: Refuse connection
+	when a game is over.
+	* common/game.c, common/game.h, server/gnocatan-server-gtk.c,
+	server/server.c, server/server.h: Repaired -x option, implemented
+	rudimentary restart.
+	* client/Makefile.am, common/Makefile.am, */config-gnome.c,
+	*/config-gnome.h: Moved config-gnome.* from client/ to common/
+	* server/gnocatan-server-gtk.c: Added save settings.
+	* server/gnocatan-server.c, server/gnocatan-server.h: Ordered the
+	names of the games.
+
 2003-10-29  Roman Hodek  <roman@hodek.net>
 
 	* po/de.po: removed fuzzy tags, cared for two untranslated msgs,

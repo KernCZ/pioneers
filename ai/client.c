@@ -171,6 +171,10 @@ static gboolean global_unhandled(StateMachine *sm, gint event)
 			log_message ( MSG_ERROR, "Server uses unknown extensions (not a problem): %s", str);
 			return TRUE;
 		}
+		if (sm_recv(sm, "NOTE %S", str, sizeof(str))) {
+			log_message( MSG_INFO, "Notice: %s\n", str);
+			return TRUE;
+		}
 		if (sm_recv(sm, "%S", str, sizeof (str))) {
 			log_message( MSG_ERROR, "Error (%s): %s\n", sm_current_name(sm), str);
 			return TRUE;

@@ -263,12 +263,15 @@ void params_load_line(GameParams *params, gchar *line)
 	line = skip_space(line);
 	if (*line == '#')
 		return;
-	
+	if (*line==0)
+		return;	
 	if (match_word(&line, "variant")) {
 		if (match_word(&line, "islands"))
 			params->variant = VAR_ISLANDS;
 		else if (match_word(&line, "intimate"))
 			params->variant = VAR_INTIMATE;
+		else
+			params->variant = VAR_DEFAULT;
 		return;
 	}
 	if (match_word(&line, "map")) {
@@ -347,6 +350,7 @@ GameParams *params_copy(GameParams *params)
 		}
 	}
 
+	copy->exit_when_done = params->exit_when_done;
 	return copy;
 }
 
