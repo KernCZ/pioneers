@@ -602,6 +602,12 @@ gboolean mode_pre_game(Player *player, gint event)
 			{
 				sm_send(sm, "state %s\n", prevstate);
 			}
+			
+			/* Send the bank, so the client can count remaining 
+			 * resources
+			 */
+			sm_send(sm, "extension bank %R\n", game->bank_deck);
+
 			/* send player info about what he has:
 			   resources, dev cards, roads, # roads,
 			   # bridges, # ships, # settles, # cities,

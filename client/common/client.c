@@ -759,12 +759,10 @@ static gboolean mode_load_gameinfo(StateMachine *sm, gint event)
 		}
 		return TRUE;
 	}
-	/* TODO: The server does not send the bank yet. 
-	 * This extension should be sent before otherplayerinfo:
-	 * because the information about the bank is then needed */
 	if (sm_recv(sm, "extension bank %R", tmp_bank) ) {
 		set_bank(tmp_bank);
 		have_bank = TRUE;
+		return TRUE;
 	}
 	if (sm_recv(sm, "turn num %d", &rinfo.turnnum)) {
 		return TRUE;

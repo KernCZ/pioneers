@@ -1,6 +1,8 @@
 2004-11-28  0.8.1.44  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/gui.h: Fix for the macro that would have bad side effects
 	when used in if statements
+	* client/common/client.c, server/pregame.c: Enable sending the bank by
+	the server
 
 2004-11-21  0.8.1.43  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/offline.c(frontend_offline): Game|Connect incorrectly
