@@ -1,3 +1,15 @@
+gnocatan (0.7.0-5) unstable; urgency=low
+
+  * Snapshot against today's CVS, closes: #151707
+
+ -- Jeff Breidenbach <jab@debian.org>  Sun, 23 Jun 2002 14:22:16 -0700
+
+gnocatan (0.7.0-4) unstable; urgency=low
+
+  * Never mind, this one didn't pass the autobuilders.
+
+ -- Jeff Breidenbach <jab@debian.org>  Sun, 23 Jun 2002 14:21:44 -0700
+
 gnocatan (0.7.0-3) unstable; urgency=low
 
   * restore original server/metaserver name resolution
