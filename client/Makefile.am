@@ -11,7 +11,7 @@ INCLUDES = \
 	-DGNOMELOCALEDIR=\""$(datadir)/locale"\" \
         -I$(includedir) $(GNOME_INCLUDEDIR)
 
-gnocatan_DEPENDENCIES = ../common/libgnocatan.a ../common/libgnocatan_gui.a
+gnocatan_DEPENDENCIES = ../common/libgnocatan.a ../common/libgnocatan_gtk.a
 
 gnocatan_SOURCES = \
 	build.c \
@@ -47,7 +47,7 @@ gnocatan_SOURCES = \
 
 gnocatan_LDADD = \
 	../common/libgnocatan.a \
-	../common/libgnocatan_gui.a \
+	../common/libgnocatan_gtk.a \
 	$(GNOME_LIBDIR) \
 	$(GNOMEUI_LIBS)
 

@@ -1,4 +1,11 @@
+2000-05-15  Steve Langasek <vorlon@dodds.net>
+
+	* common/Makefile.am, client/Makefile.am, server/Makefile.am:
+	Changed library name from libgnocatan_gui.a to libgnocatan_gtk.a,
+	allowing for the possibility of multiple front-ends
+
 2000-05-13  Bibek Sahu <scorpio@dodds.net>
+
 	* common/driver.[ch], client/gnocatan.c, server/gnocatan-server.c:
 	Moved the global driver definition to driver.c, and added a function
 	set_ui_driver( UIDriver* ).  Moved logging into the driver
@@ -6,6 +13,7 @@
 	console and must be told to move that to a window later on.
 
 2000-05-12  Steve Langasek <vorlon@dodds.net>
+
 	* common/common_gtk.c, common/state.c: Pulled all GTK-specific code
 	out of state.c, moving it to common_gtk.c.
 
@@ -23,6 +31,7 @@
 	independent interface drivers (GTK, console).
 
 2000-05-12  Bibek Sahu <scorpio@dodds.net>
+
 	* common/common_gui.[ch], common/common_gtk.[ch]: Renamed
 	common/common_gui.[ch] -> common/common_gtk.[ch] per Steve's
 	request.  More appropriate, considering its function.

@@ -1,4 +1,4 @@
-noinst_LIBRARIES = libgnocatan.a libgnocatan_gui.a
+noinst_LIBRARIES = libgnocatan.a libgnocatan_gtk.a
 
 INCLUDES = \
 	-DGNOMELOCALEDIR=\""$(datadir)/locale"\" \
@@ -28,6 +28,6 @@ libgnocatan_a_SOURCES = \
 	state.c \
 	state.h
 
-libgnocatan_gui_a_SOURCES = \
+libgnocatan_gtk_a_SOURCES = \
 	common_gtk.c \
 	common_gtk.h
