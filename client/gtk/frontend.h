@@ -23,8 +23,8 @@
 
 #include <stdio.h>
 #include <string.h>
-#include "../common/callback.h"
-#include "../../config.h"
+#include "callback.h"
+#include "config.h"
 #include "quoteinfo.h"
 
 /* Information about a GUI component */

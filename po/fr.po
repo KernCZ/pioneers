@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnocatan 0.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-01-01 23:45+0100\n"
+"POT-Creation-Date: 2004-01-02 13:15+0100\n"
 "PO-Revision-Date: 2003-11-20 16:00-0600\n"
 "Last-Translator: Arnaud MALON <moko@geumeuleu.com>\n"
 "Language-Team: Français <LL@li.org>\n"
@@ -600,7 +600,7 @@ msgstr "En attente"
 msgid "Idle"
 msgstr "Absent"
 
-#: client/common/client.c:211 client/common/client.c:575 client/gtk/gui.c:1116
+#: client/common/client.c:211 client/common/client.c:575 client/gtk/gui.c:1115
 msgid "Offline"
 msgstr "Déconnecté"
 
@@ -1032,7 +1032,7 @@ msgstr "Nom de la carte"
 msgid "Current Gnocatan Servers"
 msgstr "Les serveurs Gnocatan actuels"
 
-#: client/gtk/connect.c:937 client/gtk/gui.c:90
+#: client/gtk/connect.c:937 client/gtk/gui.c:89
 msgid "Connect to Gnocatan server"
 msgstr "Se connecter au serveur Gnocatan"
 
@@ -1145,265 +1145,265 @@ msgstr "Total des ressources"
 msgid "Waiting for players to choose"
 msgstr ""
 
-#: client/gtk/gui.c:90
+#: client/gtk/gui.c:89
 msgid "_Connect"
 msgstr "_Connection"
 
-#: client/gtk/gui.c:95
+#: client/gtk/gui.c:94
 msgid "_Admin"
 msgstr ""
 
-#: client/gtk/gui.c:95
+#: client/gtk/gui.c:94
 msgid "Administer Gnocatan server"
 msgstr ""
 
-#: client/gtk/gui.c:100
+#: client/gtk/gui.c:99
 msgid "Player _Name"
 msgstr "_Nom du joueur"
 
-#: client/gtk/gui.c:100
+#: client/gtk/gui.c:99
 msgid "Change your player name"
 msgstr "Renommer"
 
-#: client/gtk/gui.c:104
+#: client/gtk/gui.c:103
 msgid "_Settings"
 msgstr "_Paramètres"
 
-#: client/gtk/gui.c:104
+#: client/gtk/gui.c:103
 msgid "Gnocatan client settings"
 msgstr "Paramètres client Gnocatan"
 
-#: client/gtk/gui.c:107 server/gnocatan-server-gtk.c:90
+#: client/gtk/gui.c:106 server/gnocatan-server-gtk.c:90
 msgid "E_xit"
 msgstr "_Quitter"
 
-#: client/gtk/gui.c:107 server/gnocatan-server-gtk.c:90
+#: client/gtk/gui.c:106 server/gnocatan-server-gtk.c:90
 msgid "Exit the program"
 msgstr "Quitter le programme"
 
-#: client/gtk/gui.c:124
+#: client/gtk/gui.c:123
 msgid "_Legend"
 msgstr "_Légende"
 
-#: client/gtk/gui.c:124
+#: client/gtk/gui.c:123
 msgid "Terrain legend and building costs"
 msgstr "Légende des terrains et coûts de construction"
 
-#: client/gtk/gui.c:127
+#: client/gtk/gui.c:126
 msgid "_Game Settings"
 msgstr "_Paramètres de la partie"
 
-#: client/gtk/gui.c:127
+#: client/gtk/gui.c:126
 msgid "Settings for the current game"
 msgstr "Paramètres de la partie actuelle"
 
-#: client/gtk/gui.c:130
+#: client/gtk/gui.c:129
 msgid "_Dice Histogram"
 msgstr "_Histogramme des lancers de dés"
 
-#: client/gtk/gui.c:130
+#: client/gtk/gui.c:129
 msgid "Histogram of dice rolls"
 msgstr "Histogramme des lancers de dés"
 
-#: client/gtk/gui.c:133
+#: client/gtk/gui.c:132
 msgid "_About Gnocatan"
 msgstr "_A propos de Gnocatan"
 
-#: client/gtk/gui.c:133
+#: client/gtk/gui.c:132
 msgid "Information about Gnocatan"
 msgstr "Informations à propose de Gnocatan"
 
-#: client/gtk/gui.c:144
+#: client/gtk/gui.c:143
 msgid "_Game"
 msgstr "_Partie"
 
-#: client/gtk/gui.c:145 server/gnocatan-server-gtk.c:135
+#: client/gtk/gui.c:144 server/gnocatan-server-gtk.c:135
 msgid "_Help"
 msgstr "_Aide"
 
-#: client/gtk/gui.c:176
+#: client/gtk/gui.c:175
 #, fuzzy
 msgid ""
 "Roll Dice\n"
 "(F1)"
 msgstr "Lancer les dés"
 
-#: client/gtk/gui.c:179
+#: client/gtk/gui.c:178
 #, fuzzy
 msgid ""
 "Trade\n"
 "(F2)"
 msgstr "Echanges"
 
-#: client/gtk/gui.c:182
+#: client/gtk/gui.c:181
 #, fuzzy
 msgid ""
 "Undo\n"
 "(F3)"
 msgstr "Annuler"
 
-#: client/gtk/gui.c:185
+#: client/gtk/gui.c:184
 #, fuzzy
 msgid ""
 "Finish\n"
 "(F4)"
 msgstr "Fin de tour"
 
-#: client/gtk/gui.c:189
+#: client/gtk/gui.c:188
 #, fuzzy
 msgid ""
 "Road\n"
 "(F5)"
 msgstr "Route"
 
-#: client/gtk/gui.c:192
+#: client/gtk/gui.c:191
 #, fuzzy
 msgid ""
 "Ship\n"
 "(F6)"
 msgstr "Bateau"
 
-#: client/gtk/gui.c:195
+#: client/gtk/gui.c:194
 msgid ""
 "Move Ship\n"
 "(F7)"
 msgstr "Déplacer 1 bateau"
 
-#: client/gtk/gui.c:198
+#: client/gtk/gui.c:197
 #, fuzzy
 msgid ""
 "Bridge\n"
 "(F8)"
 msgstr "Pont"
 
-#: client/gtk/gui.c:202
+#: client/gtk/gui.c:201
 #, fuzzy
 msgid ""
 "Settlement\n"
 "(F9)"
 msgstr "Colonie"
 
-#: client/gtk/gui.c:205
+#: client/gtk/gui.c:204
 msgid ""
 "City\n"
 "(F10)"
 msgstr "Ville"
 
-#: client/gtk/gui.c:208
+#: client/gtk/gui.c:207
 #, fuzzy
 msgid ""
 "Develop\n"
 "(F11)"
 msgstr "Carte de Dév."
 
-#: client/gtk/gui.c:250
+#: client/gtk/gui.c:249
 #, c-format
 msgid "Points Needed to Win: %i"
 msgstr "Pts requis pour gagner: %i"
 
-#: client/gtk/gui.c:403 server/gnocatan-server-gtk.c:730
+#: client/gtk/gui.c:402 server/gnocatan-server-gtk.c:730
 msgid "Messages"
 msgstr "Messages"
 
-#: client/gtk/gui.c:495
+#: client/gtk/gui.c:494
 msgid "Map"
 msgstr "Carte"
 
-#: client/gtk/gui.c:500
+#: client/gtk/gui.c:499
 msgid "Trade"
 msgstr "Echanges"
 
-#: client/gtk/gui.c:507 client/gtk/quote.c:611
+#: client/gtk/gui.c:506 client/gtk/quote.c:611
 msgid "Quote"
 msgstr "Offre"
 
-#: client/gtk/gui.c:514 client/gtk/legend.c:201
+#: client/gtk/gui.c:513 client/gtk/legend.c:201
 msgid "Legend"
 msgstr "Légende"
 
-#: client/gtk/gui.c:522
+#: client/gtk/gui.c:521
 msgid "Welcome to Gnocatan"
 msgstr "Bienvenue à Gnocatan"
 
-#: client/gtk/gui.c:798
+#: client/gtk/gui.c:797
 msgid "Appearance"
 msgstr "Apparence"
 
-#: client/gtk/gui.c:800
+#: client/gtk/gui.c:799
 msgid "Show Toolbar As"
 msgstr "Montrer la barre d'outils comme"
 
-#: client/gtk/gui.c:804
+#: client/gtk/gui.c:803
 msgid "Text Only"
 msgstr "Seulement du texte"
 
-#: client/gtk/gui.c:805
+#: client/gtk/gui.c:804
 msgid "Icons Only"
 msgstr "Seulement des icônes"
 
-#: client/gtk/gui.c:806
+#: client/gtk/gui.c:805
 msgid "Both Icons and Text"
 msgstr "Des icônes et du texte"
 
-#: client/gtk/gui.c:808
+#: client/gtk/gui.c:807
 msgid "Display legend as page besides map?"
 msgstr "Afficher la légende en dessous de la carte?"
 
-#: client/gtk/gui.c:812
+#: client/gtk/gui.c:811
 msgid "Theme:"
 msgstr "Thème:"
 
-#: client/gtk/gui.c:846
+#: client/gtk/gui.c:845
 msgid "Color Settings"
 msgstr "Jeu de couleurs"
 
-#: client/gtk/gui.c:850
+#: client/gtk/gui.c:849
 msgid "Display messages in colors?"
 msgstr "Afficher les messages en couleur?"
 
-#: client/gtk/gui.c:851
+#: client/gtk/gui.c:850
 msgid "Display chat messages in user's color?"
 msgstr "Afficher les messages du chat dans les couleurs des utilisateurs?"
 
-#: client/gtk/gui.c:852
+#: client/gtk/gui.c:851
 msgid "Display player summary with colors?"
 msgstr "Afficher le résumé des joueurs en couleur?"
 
-#: client/gtk/gui.c:869
+#: client/gtk/gui.c:868
 msgid "Language"
 msgstr "Langue"
 
-#: client/gtk/gui.c:890
+#: client/gtk/gui.c:889
 msgid "Language setting takes full effect only after client restart!"
 msgstr "Le changement de langue prendra effet seulement après un redémarrage!"
 
-#: client/gtk/gui.c:1016
+#: client/gtk/gui.c:1015
 msgid "The Gnocatan Game"
 msgstr "Le jeu Gnocatan"
 
-#: client/gtk/gui.c:1017 server/gnocatan-server-gtk.c:106
+#: client/gtk/gui.c:1016 server/gnocatan-server-gtk.c:106
 msgid "(C) 2002 the Free Software Foundation"
 msgstr "(C) 2002 Free Software Foundation"
 
-#: client/gtk/gui.c:1018 server/gnocatan-server-gtk.c:107
+#: client/gtk/gui.c:1017 server/gnocatan-server-gtk.c:107
 msgid "Gnocatan is based upon the excellent Settlers of Catan board game"
 msgstr ""
 
-#: client/gtk/gui.c:1108
+#: client/gtk/gui.c:1107
 msgid " "
 msgstr " "
 
-#: client/gtk/gui.c:1128
+#: client/gtk/gui.c:1127
 msgid "Welcome to Gnocatan!"
 msgstr "Bienvenue à Gnocatan!"
 
-#: client/gtk/gui.c:1159 client/gtk/gui.c:1195
+#: client/gtk/gui.c:1158 client/gtk/gui.c:1194
 #: server/gnocatan-server-gtk.c:798
 #, c-format
 msgid "Warning: pixmap not found: %s\n"
 msgstr ""
 
-#: client/gtk/gui.c:1183
+#: client/gtk/gui.c:1182
 msgid "Gnocatan"
 msgstr "Gnocatan"
 
@@ -1841,7 +1841,7 @@ msgstr ""
 msgid "Error connecting to host '%s': %s\n"
 msgstr ""
 
-#: common/network.c:195 common/network.c:239
+#: common/network.c:195 common/network.c:242
 #, c-format
 msgid "Error writing socket: %s\n"
 msgstr ""
@@ -1851,41 +1851,41 @@ msgstr ""
 #. * reading. Assume something has gone wrong and
 #. * disconnect
 #.
-#: common/network.c:287
+#: common/network.c:290
 msgid "Read buffer overflow - disconnecting\n"
 msgstr ""
 
-#: common/network.c:305
+#: common/network.c:308
 #, c-format
 msgid "Error reading socket: %s\n"
 msgstr ""
 
-#: common/network.c:394
+#: common/network.c:400
 #, c-format
 msgid "Cannot resolve %s port %s: %s\n"
 msgstr ""
 
-#: common/network.c:398
+#: common/network.c:404
 #, c-format
 msgid "Cannot resolve %s port %s: host not found\n"
 msgstr ""
 
-#: common/network.c:405
+#: common/network.c:411
 #, c-format
 msgid "Error creating socket: %s\n"
 msgstr ""
 
-#: common/network.c:409
+#: common/network.c:415
 #, c-format
 msgid "Error setting socket close-on-exec: %s\n"
 msgstr ""
 
-#: common/network.c:416 server/server.c:139
+#: common/network.c:422 server/server.c:139
 #, c-format
 msgid "Error setting socket non-blocking: %s\n"
 msgstr ""
 
-#: common/network.c:429
+#: common/network.c:435
 #, c-format
 msgid "Error connecting to %s: %s\n"
 msgstr ""

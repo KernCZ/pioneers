@@ -23,7 +23,6 @@
 #include <locale.h>
 
 #include "client.h"
-#include "i18n.h"
 #include "callback.h"
 #include <glib.h>
 #include "config-gnome.h"

@@ -20,6 +20,8 @@
 
 noinst_LIBRARIES = libgnocatan.a libgnocatan_gtk.a
 
+noinst_HEADERS = authors.h
+
 INCLUDES = \
 	-DGNOMELOCALEDIR=\""$(datadir)/locale"\" \
         -I$(includedir) $(GNOME2_CFLAGS)
@@ -73,3 +75,7 @@ gnocatan-path.h: gnocatan-path.h.in
 	bdir="`echo $(bindir)`"; \
 	sed -e "s,@datadir\@,$$ddir,g" -e "s,@bindir\@,$$bdir,g" $< >$(<D)/$(@F)
 
+authors.h: ../AUTHORS
+	echo -n "#define AUTHORLIST " > $@
+	sed -e's/ <.*//; s/$$/", \\/; s/^/"/; /^"[[:space:]]*", \\$$/d' $< >> $@
+	echo "NULL" >> $@

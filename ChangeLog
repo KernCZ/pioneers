@@ -1,3 +1,14 @@
+2004-01-02 0.8.1.11  Bas Wijnen <b.wijnen@phys.rug.nl>
+	
+	* common/Makefile.am, common/Makefile.am, common/authors.h: 
+	Moved authors.h from client/common to common
+	* client/common/i18n.c, client/common/gnocatan.c, client/common/i18n.h:
+	Removed i18n.h and merged into client/callback.h
+	* client/gtk/Makefile.am, client/gtk/frontend.h, client/gtk/gui.c:
+	Removed directories in #include statements
+	* client/Makefile.am, client/common/Makefile.am, client/callback.h:
+	Moved callback.h from client/common to client
+	
 2004-01-02 0.8.1.10  Roland Clobus <rclobus@bigfoot.com>
 
 	* client/gtk/legend.c (legend_create_dlg): The legend dialog now has a

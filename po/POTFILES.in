@@ -7,16 +7,15 @@ ai/resource.c
 ai/robber.c
 ai/trade.c
 ai/turn.c
+client/callback.h
 client/common/build.c
 client/common/callback.c
-client/common/callback.h
 client/common/chat.c
 client/common/client.c
 client/common/client.h
 client/common/develop.c
 client/common/gnocatan.c
 client/common/i18n.c
-client/common/i18n.h
 client/common/player.c
 client/common/resource.c
 client/common/robber.c

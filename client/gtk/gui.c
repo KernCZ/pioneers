@@ -30,7 +30,6 @@
 #include "log.h"
 #include "common_gtk.h"
 #include "histogram.h"
-#include "../common/i18n.h"
 #include "theme.h"
 #include "config-gnome.h"
 #include "frontend.h"

@@ -45,7 +45,9 @@ ADMIN_GTK_FILES_INACTIVE = admin-gtk.c
 endif
 
 INCLUDES = \
-	-I$(srcdir)/../../common -I. \
+	-I$(srcdir)/.. \
+	-I$(srcdir)/../.. \
+	-I$(srcdir)/../../common \
 	-DGNOMELOCALEDIR=\""$(datadir)/locale"\" \
 	-DTHEMEDIR=\"$(themedir)\" \
 	-DDATADIR=\"$(datadir)\" \

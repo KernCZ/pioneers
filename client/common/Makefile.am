@@ -23,24 +23,23 @@ noinst_LIBRARIES = libgnocatanclient.a
 libgnocatanclient_a_DEPENDENCIES = ../../common/libgnocatan.a
 
 INCLUDES = \
-	-I$(srcdir)/../../common -I. \
+	-I$(srcdir)/.. \
+	-I$(srcdir)/../.. \
+	-I$(srcdir)/../../common \
         -I$(includedir) \
 	-DLOCALEDIR=\""$(datadir)/locale"\" \
 	$(GLIB2_CFLAGS) \
 	$(GNOME2_CFLAGS)
 
 libgnocatanclient_a_SOURCES = \
-	authors.h \
 	build.c \
 	callback.c \
-	callback.h \
 	chat.c \
 	client.c \
 	client.h \
 	develop.c \
 	gnocatan.c \
 	i18n.c \
-	i18n.h \
 	player.c \
 	resource.c \
 	robber.c \
@@ -50,8 +49,3 @@ libgnocatanclient_a_SOURCES = \
 
 libgnocatanclient_a_LIBADD = \
 	../../common/libgnocatan.a
-
-authors.h: ../../AUTHORS
-	echo -n "#define AUTHORLIST " > authors.h
-	sed -e's/ <.*//; s/$$/", \\/; s/^/"/; /^"[[:space:]]*", \\$$/d' $< >> $@
-	echo "NULL" >> $@

@@ -26,7 +26,7 @@
 
 #if ENABLE_NLS
 
-#include "i18n.h"
+#include "callback.h"
 #include "config-gnome.h"
 
 /* Needed below for a dirty trick */
