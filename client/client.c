@@ -1040,8 +1040,8 @@ static void build_ship_cb(Edge *edge, gint player_num)
 static void do_move_ship_cb(Edge *edge, gint player_num)
 {
 	gui_cursor_none();
-	sm_send(SM(), "move %d %d %d %d %d %d 0\n", ship_move_sx,
-		ship_move_sy, ship_move_spos, edge->x, edge->y, edge->pos);
+	sm_send(SM(), "move %d %d %d %d %d %d\n", ship_move_sx, ship_move_sy,
+			ship_move_spos, edge->x, edge->y, edge->pos);
 	sm_push(SM(), mode_move_response);
 }
 
@@ -1208,9 +1208,7 @@ static gboolean mode_setup(StateMachine *sm, gint event)
 		 * server will respond telling us whether the undo was
 		 * successful or not.
 		 */
-		rec = build_last();
-		sm_send(sm, "remove %B %d %d %d\n",
-			rec->type, rec->x, rec->y, rec->pos);
+		sm_send(sm, "undo\n");
 		sm_goto(sm, mode_setup_undo_response);
 		return TRUE;
 	case GUI_ROAD:
@@ -1538,8 +1536,7 @@ static gboolean mode_road_building(StateMachine *sm, gint event)
 		gui = g_hash_table_lookup(sm->widgets, (gpointer)event);
 		if (gui == NULL || !gui->current) return FALSE;
 		rec = build_last();
-		sm_send(sm, "remove %B %d %d %d\n",
-			rec->type, rec->x, rec->y, rec->pos);
+		sm_send(sm, "undo\n");
 		sm_goto(sm, mode_road_building_undo_response);
 		return TRUE;
 	case GUI_ROAD:
@@ -2003,14 +2000,7 @@ static gboolean mode_turn_rolled(StateMachine *sm, gint event)
 		if (sm->is_dead) return FALSE;
 		gui = g_hash_table_lookup(sm->widgets, (gpointer)event);
 		if (gui == NULL || !gui->current) return FALSE;
-		rec = build_last();
-		if (rec->type == BUILD_MOVE_SHIP) {
-			sm_send (sm, "move %d %d %d %d %d %d 1\n",
-				ship_move_sx, ship_move_sy, ship_move_spos,
-				rec->x, rec->y, rec->pos);
-		}
-		else sm_send(sm, "remove %B %d %d %d\n",
-			rec->type, rec->x, rec->y, rec->pos);
+		sm_send(sm, "undo\n");
 		sm_goto(sm, mode_turn_undo_response);
 		return TRUE;
 	case GUI_ROAD:

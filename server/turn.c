@@ -27,9 +27,6 @@
 #include "cost.h"
 #include "server.h"
 
-static gboolean ship_moved;
-gint ship_move_sx, ship_move_sy, ship_move_spos;
-
 static void build_add(Player *player, BuildType type, gint x, gint y, gint pos)
 {
 	StateMachine *sm = player->sm;
@@ -159,6 +156,12 @@ static void build_add(Player *player, BuildType type, gint x, gint y, gint pos)
 				return;
 			}
 		} else {
+			/* Make sure that there are some settlements left to
+			 * use (there must be an intermediate settlement) */
+			if (player->num_settlements == game->params->num_build_type[BUILD_SETTLEMENT]) {
+				sm_send(sm, "ERR too-many settlement\n");
+				return;
+			}
 			if (!cost_can_afford(cost_city(), player->assets)) {
 				sm_send(sm, "ERR too-expensive\n");
 				return;
@@ -169,15 +172,17 @@ static void build_add(Player *player, BuildType type, gint x, gint y, gint pos)
 	node_add(player, type, x, y, pos, TRUE);
 }
 
-static void build_remove(Player *player, BuildType type, gint x, gint y, gint pos)
+static void build_remove(Player *player)
 {
 	/* Remove the settlement/road we just built
 	 */
-	if (!perform_undo(player, type, x, y, pos))
-		sm_send(player->sm, "ERR bad-pos\n");
+	if (!perform_undo(player))
+		sm_send(player->sm, "ERR bad-undo\n");
 }
 
-static void build_move (Player *player, gint sx, gint sy, gint spos, gint dx, gint dy, gint dpos, gint isundo) {
+static void build_move (Player *player, gint sx, gint sy, gint spos,
+		gint dx, gint dy, gint dpos)
+{
 	StateMachine *sm = player->sm;
 	Game *game = player->game;
 	Map *map = game->params->map;
@@ -185,41 +190,55 @@ static void build_move (Player *player, gint sx, gint sy, gint spos, gint dx, gi
 		*to = map_edge (map, dx, dy, dpos);
 	BuildRec *rec;
 
-	if (ship_moved && !isundo) {
+	/* Allow only one move per turn */
+	if (player->has_ship_moved) {
 		sm_send(sm, "ERR already-moved\n");
 		return;
 	}
-	if (isundo) {
-		if (sx != ship_move_sx || sy != ship_move_sy || spos != ship_move_spos || !perform_undo(player, BUILD_MOVE_SHIP, dx, dy, dpos))
-			sm_send(player->sm, "ERR bad-pos\n");
-		else ship_moved = FALSE;
-		return;
-	}
+
+	/* Check if the ship is allowed to move away */
 	if (from->owner != player->num || from->type != BUILD_SHIP || to->owner >= 0 || !can_ship_be_moved(map_edge (map, sx, sy, spos), player->num)) {
 		sm_send(sm, "ERR bad-pos\n");
 		return;
 	}
+
+	/* Move it away */
 	from->owner = -1;
+	from->type = BUILD_NONE;
+
+	/* Check if it is allowed to move to the other place */
 	if ((sx == dx && sy == dy && spos == dpos) || !can_ship_be_built(map_edge(map, dx, dy, dpos), player->num)) {
 		from->owner = player->num;
+		from->type = BUILD_SHIP;
 		sm_send(sm, "ERR bad-pos\n");
 		return;
 	}
-	player_broadcast(player, PB_RESPOND, "move %d %d %d %d %d %d 0\n", sx, sy, spos, dx, dy, dpos);
-	ship_moved = TRUE;
-	ship_move_sx = sx;
-	ship_move_sy = sy;
-	ship_move_spos = spos;
-	to->owner = player->num;
-	to->type = BUILD_SHIP;
 
+	/* everything is fine, tell everybode the ship has moved */
+	player_broadcast(player, PB_RESPOND, "move %d %d %d %d %d %d 0\n", sx, sy, spos, dx, dy, dpos);
+
+	/* put the move in the undo information */
 	rec = g_malloc0(sizeof(*rec));
 	rec->type = BUILD_MOVE_SHIP;
 	rec->x = dx;
 	rec->y = dy;
 	rec->pos = dpos;
+	rec->cost = NULL;
+	rec->prev_x = sx;
+	rec->prev_y = sy;
+	rec->prev_pos = spos;
+	rec->longest_road = game->longest_road ? game->longest_road->num : -1;
 	player->build_list = g_list_append(player->build_list, rec);
-	return;
+
+	/* check the longest road while the ship is moving */
+	check_longest_road (game, FALSE);
+	
+	/* administrate the arrival of the ship */
+	to->owner = player->num;
+	to->type = BUILD_SHIP;
+
+	/* check the longest road again */
+	check_longest_road (game, FALSE);
 }
 
 typedef struct {
@@ -232,6 +251,7 @@ static gboolean distribute_resources(Map *map, Hex *hex, GameRoll *data)
 	int idx;
 
 	if (hex->roll != data->roll || hex->robber)
+		/* return false so the traverse function continues */
 		return FALSE;
 
 	for (idx = 0; idx < numElem(hex->nodes); idx++) {
@@ -242,21 +262,19 @@ static gboolean distribute_resources(Map *map, Hex *hex, GameRoll *data)
 		if (node->type == BUILD_NONE)
 			continue;
 		player = player_by_num(data->game, node->owner);
-        if( player != NULL )
-        {
-            num = (node->type == BUILD_CITY) ? 2 : 1;
-	    if (hex->terrain == GOLD_TERRAIN)
-		    player->gold += num;
-	    else
-		    player->assets[hex->terrain] += num;
-        }
-        else
-        {
-            /* This should be fixed at some point. */
-            log_message( MSG_ERROR, _("Tried to assign resources to NULL player.\n") );
-        }
+		if( player != NULL ) {
+			num = (node->type == BUILD_CITY) ? 2 : 1;
+			if (hex->terrain == GOLD_TERRAIN)
+				player->gold += num;
+			else
+				player->assets[hex->terrain] += num;
+		} else {
+			/* This should be fixed at some point. */
+			log_message( MSG_ERROR, _("Tried to assign resources to NULL player.\n") );
+		}
 	}
 
+	/* return false so the traverse function continues */
 	return FALSE;
 }
 
@@ -265,37 +283,40 @@ static gboolean exit_func(gpointer data)
     exit(0);
 }
 
-void check_victory(Game *game)
+void check_victory(Player *player)
 {
-	GList *list;
+	Game *game = player->game;
+	gint points;
 
-	for (list = player_first_real(game);
-	     list != NULL; list = player_next_real(list)) {
-		Player *player = list->data;
-		gint points;
+	points = player->num_settlements
+		+ player->num_cities * 2
+		+ player->develop_points;
 
-		points = player->num_settlements
-			+ player->num_cities * 2
-			+ player->develop_points;
+	if (game->longest_road == player)
+		points += 2;
+	if (game->largest_army == player)
+		points += 2;
 
-		if (game->longest_road == player)
-			points += 2;
-		if (game->largest_army == player)
-			points += 2;
+	if (points >= game->params->victory_points) {
+		GList *list;
 
-		if (points >= game->params->victory_points) {
-			player_broadcast(player, PB_ALL, "won with %d\n", points);
-			game->is_game_over = TRUE;
-
-			/* exit in ten seconds if configured */
-			if (game->params->exit_when_done) {
-			    g_timeout_add(10*1000,
-					  &exit_func,
-					  NULL);
-			}
-
-			return;
+		player_broadcast(player, PB_ALL, "won with %d\n", points);
+		game->is_game_over = TRUE;
+		/* Set all state machines to idle, to make sure nothing
+		 * happens. */
+		for (list = player_first_real (game); list != NULL;
+				list = player_next_real (list) ) {
+			Player *scan = list->data;
+			sm_pop_all_and_goto (scan->sm, (StateFunc)mode_idle);
 		}
+
+		/* exit in ten seconds if configured */
+		if (game->params->exit_when_done) {
+		    g_timeout_add(10*1000,
+				  &exit_func,
+				  NULL);
+		}
+
 	}
 }
 
@@ -312,8 +333,7 @@ gboolean mode_turn(Player *player, gint event)
 	gint quote_num, partner_num, idx, ratio;
 	Resource supply_type, receive_type;
 	gint supply[NO_RESOURCE], receive[NO_RESOURCE];
-	gboolean done;
-	gint sx, sy, spos, dx, dy, dpos, isundo;
+	gint sx, sy, spos, dx, dy, dpos;
 
 	sm_state_name(sm, "mode_turn");
 	if (event != SM_RECV)
@@ -328,28 +348,26 @@ gboolean mode_turn(Player *player, gint event)
 			return TRUE;
 		}
 
-		done = FALSE;
-
-		do {
+		/* roll the dice until we like it */
+		while (TRUE) {
 			game->die1 = get_rand(6) + 1;
 			game->die2 = get_rand(6) + 1;
 			roll = game->die1 + game->die2;
 			game->rolled_dice = TRUE;
 			
-			if (game->params->sevens_rule == 1) {
-				if (roll != 7 || game->curr_turn > 2) {
-					done = TRUE;
-				}			
-			} else if (game->params->sevens_rule == 2) {
-				if (roll != 7) {
-					done = TRUE;
-				}
-			} else {
-				done = TRUE;
-			}
-			
-		} while(!done);
-		
+			/* sevens_rule == 1: reroll first two turns */
+			if (game->params->sevens_rule == 1)
+				if (roll == 7 && game->curr_turn <= 2)
+					continue;
+			/* sevens_rule == 2: reroll all sevens */
+			if (game->params->sevens_rule == 2)
+				if (roll == 7)
+					continue;
+			/* sevens_rule == 0: don't reroll anything */
+			break;
+		}
+
+		/* let people know what we rolled */
 		player_broadcast(player, PB_RESPOND, "rolled %d %d\n",
 		                 game->die1, game->die2);
 
@@ -358,6 +376,7 @@ gboolean mode_turn(Player *player, gint event)
 			 * they must discard half (rounded down)
 			 */
 			discard_resources(game);
+			/* there are no resources to distribute on a 7 */
 			return TRUE;
 		}
 		resource_start(game);
@@ -368,20 +387,14 @@ gboolean mode_turn(Player *player, gint event)
 		distribute_first (list_from_player (player) );
 		return TRUE;
 	}
+	/* try to end a turn */
 	if (sm_recv(sm, "done")) {
 		if (!game->rolled_dice) {
 			sm_send(sm, "ERR roll-dice\n");
 			return TRUE;
 		}
-		/* Make sure that all built roads are connected to
-		 * buildings and vice-versa
-		 */
-		if (!buildrec_is_valid(player->build_list, map, player->num)) {
-			sm_send(sm, "ERR unconnected\n");
-			return TRUE;
-		}
+		/* Ok, finish turn */
 		sm_send(sm, "OK\n");
-		ship_moved = FALSE;
 		/* pop the state machine back to idle */
 		sm_pop (sm);
 		turn_next_player(game);
@@ -393,10 +406,7 @@ gboolean mode_turn(Player *player, gint event)
 	}
 	if (sm_recv(sm, "play-develop %d", &idx, &devel_type)) {
 		develop_play(player, idx);
-		/* 7/17/00 AJH - I don't think develop_play ever returns.
-		 *  All functions seem to call sm_goto...
-		 */
-		check_victory(game);
+		check_victory(player);
 		return TRUE;
 	}
 	if (sm_recv(sm, "maritime-trade %d supply %r receive %r",
@@ -418,17 +428,17 @@ gboolean mode_turn(Player *player, gint event)
 	}
         if (sm_recv(sm, "build %B %d %d %d", &build_type, &x, &y, &pos)) {
 		build_add(player, build_type, x, y, pos);
-		check_victory(game);
+		check_victory(player);
 		return TRUE;
 	}
-	if (sm_recv(sm, "move %d %d %d %d %d %d %d", &sx, &sy, &spos, &dx, &dy,
-				&dpos, &isundo)) {
-		build_move(player, sx, sy, spos, dx, dy, dpos, isundo);
+	if (sm_recv(sm, "move %d %d %d %d %d %d", &sx, &sy, &spos, &dx, &dy,
+				&dpos)) {
+		build_move(player, sx, sy, spos, dx, dy, dpos);
+		check_victory(player);
 		return TRUE;
 	}
-        if (sm_recv(sm, "remove %B %d %d %d", &build_type, &x, &y, &pos)) {
-		build_remove(player, build_type, x, y, pos);
-		check_victory(game);
+        if (sm_recv(sm, "undo")) {
+		build_remove(player);
 		return TRUE;
 	}
 	/* sm_send (sm, "ERR unknown-command\n"); */
@@ -481,6 +491,7 @@ void turn_next_player(Game *game)
 	game->played_develop = FALSE;
 	game->bought_develop = FALSE;
 	player->build_list = buildrec_free(player->build_list);
+	player->has_ship_moved = FALSE;
 
 	/* tell everyone what's happening */
 	player_broadcast(player, PB_RESPOND, "turn %d\n", game->curr_turn);

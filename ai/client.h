@@ -22,9 +22,8 @@ extern GameParams *game_params;
 extern Map *map;		/* the map */
 extern gint no_resource_card[NO_RESOURCE]; /* used for trading */
 
-/* chat.c */
-void chat_parser(gint player_num, char chat_str[512]);
-GtkWidget *chat_build_panel(void);
+/* ai.c */
+void ai_chat (char *message);
 
 /* client.c */
 void client_start(char *server, char *port, char *username, char *ai, int waittime, int chatty);

@@ -1,3 +1,12 @@
+2003-09-29  Bas Wijnen <b.wijnen@phys.rug.nl>
+	* server/buildutil.c, server/server.h, server/turn.c: Fixed longest
+	road bug.
+	* ai/client.h: Fixed bug.
+	* client/client.c, server/buildutil.c, server/develop.c,
+	server/pregame.c, server/server.h, server/turn.c: Changed undo protocol
+	to let the server do the thinking.
+	* server/turn.c: Fixed bug #698611
+
 2003-09-28  Bas Wijnen <b.wijnen@phys.rug.nl>
 	* server/gnocatan-server-gtk.c: Fixed UI bug in sevens rule.
 

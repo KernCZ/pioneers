@@ -27,7 +27,7 @@
 #include "log.h"
 #include "server.h"
 
-static void check_longest_road(Game *game)
+void check_longest_road(Game *game, gboolean can_cut)
 {
 	Map *map = game->params->map;
 	gint road_len[MAX_PLAYERS]; /* work out the longest road */
@@ -55,7 +55,11 @@ static void check_longest_road(Game *game)
 		log_message( MSG_INFO, " ");
 #endif
 
-		if (player->road_len > road_len[player->num]
+		/* only see if the ongest road was cut if can_cut is true.
+		 * If it is false, no building was built, and the road may
+		 * have become shorter because a ship moved away. */
+		if (can_cut
+		    && player->road_len > road_len[player->num]
 		    && game->longest_road == player)
 			/* My longest road has been cut, I Must
 			 * re-earn longest road
@@ -150,6 +154,7 @@ static void check_longest_road(Game *game)
 #endif
 }
 
+/* build something on a node */
 void node_add(Player *player,
 	      BuildType type, int x, int y, int pos, gboolean paid_for)
 {
@@ -158,6 +163,7 @@ void node_add(Player *player,
 	Node *node = map_node(map, x, y, pos);
 	BuildRec *rec;
 
+	/* administrate the built number of structures */
 	if (type == BUILD_SETTLEMENT)
 		player->num_settlements++;
 	else {
@@ -166,13 +172,16 @@ void node_add(Player *player,
 		player->num_cities++;
 	}
 
+	/* fill the backup struct */
 	rec = g_malloc0(sizeof(*rec));
 	rec->type = type;
 	rec->prev_status = node->type;
 	rec->x = x;
 	rec->y = y;
 	rec->pos = pos;
+	rec->longest_road = game->longest_road ? game->longest_road->num : -1;
 
+	/* compute the cost */
 	if (paid_for) {
 		if (type == BUILD_CITY)
 			if (node->type == BUILD_SETTLEMENT)
@@ -183,18 +192,25 @@ void node_add(Player *player,
 			rec->cost = cost_settlement();
 
 		resource_spend(player, rec->cost);
-	}
+	} else
+		rec->cost = NULL;
 
+	/* put the struct in the undo list */
 	player->build_list = g_list_append(player->build_list, rec);
 
+	/* update the node information */
 	node->owner = player->num;
 	node->type = type;
+
+	/* tell everybody about it */
 	player_broadcast(player, PB_RESPOND,
 			   "built %B %d %d %d\n", type, x, y, pos);
 
-	check_longest_road(game);
+	/* see if the longest road was cut */
+	check_longest_road(game, TRUE);
 }
 
+/* build something on an edge */
 void edge_add(Player *player, BuildType type, int x, int y, int pos, gboolean paid_for)
 {
 	Game *game = player->game;
@@ -202,12 +218,15 @@ void edge_add(Player *player, BuildType type, int x, int y, int pos, gboolean pa
 	Edge *edge = map_edge(map, x, y, pos);
 	BuildRec *rec;
 
+	/* fill the undo struct */
 	rec = g_malloc0(sizeof(*rec));
 	rec->type = type;
 	rec->x = x;
 	rec->y = y;
 	rec->pos = pos;
+	rec->longest_road = game->longest_road ? game->longest_road->num : -1;
 
+	/* take the money if needed */
 	if (paid_for) {
 		switch (type) {
 		case BUILD_ROAD: rec->cost = cost_road(); break;
@@ -221,10 +240,13 @@ void edge_add(Player *player, BuildType type, int x, int y, int pos, gboolean pa
 			break;
 		}
 		resource_spend(player, rec->cost);
-	}
+	} else
+		rec->cost = NULL;
 
+	/* put the struct in the undo list */
 	player->build_list = g_list_append(player->build_list, rec);
 
+	/* update the pieces */
 	switch(type)
 	{
 		case BUILD_ROAD: player->num_roads++; break;
@@ -238,39 +260,39 @@ void edge_add(Player *player, BuildType type, int x, int y, int pos, gboolean pa
 			break;
 	}
 
+	/* update the board */
 	edge->owner = player->num;
 	edge->type = type;
 	player_broadcast(player, PB_RESPOND,
 			 "built %B %d %d %d\n", type, x, y, pos);
 
-	check_longest_road(game);
+	/* perhaps the longest road changed owner */
+	check_longest_road(game, FALSE);
 }
 
-gboolean perform_undo(Player *player, BuildType type, gint x, gint y, gint pos)
+/* undo a build action */
+gboolean perform_undo(Player *player)
 {
 	Game *game = player->game;
 	Map *map = game->params->map;
 	GList *list;
 	BuildRec *rec;
 	Hex *hex;
+	int longest_road;
 
-	rec = NULL;
-	for (list = player->build_list; list != NULL;
-	     list = g_list_next(list)) {
-		rec = list->data;
-		if (rec->type == type
-		    && rec->x == x
-		    && rec->y == y
-		    && rec->pos == pos)
-			break;
-	}
-	if (rec == NULL)
-		return FALSE;
+	/* If the player hasn't built anything, the undo fails */
+	if (player->build_list == NULL) return FALSE;
 
+	/* Fill some convenience variables */
+	list = g_list_last (player->build_list);
+	rec = list->data;
 	hex = map_hex(map, rec->x, rec->y);
+
+	/* Remove the entry from the list (doesn't remove the data itself) */
 	player->build_list = g_list_remove_link(player->build_list, list);
 	g_list_free_1(list);
 
+	/* Do structure-specific things */
 	switch (rec->type) {
 	case BUILD_NONE:
 		g_error("BUILD_NONE in perform_undo()");
@@ -281,6 +303,7 @@ gboolean perform_undo(Player *player, BuildType type, gint x, gint y, gint pos)
 		player_broadcast(player, PB_RESPOND, "remove %B %d %d %d\n",
 				 BUILD_ROAD, rec->x, rec->y, rec->pos);
 		hex->edges[rec->pos]->owner = -1;
+		hex->edges[rec->pos]->type = BUILD_NONE;
 		break;
 	case BUILD_BRIDGE:
 		player->num_bridges--;
@@ -320,20 +343,32 @@ gboolean perform_undo(Player *player, BuildType type, gint x, gint y, gint pos)
 	case BUILD_MOVE_SHIP:
 		hex->edges[rec->pos]->owner = -1;
 		hex->edges[rec->pos]->type = BUILD_NONE;
-		hex = map_hex(map, ship_move_sx, ship_move_sy);
-		hex->edges[ship_move_spos]->owner = player->num;
-		hex->edges[ship_move_spos]->type = BUILD_SHIP;
+		hex = map_hex(map, rec->prev_x, rec->prev_y);
+		hex->edges[rec->prev_pos]->owner = player->num;
+		hex->edges[rec->prev_pos]->type = BUILD_SHIP;
 		player_broadcast(player, PB_RESPOND, "move %d %d %d %d %d %d 1\n",
-				ship_move_sx, ship_move_sy, ship_move_spos,
+				rec->prev_x, rec->prev_y, rec->prev_pos,
 				rec->x, rec->y, rec->pos);
 		break;
 	}
-
+	
+	/* Give back the money, if any */
 	if (rec->cost != NULL)
 		resource_refund(player, rec->cost);
-	g_free(rec);
 
-	check_longest_road(game);
+	/* If the longest road changed, change it back */
+	longest_road = game->longest_road ? game->longest_road->num : -1;
+	if (longest_road != rec->longest_road) {
+		if (rec->longest_road >= 0)
+			player_broadcast(player_by_num (game, rec->longest_road),
+					PB_ALL, "longest-road\n");
+		else
+			player_broadcast(player_none (game), PB_ALL,
+					"longest-road\n");
+	}
+
+	/* free the memory */
+	g_free(rec);
 
 	return TRUE;
 }

@@ -164,7 +164,7 @@ gboolean mode_road_building(Player *player, gint event)
 		/* Send ack to client, check for victory, and exit.
 		 */
 		sm_send(sm, "OK\n");
-		check_victory(game);
+		check_victory(player);
 		sm_pop(sm);
 		return TRUE;
 	}
@@ -207,8 +207,8 @@ gboolean mode_road_building(Player *player, gint event)
 		return TRUE;
 	}
 
-	if (sm_recv(sm, "remove %B %d %d %d", &type, &x, &y, &pos)) {
-		if (!perform_undo(player, type, x, y, pos))
+	if (sm_recv(sm, "undo")) {
+		if (!perform_undo(player))
 			sm_send(sm, "ERR bad-pos\n");
 		return TRUE;
 	}

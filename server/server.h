@@ -27,6 +27,7 @@ typedef struct {
 	gchar *client_version;
 
 	GList *build_list;	/* list of building that can be undone */
+	gboolean has_ship_moved; /* Has a ship already moved this turn? */
 	gint prev_assets[NO_RESOURCE]; /* remember previous resources */
 	gint assets[NO_RESOURCE]; /* our resources */
 	gint gold;		/* how much gold will we recieve? */
@@ -86,12 +87,12 @@ struct Game {
 };
 
 /* buildutil.c */
-extern gint ship_move_sx, ship_move_sy, ship_move_spos;
+void check_longest_road (Game *game, gboolean can_cut);
 void node_add(Player *player,
 	      BuildType type, int x, int y, int pos, gboolean paid_for);
 void edge_add(Player *player,
 	      BuildType type, int x, int y, int pos, gboolean paid_for);
-gboolean perform_undo(Player *player, BuildType type, gint x, gint y, gint pos);
+gboolean perform_undo(Player *player);
 
 /* develop.c */
 void develop_shuffle(Game *game);
@@ -189,7 +190,7 @@ void trade_begin_domestic(Player *player, gint *supply, gint *receive);
 gboolean mode_idle(Player *player, gint event);
 gboolean mode_turn(Player *player, gint event);
 void turn_next_player(Game *game);
-void check_victory(Game *game);
+void check_victory(Player *player);
 
 /* gnocatan-server.c */
 gint gui_victory_target(void);

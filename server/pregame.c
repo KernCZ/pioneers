@@ -103,11 +103,11 @@ static void build_add(Player *player, BuildType type, gint x, gint y, gint pos)
 	node_add(player, BUILD_SETTLEMENT, x, y, pos, FALSE);
 }
 
-static void build_remove(Player *player, BuildType type, gint x, gint y, gint pos)
+static void build_remove(Player *player)
 {
 	/* Remove the settlement/road we just built
 	 */
-	if (!perform_undo(player, type, x, y, pos))
+	if (!perform_undo(player))
 		sm_send(player->sm, "ERR bad-pos\n");
 }
 
@@ -256,8 +256,8 @@ gboolean mode_setup(Player *player, gint event)
 		build_add(player, type, x, y, pos);
 		return TRUE;
 	}
-	if (sm_recv(sm, "remove %B %d %d %d", &type, &x, &y, &pos)) {
-		build_remove(player, type, x, y, pos);
+	if (sm_recv(sm, "undo")) {
+		build_remove(player);
 		return TRUE;
 	}
 
@@ -338,10 +338,7 @@ static void send_player_list(Player *player)
 		if (list->data == player)
 			continue;
 
-		if (scan->name == NULL)
-			sm_send(sm, "player %d is anonymous\n", scan->num);
-		else
-			sm_send(sm, "player %d is %s\n", scan->num, scan->name);
+		sm_send(sm, "player %d is %s\n", scan->num, scan->name);
 	}
 	sm_send(sm, ".\n");
 }
@@ -356,8 +353,10 @@ static void send_game_line(Player *player, gchar *str)
 gboolean send_gameinfo(Map *map, Hex *hex, StateMachine *sm)
 {
 	gint i;
-	for (i = 0; i < 2; i++)
+	for (i = 0; i < numElem (hex->nodes); i++)
 	{
+		if (!hex->nodes[i] || hex->nodes[i]->x != hex->x || hex->nodes[i]->y != hex->y)
+			continue;
 		if (hex->nodes[i]->owner >= 0)
 		{
 			switch (hex->nodes[i]->type)
@@ -378,8 +377,10 @@ gboolean send_gameinfo(Map *map, Hex *hex, StateMachine *sm)
 		}
 	}
 
-	for (i = 0; i < 3; i++)
+	for (i = 0; i < numElem (hex->edges); i++)
 	{
+		if (!hex->edges[i] || hex->edges[i]->x != hex->x || hex->edges[i]->y != hex->y)
+			continue;
 		if (hex->edges[i]->owner >= 0)
 		{
 			switch (hex->edges[i]->type)
