@@ -6,11 +6,14 @@
 	* client/gtk/discard.c, client/gtk/resource.c, client/common/client.c:
 	Removed usused variable
 	* server/player.c: Removed unused code.
+	* common/state.c, common/state.h: Added stack dump code.
+	* server/player.c: Added stack names when restoring the disconnect
+	player.
 
 2004-12-21  0.8.1.46   Roland Clobus <rclobus@bigfoot.com>
 	* configure.ac: Renamed configure.in to the more modern configure.ac
 	* autogen.sh: Changed configure.in to configure.ac
-	
+
 2004-12-19  Etan Reisner <deryni@eden.rutgers.edu>
 	* ai/client.c, common/gtk/select-game.c,
 	meta-server/gnocatan-meta-server.c, server/gtk/gnocatan-server-gtk.c:

@@ -169,5 +169,6 @@ gboolean sm_connect(StateMachine *sm, const gchar *host, const gchar *port);
 void sm_use_fd(StateMachine *sm, gint fd);
 void sm_dec_use_count(StateMachine *sm);
 void sm_inc_use_count(StateMachine *sm);
-
+/** Dump the stack */
+void sm_stack_dump(StateMachine *sm);
 #endif

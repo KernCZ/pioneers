@@ -510,8 +510,9 @@ void player_revive(Player *newp, char *name)
 	/* Not copied: sm, game, location, num, client_version */
 	
 	/* copy over the state */
-	memcpy(newp->sm->stack, p->sm->stack,
-	       sizeof(newp->sm->stack));
+	memcpy(newp->sm->stack, p->sm->stack, sizeof(newp->sm->stack));
+	memcpy(newp->sm->stack_name, p->sm->stack_name,
+			sizeof(newp->sm->stack_name));
 	newp->sm->stack_ptr = p->sm->stack_ptr;
 	newp->sm->current_state = p->sm->current_state;
 

@@ -444,15 +444,11 @@ void sm_unhandled_set(StateMachine *sm, StateFunc state)
 
 static void push_new_state(StateMachine *sm)
 {
-	unsigned sp;
 	++sm->stack_ptr;
 	/* check for stack overflows */
 	if (sm->stack_ptr >= numElem(sm->stack) ) {
 		log_message (MSG_ERROR, _("State stack overflow. Stack dump sent to standard error.\n") );
-		for (sp = 0; sp < numElem (sm->stack); ++sp) {
-			fprintf (stderr, "Frame %d: %s\n", sp,
-					sm->stack_name[sp]);
-		}
+		sm_stack_dump(sm);
 		g_error (_("State stack overflow") );
 	}
 	sm->stack[sm->stack_ptr] = NULL;
@@ -602,4 +598,11 @@ void sm_free(StateMachine *sm)
 void sm_close (StateMachine *sm)
 {
 	net_free(&(sm->ses));
+}
+
+void sm_stack_dump(StateMachine *sm) {
+	gint sp;
+	for (sp = 0; sp <= sm->stack_ptr; ++sp) {
+		fprintf(stderr, "Stack %2d: %s\n", sp, sm->stack_name[sp]);
+	}
 }
