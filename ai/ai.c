@@ -19,8 +19,7 @@
 #include "map.h"
 #include "cards.h"
 #include "client.h"
-
-#define GNOCATAN_DIR_DEFAULT	"/usr/share/gnocatan"
+#include "gnocatan-path.h"
 
 
 static char *get_gnocatan_dir(void)
