@@ -917,7 +917,7 @@ static gboolean mode_load_gameinfo(StateMachine * sm, gint event)
 		}
 		return TRUE;
 	}
-	if (sm_recv(sm, "extension bank %R", tmp_bank)) {
+	if (sm_recv(sm, "bank %R", tmp_bank)) {
 		set_bank(tmp_bank);
 		have_bank = TRUE;
 		return TRUE;
@@ -1029,10 +1029,8 @@ static gboolean mode_load_gameinfo(StateMachine * sm, gint event)
 		player_modify_statistic(opnum, STAT_RESOURCES, opnassets);
 		player_modify_statistic(opnum, STAT_DEVELOPMENT, opncards);
 		player_modify_statistic(opnum, STAT_SOLDIERS, opnsoldiers);
-		if (!have_bank && opnassets != 0)
-			log_message(MSG_ERROR,
-				    _
-				    ("Cannot determine bank, expect out of resource errors\n"));
+		if (opnassets != 0)
+			g_assert(have_bank);
 		if (pchapel) {
 			player_modify_statistic(opnum, STAT_CHAPEL, 1);
 		}

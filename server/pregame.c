@@ -555,7 +555,7 @@ gboolean mode_pre_game(Player * player, gint event)
 			/* Send the bank, so the client can count remaining 
 			 * resources
 			 */
-			sm_send(sm, "extension bank %R\n",
+			sm_send(sm, "bank %R\n",
 				game->bank_deck);
 
 			/* send player info about what he has:
