@@ -379,12 +379,12 @@ static void settings_test_cb(GtkWidget *widget, void *prop_box)
 {
 	GtkWidget *dock_item;
 	GtkWidget *toolbar;
-	
+
 	dock_item = gnome_app_get_dock_item_by_name( GNOME_APP(app_window),
 	                                             GNOME_APP_TOOLBAR_NAME );
 	toolbar = gnome_dock_item_get_child( GNOME_DOCK_ITEM(dock_item) );
 	gtk_toolbar_set_style( GTK_TOOLBAR(toolbar), GTK_TOOLBAR_TEXT );
-	gnome_property_box_changed( GTK_WIDGET(prop_box) );
+	gnome_property_box_changed( GNOME_PROPERTY_BOX(prop_box) );
 }
 
 static void menu_settings_cb(GtkWidget *widget, void *user_data)
@@ -408,7 +408,8 @@ static void menu_settings_cb(GtkWidget *widget, void *user_data)
 	
 	gtk_widget_show( pg0_hbox );
 	
-	gnome_property_box_append_page( settings, pg0_hbox, pg0_label );
+	gnome_property_box_append_page( GNOME_PROPERTY_BOX(settings),
+	                                pg0_hbox, pg0_label );
 	
 	gtk_widget_show( settings );
 }
@@ -626,7 +627,7 @@ GtkWidget* gui_build_interface()
 
 	register_gnocatan_pixmaps();
 	app_window = gnome_app_new("gnocatan", _("Gnocatan"));
-	gtk_window_set_policy(GTK_WINDOW(app_window), TRUE, TRUE, FALSE);
+	gtk_window_set_policy(GTK_WINDOW(app_window), TRUE, TRUE, TRUE);
 	gtk_widget_realize(app_window);
 	gtk_signal_connect(GTK_OBJECT(app_window), "delete_event",
 			   GTK_SIGNAL_FUNC(quit_cb), NULL);
