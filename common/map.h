@@ -121,10 +121,12 @@ struct _Map {
 	gint y;			/* current y-pos during parse */
 
 	gboolean have_bridges;	/* are bridges legal on map? */
+	gboolean has_pirate;	/* is the pirate allowed in this game? */
 	gint x_size;		/* number of hexes across map */
 	gint y_size;		/* number of hexes down map */
 	Hex *grid[MAP_SIZE][MAP_SIZE]; /* hexes arranged onto a grid */
 	Hex *robber_hex;	/* which hex is the robber on */
+	Hex *pirate_hex;	/* which hex is the pirate on */
 
 	gboolean shrink_left;	/* shrink left x-margin? */
 	gboolean shrink_right;	/* shrink right x-margin? */

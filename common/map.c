@@ -524,6 +524,8 @@ void map_format_line(Map *map, gchar *line, gint y)
 			break;
 		case SEA_TERRAIN:
 			*line++ = 's';
+			if (hex == map->pirate_hex)
+				*line++ = 'R';
 			if (hex->resource == NO_RESOURCE)
 				break;
 			switch (hex->resource) {
@@ -568,11 +570,7 @@ void map_parse_line(Map *map, gchar *line)
 	gint x = 0;
 
 	for (;;) {
-		Terrain terrain = SEA_TERRAIN;
-		Resource resource = NO_RESOURCE;
-		gint facing = 0;
-		gint chit_pos = -1;
-		Hex *hex = NULL;
+		Hex *hex;
 
 		switch (*line++) {
 		case '\0':
@@ -584,82 +582,95 @@ void map_parse_line(Map *map, gchar *line)
 			continue;
 		case ',':
 			continue;
-		case 's': /* sea */
-			terrain = SEA_TERRAIN;
-			switch (*line++) {
-			case 'b':
-				resource = BRICK_RESOURCE;
-				break;
-			case 'g':
-				resource = GRAIN_RESOURCE;
-				break;
-			case 'o':
-				resource = ORE_RESOURCE;
-				break;
-			case 'w':
-				resource = WOOL_RESOURCE;
-				break;
-			case 'l':
-				resource = LUMBER_RESOURCE;
-				break;
-			case '?':
-				resource = ANY_RESOURCE;
-				break;
-			default:
-				resource = NO_RESOURCE;
-				--line;
-				break;
-			}
-			facing = 0;
-			if (resource != NO_RESOURCE) {
-				if (isdigit(*line))
-					facing = *line++ - '0';
-			}
-			break;
-		case 't': /* tree */
-			terrain = FOREST_TERRAIN;
-			break;
-		case 'p':
-			terrain = PASTURE_TERRAIN;
-			break;
-		case 'f':
-			terrain = FIELD_TERRAIN;
-			break;
-		case 'h':
-			terrain = HILL_TERRAIN;
-			break;
-		case 'm':
-			terrain = MOUNTAIN_TERRAIN;
-			break;
-		case 'd':
-			terrain = DESERT_TERRAIN;
-			break;
-		case 'g':
-			terrain = GOLD_TERRAIN;
-			break;
-		default:
-			continue;
 		}
 
 		if (x >= MAP_SIZE || map->y >= MAP_SIZE)
 			continue;
 
-		/* Read the chit sequence number
-		 */
-		if (isdigit(*line)) {
-			chit_pos = 0;
-			while (isdigit(*line))
-				chit_pos = chit_pos * 10 + *line++ - '0';
-		}
-
 		hex = g_malloc0(sizeof(*hex));
 		hex->map = map;
 		hex->y = map->y;
 		hex->x = x;
-		hex->terrain = terrain;
-		hex->resource = resource;
-		hex->facing = facing;
-		hex->chit_pos = chit_pos;
+		hex->terrain = SEA_TERRAIN;
+		hex->resource = NO_RESOURCE;
+		hex->facing = 0;
+		hex->chit_pos = -1;
+
+		switch (*line++) {
+		case 's': /* sea */
+			hex->terrain = SEA_TERRAIN;
+			if (*line == 'R') {
+				++line;
+				map->pirate_hex = hex;
+				map->has_pirate = TRUE;
+			}
+			switch (*line++) {
+			case 'b':
+				hex->resource = BRICK_RESOURCE;
+				break;
+			case 'g':
+				hex->resource = GRAIN_RESOURCE;
+				break;
+			case 'o':
+				hex->resource = ORE_RESOURCE;
+				break;
+			case 'w':
+				hex->resource = WOOL_RESOURCE;
+				break;
+			case 'l':
+				hex->resource = LUMBER_RESOURCE;
+				break;
+			case 'm': /* mine */
+				hex->resource = GOLD_RESOURCE;
+				break;
+			case '?':
+				hex->resource = ANY_RESOURCE;
+				break;
+			default:
+				hex->resource = NO_RESOURCE;
+				--line;
+				break;
+			}
+			hex->facing = 0;
+			if (hex->resource != NO_RESOURCE) {
+				if (isdigit(*line))
+					hex->facing = *line++ - '0';
+			}
+			break;
+		case 't': /* tree */
+			hex->terrain = FOREST_TERRAIN;
+			break;
+		case 'p':
+			hex->terrain = PASTURE_TERRAIN;
+			break;
+		case 'f':
+			hex->terrain = FIELD_TERRAIN;
+			break;
+		case 'h':
+			hex->terrain = HILL_TERRAIN;
+			break;
+		case 'm':
+			hex->terrain = MOUNTAIN_TERRAIN;
+			break;
+		case 'd':
+			hex->terrain = DESERT_TERRAIN;
+			break;
+		case 'g':
+			hex->terrain = GOLD_TERRAIN;
+			break;
+		default:
+			g_free (hex);
+			continue;
+		}
+
+		/* Read the chit sequence number
+		 */
+		if (isdigit(*line)) {
+			hex->chit_pos = 0;
+			while (isdigit(*line))
+				hex->chit_pos = hex->chit_pos * 10
+					+ *line++ - '0';
+		}
 
 		map->grid[map->y][x] = hex;
 		if (x >= map->x_size)

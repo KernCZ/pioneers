@@ -86,14 +86,72 @@ gboolean mode_place_robber(Player *player, gint event)
 	gint x, y;
 	gint victim_num;
 	Hex *hex;
-	gint node_idx;
+	gint idx;
 	gint num_victims;
 	gboolean victim_ok;
 
-        sm_state_name(sm, "mode_place_robber");
+	sm_state_name(sm, "mode_place_robber");
 	if (event != SM_RECV)
 		return FALSE;
 
+	/* check if the pirate was moved. */
+	if (sm_recv (sm, "move-pirate %d %d %d", &x, &y, &victim_num)) {
+		hex = map_hex (map, x, y);
+		if (hex == NULL || !can_pirate_be_moved (hex, 0)) {
+			sm_send(sm, "ERR bad-pos\n");
+			return TRUE;
+		}
+		player_broadcast (player, PB_RESPOND, "moved-pirate %d %d\n",
+				x, y);
+	
+		/* If there is no-one to steal from, or the players have no
+		 * resources, we cannot steal resources.
+		 */
+		num_victims = 0;
+		victim_ok = FALSE;
+		for (idx = 0; !victim_ok && idx < numElem(hex->edges); ++idx) {
+			Edge *edge = hex->edges[idx];
+			Player *owner;
+			Resource resource;
+
+			if (edge->type != BUILD_SHIP
+			    || edge->owner == player->num)
+				/* Can't steal from myself
+				 */
+				continue;
+
+			/* Check if the node owner has any resources
+			 */
+			owner = player_by_num(game, edge->owner);
+			for (resource = 0; resource < NO_RESOURCE; resource++)
+				if (owner->assets[resource] != 0)
+					break;
+			if (resource == NO_RESOURCE)
+				continue;
+
+			/* Has resources - we can steal
+			 */
+			num_victims++;
+			if (edge->owner == victim_num)
+				victim_ok = TRUE;
+		}
+		if (num_victims == 0) {
+			/* No one to steal from - resume turn
+			 */
+			sm_pop(sm);
+			return TRUE;
+		}
+		if (victim_ok) {
+			steal_card_from(player, player_by_num(game,
+						victim_num));
+			sm_pop(sm);
+			return TRUE;
+		}
+		sm_send(sm, "ERR bad-player\n");
+		return TRUE;
+	}
+
+	/* It wasn't the pirate; it should be the robber. */
 	if (!sm_recv(sm, "move-robber %d %d %d", &x, &y, &victim_num))
 		return FALSE;
 
@@ -114,9 +172,8 @@ gboolean mode_place_robber(Player *player, gint event)
 	 */
 	num_victims = 0;
 	victim_ok = FALSE;
-	for (node_idx = 0; !victim_ok && node_idx < numElem(hex->nodes);
-	     node_idx++) {
-		Node *node = hex->nodes[node_idx];
+	for (idx = 0; !victim_ok && idx < numElem(hex->nodes); idx++) {
+		Node *node = hex->nodes[idx];
 		Player *owner;
 		Resource resource;
 

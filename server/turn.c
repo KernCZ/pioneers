@@ -204,12 +204,26 @@ static void build_move (Player *player, gint sx, gint sy, gint spos,
 		return;
 	}
 
+	if (map->pirate_hex != NULL) {
+		gint idx;
+		/* check that the pirate is not on the from hexes */
+			for (idx = 0; idx < numElem (from->hexes); ++idx) {
+			if (map->pirate_hex == from->hexes[idx]) {
+				sm_send (sm, "ERR has-pirate\n");
+				return;
+			}
+		}
+		/* checking of destination for pirate is done in
+		 * can_ship_be_built */
+	}
+
 	/* Move it away */
 	from->owner = -1;
 	from->type = BUILD_NONE;
 
 	/* Check if it is allowed to move to the other place */
-	if ((sx == dx && sy == dy && spos == dpos) || !can_ship_be_built(map_edge(map, dx, dy, dpos), player->num)) {
+	if ((sx == dx && sy == dy && spos == dpos)
+			|| !can_ship_be_built(to, player->num)) {
 		from->owner = player->num;
 		from->type = BUILD_SHIP;
 		sm_send(sm, "ERR bad-pos\n");

@@ -1,4 +1,9 @@
 2003-10-10  Bas Wijnen <b.wijnen@phys.rug.nl>
+	* common/game.c, common/game.h, common/map.c, common/map.h,
+	common/map_query.c, server/robber.c, server/turn.c: prepared server
+	for pirates.
+
+2003-10-10  Bas Wijnen <b.wijnen@phys.rug.nl>
 	* ai/client.c: Fixed AI naming bug.
 	* client/gui.c: Made code nicer, fixed bugs.
 	* client/robber.c: Fixed language bug.

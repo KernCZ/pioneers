@@ -68,18 +68,28 @@ gboolean is_edge_on_land(Edge *edge)
 	return FALSE;
 }
 
-/* Return whether or not an edge is on sea or coast
+/* Return whether or not an edge is on sea or coast (used only for ships)
  */
 gboolean is_edge_on_sea(Edge *edge)
 {
 	gint idx;
 
+	/* If the pirate is currently next to the edge, then specific sea
+	 * actions should not be possible (building ships is the only
+	 * specific sea action). */
+	for (idx = 0; idx < numElem(edge->hexes); idx++) {
+		Hex *hex = edge->hexes[idx];
+		if (hex && edge->map->pirate_hex == hex)
+			return FALSE;
+	}
+	/* The pirate is not next to the edge, return true if there is sea */
 	for (idx = 0; idx < numElem(edge->hexes); idx++) {
 		Hex *hex = edge->hexes[idx];
 		if (hex != NULL && hex->terrain == SEA_TERRAIN)
 			return TRUE;
 	}
 
+	/* There is no sea */
 	return FALSE;
 }
 
@@ -528,6 +538,20 @@ gboolean can_city_be_built(Node *node, gint owner)
 gboolean can_robber_be_moved(Hex *hex, gint owner)
 {
 	return hex->roll > 0 && !hex->robber;
+}
+
+/* Node cursor check function.
+ *
+ * Determine whether or not the pirate be moved to the specified hex.
+ *
+ * There must be a pirate in the game for the move to be possible.
+ * Can only move the pirate to a hex which is on sea.
+ * We cannot move the pirate to the same hex it is already on.
+ */
+gboolean can_pirate_be_moved(Hex *hex, gint owner)
+{
+	return hex->map->has_pirate && hex->terrain == SEA_TERRAIN
+		&& hex != hex->map->pirate_hex;
 }
 
 /* Iterator function for map_can_place_road() query

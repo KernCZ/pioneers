@@ -57,7 +57,8 @@ static Param game_params[] = {
 	{ PARAM(chits, PARAM_INT_LIST) },
 	{ PARAM_V(register-server, PARAM_BOOL, register_server) },
 	{ PARAM_V(server-port, PARAM_INT, server_port) },
-	{ PARAM_V(tournament-time, PARAM_INT, tournament_time) }
+	{ PARAM_V(tournament-time, PARAM_INT, tournament_time) },
+	{ PARAM_V(use-pirate, PARAM_BOOL, use_pirate) }
 };
 
 GameParams *params_new()
@@ -319,5 +320,6 @@ void params_load_finish(GameParams *params)
 		map_set_chits(params->map, params->chits);
 		map_parse_finish(params->map);
 		params->map->have_bridges = params->num_build_type[BUILD_BRIDGE] > 0;
+		params->map->has_pirate = params->use_pirate;
 	}
 }

@@ -58,6 +58,7 @@ typedef struct {
 	gboolean parsing_map;	/* currently parsing map? */
         gint tournament_time;   /* time to start tournament time in minutes */
         gboolean exit_when_done;  /* server exits after someone wins */    
+	gboolean use_pirate;	/* is there a pirate in this game? */
 } GameParams;
 
 typedef void (*WriteLineFunc)(gpointer user_data, gchar *);
