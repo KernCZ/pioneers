@@ -6,3 +6,5 @@ SUBDIRS = macros common client server meta-server ai
 @MAINT@macros/macros.dep: macros/Makefile.am
 @MAINT@	cd macros && $(MAKE) macros.dep
 
+dist-hook:
+	cp $(srcdir)/gnocatan.spec $(distdir)
