@@ -167,6 +167,10 @@ static gboolean global_unhandled(StateMachine *sm, gint event)
 			exit(0);
 			return TRUE;
 		}
+		if (sm_recv(sm, "extension %S", str, sizeof (str) ) ) {
+			log_message ( MSG_ERROR, "Server uses unknown extensions (not a problem): %s", str);
+			return TRUE;
+		}
 		if (sm_recv(sm, "%S", str, sizeof (str))) {
 			log_message( MSG_ERROR, "Error (%s): %s\n", sm_current_name(sm), str);
 			return TRUE;
@@ -199,8 +203,6 @@ void client_change_my_name(gchar *name)
 	copy_player_name(name);
 	if (saved_name != NULL)
 		sm_send(SM(), "name %s\n", saved_name);
-	else
-		sm_send(SM(), "anonymous\n");
 }
 
 /* Check if computer player wants to send a chat string
@@ -509,10 +511,6 @@ static gboolean mode_start(StateMachine *sm, gint event)
 		    &player_num, &total_num, version, sizeof (version))) {
 		player_set_my_num(player_num);
 		player_set_total_num(total_num);
-		if (saved_name != NULL)
-			sm_send(sm, "name %s\n", saved_name);
-		else
-			sm_send(sm, "anonymous\n");
 		sm_send(sm, "players\n");
 		sm_goto(sm, mode_players);
 

@@ -1,6 +1,10 @@
 2003-10-01  Bas Wijnen <b.wijnen@phys.rug.nl>
-	* client/client.c, server/player.c, server/pregame.c, server/server.c,
-	server/server.h: Changed protocol for sending initial player name.
+	* ai/client.c, client/client.c, server/player.c, server/pregame.c,
+	server/server.c, server/server.h: Changed protocol for sending initial
+	player name.
+	* ai/client.c, client/client.c, server/player.c: Added extensions to
+	protocol, to allow future features without needing a minor version
+	change (which would break compatibility).
 
 2003-09-30  Bas Wijnen <b.wijnen@phys.rug.nl>
 	* many files, didn't record which: Fixed const<->non-const warnings

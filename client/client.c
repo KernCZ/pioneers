@@ -150,7 +150,6 @@ void client_start()
  */
 static gboolean global_filter(StateMachine *sm, gint event)
 {
-	fprintf(stderr, "SM: %d %s:%s\n", event, sm_current_name(sm), sm->line);
 	switch (event) {
 	case SM_INIT:
 		sm_gui_check(sm, GUI_CHANGE_NAME, sm_is_connected(sm));
@@ -188,22 +187,35 @@ static gboolean global_unhandled(StateMachine *sm, gint event)
 		sm_goto(sm, mode_offline);
 		return TRUE;
 	case SM_RECV:
+		/* all errors start with ERR */
 		if (sm_recv(sm, "ERR %S", str, sizeof (str))) {
 			log_message( MSG_ERROR, "Error (%s): %s\n", sm_current_name(sm), str);
 			return TRUE;
 		}
+		/* notices which are not errors should appear in the message
+		 * window */
 		if (sm_recv(sm, "NOTE %S", str, sizeof (str))) {
 			log_message( MSG_ERROR, "Notice: %s\n", str);
 			return TRUE;
 		}
+		/* protocol extensions which may be ignored have this prefix
+		 * before the next protocol changing version of the game is
+		 * released.  Notify the client about it anyway. */
+		if (sm_recv(sm, "extension %S", str, sizeof (str) ) ) {
+			log_message( MSG_INFO, "Ignoring extension used by server: %s\n", str);
+			return TRUE;
+		}
+		/* we're receiving strange things */
 		if (sm_recv(sm, "%S", str, sizeof (str))) {
 			log_message( MSG_ERROR, "Unknown message in %s: %s\n", sm_current_name(sm), str);
 			return TRUE;
 		}
-		break;
+		/* this is never reached: everything matches "%S" */
 	default:
 		break;
 	}
+	/* this may happen, for example when a hotkey is used for a function
+	 * which cannot be activated */
 	return FALSE;
 }
 

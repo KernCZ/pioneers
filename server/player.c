@@ -34,6 +34,7 @@ static gboolean mode_check_status(Player *player, gint event);
 static gboolean mode_game_full(Player *player, gint event);
 static gboolean mode_bad_version(Player *player, gint event);
 static gboolean mode_global(Player *player, gint event);
+static gboolean mode_unhandled(Player *player, gint event);
 
 extern void start_timeout(void);
 
@@ -99,6 +100,22 @@ static gboolean mode_global(Player *player, gint event)
 		break;
 	default:
 		break;
+	}
+	return FALSE;
+}
+
+static gboolean mode_unhandled (Player *player, gint event)
+{
+	StateMachine *sm = player->sm;
+	Game *game = player->game;
+	gchar text[512];
+
+	switch (event) {
+	case SM_RECV:
+		if (sm_recv (sm, "extension %S", text, sizeof (text) ) ) {
+			sm_send (sm, "NOTE ignoring unknown extension\n");
+			log_message (MSG_INFO, "ignoring unknown extension from %s: %s\n", player->name, text);
+		return TRUE;
 	}
 	return FALSE;
 }
@@ -178,6 +195,7 @@ Player *player_new(Game *game, int fd, gchar *location)
 	sm = player->sm = sm_new(player);
 
 	sm_global_set(sm, (StateFunc)mode_global);
+	sm_unhandled_set(sm, (StateFunc)mode_unhandled);
 	sm_use_fd(sm, fd);
 
 	player->game = game;
