@@ -27,15 +27,29 @@ gboolean road_building_can_undo()
 
 gboolean road_building_can_build_road()
 {
-	return build_count(BUILD_ROAD) < 2
+	return build_count_edges() < 2
 		&& stock_num_roads() > 0
 		&& map_can_place_road(map, my_player_num());
+}
+
+gboolean road_building_can_build_ship()
+{
+	return build_count_edges() < 2
+		&& stock_num_ships() > 0
+		&& map_can_place_ship(map, my_player_num());
+}
+
+gboolean road_building_can_build_bridge()
+{
+	return build_count_edges() < 2
+		&& stock_num_bridges() > 0
+		&& map_can_place_bridge(map, my_player_num());
 }
 
 gboolean road_building_can_finish()
 {
 	return (stock_num_roads() == 0
-		|| build_count(BUILD_ROAD) == 2
+		|| build_count_edges() == 2
 		|| !map_can_place_road(map, my_player_num()))
 		&& build_is_valid();
 }
