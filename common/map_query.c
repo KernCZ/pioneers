@@ -16,9 +16,6 @@
 #include "game.h"
 #include "map.h"
 
-/* global variables... perhaps they should be stored somewhere else */
-gint ship_move_sx, ship_move_sy, ship_move_spos;
-
 /* Local function prototypes */
 gboolean node_has_edge_owned_by(Node *node, gint owner, BuildType type);
 gboolean is_road_valid(Edge *edge, gint owner);
@@ -404,31 +401,13 @@ gboolean can_ship_be_moved(Edge *edge, gint owner)
 	gint idx;
 	/* edge must be a ship of the correct user */
 	if (edge->owner != owner || edge->type != BUILD_SHIP) return FALSE;
+	/* if the pirate is next to the edge, it is not allowed to move */
+	if (!is_edge_on_sea (edge) ) return FALSE;
 	/* check all nodes, until one is found that is not connected */
 	for (idx = 0; idx < numElem(edge->nodes); idx++)
 		if (can_ship_be_moved_node (edge->nodes[idx], owner, edge))
 			return TRUE;
 	return FALSE;
-}
-
-/* Edge cursor check function.
- *
- * Determine whether or not a ship can be moved to this edge by the
- * specified player.  Perform the following checks:
- */
-gboolean can_ship_be_moved_to(Edge *edge, gint owner)
-{
-	Edge *from = map_edge (edge->map, ship_move_sx, ship_move_sy,
-			ship_move_spos);
-	gboolean retval;
-	if (edge == from) return FALSE;
-	g_assert (from->owner == owner && from->type == BUILD_SHIP);
-	from->owner = -1;
-	from->type = BUILD_NONE;
-	retval = can_ship_be_built (edge, owner);
-	from->owner = owner;
-	from->type = BUILD_SHIP;
-	return retval;
 }
 
 /* Edge cursor check function.
@@ -538,9 +517,9 @@ gboolean can_city_be_built(Node *node, gint owner)
  */
 gboolean can_robber_or_pirate_be_moved(Hex *hex, gint owner)
 {
-	return (hex->roll > 0 && !hex->robber)
-		|| (hex->map->has_pirate && hex->terrain == SEA_TERRAIN
-			&& hex != hex->map->pirate_hex);
+	if (hex->terrain == SEA_TERRAIN)
+		return hex != hex->map->pirate_hex;
+	return hex->roll > 0 && !hex->robber;
 }
 
 /* Iterator function for map_can_place_road() query

@@ -27,7 +27,7 @@
 GameParams *game_params;
 static gchar *saved_name;
 static StateMachine *state_machine;
-gint ship_moved;
+static gint ship_move_sx, ship_move_sy, ship_move_spos;
 struct recovery_info_t {
 	gchar prevstate[40];
 	gint turnnum;
@@ -1043,6 +1043,31 @@ static void build_ship_cb(Edge *edge, gint player_num)
 	sm_push(SM(), mode_build_response);
 }
 
+/* Edge cursor check function.
+ *
+ * Determine whether or not a ship can be moved to this edge by the
+ * specified player.  Perform the following checks:
+ * 1 - Ship cannot be moved to where it comes from
+ * 2 - A ship must be buildable at the destination if the ship is moved away
+ *     from its current location.
+ * This function is moved from common/map_query.c to here, because it needs
+ * ship_move_s*, which aren't (and shouldn't be) global.
+ */
+static gboolean can_ship_be_moved_to(Edge *edge, gint owner)
+{
+	Edge *from = map_edge (edge->map, ship_move_sx, ship_move_sy,
+			ship_move_spos);
+	gboolean retval;
+	if (edge == from) return FALSE;
+	g_assert (from->owner == owner && from->type == BUILD_SHIP);
+	from->owner = -1;
+	from->type = BUILD_NONE;
+	retval = can_ship_be_built (edge, owner);
+	from->owner = owner;
+	from->type = BUILD_SHIP;
+	return retval;
+}
+
 /* This is called when the user presses the left-mouse-button on a
  * valid position to move a ship (to there).
  */
@@ -1317,6 +1342,11 @@ static gboolean mode_idle(StateMachine *sm, gint event)
 		if (sm_recv(sm, "player %d moved-robber %d %d",
 			    &player_num, &x, &y)) {
 			robber_moved(player_num, x, y);
+			return TRUE;
+		}
+		if (sm_recv(sm, "player %d moved-pirate %d %d",
+			    &player_num, &x, &y)) {
+			pirate_moved(player_num, x, y);
 			return TRUE;
 		}
 		if (sm_recv(sm, "player %d domestic-trade call supply %R receive %R",
@@ -1958,7 +1988,7 @@ static gboolean mode_turn_undo_response(StateMachine *sm, gint event)
 			    &sx, &sy, &spos, &dx, &dy, &dpos)) {
 			build_move(sx, sy, spos, dx, dy, dpos, TRUE);
 			waiting_for_network(FALSE);
-			ship_moved = FALSE;
+			map->has_moved_ship = FALSE;
 			sm_goto(sm, mode_turn_rolled);
 			return TRUE;
 		}

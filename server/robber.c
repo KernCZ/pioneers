@@ -107,6 +107,7 @@ gboolean mode_place_robber(Player *player, gint event)
 	if (hex->terrain == SEA_TERRAIN) {
 		player_broadcast (player, PB_RESPOND, "moved-pirate %d %d\n",
 				x, y);
+		map->pirate_hex = hex;
 
 		/* If there is no-one to steal from, or the players have no
 		 * resources, we cannot steal resources.

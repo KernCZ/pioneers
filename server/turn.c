@@ -193,7 +193,7 @@ static void build_move (Player *player, gint sx, gint sy, gint spos,
 	BuildRec *rec;
 
 	/* Allow only one move per turn */
-	if (player->has_ship_moved) {
+	if (map->has_moved_ship) {
 		sm_send(sm, "ERR already-moved\n");
 		return;
 	}
@@ -207,7 +207,7 @@ static void build_move (Player *player, gint sx, gint sy, gint spos,
 	if (map->pirate_hex != NULL) {
 		gint idx;
 		/* check that the pirate is not on the from hexes */
-			for (idx = 0; idx < numElem (from->hexes); ++idx) {
+		for (idx = 0; idx < numElem (from->hexes); ++idx) {
 			if (map->pirate_hex == from->hexes[idx]) {
 				sm_send (sm, "ERR has-pirate\n");
 				return;
@@ -245,7 +245,7 @@ static void build_move (Player *player, gint sx, gint sy, gint spos,
 	rec->prev_pos = spos;
 	rec->longest_road = game->longest_road ? game->longest_road->num : -1;
 	player->build_list = g_list_append(player->build_list, rec);
-	player->has_ship_moved = TRUE;
+	map->has_moved_ship = TRUE;
 
 	/* check the longest road while the ship is moving */
 	check_longest_road (game, FALSE);
@@ -508,7 +508,7 @@ void turn_next_player(Game *game)
 	game->played_develop = FALSE;
 	game->bought_develop = FALSE;
 	player->build_list = buildrec_free(player->build_list);
-	player->has_ship_moved = FALSE;
+	game->params->map->has_moved_ship = FALSE;
 
 	/* tell everyone what's happening */
 	player_broadcast(player, PB_RESPOND, "turn %d\n", game->curr_turn);

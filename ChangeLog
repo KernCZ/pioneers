@@ -2,6 +2,10 @@
 	* ai/greedy.c, client/client.c, client/client.h, client/guimap.c,
 	client/robber.c, common/map.c, common/map.h, common/map_query.c,
 	server/robber.c: Prepared client for pirates, bugfixes.
+	* client/build.c, client/client.c. client/guimap.c, client/robber.c,
+	client/turn.c, common/map.h, common/map_query.c, server/buildutil.c,
+	server/robber.c server/server.h server/turn.c: Completed pirates in
+	server and client.  Bugfixes.
 
 2003-10-10  Bas Wijnen <b.wijnen@phys.rug.nl>
 	* common/game.c, common/game.h, common/map.c, common/map.h,

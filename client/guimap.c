@@ -152,11 +152,10 @@ static Polygon robber_poly = {
 	numElem(robber_points)
 };
 static GdkPoint pirate_points[] = {
-	{  30,  60 }, {  30,   4 }, {  28,  -6 }, {  22, -15 },
-	{  12, -20 }, {  22, -32 }, {  22, -48 }, {  10, -60 },
-	{ -10, -60 }, { -22, -48 }, { -22, -32 }, { -12, -20 },
-	{ -22, -15 }, { -28,  -6 }, { -30,   4 }, { -30,  60 },
-	{  30,  60 }
+	{ 42,  15 }, { 18,  15 }, { 28,  1 }, {  18, -17 },
+	{ 10, -23 }, { -2, -25 }, { -2, 15 }, { -22,  15 },
+	{-22,  23 }, {-16,  31 }, { -6, 35 }, {  26,  35 },
+	{ 36,  31 }, { 42,  23 }, { 42, 15 }
 };
 static Polygon pirate_poly = {
 	pirate_points,
@@ -350,11 +349,10 @@ void guimap_pirate_polygon(GuiMap *gmap, Hex *hex, Polygon *poly)
 
 	assert(poly->num_points >= pirate_poly.num_points);
 	poly->num_points = pirate_poly.num_points;
-	scale = (2 * gmap->y_point) / 140.0;
+	scale = (2 * gmap->y_point) / 80.0;
 
 	if (hex != NULL) {
 		calc_hex_pos(gmap, hex->x, hex->y, &x_offset, &y_offset);
-		x_offset += rint(scale * 50);
 	} else
 		x_offset = y_offset = 0;
 
@@ -1373,10 +1371,13 @@ void guimap_draw_hex(GuiMap *gmap, Hex *hex)
 	if (hex == NULL)
 		return;
 
-	guimap_robber_polygon(gmap, hex, &poly);
-	poly_bound_rect(&poly, 1, &rect);
-
 	display_hex(gmap->map, hex, gmap);
+
+	if (hex->terrain == SEA_TERRAIN)
+		guimap_pirate_polygon(gmap, hex, &poly);
+	else
+		guimap_robber_polygon(gmap, hex, &poly);
+	poly_bound_rect(&poly, 1, &rect);
 
 	gtk_widget_draw(gmap->area, &rect);
 }

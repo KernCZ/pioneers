@@ -31,11 +31,11 @@ void robber_move_on_map(gint x, gint y)
 void pirate_move_on_map(gint x, gint y)
 {
 	Hex *hex = map_hex(map, x, y);
-	Hex *old_robber = map_pirate_hex(map);
+	Hex *old_pirate = map_pirate_hex(map);
 
 	map_move_pirate(map, x, y);
 
-	gui_draw_hex(old_robber);
+	gui_draw_hex(old_pirate);
 	gui_draw_hex(hex);
 }
 

@@ -27,7 +27,6 @@ typedef struct {
 	gchar *client_version;
 
 	GList *build_list;	/* list of building that can be undone */
-	gboolean has_ship_moved; /* Has a ship already moved this turn? */
 	gint prev_assets[NO_RESOURCE]; /* remember previous resources */
 	gint assets[NO_RESOURCE]; /* our resources */
 	gint gold;		/* how much gold will we recieve? */

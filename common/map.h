@@ -127,6 +127,7 @@ struct _Map {
 	Hex *grid[MAP_SIZE][MAP_SIZE]; /* hexes arranged onto a grid */
 	Hex *robber_hex;	/* which hex is the robber on */
 	Hex *pirate_hex;	/* which hex is the pirate on */
+	gboolean has_moved_ship;/* has the player moved a ship already? */
 
 	gboolean shrink_left;	/* shrink left x-margin? */
 	gboolean shrink_right;	/* shrink right x-margin? */
@@ -163,7 +164,6 @@ Map *map_load(char *name);
 
 /* map_query.c
  */
-extern gint ship_move_sx, ship_move_sy, ship_move_spos;
 /* simple checks */
 gboolean is_edge_adjacent_to_node(Edge *edge, Node *node);
 gboolean is_edge_on_land(Edge *edge);
@@ -181,7 +181,6 @@ gboolean can_road_be_built(Edge *edge, gint owner);
 gboolean can_ship_be_setup(Edge *edge, gint owner);
 gboolean can_ship_be_built(Edge *edge, gint owner);
 gboolean can_ship_be_moved(Edge *edge, gint owner);
-gboolean can_ship_be_moved_to(Edge *edge, gint owner);
 gboolean can_bridge_be_setup(Edge *edge, gint owner);
 gboolean can_bridge_be_built(Edge *edge, gint owner);
 gboolean can_settlement_be_setup(Node *node, int owner);
