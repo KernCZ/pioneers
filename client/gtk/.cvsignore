@@ -1,2 +1,5 @@
 Makefile.in
 Makefile
+gnocatan
+.deps
+.libs
