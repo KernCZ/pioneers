@@ -606,11 +606,19 @@ static void help_about_cb(GtkWidget *widget, void *user_data)
 	const gchar *authors[] = {
 		"Dave Cole",
 		"Andy Heroff",
+		"Steve Langasek",
+		"David Fallon",
+		"Geoff Hanson",
+		"Matt Waggoner",
+		"Jeff Breidenbach",
+		"Bibek Sahu",
+		"Dan Egnor",
+		"Roman Hodek",
 		NULL
 	};
 
 	about = gnome_about_new("The Gnocatan Game", VERSION,
-				"(C) 2000 the Free Software Foundation",
+				"(C) 2002 the Free Software Foundation",
 				authors,
 				"Gnocatan is based upon the excellent"
 				" Settlers of Catan board game",
