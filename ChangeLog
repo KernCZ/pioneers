@@ -25,10 +25,18 @@
 	* ai/Makefile.am: remove admin-gtk stuff, obviously copied from
 	client/Makefile.am
 
+	* Makefile.am (dist-hook): added spec file, autogen.sh, and debian
+	files to dist tarball
+
 	* server/Makefile.am: added new games
 
 	* common/Makefile.am: added gnocatan-path.h
 
+	* client/help/C/Makefile.am (dist-hook): add images to dist tarball
+
+	* gnocatan.spec: best-effort try to implement same sub packages
+	scheme as for Debian, but untested
+	
 	* debian/control: added Recommends: gnocatan-ai to both server
 	packages, as they can start ai clients
 
