@@ -1,5 +1,6 @@
 2004-10-01 Roland Clobus <rclobus@bigfoot.com>
 	* POTFILES.in: Regenerated from scratch, removed admin-gtk.c (old)
+	* Updated all files to fit 0.8.1.37
 	
 2004-09-26 Roland Clobus <rclobus@bigfoot.com>
 	* .cvsignore: Added Makefile.in.in, it is a generated file
