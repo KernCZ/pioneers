@@ -1,3 +1,7 @@
+2003-10-20  Jeff Breidenbach  <jab@debian.org>
+
+	* debian/rules, debian/control: Better scrollkeeper-ing.
+
 2003-10-19  Roland Clobus <rclobus@bigfoot.com>
 	* client/gui.c: Added word wrap to client messages window.
 
