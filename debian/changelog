@@ -1,3 +1,9 @@
+gnocatan (0.5.6-1) unstable; urgency=low
+
+  * New upstream release 
+
+ -- Jeff Breidenbach <jeff@alum.mit.edu>  Sun, 18 Jun 2000 17:17:15 -0700
+
 gnocatan (0.5.0-1) unstable; urgency=low
 
   * SourceForge realease
