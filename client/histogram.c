@@ -32,6 +32,7 @@
 gint dice_histogram(gint cmd, gint roll)
 {
 	static int histogram[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+	//~ static int histogram[] = { 2, 3, 5, 4, 6, 8, 4, 3, 7, 6, 4, 2, 1 };
 
 	assert(roll >= 2 && roll <= 12);
 
@@ -115,10 +116,15 @@ static gint expose_curve_cb(GtkWidget *area,
 	gint le = BAR_W/2;
 	gint mi = le + 5*(BAR_W+BAR_S);
 	gint ri = mi + 5*(BAR_W+BAR_S);
-	float by_36 = total*h/max/36;
-	gint low = h - by_36;
-	gint high = h - 6*by_36;
-	float yf;
+	float by_36, yf;
+	gint low, high;
+	
+	if(max == 0)
+		return FALSE;
+	
+	by_36 = total*h/max/36;
+	low = h - by_36;
+	high = h - 6*by_36;
 	
 	if (area->window == NULL)
 		return FALSE;
