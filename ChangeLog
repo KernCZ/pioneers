@@ -1,3 +1,31 @@
+2004-07-24  0.8.1.31  Roland Clobus <rclobus@bigfoot.com>
+	* configure.in, client/common/i18n.c: Enabled italian in the UI, made
+	some checks more strict.
+	* ai/greedy.c, client/ai/greedy.c, client/common/chat.c, TODO:
+	Enabled translated chats for the AI
+	* client/gtk/legend.c, client/gtk/theme.c: Fixed display of tiles in
+	the legend dialog/tabpage. (Foundation layed by Giancarlo Capella)
+	Replaced deprecated function calls.
+	* client/gtk/theme.c: Fixed crash on theme change before a game is
+	started.
+	* rules.make, client/gtk/gui.c, common/common_gtk.c: Enabled
+	GDK_DISABLE_DEPRECATED check in --enable-debug mode, all deprecated 
+	functions are replaced.
+	* client/callback.h: Removed prototypes for static functions
+	* client/common/callback.c(pirate_count_victims): Fixed small memory
+	leak.
+	* client/gtk/guimap.c, client/gtk/guimap.h, client/gtk/histogram.c:
+	Dynamic scaling of the font in the chit, removed duplicate code
+	* client/gtk/interface.c: Removed the need for some global variables.
+	Fixed bug that a ship to steal from could not be selected.
+	* client/gtk/polygon.c, client/gtk/polygon.h: Added some const
+	correctness.
+	* client/gtk/theme.c, client/gtk/theme.h: Port tiles are now always
+	centered.
+	
+2004-07-24  Giancarlo Capella <giancarlo@comm.cc>
+	* po/it.po: Added italian translation
+	
 2004-07-08  Jeff Breidenbach  <jab@debian.org>
 
 	* Released as Debian package, 0.8.1-5.

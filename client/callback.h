@@ -319,8 +319,6 @@ gint resource_total (void);
 void resource_format_type (gchar *buffer, gint *resources);
 const gchar *resource_name (Resource which, gboolean capital);
 gint game_resources (void);
-gboolean can_building_be_robbed (Node *node, int owner);
-gboolean can_edge_be_robbed (Edge *edge, int owner);
 gboolean is_setup_double (void);
 gint turn_num (void);
 gboolean can_trade_domestic (void);

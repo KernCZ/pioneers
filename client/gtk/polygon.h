@@ -29,7 +29,7 @@ typedef struct {
 } Polygon;
 
 void poly_offset(Polygon *poly, gint x_offset, gint y_offset);
-void poly_bound_rect(Polygon *poly, int pad, GdkRectangle *rect);
-void poly_draw(GdkDrawable *drawable, GdkGC *gc, gint filled, Polygon *poly);
+void poly_bound_rect(const Polygon *poly, int pad, GdkRectangle *rect);
+void poly_draw(GdkDrawable *drawable, GdkGC *gc, gint filled, const Polygon *poly);
 
 #endif

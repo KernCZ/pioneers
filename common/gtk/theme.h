@@ -95,6 +95,8 @@ typedef struct _MapTheme {
 	const gchar *port_tile_names[PORT_TILE_MAX];
 	GdkPixmap  *terrain_tiles[TERRAIN_TILE_MAX];
 	GdkPixmap  *port_tiles[PORT_TILE_MAX];
+	gint port_tiles_width[PORT_TILE_MAX];
+	gint port_tiles_height[PORT_TILE_MAX];
 	TScaleData scaledata[TERRAIN_TILE_MAX];
 	TColor     colors[TC_MAX];
 	TColor     ovr_colors[TC_MAX_OVRTILE][TC_MAX_OVERRIDE];

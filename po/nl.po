@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.8.1.27\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-07-08 22:15+0200\n"
+"POT-Creation-Date: 2004-07-24 14:40+0200\n"
 "PO-Revision-Date: 2004-01-26 16:51+0100\n"
 "Last-Translator: Roland Clobus <rclobus@bigfoot.com>\n"
 "Language-Team: Bas Wijnen <b.wijnen@phys.rug.nl> Roland Clobus "
@@ -288,7 +288,7 @@ msgstr "Je geeft %s %s.\n"
 msgid "%s took %s from %s.\n"
 msgstr "%3$s geeft %s aan %1$s.\n"
 
-#: ai/player.c:21 client/gtk/legend.c:181 client/gtk/player.c:48
+#: ai/player.c:21 client/gtk/legend.c:192 client/gtk/player.c:48
 msgid "Settlement"
 msgstr "Dorp"
 
@@ -296,7 +296,7 @@ msgstr "Dorp"
 msgid "Settlements"
 msgstr "Dorpen"
 
-#: ai/player.c:22 client/gtk/legend.c:182 client/gtk/player.c:49
+#: ai/player.c:22 client/gtk/legend.c:193 client/gtk/player.c:49
 msgid "City"
 msgstr "Stad"
 
@@ -606,7 +606,7 @@ msgstr "Wachten op reaktie van de server."
 msgid "Idle"
 msgstr "Klaar"
 
-#: client/common/client.c:220 client/common/client.c:586 client/gtk/gui.c:1118
+#: client/common/client.c:220 client/common/client.c:586 client/gtk/gui.c:1112
 msgid "Offline"
 msgstr "Er is geen verbinding met een server."
 
@@ -786,7 +786,7 @@ msgstr "Enige grondstof (fout)"
 msgid "gold"
 msgstr "goud"
 
-#: client/common/resource.c:42 client/gtk/legend.c:39
+#: client/common/resource.c:42 client/gtk/legend.c:40
 msgid "Gold"
 msgstr "Goud"
 
@@ -1421,7 +1421,7 @@ msgstr "Handel"
 msgid "Quote"
 msgstr "Handelsaanbod"
 
-#: client/gtk/gui.c:516 client/gtk/legend.c:201
+#: client/gtk/gui.c:516 client/gtk/legend.c:214
 msgid "Legend"
 msgstr "Legenda"
 
@@ -1429,222 +1429,229 @@ msgstr "Legenda"
 msgid "Welcome to Gnocatan"
 msgstr "Welkom bij Gnocatan"
 
-#: client/gtk/gui.c:800
+#: client/gtk/gui.c:794
 msgid "Appearance"
 msgstr "Uiterlijk"
 
-#: client/gtk/gui.c:802
+#: client/gtk/gui.c:796
 msgid "Show Toolbar As"
 msgstr "In de knoppenbalk staat"
 
-#: client/gtk/gui.c:806
+#: client/gtk/gui.c:800
 msgid "Text Only"
 msgstr "alleen tekst"
 
-#: client/gtk/gui.c:807
+#: client/gtk/gui.c:801
 msgid "Icons Only"
 msgstr "alleen plaatjes"
 
-#: client/gtk/gui.c:808
+#: client/gtk/gui.c:802
 msgid "Both Icons and Text"
 msgstr "plaatjes met tekst"
 
-#: client/gtk/gui.c:810
+#: client/gtk/gui.c:804
 msgid "Display legend as page besides map?"
 msgstr "Laat legenda zien"
 
-#: client/gtk/gui.c:814
+#: client/gtk/gui.c:808
 msgid "Theme:"
 msgstr "Thema:"
 
-#: client/gtk/gui.c:848
+#: client/gtk/gui.c:842
 msgid "Color Settings"
 msgstr "Kleurinstellingen"
 
-#: client/gtk/gui.c:852
+#: client/gtk/gui.c:846
 msgid "Display messages in colors?"
 msgstr "Berichten in kleur"
 
-#: client/gtk/gui.c:853
+#: client/gtk/gui.c:847
 msgid "Display chat messages in user's color?"
 msgstr "Praatberichten in de kleur van de speler"
 
-#: client/gtk/gui.c:854
+#: client/gtk/gui.c:848
 msgid "Display player summary with colors?"
 msgstr "Spelerinformatie in kleur"
 
-#: client/gtk/gui.c:871
+#: client/gtk/gui.c:865
 msgid "Language"
 msgstr "Taal"
 
-#: client/gtk/gui.c:892
+#: client/gtk/gui.c:886
 msgid "Language setting takes full effect only after client restart!"
 msgstr ""
 "Taalinstelling werkt pas volledig bij het opnieuw opstarten van het "
 "programma."
 
-#: client/gtk/gui.c:1018
+#: client/gtk/gui.c:1012
 msgid "The Gnocatan Game"
 msgstr "Gnocatan"
 
-#: client/gtk/gui.c:1019 server/gnocatan-server-gtk.c:621
+#: client/gtk/gui.c:1013 server/gnocatan-server-gtk.c:621
 msgid "(C) 2002 the Free Software Foundation"
 msgstr "Copyright (C) 1999-2003 the Free Software Foundation en anderen"
 
-#: client/gtk/gui.c:1020 server/gnocatan-server-gtk.c:622
+#: client/gtk/gui.c:1014 server/gnocatan-server-gtk.c:622
 msgid "Gnocatan is based upon the excellent Settlers of Catan board game"
 msgstr "Gnocatan is gebaseerd op het bordspel \"de kolonisten van Catan\""
 
-#: client/gtk/gui.c:1110
+#: client/gtk/gui.c:1104
 msgid " "
 msgstr " "
 
-#: client/gtk/gui.c:1130
+#: client/gtk/gui.c:1124
 msgid "Welcome to Gnocatan!"
 msgstr "Welkom bij Gnocatan!"
 
-#: client/gtk/gui.c:1161 client/gtk/gui.c:1197
+#: client/gtk/gui.c:1155 client/gtk/gui.c:1191
 #: server/gnocatan-server-gtk.c:680
 #, c-format
 msgid "Warning: pixmap not found: %s\n"
 msgstr "Waarschuwing: plaatje \"%s\" werd niet gevonden\n"
 
-#: client/gtk/gui.c:1185
+#: client/gtk/gui.c:1179
 msgid "Gnocatan"
 msgstr "Gnocatan"
 
-#: client/gtk/guimap.c:68 client/gtk/theme.c:257
+#: client/gtk/guimap.c:72 client/gtk/theme.c:256
 #, c-format
 msgid "Could not find '%s' pixmap file.\n"
 msgstr "Plaatjesbestand \"%s\" kon niet gevonden worden.\n"
 
-#: client/gtk/guimap.c:83 client/gtk/theme.c:264
+#: client/gtk/guimap.c:87 client/gtk/theme.c:263
 #, c-format
 msgid "Could not load '%s' pixmap file.\n"
 msgstr "Plaatjesbestand \"%s\" kon niet geladen worden.\n"
 
-#: client/gtk/guimap.c:552 client/gtk/guimap.c:553 client/gtk/guimap.c:554
-#: client/gtk/guimap.c:555 client/gtk/guimap.c:556
+#. Port indicator for a resource: trade 2 for 1
+#: client/gtk/guimap.c:557
 msgid "2:1"
 msgstr "2:1"
 
-#: client/gtk/guimap.c:552
-msgid "B"
-msgstr "B"
-
-#: client/gtk/guimap.c:553
-msgid "G"
-msgstr "G"
-
-#: client/gtk/guimap.c:554
-msgid "O"
-msgstr "IJ"
-
-#: client/gtk/guimap.c:555
-msgid "W"
-msgstr "W"
-
-#: client/gtk/guimap.c:556
-msgid "L"
-msgstr "H"
-
-#: client/gtk/guimap.c:557
+#. Port indicator: trade 3 for 1
+#. General port indicator
+#: client/gtk/guimap.c:560 client/gtk/guimap.c:574
 msgid "3:1"
 msgstr "3:1"
 
-#: client/gtk/histogram.c:222
+#. Port indicator for brick
+#: client/gtk/guimap.c:564
+msgid "B"
+msgstr "B"
+
+#. Port indicator for grain
+#: client/gtk/guimap.c:566
+msgid "G"
+msgstr "G"
+
+#. Port indicator for ore
+#: client/gtk/guimap.c:568
+msgid "O"
+msgstr "IJ"
+
+#. Port indicator for wool
+#: client/gtk/guimap.c:570
+msgid "W"
+msgstr "W"
+
+#. Port indicator for lumber
+#: client/gtk/guimap.c:572
+msgid "L"
+msgstr "H"
+
+#: client/gtk/histogram.c:230
 msgid "Dice Histogram"
 msgstr "Dobbelsteenhistogram"
 
-#: client/gtk/interface.c:637
+#: client/gtk/interface.c:627
 msgid "Select the ship to steal from."
 msgstr "Kies een schip om te bestelen."
 
-#: client/gtk/interface.c:638
+#: client/gtk/interface.c:628
 msgid "Select the ship to steal from"
 msgstr "Kies een schip om te bestelen"
 
-#: client/gtk/interface.c:654
+#: client/gtk/interface.c:644
 msgid "Select the building to steal from."
 msgstr "Kies een gebouw om te bestelen"
 
-#: client/gtk/interface.c:655
+#: client/gtk/interface.c:645
 msgid "Select the building to steal from"
 msgstr "Kies een gebouw om te bestelen"
 
-#: client/gtk/legend.c:32
+#: client/gtk/legend.c:33
 msgid "Hill"
 msgstr "Heuvels"
 
-#: client/gtk/legend.c:33
+#: client/gtk/legend.c:34
 msgid "Field"
 msgstr "Akker"
 
-#: client/gtk/legend.c:34
+#: client/gtk/legend.c:35
 msgid "Mountain"
 msgstr "Berg"
 
-#: client/gtk/legend.c:35
+#: client/gtk/legend.c:36
 msgid "Pasture"
 msgstr "Weide"
 
-#: client/gtk/legend.c:36
+#: client/gtk/legend.c:37
 msgid "Forest"
 msgstr "Bos"
 
-#: client/gtk/legend.c:37
+#: client/gtk/legend.c:38
 msgid "Desert"
 msgstr "Woestijn"
 
-#: client/gtk/legend.c:38
+#: client/gtk/legend.c:39
 msgid "Sea"
 msgstr "Zee"
 
-#: client/gtk/legend.c:132
+#: client/gtk/legend.c:144
 msgid "Terrain Yield"
 msgstr "Terreinopbrengsten"
 
-#: client/gtk/legend.c:159
+#: client/gtk/legend.c:170
 msgid "Building Costs"
 msgstr "Bouwkosten"
 
-#: client/gtk/legend.c:176
+#: client/gtk/legend.c:187
 msgid "Road"
 msgstr "Weg"
 
-#: client/gtk/legend.c:176
+#: client/gtk/legend.c:187
 msgid "brick + lumber"
 msgstr "baksteen + hout"
 
-#: client/gtk/legend.c:178
+#: client/gtk/legend.c:189
 msgid "Ship"
 msgstr "Schip"
 
-#: client/gtk/legend.c:178
+#: client/gtk/legend.c:189
 msgid "wool + lumber"
 msgstr "wol + hout"
 
-#: client/gtk/legend.c:180
+#: client/gtk/legend.c:191
 msgid "Bridge"
 msgstr "Brug"
 
-#: client/gtk/legend.c:180
+#: client/gtk/legend.c:191
 msgid "brick + wool + lumber"
 msgstr "baksteen + wol + hout"
 
-#: client/gtk/legend.c:181
+#: client/gtk/legend.c:192
 msgid "brick + grain + wool + lumber"
 msgstr "baksteen + graan + wol + hout"
 
-#: client/gtk/legend.c:182
+#: client/gtk/legend.c:193
 msgid "2 grain + 3 ore"
 msgstr "2 graan + 3 ijzererts"
 
-#: client/gtk/legend.c:183
+#: client/gtk/legend.c:194
 msgid "Development Card"
 msgstr "Ontwikkelingskaart"
 
-#: client/gtk/legend.c:183
+#: client/gtk/legend.c:194
 msgid "grain + ore + wool"
 msgstr "graan + ijzererts + wol"
 
@@ -1866,46 +1873,46 @@ msgstr "Markt:"
 msgid "Soldier Cards:"
 msgstr "Ridder:"
 
-#: client/gtk/theme.c:418
+#: client/gtk/theme.c:417
 msgid "variable name missing"
 msgstr "variabelenaam mist"
 
-#: client/gtk/theme.c:429
+#: client/gtk/theme.c:428
 #, c-format
 msgid "unknown config variable '%s'"
 msgstr "onbekende configuratievariabele \"%s\""
 
-#: client/gtk/theme.c:437
+#: client/gtk/theme.c:436
 msgid "'=' missing"
 msgstr "missende \"=\""
 
-#: client/gtk/theme.c:454
+#: client/gtk/theme.c:453
 msgid "missing value"
 msgstr "missende waarde"
 
-#: client/gtk/theme.c:482
+#: client/gtk/theme.c:481
 msgid "color must be 'none' or start with '#'"
 msgstr "Kleur moet \"none\" zijn, of beginnen met \"#\""
 
-#: client/gtk/theme.c:489
+#: client/gtk/theme.c:488
 msgid "color value contains non-hex characters"
 msgstr "Kleurwaarde bevat ongeldige tekens"
 
-#: client/gtk/theme.c:494
+#: client/gtk/theme.c:493
 msgid "bits per color component must be 4, 8, 12, or 16"
 msgstr "bits per kleurcomponent moet 4, 8, 12, of 16 zijn"
 
-#: client/gtk/theme.c:585
+#: client/gtk/theme.c:584
 #, c-format
 msgid "bad scaling mode '%s'"
 msgstr "Ongeldig schaaltype \"%s\""
 
-#: client/gtk/theme.c:591
+#: client/gtk/theme.c:590
 #, c-format
 msgid "unexpected rest at end of line: '%s'"
 msgstr "onverwachte rommel aan het einde van de regel: \"%s\""
 
-#: client/gtk/theme.c:599
+#: client/gtk/theme.c:598
 #, c-format
 msgid "Theme %s not loaded due to errors\n"
 msgstr "Thema %s is niet ingeladen vanwege fouten\n"

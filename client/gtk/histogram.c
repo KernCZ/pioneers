@@ -28,7 +28,6 @@
 static const int DIALOG_HEIGHT = 270;
 static const int DIALOG_WIDTH = 450;
 static const int GRID_DIVISIONS = 4;
-static const int CHIT_RADIUS = 15;
 static const int BAR_SEPARATION = 3;
 static const int CHIT_DIAGRAM_SEPARATION = 3;
 static const int SPACING_AROUND = 6;
@@ -120,11 +119,13 @@ static gboolean expose_histogram_cb(GtkWidget *area, UNUSED(GdkEventExpose *even
 	}
 	if (max == 0)
 		max = GRID_DIVISIONS;
-	
+
 	/* Calculate size of the labels of the y-axis */
 	sprintf(buff, "%d", max);
 	layout = gtk_widget_create_pango_layout(area, buff);
 	pango_layout_get_pixel_size(layout, &label_width, &label_height);
+	
+	gint CHIT_RADIUS = guimap_get_chit_radius(layout);
 
 	/* Determine if the drawing area is large enough to draw the labels */
 	draw_labels_and_chits = TRUE;
@@ -156,6 +157,7 @@ static gboolean expose_histogram_cb(GtkWidget *area, UNUSED(GdkEventExpose *even
 
 	/* histogram bars */
 	gdk_gc_set_fill(histogram_gc, GDK_TILED);
+	
 	for (i = 2; i <= 12; i++) {
 		gint bh = (float)grid_height * histogram_dice_retrieve(i) / max + 0.5;
 		gint x = grid_offset_x + (i - 2)*(bar_width + BAR_SEPARATION);
@@ -167,14 +169,20 @@ static gboolean expose_histogram_cb(GtkWidget *area, UNUSED(GdkEventExpose *even
 		if (draw_labels_and_chits) {
 			gdk_gc_set_fill(histogram_gc, GDK_SOLID);
 			sprintf(buff, "%d", histogram_dice_retrieve(i));
-			pango_layout_set_text(layout, buff, -1);
+			pango_layout_set_markup(layout, buff, -1);
 			pango_layout_get_pixel_size(layout, &width, &height);
 			gdk_gc_set_foreground(histogram_gc, &black);
 			gdk_draw_layout(area->window, histogram_gc,
 					x + (bar_width - width) / 2,
 					grid_height + grid_offset_y - bh - height, layout);
 
-			draw_dice_roll(area->window, histogram_gc, x + bar_width / 2, h - CHIT_RADIUS, CHIT_RADIUS - 1, i, SEA_TERRAIN, i == last_roll);
+			draw_dice_roll(layout, area->window, histogram_gc, 
+					x + bar_width / 2, 
+					h - CHIT_RADIUS, 
+					CHIT_RADIUS - 1, 
+					i, 
+					SEA_TERRAIN, 
+					i == last_roll);
 		}
 	}
 

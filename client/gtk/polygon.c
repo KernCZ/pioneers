@@ -37,7 +37,7 @@ void poly_offset(Polygon *poly, gint x_offset, gint y_offset)
 	}
 }
 
-void poly_bound_rect(Polygon *poly, int pad, GdkRectangle *rect)
+void poly_bound_rect(const Polygon *poly, int pad, GdkRectangle *rect)
 {
 	int idx;
 	GdkPoint tl;
@@ -63,7 +63,7 @@ void poly_bound_rect(Polygon *poly, int pad, GdkRectangle *rect)
 	rect->height = br.y - tl.y + pad + 1;
 }
 
-void poly_draw(GdkDrawable *drawable, GdkGC *gc, gint filled, Polygon *poly)
+void poly_draw(GdkDrawable *drawable, GdkGC *gc, gint filled, const Polygon *poly)
 {
 	gdk_draw_polygon(drawable, gc, filled, poly->points, poly->num_points);
 }

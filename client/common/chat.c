@@ -115,8 +115,11 @@ void chat_parser( gint player_num, char chat_str[MAX_CHAT] )
 	} else {
 		tempchatcolor = MSG_CHAT;
 	}
-	
-	log_message_continue( tempchatcolor, "%s\n", chat_str );
+	/* If the chat matches chat from the AI, translate it.
+	 * FIXME: There should be a flag to indicate the player is an AI,
+	  *       so that chat from human player will not be translated
+	  */
+	log_message_continue( tempchatcolor, "%s\n", _(chat_str) );
 	
 	return;
 }

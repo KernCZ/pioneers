@@ -499,7 +499,7 @@ int pirate_count_victims(Hex *hex, gint *victim_list)
 	/* If there is no-one to steal from, or the players have no
 	 * resources, we do not go into steal_resource.
 	 */
-	for (idx = 0; idx < num_players (); idx++)
+	for (idx = 0; idx < numElem(hex->edges); idx++)
 		victim_list[idx] = -1;
 	num_victims = 0;
 	for (edge_idx = 0; edge_idx < numElem(hex->edges); edge_idx++) {

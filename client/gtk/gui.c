@@ -307,7 +307,7 @@ static gint expose_map_cb(GtkWidget *area, GdkEventExpose *event,
 		guimap_display(gmap);
 	}
 
-	gdk_draw_pixmap(area->window,
+	gdk_draw_drawable(area->window,
 			area->style->fg_gc[GTK_WIDGET_STATE(area)],
 			gmap->pixmap,
 			event->area.x, event->area.y,
@@ -323,7 +323,7 @@ static gint configure_map_cb(GtkWidget *area, UNUSED(GdkEventConfigure *event),
 		return FALSE;
 
 	if (gmap->pixmap) {
-		gdk_pixmap_unref(gmap->pixmap);
+		g_object_unref(gmap->pixmap);
 		gmap->pixmap = NULL;
 	}
 	guimap_scale_to_size(gmap,
@@ -649,9 +649,7 @@ static void settings_apply_cb(UNUSED(GnomePropertyBox *prop_box), gint page,
 	gint legend_page;
 	MapTheme *theme;
 
-	switch(page)
-	{
-		GdkRectangle r;
+	switch(page) {
 	case 0:
 		if(GTK_TOGGLE_BUTTON(radio_style_text)->active) {
 			toolbar_style = GTK_TOOLBAR_TEXT;
@@ -691,16 +689,12 @@ static void settings_apply_cb(UNUSED(GnomePropertyBox *prop_box), gint page,
 			config_set_string("settings/theme", theme->name);
 			set_theme(theme);
 			if (gmap->pixmap != NULL) {
-				g_free (gmap->pixmap);
+				g_object_unref(gmap->pixmap);
 				gmap->pixmap = NULL;
 			}
 			theme_rescale(2*gmap->x_point);
-			r.x = 0;
-			r.y = 0;
-			r.width = gmap->width;
-			r.height = gmap->height;
-			gdk_window_invalidate_rect (gmap->area->window, &r, TRUE);
-			legend_create_content ();
+			gtk_widget_draw(gmap->area, NULL);
+			legend_create_content();
 		}
 		
 		break;

@@ -21,7 +21,3 @@
    the client could record how often this player won a game, was
    second (point-wise), and so on... The server could collect these
    data on game start, update it at the end and show some statistics.
-
- - The chat messages by AI players are always in English. would be
-   nice to translate them to the language other players are using in
-   their client. But those could be different... args.

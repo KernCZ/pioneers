@@ -34,10 +34,13 @@ extern int _nl_msg_cat_cntr;
 
 lang_desc languages[] = {
 	/* language names not translated intentionally! */
+	/* FIXME: locale must match exactly, e.g.
+	 * it_IT.UTF-8@euro != it_IT
+	 */
 	{ "en", "English",  "en_US", TRUE,  NULL },
 	{ "de", "Deutsch",  "de_DE", FALSE, NULL },
 	{ "fr", "Français", "fr_FR", FALSE, NULL },
-/*	{ "it", "Italiano", "it_IT", FALSE, NULL }, */
+	{ "it", "Italiano", "it_IT", FALSE, NULL }, 
 	{ "es", "Español",  "es_ES", FALSE, NULL },
 	{ "nl", "Nederlands",  "nl_NL", FALSE, NULL },
 	{ NULL, NULL, NULL, FALSE, NULL }
@@ -60,7 +63,8 @@ void init_nls(void)
 	gchar *linguas;
 	gchar *p;
 	lang_desc *ld;
-	const gchar *saved_lang;
+	gchar *saved_lang;
+	const gchar *saved_locale;
 	gint novar;
 	const gchar *set_locale;
 
@@ -68,16 +72,25 @@ void init_nls(void)
 	linguas = g_strdup(ALL_LINGUAS);
 	for(p = strtok(linguas, " "); p; p = strtok(NULL, " ")) {
 		if ((ld = find_lang_desc(p)))
-			ld->supported = TRUE;
+			ld->supported = setlocale(LC_ALL, ld->localedef) != NULL;
 	}
 	g_free(linguas);
 
  	saved_lang = config_get_string("settings/language",&novar);
 	if (!novar && (ld = find_lang_desc(saved_lang)))
-		saved_lang = ld->localedef;
+		saved_locale = ld->localedef;
 	else
-		saved_lang = "";
-	set_locale = setlocale(LC_ALL, saved_lang);
+		saved_locale = "C";
+
+	/* Change language, method found at 
+	 * http://www.gnu.org/software/gettext/manual/html_chapter/gettext_10.html#SEC154 
+	 */
+	setenv("LANGUAGE", saved_lang, 1);
+	setenv("LC_ALL", saved_locale, 1); /* Do this too, so setlocale works too */
+	/* Make change known */
+	++_nl_msg_cat_cntr;
+
+	set_locale = setlocale(LC_ALL, "");
 	if (!set_locale)
 		set_locale = "C";
 	bindtextdomain(PACKAGE, LOCALEDIR);
@@ -104,6 +117,7 @@ void init_nls(void)
 			current_language = g_strdup("en");
 		}
 	}
+	g_free(saved_lang);
 }
 
 gboolean change_nls(lang_desc *ld)

@@ -23,7 +23,7 @@ AC_PREREQ(2.50)
 AC_CONFIG_SRCDIR([client])
 
 AM_CONFIG_HEADER(config.h)
-AM_INIT_AUTOMAKE([gnocatan], [0.8.1.30])
+AM_INIT_AUTOMAKE([gnocatan], [0.8.1.31])
 
 PROTOCOL_VERSION="\"0.8.0\""
 META_PROTOCOL_VERSION="\"1.0\""
@@ -71,7 +71,7 @@ AC_DEFINE_UNQUOTED(META_PROTOCOL_VERSION, $META_PROTOCOL_VERSION,
                    [Protocol version used by the meta server])
 
 ## internationalization support
-ALL_LINGUAS="de es fr nl"
+ALL_LINGUAS="de es fr nl it"
 AM_GNU_GETTEXT(use-libtool)
 AC_LINK_FILES($nls_cv_header_libgt, $nls_cv_header_intl)
 AC_DEFINE_UNQUOTED(ALL_LINGUAS, "$ALL_LINGUAS", [Available languages])

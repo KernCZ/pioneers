@@ -1103,66 +1103,66 @@ greedy_turn(Map *map, int mynum, gint assets[NO_RESOURCE],
 	} while(0)
 
 static const char *chat_turn_start[] = {
-	_("Ok, let's go!"),
-	_("I'll beat you all now! ;)"),
-	_("Now for another try..."),
+	N_("Ok, let's go!"),
+	N_("I'll beat you all now! ;)"),
+	N_("Now for another try..."),
 };
 static const char *chat_receive_one[] = {
-	_("At least I get something..."),
-	_("One is better than none..."),
+	N_("At least I get something..."),
+	N_("One is better than none..."),
 };
 static const char *chat_receive_many[] = {
-	_("Wow!"),
-	_("Ey, I'm becoming rich ;)"),
-	_("This is really a good year!"),
+	N_("Wow!"),
+	N_("Ey, I'm becoming rich ;)"),
+	N_("This is really a good year!"),
 };
 static const char *chat_other_receive_many[] = {
-	_("You really don't deserve that much!"),
-	_("You don't know what to do with that many resources ;)"),
-	_("Ey, wait for my robber and lose all this again!"),
+	N_("You really don't deserve that much!"),
+	N_("You don't know what to do with that many resources ;)"),
+	N_("Ey, wait for my robber and lose all this again!"),
 };
 static const char *chat_self_moved_robber[] = {
-	_("Hehe!"),
-	_("Go, robber, go!"),
+	N_("Hehe!"),
+	N_("Go, robber, go!"),
 };
 static const char *chat_moved_robber_to_me[] = {
-	_("You bastard!"),
-	_("Can't you move that robber somewhere else?!"),
-	_("Why always me??"),
+	N_("You bastard!"),
+	N_("Can't you move that robber somewhere else?!"),
+	N_("Why always me??"),
 };
 static const char *chat_discard_self[] = {
-	_("Oh no!"),
-	_("Grrr!"),
-	_("Who the hell rolled that 7??"),
-	_("Why always me?!?"),
+	N_("Oh no!"),
+	N_("Grrr!"),
+	N_("Who the hell rolled that 7??"),
+	N_("Why always me?!?"),
 };
 static const char *chat_discard_other[] = {
-	_("Say good bye to your cards... :)"),
-	_("*evilgrin*"),
-	_("/me says farewell to your cards ;)"),
-	_("That's the price for being rich... :)"),
+	N_("Say good bye to your cards... :)"),
+	N_("*evilgrin*"),
+	N_("/me says farewell to your cards ;)"),
+	N_("That's the price for being rich... :)"),
 };
 static const char *chat_stole_from_me[] = {
-	_("Ey! Where's that card gone?"),
-	_("Thieves! Thieves!!"),
-	_("Wait for my revenge..."),
+	N_("Ey! Where's that card gone?"),
+	N_("Thieves! Thieves!!"),
+	N_("Wait for my revenge..."),
 };
 static const char *chat_monopoly_other[] = {
-	_("Oh no :("),
-	_("Must this happen NOW??"),
-	_("Args"),
+	N_("Oh no :("),
+	N_("Must this happen NOW??"),
+	N_("Args"),
 };
 static const char *chat_largestarmy_self[] = {
-	_("Hehe, my soldiers rule!"),
+	N_("Hehe, my soldiers rule!"),
 };
 static const char *chat_largestarmy_other[] = {
-	_("First robbing us, then grabbing the points..."),
+	N_("First robbing us, then grabbing the points..."),
 };
 static const char *chat_longestroad_self[] = {
-	_("See that road!"),
+	N_("See that road!"),
 };
 static const char *chat_longestroad_other[] = {
-	_("Pf, you won't win with roads alone..."),
+	N_("Pf, you won't win with roads alone..."),
 };
 	
 static const char *
@@ -1245,9 +1245,9 @@ greedy_chat(chat_t occasion, void *param, gboolean self,
 		break;
       case CHAT_WON:
 		if (self)
-			return _("Yippie!");
+			return N_("Yippie!");
 		else
-			return _("My congratulations");
+			return N_("My congratulations");
       case CHAT_BUILT:
       case CHAT_BOUGHT:
       case CHAT_PLAY_DEVELOP:
@@ -1684,7 +1684,7 @@ static void greedy_start_game (GameParams *params)
 	/* ai cannot handle gold: quit if the board contains it */
 	if (map_traverse (params->map, &greedy_check_gold, NULL) == TRUE) {
 		log_message(MSG_INFO, "AI does not support gold.  Quitting.\n");
-		ai_chat (_("Sorry, I do not know how to play with gold.\n"));
+		ai_chat (N_("Sorry, I do not know how to play with gold.\n"));
 		exit (1);
 	}
 }

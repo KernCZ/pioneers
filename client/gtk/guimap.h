@@ -34,7 +34,8 @@ typedef enum {
 	BRIDGE_CURSOR,
 	SETTLEMENT_CURSOR,
 	CITY_CURSOR,
-	BUILDING_CURSOR,
+	STEAL_BUILDING_CURSOR,
+	STEAL_SHIP_CURSOR,
 	ROBBER_CURSOR
 } CursorType;
 
@@ -43,39 +44,35 @@ typedef void (*SelectFunc)(void *obj, int owner, void *user_data);
 
 typedef struct _Mode Mode;
 typedef struct {
-	GtkWidget *area;	/* render map in this drawing area */
-	GdkPixmap *pixmap;	/* off screen pixmap for drawing */
-	GdkGC *gc;		/* gc for map drawing */
-	GdkRegion *hex_region;	/* region for filling hex */
-	GdkRegion *node_region[6]; /* region for filling node */
-	GdkRegion *edge_region[6]; /* regions for locating edges */
+	GtkWidget *area;           /**< render map in this drawing area */
+	GdkPixmap *pixmap;         /**< off screen pixmap for drawing */
+	GdkGC *gc;                 /**< gc for map drawing */
+	GdkRegion *hex_region;     /**< region for filling hex */
+	GdkRegion *node_region[6]; /**< region for filling node */
+	GdkRegion *edge_region[6]; /**< regions for locating edges */
+	PangoLayout *layout;       /**< layout object for rendering text */
+	gint initial_font_size;    /**< initial font size */
 
-	Map *map;		/* map that is displayed */
+	Map *map;                  /**< map that is displayed */
 
-	CursorType cursor_type;	/* current cursor type */
-	int cursor_owner;	/* owner of the cursor */
-	CheckFunc check_func;	/* check object under cursor */
-	SelectFunc check_select; /* when user selects cursor */
-	void *user_data;	/* passed to callback functions */
-	void *cursor;		/* current GUI mode edge/node/hex cursor */
+	CursorType cursor_type;    /**< current cursor type */
+	int cursor_owner;          /**< owner of the cursor */
+	CheckFunc check_func;      /**< check object under cursor */
+	SelectFunc check_select;   /**< when user selects cursor */
+	void *user_data;           /**< passed to callback functions */
+	void *cursor;              /**< current GUI mode edge/node/hex cursor */
 
-	gint highlight_chit;	/* chit number to highlight */
+	gint highlight_chit;       /**< chit number to highlight */
+	gint chit_radius;          /**< radius of the chit */
 
-	gint hex_radius;	/* size of hex on display */
-	gint x_point;		/* x offset of node 0 from centre */
-	gint y_point;		/* y offset of node 0 from centre */
-
-	gint edge_width;
-	gint edge_len;
-	gint edge_x;
-	gint edge_y;
-	gint edge_x_point;
-	gint edge_y_point;
-
-	gint x_margin;
-	gint y_margin;
-	gint width;		/* pixel width of map */
-	gint height;		/* pixel height of map */
+	gint hex_radius;           /**< size of hex on display */
+	gint x_point;              /**< x offset of node 0 from centre */
+	gint y_point;              /**< y offset of node 0 from centre */
+	
+	gint x_margin;             /**< margin to leave empty */
+	gint y_margin;             /**< margin to leave empty */
+	gint width;                /**< pixel width of map */
+	gint height;               /**< pixel height of map */
 } GuiMap;
 
 extern GdkColor black;
@@ -96,7 +93,8 @@ void guimap_bridge_polygon(GuiMap *gmap, Edge *edge, Polygon *poly);
 void guimap_city_polygon(GuiMap *gmap, Node *node, Polygon *poly);
 void guimap_settlement_polygon(GuiMap *gmap, Node *node, Polygon *poly);
 
-void draw_dice_roll(GdkPixmap *pixmap, GdkGC *gc,
+gint guimap_get_chit_radius(PangoLayout *layout);
+void draw_dice_roll(PangoLayout *layout, GdkPixmap *pixmap, GdkGC *gc,
 		    gint x_offset, gint y_offset, gint radius,
 		    gint n, gint terrain, gboolean highlight);
 

@@ -22,8 +22,8 @@
 #include "config.h"
 #include <math.h>
 #include <ctype.h>
-#include <assert.h>
-#include <gnome.h>
+#include <gdk/gdk.h>
+#include <stdlib.h>
 #include <dirent.h>
 #include <sys/stat.h>
 
@@ -107,6 +107,10 @@ static MapTheme default_theme = {
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL },
 	/* port tile pixmaps */
 	{ NULL, NULL, NULL, NULL, NULL, NULL },
+	/* port tile width */
+	{ 0, 0, 0, 0, 0, 0 },
+	/* port tile height */
+	{ 0, 0, 0, 0, 0, 0 },
 	/* terrain tile scale data */
 	{ TSCALE, TSCALE, TSCALE, TSCALE, TSCALE, TSCALE, TSCALE, TSCALE,
 		TSCALE },
@@ -244,35 +248,29 @@ static void theme_initialize(MapTheme *t)
 			t->terrain_tile_names[i] ?
 			g_strconcat(t->subdir, t->terrain_tile_names[i], NULL) :
 			g_strdup(default_theme.terrain_tile_names[i]);
-		if ((t->scaling == NEVER) || (i == BOARD_TILE)) {
-			/* don't bother to fill scaledata if it won't be used
-			 * anyway */
-			load_pixmap(fname, &(t->terrain_tiles[i]), NULL);
+		
+		GdkPixbuf *pixbuf, *pixbuf_copy;
+		gchar *file = g_strconcat(THEMEDIR "/", fname, NULL);
+
+		if (!g_file_test(file, G_FILE_TEST_EXISTS)) {
+			g_error(_("Could not find \'%s\' pixmap file.\n"), file);
+			g_free (file);
+        		exit(1);
 		}
-		else {
-			GdkPixbuf *pixbuf, *pixbuf_copy;
-			gchar *file = g_strconcat(THEMEDIR "/", fname, NULL);
-			
-			if (!g_file_exists(file)) {
-		                g_error(_("Could not find \'%s\' pixmap file.\n"), file);
-				g_free (file);
-        		        exit(1);
-			}
-			pixbuf = gdk_pixbuf_new_from_file(file, NULL);
-			pixbuf_copy = gdk_pixbuf_copy(pixbuf);
-			if (pixbuf == NULL || pixbuf_copy == NULL) {
-				g_error(_("Could not load \'%s\' pixmap file.\n"), file);
-				g_free (file);
-				exit(1);
-			}
-			g_free(file);
-			t->scaledata[i].image = pixbuf;
-			t->scaledata[i].native_image = pixbuf_copy;
-			t->scaledata[i].native_width = gdk_pixbuf_get_width(pixbuf);
-			t->scaledata[i].aspect = (float)gdk_pixbuf_get_width(pixbuf) / gdk_pixbuf_get_height(pixbuf);
-			gdk_pixbuf_render_pixmap_and_mask(pixbuf,
-					&(t->terrain_tiles[i]), NULL, 1);
+		pixbuf = gdk_pixbuf_new_from_file(file, NULL);
+		pixbuf_copy = gdk_pixbuf_copy(pixbuf);
+		if (pixbuf == NULL || pixbuf_copy == NULL) {
+			g_error(_("Could not load \'%s\' pixmap file.\n"), file);
+			g_free (file);
+			exit(1);
 		}
+		g_free(file);
+		t->scaledata[i].image = pixbuf;
+		t->scaledata[i].native_image = pixbuf_copy;
+		t->scaledata[i].native_width = gdk_pixbuf_get_width(pixbuf);
+		t->scaledata[i].aspect = (float)gdk_pixbuf_get_width(pixbuf) / gdk_pixbuf_get_height(pixbuf);
+		gdk_pixbuf_render_pixmap_and_mask(pixbuf,
+				&(t->terrain_tiles[i]), NULL, 1);
 		g_free(fname);
 	}
 
@@ -283,6 +281,7 @@ static void theme_initialize(MapTheme *t)
 		if (t->port_tile_names[i]) {
 			gchar *fname = g_strconcat(t->subdir, t->port_tile_names[i], NULL);
 			load_pixmap(fname, &(t->port_tiles[i]), NULL);
+			gdk_drawable_get_size(t->port_tiles[i], &t->port_tiles_width[i], &t->port_tiles_height[i]);
 			g_free(fname);
 		}
 		else
@@ -297,7 +296,7 @@ static void theme_initialize(MapTheme *t)
 		if (!tc->set)
 			*tc = default_theme.colors[i];
 		else if (!tc->transparent && !tc->allocated) {
-			gdk_color_alloc(cmap, &(tc->color));
+			gdk_colormap_alloc_color(cmap, &(tc->color), FALSE, TRUE);
 			tc->allocated = TRUE;
 		}
 	}
@@ -306,7 +305,7 @@ static void theme_initialize(MapTheme *t)
 		for(j = 0; j < TC_MAX_OVERRIDE; ++j) {
 			TColor *tc = &(t->ovr_colors[i][j]);
 			if (tc->set && !tc->transparent && !tc->allocated) {
-				gdk_color_alloc(cmap, &(tc->color));
+				gdk_colormap_alloc_color(cmap, &(tc->color), FALSE, TRUE);
 				tc->allocated = TRUE;
 			}
 		}
@@ -349,7 +348,7 @@ void theme_rescale(int new_width)
 				GDK_INTERP_BILINEAR);
 
 		/* render a new pixmap */
-		gdk_pixmap_unref(current_theme->terrain_tiles[i]);
+		g_object_unref(current_theme->terrain_tiles[i]);
 		gdk_pixbuf_render_pixmap_and_mask(current_theme->scaledata[i].image, &(current_theme->terrain_tiles[i]), NULL, 1);
 	}
 }

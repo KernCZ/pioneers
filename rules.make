@@ -33,6 +33,7 @@ debug_includes = \
 	-Wnested-externs \
 	-ggdb3 \
 	-O \
+	-DGDK_DISABLE_DEPRECATED \
 	-DDEBUG
 else
 debug_includes =

@@ -30,12 +30,8 @@ static void frontend_state_turn (GuiEvent event);
 /* for gold and discard, remember the previous gui state */
 static GuiState previous_state;
 
-static Hex *robber_hex;
 static gboolean gold_busy = FALSE, discard_busy = FALSE, robber_busy = FALSE;
 static gboolean have_turn = FALSE;
-
-/* for ship movement, store the position where to move from */
-static Edge *ship_from;
 
 static void frontend_state_idle (UNUSED(GuiEvent event))
 {
@@ -56,23 +52,21 @@ void build_ship_cb (Edge *edge, UNUSED(gint player_num))
 	cb_build_ship (edge);
 }
 
-static void do_move_ship_cb (Edge *edge, UNUSED(gint player_num))
+static void do_move_ship_cb (Edge *edge, UNUSED(gint player_num), Edge *ship_from)
 {
 	gui_cursor_none();
 	cb_move_ship (ship_from, edge);
 }
 
-/* Edge cursor check function.
+/** Edge cursor check function.
  *
  * Determine whether or not a ship can be moved to this edge by the
  * specified player.  Perform the following checks:
  * 1 - Ship cannot be moved to where it comes from
  * 2 - A ship must be buildable at the destination if the ship is moved away
  *     from its current location.
- * This function is not in common/map_query.c, but here, because it needs
- * ship_from, which isn't (and shouldn't be) global.
  */
-static gboolean can_ship_be_moved_to(Edge *edge, UNUSED(gint owner))
+static gboolean can_ship_be_moved_to(Edge *edge, UNUSED(gint owner), Edge *ship_from)
 {
 	return can_move_ship (ship_from, edge);
 }
@@ -85,11 +79,10 @@ void build_bridge_cb (Edge *edge, UNUSED(gint player_num))
 
 void move_ship_cb (Edge *edge, UNUSED(gint player_num))
 {
-	ship_from = edge;
 	gui_cursor_set(SHIP_CURSOR,
 			(CheckFunc)can_ship_be_moved_to,
 			(SelectFunc)do_move_ship_cb,
-			NULL);
+			edge); /* Current position */
 }
 
 void build_settlement_cb (Node *node, UNUSED(gint player_num))
@@ -572,46 +565,44 @@ static void rob_edge(Edge *edge, UNUSED(gint player_num), Hex *hex)
 	place_robber (hex, edge->owner);
 }
 
-gboolean can_building_be_robbed(Node *node, UNUSED(int owner))
+/* Return TRUE if the node can be robbed. */
+static gboolean can_building_be_robbed(Node *node, UNUSED(int owner), Hex *robber_hex)
 {
 	gint idx;
 
-	/* Can only steal from buildings that are not owned by me
-	 */
+	/* Can only steal from buildings that are not owned by me */
 	if (node->type == BUILD_NONE || node->owner == my_player_num())
 		return FALSE;
 
-	/* Can only steal from buildings adjacent to hex with robber
-	 * owned by players who have resources
-	 */
-	for (idx = 0; idx < numElem(node->hexes); idx++)
-		if (node->hexes[idx] == robber_hex)
-			break;
-	if (idx == numElem(node->hexes))
+	/* Can only steal if the owner has some resources */
+	if (player_get(node->owner)->statistics[STAT_RESOURCES] == 0)
 		return FALSE;
 
-	return player_get(node->owner)->statistics[STAT_RESOURCES] > 0;
+	/* Can only steal from buildings adjacent to hex with robber */
+	for (idx = 0; idx < numElem(node->hexes); idx++)
+		if (node->hexes[idx] == robber_hex)
+			return TRUE;
+	return FALSE;
 }
 
-gboolean can_edge_be_robbed(Edge *edge, UNUSED(int owner))
+/** Returns TRUE if the edge can be robbed. */
+static gboolean can_edge_be_robbed(Edge *edge, UNUSED(int owner), Hex *pirate_hex)
 {
 	gint idx;
 
-	/* Can only steal from ships that are not owned by me
-	 */
+	/* Can only steal from ships that are not owned by me */
 	if (edge->type != BUILD_SHIP || edge->owner == my_player_num())
 		return FALSE;
 
-	/* Can only steal from edges adjacent to hex with pirate
-	 * owned by players who have resources
-	 */
-	for (idx = 0; idx < numElem(edge->hexes); idx++)
-		if (edge->hexes[idx] == robber_hex)
-			break;
-	if (idx == numElem(edge->hexes))
+	/* Can only steal if the owner has some resources */
+	if (player_get(edge->owner)->statistics[STAT_RESOURCES] == 0)
 		return FALSE;
 
-	return player_get(edge->owner)->statistics[STAT_RESOURCES] > 0;
+	/* Can only steal from edges adjacent to hex with pirate */
+	for (idx = 0; idx < numElem(edge->hexes); idx++)
+		if (edge->hexes[idx] == pirate_hex)
+			return TRUE;
+	return FALSE;
 }
 
 /* User just placed the robber
@@ -619,7 +610,6 @@ gboolean can_edge_be_robbed(Edge *edge, UNUSED(int owner))
 static void place_robber_or_pirate_cb(Hex *hex, UNUSED(gint player_num))
 {
 	gint victim_list[6];
-	robber_hex = hex;
 	gui_cursor_none();
 	if (hex->terrain == SEA_TERRAIN) {
 		switch (pirate_count_victims(hex, victim_list)) {
@@ -630,7 +620,7 @@ static void place_robber_or_pirate_cb(Hex *hex, UNUSED(gint player_num))
 				place_robber(hex, victim_list[0]);
 				break;
 			default:
-				gui_cursor_set(BUILDING_CURSOR,
+				gui_cursor_set(STEAL_SHIP_CURSOR,
 						(CheckFunc)can_edge_be_robbed,
 						(SelectFunc)rob_edge,
 						hex);
@@ -647,7 +637,7 @@ static void place_robber_or_pirate_cb(Hex *hex, UNUSED(gint player_num))
 				place_robber(hex, victim_list[0]);
 				break;
 			default:
-				gui_cursor_set(BUILDING_CURSOR,
+				gui_cursor_set(STEAL_BUILDING_CURSOR,
 						(CheckFunc)can_building_be_robbed,
 						(SelectFunc)rob_building,
 						hex);

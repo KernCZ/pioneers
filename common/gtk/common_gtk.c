@@ -201,8 +201,8 @@ GtkWidget *message_window_set_text(GtkWidget *txt)
 
 	if (cmap == NULL) {
 		cmap = gdk_colormap_get_system();
-		gdk_color_alloc(cmap, &black);
-		gdk_color_alloc(cmap, &red);
+		gdk_colormap_alloc_color(cmap, &black, FALSE, TRUE);
+		gdk_colormap_alloc_color(cmap, &red, FALSE, TRUE);
 	}
 	message_txt = txt;
 	return old_txt;
