@@ -29,7 +29,7 @@
 #include "network.h"
 #include "log.h"
 
-#define LOG
+/* #define LOG */
 #ifdef LOG
 static void debug(gchar *fmt, ...)
 {
@@ -136,6 +136,8 @@ static void close_and_callback(Session *ses)
 
 static void write_ready(Session *ses)
 {
+	if (!ses)
+		return;
 	if (ses->connect_in_progress) {
 		/* We were waiting to connect to server
 		 */
@@ -202,6 +204,8 @@ static void write_ready(Session *ses)
 
 void net_write(Session *ses, gchar *data)
 {
+	if (!ses)
+		return;
 	if (ses->write_queue != NULL || !net_connected(ses)) {
 		/* reassign the pointer, because the glib docs say it may change and
 		 * because if we're in the process of connecting the pointer may
@@ -369,7 +373,7 @@ gboolean net_connect(Session *ses, char *host, gchar *port)
 	ses->port = g_strdup(port);
 
 	memset(&hints, 0, sizeof(hints));
-	hints.ai_family = AF_UNSPEC;
+	hints.ai_family = PF_UNSPEC;
 	hints.ai_socktype = SOCK_STREAM;
 	hints.ai_protocol = IPPROTO_TCP;
 
