@@ -181,7 +181,7 @@ struct callbacks {
 	void (*quote_trade)(gint player_num, gint partner_num, gint quote_num,
 			gint *they_supply, gint *they_receive);
 	/* the dice have been rolled */
-	void (*dice)(gint die1, gint die2);
+	void (*rolled_dice)(gint die1, gint die2, gint player_num);
 	/* the terminal should beep, if it likes to. */
 	void (*beep)(void);
 	/* An edge changed, it should be drawn */

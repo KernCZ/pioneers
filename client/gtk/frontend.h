@@ -125,7 +125,7 @@ void frontend_quote_remove (gint player_num, gint quote_num);
 void frontend_quote_start (void);
 void frontend_quote_end (void);
 void frontend_quote_monitor (void);
-void frontend_dice (gint die1, gint die2);
+void frontend_rolled_dice (gint die1, gint die2, gint player_num);
 void frontend_beep (void);
 /*void frontend_draw_edge (Edge *edge);
 void frontend_draw_node (Node *node);

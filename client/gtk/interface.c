@@ -538,9 +538,9 @@ void frontend_game_over (gint player, gint points)
 	set_gui_state (frontend_state_idle);
 }
 
-void frontend_dice (gint die1, gint die2)
+void frontend_rolled_dice (gint die1, gint die2, gint player_num)
 {
-	dice_histogram(DICE_HISTOGRAM_RECORD, die1 + die2);
+	histogram_dice_rolled(die1 + die2, player_num);
 	identity_set_dice(die1, die2);
 	gui_highlight_chits(die1 + die2);
 	frontend_gui_update ();

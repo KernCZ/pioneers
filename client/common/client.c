@@ -159,7 +159,7 @@ void client_init (void)
 	(nothing_cast)callbacks.quote_end = &do_nothing;
 	(nothing_cast)callbacks.quote_monitor = &do_nothing;
 	(nothing_cast)callbacks.quote_trade = &do_nothing;
-	(nothing_cast)callbacks.dice = &do_nothing;
+	(nothing_cast)callbacks.rolled_dice = &do_nothing;
 	(nothing_cast)callbacks.gold_choose = &do_nothing;
 	(nothing_cast)callbacks.gold_done = &do_nothing;
 	(nothing_cast)callbacks.beep = &do_nothing;
@@ -2013,7 +2013,7 @@ static void recover_from_disconnect(StateMachine *sm,
 		turn_rolled_dice(rinfo->playerturn, rinfo->die1, rinfo->die2);
 	}
 	else if (rinfo->die1 + rinfo->die2 > 1) {
-		callbacks.dice (rinfo->die1, rinfo->die2);
+		callbacks.rolled_dice (rinfo->die1, rinfo->die2, rinfo->playerturn);
 	}
 
 	if (rinfo->rolled_dice)

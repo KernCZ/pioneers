@@ -83,6 +83,7 @@ extern GdkColor white;
 extern GdkColor red;
 extern GdkColor green;
 extern GdkColor blue;
+extern GdkColor lightblue;
 
 void load_pixmap(const gchar *name, GdkPixmap **pixmap, GdkBitmap **mask);
 

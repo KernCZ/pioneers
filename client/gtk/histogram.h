@@ -22,14 +22,8 @@
 #ifndef __histogram_h
 #define __histogram_h
 
-enum {
-	DICE_HISTOGRAM_RECORD,
-	DICE_HISTOGRAM_RETRIEVE,
-	DICE_HISTOGRAM_MAX,
-	DICE_HISTOGRAM_TOTAL
-};
-
-gint dice_histogram(gint command, gint roll);
+void histogram_dice_rolled(gint roll, gint playernum);
 
 GtkWidget *histogram_create_dlg(void);
+void histogram_init(void);
 #endif

@@ -33,6 +33,7 @@ GdkColor white = { 0, 0xff00, 0xff00, 0xff00 };
 GdkColor red = { 0, 0xff00, 0, 0 };
 GdkColor green = { 0, 0, 0xff00, 0 };
 GdkColor blue = { 0, 0, 0, 0xff00 };
+GdkColor lightblue = { 0, 0xbe00, 0xbe00, 0xff00 };
 
 static GdkColormap* cmap;
 static GdkFont *roll_font;
@@ -100,6 +101,7 @@ GuiMap *guimap_new()
 	gdk_color_alloc(cmap, &red);
 	gdk_color_alloc(cmap, &green);
 	gdk_color_alloc(cmap, &blue);
+	gdk_color_alloc(cmap, &lightblue);
 
 	roll_font = gdk_font_load("-adobe-helvetica-bold-r-normal-*-*-120-*-*-p-*-iso8859-1");
 

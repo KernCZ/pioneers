@@ -40,7 +40,7 @@ void turn_rolled_dice(gint player_num, gint die1, gint die2)
 		rolled_dice = TRUE;
 		map->has_moved_ship = FALSE;
 	}
-	callbacks.dice (die1, die2);
+	callbacks.rolled_dice (die1, die2, player_num);
 }
 
 void turn_begin(gint player_num, gint num)

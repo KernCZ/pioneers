@@ -1,4 +1,18 @@
-2004-01-11  Bas Wijnen <b.wijnen@phys.rug.nl>
+2004-01-11 0.8.1.14  Roland Clobus <rclobus@bigfoot.com>
+
+	* client/callback.h, client/common/client.c, client/common/turn.c,
+	client/gtk/callbacks.c: renamed callbacks.dice to
+	callbacks.rolled_dice.
+	* client/gtk/callbacks.c, client/gtk/frontend.h,
+	client/gtk/interface.c: renamed frontend_dice to frontend_rolled_dice.
+	* client/gtk/callbacks.c (frontend_init_game): added histogram_init.
+	* client/gtk/guimap.c, client/gtk/guimap.h: add color lightblue.
+	* client/gtk/histogram.c, client/gtk/histogram.h: complete rewrite of
+	the histogram diagram. Now fully scalable.
+	* client/common/resource.c (resource_format_num): support "no
+	resources" situation.
+
+2004-01-11 0.8.1.13  Bas Wijnen <b.wijnen@phys.rug.nl>
 	* client/callback.h, client/common/client.c, client/gtk/callbacks.c,
 	client/gtk/frontend.c, client/gtk/ftontend.h, client/gtk/trade.c:
 	Fixes bug with maritime trade

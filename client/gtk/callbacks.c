@@ -20,6 +20,7 @@
 
 #include "frontend.h"
 #include <gnome.h>
+#include "histogram.h"
 
 static void frontend_network_status (gchar *description)
 {
@@ -42,6 +43,7 @@ static void frontend_network_wait (gboolean is_waiting)
 static void frontend_init_game (void)
 {
 	player_clear_summary();
+	histogram_init();
 }
 
 static void frontend_start_game (void)
@@ -146,7 +148,7 @@ void frontend_set_callbacks (int argc, char **argv)
 	callbacks.quote_end = &frontend_quote_end;
 	callbacks.quote_monitor = &frontend_quote_monitor;
 	callbacks.quote_trade = &frontend_quote_trade;
-	callbacks.dice = &frontend_dice;
+	callbacks.rolled_dice = &frontend_rolled_dice;
 	callbacks.gold_choose = &frontend_gold_choose;
 	callbacks.gold_done = &frontend_gold_done;
 	callbacks.beep = &frontend_beep;
