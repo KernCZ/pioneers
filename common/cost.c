@@ -36,6 +36,18 @@ gint *cost_ship()
 	return cost;
 }
 
+gint *cost_bridge()
+{
+	static gint cost[NO_RESOURCE] = {
+		1,		/* brick */
+		0,		/* grain */
+		0,		/* ore */
+		0,		/* wool */
+		1		/* lumber */
+	};
+	return cost;
+}
+
 gint *cost_settlement()
 {
 	static gint cost[NO_RESOURCE] = {
