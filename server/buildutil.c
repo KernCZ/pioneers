@@ -205,8 +205,6 @@ void edge_add(Player *player, BuildType type, int x, int y, int pos, gboolean pa
 	Edge *edge = map_edge(map, x, y, pos);
 	BuildRec *rec;
 
-	player->num_roads++;
-
 	rec = g_malloc0(sizeof(*rec));
 	rec->type = type;
 	rec->x = x;
@@ -221,13 +219,25 @@ void edge_add(Player *player, BuildType type, int x, int y, int pos, gboolean pa
 		case BUILD_SETTLEMENT:
 		case BUILD_CITY:
 		case BUILD_NONE:
-			/* TODO: This is an error condition... */
+			log_message( MSG_ERROR, "In buildutils.c::edge_add() - Invalid build type.\n" );
 			break;
 		}
 		resource_spend(player, rec->cost);
 	}
 
 	player->build_list = g_list_append(player->build_list, rec);
+
+	switch(type)
+	{
+		case BUILD_ROAD: player->num_roads++; break;
+		case BUILD_BRIDGE: player->num_bridges++; break;
+		case BUILD_SHIP: player->num_ships++; break;
+		case BUILD_SETTLEMENT:
+		case BUILD_CITY:
+		case BUILD_NONE:
+			log_message( MSG_ERROR, "In buildutils.c::edge_add() - Invalid build type.\n" );
+			break;
+	}
 
 	edge->owner = player->num;
 	edge->type = type;
