@@ -1,3 +1,7 @@
+2003-01-12  Jeff Breidenbach  <jab@debian.org>
+
+	* AUTHORS: adjust my email
+
 2003-01-12  Steve Langasek  <vorlon@debian.org>
 	* ai/Makefile.am: don't link GNOME libs for a binary that has
 	  no gui.
