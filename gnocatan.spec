@@ -97,6 +97,7 @@ make install prefix=$RPM_BUILD_ROOT/usr bindir=$RPM_BUILD_ROOT/usr/games \
 %doc AUTHORS COPYING ChangeLog INSTALL README NEWS 
 /usr/share/pixmaps/gnocatan/city.png
 /usr/share/pixmaps/gnocatan/cross.png
+/usr/share/pixmaps/gnocatan/bridge.png
 /usr/share/pixmaps/gnocatan/board.png
 /usr/share/pixmaps/gnocatan/desert.png
 /usr/share/pixmaps/gnocatan/develop.png
