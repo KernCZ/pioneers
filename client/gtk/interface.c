@@ -456,9 +456,11 @@ void frontend_discard_add (gint player_num, gint discard_num)
 
 void frontend_discard_remove (gint player_num, gint *list)
 {
-	discard_player_did (player_num, list);
-	if (discard_busy && player_num == my_player_num () )
-		set_gui_state (&frontend_state_idle);
+	if (discard_busy) {
+		discard_player_did (player_num, list);
+		if (player_num == my_player_num () )
+			set_gui_state (&frontend_state_idle);
+	}
 	frontend_gui_update ();
 }
 

@@ -289,13 +289,16 @@ void discard_player_did(gint player_num, gint *resources)
 
 	row = gtk_clist_find_row_from_data(GTK_CLIST(discard_clist),
 					   player_get(player_num));
-	if (row >= 0)
+	/* check if the player was in the list.  If not, it is not an error.
+	 * That happens if the player auto-discards. */
+	if (row >= 0) {
 		gtk_clist_remove(GTK_CLIST(discard_clist), row);
-	if (player_num == my_player_num()) {
-		gtk_signal_disconnect_by_func(GTK_OBJECT(discard.dlg),
-					      GTK_SIGNAL_FUNC(ignore_close), NULL);
-		gtk_widget_destroy(discard.dlg);
-		discard.dlg = NULL;
+		if (player_num == my_player_num()) {
+			gtk_signal_disconnect_by_func(GTK_OBJECT(discard.dlg),
+						      GTK_SIGNAL_FUNC(ignore_close), NULL);
+			gtk_widget_destroy(discard.dlg);
+			discard.dlg = NULL;
+		}
 	}
 }
 
