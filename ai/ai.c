@@ -42,6 +42,7 @@ random_name(void)
     int num = 1;
 
     snprintf(filename,sizeof(filename)-1,"%s/computer_names",gnopath);
+    srand(time(NULL)+getpid());
 
     stream = fopen(filename,"r");
     if (!stream) goto def;
