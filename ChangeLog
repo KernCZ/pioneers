@@ -1,3 +1,6 @@
+2003-10-03  Bas Wijnen <b.wijnen@phys.rug.nl>
+	* server/player.c: Bugfix.
+
 2003-10-01  Bas Wijnen <b.wijnen@phys.rug.nl>
 	* ai/client.c, client/client.c, server/player.c, server/pregame.c,
 	server/server.c, server/server.h: Changed protocol for sending initial

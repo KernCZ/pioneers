@@ -115,7 +115,11 @@ static gboolean mode_unhandled (Player *player, gint event)
 		if (sm_recv (sm, "extension %S", text, sizeof (text) ) ) {
 			sm_send (sm, "NOTE ignoring unknown extension\n");
 			log_message (MSG_INFO, "ignoring unknown extension from %s: %s\n", player->name, text);
-		return TRUE;
+			return TRUE;
+		}
+		break;
+	default:
+		break;
 	}
 	return FALSE;
 }
