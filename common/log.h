@@ -16,4 +16,6 @@ void log_color(GdkColor *color, gchar *fmt, ...);
 
 GtkWidget *log_widget_set(GtkWidget *txt);
 
+void log_set_use_console_bool();
+
 #endif
