@@ -221,23 +221,24 @@ static gboolean empty_list(gint *resources)
 
 void trade_format_quote(QuoteInfo *quote, gchar *desc)
 {
+	gchar *format = NULL;
+	gchar buf1[128];
+	gchar buf2[128];
+
 	if (empty_list(quote->var.d.supply)) {
-		strcpy(desc, _("ask"));
-		desc += strlen(desc);
+		format = _("ask for %s");
+		format_list(buf1, quote->var.d.receive);
+		sprintf(desc, format, buf1);
+	} else if (empty_list(quote->var.d.receive)) {
+		format = _("give %s for free");
+		format_list(buf1, quote->var.d.supply);
+		sprintf(desc, format, buf1);
 	} else {
-		strcpy(desc, _("give "));
-		desc += strlen(desc);
-		format_list(desc, quote->var.d.supply);
-		desc += strlen(desc);
+		format = _("give %s for %s");
+		format_list(buf1, quote->var.d.supply);
+		format_list(buf2, quote->var.d.receive);
+		sprintf(desc, format, buf1, buf2);
 	}
-
-	strcpy(desc, _(" for "));
-	desc += strlen(desc);
-
-	if (empty_list(quote->var.d.receive))
-		strcpy(desc, _("free"));
-	else
-		format_list(desc, quote->var.d.receive);
 }
 
 static void update_row(TradeRow *row)

@@ -1,3 +1,14 @@
+2003-01-21  Steve Langasek  <vorlon@debian.org>
+	* client/client.c, client/client.h, client/player.c,
+	  client/resource.c, client/trade.c: extensive reworking of
+	  string handling for better i18n support.  The code still needs
+	  some work to not depend on English-style plural rules, but the
+	  game should now be sanely translatable to a wide range of
+	  languages.
+
+	* po/de.po, po/es.po, po/gnocatan.pot: update the Spanish and
+	  German translations in accordance with the above.
+
 2003-01-19  Roman Hodek  <roman@hodek.net>
 
 	* po/gnocatan.pot: rebuilt

@@ -2,39 +2,39 @@
 # Copyright (C) 1999-2001 Dave Cole
 # Copyright (C) 2000-2002 Andy Heroff
 # This file is distributed under the same license as the gnocatan package.
-# Roman Hodek <roman@hodek.net> 2002.
+# Roman Hodek <roman@hodek.net>, 2002.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gnocatan 0.7.2\n"
-"POT-Creation-Date: 2003-01-19 11:15+0100\n"
-"PO-Revision-Date: 2003-01-19 11:20+0100\n"
+"Project-Id-Version: gnocatan 0.7.1\n"
+"POT-Creation-Date: 2003-01-21 01:06-0600\n"
+"PO-Revision-Date: 2003-01-21 00:33-0600\n"
 "Last-Translator: Roman Hodek <roman@hodek.net>\n"
 "Language-Team: de <de@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso8859-1\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ai/client.c:133 ai/client.c:152 client/client.c:157 client/client.c:183
 msgid "We have been kicked out of the game.\n"
 msgstr "Spielverbindung wurde beendet.\n"
 
-#: ai/client.c:280 client/client.c:296
+#: ai/client.c:280
 #, c-format
 msgid "%s receives %s\n"
 msgstr "%s bekommt %s\n"
 
-#: ai/client.c:287 client/client.c:301
+#: ai/client.c:287
 #, c-format
 msgid "%s spent %s\n"
 msgstr "%s zahlt %s\n"
 
-#: ai/client.c:292 client/client.c:306
+#: ai/client.c:292
 #, c-format
 msgid "%s is refunded %s\n"
 msgstr "%s erhält zurück %s\n"
 
-#: ai/client.c:1170 client/client.c:1671
+#: ai/client.c:1170
 #, c-format
 msgid "%s discarded %s\n"
 msgstr "%s legt ab: %s\n"
@@ -510,11 +510,11 @@ msgstr "Holz"
 msgid "%s moved robber.\n"
 msgstr "%s hat den Räuber gesetzt.\n"
 
-#: ai/trade.c:71 client/trade.c:225
+#: ai/trade.c:71
 msgid "ask"
 msgstr "will"
 
-#: ai/trade.c:74 client/trade.c:228
+#: ai/trade.c:74
 msgid "give "
 msgstr "gibt "
 
@@ -653,6 +653,21 @@ msgstr "Untätig"
 msgid "Offline"
 msgstr "Offline"
 
+#: client/client.c:296
+#, c-format
+msgid "%s receives %s.\n"
+msgstr "%s bekommt %s.\n"
+
+#: client/client.c:301
+#, c-format
+msgid "%s spent %s.\n"
+msgstr "%s zahlt %s.\n"
+
+#: client/client.c:306
+#, c-format
+msgid "%s is refunded %s.\n"
+msgstr "%s erhält zurück %s.\n"
+
 #: client/client.c:528
 msgid "Connecting"
 msgstr "Verbinde"
@@ -712,6 +727,11 @@ msgstr "Baue zwei Straßen."
 #: client/client.c:1428
 msgid "Build a road segment."
 msgstr "Baue eine Straße."
+
+#: client/client.c:1671
+#, c-format
+msgid "%s discarded %s.\n"
+msgstr "%s legt ab: %s.\n"
 
 #: client/client.c:1728 client/client.c:1854
 msgid "It is your turn."
@@ -876,12 +896,12 @@ msgid "Play Card"
 msgstr "Karte ausspielen"
 
 #: client/discard.c:138 client/plenty.c:107 client/quote.c:466
-#: client/trade.c:512
+#: client/trade.c:513
 msgid "<less"
 msgstr "<weniger"
 
 #: client/discard.c:148 client/plenty.c:117 client/quote.c:476
-#: client/trade.c:522
+#: client/trade.c:523
 msgid "more>"
 msgstr "mehr>"
 
@@ -1124,8 +1144,9 @@ msgid "Finish"
 msgstr "Beenden"
 
 #: client/gui.c:1052
+#, fuzzy
 msgid " "
-msgstr " "
+msgstr "- "
 
 #: client/gui.c:1072
 msgid "Welcome to Gnocatan!"
@@ -1300,7 +1321,7 @@ msgstr "Zu nehmende Karte"
 msgid "Total resources"
 msgstr "Insgesamt"
 
-#: client/quote.c:239 client/trade.c:337
+#: client/quote.c:239 client/trade.c:338
 msgid "Rejected trade"
 msgstr "Handel abgelehnt"
 
@@ -1309,11 +1330,11 @@ msgstr "Handel abgelehnt"
 msgid "%s has %s, and is looking for %s"
 msgstr "%s hat %s und möchte %s"
 
-#: client/quote.c:565 client/trade.c:800
+#: client/quote.c:565 client/trade.c:801
 msgid "I Want"
 msgstr "Ich will"
 
-#: client/quote.c:582 client/trade.c:817
+#: client/quote.c:582 client/trade.c:818
 msgid "Give Them"
 msgstr "Ich gebe dafür"
 
@@ -1321,55 +1342,71 @@ msgstr "Ich gebe dafür"
 msgid "Delete"
 msgstr "Löschen"
 
-#: client/resource.c:92
-#, c-format
-msgid "%d %s cards"
-msgstr "%d %s-Karten"
+#: client/resource.c:30
+msgid "a brick card"
+msgstr "eine Stein-Karte"
 
-#: client/resource.c:95
+#: client/resource.c:30
 #, c-format
-msgid "an %s card"
-msgstr "eine %s-Karte"
+msgid "%d brick cards"
+msgstr "%d Stein-Karten"
 
-#: client/resource.c:97
+#: client/resource.c:31
+msgid "a grain card"
+msgstr "eine Getreide-Karte"
+
+#: client/resource.c:31
 #, c-format
-msgid "a %s card"
-msgstr "eine %s-Karte"
+msgid "%d grain cards"
+msgstr "%d Getreide-Karten"
 
-#: client/resource.c:108
+#: client/resource.c:32
+msgid "an ore card"
+msgstr "eine Erz-Karte"
+
+#: client/resource.c:32
 #, c-format
-msgid "%d %s"
-msgstr "%d %s"
+msgid "%d ore cards"
+msgstr "%d Erz-Karten"
 
-#: client/resource.c:111
+#: client/resource.c:33
+msgid "a wool card"
+msgstr "eine Wolle-Karte"
+
+#: client/resource.c:33
 #, c-format
-msgid "an %s"
-msgstr "eine %s"
+msgid "%d wool cards"
+msgstr "%d Wolle-Karten"
 
-#: client/resource.c:113
+#: client/resource.c:34
+msgid "a lumber card"
+msgstr "eine Holz-Karte"
+
+#: client/resource.c:34
 #, c-format
-msgid "a %s"
-msgstr "eine %s"
+msgid "%d lumber cards"
+msgstr "%d Holz-Karten"
 
-#: client/resource.c:189
+#: client/resource.c:178
 #, c-format
 msgid ", and %s"
-msgstr "- und %s"
+msgstr " und %s"
 
-#: client/resource.c:193
-msgid ", "
-msgstr "-, "
+#: client/resource.c:180
+#, c-format
+msgid "%s, "
+msgstr "%s, "
 
-#: client/resource.c:241
+#: client/resource.c:226
 #, c-format
 msgid "player %d resource count wrong: server=%d, me=%d"
 msgstr "Rohstoffanzahl bei Spieler %d falsch: server=%d hier=%d"
 
-#: client/resource.c:254
+#: client/resource.c:239
 msgid "resources wrong:"
 msgstr "Rohstoffe falsch:"
 
-#: client/resource.c:258
+#: client/resource.c:243
 #, c-format
 msgid ""
 "\n"
@@ -1378,11 +1415,11 @@ msgstr ""
 "\n"
 "%s: server=%d hier=%d"
 
-#: client/resource.c:285
+#: client/resource.c:270
 msgid "Resources"
 msgstr "Rohstoffe"
 
-#: client/resource.c:364
+#: client/resource.c:349
 msgid "Total"
 msgstr "Insgesamt"
 
@@ -1513,28 +1550,35 @@ msgstr "Gründungsphase für %s.\n"
 msgid "Double setup for %s.\n"
 msgstr "Doppelte Gründungsphase für %s.\n"
 
-#: client/trade.c:234
-msgid " for "
-msgstr " für "
+#: client/trade.c:229
+#, fuzzy, c-format
+msgid "ask for %s"
+msgstr "will %s"
 
-#: client/trade.c:238
-msgid "free"
-msgstr "umsonst"
+#: client/trade.c:233
+#, c-format
+msgid "give %s for free"
+msgstr "gibt %s gratis"
 
-#: client/trade.c:283
+#: client/trade.c:237
+#, c-format
+msgid "give %s for %s"
+msgstr "gibt %s für %s"
+
+#: client/trade.c:284
 #, c-format
 msgid "%d:1 %s for %s"
 msgstr "%d:1 %s für %s"
 
-#: client/trade.c:838
+#: client/trade.c:839
 msgid "Call For Quotes"
 msgstr "Angebote einholen"
 
-#: client/trade.c:870
+#: client/trade.c:871
 msgid "Accept Quote"
 msgstr "Angebot annehmen"
 
-#: client/trade.c:875
+#: client/trade.c:876
 msgid "Finish Trading"
 msgstr "Handel beenden"
 
@@ -1681,6 +1725,9 @@ msgstr "Fehler beim Holen des Namens des Kommunikationspartners: %s\n"
 #: server/server.c:200 server/server.c:208
 msgid "unknown"
 msgstr "unbekannt"
+
+#~ msgid "free"
+#~ msgstr "umsonst"
 
 #~ msgid "%s has %s, and is looking for %s\n"
 #~ msgstr "%s hat %s and sucht nach %s\n"

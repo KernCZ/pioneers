@@ -26,6 +26,14 @@ static gchar *resource_names[][2] = {
         { N_("lumber"), N_("Lumber") }
 };
 
+static gchar *resource_lists[][2] = {
+   { N_("a brick card"),  N_("%d brick cards")  },
+   { N_("a grain card"),  N_("%d grain cards")  },
+   { N_("an ore card"),   N_("%d ore cards")    },
+   { N_("a wool card"),   N_("%d wool cards")   },
+   { N_("a lumber card"), N_("%d lumber cards") }
+};
+
 static GtkWidget *asset_labels[NO_RESOURCE]; /* label widgets showing resources */
 static GtkWidget *asset_total_label;	/* 'total' label widget */
 static gint my_assets[NO_RESOURCE];	/* my resources */
@@ -37,10 +45,12 @@ gboolean can_afford(gint *cost)
 
 gchar *resource_name(Resource type, gboolean word_caps)
 {
-	if (word_caps)
-		return gettext(resource_names[type][1]);
-	else
-		return gettext(resource_names[type][0]);
+	return _(resource_names[type][word_caps ? 1 : 0]);
+}
+
+gchar *resource_list(Resource type, ResourceListType grammar)
+{
+	return _(resource_lists[type][grammar]);
 }
 
 gint resource_asset(Resource type)
@@ -86,32 +96,13 @@ gint resource_count(gint *resources)
 gchar *resource_cards(gint num, Resource type)
 {
 	static gchar buff[64];
-	gchar *name = resource_name(type, FALSE);
 
+	/* FIXME: this should be touched up to take advantage of the
+	   GNU ngettext API */
 	if (num != 1)
-		sprintf(buff, _("%d %s cards"), num, name);
-	else {
-		if (strchr("aeiou", name[0]) != NULL)
-			sprintf(buff, _("an %s card"), name);
-		else
-			sprintf(buff, _("a %s card"), name);
-	}
-	return buff;
-}
-
-gchar *resource_num(gint num, Resource type)
-{
-	static gchar buff[64];
-	gchar *name = resource_name(type, FALSE);
-
-	if (num > 1)
-		sprintf(buff, _("%d %s"), num, name);
-	else {
-		if (strchr("aeiou", name[0]) != NULL)
-			sprintf(buff, _("an %s"), name);
-		else
-			sprintf(buff, _("a %s"), name);
-	}
+		sprintf(buff, resource_list(type, RESOURCE_MULTICARD), num);
+	else
+		strcpy(buff, resource_list(type, RESOURCE_SINGLECARD));
 	return buff;
 }
 
@@ -159,7 +150,6 @@ void resource_format_num(gchar *str, gint *resources)
 {
 	gint idx;
 	gint num_types;
-	gboolean add_comma;
 
 	/* Count how many different resources in list
 	 */
@@ -179,7 +169,6 @@ void resource_format_num(gchar *str, gint *resources)
 		return;
 	}
 	
-	add_comma = FALSE;
 	for (idx = 0; idx < NO_RESOURCE; idx++) {
 		gint num = resources[idx];
 		if (num == 0)
@@ -187,16 +176,12 @@ void resource_format_num(gchar *str, gint *resources)
 
 		if (num_types == 1) {
 			sprintf(str, _(", and %s"), resource_cards(num, idx));
-			str += strlen(str);
+		} else if (num_types > 2) {
+			sprintf(str, _("%s, "), resource_cards(num, idx));
 		} else {
-			if (add_comma) {
-				strcpy(str, _(", "));
-				str += strlen(str);
-			}
-			sprintf(str, "%s", resource_num(num, idx));
-			add_comma = TRUE;
-			str += strlen(str);
+			strcpy(str, resource_cards(num, idx));
 		}
+		str += strlen(str);
 		num_types--;
 	}
 }

@@ -609,7 +609,7 @@ void player_maritime_trade(gint player_num,
 
 	log_message( MSG_TRADE, _("%s exchanged %s for %s.\n"),
 		 player_name(player_num, TRUE),
-		 resource_num(ratio, supply), resource_cards(1, receive));
+		 resource_cards(ratio, supply), resource_cards(1, receive));
 }
 
 void player_build_add(gint player_num,

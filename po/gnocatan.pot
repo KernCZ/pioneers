@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2003-01-19 11:15+0100\n"
+"POT-Creation-Date: 2003-01-21 01:06-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,22 +19,22 @@ msgstr ""
 msgid "We have been kicked out of the game.\n"
 msgstr ""
 
-#: ai/client.c:280 client/client.c:296
+#: ai/client.c:280
 #, c-format
 msgid "%s receives %s\n"
 msgstr ""
 
-#: ai/client.c:287 client/client.c:301
+#: ai/client.c:287
 #, c-format
 msgid "%s spent %s\n"
 msgstr ""
 
-#: ai/client.c:292 client/client.c:306
+#: ai/client.c:292
 #, c-format
 msgid "%s is refunded %s\n"
 msgstr ""
 
-#: ai/client.c:1170 client/client.c:1671
+#: ai/client.c:1170
 #, c-format
 msgid "%s discarded %s\n"
 msgstr ""
@@ -510,11 +510,11 @@ msgstr ""
 msgid "%s moved robber.\n"
 msgstr ""
 
-#: ai/trade.c:71 client/trade.c:225
+#: ai/trade.c:71
 msgid "ask"
 msgstr ""
 
-#: ai/trade.c:74 client/trade.c:228
+#: ai/trade.c:74
 msgid "give "
 msgstr ""
 
@@ -653,6 +653,21 @@ msgstr ""
 msgid "Offline"
 msgstr ""
 
+#: client/client.c:296
+#, c-format
+msgid "%s receives %s.\n"
+msgstr ""
+
+#: client/client.c:301
+#, c-format
+msgid "%s spent %s.\n"
+msgstr ""
+
+#: client/client.c:306
+#, c-format
+msgid "%s is refunded %s.\n"
+msgstr ""
+
 #: client/client.c:528
 msgid "Connecting"
 msgstr ""
@@ -711,6 +726,11 @@ msgstr ""
 
 #: client/client.c:1428
 msgid "Build a road segment."
+msgstr ""
+
+#: client/client.c:1671
+#, c-format
+msgid "%s discarded %s.\n"
 msgstr ""
 
 #: client/client.c:1728 client/client.c:1854
@@ -876,12 +896,12 @@ msgid "Play Card"
 msgstr ""
 
 #: client/discard.c:138 client/plenty.c:107 client/quote.c:466
-#: client/trade.c:512
+#: client/trade.c:513
 msgid "<less"
 msgstr ""
 
 #: client/discard.c:148 client/plenty.c:117 client/quote.c:476
-#: client/trade.c:522
+#: client/trade.c:523
 msgid "more>"
 msgstr ""
 
@@ -1297,7 +1317,7 @@ msgstr ""
 msgid "Total resources"
 msgstr ""
 
-#: client/quote.c:239 client/trade.c:337
+#: client/quote.c:239 client/trade.c:338
 msgid "Rejected trade"
 msgstr ""
 
@@ -1306,11 +1326,11 @@ msgstr ""
 msgid "%s has %s, and is looking for %s"
 msgstr ""
 
-#: client/quote.c:565 client/trade.c:800
+#: client/quote.c:565 client/trade.c:801
 msgid "I Want"
 msgstr ""
 
-#: client/quote.c:582 client/trade.c:817
+#: client/quote.c:582 client/trade.c:818
 msgid "Give Them"
 msgstr ""
 
@@ -1318,66 +1338,82 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-#: client/resource.c:92
-#, c-format
-msgid "%d %s cards"
+#: client/resource.c:30
+msgid "a brick card"
 msgstr ""
 
-#: client/resource.c:95
+#: client/resource.c:30
 #, c-format
-msgid "an %s card"
+msgid "%d brick cards"
 msgstr ""
 
-#: client/resource.c:97
-#, c-format
-msgid "a %s card"
+#: client/resource.c:31
+msgid "a grain card"
 msgstr ""
 
-#: client/resource.c:108
+#: client/resource.c:31
 #, c-format
-msgid "%d %s"
+msgid "%d grain cards"
 msgstr ""
 
-#: client/resource.c:111
-#, c-format
-msgid "an %s"
+#: client/resource.c:32
+msgid "an ore card"
 msgstr ""
 
-#: client/resource.c:113
+#: client/resource.c:32
 #, c-format
-msgid "a %s"
+msgid "%d ore cards"
 msgstr ""
 
-#: client/resource.c:189
+#: client/resource.c:33
+msgid "a wool card"
+msgstr ""
+
+#: client/resource.c:33
+#, c-format
+msgid "%d wool cards"
+msgstr ""
+
+#: client/resource.c:34
+msgid "a lumber card"
+msgstr ""
+
+#: client/resource.c:34
+#, c-format
+msgid "%d lumber cards"
+msgstr ""
+
+#: client/resource.c:178
 #, c-format
 msgid ", and %s"
 msgstr ""
 
-#: client/resource.c:193
-msgid ", "
+#: client/resource.c:180
+#, c-format
+msgid "%s, "
 msgstr ""
 
-#: client/resource.c:241
+#: client/resource.c:226
 #, c-format
 msgid "player %d resource count wrong: server=%d, me=%d"
 msgstr ""
 
-#: client/resource.c:254
+#: client/resource.c:239
 msgid "resources wrong:"
 msgstr ""
 
-#: client/resource.c:258
+#: client/resource.c:243
 #, c-format
 msgid ""
 "\n"
 "%s: server=%d, me=%d"
 msgstr ""
 
-#: client/resource.c:285
+#: client/resource.c:270
 msgid "Resources"
 msgstr ""
 
-#: client/resource.c:364
+#: client/resource.c:349
 msgid "Total"
 msgstr ""
 
@@ -1508,28 +1544,35 @@ msgstr ""
 msgid "Double setup for %s.\n"
 msgstr ""
 
-#: client/trade.c:234
-msgid " for "
+#: client/trade.c:229
+#, c-format
+msgid "ask for %s"
 msgstr ""
 
-#: client/trade.c:238
-msgid "free"
+#: client/trade.c:233
+#, c-format
+msgid "give %s for free"
 msgstr ""
 
-#: client/trade.c:283
+#: client/trade.c:237
+#, c-format
+msgid "give %s for %s"
+msgstr ""
+
+#: client/trade.c:284
 #, c-format
 msgid "%d:1 %s for %s"
 msgstr ""
 
-#: client/trade.c:838
+#: client/trade.c:839
 msgid "Call For Quotes"
 msgstr ""
 
-#: client/trade.c:870
+#: client/trade.c:871
 msgid "Accept Quote"
 msgstr ""
 
-#: client/trade.c:875
+#: client/trade.c:876
 msgid "Finish Trading"
 msgstr ""
 

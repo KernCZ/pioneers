@@ -44,6 +44,12 @@ typedef enum {
 	GUI_UNDO,
 } GuiEvents;
 
+typedef enum {
+	RESOURCE_SINGLECARD = 0,
+	RESOURCE_MULTICARD
+} ResourceListType;
+
+
 extern GameParams *game_params;
 
 /* build.c */
@@ -143,10 +149,10 @@ void plenty_destroy_dlg(void);
 /* resource.c */
 gboolean can_afford(gint *cost);
 gchar *resource_name(Resource type, gboolean word_caps);
+gchar *resource_list(Resource type, ResourceListType grammar);
 gint resource_asset(Resource type);
 void resource_cmd(gchar *str, gchar *cmd, gint *resources);
 gchar *resource_cards(gint num, Resource type);
-gchar *resource_num(gint num, Resource type);
 void resource_modify(Resource type, gint num);
 gint resource_count(gint *resources);
 void resource_format_type(gchar *str, gint *resources);
