@@ -1,3 +1,7 @@
+2005-04-02  0.9.4  Roland Clobus <rclobus@bigfoot.com>
+	* client/ai/greedy.c: When receiving gold, the AI must choose
+	something, even when it has enough resources.
+	
 2005-03-31  Brian Wellington <bwelling@xbill.org>
 	* client/ai/ai.c: The AI should not stay in a game if it is full.
 

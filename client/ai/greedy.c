@@ -1685,20 +1685,29 @@ static void greedy_gold_choose(gint gold_num, gint * bank)
 	resource_values_t resval;
 	gint assets[NO_RESOURCE];
 	gint want[NO_RESOURCE];
+	gint my_bank[NO_RESOURCE];
 	gint i;
 	int r1;
 
 	for (i = 0; i < NO_RESOURCE; i++) {
 		want[i] = 0;
 		assets[i] = resource_asset(i);
+		my_bank[i] = bank[i];
 	}
 
 	for (i = 0; i < gold_num; i++) {
 		reevaluate_resources(&resval);
 
 		r1 = resource_desire(assets, &resval, NO_RESOURCE, 0);
+		/* If we don't want anything, start emptying the bank */
+		if (r1 == NO_RESOURCE) {
+			r1 = 0;
+			/* Potential deadlock, but bank is always full enough */
+			while (my_bank[r1] == 0) r1++;
+		}
 		want[r1]++;
 		assets[r1]++;
+		my_bank[r1]--;
 	}
 	cb_choose_gold(want);
 
