@@ -1,9 +1,9 @@
 Simple install procedure
 ========================
 
-  % tar xvzf gnocatan-0.5.6.tar.gz	# unpack the sources
+  % tar xvzf gnocatan-0.7.0.tar.gz	# unpack the sources
   % cd gnocatan				# change to the toplevel directory
-  % ./configure --prefix=<gnome-installation-prefix> # run the `configure' script
+  % ./autogen.sh			# regenerate configure and run it
   % make				# build Gnocatan
   [ Become root if necessary ]
   % make install			# install Gnocatan
