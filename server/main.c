@@ -138,7 +138,7 @@ static void load_game_types()
 		item = g_malloc( sizeof(game_list_item_t) );
 		item->name = ent->d_name;
 		item->params = params;
-		
+
 		game_list_add_item( item );
 	}
 
