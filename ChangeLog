@@ -1,5 +1,12 @@
 2002-05-22  Roman Hodek  <roman@hodek.net>
 
+	* client/gui.c: new option to show legend as a page besides the
+	map (someone with lack of screen space for the dialog suggested
+	that)
+
+	* client/legend.c (legend_create_content): separated out from
+	legend_create_dialog so legend page can use same code
+
 	* client/gui.c: two new checkboxes in the settings dialog to
 	disable use of colors in the message window and player summary.
 

@@ -56,7 +56,7 @@ static void add_legend_terrain(GtkWidget *table, gint row, gint col,
 	gtk_table_attach(GTK_TABLE(table), area,
 			 col, col + 1, row, row + 1,
 			 (GtkAttachOptions)GTK_FILL,
-			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
+			 (GtkAttachOptions)GTK_FILL, 0, 0);
 	gtk_widget_set_usize(area, 30, 20);
 	gtk_signal_connect(GTK_OBJECT(area), "expose_event",
 			   GTK_SIGNAL_FUNC(expose_legend_cb),
@@ -67,7 +67,7 @@ static void add_legend_terrain(GtkWidget *table, gint row, gint col,
 	gtk_table_attach(GTK_TABLE(table), label,
 			 col + 1, col + 2, row, row + 1,
 			 (GtkAttachOptions)GTK_FILL,
-			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
+			 (GtkAttachOptions)GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 
 	if (resource != NO_RESOURCE) {
@@ -76,7 +76,7 @@ static void add_legend_terrain(GtkWidget *table, gint row, gint col,
 		gtk_table_attach(GTK_TABLE(table), label,
 				 col + 2, col + 3, row, row + 1,
 				 (GtkAttachOptions)GTK_FILL,
-				 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
+				 (GtkAttachOptions)GTK_FILL, 0, 0);
 		gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 	}
 }
@@ -90,43 +90,30 @@ static void add_legend_cost(GtkWidget *table, gint row,
 	gtk_widget_show(label);
 	gtk_table_attach(GTK_TABLE(table), label, 0, 1, row, row + 1,
 			 (GtkAttachOptions)GTK_FILL,
-			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
+			 (GtkAttachOptions)GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 
 	label = gtk_label_new(cost);
 	gtk_widget_show(label);
 	gtk_table_attach(GTK_TABLE(table), label, 1, 2, row, row + 1,
 			 (GtkAttachOptions)GTK_FILL,
-			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
+			 (GtkAttachOptions)GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 }
 
-GtkWidget *legend_create_dlg()
+GtkWidget *legend_create_content()
 {
-	static GtkWidget *legend_dlg;
-	GtkWidget *dlg_vbox;
+	GtkWidget *hbox;
 	GtkWidget *vbox;
 	GtkWidget *frame;
 	GtkWidget *table;
 	GtkWidget *vsep;
 	gint num_rows;
 
-	if (legend_dlg != NULL)
-		return legend_dlg;
-
-	legend_dlg = gnome_dialog_new(_("Legend"),
-				      GNOME_STOCK_BUTTON_CLOSE, NULL);
-        gnome_dialog_set_parent(GNOME_DIALOG(legend_dlg),
-				GTK_WINDOW(app_window));
-        gtk_signal_connect(GTK_OBJECT(legend_dlg), "destroy",
-			   GTK_SIGNAL_FUNC(gtk_widget_destroyed), &legend_dlg);
-
-	dlg_vbox = GNOME_DIALOG(legend_dlg)->vbox;
-	gtk_widget_show(dlg_vbox);
+	hbox = gtk_hbox_new(FALSE, 5);
+	gtk_container_border_width(GTK_CONTAINER(hbox), 5);
 
 	vbox = gtk_vbox_new(FALSE, 5);
-	gtk_widget_show(vbox);
-	gtk_box_pack_start(GTK_BOX(dlg_vbox), vbox, TRUE, TRUE, 0);
 	gtk_container_border_width(GTK_CONTAINER(vbox), 5);
 
 	frame = gtk_frame_new(_("Terrain Yield"));
@@ -148,8 +135,8 @@ GtkWidget *legend_create_dlg()
 	vsep = gtk_vseparator_new();
 	gtk_widget_show(vsep);
 	gtk_table_attach(GTK_TABLE(table), vsep, 3, 4, 0, 4,
-			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL,
-			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
+			 (GtkAttachOptions)GTK_FILL,
+			 (GtkAttachOptions)GTK_FILL, 0, 0);
 
 	add_legend_terrain(table, 0, 4, FOREST_TERRAIN, LUMBER_RESOURCE);
 	add_legend_terrain(table, 1, 4, DESERT_TERRAIN, NO_RESOURCE);
@@ -185,7 +172,35 @@ GtkWidget *legend_create_dlg()
 	add_legend_cost(table, num_rows++, _("City"), _("2 grain + 3 ore"));
 	add_legend_cost(table, num_rows++, _("Development Card"), _("grain + ore + wool"));
 
-        gtk_widget_show(legend_dlg);
+	gtk_widget_show(vbox);
+	gtk_box_pack_start(GTK_BOX(hbox), vbox, FALSE, FALSE, 0);
+	gtk_widget_show(hbox);
+	return hbox;
+}
+
+GtkWidget *legend_create_dlg()
+{
+	static GtkWidget *legend_dlg;
+	GtkWidget *dlg_vbox;
+	GtkWidget *vbox;
+
+	if (legend_dlg != NULL)
+		return legend_dlg;
+
+	legend_dlg = gnome_dialog_new(_("Legend"),
+				      GNOME_STOCK_BUTTON_CLOSE, NULL);
+        gnome_dialog_set_parent(GNOME_DIALOG(legend_dlg),
+				GTK_WINDOW(app_window));
+        gtk_signal_connect(GTK_OBJECT(legend_dlg), "destroy",
+			   GTK_SIGNAL_FUNC(gtk_widget_destroyed), &legend_dlg);
+
+	dlg_vbox = GNOME_DIALOG(legend_dlg)->vbox;
+	gtk_widget_show(dlg_vbox);
+
+	vbox = legend_create_content();
+	gtk_box_pack_start(GTK_BOX(dlg_vbox), vbox, TRUE, TRUE, 0);
+
+	gtk_widget_show(legend_dlg);
 	gnome_dialog_set_close(GNOME_DIALOG(legend_dlg), TRUE);
 
 	return legend_dlg;

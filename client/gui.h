@@ -15,6 +15,7 @@
 gint color_chat_enabled;
 gint color_messages_enabled;
 gint color_summary_enabled;
+gint legend_page_enabled;
 
 typedef enum {
 	MODE_IDLE,		/* not allowed to do anything */
@@ -40,6 +41,7 @@ void gui_set_net_status(gchar *text);
 
 void gui_show_trade_page(gboolean show);
 void gui_show_quote_page(gboolean show);
+void gui_show_legend_page(gboolean show);
 void gui_show_splash_page(gboolean show);
 
 void gui_discard_show(void);

@@ -39,12 +39,14 @@ enum {
 	MAP_PAGE,		/* the map */
 	TRADE_PAGE,		/* trading interface */
 	QUOTE_PAGE,		/* submit quotes page */
+	LEGEND_PAGE,	/* legend */
 	SPLASH_PAGE		/* splash screen */
 };
 
 static GtkWidget *map_notebook; /* map area panel */
 static GtkWidget *trade_page;	/* trade page in map area */
 static GtkWidget *quote_page;	/* quote page in map area */
+static GtkWidget *legend_page;	/* splash page in map area */
 static GtkWidget *splash_page;	/* splash page in map area */
 
 static GtkWidget *develop_notebook; /* development card area panel */
@@ -64,6 +66,7 @@ static GtkWidget *radio_style_both;
 static GtkWidget *check_color_chat;
 static GtkWidget *check_color_messages;
 static GtkWidget *check_color_summary;
+static GtkWidget *check_legend_page;
 
 
 GtkWidget *gnome_dialog_get_button(GnomeDialog *dlg, gint button)
@@ -278,6 +281,15 @@ void gui_show_quote_page(gboolean show)
 		gtk_widget_hide(quote_page);
 }
 
+void gui_show_legend_page(gboolean show)
+{
+	if (show) {
+		gtk_widget_show(legend_page);
+		gtk_notebook_set_page(GTK_NOTEBOOK(map_notebook), QUOTE_PAGE);
+	} else
+		gtk_widget_hide(legend_page);
+}
+
 void gui_show_splash_page(gboolean show)
 {
 	if (show) {
@@ -325,6 +337,14 @@ static GtkWidget *build_map_panel()
 	gtk_notebook_insert_page(GTK_NOTEBOOK(map_notebook),
 				 quote_page, lbl, QUOTE_PAGE);
 	gtk_widget_hide(quote_page);
+
+	lbl = gtk_label_new(_("Legend"));
+	gtk_widget_show(lbl);
+	legend_page = legend_create_content();
+	gtk_notebook_insert_page(GTK_NOTEBOOK(map_notebook),
+				 legend_page, lbl, LEGEND_PAGE);
+	if (!legend_page_enabled)
+		gtk_widget_hide(legend_page);
 
 	lbl = gtk_label_new(_("Welcome to Gnocatan"));
 	gtk_widget_show(lbl);
@@ -438,6 +458,7 @@ static void settings_apply_cb(GnomePropertyBox *prop_box, gint page, gpointer da
 	gint color_chat;
 	gint color_messages;
 	gint color_summary;
+	gint legend_page;
 
 	switch(page)
 	{
@@ -497,6 +518,17 @@ static void settings_apply_cb(GnomePropertyBox *prop_box, gint page, gpointer da
 		color_summary_enabled = color_summary;
 		player_modify_statistic(0, STAT_SETTLEMENTS, 0);
 
+		if (GTK_TOGGLE_BUTTON(check_legend_page)->active) {
+			legend_page = TRUE;
+		} else {
+			legend_page = FALSE;
+		}
+		legend_page_enabled = legend_page;
+		gui_show_legend_page(legend_page_enabled);
+		
+		gnome_config_set_int( "/gnocatan/settings/legend_page",
+		                      legend_page );
+
 		gnome_config_sync();
 		break;
 	default:
@@ -517,25 +549,30 @@ static void menu_settings_cb(GtkWidget *widget, void *user_data)
 	GtkWidget *page0_label;
 	GtkWidget *frame_texticons;
 	GtkWidget *frame_colors;
+	GtkWidget *frame_other;
 	GtkWidget *vbox_texticons;
 	GtkWidget *vbox_colors;
+	GtkWidget *vbox_other;
 	gboolean default_returned;
 	gint toolbar_style;
 	gint color_chat;
 	gint color_messages;
 	gint color_summary;
+	gint legend_page;
 	
 	/* Create stuff */
 	settings = gnome_property_box_new();
 
-	page0_table = gtk_table_new( 1, 1, FALSE );
+	page0_table = gtk_table_new( 2, 2, FALSE );
 	page0_label = gtk_label_new( "General" );
 
 	frame_texticons = gtk_frame_new( "Show Toolbar As" );
 	frame_colors = gtk_frame_new( "Color Settings" );
+	frame_other = gtk_frame_new( "Other Settings" );
 
 	vbox_texticons = gtk_vbox_new( TRUE, 2 );
 	vbox_colors = gtk_vbox_new( TRUE, 2 );
+	vbox_other = gtk_vbox_new( TRUE, 2 );
 
 	radio_style_text = gtk_radio_button_new_with_label(NULL, "Text Only");
 	radio_style_icons = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(radio_style_text), "Icons Only" );
@@ -544,6 +581,7 @@ static void menu_settings_cb(GtkWidget *widget, void *user_data)
 	check_color_messages = gtk_check_button_new_with_label( "Display messages in colors?" );
 	check_color_chat = gtk_check_button_new_with_label( "Display chat messages in user's color?" );
 	check_color_summary = gtk_check_button_new_with_label( "Display player summary with colors?" );
+	check_legend_page = gtk_check_button_new_with_label( "Display legend as page besides map?" );
 
 	/* Put things in other things */
 	gtk_box_pack_start_defaults( GTK_BOX(vbox_texticons), radio_style_text );
@@ -554,12 +592,17 @@ static void menu_settings_cb(GtkWidget *widget, void *user_data)
 	gtk_box_pack_start_defaults( GTK_BOX(vbox_colors), check_color_chat );
 	gtk_box_pack_start_defaults( GTK_BOX(vbox_colors), check_color_summary );
 
+	gtk_box_pack_start_defaults( GTK_BOX(vbox_other), check_legend_page );
+
 	gtk_container_add( GTK_CONTAINER(frame_texticons), vbox_texticons );
 	gtk_container_add( GTK_CONTAINER(frame_colors), vbox_colors );
+	gtk_container_add( GTK_CONTAINER(frame_other), vbox_other );
 
 	gtk_table_attach( GTK_TABLE(page0_table), frame_texticons, 0, 1, 0, 1,
 	                  GTK_FILL, GTK_FILL, 5, 5 );
 	gtk_table_attach( GTK_TABLE(page0_table), frame_colors, 1, 2, 0, 1,
+	                  GTK_FILL, GTK_FILL, 5, 5 );
+	gtk_table_attach( GTK_TABLE(page0_table), frame_other, 0, 2, 1, 2,
 	                  GTK_FILL, GTK_FILL, 5, 5 );
 	                  
 	gnome_property_box_append_page( GNOME_PROPERTY_BOX(settings),
@@ -631,6 +674,15 @@ static void menu_settings_cb(GtkWidget *widget, void *user_data)
 		break;
 	}
 
+	legend_page = gnome_config_get_int_with_default(
+		"/gnocatan/settings/legend_page=1",
+		&default_returned);
+	if(default_returned) {
+		legend_page = FALSE;
+	}
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(check_legend_page),
+								 !!legend_page);
+
 	/* Signal Connections */
 	gtk_signal_connect( GTK_OBJECT(radio_style_text), "clicked",
 	                    settings_activate_cb, (gpointer)settings );
@@ -644,6 +696,8 @@ static void menu_settings_cb(GtkWidget *widget, void *user_data)
 	                    settings_activate_cb, (gpointer)settings );
 	gtk_signal_connect( GTK_OBJECT(check_color_summary), "clicked",
 	                    settings_activate_cb, (gpointer)settings );
+	gtk_signal_connect( GTK_OBJECT(check_legend_page), "clicked",
+	                    settings_activate_cb, (gpointer)settings );
 	gtk_signal_connect( GTK_OBJECT(settings), "apply",
 	                    settings_apply_cb, NULL );
 	
@@ -656,11 +710,15 @@ static void menu_settings_cb(GtkWidget *widget, void *user_data)
 	gtk_widget_show( check_color_chat );
 	gtk_widget_show( check_color_summary );
 
+	gtk_widget_show( check_legend_page );
+
 	gtk_widget_show( vbox_texticons );
 	gtk_widget_show( vbox_colors );
+	gtk_widget_show( vbox_other );
 
 	gtk_widget_show( frame_texticons );
 	gtk_widget_show( frame_colors );
+	gtk_widget_show( frame_other );
 
 	gtk_widget_show( page0_table );
 	
@@ -958,6 +1016,13 @@ GtkWidget* gui_build_interface()
 	                                      &default_returned );
 	if(default_returned) {
 		color_summary_enabled = TRUE;
+	}
+
+	legend_page_enabled = 
+	    gnome_config_get_int_with_default("/gnocatan/settings/legend_page=1",
+	                                      &default_returned );
+	if(default_returned) {
+		legend_page_enabled = FALSE;
 	}
 
 	gnome_app_create_menus(GNOME_APP(app_window), main_menu);

@@ -122,6 +122,7 @@ void identity_set_dice(gint die1, gint die2);
 GtkWidget *identity_build_panel(void);
 
 /* legend.c */
+GtkWidget *legend_create_content(void);
 GtkWidget *legend_create_dlg(void);
 
 /* monopoly.c */
