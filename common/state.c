@@ -528,6 +528,15 @@ void sm_pop_all(StateMachine *sm)
 	sm->stack_ptr = -1;
 }
 
+void sm_pop_all_and_goto(StateMachine *sm, StateFunc new_state)
+{
+	sm->stack_ptr = 0;
+	sm->stack[sm->stack_ptr] = new_state;
+	route_event(sm, SM_ENTER);
+	route_event(sm, SM_INIT);
+
+}
+
 StateFunc sm_previous(StateMachine *sm)
 {
 	g_assert(sm->stack_ptr > 0);

@@ -186,6 +186,7 @@ void sm_goto(StateMachine *sm, StateFunc new_state);
 void sm_push(StateMachine *sm, StateFunc new_state);
 void sm_pop(StateMachine *sm);
 void sm_pop_all(StateMachine *sm);
+void sm_pop_all_and_goto(StateMachine *sm, StateFunc new_state);
 StateFunc sm_current(StateMachine *sm);
 StateFunc sm_previous(StateMachine *sm);
 void sm_gui_register_destroy(StateMachine *sm, void *widget, gint id);
