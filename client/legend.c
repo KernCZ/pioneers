@@ -109,6 +109,7 @@ GtkWidget *legend_create_dlg()
 	GtkWidget *frame;
 	GtkWidget *table;
 	GtkWidget *vsep;
+	gint num_rows;
 
 	if (legend_dlg != NULL)
 		return legend_dlg;
@@ -158,17 +159,27 @@ GtkWidget *legend_create_dlg()
 	gtk_widget_show(frame);
 	gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, TRUE, 0);
 
-	table = gtk_table_new(4, 2, FALSE);
+	num_rows = 4;
+	if (game_params->num_build_type[BUILD_SHIP] > 0)
+	    num_rows++;
+	if (game_params->num_build_type[BUILD_BRIDGE] > 0)
+	    num_rows++;
+	table = gtk_table_new(num_rows, 2, FALSE);
 	gtk_widget_show(table);
 	gtk_container_add(GTK_CONTAINER(frame), table);
 	gtk_container_border_width(GTK_CONTAINER(table), 5);
 	gtk_table_set_row_spacings(GTK_TABLE(table), 3);
 	gtk_table_set_col_spacings(GTK_TABLE(table), 5);
 
-	add_legend_cost(table, 0, _("Road"), _("brick + lumber"));
-	add_legend_cost(table, 1, _("Settlement"), _("brick + grain + wool + lumber"));
-	add_legend_cost(table, 2, _("City"), _("2 grain + 3 ore"));
-	add_legend_cost(table, 3, _("Development Card"), _("grain + ore + wool"));
+	num_rows = 0;
+	add_legend_cost(table, num_rows++, _("Road"), _("brick + lumber"));
+	if (game_params->num_build_type[BUILD_SHIP] > 0)
+	    add_legend_cost(table, num_rows++, _("Ship"), _("wool + lumber"));
+	if (game_params->num_build_type[BUILD_BRIDGE] > 0)
+	    add_legend_cost(table, num_rows++, _("Bridge"), _("brick + wool + lumber"));
+	add_legend_cost(table, num_rows++, _("Settlement"), _("brick + grain + wool + lumber"));
+	add_legend_cost(table, num_rows++, _("City"), _("2 grain + 3 ore"));
+	add_legend_cost(table, num_rows++, _("Development Card"), _("grain + ore + wool"));
 
         gtk_widget_show(legend_dlg);
 	gnome_dialog_set_close(GNOME_DIALOG(legend_dlg), TRUE);
