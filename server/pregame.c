@@ -186,11 +186,13 @@ static void try_setup_done(Player *player)
 		/* Going back for second setup phase
 		 */
 		game->double_setup = FALSE;
-		game->setup_player = g_list_previous(game->setup_player);
+		do {
+			game->setup_player = g_list_previous(game->setup_player);
+		} while (game->setup_player && ((Player *)game->setup_player->data)->num == -1);
+		if (game->setup_player_name)
+			g_free(game->setup_player_name);
 		if (game->setup_player != NULL) {
 			start_setup_player(game->setup_player->data);
-			if (!game->setup_player_name)
-				g_free(game->setup_player_name);
 			game->setup_player_name = g_strdup(((Player *)game->setup_player->data)->name);
 		}
 		else {
@@ -201,8 +203,10 @@ static void try_setup_done(Player *player)
 	} else {
 		/* First setup phase
 		 */
-		game->setup_player = g_list_next(game->setup_player);
-		if (!game->setup_player_name)
+		do {
+			game->setup_player = g_list_next(game->setup_player);
+		} while (game->setup_player && ((Player *)game->setup_player->data)->num == -1);
+		if (game->setup_player_name)
 			g_free(game->setup_player_name);
 		game->setup_player_name = g_strdup(((Player *)game->setup_player->data)->name);
 		/* Last player gets double setup
@@ -296,7 +300,9 @@ static void try_start_game(Game *game)
 	 */
 	meta_start_game();
 	game->setup_player = game->player_list;
-	if (!game->setup_player_name)
+	while (((Player *)game->setup_player->data)->num < 0)
+		game->setup_player = game->setup_player->next;
+	if (game->setup_player_name)
 		g_free(game->setup_player_name);
 	game->setup_player_name = g_strdup(((Player *)game->setup_player->data)->name);
 	game->double_setup = game->reverse_setup = FALSE;
@@ -374,7 +380,7 @@ gboolean send_gameinfo(Map *map, Hex *hex, StateMachine *sm)
 			case BUILD_SHIP:
 				sm_send(sm, "SH%d,%d,%d,%d\n", hex->x,
 					hex->y, i,
-					hex->nodes[i]->owner);
+					hex->edges[i]->owner);
 				break;
 			case BUILD_BRIDGE:
 				sm_send(sm, "B%d,%d,%d,%d\n", hex->x,

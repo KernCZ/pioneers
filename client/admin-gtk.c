@@ -40,33 +40,43 @@ static gint server_port_int = 5556;
 void
 admin_net_event( NetEvent event, Session *admin_session, gchar *line )
 {
+#ifdef PRINT_INFO
 	g_print( "admin_event: event = %#x, admin_session = %p, line = %s\n",
 		event, admin_session, line );
+#endif
 	
 	switch( event ) {
 		case NET_READ:
 				/* there is data to be read */
 				
+#ifdef PRINT_INFO
 				g_print( "admin_event: NET_READ: line = '%s'\n", line );
+#endif
 				break;
 		
 		case NET_CONNECT:
 				/* connect() succeeded */
 				
+#ifdef PRINT_INFO
 				g_print( "admin_event: NET_CONNECT\n" );
+#endif
 				break;
 		
 		case NET_CONNECT_FAIL:
 				/* connect() failed */
 				
+#ifdef PRINT_INFO
 				g_print( "admin_event: NET_CONNECT_FAIL (falling through to NET_CLOSE...)\n" );
+#endif
 				
 				/* fall through to NET_CLOSE */
 		
 		case NET_CLOSE:
 				/* connection has been closed */
 				
+#ifdef PRINT_INFO
 				g_print( "admin_event: NET_CLOSE\n" );
+#endif
 				net_free( admin_session );
 				_admin_session = NULL;
 				break;

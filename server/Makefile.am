@@ -20,6 +20,7 @@ libgnocatan_server_a_SOURCES = \
 	buildutil.c \
 	develop.c \
 	discard.c \
+	gold.c \
 	gnocatan-server.c \
 	gnocatan-server.h \
 	meta.c \
@@ -53,10 +54,11 @@ gnocatan_server_console_LDADD = \
 	$(GLIB_LIBS)
 
 config_DATA = \
-	5-6-player.game \
 	default.game \
+	5-6-player.game \
 	four-islands.game \
 	seafarers.game \
+	seafarers-gold.game \
 	small.game \
 	canyon.game \
 	conquest.game \

@@ -379,10 +379,20 @@ void gui_discard_hide()
         gtk_notebook_set_page(GTK_NOTEBOOK(develop_notebook), 0);
 }
 
+void gui_gold_show()
+{
+        gtk_notebook_set_page(GTK_NOTEBOOK(develop_notebook), 2);
+}
+
+void gui_gold_hide()
+{
+        gtk_notebook_set_page(GTK_NOTEBOOK(develop_notebook), 0);
+}
+
 void gui_prompt_show(gchar *message)
 {
 	gtk_label_set_text(GTK_LABEL(prompt_lbl), message);
-        gtk_notebook_set_page(GTK_NOTEBOOK(develop_notebook), 2);
+        gtk_notebook_set_page(GTK_NOTEBOOK(develop_notebook), 3);
 }
 
 void gui_prompt_hide()
@@ -409,7 +419,9 @@ static GtkWidget *build_develop_panel()
 	gtk_notebook_insert_page(GTK_NOTEBOOK(develop_notebook),
 				 discard_build_page(), NULL, 1);
 	gtk_notebook_insert_page(GTK_NOTEBOOK(develop_notebook),
-				 prompt_build_page(), NULL, 2);
+				 gold_build_page(), NULL, 2);
+	gtk_notebook_insert_page(GTK_NOTEBOOK(develop_notebook),
+				 prompt_build_page(), NULL, 3);
 
 	return develop_notebook;
 }
@@ -960,36 +972,42 @@ static gchar *gnocatan_pixmaps[] = {
 };
 
 static GnomeUIInfo toolbar_uiinfo[] = {
-	{ GNOME_APP_UI_ITEM, N_("Roll Dice"), NULL,
+	{ GNOME_APP_UI_ITEM, N_("Roll Dice\n(F1)"), NULL,
 	  client_event_cb, (gpointer)GUI_ROLL, NULL,
 	  GNOME_APP_PIXMAP_STOCK, GNOCATAN_PIXMAP_DICE, 0, 0, NULL },
-	{ GNOME_APP_UI_ITEM, N_("Trade"), NULL,
+	{ GNOME_APP_UI_ITEM, N_("Trade\n(F2)"), NULL,
 	  client_event_cb, (gpointer)GUI_TRADE, NULL,
 	  GNOME_APP_PIXMAP_STOCK, GNOCATAN_PIXMAP_TRADE, 0, 0, NULL },
-	{ GNOME_APP_UI_ITEM, N_("Road"), NULL,
-	  client_event_cb, (gpointer)GUI_ROAD, NULL,
-	  GNOME_APP_PIXMAP_STOCK, GNOCATAN_PIXMAP_ROAD, 0, 0, NULL },
-	{ GNOME_APP_UI_ITEM, N_("Ship"), NULL,
-	  client_event_cb, (gpointer)GUI_SHIP, NULL,
-	  GNOME_APP_PIXMAP_STOCK, GNOCATAN_PIXMAP_SHIP, 0, 0, NULL },
-	{ GNOME_APP_UI_ITEM, N_("Bridge"), NULL,
-	  client_event_cb, (gpointer)GUI_BRIDGE, NULL,
-	  GNOME_APP_PIXMAP_STOCK, GNOCATAN_PIXMAP_BRIDGE, 0, 0, NULL },
-	{ GNOME_APP_UI_ITEM, N_("Settlement"), NULL,
-	  client_event_cb, (gpointer)GUI_SETTLEMENT, NULL,
-	  GNOME_APP_PIXMAP_STOCK, GNOCATAN_PIXMAP_SETTLEMENT, 0, 0, NULL },
-	{ GNOME_APP_UI_ITEM, N_("City"), NULL,
-	  client_event_cb, (gpointer)GUI_CITY, NULL,
-	  GNOME_APP_PIXMAP_STOCK, GNOCATAN_PIXMAP_CITY, 0, 0, NULL },
-	{ GNOME_APP_UI_ITEM, N_("Develop"), NULL,
-	  client_event_cb, (gpointer)GUI_BUY_DEVELOP, NULL,
-	  GNOME_APP_PIXMAP_STOCK, GNOCATAN_PIXMAP_DEVELOP, 0, 0, NULL },
-	{ GNOME_APP_UI_ITEM, N_("Undo"), NULL,
+	{ GNOME_APP_UI_ITEM, N_("Undo\n(F3)"), NULL,
 	  client_event_cb, (gpointer)GUI_UNDO, NULL,
 	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_PIXMAP_UNDO, 0, 0, NULL },
-	{ GNOME_APP_UI_ITEM, N_("Finish"), NULL,
+	{ GNOME_APP_UI_ITEM, N_("Finish\n(F4)"), NULL,
 	  client_event_cb, (gpointer)GUI_FINISH, NULL,
 	  GNOME_APP_PIXMAP_STOCK, GNOCATAN_PIXMAP_FINISH, 0, 0, NULL },
+
+	{ GNOME_APP_UI_ITEM, N_("Road\n(F5)"), NULL,
+	  client_event_cb, (gpointer)GUI_ROAD, NULL,
+	  GNOME_APP_PIXMAP_STOCK, GNOCATAN_PIXMAP_ROAD, 0, 0, NULL },
+	{ GNOME_APP_UI_ITEM, N_("Ship\n(F6)"), NULL,
+	  client_event_cb, (gpointer)GUI_SHIP, NULL,
+	  GNOME_APP_PIXMAP_STOCK, GNOCATAN_PIXMAP_SHIP, 0, 0, NULL },
+	{ GNOME_APP_UI_ITEM, N_("Move Ship\n(F7)"), NULL,
+	  client_event_cb, (gpointer)GUI_MOVE_SHIP, NULL,
+	  GNOME_APP_PIXMAP_STOCK, GNOCATAN_PIXMAP_SHIP, 0, 0, NULL },
+	{ GNOME_APP_UI_ITEM, N_("Bridge\n(F8)"), NULL,
+	  client_event_cb, (gpointer)GUI_BRIDGE, NULL,
+	  GNOME_APP_PIXMAP_STOCK, GNOCATAN_PIXMAP_BRIDGE, 0, 0, NULL },
+
+	{ GNOME_APP_UI_ITEM, N_("Settlement\n(F9)"), NULL,
+	  client_event_cb, (gpointer)GUI_SETTLEMENT, NULL,
+	  GNOME_APP_PIXMAP_STOCK, GNOCATAN_PIXMAP_SETTLEMENT, 0, 0, NULL },
+	{ GNOME_APP_UI_ITEM, N_("City\n(F10)"), NULL,
+	  client_event_cb, (gpointer)GUI_CITY, NULL,
+	  GNOME_APP_PIXMAP_STOCK, GNOCATAN_PIXMAP_CITY, 0, 0, NULL },
+	{ GNOME_APP_UI_ITEM, N_("Develop\n(F11)"), NULL,
+	  client_event_cb, (gpointer)GUI_BUY_DEVELOP, NULL,
+	  GNOME_APP_PIXMAP_STOCK, GNOCATAN_PIXMAP_DEVELOP, 0, 0, NULL },
+
 	{ GNOME_APP_UI_ENDOFINFO }
 };
 
@@ -1033,6 +1051,7 @@ void gui_set_game_params(GameParams *params)
 
 	show_uiinfo(GUI_ROAD, params->num_build_type[BUILD_ROAD] > 0);
 	show_uiinfo(GUI_SHIP, params->num_build_type[BUILD_SHIP] > 0);
+	show_uiinfo(GUI_MOVE_SHIP, params->num_build_type[BUILD_SHIP] > 0);
 	show_uiinfo(GUI_BRIDGE, params->num_build_type[BUILD_BRIDGE] > 0);
 	show_uiinfo(GUI_SETTLEMENT, params->num_build_type[BUILD_SETTLEMENT] > 0);
 	show_uiinfo(GUI_CITY, params->num_build_type[BUILD_CITY] > 0);
@@ -1088,6 +1107,56 @@ static void register_gnocatan_pixmaps()
 					    GNOME_STOCK_PIXMAP_REGULAR,
 					    (GnomeStockPixmapEntry *)entry);
 	}
+}
+
+static gint hotkeys_handler (GtkWidget *w, GdkEvent *e, gpointer data)
+{
+	WidgetState *gui;
+	gint arg;
+	switch (e->key.keyval) {
+	case GDK_F1:
+		arg = GUI_ROLL;
+		break;
+	case GDK_F2:
+		arg = GUI_TRADE;
+		break;
+	case GDK_F3:
+		arg = GUI_UNDO;
+		break;
+	case GDK_F4:
+		arg = GUI_FINISH;
+		break;
+
+	case GDK_F5:
+		arg = GUI_ROAD;
+		break;
+	case GDK_F6:
+		arg = GUI_SHIP;
+		break;
+	case GDK_F7:
+		arg = GUI_MOVE_SHIP;
+		break;
+	case GDK_F8:
+		arg = GUI_BRIDGE;
+		break;
+
+	case GDK_F9:
+		arg = GUI_SETTLEMENT;
+		break;
+	case GDK_F10:
+		arg = GUI_CITY;
+		break;
+	case GDK_F11:
+		arg = GUI_BUY_DEVELOP;
+		break;
+	case GDK_Escape:
+		arg = GUI_QUOTE_REJECT;
+		break;
+	default:
+		return 0; /* not handled */
+	}
+	client_event_cb (NULL, arg);
+	return 1; /* handled */
 }
 
 GtkWidget* gui_build_interface()
@@ -1160,12 +1229,16 @@ GtkWidget* gui_build_interface()
 	gnome_app_set_contents(GNOME_APP(app_window), build_main_interface());
 	build_status_bar();
 
+	gtk_signal_connect(GTK_OBJECT(app_window), "key_press_event",
+			   GTK_SIGNAL_FUNC(hotkeys_handler), NULL);
+
 	gtk_widget_show(app_window);
 
 	register_uiinfo(game_menu);
 	register_uiinfo(toolbar_uiinfo);
 
 	show_uiinfo(GUI_SHIP, FALSE);
+	show_uiinfo(GUI_MOVE_SHIP, FALSE);
 	show_uiinfo(GUI_BRIDGE, FALSE);
 
 	return app_window;

@@ -29,6 +29,7 @@ typedef struct {
 	GList *build_list;	/* list of building that can be undone */
 	gint prev_assets[NO_RESOURCE]; /* remember previous resources */
 	gint assets[NO_RESOURCE]; /* our resources */
+	gint gold;		/* how much gold will we recieve? */
 	DevelDeck *devel;	/* development cards we own */
 	gint discard_num;	/* number of resources we must discard */
 
@@ -85,6 +86,7 @@ struct Game {
 };
 
 /* buildutil.c */
+extern gint ship_move_sx, ship_move_sy, ship_move_spos;
 void node_add(Player *player,
 	      BuildType type, int x, int y, int pos, gboolean paid_for);
 void edge_add(Player *player,
@@ -106,7 +108,8 @@ gboolean mode_wait_others_place_robber(Player *player, gint event);
 gboolean mode_discard_resources_place_robber(Player *player, gint event);
 
 /* meta.c */
-gchar *meta_server_name;
+extern gchar *meta_server_name;
+extern gchar *hostname;
 void meta_register(gchar *server, gchar *port, Game *game);
 void meta_start_game(void);
 void meta_report_num_players(gint num_players);
@@ -192,5 +195,8 @@ void gui_player_add(void *player);
 void gui_player_remove(void *player);
 void gui_player_rename(void *player);
 void gui_ui_enable(gint sensitive);
+
+/* gold.c */
+void distribute_first (Player *player);
 
 #endif

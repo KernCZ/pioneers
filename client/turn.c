@@ -71,6 +71,13 @@ gboolean turn_can_build_ship()
 		&& map_can_place_ship(map, my_player_num());
 }
 
+gboolean turn_can_move_ship()
+{
+	return have_rolled_dice()
+		&& stock_num_ships() < game_params->num_build_type[BUILD_SHIP]
+		&& map_can_place_ship(map, my_player_num());
+}
+
 gboolean turn_can_build_bridge()
 {
 	return have_rolled_dice()

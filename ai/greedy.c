@@ -67,7 +67,7 @@ static Edge *best_road_spot(Map *map, int mynum, resource_values_t *resval);
 
 typedef struct node_seen_set_s {
     
-    Node *seen[100]; /* xxx */
+    Node *seen[1000]; /* xxx */
     int size;
 
 } node_seen_set_t;

@@ -46,6 +46,8 @@ void gui_show_splash_page(gboolean show);
 
 void gui_discard_show(void);
 void gui_discard_hide(void);
+void gui_gold_show(void);
+void gui_gold_hide(void);
 void gui_prompt_show(gchar *message);
 void gui_prompt_hide(void);
 

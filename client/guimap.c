@@ -489,7 +489,9 @@ static gboolean display_hex(Map *map, Hex *hex, GuiMap *gmap)
 			  case WOOL_RESOURCE:	str = typeind ? _("2:1") : _("W"); break;
 			  case LUMBER_RESOURCE: str = typeind ? _("2:1") : _("L"); break;
 			  case ANY_RESOURCE:	str = _("3:1"); break;
-			  case NO_RESOURCE:		str = ""; break;
+			  case NO_RESOURCE:	str = ""; break;
+			  case GOLD_RESOURCE:	str = ""; break;
+
 			}
 			gdk_text_extents(roll_font, str, strlen(str),
 							 &lbearing, &rbearing,
@@ -1159,6 +1161,7 @@ static void draw_building_cursor(GuiMap *gmap)
 	switch (node->type) {
 	case BUILD_ROAD:
 	case BUILD_SHIP:
+	case BUILD_MOVE_SHIP:
 	case BUILD_BRIDGE:
 		/* TODO: If our type is any of the above, then we have a
 		   serious internal consistency problem. Warn us in this
@@ -1374,6 +1377,7 @@ void guimap_cursor_set(GuiMap *gmap, CursorType cursor_type, int owner,
 	if (gmap->cursor_type != NO_CURSOR)
 		cursors[gmap->cursor_type].erase_cursor(gmap);
 	gmap->cursor_type = cursor_type;
-	if (gmap->cursor_type == NO_CURSOR)
+	/*if (gmap->cursor_type == NO_CURSOR)*/
 		gmap->cursor = NULL;
+	/*else cursors[gmap->cursor_type].draw_cursor(gmap);*/
 }

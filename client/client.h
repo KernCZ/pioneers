@@ -21,6 +21,7 @@ typedef enum {
 	GUI_BUY_DEVELOP,
 	GUI_DISCARD,
 	GUI_CHANGE_NAME,
+	GUI_CHOOSE_GOLD,
 	GUI_CONNECT,
 	GUI_CONNECT_TRY,
 	GUI_CONNECT_CANCEL,
@@ -42,6 +43,7 @@ typedef enum {
 	GUI_TRADE_CALL,
 	GUI_TRADE_FINISH,
 	GUI_UNDO,
+	GUI_MOVE_SHIP
 } GuiEvents;
 
 typedef enum {
@@ -49,6 +51,7 @@ typedef enum {
 	RESOURCE_MULTICARD
 } ResourceListType;
 
+extern gint ship_moved;
 
 extern GameParams *game_params;
 
@@ -68,6 +71,7 @@ void build_add(BuildType type, gint x, gint y, gint pos, gint *cost,
 	       gboolean newbuild);
 BuildRec *build_last(void);
 void build_remove(BuildType type, gint x, gint y, gint pos);
+void build_move(gint sx, gint sy, gint spos, gint dx, gint dy, gint dpos, gint isundo);
 
 /* chat.c */
 void chat_parser(gint player_num, char chat_str[512]);
@@ -122,6 +126,17 @@ GtkWidget *discard_build_page(void);
 
 /* gameover.c */
 GtkWidget *gameover_create_dlg(gint player_num, gint num_points);
+
+/* gold.c */
+void gold_choose_player_must(gint player_num, gint num, gint *bank,
+		gboolean myturn);
+void gold_choose_player_did(gint player_num, gint *resource_list);
+void gold_choose_begin (void);
+void gold_choose_end (void);
+gint *choose_gold_get_list (void);
+gint gold_choose_num_remaining (void);
+GtkWidget *gold_build_page(void);
+gboolean can_choose_gold (void);
 
 /* identity.c */
 void identity_draw(void);
@@ -245,6 +260,7 @@ void turn_rolled_dice(gint player_num, gint die1, gint die2);
 gboolean turn_can_undo(void);
 gboolean turn_can_build_road(void);
 gboolean turn_can_build_ship(void);
+gboolean turn_can_move_ship(void);
 gboolean turn_can_build_bridge(void);
 gboolean turn_can_build_settlement(void);
 gboolean turn_can_build_city(void);

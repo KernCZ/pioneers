@@ -216,6 +216,7 @@ void edge_add(Player *player, BuildType type, int x, int y, int pos, gboolean pa
 		case BUILD_ROAD: rec->cost = cost_road(); break;
 		case BUILD_SHIP: rec->cost = cost_ship(); break;
 		case BUILD_BRIDGE: rec->cost = cost_bridge(); break;
+		case BUILD_MOVE_SHIP:
 		case BUILD_SETTLEMENT:
 		case BUILD_CITY:
 		case BUILD_NONE:
@@ -232,6 +233,7 @@ void edge_add(Player *player, BuildType type, int x, int y, int pos, gboolean pa
 		case BUILD_ROAD: player->num_roads++; break;
 		case BUILD_BRIDGE: player->num_bridges++; break;
 		case BUILD_SHIP: player->num_ships++; break;
+		case BUILD_MOVE_SHIP:
 		case BUILD_SETTLEMENT:
 		case BUILD_CITY:
 		case BUILD_NONE:
@@ -317,6 +319,16 @@ gboolean perform_undo(Player *player, BuildType type, gint x, gint y, gint pos)
 				 BUILD_SETTLEMENT, rec->x, rec->y, rec->pos);
 		hex->nodes[rec->pos]->type = BUILD_NONE;
 		hex->nodes[rec->pos]->owner = -1;
+		break;
+	case BUILD_MOVE_SHIP:
+		hex->edges[rec->pos]->owner = -1;
+		hex->edges[rec->pos]->type = BUILD_NONE;
+		hex = map_hex(map, ship_move_sx, ship_move_sy);
+		hex->edges[ship_move_spos]->owner = player->num;
+		hex->edges[ship_move_spos]->type = BUILD_SHIP;
+		player_broadcast(player, PB_RESPOND, "move %d %d %d %d %d %d 1\n",
+				ship_move_sx, ship_move_sy, ship_move_spos,
+				rec->x, rec->y, rec->pos);
 		break;
 	}
 

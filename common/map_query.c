@@ -16,6 +16,9 @@
 #include "game.h"
 #include "map.h"
 
+/* global variables... perhaps they should be stored somewhere else */
+gint ship_move_sx, ship_move_sy, ship_move_spos;
+
 /* Local function prototypes */
 gboolean node_has_edge_owned_by(Node *node, gint owner, BuildType type);
 gboolean is_road_valid(Edge *edge, gint owner);
@@ -357,6 +360,68 @@ gboolean can_ship_be_built(Edge *edge, gint owner)
 		&& is_ship_valid(edge, owner);
 }
 
+/* Helper function for can_ship_be_moved */
+static gboolean can_ship_be_moved_node (Node *node, gint owner, Edge *not)
+{
+	gint idx;
+	/* if a building of a different player is on it, it is
+	 * unconnected */
+	if (node->type != BUILD_NONE && node->owner != owner)
+		return TRUE;
+	/* if there is a building of the player, it is connected */
+	if (node->type != BUILD_NONE) return FALSE;
+	/* no buildings: check all edges for ships */
+	for (idx = 0; idx < numElem(node->edges); idx++) {
+		Edge *edge = node->edges[idx];
+		/* If this is a ship of the player, it is connected */
+		if (edge && edge->owner == owner && edge != not
+			&& edge->type == BUILD_SHIP) return FALSE;
+	}
+	return TRUE;
+}
+
+/* Edge cursor check function.
+ *
+ * Determine whether or not a ship can be moved from this edge by the
+ * specified player.  Perform the following checks:
+ *
+ * 1 - Edge must currently have a ship on it.
+ * 2 - On one side, there must be neither a building, nor a ship of the
+ *     specified player.  A ship is allowed, if there is building of a
+ *     different player in between.
+ */
+gboolean can_ship_be_moved(Edge *edge, gint owner)
+{
+	gint idx;
+	/* edge must be a ship of the correct user */
+	if (edge->owner != owner || edge->type != BUILD_SHIP) return FALSE;
+	/* check all nodes, until one is found that is not connected */
+	for (idx = 0; idx < numElem(edge->nodes); idx++)
+		if (can_ship_be_moved_node (edge->nodes[idx], owner, edge))
+			return TRUE;
+	return FALSE;
+}
+
+/* Edge cursor check function.
+ *
+ * Determine whether or not a ship can be moved to this edge by the
+ * specified player.  Perform the following checks:
+ */
+gboolean can_ship_be_moved_to(Edge *edge, gint owner)
+{
+	Edge *from = map_edge (edge->map, ship_move_sx, ship_move_sy,
+			ship_move_spos);
+	gboolean retval;
+	if (edge == from) return FALSE;
+	g_assert (from->owner == owner && from->type == BUILD_SHIP);
+	from->owner = -1;
+	from->type = BUILD_NONE;
+	retval = can_ship_be_built (edge, owner);
+	from->owner = owner;
+	from->type = BUILD_SHIP;
+	return retval;
+}
+
 /* Edge cursor check function.
  *
  * Determine whether or not a bridge can be built on this edge by the
@@ -630,6 +695,7 @@ gboolean map_building_vacant(Map *map, BuildType type,
 			|| node->type == BUILD_SETTLEMENT;
 	case BUILD_ROAD:
 	case BUILD_SHIP:
+	case BUILD_MOVE_SHIP:
 	case BUILD_BRIDGE:
 		g_error("map_building_vacant() called with edge");
 		return FALSE;
@@ -837,45 +903,47 @@ static GList *find_tail_edges(Edge *edge)
 	return tails;
 }
 
-/* For all roads the are "owned" by this hex, work out the length of
- * the road.  If the length of the road exceeds the previous maximum
- * for the owning player, update the maximum.
- */
+/* calculate the longest road */
+static gint find_longest_road_recursive (Edge *edge)
+{
+	edge->visited = 1;
+	gint len = 0;
+	gint nodeidx, edgeidx;
+	for (nodeidx = 0; nodeidx < numElem(edge->nodes); nodeidx++) {
+		Node *node = edge->nodes[nodeidx];
+		if (node->type != BUILD_NONE && node->owner != edge->owner)
+			continue;
+		for (edgeidx = 0; edgeidx < numElem(node->edges); edgeidx++) {
+			Edge *here = node->edges[edgeidx];
+			if (here && !here->visited
+				&& here->owner == edge->owner) {
+				/* don't allow ships to extend roads, except
+				 * if there is a construction in between */
+				if (node->type != BUILD_NONE ||
+					here->type == edge->type) {
+					gint thislen = find_longest_road_recursive (here);
+					if (thislen > len) len = thislen;
+				}
+			}
+		}
+	}
+	edge->visited = 0;
+	return len + 1;
+}
+
 static gboolean find_longest_road(Map *map, Hex *hex, gint *lengths)
 {
 	gint idx;
-
 	for (idx = 0; idx < numElem(hex->edges); idx++) {
 		Edge *edge = hex->edges[idx];
 		gint len;
-		GList *tails;
-
+		/* skip unowned edges, and edges that will be handled by
+		 * other hexes */
 		if (edge->owner < 0 || edge->x != hex->x || edge->y != hex->y)
 			continue;
-		if (edge->visited)
-			continue;
-
-		/* Build a list of all "tail" edges in connected edge group.
-		 */
-		tails = find_tail_edges(edge);
-		if (tails == NULL)
-			/* There are no tails, so the edge group must
-			 * be a cycle.  This means we can start
-			 * anywhere in the group.
-			 */
-			tails = g_list_append(NULL, edge);
-		/* Work out the longest road that can be traced from
-		 * each "tail" edge.
-		 */
-                while (tails != NULL) {
-			Edge *tail = tails->data;
-			len = calc_road_length(tail);
-			if (len > lengths[tail->owner])
-				lengths[tail->owner] = len;
-                        tails = g_list_remove(tails, tail);
-                }
+		len = find_longest_road_recursive (edge);
+		if (len > lengths[edge->owner]) lengths[edge->owner] = len;
 	}
-
 	return FALSE;
 }
 
@@ -897,30 +965,9 @@ static gboolean zero_visited(Map *map, Hex *hex, void *closure)
 	return FALSE;
 }
 
-/* New improved algorithm for finding the longest road for each
- * player.  For each connected group of edges made of roads, ships,
- * and bridges, build a list of "tail" edges which are only connected
- * at one end.  If there are no such edges, choose one edge at random.
- * 
- * For each "tail" edge in the list, count the maximum length path
- * that can be traced from that edge.
- *
- * Mark the entire group of edges as searched.
- *
- * The method for finding connected edge groups is a simple map
- * traversal.  Whenever an edge is found which is not marked as
- * searched, it is part of a new group.
- *
- * Marking is done as follows;
- * 1 - Traverse map and zero the visited attribute of each edge / node.
- * 2 - Traverse map looking for edges with visited == 0, when one is
- *     found;
- * 2a - Do exhaustive search of all edges in group setting visited to
- *      1, build list of "tail" edges.  At the end of this process,
- *      all edges in group will have visited == 1.
- * 2b - From each tail edge, find the longest path that can be traced
- *      from that edge.  When visiting an edge / group, visited is set to
- *      2.  When unwinding the call stack, visited is restored to 1.
+/* Finding the longest road:
+ * 1 - set the visited attribute of all edges and nodes to 0
+ * 2 - for every edge, find the longest road using this one as a tail
  */
 void map_longest_road(Map *map, gint *lengths, gint num_players)
 {

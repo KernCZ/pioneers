@@ -401,6 +401,9 @@ void sm_vnformat(gchar *buff, gint len, gchar *fmt, va_list ap)
 			case BUILD_NONE:
 				g_error("BUILD_NONE passed to sm_vnformat");
 				break;
+			case BUILD_MOVE_SHIP:
+				g_error("BUILD_MOVE_SHIP passed to sm_vnformat");
+				break;
 			}
 			break;
 		case 'R': /* list of 5 integer resource counts */

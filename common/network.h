@@ -10,6 +10,8 @@
 #ifndef __network_h
 #define __network_h
 
+#include <glib.h>
+
 typedef enum {
 	NET_CONNECT,
 	NET_CONNECT_FAIL,

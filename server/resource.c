@@ -56,6 +56,7 @@ void resource_start(Game *game)
 
 		memcpy(player->prev_assets,
 		       player->assets, sizeof(player->assets));
+		player->gold = 0;
 	}
 }
 

@@ -695,6 +695,11 @@ void player_build_add(gint player_num,
 		/* This clause here to remove a compiler warning.
 		   Feature will be included at a later date. */
 		break;
+	case BUILD_MOVE_SHIP:
+		/* This clause here to remove a compiler warning.
+		   It should not be possible to reach this code. */
+		abort ();
+		break;
 	}
 }
 
@@ -758,7 +763,33 @@ void player_build_remove(gint player_num,
 		/* This clause here to remove a compiler warning.
 		   Feature will be included at a later date. */
 		break;
+	case BUILD_MOVE_SHIP:
+		/* This clause here to remove a compiler warning.
+		   It should not be possible to reach this case. */
+		abort ();
+		break;
 	}
+}
+
+void player_build_move(gint player_num, gint sx, gint sy, gint spos,
+		gint dx, gint dy, gint dpos, gint isundo) {
+	Edge *from = map_edge(map, sx, sy, spos),
+		*to = map_edge(map, dx, dy, dpos);
+	if (isundo) {
+		Edge *tmp = from;
+		from = to;
+		to = tmp;
+	}
+	from->owner = -1;
+	gui_draw_edge (from);
+	from->type = BUILD_NONE;
+	to->owner = player_num;
+	to->type = BUILD_SHIP;
+	gui_draw_edge (to);
+	if (isundo) log_message(MSG_BUILD, _("%s moved a ship back.\n"),
+				player_name (player_num, TRUE));
+	else log_message(MSG_BUILD, _("%s moved a ship.\n"),
+			player_name (player_num, TRUE));
 }
 
 void player_resource_action(gint player_num, gchar *action,

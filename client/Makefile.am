@@ -45,6 +45,7 @@ gnocatan_SOURCES = \
 	discard.c \
 	gameover.c \
 	gnocatan.c \
+	gold.c \
 	gui.c \
 	gui.h \
 	guimap.c \
@@ -93,6 +94,7 @@ image_DATA = \
 	pasture.png \
 	plain.png \
 	sea.png \
+	gold.png \
 	splash.png \
 	tick.png
 

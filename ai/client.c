@@ -259,6 +259,7 @@ static gboolean check_other_players(StateMachine *sm)
 	gint player_num, victim_num, card_idx;
 	gint turn_num, discard_num, num, ratio, die1, die2, x, y, pos;
 	gint resource_list[NO_RESOURCE];
+	gint sx, sy, spos, dx, dy, dpos, isundo;
 	char *tmp;
 
 	if (check_chat_or_name(sm))
@@ -271,6 +272,10 @@ static gboolean check_other_players(StateMachine *sm)
 		client_chat(CHAT_BUILT, (void *)build_type,
 					player_num == my_player_num(), 0);
 	    return TRUE;
+	}
+	if (sm_recv(sm, "move %d %d %d %d %d %d %d", &sx, &sy, &spos, &dx, &dy, &dpos, &isundo)) {
+		player_build_move(player_num, sx, sy, spos, dx, dy, dpos, isundo);
+		return TRUE;
 	}
 	if (sm_recv(sm, "remove %B %d %d %d", &build_type, &x, &y, &pos)) {
 		player_build_remove(player_num, build_type, x, y, pos);

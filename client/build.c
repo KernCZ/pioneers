@@ -136,3 +136,44 @@ void build_remove(BuildType type, gint x, gint y, gint pos)
 
 	player_build_remove(my_player_num(), type, x, y, pos);
 }
+
+/* Move a ship */
+void build_move(gint sx, gint sy, gint spos, gint dx, gint dy, gint dpos, gint isundo)
+{
+	GList *list;
+	BuildRec *rec;
+	if (isundo) {
+		g_assert(build_list != NULL);
+		list = g_list_last(build_list);
+		rec = list->data;
+		g_assert (rec->type = BUILD_MOVE_SHIP
+				&& rec->x == dx
+				&& rec->y == dy
+				&& rec->pos == dpos
+				&& ship_move_sx == sx
+				&& ship_move_sy == sy
+				&& ship_move_spos == spos);
+		build_list = g_list_remove(build_list, rec);
+		g_free (rec);
+		ship_moved = FALSE;
+		/* If the build_list is now empty (no more items to undo),
+		 * clear built flag so trading is reallowed with
+		 * strict-trade */
+		if (build_list == NULL)
+			built = FALSE;
+	} else {
+		rec = g_malloc0(sizeof(*rec));
+		rec->type = BUILD_MOVE_SHIP;
+		rec->x = dx;
+		rec->y = dy;
+		rec->pos = dpos;
+		rec->cost = NULL;
+		build_list = g_list_append(build_list, rec);
+		built = TRUE;
+		ship_move_sx = sx;
+		ship_move_sy = sy;
+		ship_move_spos = spos;
+		ship_moved = TRUE;
+	}
+	player_build_move(my_player_num(), sx, sy, spos, dx, dy, dpos, isundo);
+}

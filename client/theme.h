@@ -45,6 +45,7 @@ typedef enum {
 	MOUNTAIN_TILE,
 	PASTURE_TILE,
 	FOREST_TILE,
+	GOLD_TILE,
 	DESERT_TILE,
 	SEA_TILE,
 	BOARD_TILE,
@@ -72,11 +73,11 @@ typedef struct _MapTheme {
 	gchar      *name;
 	gchar      *subdir;
 	SCALEMODE  scaling;
-	gchar      *terrain_tile_names[8];
+	gchar      *terrain_tile_names[9];
 	gchar      *port_tile_names[6];
-	GdkPixmap  *terrain_tiles[8];
+	GdkPixmap  *terrain_tiles[9];
 	GdkPixmap  *port_tiles[6];
-	TScaleData scaledata[8];
+	TScaleData scaledata[9];
 	TColor     colors[TC_MAX];
 	TColor     ovr_colors[TC_MAX_OVRTILE][TC_MAX_OVERRIDE];
 } MapTheme;

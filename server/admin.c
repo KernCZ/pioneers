@@ -122,56 +122,72 @@ void load_game_types( gchar *path )
 /* game configuration functions / callbacks */
 void cfg_set_num_players( gint num_players )
 {
+#ifdef PRINT_INFO
 	g_print( "cfg_set_num_players: %d\n", num_players );
+#endif
 	if( params )
 		params->num_players = num_players;
 }
 
 void cfg_set_sevens_rule( gint sevens_rule )
 {
+#ifdef PRINT_INFO
 	g_print( "cfg_set_sevens_rule: %d\n", sevens_rule );
+#endif
 	if( params )
 		params->sevens_rule = sevens_rule;
 }
 
 void cfg_set_victory_points( gint victory_points )
 {
+#ifdef PRINT_INFO
 	g_print( "cfg_set_victory_points: %d\n", victory_points );
+#endif
 	if( params )
 		params->victory_points = victory_points;
 }
 
 void cfg_set_game( gchar *game )
 {
+#ifdef PRINT_INFO
 	g_print( "cfg_set_game: %s\n", game );
+#endif
 	if( params )
 		params = game_list_find_item(game);
 }
 
 void cfg_set_terrain_type( gint terrain_type )
 {
+#ifdef PRINT_INFO
 	g_print( "cfg_set_terrain_type: %d\n", terrain_type );
+#endif
 	if( params )
 		params->random_terrain = (terrain_type == TERRAIN_RANDOM) ? 1 : 0;
 }
 
 void cfg_set_tournament_time( gint tournament_time )
 {
+#ifdef PRINT_INFO
     g_print("cfg_set_tournament_time: %d\n", tournament_time);
+#endif
 	if( params )
 		params->tournament_time = tournament_time;
 }
 
 void cfg_set_exit( gboolean exitdone)
 {
+#ifdef PRINT_INFO
     g_print("cfg_set_exit: %d\n", exitdone);
+#endif
 	if( params )
 		params->exit_when_done = exitdone;
 }
 
 void cfg_set_timeout( gint to )
 {
+#ifdef PRINT_INFO
 	g_print( "cfg_set_timeout: %d\n", to );
+#endif
 	no_player_timeout = to;
 }
 
@@ -182,12 +198,14 @@ gboolean start_server( gchar *port, gboolean register_server )
 	}
 	
 	if( params ) {
+#ifdef PRINT_INFO
 		g_print( "game type: %s\n", params->title );
 		g_print( "num players: %d\n", params->num_players );
 		g_print( "victory points: %d\n", params->victory_points );
 		g_print( "terrain type: %s\n", (params->random_terrain) ? "random" : "default" );
 		g_print( "Tournament time: %d\n", params->tournament_time );
 		g_print( "Exit when done: %d\n", params->exit_when_done);
+#endif
 
 	} else {
 		g_critical( "Game parameters not set!" );
@@ -279,21 +297,27 @@ admin_run_command( Session *admin_session, gchar *line )
 void
 admin_event( NetEvent event, Session *admin_session, gchar *line )
 {
+#ifdef PRINT_INFO
 	g_print( "admin_event: event = %#x, admin_session = %p, line = %s\n",
 		event, admin_session, line );
+#endif
 	
 	switch( event ) {
 		case NET_READ:
 				/* there is data to be read */
 				
+#ifdef PRINT_INFO
 				g_print( "admin_event: NET_READ: line = '%s'\n", line );
+#endif
 				admin_run_command( admin_session, line );
 				break;
 		
 		case NET_CLOSE:
 				/* connection has been closed */
 				
+#ifdef PRINT_INFO
 				g_print( "admin_event: NET_CLOSE\n" );
+#endif
 				net_free( admin_session );
 				admin_session = NULL;
 				break;
@@ -301,13 +325,17 @@ admin_event( NetEvent event, Session *admin_session, gchar *line )
 		case NET_CONNECT:
 				/* connect() succeeded -- shouldn't get here */
 				
+#ifdef PRINT_INFO
 				g_print( "admin_event: NET_CONNECT\n" );
+#endif
 				break;
 		
 		case NET_CONNECT_FAIL:
 				/* connect() failed -- shouldn't get here */
 				
+#ifdef PRINT_INFO
 				g_print( "admin_event: NET_CONNECT_FAIL\n" );
+#endif
 				break;
 		
 		default:
@@ -350,7 +378,9 @@ admin_listen( gchar *port )
 	
 	/* open up a socket on which to listen for connections */
 	_accept_info->fd = open_listen_socket( port );
+#ifdef PRINT_INFO
 	g_print( "admin_listen: fd = %d\n", _accept_info->fd );
+#endif
 	
 	/* set up the callback to handle connections */
 	_accept_info->read_tag = driver->input_add_read( _accept_info->fd,

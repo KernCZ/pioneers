@@ -27,6 +27,7 @@
 GameParams *game_params;
 static gchar *saved_name;
 static StateMachine *state_machine;
+gint ship_moved;
 struct recovery_info_t {
 	gchar prevstate[40];
 	gint turnnum;
@@ -67,6 +68,7 @@ static gboolean mode_domestic_trade(StateMachine *sm, gint event);
 static gboolean mode_domestic_quote(StateMachine *sm, gint event);
 static gboolean mode_domestic_monitor(StateMachine *sm, gint event);
 static gboolean mode_game_over(StateMachine *sm, gint event);
+static gboolean mode_choose_gold(StateMachine *sm, gint event);
 static void recover_from_disconnect(StateMachine *sm,
                                     struct recovery_info_t *rinfo);
 
@@ -276,8 +278,9 @@ static gboolean check_other_players(StateMachine *sm)
 	DevelType devel_type;
 	Resource resource_type, supply_type, receive_type;
 	gint player_num, victim_num, card_idx;
-	gint turn_num, discard_num, num, ratio, die1, die2, x, y, pos;
+	gint turn_num, discard_num, gold_num, num, ratio, die1, die2, x, y, pos;
 	gint resource_list[NO_RESOURCE];
+	gint sx, sy, spos, dx, dy, dpos, isundo;
 
 	if (check_chat_or_name(sm))
 		return TRUE;
@@ -286,6 +289,10 @@ static gboolean check_other_players(StateMachine *sm)
 
 	if (sm_recv(sm, "built %B %d %d %d", &build_type, &x, &y, &pos)) {
 		player_build_add(player_num, build_type, x, y, pos, TRUE);
+		return TRUE;
+	}
+	if (sm_recv(sm, "move %d %d %d %d %d %d %d", &sx, &sy, &spos, &dx, &dy, &dpos, &isundo)) {
+		player_build_move(player_num, sx, sy, spos, dx, dy, dpos, isundo);
 		return TRUE;
 	}
 	if (sm_recv(sm, "remove %B %d %d %d", &build_type, &x, &y, &pos)) {
@@ -327,6 +334,13 @@ static gboolean check_other_players(StateMachine *sm)
 		discard_begin();
 		discard_player_must(player_num, discard_num);
 		sm_push(sm, mode_discard);
+		return TRUE;
+	}
+	if (sm_recv(sm, "prepare-gold %d %R", &gold_num, resource_list)) {
+		gold_choose_begin ();
+		gold_choose_player_must (player_num, gold_num, resource_list,
+				FALSE);
+		sm_push(sm, mode_choose_gold);
 		return TRUE;
 	}
 	if (sm_recv(sm, "is-robber")) {
@@ -715,6 +729,7 @@ static gboolean mode_load_gameinfo(StateMachine *sm, gint event)
 	static gint numdevcards = -1;
 	gint num_roads, num_bridges, num_ships, num_settlements,
 	     num_cities, num_soldiers, road_len;
+	gint turnmovedship;
 	gint opnum, opnassets, opncards, opnsoldiers;
 	gboolean pchapel, puniv, pgov, plibr, pmarket, plongestroad,
 	         plargestarmy;
@@ -763,6 +778,10 @@ static gboolean mode_load_gameinfo(StateMachine *sm, gint event)
 		rinfo.played_develop = TRUE;
 		return TRUE;
 	}
+/*	if (sm_recv(sm, "moved ship", &rinfo.played_develop)) {
+		rinfo.played_develop = TRUE;
+		return TRUE;
+	}*/
 	if (sm_recv(sm, "bought develop", &rinfo.bought_develop)) {
 		rinfo.bought_develop = TRUE;
 		return TRUE;
@@ -963,6 +982,35 @@ static gboolean mode_build_response(StateMachine *sm, gint event)
 	return FALSE;
 }
 
+/* Handle response to move ship command
+ */
+static gboolean mode_move_response(StateMachine *sm, gint event)
+{
+	gint sx, sy, spos, dx, dy, dpos;
+
+	sm_state_name(sm, "mode_move_response");
+	switch (event) {
+	case SM_ENTER:
+		waiting_for_network(TRUE);
+		chat_set_focus();
+		break;
+	case SM_RECV:
+		if (sm_recv(sm, "move %d %d %d %d %d %d 0",
+			    &sx, &sy, &spos, &dx, &dy, &dpos)) {
+		build_move(sx, sy, spos, dx, dy, dpos, 0);
+			waiting_for_network(FALSE);
+			sm_pop(sm);
+			return TRUE;
+		}
+		if (check_other_players(sm))
+			return TRUE;
+		waiting_for_network(FALSE);
+		sm_pop(sm);
+		break;
+	}
+	return FALSE;
+}
+
 /* This is called when the user presses the left-mouse-button on a
  * valid position to place a road during setup.  Tell the server that
  * we wish to place the road, then wait for response.
@@ -982,6 +1030,31 @@ static void build_ship_cb(Edge *edge, gint player_num)
 	gui_cursor_none();
 	sm_send(SM(), "build ship %d %d %d\n", edge->x, edge->y, edge->pos);
 	sm_push(SM(), mode_build_response);
+}
+
+/* This is called when the user presses the left-mouse-button on a
+ * valid position to move a ship (to there).
+ */
+static void do_move_ship_cb(Edge *edge, gint player_num)
+{
+	gui_cursor_none();
+	sm_send(SM(), "move %d %d %d %d %d %d 0\n", ship_move_sx,
+		ship_move_sy, ship_move_spos, edge->x, edge->y, edge->pos);
+	sm_push(SM(), mode_move_response);
+}
+
+/* This is called when the user presses the left-mouse-button on a
+ * valid position to move a ship (from there).
+ */
+static void move_ship_cb(Edge *edge, gint player_num)
+{
+	ship_move_sx = edge->x;
+	ship_move_sy = edge->y;
+	ship_move_spos = edge->pos;
+	gui_cursor_set(SHIP_CURSOR,
+	       (CheckFunc)can_ship_be_moved_to,
+	       (SelectFunc)do_move_ship_cb,
+	       NULL);
 }
 
 /* This is called when the user presses the left-mouse-button on a
@@ -1102,6 +1175,7 @@ static char *setup_msg()
 static gboolean mode_setup(StateMachine *sm, gint event)
 {
 	BuildRec *rec;
+	WidgetState *gui;
 
 	sm_state_name(sm, "mode_setup");
 	switch (event) {
@@ -1124,6 +1198,9 @@ static gboolean mode_setup(StateMachine *sm, gint event)
 			return TRUE;
 		break;
 	case GUI_UNDO:
+		if (sm->is_dead) return FALSE;
+		gui = g_hash_table_lookup(sm->widgets, (gpointer)event);
+		if (gui == NULL || !gui->current) return FALSE;
 		/* The user has pressed the "Undo" button.  Send a
 		 * command to the server to attempt the undo.  The
 		 * server will respond telling us whether the undo was
@@ -1135,6 +1212,9 @@ static gboolean mode_setup(StateMachine *sm, gint event)
 		sm_goto(sm, mode_setup_undo_response);
 		return TRUE;
 	case GUI_ROAD:
+		if (sm->is_dead) return FALSE;
+		gui = g_hash_table_lookup(sm->widgets, (gpointer)event);
+		if (gui == NULL || !gui->current) return FALSE;
 		/* User pressed "Build Road", set the map cursor;
 		 *   shape = ROAD_CURSOR
 		 *   check-if-valid-pos = setup_check_road()
@@ -1145,6 +1225,9 @@ static gboolean mode_setup(StateMachine *sm, gint event)
 			       (SelectFunc)build_road_cb, NULL);
 		return TRUE;
 	case GUI_SHIP:
+		if (sm->is_dead) return FALSE;
+		gui = g_hash_table_lookup(sm->widgets, (gpointer)event);
+		if (gui == NULL || !gui->current) return FALSE;
 		/* User pressed "Build Ship", set the map cursor;
 		 *   shape = SHIP_CURSOR
 		 *   check-if-valid-pos = setup_check_ship()
@@ -1155,6 +1238,9 @@ static gboolean mode_setup(StateMachine *sm, gint event)
 			       (SelectFunc)build_ship_cb, NULL);
 		return TRUE;
 	case GUI_BRIDGE:
+		if (sm->is_dead) return FALSE;
+		gui = g_hash_table_lookup(sm->widgets, (gpointer)event);
+		if (gui == NULL || !gui->current) return FALSE;
 		/* User pressed "Build Bridge", set the map cursor;
 		 *   shape = BRIDGE_CURSOR
 		 *   check-if-valid-pos = setup_check_bridge()
@@ -1165,11 +1251,17 @@ static gboolean mode_setup(StateMachine *sm, gint event)
 			       (SelectFunc)build_bridge_cb, NULL);
 		return TRUE;
 	case GUI_SETTLEMENT:
+		if (sm->is_dead) return FALSE;
+		gui = g_hash_table_lookup(sm->widgets, (gpointer)event);
+		if (gui == NULL || !gui->current) return FALSE;
 		gui_cursor_set(SETTLEMENT_CURSOR,
 			       (CheckFunc)setup_check_settlement,
 			       (SelectFunc)build_settlement_cb, NULL);
 		return TRUE;
 	case GUI_FINISH:
+		if (sm->is_dead) return FALSE;
+		gui = g_hash_table_lookup(sm->widgets, (gpointer)event);
+		if (gui == NULL || !gui->current) return FALSE;
 		sm_send(sm, "done\n");
 		sm_goto(sm, mode_setup_done_response);
 		return TRUE;
@@ -1418,6 +1510,7 @@ static gboolean mode_road_building_done_response(StateMachine *sm, gint event)
 static gboolean mode_road_building(StateMachine *sm, gint event)
 {
 	BuildRec *rec;
+	WidgetState *gui;
 
 	sm_state_name(sm, "mode_road_building");
 	switch (event) {
@@ -1439,30 +1532,54 @@ static gboolean mode_road_building(StateMachine *sm, gint event)
 			return TRUE;
 		break;
 	case GUI_UNDO:
+		if (sm->is_dead) return FALSE;
+		gui = g_hash_table_lookup(sm->widgets, (gpointer)event);
+		if (gui == NULL || !gui->current) return FALSE;
 		rec = build_last();
 		sm_send(sm, "remove %B %d %d %d\n",
 			rec->type, rec->x, rec->y, rec->pos);
 		sm_goto(sm, mode_road_building_undo_response);
 		return TRUE;
 	case GUI_ROAD:
+		if (sm->is_dead) return FALSE;
+		gui = g_hash_table_lookup(sm->widgets, (gpointer)event);
+		if (gui == NULL || !gui->current) return FALSE;
 		gui_cursor_set(ROAD_CURSOR,
 			       (CheckFunc)can_road_be_built,
 			       (SelectFunc)build_road_cb,
 			       NULL);
 		return TRUE;
 	case GUI_SHIP:
+		if (sm->is_dead) return FALSE;
+		gui = g_hash_table_lookup(sm->widgets, (gpointer)event);
+		if (gui == NULL || !gui->current) return FALSE;
 		gui_cursor_set(SHIP_CURSOR,
 			       (CheckFunc)can_ship_be_built,
 			       (SelectFunc)build_ship_cb,
 			       NULL);
 		return TRUE;
+	case GUI_MOVE_SHIP:
+		if (sm->is_dead) return FALSE;
+		gui = g_hash_table_lookup(sm->widgets, (gpointer)event);
+		if (gui == NULL || !gui->current) return FALSE;
+		gui_cursor_set(SHIP_CURSOR,
+			       (CheckFunc)can_ship_be_moved,
+			       (SelectFunc)move_ship_cb,
+			       NULL);
+		return TRUE;
 	case GUI_BRIDGE:
+		if (sm->is_dead) return FALSE;
+		gui = g_hash_table_lookup(sm->widgets, (gpointer)event);
+		if (gui == NULL || !gui->current) return FALSE;
 		gui_cursor_set(BRIDGE_CURSOR,
 			       (CheckFunc)can_bridge_be_built,
 			       (SelectFunc)build_bridge_cb,
 			       NULL);
 		return TRUE;
 	case GUI_FINISH:
+		if (sm->is_dead) return FALSE;
+		gui = g_hash_table_lookup(sm->widgets, (gpointer)event);
+		if (gui == NULL || !gui->current) return FALSE;
 		sm_send(sm, "done\n");
 		sm_goto(sm, mode_road_building_done_response);
 		return TRUE;
@@ -1787,6 +1904,7 @@ static gboolean mode_turn_undo_response(StateMachine *sm, gint event)
 {
 	BuildType build_type;
 	gint x, y, pos;
+	gint sx, sy, spos, dx, dy, dpos;
 
 	sm_state_name(sm, "mode_turn_undo_response");
 	switch (event) {
@@ -1799,6 +1917,14 @@ static gboolean mode_turn_undo_response(StateMachine *sm, gint event)
 			    &build_type, &x, &y, &pos)) {
 			build_remove(build_type, x, y, pos);
 			waiting_for_network(FALSE);
+			sm_goto(sm, mode_turn_rolled);
+			return TRUE;
+		}
+		if (sm_recv(sm, "move %d %d %d %d %d %d 1",
+			    &sx, &sy, &spos, &dx, &dy, &dpos)) {
+			build_move(sx, sy, spos, dx, dy, dpos, 1);
+			waiting_for_network(FALSE);
+			ship_moved = FALSE;
 			sm_goto(sm, mode_turn_rolled);
 			return TRUE;
 		}
@@ -1847,6 +1973,7 @@ static gboolean mode_turn_done_response(StateMachine *sm, gint event)
 static gboolean mode_turn_rolled(StateMachine *sm, gint event)
 {
 	BuildRec *rec;
+	WidgetState *gui;
 
 	sm_state_name(sm, "mode_turn_rolled");
 	switch (event) {
@@ -1857,6 +1984,7 @@ static gboolean mode_turn_rolled(StateMachine *sm, gint event)
 		sm_gui_check(sm, GUI_UNDO, turn_can_undo());
 		sm_gui_check(sm, GUI_ROAD, turn_can_build_road());
 		sm_gui_check(sm, GUI_SHIP, turn_can_build_ship());
+		sm_gui_check(sm, GUI_MOVE_SHIP, turn_can_move_ship());
 		sm_gui_check(sm, GUI_BRIDGE, turn_can_build_bridge());
 		sm_gui_check(sm, GUI_SETTLEMENT, turn_can_build_settlement());
 		sm_gui_check(sm, GUI_CITY, turn_can_build_city());
@@ -1870,32 +1998,63 @@ static gboolean mode_turn_rolled(StateMachine *sm, gint event)
 			return TRUE;
 		break;
 	case GUI_UNDO:
+		if (sm->is_dead) return FALSE;
+		gui = g_hash_table_lookup(sm->widgets, (gpointer)event);
+		if (gui == NULL || !gui->current) return FALSE;
 		rec = build_last();
-		sm_send(sm, "remove %B %d %d %d\n",
+		if (rec->type == BUILD_MOVE_SHIP) {
+			sm_send (sm, "move %d %d %d %d %d %d 1\n",
+				ship_move_sx, ship_move_sy, ship_move_spos,
+				rec->x, rec->y, rec->pos);
+		}
+		else sm_send(sm, "remove %B %d %d %d\n",
 			rec->type, rec->x, rec->y, rec->pos);
 		sm_goto(sm, mode_turn_undo_response);
 		return TRUE;
 	case GUI_ROAD:
+		if (sm->is_dead) return FALSE;
+		gui = g_hash_table_lookup(sm->widgets, (gpointer)event);
+		if (gui == NULL || !gui->current) return FALSE;
 		gui_cursor_set(ROAD_CURSOR,
 			       (CheckFunc)can_road_be_built,
 			       (SelectFunc)build_road_cb, NULL);
 		return TRUE;
 	case GUI_SHIP:
+		if (sm->is_dead) return FALSE;
+		gui = g_hash_table_lookup(sm->widgets, (gpointer)event);
+		if (gui == NULL || !gui->current) return FALSE;
 		gui_cursor_set(SHIP_CURSOR,
 			       (CheckFunc)can_ship_be_built,
 			       (SelectFunc)build_ship_cb, NULL);
 		return TRUE;
+	case GUI_MOVE_SHIP:
+		if (sm->is_dead) return FALSE;
+		gui = g_hash_table_lookup(sm->widgets, (gpointer)event);
+		if (gui == NULL || !gui->current) return FALSE;
+		gui_cursor_set(SHIP_CURSOR,
+			       (CheckFunc)can_ship_be_moved,
+			       (SelectFunc)move_ship_cb, NULL);
+		return TRUE;
 	case GUI_BRIDGE:
+		if (sm->is_dead) return FALSE;
+		gui = g_hash_table_lookup(sm->widgets, (gpointer)event);
+		if (gui == NULL || !gui->current) return FALSE;
 		gui_cursor_set(BRIDGE_CURSOR,
 			       (CheckFunc)can_bridge_be_built,
 			       (SelectFunc)build_bridge_cb, NULL);
 		return TRUE;
 	case GUI_SETTLEMENT:
+		if (sm->is_dead) return FALSE;
+		gui = g_hash_table_lookup(sm->widgets, (gpointer)event);
+		if (gui == NULL || !gui->current) return FALSE;
 		gui_cursor_set(SETTLEMENT_CURSOR,
 			       (CheckFunc)can_settlement_be_built,
 			       (SelectFunc)build_settlement_cb, NULL);
 		return TRUE;
 	case GUI_CITY:
+		if (sm->is_dead) return FALSE;
+		gui = g_hash_table_lookup(sm->widgets, (gpointer)event);
+		if (gui == NULL || !gui->current) return FALSE;
 		if (can_afford(cost_city()))
 			gui_cursor_set(CITY_CURSOR,
 				       (CheckFunc)can_city_be_built,
@@ -1906,6 +2065,9 @@ static gboolean mode_turn_rolled(StateMachine *sm, gint event)
 				       (SelectFunc)build_city_cb, NULL);
 		return TRUE;
 	case GUI_TRADE:
+		if (sm->is_dead) return FALSE;
+		gui = g_hash_table_lookup(sm->widgets, (gpointer)event);
+		if (gui == NULL || !gui->current) return FALSE;
 		trade_begin();
 		sm_push(sm, mode_maritime_trade);
 		return TRUE;
@@ -1914,10 +2076,16 @@ static gboolean mode_turn_rolled(StateMachine *sm, gint event)
 		sm_push(sm, mode_play_develop_response);
 		return TRUE;
 	case GUI_BUY_DEVELOP:
+		if (sm->is_dead) return FALSE;
+		gui = g_hash_table_lookup(sm->widgets, (gpointer)event);
+		if (gui == NULL || !gui->current) return FALSE;
 		sm_send(sm, "buy-develop\n");
 		sm_goto(sm, mode_buy_develop_response);
 		return TRUE;
 	case GUI_FINISH:
+		if (sm->is_dead) return FALSE;
+		gui = g_hash_table_lookup(sm->widgets, (gpointer)event);
+		if (gui == NULL || !gui->current) return FALSE;
 		sm_send(sm, "done\n");
 		sm_goto(sm, mode_turn_done_response);
 		return TRUE;
@@ -2030,6 +2198,7 @@ static gboolean mode_maritime_trade(StateMachine *sm, gint event)
 		sm_gui_check(sm, GUI_TRADE_CALL, can_call_for_quotes());
 		sm_gui_check(sm, GUI_TRADE_ACCEPT, trade_valid_selection());
 		sm_gui_check(sm, GUI_TRADE_FINISH, TRUE);
+		sm_gui_check(sm, GUI_TRADE, TRUE);
 		break;
 	case SM_RECV:
 		if (check_trading(sm) || check_other_players(sm))
@@ -2048,6 +2217,7 @@ static gboolean mode_maritime_trade(StateMachine *sm, gint event)
 		sm_push(sm, mode_trade_maritime_response);
 		return TRUE;
 	case GUI_TRADE_FINISH:
+	case GUI_TRADE:
 		trade_finish();
 		sm_pop(sm);
 		return TRUE;
@@ -2156,6 +2326,7 @@ static gboolean mode_domestic_trade(StateMachine *sm, gint event)
 		sm_gui_check(sm, GUI_TRADE_CALL, is_domestic_trade_allowed());
 		sm_gui_check(sm, GUI_TRADE_ACCEPT, trade_valid_selection());
 		sm_gui_check(sm, GUI_TRADE_FINISH, TRUE);
+		sm_gui_check(sm, GUI_TRADE, TRUE);
 		break;
 	case SM_RECV:
 		if (check_trading(sm) || check_other_players(sm))
@@ -2182,6 +2353,7 @@ static gboolean mode_domestic_trade(StateMachine *sm, gint event)
 		}
 		return TRUE;
 	case GUI_TRADE_FINISH:
+	case GUI_TRADE:
 		sm_send(sm, "domestic-trade finish\n");
 		sm_goto(sm, mode_domestic_finish_response);
 		return TRUE;
@@ -2331,6 +2503,7 @@ static gboolean mode_quote_delete_response(StateMachine *sm, gint event)
 static gboolean mode_domestic_quote(StateMachine *sm, gint event)
 {
 	QuoteInfo *quote;
+	WidgetState* gui;
 
 	sm_state_name(sm, "mode_domestic_quote");
 	switch (event) {
@@ -2355,6 +2528,9 @@ static gboolean mode_domestic_quote(StateMachine *sm, gint event)
 		sm_goto(sm, mode_quote_delete_response);
 		return TRUE;
 	case GUI_QUOTE_REJECT:
+		if (sm->is_dead) return FALSE;
+		gui = g_hash_table_lookup(sm->widgets, (gpointer)event);
+		if (gui == NULL || !gui->current) return FALSE;
 		sm_send(sm, "domestic-quote finish\n");
 		sm_goto(sm, mode_quote_finish_response);
 		return TRUE;
@@ -2564,5 +2740,60 @@ static void recover_from_disconnect(StateMachine *sm,
 	/* tell the server we have finished reconnecting and wait for
 	   its ok response */
 	sm_push(sm, mode_recovery_wait_start_response);
+}
+
+/*----------------------------------------------------------------------
+ * Nested state machine for handling resource card choice.  We enter
+ * gold-choose mode whenever any player has to choose resources.
+ * 
+ * When in gold-choose mode, as in discard mode, a section of the GUI
+ * changes to list all players who must choose resources.  This is
+ * important because if during our turn we do not receive gold, but others
+ * do, the list tells us which players have still not chosen resources.
+ */
+static gboolean mode_choose_gold(StateMachine *sm, gint event)
+{
+	gint resource_list[NO_RESOURCE], bank[NO_RESOURCE];
+	gint player_num, gold_num;
+
+	sm_state_name(sm, "mode_choose_gold");
+	switch (event) {
+	case SM_INIT:
+		sm_gui_check(sm, GUI_CHOOSE_GOLD, can_choose_gold () );
+		break;
+	case GUI_CHOOSE_GOLD:
+		sm_send(sm, "choose-gold %R\n", choose_gold_get_list());
+		return TRUE;
+	case SM_RECV:
+		if (sm_recv(sm, "player %d prepare-gold %d %R", &player_num,
+					&gold_num, bank)) {
+			gold_choose_player_must (player_num, gold_num, bank,
+				FALSE);
+			return TRUE;
+		}
+		if (sm_recv(sm, "player %d receive-gold %d %R", &player_num,
+					&gold_num, &bank)) {
+			gold_choose_player_must(player_num, gold_num, bank,
+					TRUE);
+			return TRUE;
+		}
+		if (sm_recv(sm, "player %d chose-gold %R",
+			    &player_num, resource_list)) {
+			player_resource_action(player_num, _("%s takes %s.\n"),
+					       resource_list, 1);
+			gold_choose_player_did(player_num, resource_list);
+			if (gold_choose_num_remaining() == 0) {
+				gold_choose_end();
+				sm_pop(sm);
+			}
+			return TRUE;
+		}
+		if (check_other_players(sm))
+			return TRUE;
+		break;
+	default:
+		break;
+	}
+	return FALSE;
 }
 

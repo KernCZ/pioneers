@@ -116,7 +116,8 @@ gboolean buildrec_is_valid(GList *list, Map *map, gint owner)
 				return FALSE;
 			continue;
 		case BUILD_SHIP:
-			/* Bridges have to be adjacent to buildings /
+		case BUILD_MOVE_SHIP:
+			/* ships have to be adjacent to buildings /
 			 * ships, and they have to be over water /
 			 * coast.
 			 */

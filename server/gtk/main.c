@@ -89,6 +89,7 @@ static GtkWidget *victory_spin;	/* victory point target */
 static GtkWidget *players_spin;	/* number of players */
 static GtkWidget *register_toggle; /* register with meta server? */
 static GtkWidget *meta_entry; /* name of meta server */
+static GtkWidget *hostname_entry; /* name of server (allows masquerading) */
 static GtkWidget *port_spin;	/* server port */
 static GtkWidget *addcomputer_btn; /* button to add computer players */
   
@@ -111,6 +112,8 @@ static void register_toggle_cb(GtkToggleButton *toggle, gpointer user_data)
 	register_server = gtk_toggle_button_get_active(toggle);
 	gtk_label_set_text(GTK_LABEL(label),
 			   register_server ?  _("Yes") :  _("No"));
+	gtk_widget_set_sensitive(meta_entry, register_server);
+	gtk_widget_set_sensitive(hostname_entry, register_server);
 }
 
 static void show_terrain()
@@ -216,6 +219,7 @@ static void start_clicked_cb(GtkWidget *start_btn, gpointer user_data)
 	if ( start_server(server_port, register_server) ) {
 		gtk_widget_set_sensitive(register_toggle, FALSE);
 		gtk_widget_set_sensitive(meta_entry, FALSE);
+		gtk_widget_set_sensitive(hostname_entry, FALSE);
 		gtk_widget_set_sensitive(port_spin, FALSE);
 		gtk_widget_set_sensitive(start_btn, FALSE);
 		gtk_widget_set_sensitive(addcomputer_btn, TRUE);
@@ -275,6 +279,33 @@ static void add_game_to_combo( gpointer name, gpointer params, gpointer combo )
 	gtk_container_add(GTK_CONTAINER(((GtkCombo *)combo)->list), item);
 }
 
+static gchar *getmyhostname(void)
+{
+       char hbuf[256];
+       struct hostent *hp;
+
+       if (gethostname(hbuf, sizeof(hbuf))) {
+               perror("gethostname");
+               return NULL;
+       }
+       if (!(hp = gethostbyname(hbuf))) {
+               herror("gnocatan-meta-server");
+               return NULL;
+       }
+       return strdup(hp->h_name);
+}
+
+static void hostname_changed_cb(GtkWidget *widget, gpointer user_data)
+{
+	gchar *text;
+
+	text = gtk_entry_get_text(GTK_ENTRY(hostname_entry));
+	while (*text != '\0' && isspace(*text))
+	       text++;
+	if (hostname) g_free (hostname);
+	hostname = g_strdup (text);
+}
+
 static void meta_server_changed_cb(GtkWidget *widget, gpointer user_data)
 {
 	gchar *text;
@@ -307,7 +338,10 @@ static GtkWidget *build_interface()
 	
 	if (!(meta_server_name = getenv("GNOCATAN_META_SERVER")))
 	    meta_server_name = DEFAULT_META_SERVER;
-	
+
+       if (!(hostname = getenv("GNOCATAN_SERVER_NAME")))
+                       hostname = getmyhostname ();
+
 	vbox = gtk_vbox_new(FALSE, 0);
 	gtk_widget_show(vbox);
 	gtk_container_border_width(GTK_CONTAINER(vbox), 5);
@@ -395,26 +429,33 @@ static GtkWidget *build_interface()
 	gtk_signal_connect(GTK_OBJECT(victory_spin), "changed",
 			   GTK_SIGNAL_FUNC(victory_spin_changed_cb), NULL);
 
-	label = gtk_label_new(_("Register Server"));
+	label = gtk_label_new(_("Server Port"));
 	gtk_widget_show(label);
 	gtk_table_attach(GTK_TABLE(table), label, 0, 1, 4, 5,
 			 (GtkAttachOptions)GTK_FILL,
 			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 
-	register_toggle = gtk_toggle_button_new_with_label(_("No"));
-	gtk_widget_show(register_toggle);
-	gtk_table_attach(GTK_TABLE(table), register_toggle, 1, 2, 4, 5,
-			 (GtkAttachOptions)GTK_FILL,
-			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
-	gtk_signal_connect(GTK_OBJECT(register_toggle), "toggled",
-			   GTK_SIGNAL_FUNC(register_toggle_cb), NULL);
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(register_toggle), TRUE);
-	gtk_toggle_button_toggled(GTK_TOGGLE_BUTTON(register_toggle));
+       adj = gtk_adjustment_new(server_port_int, 1024, 32767, 1, 1, 1);
+       port_spin = gtk_spin_button_new(GTK_ADJUSTMENT(adj), 1, 0);
+       gtk_widget_show(port_spin);
+       gtk_table_attach(GTK_TABLE(table), port_spin, 1, 2, 4, 5,
+                        (GtkAttachOptions)GTK_FILL,
+                        (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
+       gtk_widget_set_usize(port_spin, 60, -1);
+       gtk_signal_connect(GTK_OBJECT(port_spin), "changed",
+                          GTK_SIGNAL_FUNC(port_spin_changed_cb), NULL);
+
+       label = gtk_label_new(_("Register Server"));
+       gtk_widget_show(label);
+       gtk_table_attach(GTK_TABLE(table), label, 0, 1, 5, 6,
+                        (GtkAttachOptions)GTK_FILL,
+                        (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
+       gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 
  	label = gtk_label_new("Meta Server");
  	gtk_widget_show(label);
- 	gtk_table_attach(GTK_TABLE(table), label, 0, 1, 5, 6,
+ 	gtk_table_attach(GTK_TABLE(table), label, 0, 1, 6, 7,
  			 (GtkAttachOptions)GTK_FILL,
 			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
@@ -423,31 +464,42 @@ static GtkWidget *build_interface()
 	gtk_signal_connect_after(GTK_OBJECT(meta_entry), "changed",
 				 GTK_SIGNAL_FUNC(meta_server_changed_cb), NULL);
 	gtk_widget_show(meta_entry);
-	gtk_table_attach(GTK_TABLE(table), meta_entry, 1, 2, 5, 6,
+	gtk_table_attach(GTK_TABLE(table), meta_entry, 1, 2, 6, 7,
 			 (GtkAttachOptions)GTK_FILL,
 			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_entry_set_text(GTK_ENTRY(meta_entry), meta_server_name);
 
-	label = gtk_label_new("Server Port");
+	label = gtk_label_new("Reported Hostname");
 	gtk_widget_show(label);
-	gtk_table_attach(GTK_TABLE(table), label, 0, 1, 6, 7,
+	gtk_table_attach(GTK_TABLE(table), label, 0, 1, 7, 8,
 			 (GtkAttachOptions)GTK_FILL,
 			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 
-	adj = gtk_adjustment_new(server_port_int, 1024, 32767, 1, 1, 1);
-	port_spin = gtk_spin_button_new(GTK_ADJUSTMENT(adj), 1, 0);
-	gtk_widget_show(port_spin);
-	gtk_table_attach(GTK_TABLE(table), port_spin, 1, 2, 6, 7,
+	hostname_entry = gtk_entry_new();
+	gtk_signal_connect_after(GTK_OBJECT(hostname_entry), "changed",
+	GTK_SIGNAL_FUNC(hostname_changed_cb), NULL);
+	gtk_widget_show(hostname_entry);
+	gtk_table_attach(GTK_TABLE(table), hostname_entry, 1, 2, 7, 8,
 			 (GtkAttachOptions)GTK_FILL,
 			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
-	gtk_widget_set_usize(port_spin, 60, -1);
-	gtk_signal_connect(GTK_OBJECT(port_spin), "changed",
-			   GTK_SIGNAL_FUNC(port_spin_changed_cb), NULL);
+	gtk_entry_set_text(GTK_ENTRY(hostname_entry), hostname);
+	
+	/* this seems to fit better before, but the callback requires
+	 * that meta_entry and hostname_entry are initialized */
+	register_toggle = gtk_toggle_button_new_with_label(_("No"));
+	gtk_widget_show(register_toggle);
+	gtk_table_attach(GTK_TABLE(table), register_toggle, 1, 2, 5, 6,
+			 (GtkAttachOptions)GTK_FILL,
+			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_signal_connect(GTK_OBJECT(register_toggle), "toggled",
+			   GTK_SIGNAL_FUNC(register_toggle_cb), NULL);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(register_toggle), TRUE);
+	gtk_toggle_button_toggled(GTK_TOGGLE_BUTTON(register_toggle));
 
 	label = gtk_label_new(_("Sevens Rule"));
 	gtk_widget_show(label);
-	gtk_table_attach(GTK_TABLE(table), label, 0, 1, 7, 8,
+	gtk_table_attach(GTK_TABLE(table), label, 0, 1, 8, 9,
 			 (GtkAttachOptions)GTK_FILL,
 			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
@@ -467,7 +519,7 @@ static GtkWidget *build_interface()
 	gtk_box_pack_start_defaults( GTK_BOX(vbox_sevens), radio_sevens_2_turns );
 	gtk_box_pack_start_defaults( GTK_BOX(vbox_sevens), radio_sevens_reroll );
 	
-	gtk_table_attach(GTK_TABLE(table), vbox_sevens, 1, 2, 7, 8,
+	gtk_table_attach(GTK_TABLE(table), vbox_sevens, 1, 2, 8, 9,
 			 (GtkAttachOptions)GTK_FILL,
 			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
 
@@ -482,7 +534,7 @@ static GtkWidget *build_interface()
 	gtk_widget_show(start_btn);
 	addcomputer_btn = gtk_button_new_with_label(_("Add Computer Player"));
 	gtk_widget_show(addcomputer_btn);
-        gtk_table_attach(GTK_TABLE(table), addcomputer_btn, 0, 2, 8, 9,
+        gtk_table_attach(GTK_TABLE(table), addcomputer_btn, 0, 2, 9, 10,
                          (GtkAttachOptions)GTK_FILL,
                          (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
         gtk_signal_connect(GTK_OBJECT(addcomputer_btn), "clicked",
@@ -490,7 +542,7 @@ static GtkWidget *build_interface()
         gtk_widget_set_sensitive(addcomputer_btn, FALSE);
  
 
-	gtk_table_attach(GTK_TABLE(table), start_btn, 0, 2, 9, 10,
+	gtk_table_attach(GTK_TABLE(table), start_btn, 0, 2, 10, 11,
 			 (GtkAttachOptions)GTK_FILL,
 			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_signal_connect(GTK_OBJECT(start_btn), "clicked",

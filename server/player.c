@@ -513,7 +513,8 @@ GList *player_first_real(Game *game)
 	{
 		if (!list ||
 		    (next && ((Player *) next->data)->num
-			       < ((Player *) list->data)->num))
+			       < ((Player *) list->data)->num
+			&& ((Player *)next->data)->num >= 0))
 		{
 			list = next;
 		}

@@ -10,6 +10,8 @@
 #ifndef __map_h
 #define __map_h
 
+#include <glib.h>
+
 /* The order of the Terrain enums is EXTREMELY important!  The order
  * must match the resources indicated in enum Resource.
  */
@@ -20,7 +22,8 @@ typedef enum {
 	PASTURE_TERRAIN,
 	FOREST_TERRAIN,
 	DESERT_TERRAIN,
-	SEA_TERRAIN
+	SEA_TERRAIN,
+	GOLD_TERRAIN
 } Terrain;
 
 /* The order of the Resource enums is EXTREMELY important!  The
@@ -35,7 +38,8 @@ typedef enum {
 	WOOL_RESOURCE,
 	LUMBER_RESOURCE,
 	NO_RESOURCE,
-	ANY_RESOURCE
+	ANY_RESOURCE,
+	GOLD_RESOURCE
 } Resource;
 
 /* Types of structure that can be built
@@ -46,7 +50,8 @@ typedef enum {
 	BUILD_BRIDGE,		/* bridge was built */
 	BUILD_SHIP,		/* ship was built */
 	BUILD_SETTLEMENT,	/* settlement was built */
-	BUILD_CITY		/* city was built */
+	BUILD_CITY,		/* city was built */
+	BUILD_MOVE_SHIP		/* a ship was moved (only used for undo list) */
 } BuildType;
 
 #define NUM_BUILD_TYPES (BUILD_CITY + 1)
@@ -154,6 +159,7 @@ Map *map_load(char *name);
 
 /* map_query.c
  */
+extern gint ship_move_sx, ship_move_sy, ship_move_spos;
 /* simple checks */
 gboolean is_edge_adjacent_to_node(Edge *edge, Node *node);
 gboolean is_edge_on_land(Edge *edge);
@@ -170,6 +176,8 @@ gboolean can_road_be_setup(Edge *edge, gint owner);
 gboolean can_road_be_built(Edge *edge, gint owner);
 gboolean can_ship_be_setup(Edge *edge, gint owner);
 gboolean can_ship_be_built(Edge *edge, gint owner);
+gboolean can_ship_be_moved(Edge *edge, gint owner);
+gboolean can_ship_be_moved_to(Edge *edge, gint owner);
 gboolean can_bridge_be_setup(Edge *edge, gint owner);
 gboolean can_bridge_be_built(Edge *edge, gint owner);
 gboolean can_settlement_be_setup(Node *node, int owner);

@@ -68,6 +68,8 @@ void player_build_add(gint player_num,
 		      BuildType type, gint x, gint y, gint pos);
 void player_build_remove(gint player_num,
 			 BuildType type, gint x, gint y, gint pos);
+void player_build_move(gint player_num, gint sx, gint sy, gint spos,
+		gint dx, gint dy, gint dpos, gint isundo);
 void player_resource_action(gint player_num, gchar *action,
 			    gint *resource_list, gint mult);
 

@@ -337,7 +337,7 @@ static void layout_chits(Map *map)
 
 /* Randomise a map.  We do this by shuffling all of the land hexes,
  * and randomly reassigning port types.  This is the procedure
- * described in the board game rules.
+ * described in the board game rules.  Gold tiles are not shuffled
  */
 void map_shuffle_terrain(Map *map)
 {
@@ -355,7 +355,7 @@ void map_shuffle_terrain(Map *map)
 	for (x = 0; x < map->x_size; x++) {
 		for (y = 0; y < map->y_size; y++) {
 			Hex *hex = map->grid[y][x];
-			if (hex == NULL)
+			if (hex == NULL || hex->terrain == GOLD_TERRAIN)
 				continue;
 			if (hex->terrain == SEA_TERRAIN) {
 				if (hex->resource == NO_RESOURCE)
@@ -377,7 +377,7 @@ void map_shuffle_terrain(Map *map)
 			gint num;
 			gint idx;
 
-			if (hex == NULL)
+			if (hex == NULL || hex->terrain == GOLD_TERRAIN)
 				continue;
 			if (hex->terrain == SEA_TERRAIN) {
 				if (hex->resource == NO_RESOURCE)
@@ -519,6 +519,9 @@ void map_format_line(Map *map, gchar *line, gint y)
 		case DESERT_TERRAIN:
 			*line++ = 'd';
 			break;
+		case GOLD_TERRAIN:
+			*line++ = 'g';
+			break;
 		case SEA_TERRAIN:
 			*line++ = 's';
 			if (hex->resource == NO_RESOURCE)
@@ -544,6 +547,8 @@ void map_format_line(Map *map, gchar *line, gint y)
 				break;
 			case NO_RESOURCE:
 				break;
+			case GOLD_RESOURCE:
+				g_assert (0);
 			}
 			*line++ = hex->facing + '0';
 			break;
@@ -628,6 +633,9 @@ void map_parse_line(Map *map, gchar *line)
 			break;
 		case 'd':
 			terrain = DESERT_TERRAIN;
+			break;
+		case 'g':
+			terrain = GOLD_TERRAIN;
 			break;
 		default:
 			continue;

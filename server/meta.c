@@ -31,6 +31,7 @@
 #include "server.h"
 
 gchar *meta_server_name = NULL;
+gchar *hostname = NULL;
 
 static Session *ses;
 static enum {
@@ -60,26 +61,8 @@ void meta_report_num_players(gint num_players)
 		net_printf(ses, "curr=%d\n", num_players);
 }
 
-static gchar *getmyhostname(void)
-{
-	char hbuf[256];
-	struct hostent *hp;
-
-	if (gethostname(hbuf, sizeof(hbuf))) {
-		perror("gethostname");
-		return NULL;
-	}
-	if (!(hp = gethostbyname(hbuf))) {
-		herror("gnocatan-meta-server");
-		return NULL;
-	}
-	return strdup(hp->h_name);
-}
-
 void meta_send_details(Game *game)
 {
-	gchar *hostname = getmyhostname();
-
 	if (ses == NULL)
 		return;
 

@@ -23,7 +23,10 @@ static gchar *resource_names[][2] = {
         { N_("grain"), N_("Grain") },
         { N_("ore"), N_("Ore") },
         { N_("wool"), N_("Wool") },
-        { N_("lumber"), N_("Lumber") }
+        { N_("lumber"), N_("Lumber") },
+        { N_("no Resource (bug)"), N_("No resource (bug)") },
+        { N_("any resource (bug)"), N_("Any resource (bug)") },
+        { N_("gold"), N_("Gold") }
 };
 
 static gchar *resource_lists[][2] = {
@@ -69,7 +72,7 @@ void resource_cmd(gchar *str, gchar *cmd, gint *resources)
 
 void resource_modify(Resource type, gint num)
 {
-	if (type != NO_RESOURCE) {
+	if (type < NO_RESOURCE) {
 		char buff[16];
 
 		my_assets[type] += num;

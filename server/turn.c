@@ -27,6 +27,9 @@
 #include "cost.h"
 #include "server.h"
 
+static gboolean ship_moved;
+gint ship_move_sx, ship_move_sy, ship_move_spos;
+
 static void build_add(Player *player, BuildType type, gint x, gint y, gint pos)
 {
 	StateMachine *sm = player->sm;
@@ -174,6 +177,51 @@ static void build_remove(Player *player, BuildType type, gint x, gint y, gint po
 		sm_send(player->sm, "ERR bad-pos\n");
 }
 
+static void build_move (Player *player, gint sx, gint sy, gint spos, gint dx, gint dy, gint dpos, gint isundo) {
+	StateMachine *sm = player->sm;
+	Game *game = player->game;
+	Map *map = game->params->map;
+	Edge *from = map_edge (map, sx, sy, spos),
+		*to = map_edge (map, dx, dy, dpos);
+	BuildRec *rec;
+
+	if (ship_moved && !isundo) {
+		sm_send(sm, "ERR already-moved\n");
+		return;
+	}
+	if (isundo) {
+		if (sx != ship_move_sx || sy != ship_move_sy || spos != ship_move_spos || !perform_undo(player, BUILD_MOVE_SHIP, dx, dy, dpos))
+			sm_send(player->sm, "ERR bad-pos\n");
+		else ship_moved = FALSE;
+		return;
+	}
+	if (from->owner != player->num || from->type != BUILD_SHIP || to->owner >= 0 || !can_ship_be_moved(map_edge (map, sx, sy, spos), player->num)) {
+		sm_send(sm, "ERR bad-pos\n");
+		return;
+	}
+	from->owner = -1;
+	if ((sx == dx && sy == dy && spos == dpos) || !can_ship_be_built(map_edge(map, dx, dy, dpos), player->num)) {
+		from->owner = player->num;
+		sm_send(sm, "ERR bad-pos\n");
+		return;
+	}
+	player_broadcast(player, PB_RESPOND, "move %d %d %d %d %d %d 0\n", sx, sy, spos, dx, dy, dpos);
+	ship_moved = TRUE;
+	ship_move_sx = sx;
+	ship_move_sy = sy;
+	ship_move_spos = spos;
+	to->owner = player->num;
+	to->type = BUILD_SHIP;
+
+	rec = g_malloc0(sizeof(*rec));
+	rec->type = BUILD_MOVE_SHIP;
+	rec->x = dx;
+	rec->y = dy;
+	rec->pos = dpos;
+	player->build_list = g_list_append(player->build_list, rec);
+	return;
+}
+
 typedef struct {
 	Game *game;
 	int roll;
@@ -197,7 +245,10 @@ static gboolean distribute_resources(Map *map, Hex *hex, GameRoll *data)
         if( player != NULL )
         {
             num = (node->type == BUILD_CITY) ? 2 : 1;
-            player->assets[hex->terrain] += num;
+	    if (hex->terrain == GOLD_TERRAIN)
+		    player->gold += num;
+	    else
+		    player->assets[hex->terrain] += num;
         }
         else
         {
@@ -262,11 +313,11 @@ gboolean mode_turn(Player *player, gint event)
 	Resource supply_type, receive_type;
 	gint supply[NO_RESOURCE], receive[NO_RESOURCE];
 	gint done;
+	gint sx, sy, spos, dx, dy, dpos, isundo;
 
 	sm_state_name(sm, "mode_turn");
 	if (event != SM_RECV)
 		return FALSE;
-
 	if (sm_recv(sm, "roll")) {
 		GameRoll data;
 		gint roll;
@@ -317,7 +368,8 @@ gboolean mode_turn(Player *player, gint event)
 		data.game = game;
 		data.roll = roll;
 		map_traverse(map, (HexFunc)distribute_resources, &data);
-		resource_end(game, "receives", 1);
+		/* distribute resources and gold (includes resource_end) */
+		distribute_first (player);
 		return TRUE;
 	}
 	if (sm_recv(sm, "done")) {
@@ -333,6 +385,7 @@ gboolean mode_turn(Player *player, gint event)
 			return TRUE;
 		}
 		sm_send(sm, "OK\n");
+		ship_moved = FALSE;
 		turn_next_player(game);
 		return TRUE;
 	}
@@ -370,11 +423,17 @@ gboolean mode_turn(Player *player, gint event)
 		check_victory(game);
 		return TRUE;
 	}
+	if (sm_recv(sm, "move %d %d %d %d %d %d %d", &sx, &sy, &spos, &dx, &dy,
+				&dpos, &isundo)) {
+		build_move(player, sx, sy, spos, dx, dy, dpos, isundo);
+		return TRUE;
+	}
         if (sm_recv(sm, "remove %B %d %d %d", &build_type, &x, &y, &pos)) {
 		build_remove(player, build_type, x, y, pos);
 		check_victory(game);
 		return TRUE;
 	}
+	/* sm_send (sm, "ERR unknown-command\n"); */
 	return FALSE;
 }
 
@@ -422,7 +481,6 @@ void turn_next_player(Game *game)
 		}
 	}
 	} while (player->num < 0);
-	printf ("next turn for player %d\n", player->num);
 
 	player_broadcast(player, PB_RESPOND, "turn %d\n", game->curr_turn);
 	game->rolled_dice = FALSE;

@@ -22,6 +22,7 @@ static gchar *terrain_names[] = {
         N_("Mountain"),
         N_("Pasture"),
         N_("Forest"),
+	N_("Gold"),
         N_("Desert"),
         N_("Sea")
 };
@@ -140,8 +141,9 @@ GtkWidget *legend_create_content()
 			 (GtkAttachOptions)GTK_FILL, 0, 0);
 
 	add_legend_terrain(table, 0, 4, FOREST_TERRAIN, LUMBER_RESOURCE);
-	add_legend_terrain(table, 1, 4, DESERT_TERRAIN, NO_RESOURCE);
-	add_legend_terrain(table, 2, 4, SEA_TERRAIN, NO_RESOURCE);
+	add_legend_terrain(table, 1, 4, GOLD_TERRAIN, GOLD_RESOURCE);
+	add_legend_terrain(table, 2, 4, DESERT_TERRAIN, NO_RESOURCE);
+	add_legend_terrain(table, 3, 4, SEA_TERRAIN, NO_RESOURCE);
 
 	frame = gtk_frame_new(_("Building Costs"));
 	gtk_widget_show(frame);

@@ -55,7 +55,7 @@ void resource_cmd(gchar *str, gchar *cmd, gint *resources)
 
 void resource_modify(Resource type, gint num)
 {
-	if (type != NO_RESOURCE) {
+	if (type < NO_RESOURCE) {
 		char buff[16];
 
 		my_assets[type] += num;
