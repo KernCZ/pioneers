@@ -1,3 +1,9 @@
+2000-06-08  Bibek Sahu <scorpio@dodds.net>
+
+	* common/network.c: changed net_write() to queue data on in-progress
+	connections.  The queueing logic was already there; just fixed that
+	bit of logic.
+
 2000-06-07  Steve Langasek <vorlon@dodds.net>
 
 	* common/game.h: Removed redundant 'VERSION' define in header.

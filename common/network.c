@@ -202,9 +202,12 @@ static void write_ready(Session *ses)
 
 void net_write(Session *ses, gchar *data)
 {
-	if (ses->write_queue != NULL)
-		g_list_append(ses->write_queue, g_strdup(data));
-	else {
+	if (ses->write_queue != NULL || !net_connected(ses)) {
+		/* reassign the pointer, because the glib docs say it may change and
+		 * because if we're in the process of connecting the pointer may
+		 * currently be null. */
+		ses->write_queue = g_list_append(ses->write_queue, g_strdup(data));
+	} else {
 		int len;
 		int num;
 
