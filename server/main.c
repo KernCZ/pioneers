@@ -31,6 +31,7 @@
     fprintf(stderr,
  	    "Usage: gnocatan-server-console [options]\n"
  	    "  -a port   --  Admin port to listen on\n"
+ 	    "  -c num    --  Start num computer players\n"
  	    "  -g game   --  Game name to use\n"
 	    "  -h        --  Show this help\n"
 	    "  -k secs   --  Kill after 'secs' seconds with no players\n"
@@ -54,9 +55,9 @@
 
 int main( int argc, char *argv[] )
 {
-	int c;
+	int c, i;
 	gint num_players = 0, num_points = 0, port = 0, admin_port = 0,
-	     sevens_rule = 0, terrain = -1, timeout = 0;
+	     sevens_rule = 0, terrain = -1, timeout = 0, num_ai_players = 0;
 
 	gboolean disable_game_start = FALSE;
 	GMainLoop *event_loop;
@@ -71,7 +72,7 @@ int main( int argc, char *argv[] )
 
 	server_init( GNOCATAN_DIR_DEFAULT );
 
-	while ((c = getopt(argc, argv, "a:g:hk:P:p:rR:st:T:v:x")) != EOF)
+	while ((c = getopt(argc, argv, "a:c:g:hk:P:p:rR:st:T:v:x")) != EOF)
 	{
 		switch (c) {
 		case 'a':
@@ -79,6 +80,12 @@ int main( int argc, char *argv[] )
 				break;
 			}
 			admin_port = atoi(optarg);
+			break;
+		case 'c':
+			if (!optarg) {
+				break;
+			}
+			num_ai_players = atoi(optarg);
 			break;
 		case 'g':
 			cfg_set_game( optarg );
@@ -185,6 +192,9 @@ int main( int argc, char *argv[] )
 	if( !disable_game_start )
 		start_server( server_port, register_server );
 
+	for( i = 0; i < num_ai_players; ++i )
+		new_computer_player(NULL, server_port);
+	
 	event_loop = g_main_new(0);
 	g_main_run( event_loop );
 	g_main_destroy( event_loop );
