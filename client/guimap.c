@@ -120,6 +120,15 @@ static Polygon ship_poly = {
 	ship_points,
 	numElem(ship_points)
 };
+static GdkPoint bridge_points[] = {
+	{ 13,  40 }, { -14,  40 }, { -14,  30 }, {  -1,  15 },
+	{ -1, -15 }, { -14, -30 }, { -14, -40 }, {  13, -40 },
+	{ 13,  40 }
+};
+static Polygon bridge_poly = {
+	bridge_points,
+	numElem(bridge_points)
+};
 static GdkPoint robber_points[] = {
 	{  30,  60 }, {  30,   4 }, {  28,  -6 }, {  22, -15 },
 	{  12, -20 }, {  22, -32 }, {  22, -48 }, {  10, -60 },
@@ -262,6 +271,11 @@ void guimap_road_polygon(GuiMap *gmap, Edge *edge, Polygon *poly)
 void guimap_ship_polygon(GuiMap *gmap, Edge *edge, Polygon *poly)
 {
 	calc_edge_poly(gmap, edge, &ship_poly, poly);
+}
+
+void guimap_bridge_polygon(GuiMap *gmap, Edge *edge, Polygon *poly)
+{
+	calc_edge_poly(gmap, edge, &bridge_poly, poly);
 }
 
 void guimap_city_polygon(GuiMap *gmap, Node *node, Polygon *poly)
@@ -446,6 +460,16 @@ static gboolean display_hex(Map *map, Hex *hex, GuiMap *gmap)
 			/* Draw the ship
 			 */
 			guimap_ship_polygon(gmap, edge, &poly);
+			gdk_gc_set_foreground(gmap->gc, player_color(edge->owner));
+			poly_draw(gmap->pixmap, gmap->gc, TRUE, &poly);
+			gdk_gc_set_foreground(gmap->gc, &black);
+			poly_draw(gmap->pixmap, gmap->gc, FALSE, &poly);
+		} else if (edge->type == BUILD_BRIDGE) {
+			GdkPoint points[MAX_POINTS];
+			Polygon poly = { points, numElem(points) };
+			/* Draw the bridge
+			 */
+			guimap_bridge_polygon(gmap, edge, &poly);
 			gdk_gc_set_foreground(gmap->gc, player_color(edge->owner));
 			poly_draw(gmap->pixmap, gmap->gc, TRUE, &poly);
 			gdk_gc_set_foreground(gmap->gc, &black);
@@ -835,6 +859,27 @@ static void redraw_ship(GuiMap *gmap, Edge *edge)
 	gtk_widget_draw(gmap->area, &rect);
 }
 
+static void redraw_bridge(GuiMap *gmap, Edge *edge)
+{
+	GdkPoint points[MAX_POINTS];
+	Polygon poly = { points, numElem(points) };
+	GdkRectangle rect;
+	int idx;
+
+	guimap_bridge_polygon(gmap, edge, &poly);
+	poly_bound_rect(&poly, 1, &rect);
+	gdk_gc_set_fill(gmap->gc, GDK_TILED);
+	gdk_gc_set_tile(gmap->gc, board_tile);
+	gdk_draw_rectangle(gmap->pixmap, gmap->gc, TRUE,
+			   rect.x, rect.y, rect.width, rect.height);
+
+	for (idx = 0; idx < numElem(edge->hexes); idx++)
+		if (edge->hexes[idx] != NULL)
+			display_hex(gmap->map, edge->hexes[idx], gmap);
+
+	gtk_widget_draw(gmap->area, &rect);
+}
+
 static void erase_road_cursor(GuiMap *gmap)
 {
 	if (gmap->cursor == NULL)
@@ -851,6 +896,13 @@ static void erase_ship_cursor(GuiMap *gmap)
 	redraw_ship(gmap, gmap->cursor);
 }
 
+static void erase_bridge_cursor(GuiMap *gmap)
+{
+	if (gmap->cursor == NULL)
+		return;
+
+	redraw_bridge(gmap, gmap->cursor);
+}
 
 static void draw_road_cursor(GuiMap *gmap)
 {
@@ -885,6 +937,28 @@ static void draw_ship_cursor(GuiMap *gmap)
 		return;
 
 	guimap_ship_polygon(gmap, edge, &poly);
+	gdk_gc_set_line_attributes(gmap->gc, 2, GDK_LINE_SOLID,
+				   GDK_CAP_BUTT, GDK_JOIN_MITER);
+	gdk_gc_set_foreground(gmap->gc, player_color(gmap->cursor_owner));
+	poly_draw(gmap->pixmap, gmap->gc, TRUE, &poly);
+	gdk_gc_set_foreground(gmap->gc, &green);
+	poly_draw(gmap->pixmap, gmap->gc, FALSE, &poly);
+
+	poly_bound_rect(&poly, 1, &rect);
+	gtk_widget_draw(gmap->area, &rect);
+}
+
+static void draw_bridge_cursor(GuiMap *gmap)
+{
+	Edge *edge = gmap->cursor;
+	GdkPoint points[MAX_POINTS];
+	Polygon poly = { points, numElem(points) };
+	GdkRectangle rect;
+
+	if (edge == NULL)
+		return;
+
+	guimap_bridge_polygon(gmap, edge, &poly);
 	gdk_gc_set_line_attributes(gmap->gc, 2, GDK_LINE_SOLID,
 				   GDK_CAP_BUTT, GDK_JOIN_MITER);
 	gdk_gc_set_foreground(gmap->gc, player_color(gmap->cursor_owner));
@@ -1108,6 +1182,8 @@ void guimap_draw_edge(GuiMap *gmap, Edge *edge)
 		redraw_road(gmap, edge);
 	} else if (edge->type == BUILD_SHIP) {
 		redraw_ship(gmap, edge);
+	} else if (edge->type == BUILD_BRIDGE) {
+		redraw_bridge(gmap, edge);
 	}
 }
 
@@ -1147,6 +1223,7 @@ static ModeCursor cursors[] = {
 	{ NULL, NULL, NULL },
 	{ find_edge, erase_road_cursor, draw_road_cursor },
 	{ find_edge, erase_ship_cursor, draw_ship_cursor },
+	{ find_edge, erase_bridge_cursor, draw_bridge_cursor },
 	{ find_node, erase_settlement_cursor, draw_settlement_cursor },
 	{ find_node, erase_city_cursor, draw_city_cursor },
 	{ find_node, erase_building_cursor, draw_building_cursor },

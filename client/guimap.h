@@ -18,6 +18,7 @@ typedef enum {
 	NO_CURSOR,
 	ROAD_CURSOR,
 	SHIP_CURSOR,
+	BRIDGE_CURSOR,
 	SETTLEMENT_CURSOR,
 	CITY_CURSOR,
 	BUILDING_CURSOR,
@@ -77,6 +78,7 @@ GdkPixmap *guimap_terrain(Terrain terrain);
 
 void guimap_road_polygon(GuiMap *gmap, Edge *edge, Polygon *poly);
 void guimap_ship_polygon(GuiMap *gmap, Edge *edge, Polygon *poly);
+void guimap_bridge_polygon(GuiMap *gmap, Edge *edge, Polygon *poly);
 void guimap_city_polygon(GuiMap *gmap, Node *node, Polygon *poly);
 void guimap_settlement_polygon(GuiMap *gmap, Node *node, Polygon *poly);
 void guimap_robber_polygon(GuiMap *gmap, Hex *hex, Polygon *poly);
