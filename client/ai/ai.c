@@ -28,9 +28,9 @@ static const char *server = "127.0.0.1";
 static const char *port = "5556";
 static char *ai;
 static int waittime = 1000;
-static int chatty = 1;
 static int local_argc;
 static char **local_argv;
+static gboolean silent;
 
 static const char *get_gnocatan_dir(void)
 {
@@ -94,12 +94,13 @@ static void ai_init (int argc, char **argv)
 
 	local_argc = argc;
 	local_argv = argv;
+	silent = FALSE;
 
 	while ( (c = getopt(argc, argv, "s:p:n:a:t:ch") ) != EOF)
 	{
 		switch (c) {
 			case 'c':
-				chatty = 0;
+				silent = TRUE;
 				break;
 			case 's':
 				server = optarg;
@@ -158,6 +159,12 @@ static void ai_start_game (void)
 void ai_wait (void)
 {
 	usleep (waittime * 1000);
+}
+
+void ai_chat (const char *message)
+{
+	if (!silent)
+		cb_chat (message);
 }
 
 void frontend_set_callbacks (int argc, char **argv)

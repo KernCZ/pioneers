@@ -49,6 +49,9 @@ static const char *resource_types[NO_RESOURCE] = {
 
 static Map *map;
 static int quote_num;
+/* used to avoid multiple chat messages when more than one other player
+ * must discard resources */
+static gboolean discard_starting;
 
 /*
  * Forward declarations
@@ -1086,92 +1089,85 @@ static void greedy_turn(void)
   cb_end_turn ();   
 }
 
-#if 0
-#define randchat(array,nochat_percent)									\
-	do {																\
-		int p = (numElem(chat_##array)*1000/nochat_percent);			\
-		int n = (rand() % p) / 10;										\
-		return n < numElem(chat_##array) ? chat_##array[n] : NULL;		\
+#define randchat(array,nochat_percent)				\
+	do {							\
+		int p = (numElem(array)*1000/nochat_percent);	\
+		int n = (rand() % p) / 10;			\
+		if (n < numElem(array) )			\
+			ai_chat (array[n]);			\
 	} while(0)
 
-static char *chat_turn_start[] = {
+static const char *chat_turn_start[] = {
 	_("Ok, let's go!"),
 	_("I'll beat you all now! ;)"),
 	_("Now for another try..."),
 };
-static char *chat_receive_one[] = {
+/*
+static const char *chat_receive_one[] = {
 	_("At least I get something..."),
 	_("One is better than none..."),
 };
-static char *chat_receive_many[] = {
+*/
+static const char *chat_receive_many[] = {
 	_("Wow!"),
 	_("Ey, I'm becoming rich ;)"),
 	_("This is really a good year!"),
 };
-static char *chat_other_receive_many[] = {
+static const char *chat_other_receive_many[] = {
 	_("You really don't deserve that much!"),
 	_("You don't know what to do with that many resources ;)"),
 	_("Ey, wait for my robber and lose all this again!"),
 };
-static char *chat_self_moved_robber[] = {
+static const char *chat_self_moved_robber[] = {
 	_("Hehe!"),
 	_("Go, robber, go!"),
 };
-static char *chat_moved_robber_to_me[] = {
+static const char *chat_moved_robber_to_me[] = {
 	_("You bastard!"),
 	_("Can't you move that robber somewhere else?!"),
 	_("Why always me??"),
 };
-static char *chat_discard_self[] = {
+static const char *chat_discard_self[] = {
 	_("Oh no!"),
 	_("Grrr!"),
 	_("Who the hell rolled that 7??"),
 	_("Why always me?!?"),
 };
-static char *chat_discard_other[] = {
+static const char *chat_discard_other[] = {
 	_("Say good bye to your cards... :)"),
 	_("*evilgrin*"),
 	_("/me says farewell to your cards ;)"),
 	_("That's the price for being rich... :)"),
 };
-static char *chat_stole_from_me[] = {
+/*
+static const char *chat_stole_from_me[] = {
 	_("Ey! Where's that card gone?"),
 	_("Thieves! Thieves!!"),
 	_("Wait for my revenge..."),
 };
-static char *chat_monopoly_other[] = {
+static const char *chat_monopoly_other[] = {
 	_("Oh no :("),
 	_("Must this happen NOW??"),
 	_("Args"),
 };
-static char *chat_largestarmy_self[] = {
+static const char *chat_largestarmy_self[] = {
 	_("Hehe, my soldiers rule!"),
 };
-static char *chat_largestarmy_other[] = {
+static const char *chat_largestarmy_other[] = {
 	_("First robbing us, then grabbing the points..."),
 };
-static char *chat_longestroad_self[] = {
+static const char *chat_longestroad_self[] = {
 	_("See that road!"),
 };
-static char *chat_longestroad_other[] = {
+static const char *chat_longestroad_other[] = {
 	_("Pf, you won't win with roads alone..."),
 };
+*/
 
-static char *
-greedy_chat(chat_t occasion, void *param, gboolean self, gint other_player)
-{
-	int *resparam = (int *)param;
-	Hex *hexparam = (Hex *)param;
+#if 0
+This is left in here so those chat occasions can be reimplemented.
+It seems they would need extra callbacks though.
 
-    char *ret = NULL;
-
-    switch(occasion) {
-      case CHAT_TURN_START:
-		if (self)
-			randchat(turn_start, 70);
-		break;
-      case CHAT_ROLLED:
-		break;
       case CHAT_RECEIVES:
 		if (self) {
 			int i, sum = 0;
@@ -1179,80 +1175,29 @@ greedy_chat(chat_t occasion, void *param, gboolean self, gint other_player)
 				sum += resparam[i];
 			}
 			if (sum == 1)
-				randchat(receive_one,60);
+				randchat (receive_one, 60);
 			else if (sum <= 3)
-				/*randchat(receive_some,4)*/;
-			else
-				randchat(receive_many,20);
-		}
-		else {
-			int i, sum = 0;
-			for(i = 0; i < NO_RESOURCE; ++i) {
-				sum += resparam[i];
-			}
-			if (sum > 2)
-				randchat(other_receive_many,30);
-		}
-		break;
-	  case CHAT_MOVED_ROBBER:
-		if (self)
-			randchat(self_moved_robber,15);
-		else {
-			int idx;
-			gboolean iam_affected = FALSE;
-			for (idx = 0; idx < numElem(hexparam->nodes); idx++) {
-				if (hexparam->nodes[idx]->owner == my_player_num())
-					iam_affected = TRUE;
-			}
-			if (iam_affected)
-				randchat(moved_robber_to_me,20);
-		}
-		break;
-      case CHAT_DISCARD:
-		if (self)
-			randchat(discard_self,10);
-		else
-			randchat(discard_other,10);
-		break;
+				/*randchat (receive_some, 4)*/;
       case CHAT_STOLE:
 		if (!self)
-			randchat(stole_from_me,15);
+			randchat (stole_from_me, 15);
 		break;
       case CHAT_MONOPOLY:
 		if (!self)
-			randchat(monopoly_other,20);
+			randchat (monopoly_other, 20);
 		break;
       case CHAT_LARGEST_ARMY:
 		if (self)
-			randchat(largestarmy_self,10);
+			randchat (largestarmy_self, 10);
 		else
-			randchat(largestarmy_other,10);
+			randchat (largestarmy_other, 10);
 		break;
       case CHAT_LONGEST_ROAD:
 		if (self)
-			randchat(longestroad_self,10);
+			randchat (longestroad_self, 10);
 		else
-			randchat(longestroad_other,10);
+			randchat (longestroad_other, 10);
 		break;
-      case CHAT_WON:
-		if (self)
-			return _("Yippie!");
-		else
-			return _("My congratulations");
-      case CHAT_BUILT:
-      case CHAT_BOUGHT:
-      case CHAT_PLAY_DEVELOP:
-      case CHAT_MARITIME_TRADE:
-      case CHAT_DOMESTIC_TRADE_CALL:
-      case CHAT_DOMESTIC_TRADE_QUOTE:
-      case CHAT_DOMESTIC_TRADE_ACCEPT:
-      case CHAT_DOMESTIC_TRADE_FINISH:
-		/* nothing to chat */
-		break;
-    }
-    
-    return ret;
-}
 #endif
 
 static float score_node_hurt_opponents(Node *node)
@@ -1344,6 +1289,7 @@ static void greedy_place_robber(void)
 	}
     }
     cb_place_robber (besthex, victim);
+    randchat (chat_self_moved_robber, 15);
 }
 
 /*
@@ -1661,11 +1607,22 @@ static void greedy_roadbuilding (gint num_roads)
 		cb_end_turn ();
 }
 
+static void greedy_discard_start (void)
+{
+	discard_starting = TRUE;
+}
+
 static void greedy_discard_add (gint player_num, gint discard_num)
 {
 	if (player_num == my_player_num () ) {
+		randchat (chat_discard_self, 10);
 		ai_wait ();
 		greedy_discard (discard_num);
+	} else {
+		if (discard_starting) {
+			discard_starting = FALSE;
+			randchat (chat_discard_other, 10);
+		}
 	}
 }
 
@@ -1679,9 +1636,42 @@ static void greedy_error (gchar *message)
 	cb_disconnect ();
 }
 
-static void greedy_game_over (UNUSED (gint player_num), UNUSED (gint points) )
+static void greedy_game_over (gint player_num, UNUSED (gint points) )
 {
+	if (player_num == my_player_num () )
+		ai_chat (_("Yippie!") );
+	else
+		ai_chat (_("My congratulations") );
 	cb_disconnect ();
+}
+
+/* functions for chatting follow */
+static void greedy_player_turn (gint player)
+{
+	if (player == my_player_num () )
+		randchat (chat_turn_start, 70);
+}
+
+static void greedy_new_statistics (gint player, StatisticType type, gint num)
+{
+	if (type != STAT_RESOURCES || num < 3)
+		return;
+	if (player == my_player_num () )
+		randchat (chat_receive_many, 20);
+	else
+		randchat (chat_other_receive_many, 30);
+}
+
+static void greedy_robber_moved (UNUSED (Hex *old), Hex *new)
+{
+	int idx;
+	gboolean iam_affected = FALSE;
+	for (idx = 0; idx < numElem (new->nodes); idx++) {
+		if (new->nodes[idx]->owner == my_player_num () )
+			iam_affected = TRUE;
+	}
+	if (iam_affected)
+		randchat (chat_moved_robber_to_me, 20);
 }
 
 void greedy_init (UNUSED (int argc), UNUSED (char **argv) )
@@ -1704,4 +1694,10 @@ void greedy_init (UNUSED (int argc), UNUSED (char **argv) )
 	callbacks.quote = &greedy_consider_quote;
 	callbacks.game_over = &greedy_game_over;
 	callbacks.error = &greedy_error;
+
+	/* chatting */
+	callbacks.player_turn = &greedy_player_turn;
+	callbacks.new_statistics = &greedy_new_statistics;
+	callbacks.robber_moved = &greedy_robber_moved;
+	callbacks.discard = &greedy_discard_start;
 }
