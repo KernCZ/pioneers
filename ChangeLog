@@ -1,3 +1,8 @@
+2000-06-21  Andy Heroff <aheroff@mediaone.net>
+
+	* server/player.c: Fixed a bug where a player with an older client
+	  that doesn't report its version would have a player number of 0.
+
 2000-06-19  Jeff Breidenbach  <jeff@alum.mit.edu>
 
 	* debian/control, debian/changelog: update maintainer name,

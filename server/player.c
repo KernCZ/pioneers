@@ -106,6 +106,7 @@ Player *player_new(Game *game, int fd, gchar *location)
 	player->location = g_strdup(location);
 	player->devel = deck_new(game->params);
 	game->player_list = g_list_append(game->player_list, player);
+	player->num = -1;
 	
 	sm_goto(sm, (StateFunc)mode_check_version);
 	
@@ -117,7 +118,6 @@ void player_setup(Player *player)
 	Game *game = player->game;
 	StateMachine *sm = player->sm;
 
-	player->num = -1;
 	player->num = next_player_num(game);
 	if (player->num >= 0) {
 		game->num_players++;
