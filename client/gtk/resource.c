@@ -30,7 +30,6 @@ static GtkWidget *asset_total_label;
 
 GtkWidget *resource_build_panel()
 {
-	GtkWidget *frame;
 	GtkWidget *table;
 	GtkWidget *label;
 	GtkWidget *alignment;

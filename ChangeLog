@@ -1,7 +1,11 @@
 2004-12-25  0.8.1.47  Etan Reisner <deryni@eden.rutgers.edu>
 	* server/gtk/gnocatan-server-gtk.c, client/gtk/gui.c: Replaced GNOME
 	about dialog with Gtk code.
-	
+
+2004-12-25  Roland Clobus <rclobus@bigfoot.com>
+	* client/gtk/discard.c, client/gtk/resource.c: Removed usused variable
+	* server/player.c: Removed unused code.
+
 2004-12-21  0.8.1.46   Roland Clobus <rclobus@bigfoot.com>
 	* configure.ac: Renamed configure.in to the more modern configure.ac
 	* autogen.sh: Changed configure.in to configure.ac

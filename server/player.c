@@ -476,30 +476,6 @@ void player_revive(Player *newp, char *name)
 	/* initialize the player */
 	player_setup(newp, p->num, name, FALSE);
 
-#if 0
-	/* if the player is in the wrong position in
-	   the list, remove the player from the end of
-	   the list and insert him at the appropriate
-	   place */
-	if (newp->num < game->params->num_players - 1) {
-		game->player_list = g_list_remove(game->player_list, newp);
-		playerlist_inc_use_count(game);
-		for (currp = game->player_list;
-		     currp != NULL;
-		     currp = g_list_next(currp)) {
-			if (newp->num < ((Player *)currp->data)->num) {
-				game->player_list = g_list_insert(game->player_list, newp, g_list_index(game->player_list, currp->data));
-				break;
-			}
-		}
-		playerlist_dec_use_count(game);
-		if (!currp) {
-			game->player_list = g_list_append(game->player_list, newp);
-		}
-	driver->player_change(game);
-	}
-#endif
-
 	/* mark the player as a reconnect */
 	newp->disconnected = TRUE;
 

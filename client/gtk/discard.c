@@ -73,7 +73,6 @@ static GtkWidget *discard_create_dlg(gint num)
 {
 	GtkWidget *dlg_vbox;
 	GtkWidget *vbox;
-	GtkWidget *lbl;
 	char buff[128];
 
 	discard.dlg = gtk_dialog_new_with_buttons(
