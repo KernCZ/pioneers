@@ -2,6 +2,8 @@
 	* client/ai/greedy.c: Add gold support to the AI.
 	* server/player.c: The patch to enable random seating ordered
 	caused gtk assertions when connecting to a full game.
+	* Makefile.am, configure.ac, client/ai/Makefile.am, ai/: Remove
+	the old AI; enable the new AI.
 
 2005-03-23  0.9.1  Roland Clobus <rclobus@bigfoot.com>
 	* New version numbering: only 3 digits. The first two match the

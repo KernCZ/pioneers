@@ -20,13 +20,7 @@
 
 include $(top_srcdir)/rules.make
 
-ALWAYS_SUBDIRS = po common client server meta-server docs
-if HAVE_GNOME
-GNOME_SUBDIRS = ai
-endif
-
-SUBDIRS = $(ALWAYS_SUBDIRS) $(GNOME_SUBDIRS)
-DIST_SUBDIRS = po common client server meta-server ai docs
+SUBDIRS = po common client server meta-server docs
 
 EXTRA_DIST = autogen.sh gnocatan.spec xmldocs.make omf.make rules.make
 

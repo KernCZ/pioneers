@@ -65,22 +65,6 @@ PKG_CHECK_MODULES(GLIB2, glib-2.0)
 AC_SUBST(CFLAGS, "$CFLAGS $GLIB2_CFLAGS")
 AC_SUBST(LIBS, "$LIBS $GLIB2_LIBS")
 
-# Use the old ai when gnome is present
-# This is for compatibility
-# FIXME: If the ai has been tested enough, set default to no
-if test x$have_gnome = xyes; then
-  AC_ARG_ENABLE([old-ai],
-  [  --enable-old-ai         Use the old ai.],
-  [case "${enableval}" in
-    yes) use_old_ai=yes ;;
-    "")  use_old_ai=yes ;;
-    *)   use_old_ai=no ;;
-    esac], [use_old_ai=yes])
-else
-use_old_ai="no, because GNOME2 not found"
-fi
-AM_CONDITIONAL(USE_OLD_AI, [test x$use_old_ai = xyes])
-
 AC_TRY_COMPILE([#include <glib.h>],
 	[g_rand_new_with_seed(0)],
 	have_glib_random=yes,
@@ -171,7 +155,6 @@ AC_CONFIG_FILES([ \
 	client/ai/Makefile \
 	server/Makefile \
 	meta-server/Makefile \
-	ai/Makefile \
 	docs/Makefile \
 	])
 AC_CONFIG_FILES([ \
@@ -200,7 +183,6 @@ $PACKAGE v$VERSION configuration:
         Build help                         $have_scrollkeeper
     Compatibility:
         Use old random generator           $use_old_random
-        Use old ai                         $use_old_ai
     Developers only:
         Use verbose DEBUG logging          $debug_support
 ])
