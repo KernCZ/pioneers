@@ -511,7 +511,8 @@ static gboolean mode_start(StateMachine *sm, gint event)
 		return TRUE;
 	}
 	if (sm_recv(sm, "sorry, game is full")) {
-		sm_end(sm);
+		sm_pop_all(sm);
+		sm_goto(sm, mode_offline);
 		gui_set_net_status(_("Offline"));
 		return TRUE;
 	}

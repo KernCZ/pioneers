@@ -1,3 +1,8 @@
+2000-05-28  Dave Cole <dave@dccs.com.au>
+
+	* client/client.c (mode_start): Goto mode_offline after
+	sm_pop_all(), prevents stack underflow.
+	
 2000-05-28  Bibek Sahu <scorpio@dodds.net>
 	* client/Makefile.am client/gui.c client/gui.h client/admin-gtk.c
 	server/gnocatan-server.c: Added a basic network administration 
