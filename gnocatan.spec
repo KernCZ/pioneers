@@ -44,7 +44,6 @@ This is the client software to play the game.
 %package 	data
 Summary: 	Gnocatan Data
 Group: 		X11/Games
-BuildArchitectures: noarch
 
 %description 	data
 Gnocatan is an Internet playable implementation of the Settlers of
@@ -56,7 +55,6 @@ This package contains the data files.
 %package 	help
 Summary: 	Gnocatan Help
 Group: 		X11/Games
-BuildArchitectures: noarch
 
 %description 	help
 Gnocatan is an Internet playable implementation of the Settlers of
@@ -132,7 +130,6 @@ make install prefix=$RPM_BUILD_ROOT/usr
 
 * Tue Jun 20 2000 Steve Langasek <vorlon@dodds.net>
 - updated version number
-- switch to noarch packages for data,help
 
 * Thu Jun 01 2000 Steve Langasek <vorlon@dodds.net>
 - Updated to behave more like the filesystem standard tells us to (and
