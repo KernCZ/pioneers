@@ -2,7 +2,7 @@
  *   Go buy a copy.
  *
  * Copyright (C) 1999 the Free Software Foundation
- * Copyright (C) 2003 Bas Wijnen <b.wijnen@phys.rug.nl>
+ * Copyright (C) 2003-2005 Bas Wijnen <shevek@fmf.nl>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -141,7 +141,8 @@ static void start_setup_player(Player * player)
 	if (game->double_setup)
 		player_broadcast(player, PB_RESPOND, "setup-double\n");
 	else
-		player_broadcast(player, PB_RESPOND, "setup\n");
+		player_broadcast(player, PB_RESPOND, "setup %d\n",
+				 game->reverse_setup);
 
 	sm_goto(sm, (StateFunc) mode_setup);
 }

@@ -2,7 +2,7 @@
  *   Go buy a copy.
  *
  * Copyright (C) 1999 the Free Software Foundation
- * Copyright (C) 2003 Bas Wijnen <b.wijnen@phys.rug.nl>
+ * Copyright (C) 2003-2005 Bas Wijnen <shevek@fmf.nl>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -74,6 +74,7 @@ static gboolean mode_domestic_quote(StateMachine * sm, gint event);
 static gboolean mode_domestic_monitor(StateMachine * sm, gint event);
 static gboolean mode_game_over(StateMachine * sm, gint event);
 static gboolean mode_choose_gold(StateMachine * sm, gint event);
+static gboolean mode_wait_resources(StateMachine * sm, gint event);
 static void recover_from_disconnect(StateMachine * sm,
 				    struct recovery_info_t *rinfo);
 
@@ -521,7 +522,7 @@ static gboolean check_other_players(StateMachine * sm)
 	BuildType build_type;
 	DevelType devel_type;
 	Resource resource_type, supply_type, receive_type;
-	gint player_num, victim_num, card_idx;
+	gint player_num, victim_num, card_idx, backwards;
 	gint turn_num, discard_num, gold_num, num, ratio, die1, die2, x, y,
 	    pos;
 	gint id;
@@ -587,6 +588,8 @@ static gboolean check_other_players(StateMachine * sm)
 	}
 	if (sm_recv(sm, "rolled %d %d", &die1, &die2)) {
 		turn_rolled_dice(player_num, die1, die2);
+		if (die1 + die2 != 7)
+			sm_push(sm, mode_wait_resources);
 		return TRUE;
 	}
 	if (sm_recv(sm, "must-discard %d", &discard_num)) {
@@ -603,7 +606,7 @@ static gboolean check_other_players(StateMachine * sm)
 		return TRUE;
 	}
 	if (sm_recv(sm, "prepare-gold %d", &gold_num)) {
-		sm_push(sm, mode_choose_gold);
+		sm_goto(sm, mode_choose_gold);
 		callbacks.gold_add(player_num, gold_num);
 		return TRUE;
 	}
@@ -650,12 +653,15 @@ static gboolean check_other_players(StateMachine * sm)
 		player_take_point(player_num, id, victim_num);
 		return TRUE;
 	}
-	if (sm_recv(sm, "setup")) {
+	if (sm_recv(sm, "setup %d", &backwards)) {
 		setup_begin(player_num);
+		if (backwards)
+			sm_push(sm, mode_wait_resources);
 		return TRUE;
 	}
 	if (sm_recv(sm, "setup-double")) {
 		setup_begin_double(player_num);
+		sm_push(sm, mode_wait_resources);
 		return TRUE;
 	}
 	if (sm_recv(sm, "won with %d", &num)) {
@@ -902,6 +908,7 @@ static gboolean mode_load_gameinfo(StateMachine * sm, gint event)
 		return TRUE;
 	}
 	if (sm_recv(sm, "end")) {
+		callback_mode = MODE_WAIT_TURN;	/* allow chatting */
 		callbacks.start_game();
 		if (disconnected) {
 			recover_from_disconnect(sm, &rinfo);
@@ -1279,7 +1286,7 @@ static gboolean mode_setup(StateMachine * sm, gint event)
  */
 static gboolean mode_idle(StateMachine * sm, gint event)
 {
-	gint num, player_num, x, y;
+	gint num, player_num, x, y, backwards;
 	gint they_supply[NO_RESOURCE];
 	gint they_receive[NO_RESOURCE];
 
@@ -1290,13 +1297,16 @@ static gboolean mode_idle(StateMachine * sm, gint event)
 		callbacks.instructions(_("Waiting for your turn"));
 		break;
 	case SM_RECV:
-		if (sm_recv(sm, "setup")) {
+		if (sm_recv(sm, "setup %d", &backwards)) {
 			setup_begin(my_player_num());
+			if (backwards)
+				sm_push_noenter(sm, mode_wait_resources);
 			sm_push(sm, mode_setup);
 			return TRUE;
 		}
 		if (sm_recv(sm, "setup-double")) {
 			setup_begin_double(my_player_num());
+			sm_push_noenter(sm, mode_wait_resources);
 			sm_push(sm, mode_setup);
 			return TRUE;
 		}
@@ -1689,11 +1699,11 @@ gboolean mode_roll_response(StateMachine * sm, gint event)
 		if (sm_recv(sm, "rolled %d %d", &die1, &die2)) {
 			turn_rolled_dice(my_player_num(), die1, die2);
 			waiting_for_network(FALSE);
+			sm_goto_noenter(sm, mode_turn_rolled);
 			if (die1 + die2 == 7) {
-				sm_goto_noenter(sm, mode_turn_rolled);
 				sm_push(sm, mode_wait_for_robber);
 			} else
-				sm_goto(sm, mode_turn_rolled);
+				sm_push(sm, mode_wait_resources);
 			return TRUE;
 		}
 		if (check_other_players(sm))
@@ -2307,18 +2317,22 @@ static void recover_from_disconnect(StateMachine * sm,
 	} else if (strcmp(rinfo->prevstate, "MONOPOLY") == 0) {
 		sm_goto_noenter(sm, mode_idle);
 		sm_push_noenter(sm, modeturn);
+		callback_mode = MODE_TURN;
 		sm_push(sm, mode_monopoly);
 	} else if (strcmp(rinfo->prevstate, "PLENTY") == 0) {
 		sm_goto_noenter(sm, mode_idle);
 		sm_push_noenter(sm, modeturn);
+		callback_mode = MODE_TURN;
 		sm_push(sm, mode_year_of_plenty);
 	} else if (strcmp(rinfo->prevstate, "GOLD") == 0) {
 		sm_goto_noenter(sm, mode_idle);
 		sm_push_noenter(sm, modeturn);
+		callback_mode = MODE_TURN;
 		sm_push(sm, mode_choose_gold);
 	} else if (strcmp(rinfo->prevstate, "ROADBUILDING") == 0) {
 		sm_goto_noenter(sm, mode_idle);
 		sm_push_noenter(sm, modeturn);
+		callback_mode = MODE_TURN;
 		sm_push(sm, mode_road_building);
 	}
 
@@ -2382,7 +2396,7 @@ static gboolean mode_choose_gold(StateMachine * sm, gint event)
 			callbacks.gold_remove(player_num, resource_list);
 			return TRUE;
 		}
-		if (sm_recv(sm, "gold-done")) {
+		if (sm_recv(sm, "done-resources")) {
 			callback_mode = previous_mode;
 			callbacks.gold_done();
 			sm_pop(sm);
@@ -2392,6 +2406,22 @@ static gboolean mode_choose_gold(StateMachine * sm, gint event)
 			return TRUE;
 		break;
 	default:
+		break;
+	}
+	return FALSE;
+}
+
+static gboolean mode_wait_resources(StateMachine * sm, gint event)
+{
+	sm_state_name(sm, "mode_wait_resources");
+	switch (event) {
+	case SM_RECV:
+		if (sm_recv(sm, "done-resources")) {
+			sm_pop(sm);
+			return TRUE;
+		}
+		if (check_other_players(sm))
+			return TRUE;
 		break;
 	}
 	return FALSE;

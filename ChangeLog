@@ -1,3 +1,15 @@
+2005-03-23  0.9.1  Roland Clobus <rclobus@bigfoot.com>
+	* New version numbering: only 3 digits. The first two match the
+	protocol version, and the third is the build number.
+
+2005-03-02  Bas Wijnen <shevek@fmf.nl>
+	* client/common/client.c, server/gold.c, server/pregame.c: Fixed race
+	condition for client after rolling dice.
+
+2005-03-22  Brian Wellington <bwelling@xbill.org>
+	* meta-server/gnocatan-meta-server.c: Removed compiler warnings when
+	compiling with -pedantic.
+
 2005-03-20  0.8.1.59  Roland Clobus <rclobus@bigfoot.com>
 	* common/game.c: The automatic indent did break the sending of
 	gameinfo.

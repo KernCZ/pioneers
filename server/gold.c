@@ -2,7 +2,7 @@
  *   Go buy a copy.
  *
  * Copyright (C) 1999 the Free Software Foundation
- * Copyright (C) 2003 Bas Wijnen <b.wijnen@phys.rug.nl>
+ * Copyright (C) 2003-2005 Bas Wijnen <shevek@fmf.nl>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -62,7 +62,7 @@ gboolean gold_limited_bank(const Game * game, int limit,
 /* this function distributes resources until someone who receives gold is
  * found.  It is called again when that person chose his/her gold and
  * continues the distribution */
-static void distribute_next(GList * list, gboolean someone_wants_gold)
+static void distribute_next(GList * list)
 {
 	Player *player = list->data;
 	Game *game = player->game;
@@ -142,9 +142,8 @@ static void distribute_next(GList * list, gboolean someone_wants_gold)
 		}
 		/* no player is choosing gold, give resources to next player */
 	}			/* end loop over all players */
-	/* tell everyone the gold is finished, except if there was no gold */
-	if (someone_wants_gold)
-		player_broadcast(player, PB_SILENT, "gold-done\n");
+	/* tell everyone the resource distribution is finished */
+	player_broadcast(player, PB_SILENT, "done-resources\n");
 	/* pop everyone back to the state before we started giving out
 	 * resources */
 	for (list = player_first_real(game); list != NULL;
@@ -205,7 +204,7 @@ gboolean mode_choose_gold(Player * player, gint event)
 	/* pop back to mode_idle */
 	sm_pop(sm);
 	list = next_player_loop(list_from_player(player), player);
-	distribute_next(list, TRUE);
+	distribute_next(list);
 	return TRUE;
 }
 
@@ -216,7 +215,6 @@ void distribute_first(GList * list)
 	GList *looper;
 	Player *player = list->data;
 	Game *game = player->game;
-	gboolean someone_wants_gold = FALSE;
 	/* tell everybody who's receiving gold */
 	for (looper = list; looper != NULL;
 	     looper = next_player_loop(looper, player)) {
@@ -227,7 +225,6 @@ void distribute_first(GList * list)
 		if (scan->gold > 0) {
 			player_broadcast(scan, PB_ALL, "prepare-gold %d\n",
 					 scan->gold);
-			someone_wants_gold = TRUE;
 		}
 		/* push everyone to idle, so nothing happens while giving out
 		 * gold after the distribution of resources is done, they are
@@ -239,5 +236,5 @@ void distribute_first(GList * list)
 			(StateFunc) mode_wait_for_gold_choosing_players);
 	}
 	/* start giving out resources */
-	distribute_next(list, someone_wants_gold);
+	distribute_next(list);
 }
