@@ -68,8 +68,8 @@ This package contains the help files.
 %setup
 
 %build
-./autogen.sh --prefix=/usr
-make 
+CFLAGS="$RPM_OPT_FLAGS" ./autogen.sh --prefix=/usr
+make
 
 %install
 rm -rf $RPM_BUILD_ROOT
