@@ -2,6 +2,10 @@
 
 	* debian/gnocatan-meta-server.init: privilige reduction
 
+	* debian/control: adjust dependencies, add co-maintainers.
+
+	* debian/changelong: prepare for upload to Debian
+
 2002-12-25  Roman Hodek  <roman@hodek.net>
 
 	* configure.in: Some changes to make it work with autoconf2.50 and
