@@ -62,6 +62,8 @@ static GtkWidget *radio_style_icons;
 static GtkWidget *radio_style_both;
 
 static GtkWidget *check_color_chat;
+static GtkWidget *check_color_messages;
+static GtkWidget *check_color_summary;
 
 
 GtkWidget *gnome_dialog_get_button(GnomeDialog *dlg, gint button)
@@ -434,6 +436,8 @@ static void settings_apply_cb(GnomePropertyBox *prop_box, gint page, gpointer da
 	GtkWidget *toolbar;
 	gint toolbar_style;
 	gint color_chat;
+	gint color_messages;
+	gint color_summary;
 
 	switch(page)
 	{
@@ -467,10 +471,31 @@ static void settings_apply_cb(GnomePropertyBox *prop_box, gint page, gpointer da
 			color_chat = COLOR_CHAT_NO;
 		}
 		
+		if (GTK_TOGGLE_BUTTON(check_color_messages)->active) {
+			color_messages = TRUE;
+		} else {
+			color_messages = FALSE;
+		}
+		
+		if (GTK_TOGGLE_BUTTON(check_color_summary)->active) {
+			color_summary = TRUE;
+		} else {
+			color_summary = FALSE;
+		}
+		
 		gnome_config_set_int( "/gnocatan/settings/color_chat",
 		                      color_chat );
-
 		color_chat_enabled = color_chat;
+
+		gnome_config_set_int( "/gnocatan/settings/color_messages",
+		                      color_messages );
+		color_messages_enabled = color_messages;
+		log_set_func_message_color_enable(color_messages);
+		
+		gnome_config_set_int( "/gnocatan/settings/color_summary",
+		                      color_summary );
+		color_summary_enabled = color_summary;
+		player_modify_statistic(0, STAT_SETTLEMENTS, 0);
 
 		gnome_config_sync();
 		break;
@@ -497,6 +522,8 @@ static void menu_settings_cb(GtkWidget *widget, void *user_data)
 	gboolean default_returned;
 	gint toolbar_style;
 	gint color_chat;
+	gint color_messages;
+	gint color_summary;
 	
 	/* Create stuff */
 	settings = gnome_property_box_new();
@@ -514,14 +541,18 @@ static void menu_settings_cb(GtkWidget *widget, void *user_data)
 	radio_style_icons = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(radio_style_text), "Icons Only" );
 	radio_style_both = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(radio_style_icons), "Both Icons and Text" );
 
+	check_color_messages = gtk_check_button_new_with_label( "Display messages in colors?" );
 	check_color_chat = gtk_check_button_new_with_label( "Display chat messages in user's color?" );
+	check_color_summary = gtk_check_button_new_with_label( "Display player summary with colors?" );
 
 	/* Put things in other things */
 	gtk_box_pack_start_defaults( GTK_BOX(vbox_texticons), radio_style_text );
 	gtk_box_pack_start_defaults( GTK_BOX(vbox_texticons), radio_style_icons );
 	gtk_box_pack_start_defaults( GTK_BOX(vbox_texticons), radio_style_both );
 	
+	gtk_box_pack_start_defaults( GTK_BOX(vbox_colors), check_color_messages );
 	gtk_box_pack_start_defaults( GTK_BOX(vbox_colors), check_color_chat );
+	gtk_box_pack_start_defaults( GTK_BOX(vbox_colors), check_color_summary );
 
 	gtk_container_add( GTK_CONTAINER(frame_texticons), vbox_texticons );
 	gtk_container_add( GTK_CONTAINER(frame_colors), vbox_colors );
@@ -560,10 +591,20 @@ static void menu_settings_cb(GtkWidget *widget, void *user_data)
 	/* Set the default color chat state */
 	color_chat = gnome_config_get_int_with_default("/gnocatan/settings/color_chat=1",
 	                                                  &default_returned );
-
 	if(default_returned) {
 		color_chat = COLOR_CHAT_YES;
 	}
+	color_messages = gnome_config_get_int_with_default("/gnocatan/settings/color_messages=1",
+	                                                  &default_returned );
+	if(default_returned) {
+		color_messages = TRUE;
+	}
+	color_summary = gnome_config_get_int_with_default("/gnocatan/settings/color_summary=1",
+	                                                  &default_returned );
+	if(default_returned) {
+		color_summary = TRUE;
+	}
+
 
 	switch(color_chat) {
 	case COLOR_CHAT_NO:
@@ -571,6 +612,22 @@ static void menu_settings_cb(GtkWidget *widget, void *user_data)
 		break;
 	default:
 		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(check_color_chat), TRUE);
+		break;
+	}
+	switch(color_messages) {
+	case FALSE:
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(check_color_messages), FALSE);
+		break;
+	default:
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(check_color_messages), TRUE);
+		break;
+	}
+	switch(color_summary) {
+	case FALSE:
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(check_color_summary), FALSE);
+		break;
+	default:
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(check_color_summary), TRUE);
 		break;
 	}
 
@@ -583,6 +640,10 @@ static void menu_settings_cb(GtkWidget *widget, void *user_data)
 	                    settings_activate_cb, (gpointer)settings );
 	gtk_signal_connect( GTK_OBJECT(check_color_chat), "clicked",
 	                    settings_activate_cb, (gpointer)settings );
+	gtk_signal_connect( GTK_OBJECT(check_color_messages), "clicked",
+	                    settings_activate_cb, (gpointer)settings );
+	gtk_signal_connect( GTK_OBJECT(check_color_summary), "clicked",
+	                    settings_activate_cb, (gpointer)settings );
 	gtk_signal_connect( GTK_OBJECT(settings), "apply",
 	                    settings_apply_cb, NULL );
 	
@@ -591,7 +652,9 @@ static void menu_settings_cb(GtkWidget *widget, void *user_data)
 	gtk_widget_show( radio_style_icons );
 	gtk_widget_show( radio_style_both );
 
+	gtk_widget_show( check_color_messages );
 	gtk_widget_show( check_color_chat );
+	gtk_widget_show( check_color_summary );
 
 	gtk_widget_show( vbox_texticons );
 	gtk_widget_show( vbox_colors );
@@ -880,6 +943,21 @@ GtkWidget* gui_build_interface()
 	                                      &default_returned );
 	if(default_returned) {
 		color_chat_enabled = COLOR_CHAT_YES;
+	}
+
+	color_messages_enabled = 
+	    gnome_config_get_int_with_default("/gnocatan/settings/color_messages=1",
+	                                      &default_returned );
+	if(default_returned) {
+		color_messages_enabled = TRUE;
+	}
+	log_set_func_message_color_enable(color_messages_enabled);
+
+	color_summary_enabled = 
+	    gnome_config_get_int_with_default("/gnocatan/settings/color_summary=1",
+	                                      &default_returned );
+	if(default_returned) {
+		color_summary_enabled = TRUE;
 	}
 
 	gnome_app_create_menus(GNOME_APP(app_window), main_menu);

@@ -194,7 +194,9 @@ void player_modify_statistic(gint player_num, StatisticType type, gint num)
 		row = gtk_clist_find_row_from_data(GTK_CLIST(summary_clist),
 						   &player->statistics[type]);
 
-		current_style->fg[0] = *statistics[type].textcolor;
+		current_style->fg[0] = color_summary_enabled ?
+							   *statistics[type].textcolor :
+							   black;
 		current_style->bg[0] = player_bg;
 
 		if (row < 0) {

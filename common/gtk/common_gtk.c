@@ -14,6 +14,7 @@
 
 
 static GtkWidget *message_txt;
+static gboolean msg_colors = TRUE;
 
 static GdkColor black = { 0, 0, 0, 0 };
 static GdkColor red = { 0, 0xff00, 0, 0 };
@@ -54,6 +55,11 @@ void log_set_func_message_window( void )
 	driver->log_write = message_window_log_message_string;
 }
 
+void log_set_func_message_color_enable( gboolean enable )
+{
+	msg_colors = enable;
+}
+
 /* Write a message string to the console, setting its color based on its
  *   type.
  */
@@ -61,7 +67,9 @@ void message_window_log_message_string( gint msg_type, gchar *text )
 {
 	GdkColor *color;
 
-	switch( msg_type ) {
+	if (!msg_colors)
+		color = &black;
+	else switch( msg_type ) {
 		case MSG_ERROR:
 			color = &red;
 			break;

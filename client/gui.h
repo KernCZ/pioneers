@@ -13,6 +13,8 @@
 #include "guimap.h"
 
 gint color_chat_enabled;
+gint color_messages_enabled;
+gint color_summary_enabled;
 
 typedef enum {
 	MODE_IDLE,		/* not allowed to do anything */

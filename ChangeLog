@@ -1,3 +1,16 @@
+2002-05-22  Roman Hodek  <roman@hodek.net>
+
+	* client/gui.c: two new checkboxes in the settings dialog to
+	disable use of colors in the message window and player summary.
+
+	* common/common_gtk.c (log_set_func_message_color_enable): new
+	interface to en/disable colors in message window
+	(message_window_log_message_string): if msg_colors is false, use
+	black
+
+	* client/player.c (player_modify_statistic): obey
+	color_summary_enabled
+
 2002-05-21  Roman Hodek  <roman@hodek.net>
 
 	* client/help/C/gnocatan.sgml: Updated with respect to recent

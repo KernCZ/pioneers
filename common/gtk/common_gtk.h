@@ -16,6 +16,9 @@
 /* Set the default logging function to write to the message window. */
 void log_set_func_message_window( void );
 
+/* Set if colors in message window are enabled */
+void log_set_func_message_color_enable( gboolean enable );
+
 /* Write a message string to the console, setting its color based on its
  *   type.
  */
