@@ -199,7 +199,7 @@ void player_has_quit(gint player_num)
 	}
 	callbacks.player_quit (player_num);
 	player = player_get (player_num);
-	log_message( MSG_ERROR, _("%s has quit\n"), player_name(player_num,
+	log_message( MSG_INFO, _("%s has quit\n"), player_name(player_num,
 				TRUE));
 }
 
