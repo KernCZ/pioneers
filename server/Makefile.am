@@ -12,7 +12,7 @@ gnocatan_server_gtk_DEPENDENCIES = libgnocatan_server.a \
 	../common/libgnocatan.a ../common/libgnocatan_gtk.a
 
 gnocatan_server_console_DEPENDENCIES = libgnocatan_server.a \
-	../common/libgnocatan.a ../common/libgnocatan_gtk.a
+	../common/libgnocatan.a
 
 EXTRA_libgnocatan_server_a_SOURCES = \
 	mt_rand.c \

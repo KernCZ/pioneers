@@ -1,3 +1,3 @@
-/* Define if there is a grand() function in glib. */
+/* Define if there is a g_rand() function in glib. */
 #undef HAVE_G_RAND_NEW
 
