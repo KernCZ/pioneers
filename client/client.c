@@ -40,7 +40,6 @@ static gboolean mode_setup(StateMachine *sm, gint event);
 static gboolean mode_idle(StateMachine *sm, gint event);
 static gboolean mode_wait_for_robber(StateMachine *sm, gint event);
 static gboolean mode_road_building(StateMachine *sm, gint event);
-static gboolean mode_ship_building(StateMachine *sm, gint event);
 static gboolean mode_monopoly(StateMachine *sm, gint event);
 static gboolean mode_year_of_plenty(StateMachine *sm, gint event);
 static gboolean mode_robber(StateMachine *sm, gint event);
@@ -560,15 +559,22 @@ static void build_road_cb(Edge *edge, gint player_num)
 }
 
 /* This is called when the user presses the left-mouse-button on a
- * valid position to place a ship during setup.  Tell the server that
- * we wish to place the ship, then wait for response.
- *
- * See below for explanation of sm_resp_handler()
+ * valid position to place a ship during setup.
  */
 static void build_ship_cb(Edge *edge, gint player_num)
 {
 	gui_cursor_none();
 	sm_send(SM(), "build ship %d %d %d\n", edge->x, edge->y, edge->pos);
+	sm_resp_handler(SM(), resp_build, NULL, NULL);
+}
+
+/* This is called when the user presses the left-mouse-button on a
+ * valid position to place a bridge during setup.
+ */
+static void build_bridge_cb(Edge *edge, gint player_num)
+{
+	gui_cursor_none();
+	sm_send(SM(), "build bridge %d %d %d\n", edge->x, edge->y, edge->pos);
 	sm_resp_handler(SM(), resp_build, NULL, NULL);
 }
 
@@ -579,6 +585,44 @@ static void build_settlement_cb(Node *node, gint player_num)
 	sm_resp_handler(SM(), resp_build, NULL, NULL);
 }
 
+static char *setup_msg()
+{
+	static char msg[1024];
+	char *msg_end;
+	char *parts[5];
+	int num_parts;
+	int idx;
+
+	if (is_setup_double())
+		strcpy(msg, _("Build two settlements, each with a connecting"));
+	else
+		strcpy(msg, _("Build a settlement with a connecting"));
+	num_parts = 0;
+	if (setup_can_build_road())
+		parts[num_parts++] = _("road");
+	if (setup_can_build_bridge())
+		parts[num_parts++] = _("bridge");
+	if (setup_can_build_ship())
+		parts[num_parts++] = _("ship");
+
+	msg_end = msg + strlen(msg);
+	for (idx = 0; idx < num_parts; idx++) {
+		if (idx > 0) {
+			*msg_end++ = ',';
+			if (idx == num_parts - 1) {
+				strcpy(msg_end, " or");
+				msg_end += 3;
+			}
+		}
+		*msg_end++ = ' ';
+		strcpy(msg_end, parts[idx]);
+		msg_end += strlen(msg_end);
+	}
+	*msg_end = '\0';
+
+	return msg;
+}
+
 static gboolean mode_setup(StateMachine *sm, gint event)
 {
 	BuildRec *rec;
@@ -586,10 +630,7 @@ static gboolean mode_setup(StateMachine *sm, gint event)
 	sm_state_name(sm, "mode_setup");
 	switch (event) {
 	case SM_ENTER:
-		if (is_setup_double())
-			gui_set_instructions(_("Build two settlements, each with one connecting road or ship."));
-		else
-			gui_set_instructions(_("Build a settlement with a connecting road or ship."));
+		gui_set_instructions(setup_msg());
 		break;
 	case SM_INIT:
 		/* When the state is entered, and every time an event
@@ -604,6 +645,7 @@ static gboolean mode_setup(StateMachine *sm, gint event)
 		 */
 		sm_gui_check(sm, GUI_UNDO, setup_can_undo());
 		sm_gui_check(sm, GUI_ROAD, setup_can_build_road());
+		sm_gui_check(sm, GUI_BRIDGE, setup_can_build_bridge());
 		sm_gui_check(sm, GUI_SHIP, setup_can_build_ship());
 		sm_gui_check(sm, GUI_SETTLEMENT, setup_can_build_settlement());
 		sm_gui_check(sm, GUI_FINISH, setup_can_finish());
@@ -649,7 +691,7 @@ static gboolean mode_setup(StateMachine *sm, gint event)
 	case GUI_ROAD:
 		/* User pressed "Build Road", set the map cursor;
 		 *   shape = ROAD_CURSOR
-		 *   check-if-valid-pos = check_road_setup()
+		 *   check-if-valid-pos = setup_check_road()
 		 *   place-road-callback = build_road_cb()
 		 */
 		gui_cursor_set(ROAD_CURSOR,
@@ -659,12 +701,22 @@ static gboolean mode_setup(StateMachine *sm, gint event)
 	case GUI_SHIP:
 		/* User pressed "Build Ship", set the map cursor;
 		 *   shape = SHIP_CURSOR
-		 *   check-if-valid-pos = check_ship_setup()
+		 *   check-if-valid-pos = setup_check_ship()
 		 *   place-ship-callback = build_ship_cb()
 		 */
 		gui_cursor_set(SHIP_CURSOR,
 			       (CheckFunc)setup_check_ship,
 			       (SelectFunc)build_ship_cb, NULL);
+		return TRUE;
+	case GUI_BRIDGE:
+		/* User pressed "Build Bridge", set the map cursor;
+		 *   shape = BRIDGE_CURSOR
+		 *   check-if-valid-pos = setup_check_bridge()
+		 *   place-ship-callback = build_bridge_cb()
+		 */
+		gui_cursor_set(BRIDGE_CURSOR,
+			       (CheckFunc)setup_check_bridge,
+			       (SelectFunc)build_bridge_cb, NULL);
 		return TRUE;
 	case GUI_SETTLEMENT:
 		gui_cursor_set(SETTLEMENT_CURSOR,
@@ -776,28 +828,11 @@ static gboolean mode_wait_for_robber(StateMachine *sm, gint event)
 static gboolean resp_road_building_undo(StateMachine *sm, gint event)
 {
 	gint x, y, pos;
+	BuildType build_type;
 
 	sm_state_name(sm, "resp_road_building_undo");
-	if (sm_recv(sm, "remove road %d %d %d", &x, &y, &pos)) {
-		build_remove(BUILD_ROAD, x, y, pos);
-		sm_resp_ok(sm);
-		return TRUE;
-	}
-	if (check_other_players(sm))
-		return TRUE;
-	sm_resp_err(sm);
-	return FALSE;
-}
-
-/* Response to "undo" during ship building
- */
-static gboolean resp_ship_building_undo(StateMachine *sm, gint event)
-{
-	gint x, y, pos;
-
-	sm_state_name(sm, "resp_ship_building_undo");
-	if (sm_recv(sm, "remove ship %d %d %d", &x, &y, &pos)) {
-		build_remove(BUILD_SHIP, x, y, pos);
+	if (sm_recv(sm, "remove %B %d %d %d", &build_type, &x, &y, &pos)) {
+		build_remove(build_type, x, y, pos);
 		sm_resp_ok(sm);
 		return TRUE;
 	}
@@ -812,22 +847,6 @@ static gboolean resp_ship_building_undo(StateMachine *sm, gint event)
 static gboolean resp_road_building_done(StateMachine *sm, gint event)
 {
 	sm_state_name(sm, "resp_road_building_done");
-	if (sm_recv(sm, "OK")) {
-		build_clear();
-		sm_resp_ok(sm);
-		return TRUE;
-	}
-	if (check_other_players(sm))
-		return TRUE;
-	sm_resp_err(sm);
-	return FALSE;
-}
-
-/* Response to "done" during ship building
- */
-static gboolean resp_ship_building_done(StateMachine *sm, gint event)
-{
-	sm_state_name(sm, "resp_ship_building_done");
 	if (sm_recv(sm, "OK")) {
 		build_clear();
 		sm_resp_ok(sm);
@@ -854,6 +873,8 @@ static gboolean mode_road_building(StateMachine *sm, gint event)
 	case SM_INIT:
 		sm_gui_check(sm, GUI_UNDO, road_building_can_undo());
 		sm_gui_check(sm, GUI_ROAD, road_building_can_build_road());
+		sm_gui_check(sm, GUI_SHIP, road_building_can_build_ship());
+		sm_gui_check(sm, GUI_BRIDGE, road_building_can_build_bridge());
 		sm_gui_check(sm, GUI_FINISH, road_building_can_finish());
 		break;
 	case SM_RECV:
@@ -872,52 +893,21 @@ static gboolean mode_road_building(StateMachine *sm, gint event)
 			       (SelectFunc)build_road_cb,
 			       NULL);
 		return TRUE;
-	case GUI_FINISH:
-		sm_send(sm, "done\n");
-		sm_resp_handler(sm, resp_road_building_done, sm_previous(sm), NULL);
-		return TRUE;
-	default:
-		break;
-	}
-	return FALSE;
-}
-
-static gboolean mode_ship_building(StateMachine *sm, gint event)
-{
-	BuildRec *rec;
-
-	sm_state_name(sm, "mode_ship_building");
-	switch (event) {
-	case SM_ENTER:
-		if (stock_num_ships() >= 2)
-			gui_set_instructions(_("Build two ship segments."));
-		else
-			gui_set_instructions(_("Build a ship segment."));
-		break;
-	case SM_INIT:
-		sm_gui_check(sm, GUI_UNDO, ship_building_can_undo());
-		sm_gui_check(sm, GUI_SHIP, ship_building_can_build_ship());
-		sm_gui_check(sm, GUI_FINISH, ship_building_can_finish());
-		break;
-	case SM_RECV:
-		if (check_other_players(sm))
-			return TRUE;
-		break;
-	case GUI_UNDO:
-		rec = build_last();
-		sm_send(sm, "remove %B %d %d %d\n",
-			rec->type, rec->x, rec->y, rec->pos);
-		sm_resp_handler(sm, resp_ship_building_undo, NULL, NULL);
-		return TRUE;
 	case GUI_SHIP:
 		gui_cursor_set(SHIP_CURSOR,
 			       (CheckFunc)can_ship_be_built,
 			       (SelectFunc)build_ship_cb,
 			       NULL);
 		return TRUE;
+	case GUI_BRIDGE:
+		gui_cursor_set(BRIDGE_CURSOR,
+			       (CheckFunc)can_bridge_be_built,
+			       (SelectFunc)build_bridge_cb,
+			       NULL);
+		return TRUE;
 	case GUI_FINISH:
 		sm_send(sm, "done\n");
-		sm_resp_handler(sm, resp_ship_building_done, sm_previous(sm), NULL);
+		sm_resp_handler(sm, resp_road_building_done, sm_previous(sm), NULL);
 		return TRUE;
 	default:
 		break;
@@ -1100,15 +1090,11 @@ static gboolean resp_play_develop(StateMachine *sm, gint event)
 		develop_played(my_player_num(), card_idx, card_type);
 		switch (card_type) {
 		case DEVEL_ROAD_BUILDING:
-			if (stock_num_roads() > 0) {
+			if (stock_num_roads() > 0
+			    || stock_num_ships() > 0
+			    || stock_num_bridges() > 0) {
 				road_building_begin();
 				sm_push(sm, mode_road_building);
-			}
-			break;
-		case DEVEL_SHIP_BUILDING:
-			if (stock_num_ships() > 0) {
-				ship_building_begin();
-				sm_push(sm, mode_ship_building);
 			}
 			break;
 		case DEVEL_MONOPOLY:
@@ -1273,6 +1259,7 @@ static gboolean mode_turn_rolled(StateMachine *sm, gint event)
 		sm_gui_check(sm, GUI_UNDO, turn_can_undo());
 		sm_gui_check(sm, GUI_ROAD, turn_can_build_road());
 		sm_gui_check(sm, GUI_SHIP, turn_can_build_ship());
+		sm_gui_check(sm, GUI_BRIDGE, turn_can_build_bridge());
 		sm_gui_check(sm, GUI_SETTLEMENT, turn_can_build_settlement());
 		sm_gui_check(sm, GUI_CITY, turn_can_build_city());
 		sm_gui_check(sm, GUI_TRADE, turn_can_trade());
@@ -1299,6 +1286,11 @@ static gboolean mode_turn_rolled(StateMachine *sm, gint event)
 		gui_cursor_set(SHIP_CURSOR,
 			       (CheckFunc)can_ship_be_built,
 			       (SelectFunc)build_ship_cb, NULL);
+		return TRUE;
+	case GUI_BRIDGE:
+		gui_cursor_set(BRIDGE_CURSOR,
+			       (CheckFunc)can_bridge_be_built,
+			       (SelectFunc)build_bridge_cb, NULL);
 		return TRUE;
 	case GUI_SETTLEMENT:
 		gui_cursor_set(SETTLEMENT_CURSOR,
