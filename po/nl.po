@@ -51,7 +51,7 @@ msgstr "Stratenbouw"
 #: ai/develop.c:33 client/common/develop.c:43 client/gtk/develop.c:41
 #: client/gtk/monopoly.c:81
 msgid "Monopoly"
-msgstr "Monopoly"
+msgstr "Monopolie"
 
 #: ai/develop.c:34 client/common/develop.c:44 client/gtk/develop.c:42
 #: client/gtk/plenty.c:170
