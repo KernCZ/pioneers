@@ -641,7 +641,7 @@ static void help_about_cb(UNUSED(GtkWidget *widget), UNUSED(void *data))
 	gtk_container_add(GTK_CONTAINER(about), vbox);
 
 	imagefile = g_build_filename(DATADIR, "pixmaps", "gnocatan",
-	                             "splash.png");
+	                             "splash.png", NULL);
 	splash = gtk_image_new_from_file(imagefile);
 	g_free(imagefile);
 
@@ -655,7 +655,7 @@ static void help_about_cb(UNUSED(GtkWidget *widget), UNUSED(void *data))
 	gtk_text_buffer_insert(GTK_TEXT_BUFFER(buffer), &iter,
 	                       _("Gnocatan is based upon the excellent\n"
 	                         "Settlers of Catan board game.\n"), -1);
-
+	gtk_text_buffer_insert(buffer, &iter, VERSION, -1);
 	gtk_text_buffer_insert_with_tags_by_name(buffer, &iter,
 	                                         _("\nAuthors:\n"), -1,
 	                                         "bold");
