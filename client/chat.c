@@ -34,7 +34,7 @@ void chat_parser( gint player_num, char chat_str[MAX_CHAT] )
 
 		if (!strcmp(slashcommand, "beep")) {
 			/* Generate a beep sound if the player name specified
-			 * is the argument is the name of the current player.
+			 * in the argument is the name of the current player.
 			 */
 			if (slasharg != NULL) {
 				for (idx = 0; idx < game_params->num_players; idx++) {
@@ -50,13 +50,15 @@ void chat_parser( gint player_num, char chat_str[MAX_CHAT] )
 					}
 				}
 			}
-
+			return;
 		}
-
-		return;
-	} else {
-		log_message( MSG_INFO, _("%s"), player_name(player_num, TRUE));
+		/* IRC-compatible /me */
+		else if (!strcmp(slashcommand, "me")) {
+			chat_str += 2;
+		}
 	}
+
+	log_message( MSG_INFO, _("%s"), player_name(player_num, TRUE));
 
 	switch( chat_str[0] )
 	{
