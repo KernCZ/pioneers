@@ -21,21 +21,21 @@
  *	%B - build type;
  *		'road' = BUILD_ROAD,
  *		'ship' = BUILD_SHIP,
+ *		'bridge' = BUILD_BRIDGE,
  *		'settlement' = BUILD_SETTLEMENT
  *		'city' = BUILD_CITY
  *	%R - list of 5 integer resource counts;
  *		brick, grain, ore, wool, lumber
  *	%D - development card type;
  *		0 = DEVEL_ROAD_BUILDING,
- *		1 = DEVEL_SHIP_BUILDING,
- *		2 = DEVEL_MONOPOLY,
- *		3 = DEVEL_YEAR_OF_PLENTY,
- *		4 = DEVEL_CHAPEL,
- *		5 = DEVEL_UNIVERSITY_OF_CATAN,
- *		6 = DEVEL_GOVERNORS_HOUSE,
- *		7 = DEVEL_LIBRARY,
- *		8 = DEVEL_MARKET,
- *		9 = DEVEL_SOLDIER
+ *		1 = DEVEL_MONOPOLY,
+ *		2 = DEVEL_YEAR_OF_PLENTY,
+ *		3 = DEVEL_CHAPEL,
+ *		4 = DEVEL_UNIVERSITY_OF_CATAN,
+ *		5 = DEVEL_GOVERNORS_HOUSE,
+ *		6 = DEVEL_LIBRARY,
+ *		7 = DEVEL_MARKET,
+ *		8 = DEVEL_SOLDIER
  *	%r - resource type;
  *		'brick' = BRICK_RESOURCE,
  *		'grain' = GRAIN_RESOURCE,
