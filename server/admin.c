@@ -152,7 +152,7 @@ void load_game_types( const gchar *path )
 
 		if (len < 6 || strcmp(fname + len - 5, ".game") != 0)
 			continue;
-		fullname = g_build_filename(path, fname);
+		fullname = g_build_filename(path, fname, NULL);
 		params = load_game_desc(fullname);
 		g_free(fullname);
 		if (params)

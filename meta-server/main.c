@@ -366,7 +366,7 @@ static GList *load_game_types( void )
 
 		if (len < 6 || strcmp(fname + len - 5, ".game") != 0)
 			continue;
-		fullname = g_build_filename(gnocatan_dir, fname);
+		fullname = g_build_filename(gnocatan_dir, fname, NULL);
 		if (fullname) {
 			titles = load_game_desc(fullname, titles);
 			g_free(fullname);
