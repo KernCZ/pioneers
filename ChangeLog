@@ -1,41 +1,46 @@
+2000-05-17  Steve Langasek <vorlon@dodds.net>
+
+	* server/glib-driver.c:
+	Used the G_PRIORITY_DEFAULT define in place of constant as argument.
+
 2000-05-17  Bibek Sahu <scorpio@dodds.net>
-	* server/Makefile.am
-	Added glib-driver.c and glib-driver.h, which are used by the console
+
+	* server/Makefile.am: Added glib-driver.c and glib-driver.h, which
+	are used by the console server.
+
+	* server/glib-driver.[ch]: Functions necessary for the console
+	server.
+	
+	* server/gnocatan-server-console.c: Added some muscle to the
+	skeleton: Implemented some of the stuff necessary for a console
 	server.
 
-	* server/glib-driver.c server/glib-driver.h
-	Functions necessary for the console server.
-	
-	* server/gnocatan-server-console.c
-	Added some muscle to the skeleton: Implemented some of the stuff
-	necessary for a console server.
-
-	* server/server.h
-	Added some headers that it depended on, so it didn't scream at me
-	when I tried to include it just for the Player structure.
+	* server/server.h: Added some headers that it depended on, so it
+	didn't scream at me when I tried to include it just for the Player
+	structure.
 
 2000-05-17  Bibek Sahu <scorpio@dodds.net>
+
 	* configure.in: added GLIB configuration.
 
-	* common/common_gtk.c, common/driver.h
-	Added hooks for input read/write callbacks and [server] player
-	update callbacks.  Actually put the input read/write callbacks into
+	* common/common_gtk.c, common/driver.h: Added hooks for input
+	read/write callbacks and [server] player update callbacks.
+	Actually put the input read/write callbacks into
 	common/common_gtk.c.
 	
-	* common/network.c, server/server.c
-	Switched to using driver's input read/write callbacks.
+	* common/network.c, server/server.c: Switched to using driver's
+	input read/write callbacks.
 
-	* server/server.c, server/player.c
-	Switched to using driver's player update callbacks.
+	* server/server.c, server/player.c: Switched to using driver's
+	player update callbacks.
 
-	* server/Makefile.am
-	Added preliminary files for gui-less server.
+	* server/Makefile.am: Added preliminary files for gui-less server.
 	
-	* server/gnocatan-server.c
-	Connect the server player-update functions.
+	* server/gnocatan-server.c: Connect the server player-update
+	functions.
 	
-	* server/gnocatan-server-console.c
-	Preliminary skeleton code for gui-less server.
+	* server/gnocatan-server-console.c: Preliminary skeleton code for
+	gui-less server.
 	
 2000-05-15  Steve Langasek <vorlon@dodds.net>
 

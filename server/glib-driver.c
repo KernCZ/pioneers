@@ -39,8 +39,8 @@ static guint srv_glib_input_add_watch( gint fd, GIOCondition condition,
 	io_func->param = param;
 	io_func->channel = io_channel;
 	
-	tag = g_io_add_watch_full( io_channel, 0, condition, srv_glib_call_func, 
-		io_func, srv_glib_channel_destroyed );
+	tag = g_io_add_watch_full( io_channel, G_PRIORITY_DEFAULT, condition,
+		srv_glib_call_func, io_func, srv_glib_channel_destroyed );
 	
 	/* allocate hash table if it hasn't yet been done */
 	if( !_srv_glib_hash )
