@@ -1,3 +1,7 @@
+2004-07-08  Jeff Breidenbach  <jab@debian.org>
+
+	* Released as Debian package, 0.8.1-5.
+
 2004-07-08  0.8.1.30  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/histogram.c: Added more margins, last dice roll is shown
 	* ai/client.c, ai/greedy.c, client/ai/greedy.c, client/gtk/gui.c,
