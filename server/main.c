@@ -7,6 +7,9 @@
 #include <unistd.h>
 #include <dirent.h>
 #include <limits.h>
+#ifdef HAVE_GETOPT_H
+#include <getopt.h>
+#endif
 #include <glib.h>
 
 #include "driver.h"
@@ -40,7 +43,7 @@ void game_list_add_item( GameParams *item )
 		_game_list = g_hash_table_new( g_str_hash, g_str_equal );
 		params = item;
 	}
-	
+
 	g_hash_table_insert( _game_list, item->title, item );
 }
 
@@ -49,7 +52,7 @@ GameParams *game_list_find_item( gchar *title )
 	if( !_game_list ) {
 		return NULL;
 	}
-	
+
 	return g_hash_table_lookup( _game_list, title );
 }
 
@@ -120,7 +123,7 @@ static void load_game_types()
 	struct dirent *ent;
 
 	path = gnocatan_dir;
-	
+
 	if ((dir = opendir(path)) == NULL) {
 		log_message( MSG_ERROR, _("Missing game directory"));
 		return;
@@ -150,12 +153,14 @@ void init( void )
 	gnocatan_dir = (gchar *) getenv( "GNOCATAN_DIR" );
 	if( !gnocatan_dir )
 		gnocatan_dir = GNOCATAN_DIR_DEFAULT;
-	
+
 	load_game_types();
 }
 
 int main( int argc, char *argv[] )
 {
+	int c;
+	gint num_players = 0, num_points = 0, port = 0;
 	GMainLoop *event_loop;
 
 	/* set the UI driver to Glib_Driver, since we're using glib */
@@ -164,13 +169,64 @@ int main( int argc, char *argv[] )
 	driver->player_renamed = srv_glib_player_renamed;
 	driver->player_removed = srv_player_removed;
 
-	
 	init();
+
+	while ((c = getopt(argc, argv, "g:P:p:rv:")) != EOF)
+	{
+		switch (c) {
+		case 'g':
+			cfg_set_game( optarg, game_list_find_item(optarg) );
+			break;
+		case 'P':
+			if (!optarg) {
+				break;
+			}
+			num_players = atoi(optarg);
+			break;
+		case 'p':
+			if (!optarg) {
+				break;
+			}
+			port = atoi(optarg);
+			break;
+		case 'r':
+			if (!optarg) {
+				break;
+			}
+			cfg_set_register_server(TRUE);
+			break;
+		/* TODO: terrain type? */
+		case 'v':
+			if (!optarg) {
+				break;
+			}
+			num_points = atoi(optarg);
+			break;
+		default:
+			/* Handle erroneous args here. Usage() ? */
+			break;
+		}
+	}
+
+	if (port) {
+		cfg_set_port(port);
+	}
+
+	if (num_players) {
+		cfg_set_num_players(num_players);		
+	}
+
+	if (num_points) {
+		cfg_set_victory_points(num_points);
+	}
+
+	/* TODO: server should give the user feedback on what sort of
+	   game we're playing. */
 	server_startup(params, server_port, register_server);
-	
+
 	event_loop = g_main_new(0);
 	g_main_run( event_loop );
 	g_main_destroy( event_loop );
-	
+
 	return 0;
 }

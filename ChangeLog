@@ -1,3 +1,9 @@
+2000-05-18  Steve Langasek <vorlon@dodds.net>
+
+	* server/gnocatan-server-console.c: Plugged in getopt() support so
+	that the user has (some) control over the game settings in the
+	console server.  Documentation later.
+
 2000-05-17  Bibek Sahu <scorpio@dodds.net>
 
 	* server/gnocatan-server-console.c: removed game_list_item_t
