@@ -39,9 +39,10 @@ static GtkWidget *game_combo;	/* select game type */
 static GtkWidget *terrain_toggle; /* random terrain Yes/No */
 static GtkWidget *victory_spin;	/* victory point target */
 static GtkWidget *players_spin;	/* number of players */
+static GtkWidget *aiplayers_spin;	/* number of AI players */
 
 static int cfg_terrain = 0, cfg_num_players = 4, cfg_victory_points = 10,
-		   cfg_sevens_rule = 1;
+		   cfg_sevens_rule = 1, cfg_ai_players = 0;
 static gchar *cfg_gametype = NULL;
 
 static enum {
@@ -195,9 +196,10 @@ static void meta_create_notify(NetEvent event, void *user_data, char *line)
 	case NET_READ:
 		switch (create_mode) {
 		case MODE_SIGNON:
-			net_printf(create_ses, "create %d %d %d %d %s\n",
+			net_printf(create_ses, "create %d %d %d %d %d %s\n",
 				   cfg_terrain, cfg_num_players,
-				   cfg_victory_points, cfg_sevens_rule, cfg_gametype);
+				   cfg_victory_points, cfg_sevens_rule,
+				   cfg_ai_players, cfg_gametype);
 			create_mode = MODE_LIST;
 			break;
 
@@ -410,6 +412,11 @@ static void victory_spin_changed_cb(GtkWidget* widget, gpointer user_data)
 	cfg_victory_points = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(widget));
 }
 
+static void aiplayers_spin_changed_cb(GtkWidget* widget, gpointer user_data)
+{
+	cfg_ai_players = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(widget));
+}
+
 static void game_select_cb(GtkWidget *list, gpointer user_data)
 {
 	GList *selected = GTK_LIST(list)->selection;
@@ -458,7 +465,7 @@ static GtkWidget *build_create_interface()
 	gtk_widget_show(frame);
 	gtk_box_pack_start(GTK_BOX(hbox), frame, FALSE, TRUE, 0);
 
-	table = gtk_table_new(5, 2, FALSE);
+	table = gtk_table_new(6, 2, FALSE);
 	gtk_widget_show(table);
 	gtk_container_add(GTK_CONTAINER(frame), table);
 	gtk_container_border_width(GTK_CONTAINER(table), 3);
@@ -567,6 +574,22 @@ static GtkWidget *build_create_interface()
 			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_signal_connect(GTK_OBJECT(victory_spin), "changed",
 			   GTK_SIGNAL_FUNC(victory_spin_changed_cb), NULL);
+
+	label = gtk_label_new(_("Number of AI Players"));
+	gtk_widget_show(label);
+	gtk_table_attach(GTK_TABLE(table), label, 0, 1, 5, 6,
+			 (GtkAttachOptions)GTK_FILL,
+			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+
+	adj = gtk_adjustment_new(0, 0, MAX_PLAYERS, 1, 1, 1);
+	aiplayers_spin = gtk_spin_button_new(GTK_ADJUSTMENT(adj), 1, 0);
+	gtk_widget_show(aiplayers_spin);
+	gtk_table_attach(GTK_TABLE(table), aiplayers_spin, 1, 2, 5, 6,
+			 (GtkAttachOptions)GTK_FILL,
+			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_signal_connect(GTK_OBJECT(aiplayers_spin), "changed",
+			   GTK_SIGNAL_FUNC(aiplayers_spin_changed_cb), NULL);
 
 	start_btn = gtk_button_new_with_label(_("Start Server"));
 	gtk_widget_show(start_btn);
