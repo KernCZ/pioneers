@@ -45,6 +45,7 @@ install-stamp: build-stamp
 binary-indep: build install
 	dh_testdir -i
 	dh_testroot -i
+	dh_installdocs -i
 	dh_installmenu -i
 	dh_installchangelogs -i
 	dh_link -i
@@ -62,6 +63,7 @@ binary-arch: build install
 	dh_testdir -a
 	dh_testroot -a
 	dh_installdocs -a
+	dh_undocumented
 	dh_installexamples -a
 	dh_installmenu -a
 	dh_installchangelogs -a

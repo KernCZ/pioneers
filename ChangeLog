@@ -1,5 +1,11 @@
 2000-06-18  Andy Heroff <aheroff@mediaone.net>
 
+	* debian/control, debian/rules, debian/gnocatan-server.undocumented,
+	  debian/gnocatan-client.undocumented: Applied patches submitted by
+	  Jeff Breidenbach to bring Debian build files up to compliance for
+	  submission to the Debian release group. We're going to be a part
+	  of the official distro! Yay!
+
 	* server/STATES, server/player.c, server/server.h, client/client.c:
 	  Added version checking to the connect sequence. Also added
 	  connection error messages.
