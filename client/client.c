@@ -26,8 +26,8 @@ GameParams *game_params;
 static gchar *saved_name;
 static StateMachine *state_machine;
 
-static gboolean handle_errors(StateMachine *sm, gint event);
-static gboolean mode_global(StateMachine *sm, gint event);
+static gboolean global_unhandled(StateMachine *sm, gint event);
+static gboolean global_filter(StateMachine *sm, gint event);
 static gboolean mode_offline(StateMachine *sm, gint event);
 static gboolean mode_connect(StateMachine *sm, gint event);
 static gboolean mode_connecting(StateMachine *sm, gint event);
@@ -52,6 +52,24 @@ static gboolean mode_domestic_quote(StateMachine *sm, gint event);
 static gboolean mode_domestic_monitor(StateMachine *sm, gint event);
 static gboolean mode_game_over(StateMachine *sm, gint event);
 
+/* Create the client state machine.  Currently in a nasty global
+ * variable - have to fix this sometime.
+ */
+static StateMachine *SM()
+{
+	if (state_machine == NULL) {
+		state_machine = sm_new(NULL);
+		sm_global_set(state_machine, global_filter);
+		sm_unhandled_set(state_machine, global_unhandled);
+	}
+	return state_machine;
+}
+
+/* When commands are sent to the server, we update the status bar to
+ * indicate the the game is currently waiting for server respose.
+ * Since the GUI gets disabled while waiting, it is good to let the
+ * user know why all controls are unresponsive.
+ */
 static void waiting_for_network(gboolean is_waiting)
 {
 	if (is_waiting)
@@ -80,16 +98,9 @@ static void resp_err(StateMachine *sm)
 	sm_resp_err(sm);
 }
 
-static StateMachine *SM()
-{
-	if (state_machine == NULL) {
-		state_machine = sm_new(NULL);
-		sm_global_set(state_machine, mode_global);
-		sm_unhandled_set(state_machine, handle_errors);
-	}
-	return state_machine;
-}
-
+/*----------------------------------------------------------------------
+ * External interface to hook GUI widgets into the client state machine.
+ */
 void client_gui(GtkWidget *widget, gint event, gchar *signal)
 {
 	sm_gui_register(SM(), widget, event, signal);
@@ -110,16 +121,59 @@ void client_event_cb(GtkWidget *widget, gint event)
 	sm_event_cb(SM(), event);
 }
 
-/* Start the client state machine
+/*----------------------------------------------------------------------
+ * Entry point for the client state machine
  */
 void client_start()
 {
 	sm_goto(SM(), mode_connect);
 }
 
-/* Report all error messages
+/*----------------------------------------------------------------------
+ * The state machine API supports two global event handling callbacks.
+ *
+ * All events are sent to the global event handler before they are
+ * sent to the current state function.  If the global event handler
+ * handles the event and returns TRUE, the event will not be sent to
+ * the current state function.  is which allow unhandled events to be
+ * processed via a callback.
+ *
+ * If an event is not handled by either the global event handler, or
+ * the current state function, then it will be sent to the unhandled
+ * event handler.  Using this, the client code implements some of the
+ * error handling globally.
  */
-static gboolean handle_errors(StateMachine *sm, gint event)
+
+/* Global event handler - this get first crack at events.  If we
+ * return TRUE, the event will not be passed to the current state
+ * function.
+ */
+static gboolean global_filter(StateMachine *sm, gint event)
+{
+	switch (event) {
+	case SM_INIT:
+		sm_gui_check(sm, GUI_CHANGE_NAME, sm_is_connected(sm));
+		sm_gui_check(sm, GUI_QUIT, TRUE);
+		break;
+	case SM_NET_CLOSE:
+		gui_set_net_status(_("Offline"));
+		break;
+	case GUI_CHANGE_NAME:
+		name_create_dlg();
+		return TRUE;
+	case GUI_QUIT:
+		gtk_main_quit();
+		return TRUE;
+	default:
+		break;
+	}
+	return FALSE;
+}
+
+/* Global unhandled event handler - this get called for events that
+ * fall through the state machine whithout being handled.
+ */
+static gboolean global_unhandled(StateMachine *sm, gint event)
 {
 	char str[512];
 
@@ -145,6 +199,9 @@ static gboolean handle_errors(StateMachine *sm, gint event)
 	return FALSE;
 }
 
+/*----------------------------------------------------------------------
+ * Hooks for GUI events that can happen at almost any time
+ */
 static void copy_player_name(gchar *name)
 {
 	if (saved_name != NULL) {
@@ -156,6 +213,8 @@ static void copy_player_name(gchar *name)
 		saved_name = g_strdup(name);
 }
 
+/* When the user changes name via the Player Name dialog
+ */
 void client_change_my_name(gchar *name)
 {
 	copy_player_name(name);
@@ -165,12 +224,17 @@ void client_change_my_name(gchar *name)
 		sm_send(SM(), "anonymous\n");
 }
 
+/* When the user changes enters some text in the chat field.
+ */
 void client_chat(gchar *text)
 {
 	sm_send(SM(), "chat %s\n", text);
 }
 
-/* Handle all player chat messages, and player name changes
+/*----------------------------------------------------------------------
+ * Server notifcations about player name changes and chat messages.
+ * These can happen in any state (maybe this should be moved to
+ * global_filter()?).
  */
 static gboolean check_chat_or_name(StateMachine *sm)
 {
@@ -196,7 +260,10 @@ static gboolean check_chat_or_name(StateMachine *sm)
 	return FALSE;
 }
 
-/* Handle status messages about other players
+/*----------------------------------------------------------------------
+ * Server notifcations about other players name changes and chat
+ * messages.  These can happen in almost any state in which the game
+ * is running.
  */
 static gboolean check_other_players(StateMachine *sm)
 {
@@ -314,28 +381,67 @@ static gboolean check_other_players(StateMachine *sm)
 	return FALSE;
 }
 
-static gboolean mode_global(StateMachine *sm, gint event)
-{
-	switch (event) {
-	case SM_INIT:
-		sm_gui_check(sm, GUI_CHANGE_NAME, sm_is_connected(sm));
-		sm_gui_check(sm, GUI_QUIT, TRUE);
-		break;
-	case SM_NET_CLOSE:
-		gui_set_net_status(_("Offline"));
-		break;
-	case GUI_CHANGE_NAME:
-		name_create_dlg();
-		return TRUE;
-	case GUI_QUIT:
-		gtk_main_quit();
-		return TRUE;
-	default:
-		break;
-	}
-	return FALSE;
-}
+/*----------------------------------------------------------------------
+ * State machine state functions.
+ *
+ * All of the state machine functions start with a mode_ prefix.  All
+ * of the special states where the client is waiting for a response
+ * from the server have a resp_ prefix.
+ *
+ * The state machine API works like this:
+ *
+ * SM_ENTER:
+ *   When a state is entered the new state function is called with the
+ *   SM_ENTER event.  This allows the client to perform state
+ *   initialisation.
+ *
+ * SM_INIT:
+ *   When a state is entered, and every time an event is handled, the
+ *   state machine code calls the current state function with an
+ *   SM_INIT event.  The state function must enable all controls which
+ *   should be sensitive.  Any controls registered with the state
+ *   machine API that are set sensitive via sm_gui_check() will be
+ *   made insensitive.  This means that we only have to worry about
+ *   controls that are relevant to the current mode, everything else
+ *   will be disabled automatically.
+ *
+ * GUI_*:
+ *   The state machine API allows code to register GUI controls.  When
+ *   registering a control, an event is specified which will be
+ *   delivered to the current state function whenever the control
+ *   emits a signal.  The idea of the state machine API is to allow
+ *   all events, be they GUI or network related, in the same way.
+ *
+ * SM_RECV:
+ *   Indicates that a message has been received from the server.
+ *
+ * SM_NET_*:
+ *   These are network connection related events.
+ *
+ * To change current state function, use sm_goto().
+ *
+ * The state machine API also implements a state stack.  This allows
+ * us to reuse parts of the state machine by pushing the current
+ * state, and then returning to it when the nested processing is
+ * complete.
+ *
+ * The state machine nesting can be used via sm_push() and sm_pop().
+ *
+ * Sometimes the state that we want to return to depends upon whether
+ * the nested state machine has been "successful" or not.  Typically
+ * we use this for sending commands to the server, then reacting to
+ * the response returned from the server.  If the server responds that
+ * the command was successful, we usually want to go to a different
+ * state than if the server indicates that the command was an error.
+ *
+ * The nested state is entered via sm_resp_handler().  When we wish to
+ * exit the nested state, we either call sm_resp_ok() to indicate
+ * success, or sm_resp_err() on receiving a command failure response.
+ */
 
+/*----------------------------------------------------------------------
+ * Game startup and offline handling
+ */
 static gboolean mode_offline(StateMachine *sm, gint event)
 {
 	sm_state_name(sm, "mode_offline");
@@ -524,7 +630,11 @@ static gboolean mode_start_response(StateMachine *sm, gint event)
 	return check_other_players(sm);
 }
 
-/* Response to "build" during setup
+/*----------------------------------------------------------------------
+ * Build command processing
+ */
+
+/* Handle response to build command
  */
 static gboolean resp_build(StateMachine *sm, gint event)
 {
@@ -542,6 +652,48 @@ static gboolean resp_build(StateMachine *sm, gint event)
 	resp_err(sm);
 	return FALSE;
 }
+
+/* This is called when the user presses the left-mouse-button on a
+ * valid position to place a road during setup.  Tell the server that
+ * we wish to place the road, then wait for response.
+ */
+static void build_road_cb(Edge *edge, gint player_num)
+{
+	gui_cursor_none();
+	sm_send(SM(), "build road %d %d %d\n", edge->x, edge->y, edge->pos);
+	resp_handler(SM(), resp_build, NULL, NULL);
+}
+
+/* This is called when the user presses the left-mouse-button on a
+ * valid position to place a ship during setup.
+ */
+static void build_ship_cb(Edge *edge, gint player_num)
+{
+	gui_cursor_none();
+	sm_send(SM(), "build ship %d %d %d\n", edge->x, edge->y, edge->pos);
+	resp_handler(SM(), resp_build, NULL, NULL);
+}
+
+/* This is called when the user presses the left-mouse-button on a
+ * valid position to place a bridge during setup.
+ */
+static void build_bridge_cb(Edge *edge, gint player_num)
+{
+	gui_cursor_none();
+	sm_send(SM(), "build bridge %d %d %d\n", edge->x, edge->y, edge->pos);
+	resp_handler(SM(), resp_build, NULL, NULL);
+}
+
+static void build_settlement_cb(Node *node, gint player_num)
+{
+	gui_cursor_none();
+	sm_send(SM(), "build settlement %d %d %d\n", node->x, node->y, node->pos);
+	resp_handler(SM(), resp_build, NULL, NULL);
+}
+
+/*----------------------------------------------------------------------
+ * Setup phase handling
+ */
 
 /* Response to "undo" during setup
  */
@@ -576,46 +728,6 @@ static gboolean resp_setup_done(StateMachine *sm, gint event)
 		return TRUE;
 	resp_err(sm);
 	return FALSE;
-}
-
-/* This is called when the user presses the left-mouse-button on a
- * valid position to place a road during setup.  Tell the server that
- * we wish to place the road, then wait for response.
- *
- * See below for explanation of sm_resp_handler()
- */
-static void build_road_cb(Edge *edge, gint player_num)
-{
-	gui_cursor_none();
-	sm_send(SM(), "build road %d %d %d\n", edge->x, edge->y, edge->pos);
-	resp_handler(SM(), resp_build, NULL, NULL);
-}
-
-/* This is called when the user presses the left-mouse-button on a
- * valid position to place a ship during setup.
- */
-static void build_ship_cb(Edge *edge, gint player_num)
-{
-	gui_cursor_none();
-	sm_send(SM(), "build ship %d %d %d\n", edge->x, edge->y, edge->pos);
-	resp_handler(SM(), resp_build, NULL, NULL);
-}
-
-/* This is called when the user presses the left-mouse-button on a
- * valid position to place a bridge during setup.
- */
-static void build_bridge_cb(Edge *edge, gint player_num)
-{
-	gui_cursor_none();
-	sm_send(SM(), "build bridge %d %d %d\n", edge->x, edge->y, edge->pos);
-	resp_handler(SM(), resp_build, NULL, NULL);
-}
-
-static void build_settlement_cb(Node *node, gint player_num)
-{
-	gui_cursor_none();
-	sm_send(SM(), "build settlement %d %d %d\n", node->x, node->y, node->pos);
-	resp_handler(SM(), resp_build, NULL, NULL);
 }
 
 static char *setup_msg()
@@ -666,16 +778,6 @@ static gboolean mode_setup(StateMachine *sm, gint event)
 		gui_set_instructions(setup_msg());
 		break;
 	case SM_INIT:
-		/* When the state is entered, and every time an event
-		 * is handled, the state machine code will call us
-		 * with SM_INIT to determine which controls are
-		 * sensitive.  Any controls that are not marked
-		 * sensitive here will be made insensitive.  This
-		 * means that we only have to worry about controls
-		 * that are relevant to the current mode, as anything
-		 * we do not mark sensitive here will be made
-		 * insensitive.
-		 */
 		sm_gui_check(sm, GUI_UNDO, setup_can_undo());
 		sm_gui_check(sm, GUI_ROAD, setup_can_build_road());
 		sm_gui_check(sm, GUI_BRIDGE, setup_can_build_bridge());
@@ -699,26 +801,6 @@ static gboolean mode_setup(StateMachine *sm, gint event)
 		rec = build_last();
 		sm_send(sm, "remove %B %d %d %d\n",
 			rec->type, rec->x, rec->y, rec->pos);
-		/* Although the handling of the response could be
-		 * handled by going into another mode, if we use
-		 * sm_resp_handler(), the state machine will know that
-		 * we have just issued a command to the server, and we
-		 * are waiting for a response.  As soon as we call
-		 * this function, the network indicator in the
-		 * statusbar will be set to "Waiting", and will stay
-		 * that way until the response handler returns either
-		 * calls either sm_resp_ok(sm), or sm_resp_err(sm).
-		 *
-		 * The second parameter is the mode to switch to for
-		 * successful response, the third parameter for
-		 * unsuccessful response.  NULL means return to this
-		 * mode.
-		 *
-		 * To change states, we either use sm_goto(), or
-		 * sm_push().  If we use sm_push(), the state we go to
-		 * can reeturn to us by using sm_previous() to pick
-		 * the mode off the top of stack.
-		 */
 		resp_handler(sm, resp_setup_undo, NULL, NULL);
 		return TRUE;
 	case GUI_ROAD:
@@ -765,6 +847,10 @@ static gboolean mode_setup(StateMachine *sm, gint event)
 	}
 	return FALSE;
 }
+
+/*----------------------------------------------------------------------
+ * Game is up and running - waiting for our turn
+ */
 
 /* Waiting for your turn to come around
  */
@@ -815,26 +901,96 @@ static gboolean mode_idle(StateMachine *sm, gint event)
 	return FALSE;
 }
 
-/* Handle response to "roll dice"
+/*----------------------------------------------------------------------
+ * Nested state machine for robber handling
  */
-static gboolean resp_roll(StateMachine *sm, gint event)
-{
-	gint die1, die2;
 
-	sm_state_name(sm, "resp_roll");
-	if (sm_recv(sm, "rolled %d %d", &die1, &die2)) {
-		turn_rolled_dice(my_player_num(), die1, die2);
+/* Handle response to move robber
+ */
+static gboolean resp_robber(StateMachine *sm, gint event)
+{
+	gint x, y;
+
+	sm_state_name(sm, "resp_robber");
+	if (sm_recv(sm, "moved-robber %d %d", &x, &y)) {
+		robber_moved(my_player_num(), x, y);
+		gui_prompt_hide();
 		resp_ok(sm);
-		if (die1 + die2 == 7)
-			sm_push(sm, mode_wait_for_robber);
 		return TRUE;
 	}
 	if (check_other_players(sm))
 		return TRUE;
+	gui_prompt_hide();
 	resp_err(sm);
 	return FALSE;
 }
 
+static void move_robber(gint x, gint y, gint victim_num)
+{
+	sm_send(SM(), "move-robber %d %d %d\n", x, y, victim_num);
+	resp_handler(SM(), resp_robber, sm_previous(SM()), NULL);
+}
+
+static void rob_building(Node *node, gint player_num, Hex *hex)
+{
+	move_robber(hex->x, hex->y, node->owner);
+}
+
+/* User just placed the robber
+ */
+static void place_robber_cb(Hex *hex, gint player_num)
+{
+	gint victim_list[6];
+
+	gui_cursor_none();
+	robber_move_on_map(hex->x, hex->y);
+	switch (robber_count_victims(hex, victim_list)) {
+	case 0:
+		move_robber(hex->x, hex->y, -1);
+		break;
+	case 1:
+		move_robber(hex->x, hex->y, victim_list[0]);
+		break;
+	default:
+		gui_cursor_set(BUILDING_CURSOR,
+			       (CheckFunc)can_building_be_robbed,
+			       (SelectFunc)rob_building,
+			       hex);
+		gui_set_instructions(_("Select the building to steal from."));
+		gui_prompt_show(_("Select the building to steal from"));
+		break;
+	}
+}
+
+/* Get user to place robber
+ */
+static gboolean mode_robber(StateMachine *sm, gint event)
+{
+	sm_state_name(sm, "mode_robber");
+	switch (event) {
+	case SM_ENTER:
+		gui_set_instructions(_("Place the robber"));
+		gui_cursor_set(ROBBER_CURSOR,
+			       (CheckFunc)can_robber_be_moved,
+			       (SelectFunc)place_robber_cb, NULL);
+		robber_begin_move(my_player_num());
+		break;
+	case SM_RECV:
+		if (check_other_players(sm))
+			return TRUE;
+		break;
+	default:
+		break;
+	}
+	return FALSE;
+}
+
+/* We rolled a 7, or played a soldier card - any time now the server
+ * is going to tell us to place the robber.  Going into this state as
+ * soon as we roll a 7 stops a race condition where the user presses a
+ * GUI control in the window between receiving the die roll result and
+ * the command to enter robber mode.
+ */
 static gboolean mode_wait_for_robber(StateMachine *sm, gint event)
 {
 	sm_state_name(sm, "mode_wait_for_robber");
@@ -1029,86 +1185,6 @@ static gboolean mode_year_of_plenty(StateMachine *sm, gint event)
 	return FALSE;
 }
 
-/* Handle response to move robber
- */
-static gboolean resp_robber(StateMachine *sm, gint event)
-{
-	gint x, y;
-
-	sm_state_name(sm, "resp_robber");
-	if (sm_recv(sm, "moved-robber %d %d", &x, &y)) {
-		robber_moved(my_player_num(), x, y);
-		gui_prompt_hide();
-		resp_ok(sm);
-		return TRUE;
-	}
-	if (check_other_players(sm))
-		return TRUE;
-	gui_prompt_hide();
-	resp_err(sm);
-	return FALSE;
-}
-
-static void move_robber(gint x, gint y, gint victim_num)
-{
-	sm_send(SM(), "move-robber %d %d %d\n", x, y, victim_num);
-	resp_handler(SM(), resp_robber, sm_previous(SM()), NULL);
-}
-
-static void rob_building(Node *node, gint player_num, Hex *hex)
-{
-	move_robber(hex->x, hex->y, node->owner);
-}
-
-/* User just placed the robber
- */
-static void place_robber_cb(Hex *hex, gint player_num)
-{
-	gint victim_list[6];
-
-	gui_cursor_none();
-	robber_move_on_map(hex->x, hex->y);
-	switch (robber_count_victims(hex, victim_list)) {
-	case 0:
-		move_robber(hex->x, hex->y, -1);
-		break;
-	case 1:
-		move_robber(hex->x, hex->y, victim_list[0]);
-		break;
-	default:
-		gui_cursor_set(BUILDING_CURSOR,
-			       (CheckFunc)can_building_be_robbed,
-			       (SelectFunc)rob_building,
-			       hex);
-		gui_set_instructions(_("Select the building to steal from."));
-		gui_prompt_show(_("Select the building to steal from"));
-		break;
-	}
-}
-
-/* Get user to place robber
- */
-static gboolean mode_robber(StateMachine *sm, gint event)
-{
-	sm_state_name(sm, "mode_robber");
-	switch (event) {
-	case SM_ENTER:
-		gui_set_instructions(_("Place the robber"));
-		gui_cursor_set(ROBBER_CURSOR,
-			       (CheckFunc)can_robber_be_moved,
-			       (SelectFunc)place_robber_cb, NULL);
-		robber_begin_move(my_player_num());
-		break;
-	case SM_RECV:
-		if (check_other_players(sm))
-			return TRUE;
-		break;
-	default:
-		break;
-	}
-	return FALSE;
-}
-
 /* Handle response to play develop card
  */
 static gboolean resp_play_develop(StateMachine *sm, gint event)
@@ -1151,6 +1227,16 @@ static gboolean resp_play_develop(StateMachine *sm, gint event)
 	return FALSE;
 }
 
+/*----------------------------------------------------------------------
+ * Nested state machine for handling resource card discards.  We enter
+ * discard mode whenever any player has to discard resources.
+ * 
+ * When in discard mode, a section of the GUI changes to list all
+ * players who must discard resources.  This is important because if
+ * during our turn we roll 7, but have less than 7 resources, we do
+ * not have to discard.  The list tells us which players have still
+ * not discarded resources.
+ */
 static gboolean mode_discard(StateMachine *sm, gint event)
 {
 	gint resource_list[NO_RESOURCE];
@@ -1187,6 +1273,26 @@ static gboolean mode_discard(StateMachine *sm, gint event)
 	default:
 		break;
 	}
+	return FALSE;
+}
+
+/* Handle response to "roll dice"
+ */
+static gboolean resp_roll(StateMachine *sm, gint event)
+{
+	gint die1, die2;
+
+	sm_state_name(sm, "resp_roll");
+	if (sm_recv(sm, "rolled %d %d", &die1, &die2)) {
+		turn_rolled_dice(my_player_num(), die1, die2);
+		resp_ok(sm);
+		if (die1 + die2 == 7)
+			sm_push(sm, mode_wait_for_robber);
+		return TRUE;
+	}
+	if (check_other_players(sm))
+		return TRUE;
+	resp_err(sm);
 	return FALSE;
 }
 

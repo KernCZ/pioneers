@@ -3,7 +3,9 @@
 	* client/client.c, common/state.[ch]: Removed all of the resphook
 	from the state machine API code and replaced it with some wrappers
 	to sm_resp_{ok,err,handler}() in client.c.  First stage in
-	reducing the client state machine complexity.
+	reducing the client state machine complexity.  Moved a lot of code
+	around in client.c in an effort to partition the functionality so
+	the stack overflow bug can be found.
 	
 2000-05-10  Steve Langasek <vorlon@dodds.net>
 
