@@ -804,10 +804,6 @@ static gboolean mode_load_gameinfo(StateMachine *sm, gint event)
 		disconnected = TRUE;
 		return TRUE;
 	}
-	if (sm_recv(sm, "state PLENTY %R", rinfo.plenty)) {
-		strcpy(rinfo.prevstate, "PLENTY");
-		return TRUE;
-	}
 	if (sm_recv(sm, "state %S", str, sizeof (str))) {
 		strcpy(rinfo.prevstate, str);
 		return TRUE;

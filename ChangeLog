@@ -13,6 +13,8 @@
 	roll.
 	* client/common/develop.c(develop_bought_turn): Development cards can
 	be played when reconnected.
+	* client/common/client.c, server/pregame.c: Dialog did not show when
+	reconnecting when a Year of Plenty card has been played.
 
 2004-11-21  0.8.1.43  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/offline.c(frontend_offline): Game|Connect incorrectly

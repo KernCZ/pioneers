@@ -465,6 +465,8 @@ gboolean mode_pre_game(Player *player, gint event)
 	GList *next;
 	gint longestroadpnum = -1;
 	gint largestarmypnum = -1;
+	static gboolean recover_from_plenty = FALSE;
+
 	if (game->longest_road) {
 		longestroadpnum = game->longest_road->num;
 	}
@@ -565,9 +567,10 @@ gboolean mode_pre_game(Player *player, gint event)
 				strcpy(prevstate, "ROADBUILDING");
 			else if (state == (StateFunc)mode_monopoly)
 				strcpy(prevstate, "MONOPOLY");
-			else if (state == (StateFunc)mode_plenty_resources)
+			else if (state == (StateFunc)mode_plenty_resources) {
+				recover_from_plenty = TRUE;
 				sprintf(prevstate, "PLENTY");
-			else if (state == (StateFunc)mode_choose_gold)
+			} else if (state == (StateFunc)mode_choose_gold)
 				sprintf(prevstate, "GOLD");
 			else if (state == (StateFunc)mode_setup) {
 				/* reconstruct the setup_player list */
@@ -594,9 +597,6 @@ gboolean mode_pre_game(Player *player, gint event)
 			/* Special processing of extra arguments */
 			if (state == (StateFunc)mode_choose_gold) {
 				sm_send(sm, "state GOLD %d %R\n", player->gold, game->bank_deck);
-			}
-			else if (state == (StateFunc)mode_plenty_resources) {
-				sm_send(sm, "state PLENTY %R\n", game->bank_deck);
 			}
 			else
 			{
@@ -678,6 +678,12 @@ gboolean mode_pre_game(Player *player, gint event)
 		}
 		if (sm_recv(sm, "start")) {
 			sm_send(sm, "OK\n");
+			
+			if (recover_from_plenty) {
+				sm_send(sm, "plenty %R\n", game->bank_deck);
+				recover_from_plenty = FALSE;
+			}
+
 			player->disconnected = old_player_disconnected;
 			if (player->disconnected)
 			{
