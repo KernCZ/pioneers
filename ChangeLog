@@ -3,6 +3,10 @@
 	* po/de.po: Fixed a few German translations after Steves changes
 	below.
 
+	* client/resource.c (resource_cards): let it use two alternating
+	static buffers, because this function is sometimes called twice as
+	function argument.
+
 2003-01-21  Steve Langasek  <vorlon@debian.org>
 	* client/client.c, client/client.h, client/player.c,
 	  client/resource.c, client/trade.c: extensive reworking of
