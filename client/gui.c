@@ -27,6 +27,7 @@
 #include "i18n.h"
 #include "theme.h"
 #include "config-gnome.h"
+#include "authors.h"
 
 Map *map;			/* handle to map drawing code */
 GtkWidget *app_window;		/* main application window */
@@ -883,17 +884,7 @@ static void help_about_cb(GtkWidget *widget, void *user_data)
 {
 	GtkWidget *about;
 	const gchar *authors[] = {
-		"Dave Cole",
-		"Andy Heroff",
-		"Steve Langasek",
-		"David Fallon",
-		"Geoff Hanson",
-		"Matt Waggoner",
-		"Jeff Breidenbach",
-		"Bibek Sahu",
-		"Dan Egnor",
-		"Roman Hodek",
-		NULL
+		AUTHORLIST
 	};
 
 	about = gnome_about_new(_("The Gnocatan Game"), VERSION,

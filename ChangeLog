@@ -1,3 +1,11 @@
+2003-01-09  Steve Langasek  <vorlon@debian.org>
+	* AUTHORS, client/Makefile.am, client/gui.c, po/gnocatan.pot,
+	  po/de.po: bring the AUTHORS file up-to-date, and autogenerate
+	  the about box list from this file.	  
+
+	* client/Makefile.am: s/pixmap_DATA/image_DATA/, to please
+	  automake.
+
 2003-01-08  Steve Langasek  <vorlon@debian.org>
 
 	* client/theme.c: use a more portable variadic macro

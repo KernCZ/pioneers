@@ -30,6 +30,7 @@ EXTRA_gnocatan_SOURCES = $(ADMIN_GTK_FILES_INACTIVE)
 
 gnocatan_SOURCES = \
 	$(ADMIN_GTK_FILES_ACTIVE) \
+	authors.h \
 	build.c \
 	client.c \
 	client.h \
@@ -78,7 +79,7 @@ gnocatan_LDADD = \
 
 appicon_DATA = gnome-gnocatan.png
 
-pixmap_DATA = \
+image_DATA = \
 	board.png \
 	bridge.png \
 	city.png \
@@ -105,7 +106,7 @@ Games_DATA = gnocatan.desktop
 
 EXTRA_DIST = \
 	$(appicon_DATA) \
-	$(pixmap_DATA) \
+	$(image_DATA) \
 	$(Games_DATA)
 
 dist-hook:
@@ -118,6 +119,7 @@ install-data-hook:
 	tar -x -f - --mode=u+w,ugo+rX --no-same-owner -C $(DESTDIR)$(imagedir)
 	find $(DESTDIR)$(imagedir) -name CVS | xargs rm -rf
 
-# We don't need this, do we?  -- egnor
-# install-data-local:
-#	-chgrp games $(bindir)/gnocatan && chmod 2111 $(bindir)/gnocatan
+authors.h: ../AUTHORS
+	echo -n "#define AUTHORLIST " > authors.h
+	sed -e's/ <.*//; s/$$/", \\/; s/^/"/; /^"[[:space:]]*", \\$$/d' ../AUTHORS >> authors.h
+	echo "NULL" >> authors.h
