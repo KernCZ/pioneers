@@ -56,10 +56,11 @@ void cfg_set_quit( gboolean quitdone);
 void cfg_set_timeout( gint to );
 
 /* callbacks related to server starting / stopping */
-gboolean start_server( const gchar *port, gboolean register_server );
+gboolean start_server( const gchar *hostname, 
+		const gchar *port, gboolean register_server );
 
 /* initialize the server */
-void server_init( const gchar *default_gnocatan_dir );
+void server_init(void);
 
 /**** backend functions for network administration of the server ****/
 

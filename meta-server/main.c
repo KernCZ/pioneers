@@ -40,6 +40,7 @@
 #include <sys/socket.h>
 
 #include <glib.h>
+#include "network.h"
 
 typedef enum {
 	META_UNKNOWN,
@@ -353,9 +354,7 @@ static GList *load_game_types( void )
 	const gchar *fname;
 	gchar *fullname;
 
-	const gchar *gnocatan_dir = g_getenv( "GNOCATAN_DIR" );
-	if( !gnocatan_dir )
-		gnocatan_dir = GNOCATAN_DIR_DEFAULT;
+	const gchar *gnocatan_dir = get_gnocatan_dir();
 
 	if ((dir = g_dir_open(gnocatan_dir, 0, NULL)) == NULL) {
 		return NULL;
@@ -400,7 +399,7 @@ static void client_list_capability(Client *client)
 static const gchar *get_server_path(void) 
 {
 	const gchar *console_server;
-	if (!(console_server = getenv("GNOCATAN_SERVER_CONSOLE")))
+	if (!(console_server = g_getenv("GNOCATAN_SERVER_CONSOLE")))
 		console_server = GNOCATAN_SERVER_CONSOLE_PATH;
 	return console_server;
 }
@@ -990,23 +989,6 @@ static void convert_to_daemon(void)
 	umask(0);
 }
 
-static void setmyhostname( void )
-{
-	char hbuf[256];
-	struct hostent *hp;
-
-	myhostname = NULL;
-	if (gethostname(hbuf, sizeof(hbuf))) {
-		perror("gethostname");
-		return;
-	}
-	if (!(hp = gethostbyname(hbuf))) {
-		herror("gnocatan-meta-server");
-		return;
-	}
-	myhostname = g_strdup(hp->h_name);
-}
-
 int main(int argc, char *argv[])
 {
 	int c;
@@ -1039,7 +1021,7 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	setmyhostname();
+	myhostname = get_meta_server_name(FALSE);
 	if (!setup_accept_sock(GNOCATAN_DEFAULT_META_PORT))
 		return 1;
 

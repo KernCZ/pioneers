@@ -285,8 +285,7 @@ static void player_connect(Game *game)
 static gboolean game_server_start(Game *game)
 {
 	if (!meta_server_name) {
-		if (!(meta_server_name = getenv("GNOCATAN_META_SERVER")))
-			meta_server_name = GNOCATAN_DEFAULT_META_SERVER;
+		meta_server_name = get_meta_server_name(TRUE);
 	}
 	
 	game->accept_fd = open_listen_socket( game->params->server_port );
@@ -301,7 +300,8 @@ static gboolean game_server_start(Game *game)
 	return TRUE;
 }
 
-gboolean server_startup(GameParams *params, const gchar *port, gboolean meta)
+gboolean server_startup(GameParams *params, const gchar *hostname,
+		const gchar *port, gboolean meta)
 {
 	/* The mt_seed needs a gulong, g_rand_new_with_seed needs a guint32
 	 * The compiler will promote the datatypes if necessary
@@ -328,6 +328,7 @@ gboolean server_startup(GameParams *params, const gchar *port, gboolean meta)
 	g_assert(curr_game->params->server_port == NULL);
 	curr_game->params->server_port = g_strdup(port);
 	curr_game->params->register_server = meta;
+	curr_game->hostname = g_strdup(hostname);
 	if (game_server_start(curr_game))
 		return TRUE;
 	game_free(curr_game);

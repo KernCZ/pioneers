@@ -37,14 +37,6 @@ static int local_argc;
 static char **local_argv;
 static gboolean silent = FALSE;
 
-static const char *get_gnocatan_dir(void)
-{
-	const gchar *gnocatan_dir = (gchar *) getenv( "GNOCATAN_DIR" );
-	if( !gnocatan_dir )
-		gnocatan_dir = GNOCATAN_DIR_DEFAULT;
-	return gnocatan_dir;
-}
-
 static char *random_name(void)
 {
 	char filename[MAXPATHLEN];

@@ -84,6 +84,7 @@ int main( int argc, char *argv[] )
 	GMainLoop *event_loop;
 	gint tournament_time = -1;
  	gboolean quit_when_done = FALSE;
+	gchar *hostname;
 
 	/* set the UI driver to Glib_Driver, since we're using glib */
 	set_ui_driver( &Glib_Driver );
@@ -93,7 +94,7 @@ int main( int argc, char *argv[] )
 
 	driver->player_change = srv_player_change;
 
-	server_init( GNOCATAN_DIR_DEFAULT );
+	server_init();
 
 	while ((c = getopt(argc, argv, "a:c:g:hk:m:n:P:p:rR:st:T:v:x")) != EOF)
 	{
@@ -130,7 +131,7 @@ int main( int argc, char *argv[] )
 			if (!optarg) {
 				break;
 			}
-			hostname = optarg;
+			hostname = g_strdup(optarg);
 			break;
 		case 'P':
 			if (!optarg) {
@@ -227,7 +228,7 @@ int main( int argc, char *argv[] )
 
     if( !disable_game_start )
     {
-        if( start_server( server_port, register_server ) )
+        if( start_server( hostname, server_port, register_server ) )
         {
             for( i = 0; i < num_ai_players; ++i )
                 new_computer_player(NULL, server_port);
@@ -254,5 +255,6 @@ int main( int argc, char *argv[] )
         g_main_destroy( event_loop );
     }
 
+    g_free(hostname);
     return 0;
 }

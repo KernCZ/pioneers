@@ -772,15 +772,14 @@ static void meta_dlg_cb(GtkDialog *dlg, gint arg1, UNUSED(gpointer userdata))
 
 static void set_meta_serverinfo(void)
 {
-	const gchar *meta_tmp;
+	gchar *meta_tmp;
 
-	meta_tmp = gtk_entry_get_text(GTK_ENTRY(meta_server_entry));
+	meta_tmp = g_strdup(gtk_entry_get_text(GTK_ENTRY(meta_server_entry)));
 	if (!meta_tmp || !strlen(meta_tmp)) {
-		if ((meta_tmp = getenv("GNOCATAN_META_SERVER"))==NULL)
-			meta_tmp = GNOCATAN_DEFAULT_META_SERVER;
+		meta_tmp = get_meta_server_name(TRUE);
 		gtk_entry_set_text(GTK_ENTRY(meta_server_entry), meta_tmp);
 	}
-	metaserver_info.server = g_strdup(meta_tmp);
+	metaserver_info.server = meta_tmp; /* Take-over of the pointer */
 	if (!metaserver_info.port)
 		metaserver_info.port = g_strdup(GNOCATAN_DEFAULT_META_PORT);
 }
@@ -993,8 +992,7 @@ void connect_create_dlg(void)
 	saved_meta_server = config_get_string("connect/meta-server",&default_returned);
 	if (default_returned) {
 		g_free (saved_meta_server);
-		if (!(saved_meta_server = g_strdup (getenv("GNOCATAN_META_SERVER"))))
-			saved_meta_server = g_strdup (GNOCATAN_DEFAULT_META_SERVER);
+		saved_meta_server = get_meta_server_name(TRUE);
 	}
 
 	/* initialize name value */

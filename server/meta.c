@@ -26,7 +26,6 @@
 #include "server.h"
 
 const gchar *meta_server_name = NULL;
-gchar *hostname = NULL;
 
 static Session *ses;
 static enum {
@@ -38,6 +37,15 @@ static enum {
 static gint meta_server_version_major;
 static gint meta_server_version_minor;
 static gint num_redirects;
+
+gchar *get_server_name(void)
+{
+	gchar *server_name;
+	server_name = g_strdup(g_getenv("GNOCATAN_SERVER_NAME"));
+	if (!server_name)
+		server_name = get_my_hostname();
+	return server_name;
+}
 
 void meta_start_game()
 {
@@ -69,8 +77,16 @@ void meta_send_details(Game *game)
 		   "curr=%d\n",
 		   game->params->server_port, PROTOCOL_VERSION,
 		   game->params->num_players, game->num_players);
-	if (hostname)
-	    net_printf(ses, "host=%s\n", hostname);
+	/* Hostname is empty */
+	if (game->hostname && !strlen(game->hostname)) {
+		g_free(game->hostname);
+		game->hostname = NULL;
+	}
+	/* No hostname set, use default */
+	if (!game->hostname) {
+		game->hostname = get_server_name();
+	}
+	net_printf(ses, "host=%s\n", game->hostname);
 	if (meta_server_version_major >= 1) {
 	    net_printf(ses,
 		       "vpoints=%d\n"

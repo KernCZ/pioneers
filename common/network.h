@@ -70,4 +70,25 @@ void net_wait_for_close(Session *ses);
 void net_printf(Session *ses, const gchar *fmt, ...);
 void net_write(Session *ses, const gchar *data);
 
+/** Get the hostname of this computer.
+ * @return NULL if the hostname could not be determined.
+ */
+gchar *get_my_hostname(void);
+
+/** Get the name of the meta server.
+ *  First the environment variable GNOCATAN_META_SERVER is queried
+ *  If it is not set, the use_default flag is used.
+ * @param use_default If true, return the default meta server if the
+ *                    environment variable is not set.
+ *                    If false, return the hostname of this computer.
+ * @return The hostname of the meta server
+ */
+gchar *get_meta_server_name(gboolean use_default);
+
+/** Get the directory of the game related files.
+ *  First the environment variable GNOCATAN_DIR is queried
+ *  If it is not set, the default value is returned
+ */
+const gchar *get_gnocatan_dir(void);
+
 #endif

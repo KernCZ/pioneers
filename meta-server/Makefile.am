@@ -11,3 +11,6 @@ AM_CPPFLAGS = \
 
 gnocatan_meta_server_SOURCES = \
 	gnocatan-meta-server.c
+
+gnocatan_meta_server_LDADD = \
+	../common/libgnocatan.a

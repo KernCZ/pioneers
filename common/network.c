@@ -444,3 +444,41 @@ void net_free(Session **ses)
 	g_free(*ses);
 	*ses = NULL;
 }
+
+gchar *get_my_hostname(void) {
+	char hbuf[256];
+	struct hostent *hp;
+
+	if (gethostname(hbuf, sizeof(hbuf))) {
+		perror("gethostname");
+		return NULL;
+	}
+	if (!(hp = gethostbyname(hbuf))) {
+		herror("gethostbyname");
+		return NULL;
+	}
+	return g_strdup(hp->h_name);
+}
+
+gchar *get_meta_server_name(gboolean use_default)
+{
+	gchar *temp;
+	
+	temp = g_strdup(g_getenv("GNOCATAN_META_SERVER"));
+	if (!temp) {
+		if (use_default)
+			temp = g_strdup(GNOCATAN_DEFAULT_META_SERVER);
+		else {
+			temp = get_my_hostname();
+		}
+	}
+	return temp;
+}
+
+const gchar *get_gnocatan_dir(void)
+{
+	const gchar *gnocatan_dir = g_getenv("GNOCATAN_DIR");
+	if (!gnocatan_dir)
+		gnocatan_dir = GNOCATAN_DIR_DEFAULT;
+	return gnocatan_dir;
+}

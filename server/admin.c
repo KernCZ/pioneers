@@ -235,7 +235,8 @@ void cfg_set_timeout( gint to )
 	no_player_timeout = to;
 }
 
-gboolean start_server( const gchar *port, gboolean register_server )
+gboolean start_server( const gchar *hostname, const gchar *port, 
+		gboolean register_server )
 {
 	if( !params ) {
 		cfg_set_game( "Default" );
@@ -256,7 +257,7 @@ gboolean start_server( const gchar *port, gboolean register_server )
         return FALSE;
 	}
 	
-	return server_startup( params, port, register_server );
+	return server_startup( params, hostname, port, register_server );
 }
 
 static void handle_sigpipe (UNUSED(int signum))
@@ -268,13 +269,9 @@ static void handle_sigpipe (UNUSED(int signum))
 }
 
 /* server initialization */
-void server_init( const gchar *default_gnocatan_dir )
+void server_init(void)
 {
-	const gchar *gnocatan_dir = getenv( "GNOCATAN_DIR" );
-	if( !gnocatan_dir )
-		gnocatan_dir = default_gnocatan_dir;
-
-	load_game_types( gnocatan_dir );
+	load_game_types (get_gnocatan_dir());
 
 	/* Broken pipes can happen when multiple players disconnect
 	 * simultaneously.  This mostly happens to AI's, which disconnect
@@ -309,7 +306,7 @@ admin_run_command( Session *admin_session, gchar *line )
 	} else if( !strcmp( command, "start-server" ) ) {
 		if (server_is_running())
 			server_stop();
-		start_server( server_port, register_server );
+		start_server( get_server_name(), server_port, register_server );
 	
 	} else if( !strcmp( command, "stop-server" ) ) {
 		server_stop();

@@ -65,6 +65,7 @@ typedef struct {
 
 struct Game {
 	GameParams *params;	/* game parameters */
+	gchar *hostname;	/* reported hostname */
 
 	int accept_fd;		/* socket for accepting new clients */
 	int accept_tag;		/* Gdk event tag for accept socket */
@@ -121,7 +122,7 @@ gboolean mode_discard_resources_place_robber(Player *player, gint event);
 
 /* meta.c */
 extern const gchar *meta_server_name;
-extern gchar *hostname;
+gchar *get_server_name(void);
 void meta_register(const gchar *server, const gchar *port, Game *game);
 void meta_start_game(void);
 void meta_report_num_players(gint num_players);
@@ -183,7 +184,8 @@ gint get_rand(gint range);
 Game *game_new(GameParams *params);
 void game_free(Game *game);
 gint new_computer_player(const gchar *server, const gchar *port);
-gboolean server_startup(GameParams *params, const gchar *port, gboolean meta);
+gboolean server_startup(GameParams *params, const gchar *hostname, 
+		const gchar *port, gboolean meta);
 gboolean server_stop(void);
 gboolean server_is_running(void);
 gint accept_connection(gint in_fd, gchar **location);
