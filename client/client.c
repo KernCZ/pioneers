@@ -1388,6 +1388,13 @@ static gboolean mode_robber_response(StateMachine *sm, gint event)
 			sm_pop(sm);
 			return TRUE;
 		}
+		if (sm_recv(sm, "moved-pirate %d %d", &x, &y)) {
+			pirate_moved(my_player_num(), x, y);
+			gui_prompt_hide();
+			waiting_for_network(FALSE);
+			sm_pop(sm);
+			return TRUE;
+		}
 		if (check_other_players(sm))
 			return TRUE;
 		gui_prompt_hide();
