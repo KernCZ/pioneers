@@ -1,3 +1,9 @@
+gnocatan (0.8.0-3) unstable; urgency=low
+
+  * Better documentation packaging.
+
+ -- Jeff Breidenbach <jab@debian.org>  Sun, 26 Oct 2003 21:54:46 -0800
+
 gnocatan (0.8.0-2) unstable; urgency=low
 
   * Added scrollkeeper as a build dependency
