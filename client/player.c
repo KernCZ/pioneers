@@ -316,14 +316,23 @@ void player_change_name(gint player_num, gchar *name)
 void player_has_quit(gint player_num)
 {
 	gint row;
+	Player *player;
 
 	row = gtk_clist_find_row_from_data(GTK_CLIST(summary_clist),
 					   player_get(player_num));
 	if (row < 0)
 		return;
 
+	if (player_num < 0 || player_num >= numElem(players))
+		return;
+	player = players + player_num;
+
 	gtk_clist_remove(GTK_CLIST(summary_clist), row);
 	log_message( MSG_ERROR, _("%s has quit\n"), player_name(player_num, TRUE));
+	if (player->name != NULL) {
+		g_free(player->name);
+		player->name = NULL;
+	}
 }
 
 void player_largest_army(gint player_num)
