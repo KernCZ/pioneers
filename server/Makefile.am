@@ -14,6 +14,10 @@ gnocatan_server_DEPENDENCIES = libgnocatan_server.a \
 gnocatan_server_console_DEPENDENCIES = libgnocatan_server.a \
 	../common/libgnocatan.a ../common/libgnocatan_gtk.a
 
+EXTRA_libgnocatan_server_a_SOURCES = \
+	mt_rand.c \
+	mt_rand.h
+
 libgnocatan_server_a_SOURCES = \
 	buildutil.c \
 	develop.c \
@@ -27,6 +31,9 @@ libgnocatan_server_a_SOURCES = \
 	server.h \
 	trade.c \
 	turn.c
+
+libgnocatan_server_a_LIBADD = \
+	$(MT_RAND_OBJ)
 
 gnocatan_server_SOURCES = \
 	gnocatan-server.c

@@ -10,6 +10,7 @@
 #include <fcntl.h>
 #include <ctype.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -17,6 +18,7 @@
 #include <netdb.h>
 #include <errno.h>
 #include <string.h>
+#include <time.h>
 
 #include <gdk/gdk.h>
 
@@ -30,12 +32,22 @@
 #include "log.h"
 #include "server.h"
 #include "meta.h"
+#include "mt_rand.h"
 
 static Game *curr_game;
 
 gint get_rand(gint range)
 {
+#ifdef HAVE_G_RAND_NEW
+/* TODO: if we have g_rand_new available through glib, use it here. */
+#else
+	return mt_random() % range;
+#endif
+#if 0
 	return (gint)(((float)range) * random() / (RAND_MAX + 1.0));
+#else
+	return random() % range;
+#endif
 }
 
 Game *game_new(GameParams *params)
@@ -161,7 +173,11 @@ static gboolean game_server_start(Game *game)
 
 gboolean server_startup(GameParams *params, gint port, gboolean meta)
 {
-	srandom(time(NULL));
+#ifdef HAVE_G_RAND_NEW
+
+#else
+	mt_seed(time(NULL));
+#endif
 	curr_game = game_new(params);
 	curr_game->params->server_port = port;
 	curr_game->params->register_server = meta;
