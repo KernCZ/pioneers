@@ -1,4 +1,4 @@
-2005-04-06  Stephen Jacob <sjacob@sjacob.org>
+2005-04-06  Stephen Jacob <sj@sjacob.org>
 	* common/gtk/common-gtk.c: Change the text color of player 3's
 	messages, since light gray on white is really hard to read.
 
