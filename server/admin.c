@@ -226,7 +226,7 @@ void cfg_set_timeout( gint to )
 	no_player_timeout = to;
 }
 
-gboolean start_server( gchar *port, gboolean register_server )
+gboolean start_server( const gchar *port, gboolean register_server )
 {
 	if( !params ) {
 		cfg_set_game( "Default" );

@@ -162,7 +162,6 @@ Game *game_new(GameParams *params)
 
 	game->is_game_over = FALSE;
 	game->params = params_copy(params);
-	game->orig_params = params;
 	game->curr_player = -1;
 
 	for (idx = 0; idx < numElem(game->bank_deck); idx++)
@@ -314,7 +313,7 @@ static gboolean game_server_start(Game *game)
 	return TRUE;
 }
 
-gboolean server_startup(GameParams *params, gchar *port, gboolean meta)
+gboolean server_startup(GameParams *params, const gchar *port, gboolean meta)
 {
 	/* The mt_seed needs a gulong, g_rand_new_with_seed needs a guint32
 	 * The compiler will promote the datatypes if necessary
@@ -338,24 +337,14 @@ gboolean server_startup(GameParams *params, gchar *port, gboolean meta)
 			get_rand(1000));
 
 	curr_game = game_new(params);
-	curr_game->params->server_port = port;
+	g_assert(curr_game->params->server_port == NULL);
+	curr_game->params->server_port = g_strdup(port);
 	curr_game->params->register_server = meta;
 	if (game_server_start(curr_game))
 		return TRUE;
 	game_free(curr_game);
 	curr_game = NULL;
 	return FALSE;
-}
-
-gboolean server_restart()
-{
-	GameParams *orig_params = curr_game->orig_params;
-	gchar *port = curr_game->params->server_port;
-	gboolean meta = curr_game->params->register_server;
-
-	game_free(curr_game);
-	curr_game = NULL;
-	return server_startup(orig_params, port, meta);
 }
 
 gboolean server_stop()

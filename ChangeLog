@@ -1,3 +1,14 @@
+2004-08-07  0.8.1.33  Roland Clobus <rclobus@bigfoot.com>
+	* common/game.c: changed server-port parameter to string, fixed memory
+	leak in params_free.
+	* server/gnocatan-server.c(start_server), server/gnocatan-server.h,
+	server/server.c(server_startup), server/server.h: added const in the 
+	parameters.
+	* server/server.c, server/server.h: removed server_restart (not used).
+
+2004-08-07  Claudio Fontana (sick_soul@users.sourceforge.net>
+	* client/common/client.c: Removed deprecated lvalue casts.
+
 2004-07-31  0.8.1.32  Roland Clobus <rclobus@bigfoot.com>
 	* common/game-settings.c: more specific include files.
 	* common/select-game.c (select_game_add), server/gnocatan-server-gtk.c

@@ -65,7 +65,6 @@ typedef struct {
 
 struct Game {
 	GameParams *params;	/* game parameters */
-	GameParams *orig_params; /* original game parameters - for restart */
 
 	int accept_fd;		/* socket for accepting new clients */
 	int accept_tag;		/* Gdk event tag for accept socket */
@@ -185,8 +184,7 @@ gint get_rand(gint range);
 Game *game_new(GameParams *params);
 void game_free(Game *game);
 gint new_computer_player(const gchar *server, const gchar *port);
-gboolean server_startup(GameParams *params, gchar *port, gboolean meta);
-gboolean server_restart(void);
+gboolean server_startup(GameParams *params, const gchar *port, gboolean meta);
 gboolean server_stop(void);
 gint accept_connection(gint in_fd, gchar **location);
 gint open_listen_socket(gchar *port);
