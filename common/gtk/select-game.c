@@ -12,7 +12,7 @@
 #include <gtk/gtksignal.h>
 #include <gtk/gtktable.h>
 #include <gtk/gtktooltips.h>
-#include <gtk/gtkoptionmenu.h>
+#include <gtk/gtkcombobox.h>
 #include <gtk/gtkmenu.h>
 #include <gtk/gtkmenuitem.h>
 #include <gtk/gtklabel.h>
@@ -28,7 +28,7 @@ enum {
 
 static void select_game_class_init(SelectGameClass * klass);
 static void select_game_init(SelectGame * sg);
-static void select_game_item_activate(GtkWidget * widget, SelectGame * sg);
+static void select_game_item_changed(GtkWidget *widget, SelectGame *sg);
 
 /* All signals */
 static guint select_game_signals[LAST_SIGNAL] = { 0 };
@@ -84,35 +84,25 @@ static void select_game_init(SelectGame * sg)
 
 	tooltips = gtk_tooltips_new();
 
-	sg->option_menu = gtk_option_menu_new();
-	sg->menu = gtk_menu_new();
+	sg->combo_box = gtk_combo_box_new_text();
+	sg->game_names = g_ptr_array_new();
 
-	gtk_widget_show(sg->option_menu);
-	gtk_tooltips_set_tip(tooltips, sg->option_menu,
+	gtk_widget_show(sg->combo_box);
+	gtk_tooltips_set_tip(tooltips, sg->combo_box,
 			     /* Tooltip for the list of games */
 			     _("Select a game"), NULL);
 	gtk_table_resize(GTK_TABLE(sg), 1, 1);
-	gtk_table_attach_defaults(GTK_TABLE(sg), sg->option_menu,
+	gtk_table_attach_defaults(GTK_TABLE(sg), sg->combo_box,
 				  0, 1, 0, 1);
-	gtk_option_menu_set_menu(GTK_OPTION_MENU(sg->option_menu),
-				 sg->menu);
 	sg->default_game = g_strdup("Default");
-	sg->active_game = g_strdup(sg->default_game);
+	g_signal_connect(G_OBJECT(sg->combo_box), "changed",
+			 G_CALLBACK(select_game_item_changed), sg);
 }
 
 /* Create a new instance of the widget */
 GtkWidget *select_game_new(void)
 {
 	return GTK_WIDGET(g_object_new(select_game_get_type(), NULL));
-}
-
-/* Clear all entries in the game list */
-void select_game_clear(SelectGame * sg)
-{
-	gtk_option_menu_remove_menu(GTK_OPTION_MENU(sg->option_menu));
-	sg->menu = gtk_menu_new();
-	gtk_option_menu_set_menu(GTK_OPTION_MENU(sg->option_menu),
-				 sg->menu);
 }
 
 /* Set the default game */
@@ -124,43 +114,27 @@ void select_game_set_default(SelectGame * sg, const gchar * game_title)
 }
 
 /* Add a game title to the list.
- * The default game will be the first item
+ * The default game will be the active item.
  */
 void select_game_add(SelectGame * sg, const gchar * game_title)
 {
-	GtkWidget *item;
+	gchar *title = g_strdup(game_title);
 
-	item = gtk_menu_item_new_with_label(game_title);
-	gtk_widget_show(item);
+	g_ptr_array_add(sg->game_names, title);
+	gtk_combo_box_append_text(GTK_COMBO_BOX(sg->combo_box), title);
 
-	if (!strcmp(game_title, sg->default_game)) {
-		GtkWidget *separator = gtk_menu_item_new();
-		gtk_widget_show(separator);
-		gtk_menu_shell_prepend(GTK_MENU_SHELL(sg->menu),
-				       separator);
-		gtk_menu_shell_prepend(GTK_MENU_SHELL(sg->menu), item);
-		gtk_option_menu_set_history(GTK_OPTION_MENU
-					    (sg->option_menu), 0);
-		if (sg->active_game)
-			g_free(sg->active_game);
-		sg->active_game = g_strdup(game_title);
-	} else {
-		gtk_menu_shell_append(GTK_MENU_SHELL(sg->menu), item);
-	}
-	g_signal_connect(G_OBJECT(item), "activate",
-			 G_CALLBACK(select_game_item_activate), sg);
+	if (!strcmp(game_title, sg->default_game))
+		gtk_combo_box_set_active(GTK_COMBO_BOX(sg->combo_box),
+					 sg->game_names->len - 1);
 }
 
-static void select_game_item_activate(GtkWidget * widget, SelectGame * sg)
+static void select_game_item_changed(GtkWidget *widget, SelectGame *sg)
 {
-	GtkWidget *child = gtk_bin_get_child(GTK_BIN(widget));
-	if (sg->active_game)
-		g_free(sg->active_game);
-	sg->active_game = g_strdup(gtk_label_get_label(GTK_LABEL(child)));
 	g_signal_emit(G_OBJECT(sg), select_game_signals[ACTIVATE], 0);
 }
 
 const gchar *select_game_get_active(SelectGame * sg)
 {
-	return sg->active_game;
+	gint index = gtk_combo_box_get_active(GTK_COMBO_BOX(sg->combo_box));
+	return g_ptr_array_index(sg->game_names, index);
 }

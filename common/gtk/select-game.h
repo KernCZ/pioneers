@@ -26,10 +26,9 @@ typedef struct _SelectGameClass SelectGameClass;
 struct _SelectGame {
 	GtkTable table;
 
-	GtkWidget *option_menu;
-	GtkWidget *menu;
+	GtkWidget *combo_box;
+	GPtrArray *game_names;
 	gchar *default_game;
-	gchar *active_game;
 };
 
 struct _SelectGameClass {
@@ -40,7 +39,6 @@ struct _SelectGameClass {
 
 GType select_game_get_type(void);
 GtkWidget *select_game_new(void);
-void select_game_clear(SelectGame * sg);
 void select_game_set_default(SelectGame * sg, const gchar * game_title);
 void select_game_add(SelectGame * sg, const gchar * game_title);
 const gchar *select_game_get_active(SelectGame * sg);

@@ -1280,23 +1280,23 @@ static void update_recent_servers_list(void)
 	} while (!done);
 }
 
-static void host_list_select_cb(UNUSED(GtkWidget * widget),
+static void host_list_select_cb(GtkWidget *widget,
 				gpointer user_data)
 {
-	gchar *str1, *str2;
-	gchar *temp;
+	GPtrArray *host_entries = user_data;
+	gint index;
+	gchar *entry;
+	gchar **strs;
 
-	temp =
-	    g_strdup(gtk_label_get_text
-		     (GTK_LABEL((GtkLabel *) user_data)));
-	str1 = strtok(temp, ":");
-	str2 = strtok(NULL, "");
+	index = gtk_combo_box_get_active(GTK_COMBO_BOX(widget));
+	entry = g_ptr_array_index(host_entries, index);
+	strs = g_strsplit(entry, ":", 2);
 
-	connect_set_field(&connect_server, str1);
-	connect_set_field(&connect_port, str2);
+	connect_set_field(&connect_server, strs[0]);
+	connect_set_field(&connect_port, strs[1]);
 	gtk_entry_set_text(GTK_ENTRY(host_entry), connect_server);
 	gtk_entry_set_text(GTK_ENTRY(port_entry), connect_port);
-	g_free(temp);
+	g_strfreev(strs);
 }
 
 
@@ -1333,8 +1333,7 @@ static void connect_private_dialog(UNUSED(GtkWidget * widget),
 	GtkTooltips *tooltips;
 
 	GtkWidget *host_list;
-	GtkWidget *host_item;
-	GtkWidget *host_menu;
+	GPtrArray *host_entries;
 
 	gchar *saved_server;
 	gchar *saved_port;
@@ -1423,11 +1422,10 @@ static void connect_private_dialog(UNUSED(GtkWidget * widget),
 			     _("Port of the host of the game"), NULL);
 	connect_set_field(&connect_port, saved_port);
 
-	host_list = gtk_option_menu_new();
-	host_menu = gtk_menu_new();
+	host_list = gtk_combo_box_new_text();
+	host_entries = g_ptr_array_new();
 
 	gtk_widget_show(host_list);
-	gtk_widget_show(host_menu);
 
 	for (i = 0; i < PRIVATE_GAME_HISTORY_SIZE; i++) {
 		sprintf(temp_str, "favorites/server%dname=", i);
@@ -1450,21 +1448,14 @@ static void connect_private_dialog(UNUSED(GtkWidget * widget),
 		g_free(host_name);
 		g_free(host_port);
 
-		host_item = gtk_menu_item_new();
-		lbl = gtk_label_new(host_name_port);
-		gtk_container_add(GTK_CONTAINER(host_item), lbl);
-		g_signal_connect(G_OBJECT(host_item), "activate",
-				 G_CALLBACK(host_list_select_cb), lbl);
-		gtk_widget_show(lbl);
-		gtk_misc_set_alignment(GTK_MISC(lbl), 0, 0.5);
-		gtk_widget_show(host_item);
-
-		gtk_menu_shell_append(GTK_MENU_SHELL(host_menu),
-				      host_item);
-		g_free(host_name_port);
+		g_ptr_array_add(host_entries, host_name_port);
+		gtk_combo_box_append_text(GTK_COMBO_BOX(host_list),
+					  host_name_port);
 	}
-
-	gtk_option_menu_set_menu(GTK_OPTION_MENU(host_list), host_menu);
+	if (i > 0)
+		gtk_combo_box_set_active(GTK_COMBO_BOX(host_list), 0);
+	g_signal_connect(G_OBJECT(host_list), "changed",
+			 G_CALLBACK(host_list_select_cb), host_entries);
 
 	gtk_table_attach(GTK_TABLE(table), host_list, 1, 2, 2, 3,
 			 GTK_FILL, GTK_FILL, 0, 0);

@@ -1,3 +1,9 @@
+2005-03-28  Brian Wellington <bwelling@xbill.org>
+	* client/gtk/connect.c, client/gtk/gui.c, client/gtk/theme.c,
+	client/gtk/theme.h, common/gtk/select-game.c,
+	common/gtk/select-game.h: Replace deprecated GtkOptionMenus
+	with GtkComboBoxes.
+
 2005-03-28  0.9.3  Roland Clobus <rclobus@bigfoot.com>
 	* Makefile.am: Added target 'restorepo', to make it easier to remove
 	the changes to the *.po files when make distcheck has been used, but

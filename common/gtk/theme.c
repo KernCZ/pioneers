@@ -252,6 +252,11 @@ GList *next_theme(GList * p)
 	return p ? p->next : NULL;
 }
 
+MapTheme *get_theme_nth(gint n)
+{
+	return g_list_nth(theme_list, n)->data;
+}
+
 /** Load a pixbuf, its pixmap and its mask.
  *  If loading fails, no objects need to be freed.
  *  @return TRUE if succesful

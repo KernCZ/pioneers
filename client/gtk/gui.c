@@ -661,10 +661,10 @@ static void quit_cb(UNUSED(GtkWidget * widget), UNUSED(void *data))
 	gtk_main_quit();
 }
 
-static void theme_change_cb(UNUSED(GtkMenuItem * widget),
-			    gpointer user_data)
+static void theme_change_cb(GtkWidget *widget, UNUSED(void *data))
 {
-	MapTheme *theme = user_data;
+	gint index = gtk_combo_box_get_active(GTK_COMBO_BOX(widget));
+	MapTheme *theme = get_theme_nth(index);
 	if (theme != get_theme()) {
 		config_set_string("settings/theme", theme->name);
 		set_theme(theme);
@@ -677,6 +677,7 @@ static void theme_change_cb(UNUSED(GtkMenuItem * widget),
 					   gmap->height);
 		gtk_widget_queue_draw(legend_page);
 	}
+
 }
 
 static void show_legend_cb(GtkToggleButton * widget,
@@ -716,7 +717,6 @@ static void preferences_cb(UNUSED(GtkWidget * widget),
 	GtkWidget *dlg_vbox;
 	GtkWidget *theme_label;
 	GtkWidget *theme_list;
-	GtkWidget *theme_menu;
 	GtkWidget *layout;
 	GtkTooltips *tooltips;
 
@@ -761,28 +761,23 @@ static void preferences_cb(UNUSED(GtkWidget * widget),
 
 	row = 0;
 
-	theme_list = gtk_option_menu_new();
-	theme_menu = gtk_menu_new();
+	theme_list = gtk_combo_box_new_text();
 	/* Label for changing the theme, in the preferences dialog */
 	theme_label = gtk_label_new(_("Theme:"));
 	gtk_misc_set_alignment(GTK_MISC(theme_label), 0, 0.5);
-	gtk_widget_show(theme_menu);
 	gtk_widget_show(theme_list);
 	gtk_widget_show(theme_label);
 
 	for (i = 0, theme = first_theme(); theme;
 	     ++i, theme = next_theme(theme)) {
-		GtkWidget *item =
-		    gtk_menu_item_new_with_label(((MapTheme *) theme->
-						  data)->name);
-		gtk_widget_show(item);
-		gtk_menu_append(GTK_MENU(theme_menu), item);
+		const gchar *theme_name = ((MapTheme *)theme->data)->name;
+		gtk_combo_box_append_text(GTK_COMBO_BOX(theme_list),
+					  theme_name);
 		if (theme->data == get_theme())
-			gtk_menu_set_active(GTK_MENU(theme_menu), i);
-		g_signal_connect(G_OBJECT(item), "activate",
-				 G_CALLBACK(theme_change_cb), theme->data);
+			gtk_combo_box_set_active(GTK_COMBO_BOX(theme_list), i);
 	}
-	gtk_option_menu_set_menu(GTK_OPTION_MENU(theme_list), theme_menu);
+	g_signal_connect(G_OBJECT(theme_list), "changed",
+			 G_CALLBACK(theme_change_cb), NULL);
 
 	gtk_table_attach_defaults(GTK_TABLE(layout), theme_label,
 				  0, 1, row, row + 1);
