@@ -1,3 +1,9 @@
+2003-10-15  Bas Wijnen <b.wijnen@phys.rug.nl>
+	* ai/client.c: Use new disconnect protocol.
+	* client/build.c: Fixed ship move undo bug.
+	* server/gold.c, server/robber.c, server/trade.c: Fixed viewer bugs.
+	* po/de.po, po/es.po, po/gnocatan.pot: Updated.
+
 2003-10-13  Bas Wijnen <b.wijnen@phys.rug.nl>
 	* client/client.c, server/pregame.c: Added pirate position to
 	reconnect info.

@@ -1188,10 +1188,11 @@ static gboolean mode_discard(StateMachine *sm, gint event)
 			player_resource_action(player_num, _("%s discarded %s\n"),
 					       resource_list, -1);
 			discard_player_did(player_num, resource_list);
-			if (discard_num_remaining() == 0) {
-				discard_end();
-				sm_pop(sm);
-			}
+			return TRUE;
+		}
+		if (sm_recv(sm, "discard-done") ) {
+			discard_end();
+			sm_pop(sm);
 			return TRUE;
 		}
 		if (check_other_players(sm))

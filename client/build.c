@@ -144,12 +144,17 @@ void build_move(gint sx, gint sy, gint spos, gint dx, gint dy, gint dpos, gint i
 	BuildRec *rec;
 	if (isundo) {
 		map->has_moved_ship = FALSE;
+		list = g_list_last(build_list);
+		rec = list->data;
+		build_list = g_list_remove(build_list, rec);
 		/* If the build_list is now empty (no more items to undo),
 		 * clear built flag so trading is reallowed with
 		 * strict-trade */
 		if (build_list == NULL)
 			built = FALSE;
 	} else {
+		BuildRec *rec = g_malloc0(sizeof(*rec));
+		build_list = g_list_append(build_list, rec);
 		built = TRUE;
 		map->has_moved_ship = TRUE;
 	}

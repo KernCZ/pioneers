@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-10-13 14:15+0200\n"
+"POT-Creation-Date: 2003-10-15 15:16+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -40,7 +40,7 @@ msgstr ""
 msgid "%s discarded %s\n"
 msgstr ""
 
-#: ai/client.c:1775 client/client.c:2654
+#: ai/client.c:1776 client/client.c:2658
 msgid "The game is over.\n"
 msgstr ""
 
@@ -567,74 +567,74 @@ msgstr ""
 msgid "Begin turn %d for %s.\n"
 msgstr ""
 
-#: client/admin-gtk.c:141 client/settingscreen.c:50
+#: client/admin-gtk.c:140 client/settingscreen.c:50
 #: server/gnocatan-server-gtk.c:117
 msgid "Yes"
 msgstr ""
 
 #. this seems to fit better before, but the callback requires
 #. * that meta_entry and hostname_entry are initialized
-#: client/admin-gtk.c:141 client/admin-gtk.c:302 client/settingscreen.c:52
+#: client/admin-gtk.c:140 client/admin-gtk.c:301 client/settingscreen.c:52
 #: server/gnocatan-server-gtk.c:117 server/gnocatan-server-gtk.c:511
 msgid "No"
 msgstr ""
 
-#: client/admin-gtk.c:168 client/connect.c:408
+#: client/admin-gtk.c:167 client/connect.c:398
 #: server/gnocatan-server-gtk.c:134
 msgid "Random"
 msgstr ""
 
-#: client/admin-gtk.c:168 client/connect.c:408
+#: client/admin-gtk.c:167 client/connect.c:398
 #: server/gnocatan-server-gtk.c:134
 msgid "Default"
 msgstr ""
 
-#: client/admin-gtk.c:207 server/gnocatan-server-gtk.c:357
+#: client/admin-gtk.c:206 server/gnocatan-server-gtk.c:357
 msgid "Name"
 msgstr ""
 
-#: client/admin-gtk.c:208 server/gnocatan-server-gtk.c:358
+#: client/admin-gtk.c:207 server/gnocatan-server-gtk.c:358
 msgid "Location"
 msgstr ""
 
-#: client/admin-gtk.c:218 client/connect.c:471
+#: client/admin-gtk.c:217 client/connect.c:461
 #: server/gnocatan-server-gtk.c:375
 msgid "Server Parameters"
 msgstr ""
 
-#: client/admin-gtk.c:229 client/connect.c:482
+#: client/admin-gtk.c:228 client/connect.c:472
 #: server/gnocatan-server-gtk.c:386
 msgid "Game Name"
 msgstr ""
 
-#: client/admin-gtk.c:248 client/connect.c:501
+#: client/admin-gtk.c:247 client/connect.c:491
 #: server/gnocatan-server-gtk.c:405
 msgid "Map Terrain"
 msgstr ""
 
-#: client/admin-gtk.c:263 client/connect.c:553
+#: client/admin-gtk.c:262 client/connect.c:543
 #: server/gnocatan-server-gtk.c:421
 msgid "Number of Players"
 msgstr ""
 
-#: client/admin-gtk.c:279 client/connect.c:569
+#: client/admin-gtk.c:278 client/connect.c:559
 #: server/gnocatan-server-gtk.c:437
 msgid "Victory Point Target"
 msgstr ""
 
-#: client/admin-gtk.c:295 server/gnocatan-server-gtk.c:470
+#: client/admin-gtk.c:294 server/gnocatan-server-gtk.c:470
 msgid "Register Server"
 msgstr ""
 
-#: client/admin-gtk.c:329 server/gnocatan-server-gtk.c:554
+#: client/admin-gtk.c:328 server/gnocatan-server-gtk.c:554
 msgid "Start Server"
 msgstr ""
 
-#: client/admin-gtk.c:337 server/gnocatan-server-gtk.c:572
+#: client/admin-gtk.c:336 server/gnocatan-server-gtk.c:572
 msgid "Players Connected"
 msgstr ""
 
-#: client/admin-gtk.c:358 client/gui.c:263 server/gnocatan-server-gtk.c:593
+#: client/admin-gtk.c:357 client/gui.c:263 server/gnocatan-server-gtk.c:593
 msgid "Messages"
 msgstr ""
 
@@ -660,7 +660,7 @@ msgstr ""
 msgid "Waiting"
 msgstr ""
 
-#: client/client.c:98 client/client.c:963
+#: client/client.c:98 client/client.c:967
 msgid "Idle"
 msgstr ""
 
@@ -700,211 +700,203 @@ msgstr ""
 msgid "Version mismatch"
 msgstr ""
 
-#: client/client.c:1189
+#: client/client.c:1193
 msgid "Build two settlements, each with a connecting"
 msgstr ""
 
-#: client/client.c:1191
+#: client/client.c:1195
 msgid "Build a settlement with a connecting"
 msgstr ""
 
-#: client/client.c:1194
+#: client/client.c:1198
 msgid "road"
 msgstr ""
 
-#: client/client.c:1196
+#: client/client.c:1200
 msgid "bridge"
 msgstr ""
 
-#: client/client.c:1198
+#: client/client.c:1202
 msgid "ship"
 msgstr ""
 
-#: client/client.c:1330
+#: client/client.c:1334
 msgid "Waiting for your turn"
 msgstr ""
 
-#: client/client.c:1454 client/client.c:1472
+#: client/client.c:1458 client/client.c:1476
 msgid "Select the building to steal from."
 msgstr ""
 
-#: client/client.c:1455 client/client.c:1473
+#: client/client.c:1459 client/client.c:1477
 msgid "Select the building to steal from"
 msgstr ""
 
-#: client/client.c:1486 client/client.c:1513
+#: client/client.c:1490 client/client.c:1517
 msgid "Place the robber"
 msgstr ""
 
-#: client/client.c:1598
+#: client/client.c:1602
 msgid "Build two road segments."
 msgstr ""
 
-#: client/client.c:1600
+#: client/client.c:1604
 msgid "Build a road segment."
 msgstr ""
 
-#: client/client.c:1917 client/client.c:2053
+#: client/client.c:1921 client/client.c:2057
 msgid "It is your turn."
 msgstr ""
 
-#: client/client.c:2247
+#: client/client.c:2251
 #, c-format
 msgid "Sorry, %s available.\n"
 msgstr ""
 
-#: client/client.c:2646
+#: client/client.c:2650
 msgid "The game is over."
 msgstr ""
 
-#: client/client.c:2859
+#: client/client.c:2863
 #, c-format
 msgid "%s takes %s.\n"
 msgstr ""
 
-#: client/connect.c:99
-msgid "Receiving Data"
+#: client/connect.c:101
+#, c-format
+msgid "Meta-server at %s, port %s"
 msgstr ""
 
-#: client/connect.c:106
-msgid "Receiving data from meta server..."
+#: client/connect.c:110
+msgid "Finished.\n"
 msgstr ""
 
-#: client/connect.c:111
-msgid "Receiving data from meta server...\n"
-msgstr ""
-
-#: client/connect.c:118
-msgid "finished.\n"
-msgstr ""
-
-#: client/connect.c:146 client/connect.c:197 client/connect.c:279
-#: server/meta.c:149
+#: client/connect.c:135 client/connect.c:183 client/connect.c:266
+#: server/meta.c:152
 msgid "Meta-server kicked us off\n"
 msgstr ""
 
-#: client/connect.c:218
+#: client/connect.c:161
+msgid "Receiving game names from the meta server.\n"
+msgstr ""
+
+#: client/connect.c:203
 #, c-format
 msgid "New game server started on %s port %s\n"
 msgstr ""
 
-#: client/connect.c:296 server/meta.c:116
+#: client/connect.c:281 server/meta.c:117
 msgid "Too many meta-server redirects\n"
 msgstr ""
 
-#: client/connect.c:309 server/meta.c:122
+#: client/connect.c:303 server/meta.c:125
 #, c-format
 msgid "Bad redirect line: %s\n"
 msgstr ""
 
-#: client/connect.c:324
+#: client/connect.c:318
 #, c-format
 msgid "Meta server too old to create servers (version %d.%d)\n"
 msgstr ""
 
-#: client/connect.c:367 server/meta.c:162
+#: client/connect.c:361 server/meta.c:164
 #, c-format
 msgid "Redirected to meta-server at %s, port %s\n"
 msgstr ""
 
-#: client/connect.c:370
-#, c-format
-msgid "Querying meta-server at %s, port %s\n"
+#: client/connect.c:363
+msgid "Receiving a list of Gnocatan servers from the meta server.\n"
 msgstr ""
 
-#: client/connect.c:387
+#: client/connect.c:378 client/connect.c:601
 msgid "Requesting new game server\n"
 msgstr ""
 
-#: client/connect.c:519 client/connect.c:695 server/gnocatan-server-gtk.c:521
+#: client/connect.c:509 client/connect.c:714 server/gnocatan-server-gtk.c:521
 msgid "Sevens Rule"
 msgstr ""
 
-#: client/connect.c:538 server/gnocatan-server-gtk.c:528
+#: client/connect.c:528 server/gnocatan-server-gtk.c:528
 msgid "Normal"
 msgstr ""
 
-#: client/connect.c:542 server/gnocatan-server-gtk.c:529
+#: client/connect.c:532 server/gnocatan-server-gtk.c:529
 msgid "Reroll on 1st 2 turns"
 msgstr ""
 
-#: client/connect.c:546 server/gnocatan-server-gtk.c:530
+#: client/connect.c:536 server/gnocatan-server-gtk.c:530
 msgid "Reroll all 7s"
 msgstr ""
 
-#: client/connect.c:585
+#: client/connect.c:575
 msgid "Number of AI Players"
 msgstr ""
 
-#: client/connect.c:612
+#: client/connect.c:621
 msgid "Create New Gnocatan Server"
 msgstr ""
 
-#: client/connect.c:688
+#: client/connect.c:707
 msgid "Host"
 msgstr ""
 
-#: client/connect.c:689
+#: client/connect.c:708
 msgid "Port"
 msgstr ""
 
-#: client/connect.c:690
+#: client/connect.c:709
 msgid "Version"
 msgstr ""
 
-#: client/connect.c:691
+#: client/connect.c:710
 msgid "Max"
 msgstr ""
 
-#: client/connect.c:692
+#: client/connect.c:711
 msgid "Curr"
 msgstr ""
 
-#: client/connect.c:693
+#: client/connect.c:712
 msgid "Terrain"
 msgstr ""
 
-#: client/connect.c:694
+#: client/connect.c:713
 msgid "Vic. Points"
 msgstr ""
 
-#: client/connect.c:696
+#: client/connect.c:715
 msgid "Map Name"
 msgstr ""
 
-#: client/connect.c:700
+#: client/connect.c:719
 msgid "Current Gnocatan Servers"
 msgstr ""
 
-#: client/connect.c:746
-msgid "Create New Server"
-msgstr ""
-
-#: client/connect.c:889 client/gui.c:856
+#: client/connect.c:913 client/gui.c:856
 msgid "Connect to Gnocatan server"
 msgstr ""
 
-#: client/connect.c:912
+#: client/connect.c:936
 msgid "Meta Server"
 msgstr ""
 
-#: client/connect.c:928
+#: client/connect.c:952
 msgid "Query Meta Server"
 msgstr ""
 
-#: client/connect.c:942
+#: client/connect.c:966
 msgid "Server Host"
 msgstr ""
 
-#: client/connect.c:960 server/gnocatan-server-gtk.c:453
+#: client/connect.c:984 server/gnocatan-server-gtk.c:453
 msgid "Server Port"
 msgstr ""
 
-#: client/connect.c:983
+#: client/connect.c:1007
 msgid "Player Name"
 msgstr ""
 
-#: client/connect.c:1043
+#: client/connect.c:1067
 msgid "Recent Servers"
 msgstr ""
 
@@ -1789,7 +1781,7 @@ msgstr ""
 msgid "Error connecting to %s: %s\n"
 msgstr ""
 
-#: common/state.c:176
+#: common/state.c:174
 #, c-format
 msgid "Connecting to %s, port %s\n"
 msgstr ""
@@ -1824,7 +1816,7 @@ msgstr ""
 msgid "Missing game directory\n"
 msgstr ""
 
-#: server/meta.c:165
+#: server/meta.c:167
 #, c-format
 msgid "Register with meta-server at %s, port %s\n"
 msgstr ""
