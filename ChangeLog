@@ -1,7 +1,9 @@
 2000-05-17  Steve Langasek <vorlon@dodds.net>
 
-	* server/glib-driver.c:
-	Used the G_PRIORITY_DEFAULT define in place of constant as argument.
+	* common/common_gtk.h: Changed __common_gui_h to __common_gtk_h.
+
+	* server/glib-driver.c: Used the G_PRIORITY_DEFAULT define in
+	place of constant as argument.
 
 2000-05-17  Bibek Sahu <scorpio@dodds.net>
 

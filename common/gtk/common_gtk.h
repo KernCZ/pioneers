@@ -7,8 +7,8 @@
  * Implementation of the excellent Settlers of Catan board game.  Go
  * buy a copy.
  */
-#ifndef __common_gui_h
-#define __common_gui_h
+#ifndef __common_gtk_h
+#define __common_gtk_h
 
 #include "driver.h"
 #include "log.h"
@@ -29,4 +29,4 @@ GtkWidget *message_window_set_text(GtkWidget *txt);
 
 extern UIDriver GTK_Driver;
 
-#endif /* __common_gui_h */
+#endif /* __common_gtk_h */
