@@ -1,3 +1,20 @@
+2002-12-25  Roman Hodek  <roman@hodek.net>
+
+	* configure.in: Some changes to make it work with autoconf2.50 and
+	automake-1.7.
+
+	* depcomp: new
+
+	* acconfig.h: removed obsolete file
+
+	* Makefile.am (distclean-local): remove some more stuff
+
+	* gnocatan.spec: applied patch by Brian Wellington
+
+2002-07-22  Roman Hodek  <roman@hodek.net>
+
+	* client/Makefile.am (install-data-hook): fix silly thinko.
+
 2002-07-21  Roman Hodek  <roman@hodek.net>
 
 	* 0.7.1 released!!
