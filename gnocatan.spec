@@ -123,7 +123,7 @@ make install prefix=$RPM_BUILD_ROOT/usr
 %dir /usr/share/gnome/help/gnocatan/
 %dir /usr/share/gnome/help/gnocatan/C
 %dir /usr/share/gnome/help/gnocatan/C/images
-/usr/share/gnome/help/gnocatan/C/*
+/usr/share/gnome/help/gnocatan/C/topic.dat
 /usr/share/gnome/help/gnocatan/C/images/*
 
 %changelog

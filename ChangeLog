@@ -1,3 +1,7 @@
+2000-06-15  Steve Langasek <vorlon@dodds.net>
+
+	* gnocatan.spec: cleaned up RedHat build to not include files twice.
+
 2000-06-15  Andy Heroff <aheroff@mediaone.net>
 
 	* Bumped version again to 0.5.6, just in case, to prepare for
