@@ -1,8 +1,12 @@
 2002-05-16  Roman Hodek  <roman@hodek.net>
 
+	* client/chat.c (chat_parser): Fix /me.
+
 	* meta-server/gnocatan-meta-server.c (client_create_new_server): 
 	Emit an syslog error message if server cannot be exec-ed.
 
+	* Make everything compile also with -Werror.
+	
 	* debian subdir:
 	New package layout:
 	- merge -data into -client, data are too small to justify a
