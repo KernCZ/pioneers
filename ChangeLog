@@ -1,3 +1,7 @@
+2003-10-12  Jeff Breidenbach  <jab@debian.org>
+
+	* debian/control, debian/changelog: prepare for 0.8.0 package
+
 2003-10-11  Bas Wijnen <b.wijnen@phys.rug.nl>
 	* ai/greedy.c, client/client.c, client/client.h, client/guimap.c,
 	client/robber.c, common/map.c, common/map.h, common/map_query.c,
