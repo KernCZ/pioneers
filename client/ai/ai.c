@@ -149,7 +149,7 @@ static void ai_offline (void)
 	cb_connect (server, port);
 }
 
-static void ai_init_game (void)
+static void ai_start_game (void)
 {
 	/* TODO: choose which ai implementation to use */
 	greedy_init (local_argc, local_argv);
@@ -160,7 +160,7 @@ void frontend_set_callbacks (int argc, char **argv)
 	/* this should really not be done here.  It should be in
 	 * frontend_init.  However, i18n needs it to be done before
 	 * frontend_init is called, so it must be done here.  Please fix
-	 * this if you know how.  See alse client/gui/offline.c and
+	 * this if you know how.  See also client/gui/offline.c and
 	 * client/common/gnocatan.c */
 	gnome_program_init (PACKAGE, VERSION, LIBGNOMEUI_MODULE, argc, argv,
 			GNOME_PARAM_POPT_TABLE, NULL, GNOME_PARAM_APP_DATADIR,
@@ -168,5 +168,5 @@ void frontend_set_callbacks (int argc, char **argv)
 
 	callbacks.init = &ai_init;
 	callbacks.offline = &ai_offline;
-	callbacks.init_game = &ai_init_game;
+	callbacks.start_game = &ai_start_game;
 }
