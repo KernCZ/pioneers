@@ -446,6 +446,11 @@ static gboolean mode_start(StateMachine *sm, gint event)
 		sm_send(sm, "version %s\n", PROTOCOL_VERSION);
 		return TRUE;
 	}
+	if (sm_recv(sm, "status report")) 
+	{ 
+		sm_send(sm, "status newplayer\n"); 
+		return TRUE; 
+	} 
 	if (sm_recv(sm, "player %d of %d, welcome to gnocatan server %S",
 		    &player_num, &total_num, version)) {
 		player_set_my_num(player_num);
