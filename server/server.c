@@ -170,6 +170,7 @@ void game_free(Game *game)
 	while (game->player_list != NULL) {
 		Player *player = game->player_list->data;
 		player_remove(player);
+		game->player_list = g_list_remove (game->player_list, player);
 		player_free(player);
 	}
 

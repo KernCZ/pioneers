@@ -29,6 +29,7 @@
 
 gboolean resource_available(Player *player, gint *resources, gint *num_in_bank)
 {
+	StateMachine *sm = player->sm;
 	Game *game = player->game;
 	gint idx;
 
@@ -36,7 +37,7 @@ gboolean resource_available(Player *player, gint *resources, gint *num_in_bank)
 		*num_in_bank = 0;
 	for (idx = 0; idx < NO_RESOURCE; idx++) {
 		if (resources[idx] > game->bank_deck[idx]) {
-			sm_send(player->sm, "ERR no-cards %r\n", idx);
+			sm_send(sm, "ERR no-cards %r\n", idx);
 			return FALSE;
 		}
 		if (num_in_bank != NULL)

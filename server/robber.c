@@ -62,13 +62,14 @@ static void steal_card_from(Player *player, Player *victim)
 	     list != NULL; list = player_next_real(list)) {
 		Player *scan = list->data;
 
-		if (scan == player || scan == victim)
-			sm_send(scan->sm, "player %d stole %r from %d\n",
-				player->num, idx, victim->num);
-
-		else
-			sm_send(scan->sm, "player %d stole from %d\n",
-				player->num, victim->num);
+		if (!scan->disconnected) {
+			if (scan == player || scan == victim) {
+				sm_send(scan->sm, "player %d stole %r from %d\n",
+					player->num, idx, victim->num);
+			} else
+				sm_send(scan->sm, "player %d stole from %d\n",
+					player->num, victim->num);
+		}
 	}
 	/* Alter the assets of the respective players
 	 */
@@ -213,7 +214,8 @@ gboolean mode_place_robber(Player *player, gint event)
 
 void robber_place(Player *player)
 {
+	StateMachine *sm = player->sm;
 	player_broadcast(player, PB_OTHERS, "is-robber\n");
-	sm_send(player->sm, "you-are-robber\n");
-	sm_push(player->sm, (StateFunc)mode_place_robber);
+	sm_send(sm, "you-are-robber\n");
+	sm_push(sm, (StateFunc)mode_place_robber);
 }

@@ -1,3 +1,12 @@
+2003-10-12  Bas Wijnen <b.wijnen@phys.rug.nl>
+	* server/develop.c, server/player.c, server/server.h: Allowed multiple
+	development cards of the same type.
+	* client/client.c, server/discard.c, server/gold.c, server/robber.c,
+	server/server.c, server/player.c, server/pregame.c, server/server.h,
+	server/turn.c: Added support for viewers and disconnected players.
+	* server/develop.c, server/player.c, server/pregame.c,
+	server/resource.c, server/robber.c, server/turn.c: Cleanup.
+
 2003-10-12  Jeff Breidenbach  <jab@debian.org>
 
 	* debian/control, debian/changelog: prepare for 0.8.0 package

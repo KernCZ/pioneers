@@ -105,14 +105,16 @@ static void build_add(Player *player, BuildType type, gint x, gint y, gint pos)
 
 static void build_remove(Player *player)
 {
+	StateMachine *sm = player->sm;
 	/* Remove the settlement/road we just built
 	 */
 	if (!perform_undo(player))
-		sm_send(player->sm, "ERR bad-pos\n");
+		sm_send(sm, "ERR bad-pos\n");
 }
 
 static void start_setup_player(Player *player)
 {
+	StateMachine *sm = player->sm;
 	Game *game = player->game;
 
 	player->build_list = buildrec_free(player->build_list);
@@ -122,7 +124,7 @@ static void start_setup_player(Player *player)
 	else
 		player_broadcast(player, PB_RESPOND, "setup\n");
 
-	sm_goto(player->sm, (StateFunc)mode_setup);
+	sm_goto(sm, (StateFunc)mode_setup);
 }
 
 static void allocate_resources(Player *player, BuildRec *rec)
@@ -334,7 +336,7 @@ static void send_player_list(Player *player)
 	for (list = player_first_real(game);
 	     list != NULL; list = player_next_real(list)) {
 		Player *scan = list->data;
-
+		if (player == scan) continue;
 		sm_send(sm, "player %d is %s\n", scan->num, scan->name);
 	}
 	sm_send(sm, ".\n");
@@ -344,7 +346,8 @@ static void send_player_list(Player *player)
  */
 static void send_game_line(Player *player, gchar *str)
 {
-	sm_send(player->sm, "%s\n", str);
+	StateMachine *sm = player->sm;
+	sm_send(sm, "%s\n", str);
 }
 
 gboolean send_gameinfo(Map *map, Hex *hex, StateMachine *sm)
@@ -623,7 +626,10 @@ gboolean mode_pre_game(Player *player, gint event)
 			}
 			else
 			{
-				sm_goto(sm, (StateFunc)mode_idle);
+				if (player->num < game->params->num_players)
+					sm_goto(sm, (StateFunc)mode_idle);
+				else
+					sm_goto (sm, (StateFunc)mode_viewer);
 			}
 			try_start_game(game);
 			return TRUE;

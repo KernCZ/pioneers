@@ -42,11 +42,11 @@ typedef struct {
 	gint num_soldiers;	/* number of soldiers played */
 	gint road_len;		/* last longest road */
 	gint develop_points;	/* number of development card victory points */
-	gboolean chapel_played; /* player played the Chapel card */
-	gboolean univ_played; /* player played the University card */
-	gboolean gov_played; /* player played the Governors card */
-	gboolean libr_played; /* player played the Library card */
-	gboolean market_played; /* player played the Market card */
+	gint chapel_played;	/* number of Chapel cards played */
+	gint univ_played;	/* number of University cards played */
+	gint gov_played;	/* number of Governors cards played */
+	gint libr_played;	/* number of Library cards played */
+	gint market_played;	/* number of Market cards played */
 	gboolean disconnected; 
 } Player;
 
@@ -123,7 +123,8 @@ typedef enum {
 	PB_OTHERS
 } BroadcastType;
 Player *player_new(Game *game, int fd, gchar *location);
-void player_setup(Player *player, int playernum, gchar *name);
+void player_setup(Player *player, int playernum, gchar *name, gboolean
+		force_viewer);
 gchar *player_name(Player *player);
 Player *player_by_name(Game *game, char *name);
 Player *player_by_num(Game *game, gint num);
@@ -138,6 +139,7 @@ GList *player_first_real(Game *game);
 GList *player_next_real(GList *last);
 GList *list_from_player (Player *player);
 GList *next_player_loop (GList *current, Player *first);
+gboolean mode_viewer (Player *player, gint event);
 
 /* pregame.c */
 gboolean mode_pre_game(Player *player, gint event);

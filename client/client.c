@@ -350,6 +350,12 @@ static gboolean check_other_players(StateMachine *sm)
 		sm_push(sm, mode_discard);
 		return TRUE;
 	}
+	if (sm_recv(sm, "discarded %R", resource_list)) {
+		player_resource_action(player_num, _("%s discarded %s.\n"),
+				       resource_list, -1);
+		discard_player_did(player_num, resource_list);
+		return TRUE;
+	}
 	if (sm_recv(sm, "prepare-gold %d", &gold_num)) {
 		gold_choose_begin ();
 		gold_choose_player_prepare (player_num, gold_num);
@@ -1854,15 +1860,9 @@ static gboolean mode_discard(StateMachine *sm, gint event)
 			discard_player_must(player_num, discard_num);
 			return TRUE;
 		}
-		if (sm_recv(sm, "player %d discarded %R",
-			    &player_num, resource_list)) {
-			player_resource_action(player_num, _("%s discarded %s.\n"),
-					       resource_list, -1);
-			discard_player_did(player_num, resource_list);
-			if (discard_num_remaining() == 0) {
-				discard_end();
-				sm_pop(sm);
-			}
+		if (sm_recv(sm, "discard-done") ) {
+			discard_end ();
+			sm_pop (sm);
 			return TRUE;
 		}
 		if (check_other_players(sm))

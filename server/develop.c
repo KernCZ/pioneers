@@ -81,19 +81,20 @@ void develop_shuffle(Game *game)
 
 void develop_buy(Player *player)
 {
+	StateMachine *sm = player->sm;
 	Game *game = player->game;
 	DevelType card;
 
 	if (!game->rolled_dice) {
-		sm_send(player->sm, "ERR roll-dice\n");
+		sm_send(sm, "ERR roll-dice\n");
 		return;
 	}
 	if (!cost_can_afford(cost_development(), player->assets)) {
-		sm_send(player->sm, "ERR too-expensive\n");
+		sm_send(sm, "ERR too-expensive\n");
 		return;
 	}
 	if (game->develop_next >= game->num_develop) {
-		sm_send(player->sm, "ERR no-cards\n");
+		sm_send(sm, "ERR no-cards\n");
 		return;
 	}
 
@@ -107,7 +108,7 @@ void develop_buy(Player *player)
 
 	card = game->develop_deck[game->develop_next++];
 	deck_card_add(player->devel, card, game->curr_turn);
-	sm_send(player->sm, "bought-develop %d\n", card);
+	sm_send(sm, "bought-develop %d\n", card);
 }
 
 gboolean mode_road_building(Player *player, gint event)
@@ -393,19 +394,19 @@ void develop_play(Player *player, gint idx)
 
 		switch (card) {
         	case DEVEL_CHAPEL:
-			player->chapel_played = TRUE;
+			++player->chapel_played;
 			break;
        		case DEVEL_UNIVERSITY_OF_CATAN:
-			player->univ_played = TRUE;
+			++player->univ_played;
 			break;
 	        case DEVEL_GOVERNORS_HOUSE:
-			player->gov_played = TRUE;
+			++player->gov_played;
 			break;
        		case DEVEL_LIBRARY:
-			player->libr_played = TRUE;
+			++player->libr_played;
 			break;
 	        case DEVEL_MARKET:
-			player->market_played = TRUE;
+			++player->market_played;
 			break;
 		default:
 			;

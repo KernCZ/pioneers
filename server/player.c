@@ -31,32 +31,35 @@
 /* Local function prototypes */
 static gboolean mode_check_version(Player *player, gint event);
 static gboolean mode_check_status(Player *player, gint event);
-static gboolean mode_game_full(Player *player, gint event);
 static gboolean mode_bad_version(Player *player, gint event);
 static gboolean mode_global(Player *player, gint event);
 static gboolean mode_unhandled(Player *player, gint event);
 
 extern void start_timeout(void);
 
-static gint next_player_num(Game *game)
+static gint next_player_num(Game *game, gboolean force_viewer)
 {
-	GList *list;
-	gboolean players[MAX_PLAYERS];
-	gint idx;
+	gint idx = game->params->num_players;
 
-	memset(players, 0, sizeof(players));
-	for (list = game->player_list;
-	     list != NULL; list = g_list_next(list)) {
-		Player *player = list->data;
-		if (player->num >= 0)
-			players[player->num] = TRUE;
+	if (!force_viewer) {
+		GList *list;
+		gboolean players[MAX_PLAYERS];
+		memset(players, 0, sizeof(players));
+		for (list = game->player_list;
+		     list != NULL; list = g_list_next(list)) {
+			Player *player = list->data;
+			if (player->num >= 0
+				&& player->num < game->params->num_players
+				&& !player->disconnected)
+					players[player->num] = TRUE;
+		}
+
+		for (idx = 0; idx < game->params->num_players; idx++)
+			if (!players[idx])
+				break;
 	}
-
-	for (idx = 0; idx < game->params->num_players; idx++)
-		if (!players[idx])
-			break;
 	if (idx == game->params->num_players)
-		return -1;
+		while (player_by_num (game, idx) != NULL) ++idx;
 
 	return idx;
 }
@@ -72,11 +75,13 @@ static gboolean mode_global(Player *player, gint event)
 		player_remove(player);
 		if (player->num >= 0)
 		{
-			player_broadcast(player, PB_ALL, "has quit\n");
 			player_archive(player);
+			player_broadcast(player, PB_ALL, "has quit\n");
 		}
 		else
 		{
+			game->player_list = g_list_remove (game->player_list,
+					player);
 			player_free(player);
 		}
 
@@ -207,11 +212,11 @@ Player *player_new(Game *game, int fd, gchar *location)
 	player->devel = deck_new(game->params);
 	game->player_list = g_list_append(game->player_list, player);
 	player->num = -1;
-	player->chapel_played = FALSE;
-	player->univ_played = FALSE;
-	player->gov_played = FALSE;
-	player->libr_played = FALSE;
-	player->market_played = FALSE;
+	player->chapel_played = 0;
+	player->univ_played = 0;
+	player->gov_played = 0;
+	player->libr_played = 0;
+	player->market_played = 0;
 	player->disconnected = FALSE;
 	player->name = g_strdup (name);
 
@@ -230,67 +235,76 @@ Player *player_new(Game *game, int fd, gchar *location)
 	return player;
 }
 
-void player_setup(Player *player, int playernum, gchar *name)
+void player_setup(Player *player, int playernum, gchar *name,
+		gboolean force_viewer)
 {
 	gchar nm[100];
 	gchar *namep;
 	Game *game = player->game;
 	StateMachine *sm = player->sm;
+	Player *other;
 
 	player->num = playernum;
 	if (player->num < 0)
 	{
-		player->num = next_player_num(game);
+		player->num = next_player_num(game, force_viewer);
 	}
-	if (player->num >= 0) {
+
+	if (player->num < game->params->num_players) {
 		game->num_players++;
 		meta_report_num_players(game->num_players);
-		/* gui_ui_enable(TRUE); */
+	}
+	/* gui_ui_enable(TRUE); */
 
-		player->num_roads = 0;
-		player->num_bridges = 0;
-		player->num_ships = 0;
-		player->num_settlements = 0;
-		player->num_cities = 0;
+	player->num_roads = 0;
+	player->num_bridges = 0;
+	player->num_ships = 0;
+	player->num_settlements = 0;
+	player->num_cities = 0;
 
-		/* give the player her new name */
-		if (name == NULL) {
+	/* give the player her new name */
+	if (name == NULL) {
+		if (player->num >= game->params->num_players) {
+			gint num = 0;
+			do {
+				sprintf (nm, "Viewer %d", num);
+			} while (player_by_name (game, nm) != NULL);
+			namep = nm;
+		} else {
 			sprintf (nm, "Player %d", player->num);
 			namep = nm;
-		} else
-			namep = name;
-
-		/* if the new name exists, try padding it with underscores */
-		if (player_by_name (game, namep) != NULL) {
-			gint i;
-			/* put the name in the buffer, so it is editable */
-			if (namep != nm) {
-				strncpy (nm, namep, sizeof (nm) );
-				namep = nm;
-			}
-			/* add underscores until the name is unique */
-			for (i = strlen (nm); i < numElem (nm) - 1; ++i) {
-				if (player_by_name (game, nm) == NULL) break;
-				nm[i] = '_';
-				nm[i + 1] = 0;
-			}
-			if (i == numElem (nm) - 1) {
-				/* This should never happen */
-				/* use the connection name */
-				strncpy (nm, player->name, sizeof (nm) );
-			}
-		}
-		/* copy the (possibly new) name to dynamic memory */
-		player_set_name (player, namep);
-
-		/* add the info in the output device */
-		driver->player_added(player);
-		if (playernum < 0)
-		{
-			sm_goto(sm, (StateFunc)mode_pre_game);
 		}
 	} else
-		sm_goto(sm, (StateFunc)mode_game_full);
+		namep = name;
+
+	/* if the new name exists, try padding it with underscores */
+	other = player_by_name (game, namep);
+	if (other != player && other != NULL) {
+		gint i;
+		/* put the name in the buffer, so it is editable */
+		if (namep != nm) {
+			strncpy (nm, namep, sizeof (nm) );
+			namep = nm;
+		}
+		/* add underscores until the name is unique */
+		for (i = strlen (nm); i < numElem (nm) - 1; ++i) {
+			if (player_by_name (game, nm) == NULL) break;
+			nm[i] = '_';
+			nm[i + 1] = 0;
+		}
+		if (i == numElem (nm) - 1) {
+			/* This should never happen */
+			/* use the connection name */
+			strncpy (nm, player->name, sizeof (nm) );
+		}
+	}
+	/* copy the (possibly new) name to dynamic memory */
+	player_set_name (player, namep);
+
+	/* add the info in the output device */
+	driver->player_added(player);
+	if (playernum < 0)
+		sm_goto(sm, (StateFunc)mode_pre_game);
 }
 
 void player_free(Player *player)
@@ -319,22 +333,14 @@ void player_archive(Player *player)
 	StateFunc state;
 	Game *game = player->game;
 
-	/* First, check to make sure there isn't a player of
-	   the same name in the dead pool */
-	current = game->dead_players;
-	while (current)
-	{
-		Player *p = NULL;
-		p = current->data;
-		if (p && strcmp(p->name, player->name) == 0)
-		{
-			player_free(player);
-			return;
-		}
-		current = g_list_next(current);
+	/* If this was a viewer, forget about him */
+	if (player->num >= game->params->num_players) {
+		game->player_list = g_list_remove (game->player_list, player);
+		player_free (player);
+		return;
 	}
 
-	/* Next, if the player was in the middle of a trade, pop the state
+	/* If the player was in the middle of a trade, pop the state
 	   machine and inform others as necessary */
 	state = sm_current(player->sm);
 	if (state == (StateFunc)mode_wait_quote_exit)
@@ -360,8 +366,8 @@ void player_archive(Player *player)
 		trade_finish_domestic(player);
 	}
 
-	/* Finally, add the player to the archive */
-	game->dead_players = g_list_append(game->dead_players, player);
+	/* Mark the player as disconnected */
+	player->disconnected = TRUE;
 	game->num_players--;
 	meta_report_num_players(game->num_players);
 }
@@ -369,106 +375,148 @@ void player_archive(Player *player)
 void player_revive(Player *newp, char *name)
 {
 	Game *game = newp->game;
-	GList *current = game->dead_players;
-	while (current)
-	{
-		Player *p = NULL;
-		p = current->data;
-		if (p && strcmp(p->name, name) == 0)
-		{
-			GList *currp;
-			game->dead_players = g_list_remove(game->dead_players, p);
-
-			/* initialize the player */
-			player_setup(newp, p->num, name);
-
-			/* if the player is in the wrong position in
-			   the list, remove the player from the end of
-			   the list and insert him at the appropriate
-			   place */
-			if (newp->num < game->params->num_players - 1) {
-				game->player_list = g_list_remove(game->player_list, newp);
-				for (currp = game->player_list;
-				     currp != NULL;
-				     currp = g_list_next(currp)) {
-					if (newp->num < ((Player *)currp->data)->num) {
-						game->player_list = g_list_insert(game->player_list, newp, g_list_index(game->player_list, currp->data));
-						break;
-					}
-				}
-				if (!currp) {
-					game->player_list = g_list_append(game->player_list, newp);
-				}
-			}
-
-			/* mark the player as a reconnect */
-			newp->disconnected = TRUE;
-
-			/* Use the old player's name pointer rather than
-			   the new one */
-			if (newp->name != NULL) {
-				g_free(newp->name);
-			}
-			newp->name = p->name;
-			p->name = NULL; /* prevent deletion */
-
-			/* copy over all the data from p */
-			newp->build_list = p->build_list;
-			p->build_list = NULL; /* prevent deletion */
-			memcpy(newp->prev_assets, p->prev_assets,
-			       sizeof(newp->prev_assets));
-			memcpy(newp->assets, p->assets,
-			       sizeof(newp->assets));
-			newp->devel = p->devel;
-			p->devel = NULL; /* prevent deletion */
-			newp->discard_num = p->discard_num;
-			newp->num_roads = p->num_roads;
-			newp->num_bridges = p->num_bridges;
-			newp->num_ships = p->num_ships;
-			newp->num_settlements = p->num_settlements;
-			newp->num_cities = p->num_cities;
-			newp->num_soldiers = p->num_soldiers;
-			newp->road_len = p->road_len;
-			newp->chapel_played = p->chapel_played;
-			newp->univ_played = p->univ_played;
-			newp->gov_played = p->gov_played;
-			newp->libr_played = p->libr_played;
-			newp->market_played = p->market_played;
-			newp->develop_points = p->develop_points;
-
-			/* copy over the state */
-			memcpy(newp->sm->stack, p->sm->stack,
-			       sizeof(newp->sm->stack));
-			newp->sm->stack_ptr = p->sm->stack_ptr;
-			newp->sm->current_state = p->sm->current_state;
-
-			sm_push(newp->sm, (StateFunc)mode_pre_game);
-
-			p->num = -1; /* prevent the number of players
-				        from getting decremented */
-			player_free(p);
-			player_broadcast(newp, PB_SILENT,
-							 "NOTE player %d (%s) has reconnected\n",
-							 newp->num,
-							 newp->name ? newp->name : "anonymous");
-			return;
+	GList *current = NULL;
+	Player *p;
+	/* first see if a player with the given name exists */
+	if (name) {
+		for (current = game->player_list; current != NULL;
+				current = g_list_next (current) ) {
+			p = current->data;
+			if (strcmp (name, p->name) ) break;
 		}
-		current = g_list_next(current);
+		if (!p->disconnected || p == newp) current = NULL;
 	}
-	player_setup(newp, -1, name);
+	/* if not, see if any disconnected player exists */
+	if (current == NULL) {
+		for (current = game->player_list; current != NULL;
+				current = g_list_next (current) ) {
+			p = current->data;
+			if (p->disconnected && p != newp) break;
+		}
+	}
+	/* if still no player is found, do a normal setup */
+	if (current == NULL) {
+		player_setup (newp, -1, name, FALSE);
+		return;
+	}
+
+	/* initialize the player */
+	player_setup(newp, p->num, name, FALSE);
+
+#if 0
+	/* if the player is in the wrong position in
+	   the list, remove the player from the end of
+	   the list and insert him at the appropriate
+	   place */
+	if (newp->num < game->params->num_players - 1) {
+		game->player_list = g_list_remove(game->player_list, newp);
+		for (currp = game->player_list;
+		     currp != NULL;
+		     currp = g_list_next(currp)) {
+			if (newp->num < ((Player *)currp->data)->num) {
+				game->player_list = g_list_insert(game->player_list, newp, g_list_index(game->player_list, currp->data));
+				break;
+			}
+		}
+		if (!currp) {
+			game->player_list = g_list_append(game->player_list, newp);
+		}
+	}
+#endif
+
+	/* mark the player as a reconnect */
+	newp->disconnected = TRUE;
+
+	/* Use the old player's name pointer rather than
+	   the new one */
+	if (newp->name != NULL) {
+		g_free(newp->name);
+	}
+	newp->name = p->name;
+	p->name = NULL; /* prevent deletion */
+
+	/* copy over all the data from p */
+	newp->build_list = p->build_list;
+	p->build_list = NULL; /* prevent deletion */
+	memcpy(newp->prev_assets, p->prev_assets,
+	       sizeof(newp->prev_assets));
+	memcpy(newp->assets, p->assets,
+	       sizeof(newp->assets));
+	newp->gold = p->gold;
+	newp->devel = p->devel;
+	p->devel = NULL; /* prevent deletion */
+	newp->discard_num = p->discard_num;
+	newp->num_roads = p->num_roads;
+	newp->num_bridges = p->num_bridges;
+	newp->num_ships = p->num_ships;
+	newp->num_settlements = p->num_settlements;
+	newp->num_cities = p->num_cities;
+	newp->num_soldiers = p->num_soldiers;
+	newp->road_len = p->road_len;
+	newp->develop_points = p->develop_points;
+	newp->chapel_played = p->chapel_played;
+	newp->univ_played = p->univ_played;
+	newp->gov_played = p->gov_played;
+	newp->libr_played = p->libr_played;
+	newp->market_played = p->market_played;
+
+	/* copy over the state */
+	memcpy(newp->sm->stack, p->sm->stack,
+	       sizeof(newp->sm->stack));
+	newp->sm->stack_ptr = p->sm->stack_ptr;
+	newp->sm->current_state = p->sm->current_state;
+
+	sm_push(newp->sm, (StateFunc)mode_pre_game);
+
+	p->num = -1; /* prevent the number of players
+		        from getting decremented */
+	player_free(p);
+	player_broadcast(newp, PB_SILENT,
+			"NOTE player %d (%s) has reconnected\n",
+			 newp->num, newp->name);
+	return;
 }
 
-static gboolean mode_game_full(Player *player, gint event)
+gboolean mode_viewer (Player *player, gint event)
 {
+	gint num;
+	Game *game = player->game;
 	StateMachine *sm = player->sm;
+	Player *other;
 
-        sm_state_name(sm, "mode_game_full");
-        switch (event) {
-        case SM_ENTER:
-		sm_send(sm, "ERR sorry, game is full\n");
-		break;
+	sm_state_name (sm, "mode_viewer");
+	if (event != SM_RECV) return FALSE;
+	/* first see if this is a valid event for this mode */
+	if (sm_recv (sm, "play") ) {
+		/* try to be the first available player */
+		num = next_player_num (game, FALSE);
+		if (num >= game->params->num_players) {
+			sm_send (sm, "ERR game-full");
+			return TRUE;
+		}
+	} else if (sm_recv (sm, "play %d", num) ) {
+		/* try to be the specified player number */
+		if (num >= game->params->num_players
+				|| !player_by_num (game, num)->disconnected) {
+			sm_send (sm, "ERR invalid-player");
+			return TRUE;
+		}
+	} else
+		/* input was not what we expected,
+		 * see if mode_unhandled likes it */
+		return FALSE;
+
+	other = player_by_num (game, num);
+	if (other == NULL) {
+		sm_send (sm, "Ok\n");
+		player_broadcast (player, PB_ALL, "was viewer %d\n",
+				player->num);
+		player_setup (player, player->num, player->name, FALSE);
+		sm_goto (sm, (StateFunc)mode_pre_game);
+		return TRUE;
 	}
-	return FALSE;
+	player_revive (player, player->name);
+	return TRUE;
 }
 
 static gboolean mode_bad_version(Player *player, gint event)
@@ -548,16 +596,23 @@ static gboolean mode_check_status(Player *player, gint event)
 		break;
 	
 	case SM_RECV:
-		if( sm_recv(sm, "status newplayer") )
-		{
-			player_setup(player, -1, NULL);
+		if( sm_recv(sm, "status newplayer") ) {
+			player_setup(player, -1, NULL, FALSE);
 			return TRUE;
 		}
-		else if( sm_recv(sm, "status reconnect %S", playername,
-					sizeof (playername)) )
-		{
+		if( sm_recv(sm, "status reconnect %S", playername,
+					sizeof (playername)) ) {
 			/* if possible, try to revive the player */
 			player_revive(player, playername);
+			return TRUE;
+		}
+		if (sm_recv (sm, "status newviewer") ) {
+			player_setup (player, -1, NULL, TRUE);
+			return TRUE;
+		}
+		if (sm_recv (sm, "status viewer %S", playername,
+					sizeof (playername) ) ) {
+			player_setup (player, -1, playername, TRUE);
 			return TRUE;
 		}
 		break;
@@ -579,54 +634,43 @@ gchar *player_name(Player *player)
 
 GList *player_first_real(Game *game)
 {
-	GList *list = 0, *next;
-	/* search for lowest numbered player */
-	for (next = game->player_list;
-	     next != NULL; next = g_list_next(next))
+	GList *list;
+	/* search for player 0 */
+	for (list = game->player_list;
+	     list != NULL; list = g_list_next(list))
 	{
-		if (!list ||
-		    (next && ((Player *) next->data)->num
-			       < ((Player *) list->data)->num
-			&& ((Player *)next->data)->num >= 0))
-		{
-			list = next;
-		}
+		Player *player = list->data;
+		if (player->num == 0)
+			break;
 	}
-
 	return list;
 }
 
 GList *player_next_real(GList *last)
 {
-	GList *first = last;
-	gint currnum;
-	gint numplayers;
-	gint nextnum;
+	Player *player = last->data;
+	Game *game = player->game;
+	gint numplayers = game->params->num_players;
+	gint nextnum = player->num + 1;
+	GList *list;
 
 	if (!last)
 	{
 		return NULL;
 	}
-	currnum = ((Player *) last->data)->num;
-	numplayers = ((Player *) last->data)->game->num_players;
-	nextnum = currnum + 1;
-	if (nextnum > numplayers)
+	nextnum = player->num + 1;
+	if (nextnum >= numplayers)
 	{
 		return NULL;
 	}
 
-	for (last = (g_list_next(last)) ? g_list_next(last)
-	                                : g_list_first(last);
-	     last != NULL && last != first &&
-	     ((Player *) last->data)->num != nextnum;
-	     last = (g_list_next(last)) ? g_list_next(last)
-	                                : g_list_first(last)) ;
-
-	if (first == last)
-	{
-		return NULL;
+	for (list = game->player_list; list != NULL;
+			list = g_list_next (list) ) {
+		Player *scan = list->data;
+		if (scan->num == nextnum)
+			break;
 	}
-	return last;
+	return list;
 }
 
 Player *player_by_name(Game *game, char *name)
@@ -670,7 +714,7 @@ Player *player_none(Game *game)
 	return &player;
 }
 
-/* Broadcast a message to all players - prepend "player %d " to all
+/* Broadcast a message to all players and viewers - prepend "player %d " to all
  * players except the one generating the message.
  */
 void player_broadcast(Player *player, BroadcastType type, char *fmt, ...)
@@ -684,9 +728,10 @@ void player_broadcast(Player *player, BroadcastType type, char *fmt, ...)
 	sm_vnformat(buff, sizeof(buff), fmt, ap);
 	va_end(ap);
 
-	for (list = player_first_real(game);
-	     list != NULL; list = player_next_real(list)) {
+	for (list = game->player_list; list != NULL;
+			list = g_list_next (list) ) {
 		Player *scan = list->data;
+		if (scan->disconnected || scan->num < 0) continue;
 		if (type == PB_SILENT || (scan == player && type == PB_RESPOND))
 			sm_write(scan->sm, buff);
 		else if (scan != player || type == PB_ALL)
@@ -696,6 +741,7 @@ void player_broadcast(Player *player, BroadcastType type, char *fmt, ...)
 
 void player_set_name(Player *player, gchar *name)
 {
+	StateMachine *sm = player->sm;
 	Game *game = player->game;
 	gboolean playeriscurrent = FALSE;
 
@@ -708,13 +754,15 @@ void player_set_name(Player *player, gchar *name)
 	if (player_by_name(game, name) != NULL) {
 		/* make it a note, not an error, so nothing bad happens
 		 * (on error the AI would disconnect) */
-		sm_send (player->sm, "NOTE %s\n",
+		sm_send (sm, "NOTE %s\n",
 			_("Name not changed: new name is already in use") );
 		return;
 	}
 
-	g_free (player->name);
-	player->name = g_strdup (name);
+	if (player->name != name) {
+		g_free (player->name);
+		player->name = g_strdup (name);
+	}
 
 	player_broadcast(player, PB_ALL, "is %s\n", player->name);
 
@@ -730,7 +778,6 @@ void player_remove(Player *player)
 	Game *game = player->game;
 
 	driver->player_removed(player);
-	game->player_list = g_list_remove(game->player_list, player);
 }
 
 GList *list_from_player (Player *player)

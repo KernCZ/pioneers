@@ -176,10 +176,11 @@ static void build_add(Player *player, BuildType type, gint x, gint y, gint pos)
 
 static void build_remove(Player *player)
 {
+	StateMachine *sm = player->sm;
 	/* Remove the settlement/road we just built
 	 */
 	if (!perform_undo(player))
-		sm_send(player->sm, "ERR bad-undo\n");
+		sm_send(sm, "ERR bad-undo\n");
 }
 
 static void build_move (Player *player, gint sx, gint sy, gint spos,
@@ -481,28 +482,25 @@ void turn_next_player(Game *game)
 	{
 		player = player_by_name(game, game->curr_player);
 		game->curr_player = NULL;
-		if (!player) {
-			log_message( MSG_ERROR, _("incorrect current player.\n") );
-			exit (1);
-		}
+		g_assert (player != NULL);
+		list = list_from_player (player);
+	}
+
+	do {
 		/* next player */
-		list = player_next_real (list_from_player (player) );
-	}
-
-	/* See if it's the first player's turn again */
-	if (list == NULL) {
-		list = player_first_real (game);
-		game->curr_turn++;
-	}
-
-	/* sanity check */
-	if (!list || !list->data) {
-		log_message( MSG_ERROR, _("unable to find players.\n") );
-		exit (1);
-	}
+		if (list) list = player_next_real (list);
+		/* See if it's the first player's turn again */
+		if (list == NULL) {
+			list = player_first_real (game);
+			game->curr_turn++;
+		}
+		/* sanity check */
+		g_assert (list != NULL && list->data != NULL);
+		player = list->data;
+	/* disconnected players don't take turns */
+	} while (player->disconnected);
 
 	/* reset variables */
-	player = list->data;
 	game->curr_player = player->name;
 	game->rolled_dice = FALSE;
 	game->played_develop = FALSE;

@@ -27,7 +27,7 @@
 #include "log.h"
 #include "server.h"
 
-static void check_finished_discard (Game *game)
+static void check_finished_discard (Game *game, gboolean was_discard)
 {
 	GList *list;
 	/* is everyone finished yet? */
@@ -37,6 +37,11 @@ static void check_finished_discard (Game *game)
 			break;
 	if (list != NULL) return;
 
+	/* tell players the discarding phase is over, but only if there
+	 * actually was a discarding phase */
+	if (was_discard)
+		player_broadcast (player_none (game), PB_SILENT,
+				"discard-done\n");
 	/* everyone is done discarding, pop all the state machines to their
 	 * original state and push the robber to whoever wants it. */
 	for (list = player_first_real(game); 
@@ -81,7 +86,7 @@ gboolean mode_discard_resources(Player *player, gint event)
 	/* wait for other to finish discarding too.  The state will be
 	 * popped from check_finished_discard. */
 	sm_goto(sm, (StateFunc)mode_idle);
-	check_finished_discard (game);
+	check_finished_discard (game, TRUE);
 	return TRUE;
 }
 
@@ -91,21 +96,58 @@ gboolean mode_discard_resources(Player *player, gint event)
 void discard_resources(Game *game)
 {
 	GList *list;
+	gboolean have_discard = FALSE;
 
 	for (list = player_first_real(game);
 	     list != NULL; list = player_next_real(list)) {
 		Player *scan = list->data;
 		gint num;
 		gint idx;
+		gint num_types;
 
 		num = 0;
-		for (idx = 0; idx < numElem(scan->assets); idx++)
+		num_types = 0;
+		for (idx = 0; idx < numElem(scan->assets); idx++) {
 			num += scan->assets[idx];
+			if (scan->assets[idx] > 0)
+				++num_types;
+		}
 		if (num > 7) {
 			scan->discard_num = num / 2;
-			sm_push(scan->sm, (StateFunc)mode_discard_resources);
-			player_broadcast(scan, PB_ALL, "must-discard %d\n",
-					 scan->discard_num);
+			/* discard random resources of disconnected players */
+			/* also do auto-discard if there is no choice */
+			if (scan->disconnected || num_types == 1) {
+				gint total = 0, resource[NO_RESOURCE];
+				for (idx = 0; idx < NO_RESOURCE; idx++) {
+					resource[idx] = 0;
+					total += scan->assets[idx];
+				}
+				while (scan->discard_num) {
+					gint choice = get_rand (total);
+					for (idx = 0; idx < NO_RESOURCE;
+							idx++) {
+						choice -= scan->assets[idx];
+						if (choice < 0)
+							break;
+					}
+					++resource[idx];
+					--total;
+					--scan->discard_num;
+					--scan->assets[idx];
+					++game->bank_deck[idx];
+				}
+				player_broadcast (scan, PB_ALL,
+						"discarded %R\n", resource);
+				/* push idle to be popped off when all
+				 * players are finished discarding. */
+				sm_push(scan->sm, (StateFunc)mode_idle);
+			} else {
+				have_discard = TRUE;
+				sm_push(scan->sm,
+					(StateFunc)mode_discard_resources);
+				player_broadcast(scan, PB_ALL,
+					"must-discard %d\n", scan->discard_num);
+			}
 		} else {
 			scan->discard_num = 0;
 			/* nothing to do, but we need to push, because there
@@ -119,6 +161,6 @@ void discard_resources(Game *game)
 			sm_push(scan->sm, (StateFunc)mode_idle);
 		}
 	}
-	check_finished_discard (game);
+	check_finished_discard (game, have_discard);
 }
 

@@ -41,9 +41,10 @@ static void distribute_next (GList *list, gboolean someone_wants_gold) {
 
 	/* give resources until someone should choose gold */
 	for (;list != NULL; list = next_player_loop (list, player) ) {
-		gint resource[NO_RESOURCE], emptybank[NO_RESOURCE];
+		gint resource[NO_RESOURCE], emptybank[NO_RESOURCE], num_bank;
 		gboolean send_message = FALSE;
 		Player *scan = list->data;
+		num_bank = 0;
 		/* calculate what resources to give */
 		for (idx = 0; idx < NO_RESOURCE; ++idx) {
 			gint num;
@@ -62,6 +63,9 @@ static void distribute_next (GList *list, gboolean someone_wants_gold) {
 			/* don't let a player receive the resources twice */
 			scan->prev_assets[idx] = scan->assets[idx];
 			if (num > 0) send_message = TRUE;
+			/* count the number of resource types in the bank */
+			if (game->bank_deck[idx] != 0)
+				++num_bank;
 		}
 		if (send_message)
 			player_broadcast(scan, PB_ALL, "receives %R\n",
@@ -71,16 +75,49 @@ static void distribute_next (GList *list, gboolean someone_wants_gold) {
 		for (idx = 0; idx < NO_RESOURCE; ++idx)
 			num += game->bank_deck[idx];
 		/* give out only as much as there is if the bank is empty */
-		if (scan->gold > num) scan->gold = num;
+		if (scan->gold > num) {
+			scan->gold = num;
+			/* simulate a one-resource situation, so the choice
+			 * is made automatically */
+			num_bank = 1;
+		}
 		/* give out gold (and return so gold-done is not broadcast) */
 		if (scan->gold > 0) {
-			sm_send (scan->sm, "choose-gold %d %R\n",
-					scan->gold, emptybank);
-			sm_push (scan->sm, (StateFunc)mode_choose_gold);
-			return;
+			/* disconnected players get random gold */
+			/* if num_bank == 1, there is no choice */
+			if (scan->disconnected || num_bank == 1) {
+				while (scan->gold) {
+					gint totalbank = 0;
+					gint choice;
+					/* count the number of resources in the bank */
+					for (idx = 0; idx < NO_RESOURCE; ++idx) {
+						resource[idx] = 0;
+						totalbank += game->bank_deck[idx];
+					}
+					/* choose one of them */
+					choice = get_rand(totalbank);
+					/* find out which resource it is */
+					for (idx = 0; idx < NO_RESOURCE; ++idx) {
+						choice -= game->bank_deck[idx];
+						if (choice < 0) break;
+					}
+					++resource[idx];
+					--scan->gold;
+					++scan->assets[idx];
+					++scan->prev_assets[idx];
+					--game->bank_deck[idx];
+				}
+				player_broadcast (scan, PB_ALL,
+						"receive-gold %R\n", resource);
+			} else {
+				sm_send (scan->sm, "choose-gold %d %R\n",
+						scan->gold, emptybank);
+				sm_push (scan->sm, (StateFunc)mode_choose_gold);
+				return;
+			}
 		}
-		/* no gold was given out, give resources to next player */
-	} /* end while */
+		/* no player is choosing gold, give resources to next player */
+	} /* end loop over all players */
 	/* tell everyone the gold is finished, except if there was no gold */
 	if (someone_wants_gold)
 		player_broadcast (player, PB_SILENT, "gold-done\n");
