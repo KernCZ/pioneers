@@ -120,10 +120,14 @@ gboolean mode_road_building(Player *player, gint event)
 		 */
 		gint num_built;
 
-		num_built = buildrec_count_type(player->build_list, BUILD_ROAD);
+		num_built = buildrec_count_edges(player->build_list);
 		if (num_built < 2
-		    && player->num_roads < game->params->num_build_type[BUILD_ROAD]
-		    && map_can_place_road(map, player->num)) {
+		    && ((player->num_roads < game->params->num_build_type[BUILD_ROAD]
+			 && map_can_place_road(map, player->num))
+			|| (player->num_ships < game->params->num_build_type[BUILD_SHIP]
+			    && map_can_place_ship(map, player->num))
+			|| (player->num_bridges < game->params->num_build_type[BUILD_BRIDGE]
+			    && map_can_place_bridge(map, player->num)))) {
 			sm_send(sm, "ERR expected-build\n");
 			return TRUE;
 		}
@@ -146,87 +150,36 @@ gboolean mode_road_building(Player *player, gint event)
 			sm_send(sm, "ERR too-many\n");
 			return TRUE;
 		}
-		if (type != BUILD_ROAD) {
+
+		/* Building a road / ship / bridge, make sure it is
+		 * correctly placed
+		 */
+		if (!map_road_vacant(map, x, y, pos)) {
+			sm_send(sm, "ERR bad-pos\n");
+			return TRUE;
+		}
+		switch (type) {
+		case BUILD_ROAD:
+			if (map_road_connect_ok(map, player->num, x, y, pos))
+				break;
+			sm_send(sm, "ERR bad-pos\n");
+			return TRUE;
+		case BUILD_SHIP:
+			if (map_ship_connect_ok(map, player->num, x, y, pos))
+				break;
+			sm_send(sm, "ERR bad-pos\n");
+			return TRUE;
+		case BUILD_BRIDGE:
+			if (map_bridge_connect_ok(map, player->num, x, y, pos))
+				break;
+			sm_send(sm, "ERR bad-pos\n");
+			return TRUE;
+		default:
 			sm_send(sm, "ERR expected-road\n");
 			return TRUE;
 		}
-		/* Building a road, make sure it is next to a
-		 * building/road
-		 */
-		if (!map_road_vacant(map, x, y, pos)
-		    || !map_road_connect_ok(map, player->num, x, y, pos)) {
-			sm_send(sm, "ERR bad-pos\n");
-			return TRUE;
-		}
-		road_add(player, x, y, pos, FALSE);
-		return TRUE;
-	}
 
-	if (sm_recv(sm, "remove %B %d %d %d", &type, &x, &y, &pos)) {
-		if (!perform_undo(player, type, x, y, pos))
-			sm_send(sm, "ERR bad-pos\n");
-		return TRUE;
-	}
-
-	return FALSE;
-}
-
-gboolean mode_ship_building(Player *player, gint event)
-{
-	StateMachine *sm = player->sm;
-	Game *game = player->game;
-	Map *map = game->params->map;
-	BuildType type;
-	gint x, y, pos;
-
-        sm_state_name(sm, "mode_ship_building");
-	if (event != SM_RECV)
-		return FALSE;
-
-	if (sm_recv(sm, "done")) {
-		/* Make sure we have built the right number of ships
-		 */
-		gint num_built;
-
-		num_built = buildrec_count_type(player->build_list, BUILD_SHIP);
-		if (num_built < 2
-		    && player->num_ships > 0
-		    && map_can_place_ship(map, player->num)) {
-			sm_send(sm, "ERR expected-build\n");
-			return TRUE;
-		}
-		/* We have the right number, now make sure that all
-		 * ships are connected to buildings
-		 */
-		if (!buildrec_is_valid(player->build_list, map, player->num)) {
-			sm_send(sm, "ERR unconnected\n");
-			return TRUE;
-		}
-		/* Player has finished road building
-		 */
-		sm_send(sm, "OK\n");
-		sm_goto(sm, (StateMode)mode_turn);
-		return TRUE;
-	}
-
-	if (sm_recv(sm, "build %B %d %d %d", &type, &x, &y, &pos)) {
-		if (buildrec_count_type(player->build_list, type) == 2) {
-			sm_send(sm, "ERR too-many\n");
-			return TRUE;
-		}
-		if (type != BUILD_SHIP) {
-			sm_send(sm, "ERR expected-ship\n");
-			return TRUE;
-		}
-		/* Building a ship, make sure it is next to a
-		 * building/ship
-		 */
-		if (!map_ship_vacant(map, x, y, pos)
-		    || !map_ship_connect_ok(map, player->num, x, y, pos)) {
-			sm_send(sm, "ERR bad-pos\n");
-			return TRUE;
-		}
-		ship_add(player, x, y, pos, FALSE);
+		edge_add(player, type, x, y, pos, FALSE);
 		return TRUE;
 	}
 
@@ -387,11 +340,6 @@ void develop_play(Player *player, gint idx)
 		/* Place 2 new roads as if you had just built them.
 		 */
 		sm_goto(sm, (StateMode)mode_road_building);
-		break;
-        case DEVEL_SHIP_BUILDING:
-		/* Place 2 new ships as if you had just built them.
-		 */
-		sm_goto(sm, (StateMode)mode_ship_building);
 		break;
         case DEVEL_MONOPOLY:
 		/* When you play this card, announce one type of
