@@ -212,6 +212,7 @@ static void start_clicked_cb(UNUSED(GtkButton *start_btn),
 			config_set_string("server/port", server_port);
 			config_set_int("server/register", register_server);
 			config_set_string("server/hostname", hostname);
+			config_set_int("server/random-seating-order", random_order);
 
 			config_set_string("game/name", params->title);
 			config_set_int("game/random-terrain", params->random_terrain);
@@ -527,6 +528,9 @@ static GtkWidget *build_interface(void)
 	register_server = config_get_int_with_default("server/register", TRUE);
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(register_toggle), register_server);
 	register_toggle_cb(GTK_TOGGLE_BUTTON(register_toggle), NULL);
+
+	random_order = config_get_int_with_default("server/random-seating-order", TRUE);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(random_toggle), random_order);
                      
 	start_btn = gtk_button_new();
 	gtk_widget_show(start_btn);

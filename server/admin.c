@@ -53,7 +53,7 @@ static GSList *_game_list = NULL; /* The sorted list of game titles */
 gboolean register_server = FALSE;
 gchar server_port[NI_MAXSERV] = GNOCATAN_DEFAULT_GAME_PORT;
 gchar server_admin_port[NI_MAXSERV] = GNOCATAN_DEFAULT_ADMIN_PORT;
-gboolean random_order = FALSE;
+gboolean random_order = TRUE;
 extern gint no_player_timeout;
 
 GameParams *params = NULL;
