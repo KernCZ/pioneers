@@ -625,7 +625,6 @@ gboolean mode_pre_game(Player * player, gint event)
 				sm_send(sm, "buildinfo: %B %d %d %d\n",
 					build->type, build->x,
 					build->y, build->pos);
-												  /** @todo RC 2004-03-28 Remove BUILD_NONE for 0.9 */
 			}
 
 			sm_send(sm, "end\n");
