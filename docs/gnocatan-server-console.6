@@ -1,6 +1,6 @@
-.TH Gnocatan-server-console 6 "January 10, 2003" "gnocatan"
+.TH gnocatan-server-console 6 "March 5, 2005" "gnocatan"
 .SH NAME
-Gnocatan-server-console \- command-line game server for Settlers of Catan
+gnocatan-server-console \- command-line game server for Gnocatan
 
 .SH SYNOPSIS
 .B gnocatan-server-console
@@ -17,10 +17,12 @@ Gnocatan-server-console \- command-line game server for Settlers of Catan
 ] [
 .BI \-m " metaserver"
 ] [
-.BI \-P " player count"
+.BI \-n " hostname"
 ]
 .if n .ti +5n
 [
+.BI \-P " player count"
+] [
 .BI \-p " port"
 ] [
 .BI \-R " [0|1|2]"
@@ -28,11 +30,11 @@ Gnocatan-server-console \- command-line game server for Settlers of Catan
 .BI \-r
 ] [
 .BI \-s
-] [
-.BI \-t " minutes"
 ]
 .if n .ti +5n
 [
+.BI \-t " minutes"
+] [
 .BI \-T " [0|1]"
 ] [
 .BI \-v " points"
@@ -69,6 +71,10 @@ seconds.
 .TP
 .BI \-m " metaserver"
 Register this server with the metaserver at the specified address.
+.TP
+.BI \-n " hostname"
+Use this hostname instead of the hostname reported by 
+.BR hostname(1) .
 .TP
 .BI \-P " num"
 Start a game for \fInum\fP total players (including computer players).
@@ -107,8 +113,32 @@ Specify the number of "victory points" required to win the game.
 .B \-x
 Automatically exit after a player has won.
 
+.SH ENVIRONMENT
+The default settings of the server can be influenced with the
+following three environment variables:
+.TP 
+.B GNOCATAN_META_SERVER
+The hostname of the meta-server when no meta-server is specified on the
+command-line.
+.TP
+.B GNOCATAN_SERVER_NAME
+The hostname of the server.
+If it is not set, the hostname is determined by 
+.BR hostname(1) .
+.TP 
+.B GNOCATAN_DIR
+The path to the game definition files.
+If it is not set, the default installation path will be used.
+
+.SH FILES
+.B /usr/share/games/gnocatan/*.game
+.RS
+Game definitions
+.RE
+
 .SH AUTHOR
-This manual page was written by Steve Langasek <vorlon@debian.org>.
+This manual page was written by Steve Langasek <vorlon@debian.org>, 
+and updated by Roland Clobus <rclobus@bigfoot.com>.
 Gnocatan was written by Dave Cole <dave@dccs.com.au>, Andy Heroff
 <aheroff@mediaone.net>, and Roman Hodek <roman@hodek.net>, with
 contributions from many other developers on the Internet; see the
@@ -116,4 +146,4 @@ AUTHORS file in the gnocatan distribution for a complete list of
 contributing authors.
 
 .SH SEE ALSO
-.BR gnocatan(6) ", " gnocatan-server-gtk(6) ", " gnocatanai(6)
+.BR gnocatan(6) ", " gnocatan-server-gtk(6) ", " gnocatanai(6) ", " hostname(1)
