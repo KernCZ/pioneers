@@ -11,6 +11,8 @@ libgnocatan_a_SOURCES = \
 	cards.h \
 	cost.c \
 	cost.h \
+	driver.c \
+	driver.h \
 	game.c \
 	game.h \
 	log.c \

@@ -22,7 +22,7 @@ static GdkColor blue = { 0, 0, 0, 0xff00 };
 /* Set the default logging function to write to the message window. */
 void log_set_func_message_window( void )
 {
-	_log_func = message_window_log_message_string;
+	driver->log_write = message_window_log_message_string;
 }
 
 /* Write a message string to the console, setting its color based on its
@@ -203,6 +203,10 @@ void gtk_event_cleanup()
 UIDriver GTK_Driver = {
 	free_gtk_widget,
 	check_gtk_widget,
-	gtk_event_cleanup
+	gtk_event_cleanup,
+	
+	/* initially log to the console; change it to the message window after
+	 *   the message window is created. */
+	log_message_string_console
 };
 

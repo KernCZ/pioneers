@@ -11,17 +11,12 @@
 #include <stdio.h>
 
 #include "log.h"
-
-/* Pointer to the function to use to do the actual logging, by default.
- * This can be overridden using log_message_using_func.  If it is NULL,
- *   then use the default function (LOG_FUNC_DEFAULT, set in log.h).
- */
-LogFunc _log_func = NULL;
+#include "driver.h"
 
 /* Set the default logging function to 'func'. */
 void log_set_func( LogFunc func )
 {
-	_log_func = func;
+	driver->log_write = func;
 }
 
 /* Set the default logging function to the system default (LOG_FUNC_DEFAULT,
@@ -29,7 +24,7 @@ void log_set_func( LogFunc func )
  */
 void log_set_func_default( void )
 {
-	_log_func = LOG_FUNC_DEFAULT;
+	driver->log_write = LOG_FUNC_DEFAULT;
 }
 
 /* Take a string of text and write it to the console. */
@@ -80,8 +75,8 @@ void log_message_using_func(LogFunc logfunc, gint msg_type, gchar *fmt, ...)
 	logfunc( msg_type, text );
 }
 
-/* Log a message, sending it through _log_func (or if that's NULL, then
- *   through LOG_FUNC_DEFAULT) after turning the params into a single
+/* Log a message, sending it through driver->log_write (or if that's NULL,
+ *   then through LOG_FUNC_DEFAULT) after turning the params into a single
  *   string.
  */
 void log_message(gint msg_type, gchar *fmt, ...)
@@ -93,8 +88,8 @@ void log_message(gint msg_type, gchar *fmt, ...)
 	g_vsnprintf(text, sizeof(text), fmt, ap);
 	va_end(ap);
 	
-	if( _log_func )
-		_log_func( msg_type, text );
+	if( driver->log_write )
+		driver->log_write( msg_type, text );
 	else
 		LOG_FUNC_DEFAULT( msg_type, text );
 }

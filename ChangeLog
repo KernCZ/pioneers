@@ -1,3 +1,10 @@
+2000-05-13  Bibek Sahu <scorpio@dodds.net>
+	* common/driver.[ch], client/gnocatan.c, server/gnocatan-server.c:
+	Moved the global driver definition to driver.c, and added a function
+	set_ui_driver( UIDriver* ).  Moved logging into the driver
+	structure.  Note that the gtk driver starts by logging to the
+	console and must be told to move that to a window later on.
+
 2000-05-12  Steve Langasek <vorlon@dodds.net>
 	* common/common_gtk.c, common/state.c: Pulled all GTK-specific code
 	out of state.c, moving it to common_gtk.c.

@@ -12,6 +12,7 @@
 #include <limits.h>
 #include <gnome.h>
 
+#include "driver.h"
 #include "game.h"
 #include "cards.h"
 #include "map.h"
@@ -26,8 +27,6 @@ static GtkWidget *app;
 static GameParams *params;
 static gboolean register_server;
 static int server_port = 5556;
-
-UIDriver *driver = NULL;
 
 static void quit_cb(GtkWidget *widget, void *data)
 {
@@ -481,7 +480,7 @@ static GtkWidget *build_interface()
 
 int main(int argc, char *argv[])
 {
-	driver = &GTK_Driver;
+	set_ui_driver( &GTK_Driver );
 
 	gnome_init("gnocatan-server", VERSION, argc, argv);
 

@@ -56,7 +56,6 @@ typedef void (*LogFunc)( gint msg_type, gchar *text );
  * This can be overridden using log_message_using_func.  If it is NULL,
  *   then use the default function (LOG_FUNC_DEFAULT).
  */
-extern LogFunc _log_func;
 
 /* Set the default logging function to 'func'. */
 void log_set_func( LogFunc func );
