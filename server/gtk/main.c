@@ -42,6 +42,8 @@
 #define GNOCATAN_ICON_FILE	"gnome-gnocatan.png"
 static gchar app_name[] = "gnocatan-server";
 
+static GtkWidget *about = NULL;    /* The about dialog */
+
 static GtkWidget *game_frame;      /* the frame containing all settings regarding the game */
 static GtkWidget *select_game;     /* select game type */
 static GtkWidget *game_settings;   /* the settings of the game */
@@ -612,22 +614,80 @@ static void quit_cb(void)
 
 static void help_about_cb(UNUSED(GtkWidget *widget), UNUSED(void *data))
 {
-	GtkWidget *about;
+	GtkWidget *vbox = NULL, *splash = NULL, *view = NULL;
+	GtkTextBuffer *buffer = NULL;
+	GtkTextIter iter;
+	gchar *imagefile = NULL;
+	gint i;
 	const gchar *authors[] = {
 		"Dave Cole",
 		NULL
 	};
 
-	about = gnome_about_new(_("The Gnocatan Game Server"), VERSION,
-				_("(C) 2002 the Free Software Foundation"),
+	if (about != NULL) {
+		gtk_window_present(GTK_WINDOW(about));
+		return;
+	}
+
+	about = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+	gtk_window_set_type_hint(GTK_WINDOW(about),
+	                         GDK_WINDOW_TYPE_HINT_DIALOG);
+	gtk_window_set_role(GTK_WINDOW(about), "about");
+	gtk_window_set_title(GTK_WINDOW(about), _("The Gnocatan Game Server"));
+	g_signal_connect(G_OBJECT(about), "destroy",
+	                 G_CALLBACK(gtk_widget_destroyed), &about);
+
+	vbox = gtk_vbox_new(FALSE, 0);
+	gtk_container_add(GTK_CONTAINER(about), vbox);
+
+	imagefile = g_build_filename(DATADIR, "pixmaps", "gnocatan",
+	                             "splash.png");
+	splash = gtk_image_new_from_file(imagefile);
+	g_free(imagefile);
+
+	gtk_box_pack_start(GTK_BOX(vbox), splash, FALSE, FALSE, 0);
+
+	buffer = gtk_text_buffer_new(NULL);
+	gtk_text_buffer_get_start_iter(GTK_TEXT_BUFFER(buffer), &iter);
+	gtk_text_buffer_create_tag(GTK_TEXT_BUFFER(buffer), "bold", "weight",
+	                           PANGO_WEIGHT_BOLD, NULL);
+
+	gtk_text_buffer_insert(GTK_TEXT_BUFFER(buffer), &iter,
+	                       _("Gnocatan is based upon the excellent\n"
+	                         "Settlers of Catan board game.\n"), -1);
+
+	gtk_text_buffer_insert_with_tags_by_name(buffer, &iter,
+	                                         _("\nAuthors:\n"), -1,
+	                                         "bold");
+
+	for (i = 0; i < G_N_ELEMENTS(authors); i++) {
+		if (authors[i] != NULL) {
+			gtk_text_buffer_insert(buffer, &iter, "  ", 2);
+			gtk_text_buffer_insert(buffer, &iter, authors[i], -1);
+		}
+	}
+
+	gtk_text_buffer_get_start_iter(GTK_TEXT_BUFFER(buffer), &iter);
+	gtk_text_buffer_place_cursor(GTK_TEXT_BUFFER(buffer), &iter);
+
+	view = gtk_text_view_new_with_buffer(GTK_TEXT_BUFFER(buffer));
+	gtk_text_view_set_editable(GTK_TEXT_VIEW(view), FALSE);
+	gtk_box_pack_start(GTK_BOX(vbox), view, FALSE, FALSE, 0);
+
+	/* XXX GTK+ 2.6
+	about = g_object_new(GTK_TYPE_ABOUT_DIALOG,
+	                     "name", _("The Gnocatan Game Server"),
+	                     "version", VERSION,
+	                     "copyright", _("(C) 2002 the Free Software Foundation"),
 				_("Gnocatan is based upon the excellent"
-				" Settlers of Catan board game"),
-				authors,
-				NULL, /* documenters */
-				NULL, /* translators */
-				NULL  /* logo */
-				);
-	gtk_widget_show(about);
+	                     "Settlers of Catan board game"),
+	                     "authors", authors,
+	                     "documentors", NULL,
+	                     "translator-credits", NULL,
+	                     "logo", NULL,
+	                     NULL);
+	*/
+	gtk_widget_show_all(about);
 }
 
 int main(int argc, char *argv[])
