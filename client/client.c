@@ -367,8 +367,7 @@ static gboolean check_other_players(StateMachine *sm)
         }
 	if (sm_recv(sm, "won with %d", &num)) {
                 gameover_create_dlg(player_num, num);
-		sm_pop_all(sm);
-		sm_goto(sm, mode_game_over);
+		sm_pop_all_and_goto(sm, mode_game_over);
 		return TRUE;
 	}
 	if (sm_recv(sm, "has quit")) {
@@ -2396,6 +2395,7 @@ static gboolean mode_game_over(StateMachine *sm, gint event)
 	case SM_RECV:
 		if (check_other_players(sm))
 			return TRUE;
+		return TRUE;
 		break;
 	case SM_NET_CLOSE:
 		log_message( MSG_ERROR, _("The game is over.\n"));
