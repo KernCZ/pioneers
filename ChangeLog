@@ -1,3 +1,7 @@
+2003-10-01  Bas Wijnen <b.wijnen@phys.rug.nl>
+	* client/client.c, server/player.c, server/pregame.c, server/server.c,
+	server/server.h: Changed protocol for sending initial player name.
+
 2003-09-30  Bas Wijnen <b.wijnen@phys.rug.nl>
 	* many files, didn't record which: Fixed const<->non-const warnings
 	introduced by previous 2 patches.

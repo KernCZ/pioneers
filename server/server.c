@@ -266,8 +266,8 @@ static void player_connect(Game *game)
 	gint fd = accept_connection(game->accept_fd, &location);
 
 	if( fd > 0 ) {
-		player_new(game, fd, location);
-		stop_timeout();
+		if (player_new(game, fd, location) != NULL)
+			stop_timeout();
 	}
 }
 

@@ -262,10 +262,6 @@ static gboolean check_chat_or_name(StateMachine *sm)
 		player_change_name(player_num, str);
 		return TRUE;
 	}
-	if (sm_recv(sm, "ERR name-already-used%S", str, sizeof (str))) {
-		log_message (MSG_ERROR, _("That name is already in use, autogenerating your name\n"));
-		return TRUE;
-	}
 	return FALSE;
 }
 
@@ -629,10 +625,6 @@ static gboolean mode_start(StateMachine *sm, gint event)
 		    &player_num, &total_num, version, sizeof (version))) {
 		player_set_my_num(player_num);
 		player_set_total_num(total_num);
-		if (saved_name != NULL)
-			sm_send(sm, "name %s\n", saved_name);
-		else
-			sm_send(sm, "anonymous\n");
 		sm_send(sm, "players\n");
 		sm_goto(sm, mode_players);
 

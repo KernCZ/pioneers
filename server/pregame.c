@@ -335,9 +335,6 @@ static void send_player_list(Player *player)
 	     list != NULL; list = player_next_real(list)) {
 		Player *scan = list->data;
 
-		if (list->data == player)
-			continue;
-
 		sm_send(sm, "player %d is %s\n", scan->num, scan->name);
 	}
 	sm_send(sm, ".\n");

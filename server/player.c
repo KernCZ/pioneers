@@ -90,11 +90,10 @@ static gboolean mode_global(Player *player, gint event)
 			return TRUE;
 		}
 		if (sm_recv(sm, "name %S", text, sizeof (text))) {
-			player_set_name(player, text);
-			return TRUE;
-		}
-		if (sm_recv(sm, "anonymous")) {
-			player_set_name(player, NULL);
+			if (text[0] == 0)
+				sm_send (sm, "ERR invalid-name\n");
+			else
+				player_set_name(player, text);
 			return TRUE;
 		}
 		break;
@@ -156,8 +155,27 @@ static gboolean talk_about_tournament_cb(gpointer data)
 
 Player *player_new(Game *game, int fd, gchar *location)
 {
-	Player *player = g_malloc0(sizeof(*player));
-	StateMachine *sm = player->sm = sm_new(player);
+	gchar name[100];
+	gint i;
+	Player *player;
+	StateMachine *sm;
+
+	/* give player a name, some functions need it */
+	strcpy (name, "connecting");
+	for (i = strlen (name); i < numElem (name) - 1; ++i) {
+		if (player_by_name (game, name) == NULL) break;
+		name[i] = '_';
+		name[i + 1] = 0;
+	}
+	if (i == numElem (name) - 1) {
+		/* there are too many pending connections */
+		write (fd, "Too many connections\n", 21);
+		close (fd);
+		return NULL;
+	}
+
+	player = g_malloc0(sizeof(*player));
+	sm = player->sm = sm_new(player);
 
 	sm_global_set(sm, (StateFunc)mode_global);
 	sm_use_fd(sm, fd);
@@ -173,6 +191,7 @@ Player *player_new(Game *game, int fd, gchar *location)
 	player->libr_played = FALSE;
 	player->market_played = FALSE;
 	player->disconnected = FALSE;
+	player->name = g_strdup (name);
 
 	/* if first player in and this is a tournament start the timer */
 	if ((game->num_players == 0) && (game->params->tournament_time > 0)) {
@@ -189,8 +208,10 @@ Player *player_new(Game *game, int fd, gchar *location)
 	return player;
 }
 
-void player_setup(Player *player, int playernum)
+void player_setup(Player *player, int playernum, gchar *name)
 {
+	gchar nm[100];
+	gchar *namep;
 	Game *game = player->game;
 	StateMachine *sm = player->sm;
 
@@ -210,6 +231,36 @@ void player_setup(Player *player, int playernum)
 		player->num_settlements = 0;
 		player->num_cities = 0;
 
+		/* give the player her new name */
+		if (name == NULL) {
+			sprintf (nm, "Player %d", player->num);
+			namep = nm;
+		} else
+			namep = name;
+
+		/* if the new name exists, try padding it with underscores */
+		if (player_by_name (game, namep) != NULL) {
+			gint i;
+			/* put the name in the buffer, so it is editable */
+			if (namep != nm)
+				strncpy (nm, namep, sizeof (nm) );
+			namep = nm;
+			for (i = strlen (nm); i < numElem (nm) - 1; ++i) {
+				if (player_by_name (game, nm) == NULL) break;
+				nm[i] = '_';
+				nm[i + 1] = 0;
+			}
+			if (i == numElem (name) - 1) {
+				/* This should never happen */
+				/* use the connection name */
+				strncpy (nm, player->name, sizeof (nm) );
+				g_assert (player_by_name (game, nm) == NULL);
+			}
+		}
+		/* copy the (possibly new) name to dynamic memory */
+		player_set_name (player, namep);
+
+		/* add the info in the output device */
 		driver->player_added(player);
 		if (playernum < 0)
 		{
@@ -306,7 +357,7 @@ void player_revive(Player *newp, char *name)
 			game->dead_players = g_list_remove(game->dead_players, p);
 
 			/* initialize the player */
-			player_setup(newp, p->num);
+			player_setup(newp, p->num, name);
 
 			/* if the player is in the wrong position in
 			   the list, remove the player from the end of
@@ -344,7 +395,7 @@ void player_revive(Player *newp, char *name)
 			memcpy(newp->prev_assets, p->prev_assets,
 			       sizeof(newp->prev_assets));
 			memcpy(newp->assets, p->assets,
-			       sizeof(newp->prev_assets));
+			       sizeof(newp->assets));
 			newp->devel = p->devel;
 			p->devel = NULL; /* prevent deletion */
 			newp->discard_num = p->discard_num;
@@ -381,7 +432,7 @@ void player_revive(Player *newp, char *name)
 		}
 		current = g_list_next(current);
 	}
-	player_setup(newp, -1);
+	player_setup(newp, -1, name);
 }
 
 static gboolean mode_game_full(Player *player, gint event)
@@ -476,7 +527,7 @@ static gboolean mode_check_status(Player *player, gint event)
 	case SM_RECV:
 		if( sm_recv(sm, "status newplayer") )
 		{
-			player_setup(player, -1);
+			player_setup(player, -1, NULL);
 			return TRUE;
 		}
 		else if( sm_recv(sm, "status reconnect %S", playername,
@@ -625,33 +676,23 @@ void player_set_name(Player *player, gchar *name)
 	Game *game = player->game;
 	gboolean playeriscurrent = FALSE;
 
-	if (player->name != NULL) {
-		playeriscurrent
+	g_assert (name[0] != 0);
+
+	playeriscurrent
 		 = (game->curr_player != NULL) &&
 		   (strcmp(game->curr_player, player->name) == 0);
-		g_free(player->name);
-		player->name = NULL;
-	}
-	if (name != NULL && player_by_name(game, name) == NULL)
-		player->name = g_strdup(name);
-	else if (name != NULL)
-		sm_send(player->sm, "ERR name-already-used '%s'\n", name);
 
-	if (player->name == NULL) {
-		gchar tmp[20]; /* max player is 8, so this should be enough */
-		gint i;
-		sprintf(tmp, "Player %d", player->num);
-		/* since there are at most 8 players, the loop will always
-		 * be ended by a break.  However, if it magically isn't then
-		 * there is a bug: it expects to have a unique name then,
-		 * while it doesn't. */
-		for (i = strlen (tmp); i < sizeof (tmp) - 1; ++i) {
-			if (player_by_name (game, tmp) == NULL) break;
-			tmp[i] = '_';
-			tmp[i + 1] = 0;
-		}
-		player->name = g_strdup(tmp);
+	if (player_by_name(game, name) != NULL) {
+		/* make it a note, not an error, so nothing bad happens
+		 * (on error the AI would disconnect) */
+		sm_send (player->sm, "NOTE %s\n",
+			_("Name not changed: new name is already in use") );
+		return;
 	}
+
+	g_free (player->name);
+	player->name = g_strdup (name);
+
 	player_broadcast(player, PB_ALL, "is %s\n", player->name);
 
 	if (playeriscurrent) {
