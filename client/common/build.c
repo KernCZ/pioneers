@@ -107,15 +107,13 @@ void build_move(gint sx, gint sy, gint spos, gint dx, gint dy, gint dpos, gint i
 	player_build_move(my_player_num(), sx, sy, spos, dx, dy, dpos, isundo);
 }
 
-void build_add(BuildType type, gint x, gint y, gint pos, gint *cost,
-	       gboolean newbuild)
+void build_add(BuildType type, gint x, gint y, gint pos, gboolean newbuild)
 {
 	BuildRec *rec = g_malloc0(sizeof(*rec));
 	rec->type = type;
 	rec->x = x;
 	rec->y = y;
 	rec->pos = pos;
-	rec->cost = cost;
 	build_list = g_list_append(build_list, rec);
 	built = TRUE;
 

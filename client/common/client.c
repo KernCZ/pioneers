@@ -667,17 +667,16 @@ static gboolean mode_load_gameinfo(StateMachine *sm, gint event)
 	static gint devcardidx = -1;
 	static gint numdevcards = -1;
 	gint num_roads, num_bridges, num_ships, num_settlements,
-	     num_cities, num_soldiers, road_len;
+		num_cities, num_soldiers, road_len;
 	gint opnum, opnassets, opncards, opnsoldiers;
 	gboolean pchapel, puniv, pgov, plibr, pmarket, plongestroad,
-	         plargestarmy;
-        DevelType devcard;
+		plargestarmy;
+	DevelType devcard;
 	gint devcardturnbought;
 	gint player_num;
-	BuildType btype, prevbtype;
-	gint cost[NO_RESOURCE];
+	BuildType btype;
+	BuildType prevbtype; /** @todo RC 2004-03-28 Protocol needs change for 0.9 This field should not be sent */
 	gint resources[NO_RESOURCE];
-	gint sx, sy, spos, road;
 	gint tmp_bank[NO_RESOURCE];
 
 	sm_state_name(sm, "mode_load_gameinfo");
@@ -864,21 +863,14 @@ static gboolean mode_load_gameinfo(StateMachine *sm, gint event)
 			callbacks.discard_add (player_num, rinfo.numdiscards);
 		return TRUE;
 	}
-	if (sm_recv(sm, "buildinfo: %B %d %d %d %d %R, %d %d %d %d",
-	            &btype, &prevbtype, &x, &y, &pos, cost, &sx, &sy, &spos,
-		    &road)) {
+	if (sm_recv(sm, "buildinfo: %B %d %d %d %d",
+	            &btype, &prevbtype, &x, &y, &pos)) { /** @todo RC 2004-03-28 Protocol needs change for 0.9: prevbtype should not be sent */
 		BuildRec *rec;
 		rec = g_malloc0(sizeof(*rec));
 		rec->type = btype;
-		rec->prev_status = prevbtype;
 		rec->x = x;
 		rec->y = y;
 		rec->pos = pos;
-		rec->cost = NULL;
-		rec->prev_x = sx;
-		rec->prev_y = sy;
-		rec->prev_pos = spos;
-		rec->longest_road = road;
 		rinfo.build_list = g_list_append(rinfo.build_list, rec);
 		return TRUE;
 	}
@@ -948,7 +940,7 @@ gboolean mode_build_response(StateMachine *sm, gint event)
 	case SM_RECV:
 		if (sm_recv(sm, "built %B %d %d %d",
 			    &build_type, &x, &y, &pos)) {
-			build_add(build_type, x, y, pos, NULL, TRUE);
+			build_add(build_type, x, y, pos, TRUE);
 			waiting_for_network(FALSE);
 			sm_pop(sm);
 			return TRUE;
@@ -2154,7 +2146,7 @@ static void recover_from_disconnect(StateMachine *sm,
 		     next = g_list_next(next)) {
 			BuildRec *build = (BuildRec *)next->data;
 			build_add(build->type, build->x, build->y, build->pos,
-			          NULL, FALSE);
+			          FALSE);
 		}
 		rinfo->build_list = buildrec_free(rinfo->build_list);
 	}

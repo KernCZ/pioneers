@@ -1,3 +1,13 @@
+2004-04-25 0.8.1.26  Roland Clobus <rclobus@bigfoot.com>
+	* client/common/build.c (build_add), client/common/client.c
+	(mode_load_gameinfo), client/common/client.h (build_add),
+	common/buildrec.h (struct BuildRec), server/pregame.c (mode_pre_game):
+	Reconnect fix when something was built in the current turn.
+	
+2004-04-25 0.8.1.26  Tobias Jakobs <tobias.jakobs@web.de>
+	* client/gtk/data/splash.png: New image (400x400 pixels)
+	* client/gtk/data/splash.svg: Source for splash.png
+
 2004-04-25 0.8.1.25  Bas Wijnen <b.wijnen@phys.rug.nl>
 
 	* client/callback.h (struct callbacks), client/common/client.c

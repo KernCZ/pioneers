@@ -100,8 +100,7 @@ void build_new_turn (void);
 void build_remove (BuildType build_type, gint x, gint y, gint pos);
 void build_move (gint sx, gint sy, gint spos, gint dx, gint dy, gint dpos,
 		gint isundo);
-void build_add(BuildType type, gint x, gint y, gint pos, gint *cost,
-		gboolean newbuild);
+void build_add(BuildType type, gint x, gint y, gint pos, gboolean newbuild);
 gboolean build_can_undo(void);
 gboolean build_is_valid(void);
 gboolean have_built(void);

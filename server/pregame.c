@@ -661,13 +661,9 @@ gboolean mode_pre_game(Player *player, gint event)
 			for (next = player->build_list;
 			     next != NULL; next = g_list_next(next))
 			{
-				gint cost[NO_RESOURCE] = { 0, 0, 0, 0, 0 };
 				BuildRec *build = (BuildRec *)next->data;
-				if (build->cost) {
-					memcpy(cost, build->cost, sizeof(gint)*NO_RESOURCE);
-				}
-				sm_send(sm, "buildinfo: %B %d %d %d %d %R\n",
-					build->type, build->prev_status, build->x, build->y, build->pos, cost);
+				sm_send(sm, "buildinfo: %B %d %d %d %d\n",
+					build->type, BUILD_NONE, build->x, build->y, build->pos); /** @todo RC 2004-03-28 Remove BUILD_NONE for 0.9 */
 			}
 
 			sm_send(sm, "end\n");
