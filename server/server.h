@@ -116,6 +116,7 @@ void meta_send_details(Game *game);
 typedef enum {
 	PB_ALL,
 	PB_RESPOND,
+	PB_SILENT,
 	PB_OTHERS
 } BroadcastType;
 Player *player_new(Game *game, int fd, gchar *location);
