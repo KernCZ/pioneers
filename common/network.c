@@ -81,7 +81,7 @@ static void write_ready(Session *ses);
 static void listen_read(Session *ses, gboolean monitor)
 {
 	if (monitor && ses->read_tag == 0)
-		ses->read_tag = driver->input_add_read(ses->fd, read_ready, ses);
+		ses->read_tag = driver->input_add_read(ses->fd, (InputFunc)read_ready, ses);
 	if (!monitor && ses->read_tag != 0) {
 		driver->input_remove(ses->read_tag);
 		ses->read_tag = 0;
@@ -92,7 +92,7 @@ static void listen_read(Session *ses, gboolean monitor)
 static void listen_write(Session *ses, gboolean monitor)
 {
 	if (monitor && ses->write_tag == 0)
-		ses->write_tag = driver->input_add_write(ses->fd, write_ready, ses);
+		ses->write_tag = driver->input_add_write(ses->fd, (InputFunc)write_ready, ses);
 	if (!monitor && ses->write_tag != 0) {
 		driver->input_remove(ses->write_tag);
 		ses->write_tag = 0;

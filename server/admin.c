@@ -455,6 +455,6 @@ admin_listen( gchar *port )
 	
 	/* set up the callback to handle connections */
 	_accept_info->read_tag = driver->input_add_read( _accept_info->fd,
-					 admin_connect, _accept_info );
+			(InputFunc)admin_connect, _accept_info );
 }
 

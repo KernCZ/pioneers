@@ -88,12 +88,12 @@ static guint evl_glib_input_add_watch( gint fd, GIOCondition condition,
 }
 
 
-guint evl_glib_input_add_read( gint fd, void (*func)(gpointer), gpointer param )
+guint evl_glib_input_add_read( gint fd, InputFunc func, gpointer param )
 {
 	return evl_glib_input_add_watch( fd, G_IO_IN | G_IO_HUP, func, param );
 }       
 
-guint evl_glib_input_add_write( gint fd, void (*func)(gpointer), gpointer param )
+guint evl_glib_input_add_write( gint fd, InputFunc func, gpointer param )
 {
 	return evl_glib_input_add_watch( fd, G_IO_OUT | G_IO_HUP, func, param );
 }

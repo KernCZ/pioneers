@@ -110,78 +110,132 @@ static void waiting_for_network(gboolean is_waiting)
 	callbacks.network_wait (is_waiting);
 }
 
-static void do_nothing (void)
-{
-}
+/* Dummy callback functions. They do nothing */
+static void dummy_init(UNUSED(int argc), UNUSED(char **argv)) {;}
+static void dummy_network_status(UNUSED(gchar *description)) {;}
+static void dummy_instructions(UNUSED(gchar *message)) {;}
+static void dummy_network_wait(UNUSED(gboolean is_waiting)) {;}
+static void dummy_offline(void) {;}
+static void dummy_discard(void) {;}
+static void dummy_discard_add(UNUSED(gint player_num), UNUSED(gint discard_num)) {;}
+static void dummy_discard_remove(UNUSED(gint player_num), UNUSED(gint *resources)) {;}
+static void dummy_discard_done(void) {;}
+static void dummy_gold(void) {;}
+static void dummy_gold_add(UNUSED(gint player_num), UNUSED(gint gold_num)) {;}
+static void dummy_gold_remove(UNUSED(gint player_num), UNUSED(gint *resources)) {;}
+static void dummy_gold_choose(UNUSED(gint gold_num), UNUSED(gint *bank)) {;}
+static void dummy_gold_done(void) {;}
+static void dummy_game_over(UNUSED(gint player_num), UNUSED(gint points)) {;}
+static void dummy_init_game(void) {;}
+static void dummy_start_game(void) {;}
+static void dummy_setup(UNUSED(unsigned num_settlements), UNUSED(unsigned num_roads)) {;}
+static void dummy_quote(UNUSED(gint player_num), UNUSED(gint *they_supply), UNUSED(gint *they_receive)) {;}
+static void dummy_roadbuilding(UNUSED(gint num_roads)) {;}
+static void dummy_monopoly(void) {;}
+static void dummy_plenty(UNUSED(gint *bank)) {;}
+static void dummy_turn(void) {;}
+static void dummy_player_turn(UNUSED(gint player_num)) {;}
+static void dummy_trade(void) {;}
+static void dummy_trade_player_end(UNUSED(gint player_num)) {;}
+static void dummy_trade_add_quote(UNUSED(gint player_num), UNUSED(gint quote_num), UNUSED(gint *they_supply), UNUSED(gint *they_receive)) {;}
+static void dummy_trade_remove_quote(UNUSED(gint player_num), UNUSED(gint quote_num)) {;}
+static void dummy_trade_domestic(UNUSED(gint partner_num), UNUSED(gint quote_num), UNUSED(gint *we_supply), UNUSED(gint *we_receive)) {;}
+static void dummy_trade_maritime(UNUSED(gint ratio), UNUSED(Resource we_supply), UNUSED(Resource we_receive)) {;}
+static void dummy_quote_player_end(UNUSED(gint player_num)) {;}
+static void dummy_quote_add(UNUSED(gint player_num), UNUSED(gint quote_num), UNUSED(gint *they_supply), UNUSED(gint *they_receive)) {;}
+static void dummy_quote_remove(UNUSED(gint player_num), UNUSED(gint quote_num)) {;}
+static void dummy_quote_start(void) {;}
+static void dummy_quote_end(void) {;}
+static void dummy_quote_monitor(void) {;}
+static void dummy_quote_trade(UNUSED(gint player_num), UNUSED(gint partner_num), UNUSED(gint quote_num), UNUSED(gint *they_supply), UNUSED(gint *they_receive)) {;}
+static void dummy_rolled_dice(UNUSED(gint die1), UNUSED(gint die2), UNUSED(gint player_num)) {;}
+static void dummy_beep(void) {;}
+static void dummy_draw_edge(UNUSED(Edge *edge)) {;}
+static void dummy_draw_node(UNUSED(Node *node)) {;}
+static void dummy_bought_develop(UNUSED(DevelType type), UNUSED(gboolean this_turn)) {;}
+static void dummy_played_develop(UNUSED(gint player_num), UNUSED(gint card_idx), UNUSED(DevelType type)) {;}
+static void dummy_resource_change(UNUSED(Resource type), UNUSED(gint num)) {;}
+static void dummy_draw_hex(UNUSED(Hex *hex)) {;}
+static void dummy_update_stock(void) {;}
+static void dummy_robber(void) {;}
+static void dummy_robber_moved(UNUSED(Hex *old), UNUSED(Hex *new)) {;}
+static void dummy_player_robbed(UNUSED(gint robber_num), UNUSED(gint victim_num), UNUSED(Resource resource)) {;}
+static void dummy_get_rolled_resources(UNUSED(gint player_num), UNUSED(const gint *resources)) {;}
+static void dummy_new_statistics(UNUSED(gint player_num), UNUSED(StatisticType type), UNUSED(gint num)) {;}
+static void dummy_viewer_name(UNUSED(gint viewer_num), UNUSED(const gchar *name)) {;}
+static void dummy_player_name(UNUSED(gint player_num), UNUSED(const gchar *name)) {;}
+static void dummy_player_quit(UNUSED(gint player_num)) {;}
+static void dummy_viewer_quit(UNUSED(gint player_num)) {;}
+static void dummy_new_bank(UNUSED(const gint *new_bank)) {;}
+static void dummy_error(UNUSED(gchar *message)) {;}
 
 /*----------------------------------------------------------------------
  * Entry point for the client state machine
  */
 void client_init (void)
 {
-	typedef void (*nothing_cast)(void);
-
 	/* first set everything to 0, so we are sure it segfaults if
 	 * someone forgets to update this when adding a new callback */
 	memset (&callbacks, 0, sizeof (callbacks) );
 	/* set all callbacks to their default value: doing nothing */
-	callbacks.init = &do_nothing;
-	callbacks.network_status = &do_nothing;
-	callbacks.instructions = &do_nothing;
-	callbacks.network_wait = &do_nothing;
-	callbacks.offline = &do_nothing;
-	callbacks.discard = &do_nothing;
-	callbacks.discard_add = &do_nothing;
-	callbacks.discard_remove = &do_nothing;
-	callbacks.discard_done = &do_nothing;
-	callbacks.gold = &do_nothing;
-	callbacks.gold_add = &do_nothing;
-	callbacks.gold_remove = &do_nothing;
-	callbacks.gold_choose = &do_nothing;
-	callbacks.gold_done = &do_nothing;
-	callbacks.game_over = &do_nothing;
-	callbacks.init_game = &do_nothing;
-	callbacks.start_game = &do_nothing;
-	callbacks.setup = &do_nothing;
-	callbacks.quote = &do_nothing;
-	callbacks.roadbuilding = &do_nothing;
-	callbacks.monopoly = &do_nothing;
-	callbacks.plenty = &do_nothing;
-	callbacks.turn = &do_nothing;
-	callbacks.player_turn = &do_nothing;
-	callbacks.trade = &do_nothing;
-	callbacks.trade_player_end = &do_nothing;
-	callbacks.trade_add_quote = &do_nothing;
-	callbacks.trade_remove_quote = &do_nothing;
-	callbacks.trade_domestic = &do_nothing;
-	callbacks.trade_maritime = &do_nothing;
-	callbacks.quote_player_end = &do_nothing;
-	callbacks.quote_add = &do_nothing;
-	callbacks.quote_remove = &do_nothing;
-	callbacks.quote_start = &do_nothing;
-	callbacks.quote_end = &do_nothing;
-	callbacks.quote_monitor = &do_nothing;
-	callbacks.quote_trade = &do_nothing;
-	callbacks.rolled_dice = &do_nothing;
-	callbacks.beep = &do_nothing;
-	callbacks.draw_edge = &do_nothing;
-	callbacks.draw_node = &do_nothing;
-	callbacks.bought_develop = &do_nothing;
-	callbacks.played_develop = &do_nothing;
-	callbacks.resource_change = &do_nothing;
-	callbacks.draw_hex = &do_nothing;
-	callbacks.update_stock = &do_nothing;
-	callbacks.robber = &do_nothing;
-	callbacks.robber_moved = &do_nothing;
-	callbacks.player_robbed = &do_nothing;
-	callbacks.get_rolled_resources = &do_nothing;
-	callbacks.new_statistics = &do_nothing;
-	callbacks.viewer_name = &do_nothing;
-	callbacks.player_name = &do_nothing;
-	callbacks.player_quit = &do_nothing;
-	callbacks.viewer_quit = &do_nothing;
-	callbacks.new_bank = &do_nothing;
-	callbacks.error = &do_nothing;
+	callbacks.init = &dummy_init;
+	callbacks.network_status = &dummy_network_status;
+	callbacks.instructions = &dummy_instructions;
+	callbacks.network_wait = &dummy_network_wait;
+	callbacks.offline = &dummy_offline;
+	callbacks.discard = &dummy_discard;
+	callbacks.discard_add = &dummy_discard_add;
+	callbacks.discard_remove = &dummy_discard_remove;
+	callbacks.discard_done = &dummy_discard_done;
+	callbacks.gold = &dummy_gold;
+	callbacks.gold_add = &dummy_gold_add;
+	callbacks.gold_remove = &dummy_gold_remove;
+	callbacks.gold_choose = &dummy_gold_choose;
+	callbacks.gold_done = &dummy_gold_done;
+	callbacks.game_over = &dummy_game_over;
+	callbacks.init_game = &dummy_init_game;
+	callbacks.start_game = &dummy_start_game;
+	callbacks.setup = &dummy_setup;
+	callbacks.quote = &dummy_quote;
+	callbacks.roadbuilding = &dummy_roadbuilding;
+	callbacks.monopoly = &dummy_monopoly;
+	callbacks.plenty = &dummy_plenty;
+	callbacks.turn = &dummy_turn;
+	callbacks.player_turn = &dummy_player_turn;
+	callbacks.trade = &dummy_trade;
+	callbacks.trade_player_end = &dummy_trade_player_end;
+	callbacks.trade_add_quote = &dummy_trade_add_quote;
+	callbacks.trade_remove_quote = &dummy_trade_remove_quote;
+	callbacks.trade_domestic = &dummy_trade_domestic;
+	callbacks.trade_maritime = &dummy_trade_maritime;
+	callbacks.quote_player_end = &dummy_quote_player_end;
+	callbacks.quote_add = &dummy_quote_add;
+	callbacks.quote_remove = &dummy_quote_remove;
+	callbacks.quote_start = &dummy_quote_start;
+	callbacks.quote_end = &dummy_quote_end;
+	callbacks.quote_monitor = &dummy_quote_monitor;
+	callbacks.quote_trade = &dummy_quote_trade;
+	callbacks.rolled_dice = &dummy_rolled_dice;
+	callbacks.beep = &dummy_beep;
+	callbacks.draw_edge = &dummy_draw_edge;
+	callbacks.draw_node = &dummy_draw_node;
+	callbacks.bought_develop = &dummy_bought_develop;
+	callbacks.played_develop = &dummy_played_develop;
+	callbacks.resource_change = &dummy_resource_change;
+	callbacks.draw_hex = &dummy_draw_hex;
+	callbacks.update_stock = &dummy_update_stock;
+	callbacks.robber = &dummy_robber;
+	callbacks.robber_moved = &dummy_robber_moved;
+	callbacks.player_robbed = &dummy_player_robbed;
+	callbacks.get_rolled_resources = &dummy_get_rolled_resources;
+	callbacks.new_statistics = &dummy_new_statistics;
+	callbacks.viewer_name = &dummy_viewer_name;
+	callbacks.player_name = &dummy_player_name;
+	callbacks.player_quit = &dummy_player_quit;
+	callbacks.viewer_quit = &dummy_viewer_quit;
+	callbacks.new_bank = &dummy_new_bank;
+	callbacks.error = &dummy_error;
+	/* mainloop is not set here */
 	resource_init ();
 }
 

@@ -1,3 +1,10 @@
+2004-10-27  0.8.1.41  Roland Clobus <rclobus@bigfoot.com>
+	* client/common/client.c: Added dummy callsbacks to remove compiler
+	warnings
+	* common/common_glib.c, common/common_glib.h, common/driver.h,
+	common/network.c, server/gnocatan-server.c, server/server.c: Using the
+	new typedef InputFunc
+	
 2004-10-24  0.8.1.40  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/gui.c, client/gtk/gui.h, client/gtk/trade.c: Removed the
 	second global variable map. (The other is client/common/client.[ch])

@@ -303,7 +303,7 @@ static gboolean game_server_start(Game *game)
 		return FALSE;
 	
 	game->accept_tag = driver->input_add_read(game->accept_fd,
-					 player_connect, game);
+			(InputFunc)player_connect, game);
 
 	if (game->params->register_server)
 		meta_register(meta_server_name, GNOCATAN_DEFAULT_META_PORT, game);
