@@ -51,7 +51,7 @@ AC_DEFINE_UNQUOTED(META_PROTOCOL_VERSION, $META_PROTOCOL_VERSION,
 dnl GNOME_SUPPORT_CHECKS
 
 ## internationalization support
-ALL_LINGUAS="de"
+ALL_LINGUAS="de es"
 AM_GNU_GETTEXT(use-libtool)
 AC_LINK_FILES($nls_cv_header_libgt, $nls_cv_header_intl)
 AC_DEFINE_UNQUOTED(ALL_LINGUAS, "$ALL_LINGUAS", [Available languages])

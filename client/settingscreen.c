@@ -53,7 +53,7 @@ static void add_setting_val(GtkWidget *table, gint row, gint col, gint type,
 		}
 		break;
 	case TYPE_STRING:
-		if( char_val == NULL ) { char_val = N_(" "); }
+		if( char_val == NULL ) { char_val = " "; }
 		g_snprintf(label_var, sizeof(label_var), "%s", char_val);
 		break;
 	

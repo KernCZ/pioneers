@@ -33,7 +33,7 @@ static struct {
 	{ N_("Year of Plenty"), FALSE },
 	{ N_("Chapel"), TRUE },
         { N_("University of Gnocatan"), TRUE },
-        { N_("Governors House"), TRUE },
+        { N_("Governor's House"), TRUE },
         { N_("Library"), TRUE },
         { N_("Market"), TRUE },
         { N_("Soldier"), FALSE }

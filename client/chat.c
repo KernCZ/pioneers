@@ -59,14 +59,14 @@ void chat_parser( gint player_num, char chat_str[MAX_CHAT] )
 		}
 	}
 
-	log_message( MSG_INFO, N_("%s"), player_name(player_num, TRUE));
+	log_message( MSG_INFO, "%s", player_name(player_num, TRUE));
 
 	switch( chat_str[0] )
 	{
 		case ':':
 			chat_str += 1;
 			log_timestamp = 0;
-			log_message( MSG_INFO, N_(" "));
+			log_message( MSG_INFO, " ");
 			break;
 		case ';':
 			chat_str += 1;

@@ -206,8 +206,8 @@ void resource_log_list(gint player_num, gchar *action, gint *resources)
 	char buff[512];
 
 	resource_format_num(buff, resources);
-	log_message( MSG_RESOURCE, N_("%s %s %s.\n"),
-		 player_name(player_num, TRUE), action, buff);
+	log_message( MSG_RESOURCE, action,
+		 player_name(player_num, TRUE), buff);
 }
 
 void resource_apply_list(gint player_num, gint *resources, gint mult)

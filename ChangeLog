@@ -2,6 +2,17 @@
 	* client/Makefile.am, client/guimap.c, client/theme.c,
 	  debian/rules: further refine the placement of image files.
 
+	* configure.in, ai/client.c, ai/develop.c, ai/player.c,
+	  ai/resource.c, client/chat.c, client/client.c,
+	  client/develop.c, client/player.c, client/resource.c,
+	  client/settingscreen.c, po/de.po, po/es.po, po/gnocatan.pot:
+	  Gettext enhancements: don't construct strings by
+	  concatenation, don't mark strings for translation with _N()
+	  that are non-translatable (such as '%s').
+	  Add Spanish to the list of supported languages and begin
+	  localizing.
+	  Revert accidental breakage of the de.po file.
+
 2003-01-10  Steve Langasek  <vorlon@debian.org>
 	* docs/Makefile.am, docs/gnocatan.6, docs/gnocatan-server-gtk.6,
 	  docs/gnocatan-server-console.6, Makefile.am, configure.in,

@@ -521,7 +521,7 @@ void player_stole_from(gint player_num, gint victim_num, Resource resource)
 	if (resource == NO_RESOURCE) {
 		/* We are not in on the action
 		 */
-		log_message( MSG_STEAL, N_("%s"),
+		log_message( MSG_STEAL, "%s",
 			 player_name(player_num, TRUE));
 		log_timestamp = 0;
 		log_message( MSG_STEAL, _(" stole a resource from "));

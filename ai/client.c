@@ -277,19 +277,19 @@ static gboolean check_other_players(StateMachine *sm)
 		return TRUE;
 	}
 	if (sm_recv(sm, "receives %R", resource_list)) {
-		player_resource_action(player_num, _("receives"),
+		player_resource_action(player_num, _("%s receives %s\n"),
 				       resource_list, 1);
 		client_chat(CHAT_RECEIVES, (void *)resource_list,
 					player_num == my_player_num(), 0);
 		return TRUE;
 	}
 	if (sm_recv(sm, "spent %R", resource_list)) {
-		player_resource_action(player_num, _("spent"),
+		player_resource_action(player_num, _("%s spent %s\n"),
 				       resource_list, -1);
 		return TRUE;
 	}
 	if (sm_recv(sm, "refund %R", resource_list)) {
-		player_resource_action(player_num, _("is refunded"),
+		player_resource_action(player_num, _("%s is refunded %s\n"),
 				       resource_list, 1);
 		return TRUE;
 	}
@@ -1167,7 +1167,7 @@ static gboolean mode_discard(StateMachine *sm, gint event)
 		}
 		if (sm_recv(sm, "player %d discarded %R",
 			    &player_num, resource_list)) {
-			player_resource_action(player_num, _("discarded"),
+			player_resource_action(player_num, _("%s discarded %s\n"),
 					       resource_list, -1);
 			discard_player_did(player_num, resource_list);
 			if (discard_num_remaining() == 0) {
