@@ -11,6 +11,8 @@ dist-hook:
 	cp -p $(srcdir)/debian/*.menu $(distdir)/debian
 	cp -p $(srcdir)/debian/*.undocumented $(distdir)/debian
 	cp -p $(srcdir)/debian/*.init $(distdir)/debian
+	tar -c -f - -C $(srcdir) macros | tar -x -f - -C $(distdir)
+	find $(distdir)/macros -name CVS | xargs rm -rf
 
 distclean-local:
 	rm -f *~

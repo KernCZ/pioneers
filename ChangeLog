@@ -1,4 +1,9 @@
 2003-10-12  Bas Wijnen <b.wijnen@phys.rug.nl>
+	* AUTHORS: Added my name.
+	* Makefile.am: Fixed make distcheck bug.
+	* po/de.po, po/es.po, po/gnocatan.pot: Updated.
+
+2003-10-12  Bas Wijnen <b.wijnen@phys.rug.nl>
 	* ai/client.c, client/client.c: Fixed version conflict bug.
 	* po/de.po, po/es.po, po/gnocatan.pot: Updated.
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-10-13 12:18+0200\n"
+"POT-Creation-Date: 2003-10-13 14:15+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -40,7 +40,7 @@ msgstr ""
 msgid "%s discarded %s\n"
 msgstr ""
 
-#: ai/client.c:1775 client/client.c:2663
+#: ai/client.c:1775 client/client.c:2654
 msgid "The game is over.\n"
 msgstr ""
 
@@ -660,12 +660,11 @@ msgstr ""
 msgid "Waiting"
 msgstr ""
 
-#: client/client.c:98 client/client.c:972
+#: client/client.c:98 client/client.c:963
 msgid "Idle"
 msgstr ""
 
-#: client/client.c:162 client/client.c:665 client/client.c:674
-#: client/gui.c:1071
+#: client/client.c:162 client/client.c:665 client/gui.c:1071
 msgid "Offline"
 msgstr ""
 
@@ -701,68 +700,64 @@ msgstr ""
 msgid "Version mismatch"
 msgstr ""
 
-#: client/client.c:675
-msgid "Game is full"
-msgstr ""
-
-#: client/client.c:1198
+#: client/client.c:1189
 msgid "Build two settlements, each with a connecting"
 msgstr ""
 
-#: client/client.c:1200
+#: client/client.c:1191
 msgid "Build a settlement with a connecting"
 msgstr ""
 
-#: client/client.c:1203
+#: client/client.c:1194
 msgid "road"
 msgstr ""
 
-#: client/client.c:1205
+#: client/client.c:1196
 msgid "bridge"
 msgstr ""
 
-#: client/client.c:1207
+#: client/client.c:1198
 msgid "ship"
 msgstr ""
 
-#: client/client.c:1339
+#: client/client.c:1330
 msgid "Waiting for your turn"
 msgstr ""
 
-#: client/client.c:1463 client/client.c:1481
+#: client/client.c:1454 client/client.c:1472
 msgid "Select the building to steal from."
 msgstr ""
 
-#: client/client.c:1464 client/client.c:1482
+#: client/client.c:1455 client/client.c:1473
 msgid "Select the building to steal from"
 msgstr ""
 
-#: client/client.c:1495 client/client.c:1522
+#: client/client.c:1486 client/client.c:1513
 msgid "Place the robber"
 msgstr ""
 
-#: client/client.c:1607
+#: client/client.c:1598
 msgid "Build two road segments."
 msgstr ""
 
-#: client/client.c:1609
+#: client/client.c:1600
 msgid "Build a road segment."
 msgstr ""
 
-#: client/client.c:1926 client/client.c:2062
+#: client/client.c:1917 client/client.c:2053
 msgid "It is your turn."
 msgstr ""
 
-#: client/client.c:2256
+#: client/client.c:2247
 #, c-format
 msgid "Sorry, %s available.\n"
 msgstr ""
 
-#: client/client.c:2655
+#: client/client.c:2646
 msgid "The game is over."
 msgstr ""
 
-#: client/client.c:2868
+#: client/client.c:2859
 #, c-format
 msgid "%s takes %s.\n"
 msgstr ""
