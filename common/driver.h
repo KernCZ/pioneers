@@ -15,7 +15,9 @@
 typedef struct {
 	/* function for freeing a widget */
 	void (*widget_free)(gpointer key, WidgetState *gui, StateMachine *sm);
+	void (*check_widget)(gpointer key, WidgetState *gui, StateMachine *sm);
 	void (*event_queue)(void);
+
 } UIDriver;
    
 
