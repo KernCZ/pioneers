@@ -219,6 +219,7 @@ static void load_pixmaps(void)
 	gdk_draw_rectangle(pixmap, gc, TRUE, 0, 0, width, height);
 	maritime_pixbuf = gdk_pixbuf_get_from_drawable(NULL, pixmap, NULL, 0, 0, 0, 0,
 -1, -1);
+	g_object_unref(gc);
 
 	cross_pixbuf = gtk_widget_render_icon(quotes, GTK_STOCK_CANCEL, GTK_ICON_SIZE_MENU, NULL);
 	tick_pixbuf = gtk_widget_render_icon(quotes, GTK_STOCK_APPLY, GTK_ICON_SIZE_MENU, NULL);

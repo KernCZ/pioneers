@@ -5,6 +5,7 @@
 	client/gtk/theme.c, client/gtk/theme.h,
 	server/gtk/gnocatan-server-gtk.c: Theme.c rewrite, using
 	g_build_filename instead of gnome_program_locate_file.
+	* client/gtk/trade.c: Fixed a memory leak.
 	
 2005-01-25  0.8.1.51  Roland Clobus <rclobus@bigfoot.com>
 	* common/gtk/common_gtk.c: Added stub for gtk_alignment_set_padding,
