@@ -1,3 +1,6 @@
+2003-01-15  Steve Langasek  <vorlon@debian.org>
+	* gnocatan.spec: RPM packaging updates from Daniel Jensen
+
 2003-01-14  Steve Langasek  <vorlon@debian.org>
 	* client/Makefile.am: add an explicit dependency on authors.h to
 	  make sure it's generated when we need it.
