@@ -526,13 +526,12 @@ void trade_update ()
 		set_row_sensitive(we_supply_rows + idx, resource_asset(idx) > 0);
 		set_row_sensitive(we_receive_rows + idx, TRUE);
 	}
+	check_maritime_trades();
 }
 
 void trade_perform_maritime(gint ratio, Resource supply, Resource receive)
 {
 	cb_maritime (ratio, supply, receive);
-	check_maritime_trades();
-	trade_update ();
 }
 
 void trade_perform_domestic(gint player_num, gint partner_num, gint quote_num,
@@ -547,8 +546,6 @@ void trade_perform_domestic(gint player_num, gint partner_num, gint quote_num,
 		remove_quote_update_pixmap(quote);
 		cb_trade(partner_num, quote_num, they_supply, they_receive);
 	}
-	check_maritime_trades();
-	trade_update ();
 }
 
 void trade_refine_domestic(gint *we_supply, gint *we_receive)

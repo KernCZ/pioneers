@@ -544,7 +544,7 @@ void frontend_beep ()
 
 static void place_robber (Hex *hex, gint victim)
 {
-	cb_place_robber (hex->x, hex->y, victim);
+	cb_place_robber (hex, victim);
 	robber_busy = FALSE;
 	set_gui_state (previous_state);
 }

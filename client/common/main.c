@@ -40,6 +40,10 @@ int main(int argc, char *argv[])
 	config_init( "/gnocatan/" );
 	client_init ();
 	callbacks.mainloop = &run_main;
+
+	/* for now this function gets the commandline arguments, although
+	 * they really should not be needed.  They are currently needed
+	 * because it must call gnome_program_init. */
 	frontend_set_callbacks (argc, argv);
 
 	/* this should really be done before frontend_set_callbacks, but it
@@ -50,9 +54,9 @@ int main(int argc, char *argv[])
 	init_nls();
 #endif
 
-	/* this must come after the frontend_init, because it sets the mode
-	 * to offline, which means a callback is called. */
-	client_start();
+	/* this must come after the frontend_set_callbacks, because it sets the
+	 * mode to offline, which means a callback is called. */
+	client_start(argc, argv);
 
 	callbacks.mainloop ();
 	

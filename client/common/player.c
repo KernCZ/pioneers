@@ -468,7 +468,7 @@ void player_build_add(gint player_num,
 	case BUILD_MOVE_SHIP:
 		/* This clause here to remove a compiler warning.
 		   It should not be possible to reach this code. */
-		abort ();
+		g_error ("Bug: unreachable code reached.\n");
 		break;
 	}
 }
@@ -542,7 +542,7 @@ void player_build_remove(gint player_num,
 	case BUILD_MOVE_SHIP:
 		/* This clause here to remove a compiler warning.
 		   It should not be possible to reach this case. */
-		abort ();
+		g_error ("Bug: unreachable code reached.\n");
 		break;
 	}
 }

@@ -1,3 +1,19 @@
+2003-12-29 0.8.1.7  Bas Wijnen <b.wijnen@phys.rug.nl>
+
+	* client/common/build.c (build_move), client/common/callback.h
+	* (top level, struct callbacks), client/common/client.c (top level,
+	* client_init, mode_domestic_trade), client/gtk/callbacks.c
+	* (frontend_trade, frontend_set_callbacks), client/gtk/trade.c
+	* (trade_update, trade_perform_maritime, trade_perform_domestic): Fixed
+	bug #863901: maritime quote doesn't disappear when resources are no
+	longer available.
+	* client/common/client.c (mode_discard, mode_domestic_trade),
+	* client/common/player.c (player_build_add, player_build_remove): Code
+	cleanup.
+	* Added can_play_any_develop, get_devel_deck, get_bank, get_map,
+	* callbacks.error, frontend_error: Preparation for new AI structure.
+	* cb_place_robber, client_start, frontend_init: Changed prototype.
+
 2003-12-28 0.8.1.6  Roland Clobus <rclobus@bigfoot.com>
 
 	* client/common/player.c (player_has_quit): Fix for (null) receives...

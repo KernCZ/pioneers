@@ -146,6 +146,8 @@ void client_init ()
 	(nothing_cast)callbacks.monopoly = &do_nothing;
 	(nothing_cast)callbacks.plenty = &do_nothing;
 	(nothing_cast)callbacks.turn = &do_nothing;
+	(nothing_cast)callbacks.player_turn = &do_nothing;
+	(nothing_cast)callbacks.trade = &do_nothing;
 	(nothing_cast)callbacks.trade_player_end = &do_nothing;
 	(nothing_cast)callbacks.trade_add_quote = &do_nothing;
 	(nothing_cast)callbacks.trade_remove_quote = &do_nothing;
@@ -171,12 +173,13 @@ void client_init ()
 	(nothing_cast)callbacks.robber_moved = &do_nothing;
 	(nothing_cast)callbacks.new_statistics = &do_nothing;
 	(nothing_cast)callbacks.player_name = &do_nothing;
+	(nothing_cast)callbacks.error = &do_nothing;
 	resource_init ();
 }
 
-void client_start ()
+void client_start (int argc, char **argv)
 {
-	callbacks.init ();
+	callbacks.init (argc, argv);
 	sm_goto(SM(), mode_offline);
 }
 
@@ -228,6 +231,7 @@ static gboolean global_unhandled(StateMachine *sm, gint event)
 		/* all errors start with ERR */
 		if (sm_recv(sm, "ERR %S", str, sizeof (str))) {
 			log_message( MSG_ERROR, "Error (%s): %s\n", sm_current_name(sm), str);
+			callbacks.error (str);
 			return TRUE;
 		}
 		/* notices which are not errors should appear in the message
@@ -623,6 +627,7 @@ static gboolean mode_load_game(StateMachine *sm, gint event)
 	}
 	if (sm_recv(sm, "end")) {
 		params_load_finish(game_params);
+		map = game_params->map;
 		stock_init();
 		develop_init();
 		sm_send(sm, "gameinfo\n");
@@ -1388,9 +1393,6 @@ static gboolean mode_discard(StateMachine *sm, gint event)
 	sm_state_name(sm, "mode_discard");
 	switch (event) {
 	case SM_ENTER:
-		log_message (MSG_INFO,
-				"entering discard, previous mode was %d\n",
-				callback_mode);
 		if (callback_mode != MODE_DISCARD
 				&& callback_mode != MODE_DISCARD_WAIT) {
 			previous_mode = callback_mode;
@@ -1548,6 +1550,7 @@ static gboolean mode_turn_rolled(StateMachine *sm, gint event)
 	case SM_ENTER:
 		callback_mode = MODE_TURN;
 		callbacks.instructions(_("It is your turn."));
+		callbacks.turn ();
 		break;
 	case SM_RECV:
 		if (check_other_players(sm))
@@ -1756,11 +1759,10 @@ static gboolean mode_domestic_trade(StateMachine *sm, gint event)
 	sm_state_name(sm, "mode_domestic_trade");
 	switch (event) {
 	case SM_ENTER:
-		log_message (MSG_INFO, "enter domestic\n");
 		if (callback_mode != MODE_DOMESTIC) {
-			log_message (MSG_INFO, "enter domestic first\n");
 			callback_mode = MODE_DOMESTIC;
 		}
+		callbacks.trade ();
 		break;
 	case SM_RECV:
 		if (check_trading(sm) || check_other_players(sm))

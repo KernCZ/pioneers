@@ -34,7 +34,7 @@ extern gint color_chat_enabled;
 /********* client.c ***********/
 /* client initialization */
 void client_init (void); /* before frontend initialization */
-void client_start (void); /* after frontend initialization */
+void client_start (int argc, char **argv); /* after frontend initialization */
 
 /* access the state machine (a client has only one state machine) */
 StateMachine *SM (void);

@@ -60,7 +60,7 @@ void develop_init()
 		deck_free(develop_deck);
 	develop_deck = deck_new(game_params);
 	for (idx = 0; idx < numElem(devel_cards); idx++)
-		devel_cards[idx].is_unique = game_params->num_develop_type[idx];
+		devel_cards[idx].is_unique = game_params->num_develop_type[idx] == 1;
 }
 
 void develop_bought_card_turn(DevelType type, gint turnbought)
@@ -216,6 +216,15 @@ gboolean can_play_develop(gint card)
 	}
 }
 
+gboolean can_play_any_develop ()
+{
+	int i;
+	for (i = 0; i < develop_deck->num_cards; ++i)
+		if (can_play_develop (i) )
+			return TRUE;
+	return FALSE;
+}
+
 gboolean can_buy_develop()
 {
 	return have_rolled_dice()
@@ -226,6 +235,11 @@ gboolean can_buy_develop()
 gboolean have_bought_develop()
 {
 	return bought_develop;
+}
+
+DevelDeck *get_devel_deck ()
+{
+	return develop_deck;
 }
 
 #if 0

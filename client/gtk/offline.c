@@ -166,7 +166,7 @@ static gint compare_int(gconstpointer a, gconstpointer  b)
 }
 
 /* this function is called to let the frontend initialize itself. */
-void frontend_init ()
+void frontend_init (int argc, char **argv)
 {
 	GtkWidget *app;
 

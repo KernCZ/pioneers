@@ -93,7 +93,7 @@ void frontend_gui_register (void *widget, gint id, gchar *signal);
 void frontend_gui_route_event (GuiEvent event);
 
 /* callbacks */
-void frontend_init (void);
+void frontend_init (int argc, char **argv);
 void frontend_new_statistics (gint player_num, StatisticType type, gint num);
 void frontend_player_name (gint player_num, const gchar *name);
 void frontend_player_quit (gint player_num);

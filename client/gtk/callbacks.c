@@ -80,9 +80,18 @@ static void frontend_player_turn (gint player)
 	player_show_current ();
 }
 
+static void frontend_trade ()
+{
+	frontend_gui_update ();
+}
+
 static void frontend_robber_moved (Hex *old, Hex *new)
 {
 	gui_prompt_hide ();
+}
+
+static void frontend_error (gchar *message)
+{
 }
 
 /* set all the callbacks. */
@@ -123,6 +132,7 @@ void frontend_set_callbacks (int argc, char **argv)
 	callbacks.plenty = &frontend_plenty;
 	callbacks.turn = &frontend_turn;
 	callbacks.player_turn = &frontend_player_turn;
+	callbacks.trade = &frontend_trade;
 	callbacks.trade_player_end = &frontend_trade_player_end;
 	callbacks.trade_add_quote = &frontend_trade_add_quote;
 	callbacks.trade_remove_quote = &frontend_trade_remove_quote;
@@ -150,5 +160,6 @@ void frontend_set_callbacks (int argc, char **argv)
 	callbacks.player_name = &frontend_player_name;
 	callbacks.player_quit = &frontend_player_quit;
 	callbacks.viewer_quit = &frontend_viewer_quit;
+	callbacks.error = &frontend_error;
 };
 

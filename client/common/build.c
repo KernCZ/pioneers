@@ -77,6 +77,7 @@ void build_move(gint sx, gint sy, gint spos, gint dx, gint dy, gint dpos, gint i
 		list = g_list_last(build_list);
 		rec = list->data;
 		build_list = g_list_remove(build_list, rec);
+		g_free (rec);
 		/* If the build_list is now empty (no more items to undo),
 		 * clear built flag so trading is reallowed with
 		 * strict-trade */

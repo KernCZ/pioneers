@@ -33,6 +33,7 @@ void frontend_set_callbacks (int argc, char **argv);
 #include "map.h"  /* for Edge, Node and Hex */
 #include "game.h" /* for DevelType */
 #include "authors.h" /* defines AUTHORLIST, as a char **, NULL-ended  */
+#include "cards.h"
 
 /* types */
 typedef enum {
@@ -85,7 +86,7 @@ enum callback_mode {
 struct callbacks {
 	/* This function is called when the client is initialized.  The
 	 * frontend should initialize itself now */
-	void (*init)(void);
+	void (*init)(int argc, char **argv);
 	/* Allows the frontend to show a message considering the network
 	 * status, probably in the status bar */
 	void (*network_status)(gchar *description);
@@ -146,6 +147,8 @@ struct callbacks {
 	void (*turn)(void);
 	/* it's someone else's turn */
 	void (*player_turn)(gint player_num);
+	/* you're trading */
+	void (*trade)(void);
 	/* while you're trading, someone else rejects the trade */
 	void (*trade_player_end)(gint player_num);
 	/* while you're trading, someone else offers you a quote */
@@ -160,7 +163,11 @@ struct callbacks {
 			gint *they_supply, gint *they_receive);
 	/* while someone else is trading, a player revokes a quote */
 	void (*quote_remove)(gint player_num, gint quote_num);
-	/* someone else makes a call for quotes */
+	/* someone else makes a call for quotes.  This is an initialization
+	 * callback, it is only called once.  After that, quote is called
+	 * for every call for quotes (at least once, immediately after this
+	 * function returns.  quote can be called more times, until quote_end
+	 * is called, which marks the end of the trading session. */
 	void (*quote_start)(void);
 	/* someone else finishes trading */
 	void (*quote_end)(void);
@@ -203,6 +210,8 @@ struct callbacks {
 	void (*player_quit)(gint player_num);
 	/* a viewer left the game */
 	void (*viewer_quit)(gint player_num);
+	/* some communication error occurred, and it has already been logged */
+	void (*error)(gchar *message);
 	/* mainloop.  This is initialized to run the glib main loop.  It can
 	 * be overridden */
 	void (*mainloop)(void);
@@ -232,7 +241,7 @@ void cb_undo (void);
 void cb_maritime (gint ratio, Resource supply, Resource receive);
 void cb_domestic (gint *supply, gint *receive);
 void cb_end_turn (void);
-void cb_place_robber (gint x, gint y, gint victim_num);
+void cb_place_robber (Hex *hex, gint victim_num);
 void cb_choose_monopoly (gint resource);
 void cb_choose_plenty (gint *resources);
 void cb_trade_call (gint *we_supply, gint *we_receive);
@@ -252,6 +261,7 @@ void cb_choose_gold (gint *resources);
 gboolean have_rolled_dice (void);
 gboolean can_buy_develop (void);
 gboolean can_play_develop (int card);
+gboolean can_play_any_develop (); /* TODO: This code should be called */
 Player *player_get (gint num);
 gboolean player_is_viewer (gint num);
 Viewer *viewer_get (gint num);
@@ -279,7 +289,6 @@ gboolean setup_can_build_road (void);
 gboolean setup_can_build_bridge (void);
 gboolean setup_can_build_ship (void);
 gint turn_num (void);
-gboolean have_rolled_dice (void);
 gboolean can_trade_domestic (void);
 gboolean can_trade_maritime (void);
 gboolean can_undo (void);
@@ -288,7 +297,6 @@ gboolean road_building_can_build_road (void);
 gboolean road_building_can_build_ship (void);
 gboolean road_building_can_build_bridge (void);
 gboolean road_building_can_finish (void);
-gboolean turn_can_roll_dice (void);
 gboolean turn_can_undo (void);
 gboolean turn_can_build_road (void);
 gboolean turn_can_build_ship (void);
@@ -314,5 +322,8 @@ gboolean have_bridges (void);
 const GameParams *get_game_params (void);
 int pirate_count_victims (Hex *hex, gint *victim_list);
 int robber_count_victims (Hex *hex, gint *victim_list);
+gint *get_bank (void); /* TODO: This code should be called */
+DevelDeck *get_devel_deck (void); /* TODO: This code should be called */
+Map *get_map (void); /* TODO: This code should be called */
 
 #endif
