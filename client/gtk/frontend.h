@@ -140,10 +140,8 @@ void frontend_game_over (gint player, gint points);
 
 /* connect.c */
 const gchar *connect_get_server (void);
-gint connect_get_port (void);
-const gchar *connect_get_port_str (void);
+const gchar *connect_get_port (void);
 const gchar *connect_get_name (void);
-const gchar *connect_get_meta_server (void);
 void connect_create_dlg (void);
 
 /* theme.c */

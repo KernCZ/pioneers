@@ -20,74 +20,11 @@
  */
 
 #include "frontend.h"
-#include <config-gnome.h>
 #include <gnome.h>
 #include "common_gtk.h"
 
 static gboolean have_dlg = FALSE;
 static gboolean connectable = FALSE;
-
-static void update_recent_servers_list (void)
-{
-	gchar temp_str1[150], temp_str2[150], temp_str3[150];
-	gchar temp_name[150] = "", temp_port[150] = "", temp_user[150] = "";
-	gchar cur_name[150], cur_port[150], cur_user[150];
-	gchar conn_name[150], conn_port[150], conn_user[150];
-	gboolean default_used;
-	gint done, i;
-
-	done = 0;
-	i = 0;
-
-	strcpy(conn_name, connect_get_server());
-	strcpy(conn_port, connect_get_port_str());
-	strcpy(conn_user, connect_get_name());
-
-	strcpy(temp_name, conn_name);
-	strcpy(temp_port, conn_port);
-	strcpy(temp_user, conn_user);
-
-	do {
-		sprintf(temp_str1, "favorites/server%dname=", i);
-		sprintf(temp_str2, "favorites/server%dport=", i);
-		sprintf(temp_str3, "favorites/server%duser=", i);
-		strcpy(cur_name, config_get_string(temp_str1, &default_used));
-		strcpy(cur_port, config_get_string(temp_str2, &default_used));
-		strcpy(cur_user, config_get_string(temp_str3, &default_used));
-
-		if (strlen(temp_name)) {
-			sprintf(temp_str1, "favorites/server%dname", i);
-			sprintf(temp_str2, "favorites/server%dport", i);
-			sprintf(temp_str3, "favorites/server%duser", i);
-			config_set_string(temp_str1, temp_name);
-			config_set_string(temp_str2, temp_port);
-			config_set_string(temp_str3, temp_user);
-		} else {
-			break;
-		}
-
-		if (strlen(cur_name) == 0) {
-			break;
-		}
-
-		if (!strcmp(cur_name, conn_name)
-				&& !strcmp(cur_port, conn_port)
-				&& !strcmp(cur_user, conn_user)) {
-			strcpy(temp_name, "");
-			strcpy(temp_port, "");
-			strcpy(temp_user, "");
-		} else {
-			strcpy(temp_name, cur_name);
-			strcpy(temp_port, cur_port);
-			strcpy(temp_user, cur_user);
-		}
-
-		i++;
-		if (i > 100) {
-			done = 1;
-		}
-	} while (!done);
-}
 
 static void frontend_offline_start_connect_cb (void)
 {
@@ -108,22 +45,11 @@ static void frontend_offline_gui (GuiEvent event)
 		gui_show_splash_page(FALSE);
 		gui_set_net_status(_("Connecting"));
 
-		/* Save connect dialogue entries */
-		config_set_string("connect/server", connect_get_server());
-		config_set_string("connect/port", connect_get_port_str());
-		config_set_string("connect/meta-server",
-				connect_get_meta_server());
-		config_set_string("connect/name", connect_get_name());
-
 		connectable = FALSE;
-		/* No need to set have_dlg to FALSE, because GUI_CONNECT_CANCEL 
-		 * is automatically called when the dialog is closed (and it
-		 * is, becaus there is a close function connected to the OK
-		 * button */
+		have_dlg = FALSE;
 		cb_name_change (connect_get_name());
-		cb_connect (connect_get_server (), connect_get_port_str () );
-		update_recent_servers_list();
-		frontend_gui_update ();
+		cb_connect (connect_get_server(), connect_get_port() );
+		frontend_gui_update();
 		break;
 	case GUI_CONNECT:
 		frontend_offline_start_connect_cb ();

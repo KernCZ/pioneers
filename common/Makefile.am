@@ -70,7 +70,11 @@ libgnocatan_gtk_a_SOURCES = \
 	common_gtk.c \
 	common_gtk.h \
 	config-gnome.c \
-	config-gnome.h
+	config-gnome.h \
+	game-settings.c \
+	game-settings.h \
+	select-game.c \
+	select-game.h
 
 gnocatan-path.h: gnocatan-path.h.in
 	rm -f $(<D)/$(@F)

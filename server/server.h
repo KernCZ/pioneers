@@ -191,7 +191,6 @@ gboolean server_stop(void);
 gint accept_connection(gint in_fd, gchar **location);
 gint open_listen_socket(gchar *port);
 
-
 /* trade.c */
 void trade_perform_maritime(Player *player,
 			    gint ratio, Resource supply, Resource receive);
@@ -209,16 +208,6 @@ gboolean mode_idle(Player *player, gint event);
 gboolean mode_turn(Player *player, gint event);
 void turn_next_player(Game *game);
 void check_victory(Player *player);
-
-/* gnocatan-server.c */
-gint gui_victory_target(void);
-gint gui_max_players(void);
-gboolean gui_is_terrain_random(void);
-void gui_player_add(void *player);
-void gui_player_remove(void *player);
-void gui_player_rename(void *player);
-void gui_player_change(void *game);
-void gui_ui_enable(gint sensitive);
 
 /* gold.c */
 void distribute_first (GList *list);

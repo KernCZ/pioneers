@@ -3,6 +3,19 @@
 	(mode_load_gameinfo), client/common/client.h (build_add),
 	common/buildrec.h (struct BuildRec), server/pregame.c (mode_pre_game):
 	Reconnect fix when something was built in the current turn.
+	* common/game-settings.c, common/game-settings.h,
+	common/select-game.c, common/select-game.h, common/Makefile.am: New
+	Gtk widgets for server and client.
+	* client/gtk/connect.c: New connection scheme.
+	* client/gtk/frontend.h: Cleanup connect_get_port_str.
+	* client/gtk/gui.c: Replaced some deprecated icons.
+	* client/gtk/name.c: Replaced deprecated code.
+	* client/gtk/offline.c: Moved code regarding settings to
+	client/gtk/connect.c.
+	* meta-server/gnocatan-meta-server.c (debug): Prototype fix.
+	* server/gnocatan-server-gtk.c: Replaced deprecated code, added
+	tooltips, used new widgets
+	* server/player.c, server/server.h: Some cleanup.
 	
 2004-04-25 0.8.1.26  Tobias Jakobs <tobias.jakobs@web.de>
 	* client/gtk/data/splash.png: New image (400x400 pixels)

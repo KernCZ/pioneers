@@ -113,7 +113,7 @@ static void client_printf(Client *client, const char *fmt, ...);
 /* #define LOG */
 
 #ifdef LOG
-static void debug(gchar *fmt, ...)
+static void debug(const gchar *fmt, ...)
 {
 	static FILE *fp;
 	va_list ap;

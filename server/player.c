@@ -301,7 +301,6 @@ void player_setup(Player *player, int playernum, gchar *name,
 		game->num_players++;
 		meta_report_num_players(game->num_players);
 	}
-	/* gui_ui_enable(TRUE); */
 
 	player->num_roads = 0;
 	player->num_bridges = 0;
