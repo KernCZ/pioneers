@@ -56,10 +56,26 @@ accepted messages in state UNKNOWN and CLIENT:
    MS remembers client version of MS proto
  - "listservers"
    set state to CLIENT
-   send list of known servers; format:
+   send list of known servers
+   the format is a block of the following form for each known server:
+     "server"
+     "host=FOO"
+     "port=FOO"
+     "version=FOO"
+     "max=FOO"
+     "curr=FOO"
+     "vpoints=FOO" if client MS proto version >= 1.0
+     "sevenrule=FOO" if client MS proto version >= 1.0
+     "terrain=FOO" if client MS proto version >= 1.0
+     "title=FOO" if client MS proto version >= 1.0
+     "map=FOO" if client MS proto version < 1.0
+     "comment=FOO" if client MS proto version < 1.0
+     "end"
  - "listtypes"
    set state to CLIENT
-   send list of known games types; format:
+   send list of known games types
+   the format is a block of the following form for each known game:
+     "type=FOO"
  - "create TERRAIN MAXPLAYERS VPOINTS SEVENSRULE AIPLAYERS GAMENAME"
    set state to CLIENT
    tries to start new server with received parameters
