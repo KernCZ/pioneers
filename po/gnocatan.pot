@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2003-01-09 09:42-0600\n"
+"POT-Creation-Date: 2003-01-10 00:55-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -278,7 +278,7 @@ msgstr ""
 msgid " %s.\n"
 msgstr ""
 
-#: ai/player.c:20 client/gui.c:921 client/legend.c:172 client/player.c:33
+#: ai/player.c:20 client/gui.c:912 client/legend.c:172 client/player.c:33
 msgid "Settlement"
 msgstr ""
 
@@ -286,7 +286,7 @@ msgstr ""
 msgid "Settlements"
 msgstr ""
 
-#: ai/player.c:21 client/gui.c:924 client/legend.c:173 client/player.c:34
+#: ai/player.c:21 client/gui.c:915 client/legend.c:173 client/player.c:34
 msgid "City"
 msgstr ""
 
@@ -623,7 +623,7 @@ msgstr ""
 msgid "Players Connected"
 msgstr ""
 
-#: client/admin-gtk.c:347 client/gui.c:251 server/gnocatan-server-gtk.c:520
+#: client/admin-gtk.c:347 client/gui.c:252 server/gnocatan-server-gtk.c:520
 msgid "Messages"
 msgstr ""
 
@@ -644,7 +644,7 @@ msgstr ""
 msgid "%s"
 msgstr ""
 
-#: client/chat.c:69 client/gui.c:995 client/settingscreen.c:56
+#: client/chat.c:69 client/gui.c:986 client/settingscreen.c:56
 msgid " "
 msgstr ""
 
@@ -665,7 +665,7 @@ msgid "Idle"
 msgstr ""
 
 #: client/client.c:160 client/client.c:625 client/client.c:634
-#: client/gui.c:1003
+#: client/gui.c:994
 msgid "Offline"
 msgstr ""
 
@@ -855,7 +855,7 @@ msgstr ""
 msgid "Create New Server"
 msgstr ""
 
-#: client/connect.c:860 client/gui.c:791
+#: client/connect.c:860 client/gui.c:792
 msgid "Connect to Gnocatan server"
 msgstr ""
 
@@ -945,196 +945,196 @@ msgstr ""
 msgid "All praise %s, Lord of All Gnocatan!"
 msgstr ""
 
-#: client/gui.c:103
+#: client/gui.c:104
 #, c-format
 msgid "Points Needed to Win: %i"
 msgstr ""
 
-#: client/gui.c:334
+#: client/gui.c:335
 msgid "Map"
 msgstr ""
 
-#: client/gui.c:339 client/gui.c:909
+#: client/gui.c:340 client/gui.c:900
 msgid "Trade"
 msgstr ""
 
-#: client/gui.c:346 client/quote.c:603
+#: client/gui.c:347 client/quote.c:603
 msgid "Quote"
 msgstr ""
 
-#: client/gui.c:353 client/legend.c:191
+#: client/gui.c:354 client/legend.c:191
 msgid "Legend"
 msgstr ""
 
-#: client/gui.c:361
+#: client/gui.c:362
 msgid "Welcome to Gnocatan"
 msgstr ""
 
-#: client/gui.c:603
+#: client/gui.c:604
 msgid "Appearance"
 msgstr ""
 
-#: client/gui.c:605
+#: client/gui.c:606
 msgid "Show Toolbar As"
 msgstr ""
 
-#: client/gui.c:609
+#: client/gui.c:610
 msgid "Text Only"
 msgstr ""
 
-#: client/gui.c:610
+#: client/gui.c:611
 msgid "Icons Only"
 msgstr ""
 
-#: client/gui.c:611
+#: client/gui.c:612
 msgid "Both Icons and Text"
 msgstr ""
 
-#: client/gui.c:613
+#: client/gui.c:614
 msgid "Display legend as page besides map?"
 msgstr ""
 
-#: client/gui.c:617
+#: client/gui.c:618
 msgid "Theme:"
 msgstr ""
 
-#: client/gui.c:652
+#: client/gui.c:653
 msgid "Color Settings"
 msgstr ""
 
-#: client/gui.c:656
+#: client/gui.c:657
 msgid "Display messages in colors?"
 msgstr ""
 
-#: client/gui.c:657
+#: client/gui.c:658
 msgid "Display chat messages in user's color?"
 msgstr ""
 
-#: client/gui.c:658
+#: client/gui.c:659
 msgid "Display player summary with colors?"
 msgstr ""
 
-#: client/gui.c:791
+#: client/gui.c:792
 msgid "_Connect"
 msgstr ""
 
-#: client/gui.c:796
+#: client/gui.c:797
 msgid "_Admin"
 msgstr ""
 
-#: client/gui.c:796
+#: client/gui.c:797
 msgid "Administer Gnocatan server"
 msgstr ""
 
-#: client/gui.c:801
+#: client/gui.c:802
 msgid "Player _Name"
 msgstr ""
 
-#: client/gui.c:801
+#: client/gui.c:802
 msgid "Change your player name"
 msgstr ""
 
-#: client/gui.c:805
+#: client/gui.c:806
 msgid "_Settings"
 msgstr ""
 
-#: client/gui.c:805
+#: client/gui.c:806
 msgid "Gnocatan client settings"
 msgstr ""
 
-#: client/gui.c:808 server/gnocatan-server-gtk.c:43
+#: client/gui.c:809 server/gnocatan-server-gtk.c:43
 msgid "E_xit"
 msgstr ""
 
-#: client/gui.c:808 server/gnocatan-server-gtk.c:43
+#: client/gui.c:809 server/gnocatan-server-gtk.c:43
 msgid "Exit the program"
 msgstr ""
 
-#: client/gui.c:833
+#: client/gui.c:824
 msgid "The Gnocatan Game"
 msgstr ""
 
-#: client/gui.c:834 server/gnocatan-server-gtk.c:59
+#: client/gui.c:825 server/gnocatan-server-gtk.c:59
 msgid "(C) 2002 the Free Software Foundation"
 msgstr ""
 
-#: client/gui.c:836 server/gnocatan-server-gtk.c:61
+#: client/gui.c:827 server/gnocatan-server-gtk.c:61
 msgid "Gnocatan is based upon the excellent Settlers of Catan board game"
 msgstr ""
 
-#: client/gui.c:858
+#: client/gui.c:849
 msgid "_Legend"
 msgstr ""
 
-#: client/gui.c:858
+#: client/gui.c:849
 msgid "Terrain legend and building costs"
 msgstr ""
 
-#: client/gui.c:861
+#: client/gui.c:852
 msgid "_Game Settings"
 msgstr ""
 
-#: client/gui.c:861
+#: client/gui.c:852
 msgid "Settings for the current game"
 msgstr ""
 
-#: client/gui.c:864
+#: client/gui.c:855
 msgid "_Dice Histogram"
 msgstr ""
 
-#: client/gui.c:864
+#: client/gui.c:855
 msgid "Histogram of dice rolls"
 msgstr ""
 
-#: client/gui.c:867
+#: client/gui.c:858
 msgid "_About Gnocatan"
 msgstr ""
 
-#: client/gui.c:867
+#: client/gui.c:858
 msgid "Information about Gnocatan"
 msgstr ""
 
-#: client/gui.c:878
+#: client/gui.c:869
 msgid "_Game"
 msgstr ""
 
-#: client/gui.c:879 server/gnocatan-server-gtk.c:82
+#: client/gui.c:870 server/gnocatan-server-gtk.c:82
 msgid "_Help"
 msgstr ""
 
-#: client/gui.c:906
+#: client/gui.c:897
 msgid "Roll Dice"
 msgstr ""
 
-#: client/gui.c:912 client/legend.c:165
+#: client/gui.c:903 client/legend.c:165
 msgid "Road"
 msgstr ""
 
-#: client/gui.c:915 client/legend.c:168
+#: client/gui.c:906 client/legend.c:168
 msgid "Ship"
 msgstr ""
 
-#: client/gui.c:918 client/legend.c:171
+#: client/gui.c:909 client/legend.c:171
 msgid "Bridge"
 msgstr ""
 
-#: client/gui.c:927
+#: client/gui.c:918
 msgid "Develop"
 msgstr ""
 
-#: client/gui.c:930
+#: client/gui.c:921
 msgid "Undo"
 msgstr ""
 
-#: client/gui.c:933
+#: client/gui.c:924
 msgid "Finish"
 msgstr ""
 
-#: client/gui.c:1015
+#: client/gui.c:1006
 msgid "Welcome to Gnocatan!"
 msgstr ""
 
-#: client/gui.c:1048
+#: client/gui.c:1039
 msgid "Gnocatan"
 msgstr ""
 
