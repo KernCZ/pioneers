@@ -41,7 +41,6 @@ static void build_city_cb (MapElement node, MapElement extra);
 static GuiState previous_state;
 
 static gboolean gold_busy = FALSE, discard_busy = FALSE, robber_busy = FALSE;
-static gboolean have_turn = FALSE;
 
 static void frontend_state_idle (UNUSED(GuiEvent event))
 {
@@ -316,7 +315,6 @@ static void frontend_state_turn (GuiEvent event)
 		cb_buy_develop ();
 		return;
 	case GUI_FINISH:
-		have_turn = FALSE;
 		gui_cursor_none(); /* Finish single click build */
 		cb_end_turn ();
 		set_gui_state (frontend_state_idle);
@@ -330,13 +328,12 @@ void frontend_turn ()
 {
 	/* if it already is our turn, just update the gui (maybe something
 	 * happened), but don't beep */
-	if (have_turn) {
+	if (frontend_state_turn == get_gui_state()) {
 		/* this is in the if, because it gets called from set_gui_state
 		 * anyway. */
 		frontend_gui_update ();
 		return;
 	}
-	have_turn = TRUE;
 	set_gui_state (frontend_state_turn);
 	gdk_beep ();
 }

@@ -1,13 +1,16 @@
 2004-01-09  0.8.1.48  Roland Clobus <rcobus@bigfoot.com>
-	* common/buildrec.c, common/map.h, common/map_query.c: Disallow the
-	building of a road during setup phase when the settlement cannot be
-	built.
+	* common/buildrec.c, common/map.h, common/map_query.c: Bug #1094484:
+	Disallow the building of a road during setup phase when the settlement
+	cannot be built.
 	* common/network.c, meta-server/gnocatan-meta-server.c: Minimal system
 	include files.
 	* server/buildutil.c, server/develop.c, server/discard.c,
 	server/gold.c, server/meta.c, server/player.c, server/pregame.c,
 	server/resource.c, server/robber.c, server/server.c, server/trade.c,
 	server/turn.c: Minimal list of include files.
+	* client/gtk/interface.c: Bug #1027642, Bug #942472: Player did not
+	get a turn after the setup phase in a second game with the same
+	client.
 	
 2004-12-25  0.8.1.47  Etan Reisner <deryni@eden.rutgers.edu>
 	* server/gtk/gnocatan-server-gtk.c, client/gtk/gui.c: Replaced GNOME
