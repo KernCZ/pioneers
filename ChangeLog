@@ -3,6 +3,7 @@
 	reconnect info.
 	* common/game.c, server/player.c, server/pregame.c, server/server.h:
 	Bugfixes.
+	* common/game.c, server/player.c, server/pregame.c: Bugfixes.
 
 2003-10-12  Roland Clobus <rclobus@bigfoot.com>
 	* client/admin_gtk.c, client/connect.c, common/network.c,

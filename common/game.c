@@ -176,7 +176,7 @@ static gboolean find_no_setup (Map *map, Hex *hex, struct nosetup_t *data)
 		if (node->no_setup) {
 			if (node->x != hex->x || node->y != hex->y) continue;
 			gchar buff[512];
-			snprintf (buff, sizeof(buff), "nosetup %d %d %d\n",
+			snprintf (buff, sizeof(buff), "nosetup %d %d %d",
 					node->x, node->y, node->pos);
 			data->func (data->user_data, buff);
 		}

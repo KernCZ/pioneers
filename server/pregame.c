@@ -47,6 +47,12 @@ static void build_add(Player *player, BuildType type, gint x, gint y, gint pos)
 	}
 
 	if (type == BUILD_ROAD) {
+		/* Make sure that there are some roads left to use */
+		if (player->num_roads == game->params->num_build_type[BUILD_ROAD]) {
+			sm_send(sm, "ERR too-many road\n");
+			return;
+		}
+
 		/* Building a road, make sure it is next to a
 		 * settlement/road
 		 */
@@ -61,6 +67,12 @@ static void build_add(Player *player, BuildType type, gint x, gint y, gint pos)
 	}
 
 	if (type == BUILD_BRIDGE) {
+		/* Make sure that there are some bridges left to use */
+		if (player->num_bridges == game->params->num_build_type[BUILD_BRIDGE]) {
+			sm_send(sm, "ERR too-many bridge\n");
+			return;
+		}
+
 		/* Building a bridge, make sure it is next to a
 		 * settlement/road
 		 */
@@ -75,6 +87,12 @@ static void build_add(Player *player, BuildType type, gint x, gint y, gint pos)
 	}
 
 	if (type == BUILD_SHIP) {
+		/* Make sure that there are some ships left to use */
+		if (player->num_ships == game->params->num_build_type[BUILD_SHIP]) {
+			sm_send(sm, "ERR too-many ship\n");
+			return;
+		}
+
 		/* Building a ship, make sure it is next to a
 		 * settlement/ship
 		 */

@@ -306,7 +306,7 @@ void player_setup(Player *player, int playernum, gchar *name,
 		if (player->num >= game->params->num_players) {
 			gint num = 0;
 			do {
-				sprintf (nm, "Viewer %d", num);
+				sprintf (nm, "Viewer %d", num++);
 			} while (player_by_name (game, nm) != NULL);
 			namep = nm;
 		} else {
