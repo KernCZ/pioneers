@@ -29,6 +29,7 @@ static void add_setting_desc(GtkWidget *table, gint row, gint col, gchar *desc)
 			 col, col + 1, row, row + 1,
 			 (GtkAttachOptions)GTK_FILL,
 			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 }
 
 static void add_setting_val(GtkWidget *table, gint row, gint col, gint type,
@@ -45,18 +46,18 @@ static void add_setting_val(GtkWidget *table, gint row, gint col, gint type,
 		
 	case TYPE_BOOL:
 		if( int_val != 0 ) {
-			g_snprintf(label_var, sizeof(label_var), "Yes");
+			g_snprintf(label_var, sizeof(label_var), _("Yes"));
 		} else {
-			g_snprintf(label_var, sizeof(label_var), "No");
+			g_snprintf(label_var, sizeof(label_var), _("No"));
 		}
 		break;
 	case TYPE_STRING:
-		if( char_val == NULL ) { char_val = " "; }
+		if( char_val == NULL ) { char_val = _(" "); }
 		g_snprintf(label_var, sizeof(label_var), "%s", char_val);
 		break;
 	
 	default:
-		g_snprintf(label_var, sizeof(label_var), "Unknown");
+		g_snprintf(label_var, sizeof(label_var), _("Unknown"));
 		break;
 	}
 	
@@ -94,7 +95,7 @@ GtkWidget *settings_create_dlg()
 
 	if( game_params == NULL )
 	{
-		label = gtk_label_new("No game in progress...");
+		label = gtk_label_new(_("No game in progress..."));
 		gtk_box_pack_start(GTK_BOX(dlg_vbox), label, TRUE, TRUE, 0);
 		gtk_widget_show(label);
 	        gtk_widget_show(settings_dlg);
@@ -103,7 +104,7 @@ GtkWidget *settings_create_dlg()
 		return settings_dlg;
 	}
 
-	hbox = gtk_hbox_new(FALSE, 5);
+	hbox = gtk_hbox_new(TRUE, 5);
 	gtk_widget_show(hbox);
 	gtk_box_pack_start(GTK_BOX(dlg_vbox), hbox, TRUE, TRUE, 0);
 	gtk_container_border_width(GTK_CONTAINER(hbox), 5);
@@ -112,7 +113,7 @@ GtkWidget *settings_create_dlg()
 	gtk_widget_show(vbox);
 	gtk_box_pack_start(GTK_BOX(hbox), vbox, FALSE, TRUE, 0);
 
-	frame = gtk_frame_new("General Settings");
+	frame = gtk_frame_new(_("General Settings"));
 	gtk_widget_show(frame);
 	gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, TRUE, 0);
 
@@ -123,20 +124,20 @@ GtkWidget *settings_create_dlg()
 	gtk_table_set_row_spacings(GTK_TABLE(table), 3);
 	gtk_table_set_col_spacings(GTK_TABLE(table), 5);
 
-	add_setting_desc(table, 0, 0, "Number of players:");
+	add_setting_desc(table, 0, 0, _("Number of players:"));
 	add_setting_val(table, 0, 1, TYPE_NUM, game_params->num_players, NULL);
-	add_setting_desc(table, 1, 0, "Victory Point Target:");
+	add_setting_desc(table, 1, 0, _("Victory Point Target:"));
 	add_setting_val(table, 1, 1, TYPE_NUM, game_params->victory_points, NULL);
-	add_setting_desc(table, 2, 0, "Random Terrain?");
+	add_setting_desc(table, 2, 0, _("Random Terrain?"));
 	add_setting_val(table, 2, 1, TYPE_BOOL, game_params->random_terrain, NULL);
-	add_setting_desc(table, 3, 0, "Interplayer Trading Allowed?");
+	add_setting_desc(table, 3, 0, _("Interplayer Trading Allowed?"));
 	add_setting_val(table, 3, 1, TYPE_BOOL, game_params->domestic_trade, NULL);
-	add_setting_desc(table, 4, 0, "Trading allowed only before build/buy?");
+	add_setting_desc(table, 4, 0, _("Trading allowed only before build/buy?"));
 	add_setting_val(table, 4, 1, TYPE_BOOL, game_params->strict_trade, NULL);
-	add_setting_desc(table, 5, 0, "Amount of Each Resource:");
+	add_setting_desc(table, 5, 0, _("Amount of Each Resource:"));
 	add_setting_val(table, 5, 1, TYPE_NUM, game_params->resource_count, NULL);
 
-	frame = gtk_frame_new("Building Quotas");
+	frame = gtk_frame_new(_("Building Quotas"));
 	gtk_widget_show(frame);
 	gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, TRUE, 0);
 	
@@ -147,22 +148,22 @@ GtkWidget *settings_create_dlg()
 	gtk_table_set_row_spacings(GTK_TABLE(table), 3);
 	gtk_table_set_col_spacings(GTK_TABLE(table), 5);
 
-	add_setting_desc(table, 0, 0, "Roads:");
+	add_setting_desc(table, 0, 0, _("Roads:"));
 	add_setting_val(table, 0, 1, TYPE_NUM, game_params->num_build_type[BUILD_ROAD], NULL);
-	add_setting_desc(table, 1, 0, "Settlements:");
+	add_setting_desc(table, 1, 0, _("Settlements:"));
 	add_setting_val(table, 1, 1, TYPE_NUM, game_params->num_build_type[BUILD_SETTLEMENT], NULL);
-	add_setting_desc(table, 2, 0, "Cities:");
+	add_setting_desc(table, 2, 0, _("Cities:"));
 	add_setting_val(table, 2, 1, TYPE_NUM, game_params->num_build_type[BUILD_CITY], NULL);
-	add_setting_desc(table, 3, 0, "Ships:");
+	add_setting_desc(table, 3, 0, _("Ships:"));
 	add_setting_val(table, 3, 1, TYPE_NUM, game_params->num_build_type[BUILD_SHIP], NULL);
-	add_setting_desc(table, 4, 0, "Bridges:");
+	add_setting_desc(table, 4, 0, _("Bridges:"));
 	add_setting_val(table, 4, 1, TYPE_NUM, game_params->num_build_type[BUILD_BRIDGE], NULL);
 
 	vbox = gtk_vbox_new(FALSE, 5);
 	gtk_widget_show(vbox);
 	gtk_box_pack_start(GTK_BOX(hbox), vbox, FALSE, TRUE, 0);
 
-	frame = gtk_frame_new("Development Card Deck");
+	frame = gtk_frame_new(_("Development Card Deck"));
 	gtk_widget_show(frame);
 	gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, TRUE, 0);
 
@@ -173,23 +174,23 @@ GtkWidget *settings_create_dlg()
 	gtk_table_set_row_spacings(GTK_TABLE(table), 3);
 	gtk_table_set_col_spacings(GTK_TABLE(table), 5);
 
-	add_setting_desc(table, 0, 0, "Road Building Cards:");
+	add_setting_desc(table, 0, 0, _("Road Building Cards:"));
 	add_setting_val(table, 0, 1, TYPE_NUM, game_params->num_develop_type[DEVEL_ROAD_BUILDING], NULL);
-	add_setting_desc(table, 1, 0, "Monopoly Cards:");
+	add_setting_desc(table, 1, 0, _("Monopoly Cards:"));
 	add_setting_val(table, 1, 1, TYPE_NUM, game_params->num_develop_type[DEVEL_MONOPOLY], NULL);
-	add_setting_desc(table, 2, 0, "Year of Plenty Cards:");
+	add_setting_desc(table, 2, 0, _("Year of Plenty Cards:"));
 	add_setting_val(table, 2, 1, TYPE_NUM, game_params->num_develop_type[DEVEL_YEAR_OF_PLENTY], NULL);
-	add_setting_desc(table, 3, 0, "Chapel Cards:");
+	add_setting_desc(table, 3, 0, _("Chapel Cards:"));
 	add_setting_val(table, 3, 1, TYPE_NUM, game_params->num_develop_type[DEVEL_CHAPEL], NULL);
-	add_setting_desc(table, 4, 0, "University of Catan Cards:");
+	add_setting_desc(table, 4, 0, _("University of Catan Cards:"));
 	add_setting_val(table, 4, 1, TYPE_NUM, game_params->num_develop_type[DEVEL_UNIVERSITY_OF_CATAN], NULL);
-	add_setting_desc(table, 5, 0, "Governers House Cards:");
+	add_setting_desc(table, 5, 0, _("Governers House Cards:"));
 	add_setting_val(table, 5, 1, TYPE_NUM, game_params->num_develop_type[DEVEL_GOVERNORS_HOUSE], NULL);
-	add_setting_desc(table, 6, 0, "Library Cards:");
+	add_setting_desc(table, 6, 0, _("Library Cards:"));
 	add_setting_val(table, 6, 1, TYPE_NUM, game_params->num_develop_type[DEVEL_LIBRARY], NULL);
-	add_setting_desc(table, 7, 0, "Market Cards:");
+	add_setting_desc(table, 7, 0, _("Market Cards:"));
 	add_setting_val(table, 7, 1, TYPE_NUM, game_params->num_develop_type[DEVEL_MARKET], NULL);
-	add_setting_desc(table, 8, 0, "Soldier Cards:");
+	add_setting_desc(table, 8, 0, _("Soldier Cards:"));
 	add_setting_val(table, 8, 1, TYPE_NUM, game_params->num_develop_type[DEVEL_SOLDIER], NULL);
 
         gtk_widget_show(settings_dlg);

@@ -1,3 +1,8 @@
+2000-08-21  Andy Heroff <aheroff@mediaone.net>
+
+	* client/settingscreen.c: Modified justifications. Added i8n calls
+	  to all text.
+
 2000-08-21  Steve Langasek <vorlon@dodds.net>
 
 	* server/player.c, client/client.c, acconfig.h, configure.in:
