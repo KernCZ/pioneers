@@ -1,3 +1,11 @@
+2003-10-29  Roman Hodek  <roman@hodek.net>
+
+	* po/de.po: removed fuzzy tags, cared for two untranslated msgs,
+	made some items sound better in German.
+	* ai/monopoly.c (monopoly_player), client/monopoly.c
+	(monopoly_create_dlg): joined the two messages for better
+	translations, needed a tmp string for that.
+
 2003-10-28  Roman Hodek  <roman@hodek.net>
 
 	* server/gnocatan-server-console.c (main): New option -n to set
