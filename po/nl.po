@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.8.1.52\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-02-03 23:01+0100\n"
+"POT-Creation-Date: 2005-03-02 20:49+0100\n"
 "PO-Revision-Date: 2004-01-26 16:51+0100\n"
 "Last-Translator: Roland Clobus <rclobus@bigfoot.com>\n"
 "Language-Team: Bas Wijnen <b.wijnen@phys.rug.nl> Roland Clobus "
@@ -1553,19 +1553,19 @@ msgstr "H"
 msgid "Dice Histogram"
 msgstr "Dobbelsteenhistogram"
 
-#: client/gtk/interface.c:647
+#: client/gtk/interface.c:651
 msgid "Select the ship to steal from."
 msgstr "Kies een schip om te bestelen."
 
-#: client/gtk/interface.c:648
+#: client/gtk/interface.c:652
 msgid "Select the ship to steal from"
 msgstr "Kies een schip om te bestelen"
 
-#: client/gtk/interface.c:664
+#: client/gtk/interface.c:668
 msgid "Select the building to steal from."
 msgstr "Kies een gebouw om te bestelen"
 
-#: client/gtk/interface.c:665
+#: client/gtk/interface.c:669
 msgid "Select the building to steal from"
 msgstr "Kies een gebouw om te bestelen"
 

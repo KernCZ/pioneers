@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnocatan 0.7.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-02-03 23:01+0100\n"
+"POT-Creation-Date: 2005-03-02 20:49+0100\n"
 "PO-Revision-Date: 2003-01-25 00:08-0600\n"
 "Last-Translator: Steve Langasek <vorlon@dodds.net>\n"
 "Language-Team: Spanish <debian-l10n-spanish@lists.debian.org>\n"
@@ -1563,19 +1563,19 @@ msgstr "Ma"
 msgid "Dice Histogram"
 msgstr "Histograma de los dados"
 
-#: client/gtk/interface.c:647
+#: client/gtk/interface.c:651
 msgid "Select the ship to steal from."
 msgstr ""
 
-#: client/gtk/interface.c:648
+#: client/gtk/interface.c:652
 msgid "Select the ship to steal from"
 msgstr ""
 
-#: client/gtk/interface.c:664
+#: client/gtk/interface.c:668
 msgid "Select the building to steal from."
 msgstr "Escoge el edificio que quieres robar."
 
-#: client/gtk/interface.c:665
+#: client/gtk/interface.c:669
 msgid "Select the building to steal from"
 msgstr "Escoge el edificio que quieres robar"
 

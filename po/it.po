@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnocatan 0.8.1.32\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-02-03 23:01+0100\n"
+"POT-Creation-Date: 2005-03-02 20:49+0100\n"
 "PO-Revision-Date: 2004-07-15 21:00+0200\n"
 "Last-Translator: Giancarlo Capella <giancarlo@comm.cc>\n"
 "Language-Team: it <it@li.org>\n"
@@ -1554,19 +1554,19 @@ msgstr "Le"
 msgid "Dice Histogram"
 msgstr "Istogramma dei Tiri"
 
-#: client/gtk/interface.c:647
+#: client/gtk/interface.c:651
 msgid "Select the ship to steal from."
 msgstr "Seleziona la nave da cui rubare."
 
-#: client/gtk/interface.c:648
+#: client/gtk/interface.c:652
 msgid "Select the ship to steal from"
 msgstr "Seleziona la nave da cui rubare"
 
-#: client/gtk/interface.c:664
+#: client/gtk/interface.c:668
 msgid "Select the building to steal from."
 msgstr "Seleziona la costruzione da cui rubare."
 
-#: client/gtk/interface.c:665
+#: client/gtk/interface.c:669
 msgid "Select the building to steal from"
 msgstr "Seleziona la costruzione da cui rubare"
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnocatan 0.8.1.41\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-02-03 23:01+0100\n"
+"POT-Creation-Date: 2005-03-02 20:49+0100\n"
 "PO-Revision-Date: 2003-11-20 16:00-0600\n"
 "Last-Translator: LT-P <LT-P@lt-p.net>\n"
 "Language-Team: Français <LL@li.org>, Arnaud MALON <moko@geumeuleu.com>\n"
@@ -1552,19 +1552,19 @@ msgstr "Bois"
 msgid "Dice Histogram"
 msgstr "Histogramme des lancers de dés"
 
-#: client/gtk/interface.c:647
+#: client/gtk/interface.c:651
 msgid "Select the ship to steal from."
 msgstr "Choisissez le navire à voler."
 
-#: client/gtk/interface.c:648
+#: client/gtk/interface.c:652
 msgid "Select the ship to steal from"
 msgstr "Choisissez le navire à voler."
 
-#: client/gtk/interface.c:664
+#: client/gtk/interface.c:668
 msgid "Select the building to steal from."
 msgstr "Choisissez la construction à voler."
 
-#: client/gtk/interface.c:665
+#: client/gtk/interface.c:669
 msgid "Select the building to steal from"
 msgstr "Choisissez la construction à voler."
 
