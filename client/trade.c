@@ -225,11 +225,11 @@ void trade_format_quote(QuoteInfo *quote, gchar *desc)
 		desc += strlen(desc);
 	}
 
-	strcpy(desc, " for ");
+	strcpy(desc, _(" for "));
 	desc += strlen(desc);
 
 	if (empty_list(quote->var.d.receive))
-		strcpy(desc, "free");
+		strcpy(desc, _("free"));
 	else
 		format_list(desc, quote->var.d.receive);
 }
