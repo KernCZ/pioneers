@@ -398,7 +398,9 @@ void map_shuffle_terrain(Map * map)
 			if (hex->terrain == SEA_TERRAIN) {
 				if (hex->resource == NO_RESOURCE)
 					continue;
-				num = g_rand_int_range(g_rand_ctx, 0, num_port);
+				num =
+				    g_rand_int_range(g_rand_ctx, 0,
+						     num_port);
 				for (idx = 0; idx < numElem(port_count);
 				     idx++) {
 					num -= port_count[idx];

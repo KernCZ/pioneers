@@ -206,9 +206,7 @@ gboolean server_startup(GameParams * params, const gchar * hostname,
 	g_rand_ctx = g_rand_new_with_seed(randomseed);
 	log_message(MSG_INFO, "%s #%" G_GUINT32_FORMAT ".%s.%03d\n",
 		    /* Server: preparing game #..... */
-		    _("Preparing game"), randomseed,
-		    "G",
-		    get_rand(1000));
+		    _("Preparing game"), randomseed, "G", get_rand(1000));
 
 	curr_game = game_new(params);
 	g_assert(curr_game->server_port == NULL);

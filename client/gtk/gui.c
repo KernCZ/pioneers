@@ -770,8 +770,7 @@ static void preferences_cb(UNUSED(GtkWidget * widget),
 	gtk_widget_show(theme_label);
 
 	for (i = 0, theme_elt = theme_get_list();
-	     theme_elt != NULL;
-	     ++i, theme_elt = g_list_next(theme_elt)) {
+	     theme_elt != NULL; ++i, theme_elt = g_list_next(theme_elt)) {
 		MapTheme *theme = theme_elt->data;
 		gtk_combo_box_append_text(GTK_COMBO_BOX(theme_list),
 					  theme->name);

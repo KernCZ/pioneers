@@ -424,7 +424,7 @@ static void client_create_new_server(Client * client, gchar * line)
 	unsigned int n;
 	GList *list;
 	GSpawnFlags spawn_flags = G_SPAWN_STDOUT_TO_DEV_NULL |
-				  G_SPAWN_STDERR_TO_DEV_NULL;
+	    G_SPAWN_STDERR_TO_DEV_NULL;
 	gchar *child_argv[32];
 	GError *error;
 

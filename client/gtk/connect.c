@@ -216,9 +216,8 @@ static void show_waiting_box(const gchar * message, const gchar * server,
 			     const gchar * port)
 {
 	if (meta_dlg) {
-		gchar *s =
-		    g_strdup_printf(_("Meta-server at %s, port %s"),
-				    server, port);
+		gchar *s = g_strdup_printf(_("Meta-server at %s, port %s"),
+					   server, port);
 		gtk_label_set_text(GTK_LABEL(server_status), s);
 		g_free(s);
 	}
@@ -693,7 +692,7 @@ static void launch_server_gtk(UNUSED(GtkWidget * widget),
 {
 	gchar *child_argv[3];
 	GSpawnFlags flags = G_SPAWN_STDOUT_TO_DEV_NULL |
-			    G_SPAWN_STDERR_TO_DEV_NULL;
+	    G_SPAWN_STDERR_TO_DEV_NULL;
 	GError *error;
 	gint i;
 
@@ -1255,8 +1254,7 @@ static void update_recent_servers_list(void)
 	} while (!done);
 }
 
-static void host_list_select_cb(GtkWidget *widget,
-				gpointer user_data)
+static void host_list_select_cb(GtkWidget * widget, gpointer user_data)
 {
 	GPtrArray *host_entries = user_data;
 	gint index;

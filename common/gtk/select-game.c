@@ -28,7 +28,7 @@ enum {
 
 static void select_game_class_init(SelectGameClass * klass);
 static void select_game_init(SelectGame * sg);
-static void select_game_item_changed(GtkWidget *widget, SelectGame *sg);
+static void select_game_item_changed(GtkWidget * widget, SelectGame * sg);
 
 /* All signals */
 static guint select_game_signals[LAST_SIGNAL] = { 0 };
@@ -128,13 +128,15 @@ void select_game_add(SelectGame * sg, const gchar * game_title)
 					 sg->game_names->len - 1);
 }
 
-static void select_game_item_changed(UNUSED(GtkWidget *widget), SelectGame *sg)
+static void select_game_item_changed(UNUSED(GtkWidget * widget),
+				     SelectGame * sg)
 {
 	g_signal_emit(G_OBJECT(sg), select_game_signals[ACTIVATE], 0);
 }
 
 const gchar *select_game_get_active(SelectGame * sg)
 {
-	gint index = gtk_combo_box_get_active(GTK_COMBO_BOX(sg->combo_box));
+	gint index =
+	    gtk_combo_box_get_active(GTK_COMBO_BOX(sg->combo_box));
 	return g_ptr_array_index(sg->game_names, index);
 }
