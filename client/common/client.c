@@ -1208,15 +1208,23 @@ static gboolean mode_wait_for_robber(StateMachine *sm, gint event)
 
 static gboolean mode_road_building(StateMachine *sm, gint event)
 {
+	gint build_amount; /* The amount of available 'roads' */
+
 	sm_state_name(sm, "mode_road_building");
 	switch (event) {
 	case SM_ENTER:
 		callback_mode = MODE_ROAD_BUILD;
-		callbacks.roadbuilding ( (stock_num_roads () + stock_num_ships () + stock_num_bridges () >= 2) ? 2 : 1);
-		if (stock_num_roads() + stock_num_ships () + stock_num_bridges () >= 2)
-				callbacks.instructions (_("Build two road segments."));
-			else
-				callbacks.instructions (_("Build a road segment."));
+		/* Less than 1 road will never occur, because the server will
+		 * not accept the development card to be played */
+		build_amount = CLAMP(stock_num_roads()
+				+ stock_num_ships()
+				+ stock_num_bridges()
+				+ build_count_edges(), 1, 2);
+		callbacks.roadbuilding (build_amount - build_count_edges());
+		if (build_amount == 2)
+			callbacks.instructions(_("Build two road segments."));
+		else
+			callbacks.instructions(_("Build a road segment."));
 		break;
 	case SM_RECV:
 		if (check_other_players(sm))

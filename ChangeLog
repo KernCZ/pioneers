@@ -1,3 +1,8 @@
+2004-02-08 0.8.1.19  Bas Wijnen <b.wijnen@phys.rug.nl>, Roland Clobus <rclobus@bigfoot.com>
+
+	* client/common/client.c (mode_road_building): Changed interpretation
+	of argument of callbacks.roadbuilding to facilitate AI programs.
+
 2004-02-08 0.8.1.18  Bas Wijnen <b.wijnen@phys.rug.nl>
 	* client/callback.h, client/common/callback.c, common/state.c,
 	common/state.h: Added cb_disconnect and sm_close
