@@ -5,6 +5,13 @@
 	* client/gtk/frontend.c: Reenabled the workaround for a Gtk+ bug.
 	* client/common/player.c: A leaving player is a normal message, not an
 	error message.
+	* client/common/client.c, client/gtk/interface.c, server/discard.c,
+	server/pregame.c, server/server.h: Fixed reconnect in state DISCARD
+	and YOUAREROBBER.
+	* client/gtk/discard.c: Using the new resource-table widget, and
+	removed deprecated gtk_clist.
+	* client/gtk/frontend.h, client/gtk/player.c: Made player_create_icon
+	accessible to other source files.
 
 2004-11-28  0.8.1.44  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/gui.h: Fix for the macro that would have bad side effects

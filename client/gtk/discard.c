@@ -3,6 +3,7 @@
  *
  * Copyright (C) 1999 the Free Software Foundation
  * Copyright (C) 2003 Bas Wijnen <b.wijnen@phys.rug.nl>
+ * Copyright (C) 2004 Roland Clobus <rclobus@bigfoot.com>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,23 +22,31 @@
 
 #include "config.h"
 #include "frontend.h"
+#include "resource-table.h"
 
-static GtkWidget *discard_clist; /* list of players who must discard */
+enum {
+	DISCARD_COLUMN_PLAYER_ICON, /**< Player icon */
+	DISCARD_COLUMN_PLAYER_NUM,  /**< Internal: player number */
+	DISCARD_COLUMN_PLAYER_NAME, /**< Player name */
+	DISCARD_COLUMN_AMOUNT,      /**< The amount to discard */
+	DISCARD_COLUMN_LAST
+	};
 
-typedef struct {
-	gint num;
-	gint discard;
-	GtkWidget *current_entry;
-	GtkWidget *less;
-	GtkWidget *more;
-	GtkWidget *discard_entry;
-} DiscardInfo;
+static GtkListStore *discard_store; /**< the discard data */
+static GtkWidget *discard_widget;  /**< the discard widget */
+
+/** The summary line is found here */
+static GtkTreeIter discard_found_iter;
+/** Has the summary line been found ? */
+enum {
+	STORE_MATCH_EXACT,
+	STORE_MATCH_INSERT_BEFORE,
+	STORE_NO_MATCH
+	} discard_found_flag;
 
 static struct {
 	GtkWidget *dlg;
-	GtkWidget *total_entry;
-	DiscardInfo res[NO_RESOURCE];
-	gint target;
+	GtkWidget *resource_widget;
 } discard;
 
 /* Local function prototypes */
@@ -46,134 +55,18 @@ static GtkWidget *discard_create_dlg(gint num);
 
 gboolean can_discard()
 {
-	gint total;
-	gint idx;
-	DiscardInfo *info;
-
 	if (discard.dlg == NULL)
 		return FALSE;
 
-	total = 0;
-	for (idx = 0, info = discard.res; idx < numElem(discard.res);
-	     idx++, info++)
-		total += info->discard;
-
-	return total == discard.target;
+	return resource_table_is_total_reached(
+			RESOURCETABLE(discard.resource_widget));
 }
 
-static void format_info(DiscardInfo *info)
-{
-	char buff[16];
-
-	sprintf(buff, "%d", info->num - info->discard);
-	gtk_entry_set_text(GTK_ENTRY(info->current_entry), buff);
-	sprintf(buff, "%d", info->discard);
-	gtk_entry_set_text(GTK_ENTRY(info->discard_entry), buff);
-}
-
-static void check_total(void)
-{
-	gint idx;
-	gint total;
-	DiscardInfo *info;
-	char buff[16];
-
-	total = 0;
-	for (idx = 0, info = discard.res; idx < numElem(discard.res);
-	     idx++, info++)
-		total += info->discard;
-
-	sprintf(buff, "%d", total);
-	gtk_entry_set_text(GTK_ENTRY(discard.total_entry), buff);
-
-	for (idx = 0, info = discard.res; idx < numElem(discard.res);
-	     idx++, info++) {
-		gtk_widget_set_sensitive(info->less, info->discard > 0);
-		gtk_widget_set_sensitive(info->more,
-					 info->discard < info->num
-					 && total != discard.target);
-	}
-
-	frontend_gui_update ();
-}
-
-static void less_resource_cb(UNUSED(void *widget), DiscardInfo *info)
-{
-	info->discard--;
-	format_info(info);
-
-	check_total();
-}
-
-static void more_resource_cb(UNUSED(void *widget), DiscardInfo *info)
-{
-	info->discard++;
-	format_info(info);
-
-	check_total();
-}
-
-static void add_resource_table_row(GtkWidget *table,
-				   gint row, Resource resource)
-{
-	GtkWidget *lbl;
-	GtkWidget *entry;
-	GtkWidget *arrow;
-	DiscardInfo *info;
-
-	info = &discard.res[resource];
-	info->num = resource_asset(resource);
-	info->discard = 0;
-
-	lbl = gtk_label_new(resource_name(resource, TRUE));
-	gtk_widget_show(lbl);
-	gtk_table_attach(GTK_TABLE(table), lbl, 0, 1, row, row + 1,
-			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL,
-			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
-	gtk_misc_set_alignment(GTK_MISC(lbl), 1, 0.5);
-
-	entry = info->current_entry = gtk_entry_new();
-	gtk_widget_show(entry);
-	gtk_table_attach(GTK_TABLE(table), entry, 1, 2, row, row + 1,
-			 (GtkAttachOptions)GTK_FILL,
-			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
-	gtk_widget_set_usize(entry, 30, -1);
-	gtk_entry_set_editable(GTK_ENTRY(entry), FALSE);
-
-	arrow = info->less = gtk_button_new_with_label(_("<less"));
-	gtk_widget_set_sensitive(arrow, FALSE);
-	gtk_signal_connect(GTK_OBJECT(arrow), "clicked",
-			   GTK_SIGNAL_FUNC(less_resource_cb),
-			   &discard.res[resource]);
-	gtk_widget_show(arrow);
-	gtk_table_attach(GTK_TABLE(table), arrow, 2, 3, row, row + 1,
-			 (GtkAttachOptions)GTK_FILL,
-			 (GtkAttachOptions)GTK_EXPAND, 0, 0);
-
-	arrow = info->more = gtk_button_new_with_label(_("more>"));
-	gtk_widget_set_sensitive(arrow, info->num > 0);
-	gtk_signal_connect(GTK_OBJECT(arrow), "clicked",
-			   GTK_SIGNAL_FUNC(more_resource_cb),
-			   &discard.res[resource]);
-	gtk_widget_show(arrow);
-	gtk_table_attach(GTK_TABLE(table), arrow, 3, 4, row, row + 1,
-			 (GtkAttachOptions)GTK_FILL,
-			 (GtkAttachOptions)GTK_EXPAND, 0, 0);
-
-	entry = info->discard_entry = gtk_entry_new();
-	gtk_widget_show(entry);
-	gtk_table_attach(GTK_TABLE(table), entry, 4, 5, row, row + 1,
-			 (GtkAttachOptions)GTK_FILL,
-			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
-	gtk_widget_set_usize(entry, 30, -1);
-
-	format_info(info);
-}
-
-static gboolean ignore_close(UNUSED(GtkWidget *widget),
+static void amount_changed_cb(
+		UNUSED(ResourceTable *rt), 
 		UNUSED(gpointer user_data))
 {
-	return TRUE;
+	frontend_gui_update ();
 }
 
 static GtkWidget *discard_create_dlg(gint num)
@@ -181,22 +74,20 @@ static GtkWidget *discard_create_dlg(gint num)
 	GtkWidget *dlg_vbox;
 	GtkWidget *vbox;
 	GtkWidget *lbl;
-	GtkWidget *table;
 	char buff[128];
 
-	discard.target = num;
 	discard.dlg = gtk_dialog_new_with_buttons(
 			_("Discard resources"),
 			GTK_WINDOW(app_window),
 			GTK_DIALOG_DESTROY_WITH_PARENT,
 			GTK_STOCK_OK, GTK_RESPONSE_OK,
 			NULL);
-        gtk_signal_connect(GTK_OBJECT(discard.dlg), "close",
-			   GTK_SIGNAL_FUNC(ignore_close), NULL);
-        gtk_signal_connect(GTK_OBJECT(discard.dlg), "destroy",
-			   GTK_SIGNAL_FUNC(gtk_widget_destroyed), &discard.dlg);
+        g_signal_connect(G_OBJECT(discard.dlg), "destroy",
+			G_CALLBACK(gtk_widget_destroyed), &discard.dlg);
 	gtk_widget_realize(discard.dlg);
-	gdk_window_set_functions(discard.dlg->window, GDK_FUNC_MOVE);
+	/* Disable close */
+	gdk_window_set_functions(discard.dlg->window, 
+			GDK_FUNC_ALL | GDK_FUNC_CLOSE);
 
 	dlg_vbox = GTK_DIALOG(discard.dlg)->vbox;
 	gtk_widget_show(dlg_vbox);
@@ -204,60 +95,19 @@ static GtkWidget *discard_create_dlg(gint num)
 	vbox = gtk_vbox_new(FALSE, 5);
 	gtk_widget_show(vbox);
 	gtk_box_pack_start(GTK_BOX(dlg_vbox), vbox, FALSE, TRUE, 0);
-	gtk_container_border_width(GTK_CONTAINER(vbox), 5);
+	gtk_container_set_border_width(GTK_CONTAINER(vbox), 5);
 
 	sprintf(buff, _("You must discard %d resources"), num);
-	lbl = gtk_label_new(buff);
-	gtk_widget_show(lbl);
-	gtk_box_pack_start(GTK_BOX(vbox), lbl, FALSE, TRUE, 0);
-	gtk_misc_set_alignment(GTK_MISC(lbl), 0, 0.5);
-
-	table = gtk_table_new(7, 6, FALSE);
-	gtk_widget_show(table);
-	gtk_box_pack_start(GTK_BOX(vbox), table, FALSE, TRUE, 0);
-	gtk_container_border_width(GTK_CONTAINER(table), 3);
-	gtk_table_set_row_spacings(GTK_TABLE(table), 3);
-	gtk_table_set_col_spacings(GTK_TABLE(table), 5);
-
-	lbl = gtk_label_new(_("Resources in hand"));
-	gtk_widget_show(lbl);
-	gtk_table_attach(GTK_TABLE(table), lbl, 0, 3, 0, 1,
-			 (GtkAttachOptions)GTK_FILL,
-			 (GtkAttachOptions) GTK_EXPAND | GTK_FILL, 0, 0);
-	gtk_misc_set_alignment(GTK_MISC(lbl), 0, 0.5);
-
-	lbl = gtk_label_new(_("Discards"));
-	gtk_widget_show(lbl);
-	gtk_table_attach(GTK_TABLE(table), lbl, 4, 6, 0, 1,
-			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL,
-			 (GtkAttachOptions) GTK_EXPAND | GTK_FILL, 0, 0);
-	gtk_misc_set_alignment(GTK_MISC(lbl), 0, 0.5);
-
-	add_resource_table_row(table, 1, BRICK_RESOURCE);
-	add_resource_table_row(table, 2, GRAIN_RESOURCE);
-	add_resource_table_row(table, 3, ORE_RESOURCE);
-	add_resource_table_row(table, 4, WOOL_RESOURCE);
-	add_resource_table_row(table, 5, LUMBER_RESOURCE);
-
-	lbl = gtk_label_new(_("Total discards"));
-	gtk_widget_show(lbl);
-	gtk_table_attach(GTK_TABLE(table), lbl, 0, 4, 6, 7,
-			 (GtkAttachOptions)GTK_FILL,
-			 (GtkAttachOptions) GTK_EXPAND | GTK_FILL, 0, 0);
-	gtk_misc_set_alignment(GTK_MISC(lbl), 1, 0.5);
-
-	discard.total_entry = gtk_entry_new();
-	gtk_widget_show(discard.total_entry);
-	gtk_table_attach(GTK_TABLE(table), discard.total_entry, 4, 5, 6, 7,
-			 (GtkAttachOptions)GTK_FILL,
-			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
-	gtk_widget_set_usize(discard.total_entry, 30, -1);
-	gtk_entry_set_editable(GTK_ENTRY(discard.total_entry), FALSE);
-
+	discard.resource_widget = resource_table_new(buff, FALSE, TRUE);
+	resource_table_set_total(RESOURCETABLE(discard.resource_widget), _("Total discards"), num);
+	gtk_widget_show(discard.resource_widget);
+	gtk_box_pack_start(GTK_BOX(vbox), discard.resource_widget, FALSE, TRUE, 0);
+	g_signal_connect(G_OBJECT(discard.resource_widget), "change",
+			G_CALLBACK(amount_changed_cb), NULL);
+	
 	frontend_gui_register(gui_get_dialog_button(GTK_DIALOG(discard.dlg), 0),
 		   GUI_DISCARD, "clicked");
         gtk_widget_show(discard.dlg);
-	check_total();
 
 	return discard.dlg;
 }
@@ -265,38 +115,46 @@ static GtkWidget *discard_create_dlg(gint num)
 gint *discard_get_list()
 {
 	static gint discards[NO_RESOURCE];
-	gint idx;
-	DiscardInfo *info;
 
 	memset(discards, 0, sizeof(discards));
 	if (discard.dlg != NULL)
-		for (idx = 0, info = discard.res; idx < numElem(discard.res);
-		     idx++, info++)
-			discards[idx] = info->discard;
-
+		resource_table_get_amount(
+			RESOURCETABLE(discard.resource_widget), discards);
 	return discards;
 }
 
-#if 0
-gint discard_num_remaining(void)
+
+/** Locate a line suitable for a player */
+static gboolean discard_locate_player(GtkTreeModel *model, 
+		UNUSED(GtkTreePath *path), GtkTreeIter *iter, 
+		gpointer user_data)
 {
-	return GTK_CLIST(discard_clist)->rows;
+	int wanted = GPOINTER_TO_INT(user_data);
+	int current;
+	gtk_tree_model_get(model, iter, DISCARD_COLUMN_PLAYER_NUM, &current, -1);
+	if (current > wanted) {
+		discard_found_flag = STORE_MATCH_INSERT_BEFORE;
+		discard_found_iter = *iter;
+		return TRUE;
+	} else if (current == wanted) {
+		discard_found_flag = STORE_MATCH_EXACT;
+		discard_found_iter = *iter;
+		return TRUE;
+	}
+	return FALSE;
 }
-#endif
+
 
 void discard_player_did(gint player_num, UNUSED(gint *resources))
 {
-	gint row;
-
-	row = gtk_clist_find_row_from_data(GTK_CLIST(discard_clist),
-					   player_get(player_num));
 	/* check if the player was in the list.  If not, it is not an error.
 	 * That happens if the player auto-discards. */
-	if (row >= 0) {
-		gtk_clist_remove(GTK_CLIST(discard_clist), row);
+	discard_found_flag = STORE_NO_MATCH;
+	gtk_tree_model_foreach(GTK_TREE_MODEL(discard_store), 
+			discard_locate_player, GINT_TO_POINTER(player_num));
+	if (discard_found_flag == STORE_MATCH_EXACT) {
+		gtk_list_store_remove(discard_store, &discard_found_iter);
 		if (player_num == my_player_num()) {
-			gtk_signal_disconnect_by_func(GTK_OBJECT(discard.dlg),
-						      GTK_SIGNAL_FUNC(ignore_close), NULL);
 			gtk_widget_destroy(discard.dlg);
 			discard.dlg = NULL;
 		}
@@ -305,21 +163,36 @@ void discard_player_did(gint player_num, UNUSED(gint *resources))
 
 void discard_player_must(gint player_num, gint num)
 {
-	gint row;
-	gchar *row_data[3];
-	gchar buff[16];
-	gchar empty[1] = "";
+	GtkTreeIter iter;
+	GdkPixbuf *pixbuf;
 
-	sprintf(buff, "%d", num);
-	row_data[0] = empty;
-	row_data[1] = player_name(player_num, TRUE);
-	row_data[2] = buff;
+	/* Search for a place to add information about the player */
+	discard_found_flag = STORE_NO_MATCH;
+	gtk_tree_model_foreach(GTK_TREE_MODEL(discard_store), 
+			discard_locate_player, GINT_TO_POINTER(player_num));
+	switch (discard_found_flag) {
+		case STORE_NO_MATCH:
+			gtk_list_store_append(discard_store, &iter);
+			break;
+		case STORE_MATCH_INSERT_BEFORE:
+			gtk_list_store_insert_before(discard_store, &iter,
+					&discard_found_iter);
+			break;
+		case STORE_MATCH_EXACT:
+			iter = discard_found_iter;
+			break;
+		default:
+			g_assert(FALSE);
+	};
 
-	row = gtk_clist_append(GTK_CLIST(discard_clist), row_data);
-	gtk_clist_set_row_data(GTK_CLIST(discard_clist),
-			       row, player_get(player_num));
-	gtk_clist_set_pixmap(GTK_CLIST(discard_clist), row, 0,
-			     player_get(player_num)->user_data, NULL);
+	pixbuf = player_create_icon(discard_widget, player_num, TRUE);
+	gtk_list_store_set(discard_store, &iter,
+		DISCARD_COLUMN_PLAYER_ICON, pixbuf,
+		DISCARD_COLUMN_PLAYER_NUM, player_num, 
+		DISCARD_COLUMN_PLAYER_NAME, player_name(player_num, TRUE), 
+		DISCARD_COLUMN_AMOUNT, num, 
+		-1);
+	g_object_unref(pixbuf);
 
 	if (player_num != my_player_num())
 		return;
@@ -329,7 +202,7 @@ void discard_player_must(gint player_num, gint num)
 
 void discard_begin()
 {
-	gtk_clist_clear(GTK_CLIST(discard_clist));
+	gtk_list_store_clear(GTK_LIST_STORE(discard_store));
 	gui_discard_show();
 }
 
@@ -344,6 +217,8 @@ GtkWidget *discard_build_page()
 	GtkWidget *label;
 	GtkWidget *alignment;
 	GtkWidget *scroll_win;
+	GtkCellRenderer *renderer;
+	GtkTreeViewColumn *column;
 
 	vbox = gtk_vbox_new(FALSE, 5);
 	gtk_widget_show(vbox);
@@ -354,26 +229,56 @@ GtkWidget *discard_build_page()
 	gtk_box_pack_start(GTK_BOX(vbox), alignment, FALSE, FALSE, 0);
 
 	label = gtk_label_new(NULL);
-	/* Caption for list of player that must discard cards */
-	gtk_label_set_markup(GTK_LABEL(label), _("<b>Waiting for players to discard</b>"));
+	gtk_label_set_markup(GTK_LABEL(label), 
+		/* Caption for list of player that must discard cards */
+		_("<b>Waiting for players to discard</b>"));
 	gtk_widget_show(label);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 	gtk_container_add(GTK_CONTAINER(alignment), label);
 
 	scroll_win = gtk_scrolled_window_new(NULL, NULL);
+	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW(scroll_win),
+			GTK_SHADOW_IN);
 	gtk_widget_show(scroll_win);
 	gtk_box_pack_start(GTK_BOX(vbox), scroll_win, TRUE, TRUE, 0);
 	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scroll_win),
-				       GTK_POLICY_AUTOMATIC,
-				       GTK_POLICY_AUTOMATIC);
+			GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 
-	discard_clist = gtk_clist_new(3);
-	gtk_widget_show(discard_clist);
-	gtk_container_add(GTK_CONTAINER(scroll_win), discard_clist);
-	gtk_clist_set_column_width(GTK_CLIST(discard_clist), 0, 16);
-	gtk_clist_set_column_width(GTK_CLIST(discard_clist), 1, 130);
-	gtk_clist_set_column_width(GTK_CLIST(discard_clist), 2, 20);
-	gtk_clist_column_titles_hide(GTK_CLIST(discard_clist));
+	discard_store = gtk_list_store_new(DISCARD_COLUMN_LAST, 
+			GDK_TYPE_PIXBUF, /* player icon */
+			G_TYPE_INT,      /* player number */
+			G_TYPE_STRING,   /* text */
+			G_TYPE_INT);     /* amount to discard */
+	discard_widget =
+		gtk_tree_view_new_with_model(GTK_TREE_MODEL(discard_store));
+	
+	column = gtk_tree_view_column_new_with_attributes("",
+			gtk_cell_renderer_pixbuf_new(), 
+			"pixbuf", DISCARD_COLUMN_PLAYER_ICON, 
+			NULL);
+	gtk_tree_view_column_set_sizing(column, GTK_TREE_VIEW_COLUMN_GROW_ONLY);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(discard_widget), column);
+
+	column = gtk_tree_view_column_new_with_attributes("",
+			gtk_cell_renderer_text_new(), 
+			"text", DISCARD_COLUMN_PLAYER_NAME, 
+			NULL);
+	gtk_tree_view_column_set_sizing(column, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
+	gtk_tree_view_column_set_expand(column, TRUE);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(discard_widget), column);
+
+	renderer = gtk_cell_renderer_text_new();
+	column = gtk_tree_view_column_new_with_attributes("",
+			renderer, 
+			"text", DISCARD_COLUMN_AMOUNT,  
+			NULL);
+	g_object_set(renderer, "xalign", 1.0f, NULL);
+	gtk_tree_view_column_set_sizing(column, GTK_TREE_VIEW_COLUMN_GROW_ONLY);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(discard_widget), column);
+
+	gtk_tree_view_set_headers_visible(GTK_TREE_VIEW(discard_widget), FALSE);
+	gtk_widget_show(discard_widget);
+	gtk_container_add(GTK_CONTAINER(scroll_win), discard_widget);
 
 	return vbox;
 }

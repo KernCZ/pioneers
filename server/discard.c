@@ -66,6 +66,16 @@ static void check_finished_discard (Game *game, gboolean was_discard)
 	}
 }
 
+/* Player should be idle - I will tell them when to do something
+ */
+gboolean mode_wait_for_other_discarding_players(Player *player, UNUSED(gint event))
+{
+	StateMachine *sm = player->sm;
+	sm_state_name(sm, "mode_wait_for_other_discarding_players");
+	return FALSE;
+}
+
+
 gboolean mode_discard_resources(Player *player, gint event)
 {
 	StateMachine *sm = player->sm;
@@ -98,7 +108,7 @@ gboolean mode_discard_resources(Player *player, gint event)
 	resource_end(game, "discarded", -1);
 	/* wait for other to finish discarding too.  The state will be
 	 * popped from check_finished_discard. */
-	sm_goto(sm, (StateFunc)mode_idle);
+	sm_goto(sm, (StateFunc)mode_wait_for_other_discarding_players);
 	check_finished_discard (game, TRUE);
 	return TRUE;
 }
@@ -153,7 +163,7 @@ void discard_resources(Game *game)
 						"discarded %R\n", resource);
 				/* push idle to be popped off when all
 				 * players are finished discarding. */
-				sm_push(scan->sm, (StateFunc)mode_idle);
+				sm_push(scan->sm, (StateFunc)mode_wait_for_other_discarding_players);
 			} else {
 				have_discard = TRUE;
 				sm_push(scan->sm,
@@ -171,7 +181,7 @@ void discard_resources(Game *game)
 			 * except the one whose turn it is were idle anyway,
 			 * so it only changes things for that player (he cannot
 			 * just start playing, which is good). */
-			sm_push(scan->sm, (StateFunc)mode_idle);
+			sm_push(scan->sm, (StateFunc)mode_wait_for_other_discarding_players);
 		}
 	}
 	check_finished_discard (game, have_discard);

@@ -475,6 +475,8 @@ void frontend_discard ()
 
 void frontend_discard_add (gint player_num, gint discard_num)
 {
+	if (player_num == my_player_num())
+		g_assert(callback_mode == MODE_DISCARD);
 	discard_player_must (player_num, discard_num);
 	if (player_num == my_player_num () )
 		set_gui_state (frontend_state_discard);
@@ -485,7 +487,7 @@ void frontend_discard_remove (gint player_num, gint *list)
 {
 	if (discard_busy) {
 		discard_player_did (player_num, list);
-		if (player_num == my_player_num () )
+		if (player_num == my_player_num () ) 
 			set_gui_state (frontend_state_idle);
 	}
 	frontend_gui_update ();

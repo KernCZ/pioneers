@@ -557,10 +557,10 @@ gboolean mode_pre_game(Player *player, gint event)
 					}
 				}
 			}
-			else if (state == (StateFunc)mode_discard_resources) {
-				sprintf(prevstate, "DISCARD %d",
-					player->discard_num);
-			}
+			else if (state == (StateFunc)mode_discard_resources)
+				strcpy(prevstate, "DISCARD");
+			else if (state == (StateFunc)mode_wait_for_other_discarding_players)
+				strcpy(prevstate, "DISCARD");
 			else if (state == (StateFunc)mode_place_robber)
 				strcpy(prevstate, "YOUAREROBBER");
 			else if (state == (StateFunc)mode_road_building)
@@ -651,17 +651,6 @@ gboolean mode_pre_game(Player *player, gint event)
 				        (p->num == largestarmypnum));
 			}
 
-			/* send discard info for all players */
-			for (next = player_first_real (game); next != NULL;
-					next = player_next_real (next))
-			{
-				Player *p = (Player *)next->data;
-				if (p->discard_num > 0) {
-					sm_send(sm, "player %d must-discard %d\n",
-					        p->num, p->discard_num);
-				}
-			}
-
 			/* send build info for the current player
 			   - what builds the player was in the process
 			     of building when he disconnected */
@@ -682,6 +671,17 @@ gboolean mode_pre_game(Player *player, gint event)
 			if (recover_from_plenty) {
 				sm_send(sm, "plenty %R\n", game->bank_deck);
 				recover_from_plenty = FALSE;
+			}
+
+			/* send discard info for all players */
+			for (next = player_first_real (game); next != NULL;
+					next = player_next_real (next))
+			{
+				Player *p = (Player *)next->data;
+				if (p->discard_num > 0) {
+					sm_send(sm, "player %d must-discard %d\n",
+					        p->num, p->discard_num);
+				}
 			}
 
 			player->disconnected = old_player_disconnected;

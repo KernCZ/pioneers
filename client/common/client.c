@@ -38,7 +38,6 @@ static enum callback_mode previous_mode;
 GameParams *game_params;
 Map *map;
 static gchar *saved_name;
-static gboolean discarding; /* Dirty: used for recover_from_disconnect */
 struct recovery_info_t {
 	gchar prevstate[40];
 	gint turnnum;
@@ -732,7 +731,6 @@ static gboolean mode_load_gameinfo(StateMachine *sm, gint event)
 	if (event == SM_ENTER) {
 		gint idx;
 
-		discarding = FALSE;
 		have_bank = FALSE;
 		for (idx = 0; idx < NO_RESOURCE; ++idx)
 			tmp_bank[idx] = game_params->resource_count;
@@ -791,9 +789,6 @@ static gboolean mode_load_gameinfo(StateMachine *sm, gint event)
 	}
 	if (sm_recv(sm, "state GOLD %d %R", &rinfo.numgold, rinfo.plenty)) {
 		strcpy(rinfo.prevstate, "GOLD");
-		return TRUE;
-	}
-	if (sm_recv(sm, "state DISCARD %d", &rinfo.numdiscards)) {
 		return TRUE;
 	}
 	if (sm_recv(sm, "state ISROBBER %d", &rinfo.robber_player)) {
@@ -894,16 +889,6 @@ static gboolean mode_load_gameinfo(StateMachine *sm, gint event)
 		if (plargestarmy) {
 			player_modify_statistic(opnum, STAT_LARGEST_ARMY, 1);
 		}
-		return TRUE;
-	}
-	if (sm_recv(sm, "player %d must-discard %d", &player_num, &rinfo.numdiscards)) {
-			if (!discarding) {
-				discarding = TRUE;
-				callbacks.discard ();
-			}
-			if (player_num == my_player_num () )
-				callback_mode = MODE_DISCARD;
-			callbacks.discard_add (player_num, rinfo.numdiscards);
 		return TRUE;
 	}
 	if (sm_recv(sm, "buildinfo: %B %d %d %d %d",
@@ -2129,15 +2114,17 @@ static void recover_from_disconnect(StateMachine *sm,
 	}
 	else if (strcmp(rinfo->prevstate, "YOUAREROBBER") == 0)
 	{
-		if (!discarding) {
-			sm_goto_noenter (sm, mode_idle);
-			sm_push_noenter (sm, modeturn);
-			sm_goto(sm, mode_robber);
-		}
+		sm_goto_noenter (sm, mode_idle);
+		sm_push_noenter (sm, modeturn);
+		sm_push(sm, mode_robber);
 	}
 	else if (strcmp(rinfo->prevstate, "DISCARD") == 0) {
-		turn_begin(rinfo->playerturn, rinfo->turnnum);
-		turn_rolled_dice(rinfo->playerturn, rinfo->die1, rinfo->die2);
+		sm_goto_noenter(sm, mode_idle);
+		if (my_player_num() == rinfo->playerturn) {
+			sm_push_noenter(sm, mode_turn_rolled);
+			sm_push_noenter(sm, mode_wait_for_robber);
+		}
+		sm_push(sm, mode_discard);
 	}
 	else if (strcmp(rinfo->prevstate, "ISROBBER") == 0)
 	{
@@ -2172,15 +2159,6 @@ static void recover_from_disconnect(StateMachine *sm,
 		         will clear the build list */
 		sm_push_noenter(sm, modeturn);
 		sm_push(sm, mode_road_building);
-	}
-
-	if (discarding) {
-		sm_goto_noenter(sm, mode_idle);
-		if (my_player_num() == rinfo->playerturn) {
-			sm_push_noenter(sm, mode_turn_rolled);
-			sm_push_noenter(sm, mode_wait_for_robber);
-		}
-		sm_push(sm, mode_discard);
 	}
 
 	if (rinfo->build_list) {

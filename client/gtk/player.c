@@ -131,8 +131,8 @@ GdkColor *player_or_viewer_color(gint player_num)
 	return &token_colors[player_num];
 }
 
-/** @todo RC 29-8-2004 make public, to be usable in e.g. trade.c */
-static GdkPixbuf *create_player_icon(GtkWidget *widget, gint player_num, gboolean connected) {
+GdkPixbuf *player_create_icon(
+		GtkWidget *widget, gint player_num, gboolean connected) {
 	int width, height;
 	GdkPixbuf *temp;
 	GdkPixmap *pixmap;
@@ -157,20 +157,21 @@ static GdkPixbuf *create_player_icon(GtkWidget *widget, gint player_num, gboolea
 		gdk_draw_rectangle(pixmap, gc, FALSE,
 				6, 6, width - 12, height - 12);
 	}
-		
-	temp = gdk_pixbuf_get_from_drawable(NULL, pixmap, NULL, 
-			0, 0, 0, 0, -1, -1);
 
-	/* Store the pixmap in player->user_data */
+	/* Store the pixmap in player->user_data. 
+	 * This is needed when the gtk_clist is still used 
+	 */
 	player = player_get(player_num);
 	if (player->user_data)
 		g_object_unref(player->user_data);
 	player->user_data = pixmap;
-	
-	/* The pixmap can be unref'd if all gtk_clists in the code have been replaced
-	 * g_object_unref(pixmap); 
-	 */
+	g_object_ref(pixmap);
+
+	temp = gdk_pixbuf_get_from_drawable(NULL, pixmap, NULL, 
+			0, 0, 0, 0, -1, -1);
+
 	g_object_unref(gc);
+	g_object_unref(pixmap);
 	return temp;
 }
 
@@ -414,7 +415,8 @@ void frontend_viewer_quit(gint viewer_num)
 static void player_show_connected_at_iter(gint player_num, gboolean connected,
 		GtkTreeIter *iter)
 {
-	GdkPixbuf *pixbuf = create_player_icon(summary_widget, player_num, connected);
+	GdkPixbuf *pixbuf = player_create_icon(summary_widget, player_num, connected);
+
 	gtk_list_store_set(summary_store, iter,
 			SUMMARY_COLUMN_PLAYER_ICON, pixbuf,
 			-1);

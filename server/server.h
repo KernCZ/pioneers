@@ -212,4 +212,6 @@ void check_victory(Player *player);
 void distribute_first (GList *list);
 gboolean mode_choose_gold(Player *player, gint event);
 
+/* discard.c */
+gboolean mode_wait_for_other_discarding_players(Player *player, gint event);
 #endif
