@@ -1,3 +1,6 @@
+2004-09-26 Roland Clobus <rclobus@bigfoot.com>
+	* .cvsignore: Added Makefile.in.in, it is a generated file
+	
 2004-09-15 Arjen Schrijver <a.schrijver@skydec.nl>
 	* nl.po: fixing a typo
 	

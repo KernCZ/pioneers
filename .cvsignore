@@ -20,3 +20,7 @@ TAGS
 build-stamp
 install-stamp
 stamp-h1
+install-sh
+missing
+depcomp
+mkinstalldirs
