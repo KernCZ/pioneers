@@ -4,7 +4,7 @@ AC_CONFIG_SRCDIR([client])
 AC_PREFIX_DEFAULT([`gnome-config --prefix 2>/dev/null || echo /usr/local`])
 
 AM_CONFIG_HEADER(config.h)
-AM_INIT_AUTOMAKE([gnocatan], [0.7.2])
+AM_INIT_AUTOMAKE([gnocatan], [0.7.1.90])
 
 PROTOCOL_VERSION=\"0.7.0\"
 META_PROTOCOL_VERSION=\"1.0\"
