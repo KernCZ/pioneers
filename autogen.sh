@@ -13,7 +13,7 @@ REQUIRED_AUTOMAKE_VERSION="any"
 automake_progs="automake-1.7 automake-1.4"
  
 
-(test -f $srcdir/configure.in \
+(test -f $srcdir/configure.ac \
   && test -f $srcdir/ChangeLog \
   && test -d $srcdir/client \
   && test -d $srcdir/server) || {
