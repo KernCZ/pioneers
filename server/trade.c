@@ -216,6 +216,15 @@ void trade_accept_domestic(Player *player,
 	QuoteInfo *quote;
 	Player *partner;
 
+	/* Check for valid trade scenario */
+	if( (!game->rolled_dice) ||
+	    ( ((player->build_list != NULL) || (game->bought_develop)) &&
+	      (game->params->strict_trade) ) )
+	{
+		sm_send(sm, "ERR wrong-time\n");
+		return;
+	}
+
 	/* Initiating player accepted a quote
 	 */
 	quote = quotelist_find_domestic(game->quotes, partner_num, quote_num);

@@ -1,3 +1,16 @@
+2000-08-26  Andy Heroff  <aheroff@mediaone.net>
+
+	* server/develop.c: In Road Building dev card code, modified code
+	  so that when RB is complete, edges build during process are
+	  removed from the build list. Affects ability to trade.
+
+	* server/trade.c: In domestic trade code, added check for valid
+	  trade conditions (No trade before the roll, and if strict trade is
+	  active, no trade after building or buying a dev card).
+
+	* client/help/C/gnocatan.sgml: Started to update help code. This is
+	  by no means a finished product.
+
 2000-08-25  Jeff Breidenbach  <jeff@alum.mit.edu>
 
 	* debian/control, debian/changelog: preparation for point release

@@ -117,6 +117,7 @@ static gboolean mode_road_building(Player *player, gint event)
 	Map *map = game->params->map;
 	BuildType type;
 	gint x, y, pos;
+	GList *rb_build_rec;
 
         sm_state_name(sm, "mode_road_building");
 	if (event != SM_RECV)
@@ -145,7 +146,22 @@ static gboolean mode_road_building(Player *player, gint event)
 			sm_send(sm, "ERR unconnected\n");
 			return TRUE;
 		}
+
 		/* Player has finished road building
+		 */
+
+		/* Remove the roads built from the player's build_list.
+		 * If we don't, trading will fail when it shouldn't.
+		 */
+		if( num_built >= 2 ) { num_built = 2; }
+		for( ; num_built >= 0; num_built--)
+		{
+			rb_build_rec = g_list_last( player->build_list );
+			player->build_list = g_list_remove_link( player->build_list, rb_build_rec );
+			g_list_free_1( rb_build_rec );
+		}
+
+		/* Send ack to client, check for victory, and exit.
 		 */
 		sm_send(sm, "OK\n");
 		check_victory(game);

@@ -9,10 +9,14 @@
 	<firstname>Dave</firstname>
 	<surname>Cole</surname>
       </author>
+      <author>
+        <firstname>Andy</firstname>
+        <surname>Heroff</surname>
+      </author>
     </authorgroup>
-    <releaseinfo>documentation in progress</releaseinfo>
+    <releaseinfo>Documentation in progress</releaseinfo>
     <copyright>
-      <year>1999</year> <holder>Dave Cole</holder>
+      <year>2000</year> <holder>Andy Heroff</holder>
     </copyright>
     <legalnotice>
       <para>
@@ -27,29 +31,37 @@
     <title>Introduction</title>
 
     <sect1 id="bugs">
-      <title>Reporting bugs and sending patches to enhance the
-      game</title>
-      
-      <para>You can contact the author as
-        <symbol>dave@dccs.com.au</symbol>.  General discussion about
-        this game is carried on the
-        <symbol>gnome-list@gnome.org</symbol> mailing list.</para>
+      <title>Reporting Bugs</title>
+      <para>
+        Information on reporting bugs can be found on the Gnocatan project
+        webpage, hosted on SourceForge. The URL is:
+        <ulink url="http://sourceforge.net/projects/gnocatan/">
+         http://sourceforge.net/projects/gnocatan/
+        </ulink>
+      </para>
     </sect1>
 
     <sect1 id="Authors">
-      <title>Authors and history.</title>
-
-      <para>This GNOME game is based on the excellent Settlers of
-        Catan board game.  Dave wanted to be able to play the game
-        without having to travel, so he developed a computer
-        implementation of the game.</para>
+      <title>Authors and History</title>
+      <para>
+        Gnocatan is a GNOME game based upon the board game Settlers of Catan
+        created by Mayfair Games. Gnocatan was originally authored by Dave
+        Cole in the spring and summer of 1999. Dave wanted to be able to
+        play the game without having to travel, so he developed a computer
+        implementation of the game. The Gnocatan project stalled in the late
+        summer of 1999 and saw little development until the early spring of
+        2000 when the project was taken over by Andy Heroff and moved to
+        SourceForge. Andy recruited several developers (including Dave) and
+        they are now working to improve upon the original game as well as
+        fix the bugs that have been found in older versions.
+      </para>
     </sect1>
   </chapter>
 
   <chapter>
     <title>The Gnocatan user interface</title>
 
-    <para>When you start <symbol>gnocatan</symbol>, the application
+    <para>When you start <symbol>Gnocatan</symbol>, the application
       window is displayed.  The user interface is built up from a
       number of panels.</para>
 
