@@ -1,3 +1,8 @@
+2000-05-22  Roderick Schertler <roderick@argon.org>
+
+	* common/network.c: Fixed name resolution code to honor hostnames
+	that begin with a digit
+
 2000-05-18  Steve Langasek <vorlon@dodds.net>
 
 	* server/gnocatan-server-console.c: Plugged in getopt() support so

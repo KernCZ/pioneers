@@ -365,13 +365,7 @@ gboolean net_connect(Session *ses, char *host, gint port)
 
 	memset(&addr, 0, sizeof(addr));
 	addr.sin_family = AF_INET;
-	if (atoi(host) > 0) {
-		addr.sin_addr.s_addr = inet_addr(host);
-		if (addr.sin_addr.s_addr == -1) {
-			log_message( MSG_ERROR, _("Invalid address %s\n"), host);
-			return FALSE;
-		}
-	} else {
+	if (inet_aton(host, &addr.sin_addr) == 0) {
 		struct hostent *host_ent;
 
 		host_ent = gethostbyname(host);
