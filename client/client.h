@@ -58,7 +58,8 @@ gboolean build_can_setup_road(Edge *edge, gboolean double_setup);
 gboolean build_can_setup_ship(Edge *edge, gboolean double_setup);
 gboolean build_can_setup_bridge(Edge *edge, gboolean double_setup);
 gboolean build_can_setup_settlement(Node *node, gboolean double_setup);
-void build_add(BuildType type, gint x, gint y, gint pos, gint *cost);
+void build_add(BuildType type, gint x, gint y, gint pos, gint *cost,
+	       gboolean newbuild);
 BuildRec *build_last(void);
 void build_remove(BuildType type, gint x, gint y, gint pos);
 
@@ -93,8 +94,10 @@ gint develop_current_idx(void);
 gboolean have_bought_develop(void);
 gboolean have_played_develop(void);
 void develop_begin_turn(void);
+void develop_reset_have_played_bought(gboolean have_played, gboolean have_bought);
 void develop_bought(gint player_num);
 void develop_bought_card(DevelType type);
+void develop_bought_card_turn(DevelType type, gint turnbought);
 void develop_played(gint player_num, gint card_idx, DevelType type);
 void develop_buy(void);
 GtkWidget *develop_build_page(void);

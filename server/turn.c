@@ -260,7 +260,6 @@ gboolean mode_turn(Player *player, gint event)
 
 	if (sm_recv(sm, "roll")) {
 		GameRoll data;
-		gint die1, die2;
 		gint roll;
 
 		if (game->rolled_dice) {
@@ -271,9 +270,9 @@ gboolean mode_turn(Player *player, gint event)
 		done = 0;
 
 		do {
-			die1 = get_rand(6) + 1;
-			die2 = get_rand(6) + 1;
-			roll = die1 + die2;
+			game->die1 = get_rand(6) + 1;
+			game->die2 = get_rand(6) + 1;
+			roll = game->die1 + game->die2;
 			game->rolled_dice = TRUE;
 			
 			if (game->params->sevens_rule == 1) {
@@ -290,7 +289,8 @@ gboolean mode_turn(Player *player, gint event)
 			
 		} while(!done);
 		
-		player_broadcast(player, PB_RESPOND, "rolled %d %d\n", die1, die2);
+		player_broadcast(player, PB_RESPOND, "rolled %d %d\n",
+		                 game->die1, game->die2);
 
 		if (roll == 7) {
 			/* Find all players with more than 7 cards -
@@ -380,14 +380,37 @@ gboolean mode_idle(Player *player, gint event)
 
 void turn_next_player(Game *game)
 {
-	Player *player;
+	Player *player = NULL;
 
-	game->curr_player = player_next_real(game->curr_player);
-	if (game->curr_player == NULL) {
-		game->curr_turn++;
-		game->curr_player = game->player_list;
+	if (game->curr_player)
+	{
+		player = player_by_name(game, game->curr_player);
+		game->curr_player = NULL;
+		if (player)
+		{
+			gint nextplayer = player->num + 1;
+			gint numplayers = player->game->num_players;
+			if (nextplayer < numplayers)
+			{
+				player = player_by_num(game, nextplayer);
+				if (player)
+				{
+					game->curr_player = player->name;
+				}
+			}
+		}
 	}
-	player = game->curr_player->data;
+
+	if (game->curr_player == NULL) {
+		GList *next;
+		game->curr_turn++;
+		next = player_first_real(game);
+		if (next && next->data)
+		{
+		   player = (Player *)next->data;
+		   game->curr_player = player->name;
+		}
+	}
 
 	player_broadcast(player, PB_RESPOND, "turn %d\n", game->curr_turn);
 	game->rolled_dice = FALSE;

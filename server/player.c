@@ -30,6 +30,7 @@
 
 /* Local function prototypes */
 static gboolean mode_check_version(Player *player, gint event);
+static gboolean mode_check_status(Player *player, gint event);
 static gboolean mode_game_full(Player *player, gint event);
 static gboolean mode_bad_version(Player *player, gint event);
 static gboolean mode_global(Player *player, gint event);
@@ -68,8 +69,14 @@ static gboolean mode_global(Player *player, gint event)
 	case SM_NET_CLOSE:
 		player_remove(player);
 		if (player->num >= 0)
+		{
 			player_broadcast(player, PB_ALL, "has quit\n");
-		player_free(player);
+			player_archive(player);
+		}
+		else
+		{
+			player_free(player);
+		}
 
 		if (game->num_players == 0)
 			server_restart();
@@ -152,6 +159,12 @@ Player *player_new(Game *game, int fd, gchar *location)
 	player->devel = deck_new(game->params);
 	game->player_list = g_list_append(game->player_list, player);
 	player->num = -1;
+	player->chapel_played = FALSE;
+	player->univ_played = FALSE;
+	player->gov_played = FALSE;
+	player->libr_played = FALSE;
+	player->market_played = FALSE;
+	player->disconnected = FALSE;
 
 	/* if first player in and this is a tournament start the timer */
 	if ((game->num_players == 0) && (game->params->tournament_time > 0)) {
@@ -168,12 +181,16 @@ Player *player_new(Game *game, int fd, gchar *location)
 	return player;
 }
 
-void player_setup(Player *player)
+void player_setup(Player *player, int playernum)
 {
 	Game *game = player->game;
 	StateMachine *sm = player->sm;
 
-	player->num = next_player_num(game);
+	player->num = playernum;
+	if (player->num < 0 && !game->is_game_full)
+	{
+		player->num = next_player_num(game);
+	}
 	if (player->num >= 0) {
 		game->num_players++;
 		meta_report_num_players(game->num_players);
@@ -186,7 +203,10 @@ void player_setup(Player *player)
 		player->num_cities = 0;
 
 		driver->player_added(player);
-		sm_goto(sm, (StateFunc)mode_pre_game);
+		if (playernum < 0)
+		{
+			sm_goto(sm, (StateFunc)mode_pre_game);
+		}
 	} else
 		sm_goto(sm, (StateFunc)mode_game_full);
 }
@@ -207,6 +227,155 @@ void player_free(Player *player)
 		meta_report_num_players(game->num_players);
 	}
 	g_free(player);
+}
+
+void player_archive(Player *player)
+{
+	GList *current = NULL;
+	StateFunc state;
+	Game *game = player->game;
+
+	if (!player->game->dead_players)
+	{
+		player->game->dead_players = g_list_alloc();
+	}
+
+	/* First, check to make sure there isn't a player of
+	   the same name in the dead pool */
+	current = player->game->dead_players;
+	while (current)
+	{
+		Player *p = NULL;
+		p = current->data;
+		if (p && strcmp(p->name, player->name) == 0)
+		{
+			player_free(player);
+			return;
+		}
+		current = g_list_next(current);
+	}
+
+	/* Next, if the player was in the middle of a trade, move
+	   him to mode_turn or mode_idle and inform others as
+	   necessary */
+	state = sm_current(player->sm);
+	if (state == (StateFunc)mode_wait_quote_exit)
+	{
+		sm_goto(player->sm, (StateFunc)mode_idle);
+	} 
+	else if (state == (StateFunc)mode_domestic_quote)
+	{
+		for (;;) {
+			QuoteInfo *quote; 
+			quote = quotelist_find_domestic(game->quotes,
+							player->num, -1);
+			if (quote == NULL)
+				break;
+			quotelist_delete(game->quotes, quote);
+		}
+		player_broadcast(player, PB_RESPOND, "domestic-quote finish\n");
+
+		sm_goto(player->sm, (StateFunc)mode_idle);
+	}
+	else if (state == (StateFunc)mode_domestic_initiate)
+	{
+		trade_finish_domestic(player);
+	}
+
+	/* Finally, add the player to the archive */
+	g_list_append(player->game->dead_players,
+	              player);
+	player->game->num_players--;
+	meta_report_num_players(player->game->num_players);
+}
+
+void player_revive(Player *newp, char *name)
+{
+	Game *game = newp->game;
+	GList *current = game->dead_players;
+	GList *newpl = NULL;
+	while (current)
+	{
+		Player *p = NULL;
+		p = current->data;
+		if (p && strcmp(p->name, name) == 0)
+		{
+			GList *currp;
+			g_list_remove(current, p);
+
+			/* initialize the player */
+			player_setup(newp, p->num);
+
+			/* if the player is in the wrong position in
+			   the list, remove the player from the end of
+			   the list and insert him at the appropriate
+			   place */
+			if (newp->num < game->params->num_players - 1) {
+				game->player_list = g_list_remove(game->player_list, newp);
+				for (currp = game->player_list;
+				     currp != NULL;
+				     currp = g_list_next(currp)) {
+					if (newp->num < ((Player *)currp->data)->num) {
+						game->player_list = g_list_insert(game->player_list, newp, g_list_index(game->player_list, currp->data));
+						break;
+					}
+				}
+				if (!currp) {
+					g_list_append(game->player_list, newp);
+				}
+			}
+
+			/* mark the player as a reconnect */
+			newp->disconnected = TRUE;
+
+			/* Use the old player's name pointer rather than
+			   the new one */
+			if (newp->name != NULL) {
+				g_free(newp->name);
+			}
+			newp->name = p->name;
+			p->name = NULL; /* prevent deletion */
+
+			/* copy over all the data from p */
+			newp->build_list = p->build_list;
+			p->build_list = NULL; /* prevent deletion */
+			memcpy(newp->prev_assets, p->prev_assets,
+			       sizeof(newp->prev_assets));
+			memcpy(newp->assets, p->assets,
+			       sizeof(newp->prev_assets));
+			newp->devel = p->devel;
+			p->devel = NULL; /* prevent deletion */
+			newp->discard_num = p->discard_num;
+			newp->num_roads = p->num_roads;
+			newp->num_bridges = p->num_bridges;
+			newp->num_ships = p->num_ships;
+			newp->num_settlements = p->num_settlements;
+			newp->num_cities = p->num_cities;
+			newp->num_soldiers = p->num_soldiers;
+			newp->road_len = p->road_len;
+			newp->chapel_played = p->chapel_played;
+			newp->univ_played = p->univ_played;
+			newp->gov_played = p->gov_played;
+			newp->libr_played = p->libr_played;
+			newp->market_played = p->market_played;
+			newp->develop_points = p->develop_points;
+
+			/* copy over the state */
+			memcpy(newp->sm->stack, p->sm->stack,
+			       sizeof(newp->sm->stack));
+			newp->sm->stack_ptr = p->sm->stack_ptr;
+			newp->sm->current_state = p->sm->current_state;
+
+			sm_push(newp->sm, (StateFunc)mode_pre_game);
+
+			p->num = -1; /* prevent the number of players
+				        from getting decremented */
+			player_free(p);
+			return;
+		}
+		current = g_list_next(current);
+	}
+	player_setup(newp, -1);
 }
 
 static gboolean mode_game_full(Player *player, gint event)
@@ -269,12 +438,42 @@ static gboolean mode_check_version(Player *player, gint event)
 		{
 			if( check_versions( version ) )
 			{
-				player_setup(player);
+				sm_goto(sm, (StateFunc)mode_check_status);
 				return TRUE;
 			} else {
 				sm_goto(sm, (StateFunc)mode_bad_version);
 				return TRUE;
 			}
+		}
+		break;
+	default:
+		break;
+	}
+	return FALSE;
+}
+
+static gboolean mode_check_status(Player *player, gint event)
+{
+	StateMachine *sm = player->sm;
+	gchar playername[512];
+	
+	sm_state_name(sm, "mode_check_status");
+	switch (event) {
+	case SM_ENTER:
+		sm_send(sm, "status report\n");
+		break;
+	
+	case SM_RECV:
+		if( sm_recv(sm, "status newplayer") )
+		{
+			player_setup(player, -1);
+			return TRUE;
+		}
+		else if( sm_recv(sm, "status reconnect %S", playername ) )
+		{
+			/* if possible, try to revive the player */
+			player_revive(player, playername);
+			return TRUE;
 		}
 		break;
 	default:
@@ -295,18 +494,52 @@ gchar *player_name(Player *player)
 
 GList *player_first_real(Game *game)
 {
-	GList *list;
-	for (list = game->player_list;
-	     list != NULL && ((Player *) list->data)->num < 0;
-	     list = g_list_next(list)) ;
+	GList *list = 0, *next;
+	/* search for lowest numbered player */
+	for (next = game->player_list;
+	     next != NULL; next = g_list_next(next))
+	{
+		if (!list ||
+		    (next && ((Player *) next->data)->num
+			       < ((Player *) list->data)->num))
+		{
+			list = next;
+		}
+	}
+
 	return list;
 }
 
 GList *player_next_real(GList *last)
 {
-	for (last = g_list_next(last);
-	     last != NULL && ((Player *) last->data)->num < 0;
-	     last = g_list_next(last)) ;
+	GList *first = last;
+	gint currnum;
+	gint numplayers;
+	gint nextnum;
+
+	if (!last)
+	{
+		return NULL;
+	}
+	currnum = ((Player *) last->data)->num;
+	numplayers = ((Player *) last->data)->game->num_players;
+	nextnum = currnum + 1;
+	if (nextnum > numplayers)
+	{
+		return NULL;
+	}
+
+	for (last = (g_list_next(last)) ? g_list_next(last)
+	                                : g_list_first(last);
+	     last != NULL && last != first &&
+	     ((Player *) last->data)->num != nextnum;
+	     last = (g_list_next(last)) ? g_list_next(last)
+	                                : g_list_first(last)) ;
+
+	if (first == last)
+	{
+		return NULL;
+	}
 	return last;
 }
 
@@ -378,8 +611,12 @@ void player_broadcast(Player *player, BroadcastType type, char *fmt, ...)
 void player_set_name(Player *player, gchar *name)
 {
 	Game *game = player->game;
+	gboolean playeriscurrent = FALSE;
 
 	if (player->name != NULL) {
+		playeriscurrent
+		 = (game->curr_player != NULL) &&
+		   (strcmp(game->curr_player, player->name) == 0);
 		g_free(player->name);
 		player->name = NULL;
 	}
@@ -390,6 +627,10 @@ void player_set_name(Player *player, gchar *name)
 		player_broadcast(player, PB_ALL, "is anonymous\n");
 	else
 		player_broadcast(player, PB_ALL, "is %s\n", player->name);
+
+	if (playeriscurrent) {
+		game->curr_player = player->name;
+	}
 
 	driver->player_renamed(player);
 }

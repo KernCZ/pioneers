@@ -40,6 +40,12 @@ typedef struct {
 	gint num_soldiers;	/* number of soldiers played */
 	gint road_len;		/* last longest road */
 	gint develop_points;	/* number of development card victory points */
+	gboolean chapel_played; /* player played the Chapel card */
+	gboolean univ_played; /* player played the University card */
+	gboolean gov_played; /* player played the Governors card */
+	gboolean libr_played; /* player played the Library card */
+	gboolean market_played; /* player played the Market card */
+	gboolean disconnected; 
 } Player;
 
 struct Game {
@@ -50,21 +56,25 @@ struct Game {
 	int accept_tag;		/* Gdk event tag for accept socket */
 
 	GList *player_list;	/* all players in the game */
+	GList *dead_players;	/* players who have disconnected */
 	gint num_players;	/* current number of players in the game */
 
 	gboolean double_setup;
 	gboolean reverse_setup;
 	GList *setup_player;
+	gchar *setup_player_name;
 
+	gboolean is_game_full;	/* is the game full? */
 	gboolean is_game_over;	/* is the game over? */
 	Player *longest_road;	/* who holds longest road */
 	Player *largest_army;	/* who has largest army */
 
 	QuoteList *quotes;	/* domestic trade quotes */
 
-	GList *curr_player;	/* whose turn is it? */
+	gchar *curr_player;	/* whose turn is it? */
 	gint curr_turn;		/* current turn number */
 	gboolean rolled_dice;	/* has dice been rolled in turn yet? */
+	gint die1, die2;	/* latest dice values */
 	gboolean played_develop; /* has devel. card been played in turn? */
 	gboolean bought_develop; /* has devel. card been bought in turn? */
 
@@ -85,9 +95,15 @@ gboolean perform_undo(Player *player, BuildType type, gint x, gint y, gint pos);
 void develop_shuffle(Game *game);
 void develop_buy(Player *player);
 void develop_play(Player *player, gint idx);
+gboolean mode_road_building(Player *player, gint event);
+gboolean mode_plenty_resources(Player *player, gint event);
+gboolean mode_monopoly(Player *player, gint event);
 
 /* discard.c */
 gboolean discard_resources(Player *player);
+gboolean mode_discard_resources(Player *player, gint event);
+gboolean mode_wait_others_place_robber(Player *player, gint event);
+gboolean mode_discard_resources_place_robber(Player *player, gint event);
 
 /* meta.c */
 void meta_register(gchar *server, gint port, GameParams *params);
@@ -102,7 +118,7 @@ typedef enum {
 	PB_OTHERS
 } BroadcastType;
 Player *player_new(Game *game, int fd, gchar *location);
-void player_setup(Player *player);
+void player_setup(Player *player, int playernum);
 gchar *player_name(Player *player);
 Player *player_by_name(Game *game, char *name);
 Player *player_by_num(Game *game, gint num);
@@ -111,6 +127,8 @@ Player *player_none(Game *game);
 void player_broadcast(Player *player, BroadcastType type, char *fmt, ...);
 void player_remove(Player *player);
 void player_free(Player *player);
+void player_archive(Player *player);
+void player_revive(Player *newp, char *name);
 GList *player_first_real(Game *game);
 GList *player_next_real(GList *last);
 
@@ -129,6 +147,7 @@ void resource_refund(Player *player, gint *cost);
 
 /* robber.c */
 void robber_place(Player *player);
+gboolean mode_place_robber(Player *player, gint event);
 
 /* server.c */
 gint get_rand(gint range);
@@ -143,9 +162,13 @@ gint open_listen_socket(gint port);
 /* trade.c */
 void trade_perform_maritime(Player *player,
 			    gint ratio, Resource supply, Resource receive);
+gboolean mode_wait_quote_exit(Player *player, gint event);
+gboolean mode_domestic_quote(Player *player, gint event);
+void trade_finish_domestic(Player *player);
 void trade_accept_domestic(Player *player,
 			   gint partner_num, gint quote_num,
 			   gint *supply, gint *receive);
+gboolean mode_domestic_initiate(Player *player, gint event);
 void trade_begin_domestic(Player *player, gint *supply, gint *receive);
 
 /* turn.c */

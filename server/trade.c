@@ -27,10 +27,6 @@
 #include "quoteinfo.h"
 #include "server.h"
 
-/* Local function prototypes */
-static void trade_finish_domestic(Player *player);
-
-
 void trade_perform_maritime(Player *player,
 			    gint ratio, Resource supply, Resource receive)
 {
@@ -95,7 +91,7 @@ void trade_perform_maritime(Player *player,
 /* Trade initiating player has ended trading, wait for client to
  * acknowledge.
  */
-static gboolean mode_wait_quote_exit(Player *player, gint event)
+gboolean mode_wait_quote_exit(Player *player, gint event)
 {
 	StateMachine *sm = player->sm;
 
@@ -117,7 +113,7 @@ static gboolean mode_wait_quote_exit(Player *player, gint event)
 	return FALSE;
 }
 
-static gboolean mode_domestic_quote(Player *player, gint event)
+gboolean mode_domestic_quote(Player *player, gint event)
 {
 	StateMachine *sm = player->sm;
 	Game *game = player->game;
@@ -189,7 +185,7 @@ static gboolean mode_domestic_quote(Player *player, gint event)
 
 /* Initiating player wants to end domestic trade
  */
-static void trade_finish_domestic(Player *player)
+void trade_finish_domestic(Player *player)
 {
 	StateMachine *sm = player->sm;
 	Game *game = player->game;
@@ -339,7 +335,7 @@ static void call_domestic(Player *player, gint *supply, gint *receive)
 	process_call_domestic(player, supply, receive);
 }
 
-static gboolean mode_domestic_initiate(Player *player, gint event)
+gboolean mode_domestic_initiate(Player *player, gint event)
 {
 	StateMachine *sm = player->sm;
 	Game *game = player->game;

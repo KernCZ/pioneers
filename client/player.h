@@ -66,7 +66,8 @@ void player_maritime_trade(gint player_num,
 			   gint ratio, Resource supply, Resource receive);
 
 void player_build_add(gint player_num,
-		      BuildType type, gint x, gint y, gint pos);
+		      BuildType type, gint x, gint y, gint pos,
+		      gboolean log_changes);
 void player_build_remove(gint player_num,
 			 BuildType type, gint x, gint y, gint pos);
 void player_resource_action(gint player_num, gchar *action,

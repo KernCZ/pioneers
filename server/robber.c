@@ -78,7 +78,7 @@ static void steal_card_from(Player *player, Player *victim)
 
 /* Wait for the player to place the robber
  */
-static gboolean mode_place_robber(Player *player, gint event)
+gboolean mode_place_robber(Player *player, gint event)
 {
 	StateMachine *sm = player->sm;
 	Game *game = player->game;

@@ -100,6 +100,12 @@ void develop_begin_turn()
 	bought_develop = FALSE;
 }
 
+void develop_reset_have_played_bought(gboolean have_played, gboolean have_bought)
+{
+	played_develop = have_played;
+	bought_develop = have_bought;
+}
+
 void develop_bought(gint player_num)
 {
 	log_message( MSG_DEVCARD, _("%s bought a development card.\n"),
@@ -111,13 +117,18 @@ void develop_bought(gint player_num)
 
 void develop_bought_card(DevelType type)
 {
+	develop_bought_card_turn(type, turn_num());
+}
+
+void develop_bought_card_turn(DevelType type, gint turnbought)
+{
 	gchar *text[1];
 
 	/* Cannot undo build after buying a development card
 	 */
 	build_clear();
 	bought_develop = TRUE;
-	deck_card_add(develop_deck, type, turn_num());
+	deck_card_add(develop_deck, type, turnbought);
 	if (devel_cards[type].is_unique)
 		log_message( MSG_DEVCARD, _("You bought the %s development card.\n"),
 			 devel_cards[type].name);

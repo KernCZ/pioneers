@@ -601,7 +601,8 @@ void player_maritime_trade(gint player_num,
 }
 
 void player_build_add(gint player_num,
-		      BuildType type, gint x, gint y, gint pos)
+		      BuildType type, gint x, gint y, gint pos,
+		      gboolean log_changes)
 {
 	Edge *edge;
 	Node *node;
@@ -612,8 +613,11 @@ void player_build_add(gint player_num,
 		edge->owner = player_num;
 		edge->type = BUILD_ROAD;
 		gui_draw_edge(edge);
-		log_message( MSG_BUILD, _("%s built a road.\n"),
-			 player_name(player_num, TRUE));
+		if (log_changes)
+		{
+			log_message( MSG_BUILD, _("%s built a road.\n"),
+			             player_name(player_num, TRUE));
+		}
 		if (player_num == my_player_num())
 			stock_use_road();
 		break;
@@ -622,8 +626,11 @@ void player_build_add(gint player_num,
 		edge->owner = player_num;
 		edge->type = BUILD_SHIP;
 		gui_draw_edge(edge);
-		log_message( MSG_BUILD, _("%s built a ship.\n"),
-			 player_name(player_num, TRUE));
+		if (log_changes)
+		{
+			log_message( MSG_BUILD, _("%s built a ship.\n"),
+			             player_name(player_num, TRUE));
+		}
 		if (player_num == my_player_num())
 			stock_use_ship();
 		break;
@@ -632,8 +639,11 @@ void player_build_add(gint player_num,
 		node->type = BUILD_SETTLEMENT;
 		node->owner = player_num;
 		gui_draw_node(node);
-		log_message( MSG_BUILD, _("%s built a settlement.\n"),
-			 player_name(player_num, TRUE));
+		if (log_changes)
+		{
+			log_message( MSG_BUILD, _("%s built a settlement.\n"),
+			             player_name(player_num, TRUE));
+		}
 		player_modify_statistic(player_num, STAT_SETTLEMENTS, 1);
 		if (player_num == my_player_num())
 			stock_use_settlement();
@@ -649,8 +659,11 @@ void player_build_add(gint player_num,
 		node->type = BUILD_CITY;
 		node->owner = player_num;
 		gui_draw_node(node);
-		log_message( MSG_BUILD, _("%s built a city.\n"),
-			 player_name(player_num, TRUE));
+		if (log_changes)
+		{
+			log_message( MSG_BUILD, _("%s built a city.\n"),
+			             player_name(player_num, TRUE));
+		}
 		player_modify_statistic(player_num, STAT_CITIES, 1);
 		if (player_num == my_player_num())
 			stock_use_city();

@@ -26,6 +26,19 @@
 GameParams *game_params;
 static gchar *saved_name;
 static StateMachine *state_machine;
+struct recovery_info_t {
+	gchar prevstate[40];
+	gint turnnum;
+	gint playerturn;
+	gint numdiscards;
+	gint plenty[NO_RESOURCE];
+	gboolean rolled_dice;
+	gint die1, die2;
+	gboolean played_develop;
+	gboolean bought_develop;
+	gint robber_player;
+	GList *build_list;
+};
 
 static gboolean global_unhandled(StateMachine *sm, gint event);
 static gboolean global_filter(StateMachine *sm, gint event);
@@ -36,6 +49,7 @@ static gboolean mode_start(StateMachine *sm, gint event);
 static gboolean mode_players(StateMachine *sm, gint event);
 static gboolean mode_player_list(StateMachine *sm, gint event);
 static gboolean mode_load_game(StateMachine *sm, gint event);
+static gboolean mode_load_gameinfo(StateMachine *sm, gint event);
 static gboolean mode_start_response(StateMachine *sm, gint event);
 static gboolean mode_setup(StateMachine *sm, gint event);
 static gboolean mode_idle(StateMachine *sm, gint event);
@@ -52,6 +66,8 @@ static gboolean mode_domestic_trade(StateMachine *sm, gint event);
 static gboolean mode_domestic_quote(StateMachine *sm, gint event);
 static gboolean mode_domestic_monitor(StateMachine *sm, gint event);
 static gboolean mode_game_over(StateMachine *sm, gint event);
+static void recover_from_disconnect(StateMachine *sm,
+                                    struct recovery_info_t *rinfo);
 
 /* Create the client state machine.  Currently in a nasty global
  * variable - have to fix this sometime.
@@ -261,7 +277,7 @@ static gboolean check_other_players(StateMachine *sm)
 		return FALSE;
 
 	if (sm_recv(sm, "built %B %d %d %d", &build_type, &x, &y, &pos)) {
-		player_build_add(player_num, build_type, x, y, pos);
+		player_build_add(player_num, build_type, x, y, pos, TRUE);
 		return TRUE;
 	}
 	if (sm_recv(sm, "remove %B %d %d %d", &build_type, &x, &y, &pos)) {
@@ -566,6 +582,19 @@ static gboolean mode_start(StateMachine *sm, gint event)
 		sm_send(sm, "version %s\n", PROTOCOL_VERSION);
 		return TRUE;
 	}
+	if (sm_recv(sm, "status report"))
+	{
+		if (saved_name != NULL)
+		{
+			sm_send(sm, "status reconnect %s\n", saved_name);
+			return TRUE;
+		}
+		else
+		{
+			sm_send(sm, "status newplayer\n");
+			return TRUE;
+		}
+	}
 	if (sm_recv(sm, "player %d of %d, welcome to gnocatan server %S",
 		    &player_num, &total_num, version)) {
 		player_set_my_num(player_num);
@@ -629,7 +658,7 @@ static gboolean mode_player_list(StateMachine *sm, gint event)
 	return check_other_players(sm);
 }
 
-/* Response to "map" command
+/* Response to "game" command
  */
 static gboolean mode_load_game(StateMachine *sm, gint event)
 {
@@ -649,14 +678,227 @@ static gboolean mode_load_game(StateMachine *sm, gint event)
 		stock_init();
 		develop_init();
 		gui_set_game_params(game_params);
-		sm_send(sm, "start\n");
-		sm_goto(sm, mode_start_response);
+		sm_send(sm, "gameinfo\n");
+		sm_goto(sm, mode_load_gameinfo);
 		return TRUE;
 	}
 	if (check_other_players(sm))
 		return TRUE;
 	if (sm_recv(sm, "%S", str)) {
 		params_load_line(game_params, str);
+		return TRUE;
+	}
+	return FALSE;
+}
+
+/* Response to "gameinfo" command
+ */
+static gboolean mode_load_gameinfo(StateMachine *sm, gint event)
+{
+	gchar str[512];
+	gint x, y, pos, owner, i;
+	static struct recovery_info_t rinfo
+         = { "", -1, -1, -1, { -1, -1, -1, -1, -1 }, FALSE,
+	     -1, -1, FALSE, FALSE, -1, NULL };
+	static gboolean disconnected = FALSE;
+	static gint devcardidx = -1;
+	static gint numdevcards = -1;
+	gint num_roads, num_bridges, num_ships, num_settlements,
+	     num_cities, num_soldiers, road_len, develop_points;
+	gint opnum, opnassets, opncards, opnsoldiers;
+	gboolean pchapel, puniv, pgov, plibr, pmarket, plongestroad,
+	         plargestarmy;
+        DevelType devcard;
+	gint devcardturnbought;
+	gint player_num;
+	BuildType btype, prevbtype;
+	gint cost[NO_RESOURCE];
+	gint resources[NO_RESOURCE];
+
+	sm_state_name(sm, "mode_load_gameinfo");
+	if (event != SM_RECV)
+		return FALSE;
+	if (sm_recv(sm, "gameinfo")) {
+		return TRUE;
+	}
+	if (sm_recv(sm, ".")) {
+		return TRUE;
+	}
+	if (sm_recv(sm, "end")) {
+		if (disconnected)
+		{
+			recover_from_disconnect(sm, &rinfo);
+		}
+		else
+		{
+			sm_send(sm, "start\n");
+			sm_goto(sm, mode_start_response);
+		}
+		return TRUE;
+	}
+	if (sm_recv(sm, "turn num %d", &rinfo.turnnum)) {
+		return TRUE;
+	}
+	if (sm_recv(sm, "player turn: %d", &rinfo.playerturn)) {
+		return TRUE;
+	}
+	if (sm_recv(sm, "dice rolled: %d %d", &rinfo.die1, &rinfo.die2)) {
+		rinfo.rolled_dice = TRUE;
+		return TRUE;
+	}
+	if (sm_recv(sm, "dice value: %d %d", &rinfo.die1, &rinfo.die2)) {
+		return TRUE;
+	}
+	if (sm_recv(sm, "played develop", &rinfo.played_develop)) {
+		rinfo.played_develop = TRUE;
+		return TRUE;
+	}
+	if (sm_recv(sm, "bought develop", &rinfo.bought_develop)) {
+		rinfo.bought_develop = TRUE;
+		return TRUE;
+	}
+	if (sm_recv(sm, "state DISCARD %d", &rinfo.numdiscards)) {
+		return TRUE;
+	}
+	if (sm_recv(sm, "state ISROBBER %d", &rinfo.robber_player)) {
+		strcpy(rinfo.prevstate, "ISROBBER");
+		return TRUE;
+	}
+	if (sm_recv(sm, "player disconnected")) {
+		disconnected = TRUE;
+		return TRUE;
+	}
+	if (sm_recv(sm, "state PLENTY %R", rinfo.plenty)) {
+		strcpy(rinfo.prevstate, "PLENTY");
+		return TRUE;
+	}
+	if (sm_recv(sm, "state %S", str)) {
+		strcpy(rinfo.prevstate, str);
+		return TRUE;
+	}
+	if (sm_recv(sm, "playerinfo: resources: %R", resources)) {
+		resource_apply_list(my_player_num(), resources, 1);
+		return TRUE;
+	}
+	if (sm_recv(sm, "playerinfo: numdevcards: %d", &numdevcards)) {
+		devcardidx = 0;
+		return TRUE;
+	}
+	if (sm_recv(sm, "playerinfo: devcard: %d %d", &devcard, &devcardturnbought)) {
+		if (devcardidx >= numdevcards)
+		{
+			return FALSE;
+		}
+
+		develop_bought_card_turn(devcard, devcardturnbought);
+
+		devcardidx++;
+		if (devcardidx >= numdevcards)
+		{
+			devcardidx = numdevcards = -1;
+		}
+		return TRUE;
+	}
+	if (sm_recv(sm, "playerinfo: %d %d %d %d %d %d %d %d %d %d %d %d %d %d",
+	            &num_roads, &num_bridges, &num_ships,
+	            &num_settlements, &num_cities, &num_soldiers, &road_len,
+	            &pchapel, &puniv, &pgov, &plibr, &pmarket, &plongestroad, &plargestarmy)) {
+		player_modify_statistic(my_player_num(), STAT_SOLDIERS, num_soldiers);
+		if (pchapel) {
+			player_modify_statistic(my_player_num(), STAT_CHAPEL, 1);
+		}
+		if (puniv) {
+			player_modify_statistic(my_player_num(), STAT_UNIVERSITY_OF_CATAN, 1);
+		}
+		if (pgov) {
+			player_modify_statistic(my_player_num(), STAT_GOVERNORS_HOUSE, 1);
+		}
+		if (plibr) {
+			player_modify_statistic(my_player_num(), STAT_LIBRARY, 1);
+		}
+		if (pmarket) {
+			player_modify_statistic(my_player_num(), STAT_MARKET, 1);
+		}
+		if (plongestroad) {
+			player_modify_statistic(my_player_num(), STAT_LONGEST_ROAD, 1);
+		}
+		if (plargestarmy) {
+			player_modify_statistic(my_player_num(), STAT_LARGEST_ARMY, 1);
+		}
+		return TRUE;
+	}
+	if (sm_recv(sm, "otherplayerinfo: %d %d %d %d %d %d %d %d %d %d %d",
+	    &opnum, &opnassets, &opncards, &opnsoldiers, &pchapel,
+	    &puniv, &pgov, &plibr, &pmarket, &plongestroad, &plargestarmy)) {
+		player_modify_statistic(opnum, STAT_RESOURCES, opnassets);
+		player_modify_statistic(opnum, STAT_DEVELOPMENT, opncards);
+		player_modify_statistic(opnum, STAT_SOLDIERS, opnsoldiers);
+		if (pchapel) {
+			player_modify_statistic(opnum, STAT_CHAPEL, 1);
+		}
+		if (puniv) {
+			player_modify_statistic(opnum, STAT_UNIVERSITY_OF_CATAN, 1);
+		}
+		if (pgov) {
+			player_modify_statistic(opnum, STAT_GOVERNORS_HOUSE, 1);
+		}
+		if (plibr) {
+			player_modify_statistic(opnum, STAT_LIBRARY, 1);
+		}
+		if (pmarket) {
+			player_modify_statistic(opnum, STAT_MARKET, 1);
+		}
+		if (plongestroad) {
+			player_modify_statistic(opnum, STAT_LONGEST_ROAD, 1);
+		}
+		if (plargestarmy) {
+			player_modify_statistic(opnum, STAT_LARGEST_ARMY, 1);
+		}
+		return TRUE;
+	}
+	if (sm_recv(sm, "player %d must-discard %d", &player_num, &rinfo.numdiscards)) {
+			if (discard_num_remaining() == 0) {
+				discard_begin();
+			}
+			discard_player_must(player_num, rinfo.numdiscards);
+		return TRUE;
+	}
+	if (sm_recv(sm, "buildinfo: %B %d %d %d %d %R",
+	            &btype, &prevbtype, &x, &y, &pos, cost)) {
+		BuildRec *rec;
+		rec = g_malloc0(sizeof(*rec));
+		rec->type = btype;
+		rec->prev_status = prevbtype;
+		rec->x = x;
+		rec->y = y;
+		rec->pos = pos;
+		rec->cost = NULL;
+		rinfo.build_list = g_list_append(rinfo.build_list, rec);
+		return TRUE;
+	}
+	if (sm_recv(sm, "RO%d,%d", &x, &y)) {
+		robber_move_on_map(x, y);
+		return TRUE;
+	}
+	if (sm_recv(sm, "S%d,%d,%d,%d", &x, &y, &pos, &owner)) {
+		player_build_add(owner, BUILD_SETTLEMENT, x, y, pos,
+		                 FALSE);
+		return TRUE;
+	}
+	if (sm_recv(sm, "C%d,%d,%d,%d", &x, &y, &pos, &owner)) {
+		player_build_add(owner, BUILD_CITY, x, y, pos, FALSE);
+		return TRUE;
+	}
+	if (sm_recv(sm, "R%d,%d,%d,%d", &x, &y, &pos, &owner)) {
+		player_build_add(owner, BUILD_ROAD, x, y, pos, FALSE);
+		return TRUE;
+	}
+	if (sm_recv(sm, "SH%d,%d,%d,%d", &x, &y, &pos, &owner)) {
+		player_build_add(owner, BUILD_SHIP, x, y, pos, FALSE);
+		return TRUE;
+	}
+	if (sm_recv(sm, "B%d,%d,%d,%d", &x, &y, &pos, &owner)) {
+		player_build_add(owner, BUILD_BRIDGE, x, y, pos, FALSE);
 		return TRUE;
 	}
 	return FALSE;
@@ -696,7 +938,7 @@ static gboolean mode_build_response(StateMachine *sm, gint event)
 	case SM_RECV:
 		if (sm_recv(sm, "built %B %d %d %d",
 			    &build_type, &x, &y, &pos)) {
-			build_add(build_type, x, y, pos, NULL);
+			build_add(build_type, x, y, pos, NULL, TRUE);
 			waiting_for_network(FALSE);
 			sm_pop(sm);
 			return TRUE;
@@ -2131,3 +2373,163 @@ static gboolean mode_game_over(StateMachine *sm, gint event)
 	}
 	return FALSE;
 }
+
+static gboolean mode_recovery_wait_start_response(StateMachine *sm, gint event)
+{
+	sm_state_name(sm, "mode_recovery_wait_start_response");
+	switch (event) {
+	case SM_ENTER:
+		sm_send(sm, "start\n");
+		break;
+	case SM_RECV:
+		if (sm_recv(sm, "OK")) {
+			sm_pop(sm);
+			return TRUE;
+		}
+		break;
+	default:
+		break;
+	}
+	return FALSE;
+}
+
+static void recover_from_disconnect(StateMachine *sm,
+                                    struct recovery_info_t *rinfo)
+{
+	GList *next;
+	if (rinfo->rolled_dice) {
+		turn_begin(rinfo->playerturn, rinfo->turnnum);
+		turn_rolled_dice(rinfo->playerturn, rinfo->die1, rinfo->die2);
+	}
+	else if (rinfo->die1 + rinfo->die2 > 1) {
+		identity_set_dice(rinfo->die1, rinfo->die2);
+		gui_highlight_chits(rinfo->die1 + rinfo->die2);
+	}
+
+	if (rinfo->played_develop || rinfo->bought_develop) {
+		develop_reset_have_played_bought(rinfo->played_develop, rinfo->bought_develop);
+	}
+
+	if (strcmp(rinfo->prevstate, "IDLE") == 0)
+	{
+		sm_goto(sm, mode_idle);
+	}
+	else if (strcmp(rinfo->prevstate, "SETUP") == 0 ||
+	         strcmp(rinfo->prevstate, "SETUPDOUBLE") == 0)
+	{
+		if (strcmp(rinfo->prevstate, "SETUP") == 0) {
+			setup_begin(my_player_num());
+		}
+		else {
+			setup_begin_double(my_player_num());
+		}
+		sm_goto(sm, mode_setup);
+	}
+	else if (strcmp(rinfo->prevstate, "TURN") == 0)
+	{
+		gboolean gotoidle = TRUE;
+		if (my_player_num() == rinfo->playerturn)
+		{
+			if (rinfo->rolled_dice) {
+				sm_goto(sm, mode_turn_rolled);
+			}
+			else {
+				sm_goto(sm, mode_turn);
+			}
+			gotoidle = FALSE;
+		}
+
+		if (gotoidle)
+		{
+			sm_goto(sm, mode_idle);
+		}
+	}
+	else if (strcmp(rinfo->prevstate, "YOUAREROBBER") == 0)
+	{
+		if (discard_num_remaining() == 0) {
+			sm_goto(sm, mode_turn_rolled);
+			sm_push(sm, mode_wait_for_robber);
+			sm_goto(sm, mode_robber);
+		}
+	}
+	else if (strcmp(rinfo->prevstate, "DISCARD") == 0) {
+		turn_begin(rinfo->playerturn, rinfo->turnnum);
+		turn_rolled_dice(rinfo->playerturn, rinfo->die1, rinfo->die2);
+	}
+	else if (strcmp(rinfo->prevstate, "IDLE") == 0)
+	{
+		sm_goto(sm, mode_idle);
+	}
+	else if (strcmp(rinfo->prevstate, "ISROBBER") == 0)
+	{
+		sm_goto(sm, mode_idle);
+		robber_begin_move(rinfo->robber_player);
+	}
+	else if (strcmp(rinfo->prevstate, "MONOPOLY") == 0)
+	{
+		monopoly_create_dlg();
+		if (rinfo->rolled_dice) {
+			sm_goto(sm, mode_turn_rolled);
+		}
+		else {
+			sm_goto(sm, mode_turn);
+		}
+		sm_push(sm, mode_monopoly);
+	}
+	else if (strcmp(rinfo->prevstate, "PLENTY") == 0)
+	{
+		plenty_create_dlg(rinfo->plenty);
+		if (rinfo->rolled_dice) {
+			sm_goto(sm, mode_turn_rolled);
+		}
+		else {
+			sm_goto(sm, mode_turn);
+		}
+		sm_push(sm, mode_year_of_plenty);
+	}
+	else if (strcmp(rinfo->prevstate, "ROADBUILDING") == 0)
+	{
+		/* note: don't call road_building_begin() because it
+		         will clear the build list */
+		if (rinfo->rolled_dice) {
+			sm_goto(sm, mode_turn_rolled);
+		}
+		else {
+			sm_goto(sm, mode_turn);
+		}
+		sm_push(sm, mode_road_building);
+	}
+
+	if (discard_num_remaining() > 0) {
+		if (my_player_num() == rinfo->playerturn) {
+			sm_goto(sm, mode_turn_rolled);
+			sm_push(sm, mode_wait_for_robber);
+		}
+		else {
+			sm_goto(sm, mode_idle);
+		}
+		sm_push(sm, mode_discard);
+		gui_discard_show(); /* reshow the discard dialog */
+	}
+
+	if (rinfo->build_list) {
+		for (next = rinfo->build_list; next != NULL;
+		     next = g_list_next(next)) {
+			BuildRec *build = (BuildRec *)next->data;
+			build_add(build->type, build->x, build->y, build->pos,
+			          NULL, FALSE);
+		}
+		sm_gui_check(sm, GUI_UNDO, setup_can_undo());
+		sm_gui_check(sm, GUI_ROAD, setup_can_build_road());
+		sm_gui_check(sm, GUI_BRIDGE, setup_can_build_bridge());
+		sm_gui_check(sm, GUI_SHIP, setup_can_build_ship());
+		sm_gui_check(sm, GUI_SETTLEMENT, setup_can_build_settlement());
+		sm_gui_check(sm, GUI_FINISH, setup_can_finish());
+		rinfo->build_list = buildrec_free(rinfo->build_list);
+	}
+
+	/* tell the server we have finished reconnecting and wait for
+	   its ok response */
+	sm_push(sm, mode_recovery_wait_start_response);
+}
+

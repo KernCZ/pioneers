@@ -27,12 +27,12 @@
 #include "log.h"
 #include "server.h"
 
-static gboolean mode_discard_resources(Player *player, gint event);
+gboolean mode_discard_resources(Player *player, gint event);
 
 /* Wait for all other players to discard resources, then place the
  * robber
  */
-static gboolean mode_wait_others_place_robber(Player *player, gint event)
+gboolean mode_wait_others_place_robber(Player *player, gint event)
 {
 	StateMachine *sm = player->sm;
         sm_state_name(sm, "mode_wait_others_place_robber");
@@ -42,7 +42,7 @@ static gboolean mode_wait_others_place_robber(Player *player, gint event)
 /* Wait for the player to discard discard_num resources, then place
  * the robber.
  */
-static gboolean mode_discard_resources_place_robber(Player *player, gint event)
+gboolean mode_discard_resources_place_robber(Player *player, gint event)
 {
 	/* This mode behaves exactly the same as discard_resources
 	 * except that once the discard process is complete, the player
@@ -107,7 +107,7 @@ static void check_finished_discard(Player *player)
 	log_message( MSG_ERROR, "Could not find player to place robber\n");
 }
 
-static gboolean mode_discard_resources(Player *player, gint event)
+gboolean mode_discard_resources(Player *player, gint event)
 {
 	StateMachine *sm = player->sm;
 	Game *game = player->game;

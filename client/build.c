@@ -88,7 +88,8 @@ gboolean build_can_setup_settlement(Node *node, gboolean double_setup)
 	return buildrec_can_setup_settlement(build_list, map, node, double_setup);
 }
 
-void build_add(BuildType type, gint x, gint y, gint pos, gint *cost)
+void build_add(BuildType type, gint x, gint y, gint pos, gint *cost,
+	       gboolean newbuild)
 {
 	BuildRec *rec = g_malloc0(sizeof(*rec));
 	rec->type = type;
@@ -99,7 +100,9 @@ void build_add(BuildType type, gint x, gint y, gint pos, gint *cost)
 	build_list = g_list_append(build_list, rec);
 	built = TRUE;
 
-	player_build_add(my_player_num(), type, x, y, pos);
+	if (newbuild) {
+		player_build_add(my_player_num(), type, x, y, pos, TRUE);
+	}
 }
 
 BuildRec *build_last()

@@ -29,9 +29,9 @@
 #include "server.h"
 
 /* Local function prototypes */
-static gboolean mode_road_building(Player *player, gint event);
-static gboolean mode_plenty_resources(Player *player, gint event);
-static gboolean mode_monopoly(Player *player, gint event);
+gboolean mode_road_building(Player *player, gint event);
+gboolean mode_plenty_resources(Player *player, gint event);
+gboolean mode_monopoly(Player *player, gint event);
 
 
 void develop_shuffle(Game *game)
@@ -110,7 +110,7 @@ void develop_buy(Player *player)
 	sm_send(player->sm, "bought-develop %d\n", card);
 }
 
-static gboolean mode_road_building(Player *player, gint event)
+gboolean mode_road_building(Player *player, gint event)
 {
 	StateMachine *sm = player->sm;
 	Game *game = player->game;
@@ -216,7 +216,7 @@ static gboolean mode_road_building(Player *player, gint event)
 	return FALSE;
 }
 
-static gboolean mode_plenty_resources(Player *player, gint event)
+gboolean mode_plenty_resources(Player *player, gint event)
 {
 	StateMachine *sm = player->sm;
 	Game *game = player->game;
@@ -258,7 +258,7 @@ static gboolean mode_plenty_resources(Player *player, gint event)
 
 /* monopoly <resource-type>
  */
-static gboolean mode_monopoly(Player *player, gint event)
+gboolean mode_monopoly(Player *player, gint event)
 {
 	StateMachine *sm = player->sm;
 	Game *game = player->game;
@@ -390,6 +390,27 @@ void develop_play(Player *player, gint idx)
         case DEVEL_GOVERNORS_HOUSE:
         case DEVEL_LIBRARY:
         case DEVEL_MARKET:
+
+		switch (card) {
+        	case DEVEL_CHAPEL:
+			player->chapel_played = TRUE;
+			break;
+       		case DEVEL_UNIVERSITY_OF_CATAN:
+			player->univ_played = TRUE;
+			break;
+	        case DEVEL_GOVERNORS_HOUSE:
+			player->gov_played = TRUE;
+			break;
+       		case DEVEL_LIBRARY:
+			player->libr_played = TRUE;
+			break;
+	        case DEVEL_MARKET:
+			player->market_played = TRUE;
+			break;
+		default:
+			;
+		}
+
 		/* One victory point
 		 */
 		player->develop_points++;
