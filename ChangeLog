@@ -1,3 +1,9 @@
+2000-05-27  Steve Langasek <vorlon@dodds.net>
+
+	* server/mt_rand.[ch], server/Makefile.am, common/mt_rand.[ch],
+	common/Makefile.am: Moved Mersenne Twister to the common/ subdir,
+	as it's needed elsewhere.
+
 2000-05-27  Andy Heroff <aheroff@mediaone.net>
 
 	* client/gui.c: Added total functionality to what is in the settings

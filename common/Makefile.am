@@ -30,6 +30,16 @@ libgnocatan_a_SOURCES = \
 	state.c \
 	state.h
 
+EXTRA_libgnocatan_a_SOURCES = \
+	mt_rand.c \
+	mt_rand.h
+
+libgnocatan_a_LIBADD = \
+	$(MT_RAND_OBJ)
+
+libgnocatan_a_DEPENDENCIES = \
+	$(MT_RAND_OBJ)
+
 libgnocatan_gtk_a_SOURCES = \
 	common_gtk.c \
 	common_gtk.h
