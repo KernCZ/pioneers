@@ -188,7 +188,7 @@ gint new_computer_player(gint server_port)
 	printf("port = %d\n",server_port);
 
 	args[num] = NULL;
-	execv("gnocatanai",args);
+	execvp("gnocatanai",args);
 
 	printf("Error exec'ing gnocatanai\n");
 	exit(1);
