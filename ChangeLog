@@ -1,3 +1,9 @@
+2000-06-18  Andy Heroff <aheroff@mediaone.net>
+
+	* server/STATES, server/player.c, server/server.h, client/client.c:
+	  Added version checking to the connect sequence. Also added
+	  connection error messages.
+
 2000-06-15  Steve Langasek <vorlon@dodds.net>
 
 	* gnocatan.spec: cleaned up RedHat build to not include files twice.

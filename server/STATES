@@ -14,8 +14,12 @@ mode_global -- always invoked if primary mode doesn't handle message
 << pre-game >>
 
 (player_new) -- incoming connection
+       => mode_check_version
+
+mode_check_version
        => mode_pre_game
     or => mode_game_full
+    or => mode_bad_version
 
 mode_game_full
     X (they can only disconnect)

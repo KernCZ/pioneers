@@ -29,7 +29,9 @@
 #include "server.h"
 
 /* Local function prototypes */
+static gboolean mode_check_version(Player *player, gint event);
 static gboolean mode_game_full(Player *player, gint event);
+static gboolean mode_bad_version(Player *player, gint event);
 static gboolean mode_global(Player *player, gint event);
 
 
@@ -104,6 +106,16 @@ Player *player_new(Game *game, int fd, gchar *location)
 	player->location = g_strdup(location);
 	player->devel = deck_new(game->params);
 	game->player_list = g_list_append(game->player_list, player);
+	
+	sm_goto(sm, (StateFunc)mode_check_version);
+	
+	return player;
+}
+
+void player_setup(Player *player)
+{
+	Game *game = player->game;
+	StateMachine *sm = player->sm;
 
 	player->num = -1;
 	player->num = next_player_num(game);
@@ -122,8 +134,6 @@ Player *player_new(Game *game, int fd, gchar *location)
 		sm_goto(sm, (StateFunc)mode_pre_game);
 	} else
 		sm_goto(sm, (StateFunc)mode_game_full);
-
-	return player;
 }
 
 void player_free(Player *player)
@@ -152,6 +162,62 @@ static gboolean mode_game_full(Player *player, gint event)
         switch (event) {
         case SM_ENTER:
 		sm_send(sm, "sorry, game is full\n");
+		break;
+	}
+	return FALSE;
+}
+
+static gboolean mode_bad_version(Player *player, gint event)
+{
+	StateMachine *sm = player->sm;
+	
+	sm_state_name(sm, "mode_bad_version");
+	switch (event) {
+	case SM_ENTER:
+		sm_send(sm, "sorry, version conflict\n");
+		break;
+	}
+	return FALSE;
+}
+
+static gboolean check_versions( gchar *client_version )
+{
+	guint len;
+	
+	len = strlen(VERSION);
+	if( strncmp( VERSION, client_version, len ) == 0 )
+	{
+		return TRUE;
+	} else {
+		return FALSE;
+	}
+}
+
+static gboolean mode_check_version(Player *player, gint event)
+{
+	StateMachine *sm = player->sm;
+	gchar version[512];
+	
+	sm_state_name(sm, "mode_check_version");
+	switch (event) {
+	case SM_ENTER:
+		sm_send(sm, "version report\n");
+		break;
+	
+	case SM_RECV:
+		if( sm_recv(sm, "version %S", version ) )
+		{
+			if( check_versions( version ) )
+			{
+				player_setup(player);
+				return TRUE;
+			} else {
+				sm_goto(sm, (StateFunc)mode_bad_version);
+				return TRUE;
+			}
+		}
+		break;
+	default:
 		break;
 	}
 	return FALSE;
