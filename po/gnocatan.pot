@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-01-26 13:52+0100\n"
+"POT-Creation-Date: 2004-03-23 20:04+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ai/client.c:142 ai/client.c:161 client/common/client.c:210
+#: ai/client.c:142 ai/client.c:161 client/common/client.c:215
 msgid "We have been kicked out of the game.\n"
 msgstr ""
 
@@ -44,76 +44,76 @@ msgstr ""
 msgid "The game is over.\n"
 msgstr ""
 
-#: ai/develop.c:32 client/common/develop.c:43 client/gtk/develop.c:40
+#: ai/develop.c:32 client/common/develop.c:42 client/gtk/develop.c:40
 msgid "Road Building"
 msgstr ""
 
-#: ai/develop.c:33 client/common/develop.c:44 client/gtk/develop.c:41
+#: ai/develop.c:33 client/common/develop.c:43 client/gtk/develop.c:41
 #: client/gtk/monopoly.c:81
 msgid "Monopoly"
 msgstr ""
 
-#: ai/develop.c:34 client/common/develop.c:45 client/gtk/develop.c:42
+#: ai/develop.c:34 client/common/develop.c:44 client/gtk/develop.c:42
 #: client/gtk/plenty.c:170
 msgid "Year of Plenty"
 msgstr ""
 
-#: ai/develop.c:35 ai/player.c:25 client/common/develop.c:46
+#: ai/develop.c:35 ai/player.c:25 client/common/develop.c:45
 #: client/gtk/develop.c:43 client/gtk/player.c:52
 msgid "Chapel"
 msgstr ""
 
-#: ai/develop.c:36 ai/player.c:26 client/common/develop.c:47
+#: ai/develop.c:36 ai/player.c:26 client/common/develop.c:46
 #: client/gtk/develop.c:44 client/gtk/player.c:53
 msgid "University of Gnocatan"
 msgstr ""
 
-#: ai/develop.c:37 ai/player.c:27 client/common/develop.c:48
-#: client/gtk/develop.c:45 client/gtk/player.c:54
+#: ai/develop.c:37 ai/player.c:27 client/common/develop.c:47
+#: client/gtk/develop.c:45 client/gtk/player.c:55
 msgid "Governor's House"
 msgstr ""
 
-#: ai/develop.c:38 ai/player.c:28 client/common/develop.c:49
-#: client/gtk/develop.c:46 client/gtk/player.c:55
+#: ai/develop.c:38 ai/player.c:28 client/common/develop.c:48
+#: client/gtk/develop.c:46 client/gtk/player.c:56
 msgid "Library"
 msgstr ""
 
-#: ai/develop.c:39 ai/player.c:29 client/common/develop.c:50
-#: client/gtk/develop.c:47 client/gtk/player.c:56
+#: ai/develop.c:39 ai/player.c:29 client/common/develop.c:49
+#: client/gtk/develop.c:47 client/gtk/player.c:57
 msgid "Market"
 msgstr ""
 
-#: ai/develop.c:40 ai/player.c:30 client/common/develop.c:51
-#: client/gtk/develop.c:48 client/gtk/player.c:57
+#: ai/develop.c:40 ai/player.c:30 client/common/develop.c:50
+#: client/gtk/develop.c:48 client/gtk/player.c:58
 msgid "Soldier"
 msgstr ""
 
-#: ai/develop.c:107 client/common/develop.c:97
+#: ai/develop.c:107 client/common/develop.c:96
 #, c-format
 msgid "%s bought a development card.\n"
 msgstr ""
 
-#: ai/develop.c:123 client/common/develop.c:74
+#: ai/develop.c:123 client/common/develop.c:73
 #, c-format
 msgid "You bought the %s development card.\n"
 msgstr ""
 
-#: ai/develop.c:126 client/common/develop.c:77
+#: ai/develop.c:126 client/common/develop.c:76
 #, c-format
 msgid "You bought a %s development card.\n"
 msgstr ""
 
-#: ai/develop.c:144 client/common/develop.c:115
+#: ai/develop.c:144 client/common/develop.c:114
 #, c-format
 msgid "%s played the %s development card.\n"
 msgstr ""
 
-#: ai/develop.c:148 client/common/develop.c:119
+#: ai/develop.c:148 client/common/develop.c:118
 #, c-format
 msgid "%s played a %s development card.\n"
 msgstr ""
 
-#: ai/develop.c:159 client/common/develop.c:130
+#: ai/develop.c:159 client/common/develop.c:129
 msgid "You have run out of road segments.\n"
 msgstr ""
 
@@ -271,19 +271,19 @@ msgstr ""
 
 #. I get the cards!
 #.
-#: ai/monopoly.c:40 client/common/develop.c:168
+#: ai/monopoly.c:40 client/common/develop.c:167
 #, c-format
 msgid "You get %s from %s.\n"
 msgstr ""
 
 #. I lose the cards!
 #.
-#: ai/monopoly.c:49 client/common/develop.c:176
+#: ai/monopoly.c:49 client/common/develop.c:175
 #, c-format
 msgid "%s took %s from you.\n"
 msgstr ""
 
-#: ai/monopoly.c:58 client/common/develop.c:184
+#: ai/monopoly.c:58 client/common/develop.c:183
 #, c-format
 msgid "%s took %s from %s.\n"
 msgstr ""
@@ -312,23 +312,23 @@ msgstr ""
 msgid "Longest Road"
 msgstr ""
 
-#: ai/player.c:30 client/gtk/player.c:57
+#: ai/player.c:30 client/gtk/player.c:58
 msgid "Soldiers"
 msgstr ""
 
-#: ai/player.c:31 client/gtk/player.c:58
+#: ai/player.c:31 client/gtk/player.c:59
 msgid "Resource card"
 msgstr ""
 
-#: ai/player.c:31 client/gtk/player.c:58
+#: ai/player.c:31 client/gtk/player.c:59
 msgid "Resource cards"
 msgstr ""
 
-#: ai/player.c:32 client/gtk/player.c:59
+#: ai/player.c:32 client/gtk/player.c:60
 msgid "Development card"
 msgstr ""
 
-#: ai/player.c:32 client/gtk/player.c:59
+#: ai/player.c:32 client/gtk/player.c:60
 msgid "Development cards"
 msgstr ""
 
@@ -352,30 +352,30 @@ msgstr ""
 msgid "%s is now anonymous.\n"
 msgstr ""
 
-#: ai/player.c:156 client/common/player.c:171
+#: ai/player.c:156 client/common/player.c:172
 #, c-format
 msgid "Player %d is now %s.\n"
 msgstr ""
 
-#: ai/player.c:158 client/common/player.c:159 client/common/player.c:173
+#: ai/player.c:158 client/common/player.c:159 client/common/player.c:174
 #, c-format
 msgid "%s is now %s.\n"
 msgstr ""
 
-#: ai/player.c:174 client/common/player.c:209
+#: ai/player.c:174 client/common/player.c:210
 msgid "There is no largest army.\n"
 msgstr ""
 
-#: ai/player.c:176 client/common/player.c:211
+#: ai/player.c:176 client/common/player.c:212
 #, c-format
 msgid "%s has the largest army.\n"
 msgstr ""
 
-#: ai/player.c:196 client/common/player.c:230
+#: ai/player.c:196 client/common/player.c:231
 msgid "There is no longest road.\n"
 msgstr ""
 
-#: ai/player.c:198 client/common/player.c:232
+#: ai/player.c:198 client/common/player.c:233
 #, c-format
 msgid "%s has the longest road.\n"
 msgstr ""
@@ -389,143 +389,143 @@ msgstr ""
 #. * two calls can be safely combined. If not: ai/player.c should also be fixed
 #. FIXME: in the client, anonymous players can exist.
 #. * I prefer changing that instead of this function
-#: ai/player.c:239 client/common/player.c:280
+#: ai/player.c:239 client/common/player.c:281
 #, c-format
 msgid "%s stole a resource from %s.\n"
 msgstr ""
 
 #. We stole a card :-)
 #.
-#: ai/player.c:248 client/common/player.c:290
+#: ai/player.c:248 client/common/player.c:291
 #, c-format
 msgid "You stole %s from %s.\n"
 msgstr ""
 
 #. Someone stole our card :-(
 #.
-#: ai/player.c:255 client/common/player.c:296
+#: ai/player.c:255 client/common/player.c:297
 #, c-format
 msgid "%s stole %s from you.\n"
 msgstr ""
 
-#: ai/player.c:287 client/common/player.c:327
+#: ai/player.c:287 client/common/player.c:328
 #, c-format
 msgid "%s gave %s nothing!?\n"
 msgstr ""
 
-#: ai/player.c:293 ai/player.c:300 client/common/player.c:333
-#: client/common/player.c:340
+#: ai/player.c:293 ai/player.c:300 client/common/player.c:334
+#: client/common/player.c:341
 #, c-format
 msgid "%s gave %s %s for free.\n"
 msgstr ""
 
-#: ai/player.c:308 client/common/player.c:348
+#: ai/player.c:308 client/common/player.c:349
 #, c-format
 msgid "%s gave %s %s in exchange for %s.\n"
 msgstr ""
 
-#: ai/player.c:324 client/common/player.c:369
+#: ai/player.c:324 client/common/player.c:378
 #, c-format
 msgid "%s exchanged %s for %s.\n"
 msgstr ""
 
-#: ai/player.c:340 client/common/player.c:388
+#: ai/player.c:340 client/common/player.c:397
 #, c-format
 msgid "%s built a road.\n"
 msgstr ""
 
-#: ai/player.c:349 client/common/player.c:401
+#: ai/player.c:349 client/common/player.c:410
 #, c-format
 msgid "%s built a ship.\n"
 msgstr ""
 
-#: ai/player.c:358 client/common/player.c:414
+#: ai/player.c:358 client/common/player.c:423
 #, c-format
 msgid "%s built a settlement.\n"
 msgstr ""
 
-#: ai/player.c:374 client/common/player.c:434
+#: ai/player.c:374 client/common/player.c:443
 #, c-format
 msgid "%s built a city.\n"
 msgstr ""
 
-#: ai/player.c:381 client/common/player.c:442
+#: ai/player.c:381 client/common/player.c:451
 #, c-format
 msgid "player_build_add called with BUILD_NONE for user %s\n"
 msgstr ""
 
-#: ai/player.c:408 client/common/player.c:555
+#: ai/player.c:408 client/common/player.c:564
 #, c-format
 msgid "%s has cancelled a ship's movement.\n"
 msgstr ""
 
-#: ai/player.c:410 client/common/player.c:557
+#: ai/player.c:410 client/common/player.c:566
 #, c-format
 msgid "%s moved a ship.\n"
 msgstr ""
 
-#: ai/player.c:425 client/common/player.c:478
+#: ai/player.c:425 client/common/player.c:487
 #, c-format
 msgid "%s removed a road.\n"
 msgstr ""
 
-#: ai/player.c:434 client/common/player.c:488
+#: ai/player.c:434 client/common/player.c:497
 #, c-format
 msgid "%s removed a ship.\n"
 msgstr ""
 
-#: ai/player.c:443 client/common/player.c:498
+#: ai/player.c:443 client/common/player.c:507
 #, c-format
 msgid "%s removed a settlement.\n"
 msgstr ""
 
-#: ai/player.c:453 client/common/player.c:509
+#: ai/player.c:453 client/common/player.c:518
 #, c-format
 msgid "%s removed a city.\n"
 msgstr ""
 
-#: ai/player.c:463 client/common/player.c:519
+#: ai/player.c:463 client/common/player.c:528
 #, c-format
 msgid "player_build_remove called with BUILD_NONE for user %s\n"
 msgstr ""
 
-#: ai/resource.c:21 client/common/resource.c:33
+#: ai/resource.c:21 client/common/resource.c:35
 msgid "brick"
 msgstr ""
 
-#: ai/resource.c:21 client/common/resource.c:33
+#: ai/resource.c:21 client/common/resource.c:35
 msgid "Brick"
 msgstr ""
 
-#: ai/resource.c:22 client/common/resource.c:34
+#: ai/resource.c:22 client/common/resource.c:36
 msgid "grain"
 msgstr ""
 
-#: ai/resource.c:22 client/common/resource.c:34
+#: ai/resource.c:22 client/common/resource.c:36
 msgid "Grain"
 msgstr ""
 
-#: ai/resource.c:23 client/common/resource.c:35
+#: ai/resource.c:23 client/common/resource.c:37
 msgid "ore"
 msgstr ""
 
-#: ai/resource.c:23 client/common/resource.c:35
+#: ai/resource.c:23 client/common/resource.c:37
 msgid "Ore"
 msgstr ""
 
-#: ai/resource.c:24 client/common/resource.c:36
+#: ai/resource.c:24 client/common/resource.c:38
 msgid "wool"
 msgstr ""
 
-#: ai/resource.c:24 client/common/resource.c:36
+#: ai/resource.c:24 client/common/resource.c:38
 msgid "Wool"
 msgstr ""
 
-#: ai/resource.c:25 client/common/resource.c:37
+#: ai/resource.c:25 client/common/resource.c:39
 msgid "lumber"
 msgstr ""
 
-#: ai/resource.c:25 client/common/resource.c:37
+#: ai/resource.c:25 client/common/resource.c:39
 msgid "Lumber"
 msgstr ""
 
@@ -602,106 +602,102 @@ msgstr ""
 msgid "Waiting"
 msgstr ""
 
-#: client/common/client.c:108 client/common/client.c:896
+#: client/common/client.c:108 client/common/client.c:914
 msgid "Idle"
 msgstr ""
 
-#: client/common/client.c:213 client/common/client.c:578 client/gtk/gui.c:1115
+#: client/common/client.c:218 client/common/client.c:583 client/gtk/gui.c:1115
 msgid "Offline"
-msgstr ""
-
-#: client/common/client.c:341
-#, c-format
-msgid "%s receives %s.\n"
 msgstr ""
 
 #: client/common/client.c:346
 #, c-format
-msgid "%s spent %s.\n"
+msgid "%s receives %s.\n"
 msgstr ""
 
 #: client/common/client.c:351
 #, c-format
+msgid "%s spent %s.\n"
+msgstr ""
+
+#: client/common/client.c:356
+#, c-format
 msgid "%s is refunded %s.\n"
 msgstr ""
 
-#: client/common/client.c:379
+#: client/common/client.c:384
 #, c-format
 msgid "%s discarded %s.\n"
 msgstr ""
 
-#: client/common/client.c:540
+#: client/common/client.c:545
 msgid "Loading"
 msgstr ""
 
-#: client/common/client.c:579
+#: client/common/client.c:584
 msgid "Version mismatch"
 msgstr ""
 
-#: client/common/client.c:1003
+#: client/common/client.c:828
+msgid "Cannot determine bank, expect out of resource errors\n"
+msgstr ""
+
+#: client/common/client.c:1021
 msgid "Build two settlements, each with a connecting"
 msgstr ""
 
-#: client/common/client.c:1005
+#: client/common/client.c:1023
 msgid "Build a settlement with a connecting"
 msgstr ""
 
-#: client/common/client.c:1008
+#: client/common/client.c:1026
 msgid "road"
 msgstr ""
 
-#: client/common/client.c:1010
+#: client/common/client.c:1028
 msgid "bridge"
 msgstr ""
 
-#: client/common/client.c:1012
+#: client/common/client.c:1030
 msgid "ship"
 msgstr ""
 
-#: client/common/client.c:1019
+#: client/common/client.c:1037
 msgid " or"
 msgstr ""
 
-#: client/common/client.c:1073
+#: client/common/client.c:1091
 msgid "Waiting for your turn"
 msgstr ""
 
-#: client/common/client.c:1164 client/common/client.c:1189
+#: client/common/client.c:1182 client/common/client.c:1207
 msgid "Place the robber"
 msgstr ""
 
-#: client/common/client.c:1217
+#: client/common/client.c:1243
 msgid "Build two road segments."
 msgstr ""
 
-#: client/common/client.c:1219
+#: client/common/client.c:1245
 msgid "Build a road segment."
 msgstr ""
 
-#: client/common/client.c:1472 client/common/client.c:1559
+#: client/common/client.c:1498 client/common/client.c:1585
 msgid "It is your turn."
 msgstr ""
 
-#: client/common/client.c:1654
+#: client/common/client.c:1680
 #, c-format
 msgid "Sorry, %s available.\n"
 msgstr ""
 
-#: client/common/client.c:1972
+#: client/common/client.c:1998
 msgid "The game is over."
 msgstr ""
 
-#: client/common/client.c:2168
+#: client/common/client.c:2194
 #, c-format
 msgid "%s takes %s.\n"
-msgstr ""
-
-#: client/common/develop.c:270 client/gtk/develop.c:73
-msgid "Development Cards"
-msgstr ""
-
-#: client/common/develop.c:300 client/gtk/develop.c:103
-msgid "Play Card"
 msgstr ""
 
 #: client/common/player.c:97
@@ -719,146 +715,146 @@ msgstr ""
 msgid "New viewer: %s.\n"
 msgstr ""
 
-#: client/common/player.c:201
+#: client/common/player.c:202
 #, c-format
 msgid "%s has quit\n"
 msgstr ""
 
-#: client/common/player.c:252
+#: client/common/player.c:253
 #, c-format
 msgid "Waiting for %s."
 msgstr ""
 
-#: client/common/player.c:452
+#: client/common/player.c:461
 #, c-format
 msgid "%s built a bridge.\n"
 msgstr ""
 
-#: client/common/player.c:527
+#: client/common/player.c:536
 #, c-format
 msgid "%s removed a bridge.\n"
 msgstr ""
 
 #. tell the user
-#: client/common/player.c:580
+#: client/common/player.c:589
 #, c-format
 msgid "%s received %s.\n"
 msgstr ""
 
-#: client/common/player.c:596
+#: client/common/player.c:605
 msgid "server asks to lose invalid point.\n"
 msgstr ""
 
 #. tell the user the point is lost
-#: client/common/player.c:601
+#: client/common/player.c:610
 #, c-format
 msgid "%s lost %s.\n"
 msgstr ""
 
-#: client/common/player.c:621
+#: client/common/player.c:630
 msgid "server asks to move invalid point.\n"
 msgstr ""
 
 #. tell the user about it
-#: client/common/player.c:628
+#: client/common/player.c:637
 #, c-format
 msgid "%s lost %s to %s.\n"
 msgstr ""
 
-#: client/common/resource.c:38
+#: client/common/resource.c:40
 msgid "no resource (bug)"
 msgstr ""
 
-#: client/common/resource.c:38
+#: client/common/resource.c:40
 msgid "No resource (bug)"
 msgstr ""
 
-#: client/common/resource.c:39
+#: client/common/resource.c:41
 msgid "any resource (bug)"
 msgstr ""
 
-#: client/common/resource.c:39
+#: client/common/resource.c:41
 msgid "Any resource (bug)"
 msgstr ""
 
-#: client/common/resource.c:40
+#: client/common/resource.c:42
 msgid "gold"
 msgstr ""
 
-#: client/common/resource.c:40 client/gtk/legend.c:39
+#: client/common/resource.c:42 client/gtk/legend.c:39
 msgid "Gold"
 msgstr ""
 
-#: client/common/resource.c:45
+#: client/common/resource.c:47
 msgid "a brick card"
 msgstr ""
 
-#: client/common/resource.c:45
+#: client/common/resource.c:47
 #, c-format
 msgid "%d brick cards"
 msgstr ""
 
-#: client/common/resource.c:46
+#: client/common/resource.c:48
 msgid "a grain card"
 msgstr ""
 
-#: client/common/resource.c:46
+#: client/common/resource.c:48
 #, c-format
 msgid "%d grain cards"
 msgstr ""
 
-#: client/common/resource.c:47
+#: client/common/resource.c:49
 msgid "an ore card"
 msgstr ""
 
-#: client/common/resource.c:47
+#: client/common/resource.c:49
 #, c-format
 msgid "%d ore cards"
 msgstr ""
 
-#: client/common/resource.c:48
+#: client/common/resource.c:50
 msgid "a wool card"
 msgstr ""
 
-#: client/common/resource.c:48
+#: client/common/resource.c:50
 #, c-format
 msgid "%d wool cards"
 msgstr ""
 
-#: client/common/resource.c:49
+#: client/common/resource.c:51
 msgid "a lumber card"
 msgstr ""
 
-#: client/common/resource.c:49
+#: client/common/resource.c:51
 #, c-format
 msgid "%d lumber cards"
 msgstr ""
 
-#: client/common/resource.c:133
+#: client/common/resource.c:138 client/common/resource.c:220
 #, c-format
 msgid "nothing"
 msgstr ""
 
-#: client/common/resource.c:156
+#: client/common/resource.c:161
 #, c-format
 msgid ", and %s"
 msgstr ""
 
-#: client/common/resource.c:160
+#: client/common/resource.c:165
 #, c-format
 msgid "%s, "
 msgstr ""
 
-#: client/common/resource.c:254
+#: client/common/resource.c:285
 #, c-format
 msgid "player %d resource count wrong: server=%d, me=%d"
 msgstr ""
 
-#: client/common/resource.c:267
+#: client/common/resource.c:298
 msgid "resources wrong:"
 msgstr ""
 
-#: client/common/resource.c:271
+#: client/common/resource.c:302
 #, c-format
 msgid ""
 "\n"
@@ -894,7 +890,7 @@ msgstr ""
 msgid "Double setup for %s.\n"
 msgstr ""
 
-#: client/gtk/chat.c:58
+#: client/gtk/chat.c:59
 msgid "Chat"
 msgstr ""
 
@@ -1068,15 +1064,23 @@ msgstr ""
 msgid "Recent Servers"
 msgstr ""
 
+#: client/gtk/develop.c:73
+msgid "Development Cards"
+msgstr ""
+
+#: client/gtk/develop.c:103
+msgid "Play Card"
+msgstr ""
+
 #. less arrow
 #: client/gtk/discard.c:145 client/gtk/gold.c:116 client/gtk/plenty.c:116
-#: client/gtk/quote.c:473 client/gtk/trade.c:469
+#: client/gtk/quote.c:473 client/gtk/trade.c:458
 msgid "<less"
 msgstr ""
 
 #. more arrow
 #: client/gtk/discard.c:155 client/gtk/gold.c:135 client/gtk/plenty.c:126
-#: client/gtk/quote.c:483 client/gtk/trade.c:479
+#: client/gtk/quote.c:483 client/gtk/trade.c:468
 msgid "more>"
 msgstr ""
 
@@ -1313,10 +1317,12 @@ msgstr ""
 msgid "Trade"
 msgstr ""
 
+#. //	gtk_widget_hide(trade_page);
 #: client/gtk/gui.c:506 client/gtk/quote.c:611
 msgid "Quote"
 msgstr ""
 
+#. //	gtk_widget_hide(quote_page);
 #: client/gtk/gui.c:513 client/gtk/legend.c:201
 msgid "Legend"
 msgstr ""
@@ -1574,11 +1580,31 @@ msgstr ""
 msgid "Resource to take"
 msgstr ""
 
-#: client/gtk/player.c:397
+#: client/gtk/player.c:52
+msgid "Chapels"
+msgstr ""
+
+#: client/gtk/player.c:53
+msgid "Universities of Gnocatan"
+msgstr ""
+
+#: client/gtk/player.c:55
+msgid "Governor's Houses"
+msgstr ""
+
+#: client/gtk/player.c:56
+msgid "Libraries"
+msgstr ""
+
+#: client/gtk/player.c:57
+msgid "Markets"
+msgstr ""
+
+#: client/gtk/player.c:413
 msgid "Player Summary"
 msgstr ""
 
-#: client/gtk/quote.c:249 client/gtk/trade.c:291
+#: client/gtk/quote.c:249 client/gtk/trade.c:292
 msgid "Rejected trade"
 msgstr ""
 
@@ -1587,11 +1613,11 @@ msgstr ""
 msgid "%s has %s, and is looking for %s"
 msgstr ""
 
-#: client/gtk/quote.c:573 client/gtk/trade.c:731
+#: client/gtk/quote.c:573 client/gtk/trade.c:722
 msgid "I Want"
 msgstr ""
 
-#: client/gtk/quote.c:590 client/gtk/trade.c:748
+#: client/gtk/quote.c:590 client/gtk/trade.c:740
 msgid "Give Them"
 msgstr ""
 
@@ -1772,51 +1798,119 @@ msgstr ""
 msgid "Theme %s not loaded due to errors\n"
 msgstr ""
 
-#: client/gtk/trade.c:177
+#: client/gtk/trade.c:178
 #, c-format
 msgid "ask for %s for free"
 msgstr ""
 
-#: client/gtk/trade.c:181
+#: client/gtk/trade.c:182
 #, c-format
 msgid "give %s for free"
 msgstr ""
 
-#: client/gtk/trade.c:185
+#: client/gtk/trade.c:186
 #, c-format
 msgid "give %s for %s"
 msgstr ""
 
-#: client/gtk/trade.c:232
+#: client/gtk/trade.c:233
 #, c-format
 msgid "%d:1 %s for %s"
 msgstr ""
 
-#: client/gtk/trade.c:769
+#: client/gtk/trade.c:762
 msgid "Call For Quotes"
 msgstr ""
 
-#: client/gtk/trade.c:801
+#: client/gtk/trade.c:794
 msgid "Accept Quote"
 msgstr ""
 
-#: client/gtk/trade.c:806
+#: client/gtk/trade.c:799
 msgid "Finish Trading"
 msgstr ""
 
-#: common/log.c:75
+#: common/log.c:76
 msgid "*ERROR* "
 msgstr ""
 
-#: common/log.c:78
+#: common/log.c:79
 msgid "- "
 msgstr ""
 
-#: common/log.c:81
+#: common/log.c:82
 msgid "CHAT: "
 msgstr ""
 
-#: common/log.c:85
+#: common/log.c:86
+msgid "Resource: "
+msgstr ""
+
+#: common/log.c:89
+msgid "Build: "
+msgstr ""
+
+#: common/log.c:92
+msgid "Dice: "
+msgstr ""
+
+#: common/log.c:95
+msgid "Steal: "
+msgstr ""
+
+#: common/log.c:98
+msgid "Trade: "
+msgstr ""
+
+#: common/log.c:101
+msgid "Development: "
+msgstr ""
+
+#: common/log.c:104
+msgid "Army: "
+msgstr ""
+
+#: common/log.c:107
+msgid "Road: "
+msgstr ""
+
+#: common/log.c:110
+msgid "*BEEP* "
+msgstr ""
+
+#: common/log.c:113
+msgid "Player 1: "
+msgstr ""
+
+#: common/log.c:116
+msgid "Player 2: "
+msgstr ""
+
+#: common/log.c:119
+msgid "Player 3: "
+msgstr ""
+
+#: common/log.c:122
+msgid "Player 4: "
+msgstr ""
+
+#: common/log.c:125
+msgid "Player 5: "
+msgstr ""
+
+#: common/log.c:128
+msgid "Player 6: "
+msgstr ""
+
+#: common/log.c:131
+msgid "Player 7: "
+msgstr ""
+
+#: common/log.c:134
+msgid "Player 8: "
+msgstr ""
+
+#: common/log.c:137
 msgid "** UNKNOWN MESSAGE TYPE ** "
 msgstr ""
 
@@ -1830,9 +1924,14 @@ msgstr ""
 msgid "Error connecting to host '%s': %s\n"
 msgstr ""
 
-#: common/network.c:195 common/network.c:242
+#: common/network.c:195
 #, c-format
 msgid "Error writing socket: %s\n"
+msgstr ""
+
+#: common/network.c:241
+#, c-format
+msgid "Error writing to socket: %s\n"
 msgstr ""
 
 #. We are in trouble now - the application has not
@@ -1840,55 +1939,55 @@ msgstr ""
 #. * reading. Assume something has gone wrong and
 #. * disconnect
 #.
-#: common/network.c:290
+#: common/network.c:289
 msgid "Read buffer overflow - disconnecting\n"
 msgstr ""
 
-#: common/network.c:308
+#: common/network.c:299
 #, c-format
 msgid "Error reading socket: %s\n"
 msgstr ""
 
-#: common/network.c:400
+#: common/network.c:388
 #, c-format
 msgid "Cannot resolve %s port %s: %s\n"
 msgstr ""
 
-#: common/network.c:404
+#: common/network.c:392
 #, c-format
 msgid "Cannot resolve %s port %s: host not found\n"
 msgstr ""
 
-#: common/network.c:411
+#: common/network.c:399
 #, c-format
 msgid "Error creating socket: %s\n"
 msgstr ""
 
-#: common/network.c:415
+#: common/network.c:403
 #, c-format
 msgid "Error setting socket close-on-exec: %s\n"
 msgstr ""
 
-#: common/network.c:422 server/server.c:139
+#: common/network.c:410 server/server.c:139
 #, c-format
 msgid "Error setting socket non-blocking: %s\n"
 msgstr ""
 
-#: common/network.c:435
+#: common/network.c:423
 #, c-format
 msgid "Error connecting to %s: %s\n"
 msgstr ""
 
-#: common/state.c:186
+#: common/state.c:187
 #, c-format
 msgid "Connecting to %s, port %s\n"
 msgstr ""
 
-#: common/state.c:500
+#: common/state.c:501
 msgid "State stack overflow. Stack dump sent to standard error.\n"
 msgstr ""
 
-#: common/state.c:505
+#: common/state.c:506
 msgid "State stack overflow"
 msgstr ""
 
@@ -2045,4 +2144,8 @@ msgstr ""
 
 #: server/server.c:214 server/server.c:222
 msgid "unknown"
+msgstr ""
+
+#: server/server.c:332
+msgid "Preparing game"
 msgstr ""
