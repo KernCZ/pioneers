@@ -54,6 +54,7 @@ appicon_DATA = gnome-gnocatan.png
 
 pixmap_DATA = \
 	board.png \
+	bridge.png \
 	city.png \
 	cross.png \
 	desert.png \
