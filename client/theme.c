@@ -215,13 +215,15 @@ static void theme_initialize(MapTheme *t)
  
 	/* load terrain tiles */
 	for(i = 0; i < numElem(t->terrain_tiles); ++i) {
-		/* if a theme doesn't define a terrain tile, use the default one */
+		/* if a theme doesn't define a terrain tile, use the default
+		 * one */
 		gchar *fname =
 			t->terrain_tile_names[i] ?
 			g_strconcat(t->subdir, t->terrain_tile_names[i], NULL) :
 			g_strdup(default_theme.terrain_tile_names[i]);
 		if (t->scaling == NEVER) {
-			/* don't bother to fill scaledata if it won't be used anyway */
+			/* don't bother to fill scaledata if it won't be used
+			 * anyway */
 			load_pixmap(fname, &(t->terrain_tiles[i]), NULL);
 		}
 		else {
@@ -229,23 +231,24 @@ static void theme_initialize(MapTheme *t)
 			gchar *file = g_strconcat(IMAGEDIR "/", fname, NULL);
 			
 			if (!g_file_exists(file)) {
-                g_error(_("Could not find \'%s\' pixmap file.\n"), file);
-                exit(1);
+		                g_error(_("Could not find \'%s\' pixmap file.\n"), file);
+				g_free (file);
+        		        exit(1);
 			}
 			pixbuf = gdk_pixbuf_new_from_file(file, NULL);
 			pixbuf_copy = gdk_pixbuf_copy(pixbuf);
 			if (pixbuf == NULL || pixbuf_copy == NULL) {
-                g_error(_("Could not load \'%s\' pixmap file.\n"), file);
+				g_error(_("Could not load \'%s\' pixmap file.\n"), file);
+				g_free (file);
 				exit(1);
 			}
 			g_free(file);
 			t->scaledata[i].image = pixbuf;
 			t->scaledata[i].native_image = pixbuf_copy;
 			t->scaledata[i].native_width = gdk_pixbuf_get_width(pixbuf);
-			t->scaledata[i].aspect = (float)gdk_pixbuf_get_width(pixbuf)
-					/ gdk_pixbuf_get_height(pixbuf);
+			t->scaledata[i].aspect = (float)gdk_pixbuf_get_width(pixbuf) / gdk_pixbuf_get_height(pixbuf);
 			gdk_pixbuf_render_pixmap_and_mask(pixbuf,
-					&t->terrain_tiles[i], NULL, 1);
+					&(t->terrain_tiles[i]), NULL, 1);
 		}
 		g_free(fname);
 	}
@@ -296,13 +299,13 @@ void theme_rescale(int new_width)
 		return;
 		
 	  case ONLY_DOWNSCALE:
-		if (new_width >= current_theme->scaledata[0].native_width)
-			return;
+		if (new_width > current_theme->scaledata[0].native_width)
+			new_width = current_theme->scaledata[0].native_width;
 		break;
 		
 	  case ONLY_UPSCALE:
-		if (new_width <= current_theme->scaledata[0].native_width)
-			return;
+		if (new_width < current_theme->scaledata[0].native_width)
+			new_width = current_theme->scaledata[0].native_width;
 		break;
 		
 	  case ALWAYS:
@@ -323,7 +326,7 @@ void theme_rescale(int new_width)
 
 		/* render a new pixmap */
 		gdk_pixmap_unref(current_theme->terrain_tiles[i]);
-		gdk_pixbuf_render_pixmap_and_mask(current_theme->scaledata[i].image, &current_theme->terrain_tiles[i], NULL, 1);
+		gdk_pixbuf_render_pixmap_and_mask(current_theme->scaledata[i].image, &(current_theme->terrain_tiles[i]), NULL, 1);
 	}
 }
 

@@ -1,3 +1,9 @@
+2003-10-10  Bas Wijnen <b.wijnen@phys.rug.nl>
+	* ai/client.c: Fixed AI naming bug.
+	* client/gui.c: Made code nicer, fixed bugs.
+	* client/robber.c: Fixed language bug.
+	* client/theme.c: Made code nicer, fixed scaling bugs.
+
 2003-10-03  Roland Clobus <rclobus@bigfoot.com>
 	* client/gold.c: Cosmetic change for the Choose Gold dialog.
 

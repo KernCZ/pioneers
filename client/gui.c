@@ -500,7 +500,7 @@ static void settings_apply_cb(GnomePropertyBox *prop_box, gint page, gpointer da
 
 	switch(page)
 	{
-		GdkEventExpose e;
+		GdkRectangle r;
 	case 0:
 		if(GTK_TOGGLE_BUTTON(radio_style_text)->active) {
 			toolbar_style = GTK_TOOLBAR_TEXT;
@@ -539,25 +539,20 @@ static void settings_apply_cb(GnomePropertyBox *prop_box, gint page, gpointer da
 		theme = gtk_object_get_user_data(
 		    GTK_OBJECT(gtk_menu_get_active(GTK_MENU(theme_menu))));
 		if (theme != get_theme()) {
-		    gnome_config_set_string("/gnocatan/settings/theme",
-					    theme->name);
-		    set_theme(theme);
-		if (gmap->pixmap != NULL) {
-			g_free (gmap->pixmap);
-			gmap->pixmap = NULL;
-		}
-		e.area.x = 0;
-		e.area.y = 0;
-		e.area.width = gmap->width;
-		e.area.height = gmap->height;
-		expose_map_cb (gmap->area, &e, NULL);
-		gtk_widget_draw (gmap->area, NULL);
-
-		gdk_draw_pixmap(gmap->area->window,
-			gmap->area->style->fg_gc[GTK_WIDGET_STATE(gmap->area)],
-			gmap->pixmap,
-			0, 0, 0, 0,
-			gmap->width, gmap->height);
+			gnome_config_set_string("/gnocatan/settings/theme",
+						theme->name);
+			set_theme(theme);
+			if (gmap->pixmap != NULL) {
+				g_free (gmap->pixmap);
+				gmap->pixmap = NULL;
+			}
+			theme_rescale (gmap->width);
+			r.x = 0;
+			r.y = 0;
+			r.width = gmap->width;
+			r.height = gmap->height;
+			gdk_window_invalidate_rect (gmap->area->window, &r, TRUE);
+			legend_create_content ();
 		}
 		
 		break;
@@ -1069,7 +1064,8 @@ void gui_set_game_params(GameParams *params)
 	gmap->map = map = params->map;
 	guimap_scale_to_size(gmap, MAP_WIDTH, MAP_HEIGHT);
 
-	gdk_window_set_back_pixmap(gmap->area->window, NULL, FALSE);
+	if (gmap->area->window != NULL)
+		gdk_window_set_back_pixmap(gmap->area->window, NULL, FALSE);
 
 	gtk_drawing_area_size(GTK_DRAWING_AREA(gmap->area),
 			      gmap->width, gmap->height);

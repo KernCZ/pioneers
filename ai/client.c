@@ -504,7 +504,10 @@ static gboolean mode_start(StateMachine *sm, gint event)
 	}
 	if (sm_recv(sm, "status report")) 
 	{ 
-		sm_send(sm, "status newplayer\n"); 
+		if (saved_name)
+			sm_send(sm, "status reconnect %s\n", saved_name); 
+		else 
+			sm_send(sm, "status newplayer\n");
 		return TRUE; 
 	} 
 	if (sm_recv(sm, "player %d of %d, welcome to gnocatan server %S",
