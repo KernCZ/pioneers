@@ -30,6 +30,7 @@ gnocatan_server_LDADD = \
 
 config_DATA = \
 	default.game \
+	four-islands.game \
 	seafarers.game \
 	small.game
 
