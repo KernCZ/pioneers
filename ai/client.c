@@ -603,6 +603,7 @@ static gboolean mode_start_response(StateMachine *sm, gint event)
 	if (event != SM_RECV)
 		return FALSE;
 	if (sm_recv(sm, "OK")) {
+		computer_funcs.start_game (game_params);
 		sm_goto(sm, mode_idle);
 		return TRUE;
 	}

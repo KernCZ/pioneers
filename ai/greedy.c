@@ -1657,6 +1657,22 @@ greedy_consider_quote(Map *map, int mynum,
     return ret;
 }
 
+/* function for checking if the map contains gold, so the ai can
+ * exit if it does */
+static gboolean greedy_check_gold (Map *map, Hex *hex, void *unused)
+{
+	return hex->terrain == GOLD_TERRAIN;
+}
+
+static void greedy_start_game (GameParams *params)
+{
+	/* ai cannot handle gold: exit if the board contains it */
+	if (map_traverse (params->map, &greedy_check_gold, NULL) == TRUE) {
+		log_message(MSG_INFO, "AI does not support gold.  Exiting.\n");
+		exit (1);
+	}
+}
+
 int greedy_init(computer_funcs_t *funcs)
 {
     funcs->setup_house = &greedy_setup_house;
@@ -1668,6 +1684,6 @@ int greedy_init(computer_funcs_t *funcs)
     funcs->discard = &greedy_discard;
     funcs->chat = &greedy_chat;
     funcs->consider_quote = &greedy_consider_quote;
-
+    funcs->start_game = &greedy_start_game;
     return 0;
 }

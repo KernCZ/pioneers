@@ -6,6 +6,7 @@
 #include <gnome.h>
 
 #include "map.h"
+#include "game.h"
 
 typedef enum {
 	CHAT_TURN_START,
@@ -49,6 +50,8 @@ typedef struct computer_funcs_s {
     char *(*chat)(chat_t occasion, void *param, gboolean self, gint player);
 
 	char *(*consider_quote)(Map *map, int mynum, gint my[NO_RESOURCE], gint supply[NO_RESOURCE], gint receive[NO_RESOURCE]);
+
+	void (*start_game)(GameParams *params);
 	
     /* xxx there should be more funcs than this but this is all greedy supports for now */
 
