@@ -263,7 +263,7 @@ static GtkWidget *build_map_panel()
 	GtkWidget *lbl;
 
 	map_notebook = gtk_notebook_new();
-	gtk_notebook_set_tab_pos(GTK_NOTEBOOK(map_notebook), GTK_POS_LEFT);
+	gtk_notebook_set_tab_pos(GTK_NOTEBOOK(map_notebook), GTK_POS_TOP);
 	gtk_widget_show(map_notebook);
 
 	lbl = gtk_label_new(_("Map"));

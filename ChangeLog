@@ -1,3 +1,8 @@
+2000-07-08  Andy Heroff  <aheroff@mediaone.net>
+
+	* client/gui.c: Changed notebook tabs from left to top to fix the
+	  client resizing bug seen going in and out of trade.
+
 2000-06-23  Jeff Breidenbach  <jeff@alum.mit.edu>
 
 	* debian/README.debian: removed as recommended by
