@@ -21,8 +21,8 @@
 
 #include "config.h"
 #include <stdio.h>
+#include <dirent.h>
 #include <stdlib.h>
-#include <stdarg.h>
 #include <string.h>
 #include <ctype.h>
 #include <unistd.h>
@@ -30,17 +30,11 @@
 #ifdef HAVE_GETOPT_H
 #include <getopt.h>
 #endif
-#include <stdlib.h>
 #include <fcntl.h>
 #include <syslog.h>
-#include <sys/time.h>
 #include <sys/wait.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <sys/socket.h>
-#include <sys/dir.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
 #include <netdb.h>
 #include <time.h>
 

@@ -20,25 +20,9 @@
  */
 
 #include "config.h"
-#include <fcntl.h>
-#include <ctype.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <netdb.h>
-#include <errno.h>
 #include <stdio.h>
 #include <string.h>
-
-#include <glib.h>
-
-#include "game.h"
-#include "cards.h"
-#include "map.h"
 #include "buildrec.h"
-#include "network.h"
-#include "cost.h"
 #include "server.h"
 
 static void build_add(Player *player, BuildType type, gint x, gint y, gint pos)

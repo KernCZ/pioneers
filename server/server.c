@@ -20,32 +20,21 @@
  */
 
 #include "config.h"
-#include <stdio.h>
 #include <fcntl.h>
-#include <ctype.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/socket.h>
-#include <sys/signal.h>
 #include <sys/wait.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
 #include <netdb.h>
 #include <errno.h>
 #include <string.h>
 #include <time.h>
 
-#include "driver.h"
-#include "game.h"
-#include "cards.h"
-#include "map.h"
-#include "buildrec.h"
-#include "network.h"
-#include "cost.h"
-#include "log.h"
-#include "server.h"
+#ifndef HAVE_G_RAND_NEW_WITH_SEED
 #include "mt_rand.h"
+#endif
+#include "server.h"
 
 typedef union {
 	struct sockaddr sa;
