@@ -48,8 +48,11 @@ listens on port 5557
 accepts conns from clients (searches) and from servers (registrations)
 has a list of locally installed games
 
-MS on accept, prints "welcome to the gnocatan-meta-server version FOO"
+MS on accept prints "welcome to the gnocatan-meta-server version FOO"
 and sets peer state to UNKNOWN
+
+Exception: If MS started with -r (redirect) option, it just sends
+"goto OTHERSERVER" and closes the connection.
 
 accepted messages in state UNKNOWN and CLIENT:
  - "version FOO"
@@ -140,7 +143,11 @@ SERVER
 when started and directed to register at a MS, it connects to MS and
 sets state to SIGNON
 
-accepted messages in state SIGNON:
+accepted messages in states SIGNON and REDIRECT:
+ - "goto SERVER [PORT]"
+   set state to REDIRECT
+   try another connection to SERVER/PORT (default port if no PORT sent;
+   max. 10 goto msgs are accepted)
  - "welcome.*version FOO"
    remembers MS proto version
    set state to SERVER_LIST
@@ -172,7 +179,11 @@ CLIENT
 When requested by the user by button, client connects to MS and sets
 state to SIGNON
 
-accepted messages in state SIGNON:
+accepted messages in states SIGNON and REDIRECT:
+ - "goto SERVER [PORT]"
+   set state to REDIRECT
+   try another connection to SERVER/PORT (default port if no PORT sent;
+   max. 10 goto msgs are accepted)
  - "welcome.*version FOO"
    remembers MS proto version
    if MS proto < 1.0, prints warning that MS cannot start servers
