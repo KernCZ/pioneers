@@ -256,7 +256,7 @@ void gui_set_vp_target_value(gint vp)
 	gtk_label_set_text(GTK_LABEL(vp_target_status), vp_text);
 }
 
-void gui_set_net_status(gchar * text)
+void gui_set_net_status(const gchar * text)
 {
 	gtk_label_set_text(GTK_LABEL(net_status), text);
 }
@@ -575,7 +575,7 @@ void gui_gold_hide()
 	gtk_notebook_set_current_page(GTK_NOTEBOOK(develop_notebook), 0);
 }
 
-void gui_prompt_show(gchar * message)
+void gui_prompt_show(const gchar * message)
 {
 	gtk_label_set_text(GTK_LABEL(prompt_lbl), message);
 	gtk_notebook_set_current_page(GTK_NOTEBOOK(develop_notebook), 3);

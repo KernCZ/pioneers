@@ -3,7 +3,7 @@
 #
 # Copyright (C) 1999 the Free Software Foundation
 # Copyright (C) 2003 Bas Wijnen <b.wijnen@phys.rug.nl>
-# Copyright (C) 2004 Roland Clobus <rclobus@bigfoot.com>
+# Copyright (C) 2004-2005 Roland Clobus <rclobus@bigfoot.com>
 # 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 AC_PREREQ(2.53)
-AC_INIT([gnocatan],[0.9.1])
+AC_INIT([gnocatan],[0.9.2])
 AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
 AC_CONFIG_SRCDIR([client])
 AM_CONFIG_HEADER(config.h)

@@ -277,7 +277,7 @@ static gboolean empty_list(gint * resources)
 
 void trade_format_quote(QuoteInfo * quote, gchar * desc)
 {
-	gchar *format = NULL;
+	const gchar *format = NULL;
 	gchar buf1[128];
 	gchar buf2[128];
 

@@ -139,7 +139,7 @@ static gchar server_terrain[STRARG_LEN];
 static gchar server_title[STRARG_LEN];
 
 static void query_meta_server(const gchar * server, const gchar * port);
-static void show_waiting_box(gchar * message, const gchar * server,
+static void show_waiting_box(const gchar * message, const gchar * server,
 			     const gchar * port);
 static void close_waiting_box(void);
 
@@ -214,14 +214,15 @@ static void connect_close_all(gboolean user_pressed_ok)
 }
 
 /* Messages explaining some delays */
-static void show_waiting_box(gchar * message, const gchar * server,
+static void show_waiting_box(const gchar * message, const gchar * server,
 			     const gchar * port)
 {
-	gchar s[256];
-	snprintf(s, sizeof(s), _("Meta-server at %s, port %s"), server,
-		 port);
-	if (meta_dlg)
+	if (meta_dlg) {
+		gchar *s = g_strdup_printf(
+			_("Meta-server at %s, port %s"), server, port);
 		gtk_label_set_text(GTK_LABEL(server_status), s);
+		g_free(s);
+	}
 	log_message(MSG_INFO, message);
 }
 
@@ -399,7 +400,7 @@ static void meta_notify(NetEvent event, UNUSED(void *user_data),
 		case MODE_REDIRECT:
 			if (strncmp(line, "goto ", 5) == 0) {
 				gchar **split_result;
-				gchar *port;
+				const gchar *port;
 				meta_mode = MODE_REDIRECT;
 				net_close(ses);
 				if (metaserver_info.num_redirects++ == 10) {
@@ -408,7 +409,6 @@ static void meta_notify(NetEvent event, UNUSED(void *user_data),
 						    ("Too many meta-server redirects\n"));
 					return;
 				}
-
 				split_result = g_strsplit(line, " ", 0);
 				g_assert(split_result[0] != NULL);
 				g_assert(!strcmp(split_result[0], "goto"));

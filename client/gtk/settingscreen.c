@@ -28,7 +28,7 @@ enum { TYPE_NUM,
 };
 
 static void add_setting_desc(GtkWidget * table, gint row, gint col,
-			     gchar * desc)
+			     const gchar * desc)
 {
 	GtkWidget *label;
 

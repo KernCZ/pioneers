@@ -105,7 +105,7 @@ static void add_legend_terrain(GtkWidget * table, gint row, gint col,
 }
 
 static void add_legend_cost(GtkWidget * table, gint row,
-			    gchar * item, gchar * cost)
+			    const gchar * item, const gchar * cost)
 {
 	GtkWidget *label;
 

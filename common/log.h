@@ -52,7 +52,7 @@
 #include <glib.h>
 
 /* Type of logging functions: takes int,char; returns nothing */
-typedef void (*LogFunc) (gint msg_type, gchar * text);
+typedef void (*LogFunc) (gint msg_type, const gchar * text);
 
 /* The default function to use to write messages, when nothing else has been
  * specified.
@@ -93,7 +93,7 @@ void log_set_func_default(void);
 /* Write a message string to the console, adding a prefix depending on 
  *   its type.
  */
-void log_message_string_console(gint msg_type, gchar * text);
+void log_message_string_console(gint msg_type, const gchar * text);
 
 /* Log a message, sending it through _log_func (or if that's NULL, then
  *   through LOG_FUNC_DEFAULT) after turning the params into a single

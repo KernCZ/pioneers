@@ -111,10 +111,10 @@ static void waiting_for_network(gboolean is_waiting)
 static void dummy_init(UNUSED(int argc), UNUSED(char **argv))
 {;
 }
-static void dummy_network_status(UNUSED(gchar * description))
+static void dummy_network_status(UNUSED(const gchar * description))
 {;
 }
-static void dummy_instructions(UNUSED(gchar * message))
+static void dummy_instructions(UNUSED(const gchar * message))
 {;
 }
 static void dummy_network_wait(UNUSED(gboolean is_waiting))
@@ -309,7 +309,7 @@ static void dummy_viewer_quit(UNUSED(gint player_num))
 static void dummy_new_bank(UNUSED(const gint * new_bank))
 {;
 }
-static void dummy_error(UNUSED(gchar * message))
+static void dummy_error(UNUSED(const gchar * message))
 {;
 }
 
@@ -1212,7 +1212,7 @@ static char *setup_msg(void)
 {
 	static char msg[1024];
 	char *msg_end;
-	char *parts[5];
+	const gchar *parts[3];
 	int num_parts;
 	int idx;
 

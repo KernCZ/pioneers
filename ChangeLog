@@ -1,3 +1,12 @@
+2005-03-26  0.9.2  Roland Clobus <rclobus@bigfoot.com>
+	* client/callback.h, client/ai/greedy.c, client/common/client.c,
+	client/common/client.h, client/common/player.c,
+	client/common/resource.c, client/gtk/callbacks.c,
+	client/gtk/connect.c, client/gtk/gui.c, client/gtk/gui.h,
+	client/gtk/legend.c, client/gtk/settingscreen.c, client/gtk/trade.c,
+	common/log.c, common/log.h, common/gtk/common_gtk.c: Made several
+	gchar* arguments const gchar* argument.
+
 2005-03-24  Brian Wellington <bwelling@xbill.org>
 	* client/gtk/connect.c: Remove static buffers.
 

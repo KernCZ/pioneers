@@ -1704,13 +1704,15 @@ static void greedy_gold_choose(gint gold_num, gint * bank)
 
 }
 
-static void greedy_error(gchar * message)
+static void greedy_error(const gchar * message)
 {
-	gchar buffer[1000];
-	snprintf(buffer, sizeof(buffer),
+	gchar *buffer;
+
+	buffer = g_strdup_printf(
 		 _("Received error from server: %s.  Quitting\n"),
 		 message);
 	cb_chat(buffer);
+	g_free(buffer);
 	cb_disconnect();
 }
 

@@ -585,7 +585,7 @@ void player_build_move(gint player_num, gint sx, gint sy, gint spos,
 			    player_name(player_num, TRUE));
 }
 
-void player_resource_action(gint player_num, gchar * action,
+void player_resource_action(gint player_num, const gchar * action,
 			    gint * resource_list, gint mult)
 {
 	resource_log_list(player_num, action, resource_list);
@@ -593,7 +593,7 @@ void player_resource_action(gint player_num, gchar * action,
 }
 
 /* get a new point */
-void player_get_point(gint player_num, gint id, gchar * str, gint num)
+void player_get_point(gint player_num, gint id, const gchar * str, gint num)
 {
 	Player *player = player_get(player_num);
 	/* create the memory and fill it */

@@ -88,10 +88,10 @@ struct callbacks {
 	void (*init) (int argc, char **argv);
 	/* Allows the frontend to show a message considering the network
 	 * status, probably in the status bar */
-	void (*network_status) (gchar * description);
+	void (*network_status) (const gchar * description);
 	/* playing instructions.  conventionally shown in the "development
 	 * panel", but they can of course be put anywhere */
-	void (*instructions) (gchar * message);
+	void (*instructions) (const gchar * message);
 	/* Message if client is waiting for network.  If it is, it may be
 	 * a good idea to disable all user controls and put a message in the
 	 * status bar. */
@@ -235,7 +235,7 @@ struct callbacks {
 	/* something changed in the bank. */
 	void (*new_bank) (const gint * new_bank);
 	/* some communication error occurred, and it has already been logged */
-	void (*error) (gchar * message);
+	void (*error) (const gchar * message);
 	/* mainloop.  This is initialized to run the glib main loop.  It can
 	 * be overridden */
 	void (*mainloop) (void);

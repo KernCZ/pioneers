@@ -44,7 +44,7 @@ void log_set_func_default(void)
 /* Write a message string to the console, adding a prefix depending on 
  *   its type.
  */
-void log_message_string_console(gint msg_type, gchar * text)
+void log_message_string_console(gint msg_type, const gchar * text)
 {
 	const gchar *prefix;
 

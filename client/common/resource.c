@@ -58,7 +58,7 @@ typedef enum {
 
 static gint my_assets[NO_RESOURCE];	/* my resources */
 
-static gchar *resource_list(Resource type, ResourceListType grammar)
+static const gchar *resource_list(Resource type, ResourceListType grammar)
 {
 	return _(resource_lists[type][grammar]);
 }
@@ -173,7 +173,7 @@ void resource_format_num(gchar * str, guint len, gint * resources)
 	}
 }
 
-void resource_log_list(gint player_num, gchar * action, gint * resources)
+void resource_log_list(gint player_num, const gchar * action, gint * resources)
 {
 	char buff[512];
 

@@ -33,7 +33,7 @@ GtkWidget *gui_get_dialog_button(GtkDialog * dlg, gint button);
 void gui_reset(void);
 void gui_set_instructions(const gchar * text);
 void gui_set_vp_target_value(gint vp);
-void gui_set_net_status(gchar * text);
+void gui_set_net_status(const gchar * text);
 
 void gui_show_trade_page(gboolean show);
 void gui_show_quote_page(gboolean show);
@@ -44,7 +44,7 @@ void gui_discard_show(void);
 void gui_discard_hide(void);
 void gui_gold_show(void);
 void gui_gold_hide(void);
-void gui_prompt_show(gchar * message);
+void gui_prompt_show(const gchar * message);
 void gui_prompt_hide(void);
 
 void gui_cursor_none(void);

@@ -31,7 +31,7 @@ static gboolean msg_colors = TRUE;
 
 /* Local function prototypes */
 static void gtk_event_cleanup(void);
-static void message_window_log_message_string(gint msg_type, gchar * text);
+static void message_window_log_message_string(gint msg_type, const gchar * text);
 
 /* Set the default logging function to write to the message window. */
 void log_set_func_message_window(void)
@@ -47,7 +47,7 @@ void log_set_func_message_color_enable(gboolean enable)
 /* Write a message string to the console, setting its color based on its
  *   type.
  */
-void message_window_log_message_string(gint msg_type, gchar * text)
+void message_window_log_message_string(gint msg_type, const gchar * text)
 {
 	GtkTextBuffer *buffer;
 	GtkTextIter iter;

@@ -22,13 +22,13 @@
 #include "frontend.h"
 #include "histogram.h"
 
-static void frontend_network_status(gchar * description)
+static void frontend_network_status(const gchar * description)
 {
 	gui_set_net_status(description);
 	frontend_gui_update();
 }
 
-static void frontend_instructions(gchar * message)
+static void frontend_instructions(const gchar * message)
 {
 	gui_set_instructions(message);
 	frontend_gui_update();
