@@ -1,4 +1,4 @@
-pixmapdir = $(datadir)/pixmaps/gnocatan
+imagedir = $(datadir)/games/gnocatan/images
 appicondir=$(datadir)/pixmaps
 Gamesdir=$(datadir)/gnome/apps/Games
 
@@ -113,10 +113,10 @@ dist-hook:
 	find $(distdir)/themes -name CVS | xargs rm -rf
 
 install-data-hook:
-	mkdir -p $(DESTDIR)$(pixmapdir)
+	mkdir -p $(DESTDIR)$(imagedir)
 	tar -c -f - -C themes . | \
-	tar -x -f - --mode=u+w,ugo+rX --no-same-owner -C $(DESTDIR)$(pixmapdir)
-	find $(DESTDIR)$(pixmapdir) -name CVS | xargs rm -rf
+	tar -x -f - --mode=u+w,ugo+rX --no-same-owner -C $(DESTDIR)$(imagedir)
+	find $(DESTDIR)$(imagedir) -name CVS | xargs rm -rf
 
 # We don't need this, do we?  -- egnor
 # install-data-local:

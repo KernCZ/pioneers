@@ -1,4 +1,4 @@
-configdir=$(datadir)/gnocatan
+configdir=$(datadir)/games/gnocatan
 Gamesdir=$(datadir)/gnome/apps/Games
 
 bin_PROGRAMS = gnocatan-server-gtk gnocatan-server-console

@@ -112,7 +112,7 @@ make install prefix=$RPM_BUILD_ROOT/usr
 /usr/bin/gnocatan
 /usr/share/gnome/apps/Games/gnocatan.desktop
 /usr/share/pixmaps/gnome-gnocatan.png
-/usr/share/pixmaps/gnocatan/*
+/usr/share/gnocatan/images/*
 
 %files help
 %defattr(-,root,root)
@@ -128,7 +128,7 @@ make install prefix=$RPM_BUILD_ROOT/usr
 %defattr(-,root,root)
 %doc AUTHORS COPYING ChangeLog INSTALL README NEWS 
 /usr/bin/gnocatanai
-/usr/share/gnocatan/computer_names
+/usr/share/games/gnocatan/computer_names
 
 %files server-console
 %defattr(-,root,root)
@@ -144,7 +144,7 @@ make install prefix=$RPM_BUILD_ROOT/usr
 %files server-data
 %defattr(-,root,root)
 %doc AUTHORS COPYING ChangeLog INSTALL README NEWS 
-/usr/share/gnocatan/*.game
+/usr/share/games/gnocatan/*.game
 
 %files meta-server
 %defattr(-,root,root)

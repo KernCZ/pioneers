@@ -7,6 +7,13 @@
 	  GNOME desktop entry for the GTK server, so it's easier to
 	  start from the menu.
 
+	* ai/Makefile.am, client/Makefile.am, common/gnocatan-path.h.in,
+	  server/Makefile.am, debian/dirs, debian/gnocatan-ai.files,
+	  debian/gnocatan-server-data.files, debian/rules, gnocatan.spec,
+	  server/gnocatan-server.c: move /usr/share/gnocatan to
+	  /usr/share/games/gnocatan, per the FHS; move
+	  things-that-are-not-pixmaps out of /usr/share/pixmaps.
+
 2003-01-01  Jeff Breidenbach  <jab@debian.org>
 
 	* debian/gnocatan-meta-server.init: privilige reduction

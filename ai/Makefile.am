@@ -1,4 +1,4 @@
-configdir=$(datadir)/gnocatan
+configdir=$(datadir)/games/gnocatan
 
 bin_PROGRAMS = gnocatanai
 
