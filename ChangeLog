@@ -1,3 +1,7 @@
+2005-03-12  0.8.1.55  Roland Clobus <rclobus@bigfoot.com>
+	* configure.ac, added gnocatan.spec.in, removed gnocatan.spec: The
+	spec is automatically generated and uses the current version.
+	
 2005-03-02  0.8.1.54  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/interface.c: Reversal of the patch in 0.8.1.48, because
 	it would set the client to the state turn when performing a maritime

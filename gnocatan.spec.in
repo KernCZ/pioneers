@@ -1,12 +1,12 @@
-Name: 		gnocatan
+Name: 		@PACKAGE_NAME@
 Summary: 	Playable implementation of the Settlers of Catan 
-Version: 	0.8.1
-Release: 	53
+Version: 	@VERSION@
+Release: 	1
 Group: 		Amusements/Games
 License: 	GPL
 Url: 		http://gnocatan.sourceforge.net/
 Packager: 	Steve Langasek <vorlon@dodds.net>
-Source: 	http://unm.dl.sourceforge.net/gnocatan/%{name}-%{version}.tar.gz
+Source: 	http://prdownloads.sourceforge.net/@PACKAGE_NAME@/@PACKAGE_TARNAME@-@VERSION@.tar.gz?download
 BuildRoot: 	%{_tmppath}/%{name}-%{version}-%{release}-root
 
 %description 
