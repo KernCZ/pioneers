@@ -1,3 +1,82 @@
+2002-05-13  Roman Hodek  <roman@hodek.net>
+
+	* client/connect.c (show_waiting_box, close_waiting_box): new
+	dialog box indicating the we're waiting for an answer from a meta
+	server
+	add net functions for querying meta server about game types and
+	creating a new server
+	(meta_notify): parse welcome line for protocol version, send own
+	version, parse proto 1.0 data
+	(create_server_dlg): new dialog for creating a new game server via
+	meta server
+	(create_meta_dlg): add proto 1.0 data (victory points, sevens
+	rule) and a button to create a new server (if proto >= 1.0)
+
+	* client/client.c: implemented server notes (not used yet).
+
+	* client/chat.c: implemented IRC-compatible /me.
+	
+	* ai/ai.c: use gnocatan-path.h
+
+	* server/player.c (check_versions): ignore rightmost number (after
+	final '.') because patchlevel changes shouldn't make protocol
+	incompatible, otherwise simplify
+	(mode_bad_version, mode_game_full): send ERR to client
+	(mode_global): call start_timeout
+
+	* server/server.c (game_server_start): pass Game* to
+	meta_send_details
+	implemented timeout to exit server after some time without
+	players.
+	
+	* server/server.h (struct Game): add client_version
+	(prototypes): pass Game* to meta_send_details
+
+	* server/gnocatan-server.h: use gnocatan-path.h
+
+	* server/meta.c (meta_send_details): send proto 1.0 data if server
+	can take it, need Game* as argument for current number of players
+	(meta_event): parse welcome message for version, send own version
+	generally pass Game* instead of GameParams* to meta_send_details
+
+	* server/gnocatan-server.c (cfg_set_timeout): new
+
+	* server/gnocatan-server-console.c (main): new options -k (kill
+	server after some with no players), -T (terrain type),
+	remove unneeded optarg for -r
+	(usage): clean up
+
+	* meta-server/gnocatan-meta-server.c (struct Client): add
+	protocol_{major,minor}
+	(client_list_servers): send more data for proto 1.0 clients
+	(client_list_types): new function to list available game types
+	(client_create_new_server): new function to start a game server on
+	client request
+	(try_make_server_complete): cope with proto 0 clients
+	(client_process_line): process proto 1.0 requests and version info
+	coming from client
+	(select_loop): call new reap_children to get rid of zombie servers
+	(setup_accept_sock): loop over addrinfos to not miss the IPv4 one :)
+	(setmyhostname): new, hostname needed when starting a server
+	(general): undefine LOG
+	(general): do some logging via syslog
+
+	* meta-server/meta-report: New calling syntax:
+	meta-report [request [server [protocol]]]
+	defaults: request=client, server=$GNOCATAN_META_SERVER, protocol=1.0
+
+	* meta-server/Makefile.am: also include from common/
+
+	* common/network.c:
+	(write_ready, net_write): protect against closed sessions.
+	PF_UNSPEC cleaner than AF_UNSPEC.
+	Undefine LOG.
+
+	* configure.in: introduce META_PROTOCOL_VERSION,
+	  bump version to 0.6.99 (beta for 0.7.0)
+	
+	* acconfig.h: added META_PROTOCOL_VERSION
+
 2002-05-06  Roman Hodek  <roman@hodek.net>
 
 	* ai/greedy.c, ai/client.h: Fix "no prototype for foobar" warnings
