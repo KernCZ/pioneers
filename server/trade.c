@@ -330,7 +330,7 @@ static void call_domestic(Player *player, gint *supply, gint *receive)
 				break;
 		}
 		if (idx < NO_RESOURCE)
-			quotelist_delete(game->quotes, quote);
+			quotelist_delete(game->quotes, curr);
 	}
 	process_call_domestic(player, supply, receive);
 }

@@ -1,3 +1,10 @@
+2003-02-11  Andy Heroff  <aheroff@ameritech.net>
+
+	* server/trade.c: Fixed SF bug 660814 regarding server crash during
+	  trading. Wrong quote list nodes were being deleted when a new
+	  quote was issued which removed a request for a resource for which
+	  there was already a quote on the table.
+
 2003-01-24  Steve Langasek  <vorlon@debian.org>
 
 	* client/settingscreen.c, po/gnocatan.pot, po/de.po: fix misspelling.
