@@ -1108,8 +1108,8 @@ static char *chat_receive_many[] = {
 };
 static char *chat_other_receive_many[] = {
 	_("You really don't deserve that much!"),
-	_("You don't know anywhat what to do with that much resources ;)"),
-	_("Ey, wait for my robber and loose all this again!"),
+	_("You don't know what to do with that many resources ;)"),
+	_("Ey, wait for my robber and lose all this again!"),
 };
 static char *chat_self_moved_robber[] = {
 	_("Hehe!"),
@@ -1146,7 +1146,7 @@ static char *chat_largestarmy_self[] = {
 	_("Hehe, my soldiers rule!"),
 };
 static char *chat_largestarmy_other[] = {
-	_("First robbing us, them grabbing the points..."),
+	_("First robbing us, then grabbing the points..."),
 };
 static char *chat_longestroad_self[] = {
 	_("See that road!"),
