@@ -8,6 +8,7 @@
  * buy a copy.
  */
 #include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
 #include <ctype.h>
 #include <string.h>
@@ -377,7 +378,11 @@ void map_shuffle_terrain(Map *map)
 			if (hex->terrain == SEA_TERRAIN) {
 				if (hex->resource == NO_RESOURCE)
 					continue;
+#ifdef HAVE_G_RAND_NEW
+/* TODO: plug in a better random function. */
+#else
 				num = rand() % num_port;
+#endif
 				for (idx = 0; idx < numElem(port_count); idx++) {
 					num -= port_count[idx];
 					if (num < 0)
