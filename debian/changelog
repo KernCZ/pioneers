@@ -1,3 +1,9 @@
+gnocatan (0.7.0-2) unstable; urgency=low
+
+  * a little post-release touchup paint
+
+ -- Jeff Breidenbach <jab@debian.org>  Tue, 28 May 2002 23:27:29 -0700
+
 gnocatan (0.7.0-1) unstable; urgency=low
 
   * New upstream version.
