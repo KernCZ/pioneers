@@ -25,11 +25,14 @@ noinst_LIBRARIES = libgnocatan_gtk.a
 AM_CPPFLAGS = \
 	-I$(includedir) \
 	-I$(srcdir)/.. \
+	-DDATADIR=\"$(datadir)\" \
 	-I$(GNOME2_CFLAGS) \
 	$(debug_includes) \
 	$(extra_includes)
 
 libgnocatan_gtk_a_SOURCES = \
+	aboutbox.c \
+	aboutbox.h \
 	common_gtk.c \
 	common_gtk.h \
 	config-gnome.c \
