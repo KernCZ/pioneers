@@ -56,7 +56,6 @@ gnocatan_server_LDADD = \
 gnocatan_server_console_LDADD = \
 	libgnocatan_server.a \
 	../common/libgnocatan.a \
-	../common/libgnocatan_gtk.a \
 	$(GLIB_LIBS)
 
 config_DATA = \
