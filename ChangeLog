@@ -1,3 +1,8 @@
+2002-05-31  Roman Hodek  <roman@hodek.net>
+
+	* meta-server/gnocatan-meta-server.c (client_create_new_server): 
+	revert -m localhost to -r
+
 2002-05-28  Andy Heroff  <aheroff@ameritech.net>
 
 	* client/chat.c: Fixed parsing of /me command in chat.
