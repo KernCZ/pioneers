@@ -35,11 +35,12 @@ typedef enum {
 	FOREST_TERRAIN,
 	DESERT_TERRAIN,
 	SEA_TERRAIN,
-	GOLD_TERRAIN
+	GOLD_TERRAIN,
+	LAST_TERRAIN   /* New terrain types go before this */
 } Terrain;
 
-/* The order of the Resource enums is EXTREMELY important!  The
- * numbers are used to index arrays in cost_*(), and to identify
+/* The order of the Resource enums up to NO_RESOURCE is EXTREMELY important!
+ * The numbers are used to index arrays in cost_*(), and to identify
  * resource accumulators in player statistics.  The NO_RESOURCE marks
  * the end of the actual resources.
  */
@@ -49,9 +50,9 @@ typedef enum {
 	ORE_RESOURCE,
 	WOOL_RESOURCE,
 	LUMBER_RESOURCE,
-	NO_RESOURCE,
-	ANY_RESOURCE,
-	GOLD_RESOURCE
+	NO_RESOURCE,        /* All normal producing resources go before this */
+	ANY_RESOURCE,       /* Used for 3:1 ports */
+	GOLD_RESOURCE       /* Gold */
 } Resource;
 
 /* Types of structure that can be built
@@ -73,8 +74,6 @@ typedef enum {
  * Each hex has connections to six edges, and six nodes.  Each node
  * connects to three hexes and three edges, and each edge connects to
  * two hexes and two nodes.
- *
- * Refer to map.gif for number and grid arrangement.
  */
 typedef struct _Node Node;
 typedef struct _Edge Edge;
@@ -94,6 +93,7 @@ struct _Hex {
 
 	gint roll;		/* 2..12 number allocated to hex */
 	gboolean robber;	/* is the robber here */
+	gboolean shuffle;	/* can the hex be shuffled? */
 };
 
 struct _Node {

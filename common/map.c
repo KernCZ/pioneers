@@ -350,11 +350,11 @@ static void layout_chits(Map *map)
 
 /* Randomise a map.  We do this by shuffling all of the land hexes,
  * and randomly reassigning port types.  This is the procedure
- * described in the board game rules.  Gold tiles are not shuffled
+ * described in the board game rules.
  */
 void map_shuffle_terrain(Map *map)
 {
-	gint terrain_count[ANY_RESOURCE];
+	gint terrain_count[LAST_TERRAIN];
 	gint port_count[ANY_RESOURCE + 1];
 	gint x, y;
 	gint num_terrain;
@@ -368,7 +368,7 @@ void map_shuffle_terrain(Map *map)
 	for (x = 0; x < map->x_size; x++) {
 		for (y = 0; y < map->y_size; y++) {
 			Hex *hex = map->grid[y][x];
-			if (hex == NULL || hex->terrain == GOLD_TERRAIN)
+			if (hex == NULL || hex->shuffle == FALSE)
 				continue;
 			if (hex->terrain == SEA_TERRAIN) {
 				if (hex->resource == NO_RESOURCE)
@@ -390,7 +390,7 @@ void map_shuffle_terrain(Map *map)
 			gint num;
 			gint idx;
 
-			if (hex == NULL || hex->terrain == GOLD_TERRAIN)
+			if (hex == NULL || hex->shuffle == FALSE)
 				continue;
 			if (hex->terrain == SEA_TERRAIN) {
 				if (hex->resource == NO_RESOURCE)
@@ -478,6 +478,7 @@ static Hex *copy_hex(Map *map, Hex *hex)
 	copy->chit_pos = hex->chit_pos;
 	copy->roll = hex->roll;
 	copy->robber = hex->robber;
+	copy->shuffle = hex->shuffle;
 
 	return copy;
 }
@@ -603,6 +604,14 @@ void map_format_line(Map *map, gchar *line, gint y)
 			sprintf(line, "%d", hex->chit_pos);
 			line += strlen(line);
 		}
+		/*
+		 * Needed only if, for some reason, maps can be uploaded
+		 * to the server by clients
+		 * @todo Enable this when protocol changes beyond 0.8.1
+		if (hex->shuffle == FALSE) {
+			*line++ = '+';
+		}
+		 */
 	}
 	*line = '\0';
 }
@@ -642,6 +651,7 @@ void map_parse_line(Map *map, gchar *line)
 		hex->resource = NO_RESOURCE;
 		hex->facing = 0;
 		hex->chit_pos = -1;
+		hex->shuffle = TRUE;
 
 		switch (*line++) {
 		case 's': /* sea */
@@ -719,6 +729,12 @@ void map_parse_line(Map *map, gchar *line)
 					+ *line++ - '0';
 		}
 
+		/* Check if hex can be randomly shuffled
+		 */
+		if (*line == '+') {
+			hex->shuffle = FALSE;
+			line++;
+		}
 		map->grid[map->y][x] = hex;
 		if (x >= map->x_size)
 			map->x_size = x + 1;

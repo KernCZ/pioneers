@@ -1,4 +1,13 @@
-2004-01-09  0.8.1.48  Roland Clobus <rcobus@bigfoot.com>
+2005-01-15  0.8.1.49  Daniel <dgun@umpire.com>
+	* common/map.c, common/map.h: Patch #1100340: Added the option to mark
+	a tile such that it will never be shuffled, by adding a + (plus) after
+	the number in the .game file. All gold tiles will now be shuffled,
+	unless they are marked.
+	* server/henjes.game, server/seafarers-gold.game: Patch #1101870:
+	Marked all gold tiles such that they will not be shuffled, when random
+	map is turned on.
+
+2005-01-09  0.8.1.48  Roland Clobus <rcobus@bigfoot.com>
 	* common/buildrec.c, common/map.h, common/map_query.c: Bug #1094484:
 	Disallow the building of a road during setup phase when the settlement
 	cannot be built.
