@@ -55,7 +55,14 @@ config_DATA = \
 	default.game \
 	four-islands.game \
 	seafarers.game \
-	small.game
+	small.game \
+	canyon.game \
+	conquest.game \
+	conquest+ports.game \
+	pond.game \
+	square.game \
+	star.game \
+	x.game
 
 EXTRA_DIST = \
 	$(config_DATA)
