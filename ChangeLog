@@ -1,3 +1,8 @@
+2004-12-03  0.8.1.45  Roland Clobus <rclobus@bigfoot.com>
+	* client/gtk/resource-table.c, client/gtk/resource-table.h,
+	client/gtk/Makefile.am: Added a simple way to add a selection for
+	resources in the client.
+
 2004-11-28  0.8.1.44  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/gui.h: Fix for the macro that would have bad side effects
 	when used in if statements

@@ -91,6 +91,8 @@ gnocatan_SOURCES = \
 	player.c \
 	quote.c \
 	resource.c \
+	resource-table.c \
+	resource-table.h \
 	settingscreen.c \
 	state.c \
 	theme.c \
