@@ -32,6 +32,8 @@ GNOCATAN_DEFAULT_GAME_HOST=localhost
 GNOCATAN_DEFAULT_ADMIN_PORT=5555
 GNOCATAN_DEFAULT_META_PORT=5557
 GNOCATAN_DEFAULT_META_SERVER=gnocatan.debian.net
+
+GTK_REQUIRED_VERSION=2.4
  
 AM_MAINTAINER_MODE
 
@@ -54,11 +56,27 @@ else
 fi
 AM_CONDITIONAL(HAVE_SCROLLKEEPER, [test x$have_scrollkeeper = xyes])
 
-# gnome-2.0 support
-PKG_CHECK_MODULES(GNOME2, libgnomeui-2.0, have_gnome=yes, have_gnome=no)
-AC_SUBST(GNOME2_CFLAGS)
-AC_SUBST(GNOME2_LIBS)
-AM_CONDITIONAL(HAVE_GNOME, [test x$have_gnome = xyes])
+# Gtk+ support
+PKG_CHECK_MODULES(GTK2, gtk+-2.0 >= $GTK_REQUIRED_VERSION, have_gtk2=yes, 
+	[PKG_CHECK_MODULES(GTK2OLD, gtk+-2.0,
+		[have_gtk2="no, Gtk+ version too old"],
+		[have_gtk2="no, Gtk+ not installed"])
+	])
+AC_SUBST(CFLAGS, "$CFLAGS $GTK2_CFLAGS")
+AC_SUBST(LIBS, "$LIBS $GTK2_LIBS")
+AM_CONDITIONAL(HAVE_GTK2, [test "$have_gtk2" = "yes"])
+
+if test "$have_gtk2" = "yes"; then
+	# libgnomeui-2.0 support
+	PKG_CHECK_MODULES(GNOME2, libgnomeui-2.0, 
+		[have_gnome="yes"], 
+		[have_gnome="no, libgnomeui-2.0 not installed"])
+	AC_SUBST(GNOME2_CFLAGS)
+	AC_SUBST(GNOME2_LIBS)
+else
+	have_gnome=$have_gtk2;
+fi
+AM_CONDITIONAL(HAVE_GNOME, [test "$have_gnome" = "yes"])
 
 # glib is always needed
 PKG_CHECK_MODULES(GLIB2, glib-2.0)
@@ -106,6 +124,41 @@ esac], [debug_support=no])
 AM_CONDITIONAL(DEBUG, [test x$debug_support = xyes])
 
 AC_CHECK_HEADERS([getopt.h])
+AC_CHECK_HEADERS([netdb.h fcntl.h netinet/in.h sys/socket.h])
+AC_CHECK_HEADERS([limits.h])
+AC_CHECK_HEADERS([syslog.h])
+AC_CHECK_HEADERS([sys/param.h])
+AC_HEADER_SYS_WAIT
+AC_HEADER_TIME
+
+AC_C_CONST
+
+# Functions
+AC_FUNC_FORK
+AC_FUNC_SELECT_ARGTYPES
+
+# Mathematics
+AC_CHECK_FUNCS([rint sqrt])
+# String functions
+AC_CHECK_FUNCS([strrchr strspn strstr strcspn])
+AC_CHECK_FUNCS([memmove memset])
+# Network and I/O functions
+AC_CHECK_FUNCS([gethostbyname gethostname select socket strerror])
+# getaddrinfo and friends
+AC_CHECK_FUNCS([getaddrinfo gai_strerror freeaddrinfo], 
+	AC_DEFINE_UNQUOTED(HAVE_GETADDRINFO_ET_AL, [1],
+		[Defined when getaddrinfo. gai_strerror and freeaddrinfo are present]))
+
+# Time out
+AC_CHECK_FUNCS([alarm])
+# Functions needed for the hack to override the language
+AC_CHECK_FUNCS([setlocale])
+
+# Data types
+AC_STRUCT_TM
+AC_TYPE_PID_T
+AC_TYPE_SIGNAL
+AC_TYPE_SIZE_T
 # Check if socklen_t is present
 TYPE_SOCKLEN_T
 
@@ -179,7 +232,8 @@ $PACKAGE v$VERSION configuration:
 
         Source code location:              ${srcdir}
         Compiler:                          ${CC}
-        Build GNOME/GTK+ applications      $have_gnome
+        Build console applications         yes
+        Build graphical applications       $have_gnome
         Build help                         $have_scrollkeeper
     Compatibility:
         Use old random generator           $use_old_random
