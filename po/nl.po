@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.8.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-01-11 20:40+0100\n"
+"POT-Creation-Date: 2004-01-26 13:52+0100\n"
 "PO-Revision-Date: 2003-12-16 19:06+0100\n"
 "Last-Translator: Bas Wijnen <b.wijnen@phys.rug.nl>\n"
 "Language-Team: None\n"
@@ -381,6 +381,13 @@ msgstr "%s heeft de langste handelsroute.\n"
 
 #. We are not in on the action
 #.
+#. We are not in on the action
+#.
+#. CHECK THIS: Since anonymous players (NULL) no longer exist,
+#. *  player_name doesn't use its static buffer anymore, and
+#. * two calls can be safely combined. If not: ai/player.c should also be fixed
+#. FIXME: in the client, anonymous players can exist.
+#. * I prefer changing that instead of this function
 #: ai/player.c:239 client/common/player.c:280
 #, c-format
 msgid "%s stole a resource from %s.\n"
@@ -670,20 +677,20 @@ msgstr "Bouw twee straten."
 msgid "Build a road segment."
 msgstr "Bouw een straat."
 
-#: client/common/client.c:1470 client/common/client.c:1557
+#: client/common/client.c:1472 client/common/client.c:1559
 msgid "It is your turn."
 msgstr "Je bent aan de beurt."
 
-#: client/common/client.c:1652
+#: client/common/client.c:1654
 #, c-format
 msgid "Sorry, %s available.\n"
 msgstr "Sorry, %s beschikbaar.\n"
 
-#: client/common/client.c:1970
+#: client/common/client.c:1972
 msgid "The game is over."
 msgstr "Het spel is afgelopen."
 
-#: client/common/client.c:2165
+#: client/common/client.c:2168
 #, c-format
 msgid "%s takes %s.\n"
 msgstr "%s neemt %s.\n"
@@ -827,28 +834,33 @@ msgstr "een houtkaart"
 msgid "%d lumber cards"
 msgstr "%d houtkaarten"
 
-#: client/common/resource.c:150
+#: client/common/resource.c:133
+#, c-format
+msgid "nothing"
+msgstr ""
+
+#: client/common/resource.c:156
 #, c-format
 msgid ", and %s"
 msgstr ", en %s"
 
-#: client/common/resource.c:154
+#: client/common/resource.c:160
 #, c-format
 msgid "%s, "
 msgstr "%s, "
 
-#: client/common/resource.c:248
+#: client/common/resource.c:254
 #, c-format
 msgid "player %d resource count wrong: server=%d, me=%d"
 msgstr ""
 "Server en client zijn het niet eens over grondstoffen van speler %d.\n"
 "Server zegt %d, client zegt %d."
 
-#: client/common/resource.c:261
+#: client/common/resource.c:267
 msgid "resources wrong:"
 msgstr "foute grondstoffen:"
 
-#: client/common/resource.c:265
+#: client/common/resource.c:271
 #, c-format
 msgid ""
 "\n"
@@ -1121,6 +1133,7 @@ msgid "Choose resources"
 msgstr "Kies grondstoffen"
 
 #: client/gtk/gold.c:211
+#, c-format
 msgid "You may choose 1 resource"
 msgstr "Je mag 1 grondstofkaart kiezen"
 
@@ -1422,54 +1435,46 @@ msgstr "Waarschuwing: plaatje \"%s\" werd niet gevonden\n"
 msgid "Gnocatan"
 msgstr "Gnocatan"
 
-#: client/gtk/guimap.c:67 client/gtk/theme.c:257
+#: client/gtk/guimap.c:68 client/gtk/theme.c:257
 #, c-format
 msgid "Could not find '%s' pixmap file.\n"
 msgstr "Plaatjesbestand \"%s\" kon niet gevonden worden.\n"
 
-#: client/gtk/guimap.c:82 client/gtk/theme.c:264
+#: client/gtk/guimap.c:83 client/gtk/theme.c:264
 #, c-format
 msgid "Could not load '%s' pixmap file.\n"
 msgstr "Plaatjesbestand \"%s\" kon niet geladen worden.\n"
 
-#: client/gtk/guimap.c:550 client/gtk/guimap.c:551 client/gtk/guimap.c:552
-#: client/gtk/guimap.c:553 client/gtk/guimap.c:554
+#: client/gtk/guimap.c:552 client/gtk/guimap.c:553 client/gtk/guimap.c:554
+#: client/gtk/guimap.c:555 client/gtk/guimap.c:556
 msgid "2:1"
 msgstr "2:1"
 
-#: client/gtk/guimap.c:550
+#: client/gtk/guimap.c:552
 msgid "B"
 msgstr "B"
 
-#: client/gtk/guimap.c:551
+#: client/gtk/guimap.c:553
 msgid "G"
 msgstr "G"
 
-#: client/gtk/guimap.c:552
+#: client/gtk/guimap.c:554
 msgid "O"
 msgstr "IJ"
 
-#: client/gtk/guimap.c:553
+#: client/gtk/guimap.c:555
 msgid "W"
 msgstr "W"
 
-#: client/gtk/guimap.c:554
+#: client/gtk/guimap.c:556
 msgid "L"
 msgstr "H"
 
-#: client/gtk/guimap.c:555
+#: client/gtk/guimap.c:557
 msgid "3:1"
 msgstr "3:1"
 
-#: client/gtk/histogram.c:206
-msgid ""
-"Rolls\n"
-"Percentage"
-msgstr ""
-"Waarde\n"
-"Percentage"
-
-#: client/gtk/histogram.c:243 client/gtk/histogram.c:259
+#: client/gtk/histogram.c:222 client/gtk/histogram.c:234
 msgid "Dice Histogram"
 msgstr "Dobbelsteenhistogram"
 
@@ -1902,10 +1907,18 @@ msgstr "Fout bij het instellen van netwerkverbinding op non-blocking: %s\n"
 msgid "Error connecting to %s: %s\n"
 msgstr "Fout bij het verbinden naar %s: %s\n"
 
-#: common/state.c:185
+#: common/state.c:186
 #, c-format
 msgid "Connecting to %s, port %s\n"
 msgstr "Bezig te verbinden met %s, poort %s\n"
+
+#: common/state.c:500
+msgid "State stack overflow. Stack dump sent to standard error.\n"
+msgstr ""
+
+#: common/state.c:505
+msgid "State stack overflow"
+msgstr ""
 
 #: server/gnocatan-server-gtk.c:105
 msgid "The Gnocatan Game Server"
@@ -2061,6 +2074,13 @@ msgstr "Fout bij het opzoeken van de computernaam: %s\n"
 #: server/server.c:214 server/server.c:222
 msgid "unknown"
 msgstr "onbekend"
+
+#~ msgid ""
+#~ "Rolls\n"
+#~ "Percentage"
+#~ msgstr ""
+#~ "Waarde\n"
+#~ "Percentage"
 
 #~ msgid "English"
 #~ msgstr "English"

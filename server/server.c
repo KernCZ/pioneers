@@ -316,11 +316,26 @@ static gboolean game_server_start(Game *game)
 
 gboolean server_startup(GameParams *params, gchar *port, gboolean meta)
 {
+	/* The mt_seed needs a gulong, g_rand_new_with_seed needs a guint32
+	 * The compiler will promote the datatypes if necessary
+	 */  
+	guint32 randomseed = time(NULL);
+
 #ifdef HAVE_G_RAND_NEW_WITH_SEED
-	g_rand_ctx = g_rand_new_with_seed(time(NULL));
+	g_rand_ctx = g_rand_new_with_seed(randomseed);
 #else
-	mt_seed(time(NULL));
+	mt_seed(randomseed);
 #endif
+	log_message(MSG_INFO, "%s #%" G_GUINT32_FORMAT ".%s.%03d\n",
+			_("Preparing game"),
+			randomseed,
+#ifdef HAVE_G_RAND_NEW_WITH_SEED
+			"G",
+#else
+			"M",
+#endif
+			get_rand(1000));
+
 	curr_game = game_new(params);
 	curr_game->params->server_port = port;
 	curr_game->params->register_server = meta;
