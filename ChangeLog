@@ -1,3 +1,8 @@
+2000-06-06  Andy Heroff <aheroff@mediaone.net>
+
+	* Changed version number to 0.5.5 to prevent CVS users from using
+	  incompatable versions.
+
 2000-06-06  Roderick Schertler <roderick@argon.org>
 
 	* client/resource.c: add a 'total' field to your list of resources.
