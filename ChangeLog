@@ -1,3 +1,9 @@
+2003-02-21  Jeff Breidenbach  <jab@debian.org>
+
+	* debian/rules: Adjusted .deb build rules to Steve's suggestion.
+	  Allows debuild to run from pristine CVS checkout while still
+	  allowing debian/ tweakers to avoid some build latency.
+
 2003-02-14  Andy Heroff  <aheroff@ameritech.net>
 
 	* server/player.c: Fixed several GList usage issues in player

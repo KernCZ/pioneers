@@ -12,6 +12,7 @@ build-stamp:
 	dh_testdir
 
 	# Add here commands to compile the package.
+	-[ ! -f Makefile.in ] && NOCONFIGURE=yes ./autogen.sh
 	./configure --prefix=/usr --bindir=/usr/games --mandir=/usr/share/man
 	$(MAKE)
 	touch build-stamp

@@ -1,3 +1,9 @@
+gnocatan (0.7.1.90-3) unstable; urgency=low
+
+  * Test snapshot.
+
+ -- Jeff Breidenbach <jab@debian.org>  Fri, 21 Feb 2003 00:20:58 -0800
+
 gnocatan (0.7.1.90-2) unstable; urgency=low
 
   * closes: #168854, #174691
