@@ -1,3 +1,9 @@
+2004-02-28 0.8.1.21  Bas Wijnen <b.wijnen@phys.rug.nl>
+	* client/common/client.c (client_init): added initialisation for init
+	and new_bank
+	* client/common/resource.c (resource_format_type): added 'nothing'
+	when nothing is offered in a trade
+	
 2004-02-08 0.8.1.20  Bas Wijnen <b.wijnen@phys.rug.nl>
 	* client/common/player.c, client/gtk/gameover.c, common/common_gtk.c,
 	common/log.c, common/log.h: Removed MSG_NAMEANON, added prefixes to

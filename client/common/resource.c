@@ -139,7 +139,7 @@ void resource_format_num(gchar *str, guint len, gint *resources)
 		str[len - 1] = '\0';
 		return;
 	}
-	
+
 	if (num_types == 1) {
 		for (idx = 0; idx < NO_RESOURCE; idx++) {
 			gint num = resources[idx];
@@ -215,6 +215,11 @@ void resource_format_type(gchar *str, gint *resources)
 	for (idx = 0; idx < NO_RESOURCE; idx++)
 		if (resources[idx] != 0)
 			num_types++;
+
+	if (num_types == 0) {
+		strcpy(str, _("nothing"));
+		return;
+	}
 
 	if (num_types == 1) {
 		for (idx = 0; idx < NO_RESOURCE; idx++) {

@@ -125,6 +125,7 @@ void client_init (void)
 	 * someone forgets to update this when adding a new callback */
 	memset (&callbacks, 0, sizeof (callbacks) );
 	/* set all callbacks to their default value: doing nothing */
+	(nothing_cast)callbacks.init = &do_nothing;
 	(nothing_cast)callbacks.network_status = &do_nothing;
 	(nothing_cast)callbacks.instructions = &do_nothing;
 	(nothing_cast)callbacks.network_wait = &do_nothing;
@@ -136,6 +137,8 @@ void client_init (void)
 	(nothing_cast)callbacks.gold = &do_nothing;
 	(nothing_cast)callbacks.gold_add = &do_nothing;
 	(nothing_cast)callbacks.gold_remove = &do_nothing;
+	(nothing_cast)callbacks.gold_choose = &do_nothing;
+	(nothing_cast)callbacks.gold_done = &do_nothing;
 	(nothing_cast)callbacks.game_over = &do_nothing;
 	(nothing_cast)callbacks.init_game = &do_nothing;
 	(nothing_cast)callbacks.start_game = &do_nothing;
@@ -160,8 +163,6 @@ void client_init (void)
 	(nothing_cast)callbacks.quote_monitor = &do_nothing;
 	(nothing_cast)callbacks.quote_trade = &do_nothing;
 	(nothing_cast)callbacks.rolled_dice = &do_nothing;
-	(nothing_cast)callbacks.gold_choose = &do_nothing;
-	(nothing_cast)callbacks.gold_done = &do_nothing;
 	(nothing_cast)callbacks.beep = &do_nothing;
 	(nothing_cast)callbacks.draw_edge = &do_nothing;
 	(nothing_cast)callbacks.draw_node = &do_nothing;
@@ -177,6 +178,7 @@ void client_init (void)
 	(nothing_cast)callbacks.player_name = &do_nothing;
 	(nothing_cast)callbacks.player_quit = &do_nothing;
 	(nothing_cast)callbacks.viewer_quit = &do_nothing;
+	(nothing_cast)callbacks.new_bank = &do_nothing;
 	(nothing_cast)callbacks.error = &do_nothing;
 	resource_init ();
 }
