@@ -17,7 +17,7 @@ libgnocatan_a_SOURCES = \
 	driver.h \
 	game.c \
 	game.h \
-	gnocatan-path.h \
+	gnocatan-path.h.in \
 	log.c \
 	log.h \
 	map.c \
@@ -39,8 +39,15 @@ libgnocatan_a_LIBADD = \
 	$(MT_RAND_OBJ)
 
 libgnocatan_a_DEPENDENCIES = \
-	$(MT_RAND_OBJ)
+	$(MT_RAND_OBJ) gnocatan-path.h
 
 libgnocatan_gtk_a_SOURCES = \
 	common_gtk.c \
 	common_gtk.h
+
+gnocatan-path.h: gnocatan-path.h.in
+	rm -f $@
+	ddir="`echo $(datadir)`"; \
+	bdir="`echo $(bindir)`"; \
+	sed -e "s,@datadir\@,$$ddir,g" -e "s,@bindir\@,$$bdir,g" $< >$@
+

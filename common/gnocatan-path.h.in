@@ -1,0 +1,8 @@
+#ifndef __gnocatan_path_h
+#define __gnocatan_path_h
+
+#define GNOCATAN_DIR_DEFAULT         "@datadir@/gnocatan"
+#define GNOCATAN_SERVER_CONSOLE_PATH "@bindir@/gnocatan-server-console"
+#define GNOCATAN_AI_PATH             "@bindir@/gnocatanai"
+
+#endif
