@@ -115,7 +115,7 @@ static gboolean tournament_start_cb(gpointer data)
     Game *game = player->game;
 
     /* if game already started */
-    if (game->is_game_full)
+    if (game->num_players == game->params->num_players)
 	return FALSE;
 
     player_broadcast(player, PB_SILENT,
@@ -138,7 +138,7 @@ static gboolean talk_about_tournament_cb(gpointer data)
     Game *game = player->game;
 
     /* if game already started */
-    if (game->is_game_full)
+    if (game->num_players == game->params->num_players)
 	return FALSE;
 
     player_broadcast(player, PB_SILENT, "NOTE Game starts in %d minute%s\n",
@@ -195,7 +195,7 @@ void player_setup(Player *player, int playernum)
 	StateMachine *sm = player->sm;
 
 	player->num = playernum;
-	if (player->num < 0 && !game->is_game_full)
+	if (player->num < 0)
 	{
 		player->num = next_player_num(game);
 	}
@@ -380,6 +380,10 @@ void player_revive(Player *newp, char *name)
 			p->num = -1; /* prevent the number of players
 				        from getting decremented */
 			player_free(p);
+			player_broadcast(newp, PB_SILENT,
+							 "NOTE player %d (%s) has reconnected\n",
+							 newp->num,
+							 newp->name ? newp->name : "anonymous");
 			return;
 		}
 		current = g_list_next(current);
@@ -635,6 +639,8 @@ void player_set_name(Player *player, gchar *name)
 	}
 	if (name != NULL && player_by_name(game, name) == NULL)
 		player->name = g_strdup(name);
+	else if (name != NULL)
+		sm_send(player->sm, "ERR name-already-used '%s'\n", name);
 
 	if (player->name == NULL)
 		player_broadcast(player, PB_ALL, "is anonymous\n");
