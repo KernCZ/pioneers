@@ -7,8 +7,7 @@ gnocatan_meta_server_SOURCES = \
 	gnocatan-meta-server.c
 
 gnocatan_meta_server_LDADD = \
-	$(GNOME_LIBDIR) \
-	$(GNOMEUI_LIBS)
+	$(GLIB_LIBS)
 
 # We don't need this, do we?  -- egnor
 # install-data-local:
