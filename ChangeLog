@@ -1,3 +1,8 @@
+2003-08-09  Roland Clobus  <rclobus@bigfoot.com>
+	* client/player.c: Keep showing the names and scores of disconnected
+	players. Now you can see the scores of the other players at the end
+	of the game.
+	
 2003-08-03  Roland Clobus  <rclobus@bigfoot.com>
         * client/client.c, client/client.h, client/develop.c, client/player.c,
 	client/player.h, client/resource.c: Fixed bug 600765. The client can

@@ -18,6 +18,9 @@
 #include "player.h"
 #include "log.h"
 
+void player_show_connected_at_row(Player *player, gboolean connected, gint row);
+
+
 static GdkColor ps_settlement  = { 0, 0xbb00, 0x0000, 0x0000 };
 static GdkColor ps_city        = { 0, 0xff00, 0x0000, 0x0000 };
 static GdkColor ps_largest     = { 0, 0x1c00, 0xb500, 0xed00 };
@@ -285,24 +288,11 @@ void player_change_name(gint player_num, gchar *name)
 	if (old_name != NULL)
 		g_free(old_name);
 
-	row = gtk_clist_find_row_from_data(GTK_CLIST(summary_clist), player);
+          row = gtk_clist_find_row_from_data(GTK_CLIST(summary_clist), player);
 	if (row < 0) {
 		gchar *row_data[3];
 		GtkStyle *score_style;
-
-		if (summary_gc == NULL)
-			summary_gc = gdk_gc_new(summary_clist->window);
-		player->pixmap
-			= gdk_pixmap_new(summary_clist->window,
-					 16, 16,
-					 gtk_widget_get_visual(summary_clist)->depth);
-		gdk_gc_set_foreground(summary_gc, player_color(player_num));
-		gdk_draw_rectangle(player->pixmap, summary_gc, TRUE,
-				   0, 0, 15, 14);
-		gdk_gc_set_foreground(summary_gc, &black);
-		gdk_draw_rectangle(player->pixmap, summary_gc, FALSE,
-				   0, 0, 15, 14);
-
+                    
 		row = calc_summary_row(player_num);
 		row_data[0] = "";
 		row_data[1] = "";
@@ -320,9 +310,8 @@ void player_change_name(gint player_num, gchar *name)
 		gtk_clist_set_background(GTK_CLIST(summary_clist), row, &player_bg);
 #endif
 		gtk_clist_set_row_data(GTK_CLIST(summary_clist), row, player);
-		gtk_clist_set_pixmap(GTK_CLIST(summary_clist), row, 0,
-				     player->pixmap, NULL);
 	}
+	player_show_connected_at_row(player, TRUE, row);
 	refresh_victory_point_total(player_num);
 	gtk_clist_set_text(GTK_CLIST(summary_clist), row, 1,
 			   player_name(player_num, TRUE));
@@ -342,7 +331,8 @@ void player_has_quit(gint player_num)
 		return;
 	player = players + player_num;
 
-	gtk_clist_remove(GTK_CLIST(summary_clist), row);
+/*	gtk_clist_remove(GTK_CLIST(summary_clist), row); */
+          player_show_connected_at_row(player, FALSE, row);
 	log_message( MSG_ERROR, _("%s has quit\n"), player_name(player_num, TRUE));
 	if (player->name != NULL) {
 		g_free(player->name);
@@ -350,6 +340,36 @@ void player_has_quit(gint player_num)
 	}
 }
 
+void player_show_connected_at_row(Player *player, gboolean connected, gint row)
+{
+
+/* Assume row is within the valid range */
+	if (summary_gc == NULL)
+		summary_gc = gdk_gc_new(summary_clist->window);
+	player->pixmap
+		= gdk_pixmap_new(summary_clist->window,
+				 16, 16,
+				 gtk_widget_get_visual(summary_clist)->depth);
+
+          /* Cheating: don't want to pass player_color(player_num) */
+          gdk_gc_set_foreground(summary_gc, &token_colors[player->color]);
+          
+	gdk_draw_rectangle(player->pixmap, summary_gc, TRUE,
+			   0, 0, 15, 14);
+	gdk_gc_set_foreground(summary_gc, &black);
+	gdk_draw_rectangle(player->pixmap, summary_gc, FALSE,
+			   0, 0, 15, 14);
+	if (!connected) {
+		gdk_draw_rectangle(player->pixmap, summary_gc, FALSE,
+			3, 3, 9, 8);
+		gdk_draw_rectangle(player->pixmap, summary_gc, FALSE,
+			6, 6, 3, 2);
+	}
+            
+	gtk_clist_set_pixmap(GTK_CLIST(summary_clist), row, 0,
+			     player->pixmap, NULL);
+}
+  
 void player_largest_army(gint player_num)
 {
 	gint idx;
