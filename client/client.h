@@ -82,6 +82,7 @@ GtkWidget *connect_create_dlg();
 gchar *connect_get_name();
 gchar *connect_get_server();
 gint connect_get_port();
+gchar* connect_get_port_str();
 
 /* develop.c */
 void develop_init();

@@ -302,6 +302,18 @@ gint connect_get_port()
 	return atoi(gtk_entry_get_text(GTK_ENTRY(port_entry)));
 }
 
+gchar *connect_get_port_str()
+{
+	gchar *text;
+
+	if (port_entry == NULL)
+		return NULL;
+	text = gtk_entry_get_text(GTK_ENTRY(port_entry));
+	while (*text != '\0' && isspace(*text))
+		text++;
+	return text;
+}
+
 static void connect_destroyed_cb(void *widget, gpointer user_data)
 {
 	if (meta_dlg != NULL)
@@ -316,6 +328,13 @@ GtkWidget *connect_create_dlg()
 	GtkWidget *lbl;
 	GtkWidget *hbox;
 	GtkWidget *btn;
+	gchar     *saved_server;
+	gchar     *saved_port;
+	gchar     *saved_name;
+	
+	saved_server = gnome_config_get_string("/gnocatan/connect/server");
+	saved_port = gnome_config_get_string("/gnocatan/connect/port");
+	saved_name = gnome_config_get_string("/gnocatan/connect/name");
 
 	dlg = gnome_dialog_new(_("Connect to Gnocatan server"),
 			       GNOME_STOCK_BUTTON_OK, NULL);
@@ -352,6 +371,7 @@ GtkWidget *connect_create_dlg()
 	gtk_table_attach(GTK_TABLE(table), server_entry, 1, 2, 0, 1,
 			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL,
 			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_entry_set_text(GTK_ENTRY(server_entry), saved_server);
 
 	btn = gtk_button_new_with_label("Meta Server");
 	gtk_signal_connect(GTK_OBJECT(btn), "clicked",
@@ -382,7 +402,7 @@ GtkWidget *connect_create_dlg()
 	gtk_widget_show(port_entry);
 	gtk_widget_set_usize(port_entry, 60, -1);
         gtk_box_pack_start(GTK_BOX(hbox), port_entry, FALSE, TRUE, 0);
-	gtk_entry_set_text(GTK_ENTRY(port_entry), "5556");
+	gtk_entry_set_text(GTK_ENTRY(port_entry), saved_port);
 
 	lbl = gtk_label_new("Player Name");
 	gtk_widget_show(lbl);
@@ -403,7 +423,7 @@ GtkWidget *connect_create_dlg()
 	gtk_widget_show(name_entry);
 	gtk_widget_set_usize(name_entry, 60, -1);
         gtk_box_pack_start(GTK_BOX(hbox), name_entry, FALSE, TRUE, 0);
-	gtk_entry_set_text(GTK_ENTRY(name_entry), g_get_user_name());
+	gtk_entry_set_text(GTK_ENTRY(name_entry), saved_name);
 
 	gnome_dialog_editable_enters(GNOME_DIALOG(dlg),
 				     GTK_EDITABLE(server_entry));

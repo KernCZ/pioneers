@@ -124,10 +124,11 @@ static void route_event(StateMachine *sm, gint event)
 		if (curr->state(user_data, event))
 			break;
 		sm_cancel_prefix(sm);
-		if (!sm->is_dead
-		    && sm->global.state != NULL
-		    && sm->global.state(user_data, event))
+		if ( !sm->is_dead &&
+		     sm->global.state != NULL &&
+		     sm->global.state(user_data, event) )
 			break;
+		
 		sm_cancel_prefix(sm);
 		if (!sm->is_dead && sm->unhandled.state != NULL)
 			sm->unhandled.state(user_data, event);

@@ -78,6 +78,16 @@
 
 	* server/Makefile.am: Added basic Seafarers game.
 
+2000-05-06  Andy Heroff <aheroff@mediaone.net>
+
+	* client/client.c, client/connect.c: Connect dialogue now
+	  'remembers' your last server, port, and name.
+
+2000-05-04  Andy Heroff <aheroff@mediaone.net>
+
+	* client/player.c: Modified all colors to less intense shades.
+	  Changed first four colors to match those of the board game.
+
 2000-05-02  Andy Heroff <aheroff@mediaone.net>
 
 	* Project imported into the SourceForge CVS server.

@@ -348,6 +348,17 @@ static gboolean mode_connect(StateMachine *sm, gint event)
 		return TRUE;
 	case GUI_CONNECT_TRY:
 		gui_set_net_status(_("Connecting"));
+		
+		/* Save connect dialogue entries */
+		gnome_config_set_string("/gnocatan/connect/server",
+					connect_get_server());
+		gnome_config_set_string("/gnocatan/connect/port",
+					connect_get_port_str());
+		gnome_config_set_string("/gnocatan/connect/name",
+					connect_get_name());
+		gnome_config_sync();
+		
+		
 		copy_player_name(connect_get_name());
 		if (sm_connect(sm, connect_get_server(), connect_get_port())) {
 			if (sm_is_connected(sm))
@@ -389,7 +400,9 @@ static gboolean mode_start(StateMachine *sm, gint event)
 
 	sm_state_name(sm, "mode_start");
 	if (event == SM_ENTER)
+	{
 		gui_set_net_status(_("Loading"));
+	}		
 
 	if (event != SM_RECV)
 		return FALSE;
@@ -404,6 +417,7 @@ static gboolean mode_start(StateMachine *sm, gint event)
 			sm_send(sm, "anonymous\n");
 		sm_send(sm, "players\n");
 		sm_goto(sm, mode_players);
+
 		return TRUE;
 	}
 	if (sm_recv(sm, "sorry, game is full")) {
