@@ -323,6 +323,49 @@ void guimap_robber_polygon(GuiMap *gmap, Hex *hex, Polygon *poly)
 	}
 }
 
+void draw_dice_roll(GdkPixmap *pixmap, GdkGC *gc,
+		    gint x_offset, gint y_offset, gint radius,
+		    gint n, gboolean highlight)
+{
+	gchar num[10];
+	gint lbearing, rbearing, width, ascent, descent;
+	gint x, y;
+	gint idx;
+
+	gdk_gc_set_fill(gc, GDK_SOLID);
+	gdk_gc_set_foreground(gc, &roll_bg);
+	if (highlight)
+		gdk_gc_set_foreground(gc, &green);
+
+	gdk_draw_arc(pixmap, gc, TRUE,
+		     x_offset - radius, y_offset - radius,
+		     2 * radius, 2 * radius,
+		     0, 360 * 64);
+	gdk_gc_set_foreground(gc, &black);
+	gdk_draw_arc(pixmap, gc, FALSE,
+		     x_offset - radius, y_offset - radius,
+		     2 * radius, 2 * radius,
+		     0, 360 * 64);
+	sprintf(num, "%d", n);
+	gdk_text_extents(roll_font, num, strlen(num),
+			 &lbearing, &rbearing,
+			 &width, &ascent, &descent);
+	if (n == 6 || n == 8)
+	    gdk_gc_set_foreground(gc, &red);
+	gdk_draw_text(pixmap, roll_font, gc,
+		      x_offset - width / 2,
+		      y_offset + (ascent + descent) / 2,
+		      num, strlen(num));
+
+	x = x_offset - chances[n] * 4 / 2;
+	y = y_offset + (ascent + descent) / 2 + 1;
+	for (idx = 0; idx < chances[n]; idx++) {
+	    gdk_draw_arc(pixmap, gc, TRUE,
+			 x, y, 3, 3, 0, 360 * 64);
+	    x += 4;
+	}
+}
+
 static gboolean display_hex(Map *map, Hex *hex, GuiMap *gmap)
 {
 	gint x_offset, y_offset;
@@ -362,41 +405,10 @@ static gboolean display_hex(Map *map, Hex *hex, GuiMap *gmap)
 	/* Draw the dice roll
 	 */
 	if (hex->roll > 0) {
-		gchar num[10];
-		gint lbearing, rbearing, width, ascent, descent;
-		gint x, y;
-		gint idx;
-
-		if (!hex->robber && hex->roll == gmap->highlight_chit)
-			gdk_gc_set_foreground(gmap->gc, &green);
-
-		gdk_draw_arc(gmap->pixmap, gmap->gc, TRUE,
-			     x_offset - radius, y_offset - radius,
-			     2 * radius, 2 * radius,
-			     0, 360 * 64);
-		gdk_gc_set_foreground(gmap->gc, &black);
-		gdk_draw_arc(gmap->pixmap, gmap->gc, FALSE,
-			     x_offset - radius, y_offset - radius,
-			     2 * radius, 2 * radius,
-			     0, 360 * 64);
-		sprintf(num, "%d", hex->roll);
-		gdk_text_extents(roll_font, num, strlen(num),
-				 &lbearing, &rbearing,
-				 &width, &ascent, &descent);
-		if (hex->roll == 6 || hex->roll == 8)
-			gdk_gc_set_foreground(gmap->gc, &red);
-		gdk_draw_text(gmap->pixmap, roll_font, gmap->gc,
-			      x_offset - width / 2,
-			      y_offset + (ascent + descent) / 2,
-			      num, strlen(num));
-
-		x = x_offset - chances[hex->roll] * 4 / 2;
-		y = y_offset + (ascent + descent) / 2 + 1;
-		for (idx = 0; idx < chances[hex->roll]; idx++) {
-			gdk_draw_arc(gmap->pixmap, gmap->gc, TRUE,
-				     x, y, 3, 3, 0, 360 * 64);
-			x += 4;
-		}
+		draw_dice_roll(gmap->pixmap, gmap->gc,
+			       x_offset, y_offset, radius,
+			       hex->roll,
+			       !hex->robber && hex->roll==gmap->highlight_chit);
 	}
 
 	/* Draw ports
