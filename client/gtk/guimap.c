@@ -1376,16 +1376,16 @@ void guimap_draw_hex(GuiMap *gmap, Hex *hex)
 	GdkPoint points[MAX_POINTS];
 	Polygon poly = { points, numElem(points) };
 	GdkRectangle rect;
+	gint x_offset, y_offset;
 
 	if (hex == NULL)
 		return;
 
 	display_hex(gmap->map, hex, gmap);
 
-	if (hex->terrain == SEA_TERRAIN)
-		guimap_pirate_polygon(gmap, hex, &poly);
-	else
-		guimap_robber_polygon(gmap, hex, &poly);
+	get_hex_polygon(gmap, &poly, FALSE);
+	calc_hex_pos(gmap, hex->x, hex->y, &x_offset, &y_offset);
+	poly_offset(&poly, x_offset, y_offset);
 	poly_bound_rect(&poly, 1, &rect);
 
 	gtk_widget_draw(gmap->area, &rect);

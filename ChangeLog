@@ -1,3 +1,8 @@
+2003-12-21 0.8.1.2  Roland Clobus <rclobus@bigfoot.com>
+
+	* client/gtk/guimap.c (guimap_draw_hex): Fixed bug #230252; draw
+	complete hex, not only robber/pirate area.
+
 2003-12-21 0.8.1.1  Bas Wijnen <b.wijnen@phys.rug.nl>
 	* client/common/callback.h: Added comments
 	* client/common/callback.h, client/common/client.c (client_start),
