@@ -2,6 +2,7 @@
 	* server/gnocatan-server.c: Made random seating order the default.
 	* server/gtk/gnocatan-server-gtk.c: Made random order setting
 	persistent.
+	* Makefile.am: Added 'make indent' target.
 
 2005-03-16  Brian Wellington <bwelling@xbill.org>
 	* common/game.c, common/game.h, server/meta.c, server/player.c,

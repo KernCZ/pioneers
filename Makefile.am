@@ -49,3 +49,7 @@ distclean-local:
 # This line is added, because scrollkeeper leaves many files 
 # in /var/scrollkeeper, that makes 'make distcheck' fail
 distuninstallcheck_listfiles = find . -type f -print | grep -v '^\./var/scrollkeeper'
+
+# Reformat the code.
+indent:
+	find . -name '*.[ch]' -exec indent -kr -i8 '{}' ';'
