@@ -35,6 +35,9 @@ libgnocatan_server_a_SOURCES = \
 libgnocatan_server_a_LIBADD = \
 	$(MT_RAND_OBJ)
 
+libgnocatan_server_a_DEPENDENCIES = \
+	$(MT_RAND_OBJ)
+
 gnocatan_server_SOURCES = \
 	gnocatan-server.c
 

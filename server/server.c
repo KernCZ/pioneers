@@ -43,11 +43,6 @@ gint get_rand(gint range)
 #else
 	return mt_random() % range;
 #endif
-#if 0
-	return (gint)(((float)range) * random() / (RAND_MAX + 1.0));
-#else
-	return random() % range;
-#endif
 }
 
 Game *game_new(GameParams *params)

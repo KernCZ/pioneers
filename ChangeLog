@@ -1,3 +1,9 @@
+2000-05-27  Steve Langasek <vorlon@dodds.net>
+
+	* server/server.c, server/mt_rand.[ch], server/Makefile.am,
+	configure.in: Switched to using the Mersenne Twister for our
+	PRNG; should give better dice rolls.
+
 2000-05-25  Steve Langasek <vorlon@dodds.net>
 
 	* configure.in, acconfig.h: Set up for the use of glib's grand()
