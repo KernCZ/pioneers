@@ -115,23 +115,27 @@ void load_game_types( gchar *path )
 /* game configuration functions / callbacks */
 void cfg_set_num_players( gint num_players )
 {
+	g_print( "cfg_set_num_players: %d\n", num_players );
 	if( params )
 		params->num_players = num_players;
 }
 
 void cfg_set_victory_points( gint victory_points )
 {
+	g_print( "cfg_set_victory_points: %d\n", victory_points );
 	if( params )
 		params->victory_points = victory_points;
 }
 
 void cfg_set_game( gchar *game )
 {
+	g_print( "cfg_set_game: %s\n", game );
 	params = game_list_find_item(game);
 }
 
 void cfg_set_terrain_type( gint terrain_type )
 {
+	g_print( "cfg_set_terrain_type: %d\n", terrain_type );
 	params->random_terrain = (terrain_type == TERRAIN_RANDOM) ? 1 : 0;
 }
 
@@ -143,6 +147,9 @@ gboolean start_server( gint port, gboolean register_server )
 	
 	if( params ) {
 		g_print( "game type: %s\n", params->title );
+		g_print( "num players: %d\n", params->num_players );
+		g_print( "victory points: %d\n", params->victory_points );
+		g_print( "terrain type: %s\n", (params->random_terrain) ? "random" : "default" );
 	} else {
 		g_error( "critical: params not set!" );
 	}

@@ -1,5 +1,10 @@
 2000-05-27  Bibek Sahu <scorpio@dodds.net>
 
+	* server/gnocatan-server.c: added a little debugging output.  Will
+	be useful soon for network configuration.
+
+2000-05-27  Bibek Sahu <scorpio@dodds.net>
+
 	* server/Makefile.am, server/gnocatan-server.c,
 	server/gnocatan-server.h, server/gnocatan-server-gtk.c,
 	server/gnocatan-server-console.c: Made as much code as possible
