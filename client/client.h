@@ -52,9 +52,11 @@ void build_new_turn();
 gboolean have_built();
 gboolean build_can_undo();
 gint build_count(BuildType type);
+gint build_count_edges();
 gboolean build_is_valid();
 gboolean build_can_setup_road(Edge *edge, gboolean double_setup);
 gboolean build_can_setup_ship(Edge *edge, gboolean double_setup);
+gboolean build_can_setup_bridge(Edge *edge, gboolean double_setup);
 gboolean build_can_setup_settlement(Node *node, gboolean double_setup);
 void build_add(BuildType type, gint x, gint y, gint pos, gint *cost);
 BuildRec *build_last();
@@ -151,6 +153,8 @@ GtkWidget *resource_build_panel();
 /* road_building.c */
 gboolean road_building_can_undo();
 gboolean road_building_can_build_road();
+gboolean road_building_can_build_ship();
+gboolean road_building_can_build_bridge();
 gboolean road_building_can_finish();
 void road_building_begin();
 
@@ -166,19 +170,15 @@ gboolean is_setup_double();
 gboolean setup_can_undo();
 gboolean setup_can_build_road();
 gboolean setup_can_build_ship();
+gboolean setup_can_build_bridge();
 gboolean setup_can_build_settlement();
 gboolean setup_can_finish();
 gboolean setup_check_road(Edge *edge, gint owner);
 gboolean setup_check_ship(Edge *edge, gint owner);
+gboolean setup_check_bridge(Edge *edge, gint owner);
 gboolean setup_check_settlement(Node *node, gint owner);
 void setup_begin(gint player_num);
 void setup_begin_double(gint player_num);
-
-/* ship_building.c */
-gboolean ship_building_can_undo();
-gboolean ship_building_can_build_ship();
-gboolean ship_building_can_finish();
-void ship_building_begin();
 
 /* stock.c */
 void stock_init();
@@ -188,6 +188,9 @@ void stock_replace_road();
 gint stock_num_ships();
 void stock_use_ship();
 void stock_replace_ship();
+gint stock_num_bridges();
+void stock_use_bridge();
+void stock_replace_bridge();
 gint stock_num_settlements();
 void stock_use_settlement();
 void stock_replace_settlement();
@@ -224,6 +227,7 @@ void turn_rolled_dice(gint player_num, gint die1, gint die2);
 gboolean turn_can_undo();
 gboolean turn_can_build_road();
 gboolean turn_can_build_ship();
+gboolean turn_can_build_bridge();
 gboolean turn_can_build_settlement();
 gboolean turn_can_build_city();
 gboolean turn_can_trade();

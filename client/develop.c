@@ -33,7 +33,6 @@ static struct {
 	gboolean is_unique;
 } devel_cards[] = {
 	{ N_("Road Building"), FALSE },
-	{ N_("Ship Building"), FALSE },
 	{ N_("Monopoly"), FALSE },
 	{ N_("Year of Plenty"), FALSE },
 	{ N_("Chapel"), TRUE },
@@ -62,11 +61,12 @@ gboolean can_play_develop()
 		return FALSE;
 	switch (deck_card_type(develop_deck, selected_card_idx)) {
 	case DEVEL_ROAD_BUILDING:
-		return stock_num_roads() > 0
-			&& map_can_place_road(map, my_player_num());
-	case DEVEL_SHIP_BUILDING:
-		return stock_num_ships() > 0
-			&& map_can_place_ship(map, my_player_num());
+		return (stock_num_roads() > 0
+			&& map_can_place_road(map, my_player_num()))
+			|| (stock_num_ships() > 0
+			    && map_can_place_ship(map, my_player_num()))
+			|| (stock_num_bridges() > 0
+			    && map_can_place_bridge(map, my_player_num()));
 	default:
 		return TRUE;
 	}
@@ -154,14 +154,10 @@ void develop_played(gint player_num, gint card_idx, DevelType type)
 	switch (type) {
 	case DEVEL_ROAD_BUILDING:
 		if (player_num == my_player_num()) {
-			if (stock_num_roads() == 0)
+			if (stock_num_roads() == 0
+			    && stock_num_ships() == 0
+			    && stock_num_bridges() == 0)
 				log_info(_("You have run out of road segments.\n"));
-		}
-		break;
-	case DEVEL_SHIP_BUILDING:
-		if (player_num == my_player_num()) {
-			if (stock_num_ships() == 0)
-				log_info(_("You have run out of ship segments.\n"));
 		}
 		break;
         case DEVEL_CHAPEL:
