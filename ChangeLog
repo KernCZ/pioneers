@@ -1,3 +1,8 @@
+2000-06-23  Jeff Breidenbach  <jeff@alum.mit.edu>
+
+	* debian/README.debian: removed as recommended by
+	http://www.debian.org/doc/maint-guide/ch-dother.html#s-readme
+
 2000-06-21  Andy Heroff <aheroff@mediaone.net>
 
 	* server/player.c: Fixed a bug where a player with an older client
