@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnocatan 0.7.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-10-15 15:16+0200\n"
+"POT-Creation-Date: 2003-10-15 18:10+0200\n"
 "PO-Revision-Date: 2003-01-25 00:08-0600\n"
 "Last-Translator: Steve Langasek <vorlon@dodds.net>\n"
 "Language-Team: Spanish <debian-l10n-spanish@lists.debian.org>\n"
@@ -352,30 +352,30 @@ msgstr "Jugador %d se hace anónimo.\n"
 msgid "%s is now anonymous.\n"
 msgstr "%s se hace anónimo.\n"
 
-#: ai/player.c:164 client/player.c:405
+#: ai/player.c:164 client/player.c:427
 #, c-format
 msgid "Player %d is now %s.\n"
 msgstr "Jugador no. %d se llama %s ahora.\n"
 
-#: ai/player.c:166 client/player.c:393 client/player.c:407
+#: ai/player.c:166 client/player.c:415 client/player.c:429
 #, c-format
 msgid "%s is now %s.\n"
 msgstr ""
 
-#: ai/player.c:182 client/player.c:491
+#: ai/player.c:182 client/player.c:513
 msgid "There is no largest army.\n"
 msgstr "No hay un ejército más grande.\n"
 
-#: ai/player.c:184 client/player.c:493
+#: ai/player.c:184 client/player.c:515
 #, c-format
 msgid "%s has the largest army.\n"
 msgstr "%s tiene el ejército más grande.\n"
 
-#: ai/player.c:204 client/player.c:513
+#: ai/player.c:204 client/player.c:535
 msgid "There is no longest road.\n"
 msgstr "No hay un camino más largo.\n"
 
-#: ai/player.c:206 client/player.c:515
+#: ai/player.c:206 client/player.c:537
 #, c-format
 msgid "%s has the longest road.\n"
 msgstr "%s tiene el camino más largo.\n"
@@ -389,94 +389,94 @@ msgstr "%s le roba una carta de recurso a %s.\n"
 
 #. We stole a card :-)
 #.
-#: ai/player.c:256 client/player.c:677
+#: ai/player.c:256 client/player.c:699
 #, c-format
 msgid "You stole %s from %s.\n"
 msgstr "Robas %s a %s.\n"
 
 #. Someone stole our card :-(
 #.
-#: ai/player.c:263 client/player.c:683
+#: ai/player.c:263 client/player.c:705
 #, c-format
 msgid "%s stole %s from you.\n"
 msgstr "%s te roba %s.\n"
 
-#: ai/player.c:295 client/player.c:714
+#: ai/player.c:295 client/player.c:736
 #, c-format
 msgid "%s gave %s nothing!?\n"
 msgstr "¿¡%s no da nada a %s!?\n"
 
-#: ai/player.c:301 ai/player.c:308 client/player.c:720 client/player.c:727
+#: ai/player.c:301 ai/player.c:308 client/player.c:742 client/player.c:749
 #, c-format
 msgid "%s gave %s %s for free.\n"
 msgstr "%s da %s a %s gratis.\n"
 
-#: ai/player.c:316 client/player.c:735
+#: ai/player.c:316 client/player.c:757
 #, c-format
 msgid "%s gave %s %s in exchange for %s.\n"
 msgstr "%1s le da %3s a %2s a cambio de %4s.\n"
 
-#: ai/player.c:332 client/player.c:756
+#: ai/player.c:332 client/player.c:778
 #, c-format
 msgid "%s exchanged %s for %s.\n"
 msgstr "%s cambia %s por %s.\n"
 
-#: ai/player.c:348 client/player.c:775
+#: ai/player.c:348 client/player.c:797
 #, c-format
 msgid "%s built a road.\n"
 msgstr "%s construye un camino.\n"
 
-#: ai/player.c:357 client/player.c:788
+#: ai/player.c:357 client/player.c:810
 #, c-format
 msgid "%s built a ship.\n"
 msgstr "%s construye un barco.\n"
 
-#: ai/player.c:366 client/player.c:801
+#: ai/player.c:366 client/player.c:823
 #, c-format
 msgid "%s built a settlement.\n"
 msgstr "%s edifica un pueblo.\n"
 
-#: ai/player.c:382 client/player.c:821
+#: ai/player.c:382 client/player.c:843
 #, c-format
 msgid "%s built a city.\n"
 msgstr "%s edifica una ciudad.\n"
 
-#: ai/player.c:389 client/player.c:829
+#: ai/player.c:389 client/player.c:851
 #, c-format
 msgid "player_build_add called with BUILD_NONE for user %s\n"
 msgstr ""
 
-#: ai/player.c:416 client/player.c:927
+#: ai/player.c:416 client/player.c:949
 #, fuzzy, c-format
 msgid "%s moved a ship back.\n"
 msgstr "%s quita un barco.\n"
 
-#: ai/player.c:418 client/player.c:929
+#: ai/player.c:418 client/player.c:951
 #, fuzzy, c-format
 msgid "%s moved a ship.\n"
 msgstr "%s quita un barco.\n"
 
-#: ai/player.c:433 client/player.c:856
+#: ai/player.c:433 client/player.c:878
 #, c-format
 msgid "%s removed a road.\n"
 msgstr "%s quita un camino.\n"
 
-#: ai/player.c:442 client/player.c:866
+#: ai/player.c:442 client/player.c:888
 #, c-format
 msgid "%s removed a ship.\n"
 msgstr "%s quita un barco.\n"
 
-#: ai/player.c:451 client/player.c:876
+#: ai/player.c:451 client/player.c:898
 #, c-format
 msgid "%s removed a settlement.\n"
 msgstr "%s quita un pueblo.\n"
 
-#: ai/player.c:461 client/player.c:887
+#: ai/player.c:461 client/player.c:909
 #, c-format
 msgid "%s removed a city.\n"
 msgstr "%s quita una ciudad.\n"
 
-#: ai/player.c:471 client/player.c:897
+#: ai/player.c:471 client/player.c:919
 #, c-format
 msgid "player_build_remove called with BUILD_NONE for user %s\n"
 msgstr "Se llamó player_build_remove con BUILD_NONE para el usuario %s\n"
@@ -1374,43 +1374,43 @@ msgstr ""
 msgid "viewer %d"
 msgstr ""
 
-#: client/player.c:390
+#: client/player.c:412
 #, c-format
 msgid "New viewer: %s.\n"
 msgstr ""
 
-#: client/player.c:448
+#: client/player.c:470
 #, c-format
 msgid "%s has quit\n"
 msgstr ""
 
-#: client/player.c:558
+#: client/player.c:580
 msgid "Player Summary"
 msgstr "Resumen de jugadores"
 
-#: client/player.c:638
+#: client/player.c:660
 #, c-format
 msgid "Waiting for %s."
 msgstr "Esperando a %s."
 
-#: client/player.c:667
+#: client/player.c:689
 msgid " stole a resource from "
 msgstr ""
 
 #. tell the user
-#: client/player.c:952
+#: client/player.c:974
 #, fuzzy, c-format
 msgid "%s received %s.\n"
 msgstr "%s recibe %s.\n"
 
 #. tell the user the point is lost
-#: client/player.c:980
+#: client/player.c:1002
 #, fuzzy, c-format
 msgid "%s lost %s.\n"
 msgstr "%s gasta %s.\n"
 
 #. tell the user about it
-#: client/player.c:1010
+#: client/player.c:1032
 #, fuzzy, c-format
 msgid "%s lost %s to %s.\n"
 msgstr "Robas %s a %s.\n"

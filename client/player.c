@@ -299,6 +299,28 @@ static int calc_summary_row(player_num)
 	if (player_num == 0)
 		return 0;
 
+	if (player_num > num_players) {
+		gint maxrow;
+		GList *list;
+		/* calculate viewer row */
+		row = gtk_clist_find_row_from_data(GTK_CLIST(summary_clist),
+				viewer_get (player_num) );
+		if (row >= 0)
+			return row;
+		maxrow = -1;
+		for (list = viewers; list != NULL; list = g_list_next (list) ) {
+			Viewer *viewer = list->data;
+			row = gtk_clist_find_row_from_data(GTK_CLIST(summary_clist), viewer);
+			if (row > maxrow)
+				maxrow = row;
+		}
+		if (maxrow >= 0)
+			return maxrow;
+		/* there are no viewers, return the first row after the last
+		 * player */
+		player_num = num_players;
+	}
+	
 	for (idx = player_num - 1; idx >= 0; idx--) {
 		row = gtk_clist_find_row_from_data(GTK_CLIST(summary_clist),
 						   player_get (idx) );
