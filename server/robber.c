@@ -58,11 +58,11 @@ static void steal_card_from(Player *player, Player *victim)
 	 * interested parties find out which card was stolen, the
 	 * others just hear about the theft.
 	 */
-	for (list = player_first_real(game);
-	     list != NULL; list = player_next_real(list)) {
+	for (list = game->player_list; list != NULL;
+			list = g_list_next (list)) {
 		Player *scan = list->data;
 
-		if (!scan->disconnected) {
+		if (scan->num >= 0 && !scan->disconnected) {
 			if (scan == player || scan == victim) {
 				sm_send(scan->sm, "player %d stole %r from %d\n",
 					player->num, idx, victim->num);
