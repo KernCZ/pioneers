@@ -1118,14 +1118,13 @@ msgid "Choose resources"
 msgstr ""
 
 #: client/gtk/gold.c:210
-#, fuzzy
 msgid "You may choose 1 resource"
-msgstr "Du mußt %d Karten wahlen"
+msgstr "Du mußt 1 Karte wählen"
 
 #: client/gtk/gold.c:211
-#, fuzzy, c-format
+#, c-format
 msgid "You may choose %d resources"
-msgstr "Du mußt %d Karten wahlen"
+msgstr "Du mußt %d Karten wählen"
 
 #: client/gtk/gold.c:235
 msgid "Take"
@@ -1141,7 +1140,7 @@ msgstr "Insgesamt"
 
 #: client/gtk/gold.c:333
 msgid "Waiting for players to choose"
-msgstr "Warte auf Spieler, die wahlen müssen"
+msgstr "Warte auf Spieler, die wählen müssen"
 
 #: client/gtk/gui.c:90
 msgid "_Connect"
