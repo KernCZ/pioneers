@@ -19,6 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "config.h"
 #include <string.h>
 #include <math.h>
 #include <ctype.h>
@@ -32,7 +33,7 @@ typedef enum {
 	PARAM_STRING,
 	PARAM_INT,
 	PARAM_INT_LIST,
-	PARAM_BOOL,
+	PARAM_BOOL
 } ParamType;
 
 typedef struct {

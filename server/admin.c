@@ -21,6 +21,7 @@
 
 /* Gnocatan Console Server
  */
+#include "config.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -43,7 +44,6 @@
 #include "log.h"
 #include "buildrec.h"
 #include "server.h"
-#include "meta.h"
 
 #include "glib-driver.h"
 #include "gnocatan-server.h"
@@ -55,8 +55,8 @@ static GHashTable *_game_list = NULL;
 static GSList *_game_listS = NULL; /* The sorted list */
 
 gboolean register_server = FALSE;
-gchar server_port[NI_MAXSERV] = "5556";
-gchar server_admin_port[NI_MAXSERV] = "5555";
+gchar server_port[NI_MAXSERV] = GNOCATAN_DEFAULT_GAME_PORT;
+gchar server_admin_port[NI_MAXSERV] = GNOCATAN_DEFAULT_ADMIN_PORT;
 extern gint no_player_timeout;
 
 GameParams *params = NULL;

@@ -26,7 +26,6 @@
 #include <string.h>
 
 #include "game.h"
-#include "meta.h"
 #include "common_gtk.h"
 
 #include "gnocatan-server.h"
@@ -76,7 +75,7 @@ enum {
 
 static GnomeUIInfo file_menu[] = {
 	{ GNOME_APP_UI_ITEM, N_("_Quit"), N_("Quit the program"),
-	  quit_cb, NULL, NULL, GNOME_APP_PIXMAP_STOCK, GTK_STOCK_QUIT,
+	  (gpointer)quit_cb, NULL, NULL, GNOME_APP_PIXMAP_STOCK, GTK_STOCK_QUIT,
 	  'q', GDK_CONTROL_MASK, NULL },
 
 	GNOMEUIINFO_END
@@ -86,12 +85,8 @@ static GnomeUIInfo help_menu[] = {
 	{ GNOME_APP_UI_ITEM,
 	  N_("_About Gnocatan Server"),
 	  N_("Information about Gnocatan Server"),
-	  help_about_cb, NULL, NULL, GNOME_APP_PIXMAP_STOCK,
+	  (gpointer)help_about_cb, NULL, NULL, GNOME_APP_PIXMAP_STOCK,
 	  GNOME_STOCK_ABOUT, 0, 0, NULL },
-
-//	GNOMEUIINFO_SEPARATOR,
-
-//	GNOMEUIINFO_HELP(app_name),
 	GNOMEUIINFO_END
 };
 
@@ -490,7 +485,7 @@ static GtkWidget *build_interface(void)
 			_("The public name of this computer (needed when playing behind a firewall)"), NULL);
 
           /* Initialize server-settings */
-	strncpy(server_port, config_get_string("server/port=5556", &novar), sizeof(server_port));
+	strncpy(server_port, config_get_string("server/port=" GNOCATAN_DEFAULT_GAME_PORT, &novar), sizeof(server_port));
 	server_port[sizeof(server_port)-1] = 0;
 	gtk_entry_set_text(GTK_ENTRY(port_entry), server_port);
 	
@@ -498,7 +493,7 @@ static GtkWidget *build_interface(void)
 	meta_server_name = config_get_string("server/meta-server", &novar);
 	if (novar || !strlen(meta_server_name))
 		if (!(meta_server_name = g_strdup(getenv("GNOCATAN_META_SERVER"))))
-			meta_server_name = g_strdup(DEFAULT_META_SERVER);
+			meta_server_name = g_strdup(GNOCATAN_DEFAULT_META_SERVER);
 	gtk_entry_set_text(GTK_ENTRY(meta_entry), meta_server_name);
 
 	novar = 0;

@@ -20,6 +20,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "config.h"
 #include <math.h>
 #include <stdlib.h>
 #include <gtk/gtk.h>
@@ -393,6 +394,7 @@ void draw_dice_roll(PangoLayout *layout, GdkPixmap *pixmap, GdkGC *gc,
 	MapTheme *theme = get_theme();
 	THEME_COLOR col;
 	TColor *tcol;
+	gint width_sqr;
 
 #define col_or_ovr(ter,cno)												\
 	((terrain < TC_MAX_OVRTILE && theme->ovr_colors[ter][cno].set) ?	\
@@ -428,7 +430,7 @@ void draw_dice_roll(PangoLayout *layout, GdkPixmap *pixmap, GdkGC *gc,
 				x_offset - width / 2, 
 				y_offset - height / 2, layout);
 
-		gint width_sqr = sqr(radius) - sqr(height / 2);
+		width_sqr = sqr(radius) - sqr(height / 2);
 		if (width_sqr >= sqr(6 * 2)) {
 			/* Enough space available for the dots */
 			x = x_offset - chances[n] * 4 / 2;
@@ -445,7 +447,7 @@ void draw_dice_roll(PangoLayout *layout, GdkPixmap *pixmap, GdkGC *gc,
 static gboolean display_hex(Map *map, Hex *hex, GuiMap *gmap)
 {
 	gint x_offset, y_offset;
-	GdkPoint points[6];
+	GdkPoint points[MAX_POINTS];
 	Polygon poly = { points, numElem(points) };
 	int idx;
 	MapTheme *theme = get_theme();
@@ -588,10 +590,10 @@ static gboolean display_hex(Map *map, Hex *hex, GuiMap *gmap)
 	/* Draw all roads and ships */
 	for (idx = 0; idx < numElem(hex->edges); idx++) {
 		Edge *edge = hex->edges[idx];
-		if (edge->owner < 0)
-			continue;
 		GdkPoint points[MAX_POINTS];
 		Polygon poly = { points, numElem(points) };
+		if (edge->owner < 0)
+			continue;
 		switch (edge->type) {
 			case BUILD_ROAD: 
 				guimap_road_polygon(gmap, edge, &poly); break;
@@ -765,14 +767,14 @@ static void build_hex_region(GuiMap *gmap)
 gint guimap_get_chit_radius(PangoLayout *layout)
 {
 	gint width, height;
+	gint size_for_99_sqr;
+	gint size_for_port_sqr;
 
 	/* Calculate the maximum size of the text in the chits */
-	gint size_for_99_sqr;
 	pango_layout_set_markup(layout, "<b>99</b>", -1);
 	pango_layout_get_pixel_size(layout, &width, &height);
 	size_for_99_sqr = sqr(width) + sqr(height);
 	
-	gint size_for_port_sqr;
 	pango_layout_set_markup(layout, "3:1", -1);
 	pango_layout_get_pixel_size(layout, &width, &height);
 	size_for_port_sqr = sqr(width) + sqr(height);
@@ -783,6 +785,12 @@ gint guimap_get_chit_radius(PangoLayout *layout)
 
 void guimap_display(GuiMap *gmap)
 {
+	gint maximum_size;
+	gint size_for_text;
+	PangoContext *pc;
+	PangoFontDescription *pfd;
+	gint font_size;
+	
 	if (gmap->gc != NULL) {
 		/* Unref old gc */
 		g_object_unref(gmap->gc);
@@ -801,9 +809,9 @@ void guimap_display(GuiMap *gmap)
 	gmap->layout = gtk_widget_create_pango_layout(gmap->area, "");
 
 	/* Manipulate the font size */
-	PangoContext *pc = pango_layout_get_context(gmap->layout);
-	PangoFontDescription *pfd = pango_context_get_font_description(pc);
-	gint font_size;
+	pc = pango_layout_get_context(gmap->layout);
+	pfd = pango_context_get_font_description(pc);
+
 	/* Store the initial font size, since it is remembered for the area */
 	if (gmap->initial_font_size == -1) {
 		font_size = pango_font_description_get_size(pfd);
@@ -815,8 +823,7 @@ void guimap_display(GuiMap *gmap)
 	/* The radius of the chit is at most 67% of the tile,
 	 * so the terrain can be seen.
 	 */
-	gint maximum_size = gmap->hex_radius * 2 / 3;
-	gint size_for_text;
+	maximum_size = gmap->hex_radius * 2 / 3;
 
 	/* Shrink the font size until the letters fit in the chit */
 	do {

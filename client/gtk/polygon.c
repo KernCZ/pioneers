@@ -21,7 +21,7 @@
 
 #include <math.h>
 #include <ctype.h>
-#include <gnome.h>
+#include <gdk/gdk.h>
 
 #include "polygon.h"
 

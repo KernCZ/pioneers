@@ -23,9 +23,10 @@
 #include "config.h"
 #include <ctype.h>
 #include <netdb.h>
-#include <gnome.h>
+#include <gtk/gtk.h>
+#include <stdlib.h>
+#include <unistd.h> /* For usleep */
 
-#include "meta.h"
 #include "frontend.h"
 #include "network.h"
 #include "log.h"
@@ -386,8 +387,8 @@ static void meta_notify(NetEvent event, UNUSED(void *user_data), char *line)
  					if (meta_port)
  						g_free(meta_port);
  					meta_server = g_strdup(server);
- 					meta_port = g_strdup(META_PORT);
-					query_meta_server(server, META_PORT);
+ 					meta_port = g_strdup(GNOCATAN_DEFAULT_META_PORT);
+					query_meta_server(server, GNOCATAN_DEFAULT_META_PORT);
 				}
 				else
 					log_message( MSG_ERROR, _("Bad redirect line: %s\n"), line);
@@ -684,13 +685,13 @@ static void set_meta_serverinfo(void)
 
 	meta_tmp = gtk_entry_get_text(GTK_ENTRY(meta_server_entry));
 	if (!meta_tmp || !strlen(meta_tmp)) {
-		if (!(meta_tmp = getenv("GNOCATAN_META_SERVER")))
-			meta_tmp = DEFAULT_META_SERVER;
+		if ((meta_tmp = getenv("GNOCATAN_META_SERVER"))==NULL)
+			meta_tmp = GNOCATAN_DEFAULT_META_SERVER;
 		gtk_entry_set_text(GTK_ENTRY(meta_server_entry), meta_tmp);
 	}
 	meta_server = g_strdup(meta_tmp);
 	if (!meta_port)
-		meta_port = g_strdup(META_PORT);
+		meta_port = g_strdup(GNOCATAN_DEFAULT_META_PORT);
 }
 
 static void create_meta_dlg(UNUSED(GtkWidget *widget), GtkWidget *parent)
@@ -902,19 +903,12 @@ void connect_create_dlg(void)
 	if (default_returned) {
 		g_free (saved_meta_server);
 		if (!(saved_meta_server = g_strdup (getenv("GNOCATAN_META_SERVER"))))
-			saved_meta_server = g_strdup (DEFAULT_META_SERVER);
-	} else if (!strcmp(saved_meta_server,OLD_META_SERVER)) {
-		g_free (saved_meta_server);
-		if (!(saved_meta_server = g_strdup (getenv("GNOCATAN_META_SERVER"))))
-			saved_meta_server = g_strdup (DEFAULT_META_SERVER);
+			saved_meta_server = g_strdup (GNOCATAN_DEFAULT_META_SERVER);
 	}
 
 	/* initialize name value */
 	default_returned = FALSE;
-	saved_name = config_get_string("connect/name", &default_returned);
-	if (default_returned) {
-		saved_name = g_strdup (g_get_user_name() );
-	}
+	saved_name = g_strdup(my_player_name());
 
 	connect_dlg = gtk_dialog_new_with_buttons(
 			_("Start a new game"),
@@ -1141,10 +1135,14 @@ static void connect_private_dialog(UNUSED(GtkWidget *widget), GtkWindow *parent)
 	tooltips = gtk_tooltips_new();
 
 	/* initialize server value */
-	saved_server = config_get_string("connect/server=localhost",&default_returned);
+	saved_server = config_get_string(
+			"connect/server=" GNOCATAN_DEFAULT_GAME_HOST,
+			&default_returned);
 
 	/* initialize port value */
-	saved_port = config_get_string("connect/port=5556", &default_returned);
+	saved_port = config_get_string(
+			"connect/port=" GNOCATAN_DEFAULT_GAME_PORT, 
+			&default_returned);
 
 	connect_private_dlg = gtk_dialog_new_with_buttons(
 			_("Join a private game"),

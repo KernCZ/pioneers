@@ -19,6 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "config.h"
 #include <gtk/gtk.h>
 #include <string.h>
 #include "game.h"
@@ -70,7 +71,6 @@ static GdkColor msg_player_color[8] = {
 /* Local function prototypes */
 static void gtk_event_cleanup(void);
 
-
 /* Set the default logging function to write to the message window. */
 void log_set_func_message_window( void )
 {
@@ -87,7 +87,15 @@ void log_set_func_message_color_enable( gboolean enable )
  */
 void message_window_log_message_string( gint msg_type, gchar *text )
 {
+	GtkTextTag *text_tag;
+	GtkTextBuffer *buffer;
+	GtkTextIter iter;
+	GtkTextMark *end_mark;
+
 	GdkColor *color;
+
+	if (message_txt == NULL)
+		return; /* No widget set */
 
 	if (!msg_colors)
 		color = &black;
@@ -155,20 +163,6 @@ void message_window_log_message_string( gint msg_type, gchar *text )
 		default:
 			color = &green;
 	}
-	
-	message_window_add_text( text, color );
-}
-
-/* write a text message to the message window in the specified color. */
-void message_window_add_text(gchar *text, GdkColor *color)
-{
-	GtkTextTag *text_tag;
-	GtkTextBuffer *buffer;
-	GtkTextIter iter;
-	GtkTextMark *end_mark;
-
-	if (message_txt == NULL)
-		return;
 
 	/* create an anonymous tag for the indicated color */
 	buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(message_txt));
@@ -193,19 +187,16 @@ void message_window_add_text(gchar *text, GdkColor *color)
 			0.0, FALSE, 0.0, 0.0);
 }
 
-/* set the text in the message window to the specified color. */
-GtkWidget *message_window_set_text(GtkWidget *txt)
+/* set the text widget. */
+void message_window_set_text(GtkWidget *textWidget)
 {
 	static GdkColormap* cmap;
-	GtkWidget *old_txt = message_txt;
-
 	if (cmap == NULL) {
 		cmap = gdk_colormap_get_system();
 		gdk_colormap_alloc_color(cmap, &black, FALSE, TRUE);
 		gdk_colormap_alloc_color(cmap, &red, FALSE, TRUE);
 	}
-	message_txt = txt;
-	return old_txt;
+	message_txt = textWidget;
 }
 
 static void check_gtk_widget(UNUSED(gpointer key), WidgetState *gui,
@@ -303,8 +294,8 @@ void sm_gui_register_destroy(StateMachine *sm, void *widget, gint id)
 {
 	WidgetState *gui = gui_new(sm, widget, id);
 	gui->destroy_only = TRUE;
-	gtk_signal_connect(GTK_OBJECT((GtkWidget *)widget), "destroy",
-			   GTK_SIGNAL_FUNC(destroy_route_event_cb), gui);
+	g_signal_connect(G_OBJECT((GtkWidget *)widget), "destroy",
+			G_CALLBACK(destroy_route_event_cb), gui);
 }
 
 void sm_gui_register(StateMachine *sm,
@@ -314,11 +305,11 @@ void sm_gui_register(StateMachine *sm,
 	gui->signal = signal;
 	gui->current = TRUE;
 	gui->next = FALSE;
-        gtk_signal_connect(GTK_OBJECT((GtkWidget *)widget), "destroy",
-			   GTK_SIGNAL_FUNC(destroy_event_cb), gui);
+        g_signal_connect(G_OBJECT((GtkWidget *)widget), "destroy",
+			G_CALLBACK(destroy_event_cb), gui);
 	if (signal != NULL)
-		gtk_signal_connect(GTK_OBJECT((GtkWidget *)widget), signal,
-				   GTK_SIGNAL_FUNC(route_event_cb), gui);
+		g_signal_connect(G_OBJECT((GtkWidget *)widget), signal,
+				G_CALLBACK(route_event_cb), gui);
 }
 
 static void free_gtk_widget(UNUSED(gpointer key), WidgetState *gui,
@@ -327,17 +318,17 @@ static void free_gtk_widget(UNUSED(gpointer key), WidgetState *gui,
 	if (gui->destroy_only) {
 		/* Destroy only notification
 		 */
-		gtk_signal_disconnect_by_func(GTK_OBJECT((GtkWidget *)gui->widget),
-					      GTK_SIGNAL_FUNC(destroy_route_event_cb),
-					      gui);
+		g_signal_handlers_disconnect_by_func(
+				G_OBJECT((GtkWidget *)gui->widget),
+				(gpointer)destroy_route_event_cb, gui);
 	} else {
-		gtk_signal_disconnect_by_func(GTK_OBJECT((GtkWidget *)gui->widget),
-					      GTK_SIGNAL_FUNC(destroy_event_cb),
-					      gui);
+		g_signal_handlers_disconnect_by_func(
+				G_OBJECT((GtkWidget *)gui->widget),
+				(gpointer)destroy_event_cb, gui);
 		if (gui->signal != NULL)
-			gtk_signal_disconnect_by_func(GTK_OBJECT((GtkWidget *)gui->widget),
-						      GTK_SIGNAL_FUNC(route_event_cb),
-						      gui);
+			g_signal_handlers_disconnect_by_func(
+					G_OBJECT((GtkWidget *)gui->widget),
+					(gpointer)route_event_cb, gui);
 	}
 	g_free(gui);
 }
@@ -367,3 +358,47 @@ UIDriver GTK_Driver = {
 	NULL,	/* player removed */
 	NULL	/* player renamed */
 };
+
+/* Functions that are not in the older versions of Gtk+
+ * Some stub functionality is provided 
+ */
+ 
+#if GTK_MAJOR_VERSION >= 2
+#if GTK_MINOR_VERSION < 4
+/*  Here are some functions that are not present before 2.4 */
+void gtk_tree_view_column_set_expand (
+	UNUSED(GtkTreeViewColumn *tree_column),
+	UNUSED(gboolean expand)) {
+	/* Do nothing. This function is purely cosmetic */
+}
+
+void gtk_entry_set_alignment(
+	UNUSED(GtkEntry *entry),
+	UNUSED(gfloat xalign)) {
+	/* Do nothing. This function is purely cosmetic */
+}
+#if GTK_MINOR_VERSION < 2
+/* Here are some functions that are not present before 2.2 */
+gboolean gtk_window_set_default_icon_from_file(
+	UNUSED(const gchar *filename),
+	UNUSED(GError **err)) {
+	/* Do nothing. This function is purely cosmetic */
+}
+
+void gdk_draw_pixbuf(UNUSED(GdkDrawable *drawable),
+	UNUSED(GdkGC *gc),
+	UNUSED(GdkPixbuf *pixbuf),
+	UNUSED(gint src_x),
+	UNUSED(gint src_y),
+	UNUSED(gint dest_x),
+	UNUSED(gint dest_y),
+	UNUSED(gint width),
+	UNUSED(gint height),
+	UNUSED(GdkRgbDither dither),
+	UNUSED(gint x_dither),
+	UNUSED(gint y_dither)) {
+	/* Do nothing. This function is used in the legend */
+}
+#endif /* GTK_MINOR_VERSION < 2 */
+#endif /* GTK_MINOR_VERSION < 4 */
+#endif /* GTK_MAJOR_VERSION >= 2 */

@@ -20,6 +20,7 @@
 
 /* Gnocatan Console Server
  */
+#include "config.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -40,7 +41,6 @@
 #include "log.h"
 #include "buildrec.h"
 #include "server.h"
-#include "meta.h"
 
 #include "glib-driver.h"
 

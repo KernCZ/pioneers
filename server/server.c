@@ -19,6 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "config.h"
 #include <stdio.h>
 #include <fcntl.h>
 #include <ctype.h>
@@ -44,7 +45,6 @@
 #include "cost.h"
 #include "log.h"
 #include "server.h"
-#include "meta.h"
 #include "mt_rand.h"
 
 typedef union {
@@ -190,9 +190,9 @@ gint accept_connection( gint in_fd, gchar **location)
 {
 	int fd;
 	sockaddr_t addr;
-	size_t addr_len;
+	socklen_t addr_len;
 	sockaddr_t peer;
-	size_t peer_len;
+	socklen_t peer_len;
 
 	addr_len = sizeof(addr);
 	fd = accept(in_fd, &addr.sa, &addr_len);
@@ -228,7 +228,7 @@ gint new_computer_player(const gchar *server, const gchar *port)
     pid_t pid, pid2;
     
     if (!server)
-	server = "localhost";
+	server = GNOCATAN_DEFAULT_GAME_HOST;
     
     pid = fork();
     if (pid < 0) {
@@ -295,7 +295,7 @@ static gboolean game_server_start(Game *game)
 {
 	if (!meta_server_name) {
 		if (!(meta_server_name = getenv("GNOCATAN_META_SERVER")))
-			meta_server_name = DEFAULT_META_SERVER;
+			meta_server_name = GNOCATAN_DEFAULT_META_SERVER;
 	}
 	
 	game->accept_fd = open_listen_socket( game->params->server_port );
@@ -306,7 +306,7 @@ static gboolean game_server_start(Game *game)
 					 player_connect, game);
 
 	if (game->params->register_server)
-		meta_register(meta_server_name, META_PORT, game);
+		meta_register(meta_server_name, GNOCATAN_DEFAULT_META_PORT, game);
 	return TRUE;
 }
 

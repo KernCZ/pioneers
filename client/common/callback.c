@@ -18,6 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "config.h"
 #include <stdio.h>
 #include "config.h"
 #include "callback.h"
@@ -34,6 +35,9 @@ enum callback_mode callback_mode;
 
 /* is chat currently colourful? */
 gboolean color_chat_enabled;
+
+/* The name of the player */
+static const gchar *saved_player_name = NULL;
 
 void cb_connect (const gchar *server, const gchar *port)
 {
@@ -259,10 +263,15 @@ void cb_chat (const gchar *text)
 
 void cb_name_change (const gchar *name)
 {
+	saved_player_name = g_strdup(name);
 	/* change your name */
 	copy_player_name(name);
 	if (callback_mode != MODE_INIT)
 		sm_send(SM(), "name %s\n", name);
+}
+
+const gchar * my_player_name (void) {
+	return saved_player_name;
 }
 
 void cb_discard (gint *resources)

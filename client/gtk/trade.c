@@ -197,16 +197,16 @@ gboolean trade_valid_selection()
 static void load_pixmaps(void)
 {
 	static gboolean init = FALSE;
+	int width, height;
+	GdkPixmap *pixmap;
+	GdkGC *gc;
+	gint i;
 
 	if (init) return;
 
-	int width, height;
 	gtk_icon_size_lookup(GTK_ICON_SIZE_MENU, &width, &height);
 
-	GdkPixmap *pixmap;
 	pixmap = gdk_pixmap_new(quotes->window, width, height, gtk_widget_get_visual(quotes)->depth);
-	GdkGC *gc;
-	gint i;
 
 	gc = gdk_gc_new(pixmap);
 	gdk_gc_set_foreground(gc, &black);
@@ -354,6 +354,7 @@ static void add_maritime_trade(gint ratio, Resource receive, Resource supply)
 	QuoteInfo *quote;
 	QuoteInfo *prev;
 	gchar quote_desc[128];
+	GtkTreeIter iter;
 
 	for (quote = quotelist_first(quote_list);
 	     quote != NULL; quote = quotelist_next(quote))
@@ -369,7 +370,6 @@ static void add_maritime_trade(gint ratio, Resource receive, Resource supply)
 	trade_format_maritime(quote, quote_desc);
 	prev = quotelist_prev(quote);
 
-	GtkTreeIter iter;
 	quote_found_flag = FALSE;
 	if (prev != NULL)
 		gtk_tree_model_foreach(GTK_TREE_MODEL(store), trade_locate_quote, prev);
@@ -544,6 +544,7 @@ static void add_trade_row(GtkWidget *table, TradeRow* row, Resource resource)
 {
 	GtkWidget *label;
 	gint col;
+	GtkWidget *frame;
 
 	col = 0;
 	row->resource = resource;
@@ -556,7 +557,7 @@ static void add_trade_row(GtkWidget *table, TradeRow* row, Resource resource)
 	col++;
 
 	/* Draw a border around the number */
-	GtkWidget *frame = gtk_viewport_new(NULL, NULL);
+	frame = gtk_viewport_new(NULL, NULL);
 	gtk_viewport_set_shadow_type(GTK_VIEWPORT(frame), GTK_SHADOW_IN);
 	gtk_widget_show(frame);
 	gtk_table_attach(GTK_TABLE(table), frame,
@@ -879,9 +880,6 @@ GtkWidget *trade_build_page (void)
 	g_signal_connect(
 			G_OBJECT(gtk_tree_view_get_selection(GTK_TREE_VIEW(quotes))),
 			"changed", G_CALLBACK(quote_select_cb), NULL);
-//	tooltips = gtk_tooltips_new();
-	//gtk_tooltips_set_tip(tooltips, label,
-			//_("Shows all players and viewers connected to the server"), NULL);
 
 	/* Now create columns */
 	column = gtk_tree_view_column_new_with_attributes(
@@ -902,8 +900,6 @@ GtkWidget *trade_build_page (void)
 			gtk_cell_renderer_text_new(), "text", 
 			TRADE_COLUMN_DESCRIPTION,  NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(quotes), column);
-//	gtk_tooltips_set_tip(tooltips, column->button,
-//			_("Is the player currently connected?"), NULL);
 	gtk_widget_show(quotes);
 
 	bbox = gtk_hbutton_box_new();

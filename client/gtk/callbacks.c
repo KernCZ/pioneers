@@ -18,8 +18,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "config.h"
 #include "frontend.h"
-#include <gnome.h>
 #include "histogram.h"
 
 static void frontend_network_status (gchar *description)
@@ -158,5 +158,5 @@ void frontend_set_callbacks (void)
 	callbacks.player_quit = &frontend_player_quit;
 	callbacks.viewer_quit = &frontend_viewer_quit;
 	callbacks.new_bank = &frontend_new_bank;
-};
+}
 

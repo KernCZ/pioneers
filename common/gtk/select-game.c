@@ -7,6 +7,7 @@
  *
  */
 
+#include "config.h"
 #include "game.h"
 #include <gtk/gtksignal.h>
 #include <gtk/gtktable.h>

@@ -22,7 +22,7 @@
 #include "config.h"
 #include <math.h>
 #include <ctype.h>
-#include <gnome.h>
+#include <gtk/gtk.h>
 
 #include "frontend.h"
 #include "cards.h"

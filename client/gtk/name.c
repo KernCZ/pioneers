@@ -77,6 +77,7 @@ void name_create_dlg()
 	gtk_widget_show(name_entry);
 	gtk_box_pack_start(GTK_BOX(hbox), name_entry, TRUE, TRUE, 0);
 	gtk_entry_set_width_chars(GTK_ENTRY(name_entry), 30);
+	gtk_entry_set_text(GTK_ENTRY(name_entry), my_player_name());
 
 	gtk_entry_set_activates_default(GTK_ENTRY(name_entry), TRUE);
 

@@ -32,7 +32,7 @@
 /* Needed below for a dirty trick */
 extern int _nl_msg_cat_cntr;
 
-lang_desc languages[] = {
+static lang_desc languages[] = {
 	/* language names not translated intentionally! */
 	/* FIXME: locale must match exactly, e.g.
 	 * it_IT.UTF-8@euro != it_IT
@@ -45,7 +45,8 @@ lang_desc languages[] = {
 	{ "nl", "Nederlands",  "nl_NL", FALSE, NULL },
 	{ NULL, NULL, NULL, FALSE, NULL }
 };
-gchar *current_language = NULL;
+
+static gchar *current_language = NULL;
 
 lang_desc *find_lang_desc(const gchar *code)
 {

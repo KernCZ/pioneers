@@ -245,9 +245,6 @@ typedef struct {
 	void *widget;
 } lang_desc;
 
-extern lang_desc languages[];
-extern gchar *current_language;
-
 void init_nls(void);
 gboolean change_nls(lang_desc *ld);
 lang_desc *find_lang_desc(const gchar *code);
@@ -304,6 +301,7 @@ gboolean player_is_viewer (gint num);
 Viewer *viewer_get (gint num);
 gchar *player_name (gint player_num, gboolean word_caps);
 gint my_player_num (void);
+const gchar * my_player_name (void);
 gint num_players (void);
 gint current_player (void);
 gint build_count_edges (void);

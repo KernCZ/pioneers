@@ -54,7 +54,6 @@ libgnocatan_a_SOURCES = \
 	map.c \
 	map.h \
 	map_query.c \
-	meta.h \
 	network.c \
 	network.h \
 	quoteinfo.c \

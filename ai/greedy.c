@@ -9,6 +9,7 @@
  * buy a copy.
  */
 
+#include "config.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <glib.h>

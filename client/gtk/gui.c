@@ -88,24 +88,24 @@ static void route_widget_event (GtkWidget *w, gpointer data);
 
 static GnomeUIInfo game_menu[] = {
 	{ GNOME_APP_UI_ITEM, N_("_Connect"), N_("Connect to Gnocatan server"),
-	  route_widget_event, (gpointer)GUI_CONNECT, NULL,
+	  (gpointer)route_widget_event, (gpointer)GUI_CONNECT, NULL,
 	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_BLANK,
 	  'c', GDK_CONTROL_MASK, NULL },
 #ifdef ADMIN_GTK
 	{ GNOME_APP_UI_ITEM, N_("_Admin"), N_("Administer Gnocatan server"),
-	  show_admin_interface, NULL, NULL,
+	  (gpointer)show_admin_interface, NULL, NULL,
 	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_BLANK,
 	  'a', GDK_CONTROL_MASK, NULL },
 #endif /* ADMIN_GTK */
 	{ GNOME_APP_UI_ITEM, N_("Player _Name"), N_("Change your player name"),
-	  route_widget_event, (gpointer)GUI_CHANGE_NAME, NULL,
+	  (gpointer)route_widget_event, (gpointer)GUI_CHANGE_NAME, NULL,
 	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_BLANK,
 	  'n', GDK_CONTROL_MASK, NULL },
 	{ GNOME_APP_UI_ITEM, N_("_Settings"), N_("Gnocatan client settings"),
-	  menu_settings_cb, NULL, NULL, GNOME_APP_PIXMAP_STOCK,
+	  (gpointer)menu_settings_cb, NULL, NULL, GNOME_APP_PIXMAP_STOCK,
 	  GNOME_STOCK_BLANK, 's', GDK_CONTROL_MASK, NULL },
 	{ GNOME_APP_UI_ITEM, N_("_Quit"), N_("Quit the program"),
-	  route_widget_event, (gpointer)GUI_QUIT, NULL,
+	  (gpointer)route_widget_event, (gpointer)GUI_QUIT, NULL,
 	  GNOME_APP_PIXMAP_STOCK, GTK_STOCK_QUIT,
 	  'q', GDK_CONTROL_MASK, NULL },
 
@@ -122,16 +122,16 @@ static void help_settings_cb(GtkWidget *widget, void *user_data);
 static gchar app_name[] = "gnocatan";
 static GnomeUIInfo help_menu[] = {
 	{ GNOME_APP_UI_ITEM, N_("_Legend"), N_("Terrain legend and building costs"),
-	  help_legend_cb, NULL, NULL, GNOME_APP_PIXMAP_STOCK,
+	  (gpointer)help_legend_cb, NULL, NULL, GNOME_APP_PIXMAP_STOCK,
 	  GTK_STOCK_INDEX, 0, 0, NULL },
 	{ GNOME_APP_UI_ITEM, N_("_Game Settings"), N_("Settings for the current game"),
-	  help_settings_cb, NULL, NULL, GNOME_APP_PIXMAP_STOCK,
+	  (gpointer)help_settings_cb, NULL, NULL, GNOME_APP_PIXMAP_STOCK,
 	  GTK_STOCK_INDEX, 0, 0, NULL },
 	{ GNOME_APP_UI_ITEM, N_("_Dice Histogram"), N_("Histogram of dice rolls"),
-	  help_histogram_cb, NULL, NULL, GNOME_APP_PIXMAP_STOCK,
+	  (gpointer)help_histogram_cb, NULL, NULL, GNOME_APP_PIXMAP_STOCK,
 	  GTK_STOCK_INDEX, 0, 0, NULL },
 	{ GNOME_APP_UI_ITEM, N_("_About Gnocatan"), N_("Information about Gnocatan"),
-	  help_about_cb, NULL, NULL, GNOME_APP_PIXMAP_STOCK,
+	  (gpointer)help_about_cb, NULL, NULL, GNOME_APP_PIXMAP_STOCK,
 	  GNOME_STOCK_ABOUT, 0, 0, NULL },
 
 	GNOMEUIINFO_SEPARATOR,
@@ -174,39 +174,39 @@ static const gchar *gnocatan_pixmaps[] = {
 
 static GnomeUIInfo toolbar_uiinfo[] = {
 	{ GNOME_APP_UI_ITEM, N_("Roll Dice\n(F1)"), NULL,
-	  route_widget_event, (gpointer)GUI_ROLL, NULL,
+	  (gpointer)route_widget_event, (gpointer)GUI_ROLL, NULL,
 	  GNOME_APP_PIXMAP_STOCK, GNOCATAN_PIXMAP_DICE, 0, 0, NULL },
 	{ GNOME_APP_UI_ITEM, N_("Trade\n(F2)"), NULL,
-	  route_widget_event, (gpointer)GUI_TRADE, NULL,
+	  (gpointer)route_widget_event, (gpointer)GUI_TRADE, NULL,
 	  GNOME_APP_PIXMAP_STOCK, GNOCATAN_PIXMAP_TRADE, 0, 0, NULL },
 	{ GNOME_APP_UI_ITEM, N_("Undo\n(F3)"), NULL,
-	  route_widget_event, (gpointer)GUI_UNDO, NULL,
+	  (gpointer)route_widget_event, (gpointer)GUI_UNDO, NULL,
 	  GNOME_APP_PIXMAP_STOCK, GTK_STOCK_UNDO, 0, 0, NULL },
 	{ GNOME_APP_UI_ITEM, N_("Finish\n(F4)"), NULL,
-	  route_widget_event, (gpointer)GUI_FINISH, NULL,
+	  (gpointer)route_widget_event, (gpointer)GUI_FINISH, NULL,
 	  GNOME_APP_PIXMAP_STOCK, GNOCATAN_PIXMAP_FINISH, 0, 0, NULL },
 
 	{ GNOME_APP_UI_ITEM, N_("Road\n(F5)"), NULL,
-	  route_widget_event, (gpointer)GUI_ROAD, NULL,
+	  (gpointer)route_widget_event, (gpointer)GUI_ROAD, NULL,
 	  GNOME_APP_PIXMAP_STOCK, GNOCATAN_PIXMAP_ROAD, 0, 0, NULL },
 	{ GNOME_APP_UI_ITEM, N_("Ship\n(F6)"), NULL,
-	  route_widget_event, (gpointer)GUI_SHIP, NULL,
+	  (gpointer)route_widget_event, (gpointer)GUI_SHIP, NULL,
 	  GNOME_APP_PIXMAP_STOCK, GNOCATAN_PIXMAP_SHIP, 0, 0, NULL },
 	{ GNOME_APP_UI_ITEM, N_("Move Ship\n(F7)"), NULL,
-	  route_widget_event, (gpointer)GUI_MOVE_SHIP, NULL,
+	  (gpointer)route_widget_event, (gpointer)GUI_MOVE_SHIP, NULL,
 	  GNOME_APP_PIXMAP_STOCK, GNOCATAN_PIXMAP_SHIP_MOVEMENT, 0, 0, NULL },
 	{ GNOME_APP_UI_ITEM, N_("Bridge\n(F8)"), NULL,
-	  route_widget_event, (gpointer)GUI_BRIDGE, NULL,
+	  (gpointer)route_widget_event, (gpointer)GUI_BRIDGE, NULL,
 	  GNOME_APP_PIXMAP_STOCK, GNOCATAN_PIXMAP_BRIDGE, 0, 0, NULL },
 
 	{ GNOME_APP_UI_ITEM, N_("Settlement\n(F9)"), NULL,
-	  route_widget_event, (gpointer)GUI_SETTLEMENT, NULL,
+	  (gpointer)route_widget_event, (gpointer)GUI_SETTLEMENT, NULL,
 	  GNOME_APP_PIXMAP_STOCK, GNOCATAN_PIXMAP_SETTLEMENT, 0, 0, NULL },
 	{ GNOME_APP_UI_ITEM, N_("City\n(F10)"), NULL,
-	  route_widget_event, (gpointer)GUI_CITY, NULL,
+	  (gpointer)route_widget_event, (gpointer)GUI_CITY, NULL,
 	  GNOME_APP_PIXMAP_STOCK, GNOCATAN_PIXMAP_CITY, 0, 0, NULL },
 	{ GNOME_APP_UI_ITEM, N_("Develop\n(F11)"), NULL,
-	  route_widget_event, (gpointer)GUI_BUY_DEVELOP, NULL,
+	  (gpointer)route_widget_event, (gpointer)GUI_BUY_DEVELOP, NULL,
 	  GNOME_APP_PIXMAP_STOCK, GNOCATAN_PIXMAP_DEVELOP, 0, 0, NULL },
 
 	  /* Only the first field matters.  Fill the whole struct with some
@@ -729,22 +729,6 @@ static void settings_apply_cb(UNUSED(GnomePropertyBox *prop_box), gint page,
 
 		break;
 
-#if ENABLE_NLS
-	case 2:
-	{
-		lang_desc *ld;
-
-		for(ld = languages; ld->code; ++ld) {
-			if (ld->supported && GTK_TOGGLE_BUTTON(ld->widget)->active)
-				break;
-		}
-		if (ld->code) {
-			if (change_nls(ld))
-			    config_set_string( "settings/language", current_language);
-		}
-		break;
-	}
-#endif
 	default:
 		break;
 	}
@@ -763,19 +747,12 @@ static void menu_settings_cb(UNUSED(GtkWidget *widget), UNUSED(void *user_data))
 	GtkWidget *page0_label;
 	GtkWidget *page1_table;
 	GtkWidget *page1_label;
-	GtkWidget *page2_table;
-	GtkWidget *page2_label;
 	GtkWidget *frame_texticons;
 	GtkWidget *vbox_texticons;
 	GtkWidget *vbox_colors;
 	GtkWidget *theme_label;
 	GtkWidget *theme_list;
-#if ENABLE_NLS
-	GtkWidget *vbox_linguas;
-	GtkWidget *radio_lang;
-	GtkWidget *radio_lang_prev;
-	lang_desc *ld;
-#endif
+
 	gint toolbar_style;
 	gint color_chat;
 	gint color_messages;
@@ -856,45 +833,6 @@ static void menu_settings_cb(UNUSED(GtkWidget *widget), UNUSED(void *user_data))
 	gtk_notebook_set_current_page(GTK_NOTEBOOK(GNOME_PROPERTY_BOX(settings)->notebook), 0);
 	gnome_property_box_append_page( GNOME_PROPERTY_BOX(settings),
 	                                page1_table, page1_label );
-
-#if ENABLE_NLS
-	page2_table = gtk_table_new( 1, 2, FALSE );
-	page2_label = gtk_label_new( _("Language") );
-	vbox_linguas = gtk_vbox_new( TRUE, 2 );
-
-	radio_lang_prev = NULL;
-	for(ld = languages; ld->code; ++ld) {
-		if (!radio_lang_prev)
-			radio_lang = gtk_radio_button_new_with_label(
-				NULL, g_locale_to_utf8(ld->name,-1,NULL,NULL,NULL));
-		else
-			radio_lang = gtk_radio_button_new_with_label_from_widget(
-				GTK_RADIO_BUTTON(radio_lang_prev), g_locale_to_utf8(ld->name,-1,NULL,NULL,NULL));
-		gtk_box_pack_start_defaults(GTK_BOX(vbox_linguas), radio_lang);
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(radio_lang),
-									 strcmp(current_language, ld->code) == 0);
-		gtk_widget_show(radio_lang);
-
-		ld->widget = radio_lang;
-		radio_lang_prev = radio_lang;
-	}
-	gtk_table_attach( GTK_TABLE(page2_table), vbox_linguas, 0, 1, 0, 1,
-	                  GTK_FILL|GTK_EXPAND, GTK_FILL, 0, 0 );
-	radio_lang = gtk_label_new(_("Language setting takes full effect only after client restart!"));
-	gtk_widget_show(radio_lang);
-	gtk_table_attach( GTK_TABLE(page2_table), radio_lang, 0, 1, 1, 2,
-	                  GTK_FILL|GTK_EXPAND, GTK_FILL, 0, 0 );
-	
-	for(ld = languages; ld->code; ++ld) {
-		if (!ld->supported)
-			gtk_widget_set_sensitive(GTK_WIDGET(ld->widget), FALSE);
-		else
-			gtk_signal_connect(GTK_OBJECT(ld->widget), "clicked", (GtkSignalFunc)settings_activate_cb, (gpointer)settings );
-	}
-	
-	gnome_property_box_append_page( GNOME_PROPERTY_BOX(settings),
-	                                page2_table, page2_label );
-#endif
 	
 	/* Set the default text/icons state */
 	toolbar_style = config_get_int_with_default("settings/toolbar_style", GTK_TOOLBAR_BOTH);
@@ -986,10 +924,6 @@ static void menu_settings_cb(UNUSED(GtkWidget *widget), UNUSED(void *user_data))
 
 	gtk_widget_show( page0_table );
 	gtk_widget_show( page1_table );
-#if ENABLE_NLS
-	gtk_widget_show( vbox_linguas );
-	gtk_widget_show( page2_table );
-#endif
 	
 	gtk_widget_show( settings );
 }

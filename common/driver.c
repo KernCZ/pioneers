@@ -24,6 +24,7 @@
  * Creation of relevant globals.
  */
 
+#include "config.h"
 #include "driver.h"
 #include "common_glib.h"
 

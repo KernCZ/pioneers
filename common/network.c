@@ -19,6 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "config.h"
 #include <fcntl.h>
 #include <ctype.h>
 #include <stdio.h>
@@ -151,7 +152,7 @@ static void write_ready(Session *ses)
 		/* We were waiting to connect to server
 		 */
 		int error;
-		int error_len;
+		socklen_t error_len;
 
 		error_len = sizeof(error);
 		if (getsockopt(ses->fd, SOL_SOCKET, SO_ERROR,

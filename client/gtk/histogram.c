@@ -93,6 +93,7 @@ static gboolean expose_histogram_cb(GtkWidget *area, UNUSED(GdkEventExpose *even
 	PangoLayout *layout;
 	gboolean seven_thrown;
 	gboolean draw_labels_and_chits;
+	gint CHIT_RADIUS;
 
 	if (area->window == NULL)
 		return TRUE;
@@ -125,7 +126,7 @@ static gboolean expose_histogram_cb(GtkWidget *area, UNUSED(GdkEventExpose *even
 	layout = gtk_widget_create_pango_layout(area, buff);
 	pango_layout_get_pixel_size(layout, &label_width, &label_height);
 	
-	gint CHIT_RADIUS = guimap_get_chit_radius(layout);
+	CHIT_RADIUS = guimap_get_chit_radius(layout);
 
 	/* Determine if the drawing area is large enough to draw the labels */
 	draw_labels_and_chits = TRUE;

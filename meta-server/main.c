@@ -19,6 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "config.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -44,8 +45,6 @@
 #include <time.h>
 
 #include <glib.h>
-#include "config.h"
-#include "meta.h"
 
 typedef enum {
 	META_UNKNOWN,
@@ -398,7 +397,8 @@ static void client_create_new_server(Client *client, gchar *line)
 {
 	char *terrain, *numplayers, *points, *sevens_rule, *numai, *type;
 	char *newenv[2] = { NULL, NULL };
-	int pid, fd, yes=1;
+	int pid, fd;
+	socklen_t yes=1;
 	struct sockaddr_in sa;
 	char port[20];
 	const char *console_server;
@@ -1013,7 +1013,7 @@ int main(int argc, char *argv[])
 		convert_to_daemon();
 
 	setmyhostname();
-	if (!setup_accept_sock(META_PORT))
+	if (!setup_accept_sock(GNOCATAN_DEFAULT_META_PORT))
 		return 1;
 
 	syslog(LOG_INFO, "Gnocatan meta server started.");

@@ -9,6 +9,7 @@
  * buy a copy.
  */
 
+#include "config.h"
 #include <sys/param.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -93,8 +94,8 @@ int main(int argc, char *argv[])
 {
 	GMainLoop *event_loop;
 	int c;
-	const char *server = "127.0.0.1";
-	const char *port = "5556";
+	const char *server = GNOCATAN_DEFAULT_GAME_HOST;
+	const char *port = GNOCATAN_DEFAULT_GAME_PORT;
 	const char *name = NULL;
 	const char *ai = "default";
 	int waittime = 1000;

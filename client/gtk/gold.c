@@ -19,8 +19,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "config.h"
 #include "frontend.h"
-#include <gnome.h>
+#include <gtk/gtk.h>
 
 static GtkWidget *gold_choose_clist; /* list of players who receive gold */
 
@@ -318,7 +319,7 @@ void gold_choose_end () {
 	if (gold.dlg != NULL) { /* shouldn't happen */
 		gtk_signal_disconnect_by_func(GTK_OBJECT(gold.dlg),
 		GTK_SIGNAL_FUNC(ignore_close), NULL);
-		gnome_dialog_close(GNOME_DIALOG(gold.dlg));
+		gtk_widget_destroy(gold.dlg);
 		gold.dlg = NULL;
 	}
 }

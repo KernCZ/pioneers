@@ -22,7 +22,6 @@
 #ifndef __game_h
 #define __game_h
 
-#include "config.h"
 #include "map.h"
 #include "driver.h"
 

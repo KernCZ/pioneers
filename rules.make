@@ -40,7 +40,8 @@ debug_includes = \
 	-ggdb3 \
 	-O \
 	-DGDK_DISABLE_DEPRECATED \
-	-DDEBUG
+	-DDEBUG \
+	-pedantic
 else
 debug_includes =
 endif

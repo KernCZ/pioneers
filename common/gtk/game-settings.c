@@ -7,6 +7,7 @@
  *
  */
 
+#include "config.h"
 #include "game.h"
 #include <gtk/gtksignal.h>
 #include <gtk/gtktable.h>
@@ -141,8 +142,7 @@ static void game_settings_init(GameSettings *gs)
 
 	adj = gtk_adjustment_new(0, 2, MAX_PLAYERS, 1, 1, 1);
 	gs->players_spin = gtk_spin_button_new(GTK_ADJUSTMENT(adj), 1, 0);
-	/** @todo RC 31-7-2004 Enable the next line when the build requires Gtk 2.4 */
-	/* gtk_entry_set_alignment(GTK_ENTRY(gs->players_spin), 1.0); */
+	gtk_entry_set_alignment(GTK_ENTRY(gs->players_spin), 1.0);
 	gtk_widget_show(gs->players_spin);
 	gtk_spin_button_set_numeric(GTK_SPIN_BUTTON(gs->players_spin), TRUE);
 	gtk_table_attach(GTK_TABLE(gs), gs->players_spin, 1, 2, 1, 2,
@@ -164,8 +164,7 @@ static void game_settings_init(GameSettings *gs)
 
 	adj = gtk_adjustment_new(10, 3, 99, 1, 1, 1);
 	gs->victory_spin = gtk_spin_button_new(GTK_ADJUSTMENT(adj), 1, 0);
-	/** @todo RC 31-7-2004 Enable the next line when the build requires Gtk 2.4 */
-	/* gtk_entry_set_alignment(GTK_ENTRY(gs->victory_spin), 1.0); */
+	gtk_entry_set_alignment(GTK_ENTRY(gs->victory_spin), 1.0);
 	gtk_widget_show(gs->victory_spin);
 	gtk_spin_button_set_numeric(GTK_SPIN_BUTTON(gs->victory_spin), TRUE);
 	gtk_table_attach(GTK_TABLE(gs), gs->victory_spin, 1, 2, 2, 3,

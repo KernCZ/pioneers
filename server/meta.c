@@ -18,6 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "config.h"
 #include <fcntl.h>
 #include <ctype.h>
 #include <string.h>
@@ -40,7 +41,6 @@
 #include "cost.h"
 #include "log.h"
 #include "server.h"
-#include "meta.h"
 
 const gchar *meta_server_name = NULL;
 gchar *hostname = NULL;
@@ -131,7 +131,7 @@ static void meta_event(NetEvent event, Game *game, char *line)
 				if (sscanf(line, "goto %s %s", server, port) == 2)
 					meta_register(server, port, game);
 				else if (sscanf(line, "goto %s", server) == 1)
-					meta_register(server, META_PORT, game);
+					meta_register(server, GNOCATAN_DEFAULT_META_PORT, game);
 				else
 					log_message( MSG_ERROR, _("Bad redirect line: %s\n"), line);
 				break;

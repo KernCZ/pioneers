@@ -19,6 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "config.h"
 #include "ai.h"
 #include <stdlib.h>
 #include <stdio.h>
@@ -28,8 +29,8 @@
 #include <unistd.h>
 #include <time.h>
 
-static const char *server = "127.0.0.1";
-static const char *port = "5556";
+static const char *server = GNOCATAN_DEFAULT_GAME_HOST;
+static const char *port = GNOCATAN_DEFAULT_GAME_PORT;
 static char *ai;
 static int waittime = 1000;
 static int local_argc;

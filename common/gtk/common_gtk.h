@@ -23,7 +23,6 @@
 
 #include "driver.h"
 #include "log.h"
-#include <gdk/gdk.h>
 #include <gtk/gtk.h>
 
 /* Set the default logging function to write to the message window. */
@@ -37,11 +36,8 @@ void log_set_func_message_color_enable( gboolean enable );
  */
 void message_window_log_message_string( gint msg_type, gchar *text );
 
-/* write a text message to the message window in the specified color. */
-void message_window_add_text(gchar *text, GdkColor *color);
-
-/* set the text in the message window to the specified color. */
-GtkWidget *message_window_set_text(GtkWidget *txt);
+/* set the text widget. */
+void message_window_set_text(GtkWidget *textWidget);
 
 extern UIDriver GTK_Driver;
 

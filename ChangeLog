@@ -1,3 +1,31 @@
+2004-10-08  0.8.1.38  Roland Clobus <rclobus@bigfoot.com>
+	* All *.c: Added #include "config.h"
+	* configure.in, ai/ai.c, client/ai/ai.c, client/gtk/connect.c,
+	client/gtk/offline.c, common/Makefile.am,
+	meta-server/gnocatan-meta-server.c, server/gnocatan-server-console.c,
+	server/gnocatan-server.c, server/gtk/gnocatan-server-gtk.c,
+	server/meta.c, server/server.c: Moved contents of meta.h and port
+	numbers to configure.in
+	* common/meta.h: Replaced by contents in configure.in
+	* client/callback.h, client/common/i18n.c, client/gtk/offline.c: Added
+	commandline to gnocatan client
+	* rules.make, client/common/resource.c, client/gtk/callbacks.c,
+	client/gtk/gui.c, client/gtk/guimap.c, client/gtk/histogram.c,
+	client/gtk/player.c, client/gtk/trade.c, common/game.c,
+	common/network.c: Added -pedantic to --enable-debug, and resolving
+	many warnings
+	* client/gtk/develop.c, client/gtk/connect.c, client/gtk/discard.c,
+	client/gtk/frontend.c, client/gtk/gameover.c, client/gtk/gold.c,
+	client/gtk/monopoly.c, client/gtk/plenty.c, client/gtk/polygon.c,
+	client/gtk/quote.c, client/gtk/settingscreen.c: Replace gnome.h
+	includes with gtk and/or gdk
+	* client/gtk/gui.c: Removed language setting in GUI. Override is now
+	only possible with the normal environment variables, and the
+	commandline
+	* client/gtk/name.c: Added per default the current name
+	* common/gtk/game-settings.c, common/gtk/common_gtk.c: Added some stub
+	functions for compatibility with versions of Gtk before 2.4
+
 2004-10-01  0.8.1.37  Roland Clobus <rclobus@bigfoot.com>
 	* client/help/C/gnocatan-C.omf: Added line with DTD to make xmllint
 	happy.

@@ -20,6 +20,7 @@
  */
 
 /* This file consists of gui state functions and callbacks to set them */
+#include "config.h"
 #include "frontend.h"
 #include "cost.h"
 #include "histogram.h"

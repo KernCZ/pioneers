@@ -3,6 +3,7 @@
  *
  * Copyright (C) 1999 the Free Software Foundation
  * Copyright (C) 2003 Bas Wijnen <b.wijnen@phys.rug.nl>
+ * Copyright (C) 2004 Roland Clobus <rclobus@bigfoot.com>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +20,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "config.h"
 #include "frontend.h"
 #include <gnome.h>
 #include "common_gtk.h"
@@ -26,6 +28,28 @@
 
 static gboolean have_dlg = FALSE;
 static gboolean connectable = FALSE;
+
+static const gchar *server = NULL;
+static const gchar *port = NULL;
+static const gchar *name = NULL;
+static gboolean quit_when_offline = FALSE;
+#ifdef ENABLE_NLS
+static const gchar *override_language = NULL;
+#endif
+
+const struct poptOption options[] = {
+	/* Commandline option of client: hostname of the server */
+	{"server", 's', POPT_ARG_STRING, &server, 0, N_("Server Host"), GNOCATAN_DEFAULT_GAME_HOST },
+	/* Commandline option of client: port of the server */
+	{"port", 'p', POPT_ARG_STRING, &port, 0, N_("Server Port"), GNOCATAN_DEFAULT_GAME_PORT },
+	/* Commandline option of client: name of the player */
+	{"name", 'n', POPT_ARG_STRING, &name, 0, N_("Player name"), NULL},
+#ifdef ENABLE_NLS
+	/* Commandline option of client: override the language */
+	{"language", '\0', POPT_ARG_STRING, &override_language, 0, N_("Override the language of the system"), "en " ALL_LINGUAS},
+#endif
+	{ NULL, '\0', 0, 0, 0, NULL, NULL}
+	};
 
 static void frontend_offline_start_connect_cb (void)
 {
@@ -69,11 +93,22 @@ void frontend_offline ()
 {
 	connectable = TRUE;
 	if (have_dlg) return;
+
 	/* set the callback for gui events */
 	set_gui_state (frontend_offline_gui);
-	/* temporary function call until new startup scheme is completed:
-	 * open connect dialog */
-	frontend_offline_start_connect_cb ();
+
+	if (quit_when_offline) {
+		route_gui_event (GUI_QUIT);
+	}
+
+	/* Commandline overrides the dialog */
+	if (port && server) {
+		gui_show_splash_page(FALSE);
+		cb_connect(server, port);
+		quit_when_offline = TRUE;
+	} else {
+		frontend_offline_start_connect_cb ();
+	}
 }
 
 static guint hash_int(gconstpointer key)
@@ -96,10 +131,10 @@ static gint compare_int(gconstpointer a, gconstpointer  b)
 void frontend_init (int argc, char **argv)
 {
 	GtkWidget *app;
-	const char *server = "localhost";
-	const char *port = "5556";
-	const char *name = "Player";
-	gboolean quitaftergameover = FALSE;
+	gboolean default_returned;
+#if ENABLE_NLS
+	lang_desc *ld;
+#endif
 
 	frontend_widgets = g_hash_table_new (hash_int, compare_int);
 
@@ -107,31 +142,17 @@ void frontend_init (int argc, char **argv)
 
 	config_init( "/gnocatan/" );
 
-	const struct poptOption options[] = {
-	{"server", 's', POPT_ARG_STRING, &server, 0, N_("Server"), server},
-	{"port", 'p', POPT_ARG_STRING, &port, 0, N_("Port"), port},
-	{"name", 'n', POPT_ARG_STRING, &name, 0, N_("Player name"), NULL},
-	{"quit", 'q', POPT_ARG_NONE, &quitaftergameover, -1, N_("Quit the game after game over"), NULL},
-	POPT_TABLEEND
-	};
-
 	gnome_program_init (PACKAGE, VERSION,
 		LIBGNOMEUI_MODULE,
 		argc, argv,
-		GNOME_PARAM_POPT_TABLE, NULL /* options */,
+		GNOME_PARAM_POPT_TABLE, options,
 		GNOME_PARAM_APP_DATADIR, DATADIR,
 		NULL);
 
 #if ENABLE_NLS
-	/* Override the language if it is set in the config */
-	gint novar;
-	lang_desc *ld;
-	gchar *saved_lang;
-
-	saved_lang = config_get_string("settings/language",&novar);
-	if (!novar && (ld = find_lang_desc(saved_lang)))
+	/* Override the language if it is set in the command line */
+	if (override_language && (ld = find_lang_desc(override_language)))
 		change_nls(ld);
-	g_free(saved_lang);
 #endif
 
 	/* Create the application window
@@ -144,4 +165,20 @@ void frontend_init (int argc, char **argv)
 	/* in theory, all windows are created now... 
 	 *   set logging to message window */
 	log_set_func_message_window();
+	
+	if (!name) {
+		name = config_get_string("connect/name", &default_returned);
+		if (default_returned) {
+			name = g_strdup (g_get_user_name() );
+		}
+	}
+	cb_name_change (name);
+
+	if (server && port) {
+		/* Both are set, do nothing here */
+	} else if (server || port) {
+		g_warning(_("Only server or port set, ignoring command line"));
+		server = NULL;
+		port = NULL;
+	}
 }

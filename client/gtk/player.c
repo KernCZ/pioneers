@@ -140,7 +140,8 @@ static GdkPixbuf *create_player_icon(GtkWidget *widget, gint player_num, gboolea
 	GdkPixbuf *temp;
 	GdkPixmap *pixmap;
 	GdkGC *gc;
-	
+	Player *player;
+
 	gtk_icon_size_lookup(GTK_ICON_SIZE_MENU, &width, &height);
 
 	pixmap = gdk_pixmap_new(widget->window, width, height, -1);
@@ -164,7 +165,6 @@ static GdkPixbuf *create_player_icon(GtkWidget *widget, gint player_num, gboolea
 			0, 0, 0, 0, -1, -1);
 
 	/* Store the pixmap in player->user_data */
-	Player *player;
 	player = player_get(player_num);
 	if (player->user_data)
 		g_object_unref(player->user_data);
@@ -292,13 +292,13 @@ void frontend_new_statistics (gint player_num, StatisticType type, UNUSED(gint n
 	gchar desc[128];
 	gchar points[16];
 	GtkTreeIter iter;
+	struct Player_statistic ps;
 
 	value = player->statistics[type];
 	if (statistics[type].victory_mult > 0)
 		refresh_victory_point_total(player_num);
 		
 	summary_found_flag = STORE_NO_MATCH;
-	struct Player_statistic ps;
 	ps.player_num = player_num;
 	ps.statistic = type + 1;
 	gtk_tree_model_foreach(GTK_TREE_MODEL(summary_store), summary_locate_statistic, &ps);

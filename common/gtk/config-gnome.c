@@ -65,6 +65,7 @@ on the surface.
 	void config_set_int( string relative_path, int value )
 */
 
+#include "config.h"
 #include <glib.h>
 #include <libgnome/gnome-config.h>
 #include "config-gnome.h"

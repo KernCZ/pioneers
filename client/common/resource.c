@@ -63,7 +63,7 @@ static gchar *resource_list(Resource type, ResourceListType grammar)
 	return _(resource_lists[type][grammar]);
 }
 
-// Clear all
+/* Clear all */
 void resource_init()
 {
 	gint idx;

@@ -19,7 +19,7 @@
  */
 
 #include "config.h"
-#include <gnome.h>
+#include <gtk/gtk.h>
 
 #include "frontend.h"
 #include "cost.h"
