@@ -77,7 +77,6 @@ struct Game {
 	gboolean double_setup;
 	gboolean reverse_setup;
 	GList *setup_player;
-	gchar *setup_player_name;
 
 	gboolean is_game_over;	/* is the game over? */
 	Player *longest_road;	/* who holds longest road */

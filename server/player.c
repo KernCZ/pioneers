@@ -424,6 +424,7 @@ void player_revive(Player *newp, char *name)
 	Game *game = newp->game;
 	GList *current = NULL;
 	Player *p = NULL;
+	gboolean reviving_player_in_setup;
 
 	/* first see if a player with the given name exists */
 	if (name) {
@@ -452,6 +453,10 @@ void player_revive(Player *newp, char *name)
 		player_setup (newp, -1, name, FALSE);
 		return;
 	}
+
+	/* Reviving the player that is currently in the setup phase */
+	reviving_player_in_setup = 
+		(game->setup_player && game->setup_player->data == p);
 
 	/* remove the disconnected player from the player list, it's memory will be freed at the end of this routine */
 	game->player_list = g_list_remove (game->player_list, p);
@@ -507,10 +512,19 @@ void player_revive(Player *newp, char *name)
 	if (game->largest_army == p)
 		game->largest_army = newp;
 
+	if (reviving_player_in_setup) {
+		/* Restore the pointer */
+		game->setup_player = game->player_list;
+		while (game->setup_player && game->setup_player->data != newp) {
+			game->setup_player = g_list_next(game->setup_player);
+		}
+		g_assert(game->setup_player != NULL);
+	}
 	p->num = -1; /* prevent the number of players
 		        from getting decremented */
 
 	player_free(p);
+
 	player_broadcast(newp, PB_SILENT,
 			_("NOTE player %d (%s) has reconnected.\n"),
 			 newp->num, newp->name);

@@ -220,11 +220,8 @@ void next_setup_player (Game *game)
 		}
 		game->setup_player = prev;
 		game->double_setup = FALSE;
-		if (game->setup_player_name)
-			g_free(game->setup_player_name);
 		if (game->setup_player != NULL) {
 			start_setup_player(game->setup_player->data);
-			game->setup_player_name = g_strdup(((Player *)game->setup_player->data)->name);
 		}
 		else {
 			/* Start the game!!!
@@ -237,9 +234,6 @@ void next_setup_player (Game *game)
 		Player *player;
 		game->setup_player = player_next_real (game->setup_player);
 		player = game->setup_player->data;
-		if (game->setup_player_name)
-			g_free(game->setup_player_name);
-		game->setup_player_name = g_strdup(player->name);
 		/* Last player gets double setup
 		 */
 		game->double_setup
@@ -330,9 +324,6 @@ static void try_start_game(Game *game)
 	game->setup_player = game->player_list;
 	while (((Player *)game->setup_player->data)->num < 0)
 		game->setup_player = game->setup_player->next;
-	if (game->setup_player_name)
-		g_free(game->setup_player_name);
-	game->setup_player_name = g_strdup(((Player *)game->setup_player->data)->name);
 	game->double_setup = game->reverse_setup = FALSE;
 
 	start_setup_player(game->setup_player->data);
@@ -547,23 +538,10 @@ gboolean mode_pre_game(Player *player, gint event)
 				recover_from_plenty = TRUE;
 				strcpy(prevstate, "PLENTY");
 			} else if (state == (StateFunc)mode_setup) {
-				/* reconstruct the setup_player list */
-				/* search for the player whose setup it
-				   is */
-				for (next = game->player_list;
-				     next != NULL; next = g_list_next(next)) {
-					if (strcmp(((Player *)next->data)->name, game->setup_player_name) == 0) {
-						game->setup_player = next;
-						break;
-					}
-				}
-
-				if (game->double_setup) {
+				if (game->double_setup)
 					strcpy(prevstate, "SETUPDOUBLE");
-				}
-				else {
+				else
 					strcpy(prevstate, "SETUP");
-				}
 				/* If player is selecting gold, the state 
 				 * should be IDLE instead */
 				if (stack_offset != 1)

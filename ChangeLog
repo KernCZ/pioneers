@@ -8,6 +8,9 @@
 	client/common/develop.c: Removed unused function road_building_begin.
 	* client/gtk/gold.c, client/gtk/resource-table.c,
 	client/gtk/resource-table.h: Replaced gtk_clist.
+	* server/player.c, server/pregame.c, server/server.h: Server crashed
+	when the player who is in the setup phase reconnected with another
+	name.
 
 2005-01-15  Roland Clobus <rclobus@bigfoot.com>
 	* INSTALL, .cvsignore: Removed INSTALL from CVS. It is generated
