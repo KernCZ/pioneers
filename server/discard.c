@@ -104,7 +104,7 @@ static void check_finished_discard(Player *player)
 
 	/* We have serious problems if we get here!
 	 */
-	log_error("Could not find player to place robber\n");
+	log_message( MSG_ERROR, "Could not find player to place robber\n");
 }
 
 static gboolean mode_discard_resources(Player *player, gint event)

@@ -261,7 +261,7 @@ static void load_game_types()
 
 	path = gnome_unconditional_datadir_file("gnocatan");
 	if ((dir = opendir(path)) == NULL) {
-		log_error(_("Missing game directory"));
+		log_message( MSG_ERROR, _("Missing game directory"));
 		return;
 	}
 
@@ -469,7 +469,7 @@ static GtkWidget *build_interface()
 	message_text = gtk_text_new(NULL, NULL);
 	gtk_widget_show(message_text);
 	gtk_container_add(GTK_CONTAINER(scroll_win), message_text);
-	log_widget_set(message_text);
+	message_window_set_text(message_text);
 
 	load_game_types();
 

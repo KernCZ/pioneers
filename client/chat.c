@@ -9,6 +9,7 @@
  */
 #include <gnome.h>
 
+#include "log.h"
 #include "game.h"
 #include "map.h"
 #include "gui.h"
@@ -21,21 +22,21 @@ static GtkWidget *chat_entry;	/* messages text widget */
 
 void chat_parser( gint player_num, char chat_str[MAX_CHAT] )
 {
-	log_info(_("%s"), player_name(player_num, TRUE));
+	log_message( MSG_INFO, _("%s"), player_name(player_num, TRUE));
 	switch( chat_str[0] )
 	{
 	 case ':':
 		chat_str += 1;
-		log_info(_(" "));
+		log_message( MSG_INFO, _(" "));
 		break;
 	 case ';':
 		chat_str += 1;
 		break;
 	 default:
-		log_info(_(" said: "));
+		log_message( MSG_INFO, _(" said: "));
 		break;
 	}
-	log_color( &blue, "%s\n", chat_str );
+	log_message( MSG_CHAT, "%s\n", chat_str );
 	
 	return;
 }

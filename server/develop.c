@@ -66,7 +66,7 @@ void develop_shuffle(Game *game)
 	for (shuffle_idx = 0; shuffle_idx < numElem(shuffle_counts);
 	     shuffle_idx++)
 		if (shuffle_counts[shuffle_idx] != 0) {
-			log_error("Bad shuffle\n");
+			log_message( MSG_ERROR, "Bad shuffle\n");
 			break;
 		}
 	game->develop_next = 0;

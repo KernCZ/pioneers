@@ -37,13 +37,52 @@
 #endif
 #endif
 
+#include <glib.h>
 
-void log_error(gchar *fmt, ...);
-void log_info(gchar *fmt, ...);
-void log_color(GdkColor *color, gchar *fmt, ...);
+/* Type of logging functions: takes int,char; returns nothing */
+typedef void (*LogFunc)( gint msg_type, gchar *text );
 
-GtkWidget *log_widget_set(GtkWidget *txt);
+/* The default function to use to write messages, when nothing else has been
+ * specified.
+ */
+#define LOG_FUNC_DEFAULT log_message_string_console
 
-void log_set_use_console_bool();
+/* Message Types */
+#define MSG_ERROR	1
+#define MSG_INFO	2
+#define MSG_CHAT	3
 
-#endif
+/* Pointer to the function to use to do the actual logging, by default.
+ * This can be overridden using log_message_using_func.  If it is NULL,
+ *   then use the default function (LOG_FUNC_DEFAULT).
+ */
+extern LogFunc _log_func;
+
+/* Set the default logging function to 'func'. */
+void log_set_func( LogFunc func );
+
+/* Set the default logging function to the system default (LOG_FUNC_DEFAULT,
+ *   found in log.h).
+ */
+void log_set_func_default( void );
+
+/* Take a string of text and write it to the console. */
+void add_text_console(gchar *text, gchar *type_str);
+
+/* Write a message string to the console, adding a prefix depending on 
+ *   its type.
+ */
+void log_message_string_console( gint msg_type, gchar *text );
+
+/* Log a message, sending it through logfunc after turning the params into a
+ *   single string.
+ */
+void log_message_using_func( LogFunc logfunc, gint msg_type, gchar *fmt, ... );
+
+/* Log a message, sending it through _log_func (or if that's NULL, then
+ *   through LOG_FUNC_DEFAULT) after turning the params into a single
+ *   string.
+ */
+void log_message( gint msg_type, gchar *fmt, ... );
+
+#endif /* __log_h */

@@ -16,10 +16,11 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <errno.h>
+#include <string.h>
 
 /* FIXME: we should eliminate the dependency here on gtk and gnome, moving
    all of the graphics code to a separate file. */
-#include <gtk/gtk.h>
+#include <gdk/gdk.h>
 #include <glib.h>
 
 #include "game.h"
@@ -150,12 +151,12 @@ static void write_ready(Session *ses)
 		if (getsockopt(ses->fd, SOL_SOCKET, SO_ERROR,
 			       &error, &error_len) < 0) {
 			notify(ses, NET_CONNECT_FAIL, NULL);
-			log_error(_("Error checking connect status: %s\n"),
+			log_message( MSG_ERROR, _("Error checking connect status: %s\n"),
 				  g_strerror(errno));
 			net_close(ses);
 		} else if (error != 0) {
 			notify(ses, NET_CONNECT_FAIL, NULL);
-			log_error(_("Error connecting to host '%s': %s\n"),
+			log_message( MSG_ERROR, _("Error connecting to host '%s': %s\n"),
 				  ses->host, g_strerror(error));
 			net_close(ses);
 		} else {
@@ -180,7 +181,7 @@ static void write_ready(Session *ses)
 		if (num < 0) {
 			if (errno == EAGAIN)
 				break;
-			log_error(_("Error writing socket: %s\n"),
+			log_message( MSG_ERROR, _("Error writing socket: %s\n"),
 				  g_strerror(errno));
 			close_and_callback(ses);
 			return;
@@ -220,7 +221,7 @@ void net_write(Session *ses, gchar *data)
 #endif
 		if (num < 0) {
 			if (errno != EAGAIN) {
-				log_error(_("Error writing socket: %s\n"),
+				log_message( MSG_ERROR, _("Error writing socket: %s\n"),
 					  g_strerror(errno));
 				close_and_callback(ses);
 				return;
@@ -268,7 +269,7 @@ static void read_ready(Session *ses)
 		 * reading. Assume something has gone wrong and
 		 * disconnect
 		 */
-		log_error(_("Read buffer overflow - disconnecting\n"));
+		log_message( MSG_ERROR, _("Read buffer overflow - disconnecting\n"));
 		close_and_callback(ses);
 		return;
 	}
@@ -286,7 +287,7 @@ static void read_ready(Session *ses)
 	if (num < 0) {
 		if (errno == EAGAIN)
 			return;
-		log_error(_("Error reading socket: %s\n"), g_strerror(errno));
+		log_message( MSG_ERROR, _("Error reading socket: %s\n"), g_strerror(errno));
 		close_and_callback(ses);
 		return;
 	}
@@ -373,7 +374,7 @@ gboolean net_connect(Session *ses, char *host, gint port)
 	if (atoi(host) > 0) {
 		addr.sin_addr.s_addr = inet_addr(host);
 		if (addr.sin_addr.s_addr == -1) {
-			log_error(_("Invalid address %s\n"), host);
+			log_message( MSG_ERROR, _("Invalid address %s\n"), host);
 			return FALSE;
 		}
 	} else {
@@ -381,7 +382,7 @@ gboolean net_connect(Session *ses, char *host, gint port)
 
 		host_ent = gethostbyname(host);
 		if (host_ent == NULL) {
-			log_error(_("Cannot resolve host name %s\n"), host);
+			log_message( MSG_ERROR, _("Cannot resolve host name %s\n"), host);
 			return FALSE;
 		}
 		memcpy(&addr.sin_addr, host_ent->h_addr, host_ent->h_length);
@@ -391,16 +392,16 @@ gboolean net_connect(Session *ses, char *host, gint port)
 
 	ses->fd = socket(AF_INET, SOCK_STREAM, 0);
 	if (ses->fd < 0) {
-		log_error(_("Error creating socket: %s\n"), g_strerror(errno));
+		log_message( MSG_ERROR, _("Error creating socket: %s\n"), g_strerror(errno));
 		return FALSE;
 	}
 	if (fcntl(ses->fd, F_SETFD, 1) < 0) {
-		log_error(_("Error setting socket close-on-exec: %s\n"),
+		log_message( MSG_ERROR, _("Error setting socket close-on-exec: %s\n"),
 			  g_strerror(errno));
 		return FALSE;
 	}
 	if (fcntl(ses->fd, F_SETFL, O_NDELAY) < 0) {
-		log_error(_("Error setting socket non-blocking: %s\n"),
+		log_message( MSG_ERROR, _("Error setting socket non-blocking: %s\n"),
 			  g_strerror(errno));
 		return FALSE;
 	}
@@ -410,7 +411,7 @@ gboolean net_connect(Session *ses, char *host, gint port)
 			ses->connect_in_progress = TRUE;
 			listen_write(ses, TRUE);
 		} else {
-			log_error(_("Error connecting to %s: %s\n"),
+			log_message( MSG_ERROR, _("Error connecting to %s: %s\n"),
 				  host, g_strerror(errno));
 			close(ses->fd);
 			return FALSE;

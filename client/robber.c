@@ -92,7 +92,7 @@ int robber_count_victims(Hex *hex, gint *victim_list)
 
 void robber_moved(gint player_num, gint x, gint y)
 {
-	log_info(_("%s moved robber.\n"), player_name(player_num, TRUE));
+	log_message( MSG_INFO, _("%s moved robber.\n"), player_name(player_num, TRUE));
 	robber_move_on_map(x, y);
 	if (player_num == my_player_num())
 		gui_set_instructions(_("Continue with your turn."));

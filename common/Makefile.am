@@ -9,6 +9,8 @@ libgnocatan_a_SOURCES = \
 	buildrec.h \
 	cards.c \
 	cards.h \
+	common_gui.c \
+	common_gui.h \
 	cost.c \
 	cost.h \
 	game.c \

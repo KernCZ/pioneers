@@ -86,13 +86,13 @@ static void meta_event(NetEvent event, GameParams *params, char *line)
 				net_close(ses);
 				ses = NULL;
 				if (num_redirects++ == 10) {
-					log_info(_("Too many meta-server redirects\n"));
+					log_message( MSG_INFO, _("Too many meta-server redirects\n"));
 					return;
 				}
 				if (sscanf(line, "goto %s %d", server, &port) == 2)
 					meta_register(server, port, params);
 				else
-					log_error(_("Bad redirect line: %s\n"), line);
+					log_message( MSG_ERROR, _("Bad redirect line: %s\n"), line);
 				break;
 			}
 			/* Assume welcome message, send server details
@@ -109,7 +109,7 @@ static void meta_event(NetEvent event, GameParams *params, char *line)
 		break;
 	case NET_CLOSE:
 		if (meta_mode == MODE_SIGNON)
-			log_error(_("Meta-server kicked us off\n"));
+			log_message( MSG_ERROR, _("Meta-server kicked us off\n"));
 		net_free(ses);
 		ses = NULL;
 		break;
@@ -122,10 +122,10 @@ static void meta_event(NetEvent event, GameParams *params, char *line)
 void meta_register(gchar *server, gint port, GameParams *params)
 {
 	if (num_redirects > 0)
-		log_info(_("Redirected to meta-server at %s, port %d\n"),
+		log_message( MSG_INFO, _("Redirected to meta-server at %s, port %d\n"),
 			 server, port);
 	else
-		log_info(_("Register with meta-server at %s, port %d\n"),
+		log_message( MSG_INFO, _("Register with meta-server at %s, port %d\n"),
 			 server, port);
 
 	if (ses != NULL)

@@ -15,6 +15,7 @@
 #include "cards.h"
 #include "gui.h"
 #include "client.h"
+#include "common_gui.h"
 
 int main(int argc, char *argv[])
 {
@@ -26,7 +27,11 @@ int main(int argc, char *argv[])
 	 */
 	app = gui_build_interface();
 	client_start();
-
+	
+	/* in theory, all windows are created now... 
+	 *   set logging to message window */
+	log_set_func_message_window();
+	
 	gtk_main();
 
 	return 0;

@@ -10,6 +10,7 @@
 
 #include <ctype.h>
 #include <stdarg.h>
+#include <string.h>
 
 #include <gtk/gtk.h>
 
@@ -192,7 +193,7 @@ gboolean sm_connect(StateMachine *sm, gchar *host, gint port)
 		net_free(sm->ses);
 
 	sm->ses = net_new((NetNotifyFunc)net_event, sm);
-	log_info(_("Connecting to %s, port %d\n"),  host, port);
+	log_message( MSG_INFO, _("Connecting to %s, port %d\n"),  host, port);
 	if (net_connect(sm->ses, host, port))
 		return TRUE;
 

@@ -39,7 +39,7 @@ void turn_rolled_dice(gint player_num, gint die1, gint die2)
 	int roll;
 
 	roll = die1 + die2;
-	log_info(_("%s rolled %d.\n"), player_name(player_num, TRUE), roll);
+	log_message( MSG_INFO, _("%s rolled %d.\n"), player_name(player_num, TRUE), roll);
 	identity_set_dice(die1, die2);
 	gui_highlight_chits(roll);
 
@@ -118,7 +118,7 @@ gboolean turn_can_finish()
 void turn_begin(gint player_num, gint num)
 {
 	current_turn = num;
-	log_info(_("Begin turn %d for %s.\n"),
+	log_message( MSG_INFO, _("Begin turn %d for %s.\n"),
 		 num, player_name(player_num, FALSE));
 	rolled_dice = FALSE;
 	player_set_current(player_num);

@@ -102,7 +102,7 @@ static void meta_notify(NetEvent event, void *user_data, char *line)
 		break;
 	case NET_CLOSE:
 		if (mode == MODE_SIGNON)
-			log_error(_("Meta-server kicked us off\n"));
+			log_message( MSG_ERROR, _("Meta-server kicked us off\n"));
 		net_free(ses);
 		ses = NULL;
 		break;
@@ -118,13 +118,13 @@ static void meta_notify(NetEvent event, void *user_data, char *line)
 				net_close(ses);
 				ses = NULL;
 				if (num_redirects++ == 10) {
-					log_info(_("Too many meta-server redirects\n"));
+					log_message( MSG_INFO, _("Too many meta-server redirects\n"));
 					return;
 				}
 				if (sscanf(line, "goto %s %d", server, &port) == 2)
 					query_meta_server(server, port);
 				else
-					log_error(_("Bad redirect line: %s\n"), line);
+					log_message( MSG_ERROR, _("Bad redirect line: %s\n"), line);
 				break;
 			}
 			/* Assume welcome message, ask for server list
@@ -166,10 +166,10 @@ static void meta_notify(NetEvent event, void *user_data, char *line)
 static void query_meta_server(gchar *server, gint port)
 {
 	if (num_redirects > 0)
-		log_info(_("Redirected to meta-server at %s, port %d\n"),
+		log_message( MSG_INFO, _("Redirected to meta-server at %s, port %d\n"),
 			 server, port);
 	else
-		log_info(_("Querying meta-server at %s, port %d\n"),
+		log_message( MSG_INFO, _("Querying meta-server at %s, port %d\n"),
 			 server, port);
 
 	ses = net_new(meta_notify, NULL);

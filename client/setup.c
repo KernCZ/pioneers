@@ -135,7 +135,7 @@ gboolean setup_check_settlement(Node *node, gint owner)
 
 void setup_begin(gint player_num)
 {
-	log_info(_("Setup for %s.\n"), player_name(player_num, FALSE));
+	log_message( MSG_INFO, _("Setup for %s.\n"), player_name(player_num, FALSE));
 	player_set_current(player_num);
 	if (player_num != my_player_num())
 		return;
@@ -146,7 +146,7 @@ void setup_begin(gint player_num)
 
 void setup_begin_double(gint player_num)
 {
-	log_info(_("Double setup for %s.\n"), player_name(player_num, FALSE));
+	log_message( MSG_INFO, _("Double setup for %s.\n"), player_name(player_num, FALSE));
 	player_set_current(player_num);
 	if (player_num != my_player_num())
 		return;

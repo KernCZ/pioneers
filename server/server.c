@@ -83,14 +83,14 @@ static void player_connect(Game *game)
 	addr_len = sizeof(addr);
 	fd = accept(game->accept_fd, &addr, &addr_len);
 	if (fd < 0) {
-		log_error(_("Error accepting connection: %s\n"),
+		log_message( MSG_ERROR, _("Error accepting connection: %s\n"),
 			  g_strerror(errno));
 		return;
 	}
 
 	peer_len = sizeof(peer);
 	if (getpeername(fd, &peer, &peer_len) < 0) {
-		log_error(_("Error getting peer name: %s\n"),
+		log_message( MSG_ERROR, _("Error getting peer name: %s\n"),
 			  g_strerror(errno));
 		location = _("unknown");
 	} else {
@@ -99,7 +99,7 @@ static void player_connect(Game *game)
 		host_ent = gethostbyaddr((char*)&peer.sin_addr,
 					 sizeof(peer.sin_addr), AF_INET);
 		if (host_ent == NULL) {
-			log_error(_("Error resolving address: %s\n"),
+			log_message( MSG_ERROR, _("Error resolving address: %s\n"),
 				  hstrerror(h_errno));
 			location = inet_ntoa(peer.sin_addr);
 		} else
@@ -121,7 +121,7 @@ static gboolean game_server_start(Game *game)
 
 	game->accept_fd = socket(AF_INET, SOCK_STREAM, 0);
 	if (game->accept_fd < 0) {
-		log_error(_("Error creating socket: %s\n"), g_strerror(errno));
+		log_message( MSG_ERROR, _("Error creating socket: %s\n"), g_strerror(errno));
 		return FALSE;
 	}
 	yes = 1;
@@ -129,22 +129,22 @@ static gboolean game_server_start(Game *game)
 	/* setsockopt() before bind(); otherwise it has no effect! -- egnor */
 	if (setsockopt(game->accept_fd,
 		       SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes)) < 0) {
-		log_error(_("Error setting socket address reuse: %s\n"),
+		log_message( MSG_ERROR, _("Error setting socket address reuse: %s\n"),
 			  g_strerror(errno));
 		return FALSE;
 	}
 	if (bind(game->accept_fd, &addr, sizeof(addr)) < 0) {
-		log_error(_("Error binding socket: %s\n"), g_strerror(errno));
+		log_message( MSG_ERROR, _("Error binding socket: %s\n"), g_strerror(errno));
 		return FALSE;
 	}
 	if (fcntl(game->accept_fd, F_SETFL, O_NDELAY) < 0) {
-		log_error(_("Error setting socket non-blocking: %s\n"),
+		log_message( MSG_ERROR, _("Error setting socket non-blocking: %s\n"),
 			  g_strerror(errno));
 		return FALSE;
 	}
 
 	if (listen(game->accept_fd, 5) < 0) {
-		log_error(_("Error during listen on socket: %s\n"),
+		log_message( MSG_ERROR, _("Error during listen on socket: %s\n"),
 			  g_strerror(errno));
 		return FALSE;
 	}

@@ -179,17 +179,17 @@ static gboolean global_unhandled(StateMachine *sm, gint event)
 
 	switch (event) {
 	case SM_NET_CLOSE:
-		log_error(_("We have been kicked out of the game.\n"));
+		log_message( MSG_ERROR, _("We have been kicked out of the game.\n"));
 		sm_pop_all(sm);
 		sm_goto(sm, mode_offline);
 		return TRUE;
 	case SM_RECV:
 		if (sm_recv(sm, "ERR %S", str)) {
-			log_error("Error (%s): %s\n", sm_current_name(sm), str);
+			log_message( MSG_ERROR, "Error (%s): %s\n", sm_current_name(sm), str);
 			return TRUE;
 		}
 		if (sm_recv(sm, "%S", str)) {
-			log_error("Error (%s): %s\n", sm_current_name(sm), str);
+			log_message( MSG_ERROR, "Error (%s): %s\n", sm_current_name(sm), str);
 			return TRUE;
 		}
 		break;
@@ -244,8 +244,8 @@ static gboolean check_chat_or_name(StateMachine *sm)
 	if (sm_recv(sm, "player %d chat %S", &player_num, str)) {
 		chat_parser( player_num, str );
 		/*
-		log_info(_("%s said: "), player_name(player_num, TRUE));
-		log_color(&blue, "%s\n", str);
+		log_message( MSG_INFO, _("%s said: "), player_name(player_num, TRUE));
+		log_message( MSG_CHAT, "%s\n", str);
 		*/
 		return TRUE;
 	}
@@ -1845,7 +1845,7 @@ static gboolean mode_game_over(StateMachine *sm, gint event)
 			return TRUE;
 		break;
 	case SM_NET_CLOSE:
-		log_error(_("The game is over.\n"));
+		log_message( MSG_ERROR, _("The game is over.\n"));
 		sm_goto(sm, mode_offline);
 		return TRUE;
 	default:

@@ -228,7 +228,7 @@ static GtkWidget *build_messages_panel()
 	gtk_widget_show(messages_txt);
 	gtk_container_add(GTK_CONTAINER(scroll_win), messages_txt);
 
-	log_widget_set(messages_txt);
+	message_window_set_text(messages_txt);
 
 	return frame;
 }

@@ -48,13 +48,13 @@ static void check_longest_road(Game *game)
 		Player *player = list->data;
 
 #ifdef DEBUG_LONGEST
-		log_info("%s", player_name(player));
+		log_message( MSG_INFO, "%s", player_name(player));
 		if (game->longest_road == player)
-			log_info("(current)");
-		log_info("=%d", road_len[player->num]);
+			log_message( MSG_INFO, "(current)");
+		log_message( MSG_INFO, "=%d", road_len[player->num]);
 		if (player->road_len != road_len[player->num])
-			log_info("(was %d)", player->road_len);
-		log_info(" ");
+			log_message( MSG_INFO, "(was %d)", player->road_len);
+		log_message( MSG_INFO, " ");
 #endif
 
 		if (player->road_len > road_len[player->num]
@@ -86,14 +86,14 @@ static void check_longest_road(Game *game)
 			/* Ouch! Lost longest road
 			 */
 #ifdef DEBUG_LONGEST
-			log_info("lost longest road\n");
+			log_message( MSG_INFO, "lost longest road\n");
 #endif
 			player_broadcast(player_none(game), PB_ALL, "longest-road\n");
 			game->longest_road = NULL;
 			return;
 		}
 #ifdef DEBUG_LONGEST
-		log_info("no longest road\n");
+		log_message( MSG_INFO, "no longest road\n");
 #endif
 		return;
 	}
@@ -107,7 +107,7 @@ static void check_longest_road(Game *game)
 			/* No one had longest road, no one gets it
 			 */
 #ifdef DEBUG_LONGEST
-			log_info("multiple longest road; no one gets it\n");
+			log_message( MSG_INFO, "multiple longest road; no one gets it\n");
 #endif
 			return;
 		}
@@ -120,12 +120,12 @@ static void check_longest_road(Game *game)
 			player_broadcast(player_none(game), PB_ALL, "longest-road\n");
 			game->longest_road = NULL;
 #ifdef DEBUG_LONGEST
-			log_info("multiple longest road; no one gets it\n");
+			log_message( MSG_INFO, "multiple longest road; no one gets it\n");
 #endif
 			return;
 		}
 #ifdef DEBUG_LONGEST
-		log_info("multiple longest road; no change in owner\n");
+		log_message( MSG_INFO, "multiple longest road; no change in owner\n");
 #endif
 		return;
 	}
@@ -136,7 +136,7 @@ static void check_longest_road(Game *game)
 		game->longest_road = new_longest;
 		player_broadcast(game->longest_road, PB_ALL, "longest-road\n");
 #ifdef DEBUG_LONGEST
-		log_info("%s has longest road\n", player_name(new_longest));
+		log_message( MSG_INFO, "%s has longest road\n", player_name(new_longest));
 #endif
 		return;
 	}
@@ -147,11 +147,11 @@ static void check_longest_road(Game *game)
 		game->longest_road = new_longest;
 		player_broadcast(game->longest_road, PB_ALL, "longest-road\n");
 #ifdef DEBUG_LONGEST
-		log_info("%s has longest road\n", player_name(new_longest));
+		log_message( MSG_INFO, "%s has longest road\n", player_name(new_longest));
 #endif
 	}
 #ifdef DEBUG_LONGEST
-	log_info("no change\n");
+	log_message( MSG_INFO, "no change\n");
 #endif
 }
 

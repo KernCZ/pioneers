@@ -137,7 +137,7 @@ void monopoly_player(gint player_num, gint victim_num, gint num, Resource type)
 	if (player_num == my_player_num()) {
 		/* I get the cards!
 		 */
-		log_info(_("You get %s from %s.\n"),
+		log_message( MSG_INFO, _("You get %s from %s.\n"),
 			 resource_cards(num, type),
 			 player_name(victim_num, FALSE));
 		resource_modify(type, num);
@@ -146,7 +146,7 @@ void monopoly_player(gint player_num, gint victim_num, gint num, Resource type)
 	if (victim_num == my_player_num()) {
 		/* I lose the cards!
 		 */
-		log_info(_("%s took %s from you.\n"),
+		log_message( MSG_INFO, _("%s took %s from you.\n"),
 			 player_name(player_num, TRUE),
 			 resource_cards(num, type));
 		resource_modify(type, -num);
@@ -154,7 +154,7 @@ void monopoly_player(gint player_num, gint victim_num, gint num, Resource type)
 	}
 	/* I am a bystander
 	 */
-	log_info(_("%s took %s from"),
+	log_message( MSG_INFO, _("%s took %s from"),
 		 player_name(player_num, TRUE), resource_cards(num, type));
-	log_info(_(" %s.\n"), player_name(victim_num, FALSE));
+	log_message( MSG_INFO, _(" %s.\n"), player_name(victim_num, FALSE));
 }
