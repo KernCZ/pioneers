@@ -634,8 +634,7 @@ static void get_peer_name(gint fd, gchar ** hostname, gchar ** servname)
 
 	peer_len = sizeof(peer);
 	if (getpeername(fd, &peer.sa, &peer_len) < 0)
-		syslog(LOG_ERR, "getting peer name: %s",
-		       strerror(errno));
+		syslog(LOG_ERR, "getting peer name: %s", strerror(errno));
 	else {
 		int err;
 		char host[NI_MAXHOST];
@@ -1019,8 +1018,7 @@ static void convert_to_daemon(void)
 
 	pid = fork();
 	if (pid < 0) {
-		syslog(LOG_ALERT, "could not fork: %s",
-		       strerror(errno));
+		syslog(LOG_ALERT, "could not fork: %s", strerror(errno));
 		exit(1);
 	}
 	if (pid != 0)
