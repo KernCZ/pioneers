@@ -30,12 +30,19 @@
   {
     fprintf(stderr,
  	    "Usage: gnocatan-server-console [options]\n"
- 	    "  -a port   --  Server port to listen on\n"
- 	    "  -g game   --  Game file to use\n"
+ 	    "  -a port   --  Admin port to listen on\n"
+ 	    "  -g game   --  Game name to use\n"
+	    "  -h        --  Show this help\n"
+	    "  -k secs   --  Kill after 'secs' seconds with no players\n"
  	    "  -P num    --  Set Number of players\n"
- 	    "  -r        --  Register server\n"
- 	    "  -s ?\n"
- 	    "  -t mins   --  Tournament mode\n"
+	    "  -p port   --  Port to listen on\n"
+ 	    "  -r        --  Register server with meta-server\n"
+	    "  -R 0|1|2  --  Set seven-rule handling\n"
+ 	    "  -s        --  Don't start game immediately, wait for a "
+			    "command on admin port\n"
+ 	    "  -t mins   --  Tournament mode, ai players added after "
+			    "'mins' minutes\n"
+	    "  -T 0|1    --  select terrain type, 0=default 1=random\n"
  	    "  -v points --  Number of points needed to win\n"
  	    "  -x        --  Exit after a player has won\n"
  	    );
@@ -48,7 +55,9 @@
 int main( int argc, char *argv[] )
 {
 	int c;
-	gint num_players = 0, num_points = 0, port = 0, admin_port = 0, sevens_rule = 0;
+	gint num_players = 0, num_points = 0, port = 0, admin_port = 0,
+	     sevens_rule = 0, terrain = -1, timeout = 0;
+
 	gboolean disable_game_start = FALSE;
 	GMainLoop *event_loop;
 	gint tournament_time = -1;
@@ -62,7 +71,7 @@ int main( int argc, char *argv[] )
 
 	server_init( GNOCATAN_DIR_DEFAULT );
 
-	while ((c = getopt(argc, argv, "a:g:P:p:r:R:st:v:x")) != EOF)
+	while ((c = getopt(argc, argv, "a:g:hk:P:p:rR:st:T:v:x")) != EOF)
 	{
 		switch (c) {
 		case 'a':
@@ -73,6 +82,12 @@ int main( int argc, char *argv[] )
 			break;
 		case 'g':
 			cfg_set_game( optarg );
+			break;
+		case 'k':
+			if (!optarg) {
+				break;
+			}
+			timeout = atoi(optarg);
 			break;
 		case 'P':
 			if (!optarg) {
@@ -96,23 +111,23 @@ int main( int argc, char *argv[] )
 			}
 			break;
 		case 'r':
-			if (!optarg) {
-				break;
-			}
 			register_server = TRUE;
 			break;
 		case 's':
 		        disable_game_start = TRUE;
 			break;
-		/* TODO: terrain type? */
-			
 		case 't':
 			if (!optarg) {
 			    usage();
 			}
 		        tournament_time = atoi(optarg);
 		        break;
-		        
+		case 'T':
+			if (!optarg) {
+				break;
+			}
+			terrain = atoi(optarg);
+			break;
 		case 'v':
 			if (!optarg) {
 			    usage();
@@ -120,11 +135,11 @@ int main( int argc, char *argv[] )
 			num_points = atoi(optarg);
 			break;
 		case 'x':
-		    exit_when_done = TRUE;
-		    break;
+			exit_when_done = TRUE;
+			break;
+		case 'h':
 		default:
 		        usage();
-
 			break;
 		}
 	}
@@ -157,6 +172,14 @@ int main( int argc, char *argv[] )
 	        cfg_set_exit(exit_when_done);
 	}
 	
+	if (terrain != -1) {
+		cfg_set_terrain_type(terrain ? 1 : 0);
+	}
+
+	if (timeout) {
+		cfg_set_timeout(timeout);
+	}
+
 	admin_listen( server_admin_port );
 
 	if( !disable_game_start )
