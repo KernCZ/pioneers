@@ -1,3 +1,7 @@
+2000-05-07  Dave Cole <dave@dccs.com.au>
+
+	* client/setup.c: Check num_build_type[] in setup_can_build_*().
+	
 2000-05-06  Dave Cole <dave@dccs.com.au>
 
 	* client/Makefile.am: Added bridge.png, removed ship_building.c
