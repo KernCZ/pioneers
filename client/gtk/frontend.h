@@ -251,14 +251,6 @@ void name_create_dlg (void);
 /* settingscreen.c */
 GtkWidget *settings_create_dlg (void);
 
-/* cursor.c */
-void build_road_cb (Edge *edge, int owner);
-void build_ship_cb (Edge *edge, int owner);
-void build_bridge_cb (Edge *edge, int owner);
-void move_ship_cb (Edge *edge, int owner);
-void build_settlement_cb (Node *node, int owner);
-void build_city_cb (Node *node, int owner);
-
 /* monopoly.c */
 Resource monopoly_type (void);
 void monopoly_destroy_dlg (void);

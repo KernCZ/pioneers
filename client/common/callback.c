@@ -68,7 +68,7 @@ void cb_roll ()
 	sm_goto(SM(), mode_roll_response);
 }
 
-void cb_build_road (Edge *edge)
+void cb_build_road (const Edge *edge)
 {
 	/* build road */
 	g_assert (callback_mode == MODE_TURN
@@ -78,7 +78,7 @@ void cb_build_road (Edge *edge)
         sm_push(SM(), mode_build_response);
 }
 
-void cb_build_ship (Edge *edge)
+void cb_build_ship (const Edge *edge)
 {
 	/* build ship */
 	g_assert (callback_mode == MODE_TURN
@@ -88,7 +88,7 @@ void cb_build_ship (Edge *edge)
         sm_push(SM(), mode_build_response);
 }
 
-void cb_build_bridge (Edge *edge)
+void cb_build_bridge (const Edge *edge)
 {
 	/* build bridge */
 	g_assert (callback_mode == MODE_TURN
@@ -98,7 +98,7 @@ void cb_build_bridge (Edge *edge)
         sm_push(SM(), mode_build_response);
 }
 
-void cb_move_ship (Edge *from, Edge *to)
+void cb_move_ship (const Edge *from, const Edge *to)
 {
 	/* move ship */
 	g_assert (callback_mode == MODE_TURN);
@@ -108,7 +108,7 @@ void cb_move_ship (Edge *from, Edge *to)
         sm_push(SM(), mode_move_response);
 }
 
-void cb_build_settlement (Node *node)
+void cb_build_settlement (const Node *node)
 {
 	/* build settlement */
 	g_assert (callback_mode == MODE_TURN
@@ -118,7 +118,7 @@ void cb_build_settlement (Node *node)
         sm_push(SM(), mode_build_response);
 }
 
-void cb_build_city (Node *node)
+void cb_build_city (const Node *node)
 {
 	/* build city */
 	g_assert (callback_mode == MODE_TURN);
@@ -188,7 +188,7 @@ void cb_end_turn ()
 	sm_push(SM(), mode_done_response);
 }
 
-void cb_place_robber (Hex *hex, gint victim_num)
+void cb_place_robber (const Hex *hex, gint victim_num)
 {
 	/* place robber and rob */
 	g_assert (callback_mode == MODE_ROBBER);
@@ -419,21 +419,24 @@ static gboolean really_try_move_ship (UNUSED(Map *map), Hex *hex, Edge *from)
 	return FALSE;
 }
 
-gboolean can_move_ship (Edge *from, Edge *to)
+gboolean can_move_ship (const Edge *from, const Edge *to)
 {
 	gboolean retval;
 	gint owner;
+	Edge *ship_sailed_from_here;
+	
 	if (to == from)
 		return FALSE;
 	g_assert (from->type == BUILD_SHIP);
 	owner = from->owner;
 	if (!can_ship_be_moved (from, owner) )
 		return FALSE;
-	from->owner = -1;
-	from->type = BUILD_NONE;
+	ship_sailed_from_here = from; /* Copy to non-const pointer */
+	ship_sailed_from_here->owner = -1;
+	ship_sailed_from_here->type = BUILD_NONE;
 	retval = can_ship_be_built (to, owner);
-	from->owner = owner;
-	from->type = BUILD_SHIP;
+	ship_sailed_from_here->owner = owner;
+	ship_sailed_from_here->type = BUILD_SHIP;
 	return retval;
 }
 
@@ -460,7 +463,7 @@ gboolean turn_can_move_ship (void)
 	return map_traverse (map, (HexFunc)try_move_ship, NULL);
 }
 
-int robber_count_victims(Hex *hex, gint *victim_list)
+int robber_count_victims(const Hex *hex, gint *victim_list)
 {
 	gint idx;
 	gint node_idx;
@@ -499,7 +502,7 @@ int robber_count_victims(Hex *hex, gint *victim_list)
 	return num_victims;
 }
 
-int pirate_count_victims(Hex *hex, gint *victim_list)
+int pirate_count_victims(const Hex *hex, gint *victim_list)
 {
 	gint idx;
 	gint edge_idx;

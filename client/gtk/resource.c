@@ -42,7 +42,7 @@ GtkWidget *resource_build_panel()
 	table = gtk_table_new(3, 4, FALSE);
 	gtk_widget_show(table);
 	gtk_container_add(GTK_CONTAINER(frame), table);
-	gtk_container_border_width(GTK_CONTAINER(table), 3);
+	gtk_container_set_border_width(GTK_CONTAINER(table), 3);
 	gtk_table_set_col_spacings(GTK_TABLE(table), 5);
 
 	label = gtk_label_new(resource_name(BRICK_RESOURCE, TRUE));

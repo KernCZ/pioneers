@@ -49,7 +49,7 @@ void gui_prompt_hide(void);
 void gui_cursor_none(void);
 void gui_cursor_set(CursorType type,
 		    CheckFunc check_func, SelectFunc select_func,
-		    void *user_data);
+		    const MapElement *user_data);
 void gui_draw_hex(Hex *hex);
 void gui_draw_edge(Edge *edge);
 void gui_draw_node(Node *node);

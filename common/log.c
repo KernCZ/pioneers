@@ -27,21 +27,6 @@
 #include "log.h"
 #include "driver.h"
 
-/* Get the above defined message number based on the player ID.
- */
-gint get_player_msg( gint playernum )
-{
-	if (playernum == 0) return MSG_PLAYER1;
-	if (playernum == 1) return MSG_PLAYER2;
-	if (playernum == 2) return MSG_PLAYER3;
-	if (playernum == 3) return MSG_PLAYER4;
-	if (playernum == 4) return MSG_PLAYER5;
-	if (playernum == 5) return MSG_PLAYER6;
-	if (playernum == 6) return MSG_PLAYER7;
-	if (playernum == 7) return MSG_PLAYER8;
-	return MSG_INFO;
-}
-
 /* Set the default logging function to 'func'. */
 void log_set_func( LogFunc func )
 {
@@ -54,15 +39,6 @@ void log_set_func( LogFunc func )
 void log_set_func_default( void )
 {
 	driver->log_write = LOG_FUNC_DEFAULT;
-}
-
-/* Take a string of text and write it to the console. */
-void add_text_console(gchar *text, const gchar *type_str)
-{
-	if( type_str )
-		fprintf( stderr, "%s%s", type_str, text );
-	else
-		fprintf( stderr, "%s", text );
 }
 
 /* Write a message string to the console, adding a prefix depending on 
@@ -138,22 +114,10 @@ void log_message_string_console( gint msg_type, gchar *text )
 			prefix = _("** UNKNOWN MESSAGE TYPE ** ");
 	}
 	
-	add_text_console( text, prefix );
-}
-
-/* Log a message, sending it through logfunc after turning the params into a
- *   single string.
- */
-void log_message_using_func(LogFunc logfunc, gint msg_type, gchar *fmt, ...)
-{
-	gchar text[1024];
-	va_list ap;
-
-	va_start(ap, fmt);
-	g_vsnprintf(text, sizeof(text), fmt, ap);
-	va_end(ap);
-	
-	logfunc( msg_type, text );
+	if (prefix)
+		fprintf( stderr, "%s%s", prefix, text );
+	else
+		fprintf( stderr, "%s", text );
 }
 
 #ifdef DEBUG

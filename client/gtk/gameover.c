@@ -47,7 +47,7 @@ GtkWidget *gameover_create_dlg(gint player_num, gint num_points)
 	vbox = gtk_vbox_new(FALSE, 50);
 	gtk_widget_show(vbox);
 	gtk_box_pack_start(GTK_BOX(dlg_vbox), vbox, FALSE, TRUE, 0);
-	gtk_container_border_width(GTK_CONTAINER(vbox), 20);
+	gtk_container_set_border_width(GTK_CONTAINER(vbox), 20);
 
 	sprintf(buff, _("%s has won the game with %d victory points!"),
 		player_name(player_num, TRUE), num_points);

@@ -29,6 +29,13 @@ static gboolean already_rejected = FALSE; /** @todo UGLY HACK, remove later */
 
 /* local functions */
 static void frontend_state_turn (GuiEvent event);
+static void build_road_cb (MapElement edge, MapElement extra);
+static void build_ship_cb (MapElement edge, MapElement extra);
+static void build_bridge_cb (MapElement edge, MapElement extra);
+static void move_ship_cb (MapElement edge, MapElement extra);
+static void build_settlement_cb (MapElement node, MapElement extra);
+static void build_city_cb (MapElement node, MapElement extra);
+
 
 /* for gold and discard, remember the previous gui state */
 static GuiState previous_state;
@@ -43,22 +50,19 @@ static void frontend_state_idle (UNUSED(GuiEvent event))
 	 * handled in route_event) */
 }
 
-void build_road_cb (Edge *edge, UNUSED(gint player_num))
+void build_road_cb (MapElement edge, UNUSED(MapElement extra))
 {
-	gui_cursor_none();
-	cb_build_road (edge);
+	cb_build_road (edge.edge);
 }
 
-void build_ship_cb (Edge *edge, UNUSED(gint player_num))
+void build_ship_cb (MapElement edge, UNUSED(MapElement extra))
 {
-	gui_cursor_none();
-	cb_build_ship (edge);
+	cb_build_ship (edge.edge);
 }
 
-static void do_move_ship_cb (Edge *edge, UNUSED(gint player_num), Edge *ship_from)
+static void do_move_ship_cb (MapElement edge, MapElement ship_from)
 {
-	gui_cursor_none();
-	cb_move_ship (ship_from, edge);
+	cb_move_ship (ship_from.edge, edge.edge);
 }
 
 /** Edge cursor check function.
@@ -69,35 +73,31 @@ static void do_move_ship_cb (Edge *edge, UNUSED(gint player_num), Edge *ship_fro
  * 2 - A ship must be buildable at the destination if the ship is moved away
  *     from its current location.
  */
-static gboolean can_ship_be_moved_to(Edge *edge, UNUSED(gint owner), Edge *ship_from)
+static gboolean can_ship_be_moved_to(MapElement ship_to, UNUSED(gint owner), MapElement ship_from)
 {
-	return can_move_ship (ship_from, edge);
+	return can_move_ship (ship_from.edge, ship_to.edge);
 }
 
-void build_bridge_cb (Edge *edge, UNUSED(gint player_num))
+void build_bridge_cb (MapElement edge, UNUSED(MapElement extra))
 {
-	gui_cursor_none();
-	cb_build_bridge (edge);
+	cb_build_bridge (edge.edge);
 }
 
-void move_ship_cb (Edge *edge, UNUSED(gint player_num))
+void move_ship_cb (MapElement edge, UNUSED(MapElement extra))
 {
-	gui_cursor_set(SHIP_CURSOR,
-			(CheckFunc)can_ship_be_moved_to,
-			(SelectFunc)do_move_ship_cb,
-			edge); /* Current position */
+	MapElement ship_from;
+	ship_from.edge = edge.edge;
+	gui_cursor_set(SHIP_CURSOR, can_ship_be_moved_to, do_move_ship_cb, &ship_from);
 }
 
-void build_settlement_cb (Node *node, UNUSED(gint player_num))
+void build_settlement_cb (MapElement node, UNUSED(MapElement extra))
 {
-	gui_cursor_none();
-	cb_build_settlement (node);
+	cb_build_settlement (node.node);
 }
 
-void build_city_cb (Node *node, UNUSED(gint player_num))
+void build_city_cb (MapElement node, UNUSED(MapElement extra))
 {
-	gui_cursor_none();
-	cb_build_city (node);
+	cb_build_city (node.node);
 }
 
 /* trade */
@@ -255,6 +255,14 @@ static void frontend_state_turn (GuiEvent event)
 				can_play_develop(develop_current_idx () ));
 		frontend_gui_check(GUI_BUY_DEVELOP, can_buy_develop());
 		frontend_gui_check(GUI_FINISH, have_rolled_dice ());
+		
+		guimap_start_single_click_build(
+			turn_can_build_road(), (CheckFunc)can_road_be_built, build_road_cb,
+			turn_can_build_ship(), (CheckFunc)can_ship_be_built, build_ship_cb,
+			turn_can_build_bridge(), (CheckFunc)can_bridge_be_built, build_bridge_cb,
+			turn_can_build_settlement(), (CheckFunc)can_settlement_be_built, build_settlement_cb,
+			turn_can_build_city(), can_afford(cost_city()) ? (CheckFunc)can_city_be_built : (CheckFunc)can_settlement_be_upgraded, build_city_cb
+			);
 		break;
 	case GUI_ROLL:
 		cb_roll ();
@@ -265,37 +273,37 @@ static void frontend_state_turn (GuiEvent event)
 	case GUI_ROAD:
 		gui_cursor_set(ROAD_CURSOR,
 				(CheckFunc)can_road_be_built,
-				(SelectFunc)build_road_cb, NULL);
+				build_road_cb, NULL);
 		return;
 	case GUI_SHIP:
 		gui_cursor_set(SHIP_CURSOR,
 				(CheckFunc)can_ship_be_built,
-				(SelectFunc)build_ship_cb, NULL);
+				build_ship_cb, NULL);
 		return;
 	case GUI_MOVE_SHIP:
 		gui_cursor_set(SHIP_CURSOR,
 				(CheckFunc)can_ship_be_moved,
-				(SelectFunc)move_ship_cb, NULL);
+				move_ship_cb, NULL);
 		return;
 	case GUI_BRIDGE:
 		gui_cursor_set(BRIDGE_CURSOR,
 				(CheckFunc)can_bridge_be_built,
-				(SelectFunc)build_bridge_cb, NULL);
+				build_bridge_cb, NULL);
 		return;
 	case GUI_SETTLEMENT:
 		gui_cursor_set(SETTLEMENT_CURSOR,
 				(CheckFunc)can_settlement_be_built,
-				(SelectFunc)build_settlement_cb, NULL);
+				build_settlement_cb, NULL);
 		return;
 	case GUI_CITY:
 		if (can_afford(cost_city()))
 			gui_cursor_set(CITY_CURSOR,
 					(CheckFunc)can_city_be_built,
-					(SelectFunc)build_city_cb, NULL);
+					build_city_cb, NULL);
 		else
 			gui_cursor_set(CITY_CURSOR,
 					(CheckFunc)can_settlement_be_upgraded,
-					(SelectFunc)build_city_cb, NULL);
+					build_city_cb, NULL);
 		return;
 	case GUI_TRADE:
 		trade_begin();
@@ -309,6 +317,7 @@ static void frontend_state_turn (GuiEvent event)
 		return;
 	case GUI_FINISH:
 		have_turn = FALSE;
+		gui_cursor_none(); /* Finish single click build */
 		cb_end_turn ();
 		set_gui_state (frontend_state_idle);
 		return;
@@ -344,6 +353,13 @@ static void frontend_state_roadbuilding (GuiEvent event)
 		frontend_gui_check(GUI_BRIDGE,
 				road_building_can_build_bridge());
 		frontend_gui_check(GUI_FINISH, road_building_can_finish());
+		guimap_start_single_click_build(
+			road_building_can_build_road(), (CheckFunc)can_road_be_built, build_road_cb,
+			road_building_can_build_ship(), (CheckFunc)can_ship_be_built, build_ship_cb,
+			road_building_can_build_bridge(), (CheckFunc)can_bridge_be_built, build_bridge_cb,
+			FALSE, NULL, NULL,
+			FALSE, NULL, NULL
+			);
 		break;
 	case GUI_UNDO:
 		cb_undo ();
@@ -351,22 +367,23 @@ static void frontend_state_roadbuilding (GuiEvent event)
 	case GUI_ROAD:
 		gui_cursor_set(ROAD_CURSOR,
 				(CheckFunc)can_road_be_built,
-				(SelectFunc)build_road_cb,
+				build_road_cb,
 				NULL);
 		return;
 	case GUI_SHIP:
 		gui_cursor_set(SHIP_CURSOR,
 				(CheckFunc)can_ship_be_built,
-				(SelectFunc)build_ship_cb,
+				build_ship_cb,
 				NULL);
 		return;
 	case GUI_BRIDGE:
 		gui_cursor_set(BRIDGE_CURSOR,
 				(CheckFunc)can_bridge_be_built,
-				(SelectFunc)build_bridge_cb,
+				build_bridge_cb,
 				NULL);
 		return;
 	case GUI_FINISH:
+		gui_cursor_none(); /* Finish single click build */
 		cb_end_turn ();
 		set_gui_state (frontend_state_turn);
 		return;
@@ -460,7 +477,7 @@ void frontend_discard_add (gint player_num, gint discard_num)
 {
 	discard_player_must (player_num, discard_num);
 	if (player_num == my_player_num () )
-		set_gui_state (&frontend_state_discard);
+		set_gui_state (frontend_state_discard);
 	frontend_gui_update ();
 }
 
@@ -469,7 +486,7 @@ void frontend_discard_remove (gint player_num, gint *list)
 	if (discard_busy) {
 		discard_player_did (player_num, list);
 		if (player_num == my_player_num () )
-			set_gui_state (&frontend_state_idle);
+			set_gui_state (frontend_state_idle);
 	}
 	frontend_gui_update ();
 }
@@ -534,6 +551,7 @@ void frontend_gold_done ()
 
 void frontend_game_over (gint player, gint points)
 {
+	gui_cursor_none(); /* Clear possible (robber) cursor */
 	gameover_create_dlg (player, points);
 	set_gui_state (frontend_state_idle);
 }
@@ -552,23 +570,21 @@ void frontend_beep ()
 	frontend_gui_update ();
 }
 
-static void place_robber (Hex *hex, gint victim)
+static void place_robber (const Hex *hex, gint victim)
 {
 	cb_place_robber (hex, victim);
 	robber_busy = FALSE;
 	set_gui_state (previous_state);
 }
 
-static void rob_building(Node *node, UNUSED(gint player_num), Hex *hex)
+static void rob_building(MapElement node, MapElement hex)
 {
-	gui_cursor_none();
-	place_robber (hex, node->owner);
+	place_robber (hex.hex, node.node->owner);
 }
 
-static void rob_edge(Edge *edge, UNUSED(gint player_num), Hex *hex)
+static void rob_edge(MapElement edge, MapElement hex)
 {
-	gui_cursor_none();
-	place_robber (hex, edge->owner);
+	place_robber (hex.hex, edge.edge->owner);
 }
 
 /* Return TRUE if the node can be robbed. */
@@ -613,40 +629,39 @@ static gboolean can_edge_be_robbed(Edge *edge, UNUSED(int owner), Hex *pirate_he
 
 /* User just placed the robber
  */
-static void place_robber_or_pirate_cb(Hex *hex, UNUSED(gint player_num))
+static void place_robber_or_pirate_cb(MapElement hex, UNUSED(MapElement extra))
 {
 	gint victim_list[6];
-	gui_cursor_none();
-	if (hex->terrain == SEA_TERRAIN) {
-		switch (pirate_count_victims(hex, victim_list)) {
+	if (hex.hex->terrain == SEA_TERRAIN) {
+		switch (pirate_count_victims(hex.hex, victim_list)) {
 			case 0:
-				place_robber (hex, -1);
+				place_robber (hex.hex, -1);
 				break;
 			case 1:
-				place_robber(hex, victim_list[0]);
+				place_robber(hex.hex, victim_list[0]);
 				break;
 			default:
 				gui_cursor_set(STEAL_SHIP_CURSOR,
 						(CheckFunc)can_edge_be_robbed,
-						(SelectFunc)rob_edge,
-						hex);
+						rob_edge,
+						&hex);
 				gui_set_instructions(_("Select the ship to steal from."));
 				gui_prompt_show(_("Select the ship to steal from"));
 				break;
 		}
 	} else {
-		switch (robber_count_victims(hex, victim_list)) {
+		switch (robber_count_victims(hex.hex, victim_list)) {
 			case 0:
-				place_robber(hex, -1);
+				place_robber(hex.hex, -1);
 				break;
 			case 1:
-				place_robber(hex, victim_list[0]);
+				place_robber(hex.hex, victim_list[0]);
 				break;
 			default:
 				gui_cursor_set(STEAL_BUILDING_CURSOR,
 						(CheckFunc)can_building_be_robbed,
-						(SelectFunc)rob_building,
-						hex);
+						rob_building,
+						&hex);
 				gui_set_instructions(_("Select the building to steal from."));
 				gui_prompt_show(_("Select the building to steal from"));
 				break;
@@ -662,7 +677,7 @@ void frontend_robber ()
 	set_gui_state (frontend_state_idle);
 	gui_cursor_set(ROBBER_CURSOR,
 			(CheckFunc)can_robber_or_pirate_be_moved,
-			(SelectFunc)place_robber_or_pirate_cb, NULL);
+			place_robber_or_pirate_cb, NULL);
 	frontend_gui_update ();
 }
 
@@ -677,6 +692,13 @@ static void frontend_mode_setup (GuiEvent event)
 		frontend_gui_check(GUI_SETTLEMENT,
 				setup_can_build_settlement());
 		frontend_gui_check(GUI_FINISH, setup_can_finish());
+		guimap_start_single_click_build(
+			setup_can_build_road(), (CheckFunc)setup_check_road, build_road_cb,
+			setup_can_build_ship(), (CheckFunc)setup_check_ship, build_ship_cb,
+			setup_can_build_bridge(), (CheckFunc)setup_check_bridge, build_bridge_cb,
+			setup_can_build_settlement(), (CheckFunc)setup_check_settlement, build_settlement_cb,
+			FALSE, NULL, NULL
+			);
 		break;
 	case GUI_UNDO:
 		/* The user has pressed the "Undo" button.  Send a
@@ -694,7 +716,7 @@ static void frontend_mode_setup (GuiEvent event)
 		 */
 		gui_cursor_set(ROAD_CURSOR,
 			       (CheckFunc)setup_check_road,
-			       (SelectFunc)build_road_cb, NULL);
+			       build_road_cb, NULL);
 		return;
 	case GUI_SHIP:
 		/* User pressed "Build Ship", set the map cursor;
@@ -704,7 +726,7 @@ static void frontend_mode_setup (GuiEvent event)
 		 */
 		gui_cursor_set(SHIP_CURSOR,
 			       (CheckFunc)setup_check_ship,
-			       (SelectFunc)build_ship_cb, NULL);
+			       build_ship_cb, NULL);
 		return;
 	case GUI_BRIDGE:
 		/* User pressed "Build Bridge", set the map cursor;
@@ -714,14 +736,15 @@ static void frontend_mode_setup (GuiEvent event)
 		 */
 		gui_cursor_set(BRIDGE_CURSOR,
 			       (CheckFunc)setup_check_bridge,
-			       (SelectFunc)build_bridge_cb, NULL);
+			       build_bridge_cb, NULL);
 		return;
 	case GUI_SETTLEMENT:
 		gui_cursor_set(SETTLEMENT_CURSOR,
 			       (CheckFunc)setup_check_settlement,
-			       (SelectFunc)build_settlement_cb, NULL);
+			       build_settlement_cb, NULL);
 		return;
 	case GUI_FINISH:
+		gui_cursor_none(); /* Finish single click build */
 		cb_end_turn ();
 		set_gui_state (frontend_state_idle);
 		return;

@@ -31,11 +31,6 @@ void log_set_func_message_window( void );
 /* Set if colors in message window are enabled */
 void log_set_func_message_color_enable( gboolean enable );
 
-/* Write a message string to the console, setting its color based on its
- *   type.
- */
-void message_window_log_message_string( gint msg_type, gchar *text );
-
 /* set the text widget. */
 void message_window_set_text(GtkWidget *textWidget);
 

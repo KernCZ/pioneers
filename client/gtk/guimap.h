@@ -39,8 +39,15 @@ typedef enum {
 	ROBBER_CURSOR
 } CursorType;
 
-typedef gboolean (*CheckFunc)(void *obj, int owner, void *user_data);
-typedef void (*SelectFunc)(void *obj, int owner, void *user_data);
+typedef union {
+	const Hex *hex;
+	const Node *node;
+	const Edge *edge;
+	gconstpointer pointer;
+} MapElement;
+
+typedef gboolean (*CheckFunc)(const MapElement obj, int owner, const MapElement user_data);
+typedef void (*SelectFunc)(const MapElement obj, const MapElement user_data);
 
 typedef struct _Mode Mode;
 typedef struct {
@@ -56,11 +63,11 @@ typedef struct {
 	Map *map;                  /**< map that is displayed */
 
 	CursorType cursor_type;    /**< current cursor type */
-	int cursor_owner;          /**< owner of the cursor */
+	gint cursor_owner;         /**< owner of the cursor */
 	CheckFunc check_func;      /**< check object under cursor */
 	SelectFunc check_select;   /**< when user selects cursor */
-	void *user_data;           /**< passed to callback functions */
-	void *cursor;              /**< current GUI mode edge/node/hex cursor */
+	MapElement user_data;      /**< passed to callback functions */
+	MapElement cursor;         /**< current GUI mode edge/node/hex cursor */
 
 	gint highlight_chit;       /**< chit number to highlight */
 	gint chit_radius;          /**< radius of the chit */
@@ -87,11 +94,11 @@ void load_pixmap(const gchar *name, GdkPixmap **pixmap, GdkBitmap **mask);
 GuiMap *guimap_new(void);
 GdkPixmap *guimap_terrain(Terrain terrain);
 
-void guimap_road_polygon(GuiMap *gmap, Edge *edge, Polygon *poly);
-void guimap_ship_polygon(GuiMap *gmap, Edge *edge, Polygon *poly);
-void guimap_bridge_polygon(GuiMap *gmap, Edge *edge, Polygon *poly);
-void guimap_city_polygon(GuiMap *gmap, Node *node, Polygon *poly);
-void guimap_settlement_polygon(GuiMap *gmap, Node *node, Polygon *poly);
+void guimap_road_polygon(const GuiMap *gmap, const Edge *edge, Polygon *poly);
+void guimap_ship_polygon(const GuiMap *gmap, const Edge *edge, Polygon *poly);
+void guimap_bridge_polygon(const GuiMap *gmap, const Edge *edge, Polygon *poly);
+void guimap_city_polygon(const GuiMap *gmap, const Node *node, Polygon *poly);
+void guimap_settlement_polygon(const GuiMap *gmap, const Node *node, Polygon *poly);
 
 gint guimap_get_chit_radius(PangoLayout *layout);
 void draw_dice_roll(PangoLayout *layout, GdkPixmap *pixmap, GdkGC *gc,
@@ -107,12 +114,23 @@ void guimap_draw_edge(GuiMap *gmap, Edge *edge);
 void guimap_draw_node(GuiMap *gmap, Node *node);
 void guimap_draw_hex(GuiMap *gmap, Hex *hex);
 
-void guimap_cursor_set(GuiMap *gmap, CursorType cursor_type, int owner,
+void guimap_cursor_set(GuiMap *gmap, CursorType cursor_type, gint owner,
 		       CheckFunc check_func, SelectFunc select_func,
-		       void *user_data);
-void guimap_cursor_erase(GuiMap *gmap);
-void guimap_cursor_draw(GuiMap *gmap);
-void *guimap_cursor_move(GuiMap *gmap, gint x, gint y);
+		       const MapElement *user_data, gboolean set_by_single_click);
+/* Single click building.
+ * Single click building is aborted by explicitly setting the cursor
+ * gboolean: mask to determine wheter the CheckFunc or SelectFunc can be used
+ * CheckFunc: check function for a certain resource type
+ * SelectFunc: function to call when the resource is selected
+ */
+void guimap_start_single_click_build(
+	gboolean road_mask, CheckFunc road_check_func, SelectFunc road_select_func,
+	gboolean ship_mask, CheckFunc ship_check_func, SelectFunc ship_select_func,
+	gboolean bridge_mask, CheckFunc bridge_check_func, SelectFunc bridge_select_func,
+	gboolean settlement_mask, CheckFunc settlement_check_func, SelectFunc settlement_select_func,
+	gboolean city_mask, CheckFunc city_check_func, SelectFunc city_select_func
+	);
+void guimap_cursor_move(GuiMap *gmap, gint x, gint y, MapElement *element);
 void guimap_cursor_select(GuiMap *gmap, gint x, gint y);
 
 #endif

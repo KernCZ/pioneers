@@ -104,10 +104,10 @@ void build_add(BuildType type, gint x, gint y, gint pos, gboolean newbuild);
 gboolean build_can_undo(void);
 gboolean build_is_valid(void);
 gboolean have_built(void);
-gboolean build_can_setup_road(Edge *edge, gboolean double_setup);
-gboolean build_can_setup_ship(Edge *edge, gboolean double_setup);
-gboolean build_can_setup_bridge(Edge *edge, gboolean double_setup);
-gboolean build_can_setup_settlement(Node *node, gboolean double_setup);
+gboolean build_can_setup_road(const Edge *edge, gboolean double_setup);
+gboolean build_can_setup_ship(const Edge *edge, gboolean double_setup);
+gboolean build_can_setup_bridge(const Edge *edge, gboolean double_setup);
+gboolean build_can_setup_settlement(const Node *node, gboolean double_setup);
 
 /********** develop.c **********/
 void develop_init(void);

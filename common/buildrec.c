@@ -30,7 +30,7 @@
 
 /* Local function prototypes. */
 static gboolean buildrec_can_setup_edge(GList *list, Map *map,
-					Edge *edge, gboolean is_double);
+					const Edge *edge, gboolean is_double);
 
 
 GList *buildrec_free(GList *list)
@@ -151,12 +151,12 @@ gboolean buildrec_is_valid(GList *list, Map *map, gint owner)
 	return TRUE;
 }
 
-static gboolean edge_has_place_for_settlement(Edge *edge)
+static gboolean edge_has_place_for_settlement(const Edge *edge)
 {
 	gint idx;
 
 	for (idx = 0; idx < numElem(edge->nodes); idx++) {
-		Node *node = edge->nodes[idx];
+		const Node *node = edge->nodes[idx];
 		if (node->type == BUILD_NONE
 		    && is_node_on_land(node)
 		    && is_node_spacing_ok(node))
@@ -167,7 +167,7 @@ static gboolean edge_has_place_for_settlement(Edge *edge)
 
 /* Check if we can place this edge with 0 existing settlements during setup
  */
-static gboolean can_setup_edge_0(GList *list, Map *map, Edge *edge)
+static gboolean can_setup_edge_0(GList *list, Map *map, const Edge *edge)
 {
 	BuildRec *rec = buildrec_get_edge(list, 0);
 	Edge *other_edge;
@@ -207,7 +207,7 @@ static gboolean can_setup_edge_0(GList *list, Map *map, Edge *edge)
 
 /* Check if we can place this edge with 1 existing settlement during setup
  */
-static gboolean can_setup_edge_1(GList *list, Map *map, Edge *edge)
+static gboolean can_setup_edge_1(GList *list, Map *map, const Edge *edge)
 {
 	BuildRec *rec = buildrec_get(list, BUILD_SETTLEMENT, 0);
 	Node *node = map_node(map, rec->x, rec->y, rec->pos);
@@ -236,7 +236,7 @@ static gboolean can_setup_edge_1(GList *list, Map *map, Edge *edge)
 
 /* Check if we can place this edge with 2 existing settlements during setup
  */
-static gboolean can_setup_edge_2(GList *list, Map *map, Edge *edge)
+static gboolean can_setup_edge_2(GList *list, Map *map, const Edge *edge)
 {
 	BuildRec *rec = buildrec_get(list, BUILD_SETTLEMENT, 0);
 	Node *node = map_node(map, rec->x, rec->y, rec->pos);
@@ -284,7 +284,7 @@ static gboolean can_setup_edge_2(GList *list, Map *map, Edge *edge)
 }
 
 static gboolean buildrec_can_setup_edge(GList *list, Map *map,
-					Edge *edge, gboolean is_double)
+					const Edge *edge, gboolean is_double)
 {
 	if (!is_double) {
 		BuildRec *rec = buildrec_get(list, BUILD_SETTLEMENT, 0);
@@ -315,7 +315,7 @@ static gboolean buildrec_can_setup_edge(GList *list, Map *map,
 }
 
 gboolean buildrec_can_setup_road(GList *list, Map *map,
-				 Edge *edge, gboolean is_double)
+				 const Edge *edge, gboolean is_double)
 {
 	if (!can_road_be_setup(edge, -1))
 		return FALSE;
@@ -324,7 +324,7 @@ gboolean buildrec_can_setup_road(GList *list, Map *map,
 }
 
 gboolean buildrec_can_setup_ship(GList *list, Map *map,
-				 Edge *edge, gboolean is_double)
+				 const Edge *edge, gboolean is_double)
 {
 	if (!can_ship_be_setup(edge, -1))
 		return FALSE;
@@ -333,7 +333,7 @@ gboolean buildrec_can_setup_ship(GList *list, Map *map,
 }
 
 gboolean buildrec_can_setup_bridge(GList *list, Map *map,
-				   Edge *edge, gboolean is_double)
+				   const Edge *edge, gboolean is_double)
 {
 	if (!can_bridge_be_setup(edge, -1))
 		return FALSE;
@@ -344,14 +344,14 @@ gboolean buildrec_can_setup_bridge(GList *list, Map *map,
 /* Check if we can place this settlement with 0 existing edges during setup
  */
 static gboolean can_setup_settlement_0(UNUSED(GList *list), UNUSED(Map *map),
-		UNUSED(Node *node))
+		UNUSED(const Node *node))
 {
 	return TRUE;
 }
 
 /* Check if we can place this settlement with 1 existing edge during setup
  */
-static gboolean can_setup_settlement_1(GList *list, Map *map, Node *node)
+static gboolean can_setup_settlement_1(GList *list, Map *map, const Node *node)
 {
 	BuildRec *rec = buildrec_get_edge(list, 0);
 	Edge *edge = map_edge(map, rec->x, rec->y, rec->pos);
@@ -375,12 +375,13 @@ static gboolean can_setup_settlement_1(GList *list, Map *map, Node *node)
 
 /* Check if we can place this settlement with 2 existing edges during setup
  */
-static gboolean can_setup_settlement_2(GList *list, Map *map, Node *node)
+static gboolean can_setup_settlement_2(GList *list, Map *map, const Node *node)
 {
 	BuildRec *rec = buildrec_get_edge(list, 0);
 	Edge *edge = map_edge(map, rec->x, rec->y, rec->pos);
 	Edge *other_edge;
 	Node *other_node;
+	Node *try_build_here;
 
 	rec = buildrec_get_edge(list, 1);
 	other_edge = map_edge(map, rec->x, rec->y, rec->pos);
@@ -400,8 +401,9 @@ static gboolean can_setup_settlement_2(GList *list, Map *map, Node *node)
 		 */
 		gboolean is_ok = FALSE;
 
-		node->type = BUILD_SETTLEMENT;
-		node->owner = edge->owner;
+		try_build_here = node; /* Copy to non-const pointer */
+		try_build_here->type = BUILD_SETTLEMENT;
+		try_build_here->owner = edge->owner;
 		if (is_edge_adjacent_to_node(edge, node)) {
 			if (is_edge_adjacent_to_node(other_edge, node))
 				/* Node is adjacent to both edges -
@@ -421,8 +423,8 @@ static gboolean can_setup_settlement_2(GList *list, Map *map, Node *node)
 			 * edge has location for settlement.
 			 */
 			is_ok = edge_has_place_for_settlement(edge);
-		node->type = BUILD_NONE;
-		node->owner = -1;
+		try_build_here->type = BUILD_NONE;
+		try_build_here->owner = -1;
 		return is_ok;
 	}
 
@@ -440,7 +442,7 @@ static gboolean can_setup_settlement_2(GList *list, Map *map, Node *node)
 }
 
 gboolean buildrec_can_setup_settlement(GList *list, Map *map,
-				       Node *node, gboolean is_double)
+				       const Node *node, gboolean is_double)
 {
 	if (!can_settlement_be_setup(node, -1))
 		return FALSE;

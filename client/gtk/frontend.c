@@ -111,8 +111,8 @@ void frontend_gui_register_destroy (void *widget, gint id)
 {
 	GuiWidgetState *gui = gui_new(widget, id);
 	gui->destroy_only = TRUE;
-	gtk_signal_connect(GTK_OBJECT((GtkWidget *)widget), "destroy",
-			GTK_SIGNAL_FUNC(destroy_route_event_cb), gui);
+	g_signal_connect(G_OBJECT((GtkWidget *)widget), "destroy",
+			G_CALLBACK(destroy_route_event_cb), gui);
 }
 
 void frontend_gui_register (void *widget, gint id, const gchar *signal)
@@ -121,11 +121,11 @@ void frontend_gui_register (void *widget, gint id, const gchar *signal)
 	gui->signal = signal;
 	gui->current = TRUE;
 	gui->next = FALSE;
-	gtk_signal_connect(GTK_OBJECT((GtkWidget *)widget), "destroy",
-	GTK_SIGNAL_FUNC(destroy_event_cb), gui);
+	g_signal_connect(G_OBJECT((GtkWidget *)widget), "destroy",
+		G_CALLBACK(destroy_event_cb), gui);
 	if (signal != NULL)
-		gtk_signal_connect(GTK_OBJECT((GtkWidget *)widget), signal,
-			GTK_SIGNAL_FUNC(route_event), gui);
+		g_signal_connect(G_OBJECT((GtkWidget *)widget), signal,
+			G_CALLBACK(route_event), gui);
 }
 
 gint hotkeys_handler (UNUSED(GtkWidget *w), GdkEvent *e, UNUSED(gpointer data))

@@ -23,53 +23,15 @@
 #include <gtk/gtk.h>
 #include <string.h>
 #include "game.h"
-#include "network.h"
 #include "state.h"
 #include "common_gtk.h"
-
-/* Maximum number of lines in the buffer */
-#ifndef MAX_LINES /* allow this to be defined from Makefile */
-#define MAX_LINES 0 /* default is unlimited */
-#endif
-
-/* Used to count the number of lines in the buffer */
-#if MAX_LINES > 0
-static gint n_lines;
-#endif
 
 static GtkWidget *message_txt;
 static gboolean msg_colors = TRUE;
 
-static GdkColor black = { 0, 0, 0, 0 };
-static GdkColor red = { 0, 0xff00, 0, 0 };
-static GdkColor green = { 0, 0, 0xff00, 0 };
-/* static GdkColor blue = { 0, 0, 0, 0xff00 }; */
-
-static GdkColor msg_build_color =    { 0, 0xbb00, 0,      0      };
-static GdkColor msg_chat_color =     { 0, 0,      0,      0xff00 };
-static GdkColor msg_devcard_color =  { 0, 0xc600, 0xc600, 0x1300 };
-static GdkColor msg_dice_color =     { 0, 0,      0xaa00, 0      };
-static GdkColor msg_info_color =     { 0, 0,      0,      0      };
-static GdkColor msg_largest_color =  { 0, 0x1c00, 0xb500, 0xed00 };
-static GdkColor msg_longest_color =  { 0, 0x1c00, 0xb500, 0xed00 };
-static GdkColor msg_resource_color = { 0, 0,      0,      0xff00 };
-static GdkColor msg_steal_color =    { 0, 0xa600, 0x1300, 0xc600 };
-static GdkColor msg_trade_color =    { 0, 0,      0x6600, 0      };
-static GdkColor msg_beep_color =     { 0, 0xb700, 0xae00, 0x0700 };
-
-static GdkColor msg_player_color[8] = {
-	{ 0, 0xCD00, 0x0000, 0x0000 }, /* red */
-	{ 0, 0x1E00, 0x9000, 0xFF00 }, /* blue */
-	{ 0, 0xA800, 0xA800, 0xA800 }, /* white */
-	{ 0, 0xFF00, 0x7F00, 0x0000 }, /* orange */
-	{ 0, 0xAE00, 0xAE00, 0x0000 }, /* yellow */
-	{ 0, 0x8E00, 0xB500, 0xBE00 }, /* cyan */
-	{ 0, 0xD100, 0x5F00, 0xBE00 }, /* magenta */
-	{ 0, 0x0000, 0xBE00, 0x7600 }  /* green */
-};
-
 /* Local function prototypes */
 static void gtk_event_cleanup(void);
+static void message_window_log_message_string( gint msg_type, gchar *text );
 
 /* Set the default logging function to write to the message window. */
 void log_set_func_message_window( void )
@@ -87,102 +49,53 @@ void log_set_func_message_color_enable( gboolean enable )
  */
 void message_window_log_message_string( gint msg_type, gchar *text )
 {
-	GtkTextTag *text_tag;
 	GtkTextBuffer *buffer;
 	GtkTextIter iter;
 	GtkTextMark *end_mark;
-
-	GdkColor *color;
+	const gchar *tagname;
 
 	if (message_txt == NULL)
 		return; /* No widget set */
 
 	if (!msg_colors)
-		color = &black;
+		tagname = "black";
 	else switch( msg_type ) {
-		case MSG_ERROR:
-			color = &red;
-			break;
-		case MSG_INFO:
-			color = &msg_info_color;
-			break;
-		case MSG_CHAT:
-			color = &msg_chat_color;
-			break;
-		case MSG_RESOURCE:
-			color = &msg_resource_color;
-			break;
-		case MSG_BUILD:
-			color = &msg_build_color;
-			break;
-		case MSG_DICE:
-			color = &msg_dice_color;
-			break;
-		case MSG_STEAL:
-			color = &msg_steal_color;
-			break;
-		case MSG_TRADE:
-			color = &msg_trade_color;
-			break;
-		case MSG_DEVCARD:
-			color = &msg_devcard_color;
-			break;
-		case MSG_LARGESTARMY:
-			color = &msg_largest_color;
-			break;
-		case MSG_LONGESTROAD:
-			color = &msg_longest_color;
-			break;
-		case MSG_BEEP:
-			color = &msg_beep_color;
-			break;
-		case MSG_PLAYER1:
-			color = &msg_player_color[0];
-			break;
-		case MSG_PLAYER2:
-			color = &msg_player_color[1];
-			break;
-		case MSG_PLAYER3:
-			color = &msg_player_color[2];
-			break;
-		case MSG_PLAYER4:
-			color = &msg_player_color[3];
-			break;
-		case MSG_PLAYER5:
-			color = &msg_player_color[4];
-			break;
-		case MSG_PLAYER6:
-			color = &msg_player_color[5];
-			break;
-		case MSG_PLAYER7:
-			color = &msg_player_color[6];
-			break;
-		case MSG_PLAYER8:
-			color = &msg_player_color[7];
-			break;
-		default:
-			color = &green;
+		case MSG_ERROR: tagname = "red"; break;
+		case MSG_INFO: tagname = "info"; break;
+		case MSG_CHAT: tagname = "chat"; break;
+		case MSG_RESOURCE: tagname = "resource"; break;
+		case MSG_BUILD: tagname = "build"; break;
+		case MSG_DICE: tagname = "dice"; break;
+		case MSG_STEAL: tagname = "steal"; break;
+		case MSG_TRADE: tagname = "trade"; break;
+		case MSG_DEVCARD: tagname = "devcard"; break;
+		case MSG_LARGESTARMY: tagname = "largest"; break;
+		case MSG_LONGESTROAD: tagname = "longest"; break;
+		case MSG_BEEP: tagname = "beep"; break;
+		case MSG_PLAYER1: tagname = "player1"; break;
+		case MSG_PLAYER2: tagname = "player2"; break;
+		case MSG_PLAYER3: tagname = "player3"; break;
+		case MSG_PLAYER4: tagname = "player4"; break;
+		case MSG_PLAYER5: tagname = "player5"; break;
+		case MSG_PLAYER6: tagname = "player6"; break;
+		case MSG_PLAYER7: tagname = "player7"; break;
+		case MSG_PLAYER8: tagname = "player8"; break;
+		default: tagname = "green";
 	}
 
-	/* create an anonymous tag for the indicated color */
 	buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(message_txt));
-	text_tag = gtk_text_buffer_create_tag(buffer, NULL,
-			"foreground-gdk", color, NULL);
 
 	/* insert text at the end */
 	gtk_text_buffer_get_end_iter(buffer, &iter);
-	gtk_text_buffer_insert_with_tags(buffer, &iter, text, strlen(text),
-			text_tag, NULL);
+	gtk_text_buffer_insert_with_tags_by_name(
+			buffer, &iter, text, -1, tagname, NULL);
 
 	/* move cursor to the end */
 	gtk_text_buffer_get_end_iter(buffer, &iter);
 	gtk_text_buffer_place_cursor(buffer, &iter);
 
 	end_mark = gtk_text_buffer_get_mark(buffer, "end-mark");
-	if (end_mark == NULL) {
-		end_mark = gtk_text_buffer_create_mark(buffer, "end-mark",
-				&iter, FALSE);
-	}
+	g_assert(end_mark != NULL);
 	gtk_text_view_scroll_to_mark(GTK_TEXT_VIEW(message_txt), end_mark,
 			0.0, FALSE, 0.0, 0.0);
 }
@@ -190,13 +103,38 @@ void message_window_log_message_string( gint msg_type, gchar *text )
 /* set the text widget. */
 void message_window_set_text(GtkWidget *textWidget)
 {
-	static GdkColormap* cmap;
-	if (cmap == NULL) {
-		cmap = gdk_colormap_get_system();
-		gdk_colormap_alloc_color(cmap, &black, FALSE, TRUE);
-		gdk_colormap_alloc_color(cmap, &red, FALSE, TRUE);
-	}
+	GtkTextBuffer *buffer;
+	GtkTextIter iter;
+
 	message_txt = textWidget;
+
+	/* Prepare all tags */
+	buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(message_txt));
+	gtk_text_buffer_create_tag(buffer, "black", "foreground", "black", NULL);
+	gtk_text_buffer_create_tag(buffer, "red", "foreground", "red", NULL);
+	gtk_text_buffer_create_tag(buffer, "green", "foreground", "green", NULL);
+	gtk_text_buffer_create_tag(buffer, "build", "foreground", "#BB0000", NULL);
+	gtk_text_buffer_create_tag(buffer, "chat", "foreground", "#0000FF", NULL);
+	gtk_text_buffer_create_tag(buffer, "devcard", "foreground", "#C6C613", NULL);
+	gtk_text_buffer_create_tag(buffer, "dice", "foreground", "#00AA00", NULL);
+	gtk_text_buffer_create_tag(buffer, "info", "foreground", "#000000", NULL);
+	gtk_text_buffer_create_tag(buffer, "largest", "foreground", "#1CB5ED", NULL);
+	gtk_text_buffer_create_tag(buffer, "longest", "foreground", "#1CB5ED", NULL);
+	gtk_text_buffer_create_tag(buffer, "resource", "foreground", "#0000FF", NULL);
+	gtk_text_buffer_create_tag(buffer, "steal", "foreground", "#A613C6", NULL);
+	gtk_text_buffer_create_tag(buffer, "trade", "foreground", "#006600", NULL);
+	gtk_text_buffer_create_tag(buffer, "beep", "foreground", "#B7AE07", NULL);
+	gtk_text_buffer_create_tag(buffer, "player1", "foreground", "#CD0000", NULL);
+	gtk_text_buffer_create_tag(buffer, "player2", "foreground", "#1E90FF", NULL);
+	gtk_text_buffer_create_tag(buffer, "player3", "foreground", "#A8A8A8", NULL);
+	gtk_text_buffer_create_tag(buffer, "player4", "foreground", "#FF7F00", NULL);
+	gtk_text_buffer_create_tag(buffer, "player5", "foreground", "#AEAE00", NULL);
+	gtk_text_buffer_create_tag(buffer, "player6", "foreground", "#8EB5BE", NULL);
+	gtk_text_buffer_create_tag(buffer, "player7", "foreground", "#D15FBE", NULL);
+	gtk_text_buffer_create_tag(buffer, "player8", "foreground", "#00BE76", NULL);
+	/* Set the mark that will mark the end of the text */
+	gtk_text_buffer_get_end_iter(buffer, &iter);
+	gtk_text_buffer_create_mark(buffer, "end-mark", &iter, FALSE);
 }
 
 static void check_gtk_widget(UNUSED(gpointer key), WidgetState *gui,

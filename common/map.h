@@ -178,29 +178,29 @@ Map *map_load(char *name);
 /* map_query.c
  */
 /* simple checks */
-gboolean is_edge_adjacent_to_node(Edge *edge, Node *node);
-gboolean is_edge_on_land(Edge *edge);
-gboolean is_edge_on_sea(Edge *edge);
-gboolean is_node_on_land(Node *node);
-gboolean node_has_road_owned_by(Node *node, gint owner);
-gboolean node_has_ship_owned_by(Node *node, gint owner);
-gboolean node_has_bridge_owned_by(Node *node, gint owner);
-gboolean is_node_spacing_ok(Node *node);
-gboolean is_node_proximity_ok(Node *node);
-gboolean is_node_next_to_robber(Node *node);
+gboolean is_edge_adjacent_to_node(const Edge *edge, const Node *node);
+gboolean is_edge_on_land(const Edge *edge);
+gboolean is_edge_on_sea(const Edge *edge);
+gboolean is_node_on_land(const Node *node);
+gboolean node_has_road_owned_by(const Node *node, gint owner);
+gboolean node_has_ship_owned_by(const Node *node, gint owner);
+gboolean node_has_bridge_owned_by(const Node *node, gint owner);
+gboolean is_node_spacing_ok(const Node *node);
+gboolean is_node_proximity_ok(const Node *node);
+gboolean is_node_next_to_robber(const Node *node);
 /* cursor checks */
-gboolean can_road_be_setup(Edge *edge, gint owner);
-gboolean can_road_be_built(Edge *edge, gint owner);
-gboolean can_ship_be_setup(Edge *edge, gint owner);
-gboolean can_ship_be_built(Edge *edge, gint owner);
-gboolean can_ship_be_moved(Edge *edge, gint owner);
-gboolean can_bridge_be_setup(Edge *edge, gint owner);
-gboolean can_bridge_be_built(Edge *edge, gint owner);
-gboolean can_settlement_be_setup(Node *node, int owner);
-gboolean can_settlement_be_built(Node *node, int owner);
-gboolean can_settlement_be_upgraded(Node *node, int owner);
-gboolean can_city_be_built(Node *node, int owner);
-gboolean can_robber_or_pirate_be_moved(Hex *hex, int owner);
+gboolean can_road_be_setup(const Edge *edge, gint owner);
+gboolean can_road_be_built(const Edge *edge, gint owner);
+gboolean can_ship_be_setup(const Edge *edge, gint owner);
+gboolean can_ship_be_built(const Edge *edge, gint owner);
+gboolean can_ship_be_moved(const Edge *edge, gint owner);
+gboolean can_bridge_be_setup(const Edge *edge, gint owner);
+gboolean can_bridge_be_built(const Edge *edge, gint owner);
+gboolean can_settlement_be_setup(const Node *node, int owner);
+gboolean can_settlement_be_built(const Node *node, int owner);
+gboolean can_settlement_be_upgraded(const Node *node, int owner);
+gboolean can_city_be_built(const Node *node, int owner);
+gboolean can_robber_or_pirate_be_moved(const Hex *hex, int owner);
 /* map global queries */
 gboolean map_can_place_road(Map *map, int owner);
 gboolean map_can_place_ship(Map *map, int owner);

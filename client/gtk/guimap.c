@@ -37,6 +37,7 @@ GdkColor blue = { 0, 0, 0, 0xff00 };
 GdkColor lightblue = { 0, 0xbe00, 0xbe00, 0xff00 };
 
 static GdkColormap* cmap;
+static gboolean single_click_build_active = FALSE;
 
 typedef struct {
 	GuiMap *gmap;
@@ -44,8 +45,8 @@ typedef struct {
 } HighlightInfo;
 
 /* Local function prototypes */
-static void calc_edge_poly(GuiMap *gmap, Edge *edge, Polygon *shape, Polygon *poly);
-static void calc_node_poly(GuiMap *gmap, Node *node, Polygon *shape, Polygon *poly);
+static void calc_edge_poly(const GuiMap *gmap, const Edge *edge, const Polygon *shape, Polygon *poly);
+static void calc_node_poly(const GuiMap *gmap, const Node *node, const Polygon *shape, Polygon *poly);
 
 /* Square */
 static gint sqr(gint a)
@@ -181,7 +182,7 @@ static gint chances[13] = {
 	0, 0, 1, 2, 3, 4, 5, 6, 5, 4, 3, 2, 1
 };
 
-static void calc_hex_pos(GuiMap *gmap,
+static void calc_hex_pos(const GuiMap *gmap,
 			 gint x, gint y, gint *x_offset, gint *y_offset)
 {
 	*x_offset = gmap->x_margin
@@ -195,7 +196,7 @@ static void calc_hex_pos(GuiMap *gmap,
 		+ y * (gmap->hex_radius + gmap->y_point);
 }
 
-static void get_hex_polygon(GuiMap *gmap, Polygon *poly, gboolean draw)
+static void get_hex_polygon(const GuiMap *gmap, Polygon *poly, gboolean draw)
 {
 	GdkPoint *points;
 
@@ -217,8 +218,8 @@ static void get_hex_polygon(GuiMap *gmap, Polygon *poly, gboolean draw)
 	points[5].y = gmap->y_point;
 }
 
-static void calc_edge_poly(GuiMap *gmap, Edge *edge, Polygon *shape,
-                           Polygon *poly)
+static void calc_edge_poly(const GuiMap *gmap, const Edge *edge, 
+		const Polygon *shape, Polygon *poly)
 {
 	gint idx;
 	GdkPoint *poly_point, *shape_point;
@@ -264,8 +265,8 @@ static void calc_edge_poly(GuiMap *gmap, Edge *edge, Polygon *shape,
 	}
 }
 
-static void calc_node_poly(GuiMap *gmap, Node *node, Polygon *shape,
-                           Polygon *poly)
+static void calc_node_poly(const GuiMap *gmap, const Node *node, 
+		const Polygon *shape, Polygon *poly)
 {
 	gint idx;
 	GdkPoint *poly_point, *shape_point;
@@ -301,32 +302,32 @@ static void calc_node_poly(GuiMap *gmap, Node *node, Polygon *shape,
 	}
 }
 
-void guimap_road_polygon(GuiMap *gmap, Edge *edge, Polygon *poly)
+void guimap_road_polygon(const GuiMap *gmap, const Edge *edge, Polygon *poly)
 {
 	calc_edge_poly(gmap, edge, &road_poly, poly);
 }
 
-void guimap_ship_polygon(GuiMap *gmap, Edge *edge, Polygon *poly)
+void guimap_ship_polygon(const GuiMap *gmap, const Edge *edge, Polygon *poly)
 {
 	calc_edge_poly(gmap, edge, &ship_poly, poly);
 }
 
-void guimap_bridge_polygon(GuiMap *gmap, Edge *edge, Polygon *poly)
+void guimap_bridge_polygon(const GuiMap *gmap, const Edge *edge, Polygon *poly)
 {
 	calc_edge_poly(gmap, edge, &bridge_poly, poly);
 }
 
-void guimap_city_polygon(GuiMap *gmap, Node *node, Polygon *poly)
+void guimap_city_polygon(const GuiMap *gmap, const Node *node, Polygon *poly)
 {
 	calc_node_poly(gmap, node, &city_poly, poly);
 }
 
-void guimap_settlement_polygon(GuiMap *gmap, Node *node, Polygon *poly)
+void guimap_settlement_polygon(const GuiMap *gmap, const Node *node, Polygon *poly)
 {
 	calc_node_poly(gmap, node, &settlement_poly, poly);
 }
 
-static void guimap_robber_polygon(GuiMap *gmap, Hex *hex, Polygon *poly)
+static void guimap_robber_polygon(const GuiMap *gmap, const Hex *hex, Polygon *poly)
 {
 	GdkPoint *poly_point, *robber_point;
 	double scale;
@@ -355,7 +356,7 @@ static void guimap_robber_polygon(GuiMap *gmap, Hex *hex, Polygon *poly)
 }
 
 
-static void guimap_pirate_polygon(GuiMap *gmap, Hex *hex, Polygon *poly)
+static void guimap_pirate_polygon(const GuiMap *gmap, const Hex *hex, Polygon *poly)
 {
 	GdkPoint *poly_point, *pirate_point;
 	double scale;
@@ -444,13 +445,13 @@ void draw_dice_roll(PangoLayout *layout, GdkPixmap *pixmap, GdkGC *gc,
 	}
 }
 
-static gboolean display_hex(Map *map, Hex *hex, GuiMap *gmap)
+static gboolean display_hex(const Map *map, const Hex *hex, const GuiMap *gmap)
 {
 	gint x_offset, y_offset;
 	GdkPoint points[MAX_POINTS];
 	Polygon poly = { points, numElem(points) };
 	int idx;
-	MapTheme *theme = get_theme();
+	const MapTheme *theme = get_theme();
 
 	calc_hex_pos(gmap, hex->x, hex->y, &x_offset, &y_offset);
 
@@ -839,7 +840,7 @@ void guimap_display(GuiMap *gmap)
 	map_traverse(gmap->map, (HexFunc)display_hex, gmap);
 }
 
-static Edge *find_hex_edge(GuiMap *gmap, Hex *hex, gint x, gint y)
+static const Edge *find_hex_edge(GuiMap *gmap, const Hex *hex, gint x, gint y)
 {
 	gint x_offset, y_offset;
 	int idx;
@@ -900,7 +901,7 @@ static void build_edge_regions(GuiMap *gmap)
 	}
 }
 
-static void *find_edge(GuiMap *gmap, gint x, gint y)
+static void find_edge(GuiMap *gmap, gint x, gint y, MapElement *element)
 {
 	gint y_hex;
 	gint x_hex;
@@ -908,17 +909,19 @@ static void *find_edge(GuiMap *gmap, gint x, gint y)
 	build_edge_regions(gmap);
 	for (x_hex = 0; x_hex < gmap->map->x_size; x_hex++)
 		for (y_hex = 0; y_hex < gmap->map->y_size; y_hex++) {
-			Hex *hex;
-			Edge *edge;
+			const Hex *hex;
+			const Edge *edge;
 
 			hex = gmap->map->grid[y_hex][x_hex];
 			if (hex != NULL) {
 				edge = find_hex_edge(gmap, hex, x, y);
-				if (edge != NULL)
-					return edge;
+				if (edge != NULL) {
+					element->edge = edge;
+					return;
+				}
 			}
 		}
-	return NULL;
+	element->pointer = NULL;
 }
 
 static Node *find_hex_node(GuiMap *gmap, Hex *hex, gint x, gint y)
@@ -989,7 +992,7 @@ static void build_node_regions(GuiMap *gmap)
 	}
 }
 
-static void *find_node(GuiMap *gmap, gint x, gint y)
+static void find_node(GuiMap *gmap, gint x, gint y, MapElement *element)
 {
 	gint y_hex;
 	gint x_hex;
@@ -1003,21 +1006,23 @@ static void *find_node(GuiMap *gmap, gint x, gint y)
 			hex = gmap->map->grid[y_hex][x_hex];
 			if (hex != NULL) {
 				node = find_hex_node(gmap, hex, x, y);
-				if (node != NULL)
-					return node;
+				if (node != NULL) {
+					element->node = node;
+					return;
+				}
 			}
 		}
-	return NULL;
+	element->pointer = NULL;
 }
 
-static void *find_hex(GuiMap *gmap, gint x, gint y)
+static void find_hex(GuiMap *gmap, gint x, gint y, MapElement *element)
 {
 	gint y_hex;
 	gint x_hex;
 
 	for (x_hex = 0; x_hex < gmap->map->x_size; x_hex++)
 		for (y_hex = 0; y_hex < gmap->map->y_size; y_hex++) {
-			Hex *hex;
+			const Hex *hex;
 			gint x_offset, y_offset;
 
 			hex = gmap->map->grid[y_hex][x_hex];
@@ -1028,12 +1033,14 @@ static void *find_hex(GuiMap *gmap, gint x, gint y)
 				     &x_offset, &y_offset);
 			x -= x_offset;
 			y -= y_offset;
-			if (gdk_region_point_in(gmap->hex_region, x, y))
-				return hex;
+			if (gdk_region_point_in(gmap->hex_region, x, y)) {
+				element->hex = hex;
+				return;
+			}
 			x += x_offset;
 			y += y_offset;
 		}
-	return NULL;
+	element->pointer = NULL;
 }
 
 static void redraw_edge(GuiMap *gmap, const Edge *edge, const Polygon *poly) 
@@ -1051,14 +1058,14 @@ static void redraw_edge(GuiMap *gmap, const Edge *edge, const Polygon *poly)
 		if (edge->hexes[idx] != NULL)
 			display_hex(gmap->map, edge->hexes[idx], gmap);
 
-	gtk_widget_draw(gmap->area, &rect);
+	gdk_window_invalidate_rect(gmap->area->window, &rect, FALSE); /* @todo FALSE or TRUE ? */
 }
 
 static void draw_cursor(GuiMap *gmap, gint owner, const Polygon *poly)
 {
 	GdkRectangle rect;
 
-	g_return_if_fail(gmap->cursor != NULL);
+	g_return_if_fail(gmap->cursor.pointer != NULL);
 
 	gdk_gc_set_line_attributes(gmap->gc, 2, GDK_LINE_SOLID,
 			GDK_CAP_BUTT, GDK_JOIN_MITER);
@@ -1070,10 +1077,10 @@ static void draw_cursor(GuiMap *gmap, gint owner, const Polygon *poly)
 	poly_draw(gmap->pixmap, gmap->gc, FALSE, poly);
 
 	poly_bound_rect(poly, 1, &rect);
-	gtk_widget_draw(gmap->area, &rect);
+	gdk_window_invalidate_rect(gmap->area->window, &rect, FALSE); /* @todo FALSE or TRUE */
 }
 
-static void redraw_road(GuiMap *gmap, Edge *edge)
+static void redraw_road(GuiMap *gmap, const Edge *edge)
 {
 	GdkPoint points[MAX_POINTS];
 	Polygon poly = { points, numElem(points) };
@@ -1084,7 +1091,7 @@ static void redraw_road(GuiMap *gmap, Edge *edge)
 	redraw_edge(gmap, edge, &poly);
 }
 
-static void redraw_ship(GuiMap *gmap, Edge *edge)
+static void redraw_ship(GuiMap *gmap, const Edge *edge)
 {
 	GdkPoint points[MAX_POINTS];
 	Polygon poly = { points, numElem(points) };
@@ -1095,7 +1102,7 @@ static void redraw_ship(GuiMap *gmap, Edge *edge)
 	redraw_edge(gmap, edge, &poly);
 }
 
-static void redraw_bridge(GuiMap *gmap, Edge *edge)
+static void redraw_bridge(GuiMap *gmap, const Edge *edge)
 {
 	GdkPoint points[MAX_POINTS];
 	Polygon poly = { points, numElem(points) };
@@ -1108,20 +1115,20 @@ static void redraw_bridge(GuiMap *gmap, Edge *edge)
 
 static void erase_road_cursor(GuiMap *gmap)
 {
-	g_return_if_fail(gmap->cursor != NULL);
-	redraw_road(gmap, gmap->cursor);
+	g_return_if_fail(gmap->cursor.pointer != NULL);
+	redraw_road(gmap, gmap->cursor.edge);
 }
 
 static void erase_ship_cursor(GuiMap *gmap)
 {
-	g_return_if_fail(gmap->cursor != NULL);
-	redraw_ship(gmap, gmap->cursor);
+	g_return_if_fail(gmap->cursor.pointer != NULL);
+	redraw_ship(gmap, gmap->cursor.edge);
 }
 
 static void erase_bridge_cursor(GuiMap *gmap)
 {
-	g_return_if_fail(gmap->cursor != NULL);
-	redraw_bridge(gmap, gmap->cursor);
+	g_return_if_fail(gmap->cursor.pointer != NULL);
+	redraw_bridge(gmap, gmap->cursor.edge);
 }
 
 static void draw_road_cursor(GuiMap *gmap)
@@ -1129,9 +1136,9 @@ static void draw_road_cursor(GuiMap *gmap)
 	GdkPoint points[MAX_POINTS];
 	Polygon poly = { points, numElem(points) };
 
-	g_return_if_fail(gmap->cursor != NULL);
+	g_return_if_fail(gmap->cursor.pointer != NULL);
 
-	guimap_road_polygon(gmap, gmap->cursor, &poly);
+	guimap_road_polygon(gmap, gmap->cursor.edge, &poly);
 	draw_cursor(gmap, gmap->cursor_owner, &poly);
 }
 
@@ -1140,9 +1147,9 @@ static void draw_ship_cursor(GuiMap *gmap)
 	GdkPoint points[MAX_POINTS];
 	Polygon poly = { points, numElem(points) };
 
-	g_return_if_fail(gmap->cursor != NULL);
+	g_return_if_fail(gmap->cursor.pointer != NULL);
 
-	guimap_ship_polygon(gmap, gmap->cursor, &poly);
+	guimap_ship_polygon(gmap, gmap->cursor.edge, &poly);
 	draw_cursor(gmap, gmap->cursor_owner, &poly);
 }
 
@@ -1151,9 +1158,9 @@ static void draw_bridge_cursor(GuiMap *gmap)
 	GdkPoint points[MAX_POINTS];
 	Polygon poly = { points, numElem(points) };
 
-	g_return_if_fail(gmap->cursor != NULL);
+	g_return_if_fail(gmap->cursor.pointer != NULL);
 
-	guimap_bridge_polygon(gmap, gmap->cursor, &poly);
+	guimap_bridge_polygon(gmap, gmap->cursor.edge, &poly);
 	draw_cursor(gmap, gmap->cursor_owner, &poly);
 }
 
@@ -1178,7 +1185,7 @@ static void redraw_node(GuiMap *gmap, const Node *node, const Polygon *poly)
 		if (node->hexes[idx] != NULL)
 			display_hex(gmap->map, node->hexes[idx], gmap);
 
-	gtk_widget_draw(gmap->area, &rect);
+	gdk_window_invalidate_rect(gmap->area->window, &rect, FALSE);
 }
 
 static void erase_settlement_cursor(GuiMap *gmap)
@@ -1186,10 +1193,10 @@ static void erase_settlement_cursor(GuiMap *gmap)
 	GdkPoint points[MAX_POINTS];
 	Polygon poly = { points, numElem(points) };
 
-	g_return_if_fail(gmap->cursor != NULL);
+	g_return_if_fail(gmap->cursor.pointer != NULL);
 
-	guimap_settlement_polygon(gmap, gmap->cursor, &poly);
-	redraw_node(gmap, gmap->cursor, &poly);
+	guimap_settlement_polygon(gmap, gmap->cursor.node, &poly);
+	redraw_node(gmap, gmap->cursor.node, &poly);
 }
 
 static void draw_settlement_cursor(GuiMap *gmap)
@@ -1197,9 +1204,9 @@ static void draw_settlement_cursor(GuiMap *gmap)
 	GdkPoint points[MAX_POINTS];
 	Polygon poly = { points, numElem(points) };
 
-	g_return_if_fail(gmap->cursor != NULL);
+	g_return_if_fail(gmap->cursor.pointer != NULL);
 
-	guimap_settlement_polygon(gmap, gmap->cursor, &poly);
+	guimap_settlement_polygon(gmap, gmap->cursor.node, &poly);
 	draw_cursor(gmap, gmap->cursor_owner, &poly);
 }
 
@@ -1208,10 +1215,10 @@ static void erase_city_cursor(GuiMap *gmap)
 	GdkPoint points[MAX_POINTS];
 	Polygon poly = { points, numElem(points) };
 
-	g_return_if_fail(gmap->cursor != NULL);
+	g_return_if_fail(gmap->cursor.pointer != NULL);
 
-	guimap_city_polygon(gmap, gmap->cursor, &poly);
-	redraw_node(gmap, gmap->cursor, &poly);
+	guimap_city_polygon(gmap, gmap->cursor.node, &poly);
+	redraw_node(gmap, gmap->cursor.node, &poly);
 }
 
 static void draw_city_cursor(GuiMap *gmap)
@@ -1219,9 +1226,9 @@ static void draw_city_cursor(GuiMap *gmap)
 	GdkPoint points[MAX_POINTS];
 	Polygon poly = { points, numElem(points) };
 
-	g_return_if_fail(gmap->cursor != NULL);
+	g_return_if_fail(gmap->cursor.pointer != NULL);
 
-	guimap_city_polygon(gmap, gmap->cursor, &poly);
+	guimap_city_polygon(gmap, gmap->cursor.node, &poly);
 	draw_cursor(gmap, gmap->cursor_owner, &poly);
 }
 
@@ -1230,28 +1237,28 @@ static void erase_steal_building_cursor(GuiMap *gmap)
 	GdkPoint points[MAX_POINTS];
 	Polygon poly = { points, numElem(points) };
 
-	g_return_if_fail(gmap->cursor != NULL);
+	g_return_if_fail(gmap->cursor.pointer != NULL);
 
-	guimap_city_polygon(gmap, gmap->cursor, &poly);
-	redraw_node(gmap, gmap->cursor, &poly);
+	guimap_city_polygon(gmap, gmap->cursor.node, &poly);
+	redraw_node(gmap, gmap->cursor.node, &poly);
 }
 
 static void draw_steal_building_cursor(GuiMap *gmap)
 {
 	GdkPoint points[MAX_POINTS];
 	Polygon poly = { points, numElem(points) };
-	Node *node;
+	const Node *node;
 
-	g_return_if_fail(gmap->cursor != NULL);
+	g_return_if_fail(gmap->cursor.pointer != NULL);
 
-	node = gmap->cursor;
+	node = gmap->cursor.node;
 	switch (node->type) {
 	case BUILD_SETTLEMENT:
-		guimap_settlement_polygon(gmap, gmap->cursor, &poly);
+		guimap_settlement_polygon(gmap, node, &poly);
 		draw_cursor(gmap, node->owner, &poly);
 		break;
 	case BUILD_CITY:
-		guimap_city_polygon(gmap, gmap->cursor, &poly);
+		guimap_city_polygon(gmap, node, &poly);
 		draw_cursor(gmap, node->owner, &poly);
 		break;
 	default:
@@ -1263,14 +1270,14 @@ static void draw_steal_ship_cursor(GuiMap *gmap)
 {
 	GdkPoint points[MAX_POINTS];
 	Polygon poly = { points, numElem(points) };
-	Edge *edge;
+	const Edge *edge;
 
-	g_return_if_fail(gmap->cursor != NULL);
+	g_return_if_fail(gmap->cursor.pointer != NULL);
 
-	edge = gmap->cursor;
+	edge = gmap->cursor.edge;
 	switch (edge->type) {
 	case BUILD_SHIP:
-		guimap_ship_polygon(gmap, gmap->cursor, &poly);
+		guimap_ship_polygon(gmap, edge, &poly);
 		draw_cursor(gmap, edge->owner, &poly);
 		break;
 	default:
@@ -1280,7 +1287,7 @@ static void draw_steal_ship_cursor(GuiMap *gmap)
 
 static void erase_robber_cursor(GuiMap *gmap)
 {
-	Hex *hex = gmap->cursor;
+	const Hex *hex = gmap->cursor.hex;
 	GdkPoint points[MAX_POINTS];
 	Polygon poly = { points, numElem(points) };
 	GdkRectangle rect;
@@ -1296,12 +1303,12 @@ static void erase_robber_cursor(GuiMap *gmap)
 
 	display_hex(gmap->map, hex, gmap);
 
-	gtk_widget_draw(gmap->area, &rect);
+	gdk_window_invalidate_rect(gmap->area->window, &rect, FALSE);
 }
 
 static void draw_robber_cursor(GuiMap *gmap)
 {
-	Hex *hex = gmap->cursor;
+	const Hex *hex = gmap->cursor.hex;
 	GdkPoint points[MAX_POINTS];
 	Polygon poly = { points, numElem(points) };
 	GdkRectangle rect;
@@ -1320,7 +1327,7 @@ static void draw_robber_cursor(GuiMap *gmap)
 	gdk_gc_set_foreground(gmap->gc, &green);
 	poly_draw(gmap->pixmap, gmap->gc, FALSE, &poly);
 
-	gtk_widget_draw(gmap->area, &rect);
+	gdk_window_invalidate_rect(gmap->area->window, &rect, FALSE);
 }
 
 static gboolean highlight_chits(UNUSED(Map *map), Hex *hex,
@@ -1343,7 +1350,7 @@ static gboolean highlight_chits(UNUSED(Map *map), Hex *hex,
 	poly_offset(&poly, x_offset, y_offset);
 	poly_bound_rect(&poly, 1, &rect);
 
-	gtk_widget_draw(gmap->area, &rect);
+	gdk_window_invalidate_rect(gmap->area->window, &rect, FALSE);
 	return FALSE;
 }
 
@@ -1399,11 +1406,11 @@ void guimap_draw_hex(GuiMap *gmap, Hex *hex)
 	poly_offset(&poly, x_offset, y_offset);
 	poly_bound_rect(&poly, 1, &rect);
 
-	gtk_widget_draw(gmap->area, &rect);
+	gdk_window_invalidate_rect(gmap->area->window, &rect, FALSE);
 }
 
 typedef struct {
-	void *(*find)(GuiMap *gmap, gint x, gint y);
+	void (*find)(GuiMap *gmap, gint x, gint y, MapElement *element);
 	void (*erase_cursor)(GuiMap *gmap);
 	void (*draw_cursor)(GuiMap *gmap);
 } ModeCursor;
@@ -1421,81 +1428,156 @@ static ModeCursor cursors[] = {
 	{ find_hex, erase_robber_cursor, draw_robber_cursor } /* ROBBER_CURSOR */
 };
 
-void guimap_cursor_draw(GuiMap *gmap)
-{
-	if (gmap->cursor_type == NO_CURSOR)
-		return;
-	if (gmap->cursor == NULL)
-		return; /* No cursor set: illegal position */
+gboolean roadM, shipM, bridgeM, settlementM, cityM;
+CheckFunc roadF, shipF, bridgeF, settlementF, cityF;
+SelectFunc roadS, shipS, bridgeS, settlementS, cityS;
 
-	cursors[gmap->cursor_type].draw_cursor(gmap);
-}
-
-void guimap_cursor_erase(GuiMap *gmap)
-{
-	if (gmap->cursor_type == NO_CURSOR)
-		return;
-	if (gmap->cursor == NULL)
-		return; /* No cursor set: illegal position */
-
-	cursors[gmap->cursor_type].erase_cursor(gmap);
-}
-
-void *guimap_cursor_move(GuiMap *gmap, gint x, gint y)
+void guimap_cursor_move(GuiMap *gmap, gint x, gint y, MapElement *element)
 {
 	ModeCursor *mode;
-	void *cursor;
 
-	if (gmap->cursor_type == NO_CURSOR)
-		return NULL;
+	if (single_click_build_active) {
+		MapElement dummyElement;
+		gboolean can_build_road = FALSE;
+		gboolean can_build_ship = FALSE;
+		gboolean can_build_bridge = FALSE;
+		gboolean can_build_settlement = FALSE;
+		gboolean can_build_city = FALSE;
+		gboolean can_build_edge;
+		gboolean can_build_node;
+		
+		dummyElement.pointer = NULL;
+		find_edge(gmap, x, y, element);
+if (element->pointer) {
+		can_build_road = (roadM && roadF(*element, current_player(), dummyElement));
+		can_build_ship = (shipM && shipF(*element, current_player(), dummyElement));
+		can_build_bridge = (bridgeM && bridgeF(*element, current_player(), dummyElement));
+
+		find_node(gmap, x, y, element);
+		can_build_settlement = (settlementM && settlementF(*element, current_player(), dummyElement));
+		can_build_city = (cityM && cityF(*element, current_player(), dummyElement));
+}
+		can_build_edge = can_build_road || can_build_ship || can_build_bridge;
+		can_build_node = can_build_settlement || can_build_city;
+
+		if (can_build_edge && can_build_node) {
+			g_message("Conflict: todo determine the closest");
+		}
+
+		if (can_build_road)
+			guimap_cursor_set(gmap, ROAD_CURSOR, current_player(),
+				roadF, roadS, NULL, TRUE);
+		else if (can_build_ship)
+			guimap_cursor_set(gmap, SHIP_CURSOR, current_player(),
+				shipF, shipS, NULL, TRUE);
+		else if (can_build_bridge)
+			guimap_cursor_set(gmap, BRIDGE_CURSOR, current_player(),
+				bridgeF, bridgeS, NULL, TRUE);
+		else if (can_build_settlement)
+			guimap_cursor_set(gmap, SETTLEMENT_CURSOR, current_player(),
+				settlementF, settlementS, NULL, TRUE);
+		else if (can_build_city)
+			guimap_cursor_set(gmap, CITY_CURSOR, current_player(),
+				cityF, cityS, NULL, TRUE);
+	}
+
+	if (gmap->cursor_type == NO_CURSOR) {
+		element->pointer = NULL;
+		return;
+	}
 
 	mode = cursors + gmap->cursor_type;
-	cursor = mode->find(gmap, x, y);
-	if (cursor != gmap->cursor) {
-		if (gmap->cursor != NULL)
+	mode->find(gmap, x, y, element);
+	if (element->pointer != gmap->cursor.pointer) {
+		if (gmap->cursor.pointer != NULL)
 			mode->erase_cursor(gmap);
 		if (gmap->check_func == NULL
-		    || (cursor != NULL
-			&& gmap->check_func(cursor, gmap->cursor_owner, gmap->user_data))) {
-			gmap->cursor = cursor;
+		    || (element != NULL
+			&& gmap->check_func(*element, gmap->cursor_owner, gmap->user_data))) {
+			gmap->cursor = *element;
 			mode->draw_cursor(gmap);
 		} else {
-			gmap->cursor = NULL;
+			gmap->cursor.pointer = NULL;
 		}
 	}
-	return cursor;
 }
 
 void guimap_cursor_select(GuiMap *gmap, gint x, gint y)
 {
-	void *cursor = guimap_cursor_move(gmap, x, y);
+	MapElement cursor;
+	SelectFunc select;
+	MapElement user_data;
+	guimap_cursor_move(gmap, x, y, &cursor);
 
-	if (cursor == NULL)
+	if (cursor.pointer == NULL)
 		return;
 
 	if (gmap->check_func != NULL
 	    && !gmap->check_func(cursor, gmap->cursor_owner, gmap->user_data))
 		return;
 
-	if (gmap->check_select != NULL)
-		gmap->check_select(cursor, gmap->cursor_owner, gmap->user_data);
+	if (gmap->check_select != NULL) {
+		/* Before processing the select, clear the cursor */
+		select = gmap->check_select;
+		user_data.pointer = gmap->user_data.pointer;
+
+		if (gmap->cursor.pointer != NULL)
+			cursors[gmap->cursor_type].erase_cursor(gmap);
+		gmap->cursor_owner = -1;
+		gmap->check_func = NULL;
+		gmap->cursor_type = NO_CURSOR;
+		gmap->cursor.pointer = NULL;
+		gmap->user_data.pointer = NULL;
+		gmap->check_select = NULL;
+		select(cursor, user_data);
+	}
 }
 
-void guimap_cursor_set(GuiMap *gmap, CursorType cursor_type, int owner,
+void guimap_cursor_set(GuiMap *gmap, CursorType cursor_type, gint owner,
 		       CheckFunc check_func, SelectFunc check_select,
-		       void *user_data)
+		       const MapElement *user_data, gboolean set_by_single_click)
 {
+	single_click_build_active = set_by_single_click;
 	gmap->cursor_owner = owner;
 	gmap->check_func = check_func;
 	gmap->check_select = check_select;
-	gmap->user_data = user_data;
+	if (user_data != NULL) {
+		gmap->user_data.pointer = user_data->pointer;
+	} else {
+		gmap->user_data.pointer = NULL;
+	}
 	if (cursor_type == gmap->cursor_type)
 		return;
 
-	if (gmap->cursor != NULL)
+	if (gmap->cursor.pointer != NULL) {
+		g_assert(gmap->cursor_type != NO_CURSOR);
 		cursors[gmap->cursor_type].erase_cursor(gmap);
+	}
 	gmap->cursor_type = cursor_type;
-	/*if (gmap->cursor_type == NO_CURSOR)*/
-		gmap->cursor = NULL;
-	/*else cursors[gmap->cursor_type].draw_cursor(gmap);*/
+	gmap->cursor.pointer = NULL;
+}
+
+void guimap_start_single_click_build(
+		gboolean road_mask, CheckFunc road_check_func, SelectFunc road_select_func,
+		gboolean ship_mask, CheckFunc ship_check_func, SelectFunc ship_select_func,
+		gboolean bridge_mask, CheckFunc bridge_check_func, SelectFunc bridge_select_func,
+		gboolean settlement_mask, CheckFunc settlement_check_func, SelectFunc settlement_select_func,
+		gboolean city_mask, CheckFunc city_check_func, SelectFunc city_select_func
+		) {
+	roadM = road_mask;
+	roadF = road_check_func;
+	roadS = road_select_func;
+	shipM = ship_mask;
+	shipF = ship_check_func;
+	shipS = ship_select_func;
+	bridgeM = bridge_mask;
+	bridgeF = bridge_check_func;
+	bridgeS = bridge_select_func;
+	settlementM = settlement_mask;
+	settlementF = settlement_check_func;
+	settlementS = settlement_select_func;
+	cityM = city_mask;
+	cityF = city_check_func;
+	cityS = city_select_func;
+	single_click_build_active = TRUE;
 }

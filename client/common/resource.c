@@ -203,7 +203,7 @@ const gchar *resource_name(Resource type, gboolean word_caps)
 	return _(resource_names[type][word_caps ? 1 : 0]);
 }
 
-void resource_format_type(gchar *str, gint *resources)
+void resource_format_type(gchar *str, const gint *resources)
 {
 	gint idx;
 	gint num_types;

@@ -259,15 +259,17 @@ void gui_set_net_status(gchar *text)
 
 void gui_cursor_none()
 {
-	guimap_cursor_set(gmap, NO_CURSOR, -1, NULL, NULL, NULL);
+	MapElement dummyElement;
+	dummyElement.pointer = NULL;
+	guimap_cursor_set(gmap, NO_CURSOR, -1, NULL, NULL, &dummyElement, FALSE);
 }
 
 void gui_cursor_set(CursorType type,
 		    CheckFunc check_func, SelectFunc select_func,
-		    void *user_data)
+		    const MapElement *user_data)
 {
 	guimap_cursor_set(gmap, type, my_player_num(),
-			  check_func, select_func, user_data);
+			  check_func, select_func, user_data, FALSE);
 }
 
 void gui_draw_hex(Hex *hex)
@@ -341,6 +343,8 @@ static gint motion_notify_map_cb(GtkWidget *area, GdkEventMotion *event,
 	gint x;
 	gint y;
 	GdkModifierType state;
+	MapElement dummyElement;
+	g_assert(area != NULL);
 
 	if (area->window == NULL || map == NULL)
 		return FALSE;
@@ -353,7 +357,8 @@ static gint motion_notify_map_cb(GtkWidget *area, GdkEventMotion *event,
 		state = event->state;
 	}
 
-	guimap_cursor_move(gmap, x, y);
+	dummyElement.pointer = NULL;
+	guimap_cursor_move(gmap, x, y, &dummyElement);
   
 	return TRUE;
 }
@@ -379,7 +384,7 @@ static GtkWidget *build_map_area(void)
 			      | GDK_POINTER_MOTION_MASK
 			      | GDK_POINTER_MOTION_HINT_MASK);
 
-	gtk_drawing_area_size(GTK_DRAWING_AREA(gmap->area), MAP_WIDTH, MAP_HEIGHT);
+	gtk_widget_set_size_request(gmap->area, MAP_WIDTH, MAP_HEIGHT);
 	g_signal_connect(G_OBJECT(gmap->area), "expose_event",
 			G_CALLBACK(expose_map_cb), NULL);
 	g_signal_connect(G_OBJECT(gmap->area),"configure_event",

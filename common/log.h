@@ -81,13 +81,6 @@ typedef void (*LogFunc)( gint msg_type, gchar *text );
 #define MSG_PLAYER7	107
 #define MSG_PLAYER8	108
 
-gint get_player_msg( gint playernum );
-
-/* Pointer to the function to use to do the actual logging, by default.
- * This can be overridden using log_message_using_func.  If it is NULL,
- *   then use the default function (LOG_FUNC_DEFAULT).
- */
-
 /* Set the default logging function to 'func'. */
 void log_set_func( LogFunc func );
 
@@ -96,18 +89,10 @@ void log_set_func( LogFunc func );
  */
 void log_set_func_default( void );
 
-/* Take a string of text and write it to the console. */
-void add_text_console(gchar *text, const gchar *type_str);
-
 /* Write a message string to the console, adding a prefix depending on 
  *   its type.
  */
 void log_message_string_console( gint msg_type, gchar *text );
-
-/* Log a message, sending it through logfunc after turning the params into a
- *   single string.
- */
-void log_message_using_func( LogFunc logfunc, gint msg_type, gchar *fmt, ... );
 
 /* Log a message, sending it through _log_func (or if that's NULL, then
  *   through LOG_FUNC_DEFAULT) after turning the params into a single

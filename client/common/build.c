@@ -168,28 +168,28 @@ gboolean have_built(void)
 
 /* Place some restrictions on road placement during setup phase
  */
-gboolean build_can_setup_road(Edge *edge, gboolean double_setup)
+gboolean build_can_setup_road(const Edge *edge, gboolean double_setup)
 {
 	return buildrec_can_setup_road(build_list, map, edge, double_setup);
 }
 
 /* Place some restrictions on ship placement during setup phase
  */
-gboolean build_can_setup_ship(Edge *edge, gboolean double_setup)
+gboolean build_can_setup_ship(const Edge *edge, gboolean double_setup)
 {
 	return buildrec_can_setup_ship(build_list, map, edge, double_setup);
 }
 
 /* Place some restrictions on bridge placement during setup phase
  */
-gboolean build_can_setup_bridge(Edge *edge, gboolean double_setup)
+gboolean build_can_setup_bridge(const Edge *edge, gboolean double_setup)
 {
 	return buildrec_can_setup_bridge(build_list, map, edge, double_setup);
 }
 
 /* Place some restrictions on road placement during setup phase
  */
-gboolean build_can_setup_settlement(Node *node, gboolean double_setup)
+gboolean build_can_setup_settlement(const Node *node, gboolean double_setup)
 {
 	return buildrec_can_setup_settlement(build_list, map, node, double_setup);
 }

@@ -2,6 +2,19 @@
 	* common/map.h, common/map_query.c: Fixed longest road detection
 	* client/gtk/monopoly.c: No longer uses deprecated calls. Removed
 	frame
+	* client/callback.h, client/common/build.c, client/common/client.h,
+	client/common/resource.c, client/common/setup.c,
+	client/gtk/frontend.h, client/gtk/gui.c, client/gtk/guimap.c,
+	client/gtk/guimap.h, client/gtk/interface.c, common/buildrec.c,
+	common/buildrec.h, common/map.h, common/map_query.c: Many pointers are
+	now const
+	* client/common/robber.c: Removed unused code
+	* client/gtk/frontend.c, client/gtk/gameover.c, client/gtk/resource.c:
+	Replaced deprecated calls
+	* client/gtk/gui.c, client/gtk/guimap.c, client/gtk/guimap.h: Single
+	click building
+	* common/log.c, common/log.h, common/gtk/common_gtk.c,
+	common/gtk/common_gtk.h: Log uses less memory
 
 2004-10-08  0.8.1.38  Roland Clobus <rclobus@bigfoot.com>
 	* All *.c: Added #include "config.h"
