@@ -607,7 +607,6 @@ static GtkWidget *build_interface()
 	gtk_container_add(GTK_CONTAINER(scroll_win), message_text);
 	message_window_set_text(message_text);
 
-	load_game_types( GNOCATAN_DIR_DEFAULT );
 	game_list_foreach( add_game_to_combo, GTK_COMBO(game_combo) );
 
 	return vbox;
@@ -636,6 +635,9 @@ int main(int argc, char *argv[])
 	/* tell gettext to return UTF-8 strings */
 	bind_textdomain_codeset(PACKAGE, "UTF-8");
 #endif
+	/* Initialize frontend inspecific things */
+	server_init (GNOCATAN_DIR_DEFAULT);
+
 	gnome_init("gnocatan-server", VERSION, argc, argv);
 
 	/* Create the application window

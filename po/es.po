@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnocatan 0.7.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-10-16 17:22+0200\n"
+"POT-Creation-Date: 2003-10-17 15:25+0200\n"
 "PO-Revision-Date: 2003-01-25 00:08-0600\n"
 "Last-Translator: Steve Langasek <vorlon@dodds.net>\n"
 "Language-Team: Spanish <debian-l10n-spanish@lists.debian.org>\n"
@@ -1823,11 +1823,11 @@ msgstr "Añadir un adversario electrónico"
 
 #. Create the application window
 #.
-#: server/gnocatan-server-gtk.c:643
+#: server/gnocatan-server-gtk.c:645
 msgid "Gnocatan Server"
 msgstr "Servidor Gnocatán"
 
-#: server/gnocatan-server.c:100
+#: server/gnocatan-server.c:101
 msgid "Missing game directory\n"
 msgstr ""
 

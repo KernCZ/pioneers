@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnocatan 0.7.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-10-16 17:22+0200\n"
+"POT-Creation-Date: 2003-10-17 15:25+0200\n"
 "PO-Revision-Date: 2003-09-25 17:27+0200\n"
 "Last-Translator: Roman Hodek <roman@hodek.net>\n"
 "Language-Team: de <de@li.org>\n"
@@ -1829,11 +1829,11 @@ msgstr "Computerspieler hinzufügen"
 
 #. Create the application window
 #.
-#: server/gnocatan-server-gtk.c:643
+#: server/gnocatan-server-gtk.c:645
 msgid "Gnocatan Server"
 msgstr "Gnocatan-Server"
 
-#: server/gnocatan-server.c:100
+#: server/gnocatan-server.c:101
 #, fuzzy
 msgid "Missing game directory\n"
 msgstr "Spielverzeichnis fehlt"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-10-16 17:22+0200\n"
+"POT-Creation-Date: 2003-10-17 15:25+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1808,11 +1808,11 @@ msgstr ""
 
 #. Create the application window
 #.
-#: server/gnocatan-server-gtk.c:643
+#: server/gnocatan-server-gtk.c:645
 msgid "Gnocatan Server"
 msgstr ""
 
-#: server/gnocatan-server.c:100
+#: server/gnocatan-server.c:101
 msgid "Missing game directory\n"
 msgstr ""
 

@@ -1,3 +1,8 @@
+2003-10-17  Bas Wijnen <b.wijnen@phys.rug.nl>
+	* po/de.po, po/es.po, po/gnocatan.pot: Updated.
+	* server/gnocatan-server-gtk.c: Improved code.
+	* server/gnocatan-server.c: Ignored broken pipe.
+
 2003-10-15  Bas Wijnen <b.wijnen@phys.rug.nl>
 	* client/trade.c: Fixed reconnect bug.
 	* po/de.po, po/es.po, po/gnocatan.pot: Updated.

@@ -12,6 +12,7 @@
 #endif
 #include <glib.h>
 #include <netdb.h>
+#include <signal.h>
 
 #include "driver.h"
 #include "game.h"
@@ -223,6 +224,12 @@ void server_init( gchar *default_gnocatan_dir )
 		gnocatan_dir = default_gnocatan_dir;
 
 	load_game_types( gnocatan_dir );
+
+	/* Broken pipes can happen when multiple players disconnect
+	 * simultaneously.  This mostly happens to AI's, which disconnect
+	 * when the game is over.  The signal can be ignored, because the
+	 * connections will be nicely closed when they are polled again. */
+	signal (SIGPIPE, SIG_IGN);
 }
 
 /* network administration functions */
