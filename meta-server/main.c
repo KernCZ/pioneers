@@ -256,7 +256,8 @@ static void client_do_write(Client * client)
 		if (num < 0) {
 			if (errno == EAGAIN)
 				break;
-			syslog(LOG_ERR, "writing socket: %m");
+			syslog(LOG_ERR, "writing socket: %s",
+			       strerror(errno));
 			client_close(client);
 			return;
 		} else if (num == len) {
@@ -543,7 +544,8 @@ static void client_create_new_server(Client * client, gchar * line)
 		      "-k", "1200",
 		      "-m", myhostname,
 		      "-n", myhostname, "-x", "-r", NULL);
-		syslog(LOG_ERR, "cannot exec %s: %m", console_server);
+		syslog(LOG_ERR, "cannot exec %s: %s", console_server,
+		       strerror(errno));
 		exit(2);
 	} else {
 		close(fd);
@@ -632,7 +634,8 @@ static void get_peer_name(gint fd, gchar ** hostname, gchar ** servname)
 
 	peer_len = sizeof(peer);
 	if (getpeername(fd, &peer.sa, &peer_len) < 0)
-		syslog(LOG_ERR, "getting peer name: %m");
+		syslog(LOG_ERR, "getting peer name: %s",
+		       strerror(errno));
 	else {
 		int err;
 		char host[NI_MAXHOST];
@@ -755,7 +758,7 @@ static void client_do_read(Client * client)
 	if (num < 0) {
 		if (errno == EAGAIN)
 			return;
-		syslog(LOG_ERR, "reading socket: %m");
+		syslog(LOG_ERR, "reading socket: %s", strerror(errno));
 		client_close(client);
 		return;
 	}
@@ -805,7 +808,8 @@ static void accept_new_client(void)
 	addr_len = sizeof(addr);
 	fd = accept(accept_fd, &addr.sa, &addr_len);
 	if (fd < 0) {
-		syslog(LOG_ERR, "accepting connection: %m");
+		syslog(LOG_ERR, "accepting connection: %s",
+		       strerror(errno));
 		return;
 	}
 	if (fd > max_fd)
@@ -905,7 +909,8 @@ static void select_loop(void)
 			if (errno == EINTR)
 				continue;
 			else {
-				syslog(LOG_ALERT, "could not select: %m");
+				syslog(LOG_ALERT, "could not select: %s",
+				       strerror(errno));
 				exit(1);
 			}
 		}
@@ -981,7 +986,8 @@ static gboolean setup_accept_sock(const gchar * port)
 	}
 
 	if (!aip) {
-		syslog(LOG_ERR, "error creating listening socket: %m\n");
+		syslog(LOG_ERR, "error creating listening socket: %s",
+		       strerror(errno));
 		freeaddrinfo(ai);
 		return FALSE;
 	}
@@ -990,13 +996,15 @@ static gboolean setup_accept_sock(const gchar * port)
 	freeaddrinfo(ai);
 
 	if (fcntl(fd, F_SETFL, O_NDELAY) < 0) {
-		syslog(LOG_ERR, "setting socket non-blocking: %m");
+		syslog(LOG_ERR, "setting socket non-blocking: %s",
+		       strerror(errno));
 		close(accept_fd);
 		return FALSE;
 	}
 
 	if (listen(fd, 5) < 0) {
-		syslog(LOG_ERR, "during listen on socket: %m");
+		syslog(LOG_ERR, "during listen on socket: %s",
+		       strerror(errno));
 		close(accept_fd);
 		return FALSE;
 	}
@@ -1011,7 +1019,8 @@ static void convert_to_daemon(void)
 
 	pid = fork();
 	if (pid < 0) {
-		syslog(LOG_ALERT, "could not fork: %m");
+		syslog(LOG_ALERT, "could not fork: %s",
+		       strerror(errno));
 		exit(1);
 	}
 	if (pid != 0)
@@ -1023,11 +1032,12 @@ static void convert_to_daemon(void)
 	/* Create a new session to become a process group leader
 	 */
 	if (setsid() < 0) {
-		syslog(LOG_ALERT, "could not setsid: %m");
+		syslog(LOG_ALERT, "could not setsid: %s", strerror(errno));
 		exit(1);
 	}
 	if (chdir("/") < 0) {
-		syslog(LOG_ALERT, "could not chdir to /: %m");
+		syslog(LOG_ALERT, "could not chdir to /: %s",
+		       strerror(errno));
 		exit(1);
 	}
 	umask(0);
