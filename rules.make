@@ -33,7 +33,7 @@ debug_includes = \
 	-Wnested-externs \
 	-ggdb3 \
 	-O \
-	-DDEBUG \
+	-DDEBUG
 else
 debug_includes =
 endif
