@@ -375,6 +375,44 @@ static void quit_cb(GtkWidget *widget, void *data)
 	gtk_main_quit();
 }
 
+static void settings_test_cb(GtkWidget *widget, void *prop_box)
+{
+	GtkWidget *dock_item;
+	GtkWidget *toolbar;
+	
+	dock_item = gnome_app_get_dock_item_by_name( GNOME_APP(app_window),
+	                                             GNOME_APP_TOOLBAR_NAME );
+	toolbar = gnome_dock_item_get_child( GNOME_DOCK_ITEM(dock_item) );
+	gtk_toolbar_set_style( GTK_TOOLBAR(toolbar), GTK_TOOLBAR_TEXT );
+	gnome_property_box_changed( GTK_WIDGET(prop_box) );
+}
+
+static void menu_settings_cb(GtkWidget *widget, void *user_data)
+{
+	GtkWidget *settings;
+	GtkWidget *pg0_hbox;
+	GtkWidget *pg0_btn_test;
+	GtkWidget *pg0_label;
+	
+	settings = gnome_property_box_new();
+	pg0_hbox = gtk_hbox_new( TRUE, 0 );
+	pg0_btn_test = gtk_button_new_with_label("Test");
+	pg0_label = gtk_label_new( "General" );
+	
+	gtk_signal_connect( GTK_OBJECT(pg0_btn_test), "clicked",
+	                    settings_test_cb, (gpointer)settings );
+
+	gtk_widget_show( pg0_btn_test );
+	
+	gtk_box_pack_start( GTK_BOX(pg0_hbox), pg0_btn_test, FALSE, TRUE, 0);
+	
+	gtk_widget_show( pg0_hbox );
+	
+	gnome_property_box_append_page( settings, pg0_hbox, pg0_label );
+	
+	gtk_widget_show( settings );
+}
+
 static GnomeUIInfo game_menu[] = {
 	{ GNOME_APP_UI_ITEM, N_("_Connect"), N_("Connect to Gnocatan server"),
 	  client_event_cb, (gpointer)GUI_CONNECT, NULL,
@@ -384,6 +422,9 @@ static GnomeUIInfo game_menu[] = {
 	  client_event_cb, (gpointer)GUI_CHANGE_NAME, NULL,
 	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_BLANK,
 	  'n', GDK_CONTROL_MASK, NULL },
+	{ GNOME_APP_UI_ITEM, N_("_Settings"), N_("Gnocatan client settings"),
+	  menu_settings_cb, NULL, NULL, GNOME_APP_PIXMAP_STOCK,
+	  GNOME_STOCK_MENU_BLANK, 's', GDK_CONTROL_MASK, NULL },
 	{ GNOME_APP_UI_ITEM, N_("E_xit"), N_("Exit the program"),
 	  client_event_cb, (gpointer)GUI_QUIT, NULL,
 	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_QUIT,
