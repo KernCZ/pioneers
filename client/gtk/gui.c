@@ -865,7 +865,7 @@ static void help_about_cb(UNUSED(GtkWidget *widget), UNUSED(void *user_data))
 
 	gtk_text_buffer_insert(buffer, &iter,
 	                       _("Gnocatan is based upon the excellent\n"
-	                         "Settlers of Catan board game\n"), -1);
+	                         "Settlers of Catan board game.\n"), -1);
 
 	gtk_text_buffer_insert_with_tags_by_name(buffer, &iter,
 	                                         _("\nAuthors:\n"), -1,
@@ -893,7 +893,7 @@ static void help_about_cb(UNUSED(GtkWidget *widget), UNUSED(void *user_data))
 	                     "version", VERSION,
 	                     "copyright", _("(C) 2002 the Free Software Foundation"),
 	                     _("Gnocatan is based upon the excellent"
-	                       "Settlers of Catan board game"),
+	                       "Settlers of Catan board game."),
 	                     "authors", authors,
 	                     "documentors", NULL,
 	                     "translator-credits", NULL,

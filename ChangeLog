@@ -11,6 +11,8 @@
 	* client/gtk/interface.c: Bug #1027642, Bug #942472: Player did not
 	get a turn after the setup phase in a second game with the same
 	client.
+	* client/gtk/gui.c: Minor spelling change, to make text in about boxes
+	of client and server the same.
 	
 2004-12-25  0.8.1.47  Etan Reisner <deryni@eden.rutgers.edu>
 	* server/gtk/gnocatan-server-gtk.c, client/gtk/gui.c: Replaced GNOME
