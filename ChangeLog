@@ -1,3 +1,37 @@
+2002-05-19  Roman Hodek  <roman@hodek.net>
+
+	* Release 0.6.99 here as beta for 0.7.0.
+	
+	* client/connect.c (build_create_interface): new spin for number
+	of ai players.
+
+	* ai/ai.c (random_name): don't open computer_names in rw mode;
+	added srand to avoid rather likely case that two ai players
+	started closely together choose the same name.
+
+	* server/player.c: made tournament mode work;
+	Added PB_SILENT mode for player_broadcast.
+
+	* server/server.c (new_computer_player): new argument 'server'
+	(for completeness), simplify a bit, start a second child to avoid
+	zombies
+
+	* server/gnocatan-server-console.c: new -c option to start a
+	number of computer players
+
+	* meta-server/gnocatan-meta-server.c (client_create_new_server):
+	parse number of ai players and pass it on to server
+
+	* ai/Makefile.am: remove admin-gtk stuff, obviously copied from
+	client/Makefile.am
+
+	* server/Makefile.am: added new games
+
+	* common/Makefile.am: added gnocatan-path.h
+
+	* debian/control: added Recommends: gnocatan-ai to both server
+	packages, as they can start ai clients
+
 2002-05-16  Roman Hodek  <roman@hodek.net>
 
 	* client/chat.c (chat_parser): Fix /me.
