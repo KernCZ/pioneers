@@ -1,4 +1,5 @@
 2000-05-17  Bibek Sahu <scorpio@dodds.net>
+
 	* server/gnocatan-server-console.c: filled in global variables, and 
 	added a function to stuff all the game types in a hash.  This will
 	be relevant later when it can be changed over the network.
