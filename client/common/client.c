@@ -721,7 +721,6 @@ static gboolean mode_load_gameinfo(StateMachine *sm, gint event)
 		plargestarmy;
 	DevelType devcard;
 	gint devcardturnbought;
-	gint player_num;
 	BuildType btype;
 	BuildType prevbtype; /** @todo RC 2004-03-28 Protocol needs change for 0.9 This field should not be sent */
 	gint resources[NO_RESOURCE];

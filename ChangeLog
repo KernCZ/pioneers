@@ -3,7 +3,8 @@
 	about dialog with Gtk code.
 
 2004-12-25  Roland Clobus <rclobus@bigfoot.com>
-	* client/gtk/discard.c, client/gtk/resource.c: Removed usused variable
+	* client/gtk/discard.c, client/gtk/resource.c, client/common/client.c:
+	Removed usused variable
 	* server/player.c: Removed unused code.
 
 2004-12-21  0.8.1.46   Roland Clobus <rclobus@bigfoot.com>
