@@ -64,20 +64,29 @@ void develop_init()
 
 void develop_bought_card_turn(DevelType type, gint turnbought)
 {
-	/* Cannot undo build after buying a development card
-	 */
-	build_clear();
-	bought_develop = TRUE;
 	deck_card_add(develop_deck, type, turnbought);
-	if (devel_cards[type].is_unique)
-		log_message( MSG_DEVCARD, _("You bought the %s development card.\n"),
-			 gettext(devel_cards[type].name));
-	else
-		log_message( MSG_DEVCARD, _("You bought a %s development card.\n"),
-			 gettext(devel_cards[type].name));
+	if (turnbought == turn_num()) {
+		/* Cannot undo build after buying a development card
+		 */
+		build_clear();
+		bought_develop = TRUE;
+		/* Only log if the cards is bought in the current turn.
+		 * This function is also called during reconnect
+		 */
+		if (devel_cards[type].is_unique)
+			log_message( MSG_DEVCARD, 
+				/* This card is unique */
+				_("You bought the %s development card.\n"),
+				gettext(devel_cards[type].name));
+		else
+			log_message( MSG_DEVCARD, 
+				/* This card is not unique */
+				_("You bought a %s development card.\n"),
+				gettext(devel_cards[type].name));
+	};
 	player_modify_statistic(my_player_num(), STAT_DEVELOPMENT, 1);
 	stock_use_develop();
-	callbacks.bought_develop (type);
+	callbacks.bought_develop(type);
 }
 
 void develop_bought_card(DevelType type)
