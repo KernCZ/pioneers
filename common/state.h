@@ -144,7 +144,7 @@ typedef gboolean (*StateFunc)(StateMachine *sm, gint event);
  */
 typedef struct {
 	StateMachine *sm;	/* parent state machine */
-	GtkWidget *widget;	/* the widget */
+	void *widget;		/* the GTK widget */
 	gint id;		/* widget id */
 	gboolean destroy_only;	/* react to destroy signal */
 	gchar *signal;		/* signal attached */
@@ -186,8 +186,8 @@ void sm_pop(StateMachine *sm);
 void sm_pop_all(StateMachine *sm);
 StateFunc sm_current(StateMachine *sm);
 StateFunc sm_previous(StateMachine *sm);
-void sm_gui_register_destroy(StateMachine *sm, GtkWidget *widget, gint id);
-void sm_gui_register(StateMachine *sm, GtkWidget *widget, gint id, gchar *signal);
+void sm_gui_register_destroy(StateMachine *sm, void *widget, gint id);
+void sm_gui_register(StateMachine *sm, void *widget, gint id, gchar *signal);
 void sm_gui_check(StateMachine *sm, gint id, gboolean sensitive);
 void sm_end(StateMachine *sm);
 void sm_global_set(StateMachine *sm, StateFunc state);

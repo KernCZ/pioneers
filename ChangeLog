@@ -1,5 +1,12 @@
 2000-05-12  Steve Langasek <vorlon@dodds.net>
 
+	* common/state.[ch], server/buildutil.c, server/develop.c,
+	server/discard.c, server/meta.c, server/player.c, server/pregame.c,
+	server/resource.c, server/robber.c, server/server.c, server/trade.c,
+	server/turn.c:  Made the 'widget' within the StateMachine an opaque
+	pointer, so that code that depends on the StateMachine is not bound
+	to any one GUI.
+
 	* configure.in, meta-server/gnocatan-meta-server.c:
 	Included autoconf fix for cross-platform getopt support
 

@@ -481,7 +481,7 @@ void sm_event_cb(StateMachine *sm, gint event)
 	dec_use_count(sm);
 }
 
-static WidgetState *gui_new(StateMachine *sm, GtkWidget *widget, gint id)
+static WidgetState *gui_new(StateMachine *sm, void *widget, gint id)
 {
 	WidgetState *gui = g_malloc0(sizeof(*gui));
 	gui->sm = sm;
@@ -497,7 +497,7 @@ static void gui_free(WidgetState *gui)
 	g_free(gui);
 }
 
-static void route_event_cb(GtkWidget *widget, WidgetState *gui)
+static void route_event_cb(void *widget, WidgetState *gui)
 {
 	StateMachine *sm = gui->sm;
 
@@ -508,12 +508,12 @@ static void route_event_cb(GtkWidget *widget, WidgetState *gui)
 	dec_use_count(sm);
 }
 
-static void destroy_event_cb(GtkWidget *widget, WidgetState *gui)
+static void destroy_event_cb(void *widget, WidgetState *gui)
 {
 	gui_free(gui);
 }
 
-static void destroy_route_event_cb(GtkWidget *widget, WidgetState *gui)
+static void destroy_route_event_cb(void *widget, WidgetState *gui)
 {
 	StateMachine *sm = gui->sm;
 
@@ -525,25 +525,25 @@ static void destroy_route_event_cb(GtkWidget *widget, WidgetState *gui)
 	dec_use_count(sm);
 }
 
-void sm_gui_register_destroy(StateMachine *sm, GtkWidget *widget, gint id)
+void sm_gui_register_destroy(StateMachine *sm, void *widget, gint id)
 {
 	WidgetState *gui = gui_new(sm, widget, id);
 	gui->destroy_only = TRUE;
-	gtk_signal_connect(GTK_OBJECT(widget), "destroy",
+	gtk_signal_connect(GTK_OBJECT((GtkWidget *)widget), "destroy",
 			   GTK_SIGNAL_FUNC(destroy_route_event_cb), gui);
 }
 
 void sm_gui_register(StateMachine *sm,
-		     GtkWidget *widget, gint id, gchar *signal)
+		     void *widget, gint id, gchar *signal)
 {
 	WidgetState *gui = gui_new(sm, widget, id);
 	gui->signal = signal;
 	gui->current = TRUE;
 	gui->next = FALSE;
-        gtk_signal_connect(GTK_OBJECT(widget), "destroy",
+        gtk_signal_connect(GTK_OBJECT((GtkWidget *)widget), "destroy",
 			   GTK_SIGNAL_FUNC(destroy_event_cb), gui);
 	if (signal != NULL)
-		gtk_signal_connect(GTK_OBJECT(widget), signal,
+		gtk_signal_connect(GTK_OBJECT((GtkWidget *)widget), signal,
 				   GTK_SIGNAL_FUNC(route_event_cb), gui);
 }
 
@@ -562,6 +562,7 @@ void sm_goto(StateMachine *sm, StateFunc new_state)
 		/* Wait until the application window is fully
 		 * displayed before starting state machine.
 		 */
+		/* FIXME: gotta clear the gtk stuff out of here. */
 		while (gtk_events_pending())
 			gtk_main_iteration();
 		push_new_state(sm);
@@ -646,15 +647,15 @@ static void free_widget(gpointer key, WidgetState *gui, StateMachine *sm)
 	if (gui->destroy_only) {
 		/* Destroy only notification
 		 */
-		gtk_signal_disconnect_by_func(GTK_OBJECT(gui->widget),
+		gtk_signal_disconnect_by_func(GTK_OBJECT((GtkWidget *)gui->widget),
 					      GTK_SIGNAL_FUNC(destroy_route_event_cb),
 					      gui);
 	} else {
-		gtk_signal_disconnect_by_func(GTK_OBJECT(gui->widget),
+		gtk_signal_disconnect_by_func(GTK_OBJECT((GtkWidget *)gui->widget),
 					      GTK_SIGNAL_FUNC(destroy_event_cb),
 					      gui);
 		if (gui->signal != NULL)
-			gtk_signal_disconnect_by_func(GTK_OBJECT(gui->widget),
+			gtk_signal_disconnect_by_func(GTK_OBJECT((GtkWidget *)gui->widget),
 						      GTK_SIGNAL_FUNC(route_event_cb),
 						      gui);
 	}

@@ -17,7 +17,7 @@
 #include <netdb.h>
 #include <errno.h>
 
-#include <gtk/gtk.h>
+#include <gdk/gdk.h>
 
 #include "game.h"
 #include "cards.h"
