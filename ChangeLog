@@ -1,3 +1,8 @@
+2003-11-16  Roland Clobus <rclobus@bigfoot.com>
+	* client/gui.c: Reduced startup window size for smaller displays.
+	* client/player.c (player_build_add), server/pregame.c
+	(send_gameinfo): Fixed bridges.
+
 2003-11-05  Roland Clobus <rclobus@bigfoot.com>
 	* server/gnocatan-server-gtk.c: Fixed bug 816848
 	

@@ -418,7 +418,7 @@ gboolean send_gameinfo(Map *map, Hex *hex, Player *player)
 			case BUILD_BRIDGE:
 				sm_send(sm, "B%d,%d,%d,%d\n", hex->x,
 					hex->y, i,
-					hex->nodes[i]->owner);
+					hex->edges[i]->owner);
 				break;
 			default:
 				;

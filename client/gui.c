@@ -33,7 +33,7 @@ Map *map;			/* handle to map drawing code */
 GtkWidget *app_window;		/* main application window */
 
 #define MAP_WIDTH 550		/* default map width */
-#define MAP_HEIGHT 450		/* default map height */
+#define MAP_HEIGHT 400		/* default map height */
 
 #define COLOR_CHAT_YES 1
 #define COLOR_CHAT_NO  0

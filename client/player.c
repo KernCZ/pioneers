@@ -878,8 +878,17 @@ void player_build_add(gint player_num,
 			 player_name(player_num, TRUE));
 		break;
 	case BUILD_BRIDGE:
-		/* This clause here to remove a compiler warning.
-		   Feature will be included at a later date. */
+		edge = map_edge(map, x, y, pos);
+		edge->owner = player_num;
+		edge->type = BUILD_BRIDGE;
+		gui_draw_edge(edge);
+		if (log_changes)
+		{
+			log_message( MSG_BUILD, _("%s built a bridge.\n"),
+			             player_name(player_num, TRUE));
+		}
+		if (player_num == my_player_num())
+			stock_use_bridge();
 		break;
 	case BUILD_MOVE_SHIP:
 		/* This clause here to remove a compiler warning.
