@@ -379,16 +379,8 @@ gboolean mode_turn(Player *player, gint event)
 
 		/* roll the dice until we like it */
 		while (TRUE) {
-			int xx[] = { 2,4,5,4,3,5,4,5};
-			static int qq = 0;
-			
 			game->die1 = get_rand(6) + 1;
 			game->die2 = get_rand(6) + 1;
-
-			game->die1 = 2;
-			game->die2 = xx[qq];
-			qq = (qq+1) % (sizeof(xx)/sizeof(xx[0]));
-			
 			roll = game->die1 + game->die2;
 			game->rolled_dice = TRUE;
 			

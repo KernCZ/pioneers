@@ -1,3 +1,7 @@
+2003-12-21 0.8.1.5  Roland Clobus <rclobus@bigfoot.com>
+
+	* po/nl.po: Improved translation.
+
 2003-12-21 0.8.1.4  Bas Wijnen <b.wijnen@phys.rug.nl>
 
 	* client/gtk/interface.c (frontend_discard_remove),
