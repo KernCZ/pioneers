@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: gnocatan 0.8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2003-10-17 18:57+0200\n"
-"PO-Revision-Date: 2003-09-25 17:27+0200\n"
+"PO-Revision-Date: 2003-10-29 23:13+0100\n"
 "Last-Translator: Roman Hodek <roman@hodek.net>\n"
 "Language-Team: de <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -33,7 +33,7 @@ msgstr "%s zahlt %s\n"
 #: ai/client.c:310
 #, c-format
 msgid "%s is refunded %s\n"
-msgstr "%s erhält zurück %s\n"
+msgstr "%s erhält %s zurück\n"
 
 #: ai/client.c:1188
 #, c-format
@@ -83,7 +83,7 @@ msgstr "Ritter"
 #: ai/develop.c:106 client/develop.c:113
 #, c-format
 msgid "%s bought a development card.\n"
-msgstr "%s hat eine Entwicklungskarte gekauft\n"
+msgstr "%s hat eine Entwicklungskarte gekauft.\n"
 
 #: ai/develop.c:122 client/develop.c:135
 #, c-format
@@ -107,7 +107,7 @@ msgstr "%s hat eine %s-Entwicklungskarte ausgespielt.\n"
 
 #: ai/develop.c:158 client/develop.c:173
 msgid "You have run out of road segments.\n"
-msgstr "Du hast kein Straßensegmente mehr.\n"
+msgstr "Du hast keine Straßensegmente mehr.\n"
 
 #: ai/greedy.c:1105
 msgid "Ok, let's go!"
@@ -259,7 +259,7 @@ msgstr "Handel abgelehnt.\n"
 
 #: ai/greedy.c:1673
 msgid "Sorry, I do not know how to play with gold\n"
-msgstr "Entschuldiging, ich weiß nicht mit Gold zu spielen\n"
+msgstr "Entschuldigung, ich kann nicht mit Gold zu spielen\n"
 
 #. I get the cards!
 #.
@@ -273,7 +273,7 @@ msgstr "Du bekommst %s von %s.\n"
 #: ai/monopoly.c:47 client/monopoly.c:154
 #, c-format
 msgid "%s took %s from you.\n"
-msgstr "%s nahm %s von dir.\n"
+msgstr "%s hat %s von dir genommen.\n"
 
 #. I am a bystander
 #.
@@ -384,7 +384,7 @@ msgstr "%s hat die längste Handelsstraße.\n"
 #: ai/player.c:247
 #, c-format
 msgid "%s stole a resource from %s.\n"
-msgstr "%s hat eine Karte gestohlen von %s.\n"
+msgstr "%s hat eine Karte von %s gestohlen.\n"
 
 #. We stole a card :-)
 #.
@@ -443,12 +443,12 @@ msgstr "%s hat eine Stadt gebaut.\n"
 #: ai/player.c:389 client/player.c:877
 #, c-format
 msgid "player_build_add called with BUILD_NONE for user %s\n"
-msgstr "player_build_add aufgerufen mit BUILD_NONE für Benutzer %s\n"
+msgstr "player_build_add mit BUILD_NONE für Benutzer %s aufgerufen\n"
 
 #: ai/player.c:416 client/player.c:975
 #, c-format
 msgid "%s has cancelled a ship's movement.\n"
-msgstr "%s hat eine Bewegung eines Schiffes ungeschehen gemacht.\n"
+msgstr "%s hat eine Schiffsbewegung zurückgenommen.\n"
 
 #: ai/player.c:418 client/player.c:977
 #, c-format
@@ -478,7 +478,7 @@ msgstr "%s hat eine Stadt entfernt.\n"
 #: ai/player.c:471 client/player.c:945
 #, c-format
 msgid "player_build_remove called with BUILD_NONE for user %s\n"
-msgstr "player_build_remove aufgerufen mit BUILD_NONE für Benutzer %s\n"
+msgstr "player_build_remove mit BUILD_NONE für Benutzer %s aufgerufen\n"
 
 #: ai/resource.c:20 client/resource.c:22
 msgid "brick"
@@ -551,7 +551,7 @@ msgstr "Angebot von Spieler %d: %s.\n"
 #: ai/trade.c:141
 #, c-format
 msgid "Removed quote from player %d: %s\n"
-msgstr "Angebot vom Spieler %d entfernt: %s\n"
+msgstr "Angebot von Spieler %d zurückgezogen: %s\n"
 
 #: ai/trade.c:156 ai/trade.c:161
 msgid "Trading finished.\n"
@@ -751,11 +751,11 @@ msgstr "Du bist am Zug."
 #: client/client.c:2252
 #, c-format
 msgid "Sorry, %s available.\n"
-msgstr "Entschuldigung, %s benutzbar.\n"
+msgstr "Entschuldigung, %s verfügbar.\n"
 
 #: client/client.c:2651
 msgid "The game is over."
-msgstr "Das Spiel ist zuende."
+msgstr "Das Spiel ist beendet."
 
 #: client/client.c:2864
 #, c-format
@@ -806,11 +806,11 @@ msgstr "Weitergeleitet zu Metaserver auf %s, Port %s\n"
 
 #: client/connect.c:363
 msgid "Receiving a list of Gnocatan servers from the meta server.\n"
-msgstr "Empfange eine Liste von Gnocatanservers vom Metaserver\n"
+msgstr "Empfange eine Liste von Gnocatan-Servern vom Metaserver.\n"
 
 #: client/connect.c:378 client/connect.c:601
 msgid "Requesting new game server\n"
-msgstr "Anfrage für einen neuen Spielserver\n"
+msgstr "Anfrage für einen neuen Spielserver gesendet\n"
 
 #: client/connect.c:509 client/connect.c:714 server/gnocatan-server-gtk.c:521
 msgid "Sevens Rule"
@@ -1114,7 +1114,7 @@ msgstr "Histogramm der Würfelergebnisse"
 
 #: client/gui.c:925
 msgid "_About Gnocatan"
-msgstr "_Über Gnocatan"
+msgstr "Ü_ber Gnocatan"
 
 #: client/gui.c:925
 msgid "Information about Gnocatan"
@@ -1137,72 +1137,84 @@ msgstr ""
 "(F1)"
 
 #: client/gui.c:969
-#, fuzzy
 msgid ""
 "Trade\n"
 "(F2)"
-msgstr "Handel"
+msgstr ""
+"Handel\n"
+"(F2)"
 
 #: client/gui.c:972
-#, fuzzy
 msgid ""
 "Undo\n"
 "(F3)"
-msgstr "Rückgängig"
+msgstr ""
+"Rückgängig\n"
+"(F3)"
 
 #: client/gui.c:975
-#, fuzzy
 msgid ""
 "Finish\n"
 "(F4)"
-msgstr "Beenden"
+msgstr ""
+"Beenden\n"
+"(F4)"
 
 #: client/gui.c:979
-#, fuzzy
 msgid ""
 "Road\n"
 "(F5)"
-msgstr "Straße"
+msgstr ""
+"Straße\n"
+"(F5)"
 
 #: client/gui.c:982
-#, fuzzy
 msgid ""
 "Ship\n"
 "(F6)"
-msgstr "Schiff"
+msgstr ""
+"Schiff\n"
+"(F6)"
 
 #: client/gui.c:985
 msgid ""
 "Move Ship\n"
 "(F7)"
-msgstr "Schiff verlegen"
+msgstr ""
+"Schiff verlegen\n"
+"(F7)"
 
 #: client/gui.c:988
-#, fuzzy
 msgid ""
 "Bridge\n"
 "(F8)"
-msgstr "Brücke"
+msgstr ""
+"Brücke\n"
+"(F8)"
 
 #: client/gui.c:992
-#, fuzzy
 msgid ""
 "Settlement\n"
 "(F9)"
-msgstr "Siedlung"
+msgstr ""
+"Siedlung\n"
+"(F9)"
 
 #: client/gui.c:995
 msgid ""
 "City\n"
 "(F10)"
-msgstr "Stadt"
+msgstr ""
+"Stadt\n"
+"(F10)"
 
 #: client/gui.c:998
-#, fuzzy
 msgid ""
 "Develop\n"
 "(F11)"
-msgstr "Entw.karte"
+msgstr ""
+"Entw.karte\n"
+"(F11)"
 
 #: client/gui.c:1063
 msgid " "
@@ -1210,7 +1222,7 @@ msgstr " "
 
 #: client/gui.c:1083
 msgid "Welcome to Gnocatan!"
-msgstr "Wilkommen zu Gnocatan!"
+msgstr "Willkommen zu Gnocatan!"
 
 #: client/gui.c:1173
 msgid "Gnocatan"
@@ -1224,7 +1236,7 @@ msgstr "Bilddatei %s nicht gefunden.\n"
 #: client/guimap.c:73
 #, c-format
 msgid "Could not load '%s' pixmap file.\n"
-msgstr "Bilddatei %s nicht gefunden.\n"
+msgstr "Bilddatei %s konnte nicht geladen werden.\n"
 
 #: client/guimap.c:541 client/guimap.c:542 client/guimap.c:543
 #: client/guimap.c:544 client/guimap.c:545
@@ -1313,7 +1325,7 @@ msgstr "Straße"
 
 #: client/legend.c:170
 msgid "brick + lumber"
-msgstr "Steine + Holz"
+msgstr "Stein + Holz"
 
 #: client/legend.c:173
 msgid "Ship"
@@ -1329,11 +1341,11 @@ msgstr "Brücke"
 
 #: client/legend.c:176
 msgid "brick + wool + lumber"
-msgstr "Steine + Wolle + Holz"
+msgstr "Stein + Wolle + Holz"
 
 #: client/legend.c:177
 msgid "brick + grain + wool + lumber"
-msgstr "Steine + Getreide + Wolle + Holz"
+msgstr "Stein + Getreide + Wolle + Holz"
 
 #: client/legend.c:178
 msgid "2 grain + 3 ore"
@@ -1404,23 +1416,23 @@ msgstr "%s hat %s bekommen.\n"
 
 #: client/player.c:1019
 msgid "server asks to lose invalid point.\n"
-msgstr ""
+msgstr "Server will einen nicht vorhandenen Punkt wegnehmen.\n"
 
 #. tell the user the point is lost
 #: client/player.c:1028
 #, c-format
 msgid "%s lost %s.\n"
-msgstr "%s verlierte %s.\n"
+msgstr "%s hat %s verloren.\n"
 
 #: client/player.c:1051
 msgid "server asks to move invalid point.\n"
-msgstr ""
+msgstr "Server will einen nicht vorhandenen Punkt übertragen.\n"
 
 #. tell the user about it
 #: client/player.c:1058
 #, c-format
 msgid "%s lost %s to %s.\n"
-msgstr "%3$s hat %2$s gestohlen von %1$s.\n"
+msgstr "%s hat %s an %s verloren.\n"
 
 #: client/plenty.c:182
 msgid "Please take two resources from the bank"
@@ -1461,19 +1473,19 @@ msgstr "Löschen"
 
 #: client/resource.c:27
 msgid "no Resource (bug)"
-msgstr "Kein Rohstoff (bug)"
+msgstr "Kein Rohstoff (Fehler)"
 
 #: client/resource.c:27
 msgid "No resource (bug)"
-msgstr "Kein Rohstoff (bug)"
+msgstr "Kein Rohstoff (Fehler)"
 
 #: client/resource.c:28
 msgid "any resource (bug)"
-msgstr "willekürliche Rohstoff (bug)"
+msgstr "beliebiger Rohstoff (Fehler)"
 
 #: client/resource.c:28
 msgid "Any resource (bug)"
-msgstr "Willekürliche Rohstoff (bug)"
+msgstr "Beliebiger Rohstoff (Fehler)"
 
 #: client/resource.c:29
 msgid "gold"
@@ -1537,7 +1549,7 @@ msgstr "%s, "
 #: client/resource.c:235
 #, c-format
 msgid "player %d resource count wrong: server=%d, me=%d"
-msgstr "Rohstoffanzahl bei Spieler %d falsch: server=%d hier=%d"
+msgstr "Rohstoffanzahl bei Spieler %d falsch: server=%d, hier=%d"
 
 #: client/resource.c:248
 msgid "resources wrong:"
@@ -1548,9 +1560,7 @@ msgstr "Rohstoffe falsch:"
 msgid ""
 "\n"
 "%s: server=%d, me=%d"
-msgstr ""
-"\n"
-"%s: server=%d hier=%d"
+msgstr "\n%s: server=%d, hier=%d"
 
 #: client/resource.c:290
 msgid "Resources"
@@ -1777,17 +1787,17 @@ msgstr "Fehler beim Lesen des Sockets: %s\n"
 #: common/network.c:382
 #, c-format
 msgid "Cannot resolve %s port %s: %s\n"
-msgstr "Kann Namen %s Port %s nicht auflösen: %s\n"
+msgstr "Kann %s Port %s nicht auflösen: %s\n"
 
 #: common/network.c:386
 #, c-format
 msgid "Cannot resolve %s port %s: host not found\n"
-msgstr "Kann Name %s Port %s nicht auflösen: Rechner unbekannt\n"
+msgstr "Kann %s Port %s nicht auflösen: Rechner unbekannt\n"
 
 #: common/network.c:393
 #, c-format
 msgid "Error creating socket: %s\n"
-msgstr "Fehler beim Erzeugen des Socket: %s\n"
+msgstr "Fehler beim Anlegen eines Sockets: %s\n"
 
 #: common/network.c:397
 #, c-format
@@ -1811,11 +1821,11 @@ msgstr "Verbinde zu %s Port %s\n"
 
 #: server/gnocatan-server-gtk.c:58
 msgid "The Gnocatan Game Server"
-msgstr "Der Gnocatan-Server"
+msgstr "Der Gnocatan-Spielserver"
 
 #: server/gnocatan-server-gtk.c:72
 msgid "_About Gnocatan Server"
-msgstr "_Über Gnocatan-Server"
+msgstr "Ü_ber Gnocatan-Server"
 
 #: server/gnocatan-server-gtk.c:73
 msgid "Information about Gnocatan Server"
@@ -1846,7 +1856,7 @@ msgstr "Registriere bei Metaserver %s Port %s\n"
 
 #: server/player.c:258
 msgid "Name not changed: new name is already in use"
-msgstr "Name nicht geändert: neue Name is schon benitzt"
+msgstr "Name nicht geändert: neuer Name is schon benutzt"
 
 #: server/server.c:95
 #, c-format
@@ -1856,12 +1866,12 @@ msgstr "Fehler beim Erzeugen einer struct addrinfo: %s"
 #: server/server.c:122
 #, c-format
 msgid "Error creating listening socket: %s\n"
-msgstr "Fehler beim Erzeugen des empfangenden Sockets: %s\n"
+msgstr "Fehler beim Anlegen des annehmenden Sockets: %s\n"
 
 #: server/server.c:134
 #, c-format
 msgid "Error during listen on socket: %s\n"
-msgstr "Fehler beim Empfangen auf dem Socket: %s\n"
+msgstr "Fehler beim Versetzen des Sockets in Annahme-Zustand: %s\n"
 
 #: server/server.c:191
 #, c-format
