@@ -1,3 +1,27 @@
+2002-05-27  Roman Hodek  <roman@hodek.net>
+
+	* 0.7.0 released!!
+	
+	* configure.in, gnocatan.spec, debian/changelog: bumped version to
+	0.7.0.
+
+	* server/pregame.c, ai/greedy.c, common/map_query.c: catched a
+	bunch of NULL pointer accesses revealed by 'The Pond' that isn't
+	totally surrounded by sea.
+
+	* INSTALL, README: modernized a bit
+
+	* server/Makefile.am: added $(includedir) to INCLUDES so that
+	gdk_imlib.h is found in all cases.
+
+2002-05-24  Roman Hodek  <roman@hodek.net>
+
+	* configure.in: set default prefix to output of gnome-config
+	--prefix (if available)
+
+	* common/Makefile.am: new rule to generate gnocatan-path.h from
+	gnocatan-path.h.in with datadir and bindir substituted
+
 2002-05-23  Roman Hodek  <roman@hodek.net>
 
 	* client/histogram.c: if new value is registered, update the
