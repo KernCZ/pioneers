@@ -84,7 +84,9 @@ gboolean is_maritime_trade_allowed()
 	 * or after we have done built a settlement / city, or after
 	 * buying a development card.
 	 */
-	if (!have_rolled_dice() || have_built() || have_bought_develop())
+	if (!have_rolled_dice()
+	    || (game_params->strict_trade
+		&& (have_built() || have_bought_develop())))
 		return FALSE;
 
 	can_trade = FALSE;

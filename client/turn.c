@@ -103,8 +103,9 @@ gboolean turn_can_trade()
 	if (!have_rolled_dice())
 		return FALSE;
 
-     if ((have_built() || have_bought_develop()) && game_params->strict_trade)
-          return FALSE;
+	if (game_params->strict_trade
+	    && (have_built() || have_bought_develop()))
+		return FALSE;
 
 	return is_maritime_trade_allowed()
 		|| is_domestic_trade_allowed();
