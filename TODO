@@ -9,8 +9,6 @@
    try to reproduce this and find the cause. Hint: The settlement was
    built first and was on the coast.
 
- - The chat messages of the AI player are too dumb ;) Improve them.
-
  - The meta server should be somehow configurable to:
     - start only a certain max. number of servers on the local machine
     - if this number is reached, start servers on other machines

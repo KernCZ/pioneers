@@ -1,3 +1,17 @@
+2002-07-09  Roman Hodek  <roman@hodek.net>
+
+	* ai/greedy.c: Introduce better, situation-related chat messages.
+
+	* ai/client.c (client_chat): obey chatty parameter, call
+	computer_funcs.chat() with occasion parameters
+
+	* ai/client.c: added hooks for client_chat()
+
+	* ai/client.h, ai/computer: changed prototypes for client_chat()
+	et al.
+
+	* po/de.po: updated	
+	
 2002-07-06  Jeff Breidenbach  <jeff@jab.org>
 
 	* debian/rules: package upstream changelog, readme
