@@ -1,5 +1,8 @@
 2000-05-27  Steve Langasek <vorlon@dodds.net>
 
+	* common/map.c, server/server.c: Converted common/map.c to use the
+	Mersenne Twister PRNG; further tweaks in g_rand() (non)support.
+
 	* server/mt_rand.[ch], server/Makefile.am, common/mt_rand.[ch],
 	common/Makefile.am: Moved Mersenne Twister to the common/ subdir,
 	as it's needed elsewhere.

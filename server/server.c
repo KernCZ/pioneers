@@ -190,6 +190,7 @@ gboolean server_startup(GameParams *params, gint port, gboolean meta)
 {
 #ifdef HAVE_G_RAND_NEW
 /* TODO: what do we need here? */
+#error Support for g_rand_new() not implemented.
 #else
 	mt_seed(time(NULL));
 #endif

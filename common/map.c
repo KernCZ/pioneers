@@ -12,11 +12,11 @@
 #include <math.h>
 #include <ctype.h>
 #include <string.h>
-
 #include <glib.h>
 
 #include "game.h"
 #include "map.h"
+#include "mt_rand.h"
 
 Hex *map_hex(Map *map, gint x, gint y)
 {
@@ -380,8 +380,9 @@ void map_shuffle_terrain(Map *map)
 					continue;
 #ifdef HAVE_G_RAND_NEW
 /* TODO: plug in a better random function. */
+#error Support for g_rand_new() not implemented.
 #else
-				num = rand() % num_port;
+				num = mt_random() % num_port;
 #endif
 				for (idx = 0; idx < numElem(port_count); idx++) {
 					num -= port_count[idx];
@@ -392,7 +393,12 @@ void map_shuffle_terrain(Map *map)
 				num_port--;
 				hex->resource = idx;
 			} else {
-				num = rand() % num_terrain;
+#ifdef HAVE_G_RAND_NEW
+/* TODO: plug in a better random function. */
+#error Support for g_rand_new() not implemented.
+#else
+				num = mt_random() % num_terrain;
+#endif
 				for (idx = 0; idx < numElem(terrain_count); idx++) {
 					num -= terrain_count[idx];
 					if (num < 0)
