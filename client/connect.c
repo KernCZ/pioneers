@@ -331,10 +331,16 @@ GtkWidget *connect_create_dlg()
 	gchar     *saved_server;
 	gchar     *saved_port;
 	gchar     *saved_name;
-	
-	saved_server = gnome_config_get_string("/gnocatan/connect/server");
-	saved_port = gnome_config_get_string("/gnocatan/connect/port");
-	saved_name = gnome_config_get_string("/gnocatan/connect/name");
+	gint      novar;
+
+	saved_server = gnome_config_get_string_with_default("/gnocatan/connect/server=localhost",&novar);
+	saved_port = gnome_config_get_string_with_default("/gnocatan/connect/port=5556", &novar);
+	novar = 0;
+	saved_name = gnome_config_get_string_with_default("/gnocatan/connect/name", &novar);
+	if (novar) {
+		saved_name = g_strdup(g_get_user_name());
+	}
+	saved_name[0] = toupper(saved_name[0]);
 
 	dlg = gnome_dialog_new(_("Connect to Gnocatan server"),
 			       GNOME_STOCK_BUTTON_OK, NULL);
@@ -440,5 +446,8 @@ GtkWidget *connect_create_dlg()
         gtk_widget_show(dlg);
 	gtk_widget_grab_focus(server_entry);
 
+	g_free(saved_name);
+	g_free(saved_port);
+	g_free(saved_server);
 	return dlg;
 }

@@ -1,5 +1,8 @@
 2000-05-15  Steve Langasek <vorlon@dodds.net>
 
+	* client/connect.c: Set reasonable defaults for the connect dialog
+	if there isn't a saved config (shuts up GTK, too).
+
 	* common/Makefile.am, client/Makefile.am, server/Makefile.am:
 	Changed library name from libgnocatan_gui.a to libgnocatan_gtk.a,
 	allowing for the possibility of multiple front-ends
