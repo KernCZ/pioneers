@@ -847,8 +847,8 @@ GtkWidget *connect_create_dlg()
  	novar = 0;
  	saved_meta_server = config_get_string("connect/meta-server",&novar);
  	if (novar) {
- 		if (!(saved_meta_server = getenv("GNOCATAN_META_SERVER")))
- 			saved_meta_server = DEFAULT_META_SERVER;
+ 		if (!(saved_meta_server = g_strdup(getenv("GNOCATAN_META_SERVER"))))
+ 			saved_meta_server = g_strdup(DEFAULT_META_SERVER);
  	}
 	saved_port = config_get_string("connect/port=5556", &novar);
 	novar = 0;
