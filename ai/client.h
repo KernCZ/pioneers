@@ -13,6 +13,7 @@
 #include "network.h"
 #include "buildrec.h"
 #include "quoteinfo.h"
+#include "cards.h"
 
 /*#define FIND_STUPID_RESOURCE_BUG*/
 
@@ -43,6 +44,7 @@ gint connect_get_port(void);
 gchar* connect_get_port_str(void);
 
 /* develop.c */
+DevelDeck *develop_getdeck(void);
 void develop_init(void);
 gboolean can_play_develop(void);
 gboolean can_buy_develop(void);

@@ -663,7 +663,7 @@ static Edge *best_road_spot(Map *map, int mynum, resource_values_t *resval)
  * Any road at all that's valid for us to build
  */
 
-void rand_road_iterator(Node *n, int mynum, void *rock)
+static void rand_road_iterator(Node *n, int mynum, void *rock)
 {
     int i;
     Edge **out = (Edge **)rock;
@@ -906,7 +906,7 @@ greedy_setup_road(Map *map, int mynum)
  *
  */
 
-char *
+static char *
 greedy_turn(Map *map, int mynum, gint assets[NO_RESOURCE], 
 	    int curr_turn, gboolean built_or_bought)
 {
@@ -1061,7 +1061,7 @@ greedy_turn(Map *map, int mynum, gint assets[NO_RESOURCE],
     return ret;
 }
 
-char *
+static char *
 greedy_chat(Map *map, int mynum, gint assets[NO_RESOURCE], 
 	    int curr_turn, gboolean built_or_bought)
 {
