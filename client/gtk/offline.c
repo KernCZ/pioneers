@@ -25,6 +25,7 @@
 #include <gnome.h>
 #include "common_gtk.h"
 #include "config-gnome.h"
+#include "theme.h"
 
 static gboolean have_dlg = FALSE;
 static gboolean connectable = FALSE;

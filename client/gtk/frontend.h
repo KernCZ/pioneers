@@ -145,9 +145,6 @@ const gchar *connect_get_port(void);
 const gchar *connect_get_name(void);
 void connect_create_dlg(void);
 
-/* theme.c */
-void init_themes(void);
-
 /* trade.c */
 GtkWidget *trade_build_page(void);
 gboolean can_call_for_quotes(void);

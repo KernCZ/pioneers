@@ -107,5 +107,5 @@ void set_theme(MapTheme * t);
 MapTheme *get_theme(void);
 GList *first_theme(void);
 GList *next_theme(GList * p);
-
+void init_themes(void);
 #endif
