@@ -1,3 +1,15 @@
+gnocatan (0.6.99.1-1) unstable; urgency=low
+
+  * Another upstream beta candidate.
+     - during first connect, show a splash screen
+     - fix bug that gtk server couldn't start AI players
+     - made histogram dialog nicer
+     - let clients exit if net connection lost
+     - updated docs
+     - fix a few Debian bugs, 
+
+ -- Roman Hodek <roman@hodek.net>  Tue, 21 May 2002 21:59:45 +0200
+
 gnocatan (0.6.99-2) unstable; urgency=low
 
   * CVS snapshot from 05/20, 19:15 UTC
