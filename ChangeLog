@@ -13,6 +13,9 @@
 	  localizing.
 	  Revert accidental breakage of the de.po file.
 
+	* server/Makefile.am, server/gnocatan-server-gtk.c:
+	  fix the directory lookup for game themes
+
 2003-01-10  Steve Langasek  <vorlon@debian.org>
 	* docs/Makefile.am, docs/gnocatan.6, docs/gnocatan-server-gtk.6,
 	  docs/gnocatan-server-console.6, Makefile.am, configure.in,
