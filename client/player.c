@@ -114,6 +114,32 @@ static gint calc_statistic_row(gint player_num, StatisticType type)
 	return gtk_clist_find_row_from_data(GTK_CLIST(summary_clist), player) + 1;
 }
 
+
+/* Function to redisplay the running point total for the indicated player */
+static void refresh_victory_point_total(int player_num)
+{
+	Player *player;
+	gint tot;
+	StatisticType type;
+	int row;
+	gchar points[16];
+
+	if (player_num < 0 || player_num >= numElem(players))
+		return;
+
+	player = players + player_num;
+	for (tot = 0, type = 0; type < numElem(statistics); type++) {
+		tot += statistics[type].victory_mult
+		    * player->statistics[type];
+	}
+	snprintf(points, 16, "%d", tot);
+	points[15] = '\0';
+
+	row = gtk_clist_find_row_from_data(GTK_CLIST(summary_clist), player);
+	if (row >= 0)
+		gtk_clist_set_text(GTK_CLIST(summary_clist), row, 2, points);
+}
+
 void player_modify_statistic(gint player_num, StatisticType type, gint num)
 {
 	Player *player = players + player_num;
@@ -128,6 +154,8 @@ void player_modify_statistic(gint player_num, StatisticType type, gint num)
 	row_data[2] = points;
 
 	value = player->statistics[type] += num;
+	if (statistics[type].victory_mult > 0)
+		refresh_victory_point_total(player_num);
 	if (value == 0) {
 		row = gtk_clist_find_row_from_data(GTK_CLIST(summary_clist),
 						   &player->statistics[type]);
@@ -235,6 +263,7 @@ void player_change_name(gint player_num, gchar *name)
 		gtk_clist_set_row_data(GTK_CLIST(summary_clist), row, player);
 		gtk_clist_set_pixmap(GTK_CLIST(summary_clist), row, 0,
 				     player->pixmap, NULL);
+		refresh_victory_point_total(player_num);
 	}
 	gtk_clist_set_text(GTK_CLIST(summary_clist), row, 1,
 			   player_name(player_num, TRUE));
