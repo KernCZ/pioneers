@@ -20,6 +20,55 @@
 #include "theme.h"
 #include "config-gnome.h"
 
+/*
+
+  Description of theme.cfg:
+  -------------------------
+
+  A theme.cfg file is a series of definitions, one per line. Lines starting
+  with '#' are comments. A definition looks like
+
+    VARIABLE = VALUE
+
+  There are three types of variables: pixmaps, colors, and the scaling mode.
+  The value for a pixmap is a filename, relative to the theme directory. A
+  color can be either 'none' or 'transparent' (both equivalent), or '#rrggbb'.
+  (It's also allowed to use 1, 3, or 4 digits per color component.)
+
+  Pixmaps can be defined for hex backgrounds (hill-tile, field-tile,
+  mountain-tile, pasture-tile, forest-tile, desert-tile, sea-tile, board-tile)
+  and port backgrounds (brick-port-tile, grain-port-tile, ore-port-tile,
+  wool-port-tile, and lumber-port-tile). If a hex tile is not defined, the
+  pixmap from the default theme will be used. If a port tile is not given, the
+  corresponding 2:1 ports will be painted in solid background color.
+
+  chip-bg-color, chip-fg-color, and chip-bd-color are the colors for the dice
+  roll chips in the middle of a hex. port-{bg,fg,bd}-color are the same for
+  ports. chip-hi-bg-color is used as background for chips that correspond to
+  the current roll, chip-hi-fg-color is chips showing 6 or 8. You can also
+  define robber-{fg,bg}-color for the robber and hex-bd-color for the border
+  of hexes (around the background image). If any color is not defined, the
+  default color will be used. If a color is 'none' the corresponding element
+  won't be painted at all.
+
+  The five chip colors can also be different for each terrain type. To
+  override the general colors, add color definitions after the name of the
+  pixmap, e.g.:
+
+    field-tile	= field_grain.png none #d0d0d0 none #303030 #ffffff
+
+  The order is bg, fg, bd, hi-bg, hi-fg. Sorry, you can't skip definitions at
+  the beginning...
+
+  Normally, all pixmaps are used in their native size and repeat over their
+  area as needed (tiling). This doesn't look good for photo-like images, so
+  you can add "scaling = always" in that case. Then images will always be
+  scaled to the current size of a hex. (BTW, the height should be 1/cos(pi/6)
+  (~ 1.1547) times the width of the image.) Two other available modes are
+  'only-downscale' and 'only-upscale' to make images only smaller or larger,
+  resp. (in case it's needed sometimes...)
+  
+*/
 
 #define TCOL_INIT(r,g,b)	{ TRUE, FALSE, FALSE, { 0, r, g, b } }
 #define TCOL_TRANSP()		{ TRUE, TRUE, FALSE, { 0, 0, 0, 0 } }
@@ -247,18 +296,28 @@ void theme_rescale(int new_width)
 	
 	switch(current_theme->scaling) {
 	  case NEVER:
-		break;
+		return;
 		
 	  case ONLY_DOWNSCALE:
-	  case ONLY_UPSCALE:
-	  case ALWAYS:
-		for(i = 0; i < numElem(current_theme->terrain_tiles); ++i) {
-			gdk_imlib_render(current_theme->scaledata[i].image,
-							 new_width, new_width/current_theme->scaledata[i].aspect);
-			current_theme->terrain_tiles[i] =
-				gdk_imlib_move_image(current_theme->scaledata[i].image);
-		}
+		if (new_width >= current_theme->scaledata[0].native_width)
+			return;
 		break;
+		
+	  case ONLY_UPSCALE:
+		if (new_width <= current_theme->scaledata[0].native_width)
+			return;
+		break;
+		
+	  case ALWAYS:
+		break;
+	}
+
+	for(i = 0; i < numElem(current_theme->terrain_tiles); ++i) {
+		gdk_imlib_render(current_theme->scaledata[i].image,
+						 new_width,
+						 new_width/current_theme->scaledata[i].aspect);
+		current_theme->terrain_tiles[i] =
+			gdk_imlib_move_image(current_theme->scaledata[i].image);
 	}
 }
 
