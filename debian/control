@@ -22,7 +22,7 @@ Description: Gnocatan client - a game for Gnome
 Package: gnocatan-server-console
 Architecture: any
 Depends: gnocatan-server-data, ${shlibs:Depends}
-Recommends: gnocatan-client
+Recommends: gnocatan-client, gnocatan-ai
 Conflicts: gnocatan-server
 Replaces: gnocatan-server
 Description: Gnocatan server - a game for Gnome
@@ -35,7 +35,7 @@ Description: Gnocatan server - a game for Gnome
 Package: gnocatan-server-gtk
 Architecture: any
 Depends: gnocatan-server-data, ${shlibs:Depends}
-Recommends: gnocatan-client
+Recommends: gnocatan-client, gnocatan-ai
 Conflicts: gnocatan-server
 Replaces: gnocatan-server
 Description: Gnocatan server - a game for Gnome
