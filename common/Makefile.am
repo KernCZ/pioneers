@@ -1,4 +1,4 @@
-noinst_LIBRARIES = libgnocatan.a
+noinst_LIBRARIES = libgnocatan.a libgnocatan_gui.a
 
 INCLUDES = \
 	-DGNOMELOCALEDIR=\""$(datadir)/locale"\" \
@@ -9,8 +9,6 @@ libgnocatan_a_SOURCES = \
 	buildrec.h \
 	cards.c \
 	cards.h \
-	common_gui.c \
-	common_gui.h \
 	cost.c \
 	cost.h \
 	game.c \
@@ -27,3 +25,7 @@ libgnocatan_a_SOURCES = \
 	quoteinfo.h \
 	state.c \
 	state.h
+
+libgnocatan_gui_a_SOURCES = \
+	common_gui.c \
+	common_gui.h

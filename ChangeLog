@@ -1,3 +1,7 @@
+2000-05-12  Bibek Sahu <scorpio@dodds.net>
+	* Moved the common gui stuff into a separate library, so a non-gui 
+	program won't depend on the gui functions.
+
 2000-05-12  Dave Cole <dave@dccs.com.au>
 
 	* client/client.c, common/state.c, common/state.h,

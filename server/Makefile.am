@@ -6,7 +6,8 @@ INCLUDES = \
 	-I$(srcdir)/../common -I. \
 	$(GNOME_INCLUDEDIR)
 
-gnocatan_server_DEPENDENCIES = ../common/libgnocatan.a
+gnocatan_server_DEPENDENCIES = ../common/libgnocatan.a \
+	../common/libgnocatan_gui.a
 
 gnocatan_server_SOURCES = \
 	buildutil.c \
@@ -25,6 +26,7 @@ gnocatan_server_SOURCES = \
 
 gnocatan_server_LDADD = \
 	../common/libgnocatan.a \
+	../common/libgnocatan_gui.a \
 	$(GNOME_LIBDIR) \
 	$(GNOMEUI_LIBS)
 
