@@ -1,3 +1,8 @@
+2000-07-09  Jeff Breidenbach  <jeff@alum.mit.edu>
+
+	* debian/control: First pass at Build-Depends: field. (presumably
+	useful for the Debian autobuilders.)
+
 2000-07-08  Andy Heroff  <aheroff@mediaone.net>
 
 	* client/gui.c: Changed notebook tabs from left to top to fix the
