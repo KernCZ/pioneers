@@ -17,6 +17,7 @@
 #include "gui.h"
 #include "player.h"
 #include "log.h"
+#include "theme.h"
 
 GdkColor black = { 0, 0, 0, 0 };
 GdkColor white = { 0, 0xff00, 0xff00, 0xff00 };
@@ -24,12 +25,8 @@ GdkColor red = { 0, 0xff00, 0, 0 };
 GdkColor green = { 0, 0, 0xff00, 0 };
 GdkColor blue = { 0, 0, 0, 0xff00 };
 
-static GdkPixmap *board_tile;
-static GdkColor roll_bg = { 0, 0xff00, 0xda00, 0xb900 };
 static GdkColormap* cmap;
 static GdkFont *roll_font;
-
-static GdkPixmap *terrain_tiles[7];
 
 typedef struct {
 	GuiMap *gmap;
@@ -43,7 +40,7 @@ static void calc_node_poly(GuiMap *gmap, Node *node, Polygon *shape, Polygon *po
 
 GdkPixmap *guimap_terrain(Terrain terrain)
 {
-	return terrain_tiles[terrain];
+	return get_theme()->terrain_tiles[terrain];
 }
 
 void load_pixmap(gchar *name, GdkPixmap **pixmap, GdkBitmap **mask)
@@ -56,6 +53,10 @@ void load_pixmap(gchar *name, GdkPixmap **pixmap, GdkBitmap **mask)
                 exit(1);
         }
 	gdk_imlib_load_file_to_pixmap(path, pixmap, mask);
+	if (!*pixmap) {
+                g_error(_("Could not load \'%s\' pixmap file.\n"), path);
+                exit(1);
+        }
         g_free(path);
         g_free(file);
 }
@@ -70,7 +71,6 @@ GuiMap *guimap_new()
 		return gmap;
 
 	cmap = gdk_colormap_get_system();
-	gdk_color_alloc(cmap, &roll_bg);
 	gdk_color_alloc(cmap, &black);
 	gdk_color_alloc(cmap, &white);
 	gdk_color_alloc(cmap, &red);
@@ -78,15 +78,6 @@ GuiMap *guimap_new()
 	gdk_color_alloc(cmap, &blue);
 
 	roll_font = gdk_font_load("-adobe-helvetica-bold-r-normal-*-*-120-*-*-p-*-iso8859-1");
-
-	load_pixmap("sea.png", &terrain_tiles[SEA_TERRAIN], NULL);
-	load_pixmap("hill.png", &terrain_tiles[HILL_TERRAIN], NULL);
-	load_pixmap("field.png", &terrain_tiles[FIELD_TERRAIN], NULL);
-	load_pixmap("mountain.png", &terrain_tiles[MOUNTAIN_TERRAIN], NULL);
-	load_pixmap("pasture.png", &terrain_tiles[PASTURE_TERRAIN], NULL);
-	load_pixmap("forest.png", &terrain_tiles[FOREST_TERRAIN], NULL);
-	load_pixmap("desert.png", &terrain_tiles[DESERT_TERRAIN], NULL);
-	load_pixmap("board.png", &board_tile, NULL);
 
 	return gmap;
 }
@@ -325,44 +316,59 @@ void guimap_robber_polygon(GuiMap *gmap, Hex *hex, Polygon *poly)
 
 void draw_dice_roll(GdkPixmap *pixmap, GdkGC *gc,
 		    gint x_offset, gint y_offset, gint radius,
-		    gint n, gboolean highlight)
+		    gint n, gint terrain, gboolean highlight)
 {
 	gchar num[10];
 	gint lbearing, rbearing, width, ascent, descent;
 	gint x, y;
 	gint idx;
+	MapTheme *theme = get_theme();
+	THEME_COLOR col;
+	TColor *tcol;
 
+#define col_or_ovr(ter,cno)												\
+	((terrain < TC_MAX_OVERRIDE && theme->ovr_colors[ter][cno].set) ?	\
+	 &(theme->ovr_colors[ter][cno]) :									\
+	 &(theme->colors[cno]))
+	
 	gdk_gc_set_fill(gc, GDK_SOLID);
-	gdk_gc_set_foreground(gc, &roll_bg);
-	if (highlight)
-		gdk_gc_set_foreground(gc, &green);
+	col = highlight ? TC_CHIP_H_BG : TC_CHIP_BG;
+	tcol = col_or_ovr(terrain, col);
+	if (!tcol->transparent) {
+		gdk_gc_set_foreground(gc, &(tcol->color));
+		gdk_draw_arc(pixmap, gc, TRUE,
+					 x_offset - radius, y_offset - radius,
+					 2 * radius, 2 * radius,
+					 0, 360 * 64);
+	}
+	tcol = col_or_ovr(terrain, TC_CHIP_BD);
+	if (!tcol->transparent) {
+		gdk_gc_set_foreground(gc, &(tcol->color));
+		gdk_draw_arc(pixmap, gc, FALSE,
+					 x_offset - radius, y_offset - radius,
+					 2 * radius, 2 * radius,
+					 0, 360 * 64);
+	}
+	col = (n == 6 || n == 8) ? TC_CHIP_H_FG : TC_CHIP_FG;
+	tcol = col_or_ovr(terrain, col);
+	if (!tcol->transparent) {
+		sprintf(num, "%d", n);
+		gdk_text_extents(roll_font, num, strlen(num),
+						 &lbearing, &rbearing,
+						 &width, &ascent, &descent);
+		gdk_gc_set_foreground(gc, &(tcol->color));
+		gdk_draw_text(pixmap, roll_font, gc,
+					  x_offset - width / 2,
+					  y_offset + (ascent + descent) / 2,
+					  num, strlen(num));
 
-	gdk_draw_arc(pixmap, gc, TRUE,
-		     x_offset - radius, y_offset - radius,
-		     2 * radius, 2 * radius,
-		     0, 360 * 64);
-	gdk_gc_set_foreground(gc, &black);
-	gdk_draw_arc(pixmap, gc, FALSE,
-		     x_offset - radius, y_offset - radius,
-		     2 * radius, 2 * radius,
-		     0, 360 * 64);
-	sprintf(num, "%d", n);
-	gdk_text_extents(roll_font, num, strlen(num),
-			 &lbearing, &rbearing,
-			 &width, &ascent, &descent);
-	if (n == 6 || n == 8)
-	    gdk_gc_set_foreground(gc, &red);
-	gdk_draw_text(pixmap, roll_font, gc,
-		      x_offset - width / 2,
-		      y_offset + (ascent + descent) / 2,
-		      num, strlen(num));
-
-	x = x_offset - chances[n] * 4 / 2;
-	y = y_offset + (ascent + descent) / 2 + 1;
-	for (idx = 0; idx < chances[n]; idx++) {
-	    gdk_draw_arc(pixmap, gc, TRUE,
-			 x, y, 3, 3, 0, 360 * 64);
-	    x += 4;
+		x = x_offset - chances[n] * 4 / 2;
+		y = y_offset + (ascent + descent) / 2 + 1;
+		for (idx = 0; idx < chances[n]; idx++) {
+			gdk_draw_arc(pixmap, gc, TRUE,
+						 x, y, 3, 3, 0, 360 * 64);
+			x += 4;
+		}
 	}
 }
 
@@ -373,6 +379,7 @@ static gboolean display_hex(Map *map, Hex *hex, GuiMap *gmap)
 	Polygon poly = { points, numElem(points) };
 	int idx;
 	const int radius = 15;
+	MapTheme *theme = get_theme();
 
 	calc_hex_pos(gmap, hex->x, hex->y, &x_offset, &y_offset);
 
@@ -383,7 +390,10 @@ static gboolean display_hex(Map *map, Hex *hex, GuiMap *gmap)
 	gdk_region_offset(gmap->hex_region, x_offset, y_offset);
 	gdk_gc_set_clip_region(gmap->gc, gmap->hex_region);
 	gdk_gc_set_fill(gmap->gc, GDK_TILED);
-	gdk_gc_set_tile(gmap->gc, terrain_tiles[hex->terrain]);
+	gdk_gc_set_tile(gmap->gc, theme->terrain_tiles[hex->terrain]);
+	gdk_gc_set_ts_origin(gmap->gc,
+						 x_offset-gmap->x_point,
+						 y_offset-gmap->hex_radius);
 	gdk_draw_rectangle(gmap->pixmap, gmap->gc, TRUE, 
 			   x_offset - gmap->hex_radius,
 			   y_offset - gmap->hex_radius,
@@ -398,16 +408,18 @@ static gboolean display_hex(Map *map, Hex *hex, GuiMap *gmap)
 	poly_offset(&poly, x_offset, y_offset);
 
 	gdk_gc_set_fill(gmap->gc, GDK_SOLID);
-	gdk_gc_set_foreground(gmap->gc, &roll_bg);
-	if (hex->terrain != SEA_TERRAIN)
-		poly_draw(gmap->pixmap, gmap->gc, FALSE, &poly);
+	if (!theme->colors[TC_HEX_BD].transparent) {
+		gdk_gc_set_foreground(gmap->gc, &theme->colors[TC_HEX_BD].color);
+		if (hex->terrain != SEA_TERRAIN)
+			poly_draw(gmap->pixmap, gmap->gc, FALSE, &poly);
+	}
 
 	/* Draw the dice roll
 	 */
 	if (hex->roll > 0) {
 		draw_dice_roll(gmap->pixmap, gmap->gc,
 			       x_offset, y_offset, radius,
-			       hex->roll,
+			       hex->roll, hex->terrain,
 			       !hex->robber && hex->roll==gmap->highlight_chit);
 	}
 
@@ -416,7 +428,11 @@ static gboolean display_hex(Map *map, Hex *hex, GuiMap *gmap)
 	if (hex->resource != NO_RESOURCE) {
 		gchar *str = "";
 		gint lbearing, rbearing, width, ascent, descent;
-
+		int tileno = hex->resource == ANY_RESOURCE ?
+					 ANY_PORT_TILE : hex->resource;
+		gboolean drawit;
+		gboolean typeind;
+		
 		/* Draw lines from port to shore
 		 */
 		gdk_gc_set_foreground(gmap->gc, &white);
@@ -431,45 +447,60 @@ static gboolean display_hex(Map *map, Hex *hex, GuiMap *gmap)
 			      points[hex->facing].x, points[hex->facing].y);
 		/* Fill/tile port indicator
 		 */
-		if (hex->resource == ANY_RESOURCE) {
-			gdk_gc_set_foreground(gmap->gc, &blue);
-		} else {
+		if (theme->port_tiles[tileno]) {
 			gdk_gc_set_fill(gmap->gc, GDK_TILED);
-			gdk_gc_set_tile(gmap->gc, terrain_tiles[hex->resource]);
+			gdk_gc_set_tile(gmap->gc, theme->port_tiles[tileno]);
+			typeind = TRUE;
+			drawit = TRUE;
+		} else if (!theme->colors[TC_PORT_BG].transparent) {
+			gdk_gc_set_fill(gmap->gc, GDK_SOLID);
+			gdk_gc_set_foreground(gmap->gc, &theme->colors[TC_PORT_BG].color);
+			typeind = FALSE;
+			drawit = TRUE;
 		}
-		gdk_draw_arc(gmap->pixmap, gmap->gc, TRUE,
-			     x_offset - radius, y_offset - radius,
-			     2 * radius, 2 * radius,
-			     0, 360 * 64);
+		else {
+			typeind = FALSE;
+			drawit = FALSE;
+		}
+		if (drawit) {
+			gdk_draw_arc(gmap->pixmap, gmap->gc, TRUE,
+						 x_offset - radius, y_offset - radius,
+						 2 * radius, 2 * radius,
+						 0, 360 * 64);
+		}
 		gdk_gc_set_fill(gmap->gc, GDK_SOLID);
 		/* Outline port indicator
 		 */
-		gdk_gc_set_line_attributes(gmap->gc, 1, GDK_LINE_SOLID,
-					   GDK_CAP_BUTT, GDK_JOIN_MITER);
-			gdk_gc_set_foreground(gmap->gc, &black);
-		gdk_draw_arc(gmap->pixmap, gmap->gc, FALSE,
-			     x_offset - radius, y_offset - radius,
-			     2 * radius, 2 * radius,
-			     0, 360 * 64);
+		if (!theme->colors[TC_PORT_BD].transparent) {
+			gdk_gc_set_line_attributes(gmap->gc, 1, GDK_LINE_SOLID,
+									   GDK_CAP_BUTT, GDK_JOIN_MITER);
+			gdk_gc_set_foreground(gmap->gc, &theme->colors[TC_PORT_BD].color);
+			gdk_draw_arc(gmap->pixmap, gmap->gc, FALSE,
+						 x_offset - radius, y_offset - radius,
+						 2 * radius, 2 * radius,
+						 0, 360 * 64);
+		}
 		/* Print trading ratio
 		 */
-		gdk_gc_set_foreground(gmap->gc, &white);
-		switch (hex->resource) {
-		case BRICK_RESOURCE:
-		case GRAIN_RESOURCE:
-		case ORE_RESOURCE:
-		case WOOL_RESOURCE:
-		case LUMBER_RESOURCE: str = "2:1"; break;
-		case ANY_RESOURCE: str = "3:1"; break;
-		case NO_RESOURCE: str = ""; break;
+		if (!theme->colors[TC_PORT_FG].transparent) {
+			gdk_gc_set_foreground(gmap->gc, &theme->colors[TC_PORT_FG].color);
+			switch (hex->resource) {
+			  case BRICK_RESOURCE:	str = typeind ? _("2:1") : _("B"); break;
+			  case GRAIN_RESOURCE:	str = typeind ? _("2:1") : _("G"); break;
+			  case ORE_RESOURCE:	str = typeind ? _("2:1") : _("O"); break;
+			  case WOOL_RESOURCE:	str = typeind ? _("2:1") : _("W"); break;
+			  case LUMBER_RESOURCE: str = typeind ? _("2:1") : _("L"); break;
+			  case ANY_RESOURCE:	str = _("3:1"); break;
+			  case NO_RESOURCE:		str = ""; break;
+			}
+			gdk_text_extents(roll_font, str, strlen(str),
+							 &lbearing, &rbearing,
+							 &width, &ascent, &descent);
+			gdk_draw_text(gmap->pixmap, roll_font, gmap->gc,
+						  x_offset - width / 2 + 1,
+						  y_offset + (ascent + descent) / 2 + 1,
+						  str, strlen(str));
 		}
-		gdk_text_extents(roll_font, str, strlen(str),
-				 &lbearing, &rbearing,
-				 &width, &ascent, &descent);
-		gdk_draw_text(gmap->pixmap, roll_font, gmap->gc,
-			      x_offset - width / 2 + 1,
-			      y_offset + (ascent + descent) / 2 + 1,
-			      str, strlen(str));
 	}
 
 	gdk_gc_set_line_attributes(gmap->gc, 1, GDK_LINE_SOLID,
@@ -544,10 +575,14 @@ static gboolean display_hex(Map *map, Hex *hex, GuiMap *gmap)
 		guimap_robber_polygon(gmap, hex, &poly);
 		gdk_gc_set_line_attributes(gmap->gc, 1, GDK_LINE_SOLID,
 					   GDK_CAP_BUTT, GDK_JOIN_MITER);
-		gdk_gc_set_foreground(gmap->gc, &black);
-		poly_draw(gmap->pixmap, gmap->gc, TRUE, &poly);
-		gdk_gc_set_foreground(gmap->gc, &white);
-		poly_draw(gmap->pixmap, gmap->gc, FALSE, &poly);
+		if (!theme->colors[TC_ROBBER_FG].transparent) {
+			gdk_gc_set_foreground(gmap->gc, &theme->colors[TC_ROBBER_FG].color);
+			poly_draw(gmap->pixmap, gmap->gc, TRUE, &poly);
+		}
+		if (!theme->colors[TC_ROBBER_BD].transparent) {
+			gdk_gc_set_foreground(gmap->gc, &theme->colors[TC_ROBBER_BD].color);
+			poly_draw(gmap->pixmap, gmap->gc, FALSE, &poly);
+		}
 	}
 
 	return FALSE;
@@ -602,6 +637,7 @@ void guimap_scale_with_radius(GuiMap *gmap, gint radius)
 			gmap->node_region[idx] = NULL;
 		}
 	}
+	theme_rescale(2*gmap->x_point);
 }
 
 void guimap_scale_to_size(GuiMap *gmap, gint width, gint height)
@@ -649,7 +685,7 @@ void guimap_display(GuiMap *gmap)
 	build_hex_region(gmap);
 
 	gdk_gc_set_fill(gmap->gc, GDK_TILED);
-	gdk_gc_set_tile(gmap->gc, board_tile);
+	gdk_gc_set_tile(gmap->gc, get_theme()->terrain_tiles[BOARD_TILE]);
 	gdk_draw_rectangle(gmap->pixmap, gmap->gc, TRUE, 0, 0,
 			   gmap->width, gmap->height);
 
@@ -863,7 +899,7 @@ static void redraw_road(GuiMap *gmap, Edge *edge)
 	guimap_road_polygon(gmap, edge, &poly);
 	poly_bound_rect(&poly, 1, &rect);
 	gdk_gc_set_fill(gmap->gc, GDK_TILED);
-	gdk_gc_set_tile(gmap->gc, board_tile);
+	gdk_gc_set_tile(gmap->gc, get_theme()->terrain_tiles[BOARD_TILE]);
 	gdk_draw_rectangle(gmap->pixmap, gmap->gc, TRUE,
 			   rect.x, rect.y, rect.width, rect.height);
 
@@ -884,7 +920,7 @@ static void redraw_ship(GuiMap *gmap, Edge *edge)
 	guimap_ship_polygon(gmap, edge, &poly);
 	poly_bound_rect(&poly, 1, &rect);
 	gdk_gc_set_fill(gmap->gc, GDK_TILED);
-	gdk_gc_set_tile(gmap->gc, board_tile);
+	gdk_gc_set_tile(gmap->gc, get_theme()->terrain_tiles[BOARD_TILE]);
 	gdk_draw_rectangle(gmap->pixmap, gmap->gc, TRUE,
 			   rect.x, rect.y, rect.width, rect.height);
 
@@ -905,7 +941,7 @@ static void redraw_bridge(GuiMap *gmap, Edge *edge)
 	guimap_bridge_polygon(gmap, edge, &poly);
 	poly_bound_rect(&poly, 1, &rect);
 	gdk_gc_set_fill(gmap->gc, GDK_TILED);
-	gdk_gc_set_tile(gmap->gc, board_tile);
+	gdk_gc_set_tile(gmap->gc, get_theme()->terrain_tiles[BOARD_TILE]);
 	gdk_draw_rectangle(gmap->pixmap, gmap->gc, TRUE,
 			   rect.x, rect.y, rect.width, rect.height);
 
@@ -1016,7 +1052,7 @@ static void redraw_node(GuiMap *gmap, Node *node, Polygon *poly)
 
 	poly_bound_rect(poly, 1, &rect);
 	gdk_gc_set_fill(gmap->gc, GDK_TILED);
-	gdk_gc_set_tile(gmap->gc, board_tile);
+	gdk_gc_set_tile(gmap->gc, get_theme()->terrain_tiles[BOARD_TILE]);
 	gdk_draw_rectangle(gmap->pixmap, gmap->gc, TRUE,
 			   rect.x, rect.y, rect.width, rect.height);
 
