@@ -362,11 +362,11 @@ static struct tvars {
 };
 
 
-#define ERR(str,args...)						\
+#define ERR(str,...)						\
 	do {										\
 		fprintf(stderr, "%s:%d: ",				\
 			    filename, lno);					\
-		fprintf(stderr, str, ## args);			\
+		fprintf(stderr, str, ## __VA_ARGS__);			\
 		fprintf(stderr, "\n");					\
 	} while(0)
 

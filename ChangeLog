@@ -1,3 +1,8 @@
+2003-01-08  Steve Langasek  <vorlon@debian.org>
+
+	* client/theme.c: use a more portable variadic macro
+	  syntax, to address OS X concerns
+
 2003-01-01  Jeff Breidenbach  <jab@debian.org>
 
 	* debian/gnocatan-meta-server.init: privilige reduction
