@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnocatan 0.7.2\n"
 "POT-Creation-Date: 2003-01-11 15:10-0600\n"
-"PO-Revision-Date: 2003-01-11 16:23-0600\n"
+"PO-Revision-Date: 2003-01-11 23:46-0600\n"
 "Last-Translator: Steve Langasek <vorlon@dodds.net>\n"
 "Language-Team: Spanish <debian-l10n-spanish@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -420,7 +420,7 @@ msgstr ""
 #: ai/player.c:346 client/player.c:630
 #, c-format
 msgid "%s built a road.\n"
-msgstr "%s contruye un camino.\n"
+msgstr "%s construye un camino.\n"
 
 #: ai/player.c:355 client/player.c:643
 #, c-format
@@ -838,7 +838,7 @@ msgstr "Nombre de mapa"
 
 #: client/connect.c:679
 msgid "Current Gnocatan Servers"
-msgstr "Servidores actuales de Gnocatan"
+msgstr "Servidores actuales de Gnocatán"
 
 #: client/connect.c:722
 msgid "Create New Server"
@@ -846,7 +846,7 @@ msgstr "Crear un nuevo servidor"
 
 #: client/connect.c:860 client/gui.c:792
 msgid "Connect to Gnocatan server"
-msgstr "Conectar al servidor Gnocatan"
+msgstr "Conectar al servidor Gnocatán"
 
 #: client/connect.c:879
 msgid "Meta Server"
@@ -957,7 +957,7 @@ msgstr ""
 
 #: client/gui.c:362
 msgid "Welcome to Gnocatan"
-msgstr "Bienvenido al Gnocatan"
+msgstr "Bienvenido al Gnocatán"
 
 #: client/gui.c:604
 msgid "Appearance"
@@ -1121,7 +1121,7 @@ msgstr "Terminar"
 
 #: client/gui.c:1006
 msgid "Welcome to Gnocatan!"
-msgstr "Bienvenido a Gnocatan!"
+msgstr "¡Bienvenido a Gnocatán!"
 
 #: client/gui.c:1039
 msgid "Gnocatan"
