@@ -84,9 +84,11 @@ struct _Client {
 	gboolean send_hello;
 };
 
-static gchar *redirect_location;
-static gchar *myhostname;
+static gchar *redirect_location = NULL;
+static gchar *myhostname = NULL;
 static gboolean can_create_games;
+
+static int port_low = 0, port_high = 0;
 
 static GList *client_list;
 
@@ -407,11 +409,13 @@ static const gchar *get_server_path(void)
 static void client_create_new_server(Client *client, gchar *line)
 {
 	char *terrain, *numplayers, *points, *sevens_rule, *numai, *type;
-	int pid, fd;
+	int pid, fd, port_used;
+	gboolean found_used = TRUE;
 	socklen_t yes=1;
 	struct sockaddr_in sa;
 	char port[20];
 	const char *console_server;
+	GList *list;
 
 	line += strspn(line, " \t");
 	terrain = line;
@@ -465,7 +469,26 @@ static void client_create_new_server(Client *client, gchar *line)
 		return;
 	}
 	sa.sin_family = AF_INET;
-	sa.sin_port = 0;
+	if ((port_low == 0) && (port_high == 0)) {
+		sa.sin_port = 0;
+	} else {
+		for (port_used = port_low; ((found_used == TRUE) && (port_used <= port_high)); port_used++) {
+			found_used = FALSE;
+			for (list = client_list; list != NULL; list = g_list_next(list)) {
+				Client *scan = list->data;
+				if ((scan->port != NULL) && (atoi(scan->port) == port_used)) {
+					found_used = TRUE;
+				}
+			}
+			if (found_used == FALSE) {
+				sa.sin_port = port_used;
+			}
+	}
+		if (found_used == TRUE) {
+			client_printf(client, "Starting server failed: no port available\n");
+			return;
+		}
+	}	
 	sa.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
 	if (bind(fd, (struct sockaddr *)&sa, sizeof(sa)) < 0) {
 		client_printf(client, "Binding socket failed: %s\n",
@@ -987,11 +1010,11 @@ static void convert_to_daemon(void)
 
 int main(int argc, char *argv[])
 {
-	int c;
+	int c, count;
 	gboolean make_daemon = FALSE;
 	GList *game_list;
 
-	while ((c = getopt(argc, argv, "dr:")) != EOF)
+	while ((c = getopt(argc, argv, "dr:hs:p:")) != EOF)
 		switch (c) {
 		case 'd':
 			make_daemon = TRUE;
@@ -999,7 +1022,27 @@ int main(int argc, char *argv[])
 		case 'r':
 			redirect_location = optarg;
 			break;
-		}
+		case 'h':
+			printf("Usage: gnocatan-meta-server [options]\n");
+			printf("Options:\n");
+			printf("  -h               Display this help text\n");
+			printf("  -d               Daemonize the metaserver on start\n");
+			printf("  -r <server>      Redirect clients to another metaserver\n");
+			printf("  -s <hostname>    Use this hostname when creating new games\n");
+			printf("  -p <from>-<to>   Use this ports range when creating new games\n");
+			exit(1);
+			break;
+		case 's':
+			myhostname = g_strdup(optarg);
+			break;
+		case 'p':
+			count = sscanf(optarg, "%d-%d", &port_low, &port_high);
+			if ((port_low < 0) || (port_low > port_high) || (count != 2)) {
+				port_low = 0;
+				port_high = 0;
+			}
+			break;
+	}
 
 	openlog("gnocatan-meta", LOG_PID, LOG_USER);
 	if (make_daemon)
@@ -1017,7 +1060,8 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	myhostname = get_meta_server_name(FALSE);
+	if (!myhostname)
+		myhostname = get_meta_server_name(FALSE);
 	if (!setup_accept_sock(GNOCATAN_DEFAULT_META_PORT))
 		return 1;
 

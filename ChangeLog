@@ -18,6 +18,10 @@
 	server-console started from the meta-server will use the same hostname
 	as the meta-server.
 	
+2005-03-12  Arjan Schrijver <arjan@anymore.nl>
+	* meta-server/gnocatan-meta-server.c: Added commandline options to
+	limit the portrange of the metaserver, and to set the hostname.
+
 2005-03-02  0.8.1.54  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/interface.c: Reversal of the patch in 0.8.1.48, because
 	it would set the client to the state turn when performing a maritime
