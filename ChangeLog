@@ -12,6 +12,8 @@
 	removed deprecated gtk_clist.
 	* client/gtk/frontend.h, client/gtk/player.c: Made player_create_icon
 	accessible to other source files.
+	* client/gtk/gui.c(gui_set_game_params): Initially the map pixmap was
+	too small. (Debian bug #284063)
 
 2004-11-28  0.8.1.44  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/gui.h: Fix for the macro that would have bad side effects

@@ -897,13 +897,7 @@ static void show_uiinfo(EventType event, gboolean show)
 void gui_set_game_params(const GameParams *params)
 {
 	gmap->map = params->map;
-	guimap_scale_to_size(gmap, MAP_WIDTH, MAP_HEIGHT);
-
-	if (gmap->area->window != NULL)
-		gdk_window_set_back_pixmap(gmap->area->window, NULL, FALSE);
-
-	gtk_widget_set_size_request(gmap->area, gmap->width, gmap->height);
-	gtk_widget_queue_draw_area(gmap->area, 0, 0, gmap->width, gmap->height);
+	gtk_widget_queue_resize(gmap->area);
 
 	show_uiinfo(GUI_ROAD, params->num_build_type[BUILD_ROAD] > 0);
 	show_uiinfo(GUI_SHIP, params->num_build_type[BUILD_SHIP] > 0);
