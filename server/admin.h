@@ -43,7 +43,6 @@ extern GameParams *params;
 /**** game list control functions ****/
 GameParams *game_list_find_item( const gchar *title );
 void game_list_foreach( GFunc func, gpointer user_data );
-GameParams *load_game_desc(gchar *fname);
 void load_game_types( const gchar *path );
 
 /**** callbacks to set parameters ****/

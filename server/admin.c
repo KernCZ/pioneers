@@ -25,10 +25,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/types.h>
 #include <unistd.h>
-#include <dirent.h>
-#include <limits.h>
 #ifdef HAVE_GETOPT_H
 #include <getopt.h>
 #endif
@@ -51,8 +48,7 @@
 #define TERRAIN_DEFAULT	0
 #define TERRAIN_RANDOM	1
 
-static GHashTable *_game_list = NULL;
-static GSList *_game_listS = NULL; /* The sorted list */
+static GSList *_game_list = NULL; /* The sorted list of game titles */
 
 gboolean register_server = FALSE;
 gchar server_port[NI_MAXSERV] = GNOCATAN_DEFAULT_GAME_PORT;
@@ -60,6 +56,8 @@ gchar server_admin_port[NI_MAXSERV] = GNOCATAN_DEFAULT_ADMIN_PORT;
 extern gint no_player_timeout;
 
 GameParams *params = NULL;
+
+static GameParams *load_game_desc(const gchar *fname);
 
 static gint sort_function(gconstpointer a, gconstpointer b)
 {
@@ -71,35 +69,47 @@ static void game_list_add_item( GameParams *item )
 {
 
 	if( !_game_list ) {
-		_game_list = g_hash_table_new( g_str_hash, g_str_equal );
 		params = item;
 	}
 
-	g_hash_table_insert( _game_list, item->title, item );
+	_game_list = g_slist_insert_sorted(_game_list, item, sort_function);
+}
 
-	/*@@RC I know this is duplicate code,
-	* but I need both the accessibility of the hash,
-	* and the orderability of the list */
-	_game_listS = g_slist_insert_sorted(_game_listS, item, sort_function);
+/** Returns TRUE if the game list is empty */
+static gboolean game_list_is_empty(void)
+{
+	return _game_list == NULL;
+}
+
+static gint game_list_locate(gconstpointer param, gconstpointer argument)
+{
+	const GameParams *data = param;
+	const gchar *title = argument;
+	return strcmp(data->title, title);
 }
 
 GameParams *game_list_find_item( const gchar *title )
 {
+	GSList *result;
 	if( !_game_list ) {
 		return NULL;
 	}
 
-	return g_hash_table_lookup( _game_list, title );
+	result = g_slist_find_custom(_game_list, title, game_list_locate);
+	if (result)
+		return result->data;
+	else
+		return NULL;
 }
 
 void game_list_foreach( GFunc func, gpointer user_data )
 {
-	if (_game_listS ) {
-		g_slist_foreach( _game_listS, func, user_data );
+	if (_game_list ) {
+		g_slist_foreach( _game_list, func, user_data );
 	}
 }
 
-GameParams *load_game_desc(gchar *fname)
+GameParams *load_game_desc(const gchar *fname)
 {
 	FILE *fp;
 	gchar line[512];
@@ -118,39 +128,39 @@ GameParams *load_game_desc(gchar *fname)
 			line[len - 1] = '\0';
 		params_load_line(params, line);
 	}
-	params_load_finish(params);
 	fclose(fp);
-	return params;
+	if (params_load_finish(params))
+		return params;
+	g_warning("Skipping: %s", fname);
+	return NULL;
 }
 
 void load_game_types( const gchar *path )
 {
-	DIR *dir;
-	gchar *fname;
-	long fnamelen;
-	struct dirent *ent;
+	GDir *dir;
+	const gchar *fname;
+	gchar *fullname;
 
-	if ((dir = opendir(path)) == NULL) {
+	if ((dir = g_dir_open(path, 0, NULL)) == NULL) {
 		log_message( MSG_ERROR, _("Missing game directory\n"));
 		return;
 	}
 
-	fnamelen = pathconf(path,_PC_NAME_MAX);
-	fname = malloc(1 + fnamelen);
-	for (ent = readdir(dir); ent != NULL; ent = readdir(dir)) {
-		gint len = strlen(ent->d_name);
+	while ((fname = g_dir_read_name(dir))) {
 		GameParams *params;
+		gint len = strlen(fname);
 
-		if (len < 6 || strcmp(ent->d_name + len - 5, ".game") != 0)
+		if (len < 6 || strcmp(fname + len - 5, ".game") != 0)
 			continue;
-		g_snprintf(fname, fnamelen, "%s/%s", path, ent->d_name);
-		params = load_game_desc(fname);
-
-		game_list_add_item( params );
+		fullname = g_build_filename(path, fname);
+		params = load_game_desc(fullname);
+		g_free(fullname);
+		if (params)
+			game_list_add_item( params );
 	}
-
-	closedir(dir);
-	free(fname);
+	g_dir_close(dir);
+	if (game_list_is_empty())
+		g_error("No games available");
 }
 
 /* game configuration functions / callbacks */

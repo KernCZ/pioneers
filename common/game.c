@@ -298,10 +298,17 @@ void params_load_line(GameParams *params, gchar *line)
 	}
 	if (match_word(&line, "nosetup")) {
 		gint x = 0, y = 0, pos = 0;
+		Node *node;
 		/* don't tolerate invalid game descriptions */
 		g_assert (params->map != NULL);
 		sscanf (line, "%d %d %d", &x, &y, &pos);
-		map_node (params->map, x, y, pos)->no_setup = TRUE;
+		node = map_node (params->map, x, y, pos);
+		if (node) {
+			node->no_setup = TRUE;
+		} else {
+			g_warning(_("Nosetup node %d %d %d is not in the map"), 
+					x, y, pos);
+		}
 		return;
 	}
 
@@ -314,6 +321,9 @@ void params_load_line(GameParams *params, gchar *line)
 			continue;
 		switch (param->type) {
 		case PARAM_STRING:
+			str = G_STRUCT_MEMBER(gchar*, params, param->offset);
+			if (str)
+				g_free(str);
 			str = g_strchomp(g_strdup(line));
 			G_STRUCT_MEMBER(gchar*, params, param->offset) = str;
 			return;
@@ -325,14 +335,20 @@ void params_load_line(GameParams *params, gchar *line)
 			if (array != NULL)
 				g_array_free(array, TRUE);
 			array = g_array_new(FALSE, FALSE, sizeof(gint));
-			G_STRUCT_MEMBER(GArray*, params, param->offset) = array;
 			build_int_list(array, line);
+			if (array->len > 0) {
+				G_STRUCT_MEMBER(GArray*, params, param->offset) = array;
+			} else {
+				g_warning("Zero length array for %s", param->name);
+				g_array_free(array, FALSE);
+			}
 			return;
 		case PARAM_BOOL:
 			G_STRUCT_MEMBER(gboolean, params, param->offset) = TRUE;
 			return;
 		}
 	}
+	g_warning("Unknown keyword: %s", line);
 }
 
 GameParams *params_copy(GameParams *params)
@@ -371,10 +387,18 @@ GameParams *params_copy(GameParams *params)
 	return copy;
 }
 
-void params_load_finish(GameParams *params)
+/** Returns TRUE if the params are valid */
+gboolean params_load_finish(GameParams *params)
 {
-	if (params->map != NULL) {
-		params->map->have_bridges = params->num_build_type[BUILD_BRIDGE] > 0;
-		params->map->has_pirate = params->use_pirate;
-	}
+	if (!params->map)
+		return FALSE;
+	if (!params->chits)
+		return FALSE;
+	if (params->chits->len < 1)
+		return FALSE;
+	if (!params->title)
+		return FALSE;
+	params->map->have_bridges = params->num_build_type[BUILD_BRIDGE] > 0;
+	params->map->has_pirate = params->use_pirate;
+	return TRUE;
 }

@@ -91,5 +91,5 @@ GameParams *params_copy(GameParams *params);
 void params_free(GameParams *params);
 void params_write_lines(GameParams *params, WriteLineFunc func, gpointer user_data);
 void params_load_line(GameParams *params, gchar *line);
-void params_load_finish(GameParams *params);
+gboolean params_load_finish(GameParams *params);
 #endif

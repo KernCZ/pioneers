@@ -301,6 +301,10 @@ static void layout_chits(Map *map)
 	gint idx;
 	gint chit_idx;
 
+	g_return_if_fail(map != NULL);
+	g_return_if_fail(map->chits != NULL);
+	g_return_if_fail(map->chits->len > 0);
+
 	/* Count the number of hexes that have chits on them
 	 */
 	num_chits = 0;
