@@ -12,6 +12,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -59,8 +60,26 @@ void meta_report_num_players(gint num_players)
 		net_printf(ses, "curr=%d\n", num_players);
 }
 
+static gchar *getmyhostname(void)
+{
+	char hbuf[256];
+	struct hostent *hp;
+
+	if (gethostname(hbuf, sizeof(hbuf))) {
+		perror("gethostname");
+		return NULL;
+	}
+	if (!(hp = gethostbyname(hbuf))) {
+		herror("gnocatan-meta-server");
+		return NULL;
+	}
+	return strdup(hp->h_name);
+}
+
 void meta_send_details(Game *game)
 {
+	gchar *hostname = getmyhostname();
+
 	if (ses == NULL)
 		return;
 
@@ -72,6 +91,8 @@ void meta_send_details(Game *game)
 		   "curr=%d\n",
 		   game->params->server_port, VERSION,
 		   game->params->num_players, game->num_players);
+	if (hostname)
+	    net_printf(ses, "host=%s\n", hostname);
 	if (meta_server_version_major >= 1) {
 	    net_printf(ses,
 		       "vpoints=%d\n"

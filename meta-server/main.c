@@ -621,7 +621,8 @@ static void client_process_line(Client *client, gchar *line)
 		break;
 	case META_SERVER:
 	case META_SERVER_ALMOST:
-		if (check_str_info(line, "port=", &client->port)
+		if (check_str_info(line, "host=", &client->host)
+		    || check_str_info(line, "port=", &client->port)
 		    || check_str_info(line, "version=", &client->version)
 		    || check_int_info(line, "max=", &client->max)
 		    || check_int_info(line, "curr=", &client->curr)
