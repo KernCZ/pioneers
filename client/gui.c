@@ -648,7 +648,7 @@ GtkWidget* gui_build_interface()
 
 	register_gnocatan_pixmaps();
 	app_window = gnome_app_new("gnocatan", _("Gnocatan"));
-	gtk_window_set_policy(GTK_WINDOW(app_window), FALSE, FALSE, TRUE);
+	gtk_window_set_policy(GTK_WINDOW(app_window), TRUE, TRUE, TRUE);
 	gtk_widget_realize(app_window);
 	gtk_signal_connect(GTK_OBJECT(app_window), "delete_event",
 			   GTK_SIGNAL_FUNC(quit_cb), NULL);
