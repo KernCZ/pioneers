@@ -200,6 +200,24 @@ void gtk_event_cleanup()
 		gtk_main_iteration();
 }
 
+/* event-loop related functions */
+gint evl_gtk_input_add_read( gint fd, gpointer func, gpointer param )
+{
+	return gdk_input_add( fd, GDK_INPUT_READ | GDK_INPUT_EXCEPTION,
+			 (GdkInputFunction)func, param);
+}
+
+gint evl_gtk_input_add_write( gint fd, gpointer func, gpointer param )
+{
+	return gdk_input_add( fd, GDK_INPUT_WRITE | GDK_INPUT_EXCEPTION,
+			 (GdkInputFunction)func, param);
+}
+
+void evl_gtk_input_remove( gint tag )
+{
+	gdk_input_remove( tag );
+}
+
 UIDriver GTK_Driver = {
 	free_gtk_widget,
 	check_gtk_widget,
@@ -207,6 +225,15 @@ UIDriver GTK_Driver = {
 	
 	/* initially log to the console; change it to the message window after
 	 *   the message window is created. */
-	log_message_string_console
+	log_message_string_console,
+	
+	evl_gtk_input_add_read,
+	evl_gtk_input_add_write,
+	evl_gtk_input_remove,
+	
+	/* callbacks for the server; NULL for now -- let the server set them */
+	NULL,	/* player added */
+	NULL,	/* player renamed */
+	NULL	/* player removed */
 };
 

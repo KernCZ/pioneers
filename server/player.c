@@ -115,7 +115,7 @@ Player *player_new(Game *game, int fd, gchar *location)
 		player->num_settlements = 0;
 		player->num_cities = 0;
 
-		gui_player_add(player);
+		driver->player_added(player);
 		sm_goto(sm, (StateFunc)mode_pre_game);
 	} else
 		sm_goto(sm, (StateFunc)mode_game_full);
@@ -262,13 +262,13 @@ void player_set_name(Player *player, gchar *name)
 	else
 		player_broadcast(player, PB_ALL, "is %s\n", player->name);
 
-	gui_player_rename(player);
+	driver->player_renamed(player);
 }
 
 void player_remove(Player *player)
 {
 	Game *game = player->game;
 
-	gui_player_remove(player);
+	driver->player_removed(player);
 	game->player_list = g_list_remove(game->player_list, player);
 }

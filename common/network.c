@@ -20,9 +20,9 @@
 
 /* FIXME: we should eliminate the dependency here on gtk and gnome, moving
    all of the graphics code to a separate file. */
-#include <gdk/gdk.h>
 #include <glib.h>
 
+#include "driver.h"
 #include "game.h"
 #include "map.h"
 #include "network.h"
@@ -70,12 +70,9 @@ static void write_ready(Session *ses);
 static void listen_read(Session *ses, gboolean monitor)
 {
 	if (monitor && ses->read_tag == 0)
-		ses->read_tag
-			= gdk_input_add(ses->fd,
-					GDK_INPUT_READ | GDK_INPUT_EXCEPTION,
-					(GdkInputFunction)read_ready, ses);
+		ses->read_tag = driver->input_add_read(ses->fd, read_ready, ses);
 	if (!monitor && ses->read_tag != 0) {
-		gdk_input_remove(ses->read_tag);
+		driver->input_remove(ses->read_tag);
 		ses->read_tag = 0;
 	}
 
@@ -84,12 +81,9 @@ static void listen_read(Session *ses, gboolean monitor)
 static void listen_write(Session *ses, gboolean monitor)
 {
 	if (monitor && ses->write_tag == 0)
-		ses->write_tag
-			= gdk_input_add(ses->fd,
-					GDK_INPUT_WRITE | GDK_INPUT_EXCEPTION,
-					(GdkInputFunction)write_ready, ses);
+		ses->write_tag = driver->input_add_write(ses->fd, write_ready, ses);
 	if (!monitor && ses->write_tag != 0) {
-		gdk_input_remove(ses->write_tag);
+		driver->input_remove(ses->write_tag);
 		ses->write_tag = 0;
 	}
 }

@@ -21,6 +21,17 @@ typedef struct {
 
 	/* Function to write logs and data to the system display */
 	LogFunc log_write; /* ==> void log_write( gint msg_type, gchar *text ); */
+	
+	/* event-loop related functions */
+	gint (*input_add_read)( gint fd, gpointer func, gpointer param );
+	gint (*input_add_write)( gint fd, gpointer func, gpointer param );
+	void (*input_remove)( gint tag );
+
+	/* callbacks for the server */
+	void (*player_added)(void *player);		/* these really should be ...*/
+	void (*player_renamed)(void *player);	/* ... `Player *player', but */
+	void (*player_removed)(void *player);	/* that requires more headers */
+	
 } UIDriver;
 
 extern UIDriver *driver;

@@ -480,7 +480,13 @@ static GtkWidget *build_interface()
 
 int main(int argc, char *argv[])
 {
+	/* set the UI driver to GTK_Driver, since we're using gtk */
 	set_ui_driver( &GTK_Driver );
+	
+	/* flush out the rest of the driver with the server callbacks */
+	driver->player_added = gui_player_add;
+	driver->player_renamed = gui_player_rename;
+	driver->player_removed = gui_player_remove;
 
 	gnome_init("gnocatan-server", VERSION, argc, argv);
 

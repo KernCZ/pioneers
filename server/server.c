@@ -16,9 +16,11 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <errno.h>
+#include <string.h>
 
 #include <gdk/gdk.h>
 
+#include "driver.h"
 #include "game.h"
 #include "cards.h"
 #include "map.h"
@@ -58,7 +60,7 @@ Game *game_new(GameParams *params)
 void game_free(Game *game)
 {
 	if (game->accept_tag)
-		gdk_input_remove(game->accept_tag);
+		driver->input_remove(game->accept_tag);
 	if (game->accept_fd >= 0)
 		close(game->accept_fd);
 
@@ -149,10 +151,8 @@ static gboolean game_server_start(Game *game)
 		return FALSE;
 	}
 
-	game->accept_tag = gdk_input_add(game->accept_fd,
-					 GDK_INPUT_READ | GDK_INPUT_EXCEPTION,
-					 (GdkInputFunction)player_connect,
-					 game);
+	game->accept_tag = driver->input_add_read(game->accept_fd,
+					 player_connect, game);
 
 	if (game->params->register_server)
 		meta_register(META_SERVER, META_PORT, game->params);

@@ -1,19 +1,23 @@
 configdir=$(datadir)/gnocatan
 
-bin_PROGRAMS = gnocatan-server
+bin_PROGRAMS = gnocatan-server gnocatan-server-console
+
+noinst_LIBRARIES = libgnocatan_server.a
 
 INCLUDES = \
 	-I$(srcdir)/../common -I. \
 	$(GNOME_INCLUDEDIR)
 
-gnocatan_server_DEPENDENCIES = ../common/libgnocatan.a \
-	../common/libgnocatan_gtk.a
+gnocatan_server_DEPENDENCIES = libgnocatan_server.a \
+	../common/libgnocatan.a ../common/libgnocatan_gtk.a
 
-gnocatan_server_SOURCES = \
+gnocatan_server_console_DEPENDENCIES = libgnocatan_server.a \
+	../common/libgnocatan.a ../common/libgnocatan_gtk.a
+
+libgnocatan_server_a_SOURCES = \
 	buildutil.c \
 	develop.c \
 	discard.c \
-	gnocatan-server.c \
 	meta.c \
 	player.c \
 	pregame.c \
@@ -24,11 +28,24 @@ gnocatan_server_SOURCES = \
 	trade.c \
 	turn.c
 
+gnocatan_server_SOURCES = \
+	gnocatan-server.c
+
+gnocatan_server_console_SOURCES = \
+	gnocatan-server-console.c
+
 gnocatan_server_LDADD = \
+	libgnocatan_server.a \
 	../common/libgnocatan.a \
 	../common/libgnocatan_gtk.a \
 	$(GNOME_LIBDIR) \
 	$(GNOMEUI_LIBS)
+
+gnocatan_server_console_LDADD = \
+	libgnocatan_server.a \
+	../common/libgnocatan.a \
+	../common/libgnocatan_gtk.a \
+	$(GLIB_LIBS)
 
 config_DATA = \
 	default.game \
