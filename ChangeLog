@@ -1,3 +1,7 @@
+2005-03-20  0.8.1.59  Roland Clobus <rclobus@bigfoot.com>
+	* common/game.c: The automatic indent did break the sending of
+	gameinfo.
+
 2005-03-20  0.8.1.58  Roland Clobus <rclobus@bigfoot.com>
 	* ALL: Applied 'make indent'
 	

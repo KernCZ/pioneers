@@ -45,43 +45,35 @@ typedef struct {
 #define PARAM_V(name, type, var) #name, type, G_STRUCT_OFFSET(GameParams, var)
 #define PARAM(var, type) PARAM_V(var, type, var)
 
+/* *INDENT-OFF* */
 static Param game_params[] = {
 	{PARAM(title, PARAM_STRING)},
-	{PARAM_V(random - terrain, PARAM_BOOL, random_terrain)},
-	{PARAM_V(strict - trade, PARAM_BOOL, strict_trade)},
-	{PARAM_V(domestic - trade, PARAM_BOOL, domestic_trade)},
-	{PARAM_V(num - players, PARAM_INT, num_players)},
-	{PARAM_V(sevens - rule, PARAM_INT, sevens_rule)},
-	{PARAM_V(victory - points, PARAM_INT, victory_points)},
-	{PARAM_V(num - roads, PARAM_INT, num_build_type[BUILD_ROAD])},
-	{PARAM_V(num - bridges, PARAM_INT, num_build_type[BUILD_BRIDGE])},
-	{PARAM_V(num - ships, PARAM_INT, num_build_type[BUILD_SHIP])},
-	{PARAM_V
-	 (num - settlements, PARAM_INT, num_build_type[BUILD_SETTLEMENT])},
-	{PARAM_V(num - cities, PARAM_INT, num_build_type[BUILD_CITY])},
-	{PARAM_V(resource - count, PARAM_INT, resource_count)},
-	{PARAM_V(develop - road, PARAM_INT,
-		 num_develop_type[DEVEL_ROAD_BUILDING])},
-	{PARAM_V(develop - monopoly, PARAM_INT,
-		 num_develop_type[DEVEL_MONOPOLY])},
-	{PARAM_V(develop - plenty, PARAM_INT,
-		 num_develop_type[DEVEL_YEAR_OF_PLENTY])},
-	{PARAM_V
-	 (develop - chapel, PARAM_INT, num_develop_type[DEVEL_CHAPEL])},
-	{PARAM_V(develop - university, PARAM_INT,
-		 num_develop_type[DEVEL_UNIVERSITY_OF_CATAN])},
-	{PARAM_V(develop - governor, PARAM_INT,
-		 num_develop_type[DEVEL_GOVERNORS_HOUSE])},
-	{PARAM_V
-	 (develop - library, PARAM_INT, num_develop_type[DEVEL_LIBRARY])},
-	{PARAM_V
-	 (develop - market, PARAM_INT, num_develop_type[DEVEL_MARKET])},
-	{PARAM_V
-	 (develop - soldier, PARAM_INT, num_develop_type[DEVEL_SOLDIER])},
+	{PARAM_V(random-terrain, PARAM_BOOL, random_terrain)},
+	{PARAM_V(strict-trade, PARAM_BOOL, strict_trade)},
+	{PARAM_V(domestic-trade, PARAM_BOOL, domestic_trade)},
+	{PARAM_V(num-players, PARAM_INT, num_players)},
+	{PARAM_V(sevens-rule, PARAM_INT, sevens_rule)},
+	{PARAM_V(victory-points, PARAM_INT, victory_points)},
+	{PARAM_V(num-roads, PARAM_INT, num_build_type[BUILD_ROAD])},
+	{PARAM_V(num-bridges, PARAM_INT, num_build_type[BUILD_BRIDGE])},
+	{PARAM_V(num-ships, PARAM_INT, num_build_type[BUILD_SHIP])},
+	{PARAM_V(num-settlements, PARAM_INT, num_build_type[BUILD_SETTLEMENT])},
+	{PARAM_V(num-cities, PARAM_INT, num_build_type[BUILD_CITY])},
+	{PARAM_V(resource-count, PARAM_INT, resource_count)},
+	{PARAM_V(develop-road, PARAM_INT, num_develop_type[DEVEL_ROAD_BUILDING])},
+	{PARAM_V(develop-monopoly, PARAM_INT, num_develop_type[DEVEL_MONOPOLY])},
+	{PARAM_V(develop-plenty, PARAM_INT, num_develop_type[DEVEL_YEAR_OF_PLENTY])},
+	{PARAM_V(develop-chapel, PARAM_INT, num_develop_type[DEVEL_CHAPEL])},
+	{PARAM_V(develop-university, PARAM_INT, num_develop_type[DEVEL_UNIVERSITY_OF_CATAN])},
+	{PARAM_V(develop-governor, PARAM_INT, num_develop_type[DEVEL_GOVERNORS_HOUSE])},
+	{PARAM_V(develop-library, PARAM_INT, num_develop_type[DEVEL_LIBRARY])},
+	{PARAM_V(develop-market, PARAM_INT, num_develop_type[DEVEL_MARKET])},
+	{PARAM_V(develop-soldier, PARAM_INT, num_develop_type[DEVEL_SOLDIER])},
 	{PARAM(chits, PARAM_INT_LIST)},
-	{PARAM_V(tournament - time, PARAM_INT, tournament_time)},
-	{PARAM_V(use - pirate, PARAM_BOOL, use_pirate)}
+	{PARAM_V(tournament-time, PARAM_INT, tournament_time)},
+	{PARAM_V(use-pirate, PARAM_BOOL, use_pirate)}
 };
+/* *INDENT-ON* */
 
 GameParams *params_new()
 {
