@@ -42,7 +42,7 @@ AC_DEFINE_UNQUOTED(META_PROTOCOL_VERSION, $META_PROTOCOL_VERSION,
                    [Protocol version used by the meta server])
 
 ## internationalization support
-ALL_LINGUAS="de es"
+ALL_LINGUAS="de es fr"
 AM_GNU_GETTEXT(use-libtool)
 AC_LINK_FILES($nls_cv_header_libgt, $nls_cv_header_intl)
 AC_DEFINE_UNQUOTED(ALL_LINGUAS, "$ALL_LINGUAS", [Available languages])

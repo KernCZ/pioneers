@@ -727,10 +727,10 @@ static void menu_settings_cb(GtkWidget *widget, void *user_data)
 	for(ld = languages; ld->code; ++ld) {
 		if (!radio_lang_prev)
 			radio_lang = gtk_radio_button_new_with_label(
-				NULL, ld->name);
+				NULL, g_locale_to_utf8(ld->name, -1, NULL, NULL, NULL));
 		else
 			radio_lang = gtk_radio_button_new_with_label_from_widget(
-				GTK_RADIO_BUTTON(radio_lang_prev), ld->name);
+				GTK_RADIO_BUTTON(radio_lang_prev), g_locale_to_utf8(ld->name, -1, NULL, NULL, NULL));
 		gtk_box_pack_start_defaults(GTK_BOX(vbox_linguas), radio_lang);
 		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(radio_lang),
 									 strcmp(current_language, ld->code) == 0);
