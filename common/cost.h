@@ -12,6 +12,7 @@
 
 gint *cost_road();
 gint *cost_ship();
+gint *cost_bridge();
 gint *cost_settlement();
 gint *cost_upgrade_settlement();
 gint *cost_city();
