@@ -1,4 +1,6 @@
 2000-05-12  Steve Langasek <vorlon@dodds.net>
+	* common/common_gtk.c, common/state.c: Pulled all GTK-specific code
+	out of state.c, moving it to common_gtk.c.
 
 	* client/gnocatan.c, server/gnocatan-server.c: Changed main() loops
 	to initialize an appropriate UIDriver.

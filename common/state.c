@@ -11,8 +11,9 @@
 #include <ctype.h>
 #include <stdarg.h>
 #include <string.h>
+#include <stdlib.h>
 
-#include <gtk/gtk.h>
+#include <glib.h>
 
 #include "game.h"
 #include "cards.h"
@@ -36,12 +37,12 @@ static guint hash_int(gconstpointer key)
 	return hash_val;
 }
 
-static void inc_use_count(StateMachine *sm)
+void inc_use_count(StateMachine *sm)
 {
 	sm->use_count++;
 }
 
-static void dec_use_count(StateMachine *sm)
+void dec_use_count(StateMachine *sm)
 {
 	if (!--sm->use_count && sm->is_dead)
 		sm_free(sm);
@@ -67,29 +68,16 @@ gboolean sm_is_connected(StateMachine *sm)
 	return sm->ses != NULL && net_connected(sm->ses);
 }
 
-static void check_widget(gpointer key, WidgetState *gui, StateMachine *sm)
-{
-	if (sm->is_dead)
-		return;
-
-	if (gui->destroy_only)
-		/* Do not modify sensitivity on destroy only events
-		 */
-		return;
-
-	if (gui->widget != NULL && gui->next != gui->current)
-		gtk_widget_set_sensitive(gui->widget, gui->next);
-	gui->current = gui->next;
-	gui->next = FALSE;
-}
-
 static void check_sensitive(StateMachine *sm)
 {
 	if (sm->is_dead)
 		return;
-
-	g_hash_table_foreach(sm->widgets, (GHFunc)check_widget, sm);
+	if (driver != NULL && driver->check_widget != NULL) {
+		g_hash_table_foreach(sm->widgets,
+		                     (GHFunc)(driver->check_widget), sm);
+	}
 }
+
 
 static void route_event(StateMachine *sm, gint event)
 {
@@ -142,17 +130,6 @@ static void route_event(StateMachine *sm, gint event)
 void sm_cancel_prefix(StateMachine *sm)
 {
 	sm->line_offset = 0;
-}
-
-void sm_gui_check(StateMachine *sm, gint event, gboolean sensitive)
-{
-	WidgetState *gui;
-
-	if (sm->is_dead)
-		return;
-	gui = g_hash_table_lookup(sm->widgets, (gpointer)event);
-	if (gui != NULL)
-		gui->next = sensitive;
 }
 
 static void net_event(NetEvent event, StateMachine *sm, gchar *line)
@@ -481,72 +458,6 @@ void sm_event_cb(StateMachine *sm, gint event)
 	dec_use_count(sm);
 }
 
-static WidgetState *gui_new(StateMachine *sm, void *widget, gint id)
-{
-	WidgetState *gui = g_malloc0(sizeof(*gui));
-	gui->sm = sm;
-	gui->widget = widget;
-	gui->id = id;
-	g_hash_table_insert(sm->widgets, (gpointer)gui->id, gui);
-	return gui;
-}
-
-static void gui_free(WidgetState *gui)
-{
-	g_hash_table_remove(gui->sm->widgets, (gpointer)gui->id);
-	g_free(gui);
-}
-
-static void route_event_cb(void *widget, WidgetState *gui)
-{
-	StateMachine *sm = gui->sm;
-
-	inc_use_count(sm);
-
-	sm_event_cb(gui->sm, gui->id);
-
-	dec_use_count(sm);
-}
-
-static void destroy_event_cb(void *widget, WidgetState *gui)
-{
-	gui_free(gui);
-}
-
-static void destroy_route_event_cb(void *widget, WidgetState *gui)
-{
-	StateMachine *sm = gui->sm;
-
-	inc_use_count(sm);
-
-	sm_event_cb(gui->sm, gui->id);
-	gui_free(gui);
-
-	dec_use_count(sm);
-}
-
-void sm_gui_register_destroy(StateMachine *sm, void *widget, gint id)
-{
-	WidgetState *gui = gui_new(sm, widget, id);
-	gui->destroy_only = TRUE;
-	gtk_signal_connect(GTK_OBJECT((GtkWidget *)widget), "destroy",
-			   GTK_SIGNAL_FUNC(destroy_route_event_cb), gui);
-}
-
-void sm_gui_register(StateMachine *sm,
-		     void *widget, gint id, gchar *signal)
-{
-	WidgetState *gui = gui_new(sm, widget, id);
-	gui->signal = signal;
-	gui->current = TRUE;
-	gui->next = FALSE;
-        gtk_signal_connect(GTK_OBJECT((GtkWidget *)widget), "destroy",
-			   GTK_SIGNAL_FUNC(destroy_event_cb), gui);
-	if (signal != NULL)
-		gtk_signal_connect(GTK_OBJECT((GtkWidget *)widget), signal,
-				   GTK_SIGNAL_FUNC(route_event_cb), gui);
-}
-
 static void push_new_state(StateMachine *sm)
 {
 	sm->stack_ptr++;
@@ -562,9 +473,8 @@ void sm_goto(StateMachine *sm, StateFunc new_state)
 		/* Wait until the application window is fully
 		 * displayed before starting state machine.
 		 */
-		/* FIXME: gotta clear the gtk stuff out of here. */
-		while (gtk_events_pending())
-			gtk_main_iteration();
+		if (driver != NULL && driver->event_queue != NULL)
+			driver->event_queue();
 		push_new_state(sm);
 	}
 
@@ -642,26 +552,6 @@ StateMachine* sm_new(gpointer user_data)
 	return sm;
 }
 
-static void free_widget(gpointer key, WidgetState *gui, StateMachine *sm)
-{
-	if (gui->destroy_only) {
-		/* Destroy only notification
-		 */
-		gtk_signal_disconnect_by_func(GTK_OBJECT((GtkWidget *)gui->widget),
-					      GTK_SIGNAL_FUNC(destroy_route_event_cb),
-					      gui);
-	} else {
-		gtk_signal_disconnect_by_func(GTK_OBJECT((GtkWidget *)gui->widget),
-					      GTK_SIGNAL_FUNC(destroy_event_cb),
-					      gui);
-		if (gui->signal != NULL)
-			gtk_signal_disconnect_by_func(GTK_OBJECT((GtkWidget *)gui->widget),
-						      GTK_SIGNAL_FUNC(route_event_cb),
-						      gui);
-	}
-	g_free(gui);
-}
-
 /* Free a state machine
  */
 void sm_free(StateMachine *sm)
@@ -671,7 +561,11 @@ void sm_free(StateMachine *sm)
 		sm->ses = NULL;
 	}
 	if (sm->widgets != NULL) {
-		g_hash_table_foreach(sm->widgets, (GHFunc)free_widget, sm);
+		if (driver != NULL && driver->widget_free != NULL)
+		{
+			g_hash_table_foreach(sm->widgets,
+			                     (GHFunc)driver->widget_free, sm);
+		}
 		g_hash_table_destroy(sm->widgets);
 		sm->widgets = NULL;
 	}
