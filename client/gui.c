@@ -304,11 +304,19 @@ static GtkWidget *splash_build_page()
 {
 	GdkPixmap *splash_pix;
 	GtkWidget *pm;
+	GtkWidget *viewport;
 
 	load_pixmap("splash.png", &splash_pix, NULL);
+
+	/* The viewport avoids that the pixmap is drawn up into the tab area if
+	 * it's too large for the space provided. */
+	viewport = gtk_viewport_new(NULL, NULL);
+	gtk_viewport_set_shadow_type(viewport, GTK_SHADOW_NONE);
+	gtk_widget_show(viewport);
 	pm = gtk_pixmap_new(splash_pix, NULL);
 	gtk_widget_show(pm);
-	return pm;
+	gtk_container_add(GTK_CONTAINER(viewport), pm);
+	return viewport;
 }
 
 static GtkWidget *build_map_panel()
