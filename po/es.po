@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnocatan 0.7.2\n"
 "POT-Creation-Date: 2003-01-11 15:10-0600\n"
-"PO-Revision-Date: 2003-01-11 15:10-0600\n"
+"PO-Revision-Date: 2003-01-11 16:23-0600\n"
 "Last-Translator: Steve Langasek <vorlon@dodds.net>\n"
 "Language-Team: Spanish <debian-l10n-spanish@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -425,7 +425,7 @@ msgstr "%s contruye un camino.\n"
 #: ai/player.c:355 client/player.c:643
 #, c-format
 msgid "%s built a ship.\n"
-msgstr "%s construye una barca.\n"
+msgstr "%s construye un barco.\n"
 
 #: ai/player.c:364 client/player.c:656
 #, c-format
@@ -450,7 +450,7 @@ msgstr "%s quita un camino.\n"
 #: ai/player.c:417 client/player.c:716
 #, c-format
 msgid "%s removed a ship.\n"
-msgstr "%s quita una barca.\n"
+msgstr "%s quita un barco.\n"
 
 #: ai/player.c:426 client/player.c:726
 #, c-format
@@ -711,11 +711,11 @@ msgstr ""
 
 #: client/client.c:1426
 msgid "Build two road segments."
-msgstr ""
+msgstr "Construyir dos trechos de camino"
 
 #: client/client.c:1428
 msgid "Build a road segment."
-msgstr ""
+msgstr "Construyir un trecho de camino"
 
 #: client/client.c:1728 client/client.c:1854
 msgid "It is your turn."
@@ -785,7 +785,7 @@ msgstr "Regla de los sietes"
 
 #: client/connect.c:533 server/gnocatan-server-gtk.c:455
 msgid "Normal"
-msgstr ""
+msgstr "Normal"
 
 #: client/connect.c:537 server/gnocatan-server-gtk.c:456
 msgid "Reroll on 1st 2 turns"
@@ -796,8 +796,9 @@ msgid "Reroll all 7s"
 msgstr ""
 
 #: client/connect.c:580
+#, fuzzy
 msgid "Number of AI Players"
-msgstr ""
+msgstr "Número de jugadores artificiales"
 
 #: client/connect.c:606
 msgid "Create New Gnocatan Server"
@@ -960,7 +961,7 @@ msgstr "Bienvenido al Gnocatan"
 
 #: client/gui.c:604
 msgid "Appearance"
-msgstr ""
+msgstr "Apariencia"
 
 #: client/gui.c:606
 msgid "Show Toolbar As"
@@ -1100,7 +1101,7 @@ msgstr "Camino"
 
 #: client/gui.c:906 client/legend.c:168
 msgid "Ship"
-msgstr "Barca"
+msgstr "Barco"
 
 #: client/gui.c:909 client/legend.c:171
 msgid "Bridge"
@@ -1182,27 +1183,27 @@ msgstr ""
 
 #: client/legend.c:21
 msgid "Field"
-msgstr ""
+msgstr "Vega"
 
 #: client/legend.c:22
 msgid "Mountain"
-msgstr ""
+msgstr "Montaña"
 
 #: client/legend.c:23
 msgid "Pasture"
-msgstr ""
+msgstr "Pasto"
 
 #: client/legend.c:24
 msgid "Forest"
-msgstr ""
+msgstr "Selva"
 
 #: client/legend.c:25
 msgid "Desert"
-msgstr ""
+msgstr "Desierto"
 
 #: client/legend.c:26
 msgid "Sea"
-msgstr ""
+msgstr "Mar"
 
 #: client/legend.c:120
 msgid "Terrain Yield"
@@ -1214,47 +1215,47 @@ msgstr ""
 
 #: client/legend.c:165
 msgid "brick + lumber"
-msgstr ""
+msgstr "ladrillo y madera"
 
 #: client/legend.c:168
 msgid "wool + lumber"
-msgstr ""
+msgstr "lana y madera"
 
 #: client/legend.c:171
 msgid "brick + wool + lumber"
-msgstr ""
+msgstr "ladrillo, lana y madera"
 
 #: client/legend.c:172
 msgid "brick + grain + wool + lumber"
-msgstr ""
+msgstr "ladrillo, cereal, lana y madera"
 
 #: client/legend.c:173
 msgid "2 grain + 3 ore"
-msgstr ""
+msgstr "dos cereales y tres minerales"
 
 #: client/legend.c:174
 msgid "Development Card"
-msgstr ""
+msgstr "Carta de desarrollo"
 
 #: client/legend.c:174
 msgid "grain + ore + wool"
-msgstr ""
+msgstr "cereales, minerales y lana"
 
 #: client/monopoly.c:92
 msgid "Select the resource you wish to monopolise."
-msgstr ""
+msgstr "Escoge el recurso que quieres monopolizar."
 
 #: client/monopoly.c:101
 msgid "Resource Type"
-msgstr ""
+msgstr "Tipo de recurso"
 
 #: client/name.c:34
 msgid "Change player name"
-msgstr ""
+msgstr "Cambiar tu nombre de jugador"
 
 #: client/name.c:52
 msgid "Player Name:"
-msgstr ""
+msgstr "Nombre de jugador:"
 
 #: client/player.c:331
 #, c-format
@@ -1263,7 +1264,7 @@ msgstr ""
 
 #: client/player.c:410
 msgid "Player Summary"
-msgstr ""
+msgstr "Resumen de jugadores"
 
 #: client/player.c:501
 #, c-format
@@ -1284,7 +1285,7 @@ msgstr ""
 
 #: client/plenty.c:201
 msgid "Resource to take"
-msgstr ""
+msgstr "Recurso a tomar"
 
 #: client/plenty.c:219
 msgid "Total resources"
@@ -1301,11 +1302,12 @@ msgstr ""
 
 #: client/quote.c:565 client/trade.c:794
 msgid "I Want"
-msgstr ""
+msgstr "Quiero..."
 
 #: client/quote.c:582 client/trade.c:811
+#, fuzzy
 msgid "Give Them"
-msgstr ""
+msgstr "Dales..."
 
 #: client/quote.c:608
 msgid "Delete"
@@ -1319,12 +1321,12 @@ msgstr ""
 #: client/resource.c:95
 #, c-format
 msgid "an %s card"
-msgstr ""
+msgstr "una carta %s"
 
 #: client/resource.c:97
 #, c-format
 msgid "a %s card"
-msgstr ""
+msgstr "una carta %s"
 
 #: client/resource.c:108
 #, c-format
@@ -1368,15 +1370,16 @@ msgstr ""
 
 #: client/resource.c:285
 msgid "Resources"
-msgstr ""
+msgstr "Recursos"
 
 #: client/resource.c:364
 msgid "Total"
 msgstr ""
 
 #: client/robber.c:99
+#, fuzzy
 msgid "Continue with your turn."
-msgstr ""
+msgstr "Seguir con tu turno"
 
 #: client/robber.c:104
 #, c-format
@@ -1385,7 +1388,7 @@ msgstr ""
 
 #: client/settingscreen.c:61
 msgid "Unknown"
-msgstr ""
+msgstr "Desconocido"
 
 #: client/settingscreen.c:88
 msgid "Current Game Settings"
@@ -1401,7 +1404,7 @@ msgstr ""
 
 #: client/settingscreen.c:129
 msgid "Number of players:"
-msgstr ""
+msgstr "Número de jugadores:"
 
 #: client/settingscreen.c:131
 msgid "Victory Point Target:"
@@ -1413,7 +1416,7 @@ msgstr ""
 
 #: client/settingscreen.c:135
 msgid "Interplayer Trading Allowed?"
-msgstr ""
+msgstr "¿Se permite comercio entre los jugadores?"
 
 #: client/settingscreen.c:137
 msgid "Trading allowed only before build/buy?"
@@ -1421,11 +1424,11 @@ msgstr ""
 
 #: client/settingscreen.c:139
 msgid "Amount of Each Resource:"
-msgstr ""
+msgstr "Cantidad de cada recurso:"
 
 #: client/settingscreen.c:152
 msgid "Sevens Rule:"
-msgstr ""
+msgstr "Regla de los sietes:"
 
 #: client/settingscreen.c:155
 msgid "Building Quotas"
@@ -1433,23 +1436,23 @@ msgstr ""
 
 #: client/settingscreen.c:166
 msgid "Roads:"
-msgstr ""
+msgstr "Caminos:"
 
 #: client/settingscreen.c:168
 msgid "Settlements:"
-msgstr ""
+msgstr "Pueblos:"
 
 #: client/settingscreen.c:170
 msgid "Cities:"
-msgstr ""
+msgstr "Ciudades:"
 
 #: client/settingscreen.c:172
 msgid "Ships:"
-msgstr ""
+msgstr "Barcos:"
 
 #: client/settingscreen.c:174
 msgid "Bridges:"
-msgstr ""
+msgstr "Puentes:"
 
 #: client/settingscreen.c:181
 msgid "Development Card Deck"
@@ -1481,15 +1484,15 @@ msgstr ""
 
 #: client/settingscreen.c:204
 msgid "Library Cards:"
-msgstr ""
+msgstr "Cartas de biblioteca:"
 
 #: client/settingscreen.c:206
 msgid "Market Cards:"
-msgstr ""
+msgstr "Cartas de mercado:"
 
 #: client/settingscreen.c:208
 msgid "Soldier Cards:"
-msgstr ""
+msgstr "Cartas de soldado:"
 
 #: client/setup.c:139
 #, c-format
@@ -1540,7 +1543,7 @@ msgstr ""
 
 #: common/log.c:74
 msgid "** UNKNOWN MESSAGE TYPE ** "
-msgstr ""
+msgstr "** TIPO DE MENSAJE DESCONOCIDO ** "
 
 #: common/network.c:152
 #, c-format
@@ -1669,7 +1672,3 @@ msgstr ""
 #: server/server.c:200 server/server.c:208
 msgid "unknown"
 msgstr ""
-
-#, fuzzy
-#~ msgid "Governors House"
-#~ msgstr "Palacio del Gobernador"
