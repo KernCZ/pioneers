@@ -51,6 +51,7 @@ gnocatan_server_console_LDADD = \
 	$(GLIB_LIBS)
 
 config_DATA = \
+	5-6-player.game \
 	default.game \
 	four-islands.game \
 	seafarers.game \
