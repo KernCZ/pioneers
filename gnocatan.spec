@@ -1,14 +1,13 @@
-Summary: 	Playable implementation of the Settlers of Catan 
 Name: 		gnocatan
-Version: 	0.7.1.90
-Release: 	3
-Group: 		X11/Games
-Copyright: 	GPL
+Summary: 	Playable implementation of the Settlers of Catan 
+Version: 	0.8.0
+Release: 	2
+Group: 		Amusements/Games
+License: 	GPL
 Url: 		http://gnocatan.sourceforge.net/
 Packager: 	Steve Langasek <vorlon@dodds.net>
-Source: 	http://download.sourceforge.net/gnocatan/%{name}-%{version}.tar.gz
-BuildRoot: 	/var/tmp/%{name}_root
-
+Source: 	http://unm.dl.sourceforge.net/gnocatan/%{name}-%{version}.tar.gz
+BuildRoot: 	%{_tmppath}/%{name}-%{version}-%{release}-root
 
 %description 
 Gnocatan is an Internet playable implementation of the Settlers of
@@ -17,7 +16,7 @@ as is possible.
 
 %package 	client
 Summary: 	Gnocatan Client
-Group: 		X11/Games
+Group: 		Amusements/Games
 
 %description 	client
 Gnocatan is an Internet playable implementation of the Settlers of
@@ -28,7 +27,7 @@ This is the client software to play the game.
 
 %package 	help
 Summary: 	Gnocatan Help
-Group: 		X11/Games
+Group: 		Amusements/Games
 
 %description 	help
 Gnocatan is an Internet playable implementation of the Settlers of
@@ -39,7 +38,7 @@ This package contains the help files.
 
 %package 	ai
 Summary:	Gnocatan AI Player
-Group:		X11/Games
+Group:		Amusements/Games
 %description 	ai
 Gnocatan is an Internet playable implementation of the Settlers of
 Catan board game.  The aim is to remain as faithful to the board game
@@ -49,7 +48,7 @@ This package contains a computer player that can take part in Gnocatan games.
 
 %package 	server-console
 Summary:	Gnocatan Console Server
-Group:		X11/Games
+Group:		Amusements/Games
 Requires:	gnocatan-server-data
 %description 	server-console
 Gnocatan is an Internet playable implementation of the Settlers of
@@ -58,7 +57,7 @@ as is possible.
 
 %package 	server-gtk
 Summary:	Gnocatan GTK Server
-Group:		X11/Games
+Group:		Amusements/Games
 Requires:	gnocatan-server-data
 %description 	server-gtk
 Gnocatan is an Internet playable implementation of the Settlers of
@@ -73,7 +72,7 @@ listening for client connections.
 
 %package 	server-data
 Summary: 	Gnocatan Data
-Group: 		X11/Games
+Group: 		Amusements/Games
 
 %description 	server-data
 Gnocatan is an Internet playable implementation of the Settlers of
@@ -84,7 +83,7 @@ This package contains the data files for a game server.
 
 %package 	meta-server
 Summary:	Gnocatan Meta Server
-Group:		X11/Games
+Group:		Amusements/Games
 Requires:	gnocatan-server-console
 %description 	meta-server
 Gnocatan is an Internet playable implementation of the Settlers of
@@ -94,9 +93,8 @@ as is possible.
 The meta server registers available game servers and offers them to new
 players. It can also create new servers on client request.
 
-
 %prep
-%setup
+%setup -q
 
 %build
 CFLAGS="$RPM_OPT_FLAGS" ./autogen.sh --prefix=/usr
@@ -105,84 +103,61 @@ make
 %install
 rm -rf $RPM_BUILD_ROOT
 make install prefix=$RPM_BUILD_ROOT/usr
+rm -rf $RPM_BUILD_ROOT/usr/var/scrollkeeper
+
+%clean
+rm -rf $RPM_BUILD_ROOT
 
 %files client
 %defattr(-,root,root)
 %doc AUTHORS COPYING ChangeLog INSTALL README NEWS 
-/usr/bin/gnocatan
-/usr/share/gnome/apps/Games/gnocatan.desktop
-/usr/share/pixmaps/gnome-gnocatan.png
-/usr/share/pixmaps/gnocatan/*
-/usr/share/games/gnocatan/images/*
-/usr/man/man6/gnocatan.6.gz
-/usr/share/locale/es/LC_MESSAGES/gnocatan.mo
-/usr/share/locale/de/LC_MESSAGES/gnocatan.mo
+%doc /usr/man/man6/gnocatan.6.gz
+%{_bindir}/gnocatan
+%{_datadir}/gnome/apps/Games/gnocatan.desktop
+%{_datadir}/pixmaps/gnome-gnocatan.png
+%{_datadir}/pixmaps/gnocatan/*
+%{_datadir}/games/gnocatan/images/*
+%{_datadir}/locale/es/LC_MESSAGES/gnocatan.mo
+%{_datadir}/locale/de/LC_MESSAGES/gnocatan.mo
 
 %files help
 %defattr(-,root,root)
-%doc AUTHORS COPYING ChangeLog INSTALL README NEWS 
-%dir /usr/share/gnome/help/gnocatan/
-%dir /usr/share/gnome/help/gnocatan/C
-%dir /usr/share/gnome/help/gnocatan/C/images
-/usr/share/gnome/help/gnocatan/C/topic.dat
-/usr/share/gnome/help/gnocatan/C/*.html
-/usr/share/gnome/help/gnocatan/C/images/*
+%doc AUTHORS COPYING ChangeLog INSTALL README NEWS
+%{_datadir}/gnome/help/gnocatan/C/*.xml
+%{_datadir}/gnome/help/gnocatan/C/images/*
+%{_datadir}/omf/gnocatan/gnocatan-C.omf
+
+%post help
+if which scrollkeeper-update>/dev/null 2>&1; then scrollkeeper-update -q -o %{_datadir}/omf/gnocatan; fi
+
+%postun help
+if which scrollkeeper-update>/dev/null 2>&1; then scrollkeeper-update -q; fi
 
 %files ai
 %defattr(-,root,root)
 %doc AUTHORS COPYING ChangeLog INSTALL README NEWS 
-/usr/bin/gnocatanai
-/usr/share/games/gnocatan/computer_names
+%{_bindir}/gnocatanai
+%{_datadir}/games/gnocatan/computer_names
 
 %files server-console
 %defattr(-,root,root)
 %doc AUTHORS COPYING ChangeLog INSTALL README NEWS 
-/usr/bin/gnocatan-server-console
-/usr/man/man6/gnocatan-server-console.6.gz
+%doc /usr/man/man6/gnocatan-server-console.6.gz
+%{_bindir}/gnocatan-server-console
 
 %files server-gtk
 %defattr(-,root,root)
 %doc AUTHORS COPYING ChangeLog INSTALL README NEWS 
-/usr/bin/gnocatan-server-gtk
-/usr/share/gnome/apps/Games/gnocatan-server.desktop
-/usr/man/man6/gnocatan-server-gtk.6.gz
+%doc /usr/man/man6/gnocatan-server-gtk.6.gz
+%{_bindir}/gnocatan-server-gtk
+%{_datadir}/gnome/apps/Games/gnocatan-server.desktop
 
 %files server-data
 %defattr(-,root,root)
 %doc AUTHORS COPYING ChangeLog INSTALL README NEWS 
-/usr/share/games/gnocatan/*.game
+%{_datadir}/games/gnocatan/*.game
 
 %files meta-server
 %defattr(-,root,root)
 %doc AUTHORS COPYING ChangeLog INSTALL README NEWS 
-/usr/bin/gnocatan-meta-server
-
-%changelog
-
-* Sun May 19 2002 Roman Hodek <roman@hodek.net>
-- 0.6.99 as beta for 0.7.0
-
-* Sun Aug 27 2000 Steve Langasek <vorlon@dodds.net>
-- 0.6.1 released
-
-* Tue Jun 20 2000 Steve Langasek <vorlon@dodds.net>
-- updated version number
-
-* Thu Jun 01 2000 Steve Langasek <vorlon@dodds.net>
-- Updated to behave more like the filesystem standard tells us to (and
-  more like configure expects us to)
-
-* Sun May 07 2000 Dave Cole <adve@dccs.com.au>
-- Removed ship building development card
-
-* Mon May 01 2000 Andy Heroff <aheroff@mediaone.net>
-- SourceForge release version 0.5.0
-
-* Fri Sep 03 1999 Dave Cole <dave@dccs.com.au>
-- Modifications to build 0.4.0
-
-* Sun May 23 1999 Preben Randhol <randhol@pvv.org>
-- Building version 0.31
-
-* Wed May 12 1999 Preben Randhol <randhol@pvv.org>
-- First try at making the packages
+%{_bindir}/gnocatan-meta-server

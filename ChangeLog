@@ -1,3 +1,7 @@
+2003-10-25  Roland Clobus <rclobus@bigfoot.com>
+	* gnocatan.spec: Applied patch 829404 by Daniel Jensen
+	* client/gui.c: Removed compiler warning introduced at 2003-10-19
+
 2003-10-24  Jeff Breidenbach  <jab@debian.org>
 
 	* debian/*: More scrollkeeper packaging fixes.
