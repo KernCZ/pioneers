@@ -1,3 +1,9 @@
+2000-06-15  Andy Heroff <aheroff@mediaone.net>
+
+	* Bumped version again to 0.5.6, just in case, to prepare for
+	  another package release, mostly to get Gnocatan in the Debian
+	  distro.
+
 2000-06-12  Andy Heroff <aheroff@mediaone.net>
 
 	* debian/gnocatan-server.files: Applied patch from Aaron Denney
