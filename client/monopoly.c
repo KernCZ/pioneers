@@ -132,15 +132,17 @@ void monopoly_destroy_dlg()
 
 void monopoly_player(gint player_num, gint victim_num, gint num, Resource type)
 {
+	gchar buf[128];
+
 	player_modify_statistic(player_num, STAT_RESOURCES, num);
 	player_modify_statistic(victim_num, STAT_RESOURCES, -num);
 
+	resource_cards(num, type, buf, sizeof(buf));
 	if (player_num == my_player_num()) {
 		/* I get the cards!
 		 */
 		log_message( MSG_STEAL, _("You get %s from %s.\n"),
-			 resource_cards(num, type),
-			 player_name(victim_num, FALSE));
+			 buf, player_name(victim_num, FALSE));
 		resource_modify(type, num);
 		return;
 	}
@@ -148,14 +150,13 @@ void monopoly_player(gint player_num, gint victim_num, gint num, Resource type)
 		/* I lose the cards!
 		 */
 		log_message( MSG_STEAL, _("%s took %s from you.\n"),
-			 player_name(player_num, TRUE),
-			 resource_cards(num, type));
+			 player_name(player_num, TRUE), buf);
 		resource_modify(type, -num);
 		return;
 	}
 	/* I am a bystander
 	 */
 	log_message( MSG_STEAL, _("%s took %s from"),
-		 player_name(player_num, TRUE), resource_cards(num, type));
+		 player_name(player_num, TRUE), buf);
 	log_message( MSG_STEAL, _(" %s.\n"), player_name(victim_num, FALSE));
 }

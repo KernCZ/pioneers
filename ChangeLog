@@ -1,3 +1,9 @@
+2003-01-21  Steve Langasek  <vorlon@debian.org>
+
+	* client/client.h, client/resource.c, client/monopoly.c,
+	  client/player.c: use caller-provided buffer for
+	  resource_cards(), to eliminate the previous kludge :)
+
 2003-01-21  Roman Hodek  <roman@hodek.net>
 
 	* po/de.po: Fixed a few German translations after Steves changes

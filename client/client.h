@@ -152,7 +152,7 @@ gchar *resource_name(Resource type, gboolean word_caps);
 gchar *resource_list(Resource type, ResourceListType grammar);
 gint resource_asset(Resource type);
 void resource_cmd(gchar *str, gchar *cmd, gint *resources);
-gchar *resource_cards(gint num, Resource type);
+gchar *resource_cards(gint num, Resource type, gchar *buf, gint buflen);
 void resource_modify(Resource type, gint num);
 gint resource_count(gint *resources);
 void resource_format_type(gchar *str, gint *resources);

@@ -93,20 +93,18 @@ gint resource_count(gint *resources)
 	return num;
 }
 
-gchar *resource_cards(gint num, Resource type)
+gchar *resource_cards(gint num, Resource type, gchar *buf, gint buflen)
 {
-	static gchar buff[2][64];
-	static int bcnt = 0;
-	gchar *pbuff = buff[bcnt];
-	bcnt = (bcnt+1)%2;
-	
 	/* FIXME: this should be touched up to take advantage of the
 	   GNU ngettext API */
 	if (num != 1)
-		sprintf(pbuff, resource_list(type, RESOURCE_MULTICARD), num);
+		snprintf(buf, buflen, resource_list(type, RESOURCE_MULTICARD),
+		         num);
 	else
-		strcpy(pbuff, resource_list(type, RESOURCE_SINGLECARD));
-	return pbuff;
+		strncpy(buf, resource_list(type, RESOURCE_SINGLECARD),
+		        buflen - 1);
+	buf[buflen-1] = '\0';
+	return buf;
 }
 
 void resource_format_type(gchar *str, gint *resources)
@@ -167,22 +165,27 @@ void resource_format_num(gchar *str, gint *resources)
 			if (num == 0)
 				continue;
 
-			strcpy(str, resource_cards(num, idx));
+			/* FIXME: we should know how big our buffer is,
+			   but we don't! */
+			resource_cards(num, idx, str, 128);
 		}
 		return;
 	}
 	
 	for (idx = 0; idx < NO_RESOURCE; idx++) {
+		gchar buf[128];
 		gint num = resources[idx];
 		if (num == 0)
 			continue;
 
 		if (num_types == 1) {
-			sprintf(str, _(", and %s"), resource_cards(num, idx));
+			resource_cards(num, idx, buf, sizeof(buf));
+			sprintf(str, _(", and %s"), buf);
 		} else if (num_types > 2) {
-			sprintf(str, _("%s, "), resource_cards(num, idx));
+			resource_cards(num, idx, buf, sizeof(buf));
+			sprintf(str, _("%s, "), buf);
 		} else {
-			strcpy(str, resource_cards(num, idx));
+			resource_cards(num, idx, str, 128);
 		}
 		str += strlen(str);
 		num_types--;
