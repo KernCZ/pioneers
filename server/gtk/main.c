@@ -142,6 +142,8 @@ static void victory_spin_changed_cb(GtkWidget* widget, gpointer user_data)
 	cfg_set_victory_points( gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(widget)) );
 }
 
+static void sevens_rule_changed_cb(GtkWidget *radio, gpointer user_data);
+
 static void game_select_cb(GtkWidget *list, gpointer user_data)
 {
 	GList *selected = GTK_LIST(list)->selection;
@@ -158,9 +160,26 @@ static void game_select_cb(GtkWidget *list, gpointer user_data)
 		if (victory_spin != NULL)
 			gtk_spin_button_set_value(GTK_SPIN_BUTTON(victory_spin),
 						  params->victory_points);
+		/* set sevens rule in the UI */
+		switch (params->sevens_rule)
+		{
+		case 0:
+			gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(radio_sevens_normal), TRUE);
+			break;
+		case 1:
+			gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(radio_sevens_2_turns), TRUE);
+			break;
+		case 2:
+			gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(radio_sevens_reroll), TRUE);
+			break;
+		}
+		/* give it dummy arguments: it doesn't look at them anyway */
+		sevens_rule_changed_cb (NULL, NULL);
 	}
 }
 
+/* this function MUST NOT use its arguments, for it can be called with
+ * NULL, NULL */
 static void sevens_rule_changed_cb(GtkWidget *radio, gpointer user_data)
 {
 	gint rule_value = 0;
@@ -395,7 +414,6 @@ static GtkWidget *build_interface()
 	gtk_signal_connect(GTK_OBJECT(terrain_toggle), "toggled",
 			   GTK_SIGNAL_FUNC(terrain_toggle_cb), NULL);
 	show_terrain();
-	// gtk_toggle_button_toggled(GTK_TOGGLE_BUTTON(terrain_toggle));
 
 	label = gtk_label_new(_("Number of Players"));
 	gtk_widget_show(label);

@@ -1,4 +1,7 @@
 2003-09-28  Bas Wijnen <b.wijnen@phys.rug.nl>
+	* server/gnocatan-server-gtk.c: Fixed UI bug in sevens rule.
+
+2003-09-28  Bas Wijnen <b.wijnen@phys.rug.nl>
 	* ai/ai.c, ai/client.h, ai/greedy.c: Chat when aborting a game with
 	gold.  Function is not actually implemented yet.
 	* client/client.c, client/client.h, client/gold.c: Fixed bugs in
