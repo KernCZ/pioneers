@@ -1446,10 +1446,12 @@ gboolean mode_roll_response(StateMachine *sm, gint event)
 	case SM_RECV:
 		if (sm_recv(sm, "rolled %d %d", &die1, &die2)) {
 			turn_rolled_dice(my_player_num(), die1, die2);
-			sm_goto(sm, mode_turn_rolled);
 			waiting_for_network(FALSE);
-			if (die1 + die2 == 7)
+			if (die1 + die2 == 7) {
+				sm_goto_noenter (sm, mode_turn_rolled);
 				sm_push(sm, mode_wait_for_robber);
+			} else
+				sm_goto(sm, mode_turn_rolled);
 			return TRUE;
 		}
 		if (check_other_players(sm))
@@ -2042,21 +2044,22 @@ static void recover_from_disconnect(StateMachine *sm,
 		else {
 			setup_begin_double(my_player_num());
 		}
-		sm_goto(sm, mode_idle);
+		sm_goto_noenter(sm, mode_idle);
 		sm_push(sm, mode_setup);
 	}
 	else if (strcmp(rinfo->prevstate, "TURN") == 0)
 	{
-		sm_goto(sm, mode_idle);
-		if (my_player_num() == rinfo->playerturn)
+		if (my_player_num() == rinfo->playerturn) {
+			sm_goto_noenter(sm, mode_idle);
 			sm_push(sm, modeturn);
+		} else
+			sm_goto(sm, mode_idle);
 	}
 	else if (strcmp(rinfo->prevstate, "YOUAREROBBER") == 0)
 	{
 		if (!discarding) {
-			sm_goto(sm, mode_idle);
-			sm_push(sm, modeturn);
-			sm_push(sm, mode_wait_for_robber);
+			sm_goto_noenter (sm, mode_idle);
+			sm_push_noenter (sm, modeturn);
 			sm_goto(sm, mode_robber);
 		}
 	}
@@ -2071,20 +2074,20 @@ static void recover_from_disconnect(StateMachine *sm,
 	}
 	else if (strcmp(rinfo->prevstate, "MONOPOLY") == 0)
 	{
-		sm_goto(sm, mode_idle);
-		sm_push(sm, modeturn);
+		sm_goto_noenter(sm, mode_idle);
+		sm_push_noenter(sm, modeturn);
 		sm_push(sm, mode_monopoly);
 	}
 	else if (strcmp(rinfo->prevstate, "PLENTY") == 0)
 	{
-		sm_goto(sm, mode_idle);
-		sm_push(sm, modeturn);
+		sm_goto_noenter(sm, mode_idle);
+		sm_push_noenter(sm, modeturn);
 		sm_push(sm, mode_year_of_plenty);
 	}
 	else if (strcmp(rinfo->prevstate, "GOLD") == 0)
 	{
-		sm_goto(sm, mode_idle);
-		sm_push(sm, modeturn);
+		sm_goto_noenter(sm, mode_idle);
+		sm_push_noenter(sm, modeturn);
 /* @@RC This shoud be somewhere else...
  * gold_choose_player_must(rinfo->numgold, rinfo->plenty);
  */
@@ -2092,18 +2095,18 @@ static void recover_from_disconnect(StateMachine *sm,
 	}
 	else if (strcmp(rinfo->prevstate, "ROADBUILDING") == 0)
 	{
-		sm_goto(sm, mode_idle);
+		sm_goto_noenter(sm, mode_idle);
 		/* note: don't call road_building_begin() because it
 		         will clear the build list */
-		sm_push(sm, modeturn);
+		sm_push_noenter(sm, modeturn);
 		sm_push(sm, mode_road_building);
 	}
 
 	if (discarding) {
-		sm_goto(sm, mode_idle);
+		sm_goto_noenter(sm, mode_idle);
 		if (my_player_num() == rinfo->playerturn) {
-			sm_push(sm, mode_turn_rolled);
-			sm_push(sm, mode_wait_for_robber);
+			sm_push_noenter(sm, mode_turn_rolled);
+			sm_push_noenter(sm, mode_wait_for_robber);
 		}
 		sm_push(sm, mode_discard);
 	}

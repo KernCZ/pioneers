@@ -74,6 +74,7 @@ const gchar *sm_current_name(StateMachine *sm)
 void sm_state_name(StateMachine *sm, const gchar *name)
 {
 	sm->current_state = name;
+	sm->stack_name[sm->stack_ptr] = name;
 }
 
 gboolean sm_is_connected(StateMachine *sm)
@@ -492,12 +493,22 @@ void sm_event_cb(StateMachine *sm, gint event)
 
 static void push_new_state(StateMachine *sm)
 {
-	sm->stack_ptr++;
-	g_assert(sm->stack_ptr < numElem(sm->stack));
+	unsigned sp;
+	++sm->stack_ptr;
+	/* check for stack overflows */
+	if (sm->stack_ptr >= numElem(sm->stack) ) {
+		log_message (MSG_ERROR, _("State stack overflow. Stack dump sent to standard error.\n") );
+		for (sp = 0; sp < numElem (sm->stack); ++sp) {
+			fprintf (stderr, "Frame %d: %s\n", sp,
+					sm->stack_name[sp]);
+		}
+		g_error (_("State stack overflow") );
+	}
 	sm->stack[sm->stack_ptr] = NULL;
+	sm->stack_name[sm->stack_ptr] = NULL;
 }
 
-void sm_goto(StateMachine *sm, StateFunc new_state)
+static void do_goto(StateMachine *sm, StateFunc new_state, gboolean enter)
 {
 	sm_inc_use_count(sm);
 
@@ -511,24 +522,46 @@ void sm_goto(StateMachine *sm, StateFunc new_state)
 	}
 
 	sm->stack[sm->stack_ptr] = new_state;
-	route_event(sm, SM_ENTER);
+	if (enter)
+		route_event(sm, SM_ENTER);
 	route_event(sm, SM_INIT);
 
 	sm_dec_use_count(sm);
 }
 
-void sm_push(StateMachine *sm, StateFunc new_state)
+void sm_goto (StateMachine *sm, StateFunc new_state)
+{
+	do_goto (sm, new_state, TRUE);
+}
+
+void sm_goto_noenter (StateMachine *sm, StateFunc new_state)
+{
+	do_goto (sm, new_state, FALSE);
+}
+
+static void do_push(StateMachine *sm, StateFunc new_state, gboolean enter)
 {
 	sm_inc_use_count(sm);
 
 	push_new_state(sm);
 	sm->stack[sm->stack_ptr] = new_state;
-	route_event(sm, SM_ENTER);
+	if (enter)
+		route_event(sm, SM_ENTER);
+	route_event(sm, SM_INIT);
 #ifdef STACK_DEBUG
 	log_message( MSG_INFO, "sm_push -> %d:%s\n", sm->stack_ptr, sm->current_state);
 #endif
-	route_event(sm, SM_INIT);
 	sm_dec_use_count(sm);
+}
+
+void sm_push (StateMachine *sm, StateFunc new_state)
+{
+	do_push (sm, new_state, TRUE);
+}
+
+void sm_push_noenter (StateMachine *sm, StateFunc new_state)
+{
+	do_push (sm, new_state, FALSE);
 }
 
 void sm_pop(StateMachine *sm)
@@ -569,6 +602,7 @@ void sm_pop_all_and_goto(StateMachine *sm, StateFunc new_state)
 {
 	sm->stack_ptr = 0;
 	sm->stack[sm->stack_ptr] = new_state;
+	sm->stack_name[sm->stack_ptr] = NULL;
 	route_event(sm, SM_ENTER);
 	route_event(sm, SM_INIT);
 

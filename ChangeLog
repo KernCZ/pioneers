@@ -1,3 +1,10 @@
+2004-01-25  Bas Wijnen <b.wijnen@phys.rug.nl>
+	* common/state.c, common/state.h: Added a stackdump when overflow
+	occurs.
+	* client/common/client.c, common/state.c, common/state.h: Added
+	sm_push_noenter, sm_pop_noenter, sm_goto_noenter, needed for the AI.
+	* client/gtk/histogram.c: Added enter after last line
+
 2004-01-15  Jeff Breidenbach  <jab@debian.org>
 
 	* doc/Makefile.am, doc/gnocatan-meta-server.6,

@@ -178,6 +178,7 @@ struct StateMachine {
 	StateFunc global;	/* global state - test after current state */
 	StateFunc unhandled;	/* global state - process unhandled states */
 	StateFunc stack[16];	/* handle sm_push() to save context */
+	const gchar *stack_name[16];	/* state names used for a stack dump */
 	gint stack_ptr;		/* stack index */
 	const gchar *current_state;	/* name of current state */
 
@@ -200,7 +201,9 @@ void sm_vnformat(gchar *buff, gint len, const gchar *fmt, va_list ap);
 void sm_write(StateMachine *sm, const gchar *str);
 void sm_send(StateMachine *sm, const gchar *fmt, ...);
 void sm_goto(StateMachine *sm, StateFunc new_state);
+void sm_goto_noenter (StateMachine *sm, StateFunc new_state);
 void sm_push(StateMachine *sm, StateFunc new_state);
+void sm_push_noenter (StateMachine *sm, StateFunc new_state);
 void sm_pop(StateMachine *sm);
 void sm_multipop(StateMachine *sm, gint depth);
 void sm_pop_all(StateMachine *sm);
