@@ -1,37 +1,83 @@
 Source: gnocatan
 Section: games
 Priority: optional
-Maintainer: Jeff Breidenbach <jeff@debian.org>
-Build-Depends: debhelper, docbook-utils, cygnus-stylesheets, libgnome-dev, automake, libtool
-Standards-Version: 3.1.1
+Maintainer: Jeff Breidenbach <jab@debian.org>
+Build-Depends: debhelper, docbook-utils, libgnome-dev, libgtkxmhtml-dev, libzvt-dev, automake, libtool
+Standards-Version: 3.5.6.0
 
 Package: gnocatan-client
 Architecture: any
-Depends: gnocatan-data (>= 0.6.1), ${shlibs:Depends}
+Depends: ${shlibs:Depends}
 Suggests: gnocatan-help
 Recommends: gnocatan-server
+Conflicts: gnocatan-data
+Replaces: gnocatan-data
 Description: Gnocatan client - a game for Gnome
  Gnocatan is an emulation of the Settlers of Catan board game which
  can be played over the internet.
+ This is the game client which displays the board and interacts with a
+ player. It connects to a game server that can be local or on a remote
+ host.
 
-Package: gnocatan-server
+Package: gnocatan-server-console
 Architecture: any
-Depends: ${shlibs:Depends}
+Depends: gnocatan-server-data, ${shlibs:Depends}
 Recommends: gnocatan-client
+Conflicts: gnocatan-server
+Replaces: gnocatan-server
 Description: Gnocatan server - a game for Gnome
  Gnocatan is an emulation of the Settlers of Catan board game which
  can be played over the internet.
+ This package contains the Gnocatan game server for the console which
+ accepts local or remote clients. One server instance must be running
+ per game. The game parameters are selected via command line options.
 
-Package: gnocatan-data
+Package: gnocatan-server-gtk
+Architecture: any
+Depends: gnocatan-server-data, ${shlibs:Depends}
+Recommends: gnocatan-client
+Conflicts: gnocatan-server
+Replaces: gnocatan-server
+Description: Gnocatan server - a game for Gnome
+ Gnocatan is an emulation of the Settlers of Catan board game which
+ can be played over the internet.
+ This package contains the GTK-based Gnocatan game server which
+ accepts local or remote clients. One server instance must be running
+ per game. Game parameters can be selected in a GUI dialog, and you
+ can also monitor connected players there.
+
+Package: gnocatan-server-data
 Architecture: all
-Depends: ${shlibs:Depends}
+Conflicts: gnocatan-server
+Replaces: gnocatan-server
 Description: Data required by the Gnocatan client
  Gnocatan is an emulation of the Settlers of Catan board game which
  can be played over the internet.
+ The data package contains architecture independent data needed for the game
+ client. 
+
+Package: gnocatan-meta-server
+Architecture: any
+Depends: gnocatan-server-console, ${shlibs:Depends}
+Description: Gnocatan meta server - a game for Gnome
+ Gnocatan is an emulation of the Settlers of Catan board game which
+ can be played over the internet.
+ This meta server for Gnocatan accepts requests by clients to create new
+ game servers, and keeps a list of running servers one can connect to.
+
+Package: gnocatan-ai
+Architecture: any
+Depends: ${shlibs:Depends}
+Description: Gnocatan computer player - a game for Gnome
+ Gnocatan is an emulation of the Settlers of Catan board game which
+ can be played over the internet.
+ This package contains an AI player implementation that can take part in
+ Gnocatan games. It still isn't perfect...
 
 Package: gnocatan-help
 Architecture: all
-Depends: ${shlibs:Depends}
 Description: Online help for the Gnocatan client
  Gnocatan is an emulation of the Settlers of Catan board game which
  can be played over the internet.
+ This help package contains a good HTML documentation for the Gnocatan
+ client.

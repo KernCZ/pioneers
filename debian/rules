@@ -5,7 +5,7 @@
 # package.
 
 # Uncomment this to turn on verbose mode. 
-export DH_VERBOSE=1
+#export DH_VERBOSE=1
 
 build: build-stamp
 build-stamp:
@@ -24,7 +24,8 @@ clean:
 
 	# Add here commands to clean up after the build process.
 	-$(MAKE) distclean
-	rm -rf client/help/C/gnocatan
+	# Makefile.in's are auto-generated, too
+	find . -name Makefile.in | xargs -r rm
 
 	dh_clean
 
@@ -37,9 +38,10 @@ install-stamp: build-stamp
 
 	# Add here commands to install the package into debian/tmp.
 	$(MAKE) install prefix=`pwd`/debian/tmp/usr install bindir=`pwd`/debian/tmp/usr/games datadir=`pwd`/debian/tmp/usr/share
+	install -m644 server/*.game debian/tmp/usr/share/gnocatan
 
 	dh_movefiles
-	rm -rf debian/tmp/usr/games/gnocatan-meta-server debian/tmp/usr/share/gnocatan debian/tmp/usr/share/pixmaps/gnocatan debian/tmp/usr/share/gnome/help
+	rm -rf debian/tmp/usr/share/gnocatan debian/tmp/usr/share/gnome/help
 	touch install-stamp
 
 # Build architecture-independent files here.
@@ -52,8 +54,6 @@ binary-indep: build install
 	dh_link -i
 	dh_compress -i
 	dh_fixperms -i
-	# You may want to make some executables suid here.
-	dh_suidregister -i
 	dh_installdeb -i
 	dh_gencontrol -i
 	dh_md5sums -i
@@ -64,7 +64,8 @@ binary-arch: build install
 	dh_testdir -a
 	dh_testroot -a
 	dh_installdocs -a
-	dh_undocumented
+	dh_undocumented -a
+	dh_installinit -a
 	dh_installexamples -a
 	dh_installmenu -a
 	dh_installchangelogs -a
@@ -72,8 +73,6 @@ binary-arch: build install
 	dh_link -a
 	dh_compress -a
 	dh_fixperms -a
-	# You may want to make some executables suid here.
-	dh_suidregister -a
 	dh_installdeb -a
 	dh_shlibdeps -a
 	dh_gencontrol -a

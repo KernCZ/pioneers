@@ -1,4 +1,0 @@
-?package(gnocatan-server):needs=X11 section=Games/Board\
-  title="Gnocatan Server GTK" command="/usr/games/gnocatan-server-gtk"
-?package(gnocatan-server):needs=text section=Games/Board\
-  title="Gnocatan Server Console" command="/usr/games/gnocatan-server-console"
