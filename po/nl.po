@@ -1,14 +1,14 @@
 # Translation to dutch
 # Copyright (C) 2003 Bas Wijnen
 # This file is distributed under the same license as the gnocatan package.
-# Bas Wijnen <b.wijnen@phys.rug.nl>, 2003
+# Bas Wijnen <b.wijnen@phys.rug.nl>, 2003-2004
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.8.1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2004-01-26 13:52+0100\n"
-"PO-Revision-Date: 2003-12-16 19:06+0100\n"
+"PO-Revision-Date: 2004-01-26 16:51+0100\n"
 "Last-Translator: Bas Wijnen <b.wijnen@phys.rug.nl>\n"
 "Language-Team: None\n"
 "MIME-Version: 1.0\n"
@@ -837,7 +837,7 @@ msgstr "%d houtkaarten"
 #: client/common/resource.c:133
 #, c-format
 msgid "nothing"
-msgstr ""
+msgstr "niks"
 
 #: client/common/resource.c:156
 #, c-format
@@ -1914,11 +1914,11 @@ msgstr "Bezig te verbinden met %s, poort %s\n"
 
 #: common/state.c:500
 msgid "State stack overflow. Stack dump sent to standard error.\n"
-msgstr ""
+msgstr "Toestandsstapel is vol.  Toestanden op de stapel gaan naar standard error.\n"
 
 #: common/state.c:505
 msgid "State stack overflow"
-msgstr ""
+msgstr "Toestandsstapel is vol"
 
 #: server/gnocatan-server-gtk.c:105
 msgid "The Gnocatan Game Server"
