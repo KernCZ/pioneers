@@ -5,6 +5,9 @@
 #include <ctype.h>
 #include <unistd.h>
 #include <errno.h>
+#ifdef HAVE_GETOPT_H
+#include <getopt.h>
+#endif
 #include <stdlib.h>
 #include <fcntl.h>
 #include <syslog.h>

@@ -1,4 +1,10 @@
+2000-05-12  Steve Langasek <vorlon@dodds.net>
+
+	* configure.in, meta-server/gnocatan-meta-server.c:
+	Included autoconf fix for cross-platform getopt support
+
 2000-05-12  Bibek Sahu <scorpio@dodds.net>
+
 	* Moved the common gui stuff into a separate library, so a non-gui 
 	program won't depend on the gui functions.
 
