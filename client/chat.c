@@ -23,7 +23,6 @@ static GtkWidget *chat_entry;	/* messages text widget */
 void chat_parser( gint player_num, char chat_str[MAX_CHAT] )
 {
 	int tempchatcolor = MSG_INFO;
-	gchar *slashcommand, *slasharg;
 	gint idx;
 
 	if (chat_str[0] == '/') {
@@ -33,10 +32,11 @@ void chat_parser( gint player_num, char chat_str[MAX_CHAT] )
 			/* Generate a beep sound if the player name specified
 			 * in the argument is the name of the current player.
 			 */
-			slasharg = strtok(NULL, "");
-			if (slasharg != NULL) {
+			chat_str += 4;
+			chat_str += strspn(chat_str, " \t");
+			if (chat_str != NULL) {
 				for (idx = 0; idx < game_params->num_players; idx++) {
-					if (!strcmp(slasharg, player_name(idx, TRUE))) {
+					if (!strcmp(chat_str, player_name(idx, TRUE))) {
 						if (player_num == my_player_num()) {
 							log_message( MSG_BEEP, _("You beeped %s.\n"), player_name(idx, TRUE));
 						}
