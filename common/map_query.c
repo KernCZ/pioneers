@@ -41,7 +41,7 @@ gboolean is_edge_adjacent_to_node(Edge *edge, Node *node)
 	return edge->nodes[0] == node || edge->nodes[1] == node;
 }
 
-/* Return whether or not an edge is on land
+/* Return whether or not an edge is on land or coast
  */
 gboolean is_edge_on_land(Edge *edge)
 {
@@ -56,7 +56,7 @@ gboolean is_edge_on_land(Edge *edge)
 	return FALSE;
 }
 
-/* Return whether or not an edge is on sea
+/* Return whether or not an edge is on sea or coast
  */
 gboolean is_edge_on_sea(Edge *edge)
 {
@@ -86,39 +86,47 @@ gboolean is_node_on_land(Node *node)
 	return FALSE;
 }
 
-/* Check if a node has a adjacent road owned by the specified player
+/* Check if a node has a adjacent road/ship/bridge owned by the
+ * specified player
  */
-gboolean node_has_road_owned_by(Node *node, gint owner)
+gboolean node_has_edge_owned_by(Node *node, gint owner, BuildType type)
 {
 	gint idx;
 
 	for (idx = 0; idx < numElem(node->edges); idx++)
 		if (node->edges[idx] != NULL
 		    && node->edges[idx]->owner == owner
-		    && node->edges[idx]->type == BUILD_ROAD)
+		    && node->edges[idx]->type == type)
 			return TRUE;
 
 	return FALSE;
+}
+
+/* Check if a node has a adjacent road owned by the specified player
+ */
+gboolean node_has_road_owned_by(Node *node, gint owner)
+{
+	return node_has_edge_owned_by(node, owner, BUILD_ROAD);
 }
 
 /* Check if a node has a adjacent ship owned by the specified player
  */
 gboolean node_has_ship_owned_by(Node *node, gint owner)
 {
-	gint idx;
+	return node_has_edge_owned_by(node, owner, BUILD_SHIP);
+}
 
-	for (idx = 0; idx < numElem(node->edges); idx++)
-		if (node->edges[idx] != NULL
-		    && node->edges[idx]->owner == owner
-		    && node->edges[idx]->type == BUILD_SHIP)
-			return TRUE;
-
-	return FALSE;
+/* Check if a node has a adjacent bridge owned by the specified player
+ */
+gboolean node_has_bridge_owned_by(Node *node, gint owner)
+{
+	return node_has_edge_owned_by(node, owner, BUILD_BRIDGE);
 }
 
 /* Check node proximity to other buildings.  A building can be
- * constructed on a node if none of the adjacent nodes have buildings on
- * them.
+ * constructed on a node if none of the adjacent nodes have buildings
+ * on them.  There is an exception when bridges are being used - two
+ * buildings may be on adjacent nodes if separated by water.
  */
 gboolean is_node_spacing_ok(Node *node)
 {
@@ -129,12 +137,16 @@ gboolean is_node_spacing_ok(Node *node)
 
 		if (edge == NULL)
 			continue;
-		if (edge->nodes[0] == node) {
-			if (edge->nodes[1]->type != BUILD_NONE)
-				return FALSE;
-		} else {
-			if (edge->nodes[0]->type != BUILD_NONE)
-				return FALSE;
+		if (node->map->have_bridges && !is_edge_on_land(edge))
+			continue;
+		else {
+			if (edge->nodes[0] == node) {
+				if (edge->nodes[1]->type != BUILD_NONE)
+					return FALSE;
+			} else {
+				if (edge->nodes[0]->type != BUILD_NONE)
+					return FALSE;
+			}
 		}
 	}
 
@@ -176,7 +188,8 @@ gboolean is_road_valid(Edge *edge, gint owner)
 		if (node->owner >= 0)
 			continue;
 
-		if (node_has_road_owned_by(node, owner))
+		if (node_has_road_owned_by(node, owner)
+		    || node_has_bridge_owned_by(node, owner))
 			return TRUE;
 	}
 
@@ -206,6 +219,36 @@ gboolean is_ship_valid(Edge *edge, gint owner)
 			continue;
 
 		if (node_has_ship_owned_by(node, owner))
+			return TRUE;
+	}
+
+	return FALSE;
+}
+
+/* Check if a bridge has been positioned properly
+ */
+gboolean is_bridge_valid(Edge *edge, gint owner)
+{
+	gint idx;
+
+	/* Can only build bridge if edge is not on land
+	 */
+	if (is_edge_on_land(edge))
+		return FALSE;
+
+	/* Bridge can be build adjacent to building we own, or a road we
+	 * own that is not separated by a building owned by someone else
+	 */
+	for (idx = 0; idx < numElem(edge->nodes); idx++) {
+		Node *node = edge->nodes[idx];
+
+		if (node->owner == owner)
+			return TRUE;
+		if (node->owner >= 0)
+			continue;
+
+		if (node_has_road_owned_by(node, owner)
+		    || node_has_bridge_owned_by(node, owner))
 			return TRUE;
 	}
 
@@ -252,6 +295,25 @@ gboolean can_ship_be_setup(Edge *edge, gint owner)
 
 /* Edge cursor check function.
  *
+ * Determine whether or not a bridge can be built in this edge by the
+ * specified player during the setup phase.  Perform the following checks:
+ *
+ * 1 - Edge must not currently have a road on it.
+ * 2 - Edge must not be adjacent to a land hex.
+ *
+ * The checks are not as strict as for normal play.  This allows the
+ * player to try a few different configurations without layout
+ * restrictions.  The server will enfore correct placement at the end
+ * of the setup phase.
+ */
+gboolean can_bridge_be_setup(Edge *edge, gint owner)
+{
+	return edge->owner < 0
+		&& !is_edge_on_land(edge);
+}
+
+/* Edge cursor check function.
+ *
  * Determine whether or not a road can be built on this edge by the
  * specified player.  Perform the following checks:
  *
@@ -284,6 +346,24 @@ gboolean can_ship_be_built(Edge *edge, gint owner)
 {
 	return edge->owner < 0
 		&& is_ship_valid(edge, owner);
+}
+
+/* Edge cursor check function.
+ *
+ * Determine whether or not a bridge can be built on this edge by the
+ * specified player.  Perform the following checks:
+ *
+ * 1 - Edge must not currently have a road on it.
+ * 2 - Edge must not be adjacent to a land hex.
+ * 3 - Edge must be adjacent to a building that is owned by the
+ *     specified player, or must be adjacent to another road/bridge
+ *     segment owned by the specifed player, but not separated by a
+ *     building owned by a different player.
+ */
+gboolean can_bridge_be_built(Edge *edge, gint owner)
+{
+	return edge->owner < 0
+		&& is_bridge_valid(edge, owner);
 }
 
 /* Node cursor check function.
@@ -322,7 +402,8 @@ gboolean can_settlement_be_built(Node *node, gint owner)
 {
 	return node->owner < 0
 		&& (node_has_road_owned_by(node, owner)
-		    || node_has_ship_owned_by(node, owner))
+		    || node_has_ship_owned_by(node, owner)
+		    || node_has_bridge_owned_by(node, owner))
 		&& is_node_on_land(node)
 		&& is_node_spacing_ok(node);
 }
@@ -358,7 +439,8 @@ gboolean can_city_be_built(Node *node, gint owner)
 
 	return node->owner < 0
 		&& (node_has_road_owned_by(node, owner)
-		    || node_has_ship_owned_by(node, owner))
+		    || node_has_ship_owned_by(node, owner)
+		    || node_has_bridge_owned_by(node, owner))
 		&& is_node_on_land(node)
 		&& is_node_spacing_ok(node);
 }
@@ -399,6 +481,18 @@ static gboolean can_place_ship_check(Map *map, Hex *hex, gint *owner)
 	return FALSE;
 }
 
+/* Iterator function for map_can_place_bridge() query
+ */
+static gboolean can_place_bridge_check(Map *map, Hex *hex, gint *owner)
+{
+	gint idx;
+
+	for (idx = 0; idx < numElem(hex->edges); idx++)
+		if (can_bridge_be_built(hex->edges[idx], *owner))
+			return TRUE;
+	return FALSE;
+}
+
 /* Query.
  *
  * Determine if there are any edges on the map where a player can
@@ -417,6 +511,16 @@ gboolean map_can_place_road(Map *map, gint owner)
 gboolean map_can_place_ship(Map *map, gint owner)
 {
 	return map_traverse(map, (HexFunc)can_place_ship_check, &owner);
+}
+
+/* Query.
+ *
+ * Determine if there are any edges on the map where a player can
+ * place a bridge.
+ */
+gboolean map_can_place_bridge(Map *map, gint owner)
+{
+	return map_traverse(map, (HexFunc)can_place_bridge_check, &owner);
 }
 
 /* Iterator function for map_can_place_settlement() query
@@ -466,8 +570,8 @@ gboolean map_can_upgrade_settlement(Map *map, gint owner)
 /* Ignoring road connectivity, decide whether or not a settlement/city
  * can be placed at the specified location.
  */
-gboolean map_building_spacing_ok(Map *map, gint owner, BuildType type,
-				 gint x, gint y, gint pos)
+gboolean map_building_spacing_ok(Map *map, gint owner,
+				 BuildType type, gint x, gint y, gint pos)
 {
 	Node *node = map_node(map, x, y, pos);
 	if (node == NULL)
@@ -496,10 +600,9 @@ gboolean map_building_connect_ok(Map *map, gint owner, BuildType type,
 	if (node == NULL)
 		return FALSE;
 
-	if(node_has_road_owned_by(node, owner))
-	  return TRUE;
-	else
-	  return node_has_ship_owned_by(node, owner);
+	return node_has_road_owned_by(node, owner)
+		|| node_has_ship_owned_by(node, owner)
+		|| node_has_bridge_owned_by(node, owner);
 }
 
 gboolean map_building_vacant(Map *map, BuildType type,
@@ -539,6 +642,13 @@ gboolean map_ship_vacant(Map *map, gint x, gint y, gint pos)
 	return edge != NULL && edge->owner < 0;
 }
 
+gboolean map_bridge_vacant(Map *map, gint x, gint y, gint pos)
+{
+	Edge *edge = map_edge(map, x, y, pos);
+
+	return edge != NULL && edge->owner < 0;
+}
+
 /* Ignoring whether or not a road already exists at this point, check
  * that it has the right connectivity.
  */
@@ -561,6 +671,18 @@ gboolean map_ship_connect_ok(Map *map, gint owner, gint x, gint y, gint pos)
 		return FALSE;
 
 	return is_ship_valid(edge, owner);
+}
+
+/* Ignoring whether or not a bridge already exists at this point, check
+ * that it has the right connectivity.
+ */
+gboolean map_bridge_connect_ok(Map *map, gint owner, gint x, gint y, gint pos)
+{
+	Edge *edge = map_edge(map, x, y, pos);
+	if (edge == NULL)
+		return FALSE;
+
+	return is_bridge_valid(edge, owner);
 }
 
 static gint calc_road_length(Edge *edge);
