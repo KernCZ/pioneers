@@ -1,3 +1,8 @@
+2005-04-03  0.9.5  Roland Clobus <rclobus@bigfoot.com>
+	* client/ai/greedy.c: AI can use gold (and prefer it) during setup.
+	The nosetup nodes are honoured. Year of Plenty will only be played
+	when the bank has at least 2 resources left. 
+
 2005-04-02  Brian Wellington <bwelling@xbill.org>
 	* client/gtk/gui.c, client/gtk/guimap.c, client/gtk/legend.c,
 	client/gtk/offline.c, client/gtk/theme.c, client/gtk/theme.h: Cleanups

@@ -28,7 +28,6 @@
  *
  * What it does _NOT_ do:
  *
- * -Play with gold.  It aborts with an error.
  * -Play monopoly development card
  * -Make roads explicitly to get the longest road card
  * -Trade with other players
@@ -334,10 +333,12 @@ static void reevaluate_resources(resource_values_t * outval)
  */
 static float resource_value(Resource resource, resource_values_t * resval)
 {
-	if (resource >= NO_RESOURCE)
+	if (resource < NO_RESOURCE)
+		return resval->value[resource];
+	else if (resource == GOLD_RESOURCE)
+		return default_score_resource(resource);
+	else
 		return 0.0;
-
-	return resval->value[resource];
 }
 
 
@@ -390,10 +391,8 @@ static float score_node(Node * node, int city, resource_values_t * resval)
 	int i;
 	float score = 0;
 
-
-	/* if not a node score -1 */
-	if (node == NULL)
-		return -1;
+	/* if not a node, how did this happen? */
+	g_assert(node != NULL);
 
 	/* if already occupied, in water, or too close to others  give a score of -1 */
 	if (is_node_on_land(node) == FALSE)
@@ -433,27 +432,35 @@ static int road_connects(Node * n)
 }
 
 
-/*
- * Find the best spot for a house
- *
- * connected - does it have to be connected to a road playernum owns?
+/** Find the best spot for a settlement
+ * @param during_setup Build a settlement during the setup phase?
+ *                     During setup: no connected road is required,
+ *                                   and the no_setup must be taken into account
+ *                     Normal play:  settlement must be next to a road we own.
  */
-static Node *best_settlement_spot(int connected,
+static Node *best_settlement_spot(gboolean during_setup,
 				  resource_values_t * resval)
 {
 	int i, j, k;
 	Node *best = NULL;
 	float bestscore = -1.0;
+	float score;
 
 	for (i = 0; i < map->x_size; i++) {
 		for (j = 0; j < map->y_size; j++) {
 			for (k = 0; k < 6; k++) {
 				Node *n = map_node(map, i, j, k);
-				float score = score_node(n, 0, resval);
-
-				if ((connected) && (!road_connects(n)))
+				if (!n)
 					continue;
+				if (during_setup) {
+					if (n->no_setup)
+						continue;
+				} else {
+					if (!road_connects(n))
+						continue;
+				}
 
+				score = score_node(n, 0, resval);
 				if (score > bestscore) {
 					best = n;
 					bestscore = score;
@@ -481,9 +488,9 @@ static Node *best_city_spot(resource_values_t * resval)
 		for (j = 0; j < map->y_size; j++) {
 			for (k = 0; k < 6; k++) {
 				Node *n = map_node(map, i, j, k);
-
-				if ((n != NULL)
-				    && (n->owner == my_player_num())
+				if (!n)
+					continue;
+				if ((n->owner == my_player_num())
 				    && (n->type == BUILD_SETTLEMENT)) {
 					float score =
 					    score_node(n, 1, resval);
@@ -537,6 +544,7 @@ static Edge *traverse_out(Node * n, node_seen_set_t * set, float *score,
 			continue;
 
 		othernode = other_node(e, n);
+		g_assert(othernode != NULL);
 
 		/* if our road traverse it */
 		if (e->owner == my_player_num()) {
@@ -823,7 +831,7 @@ static int which_resource(gint assets[NO_RESOURCE])
 /* Don't want what isn't available anymore... */
 
 static int resource_desire(gint assets[NO_RESOURCE],
-			   resource_values_t * resval, int trade,
+			   const resource_values_t * resval, int trade,
 			   int tradenum)
 {
 	int i;
@@ -932,7 +940,7 @@ static void greedy_setup_house(void)
 
 	reevaluate_resources(&resval);
 
-	node = best_settlement_spot(0, &resval);
+	node = best_settlement_spot(TRUE, &resval);
 
 	/*node_add(player, BUILD_SETTLEMENT, node->x, node->y, node->pos, FALSE); */
 	cb_build_settlement(node);
@@ -968,6 +976,102 @@ static void greedy_setup_road(void)
 	}
 
 	cb_build_road(e);
+}
+
+/** I am allowed to do a maritime trade, but will I do it?
+ * @param assets The resources I already have
+ * @param resval The value of the resources
+ * @retval amount The amount to trade
+ * @retval trade_away The resource to trade away
+ * @retval want_resource The resource I want to have
+ * @return TRUE if I want to do the trade
+ */
+static gboolean will_do_maritime_trade(gint assets[NO_RESOURCE],
+				       const resource_values_t * resval,
+				       gint * amount,
+				       Resource * trade_away,
+				       Resource * want_resource)
+{
+	MaritimeInfo info;
+
+	map_maritime_info(map, &info, my_player_num());
+
+	/* trade if possible. Try to trade every resource.
+	 * First try trading 2:1, then 3:1, then 4:1
+	 */
+	for (*amount = 2; *amount <= 4; ++*amount) {
+		Resource try;
+		for (try = 0; try < NO_RESOURCE; ++try) {
+			Resource res;
+			/* first check if the trade is possible */
+			switch (*amount) {
+			case 2:
+				/* do we have a 2 to 1 harbour for this resource? */
+				if (!info.specific_resource[try])
+					continue;
+				break;
+			case 3:
+				/* do we have a 3 to 1 harbour? */
+				if (!info.any_resource)
+					continue;
+				break;
+			case 4:
+				/* always possible */
+				break;
+			}
+
+			if (assets[try] >= *amount) {	/* I have enough to trade away */
+				res =
+				    resource_desire(assets, resval, try,
+						    *amount);
+				if (res != NO_RESOURCE)
+					if (get_bank()[res] == 0)
+						res = NO_RESOURCE;
+
+				if (res != NO_RESOURCE && (try != res)) {
+					*trade_away = try;
+					*want_resource = res;
+					return TRUE;
+				}
+			}
+		}
+	}
+	return FALSE;
+}
+
+/** I can play the card, but will I do it?
+ *  @param cardtype The type of card to consider
+ *  @return TRUE if the card is to be played
+ */
+static gboolean will_play_development_card(DevelType cardtype)
+{
+	if (is_victory_card(cardtype)) {
+		return TRUE;
+	}
+
+	switch (cardtype) {
+	case DEVEL_SOLDIER:
+		return TRUE;
+	case DEVEL_YEAR_OF_PLENTY:{
+			/* only when the bank is full enough */
+			gint i;
+			gint amount = 0;
+			for (i = 0; i < NO_RESOURCE; i++)
+				amount += get_bank()[i];
+			if (amount >= 2) {
+				return TRUE;
+			}
+		}
+		break;
+	case DEVEL_ROAD_BUILDING:
+		/* don't if don't have two roads left */
+		if (stock_num_roads() < 2)
+			break;
+		return TRUE;
+	default:
+		break;
+	}
+	return FALSE;
 }
 
 /*
@@ -1011,7 +1115,7 @@ static void greedy_turn(void)
 	/* if can then buy settlement */
 	if (has_resources(assets, BUILD_SETTLEMENT, need)) {
 
-		Node *n = best_settlement_spot(1, &resval);
+		Node *n = best_settlement_spot(FALSE, &resval);
 
 		/* don't if no settlements left */
 		if (stock_num_settlements() <= 0)
@@ -1059,56 +1163,14 @@ static void greedy_turn(void)
 
 	/* if have a lot of cards see if we can trade anything */
 	if (num_assets(assets) >= 3) {
-
 		if (can_trade_maritime()) {
 			gint amount;
-			MaritimeInfo info;
-
-			map_maritime_info(map, &info, my_player_num());
-
-			/* trade if possible. Try to trade every resource.
-			 * First try trading 2:1, then 3:1, then 4:1
-			 */
-			for (amount = 2; amount <= 4; ++amount) {
-				Resource try;
-				for (try = 0; try < NO_RESOURCE; ++try) {
-					Resource res;
-					/* first check if the trade is possible */
-					switch (amount) {
-					case 2:
-						/* do we have a 2 to 1 harbour for this resource? */
-						if (!info.
-						    specific_resource[try])
-							continue;
-						break;
-					case 3:
-						/* do we have a 3 to 1 harbour? */
-						if (!info.any_resource)
-							continue;
-						break;
-					case 4:
-						/* always possible */
-						break;
-					}
-
-					if (assets[try] >= amount) {	/* I have enough to trade away */
-						res =
-						    resource_desire(assets,
-								    &resval,
-								    try,
-								    amount);
-						if (get_bank()[res] == 0)
-							res = NO_RESOURCE;
-
-						if (res != NO_RESOURCE) {
-							cb_maritime(amount,
-								    try,
-								    res);
-							return;
-						}
-					}
-				}
-			}
+			Resource trade_away, want_resource;
+			if (will_do_maritime_trade
+			    (assets, &resval, &amount, &trade_away,
+			     &want_resource))
+				cb_maritime(amount, trade_away,
+					    want_resource);
 		}
 	}
 
@@ -1121,28 +1183,10 @@ static void greedy_turn(void)
 
 			/* can't play card we just bought */
 			if (can_play_develop(i)) {
-
-				if (is_victory_card(cardtype)) {
+				if (will_play_development_card(cardtype)) {
 					cb_play_develop(i);
 					return;
 				}
-
-				switch (cardtype) {
-				case DEVEL_SOLDIER:
-				case DEVEL_YEAR_OF_PLENTY:
-					cb_play_develop(i);
-					return;
-
-				case DEVEL_ROAD_BUILDING:
-					/* don't if don't have two roads left */
-					if (stock_num_roads() < 2)
-						break;
-					cb_play_develop(i);
-					return;
-				default:
-					break;
-				}
-
 			}
 		}
 	}
@@ -1703,7 +1747,8 @@ static void greedy_gold_choose(gint gold_num, gint * bank)
 		if (r1 == NO_RESOURCE) {
 			r1 = 0;
 			/* Potential deadlock, but bank is always full enough */
-			while (my_bank[r1] == 0) r1++;
+			while (my_bank[r1] == 0)
+				r1++;
 		}
 		want[r1]++;
 		assets[r1]++;
