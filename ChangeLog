@@ -1,3 +1,7 @@
+2002-05-20  Jeff Breidenbach  <jab@debian.org>
+
+	* Fix splash screen packaging bug.
+
 2002-05-20  Roman Hodek  <roman@hodek.net>
 
 	* client/gui.[ch], client/client.c: on startup show a splash

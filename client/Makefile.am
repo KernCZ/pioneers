@@ -93,6 +93,7 @@ pixmap_DATA = \
 	sea.png \
 	settlement.png \
 	ship.png \
+	splash.png \
 	tick.png \
 	trade.png
 
