@@ -38,12 +38,19 @@ void chat_parser( gint player_num, char chat_str[MAX_CHAT] )
 			 */
 			if (slasharg != NULL) {
 				for (idx = 0; idx < game_params->num_players; idx++) {
-					if (!strcmp(slasharg, player_name(idx, TRUE)) && idx == my_player_num()) {
-						gdk_beep();
-						log_message( MSG_INFO, _("%s beeped you.\n"), player_name(player_num, TRUE));
+					if (!strcmp(slasharg, player_name(idx, TRUE))) {
+						if (player_num == my_player_num()) {
+							log_message( MSG_INFO, _("You beeped %s.\n"), player_name(idx, TRUE));
+						}
+
+						if (idx == my_player_num()) {
+							gdk_beep();
+							log_message( MSG_INFO, _("%s beeped you.\n"), player_name(player_num, TRUE));
+						}
 					}
 				}
 			}
+
 		}
 
 		return;
