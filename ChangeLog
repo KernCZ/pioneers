@@ -1,3 +1,11 @@
+2000-05-22  Andy Heroff <aheroff@mediaone.net>
+
+	* server/buildutils.c: Removed longest road debug define to prevent
+	  spamming the server's console. The debug code is still in there.
+
+	* client/gui.c: Built a settings dialog. It only has one setting,
+	  and it doesn't work yet. That's next.
+
 2000-05-22  Roderick Schertler <roderick@argon.org>
 
 	* client/player.c: Added player's total victory points to the stat

@@ -375,6 +375,8 @@ static void quit_cb(GtkWidget *widget, void *data)
 	gtk_main_quit();
 }
 
+#ifdef I_LIKE_COMPILER_WARNINGS
+/* This is here for my reference. Don't touch! --- Ngeran */
 static void settings_test_cb(GtkWidget *widget, void *prop_box)
 {
 	GtkWidget *dock_item;
@@ -386,30 +388,49 @@ static void settings_test_cb(GtkWidget *widget, void *prop_box)
 	gtk_toolbar_set_style( GTK_TOOLBAR(toolbar), GTK_TOOLBAR_TEXT );
 	gnome_property_box_changed( GNOME_PROPERTY_BOX(prop_box) );
 }
+#endif
 
 static void menu_settings_cb(GtkWidget *widget, void *user_data)
 {
 	GtkWidget *settings;
-	GtkWidget *pg0_hbox;
-	GtkWidget *pg0_btn_test;
+	GtkWidget *pg0_table;
 	GtkWidget *pg0_label;
+	GtkWidget *frame_style;
+	GtkWidget *vbox_style;
+	GtkWidget *radio_style_text;
+	GtkWidget *radio_style_icons;
+	GtkWidget *radio_style_both;
+	GList     *button_style;
 	
 	settings = gnome_property_box_new();
-	pg0_hbox = gtk_hbox_new( TRUE, 0 );
-	pg0_btn_test = gtk_button_new_with_label("Test");
+	pg0_table = gtk_table_new( 1, 1, FALSE );
 	pg0_label = gtk_label_new( "General" );
+	frame_style = gtk_frame_new( "Show Toolbar As" );
+	vbox_style = gtk_vbox_new( TRUE, 2 );
+	radio_style_text = gtk_radio_button_new_with_label(NULL, "Text Only");
+	radio_style_icons = 
+	    gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(radio_style_text),
+	                                                "Icons Only" );
+	radio_style_both =
+	    gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(radio_style_icons),
+	                                                "Both Icons and Text" );
 	
-	gtk_signal_connect( GTK_OBJECT(pg0_btn_test), "clicked",
-	                    settings_test_cb, (gpointer)settings );
-
-	gtk_widget_show( pg0_btn_test );
+	gtk_box_pack_start_defaults( GTK_BOX(vbox_style), radio_style_text );
+	gtk_box_pack_start_defaults( GTK_BOX(vbox_style), radio_style_icons );
+	gtk_box_pack_start_defaults( GTK_BOX(vbox_style), radio_style_both );
+	gtk_container_add( GTK_CONTAINER(frame_style), vbox_style );
+	gtk_table_attach( GTK_TABLE(pg0_table), frame_style, 0, 1, 0, 1,
+	                  GTK_FILL, GTK_FILL, 5, 5 );
 	
-	gtk_box_pack_start( GTK_BOX(pg0_hbox), pg0_btn_test, FALSE, TRUE, 0);
-	
-	gtk_widget_show( pg0_hbox );
+	gtk_widget_show( radio_style_text );
+	gtk_widget_show( radio_style_icons );
+	gtk_widget_show( radio_style_both );
+	gtk_widget_show( vbox_style );
+	gtk_widget_show( frame_style );
+	gtk_widget_show( pg0_table );
 	
 	gnome_property_box_append_page( GNOME_PROPERTY_BOX(settings),
-	                                pg0_hbox, pg0_label );
+	                                pg0_table, pg0_label );
 	
 	gtk_widget_show( settings );
 }
@@ -627,7 +648,7 @@ GtkWidget* gui_build_interface()
 
 	register_gnocatan_pixmaps();
 	app_window = gnome_app_new("gnocatan", _("Gnocatan"));
-	gtk_window_set_policy(GTK_WINDOW(app_window), TRUE, TRUE, TRUE);
+	gtk_window_set_policy(GTK_WINDOW(app_window), FALSE, FALSE, TRUE);
 	gtk_widget_realize(app_window);
 	gtk_signal_connect(GTK_OBJECT(app_window), "delete_event",
 			   GTK_SIGNAL_FUNC(quit_cb), NULL);
