@@ -1,5 +1,8 @@
 2000-05-17  Steve Langasek <vorlon@dodds.net>
 
+	* common/common_glib.[ch]:  Added generic glib driver for common
+	code.
+
 	* common/driver.h: Fixed prototypes within the UI driver to use
 	guint in place of gint.
 
