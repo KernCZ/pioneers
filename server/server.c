@@ -14,6 +14,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/socket.h>
+#include <sys/signal.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <netdb.h>
@@ -42,6 +43,27 @@ typedef union {
 } sockaddr_t;
 
 static Game *curr_game;
+gint no_player_timeout = 0;
+
+void timed_out(int signum)
+{
+	g_print( "Was hanging around for too long without players... bye.\n" );
+	exit(5);
+}
+
+void start_timeout(void)
+{
+	if (!no_player_timeout)
+		return;
+	signal(SIGALRM, timed_out);
+	alarm(no_player_timeout);
+}
+
+void stop_timeout(void)
+{
+	alarm(0);
+}
+
 
 gint get_rand(gint range)
 {
@@ -113,6 +135,7 @@ gint open_listen_socket( char *port )
 		return -1;
 	}
 	
+	start_timeout();
 	return fd;
 }
 
@@ -231,8 +254,10 @@ static void player_connect(Game *game)
 	gchar *location;
 	gint fd = accept_connection(game->accept_fd, &location);
 
-	if( fd > 0 )
+	if( fd > 0 ) {
 		player_new(game, fd, location);
+		stop_timeout();
+	}
 }
 
 static gboolean game_server_start(Game *game)
@@ -250,7 +275,7 @@ static gboolean game_server_start(Game *game)
 					 player_connect, game);
 
 	if (game->params->register_server)
-		meta_register(meta_server, META_PORT, game->params);
+		meta_register(meta_server, META_PORT, game);
 	return TRUE;
 }
 
