@@ -1,4 +1,18 @@
+gnocatan (0.6.0-2) unstable; urgency=low
+
+  * Removed README.debian
+  
+  * Added Build-Requires line to control file; addresses bug #67287
+  
+ -- Jeff Breidenbach <jeff@alum.mit.edu>  Sat, 15 Jul 2000 21:06:25 -0700
+
 gnocatan (0.6.0-1) unstable; urgency=low
+
+  * Correcting version numbers
+
+ -- Jeff Breidenbach <jeff@alum.mit.edu>  Thu, 29 Jun 2000 19:42:42 -0700
+
+gnocatan (0.5.6-1) unstable; urgency=low
 
   * New upstream release 
 
