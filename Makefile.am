@@ -6,5 +6,14 @@ SUBDIRS = macros common client server meta-server ai
 @MAINT@macros/macros.dep: macros/Makefile.am
 @MAINT@	cd macros && $(MAKE) macros.dep
 
+EXTRA_DIST = autogen.sh gnocatan.spec
+
 dist-hook:
-	cp $(srcdir)/gnocatan.spec $(distdir)
+	mkdir $(distdir)/debian
+	set -e; for f in control changelog rules copyright dirs menu; do \
+		cp -p $(srcdir)/debian/$$f $(distdir)/debian; \
+	done
+	cp -p $(srcdir)/debian/*.files $(distdir)/debian
+	cp -p $(srcdir)/debian/*.menu $(distdir)/debian
+	cp -p $(srcdir)/debian/*.undocumented $(distdir)/debian
+	cp -p $(srcdir)/debian/*.init $(distdir)/debian
