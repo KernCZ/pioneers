@@ -1,3 +1,79 @@
+2000-05-06  Dave Cole <dave@dccs.com.au>
+
+	* client/Makefile.am: Added bridge.png, removed ship_building.c
+
+	* gnocatan.spec, debian/gnocatan-server.files,
+	server/four-islands.game: Added basic Seafarers game and
+	bridge.png.
+
+	* client/road.png: Rotated road bitmap to match drawing in
+	identity panel.
+
+	* client/bridge.png: Added bridge bitmap.
+
+	* client/build.c, client/stock.c, client/turn.c,
+	client/identity.c: Added bridge support.
+
+	* client/client.c: Added bridge support.  Fixed setup statusbar
+	prompts.  Merged road/ship/bridge setup code.  Fixed road building
+	development to allow ships and bridges and removed ship building
+	development.
+
+	* client/ship_building.c: Deleted file - code was obsolete.
+
+	* client/client.h, client/develop.c: Fixed road building
+	development to allow ships and bridges and removed ship building
+	development.
+
+	* client/gui.c: Added bridge toolbar button.
+
+	* client/guimap.c, client/guimap.h: Added polygon for bridge
+	shape.  Added bridge drawing and cursor BRIDGE_CURSOR.
+
+	* client/road_building.c: Fix road building to build ships and
+	bridges in games which use them.
+
+	* client/setup.c: Add support for ships and bridges in games which
+	use them.
+
+	* common/buildrec.c: Almost complete rewrite/restructure to fix
+	setup support for ships and bridges.
+
+	* common/buildrec.h: Added buildrec_get_edge()
+
+	* common/cost.c, common/cost.h: Added cost_bridge().
+
+	* common/game.c (params_load_finish): Set have_bridges flag in map
+	if game with bridges.
+
+	* common/game.h: Removed DEVEL_SHIP_BUILDING.
+
+	* common/map.c, common/map.h: Added map pointer to owner Map in
+	Hex, Node, and Edge structures.
+
+	* common/map.h, common/map_query.c: Added
+	node_has_ship_owned_by(), node_has_bridge_owned_by(),
+	can_bridge_be_setup(), can_bridge_be_built(),
+	map_can_place_bridge(), map_bridge_vacant(),
+	map_bridge_connect_ok().  Fixed is_node_spacing_ok(),
+	is_road_valid(), can_settlement_be_built(), can_city_be_built(),
+	map_building_connect_ok() to handle bridges.
+
+	* common/state.h: Fixed comments; removed DEVEL_SHIP_BUILDING,
+	added BUILD_BRIDGE.
+
+	* server/buildutil.c, server/server.h: Merged road_add() and
+	ship_add() into edge_add() which handles bridges as well.
+
+	* server/develop.c (mode_road_building): Fixed road building to
+	support ships and bridges as well.
+
+	* server/pregame.c: Added support for bridge building.
+
+	* server/turn.c (build_add): Added bridge building support.
+
+	* server/Makefile.am: Added basic Seafarers game.
+
 2000-05-02  Andy Heroff <aheroff@mediaone.net>
 
 	* Project imported into the SourceForge CVS server.
