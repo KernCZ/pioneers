@@ -43,7 +43,7 @@ random_name(void)
 
     snprintf(filename,sizeof(filename)-1,"%s/computer_names",gnopath);
 
-    stream = fopen(filename,"r+");
+    stream = fopen(filename,"r");
     if (!stream) goto def;
 
     strcpy(name,"Computer Player");
