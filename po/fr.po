@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnocatan 0.8.1.41\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-11-05 21:43+0100\n"
+"POT-Creation-Date: 2004-11-05 21:53+0100\n"
 "PO-Revision-Date: 2003-11-20 16:00-0600\n"
 "Last-Translator: LT-P <LT-P@lt-p.net>\n"
 "Language-Team: Français <LL@li.org>, Arnaud MALON <moko@geumeuleu.com>\n"
@@ -1455,7 +1455,7 @@ msgstr "Afficher les messages en couleur"
 #. Tooltip for the option to display log messages in color
 #: client/gtk/gui.c:782
 msgid "Show new messages with color"
-msgstr "Afficher les messages en couleur"
+msgstr "Afficher les nouveaux messages en couleur"
 
 #. Label for the option to display chat in color of player
 #: client/gtk/gui.c:787
@@ -1465,7 +1465,7 @@ msgstr "Afficher les dialogues en couleur"
 #. Tooltip for the option to display chat in color of player
 #: client/gtk/gui.c:796
 msgid "Show new chat messages in the color of the player"
-msgstr "Afficher les dialogues avec les couleurs des joueurs"
+msgstr "Afficher les nouveaux messages des joueurs en couleurs"
 
 #. Label for the option to display the summary with colors
 #: client/gtk/gui.c:801
