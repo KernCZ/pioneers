@@ -183,9 +183,14 @@ static gboolean mode_bad_version(Player *player, gint event)
 static gboolean check_versions( gchar *client_version )
 {
 	guint len;
-	
-	len = strlen(VERSION);
-	if( strncmp( VERSION, client_version, len ) == 0 )
+
+	len = strlen(PROTOCOL_VERSION);
+	/* If the two strings aren't the same length, they do NOT match! */
+	if (len != strlen(client_version)) {
+		return FALSE;
+	}
+
+	if( strncmp( PROTOCOL_VERSION, client_version, len ) == 0 )
 	{
 		return TRUE;
 	} else {

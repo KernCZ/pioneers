@@ -1,3 +1,10 @@
+2000-08-21  Steve Langasek <vorlon@dodds.net>
+
+	* server/player.c, client/client.c, acconfig.h, configure.in:
+	Use a distinct protocol version number for client-server
+	negotiation, so that versions of the client and server that behave
+	compatibly will be able to connect to one another.
+
 2000-08-18  Andy Heroff <aheroff@mediaone.net>
 
 	* client/settingscreen.c, client/gui.c, client/client.h,
