@@ -518,7 +518,7 @@ static Edge *traverse_out(Node *n, int mynum, node_seen_set_t *set, float *score
 	    if (!nodeset_isset(set, othernode))
 		cur_e = traverse_out(othernode, mynum, set, &cur_score, resval);
 
-	} else if (e->owner == -1) {
+	} else if ((e->owner == -1) && (is_edge_on_land(e))) {
 
 	    /* no owner, how good is the other node ? */
 	    cur_e = e;
