@@ -16,12 +16,15 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/socket.h>
+#include <sys/dir.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <time.h>
 
 #include <glib.h>
+#include "config.h"
+#include "gnocatan-path.h"
 
 typedef enum {
 	META_UNKNOWN,
@@ -47,6 +50,8 @@ struct _Client {
 	int read_len;
 	GList *write_queue;
 	gboolean waiting_for_close;
+	gint protocol_major;
+	gint protocol_minor;
 
 	/* The rest of the structure is only used for META_SERVER clients
 	 */
@@ -55,13 +60,16 @@ struct _Client {
 	gchar *version;
 	gint max;
 	gint curr;
-	gchar *map;
-	gchar *comment;
+	gchar *terrain;
+	gchar *title;
+	gchar *vpoints;
+	gchar *sevenrule;
 
 	gboolean send_hello;
 };
 
 static gchar *redirect_location;
+static gchar *myhostname;
 
 static GList *client_list;
 
@@ -80,7 +88,7 @@ static void client_printf(Client *client, char *fmt, ...);
 #define SERVER_TIMEOUT (48 * HOUR) /* delay allowed between server updates */
 #define HELLO_TIMEOUT (8 * MINUTE) /* delay allowed between server hello */
 
-#define LOG
+/* #define LOG */
 
 #ifdef LOG
 static void debug(gchar *fmt, ...)
@@ -132,6 +140,8 @@ static void find_new_max_fd()
 
 static void client_free(Client *client)
 {
+	if (client->type == META_SERVER)
+		syslog(LOG_INFO, "server on port %s unregistered", client->port);
 	g_free(client);
 }
 
@@ -160,10 +170,14 @@ static void client_close(Client *client)
 		g_free(client->host);
 	if (client->version != NULL)
 		g_free(client->version);
-	if (client->map != NULL)
-		g_free(client->map);
-	if (client->comment != NULL)
-		g_free(client->comment);
+	if (client->terrain != NULL)
+		g_free(client->terrain);
+	if (client->title != NULL)
+		g_free(client->title);
+	if (client->vpoints != NULL)
+		g_free(client->vpoints);
+	if (client->sevenrule != NULL)
+		g_free(client->sevenrule);
 }
 
 static void client_hello(Client *client)
@@ -265,14 +279,206 @@ static void client_list_servers(Client *client)
 			      "port=%s\n"
 			      "version=%s\n"
 			      "max=%d\n"
-			      "curr=%d\n"
-			      "map=%s\n"
-			      "comment=%s\n"
-			      "end\n",
+			      "curr=%d\n",
 			      scan->host, scan->port, scan->version,
-			      scan->max, scan->curr, scan->map,
-			      scan->comment);
+			      scan->max, scan->curr);
+		if (client->protocol_major == 0) {
+			client_printf(client,
+				      "map=%s\n"
+				      "comment=%s\n",
+				      scan->terrain,
+				      scan->title);
+		}
+		else if (client->protocol_major >= 1) {
+			client_printf(client,
+				      "vpoints=%s\n"
+				      "sevenrule=%s\n"
+				      "terrain=%s\n"
+				      "title=%s\n",
+				      scan->vpoints,
+				      scan->sevenrule,
+				      scan->terrain,
+				      scan->title);
+		}
+		client_printf(client, "end\n");
 	}
+}
+
+static GList *load_game_desc(gchar *fname, GList *titles)
+{
+	FILE *fp;
+	gchar line[512], *title;
+
+	if ((fp = fopen(fname, "r")) == NULL) {
+		g_warning("could not open '%s'", fname);
+		return NULL;
+	}
+	while (fgets(line, sizeof(line), fp) != NULL) {
+		gint len = strlen(line);
+
+		if (len > 0 && line[len - 1] == '\n')
+			line[len - 1] = '\0';
+		if (strncmp(line, "title ", 6) == 0) {
+			title = line+6;
+			title += strspn(title, " \t");
+			titles = g_list_insert_sorted(titles, strdup(title),
+										  (GCompareFunc)strcmp);
+			break;
+		}
+	}
+	fclose(fp);
+	return titles;
+}
+
+static GList *load_game_types( gchar *path )
+{
+	DIR *dir;
+	gchar *fname;
+	long fnamelen;
+	struct dirent *ent;
+	GList *titles = NULL;
+
+	if ((dir = opendir(path)) == NULL) {
+		return NULL;
+	}
+
+	fnamelen = pathconf(path,_PC_NAME_MAX);
+	fname = malloc(1 + fnamelen);
+	for (ent = readdir(dir); ent != NULL; ent = readdir(dir)) {
+		gint len = strlen(ent->d_name);
+
+		if (len < 6 || strcmp(ent->d_name + len - 5, ".game") != 0)
+			continue;
+		g_snprintf(fname, fnamelen, "%s/%s", path, ent->d_name);
+		titles = load_game_desc(fname, titles);
+	}
+
+	closedir(dir);
+	free(fname);
+	return titles;
+}
+
+static void client_list_types(Client *client)
+{
+	GList *list;
+	gchar *gnocatan_dir = (gchar *) getenv( "GNOCATAN_DIR" );
+	if( !gnocatan_dir )
+		gnocatan_dir = GNOCATAN_DIR_DEFAULT;
+	
+	list = load_game_types(gnocatan_dir);
+
+	for (; list != NULL; list = g_list_next(list)) {
+		client_printf(client, "title=%s\n", list->data);
+	}
+	g_list_free(list);
+}
+
+static void client_create_new_server(Client *client, gchar *line)
+{
+	char *terrain, *numplayers, *points, *sevens_rule, *type;
+	char *envent = "GNOCATAN_META_SERVER=localhost";
+	char *newenv[2] = { envent, NULL };
+	int pid, fd, yes=1;
+	struct sockaddr_in sa;
+	char port[20];
+	char *console_server;
+
+	line += strspn(line, " \t");
+	terrain = line;
+	line += strspn(line, "0123456789");
+	if (line == terrain)
+		goto bad;
+	*line++ = 0;
+	line += strspn(line, " \t");
+	numplayers = line;
+	line += strspn(line, "0123456789");
+	if (line == numplayers)
+		goto bad;
+	*line++ = 0;
+	line += strspn(line, " \t");
+	points = line;
+	line += strspn(line, "0123456789");
+	if (line == points)
+		goto bad;
+	*line++ = 0;
+	line += strspn(line, " \t");
+	sevens_rule = line;
+	line += strspn(line, "0123456789");
+	if (line == points)
+		goto bad;
+	*line++ = 0;
+	line += strspn(line, " \t");
+	type = line;
+	line += strlen(line)-1;
+	while( line >= type && isspace(*line) )
+		*line-- = 0;
+	if (line < type)
+		goto bad;
+
+	if (!(console_server = getenv("GNOCATAN_SERVER_CONSOLE")))
+		console_server = GNOCATAN_SERVER_CONSOLE_PATH;
+	
+	fd = socket(AF_INET, SOCK_STREAM, 0);
+	if (fd < 0) {
+		client_printf(client, "Creating socket failed: %s\n",
+					  strerror(errno));
+		return;
+	}
+	if (setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes)) < 0) {
+		client_printf(client, "Setting socket reuse failed: %s\n",
+					  strerror(errno));
+		return;
+	}
+	sa.sin_family = AF_INET;
+	sa.sin_port = 0;
+	sa.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
+	if (bind(fd, (struct sockaddr *)&sa, sizeof(sa)) < 0) {
+		client_printf(client, "Binding socket failed: %s\n",
+					  strerror(errno));
+		return;
+	}
+	yes = sizeof(sa);
+	if (getsockname(fd, (struct sockaddr *)&sa, &yes) < 0) {
+		client_printf(client, "Getting socket address failed: %s\n",
+					  strerror(errno));
+		return;
+	}
+	sprintf(port, "%d", sa.sin_port);
+
+	if ((pid = fork()) == -1) {
+		client_printf(client, "fork failed\n");
+	}
+	else if (pid == 0) {
+		int i;
+		for( i = 0; i < 255; ++i ) close(i);
+		open("/dev/null",O_RDONLY);
+		open("/dev/null",O_WRONLY);
+		open("/dev/null",O_RDWR);
+		execle( console_server, console_server,
+				"-g", type,
+				"-P", numplayers,
+				"-v", points,
+				"-R", sevens_rule,
+				"-T", terrain,
+				"-p", port,
+				"-k", "1200",
+				"-x",
+				"-r",
+				NULL,
+				newenv );
+		exit(2);
+	}
+	else {
+		close(fd);
+	}
+
+	client_printf(client, "host=%s\n", myhostname);
+	client_printf(client, "port=%s\n", port);
+	client_printf(client, "started\n");
+	syslog(LOG_INFO, "new server started on port %s", port);
+	return;
+  bad:
+	client_printf(client, "Badly formatted request\n");
 }
 
 static gboolean check_str_info(gchar *line, gchar *prefix, gchar **data)
@@ -299,18 +505,42 @@ static gboolean check_int_info(gchar *line, gchar *prefix, gint *data)
 
 static void try_make_server_complete(Client *client)
 {
-	if (client->type == META_SERVER)
+	int ok = 0;
+	
+	if (client->type == META_SERVER) {
+		static int prev_curr = -1;
+		if (client->curr != prev_curr) {
+			syslog(LOG_INFO, "server on port %s: now %d players",
+				   client->port, client->curr);
+			prev_curr = client->curr;
+		}
 		return;
+	}
 
 	if (client->host != NULL
 	    && client->port > 0
 	    && client->version != NULL
 	    && client->max >= 0
 	    && client->curr >= 0
-	    && client->map != NULL
-	    && client->comment != NULL) {
-		client->type = META_SERVER;
-		client->send_hello = strcmp(client->version, "0.3.0") >= 0;
+	    && client->terrain != NULL
+	    && client->title != NULL) {
+	    if (client->protocol_major < 1) {
+		if (!client->vpoints)
+		    client->vpoints = g_strdup("?");
+		if (!client->sevenrule)
+		    client->sevenrule = g_strdup("?");
+		ok = 1;
+	    }
+	    else {
+		if (client->vpoints != NULL
+		    && client->sevenrule != NULL)
+		    ok = 1;
+	    }
+	}
+	    
+	if (ok) {
+	    client->type = META_SERVER;
+	    client->send_hello = strcmp(client->version, "0.3.0") >= 0;
 	}
 }
 
@@ -345,22 +575,38 @@ static void client_process_line(Client *client, gchar *line)
 {
 	switch (client->type) {
 	case META_UNKNOWN:
-		/* All we want the client to do is identify themselves
-		 */
-		if (strcmp(line, "client") == 0) {
+	case META_CLIENT:
+		if (strncmp(line, "version ", 8) == 0) {
+			char *p = line+8;
+			client->protocol_major = atoi(p);
+			p += strspn(p, "0123456789");
+			if (*p == '.')
+				client->protocol_minor = atoi(p+1);
+		}
+		else if (strcmp(line, "listservers") == 0 ||
+			/* still accept "client" request from proto 0 clients
+			 * so we don't have to distinguish between client versions */
+			strcmp(line, "client") == 0) {
 			client->type = META_CLIENT;
 			client_list_servers(client);
+			client->waiting_for_close = TRUE;
+		} else if (strcmp(line, "listtypes") == 0) {
+			client->type = META_CLIENT;
+			client_list_types(client);
+			client->waiting_for_close = TRUE;
+		} else if (strncmp(line, "create ", 7) == 0) {
+			client->type = META_CLIENT;
+			client_create_new_server(client,line+7);
 			client->waiting_for_close = TRUE;
 		} else if (strcmp(line, "server") == 0) {
 			client->type = META_SERVER_ALMOST;
 			client->max = client->curr = -1;
 			get_peer_name(client->fd, &client->host, &client->port);
 		}
-		break;
-	case META_CLIENT:
-		/* Clients are not allowed to do anything but receive
-		 * a server list
-		 */
+		else {
+			client_printf(client, "bad command\n");
+			client->waiting_for_close = TRUE;
+		}
 		break;
 	case META_SERVER:
 	case META_SERVER_ALMOST:
@@ -368,8 +614,13 @@ static void client_process_line(Client *client, gchar *line)
 		    || check_str_info(line, "version=", &client->version)
 		    || check_int_info(line, "max=", &client->max)
 		    || check_int_info(line, "curr=", &client->curr)
-		    || check_str_info(line, "map=", &client->map)
-		    || check_str_info(line, "comment=", &client->comment))
+		    || check_str_info(line, "terrain=", &client->terrain)
+		    || check_str_info(line, "title=", &client->title)
+		    || check_str_info(line, "vpoints=", &client->vpoints)
+		    || check_str_info(line, "sevenrule=", &client->sevenrule)
+		    /* meta-protocol 0.0 compat */
+		    || check_str_info(line, "map=", &client->terrain)
+		    || check_str_info(line, "comment=", &client->title))
 			try_make_server_complete(client);
 		else if (strcmp(line, "begin") == 0)
 			client_close(client);
@@ -475,13 +726,16 @@ static void accept_new_client()
 	client_list = g_list_append(client_list, client);
 
 	client->type = META_UNKNOWN;
+	client->protocol_major = 0;
+	client->protocol_minor = 0;
 	client->fd = fd;
 
 	if (redirect_location != NULL) {
 		client_printf(client, "goto %s\n", redirect_location);
 		client->waiting_for_close = TRUE;
 	} else {
-		client_printf(client, "welcome to the gnocatan-meta-server\n");
+		client_printf(client, "welcome to the gnocatan-meta-server version %s\n",
+					  META_PROTOCOL_VERSION);
 		FD_SET(client->fd, &read_fds);
 	}
 	set_client_event_at(client);
@@ -512,6 +766,14 @@ static struct timeval *find_next_delay()
 	return &timeout;
 }
 
+static void reap_children()
+{
+	int dummy;
+	
+	while( waitpid(-1, &dummy, WNOHANG) > 0 )
+		;
+}
+
 static void check_timeouts()
 {
 	time_t now = time(NULL);
@@ -540,6 +802,7 @@ static void select_loop()
 		struct timeval *timeout;
 		GList *list;
 
+		reap_children();
 		check_timeouts();
 		timeout = find_next_delay();
 
@@ -590,12 +853,12 @@ static void select_loop()
 static gboolean setup_accept_sock(gchar *port)
 {
 	int err;
-	struct addrinfo hints, *ai;
-	int yes;
+	struct addrinfo hints, *ai, *aip;
+	int fd, yes;
 
 	memset(&hints, 0, sizeof(hints));
 
-	hints.ai_family = AF_UNSPEC;
+	hints.ai_family = PF_UNSPEC;
 	hints.ai_socktype = SOCK_STREAM;
 	hints.ai_protocol = IPPROTO_TCP;
 	hints.ai_flags = AI_PASSIVE;
@@ -605,33 +868,41 @@ static gboolean setup_accept_sock(gchar *port)
 		return FALSE;
 	}
 
-	max_fd = accept_fd = socket(ai->ai_family, SOCK_STREAM, 0);
-	if (accept_fd < 0) {
-		syslog(LOG_ERR, "creating socket: %m");
+	for(aip = ai; aip; aip = aip->ai_next) {
+		fd = socket(aip->ai_family, SOCK_STREAM, 0);
+		if (fd < 0) {
+			continue;
+		}
+		yes = 1;
+		if (setsockopt(fd,
+					   SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes)) < 0) {
+			close(fd);
+			continue;
+		}
+		if (bind(fd, aip->ai_addr, aip->ai_addrlen) < 0) {
+			close(fd);
+			continue;
+		}
+
+		break;
+	}
+	
+	if (!aip) {
+		syslog(LOG_ERR, "error creating listening socket: %m\n");
 		freeaddrinfo(ai);
 		return FALSE;
 	}
-	if (bind(accept_fd, ai->ai_addr, ai->ai_addrlen) < 0) {
-		syslog(LOG_ERR, "binding socket: %m");
-		close(accept_fd);
-		freeaddrinfo(ai);
-		return FALSE;
-	}
+
+	accept_fd = max_fd = fd;
 	freeaddrinfo(ai);
-	yes = 1;
-	if (setsockopt(accept_fd,
-		       SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes)) < 0) {
-		syslog(LOG_ERR, "setting socket address reuse: %m");
-		close(accept_fd);
-		return FALSE;
-	}
-	if (fcntl(accept_fd, F_SETFL, O_NDELAY) < 0) {
+	
+	if (fcntl(fd, F_SETFL, O_NDELAY) < 0) {
 		syslog(LOG_ERR, "setting socket non-blocking: %m");
 		close(accept_fd);
 		return FALSE;
 	}
 
-	if (listen(accept_fd, 5) < 0) {
+	if (listen(fd, 5) < 0) {
 		syslog(LOG_ERR, "during listen on socket: %m");
 		close(accept_fd);
 		return FALSE;
@@ -669,6 +940,23 @@ static void convert_to_daemon()
 	umask(0);
 }
 
+void setmyhostname( void )
+{
+	char hbuf[256];
+	struct hostent *hp;
+
+	myhostname = NULL;
+	if (gethostname(hbuf, sizeof(hbuf))) {
+		perror("gethostname");
+		return;
+	}
+	if (!(hp = gethostbyname(hbuf))) {
+		herror("gnocatan-meta-server");
+		return;
+	}
+	myhostname = strdup(hp->h_name);
+}
+
 int main(int argc, char *argv[])
 {
 	int c;
@@ -688,9 +976,11 @@ int main(int argc, char *argv[])
 	if (make_daemon)
 		convert_to_daemon();
 
+	setmyhostname();
 	if (!setup_accept_sock("5557"))
 		return 1;
 
+	syslog(LOG_INFO, "Gnocatan meta server started.");
 	select_loop();
 
 	return 0;
