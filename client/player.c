@@ -24,7 +24,7 @@ static Statistic statistics[] = {
 	{ N_("Longest Road"), NULL, 2 },
 	{ N_("Chapel"), NULL, 1 },
 	{ N_("University of Gnocatan"), NULL, 1 },
-	{ N_("Governors House"), NULL, 1 },
+	{ N_("Governor's House"), NULL, 1 },
 	{ N_("Library"), NULL, 1 },
 	{ N_("Market"), NULL, 1 },
 	{ N_("Soldier"), N_("Soldiers"), 0 },
