@@ -1,3 +1,18 @@
+2004-02-29 0.8.1.22  Roland Clobus <rclobus@bigfoot.com>
+
+	* client/common.client.c (mode_load_gameinfo): Fixed textual error.
+	* server/pregame.c (mode_pre_game): Fixed bugs for viewers with
+	ID >= MAX_PLAYERS.
+	* server/gnocatan-server-gtk.c (gui_player_change), server/gold.c
+	(distribute_next, distribute_first), server/player.c (next_player_num,
+	player_setup, player_free, player_archive, player_is_viewer),
+	server/pregame.c (mode_pre_game), server/server.h, server/trade.c
+	(trade_finish_domestic, process_call_domestic, trade_begin_domestic):
+	new function player_is_viewer.
+	* common/state.c (sm_pop): Fixed too relaxed assertion.
+	* client/gtk/chat.c (chat_build_panel, chat_set_focus): Avoided
+	selection of chat entry text on every gui update.
+
 2004-02-28 0.8.1.21  Bas Wijnen <b.wijnen@phys.rug.nl>
 	* client/common/client.c (client_init): added initialisation for init
 	and new_bank

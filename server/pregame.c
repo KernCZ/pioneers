@@ -453,6 +453,8 @@ gboolean send_gameinfo(Map *map, Hex *hex, Player *player)
  */
 gboolean mode_pre_game(Player *player, gint event)
 {
+	/* When entering this state: disconnect this player, and reconnect at the end */
+	static gboolean old_player_disconnected; 
 	StateMachine *sm = player->sm;
 	Game *game = player->game;
 	Map *map = game->params->map;
@@ -478,12 +480,12 @@ gboolean mode_pre_game(Player *player, gint event)
 		 * player_set_name, because at that point the client doesn't
 		 * know how many players are in the game, and therefore if
 		 * he is a player of a viewer. */
+		old_player_disconnected = player->disconnected;
+		player->disconnected = TRUE;
+		/* Tell the other players about this player */
 		player_broadcast(player, PB_ALL, "is %s\n", player->name);
-		if (player->disconnected) {
-			/* Disconnected players don't receive broadcasts.
-			 * Thus a reconnecting player doesn't receive his own name */
-			sm_send(sm, "player %d is %s\n", player->num, player->name);
-		}
+		/* Tell this player his own name */
+		sm_send(sm, "player %d is %s\n", player->num, player->name);
 		break;
 
 	case SM_RECV:
@@ -527,11 +529,11 @@ gboolean mode_pre_game(Player *player, gint event)
 			{
 				sm_send(sm, "bought develop\n");
 			}
-			if (player->disconnected)
+			if (old_player_disconnected)
 			{
 				sm_send(sm, "player disconnected\n");
 			}
-			state = player->disconnected
+			state = old_player_disconnected
 			      ? sm_previous(player->sm)
 			      : sm_current(player->sm);
 			if (state == (StateFunc)mode_idle)
@@ -600,25 +602,28 @@ gboolean mode_pre_game(Player *player, gint event)
 				sm_send(sm, "state %s\n", prevstate);
 			}
 			/* send player info about what he has:
-                            resources, dev cards, roads, # roads,
-                            # bridges, # ships, # settles, # cities,
-                            # soldiers, road len, dev points,
-			    who has longest road/army */
-			sm_send(sm, "playerinfo: resources: %R\n", player->assets);
-			sm_send(sm, "playerinfo: numdevcards: %d\n", player->devel->num_cards);
-			for (i = 0; i < player->devel->num_cards; i++)
-			{
-				sm_send(sm, "playerinfo: devcard: %d %d\n", (gint)player->devel->cards[i].type, player->devel->cards[i].turn_bought);
+			   resources, dev cards, roads, # roads,
+			   # bridges, # ships, # settles, # cities,
+			   # soldiers, road len, dev points,
+			   who has longest road/army */
+			/* Only send this when the player is not a viewer */
+			if (!player_is_viewer(game, player->num)) {
+				sm_send(sm, "playerinfo: resources: %R\n", player->assets);
+				sm_send(sm, "playerinfo: numdevcards: %d\n", player->devel->num_cards);
+				for (i = 0; i < player->devel->num_cards; i++)
+				{
+					sm_send(sm, "playerinfo: devcard: %d %d\n", (gint)player->devel->cards[i].type, player->devel->cards[i].turn_bought);
+				}
+				sm_send(sm, "playerinfo: %d %d %d %d %d %d %d %d %d %d %d %d %d %d\n",
+					player->num_roads, player->num_bridges,
+					player->num_ships, player->num_settlements,
+					player->num_cities, player->num_soldiers,
+					player->road_len, player->chapel_played,
+					player->univ_played, player->gov_played,
+					player->libr_played, player->market_played,
+					(player->num == longestroadpnum),
+					(player->num == largestarmypnum));
 			}
-			sm_send(sm, "playerinfo: %d %d %d %d %d %d %d %d %d %d %d %d %d %d\n",
-				player->num_roads, player->num_bridges,
-				player->num_ships, player->num_settlements,
-				player->num_cities, player->num_soldiers,
-				player->road_len, player->chapel_played,
-				player->univ_played, player->gov_played,
-				player->libr_played, player->market_played,
-			        (player->num == longestroadpnum),
-			        (player->num == largestarmypnum));
 			/* send info about other players */
 			for (next = player_first_real (game); next != NULL;
 					next = player_next_real (next))
@@ -670,6 +675,7 @@ gboolean mode_pre_game(Player *player, gint event)
 		}
 		if (sm_recv(sm, "start")) {
 			sm_send(sm, "OK\n");
+			player->disconnected = old_player_disconnected;
 			if (player->disconnected)
 			{
 				player->disconnected = FALSE;
@@ -678,7 +684,7 @@ gboolean mode_pre_game(Player *player, gint event)
 			}
 			else
 			{
-				if (player->num < game->params->num_players)
+				if (!player_is_viewer(game, player->num))
 					sm_goto(sm, (StateFunc)mode_idle);
 				else
 					sm_goto (sm, (StateFunc)mode_viewer);

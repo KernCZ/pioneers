@@ -827,7 +827,7 @@ static gboolean mode_load_gameinfo(StateMachine *sm, gint event)
 		player_modify_statistic(opnum, STAT_DEVELOPMENT, opncards);
 		player_modify_statistic(opnum, STAT_SOLDIERS, opnsoldiers);
 		if (!have_bank && opnassets != 0)
-			log_message (MSG_ERROR, "Cannot determine bank, expect out of resource errors");
+			log_message (MSG_ERROR, _("Cannot determine bank, expect out of resource errors\n"));
 		if (pchapel) {
 			player_modify_statistic(opnum, STAT_CHAPEL, 1);
 		}

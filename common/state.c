@@ -569,7 +569,7 @@ void sm_pop(StateMachine *sm)
 {
 	sm_inc_use_count(sm);
 
-	g_assert(sm->stack_ptr >= 0);
+	g_assert(sm->stack_ptr > 0);
 	sm->stack_ptr--;
 	route_event(sm, SM_ENTER);
 #ifdef STACK_DEBUG

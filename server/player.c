@@ -62,7 +62,7 @@ static gint next_player_num(Game *game, gboolean force_viewer)
 		     list != NULL; list = g_list_next(list)) {
 			Player *player = list->data;
 			if (player->num >= 0
-				&& player->num < game->params->num_players
+				&& !player_is_viewer(game, player->num)
 				&& !player->disconnected)
 					players[player->num] = TRUE;
 		}
@@ -297,7 +297,7 @@ void player_setup(Player *player, int playernum, gchar *name,
 		player->num = next_player_num(game, force_viewer);
 	}
 
-	if (player->num < game->params->num_players) {
+	if (!player_is_viewer(game, player->num)) {
 		game->num_players++;
 		meta_report_num_players(game->num_players);
 	}
@@ -311,7 +311,7 @@ void player_setup(Player *player, int playernum, gchar *name,
 
 	/* give the player her new name */
 	if (name == NULL) {
-		if (player->num >= game->params->num_players) {
+		if (player_is_viewer(game, player->num)) {
 			gint num = 0;
 			do {
 				sprintf (nm, "Viewer %d", num++);
@@ -380,7 +380,7 @@ void player_free(Player *player)
 		g_free(player->client_version);
 	if (player->devel != NULL)
 		deck_free(player->devel);
-	if (player->num >= 0 && player->num < game->params->num_players) {
+	if (player->num >= 0 && !player_is_viewer(game, player->num)) {
 		game->num_players--;
 		meta_report_num_players(game->num_players);
 	}
@@ -395,7 +395,7 @@ void player_archive(Player *player)
 	Game *game = player->game;
 
 	/* If this was a viewer, forget about him */
-	if (player->num >= game->params->num_players) {
+	if (player_is_viewer(game, player->num)) {
 		player_free(player);
 		return;
 	}
@@ -793,6 +793,10 @@ Player *player_by_num(Game *game, gint num)
 	playerlist_dec_use_count(game);
 
 	return NULL;
+}
+
+gboolean player_is_viewer(Game *game, gint player_num) {
+	return game->params->num_players <= player_num;
 }
 
 /* Returns a player that's not part of the game.

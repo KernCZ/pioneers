@@ -319,7 +319,7 @@ void gui_player_change(void *data)
 		Player *p = current->data;
 		gboolean isViewer;
 
-		isViewer = p->num >= p->game->params->num_players;
+		isViewer = player_is_viewer(p->game, p->num);
 		gtk_list_store_append(store, &iter);
 		gtk_list_store_set( store, &iter,
 			PLAYER_COLUMN_NAME, p->name,
