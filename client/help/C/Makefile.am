@@ -16,8 +16,9 @@ gnocatan/index.html: gnocatan.sgml
 	-cd $(srcdir) && db2html gnocatan.sgml
 
 dist-hook:
-	-mkdir $(distdir)/gnocatan
+	-mkdir $(distdir)/gnocatan $(distdir)/images
 	cp $(srcdir)/gnocatan/*.html $(distdir)/gnocatan
+	cp $(srcdir)/images/*.gif $(distdir)/images
 
 # No-op if db2html failed
 install-data-local: index.html
