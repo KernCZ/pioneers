@@ -1,3 +1,7 @@
+2003-12-25  Jeff Breidenbach  <jbreiden@rode.parc.com>
+
+	* docs/Makefile.am: registered gnocatanai manpage
+
 2003-12-21 0.8.1.5  Roland Clobus <rclobus@bigfoot.com>
 
 	* po/nl.po: Improved translation.
