@@ -464,13 +464,27 @@ static void player_show_summary(gint player_num)
 
 GtkWidget *player_build_summary()
 {
-	GtkWidget *frame;
+	GtkWidget *vbox;
+	GtkWidget *label;
 	GtkWidget *scroll_win;
+	GtkWidget *alignment;
 	GtkCellRenderer *renderer;
 	GtkTreeViewColumn *column;
 
-	frame = gtk_frame_new(_("Player Summary"));
-	gtk_widget_show(frame);
+	vbox = gtk_vbox_new(FALSE, 5);
+	gtk_widget_show(vbox);
+
+	alignment = gtk_alignment_new(0.0, 0.0, 1.0, 1.0);
+	gtk_alignment_set_padding(GTK_ALIGNMENT(alignment), 0, 0, 3, 3);
+	gtk_widget_show(alignment);
+	gtk_box_pack_start(GTK_BOX(vbox), alignment, FALSE, FALSE, 0);
+
+	label = gtk_label_new(NULL);
+	/* Caption for the overview of the points and card of other players */
+	gtk_label_set_markup(GTK_LABEL(label), _("<b>Player Summary</b>"));
+	gtk_widget_show(label);
+	gtk_misc_set_alignment(GTK_MISC(label), 0.0, 0.5);
+	gtk_container_add(GTK_CONTAINER(alignment), label);
 
 	summary_store = gtk_list_store_new(SUMMARY_COLUMN_LAST, 
 			GDK_TYPE_PIXBUF, /* player icon */
@@ -514,14 +528,14 @@ GtkWidget *player_build_summary()
 	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW(scroll_win),
 			GTK_SHADOW_IN);
 	gtk_widget_show(scroll_win);
-	gtk_container_add(GTK_CONTAINER(frame), scroll_win);
+	gtk_box_pack_start_defaults(GTK_BOX(vbox), scroll_win);
 	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scroll_win),
 				       GTK_POLICY_AUTOMATIC,
 				       GTK_POLICY_AUTOMATIC);
 		
 	gtk_container_add(GTK_CONTAINER(scroll_win), summary_widget);
 	
-	return frame;
+	return vbox;
 }
 
 static gint expose_turn_area_cb(GtkWidget *area, UNUSED(GdkEventExpose *event),

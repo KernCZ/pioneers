@@ -395,17 +395,24 @@ static GtkWidget *build_map_area(void)
 
 static GtkWidget *build_messages_panel(void)
 {
-	GtkWidget *frame;
+	GtkWidget *vbox;
+	GtkWidget *label;
 	GtkWidget *scroll_win;
 
-	/* Frame name for messages */
-	frame = gtk_frame_new(_("Messages"));
-	gtk_widget_show(frame);
+	vbox = gtk_vbox_new(FALSE, 5);
+	gtk_widget_show(vbox);
+
+	/* Label for messages log */
+	label = gtk_label_new(NULL);
+	gtk_label_set_markup(GTK_LABEL(label), _("<b>Messages</b>"));
+	gtk_misc_set_alignment(GTK_MISC(label), 0.0, 0.5);
+	gtk_widget_show(label);
+	gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, FALSE, 0);
 
 	scroll_win = gtk_scrolled_window_new(NULL, NULL);
 	gtk_widget_set_size_request(scroll_win, -1, 80);
 	gtk_widget_show(scroll_win);
-	gtk_container_add(GTK_CONTAINER(frame), scroll_win);
+	gtk_box_pack_start_defaults(GTK_BOX(vbox), scroll_win);
 	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scroll_win),
 				       GTK_POLICY_AUTOMATIC,
 				       GTK_POLICY_AUTOMATIC);
@@ -417,7 +424,7 @@ static GtkWidget *build_messages_panel(void)
 
 	message_window_set_text(messages_txt);
 
-	return frame;
+	return vbox;
 }
 
 void gui_show_trade_page(gboolean show)
@@ -578,7 +585,7 @@ static GtkWidget *build_develop_panel(void)
 {
 	develop_notebook = gtk_notebook_new();
 	gtk_notebook_set_show_tabs(GTK_NOTEBOOK(develop_notebook), FALSE);
-	gtk_notebook_set_show_border(GTK_NOTEBOOK(develop_notebook), 0);
+	gtk_notebook_set_show_border(GTK_NOTEBOOK(develop_notebook), FALSE);
 	gtk_widget_show(develop_notebook);
 
 	gtk_notebook_insert_page(GTK_NOTEBOOK(develop_notebook),
@@ -602,7 +609,7 @@ static GtkWidget *build_main_interface(void)
 	hpaned = gtk_hpaned_new();
 	gtk_widget_show(hpaned);
 
-	vbox = gtk_vbox_new(FALSE, 0);
+	vbox = gtk_vbox_new(FALSE, 3);
 	gtk_widget_show(vbox);
 	gtk_paned_pack1(GTK_PANED(hpaned), vbox, FALSE, TRUE);
 

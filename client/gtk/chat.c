@@ -29,9 +29,9 @@ static gboolean chat_grab_focus_on_update = FALSE; /**< Flag to indicate
  * whether the chat widget should grab the focus whenever a GUI_UPDATE is sent */
 
 
-static void chat_cb(GtkEditable *editable, UNUSED(gpointer user_data))
+static void chat_cb(GtkEntry *entry, UNUSED(gpointer user_data))
 {
-	const gchar *text = gtk_entry_get_text(GTK_ENTRY(editable));
+	const gchar *text = gtk_entry_get_text(entry);
 
 	if (text[0] != '\0') {
 		gchar buff[MAX_CHAT];
@@ -47,25 +47,31 @@ static void chat_cb(GtkEditable *editable, UNUSED(gpointer user_data))
 				buff[idx] = ' ';
 
 		cb_chat(buff);
-		gtk_entry_set_text(GTK_ENTRY(editable), "");
+		gtk_entry_set_text(entry, "");
 	}
 }
 
 GtkWidget *chat_build_panel()
 {
-	GtkWidget *frame;
+	GtkWidget *hbox;
+	GtkWidget *label;
 
-	frame = gtk_frame_new(_("Chat"));
-	gtk_widget_show(frame);
+	hbox = gtk_hbox_new(FALSE, 5);
+	gtk_widget_show(hbox);
+
+	label = gtk_label_new(NULL);
+	gtk_label_set_markup(GTK_LABEL(label), _("<b>Chat</b>"));
+	gtk_widget_show(label);
+	gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, FALSE, 0);
 
 	chat_entry = gtk_entry_new();
 	gtk_entry_set_max_length(GTK_ENTRY(chat_entry), MAX_CHAT);
 	g_signal_connect(G_OBJECT(chat_entry), "activate",
 			G_CALLBACK(chat_cb), NULL);
 	gtk_widget_show(chat_entry);
-	gtk_container_add(GTK_CONTAINER(frame), chat_entry);
+	gtk_box_pack_start_defaults(GTK_BOX(hbox), chat_entry);
 
-	return frame;
+	return hbox;
 }
 
 void chat_set_grab_focus_on_update(gboolean grab)

@@ -4,6 +4,10 @@
 	port
 	* client/gtk/guimap.c(guimap_cursor_move): Crash when leaving the map
 	with a cursor active
+	* client/gtk/chat.c, client/gtk/develop.c, client/gtk/discard.c,
+	client/gtk/gold.c, client/gtk/gui.c, client/gtk/player.c,
+	client/gtk/resource.c: Main screen consistent again, now without
+	frames
 	
 2004-11-12 Roland Clobus <rclobus@bigfoot.com>
 	* Actually updated the build number to 0.8.1.42

@@ -74,19 +74,25 @@ GtkWidget *develop_build_page (void)
 	GtkWidget *vbox;
 	GtkWidget *scroll_win;
 	GtkWidget *bbox;
+	GtkWidget *alignment;
 	GtkTreeViewColumn *column;
 	GtkWidget *play_develop_btn;
 	GtkWidget *develop_list;
 
 	vbox = gtk_vbox_new(FALSE, 5);
 	gtk_widget_show(vbox);
-	gtk_container_set_border_width(GTK_CONTAINER(vbox), 3);
 
+	alignment = gtk_alignment_new(0.0, 0.0, 1.0, 1.0);
+	gtk_alignment_set_padding(GTK_ALIGNMENT(alignment), 0, 0, 3, 3);
+	gtk_widget_show(alignment);
+	gtk_box_pack_start(GTK_BOX(vbox), alignment, FALSE, FALSE, 0);
+
+	label = gtk_label_new(NULL);
 	/* Caption for list of bought development cards */
-	label = gtk_label_new(_("Development Cards"));
+	gtk_label_set_markup(GTK_LABEL(label), _("<b>Development Cards</b>"));
 	gtk_widget_show(label);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
-	gtk_box_pack_start(GTK_BOX(vbox), label, TRUE, TRUE, 0);
+	gtk_container_add(GTK_CONTAINER(alignment), label);
 
 	/* Create model */
 	store = gtk_list_store_new(DEVELOP_COLUMN_LAST,
