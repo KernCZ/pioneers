@@ -15,6 +15,7 @@
 	* client/common/chat.c, common/log.c, common/log.h,
 	common/gtk/common_gtk.c: Chat color separate from use of color of
 	messages
+	* client/gtk/identity.c: Removed compiler warnings
 	
 2004-10-24  0.8.1.40  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/gui.c, client/gtk/gui.h, client/gtk/trade.c: Removed the

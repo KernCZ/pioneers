@@ -55,7 +55,7 @@ static void calculate_optimum_size(GtkWidget *area, gint size)
 {
 	const GameParams *game_params = get_game_params ();
 	GdkPoint points[MAX_POINTS];
-	Polygon poly = { points, numElem(points) };
+	Polygon poly;
 	gint new_size;
 	gint fixedwidth;    /* Size of fixed part (digits + spacing) */
 	gint variablewidth; /* Size of variable part (polygons) */
@@ -68,6 +68,7 @@ static void calculate_optimum_size(GtkWidget *area, gint size)
 	fixedwidth = 0;
 	variablewidth = 0;
 
+	poly.points = points;
 	if (game_params->num_build_type[BUILD_ROAD] > 0) {
 		poly.num_points = MAX_POINTS;
 		guimap_road_polygon(&bogus_map, NULL, &poly);
@@ -191,7 +192,7 @@ static gint expose_identity_area_cb(GtkWidget *area,
 		UNUSED(GdkEventExpose *event), UNUSED(gpointer user_data))
 {
 	GdkPoint points[MAX_POINTS];
-	Polygon poly = { points, numElem(points) };
+	Polygon poly;
 	gint offset;
 	GdkColor *colour;
 	const GameParams *game_params;
@@ -218,6 +219,7 @@ static gint expose_identity_area_cb(GtkWidget *area,
 		return TRUE;
 	offset = 5;
 
+	poly.points = points;
 	if (game_params->num_build_type[BUILD_ROAD] > 0) {
 		poly.num_points = MAX_POINTS;
 		guimap_road_polygon(&bogus_map, NULL, &poly);
