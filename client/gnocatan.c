@@ -20,6 +20,7 @@
 #include "common_gtk.h"
 #include "config-gnome.h"
 #include "i18n.h"
+#include "theme.h"
 
 
 int main(int argc, char *argv[])
@@ -36,6 +37,7 @@ int main(int argc, char *argv[])
 
 	/* Create the application window
 	 */
+	init_themes();
 	app = gui_build_interface();
 	client_start();
 	
