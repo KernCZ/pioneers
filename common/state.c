@@ -556,11 +556,18 @@ void sm_pop_all_and_goto(StateMachine *sm, StateFunc new_state)
 
 }
 
-StateFunc sm_previous(StateMachine *sm)
+/** Return the state at offset from the top of the stack.
+ *  @param sm     The StateMachine
+ *  @param offset Offset from the top (0=top, 1=previous)
+ *  @return The StateFunc, or NULL if the stack contains 
+ *          less than offset entries
+ */
+StateFunc sm_stack_inspect(const StateMachine *sm, guint offset)
 {
-	g_assert(sm->stack_ptr > 0);
-
-	return sm->stack[sm->stack_ptr - 1];
+	if (sm->stack_ptr >= offset)
+		return sm->stack[sm->stack_ptr - offset];
+	else
+		return NULL;
 }
 
 StateFunc sm_current(StateMachine *sm)

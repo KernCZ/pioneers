@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-09 12:20+0100\n"
+"POT-Creation-Date: 2005-01-23 13:04+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ai/client.c:146 ai/client.c:165 client/common/client.c:270
+#: ai/client.c:146 ai/client.c:165 client/common/client.c:267
 msgid "We have been kicked out of the game.\n"
 msgstr ""
 
@@ -600,109 +600,109 @@ msgstr ""
 msgid " said: "
 msgstr ""
 
-#: client/common/client.c:105
+#: client/common/client.c:102
 msgid "Waiting"
 msgstr ""
 
-#: client/common/client.c:107 client/common/client.c:945
+#: client/common/client.c:104 client/common/client.c:934
 msgid "Idle"
 msgstr ""
 
 #. Network status: offline
-#: client/common/client.c:273 client/common/client.c:634 client/gtk/gui.c:990
+#: client/common/client.c:270 client/common/client.c:631 client/gtk/gui.c:990
 msgid "Offline"
 msgstr ""
 
-#: client/common/client.c:401
+#: client/common/client.c:398
 #, c-format
 msgid "%s receives %s.\n"
 msgstr ""
 
-#: client/common/client.c:407
+#: client/common/client.c:404
 #, c-format
 msgid "%s spent %s.\n"
 msgstr ""
 
-#: client/common/client.c:412
+#: client/common/client.c:409
 #, c-format
 msgid "%s is refunded %s.\n"
 msgstr ""
 
-#: client/common/client.c:440
+#: client/common/client.c:437
 #, c-format
 msgid "%s discarded %s.\n"
 msgstr ""
 
-#: client/common/client.c:596
+#: client/common/client.c:593
 msgid "Loading"
 msgstr ""
 
-#: client/common/client.c:635
+#: client/common/client.c:632
 msgid "Version mismatch"
 msgstr ""
 
-#: client/common/client.c:869
+#: client/common/client.c:858
 msgid "Cannot determine bank, expect out of resource errors\n"
 msgstr ""
 
-#: client/common/client.c:1052
+#: client/common/client.c:1041
 msgid "Build two settlements, each with a connecting"
 msgstr ""
 
-#: client/common/client.c:1054
+#: client/common/client.c:1043
 msgid "Build a settlement with a connecting"
 msgstr ""
 
-#: client/common/client.c:1057
+#: client/common/client.c:1046
 msgid "road"
 msgstr ""
 
-#: client/common/client.c:1059
+#: client/common/client.c:1048
 msgid "bridge"
 msgstr ""
 
-#: client/common/client.c:1061
+#: client/common/client.c:1050
 msgid "ship"
 msgstr ""
 
-#: client/common/client.c:1068
+#: client/common/client.c:1057
 msgid " or"
 msgstr ""
 
-#: client/common/client.c:1122
+#: client/common/client.c:1111
 msgid "Waiting for your turn"
 msgstr ""
 
-#: client/common/client.c:1213 client/common/client.c:1238
+#: client/common/client.c:1202 client/common/client.c:1227
 msgid "Place the robber"
 msgstr ""
 
-#: client/common/client.c:1277
+#: client/common/client.c:1266
 msgid "Finish the road building action."
 msgstr ""
 
-#: client/common/client.c:1278
+#: client/common/client.c:1267
 msgid "Build one road segment."
 msgstr ""
 
-#: client/common/client.c:1279
+#: client/common/client.c:1268
 msgid "Build two road segments."
 msgstr ""
 
-#: client/common/client.c:1529 client/common/client.c:1616
+#: client/common/client.c:1518 client/common/client.c:1605
 msgid "It is your turn."
 msgstr ""
 
-#: client/common/client.c:1711
+#: client/common/client.c:1700
 #, c-format
 msgid "Sorry, %s available.\n"
 msgstr ""
 
-#: client/common/client.c:2028
+#: client/common/client.c:2017
 msgid "The game is over."
 msgstr ""
 
-#: client/common/client.c:2217
+#: client/common/client.c:2192
 #, c-format
 msgid "%s takes %s.\n"
 msgstr ""

@@ -22,21 +22,56 @@
 #include "config.h"
 #include "server.h"
 
+/* Player should be idle - I will tell them when to do something
+ */
+gboolean mode_wait_for_gold_choosing_players(
+		Player *player, UNUSED(gint event))
+{
+	StateMachine *sm = player->sm;
+	sm_state_name(sm, "mode_wait_for_gold_choosing_players");
+	return FALSE;
+}
+
+/** Create a limited bank.
+ *  @param game The game
+ *  @param limit The amount of resources that will be distributed
+ *  @retval limited_bank Returns a bank limited by limit. An amount of
+ *                       limit+1 means that the bank cannot be emptied
+ *  @return TRUE if the gold can be distributed in only one way
+ */
+gboolean gold_limited_bank(const Game *game, int limit, gint *limited_bank) {
+	gint idx;
+	gint total_in_bank = 0;
+	gint resources_available = 0;
+
+	for (idx = 0; idx < NO_RESOURCE; ++idx) {
+		if (game->bank_deck[idx] <= limit) {
+			limited_bank[idx] = game->bank_deck[idx];
+		} else {
+			limited_bank[idx] = limit + 1;
+		}
+		if (game->bank_deck[idx] > 0)
+			++resources_available;
+		total_in_bank += game->bank_deck[idx];
+	};
+	return (resources_available <= 1) || (total_in_bank <= limit);
+}
+
 /* this function distributes resources until someone who receives gold is
  * found.  It is called again when that person chose his/her gold and
  * continues the distribution */
 static void distribute_next (GList *list, gboolean someone_wants_gold) {
 	Player *player = list->data;
 	Game *game = player->game;
-	gint num, idx;
+	gint idx;
 	gboolean in_setup = FALSE;
 
 	/* give resources until someone should choose gold */
 	for (;list != NULL; list = next_player_loop (list, player) ) {
-		gint resource[NO_RESOURCE], emptybank[NO_RESOURCE], num_bank;
+		gint resource[NO_RESOURCE];
 		gboolean send_message = FALSE;
 		Player *scan = list->data;
-		num_bank = 0;
+
 		/* calculate what resources to give */
 		for (idx = 0; idx < NO_RESOURCE; ++idx) {
 			gint num;
@@ -47,45 +82,31 @@ static void distribute_next (GList *list, gboolean someone_wants_gold) {
 					= scan->prev_assets[idx] + num;
 			}
 			game->bank_deck[idx] -= num;
-			/* tell the player if she can empty the bank */
-			if (game->bank_deck[idx] <= scan->gold)
-				emptybank[idx] = game->bank_deck[idx];
-			else emptybank[idx] = scan->gold + 1;
 			resource[idx] = num;
 			/* don't let a player receive the resources twice */
 			scan->prev_assets[idx] = scan->assets[idx];
 			if (num > 0) send_message = TRUE;
-			/* count the number of resource types in the bank */
-			if (game->bank_deck[idx] != 0)
-				++num_bank;
 		}
 		if (send_message)
 			player_broadcast(scan, PB_ALL, "receives %R\n",
 					resource);
-		/* count number of cards left in the bank */
-		num = 0;
-		for (idx = 0; idx < NO_RESOURCE; ++idx)
-			num += game->bank_deck[idx];
-		/* give out only as much as there is if the bank is empty */
-		if (scan->gold > num) {
-			scan->gold = num;
-			/* simulate a one-resource situation, so the choice
-			 * is made automatically */
-			num_bank = 1;
-		}
+
 		/* give out gold (and return so gold-done is not broadcast) */
 		if (scan->gold > 0) {
+			gint limited_bank[NO_RESOURCE];
+			gboolean only_one_way = 
+				gold_limited_bank (game, scan->gold, limited_bank);
+
 			/* disconnected players get random gold */
-			/* if num_bank == 1, there is no choice */
-			if (scan->disconnected || num_bank == 1) {
-				while (scan->gold) {
-					gint totalbank = 0;
-					gint choice;
-					/* count the number of resources in the bank */
-					for (idx = 0; idx < NO_RESOURCE; ++idx) {
-						resource[idx] = 0;
-						totalbank += game->bank_deck[idx];
-					}
+			if (scan->disconnected || only_one_way) {
+				gint totalbank = 0;
+				gint choice;
+				/* count the number of resources in the bank */
+				for (idx = 0; idx < NO_RESOURCE; ++idx) {
+					resource[idx] = 0;
+					totalbank += game->bank_deck[idx];
+				}
+				while ((scan->gold > 0) && (totalbank > 0)) {
 					/* choose one of them */
 					choice = get_rand(totalbank);
 					/* find out which resource it is */
@@ -98,12 +119,13 @@ static void distribute_next (GList *list, gboolean someone_wants_gold) {
 					++scan->assets[idx];
 					++scan->prev_assets[idx];
 					--game->bank_deck[idx];
+					--totalbank;
 				}
 				player_broadcast (scan, PB_ALL,
 						"receive-gold %R\n", resource);
 			} else {
 				sm_send (scan->sm, "choose-gold %d %R\n",
-						scan->gold, emptybank);
+						scan->gold, limited_bank);
 				sm_push (scan->sm, (StateFunc)mode_choose_gold);
 				return;
 			}
@@ -200,7 +222,7 @@ void distribute_first (GList *list) {
 		 * players, since they were idle anyway, but it can matter for
 		 * the player who has the turn or is setting up.
 		 */
-		sm_push (scan->sm, (StateFunc)mode_idle);
+		sm_push (scan->sm, (StateFunc)mode_wait_for_gold_choosing_players);
 	}
 	/* start giving out resources */
 	distribute_next (list, someone_wants_gold);

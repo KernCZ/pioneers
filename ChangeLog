@@ -1,3 +1,10 @@
+2005-01-23  0.8.1.50  Roland Clobus <rclobus@bigfoot.com>
+	* client/common/client.c: Removed unused variables from
+	recovery_info_t, does not show turn 0 anymore.
+	* common/map.c: Added default case
+	* common/state.c, common/state.h, server/gold.c, server/pregame.c,
+	server/server.h: Fixed reconnect during distribution of gold. 
+
 2005-01-15  Roland Clobus <rclobus@bigfoot.com>
 	* INSTALL, .cvsignore: Removed INSTALL from CVS. It is generated
 	* README: Added information from the old INSTALL

@@ -450,6 +450,7 @@ gboolean mode_pre_game(Player *player, gint event)
 	gint longestroadpnum = -1;
 	gint largestarmypnum = -1;
 	static gboolean recover_from_plenty = FALSE;
+	guint stack_offset;
 
 	if (game->longest_road) {
 		longestroadpnum = game->longest_road->num;
@@ -520,27 +521,18 @@ gboolean mode_pre_game(Player *player, gint event)
 			{
 				sm_send(sm, "player disconnected\n");
 			}
-			state = old_player_disconnected
-			      ? sm_previous(player->sm)
-			      : sm_current(player->sm);
+			stack_offset = 1;
+			state = sm_stack_inspect(player->sm, stack_offset);
+			while ((state == (StateFunc)mode_choose_gold) ||
+				(state == (StateFunc)mode_wait_for_gold_choosing_players)) {
+				++stack_offset;
+				state = sm_stack_inspect(player->sm, stack_offset);
+			}
+
 			if (state == (StateFunc)mode_idle)
 				strcpy(prevstate, "IDLE");
-			else if (state == (StateFunc)mode_turn) {
+			else if (state == (StateFunc)mode_turn)
 				strcpy(prevstate, "TURN");
-				if (game->rolled_dice && game->die1 + game->die2 == 7) {
-					/* search for the player who is the robber */
-					for (next = game->player_list;
-					     next != NULL; next = g_list_next(next)) {
-						Player *p = (Player *)next->data;
-						state = p->disconnected
-						      ? sm_previous(p->sm) : sm_current(p->sm);
-						if (state == (StateFunc)mode_place_robber) {
-							sprintf(prevstate, "ISROBBER %d", p->num);
-							break;
-						}
-					}
-				}
-			}
 			else if (state == (StateFunc)mode_discard_resources)
 				strcpy(prevstate, "DISCARD");
 			else if (state == (StateFunc)mode_wait_for_other_discarding_players)
@@ -553,10 +545,8 @@ gboolean mode_pre_game(Player *player, gint event)
 				strcpy(prevstate, "MONOPOLY");
 			else if (state == (StateFunc)mode_plenty_resources) {
 				recover_from_plenty = TRUE;
-				sprintf(prevstate, "PLENTY");
-			} else if (state == (StateFunc)mode_choose_gold)
-				sprintf(prevstate, "GOLD");
-			else if (state == (StateFunc)mode_setup) {
+				strcpy(prevstate, "PLENTY");
+			} else if (state == (StateFunc)mode_setup) {
 				/* reconstruct the setup_player list */
 				/* search for the player whose setup it
 				   is */
@@ -569,24 +559,21 @@ gboolean mode_pre_game(Player *player, gint event)
 				}
 
 				if (game->double_setup) {
-					sprintf(prevstate, "SETUPDOUBLE");
+					strcpy(prevstate, "SETUPDOUBLE");
 				}
 				else {
-					sprintf(prevstate, "SETUP");
+					strcpy(prevstate, "SETUP");
 				}
+				/* If player is selecting gold, the state 
+				 * should be IDLE instead */
+				if (stack_offset != 1)
+					strcpy(prevstate, "IDLE");
 			}
 			else
 				strcpy(prevstate, "PREGAME");
 
-			/* Special processing of extra arguments */
-			if (state == (StateFunc)mode_choose_gold) {
-				sm_send(sm, "state GOLD %d %R\n", player->gold, game->bank_deck);
-			}
-			else
-			{
-				sm_send(sm, "state %s\n", prevstate);
-			}
-			
+			sm_send(sm, "state %s\n", prevstate);
+
 			/* Send the bank, so the client can count remaining 
 			 * resources
 			 */
@@ -651,13 +638,18 @@ gboolean mode_pre_game(Player *player, gint event)
 		}
 		if (sm_recv(sm, "start")) {
 			sm_send(sm, "OK\n");
-			
+
+			/* Some player was in the setup phase */
+			if (game->setup_player != NULL)
+				sm_send(sm, "player %d setup\n", 
+					((Player*)(game->setup_player->data))->num);
+
 			if (recover_from_plenty) {
 				sm_send(sm, "plenty %R\n", game->bank_deck);
 				recover_from_plenty = FALSE;
 			}
 
-			/* send discard info for all players */
+			/* send discard and gold info for all players */
 			for (next = player_first_real (game); next != NULL;
 					next = player_next_real (next))
 			{
@@ -666,6 +658,20 @@ gboolean mode_pre_game(Player *player, gint event)
 					sm_send(sm, "player %d must-discard %d\n",
 					        p->num, p->discard_num);
 				}
+				if (p->gold > 0) {
+					sm_send(sm, "player %d prepare-gold %d\n",
+						p->num, p->gold);
+						
+				}
+			}
+
+			/* The current player was choosing gold */
+			state = sm_stack_inspect(player->sm, 1);
+			if (state == (StateFunc)mode_choose_gold) {
+				gint limited_bank[NO_RESOURCE];
+				gold_limited_bank(game, player->gold, limited_bank);
+				sm_send (sm, "choose-gold %d %R\n",
+					player->gold, limited_bank);
 			}
 
 			player->disconnected = old_player_disconnected;

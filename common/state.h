@@ -97,8 +97,8 @@
  *	Clear the state stack, set the current state to the state that
  *	was on the bottom of the stack.
  *
- * sm_previous()
- *	Return the state at the top of the stack.
+ * sm_stack_inspect()
+ *	Return the state at offset from the top of the stack.
  */
 
 typedef enum {
@@ -160,7 +160,7 @@ void sm_multipop(StateMachine *sm, gint depth);
 void sm_pop_all(StateMachine *sm);
 void sm_pop_all_and_goto(StateMachine *sm, StateFunc new_state);
 StateFunc sm_current(StateMachine *sm);
-StateFunc sm_previous(StateMachine *sm);
+StateFunc sm_stack_inspect(const StateMachine *sm, guint offset);
 void sm_global_set(StateMachine *sm, StateFunc state);
 void sm_unhandled_set(StateMachine *sm, StateFunc state);
 

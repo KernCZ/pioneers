@@ -43,15 +43,12 @@ struct recovery_info_t {
 	gint turnnum;
 	gint playerturn;
 	gint numdiscards;
-	gint plenty[NO_RESOURCE];
 	gboolean rolled_dice;
 	gint die1, die2;
 	gboolean played_develop;
 	gboolean bought_develop;
-	gint robber_player;
 	GList *build_list;
 	gboolean ship_moved;
-	gint numgold;
 };
 
 static gboolean global_unhandled(StateMachine *sm, gint event);
@@ -708,8 +705,8 @@ static gboolean mode_load_gameinfo(StateMachine *sm, gint event)
 	gchar str[512];
 	gint x, y, pos, owner;
 	static struct recovery_info_t rinfo
-         = { "", -1, -1, -1, { -1, -1, -1, -1, -1 }, FALSE,
-	     -1, -1, FALSE, FALSE, -1, NULL, FALSE, -1 };
+         = { "", -1, -1, -1, FALSE,
+	     -1, -1, FALSE, FALSE, NULL, FALSE };
 	static gboolean disconnected = FALSE;
 	static gboolean have_bank = FALSE;
 	static gint devcardidx = -1;
@@ -784,14 +781,6 @@ static gboolean mode_load_gameinfo(StateMachine *sm, gint event)
 	}
 	if (sm_recv(sm, "bought develop")) {
 		rinfo.bought_develop = TRUE;
-		return TRUE;
-	}
-	if (sm_recv(sm, "state GOLD %d %R", &rinfo.numgold, rinfo.plenty)) {
-		strcpy(rinfo.prevstate, "GOLD");
-		return TRUE;
-	}
-	if (sm_recv(sm, "state ISROBBER %d", &rinfo.robber_player)) {
-		strcpy(rinfo.prevstate, "ISROBBER");
 		return TRUE;
 	}
 	if (sm_recv(sm, "player disconnected")) {
@@ -2056,17 +2045,14 @@ static gboolean mode_recovery_wait_start_response(StateMachine *sm, gint event)
 	return FALSE;
 }
 
-/* RC: Reconnect during GOLD does not work correctly yet 
- * ISROBBER is untested/untestable: it occurs only if it is this player's
- *   turn, he has rolled the dice, and someone else is the robber.
- */
 static void recover_from_disconnect(StateMachine *sm,
                                     struct recovery_info_t *rinfo)
 {
 	StateFunc modeturn;
 	GList *next;
 
-	turn_begin(rinfo->playerturn, rinfo->turnnum);
+	if (rinfo->turnnum > 0)
+		turn_begin(rinfo->playerturn, rinfo->turnnum);
 	if (rinfo->rolled_dice) {
 		turn_rolled_dice(rinfo->playerturn, rinfo->die1, rinfo->die2);
 	}
@@ -2105,11 +2091,8 @@ static void recover_from_disconnect(StateMachine *sm,
 	}
 	else if (strcmp(rinfo->prevstate, "TURN") == 0)
 	{
-		if (my_player_num() == rinfo->playerturn) {
-			sm_goto_noenter(sm, mode_idle);
-			sm_push(sm, modeturn);
-		} else
-			sm_goto(sm, mode_idle);
+		sm_goto_noenter(sm, mode_idle);
+		sm_push(sm, modeturn);
 	}
 	else if (strcmp(rinfo->prevstate, "YOUAREROBBER") == 0)
 	{
@@ -2124,11 +2107,6 @@ static void recover_from_disconnect(StateMachine *sm,
 			sm_push_noenter(sm, mode_wait_for_robber);
 		}
 		sm_push(sm, mode_discard);
-	}
-	else if (strcmp(rinfo->prevstate, "ISROBBER") == 0)
-	{
-		sm_goto(sm, mode_idle);
-		robber_begin_move(rinfo->robber_player);
 	}
 	else if (strcmp(rinfo->prevstate, "MONOPOLY") == 0)
 	{
@@ -2146,9 +2124,6 @@ static void recover_from_disconnect(StateMachine *sm,
 	{
 		sm_goto_noenter(sm, mode_idle);
 		sm_push_noenter(sm, modeturn);
-/* @@RC This shoud be somewhere else...
- * gold_choose_player_must(rinfo->numgold, rinfo->plenty);
- */
 		sm_push(sm, mode_choose_gold);
 	}
 	else if (strcmp(rinfo->prevstate, "ROADBUILDING") == 0)

@@ -599,6 +599,9 @@ void map_format_line(Map *map, gchar *line, gint y)
 			}
 			*line++ = hex->facing + '0';
 			break;
+		default:
+			g_assert_not_reached();
+			break;
 		}
 		if (hex->chit_pos >= 0) {
 			sprintf(line, "%d", hex->chit_pos);
