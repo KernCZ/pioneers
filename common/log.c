@@ -103,7 +103,6 @@ void log_message(gint msg_type, gchar *fmt, ...)
 	va_list ap;
 	time_t t;
 	struct tm *alpha;
-	gchar thour[3], tmin[3], tsec[3];
 	
 	va_start(ap, fmt);
 	g_vsnprintf(text, sizeof(text), fmt, ap);
@@ -113,16 +112,8 @@ void log_message(gint msg_type, gchar *fmt, ...)
 		t = time(NULL);
 		alpha = localtime(&t);
 
-		if (alpha->tm_hour < 10) sprintf(thour, "0%d", alpha->tm_hour);
-		else sprintf(thour, "%d", alpha->tm_hour);
-		
-		if (alpha->tm_min < 10) sprintf(tmin, "0%d", alpha->tm_min);
-		else sprintf(tmin, "%d", alpha->tm_min);
-
-		if (alpha->tm_sec < 10) sprintf(tsec, "0%d", alpha->tm_sec);
-		else sprintf(tsec, "%d", alpha->tm_sec);
-
-		sprintf(timestamp, "%s:%s:%s ", thour, tmin, tsec);
+		sprintf(timestamp, "%02d:%02d:%02d ", alpha->tm_hour,
+				alpha->tm_min, alpha->tm_sec);
 
 		if( driver->log_write )
 			driver->log_write( MSG_INFO, timestamp );

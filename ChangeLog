@@ -6,6 +6,8 @@
 	client/turn.c, common/map.h, common/map_query.c, server/buildutil.c,
 	server/robber.c server/server.h server/turn.c: Completed pirates in
 	server and client.  Bugfixes.
+	* common/log.c: Code cleanup.
+	* server/gnocatan-server-gtk.c: Used message window for log.
 
 2003-10-10  Bas Wijnen <b.wijnen@phys.rug.nl>
 	* common/game.c, common/game.h, common/map.c, common/map.h,

@@ -623,6 +623,9 @@ int main(int argc, char *argv[])
 	driver->player_renamed = gui_player_rename;
 	driver->player_removed = gui_player_remove;
 
+	/* send logging to the message window */
+	log_set_func_message_window();
+
 #ifdef ENABLE_NLS
 	/* FIXME: do I need to initialize i18n for Gnome2? */
 	/*gnome_i18n_init();*/
