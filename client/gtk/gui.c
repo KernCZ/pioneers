@@ -441,7 +441,8 @@ static GtkWidget *build_messages_panel(void)
 
 void gui_show_trade_page(gboolean show)
 {
-	chat_set_grab_focus_on_update(!show);	/* Normal keyboard focus when visible */
+	/* Normal keyboard focus when visible */
+	chat_set_grab_focus_on_update(!show);
 	if (show) {
 		gtk_widget_show(trade_page);
 		gtk_notebook_set_current_page(GTK_NOTEBOOK(map_notebook),
@@ -452,7 +453,8 @@ void gui_show_trade_page(gboolean show)
 
 void gui_show_quote_page(gboolean show)
 {
-	chat_set_grab_focus_on_update(!show);	/* Normal keyboard focus when visible */
+	/* Normal keyboard focus when visible */
+	chat_set_grab_focus_on_update(!show);
 	if (show) {
 		gtk_widget_show(quote_page);
 		gtk_notebook_set_current_page(GTK_NOTEBOOK(map_notebook),
@@ -661,7 +663,7 @@ static void quit_cb(UNUSED(GtkWidget * widget), UNUSED(void *data))
 	gtk_main_quit();
 }
 
-static void theme_change_cb(GtkWidget *widget, UNUSED(void *data))
+static void theme_change_cb(GtkWidget * widget, UNUSED(void *data))
 {
 	gint index = gtk_combo_box_get_active(GTK_COMBO_BOX(widget));
 	MapTheme *theme = get_theme_nth(index);
@@ -730,16 +732,15 @@ static void preferences_cb(UNUSED(GtkWidget * widget),
 		return;
 	};
 
-	preferences_dlg = gtk_dialog_new_with_buttons(
-							     /* Caption of preferences dialog */
-							     _
-							     ("Gnocatan Preferences"),
-							     GTK_WINDOW
-							     (app_window),
-							     GTK_DIALOG_DESTROY_WITH_PARENT,
-							     GTK_STOCK_CLOSE,
-							     GTK_RESPONSE_CLOSE,
-							     NULL);
+	/* Caption of preferences dialog */
+	preferences_dlg = gtk_dialog_new_with_buttons(_
+						      ("Gnocatan Preferences"),
+						      GTK_WINDOW
+						      (app_window),
+						      GTK_DIALOG_DESTROY_WITH_PARENT,
+						      GTK_STOCK_CLOSE,
+						      GTK_RESPONSE_CLOSE,
+						      NULL);
 	gtk_dialog_set_default_response(GTK_DIALOG(preferences_dlg),
 					GTK_RESPONSE_CLOSE);
 	g_signal_connect(G_OBJECT(preferences_dlg), "destroy",
@@ -770,11 +771,12 @@ static void preferences_cb(UNUSED(GtkWidget * widget),
 
 	for (i = 0, theme = first_theme(); theme;
 	     ++i, theme = next_theme(theme)) {
-		const gchar *theme_name = ((MapTheme *)theme->data)->name;
+		const gchar *theme_name = ((MapTheme *) theme->data)->name;
 		gtk_combo_box_append_text(GTK_COMBO_BOX(theme_list),
 					  theme_name);
 		if (theme->data == get_theme())
-			gtk_combo_box_set_active(GTK_COMBO_BOX(theme_list), i);
+			gtk_combo_box_set_active(GTK_COMBO_BOX(theme_list),
+						 i);
 	}
 	g_signal_connect(G_OBJECT(theme_list), "changed",
 			 G_CALLBACK(theme_change_cb), NULL);
@@ -783,14 +785,13 @@ static void preferences_cb(UNUSED(GtkWidget * widget),
 				  0, 1, row, row + 1);
 	gtk_table_attach_defaults(GTK_TABLE(layout), theme_list,
 				  1, 2, row, row + 1);
+	/* Tooltip for changing the theme in the preferences dialog */
 	gtk_tooltips_set_tip(tooltips, theme_list,
-			     /* Tooltip for changing the theme in the preferences dialog */
 			     _("Choose one of the themes"), NULL);
 	row++;
 
-	widget = gtk_check_button_new_with_label(
-							/* Label for the option to show the legend */
-							_("Show legend"));
+	/* Label for the option to show the legend */
+	widget = gtk_check_button_new_with_label(_("Show legend"));
 	gtk_widget_show(widget);
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget),
 				     legend_page_enabled);
@@ -804,10 +805,8 @@ static void preferences_cb(UNUSED(GtkWidget * widget),
 			     NULL);
 	row++;
 
-	widget = gtk_check_button_new_with_label(
-							/* Label for the option to display log messages in color */
-							_
-							("Messages with color"));
+	/* Label for the option to display log messages in color */
+	widget = gtk_check_button_new_with_label(_("Messages with color"));
 	gtk_widget_show(widget);
 	gtk_table_attach_defaults(GTK_TABLE(layout), widget,
 				  0, 2, row, row + 1);
@@ -815,15 +814,14 @@ static void preferences_cb(UNUSED(GtkWidget * widget),
 				     color_messages_enabled);
 	g_signal_connect(G_OBJECT(widget), "toggled",
 			 G_CALLBACK(message_color_cb), NULL);
+	/* Tooltip for the option to display log messages in color */
 	gtk_tooltips_set_tip(tooltips, widget,
-			     /* Tooltip for the option to display log messages in color */
 			     _("Show new messages with color"), NULL);
 	row++;
 
-	widget = gtk_check_button_new_with_label(
-							/* Label for the option to display chat in color of player */
-							_
-							("Chat in color of player"));
+	/* Label for the option to display chat in color of player */
+	widget = gtk_check_button_new_with_label(_
+						 ("Chat in color of player"));
 	gtk_widget_show(widget);
 	gtk_table_attach_defaults(GTK_TABLE(layout), widget,
 				  0, 2, row, row + 1);
@@ -838,10 +836,8 @@ static void preferences_cb(UNUSED(GtkWidget * widget),
 			     NULL);
 	row++;
 
-	widget = gtk_check_button_new_with_label(
-							/* Label for the option to display the summary with colors */
-							_
-							("Summary with color"));
+	/* Label for the option to display the summary with colors */
+	widget = gtk_check_button_new_with_label(_("Summary with color"));
 	gtk_widget_show(widget);
 	gtk_table_attach_defaults(GTK_TABLE(layout), widget,
 				  0, 2, row, row + 1);
@@ -850,8 +846,8 @@ static void preferences_cb(UNUSED(GtkWidget * widget),
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), color_summary);	/* @todo RC use correct variable */
 	g_signal_connect(G_OBJECT(widget), "toggled",
 			 G_CALLBACK(summary_color_cb), NULL);
+	/* Tooltip for the option to display the summary with colors */
 	gtk_tooltips_set_tip(tooltips, widget,
-			     /* Tooltip for the option to display the summary with colors */
 			     _("Use colors in the player summary"), NULL);
 	row++;
 }
@@ -959,9 +955,8 @@ static GtkWidget *build_status_bar(void)
 	gtk_widget_show(vsep);
 	gtk_box_pack_start(GTK_BOX(app_bar), vsep, FALSE, TRUE, 0);
 
-	net_status = gtk_label_new(
-					  /* Network status: offline */
-					  _("Offline"));
+	/* Network status: offline */
+	net_status = gtk_label_new(_("Offline"));
 	gtk_widget_show(net_status);
 	gtk_box_pack_start(GTK_BOX(app_bar), net_status, FALSE, TRUE, 0);
 
@@ -972,9 +967,8 @@ static GtkWidget *build_status_bar(void)
 	gtk_box_pack_start(GTK_BOX(app_bar),
 			   player_build_turn_area(), FALSE, TRUE, 0);
 
-	gui_set_instructions(
-				    /* Initial text in status bar */
-				    _("Welcome to Gnocatan!"));
+	/* Initial text in status bar */
+	gui_set_instructions(_("Welcome to Gnocatan!"));
 
 	return app_bar;
 }
