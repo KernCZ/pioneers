@@ -324,11 +324,16 @@ static void host_list_select_cb(GtkWidget *widget, gpointer user_data) {
 	gtk_label_get(GTK_LABEL(item), &host);
 	strcpy(temp, host);
 	str1 = strtok(temp, ":");
-	str2 = strtok(NULL, "(");
-	str3 = strtok(NULL, ")");
+	str2 = strtok(NULL, " ");
+	str3 = strtok(NULL, " ");
+	str3 = strtok(NULL, "");
 	gtk_entry_set_text(GTK_ENTRY(server_entry), str1);
 	gtk_entry_set_text(GTK_ENTRY(port_entry), str2);
-	gtk_entry_set_text(GTK_ENTRY(name_entry), str3);
+	if (str3 != NULL) {
+		gtk_entry_set_text(GTK_ENTRY(name_entry), str3);
+	} else {
+		gtk_entry_set_text(GTK_ENTRY(name_entry), "");
+	}
 }
 
 static void connect_destroyed_cb(void *widget, gpointer user_data)
@@ -412,9 +417,9 @@ GtkWidget *connect_create_dlg()
 
 		sprintf(temp_str, "/gnocatan/favorites/server%duser=", i);
 		strcpy(host_user, config_get_string(temp_str, &default_returned));
-		if (default_returned == 1 || !strlen(host_user)) break;
+		if (default_returned == 1) break;
 
-		sprintf(temp_str, "%s:%s (%s)", host_name, host_port, host_user);
+		sprintf(temp_str, "%s:%s - %s", host_name, host_port, host_user);
 
 		host_item = gtk_menu_item_new();
 		lbl = gtk_label_new(temp_str);

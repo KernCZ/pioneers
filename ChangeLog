@@ -1,3 +1,7 @@
+2001-03-02  Matt Waggoner  <matt@waggoner.com>
+
+	* client/connect.c: fixed a minor bug with the server MRU list.
+
 2001-03-01  Matt Waggoner  <matt@waggoner.com>
 
 	* client/connect.c and client/client.c: Changed the server MRU
