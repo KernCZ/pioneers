@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnocatan 0.7.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-10-15 18:10+0200\n"
+"POT-Creation-Date: 2003-10-16 17:22+0200\n"
 "PO-Revision-Date: 2003-01-25 00:08-0600\n"
 "Last-Translator: Steve Langasek <vorlon@dodds.net>\n"
 "Language-Team: Spanish <debian-l10n-spanish@lists.debian.org>\n"
@@ -1440,11 +1440,11 @@ msgstr ""
 msgid "%s has %s, and is looking for %s"
 msgstr "%s tiene %s y quiere %s"
 
-#: client/quote.c:565 client/trade.c:801
+#: client/quote.c:565 client/trade.c:804
 msgid "I Want"
 msgstr "Quiero..."
 
-#: client/quote.c:582 client/trade.c:818
+#: client/quote.c:582 client/trade.c:821
 msgid "Give Them"
 msgstr "Dales..."
 
@@ -1709,15 +1709,15 @@ msgstr "ofrece %s por %s"
 msgid "%d:1 %s for %s"
 msgstr "%d:1 %s por %s"
 
-#: client/trade.c:839
+#: client/trade.c:842
 msgid "Call For Quotes"
 msgstr "Pedir presupuestos"
 
-#: client/trade.c:871
+#: client/trade.c:874
 msgid "Accept Quote"
 msgstr ""
 
-#: client/trade.c:876
+#: client/trade.c:879
 msgid "Finish Trading"
 msgstr ""
 

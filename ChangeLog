@@ -1,4 +1,11 @@
 2003-10-15  Bas Wijnen <b.wijnen@phys.rug.nl>
+	* client/trade.c: Fixed reconnect bug.
+	* po/de.po, po/es.po, po/gnocatan.pot: Updated.
+	* server/conquest+ports.game, server/conquest.game,
+	server/four-islands.game, server/seafarers-gold.game,
+	server/seafarers.game, server/x.game: Added pirate.
+
+2003-10-15  Bas Wijnen <b.wijnen@phys.rug.nl>
 	* README: Changed version number.
 	* client/player.c: bugfix.
 	* po/de.po, po/es.po, po/gnocatan.pot: updated.

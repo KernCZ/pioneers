@@ -770,6 +770,9 @@ void trade_begin()
 	if (!game_params->domestic_trade) {
 		gtk_widget_hide(we_receive_frame);
 		gtk_widget_hide(call_btn);
+	} else {
+		gtk_widget_show(we_receive_frame);
+		gtk_widget_show(call_btn);
 	}
 	gui_show_trade_page(TRUE);
 }

@@ -16,6 +16,8 @@ develop-governor 1
 develop-library 1
 develop-market 1
 develop-soldier 15
+use-pirate
+
 chits 4,9,3,6,6,10,2,5,11,8,9,8,4,12,10,4,9,3,6,6,4,9,3,6,6,10,2,5,11,8,9,8,4,12,10,4,9,3,6,6,8,4,12,10,4,9,3,6,6,11
 map
 s,s,s,s,s,s,s,s,s,s,s,s

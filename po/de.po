@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnocatan 0.7.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-10-15 18:10+0200\n"
+"POT-Creation-Date: 2003-10-16 17:22+0200\n"
 "PO-Revision-Date: 2003-09-25 17:27+0200\n"
 "Last-Translator: Roman Hodek <roman@hodek.net>\n"
 "Language-Team: de <de@li.org>\n"
@@ -1441,11 +1441,11 @@ msgstr "Handel abgelehnt"
 msgid "%s has %s, and is looking for %s"
 msgstr "%s hat %s und möchte %s"
 
-#: client/quote.c:565 client/trade.c:801
+#: client/quote.c:565 client/trade.c:804
 msgid "I Want"
 msgstr "Ich will"
 
-#: client/quote.c:582 client/trade.c:818
+#: client/quote.c:582 client/trade.c:821
 msgid "Give Them"
 msgstr "Ich gebe dafür"
 
@@ -1715,15 +1715,15 @@ msgstr "gibt %s für %s"
 msgid "%d:1 %s for %s"
 msgstr "%d:1 %s für %s"
 
-#: client/trade.c:839
+#: client/trade.c:842
 msgid "Call For Quotes"
 msgstr "Angebote einholen"
 
-#: client/trade.c:871
+#: client/trade.c:874
 msgid "Accept Quote"
 msgstr "Angebot annehmen"
 
-#: client/trade.c:876
+#: client/trade.c:879
 msgid "Finish Trading"
 msgstr "Handel beenden"
 
