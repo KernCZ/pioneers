@@ -1,5 +1,8 @@
 2000-05-17  Steve Langasek <vorlon@dodds.net>
 
+	* server/gnocatan-server-console.c: Moved some initialization code
+	for the console server's UI driver into the main loop.
+
 	* server/server.h: Polished the include list to eliminate redundancies.
 
 	* common/Makefile.am: Added common_glib.c, common_glib.h to file list.

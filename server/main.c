@@ -150,6 +150,10 @@ int main( int argc, char *argv[] )
 
 	/* set the UI driver to Glib_Driver, since we're using glib */
 	set_ui_driver( &Glib_Driver );
+	driver->player_added = srv_glib_player_added;
+	driver->player_renamed = srv_glib_player_renamed;
+	driver->player_removed = srv_player_removed;
+
 	
 	init();
 	/* server_startup(params, server_port, register_server); */
