@@ -23,9 +23,6 @@
 #include "ai.h"
 #include <stdlib.h>
 #include <stdio.h>
-#include <sys/param.h>
-#include <sys/types.h>
-#include <string.h>
 #include <unistd.h>
 #include <time.h>
 
@@ -37,32 +34,42 @@ static int local_argc;
 static char **local_argv;
 static gboolean silent = FALSE;
 
-static char *random_name(void)
+static gchar *random_name(void)
 {
-	char filename[MAXPATHLEN];
-	const char *gnopath = get_gnocatan_dir();
+	gchar *filename;
 	FILE *stream;
 	char line[512];
-	static char name[512];
+	gchar *name = NULL;
 	int num = 1;
 
-	snprintf(filename, sizeof(filename) - 1, "%s/computer_names",
-		 gnopath);
-	srand(time(NULL) + getpid());
-
+	filename =
+	    g_build_filename(get_gnocatan_dir(), "computer_names", NULL);
 	stream = fopen(filename, "r");
 	if (!stream) {
-		g_warning("Unable to open computer_names file.");
-		strcpy(name, "Computer Player");
+		g_warning("Unable to open %s", filename);
+		/* Default name for the AI when the computer_names file
+		 * is not found or empty.
+		 */
+		name = g_strdup(_("Computer Player"));
 	} else {
 		while (fgets(line, sizeof(line) - 1, stream)) {
-			if (rand() % num < 1) {
-				strcpy(name, line);
+			if (g_random_int_range(0, num) == 0) {
+				if (name)
+					g_free(name);
+				name = g_strdup(line);
 			}
 			num++;
 		}
 		fclose(stream);
+		if (num == 1) {
+			g_warning("Empty file: %s", filename);
+			/* Default name for the AI when the computer_names file
+			 * is not found or empty.
+			 */
+			name = g_strdup(_("Computer Player"));
+		}
 	}
+	g_free(filename);
 	return name;
 }
 
@@ -104,7 +111,7 @@ static void ai_init(int argc, char **argv)
 			port = optarg;
 			break;
 		case 'n':
-			name = optarg;
+			name = g_strdup(optarg);
 			break;
 		case 'a':
 			ai = optarg;
@@ -123,12 +130,13 @@ static void ai_init(int argc, char **argv)
 
 	printf("ai port is %s\n", port);
 
-	srand(time(NULL));
+	g_random_set_seed(time(NULL) + getpid());
 
 	if (!name) {
 		name = random_name();
 	}
 	cb_name_change(name);
+	g_free(name);
 
 	set_ui_driver(&Glib_Driver);
 	log_set_func_default();
@@ -147,7 +155,7 @@ static void ai_offline(void)
 
 static void ai_start_game(void)
 {
-	/* TODO: choose which ai implementation to use */
+	/** @todo choose which ai implementation to use */
 	greedy_init(local_argc, local_argv);
 }
 

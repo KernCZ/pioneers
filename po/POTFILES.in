@@ -7,6 +7,7 @@ ai/resource.c
 ai/robber.c
 ai/trade.c
 ai/turn.c
+client/ai/ai.c
 client/ai/greedy.c
 client/common/chat.c
 client/common/client.c

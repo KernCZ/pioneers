@@ -8,6 +8,9 @@
 	* client/common/client.c, common/game.c, common/game.h, common/map.c,
 	common/map.h, server/pregame.c: Small protocol change, to avoid
 	sending unused data. Added option to send secrets of the map.
+	* client/ai/ai.c: Code cleanup to random_name. Randomizer needs to be
+	initialized only once.
+	* po/POTFILES.in: Added client/ai/ai.c
 
 2005-03-23  Bas Wijnen <shevek@fmf.nl>
 	* client/common/client.c, server/gold.c, server/pregame.c: Fixed race
