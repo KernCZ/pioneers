@@ -701,7 +701,7 @@ static gint calc_longest_fork(Node *node, gint owner)
 	if (node->type != BUILD_NONE && node->owner != owner)
 		return 0;
 
-	node->visited = TRUE;
+	node->visited = 2;
 
 	/* Try all roads adjacent to the node that we have not
 	 * visited yet
@@ -711,40 +711,120 @@ static gint calc_longest_fork(Node *node, gint owner)
 		Edge *edge = node->edges[idx];
 		gint len;
 
-		if (edge->owner != owner || edge->visited)
+		if (edge->owner != owner || edge->visited == 2)
 			continue;
 		len = calc_road_length(edge);
 		if (len > max_len)
 			max_len = len;
 	}
 
-	node->visited = FALSE;
+	node->visited = 1;
 
 	return max_len;
 }
 
 /* Return the length of unvisited road connected to this edge
- * (including this edge).
+ * (including this edge).  We must only count edges in one direction
+ * to protect against cycles.
  */
 static gint calc_road_length(Edge *edge)
 {
 	gint idx;
-	gint len;
+	gint len = 0;
 
-	edge->visited = TRUE;
-	len = 1;
+	edge->visited = 2;
 
 	for (idx = 0; idx < numElem(edge->nodes); idx++) {
 		Node *node = edge->nodes[idx];
 
-		if (node->visited)
+		if (node->visited == 2)
 			continue;
-		len += calc_longest_fork(node, edge->owner);
+		len = calc_longest_fork(node, edge->owner);
+		if (len > 0)
+			break;
 	}
 
-	edge->visited = FALSE;
+	edge->visited = 1;
 
-	return len;
+	return 1 + len;
+}
+
+static GList *find_tail_edges(Edge *edge);
+
+static GList *node_find_tail_edges(Node *node, gint owner)
+{
+	gint idx;
+	GList *tails = NULL;
+
+	/* Cannot go past node if it is occupied by another
+	 * player
+	 */
+	if (node->type != BUILD_NONE && node->owner != owner)
+		return NULL;
+
+	node->visited = 1;
+	/* Try all roads adjacent to the node that we have not
+	 * visited yet
+	 */
+	for (idx = 0; idx < numElem(node->edges); idx++) {
+		Edge *edge = node->edges[idx];
+
+		if (edge->owner != owner || edge->visited)
+			continue;
+		tails = g_list_concat(tails, find_tail_edges(edge));
+	}
+
+	return tails;
+}
+
+static gboolean node_has_other_edges(Node *node, Edge *edge)
+{
+	gint idx;
+
+	for (idx = 0; idx < numElem(node->edges); idx++)
+		if (node->edges[idx] != edge
+		    && node->edges[idx]->owner == edge->owner)
+			return TRUE;
+	return FALSE;
+}
+
+/* Return a list of tail edges that are in the same group as this one
+ */
+static GList *find_tail_edges(Edge *edge)
+{
+	GList *tails = NULL;
+	gint idx;
+	gint num_exits;
+
+	edge->visited = 1;
+
+	/* Count the number of exits from this edge
+	 */
+	num_exits = 0;
+	for (idx = 0; idx < numElem(edge->nodes); idx++) {
+		Node *node = edge->nodes[idx];
+		if (node->type != BUILD_NONE && node->owner != edge->owner)
+			continue;
+		if (node_has_other_edges(node, edge))
+			num_exits++;
+	}
+	if (num_exits < 2)
+		/* This edge is either a singleton, or a tail.
+		 */
+		tails = g_list_prepend(NULL, edge);
+
+	/* Now traverse to all edges that are accessible from this one
+	 * and collect their tail lists.
+	 */
+	for (idx = 0; idx < numElem(edge->nodes); idx++) {
+		Node *node = edge->nodes[idx];
+		if (node->visited)
+			continue;
+		tails = g_list_concat(tails,
+				      node_find_tail_edges(node, edge->owner));
+	}
+
+	return tails;
 }
 
 /* For all roads the are "owned" by this hex, work out the length of
@@ -758,24 +838,83 @@ static gboolean find_longest_road(Map *map, Hex *hex, gint *lengths)
 	for (idx = 0; idx < numElem(hex->edges); idx++) {
 		Edge *edge = hex->edges[idx];
 		gint len;
+		GList *tails;
 
 		if (edge->owner < 0 || edge->x != hex->x || edge->y != hex->y)
 			continue;
+		if (edge->visited)
+			continue;
 
-		len = calc_road_length(edge);
-		if (len > lengths[edge->owner])
-			lengths[edge->owner] = len;
+		/* Build a list of all "tail" edges in connected edge group.
+		 */
+		tails = find_tail_edges(edge);
+		if (tails == NULL)
+			/* There are no tails, so the edge group must
+			 * be a cycle.  This means we can start
+			 * anywhere in the group.
+			 */
+			tails = g_list_append(NULL, edge);
+		/* Work out the longest road that can be traced from
+		 * each "tail" edge.
+		 */
+                while (tails != NULL) {
+			Edge *tail = tails->data;
+			len = calc_road_length(tail);
+			if (len > lengths[tail->owner])
+				lengths[tail->owner] = len;
+                        tails = g_list_remove(tails, tail);
+                }
 	}
 
 	return FALSE;
 }
 
-/* Completely un-optimised algorithm for finding the longest road for
- * each player.  Find every road segment on the map, and then work out
- * the maximum length road that can be extended from that segment.
+/* Zero the visited attribute for all edges and nodes.
+ */
+static gboolean zero_visited(Map *map, Hex *hex, void *closure)
+{
+	gint idx;
+
+	for (idx = 0; idx < numElem(hex->edges); idx++) {
+		Edge *edge = hex->edges[idx];
+		edge->visited = 0;
+	}
+	for (idx = 0; idx < numElem(hex->nodes); idx++) {
+		Node *node = hex->nodes[idx];
+		node->visited = 0;
+	}
+
+	return FALSE;
+}
+
+/* New improved algorithm for finding the longest road for each
+ * player.  For each connected group of edges made of roads, ships,
+ * and bridges, build a list of "tail" edges which are only connected
+ * at one end.  If there are no such edges, choose one edge at random.
+ * 
+ * For each "tail" edge in the list, count the maximum length path
+ * that can be traced from that edge.
+ *
+ * Mark the entire group of edges as searched.
+ *
+ * The method for finding connected edge groups is a simple map
+ * traversal.  Whenever an edge is found which is not marked as
+ * searched, it is part of a new group.
+ *
+ * Marking is done as follows;
+ * 1 - Traverse map and zero the visited attribute of each edge / node.
+ * 2 - Traverse map looking for edges with visited == 0, when one is
+ *     found;
+ * 2a - Do exhaustive search of all edges in group setting visited to
+ *      1, build list of "tail" edges.  At the end of this process,
+ *      all edges in group will have visited == 1.
+ * 2b - From each tail edge, find the longest path that can be traced
+ *      from that edge.  When visiting an edge / group, visited is set to
+ *      2.  When unwinding the call stack, visited is restored to 1.
  */
 void map_longest_road(Map *map, gint *lengths, gint num_players)
 {
+	map_traverse(map, (HexFunc)zero_visited, NULL);
 	memset(lengths, 0, num_players * sizeof(*lengths));
 	map_traverse(map, (HexFunc)find_longest_road, lengths);
 }

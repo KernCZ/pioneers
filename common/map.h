@@ -90,7 +90,7 @@ struct _Node {
 	gint owner;		/* building owner, -1 == no building */
 	BuildType type;		/* type of node (if owner defined) */
 
-	gboolean visited;	/* used for longest road */
+	gint visited;		/* used for longest road */
 };
 
 struct _Edge {
@@ -104,7 +104,7 @@ struct _Edge {
 	gint owner;		/* road owner, -1 == no road */
 	BuildType type;		/* type of edge (if owner defined) */
 
-	gboolean visited;	/* used for longest road */
+	gint visited;		/* used for longest road */
 };
 
 /* All of the hexes are stored in a 2 dimensional array laid out as

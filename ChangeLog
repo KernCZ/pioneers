@@ -1,5 +1,11 @@
 2000-05-08  Dave Cole <dave@dccs.com.au>
 
+	* common/map.h: Changed the visited attribute in Edge and Node to
+	gint for new longest road algorithm.
+
+	* common/map_query.c: Implemented new longest road algorithm which
+	can handle edge cycles.
+	
 	* server/develop.c: Fixed "ERR wrong-plenty" bug.  Was using
 	variable before it received a value in resource_available().
 	
