@@ -28,9 +28,8 @@ void chat_parser( gint player_num, char chat_str[MAX_CHAT] )
 
 	if (chat_str[0] == '/') {
 		chat_str += 1;
-		slashcommand = strtok(chat_str, " ");
 
-		if (!strcmp(slashcommand, "beep")) {
+		if (!strncmp(chat_str, "beep", 4)) {
 			/* Generate a beep sound if the player name specified
 			 * in the argument is the name of the current player.
 			 */
@@ -52,8 +51,9 @@ void chat_parser( gint player_num, char chat_str[MAX_CHAT] )
 			return;
 		}
 		/* IRC-compatible /me */
-		else if (!strcmp(slashcommand, "me")) {
-			chat_str += 3 + strspn(chat_str, " \t") - 1;
+		else if (!strncmp(chat_str, "me", 2)) {
+			chat_str += 2;
+			chat_str += strspn(chat_str, " \t") - 1;
 			chat_str[0] = ':';
 		}
 	}
