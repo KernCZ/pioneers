@@ -1,3 +1,7 @@
+2004-09-03  Jeff Breidenbach  <jbreiden@rode.parc.com>
+
+	* debian/changelog: sync Debian & upstream versioning.
+
 2004-08-29  0.8.1.34  Roland Clobus <rclobus@bigfoot.com>
 	* ai/client.c: Added global flag 'played_soldier_card' to fix stack
 	overflow.

@@ -1,3 +1,15 @@
+gnocatan (0.8.1.34) unstable; urgency=low
+
+  * Change version numbering to make Lintian happier.
+
+ -- Jeff Breidenbach <jab@debian.org>  Fri,  3 Sep 2004 21:04:02 -0700
+
+gnocatan (0.8.1-7) unstable; urgency=low
+
+  * snapshot from upstream CVS.
+
+ -- Jeff Breidenbach <jab@debian.org>  Mon, 30 Aug 2004 11:43:58 -0700
+
 gnocatan (0.8.1-6) unstable; urgency=low
 
   * added yelp dependency
