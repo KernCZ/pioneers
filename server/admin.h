@@ -2,8 +2,7 @@
 #define __gnocatan_server_h
 
 #include <netdb.h>
-
-#define GNOCATAN_DIR_DEFAULT	"/usr/share/gnocatan"
+#include "gnocatan-path.h"
 
 #define TERRAIN_DEFAULT	0
 #define TERRAIN_RANDOM	1
@@ -37,6 +36,7 @@ void cfg_set_game( gchar *game );
 void cfg_set_terrain_type( gint terrain_type );
 void cfg_set_tournament_time( gint tournament_time );
 void cfg_set_exit( gboolean exitdone);
+void cfg_set_timeout( gint to );
 
 /* callbacks related to server starting / stopping */
 gboolean start_server( gchar *port, gboolean register_server );
