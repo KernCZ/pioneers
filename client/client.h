@@ -166,6 +166,9 @@ int robber_count_victims(Hex *hex, gint *victim_list);
 void robber_moved(gint player_num, gint x, gint y);
 void robber_begin_move(gint player_num);
 
+/* settingscreen.c */
+GtkWidget *settings_create_dlg(void);
+
 /* setup.c */
 gboolean is_setup_double(void);
 gboolean setup_can_undo(void);

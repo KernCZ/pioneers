@@ -80,9 +80,9 @@ void gui_set_instructions(gchar *fmt, ...)
 
 void gui_set_vp_target_value( gint vp )
 {
-	gchar *vp_text;
+	gchar vp_text[30];
 	
-	g_snprintf( vp_text, 30, "Points Needed to Win: %i", vp );
+	g_snprintf( vp_text, sizeof(vp_text), "Points Needed to Win: %i", vp );
 	
 	gtk_label_set_text( GTK_LABEL(vp_target_status), vp_text );
 }
@@ -546,11 +546,12 @@ static void help_about_cb(GtkWidget *widget, void *user_data)
 	GtkWidget *about;
 	const gchar *authors[] = {
 		"Dave Cole",
+		"Andy Heroff",
 		NULL
 	};
 
 	about = gnome_about_new("The Gnocatan Game", VERSION,
-				"(C) 1999 the Free Software Foundation",
+				"(C) 2000 the Free Software Foundation",
 				authors,
 				"Gnocatan is based upon the excellent"
 				" Settlers of Catan board game",
@@ -563,9 +564,17 @@ static void help_legend_cb(GtkWidget *widget, void *user_data)
 	legend_create_dlg();
 }
 
+static void help_settings_cb(GtkWidget *widget, void *user_data)
+{
+	settings_create_dlg();
+}
+
 static GnomeUIInfo help_menu[] = {
 	{ GNOME_APP_UI_ITEM, N_("_Legend"), N_("Terrain legend and building costs"),
 	  help_legend_cb, NULL, NULL, GNOME_APP_PIXMAP_STOCK,
+	  GNOME_STOCK_MENU_INDEX, 0, 0, NULL },
+	{ GNOME_APP_UI_ITEM, N_("_Game Settings"), N_("Settings for the current game"),
+	  help_settings_cb, NULL, NULL, GNOME_APP_PIXMAP_STOCK,
 	  GNOME_STOCK_MENU_INDEX, 0, 0, NULL },
 	{ GNOME_APP_UI_ITEM, N_("_About Gnocatan"), N_("Information about Gnocatan"),
 	  help_about_cb, NULL, NULL, GNOME_APP_PIXMAP_STOCK,

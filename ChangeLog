@@ -1,3 +1,8 @@
+2000-08-18  Andy Heroff <aheroff@mediaone.net>
+
+	* client/settingscreen.c, client/gui.c, client/client.h,
+	  client/Makefile.am: Added file. Added game settings screen.
+
 2000-08-06  Jeff Breidenbach <jeff@alum.mit.edu>
 
 	* debian/control: Tweak build dependencies (Debian bug #68516)

@@ -59,6 +59,7 @@ gnocatan_SOURCES = \
 	road_building.c \
 	robber.c \
 	setup.c \
+	settingscreen.c \
 	stock.c \
 	trade.c \
 	turn.c
