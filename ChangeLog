@@ -1,5 +1,10 @@
 2002-05-23  Roman Hodek  <roman@hodek.net>
 
+	* client/histogram.c: if new value is registered, update the
+	graph; this revealed that the drawing worked only by incident, the
+	curve area overlayed the bars... solution was to draw bars and
+	curve in the same expose callback.
+
 	* common/common_gtk.c (check_gtk_widget): Work around a GTK bug:
 	if mouse is inside a toolbar button that becomes sensitive (e.g.
 	the "Roll Dice" button), you had to move out and in the mouse
