@@ -72,8 +72,10 @@ gboolean can_submit_quote()
 		/* Does this quote equal the parameters?
 		 */
 		for (idx = 0; idx < NO_RESOURCE; idx++)
-			if (quote->var.d.supply[idx] != we_supply_rows[idx].num
-			    || quote->var.d.receive[idx] != we_receive_rows[idx].num)
+			if (quote->var.d.supply[idx] !=
+			    we_supply_rows[idx].num
+			    || quote->var.d.receive[idx] !=
+			    we_receive_rows[idx].num)
 				break;
 		if (idx == NO_RESOURCE)
 			/* Yes, quote equals parameters, cannot resubmit
@@ -87,7 +89,7 @@ gboolean can_submit_quote()
 gboolean can_delete_quote()
 {
 	return selected_quote != NULL
-		&& selected_quote->var.d.player_num == my_player_num();
+	    && selected_quote->var.d.player_num == my_player_num();
 }
 
 QuoteInfo *quote_current_quote()
@@ -120,7 +122,7 @@ gint quote_next_num()
 	return next_quote_num;
 }
 
-static void remove_quote(QuoteInfo *quote)
+static void remove_quote(QuoteInfo * quote)
 {
 	gint row;
 
@@ -133,7 +135,7 @@ static void remove_quote(QuoteInfo *quote)
 	quotelist_delete(quote_list, quote);
 }
 
-static void remove_quote_update_pixmap(QuoteInfo *quote)
+static void remove_quote_update_pixmap(QuoteInfo * quote)
 {
 	gboolean is_first_quote;
 	gint row;
@@ -149,7 +151,8 @@ static void remove_quote_update_pixmap(QuoteInfo *quote)
 		QuoteInfo *next_quote = quotelist_next(quote);
 
 		if (next_quote != NULL
-		    && next_quote->var.d.player_num == quote->var.d.player_num)
+		    && next_quote->var.d.player_num ==
+		    quote->var.d.player_num)
 			gtk_clist_set_pixmap(GTK_CLIST(clist), row + 1, 0,
 					     player->user_data, NULL);
 	}
@@ -158,7 +161,7 @@ static void remove_quote_update_pixmap(QuoteInfo *quote)
 	quotelist_delete(quote_list, quote);
 }
 
-static void update_row(QuoteRow *row)
+static void update_row(QuoteRow * row)
 {
 	gchar str[16];
 
@@ -166,13 +169,15 @@ static void update_row(QuoteRow *row)
 	gtk_entry_set_text(GTK_ENTRY(row->entry), str);
 
 	if (row->is_we_supply)
-		sprintf(str, "%d", resource_asset(row->resource) - row->num);
+		sprintf(str, "%d",
+			resource_asset(row->resource) - row->num);
 	else
-		sprintf(str, "%d", resource_asset(row->resource) + row->num);
+		sprintf(str, "%d",
+			resource_asset(row->resource) + row->num);
 	gtk_entry_set_text(GTK_ENTRY(row->curr), str);
 }
 
-static void set_row_sensitive(QuoteRow *row, gint sensitive)
+static void set_row_sensitive(QuoteRow * row, gint sensitive)
 {
 	if (!sensitive)
 		gtk_entry_set_text(GTK_ENTRY(row->curr), "");
@@ -181,7 +186,8 @@ static void set_row_sensitive(QuoteRow *row, gint sensitive)
 	gtk_widget_set_sensitive(row->more_btn,
 				 sensitive
 				 && (!row->is_we_supply
-				     || row->num < resource_asset(row->resource)));
+				     || row->num <
+				     resource_asset(row->resource)));
 	gtk_widget_set_sensitive(row->entry, sensitive);
 
 	if (sensitive)
@@ -190,7 +196,7 @@ static void set_row_sensitive(QuoteRow *row, gint sensitive)
 		gtk_entry_set_text(GTK_ENTRY(row->entry), "");
 }
 
-static void quote_update (void)
+static void quote_update(void)
 {
 	gint idx;
 
@@ -202,13 +208,13 @@ static void quote_update (void)
 		if (!we_receive[idx])
 			we_receive_rows[idx].num = 0;
 
-		set_row_sensitive(we_supply_rows + idx,
-				  we_supply[idx] && resource_asset(idx) > 0);
+		set_row_sensitive(we_supply_rows + idx, we_supply[idx]
+				  && resource_asset(idx) > 0);
 		set_row_sensitive(we_receive_rows + idx, we_receive[idx]);
 	}
 }
 
-static void check_domestic_quotes(gint *receive, gint *supply)
+static void check_domestic_quotes(gint * receive, gint * supply)
 {
 	QuoteInfo *quote;
 	gint idx;
@@ -242,7 +248,7 @@ static void add_reject_row(gint player_num)
 	gchar *row_data[3];
 	gchar empty[1] = "";
 	row_data[0] = empty;
-	row_data[1] = g_strdup (_("Rejected trade") );
+	row_data[1] = g_strdup(_("Rejected trade"));
 	row_data[2] = empty;
 
 	if (row >= 0)
@@ -258,21 +264,23 @@ static void add_reject_row(gint player_num)
 			break;
 
 	if (quote != NULL) {
-		row = gtk_clist_find_row_from_data(GTK_CLIST(clist), quote);
+		row =
+		    gtk_clist_find_row_from_data(GTK_CLIST(clist), quote);
 		gtk_clist_insert(GTK_CLIST(clist), row, row_data);
 	} else
 		row = gtk_clist_append(GTK_CLIST(clist), row_data);
 	gtk_clist_set_row_data(GTK_CLIST(clist), row, player);
-	gtk_clist_set_pixmap(GTK_CLIST(clist), row, 0, player->user_data, NULL);
+	gtk_clist_set_pixmap(GTK_CLIST(clist), row, 0, player->user_data,
+			     NULL);
 	gtk_clist_set_selectable(GTK_CLIST(clist), row, FALSE);
-	g_free (row_data[1]);
+	g_free(row_data[1]);
 }
 
 static void remove_reject_rows(void)
 {
 	gint idx;
 
-	for (idx = 0; idx < num_players (); idx++) {
+	for (idx = 0; idx < num_players(); idx++) {
 		Player *player = player_get(idx);
 		gint row = gtk_clist_find_row_from_data(GTK_CLIST(clist),
 							player);
@@ -282,7 +290,7 @@ static void remove_reject_rows(void)
 }
 
 void quote_add_quote(gint player_num,
-		     gint quote_num, gint *we_supply, gint *we_receive)
+		     gint quote_num, gint * we_supply, gint * we_receive)
 {
 	QuoteInfo *quote;
 	QuoteInfo *prev;
@@ -292,19 +300,23 @@ void quote_add_quote(gint player_num,
 	gchar empty[1] = "";
 	gchar *row_data[2] = { empty, quote_desc };
 
-	if (quotelist_find_domestic(quote_list, player_num, quote_num) != NULL)
+	if (quotelist_find_domestic(quote_list, player_num, quote_num) !=
+	    NULL)
 		return;
 
 	if (player_num == my_player_num())
 		next_quote_num = quote_num + 1;
 
 	quote = quotelist_add_domestic(quote_list,
-				       player_num, quote_num, we_supply, we_receive);
+				       player_num, quote_num, we_supply,
+				       we_receive);
 
 	trade_format_quote(quote, quote_desc);
 	prev = quotelist_prev(quote);
 	if (prev != NULL)
-		row = gtk_clist_find_row_from_data(GTK_CLIST(clist), prev) + 1;
+		row =
+		    gtk_clist_find_row_from_data(GTK_CLIST(clist),
+						 prev) + 1;
 	else
 		row = 0;
 	gtk_clist_insert(GTK_CLIST(clist), row, row_data);
@@ -338,7 +350,8 @@ void quote_player_finish(gint player_num)
 	for (;;) {
 		QuoteInfo *quote;
 
-		quote = quotelist_find_domestic(quote_list, player_num, -1);
+		quote =
+		    quotelist_find_domestic(quote_list, player_num, -1);
 		if (quote == NULL)
 			break;
 
@@ -353,7 +366,7 @@ void quote_finish()
 }
 
 static void show_quote_params(gint player_num,
-			      gint *they_supply, gint *they_receive)
+			      gint * they_supply, gint * they_receive)
 {
 	gchar we_supply_desc[512];
 	gchar we_receive_desc[512];
@@ -362,16 +375,18 @@ static void show_quote_params(gint player_num,
 	trade_player = player_num;
 	resource_format_type(we_supply_desc, they_receive);
 	resource_format_type(we_receive_desc, they_supply);
-	g_snprintf(desc, sizeof(desc), _("%s has %s, and is looking for %s"),
-		   player_name(player_num, TRUE),
-		   we_receive_desc, we_supply_desc);
+	g_snprintf(desc, sizeof(desc),
+		   _("%s has %s, and is looking for %s"),
+		   player_name(player_num, TRUE), we_receive_desc,
+		   we_supply_desc);
 	gtk_label_set_text(GTK_LABEL(desc_lbl), desc);
 
 	memcpy(we_supply, they_receive, sizeof(we_supply));
 	memcpy(we_receive, they_supply, sizeof(we_receive));
 }
 
-void quote_begin_again(gint player_num, gint *we_receive, gint *we_supply)
+void quote_begin_again(gint player_num, gint * we_receive,
+		       gint * we_supply)
 {
 	/* show the new parameters */
 	show_quote_params(player_num, we_receive, we_supply);
@@ -380,11 +395,11 @@ void quote_begin_again(gint player_num, gint *we_receive, gint *we_supply)
 	/* check if existing quotes are still valid */
 	check_domestic_quotes(we_receive, we_supply);
 	/* update everything */
-	quote_update ();
-	frontend_gui_update ();
+	quote_update();
+	frontend_gui_update();
 }
 
-void quote_begin(gint player_num, gint *we_receive, gint *we_supply)
+void quote_begin(gint player_num, gint * we_receive, gint * we_supply)
 {
 	gint idx;
 	/* show what is asked */
@@ -399,18 +414,18 @@ void quote_begin(gint player_num, gint *we_receive, gint *we_supply)
 	/* initialize our offer */
 	for (idx = 0; idx < NO_RESOURCE; idx++) {
 		we_supply_rows[idx].num = we_receive_rows[idx].num = 0;
-		set_row_sensitive(we_supply_rows + idx,
-				  we_supply[idx] && resource_asset(idx) > 0);
+		set_row_sensitive(we_supply_rows + idx, we_supply[idx]
+				  && resource_asset(idx) > 0);
 		set_row_sensitive(we_receive_rows + idx, we_receive[idx]);
 	}
 	/* don't call just quote_update, because it doesn't set/unset
 	 * the sesitivity of the delete button. */
-	frontend_gui_update ();
+	frontend_gui_update();
 	/* finally, show the page so the user can see it */
 	gui_show_quote_page(TRUE);
 }
 
-static void less_resource_cb(UNUSED(void *widget), QuoteRow *row)
+static void less_resource_cb(UNUSED(void *widget), QuoteRow * row)
 {
 	row->num--;
 	if (row->num == 0)
@@ -419,23 +434,24 @@ static void less_resource_cb(UNUSED(void *widget), QuoteRow *row)
 	gtk_widget_set_sensitive(row->more_btn, TRUE);
 	update_row(row);
 	/* this call is needed to (de)activate the "quote" button */
-	frontend_gui_update ();
+	frontend_gui_update();
 }
 
-static void more_resource_cb(UNUSED(void *widget), QuoteRow *row)
+static void more_resource_cb(UNUSED(void *widget), QuoteRow * row)
 {
 	row->num++;
-	if (row->num == game_resources ()
-	    || (row->is_we_supply && row->num == resource_asset(row->resource)))
+	if (row->num == game_resources()
+	    || (row->is_we_supply
+		&& row->num == resource_asset(row->resource)))
 		gtk_widget_set_sensitive(row->more_btn, FALSE);
 
 	gtk_widget_set_sensitive(row->less_btn, TRUE);
 	update_row(row);
 	/* this call is needed to (de)activate the "quote" button */
-	frontend_gui_update ();
+	frontend_gui_update();
 }
 
-static void add_quote_row(GtkWidget *table, QuoteRow* row,
+static void add_quote_row(GtkWidget * table, QuoteRow * row,
 			  Resource resource, gboolean is_we_supply)
 {
 	GtkWidget *lbl;
@@ -450,8 +466,8 @@ static void add_quote_row(GtkWidget *table, QuoteRow* row,
 	gtk_widget_show(lbl);
 	gtk_table_attach(GTK_TABLE(table), lbl,
 			 col, col + 1, resource, resource + 1,
-			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL,
-			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
+			 (GtkAttachOptions) GTK_EXPAND | GTK_FILL,
+			 (GtkAttachOptions) GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(lbl), 0, 0.5);
 	col++;
 
@@ -460,8 +476,8 @@ static void add_quote_row(GtkWidget *table, QuoteRow* row,
 	gtk_widget_show(entry);
 	gtk_table_attach(GTK_TABLE(table), entry,
 			 col, col + 1, resource, resource + 1,
-			 (GtkAttachOptions)GTK_FILL,
-			 (GtkAttachOptions)GTK_FILL, 0, 0);
+			 (GtkAttachOptions) GTK_FILL,
+			 (GtkAttachOptions) GTK_FILL, 0, 0);
 	gtk_widget_set_usize(entry, 30, -2);
 	col++;
 
@@ -471,8 +487,8 @@ static void add_quote_row(GtkWidget *table, QuoteRow* row,
 	gtk_widget_show(btn);
 	gtk_table_attach(GTK_TABLE(table), btn,
 			 col, col + 1, resource, resource + 1,
-			 (GtkAttachOptions)GTK_FILL,
-			 (GtkAttachOptions)GTK_FILL, 0, 0);
+			 (GtkAttachOptions) GTK_FILL,
+			 (GtkAttachOptions) GTK_FILL, 0, 0);
 	col++;
 
 	row->more_btn = btn = gtk_button_new_with_label(_("more>"));
@@ -481,8 +497,8 @@ static void add_quote_row(GtkWidget *table, QuoteRow* row,
 	gtk_widget_show(btn);
 	gtk_table_attach(GTK_TABLE(table), btn,
 			 col, col + 1, resource, resource + 1,
-			 (GtkAttachOptions)GTK_FILL,
-			 (GtkAttachOptions)GTK_FILL, 0, 0);
+			 (GtkAttachOptions) GTK_FILL,
+			 (GtkAttachOptions) GTK_FILL, 0, 0);
 	col++;
 
 	row->entry = entry = gtk_entry_new();
@@ -490,13 +506,14 @@ static void add_quote_row(GtkWidget *table, QuoteRow* row,
 	gtk_widget_show(entry);
 	gtk_table_attach(GTK_TABLE(table), entry,
 			 col, col + 1, resource, resource + 1,
-			 (GtkAttachOptions)GTK_FILL,
-			 (GtkAttachOptions)GTK_FILL, 0, 0);
+			 (GtkAttachOptions) GTK_FILL,
+			 (GtkAttachOptions) GTK_FILL, 0, 0);
 	gtk_widget_set_usize(entry, 30, -2);
 }
 
-static gint expose_desc_area_cb(GtkWidget *area, UNUSED(GdkEventExpose *event),
-		UNUSED(gpointer user_data))
+static gint expose_desc_area_cb(GtkWidget * area,
+				UNUSED(GdkEventExpose * event),
+				UNUSED(gpointer user_data))
 {
 	static GdkGC *desc_gc;
 
@@ -507,26 +524,29 @@ static gint expose_desc_area_cb(GtkWidget *area, UNUSED(GdkEventExpose *event),
 		desc_gc = gdk_gc_new(area->window);
 
 	gdk_gc_set_foreground(desc_gc, player_color(trade_player));
-	gdk_draw_rectangle(area->window, desc_gc, TRUE, 
+	gdk_draw_rectangle(area->window, desc_gc, TRUE,
 			   0, 0,
-			   area->allocation.width, area->allocation.height);
+			   area->allocation.width,
+			   area->allocation.height);
 	gdk_gc_set_foreground(desc_gc, &black);
 	gdk_draw_rectangle(area->window, desc_gc, FALSE,
 			   0, 0,
-			   area->allocation.width - 1, area->allocation.height - 1);
+			   area->allocation.width - 1,
+			   area->allocation.height - 1);
 
 	return FALSE;
 }
 
-static void select_quote_cb(GtkWidget *clist, gint row, UNUSED(gint column),
-			    UNUSED(GdkEventButton* event),
+static void select_quote_cb(GtkWidget * clist, gint row,
+			    UNUSED(gint column),
+			    UNUSED(GdkEventButton * event),
 			    UNUSED(gpointer user_data))
 {
 	selected_quote = gtk_clist_get_row_data(GTK_CLIST(clist), row);
-	frontend_gui_update ();
+	frontend_gui_update();
 }
 
-GtkWidget *quote_build_page (void)
+GtkWidget *quote_build_page(void)
 {
 	GtkWidget *panel_vbox;
 	GtkWidget *vbox;
@@ -604,12 +624,12 @@ GtkWidget *quote_build_page (void)
 	gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, TRUE, 0);
 
 	submit_btn = gtk_button_new_with_label(_("Quote"));
-	frontend_gui_register (submit_btn, GUI_QUOTE_SUBMIT, "clicked");
+	frontend_gui_register(submit_btn, GUI_QUOTE_SUBMIT, "clicked");
 	gtk_widget_show(submit_btn);
 	gtk_container_add(GTK_CONTAINER(bbox), submit_btn);
 
 	delete_btn = gtk_button_new_with_label(_("Delete"));
-	frontend_gui_register (delete_btn, GUI_QUOTE_DELETE, "clicked");
+	frontend_gui_register(delete_btn, GUI_QUOTE_DELETE, "clicked");
 	gtk_widget_show(delete_btn);
 	gtk_container_add(GTK_CONTAINER(bbox), delete_btn);
 
@@ -631,30 +651,33 @@ GtkWidget *quote_build_page (void)
 	gtk_container_add(GTK_CONTAINER(scroll_win), clist);
 	gtk_clist_set_column_width(GTK_CLIST(clist), 0, 16);
 	gtk_clist_set_column_width(GTK_CLIST(clist), 1, 200);
-	gtk_clist_set_selection_mode(GTK_CLIST(clist), GTK_SELECTION_BROWSE);
+	gtk_clist_set_selection_mode(GTK_CLIST(clist),
+				     GTK_SELECTION_BROWSE);
 	gtk_clist_column_titles_hide(GTK_CLIST(clist));
 
 	bbox = gtk_hbutton_box_new();
 	gtk_widget_show(bbox);
 	gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, TRUE, 0);
-	gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox), GTK_BUTTONBOX_SPREAD);
+	gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox),
+				  GTK_BUTTONBOX_SPREAD);
 
 	reject_btn = gtk_button_new_with_label(_("Reject Domestic Trade"));
-	frontend_gui_register (reject_btn, GUI_QUOTE_REJECT, "clicked");
+	frontend_gui_register(reject_btn, GUI_QUOTE_REJECT, "clicked");
 	gtk_widget_show(reject_btn);
 	gtk_container_add(GTK_CONTAINER(bbox), reject_btn);
 
 	return panel_vbox;
 }
 
-void frontend_quote_trade (UNUSED(gint player_num), gint partner_num,
-		gint quote_num, UNUSED(gint *they_supply),
-		UNUSED(gint *they_receive))
+void frontend_quote_trade(UNUSED(gint player_num), gint partner_num,
+			  gint quote_num, UNUSED(gint * they_supply),
+			  UNUSED(gint * they_receive))
 {
 	/* a quote has been accepted, remove it from the list. */
 	QuoteInfo *quote;
-	quote = quotelist_find_domestic(quote_list, partner_num, quote_num);
-	remove_quote_update_pixmap (quote);
-	quote_update ();
-	frontend_gui_update ();
+	quote =
+	    quotelist_find_domestic(quote_list, partner_num, quote_num);
+	remove_quote_update_pixmap(quote);
+	quote_update();
+	frontend_gui_update();
 }

@@ -15,22 +15,18 @@
 #include <glib-object.h>
 #include <gtk/gtktable.h>
 
-#include "map.h" /* For NO_RESOURCE */
+#include "map.h"		/* For NO_RESOURCE */
 
 G_BEGIN_DECLS
-
 #define RESOURCETABLE_TYPE            (resource_table_get_type ())
 #define RESOURCETABLE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), RESOURCETABLE_TYPE, ResourceTable))
 #define RESOURCETABLE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), RESOURCETABLE_TYPE, ResourceTableClass))
 #define IS_RESOURCETABLE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), RESOURCETABLE_TYPE))
 #define IS_RESOURCETABLE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), RESOURCETABLE_TYPE))
+typedef struct _ResourceTable ResourceTable;
+typedef struct _ResourceTableClass ResourceTableClass;
 
-
-typedef struct _ResourceTable       ResourceTable;
-typedef struct _ResourceTableClass  ResourceTableClass;
-
-struct _ResourceRow
-{
+struct _ResourceRow {
 	gint hand;
 	gint bank;
 	gint amount;
@@ -43,11 +39,10 @@ struct _ResourceRow
 	GtkWidget *more_widget;
 };
 
-struct _ResourceTable
-{
+struct _ResourceTable {
 	GtkTable table;
 	GtkTooltips *tooltips;
-    
+
 	struct _ResourceRow row[NO_RESOURCE];
 
 	gint total_target;
@@ -60,25 +55,22 @@ struct _ResourceTable
 	gint bank_offset;
 };
 
-struct _ResourceTableClass
-{
+struct _ResourceTableClass {
 	GtkTableClass parent_class;
 
-	void (* change) (ResourceTable *rt);
+	void (*change) (ResourceTable * rt);
 };
 
 GType resource_table_get_type(void);
-GtkWidget* resource_table_new(
-	const gchar *title, 
-	gboolean with_bank,
-	gboolean with_total);
+GtkWidget *resource_table_new(const gchar * title,
+			      gboolean with_bank, gboolean with_total);
 
-void resource_table_limit_bank(ResourceTable *rt, gboolean limit);
-void resource_table_set_total(ResourceTable *rt, const gchar *text, gint total);
-void resource_table_set_bank(ResourceTable *rt, gint *bank);
-void resource_table_get_amount(ResourceTable *rt, gint *amount);
-gboolean resource_table_is_total_reached(ResourceTable *rt);
+void resource_table_limit_bank(ResourceTable * rt, gboolean limit);
+void resource_table_set_total(ResourceTable * rt, const gchar * text,
+			      gint total);
+void resource_table_set_bank(ResourceTable * rt, gint * bank);
+void resource_table_get_amount(ResourceTable * rt, gint * amount);
+gboolean resource_table_is_total_reached(ResourceTable * rt);
 
 G_END_DECLS
-
-#endif /* __RESOURCETABLE_H__ */
+#endif				/* __RESOURCETABLE_H__ */

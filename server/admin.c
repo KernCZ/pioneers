@@ -48,7 +48,7 @@
 #define TERRAIN_DEFAULT	0
 #define TERRAIN_RANDOM	1
 
-static GSList *_game_list = NULL; /* The sorted list of game titles */
+static GSList *_game_list = NULL;	/* The sorted list of game titles */
 
 gboolean register_server = FALSE;
 gchar server_port[NI_MAXSERV] = GNOCATAN_DEFAULT_GAME_PORT;
@@ -58,22 +58,23 @@ extern gint no_player_timeout;
 
 GameParams *params = NULL;
 
-static GameParams *load_game_desc(const gchar *fname);
+static GameParams *load_game_desc(const gchar * fname);
 
 static gint sort_function(gconstpointer a, gconstpointer b)
 {
-	return (strcmp(((const GameParams*)a)->title,
-				((const GameParams*)b)->title));
+	return (strcmp(((const GameParams *) a)->title,
+		       ((const GameParams *) b)->title));
 }
 
-static void game_list_add_item( GameParams *item )
+static void game_list_add_item(GameParams * item)
 {
 
-	if( !_game_list ) {
+	if (!_game_list) {
 		params = item;
 	}
 
-	_game_list = g_slist_insert_sorted(_game_list, item, sort_function);
+	_game_list =
+	    g_slist_insert_sorted(_game_list, item, sort_function);
 }
 
 /** Returns TRUE if the game list is empty */
@@ -89,10 +90,10 @@ static gint game_list_locate(gconstpointer param, gconstpointer argument)
 	return strcmp(data->title, title);
 }
 
-GameParams *game_list_find_item( const gchar *title )
+GameParams *game_list_find_item(const gchar * title)
 {
 	GSList *result;
-	if( !_game_list ) {
+	if (!_game_list) {
 		return NULL;
 	}
 
@@ -103,14 +104,14 @@ GameParams *game_list_find_item( const gchar *title )
 		return NULL;
 }
 
-void game_list_foreach( GFunc func, gpointer user_data )
+void game_list_foreach(GFunc func, gpointer user_data)
 {
-	if (_game_list ) {
-		g_slist_foreach( _game_list, func, user_data );
+	if (_game_list) {
+		g_slist_foreach(_game_list, func, user_data);
 	}
 }
 
-GameParams *load_game_desc(const gchar *fname)
+GameParams *load_game_desc(const gchar * fname)
 {
 	GameParams *params;
 
@@ -120,14 +121,14 @@ GameParams *load_game_desc(const gchar *fname)
 	return params;
 }
 
-void load_game_types( const gchar *path )
+void load_game_types(const gchar * path)
 {
 	GDir *dir;
 	const gchar *fname;
 	gchar *fullname;
 
 	if ((dir = g_dir_open(path, 0, NULL)) == NULL) {
-		log_message( MSG_ERROR, _("Missing game directory\n"));
+		log_message(MSG_ERROR, _("Missing game directory\n"));
 		return;
 	}
 
@@ -141,7 +142,7 @@ void load_game_types( const gchar *path )
 		params = load_game_desc(fullname);
 		g_free(fullname);
 		if (params)
-			game_list_add_item( params );
+			game_list_add_item(params);
 	}
 	g_dir_close(dir);
 	if (game_list_is_empty())
@@ -149,107 +150,109 @@ void load_game_types( const gchar *path )
 }
 
 /* game configuration functions / callbacks */
-void cfg_set_num_players( gint num_players )
+void cfg_set_num_players(gint num_players)
 {
 #ifdef PRINT_INFO
-	g_print( "cfg_set_num_players: %d\n", num_players );
+	g_print("cfg_set_num_players: %d\n", num_players);
 #endif
-	if( params )
+	if (params)
 		params->num_players = num_players;
 }
 
-void cfg_set_sevens_rule( gint sevens_rule )
+void cfg_set_sevens_rule(gint sevens_rule)
 {
 #ifdef PRINT_INFO
-	g_print( "cfg_set_sevens_rule: %d\n", sevens_rule );
+	g_print("cfg_set_sevens_rule: %d\n", sevens_rule);
 #endif
-	if( params )
+	if (params)
 		params->sevens_rule = sevens_rule;
 }
 
-void cfg_set_victory_points( gint victory_points )
+void cfg_set_victory_points(gint victory_points)
 {
 #ifdef PRINT_INFO
-	g_print( "cfg_set_victory_points: %d\n", victory_points );
+	g_print("cfg_set_victory_points: %d\n", victory_points);
 #endif
-	if( params )
+	if (params)
 		params->victory_points = victory_points;
 }
 
-void cfg_set_game( const gchar *game )
+void cfg_set_game(const gchar * game)
 {
 #ifdef PRINT_INFO
-	g_print( "cfg_set_game: %s\n", game );
+	g_print("cfg_set_game: %s\n", game);
 #endif
-	if( params )
+	if (params)
 		params = game_list_find_item(game);
 }
 
-void cfg_set_terrain_type( gint terrain_type )
+void cfg_set_terrain_type(gint terrain_type)
 {
 #ifdef PRINT_INFO
-	g_print( "cfg_set_terrain_type: %d\n", terrain_type );
+	g_print("cfg_set_terrain_type: %d\n", terrain_type);
 #endif
-	if( params )
-		params->random_terrain = (terrain_type == TERRAIN_RANDOM) ? 1 : 0;
+	if (params)
+		params->random_terrain =
+		    (terrain_type == TERRAIN_RANDOM) ? 1 : 0;
 }
 
-void cfg_set_tournament_time( gint tournament_time )
+void cfg_set_tournament_time(gint tournament_time)
 {
 #ifdef PRINT_INFO
-    g_print("cfg_set_tournament_time: %d\n", tournament_time);
+	g_print("cfg_set_tournament_time: %d\n", tournament_time);
 #endif
-	if( params )
+	if (params)
 		params->tournament_time = tournament_time;
 }
 
-void cfg_set_quit( gboolean quitdone)
+void cfg_set_quit(gboolean quitdone)
 {
 #ifdef PRINT_INFO
-    g_print("cfg_set_quit: %d\n", quitdone);
+	g_print("cfg_set_quit: %d\n", quitdone);
 #endif
-	if( params )
+	if (params)
 		params->quit_when_done = quitdone;
 }
 
-void cfg_set_timeout( gint to )
+void cfg_set_timeout(gint to)
 {
 #ifdef PRINT_INFO
-	g_print( "cfg_set_timeout: %d\n", to );
+	g_print("cfg_set_timeout: %d\n", to);
 #endif
 	no_player_timeout = to;
 }
 
-gboolean start_server( const gchar *hostname, const gchar *port, 
-		gboolean register_server )
+gboolean start_server(const gchar * hostname, const gchar * port,
+		      gboolean register_server)
 {
-	if( !params ) {
-		cfg_set_game( "Default" );
+	if (!params) {
+		cfg_set_game("Default");
 	}
-	
-	if( params ) {
+
+	if (params) {
 #ifdef PRINT_INFO
-		g_print( "game type: %s\n", params->title );
-		g_print( "num players: %d\n", params->num_players );
-		g_print( "victory points: %d\n", params->victory_points );
-		g_print( "terrain type: %s\n", (params->random_terrain) ? "random" : "default" );
-		g_print( "Tournament time: %d\n", params->tournament_time );
-		g_print( "Quit when done: %d\n", params->quit_when_done);
+		g_print("game type: %s\n", params->title);
+		g_print("num players: %d\n", params->num_players);
+		g_print("victory points: %d\n", params->victory_points);
+		g_print("terrain type: %s\n",
+			(params->random_terrain) ? "random" : "default");
+		g_print("Tournament time: %d\n", params->tournament_time);
+		g_print("Quit when done: %d\n", params->quit_when_done);
 #endif
 
 	} else {
-		g_critical( "Game parameters not set!" );
-        return FALSE;
+		g_critical("Game parameters not set!");
+		return FALSE;
 	}
-	
-	return server_startup( params, hostname, port, register_server,
-			       random_order);
+
+	return server_startup(params, hostname, port, register_server,
+			      random_order);
 }
 
-static void handle_sigpipe (UNUSED(int signum))
+static void handle_sigpipe(UNUSED(int signum))
 {
 	/* reset the signal handler */
-	signal (SIGPIPE, handle_sigpipe);
+	signal(SIGPIPE, handle_sigpipe);
 	/* no need to actually handle anything, this will be done by 
 	 * write returning error */
 }
@@ -257,197 +260,197 @@ static void handle_sigpipe (UNUSED(int signum))
 /* server initialization */
 void server_init(void)
 {
-	load_game_types (get_gnocatan_dir());
+	load_game_types(get_gnocatan_dir());
 
 	/* Broken pipes can happen when multiple players disconnect
 	 * simultaneously.  This mostly happens to AI's, which disconnect
 	 * when the game is over. */
-	signal (SIGPIPE, handle_sigpipe);
+	signal(SIGPIPE, handle_sigpipe);
 }
 
 /* network administration functions */
 comm_info *_accept_info = NULL;
 
 /* parse 'line' and run the command requested */
-void
-admin_run_command( Session *admin_session, gchar *line )
+void admin_run_command(Session * admin_session, gchar * line)
 {
 	gchar command[100];
 	gchar value_str[100];
 	gint value_int;
-	
+
 	/* parse the line down into command and value */
-	sscanf( line, "admin %99s %99s", command, value_str );
-	value_int = atoi( value_str );
-	
+	sscanf(line, "admin %99s %99s", command, value_str);
+	value_int = atoi(value_str);
+
 	/* set the GAME port */
-	if( !strcmp( command, "set-port" ) ) {
-		if( value_int ) {
+	if (!strcmp(command, "set-port")) {
+		if (value_int) {
 			if (server_is_running())
 				server_stop();
-			snprintf(server_port, sizeof(server_port), "%d", value_int);
+			snprintf(server_port, sizeof(server_port), "%d",
+				 value_int);
 		}
-	
-	/* start the server */
-	} else if( !strcmp( command, "start-server" ) ) {
+
+		/* start the server */
+	} else if (!strcmp(command, "start-server")) {
 		if (server_is_running())
 			server_stop();
-		start_server( get_server_name(), server_port, register_server );
-	
-	} else if( !strcmp( command, "stop-server" ) ) {
+		start_server(get_server_name(), server_port,
+			     register_server);
+
+	} else if (!strcmp(command, "stop-server")) {
 		server_stop();
-	
-	/* set whether or not to register the server with a meta server */
-	} else if( !strcmp( command, "set-register-server" ) ) {
-		if( value_int ) {
+
+		/* set whether or not to register the server with a meta server */
+	} else if (!strcmp(command, "set-register-server")) {
+		if (value_int) {
 			if (server_is_running())
 				server_stop();
 			register_server = value_int;
 		}
-	
-	/* set the number of players */
-	} else if( !strcmp( command, "set-num-players" ) ) {
-		if( value_int ) {
+
+		/* set the number of players */
+	} else if (!strcmp(command, "set-num-players")) {
+		if (value_int) {
 			if (server_is_running())
 				server_stop();
-			cfg_set_num_players( value_int );
+			cfg_set_num_players(value_int);
 		}
-	
-	/* set the sevens rule */
-	} else if( !strcmp( command, "set-sevens-rule" ) ) {
-		if( value_int ) {
+
+		/* set the sevens rule */
+	} else if (!strcmp(command, "set-sevens-rule")) {
+		if (value_int) {
 			if (server_is_running())
 				server_stop();
-			cfg_set_sevens_rule( value_int );
+			cfg_set_sevens_rule(value_int);
 		}
 
 		/* set the victory points */
-	} else if( !strcmp( command, "set-victory-points" ) ) {
-		if( value_int ) {
+	} else if (!strcmp(command, "set-victory-points")) {
+		if (value_int) {
 			if (server_is_running())
 				server_stop();
-			cfg_set_victory_points( value_int );
+			cfg_set_victory_points(value_int);
 		}
-	
-	/* set whether to use random terrain */
-	} else if( !strcmp( command, "set-random-terrain" ) ) {
-		if( value_int ) {
+
+		/* set whether to use random terrain */
+	} else if (!strcmp(command, "set-random-terrain")) {
+		if (value_int) {
 			if (server_is_running())
 				server_stop();
-			cfg_set_terrain_type( value_int );
+			cfg_set_terrain_type(value_int);
 		}
-	
-	/* set the game type (by name) */
-	} else if( !strcmp( command, "set-game" ) ) {
-		if( value_str ) {
+
+		/* set the game type (by name) */
+	} else if (!strcmp(command, "set-game")) {
+		if (value_str) {
 			if (server_is_running())
 				server_stop();
-			cfg_set_game( value_str );
+			cfg_set_game(value_str);
 		}
-	
-	/* request to close the connection */
-	} else if( !strcmp( command, "quit" ) ) {
-		net_close( admin_session );
+
+		/* request to close the connection */
+	} else if (!strcmp(command, "quit")) {
+		net_close(admin_session);
 		/* Quit the server if the admin leaves */
 		if (!server_is_running())
 			exit(0);
-	
-	/* fallthrough -- unknown command */
+
+		/* fallthrough -- unknown command */
 	} else {
-		g_warning( "unrecognized admin request: '%s'\n", line );
+		g_warning("unrecognized admin request: '%s'\n", line);
 	}
 }
 
 /* network event handler, just like the one in meta.c, state.c, etc. */
-void
-admin_event( NetEvent event, Session *admin_session, gchar *line )
+void admin_event(NetEvent event, Session * admin_session, gchar * line)
 {
 #ifdef PRINT_INFO
-	g_print( "admin_event: event = %#x, admin_session = %p, line = %s\n",
-		event, admin_session, line );
+	g_print
+	    ("admin_event: event = %#x, admin_session = %p, line = %s\n",
+	     event, admin_session, line);
 #endif
-	
-	switch( event ) {
-		case NET_READ:
-				/* there is data to be read */
-				
+
+	switch (event) {
+	case NET_READ:
+		/* there is data to be read */
+
 #ifdef PRINT_INFO
-				g_print( "admin_event: NET_READ: line = '%s'\n", line );
+		g_print("admin_event: NET_READ: line = '%s'\n", line);
 #endif
-				admin_run_command( admin_session, line );
-				break;
-		
-		case NET_CLOSE:
-				/* connection has been closed */
-				
+		admin_run_command(admin_session, line);
+		break;
+
+	case NET_CLOSE:
+		/* connection has been closed */
+
 #ifdef PRINT_INFO
-				g_print( "admin_event: NET_CLOSE\n" );
+		g_print("admin_event: NET_CLOSE\n");
 #endif
-				net_free( &admin_session );
-				break;
-		
-		case NET_CONNECT:
-				/* connect() succeeded -- shouldn't get here */
-				
+		net_free(&admin_session);
+		break;
+
+	case NET_CONNECT:
+		/* connect() succeeded -- shouldn't get here */
+
 #ifdef PRINT_INFO
-				g_print( "admin_event: NET_CONNECT\n" );
+		g_print("admin_event: NET_CONNECT\n");
 #endif
-				break;
-		
-		case NET_CONNECT_FAIL:
-				/* connect() failed -- shouldn't get here */
-				
+		break;
+
+	case NET_CONNECT_FAIL:
+		/* connect() failed -- shouldn't get here */
+
 #ifdef PRINT_INFO
-				g_print( "admin_event: NET_CONNECT_FAIL\n" );
+		g_print("admin_event: NET_CONNECT_FAIL\n");
 #endif
-				break;
-		
-		default:
-                                /* To kill a warning... */
-                                break;
+		break;
+
+	default:
+		/* To kill a warning... */
+		break;
 	}
 }
 
 /* accept a connection made to the admin port */
-void
-admin_connect( comm_info *admin_info )
+void admin_connect(comm_info * admin_info)
 {
 	Session *admin_session;
 	gint new_fd;
-	
+
 	/* somebody connected to the administration port, so we... */
-	
+
 	/* (1) create a new network session */
-	admin_session = net_new( (NetNotifyFunc)admin_event, NULL );
-	
+	admin_session = net_new((NetNotifyFunc) admin_event, NULL);
+
 	/* (2) set the session as the session's user data, so we can free it 
 	 * later (this way we don't have to keep any globals holding all the 
 	 * sessions) */
 	admin_session->user_data = admin_session;
-	
+
 	/* (3) accept the connection into a new file descriptor */
-	new_fd = accept_connection( admin_info->fd, NULL );
-	
+	new_fd = accept_connection(admin_info->fd, NULL);
+
 	/* (4) tie the new file descriptor to the session we created earlier */
-	net_use_fd( admin_session, new_fd );
+	net_use_fd(admin_session, new_fd);
 }
 
 /* set up the administration port */
-void
-admin_listen( gchar *port )
+void admin_listen(gchar * port)
 {
-	if( !_accept_info ) {
-		_accept_info = g_malloc0( sizeof( comm_info ) );
+	if (!_accept_info) {
+		_accept_info = g_malloc0(sizeof(comm_info));
 	}
-	
-	/* open up a socket on which to listen for connections */
-	_accept_info->fd = open_listen_socket( port );
-#ifdef PRINT_INFO
-	g_print( "admin_listen: fd = %d\n", _accept_info->fd );
-#endif
-	
-	/* set up the callback to handle connections */
-	_accept_info->read_tag = driver->input_add_read( _accept_info->fd,
-			(InputFunc)admin_connect, _accept_info );
-}
 
+	/* open up a socket on which to listen for connections */
+	_accept_info->fd = open_listen_socket(port);
+#ifdef PRINT_INFO
+	g_print("admin_listen: fd = %d\n", _accept_info->fd);
+#endif
+
+	/* set up the callback to handle connections */
+	_accept_info->read_tag = driver->input_add_read(_accept_info->fd,
+							(InputFunc)
+							admin_connect,
+							_accept_info);
+}

@@ -36,7 +36,7 @@ typedef enum {
 	DESERT_TERRAIN,
 	SEA_TERRAIN,
 	GOLD_TERRAIN,
-	LAST_TERRAIN   /* New terrain types go before this */
+	LAST_TERRAIN		/* New terrain types go before this */
 } Terrain;
 
 /* The order of the Resource enums up to NO_RESOURCE is EXTREMELY important!
@@ -50,9 +50,9 @@ typedef enum {
 	ORE_RESOURCE,
 	WOOL_RESOURCE,
 	LUMBER_RESOURCE,
-	NO_RESOURCE,        /* All normal producing resources go before this */
-	ANY_RESOURCE,       /* Used for 3:1 ports */
-	GOLD_RESOURCE       /* Gold */
+	NO_RESOURCE,		/* All normal producing resources go before this */
+	ANY_RESOURCE,		/* Used for 3:1 ports */
+	GOLD_RESOURCE		/* Gold */
 } Resource;
 
 /* Types of structure that can be built
@@ -137,10 +137,10 @@ struct _Map {
 	gboolean has_pirate;	/* is the pirate allowed in this game? */
 	gint x_size;		/* number of hexes across map */
 	gint y_size;		/* number of hexes down map */
-	Hex *grid[MAP_SIZE][MAP_SIZE]; /* hexes arranged onto a grid */
+	Hex *grid[MAP_SIZE][MAP_SIZE];	/* hexes arranged onto a grid */
 	Hex *robber_hex;	/* which hex is the robber on */
 	Hex *pirate_hex;	/* which hex is the pirate on */
-	gboolean has_moved_ship;/* has the player moved a ship already? */
+	gboolean has_moved_ship;	/* has the player moved a ship already? */
 
 	gboolean shrink_left;	/* shrink left x-margin? */
 	gboolean shrink_right;	/* shrink right x-margin? */
@@ -155,74 +155,77 @@ typedef struct {
 
 /* map.c
  */
-Hex *map_hex(Map *map, gint x, gint y);
-Edge *map_edge(Map *map, gint x, gint y, gint pos);
-Node *map_node(Map *map, gint x, gint y, gint pos);
-typedef gboolean (*HexFunc)(Map *map, Hex *hex, void *closure);
-gboolean map_traverse(Map *map, HexFunc func, void *closure);
-void map_shuffle_terrain(Map *map);
-Hex *map_robber_hex(Map *map);
-Hex *map_pirate_hex(Map *map);
-void map_move_robber(Map *map, gint x, gint y);
-void map_move_pirate(Map *map, gint x, gint y);
+Hex *map_hex(Map * map, gint x, gint y);
+Edge *map_edge(Map * map, gint x, gint y, gint pos);
+Node *map_node(Map * map, gint x, gint y, gint pos);
+typedef gboolean(*HexFunc) (Map * map, Hex * hex, void *closure);
+gboolean map_traverse(Map * map, HexFunc func, void *closure);
+void map_shuffle_terrain(Map * map);
+Hex *map_robber_hex(Map * map);
+Hex *map_pirate_hex(Map * map);
+void map_move_robber(Map * map, gint x, gint y);
+void map_move_pirate(Map * map, gint x, gint y);
 
 Map *map_new(void);
-Map *map_copy(Map *map);
-void map_format_line(Map *map, gchar *line, gint y);
-void map_parse_line(Map *map, char *line);
-void map_parse_finish(Map *map);
-void map_set_chits(Map *map, GArray *chits);
-void map_free(Map *map);
+Map *map_copy(Map * map);
+void map_format_line(Map * map, gchar * line, gint y);
+void map_parse_line(Map * map, char *line);
+void map_parse_finish(Map * map);
+void map_set_chits(Map * map, GArray * chits);
+void map_free(Map * map);
 Map *map_load(char *name);
 
 /* map_query.c
  */
 /* simple checks */
-gboolean is_edge_adjacent_to_node(const Edge *edge, const Node *node);
-gboolean is_edge_on_land(const Edge *edge);
-gboolean is_edge_on_sea(const Edge *edge);
-gboolean is_node_on_land(const Node *node);
-gboolean node_has_road_owned_by(const Node *node, gint owner);
-gboolean node_has_ship_owned_by(const Node *node, gint owner);
-gboolean node_has_bridge_owned_by(const Node *node, gint owner);
-gboolean is_node_spacing_ok(const Node *node);
-gboolean is_node_proximity_ok(const Node *node);
-gboolean is_node_next_to_robber(const Node *node);
+gboolean is_edge_adjacent_to_node(const Edge * edge, const Node * node);
+gboolean is_edge_on_land(const Edge * edge);
+gboolean is_edge_on_sea(const Edge * edge);
+gboolean is_node_on_land(const Node * node);
+gboolean node_has_road_owned_by(const Node * node, gint owner);
+gboolean node_has_ship_owned_by(const Node * node, gint owner);
+gboolean node_has_bridge_owned_by(const Node * node, gint owner);
+gboolean is_node_spacing_ok(const Node * node);
+gboolean is_node_proximity_ok(const Node * node);
+gboolean is_node_next_to_robber(const Node * node);
 /* cursor checks */
-gboolean can_road_be_setup(const Edge *edge);
-gboolean can_road_be_built(const Edge *edge, gint owner);
-gboolean can_ship_be_setup(const Edge *edge);
-gboolean can_ship_be_built(const Edge *edge, gint owner);
-gboolean can_ship_be_moved(const Edge *edge, gint owner);
-gboolean can_bridge_be_setup(const Edge *edge);
-gboolean can_bridge_be_built(const Edge *edge, gint owner);
-gboolean can_settlement_be_setup(const Node *node);
-gboolean can_settlement_be_built(const Node *node, int owner);
-gboolean can_settlement_be_upgraded(const Node *node, int owner);
-gboolean can_city_be_built(const Node *node, int owner);
-gboolean can_robber_or_pirate_be_moved(const Hex *hex, int owner);
+gboolean can_road_be_setup(const Edge * edge);
+gboolean can_road_be_built(const Edge * edge, gint owner);
+gboolean can_ship_be_setup(const Edge * edge);
+gboolean can_ship_be_built(const Edge * edge, gint owner);
+gboolean can_ship_be_moved(const Edge * edge, gint owner);
+gboolean can_bridge_be_setup(const Edge * edge);
+gboolean can_bridge_be_built(const Edge * edge, gint owner);
+gboolean can_settlement_be_setup(const Node * node);
+gboolean can_settlement_be_built(const Node * node, int owner);
+gboolean can_settlement_be_upgraded(const Node * node, int owner);
+gboolean can_city_be_built(const Node * node, int owner);
+gboolean can_robber_or_pirate_be_moved(const Hex * hex, int owner);
 /* map global queries */
-gboolean map_can_place_road(Map *map, int owner);
-gboolean map_can_place_ship(Map *map, int owner);
-gboolean map_can_place_bridge(Map *map, int owner);
-gboolean map_can_place_settlement(Map *map, int owner);
-gboolean map_can_upgrade_settlement(Map *map, int owner);
+gboolean map_can_place_road(Map * map, int owner);
+gboolean map_can_place_ship(Map * map, int owner);
+gboolean map_can_place_bridge(Map * map, int owner);
+gboolean map_can_place_settlement(Map * map, int owner);
+gboolean map_can_upgrade_settlement(Map * map, int owner);
 
-gboolean map_building_spacing_ok(Map *map, gint owner, BuildType type,
+gboolean map_building_spacing_ok(Map * map, gint owner, BuildType type,
 				 gint x, gint y, gint pos);
-gboolean map_building_connect_ok(Map *map, gint owner, BuildType type,
+gboolean map_building_connect_ok(Map * map, gint owner, BuildType type,
 				 gint x, gint y, gint pos);
-gboolean map_building_vacant(Map *map, BuildType type,
+gboolean map_building_vacant(Map * map, BuildType type,
 			     gint x, gint y, gint pos);
-gboolean map_road_vacant(Map *map, gint x, gint y, gint pos);
-gboolean map_road_connect_ok(Map *map, gint owner, gint x, gint y, gint pos);
-gboolean map_ship_vacant(Map *map, gint x, gint y, gint pos);
-gboolean map_ship_connect_ok(Map *map, gint owner, gint x, gint y, gint pos);
-gboolean map_bridge_vacant(Map *map, gint x, gint y, gint pos);
-gboolean map_bridge_connect_ok(Map *map, gint owner, gint x, gint y, gint pos);
+gboolean map_road_vacant(Map * map, gint x, gint y, gint pos);
+gboolean map_road_connect_ok(Map * map, gint owner, gint x, gint y,
+			     gint pos);
+gboolean map_ship_vacant(Map * map, gint x, gint y, gint pos);
+gboolean map_ship_connect_ok(Map * map, gint owner, gint x, gint y,
+			     gint pos);
+gboolean map_bridge_vacant(Map * map, gint x, gint y, gint pos);
+gboolean map_bridge_connect_ok(Map * map, gint owner, gint x, gint y,
+			       gint pos);
 /* information gathering */
-void map_longest_road(Map *map, gint *lengths, gint num_players);
-void map_maritime_info(Map *map, MaritimeInfo *info, gint owner);
+void map_longest_road(Map * map, gint * lengths, gint num_players);
+void map_maritime_info(Map * map, MaritimeInfo * info, gint owner);
 
 #ifdef HAVE_G_RAND_NEW_WITH_SEED
 extern GRand *g_rand_ctx;

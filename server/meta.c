@@ -64,7 +64,7 @@ void meta_report_num_players(gint num_players)
 		net_printf(ses, "curr=%d\n", num_players);
 }
 
-void meta_send_details(Game *game)
+void meta_send_details(Game * game)
 {
 	if (ses == NULL)
 		return;
@@ -88,28 +88,29 @@ void meta_send_details(Game *game)
 	}
 	net_printf(ses, "host=%s\n", game->hostname);
 	if (meta_server_version_major >= 1) {
-	    net_printf(ses,
-		       "vpoints=%d\n"
-		       "sevenrule=%s\n"
-		       "terrain=%s\n"
-		       "title=%s\n",
-		       game->params->victory_points,
-		       game->params->sevens_rule == 0 ? "normal" :
-		       game->params->sevens_rule == 1 ? "reroll first 2" :
-							"reroll all",
-		       game->params->random_terrain ? "random" : "default",
-		       game->params->title);
-	}
-	else {
-	    net_printf(ses,
-		       "map=%s\n"
-		       "comment=%s\n",
-		       game->params->random_terrain ? "random" : "default",
-		       game->params->title);
+		net_printf(ses,
+			   "vpoints=%d\n"
+			   "sevenrule=%s\n"
+			   "terrain=%s\n"
+			   "title=%s\n",
+			   game->params->victory_points,
+			   game->params->sevens_rule == 0 ? "normal" :
+			   game->params->sevens_rule ==
+			   1 ? "reroll first 2" : "reroll all",
+			   game->params->
+			   random_terrain ? "random" : "default",
+			   game->params->title);
+	} else {
+		net_printf(ses,
+			   "map=%s\n"
+			   "comment=%s\n",
+			   game->params->
+			   random_terrain ? "random" : "default",
+			   game->params->title);
 	}
 }
-			   
-static void meta_event(NetEvent event, Game *game, char *line)
+
+static void meta_event(NetEvent event, Game * game, char *line)
 {
 	switch (event) {
 	case NET_READ:
@@ -124,29 +125,43 @@ static void meta_event(NetEvent event, Game *game, char *line)
 				net_close(ses);
 				ses = NULL;
 				if (num_redirects++ == 10) {
-					log_message( MSG_INFO, _("Too many meta-server redirects\n"));
+					log_message(MSG_INFO,
+						    _
+						    ("Too many meta-server redirects\n"));
 					return;
 				}
-				if (sscanf(line, "goto %s %s", server, port) == 2)
+				if (sscanf
+				    (line, "goto %s %s", server,
+				     port) == 2)
 					meta_register(server, port, game);
-				else if (sscanf(line, "goto %s", server) == 1)
-					meta_register(server, GNOCATAN_DEFAULT_META_PORT, game);
+				else if (sscanf(line, "goto %s", server) ==
+					 1)
+					meta_register(server,
+						      GNOCATAN_DEFAULT_META_PORT,
+						      game);
 				else
-					log_message( MSG_ERROR, _("Bad redirect line: %s\n"), line);
+					log_message(MSG_ERROR,
+						    _
+						    ("Bad redirect line: %s\n"),
+						    line);
 				break;
 			}
-			meta_server_version_major = meta_server_version_minor = 0;
+			meta_server_version_major =
+			    meta_server_version_minor = 0;
 			if (strncmp(line, "welcome ", 8) == 0) {
 				char *p = strstr(line, "version ");
 				if (p) {
 					p += 8;
-					meta_server_version_major = atoi(p);
+					meta_server_version_major =
+					    atoi(p);
 					p += strspn(p, "0123456789");
 					if (*p == '.')
-						meta_server_version_minor = atoi(p+1);
+						meta_server_version_minor =
+						    atoi(p + 1);
 				}
 			}
-			net_printf(ses, "version %s\n", META_PROTOCOL_VERSION);
+			net_printf(ses, "version %s\n",
+				   META_PROTOCOL_VERSION);
 			meta_mode = MODE_SERVER_LIST;
 			meta_send_details(game);
 			break;
@@ -159,7 +174,8 @@ static void meta_event(NetEvent event, Game *game, char *line)
 		break;
 	case NET_CLOSE:
 		if (meta_mode == MODE_SIGNON)
-			log_message( MSG_ERROR, _("Meta-server kicked us off\n"));
+			log_message(MSG_ERROR,
+				    _("Meta-server kicked us off\n"));
 		net_free(&ses);
 		break;
 	case NET_CONNECT:
@@ -168,19 +184,23 @@ static void meta_event(NetEvent event, Game *game, char *line)
 	}
 }
 
-void meta_register(const gchar *server, const gchar *port, Game *game)
+void meta_register(const gchar * server, const gchar * port, Game * game)
 {
 	if (num_redirects > 0)
-		log_message( MSG_INFO, _("Redirected to meta-server at %s, port %s\n"),
-			 server, port);
+		log_message(MSG_INFO,
+			    _
+			    ("Redirected to meta-server at %s, port %s\n"),
+			    server, port);
 	else
-		log_message( MSG_INFO, _("Register with meta-server at %s, port %s\n"),
-			 server, port);
+		log_message(MSG_INFO,
+			    _
+			    ("Register with meta-server at %s, port %s\n"),
+			    server, port);
 
 	if (ses != NULL)
 		net_close(ses);
 
-	ses = net_new((NetNotifyFunc)meta_event, game);
+	ses = net_new((NetNotifyFunc) meta_event, game);
 	if (net_connect(ses, server, port))
 		meta_mode = MODE_SIGNON;
 	else {

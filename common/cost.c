@@ -109,7 +109,7 @@ gint *cost_development()
 	return cost;
 }
 
-gboolean cost_buy(gint *cost, gint *assets)
+gboolean cost_buy(gint * cost, gint * assets)
 {
 	gint idx;
 
@@ -121,7 +121,7 @@ gboolean cost_buy(gint *cost, gint *assets)
 	return TRUE;
 }
 
-void cost_refund(gint *cost, gint *assets)
+void cost_refund(gint * cost, gint * assets)
 {
 	gint idx;
 
@@ -129,11 +129,10 @@ void cost_refund(gint *cost, gint *assets)
 		assets[idx] += cost[idx];
 }
 
-gboolean cost_can_afford(gint *cost, gint *assets)
+gboolean cost_can_afford(gint * cost, gint * assets)
 {
 	gint tmp[NO_RESOURCE];
 
 	memcpy(tmp, assets, sizeof(tmp));
 	return cost_buy(cost, tmp);
 }
-

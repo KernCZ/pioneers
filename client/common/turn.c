@@ -34,25 +34,26 @@ void turn_rolled_dice(gint player_num, gint die1, gint die2)
 	int roll;
 
 	roll = die1 + die2;
-	log_message( MSG_DICE, _("%s rolled %d.\n"), player_name(player_num, TRUE), roll);
+	log_message(MSG_DICE, _("%s rolled %d.\n"),
+		    player_name(player_num, TRUE), roll);
 
 	if (player_num == my_player_num()) {
 		rolled_dice = TRUE;
 		map->has_moved_ship = FALSE;
 	}
-	callbacks.rolled_dice (die1, die2, player_num);
+	callbacks.rolled_dice(die1, die2, player_num);
 }
 
 void turn_begin(gint player_num, gint num)
 {
 	current_turn = num;
-	log_message( MSG_DICE, _("Begin turn %d for %s.\n"),
-		 num, player_name(player_num, FALSE));
+	log_message(MSG_DICE, _("Begin turn %d for %s.\n"),
+		    num, player_name(player_num, FALSE));
 	rolled_dice = FALSE;
 	player_set_current(player_num);
 	develop_begin_turn();
 	build_clear();
-	callbacks.player_turn (player_num);
+	callbacks.player_turn(player_num);
 }
 
 gint turn_num()

@@ -27,18 +27,19 @@
  * must match the enum Terrain.
  */
 static const gchar *terrain_names[] = {
-        N_("Hill"),
-        N_("Field"),
-        N_("Mountain"),
-        N_("Pasture"),
-        N_("Forest"),
-        N_("Desert"),
-        N_("Sea"),
-        N_("Gold")
+	N_("Hill"),
+	N_("Field"),
+	N_("Mountain"),
+	N_("Pasture"),
+	N_("Forest"),
+	N_("Desert"),
+	N_("Sea"),
+	N_("Gold")
 };
 
-static gint expose_legend_cb(GtkWidget *area,
-			     UNUSED(GdkEventExpose *event), Terrain terrain)
+static gint expose_legend_cb(GtkWidget * area,
+			     UNUSED(GdkEventExpose * event),
+			     Terrain terrain)
 {
 	static GdkGC *legend_gc;
 	GdkPixbuf *p;
@@ -52,24 +53,23 @@ static gint expose_legend_cb(GtkWidget *area,
 
 	gdk_gc_set_fill(legend_gc, GDK_TILED);
 	gdk_gc_set_tile(legend_gc, guimap_terrain(terrain));
-	
-	height = area->allocation.width / get_theme()->scaledata[terrain].aspect;
-	p = gdk_pixbuf_scale_simple(
-			get_theme()->scaledata[terrain].native_image,
-			area->allocation.width,
-			height,
-			GDK_INTERP_BILINEAR);
+
+	height =
+	    area->allocation.width /
+	    get_theme()->scaledata[terrain].aspect;
+	p = gdk_pixbuf_scale_simple(get_theme()->scaledata[terrain].
+				    native_image, area->allocation.width,
+				    height, GDK_INTERP_BILINEAR);
 
 	/* Center the image in the available space */
 	gdk_draw_pixbuf(area->window, legend_gc, p,
-			0, 0, 0, (area->allocation.height - height) / 2, 
-			-1, -1,
-			GDK_RGB_DITHER_NONE, 0, 0);
-	gdk_pixbuf_unref(p);                         
+			0, 0, 0, (area->allocation.height - height) / 2,
+			-1, -1, GDK_RGB_DITHER_NONE, 0, 0);
+	gdk_pixbuf_unref(p);
 	return FALSE;
 }
 
-static void add_legend_terrain(GtkWidget *table, gint row, gint col,
+static void add_legend_terrain(GtkWidget * table, gint row, gint col,
 			       Terrain terrain, Resource resource)
 {
 	GtkWidget *area;
@@ -78,35 +78,34 @@ static void add_legend_terrain(GtkWidget *table, gint row, gint col,
 	area = gtk_drawing_area_new();
 	gtk_widget_show(area);
 	gtk_table_attach(GTK_TABLE(table), area,
-			col, col + 1, row, row + 1,
-			(GtkAttachOptions)GTK_FILL,
-			(GtkAttachOptions)GTK_FILL, 0, 0);
+			 col, col + 1, row, row + 1,
+			 (GtkAttachOptions) GTK_FILL,
+			 (GtkAttachOptions) GTK_FILL, 0, 0);
 	gtk_widget_set_size_request(area, 30, 34);
 	g_signal_connect(G_OBJECT(area), "expose_event",
-			G_CALLBACK(expose_legend_cb),
-			(gpointer)terrain);
+			 G_CALLBACK(expose_legend_cb), (gpointer) terrain);
 
 	label = gtk_label_new(_(terrain_names[terrain]));
 	gtk_widget_show(label);
 	gtk_table_attach(GTK_TABLE(table), label,
-			col + 1, col + 2, row, row + 1,
-			(GtkAttachOptions)GTK_FILL,
-			(GtkAttachOptions)GTK_FILL, 0, 0);
+			 col + 1, col + 2, row, row + 1,
+			 (GtkAttachOptions) GTK_FILL,
+			 (GtkAttachOptions) GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 
 	if (resource != NO_RESOURCE) {
 		label = gtk_label_new(resource_name(resource, TRUE));
 		gtk_widget_show(label);
 		gtk_table_attach(GTK_TABLE(table), label,
-				col + 2, col + 3, row, row + 1,
-				(GtkAttachOptions)GTK_FILL,
-				(GtkAttachOptions)GTK_FILL, 0, 0);
+				 col + 2, col + 3, row, row + 1,
+				 (GtkAttachOptions) GTK_FILL,
+				 (GtkAttachOptions) GTK_FILL, 0, 0);
 		gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 	}
 }
 
-static void add_legend_cost(GtkWidget *table, gint row,
-		gchar *item, gchar *cost)
+static void add_legend_cost(GtkWidget * table, gint row,
+			    gchar * item, gchar * cost)
 {
 	GtkWidget *label;
 
@@ -119,7 +118,7 @@ static void add_legend_cost(GtkWidget *table, gint row,
 	label = gtk_label_new(cost);
 	gtk_widget_show(label);
 	gtk_table_attach(GTK_TABLE(table), label, 1, 2, row, row + 1,
-			GTK_FILL, GTK_FILL, 0, 0);
+			 GTK_FILL, GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 }
 
@@ -157,7 +156,7 @@ GtkWidget *legend_create_content()
 	vsep = gtk_vseparator_new();
 	gtk_widget_show(vsep);
 	gtk_table_attach(GTK_TABLE(table), vsep, 3, 4, 0, 4,
-			GTK_FILL, GTK_FILL, 0, 0);
+			 GTK_FILL, GTK_FILL, 0, 0);
 
 	add_legend_terrain(table, 0, 4, FOREST_TERRAIN, LUMBER_RESOURCE);
 	add_legend_terrain(table, 1, 4, GOLD_TERRAIN, GOLD_RESOURCE);
@@ -169,10 +168,10 @@ GtkWidget *legend_create_content()
 	gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, TRUE, 0);
 
 	num_rows = 4;
-	if (have_ships () )
-	    num_rows++;
-	if (have_bridges () )
-	    num_rows++;
+	if (have_ships())
+		num_rows++;
+	if (have_bridges())
+		num_rows++;
 	table = gtk_table_new(num_rows, 2, FALSE);
 	gtk_widget_show(table);
 	gtk_container_add(GTK_CONTAINER(frame), table);
@@ -182,13 +181,18 @@ GtkWidget *legend_create_content()
 
 	num_rows = 0;
 	add_legend_cost(table, num_rows++, _("Road"), _("brick + lumber"));
-	if (have_ships () )
-	    add_legend_cost(table, num_rows++, _("Ship"), _("wool + lumber"));
-	if (have_bridges () )
-	    add_legend_cost(table, num_rows++, _("Bridge"), _("brick + wool + lumber"));
-	add_legend_cost(table, num_rows++, _("Settlement"), _("brick + grain + wool + lumber"));
-	add_legend_cost(table, num_rows++, _("City"), _("2 grain + 3 ore"));
-	add_legend_cost(table, num_rows++, _("Development Card"), _("grain + ore + wool"));
+	if (have_ships())
+		add_legend_cost(table, num_rows++, _("Ship"),
+				_("wool + lumber"));
+	if (have_bridges())
+		add_legend_cost(table, num_rows++, _("Bridge"),
+				_("brick + wool + lumber"));
+	add_legend_cost(table, num_rows++, _("Settlement"),
+			_("brick + grain + wool + lumber"));
+	add_legend_cost(table, num_rows++, _("City"),
+			_("2 grain + 3 ore"));
+	add_legend_cost(table, num_rows++, _("Development Card"),
+			_("grain + ore + wool"));
 
 	gtk_widget_show(vbox);
 	gtk_box_pack_start(GTK_BOX(hbox), vbox, FALSE, FALSE, 0);
@@ -196,7 +200,7 @@ GtkWidget *legend_create_content()
 	return hbox;
 }
 
-GtkWidget *legend_create_dlg (void)
+GtkWidget *legend_create_dlg(void)
 {
 	static GtkWidget *legend_dlg;
 	GtkWidget *dlg_vbox;
@@ -207,14 +211,13 @@ GtkWidget *legend_create_dlg (void)
 		return legend_dlg;
 	}
 
-	legend_dlg = gtk_dialog_new_with_buttons(
-			_("Legend"),
-			GTK_WINDOW(app_window),
-			GTK_DIALOG_DESTROY_WITH_PARENT,
-			GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE,
-			NULL);
+	legend_dlg = gtk_dialog_new_with_buttons(_("Legend"),
+						 GTK_WINDOW(app_window),
+						 GTK_DIALOG_DESTROY_WITH_PARENT,
+						 GTK_STOCK_CLOSE,
+						 GTK_RESPONSE_CLOSE, NULL);
 	g_signal_connect(G_OBJECT(legend_dlg), "destroy",
-			G_CALLBACK(gtk_widget_destroyed), &legend_dlg);
+			 G_CALLBACK(gtk_widget_destroyed), &legend_dlg);
 
 	dlg_vbox = GTK_DIALOG(legend_dlg)->vbox;
 	gtk_widget_show(dlg_vbox);
@@ -226,8 +229,7 @@ GtkWidget *legend_create_dlg (void)
 
 	/* destroy dialog when OK is clicked */
 	g_signal_connect(legend_dlg, "response",
-			G_CALLBACK(gtk_widget_destroy), NULL);
+			 G_CALLBACK(gtk_widget_destroy), NULL);
 
 	return legend_dlg;
 }
-

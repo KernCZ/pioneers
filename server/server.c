@@ -49,7 +49,8 @@ gint no_player_timeout = 0;
 
 void timed_out(UNUSED(int signum))
 {
-	g_print( "Was hanging around for too long without players... bye.\n" );
+	g_print
+	    ("Was hanging around for too long without players... bye.\n");
 	exit(5);
 }
 
@@ -76,7 +77,7 @@ gint get_rand(gint range)
 #endif
 }
 
-gint open_listen_socket( char *port )
+gint open_listen_socket(char *port)
 {
 	int err;
 	struct addrinfo hints, *ai, *aip;
@@ -91,12 +92,14 @@ gint open_listen_socket( char *port )
 	hints.ai_protocol = IPPROTO_TCP;
 	hints.ai_flags = AI_PASSIVE;
 
-	if((err = getaddrinfo(NULL, port, &hints, &ai)) || !ai) {
-		log_message( MSG_ERROR, _("Error creating struct addrinfo: %s"), gai_strerror(err));
+	if ((err = getaddrinfo(NULL, port, &hints, &ai)) || !ai) {
+		log_message(MSG_ERROR,
+			    _("Error creating struct addrinfo: %s"),
+			    gai_strerror(err));
 		return FALSE;
 	}
 
-	for(aip = ai; aip; aip = aip->ai_next) {
+	for (aip = ai; aip; aip = aip->ai_next) {
 		fd = socket(aip->ai_family, SOCK_STREAM, 0);
 		if (fd < 0) {
 			continue;;
@@ -104,7 +107,9 @@ gint open_listen_socket( char *port )
 		yes = 1;
 
 		/* setsockopt() before bind(); otherwise it has no effect! -- egnor */
-		if (setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes)) < 0) {
+		if (setsockopt
+		    (fd, SOL_SOCKET, SO_REUSEADDR, &yes,
+		     sizeof(yes)) < 0) {
 			close(fd);
 			continue;
 		}
@@ -112,38 +117,42 @@ gint open_listen_socket( char *port )
 			close(fd);
 			continue;
 		}
-		
+
 		break;
 	}
 
 	freeaddrinfo(ai);
 
-	if(!aip) {
-		log_message( MSG_ERROR, _("Error creating listening socket: %s\n"), g_strerror(errno));
+	if (!aip) {
+		log_message(MSG_ERROR,
+			    _("Error creating listening socket: %s\n"),
+			    g_strerror(errno));
 		return -1;
 	}
 
 	if (fcntl(fd, F_SETFL, O_NDELAY) < 0) {
-		log_message( MSG_ERROR, _("Error setting socket non-blocking: %s\n"),
-			  g_strerror(errno));
+		log_message(MSG_ERROR,
+			    _("Error setting socket non-blocking: %s\n"),
+			    g_strerror(errno));
 		close(fd);
 		return -1;
 	}
 
 	if (listen(fd, 5) < 0) {
-		log_message( MSG_ERROR, _("Error during listen on socket: %s\n"),
-			  g_strerror(errno));
+		log_message(MSG_ERROR,
+			    _("Error during listen on socket: %s\n"),
+			    g_strerror(errno));
 		close(fd);
 		return -1;
 	}
-	
+
 	start_timeout();
 	return fd;
 }
 
-Game *game_new(GameParams *params)
+Game *game_new(GameParams * params)
 {
-	Game* game;
+	Game *game;
 	gint idx;
 
 	game = g_malloc0(sizeof(*game));
@@ -161,14 +170,14 @@ Game *game_new(GameParams *params)
 	return game;
 }
 
-void game_free(Game *game)
+void game_free(Game * game)
 {
 	if (game->accept_tag)
 		driver->input_remove(game->accept_tag);
 	if (game->accept_fd >= 0)
 		close(game->accept_fd);
 
-	g_assert(game->player_list_use_count==0);
+	g_assert(game->player_list_use_count == 0);
 	while (game->player_list != NULL) {
 		Player *player = game->player_list->data;
 		player_remove(player);
@@ -179,7 +188,7 @@ void game_free(Game *game)
 	g_free(game);
 }
 
-gint accept_connection( gint in_fd, gchar **location)
+gint accept_connection(gint in_fd, gchar ** location)
 {
 	int fd;
 	sockaddr_t addr;
@@ -190,24 +199,31 @@ gint accept_connection( gint in_fd, gchar **location)
 	addr_len = sizeof(addr);
 	fd = accept(in_fd, &addr.sa, &addr_len);
 	if (fd < 0) {
-		log_message( MSG_ERROR, _("Error accepting connection: %s\n"),
-			  g_strerror(errno));
+		log_message(MSG_ERROR,
+			    _("Error accepting connection: %s\n"),
+			    g_strerror(errno));
 		return -1;
 	}
 
 	peer_len = sizeof(peer);
-	if( location ) {
+	if (location) {
 		if (getpeername(fd, &peer.sa, &peer_len) < 0) {
-			log_message( MSG_ERROR, _("Error getting peer name: %s\n"),
-				  g_strerror(errno));
+			log_message(MSG_ERROR,
+				    _("Error getting peer name: %s\n"),
+				    g_strerror(errno));
 			*location = g_strdup(_("unknown"));
 		} else {
 			int err;
 			char host[NI_MAXHOST];
 			char port[NI_MAXSERV];
 
-			if((err = getnameinfo(&peer.sa, peer_len, host, NI_MAXHOST, port, NI_MAXSERV, 0))) {
-				log_message( MSG_ERROR, "resolving address: %s", gai_strerror(err));
+			if ((err =
+			     getnameinfo(&peer.sa, peer_len, host,
+					 NI_MAXHOST, port, NI_MAXSERV,
+					 0))) {
+				log_message(MSG_ERROR,
+					    "resolving address: %s",
+					    gai_strerror(err));
 				*location = g_strdup(_("unknown"));
 			} else
 				*location = g_strdup(host);
@@ -216,98 +232,101 @@ gint accept_connection( gint in_fd, gchar **location)
 	return fd;
 }
 
-gint new_computer_player(const gchar *server, const gchar *port)
+gint new_computer_player(const gchar * server, const gchar * port)
 {
-    pid_t pid, pid2;
-    
-    if (!server)
-	server = GNOCATAN_DEFAULT_GAME_HOST;
-    
-    pid = fork();
-    if (pid < 0) {
-	log_message(MSG_ERROR, "Error starting gnocatanai: %s",
-		    strerror(errno));
-	return -1;
-    } else if (pid == 0) {
-	/* child */
-	int i;
+	pid_t pid, pid2;
 
-	/* Show AI logs on the console */
-	for(i = 3; i < 256; ++i) close(i);
-	close(0);
-	open("/dev/null", O_RDONLY);
+	if (!server)
+		server = GNOCATAN_DEFAULT_GAME_HOST;
 
-	/* Don't show any AI logs */
-	/*
-	for( i = 0; i < 255; ++i ) close(i);
-		open("/dev/null",O_RDONLY);
-		open("/dev/null",O_WRONLY);
-		open("/dev/null",O_RDWR);
-	*/
-		
-	/* start a second child to avoid zombies */
-	pid2 = fork();
-	if (pid2 < 0) {
-	    log_message(MSG_ERROR, "Error starting gnocatanai: %s",
-			strerror(errno));
-	    exit(1);
-	} else if (pid2 == 0) {
-	    execl(GNOCATAN_AI_PATH, GNOCATAN_AI_PATH,
-		  "-s", server,
-		  "-p", port,
-		  NULL);
-	    log_message(MSG_ERROR, "Error starting gnocatanai: %s",
-			strerror(errno));
-	    exit(2);
+	pid = fork();
+	if (pid < 0) {
+		log_message(MSG_ERROR, "Error starting gnocatanai: %s",
+			    strerror(errno));
+		return -1;
+	} else if (pid == 0) {
+		/* child */
+		int i;
+
+		/* Show AI logs on the console */
+		for (i = 3; i < 256; ++i)
+			close(i);
+		close(0);
+		open("/dev/null", O_RDONLY);
+
+		/* Don't show any AI logs */
+		/*
+		   for( i = 0; i < 255; ++i ) close(i);
+		   open("/dev/null",O_RDONLY);
+		   open("/dev/null",O_WRONLY);
+		   open("/dev/null",O_RDWR);
+		 */
+
+		/* start a second child to avoid zombies */
+		pid2 = fork();
+		if (pid2 < 0) {
+			log_message(MSG_ERROR,
+				    "Error starting gnocatanai: %s",
+				    strerror(errno));
+			exit(1);
+		} else if (pid2 == 0) {
+			execl(GNOCATAN_AI_PATH, GNOCATAN_AI_PATH,
+			      "-s", server, "-p", port, NULL);
+			log_message(MSG_ERROR,
+				    "Error starting gnocatanai: %s",
+				    strerror(errno));
+			exit(2);
+		} else {
+			/* parent */
+			_exit(0);
+		}
+	} else {
+		/* parent */
+		int stat;
+		waitpid(pid, &stat, 0);
+		return 0;
 	}
-	else {
-	    /* parent */
-	    _exit(0);
-	}
-    } else {
-	/* parent */
-	int stat;
-	waitpid(pid, &stat, 0);
-	return 0;
-    }
 }
 
 
-static void player_connect(Game *game)
+static void player_connect(Game * game)
 {
 	gchar *location;
 	gint fd = accept_connection(game->accept_fd, &location);
 
-	if( fd > 0 ) {
+	if (fd > 0) {
 		if (player_new(game, fd, location) != NULL)
 			stop_timeout();
 	}
 }
 
-static gboolean game_server_start(Game *game)
+static gboolean game_server_start(Game * game)
 {
 	if (!meta_server_name) {
 		meta_server_name = get_meta_server_name(TRUE);
 	}
-	
-	game->accept_fd = open_listen_socket( game->server_port );
-	if( game->accept_fd < 0 )
+
+	game->accept_fd = open_listen_socket(game->server_port);
+	if (game->accept_fd < 0)
 		return FALSE;
-	
+
 	game->accept_tag = driver->input_add_read(game->accept_fd,
-			(InputFunc)player_connect, game);
+						  (InputFunc)
+						  player_connect, game);
 
 	if (game->register_server)
-		meta_register(meta_server_name, GNOCATAN_DEFAULT_META_PORT, game);
+		meta_register(meta_server_name, GNOCATAN_DEFAULT_META_PORT,
+			      game);
 	return TRUE;
 }
 
-gboolean server_startup(GameParams *params, const gchar *hostname,
-		const gchar *port, gboolean meta, gboolean random_order)
+gboolean server_startup(GameParams * params, const gchar * hostname,
+			const gchar * port, gboolean meta,
+			gboolean random_order)
 {
 	/* The mt_seed needs a gulong, g_rand_new_with_seed needs a guint32
 	 * The compiler will promote the datatypes if necessary
-	 */  
+	 */
 	guint32 randomseed = time(NULL);
 
 #ifdef HAVE_G_RAND_NEW_WITH_SEED
@@ -316,15 +335,14 @@ gboolean server_startup(GameParams *params, const gchar *hostname,
 	mt_seed(randomseed);
 #endif
 	log_message(MSG_INFO, "%s #%" G_GUINT32_FORMAT ".%s.%03d\n",
-			/* Server: preparing game #..... */
-			_("Preparing game"),
-			randomseed,
+		    /* Server: preparing game #..... */
+		    _("Preparing game"), randomseed,
 #ifdef HAVE_G_RAND_NEW_WITH_SEED
-			"G",
+		    "G",
 #else
-			"M",
+		    "M",
 #endif
-			get_rand(1000));
+		    get_rand(1000));
 
 	curr_game = game_new(params);
 	g_assert(curr_game->server_port == NULL);
@@ -347,6 +365,7 @@ gboolean server_stop()
 }
 
 /* Return true if a game is running */
-gboolean server_is_running(void) {
+gboolean server_is_running(void)
+{
 	return curr_game != NULL;
 }

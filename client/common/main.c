@@ -26,29 +26,29 @@
 #include "callback.h"
 #include <glib.h>
 
-static void run_main (void)
+static void run_main(void)
 {
-	GMainLoop *loop = g_main_loop_new (NULL, FALSE);
-	g_main_loop_run (loop);
-	g_main_loop_unref (loop);
+	GMainLoop *loop = g_main_loop_new(NULL, FALSE);
+	g_main_loop_run(loop);
+	g_main_loop_unref(loop);
 }
 
 int main(int argc, char *argv[])
 {
-	client_init ();
+	client_init();
 	callbacks.mainloop = &run_main;
 
 #if ENABLE_NLS
 	init_nls();
 #endif
 
-	frontend_set_callbacks ();
+	frontend_set_callbacks();
 
 	/* this must come after the frontend_set_callbacks, because it sets the
 	 * mode to offline, which means a callback is called. */
 	client_start(argc, argv);
 
-	callbacks.mainloop ();
-	
+	callbacks.mainloop();
+
 	return 0;
 }

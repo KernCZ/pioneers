@@ -51,31 +51,31 @@ struct recovery_info_t {
 	gboolean ship_moved;
 };
 
-static gboolean global_unhandled(StateMachine *sm, gint event);
-static gboolean global_filter(StateMachine *sm, gint event);
-static gboolean mode_offline(StateMachine *sm, gint event);
-static gboolean mode_players(StateMachine *sm, gint event);
-static gboolean mode_player_list(StateMachine *sm, gint event);
-static gboolean mode_load_game(StateMachine *sm, gint event);
-static gboolean mode_load_gameinfo(StateMachine *sm, gint event);
-static gboolean mode_start_response(StateMachine *sm, gint event);
-static gboolean mode_setup(StateMachine *sm, gint event);
-static gboolean mode_idle(StateMachine *sm, gint event);
-static gboolean mode_wait_for_robber(StateMachine *sm, gint event);
-static gboolean mode_road_building(StateMachine *sm, gint event);
-static gboolean mode_monopoly(StateMachine *sm, gint event);
-static gboolean mode_year_of_plenty(StateMachine *sm, gint event);
-static gboolean mode_robber(StateMachine *sm, gint event);
-static gboolean mode_discard(StateMachine *sm, gint event);
-static gboolean mode_turn(StateMachine *sm, gint event);
-static gboolean mode_turn_rolled(StateMachine *sm, gint event);
-static gboolean mode_domestic_trade(StateMachine *sm, gint event);
-static gboolean mode_domestic_quote(StateMachine *sm, gint event);
-static gboolean mode_domestic_monitor(StateMachine *sm, gint event);
-static gboolean mode_game_over(StateMachine *sm, gint event);
-static gboolean mode_choose_gold(StateMachine *sm, gint event);
-static void recover_from_disconnect(StateMachine *sm,
-                                    struct recovery_info_t *rinfo);
+static gboolean global_unhandled(StateMachine * sm, gint event);
+static gboolean global_filter(StateMachine * sm, gint event);
+static gboolean mode_offline(StateMachine * sm, gint event);
+static gboolean mode_players(StateMachine * sm, gint event);
+static gboolean mode_player_list(StateMachine * sm, gint event);
+static gboolean mode_load_game(StateMachine * sm, gint event);
+static gboolean mode_load_gameinfo(StateMachine * sm, gint event);
+static gboolean mode_start_response(StateMachine * sm, gint event);
+static gboolean mode_setup(StateMachine * sm, gint event);
+static gboolean mode_idle(StateMachine * sm, gint event);
+static gboolean mode_wait_for_robber(StateMachine * sm, gint event);
+static gboolean mode_road_building(StateMachine * sm, gint event);
+static gboolean mode_monopoly(StateMachine * sm, gint event);
+static gboolean mode_year_of_plenty(StateMachine * sm, gint event);
+static gboolean mode_robber(StateMachine * sm, gint event);
+static gboolean mode_discard(StateMachine * sm, gint event);
+static gboolean mode_turn(StateMachine * sm, gint event);
+static gboolean mode_turn_rolled(StateMachine * sm, gint event);
+static gboolean mode_domestic_trade(StateMachine * sm, gint event);
+static gboolean mode_domestic_quote(StateMachine * sm, gint event);
+static gboolean mode_domestic_monitor(StateMachine * sm, gint event);
+static gboolean mode_game_over(StateMachine * sm, gint event);
+static gboolean mode_choose_gold(StateMachine * sm, gint event);
+static void recover_from_disconnect(StateMachine * sm,
+				    struct recovery_info_t *rinfo);
 
 /* Create and/or return the client state machine.
  */
@@ -99,80 +99,227 @@ StateMachine *SM()
 static void waiting_for_network(gboolean is_waiting)
 {
 	if (is_waiting) {
-		callbacks.network_status (_("Waiting"));
+		callbacks.network_status(_("Waiting"));
 	} else {
 		callbacks.network_status(_("Idle"));
 	}
-	callbacks.network_wait (is_waiting);
+	callbacks.network_wait(is_waiting);
 }
 
 /* Dummy callback functions. They do nothing */
-static void dummy_init(UNUSED(int argc), UNUSED(char **argv)) {;}
-static void dummy_network_status(UNUSED(gchar *description)) {;}
-static void dummy_instructions(UNUSED(gchar *message)) {;}
-static void dummy_network_wait(UNUSED(gboolean is_waiting)) {;}
-static void dummy_offline(void) {;}
-static void dummy_discard(void) {;}
-static void dummy_discard_add(UNUSED(gint player_num), UNUSED(gint discard_num)) {;}
-static void dummy_discard_remove(UNUSED(gint player_num), UNUSED(gint *resources)) {;}
-static void dummy_discard_done(void) {;}
-static void dummy_gold(void) {;}
-static void dummy_gold_add(UNUSED(gint player_num), UNUSED(gint gold_num)) {;}
-static void dummy_gold_remove(UNUSED(gint player_num), UNUSED(gint *resources)) {;}
-static void dummy_gold_choose(UNUSED(gint gold_num), UNUSED(gint *bank)) {;}
-static void dummy_gold_done(void) {;}
-static void dummy_game_over(UNUSED(gint player_num), UNUSED(gint points)) {;}
-static void dummy_init_game(void) {;}
-static void dummy_start_game(void) {;}
-static void dummy_setup(UNUSED(unsigned num_settlements), UNUSED(unsigned num_roads)) {;}
-static void dummy_quote(UNUSED(gint player_num), UNUSED(gint *they_supply), UNUSED(gint *they_receive)) {;}
-static void dummy_roadbuilding(UNUSED(gint num_roads)) {;}
-static void dummy_monopoly(void) {;}
-static void dummy_plenty(UNUSED(gint *bank)) {;}
-static void dummy_turn(void) {;}
-static void dummy_player_turn(UNUSED(gint player_num)) {;}
-static void dummy_trade(void) {;}
-static void dummy_trade_player_end(UNUSED(gint player_num)) {;}
-static void dummy_trade_add_quote(UNUSED(gint player_num), UNUSED(gint quote_num), UNUSED(gint *they_supply), UNUSED(gint *they_receive)) {;}
-static void dummy_trade_remove_quote(UNUSED(gint player_num), UNUSED(gint quote_num)) {;}
-static void dummy_trade_domestic(UNUSED(gint partner_num), UNUSED(gint quote_num), UNUSED(gint *we_supply), UNUSED(gint *we_receive)) {;}
-static void dummy_trade_maritime(UNUSED(gint ratio), UNUSED(Resource we_supply), UNUSED(Resource we_receive)) {;}
-static void dummy_quote_player_end(UNUSED(gint player_num)) {;}
-static void dummy_quote_add(UNUSED(gint player_num), UNUSED(gint quote_num), UNUSED(gint *they_supply), UNUSED(gint *they_receive)) {;}
-static void dummy_quote_remove(UNUSED(gint player_num), UNUSED(gint quote_num)) {;}
-static void dummy_quote_start(void) {;}
-static void dummy_quote_end(void) {;}
-static void dummy_quote_monitor(void) {;}
-static void dummy_quote_trade(UNUSED(gint player_num), UNUSED(gint partner_num), UNUSED(gint quote_num), UNUSED(gint *they_supply), UNUSED(gint *they_receive)) {;}
-static void dummy_rolled_dice(UNUSED(gint die1), UNUSED(gint die2), UNUSED(gint player_num)) {;}
-static void dummy_beep(void) {;}
-static void dummy_draw_edge(UNUSED(Edge *edge)) {;}
-static void dummy_draw_node(UNUSED(Node *node)) {;}
-static void dummy_bought_develop(UNUSED(DevelType type)) {;}
-static void dummy_played_develop(UNUSED(gint player_num), UNUSED(gint card_idx), UNUSED(DevelType type)) {;}
-static void dummy_resource_change(UNUSED(Resource type), UNUSED(gint num)) {;}
-static void dummy_draw_hex(UNUSED(Hex *hex)) {;}
-static void dummy_update_stock(void) {;}
-static void dummy_robber(void) {;}
-static void dummy_robber_moved(UNUSED(Hex *old), UNUSED(Hex *new)) {;}
-static void dummy_player_robbed(UNUSED(gint robber_num), UNUSED(gint victim_num), UNUSED(Resource resource)) {;}
-static void dummy_get_rolled_resources(UNUSED(gint player_num), UNUSED(const gint *resources)) {;}
-static void dummy_new_statistics(UNUSED(gint player_num), UNUSED(StatisticType type), UNUSED(gint num)) {;}
-static void dummy_viewer_name(UNUSED(gint viewer_num), UNUSED(const gchar *name)) {;}
-static void dummy_player_name(UNUSED(gint player_num), UNUSED(const gchar *name)) {;}
-static void dummy_player_quit(UNUSED(gint player_num)) {;}
-static void dummy_viewer_quit(UNUSED(gint player_num)) {;}
-static void dummy_new_bank(UNUSED(const gint *new_bank)) {;}
-static void dummy_error(UNUSED(gchar *message)) {;}
+static void dummy_init(UNUSED(int argc), UNUSED(char **argv))
+{;
+}
+static void dummy_network_status(UNUSED(gchar * description))
+{;
+}
+static void dummy_instructions(UNUSED(gchar * message))
+{;
+}
+static void dummy_network_wait(UNUSED(gboolean is_waiting))
+{;
+}
+static void dummy_offline(void)
+{;
+}
+static void dummy_discard(void)
+{;
+}
+static void dummy_discard_add(UNUSED(gint player_num),
+			      UNUSED(gint discard_num))
+{;
+}
+static void dummy_discard_remove(UNUSED(gint player_num),
+				 UNUSED(gint * resources))
+{;
+}
+static void dummy_discard_done(void)
+{;
+}
+static void dummy_gold(void)
+{;
+}
+static void dummy_gold_add(UNUSED(gint player_num), UNUSED(gint gold_num))
+{;
+}
+static void dummy_gold_remove(UNUSED(gint player_num),
+			      UNUSED(gint * resources))
+{;
+}
+static void dummy_gold_choose(UNUSED(gint gold_num), UNUSED(gint * bank))
+{;
+}
+static void dummy_gold_done(void)
+{;
+}
+static void dummy_game_over(UNUSED(gint player_num), UNUSED(gint points))
+{;
+}
+static void dummy_init_game(void)
+{;
+}
+static void dummy_start_game(void)
+{;
+}
+static void dummy_setup(UNUSED(unsigned num_settlements),
+			UNUSED(unsigned num_roads))
+{;
+}
+static void dummy_quote(UNUSED(gint player_num),
+			UNUSED(gint * they_supply),
+			UNUSED(gint * they_receive))
+{;
+}
+static void dummy_roadbuilding(UNUSED(gint num_roads))
+{;
+}
+static void dummy_monopoly(void)
+{;
+}
+static void dummy_plenty(UNUSED(gint * bank))
+{;
+}
+static void dummy_turn(void)
+{;
+}
+static void dummy_player_turn(UNUSED(gint player_num))
+{;
+}
+static void dummy_trade(void)
+{;
+}
+static void dummy_trade_player_end(UNUSED(gint player_num))
+{;
+}
+static void dummy_trade_add_quote(UNUSED(gint player_num),
+				  UNUSED(gint quote_num),
+				  UNUSED(gint * they_supply),
+				  UNUSED(gint * they_receive))
+{;
+}
+static void dummy_trade_remove_quote(UNUSED(gint player_num),
+				     UNUSED(gint quote_num))
+{;
+}
+static void dummy_trade_domestic(UNUSED(gint partner_num),
+				 UNUSED(gint quote_num),
+				 UNUSED(gint * we_supply),
+				 UNUSED(gint * we_receive))
+{;
+}
+static void dummy_trade_maritime(UNUSED(gint ratio),
+				 UNUSED(Resource we_supply),
+				 UNUSED(Resource we_receive))
+{;
+}
+static void dummy_quote_player_end(UNUSED(gint player_num))
+{;
+}
+static void dummy_quote_add(UNUSED(gint player_num),
+			    UNUSED(gint quote_num),
+			    UNUSED(gint * they_supply),
+			    UNUSED(gint * they_receive))
+{;
+}
+static void dummy_quote_remove(UNUSED(gint player_num),
+			       UNUSED(gint quote_num))
+{;
+}
+static void dummy_quote_start(void)
+{;
+}
+static void dummy_quote_end(void)
+{;
+}
+static void dummy_quote_monitor(void)
+{;
+}
+static void dummy_quote_trade(UNUSED(gint player_num),
+			      UNUSED(gint partner_num),
+			      UNUSED(gint quote_num),
+			      UNUSED(gint * they_supply),
+			      UNUSED(gint * they_receive))
+{;
+}
+static void dummy_rolled_dice(UNUSED(gint die1), UNUSED(gint die2),
+			      UNUSED(gint player_num))
+{;
+}
+static void dummy_beep(void)
+{;
+}
+static void dummy_draw_edge(UNUSED(Edge * edge))
+{;
+}
+static void dummy_draw_node(UNUSED(Node * node))
+{;
+}
+static void dummy_bought_develop(UNUSED(DevelType type))
+{;
+}
+static void dummy_played_develop(UNUSED(gint player_num),
+				 UNUSED(gint card_idx),
+				 UNUSED(DevelType type))
+{;
+}
+static void dummy_resource_change(UNUSED(Resource type), UNUSED(gint num))
+{;
+}
+static void dummy_draw_hex(UNUSED(Hex * hex))
+{;
+}
+static void dummy_update_stock(void)
+{;
+}
+static void dummy_robber(void)
+{;
+}
+static void dummy_robber_moved(UNUSED(Hex * old), UNUSED(Hex * new))
+{;
+}
+static void dummy_player_robbed(UNUSED(gint robber_num),
+				UNUSED(gint victim_num),
+				UNUSED(Resource resource))
+{;
+}
+static void dummy_get_rolled_resources(UNUSED(gint player_num),
+				       UNUSED(const gint * resources))
+{;
+}
+static void dummy_new_statistics(UNUSED(gint player_num),
+				 UNUSED(StatisticType type),
+				 UNUSED(gint num))
+{;
+}
+static void dummy_viewer_name(UNUSED(gint viewer_num),
+			      UNUSED(const gchar * name))
+{;
+}
+static void dummy_player_name(UNUSED(gint player_num),
+			      UNUSED(const gchar * name))
+{;
+}
+static void dummy_player_quit(UNUSED(gint player_num))
+{;
+}
+static void dummy_viewer_quit(UNUSED(gint player_num))
+{;
+}
+static void dummy_new_bank(UNUSED(const gint * new_bank))
+{;
+}
+static void dummy_error(UNUSED(gchar * message))
+{;
+}
 
 /*----------------------------------------------------------------------
  * Entry point for the client state machine
  */
-void client_init (void)
+void client_init(void)
 {
 	/* first set everything to 0, so we are sure it segfaults if
 	 * someone forgets to update this when adding a new callback */
-	memset (&callbacks, 0, sizeof (callbacks) );
+	memset(&callbacks, 0, sizeof(callbacks));
 	/* set all callbacks to their default value: doing nothing */
 	callbacks.init = &dummy_init;
 	callbacks.network_status = &dummy_network_status;
@@ -232,12 +379,12 @@ void client_init (void)
 	callbacks.new_bank = &dummy_new_bank;
 	callbacks.error = &dummy_error;
 	/* mainloop is not set here */
-	resource_init ();
+	resource_init();
 }
 
-void client_start (int argc, char **argv)
+void client_start(int argc, char **argv)
 {
-	callbacks.init (argc, argv);
+	callbacks.init(argc, argv);
 	sm_goto(SM(), mode_offline);
 }
 
@@ -260,14 +407,15 @@ void client_start (int argc, char **argv)
  * return TRUE, the event will not be passed to the current state
  * function.
  */
-static gboolean global_filter(StateMachine *sm, gint event)
+static gboolean global_filter(StateMachine * sm, gint event)
 {
 	switch (event) {
 	case SM_NET_CLOSE:
-		log_message( MSG_ERROR, _("We have been kicked out of the game.\n"));
+		log_message(MSG_ERROR,
+			    _("We have been kicked out of the game.\n"));
 		sm_pop_all(sm);
 		sm_goto(sm, mode_offline);
-		callbacks.network_status (_("Offline"));
+		callbacks.network_status(_("Offline"));
 		return TRUE;
 	default:
 		break;
@@ -278,40 +426,46 @@ static gboolean global_filter(StateMachine *sm, gint event)
 /* Global unhandled event handler - this get called for events that
  * fall through the state machine without being handled.
  */
-static gboolean global_unhandled(StateMachine *sm, gint event)
+static gboolean global_unhandled(StateMachine * sm, gint event)
 {
 	char str[512];
 
 	switch (event) {
 	case SM_NET_CLOSE:
-		g_error ("SM_NET_CLOSE not caught by global_filter.\n");
+		g_error("SM_NET_CLOSE not caught by global_filter.\n");
 	case SM_RECV:
 		/* all errors start with ERR */
-		if (sm_recv(sm, "ERR %S", str, sizeof (str))) {
-			log_message( MSG_ERROR, "Error (%s): %s\n", sm_current_name(sm), str);
-			callbacks.error (str);
+		if (sm_recv(sm, "ERR %S", str, sizeof(str))) {
+			log_message(MSG_ERROR, "Error (%s): %s\n",
+				    sm_current_name(sm), str);
+			callbacks.error(str);
 			return TRUE;
 		}
 		/* notices which are not errors should appear in the message
 		 * window */
-		if (sm_recv(sm, "NOTE %S", str, sizeof (str))) {
-			log_message( MSG_ERROR, "Notice: %s\n", str);
+		if (sm_recv(sm, "NOTE %S", str, sizeof(str))) {
+			log_message(MSG_ERROR, "Notice: %s\n", str);
 			return TRUE;
 		}
 		/* protocol extensions which may be ignored have this prefix
 		 * before the next protocol changing version of the game is
 		 * released.  Notify the client about it anyway. */
-		if (sm_recv(sm, "extension %S", str, sizeof (str) ) ) {
-			log_message( MSG_INFO, "Ignoring extension used by server: %s\n", str);
+		if (sm_recv(sm, "extension %S", str, sizeof(str))) {
+			log_message(MSG_INFO,
+				    "Ignoring extension used by server: %s\n",
+				    str);
 			return TRUE;
 		}
 		/* we're receiving strange things */
-		if (sm_recv(sm, "%S", str, sizeof (str))) {
-			log_message( MSG_ERROR, "Unknown message in %s: %s\n", sm_current_name(sm), str);
+		if (sm_recv(sm, "%S", str, sizeof(str))) {
+			log_message(MSG_ERROR,
+				    "Unknown message in %s: %s\n",
+				    sm_current_name(sm), str);
 			return TRUE;
 		}
 		/* this is never reached: everything matches "%S" */
-		g_error ("This should not be possible, please report this bug.\n");
+		g_error
+		    ("This should not be possible, please report this bug.\n");
 	default:
 		break;
 	}
@@ -323,16 +477,16 @@ static gboolean global_unhandled(StateMachine *sm, gint event)
 /*----------------------------------------------------------------------
  * Hooks for GUI events that can happen at almost any time
  */
-void copy_player_name(const gchar *name)
+void copy_player_name(const gchar * name)
 {
-	char *tmp = g_strdup (name);
+	char *tmp = g_strdup(name);
 	tmp = g_strstrip(tmp);
 	if (*tmp != '\0') {
 		if (saved_name != NULL)
 			g_free(saved_name);
 		saved_name = g_strdup(tmp);
 	}
-	g_free (tmp);
+	g_free(tmp);
 }
 
 /*----------------------------------------------------------------------
@@ -340,16 +494,17 @@ void copy_player_name(const gchar *name)
  * These can happen in any state (maybe this should be moved to
  * global_filter()?).
  */
-static gboolean check_chat_or_name(StateMachine *sm)
+static gboolean check_chat_or_name(StateMachine * sm)
 {
 	gint player_num;
 	char str[512];
 
-	if (sm_recv(sm, "player %d chat %S", &player_num, str, sizeof (str))) {
-		chat_parser( player_num, str );
+	if (sm_recv
+	    (sm, "player %d chat %S", &player_num, str, sizeof(str))) {
+		chat_parser(player_num, str);
 		return TRUE;
 	}
-	if (sm_recv(sm, "player %d is %S", &player_num, str, sizeof (str))) {
+	if (sm_recv(sm, "player %d is %S", &player_num, str, sizeof(str))) {
 		player_change_name(player_num, str);
 		return TRUE;
 	}
@@ -361,13 +516,14 @@ static gboolean check_chat_or_name(StateMachine *sm)
  * messages.  These can happen in almost any state in which the game
  * is running.
  */
-static gboolean check_other_players(StateMachine *sm)
+static gboolean check_other_players(StateMachine * sm)
 {
 	BuildType build_type;
 	DevelType devel_type;
 	Resource resource_type, supply_type, receive_type;
 	gint player_num, victim_num, card_idx;
-	gint turn_num, discard_num, gold_num, num, ratio, die1, die2, x, y, pos;
+	gint turn_num, discard_num, gold_num, num, ratio, die1, die2, x, y,
+	    pos;
 	gint id;
 	gint resource_list[NO_RESOURCE];
 	gint sx, sy, spos, dx, dy, dpos;
@@ -382,12 +538,18 @@ static gboolean check_other_players(StateMachine *sm)
 		player_build_add(player_num, build_type, x, y, pos, TRUE);
 		return TRUE;
 	}
-	if (sm_recv(sm, "move %d %d %d %d %d %d", &sx, &sy, &spos, &dx, &dy, &dpos)) {
-		player_build_move(player_num, sx, sy, spos, dx, dy, dpos, FALSE);
+	if (sm_recv
+	    (sm, "move %d %d %d %d %d %d", &sx, &sy, &spos, &dx, &dy,
+	     &dpos)) {
+		player_build_move(player_num, sx, sy, spos, dx, dy, dpos,
+				  FALSE);
 		return TRUE;
 	}
-	if (sm_recv(sm, "move-back %d %d %d %d %d %d", &sx, &sy, &spos, &dx, &dy, &dpos)) {
-		player_build_move(player_num, sx, sy, spos, dx, dy, dpos, TRUE);
+	if (sm_recv
+	    (sm, "move-back %d %d %d %d %d %d", &sx, &sy, &spos, &dx, &dy,
+	     &dpos)) {
+		player_build_move(player_num, sx, sy, spos, dx, dy, dpos,
+				  TRUE);
 		return TRUE;
 	}
 	if (sm_recv(sm, "remove %B %d %d %d", &build_type, &x, &y, &pos)) {
@@ -397,7 +559,7 @@ static gboolean check_other_players(StateMachine *sm)
 	if (sm_recv(sm, "receives %R", resource_list)) {
 		player_resource_action(player_num, _("%s receives %s.\n"),
 				       resource_list, 1);
-		callbacks.get_rolled_resources (player_num, resource_list);
+		callbacks.get_rolled_resources(player_num, resource_list);
 		return TRUE;
 	}
 	if (sm_recv(sm, "spent %R", resource_list)) {
@@ -406,7 +568,8 @@ static gboolean check_other_players(StateMachine *sm)
 		return TRUE;
 	}
 	if (sm_recv(sm, "refund %R", resource_list)) {
-		player_resource_action(player_num, _("%s is refunded %s.\n"),
+		player_resource_action(player_num,
+				       _("%s is refunded %s.\n"),
 				       resource_list, 1);
 		return TRUE;
 	}
@@ -428,20 +591,20 @@ static gboolean check_other_players(StateMachine *sm)
 	}
 	if (sm_recv(sm, "must-discard %d", &discard_num)) {
 		sm_push(sm, mode_discard);
-		if (player_num == my_player_num () )
+		if (player_num == my_player_num())
 			callback_mode = MODE_DISCARD;
-		callbacks.discard_add (player_num, discard_num);
+		callbacks.discard_add(player_num, discard_num);
 		return TRUE;
 	}
 	if (sm_recv(sm, "discarded %R", resource_list)) {
 		player_resource_action(player_num, _("%s discarded %s.\n"),
 				       resource_list, -1);
-		callbacks.discard_remove (player_num, resource_list);
+		callbacks.discard_remove(player_num, resource_list);
 		return TRUE;
 	}
 	if (sm_recv(sm, "prepare-gold %d", &gold_num)) {
 		sm_push(sm, mode_choose_gold);
-		callbacks.gold_add (player_num, gold_num);
+		callbacks.gold_add(player_num, gold_num);
 		return TRUE;
 	}
 	if (sm_recv(sm, "is-robber")) {
@@ -460,51 +623,55 @@ static gboolean check_other_players(StateMachine *sm)
 		player_stole_from(player_num, victim_num, resource_type);
 		return TRUE;
 	}
-	if (sm_recv(sm, "monopoly %d %r from %d", &num, &resource_type, &victim_num)) {
-		monopoly_player(player_num, victim_num, num, resource_type);
+	if (sm_recv
+	    (sm, "monopoly %d %r from %d", &num, &resource_type,
+	     &victim_num)) {
+		monopoly_player(player_num, victim_num, num,
+				resource_type);
 		return TRUE;
 	}
 	if (sm_recv(sm, "largest-army")) {
-                player_largest_army(player_num);
+		player_largest_army(player_num);
 		return TRUE;
 	}
 	if (sm_recv(sm, "longest-road")) {
-                player_longest_road(player_num);
+		player_longest_road(player_num);
 		return TRUE;
 	}
-	if (sm_recv(sm, "get-point %d %d %S", &id, &num, str, sizeof (str) ) ) {
-		player_get_point (player_num, id, str, num);
+	if (sm_recv(sm, "get-point %d %d %S", &id, &num, str, sizeof(str))) {
+		player_get_point(player_num, id, str, num);
 		return TRUE;
 	}
-	if (sm_recv(sm, "lose-point %d", &id) ) {
-		player_lose_point (player_num, id);
+	if (sm_recv(sm, "lose-point %d", &id)) {
+		player_lose_point(player_num, id);
 		return TRUE;
 	}
-	if (sm_recv(sm, "take-point %d %d", &id, &victim_num) ) {
-		player_take_point (player_num, id, victim_num);
+	if (sm_recv(sm, "take-point %d %d", &id, &victim_num)) {
+		player_take_point(player_num, id, victim_num);
 		return TRUE;
 	}
-        if (sm_recv(sm, "setup")) {
+	if (sm_recv(sm, "setup")) {
 		setup_begin(player_num);
-                return TRUE;
-        }
-        if (sm_recv(sm, "setup-double")) {
+		return TRUE;
+	}
+	if (sm_recv(sm, "setup-double")) {
 		setup_begin_double(player_num);
-                return TRUE;
-        }
+		return TRUE;
+	}
 	if (sm_recv(sm, "won with %d", &num)) {
-		callbacks.game_over (player_num, num);
+		callbacks.game_over(player_num, num);
 		sm_pop_all_and_goto(sm, mode_game_over);
 		return TRUE;
 	}
 	if (sm_recv(sm, "has quit")) {
-                player_has_quit(player_num);
+		player_has_quit(player_num);
 		return TRUE;
 	}
 
 	if (sm_recv(sm, "maritime-trade %d supply %r receive %r",
 		    &ratio, &supply_type, &receive_type)) {
-		player_maritime_trade(player_num, ratio, supply_type, receive_type);
+		player_maritime_trade(player_num, ratio, supply_type,
+				      receive_type);
 		return TRUE;
 	}
 
@@ -547,13 +714,13 @@ static gboolean check_other_players(StateMachine *sm)
  * Game startup and offline handling
  */
 
-static gboolean mode_offline(StateMachine *sm, gint event)
+static gboolean mode_offline(StateMachine * sm, gint event)
 {
 	sm_state_name(sm, "mode_offline");
 	switch (event) {
 	case SM_ENTER:
 		callback_mode = MODE_INIT;
-		callbacks.offline ();
+		callbacks.offline();
 		break;
 	default:
 		break;
@@ -563,7 +730,7 @@ static gboolean mode_offline(StateMachine *sm, gint event)
 
 /* Waiting for connect to complete
  */
-gboolean mode_connecting(StateMachine *sm, gint event)
+gboolean mode_connecting(StateMachine * sm, gint event)
 {
 	sm_state_name(sm, "mode_connecting");
 	switch (event) {
@@ -581,42 +748,36 @@ gboolean mode_connecting(StateMachine *sm, gint event)
 
 /* Handle initial signon message
  */
-gboolean mode_start(StateMachine *sm, gint event)
+gboolean mode_start(StateMachine * sm, gint event)
 {
 	gint player_num, total_num;
 	gchar version[512];
 
 	sm_state_name(sm, "mode_start");
 
-	if (event == SM_ENTER)
-	{
-		callbacks.network_status (_("Loading"));
+	if (event == SM_ENTER) {
+		callbacks.network_status(_("Loading"));
 		player_reset();
-		callbacks.init_game ();
+		callbacks.init_game();
 	}
 
 	if (event != SM_RECV)
 		return FALSE;
-	if (sm_recv(sm, "version report"))
-	{
+	if (sm_recv(sm, "version report")) {
 		sm_send(sm, "version %s\n", PROTOCOL_VERSION);
 		return TRUE;
 	}
-	if (sm_recv(sm, "status report"))
-	{
-		if (saved_name != NULL)
-		{
+	if (sm_recv(sm, "status report")) {
+		if (saved_name != NULL) {
 			sm_send(sm, "status reconnect %s\n", saved_name);
 			return TRUE;
-		}
-		else
-		{
+		} else {
 			sm_send(sm, "status newplayer\n");
 			return TRUE;
 		}
 	}
 	if (sm_recv(sm, "player %d of %d, welcome to gnocatan server %S",
-		    &player_num, &total_num, version, sizeof (version))) {
+		    &player_num, &total_num, version, sizeof(version))) {
 		player_set_my_num(player_num);
 		player_set_total_num(total_num);
 		sm_send(sm, "players\n");
@@ -624,13 +785,13 @@ gboolean mode_start(StateMachine *sm, gint event)
 
 		return TRUE;
 	}
-	if(sm_recv(sm, "ERR sorry, version conflict"))
-	{
+	if (sm_recv(sm, "ERR sorry, version conflict")) {
 		sm_pop_all(sm);
 		sm_goto(sm, mode_offline);
-		callbacks.network_status (_("Offline"));
+		callbacks.network_status(_("Offline"));
 		callbacks.instructions(_("Version mismatch"));
-		log_message( MSG_ERROR, "Connect Error: Version mismatch! Please make sure client and server are up to date.\n");
+		log_message(MSG_ERROR,
+			    "Connect Error: Version mismatch! Please make sure client and server are up to date.\n");
 		return TRUE;
 	}
 	return check_chat_or_name(sm);
@@ -638,7 +799,7 @@ gboolean mode_start(StateMachine *sm, gint event)
 
 /* Response to "players" command
  */
-static gboolean mode_players(StateMachine *sm, gint event)
+static gboolean mode_players(StateMachine * sm, gint event)
 {
 	sm_state_name(sm, "mode_players");
 	if (event != SM_RECV)
@@ -652,7 +813,7 @@ static gboolean mode_players(StateMachine *sm, gint event)
 
 /* Handle list of players
  */
-static gboolean mode_player_list(StateMachine *sm, gint event)
+static gboolean mode_player_list(StateMachine * sm, gint event)
 {
 	sm_state_name(sm, "mode_player_list");
 	if (event != SM_RECV)
@@ -667,7 +828,7 @@ static gboolean mode_player_list(StateMachine *sm, gint event)
 
 /* Response to "game" command
  */
-static gboolean mode_load_game(StateMachine *sm, gint event)
+static gboolean mode_load_game(StateMachine * sm, gint event)
 {
 	gchar str[512];
 
@@ -691,7 +852,7 @@ static gboolean mode_load_game(StateMachine *sm, gint event)
 	}
 	if (check_other_players(sm))
 		return TRUE;
-	if (sm_recv(sm, "%S", str, sizeof (str))) {
+	if (sm_recv(sm, "%S", str, sizeof(str))) {
 		params_load_line(game_params, str);
 		return TRUE;
 	}
@@ -700,22 +861,22 @@ static gboolean mode_load_game(StateMachine *sm, gint event)
 
 /* Response to "gameinfo" command
  */
-static gboolean mode_load_gameinfo(StateMachine *sm, gint event)
+static gboolean mode_load_gameinfo(StateMachine * sm, gint event)
 {
 	gchar str[512];
 	gint x, y, pos, owner;
-	static struct recovery_info_t rinfo
-         = { "", -1, -1, -1, FALSE,
-	     -1, -1, FALSE, FALSE, NULL, FALSE };
+	static struct recovery_info_t rinfo = { "", -1, -1, -1, FALSE,
+		-1, -1, FALSE, FALSE, NULL, FALSE
+	};
 	static gboolean disconnected = FALSE;
 	static gboolean have_bank = FALSE;
 	static gint devcardidx = -1;
 	static gint numdevcards = -1;
 	gint num_roads, num_bridges, num_ships, num_settlements,
-		num_cities, num_soldiers, road_len;
+	    num_cities, num_soldiers, road_len;
 	gint opnum, opnassets, opncards, opnsoldiers;
 	gboolean pchapel, puniv, pgov, plibr, pmarket, plongestroad,
-		plargestarmy;
+	    plargestarmy;
 	DevelType devcard;
 	gint devcardturnbought;
 	BuildType btype;
@@ -730,7 +891,7 @@ static gboolean mode_load_gameinfo(StateMachine *sm, gint event)
 		have_bank = FALSE;
 		for (idx = 0; idx < NO_RESOURCE; ++idx)
 			tmp_bank[idx] = game_params->resource_count;
-		set_bank (tmp_bank);
+		set_bank(tmp_bank);
 	}
 	if (event != SM_RECV)
 		return FALSE;
@@ -741,19 +902,16 @@ static gboolean mode_load_gameinfo(StateMachine *sm, gint event)
 		return TRUE;
 	}
 	if (sm_recv(sm, "end")) {
-		callbacks.start_game ();
-		if (disconnected)
-		{
+		callbacks.start_game();
+		if (disconnected) {
 			recover_from_disconnect(sm, &rinfo);
-		}
-		else
-		{
+		} else {
 			sm_send(sm, "start\n");
 			sm_goto(sm, mode_start_response);
 		}
 		return TRUE;
 	}
-	if (sm_recv(sm, "extension bank %R", tmp_bank) ) {
+	if (sm_recv(sm, "extension bank %R", tmp_bank)) {
 		set_bank(tmp_bank);
 		have_bank = TRUE;
 		return TRUE;
@@ -787,7 +945,7 @@ static gboolean mode_load_gameinfo(StateMachine *sm, gint event)
 		disconnected = TRUE;
 		return TRUE;
 	}
-	if (sm_recv(sm, "state %S", str, sizeof (str))) {
+	if (sm_recv(sm, "state %S", str, sizeof(str))) {
 		strcpy(rinfo.prevstate, str);
 		return TRUE;
 	}
@@ -798,72 +956,88 @@ static gboolean mode_load_gameinfo(StateMachine *sm, gint event)
 		 * compensated for my own resources, because it was already
 		 * correct.  So we compensate it back. */
 		if (have_bank)
-			modify_bank (resources);
+			modify_bank(resources);
 		return TRUE;
 	}
 	if (sm_recv(sm, "playerinfo: numdevcards: %d", &numdevcards)) {
 		devcardidx = 0;
 		return TRUE;
 	}
-	if (sm_recv(sm, "playerinfo: devcard: %d %d", &devcard, &devcardturnbought)) {
-		if (devcardidx >= numdevcards)
-		{
+	if (sm_recv
+	    (sm, "playerinfo: devcard: %d %d", &devcard,
+	     &devcardturnbought)) {
+		if (devcardidx >= numdevcards) {
 			return FALSE;
 		}
 
 		develop_bought_card_turn(devcard, devcardturnbought);
 
 		devcardidx++;
-		if (devcardidx >= numdevcards)
-		{
+		if (devcardidx >= numdevcards) {
 			devcardidx = numdevcards = -1;
 		}
 		return TRUE;
 	}
-	if (sm_recv(sm, "playerinfo: %d %d %d %d %d %d %d %d %d %d %d %d %d %d",
-	            &num_roads, &num_bridges, &num_ships,
-	            &num_settlements, &num_cities, &num_soldiers, &road_len,
-	            &pchapel, &puniv, &pgov, &plibr, &pmarket, &plongestroad, &plargestarmy)) {
-		player_modify_statistic(my_player_num(), STAT_SOLDIERS, num_soldiers);
+	if (sm_recv
+	    (sm, "playerinfo: %d %d %d %d %d %d %d %d %d %d %d %d %d %d",
+	     &num_roads, &num_bridges, &num_ships, &num_settlements,
+	     &num_cities, &num_soldiers, &road_len, &pchapel, &puniv,
+	     &pgov, &plibr, &pmarket, &plongestroad, &plargestarmy)) {
+		player_modify_statistic(my_player_num(), STAT_SOLDIERS,
+					num_soldiers);
 		if (pchapel) {
-			player_modify_statistic(my_player_num(), STAT_CHAPEL, 1);
+			player_modify_statistic(my_player_num(),
+						STAT_CHAPEL, 1);
 		}
 		if (puniv) {
-			player_modify_statistic(my_player_num(), STAT_UNIVERSITY_OF_CATAN, 1);
+			player_modify_statistic(my_player_num(),
+						STAT_UNIVERSITY_OF_CATAN,
+						1);
 		}
 		if (pgov) {
-			player_modify_statistic(my_player_num(), STAT_GOVERNORS_HOUSE, 1);
+			player_modify_statistic(my_player_num(),
+						STAT_GOVERNORS_HOUSE, 1);
 		}
 		if (plibr) {
-			player_modify_statistic(my_player_num(), STAT_LIBRARY, 1);
+			player_modify_statistic(my_player_num(),
+						STAT_LIBRARY, 1);
 		}
 		if (pmarket) {
-			player_modify_statistic(my_player_num(), STAT_MARKET, 1);
+			player_modify_statistic(my_player_num(),
+						STAT_MARKET, 1);
 		}
 		if (plongestroad) {
-			player_modify_statistic(my_player_num(), STAT_LONGEST_ROAD, 1);
+			player_modify_statistic(my_player_num(),
+						STAT_LONGEST_ROAD, 1);
 		}
 		if (plargestarmy) {
-			player_modify_statistic(my_player_num(), STAT_LARGEST_ARMY, 1);
+			player_modify_statistic(my_player_num(),
+						STAT_LARGEST_ARMY, 1);
 		}
 		return TRUE;
 	}
-	if (sm_recv(sm, "otherplayerinfo: %d %d %d %d %d %d %d %d %d %d %d",
-	    &opnum, &opnassets, &opncards, &opnsoldiers, &pchapel,
-	    &puniv, &pgov, &plibr, &pmarket, &plongestroad, &plargestarmy)) {
+	if (sm_recv
+	    (sm, "otherplayerinfo: %d %d %d %d %d %d %d %d %d %d %d",
+	     &opnum, &opnassets, &opncards, &opnsoldiers, &pchapel, &puniv,
+	     &pgov, &plibr, &pmarket, &plongestroad, &plargestarmy)) {
 		player_modify_statistic(opnum, STAT_RESOURCES, opnassets);
 		player_modify_statistic(opnum, STAT_DEVELOPMENT, opncards);
 		player_modify_statistic(opnum, STAT_SOLDIERS, opnsoldiers);
 		if (!have_bank && opnassets != 0)
-			log_message (MSG_ERROR, _("Cannot determine bank, expect out of resource errors\n"));
+			log_message(MSG_ERROR,
+				    _
+				    ("Cannot determine bank, expect out of resource errors\n"));
 		if (pchapel) {
 			player_modify_statistic(opnum, STAT_CHAPEL, 1);
 		}
 		if (puniv) {
-			player_modify_statistic(opnum, STAT_UNIVERSITY_OF_CATAN, 1);
+			player_modify_statistic(opnum,
+						STAT_UNIVERSITY_OF_CATAN,
+						1);
 		}
 		if (pgov) {
-			player_modify_statistic(opnum, STAT_GOVERNORS_HOUSE, 1);
+			player_modify_statistic(opnum,
+						STAT_GOVERNORS_HOUSE, 1);
 		}
 		if (plibr) {
 			player_modify_statistic(opnum, STAT_LIBRARY, 1);
@@ -872,15 +1046,19 @@ static gboolean mode_load_gameinfo(StateMachine *sm, gint event)
 			player_modify_statistic(opnum, STAT_MARKET, 1);
 		}
 		if (plongestroad) {
-			player_modify_statistic(opnum, STAT_LONGEST_ROAD, 1);
+			player_modify_statistic(opnum, STAT_LONGEST_ROAD,
+						1);
 		}
 		if (plargestarmy) {
-			player_modify_statistic(opnum, STAT_LARGEST_ARMY, 1);
+			player_modify_statistic(opnum, STAT_LARGEST_ARMY,
+						1);
 		}
 		return TRUE;
 	}
-	if (sm_recv(sm, "buildinfo: %B %d %d %d %d",
-	            &btype, &prevbtype, &x, &y, &pos)) { /** @todo RC 2004-03-28 Protocol needs change for 0.9: prevbtype should not be sent */
+	if (sm_recv
+	    (sm, "buildinfo: %B %d %d %d %d", &btype, &prevbtype, &x, &y,
+	     &pos)) {
+							 /** @todo RC 2004-03-28 Protocol needs change for 0.9: prevbtype should not be sent */
 		BuildRec *rec;
 		rec = g_malloc0(sizeof(*rec));
 		rec->type = btype;
@@ -900,7 +1078,7 @@ static gboolean mode_load_gameinfo(StateMachine *sm, gint event)
 	}
 	if (sm_recv(sm, "S%d,%d,%d,%d", &x, &y, &pos, &owner)) {
 		player_build_add(owner, BUILD_SETTLEMENT, x, y, pos,
-		                 FALSE);
+				 FALSE);
 		return TRUE;
 	}
 	if (sm_recv(sm, "C%d,%d,%d,%d", &x, &y, &pos, &owner)) {
@@ -924,14 +1102,14 @@ static gboolean mode_load_gameinfo(StateMachine *sm, gint event)
 
 /* Response to the "start" command
  */
-static gboolean mode_start_response(StateMachine *sm, gint event)
+static gboolean mode_start_response(StateMachine * sm, gint event)
 {
 	sm_state_name(sm, "mode_start_response");
 	if (event != SM_RECV)
 		return FALSE;
 	if (sm_recv(sm, "OK")) {
 		sm_goto(sm, mode_idle);
-		callbacks.network_status (_("Idle"));
+		callbacks.network_status(_("Idle"));
 		return TRUE;
 	}
 	return check_other_players(sm);
@@ -943,7 +1121,7 @@ static gboolean mode_start_response(StateMachine *sm, gint event)
 
 /* Handle response to build command
  */
-gboolean mode_build_response(StateMachine *sm, gint event)
+gboolean mode_build_response(StateMachine * sm, gint event)
 {
 	BuildType build_type;
 	gint x, y, pos;
@@ -972,7 +1150,7 @@ gboolean mode_build_response(StateMachine *sm, gint event)
 
 /* Handle response to move ship command
  */
-gboolean mode_move_response(StateMachine *sm, gint event)
+gboolean mode_move_response(StateMachine * sm, gint event)
 {
 	gint sx, sy, spos, dx, dy, dpos;
 
@@ -984,7 +1162,7 @@ gboolean mode_move_response(StateMachine *sm, gint event)
 	case SM_RECV:
 		if (sm_recv(sm, "move %d %d %d %d %d %d",
 			    &sx, &sy, &spos, &dx, &dy, &dpos)) {
-		build_move(sx, sy, spos, dx, dy, dpos, FALSE);
+			build_move(sx, sy, spos, dx, dy, dpos, FALSE);
 			waiting_for_network(FALSE);
 			sm_pop(sm);
 			return TRUE;
@@ -1004,7 +1182,7 @@ gboolean mode_move_response(StateMachine *sm, gint event)
 
 /* Response to a "done"
  */
-gboolean mode_done_response(StateMachine *sm, gint event)
+gboolean mode_done_response(StateMachine * sm, gint event)
 {
 	sm_state_name(sm, "mode_done_response");
 	switch (event) {
@@ -1038,7 +1216,8 @@ static char *setup_msg(void)
 	int idx;
 
 	if (is_setup_double())
-		strcpy(msg, _("Build two settlements, each with a connecting"));
+		strcpy(msg,
+		       _("Build two settlements, each with a connecting"));
 	else
 		strcpy(msg, _("Build a settlement with a connecting"));
 	num_parts = 0;
@@ -1054,7 +1233,7 @@ static char *setup_msg(void)
 		if (idx > 0) {
 			*msg_end++ = ',';
 			if (idx == num_parts - 1) {
-				strcpy(msg_end, _(" or") );
+				strcpy(msg_end, _(" or"));
 				msg_end += 3;
 			}
 		}
@@ -1067,17 +1246,17 @@ static char *setup_msg(void)
 	return msg;
 }
 
-static gboolean mode_setup(StateMachine *sm, gint event)
+static gboolean mode_setup(StateMachine * sm, gint event)
 {
 	unsigned total;
 	sm_state_name(sm, "mode_setup");
 	switch (event) {
 	case SM_ENTER:
 		callback_mode = MODE_SETUP;
-		callbacks.instructions (setup_msg () );
-		total = is_setup_double () ? 2 : 1;
-		callbacks.setup (total - build_count_settlements (),
-				total - build_count_edges () );
+		callbacks.instructions(setup_msg());
+		total = is_setup_double()? 2 : 1;
+		callbacks.setup(total - build_count_settlements(),
+				total - build_count_edges());
 		break;
 	case SM_RECV:
 		/* When a line of text comes in from the network, the
@@ -1098,7 +1277,7 @@ static gboolean mode_setup(StateMachine *sm, gint event)
 
 /* Waiting for your turn to come around
  */
-static gboolean mode_idle(StateMachine *sm, gint event)
+static gboolean mode_idle(StateMachine * sm, gint event)
 {
 	gint num, player_num, x, y;
 	gint they_supply[NO_RESOURCE];
@@ -1108,7 +1287,7 @@ static gboolean mode_idle(StateMachine *sm, gint event)
 	switch (event) {
 	case SM_ENTER:
 		callback_mode = MODE_WAIT_TURN;
-		callbacks.instructions (_("Waiting for your turn"));
+		callbacks.instructions(_("Waiting for your turn"));
 		break;
 	case SM_RECV:
 		if (sm_recv(sm, "setup")) {
@@ -1136,10 +1315,13 @@ static gboolean mode_idle(StateMachine *sm, gint event)
 			pirate_moved(player_num, x, y);
 			return TRUE;
 		}
-		if (sm_recv(sm, "player %d domestic-trade call supply %R receive %R",
-			    &player_num, they_supply, they_receive)) {
+		if (sm_recv
+		    (sm,
+		     "player %d domestic-trade call supply %R receive %R",
+		     &player_num, they_supply, they_receive)) {
 			sm_push(sm, mode_domestic_quote);
-			callbacks.quote (player_num, they_supply, they_receive);
+			callbacks.quote(player_num, they_supply,
+					they_receive);
 			return TRUE;
 		}
 		if (check_other_players(sm))
@@ -1157,7 +1339,7 @@ static gboolean mode_idle(StateMachine *sm, gint event)
 
 /* Handle response to move robber
  */
-gboolean mode_robber_response(StateMachine *sm, gint event)
+gboolean mode_robber_response(StateMachine * sm, gint event)
 {
 	gint x, y;
 
@@ -1193,7 +1375,7 @@ gboolean mode_robber_response(StateMachine *sm, gint event)
 
 /* Get user to place robber
  */
-static gboolean mode_robber(StateMachine *sm, gint event)
+static gboolean mode_robber(StateMachine * sm, gint event)
 {
 	sm_state_name(sm, "mode_robber");
 	switch (event) {
@@ -1201,7 +1383,7 @@ static gboolean mode_robber(StateMachine *sm, gint event)
 		callback_mode = MODE_ROBBER;
 		callbacks.instructions(_("Place the robber"));
 		robber_begin_move(my_player_num());
-		callbacks.robber ();
+		callbacks.robber();
 		break;
 	case SM_RECV:
 		if (check_other_players(sm))
@@ -1219,7 +1401,7 @@ static gboolean mode_robber(StateMachine *sm, gint event)
  * GUI control in the window between receiving the die roll result and
  * the command to enter robber mode.
  */
-static gboolean mode_wait_for_robber(StateMachine *sm, gint event)
+static gboolean mode_wait_for_robber(StateMachine * sm, gint event)
 {
 	sm_state_name(sm, "mode_wait_for_robber");
 	switch (event) {
@@ -1244,9 +1426,9 @@ static gboolean mode_wait_for_robber(StateMachine *sm, gint event)
  * Road building
  */
 
-static gboolean mode_road_building(StateMachine *sm, gint event)
+static gboolean mode_road_building(StateMachine * sm, gint event)
 {
-	gint build_amount; /* The amount of available 'roads' */
+	gint build_amount;	/* The amount of available 'roads' */
 	sm_state_name(sm, "mode_road_building");
 	switch (event) {
 	case SM_ENTER:
@@ -1261,12 +1443,24 @@ static gboolean mode_road_building(StateMachine *sm, gint event)
 			build_amount += stock_num_bridges();
 		/* Now determine the amount of segments left to play */
 		build_amount = MIN(build_amount, 2 - build_count_edges());
-		callbacks.roadbuilding (build_amount);
+		callbacks.roadbuilding(build_amount);
 		switch (build_amount) {
-			case 0: callbacks.instructions(_("Finish the road building action.")); break;
-			case 1: callbacks.instructions(_("Build one road segment.")); break;
-			case 2: callbacks.instructions(_("Build two road segments.")); break;
-			default: g_error("Unknown road building amount"); break;
+		case 0:
+			callbacks.
+			    instructions(_
+					 ("Finish the road building action."));
+			break;
+		case 1:
+			callbacks.
+			    instructions(_("Build one road segment."));
+			break;
+		case 2:
+			callbacks.
+			    instructions(_("Build two road segments."));
+			break;
+		default:
+			g_error("Unknown road building amount");
+			break;
 		};
 		break;
 	case SM_RECV:
@@ -1285,7 +1479,7 @@ static gboolean mode_road_building(StateMachine *sm, gint event)
 
 /* Response to "monopoly"
  */
-gboolean mode_monopoly_response(StateMachine *sm, gint event)
+gboolean mode_monopoly_response(StateMachine * sm, gint event)
 {
 	sm_state_name(sm, "mode_monopoly_response");
 	switch (event) {
@@ -1309,13 +1503,13 @@ gboolean mode_monopoly_response(StateMachine *sm, gint event)
 	return FALSE;
 }
 
-static gboolean mode_monopoly(StateMachine *sm, gint event)
+static gboolean mode_monopoly(StateMachine * sm, gint event)
 {
 	sm_state_name(sm, "mode_monopoly");
 	switch (event) {
 	case SM_ENTER:
 		callback_mode = MODE_MONOPOLY;
-		callbacks.monopoly ();
+		callbacks.monopoly();
 		break;
 	case SM_RECV:
 		if (check_other_players(sm))
@@ -1333,7 +1527,7 @@ static gboolean mode_monopoly(StateMachine *sm, gint event)
 
 /* Response to "plenty"
  */
-gboolean mode_year_of_plenty_response(StateMachine *sm, gint event)
+gboolean mode_year_of_plenty_response(StateMachine * sm, gint event)
 {
 	sm_state_name(sm, "mode_year_of_plenty_response");
 	switch (event) {
@@ -1357,16 +1551,16 @@ gboolean mode_year_of_plenty_response(StateMachine *sm, gint event)
 	return FALSE;
 }
 
-static gboolean mode_year_of_plenty(StateMachine *sm, gint event)
+static gboolean mode_year_of_plenty(StateMachine * sm, gint event)
 {
-        gint plenty[NO_RESOURCE];
+	gint plenty[NO_RESOURCE];
 
 	sm_state_name(sm, "mode_year_of_plenty");
 	switch (event) {
 	case SM_RECV:
 		if (sm_recv(sm, "plenty %R", plenty)) {
 			callback_mode = MODE_PLENTY;
-			callbacks.plenty (plenty);
+			callbacks.plenty(plenty);
 			return TRUE;
 		}
 		if (check_other_players(sm))
@@ -1384,7 +1578,7 @@ static gboolean mode_year_of_plenty(StateMachine *sm, gint event)
 
 /* Handle response to play develop card
  */
-gboolean mode_play_develop_response(StateMachine *sm, gint event)
+gboolean mode_play_develop_response(StateMachine * sm, gint event)
 {
 	gint card_idx;
 	DevelType card_type;
@@ -1395,10 +1589,12 @@ gboolean mode_play_develop_response(StateMachine *sm, gint event)
 		waiting_for_network(TRUE);
 		break;
 	case SM_RECV:
-		if (sm_recv(sm, "play-develop %d %D", &card_idx, &card_type)) {
+		if (sm_recv
+		    (sm, "play-develop %d %D", &card_idx, &card_type)) {
 			build_clear();
 			waiting_for_network(FALSE);
-			develop_played(my_player_num(), card_idx, card_type);
+			develop_played(my_player_num(), card_idx,
+				       card_type);
 			switch (card_type) {
 			case DEVEL_ROAD_BUILDING:
 				sm_goto(sm, mode_road_building);
@@ -1437,7 +1633,7 @@ gboolean mode_play_develop_response(StateMachine *sm, gint event)
  * not have to discard.  The list tells us which players have still
  * not discarded resources.
  */
-static gboolean mode_discard(StateMachine *sm, gint event)
+static gboolean mode_discard(StateMachine * sm, gint event)
 {
 	gint player_num, discard_num;
 
@@ -1445,24 +1641,24 @@ static gboolean mode_discard(StateMachine *sm, gint event)
 	switch (event) {
 	case SM_ENTER:
 		if (callback_mode != MODE_DISCARD
-				&& callback_mode != MODE_DISCARD_WAIT) {
+		    && callback_mode != MODE_DISCARD_WAIT) {
 			previous_mode = callback_mode;
 			callback_mode = MODE_DISCARD_WAIT;
 		}
-		callbacks.discard ();
+		callbacks.discard();
 		break;
 	case SM_RECV:
 		if (sm_recv(sm, "player %d must-discard %d",
-					&player_num, &discard_num)) {
-			if (player_num == my_player_num () )
+			    &player_num, &discard_num)) {
+			if (player_num == my_player_num())
 				callback_mode = MODE_DISCARD;
-			callbacks.discard_add (player_num, discard_num);
+			callbacks.discard_add(player_num, discard_num);
 			return TRUE;
 		}
-		if (sm_recv(sm, "discard-done") ) {
+		if (sm_recv(sm, "discard-done")) {
 			callback_mode = previous_mode;
-			callbacks.discard_done ();
-			sm_pop (sm);
+			callbacks.discard_done();
+			sm_pop(sm);
 			return TRUE;
 		}
 		if (check_other_players(sm))
@@ -1480,7 +1676,7 @@ static gboolean mode_discard(StateMachine *sm, gint event)
 
 /* Handle response to "roll dice"
  */
-gboolean mode_roll_response(StateMachine *sm, gint event)
+gboolean mode_roll_response(StateMachine * sm, gint event)
 {
 	gint die1, die2;
 
@@ -1494,7 +1690,7 @@ gboolean mode_roll_response(StateMachine *sm, gint event)
 			turn_rolled_dice(my_player_num(), die1, die2);
 			waiting_for_network(FALSE);
 			if (die1 + die2 == 7) {
-				sm_goto_noenter (sm, mode_turn_rolled);
+				sm_goto_noenter(sm, mode_turn_rolled);
 				sm_push(sm, mode_wait_for_robber);
 			} else
 				sm_goto(sm, mode_turn_rolled);
@@ -1509,14 +1705,14 @@ gboolean mode_roll_response(StateMachine *sm, gint event)
 	return FALSE;
 }
 
-static gboolean mode_turn(StateMachine *sm, gint event)
+static gboolean mode_turn(StateMachine * sm, gint event)
 {
 	sm_state_name(sm, "mode_turn");
 	switch (event) {
 	case SM_ENTER:
 		callback_mode = MODE_TURN;
 		callbacks.instructions(_("It is your turn."));
-		callbacks.turn ();
+		callbacks.turn();
 		break;
 	case SM_RECV:
 		if (check_other_players(sm))
@@ -1534,7 +1730,7 @@ static gboolean mode_turn(StateMachine *sm, gint event)
 
 /* Handle response to buy development card
  */
-gboolean mode_buy_develop_response(StateMachine *sm, gint event)
+gboolean mode_buy_develop_response(StateMachine * sm, gint event)
 {
 	DevelType card_type;
 
@@ -1561,7 +1757,7 @@ gboolean mode_buy_develop_response(StateMachine *sm, gint event)
 
 /* Response to "undo"
  */
-gboolean mode_undo_response(StateMachine *sm, gint event)
+gboolean mode_undo_response(StateMachine * sm, gint event)
 {
 	BuildType build_type;
 	gint x, y, pos;
@@ -1574,36 +1770,36 @@ gboolean mode_undo_response(StateMachine *sm, gint event)
 		break;
 	case SM_RECV:
 		if (sm_recv(sm, "remove %B %d %d %d",
-					&build_type, &x, &y, &pos)) {
+			    &build_type, &x, &y, &pos)) {
 			build_remove(build_type, x, y, pos);
 			waiting_for_network(FALSE);
-			sm_pop (sm);
+			sm_pop(sm);
 			return TRUE;
 		}
 		if (sm_recv(sm, "move-back %d %d %d %d %d %d",
-					&sx, &sy, &spos, &dx, &dy, &dpos)) {
+			    &sx, &sy, &spos, &dx, &dy, &dpos)) {
 			build_move(sx, sy, spos, dx, dy, dpos, TRUE);
 			waiting_for_network(FALSE);
-			sm_pop (sm);
+			sm_pop(sm);
 			return TRUE;
 		}
 		if (check_other_players(sm))
 			return TRUE;
 		waiting_for_network(FALSE);
-		sm_pop (sm);
+		sm_pop(sm);
 		break;
 	}
 	return FALSE;
 }
 
-static gboolean mode_turn_rolled(StateMachine *sm, gint event)
+static gboolean mode_turn_rolled(StateMachine * sm, gint event)
 {
 	sm_state_name(sm, "mode_turn_rolled");
 	switch (event) {
 	case SM_ENTER:
 		callback_mode = MODE_TURN;
 		callbacks.instructions(_("It is your turn."));
-		callbacks.turn ();
+		callbacks.turn();
 		break;
 	case SM_RECV:
 		if (check_other_players(sm))
@@ -1620,7 +1816,7 @@ static gboolean mode_turn_rolled(StateMachine *sm, gint event)
  * to allow trading to be invoked from multiple states.
  */
 
-static gboolean check_trading(StateMachine *sm)
+static gboolean check_trading(StateMachine * sm)
 {
 	gint player_num, quote_num;
 	gint they_supply[NO_RESOURCE];
@@ -1635,12 +1831,12 @@ static gboolean check_trading(StateMachine *sm)
 	}
 	if (sm_recv(sm, "domestic-quote quote %d supply %R receive %R",
 		    &quote_num, they_supply, they_receive)) {
-		callbacks.trade_add_quote (player_num, quote_num,
-					they_supply, they_receive);
+		callbacks.trade_add_quote(player_num, quote_num,
+					  they_supply, they_receive);
 		return TRUE;
 	}
 	if (sm_recv(sm, "domestic-quote delete %d", &quote_num)) {
-		callbacks.trade_remove_quote (player_num, quote_num);
+		callbacks.trade_remove_quote(player_num, quote_num);
 		return TRUE;
 	}
 
@@ -1650,7 +1846,7 @@ static gboolean check_trading(StateMachine *sm)
 
 /* Handle response to call for domestic trade quotes
  */
-gboolean mode_trade_call_response(StateMachine *sm, gint event)
+gboolean mode_trade_call_response(StateMachine * sm, gint event)
 {
 	gint we_supply[NO_RESOURCE];
 	gint we_receive[NO_RESOURCE];
@@ -1670,7 +1866,7 @@ gboolean mode_trade_call_response(StateMachine *sm, gint event)
 		if (check_trading(sm) || check_other_players(sm))
 			return TRUE;
 		waiting_for_network(FALSE);
-		sm_pop (sm);
+		sm_pop(sm);
 		break;
 	}
 	return FALSE;
@@ -1678,14 +1874,14 @@ gboolean mode_trade_call_response(StateMachine *sm, gint event)
 
 /* Handle response to maritime trade
  */
-gboolean mode_trade_maritime_response(StateMachine *sm, gint event)
+gboolean mode_trade_maritime_response(StateMachine * sm, gint event)
 {
 	gint ratio;
 	Resource we_supply;
 	Resource we_receive;
 
 	Resource no_receive;
-          
+
 	sm_state_name(sm, "mode_trade_maritime_response");
 	switch (event) {
 	case SM_ENTER:
@@ -1694,21 +1890,24 @@ gboolean mode_trade_maritime_response(StateMachine *sm, gint event)
 	case SM_RECV:
 		/* Handle out-of-resource-cards */
 		if (sm_recv(sm, "ERR no-cards %r", &no_receive)) {
-                    	gchar buf_receive[128];
-                     
-                     	resource_cards(0, no_receive, buf_receive, sizeof(buf_receive));
-                    	log_message( MSG_TRADE, _("Sorry, %s available.\n"), buf_receive);
-                              waiting_for_network(FALSE);
-                              sm_pop(sm);
-                              return TRUE;
-                    }                                                            
-		if (sm_recv(sm, "maritime-trade %d supply %r receive %r",
-			    &ratio, &we_supply, &we_receive)) {
-			player_maritime_trade (my_player_num (), ratio,
-					we_supply, we_receive);
+			gchar buf_receive[128];
+
+			resource_cards(0, no_receive, buf_receive,
+				       sizeof(buf_receive));
+			log_message(MSG_TRADE, _("Sorry, %s available.\n"),
+				    buf_receive);
 			waiting_for_network(FALSE);
 			sm_pop(sm);
-			callbacks.trade_maritime (ratio, we_supply, we_receive);
+			return TRUE;
+		}
+		if (sm_recv(sm, "maritime-trade %d supply %r receive %r",
+			    &ratio, &we_supply, &we_receive)) {
+			player_maritime_trade(my_player_num(), ratio,
+					      we_supply, we_receive);
+			waiting_for_network(FALSE);
+			sm_pop(sm);
+			callbacks.trade_maritime(ratio, we_supply,
+						 we_receive);
 			return TRUE;
 		}
 		if (check_trading(sm) || check_other_players(sm))
@@ -1722,7 +1921,7 @@ gboolean mode_trade_maritime_response(StateMachine *sm, gint event)
 
 /* Handle response to call for quotes during domestic trade
  */
-gboolean mode_trade_call_again_response(StateMachine *sm, gint event)
+gboolean mode_trade_call_again_response(StateMachine * sm, gint event)
 {
 	gint we_supply[NO_RESOURCE];
 	gint we_receive[NO_RESOURCE];
@@ -1736,13 +1935,13 @@ gboolean mode_trade_call_again_response(StateMachine *sm, gint event)
 		if (sm_recv(sm, "domestic-trade call supply %R receive %R",
 			    we_supply, we_receive)) {
 			waiting_for_network(FALSE);
-			sm_pop (sm);
+			sm_pop(sm);
 			return TRUE;
 		}
 		if (check_trading(sm) || check_other_players(sm))
 			return TRUE;
 		waiting_for_network(FALSE);
-		sm_pop (sm);
+		sm_pop(sm);
 		break;
 	}
 	return FALSE;
@@ -1750,7 +1949,7 @@ gboolean mode_trade_call_again_response(StateMachine *sm, gint event)
 
 /* Handle response to domestic trade
  */
-gboolean mode_trade_domestic_response(StateMachine *sm, gint event)
+gboolean mode_trade_domestic_response(StateMachine * sm, gint event)
 {
 	gint partner_num;
 	gint quote_num;
@@ -1763,14 +1962,17 @@ gboolean mode_trade_domestic_response(StateMachine *sm, gint event)
 		waiting_for_network(TRUE);
 		break;
 	case SM_RECV:
-		if (sm_recv(sm, "domestic-trade accept player %d quote %d supply %R receive %R",
-			    &partner_num, &quote_num, &they_supply,
-			    &they_receive)) {
-			player_domestic_trade (my_player_num (), partner_num,
-					they_supply, they_receive);
+		if (sm_recv
+		    (sm,
+		     "domestic-trade accept player %d quote %d supply %R receive %R",
+		     &partner_num, &quote_num, &they_supply,
+		     &they_receive)) {
+			player_domestic_trade(my_player_num(), partner_num,
+					      they_supply, they_receive);
 			waiting_for_network(FALSE);
-			callbacks.trade_domestic (partner_num, quote_num,
-					they_receive, they_supply);
+			callbacks.trade_domestic(partner_num, quote_num,
+						 they_receive,
+						 they_supply);
 			sm_pop(sm);
 			return TRUE;
 		}
@@ -1785,7 +1987,7 @@ gboolean mode_trade_domestic_response(StateMachine *sm, gint event)
 
 /* Handle response to domestic trade finish
  */
-gboolean mode_domestic_finish_response(StateMachine *sm, gint event)
+gboolean mode_domestic_finish_response(StateMachine * sm, gint event)
 {
 	sm_state_name(sm, "mode_domestic_finish_response");
 	switch (event) {
@@ -1810,7 +2012,7 @@ gboolean mode_domestic_finish_response(StateMachine *sm, gint event)
 	return FALSE;
 }
 
-static gboolean mode_domestic_trade(StateMachine *sm, gint event)
+static gboolean mode_domestic_trade(StateMachine * sm, gint event)
 {
 	sm_state_name(sm, "mode_domestic_trade");
 	switch (event) {
@@ -1818,7 +2020,7 @@ static gboolean mode_domestic_trade(StateMachine *sm, gint event)
 		if (callback_mode != MODE_DOMESTIC) {
 			callback_mode = MODE_DOMESTIC;
 		}
-		callbacks.trade ();
+		callbacks.trade();
 		break;
 	case SM_RECV:
 		if (check_trading(sm) || check_other_players(sm))
@@ -1834,7 +2036,7 @@ static gboolean mode_domestic_trade(StateMachine *sm, gint event)
  * Quote processing - all quoting done inside a nested state machine.
  */
 
-static gboolean check_quoting(StateMachine *sm)
+static gboolean check_quoting(StateMachine * sm)
 {
 	gint player_num, partner_num, quote_num;
 	gint they_supply[NO_RESOURCE];
@@ -1844,35 +2046,37 @@ static gboolean check_quoting(StateMachine *sm)
 		return FALSE;
 
 	if (sm_recv(sm, "domestic-quote finish")) {
-		callbacks.quote_player_end (player_num);
+		callbacks.quote_player_end(player_num);
 		return TRUE;
 	}
 	if (sm_recv(sm, "domestic-quote quote %d supply %R receive %R",
 		    &quote_num, they_supply, they_receive)) {
-		callbacks.quote_add (player_num, quote_num, they_supply,
-				they_receive);
+		callbacks.quote_add(player_num, quote_num, they_supply,
+				    they_receive);
 		return TRUE;
 	}
 	if (sm_recv(sm, "domestic-quote delete %d", &quote_num)) {
-		callbacks.quote_remove (player_num, quote_num);
+		callbacks.quote_remove(player_num, quote_num);
 		return TRUE;
 	}
 	if (sm_recv(sm, "domestic-trade call supply %R receive %R",
-				they_supply, they_receive)) {
-		callbacks.quote (player_num, they_supply, they_receive);
+		    they_supply, they_receive)) {
+		callbacks.quote(player_num, they_supply, they_receive);
 		return TRUE;
 	}
-	if (sm_recv(sm, "domestic-trade accept player %d quote %d supply %R receive %R",
-		    &partner_num, &quote_num, they_supply, they_receive)) {
-		player_domestic_trade (player_num, partner_num, they_supply,
-				they_receive);
-		callbacks.quote_trade (player_num, partner_num, quote_num,
-				they_supply, they_receive);
+	if (sm_recv
+	    (sm,
+	     "domestic-trade accept player %d quote %d supply %R receive %R",
+	     &partner_num, &quote_num, they_supply, they_receive)) {
+		player_domestic_trade(player_num, partner_num, they_supply,
+				      they_receive);
+		callbacks.quote_trade(player_num, partner_num, quote_num,
+				      they_supply, they_receive);
 		return TRUE;
 	}
 	if (sm_recv(sm, "domestic-trade finish")) {
 		callback_mode = previous_mode;
-		callbacks.quote_end ();
+		callbacks.quote_end();
 		sm_send(sm, "domestic-quote exit\n");
 		sm_pop(sm);
 		return TRUE;
@@ -1884,7 +2088,7 @@ static gboolean check_quoting(StateMachine *sm)
 
 /* Handle response to domestic quote finish
  */
-gboolean mode_quote_finish_response(StateMachine *sm, gint event)
+gboolean mode_quote_finish_response(StateMachine * sm, gint event)
 {
 	sm_state_name(sm, "mode_quote_finish_response");
 	switch (event) {
@@ -1901,7 +2105,7 @@ gboolean mode_quote_finish_response(StateMachine *sm, gint event)
 			return TRUE;
 		waiting_for_network(FALSE);
 		sm_goto(sm, mode_domestic_quote);
-		callbacks.quote_monitor ();
+		callbacks.quote_monitor();
 		break;
 	}
 	return FALSE;
@@ -1909,7 +2113,7 @@ gboolean mode_quote_finish_response(StateMachine *sm, gint event)
 
 /* Handle response to domestic quote submit
  */
-gboolean mode_quote_submit_response(StateMachine *sm, gint event)
+gboolean mode_quote_submit_response(StateMachine * sm, gint event)
 {
 	gint quote_num;
 	gint we_supply[NO_RESOURCE];
@@ -1921,10 +2125,11 @@ gboolean mode_quote_submit_response(StateMachine *sm, gint event)
 		waiting_for_network(TRUE);
 		break;
 	case SM_RECV:
-		if (sm_recv(sm, "domestic-quote quote %d supply %R receive %R",
-			    &quote_num, we_supply, we_receive)) {
-			callbacks.quote_add (my_player_num(), quote_num,
-					we_supply, we_receive);
+		if (sm_recv
+		    (sm, "domestic-quote quote %d supply %R receive %R",
+		     &quote_num, we_supply, we_receive)) {
+			callbacks.quote_add(my_player_num(), quote_num,
+					    we_supply, we_receive);
 			waiting_for_network(FALSE);
 			sm_pop(sm);
 			return TRUE;
@@ -1940,7 +2145,7 @@ gboolean mode_quote_submit_response(StateMachine *sm, gint event)
 
 /* Handle response to domestic quote delete
  */
-gboolean mode_quote_delete_response(StateMachine *sm, gint event)
+gboolean mode_quote_delete_response(StateMachine * sm, gint event)
 {
 	gint quote_num;
 
@@ -1951,7 +2156,7 @@ gboolean mode_quote_delete_response(StateMachine *sm, gint event)
 		break;
 	case SM_RECV:
 		if (sm_recv(sm, "domestic-quote delete %d", &quote_num)) {
-			callbacks.quote_remove (my_player_num(), quote_num);
+			callbacks.quote_remove(my_player_num(), quote_num);
 			waiting_for_network(FALSE);
 			sm_pop(sm);
 			return TRUE;
@@ -1967,7 +2172,7 @@ gboolean mode_quote_delete_response(StateMachine *sm, gint event)
 
 /* Another player has called for quotes for domestic trade
  */
-static gboolean mode_domestic_quote(StateMachine *sm, gint event)
+static gboolean mode_domestic_quote(StateMachine * sm, gint event)
 {
 	sm_state_name(sm, "mode_domestic_quote");
 	switch (event) {
@@ -1975,7 +2180,7 @@ static gboolean mode_domestic_quote(StateMachine *sm, gint event)
 		if (callback_mode != MODE_QUOTE) {
 			previous_mode = callback_mode;
 			callback_mode = MODE_QUOTE;
-			callbacks.quote_start ();
+			callbacks.quote_start();
 		}
 		break;
 	case SM_RECV:
@@ -1990,7 +2195,7 @@ static gboolean mode_domestic_quote(StateMachine *sm, gint event)
 
 /* We have rejected domestic trade, now just monitor
  */
-static gboolean mode_domestic_monitor(StateMachine *sm, gint event)
+static gboolean mode_domestic_monitor(StateMachine * sm, gint event)
 {
 	sm_state_name(sm, "mode_domestic_monitor");
 	switch (event) {
@@ -2008,13 +2213,13 @@ static gboolean mode_domestic_monitor(StateMachine *sm, gint event)
  * The game is over
  */
 
-static gboolean mode_game_over(StateMachine *sm, gint event)
+static gboolean mode_game_over(StateMachine * sm, gint event)
 {
 	sm_state_name(sm, "mode_game_over");
 	switch (event) {
 	case SM_ENTER:
 		callback_mode = MODE_GAME_OVER;
-		callbacks.instructions (_("The game is over."));
+		callbacks.instructions(_("The game is over."));
 		break;
 	case SM_RECV:
 		if (check_other_players(sm))
@@ -2026,7 +2231,8 @@ static gboolean mode_game_over(StateMachine *sm, gint event)
 	return FALSE;
 }
 
-static gboolean mode_recovery_wait_start_response(StateMachine *sm, gint event)
+static gboolean mode_recovery_wait_start_response(StateMachine * sm,
+						  gint event)
 {
 	sm_state_name(sm, "mode_recovery_wait_start_response");
 	switch (event) {
@@ -2045,8 +2251,8 @@ static gboolean mode_recovery_wait_start_response(StateMachine *sm, gint event)
 	return FALSE;
 }
 
-static void recover_from_disconnect(StateMachine *sm,
-                                    struct recovery_info_t *rinfo)
+static void recover_from_disconnect(StateMachine * sm,
+				    struct recovery_info_t *rinfo)
 {
 	StateFunc modeturn;
 	GList *next;
@@ -2054,80 +2260,63 @@ static void recover_from_disconnect(StateMachine *sm,
 	if (rinfo->turnnum > 0)
 		turn_begin(rinfo->playerturn, rinfo->turnnum);
 	if (rinfo->rolled_dice) {
-		turn_rolled_dice(rinfo->playerturn, rinfo->die1, rinfo->die2);
-	}
-	else if (rinfo->die1 + rinfo->die2 > 1) {
-		callbacks.rolled_dice (rinfo->die1, rinfo->die2, rinfo->playerturn);
+		turn_rolled_dice(rinfo->playerturn, rinfo->die1,
+				 rinfo->die2);
+	} else if (rinfo->die1 + rinfo->die2 > 1) {
+		callbacks.rolled_dice(rinfo->die1, rinfo->die2,
+				      rinfo->playerturn);
 	}
 
 	if (rinfo->rolled_dice)
 		modeturn = mode_turn_rolled;
 	else
 		modeturn = mode_turn;
-	
+
 	if (rinfo->played_develop || rinfo->bought_develop) {
-		develop_reset_have_played_bought(rinfo->played_develop, rinfo->bought_develop);
+		develop_reset_have_played_bought(rinfo->played_develop,
+						 rinfo->bought_develop);
 	}
 
-	if (strcmp(rinfo->prevstate, "PREGAME") == 0)
-	{
+	if (strcmp(rinfo->prevstate, "PREGAME") == 0) {
 		sm_goto(sm, mode_idle);
-	}
-	else if (strcmp(rinfo->prevstate, "IDLE") == 0)
-	{
+	} else if (strcmp(rinfo->prevstate, "IDLE") == 0) {
 		sm_goto(sm, mode_idle);
-	}
-	else if (strcmp(rinfo->prevstate, "SETUP") == 0 ||
-	         strcmp(rinfo->prevstate, "SETUPDOUBLE") == 0)
-	{
+	} else if (strcmp(rinfo->prevstate, "SETUP") == 0 ||
+		   strcmp(rinfo->prevstate, "SETUPDOUBLE") == 0) {
 		if (strcmp(rinfo->prevstate, "SETUP") == 0) {
 			setup_begin(my_player_num());
-		}
-		else {
+		} else {
 			setup_begin_double(my_player_num());
 		}
 		sm_goto_noenter(sm, mode_idle);
 		sm_push(sm, mode_setup);
-	}
-	else if (strcmp(rinfo->prevstate, "TURN") == 0)
-	{
+	} else if (strcmp(rinfo->prevstate, "TURN") == 0) {
 		sm_goto_noenter(sm, mode_idle);
 		sm_push(sm, modeturn);
-	}
-	else if (strcmp(rinfo->prevstate, "YOUAREROBBER") == 0)
-	{
-		sm_goto_noenter (sm, mode_idle);
-		sm_push_noenter (sm, modeturn);
+	} else if (strcmp(rinfo->prevstate, "YOUAREROBBER") == 0) {
+		sm_goto_noenter(sm, mode_idle);
+		sm_push_noenter(sm, modeturn);
 		sm_push(sm, mode_robber);
-	}
-	else if (strcmp(rinfo->prevstate, "DISCARD") == 0) {
+	} else if (strcmp(rinfo->prevstate, "DISCARD") == 0) {
 		sm_goto_noenter(sm, mode_idle);
 		if (my_player_num() == rinfo->playerturn) {
 			sm_push_noenter(sm, mode_turn_rolled);
 			sm_push_noenter(sm, mode_wait_for_robber);
 		}
 		sm_push(sm, mode_discard);
-	}
-	else if (strcmp(rinfo->prevstate, "MONOPOLY") == 0)
-	{
+	} else if (strcmp(rinfo->prevstate, "MONOPOLY") == 0) {
 		sm_goto_noenter(sm, mode_idle);
 		sm_push_noenter(sm, modeturn);
 		sm_push(sm, mode_monopoly);
-	}
-	else if (strcmp(rinfo->prevstate, "PLENTY") == 0)
-	{
+	} else if (strcmp(rinfo->prevstate, "PLENTY") == 0) {
 		sm_goto_noenter(sm, mode_idle);
 		sm_push_noenter(sm, modeturn);
 		sm_push(sm, mode_year_of_plenty);
-	}
-	else if (strcmp(rinfo->prevstate, "GOLD") == 0)
-	{
+	} else if (strcmp(rinfo->prevstate, "GOLD") == 0) {
 		sm_goto_noenter(sm, mode_idle);
 		sm_push_noenter(sm, modeturn);
 		sm_push(sm, mode_choose_gold);
-	}
-	else if (strcmp(rinfo->prevstate, "ROADBUILDING") == 0)
-	{
+	} else if (strcmp(rinfo->prevstate, "ROADBUILDING") == 0) {
 		sm_goto_noenter(sm, mode_idle);
 		sm_push_noenter(sm, modeturn);
 		sm_push(sm, mode_road_building);
@@ -2136,9 +2325,9 @@ static void recover_from_disconnect(StateMachine *sm,
 	if (rinfo->build_list) {
 		for (next = rinfo->build_list; next != NULL;
 		     next = g_list_next(next)) {
-			BuildRec *build = (BuildRec *)next->data;
-			build_add(build->type, build->x, build->y, build->pos,
-			          FALSE);
+			BuildRec *build = (BuildRec *) next->data;
+			build_add(build->type, build->x, build->y,
+				  build->pos, FALSE);
 		}
 		rinfo->build_list = buildrec_free(rinfo->build_list);
 	}
@@ -2159,7 +2348,7 @@ static void recover_from_disconnect(StateMachine *sm,
  * Only the top player in the list can actually choose, the rest is waiting
  * for their turn.
  */
-static gboolean mode_choose_gold(StateMachine *sm, gint event)
+static gboolean mode_choose_gold(StateMachine * sm, gint event)
 {
 	gint resource_list[NO_RESOURCE], bank[NO_RESOURCE];
 	gint player_num, gold_num;
@@ -2168,33 +2357,34 @@ static gboolean mode_choose_gold(StateMachine *sm, gint event)
 	switch (event) {
 	case SM_ENTER:
 		if (callback_mode != MODE_GOLD
-				&& callback_mode != MODE_GOLD_WAIT) {
+		    && callback_mode != MODE_GOLD_WAIT) {
 			previous_mode = callback_mode;
 			callback_mode = MODE_GOLD_WAIT;
 		}
-		callbacks.gold ();
+		callbacks.gold();
 		break;
 	case SM_RECV:
 		if (sm_recv(sm, "player %d prepare-gold %d", &player_num,
-					&gold_num)) {
-			callbacks.gold_add (player_num, gold_num);
+			    &gold_num)) {
+			callbacks.gold_add(player_num, gold_num);
 			return TRUE;
 		}
 		if (sm_recv(sm, "choose-gold %d %R", &gold_num, &bank)) {
 			callback_mode = MODE_GOLD;
-			callbacks.gold_choose (gold_num, bank);
+			callbacks.gold_choose(gold_num, bank);
 			return TRUE;
 		}
 		if (sm_recv(sm, "player %d receive-gold %R",
 			    &player_num, resource_list)) {
-			player_resource_action(player_num, _("%s takes %s.\n"),
+			player_resource_action(player_num,
+					       _("%s takes %s.\n"),
 					       resource_list, 1);
-			callbacks.gold_remove (player_num, resource_list);
+			callbacks.gold_remove(player_num, resource_list);
 			return TRUE;
 		}
-		if (sm_recv(sm, "gold-done") ) {
+		if (sm_recv(sm, "gold-done")) {
 			callback_mode = previous_mode;
-			callbacks.gold_done ();
+			callbacks.gold_done();
 			sm_pop(sm);
 			return TRUE;
 		}
@@ -2207,7 +2397,7 @@ static gboolean mode_choose_gold(StateMachine *sm, gint event)
 	return FALSE;
 }
 
-gboolean can_trade_domestic (void)
+gboolean can_trade_domestic(void)
 {
 	gint idx;
 	/* Check if we can do domestic trading */
@@ -2219,7 +2409,7 @@ gboolean can_trade_domestic (void)
 	return FALSE;
 }
 
-gboolean can_trade_maritime (void)
+gboolean can_trade_maritime(void)
 {
 	MaritimeInfo info;
 	gint idx;
@@ -2228,14 +2418,15 @@ gboolean can_trade_maritime (void)
 	 * or after we have done built a settlement / city, or after
 	 * buying a development card.  */
 	if (!have_rolled_dice()
-			|| (game_params->strict_trade
-				&& (have_built() || have_bought_develop())))
+	    || (game_params->strict_trade
+		&& (have_built() || have_bought_develop())))
 		return FALSE;
 	can_trade = FALSE;
 	/* Check if we can do a maritime trade */
 	map_maritime_info(map, &info, my_player_num());
 	for (idx = 0; idx < NO_RESOURCE; idx++)
-		if (info.specific_resource[idx] && resource_asset(idx) >= 2) {
+		if (info.specific_resource[idx]
+		    && resource_asset(idx) >= 2) {
 			can_trade = TRUE;
 			break;
 		} else if (info.any_resource && resource_asset(idx) >= 3) {

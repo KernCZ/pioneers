@@ -36,7 +36,7 @@ static struct {
 	PlentyInfo res[NO_RESOURCE];
 } plenty;
 
-static void format_info(PlentyInfo *info)
+static void format_info(PlentyInfo * info)
 {
 	char buff[16];
 
@@ -71,12 +71,12 @@ static void check_total(void)
 					 info->num < info->bank
 					 && total < limit);
 	}
-	gtk_widget_set_sensitive(
-			gui_get_dialog_button(GTK_DIALOG(plenty.dlg), 0),
-			total == limit);
+	gtk_widget_set_sensitive(gui_get_dialog_button
+				 (GTK_DIALOG(plenty.dlg), 0),
+				 total == limit);
 }
 
-static void less_resource_cb(UNUSED(void *widget), PlentyInfo *info)
+static void less_resource_cb(UNUSED(void *widget), PlentyInfo * info)
 {
 	info->num--;
 	format_info(info);
@@ -84,7 +84,7 @@ static void less_resource_cb(UNUSED(void *widget), PlentyInfo *info)
 	check_total();
 }
 
-static void more_resource_cb(UNUSED(void *widget), PlentyInfo *info)
+static void more_resource_cb(UNUSED(void *widget), PlentyInfo * info)
 {
 	info->num++;
 	format_info(info);
@@ -92,7 +92,7 @@ static void more_resource_cb(UNUSED(void *widget), PlentyInfo *info)
 	check_total();
 }
 
-static void add_resource_table_row(GtkWidget *table, gint row,
+static void add_resource_table_row(GtkWidget * table, gint row,
 				   int bank, Resource resource)
 {
 	GtkWidget *lbl;
@@ -107,8 +107,8 @@ static void add_resource_table_row(GtkWidget *table, gint row,
 	lbl = gtk_label_new(resource_name(resource, TRUE));
 	gtk_widget_show(lbl);
 	gtk_table_attach(GTK_TABLE(table), lbl, 0, 1, row, row + 1,
-			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL,
-			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
+			 (GtkAttachOptions) GTK_EXPAND | GTK_FILL,
+			 (GtkAttachOptions) GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(lbl), 1, 0.5);
 
 	arrow = info->less = gtk_button_new_with_label(_("<less"));
@@ -118,8 +118,8 @@ static void add_resource_table_row(GtkWidget *table, gint row,
 			   &plenty.res[resource]);
 	gtk_widget_show(arrow);
 	gtk_table_attach(GTK_TABLE(table), arrow, 1, 2, row, row + 1,
-			 (GtkAttachOptions)GTK_FILL,
-			 (GtkAttachOptions)GTK_EXPAND, 0, 0);
+			 (GtkAttachOptions) GTK_FILL,
+			 (GtkAttachOptions) GTK_EXPAND, 0, 0);
 
 	arrow = info->more = gtk_button_new_with_label(_("more>"));
 	gtk_widget_set_sensitive(arrow, info->num > 0);
@@ -128,25 +128,26 @@ static void add_resource_table_row(GtkWidget *table, gint row,
 			   &plenty.res[resource]);
 	gtk_widget_show(arrow);
 	gtk_table_attach(GTK_TABLE(table), arrow, 2, 3, row, row + 1,
-			 (GtkAttachOptions)GTK_FILL,
-			 (GtkAttachOptions)GTK_EXPAND, 0, 0);
+			 (GtkAttachOptions) GTK_FILL,
+			 (GtkAttachOptions) GTK_EXPAND, 0, 0);
 
 	entry = info->num_entry = gtk_entry_new();
 	gtk_widget_show(entry);
 	gtk_table_attach(GTK_TABLE(table), entry, 3, 4, row, row + 1,
-			 (GtkAttachOptions)GTK_FILL,
-			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
+			 (GtkAttachOptions) GTK_FILL,
+			 (GtkAttachOptions) GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_widget_set_usize(entry, 30, -1);
 
 	format_info(info);
 }
 
-static gboolean ignore_close(UNUSED(GtkWidget *widget), UNUSED(gpointer user_data))
+static gboolean ignore_close(UNUSED(GtkWidget * widget),
+			     UNUSED(gpointer user_data))
 {
 	return TRUE;
 }
 
-void plenty_resources(gint *resources)
+void plenty_resources(gint * resources)
 {
 	gint idx;
 	PlentyInfo *info;
@@ -156,7 +157,7 @@ void plenty_resources(gint *resources)
 		resources[idx] = info->num;
 }
 
-void plenty_create_dlg(gint *bank)
+void plenty_create_dlg(gint * bank)
 {
 	GtkWidget *dlg_vbox;
 	GtkWidget *vbox;
@@ -164,16 +165,16 @@ void plenty_create_dlg(gint *bank)
 	GtkWidget *table;
 	int idx;
 
-	plenty.dlg = gtk_dialog_new_with_buttons(
-			_("Year of Plenty"),
-			GTK_WINDOW(app_window),
-			GTK_DIALOG_DESTROY_WITH_PARENT,
-			GTK_STOCK_OK, GTK_RESPONSE_OK,
-			NULL);
-        gtk_signal_connect(GTK_OBJECT(plenty.dlg), "close",
+	plenty.dlg = gtk_dialog_new_with_buttons(_("Year of Plenty"),
+						 GTK_WINDOW(app_window),
+						 GTK_DIALOG_DESTROY_WITH_PARENT,
+						 GTK_STOCK_OK,
+						 GTK_RESPONSE_OK, NULL);
+	gtk_signal_connect(GTK_OBJECT(plenty.dlg), "close",
 			   GTK_SIGNAL_FUNC(ignore_close), NULL);
-        gtk_signal_connect(GTK_OBJECT(plenty.dlg), "destroy",
-			   GTK_SIGNAL_FUNC(gtk_widget_destroyed), &plenty.dlg);
+	gtk_signal_connect(GTK_OBJECT(plenty.dlg), "destroy",
+			   GTK_SIGNAL_FUNC(gtk_widget_destroyed),
+			   &plenty.dlg);
 	gtk_widget_realize(plenty.dlg);
 	gdk_window_set_functions(plenty.dlg->window, GDK_FUNC_MOVE);
 
@@ -210,16 +211,15 @@ void plenty_create_dlg(gint *bank)
 	lbl = gtk_label_new(_("Resource to take"));
 	gtk_widget_show(lbl);
 	gtk_table_attach(GTK_TABLE(table), lbl, 0, 4, 0, 1,
-			 (GtkAttachOptions)GTK_FILL,
-			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
+			 (GtkAttachOptions) GTK_FILL,
+			 (GtkAttachOptions) GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(lbl), 0, 0.5);
 
 	add_resource_table_row(table, 1,
 			       bank[BRICK_RESOURCE], BRICK_RESOURCE);
 	add_resource_table_row(table, 2,
 			       bank[GRAIN_RESOURCE], GRAIN_RESOURCE);
-	add_resource_table_row(table, 3,
-			       bank[ORE_RESOURCE], ORE_RESOURCE);
+	add_resource_table_row(table, 3, bank[ORE_RESOURCE], ORE_RESOURCE);
 	add_resource_table_row(table, 4,
 			       bank[WOOL_RESOURCE], WOOL_RESOURCE);
 	add_resource_table_row(table, 5,
@@ -228,21 +228,22 @@ void plenty_create_dlg(gint *bank)
 	lbl = gtk_label_new(_("Total resources"));
 	gtk_widget_show(lbl);
 	gtk_table_attach(GTK_TABLE(table), lbl, 0, 3, 6, 7,
-			 (GtkAttachOptions)GTK_FILL,
-			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
+			 (GtkAttachOptions) GTK_FILL,
+			 (GtkAttachOptions) GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(lbl), 1, 0.5);
 
 	plenty.total_entry = gtk_entry_new();
 	gtk_widget_show(plenty.total_entry);
 	gtk_table_attach(GTK_TABLE(table), plenty.total_entry, 3, 4, 6, 7,
-			 (GtkAttachOptions)GTK_FILL,
-			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
+			 (GtkAttachOptions) GTK_FILL,
+			 (GtkAttachOptions) GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_widget_set_usize(plenty.total_entry, 30, -1);
 	gtk_entry_set_editable(GTK_ENTRY(plenty.total_entry), FALSE);
 
-	frontend_gui_register (gui_get_dialog_button(GTK_DIALOG(plenty.dlg), 0),
-		   GUI_PLENTY, "clicked");
-        gtk_widget_show(plenty.dlg);
+	frontend_gui_register(gui_get_dialog_button
+			      (GTK_DIALOG(plenty.dlg), 0), GUI_PLENTY,
+			      "clicked");
+	gtk_widget_show(plenty.dlg);
 
 	check_total();
 }

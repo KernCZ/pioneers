@@ -58,13 +58,13 @@ gint stock_num_roads()
 void stock_use_road()
 {
 	num_roads--;
-	callbacks.update_stock ();
+	callbacks.update_stock();
 }
 
 void stock_replace_road()
 {
 	num_roads++;
-	callbacks.update_stock ();
+	callbacks.update_stock();
 }
 
 gint stock_num_ships()
@@ -75,13 +75,13 @@ gint stock_num_ships()
 void stock_use_ship()
 {
 	num_ships--;
-	callbacks.update_stock ();
+	callbacks.update_stock();
 }
 
 void stock_replace_ship()
 {
 	num_ships++;
-	callbacks.update_stock ();
+	callbacks.update_stock();
 }
 
 gint stock_num_bridges()
@@ -92,13 +92,13 @@ gint stock_num_bridges()
 void stock_use_bridge()
 {
 	num_bridges--;
-	callbacks.update_stock ();
+	callbacks.update_stock();
 }
 
 void stock_replace_bridge()
 {
 	num_bridges++;
-	callbacks.update_stock ();
+	callbacks.update_stock();
 }
 
 gint stock_num_settlements()
@@ -109,13 +109,13 @@ gint stock_num_settlements()
 void stock_use_settlement()
 {
 	num_settlements--;
-	callbacks.update_stock ();
+	callbacks.update_stock();
 }
 
 void stock_replace_settlement()
 {
 	num_settlements++;
-	callbacks.update_stock ();
+	callbacks.update_stock();
 }
 
 gint stock_num_cities()
@@ -126,13 +126,13 @@ gint stock_num_cities()
 void stock_use_city()
 {
 	num_cities--;
-	callbacks.update_stock ();
+	callbacks.update_stock();
 }
 
 void stock_replace_city()
 {
 	num_cities++;
-	callbacks.update_stock ();
+	callbacks.update_stock();
 }
 
 gint stock_num_develop()

@@ -32,23 +32,23 @@
 static gint bank[NO_RESOURCE];
 
 static const gchar *resource_names[][2] = {
-	{ N_("brick"), N_("Brick") },
-	{ N_("grain"), N_("Grain") },
-	{ N_("ore"), N_("Ore") },
-	{ N_("wool"), N_("Wool") },
-	{ N_("lumber"), N_("Lumber") },
-	{ N_("no resource (bug)"), N_("No resource (bug)") },
-	{ N_("any resource (bug)"), N_("Any resource (bug)") },
-	{ N_("gold"), N_("Gold") }
+	{N_("brick"), N_("Brick")},
+	{N_("grain"), N_("Grain")},
+	{N_("ore"), N_("Ore")},
+	{N_("wool"), N_("Wool")},
+	{N_("lumber"), N_("Lumber")},
+	{N_("no resource (bug)"), N_("No resource (bug)")},
+	{N_("any resource (bug)"), N_("Any resource (bug)")},
+	{N_("gold"), N_("Gold")}
 };
 
 
 static const gchar *resource_lists[][2] = {
-   { N_("a brick card"),  N_("%d brick cards")  },
-   { N_("a grain card"),  N_("%d grain cards")  },
-   { N_("an ore card"),   N_("%d ore cards")    },
-   { N_("a wool card"),   N_("%d wool cards")   },
-   { N_("a lumber card"), N_("%d lumber cards") }
+	{N_("a brick card"), N_("%d brick cards")},
+	{N_("a grain card"), N_("%d grain cards")},
+	{N_("an ore card"), N_("%d ore cards")},
+	{N_("a wool card"), N_("%d wool cards")},
+	{N_("a lumber card"), N_("%d lumber cards")}
 };
 
 typedef enum {
@@ -74,7 +74,7 @@ void resource_init()
 	};
 }
 
-void resource_apply_list(gint player_num, gint *resources, gint mult)
+void resource_apply_list(gint player_num, gint * resources, gint mult)
 {
 	gint idx;
 	gint bank_change[NO_RESOURCE];
@@ -89,23 +89,23 @@ void resource_apply_list(gint player_num, gint *resources, gint mult)
 		if (player_num == my_player_num())
 			resource_modify(idx, num);
 	}
-	modify_bank (bank_change);
+	modify_bank(bank_change);
 }
 
-void resource_cards(gint num, Resource type, gchar *buf, gint buflen)
+void resource_cards(gint num, Resource type, gchar * buf, gint buflen)
 {
 	/* FIXME: this should be touched up to take advantage of the
 	   GNU ngettext API */
 	if (num != 1)
-		snprintf(buf, buflen, resource_list(type, RESOURCE_MULTICARD),
-		         num);
+		snprintf(buf, buflen,
+			 resource_list(type, RESOURCE_MULTICARD), num);
 	else
 		strncpy(buf, resource_list(type, RESOURCE_SINGLECARD),
-		        buflen - 1);
-	buf[buflen-1] = '\0';
+			buflen - 1);
+	buf[buflen - 1] = '\0';
 }
 
-gint resource_count(gint *resources)
+gint resource_count(gint * resources)
 {
 	gint num;
 	gint idx;
@@ -117,12 +117,12 @@ gint resource_count(gint *resources)
 	return num;
 }
 
-gint resource_total ()
+gint resource_total()
 {
-	return resource_count (my_assets);
+	return resource_count(my_assets);
 }
 
-void resource_format_num(gchar *str, guint len, gint *resources)
+void resource_format_num(gchar * str, guint len, gint * resources)
 {
 	gint idx;
 	gint num_types;
@@ -149,7 +149,7 @@ void resource_format_num(gchar *str, guint len, gint *resources)
 		}
 		return;
 	}
-	
+
 	for (idx = 0; idx < NO_RESOURCE; idx++) {
 		gchar buf[128];
 		gint num = resources[idx];
@@ -173,22 +173,22 @@ void resource_format_num(gchar *str, guint len, gint *resources)
 	}
 }
 
-void resource_log_list(gint player_num, gchar *action, gint *resources)
+void resource_log_list(gint player_num, gchar * action, gint * resources)
 {
 	char buff[512];
 
-	resource_format_num(buff, sizeof (buff), resources);
-	log_message( MSG_RESOURCE, action,
-		 player_name(player_num, TRUE), buff);
+	resource_format_num(buff, sizeof(buff), resources);
+	log_message(MSG_RESOURCE, action,
+		    player_name(player_num, TRUE), buff);
 }
 
-void resource_modify (Resource type, gint num)
+void resource_modify(Resource type, gint num)
 {
 	my_assets[type] += num;
-	callbacks.resource_change (type, my_assets[type]);
+	callbacks.resource_change(type, my_assets[type]);
 }
 
-gboolean can_afford(gint *cost)
+gboolean can_afford(gint * cost)
 {
 	return cost_can_afford(cost, my_assets);
 }
@@ -203,7 +203,7 @@ const gchar *resource_name(Resource type, gboolean word_caps)
 	return _(resource_names[type][word_caps ? 1 : 0]);
 }
 
-void resource_format_type(gchar *str, const gint *resources)
+void resource_format_type(gchar * str, const gint * resources)
 {
 	gint idx;
 	gint num_types;
@@ -231,7 +231,7 @@ void resource_format_type(gchar *str, const gint *resources)
 		}
 		return;
 	}
-	
+
 	add_comma = FALSE;
 	for (idx = 0; idx < NO_RESOURCE; idx++) {
 		gint num = resources[idx];
@@ -248,23 +248,23 @@ void resource_format_type(gchar *str, const gint *resources)
 	}
 }
 
-const gint *get_bank (void)
+const gint *get_bank(void)
 {
 	return bank;
 }
 
-void set_bank (const gint *new_bank)
+void set_bank(const gint * new_bank)
 {
 	gint idx;
 	for (idx = 0; idx < NO_RESOURCE; ++idx)
 		bank[idx] = new_bank[idx];
-	callbacks.new_bank (bank);
+	callbacks.new_bank(bank);
 }
 
-void modify_bank (const gint *bank_change)
+void modify_bank(const gint * bank_change)
 {
 	gint idx;
 	for (idx = 0; idx < NO_RESOURCE; ++idx)
 		bank[idx] += bank_change[idx];
-	callbacks.new_bank (bank);
+	callbacks.new_bank(bank);
 }

@@ -27,8 +27,8 @@ static const int MAX_NUMBER_OF_WIDGETS_PER_EVENT = 2;
 GHashTable *frontend_widgets;
 gboolean frontend_waiting_for_network;
 
-static void set_sensitive (UNUSED(void *key), GuiWidgetState *gui,
-		UNUSED(void *user_data))
+static void set_sensitive(UNUSED(void *key), GuiWidgetState * gui,
+			  UNUSED(void *user_data))
 {
 	if (gui->destroy_only)
 		/* Do not modify sensitivity on destroy only events
@@ -52,9 +52,9 @@ static void set_sensitive (UNUSED(void *key), GuiWidgetState *gui,
 			gtk_widget_get_pointer(gui->widget, &x, &y);
 			state = GTK_WIDGET_STATE(gui->widget);
 			if (state == GTK_STATE_NORMAL &&
-				x >= 0 && y >= 0 &&
-				x < (gui->widget)->allocation.width &&
-				y < (gui->widget)->allocation.height) {
+			    x >= 0 && y >= 0 &&
+			    x < (gui->widget)->allocation.width &&
+			    y < (gui->widget)->allocation.height) {
 				gtk_button_enter(GTK_BUTTON(gui->widget));
 				GTK_BUTTON(gui->widget)->in_button = TRUE;
 			}
@@ -64,33 +64,34 @@ static void set_sensitive (UNUSED(void *key), GuiWidgetState *gui,
 	gui->next = FALSE;
 }
 
-void frontend_gui_register_init ()
+void frontend_gui_register_init()
 {
 	frontend_widgets = g_hash_table_new(NULL, NULL);
 }
 
-void frontend_gui_update ()
+void frontend_gui_update()
 {
-	route_gui_event (GUI_UPDATE);
-	g_hash_table_foreach (frontend_widgets, (GHFunc)set_sensitive, NULL);
+	route_gui_event(GUI_UPDATE);
+	g_hash_table_foreach(frontend_widgets, (GHFunc) set_sensitive,
+			     NULL);
 }
 
-void frontend_gui_check (GuiEvent event, gboolean sensitive)
+void frontend_gui_check(GuiEvent event, gboolean sensitive)
 {
 	GuiWidgetState *gui;
 	gint i;
 	gint key = event * MAX_NUMBER_OF_WIDGETS_PER_EVENT;
-	
+
 	/* Set all related widgets */
 	for (i = 0; i < MAX_NUMBER_OF_WIDGETS_PER_EVENT; ++i) {
-		gui = g_hash_table_lookup(frontend_widgets, 
-				GINT_TO_POINTER(key+i));
+		gui = g_hash_table_lookup(frontend_widgets,
+					  GINT_TO_POINTER(key + i));
 		if (gui != NULL)
 			gui->next = sensitive;
 	}
 }
 
-static GuiWidgetState *gui_new (void *widget, gint id)
+static GuiWidgetState *gui_new(void *widget, gint id)
 {
 	gint i;
 	gint key = id * MAX_NUMBER_OF_WIDGETS_PER_EVENT;
@@ -101,66 +102,71 @@ static GuiWidgetState *gui_new (void *widget, gint id)
 	/* Find an empty key */
 	i = 0;
 	while (i < MAX_NUMBER_OF_WIDGETS_PER_EVENT) {
-		if (g_hash_table_lookup(frontend_widgets, 
-				GINT_TO_POINTER(key + i))) 
+		if (g_hash_table_lookup(frontend_widgets,
+					GINT_TO_POINTER(key + i)))
 			++i;
 		else
 			break;
-	}	
+	}
 	g_assert(i != MAX_NUMBER_OF_WIDGETS_PER_EVENT);
-	g_hash_table_insert(frontend_widgets, GINT_TO_POINTER(key + i), gui);
+	g_hash_table_insert(frontend_widgets, GINT_TO_POINTER(key + i),
+			    gui);
 	return gui;
 }
 
-static void gui_free (GuiWidgetState *gui)
+static void gui_free(GuiWidgetState * gui)
 {
 	gint i;
 	gint key = gui->id * MAX_NUMBER_OF_WIDGETS_PER_EVENT;
 
 	/* Find an empty key */
 	for (i = 0; i < MAX_NUMBER_OF_WIDGETS_PER_EVENT; ++i) {
-		g_hash_table_remove(frontend_widgets, GINT_TO_POINTER(key + i));
-	}	
+		g_hash_table_remove(frontend_widgets,
+				    GINT_TO_POINTER(key + i));
+	}
 }
 
-static void route_event (UNUSED(void *widget), GuiWidgetState *gui)
+static void route_event(UNUSED(void *widget), GuiWidgetState * gui)
 {
-	route_gui_event (gui->id);
+	route_gui_event(gui->id);
 }
 
-static void destroy_event_cb (UNUSED(void *widget), GuiWidgetState *gui)
+static void destroy_event_cb(UNUSED(void *widget), GuiWidgetState * gui)
 {
 	gui_free(gui);
 }
 
-static void destroy_route_event_cb (UNUSED(void *widget), GuiWidgetState *gui)
+static void destroy_route_event_cb(UNUSED(void *widget),
+				   GuiWidgetState * gui)
 {
-	route_gui_event (gui->id);
-	gui_free (gui);
+	route_gui_event(gui->id);
+	gui_free(gui);
 }
 
-void frontend_gui_register_destroy (GtkWidget *widget, GuiEvent id)
+void frontend_gui_register_destroy(GtkWidget * widget, GuiEvent id)
 {
 	GuiWidgetState *gui = gui_new(widget, id);
 	gui->destroy_only = TRUE;
 	g_signal_connect(G_OBJECT(widget), "destroy",
-			G_CALLBACK(destroy_route_event_cb), gui);
+			 G_CALLBACK(destroy_route_event_cb), gui);
 }
 
-void frontend_gui_register (GtkWidget *widget, GuiEvent id, const gchar *signal)
+void frontend_gui_register(GtkWidget * widget, GuiEvent id,
+			   const gchar * signal)
 {
 	GuiWidgetState *gui = gui_new(widget, id);
 	gui->signal = signal;
 	gui->current = TRUE;
 	gui->next = FALSE;
 	g_signal_connect(G_OBJECT(widget), "destroy",
-		G_CALLBACK(destroy_event_cb), gui);
+			 G_CALLBACK(destroy_event_cb), gui);
 	if (signal != NULL)
 		g_signal_connect(G_OBJECT(widget), signal,
-			G_CALLBACK(route_event), gui);
+				 G_CALLBACK(route_event), gui);
 }
 
-gint hotkeys_handler (UNUSED(GtkWidget *w), GdkEvent *e, UNUSED(gpointer data))
+gint hotkeys_handler(UNUSED(GtkWidget * w), GdkEvent * e,
+		     UNUSED(gpointer data))
 {
 	GuiWidgetState *gui;
 	GuiEvent arg;
@@ -202,11 +208,13 @@ gint hotkeys_handler (UNUSED(GtkWidget *w), GdkEvent *e, UNUSED(gpointer data))
 		arg = GUI_QUOTE_REJECT;
 		break;
 	default:
-		return 0; /* not handled */
+		return 0;	/* not handled */
 	}
-	gui = g_hash_table_lookup (frontend_widgets, 
-			GINT_TO_POINTER(arg * MAX_NUMBER_OF_WIDGETS_PER_EVENT));
-	if (!gui || !gui->current) return 0; /* not handled */
-	route_gui_event (arg);
-	return 1; /* handled */
+	gui = g_hash_table_lookup(frontend_widgets,
+				  GINT_TO_POINTER(arg *
+						  MAX_NUMBER_OF_WIDGETS_PER_EVENT));
+	if (!gui || !gui->current)
+		return 0;	/* not handled */
+	route_gui_event(arg);
+	return 1;		/* handled */
 }

@@ -52,7 +52,7 @@
 #include <glib.h>
 
 /* Type of logging functions: takes int,char; returns nothing */
-typedef void (*LogFunc)( gint msg_type, gchar *text );
+typedef void (*LogFunc) (gint msg_type, gchar * text);
 
 /* The default function to use to write messages, when nothing else has been
  * specified.
@@ -83,22 +83,22 @@ typedef void (*LogFunc)( gint msg_type, gchar *text );
 #define MSG_VIEWER_CHAT	199
 
 /* Set the default logging function to 'func'. */
-void log_set_func( LogFunc func );
+void log_set_func(LogFunc func);
 
 /* Set the default logging function to the system default (LOG_FUNC_DEFAULT,
  *   found in log.h).
  */
-void log_set_func_default( void );
+void log_set_func_default(void);
 
 /* Write a message string to the console, adding a prefix depending on 
  *   its type.
  */
-void log_message_string_console( gint msg_type, gchar *text );
+void log_message_string_console(gint msg_type, gchar * text);
 
 /* Log a message, sending it through _log_func (or if that's NULL, then
  *   through LOG_FUNC_DEFAULT) after turning the params into a single
  *   string.
  */
-void log_message( gint msg_type, const gchar *fmt, ... );
-void log_message_continue( gint msg_type, const gchar *fmt, ... );
-#endif /* __log_h */
+void log_message(gint msg_type, const gchar * fmt, ...);
+void log_message_continue(gint msg_type, const gchar * fmt, ...);
+#endif				/* __log_h */

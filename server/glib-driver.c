@@ -29,27 +29,27 @@
 void srv_glib_player_added(UNUSED(void *data))
 {
 #ifdef PRINT_INFO
-	Player *player = (Player *)data;
-	g_print( "Player %d added: %s (from host %s)\n", 
-		player->num, player->name, player->location );
+	Player *player = (Player *) data;
+	g_print("Player %d added: %s (from host %s)\n",
+		player->num, player->name, player->location);
 #endif
 }
 
 void srv_glib_player_renamed(UNUSED(void *data))
 {
 #ifdef PRINT_INFO
-	Player *player = (Player *)data;
-	g_print( "Player %d renamed to %s (at host %s)\n", 
-		player->num, player->name, player->location );
+	Player *player = (Player *) data;
+	g_print("Player %d renamed to %s (at host %s)\n",
+		player->num, player->name, player->location);
 #endif
 }
 
 void srv_player_removed(UNUSED(void *data))
 {
 #ifdef PRINT_INFO
-	Player *player = (Player *)data;
-	g_print( "Player %d removed: %s (at host %s)\n", 
-		player->num, player->name, player->location );
+	Player *player = (Player *) data;
+	g_print("Player %d removed: %s (at host %s)\n",
+		player->num, player->name, player->location);
 #endif
 }
 
@@ -58,12 +58,15 @@ void srv_player_change(UNUSED(void *data))
 {
 #ifdef PRINT_INFO
 	GList *current;
- 	Game *game = (Game *)data;
-	g_print( "Players connected:\n");
+	Game *game = (Game *) data;
+	g_print("Players connected:\n");
 	playerlist_inc_use_count(game);
-	for (current = game->player_list; current != NULL; current = g_list_next(current)) {
-	 	Player *p = (Player*)current->data;
-		g_print ("Player %d: %s (at host %s) is %s connected\n", p->num, p->name, p->location, p->disconnected ? "not" : "");
+	for (current = game->player_list; current != NULL;
+	     current = g_list_next(current)) {
+		Player *p = (Player *) current->data;
+		g_print("Player %d: %s (at host %s) is %s connected\n",
+			p->num, p->name, p->location,
+			p->disconnected ? "not" : "");
 	}
 	playerlist_dec_use_count(game);
 #endif

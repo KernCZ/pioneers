@@ -91,71 +91,79 @@ static MapTheme default_theme = {
 	default_name,
 	NEVER,
 	/* terrain tile names */
-	{ "hill.png", "field.png", "mountain.png", "pasture.png", "forest.png",
-	  "desert.png", "sea.png", "gold.png", "board.png" },
+	{"hill.png", "field.png", "mountain.png", "pasture.png",
+	 "forest.png",
+	 "desert.png", "sea.png", "gold.png", "board.png"},
 	/* port tile names */
-	{ "hill.png", "field.png", "mountain.png", "pasture.png", "forest.png",
-	  NULL },
+	{"hill.png", "field.png", "mountain.png", "pasture.png",
+	 "forest.png",
+	 NULL},
 	/* terrain tile pixmaps */
-	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL },
+	{NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
 	/* port tile pixmaps */
-	{ NULL, NULL, NULL, NULL, NULL, NULL },
+	{NULL, NULL, NULL, NULL, NULL, NULL},
 	/* port tile width */
-	{ 0, 0, 0, 0, 0, 0 },
+	{0, 0, 0, 0, 0, 0},
 	/* port tile height */
-	{ 0, 0, 0, 0, 0, 0 },
+	{0, 0, 0, 0, 0, 0},
 	/* terrain tile scale data */
-	{ TSCALE, TSCALE, TSCALE, TSCALE, TSCALE, TSCALE, TSCALE, TSCALE,
-		TSCALE },
+	{TSCALE, TSCALE, TSCALE, TSCALE, TSCALE, TSCALE, TSCALE, TSCALE,
+	 TSCALE},
 	/* colours */
 	{
-		TCOL_INIT(0xff00, 0xda00, 0xb900),
-		TCOL_INIT(0, 0, 0),
-		TCOL_INIT(0, 0, 0),
-		TCOL_INIT(0, 0xff00, 0),
-		TCOL_INIT(0xff00, 0, 0),
-		TCOL_INIT(0, 0, 0xff00),
-		TCOL_INIT(0xff00, 0xff00, 0xff00),
-		TCOL_INIT(0, 0, 0),
-		TCOL_INIT(0, 0, 0),
-		TCOL_INIT(0xff00, 0xff00, 0xff00),
-		TCOL_INIT(0xff00, 0xda00, 0xb900),
-	},
+	 TCOL_INIT(0xff00, 0xda00, 0xb900),
+	 TCOL_INIT(0, 0, 0),
+	 TCOL_INIT(0, 0, 0),
+	 TCOL_INIT(0, 0xff00, 0),
+	 TCOL_INIT(0xff00, 0, 0),
+	 TCOL_INIT(0, 0, 0xff00),
+	 TCOL_INIT(0xff00, 0xff00, 0xff00),
+	 TCOL_INIT(0, 0, 0),
+	 TCOL_INIT(0, 0, 0),
+	 TCOL_INIT(0xff00, 0xff00, 0xff00),
+	 TCOL_INIT(0xff00, 0xda00, 0xb900),
+	 },
 	/* colours per tile */
 	{
-		{ TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET() }, /* Hill */
-		{ TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET() }, /* Field */
-		{ TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET() }, /* Mountain */
-		{ TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET() }, /* Pasture */
-		{ TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET() }, /* Forest */
-		{ TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET() }, /* unused: desert */
-		{ TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET() }, /* unused: sea */
-		{ TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET() }  /* Gold */
-	}
+	 {TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET()},	/* Hill */
+	 {TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET()},	/* Field */
+	 {TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET()},	/* Mountain */
+	 {TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET()},	/* Pasture */
+	 {TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET()},	/* Forest */
+	 {TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET()},	/* unused: desert */
+	 {TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET()},	/* unused: sea */
+	 {TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET()}	/* Gold */
+	 }
 };
 
 static GList *theme_list = NULL;
 static MapTheme *current_theme = NULL;
 
-static gboolean theme_initialize(MapTheme *t, const gchar *subdir);
-static struct tvars *getvar(char **p, const gchar *filename, int lno);
-static char *getval(char **p, const gchar *filename, int lno);
-static gboolean parsecolor(char *p, TColor *tc, const gchar *filename, int lno);
+static gboolean theme_initialize(MapTheme * t, const gchar * subdir);
+static struct tvars *getvar(char **p, const gchar * filename, int lno);
+static char *getval(char **p, const gchar * filename, int lno);
+static gboolean parsecolor(char *p, TColor * tc, const gchar * filename,
+			   int lno);
 static gushort parsehex(char *p, int len);
-static MapTheme *theme_config_parse(const gchar *themename, const gchar *filename);
-static gboolean theme_load_pixmap(const gchar *file, const gchar *themename,
-		GdkPixbuf **pixbuf, 
-		GdkPixmap **pixmap_return, GdkBitmap **mask_return);
+static MapTheme *theme_config_parse(const gchar * themename,
+				    const gchar * filename);
+static gboolean theme_load_pixmap(const gchar * file,
+				  const gchar * themename,
+				  GdkPixbuf ** pixbuf,
+				  GdkPixmap ** pixmap_return,
+				  GdkBitmap ** mask_return);
 
 /** Find a theme with the given name */
-static gint theme_list_locate(gconstpointer item, gconstpointer data) {
+static gint theme_list_locate(gconstpointer item, gconstpointer data)
+{
 	const MapTheme *theme = item;
 	const gchar *name = data;
 	return strcmp(theme->name, name);
 }
 
 /** Insert the theme alphabetically in the list, but keep 'Default' first */
-static gint theme_insert_sorted(gconstpointer new, gconstpointer first) {
+static gint theme_insert_sorted(gconstpointer new, gconstpointer first)
+{
 	const MapTheme *newTheme = new;
 	const MapTheme *firstTheme = first;
 	if (!strcmp(firstTheme->name, default_name))
@@ -172,29 +180,36 @@ void init_themes(void)
 	MapTheme *t;
 	gint novar;
 	gchar *user_theme;
-	
+
 	/* initialize default theme */
 	if (!theme_initialize(&default_theme, "")) {
 		g_error(_("Could not initialize default theme."));
 	}
 	g_assert(theme_list == NULL);
 	theme_list = g_list_append(NULL, &default_theme);
-	
+
 	/* scan gnocatan image dir for theme descriptor files */
 	if (!(dir = g_dir_open(THEMEDIR, 0, NULL)))
 		return;
-	while( (dirname = g_dir_read_name(dir)) ) {
+	while ((dirname = g_dir_read_name(dir))) {
 		fname = g_build_filename(THEMEDIR, dirname, NULL);
 		if (g_file_test(fname, G_FILE_TEST_IS_DIR)) {
 			path = g_build_filename(fname, "theme.cfg", NULL);
 			if ((t = theme_config_parse(dirname, path))) {
 				if (theme_initialize(t, dirname)) {
-					theme_list = g_list_insert_sorted(theme_list, t, theme_insert_sorted);
+					theme_list =
+					    g_list_insert_sorted
+					    (theme_list, t,
+					     theme_insert_sorted);
 				} else {
-					g_warning(_("Theme %s not loaded due to errors."), t->name);
+					g_warning(_
+						  ("Theme %s not loaded due to errors."),
+						  t->name);
 				}
 			} else {
-				g_warning(_("Theme %s not loaded due to errors."), dirname);
+				g_warning(_
+					  ("Theme %s not loaded due to errors."),
+					  dirname);
 			}
 			g_free(path);
 		}
@@ -203,10 +218,10 @@ void init_themes(void)
 	g_dir_close(dir);
 
 	t = NULL;
- 	user_theme = config_get_string("settings/theme",&novar);
+	user_theme = config_get_string("settings/theme", &novar);
 	if (!(novar || !user_theme || !*user_theme)) {
 		GList *result = g_list_find_custom(theme_list, user_theme,
-				theme_list_locate);
+						   theme_list_locate);
 		if (result)
 			t = result->data;
 	}
@@ -217,7 +232,7 @@ void init_themes(void)
 	current_theme = t;
 }
 
-void set_theme(MapTheme *t)
+void set_theme(MapTheme * t)
 {
 	current_theme = t;
 }
@@ -232,7 +247,7 @@ GList *first_theme(void)
 	return theme_list;
 }
 
-GList *next_theme(GList *p)
+GList *next_theme(GList * p)
 {
 	return p ? p->next : NULL;
 }
@@ -241,9 +256,10 @@ GList *next_theme(GList *p)
  *  If loading fails, no objects need to be freed.
  *  @return TRUE if succesful
  */
-gboolean theme_load_pixmap(const gchar *file, const gchar *themename,
-		GdkPixbuf **pixbuf, 
-		GdkPixmap **pixmap_return, GdkBitmap **mask_return)
+gboolean theme_load_pixmap(const gchar * file, const gchar * themename,
+			   GdkPixbuf ** pixbuf,
+			   GdkPixmap ** pixmap_return,
+			   GdkBitmap ** mask_return)
 {
 	g_return_val_if_fail(themename != NULL, FALSE);
 	g_return_val_if_fail(pixbuf != NULL, FALSE);
@@ -255,8 +271,9 @@ gboolean theme_load_pixmap(const gchar *file, const gchar *themename,
 
 	/* check that file exists */
 	if (!g_file_test(file, G_FILE_TEST_EXISTS)) {
-		g_warning(_("Could not find \'%s\' pixmap file in theme \'%s\'."),
-				file, themename);
+		g_warning(_
+			  ("Could not find \'%s\' pixmap file in theme \'%s\'."),
+			  file, themename);
 		return FALSE;
 	}
 
@@ -265,15 +282,17 @@ gboolean theme_load_pixmap(const gchar *file, const gchar *themename,
 	*pixmap_return = NULL;
 	if (*pixbuf != NULL) {
 		gdk_pixbuf_render_pixmap_and_mask(*pixbuf,
-				pixmap_return, mask_return, 1);
+						  pixmap_return,
+						  mask_return, 1);
 	}
 
 	/* check result */
 	if (*pixmap_return == NULL) {
 		if (*pixbuf)
 			g_object_unref(*pixbuf);
-		g_warning(_("Could not load \'%s\' pixmap file in theme \'%s\'."),
-				file, themename);
+		g_warning(_
+			  ("Could not load \'%s\' pixmap file in theme \'%s\'."),
+			  file, themename);
 		return FALSE;
 	}
 	return TRUE;
@@ -283,36 +302,43 @@ gboolean theme_load_pixmap(const gchar *file, const gchar *themename,
  *  Revert to pixmaps from the default theme if loading fails
  *  @return TRUE if succesful
  */
-static gboolean theme_initialize(MapTheme *t, const gchar *subdir)
+static gboolean theme_initialize(MapTheme * t, const gchar * subdir)
 {
 	int i, j;
 	GdkColormap *cmap;
- 
+
 	/* load terrain tiles */
-	for(i = 0; i < numElem(t->terrain_tiles); ++i) {
+	for (i = 0; i < numElem(t->terrain_tiles); ++i) {
 		GdkPixbuf *pixbuf, *pixbuf_copy;
 		gchar *file;
 		/* if a theme doesn't define a terrain tile, use the default
 		 * one */
 		if (t->terrain_tile_names[i])
 			file = g_build_filename(THEMEDIR, subdir,
-					t->terrain_tile_names[i], NULL);
+						t->terrain_tile_names[i],
+						NULL);
 		else
 			file = g_build_filename(THEMEDIR,
-					default_theme.terrain_tile_names[i], 
-					NULL);
-		if (!theme_load_pixmap(file, t->name, &pixbuf,
-				&(t->terrain_tiles[i]), NULL)) {
+						default_theme.
+						terrain_tile_names[i],
+						NULL);
+		if (!theme_load_pixmap
+		    (file, t->name, &pixbuf, &(t->terrain_tiles[i]),
+		     NULL)) {
 			/* Fall back to default theme images */
 			g_free(file);
 			file = g_build_filename(THEMEDIR,
-					default_theme.terrain_tile_names[i], 
-					NULL);
-			if (!theme_load_pixmap(file, t->name, &pixbuf,
-					&(t->terrain_tiles[i]), NULL)) {
-				g_error(_("Could not find default pixmap file: %s"), file);
-				g_free (file);
-        			exit(1);
+						default_theme.
+						terrain_tile_names[i],
+						NULL);
+			if (!theme_load_pixmap
+			    (file, t->name, &pixbuf,
+			     &(t->terrain_tiles[i]), NULL)) {
+				g_error(_
+					("Could not find default pixmap file: %s"),
+					file);
+				g_free(file);
+				exit(1);
 			}
 		};
 		g_free(file);
@@ -322,65 +348,84 @@ static gboolean theme_initialize(MapTheme *t, const gchar *subdir)
 		}
 		t->scaledata[i].image = pixbuf;
 		t->scaledata[i].native_image = pixbuf_copy;
-		t->scaledata[i].native_width = gdk_pixbuf_get_width(pixbuf);
-		t->scaledata[i].aspect = (float)gdk_pixbuf_get_width(pixbuf) /
-				gdk_pixbuf_get_height(pixbuf);
+		t->scaledata[i].native_width =
+		    gdk_pixbuf_get_width(pixbuf);
+		t->scaledata[i].aspect =
+		    (float) gdk_pixbuf_get_width(pixbuf) /
+		    gdk_pixbuf_get_height(pixbuf);
 		gdk_pixbuf_render_pixmap_and_mask(pixbuf,
-				&(t->terrain_tiles[i]), NULL, 1);
+						  &(t->terrain_tiles[i]),
+						  NULL, 1);
 	}
 
 	/* load port tiles */
-	for(i = 0; i < numElem(t->port_tiles); ++i) {
+	for (i = 0; i < numElem(t->port_tiles); ++i) {
 		/* if a theme doesn't define a port tile, it will be drawn with
 		 * its resource letter instead */
 		if (t->port_tile_names[i]) {
 			GdkPixbuf *pixbuf;
 			gchar *fname = g_build_filename(THEMEDIR, subdir,
-					t->port_tile_names[i], NULL);
-			if (theme_load_pixmap(fname, t->name, &pixbuf,
-					&(t->port_tiles[i]), NULL)) {
+							t->
+							port_tile_names[i],
+							NULL);
+			if (theme_load_pixmap
+			    (fname, t->name, &pixbuf, &(t->port_tiles[i]),
+			     NULL)) {
 				gdk_drawable_get_size(t->port_tiles[i],
-						&t->port_tiles_width[i],
-						&t->port_tiles_height[i]);
+						      &t->
+						      port_tiles_width[i],
+						      &t->
+						      port_tiles_height
+						      [i]);
 				g_object_unref(pixbuf);
 			} else {
 				/* Fall back on the default port tile */
 				g_free(fname);
 				fname = g_build_filename(THEMEDIR,
-						default_theme.port_tile_names[i],
-						NULL);
-				if (theme_load_pixmap(fname, t->name, &pixbuf,
-						&(t->port_tiles[i]), NULL)) {
-					gdk_drawable_get_size(t->port_tiles[i],
-							&t->port_tiles_width[i],
-							&t->port_tiles_height[i]);
+							 default_theme.
+							 port_tile_names
+							 [i], NULL);
+				if (theme_load_pixmap
+				    (fname, t->name, &pixbuf,
+				     &(t->port_tiles[i]), NULL)) {
+					gdk_drawable_get_size(t->
+							      port_tiles
+							      [i],
+							      &t->
+							      port_tiles_width
+							      [i],
+							      &t->
+							      port_tiles_height
+							      [i]);
 					g_object_unref(pixbuf);
 				}
 			}
 			g_free(fname);
-		}
-		else
+		} else
 			t->port_tiles[i] = NULL;
 	}
 
 	/* allocate defined colors */
 	cmap = gdk_colormap_get_system();
-	
-	for(i = 0; i < numElem(t->colors); ++i) {
+
+	for (i = 0; i < numElem(t->colors); ++i) {
 		TColor *tc = &(t->colors[i]);
 		if (!tc->set)
 			*tc = default_theme.colors[i];
 		else if (!tc->transparent && !tc->allocated) {
-			gdk_colormap_alloc_color(cmap, &(tc->color), FALSE, TRUE);
+			gdk_colormap_alloc_color(cmap, &(tc->color), FALSE,
+						 TRUE);
 			tc->allocated = TRUE;
 		}
 	}
 
-	for(i = 0; i < TC_MAX_OVRTILE; ++i) {
-		for(j = 0; j < TC_MAX_OVERRIDE; ++j) {
+	for (i = 0; i < TC_MAX_OVRTILE; ++i) {
+		for (j = 0; j < TC_MAX_OVERRIDE; ++j) {
 			TColor *tc = &(t->ovr_colors[i][j]);
 			if (tc->set && !tc->transparent && !tc->allocated) {
-				gdk_colormap_alloc_color(cmap, &(tc->color), FALSE, TRUE);
+				gdk_colormap_alloc_color(cmap,
+							 &(tc->color),
+							 FALSE, TRUE);
 				tc->allocated = TRUE;
 			}
 		}
@@ -391,41 +436,50 @@ static gboolean theme_initialize(MapTheme *t, const gchar *subdir)
 void theme_rescale(int new_width)
 {
 	int i;
-	
-	switch(current_theme->scaling) {
-	  case NEVER:
+
+	switch (current_theme->scaling) {
+	case NEVER:
 		return;
-		
-	  case ONLY_DOWNSCALE:
+
+	case ONLY_DOWNSCALE:
 		if (new_width > current_theme->scaledata[0].native_width)
-			new_width = current_theme->scaledata[0].native_width;
+			new_width =
+			    current_theme->scaledata[0].native_width;
 		break;
-		
-	  case ONLY_UPSCALE:
+
+	case ONLY_UPSCALE:
 		if (new_width < current_theme->scaledata[0].native_width)
-			new_width = current_theme->scaledata[0].native_width;
+			new_width =
+			    current_theme->scaledata[0].native_width;
 		break;
-		
-	  case ALWAYS:
+
+	case ALWAYS:
 		break;
 	}
 
 	/* if the size is 0, gdk_pixbuf_scale_simple fails */
-	if (new_width == 0) new_width = 1;
+	if (new_width == 0)
+		new_width = 1;
 
-	for(i = 0; i < numElem(current_theme->terrain_tiles); ++i) {
-		if (i == BOARD_TILE) continue; /* Don't scale the board-tile */
+	for (i = 0; i < numElem(current_theme->terrain_tiles); ++i) {
+		if (i == BOARD_TILE)
+			continue;	/* Don't scale the board-tile */
 		/* rescale the pixbuf */
 		gdk_pixbuf_unref(current_theme->scaledata[i].image);
-		current_theme->scaledata[i].image = gdk_pixbuf_scale_simple(
-				current_theme->scaledata[i].native_image,
-				new_width,
-				new_width / current_theme->scaledata[i].aspect,
-				GDK_INTERP_BILINEAR);
+		current_theme->scaledata[i].image =
+		    gdk_pixbuf_scale_simple(current_theme->scaledata[i].
+					    native_image, new_width,
+					    new_width /
+					    current_theme->scaledata[i].
+					    aspect, GDK_INTERP_BILINEAR);
 
 		/* render a new pixmap */
 		g_object_unref(current_theme->terrain_tiles[i]);
-		gdk_pixbuf_render_pixmap_and_mask(current_theme->scaledata[i].image, &(current_theme->terrain_tiles[i]), NULL, 1);
+		gdk_pixbuf_render_pixmap_and_mask(current_theme->
+						  scaledata[i].image,
+						  &(current_theme->
+						    terrain_tiles[i]),
+						  NULL, 1);
 	}
 }
 
@@ -435,40 +489,54 @@ void theme_rescale(int new_width)
 typedef enum { STR, COL, SCMODE } vartype;
 
 static struct tvars {
-	const char     *name;
-	vartype  type;
-	int      override;
-	size_t   offset;
+	const char *name;
+	vartype type;
+	int override;
+	size_t offset;
 } theme_vars[] = {
-	{ "name",             STR, -1, offs(name) },
-	{ "hill-tile",        STR, HILL_TILE,  offs(terrain_tile_names[HILL_TILE]) },
-	{ "field-tile",       STR, FIELD_TILE,  offs(terrain_tile_names[FIELD_TILE]) },
-	{ "mountain-tile",    STR, MOUNTAIN_TILE,  offs(terrain_tile_names[MOUNTAIN_TILE]) },
-	{ "pasture-tile",     STR, PASTURE_TILE,  offs(terrain_tile_names[PASTURE_TILE]) },
-	{ "forest-tile",      STR, FOREST_TILE,  offs(terrain_tile_names[FOREST_TILE]) },
-	{ "desert-tile",      STR, -1, offs(terrain_tile_names[DESERT_TILE]) },
-	{ "sea-tile",         STR, -1, offs(terrain_tile_names[SEA_TILE]) },
-	{ "gold-tile",        STR, GOLD_TILE, offs(terrain_tile_names[GOLD_TILE]) },
-	{ "board-tile",       STR, -1, offs(terrain_tile_names[BOARD_TILE]) },
-	{ "brick-port-tile",  STR, -1, offs(port_tile_names[HILL_PORT_TILE]) },
-	{ "grain-port-tile",  STR, -1, offs(port_tile_names[FIELD_PORT_TILE]) },
-	{ "ore-port-tile",    STR, -1, offs(port_tile_names[MOUNTAIN_PORT_TILE]) },
-	{ "wool-port-tile",   STR, -1, offs(port_tile_names[PASTURE_PORT_TILE]) },
-	{ "lumber-port-tile", STR, -1, offs(port_tile_names[FOREST_PORT_TILE]) },
-	{ "nores-port-tile",  STR, -1, offs(port_tile_names[ANY_PORT_TILE]) },
-	{ "chip-bg-color",    COL, -1, offs(colors[TC_CHIP_BG]) },
-	{ "chip-fg-color",    COL, -1, offs(colors[TC_CHIP_FG]) },
-	{ "chip-bd-color",    COL, -1, offs(colors[TC_CHIP_BD]) },
-	{ "chip-hi-bg-color", COL, -1, offs(colors[TC_CHIP_H_BG]) },
-	{ "chip-hi-fg-color", COL, -1, offs(colors[TC_CHIP_H_FG]) },
-	{ "port-bg-color",    COL, -1, offs(colors[TC_PORT_BG]) },
-	{ "port-fg-color",    COL, -1, offs(colors[TC_PORT_FG]) },
-	{ "port-bd-color",    COL, -1, offs(colors[TC_PORT_BD]) },
-	{ "robber-fg-color",  COL, -1, offs(colors[TC_ROBBER_FG]) },
-	{ "robber-bd-color",  COL, -1, offs(colors[TC_ROBBER_BD]) },
-	{ "hex-bd-color",     COL, -1, offs(colors[TC_HEX_BD]) },
-	{ "scaling",          SCMODE, -1, offs(scaling) },
-	{ NULL, 0, -1, 0 }
+	{
+	"name", STR, -1, offs(name)}, {
+	"hill-tile", STR, HILL_TILE, offs(terrain_tile_names[HILL_TILE])},
+	{
+	"field-tile", STR, FIELD_TILE,
+		    offs(terrain_tile_names[FIELD_TILE])}, {
+	"mountain-tile", STR, MOUNTAIN_TILE,
+		    offs(terrain_tile_names[MOUNTAIN_TILE])}, {
+	"pasture-tile", STR, PASTURE_TILE,
+		    offs(terrain_tile_names[PASTURE_TILE])}, {
+	"forest-tile", STR, FOREST_TILE,
+		    offs(terrain_tile_names[FOREST_TILE])}, {
+	"desert-tile", STR, -1, offs(terrain_tile_names[DESERT_TILE])},
+	{
+	"sea-tile", STR, -1, offs(terrain_tile_names[SEA_TILE])}, {
+	"gold-tile", STR, GOLD_TILE, offs(terrain_tile_names[GOLD_TILE])},
+	{
+	"board-tile", STR, -1, offs(terrain_tile_names[BOARD_TILE])}, {
+	"brick-port-tile", STR, -1, offs(port_tile_names[HILL_PORT_TILE])},
+	{
+	"grain-port-tile", STR, -1,
+		    offs(port_tile_names[FIELD_PORT_TILE])}, {
+	"ore-port-tile", STR, -1,
+		    offs(port_tile_names[MOUNTAIN_PORT_TILE])}, {
+	"wool-port-tile", STR, -1,
+		    offs(port_tile_names[PASTURE_PORT_TILE])}, {
+	"lumber-port-tile", STR, -1,
+		    offs(port_tile_names[FOREST_PORT_TILE])}, {
+	"nores-port-tile", STR, -1, offs(port_tile_names[ANY_PORT_TILE])},
+	{
+	"chip-bg-color", COL, -1, offs(colors[TC_CHIP_BG])}, {
+	"chip-fg-color", COL, -1, offs(colors[TC_CHIP_FG])}, {
+	"chip-bd-color", COL, -1, offs(colors[TC_CHIP_BD])}, {
+	"chip-hi-bg-color", COL, -1, offs(colors[TC_CHIP_H_BG])}, {
+	"chip-hi-fg-color", COL, -1, offs(colors[TC_CHIP_H_FG])}, {
+	"port-bg-color", COL, -1, offs(colors[TC_PORT_BG])}, {
+	"port-fg-color", COL, -1, offs(colors[TC_PORT_FG])}, {
+	"port-bd-color", COL, -1, offs(colors[TC_PORT_BD])}, {
+	"robber-fg-color", COL, -1, offs(colors[TC_ROBBER_FG])}, {
+	"robber-bd-color", COL, -1, offs(colors[TC_ROBBER_BD])}, {
+	"hex-bd-color", COL, -1, offs(colors[TC_HEX_BD])}, {
+	"scaling", SCMODE, -1, offs(scaling)}, {
+	NULL, 0, -1, 0}
 };
 
 #define ERR1(formatstring, argument) \
@@ -477,15 +545,15 @@ static struct tvars {
 #define ERR0(string) \
 	ERR1("%s", string);
 
-static struct tvars *getvar(char **p, const gchar *filename, int lno)
+static struct tvars *getvar(char **p, const gchar * filename, int lno)
 {
 	char *q, qsave;
 	struct tvars *tv;
-	
+
 	*p += strspn(*p, " \t");
 	if (!**p || **p == '\n')
-		return NULL; /* empty line */
-	
+		return NULL;	/* empty line */
+
 	q = *p + strcspn(*p, " \t=\n");
 	if (q == *p) {
 		ERR1(_("variable name missing: %s"), *p);
@@ -493,8 +561,8 @@ static struct tvars *getvar(char **p, const gchar *filename, int lno)
 	}
 	qsave = *q;
 	*q++ = '\0';
-	
-	for(tv = theme_vars; tv->name; ++tv) {
+
+	for (tv = theme_vars; tv->name; ++tv) {
 		if (strcmp(*p, tv->name) == 0)
 			break;
 	}
@@ -517,7 +585,7 @@ static struct tvars *getvar(char **p, const gchar *filename, int lno)
 	return tv;
 }
 
-static char *getval(char **p, const gchar *filename, int lno)
+static char *getval(char **p, const gchar * filename, int lno)
 {
 	char *q;
 
@@ -539,18 +607,19 @@ static gboolean checkend(const char *p)
 	p += strspn(p, " \t");
 	return !*p || *p == '\n';
 }
- 
-static gboolean parsecolor(char *p, TColor *tc, const gchar *filename, int lno)
+
+static gboolean parsecolor(char *p, TColor * tc, const gchar * filename,
+			   int lno)
 {
 	int l;
-	
+
 	if (strcmp(p, "none") == 0 || strcmp(p, "transparent") == 0) {
 		tc->set = TRUE;
 		tc->transparent = TRUE;
 		return TRUE;
 	}
 	tc->transparent = FALSE;
-	
+
 	if (*p != '#') {
 		ERR1(_("color must be 'none' or start with '#': %s"), p);
 		return FALSE;
@@ -564,15 +633,17 @@ static gboolean parsecolor(char *p, TColor *tc, const gchar *filename, int lno)
 	}
 
 	if (l < 3 || l % 3 != 0 || l > 12) {
-		ERR1(_("bits per color component must be 4, 8, 12, or 16: #%s"), p);
+		ERR1(_
+		     ("bits per color component must be 4, 8, 12, or 16: #%s"),
+		     p);
 		return FALSE;
 	}
 
 	l /= 3;
 	tc->set = TRUE;
-	tc->color.red   = parsehex(p, l);
-	tc->color.green = parsehex(p+l, l);
-	tc->color.blue  = parsehex(p+2*l, l);
+	tc->color.red = parsehex(p, l);
+	tc->color.green = parsehex(p + l, l);
+	tc->color.blue = parsehex(p + 2 * l, l);
 	return TRUE;
 }
 
@@ -581,14 +652,16 @@ static gushort parsehex(char *p, int len)
 	gushort v = 0;
 	int shift = 12;
 
-	while(len--) {
-		v |= (*p <= '9' ? *p - '0' : tolower(*p)-'a'+10) << shift;
+	while (len--) {
+		v |= (*p <=
+		      '9' ? *p - '0' : tolower(*p) - 'a' + 10) << shift;
 		shift -= 4;
 	}
 	return v;
 }
 
-static MapTheme *theme_config_parse(const gchar *themename, const gchar *filename)
+static MapTheme *theme_config_parse(const gchar * themename,
+				    const gchar * filename)
 {
 	FILE *f;
 	char line[512];
@@ -597,7 +670,7 @@ static MapTheme *theme_config_parse(const gchar *themename, const gchar *filenam
 	MapTheme *t;
 	struct tvars *tv;
 	gboolean ok = TRUE;
-	
+
 	if (!(f = fopen(filename, "r")))
 		return NULL;
 
@@ -606,46 +679,51 @@ static MapTheme *theme_config_parse(const gchar *themename, const gchar *filenam
 	t->name = g_filename_to_utf8(themename, -1, NULL, NULL, NULL);
 
 	lno = 0;
-	while( fgets(line, sizeof(line), f)) {
+	while (fgets(line, sizeof(line), f)) {
 		++lno;
 		if (line[0] == '#')
 			continue;
 		p = line;
 		if (!(tv = getvar(&p, filename, lno)) ||
-			!(q = getval(&p, filename, lno))) {
+		    !(q = getval(&p, filename, lno))) {
 			ok = FALSE;
 			continue;
 		}
 
-		switch(tv->type) {
-		  case STR:
+		switch (tv->type) {
+		case STR:
 			telem(char *, t, tv) = g_strdup(q);
 			if (tv->override >= 0 && !checkend(p)) {
 				int terrain = tv->override;
 				int i;
-				
-				for(i=0; i < TC_MAX_OVERRIDE; ++i) {
+
+				for (i = 0; i < TC_MAX_OVERRIDE; ++i) {
 					if (checkend(p))
 						break;
-					if (!(q = getval(&p, filename, lno))) {
+					if (!
+					    (q =
+					     getval(&p, filename, lno))) {
 						ok = FALSE;
 						break;
 					}
-					if (!parsecolor(q, &(t->ovr_colors[terrain][i]),
-									 filename, lno)) {
+					if (!parsecolor
+					    (q,
+					     &(t->ovr_colors[terrain][i]),
+					     filename, lno)) {
 						ok = FALSE;
 						break;
 					}
 				}
 			}
 			break;
-		  case COL:
-			if (!parsecolor(q, &telem(TColor, t, tv), filename, lno)) {
+		case COL:
+			if (!parsecolor
+			    (q, &telem(TColor, t, tv), filename, lno)) {
 				ok = FALSE;
 				continue;
 			}
 			break;
-		  case SCMODE:
+		case SCMODE:
 			if (strcmp(q, "never") == 0)
 				t->scaling = NEVER;
 			else if (strcmp(q, "always") == 0)

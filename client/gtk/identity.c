@@ -30,34 +30,35 @@ static GdkGC *identity_gc;
 static int die1_num;
 static int die2_num;
 
-static void calculate_width(GtkWidget *area, const Polygon *poly, gint num,
-		gint *fixedwidth, gint *variablewidth)
+static void calculate_width(GtkWidget * area, const Polygon * poly,
+			    gint num, gint * fixedwidth,
+			    gint * variablewidth)
 {
 	GdkRectangle rect;
 	char buff[10];
 	gint width, height;
 	PangoLayout *layout;
-	
+
 	poly_bound_rect(poly, 0, &rect);
 
 	sprintf(buff, "%d", num);
-	layout = gtk_widget_create_pango_layout (area, buff);
-	pango_layout_get_pixel_size (layout, &width, &height);
-	g_object_unref (layout);
+	layout = gtk_widget_create_pango_layout(area, buff);
+	pango_layout_get_pixel_size(layout, &width, &height);
+	g_object_unref(layout);
 
 	*fixedwidth += width + 10;
 	*variablewidth += rect.width;
 }
 
-static void calculate_optimum_size(GtkWidget *area, gint size)
+static void calculate_optimum_size(GtkWidget * area, gint size)
 {
-	const GameParams *game_params = get_game_params ();
+	const GameParams *game_params = get_game_params();
 	GdkPoint points[MAX_POINTS];
 	Polygon poly;
 	gint new_size;
-	gint fixedwidth;    /* Size of fixed part (digits + spacing) */
-	gint variablewidth; /* Size of variable part (polygons) */
-	
+	gint fixedwidth;	/* Size of fixed part (digits + spacing) */
+	gint variablewidth;	/* Size of variable part (polygons) */
+
 	if (game_params == NULL)
 		return;
 
@@ -70,37 +71,36 @@ static void calculate_optimum_size(GtkWidget *area, gint size)
 	if (game_params->num_build_type[BUILD_ROAD] > 0) {
 		poly.num_points = MAX_POINTS;
 		guimap_road_polygon(&bogus_map, NULL, &poly);
-		calculate_width(area, &poly, stock_num_roads(), 
+		calculate_width(area, &poly, stock_num_roads(),
 				&fixedwidth, &variablewidth);
 	}
 	if (game_params->num_build_type[BUILD_SHIP] > 0) {
 		poly.num_points = MAX_POINTS;
 		guimap_ship_polygon(&bogus_map, NULL, &poly);
-		calculate_width(area, &poly, stock_num_ships(), 
+		calculate_width(area, &poly, stock_num_ships(),
 				&fixedwidth, &variablewidth);
 	}
 	if (game_params->num_build_type[BUILD_BRIDGE] > 0) {
 		poly.num_points = MAX_POINTS;
 		guimap_bridge_polygon(&bogus_map, NULL, &poly);
-		calculate_width(area, &poly, stock_num_bridges(), 
+		calculate_width(area, &poly, stock_num_bridges(),
 				&fixedwidth, &variablewidth);
 	}
 	if (game_params->num_build_type[BUILD_SETTLEMENT] > 0) {
 		poly.num_points = MAX_POINTS;
 		guimap_settlement_polygon(&bogus_map, NULL, &poly);
-		calculate_width(area, &poly, stock_num_settlements(), 
+		calculate_width(area, &poly, stock_num_settlements(),
 				&fixedwidth, &variablewidth);
 	}
 	if (game_params->num_build_type[BUILD_CITY] > 0) {
 		poly.num_points = MAX_POINTS;
 		guimap_city_polygon(&bogus_map, NULL, &poly);
-		calculate_width(area, &poly, stock_num_cities(), 
+		calculate_width(area, &poly, stock_num_cities(),
 				&fixedwidth, &variablewidth);
 	}
 
-	new_size = bogus_map.hex_radius * 
-			(area->allocation.width - 75 - fixedwidth) / 
-			variablewidth;
+	new_size = bogus_map.hex_radius *
+	    (area->allocation.width - 75 - fixedwidth) / variablewidth;
 	if (new_size < bogus_map.hex_radius) {
 		if (new_size < 0)
 			new_size = 0;
@@ -108,14 +108,14 @@ static void calculate_optimum_size(GtkWidget *area, gint size)
 	}
 }
 
-static int draw_building_and_count(GdkGC *gc, GtkWidget *area, gint offset,
-				   Polygon *poly, gint num)
+static int draw_building_and_count(GdkGC * gc, GtkWidget * area,
+				   gint offset, Polygon * poly, gint num)
 {
 	GdkRectangle rect;
 	char buff[10];
 	gint width, height;
 	PangoLayout *layout;
-	
+
 	poly_bound_rect(poly, 0, &rect);
 	poly_offset(poly,
 		    offset - rect.x,
@@ -125,34 +125,35 @@ static int draw_building_and_count(GdkGC *gc, GtkWidget *area, gint offset,
 	offset += 5 + rect.width;
 
 	sprintf(buff, "%d", num);
-	layout = gtk_widget_create_pango_layout (area, buff);
-	pango_layout_get_pixel_size (layout, &width, &height);
-	gdk_draw_layout(area->window, gc, offset, area->allocation.height - height - 5, layout);
-	g_object_unref (layout);
+	layout = gtk_widget_create_pango_layout(area, buff);
+	pango_layout_get_pixel_size(layout, &width, &height);
+	gdk_draw_layout(area->window, gc, offset,
+			area->allocation.height - height - 5, layout);
+	g_object_unref(layout);
 
 	offset += 5 + width;
 
 	return offset;
 }
 
-static void show_die(GdkGC *gc, GtkWidget *area, gint x_offset, gint num)
+static void show_die(GdkGC * gc, GtkWidget * area, gint x_offset, gint num)
 {
 	static GdkPoint die_points[4] = {
-		{ 0, 0 }, { 30, 0 }, { 30, 30 }, { 0, 30 }
+		{0, 0}, {30, 0}, {30, 30}, {0, 30}
 	};
 	static Polygon die_shape = { die_points, numElem(die_points) };
 	static GdkPoint dot_pos[7] = {
-		{ 7,  7 },             { 22,  7 },
-		{ 7, 15 }, { 15, 15 }, { 22, 15 },
-		{ 7, 22 },             { 22, 22 }
+		{7, 7}, {22, 7},
+		{7, 15}, {15, 15}, {22, 15},
+		{7, 22}, {22, 22}
 	};
 	static gint draw_list[6][7] = {
-		{ 0,0,0,1,0,0,0 },
-		{ 0,1,0,0,0,1,0 },
-		{ 1,0,0,1,0,0,1 },
-		{ 1,1,0,0,0,1,1 },
-		{ 1,1,0,1,0,1,1 },
-		{ 1,1,1,0,1,1,1 }
+		{0, 0, 0, 1, 0, 0, 0},
+		{0, 1, 0, 0, 0, 1, 0},
+		{1, 0, 0, 1, 0, 0, 1},
+		{1, 1, 0, 0, 0, 1, 1},
+		{1, 1, 0, 1, 0, 1, 1},
+		{1, 1, 1, 0, 1, 1, 1}
 	};
 	gint y_offset = (area->allocation.height - 30) / 2;
 	gint *list = draw_list[num - 1];
@@ -179,15 +180,16 @@ static void show_die(GdkGC *gc, GtkWidget *area, gint x_offset, gint num)
 	}
 }
 
-static void identity_resize_cb(GtkWidget *area, 
-		UNUSED(GtkAllocation *allocation),
-		UNUSED(gpointer user_data))
+static void identity_resize_cb(GtkWidget * area,
+			       UNUSED(GtkAllocation * allocation),
+			       UNUSED(gpointer user_data))
 {
 	calculate_optimum_size(area, 50);
 }
 
-static gint expose_identity_area_cb(GtkWidget *area,
-		UNUSED(GdkEventExpose *event), UNUSED(gpointer user_data))
+static gint expose_identity_area_cb(GtkWidget * area,
+				    UNUSED(GdkEventExpose * event),
+				    UNUSED(gpointer user_data))
 {
 	GdkPoint points[MAX_POINTS];
 	Polygon poly;
@@ -204,15 +206,16 @@ static gint expose_identity_area_cb(GtkWidget *area,
 	colour = player_or_viewer_color(my_player_num());
 	gdk_gc_set_foreground(identity_gc, colour);
 	gdk_draw_rectangle(area->window, identity_gc, TRUE, 0, 0,
-			   area->allocation.width, area->allocation.height);
+			   area->allocation.width,
+			   area->allocation.height);
 
-	if (player_is_viewer (my_player_num () ) )
+	if (player_is_viewer(my_player_num()))
 		colour = &white;
 	else
 		colour = &black;
 	gdk_gc_set_foreground(identity_gc, colour);
 
-	game_params = get_game_params ();
+	game_params = get_game_params();
 	if (game_params == NULL)
 		return TRUE;
 	offset = 5;
@@ -234,19 +237,22 @@ static gint expose_identity_area_cb(GtkWidget *area,
 		poly.num_points = MAX_POINTS;
 		guimap_bridge_polygon(&bogus_map, NULL, &poly);
 		offset = draw_building_and_count(identity_gc, area, offset,
-						 &poly, stock_num_bridges());
+						 &poly,
+						 stock_num_bridges());
 	}
 	if (game_params->num_build_type[BUILD_SETTLEMENT] > 0) {
 		poly.num_points = MAX_POINTS;
 		guimap_settlement_polygon(&bogus_map, NULL, &poly);
 		offset = draw_building_and_count(identity_gc, area, offset,
-						 &poly, stock_num_settlements());
+						 &poly,
+						 stock_num_settlements());
 	}
 	if (game_params->num_build_type[BUILD_CITY] > 0) {
 		poly.num_points = MAX_POINTS;
 		guimap_city_polygon(&bogus_map, NULL, &poly);
 		offset = draw_building_and_count(identity_gc, area, offset,
-						 &poly, stock_num_cities());
+						 &poly,
+						 stock_num_cities());
 	}
 
 	if (die1_num > 0 && die2_num > 0) {
@@ -271,13 +277,13 @@ void identity_set_dice(gint die1, gint die2)
 	gtk_widget_queue_draw(identity_area);
 }
 
-GtkWidget* identity_build_panel()
+GtkWidget *identity_build_panel()
 {
 	identity_area = gtk_drawing_area_new();
 	g_signal_connect(G_OBJECT(identity_area), "expose_event",
-			G_CALLBACK(expose_identity_area_cb), NULL);
+			 G_CALLBACK(expose_identity_area_cb), NULL);
 	g_signal_connect(G_OBJECT(identity_area), "size-allocate",
-			G_CALLBACK(identity_resize_cb), NULL);
+			 G_CALLBACK(identity_resize_cb), NULL);
 	gtk_widget_set_size_request(identity_area, -1, 40);
 	identity_reset();
 	gtk_widget_show(identity_area);

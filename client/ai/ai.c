@@ -46,22 +46,22 @@ static char *random_name(void)
 	static char name[512];
 	int num = 1;
 
-	snprintf (filename, sizeof (filename) - 1, "%s/computer_names",
-			gnopath);
-	srand (time (NULL) + getpid () );
+	snprintf(filename, sizeof(filename) - 1, "%s/computer_names",
+		 gnopath);
+	srand(time(NULL) + getpid());
 
-	stream = fopen (filename, "r");
+	stream = fopen(filename, "r");
 	if (!stream) {
-		g_warning ("Unable to open computer_names file.");
-		strcpy (name, "Computer Player");
+		g_warning("Unable to open computer_names file.");
+		strcpy(name, "Computer Player");
 	} else {
-		while (fgets (line, sizeof (line) - 1, stream) ) {
-			if (rand () % num < 1) {
-				strcpy (name, line);
+		while (fgets(line, sizeof(line) - 1, stream)) {
+			if (rand() % num < 1) {
+				strcpy(name, line);
 			}
 			num++;
 		}
-		fclose (stream);
+		fclose(stream);
 	}
 	return name;
 }
@@ -69,14 +69,14 @@ static char *random_name(void)
 static void usage(int retval)
 {
 	printf("Usage: gnocatanai [args]\n"
-		"\n"
-		"s - server\n"
-		"p - port\n"
-		"n - computer name (leave absent for random name)\n"
-		"a - AI player (possible values: greedy)\n"
-		"t - time to wait between turns (in milliseconds; default 1000)\n"
-		"c - stop computer players from talking\n");
-	exit (retval);
+	       "\n"
+	       "s - server\n"
+	       "p - port\n"
+	       "n - computer name (leave absent for random name)\n"
+	       "a - AI player (possible values: greedy)\n"
+	       "t - time to wait between turns (in milliseconds; default 1000)\n"
+	       "c - stop computer players from talking\n");
+	exit(retval);
 }
 
 UIDriver Glib_Driver;
@@ -84,7 +84,7 @@ UIDriver Glib_Driver;
 /* this needs some tweaking.  It would be nice if anything not handled by
  * the AI program can be handled by the AI implementation that is playing.
  * -c is typically an option which should not be handled globally */
-static void ai_init (int argc, char **argv)
+static void ai_init(int argc, char **argv)
 {
 	int c;
 	char *name = NULL;
@@ -92,78 +92,77 @@ static void ai_init (int argc, char **argv)
 	local_argc = argc;
 	local_argv = argv;
 
-	while ( (c = getopt(argc, argv, "s:p:n:a:t:ch") ) != EOF)
-	{
+	while ((c = getopt(argc, argv, "s:p:n:a:t:ch")) != EOF) {
 		switch (c) {
-			case 'c':
-				silent = TRUE;
-				break;
-			case 's':
-				server = optarg;
-				break;
-			case 'p':
-				port = optarg;
-				break;
-			case 'n':
-				name = optarg;
-				break;
-			case 'a':
-				ai = optarg;
-				break;
-			case 't':
-				waittime = atoi(optarg);
-				break;
-			case 'h':
-				usage (0);
-				/* does not return */
-			default:
-				usage (1);
-				/* does not return */
+		case 'c':
+			silent = TRUE;
+			break;
+		case 's':
+			server = optarg;
+			break;
+		case 'p':
+			port = optarg;
+			break;
+		case 'n':
+			name = optarg;
+			break;
+		case 'a':
+			ai = optarg;
+			break;
+		case 't':
+			waittime = atoi(optarg);
+			break;
+		case 'h':
+			usage(0);
+			/* does not return */
+		default:
+			usage(1);
+			/* does not return */
 		}
 	}
 
-	printf ("ai port is %s\n", port);
+	printf("ai port is %s\n", port);
 
-	srand (time (NULL) );
+	srand(time(NULL));
 
 	if (!name) {
-		name = random_name ();
+		name = random_name();
 	}
-	cb_name_change (name);
+	cb_name_change(name);
 
-	set_ui_driver (&Glib_Driver);
-	log_set_func_default ();
+	set_ui_driver(&Glib_Driver);
+	log_set_func_default();
 }
 
-static void ai_quit (void)
+static void ai_quit(void)
 {
-	exit (0);
+	exit(0);
 }
 
-static void ai_offline (void)
+static void ai_offline(void)
 {
 	callbacks.offline = &ai_quit;
-	cb_connect (server, port);
+	cb_connect(server, port);
 }
 
-static void ai_start_game (void)
+static void ai_start_game(void)
 {
 	/* TODO: choose which ai implementation to use */
-	greedy_init (local_argc, local_argv);
+	greedy_init(local_argc, local_argv);
 }
 
-void ai_wait (void)
+void ai_wait(void)
 {
-	usleep (waittime * 1000);
+	usleep(waittime * 1000);
 }
 
-void ai_chat (const char *message)
+void ai_chat(const char *message)
 {
 	if (!silent)
-		cb_chat (message);
+		cb_chat(message);
 }
 
-void frontend_set_callbacks (void)
+void frontend_set_callbacks(void)
 {
 	callbacks.init = &ai_init;
 	callbacks.offline = &ai_offline;

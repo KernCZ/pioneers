@@ -14,4 +14,4 @@ void mt_seed(gulong seed);
 gulong mt_reload(void);
 gulong mt_random(void);
 
-#endif /* __mt_rand_h */
+#endif				/* __mt_rand_h */

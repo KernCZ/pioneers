@@ -45,49 +45,48 @@
 
 #include "gnocatan-server.h"
 
-  static void usage(void)
-  {
-    fprintf(stderr,
- 	    "Usage: gnocatan-server-console [options]\n"
- 	    "  -a port   --  Admin port to listen on\n"
- 	    "  -c num    --  Start num computer players\n"
- 	    "  -g game   --  Game name to use\n"
-	    "  -h        --  Show this help\n"
-	    "  -k secs   --  Kill after 'secs' seconds with no players\n"
-	    "  -m meta   --  Register at meta-server name (implies -r)\n"
+static void usage(void)
+{
+	fprintf(stderr,
+		"Usage: gnocatan-server-console [options]\n"
+		"  -a port   --  Admin port to listen on\n"
+		"  -c num    --  Start num computer players\n"
+		"  -g game   --  Game name to use\n"
+		"  -h        --  Show this help\n"
+		"  -k secs   --  Kill after 'secs' seconds with no players\n"
+		"  -m meta   --  Register at meta-server name (implies -r)\n"
 		"  -n name   --  Use this hostname when registering\n"
- 	    "  -P num    --  Set Number of players\n"
-	    "  -p port   --  Port to listen on\n"
- 	    "  -r        --  Register server with meta-server\n"
-	    "  -R 0|1|2  --  Set seven-rule handling\n"
- 	    "  -s        --  Don't start game immediately, wait for a "
-			    "command on admin port\n"
- 	    "  -t mins   --  Tournament mode, ai players added after "
-			    "'mins' minutes\n"
-	    "  -T 0|1    --  select terrain type, 0=default 1=random\n"
- 	    "  -v points --  Number of points needed to win\n"
- 	    "  -x        --  Quit after a player has won\n"
- 	    );
-     
-    exit(1);
-  }
- 
+		"  -P num    --  Set Number of players\n"
+		"  -p port   --  Port to listen on\n"
+		"  -r        --  Register server with meta-server\n"
+		"  -R 0|1|2  --  Set seven-rule handling\n"
+		"  -s        --  Don't start game immediately, wait for a "
+		"command on admin port\n"
+		"  -t mins   --  Tournament mode, ai players added after "
+		"'mins' minutes\n"
+		"  -T 0|1    --  select terrain type, 0=default 1=random\n"
+		"  -v points --  Number of points needed to win\n"
+		"  -x        --  Quit after a player has won\n");
+
+	exit(1);
+}
 
 
-int main( int argc, char *argv[] )
+
+int main(int argc, char *argv[])
 {
 	int c, i;
 	gint num_players = 0, num_points = 0, port = 0, admin_port = 0,
-	     sevens_rule = 0, terrain = -1, timeout = 0, num_ai_players = 0;
+	    sevens_rule = 0, terrain = -1, timeout = 0, num_ai_players = 0;
 
 	gboolean disable_game_start = FALSE;
 	GMainLoop *event_loop;
 	gint tournament_time = -1;
- 	gboolean quit_when_done = FALSE;
+	gboolean quit_when_done = FALSE;
 	gchar *hostname = NULL;
 
 	/* set the UI driver to Glib_Driver, since we're using glib */
-	set_ui_driver( &Glib_Driver );
+	set_ui_driver(&Glib_Driver);
 	driver->player_added = srv_glib_player_added;
 	driver->player_renamed = srv_glib_player_renamed;
 	driver->player_removed = srv_player_removed;
@@ -96,8 +95,9 @@ int main( int argc, char *argv[] )
 
 	server_init();
 
-	while ((c = getopt(argc, argv, "a:c:g:hk:m:n:P:p:rR:st:T:v:x")) != EOF)
-	{
+	while ((c =
+		getopt(argc, argv,
+		       "a:c:g:hk:m:n:P:p:rR:st:T:v:x")) != EOF) {
 		switch (c) {
 		case 'a':
 			if (!optarg) {
@@ -112,7 +112,7 @@ int main( int argc, char *argv[] )
 			num_ai_players = atoi(optarg);
 			break;
 		case 'g':
-			cfg_set_game( optarg );
+			cfg_set_game(optarg);
 			break;
 		case 'k':
 			if (!optarg) {
@@ -158,14 +158,14 @@ int main( int argc, char *argv[] )
 			register_server = TRUE;
 			break;
 		case 's':
-		        disable_game_start = TRUE;
+			disable_game_start = TRUE;
 			break;
 		case 't':
 			if (!optarg) {
-			    usage();
+				usage();
 			}
-		        tournament_time = atoi(optarg);
-		        break;
+			tournament_time = atoi(optarg);
+			break;
 		case 'T':
 			if (!optarg) {
 				break;
@@ -174,7 +174,7 @@ int main( int argc, char *argv[] )
 			break;
 		case 'v':
 			if (!optarg) {
-			    usage();
+				usage();
 			}
 			num_points = atoi(optarg);
 			break;
@@ -183,7 +183,7 @@ int main( int argc, char *argv[] )
 			break;
 		case 'h':
 		default:
-		        usage();
+			usage();
 			break;
 		}
 	}
@@ -193,11 +193,12 @@ int main( int argc, char *argv[] )
 	}
 
 	if (admin_port) {
-		snprintf(server_admin_port, sizeof(server_admin_port), "%d", admin_port);
+		snprintf(server_admin_port, sizeof(server_admin_port),
+			 "%d", admin_port);
 	}
 
 	if (num_players) {
-		cfg_set_num_players(num_players);		
+		cfg_set_num_players(num_players);
 	}
 
 	if (sevens_rule) {
@@ -208,14 +209,14 @@ int main( int argc, char *argv[] )
 		cfg_set_victory_points(num_points);
 	}
 
-	if (tournament_time!=-1) {
-	        cfg_set_tournament_time(tournament_time);
+	if (tournament_time != -1) {
+		cfg_set_tournament_time(tournament_time);
 	}
 
 	if (quit_when_done) {
-	        cfg_set_quit(quit_when_done);
+		cfg_set_quit(quit_when_done);
 	}
-	
+
 	if (terrain != -1) {
 		cfg_set_terrain_type(terrain ? 1 : 0);
 	}
@@ -224,37 +225,35 @@ int main( int argc, char *argv[] )
 		cfg_set_timeout(timeout);
 	}
 
-	admin_listen( server_admin_port );
+	admin_listen(server_admin_port);
 
-    if( !disable_game_start )
-    {
-        if( start_server( hostname, server_port, register_server ) )
-        {
-            for( i = 0; i < num_ai_players; ++i )
-                new_computer_player(NULL, server_port);
+	if (!disable_game_start) {
+		if (start_server(hostname, server_port, register_server)) {
+			for (i = 0; i < num_ai_players; ++i)
+				new_computer_player(NULL, server_port);
 
-            event_loop = g_main_new(0);
-            g_main_run( event_loop );
-            g_main_destroy( event_loop );
-            
-        } else {
-            
-            usage();
-        }
-        
-    } else {
+			event_loop = g_main_new(0);
+			g_main_run(event_loop);
+			g_main_destroy(event_loop);
 
-        /* Ugly... But needed to preserve the original functionality
-           if the disable_game_start flag is set... Even if it doesn't
-           really -do- anything. */
-        for( i = 0; i < num_ai_players; ++i )
-            new_computer_player(NULL, server_port);
+		} else {
 
-        event_loop = g_main_new(0);
-        g_main_run( event_loop );
-        g_main_destroy( event_loop );
-    }
+			usage();
+		}
 
-    g_free(hostname);
-    return 0;
+	} else {
+
+		/* Ugly... But needed to preserve the original functionality
+		   if the disable_game_start flag is set... Even if it doesn't
+		   really -do- anything. */
+		for (i = 0; i < num_ai_players; ++i)
+			new_computer_player(NULL, server_port);
+
+		event_loop = g_main_new(0);
+		g_main_run(event_loop);
+		g_main_destroy(event_loop);
+	}
+
+	g_free(hostname);
+	return 0;
 }

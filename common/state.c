@@ -37,34 +37,34 @@
 #include "state.h"
 #include "cost.h"
 
-void sm_inc_use_count(StateMachine *sm)
+void sm_inc_use_count(StateMachine * sm)
 {
 	sm->use_count++;
 }
 
-void sm_dec_use_count(StateMachine *sm)
+void sm_dec_use_count(StateMachine * sm)
 {
 	if (!--sm->use_count && sm->is_dead)
 		sm_free(sm);
 }
 
-const gchar *sm_current_name(StateMachine *sm)
+const gchar *sm_current_name(StateMachine * sm)
 {
 	return sm->current_state;
 }
 
-void sm_state_name(StateMachine *sm, const gchar *name)
+void sm_state_name(StateMachine * sm, const gchar * name)
 {
 	sm->current_state = name;
 	sm->stack_name[sm->stack_ptr] = name;
 }
 
-gboolean sm_is_connected(StateMachine *sm)
+gboolean sm_is_connected(StateMachine * sm)
 {
 	return sm->ses != NULL && net_connected(sm->ses);
 }
 
-static void route_event(StateMachine *sm, gint event)
+static void route_event(StateMachine * sm, gint event)
 {
 	StateFunc curr_state;
 	gpointer user_data;
@@ -83,8 +83,8 @@ static void route_event(StateMachine *sm, gint event)
 		break;
 	case SM_INIT:
 		curr_state(user_data, event);
-		if (!sm->is_dead && sm->global != NULL)
-			sm->global(user_data, event);
+		if (!sm->is_dead && sm->global !=NULL)
+			sm->global (user_data, event);
 		break;
 	case SM_RECV:
 		sm_cancel_prefix(sm);
@@ -92,10 +92,9 @@ static void route_event(StateMachine *sm, gint event)
 			break;
 		sm_cancel_prefix(sm);
 		if (!sm->is_dead
-		    && sm->global != NULL
-		    && sm->global(user_data, event))
+		    && sm->global !=NULL && sm->global (user_data, event))
 			break;
-		
+
 		sm_cancel_prefix(sm);
 		if (!sm->is_dead && sm->unhandled != NULL)
 			sm->unhandled(user_data, event);
@@ -104,18 +103,18 @@ static void route_event(StateMachine *sm, gint event)
 		net_free(&(sm->ses));
 	default:
 		curr_state(user_data, event);
-		if (!sm->is_dead && sm->global != NULL)
-			sm->global(user_data, event);
+		if (!sm->is_dead && sm->global !=NULL)
+			sm->global (user_data, event);
 		break;
 	}
 }
 
-void sm_cancel_prefix(StateMachine *sm)
+void sm_cancel_prefix(StateMachine * sm)
 {
 	sm->line_offset = 0;
 }
 
-static void net_event(NetEvent event, StateMachine *sm, gchar *line)
+static void net_event(NetEvent event, StateMachine * sm, gchar * line)
 {
 	sm_inc_use_count(sm);
 
@@ -135,9 +134,9 @@ static void net_event(NetEvent event, StateMachine *sm, gchar *line)
 		 * clients starting to send data immediately crash the
 		 * server */
 		if (sm->stack_ptr != -1)
-		route_event(sm, SM_RECV);
+			route_event(sm, SM_RECV);
 		else {
-			sm_dec_use_count (sm);
+			sm_dec_use_count(sm);
 			return;
 		}
 		break;
@@ -147,13 +146,15 @@ static void net_event(NetEvent event, StateMachine *sm, gchar *line)
 	sm_dec_use_count(sm);
 }
 
-gboolean sm_connect(StateMachine *sm, const gchar *host, const gchar *port)
+gboolean sm_connect(StateMachine * sm, const gchar * host,
+		    const gchar * port)
 {
 	if (sm->ses != NULL)
 		net_free(&(sm->ses));
 
-	sm->ses = net_new((NetNotifyFunc)net_event, sm);
-	log_message( MSG_INFO, _("Connecting to %s, port %s\n"),  host, port);
+	sm->ses = net_new((NetNotifyFunc) net_event, sm);
+	log_message(MSG_INFO, _("Connecting to %s, port %s\n"), host,
+		    port);
 	if (net_connect(sm->ses, host, port))
 		return TRUE;
 
@@ -161,16 +162,16 @@ gboolean sm_connect(StateMachine *sm, const gchar *host, const gchar *port)
 	return FALSE;
 }
 
-void sm_use_fd(StateMachine *sm, gint fd)
+void sm_use_fd(StateMachine * sm, gint fd)
 {
 	if (sm->ses != NULL)
 		net_free(&(sm->ses));
 
-	sm->ses = net_new((NetNotifyFunc)net_event, sm);
+	sm->ses = net_new((NetNotifyFunc) net_event, sm);
 	net_use_fd(sm->ses, fd);
 }
 
-static gint get_num(gchar *str, gint *num)
+static gint get_num(gchar * str, gint * num)
 {
 	gint len = 0;
 	gboolean is_negative = FALSE;
@@ -198,7 +199,7 @@ static const gchar *resource_types[] = {
 	"lumber"
 };
 
-static gint try_recv(StateMachine *sm, const gchar *fmt, va_list ap)
+static gint try_recv(StateMachine * sm, const gchar * fmt, va_list ap)
 {
 	gint offset = 0;
 	gchar *line = sm->line + sm->line_offset;
@@ -221,32 +222,34 @@ static gint try_recv(StateMachine *sm, const gchar *fmt, va_list ap)
 		fmt++;
 
 		switch (*fmt++) {
-		case 'S': /* string from current position to end of line */
-			str = va_arg(ap, gchar*);
+		case 'S':	/* string from current position to end of line */
+			str = va_arg(ap, gchar *);
 			len = va_arg(ap, gint);
 			strncpy(str, line + offset, len - 1);
 			str[len - 1] = '\0';
 			offset += strlen(str);
 			break;
-		case 'd': /* integer */
-			num = va_arg(ap, gint*);
+		case 'd':	/* integer */
+			num = va_arg(ap, gint *);
 			len = get_num(line + offset, num);
 			if (len == 0)
 				return -1;
 			offset += len;
 			break;
-		case 'B': /* build type */
-			build_type = va_arg(ap, BuildType*);
+		case 'B':	/* build type */
+			build_type = va_arg(ap, BuildType *);
 			if (strncmp(line + offset, "road", 4) == 0) {
 				*build_type = BUILD_ROAD;
 				offset += 4;
-			} else if (strncmp(line + offset, "bridge", 6) == 0) {
+			} else if (strncmp(line + offset, "bridge", 6) ==
+				   0) {
 				*build_type = BUILD_BRIDGE;
 				offset += 6;
 			} else if (strncmp(line + offset, "ship", 4) == 0) {
 				*build_type = BUILD_SHIP;
 				offset += 4;
-			} else if (strncmp(line + offset, "settlement", 10) == 0) {
+			} else if (strncmp(line + offset, "settlement", 10)
+				   == 0) {
 				*build_type = BUILD_SETTLEMENT;
 				offset += 10;
 			} else if (strncmp(line + offset, "city", 4) == 0) {
@@ -255,8 +258,8 @@ static gint try_recv(StateMachine *sm, const gchar *fmt, va_list ap)
 			} else
 				return -1;
 			break;
-		case 'R': /* list of 5 integer resource counts */
-			num  = va_arg(ap, gint*);
+		case 'R':	/* list of 5 integer resource counts */
+			num = va_arg(ap, gint *);
 			for (idx = 0; idx < NO_RESOURCE; idx++) {
 				while (line[offset] == ' ')
 					offset++;
@@ -267,19 +270,19 @@ static gint try_recv(StateMachine *sm, const gchar *fmt, va_list ap)
 				num++;
 			}
 			break;
-		case 'D': /* development card type */
-			num = va_arg(ap, gint*);
+		case 'D':	/* development card type */
+			num = va_arg(ap, gint *);
 			len = get_num(line + offset, num);
 			if (len == 0)
 				return -1;
 			offset += len;
 			break;
-		case 'r': /* resource type */
-			resource = va_arg(ap, Resource*);
+		case 'r':	/* resource type */
+			resource = va_arg(ap, Resource *);
 			for (idx = 0; idx < NO_RESOURCE; idx++) {
 				const gchar *type = resource_types[idx];
 				len = strlen(type);
-				if (strncmp(line + offset, type,len) == 0) {
+				if (strncmp(line + offset, type, len) == 0) {
 					offset += len;
 					*resource = idx;
 					break;
@@ -295,7 +298,7 @@ static gint try_recv(StateMachine *sm, const gchar *fmt, va_list ap)
 	return offset;
 }
 
-gboolean sm_recv(StateMachine *sm, const gchar *fmt, ...)
+gboolean sm_recv(StateMachine * sm, const gchar * fmt, ...)
 {
 	va_list ap;
 	gint offset;
@@ -307,7 +310,7 @@ gboolean sm_recv(StateMachine *sm, const gchar *fmt, ...)
 	return offset > 0 && sm->line[sm->line_offset + offset] == '\0';
 }
 
-gboolean sm_recv_prefix(StateMachine *sm, const gchar *fmt, ...)
+gboolean sm_recv_prefix(StateMachine * sm, const gchar * fmt, ...)
 {
 	va_list ap;
 	gint offset;
@@ -322,7 +325,8 @@ gboolean sm_recv_prefix(StateMachine *sm, const gchar *fmt, ...)
 	return TRUE;
 }
 
-static gint buff_append(gchar *buff, gint len, gint offset, const gchar *str)
+static gint buff_append(gchar * buff, gint len, gint offset,
+			const gchar * str)
 {
 	gint str_len = strlen(str);
 
@@ -331,7 +335,7 @@ static gint buff_append(gchar *buff, gint len, gint offset, const gchar *str)
 	return offset + str_len;
 }
 
-void sm_vnformat(gchar *buff, gint len, const gchar *fmt, va_list ap)
+void sm_vnformat(gchar * buff, gint len, const gchar * fmt, va_list ap)
 {
 	gint offset = 0;
 
@@ -351,60 +355,73 @@ void sm_vnformat(gchar *buff, gint len, const gchar *fmt, va_list ap)
 		fmt++;
 
 		switch (*fmt++) {
-		case 's': /* string */
-			str = va_arg(ap, gchar*);
+		case 's':	/* string */
+			str = va_arg(ap, gchar *);
 			offset = buff_append(buff, len, offset, str);
 			break;
-		case 'd': /* integer */
+		case 'd':	/* integer */
 			val = va_arg(ap, gint);
 			sprintf(tmp, "%d", val);
 			offset = buff_append(buff, len, offset, tmp);
 			break;
-		case 'B': /* build type */
+		case 'B':	/* build type */
 			build_type = va_arg(ap, BuildType);
 			switch (build_type) {
 			case BUILD_ROAD:
-				offset = buff_append(buff, len, offset, "road");
+				offset =
+				    buff_append(buff, len, offset, "road");
 				break;
 			case BUILD_BRIDGE:
-				offset = buff_append(buff, len, offset, "bridge");
+				offset =
+				    buff_append(buff, len, offset,
+						"bridge");
 				break;
 			case BUILD_SHIP:
-				offset = buff_append(buff, len, offset, "ship");
+				offset =
+				    buff_append(buff, len, offset, "ship");
 				break;
 			case BUILD_SETTLEMENT:
-				offset = buff_append(buff, len, offset, "settlement");
+				offset =
+				    buff_append(buff, len, offset,
+						"settlement");
 				break;
 			case BUILD_CITY:
-				offset = buff_append(buff, len, offset, "city");
+				offset =
+				    buff_append(buff, len, offset, "city");
 				break;
 			case BUILD_NONE:
-				g_error("BUILD_NONE passed to sm_vnformat");
+				g_error
+				    ("BUILD_NONE passed to sm_vnformat");
 				break;
 			case BUILD_MOVE_SHIP:
-				g_error("BUILD_MOVE_SHIP passed to sm_vnformat");
+				g_error
+				    ("BUILD_MOVE_SHIP passed to sm_vnformat");
 				break;
 			}
 			break;
-		case 'R': /* list of 5 integer resource counts */
-			num  = va_arg(ap, gint*);
-			for (idx = 0; idx < NO_RESOURCE && offset < len; idx++) {
+		case 'R':	/* list of 5 integer resource counts */
+			num = va_arg(ap, gint *);
+			for (idx = 0; idx < NO_RESOURCE && offset < len;
+			     idx++) {
 				if (idx > 0)
 					sprintf(tmp, " %d", *num);
 				else
 					sprintf(tmp, "%d", *num);
-				offset = buff_append(buff, len, offset, tmp);
+				offset =
+				    buff_append(buff, len, offset, tmp);
 				num++;
 			}
 			break;
-		case 'D': /* development card type */
+		case 'D':	/* development card type */
 			val = va_arg(ap, gint);
 			sprintf(tmp, "%d", val);
 			offset = buff_append(buff, len, offset, tmp);
 			break;
-		case 'r': /* resource type */
+		case 'r':	/* resource type */
 			resource = va_arg(ap, Resource);
-			offset = buff_append(buff, len, offset, resource_types[resource]);
+			offset =
+			    buff_append(buff, len, offset,
+					resource_types[resource]);
 			break;
 		}
 	}
@@ -413,17 +430,18 @@ void sm_vnformat(gchar *buff, gint len, const gchar *fmt, va_list ap)
 	buff[offset] = '\0';
 }
 
-void sm_write(StateMachine *sm, const gchar *str)
+void sm_write(StateMachine * sm, const gchar * str)
 {
 	net_write(sm->ses, str);
 }
 
-void sm_send(StateMachine *sm, const gchar *fmt, ...)
+void sm_send(StateMachine * sm, const gchar * fmt, ...)
 {
 	va_list ap;
 	gchar buff[512];
 
-	if (!sm->ses) return;
+	if (!sm->ses)
+		return;
 
 	va_start(ap, fmt);
 	sm_vnformat(buff, sizeof(buff), fmt, ap);
@@ -432,30 +450,32 @@ void sm_send(StateMachine *sm, const gchar *fmt, ...)
 	net_write(sm->ses, buff);
 }
 
-void sm_global_set(StateMachine *sm, StateFunc state)
+void sm_global_set(StateMachine * sm, StateFunc state)
 {
 	sm->global = state;
 }
 
-void sm_unhandled_set(StateMachine *sm, StateFunc state)
+void sm_unhandled_set(StateMachine * sm, StateFunc state)
 {
 	sm->unhandled = state;
 }
 
-static void push_new_state(StateMachine *sm)
+static void push_new_state(StateMachine * sm)
 {
 	++sm->stack_ptr;
 	/* check for stack overflows */
-	if (sm->stack_ptr >= numElem(sm->stack) ) {
-		log_message (MSG_ERROR, _("State stack overflow. Stack dump sent to standard error.\n") );
+	if (sm->stack_ptr >= numElem(sm->stack)) {
+		log_message(MSG_ERROR,
+			    _
+			    ("State stack overflow. Stack dump sent to standard error.\n"));
 		sm_stack_dump(sm);
-		g_error (_("State stack overflow") );
+		g_error(_("State stack overflow"));
 	}
 	sm->stack[sm->stack_ptr] = NULL;
 	sm->stack_name[sm->stack_ptr] = NULL;
 }
 
-static void do_goto(StateMachine *sm, StateFunc new_state, gboolean enter)
+static void do_goto(StateMachine * sm, StateFunc new_state, gboolean enter)
 {
 	sm_inc_use_count(sm);
 
@@ -476,17 +496,17 @@ static void do_goto(StateMachine *sm, StateFunc new_state, gboolean enter)
 	sm_dec_use_count(sm);
 }
 
-void sm_goto (StateMachine *sm, StateFunc new_state)
+void sm_goto(StateMachine * sm, StateFunc new_state)
 {
-	do_goto (sm, new_state, TRUE);
+	do_goto(sm, new_state, TRUE);
 }
 
-void sm_goto_noenter (StateMachine *sm, StateFunc new_state)
+void sm_goto_noenter(StateMachine * sm, StateFunc new_state)
 {
-	do_goto (sm, new_state, FALSE);
+	do_goto(sm, new_state, FALSE);
 }
 
-static void do_push(StateMachine *sm, StateFunc new_state, gboolean enter)
+static void do_push(StateMachine * sm, StateFunc new_state, gboolean enter)
 {
 	sm_inc_use_count(sm);
 
@@ -496,23 +516,23 @@ static void do_push(StateMachine *sm, StateFunc new_state, gboolean enter)
 		route_event(sm, SM_ENTER);
 	route_event(sm, SM_INIT);
 #ifdef STACK_DEBUG
-	debug ("sm_push -> %d:%s (enter=%d)\n", sm->stack_ptr,
-			sm->current_state, enter);
+	debug("sm_push -> %d:%s (enter=%d)\n", sm->stack_ptr,
+	      sm->current_state, enter);
 #endif
 	sm_dec_use_count(sm);
 }
 
-void sm_push (StateMachine *sm, StateFunc new_state)
+void sm_push(StateMachine * sm, StateFunc new_state)
 {
-	do_push (sm, new_state, TRUE);
+	do_push(sm, new_state, TRUE);
 }
 
-void sm_push_noenter (StateMachine *sm, StateFunc new_state)
+void sm_push_noenter(StateMachine * sm, StateFunc new_state)
 {
-	do_push (sm, new_state, FALSE);
+	do_push(sm, new_state, FALSE);
 }
 
-void sm_pop(StateMachine *sm)
+void sm_pop(StateMachine * sm)
 {
 	sm_inc_use_count(sm);
 
@@ -520,13 +540,13 @@ void sm_pop(StateMachine *sm)
 	sm->stack_ptr--;
 	route_event(sm, SM_ENTER);
 #ifdef STACK_DEBUG
-	debug ("sm_pop  -> %d:%s\n", sm->stack_ptr, sm->current_state);
+	debug("sm_pop  -> %d:%s\n", sm->stack_ptr, sm->current_state);
 #endif
 	route_event(sm, SM_INIT);
 	sm_dec_use_count(sm);
 }
 
-void sm_multipop(StateMachine *sm, gint depth)
+void sm_multipop(StateMachine * sm, gint depth)
 {
 	sm_inc_use_count(sm);
 
@@ -534,19 +554,19 @@ void sm_multipop(StateMachine *sm, gint depth)
 	sm->stack_ptr -= depth;
 	route_event(sm, SM_ENTER);
 #ifdef STACK_DEBUG
-	debug ("sm_multipop  -> %d:%s\n", sm->stack_ptr, sm->current_state);
+	debug("sm_multipop  -> %d:%s\n", sm->stack_ptr, sm->current_state);
 #endif
 	route_event(sm, SM_INIT);
 
 	sm_dec_use_count(sm);
 }
 
-void sm_pop_all(StateMachine *sm)
+void sm_pop_all(StateMachine * sm)
 {
 	sm->stack_ptr = -1;
 }
 
-void sm_pop_all_and_goto(StateMachine *sm, StateFunc new_state)
+void sm_pop_all_and_goto(StateMachine * sm, StateFunc new_state)
 {
 	sm->stack_ptr = 0;
 	sm->stack[sm->stack_ptr] = new_state;
@@ -562,7 +582,7 @@ void sm_pop_all_and_goto(StateMachine *sm, StateFunc new_state)
  *  @return The StateFunc, or NULL if the stack contains 
  *          less than offset entries
  */
-StateFunc sm_stack_inspect(const StateMachine *sm, guint offset)
+StateFunc sm_stack_inspect(const StateMachine * sm, guint offset)
 {
 	if (sm->stack_ptr >= offset)
 		return sm->stack[sm->stack_ptr - offset];
@@ -570,7 +590,7 @@ StateFunc sm_stack_inspect(const StateMachine *sm, guint offset)
 		return NULL;
 }
 
-StateFunc sm_current(StateMachine *sm)
+StateFunc sm_current(StateMachine * sm)
 {
 	g_assert(sm->stack_ptr >= 0);
 
@@ -579,7 +599,7 @@ StateFunc sm_current(StateMachine *sm)
 
 /* Build a new state machine instance
  */
-StateMachine* sm_new(gpointer user_data)
+StateMachine *sm_new(gpointer user_data)
 {
 	StateMachine *sm = g_malloc0(sizeof(*sm));
 
@@ -591,7 +611,7 @@ StateMachine* sm_new(gpointer user_data)
 
 /* Free a state machine
  */
-void sm_free(StateMachine *sm)
+void sm_free(StateMachine * sm)
 {
 	if (sm->ses != NULL) {
 		net_free(&(sm->ses));
@@ -602,12 +622,13 @@ void sm_free(StateMachine *sm)
 		g_free(sm);
 }
 
-void sm_close (StateMachine *sm)
+void sm_close(StateMachine * sm)
 {
 	net_free(&(sm->ses));
 }
 
-void sm_stack_dump(StateMachine *sm) {
+void sm_stack_dump(StateMachine * sm)
+{
 	gint sp;
 	for (sp = 0; sp <= sm->stack_ptr; ++sp) {
 		fprintf(stderr, "Stack %2d: %s\n", sp, sm->stack_name[sp]);

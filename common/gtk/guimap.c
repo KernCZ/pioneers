@@ -36,7 +36,7 @@ GdkColor green = { 0, 0, 0xff00, 0 };
 GdkColor blue = { 0, 0, 0, 0xff00 };
 GdkColor lightblue = { 0, 0xbe00, 0xbe00, 0xff00 };
 
-static GdkColormap* cmap;
+static GdkColormap *cmap;
 static gboolean single_click_build_active = FALSE;
 
 typedef struct {
@@ -45,8 +45,10 @@ typedef struct {
 } HighlightInfo;
 
 /* Local function prototypes */
-static void calc_edge_poly(const GuiMap *gmap, const Edge *edge, const Polygon *shape, Polygon *poly);
-static void calc_node_poly(const GuiMap *gmap, const Node *node, const Polygon *shape, Polygon *poly);
+static void calc_edge_poly(const GuiMap * gmap, const Edge * edge,
+			   const Polygon * shape, Polygon * poly);
+static void calc_node_poly(const GuiMap * gmap, const Node * node,
+			   const Polygon * shape, Polygon * poly);
 
 /* Square */
 static gint sqr(gint a)
@@ -80,70 +82,70 @@ GuiMap *guimap_new()
 	return gmap;
 }
 
-void guimap_reset(GuiMap *gmap)
+void guimap_reset(GuiMap * gmap)
 {
 	gmap->highlight_chit = -1;
 }
 
 static GdkPoint settlement_points[] = {
-	{  20, 20 }, { 20, -8 }, { 0, -28 }, { -20, -8 },
-	{ -20, 20 }, { 20, 20 }
+	{20, 20}, {20, -8}, {0, -28}, {-20, -8},
+	{-20, 20}, {20, 20}
 };
 static Polygon settlement_poly = {
 	settlement_points,
 	numElem(settlement_points)
 };
 static GdkPoint city_points[] = {
-	{  40,  20 }, {  40, -16 }, {   2, -16 }, {  2, -28 },
-	{ -18, -48 }, { -40, -28 }, { -40,  20 }, { 40,  20 }
+	{40, 20}, {40, -16}, {2, -16}, {2, -28},
+	{-18, -48}, {-40, -28}, {-40, 20}, {40, 20}
 };
 static Polygon city_poly = {
 	city_points,
 	numElem(city_points)
 };
 static GdkPoint road_points[] = {
-	{ 10, 40 }, { 10, -40 }, { -10, -40 }, { -10, 40 },
-	{ 10, 40 }
+	{10, 40}, {10, -40}, {-10, -40}, {-10, 40},
+	{10, 40}
 };
 static Polygon road_poly = {
 	road_points,
 	numElem(road_points)
 };
 static GdkPoint ship_points[] = {
-	{ 10,  32 }, { 10,   8 }, {  24,  18 }, {  42,   8 },
-	{ 48,   0 }, { 50, -12 }, {  10, -12 }, {  10, -32 },
-	{  2, -32 }, { -6, -26 }, { -10, -16 }, { -10,  16 },
-	{ -6,  26 }, {  2,  32 }, {  10,  32 }
+	{10, 32}, {10, 8}, {24, 18}, {42, 8},
+	{48, 0}, {50, -12}, {10, -12}, {10, -32},
+	{2, -32}, {-6, -26}, {-10, -16}, {-10, 16},
+	{-6, 26}, {2, 32}, {10, 32}
 };
 static Polygon ship_poly = {
 	ship_points,
 	numElem(ship_points)
 };
 static GdkPoint bridge_points[] = {
-	{ 13,  40 }, { -14,  40 }, { -14,  30 }, {  -1,  15 },
-	{ -1, -15 }, { -14, -30 }, { -14, -40 }, {  13, -40 },
-	{ 13,  40 }
+	{13, 40}, {-14, 40}, {-14, 30}, {-1, 15},
+	{-1, -15}, {-14, -30}, {-14, -40}, {13, -40},
+	{13, 40}
 };
 static Polygon bridge_poly = {
 	bridge_points,
 	numElem(bridge_points)
 };
 static GdkPoint robber_points[] = {
-	{  30,  60 }, {  30,   4 }, {  28,  -6 }, {  22, -15 },
-	{  12, -20 }, {  22, -32 }, {  22, -48 }, {  10, -60 },
-	{ -10, -60 }, { -22, -48 }, { -22, -32 }, { -12, -20 },
-	{ -22, -15 }, { -28,  -6 }, { -30,   4 }, { -30,  60 },
-	{  30,  60 }
+	{30, 60}, {30, 4}, {28, -6}, {22, -15},
+	{12, -20}, {22, -32}, {22, -48}, {10, -60},
+	{-10, -60}, {-22, -48}, {-22, -32}, {-12, -20},
+	{-22, -15}, {-28, -6}, {-30, 4}, {-30, 60},
+	{30, 60}
 };
 static Polygon robber_poly = {
 	robber_points,
 	numElem(robber_points)
 };
 static GdkPoint pirate_points[] = {
-	{ 42,  15 }, { 18,  15 }, { 28,  1 }, {  18, -17 },
-	{ 10, -23 }, { -2, -25 }, { -2, 15 }, { -22,  15 },
-	{-22,  23 }, {-16,  31 }, { -6, 35 }, {  26,  35 },
-	{ 36,  31 }, { 42,  23 }, { 42, 15 }
+	{42, 15}, {18, 15}, {28, 1}, {18, -17},
+	{10, -23}, {-2, -25}, {-2, 15}, {-22, 15},
+	{-22, 23}, {-16, 31}, {-6, 35}, {26, 35},
+	{36, 31}, {42, 23}, {42, 15}
 };
 static Polygon pirate_poly = {
 	pirate_points,
@@ -154,21 +156,20 @@ static gint chances[13] = {
 	0, 0, 1, 2, 3, 4, 5, 6, 5, 4, 3, 2, 1
 };
 
-static void calc_hex_pos(const GuiMap *gmap,
-			 gint x, gint y, gint *x_offset, gint *y_offset)
+static void calc_hex_pos(const GuiMap * gmap,
+			 gint x, gint y, gint * x_offset, gint * y_offset)
 {
 	*x_offset = gmap->x_margin
-		+ gmap->x_point
-		+ ((y % 2) ? gmap->x_point : 0)
-		+ x * gmap->x_point * 2;
+	    + gmap->x_point + ((y % 2) ? gmap->x_point : 0)
+	    + x * gmap->x_point * 2;
 	if (gmap->map->shrink_left)
 		*x_offset -= gmap->x_point;
 	*y_offset = gmap->y_margin
-		+ gmap->hex_radius
-		+ y * (gmap->hex_radius + gmap->y_point);
+	    + gmap->hex_radius + y * (gmap->hex_radius + gmap->y_point);
 }
 
-static void get_hex_polygon(const GuiMap *gmap, Polygon *poly, gboolean draw)
+static void get_hex_polygon(const GuiMap * gmap, Polygon * poly,
+			    gboolean draw)
 {
 	GdkPoint *points;
 
@@ -190,8 +191,8 @@ static void get_hex_polygon(const GuiMap *gmap, Polygon *poly, gboolean draw)
 	points[5].y = gmap->y_point;
 }
 
-static void calc_edge_poly(const GuiMap *gmap, const Edge *edge, 
-		const Polygon *shape, Polygon *poly)
+static void calc_edge_poly(const GuiMap * gmap, const Edge * edge,
+			   const Polygon * shape, Polygon * poly)
 {
 	gint idx;
 	GdkPoint *poly_point, *shape_point;
@@ -220,8 +221,10 @@ static void calc_edge_poly(const GuiMap *gmap, const Edge *edge,
 		if (edge == NULL || edge->pos % 3 > 0) {
 			gint x = poly_point->x;
 			gint y = poly_point->y;
-			poly_point->x = rint(x * cos_theta - y * sin_theta);
-			poly_point->y = rint(x * sin_theta + y * cos_theta);
+			poly_point->x =
+			    rint(x * cos_theta - y * sin_theta);
+			poly_point->y =
+			    rint(x * sin_theta + y * cos_theta);
 		}
 	}
 
@@ -237,8 +240,8 @@ static void calc_edge_poly(const GuiMap *gmap, const Edge *edge,
 	}
 }
 
-static void calc_node_poly(const GuiMap *gmap, const Node *node, 
-		const Polygon *shape, Polygon *poly)
+static void calc_node_poly(const GuiMap * gmap, const Node * node,
+			   const Polygon * shape, Polygon * poly)
 {
 	gint idx;
 	GdkPoint *poly_point, *shape_point;
@@ -274,32 +277,38 @@ static void calc_node_poly(const GuiMap *gmap, const Node *node,
 	}
 }
 
-void guimap_road_polygon(const GuiMap *gmap, const Edge *edge, Polygon *poly)
+void guimap_road_polygon(const GuiMap * gmap, const Edge * edge,
+			 Polygon * poly)
 {
 	calc_edge_poly(gmap, edge, &road_poly, poly);
 }
 
-void guimap_ship_polygon(const GuiMap *gmap, const Edge *edge, Polygon *poly)
+void guimap_ship_polygon(const GuiMap * gmap, const Edge * edge,
+			 Polygon * poly)
 {
 	calc_edge_poly(gmap, edge, &ship_poly, poly);
 }
 
-void guimap_bridge_polygon(const GuiMap *gmap, const Edge *edge, Polygon *poly)
+void guimap_bridge_polygon(const GuiMap * gmap, const Edge * edge,
+			   Polygon * poly)
 {
 	calc_edge_poly(gmap, edge, &bridge_poly, poly);
 }
 
-void guimap_city_polygon(const GuiMap *gmap, const Node *node, Polygon *poly)
+void guimap_city_polygon(const GuiMap * gmap, const Node * node,
+			 Polygon * poly)
 {
 	calc_node_poly(gmap, node, &city_poly, poly);
 }
 
-void guimap_settlement_polygon(const GuiMap *gmap, const Node *node, Polygon *poly)
+void guimap_settlement_polygon(const GuiMap * gmap, const Node * node,
+			       Polygon * poly)
 {
 	calc_node_poly(gmap, node, &settlement_poly, poly);
 }
 
-static void guimap_robber_polygon(const GuiMap *gmap, const Hex *hex, Polygon *poly)
+static void guimap_robber_polygon(const GuiMap * gmap, const Hex * hex,
+				  Polygon * poly)
 {
 	GdkPoint *poly_point, *robber_point;
 	double scale;
@@ -328,7 +337,8 @@ static void guimap_robber_polygon(const GuiMap *gmap, const Hex *hex, Polygon *p
 }
 
 
-static void guimap_pirate_polygon(const GuiMap *gmap, const Hex *hex, Polygon *poly)
+static void guimap_pirate_polygon(const GuiMap * gmap, const Hex * hex,
+				  Polygon * poly)
 {
 	GdkPoint *poly_point, *pirate_point;
 	double scale;
@@ -355,7 +365,7 @@ static void guimap_pirate_polygon(const GuiMap *gmap, const Hex *hex, Polygon *p
 	}
 }
 
-void draw_dice_roll(PangoLayout *layout, GdkPixmap *pixmap, GdkGC *gc,
+void draw_dice_roll(PangoLayout * layout, GdkPixmap * pixmap, GdkGC * gc,
 		    gint x_offset, gint y_offset, gint radius,
 		    gint n, gint terrain, gboolean highlight)
 {
@@ -380,17 +390,15 @@ void draw_dice_roll(PangoLayout *layout, GdkPixmap *pixmap, GdkGC *gc,
 	if (!tcol->transparent) {
 		gdk_gc_set_foreground(gc, &(tcol->color));
 		gdk_draw_arc(pixmap, gc, TRUE,
-				x_offset - radius, y_offset - radius,
-				2 * radius, 2 * radius,
-				0, 360 * 64);
+			     x_offset - radius, y_offset - radius,
+			     2 * radius, 2 * radius, 0, 360 * 64);
 	}
 	tcol = col_or_ovr(terrain, TC_CHIP_BD);
 	if (!tcol->transparent) {
 		gdk_gc_set_foreground(gc, &(tcol->color));
 		gdk_draw_arc(pixmap, gc, FALSE,
-				x_offset - radius, y_offset - radius,
-				2 * radius, 2 * radius,
-				0, 360 * 64);
+			     x_offset - radius, y_offset - radius,
+			     2 * radius, 2 * radius, 0, 360 * 64);
 	}
 	col = (n == 6 || n == 8) ? TC_CHIP_H_FG : TC_CHIP_FG;
 	tcol = col_or_ovr(terrain, col);
@@ -399,8 +407,8 @@ void draw_dice_roll(PangoLayout *layout, GdkPixmap *pixmap, GdkGC *gc,
 		pango_layout_set_markup(layout, num, -1);
 		pango_layout_get_pixel_size(layout, &width, &height);
 		gdk_gc_set_foreground(gc, &(tcol->color));
-		gdk_draw_layout(pixmap, gc, 
-				x_offset - width / 2, 
+		gdk_draw_layout(pixmap, gc,
+				x_offset - width / 2,
 				y_offset - height / 2, layout);
 
 		width_sqr = sqr(radius) - sqr(height / 2);
@@ -410,14 +418,15 @@ void draw_dice_roll(PangoLayout *layout, GdkPixmap *pixmap, GdkGC *gc,
 			y = y_offset - 1 + height / 2;
 			for (idx = 0; idx < chances[n]; idx++) {
 				gdk_draw_arc(pixmap, gc, TRUE,
-						x, y, 3, 3, 0, 360 * 64);
+					     x, y, 3, 3, 0, 360 * 64);
 				x += 4;
 			}
 		}
 	}
 }
 
-static gboolean display_hex(const Map *map, const Hex *hex, const GuiMap *gmap)
+static gboolean display_hex(const Map * map, const Hex * hex,
+			    const GuiMap * gmap)
 {
 	gint x_offset, y_offset;
 	GdkPoint points[MAX_POINTS];
@@ -429,19 +438,18 @@ static gboolean display_hex(const Map *map, const Hex *hex, const GuiMap *gmap)
 
 	/* Fill the hex with the nice pattern */
 	gdk_gc_set_line_attributes(gmap->gc, 1, GDK_LINE_SOLID,
-			GDK_CAP_BUTT, GDK_JOIN_MITER);
+				   GDK_CAP_BUTT, GDK_JOIN_MITER);
 	gdk_region_offset(gmap->hex_region, x_offset, y_offset);
 	gdk_gc_set_clip_region(gmap->gc, gmap->hex_region);
 	gdk_gc_set_fill(gmap->gc, GDK_TILED);
 	gdk_gc_set_tile(gmap->gc, theme->terrain_tiles[hex->terrain]);
 	gdk_gc_set_ts_origin(gmap->gc,
-			x_offset-gmap->x_point,
-			y_offset-gmap->hex_radius);
-	gdk_draw_rectangle(gmap->pixmap, gmap->gc, TRUE, 
-			x_offset - gmap->hex_radius,
-			y_offset - gmap->hex_radius,
-			gmap->hex_radius * 2,
-			gmap->hex_radius * 2);
+			     x_offset - gmap->x_point,
+			     y_offset - gmap->hex_radius);
+	gdk_draw_rectangle(gmap->pixmap, gmap->gc, TRUE,
+			   x_offset - gmap->hex_radius,
+			   y_offset - gmap->hex_radius,
+			   gmap->hex_radius * 2, gmap->hex_radius * 2);
 	gdk_region_offset(gmap->hex_region, -x_offset, -y_offset);
 	gdk_gc_set_clip_region(gmap->gc, NULL);
 
@@ -453,7 +461,8 @@ static gboolean display_hex(const Map *map, const Hex *hex, const GuiMap *gmap)
 
 	gdk_gc_set_fill(gmap->gc, GDK_SOLID);
 	if (!theme->colors[TC_HEX_BD].transparent) {
-		gdk_gc_set_foreground(gmap->gc, &theme->colors[TC_HEX_BD].color);
+		gdk_gc_set_foreground(gmap->gc,
+				      &theme->colors[TC_HEX_BD].color);
 		if (hex->terrain != SEA_TERRAIN)
 			poly_draw(gmap->pixmap, gmap->gc, FALSE, &poly);
 	}
@@ -462,9 +471,10 @@ static gboolean display_hex(const Map *map, const Hex *hex, const GuiMap *gmap)
 	if (hex->roll > 0) {
 		g_assert(gmap->layout);
 		draw_dice_roll(gmap->layout, gmap->pixmap, gmap->gc,
-				x_offset, y_offset, gmap->chit_radius,
-				hex->roll, hex->terrain,
-				!hex->robber && hex->roll==gmap->highlight_chit);
+			       x_offset, y_offset, gmap->chit_radius,
+			       hex->roll, hex->terrain,
+			       !hex->robber
+			       && hex->roll == gmap->highlight_chit);
 	}
 
 	/* Draw ports */
@@ -472,33 +482,41 @@ static gboolean display_hex(const Map *map, const Hex *hex, const GuiMap *gmap)
 		const gchar *str = "";
 		gint width, height;
 		int tileno = hex->resource == ANY_RESOURCE ?
-				ANY_PORT_TILE : hex->resource;
+		    ANY_PORT_TILE : hex->resource;
 		gboolean drawit;
 		gboolean typeind;
-		
+
 		/* Draw lines from port to shore */
 		gdk_gc_set_foreground(gmap->gc, &white);
-		gdk_gc_set_line_attributes(gmap->gc, 1, GDK_LINE_ON_OFF_DASH,
-				GDK_CAP_BUTT, GDK_JOIN_MITER);
-		gdk_draw_line(gmap->pixmap, gmap->gc,
-				x_offset, y_offset,
-				points[(hex->facing + 5) % 6].x,
-				points[(hex->facing + 5) % 6].y);
-		gdk_draw_line(gmap->pixmap, gmap->gc,
-				x_offset, y_offset,
-				points[hex->facing].x, points[hex->facing].y);
+		gdk_gc_set_line_attributes(gmap->gc, 1,
+					   GDK_LINE_ON_OFF_DASH,
+					   GDK_CAP_BUTT, GDK_JOIN_MITER);
+		gdk_draw_line(gmap->pixmap, gmap->gc, x_offset, y_offset,
+			      points[(hex->facing + 5) % 6].x,
+			      points[(hex->facing + 5) % 6].y);
+		gdk_draw_line(gmap->pixmap, gmap->gc, x_offset, y_offset,
+			      points[hex->facing].x,
+			      points[hex->facing].y);
 		/* Fill/tile port indicator */
 		if (theme->port_tiles[tileno]) {
 			gdk_gc_set_fill(gmap->gc, GDK_TILED);
-			gdk_gc_set_tile(gmap->gc, theme->port_tiles[tileno]);
-			gdk_gc_set_ts_origin(gmap->gc, 
-					x_offset - theme->port_tiles_width[tileno] / 2,
-					y_offset - theme->port_tiles_height[tileno] / 2);
+			gdk_gc_set_tile(gmap->gc,
+					theme->port_tiles[tileno]);
+			gdk_gc_set_ts_origin(gmap->gc,
+					     x_offset -
+					     theme->
+					     port_tiles_width[tileno] / 2,
+					     y_offset -
+					     theme->
+					     port_tiles_height[tileno] /
+					     2);
 			typeind = TRUE;
 			drawit = TRUE;
 		} else if (!theme->colors[TC_PORT_BG].transparent) {
 			gdk_gc_set_fill(gmap->gc, GDK_SOLID);
-			gdk_gc_set_foreground(gmap->gc, &theme->colors[TC_PORT_BG].color);
+			gdk_gc_set_foreground(gmap->gc,
+					      &theme->colors[TC_PORT_BG].
+					      color);
 			typeind = FALSE;
 			drawit = TRUE;
 		} else {
@@ -507,24 +525,26 @@ static gboolean display_hex(const Map *map, const Hex *hex, const GuiMap *gmap)
 		}
 		if (drawit) {
 			gdk_draw_arc(gmap->pixmap, gmap->gc, TRUE,
-					x_offset - gmap->chit_radius, 
-					y_offset - gmap->chit_radius,
-					2 * gmap->chit_radius, 
-					2 * gmap->chit_radius,
-					0, 360 * 64);
+				     x_offset - gmap->chit_radius,
+				     y_offset - gmap->chit_radius,
+				     2 * gmap->chit_radius,
+				     2 * gmap->chit_radius, 0, 360 * 64);
 		}
 		gdk_gc_set_fill(gmap->gc, GDK_SOLID);
 		/* Outline port indicator */
 		if (!theme->colors[TC_PORT_BD].transparent) {
-			gdk_gc_set_line_attributes(gmap->gc, 1, GDK_LINE_SOLID,
-					GDK_CAP_BUTT, GDK_JOIN_MITER);
-			gdk_gc_set_foreground(gmap->gc, &theme->colors[TC_PORT_BD].color);
+			gdk_gc_set_line_attributes(gmap->gc, 1,
+						   GDK_LINE_SOLID,
+						   GDK_CAP_BUTT,
+						   GDK_JOIN_MITER);
+			gdk_gc_set_foreground(gmap->gc,
+					      &theme->colors[TC_PORT_BD].
+					      color);
 			gdk_draw_arc(gmap->pixmap, gmap->gc, FALSE,
-					x_offset - gmap->chit_radius, 
-					y_offset - gmap->chit_radius,
-					2 * gmap->chit_radius, 
-					2 * gmap->chit_radius,
-					0, 360 * 64);
+				     x_offset - gmap->chit_radius,
+				     y_offset - gmap->chit_radius,
+				     2 * gmap->chit_radius,
+				     2 * gmap->chit_radius, 0, 360 * 64);
 		}
 		/* Print trading ratio */
 		if (!theme->colors[TC_PORT_FG].transparent) {
@@ -538,30 +558,46 @@ static gboolean display_hex(const Map *map, const Hex *hex, const GuiMap *gmap)
 			} else {
 				switch (hex->resource) {
 					/* Port indicator for brick */
-					case BRICK_RESOURCE: str = _("B"); break;
+				case BRICK_RESOURCE:
+					str = _("B");
+					break;
 					/* Port indicator for grain */
-					case GRAIN_RESOURCE: str = _("G"); break;
+				case GRAIN_RESOURCE:
+					str = _("G");
+					break;
 					/* Port indicator for ore */
-					case ORE_RESOURCE: str = _("O"); break;
+				case ORE_RESOURCE:
+					str = _("O");
+					break;
 					/* Port indicator for wool */
-					case WOOL_RESOURCE: str = _("W"); break;
+				case WOOL_RESOURCE:
+					str = _("W");
+					break;
 					/* Port indicator for lumber */
-					case LUMBER_RESOURCE: str = _("L"); break;
+				case LUMBER_RESOURCE:
+					str = _("L");
+					break;
 					/* General port indicator */
-					default: str = _("3:1"); break;
+				default:
+					str = _("3:1");
+					break;
 				}
 			}
 			pango_layout_set_markup(gmap->layout, str, -1);
-			pango_layout_get_pixel_size(gmap->layout, &width, &height);
-			gdk_gc_set_foreground(gmap->gc, &theme->colors[TC_PORT_FG].color);
-			gdk_draw_layout(gmap->pixmap, gmap->gc, 
-					x_offset - width / 2, 
-					y_offset - height / 2, gmap->layout);
+			pango_layout_get_pixel_size(gmap->layout, &width,
+						    &height);
+			gdk_gc_set_foreground(gmap->gc,
+					      &theme->colors[TC_PORT_FG].
+					      color);
+			gdk_draw_layout(gmap->pixmap, gmap->gc,
+					x_offset - width / 2,
+					y_offset - height / 2,
+					gmap->layout);
 		}
 	}
 
 	gdk_gc_set_line_attributes(gmap->gc, 1, GDK_LINE_SOLID,
-			GDK_CAP_BUTT, GDK_JOIN_MITER);
+				   GDK_CAP_BUTT, GDK_JOIN_MITER);
 	/* Draw all roads and ships */
 	for (idx = 0; idx < numElem(hex->edges); idx++) {
 		const Edge *edge = hex->edges[idx];
@@ -570,14 +606,18 @@ static gboolean display_hex(const Map *map, const Hex *hex, const GuiMap *gmap)
 
 		poly.num_points = numElem(points);
 		switch (edge->type) {
-			case BUILD_ROAD: 
-				guimap_road_polygon(gmap, edge, &poly); break;
-			case BUILD_SHIP:
-				guimap_ship_polygon(gmap, edge, &poly); break;
-			case BUILD_BRIDGE:
-				guimap_bridge_polygon(gmap, edge, &poly); break;
-			default: 
-				g_assert_not_reached(); break;
+		case BUILD_ROAD:
+			guimap_road_polygon(gmap, edge, &poly);
+			break;
+		case BUILD_SHIP:
+			guimap_ship_polygon(gmap, edge, &poly);
+			break;
+		case BUILD_BRIDGE:
+			guimap_bridge_polygon(gmap, edge, &poly);
+			break;
+		default:
+			g_assert_not_reached();
+			break;
 		}
 		gdk_gc_set_foreground(gmap->gc, player_color(edge->owner));
 		poly_draw(gmap->pixmap, gmap->gc, TRUE, &poly);
@@ -609,13 +649,17 @@ static gboolean display_hex(const Map *map, const Hex *hex, const GuiMap *gmap)
 		poly.num_points = numElem(points);
 		guimap_robber_polygon(gmap, hex, &poly);
 		gdk_gc_set_line_attributes(gmap->gc, 1, GDK_LINE_SOLID,
-				GDK_CAP_BUTT, GDK_JOIN_MITER);
+					   GDK_CAP_BUTT, GDK_JOIN_MITER);
 		if (!theme->colors[TC_ROBBER_FG].transparent) {
-			gdk_gc_set_foreground(gmap->gc, &theme->colors[TC_ROBBER_FG].color);
+			gdk_gc_set_foreground(gmap->gc,
+					      &theme->colors[TC_ROBBER_FG].
+					      color);
 			poly_draw(gmap->pixmap, gmap->gc, TRUE, &poly);
 		}
 		if (!theme->colors[TC_ROBBER_BD].transparent) {
-			gdk_gc_set_foreground(gmap->gc, &theme->colors[TC_ROBBER_BD].color);
+			gdk_gc_set_foreground(gmap->gc,
+					      &theme->colors[TC_ROBBER_BD].
+					      color);
 			poly_draw(gmap->pixmap, gmap->gc, FALSE, &poly);
 		}
 	}
@@ -625,13 +669,17 @@ static gboolean display_hex(const Map *map, const Hex *hex, const GuiMap *gmap)
 		poly.num_points = numElem(points);
 		guimap_pirate_polygon(gmap, hex, &poly);
 		gdk_gc_set_line_attributes(gmap->gc, 1, GDK_LINE_SOLID,
-				GDK_CAP_BUTT, GDK_JOIN_MITER);
+					   GDK_CAP_BUTT, GDK_JOIN_MITER);
 		if (!theme->colors[TC_ROBBER_FG].transparent) {
-			gdk_gc_set_foreground(gmap->gc, &theme->colors[TC_ROBBER_FG].color);
+			gdk_gc_set_foreground(gmap->gc,
+					      &theme->colors[TC_ROBBER_FG].
+					      color);
 			poly_draw(gmap->pixmap, gmap->gc, TRUE, &poly);
 		}
 		if (!theme->colors[TC_ROBBER_BD].transparent) {
-			gdk_gc_set_foreground(gmap->gc, &theme->colors[TC_ROBBER_BD].color);
+			gdk_gc_set_foreground(gmap->gc,
+					      &theme->colors[TC_ROBBER_BD].
+					      color);
 			poly_draw(gmap->pixmap, gmap->gc, FALSE, &poly);
 		}
 	}
@@ -639,7 +687,7 @@ static gboolean display_hex(const Map *map, const Hex *hex, const GuiMap *gmap)
 	return FALSE;
 }
 
-void guimap_scale_with_radius(GuiMap *gmap, gint radius)
+void guimap_scale_with_radius(GuiMap * gmap, gint radius)
 {
 	int idx;
 
@@ -661,10 +709,10 @@ void guimap_scale_with_radius(GuiMap *gmap, gint radius)
 		return;
 
 	gmap->width = 2 * gmap->x_margin
-		+ gmap->map->x_size * 2 * gmap->x_point + gmap->x_point;
+	    + gmap->map->x_size * 2 * gmap->x_point + gmap->x_point;
 	gmap->height = 2 * gmap->y_margin
-		+ (gmap->map->y_size - 1) * (gmap->hex_radius + gmap->y_point)
-		+ 2 * gmap->hex_radius;
+	    + (gmap->map->y_size - 1) * (gmap->hex_radius + gmap->y_point)
+	    + 2 * gmap->hex_radius;
 
 	if (gmap->map->shrink_left)
 		gmap->width -= gmap->x_point;
@@ -692,21 +740,21 @@ void guimap_scale_with_radius(GuiMap *gmap, gint radius)
 
 	gmap->chit_radius = 15;
 
-	theme_rescale(2*gmap->x_point);
+	theme_rescale(2 * gmap->x_point);
 }
 
-void guimap_scale_to_size(GuiMap *gmap, gint width, gint height)
+void guimap_scale_to_size(GuiMap * gmap, gint width, gint height)
 {
 	gint width_radius;
 	gint height_radius;
 
 	width_radius = (width - 20)
-		/ ((gmap->map->x_size * 2 + 1
-		    - gmap->map->shrink_left
-		    - gmap->map->shrink_right) * cos(M_PI / 6.0));
+	    / ((gmap->map->x_size * 2 + 1
+		- gmap->map->shrink_left
+		- gmap->map->shrink_right) * cos(M_PI / 6.0));
 	height_radius = (height - 20)
-		/ ((gmap->map->y_size - 1)
-		   * (sin(M_PI / 6.0) + 1) + 2);
+	    / ((gmap->map->y_size - 1)
+	       * (sin(M_PI / 6.0) + 1) + 2);
 
 	if (width_radius < height_radius)
 		guimap_scale_with_radius(gmap, width_radius);
@@ -720,7 +768,7 @@ void guimap_scale_to_size(GuiMap *gmap, gint width, gint height)
 	gmap->height = height;
 }
 
-static void build_hex_region(GuiMap *gmap)
+static void build_hex_region(GuiMap * gmap)
 {
 	GdkPoint points[6];
 	Polygon poly;
@@ -736,7 +784,7 @@ static void build_hex_region(GuiMap *gmap)
 }
 
 /** @return The radius of the chit for the current font size */
-gint guimap_get_chit_radius(PangoLayout *layout, gboolean show_dots)
+gint guimap_get_chit_radius(PangoLayout * layout, gboolean show_dots)
 {
 	gint width, height;
 	gint size_for_99_sqr;
@@ -747,29 +795,29 @@ gint guimap_get_chit_radius(PangoLayout *layout, gboolean show_dots)
 	pango_layout_set_markup(layout, "<b>99</b>", -1);
 	pango_layout_get_pixel_size(layout, &width, &height);
 	size_for_99_sqr = sqr(width) + sqr(height);
-	
+
 	pango_layout_set_markup(layout, "3:1", -1);
 	pango_layout_get_pixel_size(layout, &width, &height);
 	size_for_port_sqr = sqr(width) + sqr(height);
 
 	size_for_text_sqr = MAX(size_for_99_sqr, size_for_port_sqr);
 	if (show_dots) {
-		gint size_with_dots = sqr(height/2 + 2) + sqr(6 * 2);
-		if (size_with_dots*4 > size_for_text_sqr)
+		gint size_with_dots = sqr(height / 2 + 2) + sqr(6 * 2);
+		if (size_with_dots * 4 > size_for_text_sqr)
 			return sqrt(size_with_dots);
 	}
 	/* Divide: calculations should have been sqr(width/2)+sqr(height/2) */
-	return sqrt(size_for_text_sqr) /2;
+	return sqrt(size_for_text_sqr) / 2;
 }
 
-void guimap_display(GuiMap *gmap)
+void guimap_display(GuiMap * gmap)
 {
 	gint maximum_size;
 	gint size_for_text;
 	PangoContext *pc;
 	PangoFontDescription *pfd;
 	gint font_size;
-	
+
 	if (gmap->gc != NULL) {
 		/* Unref old gc */
 		g_object_unref(gmap->gc);
@@ -798,7 +846,7 @@ void guimap_display(GuiMap *gmap)
 	} else {
 		font_size = gmap->initial_font_size;
 	}
-	
+
 	/* The radius of the chit is at most 67% of the tile,
 	 * so the terrain can be seen.
 	 */
@@ -816,15 +864,17 @@ void guimap_display(GuiMap *gmap)
 		pango_layout_set_font_description(gmap->layout, pfd);
 		font_size -= PANGO_SCALE;
 
-		size_for_text = guimap_get_chit_radius(gmap->layout, FALSE);
+		size_for_text =
+		    guimap_get_chit_radius(gmap->layout, FALSE);
 	};
 
 	gmap->chit_radius = size_for_text;
 
-	map_traverse(gmap->map, (HexFunc)display_hex, gmap);
+	map_traverse(gmap->map, (HexFunc) display_hex, gmap);
 }
 
-static const Edge *find_hex_edge(GuiMap *gmap, const Hex *hex, gint x, gint y)
+static const Edge *find_hex_edge(GuiMap * gmap, const Hex * hex, gint x,
+				 gint y)
 {
 	gint x_offset, y_offset;
 	int idx;
@@ -838,7 +888,7 @@ static const Edge *find_hex_edge(GuiMap *gmap, const Hex *hex, gint x, gint y)
 	return NULL;
 }
 
-static void build_edge_regions(GuiMap *gmap)
+static void build_edge_regions(GuiMap * gmap)
 {
 	int idx;
 	GdkPoint points[6];
@@ -883,11 +933,11 @@ static void build_edge_regions(GuiMap *gmap)
 			break;
 		}
 		gmap->edge_region[idx]
-			= gdk_region_polygon(edge, 4, GDK_EVEN_ODD_RULE);
+		    = gdk_region_polygon(edge, 4, GDK_EVEN_ODD_RULE);
 	}
 }
 
-static void find_edge(GuiMap *gmap, gint x, gint y, MapElement *element)
+static void find_edge(GuiMap * gmap, gint x, gint y, MapElement * element)
 {
 	gint y_hex;
 	gint x_hex;
@@ -910,7 +960,7 @@ static void find_edge(GuiMap *gmap, gint x, gint y, MapElement *element)
 	element->pointer = NULL;
 }
 
-static Node *find_hex_node(GuiMap *gmap, const Hex *hex, gint x, gint y)
+static Node *find_hex_node(GuiMap * gmap, const Hex * hex, gint x, gint y)
 {
 	gint x_offset, y_offset;
 	int idx;
@@ -924,7 +974,7 @@ static Node *find_hex_node(GuiMap *gmap, const Hex *hex, gint x, gint y)
 	return NULL;
 }
 
-static void build_node_regions(GuiMap *gmap)
+static void build_node_regions(GuiMap * gmap)
 {
 	int idx;
 
@@ -978,7 +1028,7 @@ static void build_node_regions(GuiMap *gmap)
 	}
 }
 
-static void find_node(GuiMap *gmap, gint x, gint y, MapElement *element)
+static void find_node(GuiMap * gmap, gint x, gint y, MapElement * element)
 {
 	gint y_hex;
 	gint x_hex;
@@ -1001,7 +1051,7 @@ static void find_node(GuiMap *gmap, gint x, gint y, MapElement *element)
 	element->pointer = NULL;
 }
 
-static void find_hex(GuiMap *gmap, gint x, gint y, MapElement *element)
+static void find_hex(GuiMap * gmap, gint x, gint y, MapElement * element)
 {
 	gint y_hex;
 	gint x_hex;
@@ -1029,7 +1079,8 @@ static void find_hex(GuiMap *gmap, gint x, gint y, MapElement *element)
 	element->pointer = NULL;
 }
 
-static void redraw_edge(GuiMap *gmap, const Edge *edge, const Polygon *poly) 
+static void redraw_edge(GuiMap * gmap, const Edge * edge,
+			const Polygon * poly)
 {
 	GdkRectangle rect;
 	gint idx;
@@ -1044,17 +1095,17 @@ static void redraw_edge(GuiMap *gmap, const Edge *edge, const Polygon *poly)
 		if (edge->hexes[idx] != NULL)
 			display_hex(gmap->map, edge->hexes[idx], gmap);
 
-	gdk_window_invalidate_rect(gmap->area->window, &rect, FALSE); /* @todo FALSE or TRUE ? */
+	gdk_window_invalidate_rect(gmap->area->window, &rect, FALSE);	/* @todo FALSE or TRUE ? */
 }
 
-static void draw_cursor(GuiMap *gmap, gint owner, const Polygon *poly)
+static void draw_cursor(GuiMap * gmap, gint owner, const Polygon * poly)
 {
 	GdkRectangle rect;
 
 	g_return_if_fail(gmap->cursor.pointer != NULL);
 
 	gdk_gc_set_line_attributes(gmap->gc, 2, GDK_LINE_SOLID,
-			GDK_CAP_BUTT, GDK_JOIN_MITER);
+				   GDK_CAP_BUTT, GDK_JOIN_MITER);
 	gdk_gc_set_fill(gmap->gc, GDK_SOLID);
 	gdk_gc_set_foreground(gmap->gc, player_color(owner));
 	poly_draw(gmap->pixmap, gmap->gc, TRUE, poly);
@@ -1063,10 +1114,10 @@ static void draw_cursor(GuiMap *gmap, gint owner, const Polygon *poly)
 	poly_draw(gmap->pixmap, gmap->gc, FALSE, poly);
 
 	poly_bound_rect(poly, 1, &rect);
-	gdk_window_invalidate_rect(gmap->area->window, &rect, FALSE); /* @todo FALSE or TRUE */
+	gdk_window_invalidate_rect(gmap->area->window, &rect, FALSE);	/* @todo FALSE or TRUE */
 }
 
-static void redraw_road(GuiMap *gmap, const Edge *edge)
+static void redraw_road(GuiMap * gmap, const Edge * edge)
 {
 	GdkPoint points[MAX_POINTS];
 	Polygon poly;
@@ -1079,7 +1130,7 @@ static void redraw_road(GuiMap *gmap, const Edge *edge)
 	redraw_edge(gmap, edge, &poly);
 }
 
-static void redraw_ship(GuiMap *gmap, const Edge *edge)
+static void redraw_ship(GuiMap * gmap, const Edge * edge)
 {
 	GdkPoint points[MAX_POINTS];
 	Polygon poly;
@@ -1092,7 +1143,7 @@ static void redraw_ship(GuiMap *gmap, const Edge *edge)
 	redraw_edge(gmap, edge, &poly);
 }
 
-static void redraw_bridge(GuiMap *gmap, const Edge *edge)
+static void redraw_bridge(GuiMap * gmap, const Edge * edge)
 {
 	GdkPoint points[MAX_POINTS];
 	Polygon poly;
@@ -1105,25 +1156,25 @@ static void redraw_bridge(GuiMap *gmap, const Edge *edge)
 	redraw_edge(gmap, edge, &poly);
 }
 
-static void erase_road_cursor(GuiMap *gmap)
+static void erase_road_cursor(GuiMap * gmap)
 {
 	g_return_if_fail(gmap->cursor.pointer != NULL);
 	redraw_road(gmap, gmap->cursor.edge);
 }
 
-static void erase_ship_cursor(GuiMap *gmap)
+static void erase_ship_cursor(GuiMap * gmap)
 {
 	g_return_if_fail(gmap->cursor.pointer != NULL);
 	redraw_ship(gmap, gmap->cursor.edge);
 }
 
-static void erase_bridge_cursor(GuiMap *gmap)
+static void erase_bridge_cursor(GuiMap * gmap)
 {
 	g_return_if_fail(gmap->cursor.pointer != NULL);
 	redraw_bridge(gmap, gmap->cursor.edge);
 }
 
-static void draw_road_cursor(GuiMap *gmap)
+static void draw_road_cursor(GuiMap * gmap)
 {
 	GdkPoint points[MAX_POINTS];
 	Polygon poly;
@@ -1136,7 +1187,7 @@ static void draw_road_cursor(GuiMap *gmap)
 	draw_cursor(gmap, gmap->cursor_owner, &poly);
 }
 
-static void draw_ship_cursor(GuiMap *gmap)
+static void draw_ship_cursor(GuiMap * gmap)
 {
 	GdkPoint points[MAX_POINTS];
 	Polygon poly;
@@ -1149,7 +1200,7 @@ static void draw_ship_cursor(GuiMap *gmap)
 	draw_cursor(gmap, gmap->cursor_owner, &poly);
 }
 
-static void draw_bridge_cursor(GuiMap *gmap)
+static void draw_bridge_cursor(GuiMap * gmap)
 {
 	GdkPoint points[MAX_POINTS];
 	Polygon poly;
@@ -1162,7 +1213,8 @@ static void draw_bridge_cursor(GuiMap *gmap)
 	draw_cursor(gmap, gmap->cursor_owner, &poly);
 }
 
-static void redraw_node(GuiMap *gmap, const Node *node, const Polygon *poly)
+static void redraw_node(GuiMap * gmap, const Node * node,
+			const Polygon * poly)
 {
 	GdkRectangle rect;
 	int idx;
@@ -1186,7 +1238,7 @@ static void redraw_node(GuiMap *gmap, const Node *node, const Polygon *poly)
 	gdk_window_invalidate_rect(gmap->area->window, &rect, FALSE);
 }
 
-static void erase_settlement_cursor(GuiMap *gmap)
+static void erase_settlement_cursor(GuiMap * gmap)
 {
 	GdkPoint points[MAX_POINTS];
 	Polygon poly;
@@ -1199,7 +1251,7 @@ static void erase_settlement_cursor(GuiMap *gmap)
 	redraw_node(gmap, gmap->cursor.node, &poly);
 }
 
-static void draw_settlement_cursor(GuiMap *gmap)
+static void draw_settlement_cursor(GuiMap * gmap)
 {
 	GdkPoint points[MAX_POINTS];
 	Polygon poly;
@@ -1212,7 +1264,7 @@ static void draw_settlement_cursor(GuiMap *gmap)
 	draw_cursor(gmap, gmap->cursor_owner, &poly);
 }
 
-static void erase_city_cursor(GuiMap *gmap)
+static void erase_city_cursor(GuiMap * gmap)
 {
 	GdkPoint points[MAX_POINTS];
 	Polygon poly;
@@ -1225,7 +1277,7 @@ static void erase_city_cursor(GuiMap *gmap)
 	redraw_node(gmap, gmap->cursor.node, &poly);
 }
 
-static void draw_city_cursor(GuiMap *gmap)
+static void draw_city_cursor(GuiMap * gmap)
 {
 	GdkPoint points[MAX_POINTS];
 	Polygon poly;
@@ -1238,7 +1290,7 @@ static void draw_city_cursor(GuiMap *gmap)
 	draw_cursor(gmap, gmap->cursor_owner, &poly);
 }
 
-static void erase_steal_building_cursor(GuiMap *gmap)
+static void erase_steal_building_cursor(GuiMap * gmap)
 {
 	GdkPoint points[MAX_POINTS];
 	Polygon poly;
@@ -1251,7 +1303,7 @@ static void erase_steal_building_cursor(GuiMap *gmap)
 	redraw_node(gmap, gmap->cursor.node, &poly);
 }
 
-static void draw_steal_building_cursor(GuiMap *gmap)
+static void draw_steal_building_cursor(GuiMap * gmap)
 {
 	GdkPoint points[MAX_POINTS];
 	Polygon poly;
@@ -1272,11 +1324,12 @@ static void draw_steal_building_cursor(GuiMap *gmap)
 		draw_cursor(gmap, node->owner, &poly);
 		break;
 	default:
-		g_assert_not_reached(); break;
+		g_assert_not_reached();
+		break;
 	}
 }
 
-static void draw_steal_ship_cursor(GuiMap *gmap)
+static void draw_steal_ship_cursor(GuiMap * gmap)
 {
 	GdkPoint points[MAX_POINTS];
 	Polygon poly;
@@ -1293,11 +1346,12 @@ static void draw_steal_ship_cursor(GuiMap *gmap)
 		draw_cursor(gmap, edge->owner, &poly);
 		break;
 	default:
-		g_assert_not_reached(); break;
+		g_assert_not_reached();
+		break;
 	}
 }
 
-static void erase_robber_cursor(GuiMap *gmap)
+static void erase_robber_cursor(GuiMap * gmap)
 {
 	const Hex *hex = gmap->cursor.hex;
 	GdkPoint points[MAX_POINTS];
@@ -1320,7 +1374,7 @@ static void erase_robber_cursor(GuiMap *gmap)
 	gdk_window_invalidate_rect(gmap->area->window, &rect, FALSE);
 }
 
-static void draw_robber_cursor(GuiMap *gmap)
+static void draw_robber_cursor(GuiMap * gmap)
 {
 	const Hex *hex = gmap->cursor.hex;
 	GdkPoint points[MAX_POINTS];
@@ -1346,8 +1400,8 @@ static void draw_robber_cursor(GuiMap *gmap)
 	gdk_window_invalidate_rect(gmap->area->window, &rect, FALSE);
 }
 
-static gboolean highlight_chits(UNUSED(Map *map), const Hex *hex,
-		HighlightInfo *closure)
+static gboolean highlight_chits(UNUSED(Map * map), const Hex * hex,
+				HighlightInfo * closure)
 {
 	GuiMap *gmap = closure->gmap;
 	GdkPoint points[6];
@@ -1372,7 +1426,7 @@ static gboolean highlight_chits(UNUSED(Map *map), const Hex *hex,
 	return FALSE;
 }
 
-void guimap_highlight_chits(GuiMap *gmap, gint roll)
+void guimap_highlight_chits(GuiMap * gmap, gint roll)
 {
 	HighlightInfo closure;
 
@@ -1382,12 +1436,13 @@ void guimap_highlight_chits(GuiMap *gmap, gint roll)
 	closure.old_highlight = gmap->highlight_chit;
 	gmap->highlight_chit = roll;
 	if (gmap->pixmap != NULL)
-		map_traverse(gmap->map, (HexFunc)highlight_chits, &closure);
+		map_traverse(gmap->map, (HexFunc) highlight_chits,
+			     &closure);
 }
 
-void guimap_draw_edge(GuiMap *gmap, const Edge *edge)
+void guimap_draw_edge(GuiMap * gmap, const Edge * edge)
 {
-	if(edge->type == BUILD_ROAD) {
+	if (edge->type == BUILD_ROAD) {
 		redraw_road(gmap, edge);
 	} else if (edge->type == BUILD_SHIP) {
 		redraw_ship(gmap, edge);
@@ -1396,7 +1451,7 @@ void guimap_draw_edge(GuiMap *gmap, const Edge *edge)
 	}
 }
 
-void guimap_draw_node(GuiMap *gmap, const Node *node)
+void guimap_draw_node(GuiMap * gmap, const Node * node)
 {
 	GdkPoint points[MAX_POINTS];
 	Polygon poly;
@@ -1410,7 +1465,7 @@ void guimap_draw_node(GuiMap *gmap, const Node *node)
 	redraw_node(gmap, node, &poly);
 }
 
-void guimap_draw_hex(GuiMap *gmap, const Hex *hex)
+void guimap_draw_hex(GuiMap * gmap, const Hex * hex)
 {
 	GdkPoint points[MAX_POINTS];
 	Polygon poly;
@@ -1433,29 +1488,30 @@ void guimap_draw_hex(GuiMap *gmap, const Hex *hex)
 }
 
 typedef struct {
-	void (*find)(GuiMap *gmap, gint x, gint y, MapElement *element);
-	void (*erase_cursor)(GuiMap *gmap);
-	void (*draw_cursor)(GuiMap *gmap);
+	void (*find) (GuiMap * gmap, gint x, gint y, MapElement * element);
+	void (*erase_cursor) (GuiMap * gmap);
+	void (*draw_cursor) (GuiMap * gmap);
 } ModeCursor;
 
 /* This array must follow the enum CursorType */
 static ModeCursor cursors[] = {
-	{ NULL, NULL, NULL }, /* NO_CURSOR */
-	{ find_edge, erase_road_cursor, draw_road_cursor }, /* ROAD_CURSOR */
-	{ find_edge, erase_ship_cursor, draw_ship_cursor }, /* SHIP_CURSOR */
-	{ find_edge, erase_bridge_cursor, draw_bridge_cursor }, /* BRIDGE_CURSOR */
-	{ find_node, erase_settlement_cursor, draw_settlement_cursor }, /* SETTLEMENT_CURSOR */
-	{ find_node, erase_city_cursor, draw_city_cursor }, /* CITY_CURSOR */
-	{ find_node, erase_steal_building_cursor, draw_steal_building_cursor }, /* STEAL_BUILDING_CURSOR */
-	{ find_edge, erase_ship_cursor, draw_steal_ship_cursor }, /* STEAL_SHIP_CURSOR */
-	{ find_hex, erase_robber_cursor, draw_robber_cursor } /* ROBBER_CURSOR */
+	{NULL, NULL, NULL},	/* NO_CURSOR */
+	{find_edge, erase_road_cursor, draw_road_cursor},	/* ROAD_CURSOR */
+	{find_edge, erase_ship_cursor, draw_ship_cursor},	/* SHIP_CURSOR */
+	{find_edge, erase_bridge_cursor, draw_bridge_cursor},	/* BRIDGE_CURSOR */
+	{find_node, erase_settlement_cursor, draw_settlement_cursor},	/* SETTLEMENT_CURSOR */
+	{find_node, erase_city_cursor, draw_city_cursor},	/* CITY_CURSOR */
+	{find_node, erase_steal_building_cursor, draw_steal_building_cursor},	/* STEAL_BUILDING_CURSOR */
+	{find_edge, erase_ship_cursor, draw_steal_ship_cursor},	/* STEAL_SHIP_CURSOR */
+	{find_hex, erase_robber_cursor, draw_robber_cursor}	/* ROBBER_CURSOR */
 };
 
 gboolean roadM, shipM, bridgeM, settlementM, cityM;
 CheckFunc roadF, shipF, bridgeF, settlementF, cityF;
 SelectFunc roadS, shipS, bridgeS, settlementS, cityS;
 
-void guimap_cursor_move(GuiMap *gmap, gint x, gint y, MapElement *element)
+void guimap_cursor_move(GuiMap * gmap, gint x, gint y,
+			MapElement * element)
 {
 	ModeCursor *mode;
 
@@ -1468,19 +1524,36 @@ void guimap_cursor_move(GuiMap *gmap, gint x, gint y, MapElement *element)
 		gboolean can_build_city = FALSE;
 		gboolean can_build_edge;
 		gboolean can_build_node;
-		
+
 		dummyElement.pointer = NULL;
 		find_edge(gmap, x, y, element);
-if (element->pointer) {
-		can_build_road = (roadM && roadF(*element, current_player(), dummyElement));
-		can_build_ship = (shipM && shipF(*element, current_player(), dummyElement));
-		can_build_bridge = (bridgeM && bridgeF(*element, current_player(), dummyElement));
+		if (element->pointer) {
+			can_build_road = (roadM
+					  && roadF(*element,
+						   current_player(),
+						   dummyElement));
+			can_build_ship = (shipM
+					  && shipF(*element,
+						   current_player(),
+						   dummyElement));
+			can_build_bridge = (bridgeM
+					    && bridgeF(*element,
+						       current_player(),
+						       dummyElement));
 
-		find_node(gmap, x, y, element);
-		can_build_settlement = (settlementM && settlementF(*element, current_player(), dummyElement));
-		can_build_city = (cityM && cityF(*element, current_player(), dummyElement));
-}
-		can_build_edge = can_build_road || can_build_ship || can_build_bridge;
+			find_node(gmap, x, y, element);
+			can_build_settlement = (settlementM
+						&& settlementF(*element,
+							       current_player
+							       (),
+							       dummyElement));
+			can_build_city = (cityM
+					  && cityF(*element,
+						   current_player(),
+						   dummyElement));
+		}
+		can_build_edge = can_build_road || can_build_ship
+		    || can_build_bridge;
 		can_build_node = can_build_settlement || can_build_city;
 
 		if (can_build_edge && can_build_node) {
@@ -1488,20 +1561,25 @@ if (element->pointer) {
 		}
 
 		if (can_build_road)
-			guimap_cursor_set(gmap, ROAD_CURSOR, current_player(),
-				roadF, roadS, NULL, TRUE);
+			guimap_cursor_set(gmap, ROAD_CURSOR,
+					  current_player(), roadF, roadS,
+					  NULL, TRUE);
 		else if (can_build_ship)
-			guimap_cursor_set(gmap, SHIP_CURSOR, current_player(),
-				shipF, shipS, NULL, TRUE);
+			guimap_cursor_set(gmap, SHIP_CURSOR,
+					  current_player(), shipF, shipS,
+					  NULL, TRUE);
 		else if (can_build_bridge)
-			guimap_cursor_set(gmap, BRIDGE_CURSOR, current_player(),
-				bridgeF, bridgeS, NULL, TRUE);
+			guimap_cursor_set(gmap, BRIDGE_CURSOR,
+					  current_player(), bridgeF,
+					  bridgeS, NULL, TRUE);
 		else if (can_build_settlement)
-			guimap_cursor_set(gmap, SETTLEMENT_CURSOR, current_player(),
-				settlementF, settlementS, NULL, TRUE);
+			guimap_cursor_set(gmap, SETTLEMENT_CURSOR,
+					  current_player(), settlementF,
+					  settlementS, NULL, TRUE);
 		else if (can_build_city)
-			guimap_cursor_set(gmap, CITY_CURSOR, current_player(),
-				cityF, cityS, NULL, TRUE);
+			guimap_cursor_set(gmap, CITY_CURSOR,
+					  current_player(), cityF, cityS,
+					  NULL, TRUE);
 	}
 
 	if (gmap->cursor_type == NO_CURSOR) {
@@ -1516,7 +1594,8 @@ if (element->pointer) {
 			mode->erase_cursor(gmap);
 		if (gmap->check_func == NULL
 		    || (element->pointer != NULL
-			&& gmap->check_func(*element, gmap->cursor_owner, gmap->user_data))) {
+			&& gmap->check_func(*element, gmap->cursor_owner,
+					    gmap->user_data))) {
 			gmap->cursor = *element;
 			mode->draw_cursor(gmap);
 		} else {
@@ -1525,7 +1604,7 @@ if (element->pointer) {
 	}
 }
 
-void guimap_cursor_select(GuiMap *gmap, gint x, gint y)
+void guimap_cursor_select(GuiMap * gmap, gint x, gint y)
 {
 	MapElement cursor;
 	SelectFunc select;
@@ -1536,7 +1615,8 @@ void guimap_cursor_select(GuiMap *gmap, gint x, gint y)
 		return;
 
 	if (gmap->check_func != NULL
-	    && !gmap->check_func(cursor, gmap->cursor_owner, gmap->user_data))
+	    && !gmap->check_func(cursor, gmap->cursor_owner,
+				 gmap->user_data))
 		return;
 
 	if (gmap->check_select != NULL) {
@@ -1556,9 +1636,10 @@ void guimap_cursor_select(GuiMap *gmap, gint x, gint y)
 	}
 }
 
-void guimap_cursor_set(GuiMap *gmap, CursorType cursor_type, gint owner,
+void guimap_cursor_set(GuiMap * gmap, CursorType cursor_type, gint owner,
 		       CheckFunc check_func, SelectFunc check_select,
-		       const MapElement *user_data, gboolean set_by_single_click)
+		       const MapElement * user_data,
+		       gboolean set_by_single_click)
 {
 	single_click_build_active = set_by_single_click;
 	if (cursor_type != NO_CURSOR)
@@ -1582,13 +1663,22 @@ void guimap_cursor_set(GuiMap *gmap, CursorType cursor_type, gint owner,
 	gmap->cursor.pointer = NULL;
 }
 
-void guimap_start_single_click_build(
-		gboolean road_mask, CheckFunc road_check_func, SelectFunc road_select_func,
-		gboolean ship_mask, CheckFunc ship_check_func, SelectFunc ship_select_func,
-		gboolean bridge_mask, CheckFunc bridge_check_func, SelectFunc bridge_select_func,
-		gboolean settlement_mask, CheckFunc settlement_check_func, SelectFunc settlement_select_func,
-		gboolean city_mask, CheckFunc city_check_func, SelectFunc city_select_func
-		) {
+void guimap_start_single_click_build(gboolean road_mask,
+				     CheckFunc road_check_func,
+				     SelectFunc road_select_func,
+				     gboolean ship_mask,
+				     CheckFunc ship_check_func,
+				     SelectFunc ship_select_func,
+				     gboolean bridge_mask,
+				     CheckFunc bridge_check_func,
+				     SelectFunc bridge_select_func,
+				     gboolean settlement_mask,
+				     CheckFunc settlement_check_func,
+				     SelectFunc settlement_select_func,
+				     gboolean city_mask,
+				     CheckFunc city_check_func,
+				     SelectFunc city_select_func)
+{
 	roadM = road_mask;
 	roadF = road_check_func;
 	roadS = road_select_func;

@@ -38,230 +38,234 @@ gboolean color_chat_enabled;
 /* The name of the player */
 static const gchar *saved_player_name = NULL;
 
-void cb_connect (const gchar *server, const gchar *port)
+void cb_connect(const gchar * server, const gchar * port)
 {
 	/* connect to a server */
-	g_assert (callback_mode == MODE_INIT);
-	if (sm_connect(SM(), server, port) ) {
-		if (sm_is_connected (SM()) ) {
+	g_assert(callback_mode == MODE_INIT);
+	if (sm_connect(SM(), server, port)) {
+		if (sm_is_connected(SM())) {
 			sm_goto(SM(), mode_start);
 		} else {
 			sm_goto(SM(), mode_connecting);
 		}
 	} else {
-		callbacks.offline ();
+		callbacks.offline();
 	}
 }
 
-void cb_disconnect ()
+void cb_disconnect()
 {
-	sm_close (SM() );
+	sm_close(SM());
 	callback_mode = MODE_INIT;
-	callbacks.offline ();
+	callbacks.offline();
 }
 
-void cb_roll ()
+void cb_roll()
 {
 	/* roll dice */
-	g_assert (callback_mode == MODE_TURN && !have_rolled_dice () );
+	g_assert(callback_mode == MODE_TURN && !have_rolled_dice());
 	sm_send(SM(), "roll\n");
 	sm_goto(SM(), mode_roll_response);
 }
 
-void cb_build_road (const Edge *edge)
+void cb_build_road(const Edge * edge)
 {
 	/* build road */
-	g_assert (callback_mode == MODE_TURN
-			|| callback_mode == MODE_ROAD_BUILD
-			|| callback_mode == MODE_SETUP);
-	sm_send(SM(), "build road %d %d %d\n", edge->x, edge->y, edge->pos);
-        sm_push(SM(), mode_build_response);
+	g_assert(callback_mode == MODE_TURN
+		 || callback_mode == MODE_ROAD_BUILD
+		 || callback_mode == MODE_SETUP);
+	sm_send(SM(), "build road %d %d %d\n", edge->x, edge->y,
+		edge->pos);
+	sm_push(SM(), mode_build_response);
 }
 
-void cb_build_ship (const Edge *edge)
+void cb_build_ship(const Edge * edge)
 {
 	/* build ship */
-	g_assert (callback_mode == MODE_TURN
-			|| callback_mode == MODE_ROAD_BUILD
-			|| callback_mode == MODE_SETUP);
-	sm_send(SM(), "build ship %d %d %d\n", edge->x, edge->y, edge->pos);
-        sm_push(SM(), mode_build_response);
+	g_assert(callback_mode == MODE_TURN
+		 || callback_mode == MODE_ROAD_BUILD
+		 || callback_mode == MODE_SETUP);
+	sm_send(SM(), "build ship %d %d %d\n", edge->x, edge->y,
+		edge->pos);
+	sm_push(SM(), mode_build_response);
 }
 
-void cb_build_bridge (const Edge *edge)
+void cb_build_bridge(const Edge * edge)
 {
 	/* build bridge */
-	g_assert (callback_mode == MODE_TURN
-			|| callback_mode == MODE_ROAD_BUILD
-			|| callback_mode == MODE_SETUP);
-	sm_send(SM(), "build bridge %d %d %d\n", edge->x, edge->y, edge->pos);
-        sm_push(SM(), mode_build_response);
+	g_assert(callback_mode == MODE_TURN
+		 || callback_mode == MODE_ROAD_BUILD
+		 || callback_mode == MODE_SETUP);
+	sm_send(SM(), "build bridge %d %d %d\n", edge->x, edge->y,
+		edge->pos);
+	sm_push(SM(), mode_build_response);
 }
 
-void cb_move_ship (const Edge *from, const Edge *to)
+void cb_move_ship(const Edge * from, const Edge * to)
 {
 	/* move ship */
-	g_assert (callback_mode == MODE_TURN);
+	g_assert(callback_mode == MODE_TURN);
 	sm_send(SM(), "move %d %d %d %d %d %d\n",
-			from->x, from->y, from->pos,
-			to->x, to->y, to->pos);
-        sm_push(SM(), mode_move_response);
+		from->x, from->y, from->pos, to->x, to->y, to->pos);
+	sm_push(SM(), mode_move_response);
 }
 
-void cb_build_settlement (const Node *node)
+void cb_build_settlement(const Node * node)
 {
 	/* build settlement */
-	g_assert (callback_mode == MODE_TURN
-			|| callback_mode == MODE_SETUP);
+	g_assert(callback_mode == MODE_TURN
+		 || callback_mode == MODE_SETUP);
 	sm_send(SM(), "build settlement %d %d %d\n",
-			node->x, node->y, node->pos);
-        sm_push(SM(), mode_build_response);
+		node->x, node->y, node->pos);
+	sm_push(SM(), mode_build_response);
 }
 
-void cb_build_city (const Node *node)
+void cb_build_city(const Node * node)
 {
 	/* build city */
-	g_assert (callback_mode == MODE_TURN);
-	sm_send(SM(), "build city %d %d %d\n", node->x, node->y, node->pos);
-        sm_push(SM(), mode_build_response);
+	g_assert(callback_mode == MODE_TURN);
+	sm_send(SM(), "build city %d %d %d\n", node->x, node->y,
+		node->pos);
+	sm_push(SM(), mode_build_response);
 }
 
-void cb_buy_develop ()
+void cb_buy_develop()
 {
 	/* buy development card */
-	g_assert (callback_mode == MODE_TURN && can_buy_develop () );
+	g_assert(callback_mode == MODE_TURN && can_buy_develop());
 	sm_send(SM(), "buy-develop\n");
 	sm_goto(SM(), mode_buy_develop_response);
 }
 
-void cb_play_develop (int card)
+void cb_play_develop(int card)
 {
 	/* play development card */
-	g_assert (callback_mode == MODE_TURN
-			&& can_play_develop (card) );
+	g_assert(callback_mode == MODE_TURN && can_play_develop(card));
 	sm_send(SM(), "play-develop %d\n", card);
 	sm_push(SM(), mode_play_develop_response);
 }
 
-void cb_undo ()
+void cb_undo()
 {
 	/* undo a move */
-	g_assert (callback_mode == MODE_TURN
-			|| callback_mode == MODE_ROAD_BUILD
-			|| callback_mode == MODE_SETUP);
+	g_assert(callback_mode == MODE_TURN
+		 || callback_mode == MODE_ROAD_BUILD
+		 || callback_mode == MODE_SETUP);
 	sm_send(SM(), "undo\n");
 	sm_push(SM(), mode_undo_response);
 }
 
-void cb_maritime (gint ratio, Resource supply, Resource receive)
+void cb_maritime(gint ratio, Resource supply, Resource receive)
 {
 	/* trade with the bank */
-	g_assert (callback_mode == MODE_TURN
-			|| callback_mode == MODE_DOMESTIC);
+	g_assert(callback_mode == MODE_TURN
+		 || callback_mode == MODE_DOMESTIC);
 	sm_send(SM(), "maritime-trade %d supply %r receive %r\n",
-			ratio, supply, receive);
+		ratio, supply, receive);
 	sm_push(SM(), mode_trade_maritime_response);
 }
 
-void cb_domestic (gint *supply, gint *receive)
+void cb_domestic(gint * supply, gint * receive)
 {
 	/* call for quotes */
-	g_assert (callback_mode == MODE_TURN
-			|| callback_mode == MODE_DOMESTIC);
+	g_assert(callback_mode == MODE_TURN
+		 || callback_mode == MODE_DOMESTIC);
 	sm_send(SM(), "domestic-trade call supply %R receive %R\n",
-			supply, receive);
+		supply, receive);
 	if (callback_mode == MODE_DOMESTIC) {
-		printf ("call again\n");
-		sm_push (SM(), mode_trade_call_again_response);
+		printf("call again\n");
+		sm_push(SM(), mode_trade_call_again_response);
 	} else {
-		sm_push (SM(), mode_trade_call_response);
+		sm_push(SM(), mode_trade_call_response);
 	}
 }
 
-void cb_end_turn ()
+void cb_end_turn()
 {
 	/* end turn or road building or setup */
-	g_assert (callback_mode == MODE_TURN
-			|| callback_mode == MODE_ROAD_BUILD
-			|| callback_mode == MODE_SETUP);
+	g_assert(callback_mode == MODE_TURN
+		 || callback_mode == MODE_ROAD_BUILD
+		 || callback_mode == MODE_SETUP);
 	sm_send(SM(), "done\n");
 	sm_push(SM(), mode_done_response);
 }
 
-void cb_place_robber (const Hex *hex, gint victim_num)
+void cb_place_robber(const Hex * hex, gint victim_num)
 {
 	/* place robber and rob */
-	g_assert (callback_mode == MODE_ROBBER);
-	sm_send(SM(), "move-robber %d %d %d\n", hex->x, hex->y, victim_num);
+	g_assert(callback_mode == MODE_ROBBER);
+	sm_send(SM(), "move-robber %d %d %d\n", hex->x, hex->y,
+		victim_num);
 	sm_push(SM(), mode_robber_response);
 }
 
-void cb_choose_monopoly (gint resource)
+void cb_choose_monopoly(gint resource)
 {
 	/* choose a monopoly resource */
-	g_assert (callback_mode == MODE_MONOPOLY);
+	g_assert(callback_mode == MODE_MONOPOLY);
 	sm_send(SM(), "monopoly %r\n", resource);
 	sm_push(SM(), mode_monopoly_response);
 }
 
-void cb_choose_plenty (gint *resources)
+void cb_choose_plenty(gint * resources)
 {
 	/* choose year of plenty resources */
-	g_assert (callback_mode == MODE_PLENTY);
+	g_assert(callback_mode == MODE_PLENTY);
 	sm_send(SM(), "plenty %R\n", resources);
 	sm_push(SM(), mode_year_of_plenty_response);
 }
 
-void cb_trade (gint player, gint quote, gint *supply, gint *receive)
+void cb_trade(gint player, gint quote, gint * supply, gint * receive)
 {
 	/* accept a domestic trade */
-	g_assert (callback_mode == MODE_DOMESTIC);
-	sm_send(SM(), "domestic-trade accept player %d quote %d supply %R receive %R\n",
-			player, quote, supply, receive);
+	g_assert(callback_mode == MODE_DOMESTIC);
+	sm_send(SM(),
+		"domestic-trade accept player %d quote %d supply %R receive %R\n",
+		player, quote, supply, receive);
 	sm_push(SM(), mode_trade_domestic_response);
 }
 
-void cb_end_trade ()
+void cb_end_trade()
 {
 	/* stop trading */
-	g_assert (callback_mode == MODE_DOMESTIC);
+	g_assert(callback_mode == MODE_DOMESTIC);
 	sm_send(SM(), "domestic-trade finish\n");
 	sm_push(SM(), mode_domestic_finish_response);
 }
 
-void cb_quote (gint num, gint *supply, gint *receive)
+void cb_quote(gint num, gint * supply, gint * receive)
 {
 	/* make a quote */
-	g_assert (callback_mode == MODE_QUOTE);
+	g_assert(callback_mode == MODE_QUOTE);
 	sm_send(SM(), "domestic-quote quote %d supply %R receive %R\n",
-			num, supply, receive);
+		num, supply, receive);
 	sm_push(SM(), mode_quote_submit_response);
 }
 
-void cb_delete_quote (gint num)
+void cb_delete_quote(gint num)
 {
 	/* revoke a quote */
-	g_assert (callback_mode == MODE_QUOTE);
+	g_assert(callback_mode == MODE_QUOTE);
 	sm_send(SM(), "domestic-quote delete %d\n", num);
 	sm_push(SM(), mode_quote_delete_response);
 }
 
-void cb_end_quote ()
+void cb_end_quote()
 {
 	/* stop trading */
-	g_assert (callback_mode == MODE_QUOTE);
+	g_assert(callback_mode == MODE_QUOTE);
 	sm_send(SM(), "domestic-quote finish\n");
 	sm_goto(SM(), mode_quote_finish_response);
 }
 
-void cb_chat (const gchar *text)
+void cb_chat(const gchar * text)
 {
 	/* chat a message */
-	g_assert (callback_mode != MODE_INIT);
+	g_assert(callback_mode != MODE_INIT);
 	sm_send(SM(), "chat %s\n", text);
 }
 
-void cb_name_change (const gchar *name)
+void cb_name_change(const gchar * name)
 {
 	saved_player_name = g_strdup(name);
 	/* change your name */
@@ -270,122 +274,119 @@ void cb_name_change (const gchar *name)
 		sm_send(SM(), "name %s\n", name);
 }
 
-const gchar * my_player_name (void) {
+const gchar *my_player_name(void)
+{
 	return saved_player_name;
 }
 
-void cb_discard (gint *resources)
+void cb_discard(gint * resources)
 {
 	/* discard resources */
-	g_assert (callback_mode == MODE_DISCARD);
+	g_assert(callback_mode == MODE_DISCARD);
 	callback_mode = MODE_DISCARD_WAIT;
 	sm_send(SM(), "discard %R\n", resources);
 }
 
-void cb_choose_gold (gint *resources)
+void cb_choose_gold(gint * resources)
 {
 	/* choose gold */
-	g_assert (callback_mode == MODE_GOLD);
+	g_assert(callback_mode == MODE_GOLD);
 	callback_mode = MODE_GOLD_WAIT;
-	sm_send (SM(), "chose-gold %R\n", resources);
+	sm_send(SM(), "chose-gold %R\n", resources);
 }
 
-gboolean have_ships (void)
+gboolean have_ships(void)
 {
 	return game_params == NULL
-		|| game_params->num_build_type[BUILD_SHIP] > 0;
+	    || game_params->num_build_type[BUILD_SHIP] > 0;
 }
 
-gboolean have_bridges (void)
+gboolean have_bridges(void)
 {
 	return game_params == NULL
-		|| game_params->num_build_type[BUILD_BRIDGE] > 0;
+	    || game_params->num_build_type[BUILD_BRIDGE] > 0;
 }
 
-const GameParams *get_game_params (void)
+const GameParams *get_game_params(void)
 {
 	return game_params;
 }
 
-gint game_resources ()
+gint game_resources()
 {
 	return game_params->resource_count;
 }
 
-gboolean can_undo (void)
+gboolean can_undo(void)
 {
-	return build_can_undo ();
+	return build_can_undo();
 }
 
-gboolean road_building_can_build_road (void)
-{
-	return  build_count_edges() < 2
-		&& stock_num_roads() > 0
-		&& map_can_place_road(map, my_player_num());
-}
-
-gboolean road_building_can_build_ship (void)
+gboolean road_building_can_build_road(void)
 {
 	return build_count_edges() < 2
-		&& stock_num_ships() > 0
-		&& map_can_place_ship(map, my_player_num());
+	    && stock_num_roads() > 0
+	    && map_can_place_road(map, my_player_num());
 }
 
-gboolean road_building_can_build_bridge (void)
+gboolean road_building_can_build_ship(void)
 {
 	return build_count_edges() < 2
-		&& stock_num_bridges() > 0
-		&& map_can_place_bridge(map, my_player_num());
+	    && stock_num_ships() > 0
+	    && map_can_place_ship(map, my_player_num());
 }
 
-gboolean road_building_can_finish (void)
+gboolean road_building_can_build_bridge(void)
+{
+	return build_count_edges() < 2
+	    && stock_num_bridges() > 0
+	    && map_can_place_bridge(map, my_player_num());
+}
+
+gboolean road_building_can_finish(void)
 {
 	return !road_building_can_build_road()
-		&& !road_building_can_build_ship()
-		&& !road_building_can_build_bridge()
-		&& build_is_valid();
+	    && !road_building_can_build_ship()
+	    && !road_building_can_build_bridge()
+	    && build_is_valid();
 }
 
-gboolean turn_can_build_road (void)
+gboolean turn_can_build_road(void)
 {
 	return have_rolled_dice()
-		&& stock_num_roads() > 0
-		&& can_afford(cost_road())
-		&& map_can_place_road(map, my_player_num());
+	    && stock_num_roads() > 0 && can_afford(cost_road())
+	    && map_can_place_road(map, my_player_num());
 }
 
-gboolean turn_can_build_ship (void)
+gboolean turn_can_build_ship(void)
 {
 	return have_rolled_dice()
-		&& stock_num_ships() > 0
-		&& can_afford(cost_ship())
-		&& map_can_place_ship(map, my_player_num());
+	    && stock_num_ships() > 0 && can_afford(cost_ship())
+	    && map_can_place_ship(map, my_player_num());
 }
 
-gboolean turn_can_build_bridge (void)
+gboolean turn_can_build_bridge(void)
 {
 	return have_rolled_dice()
-		&& stock_num_bridges() > 0
-		&& can_afford(cost_bridge())
-		&& map_can_place_bridge(map, my_player_num());
+	    && stock_num_bridges() > 0 && can_afford(cost_bridge())
+	    && map_can_place_bridge(map, my_player_num());
 }
 
-gboolean turn_can_build_settlement (void)
+gboolean turn_can_build_settlement(void)
 {
 	return have_rolled_dice()
-		&& stock_num_settlements() > 0
-		&& can_afford(cost_settlement())
-		&& map_can_place_settlement(map, my_player_num());
+	    && stock_num_settlements() > 0 && can_afford(cost_settlement())
+	    && map_can_place_settlement(map, my_player_num());
 }
 
 gboolean turn_can_build_city()
 {
 	return have_rolled_dice()
-		&& stock_num_cities() > 0
-		&& ((can_afford(cost_upgrade_settlement())
-			&& map_can_upgrade_settlement(map, my_player_num()))
-			|| (can_afford(cost_city())
-			&& map_can_place_settlement(map, my_player_num())));
+	    && stock_num_cities() > 0
+	    && ((can_afford(cost_upgrade_settlement())
+		 && map_can_upgrade_settlement(map, my_player_num()))
+		|| (can_afford(cost_city())
+		    && map_can_place_settlement(map, my_player_num())));
 }
 
 gboolean turn_can_trade()
@@ -398,72 +399,75 @@ gboolean turn_can_trade()
 		return FALSE;
 
 	if (game_params->strict_trade
-			&& (have_built() || have_bought_develop()))
+	    && (have_built() || have_bought_develop()))
 		return FALSE;
 
-	return can_trade_maritime ()
-		|| can_trade_domestic ();
+	return can_trade_maritime()
+	    || can_trade_domestic();
 }
 
-static gboolean really_try_move_ship (UNUSED(Map *map), Hex *hex, Edge *from)
+static gboolean really_try_move_ship(UNUSED(Map * map), Hex * hex,
+				     Edge * from)
 {
 	gint idx;
-	for (idx = 0; idx < numElem (hex->edges); ++idx) {
+	for (idx = 0; idx < numElem(hex->edges); ++idx) {
 		Edge *edge;
 		edge = hex->edges[idx];
 		if (edge->x != hex->x || edge->y != hex->y)
 			continue;
-		if (can_move_ship (from, edge) )
+		if (can_move_ship(from, edge))
 			return TRUE;
 	}
 	return FALSE;
 }
 
-gboolean can_move_ship (const Edge *from, const Edge *to)
+gboolean can_move_ship(const Edge * from, const Edge * to)
 {
 	gboolean retval;
 	gint owner;
 	Edge *ship_sailed_from_here;
-	
+
 	if (to == from)
 		return FALSE;
-	g_assert (from->type == BUILD_SHIP);
+	g_assert(from->type == BUILD_SHIP);
 	owner = from->owner;
-	if (!can_ship_be_moved (from, owner) )
+	if (!can_ship_be_moved(from, owner))
 		return FALSE;
-	ship_sailed_from_here = map_edge(map, from->x, from->y, from->pos); /* Copy to non-const pointer */
+	ship_sailed_from_here = map_edge(map, from->x, from->y, from->pos);	/* Copy to non-const pointer */
 	ship_sailed_from_here->owner = -1;
 	ship_sailed_from_here->type = BUILD_NONE;
-	retval = can_ship_be_built (to, owner);
+	retval = can_ship_be_built(to, owner);
 	ship_sailed_from_here->owner = owner;
 	ship_sailed_from_here->type = BUILD_SHIP;
 	return retval;
 }
 
-static gboolean try_move_ship (Map *map, Hex *hex)
+static gboolean try_move_ship(Map * map, Hex * hex)
 {
 	gint idx;
-	for (idx = 0; idx < numElem (hex->edges); ++idx) {
+	for (idx = 0; idx < numElem(hex->edges); ++idx) {
 		Edge *edge;
 		edge = hex->edges[idx];
 		if (edge->x != hex->x || edge->y != hex->y)
 			continue;
-		if (edge->owner != my_player_num () || edge->type != BUILD_SHIP)
+		if (edge->owner != my_player_num()
+		    || edge->type != BUILD_SHIP)
 			continue;
-		if (map_traverse (map, (HexFunc)really_try_move_ship, edge) )
+		if (map_traverse
+		    (map, (HexFunc) really_try_move_ship, edge))
 			return TRUE;
 	}
 	return FALSE;
 }
 
-gboolean turn_can_move_ship (void)
+gboolean turn_can_move_ship(void)
 {
 	if (!have_rolled_dice() || map->has_moved_ship)
 		return FALSE;
-	return map_traverse (map, (HexFunc)try_move_ship, NULL);
+	return map_traverse(map, (HexFunc) try_move_ship, NULL);
 }
 
-int robber_count_victims(const Hex *hex, gint *victim_list)
+int robber_count_victims(const Hex * hex, gint * victim_list)
 {
 	gint idx;
 	gint node_idx;
@@ -472,7 +476,7 @@ int robber_count_victims(const Hex *hex, gint *victim_list)
 	/* If there is no-one to steal from, or the players have no
 	 * resources, we do not go into steal_resource.
 	 */
-	for (idx = 0; idx < num_players (); idx++)
+	for (idx = 0; idx < num_players(); idx++)
 		victim_list[idx] = -1;
 	num_victims = 0;
 	for (node_idx = 0; node_idx < numElem(hex->nodes); node_idx++) {
@@ -502,7 +506,7 @@ int robber_count_victims(const Hex *hex, gint *victim_list)
 	return num_victims;
 }
 
-int pirate_count_victims(const Hex *hex, gint *victim_list)
+int pirate_count_victims(const Hex * hex, gint * victim_list)
 {
 	gint idx;
 	gint edge_idx;
@@ -541,7 +545,7 @@ int pirate_count_victims(const Hex *hex, gint *victim_list)
 	return num_victims;
 }
 
-Map *get_map ()
+Map *get_map()
 {
 	return map;
 }

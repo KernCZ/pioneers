@@ -63,28 +63,28 @@ on the surface.
  * it in the main code.  Thus, different architectures can have different 
  * prefixes depending on what's relevant for said arch.
  */
-void config_init( const gchar *path_prefix );
+void config_init(const gchar * path_prefix);
 
 /**** get configuration settings ****/
 
 /* get a string.  If a default is sent as part of the path, and the default
  * is returned, set *default_used to 1.
  */
-gchar *config_get_string( const gchar* path, gboolean* default_used );
+gchar *config_get_string(const gchar * path, gboolean * default_used);
 
 /* get an integer.  If a default is sent as part of the path, and the
  * default is returned, set *default_used to 1.
  */
-gint config_get_int( const gchar* path, gboolean* default_used );
+gint config_get_int(const gchar * path, gboolean * default_used);
 
 /* get an integer.  If the setting is not found, return the default value */
-gint config_get_int_with_default( const gchar* path, gint default_value );
+gint config_get_int_with_default(const gchar * path, gint default_value);
 
 /**** set configuration settings ****/
 /* these MUST be synchronous */
 
 /* set a string; make sure the configuration set is sync'd afterwards. */
-void config_set_string( const gchar* path, const gchar* value );
+void config_set_string(const gchar * path, const gchar * value);
 
 /* set an int; make sure the configuration set is sync'd afterwards. */
-void config_set_int( const gchar* path, gint value );
+void config_set_int(const gchar * path, gint value);

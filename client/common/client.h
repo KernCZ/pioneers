@@ -32,125 +32,132 @@ extern GameParams *game_params;
 
 /********* client.c ***********/
 /* client initialization */
-void client_init (void); /* before frontend initialization */
-void client_start (int argc, char **argv); /* after frontend initialization */
+void client_init(void);		/* before frontend initialization */
+void client_start(int argc, char **argv);	/* after frontend initialization */
 
 /* access the state machine (a client has only one state machine) */
-StateMachine *SM (void);
+StateMachine *SM(void);
 
 /* handle a player name change */
-void copy_player_name (const gchar *name);
+void copy_player_name(const gchar * name);
 
 /* state machine modes */
-gboolean mode_connecting(StateMachine *sm, gint event);
-gboolean mode_start(StateMachine *sm, gint event);
-gboolean mode_build_response(StateMachine *sm, gint event);
-gboolean mode_move_response(StateMachine *sm, gint event);
-gboolean mode_done_response(StateMachine *sm, gint event);
-gboolean mode_robber_response(StateMachine *sm, gint event);
-gboolean mode_monopoly_response(StateMachine *sm, gint event);
-gboolean mode_year_of_plenty_response(StateMachine *sm, gint event);
-gboolean mode_play_develop_response(StateMachine *sm, gint event);
-gboolean mode_roll_response(StateMachine *sm, gint event);
-gboolean mode_buy_develop_response(StateMachine *sm, gint event);
-gboolean mode_undo_response(StateMachine *sm, gint event);
-gboolean mode_trade_call_response(StateMachine *sm, gint event);
-gboolean mode_trade_maritime_response(StateMachine *sm, gint event);
-gboolean mode_trade_call_again_response(StateMachine *sm, gint event);
-gboolean mode_trade_domestic_response(StateMachine *sm, gint event);
-gboolean mode_domestic_finish_response(StateMachine *sm, gint event);
-gboolean mode_quote_finish_response(StateMachine *sm, gint event);
-gboolean mode_quote_submit_response(StateMachine *sm, gint event);
-gboolean mode_quote_delete_response(StateMachine *sm, gint event);
+gboolean mode_connecting(StateMachine * sm, gint event);
+gboolean mode_start(StateMachine * sm, gint event);
+gboolean mode_build_response(StateMachine * sm, gint event);
+gboolean mode_move_response(StateMachine * sm, gint event);
+gboolean mode_done_response(StateMachine * sm, gint event);
+gboolean mode_robber_response(StateMachine * sm, gint event);
+gboolean mode_monopoly_response(StateMachine * sm, gint event);
+gboolean mode_year_of_plenty_response(StateMachine * sm, gint event);
+gboolean mode_play_develop_response(StateMachine * sm, gint event);
+gboolean mode_roll_response(StateMachine * sm, gint event);
+gboolean mode_buy_develop_response(StateMachine * sm, gint event);
+gboolean mode_undo_response(StateMachine * sm, gint event);
+gboolean mode_trade_call_response(StateMachine * sm, gint event);
+gboolean mode_trade_maritime_response(StateMachine * sm, gint event);
+gboolean mode_trade_call_again_response(StateMachine * sm, gint event);
+gboolean mode_trade_domestic_response(StateMachine * sm, gint event);
+gboolean mode_domestic_finish_response(StateMachine * sm, gint event);
+gboolean mode_quote_finish_response(StateMachine * sm, gint event);
+gboolean mode_quote_submit_response(StateMachine * sm, gint event);
+gboolean mode_quote_delete_response(StateMachine * sm, gint event);
 
 /******** chat.c ************/
 /* parse an incoming chat message */
-void chat_parser (gint player_num, char *chat_str);
+void chat_parser(gint player_num, char *chat_str);
 
 /******* player.c **********/
-void player_reset (void);
+void player_reset(void);
 void player_set_my_num(gint player_num);
-void player_modify_statistic(gint player_num, StatisticType type, gint num);
-void player_change_name(gint player_num, const gchar *name);
+void player_modify_statistic(gint player_num, StatisticType type,
+			     gint num);
+void player_change_name(gint player_num, const gchar * name);
 void player_has_quit(gint player_num);
 void player_largest_army(gint player_num);
 void player_longest_road(gint player_num);
 void player_set_current(gint player_num);
 void player_set_total_num(gint num);
-void player_stole_from(gint player_num, gint victim_num, Resource resource);
-void player_domestic_trade(gint player_num, gint partner_num, gint *supply,
-		gint *receive);
+void player_stole_from(gint player_num, gint victim_num,
+		       Resource resource);
+void player_domestic_trade(gint player_num, gint partner_num,
+			   gint * supply, gint * receive);
 void player_maritime_trade(gint player_num, gint ratio, Resource supply,
-		Resource receive);
+			   Resource receive);
 void player_build_add(gint player_num, BuildType type, gint x, gint y,
-		gint pos, gboolean log_changes);
+		      gint pos, gboolean log_changes);
 void player_build_remove(gint player_num, BuildType type, gint x, gint y,
-		gint pos);
+			 gint pos);
 void player_build_move(gint player_num, gint sx, gint sy, gint spos,
-		gint dx, gint dy, gint dpos, gint isundo);
-void player_resource_action(gint player_num, gchar *action,
-		gint *resource_list, gint mult);
-void player_get_point (gint player_num, gint id, gchar *str, gint num);
-void player_lose_point (gint player_num, gint id);
-void player_take_point (gint player_num, gint id, gint old_owner);
+		       gint dx, gint dy, gint dpos, gint isundo);
+void player_resource_action(gint player_num, gchar * action,
+			    gint * resource_list, gint mult);
+void player_get_point(gint player_num, gint id, gchar * str, gint num);
+void player_lose_point(gint player_num, gint id);
+void player_take_point(gint player_num, gint id, gint old_owner);
 
 /********* build.c **********/
 void build_clear(void);
-void build_new_turn (void);
-void build_remove (BuildType build_type, gint x, gint y, gint pos);
-void build_move (gint sx, gint sy, gint spos, gint dx, gint dy, gint dpos,
+void build_new_turn(void);
+void build_remove(BuildType build_type, gint x, gint y, gint pos);
+void build_move(gint sx, gint sy, gint spos, gint dx, gint dy, gint dpos,
 		gint isundo);
-void build_add(BuildType type, gint x, gint y, gint pos, gboolean newbuild);
+void build_add(BuildType type, gint x, gint y, gint pos,
+	       gboolean newbuild);
 gboolean build_can_undo(void);
 gboolean build_is_valid(void);
 gboolean have_built(void);
-gboolean build_can_setup_road(const Edge *edge, gboolean double_setup);
-gboolean build_can_setup_ship(const Edge *edge, gboolean double_setup);
-gboolean build_can_setup_bridge(const Edge *edge, gboolean double_setup);
-gboolean build_can_setup_settlement(const Node *node, gboolean double_setup);
+gboolean build_can_setup_road(const Edge * edge, gboolean double_setup);
+gboolean build_can_setup_ship(const Edge * edge, gboolean double_setup);
+gboolean build_can_setup_bridge(const Edge * edge, gboolean double_setup);
+gboolean build_can_setup_settlement(const Node * node,
+				    gboolean double_setup);
 
 /********** develop.c **********/
 void develop_init(void);
 void develop_bought_card_turn(DevelType type, gint turnbought);
 void develop_bought_card(DevelType type);
 void develop_reset_have_played_bought(gboolean played_develop,
-		gboolean bought_develop);
+				      gboolean bought_develop);
 void develop_bought(gint player_num);
 void develop_played(gint player_num, gint card_idx, DevelType type);
-void monopoly_player(gint player_num, gint victim_num, gint num, Resource type);
-void develop_begin_turn (void);
+void monopoly_player(gint player_num, gint victim_num, gint num,
+		     Resource type);
+void develop_begin_turn(void);
 gboolean have_bought_develop(void);
 
 /********** stock.c **********/
 void stock_init(void);
-void stock_use_road (void);
-void stock_replace_road (void);
-void stock_use_ship (void);
-void stock_replace_ship (void);
-void stock_use_bridge (void);
-void stock_replace_bridge (void);
-void stock_use_settlement (void);
-void stock_replace_settlement (void);
-void stock_use_city (void);
-void stock_replace_city (void);
+void stock_use_road(void);
+void stock_replace_road(void);
+void stock_use_ship(void);
+void stock_replace_ship(void);
+void stock_use_bridge(void);
+void stock_replace_bridge(void);
+void stock_use_settlement(void);
+void stock_replace_settlement(void);
+void stock_use_city(void);
+void stock_replace_city(void);
 void stock_use_develop(void);
 
 /********** resource.c **********/
-void resource_init (void);
-void resource_apply_list (gint player_num, gint *resources, gint multiplier);
-void resource_cards (gint num, Resource which, gchar *buffer, gint buf_size);
-gint resource_count (gint *resources);
-void resource_format_num (gchar *desc, guint desc_size, gint *resources);
-void resource_log_list (gint player_num, gchar *action, gint *resources);
-void resource_modify (Resource type, gint num);
-void set_bank (const gint *new_bank);
-void modify_bank (const gint *bank_change);
+void resource_init(void);
+void resource_apply_list(gint player_num, gint * resources,
+			 gint multiplier);
+void resource_cards(gint num, Resource which, gchar * buffer,
+		    gint buf_size);
+gint resource_count(gint * resources);
+void resource_format_num(gchar * desc, guint desc_size, gint * resources);
+void resource_log_list(gint player_num, gchar * action, gint * resources);
+void resource_modify(Resource type, gint num);
+void set_bank(const gint * new_bank);
+void modify_bank(const gint * bank_change);
 
 /********** robber.c **********/
 void robber_move_on_map(gint x, gint y);
 void pirate_move_on_map(gint x, gint y);
 void robber_moved(gint player_num, gint x, gint y);
-void pirate_moved (gint player_num, gint x, gint y);
+void pirate_moved(gint player_num, gint x, gint y);
 void robber_begin_move(gint player_num);
 
 /********* setup.c *********/

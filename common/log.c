@@ -28,7 +28,7 @@
 #include "driver.h"
 
 /* Set the default logging function to 'func'. */
-void log_set_func( LogFunc func )
+void log_set_func(LogFunc func)
 {
 	driver->log_write = func;
 }
@@ -36,7 +36,7 @@ void log_set_func( LogFunc func )
 /* Set the default logging function to the system default (LOG_FUNC_DEFAULT,
  *   found in log.h).
  */
-void log_set_func_default( void )
+void log_set_func_default(void)
 {
 	driver->log_write = LOG_FUNC_DEFAULT;
 }
@@ -44,87 +44,87 @@ void log_set_func_default( void )
 /* Write a message string to the console, adding a prefix depending on 
  *   its type.
  */
-void log_message_string_console( gint msg_type, gchar *text )
+void log_message_string_console(gint msg_type, gchar * text)
 {
 	const gchar *prefix;
-	
-	switch( msg_type ) {
-		case MSG_ERROR:
-			prefix = _("*ERROR* ");
-			break;
-		case MSG_INFO:
-			prefix = _("- ");
-			break;
-		case MSG_CHAT:
-			prefix = _("CHAT: ");  
-			/* why the hell are you logging chat to the console? */
-			break;
-		case MSG_RESOURCE:
-			prefix = _("Resource: ");
-			break;
-		case MSG_BUILD:
-			prefix = _("Build: ");
-			break;
-		case MSG_DICE:
-			prefix = _("Dice: ");
-			break;
-		case MSG_STEAL:
-			prefix = _("Steal: ");
-			break;
-		case MSG_TRADE:
-			prefix = _("Trade: ");
-			break;
-		case MSG_DEVCARD:
-			prefix = _("Development: ");
-			break;
-		case MSG_LARGESTARMY:
-			prefix = _("Army: ");
-			break;
-		case MSG_LONGESTROAD:
-			prefix = _("Road: ");
-			break;
-		case MSG_BEEP:
-			prefix = _("*BEEP* ");
-			break;
-		case MSG_PLAYER1:
-			prefix = _("Player 1: ");
-			break;
-		case MSG_PLAYER2:
-			prefix = _("Player 2: ");
-			break;
-		case MSG_PLAYER3:
-			prefix = _("Player 3: ");
-			break;
-		case MSG_PLAYER4:
-			prefix = _("Player 4: ");
-			break;
-		case MSG_PLAYER5:
-			prefix = _("Player 5: ");
-			break;
-		case MSG_PLAYER6:
-			prefix = _("Player 6: ");
-			break;
-		case MSG_PLAYER7:
-			prefix = _("Player 7: ");
-			break;
-		case MSG_PLAYER8:
-			prefix = _("Player 8: ");
-			break;
-		case MSG_VIEWER_CHAT:
-			prefix = _("Viewer: ");
-			break;
-		default:
-			prefix = _("** UNKNOWN MESSAGE TYPE ** ");
+
+	switch (msg_type) {
+	case MSG_ERROR:
+		prefix = _("*ERROR* ");
+		break;
+	case MSG_INFO:
+		prefix = _("- ");
+		break;
+	case MSG_CHAT:
+		prefix = _("CHAT: ");
+		/* why the hell are you logging chat to the console? */
+		break;
+	case MSG_RESOURCE:
+		prefix = _("Resource: ");
+		break;
+	case MSG_BUILD:
+		prefix = _("Build: ");
+		break;
+	case MSG_DICE:
+		prefix = _("Dice: ");
+		break;
+	case MSG_STEAL:
+		prefix = _("Steal: ");
+		break;
+	case MSG_TRADE:
+		prefix = _("Trade: ");
+		break;
+	case MSG_DEVCARD:
+		prefix = _("Development: ");
+		break;
+	case MSG_LARGESTARMY:
+		prefix = _("Army: ");
+		break;
+	case MSG_LONGESTROAD:
+		prefix = _("Road: ");
+		break;
+	case MSG_BEEP:
+		prefix = _("*BEEP* ");
+		break;
+	case MSG_PLAYER1:
+		prefix = _("Player 1: ");
+		break;
+	case MSG_PLAYER2:
+		prefix = _("Player 2: ");
+		break;
+	case MSG_PLAYER3:
+		prefix = _("Player 3: ");
+		break;
+	case MSG_PLAYER4:
+		prefix = _("Player 4: ");
+		break;
+	case MSG_PLAYER5:
+		prefix = _("Player 5: ");
+		break;
+	case MSG_PLAYER6:
+		prefix = _("Player 6: ");
+		break;
+	case MSG_PLAYER7:
+		prefix = _("Player 7: ");
+		break;
+	case MSG_PLAYER8:
+		prefix = _("Player 8: ");
+		break;
+	case MSG_VIEWER_CHAT:
+		prefix = _("Viewer: ");
+		break;
+	default:
+		prefix = _("** UNKNOWN MESSAGE TYPE ** ");
 	}
-	
+
 	if (prefix)
-		fprintf( stderr, "%s%s", prefix, text );
+		fprintf(stderr, "%s%s", prefix, text);
 	else
-		fprintf( stderr, "%s", text );
+		fprintf(stderr, "%s", text);
 }
 
 #ifdef DEBUG
-static const char *debug_type (int type)
+static const char *debug_type(int type)
 {
 	switch (type) {
 	case MSG_ERROR:
@@ -177,25 +177,25 @@ static const char *debug_type (int type)
  *   then through LOG_FUNC_DEFAULT) after turning the params into a single
  *   string.
  */
-void log_message_continue(gint msg_type, const gchar *fmt, ...)
+void log_message_continue(gint msg_type, const gchar * fmt, ...)
 {
 	gchar text[1024];
 	va_list ap;
-	
+
 	va_start(ap, fmt);
 	g_vsnprintf(text, sizeof(text), fmt, ap);
 	va_end(ap);
 
 #ifdef DEBUG
-	debug ("[%s]%s", debug_type (msg_type), text);
+	debug("[%s]%s", debug_type(msg_type), text);
 #endif
-	if( driver->log_write )
-		driver->log_write( msg_type, text );
+	if (driver->log_write)
+		driver->log_write(msg_type, text);
 	else
-		LOG_FUNC_DEFAULT( msg_type, text );
+		LOG_FUNC_DEFAULT(msg_type, text);
 }
 
-void log_message(gint msg_type, const gchar *fmt, ...)
+void log_message(gint msg_type, const gchar * fmt, ...)
 {
 	gchar text[1024];
 	gchar timestamp[1024];
@@ -211,18 +211,18 @@ void log_message(gint msg_type, const gchar *fmt, ...)
 	alpha = localtime(&t);
 
 	sprintf(timestamp, "%02d:%02d:%02d ", alpha->tm_hour,
-			alpha->tm_min, alpha->tm_sec);
+		alpha->tm_min, alpha->tm_sec);
 
-	if( driver->log_write )
-		driver->log_write( MSG_INFO, timestamp );
+	if (driver->log_write)
+		driver->log_write(MSG_INFO, timestamp);
 	else
-		LOG_FUNC_DEFAULT( MSG_INFO, timestamp );
+		LOG_FUNC_DEFAULT(MSG_INFO, timestamp);
 
 #ifdef DEBUG
-	debug ("%s[%s]%s", timestamp, debug_type (msg_type), text);
+	debug("%s[%s]%s", timestamp, debug_type(msg_type), text);
 #endif
-	if( driver->log_write )
-		driver->log_write( msg_type, text );
+	if (driver->log_write)
+		driver->log_write(msg_type, text);
 	else
-		LOG_FUNC_DEFAULT( msg_type, text );
+		LOG_FUNC_DEFAULT(msg_type, text);
 }

@@ -23,35 +23,37 @@
 #include "cost.h"
 #include "server.h"
 
-static void check_finished_discard (Game *game, gboolean was_discard)
+static void check_finished_discard(Game * game, gboolean was_discard)
 {
 	GList *list;
 	/* is everyone finished yet? */
-	for (list = player_first_real(game); 
+	for (list = player_first_real(game);
 	     list != NULL; list = player_next_real(list))
-		if (((Player*)list->data)->discard_num > 0)
+		if (((Player *) list->data)->discard_num > 0)
 			break;
-	if (list != NULL) return;
+	if (list != NULL)
+		return;
 
 	/* tell players the discarding phase is over, but only if there
 	 * actually was a discarding phase */
 	if (was_discard)
-		player_broadcast (player_none (game), PB_SILENT,
-				"discard-done\n");
+		player_broadcast(player_none(game), PB_SILENT,
+				 "discard-done\n");
 	/* everyone is done discarding, pop all the state machines to their
 	 * original state and push the robber to whoever wants it. */
-	for (list = player_first_real(game); 
+	for (list = player_first_real(game);
 	     list != NULL; list = player_next_real(list)) {
 		Player *scan = list->data;
-		sm_pop (scan->sm);
-		if (sm_current (scan->sm) == (StateFunc)mode_turn)
-			robber_place (scan);
+		sm_pop(scan->sm);
+		if (sm_current(scan->sm) == (StateFunc) mode_turn)
+			robber_place(scan);
 	}
 }
 
 /* Player should be idle - I will tell them when to do something
  */
-gboolean mode_wait_for_other_discarding_players(Player *player, UNUSED(gint event))
+gboolean mode_wait_for_other_discarding_players(Player * player,
+						UNUSED(gint event))
 {
 	StateMachine *sm = player->sm;
 	sm_state_name(sm, "mode_wait_for_other_discarding_players");
@@ -59,7 +61,7 @@ gboolean mode_wait_for_other_discarding_players(Player *player, UNUSED(gint even
 }
 
 
-gboolean mode_discard_resources(Player *player, gint event)
+gboolean mode_discard_resources(Player * player, gint event)
 {
 	StateMachine *sm = player->sm;
 	Game *game = player->game;
@@ -67,7 +69,7 @@ gboolean mode_discard_resources(Player *player, gint event)
 	int num;
 	int discards[NO_RESOURCE];
 
-        sm_state_name(sm, "mode_discard_resources");
+	sm_state_name(sm, "mode_discard_resources");
 	if (event != SM_RECV)
 		return FALSE;
 
@@ -91,15 +93,15 @@ gboolean mode_discard_resources(Player *player, gint event)
 	resource_end(game, "discarded", -1);
 	/* wait for other to finish discarding too.  The state will be
 	 * popped from check_finished_discard. */
-	sm_goto(sm, (StateFunc)mode_wait_for_other_discarding_players);
-	check_finished_discard (game, TRUE);
+	sm_goto(sm, (StateFunc) mode_wait_for_other_discarding_players);
+	check_finished_discard(game, TRUE);
 	return TRUE;
 }
 
 /* Find all players that have exceeded the 7 resource card limit and
  * get them to discard.
  */
-void discard_resources(Game *game)
+void discard_resources(Game * game)
 {
 	GList *list;
 	gboolean have_discard = FALSE;
@@ -129,10 +131,11 @@ void discard_resources(Game *game)
 					total += scan->assets[idx];
 				}
 				while (scan->discard_num) {
-					gint choice = get_rand (total);
+					gint choice = get_rand(total);
 					for (idx = 0; idx < NO_RESOURCE;
-							idx++) {
-						choice -= scan->assets[idx];
+					     idx++) {
+						choice -=
+						    scan->assets[idx];
 						if (choice < 0)
 							break;
 					}
@@ -142,17 +145,20 @@ void discard_resources(Game *game)
 					--scan->assets[idx];
 					++game->bank_deck[idx];
 				}
-				player_broadcast (scan, PB_ALL,
-						"discarded %R\n", resource);
+				player_broadcast(scan, PB_ALL,
+						 "discarded %R\n",
+						 resource);
 				/* push idle to be popped off when all
 				 * players are finished discarding. */
-				sm_push(scan->sm, (StateFunc)mode_wait_for_other_discarding_players);
+				sm_push(scan->sm, (StateFunc)
+					mode_wait_for_other_discarding_players);
 			} else {
 				have_discard = TRUE;
-				sm_push(scan->sm,
-					(StateFunc)mode_discard_resources);
+				sm_push(scan->sm, (StateFunc)
+					mode_discard_resources);
 				player_broadcast(scan, PB_ALL,
-					"must-discard %d\n", scan->discard_num);
+						 "must-discard %d\n",
+						 scan->discard_num);
 			}
 		} else {
 			scan->discard_num = 0;
@@ -164,9 +170,9 @@ void discard_resources(Game *game)
 			 * except the one whose turn it is were idle anyway,
 			 * so it only changes things for that player (he cannot
 			 * just start playing, which is good). */
-			sm_push(scan->sm, (StateFunc)mode_wait_for_other_discarding_players);
+			sm_push(scan->sm, (StateFunc)
+				mode_wait_for_other_discarding_players);
 		}
 	}
-	check_finished_discard (game, have_discard);
+	check_finished_discard(game, have_discard);
 }
-

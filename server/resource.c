@@ -24,7 +24,8 @@
 #include "cost.h"
 #include "server.h"
 
-gboolean resource_available(Player *player, gint *resources, gint *num_in_bank)
+gboolean resource_available(Player * player, gint * resources,
+			    gint * num_in_bank)
 {
 	StateMachine *sm = player->sm;
 	Game *game = player->game;
@@ -44,7 +45,7 @@ gboolean resource_available(Player *player, gint *resources, gint *num_in_bank)
 	return TRUE;
 }
 
-void resource_start(Game *game)
+void resource_start(Game * game)
 {
 	GList *list;
 
@@ -58,7 +59,7 @@ void resource_start(Game *game)
 	}
 }
 
-void resource_end(Game *game, const gchar *action, gint mult)
+void resource_end(Game * game, const gchar * action, gint mult)
 {
 	GList *list;
 
@@ -72,11 +73,12 @@ void resource_end(Game *game, const gchar *action, gint mult)
 		for (idx = 0; idx < numElem(player->assets); idx++) {
 			gint num;
 
-			num = player->assets[idx] - player->prev_assets[idx];
+			num =
+			    player->assets[idx] - player->prev_assets[idx];
 			if (game->bank_deck[idx] - num < 0) {
 				num = game->bank_deck[idx];
 				player->assets[idx]
-					= player->prev_assets[idx] + num;
+				    = player->prev_assets[idx] + num;
 			}
 
 			resource[idx] = num;
@@ -89,12 +91,13 @@ void resource_end(Game *game, const gchar *action, gint mult)
 		if (send_message) {
 			for (idx = 0; idx < NO_RESOURCE; idx++)
 				resource[idx] *= mult;
-			player_broadcast(player, PB_ALL, "%s %R\n", action, resource);
+			player_broadcast(player, PB_ALL, "%s %R\n", action,
+					 resource);
 		}
 	}
 }
 
-void resource_spend(Player *player, gint *cost)
+void resource_spend(Player * player, gint * cost)
 {
 	Game *game = player->game;
 
@@ -103,7 +106,7 @@ void resource_spend(Player *player, gint *cost)
 	resource_end(game, "spent", -1);
 }
 
-void resource_refund(Player *player, gint *cost)
+void resource_refund(Player * player, gint * cost)
 {
 	Game *game = player->game;
 

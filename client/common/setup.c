@@ -44,12 +44,12 @@ gboolean setup_can_build_road()
 		if (build_count_edges() == 2)
 			return FALSE;
 		return build_count_settlements() < 2
-			|| map_can_place_road(map, my_player_num());
+		    || map_can_place_road(map, my_player_num());
 	} else {
 		if (build_count_edges() == 1)
 			return FALSE;
 		return build_count_settlements() < 1
-			|| map_can_place_road(map, my_player_num());
+		    || map_can_place_road(map, my_player_num());
 	}
 }
 
@@ -61,12 +61,12 @@ gboolean setup_can_build_ship()
 		if (build_count_edges() == 2)
 			return FALSE;
 		return build_count_settlements() < 2
-			|| map_can_place_ship(map, my_player_num());
+		    || map_can_place_ship(map, my_player_num());
 	} else {
 		if (build_count_edges() == 1)
 			return FALSE;
 		return build_count_settlements() < 1
-			|| map_can_place_ship(map, my_player_num());
+		    || map_can_place_ship(map, my_player_num());
 	}
 }
 
@@ -78,16 +78,16 @@ gboolean setup_can_build_bridge()
 		if (build_count_edges() == 2)
 			return FALSE;
 		return build_count_settlements() < 2
-			|| map_can_place_bridge(map, my_player_num());
+		    || map_can_place_bridge(map, my_player_num());
 	} else {
 		if (build_count_edges() == 1)
 			return FALSE;
 		return build_count_settlements() < 1
-			|| map_can_place_bridge(map, my_player_num());
+		    || map_can_place_bridge(map, my_player_num());
 	}
 }
 
-gboolean setup_can_build_settlement ()
+gboolean setup_can_build_settlement()
 {
 	if (game_params->num_build_type[BUILD_SETTLEMENT] == 0)
 		return FALSE;
@@ -101,45 +101,44 @@ gboolean setup_can_finish()
 {
 	if (double_setup)
 		return build_count_edges() == 2
-			&& build_count_settlements() == 2
-			&& build_is_valid();
+		    && build_count_settlements() == 2 && build_is_valid();
 	else
 		return build_count_edges() == 1
-			&& build_count_settlements() == 1
-			&& build_is_valid();
+		    && build_count_settlements() == 1 && build_is_valid();
 }
 
 /* Place some restrictions on road placement during setup phase
  */
-gboolean setup_check_road(const Edge *edge, UNUSED(gint owner))
+gboolean setup_check_road(const Edge * edge, UNUSED(gint owner))
 {
 	return build_can_setup_road(edge, double_setup);
 }
 
 /* Place some restrictions on ship placement during setup phase
  */
-gboolean setup_check_ship(const Edge *edge, UNUSED(gint owner))
+gboolean setup_check_ship(const Edge * edge, UNUSED(gint owner))
 {
 	return build_can_setup_ship(edge, double_setup);
 }
 
 /* Place some restrictions on bridge placement during setup phase
  */
-gboolean setup_check_bridge(const Edge *edge, UNUSED(gint owner))
+gboolean setup_check_bridge(const Edge * edge, UNUSED(gint owner))
 {
 	return build_can_setup_bridge(edge, double_setup);
 }
 
 /* Place some restrictions on settlement placement during setup phase
  */
-gboolean setup_check_settlement(const Node *node, UNUSED(gint owner))
+gboolean setup_check_settlement(const Node * node, UNUSED(gint owner))
 {
 	return build_can_setup_settlement(node, double_setup);
 }
 
 void setup_begin(gint player_num)
 {
-	log_message( MSG_INFO, _("Setup for %s.\n"), player_name(player_num, FALSE));
+	log_message(MSG_INFO, _("Setup for %s.\n"),
+		    player_name(player_num, FALSE));
 	player_set_current(player_num);
 	if (player_num != my_player_num())
 		return;
@@ -150,7 +149,8 @@ void setup_begin(gint player_num)
 
 void setup_begin_double(gint player_num)
 {
-	log_message( MSG_INFO, _("Double setup for %s.\n"), player_name(player_num, FALSE));
+	log_message(MSG_INFO, _("Double setup for %s.\n"),
+		    player_name(player_num, FALSE));
 	player_set_current(player_num);
 	if (player_num != my_player_num())
 		return;

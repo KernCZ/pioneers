@@ -35,9 +35,9 @@ void robber_move_on_map(gint x, gint y)
 
 	map_move_robber(map, x, y);
 
-	callbacks.draw_hex (old_robber);
-	callbacks.draw_hex (hex);
-	callbacks.robber_moved (old_robber, hex);
+	callbacks.draw_hex(old_robber);
+	callbacks.draw_hex(hex);
+	callbacks.robber_moved(old_robber, hex);
 }
 
 void pirate_move_on_map(gint x, gint y)
@@ -47,14 +47,15 @@ void pirate_move_on_map(gint x, gint y)
 
 	map_move_pirate(map, x, y);
 
-	callbacks.draw_hex (old_pirate);
-	callbacks.draw_hex (hex);
-	callbacks.robber_moved (old_pirate, hex);
+	callbacks.draw_hex(old_pirate);
+	callbacks.draw_hex(hex);
+	callbacks.robber_moved(old_pirate, hex);
 }
 
 void robber_moved(gint player_num, gint x, gint y)
 {
-	log_message( MSG_STEAL, _("%s moved the robber.\n"), player_name(player_num, TRUE));
+	log_message(MSG_STEAL, _("%s moved the robber.\n"),
+		    player_name(player_num, TRUE));
 	robber_move_on_map(x, y);
 	if (player_num == my_player_num() && callbacks.instructions)
 		callbacks.instructions(_("Continue with your turn."));
@@ -63,7 +64,8 @@ void robber_moved(gint player_num, gint x, gint y)
 
 void pirate_moved(gint player_num, gint x, gint y)
 {
-	log_message( MSG_STEAL, _("%s moved the pirate.\n"), player_name(player_num, TRUE));
+	log_message(MSG_STEAL, _("%s moved the pirate.\n"),
+		    player_name(player_num, TRUE));
 	pirate_move_on_map(x, y);
 	if (player_num == my_player_num() && callbacks.instructions)
 		callbacks.instructions(_("Continue with your turn."));
@@ -72,7 +74,7 @@ void pirate_moved(gint player_num, gint x, gint y)
 void robber_begin_move(gint player_num)
 {
 	char buffer[512];
-	snprintf (buffer, 512, _("%s must move the robber."),
-			player_name(player_num, TRUE));
-	callbacks.instructions (buffer);
+	snprintf(buffer, 512, _("%s must move the robber."),
+		 player_name(player_num, TRUE));
+	callbacks.instructions(buffer);
 }

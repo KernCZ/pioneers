@@ -60,7 +60,7 @@ struct _Client {
 	ClientType type;
 	gint fd;
 	time_t event_at;	/* when is the next timeout for this client? */
-	void (*event_func)(Client *client);
+	void (*event_func) (Client * client);
 
 	char read_buff[16 * 1024];
 	int read_len;
@@ -97,24 +97,24 @@ static fd_set write_fds;
 static int accept_fd;
 static gint max_fd;
 
-static void client_printf(Client *client, const char *fmt, ...);
+static void client_printf(Client * client, const char *fmt, ...);
 
 #define MINUTE 60
 #define HOUR (60 * MINUTE)
 
-#define MODE_TIMEOUT (2 * MINUTE) /* delay allowed to define mode */
-#define CLIENT_TIMEOUT (2 * MINUTE) /* delay allowed while listing servers */
-#define SERVER_TIMEOUT (48 * HOUR) /* delay allowed between server updates */
-#define HELLO_TIMEOUT (8 * MINUTE) /* delay allowed between server hello */
+#define MODE_TIMEOUT (2 * MINUTE)	/* delay allowed to define mode */
+#define CLIENT_TIMEOUT (2 * MINUTE)	/* delay allowed while listing servers */
+#define SERVER_TIMEOUT (48 * HOUR)	/* delay allowed between server updates */
+#define HELLO_TIMEOUT (8 * MINUTE)	/* delay allowed between server hello */
 
 /* #define LOG */
 
 #ifdef LOG
-static void debug(const gchar *fmt, ...)
+static void debug(const gchar * fmt, ...)
 {
 	static FILE *fp;
 	va_list ap;
-	gchar buff[16 *1024];
+	gchar buff[16 * 1024];
 	gint len;
 	gint idx;
 
@@ -133,12 +133,24 @@ static void debug(const gchar *fmt, ...)
 	for (idx = 0; idx < len; idx++) {
 		if (isprint(buff[idx]) || idx == len - 1)
 			fputc(buff[idx], fp);
-		else switch (buff[idx]) {
-		case '\n': fputc('\\', fp); fputc('n', fp); break;
-		case '\r': fputc('\\', fp); fputc('r', fp); break;
-		case '\t': fputc('\\', fp); fputc('t', fp); break;
-		default: fprintf(fp, "\\x%02x", buff[idx]); break;
-		}
+		else
+			switch (buff[idx]) {
+			case '\n':
+				fputc('\\', fp);
+				fputc('n', fp);
+				break;
+			case '\r':
+				fputc('\\', fp);
+				fputc('r', fp);
+				break;
+			case '\t':
+				fputc('\\', fp);
+				fputc('t', fp);
+				break;
+			default:
+				fprintf(fp, "\\x%02x", buff[idx]);
+				break;
+			}
 	}
 	fflush(fp);
 }
@@ -157,14 +169,15 @@ static void find_new_max_fd(void)
 	}
 }
 
-static void client_free(Client *client)
+static void client_free(Client * client)
 {
 	if (client->type == META_SERVER)
-		syslog(LOG_INFO, "server on port %s unregistered", client->port);
+		syslog(LOG_INFO, "server on port %s unregistered",
+		       client->port);
 	g_free(client);
 }
 
-static void client_close(Client *client)
+static void client_close(Client * client)
 {
 	client_list = g_list_remove(client_list, client);
 
@@ -178,7 +191,8 @@ static void client_close(Client *client)
 	while (client->write_queue != NULL) {
 		char *data = client->write_queue->data;
 
-		client->write_queue = g_list_remove(client->write_queue, data);
+		client->write_queue =
+		    g_list_remove(client->write_queue, data);
 		g_free(data);
 	}
 
@@ -199,12 +213,12 @@ static void client_close(Client *client)
 		g_free(client->sevenrule);
 }
 
-static void client_hello(Client *client)
+static void client_hello(Client * client)
 {
 	client_printf(client, "hello\n");
 }
 
-static void set_client_event_at(Client *client)
+static void set_client_event_at(Client * client)
 {
 	time_t now = time(NULL);
 
@@ -227,7 +241,7 @@ static void set_client_event_at(Client *client)
 	}
 }
 
-static void client_do_write(Client *client)
+static void client_do_write(Client * client)
 {
 	while (client->write_queue != NULL) {
 		char *data = client->write_queue->data;
@@ -237,7 +251,7 @@ static void client_do_write(Client *client)
 		num = write(client->fd, data, len);
 #ifdef LOG
 		debug("client_do_write: write(%d, \"%.*s\", %d) = %d\n",
-			client->fd, len, data, len, num);
+		      client->fd, len, data, len, num);
 #endif
 		if (num < 0) {
 			if (errno == EAGAIN)
@@ -247,7 +261,7 @@ static void client_do_write(Client *client)
 			return;
 		} else if (num == len) {
 			client->write_queue
-				= g_list_remove(client->write_queue, data);
+			    = g_list_remove(client->write_queue, data);
 			g_free(data);
 		} else {
 			memmove(data, data + num, len - num + 1);
@@ -268,7 +282,7 @@ static void client_do_write(Client *client)
 	set_client_event_at(client);
 }
 
-static void client_printf(Client *client, const char *fmt, ...)
+static void client_printf(Client * client, const char *fmt, ...)
 {
 	gchar buff[10240];
 	va_list ap;
@@ -277,13 +291,14 @@ static void client_printf(Client *client, const char *fmt, ...)
 	g_vsnprintf(buff, sizeof(buff), fmt, ap);
 	va_end(ap);
 
-	client->write_queue = g_list_append(client->write_queue, g_strdup(buff));
+	client->write_queue =
+	    g_list_append(client->write_queue, g_strdup(buff));
 	FD_SET(client->fd, &write_fds);
 
 	set_client_event_at(client);
 }
 
-static void client_list_servers(Client *client)
+static void client_list_servers(Client * client)
 {
 	GList *list;
 
@@ -305,10 +320,8 @@ static void client_list_servers(Client *client)
 			client_printf(client,
 				      "map=%s\n"
 				      "comment=%s\n",
-				      scan->terrain,
-				      scan->title);
-		}
-		else if (client->protocol_major >= 1) {
+				      scan->terrain, scan->title);
+		} else if (client->protocol_major >= 1) {
 			client_printf(client,
 				      "vpoints=%s\n"
 				      "sevenrule=%s\n"
@@ -316,14 +329,13 @@ static void client_list_servers(Client *client)
 				      "title=%s\n",
 				      scan->vpoints,
 				      scan->sevenrule,
-				      scan->terrain,
-				      scan->title);
+				      scan->terrain, scan->title);
 		}
 		client_printf(client, "end\n");
 	}
 }
 
-static GList *load_game_desc(gchar *fname, GList *titles)
+static GList *load_game_desc(gchar * fname, GList * titles)
 {
 	FILE *fp;
 	gchar line[512], *title;
@@ -338,10 +350,11 @@ static GList *load_game_desc(gchar *fname, GList *titles)
 		if (len > 0 && line[len - 1] == '\n')
 			line[len - 1] = '\0';
 		if (strncmp(line, "title ", 6) == 0) {
-			title = line+6;
+			title = line + 6;
 			title += strspn(title, " \t");
-			titles = g_list_insert_sorted(titles, g_strdup(title),
-										  (GCompareFunc)strcmp);
+			titles =
+			    g_list_insert_sorted(titles, g_strdup(title),
+						 (GCompareFunc) strcmp);
 			break;
 		}
 	}
@@ -349,7 +362,7 @@ static GList *load_game_desc(gchar *fname, GList *titles)
 	return titles;
 }
 
-static GList *load_game_types( void )
+static GList *load_game_types(void)
 {
 	GDir *dir;
 	GList *titles = NULL;
@@ -378,7 +391,7 @@ static GList *load_game_types( void )
 	return titles;
 }
 
-static void client_list_types(Client *client)
+static void client_list_types(Client * client)
 {
 	GList *list = load_game_types();
 
@@ -388,7 +401,7 @@ static void client_list_types(Client *client)
 	g_list_free(list);
 }
 
-static void client_list_capability(Client *client)
+static void client_list_capability(Client * client)
 {
 	if (can_create_games)
 		client_printf(client, "create games\n");
@@ -398,7 +411,7 @@ static void client_list_capability(Client *client)
 	client_printf(client, "end\n");
 }
 
-static const gchar *get_server_path(void) 
+static const gchar *get_server_path(void)
 {
 	const gchar *console_server;
 	if (!(console_server = g_getenv("GNOCATAN_SERVER_CONSOLE")))
@@ -406,12 +419,12 @@ static const gchar *get_server_path(void)
 	return console_server;
 }
 
-static void client_create_new_server(Client *client, gchar *line)
+static void client_create_new_server(Client * client, gchar * line)
 {
 	char *terrain, *numplayers, *points, *sevens_rule, *numai, *type;
 	int pid, fd, port_used;
 	gboolean found_used = TRUE;
-	socklen_t yes=1;
+	socklen_t yes = 1;
 	struct sockaddr_in sa;
 	char port[20];
 	const char *console_server;
@@ -449,87 +462,90 @@ static void client_create_new_server(Client *client, gchar *line)
 	*line++ = 0;
 	line += strspn(line, " \t");
 	type = line;
-	line += strlen(line)-1;
-	while( line >= type && isspace(*line) )
+	line += strlen(line) - 1;
+	while (line >= type && isspace(*line))
 		*line-- = 0;
 	if (line < type)
 		goto bad;
 
 	console_server = get_server_path();
-	
+
 	fd = socket(AF_INET, SOCK_STREAM, 0);
 	if (fd < 0) {
 		client_printf(client, "Creating socket failed: %s\n",
-					  strerror(errno));
+			      strerror(errno));
 		return;
 	}
-	if (setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes)) < 0) {
+	if (setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes)) <
+	    0) {
 		client_printf(client, "Setting socket reuse failed: %s\n",
-					  strerror(errno));
+			      strerror(errno));
 		return;
 	}
 	sa.sin_family = AF_INET;
 	if ((port_low == 0) && (port_high == 0)) {
 		sa.sin_port = 0;
 	} else {
-		for (port_used = port_low; ((found_used == TRUE) && (port_used <= port_high)); port_used++) {
+		for (port_used = port_low;
+		     ((found_used == TRUE) && (port_used <= port_high));
+		     port_used++) {
 			found_used = FALSE;
-			for (list = client_list; list != NULL; list = g_list_next(list)) {
+			for (list = client_list; list != NULL;
+			     list = g_list_next(list)) {
 				Client *scan = list->data;
-				if ((scan->port != NULL) && (atoi(scan->port) == port_used)) {
+				if ((scan->port != NULL)
+				    && (atoi(scan->port) == port_used)) {
 					found_used = TRUE;
 				}
 			}
 			if (found_used == FALSE) {
 				sa.sin_port = port_used;
 			}
-	}
+		}
 		if (found_used == TRUE) {
-			client_printf(client, "Starting server failed: no port available\n");
+			client_printf(client,
+				      "Starting server failed: no port available\n");
 			return;
 		}
-	}	
+	}
 	sa.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
-	if (bind(fd, (struct sockaddr *)&sa, sizeof(sa)) < 0) {
+	if (bind(fd, (struct sockaddr *) &sa, sizeof(sa)) < 0) {
 		client_printf(client, "Binding socket failed: %s\n",
-					  strerror(errno));
+			      strerror(errno));
 		return;
 	}
 	yes = sizeof(sa);
-	if (getsockname(fd, (struct sockaddr *)&sa, &yes) < 0) {
-		client_printf(client, "Getting socket address failed: %s\n",
-					  strerror(errno));
+	if (getsockname(fd, (struct sockaddr *) &sa, &yes) < 0) {
+		client_printf(client,
+			      "Getting socket address failed: %s\n",
+			      strerror(errno));
 		return;
 	}
 	sprintf(port, "%d", sa.sin_port);
 
 	if ((pid = fork()) == -1) {
 		client_printf(client, "fork failed\n");
-	}
-	else if (pid == 0) {
+	} else if (pid == 0) {
 		int i;
-		for( i = 0; i < 255; ++i ) close(i);
-		open("/dev/null",O_RDONLY);
-		open("/dev/null",O_WRONLY);
-		open("/dev/null",O_RDWR);
-		execl( console_server, console_server,
-				"-g", type,
-				"-P", numplayers,
-				"-v", points,
-				"-R", sevens_rule,
-				"-T", terrain,
-				"-p", port,
-				"-c", numai,
-				"-k", "1200",
-				"-m", myhostname,
-				"-n", myhostname,
-				"-x",
-				"-r",
-				NULL);
+		for (i = 0; i < 255; ++i)
+			close(i);
+		open("/dev/null", O_RDONLY);
+		open("/dev/null", O_WRONLY);
+		open("/dev/null", O_RDWR);
+		execl(console_server, console_server,
+		      "-g", type,
+		      "-P", numplayers,
+		      "-v", points,
+		      "-R", sevens_rule,
+		      "-T", terrain,
+		      "-p", port,
+		      "-c", numai,
+		      "-k", "1200",
+		      "-m", myhostname,
+		      "-n", myhostname, "-x", "-r", NULL);
 		syslog(LOG_ERR, "cannot exec %s: %m", console_server);
 		exit(2);
-	}
-	else {
+	} else {
 		close(fd);
 	}
 
@@ -538,11 +554,12 @@ static void client_create_new_server(Client *client, gchar *line)
 	client_printf(client, "started\n");
 	syslog(LOG_INFO, "new server started on port %s", port);
 	return;
-  bad:
+      bad:
 	client_printf(client, "Badly formatted request\n");
 }
 
-static gboolean check_str_info(gchar *line, const gchar *prefix, gchar **data)
+static gboolean check_str_info(gchar * line, const gchar * prefix,
+			       gchar ** data)
 {
 	gint len = strlen(prefix);
 
@@ -554,7 +571,8 @@ static gboolean check_str_info(gchar *line, const gchar *prefix, gchar **data)
 	return TRUE;
 }
 
-static gboolean check_int_info(gchar *line, const gchar *prefix, gint *data)
+static gboolean check_int_info(gchar * line, const gchar * prefix,
+			       gint * data)
 {
 	gint len = strlen(prefix);
 
@@ -564,15 +582,16 @@ static gboolean check_int_info(gchar *line, const gchar *prefix, gint *data)
 	return TRUE;
 }
 
-static void try_make_server_complete(Client *client)
+static void try_make_server_complete(Client * client)
 {
 	int ok = 0;
-	
+
 	if (client->type == META_SERVER) {
 		static int prev_curr = -1;
 		if (client->curr != prev_curr) {
-			syslog(LOG_INFO, "server on port %s: now %d players",
-				   client->port, client->curr);
+			syslog(LOG_INFO,
+			       "server on port %s: now %d players",
+			       client->port, client->curr);
 			prev_curr = client->curr;
 		}
 		return;
@@ -582,33 +601,31 @@ static void try_make_server_complete(Client *client)
 	    /* FIXME: client->port is a gchar *, because it should be possible
 	     * to give the name of a service instead of a port.  atoi obviously
 	     * doesn't allow this */
-	    && atoi (client->port) > 0
+	    && atoi(client->port) > 0
 	    && client->version != NULL
 	    && client->max >= 0
 	    && client->curr >= 0
-	    && client->terrain != NULL
-	    && client->title != NULL) {
-	    if (client->protocol_major < 1) {
-		if (!client->vpoints)
-		    client->vpoints = g_strdup("?");
-		if (!client->sevenrule)
-		    client->sevenrule = g_strdup("?");
-		ok = 1;
-	    }
-	    else {
-		if (client->vpoints != NULL
-		    && client->sevenrule != NULL)
-		    ok = 1;
-	    }
+	    && client->terrain != NULL && client->title != NULL) {
+		if (client->protocol_major < 1) {
+			if (!client->vpoints)
+				client->vpoints = g_strdup("?");
+			if (!client->sevenrule)
+				client->sevenrule = g_strdup("?");
+			ok = 1;
+		} else {
+			if (client->vpoints != NULL
+			    && client->sevenrule != NULL)
+				ok = 1;
+		}
 	}
-	    
+
 	if (ok) {
-	    client->type = META_SERVER;
-	    client->send_hello = strcmp(client->version, "0.3.0") >= 0;
+		client->type = META_SERVER;
+		client->send_hello = strcmp(client->version, "0.3.0") >= 0;
 	}
 }
 
-static void get_peer_name(gint fd, gchar **hostname, gchar **servname)
+static void get_peer_name(gint fd, gchar ** hostname, gchar ** servname)
 {
 	sockaddr_t peer;
 	socklen_t peer_len;
@@ -621,8 +638,11 @@ static void get_peer_name(gint fd, gchar **hostname, gchar **servname)
 		char host[NI_MAXHOST];
 		char port[NI_MAXSERV];
 
-		if((err = getnameinfo(&peer.sa, peer_len, host, NI_MAXHOST, port, NI_MAXSERV, 0)))
-			syslog(LOG_ERR, "resolving address: %s", gai_strerror(err));
+		if ((err =
+		     getnameinfo(&peer.sa, peer_len, host, NI_MAXHOST,
+				 port, NI_MAXSERV, 0)))
+			syslog(LOG_ERR, "resolving address: %s",
+			       gai_strerror(err));
 		else {
 			*hostname = g_strdup(host);
 			*servname = g_strdup(port);
@@ -635,22 +655,21 @@ static void get_peer_name(gint fd, gchar **hostname, gchar **servname)
 	return;
 }
 
-static void client_process_line(Client *client, gchar *line)
+static void client_process_line(Client * client, gchar * line)
 {
 	switch (client->type) {
 	case META_UNKNOWN:
 	case META_CLIENT:
 		if (strncmp(line, "version ", 8) == 0) {
-			char *p = line+8;
+			char *p = line + 8;
 			client->protocol_major = atoi(p);
 			p += strspn(p, "0123456789");
 			if (*p == '.')
-				client->protocol_minor = atoi(p+1);
-		}
-		else if (strcmp(line, "listservers") == 0 ||
-			/* still accept "client" request from proto 0 clients
-			 * so we don't have to distinguish between client versions */
-			strcmp(line, "client") == 0) {
+				client->protocol_minor = atoi(p + 1);
+		} else if (strcmp(line, "listservers") == 0 ||
+			   /* still accept "client" request from proto 0 clients
+			    * so we don't have to distinguish between client versions */
+			   strcmp(line, "client") == 0) {
 			client->type = META_CLIENT;
 			client_list_servers(client);
 			client->waiting_for_close = TRUE;
@@ -660,17 +679,17 @@ static void client_process_line(Client *client, gchar *line)
 			client->waiting_for_close = TRUE;
 		} else if (strncmp(line, "create ", 7) == 0) {
 			client->type = META_CLIENT;
-			client_create_new_server(client,line+7);
+			client_create_new_server(client, line + 7);
 			client->waiting_for_close = TRUE;
 		} else if (strcmp(line, "server") == 0) {
 			client->type = META_SERVER_ALMOST;
 			client->max = client->curr = -1;
-			get_peer_name(client->fd, &client->host, &client->port);
+			get_peer_name(client->fd, &client->host,
+				      &client->port);
 		} else if (strcmp(line, "capability") == 0) {
 			client->type = META_CLIENT;
 			client_list_capability(client);
-		}
-		else {
+		} else {
 			client_printf(client, "bad command\n");
 			client->waiting_for_close = TRUE;
 		}
@@ -685,7 +704,8 @@ static void client_process_line(Client *client, gchar *line)
 		    || check_str_info(line, "terrain=", &client->terrain)
 		    || check_str_info(line, "title=", &client->title)
 		    || check_str_info(line, "vpoints=", &client->vpoints)
-		    || check_str_info(line, "sevenrule=", &client->sevenrule)
+		    || check_str_info(line, "sevenrule=",
+				      &client->sevenrule)
 		    /* meta-protocol 0.0 compat */
 		    || check_str_info(line, "map=", &client->terrain)
 		    || check_str_info(line, "comment=", &client->title))
@@ -706,7 +726,7 @@ static int find_line(char *buff, int len)
 	return -1;
 }
 
-static void client_do_read(Client *client)
+static void client_do_read(Client * client)
 {
 	int num;
 	int offset;
@@ -725,7 +745,8 @@ static void client_do_read(Client *client)
 		   sizeof(client->read_buff) - client->read_len);
 #ifdef LOG
 	debug("client_do_read: read(%d, %d) = %d",
-	      client->fd, sizeof(client->read_buff) - client->read_len, num);
+	      client->fd, sizeof(client->read_buff) - client->read_len,
+	      num);
 	if (num > 0)
 		debug(", \"%.*s\"",
 		      num, client->read_buff + client->read_len);
@@ -802,8 +823,9 @@ static void accept_new_client(void)
 		client_printf(client, "goto %s\n", redirect_location);
 		client->waiting_for_close = TRUE;
 	} else {
-		client_printf(client, "welcome to the gnocatan-meta-server version %s\n",
-					  META_PROTOCOL_VERSION);
+		client_printf(client,
+			      "welcome to the gnocatan-meta-server version %s\n",
+			      META_PROTOCOL_VERSION);
 		FD_SET(client->fd, &read_fds);
 	}
 	set_client_event_at(client);
@@ -815,8 +837,8 @@ static struct timeval *find_next_delay(void)
 	static struct timeval timeout;
 	time_t now = time(NULL);
 
-        timeout.tv_sec = 30 * 60 * 60; /* 30 minutes */
-        timeout.tv_usec = 0;
+	timeout.tv_sec = 30 * 60 * 60;	/* 30 minutes */
+	timeout.tv_usec = 0;
 
 	for (list = client_list; list != NULL; list = g_list_next(list)) {
 		Client *client = list->data;
@@ -837,9 +859,8 @@ static struct timeval *find_next_delay(void)
 static void reap_children(void)
 {
 	int dummy;
-	
-	while( waitpid(-1, &dummy, WNOHANG) > 0 )
-		;
+
+	while (waitpid(-1, &dummy, WNOHANG) > 0);
 }
 
 static void check_timeouts(void)
@@ -877,7 +898,9 @@ static void select_loop(void)
 		read_res = read_fds;
 		write_res = write_fds;
 
-		num = select(max_fd + 1, &read_res, &write_res, NULL, timeout);
+		num =
+		    select(max_fd + 1, &read_res, &write_res, NULL,
+			   timeout);
 		if (num < 0) {
 			if (errno == EINTR)
 				continue;
@@ -918,7 +941,7 @@ static void select_loop(void)
 	}
 }
 
-static gboolean setup_accept_sock(const gchar *port)
+static gboolean setup_accept_sock(const gchar * port)
 {
 	int err;
 	struct addrinfo hints, *ai, *aip;
@@ -931,19 +954,21 @@ static gboolean setup_accept_sock(const gchar *port)
 	hints.ai_protocol = IPPROTO_TCP;
 	hints.ai_flags = AI_PASSIVE;
 
-	if((err = getaddrinfo(NULL, port, &hints, &ai)) || !ai) {
-		syslog(LOG_ERR, "creating struct addrinfo: %s", gai_strerror(errno));
+	if ((err = getaddrinfo(NULL, port, &hints, &ai)) || !ai) {
+		syslog(LOG_ERR, "creating struct addrinfo: %s",
+		       gai_strerror(errno));
 		return FALSE;
 	}
 
-	for(aip = ai; aip; aip = aip->ai_next) {
+	for (aip = ai; aip; aip = aip->ai_next) {
 		fd = socket(aip->ai_family, SOCK_STREAM, 0);
 		if (fd < 0) {
 			continue;
 		}
 		yes = 1;
 		if (setsockopt(fd,
-					   SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes)) < 0) {
+			       SOL_SOCKET, SO_REUSEADDR, &yes,
+			       sizeof(yes)) < 0) {
 			close(fd);
 			continue;
 		}
@@ -954,7 +979,7 @@ static gboolean setup_accept_sock(const gchar *port)
 
 		break;
 	}
-	
+
 	if (!aip) {
 		syslog(LOG_ERR, "error creating listening socket: %m\n");
 		freeaddrinfo(ai);
@@ -963,7 +988,7 @@ static gboolean setup_accept_sock(const gchar *port)
 
 	accept_fd = max_fd = fd;
 	freeaddrinfo(ai);
-	
+
 	if (fcntl(fd, F_SETFL, O_NDELAY) < 0) {
 		syslog(LOG_ERR, "setting socket non-blocking: %m");
 		close(accept_fd);
@@ -1025,24 +1050,31 @@ int main(int argc, char *argv[])
 		case 'h':
 			printf("Usage: gnocatan-meta-server [options]\n");
 			printf("Options:\n");
-			printf("  -h               Display this help text\n");
-			printf("  -d               Daemonize the metaserver on start\n");
-			printf("  -r <server>      Redirect clients to another metaserver\n");
-			printf("  -s <hostname>    Use this hostname when creating new games\n");
-			printf("  -p <from>-<to>   Use this ports range when creating new games\n");
+			printf
+			    ("  -h               Display this help text\n");
+			printf
+			    ("  -d               Daemonize the metaserver on start\n");
+			printf
+			    ("  -r <server>      Redirect clients to another metaserver\n");
+			printf
+			    ("  -s <hostname>    Use this hostname when creating new games\n");
+			printf
+			    ("  -p <from>-<to>   Use this ports range when creating new games\n");
 			exit(1);
 			break;
 		case 's':
 			myhostname = g_strdup(optarg);
 			break;
 		case 'p':
-			count = sscanf(optarg, "%d-%d", &port_low, &port_high);
-			if ((port_low < 0) || (port_low > port_high) || (count != 2)) {
+			count =
+			    sscanf(optarg, "%d-%d", &port_low, &port_high);
+			if ((port_low < 0) || (port_low > port_high)
+			    || (count != 2)) {
 				port_low = 0;
 				port_high = 0;
 			}
 			break;
-	}
+		}
 
 	openlog("gnocatan-meta", LOG_PID, LOG_USER);
 	if (make_daemon)

@@ -39,7 +39,7 @@
 #include "log.h"
 
 #ifdef DEBUG
-void debug(const gchar *fmt, ...)
+void debug(const gchar * fmt, ...)
 {
 	va_list ap;
 	gchar buff[16 * 1024];
@@ -53,34 +53,37 @@ void debug(const gchar *fmt, ...)
 	for (idx = 0; idx < len; idx++) {
 		if (isprint(buff[idx]) || idx == len - 1)
 			fputc(buff[idx], stderr);
-		else switch (buff[idx]) {
-		case '\n':
-			fputc ('\\', stderr);
-			fputc ('n', stderr);
-			break;
-		case '\r':
-			fputc ('\\', stderr);
-			fputc ('r', stderr);
-			break;
-		case '\t':
-			fputc ('\\', stderr);
-			fputc ('t', stderr);
-			break;
-		default:
-			fprintf (stderr, "\\x%02x", buff[idx]);
-			break;
-		}
+		else
+			switch (buff[idx]) {
+			case '\n':
+				fputc('\\', stderr);
+				fputc('n', stderr);
+				break;
+			case '\r':
+				fputc('\\', stderr);
+				fputc('r', stderr);
+				break;
+			case '\t':
+				fputc('\\', stderr);
+				fputc('t', stderr);
+				break;
+			default:
+				fprintf(stderr, "\\x%02x", buff[idx]);
+				break;
+			}
 	}
 }
 #endif
 
-static void read_ready(Session *ses);
-static void write_ready(Session *ses);
+static void read_ready(Session * ses);
+static void write_ready(Session * ses);
 
-static void listen_read(Session *ses, gboolean monitor)
+static void listen_read(Session * ses, gboolean monitor)
 {
 	if (monitor && ses->read_tag == 0)
-		ses->read_tag = driver->input_add_read(ses->fd, (InputFunc)read_ready, ses);
+		ses->read_tag =
+		    driver->input_add_read(ses->fd, (InputFunc) read_ready,
+					   ses);
 	if (!monitor && ses->read_tag != 0) {
 		driver->input_remove(ses->read_tag);
 		ses->read_tag = 0;
@@ -88,23 +91,25 @@ static void listen_read(Session *ses, gboolean monitor)
 
 }
 
-static void listen_write(Session *ses, gboolean monitor)
+static void listen_write(Session * ses, gboolean monitor)
 {
 	if (monitor && ses->write_tag == 0)
-		ses->write_tag = driver->input_add_write(ses->fd, (InputFunc)write_ready, ses);
+		ses->write_tag =
+		    driver->input_add_write(ses->fd,
+					    (InputFunc) write_ready, ses);
 	if (!monitor && ses->write_tag != 0) {
 		driver->input_remove(ses->write_tag);
 		ses->write_tag = 0;
 	}
 }
 
-static void notify(Session *ses, NetEvent event, gchar *line)
+static void notify(Session * ses, NetEvent event, gchar * line)
 {
 	if (ses->notify_func != NULL)
 		ses->notify_func(event, ses->user_data, line);
 }
 
-void net_close(Session *ses)
+void net_close(Session * ses)
 {
 	if (ses->fd >= 0) {
 		listen_read(ses, FALSE);
@@ -116,13 +121,13 @@ void net_close(Session *ses)
 			char *data = ses->write_queue->data;
 
 			ses->write_queue
-				= g_list_remove(ses->write_queue, data);
+			    = g_list_remove(ses->write_queue, data);
 			g_free(data);
 		}
 	}
 }
 
-void net_close_when_flushed(Session *ses)
+void net_close_when_flushed(Session * ses)
 {
 	ses->waiting_for_close = TRUE;
 	if (ses->write_queue != NULL)
@@ -132,18 +137,18 @@ void net_close_when_flushed(Session *ses)
 	notify(ses, NET_CLOSE, NULL);
 }
 
-void net_wait_for_close(Session *ses)
+void net_wait_for_close(Session * ses)
 {
 	ses->waiting_for_close = TRUE;
 }
 
-static void close_and_callback(Session *ses)
+static void close_and_callback(Session * ses)
 {
 	net_close(ses);
 	notify(ses, NET_CLOSE, NULL);
 }
 
-static void write_ready(Session *ses)
+static void write_ready(Session * ses)
 {
 	if (!ses || ses->fd < 0)
 		return;
@@ -157,13 +162,17 @@ static void write_ready(Session *ses)
 		if (getsockopt(ses->fd, SOL_SOCKET, SO_ERROR,
 			       &error, &error_len) < 0) {
 			notify(ses, NET_CONNECT_FAIL, NULL);
-			log_message( MSG_ERROR, _("Error checking connect status: %s\n"),
-				  g_strerror(errno));
+			log_message(MSG_ERROR,
+				    _
+				    ("Error checking connect status: %s\n"),
+				    g_strerror(errno));
 			net_close(ses);
 		} else if (error != 0) {
 			notify(ses, NET_CONNECT_FAIL, NULL);
-			log_message( MSG_ERROR, _("Error connecting to host '%s': %s\n"),
-				  ses->host, g_strerror(error));
+			log_message(MSG_ERROR,
+				    _
+				    ("Error connecting to host '%s': %s\n"),
+				    ses->host, g_strerror(error));
 			net_close(ses);
 		} else {
 			ses->connect_in_progress = FALSE;
@@ -182,18 +191,21 @@ static void write_ready(Session *ses)
 		num = write(ses->fd, data, len);
 #ifdef DEBUG
 		debug("write_ready: write(%d, \"%.*s\", %d) = %d\n",
-			ses->fd, len, data, len, num);
+		      ses->fd, len, data, len, num);
 #endif
 		if (num < 0) {
 			if (errno == EAGAIN)
 				break;
 			if (errno != EPIPE)
-				log_message( MSG_ERROR, _("Error writing socket: %s\n"), g_strerror(errno));
+				log_message(MSG_ERROR,
+					    _
+					    ("Error writing socket: %s\n"),
+					    g_strerror(errno));
 			close_and_callback(ses);
 			return;
 		} else if (num == len) {
 			ses->write_queue
-				= g_list_remove(ses->write_queue, data);
+			    = g_list_remove(ses->write_queue, data);
 			g_free(data);
 		} else {
 			memmove(data, data + num, len - num + 1);
@@ -211,7 +223,7 @@ static void write_ready(Session *ses)
 	}
 }
 
-void net_write(Session *ses, const gchar *data)
+void net_write(Session * ses, const gchar * data)
 {
 	if (!ses || ses->fd < 0)
 		return;
@@ -219,7 +231,8 @@ void net_write(Session *ses, const gchar *data)
 		/* reassign the pointer, because the glib docs say it may
 		 * change and because if we're in the process of connecting the
 		 * pointer may currently be null. */
-		ses->write_queue = g_list_append(ses->write_queue, g_strdup(data));
+		ses->write_queue =
+		    g_list_append(ses->write_queue, g_strdup(data));
 	} else {
 		int len;
 		int num;
@@ -230,12 +243,15 @@ void net_write(Session *ses, const gchar *data)
 		if (num > 0)
 			debug("(%d) --> %s\n", ses->fd, data);
 		else if (errno != EAGAIN)
-			debug ("(%d) --- Error writing to socket.\n", ses->fd);
+			debug("(%d) --- Error writing to socket.\n",
+			      ses->fd);
 #endif
 		if (num < 0) {
 			if (errno != EAGAIN) {
-				log_message( MSG_ERROR, _("Error writing to socket: %s\n"),
-					  g_strerror(errno));
+				log_message(MSG_ERROR,
+					    _
+					    ("Error writing to socket: %s\n"),
+					    g_strerror(errno));
 				close_and_callback(ses);
 				return;
 			}
@@ -243,13 +259,13 @@ void net_write(Session *ses, const gchar *data)
 		}
 		if (num != len) {
 			ses->write_queue
-				= g_list_append(NULL, g_strdup(data + num));
+			    = g_list_append(NULL, g_strdup(data + num));
 			listen_write(ses, TRUE);
 		}
 	}
 }
 
-void net_printf(Session *ses, const gchar *fmt, ...)
+void net_printf(Session * ses, const gchar * fmt, ...)
 {
 	char buff[4096];
 	va_list ap;
@@ -271,7 +287,7 @@ static int find_line(char *buff, int len)
 	return -1;
 }
 
-static void read_ready(Session *ses)
+static void read_ready(Session * ses)
 {
 	int num;
 	int offset;
@@ -282,7 +298,8 @@ static void read_ready(Session *ses)
 		 * reading. Assume something has gone wrong and
 		 * disconnect
 		 */
-		log_message( MSG_ERROR, _("Read buffer overflow - disconnecting\n"));
+		log_message(MSG_ERROR,
+			    _("Read buffer overflow - disconnecting\n"));
 		close_and_callback(ses);
 		return;
 	}
@@ -292,7 +309,8 @@ static void read_ready(Session *ses)
 	if (num < 0) {
 		if (errno == EAGAIN)
 			return;
-		log_message( MSG_ERROR, _("Error reading socket: %s\n"), g_strerror(errno));
+		log_message(MSG_ERROR, _("Error reading socket: %s\n"),
+			    g_strerror(errno));
 		close_and_callback(ses);
 		return;
 	}
@@ -309,8 +327,7 @@ static void read_ready(Session *ses)
 	ses->entered = TRUE;
 
 	offset = 0;
-	while (ses->fd >= 0
-	       && offset < ses->read_len) {
+	while (ses->fd >= 0 && offset < ses->read_len) {
 		char *line = ses->read_buff + offset;
 		int len = find_line(line, ses->read_len - offset);
 
@@ -353,18 +370,18 @@ Session *net_new(NetNotifyFunc notify_func, void *user_data)
 	return ses;
 }
 
-void net_use_fd(Session *ses, int fd)
+void net_use_fd(Session * ses, int fd)
 {
 	ses->fd = fd;
 	listen_read(ses, TRUE);
 }
 
-gboolean net_connected(Session *ses)
+gboolean net_connected(Session * ses)
 {
 	return ses->fd >= 0 && !ses->connect_in_progress;
 }
 
-gboolean net_connect(Session *ses, const gchar *host, const gchar *port)
+gboolean net_connect(Session * ses, const gchar * host, const gchar * port)
 {
 	int err;
 	struct addrinfo hints, *ai, *aip;
@@ -380,31 +397,42 @@ gboolean net_connect(Session *ses, const gchar *host, const gchar *port)
 	hints.ai_socktype = SOCK_STREAM;
 	hints.ai_protocol = IPPROTO_TCP;
 
-	if((err = getaddrinfo(host, port, &hints, &ai))) {
-		log_message( MSG_ERROR, _("Cannot resolve %s port %s: %s\n"), host, port, gai_strerror(err));
+	if ((err = getaddrinfo(host, port, &hints, &ai))) {
+		log_message(MSG_ERROR,
+			    _("Cannot resolve %s port %s: %s\n"), host,
+			    port, gai_strerror(err));
 		return FALSE;
 	}
-	if(!ai) {
-		log_message( MSG_ERROR, _("Cannot resolve %s port %s: host not found\n"), host, port);
+	if (!ai) {
+		log_message(MSG_ERROR,
+			    _
+			    ("Cannot resolve %s port %s: host not found\n"),
+			    host, port);
 		return FALSE;
 	}
 
-	for(aip = ai; aip; aip = aip->ai_next) {
+	for (aip = ai; aip; aip = aip->ai_next) {
 		ses->fd = socket(aip->ai_family, SOCK_STREAM, 0);
 		if (ses->fd < 0) {
-			log_message( MSG_ERROR, _("Error creating socket: %s\n"), g_strerror(errno));
+			log_message(MSG_ERROR,
+				    _("Error creating socket: %s\n"),
+				    g_strerror(errno));
 			continue;
 		}
 		if (fcntl(ses->fd, F_SETFD, 1) < 0) {
-			log_message( MSG_ERROR, _("Error setting socket close-on-exec: %s\n"),
-				  g_strerror(errno));
+			log_message(MSG_ERROR,
+				    _
+				    ("Error setting socket close-on-exec: %s\n"),
+				    g_strerror(errno));
 			close(ses->fd);
 			ses->fd = -1;
 			continue;
 		}
 		if (fcntl(ses->fd, F_SETFL, O_NDELAY) < 0) {
-			log_message( MSG_ERROR, _("Error setting socket non-blocking: %s\n"),
-				  g_strerror(errno));
+			log_message(MSG_ERROR,
+				    _
+				    ("Error setting socket non-blocking: %s\n"),
+				    g_strerror(errno));
 			close(ses->fd);
 			ses->fd = -1;
 			continue;
@@ -416,11 +444,13 @@ gboolean net_connect(Session *ses, const gchar *host, const gchar *port)
 				listen_write(ses, TRUE);
 				break;
 			} else {
-				log_message( MSG_ERROR, _("Error connecting to %s: %s\n"),
-					  host, g_strerror(errno));
-			close(ses->fd);
-			ses->fd = -1;
-			continue;
+				log_message(MSG_ERROR,
+					    _
+					    ("Error connecting to %s: %s\n"),
+					    host, g_strerror(errno));
+				close(ses->fd);
+				ses->fd = -1;
+				continue;
 			}
 		} else
 			listen_read(ses, TRUE);
@@ -428,14 +458,14 @@ gboolean net_connect(Session *ses, const gchar *host, const gchar *port)
 
 	freeaddrinfo(ai);
 
-	if(ses->fd >= 0)
+	if (ses->fd >= 0)
 		return TRUE;
 	else
 		return FALSE;
 }
 
 /* Free and NULL-ity the session *ses */
-void net_free(Session **ses)
+void net_free(Session ** ses)
 {
 	net_close(*ses);
 
@@ -445,7 +475,8 @@ void net_free(Session **ses)
 	*ses = NULL;
 }
 
-gchar *get_my_hostname(void) {
+gchar *get_my_hostname(void)
+{
 	char hbuf[256];
 	struct hostent *hp;
 
@@ -463,7 +494,7 @@ gchar *get_my_hostname(void) {
 gchar *get_meta_server_name(gboolean use_default)
 {
 	gchar *temp;
-	
+
 	temp = g_strdup(g_getenv("GNOCATAN_META_SERVER"));
 	if (!temp) {
 		if (use_default)

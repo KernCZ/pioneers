@@ -35,22 +35,20 @@ GRand *g_rand_ctx = NULL;
 #include "mt_rand.h"
 #endif
 
-Hex *map_hex(Map *map, gint x, gint y)
+Hex *map_hex(Map * map, gint x, gint y)
 {
-	if (x < 0 || x >= map->x_size
-	    || y < 0 || y >= map->y_size)
+	if (x < 0 || x >= map->x_size || y < 0 || y >= map->y_size)
 		return NULL;
 
 	return map->grid[y][x];
 }
 
-Node *map_node(Map *map, gint x, gint y, gint pos)
+Node *map_node(Map * map, gint x, gint y, gint pos)
 {
 	Hex *hex;
 
 	if (x < 0 || x >= map->x_size
-	    || y < 0 || y >= map->y_size
-	    || pos < 0 || pos >= 6)
+	    || y < 0 || y >= map->y_size || pos < 0 || pos >= 6)
 		return NULL;
 
 	hex = map->grid[y][x];
@@ -59,13 +57,12 @@ Node *map_node(Map *map, gint x, gint y, gint pos)
 	return hex->nodes[pos];
 }
 
-Edge *map_edge(Map *map, gint x, gint y, gint pos)
+Edge *map_edge(Map * map, gint x, gint y, gint pos)
 {
 	Hex *hex;
 
 	if (x < 0 || x >= map->x_size
-	    || y < 0 || y >= map->y_size
-	    || pos < 0 || pos >= 6)
+	    || y < 0 || y >= map->y_size || pos < 0 || pos >= 6)
 		return NULL;
 
 	hex = map->grid[y][x];
@@ -79,7 +76,7 @@ Edge *map_edge(Map *map, gint x, gint y, gint pos)
  * If the callback function returns TRUE, stop traversal immediately
  * and return TRUE to caller,
  */
-gboolean map_traverse(Map *map, HexFunc func, void *closure)
+gboolean map_traverse(Map * map, HexFunc func, void *closure)
 {
 	gint x;
 
@@ -114,25 +111,25 @@ typedef struct {
 	gint y_offset;
 } HexOffset;
 static HexOffset even_offsets[6] = {
-	{  1,  0 },		/* 0 */
-	{  0, -1 },		/* 1 */
-	{ -1, -1 },		/* 2 */
-	{ -1,  0 },		/* 3 */
-	{ -1,  1 },		/* 4 */
-	{  0,  1 }		/* 5 */
+	{1, 0},			/* 0 */
+	{0, -1},		/* 1 */
+	{-1, -1},		/* 2 */
+	{-1, 0},		/* 3 */
+	{-1, 1},		/* 4 */
+	{0, 1}			/* 5 */
 };
 static HexOffset odd_offsets[6] = {
-	{  1,  0 },		/* 0 */
-	{  1, -1 },		/* 1 */
-	{  0, -1 },		/* 2 */
-	{ -1,  0 },		/* 3 */
-	{  0,  1 },		/* 4 */
-	{  1,  1 }		/* 5 */
+	{1, 0},			/* 0 */
+	{1, -1},		/* 1 */
+	{0, -1},		/* 2 */
+	{-1, 0},		/* 3 */
+	{0, 1},			/* 4 */
+	{1, 1}			/* 5 */
 };
 
 /* Build an array of adjacent hexes
  */
-static void calc_adjacent(Map *map, gint x, gint y, Hex *adjacent[6])
+static void calc_adjacent(Map * map, gint x, gint y, Hex * adjacent[6])
 {
 	HexOffset *offset;
 	gint idx;
@@ -144,8 +141,7 @@ static void calc_adjacent(Map *map, gint x, gint y, Hex *adjacent[6])
 
 		if (x_hex >= 0
 		    && y_hex >= 0
-		    && x_hex < map->x_size
-		    && y_hex < map->y_size)
+		    && x_hex < map->x_size && y_hex < map->y_size)
 			adjacent[idx] = map->grid[y_hex][x_hex];
 		else
 			adjacent[idx] = NULL;
@@ -180,17 +176,17 @@ typedef struct {
 	gint edge_pos;		/* edge position to connect this hex to */
 } ChainPart;
 static ChainPart node_chain[] = {
-	{ 2, 4, 1, 1 },	/* 0 */
-	{ 3, 5, 2, 1 },	/* 1 */
-	{ 4, 0, 2, 0 },	/* 2 */
-	{ 5, 1, 0, 0 },	/* 3 */
-	{ 0, 2, 0, 0 },	/* 4 */
-	{ 1, 3, 1, 1 }	/* 5 */
+	{2, 4, 1, 1},		/* 0 */
+	{3, 5, 2, 1},		/* 1 */
+	{4, 0, 2, 0},		/* 2 */
+	{5, 1, 0, 0},		/* 3 */
+	{0, 2, 0, 0},		/* 4 */
+	{1, 3, 1, 1}		/* 5 */
 };
 
 /* Build ring of nodes and edges around the current hex
  */
-static gboolean build_network(Map *map, Hex *hex, UNUSED(void *closure))
+static gboolean build_network(Map * map, Hex * hex, UNUSED(void *closure))
 {
 	Hex *adjacent[6];
 	gint idx;
@@ -205,7 +201,8 @@ static gboolean build_network(Map *map, Hex *hex, UNUSED(void *closure))
 		if (adjacent[idx] != NULL)
 			node = adjacent[idx]->nodes[part->hex0_pos];
 		if (node == NULL && adjacent[(idx + 1) % 6] != NULL)
-			node = adjacent[(idx + 1) % 6]->nodes[part->hex1_pos];
+			node =
+			    adjacent[(idx + 1) % 6]->nodes[part->hex1_pos];
 		if (node == NULL) {
 			node = g_malloc0(sizeof(*node));
 			node->map = map;
@@ -248,16 +245,18 @@ typedef struct {
 	gint edge1_pos;		/* edge 1 connect position in node */
 } ChainConnect;
 static ChainConnect node_connect[] = {
-	{ 0, 1, 2, 1 },		/* 0 */
-	{ 0, 1, 2, 1 },		/* 1 */
-	{ 0, 1, 0, 2 },		/* 2 */
-	{ 0, 1, 0, 2 },		/* 3 */
-	{ 0, 1, 1, 0 },		/* 4 */
-	{ 0, 1, 1, 0 }		/* 5 */
+	{0, 1, 2, 1},		/* 0 */
+	{0, 1, 2, 1},		/* 1 */
+	{0, 1, 0, 2},		/* 2 */
+	{0, 1, 0, 2},		/* 3 */
+	{0, 1, 1, 0},		/* 4 */
+	{0, 1, 1, 0}		/* 5 */
 };
+
 /* Connect the the ring of nodes and edges to each other
  */
-static gboolean connect_network(Map *map, Hex *hex, UNUSED(void *closure))
+static gboolean connect_network(Map * map, Hex * hex,
+				UNUSED(void *closure))
 {
 	Hex *adjacent[6];
 	gint idx;
@@ -272,13 +271,15 @@ static gboolean connect_network(Map *map, Hex *hex, UNUSED(void *closure))
 		/* Connect current edge to adjacent nodes
 		 */
 		edge = hex->edges[idx];
-		edge->nodes[connect->node0_pos] = hex->nodes[(idx + 5) % 6];
+		edge->nodes[connect->node0_pos] =
+		    hex->nodes[(idx + 5) % 6];
 		edge->nodes[connect->node1_pos] = hex->nodes[idx];
 		/* Connect current node to adjacent edges
 		 */
 		node = hex->nodes[idx];
 		node->edges[connect->edge0_pos] = hex->edges[idx];
-		node->edges[connect->edge1_pos] = hex->edges[(idx + 1) % 6];
+		node->edges[connect->edge1_pos] =
+		    hex->edges[(idx + 1) % 6];
 	}
 
 	return FALSE;
@@ -293,7 +294,7 @@ static gboolean connect_network(Map *map, Hex *hex, UNUSED(void *closure))
  * shuffle the terrain hexes and then lay the chits out accounting for
  * the new position of the desert.
  */
-static void layout_chits(Map *map)
+static void layout_chits(Map * map)
 {
 	Hex **hexes;
 	gint num_chits;
@@ -344,7 +345,8 @@ static void layout_chits(Map *map)
 			map->robber_hex = hex;
 		} else {
 			hex->robber = FALSE;
-			hex->roll = g_array_index(map->chits, gint, chit_idx);
+			hex->roll =
+			    g_array_index(map->chits, gint, chit_idx);
 			chit_idx++;
 			if (chit_idx == map->chits->len)
 				chit_idx = 0;
@@ -356,7 +358,7 @@ static void layout_chits(Map *map)
  * and randomly reassigning port types.  This is the procedure
  * described in the board game rules.
  */
-void map_shuffle_terrain(Map *map)
+void map_shuffle_terrain(Map * map)
 {
 	gint terrain_count[LAST_TERRAIN];
 	gint port_count[ANY_RESOURCE + 1];
@@ -404,7 +406,8 @@ void map_shuffle_terrain(Map *map)
 #else
 				num = mt_random() % num_port;
 #endif
-				for (idx = 0; idx < numElem(port_count); idx++) {
+				for (idx = 0; idx < numElem(port_count);
+				     idx++) {
 					num -= port_count[idx];
 					if (num < 0)
 						break;
@@ -418,7 +421,8 @@ void map_shuffle_terrain(Map *map)
 #else
 				num = mt_random() % num_terrain;
 #endif
-				for (idx = 0; idx < numElem(terrain_count); idx++) {
+				for (idx = 0; idx < numElem(terrain_count);
+				     idx++) {
 					num -= terrain_count[idx];
 					if (num < 0)
 						break;
@@ -435,17 +439,17 @@ void map_shuffle_terrain(Map *map)
 	layout_chits(map);
 }
 
-Hex *map_robber_hex(Map *map)
+Hex *map_robber_hex(Map * map)
 {
 	return map->robber_hex;
 }
 
-Hex *map_pirate_hex(Map *map)
+Hex *map_pirate_hex(Map * map)
 {
 	return map->pirate_hex;
 }
 
-void map_move_robber(Map *map, gint x, gint y)
+void map_move_robber(Map * map, gint x, gint y)
 {
 	if (map->robber_hex != NULL)
 		map->robber_hex->robber = FALSE;
@@ -454,7 +458,7 @@ void map_move_robber(Map *map, gint x, gint y)
 		map->robber_hex->robber = TRUE;
 }
 
-void map_move_pirate(Map *map, gint x, gint y)
+void map_move_pirate(Map * map, gint x, gint y)
 {
 	map->pirate_hex = map_hex(map, x, y);
 }
@@ -466,7 +470,7 @@ Map *map_new()
 	return g_malloc0(sizeof(Map));
 }
 
-static Hex *copy_hex(Map *map, Hex *hex)
+static Hex *copy_hex(Map * map, Hex * hex)
 {
 	Hex *copy;
 
@@ -487,23 +491,24 @@ static Hex *copy_hex(Map *map, Hex *hex)
 	return copy;
 }
 
-static gboolean set_nosetup_nodes (UNUSED(Map *map), Hex *hex, Map *copy)
+static gboolean set_nosetup_nodes(UNUSED(Map * map), Hex * hex, Map * copy)
 {
 	gint idx;
 	for (idx = 0; idx < numElem(hex->nodes); ++idx) {
 		Node *node = hex->nodes[idx];
 		/* only handle nodes which are owned by the hex, to
 		 * prevent doing every node three times */
-		if (hex->x != node->x || hex->y != node->y) continue;
-		map_node (copy, node->x, node->y, node->pos)->no_setup
-			= node->no_setup;
+		if (hex->x != node->x || hex->y != node->y)
+			continue;
+		map_node(copy, node->x, node->y, node->pos)->no_setup
+		    = node->no_setup;
 	}
 	return FALSE;
 }
 
 /* Make a copy of an existing map
  */
-Map *map_copy(Map *map)
+Map *map_copy(Map * map)
 {
 	Map *copy = map_new();
 	int x, y;
@@ -516,7 +521,7 @@ Map *map_copy(Map *map)
 			copy->grid[y][x] = copy_hex(copy, map->grid[y][x]);
 	map_traverse(copy, build_network, NULL);
 	map_traverse(copy, connect_network, NULL);
-	map_traverse(map, (HexFunc)set_nosetup_nodes, copy);
+	map_traverse(map, (HexFunc) set_nosetup_nodes, copy);
 	copy->robber_hex = map->robber_hex;
 	copy->pirate_hex = map->pirate_hex;
 	copy->shrink_left = map->shrink_left;
@@ -527,7 +532,7 @@ Map *map_copy(Map *map)
 	copy->shrink_left = map->shrink_left;
 	copy->shrink_right = map->shrink_right;
 	/* chits is not owned by the map, i.e. not allocated / freed
-	 */ 
+	 */
 	copy->chits = map->chits;
 
 	return copy;
@@ -536,7 +541,7 @@ Map *map_copy(Map *map)
 /* Maps are sent from the server to the client a line at a time.  This
  * routine formats a line of a map for just that purpose.
  */
-void map_format_line(Map *map, gchar *line, gint y)
+void map_format_line(Map * map, gchar * line, gint y)
 {
 	gint x;
 
@@ -563,7 +568,7 @@ void map_format_line(Map *map, gchar *line, gint y)
 			*line++ = 'p';
 			break;
 		case FOREST_TERRAIN:
-			*line++ = 't'; /* tree */
+			*line++ = 't';	/* tree */
 			break;
 		case DESERT_TERRAIN:
 			*line++ = 'd';
@@ -599,7 +604,7 @@ void map_format_line(Map *map, gchar *line, gint y)
 			case NO_RESOURCE:
 				break;
 			case GOLD_RESOURCE:
-				g_assert (0);
+				g_assert(0);
 			}
 			*line++ = hex->facing + '0';
 			break;
@@ -615,9 +620,9 @@ void map_format_line(Map *map, gchar *line, gint y)
 		 * Needed only if, for some reason, maps can be uploaded
 		 * to the server by clients
 		 * @todo Enable this when protocol changes beyond 0.8.1
-		if (hex->shuffle == FALSE) {
-			*line++ = '+';
-		}
+		 if (hex->shuffle == FALSE) {
+		 *line++ = '+';
+		 }
 		 */
 	}
 	*line = '\0';
@@ -625,7 +630,7 @@ void map_format_line(Map *map, gchar *line, gint y)
 
 /* Read a map line into the grid
  */
-void map_parse_line(Map *map, gchar *line)
+void map_parse_line(Map * map, gchar * line)
 {
 	gint x = 0;
 
@@ -661,7 +666,7 @@ void map_parse_line(Map *map, gchar *line)
 		hex->shuffle = TRUE;
 
 		switch (*line++) {
-		case 's': /* sea */
+		case 's':	/* sea */
 			hex->terrain = SEA_TERRAIN;
 			if (*line == 'R') {
 				++line;
@@ -684,7 +689,7 @@ void map_parse_line(Map *map, gchar *line)
 			case 'l':
 				hex->resource = LUMBER_RESOURCE;
 				break;
-			case 'm': /* mine */
+			case 'm':	/* mine */
 				hex->resource = GOLD_RESOURCE;
 				break;
 			case '?':
@@ -701,7 +706,7 @@ void map_parse_line(Map *map, gchar *line)
 					hex->facing = *line++ - '0';
 			}
 			break;
-		case 't': /* tree */
+		case 't':	/* tree */
 			hex->terrain = FOREST_TERRAIN;
 			break;
 		case 'p':
@@ -723,7 +728,7 @@ void map_parse_line(Map *map, gchar *line)
 			hex->terrain = GOLD_TERRAIN;
 			break;
 		default:
-			g_free (hex);
+			g_free(hex);
 			continue;
 		}
 
@@ -733,7 +738,7 @@ void map_parse_line(Map *map, gchar *line)
 			hex->chit_pos = 0;
 			while (isdigit(*line))
 				hex->chit_pos = hex->chit_pos * 10
-					+ *line++ - '0';
+				    + *line++ - '0';
 		}
 
 		/* Check if hex can be randomly shuffled
@@ -756,7 +761,7 @@ void map_parse_line(Map *map, gchar *line)
  * to shrink the left / right margins depending on the distribution of
  * hexes.
  */
-void map_parse_finish(Map *map)
+void map_parse_finish(Map * map)
 {
 	gint y;
 
@@ -779,14 +784,15 @@ void map_parse_finish(Map *map)
 		}
 }
 
-void map_set_chits(Map *map, GArray *chits)
+void map_set_chits(Map * map, GArray * chits)
 {
 	map->chits = chits;
 }
 
 /* Disconnect a hex from all nodes and edges that it does not "own"
  */
-static gboolean disconnect_hex(UNUSED(Map *map), Hex *hex, UNUSED(void *closure))
+static gboolean disconnect_hex(UNUSED(Map * map), Hex * hex,
+			       UNUSED(void *closure))
 {
 	gint idx;
 
@@ -805,7 +811,8 @@ static gboolean disconnect_hex(UNUSED(Map *map), Hex *hex, UNUSED(void *closure)
 
 /* Free a node and all of the hexes and nodes that it is connected to.
  */
-static gboolean free_hex(UNUSED(Map *map), Hex *hex, UNUSED(void *closure))
+static gboolean free_hex(UNUSED(Map * map), Hex * hex,
+			 UNUSED(void *closure))
 {
 	gint idx;
 
@@ -825,7 +832,7 @@ static gboolean free_hex(UNUSED(Map *map), Hex *hex, UNUSED(void *closure))
 
 /* Free a map
  */
-void map_free(Map *map)
+void map_free(Map * map)
 {
 	map_traverse(map, disconnect_hex, NULL);
 	map_traverse(map, free_hex, NULL);
@@ -834,10 +841,10 @@ void map_free(Map *map)
 
 /* Load a map from a file
  */
-Map *map_load(gchar *name)
+Map *map_load(gchar * name)
 {
 	gchar line[512];
-	FILE* fp;
+	FILE *fp;
 	Map *map;
 
 	fp = fopen(name, "r");

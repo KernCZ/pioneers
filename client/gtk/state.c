@@ -23,45 +23,45 @@
 
 static GuiState current_state;
 
-void set_gui_state_nomacro (GuiState state)
+void set_gui_state_nomacro(GuiState state)
 {
 	current_state = state;
-	frontend_gui_update ();
+	frontend_gui_update();
 }
 
-GuiState get_gui_state (void)
+GuiState get_gui_state(void)
 {
 	return current_state;
 }
 
-void route_gui_event (GuiEvent event)
+void route_gui_event(GuiEvent event)
 {
 	switch (event) {
 	case GUI_UPDATE:
-		frontend_gui_check (GUI_CHANGE_NAME, TRUE);
-		frontend_gui_check (GUI_QUIT, TRUE);
+		frontend_gui_check(GUI_CHANGE_NAME, TRUE);
+		frontend_gui_check(GUI_QUIT, TRUE);
 		/* The routed event could disable disconnect again */
-		frontend_gui_check (GUI_DISCONNECT, TRUE);
+		frontend_gui_check(GUI_DISCONNECT, TRUE);
 		break;
 	case GUI_CHANGE_NAME:
 		name_create_dlg();
 		return;
 	case GUI_DISCONNECT:
 		/* quit_when_offline = FALSE */
-		cb_disconnect(); /* @todo RC 2004-11-09 Use frontend calls */
+		cb_disconnect();	/* @todo RC 2004-11-09 Use frontend calls */
 		/* @todo RC 2004-11-18 Connection to another game does not
 		 * work 100%, for now: quit when leaving the game... */
 		/* Fall through */
 	case GUI_QUIT:
 #ifdef DEBUG
-		debug ("quitting\n");
+		debug("quitting\n");
 #endif
-		gtk_main_quit ();
+		gtk_main_quit();
 		return;
 	default:
 		break;
 	}
-	current_state (event);
+	current_state(event);
 	/* set the focus to the chat window, no matter what happened */
-	chat_set_focus ();
+	chat_set_focus();
 }

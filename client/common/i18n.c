@@ -37,22 +37,22 @@ static lang_desc languages[] = {
 	/* FIXME: locale must match exactly, e.g.
 	 * it_IT.UTF-8@euro != it_IT
 	 */
-	{ "en", "English",  "en_US", TRUE,  NULL },
-	{ "de", "Deutsch",  "de_DE", FALSE, NULL },
-	{ "fr", "Français", "fr_FR", FALSE, NULL },
-	{ "it", "Italiano", "it_IT", FALSE, NULL }, 
-	{ "es", "Español",  "es_ES", FALSE, NULL },
-	{ "nl", "Nederlands",  "nl_NL", FALSE, NULL },
-	{ NULL, NULL, NULL, FALSE, NULL }
+	{"en", "English", "en_US", TRUE, NULL},
+	{"de", "Deutsch", "de_DE", FALSE, NULL},
+	{"fr", "Français", "fr_FR", FALSE, NULL},
+	{"it", "Italiano", "it_IT", FALSE, NULL},
+	{"es", "Español", "es_ES", FALSE, NULL},
+	{"nl", "Nederlands", "nl_NL", FALSE, NULL},
+	{NULL, NULL, NULL, FALSE, NULL}
 };
 
 static gchar *current_language = NULL;
 
-lang_desc *find_lang_desc(const gchar *code)
+lang_desc *find_lang_desc(const gchar * code)
 {
 	lang_desc *ld;
 
-	for(ld = languages; ld->code; ++ld) {
+	for (ld = languages; ld->code; ++ld) {
 		if (strcmp(ld->code, code) == 0)
 			return ld;
 	}
@@ -68,9 +68,10 @@ void init_nls(void)
 
 	/* mark languages supported from ALL_LINGUAS (+English) */
 	linguas = g_strdup(ALL_LINGUAS);
-	for(p = strtok(linguas, " "); p; p = strtok(NULL, " ")) {
+	for (p = strtok(linguas, " "); p; p = strtok(NULL, " ")) {
 		if ((ld = find_lang_desc(p)))
-			ld->supported = setlocale(LC_ALL, ld->localedef) != NULL;
+			ld->supported =
+			    setlocale(LC_ALL, ld->localedef) != NULL;
 	}
 	g_free(linguas);
 
@@ -87,26 +88,25 @@ void init_nls(void)
 	 * if the found language isn't supported, fall back to English
 	 */
 	if (!set_locale || strcmp(set_locale, "C") == 0 ||
-		strcmp(set_locale, "POSIX") == 0) {
+	    strcmp(set_locale, "POSIX") == 0) {
 		current_language = g_strdup("en");
-	}
-	else {
+	} else {
 		int len = strcspn(set_locale, "_@+,");
 		current_language = g_strndup(set_locale, len);
 		if (!(ld = find_lang_desc(current_language)) ||
-			!ld->supported) {
+		    !ld->supported) {
 			g_free(current_language);
 			current_language = g_strdup("en");
 		}
 	}
 }
 
-gboolean change_nls(lang_desc *ld)
+gboolean change_nls(lang_desc * ld)
 {
 	if (!setlocale(LC_ALL, ld->localedef)) {
 		/* args */
 		fprintf(stderr, "Locale %s not supported by C library!\n",
-				ld->localedef);
+			ld->localedef);
 		return FALSE;
 	}
 
@@ -114,7 +114,7 @@ gboolean change_nls(lang_desc *ld)
 	 * http://www.gnu.org/software/gettext/manual/html_chapter/gettext_10.html#SEC154 
 	 */
 	setenv("LANGUAGE", ld->code, 1);
-	setenv("LC_ALL", ld->localedef, 1); /* Do this too, so setlocale works too */
+	setenv("LC_ALL", ld->localedef, 1);	/* Do this too, so setlocale works too */
 	/* Make change known */
 	++_nl_msg_cat_cntr;
 

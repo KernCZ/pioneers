@@ -26,14 +26,14 @@
 #include <gtk/gtk.h>
 
 /* Set the default logging function to write to the message window. */
-void log_set_func_message_window( void );
+void log_set_func_message_window(void);
 
 /* Set if colors in message window are enabled */
-void log_set_func_message_color_enable( gboolean enable );
+void log_set_func_message_color_enable(gboolean enable);
 
 /* set the text widget. */
-void message_window_set_text(GtkWidget *textWidget);
+void message_window_set_text(GtkWidget * textWidget);
 
 extern UIDriver GTK_Driver;
 
-#endif /* __common_gtk_h */
+#endif				/* __common_gtk_h */

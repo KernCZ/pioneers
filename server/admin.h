@@ -42,23 +42,23 @@ extern gboolean random_order;
 extern GameParams *params;
 
 /**** game list control functions ****/
-GameParams *game_list_find_item( const gchar *title );
-void game_list_foreach( GFunc func, gpointer user_data );
-void load_game_types( const gchar *path );
+GameParams *game_list_find_item(const gchar * title);
+void game_list_foreach(GFunc func, gpointer user_data);
+void load_game_types(const gchar * path);
 
 /**** callbacks to set parameters ****/
-void cfg_set_num_players( gint num_players );
-void cfg_set_sevens_rule( gint sevens_rule );
-void cfg_set_victory_points( gint victory_points );
-void cfg_set_game( const gchar *game );
-void cfg_set_terrain_type( gint terrain_type );
-void cfg_set_tournament_time( gint tournament_time );
-void cfg_set_quit( gboolean quitdone);
-void cfg_set_timeout( gint to );
+void cfg_set_num_players(gint num_players);
+void cfg_set_sevens_rule(gint sevens_rule);
+void cfg_set_victory_points(gint victory_points);
+void cfg_set_game(const gchar * game);
+void cfg_set_terrain_type(gint terrain_type);
+void cfg_set_tournament_time(gint tournament_time);
+void cfg_set_quit(gboolean quitdone);
+void cfg_set_timeout(gint to);
 
 /* callbacks related to server starting / stopping */
-gboolean start_server( const gchar *hostname, 
-		const gchar *port, gboolean register_server );
+gboolean start_server(const gchar * hostname,
+		      const gchar * port, gboolean register_server);
 
 /* initialize the server */
 void server_init(void);
@@ -66,15 +66,15 @@ void server_init(void);
 /**** backend functions for network administration of the server ****/
 
 /* parse 'line' and run the command requested */
-void admin_run_command( Session *admin_session, gchar *line );
+void admin_run_command(Session * admin_session, gchar * line);
 
 /* network event handler, just like the one in meta.c, state.c, etc. */
-void admin_event( NetEvent event, Session *admin_session, gchar *line );
+void admin_event(NetEvent event, Session * admin_session, gchar * line);
 
 /* accept a connection made to the admin port */
-void admin_connect( comm_info *admin_info );
+void admin_connect(comm_info * admin_info);
 
 /* set up the administration port */
-void admin_listen( gchar *port );
+void admin_listen(gchar * port);
 
-#endif /* __gnocatan_server_h */
+#endif				/* __gnocatan_server_h */

@@ -21,8 +21,10 @@
 #ifndef __common_glib_h
 #define __common_glib_h
 
-extern guint evl_glib_input_add_read( gint fd, InputFunc func, gpointer param );
-extern guint evl_glib_input_add_write( gint fd, InputFunc func, gpointer param );
-extern void evl_glib_input_remove( guint tag );
+extern guint evl_glib_input_add_read(gint fd, InputFunc func,
+				     gpointer param);
+extern guint evl_glib_input_add_write(gint fd, InputFunc func,
+				      gpointer param);
+extern void evl_glib_input_remove(guint tag);
 
 #endif

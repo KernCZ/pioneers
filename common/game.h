@@ -28,9 +28,9 @@
 #define numElem(a) (sizeof(a)/sizeof(a[0]))
 
 #ifdef __GNUC__
-	#define UNUSED(var) var __attribute__ ((unused))
+#define UNUSED(var) var __attribute__ ((unused))
 #else
-	#define UNUSED(var) var
+#define UNUSED(var) var
 #endif
 
 typedef enum {
@@ -57,39 +57,40 @@ typedef enum {
 typedef struct {
 	gchar *title;		/* title of the game */
 	GameVariant variant;	/* which variant is being played */
-	gboolean random_terrain; /* shuffle terrain location? */
+	gboolean random_terrain;	/* shuffle terrain location? */
 	gboolean strict_trade;	/* trade only before build/buy? */
-	gboolean domestic_trade; /* player trading allowed? */
+	gboolean domestic_trade;	/* player trading allowed? */
 	gint num_players;	/* number of players in the game */
 	gint sevens_rule;	/* what to do when a seven is rolled */
 	/* 0 = normal, 1 = no 7s on first 2 turns (official rule variant),
 	 * 2 = all 7s rerolled */
 	gint victory_points;	/* target number of victory points */
-	gint num_build_type[NUM_BUILD_TYPES]; /* number of each build type */
+	gint num_build_type[NUM_BUILD_TYPES];	/* number of each build type */
 	gint resource_count;	/* number of each resource */
-	gint num_develop_type[NUM_DEVEL_TYPES]; /* number of each development */
+	gint num_develop_type[NUM_DEVEL_TYPES];	/* number of each development */
 	GArray *chits;		/* chit sequence */
 	Map *map;		/* the game map */
-	gboolean parsing_map;	/* currently parsing map? */ /* Not in game_params[] */
-	gint tournament_time;   /* time to start tournament time in minutes */
-	gboolean quit_when_done;  /* server quits after someone wins */ /* Not in game_params[] */
+	gboolean parsing_map;	/* currently parsing map? *//* Not in game_params[] */
+	gint tournament_time;	/* time to start tournament time in minutes */
+	gboolean quit_when_done;	/* server quits after someone wins *//* Not in game_params[] */
 	gboolean use_pirate;	/* is there a pirate in this game? */
 } GameParams;
 
 typedef struct {
-	gint id;	/* identification for client-server communication */
-	gchar *name;	/* name of the item */
-	gint points;	/* number of points */
+	gint id;		/* identification for client-server communication */
+	gchar *name;		/* name of the item */
+	gint points;		/* number of points */
 } Points;
 
-typedef void (*WriteLineFunc)(gpointer user_data, const gchar *);
+typedef void (*WriteLineFunc) (gpointer user_data, const gchar *);
 
 GameParams *params_new(void);
-GameParams *params_copy(GameParams *params);
-GameParams *params_load_file(const gchar *fname);
-void params_free(GameParams *params);
-void params_write_lines(GameParams *params, WriteLineFunc func, gpointer user_data);
-gboolean params_write_file(GameParams *params, const gchar *fname);
-void params_load_line(GameParams *params, gchar *line);
-gboolean params_load_finish(GameParams *params);
+GameParams *params_copy(GameParams * params);
+GameParams *params_load_file(const gchar * fname);
+void params_free(GameParams * params);
+void params_write_lines(GameParams * params, WriteLineFunc func,
+			gpointer user_data);
+gboolean params_write_file(GameParams * params, const gchar * fname);
+void params_load_line(GameParams * params, gchar * line);
+gboolean params_load_finish(GameParams * params);
 #endif

@@ -31,8 +31,8 @@ gint *cost_upgrade_settlement(void);
 gint *cost_city(void);
 gint *cost_development(void);
 
-gboolean cost_buy(gint *cost, gint *assets);
-void cost_refund(gint *cost, gint *assets);
-gboolean cost_can_afford(gint *cost, gint *assets);
+gboolean cost_buy(gint * cost, gint * assets);
+void cost_refund(gint * cost, gint * assets);
+gboolean cost_can_afford(gint * cost, gint * assets);
 
 #endif

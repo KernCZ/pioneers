@@ -22,7 +22,7 @@
 #include "config.h"
 #include "server.h"
 
-static void steal_card_from(Player *player, Player *victim)
+static void steal_card_from(Player * player, Player * victim)
 {
 	StateMachine *sm = player->sm;
 	Game *game = player->game;
@@ -54,15 +54,17 @@ static void steal_card_from(Player *player, Player *victim)
 	 * others just hear about the theft.
 	 */
 	for (list = game->player_list; list != NULL;
-			list = g_list_next (list)) {
+	     list = g_list_next(list)) {
 		Player *scan = list->data;
 
 		if (scan->num >= 0 && !scan->disconnected) {
 			if (scan == player || scan == victim) {
-				sm_send(scan->sm, "player %d stole %r from %d\n",
+				sm_send(scan->sm,
+					"player %d stole %r from %d\n",
 					player->num, idx, victim->num);
 			} else
-				sm_send(scan->sm, "player %d stole from %d\n",
+				sm_send(scan->sm,
+					"player %d stole from %d\n",
 					player->num, victim->num);
 		}
 	}
@@ -74,7 +76,7 @@ static void steal_card_from(Player *player, Player *victim)
 
 /* Wait for the player to place the robber
  */
-gboolean mode_place_robber(Player *player, gint event)
+gboolean mode_place_robber(Player * player, gint event)
 {
 	StateMachine *sm = player->sm;
 	Game *game = player->game;
@@ -101,8 +103,8 @@ gboolean mode_place_robber(Player *player, gint event)
 
 	/* check if the pirate was moved. */
 	if (hex->terrain == SEA_TERRAIN) {
-		player_broadcast (player, PB_RESPOND, "moved-pirate %d %d\n",
-				x, y);
+		player_broadcast(player, PB_RESPOND,
+				 "moved-pirate %d %d\n", x, y);
 		map->pirate_hex = hex;
 
 		/* If there is no-one to steal from, or the players have no
@@ -110,7 +112,8 @@ gboolean mode_place_robber(Player *player, gint event)
 		 */
 		num_victims = 0;
 		victim_ok = FALSE;
-		for (idx = 0; !victim_ok && idx < numElem(hex->edges); ++idx) {
+		for (idx = 0; !victim_ok && idx < numElem(hex->edges);
+		     ++idx) {
 			Edge *edge = hex->edges[idx];
 			Player *owner;
 			Resource resource;
@@ -124,7 +127,8 @@ gboolean mode_place_robber(Player *player, gint event)
 			/* Check if the node owner has any resources
 			 */
 			owner = player_by_num(game, edge->owner);
-			for (resource = 0; resource < NO_RESOURCE; resource++)
+			for (resource = 0; resource < NO_RESOURCE;
+			     resource++)
 				if (owner->assets[resource] != 0)
 					break;
 			if (resource == NO_RESOURCE)
@@ -144,7 +148,7 @@ gboolean mode_place_robber(Player *player, gint event)
 		}
 		if (victim_ok) {
 			steal_card_from(player, player_by_num(game,
-						victim_num));
+							      victim_num));
 			sm_pop(sm);
 			return TRUE;
 		}
@@ -170,8 +174,7 @@ gboolean mode_place_robber(Player *player, gint event)
 		Player *owner;
 		Resource resource;
 
-		if (node->type == BUILD_NONE
-		    || node->owner == player->num)
+		if (node->type == BUILD_NONE || node->owner == player->num)
 			/* Can't steal from myself
 			 */
 			continue;
@@ -207,10 +210,10 @@ gboolean mode_place_robber(Player *player, gint event)
 	return TRUE;
 }
 
-void robber_place(Player *player)
+void robber_place(Player * player)
 {
 	StateMachine *sm = player->sm;
 	player_broadcast(player, PB_OTHERS, "is-robber\n");
 	sm_send(sm, "you-are-robber\n");
-	sm_push(sm, (StateFunc)mode_place_robber);
+	sm_push(sm, (StateFunc) mode_place_robber);
 }

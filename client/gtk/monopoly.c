@@ -26,28 +26,30 @@
 static GtkWidget *monop_dlg;
 static Resource monop_type;
 
-static void monop_toggled(GtkToggleButton *btn, gpointer type)
+static void monop_toggled(GtkToggleButton * btn, gpointer type)
 {
 	if (gtk_toggle_button_get_active(btn))
 		monop_type = GPOINTER_TO_INT(type);
 }
 
-static GSList *add_resource_btn(GtkWidget *vbox,
-				GSList *grp, Resource resource)
+static GSList *add_resource_btn(GtkWidget * vbox,
+				GSList * grp, Resource resource)
 {
 	GtkWidget *btn;
 	gboolean active;
 
 	active = grp == NULL;
 	btn = gtk_radio_button_new_with_label(grp,
-					      resource_name(resource, TRUE));
+					      resource_name(resource,
+							    TRUE));
 	grp = gtk_radio_button_get_group(GTK_RADIO_BUTTON(btn));
 	gtk_widget_show(btn);
 	gtk_box_pack_start(GTK_BOX(vbox), btn, TRUE, TRUE, 0);
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(btn), active);
 
 	g_signal_connect(G_OBJECT(btn), "toggled",
-			G_CALLBACK(monop_toggled), GINT_TO_POINTER(resource));
+			 G_CALLBACK(monop_toggled),
+			 GINT_TO_POINTER(resource));
 	if (active)
 		monop_type = resource;
 
@@ -71,17 +73,17 @@ void monopoly_create_dlg()
 		return;
 	};
 
-	monop_dlg = gtk_dialog_new_with_buttons(
-			_("Monopoly"),
-			GTK_WINDOW(app_window),
-			GTK_DIALOG_DESTROY_WITH_PARENT,
-			GTK_STOCK_OK, GTK_RESPONSE_OK,
-			NULL);
-        g_signal_connect(G_OBJECT(monop_dlg), "destroy",
-			G_CALLBACK(gtk_widget_destroyed), &monop_dlg);
+	monop_dlg = gtk_dialog_new_with_buttons(_("Monopoly"),
+						GTK_WINDOW(app_window),
+						GTK_DIALOG_DESTROY_WITH_PARENT,
+						GTK_STOCK_OK,
+						GTK_RESPONSE_OK, NULL);
+	g_signal_connect(G_OBJECT(monop_dlg), "destroy",
+			 G_CALLBACK(gtk_widget_destroyed), &monop_dlg);
 	gtk_widget_realize(monop_dlg);
 	/* Disable close */
-	gdk_window_set_functions(monop_dlg->window, GDK_FUNC_ALL | GDK_FUNC_CLOSE);
+	gdk_window_set_functions(monop_dlg->window,
+				 GDK_FUNC_ALL | GDK_FUNC_CLOSE);
 
 	dlg_vbox = GTK_DIALOG(monop_dlg)->vbox;
 	gtk_widget_show(dlg_vbox);
@@ -91,7 +93,9 @@ void monopoly_create_dlg()
 	gtk_box_pack_start(GTK_BOX(dlg_vbox), vbox, FALSE, TRUE, 0);
 	gtk_container_set_border_width(GTK_CONTAINER(vbox), 5);
 
-	lbl = gtk_label_new(_("Select the resource you wish to monopolise."));
+	lbl =
+	    gtk_label_new(_
+			  ("Select the resource you wish to monopolise."));
 	gtk_widget_show(lbl);
 	gtk_box_pack_start(GTK_BOX(vbox), lbl, TRUE, TRUE, 0);
 	gtk_misc_set_alignment(GTK_MISC(lbl), 0, 0.5);
@@ -102,10 +106,12 @@ void monopoly_create_dlg()
 	monop_grp = add_resource_btn(vbox, monop_grp, WOOL_RESOURCE);
 	monop_grp = add_resource_btn(vbox, monop_grp, LUMBER_RESOURCE);
 
-	frontend_gui_register (gui_get_dialog_button(GTK_DIALOG(monop_dlg), 0),
-		   GUI_MONOPOLY, "clicked");
-	gtk_dialog_set_default_response(GTK_DIALOG(monop_dlg), GTK_RESPONSE_OK);
-        gtk_widget_show(monop_dlg);
+	frontend_gui_register(gui_get_dialog_button
+			      (GTK_DIALOG(monop_dlg), 0), GUI_MONOPOLY,
+			      "clicked");
+	gtk_dialog_set_default_response(GTK_DIALOG(monop_dlg),
+					GTK_RESPONSE_OK);
+	gtk_widget_show(monop_dlg);
 }
 
 void monopoly_destroy_dlg()

@@ -30,7 +30,7 @@
 
 UIDriver *driver;
 
-void set_ui_driver( UIDriver *d )
+void set_ui_driver(UIDriver * d)
 {
 	driver = d;
 

@@ -25,7 +25,7 @@
 #include "game.h"
 #include "cards.h"
 
-DevelDeck *deck_new(GameParams *params)
+DevelDeck *deck_new(GameParams * params)
 {
 	DevelDeck *deck;
 	gint num;
@@ -39,14 +39,14 @@ DevelDeck *deck_new(GameParams *params)
 	return deck;
 }
 
-void deck_free(DevelDeck *deck)
+void deck_free(DevelDeck * deck)
 {
 	if (deck->cards != NULL)
 		g_free(deck->cards);
 	g_free(deck);
 }
 
-void deck_card_add(DevelDeck *deck, DevelType type, gint turn_bought)
+void deck_card_add(DevelDeck * deck, DevelType type, gint turn_bought)
 {
 	if (deck->num_cards >= deck->max_cards)
 		return;
@@ -60,16 +60,15 @@ gboolean is_victory_card(DevelType type)
 	return type == DEVEL_CHAPEL
 	    || type == DEVEL_UNIVERSITY_OF_CATAN
 	    || type == DEVEL_GOVERNORS_HOUSE
-	    || type == DEVEL_LIBRARY
-	    || type == DEVEL_MARKET;
+	    || type == DEVEL_LIBRARY || type == DEVEL_MARKET;
 }
 
-DevelType deck_card_type(const DevelDeck *deck, gint idx)
+DevelType deck_card_type(const DevelDeck * deck, gint idx)
 {
 	return deck->cards[idx].type;
 }
 
-gboolean deck_card_playable(const DevelDeck *deck,
+gboolean deck_card_playable(const DevelDeck * deck,
 			    gboolean played_develop, gint idx, gint turn)
 {
 	if (idx >= deck->num_cards)
@@ -81,7 +80,7 @@ gboolean deck_card_playable(const DevelDeck *deck,
 	return !played_develop && deck->cards[idx].turn_bought < turn;
 }
 
-gboolean deck_card_play(DevelDeck *deck,
+gboolean deck_card_play(DevelDeck * deck,
 			gboolean played_develop, gint idx, gint turn)
 {
 	if (!deck_card_playable(deck, played_develop, idx, turn))
@@ -94,17 +93,19 @@ gboolean deck_card_play(DevelDeck *deck,
 	return TRUE;
 }
 
-gint deck_card_amount(const DevelDeck *deck, DevelType type) {
+gint deck_card_amount(const DevelDeck * deck, DevelType type)
+{
 	gint idx;
 	gint amount = 0;
-	
+
 	for (idx = 0; idx < deck->num_cards; ++idx)
 		if (deck->cards[idx].type == type)
 			++amount;
 	return amount;
 }
 
-gint deck_card_oldest_card(const DevelDeck *deck, DevelType type) {
+gint deck_card_oldest_card(const DevelDeck * deck, DevelType type)
+{
 	gint idx;
 	for (idx = 0; idx < deck->num_cards; ++idx)
 		if (deck->cards[idx].type == type)

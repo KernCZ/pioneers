@@ -25,7 +25,7 @@
 #include "cost.h"
 #include "server.h"
 
-void develop_shuffle(Game *game)
+void develop_shuffle(Game * game)
 {
 	GameParams *params;
 	gint idx;
@@ -33,19 +33,22 @@ void develop_shuffle(Game *game)
 	gint shuffle_counts[NUM_DEVEL_TYPES];
 
 	params = game->params;
-	memcpy(shuffle_counts, params->num_develop_type, sizeof(shuffle_counts));
+	memcpy(shuffle_counts, params->num_develop_type,
+	       sizeof(shuffle_counts));
 	game->num_develop = 0;
 	for (idx = 0; idx < NUM_DEVEL_TYPES; idx++)
 		game->num_develop += shuffle_counts[idx];
 	if (game->develop_deck != NULL)
 		g_free(game->develop_deck);
-	game->develop_deck = g_malloc0(game->num_develop * sizeof(*game->develop_deck));
+	game->develop_deck =
+	    g_malloc0(game->num_develop * sizeof(*game->develop_deck));
 
 	for (idx = 0; idx < game->num_develop; idx++) {
 		int card_idx;
 
 		card_idx = get_rand(game->num_develop - idx);
-		for (shuffle_idx = 0; shuffle_idx < numElem(shuffle_counts);
+		for (shuffle_idx = 0;
+		     shuffle_idx < numElem(shuffle_counts);
 		     shuffle_idx++) {
 			card_idx -= shuffle_counts[shuffle_idx];
 			if (card_idx < 0) {
@@ -58,19 +61,20 @@ void develop_shuffle(Game *game)
 
 	/* Check that the deck was shuffled correctly
 	 */
-	memcpy(shuffle_counts, params->num_develop_type, sizeof(shuffle_counts));
+	memcpy(shuffle_counts, params->num_develop_type,
+	       sizeof(shuffle_counts));
 	for (idx = 0; idx < game->num_develop; idx++)
 		shuffle_counts[game->develop_deck[idx]]--;
 	for (shuffle_idx = 0; shuffle_idx < numElem(shuffle_counts);
 	     shuffle_idx++)
 		if (shuffle_counts[shuffle_idx] != 0) {
-			log_message( MSG_ERROR, "Bad shuffle\n");
+			log_message(MSG_ERROR, "Bad shuffle\n");
 			break;
 		}
 	game->develop_next = 0;
 }
 
-void develop_buy(Player *player)
+void develop_buy(Player * player)
 {
 	StateMachine *sm = player->sm;
 	Game *game = player->game;
@@ -102,7 +106,7 @@ void develop_buy(Player *player)
 	sm_send(sm, "bought-develop %d\n", card);
 }
 
-gboolean mode_road_building(Player *player, gint event)
+gboolean mode_road_building(Player * player, gint event)
 {
 	StateMachine *sm = player->sm;
 	Game *game = player->game;
@@ -111,7 +115,7 @@ gboolean mode_road_building(Player *player, gint event)
 	gint x, y, pos;
 	GList *rb_build_rec;
 
-        sm_state_name(sm, "mode_road_building");
+	sm_state_name(sm, "mode_road_building");
 	if (event != SM_RECV)
 		return FALSE;
 
@@ -122,19 +126,24 @@ gboolean mode_road_building(Player *player, gint event)
 
 		num_built = buildrec_count_edges(player->build_list);
 		if (num_built < 2
-		    && ((player->num_roads < game->params->num_build_type[BUILD_ROAD]
-			 && map_can_place_road(map, player->num))
-			|| (player->num_ships < game->params->num_build_type[BUILD_SHIP]
-			    && map_can_place_ship(map, player->num))
-			|| (player->num_bridges < game->params->num_build_type[BUILD_BRIDGE]
-			    && map_can_place_bridge(map, player->num)))) {
+		    &&
+		    ((player->num_roads <
+		      game->params->num_build_type[BUILD_ROAD]
+		      && map_can_place_road(map, player->num))
+		     || (player->num_ships <
+			 game->params->num_build_type[BUILD_SHIP]
+			 && map_can_place_ship(map, player->num))
+		     || (player->num_bridges <
+			 game->params->num_build_type[BUILD_BRIDGE]
+			 && map_can_place_bridge(map, player->num)))) {
 			sm_send(sm, "ERR expected-build\n");
 			return TRUE;
 		}
 		/* We have the right number, now make sure that all
 		 * roads are connected to buildings
 		 */
-		if (!buildrec_is_valid(player->build_list, map, player->num)) {
+		if (!buildrec_is_valid
+		    (player->build_list, map, player->num)) {
 			sm_send(sm, "ERR unconnected\n");
 			return TRUE;
 		}
@@ -145,12 +154,15 @@ gboolean mode_road_building(Player *player, gint event)
 		/* Remove the roads built from the player's build_list.
 		 * If we don't, trading will fail when it shouldn't.
 		 */
-		if( num_built >= 2 ) { num_built = 2; }
-		for( ; num_built >= 0; num_built--)
-		{
-			rb_build_rec = g_list_last( player->build_list );
-			player->build_list = g_list_remove_link( player->build_list, rb_build_rec );
-			g_list_free_1( rb_build_rec );
+		if (num_built >= 2) {
+			num_built = 2;
+		}
+		for (; num_built >= 0; num_built--) {
+			rb_build_rec = g_list_last(player->build_list);
+			player->build_list =
+			    g_list_remove_link(player->build_list,
+					       rb_build_rec);
+			g_list_free_1(rb_build_rec);
 		}
 
 		/* Send ack to client, check for victory, and quit.
@@ -176,17 +188,20 @@ gboolean mode_road_building(Player *player, gint event)
 		}
 		switch (type) {
 		case BUILD_ROAD:
-			if (map_road_connect_ok(map, player->num, x, y, pos))
+			if (map_road_connect_ok
+			    (map, player->num, x, y, pos))
 				break;
 			sm_send(sm, "ERR bad-pos\n");
 			return TRUE;
 		case BUILD_SHIP:
-			if (map_ship_connect_ok(map, player->num, x, y, pos))
+			if (map_ship_connect_ok
+			    (map, player->num, x, y, pos))
 				break;
 			sm_send(sm, "ERR bad-pos\n");
 			return TRUE;
 		case BUILD_BRIDGE:
-			if (map_bridge_connect_ok(map, player->num, x, y, pos))
+			if (map_bridge_connect_ok
+			    (map, player->num, x, y, pos))
 				break;
 			sm_send(sm, "ERR bad-pos\n");
 			return TRUE;
@@ -208,7 +223,7 @@ gboolean mode_road_building(Player *player, gint event)
 	return FALSE;
 }
 
-gboolean mode_plenty_resources(Player *player, gint event)
+gboolean mode_plenty_resources(Player * player, gint event)
 {
 	StateMachine *sm = player->sm;
 	Game *game = player->game;
@@ -217,7 +232,7 @@ gboolean mode_plenty_resources(Player *player, gint event)
 	int num_in_bank;
 	int plenty[NO_RESOURCE];
 
-        sm_state_name(sm, "mode_plenty_resources");
+	sm_state_name(sm, "mode_plenty_resources");
 	if (event != SM_RECV)
 		return FALSE;
 
@@ -250,14 +265,14 @@ gboolean mode_plenty_resources(Player *player, gint event)
 
 /* monopoly <resource-type>
  */
-gboolean mode_monopoly(Player *player, gint event)
+gboolean mode_monopoly(Player * player, gint event)
 {
 	StateMachine *sm = player->sm;
 	Game *game = player->game;
 	GList *list;
 	Resource type;
 
-        sm_state_name(sm, "mode_monopoly");
+	sm_state_name(sm, "mode_monopoly");
 	if (event != SM_RECV)
 		return FALSE;
 
@@ -274,7 +289,8 @@ gboolean mode_monopoly(Player *player, gint event)
 		if (scan == player)
 			continue;
 
-		player_broadcast(player, PB_ALL, "monopoly %d %r from %d\n",
+		player_broadcast(player, PB_ALL,
+				 "monopoly %d %r from %d\n",
 				 scan->assets[type], type, scan->num);
 
 		/* Alter the assets of the respective players
@@ -287,7 +303,7 @@ gboolean mode_monopoly(Player *player, gint event)
 	return TRUE;
 }
 
-static void check_largest_army(Game *game)
+static void check_largest_army(Game * game)
 {
 	GList *list;
 	Player *new_largest;
@@ -316,19 +332,22 @@ static void check_largest_army(Game *game)
 	 */
 	if (game->largest_army == NULL) {
 		game->largest_army = new_largest;
-		player_broadcast(game->largest_army, PB_ALL, "largest-army\n");
+		player_broadcast(game->largest_army, PB_ALL,
+				 "largest-army\n");
 		return;
 	}
 	/* Did largest army owner change?
 	 */
 	if (new_largest != game->largest_army
-	    && new_largest->num_soldiers > game->largest_army->num_soldiers) {
+	    && new_largest->num_soldiers >
+	    game->largest_army->num_soldiers) {
 		game->largest_army = new_largest;
-		player_broadcast(game->largest_army, PB_ALL, "largest-army\n");
+		player_broadcast(game->largest_army, PB_ALL,
+				 "largest-army\n");
 	}
 }
 
-void develop_play(Player *player, gint idx)
+void develop_play(Player * player, gint idx)
 {
 	StateMachine *sm = player->sm;
 	Game *game = player->game;
@@ -353,50 +372,51 @@ void develop_play(Player *player, gint idx)
 	 */
 	player->build_list = buildrec_free(player->build_list);
 
-	player_broadcast(player, PB_RESPOND, "play-develop %d %D\n", idx, card);
+	player_broadcast(player, PB_RESPOND, "play-develop %d %D\n", idx,
+			 card);
 
 	switch (card) {
-        case DEVEL_ROAD_BUILDING:
+	case DEVEL_ROAD_BUILDING:
 		/* Place 2 new roads as if you had just built them.
 		 */
-		sm_push(sm, (StateFunc)mode_road_building);
+		sm_push(sm, (StateFunc) mode_road_building);
 		break;
-        case DEVEL_MONOPOLY:
+	case DEVEL_MONOPOLY:
 		/* When you play this card, announce one type of
 		 * resource.  All other players must give you all
 		 * their resource cards of that type.
 		 */
-		sm_push(sm, (StateFunc)mode_monopoly);
+		sm_push(sm, (StateFunc) mode_monopoly);
 		break;
-        case DEVEL_YEAR_OF_PLENTY:
+	case DEVEL_YEAR_OF_PLENTY:
 		/* Take any 2 resource cards from the bank and add
 		 * them to your hand. They can be two different
 		 * resources or two of the same resource. They may
 		 * immediately be used to build.
 		 */
 		sm_send(sm, "plenty %R\n", game->bank_deck);
-		sm_push(sm, (StateFunc)mode_plenty_resources);
+		sm_push(sm, (StateFunc) mode_plenty_resources);
 		break;
-        case DEVEL_CHAPEL:
-        case DEVEL_UNIVERSITY_OF_CATAN:
-        case DEVEL_GOVERNORS_HOUSE:
-        case DEVEL_LIBRARY:
-        case DEVEL_MARKET:
+	case DEVEL_CHAPEL:
+	case DEVEL_UNIVERSITY_OF_CATAN:
+	case DEVEL_GOVERNORS_HOUSE:
+	case DEVEL_LIBRARY:
+	case DEVEL_MARKET:
 
 		switch (card) {
-        	case DEVEL_CHAPEL:
+		case DEVEL_CHAPEL:
 			++player->chapel_played;
 			break;
-       		case DEVEL_UNIVERSITY_OF_CATAN:
+		case DEVEL_UNIVERSITY_OF_CATAN:
 			++player->univ_played;
 			break;
-	        case DEVEL_GOVERNORS_HOUSE:
+		case DEVEL_GOVERNORS_HOUSE:
 			++player->gov_played;
 			break;
-       		case DEVEL_LIBRARY:
+		case DEVEL_LIBRARY:
 			++player->libr_played;
 			break;
-	        case DEVEL_MARKET:
+		case DEVEL_MARKET:
 			++player->market_played;
 			break;
 		default:
@@ -408,7 +428,7 @@ void develop_play(Player *player, gint idx)
 		player->develop_points++;
 		break;
 
-        case DEVEL_SOLDIER:
+	case DEVEL_SOLDIER:
 		/* Move the robber. Steal one resource card from the
 		 * owner of an adjacent settlement or city.
 		 */
@@ -418,4 +438,3 @@ void develop_play(Player *player, gint idx)
 		break;
 	}
 }
-

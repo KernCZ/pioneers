@@ -31,7 +31,7 @@
 #include "buildrec.h"
 
 static GList *build_list;
-static gboolean built;	/* have we buld road / settlement / city? */
+static gboolean built;		/* have we buld road / settlement / city? */
 static gint num_edges, num_settlements;
 
 void build_clear()
@@ -57,9 +57,7 @@ void build_remove(BuildType type, gint x, gint y, gint pos)
 	rec = list->data;
 	build_list = g_list_remove(build_list, rec);
 	g_assert(rec->type == type
-		 && rec->x == x
-		 && rec->y == y
-		 && rec->pos == pos);
+		 && rec->x == x && rec->y == y && rec->pos == pos);
 	g_free(rec);
 
 	switch (type) {
@@ -84,7 +82,8 @@ void build_remove(BuildType type, gint x, gint y, gint pos)
 }
 
 /* Move a ship */
-void build_move(gint sx, gint sy, gint spos, gint dx, gint dy, gint dpos, gint isundo)
+void build_move(gint sx, gint sy, gint spos, gint dx, gint dy, gint dpos,
+		gint isundo)
 {
 	GList *list;
 	BuildRec *rec;
@@ -93,7 +92,7 @@ void build_move(gint sx, gint sy, gint spos, gint dx, gint dy, gint dpos, gint i
 		list = g_list_last(build_list);
 		rec = list->data;
 		build_list = g_list_remove(build_list, rec);
-		g_free (rec);
+		g_free(rec);
 		/* If the build_list is now empty (no more items to undo),
 		 * clear built flag so trading is reallowed with
 		 * strict-trade */
@@ -105,7 +104,8 @@ void build_move(gint sx, gint sy, gint spos, gint dx, gint dy, gint dpos, gint i
 		built = TRUE;
 		map->has_moved_ship = TRUE;
 	}
-	player_build_move(my_player_num(), sx, sy, spos, dx, dy, dpos, isundo);
+	player_build_move(my_player_num(), sx, sy, spos, dx, dy, dpos,
+			  isundo);
 }
 
 void build_add(BuildType type, gint x, gint y, gint pos, gboolean newbuild)
@@ -138,12 +138,12 @@ void build_add(BuildType type, gint x, gint y, gint pos, gboolean newbuild)
 
 gint build_count_edges()
 {
-    return num_edges;
+	return num_edges;
 }
 
 gint build_count_settlements()
 {
-    return num_settlements;
+	return num_settlements;
 }
 
 gint build_count(BuildType type)
@@ -168,28 +168,33 @@ gboolean have_built(void)
 
 /* Place some restrictions on road placement during setup phase
  */
-gboolean build_can_setup_road(const Edge *edge, gboolean double_setup)
+gboolean build_can_setup_road(const Edge * edge, gboolean double_setup)
 {
-	return buildrec_can_setup_road(build_list, map, edge, double_setup);
+	return buildrec_can_setup_road(build_list, map, edge,
+				       double_setup);
 }
 
 /* Place some restrictions on ship placement during setup phase
  */
-gboolean build_can_setup_ship(const Edge *edge, gboolean double_setup)
+gboolean build_can_setup_ship(const Edge * edge, gboolean double_setup)
 {
-	return buildrec_can_setup_ship(build_list, map, edge, double_setup);
+	return buildrec_can_setup_ship(build_list, map, edge,
+				       double_setup);
 }
 
 /* Place some restrictions on bridge placement during setup phase
  */
-gboolean build_can_setup_bridge(const Edge *edge, gboolean double_setup)
+gboolean build_can_setup_bridge(const Edge * edge, gboolean double_setup)
 {
-	return buildrec_can_setup_bridge(build_list, map, edge, double_setup);
+	return buildrec_can_setup_bridge(build_list, map, edge,
+					 double_setup);
 }
 
 /* Place some restrictions on road placement during setup phase
  */
-gboolean build_can_setup_settlement(const Node *node, gboolean double_setup)
+gboolean build_can_setup_settlement(const Node * node,
+				    gboolean double_setup)
 {
-	return buildrec_can_setup_settlement(build_list, map, node, double_setup);
+	return buildrec_can_setup_settlement(build_list, map, node,
+					     double_setup);
 }

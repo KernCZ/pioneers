@@ -22,25 +22,25 @@
 #include "frontend.h"
 #include "histogram.h"
 
-static void frontend_network_status (gchar *description)
+static void frontend_network_status(gchar * description)
 {
-	gui_set_net_status (description);
-	frontend_gui_update ();
+	gui_set_net_status(description);
+	frontend_gui_update();
 }
 
-static void frontend_instructions (gchar *message)
+static void frontend_instructions(gchar * message)
 {
-	gui_set_instructions (message);
-	frontend_gui_update ();
+	gui_set_instructions(message);
+	frontend_gui_update();
 }
 
-static void frontend_network_wait (gboolean is_waiting)
+static void frontend_network_wait(gboolean is_waiting)
 {
 	frontend_waiting_for_network = is_waiting;
-	frontend_gui_update ();
+	frontend_gui_update();
 }
 
-static void frontend_init_game (void)
+static void frontend_init_game(void)
 {
 	player_clear_summary();
 	develop_reset();
@@ -48,63 +48,63 @@ static void frontend_init_game (void)
 	gui_reset();
 }
 
-static void frontend_start_game (void)
+static void frontend_start_game(void)
 {
-	gui_set_game_params (get_game_params () );
-	set_num_players (num_players () );
+	gui_set_game_params(get_game_params());
+	set_num_players(num_players());
 	identity_reset();
-	frontend_gui_update ();
+	frontend_gui_update();
 }
 
-static void frontend_draw_edge (Edge *edge)
+static void frontend_draw_edge(Edge * edge)
 {
-	gui_draw_edge (edge);
-	frontend_gui_update ();
+	gui_draw_edge(edge);
+	frontend_gui_update();
 }
 
-static void frontend_draw_node (Node *node)
+static void frontend_draw_node(Node * node)
 {
-	gui_draw_node (node);
-	frontend_gui_update ();
+	gui_draw_node(node);
+	frontend_gui_update();
 }
 
-static void frontend_draw_hex (Hex *hex)
+static void frontend_draw_hex(Hex * hex)
 {
-	gui_draw_hex (hex);
-	frontend_gui_update ();
+	gui_draw_hex(hex);
+	frontend_gui_update();
 }
 
-static void frontend_update_stock (void)
+static void frontend_update_stock(void)
 {
-	identity_draw ();
-	frontend_gui_update ();
+	identity_draw();
+	frontend_gui_update();
 }
 
-static void frontend_player_turn (gint player)
+static void frontend_player_turn(gint player)
 {
-	player_show_current (player);
+	player_show_current(player);
 }
 
-static void frontend_trade (void)
+static void frontend_trade(void)
 {
-	frontend_gui_update ();
+	frontend_gui_update();
 }
 
-static void frontend_robber_moved (UNUSED(Hex *old), UNUSED(Hex *new))
+static void frontend_robber_moved(UNUSED(Hex * old), UNUSED(Hex * new))
 {
-	gui_prompt_hide ();
+	gui_prompt_hide();
 }
 
-static void frontend_new_bank (const gint *new_bank)
+static void frontend_new_bank(const gint * new_bank)
 {
 #ifdef DEBUG
-	debug ("New bank: %d %d %d %d %d\n", new_bank[0], new_bank[1],
-			new_bank[2], new_bank[3], new_bank[4]);
+	debug("New bank: %d %d %d %d %d\n", new_bank[0], new_bank[1],
+	      new_bank[2], new_bank[3], new_bank[4]);
 #endif
 }
 
 /* set all the callbacks. */
-void frontend_set_callbacks (void)
+void frontend_set_callbacks(void)
 {
 	callbacks.init = &frontend_init;
 	callbacks.network_status = &frontend_network_status;
@@ -161,4 +161,3 @@ void frontend_set_callbacks (void)
 	callbacks.viewer_quit = &frontend_viewer_quit;
 	callbacks.new_bank = &frontend_new_bank;
 }
-

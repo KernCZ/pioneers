@@ -28,8 +28,9 @@ typedef struct {
 	gint num_points;
 } Polygon;
 
-void poly_offset(Polygon *poly, gint x_offset, gint y_offset);
-void poly_bound_rect(const Polygon *poly, int pad, GdkRectangle *rect);
-void poly_draw(GdkDrawable *drawable, GdkGC *gc, gint filled, const Polygon *poly);
+void poly_offset(Polygon * poly, gint x_offset, gint y_offset);
+void poly_bound_rect(const Polygon * poly, int pad, GdkRectangle * rect);
+void poly_draw(GdkDrawable * drawable, GdkGC * gc, gint filled,
+	       const Polygon * poly);
 
 #endif

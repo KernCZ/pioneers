@@ -25,10 +25,11 @@
 static GtkWidget *name_entry;
 static GtkWidget *dlg;
 
-static void change_name_cb(GtkDialog *dlg, int response_id, UNUSED(gpointer user_data))
+static void change_name_cb(GtkDialog * dlg, int response_id,
+			   UNUSED(gpointer user_data))
 {
 	if (response_id == GTK_RESPONSE_OK)
-		cb_name_change (gtk_entry_get_text(GTK_ENTRY(name_entry)));
+		cb_name_change(gtk_entry_get_text(GTK_ENTRY(name_entry)));
 	gtk_widget_destroy(GTK_WIDGET(dlg));
 }
 
@@ -43,19 +44,19 @@ void name_create_dlg()
 		return;
 	};
 
-	dlg = gtk_dialog_new_with_buttons(
-			_("Change player name"),
-			GTK_WINDOW(app_window),
-			GTK_DIALOG_DESTROY_WITH_PARENT,
-			GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-			GTK_STOCK_OK, GTK_RESPONSE_OK,
-			NULL);
+	dlg = gtk_dialog_new_with_buttons(_("Change player name"),
+					  GTK_WINDOW(app_window),
+					  GTK_DIALOG_DESTROY_WITH_PARENT,
+					  GTK_STOCK_CANCEL,
+					  GTK_RESPONSE_CANCEL,
+					  GTK_STOCK_OK, GTK_RESPONSE_OK,
+					  NULL);
 	gtk_dialog_set_default_response(GTK_DIALOG(dlg), GTK_RESPONSE_OK);
 	g_signal_connect(G_OBJECT(dlg), "destroy",
-			G_CALLBACK(gtk_widget_destroyed), &dlg);
+			 G_CALLBACK(gtk_widget_destroyed), &dlg);
 	gtk_widget_realize(dlg);
 	gdk_window_set_functions(dlg->window,
-			GDK_FUNC_MOVE | GDK_FUNC_CLOSE);
+				 GDK_FUNC_MOVE | GDK_FUNC_CLOSE);
 
 	dlg_vbox = GTK_DIALOG(dlg)->vbox;
 	gtk_widget_show(dlg_vbox);
@@ -81,7 +82,7 @@ void name_create_dlg()
 
 	/* destroy dialog when OK or Cancel button gets clicked */
 	g_signal_connect(dlg, "response",
-			G_CALLBACK(change_name_cb), NULL);
+			 G_CALLBACK(change_name_cb), NULL);
 	gtk_widget_show(dlg);
 	gtk_widget_grab_focus(name_entry);
 }

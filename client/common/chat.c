@@ -30,7 +30,7 @@
 
 #define MAX_CHAT 512		/* maximum chat message size */
 
-void chat_parser( gint player_num, char chat_str[MAX_CHAT] )
+void chat_parser(gint player_num, char chat_str[MAX_CHAT])
 {
 	int tempchatcolor = MSG_INFO;
 	gint idx;
@@ -45,15 +45,31 @@ void chat_parser( gint player_num, char chat_str[MAX_CHAT] )
 			chat_str += 4;
 			chat_str += strspn(chat_str, " \t");
 			if (chat_str != NULL) {
-				for (idx = 0; idx < game_params->num_players; idx++) {
-					if (!strcmp(chat_str, player_name(idx, TRUE))) {
-						if (player_num == my_player_num()) {
-							log_message( MSG_BEEP, _("You beeped %s.\n"), player_name(idx, TRUE));
+				for (idx = 0;
+				     idx < game_params->num_players;
+				     idx++) {
+					if (!strcmp
+					    (chat_str,
+					     player_name(idx, TRUE))) {
+						if (player_num ==
+						    my_player_num()) {
+							log_message
+							    (MSG_BEEP,
+							     _
+							     ("You beeped %s.\n"),
+							     player_name
+							     (idx, TRUE));
 						}
 
 						if (idx == my_player_num()) {
-							callbacks.beep ();
-							log_message( MSG_BEEP, _("%s beeped you.\n"), player_name(player_num, TRUE));
+							callbacks.beep();
+							log_message
+							    (MSG_BEEP,
+							     _
+							     ("%s beeped you.\n"),
+							     player_name
+							     (player_num,
+							      TRUE));
 						}
 					}
 				}
@@ -68,27 +84,26 @@ void chat_parser( gint player_num, char chat_str[MAX_CHAT] )
 		}
 	}
 
-	log_message( MSG_INFO, "%s", player_name(player_num, TRUE));
+	log_message(MSG_INFO, "%s", player_name(player_num, TRUE));
 
-	switch( chat_str[0] )
-	{
-		case ':':
-			chat_str += 1;
-			log_message_continue( MSG_INFO, " ");
-			break;
-		case ';':
-			chat_str += 1;
-			break;
-		default:
-			log_message_continue( MSG_INFO, _(" said: "));
-			break;
+	switch (chat_str[0]) {
+	case ':':
+		chat_str += 1;
+		log_message_continue(MSG_INFO, " ");
+		break;
+	case ';':
+		chat_str += 1;
+		break;
+	default:
+		log_message_continue(MSG_INFO, _(" said: "));
+		break;
 	}
 
 	if (color_chat_enabled) {
 		if (player_is_viewer(player_num))
 			tempchatcolor = MSG_VIEWER_CHAT;
-		else switch( player_num )
-		{
+		else
+			switch (player_num) {
 			case 0:
 				tempchatcolor = MSG_PLAYER1;
 				break;
@@ -116,15 +131,15 @@ void chat_parser( gint player_num, char chat_str[MAX_CHAT] )
 			default:
 				g_assert_not_reached();
 				break;
-		}
+			}
 	} else {
 		tempchatcolor = MSG_CHAT;
 	}
 	/* If the chat matches chat from the AI, translate it.
 	 * FIXME: There should be a flag to indicate the player is an AI,
-	  *       so that chat from human player will not be translated
-	  */
-	log_message_continue( tempchatcolor, "%s\n", _(chat_str) );
-	
+	 *       so that chat from human player will not be translated
+	 */
+	log_message_continue(tempchatcolor, "%s\n", _(chat_str));
+
 	return;
 }

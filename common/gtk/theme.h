@@ -25,17 +25,17 @@
 #include <gtk/gtk.h>
 
 typedef struct {
-	gboolean set : 1;
-	gboolean transparent : 1;
-	gboolean allocated : 1;
+	gboolean set:1;
+	gboolean transparent:1;
+	gboolean allocated:1;
 	GdkColor color;
 } TColor;
 
 typedef struct {
-	GdkPixbuf     *image;
-	GdkPixbuf     *native_image;
-	gint          native_width;
-	float         aspect;
+	GdkPixbuf *image;
+	GdkPixbuf *native_image;
+	gint native_width;
+	float aspect;
 } TScaleData;
 
 typedef enum {
@@ -90,22 +90,22 @@ typedef enum {
 
 typedef struct _MapTheme {
 	gchar *name;
-	SCALEMODE  scaling;
+	SCALEMODE scaling;
 	const gchar *terrain_tile_names[TERRAIN_TILE_MAX];
 	const gchar *port_tile_names[PORT_TILE_MAX];
-	GdkPixmap  *terrain_tiles[TERRAIN_TILE_MAX];
-	GdkPixmap  *port_tiles[PORT_TILE_MAX];
+	GdkPixmap *terrain_tiles[TERRAIN_TILE_MAX];
+	GdkPixmap *port_tiles[PORT_TILE_MAX];
 	gint port_tiles_width[PORT_TILE_MAX];
 	gint port_tiles_height[PORT_TILE_MAX];
 	TScaleData scaledata[TERRAIN_TILE_MAX];
-	TColor     colors[TC_MAX];
-	TColor     ovr_colors[TC_MAX_OVRTILE][TC_MAX_OVERRIDE];
+	TColor colors[TC_MAX];
+	TColor ovr_colors[TC_MAX_OVRTILE][TC_MAX_OVERRIDE];
 } MapTheme;
 
 void theme_rescale(int radius);
-void set_theme(MapTheme *t);
+void set_theme(MapTheme * t);
 MapTheme *get_theme(void);
 GList *first_theme(void);
-GList *next_theme(GList *p);
+GList *next_theme(GList * p);
 
 #endif

@@ -115,15 +115,15 @@ typedef struct StateMachine StateMachine;
 
 /* All state functions look like this
  */
-typedef gboolean (*StateFunc)(StateMachine *sm, gint event);
+typedef gboolean(*StateFunc) (StateMachine * sm, gint event);
 
 struct StateMachine {
 	gpointer user_data;	/* parameter for mode functions */
-				/* FIXME RC 2004-11-13 in practice: 
-				 * it is NULL or a Player*
-				 * the value is set by sm_new.
-				 * Why? Can the player not be bound to a 
-				 * StateMachine otherwise? */
+	/* FIXME RC 2004-11-13 in practice: 
+	 * it is NULL or a Player*
+	 * the value is set by sm_new.
+	 * Why? Can the player not be bound to a 
+	 * StateMachine otherwise? */
 
 	StateFunc global;	/* global state - test after current state */
 	StateFunc unhandled;	/* global state - process unhandled states */
@@ -140,35 +140,36 @@ struct StateMachine {
 	gboolean is_dead;	/* is this machine waiting to be killed? */
 };
 
-StateMachine* sm_new(gpointer user_data);
-void sm_free(StateMachine *sm);
-void sm_close (StateMachine *sm);
-const gchar *sm_current_name(StateMachine *sm);
-void sm_state_name(StateMachine *sm, const gchar *name);
-gboolean sm_recv(StateMachine *sm, const gchar *fmt, ...);
-gboolean sm_recv_prefix(StateMachine *sm, const gchar *fmt, ...);
-void sm_cancel_prefix(StateMachine *sm);
-void sm_vnformat(gchar *buff, gint len, const gchar *fmt, va_list ap);
-void sm_write(StateMachine *sm, const gchar *str);
-void sm_send(StateMachine *sm, const gchar *fmt, ...);
-void sm_goto(StateMachine *sm, StateFunc new_state);
-void sm_goto_noenter (StateMachine *sm, StateFunc new_state);
-void sm_push(StateMachine *sm, StateFunc new_state);
-void sm_push_noenter (StateMachine *sm, StateFunc new_state);
-void sm_pop(StateMachine *sm);
-void sm_multipop(StateMachine *sm, gint depth);
-void sm_pop_all(StateMachine *sm);
-void sm_pop_all_and_goto(StateMachine *sm, StateFunc new_state);
-StateFunc sm_current(StateMachine *sm);
-StateFunc sm_stack_inspect(const StateMachine *sm, guint offset);
-void sm_global_set(StateMachine *sm, StateFunc state);
-void sm_unhandled_set(StateMachine *sm, StateFunc state);
+StateMachine *sm_new(gpointer user_data);
+void sm_free(StateMachine * sm);
+void sm_close(StateMachine * sm);
+const gchar *sm_current_name(StateMachine * sm);
+void sm_state_name(StateMachine * sm, const gchar * name);
+gboolean sm_recv(StateMachine * sm, const gchar * fmt, ...);
+gboolean sm_recv_prefix(StateMachine * sm, const gchar * fmt, ...);
+void sm_cancel_prefix(StateMachine * sm);
+void sm_vnformat(gchar * buff, gint len, const gchar * fmt, va_list ap);
+void sm_write(StateMachine * sm, const gchar * str);
+void sm_send(StateMachine * sm, const gchar * fmt, ...);
+void sm_goto(StateMachine * sm, StateFunc new_state);
+void sm_goto_noenter(StateMachine * sm, StateFunc new_state);
+void sm_push(StateMachine * sm, StateFunc new_state);
+void sm_push_noenter(StateMachine * sm, StateFunc new_state);
+void sm_pop(StateMachine * sm);
+void sm_multipop(StateMachine * sm, gint depth);
+void sm_pop_all(StateMachine * sm);
+void sm_pop_all_and_goto(StateMachine * sm, StateFunc new_state);
+StateFunc sm_current(StateMachine * sm);
+StateFunc sm_stack_inspect(const StateMachine * sm, guint offset);
+void sm_global_set(StateMachine * sm, StateFunc state);
+void sm_unhandled_set(StateMachine * sm, StateFunc state);
 
-gboolean sm_is_connected(StateMachine *sm);
-gboolean sm_connect(StateMachine *sm, const gchar *host, const gchar *port);
-void sm_use_fd(StateMachine *sm, gint fd);
-void sm_dec_use_count(StateMachine *sm);
-void sm_inc_use_count(StateMachine *sm);
+gboolean sm_is_connected(StateMachine * sm);
+gboolean sm_connect(StateMachine * sm, const gchar * host,
+		    const gchar * port);
+void sm_use_fd(StateMachine * sm, gint fd);
+void sm_dec_use_count(StateMachine * sm);
+void sm_inc_use_count(StateMachine * sm);
 /** Dump the stack */
-void sm_stack_dump(StateMachine *sm);
+void sm_stack_dump(StateMachine * sm);
 #endif

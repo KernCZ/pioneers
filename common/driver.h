@@ -25,31 +25,31 @@
 #include "log.h"
 #include "state.h"
 
-typedef void (*InputFunc)(gpointer);
+typedef void (*InputFunc) (gpointer);
 
 typedef struct {
 	/* function for clearing the event queue */
-	void (*event_queue)(void);
+	void (*event_queue) (void);
 
 	/* Function to write logs and data to the system display */
-	LogFunc log_write; /* ==> void log_write( gint msg_type, gchar *text ); */
+	LogFunc log_write;	/* ==> void log_write( gint msg_type, gchar *text ); */
 
 	/* event-loop related functions */
-	guint (*input_add_read)( gint fd, InputFunc func, gpointer param );
-	guint (*input_add_write)( gint fd, InputFunc func, gpointer param );
-	void (*input_remove)( guint tag );
+	 guint(*input_add_read) (gint fd, InputFunc func, gpointer param);
+	 guint(*input_add_write) (gint fd, InputFunc func, gpointer param);
+	void (*input_remove) (guint tag);
 
 	/* callbacks for the server */
-	void (*player_added)(void *player);		/* these really should be ...*/
-	void (*player_renamed)(void *player);	/* ... `Player *player', but */
-	void (*player_removed)(void *player);	/* that requires more headers */
+	void (*player_added) (void *player);	/* these really should be ... */
+	void (*player_renamed) (void *player);	/* ... `Player *player', but */
+	void (*player_removed) (void *player);	/* that requires more headers */
 
-	void (*player_change)(void *game);	/* Should be Game *game */
-	
+	void (*player_change) (void *game);	/* Should be Game *game */
+
 } UIDriver;
 
 extern UIDriver *driver;
 
-void set_ui_driver( UIDriver *d );
+void set_ui_driver(UIDriver * d);
 
-#endif /* __driver_h */
+#endif				/* __driver_h */

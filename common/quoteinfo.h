@@ -26,10 +26,10 @@ typedef struct {
 	gboolean is_domestic;	/* is this a maritime trade? */
 	union {
 		struct {
-			gint player_num; /* player who make the quote */
+			gint player_num;	/* player who make the quote */
 			gint quote_num;	/* quote identifier */
-			gint supply[NO_RESOURCE]; /* resources supplied in the quote */
-			gint receive[NO_RESOURCE]; /* resources received in the quote */
+			gint supply[NO_RESOURCE];	/* resources supplied in the quote */
+			gint receive[NO_RESOURCE];	/* resources received in the quote */
 		} d;
 		struct {
 			gint ratio;
@@ -44,18 +44,20 @@ typedef struct {
 } QuoteList;
 
 /** Create a new quote list, and remove the old list if needed */
-void quotelist_new(QuoteList **list);
+void quotelist_new(QuoteList ** list);
 /** Free the QuoteList (if needed), and set it to NULL */
-void quotelist_free(QuoteList **list);
-QuoteInfo *quotelist_add_domestic(QuoteList *list, gint player_num,
-				  gint quote_num, gint *supply, gint *receive);
-QuoteInfo *quotelist_add_maritime(QuoteList *list,
-				  gint ratio, Resource supply, Resource receive);
-QuoteInfo *quotelist_first(QuoteList *list);
-QuoteInfo *quotelist_prev(QuoteInfo *quote);
-QuoteInfo *quotelist_next(QuoteInfo *quote);
-gboolean quotelist_is_player_first(QuoteInfo *quote);
-QuoteInfo *quotelist_find_domestic(QuoteList *list, gint player_num, gint quote_num);
-void quotelist_delete(QuoteList *list, QuoteInfo *quote);
+void quotelist_free(QuoteList ** list);
+QuoteInfo *quotelist_add_domestic(QuoteList * list, gint player_num,
+				  gint quote_num, gint * supply,
+				  gint * receive);
+QuoteInfo *quotelist_add_maritime(QuoteList * list, gint ratio,
+				  Resource supply, Resource receive);
+QuoteInfo *quotelist_first(QuoteList * list);
+QuoteInfo *quotelist_prev(QuoteInfo * quote);
+QuoteInfo *quotelist_next(QuoteInfo * quote);
+gboolean quotelist_is_player_first(QuoteInfo * quote);
+QuoteInfo *quotelist_find_domestic(QuoteList * list, gint player_num,
+				   gint quote_num);
+void quotelist_delete(QuoteList * list, QuoteInfo * quote);
 
 #endif

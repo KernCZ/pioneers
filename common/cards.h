@@ -39,15 +39,15 @@ typedef struct {
 
 gboolean is_victory_card(DevelType type);
 
-DevelDeck *deck_new(GameParams *params);
-void deck_free(DevelDeck *deck);
-void deck_card_add(DevelDeck *deck, DevelType type, gint turn_bought);
-gboolean deck_card_playable(const DevelDeck *deck,
+DevelDeck *deck_new(GameParams * params);
+void deck_free(DevelDeck * deck);
+void deck_card_add(DevelDeck * deck, DevelType type, gint turn_bought);
+gboolean deck_card_playable(const DevelDeck * deck,
 			    gboolean played_develop, gint idx, gint turn);
-gboolean deck_card_play(DevelDeck *deck,
+gboolean deck_card_play(DevelDeck * deck,
 			gboolean played_develop, gint idx, gint turn);
-DevelType deck_card_type(const DevelDeck *deck, gint idx);
+DevelType deck_card_type(const DevelDeck * deck, gint idx);
 
-gint deck_card_amount(const DevelDeck *deck, DevelType type);
-gint deck_card_oldest_card(const DevelDeck *deck, DevelType type);
+gint deck_card_amount(const DevelDeck * deck, DevelType type);
+gint deck_card_oldest_card(const DevelDeck * deck, DevelType type);
 #endif

@@ -46,31 +46,41 @@ typedef struct {
 #define PARAM(var, type) PARAM_V(var, type, var)
 
 static Param game_params[] = {
-	{ PARAM(title, PARAM_STRING) },
-	{ PARAM_V(random-terrain, PARAM_BOOL, random_terrain) },
-	{ PARAM_V(strict-trade, PARAM_BOOL, strict_trade) },
-	{ PARAM_V(domestic-trade, PARAM_BOOL, domestic_trade) },
-	{ PARAM_V(num-players, PARAM_INT, num_players) },
-	{ PARAM_V(sevens-rule, PARAM_INT, sevens_rule) },
-	{ PARAM_V(victory-points, PARAM_INT, victory_points) },
-	{ PARAM_V(num-roads, PARAM_INT, num_build_type[BUILD_ROAD]) },
-	{ PARAM_V(num-bridges, PARAM_INT, num_build_type[BUILD_BRIDGE]) },
-	{ PARAM_V(num-ships, PARAM_INT, num_build_type[BUILD_SHIP]) },
-	{ PARAM_V(num-settlements, PARAM_INT, num_build_type[BUILD_SETTLEMENT]) },
-	{ PARAM_V(num-cities, PARAM_INT, num_build_type[BUILD_CITY]) },
-	{ PARAM_V(resource-count, PARAM_INT, resource_count) },
-	{ PARAM_V(develop-road, PARAM_INT, num_develop_type[DEVEL_ROAD_BUILDING]) },
-	{ PARAM_V(develop-monopoly, PARAM_INT, num_develop_type[DEVEL_MONOPOLY]) },
-	{ PARAM_V(develop-plenty, PARAM_INT, num_develop_type[DEVEL_YEAR_OF_PLENTY]) },
-	{ PARAM_V(develop-chapel, PARAM_INT, num_develop_type[DEVEL_CHAPEL]) },
-	{ PARAM_V(develop-university, PARAM_INT, num_develop_type[DEVEL_UNIVERSITY_OF_CATAN]) },
-	{ PARAM_V(develop-governor, PARAM_INT, num_develop_type[DEVEL_GOVERNORS_HOUSE]) },
-	{ PARAM_V(develop-library, PARAM_INT, num_develop_type[DEVEL_LIBRARY]) },
-	{ PARAM_V(develop-market, PARAM_INT, num_develop_type[DEVEL_MARKET]) },
-	{ PARAM_V(develop-soldier, PARAM_INT, num_develop_type[DEVEL_SOLDIER]) },
-	{ PARAM(chits, PARAM_INT_LIST) },
-	{ PARAM_V(tournament-time, PARAM_INT, tournament_time) },
-	{ PARAM_V(use-pirate, PARAM_BOOL, use_pirate) }
+	{PARAM(title, PARAM_STRING)},
+	{PARAM_V(random - terrain, PARAM_BOOL, random_terrain)},
+	{PARAM_V(strict - trade, PARAM_BOOL, strict_trade)},
+	{PARAM_V(domestic - trade, PARAM_BOOL, domestic_trade)},
+	{PARAM_V(num - players, PARAM_INT, num_players)},
+	{PARAM_V(sevens - rule, PARAM_INT, sevens_rule)},
+	{PARAM_V(victory - points, PARAM_INT, victory_points)},
+	{PARAM_V(num - roads, PARAM_INT, num_build_type[BUILD_ROAD])},
+	{PARAM_V(num - bridges, PARAM_INT, num_build_type[BUILD_BRIDGE])},
+	{PARAM_V(num - ships, PARAM_INT, num_build_type[BUILD_SHIP])},
+	{PARAM_V
+	 (num - settlements, PARAM_INT, num_build_type[BUILD_SETTLEMENT])},
+	{PARAM_V(num - cities, PARAM_INT, num_build_type[BUILD_CITY])},
+	{PARAM_V(resource - count, PARAM_INT, resource_count)},
+	{PARAM_V(develop - road, PARAM_INT,
+		 num_develop_type[DEVEL_ROAD_BUILDING])},
+	{PARAM_V(develop - monopoly, PARAM_INT,
+		 num_develop_type[DEVEL_MONOPOLY])},
+	{PARAM_V(develop - plenty, PARAM_INT,
+		 num_develop_type[DEVEL_YEAR_OF_PLENTY])},
+	{PARAM_V
+	 (develop - chapel, PARAM_INT, num_develop_type[DEVEL_CHAPEL])},
+	{PARAM_V(develop - university, PARAM_INT,
+		 num_develop_type[DEVEL_UNIVERSITY_OF_CATAN])},
+	{PARAM_V(develop - governor, PARAM_INT,
+		 num_develop_type[DEVEL_GOVERNORS_HOUSE])},
+	{PARAM_V
+	 (develop - library, PARAM_INT, num_develop_type[DEVEL_LIBRARY])},
+	{PARAM_V
+	 (develop - market, PARAM_INT, num_develop_type[DEVEL_MARKET])},
+	{PARAM_V
+	 (develop - soldier, PARAM_INT, num_develop_type[DEVEL_SOLDIER])},
+	{PARAM(chits, PARAM_INT_LIST)},
+	{PARAM_V(tournament - time, PARAM_INT, tournament_time)},
+	{PARAM_V(use - pirate, PARAM_BOOL, use_pirate)}
 };
 
 GameParams *params_new()
@@ -81,7 +91,7 @@ GameParams *params_new()
 	return params;
 }
 
-void params_free(GameParams *params)
+void params_free(GameParams * params)
 {
 	if (params == NULL)
 		return;
@@ -95,14 +105,14 @@ void params_free(GameParams *params)
 	g_free(params);
 }
 
-static gchar *skip_space(gchar *str)
+static gchar *skip_space(gchar * str)
 {
 	while (isspace(*str))
 		str++;
 	return str;
 }
 
-static gboolean match_word(gchar **str, const gchar *word)
+static gboolean match_word(gchar ** str, const gchar * word)
 {
 	gint word_len;
 
@@ -115,7 +125,7 @@ static gboolean match_word(gchar **str, const gchar *word)
 	return FALSE;
 }
 
-static void build_int_list(GArray *array, char *str)
+static void build_int_list(GArray * array, char *str)
 {
 	while (*str != '\0') {
 		gint num;
@@ -139,8 +149,8 @@ static void build_int_list(GArray *array, char *str)
 	}
 }
 
-static void format_int_list(const gchar *name, GArray *array, char *str,
-		int len)
+static void format_int_list(const gchar * name, GArray * array, char *str,
+			    int len)
 {
 	int idx;
 
@@ -165,11 +175,11 @@ static void format_int_list(const gchar *name, GArray *array, char *str,
 	}
 }
 
-static GArray *copy_int_list(GArray *array)
+static GArray *copy_int_list(GArray * array)
 {
 	GArray *copy = g_array_new(FALSE, FALSE, sizeof(gint));
 	int idx;
-	
+
 	for (idx = 0; idx < array->len; idx++)
 		g_array_append_val(copy, g_array_index(array, gint, idx));
 
@@ -181,23 +191,26 @@ struct nosetup_t {
 	gpointer user_data;
 };
 
-static gboolean find_no_setup (UNUSED(Map *map), Hex *hex, struct nosetup_t *data)
+static gboolean find_no_setup(UNUSED(Map * map), Hex * hex,
+			      struct nosetup_t *data)
 {
 	gint idx;
-	for (idx = 0; idx < numElem (hex->nodes); ++idx) {
+	for (idx = 0; idx < numElem(hex->nodes); ++idx) {
 		Node *node = hex->nodes[idx];
 		if (node->no_setup) {
 			gchar buff[512];
-			if (node->x != hex->x || node->y != hex->y) continue;
-			snprintf (buff, sizeof(buff), "nosetup %d %d %d",
-					node->x, node->y, node->pos);
-			data->func (data->user_data, buff);
+			if (node->x != hex->x || node->y != hex->y)
+				continue;
+			snprintf(buff, sizeof(buff), "nosetup %d %d %d",
+				 node->x, node->y, node->pos);
+			data->func(data->user_data, buff);
 		}
 	}
 	return FALSE;
 }
 
-void params_write_lines(GameParams *params, WriteLineFunc func, gpointer user_data)
+void params_write_lines(GameParams * params, WriteLineFunc func,
+			gpointer user_data)
 {
 	gint idx;
 	gint y;
@@ -221,7 +234,9 @@ void params_write_lines(GameParams *params, WriteLineFunc func, gpointer user_da
 
 		switch (param->type) {
 		case PARAM_STRING:
-			str = G_STRUCT_MEMBER(gchar*, params, param->offset);
+			str =
+			    G_STRUCT_MEMBER(gchar *, params,
+					    param->offset);
 			if (!str)
 				continue;
 			g_snprintf(buff, sizeof(buff), "%s %s",
@@ -231,16 +246,20 @@ void params_write_lines(GameParams *params, WriteLineFunc func, gpointer user_da
 		case PARAM_INT:
 			g_snprintf(buff, sizeof(buff), "%s %d",
 				   param->name,
-				   G_STRUCT_MEMBER(gint, params, param->offset));
+				   G_STRUCT_MEMBER(gint, params,
+						   param->offset));
 			func(user_data, buff);
 			break;
 		case PARAM_INT_LIST:
 			format_int_list(param->name,
-					G_STRUCT_MEMBER(GArray*, params, param->offset), buff, sizeof(buff));
+					G_STRUCT_MEMBER(GArray *, params,
+							param->offset),
+					buff, sizeof(buff));
 			func(user_data, buff);
 			break;
 		case PARAM_BOOL:
-			if (G_STRUCT_MEMBER(gboolean, params, param->offset)) {
+			if (G_STRUCT_MEMBER
+			    (gboolean, params, param->offset)) {
 				g_snprintf(buff, sizeof(buff), "%s",
 					   param->name);
 				func(user_data, buff);
@@ -258,12 +277,12 @@ void params_write_lines(GameParams *params, WriteLineFunc func, gpointer user_da
 		struct nosetup_t tmp;
 		tmp.user_data = user_data;
 		tmp.func = func;
-		map_traverse (params->map, (HexFunc)find_no_setup, &tmp);
+		map_traverse(params->map, (HexFunc) find_no_setup, &tmp);
 	}
 	func(user_data, "end");
 }
 
-void params_load_line(GameParams *params, gchar *line)
+void params_load_line(GameParams * params, gchar * line)
 {
 	gint idx;
 
@@ -279,8 +298,8 @@ void params_load_line(GameParams *params, gchar *line)
 	line = skip_space(line);
 	if (*line == '#')
 		return;
-	if (*line==0)
-		return;	
+	if (*line == 0)
+		return;
 	if (match_word(&line, "variant")) {
 		if (match_word(&line, "islands"))
 			params->variant = VAR_ISLANDS;
@@ -299,14 +318,15 @@ void params_load_line(GameParams *params, gchar *line)
 		gint x = 0, y = 0, pos = 0;
 		Node *node;
 		/* don't tolerate invalid game descriptions */
-		g_assert (params->map != NULL);
-		sscanf (line, "%d %d %d", &x, &y, &pos);
-		node = map_node (params->map, x, y, pos);
+		g_assert(params->map != NULL);
+		sscanf(line, "%d %d %d", &x, &y, &pos);
+		node = map_node(params->map, x, y, pos);
 		if (node) {
 			node->no_setup = TRUE;
 		} else {
-			g_warning(_("Nosetup node %d %d %d is not in the map"), 
-					x, y, pos);
+			g_warning(_
+				  ("Nosetup node %d %d %d is not in the map"),
+				  x, y, pos);
 		}
 		return;
 	}
@@ -320,64 +340,73 @@ void params_load_line(GameParams *params, gchar *line)
 			continue;
 		switch (param->type) {
 		case PARAM_STRING:
-			str = G_STRUCT_MEMBER(gchar*, params, param->offset);
+			str =
+			    G_STRUCT_MEMBER(gchar *, params,
+					    param->offset);
 			if (str)
 				g_free(str);
 			str = g_strchomp(g_strdup(line));
-			G_STRUCT_MEMBER(gchar*, params, param->offset) = str;
+			G_STRUCT_MEMBER(gchar *, params, param->offset) =
+			    str;
 			return;
 		case PARAM_INT:
-			G_STRUCT_MEMBER(gint, params, param->offset) = atoi(line);
+			G_STRUCT_MEMBER(gint, params, param->offset) =
+			    atoi(line);
 			return;
 		case PARAM_INT_LIST:
-			array = G_STRUCT_MEMBER(GArray*, params, param->offset);
+			array =
+			    G_STRUCT_MEMBER(GArray *, params,
+					    param->offset);
 			if (array != NULL)
 				g_array_free(array, TRUE);
 			array = g_array_new(FALSE, FALSE, sizeof(gint));
 			build_int_list(array, line);
 			if (array->len > 0) {
-				G_STRUCT_MEMBER(GArray*, params, param->offset) = array;
+				G_STRUCT_MEMBER(GArray *, params,
+						param->offset) = array;
 			} else {
-				g_warning("Zero length array for %s", param->name);
+				g_warning("Zero length array for %s",
+					  param->name);
 				g_array_free(array, FALSE);
 			}
 			return;
 		case PARAM_BOOL:
-			G_STRUCT_MEMBER(gboolean, params, param->offset) = TRUE;
+			G_STRUCT_MEMBER(gboolean, params, param->offset) =
+			    TRUE;
 			return;
 		}
 	}
 	g_warning("Unknown keyword: %s", line);
 }
 
-GameParams *params_load_file(const gchar *fname)
+GameParams *params_load_file(const gchar * fname)
 {
-        FILE *fp;
-        gchar line[512];
-        GameParams *params;
+	FILE *fp;
+	gchar line[512];
+	GameParams *params;
 
-        if ((fp = fopen(fname, "r")) == NULL) {
-                g_warning("could not open '%s'", fname);
-                return NULL;
-        }
+	if ((fp = fopen(fname, "r")) == NULL) {
+		g_warning("could not open '%s'", fname);
+		return NULL;
+	}
 
-        params = params_new();
-        while (fgets(line, sizeof(line), fp) != NULL) {
-                gint len = strlen(line);
+	params = params_new();
+	while (fgets(line, sizeof(line), fp) != NULL) {
+		gint len = strlen(line);
 
-                if (len > 0 && line[len - 1] == '\n')
-                        line[len - 1] = '\0';
-                params_load_line(params, line);
-        }
-        fclose(fp);
-        if (!params_load_finish(params)) {
+		if (len > 0 && line[len - 1] == '\n')
+			line[len - 1] = '\0';
+		params_load_line(params, line);
+	}
+	fclose(fp);
+	if (!params_load_finish(params)) {
 		params_free(params);
 		return NULL;
 	}
 	return params;
 }
 
-GameParams *params_copy(GameParams *params)
+GameParams *params_copy(GameParams * params)
 {
 	GameParams *copy;
 	gint idx;
@@ -391,20 +420,26 @@ GameParams *params_copy(GameParams *params)
 
 		switch (param->type) {
 		case PARAM_STRING:
-			G_STRUCT_MEMBER(gchar*, copy, param->offset)
-				= g_strdup(G_STRUCT_MEMBER(gchar*, params, param->offset));
+			G_STRUCT_MEMBER(gchar *, copy, param->offset)
+			    =
+			    g_strdup(G_STRUCT_MEMBER
+				     (gchar *, params, param->offset));
 			break;
 		case PARAM_INT:
 			G_STRUCT_MEMBER(gint, copy, param->offset)
-				= G_STRUCT_MEMBER(gint, params, param->offset);
+			    = G_STRUCT_MEMBER(gint, params, param->offset);
 			break;
 		case PARAM_INT_LIST:
-			G_STRUCT_MEMBER(GArray*, copy, param->offset)
-				= copy_int_list(G_STRUCT_MEMBER(GArray*, params, param->offset));
+			G_STRUCT_MEMBER(GArray *, copy, param->offset)
+			    =
+			    copy_int_list(G_STRUCT_MEMBER
+					  (GArray *, params,
+					   param->offset));
 			break;
 		case PARAM_BOOL:
 			G_STRUCT_MEMBER(gboolean, copy, param->offset)
-				= G_STRUCT_MEMBER(gboolean, params, param->offset);
+			    = G_STRUCT_MEMBER(gboolean, params,
+					      param->offset);
 			break;
 		}
 	}
@@ -414,7 +449,7 @@ GameParams *params_copy(GameParams *params)
 }
 
 /** Returns TRUE if the params are valid */
-gboolean params_load_finish(GameParams *params)
+gboolean params_load_finish(GameParams * params)
 {
 	if (!params->map)
 		return FALSE;
@@ -424,18 +459,19 @@ gboolean params_load_finish(GameParams *params)
 		return FALSE;
 	if (!params->title)
 		return FALSE;
-	params->map->have_bridges = params->num_build_type[BUILD_BRIDGE] > 0;
+	params->map->have_bridges =
+	    params->num_build_type[BUILD_BRIDGE] > 0;
 	params->map->has_pirate = params->use_pirate;
 	return TRUE;
 }
 
-static void write_one_line(gpointer user_data, const gchar *line)
+static void write_one_line(gpointer user_data, const gchar * line)
 {
 	FILE *fp = user_data;
 	fprintf(fp, "%s\n", line);
 }
 
-gboolean params_write_file(GameParams *params, const gchar *fname)
+gboolean params_write_file(GameParams * params, const gchar * fname)
 {
 	FILE *fp;
 

@@ -30,10 +30,11 @@
 #include "map.h"
 
 /* Local function prototypes */
-gboolean node_has_edge_owned_by(const Node *node, gint owner, BuildType type);
-gboolean is_road_valid(const Edge *edge, gint owner);
-gboolean is_ship_valid(const Edge *edge, gint owner);
-gboolean is_bridge_valid(const Edge *edge, gint owner);
+gboolean node_has_edge_owned_by(const Node * node, gint owner,
+				BuildType type);
+gboolean is_road_valid(const Edge * edge, gint owner);
+gboolean is_ship_valid(const Edge * edge, gint owner);
+gboolean is_bridge_valid(const Edge * edge, gint owner);
 
 
 /* This file is broken into a number of sections:
@@ -58,14 +59,14 @@ gboolean is_bridge_valid(const Edge *edge, gint owner);
 
 /* Return whether or not an edge is adjacent to a node
  */
-gboolean is_edge_adjacent_to_node(const Edge *edge, const Node *node)
+gboolean is_edge_adjacent_to_node(const Edge * edge, const Node * node)
 {
 	return edge->nodes[0] == node || edge->nodes[1] == node;
 }
 
 /* Return whether or not an edge is on land or coast
  */
-gboolean is_edge_on_land(const Edge *edge)
+gboolean is_edge_on_land(const Edge * edge)
 {
 	gint idx;
 
@@ -80,7 +81,7 @@ gboolean is_edge_on_land(const Edge *edge)
 
 /* Return whether or not an edge is on sea or coast (used only for ships)
  */
-gboolean is_edge_on_sea(const Edge *edge)
+gboolean is_edge_on_sea(const Edge * edge)
 {
 	gint idx;
 
@@ -105,7 +106,7 @@ gboolean is_edge_on_sea(const Edge *edge)
 
 /* Return whether or not a node is on land
  */
-gboolean is_node_on_land(const Node *node)
+gboolean is_node_on_land(const Node * node)
 {
 	gint idx;
 
@@ -121,7 +122,8 @@ gboolean is_node_on_land(const Node *node)
 /* Check if a node has a adjacent road/ship/bridge owned by the
  * specified player
  */
-gboolean node_has_edge_owned_by(const Node *node, gint owner, BuildType type)
+gboolean node_has_edge_owned_by(const Node * node, gint owner,
+				BuildType type)
 {
 	gint idx;
 
@@ -136,21 +138,21 @@ gboolean node_has_edge_owned_by(const Node *node, gint owner, BuildType type)
 
 /* Check if a node has a adjacent road owned by the specified player
  */
-gboolean node_has_road_owned_by(const Node *node, gint owner)
+gboolean node_has_road_owned_by(const Node * node, gint owner)
 {
 	return node_has_edge_owned_by(node, owner, BUILD_ROAD);
 }
 
 /* Check if a node has a adjacent ship owned by the specified player
  */
-gboolean node_has_ship_owned_by(const Node *node, gint owner)
+gboolean node_has_ship_owned_by(const Node * node, gint owner)
 {
 	return node_has_edge_owned_by(node, owner, BUILD_SHIP);
 }
 
 /* Check if a node has a adjacent bridge owned by the specified player
  */
-gboolean node_has_bridge_owned_by(const Node *node, gint owner)
+gboolean node_has_bridge_owned_by(const Node * node, gint owner)
 {
 	return node_has_edge_owned_by(node, owner, BUILD_BRIDGE);
 }
@@ -160,7 +162,7 @@ gboolean node_has_bridge_owned_by(const Node *node, gint owner)
  * on them.  There is an exception when bridges are being used - two
  * buildings may be on adjacent nodes if separated by water.
  */
-gboolean is_node_spacing_ok(const Node *node)
+gboolean is_node_spacing_ok(const Node * node)
 {
 	gint idx;
 
@@ -172,13 +174,14 @@ gboolean is_node_spacing_ok(const Node *node)
 			continue;
 		if (node->map->have_bridges && !is_edge_on_land(edge))
 			continue;
-		else for (idx2 = 0; idx2 < numElem(edge->nodes); ++idx2) {
-			Node *scan = edge->nodes[idx2];
-			if (scan == node)
-				continue;
-			if (scan->type != BUILD_NONE)
-				return FALSE;
-		}
+		else
+			for (idx2 = 0; idx2 < numElem(edge->nodes); ++idx2) {
+				Node *scan = edge->nodes[idx2];
+				if (scan == node)
+					continue;
+				if (scan->type != BUILD_NONE)
+					return FALSE;
+			}
 	}
 
 	return TRUE;
@@ -186,7 +189,7 @@ gboolean is_node_spacing_ok(const Node *node)
 
 /* Check if the specified node is next to the hex with the robber
  */
-gboolean is_node_next_to_robber(const Node *node)
+gboolean is_node_next_to_robber(const Node * node)
 {
 	gint idx;
 
@@ -199,7 +202,7 @@ gboolean is_node_next_to_robber(const Node *node)
 
 /* Check if a road has been positioned properly
  */
-gboolean is_road_valid(const Edge *edge, gint owner)
+gboolean is_road_valid(const Edge * edge, gint owner)
 {
 	gint idx;
 
@@ -229,7 +232,7 @@ gboolean is_road_valid(const Edge *edge, gint owner)
 
 /* Check if a ship has been positioned properly
  */
-gboolean is_ship_valid(const Edge *edge, gint owner)
+gboolean is_ship_valid(const Edge * edge, gint owner)
 {
 	gint idx;
 
@@ -258,7 +261,7 @@ gboolean is_ship_valid(const Edge *edge, gint owner)
 
 /* Check if a bridge has been positioned properly
  */
-gboolean is_bridge_valid(const Edge *edge, gint owner)
+gboolean is_bridge_valid(const Edge * edge, gint owner)
 {
 	gint idx;
 
@@ -291,11 +294,11 @@ gboolean is_bridge_valid(const Edge *edge, gint owner)
  * A full check (to see if the owner of the road matches the owner
  * of the settlement) is performed in another function
  */
-static gboolean can_adjacent_settlement_be_built(const Edge *edge) {
+static gboolean can_adjacent_settlement_be_built(const Edge * edge)
+{
 	return can_settlement_be_setup(edge->nodes[0]) ||
-		can_settlement_be_setup(edge->nodes[1]) ||
-		edge->nodes[0]->owner >= 0 ||
-		edge->nodes[1]->owner >= 0;
+	    can_settlement_be_setup(edge->nodes[1]) ||
+	    edge->nodes[0]->owner >= 0 || edge->nodes[1]->owner >= 0;
 }
 
 /* Edge cursor check function.
@@ -312,11 +315,10 @@ static gboolean can_adjacent_settlement_be_built(const Edge *edge) {
  * restrictions.  The server will enfore correct placement at the end
  * of the setup phase.
  */
-gboolean can_road_be_setup(const Edge *edge)
+gboolean can_road_be_setup(const Edge * edge)
 {
-	return edge->owner < 0
-		&& is_edge_on_land(edge)
-		&& can_adjacent_settlement_be_built(edge);
+	return edge->owner < 0 && is_edge_on_land(edge)
+	    && can_adjacent_settlement_be_built(edge);
 }
 
 /* Edge cursor check function.
@@ -333,11 +335,10 @@ gboolean can_road_be_setup(const Edge *edge)
  * restrictions.  The server will enfore correct placement at the end
  * of the setup phase.
  */
-gboolean can_ship_be_setup(const Edge *edge)
+gboolean can_ship_be_setup(const Edge * edge)
 {
-	return edge->owner < 0
-		&& is_edge_on_sea(edge)
-		&& can_adjacent_settlement_be_built(edge);
+	return edge->owner < 0 && is_edge_on_sea(edge)
+	    && can_adjacent_settlement_be_built(edge);
 }
 
 /* Edge cursor check function.
@@ -354,11 +355,10 @@ gboolean can_ship_be_setup(const Edge *edge)
  * restrictions.  The server will enfore correct placement at the end
  * of the setup phase.
  */
-gboolean can_bridge_be_setup(const Edge *edge)
+gboolean can_bridge_be_setup(const Edge * edge)
 {
-	return edge->owner < 0
-		&& !is_edge_on_land(edge)
-		&& can_adjacent_settlement_be_built(edge);
+	return edge->owner < 0 && !is_edge_on_land(edge)
+	    && can_adjacent_settlement_be_built(edge);
 }
 
 /* Edge cursor check function.
@@ -373,10 +373,9 @@ gboolean can_bridge_be_setup(const Edge *edge)
  *     owned by the specifed player, but not separated by a building
  *     owned by a different player.
  */
-gboolean can_road_be_built(const Edge *edge, gint owner)
+gboolean can_road_be_built(const Edge * edge, gint owner)
 {
-	return edge->owner < 0
-		&& is_road_valid(edge, owner);
+	return edge->owner < 0 && is_road_valid(edge, owner);
 }
 
 /* Edge cursor check function.
@@ -391,14 +390,14 @@ gboolean can_road_be_built(const Edge *edge, gint owner)
  *     owned by the specifed player, but not separated by a building
  *     owned by a different player.
  */
-gboolean can_ship_be_built(const Edge *edge, gint owner)
+gboolean can_ship_be_built(const Edge * edge, gint owner)
 {
-	return edge->owner < 0
-		&& is_ship_valid(edge, owner);
+	return edge->owner < 0 && is_ship_valid(edge, owner);
 }
 
 /* Helper function for can_ship_be_moved */
-static gboolean can_ship_be_moved_node (const Node *node, gint owner, const Edge *not)
+static gboolean can_ship_be_moved_node(const Node * node, gint owner,
+				       const Edge * not)
 {
 	gint idx;
 	/* if a building of a different player is on it, it is
@@ -406,13 +405,15 @@ static gboolean can_ship_be_moved_node (const Node *node, gint owner, const Edge
 	if (node->type != BUILD_NONE && node->owner != owner)
 		return TRUE;
 	/* if there is a building of the player, it is connected */
-	if (node->type != BUILD_NONE) return FALSE;
+	if (node->type != BUILD_NONE)
+		return FALSE;
 	/* no buildings: check all edges for ships */
 	for (idx = 0; idx < numElem(node->edges); idx++) {
 		Edge *edge = node->edges[idx];
 		/* If this is a ship of the player, it is connected */
 		if (edge && edge->owner == owner && edge != not
-			&& edge->type == BUILD_SHIP) return FALSE;
+		    && edge->type == BUILD_SHIP)
+			return FALSE;
 	}
 	return TRUE;
 }
@@ -427,16 +428,18 @@ static gboolean can_ship_be_moved_node (const Node *node, gint owner, const Edge
  *     specified player.  A ship is allowed, if there is building of a
  *     different player in between.
  */
-gboolean can_ship_be_moved(const Edge *edge, gint owner)
+gboolean can_ship_be_moved(const Edge * edge, gint owner)
 {
 	gint idx;
 	/* edge must be a ship of the correct user */
-	if (edge->owner != owner || edge->type != BUILD_SHIP) return FALSE;
+	if (edge->owner != owner || edge->type != BUILD_SHIP)
+		return FALSE;
 	/* if the pirate is next to the edge, it is not allowed to move */
-	if (!is_edge_on_sea (edge) ) return FALSE;
+	if (!is_edge_on_sea(edge))
+		return FALSE;
 	/* check all nodes, until one is found that is not connected */
 	for (idx = 0; idx < numElem(edge->nodes); idx++)
-		if (can_ship_be_moved_node (edge->nodes[idx], owner, edge))
+		if (can_ship_be_moved_node(edge->nodes[idx], owner, edge))
 			return TRUE;
 	return FALSE;
 }
@@ -453,10 +456,9 @@ gboolean can_ship_be_moved(const Edge *edge, gint owner)
  *     segment owned by the specifed player, but not separated by a
  *     building owned by a different player.
  */
-gboolean can_bridge_be_built(const Edge *edge, gint owner)
+gboolean can_bridge_be_built(const Edge * edge, gint owner)
 {
-	return edge->owner < 0
-		&& is_bridge_valid(edge, owner);
+	return edge->owner < 0 && is_bridge_valid(edge, owner);
 }
 
 /* Node cursor check function.
@@ -475,12 +477,10 @@ gboolean can_bridge_be_built(const Edge *edge, gint owner)
  * restrictions.  The server will enfore correct placement at the end
  * of the setup phase.
  */
-gboolean can_settlement_be_setup(const Node *node)
+gboolean can_settlement_be_setup(const Node * node)
 {
-	return !node->no_setup
-		&& node->owner < 0
-		&& is_node_on_land(node)
-		&& is_node_spacing_ok(node);
+	return !node->no_setup && node->owner < 0 && is_node_on_land(node)
+	    && is_node_spacing_ok(node);
 }
 
 /* Node cursor check function.
@@ -493,14 +493,14 @@ gboolean can_settlement_be_setup(const Node *node)
  * 3 - Node must be adjacent to a land hex.
  * 4 - Node must not be within one node of another building.
  */
-gboolean can_settlement_be_built(const Node *node, gint owner)
+gboolean can_settlement_be_built(const Node * node, gint owner)
 {
-	return node->owner < 0
-		&& (node_has_road_owned_by(node, owner)
-		    || node_has_ship_owned_by(node, owner)
-		    || node_has_bridge_owned_by(node, owner))
-		&& is_node_on_land(node)
-		&& is_node_spacing_ok(node);
+	return node->owner < 0 && (node_has_road_owned_by(node, owner)
+				   || node_has_ship_owned_by(node, owner)
+				   || node_has_bridge_owned_by(node,
+							       owner))
+	    && is_node_on_land(node)
+	    && is_node_spacing_ok(node);
 }
 
 /* Node cursor check function.
@@ -508,10 +508,9 @@ gboolean can_settlement_be_built(const Node *node, gint owner)
  * Determine whether or not a settlement can be upgraded to a city by
  * the specified player.
  */
-gboolean can_settlement_be_upgraded(const Node *node, gint owner)
+gboolean can_settlement_be_upgraded(const Node * node, gint owner)
 {
-	return node->owner == owner
-		&& node->type == BUILD_SETTLEMENT;
+	return node->owner == owner && node->type == BUILD_SETTLEMENT;
 }
 
 /* Node cursor check function.
@@ -527,17 +526,17 @@ gboolean can_settlement_be_upgraded(const Node *node, gint owner)
  * 4 - If vacent, node must not be within one node of another
  *     building.
  */
-gboolean can_city_be_built(const Node *node, gint owner)
+gboolean can_city_be_built(const Node * node, gint owner)
 {
 	if (can_settlement_be_upgraded(node, owner))
 		return TRUE;
 
-	return node->owner < 0
-		&& (node_has_road_owned_by(node, owner)
-		    || node_has_ship_owned_by(node, owner)
-		    || node_has_bridge_owned_by(node, owner))
-		&& is_node_on_land(node)
-		&& is_node_spacing_ok(node);
+	return node->owner < 0 && (node_has_road_owned_by(node, owner)
+				   || node_has_ship_owned_by(node, owner)
+				   || node_has_bridge_owned_by(node,
+							       owner))
+	    && is_node_on_land(node)
+	    && is_node_spacing_ok(node);
 }
 
 /* Hex cursor check function.
@@ -548,17 +547,19 @@ gboolean can_city_be_built(const Node *node, gint owner)
  * 0).  We cannot move the robber to the same hex it is already on.
  * Also check if pirate can be moved.
  */
-gboolean can_robber_or_pirate_be_moved(const Hex *hex, UNUSED(gint owner))
+gboolean can_robber_or_pirate_be_moved(const Hex * hex, UNUSED(gint owner))
 {
 	if (hex->terrain == SEA_TERRAIN)
-		return (hex->map->has_pirate) && (hex != hex->map->pirate_hex);
+		return (hex->map->has_pirate)
+		    && (hex != hex->map->pirate_hex);
 	else
 		return (hex->roll > 0) && (!hex->robber);
 }
 
 /* Iterator function for map_can_place_road() query
  */
-static gboolean can_place_road_check(UNUSED(Map *map), Hex *hex, gint *owner)
+static gboolean can_place_road_check(UNUSED(Map * map), Hex * hex,
+				     gint * owner)
 {
 	gint idx;
 
@@ -570,7 +571,8 @@ static gboolean can_place_road_check(UNUSED(Map *map), Hex *hex, gint *owner)
 
 /* Iterator function for map_can_place_ship() query
  */
-static gboolean can_place_ship_check(UNUSED(Map *map), Hex *hex, gint *owner)
+static gboolean can_place_ship_check(UNUSED(Map * map), Hex * hex,
+				     gint * owner)
 {
 	gint idx;
 
@@ -582,7 +584,8 @@ static gboolean can_place_ship_check(UNUSED(Map *map), Hex *hex, gint *owner)
 
 /* Iterator function for map_can_place_bridge() query
  */
-static gboolean can_place_bridge_check(UNUSED(Map *map), Hex *hex, gint *owner)
+static gboolean can_place_bridge_check(UNUSED(Map * map), Hex * hex,
+				       gint * owner)
 {
 	gint idx;
 
@@ -597,9 +600,9 @@ static gboolean can_place_bridge_check(UNUSED(Map *map), Hex *hex, gint *owner)
  * Determine if there are any edges on the map where a player can
  * place a road.
  */
-gboolean map_can_place_road(Map *map, gint owner)
+gboolean map_can_place_road(Map * map, gint owner)
 {
-	return map_traverse(map, (HexFunc)can_place_road_check, &owner);
+	return map_traverse(map, (HexFunc) can_place_road_check, &owner);
 }
 
 /* Query.
@@ -607,9 +610,9 @@ gboolean map_can_place_road(Map *map, gint owner)
  * Determine if there are any edges on the map where a player can
  * place a ship.
  */
-gboolean map_can_place_ship(Map *map, gint owner)
+gboolean map_can_place_ship(Map * map, gint owner)
 {
-	return map_traverse(map, (HexFunc)can_place_ship_check, &owner);
+	return map_traverse(map, (HexFunc) can_place_ship_check, &owner);
 }
 
 /* Query.
@@ -617,14 +620,15 @@ gboolean map_can_place_ship(Map *map, gint owner)
  * Determine if there are any edges on the map where a player can
  * place a bridge.
  */
-gboolean map_can_place_bridge(Map *map, gint owner)
+gboolean map_can_place_bridge(Map * map, gint owner)
 {
-	return map_traverse(map, (HexFunc)can_place_bridge_check, &owner);
+	return map_traverse(map, (HexFunc) can_place_bridge_check, &owner);
 }
 
 /* Iterator function for map_can_place_settlement() query
  */
-static gboolean can_place_settlement_check(UNUSED(Map *map), Hex *hex, gint *owner)
+static gboolean can_place_settlement_check(UNUSED(Map * map), Hex * hex,
+					   gint * owner)
 {
 	gint idx;
 
@@ -639,14 +643,16 @@ static gboolean can_place_settlement_check(UNUSED(Map *map), Hex *hex, gint *own
  * Determine if there are any nodes on the map where a player can
  * place a settlement
  */
-gboolean map_can_place_settlement(Map *map, gint owner)
+gboolean map_can_place_settlement(Map * map, gint owner)
 {
-	return map_traverse(map, (HexFunc)can_place_settlement_check, &owner);
+	return map_traverse(map, (HexFunc) can_place_settlement_check,
+			    &owner);
 }
 
 /* Iterator function for map_can_upgrade_settlement() query
  */
-static gboolean can_upgrade_settlement_check(UNUSED(Map *map), Hex *hex, gint *owner)
+static gboolean can_upgrade_settlement_check(UNUSED(Map * map), Hex * hex,
+					     gint * owner)
 {
 	gint idx;
 
@@ -661,15 +667,16 @@ static gboolean can_upgrade_settlement_check(UNUSED(Map *map), Hex *hex, gint *o
  * Determine if there are any nodes on the map where a player can
  * upgrade a settlement
  */
-gboolean map_can_upgrade_settlement(Map *map, gint owner)
+gboolean map_can_upgrade_settlement(Map * map, gint owner)
 {
-	return map_traverse(map, (HexFunc)can_upgrade_settlement_check, &owner);
+	return map_traverse(map, (HexFunc) can_upgrade_settlement_check,
+			    &owner);
 }
 
 /* Ignoring road connectivity, decide whether or not a settlement/city
  * can be placed at the specified location.
  */
-gboolean map_building_spacing_ok(Map *map, gint owner,
+gboolean map_building_spacing_ok(Map * map, gint owner,
 				 BuildType type, gint x, gint y, gint pos)
 {
 	Node *node = map_node(map, x, y, pos);
@@ -686,25 +693,25 @@ gboolean map_building_spacing_ok(Map *map, gint owner,
 	 * am trying to upgrade a settlement to a city.
 	 */
 	return node->owner == owner
-		&& node->type == BUILD_SETTLEMENT
-		&& type == BUILD_CITY;
+	    && node->type == BUILD_SETTLEMENT && type == BUILD_CITY;
 }
 
 /* Ignoring building spacing, check if the building connects to a road.
  */
-gboolean map_building_connect_ok(Map *map, gint owner, UNUSED(BuildType type),
-				 gint x, gint y, gint pos)
+gboolean map_building_connect_ok(Map * map, gint owner,
+				 UNUSED(BuildType type), gint x, gint y,
+				 gint pos)
 {
 	Node *node = map_node(map, x, y, pos);
 	if (node == NULL)
 		return FALSE;
 
 	return node_has_road_owned_by(node, owner)
-		|| node_has_ship_owned_by(node, owner)
-		|| node_has_bridge_owned_by(node, owner);
+	    || node_has_ship_owned_by(node, owner)
+	    || node_has_bridge_owned_by(node, owner);
 }
 
-gboolean map_building_vacant(Map *map, BuildType type,
+gboolean map_building_vacant(Map * map, BuildType type,
 			     gint x, gint y, gint pos)
 {
 	Node *node = map_node(map, x, y, pos);
@@ -717,7 +724,7 @@ gboolean map_building_vacant(Map *map, BuildType type,
 		return node->type == BUILD_NONE;
 	case BUILD_CITY:
 		return node->type == BUILD_NONE
-			|| node->type == BUILD_SETTLEMENT;
+		    || node->type == BUILD_SETTLEMENT;
 	case BUILD_ROAD:
 	case BUILD_SHIP:
 	case BUILD_MOVE_SHIP:
@@ -728,21 +735,21 @@ gboolean map_building_vacant(Map *map, BuildType type,
 	return FALSE;
 }
 
-gboolean map_road_vacant(Map *map, gint x, gint y, gint pos)
+gboolean map_road_vacant(Map * map, gint x, gint y, gint pos)
 {
 	Edge *edge = map_edge(map, x, y, pos);
 
 	return edge != NULL && edge->owner < 0;
 }
 
-gboolean map_ship_vacant(Map *map, gint x, gint y, gint pos)
+gboolean map_ship_vacant(Map * map, gint x, gint y, gint pos)
 {
 	Edge *edge = map_edge(map, x, y, pos);
 
 	return edge != NULL && edge->owner < 0;
 }
 
-gboolean map_bridge_vacant(Map *map, gint x, gint y, gint pos)
+gboolean map_bridge_vacant(Map * map, gint x, gint y, gint pos)
 {
 	Edge *edge = map_edge(map, x, y, pos);
 
@@ -752,7 +759,8 @@ gboolean map_bridge_vacant(Map *map, gint x, gint y, gint pos)
 /* Ignoring whether or not a road already exists at this point, check
  * that it has the right connectivity.
  */
-gboolean map_road_connect_ok(Map *map, gint owner, gint x, gint y, gint pos)
+gboolean map_road_connect_ok(Map * map, gint owner, gint x, gint y,
+			     gint pos)
 {
 	Edge *edge = map_edge(map, x, y, pos);
 	if (edge == NULL)
@@ -764,7 +772,8 @@ gboolean map_road_connect_ok(Map *map, gint owner, gint x, gint y, gint pos)
 /* Ignoring whether or not a ship already exists at this point, check
  * that it has the right connectivity.
  */
-gboolean map_ship_connect_ok(Map *map, gint owner, gint x, gint y, gint pos)
+gboolean map_ship_connect_ok(Map * map, gint owner, gint x, gint y,
+			     gint pos)
 {
 	Edge *edge = map_edge(map, x, y, pos);
 	if (edge == NULL)
@@ -776,7 +785,8 @@ gboolean map_ship_connect_ok(Map *map, gint owner, gint x, gint y, gint pos)
 /* Ignoring whether or not a bridge already exists at this point, check
  * that it has the right connectivity.
  */
-gboolean map_bridge_connect_ok(Map *map, gint owner, gint x, gint y, gint pos)
+gboolean map_bridge_connect_ok(Map * map, gint owner, gint x, gint y,
+			       gint pos)
 {
 	Edge *edge = map_edge(map, x, y, pos);
 	if (edge == NULL)
@@ -785,7 +795,8 @@ gboolean map_bridge_connect_ok(Map *map, gint owner, gint x, gint y, gint pos)
 	return is_bridge_valid(edge, owner);
 }
 
-static BuildType bridge_as_road(BuildType type) {
+static BuildType bridge_as_road(BuildType type)
+{
 	if (type == BUILD_BRIDGE)
 		return BUILD_ROAD;
 	else
@@ -793,7 +804,7 @@ static BuildType bridge_as_road(BuildType type) {
 }
 
 /* calculate the longest road */
-static gint find_longest_road_recursive (Edge *edge)
+static gint find_longest_road_recursive(Edge * edge)
 {
 	gint len = 0;
 	gint nodeidx, edgeidx;
@@ -802,7 +813,8 @@ static gint find_longest_road_recursive (Edge *edge)
 	for (nodeidx = 0; nodeidx < numElem(edge->nodes); nodeidx++) {
 		Node *node = edge->nodes[nodeidx];
 		/* don't go back to where we came from */
-		if (node->visited) continue;
+		if (node->visited)
+			continue;
 		/* don't continue counting if someone else's building is on
 		 * the node. */
 		if (node->type != BUILD_NONE && node->owner != edge->owner)
@@ -810,18 +822,23 @@ static gint find_longest_road_recursive (Edge *edge)
 		/* don't let other go back here */
 		node->visited = TRUE;
 		/* try all edges */
-		for (edgeidx = 0; edgeidx < numElem(node->edges); edgeidx++) {
+		for (edgeidx = 0; edgeidx < numElem(node->edges);
+		     edgeidx++) {
 			Edge *here = node->edges[edgeidx];
 			if (here && !here->visited
-				&& here->owner == edge->owner) {
+			    && here->owner == edge->owner) {
 				/* don't allow ships to extend roads, except
 				 * if there is a construction in between */
 				/* bridges are treated as roads */
 				if (node->type != BUILD_NONE ||
-					bridge_as_road(here->type) == bridge_as_road(edge->type)) {
-					gint thislen = find_longest_road_recursive (here);
+				    bridge_as_road(here->type) ==
+				    bridge_as_road(edge->type)) {
+					gint thislen =
+					    find_longest_road_recursive
+					    (here);
 					/* take the maximum of all paths */
-					if (thislen > len) len = thislen;
+					if (thislen > len)
+						len = thislen;
 				}
 			}
 		}
@@ -832,7 +849,8 @@ static gint find_longest_road_recursive (Edge *edge)
 	return len + 1;
 }
 
-static gboolean find_longest_road(UNUSED(Map *map), Hex *hex, gint *lengths)
+static gboolean find_longest_road(UNUSED(Map * map), Hex * hex,
+				  gint * lengths)
 {
 	gint idx;
 	for (idx = 0; idx < numElem(hex->edges); idx++) {
@@ -840,17 +858,20 @@ static gboolean find_longest_road(UNUSED(Map *map), Hex *hex, gint *lengths)
 		gint len;
 		/* skip unowned edges, and edges that will be handled by
 		 * other hexes */
-		if (edge->owner < 0 || edge->x != hex->x || edge->y != hex->y)
+		if (edge->owner < 0 || edge->x != hex->x
+		    || edge->y != hex->y)
 			continue;
-		len = find_longest_road_recursive (edge);
-		if (len > lengths[edge->owner]) lengths[edge->owner] = len;
+		len = find_longest_road_recursive(edge);
+		if (len > lengths[edge->owner])
+			lengths[edge->owner] = len;
 	}
 	return FALSE;
 }
 
 /* Zero the visited attribute for all edges and nodes.
  */
-static gboolean zero_visited(UNUSED(Map *map), Hex *hex, UNUSED(void *closure))
+static gboolean zero_visited(UNUSED(Map * map), Hex * hex,
+			     UNUSED(void *closure))
 {
 	gint idx;
 
@@ -870,16 +891,17 @@ static gboolean zero_visited(UNUSED(Map *map), Hex *hex, UNUSED(void *closure))
  * 1 - set the visited attribute of all edges and nodes to FALSE
  * 2 - for every edge, find the longest road using this one as a tail
  */
-void map_longest_road(Map *map, gint *lengths, gint num_players)
+void map_longest_road(Map * map, gint * lengths, gint num_players)
 {
-	map_traverse(map, (HexFunc)zero_visited, NULL);
+	map_traverse(map, (HexFunc) zero_visited, NULL);
 	memset(lengths, 0, num_players * sizeof(*lengths));
-	map_traverse(map, (HexFunc)find_longest_road, lengths);
+	map_traverse(map, (HexFunc) find_longest_road, lengths);
 }
 
 /* Determine the maritime trading capabilities for the specified player
  */
-static gboolean find_maritime(UNUSED(Map *map), Hex *hex, MaritimeInfo *info)
+static gboolean find_maritime(UNUSED(Map * map), Hex * hex,
+			      MaritimeInfo * info)
 {
 	if (hex->terrain != SEA_TERRAIN || hex->resource == NO_RESOURCE)
 		return FALSE;
@@ -898,9 +920,9 @@ static gboolean find_maritime(UNUSED(Map *map), Hex *hex, MaritimeInfo *info)
 
 /* Determine the maritime trading capacity of the specified player
  */
-void map_maritime_info(Map *map, MaritimeInfo *info, gint owner)
+void map_maritime_info(Map * map, MaritimeInfo * info, gint owner)
 {
 	memset(info, 0, sizeof(*info));
 	info->owner = owner;
-	map_traverse(map, (HexFunc)find_maritime, info);
+	map_traverse(map, (HexFunc) find_maritime, info);
 }

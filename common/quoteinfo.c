@@ -28,17 +28,17 @@
 #include "game.h"
 #include "quoteinfo.h"
 
-void quotelist_new(QuoteList **list)
+void quotelist_new(QuoteList ** list)
 {
 	g_assert(*list == NULL);
 	quotelist_free(list);
 	*list = g_malloc0(sizeof(**list));
 }
 
-void quotelist_free(QuoteList **list)
+void quotelist_free(QuoteList ** list)
 {
-	if (*list == NULL) 
-		return; /* Already free */
+	if (*list == NULL)
+		return;		/* Already free */
 	while ((*list)->quotes != NULL) {
 		QuoteInfo *quote = (*list)->quotes->data;
 		(*list)->quotes = g_list_remove((*list)->quotes, quote);
@@ -48,7 +48,7 @@ void quotelist_free(QuoteList **list)
 	*list = NULL;
 }
 
-static gint sort_quotes(QuoteInfo *a, QuoteInfo *b)
+static gint sort_quotes(QuoteInfo * a, QuoteInfo * b)
 {
 	gint res;
 
@@ -70,8 +70,9 @@ static gint sort_quotes(QuoteInfo *a, QuoteInfo *b)
 	return a->var.m.supply - b->var.m.supply;
 }
 
-QuoteInfo *quotelist_add_maritime(QuoteList *list,
-				  gint ratio, Resource supply, Resource receive)
+QuoteInfo *quotelist_add_maritime(QuoteList * list,
+				  gint ratio, Resource supply,
+				  Resource receive)
 {
 	QuoteInfo *quote;
 
@@ -82,14 +83,15 @@ QuoteInfo *quotelist_add_maritime(QuoteList *list,
 	quote->var.m.receive = receive;
 
 	list->quotes = g_list_insert_sorted(list->quotes, quote,
-					    (GCompareFunc)sort_quotes);
+					    (GCompareFunc) sort_quotes);
 	quote->list = g_list_find(list->quotes, quote);
 
 	return quote;
 }
 
-QuoteInfo *quotelist_add_domestic(QuoteList *list, gint player_num,
-				  gint quote_num, gint *supply, gint *receive)
+QuoteInfo *quotelist_add_domestic(QuoteList * list, gint player_num,
+				  gint quote_num, gint * supply,
+				  gint * receive)
 {
 	QuoteInfo *quote;
 
@@ -98,16 +100,18 @@ QuoteInfo *quotelist_add_domestic(QuoteList *list, gint player_num,
 	quote->var.d.player_num = player_num;
 	quote->var.d.quote_num = quote_num;
 	memcpy(quote->var.d.supply, supply, sizeof(quote->var.d.supply));
-	memcpy(quote->var.d.receive, receive, sizeof(quote->var.d.receive));
+	memcpy(quote->var.d.receive, receive,
+	       sizeof(quote->var.d.receive));
 
 	list->quotes = g_list_insert_sorted(list->quotes, quote,
-					    (GCompareFunc)sort_quotes);
+					    (GCompareFunc) sort_quotes);
 	quote->list = g_list_find(list->quotes, quote);
 
 	return quote;
 }
 
-QuoteInfo *quotelist_find_domestic(QuoteList *list, gint player_num, gint quote_num)
+QuoteInfo *quotelist_find_domestic(QuoteList * list, gint player_num,
+				   gint quote_num)
 {
 	GList *scan;
 
@@ -125,14 +129,14 @@ QuoteInfo *quotelist_find_domestic(QuoteList *list, gint player_num, gint quote_
 	return NULL;
 }
 
-QuoteInfo *quotelist_first(QuoteList *list)
+QuoteInfo *quotelist_first(QuoteList * list)
 {
 	if (list == NULL || list->quotes == NULL)
 		return NULL;
 	return list->quotes->data;
 }
 
-QuoteInfo *quotelist_prev(QuoteInfo *quote)
+QuoteInfo *quotelist_prev(QuoteInfo * quote)
 {
 	GList *list = g_list_previous(quote->list);
 
@@ -141,7 +145,7 @@ QuoteInfo *quotelist_prev(QuoteInfo *quote)
 	return list->data;
 }
 
-QuoteInfo *quotelist_next(QuoteInfo *quote)
+QuoteInfo *quotelist_next(QuoteInfo * quote)
 {
 	GList *list = g_list_next(quote->list);
 
@@ -150,25 +154,25 @@ QuoteInfo *quotelist_next(QuoteInfo *quote)
 	return list->data;
 }
 
-gboolean quotelist_is_player_first(QuoteInfo *quote)
+gboolean quotelist_is_player_first(QuoteInfo * quote)
 {
 	QuoteInfo *prev = quotelist_prev(quote);
 	return prev == NULL
-		|| !prev->is_domestic
-		|| prev->var.d.player_num != quote->var.d.player_num;
+	    || !prev->is_domestic
+	    || prev->var.d.player_num != quote->var.d.player_num;
 }
 
-void quotelist_delete(QuoteList *list, QuoteInfo *quote)
+void quotelist_delete(QuoteList * list, QuoteInfo * quote)
 {
 	GList *scan;
 
 	for (scan = list->quotes; scan != NULL; scan = g_list_next(scan)) {
 		if (scan->data == quote) {
-			list->quotes = g_list_remove_link(list->quotes, scan);
+			list->quotes =
+			    g_list_remove_link(list->quotes, scan);
 			g_list_free_1(scan);
 			g_free(quote);
 			return;
 		}
 	}
 }
-

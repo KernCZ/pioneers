@@ -24,7 +24,7 @@
 #include "cost.h"
 #include "server.h"
 
-void trade_perform_maritime(Player *player,
+void trade_perform_maritime(Player * player,
 			    gint ratio, Resource supply, Resource receive)
 {
 	StateMachine *sm = player->sm;
@@ -34,9 +34,9 @@ void trade_perform_maritime(Player *player,
 	MaritimeInfo info;
 
 	if ((!game->rolled_dice) ||
-         ((player->build_list != NULL || game->bought_develop) &&
-          game->params->strict_trade)) {
-          sm_send(sm, "ERR wrong-time\n");
+	    ((player->build_list != NULL || game->bought_develop) &&
+	     game->params->strict_trade)) {
+		sm_send(sm, "ERR wrong-time\n");
 		return;
 	}
 
@@ -51,20 +51,23 @@ void trade_perform_maritime(Player *player,
 	switch (ratio) {
 	case 4:
 		if (player->assets[supply] < 4) {
-			sm_send(sm, "ERR maritime trade, not 4 resources\n");
+			sm_send(sm,
+				"ERR maritime trade, not 4 resources\n");
 			return;
 		}
 		break;
 	case 3:
 		if (!info.any_resource || player->assets[supply] < 3) {
-			sm_send(sm, "ERR maritime trade, not 3 resources\n");
+			sm_send(sm,
+				"ERR maritime trade, not 3 resources\n");
 			return;
 		}
 		break;
 	case 2:
 		if (!info.specific_resource[supply]
 		    || player->assets[supply] < 2) {
-			sm_send(sm, "ERR maritime trade, not 2 resources\n");
+			sm_send(sm,
+				"ERR maritime trade, not 2 resources\n");
 			return;
 		}
 		break;
@@ -88,11 +91,11 @@ void trade_perform_maritime(Player *player,
 /* Trade initiating player has ended trading, wait for client to
  * acknowledge.
  */
-gboolean mode_wait_quote_exit(Player *player, gint event)
+gboolean mode_wait_quote_exit(Player * player, gint event)
 {
 	StateMachine *sm = player->sm;
 
-        sm_state_name(sm, "mode_wait_quote_exit");
+	sm_state_name(sm, "mode_wait_quote_exit");
 	if (event != SM_RECV)
 		return FALSE;
 
@@ -110,7 +113,7 @@ gboolean mode_wait_quote_exit(Player *player, gint event)
 	return FALSE;
 }
 
-gboolean mode_domestic_quote(Player *player, gint event)
+gboolean mode_domestic_quote(Player * player, gint event)
 {
 	StateMachine *sm = player->sm;
 	Game *game = player->game;
@@ -118,7 +121,7 @@ gboolean mode_domestic_quote(Player *player, gint event)
 	gint supply[NO_RESOURCE];
 	gint receive[NO_RESOURCE];
 
-        sm_state_name(sm, "mode_domestic_quote");
+	sm_state_name(sm, "mode_domestic_quote");
 	if (event != SM_RECV)
 		return FALSE;
 
@@ -132,14 +135,15 @@ gboolean mode_domestic_quote(Player *player, gint event)
 							player->num, -1);
 			if (quote == NULL)
 				break;
-			player_broadcast(player, PB_ALL, 
-					"domestic-quote delete %d\n", 
-					quote->var.d.quote_num);
+			player_broadcast(player, PB_ALL,
+					 "domestic-quote delete %d\n",
+					 quote->var.d.quote_num);
 			quotelist_delete(game->quotes, quote);
 		}
-		player_broadcast(player, PB_RESPOND, "domestic-quote finish\n");
+		player_broadcast(player, PB_RESPOND,
+				 "domestic-quote finish\n");
 
-		sm_goto(sm, (StateFunc)mode_wait_quote_exit);
+		sm_goto(sm, (StateFunc) mode_wait_quote_exit);
 		return TRUE;
 	}
 
@@ -148,14 +152,14 @@ gboolean mode_domestic_quote(Player *player, gint event)
 		 */
 		QuoteInfo *quote;
 		quote = quotelist_find_domestic(game->quotes,
-				player->num, quote_num);
+						player->num, quote_num);
 		if (quote == NULL) {
 			sm_send(sm, "ERR quote already deleted\n");
 			return TRUE;
 		}
 		quotelist_delete(game->quotes, quote);
-		player_broadcast(player, PB_RESPOND, 
-				"domestic-quote delete %d\n", quote_num);
+		player_broadcast(player, PB_RESPOND,
+				 "domestic-quote delete %d\n", quote_num);
 		return TRUE;
 	}
 
@@ -169,12 +173,14 @@ gboolean mode_domestic_quote(Player *player, gint event)
 		}
 		/* Make sure that the quote does not already exist
 		 */
-		if (quotelist_find_domestic(game->quotes, player->num, quote_num) != NULL) {
+		if (quotelist_find_domestic
+		    (game->quotes, player->num, quote_num) != NULL) {
 			sm_send(sm, "INFO duplicate quote\n");
 			return TRUE;
 		}
 
-		quotelist_add_domestic(game->quotes, player->num, quote_num, supply, receive);
+		quotelist_add_domestic(game->quotes, player->num,
+				       quote_num, supply, receive);
 		player_broadcast(player, PB_RESPOND,
 				 "domestic-quote quote %d supply %R receive %R\n",
 				 quote_num, supply, receive);
@@ -186,7 +192,7 @@ gboolean mode_domestic_quote(Player *player, gint event)
 
 /* Initiating player wants to end domestic trade
  */
-void trade_finish_domestic(Player *player)
+void trade_finish_domestic(Player * player)
 {
 	StateMachine *sm = player->sm;
 	Game *game = player->game;
@@ -198,14 +204,15 @@ void trade_finish_domestic(Player *player)
 	     list != NULL; list = player_next_real(list)) {
 		Player *scan = list->data;
 		if (scan != player && !player_is_viewer(game, scan->num))
-			sm_goto(scan->sm, (StateFunc)mode_wait_quote_exit);
+			sm_goto(scan->sm,
+				(StateFunc) mode_wait_quote_exit);
 	}
 	quotelist_free(&game->quotes);
 }
 
-void trade_accept_domestic(Player *player,
+void trade_accept_domestic(Player * player,
 			   gint partner_num, gint quote_num,
-			   gint *supply, gint *receive)
+			   gint * supply, gint * receive)
 {
 	StateMachine *sm = player->sm;
 	Game *game = player->game;
@@ -213,17 +220,17 @@ void trade_accept_domestic(Player *player,
 	Player *partner;
 
 	/* Check for valid trade scenario */
-	if( (!game->rolled_dice) ||
-	    ( ((player->build_list != NULL) || (game->bought_develop)) &&
-	      (game->params->strict_trade) ) )
-	{
+	if ((!game->rolled_dice) ||
+	    (((player->build_list != NULL) || (game->bought_develop)) &&
+	     (game->params->strict_trade))) {
 		sm_send(sm, "ERR wrong-time\n");
 		return;
 	}
 
 	/* Initiating player accepted a quote
 	 */
-	quote = quotelist_find_domestic(game->quotes, partner_num, quote_num);
+	quote =
+	    quotelist_find_domestic(game->quotes, partner_num, quote_num);
 	if (quote == NULL) {
 		sm_send(sm, "ERR quote not found\n");
 		return;
@@ -259,13 +266,11 @@ void trade_accept_domestic(Player *player,
 	 * longer valid
 	 */
 	quote = quotelist_find_domestic(game->quotes, partner_num, -1);
-	while (quote != NULL
-	       && quote->var.d.player_num == partner_num) {
+	while (quote != NULL && quote->var.d.player_num == partner_num) {
 		QuoteInfo *tmp = quote;
 
 		quote = quotelist_next(quote);
-		if (!cost_can_afford(tmp->var.d.supply,
-				     partner->assets)) {
+		if (!cost_can_afford(tmp->var.d.supply, partner->assets)) {
 			player_broadcast(partner, PB_ALL,
 					 "domestic-quote delete %d\n",
 					 tmp->var.d.quote_num);
@@ -274,7 +279,8 @@ void trade_accept_domestic(Player *player,
 	}
 }
 
-static void process_call_domestic(Player *player, gint *supply, gint *receive)
+static void process_call_domestic(Player * player, gint * supply,
+				  gint * receive)
 {
 	Game *game = player->game;
 	GList *list;
@@ -286,16 +292,16 @@ static void process_call_domestic(Player *player, gint *supply, gint *receive)
 	 * gone to monitor mode (after rejecting), but they should be able
 	 * to reply to the new call */
 	for (list = player_first_real(game); list != NULL;
-			list = player_next_real(list)) {
+	     list = player_next_real(list)) {
 		Player *scan = list->data;
 		if (!player_is_viewer(game, scan->num) && scan != player) {
-			sm_pop (scan->sm);
-			sm_push (scan->sm, (StateFunc)mode_domestic_quote);
+			sm_pop(scan->sm);
+			sm_push(scan->sm, (StateFunc) mode_domestic_quote);
 		}
 	}
 }
 
-static void call_domestic(Player *player, gint *supply, gint *receive)
+static void call_domestic(Player * player, gint * supply, gint * receive)
 {
 	StateMachine *sm = player->sm;
 	Game *game = player->game;
@@ -310,12 +316,14 @@ static void call_domestic(Player *player, gint *supply, gint *receive)
 	for (idx = 0; idx < NO_RESOURCE; idx++) {
 		if (supply[idx]) {
 			if (player->assets[idx] == 0) {
-				sm_send(sm, "ERR not enough resources for this quote\n");
+				sm_send(sm,
+					"ERR not enough resources for this quote\n");
 				return;
 			}
 			num_supply++;
 		}
-		if (receive[idx] > 0) ++num_receive;
+		if (receive[idx] > 0)
+			++num_receive;
 	}
 	if (num_supply == 0 && num_receive == 0) {
 		sm_send(sm, "ERR empty quote\n");
@@ -338,17 +346,18 @@ static void call_domestic(Player *player, gint *supply, gint *receive)
 				break;
 		}
 		if (idx < NO_RESOURCE) {
-			partner = player_by_num(game, curr->var.d.player_num);
+			partner =
+			    player_by_num(game, curr->var.d.player_num);
 			player_broadcast(partner, PB_ALL,
 					 "domestic-quote delete %d\n",
-			 		curr->var.d.quote_num);
+					 curr->var.d.quote_num);
 			quotelist_delete(game->quotes, curr);
 		}
 	}
 	process_call_domestic(player, supply, receive);
 }
 
-gboolean mode_domestic_initiate(Player *player, gint event)
+gboolean mode_domestic_initiate(Player * player, gint event)
 {
 	StateMachine *sm = player->sm;
 	Game *game = player->game;
@@ -360,13 +369,14 @@ gboolean mode_domestic_initiate(Player *player, gint event)
 	gint supply[NO_RESOURCE];
 	gint receive[NO_RESOURCE];
 
-        sm_state_name(sm, "mode_domestic_initiate");
+	sm_state_name(sm, "mode_domestic_initiate");
 	if (event != SM_RECV)
 		return FALSE;
 
 	if (sm_recv(sm, "maritime-trade %d supply %r receive %r",
 		    &ratio, &supply_type, &receive_type)) {
-		trade_perform_maritime(player, ratio, supply_type, receive_type);
+		trade_perform_maritime(player, ratio, supply_type,
+				       receive_type);
 		return TRUE;
 	}
 
@@ -375,10 +385,12 @@ gboolean mode_domestic_initiate(Player *player, gint event)
 		return TRUE;
 	}
 
-	if (sm_recv(sm, "domestic-trade accept player %d quote %d supply %R receive %R",
-		    &partner_num, &quote_num, supply, receive)) {
-		trade_accept_domestic(player,
-				      partner_num, quote_num, supply, receive);
+	if (sm_recv
+	    (sm,
+	     "domestic-trade accept player %d quote %d supply %R receive %R",
+	     &partner_num, &quote_num, supply, receive)) {
+		trade_accept_domestic(player, partner_num, quote_num,
+				      supply, receive);
 		return TRUE;
 	}
 
@@ -393,22 +405,22 @@ gboolean mode_domestic_initiate(Player *player, gint event)
 	return FALSE;
 }
 
-void trade_begin_domestic(Player *player, gint *supply, gint *receive)
+void trade_begin_domestic(Player * player, gint * supply, gint * receive)
 {
 	Game *game = player->game;
 	GList *list;
 
-	sm_push(player->sm, (StateFunc)mode_domestic_initiate);
+	sm_push(player->sm, (StateFunc) mode_domestic_initiate);
 	quotelist_new(&game->quotes);
 
 	/* push all others to quote mode.  process_call_domestic pops and
 	 * repushes them all, so this is needed to keep the state stack
 	 * from corrupting. */
 	for (list = player_first_real(game); list != NULL;
-			list = player_next_real(list)) {
+	     list = player_next_real(list)) {
 		Player *scan = list->data;
 		if (!player_is_viewer(game, scan->num) && scan != player)
-			sm_push(scan->sm, (StateFunc)mode_domestic_quote);
+			sm_push(scan->sm, (StateFunc) mode_domestic_quote);
 	}
 
 	process_call_domestic(player, supply, receive);

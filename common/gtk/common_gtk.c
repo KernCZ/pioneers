@@ -31,15 +31,15 @@ static gboolean msg_colors = TRUE;
 
 /* Local function prototypes */
 static void gtk_event_cleanup(void);
-static void message_window_log_message_string( gint msg_type, gchar *text );
+static void message_window_log_message_string(gint msg_type, gchar * text);
 
 /* Set the default logging function to write to the message window. */
-void log_set_func_message_window( void )
+void log_set_func_message_window(void)
 {
 	driver->log_write = message_window_log_message_string;
 }
 
-void log_set_func_message_color_enable( gboolean enable )
+void log_set_func_message_color_enable(gboolean enable)
 {
 	msg_colors = enable;
 }
@@ -47,7 +47,7 @@ void log_set_func_message_color_enable( gboolean enable )
 /* Write a message string to the console, setting its color based on its
  *   type.
  */
-void message_window_log_message_string( gint msg_type, gchar *text )
+void message_window_log_message_string(gint msg_type, gchar * text)
 {
 	GtkTextBuffer *buffer;
 	GtkTextIter iter;
@@ -55,42 +55,86 @@ void message_window_log_message_string( gint msg_type, gchar *text )
 	const gchar *tagname;
 
 	if (message_txt == NULL)
-		return; /* No widget set */
+		return;		/* No widget set */
 
 	/* First determine if the requested color is for chat.
 	 * Chat colors are separately turned on/off
 	 */
 	switch (msg_type) {
-		case MSG_PLAYER1: tagname = "player1"; break;
-		case MSG_PLAYER2: tagname = "player2"; break;
-		case MSG_PLAYER3: tagname = "player3"; break;
-		case MSG_PLAYER4: tagname = "player4"; break;
-		case MSG_PLAYER5: tagname = "player5"; break;
-		case MSG_PLAYER6: tagname = "player6"; break;
-		case MSG_PLAYER7: tagname = "player7"; break;
-		case MSG_PLAYER8: tagname = "player8"; break;
-		default:
-			/* Not chat related, check whether other messages
-			 * use color
-			 */
+	case MSG_PLAYER1:
+		tagname = "player1";
+		break;
+	case MSG_PLAYER2:
+		tagname = "player2";
+		break;
+	case MSG_PLAYER3:
+		tagname = "player3";
+		break;
+	case MSG_PLAYER4:
+		tagname = "player4";
+		break;
+	case MSG_PLAYER5:
+		tagname = "player5";
+		break;
+	case MSG_PLAYER6:
+		tagname = "player6";
+		break;
+	case MSG_PLAYER7:
+		tagname = "player7";
+		break;
+	case MSG_PLAYER8:
+		tagname = "player8";
+		break;
+	default:
+		/* Not chat related, check whether other messages
+		 * use color
+		 */
 		if (!msg_colors)
 			tagname = "black";
-		else switch( msg_type ) {
-			case MSG_ERROR: tagname = "red"; break;
-			case MSG_INFO: tagname = "info"; break;
-			case MSG_CHAT: tagname = "chat"; break;
-			case MSG_VIEWER_CHAT: tagname = "chat"; break;
-			case MSG_RESOURCE: tagname = "resource"; break;
-			case MSG_BUILD: tagname = "build"; break;
-			case MSG_DICE: tagname = "dice"; break;
-			case MSG_STEAL: tagname = "steal"; break;
-			case MSG_TRADE: tagname = "trade"; break;
-			case MSG_DEVCARD: tagname = "devcard"; break;
-			case MSG_LARGESTARMY: tagname = "largest"; break;
-			case MSG_LONGESTROAD: tagname = "longest"; break;
-			case MSG_BEEP: tagname = "beep"; break;
-			default: tagname = "green";
-		};
+		else
+			switch (msg_type) {
+			case MSG_ERROR:
+				tagname = "red";
+				break;
+			case MSG_INFO:
+				tagname = "info";
+				break;
+			case MSG_CHAT:
+				tagname = "chat";
+				break;
+			case MSG_VIEWER_CHAT:
+				tagname = "chat";
+				break;
+			case MSG_RESOURCE:
+				tagname = "resource";
+				break;
+			case MSG_BUILD:
+				tagname = "build";
+				break;
+			case MSG_DICE:
+				tagname = "dice";
+				break;
+			case MSG_STEAL:
+				tagname = "steal";
+				break;
+			case MSG_TRADE:
+				tagname = "trade";
+				break;
+			case MSG_DEVCARD:
+				tagname = "devcard";
+				break;
+			case MSG_LARGESTARMY:
+				tagname = "largest";
+				break;
+			case MSG_LONGESTROAD:
+				tagname = "longest";
+				break;
+			case MSG_BEEP:
+				tagname = "beep";
+				break;
+			default:
+				tagname = "green";
+			};
 		break;
 	}
 
@@ -98,8 +142,8 @@ void message_window_log_message_string( gint msg_type, gchar *text )
 
 	/* insert text at the end */
 	gtk_text_buffer_get_end_iter(buffer, &iter);
-	gtk_text_buffer_insert_with_tags_by_name(
-			buffer, &iter, text, -1, tagname, NULL);
+	gtk_text_buffer_insert_with_tags_by_name(buffer, &iter, text, -1,
+						 tagname, NULL);
 
 	/* move cursor to the end */
 	gtk_text_buffer_get_end_iter(buffer, &iter);
@@ -108,11 +152,11 @@ void message_window_log_message_string( gint msg_type, gchar *text )
 	end_mark = gtk_text_buffer_get_mark(buffer, "end-mark");
 	g_assert(end_mark != NULL);
 	gtk_text_view_scroll_to_mark(GTK_TEXT_VIEW(message_txt), end_mark,
-			0.0, FALSE, 0.0, 0.0);
+				     0.0, FALSE, 0.0, 0.0);
 }
 
 /* set the text widget. */
-void message_window_set_text(GtkWidget *textWidget)
+void message_window_set_text(GtkWidget * textWidget)
 {
 	GtkTextBuffer *buffer;
 	GtkTextIter iter;
@@ -121,28 +165,50 @@ void message_window_set_text(GtkWidget *textWidget)
 
 	/* Prepare all tags */
 	buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(message_txt));
-	gtk_text_buffer_create_tag(buffer, "black", "foreground", "black", NULL);
-	gtk_text_buffer_create_tag(buffer, "red", "foreground", "red", NULL);
-	gtk_text_buffer_create_tag(buffer, "green", "foreground", "green", NULL);
-	gtk_text_buffer_create_tag(buffer, "build", "foreground", "#BB0000", NULL);
-	gtk_text_buffer_create_tag(buffer, "chat", "foreground", "#0000FF", NULL);
-	gtk_text_buffer_create_tag(buffer, "devcard", "foreground", "#C6C613", NULL);
-	gtk_text_buffer_create_tag(buffer, "dice", "foreground", "#00AA00", NULL);
-	gtk_text_buffer_create_tag(buffer, "info", "foreground", "#000000", NULL);
-	gtk_text_buffer_create_tag(buffer, "largest", "foreground", "#1CB5ED", NULL);
-	gtk_text_buffer_create_tag(buffer, "longest", "foreground", "#1CB5ED", NULL);
-	gtk_text_buffer_create_tag(buffer, "resource", "foreground", "#0000FF", NULL);
-	gtk_text_buffer_create_tag(buffer, "steal", "foreground", "#A613C6", NULL);
-	gtk_text_buffer_create_tag(buffer, "trade", "foreground", "#006600", NULL);
-	gtk_text_buffer_create_tag(buffer, "beep", "foreground", "#B7AE07", NULL);
-	gtk_text_buffer_create_tag(buffer, "player1", "foreground", "#CD0000", NULL);
-	gtk_text_buffer_create_tag(buffer, "player2", "foreground", "#1E90FF", NULL);
-	gtk_text_buffer_create_tag(buffer, "player3", "foreground", "#A8A8A8", NULL);
-	gtk_text_buffer_create_tag(buffer, "player4", "foreground", "#FF7F00", NULL);
-	gtk_text_buffer_create_tag(buffer, "player5", "foreground", "#AEAE00", NULL);
-	gtk_text_buffer_create_tag(buffer, "player6", "foreground", "#8EB5BE", NULL);
-	gtk_text_buffer_create_tag(buffer, "player7", "foreground", "#D15FBE", NULL);
-	gtk_text_buffer_create_tag(buffer, "player8", "foreground", "#00BE76", NULL);
+	gtk_text_buffer_create_tag(buffer, "black", "foreground", "black",
+				   NULL);
+	gtk_text_buffer_create_tag(buffer, "red", "foreground", "red",
+				   NULL);
+	gtk_text_buffer_create_tag(buffer, "green", "foreground", "green",
+				   NULL);
+	gtk_text_buffer_create_tag(buffer, "build", "foreground",
+				   "#BB0000", NULL);
+	gtk_text_buffer_create_tag(buffer, "chat", "foreground", "#0000FF",
+				   NULL);
+	gtk_text_buffer_create_tag(buffer, "devcard", "foreground",
+				   "#C6C613", NULL);
+	gtk_text_buffer_create_tag(buffer, "dice", "foreground", "#00AA00",
+				   NULL);
+	gtk_text_buffer_create_tag(buffer, "info", "foreground", "#000000",
+				   NULL);
+	gtk_text_buffer_create_tag(buffer, "largest", "foreground",
+				   "#1CB5ED", NULL);
+	gtk_text_buffer_create_tag(buffer, "longest", "foreground",
+				   "#1CB5ED", NULL);
+	gtk_text_buffer_create_tag(buffer, "resource", "foreground",
+				   "#0000FF", NULL);
+	gtk_text_buffer_create_tag(buffer, "steal", "foreground",
+				   "#A613C6", NULL);
+	gtk_text_buffer_create_tag(buffer, "trade", "foreground",
+				   "#006600", NULL);
+	gtk_text_buffer_create_tag(buffer, "beep", "foreground", "#B7AE07",
+				   NULL);
+	gtk_text_buffer_create_tag(buffer, "player1", "foreground",
+				   "#CD0000", NULL);
+	gtk_text_buffer_create_tag(buffer, "player2", "foreground",
+				   "#1E90FF", NULL);
+	gtk_text_buffer_create_tag(buffer, "player3", "foreground",
+				   "#A8A8A8", NULL);
+	gtk_text_buffer_create_tag(buffer, "player4", "foreground",
+				   "#FF7F00", NULL);
+	gtk_text_buffer_create_tag(buffer, "player5", "foreground",
+				   "#AEAE00", NULL);
+	gtk_text_buffer_create_tag(buffer, "player6", "foreground",
+				   "#8EB5BE", NULL);
+	gtk_text_buffer_create_tag(buffer, "player7", "foreground",
+				   "#D15FBE", NULL);
+	gtk_text_buffer_create_tag(buffer, "player8", "foreground",
+				   "#00BE76", NULL);
 	/* Set the mark that will mark the end of the text */
 	gtk_text_buffer_get_end_iter(buffer, &iter);
 	gtk_text_buffer_create_mark(buffer, "end-mark", &iter, FALSE);
@@ -156,72 +222,74 @@ static void gtk_event_cleanup()
 
 UIDriver GTK_Driver = {
 	gtk_event_cleanup,
-	
+
 	/* initially log to the console; change it to the message window after
 	 *   the message window is created. */
 	log_message_string_console,
 
-	NULL,	/* add read input */
-	NULL,	/* add write input */
-	NULL,	/* remove input */
-	
+	NULL,			/* add read input */
+	NULL,			/* add write input */
+	NULL,			/* remove input */
+
 	/* callbacks for the server; NULL for now -- let the server set them */
-	NULL,	/* player added */
-	NULL,	/* player renamed */
-	NULL,	/* player removed */
-	NULL	/* player renamed */
+	NULL,			/* player added */
+	NULL,			/* player renamed */
+	NULL,			/* player removed */
+	NULL			/* player renamed */
 };
 
 /* Functions that are not in the older versions of Gtk+
  * Some stub functionality is provided 
  */
- 
+
 #if GTK_MAJOR_VERSION >= 2
 #if GTK_MINOR_VERSION < 4
 /*  Here are some functions that are not present before 2.4 */
-void gtk_tree_view_column_set_expand (
-	UNUSED(GtkTreeViewColumn *tree_column),
-	UNUSED(gboolean expand)) {
+void
+gtk_tree_view_column_set_expand(UNUSED(GtkTreeViewColumn * tree_column),
+				UNUSED(gboolean expand))
+{
 	/* Do nothing. This function is purely cosmetic */
 }
 
-void gtk_entry_set_alignment(
-	UNUSED(GtkEntry *entry),
-	UNUSED(gfloat xalign)) {
+void gtk_entry_set_alignment(UNUSED(GtkEntry * entry),
+			     UNUSED(gfloat xalign))
+{
 	/* Do nothing. This function is purely cosmetic */
 }
 
-void gtk_alignment_set_padding(
-	UNUSED(GtkAlignment *alignment),
-	UNUSED(guint padding_top),
-	UNUSED(guint padding_bottom),
-	UNUSED(guint padding_left),
-	UNUSED(guint padding_right)) {
+void gtk_alignment_set_padding(UNUSED(GtkAlignment * alignment),
+			       UNUSED(guint padding_top),
+			       UNUSED(guint padding_bottom),
+			       UNUSED(guint padding_left),
+			       UNUSED(guint padding_right))
+{
 	/* Do nothing. This function is purely cosmetic */
 }
 
 #if GTK_MINOR_VERSION < 2
 /* Here are some functions that are not present before 2.2 */
-gboolean gtk_window_set_default_icon_from_file(
-	UNUSED(const gchar *filename),
-	UNUSED(GError **err)) {
+gboolean
+gtk_window_set_default_icon_from_file(UNUSED(const gchar * filename),
+				      UNUSED(GError ** err))
+{
 	/* Do nothing. This function is purely cosmetic */
 }
 
-void gdk_draw_pixbuf(UNUSED(GdkDrawable *drawable),
-	UNUSED(GdkGC *gc),
-	UNUSED(GdkPixbuf *pixbuf),
-	UNUSED(gint src_x),
-	UNUSED(gint src_y),
-	UNUSED(gint dest_x),
-	UNUSED(gint dest_y),
-	UNUSED(gint width),
-	UNUSED(gint height),
-	UNUSED(GdkRgbDither dither),
-	UNUSED(gint x_dither),
-	UNUSED(gint y_dither)) {
+void gdk_draw_pixbuf(UNUSED(GdkDrawable * drawable),
+		     UNUSED(GdkGC * gc),
+		     UNUSED(GdkPixbuf * pixbuf),
+		     UNUSED(gint src_x),
+		     UNUSED(gint src_y),
+		     UNUSED(gint dest_x),
+		     UNUSED(gint dest_y),
+		     UNUSED(gint width),
+		     UNUSED(gint height),
+		     UNUSED(GdkRgbDither dither),
+		     UNUSED(gint x_dither), UNUSED(gint y_dither))
+{
 	/* Do nothing. This function is used in the legend */
 }
-#endif /* GTK_MINOR_VERSION < 2 */
-#endif /* GTK_MINOR_VERSION < 4 */
-#endif /* GTK_MAJOR_VERSION >= 2 */
+#endif				/* GTK_MINOR_VERSION < 2 */
+#endif				/* GTK_MINOR_VERSION < 4 */
+#endif				/* GTK_MAJOR_VERSION >= 2 */
