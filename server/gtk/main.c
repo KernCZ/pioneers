@@ -28,6 +28,8 @@
 
 #include "gnocatan-server.h"
 
+#define GNOCATAN_ICON_FILE	"gnome-gnocatan.png"
+
 static GtkWidget *app;
 
 /* Local function prototypes */
@@ -614,6 +616,8 @@ static GtkWidget *build_interface()
 
 int main(int argc, char *argv[])
 {
+	gchar *icon_file;
+	
 	/* set the UI driver to GTK_Driver, since we're using gtk */
 	set_ui_driver( &GTK_Driver );
 	
@@ -638,12 +642,30 @@ int main(int argc, char *argv[])
 	/* Initialize frontend inspecific things */
 	server_init (GNOCATAN_DIR_DEFAULT);
 
-	gnome_init("gnocatan-server", VERSION, argc, argv);
+ 	gnome_program_init("gnocatan-server", VERSION,
+ 		LIBGNOMEUI_MODULE,
+ 		argc, argv,
+ 		GNOME_PARAM_POPT_TABLE, NULL,
+ 		GNOME_PARAM_APP_DATADIR, DATADIR,
+ 		NULL);
 
 	/* Create the application window
 	 */
 	app = gnome_app_new("gnocatan-server", _("Gnocatan Server"));
-	gtk_window_set_default_icon_from_file(gnome_pixmap_file("gnome-gnocatan.png"), NULL);
+ 
+ 	icon_file = gnome_program_locate_file(NULL,
+ 			GNOME_FILE_DOMAIN_APP_PIXMAP,
+ 			GNOCATAN_ICON_FILE,
+ 			TRUE, NULL);
+ 	if (icon_file != NULL) {
+ 		gtk_window_set_default_icon_from_file(icon_file, NULL);
+ 		g_free(icon_file);
+ 	}
+ 	else {
+ 		fprintf(stderr, _("Warning: pixmap not found: %s\n"),
+ 				GNOCATAN_ICON_FILE);
+ 	}
+ 
 	gtk_widget_realize(app);
 	gtk_signal_connect(GTK_OBJECT(app), "delete_event",
 			   GTK_SIGNAL_FUNC(quit_cb), NULL);

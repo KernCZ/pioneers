@@ -8,6 +8,7 @@ noinst_LIBRARIES = libgnocatan_server.a
 INCLUDES = \
 	-I$(srcdir)/../common -I. \
 	-DGNOMELOCALEDIR=\""$(datadir)/locale"\" \
+	-DDATADIR=\"$(datadir)\" \
 	-I$(includedir) \
 	$(GNOME2_CFLAGS)
 

@@ -8,11 +8,6 @@ Simple install procedure
   [ Become root if necessary ]
   % make install			# install Gnocatan
 
-* VERY IMPORTANT NOTE! *
-The client program uses Gnome to locate pixmap files, so you must use the
-same prefix for Gnocatan that was used to install Gnome. On a Debian
-system, that prefix is /usr.
-
 See below for instructions on building RPM or DEB binary packages from
 these sources.
 

@@ -44,6 +44,13 @@
 	* server/gnocatan-server.c: Ignored broken pipe.
 
 2003-10-15  Bas Wijnen <b.wijnen@phys.rug.nl>
+
+2003-10-14  Jason Long <jlong@messiah.edu>
+	* INSTALL: removed note about requiring the Gnome prefix.
+	* client/gui.c, server/gnocatan-server-gtk.c: replace gnome_pixmap_file
+	with gnome_program_locate_file, which uses the application-specific
+ 	pixmap directory instead of Gnome's pixmap directory.
+ 	* server/Makefile.am: make DATADIR available to gnocatan-server-gtk.
 	* client/trade.c: Fixed reconnect bug.
 	* po/de.po, po/es.po, po/gnocatan.pot: Updated.
 	* server/conquest+ports.game, server/conquest.game,

@@ -38,6 +38,8 @@ GtkWidget *app_window;		/* main application window */
 #define COLOR_CHAT_YES 1
 #define COLOR_CHAT_NO  0
 
+#define GNOCATAN_ICON_FILE	"gnome-gnocatan.png"
+
 static GuiMap *gmap;		/* handle to map drawing code */
 
 enum {
@@ -1093,14 +1095,29 @@ static void register_gnocatan_pixmaps()
 	GtkIconFactory *factory = gtk_icon_factory_new();
 
 	for (idx = 0; idx < numElem(gnocatan_pixmaps); idx++) {
-		GtkIconSource *source;
+		gchar *filename;
 		GtkIconSet *icon;
 
-		source = gtk_icon_source_new();
-		gtk_icon_source_set_filename(source,
-				gnome_pixmap_file(gnocatan_pixmaps[idx]));
 		icon = gtk_icon_set_new();
-		gtk_icon_set_add_source(icon, source);
+
+		/* determine full path to pixmap file...
+		 * this will be APP_DATADIR "/pixmaps/" pixmap_filename
+		 * or e.g. APP_DATADIR "/pixmaps/gnocatan/dice.png" */
+		filename = gnome_program_locate_file(NULL,
+				GNOME_FILE_DOMAIN_APP_PIXMAP,
+				gnocatan_pixmaps[idx], TRUE, NULL);
+		if (filename != NULL) {
+			GtkIconSource *source;
+			source = gtk_icon_source_new();
+			gtk_icon_source_set_filename(source, filename);
+			g_free(filename);
+			gtk_icon_set_add_source(icon, source);
+		}
+		else {
+			fprintf(stderr, _("Warning: pixmap not found: %s\n"),
+					gnocatan_pixmaps[idx]);
+		}
+
 		gtk_icon_factory_add(factory,
 				gnocatan_pixmaps[idx],
 				icon);
@@ -1165,6 +1182,7 @@ GtkWidget* gui_build_interface()
 	gboolean default_returned;
 	BonoboDockItem *dock_item;
 	GtkWidget *toolbar;
+	gchar *icon_file;
 
 	player_init();
 
@@ -1173,7 +1191,20 @@ GtkWidget* gui_build_interface()
 	register_gnocatan_pixmaps();
 	app_window = gnome_app_new("gnocatan", _("Gnocatan"));
 	gtk_window_set_policy(GTK_WINDOW(app_window), TRUE, TRUE, TRUE);
-	gtk_window_set_default_icon_from_file(gnome_pixmap_file("gnome-gnocatan.png"), NULL);
+
+	icon_file = gnome_program_locate_file(NULL,
+			GNOME_FILE_DOMAIN_APP_PIXMAP,
+			GNOCATAN_ICON_FILE,
+			TRUE, NULL);
+	if (icon_file != NULL) {
+		gtk_window_set_default_icon_from_file(icon_file, NULL);
+		g_free(icon_file);
+	}
+	else {
+		fprintf(stderr, _("Warning: pixmap not found: %s\n"),
+				GNOCATAN_ICON_FILE);
+	}
+	
 	gtk_widget_realize(app_window);
 	gtk_signal_connect(GTK_OBJECT(app_window), "delete_event",
 			   GTK_SIGNAL_FUNC(quit_cb), NULL);
