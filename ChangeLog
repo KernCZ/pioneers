@@ -1,3 +1,6 @@
+2005-03-23  Brian Wellington <bwelling@xbill.org>
+	* client/ai/greedy.c: Add gold support to the AI.
+
 2005-03-23  0.9.1  Roland Clobus <rclobus@bigfoot.com>
 	* New version numbering: only 3 digits. The first two match the
 	protocol version, and the third is the build number.

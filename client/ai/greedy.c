@@ -237,6 +237,9 @@ static float default_score_resource(Resource resource)
 	float score;
 
 	switch (resource) {
+	case GOLD_TERRAIN:	/* gold */
+		score = 1.25;
+		break;
 	case HILL_TERRAIN:	/* brick */
 		score = 1.1;
 		break;
@@ -1638,14 +1641,6 @@ static void greedy_consider_quote(UNUSED(gint partner),
 	log_message(MSG_INFO, "Quoting.\n");
 }
 
-/* function for checking if the map contains gold, so the ai can
- * quit if it does */
-static gboolean greedy_check_gold(UNUSED(Map * map), Hex * hex,
-				  UNUSED(void *unused))
-{
-	return hex->terrain == GOLD_TERRAIN;
-}
-
 static void greedy_setup(unsigned num_settlements, unsigned num_roads)
 {
 	ai_wait();
@@ -1683,6 +1678,30 @@ static void greedy_discard_add(gint player_num, gint discard_num)
 			randchat(chat_discard_other, 10);
 		}
 	}
+}
+
+static void greedy_gold_choose(gint gold_num, gint * bank)
+{
+	resource_values_t resval;
+	gint assets[NO_RESOURCE];
+	gint want[NO_RESOURCE];
+	gint i;
+	int r1;
+
+	for (i = 0; i < NO_RESOURCE; i++) {
+		want[i] = 0;
+		assets[i] = resource_asset(i);
+	}
+
+	for (i = 0; i < gold_num; i++) {
+		reevaluate_resources(&resval);
+
+		r1 = resource_desire(assets, &resval, NO_RESOURCE, 0);
+		want[r1]++;
+		assets[r1]++;
+	}
+	cb_choose_gold(want);
+
 }
 
 static void greedy_error(gchar * message)
@@ -1774,13 +1793,6 @@ void greedy_init(UNUSED(int argc), UNUSED(char **argv))
 {
 	map = get_map();
 
-	/* ai cannot handle gold: quit if the board contains it */
-	if (map_traverse(map, &greedy_check_gold, NULL) == TRUE) {
-		cb_chat(N_
-			("Sorry, I do not know how to play with gold.\n"));
-		exit(1);
-	}
-
 	callbacks.setup = &greedy_setup;
 	callbacks.turn = &greedy_turn;
 	callbacks.robber = &greedy_place_robber;
@@ -1796,6 +1808,7 @@ void greedy_init(UNUSED(int argc), UNUSED(char **argv))
 	callbacks.player_turn = &greedy_player_turn;
 	callbacks.robber_moved = &greedy_robber_moved;
 	callbacks.discard = &greedy_discard_start;
+	callbacks.gold_choose = &greedy_gold_choose;
 	callbacks.player_robbed = &greedy_player_robbed;
 	callbacks.get_rolled_resources = &greedy_get_rolled_resources;
 	callbacks.played_develop = &greedy_played_develop;
