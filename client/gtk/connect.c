@@ -20,11 +20,15 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+/* #undef GTK_DISABLE_DEPRECATED */
 #include "config.h"
 #include <ctype.h>
 #include <netdb.h>
 #include <stdlib.h>
 #include <unistd.h> /* For usleep */
+#include <errno.h>
+#include <fcntl.h>
+#include <sys/wait.h>
 
 #include "frontend.h"
 #include "network.h"
@@ -84,16 +88,42 @@ static GtkWidget *host_entry;          /* Host name entry */
 static GtkWidget *port_entry;          /* Host port entry */
 
 static enum {
+	GAMETYPE_MODE_SIGNON,
+	GAMETYPE_MODE_LIST
+} gametype_mode;
+
+static enum {
+	CREATE_MODE_SIGNON,
+	CREATE_MODE_WAIT_FOR_INFO
+} create_mode;
+
+static enum {
 	MODE_SIGNON,
 	MODE_REDIRECT,
-	MODE_LIST
-} meta_mode, gametype_mode, create_mode;
+	MODE_LIST,
+	MODE_CAPABILITY
+} meta_mode;
+
 static Session *gametype_ses;
 static Session *create_ses;
 
-static gint meta_server_version_major;
-static gint meta_server_version_minor;
-static gint num_redirects;
+/** Information about the metaserver */
+static struct {
+	/** Server name */
+	gchar *server;
+	/** Port */
+	gchar *port;
+	/** Major version number of metaserver protocol */
+	gint version_major;
+	/** Minor version number of metaserver protocol */
+	gint version_minor;
+	/** Number of times the metaserver has redirected */
+	gint num_redirects;
+	/** The metaserver can create remote games */
+	gboolean can_create_games;
+	/** The metaserver can send information about a game */
+	gboolean can_send_game_settings;
+}  metaserver_info = { NULL, NULL, 0, 0, 0, FALSE, FALSE };
 
 #define STRARG_LEN 128
 #define INTARG_LEN 16
@@ -107,8 +137,6 @@ static gchar server_vpoints[STRARG_LEN];
 static gchar server_sevenrule[STRARG_LEN];
 static gchar server_terrain[STRARG_LEN];
 static gchar server_title[STRARG_LEN];
-
-gchar *meta_server = NULL, *meta_port = NULL;
 
 static void query_meta_server(const gchar *server, const gchar *port);
 static void show_waiting_box(gchar *message, const gchar *server, const gchar *port);
@@ -206,26 +234,23 @@ static void meta_gametype_notify(NetEvent event, UNUSED(void *user_data),
 		net_free(&gametype_ses);
 		break;
 	case NET_CLOSE:
-		if (gametype_mode == MODE_SIGNON)
+		if (gametype_mode == GAMETYPE_MODE_SIGNON)
 			log_message( MSG_ERROR, _("Meta-server kicked us off\n"));
 		net_free(&gametype_ses);
 		close_waiting_box();
 		break;
 	case NET_READ:
 		switch (gametype_mode) {
-		case MODE_SIGNON:
+		case GAMETYPE_MODE_SIGNON:
 			net_printf(gametype_ses, "listtypes\n");
-			gametype_mode = MODE_LIST;
+			gametype_mode = GAMETYPE_MODE_LIST;
 			break;
-		case MODE_LIST:
+		case GAMETYPE_MODE_LIST:
 			/* A server description looks like this:
 			 * title=%s\n
 			 */
 			if (strncmp(line, "title=", 6) == 0)
 				select_game_add(SELECTGAME(select_game), line+6);
-			break;
-		case MODE_REDIRECT: /* can not happen */
-			g_assert_not_reached();
 			break;
 		}
 		break;
@@ -237,7 +262,7 @@ static void get_meta_server_games_types(gchar *server, gchar *port)
 	show_waiting_box(_("Receiving game names from the meta server.\n"), server, port);
 	gametype_ses = net_new(meta_gametype_notify, NULL);
 	if (net_connect(gametype_ses, server, port))
-		gametype_mode = MODE_SIGNON;
+		gametype_mode = GAMETYPE_MODE_SIGNON;
 	else {
 		net_free(&gametype_ses);
 		close_waiting_box();
@@ -256,13 +281,13 @@ static void meta_create_notify(NetEvent event, UNUSED(void *user_data),
 		net_free(&create_ses);
 		break;
 	case NET_CLOSE:
-		if (create_mode == MODE_SIGNON)
+		if (create_mode == CREATE_MODE_SIGNON)
 			log_message( MSG_ERROR, _("Meta-server kicked us off\n"));
 		net_free(&create_ses);
 		break;
 	case NET_READ:
 		switch (create_mode) {
-		case MODE_SIGNON:
+		case CREATE_MODE_SIGNON:
 			net_printf(create_ses, "create %d %d %d %d %d %s\n",
 					cfg_terrain,
 					cfg_num_players,
@@ -271,10 +296,10 @@ static void meta_create_notify(NetEvent event, UNUSED(void *user_data),
 					cfg_ai_players,
 					cfg_gametype
 				);
-			create_mode = MODE_LIST;
+			create_mode = CREATE_MODE_WAIT_FOR_INFO;
 			break;
 
-		case MODE_LIST:
+		case CREATE_MODE_WAIT_FOR_INFO:
 			if (strncmp(line, "host=", 5) == 0)
 				connect_set_field(&connect_server, line+5);
 			else if (strncmp(line, "port=", 5) == 0)
@@ -290,9 +315,6 @@ static void meta_create_notify(NetEvent event, UNUSED(void *user_data),
 			}
 			else
 				log_message( MSG_ERROR, _("Unknown message from the metaserver: %s\n"), line);
-			break;
-		case MODE_REDIRECT: /* can not happen */
-			g_assert_not_reached();
 			break;
 		}
 	}
@@ -367,69 +389,88 @@ static void meta_notify(NetEvent event, UNUSED(void *user_data), char *line)
 
 				meta_mode = MODE_REDIRECT;
 				net_close(ses);
-				if (num_redirects++ == 10) {
+				if (metaserver_info.num_redirects++ == 10) {
 					log_message( MSG_INFO, _("Too many meta-server redirects\n"));
 					return;
 				}
 				if (sscanf(line, "goto %s %s", server, port) == 2) {
- 					if (meta_server)
- 						g_free(meta_server);
- 					if (meta_port)
- 						g_free(meta_port);
- 					meta_server = g_strdup(server);
- 					meta_port = g_strdup(port);
+ 					if (metaserver_info.server)
+ 						g_free(metaserver_info.server);
+ 					if (metaserver_info.port)
+ 						g_free(metaserver_info.port);
+ 					metaserver_info.server = g_strdup(server);
+ 					metaserver_info.port = g_strdup(port);
 					query_meta_server(server, port);
 				}
 				else if (sscanf(line, "goto %s", server) == 1) {
- 					if (meta_server)
- 						g_free(meta_server);
- 					if (meta_port)
- 						g_free(meta_port);
- 					meta_server = g_strdup(server);
- 					meta_port = g_strdup(GNOCATAN_DEFAULT_META_PORT);
+ 					if (metaserver_info.server)
+ 						g_free(metaserver_info.server);
+ 					if (metaserver_info.port)
+ 						g_free(metaserver_info.port);
+ 					metaserver_info.server = g_strdup(server);
+ 					metaserver_info.port = g_strdup(GNOCATAN_DEFAULT_META_PORT);
 					query_meta_server(server, GNOCATAN_DEFAULT_META_PORT);
 				}
 				else
 					log_message( MSG_ERROR, _("Bad redirect line: %s\n"), line);
 				break;
 			}
-			meta_server_version_major = meta_server_version_minor = 0;
+			metaserver_info.version_major = metaserver_info.version_minor = 0;
+			metaserver_info.can_create_games = FALSE;
+			metaserver_info.can_send_game_settings = FALSE;
 			if (strncmp(line, "welcome ", 8) == 0) {
 				char *p = strstr(line, "version ");
 				if (p) {
 					p += 8;
-					meta_server_version_major = atoi(p);
+					metaserver_info.version_major = atoi(p);
 					p += strspn(p, "0123456789");
 					if (*p == '.')
-						meta_server_version_minor = atoi(p+1);
+						metaserver_info.version_minor = atoi(p+1);
 				}
 			}
-			if (meta_server_version_major < 1) {
+			if (metaserver_info.version_major < 1) {
 				log_message(MSG_INFO, _("Meta server too old to create "
 						"servers (version %d.%d)\n"),
-						meta_server_version_major,
-						meta_server_version_minor);
+						metaserver_info.version_major,
+						metaserver_info.version_minor);
 			}
 			else {
-				if (meta_dlg) {
-					gtk_dialog_set_response_sensitive(GTK_DIALOG(meta_dlg), META_RESPONSE_NEW, TRUE);
-				}
 				net_printf(ses, "version %s\n", META_PROTOCOL_VERSION);
 			}
 			
-			net_printf(ses, meta_server_version_major >= 1 ?
-					   "listservers\n" : "client\n");
-			meta_mode = MODE_LIST;
-			if (meta_dlg)
-				gtk_dialog_set_response_sensitive(GTK_DIALOG(meta_dlg), META_RESPONSE_REFRESH, TRUE);
+			if ((metaserver_info.version_major > 1) ||
+				(metaserver_info.version_major==1 && metaserver_info.version_minor>=1)) {
+				net_printf(ses, "capability\n");
+				meta_mode = MODE_CAPABILITY;
+			} else {
+				net_printf(ses, metaserver_info.version_major >= 1 ?
+						   "listservers\n" : "client\n");
+				meta_mode = MODE_LIST;
+			}
+			gtk_dialog_set_response_sensitive(GTK_DIALOG(meta_dlg), 
+					META_RESPONSE_REFRESH, TRUE);
 			break;
-
+		case MODE_CAPABILITY:
+			if (!strcmp(line, "create games")) {
+				metaserver_info.can_create_games = TRUE;
+			} else if (!strcmp(line, "send game settings")) {
+				metaserver_info.can_send_game_settings = TRUE;
+			} else if (!strcmp(line, "end")) {
+				gtk_dialog_set_response_sensitive(
+						GTK_DIALOG(meta_dlg), 
+						META_RESPONSE_NEW, 
+						metaserver_info.can_create_games);
+				net_printf(ses, metaserver_info.version_major >= 1 ?
+					   "listservers\n" : "client\n");
+				meta_mode = MODE_LIST;
+			}
+			break;
 		case MODE_LIST:
 			if (strcmp(line, "server") == 0)
 				; /* Information will come shortly */
-			else if (strcmp(line, "end") == 0)
+			else if (strcmp(line, "end") == 0) {
 				server_end();
-			else if (check_str_info(line, "host=", server_host) )
+			} else if (check_str_info(line, "host=", server_host) )
 				break;
 			else if (check_str_info(line, "port=", server_port) )
 				break;
@@ -460,7 +501,7 @@ static void meta_notify(NetEvent event, UNUSED(void *user_data), char *line)
 
 static void query_meta_server(const gchar *server, const gchar *port)
 {
-	if (num_redirects > 0)
+	if (metaserver_info.num_redirects > 0)
 		log_message( MSG_INFO, _("Redirected to meta-server at %s, port %s\n"),
 			 server, port);
 	show_waiting_box(_("Receiving a list of Gnocatan servers from the meta server.\n"), server, port);
@@ -538,6 +579,7 @@ static GtkWidget *build_create_interface(void)
 	aiplayers_spin = gtk_spin_button_new(GTK_ADJUSTMENT(adj), 1, 0);
 	gtk_spin_button_set_numeric(GTK_SPIN_BUTTON(aiplayers_spin), TRUE);
 	gtk_widget_show(aiplayers_spin);
+	gtk_entry_set_alignment(GTK_ENTRY(aiplayers_spin), 1.0);
 	gtk_table_attach(GTK_TABLE(game_settings), aiplayers_spin, 
 			1, 2, row, row+ 1,
 			GTK_FILL,
@@ -545,15 +587,17 @@ static GtkWidget *build_create_interface(void)
 	gtk_tooltips_set_tip(tooltips, aiplayers_spin,
 			_("The number of AI players"), NULL);
 
-	label = gtk_label_new(
-			_("Notes:\n"
-			"\t* The default metaserver does not allow creating new games.\n"
-			"\t* The metaserver does not send information about the games.\n"
-			"\t  Please set appropriate values yourself."));
-	gtk_widget_show(label);
-	gtk_box_pack_end_defaults(GTK_BOX(vbox), label);
+	if (!metaserver_info.can_send_game_settings) {
+		label = gtk_label_new(NULL);
+		gtk_label_set_markup(GTK_LABEL(label),
+			_("<b>Note</b>:\n"
+			"\tThe metaserver does not send information about the games.\n"
+			"\tPlease set appropriate values yourself."));
+		gtk_widget_show(label);
+		gtk_box_pack_end_defaults(GTK_BOX(vbox), label);
+	}
 	
-	get_meta_server_games_types(meta_server, meta_port);
+	get_meta_server_games_types(metaserver_info.server, metaserver_info.port);
 
 	return vbox;
 }
@@ -575,8 +619,8 @@ static void create_server_dlg_cb(GtkDialog *dlg, gint arg1, UNUSED(gpointer user
 			cfg_gametype = select_game_get_active(sg);
 
 			create_ses = net_new(meta_create_notify, NULL);
-			if (net_connect(create_ses, meta_server, meta_port))
-				create_mode = MODE_SIGNON;
+			if (net_connect(create_ses, metaserver_info.server, metaserver_info.port))
+				create_mode = CREATE_MODE_SIGNON;
 			else
 				net_free(&create_ses);
 			break;
@@ -585,6 +629,54 @@ static void create_server_dlg_cb(GtkDialog *dlg, gint arg1, UNUSED(gpointer user
 			gtk_widget_destroy(GTK_WIDGET(dlg));
 			break;
 	};
+}
+
+/** Launch the server gtk. */
+static void launch_server_gtk(UNUSED(GtkWidget *widget), UNUSED(GtkWindow *parent))
+{
+	pid_t pid, pid2;
+    
+	pid = fork();
+	if (pid < 0) {
+		log_message(MSG_ERROR, 
+				/* Error message when program %1 is started, reason is %2 */
+				_("Error starting %s: %s"),
+				GNOCATAN_SERVER_GTK_PATH,
+				strerror(errno));
+    	} else if (pid == 0) {
+		/* child */
+		int i;
+
+		/* Don't show any logs in the console */
+		for(i = 0; i < 256; ++i) close(i);
+		open("/dev/null",O_RDONLY);
+		open("/dev/null",O_WRONLY);
+		open("/dev/null",O_RDWR);
+
+		/* start a second child to avoid zombies */
+		pid2 = fork();
+		if (pid2 < 0) {
+			log_message(MSG_ERROR, _("Error starting %s: %s"),
+					GNOCATAN_SERVER_GTK_PATH,
+					strerror(errno));
+			exit(1);
+		} else if (pid2 == 0) {
+			execl(GNOCATAN_SERVER_GTK_PATH, 
+					GNOCATAN_SERVER_GTK_PATH,
+					NULL);
+			log_message(MSG_ERROR, _("Error starting %s: %s"),
+					GNOCATAN_SERVER_GTK_PATH,
+					strerror(errno));
+			exit(2);
+		} else {
+			/* parent */
+			_exit(0);
+		}
+	} else {
+		/* parent */
+		int stat;
+		waitpid(pid, &stat, 0);
+	}
 }
 
 static void create_server_dlg(UNUSED(GtkWidget *widget), GtkWindow *parent)
@@ -649,8 +741,8 @@ static void meta_dlg_cb(GtkDialog *dlg, gint arg1, UNUSED(gpointer userdata))
 	switch (arg1) {
 		case META_RESPONSE_REFRESH: /* Refresh the list */
 			gtk_list_store_clear(meta_games_model);
-			num_redirects = 0;
-			query_meta_server(meta_server, meta_port);
+			metaserver_info.num_redirects = 0;
+			query_meta_server(metaserver_info.server, metaserver_info.port);
 			break;
 		case META_RESPONSE_NEW: /* Add a server */
 			create_server_dlg(NULL, GTK_WINDOW(dlg));
@@ -688,9 +780,9 @@ static void set_meta_serverinfo(void)
 			meta_tmp = GNOCATAN_DEFAULT_META_SERVER;
 		gtk_entry_set_text(GTK_ENTRY(meta_server_entry), meta_tmp);
 	}
-	meta_server = g_strdup(meta_tmp);
-	if (!meta_port)
-		meta_port = g_strdup(GNOCATAN_DEFAULT_META_PORT);
+	metaserver_info.server = g_strdup(meta_tmp);
+	if (!metaserver_info.port)
+		metaserver_info.port = g_strdup(GNOCATAN_DEFAULT_META_PORT);
 }
 
 static void create_meta_dlg(UNUSED(GtkWidget *widget), GtkWidget *parent)
@@ -706,8 +798,8 @@ static void create_meta_dlg(UNUSED(GtkWidget *widget), GtkWidget *parent)
 
 	if (meta_dlg != NULL) {
 		if (ses == NULL) {
-			num_redirects = 0;
-			query_meta_server(meta_server, meta_port);
+			metaserver_info.num_redirects = 0;
+			query_meta_server(metaserver_info.server, metaserver_info.port);
 		}
 		return;
 	}
@@ -724,7 +816,7 @@ static void create_meta_dlg(UNUSED(GtkWidget *widget), GtkWidget *parent)
 			GTK_WINDOW(parent),
 			0,
 			GTK_STOCK_REFRESH, META_RESPONSE_REFRESH,
-			GTK_STOCK_NEW, META_RESPONSE_NEW,
+			_("_New remote game"), META_RESPONSE_NEW,
 			GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 			GTK_STOCK_OK, GTK_RESPONSE_OK,
 			NULL);
@@ -736,7 +828,7 @@ static void create_meta_dlg(UNUSED(GtkWidget *widget), GtkWidget *parent)
 	gtk_tooltips_set_tip(tooltips, gui_get_dialog_button(GTK_DIALOG(meta_dlg), 0),
 			_("Refresh the list of games"), NULL);
 	gtk_tooltips_set_tip(tooltips, gui_get_dialog_button(GTK_DIALOG(meta_dlg), 1),
-			_("Create a new public game"), NULL);
+			_("Create a new public game at the meta server"), NULL);
 	gtk_tooltips_set_tip(tooltips, gui_get_dialog_button(GTK_DIALOG(meta_dlg), 2),
 			_("Don't join a public game"), NULL);
 	gtk_tooltips_set_tip(tooltips, gui_get_dialog_button(GTK_DIALOG(meta_dlg), 3),
@@ -863,8 +955,8 @@ static void create_meta_dlg(UNUSED(GtkWidget *widget), GtkWidget *parent)
 
 	gtk_widget_show(meta_dlg);
 
-	num_redirects = 0;
-	query_meta_server(meta_server, meta_port);
+	metaserver_info.num_redirects = 0;
+	query_meta_server(metaserver_info.server, metaserver_info.port);
 
 	/* Workaround: Set the size of the widget as late as possible, to avoid a strange display */
 	gtk_widget_set_size_request(scroll_win, -1, 150);
@@ -884,7 +976,7 @@ void connect_create_dlg(void)
 	GtkWidget *btn;
 	GtkWidget *sep;
 	GtkTooltips *tooltips;
-
+	gchar *fullname;
 	gchar *saved_meta_server;
 	gchar *saved_name;
 	gboolean default_returned;
@@ -991,13 +1083,19 @@ void connect_create_dlg(void)
 	GTK_WIDGET_SET_FLAGS(btn, GTK_CAN_DEFAULT);
 	gtk_widget_grab_default(btn);
 
-	btn = gtk_button_new_with_label(_("Create public game"));
+	btn = gtk_button_new_with_label(_("Create game"));
 	gtk_widget_show(btn);
 	gtk_box_pack_start_defaults(GTK_BOX(hbox), btn);
 	gtk_tooltips_set_tip(tooltips, btn,
-			_("Create a public game"), NULL);
+			_("Create a game"), NULL);
 	g_signal_connect(G_OBJECT(btn), "clicked",
-			G_CALLBACK(create_server_dlg), app_window);
+			G_CALLBACK(launch_server_gtk), app_window);
+	fullname = g_find_program_in_path(GNOCATAN_SERVER_GTK_PATH);
+	if (fullname) {
+		g_free(fullname);
+	} else {
+		gtk_widget_set_sensitive(GTK_WIDGET(btn), FALSE);
+	}
 
 	btn = gtk_button_new_with_label(_("Join private game"));
 	gtk_widget_show(btn);

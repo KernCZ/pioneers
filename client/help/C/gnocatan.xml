@@ -523,7 +523,7 @@
     <title>Playing Gnocatan</title>
 
     <sect1 id="joining">
-      <title>Joining a Gnocatan game.</title>
+      <title>Joining a Gnocatan game</title>
 
       <para>The Gnocatan client program is
         "<application>gnocatan</application>". When you run this
@@ -533,12 +533,12 @@
         <title>The connect dialog</title>
 
 	<para>Using the connect dialog, you identify the game which
-          you wish to join.  This dialog is automatically invoked when
-          you start <symbol>gnocatan</symbol>.  If the initial
+          you wish to join. This dialog is automatically invoked when
+          you start Gnocatan. If the initial
           connection fails, you can invoke the dialog from the
-          <guimenu>Game</guimenu>/<guimenuitem>Connect</guimenuitem>
+          <guimenu>Game</guimenu>/<guimenuitem>New game</guimenuitem>
           menu, or by using the
-          <keycombo><keycap>Ctrl</keycap><keycap>C</keycap></keycombo>
+          <keycombo><keycap>Ctrl</keycap><keycap>N</keycap></keycombo>
           keyboard shortcut.</para>
 
 	<figure id="gnocatan-FIG-connect-dialog">
@@ -548,74 +548,61 @@
 	  </screenshot>
 	</figure>
 
-	<para>You can manually specify the game that you wish to join
-          by entering the server host and port in the Server Host and
-          Server Port fields in the lower half. The client also
-          remembers server/port/username combinations you used
-          recently. You can recall them quickly with the Recent
-          Servers button at the bottom.</para>
+	<para>Enter your name, and join an existing game or create a
+	new game.</para>
 
-        <para>Alternatively, you can enter the name of a meta server
-          and press the Meta Server button, which will invoke the
-          servers dialog where you can locate games over the
-          Internet.</para>
-
-	<para>Using the Player Name field you can change the name that
-          will be used to identify you to other players.</para>
-
-	<para>Press the OK button to connect to the game.</para>
+	<para>Only if <application>gnocatan-server-gtk</application> is
+	 installed, you can create new games.</para>
       </sect2>
 
       <sect2 id="server-dialog">
-        <title>The servers dialog</title>
+        <title>Join public game</title>
 
-	<para>The servers dialog displays a list of Gnocatan games
-          that are currently running on the Internet.  When you select
-          a game from the list, the host and port fields in the
-          connect dialog will changed to point to that game.</para>
+	<para>The dialog displays a list of Gnocatan games
+          that are currently running on the Internet. The default
+	  meta server is <url>gnocatan.debian.net</url></para>
 
 	<figure id="gnocatan-FIG-servers-dialog">
-	  <title>The servers dialog.</title>
+	  <title>The Join a public game dialog.</title>
 	  <screenshot>
 	    <graphic fileref="images/servers-dialog.png"></graphic>
 	  </screenshot>
 	</figure>
 
 	<para>You join a game by selecting it and pressing the OK
-          button in the connect dialog. To obtain an updated list, you
-          must close the dialog and re-open it from the connect
-          dialog.</para>
+          button in the connect dialog. To obtain an updated list, push
+	  the Refresh button.</para>
 
-	<para>Recent meta servers also allow you to start new game
-	  servers on their host. If this is possible, the Create New
-	  Server button will be active and will bring you to the
-	  create server dialog.</para>
+	<para>Some meta servers also allow you to start new games
+	  on their host. If this is possible, the New remote game 
+	  button will be active and will bring you to the
+	  Create a public game dialog.</para>
 
       </sect2>
 
       <sect2 id="server-create-dialog">
-        <title>The create server dialog</title>
+        <title>The Create a public game dialog</title>
 
 	<para>In this dialog, you can select various parameters for
 	  the new game: board name (available types will be retrieved
-	  from the meta-server), default or random terrain, which
-	  sevens rule to apply, the number of players, victory points
-	  to reach, and how many AI players should join the
-	  game.</para>
+	  from the meta-server), default or random terrain, 
+	  the number of players, victory points
+	  to reach, which sevens rule to apply 
+	  and how many AI players should join the game.</para>
 
 	<figure id="gnocatan-FIG-server-create">
-	  <title>The create server dialog.</title>
+	  <title>The Create a public game dialog.</title>
 	  <screenshot>
 	    <graphic fileref="images/server-create.png"></graphic>
 	  </screenshot>
 	</figure>
 
-      <para>Once you're satisfied with your choices, press the Start
-        Server button. The create server and servers dialogs will pop
-        down, and server name and port will appear in the respective
-        fields of the connect dialog. The new server will of course
-        register to the meta server it was started from. You can see
-        it in the list if you press Query Meta Server again.</para>
+      <para>Once you're satisfied with your choices, press the OK
+        button. The game will be started once enough players have
+	entered the game. The new game will of course be 
+        registered to the meta server it was started from. Other players
+	can see it in the list if they press the Join public game button,
+	or refresh the list of public games.</para>
 
       <para>The server started remotely will terminate itself
         automatically when the game is finished, or if sits around for
@@ -626,6 +613,21 @@
 
       </sect2>
 
+      <sect2>
+	<title>Join private game</title>
+	<para>You can manually specify the game that you wish to join
+          by entering the server host and port in the Server Host and
+          Server Port fields. The hostname/port combinations you used
+          recently are remembered. You can recall them quickly with the Recent
+          Games button at the bottom.</para>
+	<figure id="gnocatan-FIG-join-private-game">
+	  <title>The Join a private game dialog.</title>
+	  <screenshot>
+	    <graphic fileref="images/join-private-dialog.png"></graphic>
+	  </screenshot>
+	</figure>
+
+      </sect2>
     </sect1>
 
     <sect1 id="setup">

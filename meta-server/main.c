@@ -21,7 +21,6 @@
 
 #include "config.h"
 #include <stdio.h>
-#include <dirent.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
@@ -86,6 +85,7 @@ struct _Client {
 
 static gchar *redirect_location;
 static gchar *myhostname;
+static gboolean can_create_games;
 
 static GList *client_list;
 
@@ -346,47 +346,63 @@ static GList *load_game_desc(gchar *fname, GList *titles)
 	return titles;
 }
 
-static GList *load_game_types( const gchar *path )
+static GList *load_game_types( void )
 {
-	DIR *dir;
-	gchar *fname;
-	long fnamelen;
-	struct dirent *ent;
+	GDir *dir;
 	GList *titles = NULL;
+	const gchar *fname;
+	gchar *fullname;
 
-	if ((dir = opendir(path)) == NULL) {
+	const gchar *gnocatan_dir = g_getenv( "GNOCATAN_DIR" );
+	if( !gnocatan_dir )
+		gnocatan_dir = GNOCATAN_DIR_DEFAULT;
+
+	if ((dir = g_dir_open(gnocatan_dir, 0, NULL)) == NULL) {
 		return NULL;
 	}
 
-	fnamelen = pathconf(path,_PC_NAME_MAX);
-	fname = malloc(1 + fnamelen);
-	for (ent = readdir(dir); ent != NULL; ent = readdir(dir)) {
-		gint len = strlen(ent->d_name);
+	while ((fname = g_dir_read_name(dir))) {
+		gint len = strlen(fname);
 
-		if (len < 6 || strcmp(ent->d_name + len - 5, ".game") != 0)
+		if (len < 6 || strcmp(fname + len - 5, ".game") != 0)
 			continue;
-		g_snprintf(fname, fnamelen, "%s/%s", path, ent->d_name);
-		titles = load_game_desc(fname, titles);
+		fullname = g_build_filename(gnocatan_dir, fname);
+		if (fullname) {
+			titles = load_game_desc(fullname, titles);
+			g_free(fullname);
+		};
 	}
 
-	closedir(dir);
-	free(fname);
+	g_dir_close(dir);
 	return titles;
 }
 
 static void client_list_types(Client *client)
 {
-	GList *list;
-	const gchar *gnocatan_dir = getenv( "GNOCATAN_DIR" );
-	if( !gnocatan_dir )
-		gnocatan_dir = GNOCATAN_DIR_DEFAULT;
-	
-	list = load_game_types(gnocatan_dir);
+	GList *list = load_game_types();
 
 	for (; list != NULL; list = g_list_next(list)) {
 		client_printf(client, "title=%s\n", list->data);
 	}
 	g_list_free(list);
+}
+
+static void client_list_capability(Client *client)
+{
+	if (can_create_games)
+		client_printf(client, "create games\n");
+	/** @todo RC 2005-01-30 Implement this in the metaserver */
+	if (FALSE)
+		client_printf(client, "send game settings\n");
+	client_printf(client, "end\n");
+}
+
+static const gchar *get_server_path(void) 
+{
+	const gchar *console_server;
+	if (!(console_server = getenv("GNOCATAN_SERVER_CONSOLE")))
+		console_server = GNOCATAN_SERVER_CONSOLE_PATH;
+	return console_server;
 }
 
 static void client_create_new_server(Client *client, gchar *line)
@@ -437,8 +453,7 @@ static void client_create_new_server(Client *client, gchar *line)
 	if (line < type)
 		goto bad;
 
-	if (!(console_server = getenv("GNOCATAN_SERVER_CONSOLE")))
-		console_server = GNOCATAN_SERVER_CONSOLE_PATH;
+	console_server = get_server_path();
 	
 	fd = socket(AF_INET, SOCK_STREAM, 0);
 	if (fd < 0) {
@@ -633,6 +648,9 @@ static void client_process_line(Client *client, gchar *line)
 			client->type = META_SERVER_ALMOST;
 			client->max = client->curr = -1;
 			get_peer_name(client->fd, &client->host, &client->port);
+		} else if (strcmp(line, "capability") == 0) {
+			client->type = META_CLIENT;
+			client_list_capability(client);
 		}
 		else {
 			client_printf(client, "bad command\n");
@@ -993,6 +1011,7 @@ int main(int argc, char *argv[])
 {
 	int c;
 	gboolean make_daemon = FALSE;
+	GList *game_list;
 
 	while ((c = getopt(argc, argv, "dr:")) != EOF)
 		switch (c) {
@@ -1007,6 +1026,18 @@ int main(int argc, char *argv[])
 	openlog("gnocatan-meta", LOG_PID, LOG_USER);
 	if (make_daemon)
 		convert_to_daemon();
+
+	can_create_games = FALSE;
+	game_list = load_game_types();
+	if (game_list) {
+		gchar *server_name;
+		g_list_free(game_list);
+		server_name = g_find_program_in_path(get_server_path());
+		if (server_name) {
+			g_free(server_name);
+			can_create_games = TRUE;
+		}
+	}
 
 	setmyhostname();
 	if (!setup_accept_sock(GNOCATAN_DEFAULT_META_PORT))
