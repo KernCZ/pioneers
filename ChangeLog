@@ -1,4 +1,4 @@
-2005-03-14  Brian Wellington <bwelling@xbill.org>
+2005-03-14  0.8.1.56  Brian Wellington <bwelling@xbill.org>
 	* common/gtk/aboutbox.c, common/gtk/aboutbox.h, common/gtk/Makefile.am,
 	client/gtk/gui.c, server/gtk/gnocatan-server-gtk.c: Add common code for
 	displaying about boxes; make the client and server use it.
@@ -8,6 +8,8 @@
 	server/player.c, server/pregame.c, server/server.c, server/server.h,
 	server/gtk/gnocatan-server-gtk.c: Add the ability to randomize
 	seating order.
+
+	Gnocatan is joined by a new developer: Brain Wellington
 
 2005-03-12  0.8.1.55  Roland Clobus <rclobus@bigfoot.com>
 	* configure.ac, added gnocatan.spec.in, removed gnocatan.spec: The
