@@ -1,7 +1,7 @@
 2000-05-12  Steve Langasek <vorlon@dodds.net>
 
-	* common/driver.h: Began creating the structure for independent
-	interface drivers (GTK, console).
+	* common/driver.h, common_gtk.h: Began creating the structure for
+	independent interface drivers (GTK, console).
 
 2000-05-12  Bibek Sahu <scorpio@dodds.net>
 	* common/common_gui.[ch], common/common_gtk.[ch]: Renamed

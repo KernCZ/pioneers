@@ -10,6 +10,7 @@
 #ifndef __common_gui_h
 #define __common_gui_h
 
+#include "driver.h"
 #include "log.h"
 
 /* Set the default logging function to write to the message window. */
@@ -25,5 +26,7 @@ void message_window_add_text(gchar *text, GdkColor *color);
 
 /* set the text in the message window to the specified color. */
 GtkWidget *message_window_set_text(GtkWidget *txt);
+
+extern UIDriver GTK_Driver;
 
 #endif /* __common_gui_h */
