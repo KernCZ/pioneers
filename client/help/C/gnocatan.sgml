@@ -98,21 +98,16 @@
       <sect2>
         <title>The waiting prompt</title>
 
-	<para>When it is not your turn, the action panel is
-	  replaced by a message telling you to wait.</para>
+	<para>When it is not your turn, a message is displayed in the
+	status line at the very bottom for whom the game is waiting.</para>
 	
-	<figure>
-	  <title>The waiting prompt.</title>
-	  <screenshot>
-	    <graphic fileref="images/waiting.gif"></graphic>
-	  </screenshot>
-	</figure>
       </sect2>
 
       <sect2>
         <title>The actions buttons</title>
 
-	<para>When it is your turn, the actions panel is displayed.
+	<para>When it is your turn, one more more of the buttons in
+	  the action toolbar are active.
 	  Only the actions that you are allowed to perform will be
 	  enabled.</para>
 	
@@ -139,27 +134,27 @@
 		  turn.</entry>
 	      </row>
 	      <row>
-		<entry>Build Road</entry>
-		<entry>Press this when you wish to build a road
-		    segment.</entry>
-	      </row>
-	      <row>
-		<entry>Build Settlement</entry>
-		<entry>Press this when you wish to build a
-		    settlement.</entry>
-	      </row>
-	      <row>
-		<entry>Build City</entry>
-		<entry>Press this when you wish to build a city.</entry>
-	      </row>
-	      <row>
 		<entry>Trade</entry>
 		<entry>Press this when you wish to perform trade with
 		  either the bank (maritime), or with other players
 		  (domestic).</entry>
 	      </row>
 	      <row>
-		<entry>Buy Development</entry>
+		<entry>Road</entry>
+		<entry>Press this when you wish to build a road
+		    segment.</entry>
+	      </row>
+	      <row>
+		<entry>Settlement</entry>
+		<entry>Press this when you wish to build a
+		    settlement.</entry>
+	      </row>
+	      <row>
+		<entry>City</entry>
+		<entry>Press this when you wish to build a city.</entry>
+	      </row>
+	      <row>
+		<entry> Develop</entry>
 		<entry>Press this when you wish to purchase a development
 		  card from the bank.</entry>
 	      </row>
@@ -173,8 +168,7 @@
 	      </row>
 	      <row>
 		<entry>Finish</entry>
-		<entry>The label on this button changes depending upon
-		  context.  Press the button to indicate that you have
+		<entry>Press this button to indicate that you have
 		  finished performing setup, your turn, or road
 		  building.</entry>
 	      </row>
@@ -320,7 +314,7 @@
         dice are rolled, all hexes that are labelled with a number
         equalling the sum of the two dice will produce resources for
         buildings on that hex.  Underneath the number in the circle
-        are a some dots.  The number of dots is equal to the number of
+        are some dots.  The number of dots is equal to the number of
         different dice combinations that will generate this number.
         To highlight the two most commonly rolled numbers, the 6 and 8
         are displayed in red (there is no label with the number 7).
@@ -328,18 +322,16 @@
         painted with a green background.</para>
 
       <para>The sea hexes which have a circle in them have building
-        sites for ports where maritime trading can be performed.  The
+        sites for ports where maritime trading can be performed. The
         location of the building sites is indicated by a dashed line
-        drawn from the circle to a hex corner.  The letter in the
-        circle indicates the resource type which may be traded at the
-        ports.  The question mark label indicates that all resource
-        types can be traded at the associated port locations.</para>
+        drawn from the circle to a hex corner. The color of the circle
+        indicates the resource type which may be traded at the ports.
+        At the blue circles all resource types can be traded.</para>
 
       <para>The black bottle shape is the robber.</para>
 
-      <para>The following table shows each terrain type, the resources
-        produced by that terrain, and the port indicator for the
-        resource.</para>
+      <para>The following table shows each terrain type, and the resources
+        produced by that terrain.</para>
 
       <table frame="none">
         <title>Gnocatan terrain types</title>
@@ -349,7 +341,6 @@
 	      <entry>Graphic</entry>
 	      <entry>Terrain</entry>
 	      <entry>Resource</entry>
-	      <entry>Port</entry>
 	      <entry>Description</entry>
 	    </row>
 	  </thead>
@@ -360,7 +351,6 @@
 	      </entry>
 	      <entry>Hill</entry>
 	      <entry>Brick</entry>
-	      <entry>B</entry>
 	      <entry>Bricks are produced from the clay found in
 	        hills.</entry>
 	    </row>
@@ -370,7 +360,6 @@
 	      </entry>
 	      <entry>Field</entry>
 	      <entry>Grain</entry>
-	      <entry>G</entry>
 	      <entry>Grain is produced by crops grown in
 	        fields.</entry>
 	    </row>
@@ -380,7 +369,6 @@
 	      </entry>
 	      <entry>Mountain</entry>
 	      <entry>Ore</entry>
-	      <entry>O</entry>
 	      <entry>Ore is produced by quarries in mountains.</entry>
 	    </row>
 	    <row>
@@ -389,7 +377,6 @@
 	      </entry>
 	      <entry>Pasture</entry>
 	      <entry>Wool</entry>
-	      <entry>W</entry>
 	      <entry>Wool is produced by sheep in pastures.</entry>
 	    </row>
 	    <row>
@@ -398,7 +385,6 @@
 	      </entry>
 	      <entry>Forest</entry>
 	      <entry>Lumber</entry>
-	      <entry>L</entry>
 	      <entry>Lumber is produced by trees in forests.</entry>
 	    </row>
 	    <row>
@@ -407,7 +393,6 @@
 	      </entry>
 	      <entry>Desert</entry>
 	      <entry></entry>
-	      <entry></entry>
 	      <entry>No resources are produced in the desert.</entry>
 	    </row>
 	    <row>
@@ -415,7 +400,6 @@
 	        <inlinegraphic fileref="images/sea.gif"></inlinegraphic>
 	      </entry>
 	      <entry>Sea</entry>
-	      <entry></entry>
 	      <entry></entry>
 	      <entry>No resources are produced in the sea, but
 	        maritime trading may be performed at ports.</entry>
@@ -439,6 +423,43 @@
 	  <graphic fileref="images/chat.gif"></graphic>
 	</screenshot>
       </figure>
+
+      <para>Normally, text that you type will appear with your player
+	name, for example "<ComputerOutput>player1 said:
+	foo</ComputerOutput>". If you start your text with
+	"<UserInput>:</UserInput>" the output will omit the "said",
+	like "<ComputerOutput>player1 needs more
+	lumber</ComputerOutput>".</para>
+
+      <para>The chat also knows some special commands that start with
+      "<UserInput>/</UserInput>". The commands currently defined are:
+      <table frame="none">
+        <title>Chat Commands</title>
+	<tgroup cols="3">
+	  <thead>
+	    <row>
+	      <entry>Command</entry>
+	      <entry>Arguments</entry>
+	      <entry>Description</entry>
+	    </row>
+	  </thead>
+	  <tbody>
+	    <row>
+	      <entry><UserInput>/me</UserInput></entry>
+	      <entry>(anything)</entry>
+	      <entry>This is the same as the
+	      "<UserInput>:</UserInput>" described above, but IRC
+	      addicts might prefer this variant.</entry>
+	    </row>
+	    <row>
+	      <entry><UserInput>/beep</UserInput></entry>
+	      <entry><Replaceable>username</Replaceable></entry>
+	      <entry>Let <Replaceable>username</Replaceable>'s client
+	      beep.</entry>
+	    </row>
+	  </tbody>
+	</table>
+      </para>
     </sect1>
 
     <sect1 id="messages">
@@ -487,9 +508,9 @@
     <sect1 id="joining">
       <title>Joining a Gnocatan game.</title>
 
-      <para>The Gnocatan client program is <symbol>gnocatan</symbol>.
-        When you run this program, you will be presented with the
-        connect dialog.</para>
+      <para>The Gnocatan client program is
+        "<Application>gnocatan</Application>". When you run this
+        program, you will be presented with the connect dialog.</para>
 
       <sect2 id="connect-dialog">
         <title>The connect dialog</title>
@@ -512,9 +533,15 @@
 
 	<para>You can manually specify the game that you wish to join
           by entering the server host and port in the Server Host and
-          Server Port fields respectively.  Alternatively, you can
-          press the Meta Server button which will invoke the servers
-          dialog where you can locate games over the Internet.</para>
+          Server Port fields in the lower half. The client also
+          remembers server/port/username combinations you used
+          recently. You can recall them quickly with the Recent
+          Servers button at the bottom.</para>
+
+        <para>Alternatively, you can enter the name of a meta server
+          and press the Meta Server button, which will invoke the
+          servers dialog where you can locate games over the
+          Internet.</para>
 
 	<para>Using the Player Name field you can change the name that
           will be used to identify you to other players.</para>
@@ -525,7 +552,7 @@
       <sect2 id="server-dialog">
         <title>The servers dialog</title>
 
-	<para>The servers dialog displays a list of all Gnocatan games
+	<para>The servers dialog displays a list of Gnocatan games
           that are currently running on the Internet.  When you select
           a game from the list, the host and port fields in the
           connect dialog will changed to point to that game.</para>
@@ -537,11 +564,51 @@
 	  </screenshot>
 	</figure>
 
-	<para>You join a game by pressing the OK button in the connect
-          dialog.  To obtain an updated list, you must close the
-          dialog and re-open it from the connect dialog.</para>
+	<para>You join a game by selecting it and pressing the OK
+          button in the connect dialog. To obtain an updated list, you
+          must close the dialog and re-open it from the connect
+          dialog.</para>
+
+	<para>Recent meta servers also allow you to start new game
+	  servers on their host. If this is possible, the Create New
+	  Server button will be active and will bring you to the
+	  create server dialog.</para>
 
       </sect2>
+
+      <sect2 id="server-create-dialog">
+        <title>The create server dialog</title>
+
+	<para>In this dialog, you can select various parameters for
+	  the new game: board name (available types will be retrieved
+	  from the meta-server), default or random terrain, which
+	  sevens rule to apply, the number of players, victory points
+	  to reach, and how many AI players should join the
+	  game.</para>
+
+	<figure>
+	  <title>The create server dialog.</title>
+	  <screenshot>
+	    <graphic fileref="images/server-create.gif"></graphic>
+	  </screenshot>
+	</figure>
+
+      <para>Once you're satisfied with your choices, press the Start
+        Server button. The create server and servers dialogs will pop
+        down, and server name and port will appear in the respective
+        fields of the connect dialog. The new server will of course
+        register to the meta server it was started from. You can see
+        it in the list if you press Query Meta Server again.</para>
+
+      <para>The server started remotely will terminate itself
+        automatically when the game is finished, or if sits around for
+        more than 20 minutes without any connected players. Please
+        also note that adding AI players will silently fail if the
+        <Application>gnocatanai</Application> program is not installed
+        on the meta server.</para>
+
+      </sect2>
+
     </sect1>
 
     <sect1 id="setup">
@@ -725,15 +792,15 @@
 	      </row>
 	      <row>
 	    	<entry>Less</entry>
-	    	<entry>Reserved for future use.</entry>
+	    	<entry>Used later.</entry>
 	      </row>
 	      <row>
 	    	<entry>More</entry>
-	    	<entry>Reserved for future use.</entry>
+	    	<entry>Used later.</entry>
 	      </row>
 	      <row>
 	    	<entry>Number to trade</entry>
-	    	<entry>Reserved for future use.</entry>
+	    	<entry>Used later.</entry>
 	      </row>
 	    </tbody>
 	  </tgroup>
@@ -1134,5 +1201,77 @@
 	</figure>
       </sect2>
     </sect1>
+  </chapter>
+
+  <chapter>
+    <title>The AI Player</title>
+
+    <para>
+      Starting with version 0.7.0, Gnocatan comes with
+      <Application>gnocatanai</Application>, a computer player
+      implementation. This AI player isn't too bad at the moment, but
+      not finished yet. Most notably, it cannot take part in domenstic
+      trade yet.
+    </para>
+
+    <para>
+      <Application>gnocatanai</Application> is a terminal application
+      without GUI. Its command line options are:
+
+      <table frame="none">
+	<title><Application>gnocatanai</Application> options</title>
+	<tgroup cols="3">
+	  <thead>
+	    <row>
+	      <entry>Option</entry>
+	      <entry>Arguments</entry>
+	      <entry>Description</entry>
+	    </row>
+	  </thead>
+	  <tbody>
+	    <row>
+	      <entry>-s</entry>
+	      <entry><Replaceable>servername</Replaceable></entry>
+	      <entry>Connect to <Replaceable>servername</Replaceable></entry>
+	    </row>
+	    <row>
+	      <entry>-p</entry>
+	      <entry><Replaceable>port</Replaceable></entry>
+	      <entry>Connect to port <Replaceable>port</Replaceable></entry>
+	    </row>
+	    <row>
+	      <entry>-n</entry>
+	      <entry><Replaceable>name</Replaceable></entry>
+	      <entry>Set the player name. If this option is absent, a
+	      random name will be choosen.</entry>
+	    </row>
+	    <row>
+	      <entry>-a</entry>
+	      <entry><Replaceable>playertype</Replaceable></entry>
+	      <entry>Choose the type of AI player. Currently, there is
+	      only one type <UserInput>greedy</UserInput>, which is
+	      obviously also the default.</entry>
+	    </row>
+	    <row>
+	      <entry>-t</entry>
+	      <entry><Replaceable>milliseconds</Replaceable></entry>
+	      <entry>Set time to wait between turns.</entry>
+	    </row>
+	    <row>
+	      <entry>-c</entry>
+	      <entry></entry>
+	      <entry>Stop the computer player from giving comments.</entry>
+	    </row>
+	  </tbody>
+	</tgroup>
+      </table>
+    </para>
+
+    <para>
+      However, most of the time you won't start
+      <Application>gnocatanai</Application> manually. Both game
+      servers offer ways to start a number of AI players.
+    </para>
+
   </chapter>
 </book>
