@@ -15,6 +15,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/signal.h>
+#include <sys/wait.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <netdb.h>
@@ -214,34 +215,42 @@ gint accept_connection( gint in_fd, gchar **location)
 
 gint new_computer_player(gchar *server, gchar *port)
 {
-    pid_t pid;
+    pid_t pid, pid2;
     
     if (!server)
 	server = "localhost";
     
     pid = fork();
     if (pid < 0) {
-	/* error */
-	return -1;
-
-    } else if (pid == 0) {
-	/* child */
-	int i;
-	for( i = 0; i < 255; ++i ) close(i);
-	open("/dev/null",O_RDONLY);
-	open("/dev/null",O_WRONLY);
-	open("/dev/null",O_RDWR);
-
-	execl(GNOCATAN_AI_PATH, GNOCATAN_AI_PATH,
-	      "-s", server,
-	      "-p", port,
-	      NULL);
-
 	log_message(MSG_ERROR, "Error starting gnocatanai: %s",
 		    strerror(errno));
-	exit(2);
+	return -1;
+    } else if (pid == 0) {
+	/* child */
+
+	/* start a second child to avoid zombies */
+	pid2 = fork();
+	if (pid2 < 0) {
+	    log_message(MSG_ERROR, "Error starting gnocatanai: %s",
+			strerror(errno));
+	    exit(1);
+	} else if (pid2 == 0) {
+	    execl(GNOCATAN_AI_PATH, GNOCATAN_AI_PATH,
+		  "-s", server,
+		  "-p", port,
+		  NULL);
+	    log_message(MSG_ERROR, "Error starting gnocatanai: %s",
+			strerror(errno));
+	    exit(2);
+	}
+	else {
+	    /* parent */
+	    exit(0);
+	}
     } else {
 	/* parent */
+	int stat;
+	waitpid(pid, &stat, 0);
 	return 0;
     }
 }
