@@ -23,18 +23,7 @@
 #include "cards.h"
 #include "client.h"
 
-
-static const char *get_gnocatan_dir(void)
-{
-    const gchar *gnocatan_dir = (gchar *) getenv( "GNOCATAN_DIR" );
-    if( !gnocatan_dir )
-	gnocatan_dir = GNOCATAN_DIR_DEFAULT;
-    
-    return gnocatan_dir;
-}
-
-static char *
-random_name(void)
+static char *random_name(void)
 {
     char filename[MAXPATHLEN];
     const char *gnopath = get_gnocatan_dir();

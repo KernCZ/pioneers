@@ -1,6 +1,14 @@
 2005-03-12  0.8.1.55  Roland Clobus <rclobus@bigfoot.com>
 	* configure.ac, added gnocatan.spec.in, removed gnocatan.spec: The
 	spec is automatically generated and uses the current version.
+	* ai/ai.c, client/ai/ai.c, client/gtk/connect.c, common/network.c,
+	common/network.h, meta-server/Makefile.am,
+	meta-server/gnocatan-meta-server.c, server/gnocatan-server-console.c,
+	server/gnocatan-server.c, server/gnocatan-server.h, server/meta.c,
+	server/server.c, server/server.h, server/gtk/gnocatan-server-gtk.c:
+	More consistent use of the environment variables GNOCATAN_DIR,
+	GNOCATAN_META_SERVER, GNOCATAN_SERVER_CONSOLE and
+	GNOCATAN_SERVER_NAME. Moved common code to common/network.c.
 	
 2005-03-02  0.8.1.54  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/interface.c: Reversal of the patch in 0.8.1.48, because

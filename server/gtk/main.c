@@ -60,6 +60,7 @@ static GtkTooltips *tooltips;      /* tooltips */
 static GtkListStore *store;        /* shows player connection status */
 
 static gboolean ui_enabled;        /* is the ui accessible? */
+static gchar *hostname;            /* reported hostname */
 
 /* Local function prototypes */
 static void add_game_to_list( gpointer name, UNUSED(gpointer user_data));
@@ -196,7 +197,7 @@ static void start_clicked_cb(UNUSED(GtkButton *start_btn),
 		params->victory_points = game_settings_get_victory_points(GAMESETTINGS(game_settings));
 		params->sevens_rule = game_settings_get_sevens_rule(GAMESETTINGS(game_settings));
 		update_game_settings();
-		if ( start_server(server_port, register_server) ) {
+		if ( start_server(hostname, server_port, register_server) ) {
 			gui_ui_enable(FALSE);
 			config_set_string("server/meta-server", meta_server_name);
 			config_set_string("server/port", server_port);
@@ -270,22 +271,6 @@ static void add_game_to_list( gpointer name, UNUSED(gpointer user_data))
 {
 	GameParams *a = (GameParams*)name;
 	select_game_add(SELECTGAME(select_game), a->title);
-}
-
-static gchar *getmyhostname(void)
-{
-       char hbuf[256];
-       struct hostent *hp;
-
-       if (gethostname(hbuf, sizeof(hbuf))) {
-               perror("gethostname");
-               return NULL;
-       }
-       if (!(hp = gethostbyname(hbuf))) {
-               herror("gnocatan-meta-server");
-               return NULL;
-       }
-	return g_strdup(hp->h_name);
 }
 
 static void hostname_changed_cb(GtkEntry *widget,
@@ -504,15 +489,13 @@ static GtkWidget *build_interface(void)
 	novar = 0;
 	meta_server_name = config_get_string("server/meta-server", &novar);
 	if (novar || !strlen(meta_server_name))
-		if (!(meta_server_name = g_strdup(getenv("GNOCATAN_META_SERVER"))))
-			meta_server_name = g_strdup(GNOCATAN_DEFAULT_META_SERVER);
+		meta_server_name = get_meta_server_name(TRUE);
 	gtk_entry_set_text(GTK_ENTRY(meta_entry), meta_server_name);
 
 	novar = 0;
 	hostname = config_get_string("server/hostname", &novar);
 	if (novar || !strlen(hostname))
-		if (!(hostname = getenv("GNOCATAN_SERVER_NAME")))
-			hostname = getmyhostname ();
+		hostname = get_server_name();
 	gtk_entry_set_text(GTK_ENTRY(hostname_entry), hostname);
 
 	register_server = config_get_int_with_default("server/register", TRUE);
@@ -725,7 +708,7 @@ int main(int argc, char *argv[])
 	bind_textdomain_codeset(PACKAGE, "UTF-8");
 #endif
 	/* Initialize frontend inspecific things */
-	server_init (GNOCATAN_DIR_DEFAULT);
+	server_init ();
 
  	gnome_program_init(app_name, VERSION,
  		LIBGNOMEUI_MODULE,
