@@ -352,14 +352,14 @@ static void player_show_connected_at_row(gint player_num, gboolean connected,
 			gtk_widget_get_visual(summary_clist)->depth);
 
 	gdk_gc_set_foreground(summary_gc, player_color (player_num) );
-	gdk_draw_rectangle(player->user_data, summary_gc, TRUE, 0, 0, 15, 14);
+	gdk_draw_rectangle(player->user_data, summary_gc, TRUE, 0, 0, 15, 15);
 	gdk_gc_set_foreground(summary_gc, &black);
-	gdk_draw_rectangle(player->user_data, summary_gc, FALSE, 0, 0, 15, 14);
+	gdk_draw_rectangle(player->user_data, summary_gc, FALSE, 0, 0, 15, 15);
 	if (!connected) {
 		gdk_draw_rectangle(player->user_data, summary_gc, FALSE,
-				3, 3, 9, 8);
+				3, 3, 9, 9);
 		gdk_draw_rectangle(player->user_data, summary_gc, FALSE,
-				6, 6, 3, 2);
+				6, 6, 3, 3);
 	}
             
 	gtk_clist_set_pixmap(GTK_CLIST(summary_clist), row, 0,

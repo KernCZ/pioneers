@@ -1,3 +1,8 @@
+2004-02-06 0.8.1.17  Roland Clobus <rclobus@bigfoot.com>
+
+	* client/gtk/player.c (player_show_connected_at_row): Fixed bug
+	displaying random line below player icon.
+
 2004-01-26 0.8.1.16  Roland Clobus <rclobus@bigfoot.com>
 
 	* server/server.c (game_server_start): Show random seed in the server.
