@@ -1,3 +1,9 @@
+2002-03-10  Steve Langasek <vorlon@dodds.net>
+
+	* Begin cleaning up the source to make it usable again.
+	* Bump the protocol version, since, well, that's what you're 
+	  supposed to do when you change the bloody protocol.
+
 2001-05-29  David Fallon <davef@tetsubo.com>
 
 	* Added Geoff Hanson's <gwhizz@usa.net> reconnect patch. The short version
