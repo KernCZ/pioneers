@@ -273,10 +273,10 @@ static void player_connect(Game *game)
 
 static gboolean game_server_start(Game *game)
 {
-	gchar *meta_server;
-	
-	if (!(meta_server = getenv("GNOCATAN_META_SERVER")))
-		meta_server = DEFAULT_META_SERVER;
+	if (!meta_server_name) {
+		if (!(meta_server_name = getenv("GNOCATAN_META_SERVER")))
+			meta_server_name = DEFAULT_META_SERVER;
+	}
 	
 	game->accept_fd = open_listen_socket( game->params->server_port );
 	if( game->accept_fd < 0 )
@@ -286,7 +286,7 @@ static gboolean game_server_start(Game *game)
 					 player_connect, game);
 
 	if (game->params->register_server)
-		meta_register(meta_server, META_PORT, game);
+		meta_register(meta_server_name, META_PORT, game);
 	return TRUE;
 }
 

@@ -35,6 +35,7 @@
  	    "  -g game   --  Game name to use\n"
 	    "  -h        --  Show this help\n"
 	    "  -k secs   --  Kill after 'secs' seconds with no players\n"
+	    "  -m meta   --  Register at meta-server name (implies -r)\n"
  	    "  -P num    --  Set Number of players\n"
 	    "  -p port   --  Port to listen on\n"
  	    "  -r        --  Register server with meta-server\n"
@@ -72,7 +73,7 @@ int main( int argc, char *argv[] )
 
 	server_init( GNOCATAN_DIR_DEFAULT );
 
-	while ((c = getopt(argc, argv, "a:c:g:hk:P:p:rR:st:T:v:x")) != EOF)
+	while ((c = getopt(argc, argv, "a:c:g:hk:m:P:p:rR:st:T:v:x")) != EOF)
 	{
 		switch (c) {
 		case 'a':
@@ -95,6 +96,13 @@ int main( int argc, char *argv[] )
 				break;
 			}
 			timeout = atoi(optarg);
+			break;
+		case 'm':
+			if (!optarg) {
+				break;
+			}
+			meta_server_name = optarg;
+			register_server = TRUE;
 			break;
 		case 'P':
 			if (!optarg) {

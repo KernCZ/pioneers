@@ -29,6 +29,8 @@
 #include "log.h"
 #include "server.h"
 
+gchar *meta_server_name = NULL;
+
 static Session *ses;
 static enum {
 	MODE_SIGNON,

@@ -1,3 +1,17 @@
+2002-05-23  Roman Hodek  <roman@hodek.net>
+
+	* server/gnocatan-server-console.c (main): added new option -m to
+	set meta server name
+
+	* server/gnocatan-server-gtk.c (build_interface): added new field
+	for meta server name
+
+	* server/meta.c: make name of meta server to connect to a global var
+
+	* client/connect.c (create_server_dlg): remove "start server"
+	button in create server dialog, and use standard OK/Cancel buttons
+	instead. (I finally found out how to do this :)
+
 2002-05-22  Roman Hodek  <roman@hodek.net>
 
 	* client/gui.c: new option to show legend as a page besides the

@@ -107,6 +107,7 @@ gboolean mode_wait_others_place_robber(Player *player, gint event);
 gboolean mode_discard_resources_place_robber(Player *player, gint event);
 
 /* meta.c */
+gchar *meta_server_name;
 void meta_register(gchar *server, gchar *port, Game *game);
 void meta_start_game(void);
 void meta_report_num_players(gint num_players);
