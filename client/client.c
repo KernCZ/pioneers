@@ -524,6 +524,7 @@ static gboolean mode_connect(StateMachine *sm, gint event)
 		sm_goto(sm, mode_offline);
 		return TRUE;
 	case GUI_CONNECT_TRY:
+	  gui_show_splash_page(FALSE);
 		gui_set_net_status(_("Connecting"));
 		
 		/* Save connect dialogue entries */

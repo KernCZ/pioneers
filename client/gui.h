@@ -38,6 +38,7 @@ void gui_set_net_status(gchar *text);
 
 void gui_show_trade_page(gboolean show);
 void gui_show_quote_page(gboolean show);
+void gui_show_splash_page(gboolean show);
 
 void gui_discard_show(void);
 void gui_discard_hide(void);

@@ -38,12 +38,14 @@ static GuiMap *gmap;		/* handle to map drawing code */
 enum {
 	MAP_PAGE,		/* the map */
 	TRADE_PAGE,		/* trading interface */
-	QUOTE_PAGE		/* submit quotes page */
+	QUOTE_PAGE,		/* submit quotes page */
+	SPLASH_PAGE		/* splash screen */
 };
 
 static GtkWidget *map_notebook; /* map area panel */
 static GtkWidget *trade_page;	/* trade page in map area */
 static GtkWidget *quote_page;	/* quote page in map area */
+static GtkWidget *splash_page;	/* splash page in map area */
 
 static GtkWidget *develop_notebook; /* development card area panel */
 
@@ -274,6 +276,27 @@ void gui_show_quote_page(gboolean show)
 		gtk_widget_hide(quote_page);
 }
 
+void gui_show_splash_page(gboolean show)
+{
+	if (show) {
+		gtk_widget_show(splash_page);
+		gtk_notebook_set_page(GTK_NOTEBOOK(map_notebook), TRADE_PAGE);
+	} else
+		gtk_widget_hide(splash_page);
+}
+
+
+static GtkWidget *splash_build_page()
+{
+	GdkPixmap *splash_pix;
+	GtkWidget *pm;
+	
+	load_pixmap("splash.png", &splash_pix, NULL);
+	pm = gtk_pixmap_new(splash_pix, NULL);
+	gtk_widget_show(pm);
+	return pm;
+}
+
 static GtkWidget *build_map_panel()
 {
 	GtkWidget *lbl;
@@ -300,6 +323,13 @@ static GtkWidget *build_map_panel()
 	gtk_notebook_insert_page(GTK_NOTEBOOK(map_notebook),
 				 quote_page, lbl, QUOTE_PAGE);
 	gtk_widget_hide(quote_page);
+
+	lbl = gtk_label_new(_("Welcome to Gnocatan"));
+	gtk_widget_show(lbl);
+	splash_page = splash_build_page();
+	gtk_notebook_insert_page(GTK_NOTEBOOK(map_notebook),
+				 splash_page, lbl, SPLASH_PAGE);
+	gtk_notebook_set_page(GTK_NOTEBOOK(map_notebook), SPLASH_PAGE);
 
 	return map_notebook;
 }
