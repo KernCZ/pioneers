@@ -1,6 +1,7 @@
 #ifndef __glib_driver_h
 #define __glib_driver_h
 
+#include "server.h"
 #include "driver.h"
 
 void srv_glib_player_added(Player *player);

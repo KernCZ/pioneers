@@ -36,12 +36,12 @@ static gchar *gnocatan_dir = NULL;
 
 void game_list_add_item( GameParams *item )
 {
-	if( !game_list ) {
+	if( !_game_list ) {
 		_game_list = g_hash_table_new( g_str_hash, g_str_equal );
-		params = item->params;
+		params = item;
 	}
 	
-	g_hash_table_insert( game_list, item->name, item );
+	g_hash_table_insert( _game_list, item->title, item );
 }
 
 GameParams *game_list_find_item( gchar *title )
@@ -131,7 +131,6 @@ static void load_game_types()
 	for (ent = readdir(dir); ent != NULL; ent = readdir(dir)) {
 		gint len = strlen(ent->d_name);
 		GameParams *params;
-		game_list_item_t *item;
 
 		if (len < 6 || strcmp(ent->d_name + len - 5, ".game") != 0)
 			continue;
