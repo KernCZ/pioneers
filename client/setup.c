@@ -34,20 +34,47 @@ gboolean setup_can_undo()
 
 gboolean setup_can_build_road()
 {
-	if (double_setup)
-		return (build_count(BUILD_ROAD) +
-			build_count(BUILD_SHIP)) < 2;
-	else
-		return (build_count(BUILD_ROAD) +
-			build_count(BUILD_SHIP)) < 1;
+	if (double_setup) {
+		if (build_count_edges() == 2)
+			return FALSE;
+		return build_count(BUILD_SETTLEMENT) < 2
+			|| map_can_place_road(map, my_player_num());
+	} else {
+		if (build_count_edges() == 1)
+			return FALSE;
+		return build_count(BUILD_SETTLEMENT) < 1
+			|| map_can_place_road(map, my_player_num());
+	}
 }
 
 gboolean setup_can_build_ship()
 {
-	if (double_setup)
-		return (build_count(BUILD_SHIP) + build_count(BUILD_ROAD)) < 2;
-	else
-		return (build_count(BUILD_SHIP) + build_count(BUILD_ROAD)) < 1;
+	if (double_setup) {
+		if (build_count_edges() == 2)
+			return FALSE;
+		return build_count(BUILD_SETTLEMENT) < 2
+			|| map_can_place_ship(map, my_player_num());
+	} else {
+		if (build_count_edges() == 1)
+			return FALSE;
+		return build_count(BUILD_SETTLEMENT) < 1
+			|| map_can_place_ship(map, my_player_num());
+	}
+}
+
+gboolean setup_can_build_bridge()
+{
+	if (double_setup) {
+		if (build_count_edges() == 2)
+			return FALSE;
+		return build_count(BUILD_SETTLEMENT) < 2
+			|| map_can_place_bridge(map, my_player_num());
+	} else {
+		if (build_count_edges() == 1)
+			return FALSE;
+		return build_count(BUILD_SETTLEMENT) < 1
+			|| map_can_place_bridge(map, my_player_num());
+	}
 }
 
 gboolean setup_can_build_settlement()
@@ -61,11 +88,11 @@ gboolean setup_can_build_settlement()
 gboolean setup_can_finish()
 {
 	if (double_setup)
-		return (build_count(BUILD_ROAD) + build_count(BUILD_SHIP)) == 2
+		return build_count_edges() == 2
 			&& build_count(BUILD_SETTLEMENT) == 2
 			&& build_is_valid();
 	else
-		return (build_count(BUILD_ROAD) + build_count(BUILD_SHIP)) == 1
+		return build_count_edges() == 1
 			&& build_count(BUILD_SETTLEMENT) == 1
 			&& build_is_valid();
 }
@@ -82,6 +109,13 @@ gboolean setup_check_road(Edge *edge, gint owner)
 gboolean setup_check_ship(Edge *edge, gint owner)
 {
 	return build_can_setup_ship(edge, double_setup);
+}
+
+/* Place some restrictions on bridge placement during setup phase
+ */
+gboolean setup_check_bridge(Edge *edge, gint owner)
+{
+	return build_can_setup_bridge(edge, double_setup);
 }
 
 /* Place some restrictions on settlement placement during setup phase
