@@ -245,14 +245,9 @@ void player_archive(Player *player)
 	StateFunc state;
 	Game *game = player->game;
 
-	if (!player->game->dead_players)
-	{
-		player->game->dead_players = g_list_alloc();
-	}
-
 	/* First, check to make sure there isn't a player of
 	   the same name in the dead pool */
-	current = player->game->dead_players;
+	current = game->dead_players;
 	while (current)
 	{
 		Player *p = NULL;
@@ -293,10 +288,9 @@ void player_archive(Player *player)
 	}
 
 	/* Finally, add the player to the archive */
-	g_list_append(player->game->dead_players,
-	              player);
-	player->game->num_players--;
-	meta_report_num_players(player->game->num_players);
+	game->dead_players = g_list_append(game->dead_players, player);
+	game->num_players--;
+	meta_report_num_players(game->num_players);
 }
 
 void player_revive(Player *newp, char *name)
@@ -310,7 +304,7 @@ void player_revive(Player *newp, char *name)
 		if (p && strcmp(p->name, name) == 0)
 		{
 			GList *currp;
-			g_list_remove(current, p);
+			game->dead_players = g_list_remove(game->dead_players, p);
 
 			/* initialize the player */
 			player_setup(newp, p->num);
@@ -330,7 +324,7 @@ void player_revive(Player *newp, char *name)
 					}
 				}
 				if (!currp) {
-					g_list_append(game->player_list, newp);
+					game->player_list = g_list_append(game->player_list, newp);
 				}
 			}
 

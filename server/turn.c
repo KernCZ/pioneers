@@ -194,8 +194,16 @@ static gboolean distribute_resources(Map *map, Hex *hex, GameRoll *data)
 		if (node->type == BUILD_NONE)
 			continue;
 		player = player_by_num(data->game, node->owner);
-		num = (node->type == BUILD_CITY) ? 2 : 1;
-		player->assets[hex->terrain] += num;
+        if( player != NULL )
+        {
+            num = (node->type == BUILD_CITY) ? 2 : 1;
+            player->assets[hex->terrain] += num;
+        }
+        else
+        {
+            /* This should be fixed at some point. */
+            log_message( MSG_ERROR, _("Tried to assign resources to NULL player.\n") );
+        }
 	}
 
 	return FALSE;

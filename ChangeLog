@@ -1,5 +1,18 @@
 2003-02-14  Andy Heroff  <aheroff@ameritech.net>
 
+	* server/player.c: Fixed several GList usage issues in player
+	  reconnection code. Need to always store the return value from
+	  an append or remove, also don't need to allocate a list node
+	  when the GList pointer is NULL. NULL is considered the empty
+	  list value.
+
+	* server/turn.c: Check for NULL player when trying to hand out
+	  resources after a roll. We can run into this if a player drops
+	  and a roll occurs while he is disconnected. Fixes bug 621358,
+	  but creates bug 686956.
+
+2003-02-13  Andy Heroff  <aheroff@ameritech.net>
+
 	* Batch fix of bugs 205475, 480328, 482336, 482744. Cleaned up
 	  compiler warnings.
 
