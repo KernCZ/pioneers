@@ -61,6 +61,12 @@ typedef struct {
 	gboolean use_pirate;	/* is there a pirate in this game? */
 } GameParams;
 
+typedef struct {
+	gint id;	/* identification for client-server communication */
+	gchar *name;	/* name of the item */
+	gint points;	/* number of points */
+} Points;
+
 typedef void (*WriteLineFunc)(gpointer user_data, gchar *);
 
 GameParams *params_new(void);

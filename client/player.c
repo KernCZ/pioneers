@@ -164,7 +164,11 @@ static gint calc_statistic_row(gint player_num, StatisticType type)
 		if (row >= 0)
 			return row + 1;
 	}
-	return gtk_clist_find_row_from_data(GTK_CLIST(summary_clist), player) + 1;
+	if (player->points == NULL)
+		return gtk_clist_find_row_from_data(GTK_CLIST(summary_clist),
+				player) + 1;
+	return gtk_clist_find_row_from_data (GTK_CLIST (summary_clist),
+			g_list_last (player->points)->data) + 1;
 }
 
 
@@ -209,6 +213,37 @@ void player_reset_statistic(void)
 	}
 }
 
+static gint player_insert_summary_row_before (gint row, gchar *name,
+		gchar *points, void *data, GdkColor *colour, gboolean new)
+{
+	gchar *row_data[3];
+	row_data[0] = "";
+	row_data[1] = name;
+	row_data[2] = points;
+	GtkStyle *current_style = gtk_style_new();
+	current_style->fg[0] = *colour;
+	current_style->bg[0] = player_bg;
+	if (new) {
+		gtk_clist_insert(GTK_CLIST(summary_clist), row, row_data);
+		gtk_clist_set_cell_style(GTK_CLIST(summary_clist), row, 1,
+				current_style);
+		gtk_clist_set_cell_style(GTK_CLIST(summary_clist), row, 2,
+				current_style);
+		gtk_clist_set_row_data(GTK_CLIST(summary_clist), row, data);
+		gtk_clist_set_selectable(GTK_CLIST(summary_clist), row, FALSE);
+		gtk_clist_set_text(GTK_CLIST(summary_clist), row, 1, name);
+		gtk_clist_set_text(GTK_CLIST(summary_clist), row, 2, points);
+		return row;
+	}
+	gtk_clist_set_cell_style(GTK_CLIST(summary_clist), row, 1,
+			current_style);
+	gtk_clist_set_cell_style(GTK_CLIST(summary_clist), row, 2,
+			current_style);
+	gtk_clist_set_text(GTK_CLIST(summary_clist), row, 1, name);
+	gtk_clist_set_text(GTK_CLIST(summary_clist), row, 2, points);
+	return row;
+}
+
 void player_modify_statistic(gint player_num, StatisticType type, gint num)
 {
 	Player *player = player_get (player_num);
@@ -216,12 +251,6 @@ void player_modify_statistic(gint player_num, StatisticType type, gint num)
 	int row;
 	gchar desc[128];
 	gchar points[16];
-	gchar *row_data[3];
-	GtkStyle *current_style = gtk_style_new();
-
-	row_data[0] = "";
-	row_data[1] = desc;
-	row_data[2] = points;
 
 	value = player->statistics[type] += num;
 	if (statistics[type].victory_mult > 0)
@@ -232,6 +261,7 @@ void player_modify_statistic(gint player_num, StatisticType type, gint num)
 		if (row >= 0)
 			gtk_clist_remove(GTK_CLIST(summary_clist), row);
 	} else {
+		gboolean new;
 		if (value == 1) {
 			if (statistics[type].plural != NULL)
 				sprintf(desc, "%d %s", value,
@@ -248,34 +278,16 @@ void player_modify_statistic(gint player_num, StatisticType type, gint num)
 		row = gtk_clist_find_row_from_data(GTK_CLIST(summary_clist),
 						   &player->statistics[type]);
 
-		current_style->fg[0] = color_summary_enabled ?
-							   *statistics[type].textcolor :
-							   black;
-		current_style->bg[0] = player_bg;
 
 		if (row < 0) {
 			row = calc_statistic_row(player_num, type);
-			gtk_clist_insert(GTK_CLIST(summary_clist),
-					 row, row_data);
-			gtk_clist_set_cell_style(GTK_CLIST(summary_clist), row, 1, current_style);
-			gtk_clist_set_cell_style(GTK_CLIST(summary_clist), row, 2, current_style);
-			gtk_clist_set_row_data(GTK_CLIST(summary_clist), row,
-					       &player->statistics[type]);
-			gtk_clist_set_selectable(GTK_CLIST(summary_clist),
-						 row, FALSE);
-			gtk_clist_set_text(GTK_CLIST(summary_clist),
-					   row, 1, desc);
-			gtk_clist_set_text(GTK_CLIST(summary_clist),
-					   row, 2, points);
-		} else {
-			gtk_clist_set_cell_style(GTK_CLIST(summary_clist), row, 1, current_style);
-			gtk_clist_set_cell_style(GTK_CLIST(summary_clist), row, 2, current_style);
-
-			gtk_clist_set_text(GTK_CLIST(summary_clist),
-					   row, 1, desc);
-			gtk_clist_set_text(GTK_CLIST(summary_clist),
-					   row, 2, points);
-		}
+			new = TRUE;
+		} else
+			new = FALSE;
+		player_insert_summary_row_before (row, desc, points,
+				&player->statistics[type], 
+				color_summary_enabled ?
+				statistics[type].textcolor : &black, new);
 	}
 }
 
@@ -294,6 +306,33 @@ static int calc_summary_row(player_num)
 			return calc_statistic_row(idx, numElem(statistics));
 	}
 	return 0;
+}
+
+/* this function updates the points in the summary window.  It only adds
+ * points, removing is done when the points are still available
+ * (that is, before their memory is freed) */
+void player_update_points (gint num)
+{
+	Player *player = player_get (num);
+	GList *list;
+	gint last_row, row;
+	last_row = calc_summary_row (num);
+	for (list = player->points; list != NULL; list = g_list_next (list) ) {
+		gchar buff[20];
+		gboolean new;
+		Points *points = list->data;
+		snprintf (buff, sizeof (buff), "%d", points->points);
+		row = gtk_clist_find_row_from_data(GTK_CLIST(summary_clist),
+						   points);
+		if (row < 0) {
+			/* the row doesn't exist, create it */
+			new = TRUE;
+			row = last_row + 1;
+		} else
+			new = FALSE;
+		last_row = player_insert_summary_row_before (row, points->name,
+				buff, points, &black, new);
+	}
 }
 
 static gint player_create_summary_row (gint num, void *data)
@@ -896,4 +935,86 @@ void player_resource_action(gint player_num, gchar *action,
 {
 	resource_log_list(player_num, action, resource_list);
 	resource_apply_list(player_num, resource_list, mult);
+}
+
+/* get a new point */
+void player_get_point (gint player_num, gint id, gchar *str, gint num)
+{
+	Player *player = player_get (player_num);
+	/* create the memory and fill it */
+	Points *point = g_malloc0 (sizeof (*point) );
+	point->id = id;
+	point->name = g_strdup (str);
+	point->points = num;
+	/* put the point in the list */
+	player->points = g_list_append (player->points, point);
+	/* tell the user */
+	log_message (MSG_INFO, _("%s received %s.\n"), player->name, str);
+	/* show the points in the summary */
+	player_update_points (player_num);
+}
+
+/* lose a point: noone gets it */
+void player_lose_point (gint player_num, gint id)
+{
+	Player *player = player_get (player_num);
+	Points *point;
+	gint row;
+	GList *list;
+	/* look up the point in the list */
+	for (list = player->points; list != NULL; list = g_list_next (list) ) {
+		point = list->data;
+		if (point->id == id) break;
+	}
+	/* communication error: the point doesn't exist */
+	if (list == NULL) {
+		log_message (MSG_ERROR, "server asks to lose invalid point.\n");
+		return;
+	}
+	player->points = g_list_remove (player->points, point);
+	/* remove the point from the list */
+	row = gtk_clist_find_row_from_data(GTK_CLIST(summary_clist), point);
+	if (row >= 0)
+		gtk_clist_remove(GTK_CLIST(summary_clist), row);
+	/* tell the user the point is lost */
+	log_message (MSG_INFO, _("%s lost %s.\n"), player->name, point->name);
+	/* free the memory */
+	g_free (point->name);
+	g_free (point);
+	/* not needed here, but it doesn't harm */
+	player_update_points (player_num);
+}
+
+/* take a point from an other player */
+void player_take_point (gint player_num, gint id, gint old_owner)
+{
+	Player *player = player_get (player_num);
+	Player *victim = player_get (old_owner);
+	Points *point;
+	gint row;
+	GList *list;
+	/* look up the point in the list */
+	for (list = victim->points; list != NULL; list = g_list_next (list) ) {
+		point = list->data;
+		if (point->id == id) break;
+	}
+	/* communication error: the point doesn't exist */
+	if (list == NULL) {
+		log_message (MSG_ERROR, "server asks to move invalid point.\n");
+		return;
+	}
+	/* move the point in memory */
+	victim->points = g_list_remove (victim->points, point);
+	player->points = g_list_append (player->points, point);
+	/* tell the user about it */
+	log_message (MSG_INFO, _("%s lost %s to %s.\n"), victim->name,
+			point->name, player->name);
+	/* remove the point from the clist */
+	row = gtk_clist_find_row_from_data(GTK_CLIST(summary_clist), point);
+	if (row >= 0)
+		gtk_clist_remove(GTK_CLIST(summary_clist), row);
+	/* add it to the clist for the other player */
+	player_update_points (player_num);
+	/* not needed, but doesn't harm: update the old list as well */
+	player_update_points (old_owner);
 }

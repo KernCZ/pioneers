@@ -39,6 +39,7 @@ typedef struct {
 	gint color;		/* the color used for the player */
 	gint statistics[STAT_DEVELOPMENT + 1];
 	GdkPixmap *pixmap;	/* used in summary and discard list */
+	GList *points;		/* bonus points from special actions */
 } Player;
 
 typedef struct {
@@ -81,5 +82,8 @@ void player_build_move(gint player_num, gint sx, gint sy, gint spos,
 		gint dx, gint dy, gint dpos, gint isundo);
 void player_resource_action(gint player_num, gchar *action,
 			    gint *resource_list, gint mult);
+void player_get_point (gint player_num, gint id, gchar *str, gint num);
+void player_lose_point (gint player_num, gint id);
+void player_take_point (gint player_num, gint id, gint old_owner);
 
 #endif

@@ -289,8 +289,10 @@ static gboolean check_other_players(StateMachine *sm)
 	Resource resource_type, supply_type, receive_type;
 	gint player_num, victim_num, card_idx;
 	gint turn_num, discard_num, gold_num, num, ratio, die1, die2, x, y, pos;
+	gint id;
 	gint resource_list[NO_RESOURCE];
 	gint sx, sy, spos, dx, dy, dpos, isundo;
+	gchar str[512];
 
 	if (check_chat_or_name(sm))
 		return TRUE;
@@ -388,6 +390,18 @@ static gboolean check_other_players(StateMachine *sm)
 	}
 	if (sm_recv(sm, "longest-road")) {
                 player_longest_road(player_num);
+		return TRUE;
+	}
+	if (sm_recv(sm, "get-point %d %d %S", &id, &num, str, sizeof (str) ) ) {
+		player_get_point (player_num, id, str, num);
+		return TRUE;
+	}
+	if (sm_recv(sm, "lose-point %d", &id) ) {
+		player_lose_point (player_num, id);
+		return TRUE;
+	}
+	if (sm_recv(sm, "take-point %d %d", &id, &victim_num) ) {
+		player_take_point (player_num, id, victim_num);
 		return TRUE;
 	}
         if (sm_recv(sm, "setup")) {

@@ -31,6 +31,7 @@ typedef struct {
 	gint assets[NO_RESOURCE]; /* our resources */
 	gint gold;		/* how much gold will we recieve? */
 	DevelDeck *devel;	/* development cards we own */
+	GList *points;		/* points from special actions */
 	gint discard_num;	/* number of resources we must discard */
 
 	gint num_roads;		/* number of roads available */

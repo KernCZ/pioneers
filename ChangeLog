@@ -1,4 +1,8 @@
 2003-10-12  Bas Wijnen <b.wijnen@phys.rug.nl>
+	* client/client.c, client/player.c, client/player.h, common/game.h,
+	server/server.h: Added arbitrary point tokens.
+
+2003-10-12  Bas Wijnen <b.wijnen@phys.rug.nl>
 	* client/identity.c, client/player.c, client/player.h,
 	server/player.c, server/pregame.c: Finished viewer support.
 	* common/map_query.c: Fixed bug with pirate.
