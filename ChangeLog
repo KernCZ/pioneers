@@ -7,6 +7,9 @@
 	code of server and meta-server to common/network.c. All ports are now
 	strings (service names), there are no conversions to integers left.
 	Upgraded meta-server protocol to 1.2.
+	* rules.make, client/gtk/connect.c, client/gtk/plenty.c,
+	client/gtk/quote.c: Added GTK_DISABLE_DEPRECATED for developer-only
+	builds. Marked the files that still use deprecated calls.
 
 2005-04-03  Brian Wellington <bwelling@xbill.org>
 	* configure.ac, common/Makefile.am, common/map.[ch],
