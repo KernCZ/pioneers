@@ -190,6 +190,16 @@ void gtk_entry_set_alignment(
 	UNUSED(gfloat xalign)) {
 	/* Do nothing. This function is purely cosmetic */
 }
+
+void gtk_alignment_set_padding(
+	UNUSED(GtkAlignment *alignment),
+	UNUSED(guint padding_top),
+	UNUSED(guint padding_bottom),
+	UNUSED(guint padding_left),
+	UNUSED(guint padding_right)) {
+	/* Do nothing. This function is purely cosmetic */
+}
+
 #if GTK_MINOR_VERSION < 2
 /* Here are some functions that are not present before 2.2 */
 gboolean gtk_window_set_default_icon_from_file(
