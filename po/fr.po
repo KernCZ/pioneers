@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnocatan 0.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-11-20 16:00+0200\n"
+"POT-Creation-Date: 2003-12-20 17:26+0100\n"
 "PO-Revision-Date: 2003-11-20 16:00-0600\n"
 "Last-Translator: Arnaud MALON <moko@geumeuleu.com>\n"
 "Language-Team: Français <LL@li.org>\n"
@@ -16,96 +16,104 @@ msgstr ""
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ai/client.c:140 ai/client.c:159 client/client.c:159 client/client.c:185
+#: ai/client.c:140 ai/client.c:159 client/common/client.c:205
 msgid "We have been kicked out of the game.\n"
 msgstr "Nous avons été explusé de la partie!\n"
 
-#: ai/client.c:298
+#: ai/client.c:302
 #, c-format
 msgid "%s receives %s\n"
 msgstr "%s reçoit %s\n"
 
-#: ai/client.c:305
+#: ai/client.c:309
 #, c-format
 msgid "%s spent %s\n"
 msgstr "%s dépense %s\n"
 
-#: ai/client.c:310
+#: ai/client.c:314
 #, c-format
 msgid "%s is refunded %s\n"
 msgstr "%2s est remboursé de %1s\n"
 
-#: ai/client.c:1188
+#: ai/client.c:1192
 #, c-format
 msgid "%s discarded %s\n"
 msgstr "%s jete %s\n"
 
-#: ai/client.c:1776 client/client.c:2659
+#: ai/client.c:1780
 msgid "The game is over.\n"
 msgstr "La partie est terminée.\n"
 
-#: ai/develop.c:31 client/develop.c:36
+#: ai/develop.c:31 client/common/develop.c:43 client/gtk/develop.c:40
 msgid "Road Building"
 msgstr "Construction de route"
 
-#: ai/develop.c:32 client/develop.c:37 client/monopoly.c:74
+#: ai/develop.c:32 client/common/develop.c:44 client/gtk/develop.c:41
+#: client/gtk/monopoly.c:81
 msgid "Monopoly"
 msgstr "Monopole"
 
-#: ai/develop.c:33 client/develop.c:38 client/plenty.c:162
+#: ai/develop.c:33 client/common/develop.c:45 client/gtk/develop.c:42
+#: client/gtk/plenty.c:170
 msgid "Year of Plenty"
 msgstr "Année faste"
 
-#: ai/develop.c:34 ai/player.c:24 client/develop.c:39 client/player.c:40
+#: ai/develop.c:34 ai/player.c:24 client/common/develop.c:46
+#: client/gtk/develop.c:43 client/gtk/player.c:52
 msgid "Chapel"
 msgstr "Chapelle"
 
-#: ai/develop.c:35 ai/player.c:25 client/develop.c:40 client/player.c:41
+#: ai/develop.c:35 ai/player.c:25 client/common/develop.c:47
+#: client/gtk/develop.c:44 client/gtk/player.c:53
 msgid "University of Gnocatan"
 msgstr "Université de Gnocatan"
 
-#: ai/develop.c:36 ai/player.c:26 client/develop.c:41 client/player.c:42
+#: ai/develop.c:36 ai/player.c:26 client/common/develop.c:48
+#: client/gtk/develop.c:45 client/gtk/player.c:54
 msgid "Governor's House"
 msgstr "Palais du Gouverneur"
 
-#: ai/develop.c:37 ai/player.c:27 client/develop.c:42 client/player.c:43
+#: ai/develop.c:37 ai/player.c:27 client/common/develop.c:49
+#: client/gtk/develop.c:46 client/gtk/player.c:55
 msgid "Library"
 msgstr "Bibliothèque"
 
-#: ai/develop.c:38 ai/player.c:28 client/develop.c:43 client/player.c:44
+#: ai/develop.c:38 ai/player.c:28 client/common/develop.c:50
+#: client/gtk/develop.c:47 client/gtk/player.c:56
 msgid "Market"
 msgstr "Marché"
 
-#: ai/develop.c:39 ai/player.c:29 client/develop.c:44 client/player.c:45
+#: ai/develop.c:39 ai/player.c:29 client/common/develop.c:51
+#: client/gtk/develop.c:48 client/gtk/player.c:57
 msgid "Soldier"
 msgstr "Chevalier"
 
-#: ai/develop.c:106 client/develop.c:113
+#: ai/develop.c:106 client/common/develop.c:97
 #, c-format
 msgid "%s bought a development card.\n"
 msgstr "%s joue une carte de développement.\n"
 
-#: ai/develop.c:122 client/develop.c:135
+#: ai/develop.c:122 client/common/develop.c:74
 #, c-format
 msgid "You bought the %s development card.\n"
 msgstr "Tu joues la carte de développement %s.\n"
 
-#: ai/develop.c:125 client/develop.c:138
+#: ai/develop.c:125 client/common/develop.c:77
 #, c-format
 msgid "You bought a %s development card.\n"
 msgstr "Tu joues une carte de développement %s.\n"
 
-#: ai/develop.c:143 client/develop.c:158
+#: ai/develop.c:143 client/common/develop.c:115
 #, c-format
 msgid "%s played the %s development card.\n"
 msgstr "%s joue la carte de développement %s.\n"
 
-#: ai/develop.c:147 client/develop.c:162
+#: ai/develop.c:147 client/common/develop.c:119
 #, c-format
 msgid "%s played a %s development card.\n"
 msgstr "%s joue une carte de développement %s.\n"
 
-#: ai/develop.c:158 client/develop.c:173
+#: ai/develop.c:158 client/common/develop.c:130
 msgid "You have run out of road segments.\n"
 msgstr "Tu es à court de routes.\n"
 
@@ -258,85 +266,78 @@ msgid "Rejecting trade.\n"
 msgstr "Offre rejetée.\n"
 
 #: ai/greedy.c:1673
-msgid "Sorry, I do not know how to play with gold\n"
+msgid "Sorry, I do not know how to play with gold.\n"
 msgstr "Désolé, je sais pas jouer avec l'or.\n"
 
 #. I get the cards!
 #.
-#: ai/monopoly.c:38 client/monopoly.c:146
+#: ai/monopoly.c:40 client/common/develop.c:168
 #, c-format
 msgid "You get %s from %s.\n"
 msgstr "Tu reçois %s de %s.\n"
 
 #. I lose the cards!
 #.
-#: ai/monopoly.c:47 client/monopoly.c:154
+#: ai/monopoly.c:49 client/common/develop.c:176
 #, c-format
 msgid "%s took %s from you.\n"
 msgstr "%s te prends %s.\n"
 
-#. I am a bystander
-#.
-#: ai/monopoly.c:55 client/monopoly.c:161
+#: ai/monopoly.c:58 client/common/develop.c:184
 #, c-format
-msgid "%s took %s from"
-msgstr "%s prends %s à"
+msgid "%s took %s from %s.\n"
+msgstr "%s prends %s à %s.\n"
 
-#: ai/monopoly.c:57 client/monopoly.c:163
-#, c-format
-msgid " %s.\n"
-msgstr " %s.\n"
-
-#: ai/player.c:20 client/legend.c:177 client/player.c:36
+#: ai/player.c:20 client/gtk/legend.c:181 client/gtk/player.c:48
 msgid "Settlement"
 msgstr "Colonie"
 
-#: ai/player.c:20 client/player.c:36
+#: ai/player.c:20 client/gtk/player.c:48
 msgid "Settlements"
 msgstr "Colonies"
 
-#: ai/player.c:21 client/legend.c:178 client/player.c:37
+#: ai/player.c:21 client/gtk/legend.c:182 client/gtk/player.c:49
 msgid "City"
 msgstr "Ville"
 
-#: ai/player.c:21 client/player.c:37
+#: ai/player.c:21 client/gtk/player.c:49
 msgid "Cities"
 msgstr "Villes"
 
-#: ai/player.c:22 client/player.c:38
+#: ai/player.c:22 client/gtk/player.c:50
 msgid "Largest Army"
 msgstr "Chevalier le plus puissant"
 
-#: ai/player.c:23 client/player.c:39
+#: ai/player.c:23 client/gtk/player.c:51
 msgid "Longest Road"
 msgstr "Route la plus longue"
 
-#: ai/player.c:29 client/player.c:45
+#: ai/player.c:29 client/gtk/player.c:57
 msgid "Soldiers"
 msgstr "Chevaliers"
 
-#: ai/player.c:30 client/player.c:46
+#: ai/player.c:30 client/gtk/player.c:58
 msgid "Resource card"
 msgstr "Carte ressources"
 
-#: ai/player.c:30 client/player.c:46
+#: ai/player.c:30 client/gtk/player.c:58
 msgid "Resource cards"
 msgstr "Cartes ressources"
 
-#: ai/player.c:31 client/player.c:47
+#: ai/player.c:31 client/gtk/player.c:59
 msgid "Development card"
 msgstr "Carte de développement"
 
-#: ai/player.c:31 client/player.c:47
+#: ai/player.c:31 client/gtk/player.c:59
 msgid "Development cards"
 msgstr "Cartes de développement"
 
-#: ai/player.c:50 client/player.c:160 server/player.c:673
+#: ai/player.c:50 client/common/player.c:104
 #, c-format
 msgid "Player %d"
 msgstr "Joueur %d"
 
-#: ai/player.c:52 client/player.c:162
+#: ai/player.c:52 client/common/player.c:106
 #, c-format
 msgid "player %d"
 msgstr "joueur %d"
@@ -351,172 +352,173 @@ msgstr "Joueur %d devient anonyme.\n"
 msgid "%s is now anonymous.\n"
 msgstr "%s devient anonyme.\n"
 
-#: ai/player.c:164 client/player.c:453
+#: ai/player.c:164 client/common/player.c:181
 #, c-format
 msgid "Player %d is now %s.\n"
 msgstr "Joueur %d s'appelle maintenant %s.\n"
 
-#: ai/player.c:166 client/player.c:441 client/player.c:455
+#: ai/player.c:166 client/common/player.c:169 client/common/player.c:183
 #, c-format
 msgid "%s is now %s.\n"
 msgstr "%s s'appelle maintenant %s.\n"
 
-#: ai/player.c:182 client/player.c:539
+#: ai/player.c:182 client/common/player.c:222
 msgid "There is no largest army.\n"
 msgstr "Il n'y a pas de chevalier plus puissant.\n"
 
-#: ai/player.c:184 client/player.c:541
+#: ai/player.c:184 client/common/player.c:224
 #, c-format
 msgid "%s has the largest army.\n"
 msgstr "%s détient le chevalier le plus puissant.\n"
 
-#: ai/player.c:204 client/player.c:561
+#: ai/player.c:204 client/common/player.c:243
 msgid "There is no longest road.\n"
 msgstr "Il n'y a pas de route plus longue.\n"
 
-#: ai/player.c:206 client/player.c:563
+#: ai/player.c:206 client/common/player.c:245
 #, c-format
 msgid "%s has the longest road.\n"
 msgstr "%s a la route la plus longue.\n"
 
 #. We are not in on the action
 #.
-#: ai/player.c:247
+#: ai/player.c:247 client/common/player.c:293
 #, c-format
 msgid "%s stole a resource from %s.\n"
 msgstr "%s vole une ressource à %s.\n"
 
 #. We stole a card :-)
 #.
-#: ai/player.c:256 client/player.c:725
+#: ai/player.c:256 client/common/player.c:303
 #, c-format
 msgid "You stole %s from %s.\n"
 msgstr "Tu vole %s à %s.\n"
 
 #. Someone stole our card :-(
 #.
-#: ai/player.c:263 client/player.c:731
+#: ai/player.c:263 client/common/player.c:309
 #, c-format
 msgid "%s stole %s from you.\n"
 msgstr "%s te vole %s.\n"
 
-#: ai/player.c:295 client/player.c:762
+#: ai/player.c:295 client/common/player.c:340
 #, c-format
 msgid "%s gave %s nothing!?\n"
 msgstr "%s ne donne rien à %s!?\n"
 
-#: ai/player.c:301 ai/player.c:308 client/player.c:768 client/player.c:775
+#: ai/player.c:301 ai/player.c:308 client/common/player.c:346
+#: client/common/player.c:353
 #, c-format
 msgid "%s gave %s %s for free.\n"
 msgstr "%s donne %s %s gratuitement.\n"
 
-#: ai/player.c:316 client/player.c:783
+#: ai/player.c:316 client/common/player.c:361
 #, c-format
 msgid "%s gave %s %s in exchange for %s.\n"
 msgstr "%s donne %s %s en échange de %s.\n"
 
-#: ai/player.c:332 client/player.c:804
+#: ai/player.c:332 client/common/player.c:382
 #, c-format
 msgid "%s exchanged %s for %s.\n"
 msgstr "%s échange %s contre %s.\n"
 
-#: ai/player.c:348 client/player.c:823
+#: ai/player.c:348 client/common/player.c:401
 #, c-format
 msgid "%s built a road.\n"
 msgstr "%s construit une route.\n"
 
-#: ai/player.c:357 client/player.c:836
+#: ai/player.c:357 client/common/player.c:414
 #, c-format
 msgid "%s built a ship.\n"
 msgstr "%s construit un bateau.\n"
 
-#: ai/player.c:366 client/player.c:849
+#: ai/player.c:366 client/common/player.c:427
 #, c-format
 msgid "%s built a settlement.\n"
 msgstr "%s construit une colonie.\n"
 
-#: ai/player.c:382 client/player.c:869
+#: ai/player.c:382 client/common/player.c:447
 #, c-format
 msgid "%s built a city.\n"
 msgstr "%s érige une ville.\n"
 
-#: ai/player.c:389 client/player.c:877
+#: ai/player.c:389 client/common/player.c:455
 #, c-format
 msgid "player_build_add called with BUILD_NONE for user %s\n"
 msgstr ""
 
-#: ai/player.c:416 client/player.c:975
+#: ai/player.c:416 client/common/player.c:568
 #, c-format
 msgid "%s has cancelled a ship's movement.\n"
 msgstr "%s a annulé un mouvement de bateau.\n"
 
-#: ai/player.c:418 client/player.c:977
+#: ai/player.c:418 client/common/player.c:570
 #, c-format
 msgid "%s moved a ship.\n"
 msgstr "%s déplace un bateau.\n"
 
-#: ai/player.c:433 client/player.c:904
+#: ai/player.c:433 client/common/player.c:491
 #, c-format
 msgid "%s removed a road.\n"
 msgstr "%s retire une route.\n"
 
-#: ai/player.c:442 client/player.c:914
+#: ai/player.c:442 client/common/player.c:501
 #, c-format
 msgid "%s removed a ship.\n"
 msgstr "%s retire un bateau.\n"
 
-#: ai/player.c:451 client/player.c:924
+#: ai/player.c:451 client/common/player.c:511
 #, c-format
 msgid "%s removed a settlement.\n"
 msgstr "%s retire une colonie.\n"
 
-#: ai/player.c:461 client/player.c:935
+#: ai/player.c:461 client/common/player.c:522
 #, c-format
 msgid "%s removed a city.\n"
 msgstr "%s retire une ville.\n"
 
-#: ai/player.c:471 client/player.c:945
+#: ai/player.c:471 client/common/player.c:532
 #, c-format
 msgid "player_build_remove called with BUILD_NONE for user %s\n"
 msgstr "player_build_remove est appellé avec BUILD_NONE pour le joueur %s\n"
 
-#: ai/resource.c:20 client/resource.c:22
+#: ai/resource.c:20 client/common/resource.c:33
 msgid "brick"
 msgstr "argile"
 
-#: ai/resource.c:20 client/resource.c:22
+#: ai/resource.c:20 client/common/resource.c:33
 msgid "Brick"
 msgstr "argiles"
 
-#: ai/resource.c:21 client/resource.c:23
+#: ai/resource.c:21 client/common/resource.c:34
 msgid "grain"
 msgstr "blé"
 
-#: ai/resource.c:21 client/resource.c:23
+#: ai/resource.c:21 client/common/resource.c:34
 msgid "Grain"
 msgstr "Blé"
 
-#: ai/resource.c:22 client/resource.c:24
+#: ai/resource.c:22 client/common/resource.c:35
 msgid "ore"
 msgstr "pierre"
 
-#: ai/resource.c:22 client/resource.c:24
+#: ai/resource.c:22 client/common/resource.c:35
 msgid "Ore"
 msgstr "Pierre"
 
-#: ai/resource.c:23 client/resource.c:25
+#: ai/resource.c:23 client/common/resource.c:36
 msgid "wool"
 msgstr "laine"
 
-#: ai/resource.c:23 client/resource.c:25
+#: ai/resource.c:23 client/common/resource.c:36
 msgid "Wool"
 msgstr "Laine"
 
-#: ai/resource.c:24 client/resource.c:26
+#: ai/resource.c:24 client/common/resource.c:37
 msgid "lumber"
 msgstr "bois"
 
-#: ai/resource.c:24 client/resource.c:26
+#: ai/resource.c:24 client/common/resource.c:37
 msgid "Lumber"
 msgstr "Bois"
 
@@ -532,6 +534,15 @@ msgstr "demande"
 #: ai/trade.c:74
 msgid "give "
 msgstr "donne "
+
+#: ai/trade.c:81
+msgid "for free"
+msgstr "gratuitement"
+
+#: ai/trade.c:83
+#, fuzzy
+msgid " for "
+msgstr " pour "
 
 #: ai/trade.c:98
 #, c-format
@@ -557,695 +568,882 @@ msgstr "Offre annulée du joueur %d: %s\n"
 msgid "Trading finished.\n"
 msgstr "Fin des échanges.\n"
 
-#: ai/turn.c:42 client/turn.c:44
+#: ai/turn.c:42 client/common/turn.c:37
 #, c-format
 msgid "%s rolled %d.\n"
 msgstr "%s jete %d.\n"
 
-#: ai/turn.c:98 client/turn.c:133
+#: ai/turn.c:98 client/common/turn.c:49
 #, c-format
 msgid "Begin turn %d for %s.\n"
 msgstr "Début du tour %d de %s.\n"
 
-#: client/admin-gtk.c:140 client/settingscreen.c:50
-#: server/gnocatan-server-gtk.c:117
-msgid "Yes"
-msgstr "Oui"
-
-#. this seems to fit better before, but the callback requires
-#. * that meta_entry and hostname_entry are initialized
-#: client/admin-gtk.c:140 client/admin-gtk.c:301 client/settingscreen.c:52
-#: server/gnocatan-server-gtk.c:117 server/gnocatan-server-gtk.c:511
-msgid "No"
-msgstr "Non"
-
-#: client/admin-gtk.c:167 client/connect.c:398
-#: server/gnocatan-server-gtk.c:134
-msgid "Random"
-msgstr "Au hazard"
-
-#: client/admin-gtk.c:167 client/connect.c:398
-#: server/gnocatan-server-gtk.c:134
-msgid "Default"
-msgstr "Par défaut"
-
-#: client/admin-gtk.c:206 server/gnocatan-server-gtk.c:357
-msgid "Name"
-msgstr "Nom"
-
-#: client/admin-gtk.c:207 server/gnocatan-server-gtk.c:358
-msgid "Location"
-msgstr "Adresse"
-
-#: client/admin-gtk.c:217 client/connect.c:461
-#: server/gnocatan-server-gtk.c:375
-msgid "Server Parameters"
-msgstr "Paramètres du serveur"
-
-#: client/admin-gtk.c:228 client/connect.c:472
-#: server/gnocatan-server-gtk.c:386
-msgid "Game Name"
-msgstr "Nom de la partie"
-
-#: client/admin-gtk.c:247 client/connect.c:491
-#: server/gnocatan-server-gtk.c:405
-msgid "Map Terrain"
-msgstr "Carte"
-
-#: client/admin-gtk.c:262 client/connect.c:543
-#: server/gnocatan-server-gtk.c:421
-msgid "Number of Players"
-msgstr "Nombre de joueurs"
-
-#: client/admin-gtk.c:278 client/connect.c:559
-#: server/gnocatan-server-gtk.c:437
-msgid "Victory Point Target"
-msgstr "Pts de victoire requis"
-
-#: client/admin-gtk.c:294 server/gnocatan-server-gtk.c:470
-msgid "Register Server"
-msgstr "Enregistrer le serveur"
-
-#: client/admin-gtk.c:328 server/gnocatan-server-gtk.c:554
-msgid "Start Server"
-msgstr "Démarrer le serveur"
-
-#: client/admin-gtk.c:336 server/gnocatan-server-gtk.c:572
-msgid "Players Connected"
-msgstr "Joueurs connectés"
-
-#: client/admin-gtk.c:357 client/gui.c:263 server/gnocatan-server-gtk.c:593
-msgid "Messages"
-msgstr "Messages"
-
-#: client/chat.c:42
+#: client/common/chat.c:51
 #, c-format
 msgid "You beeped %s.\n"
 msgstr "Tu bipes %s.\n"
 
-#: client/chat.c:47
+#: client/common/chat.c:56
 #, c-format
 msgid "%s beeped you.\n"
 msgstr "%s te bipe.\n"
 
-#: client/chat.c:76
+#: client/common/chat.c:83
 msgid " said: "
 msgstr " dit: "
 
-#: client/chat.c:144
-msgid "Chat"
-msgstr "Chat"
-
-#: client/client.c:96
+#: client/common/client.c:107
 msgid "Waiting"
 msgstr "En attente"
 
-#: client/client.c:98 client/client.c:968
+#: client/common/client.c:109 client/common/client.c:888
 msgid "Idle"
 msgstr "Absent"
 
-#: client/client.c:162 client/client.c:666 client/gui.c:1071
+#: client/common/client.c:208 client/common/client.c:571 client/gtk/gui.c:1108
 msgid "Offline"
 msgstr "Déconnecté"
 
-#: client/client.c:319
+#: client/common/client.c:335
 #, c-format
 msgid "%s receives %s.\n"
 msgstr "%s reçois %s.\n"
 
-#: client/client.c:324
+#: client/common/client.c:340
 #, c-format
 msgid "%s spent %s.\n"
 msgstr "%s dépense %s.\n"
 
-#: client/client.c:329
+#: client/common/client.c:345
 #, c-format
 msgid "%s is refunded %s.\n"
 msgstr "%s est remboursé de %s.\n"
 
-#: client/client.c:356
+#: client/common/client.c:373
 #, c-format
 msgid "%s discarded %s.\n"
 msgstr "%s jete %s.\n"
 
-#: client/client.c:575
-msgid "Connecting"
-msgstr "Connection"
-
-#: client/client.c:628
+#: client/common/client.c:534
 msgid "Loading"
 msgstr "Chargement"
 
-#: client/client.c:667
+#: client/common/client.c:572
 msgid "Version mismatch"
 msgstr "Versions incompatibles"
 
-#: client/client.c:1194
+#: client/common/client.c:996
 msgid "Build two settlements, each with a connecting"
 msgstr "Construire deux colonies avec une route pour chacune"
 
-#: client/client.c:1196
+#: client/common/client.c:998
 msgid "Build a settlement with a connecting"
 msgstr "Construire une colonie et sa route"
 
-#: client/client.c:1199
+#: client/common/client.c:1001
 msgid "road"
 msgstr "route"
 
-#: client/client.c:1201
+#: client/common/client.c:1003
 msgid "bridge"
 msgstr "pont"
 
-#: client/client.c:1203
+#: client/common/client.c:1005
 msgid "ship"
 msgstr "bateau"
 
-#: client/client.c:1335
+#: client/common/client.c:1012
+#, fuzzy
+msgid " or"
+msgstr " ou"
+
+#: client/common/client.c:1062
 msgid "Waiting for your turn"
 msgstr "Attends ton tour!"
 
-#: client/client.c:1459 client/client.c:1477
-msgid "Select the building to steal from."
-msgstr "Choisis où voler."
-
-#: client/client.c:1460 client/client.c:1478
-msgid "Select the building to steal from"
-msgstr "Choisis où voler"
-
-#: client/client.c:1491 client/client.c:1518
+#: client/common/client.c:1153 client/common/client.c:1178
 msgid "Place the robber"
 msgstr "Déplace le voleur"
 
-#: client/client.c:1603
+#: client/common/client.c:1206
 msgid "Build two road segments."
 msgstr "Construis deux segments de route"
 
-#: client/client.c:1605
+#: client/common/client.c:1208
 msgid "Build a road segment."
 msgstr "Construis un segment de route."
 
-#: client/client.c:1922 client/client.c:2058
+#: client/common/client.c:1462 client/common/client.c:1549
 msgid "It is your turn."
 msgstr "C'est à toi."
 
-#: client/client.c:2252
+#: client/common/client.c:1643
 #, c-format
 msgid "Sorry, %s available.\n"
 msgstr "Désolé, %s indisponible.\n"
 
-#: client/client.c:2651
+#: client/common/client.c:1959
 msgid "The game is over."
 msgstr "La partie est finie."
 
-#: client/client.c:2864
+#: client/common/client.c:2154
 #, c-format
 msgid "%s takes %s.\n"
 msgstr "%s prends %s.\n"
 
-#: client/connect.c:101
+#: client/common/develop.c:256 client/gtk/develop.c:73
+msgid "Development Cards"
+msgstr "Cartes de développement"
+
+#: client/common/develop.c:286 client/gtk/develop.c:103
+msgid "Play Card"
+msgstr "Jouer la carte"
+
+#: client/common/player.c:94
+#, c-format
+msgid "Viewer %d"
+msgstr "Spectateur %d"
+
+#: client/common/player.c:96
+#, c-format
+msgid "viewer %d"
+msgstr "spectateur %d"
+
+#: client/common/player.c:166
+#, c-format
+msgid "New viewer: %s.\n"
+msgstr "Nouveau spectateur: %s.\n"
+
+#: client/common/player.c:210
+#, c-format
+msgid "%s has quit\n"
+msgstr "%s est parti!\n"
+
+#: client/common/player.c:265
+#, c-format
+msgid "Waiting for %s."
+msgstr "On attends %s."
+
+#: client/common/player.c:465
+#, c-format
+msgid "%s built a bridge.\n"
+msgstr "%s construit un pont.\n"
+
+#: client/common/player.c:540
+#, c-format
+msgid "%s removed a bridge.\n"
+msgstr "%s retire un pont.\n"
+
+#. tell the user
+#: client/common/player.c:593
+#, c-format
+msgid "%s received %s.\n"
+msgstr "%s reçois %s.\n"
+
+#: client/common/player.c:609
+msgid "server asks to lose invalid point.\n"
+msgstr ""
+
+#. tell the user the point is lost
+#: client/common/player.c:614
+#, fuzzy, c-format
+msgid "%s lost %s.\n"
+msgstr "%s perds %s.\n"
+
+#: client/common/player.c:634
+msgid "server asks to move invalid point.\n"
+msgstr ""
+
+#. tell the user about it
+#: client/common/player.c:641
+#, fuzzy, c-format
+msgid "%s lost %s to %s.\n"
+msgstr "%s perds %s à %s.\n"
+
+#: client/common/resource.c:38
+msgid "no resource (bug)"
+msgstr "pas de ressources (bug)"
+
+#: client/common/resource.c:38
+msgid "No resource (bug)"
+msgstr "Pas de ressources (bug)"
+
+#: client/common/resource.c:39
+msgid "any resource (bug)"
+msgstr "n'importe quel ressource (bug)"
+
+#: client/common/resource.c:39
+msgid "Any resource (bug)"
+msgstr "N'importe quel ressource (bug)"
+
+#: client/common/resource.c:40
+msgid "gold"
+msgstr "or"
+
+#: client/common/resource.c:40 client/gtk/legend.c:39
+msgid "Gold"
+msgstr "Or"
+
+#: client/common/resource.c:45
+msgid "a brick card"
+msgstr "une carte argile"
+
+#: client/common/resource.c:45
+#, c-format
+msgid "%d brick cards"
+msgstr "%d cartes argile"
+
+#: client/common/resource.c:46
+msgid "a grain card"
+msgstr "une carte blé"
+
+#: client/common/resource.c:46
+#, c-format
+msgid "%d grain cards"
+msgstr "%d cartes blés"
+
+#: client/common/resource.c:47
+msgid "an ore card"
+msgstr "une carte pierre"
+
+#: client/common/resource.c:47
+#, c-format
+msgid "%d ore cards"
+msgstr "%d cartes pierre"
+
+#: client/common/resource.c:48
+msgid "a wool card"
+msgstr "une carte laine"
+
+#: client/common/resource.c:48
+#, c-format
+msgid "%d wool cards"
+msgstr "%d cartes laine"
+
+#: client/common/resource.c:49
+msgid "a lumber card"
+msgstr "une carte bois"
+
+#: client/common/resource.c:49
+#, c-format
+msgid "%d lumber cards"
+msgstr "%d cartes bois"
+
+#: client/common/resource.c:150
+#, c-format
+msgid ", and %s"
+msgstr " et %s"
+
+#: client/common/resource.c:154
+#, c-format
+msgid "%s, "
+msgstr "%s, "
+
+#: client/common/resource.c:257
+#, c-format
+msgid "player %d resource count wrong: server=%d, me=%d"
+msgstr ""
+
+#: client/common/resource.c:270
+msgid "resources wrong:"
+msgstr ""
+
+#: client/common/resource.c:274
+#, c-format
+msgid ""
+"\n"
+"%s: server=%d, me=%d"
+msgstr ""
+
+#: client/common/robber.c:57
+#, c-format
+msgid "%s moved the robber.\n"
+msgstr "%s déplace le voleur.\n"
+
+#: client/common/robber.c:60 client/common/robber.c:69
+msgid "Continue with your turn."
+msgstr "Continue ton tour."
+
+#: client/common/robber.c:66
+#, c-format
+msgid "%s moved the pirate.\n"
+msgstr "%s déplace le pirate.\n"
+
+#: client/common/robber.c:75
+#, c-format
+msgid "%s must move the robber."
+msgstr "%s dois déplacer le voleur."
+
+#: client/common/setup.c:142
+#, c-format
+msgid "Setup for %s.\n"
+msgstr ""
+
+#: client/common/setup.c:153
+#, c-format
+msgid "Double setup for %s.\n"
+msgstr ""
+
+#: client/gtk/chat.c:58
+msgid "Chat"
+msgstr "Chat"
+
+#: client/gtk/connect.c:107
 #, c-format
 msgid "Meta-server at %s, port %s"
 msgstr "Meta-serveur à l'adresse %s, port %s"
 
-#: client/connect.c:110
+#: client/gtk/connect.c:116
 msgid "Finished.\n"
 msgstr "Terminé.\n"
 
-#: client/connect.c:135 client/connect.c:183 client/connect.c:266
-#: server/meta.c:152
+#: client/gtk/connect.c:141 client/gtk/connect.c:189 client/gtk/connect.c:272
+#: server/meta.c:163
 msgid "Meta-server kicked us off\n"
 msgstr "Le meta-serveur nous a expulsé.\n"
 
-#: client/connect.c:161
+#: client/gtk/connect.c:167
 msgid "Receiving game names from the meta server.\n"
 msgstr "Reception du nom des parties du meta-serveur.\n"
 
-#: client/connect.c:203
+#: client/gtk/connect.c:209
 #, c-format
 msgid "New game server started on %s port %s\n"
 msgstr "Une nouvelle partie commence sur le serveur %s, port %s.\n"
 
-#: client/connect.c:281 server/meta.c:117
+#: client/gtk/connect.c:287 server/meta.c:128
 msgid "Too many meta-server redirects\n"
 msgstr "Trop de redirections du meta-serveur\n"
 
-#: client/connect.c:303 server/meta.c:125
+#: client/gtk/connect.c:309 server/meta.c:136
 #, c-format
 msgid "Bad redirect line: %s\n"
 msgstr "Mauvaise redirection ligne %s\n"
 
-#: client/connect.c:318
+#: client/gtk/connect.c:324
 #, c-format
 msgid "Meta server too old to create servers (version %d.%d)\n"
-msgstr "Le meta-serveur est trop vieux pour enregistrer des serveurs (version %d.%d)\n"
+msgstr ""
+"Le meta-serveur est trop vieux pour enregistrer des serveurs (version %d.%"
+"d)\n"
 
-#: client/connect.c:361 server/meta.c:164
+#: client/gtk/connect.c:367 server/meta.c:175
 #, c-format
 msgid "Redirected to meta-server at %s, port %s\n"
 msgstr "Redirection sur le meta-serveur %s, port %s.\n"
 
-#: client/connect.c:363
+#: client/gtk/connect.c:369
 msgid "Receiving a list of Gnocatan servers from the meta server.\n"
 msgstr "Reception d'une liste de serveurs Gnocatan du meta-serveur.\n"
 
-#: client/connect.c:378 client/connect.c:601
+#: client/gtk/connect.c:384 client/gtk/connect.c:606
 msgid "Requesting new game server\n"
 msgstr "Demander une nouvelle partie\n"
 
-#: client/connect.c:509 client/connect.c:714 server/gnocatan-server-gtk.c:521
+#: client/gtk/connect.c:404 server/gnocatan-server-gtk.c:170
+msgid "Random"
+msgstr "Au hazard"
+
+#: client/gtk/connect.c:404 server/gnocatan-server-gtk.c:170
+msgid "Default"
+msgstr "Par défaut"
+
+#: client/gtk/connect.c:466 server/gnocatan-server-gtk.c:567
+msgid "Server Parameters"
+msgstr "Paramètres du serveur"
+
+#: client/gtk/connect.c:477 server/gnocatan-server-gtk.c:396
+msgid "Game Name"
+msgstr "Nom de la partie"
+
+#: client/gtk/connect.c:496 server/gnocatan-server-gtk.c:415
+msgid "Map Terrain"
+msgstr "Carte"
+
+#: client/gtk/connect.c:514 client/gtk/connect.c:719
+#: server/gnocatan-server-gtk.c:464
 msgid "Sevens Rule"
 msgstr "La règle des septs"
 
-#: client/connect.c:528 server/gnocatan-server-gtk.c:528
+#: client/gtk/connect.c:533 server/gnocatan-server-gtk.c:471
 msgid "Normal"
 msgstr "Normal"
 
-#: client/connect.c:532 server/gnocatan-server-gtk.c:529
+#: client/gtk/connect.c:537 server/gnocatan-server-gtk.c:472
 msgid "Reroll on 1st 2 turns"
 msgstr "Rejouer les dés les 2 premiers tours"
 
-#: client/connect.c:536 server/gnocatan-server-gtk.c:530
+#: client/gtk/connect.c:541 server/gnocatan-server-gtk.c:473
 msgid "Reroll all 7s"
 msgstr "Rejouer tous les 7"
 
-#: client/connect.c:575
+#: client/gtk/connect.c:548 server/gnocatan-server-gtk.c:430
+msgid "Number of Players"
+msgstr "Nombre de joueurs"
+
+#: client/gtk/connect.c:564 server/gnocatan-server-gtk.c:447
+msgid "Victory Point Target"
+msgstr "Pts de victoire requis"
+
+#: client/gtk/connect.c:580
 msgid "Number of AI Players"
 msgstr "Nombre de joueurs"
 
-#: client/connect.c:621
+#: client/gtk/connect.c:626
 msgid "Create New Gnocatan Server"
 msgstr "Créer un nouveau serveur Gnocatan"
 
-#: client/connect.c:707
+#: client/gtk/connect.c:712
 msgid "Host"
 msgstr "Adresse"
 
-#: client/connect.c:708
+#: client/gtk/connect.c:713
 msgid "Port"
 msgstr "Port"
 
-#: client/connect.c:709
+#: client/gtk/connect.c:714
 msgid "Version"
 msgstr "Version"
 
-#: client/connect.c:710
+#: client/gtk/connect.c:715 client/gtk/gold.c:228
 msgid "Max"
 msgstr "Max."
 
-#: client/connect.c:711
+#: client/gtk/connect.c:716
 msgid "Curr"
 msgstr "Cour."
 
-#: client/connect.c:712
+#: client/gtk/connect.c:717
 msgid "Terrain"
 msgstr "Carte"
 
-#: client/connect.c:713
+#: client/gtk/connect.c:718
 msgid "Vic. Points"
 msgstr "Pts de Vic."
 
-#: client/connect.c:715
+#: client/gtk/connect.c:720
 msgid "Map Name"
 msgstr "Nom de la carte"
 
-#: client/connect.c:719
+#: client/gtk/connect.c:724
 msgid "Current Gnocatan Servers"
 msgstr "Les serveurs Gnocatan actuels"
 
-#: client/connect.c:913 client/gui.c:856
+#: client/gtk/connect.c:918 client/gtk/gui.c:90
 msgid "Connect to Gnocatan server"
 msgstr "Se connecter au serveur Gnocatan"
 
-#: client/connect.c:936
+#: client/gtk/connect.c:941 server/gnocatan-server-gtk.c:608
 msgid "Meta Server"
 msgstr "Meta-serveur"
 
-#: client/connect.c:952
+#: client/gtk/connect.c:957
 msgid "Query Meta Server"
 msgstr "Interroger le meta-serveur"
 
-#: client/connect.c:966
+#: client/gtk/connect.c:971
 msgid "Server Host"
 msgstr "Adresse du serveur"
 
-#: client/connect.c:984 server/gnocatan-server-gtk.c:453
+#: client/gtk/connect.c:989 server/gnocatan-server-gtk.c:578
 msgid "Server Port"
 msgstr "Port du serveur"
 
-#: client/connect.c:1007
+#: client/gtk/connect.c:1012
 msgid "Player Name"
 msgstr "Nom du joueur"
 
-#: client/connect.c:1067
+#: client/gtk/connect.c:1072
 msgid "Recent Servers"
 msgstr "Serveurs récents"
 
-#: client/develop.c:213
-msgid "Development Cards"
-msgstr "Cartes de développement"
-
-#: client/develop.c:243
-msgid "Play Card"
-msgstr "Jouer la carte"
-
-#: client/discard.c:138 client/plenty.c:108 client/quote.c:466
-#: client/trade.c:513
+#. less arrow
+#: client/gtk/discard.c:145 client/gtk/gold.c:116 client/gtk/plenty.c:116
+#: client/gtk/quote.c:466 client/gtk/trade.c:455
 msgid "<less"
 msgstr "<moins"
 
-#: client/discard.c:148 client/plenty.c:118 client/quote.c:476
-#: client/trade.c:523
+#. more arrow
+#: client/gtk/discard.c:155 client/gtk/gold.c:135 client/gtk/plenty.c:126
+#: client/gtk/quote.c:476 client/gtk/trade.c:465
 msgid "more>"
 msgstr "plus>"
 
-#: client/discard.c:183
+#: client/gtk/discard.c:190
 msgid "Discard resources"
 msgstr "Jeter les ressources"
 
-#: client/discard.c:203
+#: client/gtk/discard.c:210
 #, c-format
 msgid "You must discard %d resources"
 msgstr "Tu dois jeter %d ressources"
 
-#: client/discard.c:216
+#: client/gtk/discard.c:223
 msgid "Resources in hand"
 msgstr "Ressources en main"
 
-#: client/discard.c:223
+#: client/gtk/discard.c:230
 msgid "Discards"
 msgstr "Jeter"
 
-#: client/discard.c:236
+#: client/gtk/discard.c:243
 msgid "Total discards"
 msgstr "Total des cartes jetées"
 
-#: client/discard.c:339
+#: client/gtk/discard.c:346
 msgid "Waiting for players to discard"
 msgstr "En attente que les joueurs jetent leurs cartes"
 
-#: client/gameover.c:29
+#: client/gtk/gameover.c:36
 msgid "Game over"
 msgstr "Partie terminée"
 
-#: client/gameover.c:45
+#: client/gtk/gameover.c:52
 #, c-format
 msgid "%s has won the game with %d victory points!"
 msgstr "%s a gagné le jeu avec %d points de victoire!"
 
-#: client/gameover.c:47
+#: client/gtk/gameover.c:54
 #, c-format
 msgid "%s has won the game with %d victory points!\n"
 msgstr "%s a gagné le jeu avec %d points de victoire!\n"
 
-#: client/gameover.c:53
+#: client/gtk/gameover.c:60
 #, c-format
 msgid "All praise %s, Lord of All Gnocatan!"
 msgstr "Gloire à %s, Seigneur de Gnocatan!"
 
-#: client/gui.c:110
+#: client/gtk/gold.c:190
+msgid "Choose resources"
+msgstr ""
+
+#: client/gtk/gold.c:210
+msgid "You may choose 1 resource"
+msgstr ""
+
+#: client/gtk/gold.c:211
 #, c-format
-msgid "Points Needed to Win: %i"
-msgstr "Pts requis pour gagner: %i"
+msgid "You may choose %d resources"
+msgstr ""
 
-#: client/gui.c:347
-msgid "Map"
-msgstr "Carte"
+#: client/gtk/gold.c:235
+msgid "Take"
+msgstr ""
 
-#: client/gui.c:352
-msgid "Trade"
-msgstr "Echanges"
+#: client/gtk/gold.c:242
+msgid "Hand"
+msgstr ""
 
-#: client/gui.c:359 client/quote.c:603
-msgid "Quote"
-msgstr "Offre"
+#: client/gtk/gold.c:253 client/gtk/plenty.c:230
+msgid "Total resources"
+msgstr "Total des ressources"
 
-#: client/gui.c:366 client/legend.c:197
-msgid "Legend"
-msgstr "Légende"
+#: client/gtk/gold.c:333
+msgid "Waiting for players to choose"
+msgstr ""
 
-#: client/gui.c:374
-msgid "Welcome to Gnocatan"
-msgstr "Bienvenue à Gnocatan"
-
-#: client/gui.c:649
-msgid "Appearance"
-msgstr "Apparence"
-
-#: client/gui.c:651
-msgid "Show Toolbar As"
-msgstr "Montrer la barre d'outils comme"
-
-#: client/gui.c:655
-msgid "Text Only"
-msgstr "Seulement du texte"
-
-#: client/gui.c:656
-msgid "Icons Only"
-msgstr "Seulement des icônes"
-
-#: client/gui.c:657
-msgid "Both Icons and Text"
-msgstr "Des icônes et du texte"
-
-#: client/gui.c:659
-msgid "Display legend as page besides map?"
-msgstr "Afficher la légende en dessous de la carte?"
-
-#: client/gui.c:663
-msgid "Theme:"
-msgstr "Thème:"
-
-#: client/gui.c:697
-msgid "Color Settings"
-msgstr "Jeu de couleurs"
-
-#: client/gui.c:701
-msgid "Display messages in colors?"
-msgstr "Afficher les messages en couleur?"
-
-#: client/gui.c:702
-msgid "Display chat messages in user's color?"
-msgstr "Afficher les messages du chat dans les couleurs des utilisateurs?"
-
-#: client/gui.c:703
-msgid "Display player summary with colors?"
-msgstr "Afficher le résumé des joueurs en couleur?"
-
-#: client/gui.c:720
-msgid "Language"
-msgstr "Langue"
-
-#: client/gui.c:741
-msgid "Language setting takes full effect only after client restart!"
-msgstr "Le changement de langue prendra effet seulement après un redémarrage!"
-
-#: client/gui.c:856
+#: client/gtk/gui.c:90
 msgid "_Connect"
-msgstr "_Conection"
+msgstr "_Connection"
 
-#: client/gui.c:861
+#: client/gtk/gui.c:95
 msgid "_Admin"
 msgstr ""
 
-#: client/gui.c:861
+#: client/gtk/gui.c:95
 msgid "Administer Gnocatan server"
 msgstr ""
 
-#: client/gui.c:866
+#: client/gtk/gui.c:100
 msgid "Player _Name"
 msgstr "_Nom du joueur"
 
-#: client/gui.c:866
+#: client/gtk/gui.c:100
 msgid "Change your player name"
 msgstr "Renommer"
 
-#: client/gui.c:870
+#: client/gtk/gui.c:104
 msgid "_Settings"
 msgstr "_Paramètres"
 
-#: client/gui.c:870
+#: client/gtk/gui.c:104
 msgid "Gnocatan client settings"
 msgstr "Paramètres client Gnocatan"
 
-#: client/gui.c:873 server/gnocatan-server-gtk.c:43
+#: client/gtk/gui.c:107 server/gnocatan-server-gtk.c:90
 msgid "E_xit"
 msgstr "_Quitter"
 
-#: client/gui.c:873 server/gnocatan-server-gtk.c:43
+#: client/gtk/gui.c:107 server/gnocatan-server-gtk.c:90
 msgid "Exit the program"
 msgstr "Quitter le programme"
 
-#: client/gui.c:888
-msgid "The Gnocatan Game"
-msgstr "Le jeu Gnocatan"
+#: client/gtk/gui.c:121
+msgid "_Legend"
+msgstr "_Légende"
 
-#: client/gui.c:889 server/gnocatan-server-gtk.c:59
-msgid "(C) 2002 the Free Software Foundation"
-msgstr "(C) 2002 Free Software Foundation"
-
-#: client/gui.c:916
+#: client/gtk/gui.c:121
 msgid "Terrain legend and building costs"
 msgstr "Légende des terrains et coûts de construction"
 
-#: client/gui.c:919
+#: client/gtk/gui.c:124
 msgid "_Game Settings"
 msgstr "_Paramètres de la partie"
 
-#: client/gui.c:919
+#: client/gtk/gui.c:124
 msgid "Settings for the current game"
 msgstr "Paramètres de la partie actuelle"
 
-#: client/gui.c:922
+#: client/gtk/gui.c:127
 msgid "_Dice Histogram"
 msgstr "_Histogramme des lancers de dés"
 
-#: client/gui.c:922
+#: client/gtk/gui.c:127
 msgid "Histogram of dice rolls"
 msgstr "Histogramme des lancers de dés"
 
-#: client/gui.c:925
+#: client/gtk/gui.c:130
 msgid "_About Gnocatan"
 msgstr "_A propos de Gnocatan"
 
-#: client/gui.c:925
+#: client/gtk/gui.c:130
 msgid "Information about Gnocatan"
 msgstr "Informations à propose de Gnocatan"
 
-#: client/gui.c:936
+#: client/gtk/gui.c:141
 msgid "_Game"
 msgstr "_Partie"
 
-#: client/gui.c:937 server/gnocatan-server-gtk.c:85
+#: client/gtk/gui.c:142 server/gnocatan-server-gtk.c:132
 msgid "_Help"
 msgstr "_Aide"
 
-#: client/gui.c:966
+#: client/gtk/gui.c:173
 #, fuzzy
 msgid ""
 "Roll Dice\n"
 "(F1)"
 msgstr "Lancer les dés"
 
-#: client/gui.c:969
+#: client/gtk/gui.c:176
 #, fuzzy
 msgid ""
 "Trade\n"
 "(F2)"
 msgstr "Echanges"
 
-#: client/gui.c:972
+#: client/gtk/gui.c:179
 #, fuzzy
 msgid ""
 "Undo\n"
 "(F3)"
 msgstr "Annuler"
 
-#: client/gui.c:975
+#: client/gtk/gui.c:182
 #, fuzzy
 msgid ""
 "Finish\n"
 "(F4)"
 msgstr "Fin de tour"
 
-#: client/gui.c:979
+#: client/gtk/gui.c:186
 #, fuzzy
 msgid ""
 "Road\n"
 "(F5)"
 msgstr "Route"
 
-#: client/gui.c:982
+#: client/gtk/gui.c:189
 #, fuzzy
 msgid ""
 "Ship\n"
 "(F6)"
 msgstr "Bateau"
 
-#: client/gui.c:985
+#: client/gtk/gui.c:192
 msgid ""
 "Move Ship\n"
 "(F7)"
 msgstr "Déplacer 1 bateau"
 
-#: client/gui.c:988
+#: client/gtk/gui.c:195
 #, fuzzy
 msgid ""
 "Bridge\n"
 "(F8)"
 msgstr "Pont"
 
-#: client/gui.c:992
+#: client/gtk/gui.c:199
 #, fuzzy
 msgid ""
 "Settlement\n"
 "(F9)"
 msgstr "Colonie"
 
-#: client/gui.c:995
+#: client/gtk/gui.c:202
 msgid ""
 "City\n"
 "(F10)"
 msgstr "Ville"
 
-#: client/gui.c:998
+#: client/gtk/gui.c:205
 #, fuzzy
 msgid ""
 "Develop\n"
 "(F11)"
 msgstr "Carte de Dév."
 
-#: client/gui.c:1063
+#: client/gtk/gui.c:243
+#, c-format
+msgid "Points Needed to Win: %i"
+msgstr "Pts requis pour gagner: %i"
+
+#: client/gtk/gui.c:396 server/gnocatan-server-gtk.c:721
+msgid "Messages"
+msgstr "Messages"
+
+#: client/gtk/gui.c:489
+msgid "Map"
+msgstr "Carte"
+
+#: client/gtk/gui.c:494
+msgid "Trade"
+msgstr "Echanges"
+
+#: client/gtk/gui.c:501 client/gtk/quote.c:603
+msgid "Quote"
+msgstr "Offre"
+
+#: client/gtk/gui.c:508 client/gtk/legend.c:201
+msgid "Legend"
+msgstr "Légende"
+
+#: client/gtk/gui.c:516
+msgid "Welcome to Gnocatan"
+msgstr "Bienvenue à Gnocatan"
+
+#: client/gtk/gui.c:791
+msgid "Appearance"
+msgstr "Apparence"
+
+#: client/gtk/gui.c:793
+msgid "Show Toolbar As"
+msgstr "Montrer la barre d'outils comme"
+
+#: client/gtk/gui.c:797
+msgid "Text Only"
+msgstr "Seulement du texte"
+
+#: client/gtk/gui.c:798
+msgid "Icons Only"
+msgstr "Seulement des icônes"
+
+#: client/gtk/gui.c:799
+msgid "Both Icons and Text"
+msgstr "Des icônes et du texte"
+
+#: client/gtk/gui.c:801
+msgid "Display legend as page besides map?"
+msgstr "Afficher la légende en dessous de la carte?"
+
+#: client/gtk/gui.c:805
+msgid "Theme:"
+msgstr "Thème:"
+
+#: client/gtk/gui.c:839
+msgid "Color Settings"
+msgstr "Jeu de couleurs"
+
+#: client/gtk/gui.c:843
+msgid "Display messages in colors?"
+msgstr "Afficher les messages en couleur?"
+
+#: client/gtk/gui.c:844
+msgid "Display chat messages in user's color?"
+msgstr "Afficher les messages du chat dans les couleurs des utilisateurs?"
+
+#: client/gtk/gui.c:845
+msgid "Display player summary with colors?"
+msgstr "Afficher le résumé des joueurs en couleur?"
+
+#: client/gtk/gui.c:862
+msgid "Language"
+msgstr "Langue"
+
+#: client/gtk/gui.c:883
+msgid "Language setting takes full effect only after client restart!"
+msgstr "Le changement de langue prendra effet seulement après un redémarrage!"
+
+#: client/gtk/gui.c:1009
+msgid "The Gnocatan Game"
+msgstr "Le jeu Gnocatan"
+
+#: client/gtk/gui.c:1010 server/gnocatan-server-gtk.c:106
+msgid "(C) 2002 the Free Software Foundation"
+msgstr "(C) 2002 Free Software Foundation"
+
+#: client/gtk/gui.c:1011 server/gnocatan-server-gtk.c:107
+msgid "Gnocatan is based upon the excellent Settlers of Catan board game"
+msgstr ""
+
+#: client/gtk/gui.c:1100
 msgid " "
 msgstr " "
 
-#: client/gui.c:1083
+#: client/gtk/gui.c:1120
 msgid "Welcome to Gnocatan!"
 msgstr "Bienvenue à Gnocatan!"
 
-#: client/gui.c:1173
+#: client/gtk/gui.c:1151 client/gtk/gui.c:1187
+#: server/gnocatan-server-gtk.c:789
+#, c-format
+msgid "Warning: pixmap not found: %s\n"
+msgstr ""
+
+#: client/gtk/gui.c:1175
 msgid "Gnocatan"
 msgstr "Gnocatan"
 
-#: client/guimap.c:58
+#: client/gtk/guimap.c:67 client/gtk/theme.c:249
 #, c-format
 msgid "Could not find '%s' pixmap file.\n"
 msgstr ""
 
-#: client/guimap.c:73
+#: client/gtk/guimap.c:82 client/gtk/theme.c:256
 #, c-format
 msgid "Could not load '%s' pixmap file.\n"
 msgstr ""
 
-#: client/guimap.c:541 client/guimap.c:542 client/guimap.c:543
-#: client/guimap.c:544 client/guimap.c:545
+#: client/gtk/guimap.c:550 client/gtk/guimap.c:551 client/gtk/guimap.c:552
+#: client/gtk/guimap.c:553 client/gtk/guimap.c:554
 msgid "2:1"
 msgstr "2:1"
 
-#: client/guimap.c:541
+#: client/gtk/guimap.c:550
 msgid "B"
 msgstr "Argile"
 
-#: client/guimap.c:542
+#: client/gtk/guimap.c:551
 msgid "G"
 msgstr "Blé"
 
-#: client/guimap.c:543
+#: client/gtk/guimap.c:552
 msgid "O"
 msgstr "Pierre"
 
-#: client/guimap.c:544
+#: client/gtk/guimap.c:553
 msgid "W"
 msgstr "Laine"
 
-#: client/guimap.c:545
+#: client/gtk/guimap.c:554
 msgid "L"
 msgstr "Bois"
 
-#: client/guimap.c:546
+#: client/gtk/guimap.c:555
 msgid "3:1"
 msgstr "3:1"
 
-#: client/histogram.c:199
+#: client/gtk/histogram.c:206
 msgid ""
 "Rolls\n"
 "Percentage"
@@ -1253,497 +1451,389 @@ msgstr ""
 "Lancers\n"
 "Pourcentage"
 
-#: client/histogram.c:236 client/histogram.c:252
+#: client/gtk/histogram.c:243 client/gtk/histogram.c:259
 msgid "Dice Histogram"
 msgstr "Histogramme des lancers de dés"
 
-#: client/legend.c:23
+#: client/gtk/interface.c:623
+#, fuzzy
+msgid "Select the ship to steal from."
+msgstr "Choisis où voler."
+
+#: client/gtk/interface.c:624
+#, fuzzy
+msgid "Select the ship to steal from"
+msgstr "Choisis où voler"
+
+#: client/gtk/interface.c:640
+msgid "Select the building to steal from."
+msgstr "Choisis où voler."
+
+#: client/gtk/interface.c:641
+msgid "Select the building to steal from"
+msgstr "Choisis où voler"
+
+#: client/gtk/legend.c:32
 msgid "Hill"
 msgstr "Coline"
 
-#: client/legend.c:24
+#: client/gtk/legend.c:33
 msgid "Field"
 msgstr "Champs"
 
-#: client/legend.c:25
+#: client/gtk/legend.c:34
 msgid "Mountain"
 msgstr "Montagne"
 
-#: client/legend.c:26
+#: client/gtk/legend.c:35
 msgid "Pasture"
 msgstr "Pré"
 
-#: client/legend.c:27
+#: client/gtk/legend.c:36
 msgid "Forest"
 msgstr "Forêt"
 
-#: client/legend.c:28
+#: client/gtk/legend.c:37
 msgid "Desert"
 msgstr "Désert"
 
-#: client/legend.c:29
+#: client/gtk/legend.c:38
 msgid "Sea"
 msgstr "Mer"
 
-#: client/legend.c:30 client/resource.c:29
-msgid "Gold"
-msgstr "Or"
-
-#: client/legend.c:124
+#: client/gtk/legend.c:132
 msgid "Terrain Yield"
 msgstr "Production des terrains"
 
-#: client/legend.c:151
+#: client/gtk/legend.c:159
 msgid "Building Costs"
 msgstr "Coûts de construction"
 
-#: client/legend.c:170
+#: client/gtk/legend.c:176
 msgid "Road"
 msgstr "Route"
 
-#: client/legend.c:170
+#: client/gtk/legend.c:176
 msgid "brick + lumber"
 msgstr "argile + bois"
 
-#: client/legend.c:173
+#: client/gtk/legend.c:178
 msgid "Ship"
 msgstr "Bateau"
 
-#: client/legend.c:173
+#: client/gtk/legend.c:178
 msgid "wool + lumber"
 msgstr "laine + bois"
 
-#: client/legend.c:176
+#: client/gtk/legend.c:180
 msgid "Bridge"
 msgstr "Pont"
 
-#: client/legend.c:176
+#: client/gtk/legend.c:180
 msgid "brick + wool + lumber"
 msgstr "argile + laine + bois"
 
-#: client/legend.c:177
+#: client/gtk/legend.c:181
 msgid "brick + grain + wool + lumber"
 msgstr "argile + blé + laine + bois"
 
-#: client/legend.c:178
+#: client/gtk/legend.c:182
 msgid "2 grain + 3 ore"
 msgstr "2 blés + 3 pierres"
 
-#: client/legend.c:179
+#: client/gtk/legend.c:183
 msgid "Development Card"
 msgstr "Carte de développement"
 
-#: client/legend.c:179
+#: client/gtk/legend.c:183
 msgid "grain + ore + wool"
 msgstr "blé + pierre + laine"
 
-#: client/monopoly.c:94
+#: client/gtk/monopoly.c:101
 msgid "Select the resource you wish to monopolise."
 msgstr "Choissis la ressource que tu veux monopoliser"
 
-#: client/monopoly.c:103
+#: client/gtk/monopoly.c:110
 msgid "Resource Type"
 msgstr "Type de ressource"
 
-#: client/name.c:39
+#: client/gtk/name.c:46
 msgid "Change player name"
 msgstr "Renommer"
 
-#: client/name.c:61
+#: client/gtk/name.c:68
 msgid "Player Name:"
 msgstr "Nom du joueur:"
 
-#: client/player.c:150
-#, c-format
-msgid "Viewer %d"
-msgstr "Spectateur %d"
+#: client/gtk/offline.c:109
+msgid "Connecting"
+msgstr "Connection"
 
-#: client/player.c:152
-#, c-format
-msgid "viewer %d"
-msgstr "spectateur %d"
-
-#: client/player.c:438
-#, c-format
-msgid "New viewer: %s.\n"
-msgstr "Nouveau spectateur: %s.\n"
-
-#: client/player.c:496
-#, c-format
-msgid "%s has quit\n"
-msgstr "%s est parti!\n"
-
-#: client/player.c:606
-msgid "Player Summary"
-msgstr "Résumé des joueurs"
-
-#: client/player.c:686
-#, c-format
-msgid "Waiting for %s."
-msgstr "On attends %s."
-
-#: client/player.c:715
-msgid " stole a resource from "
-msgstr "vole une ressource à "
-
-#. tell the user
-#: client/player.c:1000
-#, c-format
-msgid "%s received %s.\n"
-msgstr "%s reçois %s.\n"
-
-#: client/player.c:1019
-msgid "server asks to lose invalid point.\n"
-msgstr ""
-
-#. tell the user the point is lost
-#: client/player.c:1028
-#, fuzzy, c-format
-msgid "%s lost %s.\n"
-msgstr "%s vole %s.\n"
-
-#: client/player.c:1051
-msgid "server asks to move invalid point.\n"
-msgstr ""
-
-#. tell the user about it
-#: client/player.c:1058
-#, fuzzy, c-format
-msgid "%s lost %s to %s.\n"
-msgstr "%s vole %s à %s.\n"
-
-#: client/plenty.c:182
+#: client/gtk/plenty.c:190
 msgid "Please take two resources from the bank"
 msgstr "Tu peux prendre deux ressources à la banque"
 
-#: client/plenty.c:191
+#: client/gtk/plenty.c:199
 msgid "Warning - there are shortages."
 msgstr "Attention! Il y a une rupture de stocks!"
 
-#: client/plenty.c:204
+#: client/gtk/plenty.c:212
 msgid "Resource to take"
 msgstr "Ressource à prendrer"
 
-#: client/plenty.c:222
-msgid "Total resources"
-msgstr "Total des ressources"
+#: client/gtk/player.c:417
+msgid "Player Summary"
+msgstr "Résumé des joueurs"
 
-#: client/quote.c:239 client/trade.c:338
+#: client/gtk/quote.c:245 client/gtk/trade.c:280
 msgid "Rejected trade"
 msgstr "Offre refusée"
 
-#: client/quote.c:375
+#: client/gtk/quote.c:361
 #, c-format
 msgid "%s has %s, and is looking for %s"
 msgstr "%s a %s et cherche %s"
 
-#: client/quote.c:565 client/trade.c:804
+#: client/gtk/quote.c:565 client/gtk/trade.c:745
 msgid "I Want"
 msgstr "Je voudrais"
 
-#: client/quote.c:582 client/trade.c:821
+#: client/gtk/quote.c:582 client/gtk/trade.c:762
 msgid "Give Them"
 msgstr "Accepter"
 
-#: client/quote.c:608
+#: client/gtk/quote.c:608
 msgid "Delete"
 msgstr "Effacer"
 
-#: client/resource.c:27
-msgid "no Resource (bug)"
-msgstr "pas de ressources (bug)"
-
-#: client/resource.c:27
-msgid "No resource (bug)"
-msgstr "Pas de ressources (bug)"
-
-#: client/resource.c:28
-msgid "any resource (bug)"
-msgstr "n'importe quel ressource (bug)"
-
-#: client/resource.c:28
-msgid "Any resource (bug)"
-msgstr "N'importe quel ressource (bug)"
-
-#: client/resource.c:29
-msgid "gold"
-msgstr "or"
-
-#: client/resource.c:33
-msgid "a brick card"
-msgstr "une carte argile"
-
-#: client/resource.c:33
-#, c-format
-msgid "%d brick cards"
-msgstr "%d cartes argile"
-
-#: client/resource.c:34
-msgid "a grain card"
-msgstr "une carte blé"
-
-#: client/resource.c:34
-#, c-format
-msgid "%d grain cards"
-msgstr "%d cartes blés"
-
-#: client/resource.c:35
-msgid "an ore card"
-msgstr "une carte pierre"
-
-#: client/resource.c:35
-#, c-format
-msgid "%d ore cards"
-msgstr "%d cartes pierre"
-
-#: client/resource.c:36
-msgid "a wool card"
-msgstr "une carte laine"
-
-#: client/resource.c:36
-#, c-format
-msgid "%d wool cards"
-msgstr "%d cartes laine"
-
-#: client/resource.c:37
-msgid "a lumber card"
-msgstr "une carte bois"
-
-#: client/resource.c:37
-#, c-format
-msgid "%d lumber cards"
-msgstr "%d cartes bois"
-
-#: client/resource.c:183
-#, c-format
-msgid ", and %s"
-msgstr " et %s"
-
-#: client/resource.c:187
-#, c-format
-msgid "%s, "
-msgstr "%s, "
-
-#: client/resource.c:235
-#, c-format
-msgid "player %d resource count wrong: server=%d, me=%d"
-msgstr ""
-
-#: client/resource.c:248
-msgid "resources wrong:"
-msgstr ""
-
-#: client/resource.c:252
-#, c-format
-msgid ""
-"\n"
-"%s: server=%d, me=%d"
-msgstr ""
-
-#: client/resource.c:290
+#: client/gtk/resource.c:37
 msgid "Resources"
 msgstr "Ressources"
 
-#: client/resource.c:369
+#: client/gtk/resource.c:116
 msgid "Total"
 msgstr ""
 
-#: client/robber.c:166
-#, c-format
-msgid "%s moved the robber.\n"
-msgstr "%s déplace le voleur.\n"
+#: client/gtk/settingscreen.c:59 server/gnocatan-server-gtk.c:153
+msgid "Yes"
+msgstr "Oui"
 
-#: client/robber.c:169 client/robber.c:178
-msgid "Continue with your turn."
-msgstr "Continue ton tour."
+#: client/gtk/settingscreen.c:61 server/gnocatan-server-gtk.c:153
+#: server/gnocatan-server-gtk.c:600
+msgid "No"
+msgstr "Non"
 
-#: client/robber.c:175
-#, c-format
-msgid "%s moved the pirate.\n"
-msgstr "%s déplace le pirate.\n"
-
-#: client/robber.c:183
-#, c-format
-msgid "%s must move the robber."
-msgstr "%s dois déplacer le voleur."
-
-#: client/settingscreen.c:61
+#: client/gtk/settingscreen.c:70
 msgid "Unknown"
 msgstr "Inconnu"
 
-#: client/settingscreen.c:89
+#: client/gtk/settingscreen.c:99
 msgid "Current Game Settings"
 msgstr "Paramètres de la partie en cours"
 
-#: client/settingscreen.c:105
+#: client/gtk/settingscreen.c:116
 msgid "No game in progress..."
 msgstr "Pas de parties en cours..."
 
-#: client/settingscreen.c:122
+#: client/gtk/settingscreen.c:133
 msgid "General Settings"
 msgstr "Paramètres généraux"
 
-#: client/settingscreen.c:133
+#: client/gtk/settingscreen.c:144
 msgid "Number of players:"
 msgstr "Nombre de joueurs:"
 
-#: client/settingscreen.c:135
+#: client/gtk/settingscreen.c:146
 msgid "Victory Point Target:"
 msgstr "Pts de Victoire requis"
 
-#: client/settingscreen.c:137
+#: client/gtk/settingscreen.c:148
 msgid "Random Terrain?"
 msgstr "Carte au hazard?"
 
-#: client/settingscreen.c:139
+#: client/gtk/settingscreen.c:150
 msgid "Interplayer Trading Allowed?"
 msgstr "Echanges en joueurs autorisés?"
 
-#: client/settingscreen.c:141
+#: client/gtk/settingscreen.c:152
 msgid "Trading allowed only before build/buy?"
 msgstr "Echanges autorisés avant la construction?"
 
-#: client/settingscreen.c:143
+#: client/gtk/settingscreen.c:154
 msgid "Amount of Each Resource:"
 msgstr "Nombre de chaque ressource:"
 
-#: client/settingscreen.c:156
+#: client/gtk/settingscreen.c:167
 msgid "Sevens Rule:"
 msgstr "Règle des septs:"
 
-#: client/settingscreen.c:159
+#: client/gtk/settingscreen.c:170
 msgid "Building Quotas"
 msgstr "Quotas de constructions"
 
-#: client/settingscreen.c:170
+#: client/gtk/settingscreen.c:181
 msgid "Roads:"
 msgstr "Routes:"
 
-#: client/settingscreen.c:172
+#: client/gtk/settingscreen.c:183
 msgid "Settlements:"
 msgstr "Colonies:"
 
-#: client/settingscreen.c:174
+#: client/gtk/settingscreen.c:185
 msgid "Cities:"
 msgstr "Villes:"
 
-#: client/settingscreen.c:176
+#: client/gtk/settingscreen.c:187
 msgid "Ships:"
 msgstr "Bateaux:"
 
-#: client/settingscreen.c:178
+#: client/gtk/settingscreen.c:189
 msgid "Bridges:"
 msgstr "Ponts:"
 
-#: client/settingscreen.c:185
+#: client/gtk/settingscreen.c:196
 msgid "Development Card Deck"
 msgstr "Talon de développement"
 
-#: client/settingscreen.c:196
+#: client/gtk/settingscreen.c:207
 msgid "Road Building Cards:"
 msgstr "Carte Construction de routes:"
 
-#: client/settingscreen.c:198
+#: client/gtk/settingscreen.c:209
 msgid "Monopoly Cards:"
 msgstr "Carte Monopole:"
 
-#: client/settingscreen.c:200
+#: client/gtk/settingscreen.c:211
 msgid "Year of Plenty Cards:"
 msgstr "Carte Année faste:"
 
-#: client/settingscreen.c:202
+#: client/gtk/settingscreen.c:213
 msgid "Chapel Cards:"
 msgstr "Carte Chapelle:"
 
-#: client/settingscreen.c:204
+#: client/gtk/settingscreen.c:215
 msgid "University of Catan Cards:"
 msgstr "Carte Université de Gnocatan:"
 
-#: client/settingscreen.c:206
+#: client/gtk/settingscreen.c:217
 msgid "Governor's House Cards:"
 msgstr "Carte Palais du Gouverneur:"
 
-#: client/settingscreen.c:208
+#: client/gtk/settingscreen.c:219
 msgid "Library Cards:"
 msgstr "Carte Bibliothèque:"
 
-#: client/settingscreen.c:210
+#: client/gtk/settingscreen.c:221
 msgid "Market Cards:"
 msgstr "Cartas de mercado:"
 
-#: client/settingscreen.c:212
+#: client/gtk/settingscreen.c:223
 msgid "Soldier Cards:"
 msgstr "Carte chevalier:"
 
-#: client/setup.c:139
-#, c-format
-msgid "Setup for %s.\n"
+#: client/gtk/theme.c:410
+msgid "variable name missing"
 msgstr ""
 
-#: client/setup.c:150
+#: client/gtk/theme.c:421
 #, c-format
-msgid "Double setup for %s.\n"
+msgid "unknown config variable '%s'"
 msgstr ""
 
-#: client/trade.c:229
-#, c-format
-msgid "ask for %s"
-msgstr "demande %s"
+#: client/gtk/theme.c:429
+msgid "'=' missing"
+msgstr ""
 
-#: client/trade.c:233
+#: client/gtk/theme.c:446
+msgid "missing value"
+msgstr ""
+
+#: client/gtk/theme.c:474
+msgid "color must be 'none' or start with '#'"
+msgstr ""
+
+#: client/gtk/theme.c:481
+msgid "color value contains non-hex characters"
+msgstr ""
+
+#: client/gtk/theme.c:486
+msgid "bits per color component must be 4, 8, 12, or 16"
+msgstr ""
+
+#: client/gtk/theme.c:578
+#, c-format
+msgid "bad scaling mode '%s'"
+msgstr ""
+
+#: client/gtk/theme.c:584
+#, c-format
+msgid "unexpected rest at end of line: '%s'"
+msgstr ""
+
+#: client/gtk/theme.c:592
+#, c-format
+msgid "Theme %s not loaded due to errors\n"
+msgstr ""
+
+#: client/gtk/trade.c:173
+#, c-format
+msgid "ask for %s for free"
+msgstr "demande %s gratuitement"
+
+#: client/gtk/trade.c:177
 #, c-format
 msgid "give %s for free"
 msgstr "donne %s gratuitement"
 
-#: client/trade.c:237
+#: client/gtk/trade.c:181
 #, c-format
 msgid "give %s for %s"
 msgstr "donne %s contre %s"
 
-#: client/trade.c:284
+#: client/gtk/trade.c:226
 #, c-format
 msgid "%d:1 %s for %s"
 msgstr "%d:1 %s pour %s"
 
-#: client/trade.c:842
+#: client/gtk/trade.c:783
 msgid "Call For Quotes"
 msgstr "Appel d'offre"
 
-#: client/trade.c:874
+#: client/gtk/trade.c:815
 msgid "Accept Quote"
 msgstr "Accepter l'offre"
 
-#: client/trade.c:879
+#: client/gtk/trade.c:820
 msgid "Finish Trading"
 msgstr "Fin des échanges"
 
-#: common/log.c:64
+#: common/log.c:74
 msgid "*ERROR* "
 msgstr "*ERREUR*"
 
-#: common/log.c:67
+#: common/log.c:77
 msgid "- "
 msgstr "- "
 
-#: common/log.c:70
+#: common/log.c:80
 msgid "CHAT: "
 msgstr "Chat:"
 
-#: common/log.c:74
+#: common/log.c:84
 msgid "** UNKNOWN MESSAGE TYPE ** "
 msgstr "** TYPE DE MESSAGE INCONNU ** "
 
-#: common/network.c:152
+#: common/network.c:163
 #, c-format
 msgid "Error checking connect status: %s\n"
 msgstr ""
 
-#: common/network.c:157
+#: common/network.c:168
 #, c-format
 msgid "Error connecting to host '%s': %s\n"
 msgstr ""
 
-#: common/network.c:183 common/network.c:227
+#: common/network.c:194 common/network.c:238
 #, c-format
 msgid "Error writing socket: %s\n"
 msgstr ""
@@ -1753,117 +1843,218 @@ msgstr ""
 #. * reading. Assume something has gone wrong and
 #. * disconnect
 #.
-#: common/network.c:275
+#: common/network.c:286
 msgid "Read buffer overflow - disconnecting\n"
 msgstr ""
 
-#: common/network.c:293
+#: common/network.c:304
 #, c-format
 msgid "Error reading socket: %s\n"
 msgstr ""
 
-#: common/network.c:382
+#: common/network.c:393
 #, c-format
 msgid "Cannot resolve %s port %s: %s\n"
 msgstr ""
 
-#: common/network.c:386
+#: common/network.c:397
 #, c-format
 msgid "Cannot resolve %s port %s: host not found\n"
 msgstr ""
 
-#: common/network.c:393
+#: common/network.c:404
 #, c-format
 msgid "Error creating socket: %s\n"
 msgstr ""
 
-#: common/network.c:397
+#: common/network.c:408
 #, c-format
 msgid "Error setting socket close-on-exec: %s\n"
 msgstr ""
 
-#: common/network.c:404 server/server.c:127
+#: common/network.c:415 server/server.c:138
 #, c-format
 msgid "Error setting socket non-blocking: %s\n"
 msgstr ""
 
-#: common/network.c:417
+#: common/network.c:428
 #, c-format
 msgid "Error connecting to %s: %s\n"
 msgstr ""
 
-#: common/state.c:174
+#: common/state.c:185
 #, c-format
 msgid "Connecting to %s, port %s\n"
 msgstr ""
 
-#: server/gnocatan-server-gtk.c:58
+#: server/gnocatan-server-gtk.c:105
 msgid "The Gnocatan Game Server"
 msgstr ""
 
-#: server/gnocatan-server-gtk.c:72
+#: server/gnocatan-server-gtk.c:119
 msgid "_About Gnocatan Server"
 msgstr ""
 
-#: server/gnocatan-server-gtk.c:73
+#: server/gnocatan-server-gtk.c:120
 msgid "Information about Gnocatan Server"
 msgstr ""
 
-#: server/gnocatan-server-gtk.c:84
+#: server/gnocatan-server-gtk.c:131
 msgid "_File"
 msgstr "_Fichier"
 
-#: server/gnocatan-server-gtk.c:556
+#: server/gnocatan-server-gtk.c:251
+#, fuzzy
+msgid "Start server"
+msgstr "Démarrer le serveur"
+
+#: server/gnocatan-server-gtk.c:251
+msgid "Stop server"
+msgstr ""
+
+#: server/gnocatan-server-gtk.c:287
+#, c-format
+msgid "Player %s from %s entered\n"
+msgstr ""
+
+#: server/gnocatan-server-gtk.c:293
+#, c-format
+msgid "Player %s from %s left\n"
+msgstr ""
+
+#: server/gnocatan-server-gtk.c:299
+#, c-format
+msgid "Player %d is now %s\n"
+msgstr "Joueur %d s'appelle maintenant %s.\n"
+
+#: server/gnocatan-server-gtk.c:385
+msgid "Game Parameters"
+msgstr "Paramètres du jeu"
+
+#. Now we can format the value ourselves.
+#: server/gnocatan-server-gtk.c:530
+msgid "Viewer"
+msgstr "Spectateur"
+
+#: server/gnocatan-server-gtk.c:530
+msgid "Player"
+msgstr "Joueur"
+
+#: server/gnocatan-server-gtk.c:593
+msgid "Register Server"
+msgstr "Enregistrer le serveur"
+
+#: server/gnocatan-server-gtk.c:623
+msgid "Reported Hostname"
+msgstr ""
+
+#: server/gnocatan-server-gtk.c:662
+msgid "Start Server"
+msgstr "Démarrer le serveur"
+
+#: server/gnocatan-server-gtk.c:669
 msgid "Add Computer Player"
 msgstr "Ajouter un joueur IA"
 
+#: server/gnocatan-server-gtk.c:676
+msgid "Players Connected"
+msgstr "Joueurs connectés"
+
+#. Now create columns
+#: server/gnocatan-server-gtk.c:701
+msgid "Connected"
+msgstr ""
+
+#: server/gnocatan-server-gtk.c:703
+msgid "Name"
+msgstr "Nom"
+
+#: server/gnocatan-server-gtk.c:705
+msgid "Location"
+msgstr "Adresse"
+
+#: server/gnocatan-server-gtk.c:709
+msgid "Number"
+msgstr ""
+
+#: server/gnocatan-server-gtk.c:714
+msgid "Role"
+msgstr ""
+
 #. Create the application window
 #.
-#: server/gnocatan-server-gtk.c:645
+#: server/gnocatan-server-gtk.c:778
 msgid "Gnocatan Server"
 msgstr "Serveur Gnocatan"
 
-#: server/gnocatan-server.c:101
+#: server/gnocatan-server.c:133
 msgid "Missing game directory\n"
 msgstr ""
 
-#: server/meta.c:167
+#: server/meta.c:178
 #, c-format
 msgid "Register with meta-server at %s, port %s\n"
 msgstr ""
 
-#: server/player.c:258
+#: server/player.c:222
+#, c-format
+msgid "Player from %s is refused: game is over\n"
+msgstr ""
+
+#: server/player.c:271
 msgid "Name not changed: new name is already in use"
 msgstr ""
 
-#: server/server.c:95
+#: server/player.c:552
+#, c-format
+msgid "NOTE player %d (%s) has reconnected.\n"
+msgstr ""
+
+#: server/player.c:619
+#, fuzzy
+msgid "Sorry, game is over."
+msgstr "La partie est finie."
+
+#: server/server.c:106
 #, c-format
 msgid "Error creating struct addrinfo: %s"
 msgstr ""
 
-#: server/server.c:122
+#: server/server.c:133
 #, c-format
 msgid "Error creating listening socket: %s\n"
 msgstr ""
 
-#: server/server.c:134
+#: server/server.c:145
 #, c-format
 msgid "Error during listen on socket: %s\n"
 msgstr ""
 
-#: server/server.c:191
+#: server/server.c:203
 #, c-format
 msgid "Error accepting connection: %s\n"
 msgstr ""
 
-#: server/server.c:199
+#: server/server.c:211
 #, c-format
 msgid "Error getting peer name: %s\n"
 msgstr ""
 
-#: server/server.c:201 server/server.c:209
+#: server/server.c:213 server/server.c:221
 msgid "unknown"
 msgstr ""
+
+#~ msgid "no Resource (bug)"
+#~ msgstr "pas de ressources (bug)"
+
+#~ msgid "%s took %s from"
+#~ msgstr "%s prends %s à"
+
+#~ msgid " %s.\n"
+#~ msgstr " %s.\n"
+
+#~ msgid " stole a resource from "
+#~ msgstr "vole une ressource à "
 
 #, fuzzy
 #~ msgid "%s moved a ship back.\n"

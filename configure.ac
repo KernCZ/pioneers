@@ -1,9 +1,29 @@
+# Gnocatan - Implementation of the excellent Settlers of Catan board game.
+#   Go buy a copy.
+#
+# Copyright (C) 1999 the Free Software Foundation
+# Copyright (C) 2003 Bas Wijnen <b.wijnen@phys.rug.nl>
+# 
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
 AC_INIT
 AC_PREREQ(2.50)
 AC_CONFIG_SRCDIR([client])
 
 AM_CONFIG_HEADER(config.h)
-AM_INIT_AUTOMAKE([gnocatan], [0.8.0.0])
+AM_INIT_AUTOMAKE([gnocatan], [0.8.1.0])
 
 PROTOCOL_VERSION="\"0.8.0\""
 META_PROTOCOL_VERSION="\"1.0\""
@@ -42,7 +62,7 @@ AC_DEFINE_UNQUOTED(META_PROTOCOL_VERSION, $META_PROTOCOL_VERSION,
                    [Protocol version used by the meta server])
 
 ## internationalization support
-ALL_LINGUAS="de es fr"
+ALL_LINGUAS="de es fr nl"
 AM_GNU_GETTEXT(use-libtool)
 AC_LINK_FILES($nls_cv_header_libgt, $nls_cv_header_intl)
 AC_DEFINE_UNQUOTED(ALL_LINGUAS, "$ALL_LINGUAS", [Available languages])
@@ -53,6 +73,7 @@ AC_SUBST(GNOME2_CFLAGS)
 AC_SUBST(GNOME2_LIBS)
 
 PKG_CHECK_MODULES(GLIB2, glib-2.0)
+AC_SUBST(GLIB2_CFLAGS)
 AC_SUBST(GLIB2_LIBS)
 
 AC_CONFIG_FILES([
@@ -61,6 +82,13 @@ AC_CONFIG_FILES([
         intl/Makefile
         common/Makefile
         client/Makefile
+        client/common/Makefile
+	client/gtk/Makefile
+	client/gtk/data/Makefile
+	client/gtk/data/themes/Makefile
+	client/gtk/data/themes/FreeCIV-like/Makefile
+	client/gtk/data/themes/Iceland/Makefile
+	client/gtk/data/themes/Tiny/Makefile
         client/help/Makefile
         client/help/C/Makefile
         server/Makefile

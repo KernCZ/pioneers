@@ -1,12 +1,24 @@
-/*
- * Gnocatan: a fun game.
- * (C) 1999 the Free Software Foundation
+/* Gnocatan - Implementation of the excellent Settlers of Catan board game.
+ *   Go buy a copy.
  *
- * Author: Dave Cole.
+ * Copyright (C) 1999 the Free Software Foundation
+ * Copyright (C) 2003 Bas Wijnen <b.wijnen@phys.rug.nl>
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
- * Implementation of the excellent Settlers of Catan board game.  Go
- * buy a copy.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+
 #ifndef __state_h
 #define __state_h
 
@@ -76,6 +88,10 @@
  *
  * sm_pop()
  *	Pop the top state off the stack and make it the current state.
+ *
+ * sm_multipop()
+ * 	Pop a number of states off the stack and set a new current state
+ * 	accordingly.
  *
  * sm_pop_all()
  *	Clear the state stack, set the current state to the state that
@@ -186,6 +202,7 @@ void sm_send(StateMachine *sm, gchar *fmt, ...);
 void sm_goto(StateMachine *sm, StateFunc new_state);
 void sm_push(StateMachine *sm, StateFunc new_state);
 void sm_pop(StateMachine *sm);
+void sm_multipop(StateMachine *sm, gint depth);
 void sm_pop_all(StateMachine *sm);
 void sm_pop_all_and_goto(StateMachine *sm, StateFunc new_state);
 StateFunc sm_current(StateMachine *sm);

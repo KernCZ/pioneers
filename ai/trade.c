@@ -77,13 +77,13 @@ static void trade_format_quote(QuoteInfo *quote, gchar *desc)
 		desc += strlen(desc);
 	}
 
-	strcpy(desc, " for ");
-	desc += strlen(desc);
-
 	if (empty_list(quote->var.d.receive))
-		strcpy(desc, "free");
-	else
+		strcpy(desc, _("for free") );
+	else {
+		strcpy(desc, _(" for ") );
+		desc += strlen(desc);
 		format_list(desc, quote->var.d.receive);
+	}
 }
 
 gint quote_next_num()

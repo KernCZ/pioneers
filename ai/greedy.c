@@ -1670,7 +1670,7 @@ static void greedy_start_game (GameParams *params)
 	/* ai cannot handle gold: exit if the board contains it */
 	if (map_traverse (params->map, &greedy_check_gold, NULL) == TRUE) {
 		log_message(MSG_INFO, "AI does not support gold.  Exiting.\n");
-		ai_chat (_("Sorry, I do not know how to play with gold\n"));
+		ai_chat (_("Sorry, I do not know how to play with gold.\n"));
 		exit (1);
 	}
 }
