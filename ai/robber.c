@@ -20,7 +20,6 @@ static Hex *new_robber;		/* where we just tried to place robber */
 void robber_move_on_map(gint x, gint y)
 {
 	Hex *hex = map_hex(map, x, y);
-	Hex *old_robber = map_robber_hex(map);
 
 	map_move_robber(map, x, y);
 

@@ -23,6 +23,7 @@ typedef struct {
 	gint num;
 } TradeRow;
 
+#if 0 /* unused */
 static TradeRow we_supply_rows[NO_RESOURCE];
 static TradeRow we_receive_rows[NO_RESOURCE];
 
@@ -30,6 +31,7 @@ static QuoteList *quote_list;	/* domestic trade quotes */
 static MaritimeInfo maritime_info;
 static gboolean in_domestic_trade;
 static QuoteInfo *selected_quote;
+#endif
 
 
 

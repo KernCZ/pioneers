@@ -47,12 +47,18 @@ static gboolean mode_year_of_plenty(StateMachine *sm, gint event);
 static gboolean mode_robber(StateMachine *sm, gint event);
 static gboolean mode_discard(StateMachine *sm, gint event);
 static gboolean mode_turn(StateMachine *sm, gint event);
+#if 0 /* unused */
 static gboolean mode_turn_rolled(StateMachine *sm, gint event);
+#endif
 static gboolean mode_turn_done_response(StateMachine *sm, gint event);
+#if 0 /* unused */
 static gboolean mode_maritime_trade(StateMachine *sm, gint event);
 static gboolean mode_domestic_trade(StateMachine *sm, gint event);
+#endif
 static gboolean mode_domestic_quote(StateMachine *sm, gint event);
+#if 0 /* unused */
 static gboolean mode_domestic_monitor(StateMachine *sm, gint event);
+#endif
 static gboolean mode_game_over(StateMachine *sm, gint event);
 static gboolean mode_buy_develop_response(StateMachine *sm, gint event);
 static gboolean mode_trade_maritime_response(StateMachine *sm, gint event);
@@ -590,6 +596,7 @@ static gboolean mode_build_response(StateMachine *sm, gint event)
 	return FALSE;
 }
 
+#if 0 /* unused */
 /* This is called when the user presses the left-mouse-button on a
  * valid position to place a road during setup.  Tell the server that
  * we wish to place the road, then wait for response.
@@ -623,6 +630,7 @@ static void build_settlement_cb(Node *node, gint player_num)
 	sm_send(SM(), "build settlement %d %d %d\n", node->x, node->y, node->pos);
 	sm_push(SM(), mode_build_response);
 }
+#endif
 
 /*----------------------------------------------------------------------
  * Setup phase handling
@@ -657,7 +665,6 @@ static gboolean mode_setup_done_response(StateMachine *sm, gint event)
 
 static gboolean mode_setup(StateMachine *sm, gint event)
 {
-	BuildRec *rec;
 	char *tmp;
 
 	sm_state_name(sm, "mode_setup");
@@ -795,6 +802,7 @@ static gboolean mode_robber_response(StateMachine *sm, gint event)
 	return FALSE;
 }
 
+#if 0 /* unused */
 static void move_robber(gint x, gint y, gint victim_num)
 {
 	sm_send(SM(), "move-robber %d %d %d\n", x, y, victim_num);
@@ -824,6 +832,7 @@ static void place_robber_cb(Hex *hex, gint player_num)
 		break;
 	}
 }
+#endif
 
 /* Get user to place robber
  */
@@ -907,7 +916,6 @@ static gboolean mode_road_building_done_response(StateMachine *sm, gint event)
 
 static gboolean mode_road_building(StateMachine *sm, gint event)
 {
-	BuildRec *rec;
 	char *tmp;
 
 	sm_state_name(sm, "mode_road_building");
@@ -940,6 +948,7 @@ static gboolean mode_road_building(StateMachine *sm, gint event)
  * Monopoly development card
  */
 
+#if 0 /* unused */
 /* Response to "monopoly"
  */
 static gboolean mode_monopoly_response(StateMachine *sm, gint event)
@@ -960,6 +969,7 @@ static gboolean mode_monopoly_response(StateMachine *sm, gint event)
 	}
 	return FALSE;
 }
+#endif
 
 static gboolean mode_monopoly(StateMachine *sm, gint event)
 {
@@ -1273,11 +1283,13 @@ static gboolean mode_buy_develop_response(StateMachine *sm, gint event)
 	return FALSE;
 }
 
+#if 0 /* unused */
 static void build_city_cb(Node *node, gint player_num)
 {
 	sm_send(SM(), "build city %d %d %d\n", node->x, node->y, node->pos);
 	sm_push(SM(), mode_build_response);
 }
+#endif
 
 /* Response to an "done" during turn
  */
@@ -1301,10 +1313,9 @@ static gboolean mode_turn_done_response(StateMachine *sm, gint event)
 	return FALSE;
 }
 
+#if 0 /* unused */
 static gboolean mode_turn_rolled(StateMachine *sm, gint event)
 {
-	BuildRec *rec;
-
 	sm_state_name(sm, "mode_turn_rolled");
 	switch (event) {
 	case SM_ENTER:
@@ -1320,6 +1331,7 @@ static gboolean mode_turn_rolled(StateMachine *sm, gint event)
 	}
 	return FALSE;
 }
+#endif
 
 /*----------------------------------------------------------------------
  * Trade processing - all trading done inside a nested state machine
@@ -1350,6 +1362,7 @@ static gboolean check_trading(StateMachine *sm)
 	return FALSE;
 }
 
+#if 0 /* unused */
 /* Handle response to call for domestic trade quotes
  */
 static gboolean mode_trade_call_response(StateMachine *sm, gint event)
@@ -1374,6 +1387,7 @@ static gboolean mode_trade_call_response(StateMachine *sm, gint event)
 	}
 	return FALSE;
 }
+#endif
 
 /* Handle response to maritime trade
  */
@@ -1402,10 +1416,9 @@ static gboolean mode_trade_maritime_response(StateMachine *sm, gint event)
 	return FALSE;
 }
 
+#if 0 /* unused */
 static gboolean mode_maritime_trade(StateMachine *sm, gint event)
 {
-	QuoteInfo *quote;
-
 	sm_state_name(sm, "mode_maritime_trade");
 	switch (event) {
 	case SM_INIT:
@@ -1497,8 +1510,6 @@ static gboolean mode_domestic_finish_response(StateMachine *sm, gint event)
 
 static gboolean mode_domestic_trade(StateMachine *sm, gint event)
 {
-	QuoteInfo *quote;
-
 	sm_state_name(sm, "mode_domestic_trade");
 	switch (event) {
 	case SM_INIT:
@@ -1512,6 +1523,7 @@ static gboolean mode_domestic_trade(StateMachine *sm, gint event)
 	}
 	return FALSE;
 }
+#endif
 
 /*----------------------------------------------------------------------
  * Quote processing - all quoting done inside a nested state machine.
@@ -1555,6 +1567,7 @@ static gboolean check_quoting(StateMachine *sm)
 	return FALSE;
 }
 
+#if 0 /* unused */
 /* Handle response to domestic quote finish
  */
 static gboolean mode_quote_finish_response(StateMachine *sm, gint event)
@@ -1624,13 +1637,12 @@ static gboolean mode_quote_delete_response(StateMachine *sm, gint event)
 	}
 	return FALSE;
 }
+#endif
 
 /* Another player has called for quotes for domestic trade
  */
 static gboolean mode_domestic_quote(StateMachine *sm, gint event)
 {
-	QuoteInfo *quote;
-
 	sm_state_name(sm, "mode_domestic_quote");
 	switch (event) {
 	case SM_INIT:
@@ -1645,6 +1657,7 @@ static gboolean mode_domestic_quote(StateMachine *sm, gint event)
 	return FALSE;
 }
 
+#if 0 /* unused */
 /* We have rejected domestic trade, now just monitor
  */
 static gboolean mode_domestic_monitor(StateMachine *sm, gint event)
@@ -1660,6 +1673,7 @@ static gboolean mode_domestic_monitor(StateMachine *sm, gint event)
 	}
 	return FALSE;
 }
+#endif
 
 /*----------------------------------------------------------------------
  * The game is over

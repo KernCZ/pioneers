@@ -132,7 +132,6 @@ static gboolean tournament_start_cb(gpointer data)
  */
 static gboolean talk_about_tournament_cb(gpointer data)
 {
-    int i;
     Player *player = (Player *)data;
 
     /* if game already started */
@@ -298,7 +297,6 @@ void player_revive(Player *newp, char *name)
 {
 	Game *game = newp->game;
 	GList *current = game->dead_players;
-	GList *newpl = NULL;
 	while (current)
 	{
 		Player *p = NULL;

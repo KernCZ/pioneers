@@ -47,8 +47,10 @@ static GdkColor token_colors[] = {
 	{ 0, 0x0000, 0xEE00, 0x7600 } /* green */
 };
 
+#if 0 /* unused */
 static GdkColor player_bg = { 0, 0xB000, 0xB000, 0xB000 };
 static GdkColor player_fg = { 0, 0x0000, 0x0000, 0xFF00 };
+#endif
 
 void player_init()
 {
@@ -112,7 +114,6 @@ static void refresh_victory_point_total(int player_num)
 	Player *player;
 	gint tot;
 	StatisticType type;
-	int row;
 	gchar points[16];
 
 	if (player_num < 0 || player_num >= numElem(players))
@@ -131,7 +132,6 @@ void player_modify_statistic(gint player_num, StatisticType type, gint num)
 {
 	Player *player = players + player_num;
 	gint value;
-	int row;
 	gchar desc[128];
 	gchar points[16];
 	gchar *row_data[3];
@@ -162,22 +162,20 @@ void player_modify_statistic(gint player_num, StatisticType type, gint num)
 	}
 }
 
+#if 0 /* unused */
 static int calc_summary_row(player_num)
 {
-	gint row;
-	gint idx;
-
 	if (player_num == 0)
 		return 0;
 
 	return 0;
 }
+#endif
 
 void player_change_name(gint player_num, gchar *name)
 {
 	Player *player;
 	gchar *old_name;
-	gint row;
 
 	if (player_num < 0 || player_num >= numElem(players))
 		return;
@@ -204,8 +202,6 @@ void player_change_name(gint player_num, gchar *name)
 
 void player_has_quit(gint player_num)
 {
-	gint row;
-
 }
 
 void player_largest_army(gint player_num)
@@ -257,9 +253,6 @@ void player_longest_road(gint player_num)
  */
 void player_show_summary(gint player_num)
 {
-	gint top_row;
-	gint bottom_row;
-
 }
 
 void player_set_current(gint player_num)

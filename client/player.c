@@ -20,7 +20,9 @@
 static GdkColor ps_settlement  = { 0, 0xbb00, 0x0000, 0x0000 };
 static GdkColor ps_city        = { 0, 0xff00, 0x0000, 0x0000 };
 static GdkColor ps_largest     = { 0, 0x1c00, 0xb500, 0xed00 };
+#if 0 /* unused */
 static GdkColor ps_longest     = { 0, 0x1c00, 0xb500, 0xed00 };
+#endif
 static GdkColor ps_soldier     = { 0, 0xe500, 0x8f00, 0x1600 };
 static GdkColor ps_resource    = { 0, 0x0000, 0x0000, 0xFF00 };
 static GdkColor ps_development = { 0, 0xc600, 0xc600, 0x1300 };
@@ -162,7 +164,6 @@ void player_modify_statistic(gint player_num, StatisticType type, gint num)
 	gchar points[16];
 	gchar *row_data[3];
 	GtkStyle *current_style = gtk_style_new();
-	static GdkColor temp1x;
 
 	row_data[0] = "";
 	row_data[1] = desc;
@@ -270,7 +271,6 @@ void player_change_name(gint player_num, gchar *name)
 	if (row < 0) {
 		gchar *row_data[3];
 		GtkStyle *score_style;
-		GdkColor *color_p;
 
 		if (summary_gc == NULL)
 			summary_gc = gdk_gc_new(summary_clist->window);

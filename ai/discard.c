@@ -20,10 +20,12 @@ typedef struct {
 	gint discard;
 } DiscardInfo;
 
+#if 0 /* unused */
 static struct {
 	DiscardInfo res[NO_RESOURCE];
 	gint target;
 } discard;
+#endif
 
 int discard_num = 0;
 

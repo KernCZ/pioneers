@@ -23,6 +23,7 @@ static struct {
 	PlentyInfo res[NO_RESOURCE];
 } plenty;
 
+#if 0 /* unused */
 static void format_info(PlentyInfo *info)
 {
 	char buff[16];
@@ -55,6 +56,7 @@ static gboolean ignore_close(GtkWidget *widget, gpointer user_data)
 {
 	return TRUE;
 }
+#endif
 
 void plenty_resources(gint *resources)
 {

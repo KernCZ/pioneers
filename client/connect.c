@@ -37,11 +37,8 @@ static GtkWidget *cserver_dlg;
 
 static GtkWidget *game_combo;	/* select game type */
 static GtkWidget *terrain_toggle; /* random terrain Yes/No */
-static GtkWidget *seven_combo;	/* select sevens rule */
 static GtkWidget *victory_spin;	/* victory point target */
 static GtkWidget *players_spin;	/* number of players */
-static GtkWidget *register_toggle; /* register with meta server? */
-static GtkWidget *port_spin;	/* server port */
 
 static int cfg_terrain = 0, cfg_num_players = 4, cfg_victory_points = 10,
 		   cfg_sevens_rule = 1;
@@ -446,14 +443,8 @@ static GtkWidget *build_create_interface()
 	GtkWidget *label;
 	GtkObject *adj;
 	GtkWidget *start_btn;
-	GtkWidget *scroll_win;
-	GtkWidget *message_text;
 	GtkWidget *sevens_combo;
 	GtkWidget *item, *items[3];
-
-	static gchar *titles[] = {
-		N_("Name"), N_("Location")
-	};
 
 	vbox = gtk_vbox_new(FALSE, 0);
 	gtk_widget_show(vbox);
@@ -588,11 +579,10 @@ static GtkWidget *build_create_interface()
 	return vbox;
 }
 
-void create_server_dlg(GtkWidget *widget, GtkWidget *parent)
+static void create_server_dlg(GtkWidget *widget, GtkWidget *parent)
 {
 	GtkWidget *dlg_vbox;
 	GtkWidget *vbox;
-	GtkWidget *scroll_win;
 
 	cserver_dlg = gnome_dialog_new(_("Create New Gnocatan Server"),
 				    GNOME_STOCK_BUTTON_CLOSE, NULL);

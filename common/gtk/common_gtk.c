@@ -18,7 +18,7 @@ static GtkWidget *message_txt;
 static GdkColor black = { 0, 0, 0, 0 };
 static GdkColor red = { 0, 0xff00, 0, 0 };
 static GdkColor green = { 0, 0, 0xff00, 0 };
-static GdkColor blue = { 0, 0, 0, 0xff00 };
+/* static GdkColor blue = { 0, 0, 0, 0xff00 }; */
 
 static GdkColor msg_build_color =    { 0, 0xbb00, 0,      0      };
 static GdkColor msg_chat_color =     { 0, 0,      0,      0xff00 };

@@ -702,7 +702,7 @@ static gboolean mode_load_game(StateMachine *sm, gint event)
 static gboolean mode_load_gameinfo(StateMachine *sm, gint event)
 {
 	gchar str[512];
-	gint x, y, pos, owner, i;
+	gint x, y, pos, owner;
 	static struct recovery_info_t rinfo
          = { "", -1, -1, -1, { -1, -1, -1, -1, -1 }, FALSE,
 	     -1, -1, FALSE, FALSE, -1, NULL };
@@ -710,7 +710,7 @@ static gboolean mode_load_gameinfo(StateMachine *sm, gint event)
 	static gint devcardidx = -1;
 	static gint numdevcards = -1;
 	gint num_roads, num_bridges, num_ships, num_settlements,
-	     num_cities, num_soldiers, road_len, develop_points;
+	     num_cities, num_soldiers, road_len;
 	gint opnum, opnassets, opncards, opnsoldiers;
 	gboolean pchapel, puniv, pgov, plibr, pmarket, plongestroad,
 	         plargestarmy;

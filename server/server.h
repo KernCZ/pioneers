@@ -152,6 +152,9 @@ void robber_place(Player *player);
 gboolean mode_place_robber(Player *player, gint event);
 
 /* server.c */
+void timed_out(int signum);
+void start_timeout(void);
+void stop_timeout(void);
 gint get_rand(gint range);
 Game *game_new(GameParams *params);
 void game_free(Game *game);

@@ -851,9 +851,7 @@ static char *
 greedy_setup_house(Map *map, int mynum)
 {
     Node *node;
-    int i;
     resource_values_t resval;
-    float tmp;
     static char ret[1024];
 
     reevaluate_resources(map, mynum, &resval);
@@ -1108,7 +1106,6 @@ static float score_node_hurt_opponents(int mynum, Node *node)
  */
 static float score_hex_hurt_opponents(int mynum, Hex *hex)
 {
-    Node *node;
     int i;
     float score = 0;
 
@@ -1156,7 +1153,6 @@ greedy_place_robber(Map *map, int mynum)
 
     /* which opponent to steal from */
     for (i = 0; i < 6; i++) {
-	int resource;
 	int numres = 0;
 
 	/* if has owner (and isn't me) */

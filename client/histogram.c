@@ -151,8 +151,6 @@ GtkWidget *histogram_create_dlg()
 	GtkWidget *vbox;
 	GtkWidget *frame;
 	GtkWidget *table;
-	GtkWidget *vsep;
-	gint num_rows;
 
 	if (histogram_dlg != NULL) {
 		return histogram_dlg;

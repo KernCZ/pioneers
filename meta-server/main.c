@@ -941,7 +941,7 @@ static void convert_to_daemon()
 	umask(0);
 }
 
-void setmyhostname( void )
+static void setmyhostname( void )
 {
 	char hbuf[256];
 	struct hostent *hp;
