@@ -211,9 +211,13 @@ gboolean mode_plenty_resources(Player *player, gint event)
 	num = 0;
 	for (idx = 0; idx < NO_RESOURCE; idx++)
 		num += plenty[idx];
+
+	if (!resource_available(player, plenty, &num_in_bank)) {
+		sm_send(sm, "ERR plenty-no-resources\n");
+		return TRUE;
+	}
 	if ((num_in_bank < 2 && num != num_in_bank)
-	    || (num_in_bank >= 2 && num != 2)
-	    || !resource_available(player, plenty, &num_in_bank)) {
+	    || (num_in_bank >= 2 && num != 2)) {
 		sm_send(sm, "ERR wrong-plenty\n");
 		return TRUE;
 	}

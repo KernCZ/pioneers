@@ -1,3 +1,8 @@
+2000-05-08  Dave Cole <dave@dccs.com.au>
+
+	* server/develop.c: Fixed "ERR wrong-plenty" bug.  Was using
+	variable before it received a value in resource_available().
+	
 2000-05-07  Andy Heroff <aheroff@mediaone.net>
 
 	* common/log.c, common/log.h: Added log to console if use_console
