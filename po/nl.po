@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 0.8.1.32\n"
+"Project-Id-Version: 0.8.1.41\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-10-27 08:00+0200\n"
+"POT-Creation-Date: 2004-10-27 20:18+0200\n"
 "PO-Revision-Date: 2004-01-26 16:51+0100\n"
 "Last-Translator: Roland Clobus <rclobus@bigfoot.com>\n"
 "Language-Team: Bas Wijnen <b.wijnen@phys.rug.nl> Roland Clobus "
@@ -585,6 +585,7 @@ msgstr "%2$s is aan de beurt voor beurt %1$d.\n"
 #, c-format
 msgid "Received error from server: %s.  Quitting\n"
 msgstr ""
+"Foutmelding van de server ontvangen: %s. Het programma wordt afgesloten\n"
 
 #: client/common/chat.c:51
 #, c-format
@@ -884,7 +885,7 @@ msgstr "%s mag dubbel opzetten.\n"
 
 #: client/gtk/chat.c:58
 msgid "Chat"
-msgstr "Praten"
+msgstr "Chat"
 
 #: client/gtk/connect.c:187
 #, c-format
@@ -1220,9 +1221,8 @@ msgid "Waiting for players to choose"
 msgstr "Wacht op anderen om grondstoffen te kiezen"
 
 #: client/gtk/gui.c:75
-#, fuzzy
 msgid "_New game"
-msgstr "Naam"
+msgstr "_Nieuw spel"
 
 #: client/gtk/gui.c:80
 msgid "_Admin"
@@ -1233,9 +1233,8 @@ msgid "Administer Gnocatan server"
 msgstr "Administreer een Gnocatan server"
 
 #: client/gtk/gui.c:86
-#, fuzzy
 msgid "_Player name"
-msgstr "Naam"
+msgstr "Verander naam"
 
 #: client/gtk/gui.c:86
 msgid "Change your player name"
@@ -1251,11 +1250,11 @@ msgstr "Sluit het programma af"
 
 #: client/gtk/gui.c:100
 msgid "Prefere_nces"
-msgstr ""
+msgstr "_Voorkeuren"
 
 #: client/gtk/gui.c:100
 msgid "Configure the application"
-msgstr ""
+msgstr "Verander de instellingen van het programma"
 
 #: client/gtk/gui.c:115
 msgid "_Legend"
@@ -1427,9 +1426,8 @@ msgstr "Welkom bij Gnocatan"
 
 #. Caption of preferences dialog
 #: client/gtk/gui.c:702
-#, fuzzy
 msgid "Gnocatan Preferences"
-msgstr "Gnocatan server"
+msgstr "Gnocatan Voorkeuren"
 
 #. Label for changing the theme, in the preferences dialog
 #: client/gtk/gui.c:729
@@ -1438,54 +1436,48 @@ msgstr "Thema:"
 
 #. Tooltip for changing the theme in the preferences dialog
 #: client/gtk/gui.c:752
-#, fuzzy
 msgid "Choose one of the themes"
-msgstr "Poort van het spel"
+msgstr "Kies een van de thema's"
 
 #. Label for the option to show the legend
 #: client/gtk/gui.c:757
 msgid "Show legend"
-msgstr ""
+msgstr "Toon legenda"
 
 #. Tooltip for the option to show the legend
 #: client/gtk/gui.c:767
-#, fuzzy
 msgid "Show the legend as a page beside the map"
-msgstr "Laat legenda zien"
+msgstr "Laat legenda zien naast de kaart"
 
 #. Label for the option to display log messages in color
 #: client/gtk/gui.c:772
-#, fuzzy
 msgid "Messages with color"
 msgstr "Berichten in kleur"
 
 #. Tooltip for the option to display log messages in color
 #: client/gtk/gui.c:782
-#, fuzzy
 msgid "Show new messages with color"
-msgstr "Berichten in kleur"
+msgstr "Toon nieuwe berichten in kleur"
 
 #. Label for the option to display chat in color of player
 #: client/gtk/gui.c:787
-#, fuzzy
 msgid "Chat in color of player"
-msgstr "Het aantal spelers"
+msgstr "Chat in de kleur van de speler"
 
 #. Tooltip for the option to display chat in color of player
 #: client/gtk/gui.c:796
 msgid "Show new chat messages in the color of the player"
-msgstr ""
+msgstr "Toon de nieuwe chat in de kleur van de speler"
 
 #. Label for the option to display the summary with colors
 #: client/gtk/gui.c:801
-#, fuzzy
 msgid "Summary with color"
-msgstr "Spelerinformatie in kleur"
+msgstr "Spelersoverzicht in kleur"
 
 #. Tooltip for the option to display the summary with colors
 #: client/gtk/gui.c:811
 msgid "Use colors in the player summary"
-msgstr ""
+msgstr "Gebruik kleur in het spelersoverzicht"
 
 #. About title
 #: client/gtk/gui.c:829
@@ -1676,14 +1668,13 @@ msgstr "Naam:"
 
 #. Commandline option of client: name of the player
 #: client/gtk/offline.c:46
-#, fuzzy
 msgid "Player name"
-msgstr "Naam"
+msgstr "Speler naam"
 
 #. Commandline option of client: override the language
 #: client/gtk/offline.c:49
 msgid "Override the language of the system"
-msgstr ""
+msgstr "Taalinstelling van het systeem teniet doen"
 
 #: client/gtk/offline.c:71
 msgid "Connecting"
@@ -1691,7 +1682,7 @@ msgstr "Bezig verbinding te maken"
 
 #: client/gtk/offline.c:180
 msgid "Only server or port set, ignoring command line"
-msgstr ""
+msgstr "Alleen server of poort ingesteld, commando regel wordt genegeerd"
 
 #: client/gtk/player.c:53
 msgid "Chapels"
@@ -2139,9 +2130,8 @@ msgid "Player 8: "
 msgstr "Speler 8: "
 
 #: common/log.c:114
-#, fuzzy
 msgid "Viewer: "
-msgstr "Toeschouwer"
+msgstr "Toeschouwer: "
 
 #: common/log.c:117
 msgid "** UNKNOWN MESSAGE TYPE ** "
@@ -2442,7 +2432,7 @@ msgstr "Voorbereiden spel"
 #. This should be fixed at some point.
 #: server/turn.c:304
 msgid "Tried to assign resources to NULL player.\n"
-msgstr ""
+msgstr "Poging om grondstoffen aan de NULL speler te geven.\n"
 
 #~ msgid "_Connect"
 #~ msgstr "_Verbinden"
@@ -2491,14 +2481,6 @@ msgstr ""
 #~ msgid "Resource Type"
 #~ msgstr "Grondstof"
 
-#, fuzzy
-#~ msgid "Server"
-#~ msgstr "Metaserver"
-
-#, fuzzy
-#~ msgid "Quit the game after game over"
-#~ msgstr "Registreer dit spel bij de metaserver"
-
 #~ msgid "player %d resource count wrong: server=%d, me=%d"
 #~ msgstr ""
 #~ "Server en client zijn het niet eens over grondstoffen van speler %d.\n"
@@ -2538,12 +2520,3 @@ msgstr ""
 #~ msgstr ""
 #~ "Waarde\n"
 #~ "Percentage"
-
-#~ msgid "English"
-#~ msgstr "English"
-
-#~ msgid "Deutsch"
-#~ msgstr "Deutsch"
-
-#~ msgid "Espanol"
-#~ msgstr "Espanol"

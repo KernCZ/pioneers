@@ -1,5 +1,6 @@
 2004-10-27 Roland Clobus <rclobus@bigfoot.com>
 	* Updated all files to fit 0.8.1.41
+	* nl.po: Added the missing translations. Changed translation of 'chat'
 	
 2004-10-13 Roland Clobus <rclobus@bigfoot.com>
 	* nl.po: fixing a typo
