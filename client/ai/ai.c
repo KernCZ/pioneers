@@ -155,6 +155,11 @@ static void ai_start_game (void)
 	greedy_init (local_argc, local_argv);
 }
 
+void ai_wait (void)
+{
+	usleep (waittime * 1000);
+}
+
 void frontend_set_callbacks (int argc, char **argv)
 {
 	/* this should really not be done here.  It should be in

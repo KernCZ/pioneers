@@ -934,7 +934,9 @@ static void greedy_turn(void)
 	    cb_roll ();
 	    return;
     }
-    
+
+    /* Don't wait before the dice roll, that will take too long */
+    ai_wait ();
     for (i = 0; i < NO_RESOURCE; ++i)
 	    assets[i] = resource_asset (i);
 
@@ -1312,6 +1314,7 @@ static void greedy_place_robber(void)
     int victim = -1;
     int victim_resources = -1;
 
+    ai_wait ();
     for (i = 0; i < map->x_size; i++) {
 	for (j = 0; j < map->y_size; j++) {
 	    Hex *hex = map_hex(map, i, j);
@@ -1387,6 +1390,7 @@ static void greedy_year_of_plenty(gint assets[NO_RESOURCE])
     int r1, r2;
     resource_values_t resval;
 
+    ai_wait ();
     for (i = 0; i < NO_RESOURCE; i++)
 	want[i] = 0;
 
@@ -1640,6 +1644,7 @@ static gboolean greedy_check_gold (UNUSED (Map *map), Hex *hex,
 
 static void greedy_setup (unsigned num_settlements, unsigned num_roads)
 {
+	ai_wait ();
 	if (num_settlements > 0)
 		greedy_setup_house ();
 	else if (num_roads > 0)
@@ -1649,6 +1654,7 @@ static void greedy_setup (unsigned num_settlements, unsigned num_roads)
 
 static void greedy_roadbuilding (gint num_roads)
 {
+	ai_wait ();
 	while (num_roads--)
 		greedy_free_road ();
 	cb_end_turn ();
@@ -1656,8 +1662,10 @@ static void greedy_roadbuilding (gint num_roads)
 
 static void greedy_discard_add (gint player_num, gint discard_num)
 {
-	if (player_num == my_player_num () )
+	if (player_num == my_player_num () ) {
+		ai_wait ();
 		greedy_discard (discard_num);
+	}
 }
 
 static void greedy_error (gchar *message)

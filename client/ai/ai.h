@@ -26,6 +26,7 @@
 #include "callback.h"
 #include "gnocatan-path.h"
 
+void ai_wait (void);
 void greedy_init (int argc, char **argv);
 
 #endif
