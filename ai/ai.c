@@ -47,7 +47,7 @@ random_name(void)
     stream = fopen(filename,"r");
     if (!stream)
     {
-        g_warning("Unable to find computer_names file.");
+        g_warning("Unable to open computer_names file.");
         strcpy(name,"Computer Player");
         
     } else {
