@@ -1,3 +1,18 @@
+2002-05-21  Roman Hodek  <roman@hodek.net>
+
+	* client/help/C/gnocatan.sgml: Updated with respect to recent
+	developments/changes, updated some images to match current
+	looking.
+
+	* meta-server/gnocatan-meta-server.c (client_create_new_server):
+	Pass full hostname to created servers in environment. Otherwise
+	the server will register to the meta-server as running on
+	"localhost" and it won't be reachable from outside.
+
+	* debian/gnocatan-ai.menu: Fix typo ('-' too much again)
+
+	* debian/gnocatan-meta-server.conffiles: init.d files is a conffile
+
 2002-05-20  Jeff Breidenbach  <jab@debian.org>
 
 	* Fix splash screen packaging bug.
