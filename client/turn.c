@@ -20,6 +20,7 @@
 #include "log.h"
 #include "client.h"
 #include "cost.h"
+#include "histogram.h"
 
 static gboolean rolled_dice;	/* have we rolled the dice? */
 static gint current_turn;
@@ -40,6 +41,7 @@ void turn_rolled_dice(gint player_num, gint die1, gint die2)
 
 	roll = die1 + die2;
 	log_message( MSG_DICE, _("%s rolled %d.\n"), player_name(player_num, TRUE), roll);
+ 	dice_histogram(DICE_HISTOGRAM_RECORD, roll);
 	identity_set_dice(die1, die2);
 	gui_highlight_chits(roll);
 

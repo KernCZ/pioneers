@@ -45,6 +45,8 @@ gnocatan_SOURCES = \
 	gui.h \
 	guimap.c \
 	guimap.h \
+	histogram.c \
+	histogram.h \
 	identity.c \
 	legend.c \
 	monopoly.c \

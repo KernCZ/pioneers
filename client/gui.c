@@ -22,6 +22,7 @@
 #include "cost.h"
 #include "log.h"
 #include "common_gtk.h"
+#include "histogram.h"
 
 Map *map;			/* handle to map drawing code */
 GtkWidget *app_window;		/* main application window */
@@ -564,6 +565,11 @@ static void help_legend_cb(GtkWidget *widget, void *user_data)
 	legend_create_dlg();
 }
 
+static void help_histogram_cb(GtkWidget *widget, void *user_data)
+{
+	histogram_create_dlg();
+}
+
 static void help_settings_cb(GtkWidget *widget, void *user_data)
 {
 	settings_create_dlg();
@@ -575,6 +581,9 @@ static GnomeUIInfo help_menu[] = {
 	  GNOME_STOCK_MENU_INDEX, 0, 0, NULL },
 	{ GNOME_APP_UI_ITEM, N_("_Game Settings"), N_("Settings for the current game"),
 	  help_settings_cb, NULL, NULL, GNOME_APP_PIXMAP_STOCK,
+	  GNOME_STOCK_MENU_INDEX, 0, 0, NULL },
+	{ GNOME_APP_UI_ITEM, N_("_Dice Histogram"), N_("Histogram of dice rolls"),
+	  help_histogram_cb, NULL, NULL, GNOME_APP_PIXMAP_STOCK,
 	  GNOME_STOCK_MENU_INDEX, 0, 0, NULL },
 	{ GNOME_APP_UI_ITEM, N_("_About Gnocatan"), N_("Information about Gnocatan"),
 	  help_about_cb, NULL, NULL, GNOME_APP_PIXMAP_STOCK,

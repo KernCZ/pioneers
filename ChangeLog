@@ -1,4 +1,17 @@
-2001-02-16  Matt Waggoner  <matt@waggoner.com
+2001-02-16  David Fallon  <davef@getacard.com>
+
+	* Added Jeff Breidenbach's <jeff@alum.mit.edu> histogram patch.
+
+	* client/Makefile.am: Added histogram.[ch] to sources
+	* client/histogram.c: Added the file - it handles the dice recording
+		and the actual histogram dialog generation
+	* client/histogram.h: Added the file - heade file for histogram.c
+	* client/gui.c - Added help_histogram_cb function, added "Dice Histogram"
+		menu option to the Help menu.
+	* client/turn.c - Added call to "dice_histogram" function to record
+		dice rolls for the histogram generation.
+
+2001-02-16  Matt Waggoner  <matt@waggoner.com>
 
 	* A whole bunch of changes to various files, implementing
 		multiple message colors (i.e. resource gain messages are
