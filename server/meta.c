@@ -73,7 +73,7 @@ void meta_send_details(Game *game)
 		   "version=%s\n"
 		   "max=%d\n"
 		   "curr=%d\n",
-		   game->params->server_port, VERSION,
+		   game->params->server_port, PROTOCOL_VERSION,
 		   game->params->num_players, game->num_players);
 	if (hostname)
 	    net_printf(ses, "host=%s\n", hostname);
