@@ -1,6 +1,8 @@
 #ifndef __gnocatan_server_h
 #define __gnocatan_server_h
 
+#include <netdb.h>
+
 #define GNOCATAN_DIR_DEFAULT	"/usr/share/gnocatan"
 
 #define TERRAIN_DEFAULT	0
@@ -14,8 +16,9 @@ typedef struct _comm_info {
 
 /**** global variables ****/
 extern gboolean register_server;
-extern gint server_port;
-extern gint server_admin_port;
+extern gchar server_port[NI_MAXSERV];
+extern gchar server_admin_port[NI_MAXSERV];
+extern gint server_port_int;
 
 extern GameParams *params;
 
@@ -32,9 +35,11 @@ void cfg_set_sevens_rule( gint sevens_rule );
 void cfg_set_victory_points( gint victory_points );
 void cfg_set_game( gchar *game );
 void cfg_set_terrain_type( gint terrain_type );
+void cfg_set_tournament_time( gint tournament_time );
+void cfg_set_exit( gboolean exitdone);
 
 /* callbacks related to server starting / stopping */
-gboolean start_server( gint port, gboolean register_server );
+gboolean start_server( gchar *port, gboolean register_server );
 
 /* initialize the server */
 void server_init( gchar *default_gnocatan_dir );
@@ -51,6 +56,6 @@ void admin_event( NetEvent event, Session *admin_session, gchar *line );
 void admin_connect( comm_info *admin_info );
 
 /* set up the administration port */
-void admin_listen( gint port );
+void admin_listen( gchar *port );
 
 #endif /* __gnocatan_server_h */

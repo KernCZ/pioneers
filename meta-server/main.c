@@ -19,6 +19,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <netdb.h>
+#include <time.h>
 
 #include <glib.h>
 
@@ -28,6 +29,12 @@ typedef enum {
 	META_SERVER_ALMOST,
 	META_SERVER
 } ClientType;
+
+typedef union {
+	struct sockaddr sa;
+	struct sockaddr_in in;
+	struct sockaddr_in6 in6;
+} sockaddr_t;
 
 typedef struct _Client Client;
 struct _Client {
@@ -44,7 +51,7 @@ struct _Client {
 	/* The rest of the structure is only used for META_SERVER clients
 	 */
 	gchar *host;
-	gint port;
+	gchar *port;
 	gchar *version;
 	gint max;
 	gint curr;
@@ -255,7 +262,7 @@ static void client_list_servers(Client *client)
 		client_printf(client,
 			      "server\n"
 			      "host=%s\n"
-			      "port=%d\n"
+			      "port=%s\n"
 			      "version=%s\n"
 			      "max=%d\n"
 			      "curr=%d\n"
@@ -307,27 +314,31 @@ static void try_make_server_complete(Client *client)
 	}
 }
 
-static gchar *get_peer_name(gint fd)
+static void get_peer_name(gint fd, gchar **hostname, gchar **servname)
 {
-	struct sockaddr_in peer;
+	sockaddr_t peer;
 	socklen_t peer_len;
 
 	peer_len = sizeof(peer);
-	if (getpeername(fd, &peer, &peer_len) < 0)
+	if (getpeername(fd, &peer.sa, &peer_len) < 0)
 		syslog(LOG_ERR, "getting peer name: %m");
 	else {
-		struct hostent *host_ent;
+		int err;
+		char host[NI_MAXHOST];
+		char port[NI_MAXSERV];
 
-		host_ent = gethostbyaddr((char*)&peer.sin_addr,
-					 sizeof(peer.sin_addr), AF_INET);
-		if (host_ent == NULL)
-			syslog(LOG_ERR, "resolving address: %s",
-			       hstrerror(h_errno));
-		else
-			return g_strdup(host_ent->h_name);
+		if((err = getnameinfo(&peer.sa, peer_len, host, NI_MAXHOST, port, NI_MAXSERV, 0)))
+			syslog(LOG_ERR, "resolving address: %s", gai_strerror(err));
+		else {
+			*hostname = g_strdup(host);
+			*servname = g_strdup(port);
+			return;
+		}
 	}
 
-	return g_strdup(inet_ntoa(peer.sin_addr));
+	*hostname = g_strdup("unknown");
+	*servname = g_strdup("unknown");
+	return;
 }
 
 static void client_process_line(Client *client, gchar *line)
@@ -342,8 +353,8 @@ static void client_process_line(Client *client, gchar *line)
 			client->waiting_for_close = TRUE;
 		} else if (strcmp(line, "server") == 0) {
 			client->type = META_SERVER_ALMOST;
-			client->port = client->max = client->curr = -1;
-			client->host = get_peer_name(client->fd);
+			client->max = client->curr = -1;
+			get_peer_name(client->fd, &client->host, &client->port);
 		}
 		break;
 	case META_CLIENT:
@@ -353,7 +364,7 @@ static void client_process_line(Client *client, gchar *line)
 		break;
 	case META_SERVER:
 	case META_SERVER_ALMOST:
-		if (check_int_info(line, "port=", &client->port)
+		if (check_str_info(line, "port=", &client->port)
 		    || check_str_info(line, "version=", &client->version)
 		    || check_int_info(line, "max=", &client->max)
 		    || check_int_info(line, "curr=", &client->curr)
@@ -447,12 +458,12 @@ static void client_do_read(Client *client)
 static void accept_new_client()
 {
 	int fd;
-	struct sockaddr_in addr;
+	sockaddr_t addr;
 	socklen_t addr_len;
 	Client *client;
 
 	addr_len = sizeof(addr);
-	fd = accept(accept_fd, &addr, &addr_len);
+	fd = accept(accept_fd, &addr.sa, &addr_len);
 	if (fd < 0) {
 		syslog(LOG_ERR, "accepting connection: %m");
 		return;
@@ -576,39 +587,53 @@ static void select_loop()
 	}
 }
 
-static gboolean setup_accept_sock(gint port)
+static gboolean setup_accept_sock(gchar *port)
 {
-	struct sockaddr_in addr;
+	int err;
+	struct addrinfo hints, *ai;
 	int yes;
 
-	memset(&addr, 0, sizeof(addr));
+	memset(&hints, 0, sizeof(hints));
 
-	addr.sin_family = AF_INET;
-	addr.sin_addr.s_addr = INADDR_ANY;
-	addr.sin_port = htons(port);
+	hints.ai_family = AF_UNSPEC;
+	hints.ai_socktype = SOCK_STREAM;
+	hints.ai_protocol = IPPROTO_TCP;
+	hints.ai_flags = AI_PASSIVE;
 
-	max_fd = accept_fd = socket(AF_INET, SOCK_STREAM, 0);
+	if((err = getaddrinfo(NULL, port, &hints, &ai)) || !ai) {
+		syslog(LOG_ERR, "creating struct addrinfo: %s", gai_strerror(errno));
+		return FALSE;
+	}
+
+	max_fd = accept_fd = socket(ai->ai_family, SOCK_STREAM, 0);
 	if (accept_fd < 0) {
 		syslog(LOG_ERR, "creating socket: %m");
+		freeaddrinfo(ai);
 		return FALSE;
 	}
-	if (bind(accept_fd, &addr, sizeof(addr)) < 0) {
+	if (bind(accept_fd, ai->ai_addr, ai->ai_addrlen) < 0) {
 		syslog(LOG_ERR, "binding socket: %m");
+		close(accept_fd);
+		freeaddrinfo(ai);
 		return FALSE;
 	}
+	freeaddrinfo(ai);
 	yes = 1;
 	if (setsockopt(accept_fd,
 		       SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes)) < 0) {
 		syslog(LOG_ERR, "setting socket address reuse: %m");
+		close(accept_fd);
 		return FALSE;
 	}
 	if (fcntl(accept_fd, F_SETFL, O_NDELAY) < 0) {
 		syslog(LOG_ERR, "setting socket non-blocking: %m");
+		close(accept_fd);
 		return FALSE;
 	}
 
 	if (listen(accept_fd, 5) < 0) {
 		syslog(LOG_ERR, "during listen on socket: %m");
+		close(accept_fd);
 		return FALSE;
 	}
 
@@ -663,7 +688,7 @@ int main(int argc, char *argv[])
 	if (make_daemon)
 		convert_to_daemon();
 
-	if (!setup_accept_sock(5557))
+	if (!setup_accept_sock("5557"))
 		return 1;
 
 	select_loop();

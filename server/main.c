@@ -130,11 +130,11 @@ int main( int argc, char *argv[] )
 	}
 
 	if (port) {
-		server_port = port;
+		snprintf(server_port, sizeof(server_port), "%d", port);
 	}
 
 	if (admin_port) {
-		server_admin_port = port;
+		snprintf(server_admin_port, sizeof(server_admin_port), "%d", admin_port);
 	}
 
 	if (num_players) {

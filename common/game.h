@@ -52,7 +52,7 @@ typedef struct {
 	gint resource_count;	/* number of each resource */
 	gint num_develop_type[NUM_DEVEL_TYPES]; /* number of each development */
 	gboolean register_server; /* register game with meta-server? */
-	gint server_port;	/* port to run game on */
+	gchar *server_port;	/* port to run game on */
 	GArray *chits;		/* chit sequence */
 	Map *map;		/* the game map */
 	gboolean parsing_map;	/* currently parsing map? */

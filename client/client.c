@@ -524,11 +524,13 @@ static gboolean mode_connect(StateMachine *sm, gint event)
 					connect_get_server());
 		config_set_string("connect/port",
 					connect_get_port_str());
+		config_set_string("connect/meta-server",
+					connect_get_meta_server());
 		config_set_string("connect/name",
 					connect_get_name());
 		
 		copy_player_name(connect_get_name());
-		if (sm_connect(sm, connect_get_server(), connect_get_port())) {
+		if (sm_connect(sm, connect_get_server(), connect_get_port_str())) {
 			update_recent_servers_list();
 			if (sm_is_connected(sm)) {
 				sm_goto(sm, mode_start);

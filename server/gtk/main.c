@@ -96,7 +96,8 @@ static GtkWidget *clist;	/* currently connected players */
 
 static void port_spin_changed_cb(GtkWidget* widget, gpointer user_data)
 {
-	server_port = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(widget));
+	server_port_int = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(widget));
+	snprintf(server_port, sizeof(server_port), "%d", server_port_int);
 }
 
 static void register_toggle_cb(GtkToggleButton *toggle, gpointer user_data)
@@ -397,7 +398,7 @@ static GtkWidget *build_interface()
 			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 
-	adj = gtk_adjustment_new(server_port, 1024, 32767, 1, 1, 1);
+	adj = gtk_adjustment_new(server_port_int, 1024, 32767, 1, 1, 1);
 	port_spin = gtk_spin_button_new(GTK_ADJUSTMENT(adj), 1, 0);
 	gtk_widget_show(port_spin);
 	gtk_table_attach(GTK_TABLE(table), port_spin, 1, 2, 5, 6,

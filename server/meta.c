@@ -61,7 +61,7 @@ void meta_send_details(GameParams *params)
 
 	net_printf(ses,
 		   "server\n"
-		   "port=%d\n"
+		   "port=%s\n"
 		   "version=%s\n"
 		   "max=%d\n"
 		   "curr=%d\n"
@@ -80,8 +80,8 @@ static void meta_event(NetEvent event, GameParams *params, char *line)
 		case MODE_SIGNON:
 		case MODE_REDIRECT:
 			if (strncmp(line, "goto ", 5) == 0) {
-				gchar server[256];
-				gint port;
+				gchar server[NI_MAXHOST];
+				gchar port[NI_MAXSERV];
 
 				meta_mode = MODE_REDIRECT;
 				net_close(ses);
@@ -90,7 +90,7 @@ static void meta_event(NetEvent event, GameParams *params, char *line)
 					log_message( MSG_INFO, _("Too many meta-server redirects\n"));
 					return;
 				}
-				if (sscanf(line, "goto %s %d", server, &port) == 2)
+				if (sscanf(line, "goto %s %s", server, port) == 2)
 					meta_register(server, port, params);
 				else
 					log_message( MSG_ERROR, _("Bad redirect line: %s\n"), line);
@@ -120,13 +120,13 @@ static void meta_event(NetEvent event, GameParams *params, char *line)
 	}
 }
 
-void meta_register(gchar *server, gint port, GameParams *params)
+void meta_register(gchar *server, gchar *port, GameParams *params)
 {
 	if (num_redirects > 0)
-		log_message( MSG_INFO, _("Redirected to meta-server at %s, port %d\n"),
+		log_message( MSG_INFO, _("Redirected to meta-server at %s, port %s\n"),
 			 server, port);
 	else
-		log_message( MSG_INFO, _("Register with meta-server at %s, port %d\n"),
+		log_message( MSG_INFO, _("Register with meta-server at %s, port %s\n"),
 			 server, port);
 
 	if (ses != NULL)

@@ -25,7 +25,7 @@ void chat_parser(gint player_num, char chat_str[512]);
 GtkWidget *chat_build_panel(void);
 
 /* client.c */
-void client_start(char *server, int port, char *username, char *ai, int waittime, int chatty);
+void client_start(char *server, char *port, char *username, char *ai, int waittime, int chatty);
 void client_change_my_name(gchar *name);
 void client_chat(gchar *text);
 gboolean client_connected(void);

@@ -157,13 +157,13 @@ static void net_event(NetEvent event, StateMachine *sm, gchar *line)
 	dec_use_count(sm);
 }
 
-gboolean sm_connect(StateMachine *sm, gchar *host, gint port)
+gboolean sm_connect(StateMachine *sm, gchar *host, gchar *port)
 {
 	if (sm->ses != NULL)
 		net_free(sm->ses);
 
 	sm->ses = net_new((NetNotifyFunc)net_event, sm);
-	log_message( MSG_INFO, _("Connecting to %s, port %d\n"),  host, port);
+	log_message( MSG_INFO, _("Connecting to %s, port %s\n"),  host, port);
 	if (net_connect(sm->ses, host, port))
 		return TRUE;
 

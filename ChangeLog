@@ -1,5 +1,10 @@
 2002-05-06  Roman Hodek  <roman@hodek.net>
 
+	* Merged in latest Debian version (0.6.1-6), including:
+	   - IPv6 support by using getaddrinfo()
+	   - my connect dialog changes that add a new field for naming the
+	     meta server to contact
+
 	* Added new games in server/, contributed by <piman@sacredchao.net>:
 	  canyon.game conquest.game  pond.game square.game star.game x.game
           And one extended by me to have ports:

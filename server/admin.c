@@ -11,6 +11,7 @@
 #include <getopt.h>
 #endif
 #include <glib.h>
+#include <netdb.h>
 
 #include "driver.h"
 #include "game.h"
@@ -33,8 +34,9 @@
 static GHashTable *_game_list = NULL;
 
 gboolean register_server = FALSE;
-gint server_port = 5556;
-gint server_admin_port = 5555;
+gchar server_port[NI_MAXSERV] = "5556";
+gint server_port_int = 5556;
+gchar server_admin_port[NI_MAXSERV] = "5555";
 
 GameParams *params = NULL;
 
@@ -163,7 +165,7 @@ void cfg_set_exit( gboolean exitdone)
     params->exit_when_done = exitdone;
 }
 
-gboolean start_server( gint port, gboolean register_server )
+gboolean start_server( gchar *port, gboolean register_server )
 {
 	if( !params ) {
 		cfg_set_game( "Default" );
@@ -212,7 +214,7 @@ admin_run_command( Session *admin_session, gchar *line )
 	/* set the GAME port */
 	if( !strcmp( command, "set-port" ) ) {
 		if( value_int )
-			server_port = value_int;
+			snprintf(server_port, sizeof(server_port), "%d", value_int);
 	
 	/* start the server */
 	} else if( !strcmp( command, "start-server" ) ) {
@@ -327,7 +329,7 @@ admin_connect( comm_info *admin_info )
 
 /* set up the administration port */
 void
-admin_listen( gint port )
+admin_listen( gchar *port )
 {
 	if( !_accept_info ) {
 		_accept_info = g_malloc0( sizeof( comm_info ) );

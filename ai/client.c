@@ -74,7 +74,7 @@ static StateMachine *SM()
 /*----------------------------------------------------------------------
  * Entry point for the client state machine
  */
-void client_start(char *server, int port, char *username, char *ai, int waittime, int chatty)
+void client_start(char *server, char *port, char *username, char *ai, int waittime, int chatty)
 {
     copy_player_name(strdup(username));
 

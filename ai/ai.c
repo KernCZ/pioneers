@@ -87,7 +87,7 @@ int main(int argc, char *argv[])
 	GMainLoop *event_loop;
 	char c;
 	char *server = "127.0.0.1";
-	int port = 5556;
+	char *port = "5556";
 	char *name = NULL;
 	char *ai = "default";
 	int waittime = 1000;
@@ -103,7 +103,7 @@ int main(int argc, char *argv[])
 		    server = optarg;
 		    break;
 		case 'p':
-		    port = atoi(optarg);
+		    port = optarg;
 		    break;
 		case 'n':
 		    name = optarg;
@@ -120,7 +120,7 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	printf("ai port is %d\n",port);
+	printf("ai port is %s\n",port);
 
 	srand(time(NULL));
 

@@ -9,6 +9,7 @@
  */
 #include <ctype.h>
 #include <gnome.h>
+#include <netdb.h>
 
 #include "meta.h"
 #include "game.h"
@@ -27,6 +28,7 @@ static Session *ses;
 static GtkWidget *server_entry;
 static GtkWidget *port_entry;
 static GtkWidget *name_entry;
+static GtkWidget *meta_server_entry;
 
 static enum {
 	MODE_SIGNON,
@@ -47,6 +49,8 @@ static gchar server_curr[INTARG_LEN];
 static gchar server_map[STRARG_LEN];
 static gchar server_comment[STRARG_LEN];
 
+gchar *meta_server = NULL, *meta_port = NULL;
+
 static gchar *row_data[] = {
 	server_host,
 	server_port,
@@ -57,7 +61,7 @@ static gchar *row_data[] = {
 	server_comment
 };
 
-static void query_meta_server(gchar *server, gint port);
+static void query_meta_server(gchar *server, gchar *port);
 
 static gboolean check_str_info(gchar *line, gchar *prefix, gchar *data)
 {
@@ -112,8 +116,8 @@ static void meta_notify(NetEvent event, void *user_data, char *line)
 		case MODE_SIGNON:
 		case MODE_REDIRECT:
 			if (strncmp(line, "goto ", 5) == 0) {
-				gchar server[256];
-				gint port;
+				gchar server[NI_MAXHOST];
+				gchar port[NI_MAXSERV];
 
 				mode = MODE_REDIRECT;
 				net_close(ses);
@@ -122,8 +126,15 @@ static void meta_notify(NetEvent event, void *user_data, char *line)
 					log_message( MSG_INFO, _("Too many meta-server redirects\n"));
 					return;
 				}
-				if (sscanf(line, "goto %s %d", server, &port) == 2)
+				if (sscanf(line, "goto %s %s", server, port) == 2) {
+ 					if (meta_server)
+ 						g_free(meta_server);
+ 					if (meta_port)
+ 						g_free(meta_port);
+ 					meta_server = g_strdup(server);
+ 					meta_port = g_strdup(port);
 					query_meta_server(server, port);
+				}
 				else
 					log_message( MSG_ERROR, _("Bad redirect line: %s\n"), line);
 				break;
@@ -151,7 +162,7 @@ static void meta_notify(NetEvent event, void *user_data, char *line)
 			else if (strcmp(line, "end") == 0)
 				server_end();
 			else if (check_str_info(line, "host=", server_host)
-				 || check_int_info(line, "port=", server_port)
+				 || check_str_info(line, "port=", server_port)
 				 || check_str_info(line, "version=", server_version)
 				 || check_int_info(line, "max=", server_max)
 				 || check_int_info(line, "curr=", server_curr)
@@ -164,13 +175,13 @@ static void meta_notify(NetEvent event, void *user_data, char *line)
 	}
 }
 
-static void query_meta_server(gchar *server, gint port)
+static void query_meta_server(gchar *server, gchar *port)
 {
 	if (num_redirects > 0)
-		log_message( MSG_INFO, _("Redirected to meta-server at %s, port %d\n"),
+		log_message( MSG_INFO, _("Redirected to meta-server at %s, port %s\n"),
 			 server, port);
 	else
-		log_message( MSG_INFO, _("Querying meta-server at %s, port %d\n"),
+		log_message( MSG_INFO, _("Querying meta-server at %s, port %s\n"),
 			 server, port);
 
 	ses = net_new(meta_notify, NULL);
@@ -209,11 +220,20 @@ static void create_meta_dlg(GtkWidget *widget, GtkWidget *parent)
 		N_("Comment")
 	};
 
+	meta_server = gtk_entry_get_text(GTK_ENTRY(meta_server_entry));
+	if (!meta_server) {
+		if (!(meta_server = getenv("GNOCATAN_META_SERVER")))
+			meta_server = DEFAULT_META_SERVER;
+		gtk_entry_set_text(GTK_ENTRY(meta_server_entry), meta_server);
+	}
+	if (!meta_port)
+		meta_port = META_PORT;
+	
 	if (meta_dlg != NULL) {
 		if (ses == NULL) {
 			num_redirects = 0;
 			gtk_clist_clear(GTK_CLIST(server_clist));
-			query_meta_server(META_SERVER, META_PORT);
+			query_meta_server(meta_server, meta_port);
 		}
 		return;
 	}
@@ -262,7 +282,7 @@ static void create_meta_dlg(GtkWidget *widget, GtkWidget *parent)
 	gtk_widget_show(meta_dlg);
 
 	num_redirects = 0;
-	query_meta_server(META_SERVER, META_PORT);
+	query_meta_server(meta_server, meta_port);
 }
 
 gboolean connect_valid_params()
@@ -291,6 +311,18 @@ gchar *connect_get_server()
 	if (server_entry == NULL)
 		return NULL;
 	text = gtk_entry_get_text(GTK_ENTRY(server_entry));
+	while (*text != '\0' && isspace(*text))
+		text++;
+	return text;
+}
+
+gchar *connect_get_meta_server()
+{
+	gchar *text;
+
+	if (meta_server_entry == NULL)
+		return NULL;
+	text = gtk_entry_get_text(GTK_ENTRY(meta_server_entry));
 	while (*text != '\0' && isspace(*text))
 		text++;
 	return text;
@@ -350,12 +382,14 @@ GtkWidget *connect_create_dlg()
 	GtkWidget *lbl;
 	GtkWidget *hbox;
 	GtkWidget *btn;
+ 	GtkWidget *sep;
 
 	GtkWidget *host_list;
 	GtkWidget *host_item;
 	GtkWidget *host_menu;
 	
 	gchar     *saved_server;
+ 	gchar     *saved_meta_server;
 	gchar     *saved_port;
 	gchar     *saved_name;
 	gint      novar, i;
@@ -363,6 +397,12 @@ GtkWidget *connect_create_dlg()
 	gboolean default_returned;
 
 	saved_server = config_get_string("connect/server=localhost",&novar);
+ 	novar = 0;
+ 	saved_meta_server = config_get_string("connect/meta-server",&novar);
+ 	if (novar) {
+ 		if (!(saved_meta_server = getenv("GNOCATAN_META_SERVER")))
+ 			saved_meta_server = DEFAULT_META_SERVER;
+ 	}
 	saved_port = config_get_string("connect/port=5556", &novar);
 	novar = 0;
 	saved_name = config_get_string("connect/name", &novar);
@@ -382,23 +422,104 @@ GtkWidget *connect_create_dlg()
 	dlg_vbox = GNOME_DIALOG(dlg)->vbox;
 	gtk_widget_show(dlg_vbox);
 
-	table = gtk_table_new(4, 4, FALSE);
+	table = gtk_table_new(7, 2, FALSE);
 	gtk_widget_show(table);
 	gtk_box_pack_start(GTK_BOX(dlg_vbox), table, FALSE, TRUE, 0);
 	gtk_container_border_width(GTK_CONTAINER(table), 5);
 	gtk_table_set_row_spacings(GTK_TABLE(table), 3);
 	gtk_table_set_col_spacings(GTK_TABLE(table), 5);
 
-	lbl = gtk_label_new("Server Host");
+ 	lbl = gtk_label_new("Meta Server");
 	gtk_widget_show(lbl);
 	gtk_table_attach(GTK_TABLE(table), lbl, 0, 1, 0, 1,
+			 (GtkAttachOptions)GTK_FILL,
+ 			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
+ 	gtk_misc_set_alignment(GTK_MISC(lbl), 0, 0.5);
+ 
+ 	meta_server_entry = gtk_entry_new();
+ 	gtk_signal_connect(GTK_OBJECT(meta_server_entry), "destroy",
+ 			   GTK_SIGNAL_FUNC(gtk_widget_destroyed), &meta_server_entry);
+ 	gtk_widget_show(meta_server_entry);
+ 	gtk_table_attach(GTK_TABLE(table), meta_server_entry, 1, 2, 0, 1,
+ 			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL,
+ 			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
+ 	gtk_entry_set_text(GTK_ENTRY(meta_server_entry), saved_meta_server);
+ 
+ 	btn = gtk_button_new_with_label("Query Meta Server");
+ 	gtk_signal_connect(GTK_OBJECT(btn), "clicked",
+ 			   GTK_SIGNAL_FUNC(create_meta_dlg), app_window);
+ 	gtk_widget_show(btn);
+ 	gtk_table_attach(GTK_TABLE(table), btn, 0, 2, 1, 2,
+ 			 (GtkAttachOptions)GTK_FILL,
+ 			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 3);
+ 	
+ 	sep = gtk_hseparator_new();
+ 	gtk_widget_show(sep);
+ 	gtk_table_attach(GTK_TABLE(table), sep, 0, 2, 2, 3,
+ 			 (GtkAttachOptions)GTK_FILL,
+ 			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 6);
+ 
+ 	lbl = gtk_label_new("Server Host");
+ 	gtk_widget_show(lbl);
+ 	gtk_table_attach(GTK_TABLE(table), lbl, 0, 1, 3, 4,
+ 			 (GtkAttachOptions)GTK_FILL,
+			 (GtkAttachOptions)GTK_EXPAND, 0, 0);
+	gtk_misc_set_alignment(GTK_MISC(lbl), 0, 0.5);
+
+	server_entry = gtk_entry_new();
+	gtk_signal_connect_after(GTK_OBJECT(server_entry), "changed",
+				 GTK_SIGNAL_FUNC(client_changed_cb), NULL);
+        gtk_signal_connect(GTK_OBJECT(server_entry), "destroy",
+			   GTK_SIGNAL_FUNC(gtk_widget_destroyed), &server_entry);
+	gtk_widget_show(server_entry);
+	gtk_table_attach(GTK_TABLE(table), server_entry, 1, 2, 3, 4,
+			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL,
+			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_entry_set_text(GTK_ENTRY(server_entry), saved_server);
+
+	lbl = gtk_label_new("Server Port");
+	gtk_widget_show(lbl);
+	gtk_table_attach(GTK_TABLE(table), lbl, 0, 1, 4, 5,
 			 (GtkAttachOptions)GTK_FILL,
 			 (GtkAttachOptions)GTK_EXPAND, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(lbl), 0, 0.5);
 
-/***********************************/
-/* Recently Used Servers list box  */
-/***********************************/
+        hbox = gtk_hbox_new(FALSE, 0);
+        gtk_widget_show(hbox);
+	gtk_table_attach(GTK_TABLE(table), hbox, 1, 2, 4, 5,
+			 (GtkAttachOptions)GTK_FILL,
+			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
+
+	port_entry = gtk_entry_new();
+	gtk_signal_connect_after(GTK_OBJECT(port_entry), "changed",
+				 GTK_SIGNAL_FUNC(client_changed_cb), NULL);
+        gtk_signal_connect(GTK_OBJECT(port_entry), "destroy",
+			   GTK_SIGNAL_FUNC(gtk_widget_destroyed), &port_entry);
+	gtk_widget_show(port_entry);
+	gtk_widget_set_usize(port_entry, 60, -1);
+        gtk_box_pack_start(GTK_BOX(hbox), port_entry, FALSE, TRUE, 0);
+	gtk_entry_set_text(GTK_ENTRY(port_entry), saved_port);
+
+	lbl = gtk_label_new("Player Name");
+	gtk_widget_show(lbl);
+	gtk_table_attach(GTK_TABLE(table), lbl, 0, 1, 5, 6,
+			 (GtkAttachOptions)GTK_FILL,
+			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_misc_set_alignment(GTK_MISC(lbl), 0, 0.5);
+
+        hbox = gtk_hbox_new(FALSE, 0);
+        gtk_widget_show(hbox);
+	gtk_table_attach(GTK_TABLE(table), hbox, 1, 2, 5, 6,
+			 (GtkAttachOptions)GTK_FILL,
+			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
+
+	name_entry = gtk_entry_new_with_max_length(30);
+        gtk_signal_connect(GTK_OBJECT(name_entry), "destroy",
+			   GTK_SIGNAL_FUNC(gtk_widget_destroyed), &name_entry);
+	gtk_widget_show(name_entry);
+	gtk_widget_set_usize(name_entry, 60, -1);
+        gtk_box_pack_start(GTK_BOX(hbox), name_entry, FALSE, TRUE, 0);
+	gtk_entry_set_text(GTK_ENTRY(name_entry), saved_name);
 
 	host_list = gtk_option_menu_new();
 	host_menu = gtk_menu_new();
@@ -435,81 +556,16 @@ GtkWidget *connect_create_dlg()
 
 	gtk_option_menu_set_menu(GTK_OPTION_MENU(host_list), host_menu);
 	
-	gtk_table_attach(GTK_TABLE(table), host_list, 1, 3, 3, 4, GTK_FILL, GTK_FILL, 0, 0);
+	gtk_table_attach(GTK_TABLE(table), host_list, 1, 2, 6, 7,
+					 (GtkAttachOptions)GTK_FILL,
+					 (GtkAttachOptions)GTK_FILL, 0, 0);
 
 	lbl = gtk_label_new("Recent Servers");
 	gtk_widget_show(lbl);
-	gtk_table_attach(GTK_TABLE(table), lbl, 0, 1, 3, 4,
+	gtk_table_attach(GTK_TABLE(table), lbl, 0, 1, 6, 7,
 			 (GtkAttachOptions)GTK_FILL,
 			 (GtkAttachOptions)GTK_EXPAND, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(lbl), 0, 0.5);
-
-/***********************************/
-/* End Recently Used Servers list  */
-/***********************************/
-
-	server_entry = gtk_entry_new();
-	gtk_signal_connect_after(GTK_OBJECT(server_entry), "changed",
-				 GTK_SIGNAL_FUNC(client_changed_cb), NULL);
-        gtk_signal_connect(GTK_OBJECT(server_entry), "destroy",
-			   GTK_SIGNAL_FUNC(gtk_widget_destroyed), &server_entry);
-	gtk_widget_show(server_entry);
-	gtk_table_attach(GTK_TABLE(table), server_entry, 1, 2, 0, 1,
-			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL,
-			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
-	gtk_entry_set_text(GTK_ENTRY(server_entry), saved_server);
-
-	btn = gtk_button_new_with_label("Meta Server");
-	gtk_signal_connect(GTK_OBJECT(btn), "clicked",
-			   GTK_SIGNAL_FUNC(create_meta_dlg), app_window);
-	gtk_widget_show(btn);
-	gtk_table_attach(GTK_TABLE(table), btn, 2, 3, 0, 1,
-			 (GtkAttachOptions)GTK_FILL,
-			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
-
-	lbl = gtk_label_new("Server Port");
-	gtk_widget_show(lbl);
-	gtk_table_attach(GTK_TABLE(table), lbl, 0, 1, 1, 2,
-			 (GtkAttachOptions)GTK_FILL,
-			 (GtkAttachOptions)GTK_EXPAND, 0, 0);
-	gtk_misc_set_alignment(GTK_MISC(lbl), 0, 0.5);
-
-        hbox = gtk_hbox_new(FALSE, 0);
-        gtk_widget_show(hbox);
-	gtk_table_attach(GTK_TABLE(table), hbox, 1, 2, 1, 2,
-			 (GtkAttachOptions)GTK_FILL,
-			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
-
-	port_entry = gtk_entry_new();
-	gtk_signal_connect_after(GTK_OBJECT(port_entry), "changed",
-				 GTK_SIGNAL_FUNC(client_changed_cb), NULL);
-        gtk_signal_connect(GTK_OBJECT(port_entry), "destroy",
-			   GTK_SIGNAL_FUNC(gtk_widget_destroyed), &port_entry);
-	gtk_widget_show(port_entry);
-	gtk_widget_set_usize(port_entry, 60, -1);
-        gtk_box_pack_start(GTK_BOX(hbox), port_entry, FALSE, TRUE, 0);
-	gtk_entry_set_text(GTK_ENTRY(port_entry), saved_port);
-
-	lbl = gtk_label_new("Player Name");
-	gtk_widget_show(lbl);
-	gtk_table_attach(GTK_TABLE(table), lbl, 0, 1, 2, 3,
-			 (GtkAttachOptions)GTK_FILL,
-			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
-	gtk_misc_set_alignment(GTK_MISC(lbl), 0, 0.5);
-
-        hbox = gtk_hbox_new(FALSE, 0);
-        gtk_widget_show(hbox);
-	gtk_table_attach(GTK_TABLE(table), hbox, 1, 2, 2, 3,
-			 (GtkAttachOptions)GTK_FILL,
-			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
-
-	name_entry = gtk_entry_new_with_max_length(30);
-        gtk_signal_connect(GTK_OBJECT(name_entry), "destroy",
-			   GTK_SIGNAL_FUNC(gtk_widget_destroyed), &name_entry);
-	gtk_widget_show(name_entry);
-	gtk_widget_set_usize(name_entry, 60, -1);
-        gtk_box_pack_start(GTK_BOX(hbox), name_entry, FALSE, TRUE, 0);
-	gtk_entry_set_text(GTK_ENTRY(name_entry), saved_name);
 
 	gnome_dialog_editable_enters(GNOME_DIALOG(dlg),
 				     GTK_EDITABLE(server_entry));
@@ -517,6 +573,8 @@ GtkWidget *connect_create_dlg()
 				     GTK_EDITABLE(port_entry));
 	gnome_dialog_editable_enters(GNOME_DIALOG(dlg),
 				     GTK_EDITABLE(name_entry));
+	gnome_dialog_editable_enters(GNOME_DIALOG(dlg),
+				     GTK_EDITABLE(meta_server_entry));
 
 	gnome_dialog_set_close(GNOME_DIALOG(dlg), TRUE);
 
@@ -529,5 +587,6 @@ GtkWidget *connect_create_dlg()
 	g_free(saved_name);
 	g_free(saved_port);
 	g_free(saved_server);
+	g_free(saved_meta_server);
 	return dlg;
 }

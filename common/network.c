@@ -357,61 +357,74 @@ gboolean net_connected(Session *ses)
 	return ses->fd >= 0 && !ses->connect_in_progress;
 }
 
-gboolean net_connect(Session *ses, char *host, gint port)
+gboolean net_connect(Session *ses, char *host, gchar *port)
 {
-	struct sockaddr_in addr;
+	int err;
+	struct addrinfo hints, *ai, *aip;
 
 	net_close(ses);
 	if (ses->host != NULL)
 		g_free(ses->host);
 	ses->host = g_strdup(host);
-	ses->port = port;
+	ses->port = g_strdup(port);
 
-	memset(&addr, 0, sizeof(addr));
-	addr.sin_family = AF_INET;
-	if (inet_aton(host, &addr.sin_addr) == 0) {
-		struct hostent *host_ent;
+	memset(&hints, 0, sizeof(hints));
+	hints.ai_family = AF_UNSPEC;
+	hints.ai_socktype = SOCK_STREAM;
+	hints.ai_protocol = IPPROTO_TCP;
 
-		host_ent = gethostbyname(host);
-		if (host_ent == NULL) {
-			log_message( MSG_ERROR, _("Cannot resolve host name %s\n"), host);
-			return FALSE;
+	if((err = getaddrinfo(host, port, &hints, &ai))) {
+		log_message( MSG_ERROR, _("Cannot resolve %s port %s: %s\n"), host, port, gai_strerror(err));
+		return FALSE;
+	}
+	if(!ai) {
+		log_message( MSG_ERROR, _("Cannot resolve %s port %s: host not found\n"), host, port);
+		return FALSE;
+	}
+
+	for(aip = ai; aip; aip = aip->ai_next) {
+		ses->fd = socket(aip->ai_family, SOCK_STREAM, 0);
+		if (ses->fd < 0) {
+			log_message( MSG_ERROR, _("Error creating socket: %s\n"), g_strerror(errno));
+			continue;
 		}
-		memcpy(&addr.sin_addr, host_ent->h_addr, host_ent->h_length);
-	}
-
-	addr.sin_port = htons(port);
-
-	ses->fd = socket(AF_INET, SOCK_STREAM, 0);
-	if (ses->fd < 0) {
-		log_message( MSG_ERROR, _("Error creating socket: %s\n"), g_strerror(errno));
-		return FALSE;
-	}
-	if (fcntl(ses->fd, F_SETFD, 1) < 0) {
-		log_message( MSG_ERROR, _("Error setting socket close-on-exec: %s\n"),
-			  g_strerror(errno));
-		return FALSE;
-	}
-	if (fcntl(ses->fd, F_SETFL, O_NDELAY) < 0) {
-		log_message( MSG_ERROR, _("Error setting socket non-blocking: %s\n"),
-			  g_strerror(errno));
-		return FALSE;
-	}
-
-	if (connect(ses->fd, (struct sockaddr*)&addr, sizeof(addr)) < 0) {
-		if (errno == EINPROGRESS) {
-			ses->connect_in_progress = TRUE;
-			listen_write(ses, TRUE);
-		} else {
-			log_message( MSG_ERROR, _("Error connecting to %s: %s\n"),
-				  host, g_strerror(errno));
+		if (fcntl(ses->fd, F_SETFD, 1) < 0) {
+			log_message( MSG_ERROR, _("Error setting socket close-on-exec: %s\n"),
+				  g_strerror(errno));
 			close(ses->fd);
-			return FALSE;
+			ses->fd = -1;
+			continue;
 		}
-	} else
-		listen_read(ses, TRUE);
+		if (fcntl(ses->fd, F_SETFL, O_NDELAY) < 0) {
+			log_message( MSG_ERROR, _("Error setting socket non-blocking: %s\n"),
+				  g_strerror(errno));
+			close(ses->fd);
+			ses->fd = -1;
+			continue;
+		}
 
-	return TRUE;
+		if (connect(ses->fd, aip->ai_addr, aip->ai_addrlen) < 0) {
+			if (errno == EINPROGRESS) {
+				ses->connect_in_progress = TRUE;
+				listen_write(ses, TRUE);
+				break;
+			} else {
+				log_message( MSG_ERROR, _("Error connecting to %s: %s\n"),
+					  host, g_strerror(errno));
+			close(ses->fd);
+			ses->fd = -1;
+			continue;
+			}
+		} else
+			listen_read(ses, TRUE);
+	}
+
+	freeaddrinfo(ai);
+
+	if(ses->fd >= 0)
+		return TRUE;
+	else
+		return FALSE;
 }
 
 void net_free(Session *ses)

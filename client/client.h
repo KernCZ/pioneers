@@ -83,6 +83,7 @@ gboolean connect_valid_params(void);
 GtkWidget *connect_create_dlg(void);
 gchar *connect_get_name(void);
 gchar *connect_get_server(void);
+gchar *connect_get_meta_server(void);
 gint connect_get_port(void);
 gchar* connect_get_port_str(void);
 

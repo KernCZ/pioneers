@@ -27,7 +27,7 @@ struct _Session {
 	gboolean connect_in_progress;
 	gboolean waiting_for_close;
 	char *host;
-	int port;
+	char *port;
 
 	gint read_tag;
 	char read_buff[16 * 1024];
@@ -43,7 +43,7 @@ Session *net_new(NetNotifyFunc notify_func, void *user_data);
 void net_free(Session *ses);
 
 void net_use_fd(Session *ses, int fd);
-gboolean net_connect(Session *ses, char *host, gint port);
+gboolean net_connect(Session *ses, char *host, gchar *port);
 gboolean net_connected(Session *ses);
 
 void net_close(Session *ses);

@@ -106,7 +106,7 @@ gboolean mode_wait_others_place_robber(Player *player, gint event);
 gboolean mode_discard_resources_place_robber(Player *player, gint event);
 
 /* meta.c */
-void meta_register(gchar *server, gint port, GameParams *params);
+void meta_register(gchar *server, gchar *port, GameParams *params);
 void meta_start_game(void);
 void meta_report_num_players(gint num_players);
 void meta_send_details(GameParams *params);
@@ -134,6 +134,7 @@ GList *player_next_real(GList *last);
 
 /* pregame.c */
 gboolean mode_pre_game(Player *player, gint event);
+gboolean send_gameinfo(Map *map, Hex *hex, StateMachine *sm);
 
 /* resource.c */
 gboolean resource_available(Player *player,
@@ -153,10 +154,11 @@ gboolean mode_place_robber(Player *player, gint event);
 gint get_rand(gint range);
 Game *game_new(GameParams *params);
 void game_free(Game *game);
-gboolean server_startup(GameParams *params, gint port, gboolean meta);
+gint new_computer_player(gchar *server_port);
+gboolean server_startup(GameParams *params, gchar *port, gboolean meta);
 gboolean server_restart(void);
 gint accept_connection(gint in_fd, gchar **location);
-gint open_listen_socket(gint port);
+gint open_listen_socket(gchar *port);
 
 
 /* trade.c */

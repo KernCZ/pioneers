@@ -10,7 +10,7 @@
 #ifndef __meta_h
 #define __meta_h
 
-#define META_SERVER "term1.dccs.com.au"
-#define META_PORT 5557
+#define DEFAULT_META_SERVER "term1.dccs.com.au"
+#define META_PORT "5557"
 
 #endif
