@@ -6,7 +6,9 @@ gnocatan-ai.prerm.debhelper
 gnocatan-ai.substvars
 gnocatan-help
 gnocatan-help.postinst.debhelper
+gnocatan-help.postrm.debhelper
 gnocatan-help.prerm.debhelper
+gnocatan-help.substvars
 gnocatan-meta-server
 gnocatan-meta-server.postinst.debhelper
 gnocatan-meta-server.postrm.debhelper
