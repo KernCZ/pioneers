@@ -152,7 +152,7 @@ static void dummy_rolled_dice(UNUSED(gint die1), UNUSED(gint die2), UNUSED(gint 
 static void dummy_beep(void) {;}
 static void dummy_draw_edge(UNUSED(Edge *edge)) {;}
 static void dummy_draw_node(UNUSED(Node *node)) {;}
-static void dummy_bought_develop(UNUSED(DevelType type), UNUSED(gboolean this_turn)) {;}
+static void dummy_bought_develop(UNUSED(DevelType type)) {;}
 static void dummy_played_develop(UNUSED(gint player_num), UNUSED(gint card_idx), UNUSED(DevelType type)) {;}
 static void dummy_resource_change(UNUSED(Resource type), UNUSED(gint num)) {;}
 static void dummy_draw_hex(UNUSED(Hex *hex)) {;}

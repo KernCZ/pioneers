@@ -3,6 +3,7 @@
  *
  * Copyright (C) 1999 the Free Software Foundation
  * Copyright (C) 2003 Bas Wijnen <b.wijnen@phys.rug.nl>
+ * Copyright (C) 2004 Roland Clobus <rclobus@bigfoot.com>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,104 +21,152 @@
  */
 
 #include "config.h"
-#include <math.h>
-#include <ctype.h>
 #include <gtk/gtk.h>
 
 #include "frontend.h"
-#include "cards.h"
-#include "gui.h"
-#include "cost.h"
-#include "log.h"
 
-static GtkWidget *develop_clist; /* development cards */
-static GtkWidget *play_develop_btn;
-
-static struct {
-	const gchar *name;
-	gboolean is_unique;
-} devel_cards[] = {
-	{ N_("Road Building"), FALSE },
-	{ N_("Monopoly"), FALSE },
-	{ N_("Year of Plenty"), FALSE },
-	{ N_("Chapel"), TRUE },
-	{ N_("University of Gnocatan"), TRUE },
-	{ N_("Governor's House"), TRUE },
-	{ N_("Library"), TRUE },
-	{ N_("Market"), TRUE },
-	{ N_("Soldier"), FALSE }
-};
-
-static gint selected_card_idx;	/* currently selected development card */
+enum {
+	DEVELOP_COLUMN_DESCRIPTION, /**< Description of the card */
+	DEVELOP_COLUMN_LAST
+	};
+	
+static GtkListStore *store;    /**< The data for the GUI */
+static gint selected_card_idx; /**< currently selected development card */
 
 gint develop_current_idx()
 {
 	return selected_card_idx;
 }
 
-static void select_develop_cb(UNUSED(GtkWidget *clist), gint row,
-		UNUSED(gint column), UNUSED(GdkEventButton* event),
-		UNUSED(gpointer user_data))
+static gint develop_click_cb(UNUSED(GtkWidget *widget),
+		UNUSED(GdkEventButton *event), gpointer play_develop_btn)
 {
-	selected_card_idx = row;
+	if (event->type == GDK_2BUTTON_PRESS) {
+		if (can_play_develop(develop_current_idx()))
+			gtk_button_clicked(GTK_BUTTON(play_develop_btn));
+	};
+	return FALSE;
+}
+
+static void develop_select_cb(GtkTreeSelection *selection, UNUSED(gpointer user_data))
+{
+	GtkTreeIter iter;
+	GtkTreeModel *model;
+	GtkTreePath *path;
+
+	g_assert(selection != NULL);
+	if (gtk_tree_selection_get_selected(selection, &model, &iter)) {
+		/* @todo RC 2004-10-28 This code is not prepared for sorted
+		 * lists. The index number of the card must strictly follow
+		 * the order in the DevelDeck 
+		 */
+		path = gtk_tree_model_get_path(model, &iter);
+		selected_card_idx = gtk_tree_path_get_indices(path)[0];
+		gtk_tree_path_free(path);
+	} else
+		selected_card_idx = -1;
 	frontend_gui_update ();
 }
 
 GtkWidget *develop_build_page (void)
 {
-	GtkWidget *frame;
+	GtkWidget *label;
 	GtkWidget *vbox;
 	GtkWidget *scroll_win;
 	GtkWidget *bbox;
-
-	frame = gtk_frame_new(_("Development Cards"));
-	gtk_widget_show(frame);
+	GtkTreeViewColumn *column;
+	GtkWidget *play_develop_btn;
+	GtkWidget *develop_list;
 
 	vbox = gtk_vbox_new(FALSE, 5);
 	gtk_widget_show(vbox);
-	gtk_container_add(GTK_CONTAINER(frame), vbox);
-	gtk_container_border_width(GTK_CONTAINER(vbox), 3);
+	gtk_container_set_border_width(GTK_CONTAINER(vbox), 3);
+
+	/* Caption for list of bought development cards */
+	label = gtk_label_new(_("Development Cards"));
+	gtk_widget_show(label);
+	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+	gtk_box_pack_start(GTK_BOX(vbox), label, TRUE, TRUE, 0);
+
+	/* Create model */
+	store = gtk_list_store_new(DEVELOP_COLUMN_LAST,
+		G_TYPE_STRING);
 
 	scroll_win = gtk_scrolled_window_new(NULL, NULL);
+	gtk_widget_set_size_request(scroll_win, -1, 100);
+	gtk_scrolled_window_set_shadow_type(
+			GTK_SCROLLED_WINDOW(scroll_win), GTK_SHADOW_IN);
 	gtk_widget_show(scroll_win);
-	gtk_widget_set_usize(scroll_win, -1, 100);
 	gtk_box_pack_start(GTK_BOX(vbox), scroll_win, TRUE, TRUE, 0);
 	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scroll_win),
-				       GTK_POLICY_AUTOMATIC,
-				       GTK_POLICY_AUTOMATIC);
+			GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
 
-	develop_clist = gtk_clist_new(1);
-	gtk_signal_connect(GTK_OBJECT(develop_clist), "select_row",
-			   GTK_SIGNAL_FUNC(select_develop_cb), NULL);
-	gtk_widget_show(develop_clist);
-	gtk_container_add(GTK_CONTAINER(scroll_win), develop_clist);
-	gtk_clist_set_column_width(GTK_CLIST(develop_clist), 0, 120);
-	gtk_clist_set_selection_mode(GTK_CLIST(develop_clist),
-				     GTK_SELECTION_BROWSE);
-	gtk_clist_column_titles_hide(GTK_CLIST(develop_clist));
+	/* Create graphical representation of the model */
+	develop_list = gtk_tree_view_new_with_model(GTK_TREE_MODEL(store));
+	gtk_tree_view_set_headers_visible(GTK_TREE_VIEW(develop_list), FALSE);
+	gtk_container_add(GTK_CONTAINER(scroll_win), develop_list);
+	
+	/* First create the button, it is used as user_data for the listview */
+	play_develop_btn = gtk_button_new_with_label(
+			/* Button text: play development card */
+			_("Play Card"));
+
+	/* Register double-click */
+	g_signal_connect(G_OBJECT(develop_list), "button_press_event",
+			G_CALLBACK(develop_click_cb), play_develop_btn);
+
+	g_signal_connect(
+			G_OBJECT(gtk_tree_view_get_selection(GTK_TREE_VIEW(develop_list))),
+			"changed", G_CALLBACK(develop_select_cb), NULL);
+
+	/* Now create columns */
+	column = gtk_tree_view_column_new_with_attributes(
+			/* Not translated: it is not visible */
+			"Development Cards",
+			gtk_cell_renderer_text_new(), "text", 
+			DEVELOP_COLUMN_DESCRIPTION,  NULL);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(develop_list), column);
+	gtk_widget_show(develop_list);
 
 	bbox = gtk_hbutton_box_new();
 	gtk_widget_show(bbox);
 	gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, TRUE, 0);
-
-	play_develop_btn = gtk_button_new_with_label(_("Play Card"));
+	
 	frontend_gui_register (play_develop_btn, GUI_PLAY_DEVELOP, "clicked");
 	gtk_widget_show(play_develop_btn);
 	gtk_container_add(GTK_CONTAINER(bbox), play_develop_btn);
 
-	return frame;
+	return vbox;
 }
 
-void frontend_bought_develop (DevelType type, UNUSED(gboolean this_turn))
+void frontend_bought_develop (DevelType type)
 {
-	gchar *text[1];
-	text[0] = gettext(devel_cards[type].name);
-        gtk_clist_append(GTK_CLIST(develop_clist), text);
+	const gchar *text = get_devel_name(type);
+	GtkTreeIter iter;
+        
+	gtk_list_store_append(store, &iter);
+	gtk_list_store_set(store, &iter,
+			DEVELOP_COLUMN_DESCRIPTION, text,
+			-1);
+
 }
 
 void frontend_played_develop (gint player_num, gint card_idx,
 		UNUSED(DevelType type))
 {
-	if (player_num == my_player_num () )
-		gtk_clist_remove(GTK_CLIST(develop_clist), card_idx);
+	GtkTreeIter iter;
+
+	if (player_num == my_player_num()) {
+		/* @todo RC 2004-10-28 This code is not prepared for sorted
+		 * lists. The index number of the card must strictly follow
+		 * the order in the DevelDeck 
+		 */
+		gtk_tree_model_iter_nth_child(GTK_TREE_MODEL(store), &iter, NULL, card_idx);
+		gtk_list_store_remove(store, &iter);
+	};
+}
+
+void develop_reset (void)
+{
+	gtk_list_store_clear(store);
 }

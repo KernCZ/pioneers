@@ -188,7 +188,7 @@ struct callbacks {
 	/* A node changed, it should be drawn */
 	void (*draw_node)(Node *node);
 	/* You bought a development card */
-	void (*bought_develop)(DevelType type, gboolean this_turn);
+	void (*bought_develop)(DevelType type);
 	/* someone played a development card */
 	void (*played_develop)(gint player_num, gint card_idx, DevelType type);
 	/* Something happened to your resources.  The frontend should not
@@ -354,7 +354,8 @@ const GameParams *get_game_params (void);
 int pirate_count_victims (const Hex *hex, gint *victim_list);
 int robber_count_victims (const Hex *hex, gint *victim_list);
 const gint *get_bank (void);
-DevelDeck *get_devel_deck (void);
+const DevelDeck *get_devel_deck (void);
+const gchar *get_devel_name (DevelType type);
 Map *get_map (void);
 
 #endif

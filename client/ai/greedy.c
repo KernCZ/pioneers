@@ -1049,7 +1049,7 @@ static void greedy_turn(void)
 
     /* play developement cards */
     if (can_play_any_develop()) {
-	DevelDeck *deck = get_devel_deck();
+	const DevelDeck *deck = get_devel_deck();
 
 	for (i = 0; i < deck->num_cards; i++ ) {
 	    DevelType cardtype = deck_card_type(deck, i);

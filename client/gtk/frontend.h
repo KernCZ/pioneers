@@ -132,7 +132,7 @@ void frontend_beep (void);
 void frontend_draw_node (Node *node);
 void frontend_draw_hex (Hex *hex);
 void frontend_update_stock (void);*/
-void frontend_bought_develop (DevelType type, gboolean this_turn);
+void frontend_bought_develop (DevelType type);
 void frontend_played_develop (gint player_num, gint card_idx, DevelType type);
 void frontend_resource_change (Resource type, gint new_amount);
 void frontend_robber (void);
@@ -196,6 +196,7 @@ GtkWidget *legend_create_content (void);
 /* gui_develop.c */
 GtkWidget *develop_build_page (void);
 gint develop_current_idx (void);
+void develop_reset (void);
 
 /* discard.c */
 GtkWidget *discard_build_page (void);

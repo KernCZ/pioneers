@@ -64,12 +64,12 @@ gboolean is_victory_card(DevelType type)
 	    || type == DEVEL_MARKET;
 }
 
-DevelType deck_card_type(DevelDeck *deck, gint idx)
+DevelType deck_card_type(const DevelDeck *deck, gint idx)
 {
 	return deck->cards[idx].type;
 }
 
-gboolean deck_card_playable(DevelDeck *deck,
+gboolean deck_card_playable(const DevelDeck *deck,
 			    gboolean played_develop, gint idx, gint turn)
 {
 	if (idx >= deck->num_cards)
@@ -94,3 +94,20 @@ gboolean deck_card_play(DevelDeck *deck,
 	return TRUE;
 }
 
+gint deck_card_amount(const DevelDeck *deck, DevelType type) {
+	gint idx;
+	gint amount = 0;
+	
+	for (idx = 0; idx < deck->num_cards; ++idx)
+		if (deck->cards[idx].type == type)
+			++amount;
+	return amount;
+}
+
+gint deck_card_oldest_card(const DevelDeck *deck, DevelType type) {
+	gint idx;
+	for (idx = 0; idx < deck->num_cards; ++idx)
+		if (deck->cards[idx].type == type)
+			return idx;
+	return -1;
+}

@@ -77,7 +77,7 @@ void develop_bought_card_turn(DevelType type, gint turnbought)
 			 gettext(devel_cards[type].name));
 	player_modify_statistic(my_player_num(), STAT_DEVELOPMENT, 1);
 	stock_use_develop();
-	callbacks.bought_develop (type, turnbought == turn_num () );
+	callbacks.bought_develop (type);
 }
 
 void develop_bought_card(DevelType type)
@@ -226,7 +226,12 @@ gboolean have_bought_develop()
 	return bought_develop;
 }
 
-DevelDeck *get_devel_deck ()
+const DevelDeck *get_devel_deck(void)
 {
 	return develop_deck;
+}
+
+const gchar *get_devel_name(DevelType type)
+{
+	return gettext(devel_cards[type].name);
 }

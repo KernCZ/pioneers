@@ -1,6 +1,11 @@
 2004-11-05  0.8.1.42  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/resource.c: Translation was not active
-	
+	* client/callback.h, client/ai/greedy.c, client/common/client.c,
+	client/common/develop.c, client/gtk/frontend.h, common/cards.c,
+	common/cards.h: More const in prototypes
+	* client/gtk/develop.c: Rewrite without deprecated GTK calls
+	* client/common/callbacks.c: Reset development cards when a new game
+	starts
 2004-10-27  0.8.1.41  Roland Clobus <rclobus@bigfoot.com>
 	* client/common/client.c: Added dummy callsbacks to remove compiler
 	warnings
