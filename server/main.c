@@ -41,7 +41,7 @@ int main( int argc, char *argv[] )
 
 	server_init( GNOCATAN_DIR_DEFAULT );
 
-	while ((c = getopt(argc, argv, "g:P:p:r:sv:")) != EOF)
+	while ((c = getopt(argc, argv, "a:g:P:p:r:sv:")) != EOF)
 	{
 		switch (c) {
 		case 'a':
@@ -103,7 +103,7 @@ int main( int argc, char *argv[] )
 	}
 	
 	admin_listen( server_admin_port );
-	
+
 	if( !disable_game_start )
 		start_server( server_port, register_server );
 
