@@ -468,16 +468,11 @@ static GtkWidget *splash_build_page(void)
 	GtkWidget *pm;
 	GtkWidget *viewport;
 	gchar *filename;
-
-	filename = gnome_program_locate_file(NULL,
-			GNOME_FILE_DOMAIN_APP_PIXMAP,
-			GNOCATAN_PIXMAP_SPLASH, TRUE, NULL);
-	if (filename==NULL) {
-		pm = gtk_image_new_from_file(GNOCATAN_PIXMAP_SPLASH);
-	} else {
-		pm = gtk_image_new_from_file(filename);
-		g_free(filename);
-	}
+	
+	filename = g_build_filename(DATADIR, "pixmaps", "gnocatan", 
+			"splash.png", NULL);
+	pm = gtk_image_new_from_file(filename);
+	g_free(filename);
 
 	/* The viewport avoids that the pixmap is drawn up into the tab area if
 	 * it's too large for the space provided. */
@@ -695,7 +690,7 @@ static void preferences_cb(UNUSED(GtkWidget *widget), UNUSED(void *user_data))
 
 	gint row;
 	gint color_summary;
-	MapTheme *theme;
+	GList *theme;
 	int i;
 
 	if (preferences_dlg != NULL) {
@@ -739,13 +734,13 @@ static void preferences_cb(UNUSED(GtkWidget *widget), UNUSED(void *user_data))
 	gtk_widget_show(theme_label);
 	
 	for(i = 0, theme = first_theme(); theme; ++i, theme = next_theme(theme)) {
-		GtkWidget *item = gtk_menu_item_new_with_label(theme->name);
+		GtkWidget *item = gtk_menu_item_new_with_label(((MapTheme*)theme->data)->name);
 		gtk_widget_show(item);
 		gtk_menu_append(GTK_MENU(theme_menu), item);
-		if (theme == get_theme())
+		if (theme->data == get_theme())
 			gtk_menu_set_active(GTK_MENU(theme_menu), i);
 		g_signal_connect(G_OBJECT(item), "activate", 
-			G_CALLBACK(theme_change_cb), theme);
+			G_CALLBACK(theme_change_cb), theme->data);
 	}
 	gtk_option_menu_set_menu(GTK_OPTION_MENU(theme_list), theme_menu);
 	
@@ -1017,32 +1012,30 @@ static void register_gnocatan_pixmaps(void)
 		GtkIconSet *icon;
 
 		icon = gtk_icon_set_new();
-
-		/* determine full path to pixmap file...
-		 * this will be APP_DATADIR "/pixmaps/" pixmap_filename
-		 * or e.g. APP_DATADIR "/pixmaps/gnocatan/dice.png" */
-		filename = gnome_program_locate_file(NULL,
-				GNOME_FILE_DOMAIN_APP_PIXMAP,
-				gnocatan_pixmaps[idx], TRUE, NULL);
-		if (filename != NULL) {
+		/* determine full path to pixmap file */
+		filename = g_build_filename(DATADIR, "pixmaps", 
+				gnocatan_pixmaps[idx], NULL);
+		if (g_file_test(filename, G_FILE_TEST_EXISTS)) {
 			GtkIconSource *source;
 			source = gtk_icon_source_new();
 			gtk_icon_source_set_filename(source, filename);
-			g_free(filename);
 			gtk_icon_set_add_source(icon, source);
+			gtk_icon_source_free(source);
 		}
 		else {
 			/* Missing pixmap */
-			fprintf(stderr, _("Warning: pixmap not found: %s\n"),
-					gnocatan_pixmaps[idx]);
+			g_warning(_("Pixmap not found: %s\n"), filename);
 		}
 
 		gtk_icon_factory_add(factory,
 				gnocatan_pixmaps[idx],
 				icon);
+		g_free(filename);
+		gtk_icon_set_unref(icon);
 	}
 
 	gtk_icon_factory_add_default(factory);
+	g_object_unref(factory);
 }
 
 GtkWidget* gui_build_interface()
@@ -1058,19 +1051,16 @@ GtkWidget* gui_build_interface()
 			/* The name of the application */
 			_("Gnocatan"));
 
-	icon_file = gnome_program_locate_file(NULL,
-			GNOME_FILE_DOMAIN_APP_PIXMAP,
-			GNOCATAN_ICON_FILE,
-			TRUE, NULL);
-	if (icon_file != NULL) {
+	
+	icon_file = g_build_filename(DATADIR, "pixmaps", GNOCATAN_ICON_FILE, NULL);
+ 	if (g_file_test(icon_file, G_FILE_TEST_EXISTS)) {
 		gtk_window_set_default_icon_from_file(icon_file, NULL);
-		g_free(icon_file);
 	}
 	else {
 		/* Missing pixmap, main icon file */
-		fprintf(stderr, _("Warning: pixmap not found: %s\n"),
-				GNOCATAN_ICON_FILE);
+		g_warning(_("Pixmap not found: %s\n"), icon_file);
 	}
+	g_free(icon_file);
 	
 	gtk_widget_realize(app_window);
 	g_signal_connect(G_OBJECT(app_window), "delete_event",

@@ -731,21 +731,17 @@ int main(int argc, char *argv[])
 			/* Name in the titlebar of the server */
 			_("Gnocatan Server"));
  
- 	icon_file = gnome_program_locate_file(NULL,
- 			GNOME_FILE_DOMAIN_APP_PIXMAP,
- 			GNOCATAN_ICON_FILE,
- 			TRUE, NULL);
- 	if (icon_file != NULL) {
+	icon_file = g_build_filename(DATADIR, "pixmaps", GNOCATAN_ICON_FILE, NULL);
+ 	if (g_file_test(icon_file, G_FILE_TEST_EXISTS)) {
  		gtk_window_set_default_icon_from_file(icon_file, NULL);
- 		g_free(icon_file);
  	}
  	else {
- 		fprintf(stderr, _("Warning: pixmap not found: %s\n"),
- 				GNOCATAN_ICON_FILE);
+ 		g_warning(_("Pixmap not found: %s\n"), icon_file);
  	}
+	g_free(icon_file);
  
 	gtk_widget_realize(app);
-	g_signal_connect(GTK_OBJECT(app), "delete_event",
+	g_signal_connect(G_OBJECT(app), "delete_event",
 			G_CALLBACK(quit_cb), NULL);
 
 	gnome_app_create_menus(GNOME_APP(app), main_menu);

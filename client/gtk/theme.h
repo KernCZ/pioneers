@@ -87,9 +87,7 @@ typedef enum {
 } SCALEMODE;
 
 typedef struct _MapTheme {
-	struct _MapTheme *next;
 	gchar *name;
-	gchar *subdir;
 	SCALEMODE  scaling;
 	const gchar *terrain_tile_names[TERRAIN_TILE_MAX];
 	const gchar *port_tile_names[PORT_TILE_MAX];
@@ -105,7 +103,7 @@ typedef struct _MapTheme {
 void theme_rescale(int radius);
 void set_theme(MapTheme *t);
 MapTheme *get_theme(void);
-MapTheme *first_theme(void);
-MapTheme *next_theme(MapTheme *p);
+GList *first_theme(void);
+GList *next_theme(GList *p);
 
 #endif

@@ -89,8 +89,6 @@ extern GdkColor green;
 extern GdkColor blue;
 extern GdkColor lightblue;
 
-void load_pixmap(const gchar *name, GdkPixmap **pixmap, GdkBitmap **mask);
-
 GuiMap *guimap_new(void);
 GdkPixmap *guimap_terrain(Terrain terrain);
 

@@ -59,39 +59,6 @@ GdkPixmap *guimap_terrain(Terrain terrain)
 	return get_theme()->terrain_tiles[terrain];
 }
 
-void load_pixmap(const gchar *name, GdkPixmap **pixmap_return,
-                        GdkBitmap **mask_return)
-{
-	GdkPixbuf *pixbuf;
-	gchar *file;
-
-	g_return_if_fail(name != NULL);
-	g_return_if_fail(pixmap_return != NULL);
-
-	/* check that file exists */
-	file = g_strconcat(THEMEDIR "/", name, NULL);
-	if (!g_file_test(file, G_FILE_TEST_EXISTS)) {
-		g_error(_("Could not find \'%s\' pixmap file.\n"), file);
-		exit(1);
-	}
-
-	/* load pixmap/mask */
-	pixbuf = gdk_pixbuf_new_from_file(file, NULL);
-	if (pixbuf != NULL) {
-		*pixmap_return = NULL;
-		gdk_pixbuf_render_pixmap_and_mask(pixbuf,
-				pixmap_return, mask_return, 1);
-		gdk_pixbuf_unref(pixbuf);
-	}
-
-	/* check result */
-	if (pixbuf == NULL || *pixmap_return == NULL) {
-		g_error(_("Could not load \'%s\' pixmap file.\n"), file);
-		exit(1);
-	}
-	g_free(file);
-}
-
 GuiMap *guimap_new()
 {
 	GuiMap *gmap;

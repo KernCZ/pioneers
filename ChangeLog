@@ -1,6 +1,10 @@
 2005-02-03  0.8.1.52  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/gui.c, server/gtk/gnocatan-server-gtk.c: Fix for crash in
 	about dialog. Also reintroduces the version number.
+	* client/gtk/gui.c, client/gtk/guimap.c, client/gtk/guimap.h,
+	client/gtk/theme.c, client/gtk/theme.h,
+	server/gtk/gnocatan-server-gtk.c: Theme.c rewrite, using
+	g_build_filename instead of gnome_program_locate_file.
 	
 2005-01-25  0.8.1.51  Roland Clobus <rclobus@bigfoot.com>
 	* common/gtk/common_gtk.c: Added stub for gtk_alignment_set_padding,
