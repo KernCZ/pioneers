@@ -11,6 +11,8 @@
 	* client/ai/ai.c: Code cleanup to random_name. Randomizer needs to be
 	initialized only once.
 	* po/POTFILES.in: Added client/ai/ai.c
+	* client/gtk/connect.c: Made metaserver redirects insensitive to
+	buffer overflows.
 
 2005-03-23  Bas Wijnen <shevek@fmf.nl>
 	* client/common/client.c, server/gold.c, server/pregame.c: Fixed race

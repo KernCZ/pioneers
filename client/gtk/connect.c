@@ -23,7 +23,6 @@
 /* #undef GTK_DISABLE_DEPRECATED */
 #include "config.h"
 #include <ctype.h>
-#include <netdb.h>
 #include <stdlib.h>
 #include <unistd.h>		/* For usleep */
 #include <errno.h>
@@ -399,9 +398,8 @@ static void meta_notify(NetEvent event, UNUSED(void *user_data),
 		case MODE_SIGNON:
 		case MODE_REDIRECT:
 			if (strncmp(line, "goto ", 5) == 0) {
-				gchar server[NI_MAXHOST];
-				gchar port[NI_MAXSERV];
-
+				gchar **split_result;
+				gchar *port;
 				meta_mode = MODE_REDIRECT;
 				net_close(ses);
 				if (metaserver_info.num_redirects++ == 10) {
@@ -410,40 +408,34 @@ static void meta_notify(NetEvent event, UNUSED(void *user_data),
 						    ("Too many meta-server redirects\n"));
 					return;
 				}
-				if (sscanf
-				    (line, "goto %s %s", server,
-				     port) == 2) {
+
+				split_result = g_strsplit(line, " ", 0);
+				g_assert(split_result[0] != NULL);
+				g_assert(!strcmp(split_result[0], "goto"));
+				if (split_result[1]) {
 					if (metaserver_info.server)
 						g_free(metaserver_info.
 						       server);
+					metaserver_info.server =
+					    g_strdup(split_result[1]);
 					if (metaserver_info.port)
 						g_free(metaserver_info.
 						       port);
-					metaserver_info.server =
-					    g_strdup(server);
-					metaserver_info.port =
-					    g_strdup(port);
-					query_meta_server(server, port);
-				} else if (sscanf(line, "goto %s", server)
-					   == 1) {
-					if (metaserver_info.server)
-						g_free(metaserver_info.
-						       server);
-					if (metaserver_info.port)
-						g_free(metaserver_info.
-						       port);
-					metaserver_info.server =
-					    g_strdup(server);
-					metaserver_info.port =
-					    g_strdup
-					    (GNOCATAN_DEFAULT_META_PORT);
-					query_meta_server(server,
-							  GNOCATAN_DEFAULT_META_PORT);
-				} else
+					port = GNOCATAN_DEFAULT_META_PORT;
+					if (split_result[2])
+						port = split_result[2];
+					metaserver_info.port = g_strdup(port);
+					query_meta_server(metaserver_info.
+							  server,
+							  metaserver_info.
+							  port);
+				} else {
 					log_message(MSG_ERROR,
 						    _
 						    ("Bad redirect line: %s\n"),
 						    line);
+				};
+				g_strfreev(split_result);
 				break;
 			}
 			metaserver_info.version_major =
