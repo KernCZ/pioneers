@@ -248,7 +248,7 @@ void sm_gui_check(StateMachine *sm, gint event, gboolean sensitive)
 	WidgetState *gui;
 	if (sm->is_dead)
 		return;
-	gui = g_hash_table_lookup(sm->widgets, (gpointer)event);
+	gui = g_hash_table_lookup(sm->widgets, GINT_TO_POINTER(event));
 	if (gui != NULL)
 		gui->next = sensitive;
 }
@@ -260,13 +260,13 @@ static WidgetState *gui_new(StateMachine *sm, void *widget, gint id)
 	gui->sm = sm;
 	gui->widget = widget;
 	gui->id = id;
-	g_hash_table_insert(sm->widgets, (gpointer)gui->id, gui);
+	g_hash_table_insert(sm->widgets, GINT_TO_POINTER(gui->id), gui);
 	return gui;
 }
 
 static void gui_free(WidgetState *gui)
 {
-	g_hash_table_remove(gui->sm->widgets, (gpointer)gui->id);
+	g_hash_table_remove(gui->sm->widgets, GINT_TO_POINTER(gui->id));
 	g_free(gui);
 }
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnocatan 0.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-04-26 07:46+0200\n"
+"POT-Creation-Date: 2004-05-23 15:28+0200\n"
 "PO-Revision-Date: 2003-11-20 16:00-0600\n"
 "Last-Translator: Arnaud MALON <moko@geumeuleu.com>\n"
 "Language-Team: Français <LL@li.org>\n"
@@ -897,73 +897,73 @@ msgstr ""
 msgid "Double setup for %s.\n"
 msgstr ""
 
-#: client/gtk/chat.c:59
+#: client/gtk/chat.c:55
 msgid "Chat"
 msgstr "Chat"
 
-#: client/gtk/connect.c:190
+#: client/gtk/connect.c:186
 #, c-format
 msgid "Meta-server at %s, port %s"
 msgstr "Meta-serveur à l'adresse %s, port %s"
 
-#: client/gtk/connect.c:198
+#: client/gtk/connect.c:194
 msgid "Finished.\n"
 msgstr "Terminé.\n"
 
-#: client/gtk/connect.c:214 client/gtk/connect.c:264 client/gtk/connect.c:360
+#: client/gtk/connect.c:210 client/gtk/connect.c:260 client/gtk/connect.c:356
 #: server/meta.c:163
 msgid "Meta-server kicked us off\n"
 msgstr "Le meta-serveur nous a expulsé.\n"
 
-#: client/gtk/connect.c:241
+#: client/gtk/connect.c:237
 msgid "Receiving game names from the meta server.\n"
 msgstr "Reception du nom des parties du meta-serveur.\n"
 
-#: client/gtk/connect.c:287
+#: client/gtk/connect.c:283
 #, fuzzy, c-format
 msgid "New game server requested on %s port %s\n"
 msgstr "Une nouvelle partie commence sur le serveur %s, port %s.\n"
 
-#: client/gtk/connect.c:296
+#: client/gtk/connect.c:292
 #, fuzzy, c-format
 msgid "Unknown message from the metaserver: %s\n"
 msgstr "Reception du nom des parties du meta-serveur.\n"
 
-#: client/gtk/connect.c:375 server/meta.c:128
+#: client/gtk/connect.c:371 server/meta.c:128
 msgid "Too many meta-server redirects\n"
 msgstr "Trop de redirections du meta-serveur\n"
 
-#: client/gtk/connect.c:397 server/meta.c:136
+#: client/gtk/connect.c:393 server/meta.c:136
 #, c-format
 msgid "Bad redirect line: %s\n"
 msgstr "Mauvaise redirection ligne %s\n"
 
-#: client/gtk/connect.c:412
+#: client/gtk/connect.c:408
 #, c-format
 msgid "Meta server too old to create servers (version %d.%d)\n"
 msgstr ""
 "Le meta-serveur est trop vieux pour enregistrer des serveurs (version %d.%"
 "d)\n"
 
-#: client/gtk/connect.c:468 server/meta.c:175
+#: client/gtk/connect.c:464 server/meta.c:175
 #, c-format
 msgid "Redirected to meta-server at %s, port %s\n"
 msgstr "Redirection sur le meta-serveur %s, port %s.\n"
 
-#: client/gtk/connect.c:470
+#: client/gtk/connect.c:466
 msgid "Receiving a list of Gnocatan servers from the meta server.\n"
 msgstr "Reception d'une liste de serveurs Gnocatan du meta-serveur.\n"
 
-#: client/gtk/connect.c:532
+#: client/gtk/connect.c:528
 msgid "Number of AI Players"
 msgstr "Nombre de joueurs"
 
-#: client/gtk/connect.c:550
+#: client/gtk/connect.c:546
 #, fuzzy
 msgid "The number of AI players"
 msgstr "Nombre de joueurs"
 
-#: client/gtk/connect.c:553
+#: client/gtk/connect.c:549
 msgid ""
 "Notes:\n"
 "\t* The default metaserver does not allow creating new games.\n"
@@ -971,174 +971,174 @@ msgid ""
 "\t  Please set appropriate values yourself."
 msgstr ""
 
-#: client/gtk/connect.c:572
+#: client/gtk/connect.c:568
 msgid "Requesting new game server\n"
 msgstr "Demander une nouvelle partie\n"
 
-#: client/gtk/connect.c:606 client/gtk/connect.c:1009
+#: client/gtk/connect.c:602 client/gtk/connect.c:1005
 msgid "Create a public game"
 msgstr ""
 
-#: client/gtk/connect.c:727 client/gtk/connect.c:1001
+#: client/gtk/connect.c:723 client/gtk/connect.c:997
 msgid "Join a public game"
 msgstr ""
 
-#: client/gtk/connect.c:741
+#: client/gtk/connect.c:737
 msgid "Refresh the list of games"
 msgstr ""
 
-#: client/gtk/connect.c:743
+#: client/gtk/connect.c:739
 msgid "Create a new public game"
 msgstr ""
 
-#: client/gtk/connect.c:745
+#: client/gtk/connect.c:741
 msgid "Don't join a public game"
 msgstr ""
 
-#: client/gtk/connect.c:747
+#: client/gtk/connect.c:743
 msgid "Join the selected game"
 msgstr ""
 
-#: client/gtk/connect.c:779
+#: client/gtk/connect.c:775
 msgid "Select a game to join"
 msgstr ""
 
-#: client/gtk/connect.c:782
+#: client/gtk/connect.c:778
 msgid "Map Name"
 msgstr "Nom de la carte"
 
-#: client/gtk/connect.c:787
+#: client/gtk/connect.c:783
 msgid "Name of the game"
 msgstr ""
 
-#: client/gtk/connect.c:792
+#: client/gtk/connect.c:788
 msgid "Curr"
 msgstr "Cour."
 
-#: client/gtk/connect.c:796
+#: client/gtk/connect.c:792
 #, fuzzy
 msgid "Number of players in the game"
 msgstr "Nombre de joueurs:"
 
-#: client/gtk/connect.c:801 client/gtk/gold.c:229
+#: client/gtk/connect.c:797 client/gtk/gold.c:229
 msgid "Max"
 msgstr "Max."
 
-#: client/gtk/connect.c:805
+#: client/gtk/connect.c:801
 msgid "Maximum players for the game"
 msgstr ""
 
-#: client/gtk/connect.c:808
+#: client/gtk/connect.c:804
 msgid "Terrain"
 msgstr "Carte"
 
-#: client/gtk/connect.c:812
+#: client/gtk/connect.c:808
 #, fuzzy
 msgid "Random of default terrain"
 msgstr "Carte au hazard?"
 
-#: client/gtk/connect.c:817
+#: client/gtk/connect.c:813
 msgid "Vic. Points"
 msgstr "Pts de Vic."
 
-#: client/gtk/connect.c:821
+#: client/gtk/connect.c:817
 #, fuzzy
 msgid "Points needed to win"
 msgstr "Pts requis pour gagner: %i"
 
-#: client/gtk/connect.c:824
+#: client/gtk/connect.c:820
 msgid "Sevens Rule"
 msgstr "La règle des septs"
 
-#: client/gtk/connect.c:828
+#: client/gtk/connect.c:824
 #, fuzzy
 msgid "Sevens rule"
 msgstr "La règle des septs"
 
-#: client/gtk/connect.c:831
+#: client/gtk/connect.c:827
 msgid "Host"
 msgstr "Adresse"
 
-#: client/gtk/connect.c:836
+#: client/gtk/connect.c:832
 msgid "Host of the game"
 msgstr ""
 
-#: client/gtk/connect.c:841
+#: client/gtk/connect.c:837
 msgid "Port"
 msgstr "Port"
 
-#: client/gtk/connect.c:845
+#: client/gtk/connect.c:841
 msgid "Port of the the game"
 msgstr ""
 
-#: client/gtk/connect.c:848
+#: client/gtk/connect.c:844
 msgid "Version"
 msgstr "Version"
 
-#: client/gtk/connect.c:852
+#: client/gtk/connect.c:848
 msgid "Version of the host"
 msgstr ""
 
-#: client/gtk/connect.c:924
+#: client/gtk/connect.c:920
 msgid "Start a new game"
 msgstr ""
 
-#: client/gtk/connect.c:948
+#: client/gtk/connect.c:944
 msgid "Player Name"
 msgstr "Nom du joueur"
 
-#: client/gtk/connect.c:965
+#: client/gtk/connect.c:961
 #, fuzzy
 msgid "Enter your name"
 msgstr "Renommer"
 
-#: client/gtk/connect.c:973 server/gnocatan-server-gtk.c:452
+#: client/gtk/connect.c:969 server/gnocatan-server-gtk.c:452
 msgid "Meta Server"
 msgstr "Meta-serveur"
 
-#: client/gtk/connect.c:987
+#: client/gtk/connect.c:983
 msgid "Leave empty for the default meta server"
 msgstr ""
 
-#: client/gtk/connect.c:995
+#: client/gtk/connect.c:991
 msgid "Join public game"
 msgstr ""
 
-#: client/gtk/connect.c:1005
+#: client/gtk/connect.c:1001
 msgid "Create public game"
 msgstr ""
 
-#: client/gtk/connect.c:1013
+#: client/gtk/connect.c:1009
 msgid "Join private game"
 msgstr ""
 
-#: client/gtk/connect.c:1017 client/gtk/connect.c:1154
+#: client/gtk/connect.c:1013 client/gtk/connect.c:1150
 msgid "Join a private game"
 msgstr ""
 
-#: client/gtk/connect.c:1182
+#: client/gtk/connect.c:1178
 msgid "Server Host"
 msgstr "Adresse du serveur"
 
-#: client/gtk/connect.c:1196
+#: client/gtk/connect.c:1192
 #, fuzzy
 msgid "Name of the host of the game"
 msgstr "Nous avons été explusé de la partie!\n"
 
-#: client/gtk/connect.c:1199 server/gnocatan-server-gtk.c:418
+#: client/gtk/connect.c:1195 server/gnocatan-server-gtk.c:418
 msgid "Server Port"
 msgstr "Port du serveur"
 
-#: client/gtk/connect.c:1217
+#: client/gtk/connect.c:1213
 msgid "Port of the host of the game"
 msgstr ""
 
-#: client/gtk/connect.c:1255
+#: client/gtk/connect.c:1251
 #, fuzzy
 msgid "Recent games"
 msgstr "Serveurs récents"
 
-#: client/gtk/connect.c:1257
+#: client/gtk/connect.c:1253
 #, fuzzy
 msgid "Recent Games"
 msgstr "Serveurs récents"
@@ -1542,7 +1542,7 @@ msgstr "Bois"
 msgid "3:1"
 msgstr "3:1"
 
-#: client/gtk/histogram.c:222 client/gtk/histogram.c:234
+#: client/gtk/histogram.c:219 client/gtk/histogram.c:231
 msgid "Dice Histogram"
 msgstr "Histogramme des lancers de dés"
 
@@ -1648,11 +1648,11 @@ msgstr "Choissis la ressource que tu veux monopoliser"
 msgid "Resource Type"
 msgstr "Type de ressource"
 
-#: client/gtk/name.c:53
+#: client/gtk/name.c:49
 msgid "Change player name"
 msgstr "Renommer"
 
-#: client/gtk/name.c:74
+#: client/gtk/name.c:70
 msgid "Player Name:"
 msgstr "Nom du joueur:"
 

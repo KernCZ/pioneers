@@ -1,3 +1,14 @@
+2004-05-23 0.8.1.27  Roland Clobus <rclobus@bigfoot.com>
+	* client/gtk/chat.c, client/gtk/connect.c, client/gtk/histogram.c,
+	client/gtk/name.c, common/game-settings.c, common/select-game.c,
+	server/gnocatan-server-gtk.c: Removed *_DISABLE_DEPRECATED defines to
+	allow the code to build with Gtk 2.4.
+	* client/gtk/frontend.c, common/common_gtk.c: Replaced casts to
+	gpointer with more portable GINT_TO_POINTER.
+	* server/gnocatan-server-gtk.c: Added #include <locale.h>, needed when
+	building with gcc flag -O0.
+	* po/nl.po: Added dutch translations.
+	
 2004-05-04  Roland Clobus <rclobus@bigfoot.com>
 	* po/de.po, po/es.po, po/nl.po, po/fr.po, po/gnocatan.pot: Updated
 	translation files to reflect current texts. (No changes to translated

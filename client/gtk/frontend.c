@@ -69,7 +69,7 @@ void frontend_gui_update ()
 void frontend_gui_check (GuiEvent event, gboolean sensitive)
 {
 	GuiWidgetState *gui;
-	gui = g_hash_table_lookup(frontend_widgets, (gpointer)event);
+	gui = g_hash_table_lookup(frontend_widgets, GINT_TO_POINTER(event));
 	if (gui != NULL)
 		gui->next = sensitive;
 }
@@ -79,13 +79,13 @@ static GuiWidgetState *gui_new (void *widget, gint id)
 	GuiWidgetState *gui = g_malloc0(sizeof(*gui));
 	gui->widget = widget;
 	gui->id = id;
-	g_hash_table_insert(frontend_widgets, (gpointer)gui->id, gui);
+	g_hash_table_insert(frontend_widgets, GINT_TO_POINTER(gui->id), gui);
 	return gui;
 }
 
 static void gui_free (GuiWidgetState *gui)
 {
-	g_hash_table_remove(frontend_widgets, (gpointer)gui->id);
+	g_hash_table_remove(frontend_widgets, GINT_TO_POINTER(gui->id));
 	g_free(gui);
 }
 
@@ -170,7 +170,7 @@ gint hotkeys_handler (UNUSED(GtkWidget *w), GdkEvent *e, UNUSED(gpointer data))
 	default:
 		return 0; /* not handled */
 	}
-	gui = g_hash_table_lookup (frontend_widgets, (gpointer)arg);
+	gui = g_hash_table_lookup (frontend_widgets, GINT_TO_POINTER(arg));
 	if (!gui || !gui->current) return 0; /* not handled */
 	route_gui_event (arg);
 	return 1; /* handled */

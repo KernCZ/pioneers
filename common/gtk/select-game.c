@@ -7,10 +7,6 @@
  *
  */
 
-#define GDK_DISABLE_DEPRECATED 1
-#define GTK_DISABLE_DEPRECATED 1
-#define GNOME_DISABLE_DEPRECATED 1
-
 #include "game.h"
 #include <gtk/gtksignal.h>
 #include <gtk/gtktable.h>

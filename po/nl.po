@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 0.8.1.0\n"
+"Project-Id-Version: 0.8.1.27\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-04-26 07:46+0200\n"
+"POT-Creation-Date: 2004-05-23 15:28+0200\n"
 "PO-Revision-Date: 2004-01-26 16:51+0100\n"
 "Last-Translator: Roland Clobus <rclobus@bigfoot.com>\n"
 "Language-Team: Bas Wijnen <b.wijnen@phys.rug.nl> Roland Clobus "
@@ -676,10 +676,9 @@ msgstr "Plaats de struikrover"
 
 #: client/common/client.c:1250
 msgid "Finish the road building action."
-msgstr ""
+msgstr "Beëindig de bouwkaart"
 
 #: client/common/client.c:1251
-#, fuzzy
 msgid "Build one road segment."
 msgstr "Bouw een straat."
 
@@ -900,247 +899,242 @@ msgstr "%s mag opzetten.\n"
 msgid "Double setup for %s.\n"
 msgstr "%s mag dubbel opzetten.\n"
 
-#: client/gtk/chat.c:59
+#: client/gtk/chat.c:55
 msgid "Chat"
 msgstr "Praten"
 
-#: client/gtk/connect.c:190
+#: client/gtk/connect.c:186
 #, c-format
 msgid "Meta-server at %s, port %s"
 msgstr "Metaserver op %s, poort %s"
 
-#: client/gtk/connect.c:198
+#: client/gtk/connect.c:194
 msgid "Finished.\n"
 msgstr "Klaar.\n"
 
-#: client/gtk/connect.c:214 client/gtk/connect.c:264 client/gtk/connect.c:360
+#: client/gtk/connect.c:210 client/gtk/connect.c:260 client/gtk/connect.c:356
 #: server/meta.c:163
 msgid "Meta-server kicked us off\n"
 msgstr "De metaserver heeft de verbinding verbroken.\n"
 
-#: client/gtk/connect.c:241
+#: client/gtk/connect.c:237
 msgid "Receiving game names from the meta server.\n"
 msgstr "De metaserver stuurt de spelnamen door.\n"
 
-#: client/gtk/connect.c:287
-#, fuzzy, c-format
+#: client/gtk/connect.c:283
+#, c-format
 msgid "New game server requested on %s port %s\n"
 msgstr "Er is een nieuwe server gestart op %s, poort %s.\n"
 
-#: client/gtk/connect.c:296
-#, fuzzy, c-format
+#: client/gtk/connect.c:292
+#, c-format
 msgid "Unknown message from the metaserver: %s\n"
-msgstr "De metaserver stuurt de spelnamen door.\n"
+msgstr "Onbekende gegevens ontvangen van de metaserver: %s\n"
 
-#: client/gtk/connect.c:375 server/meta.c:128
+#: client/gtk/connect.c:371 server/meta.c:128
 msgid "Too many meta-server redirects\n"
 msgstr "Teveel metaserver omleidingen.\n"
 
-#: client/gtk/connect.c:397 server/meta.c:136
+#: client/gtk/connect.c:393 server/meta.c:136
 #, c-format
 msgid "Bad redirect line: %s\n"
 msgstr "Foute omleiding: %s\n"
 
-#: client/gtk/connect.c:412
+#: client/gtk/connect.c:408
 #, c-format
 msgid "Meta server too old to create servers (version %d.%d)\n"
 msgstr "De metaserver is te oud om servers te starten (versie %d.%d)\n"
 
-#: client/gtk/connect.c:468 server/meta.c:175
+#: client/gtk/connect.c:464 server/meta.c:175
 #, c-format
 msgid "Redirected to meta-server at %s, port %s\n"
 msgstr "We worden doorgestuurd naar de metaserver op %s, poort %s.\n"
 
-#: client/gtk/connect.c:470
+#: client/gtk/connect.c:466
 msgid "Receiving a list of Gnocatan servers from the meta server.\n"
 msgstr "De metaserver stuurt een lijst Gnocatan servers.\n"
 
-#: client/gtk/connect.c:532
+#: client/gtk/connect.c:528
 msgid "Number of AI Players"
 msgstr "Aantal computerspelers"
 
-#: client/gtk/connect.c:550
-#, fuzzy
+#: client/gtk/connect.c:546
 msgid "The number of AI players"
 msgstr "Aantal computerspelers"
 
-#: client/gtk/connect.c:553
+#: client/gtk/connect.c:549
 msgid ""
 "Notes:\n"
 "\t* The default metaserver does not allow creating new games.\n"
 "\t* The metaserver does not send information about the games.\n"
 "\t  Please set appropriate values yourself."
 msgstr ""
+"Opmerkingen:\n"
+"\t* De standaard metaserver kan geen nieuwe spellen starten.\n"
+"\t* De metaserver verstrekt geen informatie over de spellen.\n"
+"\t Kies zelf geschikte instellingen."
 
-#: client/gtk/connect.c:572
+#: client/gtk/connect.c:568
 msgid "Requesting new game server\n"
 msgstr "Een nieuwe server wordt aangevraagd.\n"
 
-#: client/gtk/connect.c:606 client/gtk/connect.c:1009
+#: client/gtk/connect.c:602 client/gtk/connect.c:1005
 msgid "Create a public game"
-msgstr ""
+msgstr "Maak een nieuw openbaar spel"
 
-#: client/gtk/connect.c:727 client/gtk/connect.c:1001
+#: client/gtk/connect.c:723 client/gtk/connect.c:997
 msgid "Join a public game"
-msgstr ""
+msgstr "Meedoen aan een openbaar spel"
+
+#: client/gtk/connect.c:737
+msgid "Refresh the list of games"
+msgstr "Ververs de lijst met spellen"
+
+#: client/gtk/connect.c:739
+msgid "Create a new public game"
+msgstr "Maak een nieuw openbaar spel"
 
 #: client/gtk/connect.c:741
-msgid "Refresh the list of games"
-msgstr ""
+msgid "Don't join a public game"
+msgstr "Niet meedoen"
 
 #: client/gtk/connect.c:743
-msgid "Create a new public game"
-msgstr ""
-
-#: client/gtk/connect.c:745
-msgid "Don't join a public game"
-msgstr ""
-
-#: client/gtk/connect.c:747
 msgid "Join the selected game"
-msgstr ""
+msgstr "Doe mee met het geselecteerde spel"
 
-#: client/gtk/connect.c:779
+#: client/gtk/connect.c:775
 msgid "Select a game to join"
-msgstr ""
+msgstr "Kies een spel om aan mee te doen"
 
-#: client/gtk/connect.c:782
+#: client/gtk/connect.c:778
 msgid "Map Name"
 msgstr "Naam"
 
-#: client/gtk/connect.c:787
+#: client/gtk/connect.c:783
 msgid "Name of the game"
-msgstr ""
+msgstr "Naam van het spel"
 
-#: client/gtk/connect.c:792
+#: client/gtk/connect.c:788
 msgid "Curr"
 msgstr "Huidig"
 
-#: client/gtk/connect.c:796
-#, fuzzy
+#: client/gtk/connect.c:792
 msgid "Number of players in the game"
-msgstr "Aantal spelers:"
+msgstr "Aantal spelers"
 
-#: client/gtk/connect.c:801 client/gtk/gold.c:229
+#: client/gtk/connect.c:797 client/gtk/gold.c:229
 msgid "Max"
 msgstr "Max"
 
-#: client/gtk/connect.c:805
+#: client/gtk/connect.c:801
 msgid "Maximum players for the game"
-msgstr ""
+msgstr "Maximum aantal spelers voor dit spel"
 
-#: client/gtk/connect.c:808
+#: client/gtk/connect.c:804
 msgid "Terrain"
 msgstr "Terrein"
 
-#: client/gtk/connect.c:812
-#, fuzzy
+#: client/gtk/connect.c:808
 msgid "Random of default terrain"
-msgstr "Willekeurig terrein?"
+msgstr "Willekeurig of standaard terrein"
 
-#: client/gtk/connect.c:817
+#: client/gtk/connect.c:813
 msgid "Vic. Points"
 msgstr "Punten"
 
-#: client/gtk/connect.c:821
-#, fuzzy
+#: client/gtk/connect.c:817
 msgid "Points needed to win"
-msgstr "De eerste speler met ten minste %i punten wint"
+msgstr "Het aantal benodigde punten om te winnen"
 
-#: client/gtk/connect.c:824
+#: client/gtk/connect.c:820
 msgid "Sevens Rule"
 msgstr "Regel voor zevens"
 
-#: client/gtk/connect.c:828
-#, fuzzy
+#: client/gtk/connect.c:824
 msgid "Sevens rule"
 msgstr "Regel voor zevens"
 
-#: client/gtk/connect.c:831
+#: client/gtk/connect.c:827
 msgid "Host"
 msgstr "Computer"
 
-#: client/gtk/connect.c:836
+#: client/gtk/connect.c:832
 msgid "Host of the game"
-msgstr ""
+msgstr "Spel server"
 
-#: client/gtk/connect.c:841
+#: client/gtk/connect.c:837
 msgid "Port"
 msgstr "Poort"
 
-#: client/gtk/connect.c:845
+#: client/gtk/connect.c:841
 msgid "Port of the the game"
-msgstr ""
+msgstr "Poort van het spel"
 
-#: client/gtk/connect.c:848
+#: client/gtk/connect.c:844
 msgid "Version"
 msgstr "Versie"
 
-#: client/gtk/connect.c:852
+#: client/gtk/connect.c:848
 msgid "Version of the host"
-msgstr ""
+msgstr "Versie van de server"
 
-#: client/gtk/connect.c:924
+#: client/gtk/connect.c:920
 msgid "Start a new game"
-msgstr ""
+msgstr "Start een nieuw spel"
 
-#: client/gtk/connect.c:948
+#: client/gtk/connect.c:944
 msgid "Player Name"
 msgstr "Naam"
 
-#: client/gtk/connect.c:965
-#, fuzzy
+#: client/gtk/connect.c:961
 msgid "Enter your name"
-msgstr "Verander de naam van je speler"
+msgstr "Geef je naam"
 
-#: client/gtk/connect.c:973 server/gnocatan-server-gtk.c:452
+#: client/gtk/connect.c:969 server/gnocatan-server-gtk.c:452
 msgid "Meta Server"
 msgstr "Metaserver"
 
-#: client/gtk/connect.c:987
+#: client/gtk/connect.c:983
 msgid "Leave empty for the default meta server"
-msgstr ""
+msgstr "Laat leeg om de standaard metaserver te gebruiken"
 
-#: client/gtk/connect.c:995
+#: client/gtk/connect.c:991
 msgid "Join public game"
-msgstr ""
+msgstr "Meespelen met openbaar spel"
 
-#: client/gtk/connect.c:1005
+#: client/gtk/connect.c:1001
 msgid "Create public game"
-msgstr ""
+msgstr "Maak nieuw openbaar spel"
 
-#: client/gtk/connect.c:1013
+#: client/gtk/connect.c:1009
 msgid "Join private game"
-msgstr ""
+msgstr "Privé spel"
 
-#: client/gtk/connect.c:1017 client/gtk/connect.c:1154
+#: client/gtk/connect.c:1013 client/gtk/connect.c:1150
 msgid "Join a private game"
-msgstr ""
+msgstr "Meedoen aan een privé spel"
 
-#: client/gtk/connect.c:1182
+#: client/gtk/connect.c:1178
 msgid "Server Host"
 msgstr "Computer"
 
-#: client/gtk/connect.c:1196
-#, fuzzy
+#: client/gtk/connect.c:1192
 msgid "Name of the host of the game"
-msgstr "De verbinding met de server is verbroken.\n"
+msgstr "Naam van de server van het spel"
 
-#: client/gtk/connect.c:1199 server/gnocatan-server-gtk.c:418
+#: client/gtk/connect.c:1195 server/gnocatan-server-gtk.c:418
 msgid "Server Port"
 msgstr "Poort"
 
-#: client/gtk/connect.c:1217
+#: client/gtk/connect.c:1213
 msgid "Port of the host of the game"
-msgstr ""
+msgstr "Poort van de spel server"
 
-#: client/gtk/connect.c:1255
-#, fuzzy
+#: client/gtk/connect.c:1251
 msgid "Recent games"
 msgstr "Recente spellen"
 
-#: client/gtk/connect.c:1257
-#, fuzzy
+#: client/gtk/connect.c:1253
 msgid "Recent Games"
 msgstr "Recente spellen"
 
@@ -1558,7 +1552,7 @@ msgstr "H"
 msgid "3:1"
 msgstr "3:1"
 
-#: client/gtk/histogram.c:222 client/gtk/histogram.c:234
+#: client/gtk/histogram.c:219 client/gtk/histogram.c:231
 msgid "Dice Histogram"
 msgstr "Dobbelsteenhistogram"
 
@@ -1662,11 +1656,11 @@ msgstr "Kies de grondstof waar je een monopolie op wilt."
 msgid "Resource Type"
 msgstr "Grondstof"
 
-#: client/gtk/name.c:53
+#: client/gtk/name.c:49
 msgid "Change player name"
 msgstr "Verander naam"
 
-#: client/gtk/name.c:74
+#: client/gtk/name.c:70
 msgid "Player Name:"
 msgstr "Naam:"
 
@@ -2131,14 +2125,12 @@ msgid "Stop server"
 msgstr "Stop server"
 
 #: server/gnocatan-server-gtk.c:175
-#, fuzzy
 msgid "Start the server"
-msgstr "Start server"
+msgstr "Start de server"
 
 #: server/gnocatan-server-gtk.c:175
-#, fuzzy
 msgid "Stop the server"
-msgstr "Stop server"
+msgstr "Stop de server"
 
 #: server/gnocatan-server-gtk.c:219
 #, c-format
@@ -2173,23 +2165,20 @@ msgid "Server Parameters"
 msgstr "Serverinstellingen"
 
 #: server/gnocatan-server-gtk.c:433
-#, fuzzy
 msgid "The port for the game server"
-msgstr "De Gnocatan server"
+msgstr "De poort van de server"
 
 #: server/gnocatan-server-gtk.c:435
 msgid "Register Server"
 msgstr "Registreer server"
 
 #: server/gnocatan-server-gtk.c:450
-#, fuzzy
 msgid "Register this game at the meta server"
-msgstr "De metaserver stuurt de spelnamen door.\n"
+msgstr "Registreer dit spel bij de metaserver"
 
 #: server/gnocatan-server-gtk.c:467
-#, fuzzy
 msgid "The address of the meta server"
-msgstr "De metaserver stuurt de spelnamen door.\n"
+msgstr "Het adres van de metaserver"
 
 #: server/gnocatan-server-gtk.c:469
 msgid "Reported Hostname"
@@ -2199,15 +2188,16 @@ msgstr "Geregistreerde computernaam"
 msgid ""
 "The public name of this computer (needed when playing behind a firewall)"
 msgstr ""
+"De naam van deze computer (is nodig om een spel te registreren vanachter een "
+"firewall)"
 
 #: server/gnocatan-server-gtk.c:516
 msgid "Add Computer Player"
 msgstr "Voeg computerspeler toe"
 
 #: server/gnocatan-server-gtk.c:523
-#, fuzzy
 msgid "Add a computer player to the game"
-msgstr "Voeg computerspeler toe"
+msgstr "Voeg computerspeler toe aan het spel"
 
 #: server/gnocatan-server-gtk.c:525
 msgid "Players Connected"
@@ -2215,7 +2205,7 @@ msgstr "Huidige spelers"
 
 #: server/gnocatan-server-gtk.c:550
 msgid "Shows all players and viewers connected to the server"
-msgstr ""
+msgstr "Toont alle verbonden spelers en toeschouwers"
 
 #. Now create columns
 #: server/gnocatan-server-gtk.c:553
@@ -2224,16 +2214,15 @@ msgstr "Verbonden"
 
 #: server/gnocatan-server-gtk.c:556
 msgid "Is the player currently connected?"
-msgstr ""
+msgstr "Is de speler op het moment verbonden?"
 
 #: server/gnocatan-server-gtk.c:557
 msgid "Name"
 msgstr "Naam"
 
 #: server/gnocatan-server-gtk.c:560
-#, fuzzy
 msgid "Name of the player"
-msgstr "Aantal spelers:"
+msgstr "Naam van de speler"
 
 #: server/gnocatan-server-gtk.c:561
 msgid "Location"
@@ -2241,29 +2230,27 @@ msgstr "Computer"
 
 #: server/gnocatan-server-gtk.c:564
 msgid "Host name of the player"
-msgstr ""
+msgstr "Computernaam van de speler"
 
 #: server/gnocatan-server-gtk.c:567
 msgid "Number"
 msgstr "Nummer"
 
 #: server/gnocatan-server-gtk.c:571
-#, fuzzy
 msgid "Player number"
-msgstr "Naam"
+msgstr "Speler nummer"
 
 #: server/gnocatan-server-gtk.c:574
 msgid "Role"
 msgstr "Rol"
 
 #: server/gnocatan-server-gtk.c:577
-#, fuzzy
 msgid "Player of viewer"
-msgstr "Speler 1: "
+msgstr "Speler of toeschouwer"
 
 #: server/gnocatan-server-gtk.c:600
 msgid "Messages from the server"
-msgstr ""
+msgstr "Berichten van de server"
 
 #: server/gnocatan-server-gtk.c:620
 msgid "The Gnocatan Game Server"

@@ -20,10 +20,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#define GDK_DISABLE_DEPRECATED 1
-#define GTK_DISABLE_DEPRECATED 1
-#define GNOME_DISABLE_DEPRECATED 1
-
 #include "config.h"
 #include <ctype.h>
 #include <netdb.h>
