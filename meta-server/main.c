@@ -466,6 +466,7 @@ static void client_create_new_server(Client *client, gchar *line)
 				"-r",
 				NULL,
 				newenv );
+		syslog(LOG_ERR, "cannot exec %s: %m", console_server);
 		exit(2);
 	}
 	else {
