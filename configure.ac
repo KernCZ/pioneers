@@ -1,4 +1,5 @@
 AC_INIT(client)
+AC_PREFIX_DEFAULT(`gnome-config --prefix 2>/dev/null || echo /usr/local`)
 
 AM_CONFIG_HEADER(config.h)
 AM_INIT_AUTOMAKE(gnocatan, 0.6.99.1)
