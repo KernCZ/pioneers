@@ -1,3 +1,13 @@
+2002-05-20  Roman Hodek  <roman@hodek.net>
+
+	* client/histogram.c: added y axis labelling, draw normal
+	distribution
+
+	* server/server.c (new_computer_player): close inherited fd's, use
+	_exit normally to avoid GTK atexit procedures running.
+
+	* deian/gnocatan-ai.menu: fix typo
+
 2002-05-19  Roman Hodek  <roman@hodek.net>
 
 	* Release 0.6.99 here as beta for 0.7.0.
