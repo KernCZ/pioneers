@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnocatan 0.7.1\n"
 "POT-Creation-Date: 2003-01-21 01:06-0600\n"
-"PO-Revision-Date: 2003-01-21 00:33-0600\n"
+"PO-Revision-Date: 2003-01-21 23:32+0100\n"
 "Last-Translator: Roman Hodek <roman@hodek.net>\n"
 "Language-Team: de <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -666,7 +666,7 @@ msgstr "%s zahlt %s.\n"
 #: client/client.c:306
 #, c-format
 msgid "%s is refunded %s.\n"
-msgstr "%s erhält zurück %s.\n"
+msgstr "%s erhält %s zurück.\n"
 
 #: client/client.c:528
 msgid "Connecting"
@@ -731,7 +731,7 @@ msgstr "Baue eine Straße."
 #: client/client.c:1671
 #, c-format
 msgid "%s discarded %s.\n"
-msgstr "%s legt ab: %s.\n"
+msgstr "%s hat %s abgelegt.\n"
 
 #: client/client.c:1728 client/client.c:1854
 msgid "It is your turn."
@@ -1144,9 +1144,8 @@ msgid "Finish"
 msgstr "Beenden"
 
 #: client/gui.c:1052
-#, fuzzy
 msgid " "
-msgstr "- "
+msgstr " "
 
 #: client/gui.c:1072
 msgid "Welcome to Gnocatan!"
