@@ -40,6 +40,7 @@ gint get_rand(gint range)
 {
 #ifdef HAVE_G_RAND_NEW
 /* TODO: if we have g_rand_new available through glib, use it here. */
+#error Support for g_rand_new() not implemented.
 #else
 	return mt_random() % range;
 #endif
@@ -169,7 +170,7 @@ static gboolean game_server_start(Game *game)
 gboolean server_startup(GameParams *params, gint port, gboolean meta)
 {
 #ifdef HAVE_G_RAND_NEW
-
+/* TODO: what do we need here? */
 #else
 	mt_seed(time(NULL));
 #endif
