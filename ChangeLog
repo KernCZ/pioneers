@@ -17,6 +17,8 @@
 	-m and -n commandline options instead of the environment variable. The
 	server-console started from the meta-server will use the same hostname
 	as the meta-server.
+	* server/gnocatan-server-console.c (main): Correctly initialise
+	hostname.
 	
 2005-03-12  Arjan Schrijver <arjan@anymore.nl>
 	* meta-server/gnocatan-meta-server.c: Added commandline options to

@@ -84,7 +84,7 @@ int main( int argc, char *argv[] )
 	GMainLoop *event_loop;
 	gint tournament_time = -1;
  	gboolean quit_when_done = FALSE;
-	gchar *hostname;
+	gchar *hostname = NULL;
 
 	/* set the UI driver to Glib_Driver, since we're using glib */
 	set_ui_driver( &Glib_Driver );
