@@ -423,6 +423,11 @@ Hex *map_robber_hex(Map *map)
 	return map->robber_hex;
 }
 
+Hex *map_pirate_hex(Map *map)
+{
+	return map->pirate_hex;
+}
+
 void map_move_robber(Map *map, gint x, gint y)
 {
 	if (map->robber_hex != NULL)
@@ -430,6 +435,11 @@ void map_move_robber(Map *map, gint x, gint y)
 	map->robber_hex = map_hex(map, x, y);
 	if (map->robber_hex != NULL)
 		map->robber_hex->robber = TRUE;
+}
+
+void map_move_pirate(Map *map, gint x, gint y)
+{
+	map->pirate_hex = map_hex(map, x, y);
 }
 
 /* Allocate a new map
@@ -581,8 +591,11 @@ void map_parse_line(Map *map, gchar *line)
 			x++;
 			continue;
 		case ',':
+		case ' ':
+		case '\t':
 			continue;
 		}
+		--line;
 
 		if (x >= MAP_SIZE || map->y >= MAP_SIZE)
 			continue;

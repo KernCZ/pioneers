@@ -151,6 +151,17 @@ static Polygon robber_poly = {
 	robber_points,
 	numElem(robber_points)
 };
+static GdkPoint pirate_points[] = {
+	{  30,  60 }, {  30,   4 }, {  28,  -6 }, {  22, -15 },
+	{  12, -20 }, {  22, -32 }, {  22, -48 }, {  10, -60 },
+	{ -10, -60 }, { -22, -48 }, { -22, -32 }, { -12, -20 },
+	{ -22, -15 }, { -28,  -6 }, { -30,   4 }, { -30,  60 },
+	{  30,  60 }
+};
+static Polygon pirate_poly = {
+	pirate_points,
+	numElem(pirate_points)
+};
 
 static gint chances[13] = {
 	0, 0, 1, 2, 3, 4, 5, 6, 5, 4, 3, 2, 1
@@ -326,6 +337,35 @@ void guimap_robber_polygon(GuiMap *gmap, Hex *hex, Polygon *poly)
 	     idx++, robber_point++, poly_point++) {
 		poly_point->x = x_offset + rint(scale * robber_point->x);
 		poly_point->y = y_offset + rint(scale * robber_point->y);
+	}
+}
+
+
+void guimap_pirate_polygon(GuiMap *gmap, Hex *hex, Polygon *poly)
+{
+	GdkPoint *poly_point, *pirate_point;
+	double scale;
+	gint x_offset, y_offset;
+	gint idx;
+
+	assert(poly->num_points >= pirate_poly.num_points);
+	poly->num_points = pirate_poly.num_points;
+	scale = (2 * gmap->y_point) / 140.0;
+
+	if (hex != NULL) {
+		calc_hex_pos(gmap, hex->x, hex->y, &x_offset, &y_offset);
+		x_offset += rint(scale * 50);
+	} else
+		x_offset = y_offset = 0;
+
+	/* Scale all points, offset to right
+	 */
+	poly_point = poly->points;
+	pirate_point = pirate_poly.points;
+	for (idx = 0; idx < pirate_poly.num_points;
+	     idx++, pirate_point++, poly_point++) {
+		poly_point->x = x_offset + rint(scale * pirate_point->x);
+		poly_point->y = y_offset + rint(scale * pirate_point->y);
 	}
 }
 
@@ -590,6 +630,26 @@ static gboolean display_hex(Map *map, Hex *hex, GuiMap *gmap)
 		Polygon poly = { points, numElem(points) };
 
 		guimap_robber_polygon(gmap, hex, &poly);
+		gdk_gc_set_line_attributes(gmap->gc, 1, GDK_LINE_SOLID,
+					   GDK_CAP_BUTT, GDK_JOIN_MITER);
+		if (!theme->colors[TC_ROBBER_FG].transparent) {
+			gdk_gc_set_foreground(gmap->gc, &theme->colors[TC_ROBBER_FG].color);
+			poly_draw(gmap->pixmap, gmap->gc, TRUE, &poly);
+		}
+		if (!theme->colors[TC_ROBBER_BD].transparent) {
+			gdk_gc_set_foreground(gmap->gc, &theme->colors[TC_ROBBER_BD].color);
+			poly_draw(gmap->pixmap, gmap->gc, FALSE, &poly);
+		}
+	}
+
+
+	/* Draw the pirate
+	 */
+	if (hex == map->pirate_hex) {
+		GdkPoint points[MAX_POINTS];
+		Polygon poly = { points, numElem(points) };
+
+		guimap_pirate_polygon(gmap, hex, &poly);
 		gdk_gc_set_line_attributes(gmap->gc, 1, GDK_LINE_SOLID,
 					   GDK_CAP_BUTT, GDK_JOIN_MITER);
 		if (!theme->colors[TC_ROBBER_FG].transparent) {
@@ -1213,7 +1273,10 @@ static void erase_robber_cursor(GuiMap *gmap)
 	if (hex == NULL)
 		return;
 
-	guimap_robber_polygon(gmap, hex, &poly);
+	if (hex->terrain == SEA_TERRAIN)
+		guimap_pirate_polygon(gmap, hex, &poly);
+	else
+		guimap_robber_polygon(gmap, hex, &poly);
 	poly_bound_rect(&poly, 1, &rect);
 
 	display_hex(gmap->map, hex, gmap);
@@ -1231,7 +1294,11 @@ static void draw_robber_cursor(GuiMap *gmap)
 	if (hex == NULL)
 		return;
 
-	guimap_robber_polygon(gmap, hex, &poly);
+
+	if (hex->terrain == SEA_TERRAIN)
+		guimap_pirate_polygon(gmap, hex, &poly);
+	else
+		guimap_robber_polygon(gmap, hex, &poly);
 	poly_bound_rect(&poly, 1, &rect);
 
 	gdk_gc_set_line_attributes(gmap->gc, 2, GDK_LINE_SOLID,

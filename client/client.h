@@ -190,6 +190,7 @@ void road_building_begin(void);
 /* robber.c */
 void robber_move_on_map(gint x, gint y);
 gboolean can_building_be_robbed(Node *node, int owner);
+gboolean can_edge_be_robbed(Edge *edge, int owner);
 int robber_count_victims(Hex *hex, gint *victim_list);
 void robber_moved(gint player_num, gint x, gint y);
 void robber_begin_move(gint player_num);

@@ -1368,7 +1368,7 @@ static gboolean mode_robber_response(StateMachine *sm, gint event)
 	return FALSE;
 }
 
-static void move_robber(gint x, gint y, gint victim_num)
+static void move_pirate_or_robber(gint x, gint y, gint victim_num)
 {
 	sm_send(SM(), "move-robber %d %d %d\n", x, y, victim_num);
 	sm_goto(SM(), mode_robber_response);
@@ -1377,32 +1377,58 @@ static void move_robber(gint x, gint y, gint victim_num)
 static void rob_building(Node *node, gint player_num, Hex *hex)
 {
 	gui_cursor_none();
-	move_robber(hex->x, hex->y, node->owner);
+	move_pirate_or_robber(hex->x, hex->y, node->owner);
+}
+
+static void rob_edge(Edge *edge, gint player_num, Hex *hex)
+{
+	gui_cursor_none();
+	move_pirate_or_robber(hex->x, hex->y, edge->owner);
 }
 
 /* User just placed the robber
  */
-static void place_robber_cb(Hex *hex, gint player_num)
+static void place_robber_or_pirate_cb(Hex *hex, gint player_num)
 {
 	gint victim_list[6];
 
 	gui_cursor_none();
-	robber_move_on_map(hex->x, hex->y);
-	switch (robber_count_victims(hex, victim_list)) {
-	case 0:
-		move_robber(hex->x, hex->y, -1);
-		break;
-	case 1:
-		move_robber(hex->x, hex->y, victim_list[0]);
-		break;
-	default:
-		gui_cursor_set(BUILDING_CURSOR,
-			       (CheckFunc)can_building_be_robbed,
-			       (SelectFunc)rob_building,
-			       hex);
-		gui_set_instructions(_("Select the building to steal from."));
-		gui_prompt_show(_("Select the building to steal from"));
-		break;
+	if (hex->terrain == SEA_TERRAIN) {
+		pirate_move_on_map(hex->x, hex->y);
+		switch (pirate_count_victims(hex, victim_list)) {
+		case 0:
+			move_pirate_or_robber(hex->x, hex->y, -1);
+			break;
+		case 1:
+			move_pirate_or_robber(hex->x, hex->y, victim_list[0]);
+			break;
+		default:
+			gui_cursor_set(BUILDING_CURSOR,
+				       (CheckFunc)can_edge_be_robbed,
+				       (SelectFunc)rob_edge,
+				       hex);
+			gui_set_instructions(_("Select the building to steal from."));
+			gui_prompt_show(_("Select the building to steal from"));
+			break;
+		}
+	} else {
+		robber_move_on_map(hex->x, hex->y);
+		switch (robber_count_victims(hex, victim_list)) {
+		case 0:
+			move_pirate_or_robber(hex->x, hex->y, -1);
+			break;
+		case 1:
+			move_pirate_or_robber(hex->x, hex->y, victim_list[0]);
+			break;
+		default:
+			gui_cursor_set(BUILDING_CURSOR,
+				       (CheckFunc)can_building_be_robbed,
+				       (SelectFunc)rob_building,
+				       hex);
+			gui_set_instructions(_("Select the building to steal from."));
+			gui_prompt_show(_("Select the building to steal from"));
+			break;
+		}
 	}
 }
 
@@ -1415,8 +1441,8 @@ static gboolean mode_robber(StateMachine *sm, gint event)
 	case SM_ENTER:
 		gui_set_instructions(_("Place the robber"));
 		gui_cursor_set(ROBBER_CURSOR,
-			       (CheckFunc)can_robber_be_moved,
-			       (SelectFunc)place_robber_cb, NULL);
+			       (CheckFunc)can_robber_or_pirate_be_moved,
+			       (SelectFunc)place_robber_or_pirate_cb, NULL);
 		robber_begin_move(my_player_num());
 		break;
 	case SM_RECV:

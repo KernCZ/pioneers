@@ -148,7 +148,9 @@ typedef gboolean (*HexFunc)(Map *map, Hex *hex, void *closure);
 gboolean map_traverse(Map *map, HexFunc func, void *closure);
 void map_shuffle_terrain(Map *map);
 Hex *map_robber_hex(Map *map);
+Hex *map_pirate_hex(Map *map);
 void map_move_robber(Map *map, gint x, gint y);
+void map_move_pirate(Map *map, gint x, gint y);
 
 Map *map_new(void);
 Map *map_copy(Map *map);
@@ -186,7 +188,7 @@ gboolean can_settlement_be_setup(Node *node, int owner);
 gboolean can_settlement_be_built(Node *node, int owner);
 gboolean can_settlement_be_upgraded(Node *node, int owner);
 gboolean can_city_be_built(Node *node, int owner);
-gboolean can_robber_be_moved(Hex *hex, int owner);
+gboolean can_robber_or_pirate_be_moved(Hex *hex, int owner);
 /* map global queries */
 gboolean map_can_place_road(Map *map, int owner);
 gboolean map_can_place_ship(Map *map, int owner);

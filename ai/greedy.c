@@ -1296,7 +1296,8 @@ static float score_hex_hurt_opponents(int mynum, Hex *hex)
     if (hex == NULL) return -1000;
 
     /* xxx secord arg? */
-    if (!can_robber_be_moved(hex, 0)) return -1000;
+    if (!can_robber_or_pirate_be_moved(hex, 0) && hex->terrain != SEA_TERRAIN)
+		return -1000;
 
     for (i = 0; i < 6; i++) {
 	score += score_node_hurt_opponents(mynum, hex->nodes[i]);

@@ -94,16 +94,20 @@ gboolean mode_place_robber(Player *player, gint event)
 	if (event != SM_RECV)
 		return FALSE;
 
+	if (!sm_recv(sm, "move-robber %d %d %d", &x, &y, &victim_num))
+		return FALSE;
+
+	hex = map_hex(map, x, y);
+	if (hex == NULL || !can_robber_or_pirate_be_moved(hex, 0)) {
+		sm_send(sm, "ERR bad-pos\n");
+		return TRUE;
+	}
+
 	/* check if the pirate was moved. */
-	if (sm_recv (sm, "move-pirate %d %d %d", &x, &y, &victim_num)) {
-		hex = map_hex (map, x, y);
-		if (hex == NULL || !can_pirate_be_moved (hex, 0)) {
-			sm_send(sm, "ERR bad-pos\n");
-			return TRUE;
-		}
+	if (hex->terrain == SEA_TERRAIN) {
 		player_broadcast (player, PB_RESPOND, "moved-pirate %d %d\n",
 				x, y);
-	
+
 		/* If there is no-one to steal from, or the players have no
 		 * resources, we cannot steal resources.
 		 */
@@ -151,15 +155,7 @@ gboolean mode_place_robber(Player *player, gint event)
 		return TRUE;
 	}
 
-	/* It wasn't the pirate; it should be the robber. */
-	if (!sm_recv(sm, "move-robber %d %d %d", &x, &y, &victim_num))
-		return FALSE;
-
-	hex = map_hex(map, x, y);
-	if (hex == NULL || !can_robber_be_moved(hex, 0)) {
-		sm_send(sm, "ERR bad-pos\n");
-		return TRUE;
-	}
+	/* It wasn't the pirate; it was the robber. */
 
 	if (map->robber_hex != NULL)
 		map->robber_hex->robber = FALSE;
