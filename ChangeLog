@@ -1,3 +1,7 @@
+2000-09-03  Jeff Breidenbach  <jeff@alum.mit.edu>
+
+	* debian/gnocatan-server.menu: Fix Debian bug #70831
+
 2000-09-18  Andy Heroff  <aheroff@mediaone.net>
 
 	* server/5-6-player.game: Set default number of players to 5.

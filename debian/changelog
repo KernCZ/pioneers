@@ -1,3 +1,9 @@
+gnocatan (0.6.1-2) unstable; urgency=low
+
+  * Fixed bug #70831  (gnocatan-server.menu outdated)
+
+ -- Jeff Breidenbach <jeff@alum.mit.edu>  Thu,  2 Nov 2000 19:29:52 -0800
+
 gnocatan (0.6.1-1) unstable; urgency=low
 
   * New upstream release, incorporates all debian diffs 
