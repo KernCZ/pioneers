@@ -66,6 +66,11 @@ void monopoly_create_dlg()
 	GtkWidget *lbl;
 	GSList *monop_grp = NULL;
 
+	if (monop_dlg != NULL) {
+		gtk_window_present(GTK_WINDOW(monop_dlg));
+		return;
+	};
+
 	monop_dlg = gtk_dialog_new_with_buttons(
 			_("Monopoly"),
 			GTK_WINDOW(app_window),
