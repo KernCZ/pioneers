@@ -1,3 +1,8 @@
+2003-01-21  Roman Hodek  <roman@hodek.net>
+
+	* po/de.po: Fixed a few German translations after Steves changes
+	below.
+
 2003-01-21  Steve Langasek  <vorlon@debian.org>
 	* client/client.c, client/client.h, client/player.c,
 	  client/resource.c, client/trade.c: extensive reworking of
