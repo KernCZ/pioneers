@@ -27,5 +27,5 @@ libgnocatan_a_SOURCES = \
 	state.h
 
 libgnocatan_gui_a_SOURCES = \
-	common_gui.c \
-	common_gui.h
+	common_gtk.c \
+	common_gtk.h

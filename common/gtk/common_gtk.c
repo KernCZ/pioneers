@@ -8,7 +8,7 @@
  * buy a copy.
  */
 #include <gtk/gtk.h>
-#include "common_gui.h"
+#include "common_gtk.h"
 
 static GtkWidget *message_txt;
 static GdkColor black = { 0, 0, 0, 0 };

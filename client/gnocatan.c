@@ -15,7 +15,7 @@
 #include "cards.h"
 #include "gui.h"
 #include "client.h"
-#include "common_gui.h"
+#include "common_gtk.h"
 
 int main(int argc, char *argv[])
 {
