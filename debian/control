@@ -2,7 +2,7 @@ Source: gnocatan
 Section: games
 Priority: optional
 Maintainer: Jeff Breidenbach <jab@debian.org>
-Build-Depends: debhelper, docbook-utils, libgnome-dev, libgtkxmhtml-dev, libzvt-dev, automake1.4, libtool, gettext
+Build-Depends: debhelper, docbook-utils, libgnome-dev, libgtkxmhtml-dev, libzvt-dev, automake1.7, libtool, gettext, autoconf
 Standards-Version: 3.5.6.0
 
 Package: gnocatan-client

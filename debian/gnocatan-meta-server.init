@@ -1,24 +1,25 @@
 #! /bin/sh
 
 DAEMON=/usr/games/gnocatan-meta-server
+ARGS="--quiet --chuid nobody --chuid nobody:nogroup"
 test -x $DAEMON || exit 0
 
 case "$1" in
 	start)
 		echo -n "Starting Gnocatan meta server: gnocatan-meta-server"
-		start-stop-daemon --start --quiet --exec $DAEMON -- -d
+		start-stop-daemon --start $ARGS --exec $DAEMON -- -d
 		echo "."
 		;;
 	stop)
 		echo -n "Stopping Gnocatan meta server: gnocatan-meta-server"
-		start-stop-daemon --stop --quiet --exec $DAEMON
+		start-stop-daemon --stop $ARGS --exec $DAEMON
 		echo "."
 		;;
 	restart|force-reload)
 		echo -n "Restarting Gnocatan meta server: gnocatan-meta-server... "
 		start-stop-daemon --stop --quiet --exec $DAEMON
 		sleep 2
-		start-stop-daemon --start --quiet --exec $DAEMON -- -d
+		start-stop-daemon --start $ARGS --exec $DAEMON -- -d
 		echo "done."
 		;;
 	*)
