@@ -13,6 +13,21 @@
 	rolling dice.  Altered is_maritime_trade_allowed() to look at the
 	strict_trade flag.
 
+2000-05-12  Bibek Sahu <scorpio@dodds.net>
+
+	* Completely rewrote logging setup.  It's now very modular in
+	design, and the main logging stuff does not depend on gtk/gnome
+	(which is the reason it was done).  Most files that did logging were
+	moderately modified -- the following functions were converted:
+		log_error(...) -> log_message( MSG_ERROR, ... )
+		log_info(...) -> log_message( MSG_INFO, ... )
+		log_color(...) -> log_message( MSG_CHAT, ... )
+	
+	* The client's initialization sequence now logs to the console until
+	all the windows are set up, then switches logging to the message
+	window.  This is step 1 on the road to a server that doesn't require
+	a gui...
+
 2000-05-11  Dave Cole <dave@dccs.com.au>
 
 	* client/client.c, common/state.[ch]: Removed all of the resphook
