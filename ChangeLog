@@ -1,8 +1,14 @@
+2005-03-02  0.8.1.54  Roland Clobus <rclobus@bigfoot.com>
+	* client/gtk/interface.c: Reversal of the patch in 0.8.1.48, because
+	it would set the client to the state turn when performing a maritime
+	trade. Added a reset of the have_turn flag when game over is reached.
+
 2005-02-05  0.8.1.53  Roland Clobus <rclobus@bigfoot.com>
 	* server/gnocatan-server.c, meta-server/gnocatan-meta-server.c: Forgot
-	the NULL termination of g_build_filename, pointed out by bwelling.
+	the NULL termination of g_build_filename, pointed out by Brian
+	Wellington.
 
-2005-02-05 <bwelling@users.sourceforge.net>
+2005-02-05  Brian Wellington <bwelling@users.sourceforge.net>
 	* gnocatan.spec: Updated to version 0.8.1
 
 2005-02-03  0.8.1.52  Roland Clobus <rclobus@bigfoot.com>
