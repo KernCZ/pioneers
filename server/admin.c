@@ -32,6 +32,10 @@
 
 static GHashTable *_game_list = NULL;
 
+gboolean register_server = FALSE;
+gint server_port = 5556;
+gint server_admin_port = 5555;
+
 GameParams *params = NULL;
 
 void game_list_add_item( GameParams *item )
@@ -157,7 +161,7 @@ gboolean start_server( gint port, gboolean register_server )
 	return server_startup( params, port, register_server );
 }
 
-/* initialize the server */
+/* server initialization */
 void server_init( gchar *default_gnocatan_dir )
 {
 	gchar *gnocatan_dir = (gchar *) getenv( "GNOCATAN_DIR" );
@@ -165,5 +169,154 @@ void server_init( gchar *default_gnocatan_dir )
 		gnocatan_dir = default_gnocatan_dir;
 
 	load_game_types( gnocatan_dir );
+}
+
+/* network administration functions */
+comm_info *_accept_info = NULL;
+
+/* parse 'line' and run the command requested */
+void
+admin_run_command( Session *admin_session, gchar *line )
+{
+	gchar command[1024];
+	
+	/* set the GAME port */
+	if( !strncmp( line, "admin-set-port ", 15 ) ) {
+		gint tmp;
+		sscanf( line, "%s %d", command, &tmp );
+		if( tmp )
+			server_port = tmp;
+	
+	/* start the server */
+	} else if( !strncmp( line, "admin-start-server", 18 ) ) {
+		start_server( server_port, register_server );
+	
+	/* TODO: stop the server */
+	} else if( !strncmp( line, "admin-stop-server", 17 ) ) {
+		/* stop_server(); */
+	
+	/* set whether or not to register the server with a meta server */
+	} else if( !strncmp( line, "admin-set-register-server ", 26 ) ) {
+		gint tmp;
+		sscanf( line, "%s %d", command, &tmp );
+		if( tmp )
+			register_server = tmp;
+	
+	/* set the number of players */
+	} else if( !strncmp( line, "admin-set-num-players ", 21 ) ) {
+		gint tmp;
+		sscanf( line, "%s %d", command, &tmp );
+		if( tmp )
+			cfg_set_num_players( tmp );
+	
+	/* set the victory points */
+	} else if( !strncmp( line, "admin-set-victory-points ", 24 ) ) {
+		gint tmp;
+		sscanf( line, "%s %d", command, &tmp );
+		if( tmp )
+			cfg_set_victory_points( tmp );
+	
+	/* set whether to use random terrain */
+	} else if( !strncmp( line, "admin-set-random-terrain ", 24 ) ) {
+		gint tmp;
+		sscanf( line, "%s %d", command, &tmp );
+		if( tmp )
+			cfg_set_terrain_type( tmp );
+	
+	/* set the game type (by name) */
+	} else if( !strncmp( line, "admin-set-game ", 14 ) ) {
+		gchar tmp[64];
+		sscanf( line, "%s %s", command, tmp );
+		if( tmp )
+			cfg_set_game( tmp );
+	
+	/* request to close the connection */
+	} else if( !strncmp( line, "quit", 4 ) ) {
+		net_close( admin_session );
+	
+	/* fallthrough -- unknown command */
+	} else {
+		g_warning( "unrecognized admin request: '%s'\n", line );
+	}
+}
+
+/* network event handler, just like the one in meta.c, state.c, etc. */
+void
+admin_event( NetEvent event, Session *admin_session, gchar *line )
+{
+	g_print( "admin_event: event = %#x, admin_session = %p, line = %s\n",
+		event, admin_session, line );
+	
+	switch( event ) {
+		case NET_READ:
+				/* there is data to be read */
+				
+				g_print( "admin_event: NET_READ: line = '%s'\n", line );
+				admin_run_command( admin_session, line );
+				break;
+		
+		case NET_CLOSE:
+				/* connection has been closed */
+				
+				g_print( "admin_event: NET_CLOSE\n" );
+				net_free( admin_session );
+				admin_session = NULL;
+				break;
+		
+		case NET_CONNECT:
+				/* connect() succeeded -- shouldn't get here */
+				
+				g_print( "admin_event: NET_CONNECT\n" );
+				break;
+		
+		case NET_CONNECT_FAIL:
+				/* connect() failed -- shouldn't get here */
+				
+				g_print( "admin_event: NET_CONNECT_FAIL\n" );
+				break;
+		
+		default:
+	}
+}
+
+/* accept a connection made to the admin port */
+void
+admin_connect( comm_info *admin_info )
+{
+	Session *admin_session;
+	gint new_fd;
+	
+	/* somebody connected to the administration port, so we... */
+	
+	/* (1) create a new network session */
+	admin_session = net_new( (NetNotifyFunc)admin_event, NULL );
+	
+	/* (2) set the session as the session's user data, so we can free it 
+	 * later (this way we don't have to keep any globals holding all the 
+	 * sessions) */
+	admin_session->user_data = admin_session;
+	
+	/* (3) accept the connection into a new file descriptor */
+	new_fd = accept_connection( admin_info->fd, NULL );
+	
+	/* (4) tie the new file descriptor to the session we created earlier */
+	net_use_fd( admin_session, new_fd );
+}
+
+/* set up the administration port */
+void
+admin_listen( gint port )
+{
+	if( !_accept_info ) {
+		_accept_info = g_malloc0( sizeof( comm_info ) );
+	}
+	
+	/* open up a socket on which to listen for connections */
+	_accept_info->fd = open_listen_socket( port );
+	g_print( "admin_listen: fd = %d\n", _accept_info->fd );
+	
+	/* set up the callback to handle connections */
+	_accept_info->read_tag = driver->input_add_read( _accept_info->fd,
+					 admin_connect, _accept_info );
 }
 

@@ -46,6 +46,50 @@ gint get_rand(gint range)
 #endif
 }
 
+gint open_listen_socket( gint port )
+{
+	struct sockaddr_in addr;
+	int yes;
+	gint fd;
+
+	memset(&addr, 0, sizeof(addr));
+	addr.sin_family = AF_INET;
+	addr.sin_addr.s_addr = INADDR_ANY;
+	addr.sin_port = htons(port);
+
+	fd = socket(AF_INET, SOCK_STREAM, 0);
+	if (fd < 0) {
+		log_message( MSG_ERROR, _("Error creating socket: %s\n"), g_strerror(errno));
+		return -1;
+	}
+	yes = 1;
+
+	/* setsockopt() before bind(); otherwise it has no effect! -- egnor */
+	if (setsockopt(fd,
+		       SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes)) < 0) {
+		log_message( MSG_ERROR, _("Error setting socket address reuse: %s\n"),
+			  g_strerror(errno));
+		return -1;
+	}
+	if (bind(fd, &addr, sizeof(addr)) < 0) {
+		log_message( MSG_ERROR, _("Error binding socket: %s\n"), g_strerror(errno));
+		return -1;
+	}
+	if (fcntl(fd, F_SETFL, O_NDELAY) < 0) {
+		log_message( MSG_ERROR, _("Error setting socket non-blocking: %s\n"),
+			  g_strerror(errno));
+		return -1;
+	}
+
+	if (listen(fd, 5) < 0) {
+		log_message( MSG_ERROR, _("Error during listen on socket: %s\n"),
+			  g_strerror(errno));
+		return -1;
+	}
+	
+	return fd;
+}
+
 Game *game_new(GameParams *params)
 {
 	Game* game;
@@ -81,84 +125,59 @@ void game_free(Game *game)
 	g_free(game);
 }
 
-static void player_connect(Game *game)
+gint accept_connection( gint in_fd, gchar **location)
 {
 	int fd;
 	struct sockaddr_in addr;
 	size_t addr_len;
 	struct sockaddr_in peer;
 	size_t peer_len;
-	gchar *location;
 
 	addr_len = sizeof(addr);
-	fd = accept(game->accept_fd, &addr, &addr_len);
+	fd = accept(in_fd, &addr, &addr_len);
 	if (fd < 0) {
 		log_message( MSG_ERROR, _("Error accepting connection: %s\n"),
 			  g_strerror(errno));
-		return;
+		return -1;
 	}
 
 	peer_len = sizeof(peer);
-	if (getpeername(fd, &peer, &peer_len) < 0) {
-		log_message( MSG_ERROR, _("Error getting peer name: %s\n"),
-			  g_strerror(errno));
-		location = _("unknown");
-	} else {
-		struct hostent *host_ent;
-
-		host_ent = gethostbyaddr((char*)&peer.sin_addr,
-					 sizeof(peer.sin_addr), AF_INET);
-		if (host_ent == NULL) {
-			log_message( MSG_ERROR, _("Error resolving address: %s\n"),
-				  hstrerror(h_errno));
-			location = inet_ntoa(peer.sin_addr);
-		} else
-			location = host_ent->h_name;
+	if( location ) {
+		if (getpeername(fd, &peer, &peer_len) < 0) {
+			log_message( MSG_ERROR, _("Error getting peer name: %s\n"),
+				  g_strerror(errno));
+			*location = _("unknown");
+		} else {
+			struct hostent *host_ent;
+	
+			host_ent = gethostbyaddr((char*)&peer.sin_addr,
+						 sizeof(peer.sin_addr), AF_INET);
+			if (host_ent == NULL) {
+				log_message( MSG_ERROR, _("Error resolving address: %s\n"),
+					  hstrerror(h_errno));
+				*location = inet_ntoa(peer.sin_addr);
+			} else
+				*location = host_ent->h_name;
+		}
 	}
+	return fd;
+}
 
-	player_new(game, fd, location);
+static void player_connect(Game *game)
+{
+	gchar *location;
+	gint fd = accept_connection(game->accept_fd, &location);
+
+	if( fd > 0 )
+		player_new(game, fd, location);
 }
 
 static gboolean game_server_start(Game *game)
 {
-	struct sockaddr_in addr;
-	int yes;
-
-	memset(&addr, 0, sizeof(addr));
-	addr.sin_family = AF_INET;
-	addr.sin_addr.s_addr = INADDR_ANY;
-	addr.sin_port = htons(game->params->server_port);
-
-	game->accept_fd = socket(AF_INET, SOCK_STREAM, 0);
-	if (game->accept_fd < 0) {
-		log_message( MSG_ERROR, _("Error creating socket: %s\n"), g_strerror(errno));
+	game->accept_fd = open_listen_socket( game->params->server_port );
+	if( game->accept_fd < 0 )
 		return FALSE;
-	}
-	yes = 1;
-
-	/* setsockopt() before bind(); otherwise it has no effect! -- egnor */
-	if (setsockopt(game->accept_fd,
-		       SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes)) < 0) {
-		log_message( MSG_ERROR, _("Error setting socket address reuse: %s\n"),
-			  g_strerror(errno));
-		return FALSE;
-	}
-	if (bind(game->accept_fd, &addr, sizeof(addr)) < 0) {
-		log_message( MSG_ERROR, _("Error binding socket: %s\n"), g_strerror(errno));
-		return FALSE;
-	}
-	if (fcntl(game->accept_fd, F_SETFL, O_NDELAY) < 0) {
-		log_message( MSG_ERROR, _("Error setting socket non-blocking: %s\n"),
-			  g_strerror(errno));
-		return FALSE;
-	}
-
-	if (listen(game->accept_fd, 5) < 0) {
-		log_message( MSG_ERROR, _("Error during listen on socket: %s\n"),
-			  g_strerror(errno));
-		return FALSE;
-	}
-
+	
 	game->accept_tag = driver->input_add_read(game->accept_fd,
 					 player_connect, game);
 

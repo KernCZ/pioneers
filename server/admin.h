@@ -6,6 +6,20 @@
 #define TERRAIN_DEFAULT	0
 #define TERRAIN_RANDOM	1
 
+typedef struct _comm_info {
+	gint fd;
+	guint read_tag;
+	guint write_tag;
+} comm_info;
+
+/* global variables */
+extern gboolean register_server;
+extern gint server_port;
+extern gint server_admin_port;
+
+extern GameParams *params;
+
+/* game list control functions */
 void game_list_add_item( GameParams *item );
 GameParams *game_list_find_item( gchar *title );
 void game_list_foreach( GHFunc func, gpointer user_data );

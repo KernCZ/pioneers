@@ -14,7 +14,11 @@
 	* server/Makefile.am, server/gnocatan-server.c,
 	server/gnocatan-server.h, server/gnocatan-server-gtk.c,
 	server/gnocatan-server-console.c: Made as much code as possible
-	common between the two servers.
+	common between the two servers.  Added rudimentary network
+	administration functions.
+
+	* server/server.c: separated networking code from player connection
+	code so I could use it elsewhere w/o having to rewrite it.
 
 	* server/Makefile.am: removed line where console server was being
 	linked against common gtk code.

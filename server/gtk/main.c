@@ -26,10 +26,6 @@
 #include "gnocatan-server.h"
 
 static GtkWidget *app;
-static gboolean register_server;
-static int server_port = 5556;
-
-extern GameParams *params;
 
 static void quit_cb(GtkWidget *widget, void *data)
 {

@@ -26,13 +26,11 @@
 
 #include "gnocatan-server.h"
 
-static gboolean register_server = FALSE;
-static gint server_port = 5556;
-
 int main( int argc, char *argv[] )
 {
 	int c;
-	gint num_players = 0, num_points = 0, port = 0;
+	gint num_players = 0, num_points = 0, port = 0, admin_port = 0;
+	gboolean disable_game_start = FALSE;
 	GMainLoop *event_loop;
 
 	/* set the UI driver to Glib_Driver, since we're using glib */
@@ -43,9 +41,15 @@ int main( int argc, char *argv[] )
 
 	server_init( GNOCATAN_DIR_DEFAULT );
 
-	while ((c = getopt(argc, argv, "g:P:p:rv:")) != EOF)
+	while ((c = getopt(argc, argv, "g:P:p:r:sv:")) != EOF)
 	{
 		switch (c) {
+		case 'a':
+			if (!optarg) {
+				break;
+			}
+			admin_port = atoi(optarg);
+			break;
 		case 'g':
 			cfg_set_game( optarg );
 			break;
@@ -67,6 +71,8 @@ int main( int argc, char *argv[] )
 			}
 			register_server = TRUE;
 			break;
+		case 's':
+			disable_game_start = TRUE;
 		/* TODO: terrain type? */
 		case 'v':
 			if (!optarg) {
@@ -84,6 +90,10 @@ int main( int argc, char *argv[] )
 		server_port = port;
 	}
 
+	if (admin_port) {
+		server_admin_port = port;
+	}
+
 	if (num_players) {
 		cfg_set_num_players(num_players);		
 	}
@@ -92,7 +102,10 @@ int main( int argc, char *argv[] )
 		cfg_set_victory_points(num_points);
 	}
 	
-	start_server( server_port, register_server );
+	admin_listen( server_admin_port );
+	
+	if( !disable_game_start )
+		start_server( server_port, register_server );
 
 	event_loop = g_main_new(0);
 	g_main_run( event_loop );
