@@ -331,11 +331,21 @@ gboolean sm_recv_prefix(StateMachine *sm, gchar *fmt, ...)
 	return TRUE;
 }
 
+static gint buff_append(gchar *buff, gint len, gint offset, gchar *str)
+{
+	gint str_len = strlen(str);
+
+	assert(offset + str_len < len);
+	strncpy(buff + offset, str, str_len);
+	return offset + str_len;
+}
+
 void sm_vnformat(gchar *buff, gint len, gchar *fmt, va_list ap)
 {
 	gint offset = 0;
 
-	while (*fmt != '\0') {
+	while (*fmt != '\0' && offset < len) {
+		gchar tmp[64];
 		gchar *str;
 		gint val;
 		gint *num;
@@ -352,36 +362,30 @@ void sm_vnformat(gchar *buff, gint len, gchar *fmt, va_list ap)
 		switch (*fmt++) {
 		case 's': /* string */
 			str = va_arg(ap, gchar*);
-			strcpy(buff + offset, str);
-			offset += strlen(buff + offset);
+			offset = buff_append(buff, len, offset, str);
 			break;
 		case 'd': /* integer */
 			val = va_arg(ap, gint);
-			sprintf(buff + offset, "%d", val);
-			offset += strlen(buff + offset);
+			sprintf(tmp, "%d", val);
+			offset = buff_append(buff, len, offset, tmp);
 			break;
 		case 'B': /* build type */
 			build_type = va_arg(ap, BuildType);
 			switch (build_type) {
 			case BUILD_ROAD:
-				strcpy(buff + offset, "road");
-				offset += 4;
+				offset = buff_append(buff, len, offset, "road");
 				break;
 			case BUILD_BRIDGE:
-				strcpy(buff + offset, "bridge");
-				offset += 6;
+				offset = buff_append(buff, len, offset, "bridge");
 				break;
 			case BUILD_SHIP:
-				strcpy(buff + offset, "ship");
-				offset += 4;
+				offset = buff_append(buff, len, offset, "ship");
 				break;
 			case BUILD_SETTLEMENT:
-				strcpy(buff + offset, "settlement");
-				offset += 10;
+				offset = buff_append(buff, len, offset, "settlement");
 				break;
 			case BUILD_CITY:
-				strcpy(buff + offset, "city");
-				offset += 4;
+				offset = buff_append(buff, len, offset, "city");
 				break;
 			case BUILD_NONE:
 				g_error("BUILD_NONE passed to sm_vnformat");
@@ -390,26 +394,28 @@ void sm_vnformat(gchar *buff, gint len, gchar *fmt, va_list ap)
 			break;
 		case 'R': /* list of 5 integer resource counts */
 			num  = va_arg(ap, gint*);
-			for (idx = 0; idx < NO_RESOURCE; idx++) {
+			for (idx = 0; idx < NO_RESOURCE && offset < len; idx++) {
 				if (idx > 0)
-					buff[offset++] = ' ';
-				sprintf(buff + offset, "%d", *num);
-				offset += strlen(buff + offset);
+					sprintf(tmp, " %d", *num);
+				else
+					sprintf(tmp, "%d", *num);
+				offset = buff_append(buff, len, offset, tmp);
 				num++;
 			}
 			break;
 		case 'D': /* development card type */
 			val = va_arg(ap, gint);
-			sprintf(buff + offset, "%d", val);
-			offset += strlen(buff + offset);
+			sprintf(tmp, "%d", val);
+			offset = buff_append(buff, len, offset, tmp);
 			break;
 		case 'r': /* resource type */
 			resource = va_arg(ap, Resource);
-			strcpy(buff + offset, resource_types[resource]);
-			offset += strlen(buff + offset);
+			offset = buff_append(buff, len, offset, resource_types[resource]);
 			break;
 		}
 	}
+	if (offset == len)
+		offset--;
 	buff[offset] = '\0';
 }
 

@@ -1,3 +1,10 @@
+2001-03-01  Dave Cole <dave@dccs.com.au>
+
+	* common/state.c (sm_vnformat): Caught a segfault which appeared
+	to be a buffer overrun in sm_vnformat().  Added code to actaully
+	limit formatting to buffer length and abort if overrun to allow
+	real bug to be found.
+
 2001-02-28  David Falllon  <davef@getacard.com>
 
 	* Changed client/client.h, client/gui.h, client/gnocatan.c
