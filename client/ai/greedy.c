@@ -1055,18 +1055,17 @@ static void greedy_turn(void)
 	DevelDeck *deck = get_devel_deck();
 
 	for (i = 0; i < deck->num_cards; i++ ) {
-	    DevelType card = deck_card_type(deck, i);
+	    DevelType cardtype = deck_card_type(deck, i);
 
 	    /* can't play card we just bought */
-	    if (can_play_develop (card) ) {
+	    if (can_play_develop (i) ) {
 
-		if (is_victory_card(card)) {
+		if (is_victory_card(cardtype)) {
 			cb_play_develop (i);
 			return;
 		}
 
-		switch (card) 
-		    {
+		switch (cardtype) {
 		    case DEVEL_SOLDIER:
 		    case DEVEL_YEAR_OF_PLENTY:
 			cb_play_develop (i);
