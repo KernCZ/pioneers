@@ -1,3 +1,8 @@
+2003-12-11  Bas Wijnen <b.wijnen@phys.rug.nl>
+
+	* server/trade.c: Fixed bug #848386, state stack overflow.  Allow
+	asking for free resources in server.
+
 2003-12-10  Roland Clobus <rclobus@bigfoot.com>
 	* ai/greedy.c: Fixed AI to build only on land.
 	* common/map_query.c: Fixed AI placing robber in water.

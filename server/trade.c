@@ -281,11 +281,16 @@ static void process_call_domestic(Player *player, gint *supply, gint *receive)
 	player_broadcast(player, PB_RESPOND,
 			 "domestic-trade call supply %R receive %R\n",
 			 supply, receive);
-	for (list = player_first_real(game);
-	     list != NULL; list = player_next_real(list)) {
+	/* make sure all the others are back in quote mode.  They may have
+	 * gone to monitor mode (after rejecting), but they should be able
+	 * to reply to the new call */
+	for (list = player_first_real(game); list != NULL;
+			list = player_next_real(list)) {
 		Player *scan = list->data;
-		if (scan != player && scan->num < game->params->num_players)
-			sm_push(scan->sm, (StateFunc)mode_domestic_quote);
+		if (scan->num < game->params->num_players && scan != player) {
+			sm_pop (scan->sm);
+			sm_push (scan->sm, (StateFunc)mode_domestic_quote);
+		}
 	}
 }
 
@@ -293,7 +298,7 @@ static void call_domestic(Player *player, gint *supply, gint *receive)
 {
 	StateMachine *sm = player->sm;
 	Game *game = player->game;
-	gint num_supply;
+	gint num_supply, num_receive;
 	gint idx;
 	QuoteInfo *quote;
 
@@ -308,8 +313,9 @@ static void call_domestic(Player *player, gint *supply, gint *receive)
 			}
 			num_supply++;
 		}
+		if (receive[idx] > 0) ++num_receive;
 	}
-	if (num_supply == 0) {
+	if (num_supply == 0 && num_receive == 0) {
 		sm_send(sm, "ERR bad-trade\n");
 		return;
 	}
@@ -383,11 +389,22 @@ gboolean mode_domestic_initiate(Player *player, gint event)
 void trade_begin_domestic(Player *player, gint *supply, gint *receive)
 {
 	Game *game = player->game;
+	GList *list;
 
 	sm_push(player->sm, (StateFunc)mode_domestic_initiate);
 	if (game->quotes != NULL)
 		quotelist_free(game->quotes);
 	game->quotes = quotelist_new();
+
+	/* push all others to quote mode.  process_call_domestic pops and
+	 * repushes them all, so this is needed to keep the state stack
+	 * from corrupting. */
+	for (list = player_first_real(game); list != NULL;
+			list = player_next_real(list)) {
+		Player *scan = list->data;
+		if (scan->num < game->params->num_players && scan != player)
+			sm_push(scan->sm, (StateFunc)mode_domestic_quote);
+	}
 
 	process_call_domestic(player, supply, receive);
 }
