@@ -38,9 +38,8 @@ static Game *curr_game;
 
 gint get_rand(gint range)
 {
-#ifdef HAVE_G_RAND_NEW
-/* TODO: if we have g_rand_new available through glib, use it here. */
-#error Support for g_rand_new() not implemented.
+#ifdef HAVE_G_RAND_NEW_WITH_SEED
+	return g_rand_int_range(g_rand_ctx, 0, range);
 #else
 	return mt_random() % range;
 #endif
@@ -188,9 +187,8 @@ static gboolean game_server_start(Game *game)
 
 gboolean server_startup(GameParams *params, gint port, gboolean meta)
 {
-#ifdef HAVE_G_RAND_NEW
-/* TODO: what do we need here? */
-#error Support for g_rand_new() not implemented.
+#ifdef HAVE_G_RAND_NEW_WITH_SEED
+	g_rand_ctx = g_rand_new_with_seed(time(NULL));
 #else
 	mt_seed(time(NULL));
 #endif

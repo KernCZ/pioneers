@@ -16,7 +16,11 @@
 
 #include "game.h"
 #include "map.h"
+#ifdef HAVE_G_RAND_NEW_WITH_SEED
+GRand *g_rand_ctx = NULL;
+#else
 #include "mt_rand.h"
+#endif
 
 Hex *map_hex(Map *map, gint x, gint y)
 {
@@ -378,9 +382,8 @@ void map_shuffle_terrain(Map *map)
 			if (hex->terrain == SEA_TERRAIN) {
 				if (hex->resource == NO_RESOURCE)
 					continue;
-#ifdef HAVE_G_RAND_NEW
-/* TODO: plug in a better random function. */
-#error Support for g_rand_new() not implemented.
+#ifdef HAVE_G_RAND_NEW_WITH_SEED
+				num = g_rand_int(g_rand_ctx) % num_port;
 #else
 				num = mt_random() % num_port;
 #endif
@@ -393,9 +396,8 @@ void map_shuffle_terrain(Map *map)
 				num_port--;
 				hex->resource = idx;
 			} else {
-#ifdef HAVE_G_RAND_NEW
-/* TODO: plug in a better random function. */
-#error Support for g_rand_new() not implemented.
+#ifdef HAVE_G_RAND_NEW_WITH_SEED
+				num = g_rand_int(g_rand_ctx) % num_terrain;
 #else
 				num = mt_random() % num_terrain;
 #endif
