@@ -1,3 +1,7 @@
+2003-08-14  Bas Wijnen <b.wijnen@phys.rug.nl>
+	* client/themes/Iceland/theme.cfg: Made the Iceland theme use its gold
+	tile.
+
 2003-08-14  Yusei <yusei@ragondux.com>
 	* new file client/ship_move.c; common/game.c, client/gui.c,
 	client/Makefile.am, common/common_gtk.c: Fixed truncated long lines
