@@ -61,17 +61,7 @@ gboolean can_play_develop()
 				   played_develop, selected_card_idx,
 				   turn_num()))
 		return FALSE;
-	switch (deck_card_type(develop_deck, selected_card_idx)) {
-	case DEVEL_ROAD_BUILDING:
-		return (stock_num_roads() > 0
-			&& map_can_place_road(map, my_player_num()))
-			|| (stock_num_ships() > 0
-			    && map_can_place_ship(map, my_player_num()))
-			|| (stock_num_bridges() > 0
-			    && map_can_place_bridge(map, my_player_num()));
-	default:
-		return TRUE;
-	}
+	return TRUE;
 }
 
 gboolean can_buy_develop()

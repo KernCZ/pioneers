@@ -1,3 +1,15 @@
+2004-03-28 0.8.1.24  Roland Clobus <rclobus@bigfoot.com>
+	* ai/client.c (mode_play_develop_response), ai/develop.c
+	(can_play_develop), client/common/client.c
+	(mode_play_develop_response), client/common/develop.c
+	(can_play_develop): Less stringent check if Road building development
+	card can be played.
+	* client/common/callback.c (road_building_can_finish)m
+	client/common/client.c (mode_road_building): Road building
+	can be aborted when nothing can be built anymore.
+	* client/common/develop.c (develop_played): Out of resource is
+	a warning instead of an error.
+	
 2004-03-23 0.8.1.23  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/state.c (route_gui_event): Added #ifdef DEBUG
 	

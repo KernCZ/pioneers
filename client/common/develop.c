@@ -126,7 +126,7 @@ void develop_played(gint player_num, gint card_idx, DevelType type)
 			if (stock_num_roads() == 0
 			    && stock_num_ships() == 0
 			    && stock_num_bridges() == 0)
-				log_message( MSG_ERROR, _("You have run out of road segments.\n"));
+				log_message( MSG_INFO, _("You have run out of road segments.\n"));
 		}
 		break;
         case DEVEL_CHAPEL:
@@ -202,17 +202,7 @@ gboolean can_play_develop(gint card)
 	    || !deck_card_playable(develop_deck, played_develop, card,
 		    turn_num()))
 		return FALSE;
-	switch (deck_card_type(develop_deck, card)) {
-	case DEVEL_ROAD_BUILDING:
-		return (stock_num_roads() > 0
-			&& map_can_place_road(map, my_player_num()))
-			|| (stock_num_ships() > 0
-			    && map_can_place_ship(map, my_player_num()))
-			|| (stock_num_bridges() > 0
-			    && map_can_place_bridge(map, my_player_num()));
-	default:
-		return TRUE;
-	}
+	return TRUE;
 }
 
 gboolean can_play_any_develop ()

@@ -331,11 +331,9 @@ gboolean road_building_can_build_bridge (void)
 
 gboolean road_building_can_finish (void)
 {
-	return (stock_num_roads()
-			+ stock_num_ships ()
-			+ stock_num_bridges () == 0
-			|| build_count_edges() == 2
-			|| !map_can_place_road(map, my_player_num()))
+	return !road_building_can_build_road()
+		&& !road_building_can_build_ship()
+		&& !road_building_can_build_bridge()
 		&& build_is_valid();
 }
 

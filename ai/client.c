@@ -1128,11 +1128,7 @@ static gboolean mode_play_develop_response(StateMachine *sm, gint event)
 			develop_played(my_player_num(), card_idx, card_type);
 			switch (card_type) {
 			case DEVEL_ROAD_BUILDING:
-				if (stock_num_roads() > 0
-				    || stock_num_ships() > 0
-				    || stock_num_bridges() > 0) {
-					sm_goto(sm, mode_road_building);
-				}
+				sm_goto(sm, mode_road_building);
 				break;
 			case DEVEL_MONOPOLY:
 				sm_goto(sm, mode_monopoly);

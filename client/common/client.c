@@ -1236,22 +1236,27 @@ static gboolean mode_wait_for_robber(StateMachine *sm, gint event)
 static gboolean mode_road_building(StateMachine *sm, gint event)
 {
 	gint build_amount; /* The amount of available 'roads' */
-
 	sm_state_name(sm, "mode_road_building");
 	switch (event) {
 	case SM_ENTER:
 		callback_mode = MODE_ROAD_BUILD;
-		/* Less than 1 road will never occur, because the server will
-		 * not accept the development card to be played */
-		build_amount = CLAMP(stock_num_roads()
-				+ stock_num_ships()
-				+ stock_num_bridges()
-				+ build_count_edges(), 1, 2);
-		callbacks.roadbuilding (build_amount - build_count_edges());
-		if (build_amount == 2)
-			callbacks.instructions(_("Build two road segments."));
-		else
-			callbacks.instructions(_("Build a road segment."));
+		/* Determine the possible amount of road segments */
+		build_amount = 0;
+		if (road_building_can_build_road())
+			build_amount += stock_num_roads();
+		if (road_building_can_build_ship())
+			build_amount += stock_num_ships();
+		if (road_building_can_build_bridge())
+			build_amount += stock_num_bridges();
+		/* Now determine the amount of segments left to play */
+		build_amount = MIN(build_amount, 2 - build_count_edges());
+		callbacks.roadbuilding (build_amount);
+		switch (build_amount) {
+			case 0: callbacks.instructions(_("Finish the road building action.")); break;
+			case 1: callbacks.instructions(_("Build one road segment.")); break;
+			case 2: callbacks.instructions(_("Build two road segments.")); break;
+			default: g_error("Unknown road building amount"); break;
+		};
 		break;
 	case SM_RECV:
 		if (check_other_players(sm))
@@ -1385,12 +1390,7 @@ gboolean mode_play_develop_response(StateMachine *sm, gint event)
 			develop_played(my_player_num(), card_idx, card_type);
 			switch (card_type) {
 			case DEVEL_ROAD_BUILDING:
-				if (stock_num_roads() > 0
-				    || stock_num_ships() > 0
-				    || stock_num_bridges() > 0) {
-					road_building_begin();
-					sm_goto(sm, mode_road_building);
-				}
+				sm_goto(sm, mode_road_building);
 				break;
 			case DEVEL_MONOPOLY:
 				sm_goto(sm, mode_monopoly);
