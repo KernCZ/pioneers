@@ -32,13 +32,23 @@ struct game_list_item {
 };
 typedef struct game_list_item game_list_item_t;
 
-static game_list_item_t *games;
+static GHashTable *game_list = NULL;
 
 static GameParams *params;
 static gboolean register_server;
 static gint server_port = 5556;
 
 static gchar *gnocatan_dir;
+
+void game_list_add_item( game_list_item_t *item )
+{
+	if( !game_list ) {
+		game_list = g_hash_table_new( NULL, NULL );
+		params = item->params;
+	}
+	
+	g_hash_table_insert( game_list, item->name, item );
+}
 
 void cfg_set_num_players( gint num_players )
 {
@@ -128,6 +138,8 @@ static void load_game_types()
 		item = g_malloc( sizeof(game_list_item_t) );
 		item->name = ent->d_name;
 		item->params = params;
+		
+		game_list_add_item( item );
 	}
 
 	closedir(dir);
@@ -156,7 +168,7 @@ int main( int argc, char *argv[] )
 
 	
 	init();
-	/* server_startup(params, server_port, register_server); */
+	server_startup(params, server_port, register_server);
 	
 	event_loop = g_main_new(0);
 	g_main_run( event_loop );
