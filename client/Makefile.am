@@ -65,6 +65,8 @@ gnocatan_SOURCES = \
 	setup.c \
 	settingscreen.c \
 	stock.c \
+	theme.c \
+	theme.h \
 	trade.c \
 	turn.c
 
@@ -104,7 +106,12 @@ Games_DATA = gnocatan.desktop
 EXTRA_DIST = \
 	$(appicon_DATA) \
 	$(pixmap_DATA) \
-	$(Games_DATA)
+	$(Games_DATA) \
+	$(wildcard themes/*)
+
+install-data-hook:
+	cp -pr themes/* $(DESTDIR)$(pixmapdir)
+	chmod -R u+w,ugo+rX $(DESTDIR)$(pixmapdir)
 
 # We don't need this, do we?  -- egnor
 # install-data-local:
