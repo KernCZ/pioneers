@@ -1,3 +1,7 @@
+2002-05-28  Andy Heroff  <aheroff@ameritech.net>
+
+	* client/chat.c: Fixed parsing of /me command in chat.
+
 2002-05-27  Roman Hodek  <roman@hodek.net>
 
 	* 0.7.0 released!!
