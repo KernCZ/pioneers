@@ -1,3 +1,7 @@
+2003-10-26  Jeff Breidenbach  <jab@debian.org>
+
+	* docs/gnocatan*.6: added gnocatanai man page
+
 2003-10-25  Roland Clobus <rclobus@bigfoot.com>
 	* gnocatan.spec: Applied patch 829404 by Daniel Jensen
 	* client/gui.c: Removed compiler warning introduced at 2003-10-19
