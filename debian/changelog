@@ -1,3 +1,9 @@
+gnocatan (0.7.0) unstable; urgency=low
+
+  * New upstream version.
+
+ -- Roman Hodek <roman@hodek.net>  Mon, 27 May 2002 21:15:03 +0200
+
 gnocatan (0.6.99.1-1) unstable; urgency=low
 
   * Another upstream beta candidate.
