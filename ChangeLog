@@ -3,6 +3,8 @@
 	protocol version, and the third is the build number.
 	* client/gtk/frontend.h, client/gtk/offline.c, client/gtk/theme.h:
 	Moved declaration of init_themes to theme.h
+	* server/player.c: Version check to only two digits. Added message
+	when version does not match.
 
 2005-03-23  Bas Wijnen <shevek@fmf.nl>
 	* client/common/client.c, server/gold.c, server/pregame.c: Fixed race

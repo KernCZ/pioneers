@@ -618,23 +618,7 @@ static gboolean mode_game_is_over(Player * player, gint event)
 
 static gboolean check_versions(gchar * client_version)
 {
-	gchar *p, *v1, *v2;
-	gboolean rv;
-
-	v1 = g_strdup(client_version);
-	v2 = g_strdup(PROTOCOL_VERSION);
-	/* ignore rightmost number (after last dot) in versions -- changes
-	 * in patchlevel shouldn't change protocol incompatibly */
-	if ((p = strrchr(v1, '.')))
-		*p = '\0';
-	if ((p = strrchr(v2, '.')))
-		*p = '\0';
-
-	rv = strcmp(v1, v2) == 0;
-
-	g_free(v1);
-	g_free(v2);
-	return rv;
+	return !strcmp(client_version, PROTOCOL_VERSION);
 }
 
 static gboolean mode_check_version(Player * player, gint event)
@@ -655,6 +639,15 @@ static gboolean mode_check_version(Player * player, gint event)
 				sm_goto(sm, (StateFunc) mode_check_status);
 				return TRUE;
 			} else {
+				/* Version mismatch. 
+				 * %1 = expected version, 
+				 * %2 = version of the client. 
+				 * Don't translate the NOTE at 
+				 * the beginning of the text */
+				sm_send(sm,
+					_
+					("NOTE Expecting version %s, not %s\n"),
+					PROTOCOL_VERSION, version);
 				sm_goto(sm, (StateFunc) mode_bad_version);
 				return TRUE;
 			}
