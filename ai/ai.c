@@ -45,24 +45,25 @@ random_name(void)
     srand(time(NULL)+getpid());
 
     stream = fopen(filename,"r");
-    if (!stream) goto def;
+    if (!stream)
+    {
+        g_warning("Unable to find computer_names file.");
+        strcpy(name,"Computer Player");
+        
+    } else {
+        
+        while (fgets(line,sizeof(line)-1,stream)) {
+            if (rand()%num < 1) {
+                strcpy(name,line);
+            } 
 
-    strcpy(name,"Computer Player");
+            num++;
+        }
 
-    while (fgets(line,sizeof(line)-1,stream)) {
-	if (rand()%num < 1) {
-	    strcpy(name,line);
-	} 
-
-	num++;
+        fclose(stream);
     }
 
-    fclose(stream);
-
     return name;
-
- def:
-    return "Computer Player";
 }
 
 static void

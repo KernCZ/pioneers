@@ -197,15 +197,34 @@ int main( int argc, char *argv[] )
 
 	admin_listen( server_admin_port );
 
-	if( !disable_game_start )
-		start_server( server_port, register_server );
+    if( !disable_game_start )
+    {
+        if( start_server( server_port, register_server ) )
+        {
+            for( i = 0; i < num_ai_players; ++i )
+                new_computer_player(NULL, server_port);
 
-	for( i = 0; i < num_ai_players; ++i )
-		new_computer_player(NULL, server_port);
-	
-	event_loop = g_main_new(0);
-	g_main_run( event_loop );
-	g_main_destroy( event_loop );
+            event_loop = g_main_new(0);
+            g_main_run( event_loop );
+            g_main_destroy( event_loop );
+            
+        } else {
+            
+            usage();
+        }
+        
+    } else {
 
-	return 0;
+        /* Ugly... But needed to preserve the original functionality
+           if the disable_game_start flag is set... Even if it doesn't
+           really -do- anything. */
+        for( i = 0; i < num_ai_players; ++i )
+            new_computer_player(NULL, server_port);
+
+        event_loop = g_main_new(0);
+        g_main_run( event_loop );
+        g_main_destroy( event_loop );
+    }
+
+    return 0;
 }

@@ -1,3 +1,19 @@
+2003-02-14  Andy Heroff  <aheroff@ameritech.net>
+
+	* Batch fix of bugs 205475, 480328, 482336, 482744. Cleaned up
+	  compiler warnings.
+
+	* ai/ai.c: Removed goto. Added warning when the computer names file
+	  can't be found.
+
+	* server/gnocatan-server-console.c: Added printing of usage
+	  information if attempt to start server returns FALSE.
+
+	* server/gnocatan-server.c: Added missing CR to log message. Changed
+	  g_error call to g_critical call when game params are not found to
+	  prevent server from exiting at that point, also allowing the call
+	  to return FALSE in that case.
+
 2003-02-11  Andy Heroff  <aheroff@ameritech.net>
 
 	* server/trade.c: Fixed SF bug 660814 regarding server crash during

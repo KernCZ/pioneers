@@ -97,7 +97,7 @@ void load_game_types( gchar *path )
 	struct dirent *ent;
 
 	if ((dir = opendir(path)) == NULL) {
-		log_message( MSG_ERROR, _("Missing game directory"));
+		log_message( MSG_ERROR, _("Missing game directory\n"));
 		return;
 	}
 
@@ -190,7 +190,8 @@ gboolean start_server( gchar *port, gboolean register_server )
 		g_print( "Exit when done: %d\n", params->exit_when_done);
 
 	} else {
-		g_error( "critical: params not set!" );
+		g_critical( "Game parameters not set!" );
+        return FALSE;
 	}
 	
 	return server_startup( params, port, register_server );
@@ -310,6 +311,8 @@ admin_event( NetEvent event, Session *admin_session, gchar *line )
 				break;
 		
 		default:
+                                /* To kill a warning... */
+                                break;
 	}
 }
 

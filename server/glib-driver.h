@@ -10,4 +10,4 @@ void srv_player_removed(void *data);
 
 extern UIDriver Glib_Driver;
 
-#endif __glib_driver_h
+#endif /* __glib_driver_h */
