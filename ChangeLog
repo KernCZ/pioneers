@@ -1,5 +1,7 @@
+2004-03-23 0.8.1.23  Roland Clobus <rclobus@bigfoot.com>
+	* client/gtk/state.c (route_gui_event): Added #ifdef DEBUG
+	
 2004-02-29 0.8.1.22  Roland Clobus <rclobus@bigfoot.com>
-
 	* client/common.client.c (mode_load_gameinfo): Fixed textual error.
 	* server/pregame.c (mode_pre_game): Fixed bugs for viewers with
 	ID >= MAX_PLAYERS.

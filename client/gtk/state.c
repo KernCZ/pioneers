@@ -48,7 +48,9 @@ void route_gui_event (GuiEvent event)
 		name_create_dlg();
 		return;
 	case GUI_QUIT:
+#ifdef DEBUG
 		debug ("quitting\n");
+#endif
 		gtk_main_quit ();
 		return;
 	default:
