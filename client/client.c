@@ -505,10 +505,12 @@ static gboolean mode_connect(StateMachine *sm, gint event)
 		
 		copy_player_name(connect_get_name());
 		if (sm_connect(sm, connect_get_server(), connect_get_port())) {
-			if (sm_is_connected(sm))
+			update_recent_servers_list();
+			if (sm_is_connected(sm)) {
 				sm_goto(sm, mode_start);
-			else
+			} else {
 				sm_goto(sm, mode_connecting);
+			}
 		}
 		return TRUE;
 	default:
@@ -544,8 +546,6 @@ static gboolean mode_start(StateMachine *sm, gint event)
 
 	sm_state_name(sm, "mode_start");
 
-	update_recent_servers_list();
-		
 	if (event == SM_ENTER)
 	{
 		gui_set_net_status(_("Loading"));
