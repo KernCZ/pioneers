@@ -246,7 +246,6 @@ void player_change_name(gint player_num, gchar *name)
 	if (row < 0) {
 		gchar *row_data[3];
 		GtkStyle *score_style;
-		GtkStyle  score_style_r;
 		GdkColor *color_p;
 
 		if (summary_gc == NULL)
@@ -267,8 +266,17 @@ void player_change_name(gint player_num, gchar *name)
 		row_data[1] = "";
 		row_data[2] = "";
 		gtk_clist_insert(GTK_CLIST(summary_clist), row, row_data);
+		score_style = gtk_clist_get_row_style(GTK_CLIST(summary_clist), row);
+		if (!score_style) {
+			score_style = gtk_style_new();
+		}
+		score_style->fg[0] = player_fg;
+		score_style->bg[0] = player_bg;
+		gtk_clist_set_cell_style(GTK_CLIST(summary_clist), row, 2, score_style);
+#if 0
 		gtk_clist_set_foreground(GTK_CLIST(summary_clist), row, &player_fg);
 		gtk_clist_set_background(GTK_CLIST(summary_clist), row, &player_bg);
+#endif
 		gtk_clist_set_row_data(GTK_CLIST(summary_clist), row, player);
 		gtk_clist_set_pixmap(GTK_CLIST(summary_clist), row, 0,
 				     player->pixmap, NULL);
