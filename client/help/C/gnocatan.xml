@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
     "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
 <!ENTITY legal SYSTEM "legal.xml">
 ]>
 
-<article id="index" lang="en">
+<book id="index" lang="en">
   <title>Gnocatan player's guide</title>
-  <articleinfo>
+  <bookinfo>
     <authorgroup>
       <author>
 	<firstname>Dave</firstname>
@@ -17,17 +17,26 @@
         <surname>Heroff</surname>
       </author>
     </authorgroup>
+    <authorgroup>
+      <author>
+        <firstname>Roland</firstname>
+        <surname>Clobus</surname>
+      </author>
+    </authorgroup>
     <releaseinfo>Documentation in progress</releaseinfo>
     <copyright>
       <year>2000</year> <holder>Andy Heroff</holder>
     </copyright>
+    <copyright>
+      <year>2004</year> <holder>Roland Clobus</holder>
+    </copyright>
     &legal;
-  </articleinfo>
+  </bookinfo>
 
-  <sect1 id="introduction">
+  <chapter id="introduction">
     <title>Introduction</title>
 
-    <sect2 id="bugs">
+    <sect1 id="bugs">
       <title>Reporting Bugs</title>
       <para>
         Information on reporting bugs can be found on the Gnocatan project
@@ -36,9 +45,9 @@
          http://sourceforge.net/projects/gnocatan/
         </ulink>
       </para>
-    </sect2>
+    </sect1>
 
-    <sect2 id="Authors">
+    <sect1 id="Authors">
       <title>Authors and History</title>
       <para>
         Gnocatan is a GNOME game based upon the board game Settlers of Catan
@@ -49,13 +58,23 @@
         summer of 1999 and saw little development until the early spring of
         2000 when the project was taken over by Andy Heroff and moved to
         SourceForge. Andy recruited several developers (including Dave) and
-        they are now working to improve upon the original game as well as
-        fix the bugs that have been found in older versions.
+        they improved upon the original game as well as
+        fixed bugs that have been found in older versions.
       </para>
-    </sect2>
-  </sect1>
+      <para>
+        After summer 2002 Gnocatan lay dormant again, when in summer 2003 Bas
+	Wijnen found some security bugs, and started programming new features.
+	A little later he was joined by Roland Clobus. Bas made the split 
+	between the core code and the user interface, while Roland was working
+	on the user interface.
+      </para>
+      <para>
+        To be continued...
+      </para>
+    </sect1>
+  </chapter>
 
-  <sect1 id="gnocatan_ui">
+  <chapter id="gnocatan_ui">
     <title>The Gnocatan user interface</title>
 
     <para>When you start <symbol>Gnocatan</symbol>, the application
@@ -69,7 +88,7 @@
 	</screenshot>
       </figure>
 
-    <sect2 id="identity">
+    <sect1 id="identity">
       <title>The identity panel</title>
 
       <para>Before you have connected to a server, this panel will not
@@ -87,20 +106,20 @@
 	  <graphic fileref="images/identity.png"></graphic>
 	</screenshot>
       </figure>
-    </sect2>
+    </sect1>
 
-    <sect2 id="actions">
+    <sect1 id="actions">
       <title>The actions panel</title>
 
-      <sect3 id="waiting_prompt">
+      <sect2 id="waiting_prompt">
         <title>The waiting prompt</title>
 
 	<para>When it is not your turn, a message is displayed in the
 	status line at the very bottom for whom the game is waiting.</para>
 	
-      </sect3>
+      </sect2>
 
-      <sect3 id="actions_buttons">
+      <sect2 id="actions_buttons">
         <title>The actions buttons</title>
 
 	<para>When it is your turn, one more more of the buttons in
@@ -172,9 +191,9 @@
 	    </tbody>
 	  </tgroup>
 	</table>
-      </sect3>
+      </sect2>
 
-      <sect3 id="robber_prompt">
+      <sect2 id="robber_prompt">
         <title>The robber prompt</title>
 
 	<para>If you roll 7 on the dice, all players who are holding
@@ -190,9 +209,9 @@
 	    <graphic fileref="images/discards.png"></graphic>
 	  </screenshot>
 	</figure>
-      </sect3>
+      </sect2>
 
-      <sect3 id="place_robber_prompt">
+      <sect2 id="place_robber_prompt">
         <title>The place robber prompt</title>
 
 	<para>After all excess resources have been discarded, if you
@@ -210,9 +229,9 @@
 	    <graphic fileref="images/place-robber.png"></graphic>
 	  </screenshot>
 	</figure>
-      </sect3>
+      </sect2>
 
-      <sect3 id="steal_prompt">
+      <sect2 id="steal_prompt">
         <title>The steal from prompt</title>
 
 	<para>If you ever place the robber on a hex which has
@@ -229,10 +248,10 @@
 	    <graphic fileref="images/steal-from.png"></graphic>
 	  </screenshot>
 	</figure>
-      </sect3>
-    </sect2>
+      </sect2>
+    </sect1>
 
-    <sect2 id="resources">
+    <sect1 id="resources">
       <title>The resources panel</title>
 
       <para>As the game progresses you will accumulate resources.  The
@@ -245,9 +264,9 @@
 	  <graphic fileref="images/resources.png"></graphic>
 	</screenshot>
       </figure>
-    </sect2>
+    </sect1>
 
-    <sect2 id="develop-cards">
+    <sect1 id="develop-cards">
       <title>The development cards panel</title>
 
       <para>If you spend the right combination of resources, you can
@@ -264,9 +283,9 @@
 	  <graphic fileref="images/develop-cards.png"></graphic>
 	</screenshot>
       </figure>
-    </sect2>
+    </sect1>
 
-    <sect2 id="player-summary">
+    <sect1 id="player-summary">
       <title>The player summary panel</title>
 
       <para>This panel contains a summary of public statistics about
@@ -285,9 +304,9 @@
 	  <graphic fileref="images/player-summary.png"></graphic>
 	</screenshot>
       </figure>
-    </sect2>
+    </sect1>
 
-    <sect2 id="map">
+    <sect1 id="map">
       <title>The Gnocatan map.</title>
 
       <figure id="gnocatan-FIG-map">
@@ -404,9 +423,9 @@
           </tbody>
         </tgroup>
       </table>
-    </sect2>
+    </sect1>
 
-    <sect2 id="chat">
+    <sect1 id="chat">
       <title>The chat panel</title>
 
       <para>Underneath the map is a textfield where you can enter
@@ -458,9 +477,9 @@
         </tgroup>
       </table>
       </para>
-    </sect2>
+    </sect1>
 
-    <sect2 id="messages">
+    <sect1 id="messages">
       <title>The messages panel</title>
 
       <para>Underneath the chat panel is a message area where all
@@ -472,9 +491,9 @@
 	  <graphic fileref="images/messages.png"></graphic>
 	</screenshot>
       </figure>
-    </sect2>
+    </sect1>
 
-    <sect2 id="statusbar">
+    <sect1 id="statusbar">
       <title>The status bar</title>
 
       <para>The status bar is used for providing instructions about
@@ -497,20 +516,20 @@
 	  <graphic fileref="images/status.png"></graphic>
 	</screenshot>
       </figure>
-    </sect2>
-  </sect1>
+    </sect1>
+  </chapter>
 
-  <sect1 id="playing">
+  <chapter id="playing">
     <title>Playing Gnocatan</title>
 
-    <sect2 id="joining">
+    <sect1 id="joining">
       <title>Joining a Gnocatan game.</title>
 
       <para>The Gnocatan client program is
         "<application>gnocatan</application>". When you run this
         program, you will be presented with the connect dialog.</para>
 
-      <sect3 id="connect-dialog">
+      <sect2 id="connect-dialog">
         <title>The connect dialog</title>
 
 	<para>Using the connect dialog, you identify the game which
@@ -545,9 +564,9 @@
           will be used to identify you to other players.</para>
 
 	<para>Press the OK button to connect to the game.</para>
-      </sect3>
+      </sect2>
 
-      <sect3 id="server-dialog">
+      <sect2 id="server-dialog">
         <title>The servers dialog</title>
 
 	<para>The servers dialog displays a list of Gnocatan games
@@ -572,9 +591,9 @@
 	  Server button will be active and will bring you to the
 	  create server dialog.</para>
 
-      </sect3>
+      </sect2>
 
-      <sect3 id="server-create-dialog">
+      <sect2 id="server-create-dialog">
         <title>The create server dialog</title>
 
 	<para>In this dialog, you can select various parameters for
@@ -605,11 +624,11 @@
         <application>gnocatanai</application> program is not installed
         on the meta server.</para>
 
-      </sect3>
+      </sect2>
 
-    </sect2>
+    </sect1>
 
-    <sect2 id="setup">
+    <sect1 id="setup">
       <title>Gnocatan setup phase.</title>
 
       <para>Once you have successfully connected to a Gnocatan game
@@ -635,9 +654,9 @@
 
       <para>Once the first player has completed their second setup,
         the game will begin.</para>
-    </sect2>
+    </sect1>
 
-    <sect2 id="turn">
+    <sect1 id="turn">
       <title>Gnocatan turn sequence.</title>
 
       <para>When it is your turn, the actions panel will show all of
@@ -674,7 +693,7 @@
         if you buy a development card, you will not be able to trade
         for the rest of the turn.</para>
 
-      <sect3 id="gnocatan-dice-roll">
+      <sect2 id="gnocatan-dice-roll">
         <title>Dice roll / resource collection</title>
 
 	<para>When the dice are rolled, they are added together,
@@ -695,9 +714,9 @@
 	<para>If you roll 7 on the dice, all players with excess
 	  resources must discard them, then you must move the
 	  robber.</para>
-      </sect3>
+      </sect2>
 
-      <sect3 id="discarding_resources">
+      <sect2 id="discarding_resources">
         <title>Discarding resources</title>
 
 	<para>If you roll 7 on the dice, all players holding more than
@@ -718,9 +737,9 @@
 	<para>Once all players have discarded their excess resources,
 	  the player who rolled the 7 will have to move the
 	  robber.</para>
-      </sect3>
+      </sect2>
 
-      <sect3 id="moving_robber">
+      <sect2 id="moving_robber">
         <title>Moving the robber</title>
 
 	<para>The robber begins the game in the desert, but can never
@@ -739,10 +758,10 @@
 	  by selecting one of the buildings on the hex.  When the
 	  robber steals the resource, only the players involved in the
 	  transaction will be told which resource was stolen.</para>
-      </sect3>
-    </sect2>
+      </sect2>
+    </sect1>
 
-      <sect2 id="trade">
+      <sect1 id="trade">
         <title>Trade</title>
 
 	<para>You may trade resources only after you have rolled the
@@ -821,7 +840,7 @@
 	<para>To finish trading, press the Finish Trading button at
 	  the bottom right of the trading interface.</para>
 
-	<sect3 id="bank_trading">
+	<sect2 id="bank_trading">
 	  <title>Trading with the bank</title>
 	
 	  <para>Maritime trade is trade performed with the bank.  To
@@ -849,9 +868,9 @@
 
 	  <para>Select the trade that you wish to perform, then press
 	    the Accept Quote button.</para>
-	</sect3>
+	</sect2>
 
-	<sect3 id="trading_players">
+	<sect2 id="trading_players">
 	  <title>Trading with other players</title>
 
 	  <para>Domestic trade is trade performed with other players.
@@ -865,9 +884,9 @@
 
 	  <para>Select the trade that you wish to perform, then press
 	    the Accept Quote button.</para>
-	</sect3>
+	</sect2>
 
-	<sect3 id="trade_quote_submit">
+	<sect2 id="trade_quote_submit">
 	  <title>Submitting trade quotes</title>
 
 	  <para>When another player presses the Call For Quotes button
@@ -944,10 +963,10 @@
 	  <para>To decline the offer to perform trading, press the
 	    Reject Domestic Trade button at the bottom right of the
 	    interface.</para>
-	</sect3>
-    </sect2>
+	</sect2>
+    </sect1>
 
-    <sect2 id="development">
+    <sect1 id="development">
       <title>Development cards.</title>
 
       <para>There are 25 development cards in the game, they are
@@ -1041,7 +1060,7 @@
         </tgroup>
       </table>
 
-      <sect3 id="monopolydlg">
+      <sect2 id="monopolydlg">
         <title>The monopoly dialog</title>
 
 	<para>When you play the monopoly development card, the
@@ -1058,9 +1077,9 @@
 	  monopolise.  When you press OK, all resources of the
 	  selected type held by other players will be transferred to
 	  your hand.</para>
-      </sect3>
+      </sect2>
 
-      <sect3 id="yearofplentydlg">
+      <sect2 id="yearofplentydlg">
         <title>The year of plenty dialog</title>
 
 	<para>When you play the year of plenty development card, the
@@ -1075,9 +1094,9 @@
 
 	<para>You must select any two resource cards that you wish to
 	  take from the bank.</para>
-      </sect3>
+      </sect2>
 
-      <sect3 id="largest_army">
+      <sect2 id="largest_army">
         <title>Largest army</title>
 
 	<para>The first player to play three soldier cards will earn
@@ -1089,10 +1108,10 @@
 
 	<para>Ownership of the largest army award will change only
 	  when another player builds a larger army.</para>
-      </sect3>
-    </sect2>
+      </sect2>
+    </sect1>
 
-    <sect2 id="building">
+    <sect1 id="building">
       <title>Building</title>
 
       <para>By spending the right combination of resources, you can
@@ -1129,7 +1148,7 @@
 	one of your roads.  You cannot extend your road through a
 	building owned by another player.</para>
 
-      <sect3 id="longest_road">
+      <sect2 id="longest_road">
 	<title>Longest road</title>
 	
 	<para>The first player to build a continuous path of five or
@@ -1152,10 +1171,10 @@
 	  road, the award is temporarily removed from play.  If no
 	  player has a road of five or more segments, the award is
 	  temporarily removed from play.</para>
-      </sect3>
-    </sect2>
+      </sect2>
+    </sect1>
 
-    <sect2 id="objective">
+    <sect1 id="objective">
       <title>Game objective</title>
 
       <para>The objective of the game is to achieve a certain number
@@ -1185,7 +1204,7 @@
 	</listitem>
       </itemizedlist>
 
-      <sect3 id="gameoverdlg">
+      <sect2 id="gameoverdlg">
         <title>The game over dialog</title>
 
 	<para>Once you have won the game, all players will to notified
@@ -1197,11 +1216,11 @@
 	    <graphic fileref="images/gameover-dialog.png"></graphic>
 	  </screenshot>
 	</figure>
-      </sect3>
-    </sect2>
-  </sect1>
+      </sect2>
+    </sect1>
+  </chapter>
 
-  <sect1 id="ai">
+  <chapter id="ai">
     <title>The AI Player</title>
 
     <para>
@@ -1271,5 +1290,396 @@
       servers offer ways to start a number of AI players.
     </para>
 
-  </sect1>
-</article>
+  </chapter>
+  <chapter id="configuration">
+    <title>Configuration</title>
+      <warning>
+        <para>
+        This chapter is included for the people who wish to control
+        exactly the way <symbol>Gnocatan</symbol> is running.
+	</para>
+      </warning>
+      <para>The extra configuration options are processed in this order:
+        <orderedlist>
+	  <listitem><para>Command line</para></listitem>
+	  <listitem><para>Settings file</para></listitem>
+	  <listitem><para>Environment</para></listitem>
+	  <listitem><para>Built-in settings</para></listitem>
+	</orderedlist>
+	</para>
+      <sect1 id="configuration-client">
+      <title><application>gnocatan</application></title>
+        <para>
+          The client is controlled by the command line, the environment
+          and the settings file.
+	</para>
+
+	<table id="configuration-client-commandline">
+	  <title>Command line</title>
+	  <tgroup cols="3">
+	    <thead>
+	      <row>
+	        <entry>Short</entry>
+		<entry>Long</entry>
+		<entry>Description</entry>
+	      </row>
+	    </thead>
+	    <tbody>
+	      <row>
+	        <entry>-s</entry>
+		<entry>--server</entry>
+		<entry>Hostname of the server</entry>
+	      </row>
+	      <row>
+	        <entry>-p</entry>
+		<entry>--port</entry>
+		<entry>Port of the server</entry>
+	      </row>
+	      <row>
+	        <entry>-n</entry>
+		<entry>--name</entry>
+		<entry>Player name</entry>
+	      </row>
+	      <row>
+	        <entry></entry>
+		<entry>--language</entry>
+		<entry>Override the language as set in the environment.
+		  Valid choices: en de es fr nl it
+		</entry>
+	      </row>
+	    </tbody>
+	  </tgroup>
+	</table>
+	<para>
+	  When both the server and port are set, the client will not display
+	  the connect dialog, but will directly connect to this port.
+	  When the connection is closed (because the game is over, or the
+	  connection fails), the client quits.
+	</para>
+	<para>
+	  Server and port need both to be set, or not at all.
+	</para>
+	<table id="configuration-client-settingsfile">
+	  <title>Settings file <application>~/.gnome2/gnocatan</application></title>
+	  <tgroup cols="2">
+	    <thead>
+	      <row>
+	        <entry>Section</entry>
+	        <entry>Key</entry>
+		<entry>Type</entry>
+		<entry>Description</entry>
+              </row>
+	    </thead>
+	    <tbody>
+	      <row>
+	        <entry>connect</entry>
+	        <entry>server</entry>
+		<entry>string</entry>
+		<entry>Last used server for private game</entry>
+	      </row>
+	      <row>
+	        <entry>connect</entry>
+	        <entry>port</entry>
+		<entry>string</entry>
+		<entry>Last used port for private game</entry>
+	      </row>
+	      <row>
+	        <entry>connect</entry>
+	        <entry>meta-server</entry>
+		<entry>string</entry>
+		<entry>Address of the meta server</entry>
+	      </row>
+	      <row>
+	        <entry>connect</entry>
+	        <entry>name</entry>
+		<entry>string</entry>
+		<entry>Last used player name</entry>
+	     </row>
+	     <row>
+	       <entry>favorites</entry>
+	       <entry>server%dname</entry>
+	       <entry>string</entry>
+	       <entry>History entry of private server games</entry>
+	     </row>
+	     <row>
+	       <entry>favorites</entry>
+	       <entry>server%dport</entry>
+	       <entry>string</entry>
+	       <entry>History entry of private server games</entry>
+	     </row>
+	     <row>
+	       <entry>settings</entry>
+	       <entry>color_chat</entry>
+	       <entry>boolean</entry>
+	       <entry>Display chat messages in user's color</entry>
+	     </row>
+	     <row>
+	       <entry>settings</entry>
+	       <entry>color_messages</entry>
+	       <entry>boolean</entry>
+	       <entry>Display colors in the message log</entry>
+	     </row>
+	     <row>
+	       <entry>settings</entry>
+	       <entry>color_summary</entry>
+	       <entry>boolean</entry>
+	       <entry>Use colors in the summary</entry>
+	     </row>
+	     <row>
+	       <entry>settings</entry>
+	       <entry>toolbar_style</entry>
+	       <entry>GtkToolbarStyle</entry>
+	       <entry>Style of the toolbar.</entry>
+	     </row>
+	     <row>
+	       <entry>settings</entry>
+	       <entry>legend_page</entry>
+	       <entry>boolean</entry>
+	       <entry>Display the legend page beside the map</entry>
+	     </row>
+	     <row>
+	       <entry>settings</entry>
+	       <entry>theme</entry>
+	       <entry>string</entry>
+	       <entry>The theme</entry>
+	     </row>
+           </tbody>
+	 </tgroup>
+       </table>
+	<table id="configuration-client-environment">
+	  <title>Environment</title>
+	  <tgroup cols="2">
+	    <thead>
+	      <row>
+	        <entry>Variable</entry>
+		<entry>Description</entry>
+	      </row>
+	    </thead>
+	    <tbody>
+	      <row>
+	        <entry>GNOCATAN_META_SERVER</entry>
+		<entry>The host name of the meta server</entry>
+	      </row>
+	    </tbody>
+	  </tgroup>
+	</table>
+	<para>
+          When the host name is not provided in the client, this environment
+	  variable will be used. If it is not set, the default
+	  (<symbol>gnocatan.debian.org</symbol>) will be used.
+	</para>
+      </sect1>
+      <sect1 id="configuration-server">
+      <title><application>gnocatan-server-console</application></title>
+	<table id="configuration-server-console-commandline">
+	  <title>Command line</title>
+	  <tgroup cols="3">
+	    <thead>
+	      <row>
+                <entry>M</entry>
+	        <entry>Short</entry>
+		<entry>Type</entry>
+		<entry>Description</entry>
+	      </row>
+	    </thead>
+	    <tbody>
+	      <row>
+                <entry></entry>
+	        <entry>-a</entry>
+		<entry>integer</entry>
+		<entry>Admin port to listen on</entry>
+	      </row>
+	      <row>
+                <entry>*</entry>
+	        <entry>-c</entry>
+		<entry>integer</entry>
+		<entry>Number of computer players to add</entry>
+	      </row>
+	      <row>
+                <entry>*</entry>
+	        <entry>-g</entry>
+		<entry>string</entry>
+		<entry>Game name to use</entry>
+              </row>
+	      <row>
+                <entry></entry>
+	        <entry>-h</entry>
+		<entry></entry>
+		<entry>Show help</entry>
+              </row>
+	      <row>
+                <entry>*</entry>
+	        <entry>-k</entry>
+		<entry>integer</entry>
+		<entry>Kill after <symbol>n</symbol> seconds with no player</entry>
+              </row>
+	      <row>
+                <entry></entry>
+	        <entry>-m</entry>
+		<entry>string</entry>
+		<entry>Register at meta-server name (implies -r)</entry>
+              </row>
+	      <row>
+                <entry></entry>
+	        <entry>-n</entry>
+		<entry>string</entry>
+		<entry>Use this hostname when registering at the meta-server</entry>
+              </row>
+	      <row>
+                <entry>*</entry>
+	        <entry>-P</entry>
+		<entry>integer</entry>
+		<entry>Number of players</entry>
+              </row>
+	      <row>
+                <entry>*</entry>
+	        <entry>-p</entry>
+		<entry>string</entry>
+		<entry>Port to listen on</entry>
+              </row>
+	      <row>
+                <entry>*</entry>
+	        <entry>-r</entry>
+		<entry></entry>
+		<entry>Register with meta-server</entry>
+              </row>
+	      <row>
+                <entry></entry>
+	        <entry>-R</entry>
+		<entry>0|1|2</entry>
+		<entry>Seven rule</entry>
+              </row>
+	      <row>
+                <entry></entry>
+	        <entry>-s</entry>
+		<entry></entry>
+		<entry>Don't start game immediately, wait for command on admin port</entry>
+              </row>
+	      <row>
+                <entry></entry>
+	        <entry>-t</entry>
+		<entry>integer</entry>
+		<entry>Tournament mode. AI players added after %d minutes</entry>
+              </row>
+	      <row>
+                <entry>*</entry>
+	        <entry>-T</entry>
+		<entry>0|1</entry>
+		<entry>Select terrain type (0=default, 1=random)</entry>
+              </row>
+	      <row>
+                <entry>*</entry>
+	        <entry>-v</entry>
+		<entry>integer</entry>
+		<entry>Number of points needed to win</entry>
+              </row>
+	      <row>
+                <entry>*</entry>
+	        <entry>-x</entry>
+		<entry></entry>
+		<entry>Quit after a player has won</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+        <para>
+          The column 'M' shows whether the switch is used by the meta-server
+        </para>
+	<table id="configuration-server-console-environment">
+	  <title>Environment</title>
+	  <tgroup cols="2">
+	    <thead>
+	      <row>
+	        <entry>Variable</entry>
+		<entry>Description</entry>
+	      </row>
+	    </thead>
+	    <tbody>
+              <row>
+                <entry>GNOCATAN_DIR</entry>
+                <entry>The location of the *.game files</entry>
+              </row>
+	      <row>
+	        <entry>GNOCATAN_META_SERVER</entry>
+		<entry>The host name of the meta server</entry>
+	      </row>
+	    </tbody>
+	  </tgroup>
+	</table>
+      </sect1>
+      <sect1 id="server-admin-interface">
+        <title>Server admin interface protocol</title>
+        <para>
+          When the server is started with the command line switch 
+          <userinput>-a</userinput>, the following commands can be
+          sent to that port:
+        </para>
+	<table id="configuration-server-console-admin">
+	  <title>Admin interface commands</title>
+	  <tgroup cols="2">
+	    <thead>
+	      <row>
+	        <entry>Command</entry>
+		<entry>Argument type</entry>
+	      </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry><userinput>admin set-game</userinput></entry>
+                <entry>string</entry>
+              </row>
+              <row>
+                <entry><userinput>admin set-register-server</userinput></entry>
+                <entry>integer</entry>
+              </row>
+              <row>
+                <entry><userinput>admin set-num-players</userinput></entry>
+                <entry>integer</entry>
+              </row>
+              <row>
+                <entry><userinput>admin set-sevens-rule</userinput></entry>
+                <entry>integer</entry>
+              </row>
+              <row>
+                <entry><userinput>admin set-victory-points</userinput></entry>
+                <entry>integer</entry>
+              </row>
+              <row>
+                <entry><userinput>admin set-random-terrain</userinput></entry>
+                <entry>integer</entry>
+              </row>
+              <row>
+                <entry><userinput>admin set-port</userinput></entry>
+                <entry>integer</entry>
+              </row>
+              <row>
+                <entry><userinput>admin start-server</userinput></entry>
+                <entry>none</entry>
+              </row>
+              <row>
+                <entry><userinput>admin stop-server</userinput></entry>
+                <entry>none</entry>
+              </row>
+              <row>
+                <entry><userinput>admin quit</userinput></entry>
+                <entry>none</entry>
+              </row>
+           </tbody>
+          </tgroup>
+	</table>
+        <para>
+          <userinput>admin set-game</userinput> should be used before the
+          other game parameters are changed, because it changes all game
+          parameters.
+        </para>
+        <note><para>
+          If a game was running while a game parameter is changed,
+          it will be aborted.
+        </para></note>
+        <para>
+          When no game is running when <userinput>admin quit</userinput>
+          is issued, the application will quit.
+        </para>
+      </sect1>
+  </chapter>
+</book>

@@ -350,3 +350,8 @@ gboolean server_stop()
 	curr_game = NULL;
 	return TRUE;
 }
+
+/* Return true if a game is running */
+gboolean server_is_running(void) {
+	return curr_game != NULL;
+}

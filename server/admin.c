@@ -289,50 +289,75 @@ admin_run_command( Session *admin_session, gchar *line )
 	
 	/* set the GAME port */
 	if( !strcmp( command, "set-port" ) ) {
-		if( value_int )
+		if( value_int ) {
+			if (server_is_running())
+				server_stop();
 			snprintf(server_port, sizeof(server_port), "%d", value_int);
+		}
 	
 	/* start the server */
 	} else if( !strcmp( command, "start-server" ) ) {
+		if (server_is_running())
+			server_stop();
 		start_server( server_port, register_server );
 	
-	/* TODO: stop the server */
 	} else if( !strcmp( command, "stop-server" ) ) {
-		/* stop_server(); */
+		server_stop();
 	
 	/* set whether or not to register the server with a meta server */
 	} else if( !strcmp( command, "set-register-server" ) ) {
-		if( value_int )
+		if( value_int ) {
+			if (server_is_running())
+				server_stop();
 			register_server = value_int;
+		}
 	
 	/* set the number of players */
 	} else if( !strcmp( command, "set-num-players" ) ) {
-		if( value_int )
+		if( value_int ) {
+			if (server_is_running())
+				server_stop();
 			cfg_set_num_players( value_int );
+		}
 	
 	/* set the sevens rule */
 	} else if( !strcmp( command, "set-sevens-rule" ) ) {
-		if( value_int )
+		if( value_int ) {
+			if (server_is_running())
+				server_stop();
 			cfg_set_sevens_rule( value_int );
+		}
 
 		/* set the victory points */
 	} else if( !strcmp( command, "set-victory-points" ) ) {
-		if( value_int )
+		if( value_int ) {
+			if (server_is_running())
+				server_stop();
 			cfg_set_victory_points( value_int );
+		}
 	
 	/* set whether to use random terrain */
 	} else if( !strcmp( command, "set-random-terrain" ) ) {
-		if( value_int )
+		if( value_int ) {
+			if (server_is_running())
+				server_stop();
 			cfg_set_terrain_type( value_int );
+		}
 	
 	/* set the game type (by name) */
 	} else if( !strcmp( command, "set-game" ) ) {
-		if( value_str )
+		if( value_str ) {
+			if (server_is_running())
+				server_stop();
 			cfg_set_game( value_str );
+		}
 	
 	/* request to close the connection */
 	} else if( !strcmp( command, "quit" ) ) {
 		net_close( admin_session );
+		/* Quit the server if the admin leaves */
+		if (!server_is_running())
+			exit(0);
 	
 	/* fallthrough -- unknown command */
 	} else {

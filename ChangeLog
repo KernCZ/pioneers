@@ -25,6 +25,9 @@
 	* client/gtk/name.c: Added per default the current name
 	* common/gtk/game-settings.c, common/gtk/common_gtk.c: Added some stub
 	functions for compatibility with versions of Gtk before 2.4
+	* client/help/C/gnocatan.xml: Added technical chapter
+	* server/gnocatan-server.c, server/server.c, server/server.h: Enabled
+	server-stop for administrator, added a few checks to admin interface
 
 2004-10-01  0.8.1.37  Roland Clobus <rclobus@bigfoot.com>
 	* client/help/C/gnocatan-C.omf: Added line with DTD to make xmllint
