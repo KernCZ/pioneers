@@ -1,3 +1,7 @@
+2003-05-31  Jeff Breidenbach  <jab@debian.org>
+
+	* Security fixes courtesy of Bas Wijnen
+
 2003-02-21  Jeff Breidenbach  <jab@debian.org>
 
 	* debian/rules: Adjusted .deb build rules to Steve's suggestion.

@@ -156,7 +156,7 @@ gchar *resource_cards(gint num, Resource type, gchar *buf, gint buflen);
 void resource_modify(Resource type, gint num);
 gint resource_count(gint *resources);
 void resource_format_type(gchar *str, gint *resources);
-void resource_format_num(gchar *str, gint *resources);
+void resource_format_num(gchar *str, guint len, gint *resources);
 void resource_log_list(gint player_num, gchar *action, gint *resources);
 void resource_apply_list(gint player_num, gint *resources, gint mult);
 #ifdef FIND_STUPID_RESOURCE_BUG

@@ -577,21 +577,23 @@ void player_domestic_trade(gint player_num, gint partner_num,
 				 player_name(player_num, TRUE),
 				 player_name(partner_num, FALSE));
 		} else {
-			resource_format_num(receive_desc, receive);
+			resource_format_num(receive_desc,
+					sizeof (receive_desc), receive);
 			log_message( MSG_TRADE, _("%s gave %s %s for free.\n"),
 				 player_name(player_num, TRUE),
 				 player_name(partner_num, FALSE),
 				 receive_desc);
 		}
 	} else if (!resource_count(receive)) {
-		resource_format_num(supply_desc, supply);
+		resource_format_num(supply_desc, sizeof (supply_desc), supply);
 		log_message( MSG_TRADE, _("%s gave %s %s for free.\n"),
 			 player_name(partner_num, TRUE),
 			 player_name(player_num, FALSE),
 			 supply_desc);
 	} else {
-		resource_format_num(supply_desc, supply);
-		resource_format_num(receive_desc, receive);
+		resource_format_num(supply_desc, sizeof (supply_desc), supply);
+		resource_format_num(receive_desc,
+					sizeof (receive_desc), receive);
 		log_message( MSG_TRADE, _("%s gave %s %s in exchange for %s.\n"),
 			 player_name(player_num, TRUE),
 			 player_name(partner_num, FALSE),

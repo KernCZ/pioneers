@@ -185,15 +185,15 @@ static gboolean global_unhandled(StateMachine *sm, gint event)
 		sm_goto(sm, mode_offline);
 		return TRUE;
 	case SM_RECV:
-		if (sm_recv(sm, "ERR %S", str)) {
+		if (sm_recv(sm, "ERR %S", str, sizeof (str))) {
 			log_message( MSG_ERROR, "Error (%s): %s\n", sm_current_name(sm), str);
 			return TRUE;
 		}
-		if (sm_recv(sm, "NOTE %S", str)) {
+		if (sm_recv(sm, "NOTE %S", str, sizeof (str))) {
 			log_message( MSG_ERROR, "Notice: %s\n", str);
 			return TRUE;
 		}
-		if (sm_recv(sm, "%S", str)) {
+		if (sm_recv(sm, "%S", str, sizeof (str))) {
 			log_message( MSG_ERROR, "Unknown message in %s: %s\n", sm_current_name(sm), str);
 			return TRUE;
 		}
@@ -246,7 +246,7 @@ static gboolean check_chat_or_name(StateMachine *sm)
 	gint player_num;
 	char str[512];
 
-	if (sm_recv(sm, "player %d chat %S", &player_num, str)) {
+	if (sm_recv(sm, "player %d chat %S", &player_num, str, sizeof (str))) {
 		chat_parser( player_num, str );
 		/*
 		log_message( MSG_INFO, _("%s said: "), player_name(player_num, TRUE));
@@ -258,7 +258,7 @@ static gboolean check_chat_or_name(StateMachine *sm)
 		player_change_name(player_num, NULL);
 		return TRUE;
 	}
-	if (sm_recv(sm, "player %d is %S", &player_num, str)) {
+	if (sm_recv(sm, "player %d is %S", &player_num, str, sizeof (str))) {
 		player_change_name(player_num, str);
 		return TRUE;
 	}
@@ -606,7 +606,7 @@ static gboolean mode_start(StateMachine *sm, gint event)
 		}
 	}
 	if (sm_recv(sm, "player %d of %d, welcome to gnocatan server %S",
-		    &player_num, &total_num, version)) {
+		    &player_num, &total_num, version, sizeof (version))) {
 		player_set_my_num(player_num);
 		player_set_total_num(total_num);
 		if (saved_name != NULL)
@@ -694,7 +694,7 @@ static gboolean mode_load_game(StateMachine *sm, gint event)
 	}
 	if (check_other_players(sm))
 		return TRUE;
-	if (sm_recv(sm, "%S", str)) {
+	if (sm_recv(sm, "%S", str, sizeof (str))) {
 		params_load_line(game_params, str);
 		return TRUE;
 	}
@@ -782,7 +782,7 @@ static gboolean mode_load_gameinfo(StateMachine *sm, gint event)
 		strcpy(rinfo.prevstate, "PLENTY");
 		return TRUE;
 	}
-	if (sm_recv(sm, "state %S", str)) {
+	if (sm_recv(sm, "state %S", str, sizeof (str))) {
 		strcpy(rinfo.prevstate, str);
 		return TRUE;
 	}

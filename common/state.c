@@ -150,7 +150,15 @@ static void net_event(NetEvent event, StateMachine *sm, gchar *line)
 		break;
 	case NET_READ:
 		sm->line = line;
+		/* Only handle data if there is a context.  Fixes bug that
+		 * clients starting to send data immediately crash the
+		 * server */
+		if (sm->stack_ptr != -1)
 		route_event(sm, SM_RECV);
+		else {
+			dec_use_count (sm);
+			return;
+		}
 		break;
 	}
 	route_event(sm, SM_INIT);
@@ -235,7 +243,9 @@ static gint try_recv(StateMachine *sm, gchar *fmt, va_list ap)
 		switch (*fmt++) {
 		case 'S': /* string from current position to end of line */
 			str = va_arg(ap, gchar*);
-			strcpy(str, line + offset);
+			len = va_arg(ap, gint);
+			strncpy(str, line + offset, len - offset - 1);
+			str[len - offset - 1] = '\0';
 			offset += strlen(str);
 			break;
 		case 'd': /* integer */

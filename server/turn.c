@@ -391,6 +391,7 @@ void turn_next_player(Game *game)
 {
 	Player *player = NULL;
 
+	do {
 	if (game->curr_player)
 	{
 		player = player_by_name(game, game->curr_player);
@@ -420,6 +421,8 @@ void turn_next_player(Game *game)
 		   game->curr_player = player->name;
 		}
 	}
+	} while (player->num < 0);
+	printf ("next turn for player %d\n", player->num);
 
 	player_broadcast(player, PB_RESPOND, "turn %d\n", game->curr_turn);
 	game->rolled_dice = FALSE;

@@ -19,6 +19,7 @@
  * [fmt] format string is modelled on the printf format string.  It
  * understands the following types:
  *	%S - string from current position to end of line
+ *		this takes two arguments: the gchar * and the buffer size
  *	%d - integer
  *	%B - build type;
  *		'road' = BUILD_ROAD,

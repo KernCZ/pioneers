@@ -147,7 +147,7 @@ void resource_format_type(gchar *str, gint *resources)
 	}
 }
 
-void resource_format_num(gchar *str, gint *resources)
+void resource_format_num(gchar *str, guint len, gint *resources)
 {
 	gint idx;
 	gint num_types;
@@ -164,10 +164,7 @@ void resource_format_num(gchar *str, gint *resources)
 			gint num = resources[idx];
 			if (num == 0)
 				continue;
-
-			/* FIXME: we should know how big our buffer is,
-			   but we don't! */
-			resource_cards(num, idx, str, 128);
+			resource_cards(num, idx, str, len);
 		}
 		return;
 	}
@@ -180,13 +177,16 @@ void resource_format_num(gchar *str, gint *resources)
 
 		if (num_types == 1) {
 			resource_cards(num, idx, buf, sizeof(buf));
-			sprintf(str, _(", and %s"), buf);
+			snprintf(str, len - 1, _(", and %s"), buf);
+			str[len - 1] = '\0';
 		} else if (num_types > 2) {
 			resource_cards(num, idx, buf, sizeof(buf));
-			sprintf(str, _("%s, "), buf);
+			snprintf(str, len - 1, _("%s, "), buf);
+			str[len - 1] = '\0';
 		} else {
-			resource_cards(num, idx, str, 128);
+			resource_cards(num, idx, str, len);
 		}
+		len -= strlen(str);
 		str += strlen(str);
 		num_types--;
 	}
@@ -196,7 +196,7 @@ void resource_log_list(gint player_num, gchar *action, gint *resources)
 {
 	char buff[512];
 
-	resource_format_num(buff, resources);
+	resource_format_num(buff, sizeof (buff), resources);
 	log_message( MSG_RESOURCE, action,
 		 player_name(player_num, TRUE), buff);
 }

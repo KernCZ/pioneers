@@ -85,11 +85,11 @@ static gboolean mode_global(Player *player, gint event)
 		}
 		return TRUE;
 	case SM_RECV:
-		if (sm_recv(sm, "chat %S", text)) {
+		if (sm_recv(sm, "chat %S", text, sizeof (text))) {
 			player_broadcast(player, PB_ALL, "chat %s\n", text);
 			return TRUE;
 		}
-		if (sm_recv(sm, "name %S", text)) {
+		if (sm_recv(sm, "name %S", text, sizeof (text))) {
 			player_set_name(player, text);
 			return TRUE;
 		}
@@ -444,7 +444,7 @@ static gboolean mode_check_version(Player *player, gint event)
 		break;
 	
 	case SM_RECV:
-		if( sm_recv(sm, "version %S", version ) )
+		if( sm_recv(sm, "version %S", version, sizeof (version)) )
 		{
 			player->client_version = g_strdup(version);
 			if( check_versions( version ) )
@@ -480,7 +480,8 @@ static gboolean mode_check_status(Player *player, gint event)
 			player_setup(player, -1);
 			return TRUE;
 		}
-		else if( sm_recv(sm, "status reconnect %S", playername ) )
+		else if( sm_recv(sm, "status reconnect %S", playername,
+					sizeof (playername)) )
 		{
 			/* if possible, try to revive the player */
 			player_revive(player, playername);

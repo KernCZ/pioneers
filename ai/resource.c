@@ -149,7 +149,7 @@ void resource_format_type(gchar *str, gint *resources)
 	}
 }
 
-void resource_format_num(gchar *str, gint *resources)
+void resource_format_num(gchar *str, guint len, gint *resources)
 {
 	gint idx;
 	gint num_types;
@@ -168,7 +168,8 @@ void resource_format_num(gchar *str, gint *resources)
 			if (num == 0)
 				continue;
 
-			strcpy(str, resource_cards(num, idx));
+			strncpy(str, resource_cards(num, idx), len - 1);
+			str[len - 1] = '\0';
 		}
 		return;
 	}
@@ -180,15 +181,22 @@ void resource_format_num(gchar *str, gint *resources)
 			continue;
 
 		if (num_types == 1) {
-			sprintf(str, ", and %s", resource_cards(num, idx));
+			snprintf(str, len - 1, ", and %s",
+					resource_cards(num, idx));
+			str[len - 1] = '\0';
+			len -= strlen(str);
 			str += strlen(str);
 		} else {
 			if (add_comma) {
-				strcpy(str, ", ");
+				strncpy(str, ", ", len - 1);
+				str[len - 1] = '\0';
+				len -= strlen(str);
 				str += strlen(str);
 			}
-			sprintf(str, "%s", resource_num(num, idx));
+			snprintf(str, len - 1, "%s", resource_num(num, idx));
 			add_comma = TRUE;
+			str[len - 1] = '\0';
+			len -= strlen(str);
 			str += strlen(str);
 		}
 		num_types--;
@@ -199,7 +207,7 @@ void resource_log_list(gint player_num, gchar *action, gint *resources)
 {
 	char buff[512];
 
-	resource_format_num(buff, resources);
+	resource_format_num(buff, sizeof (buff), resources);
 	log_message( MSG_INFO, action, player_name(player_num, TRUE), buff);
 }
 
