@@ -4,7 +4,7 @@ use Time::Local;
 use Socket;
 
 $ENV{PATH} = '/bin:/usr/bin:/usr/sbin';
-my $server = $ARGV[1] || $ENV{'GNOCATAN_META_SERVER'} || 'term1.dccs.com.au';
+my $server = $ARGV[1] || $ENV{'GNOCATAN_META_SERVER'} || 'gnocatan.debian.net';
 my $iaddr = gethostbyname($server);
 my $meta_addr = sockaddr_in(5557, $iaddr);
 my $proto = getprotobyname('tcp');

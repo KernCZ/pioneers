@@ -1,3 +1,8 @@
+2003-01-16  Steve Langasek  <vorlon@debian.org>
+	* common/meta.h, meta-server/meta-report: change to using
+	  gnocatan.debian.net as the default metaserver instead of
+	  the defunct term1.dccs.com.au.
+
 2003-01-15  Jeff Breidenbach  <jab@debian.org>
 
 	* themes.c: incorporate string terminator patch from Hal Eisen
