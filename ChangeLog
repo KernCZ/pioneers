@@ -1,3 +1,8 @@
+2003-08-03  Roland Clobus  <rclobus@bigfoot.com>
+        * client/client.c, client/client.h, client/develop.c, client/player.c,
+	client/player.h, client/resource.c: Fixed bug 600765. The client can
+	now play several consecutive games, restart is not needed anymore.
+
 2003-08-02  Bas Wijnen  <b.wijnen@phys.rug.nl>
 
 	* new files client/gold.c, client/gold.png, server/gold.c,

@@ -156,6 +156,21 @@ static void refresh_victory_point_total(int player_num)
 	}
 }
 
+void player_reset_statistic(void)
+{
+	gint idx,player_num;
+	Player *player;
+
+	gtk_clist_clear(GTK_CLIST(summary_clist));
+
+	for (player_num = 0; player_num < numElem(players); player_num++) {
+		player = players + player_num;
+		for (idx = 0; idx < numElem(player->statistics); idx++) {
+			player->statistics[idx] = 0;
+		}
+	}
+}
+
 void player_modify_statistic(gint player_num, StatisticType type, gint num)
 {
 	Player *player = players + player_num;
@@ -307,8 +322,8 @@ void player_change_name(gint player_num, gchar *name)
 		gtk_clist_set_row_data(GTK_CLIST(summary_clist), row, player);
 		gtk_clist_set_pixmap(GTK_CLIST(summary_clist), row, 0,
 				     player->pixmap, NULL);
-		refresh_victory_point_total(player_num);
 	}
+	refresh_victory_point_total(player_num);
 	gtk_clist_set_text(GTK_CLIST(summary_clist), row, 1,
 			   player_name(player_num, TRUE));
 }

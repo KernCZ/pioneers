@@ -597,6 +597,7 @@ static gboolean mode_start(StateMachine *sm, gint event)
 	if (event == SM_ENTER)
 	{
 		gui_set_net_status(_("Loading"));
+		player_reset_statistic();
 	}		
 
 	if (event != SM_RECV)
@@ -806,6 +807,7 @@ static gboolean mode_load_gameinfo(StateMachine *sm, gint event)
 		return TRUE;
 	}
 	if (sm_recv(sm, "playerinfo: resources: %R", resources)) {
+		resource_init();
 		resource_apply_list(my_player_num(), resources, 1);
 		return TRUE;
 	}

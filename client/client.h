@@ -177,6 +177,7 @@ void resource_apply_list(gint player_num, gint *resources, gint mult);
 #ifdef FIND_STUPID_RESOURCE_BUG
 void resource_check(gint player_num, gint *resources);
 #endif
+void resource_init(void);
 GtkWidget *resource_build_panel(void);
 
 /* road_building.c */

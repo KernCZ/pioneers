@@ -51,6 +51,7 @@ void develop_init()
 	if (develop_deck != NULL)
 		deck_free(develop_deck);
 	develop_deck = deck_new(game_params);
+	gtk_clist_clear(GTK_CLIST(develop_clist));
 }
 
 gboolean can_play_develop()

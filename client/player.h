@@ -49,6 +49,7 @@ gchar *player_name(gint player_num, gboolean word_caps);
 GdkColor *player_color(gint player_num);
 void player_set_my_num(gint player_num);
 void player_change_name(gint player_num, gchar *name);
+void player_reset_statistic(void);
 void player_modify_statistic(gint player_num, StatisticType type, gint num);
 void player_has_quit(gint player_num);
 void player_largest_army(gint player_num);

@@ -270,6 +270,17 @@ void resource_check(gint player_num, gint *resources)
 }
 #endif
 
+// Clear all
+void resource_init()
+{
+  gint idx;
+
+  for (idx = 0; idx < NO_RESOURCE; idx++) {
+    my_assets[idx] = 0;
+    resource_modify(idx, 0);
+  };
+}
+
 GtkWidget *resource_build_panel()
 {
 	GtkWidget *frame;
@@ -292,7 +303,7 @@ GtkWidget *resource_build_panel()
 			 (GtkAttachOptions)GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(label), 1, 0.5);
 
-	asset_labels[BRICK_RESOURCE] = label = gtk_label_new("0");
+	asset_labels[BRICK_RESOURCE] = label = gtk_label_new("-");
 	gtk_widget_show(label);
 	gtk_table_attach(GTK_TABLE(table), label, 1, 2, 0, 1,
 			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL,
@@ -306,7 +317,7 @@ GtkWidget *resource_build_panel()
 			 (GtkAttachOptions)GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(label), 1, 0.5);
 
-	asset_labels[WOOL_RESOURCE] = label = gtk_label_new("0");
+	asset_labels[WOOL_RESOURCE] = label = gtk_label_new("-");
 	gtk_widget_show(label);
 	gtk_table_attach(GTK_TABLE(table), label, 3, 4, 0, 1,
 			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL,
@@ -320,7 +331,7 @@ GtkWidget *resource_build_panel()
 			 (GtkAttachOptions)GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(label), 1, 0.5);
 
-	asset_labels[GRAIN_RESOURCE] = label = gtk_label_new("0");
+	asset_labels[GRAIN_RESOURCE] = label = gtk_label_new("-");
 	gtk_widget_show(label);
 	gtk_table_attach(GTK_TABLE(table), label, 1, 2, 1, 2,
 			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL,
@@ -334,7 +345,7 @@ GtkWidget *resource_build_panel()
 			 (GtkAttachOptions)GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(label), 1, 0.5);
 
-	asset_labels[LUMBER_RESOURCE] = label = gtk_label_new("0");
+	asset_labels[LUMBER_RESOURCE] = label = gtk_label_new("-");
 	gtk_widget_show(label);
 	gtk_table_attach(GTK_TABLE(table), label, 3, 4, 1, 2,
 			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL,
@@ -348,7 +359,7 @@ GtkWidget *resource_build_panel()
 			 (GtkAttachOptions)GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(label), 1, 0.5);
 
-	asset_labels[ORE_RESOURCE] = label = gtk_label_new("0");
+	asset_labels[ORE_RESOURCE] = label = gtk_label_new("-");
 	gtk_widget_show(label);
 	gtk_table_attach(GTK_TABLE(table), label, 1, 2, 2, 3,
 			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL,
@@ -362,12 +373,13 @@ GtkWidget *resource_build_panel()
 			 (GtkAttachOptions)GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(label), 1, 0.5);
 
-	asset_total_label = label = gtk_label_new("0");
+	asset_total_label = label = gtk_label_new("-");
 	gtk_widget_show(label);
 	gtk_table_attach(GTK_TABLE(table), label, 3, 4, 2, 3,
 			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL,
 			 (GtkAttachOptions)GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(label), 1, 0.5);
 
+  resource_init();
 	return frame;
 }
