@@ -48,7 +48,7 @@ GtkWidget *resource_build_panel()
 	label = gtk_label_new(resource_name(BRICK_RESOURCE, TRUE));
 	gtk_widget_show(label);
 	gtk_table_attach(GTK_TABLE(table), label, 0, 1, 0, 1,
-			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL,
+			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL | GTK_SHRINK,
 			 (GtkAttachOptions)GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(label), 1, 0.5);
 
@@ -69,7 +69,7 @@ GtkWidget *resource_build_panel()
 	label = gtk_label_new(resource_name(WOOL_RESOURCE, TRUE));
 	gtk_widget_show(label);
 	gtk_table_attach(GTK_TABLE(table), label, 2, 3, 0, 1,
-			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL,
+			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL | GTK_SHRINK,
 			 (GtkAttachOptions)GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(label), 1, 0.5);
 
@@ -84,7 +84,7 @@ GtkWidget *resource_build_panel()
 	label = gtk_label_new(resource_name(GRAIN_RESOURCE, TRUE));
 	gtk_widget_show(label);
 	gtk_table_attach(GTK_TABLE(table), label, 0, 1, 1, 2,
-			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL,
+			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL | GTK_SHRINK,
 			 (GtkAttachOptions)GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(label), 1, 0.5);
 
@@ -99,7 +99,7 @@ GtkWidget *resource_build_panel()
 	label = gtk_label_new(resource_name(LUMBER_RESOURCE, TRUE));
 	gtk_widget_show(label);
 	gtk_table_attach(GTK_TABLE(table), label, 2, 3, 1, 2,
-			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL,
+			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL | GTK_SHRINK,
 			 (GtkAttachOptions)GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(label), 1, 0.5);
 
@@ -114,7 +114,7 @@ GtkWidget *resource_build_panel()
 	label = gtk_label_new(resource_name(ORE_RESOURCE, TRUE));
 	gtk_widget_show(label);
 	gtk_table_attach(GTK_TABLE(table), label, 0, 1, 2, 3,
-			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL,
+			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL | GTK_SHRINK,
 			 (GtkAttachOptions)GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(label), 1, 0.5);
 
@@ -129,7 +129,7 @@ GtkWidget *resource_build_panel()
 	label = gtk_label_new(_("Total"));
 	gtk_widget_show(label);
 	gtk_table_attach(GTK_TABLE(table), label, 2, 3, 2, 3,
-			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL,
+			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL | GTK_SHRINK,
 			 (GtkAttachOptions)GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(label), 1, 0.5);
 

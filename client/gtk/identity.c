@@ -20,7 +20,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <gnome.h>
+#include <gtk/gtk.h>
 
 #include "frontend.h"
 
@@ -31,8 +31,82 @@ static GdkGC *identity_gc;
 static int die1_num;
 static int die2_num;
 
-static int fixedwidth;    /* Size of fixed part (digits + spacing) */
-static int variablewidth; /* Size of variable part (polygons) */
+static void calculate_width(GtkWidget *area, const Polygon *poly, gint num,
+		gint *fixedwidth, gint *variablewidth)
+{
+	GdkRectangle rect;
+	char buff[10];
+	gint width, height;
+	PangoLayout *layout;
+	
+	poly_bound_rect(poly, 0, &rect);
+
+	sprintf(buff, "%d", num);
+	layout = gtk_widget_create_pango_layout (area, buff);
+	pango_layout_get_pixel_size (layout, &width, &height);
+	g_object_unref (layout);
+
+	*fixedwidth += width + 10;
+	*variablewidth += rect.width;
+}
+
+static void calculate_optimum_size(GtkWidget *area, gint size)
+{
+	const GameParams *game_params = get_game_params ();
+	GdkPoint points[MAX_POINTS];
+	Polygon poly = { points, numElem(points) };
+	gint new_size;
+	gint fixedwidth;    /* Size of fixed part (digits + spacing) */
+	gint variablewidth; /* Size of variable part (polygons) */
+	
+	if (game_params == NULL)
+		return;
+
+	guimap_scale_with_radius(&bogus_map, size);
+
+	fixedwidth = 0;
+	variablewidth = 0;
+
+	if (game_params->num_build_type[BUILD_ROAD] > 0) {
+		poly.num_points = MAX_POINTS;
+		guimap_road_polygon(&bogus_map, NULL, &poly);
+		calculate_width(area, &poly, stock_num_roads(), 
+				&fixedwidth, &variablewidth);
+	}
+	if (game_params->num_build_type[BUILD_SHIP] > 0) {
+		poly.num_points = MAX_POINTS;
+		guimap_ship_polygon(&bogus_map, NULL, &poly);
+		calculate_width(area, &poly, stock_num_ships(), 
+				&fixedwidth, &variablewidth);
+	}
+	if (game_params->num_build_type[BUILD_BRIDGE] > 0) {
+		poly.num_points = MAX_POINTS;
+		guimap_bridge_polygon(&bogus_map, NULL, &poly);
+		calculate_width(area, &poly, stock_num_bridges(), 
+				&fixedwidth, &variablewidth);
+	}
+	if (game_params->num_build_type[BUILD_SETTLEMENT] > 0) {
+		poly.num_points = MAX_POINTS;
+		guimap_settlement_polygon(&bogus_map, NULL, &poly);
+		calculate_width(area, &poly, stock_num_settlements(), 
+				&fixedwidth, &variablewidth);
+	}
+	if (game_params->num_build_type[BUILD_CITY] > 0) {
+		poly.num_points = MAX_POINTS;
+		guimap_city_polygon(&bogus_map, NULL, &poly);
+		calculate_width(area, &poly, stock_num_cities(), 
+				&fixedwidth, &variablewidth);
+	}
+
+	new_size = bogus_map.hex_radius * 
+			(area->allocation.width - 75 - fixedwidth) / 
+			variablewidth;
+	if (new_size < bogus_map.hex_radius) {
+		if (new_size < 0)
+			new_size = 0;
+		calculate_optimum_size(area, new_size);
+	}
+}
 
 static int draw_building_and_count(GdkGC *gc, GtkWidget *area, gint offset,
 				   Polygon *poly, gint num)
@@ -58,8 +132,6 @@ static int draw_building_and_count(GdkGC *gc, GtkWidget *area, gint offset,
 
 	offset += 5 + width;
 
-	fixedwidth += width + 10;
-	variablewidth += rect.width;
 	return offset;
 }
 
@@ -106,7 +178,14 @@ static void show_die(GdkGC *gc, GtkWidget *area, gint x_offset, gint num)
 			     7, 7, 0, 360 * 64);
 	}
 }
-				   
+
+static void identity_resize_cb(GtkWidget *area, 
+		UNUSED(GtkAllocation *allocation),
+		UNUSED(gpointer user_data))
+{
+	calculate_optimum_size(area, 50);
+}
+
 static gint expose_identity_area_cb(GtkWidget *area,
 		UNUSED(GdkEventExpose *event), UNUSED(gpointer user_data))
 {
@@ -115,7 +194,6 @@ static gint expose_identity_area_cb(GtkWidget *area,
 	gint offset;
 	GdkColor *colour;
 	const GameParams *game_params;
-	gint new_radius;
 
 	if (area->window == NULL || my_player_num() < 0)
 		return FALSE;
@@ -138,9 +216,6 @@ static gint expose_identity_area_cb(GtkWidget *area,
 	if (game_params == NULL)
 		return TRUE;
 	offset = 5;
-
-	fixedwidth = 0;
-	variablewidth = 0;
 
 	if (game_params->num_build_type[BUILD_ROAD] > 0) {
 		poly.num_points = MAX_POINTS;
@@ -173,13 +248,6 @@ static gint expose_identity_area_cb(GtkWidget *area,
 						 &poly, stock_num_cities());
 	}
 
-	new_radius = bogus_map.hex_radius * (area->allocation.width - 75 - fixedwidth) / variablewidth;
-	if (new_radius < bogus_map.hex_radius) {
-		guimap_scale_with_radius(&bogus_map, new_radius);
-		/* Appearance changed -> draw again */
-		gtk_widget_queue_draw(area);
-	}
-
 	if (die1_num > 0 && die2_num > 0) {
 		show_die(identity_gc, area, area->allocation.width - 35,
 			 die1_num);
@@ -207,6 +275,8 @@ GtkWidget* identity_build_panel()
 	identity_area = gtk_drawing_area_new();
 	g_signal_connect(G_OBJECT(identity_area), "expose_event",
 			G_CALLBACK(expose_identity_area_cb), NULL);
+	g_signal_connect(G_OBJECT(identity_area), "size-allocate",
+			G_CALLBACK(identity_resize_cb), NULL);
 	gtk_widget_set_size_request(identity_area, -1, 40);
 	identity_reset();
 	gtk_widget_show(identity_area);
@@ -218,5 +288,6 @@ void identity_reset()
 	die1_num = 0;
 	die2_num = 0;
 	/* 50 seems to give a good upper limit */
-	guimap_scale_with_radius(&bogus_map, 50);
+	if (identity_area != NULL)
+		calculate_optimum_size(identity_area, 50);
 }

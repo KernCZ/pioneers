@@ -1,3 +1,10 @@
+2004-09-06  0.8.1.35  Roland Clobus <rclobus@bigfoot.com>
+	* client/gtk/gui.c, client/gtk/gui.h: Made left pane resizable.
+	* client/gtk/identity.c: Made identity panel resizable.
+	* client/gtk/player.c: Player summary uses Gtk2 widget, is resizable.
+	* client/gtk/resource.c(resource_build_panel): Resource panel
+	resizable.
+	
 2004-09-03  Jeff Breidenbach  <jbreiden@rode.parc.com>
 
 	* debian/changelog: sync Debian & upstream versioning.

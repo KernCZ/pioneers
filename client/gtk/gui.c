@@ -3,6 +3,7 @@
  *
  * Copyright (C) 1999 the Free Software Foundation
  * Copyright (C) 2003 Bas Wijnen <b.wijnen@phys.rug.nl>
+ * Copyright (C) 2004 Roland Clobus <rclobus@bigfoot.com>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -379,15 +380,15 @@ static GtkWidget *build_map_area(void)
 			      | GDK_POINTER_MOTION_HINT_MASK);
 
 	gtk_drawing_area_size(GTK_DRAWING_AREA(gmap->area), MAP_WIDTH, MAP_HEIGHT);
-	gtk_signal_connect(GTK_OBJECT(gmap->area), "expose_event",
-			   GTK_SIGNAL_FUNC(expose_map_cb), NULL);
-	gtk_signal_connect(GTK_OBJECT(gmap->area),"configure_event",
-			   GTK_SIGNAL_FUNC(configure_map_cb), NULL);
+	g_signal_connect(G_OBJECT(gmap->area), "expose_event",
+			G_CALLBACK(expose_map_cb), NULL);
+	g_signal_connect(G_OBJECT(gmap->area),"configure_event",
+			G_CALLBACK(configure_map_cb), NULL);
 
-	gtk_signal_connect(GTK_OBJECT(gmap->area), "motion_notify_event",
-			   GTK_SIGNAL_FUNC(motion_notify_map_cb), NULL);
-	gtk_signal_connect(GTK_OBJECT(gmap->area), "button_press_event",
-			   GTK_SIGNAL_FUNC(button_press_map_cb), NULL);
+	g_signal_connect(G_OBJECT(gmap->area), "motion_notify_event",
+			G_CALLBACK(motion_notify_map_cb), NULL);
+	g_signal_connect(G_OBJECT(gmap->area), "button_press_event",
+			G_CALLBACK(button_press_map_cb), NULL);
 
 	gtk_widget_show(gmap->area);
 
@@ -403,7 +404,7 @@ static GtkWidget *build_messages_panel(void)
 	gtk_widget_show(frame);
 
 	scroll_win = gtk_scrolled_window_new(NULL, NULL);
-	gtk_widget_set_usize(scroll_win, -1, 80);
+	gtk_widget_set_size_request(scroll_win, -1, 80);
 	gtk_widget_show(scroll_win);
 	gtk_container_add(GTK_CONTAINER(frame), scroll_win);
 	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scroll_win),
@@ -480,7 +481,7 @@ static GtkWidget *splash_build_page(void)
 	viewport = gtk_viewport_new(NULL, NULL);
 	gtk_viewport_set_shadow_type(GTK_VIEWPORT(viewport), GTK_SHADOW_NONE);
 	gtk_widget_show(viewport);
-	gtk_widget_set_usize(pm, 1, 1);
+	gtk_widget_set_size_request(pm, 1, 1);
 	gtk_widget_show(pm);
 	gtk_container_add(GTK_CONTAINER(viewport), pm);
 	return viewport;
@@ -591,17 +592,15 @@ static GtkWidget *build_develop_panel(void)
 static GtkWidget *build_main_interface(void)
 {
 	GtkWidget *vbox;
-	GtkWidget *hbox;
+	GtkWidget *hpaned;
 	GtkWidget *vpaned;
 
-	hbox = gtk_hbox_new(FALSE, 5);
-	gtk_widget_show(hbox);
-	gtk_container_border_width(GTK_CONTAINER(hbox), 5);
+	hpaned = gtk_hpaned_new();
+	gtk_widget_show(hpaned);
 
 	vbox = gtk_vbox_new(FALSE, 0);
 	gtk_widget_show(vbox);
-	gtk_widget_set_usize(vbox, 240, -1);
-	gtk_box_pack_start(GTK_BOX(hbox), vbox, FALSE, TRUE, 0);
+	gtk_paned_pack1(GTK_PANED(hpaned), vbox, FALSE, TRUE);
 
 	gtk_box_pack_start(GTK_BOX(vbox),
 			   identity_build_panel(), FALSE, TRUE, 0);
@@ -614,7 +613,7 @@ static GtkWidget *build_main_interface(void)
 
 	vpaned = gtk_vpaned_new();
 	gtk_widget_show(vpaned);
-	gtk_box_pack_start(GTK_BOX(hbox), vpaned, TRUE, TRUE, 0);
+	gtk_paned_pack2(GTK_PANED(hpaned), vpaned, TRUE, TRUE);
 
 	gtk_paned_pack1(GTK_PANED(vpaned),
 			build_map_panel(), TRUE, TRUE);
@@ -629,7 +628,7 @@ static GtkWidget *build_main_interface(void)
 
 	gtk_paned_pack2(GTK_PANED(vpaned), vbox, FALSE, TRUE);
 
-	return hbox;
+	return hpaned;
 }
 
 static void quit_cb(UNUSED(GtkWidget *widget), UNUSED(void *data))
@@ -726,9 +725,7 @@ static void settings_apply_cb(UNUSED(GnomePropertyBox *prop_box), gint page,
 		log_set_func_message_color_enable(color_messages);
 		
 		config_set_int( "settings/color_summary", color_summary );
-		color_summary_enabled = color_summary;
-		/* in case of a new statistic, the whole panel is redrawn */
-		frontend_new_statistics (0, STAT_SETTLEMENTS, 0);
+		set_color_summary(color_summary);
 
 		break;
 
@@ -1206,8 +1203,7 @@ GtkWidget* gui_build_interface()
 	    config_get_int_with_default("settings/color_messages", TRUE);
 	log_set_func_message_color_enable(color_messages_enabled);
 
-	color_summary_enabled = 
-	    config_get_int_with_default("settings/color_summary", TRUE);
+	set_color_summary(config_get_int_with_default("settings/color_summary", TRUE));
 
 	legend_page_enabled = 
 	    config_get_int_with_default("settings/legend_page", FALSE);

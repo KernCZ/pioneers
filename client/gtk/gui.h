@@ -25,7 +25,7 @@
 #include "guimap.h"
 
 gint color_messages_enabled;
-gint color_summary_enabled;
+void set_color_summary(gboolean flag);
 gint legend_page_enabled;
 
 GtkWidget *gui_get_dialog_button(GtkDialog *dlg, gint button);
