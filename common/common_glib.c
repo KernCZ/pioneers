@@ -34,8 +34,8 @@ typedef struct {
 GHashTable *_evl_glib_hash = NULL;
 
 /* Local function prototypes. */
-guint evl_glib_input_add_read( gint fd, gpointer func, gpointer param );
-guint evl_glib_input_add_write( gint fd, gpointer func, gpointer param );
+guint evl_glib_input_add_read( gint fd, void (*func)(gpointer), gpointer param );
+guint evl_glib_input_add_write( gint fd, void (*func)(gpointer), gpointer param );
 void evl_glib_input_remove( guint tag );
 
 
@@ -62,7 +62,7 @@ static void evl_glib_channel_destroyed( gpointer data )
 
 
 static guint evl_glib_input_add_watch( gint fd, GIOCondition condition,
-                                       gpointer func, gpointer param )
+                                       void (*func)(gpointer), gpointer param )
 {
 	GIOChannel *io_channel;
 	evl_io_func *io_func = g_malloc0( sizeof(evl_io_func) );
@@ -88,12 +88,12 @@ static guint evl_glib_input_add_watch( gint fd, GIOCondition condition,
 }
 
 
-guint evl_glib_input_add_read( gint fd, gpointer func, gpointer param )
+guint evl_glib_input_add_read( gint fd, void (*func)(gpointer), gpointer param )
 {
 	return evl_glib_input_add_watch( fd, G_IO_IN | G_IO_HUP, func, param );
 }       
 
-guint evl_glib_input_add_write( gint fd, gpointer func, gpointer param )
+guint evl_glib_input_add_write( gint fd, void (*func)(gpointer), gpointer param )
 {
 	return evl_glib_input_add_watch( fd, G_IO_OUT | G_IO_HUP, func, param );
 }

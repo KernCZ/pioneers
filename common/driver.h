@@ -35,8 +35,8 @@ typedef struct {
 	LogFunc log_write; /* ==> void log_write( gint msg_type, gchar *text ); */
 
 	/* event-loop related functions */
-	guint (*input_add_read)( gint fd, gpointer func, gpointer param );
-	guint (*input_add_write)( gint fd, gpointer func, gpointer param );
+	guint (*input_add_read)( gint fd, void (*func)(gpointer), gpointer param );
+	guint (*input_add_write)( gint fd, void (*func)(gpointer), gpointer param );
 	void (*input_remove)( guint tag );
 
 	/* callbacks for the server */

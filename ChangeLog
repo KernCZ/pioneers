@@ -8,6 +8,9 @@
 	common/buildrec.c(can_setup_settlement): Removed the compiler warnings
 	about losing const-ness, introduced in 0.8.1.39 (It is still cheating:
 	a temporary non-const pointer is used to temporarily modify the map)
+	* common/common_glib.c, common/common_glib.h, common/driver.h: Removed
+	compiler warning: ISO C forbids passing arg 2 of pointer to function
+	between function pointer and `void *'
 
 2004-10-17  0.8.1.39  Roland Clobus <rclobus@bigfoot.com>
 	* common/map.h, common/map_query.c: Fixed longest road detection
