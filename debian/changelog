@@ -1,3 +1,9 @@
+gnocatan (0.6.1-1) unstable; urgency=low
+
+  * New upstream release, incorporates all debian diffs 
+
+ -- Jeff Breidenbach <jeff@alum.mit.edu>  Fri, 25 Aug 2000 19:31:28 -0700
+
 gnocatan (0.6.0-2) unstable; urgency=low
 
   * Removed README.debian
