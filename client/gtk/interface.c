@@ -31,7 +31,7 @@ static void frontend_state_turn (GuiEvent event);
 static GuiState previous_state;
 
 static Hex *robber_hex;
-static gboolean gold_busy = FALSE, discard_busy = FALSE;
+static gboolean gold_busy = FALSE, discard_busy = FALSE, robber_busy = FALSE;
 
 /* for ship movement, store the position where to move from */
 static Edge *ship_from;
@@ -457,7 +457,7 @@ void frontend_discard_add (gint player_num, gint discard_num)
 void frontend_discard_remove (gint player_num, gint *list)
 {
 	discard_player_did (player_num, list);
-	if (player_num == my_player_num () )
+	if (discard_busy && player_num == my_player_num () )
 		set_gui_state (&frontend_state_idle);
 	frontend_gui_update ();
 }
@@ -543,6 +543,7 @@ void frontend_beep ()
 static void place_robber (Hex *hex, gint victim)
 {
 	cb_place_robber (hex->x, hex->y, victim);
+	robber_busy = FALSE;
 	set_gui_state (previous_state);
 }
 
@@ -646,6 +647,8 @@ static void place_robber_or_pirate_cb(Hex *hex, gint player_num)
 
 void frontend_robber ()
 {
+	if (robber_busy) return;
+	robber_busy = TRUE;
 	previous_state = get_gui_state ();
 	set_gui_state (frontend_state_idle);
 	gui_cursor_set(ROBBER_CURSOR,

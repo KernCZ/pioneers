@@ -54,5 +54,5 @@ libgnocatanclient_a_LIBADD = \
 
 authors.h: ../../AUTHORS
 	echo -n "#define AUTHORLIST " > authors.h
-	sed -e's/ <.*//; s/$$/", \\/; s/^/"/; /^"[[:space:]]*", \\$$/d' $< >> authors.h
-	echo "NULL" >> authors.h
+	sed -e's/ <.*//; s/$$/", \\/; s/^/"/; /^"[[:space:]]*", \\$$/d' $< >> $@
+	echo "NULL" >> $@

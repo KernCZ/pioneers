@@ -58,7 +58,6 @@ gint develop_current_idx()
 static void select_develop_cb(GtkWidget *clist, gint row, gint column,
 			      GdkEventButton* event, gpointer user_data)
 {
-	printf ("select_cb %d\n", row);
 	selected_card_idx = row;
 	frontend_gui_update ();
 }
@@ -111,14 +110,12 @@ GtkWidget *develop_build_page (void)
 void frontend_bought_develop (DevelType type, gboolean this_turn)
 {
 	gchar *text[1];
-	printf ("bought develop %d %d\n", type, this_turn);
 	text[0] = gettext(devel_cards[type].name);
         gtk_clist_append(GTK_CLIST(develop_clist), text);
 }
 
 void frontend_played_develop (gint player_num, gint card_idx, DevelType type)
 {
-	printf ("played develop %d %d %d\n", player_num, card_idx, type);
 	if (player_num == my_player_num () )
 		gtk_clist_remove(GTK_CLIST(develop_clist), card_idx);
 }
