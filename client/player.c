@@ -132,8 +132,7 @@ static void refresh_victory_point_total(int player_num)
 		tot += statistics[type].victory_mult
 		    * player->statistics[type];
 	}
-	snprintf(points, 16, "%d", tot);
-	points[15] = '\0';
+	snprintf(points, sizeof(points), "%d", tot);
 
 	row = gtk_clist_find_row_from_data(GTK_CLIST(summary_clist), player);
 	if (row >= 0)
