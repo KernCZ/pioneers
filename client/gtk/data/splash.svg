@@ -176,15 +176,15 @@
   <text
      xml:space="preserve"
      style="fill:#000000;stroke:none;font-family:Bitstream Charter;font-style:normal;font-weight:bold;font-size:56;fill-opacity:1;stroke-opacity:1;stroke-width:3pt;stroke-linejoin:miter;stroke-linecap:butt;text-anchor:start;writing-mode:lr;"
-     x="173.759308"
+     x="227.447308"
      y="258.424154"
      id="text604"
      sodipodi:linespacing="100%"
      transform="scale(1.000000,0.851389)"><tspan
-       x="173.759308"
+       x="227.447308"
        y="258.424164"
        sodipodi:role="line"
-       id="tspan614">- Version 0.8.1 -</tspan></text>
+       id="tspan614">Version 0.9</tspan></text>
   <path
      style="fill-rule:evenodd;stroke:none;fill:#000000;fill-opacity:1.0000;stroke-opacity:1;stroke-width:1pt;stroke-linejoin:miter;stroke-linecap:butt;"
      d="M 367.28125 610.57269 C 219.21977 610.57269 86.995276 634.23885 0 671.24218 L 0 744.09375 L 744.09375 744.09375 L 744.09375 675.44052 C 657.40008 636.04073 520.85728 610.57267 367.28125 610.57269 z "
