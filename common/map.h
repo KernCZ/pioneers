@@ -62,7 +62,9 @@ typedef enum {
 typedef struct _Node Node;
 typedef struct _Edge Edge;
 typedef struct _Hex Hex;
+typedef struct _Map Map;
 struct _Hex {
+	Map *map;		/* owner map */
 	gint x;			/* x-pos on grid */
 	gint y;			/* y-pos on grid */
 
@@ -78,6 +80,7 @@ struct _Hex {
 };
 
 struct _Node {
+	Map *map;		/* owner map */
 	gint x;			/* x-pos of owner hex */
 	gint y;			/* y-pos of owner hex */
 	gint pos;		/* location of node on hex */
@@ -91,6 +94,7 @@ struct _Node {
 };
 
 struct _Edge {
+	Map *map;		/* owner map */
 	gint x;			/* x-pos of owner hex */
 	gint y;			/* y-pos of owner hex */
 	gint pos;		/* location of edge on hex */
@@ -108,10 +112,10 @@ struct _Edge {
  */
 #define MAP_SIZE 32		/* maximum map dimension */
 
-typedef struct _Map Map;
 struct _Map {
 	gint y;			/* current y-pos during parse */
 
+	gboolean have_bridges;	/* are bridges legal on map? */
 	gint x_size;		/* number of hexes across map */
 	gint y_size;		/* number of hexes down map */
 	Hex *grid[MAP_SIZE][MAP_SIZE]; /* hexes arranged onto a grid */
@@ -155,6 +159,8 @@ gboolean is_edge_adjacent_to_node(Edge *edge, Node *node);
 gboolean is_edge_on_land(Edge *edge);
 gboolean is_node_on_land(Node *node);
 gboolean node_has_road_owned_by(Node *node, gint owner);
+gboolean node_has_ship_owned_by(Node *node, gint owner);
+gboolean node_has_bridge_owned_by(Node *node, gint owner);
 gboolean is_node_spacing_ok(Node *node);
 gboolean is_node_proximity_ok(Node *node);
 gboolean is_node_next_to_robber(Node *node);
@@ -163,6 +169,8 @@ gboolean can_road_be_setup(Edge *edge, gint owner);
 gboolean can_road_be_built(Edge *edge, gint owner);
 gboolean can_ship_be_setup(Edge *edge, gint owner);
 gboolean can_ship_be_built(Edge *edge, gint owner);
+gboolean can_bridge_be_setup(Edge *edge, gint owner);
+gboolean can_bridge_be_built(Edge *edge, gint owner);
 gboolean can_settlement_be_setup(Node *node, int owner);
 gboolean can_settlement_be_built(Node *node, int owner);
 gboolean can_settlement_be_upgraded(Node *node, int owner);
@@ -171,6 +179,7 @@ gboolean can_robber_be_moved(Hex *hex, int owner);
 /* map global queries */
 gboolean map_can_place_road(Map *map, int owner);
 gboolean map_can_place_ship(Map *map, int owner);
+gboolean map_can_place_bridge(Map *map, int owner);
 gboolean map_can_place_settlement(Map *map, int owner);
 gboolean map_can_upgrade_settlement(Map *map, int owner);
 
@@ -184,6 +193,8 @@ gboolean map_road_vacant(Map *map, gint x, gint y, gint pos);
 gboolean map_road_connect_ok(Map *map, gint owner, gint x, gint y, gint pos);
 gboolean map_ship_vacant(Map *map, gint x, gint y, gint pos);
 gboolean map_ship_connect_ok(Map *map, gint owner, gint x, gint y, gint pos);
+gboolean map_bridge_vacant(Map *map, gint x, gint y, gint pos);
+gboolean map_bridge_connect_ok(Map *map, gint owner, gint x, gint y, gint pos);
 /* information gathering */
 void map_longest_road(Map *map, gint *lengths, gint num_players);
 void map_maritime_info(Map *map, MaritimeInfo *info, gint owner);

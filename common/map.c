@@ -187,6 +187,7 @@ static gboolean build_network(Map *map, Hex *hex, void *closure)
 			node = adjacent[(idx + 1) % 6]->nodes[part->hex1_pos];
 		if (node == NULL) {
 			node = g_malloc0(sizeof(*node));
+			node->map = map;
 			node->owner = -1;
 			node->x = hex->x;
 			node->y = hex->y;
@@ -199,6 +200,7 @@ static gboolean build_network(Map *map, Hex *hex, void *closure)
 			edge = adjacent[idx]->edges[opposite(idx)];
 		if (edge == NULL) {
 			edge = g_malloc0(sizeof(*edge));
+			edge->map = map;
 			edge->owner = -1;
 			edge->x = hex->x;
 			edge->y = hex->y;
@@ -421,13 +423,14 @@ Map *map_new()
 	return g_malloc0(sizeof(Map));
 }
 
-static Hex *copy_hex(Hex *hex)
+static Hex *copy_hex(Map *map, Hex *hex)
 {
 	Hex *copy;
 
 	if (hex == NULL)
 		return NULL;
 	copy = g_malloc0(sizeof(*copy));
+	copy->map = map;
 	copy->y = hex->y;
 	copy->x = hex->x;
 	copy->terrain = hex->terrain;
@@ -452,7 +455,7 @@ Map *map_copy(Map *map)
 	copy->y_size = map->y_size;
 	for (y = 0; y < MAP_SIZE; y++)
 		for (x = 0; x < MAP_SIZE; x++)
-			copy->grid[y][x] = copy_hex(map->grid[y][x]);
+			copy->grid[y][x] = copy_hex(copy, map->grid[y][x]);
 	map_traverse(copy, build_network, NULL);
 	map_traverse(copy, connect_network, NULL);
 	copy->robber_hex = map->robber_hex;
@@ -626,6 +629,7 @@ void map_parse_line(Map *map, gchar *line)
 		}
 
 		hex = g_malloc0(sizeof(*hex));
+		hex->map = map;
 		hex->y = map->y;
 		hex->x = x;
 		hex->terrain = terrain;
