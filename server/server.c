@@ -30,6 +30,8 @@
 #include <errno.h>
 #include <string.h>
 #include <time.h>
+#include <netinet/in.h>
+#include <signal.h>
 
 #ifndef HAVE_G_RAND_NEW_WITH_SEED
 #include "mt_rand.h"

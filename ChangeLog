@@ -1,3 +1,8 @@
+2005-01-25  Stefan Walter <sw@gegenunendlich.de>
+	* common/network.c, meta-server/gnocatan-meta-server.c,
+	server/server.c: Restored the include files needed for FreeBSD that
+	disappeared in 0.8.1.48
+	
 2005-01-23  0.8.1.50  Roland Clobus <rclobus@bigfoot.com>
 	* client/common/client.c: Removed unused variables from
 	recovery_info_t, does not show turn 0 anymore.

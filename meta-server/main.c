@@ -37,6 +37,8 @@
 #include <sys/stat.h>
 #include <netdb.h>
 #include <time.h>
+#include <netinet/in.h>
+#include <sys/socket.h>
 
 #include <glib.h>
 
