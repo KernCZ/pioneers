@@ -56,6 +56,8 @@ static gboolean mode_maritime_trade(StateMachine *sm, gint event);
 static gboolean mode_domestic_trade(StateMachine *sm, gint event);
 #endif
 static gboolean mode_domestic_quote(StateMachine *sm, gint event);
+static gboolean mode_quote_finish_response(StateMachine *sm, gint event);
+static gboolean mode_quote_submit_response(StateMachine *sm, gint event);
 static gboolean mode_domestic_monitor(StateMachine *sm, gint event);
 static gboolean mode_game_over(StateMachine *sm, gint event);
 static gboolean mode_buy_develop_response(StateMachine *sm, gint event);
@@ -672,8 +674,6 @@ static gboolean mode_setup(StateMachine *sm, gint event)
 	switch (event) {
 	case SM_ENTER:
 
-	    printf("setup step %d\n",setup_step);
-
 	    if ((setup_double) && (setup_step == 2)) {
 		setup_step = 0;
 		setup_double = 0;
@@ -759,8 +759,17 @@ static gboolean mode_idle(StateMachine *sm, gint event)
 		}
 		if (sm_recv(sm, "player %d domestic-trade call supply %R receive %R",
 			    &player_num, they_supply, they_receive)) {
+			gchar *tmp;
 			quote_begin(player_num, they_supply, they_receive);
+			tmp = computer_funcs.consider_quote(map, my_player_num(),
+												my_assets,
+												they_supply,
+												they_receive);
+			sm_send(sm, tmp);
 			sm_push(sm, mode_domestic_quote);
+			sm_goto(sm, strstr(tmp, "finish") ?
+				mode_quote_finish_response :
+				mode_quote_submit_response);
 			return TRUE;
 		}
 		if (check_other_players(sm))
@@ -1023,17 +1032,14 @@ static gboolean mode_year_of_plenty(StateMachine *sm, gint event)
 		break;
 	case SM_RECV:
 		if (sm_recv(sm, "plenty %R", plenty)) {
+			tmp = computer_funcs.year_of_plenty(map, my_player_num(), my_assets);
+			sm_send(sm, tmp);
+			sm_goto(sm, mode_year_of_plenty_response);
 		    return TRUE;
 		}
 		if (check_other_players(sm))
 			return TRUE;
 		break;
-	case SM_ENTER:
-	    tmp = computer_funcs.year_of_plenty(map, my_player_num(), my_assets);
-	    sm_send(sm, tmp);
-	    sm_goto(sm, mode_year_of_plenty_response);
-	    return TRUE;
-	    break;
 	default:
 		break;
 	}
@@ -1552,8 +1558,17 @@ static gboolean check_quoting(StateMachine *sm)
 	}
 	if (sm_recv(sm, "domestic-trade call supply %R receive %R",
 		    they_supply, they_receive)) {
+		gchar *tmp;
 		quote_begin_again(player_num, they_supply, they_receive);
-		sm_goto(sm, mode_domestic_quote);
+		quote_begin(player_num, they_supply, they_receive);
+		tmp = computer_funcs.consider_quote(map, my_player_num(),
+											my_assets,
+											they_supply,
+											they_receive);
+		sm_send(sm, tmp);
+		sm_goto(sm, strstr(tmp, "finish") ?
+				mode_quote_finish_response :
+				mode_quote_submit_response);
 		return TRUE;
 	}
 	if (sm_recv(sm, "domestic-trade accept player %d quote %d supply %R receive %R",
@@ -1651,16 +1666,9 @@ static gboolean mode_quote_delete_response(StateMachine *sm, gint event)
  */
 static gboolean mode_domestic_quote(StateMachine *sm, gint event)
 {
-	gchar *tmp;
-	
 	sm_state_name(sm, "mode_domestic_quote");
 	switch (event) {
 	case SM_INIT:
-		tmp = computer_funcs.consider_quote();
-		sm_send(sm, tmp);
-		sm_goto(sm, strstr(tmp, "finish") ?
-			mode_quote_finish_response :
-			mode_quote_submit_response);
 		break;
 	case SM_RECV:
 		if (check_quoting(sm) || check_other_players(sm))

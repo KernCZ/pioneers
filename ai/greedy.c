@@ -559,7 +559,7 @@ static Edge *best_road_to_road_spot(Node *n, int mynum, float *score,
 	if (e) {
 	    Node *othernode = other_node(e,n);
 
-	    if (e->owner == -1) {
+	    if (is_edge_on_land(e) && e->owner == -1) {
 		
 		for (j = 0; j < 3; j++) {
 		    Edge *e2 = othernode->edges[j];
@@ -752,6 +752,29 @@ static int which_one(gint assets[NO_RESOURCE])
 }
 
 /*
+ * Does this resource list contain just one kind of element? If so return it
+ * otherwise return NO_RESOURCE
+ */
+static int which_resource(gint assets[NO_RESOURCE])
+{
+    int i;
+    int res = NO_RESOURCE;
+    int n_nonzero = 0;
+
+    for (i = 0; i < NO_RESOURCE; i++) {
+
+	if (assets[i] > 0) {
+	    n_nonzero++;
+	    res = i;
+	}
+    }
+
+    if (n_nonzero == 1) return res;
+    
+    return NO_RESOURCE;
+}
+
+/*
  * What resource do we want the most?
  *
  */
@@ -863,7 +886,6 @@ greedy_setup_house(Map *map, int mynum)
 
     /*node_add(player, BUILD_SETTLEMENT, node->x, node->y, node->pos, FALSE);*/
     sprintf(ret,"build settlement %d %d %d\n",node->x,node->y,node->pos);
-    printf("ret = %s\n",ret);
     return ret;
 }
 
@@ -886,14 +908,15 @@ greedy_setup_road(Map *map, int mynum)
 
     node = void_settlement(map, mynum);
 
-    printf("node = %d %d %d\n",node->x, node->y, node->pos);
-
     e = best_road_to_road_spot(node, mynum, &tmp, &resval);
 
     /* if didn't find one just pick one randomly */
     if (e == NULL) {
 	for (i = 0; i < 3; i++) {
-	    if (is_edge_on_land(node->edges[i])) e = node->edges[i];
+	    if (is_edge_on_land(node->edges[i])) {
+		e = node->edges[i];
+		break;
+	    }
 	}
     }
 
@@ -1377,95 +1400,103 @@ greedy_discard(Map *map, int mynum, gint assets[NO_RESOURCE], int num)
  * Domestic Trade
  *
  */
-static int trade_resource_desire(gint supply[NO_RESOURCE],
-				 gint receive[NO_RESOURCE])
+static int trade_desired(Map *map, int mynum,
+			 gint assets[NO_RESOURCE], gint give, gint take)
 {
-#if 0
-    int i;
+    int i, n;
     int res = NO_RESOURCE;
+    resource_values_t resval;
     float value = 0.0;
     gint need[NO_RESOURCE];
 
+    /* don't give away cards we have only once */
+    if (assets[give] <= 1) {
+	return 0;
+    }
+    
     /* make it as if we don't have what we're trading away */
-    if (trade != NO_RESOURCE) {
-	assets[trade] -= tradenum;
-    }
+    assets[give] -= 1;
 
-    /* do i need just 1 more for something? */
-    if (!has_resources(assets, BUILD_CITY, need)) {
-	if (which_one(need)!=NO_RESOURCE) goto oneneed;
-    }
-    if (!has_resources(assets, BUILD_SETTLEMENT, need)) {
-	if (which_one(need)!=NO_RESOURCE) goto oneneed;
-    }
-    if (!has_resources(assets, BUILD_ROAD, need)) {
-	if (which_one(need)!=NO_RESOURCE) goto oneneed;
-    }
-    if (!has_resources(assets, DEVEL_CARD, need)) {
-	if (which_one(need)!=NO_RESOURCE) goto oneneed;
-    }
-
-    if (trade != NO_RESOURCE) {
-	assets[trade] += tradenum;
-    }
-
-    /* desire the one we don't produce the most */
-    for (i = 0; i < NO_RESOURCE; i++) {
-
-	if ((resval->value[i] > value) && (assets[i] < 2)) {
-	    res = i;
-	    value = resval->value[i];
+    for(n = 1; n <= 3; ++n) {
+	/* do i need something more for something? */
+	if (!has_resources(assets, BUILD_CITY, need)) {
+	    if ((res = which_resource(need)) == take && need[res] == n)
+		return n;
+	}
+	if (!has_resources(assets, BUILD_SETTLEMENT, need)) {
+	    if ((res = which_resource(need)) == take && need[res] == n)
+		return n;
+	}
+	if (!has_resources(assets, BUILD_ROAD, need)) {
+	    if ((res = which_resource(need)) == take && need[res] == n)
+		return n;
+	}
+	if (!has_resources(assets, DEVEL_CARD, need)) {
+	    if ((res = which_resource(need)) == take && need[res] == n)
+		return n;
 	}
     }
+    assets[give] += 1;
 
-    /* don't do stupid trades :) */
-    if (res == trade) return NO_RESOURCE;
+    /* desire the one we don't produce the most */
+    reevaluate_resources(map, mynum, &resval);
+    for (i = 0; i < NO_RESOURCE; i++) {
+	if ((resval.value[i] > value) && (assets[i] < 2)) {
+	    res = i;
+	    value = resval.value[i];
+	}
+    }
+    
+    if (res == take && assets[give] > 2) {
+	return 1;
+    }
 
-    return res;
-
- oneneed:
-    if (trade != NO_RESOURCE) {
-	assets[trade] += tradenum;
-    }    
-    res = which_one(need);
-
-    /* don't do stupid trades :) */
-    if (res == trade) return NO_RESOURCE;
-
-    return res;    
-#endif
-	return 0;
+    return 0;
 }
 
 static gchar *
-greedy_consider_quote(gint we_receive[NO_RESOURCE],
+greedy_consider_quote(Map *map, int mynum,
+		      gint my_assets[NO_RESOURCE],
+		      gint we_receive[NO_RESOURCE],
 		      gint we_supply[NO_RESOURCE])
 {
-#if 0
     static char ret[1024];
-    gint give, take;
-
+    gint give, take, ntake;
+    resource_values_t *resval;
+    
     for (give = 0; give < NO_RESOURCE; give++) {
 	if (!we_supply[give])
 	    continue;
-	if (!assets[give]) {
+	if (!my_assets[give]) {
 	    printf("Dont't have %s\n", resource_types[give]);
 	    continue;
 	}
 	for (take = 0; take < NO_RESOURCE; take++) {
 	    if (!we_receive[take])
 		continue;
-	    if (trade_desired(give, we_supply[give], take, we_receive[take]))
+	    if ((ntake = trade_desired(map, mynum, my_assets, give, take)) > 0)
 		goto doquote;
 	}
     }
-#endif
     
     log_message(MSG_INFO, _("Rejecting trade.\n"));
     return "domestic-quote finish\n";
 
-  doit:
-    
+  doquote:
+    sprintf(ret, "domestic-quote quote %d supply %d %d %d %d %d receive %d %d %d %d %d\n",
+	    quote_next_num(),
+	    give == 0 ? 1 : 0,
+	    give == 1 ? 1 : 0,
+	    give == 2 ? 1 : 0, 
+	    give == 3 ? 1 : 0, 
+	    give == 4 ? 1 : 0, 
+	    take == 0 ? ntake : 0, 
+	    take == 1 ? ntake : 0, 
+	    take == 2 ? ntake : 0, 
+	    take == 3 ? ntake : 0, 
+	    take == 4 ? ntake : 0);
+    log_message(MSG_INFO, "Quoting.\n");
+    return ret;
 }
 
 int greedy_init(computer_funcs_t *funcs)

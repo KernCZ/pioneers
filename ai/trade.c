@@ -19,11 +19,7 @@
 
 static QuoteList *quote_list;	/* domestic trade quotes */
 static gint next_quote_num;
-// static QuoteInfo *selected_quote;
 
-static gint trade_supply[NO_RESOURCE];
-static gint trade_receive[NO_RESOURCE];
-static gint trade_player;
 
 
 void trade_perform_maritime(gint ratio, Resource supply, Resource receive)
@@ -90,21 +86,9 @@ static void trade_format_quote(QuoteInfo *quote, gchar *desc)
 		format_list(desc, quote->var.d.receive);
 }
 
-static void store_trade_params(gint player_num, gint *they_supply, gint
-							   *they_receive)
+gint quote_next_num()
 {
-	gchar we_supply_desc[512];
-	gchar we_receive_desc[512];
-
-	trade_player = player_num;
-	memcpy(trade_supply, they_supply, sizeof(trade_supply));
-	memcpy(trade_receive, they_receive, sizeof(trade_receive));
-	
-	resource_format_type(we_supply_desc, they_receive);
-	resource_format_type(we_receive_desc, they_supply);
-	log_message(MSG_INFO, _("%s has %s, and is looking for %s\n"),
-				player_name(player_num, TRUE),
-				we_receive_desc, we_supply_desc);
+	return next_quote_num;
 }
 
 void quote_begin(gint player_num, gint *we_receive, gint *we_supply)
@@ -113,7 +97,6 @@ void quote_begin(gint player_num, gint *we_receive, gint *we_supply)
 
 	log_message(MSG_INFO, _("Trading started by %s\n"),
 				player_name(player_num, TRUE));
-	store_trade_params(player_num, we_receive, we_supply);
 
 	if (quote_list != NULL)
 		quotelist_free(quote_list);
@@ -125,7 +108,6 @@ void quote_begin_again(gint player_num, gint *we_receive, gint *we_supply)
 {
 	log_message(MSG_INFO, _("Trading restarted by %s\n"),
 				player_name(player_num, TRUE));
-	store_trade_params(player_num, we_receive, we_supply);
 }
 
 void quote_add_quote(gint player_num,

@@ -1,3 +1,31 @@
+2002-06-09  Roman Hodek  <roman@hodek.net>
+
+	* ai/greedy.c (greedy_consider_quote, trade_desired), ai/trade.c,
+	ai/client.c: new functions to make AI respond to trade requests;
+	maybe not really clever yet, but at least a start.
+	Again removed some unnecessary printf()s.
+
+	* ai/greedy.c (best_road_to_road_spot): don't set up roads on sea.
+	
+	* ai/client.c (mode_year_of_plenty): send plenty selection _after_
+	receiving what is in bank to avoid protocol error.
+
+	* client/client.c (mode_game_over): accept all messages in
+	mode_game_over to avoid error messages.
+
+	* client/monopoly.c: added #include "config.h" before gnome.h to
+	make gettext work
+
+	* common/state.c (sm_pop_all_and_goto): new func to avoid
+	undefined state after sm_pop_all().
+
+	* client/client.c (check_other_players): when receiving game won
+	message, use sm_pop_all_and_goto(), otherwise it can happen that
+	the NET_CLOSE event is already received during processing of the
+	sm_goto() and the state is undefined and an assertation fails.
+
+	* server/gnocatan-server.c (cfg_set_*): check for params != NULL.
+
 2002-06-07  Jeff Breidenbach  <jab@debian.org>
 
 	* debian/contol: merge debian packaging update

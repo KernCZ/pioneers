@@ -145,6 +145,9 @@ void stock_use_develop(void);
 void trade_perform_maritime(gint ratio, Resource supply, Resource receive);
 void trade_perform_domestic(gint player_num, gint partner_num, gint quote_num,
 							gint *they_supply, gint *they_receive);
+gint quote_next_num();
+void quote_begin(gint player_num, gint *we_receive, gint *we_supply);
+void quote_begin_again(gint player_num, gint *we_receive, gint *we_supply);
 void quote_add_quote(gint player_num,
 					 gint quote_num, gint *we_supply, gint *we_receive);
 void quote_delete_quote(gint player_num, gint quote_num);
