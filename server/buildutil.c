@@ -368,6 +368,7 @@ gboolean perform_undo(Player *player)
 			player_broadcast(player_none (game), PB_ALL,
 					"longest-road\n");
 	}
+	game->longest_road = player_by_num (game, rec->longest_road);
 
 	/* free the memory */
 	g_free(rec);

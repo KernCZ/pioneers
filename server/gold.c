@@ -166,7 +166,6 @@ void distribute_first (GList *list) {
 		 * players, since they were idle anyway, but it can matter for
 		 * the player who has the turn or is setting up.
 		 */
-		log_message (MSG_INFO, "pushing idle\n");
 		sm_push (scan->sm, (StateFunc)mode_idle);
 	}
 	/* start giving out resources */
