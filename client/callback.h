@@ -248,6 +248,7 @@ extern gboolean color_chat_enabled;
  * changes to the board, etc.  The frontend should NEVER touch any game
  * structures directly (except for reading). */
 void cb_connect (const gchar *server, const gchar *port);
+void cb_disconnect (void);
 void cb_roll (void);
 void cb_build_road (Edge *edge);
 void cb_build_ship (Edge *edge);

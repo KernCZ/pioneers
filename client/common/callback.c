@@ -50,6 +50,12 @@ void cb_connect (const gchar *server, const gchar *port)
 	}
 }
 
+void cb_disconnect ()
+{
+	sm_close (SM() );
+	callbacks.offline ();
+}
+
 void cb_roll ()
 {
 	/* roll dice */

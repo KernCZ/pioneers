@@ -661,3 +661,8 @@ void sm_free(StateMachine *sm)
 	else
 		g_free(sm);
 }
+
+void sm_close (StateMachine *sm)
+{
+	net_free(&(sm->ses));
+}

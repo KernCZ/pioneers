@@ -192,6 +192,7 @@ struct StateMachine {
 
 StateMachine* sm_new(gpointer user_data);
 void sm_free(StateMachine *sm);
+void sm_close (StateMachine *sm);
 const gchar *sm_current_name(StateMachine *sm);
 void sm_state_name(StateMachine *sm, const gchar *name);
 gboolean sm_recv(StateMachine *sm, const gchar *fmt, ...);

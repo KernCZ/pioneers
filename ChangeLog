@@ -1,3 +1,7 @@
+2004-02-08 0.8.1.18  Bas Wijnen <b.wijnen@phys.rug.nl>
+	* client/callback.h, client/common/callback.c, common/state.c,
+	common/state.h: Added cb_disconnect and sm_close
+	
 2004-02-06 0.8.1.17  Roland Clobus <rclobus@bigfoot.com>
 
 	* client/gtk/player.c (player_show_connected_at_row): Fixed bug
