@@ -26,7 +26,6 @@
 #include "cost.h"
 #include "client.h"
 
-
 static gchar *resource_types[] = {
 	"brick",
 	"grain",
@@ -40,7 +39,7 @@ static gchar *resource_types[] = {
  *
  * What it does _NOT_ do:
  *
- * -Use 2 for 1 ports
+ * -Play with gold.  FIXME: in fact it crashes.  It should abort with an error.
  * -Play monopoly development card
  * -Make roads explicitly to get the longest road card
  * -Trade with other players
@@ -778,6 +777,9 @@ static int which_resource(gint assets[NO_RESOURCE])
  * What resource do we want the most?
  *
  */
+
+/* Don't want what isn't available anymore... */
+
 static int resource_desire(gint assets[NO_RESOURCE], resource_values_t *resval, 
 			   int trade, int tradenum)
 {
@@ -1003,46 +1005,53 @@ greedy_turn(Map *map, int mynum, gint assets[NO_RESOURCE],
     }
 
     /* if have a lot of cards see if we can trade anything */
-    if (num_assets(assets) >= 4) {
+    if (num_assets(assets) >= 3) {
 
 	if (game_params->strict_trade
 	    && (built_or_bought))
 	    {
 
 	    } else {
-
+	gint amount;
 	MaritimeInfo info;
 
 	map_maritime_info(map, &info, mynum);
 
-	/* trade 3 for 1 if possible */
-	if (info.any_resource) {
-	    for (i = 0; i < NO_RESOURCE; i++ ) {
-		if (assets[i] >= 3) {
+	/* trade if possible. Try to trade every resource.
+	 * First try trading 2:1, then 3:1, then 4:1
+	 */
+	for (amount = 2; amount <= 4; ++amount) {
+		Resource try;
+		for (try = 0; try < NO_RESOURCE; ++try) {
+        	        Resource res;
+			/* first check if the trade is possible */
+			switch (amount)
+			{
+			case 2:
+				/* do we have a 2 to 1 harbour for this resource? */
+				if (!info.specific_resource[try]) continue;
+				break;
+			case 3:
+				/* do we have a 3 to 1 harbour? */
+				if (!info.any_resource) continue;
+				break;
+			case 4:
+				/* always possible */
+				break;
+			}
 
-		    int res = resource_desire(assets, &resval, i, 3);
+			if (assets[try] >= amount) { /* I have enough to trade away */
+				res = resource_desire(assets, &resval, try, amount);
+				if (no_resource_card[res]) /* In the previous round it was discovered this resource isn't available anymore  */
+					res = NO_RESOURCE;
 
-		    if (res != NO_RESOURCE) {
-			sprintf(ret, "maritime-trade 3 supply %s receive %s\n",resource_types[i], resource_types[res]);
-			return ret;
-		    }
+				if (res != NO_RESOURCE) {
+					sprintf(ret, "maritime-trade %d supply %s receive %s\n", amount, resource_types[try], resource_types[res]);
+					return ret;
+				};
+			}; 
 		}
-	    }
 	}
-
-	/* can always trade 4 for 1 */
-	for (i = 0; i < NO_RESOURCE; i++ ) {
-	    if (assets[i] >= 4) {
-
-		int res = resource_desire(assets, &resval, i, 4);
-
-		if (res != NO_RESOURCE) {
-		    sprintf(ret, "maritime-trade 4 supply %s receive %s\n",resource_types[i], resource_types[res]);
-		    return ret;
-		}
-	    }
-	}
-
 	    }
     }
 

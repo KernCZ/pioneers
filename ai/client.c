@@ -21,6 +21,13 @@
 #include "state.h"
 #include "computer.h"
 
+/* Will be read by ai implementation (e.g. ai/greedy.c)
+ * In the current implementation, the client tries to perform a marine-trade.
+ * Of it fails, it will try another turn. That time, the no_resource_card-flag
+ * is set.  At the end of the turn all flags are reset.  I would prefer to
+ * initialize _before_ each turn, not reset it afterwards. */
+gint no_resource_card[NO_RESOURCE];
+
 Map *map;		/* the map */
 computer_funcs_t computer_funcs;
 
@@ -1270,8 +1277,12 @@ static gboolean mode_turn(StateMachine *sm, gint event)
 		    return TRUE;
 
 		} else if (strstr(tmp,"done")) {
+		    gint idx;
+                                              
 		    built_or_bought = FALSE;
 		    sm_goto(sm, mode_turn_done_response);
+		    for (idx = 0; idx < NO_RESOURCE; idx++)
+		         no_resource_card[idx] = 0; /*@@RC Clear list of out-of-resources */
 		    return TRUE;
 		} else {
 		    printf("WHAT THIS? %s\n",tmp);
@@ -1438,6 +1449,12 @@ static gboolean mode_trade_maritime_response(StateMachine *sm, gint event)
 	case SM_ENTER:
 		break;
 	case SM_RECV:
+                    /* Handle out-of-resource-cards: adjust the counter */
+		if (sm_recv(sm, "ERR no-cards %r", &we_receive)) {
+			no_resource_card[we_receive]++;
+			sm_pop(sm);
+			return TRUE;
+                    }
 		if (sm_recv(sm, "maritime-trade %d supply %r receive %r",
 			    &ratio, &we_supply, &we_receive)) {
 			trade_perform_maritime(ratio, we_supply, we_receive);

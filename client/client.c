@@ -150,6 +150,7 @@ void client_start()
  */
 static gboolean global_filter(StateMachine *sm, gint event)
 {
+	fprintf(stderr, "SM: %d %s:%s\n", event, sm_current_name(sm), sm->line);
 	switch (event) {
 	case SM_INIT:
 		sm_gui_check(sm, GUI_CHANGE_NAME, sm_is_connected(sm));
@@ -2167,6 +2168,8 @@ static gboolean mode_trade_maritime_response(StateMachine *sm, gint event)
 	Resource we_supply;
 	Resource we_receive;
 
+	Resource no_receive;
+          
 	sm_state_name(sm, "mode_trade_maritime_response");
 	switch (event) {
 	case SM_ENTER:
@@ -2174,6 +2177,16 @@ static gboolean mode_trade_maritime_response(StateMachine *sm, gint event)
 		chat_set_focus();
 		break;
 	case SM_RECV:
+		/* Handle out-of-resource-cards */
+		if (sm_recv(sm, "ERR no-cards %r", &no_receive)) {
+                    	gchar buf_receive[128];
+                     
+                     	resource_cards(0, no_receive, buf_receive, sizeof(buf_receive));
+                    	log_message( MSG_TRADE, _("Sorry, %s available.\n"), buf_receive);
+                              waiting_for_network(FALSE);
+                              sm_pop(sm);
+                              return TRUE;
+                    }                                                            
 		if (sm_recv(sm, "maritime-trade %d supply %r receive %r",
 			    &ratio, &we_supply, &we_receive)) {
 			trade_perform_maritime(ratio, we_supply, we_receive);

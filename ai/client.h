@@ -20,7 +20,7 @@
 
 extern GameParams *game_params;
 extern Map *map;		/* the map */
-
+extern gint no_resource_card[NO_RESOURCE]; /* used for trading */
 
 /* chat.c */
 void chat_parser(gint player_num, char chat_str[512]);

@@ -1,3 +1,16 @@
+2003-09-25  Bas Wijnen <b.wijnen@phys.rug.nl>
+	* ai/client.c: Let ai prefer 2:1 trade.
+
+2003-08-18  Roland Clobus  <rclobus@bigfoot.com>
+	* client/client.c, server/resource.c, ai/client.c, ai/greedy.c,
+	ai/client.h: Fixed bug 652707. The ai now correctly handles the
+	out-of-resource-card situation. Also the client is fixed. As I side
+	effect, I enabled the 2:1 trade for the AI.  Applied with minor
+	changes by Bas Wijnen.
+	
+2003-09-25  Bas Wijnen <b.wijnen@phys.rug.nl>
+	* po/de.po: Fixed a translation.
+
 2003-08-14  Bas Wijnen <b.wijnen@phys.rug.nl>
 	* server/gold.c, client/gold.c: fixed bug that gold was not taken out
 	of the bank.  Added support for giving out gold during setup.  Fixed
