@@ -46,8 +46,8 @@ libgnocatan_gtk_a_SOURCES = \
 	common_gtk.h
 
 gnocatan-path.h: gnocatan-path.h.in
-	rm -f $@
+	rm -f $(<D)/$(@F)
 	ddir="`echo $(datadir)`"; \
 	bdir="`echo $(bindir)`"; \
-	sed -e "s,@datadir\@,$$ddir,g" -e "s,@bindir\@,$$bdir,g" $< >$@
+	sed -e "s,@datadir\@,$$ddir,g" -e "s,@bindir\@,$$bdir,g" $< >$(<D)/$(@F)
 

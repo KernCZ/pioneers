@@ -1,10 +1,15 @@
-2003-09-25  Bas Wijnen <b.wijnen@phys.rug.nl>
-	* server/player.c: fixed bug.
-	* common/map_query.c, server/gold.c: Fixed incorrect C.
+2003-08-15  Roland Clobus <rclobus@bigfoot.com>
+	* common/Makefile.am, meta-server/Makefile.am, po/Makefile.in.in: 
+	'make distcheck' aborted with an error.  Removed reference to
+	non-existing po/Changelog and updated the generation of
+	common/gnocatan-path.h
+	* po/de.po, po/es.po, po/gnocatan.pot: Changed automatically (line
+	numbers in comments) by make distcheck.
 
 2003-09-25  Bas Wijnen <b.wijnen@phys.rug.nl>
 	* ai/greedy.c: Fixed bug.
 	* server/player.c, client/player.c, client/client.c: Fixed bug.
+	* common/map_query.c, server/gold.c: Fixed incorrect C.
 
 2003-08-15  Yusei <yusei@ragondux.com>
 	* server/player.c: fixed a bug with anonymous players that caused the
@@ -19,7 +24,7 @@
 2003-08-18  Roland Clobus  <rclobus@bigfoot.com>
 	* client/client.c, server/resource.c, ai/client.c, ai/greedy.c,
 	ai/client.h: Fixed bug 652707. The ai now correctly handles the
-	out-of-resource-card situation. Also the client is fixed. As I side
+	out-of-resource-card situation. Also the client is fixed. As a side
 	effect, I enabled the 2:1 trade for the AI.  Applied with minor
 	changes by Bas Wijnen.
 	

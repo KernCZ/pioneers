@@ -1,7 +1,7 @@
 bin_PROGRAMS = gnocatan-meta-server
 
 INCLUDES = \
-        -I$(includedir) -I../common $(GNOME_INCLUDEDIR)
+        -I$(includedir) -I$(srcdir)/../common $(GNOME_INCLUDEDIR)
 
 gnocatan_meta_server_SOURCES = \
 	gnocatan-meta-server.c
