@@ -1,5 +1,6 @@
 2003-09-25  Bas Wijnen <b.wijnen@phys.rug.nl>
 	* server/player.c: fixed bug.
+	* common/map_query.c, server/gold.c: Fixed incorrect C.
 
 2003-09-25  Bas Wijnen <b.wijnen@phys.rug.nl>
 	* ai/greedy.c: Fixed bug.

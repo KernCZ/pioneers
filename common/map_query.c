@@ -906,9 +906,9 @@ static GList *find_tail_edges(Edge *edge)
 /* calculate the longest road */
 static gint find_longest_road_recursive (Edge *edge)
 {
-	edge->visited = 1;
 	gint len = 0;
 	gint nodeidx, edgeidx;
+	edge->visited = 1;
 	for (nodeidx = 0; nodeidx < numElem(edge->nodes); nodeidx++) {
 		Node *node = edge->nodes[nodeidx];
 		if (node->type != BUILD_NONE && node->owner != edge->owner)

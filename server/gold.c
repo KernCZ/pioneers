@@ -194,8 +194,8 @@ static gboolean mode_wait_receive_gold (Player *player, gint event) {
  * distributed */
 void distribute_first (Player *player, gboolean setup) {
 	GList *list;
-	gold_chooser = NULL;
 	Game *game = player->game;
+	gold_chooser = NULL;
 	for (list = player_first_real (game); list != NULL;
 			list = player_next_real (list) ) {
 		Player *scan = list->data;
