@@ -519,9 +519,10 @@ gboolean can_city_be_built(Node *node, gint owner)
  */
 gboolean can_robber_or_pirate_be_moved(Hex *hex, gint owner)
 {
-	if (hex->terrain == SEA_TERRAIN && hex->map->has_pirate)
-		return hex != hex->map->pirate_hex;
-	return hex->roll > 0 && !hex->robber;
+	if (hex->terrain == SEA_TERRAIN)
+		return (hex->map->has_pirate) && (hex != hex->map->pirate_hex);
+	else
+		return (hex->roll > 0) && (!hex->robber);
 }
 
 /* Iterator function for map_can_place_road() query

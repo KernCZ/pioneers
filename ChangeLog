@@ -1,5 +1,6 @@
 2003-12-10  Roland Clobus <rclobus@bigfoot.com>
 	* ai/greedy.c: Fixed AI to build only on land.
+	* common/map_query.c: Fixed AI placing robber in water.
 
 2003-12-02  Roland Clobus <rclobus@bigfoot.com>
 	* seafarers.game, seafarers-gold.game: removed unknown keyword.
