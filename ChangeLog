@@ -1,5 +1,8 @@
 2000-05-22  Roderick Schertler <roderick@argon.org>
 
+	* client/player.c: Added player's total victory points to the stat
+	window
+
 	* common/network.c: Fixed name resolution code to honor hostnames
 	that begin with a digit
 
