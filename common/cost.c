@@ -42,7 +42,7 @@ gint *cost_bridge()
 		1,		/* brick */
 		0,		/* grain */
 		0,		/* ore */
-		0,		/* wool */
+		1,		/* wool */
 		1		/* lumber */
 	};
 	return cost;
