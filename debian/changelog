@@ -1,3 +1,9 @@
+gnocatan (0.7.1-1) unstable; urgency=low
+
+  * New upstream version.
+
+ -- Roman Hodek <roman@hodek.net>  Sun, 21 Jul 2002 14:28:43 +0200
+
 gnocatan (0.7.0-5) unstable; urgency=low
 
   * Snapshot against today's CVS, closes: #151707, #149307

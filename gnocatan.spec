@@ -1,6 +1,6 @@
 Summary: 	Playable implementation of the Settlers of Catan 
 Name: 		gnocatan
-Version: 	0.7.0
+Version: 	0.7.1
 Release: 	1
 Group: 		X11/Games
 Copyright: 	GPL
