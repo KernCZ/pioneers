@@ -376,8 +376,7 @@ static void client_list_types(Client *client)
 static void client_create_new_server(Client *client, gchar *line)
 {
 	char *terrain, *numplayers, *points, *sevens_rule, *numai, *type;
-	char *envent = "GNOCATAN_META_SERVER=localhost";
-	char *newenv[2] = { envent, NULL };
+	char *newenv[2] = { NULL, NULL };
 	int pid, fd, yes=1;
 	struct sockaddr_in sa;
 	char port[20];
@@ -450,6 +449,10 @@ static void client_create_new_server(Client *client, gchar *line)
 		return;
 	}
 	sprintf(port, "%d", sa.sin_port);
+
+	newenv[0] = g_malloc(strlen("GNOCATAN_META_SERVER=")+strlen(myhostname)+1);
+	strcpy(newenv[0], "GNOCATAN_META_SERVER=");
+	strcat(newenv[0], myhostname);
 
 	if ((pid = fork()) == -1) {
 		client_printf(client, "fork failed\n");
