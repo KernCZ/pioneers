@@ -81,6 +81,7 @@ make install prefix=$RPM_BUILD_ROOT/usr bindir=$RPM_BUILD_ROOT/usr/games \
 %doc AUTHORS COPYING ChangeLog INSTALL README NEWS 
 /usr/games/gnocatan-server
 /usr/share/gnocatan/default.game
+/usr/share/gnocatan/four-islands.game
 /usr/share/gnocatan/seafarers.game
 /usr/share/gnocatan/small.game
 
