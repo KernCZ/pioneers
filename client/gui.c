@@ -502,10 +502,12 @@ static GnomeUIInfo game_menu[] = {
 	  client_event_cb, (gpointer)GUI_CONNECT, NULL,
 	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_BLANK,
 	  'c', GDK_CONTROL_MASK, NULL },
+#ifdef ADMIN_GTK
 	{ GNOME_APP_UI_ITEM, N_("_Admin"), N_("Administer Gnocatan server"),
 	  show_admin_interface, NULL, NULL,
 	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_BLANK,
 	  'a', GDK_CONTROL_MASK, NULL },
+#endif /* ADMIN_GTK */
 	{ GNOME_APP_UI_ITEM, N_("Player _Name"), N_("Change your player name"),
 	  client_event_cb, (gpointer)GUI_CHANGE_NAME, NULL,
 	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_BLANK,

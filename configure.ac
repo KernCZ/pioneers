@@ -22,6 +22,16 @@ AC_TRY_LINK_FUNC(g_rand_new_with_seed,
 	[AC_DEFINE(HAVE_G_RAND_NEW_WITH_SEED)],
 	[MT_RAND_OBJ="mt_rand.o"]
 )
+
+AC_ARG_ENABLE(admin-gtk,
+[  --enable-admin-gtk      Turn on (unstable) network administration support.],
+[case "${enableval}" in
+  yes) admin_gtk_support=true  ;;
+  "")  admin_gtk_support=true  ;;
+  *)   admin_gtk_support=false ;;
+esac], [admin_gtk_support=false])
+AM_CONDITIONAL(ADMIN_GTK_SUPPORT, test x$admin_gtk_support = xtrue)
+
 AC_CHECK_HEADERS(getopt.h)
 AC_SUBST(CFLAGS)
 AC_SUBST(CPPFLAGS)
