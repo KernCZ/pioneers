@@ -78,8 +78,8 @@ struct Game {
 /* buildutil.c */
 void node_add(Player *player,
 	      BuildType type, int x, int y, int pos, gboolean paid_for);
-void road_add(Player *player, int x, int y, int pos, gboolean paid_for);
-void ship_add(Player *player, int x, int y, int pos, gboolean paid_for);
+void edge_add(Player *player,
+	      BuildType type, int x, int y, int pos, gboolean paid_for);
 gboolean perform_undo(Player *player, BuildType type, gint x, gint y, gint pos);
 
 /* develop.c */

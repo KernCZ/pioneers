@@ -162,7 +162,7 @@ void node_add(Player *player,
 	check_longest_road(game);
 }
 
-void road_add(Player *player, int x, int y, int pos, gboolean paid_for)
+void edge_add(Player *player, BuildType type, int x, int y, int pos, gboolean paid_for)
 {
 	Game *game = player->game;
 	Map *map = game->params->map;
@@ -172,56 +172,27 @@ void road_add(Player *player, int x, int y, int pos, gboolean paid_for)
 	player->num_roads++;
 
 	rec = g_malloc0(sizeof(*rec));
-	rec->type = BUILD_ROAD;
+	rec->type = type;
 	rec->x = x;
 	rec->y = y;
 	rec->pos = pos;
 
 	if (paid_for) {
-		rec->cost = cost_road();
+		switch (type) {
+		case BUILD_ROAD: rec->cost = cost_road(); break;
+		case BUILD_SHIP: rec->cost = cost_ship(); break;
+		case BUILD_BRIDGE: rec->cost = cost_bridge(); break;
+		}
 		resource_spend(player, rec->cost);
 	}
 
 	player->build_list = g_list_append(player->build_list, rec);
 
 	edge->owner = player->num;
-	edge->type = BUILD_ROAD;
+	edge->type = type;
 	player_broadcast(player, PB_RESPOND,
-			 "built %B %d %d %d\n", BUILD_ROAD, x, y, pos);
+			 "built %B %d %d %d\n", type, x, y, pos);
 
-	check_longest_road(game);
-}
-
-void ship_add(Player *player, int x, int y, int pos, gboolean paid_for)
-{
-	Game *game = player->game;
-	Map *map = game->params->map;
-	Edge *edge = map_edge(map, x, y, pos);
-	BuildRec *rec;
-
-	player->num_ships++;
-
-	rec = g_malloc0(sizeof(*rec));
-	rec->type = BUILD_SHIP;
-	rec->x = x;
-	rec->y = y;
-	rec->pos = pos;
-
-	if (paid_for) {
-		rec->cost = cost_ship();
-		resource_spend(player, rec->cost);
-	}
-
-	player->build_list = g_list_append(player->build_list, rec);
-
-	edge->owner = player->num;
-	edge->type  = BUILD_SHIP;
-	player_broadcast(player, PB_RESPOND,
-			 "built %B %d %d %d\n", BUILD_SHIP, x, y, pos);
-
-	/* check for longest road, since a ship is handled like a road
-	 * in this case
-	 */
 	check_longest_road(game);
 }
 
