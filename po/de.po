@@ -2,11 +2,10 @@
 # Copyright (C) YEAR Free Software Foundation, Inc.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#: ai/greedy.c:1150
 msgid ""
 msgstr ""
 "Project-Id-Version: gnocatan 0.7.1\n"
-"POT-Creation-Date: 2002-07-06 20:02+0200\n"
+"POT-Creation-Date: 2002-07-09 01:12+0200\n"
 "PO-Revision-Date: 2002-05-26 15:39+0200\n"
 "Last-Translator: Roman Hodek <roman@hodek.net>\n"
 "Language-Team: de <de@li.org>\n"
@@ -40,7 +39,7 @@ msgstr "Ende des Spiels.\n"
 
 #: ai/develop.c:31 client/develop.c:36
 msgid "Road Building"
-msgstr "Staßenbau"
+msgstr "Straßenbau"
 
 #: ai/develop.c:32 client/develop.c:37 client/monopoly.c:73
 msgid "Monopoly"
@@ -103,123 +102,151 @@ msgstr "%s hat eine %s-Entwicklungskarte ausgespielt.\n"
 msgid "You have run out of road segments.\n"
 msgstr "Du hast kein Straßensegmente mehr.\n"
 
-#: ai/greedy.c:1104
+#: ai/greedy.c:1096
 msgid "Ok, let's go!"
 msgstr "Auf gehts!"
 
-#: ai/greedy.c:1105
+#: ai/greedy.c:1097
 msgid "I'll beat you all now! ;)"
 msgstr "Ich werd euch jetzt alle abhängen! ;)"
 
-#: ai/greedy.c:1106
+#: ai/greedy.c:1098
 msgid "Now for another try..."
 msgstr "Ok, noch ein Versuch..."
 
-#: ai/greedy.c:1109
+#: ai/greedy.c:1101
 msgid "At least I get something..."
 msgstr "Wenigstens bekomme ich irgendwas..."
 
-#: ai/greedy.c:1110
+#: ai/greedy.c:1102
 msgid "One is better than none..."
 msgstr "Eine ist besser als keine..."
 
-#: ai/greedy.c:1113
+#: ai/greedy.c:1105
 msgid "Wow!"
 msgstr "Toll!"
 
-#: ai/greedy.c:1114
+#: ai/greedy.c:1106
 msgid "Ey, I'm becoming rich ;)"
 msgstr "Hey, ich werde reich! ;)"
 
-#: ai/greedy.c:1115
+#: ai/greedy.c:1107
 msgid "This is really a good year!"
 msgstr "Das ist wirklich ein gutes Jahr!"
 
-#: ai/greedy.c:1118
+#: ai/greedy.c:1110
 msgid "You really don't deserve that much!"
 msgstr "Du verdienst wirklich nicht so viel!"
 
-#: ai/greedy.c:1119
+#: ai/greedy.c:1111
 msgid "You don't know anywhat what to do with that much resources ;)"
 msgstr "Du weißt eh nicht, was du mit sovielen Karten anfangen sollst ;)"
 
-#: ai/greedy.c:1120
+#: ai/greedy.c:1112
 msgid "Ey, wait for my robber and loose all this again!"
 msgstr "He, warte auf meinen Räuber, dann ist das alles wieder weg!"
 
-#: ai/greedy.c:1123
+#: ai/greedy.c:1115
 msgid "Hehe!"
 msgstr "Hehe!"
 
-#: ai/greedy.c:1124
+#: ai/greedy.c:1116
 msgid "Go, robber, go!"
 msgstr "Los, Räuber, los!"
 
-#: ai/greedy.c:1127
+#: ai/greedy.c:1119
 msgid "You bastard!"
 msgstr "Schweinehund!"
 
-#: ai/greedy.c:1128
+#: ai/greedy.c:1120
 msgid "Can't you move that robber somewhere else?!"
 msgstr "Kannst du den Räuber nicht woanders hinstellen?!"
 
-#: ai/greedy.c:1129
+#: ai/greedy.c:1121
 msgid "Why always me??"
 msgstr "Warum immer ich??"
 
-#: ai/greedy.c:1132
+#: ai/greedy.c:1124
 msgid "Oh no!"
 msgstr "Oh nein!"
 
-#: ai/greedy.c:1133
+#: ai/greedy.c:1125
 msgid "Grrr!"
 msgstr "Grrr!"
 
-#: ai/greedy.c:1134
+#: ai/greedy.c:1126
 msgid "Who the hell rolled that 7??"
 msgstr "Wer zum Teufel hat die 7 gewürfelt??"
 
-#: ai/greedy.c:1135
+#: ai/greedy.c:1127
 msgid "Why always me?!?"
 msgstr "Warum immer ich?!?"
 
-#: ai/greedy.c:1138
+#: ai/greedy.c:1130
 msgid "Say good bye to your cards... :)"
 msgstr "Sag Tschüss zu deinen Karten... :)"
 
-#: ai/greedy.c:1139
+#: ai/greedy.c:1131
 msgid "*evilgrin*"
 msgstr "*bösegrins*"
 
-#: ai/greedy.c:1140
+#: ai/greedy.c:1132
 msgid "/me says farewell to your cards ;)"
 msgstr "/me sagt Lebwohl zu deinen Karten ;)"
 
-#: ai/greedy.c:1141
+#: ai/greedy.c:1133
 msgid "That's the price for being rich... :)"
 msgstr "Das ist der Preis für's Reichsein... :)"
 
-#: ai/greedy.c:1144
+#: ai/greedy.c:1136
 msgid "Ey! Where's that card gone?"
 msgstr "He! Wo ist die Karte hin?"
 
-#: ai/greedy.c:1145
+#: ai/greedy.c:1137
 msgid "Thieves! Thieves!!"
 msgstr "Diebe! Diebe!!"
 
-#: ai/greedy.c:1146
+#: ai/greedy.c:1138
 msgid "Wait for my revenge..."
 msgstr "Wart auf meine Rache..."
 
-#: ai/greedy.c:1231
+#: ai/greedy.c:1141
+msgid "Oh no :("
+msgstr "Oh nein :("
+
+#: ai/greedy.c:1142
+msgid "Must this happen NOW??"
+msgstr "Muß das ausgerechnet jetzt passieren??"
+
+#: ai/greedy.c:1143
+msgid "Args"
+msgstr "Args"
+
+#: ai/greedy.c:1146
+msgid "Hehe, my soldiers rule!"
+msgstr "Hehe, meine Soldaten geben hier den Ton an!"
+
+#: ai/greedy.c:1149
+msgid "First robbing us, them grabbing the points..."
+msgstr "Erst uns ausrauben und dann noch Punkte dafür kassieren..."
+
+#: ai/greedy.c:1152
+msgid "See that road!"
+msgstr "Schaut euch diese Straße an!"
+
+#: ai/greedy.c:1155
+msgid "Pf, you won't win with roads alone..."
+msgstr "Pft, mit Straßen allein gewinnt keiner..."
+
+#: ai/greedy.c:1239
 msgid "Yippie!"
 msgstr "Juhu!"
 
-#: ai/greedy.c:1233
+#: ai/greedy.c:1241
 msgid "My congratulations"
 msgstr "Glückwunsch!"
 
-#: ai/greedy.c:1613
+#: ai/greedy.c:1631
 msgid "Rejecting trade.\n"
 msgstr "Handel abgelehnt.\n"
 
