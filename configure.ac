@@ -101,6 +101,9 @@ esac], [debug_support=no])
 AM_CONDITIONAL(DEBUG, [test x$debug_support = xyes])
 
 AC_CHECK_HEADERS([getopt.h])
+# Check if socklen_t is present
+TYPE_SOCKLEN_T
+
 AC_SUBST(CFLAGS)
 AC_SUBST(LDFLAGS)
 AC_SUBST(MT_RAND_OBJ)
