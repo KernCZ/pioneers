@@ -189,14 +189,14 @@ gboolean is_node_spacing_ok(const Node *node);
 gboolean is_node_proximity_ok(const Node *node);
 gboolean is_node_next_to_robber(const Node *node);
 /* cursor checks */
-gboolean can_road_be_setup(const Edge *edge, gint owner);
+gboolean can_road_be_setup(const Edge *edge);
 gboolean can_road_be_built(const Edge *edge, gint owner);
-gboolean can_ship_be_setup(const Edge *edge, gint owner);
+gboolean can_ship_be_setup(const Edge *edge);
 gboolean can_ship_be_built(const Edge *edge, gint owner);
 gboolean can_ship_be_moved(const Edge *edge, gint owner);
-gboolean can_bridge_be_setup(const Edge *edge, gint owner);
+gboolean can_bridge_be_setup(const Edge *edge);
 gboolean can_bridge_be_built(const Edge *edge, gint owner);
-gboolean can_settlement_be_setup(const Node *node, int owner);
+gboolean can_settlement_be_setup(const Node *node);
 gboolean can_settlement_be_built(const Node *node, int owner);
 gboolean can_settlement_be_upgraded(const Node *node, int owner);
 gboolean can_city_be_built(const Node *node, int owner);

@@ -286,6 +286,18 @@ gboolean is_bridge_valid(const Edge *edge, gint owner)
 	return FALSE;
 }
 
+/* Returns TRUE if one of the nodes can be used for setup,
+ * or if it already has been used.
+ * A full check (to see if the owner of the road matches the owner
+ * of the settlement) is performed in another function
+ */
+static gboolean can_adjacent_settlement_be_built(const Edge *edge) {
+	return can_settlement_be_setup(edge->nodes[0]) ||
+		can_settlement_be_setup(edge->nodes[1]) ||
+		edge->nodes[0]->owner >= 0 ||
+		edge->nodes[1]->owner >= 0;
+}
+
 /* Edge cursor check function.
  *
  * Determine whether or not a road can be built in this edge by the
@@ -293,16 +305,18 @@ gboolean is_bridge_valid(const Edge *edge, gint owner)
  *
  * 1 - Edge must not currently have a road on it.
  * 2 - Edge must be adjacent to a land hex.
+ * 3 - At least one node must available for a settlement
  *
  * The checks are not as strict as for normal play.  This allows the
  * player to try a few different configurations without layout
  * restrictions.  The server will enfore correct placement at the end
  * of the setup phase.
  */
-gboolean can_road_be_setup(const Edge *edge, UNUSED(gint owner))
+gboolean can_road_be_setup(const Edge *edge)
 {
 	return edge->owner < 0
-		&& is_edge_on_land(edge);
+		&& is_edge_on_land(edge)
+		&& can_adjacent_settlement_be_built(edge);
 }
 
 /* Edge cursor check function.
@@ -312,16 +326,18 @@ gboolean can_road_be_setup(const Edge *edge, UNUSED(gint owner))
  *
  * 1 - Edge must not currently have a ship on it.
  * 2 - Edge must be adjacent to a sea hex.
+ * 3 - At least one node must available for a settlement
  *
  * The checks are not as strict as for normal play.  This allows the
  * player to try a few different configurations without layout
  * restrictions.  The server will enfore correct placement at the end
  * of the setup phase.
  */
-gboolean can_ship_be_setup(const Edge *edge, UNUSED(gint owner))
+gboolean can_ship_be_setup(const Edge *edge)
 {
 	return edge->owner < 0
-		&& is_edge_on_sea(edge);
+		&& is_edge_on_sea(edge)
+		&& can_adjacent_settlement_be_built(edge);
 }
 
 /* Edge cursor check function.
@@ -331,16 +347,18 @@ gboolean can_ship_be_setup(const Edge *edge, UNUSED(gint owner))
  *
  * 1 - Edge must not currently have a road on it.
  * 2 - Edge must not be adjacent to a land hex.
+ * 3 - At least one node must available for a settlement
  *
  * The checks are not as strict as for normal play.  This allows the
  * player to try a few different configurations without layout
  * restrictions.  The server will enfore correct placement at the end
  * of the setup phase.
  */
-gboolean can_bridge_be_setup(const Edge *edge, UNUSED(gint owner))
+gboolean can_bridge_be_setup(const Edge *edge)
 {
 	return edge->owner < 0
-		&& !is_edge_on_land(edge);
+		&& !is_edge_on_land(edge)
+		&& can_adjacent_settlement_be_built(edge);
 }
 
 /* Edge cursor check function.
@@ -457,7 +475,7 @@ gboolean can_bridge_be_built(const Edge *edge, gint owner)
  * restrictions.  The server will enfore correct placement at the end
  * of the setup phase.
  */
-gboolean can_settlement_be_setup(const Node *node, UNUSED(gint owner))
+gboolean can_settlement_be_setup(const Node *node)
 {
 	return !node->no_setup
 		&& node->owner < 0

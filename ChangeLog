@@ -1,3 +1,8 @@
+2004-01-09  0.8.1.48  Roland Clobus <rcobus@bigfoot.com>
+	* common/buildrec.c, common/map.h, common/map_query.c: Disallow the
+	building of a road during setup phase when the settlement cannot be
+	built.
+
 2004-12-25  0.8.1.47  Etan Reisner <deryni@eden.rutgers.edu>
 	* server/gtk/gnocatan-server-gtk.c, client/gtk/gui.c: Replaced GNOME
 	about dialog with Gtk code.

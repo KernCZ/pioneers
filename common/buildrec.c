@@ -317,7 +317,7 @@ static gboolean buildrec_can_setup_edge(GList *list, Map *map,
 gboolean buildrec_can_setup_road(GList *list, Map *map,
 				 const Edge *edge, gboolean is_double)
 {
-	if (!can_road_be_setup(edge, -1))
+	if (!can_road_be_setup(edge))
 		return FALSE;
 
 	return buildrec_can_setup_edge(list, map, edge, is_double);
@@ -326,7 +326,7 @@ gboolean buildrec_can_setup_road(GList *list, Map *map,
 gboolean buildrec_can_setup_ship(GList *list, Map *map,
 				 const Edge *edge, gboolean is_double)
 {
-	if (!can_ship_be_setup(edge, -1))
+	if (!can_ship_be_setup(edge))
 		return FALSE;
 
 	return buildrec_can_setup_edge(list, map, edge, is_double);
@@ -335,7 +335,7 @@ gboolean buildrec_can_setup_ship(GList *list, Map *map,
 gboolean buildrec_can_setup_bridge(GList *list, Map *map,
 				   const Edge *edge, gboolean is_double)
 {
-	if (!can_bridge_be_setup(edge, -1))
+	if (!can_bridge_be_setup(edge))
 		return FALSE;
 
 	return buildrec_can_setup_edge(list, map, edge, is_double);
@@ -444,7 +444,7 @@ static gboolean can_setup_settlement_2(GList *list, Map *map, const Node *node)
 gboolean buildrec_can_setup_settlement(GList *list, Map *map,
 				       const Node *node, gboolean is_double)
 {
-	if (!can_settlement_be_setup(node, -1))
+	if (!can_settlement_be_setup(node))
 		return FALSE;
 
 	if (!is_double) {
