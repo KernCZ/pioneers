@@ -1,16 +1,20 @@
+2000-05-27  Andy Heroff <aheroff@mediaone.net>
+
+	* client/gui.c: Added total functionality to what is in the settings
+	  dialog. What's there works. More settings will be added as needed.
+
+	* server/.cvsignore: Readded gnocatan-server to the ignore list for
+	  now for those with dirty build directories. Will remove later.
+
 2000-05-27  Bibek Sahu <scorpio@dodds.net>
 
 	* server/gnocatan-server.c: added a little debugging output.  Will
 	be useful soon for network configuration.
 
-2000-05-27  Bibek Sahu <scorpio@dodds.net>
-
 	* server/Makefile.am, server/gnocatan-server.c,
 	server/gnocatan-server.h, server/gnocatan-server-gtk.c,
 	server/gnocatan-server-console.c: Made as much code as possible
 	common between the two servers.
-
-2000-05-27  Bibek Sahu <scorpio@dodds.net>
 
 	* server/Makefile.am: removed line where console server was being
 	linked against common gtk code.

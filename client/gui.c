@@ -1,6 +1,6 @@
 /*
  * Gnocatan: a fun game.
- * (C) 1999 the Free Software Foundation
+ * (C) 2000 the Free Software Foundation
  *
  * Author: Dave Cole.
  *
@@ -47,6 +47,12 @@ static GtkWidget *prompt_lbl;	/* big prompt messages */
 
 static GtkWidget *app_bar;
 static GtkWidget *net_status;
+
+/* Settings dialog widgets (Only those needed for apply callback) */
+static GtkWidget *radio_style_text;
+static GtkWidget *radio_style_icons;
+static GtkWidget *radio_style_both;
+
 
 GtkWidget *gnome_dialog_get_button(GnomeDialog *dlg, gint button)
 {
@@ -375,20 +381,42 @@ static void quit_cb(GtkWidget *widget, void *data)
 	gtk_main_quit();
 }
 
-#ifdef I_LIKE_COMPILER_WARNINGS
-/* This is here for my reference. Don't touch! --- Ngeran */
-static void settings_test_cb(GtkWidget *widget, void *prop_box)
+static void settings_apply_cb(GnomePropertyBox *prop_box, gint page, gpointer data)
 {
-	GtkWidget *dock_item;
+	GnomeDockItem *dock_item;
 	GtkWidget *toolbar;
+	gint toolbar_style;
 
-	dock_item = gnome_app_get_dock_item_by_name( GNOME_APP(app_window),
-	                                             GNOME_APP_TOOLBAR_NAME );
-	toolbar = gnome_dock_item_get_child( GNOME_DOCK_ITEM(dock_item) );
-	gtk_toolbar_set_style( GTK_TOOLBAR(toolbar), GTK_TOOLBAR_TEXT );
+	switch(page)
+	{
+	case 0:
+		if(GTK_TOGGLE_BUTTON(radio_style_text)->active) {
+			toolbar_style = GTK_TOOLBAR_TEXT;
+		} else if (GTK_TOGGLE_BUTTON(radio_style_icons)->active)
+		{
+			toolbar_style = GTK_TOOLBAR_ICONS;
+		} else {
+			toolbar_style = GTK_TOOLBAR_BOTH;
+		}
+		dock_item = gnome_app_get_dock_item_by_name( GNOME_APP(app_window),
+		                                             GNOME_APP_TOOLBAR_NAME );
+		toolbar = gnome_dock_item_get_child( dock_item );
+		
+		gnome_config_set_int( "/gnocatan/settings/toolbar_style",
+		                      toolbar_style );
+		gnome_config_sync();
+		gtk_toolbar_set_style( GTK_TOOLBAR(toolbar), toolbar_style );
+		break;
+	default:
+		break;
+	}
+	return;
+}
+
+static void settings_activate_cb(GtkWidget *widget, void *prop_box)
+{
 	gnome_property_box_changed( GNOME_PROPERTY_BOX(prop_box) );
 }
-#endif
 
 static void menu_settings_cb(GtkWidget *widget, void *user_data)
 {
@@ -397,11 +425,10 @@ static void menu_settings_cb(GtkWidget *widget, void *user_data)
 	GtkWidget *pg0_label;
 	GtkWidget *frame_style;
 	GtkWidget *vbox_style;
-	GtkWidget *radio_style_text;
-	GtkWidget *radio_style_icons;
-	GtkWidget *radio_style_both;
-	GList     *button_style;
+	gboolean default_returned;
+	gint toolbar_style;
 	
+	/* Create stuff */
 	settings = gnome_property_box_new();
 	pg0_table = gtk_table_new( 1, 1, FALSE );
 	pg0_label = gtk_label_new( "General" );
@@ -414,14 +441,48 @@ static void menu_settings_cb(GtkWidget *widget, void *user_data)
 	radio_style_both =
 	    gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(radio_style_icons),
 	                                                "Both Icons and Text" );
-	
+
+	/* Set the default button state */
+	toolbar_style = gnome_config_get_int_with_default("/gnocatan/settings/toolbar_style=0",
+	                                                  &default_returned );
+	if(default_returned) {
+		toolbar_style = GTK_TOOLBAR_BOTH;
+	}
+	switch(toolbar_style)
+	{
+	case GTK_TOOLBAR_TEXT:
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(radio_style_text),
+		                             TRUE);
+		break;
+	case GTK_TOOLBAR_ICONS:
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(radio_style_icons),
+		                             TRUE);
+		break;
+	default:
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(radio_style_both),
+		                             TRUE);
+		break;
+	}
+
+	/* Put things in other things */
 	gtk_box_pack_start_defaults( GTK_BOX(vbox_style), radio_style_text );
 	gtk_box_pack_start_defaults( GTK_BOX(vbox_style), radio_style_icons );
 	gtk_box_pack_start_defaults( GTK_BOX(vbox_style), radio_style_both );
 	gtk_container_add( GTK_CONTAINER(frame_style), vbox_style );
 	gtk_table_attach( GTK_TABLE(pg0_table), frame_style, 0, 1, 0, 1,
 	                  GTK_FILL, GTK_FILL, 5, 5 );
+	                  
+	/* Signal Connections */
+	gtk_signal_connect( GTK_OBJECT(radio_style_text), "clicked",
+	                    settings_activate_cb, (gpointer)settings );
+	gtk_signal_connect( GTK_OBJECT(radio_style_icons), "clicked",
+	                    settings_activate_cb, (gpointer)settings );
+	gtk_signal_connect( GTK_OBJECT(radio_style_both), "clicked",
+	                    settings_activate_cb, (gpointer)settings );
+	gtk_signal_connect( GTK_OBJECT(settings), "apply",
+	                    settings_apply_cb, NULL );
 	
+	/* Show me the widgets! */
 	gtk_widget_show( radio_style_text );
 	gtk_widget_show( radio_style_icons );
 	gtk_widget_show( radio_style_both );
@@ -642,6 +703,11 @@ static void register_gnocatan_pixmaps()
 
 GtkWidget* gui_build_interface()
 {
+	gint toolbar_style;
+	gboolean default_returned;
+	GnomeDockItem *dock_item;
+	GtkWidget *toolbar;
+
 	player_init();
 
 	gmap = guimap_new();
@@ -652,9 +718,23 @@ GtkWidget* gui_build_interface()
 	gtk_widget_realize(app_window);
 	gtk_signal_connect(GTK_OBJECT(app_window), "delete_event",
 			   GTK_SIGNAL_FUNC(quit_cb), NULL);
+	
+	toolbar_style = 
+	    gnome_config_get_int_with_default("/gnocatan/settings/toolbar_style=0",
+	                                      &default_returned );
+	if(default_returned) {
+		toolbar_style = GTK_TOOLBAR_BOTH;
+	}
 
 	gnome_app_create_menus(GNOME_APP(app_window), main_menu);
         gnome_app_create_toolbar(GNOME_APP(app_window), toolbar_uiinfo);
+        
+        /* Get the toolbar (I wish there was a Gnome function for this...)
+           and set its style from what was saved. */
+        dock_item = gnome_app_get_dock_item_by_name( GNOME_APP(app_window),
+                                                     GNOME_APP_TOOLBAR_NAME );
+        toolbar = gnome_dock_item_get_child( dock_item );
+        gtk_toolbar_set_style( GTK_TOOLBAR(toolbar), toolbar_style );
 
 	gnome_app_set_contents(GNOME_APP(app_window), build_main_interface());
 	build_status_bar();
