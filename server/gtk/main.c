@@ -534,7 +534,7 @@ static GtkWidget *build_interface()
 	gtk_container_add(GTK_CONTAINER(scroll_win), message_text);
 	message_window_set_text(message_text);
 
-	load_game_types( THEMEDIR );
+	load_game_types( GNOCATAN_DIR_DEFAULT );
 	game_list_foreach( add_game_to_combo, GTK_COMBO(game_combo) );
 
 	return vbox;

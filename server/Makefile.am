@@ -1,8 +1,6 @@
 configdir=$(datadir)/games/gnocatan
 Gamesdir=$(datadir)/gnome/apps/Games
 
-CPPFLAGS += -DTHEMEDIR=\"$(configdir)\"
-
 bin_PROGRAMS = gnocatan-server-gtk gnocatan-server-console
 
 noinst_LIBRARIES = libgnocatan_server.a
