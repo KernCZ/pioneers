@@ -102,8 +102,31 @@ static void resource_table_init(ResourceTable *rt)
 	rt->total_current = 0;
 	rt->total_widget = NULL;
 
+	rt->limit_bank = FALSE;
 	rt->with_bank = FALSE;
-	rt->with_total = FALSE;	
+	rt->with_total = FALSE;
+	rt->tooltips = gtk_tooltips_new();
+
+}
+
+static void resource_table_set_limit(ResourceTable* rt, gint row)
+{
+	gint limit;
+
+	if (rt->with_total)
+		limit = 
+			rt->with_bank ? 
+				MIN(rt->total_target, rt->row[row].bank) :
+				MIN(rt->total_target, rt->row[row].hand);
+	else
+		limit =
+			rt->with_bank ?
+				rt->row[row].bank :
+				999;
+	rt->row[row].limit = limit;
+	gtk_spin_button_set_range(
+			GTK_SPIN_BUTTON(rt->row[row].amount_widget), 0, limit);
+	gtk_widget_set_sensitive(rt->row[row].amount_widget, limit > 0);
 }
 
 /* Create a new ResourceTable */
@@ -114,7 +137,6 @@ GtkWidget* resource_table_new(
 {
 	ResourceTable *rt;
 
-	GtkTooltips *tooltips;
 	gchar temp[256]; /* @TODO Fixed length?? */
 	GtkWidget *widget;
 	gint i;
@@ -123,7 +145,7 @@ GtkWidget* resource_table_new(
 	rt = g_object_new(resource_table_get_type(), NULL);
 
 	rt->with_bank = with_bank;
-	/* Don't set rt->with_total yet, wait for _wait_total */
+	/* Don't set rt->with_total yet, wait for _set_total */
 
 	rt->bank_offset = with_bank ? 1 : 0;
 	gtk_table_resize(GTK_TABLE(rt), 
@@ -132,7 +154,6 @@ GtkWidget* resource_table_new(
 	gtk_table_set_row_spacings(GTK_TABLE(rt), 3);
 	gtk_table_set_col_spacings(GTK_TABLE(rt), 5);
 
-	tooltips = gtk_tooltips_new();
 	sprintf(temp, "<b>%s</b>", title);
 	widget = gtk_label_new(NULL);
 	gtk_label_set_markup(GTK_LABEL(widget), temp);
@@ -157,6 +178,9 @@ GtkWidget* resource_table_new(
 		gtk_entry_set_width_chars(GTK_ENTRY(widget), 3);
 		gtk_widget_set_sensitive(widget, FALSE);
 		gtk_entry_set_alignment(GTK_ENTRY(widget), 1.0);
+		gtk_tooltips_set_tip(rt->tooltips, widget,
+			/* Tooltip for the amount of resources in the hand */
+			_("Amount in hand"), NULL);
 		
 		rt->row[i].hand = resource_asset(i);
 
@@ -168,8 +192,12 @@ GtkWidget* resource_table_new(
 		gtk_widget_show(widget);
 		gtk_table_attach_defaults(GTK_TABLE(rt), widget, 
 				2, 3, row, row + 1);
+		gtk_tooltips_set_tip(rt->tooltips, widget,
+			/* Tooltip for decreasing the selected amount */
+			_("Decrease the selected amount"), NULL);
 
 		if (with_bank) {
+			rt->row[i].bank = get_bank()[i];
 			widget = rt->row[i].bank_widget = 
 					gtk_entry_new();
 			gtk_widget_show(widget);
@@ -178,6 +206,9 @@ GtkWidget* resource_table_new(
 			gtk_entry_set_width_chars(GTK_ENTRY(widget), 3);
 			gtk_widget_set_sensitive(widget, FALSE);
 			gtk_entry_set_alignment(GTK_ENTRY(widget), 1.0);
+			gtk_tooltips_set_tip(rt->tooltips, widget,
+				/* Tooltip for the amount of resources in the bank */
+				_("Amount in the bank"), NULL);
 		}
 		widget = rt->row[i].more_widget =
 				gtk_button_new_with_label(_("more>"));
@@ -188,6 +219,9 @@ GtkWidget* resource_table_new(
 		gtk_table_attach_defaults(GTK_TABLE(rt), widget, 
 				3 + rt->bank_offset, 4 + rt->bank_offset, 
 				row, row + 1);
+		gtk_tooltips_set_tip(rt->tooltips, widget,
+			/* Tooltip for increasing the selected amount */
+			_("Increase the selected amount"), NULL);
 
 		widget = rt->row[i].amount_widget =
 				gtk_spin_button_new_with_range(0, 99, 1);
@@ -200,12 +234,20 @@ GtkWidget* resource_table_new(
 		g_signal_connect(G_OBJECT(widget), "value-changed",
 				G_CALLBACK(value_changed_cb),
 				&rt->row[i]);
+		gtk_tooltips_set_tip(rt->tooltips, widget,
+			/* Tooltip for the selected amount */
+			_("Selected amount"), NULL);
 
-		rt->row[i].limit = rt->row[i].hand;
+		resource_table_set_limit(rt, i);
 		row++;
 	}
 	resource_table_update(rt);
 	return GTK_WIDGET(rt);
+}
+
+void resource_table_limit_bank(ResourceTable *rt, gboolean limit) {
+	rt->limit_bank = limit;
+	resource_table_update(rt);
 }
 
 void resource_table_set_total(ResourceTable *rt, const gchar *text, gint total) {
@@ -235,12 +277,28 @@ void resource_table_set_total(ResourceTable *rt, const gchar *text, gint total) 
 	gtk_entry_set_width_chars(GTK_ENTRY(widget), 3);
 	gtk_widget_set_sensitive(widget, FALSE);
 	gtk_entry_set_alignment(GTK_ENTRY(widget), 1.0);
+	gtk_tooltips_set_tip(rt->tooltips, widget,
+		/* Tooltip for the total selected amount */
+		_("Total selected amount"), NULL);
 	
 	for (i = 0; i < NO_RESOURCE; i++) {
-		rt->row[i].limit = MIN(rt->row[i].limit, total);
-		gtk_spin_button_set_range(
-			GTK_SPIN_BUTTON(rt->row[i].amount_widget), 0, rt->row[i].limit);
-		gtk_widget_set_sensitive(rt->row[i].amount_widget, rt->row[i].limit > 0);
+		resource_table_set_limit(rt, i);
+	}
+	resource_table_update(rt);
+}
+
+void resource_table_set_bank(ResourceTable *rt, gint *bank)
+{
+	gint i;
+
+	for (i = 0; i < NO_RESOURCE; i++) {
+		rt->row[i].bank = bank[i];
+		resource_table_set_limit(rt, i);
+		if (rt->limit_bank && rt->with_total && bank[i] > rt->total_target) {
+			gtk_tooltips_set_tip(rt->tooltips, rt->row[i].bank_widget,
+				/* Tooltip when the bank cannot be emptied */
+				_("The bank cannot be emptied"), NULL);
+		}
 	}
 	resource_table_update(rt);
 }
@@ -280,7 +338,10 @@ static void resource_table_update(ResourceTable *rt)
 		gtk_entry_set_text(GTK_ENTRY(row->hand_widget), buff);
 	
 		if (rt->with_bank) {
-			sprintf(buff, "%d", row->bank - row->amount);
+			if (rt->limit_bank && rt->with_total && row->bank > rt->total_target)
+				sprintf(buff, "%s", "++");
+			else
+				sprintf(buff, "%d", row->bank - row->amount);
 			gtk_entry_set_text(GTK_ENTRY(row->bank_widget), buff);
 		}
 	}
