@@ -1,7 +1,7 @@
 AC_INIT(client)
 
 AM_CONFIG_HEADER(config.h)
-AM_INIT_AUTOMAKE(gnocatan, 0.5.6)
+AM_INIT_AUTOMAKE(gnocatan, 0.6.0)
 
 AM_MAINTAINER_MODE
 

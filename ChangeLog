@@ -1,3 +1,10 @@
+2000-06-18  Andy Heroff <aheroff@mediaone.net>
+
+	* Version 0.6.0 released for general consumption!
+
+	* client/player.c: Added a couple clauses for BUILD_BRIDGE to remove
+	  compile time warnings.
+
 2000-06-18  Bibek Sahu <scorpio@dodds.net>
 
 	* configure.in, client/Makefile.am, client/gui.c: Made network
