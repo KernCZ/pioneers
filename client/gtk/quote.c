@@ -19,6 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "config.h"
 #include <gnome.h>
 
 #include "frontend.h"
@@ -643,7 +644,7 @@ GtkWidget *quote_build_page (void)
 	gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, TRUE, 0);
 	gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox), GTK_BUTTONBOX_SPREAD);
 
-	reject_btn = gtk_button_new_with_label("Reject Domestic Trade");
+	reject_btn = gtk_button_new_with_label(_("Reject Domestic Trade"));
 	frontend_gui_register (reject_btn, GUI_QUOTE_REJECT, "clicked");
 	gtk_widget_show(reject_btn);
 	gtk_container_add(GTK_CONTAINER(bbox), reject_btn);

@@ -1,3 +1,16 @@
+2004-01-02 0.8.1.10  Roland Clobus <rclobus@bigfoot.com>
+
+	* client/gtk/legend.c (legend_create_dlg): The legend dialog now has a
+	close button, like the other dialogs.
+	* client/gtk/quote.c (top level, quote_build_page): The translation
+	now works.
+	* client/gtk/settingscreen.c (top level, add_setting_val,
+	settings_create_dlg): Shuffled the boxed around in game settings
+	dialog, for better layout, numbers (where possible) right aligned.
+	* po/de.po, po/es.po, po/fr.po, po/nl.po, po/gnocatan.pot:
+	Translations modified for the new string 'Reject Domestic Trade'.
+	(still marked fuzzy, because I'm not a native speaker.)
+
 2004-01-01 0.8.1.9  Bas Wijnen <b.wijnen@phys.rug.nl>
 	* (nearly) all files: Removed compiler warnings when compiling with
 	-Wall -W -Wpointer-arith -Wcast-qual -Wno-sign-compare

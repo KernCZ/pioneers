@@ -201,10 +201,10 @@ GtkWidget *legend_create_dlg (void)
 			_("Legend"),
 			GTK_WINDOW(app_window),
 			GTK_DIALOG_DESTROY_WITH_PARENT,
-			GTK_STOCK_OK, GTK_RESPONSE_OK,
+			GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE,
 			NULL);
-        gtk_signal_connect(GTK_OBJECT(legend_dlg), "destroy",
-			   GTK_SIGNAL_FUNC(gtk_widget_destroyed), &legend_dlg);
+	g_signal_connect(GTK_OBJECT(legend_dlg), "destroy",
+			GTK_SIGNAL_FUNC(gtk_widget_destroyed), &legend_dlg);
 
 	dlg_vbox = GTK_DIALOG(legend_dlg)->vbox;
 	gtk_widget_show(dlg_vbox);
