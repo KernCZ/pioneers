@@ -1,3 +1,17 @@
+gnocatan (0.8.1.41-1) unstable; urgency=low
+
+  * snapshot from upstream CVS (basically 0.8.1.42, but
+    upstream is a little behind on updating version numbers)
+
+ -- Jeff Breidenbach <jab@debian.org>  Wed, 10 Nov 2004 00:51:41 -0800
+
+gnocatan (0.8.1.38-1) unstable; urgency=low
+
+  * snapshot from upstream CVS
+  * stop doing the native package thing
+
+ -- Jeff Breidenbach <jab@debian.org>  Mon, 11 Oct 2004 21:50:31 -0700
+
 gnocatan (0.8.1.35) unstable; urgency=low
 
   * snapshot from upstream CVS
