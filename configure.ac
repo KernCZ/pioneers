@@ -1,7 +1,7 @@
 AC_INIT(client)
 
 AM_CONFIG_HEADER(config.h)
-AM_INIT_AUTOMAKE(gnocatan, 0.6.0)
+AM_INIT_AUTOMAKE(gnocatan, 0.6.1)
 
 PROTOCOL_VERSION=\"0.6.0\"
 

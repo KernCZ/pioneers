@@ -1,5 +1,9 @@
 2000-08-26  Andy Heroff  <aheroff@mediaone.net>
 
+	* Version 0.6.1 released!
+
+	* configure.in: Version update to 0.6.1.
+
 	* server/develop.c: In Road Building dev card code, modified code
 	  so that when RB is complete, edges build during process are
 	  removed from the build list. Affects ability to trade.
