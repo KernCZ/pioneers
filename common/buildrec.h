@@ -21,6 +21,7 @@ typedef struct {
 
 int buildrec_count_type(GList *list, BuildType type);
 BuildRec *buildrec_get(GList *list, BuildType type, gint idx);
+BuildRec *buildrec_get_edge(GList *list, gint idx);
 GList *buildrec_free(GList *list);
 gboolean buildrec_is_valid(GList *list, Map *map, int owner);
 gboolean buildrec_can_setup_road(GList *list, Map *map,
