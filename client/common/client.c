@@ -2129,8 +2129,6 @@ static void recover_from_disconnect(StateMachine *sm,
 	else if (strcmp(rinfo->prevstate, "ROADBUILDING") == 0)
 	{
 		sm_goto_noenter(sm, mode_idle);
-		/* note: don't call road_building_begin() because it
-		         will clear the build list */
 		sm_push_noenter(sm, modeturn);
 		sm_push(sm, mode_road_building);
 	}

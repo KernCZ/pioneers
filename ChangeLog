@@ -4,6 +4,8 @@
 	* common/map.c: Added default case
 	* common/state.c, common/state.h, server/gold.c, server/pregame.c,
 	server/server.h: Fixed reconnect during distribution of gold. 
+	* client/common/client.c, client/common/client.h,
+	client/common/develop.c: Removed unused function road_building_begin.
 
 2005-01-15  Roland Clobus <rclobus@bigfoot.com>
 	* INSTALL, .cvsignore: Removed INSTALL from CVS. It is generated

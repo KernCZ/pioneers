@@ -118,7 +118,6 @@ void develop_reset_have_played_bought(gboolean played_develop,
 void develop_bought(gint player_num);
 void develop_played(gint player_num, gint card_idx, DevelType type);
 void monopoly_player(gint player_num, gint victim_num, gint num, Resource type);
-void road_building_begin (void);
 void develop_begin_turn (void);
 gboolean have_bought_develop(void);
 

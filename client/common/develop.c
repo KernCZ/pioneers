@@ -194,11 +194,6 @@ void monopoly_player(gint player_num, gint victim_num, gint num, Resource type)
 	g_free(tmp);
 }
 
-void road_building_begin()
-{
-	build_clear();
-}
-
 void develop_begin_turn()
 {
 	played_develop = FALSE;
