@@ -49,6 +49,7 @@ static GtkWidget *prompt_lbl;	/* big prompt messages */
 
 static GtkWidget *app_bar;
 static GtkWidget *net_status;
+static GtkWidget *vp_target_status;
 
 /* Settings dialog widgets (Only those needed for apply callback) */
 static GtkWidget *radio_style_text;
@@ -76,6 +77,15 @@ void gui_set_instructions(gchar *fmt, ...)
 	va_end(ap);
 
 	gnome_appbar_set_status(GNOME_APPBAR(app_bar), text);
+}
+
+void gui_set_vp_target_value( gint vp )
+{
+	gchar *vp_text;
+	
+	g_snprintf( vp_text, 25, "VP Needed to Win: %i", vp );
+	
+	gtk_label_set_text( GTK_LABEL(vp_target_status), vp_text );
 }
 
 void gui_set_net_status(gchar *text)
@@ -400,6 +410,10 @@ static void settings_apply_cb(GnomePropertyBox *prop_box, gint page, gpointer da
 		} else {
 			toolbar_style = GTK_TOOLBAR_BOTH;
 		}
+		
+		/* Allow auto-shrink in case toolbar is shrunk */
+		gtk_window_set_policy( GTK_WINDOW(app_window), TRUE, TRUE, TRUE );
+		
 		dock_item = gnome_app_get_dock_item_by_name( GNOME_APP(app_window),
 		                                             GNOME_APP_TOOLBAR_NAME );
 		toolbar = gnome_dock_item_get_child( dock_item );
@@ -407,6 +421,10 @@ static void settings_apply_cb(GnomePropertyBox *prop_box, gint page, gpointer da
 		config_set_int( "settings/toolbar_style",
 		                      toolbar_style );
 		gtk_toolbar_set_style( GTK_TOOLBAR(toolbar), toolbar_style );
+		
+		/* Turn auto-shrink off */
+		gtk_window_set_policy( GTK_WINDOW(app_window), TRUE, TRUE, FALSE );
+		
 		break;
 	default:
 		break;
@@ -665,6 +683,8 @@ void gui_set_game_params(GameParams *params)
 	show_uiinfo(GUI_SETTLEMENT, params->num_build_type[BUILD_SETTLEMENT] > 0);
 	show_uiinfo(GUI_CITY, params->num_build_type[BUILD_CITY] > 0);
 	identity_draw();
+
+	gui_set_vp_target_value( params->victory_points );
 }
 
 static GtkWidget *build_status_bar()
@@ -674,6 +694,14 @@ static GtkWidget *build_status_bar()
 	app_bar = gnome_appbar_new(FALSE, TRUE, GNOME_PREFERENCES_NEVER);
 	gnome_app_set_statusbar(GNOME_APP(app_window), app_bar);
 	gnome_app_install_menu_hints(GNOME_APP(app_window), main_menu);
+
+	vp_target_status = gtk_label_new(_(" "));
+	gtk_widget_show(vp_target_status);
+	gtk_box_pack_start(GTK_BOX(app_bar), vp_target_status, FALSE, TRUE, 0);
+
+	vsep = gtk_vseparator_new();
+	gtk_widget_show(vsep);
+	gtk_box_pack_start(GTK_BOX(app_bar), vsep, FALSE, TRUE, 0);
 
 	net_status = gtk_label_new(_("Offline"));
 	gtk_widget_show(net_status);
@@ -742,6 +770,9 @@ GtkWidget* gui_build_interface()
                                                      GNOME_APP_TOOLBAR_NAME );
         toolbar = gnome_dock_item_get_child( dock_item );
         gtk_toolbar_set_style( GTK_TOOLBAR(toolbar), toolbar_style );
+
+	/* Allow grow and shrink, but don't auto-shrink */
+	gtk_window_set_policy( GTK_WINDOW(app_window), TRUE, TRUE, FALSE );
 
 	gnome_app_set_contents(GNOME_APP(app_window), build_main_interface());
 	build_status_bar();

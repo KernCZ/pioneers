@@ -1,3 +1,8 @@
+2000-07-31  Andy Heroff  <aheroff@mediaone.net>
+
+	* client/gui.c: Fixed resize bug once and for all. Added VP target
+	  listing in the status bar.
+
 2000-07-30  Jeff Breidenbach  <jeff@alum.mit.edu>
 
 	* debian/rules: Explicitly clean client/help/C/gnocatan to
