@@ -335,7 +335,7 @@ static gint buff_append(gchar *buff, gint len, gint offset, gchar *str)
 {
 	gint str_len = strlen(str);
 
-	assert(offset + str_len < len);
+	g_assert(offset + str_len < len);
 	strncpy(buff + offset, str, str_len);
 	return offset + str_len;
 }
