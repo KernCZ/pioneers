@@ -71,6 +71,8 @@ typedef void (*LogFunc)( gint msg_type, gchar *text );
 #define MSG_PLAYER7	107
 #define MSG_PLAYER8	108
 
+gint get_player_msg( gint playernum );
+
 /* Pointer to the function to use to do the actual logging, by default.
  * This can be overridden using log_message_using_func.  If it is NULL,
  *   then use the default function (LOG_FUNC_DEFAULT).

@@ -19,8 +19,8 @@
 
 static GdkColor ps_settlement  = { 0, 0xbb00, 0x0000, 0x0000 };
 static GdkColor ps_city        = { 0, 0xff00, 0x0000, 0x0000 };
-static GdkColor ps_largest     = { 0, 0x1300, 0xc600, 0xba00 };
-static GdkColor ps_longest     = { 0, 0x1300, 0xc600, 0xba00 };
+static GdkColor ps_largest     = { 0, 0x1c00, 0xb500, 0xed00 };
+static GdkColor ps_longest     = { 0, 0x1c00, 0xb500, 0xed00 };
 static GdkColor ps_soldier     = { 0, 0xe500, 0x8f00, 0x1600 };
 static GdkColor ps_resource    = { 0, 0x0000, 0x0000, 0xFF00 };
 static GdkColor ps_development = { 0, 0xc600, 0xc600, 0x1300 };
@@ -61,7 +61,7 @@ static GdkColor token_colors[] = {
 };
 
 static GdkColor player_bg = { 0, 0xB000, 0xB000, 0xB000 };
-static GdkColor player_fg = { 0, 0x0000, 0x0000, 0xFF00 };
+static GdkColor player_fg = { 0, 0xFF00, 0xFF00, 0xFF00 };
 
 void player_init()
 {

@@ -15,6 +15,21 @@
 #include "log.h"
 #include "driver.h"
 
+/* Get the above defined message number based on the player ID.
+ */
+gint get_player_msg( gint playernum )
+{
+	if (playernum == 0) return MSG_PLAYER1;
+	if (playernum == 1) return MSG_PLAYER2;
+	if (playernum == 2) return MSG_PLAYER3;
+	if (playernum == 3) return MSG_PLAYER4;
+	if (playernum == 4) return MSG_PLAYER5;
+	if (playernum == 5) return MSG_PLAYER6;
+	if (playernum == 6) return MSG_PLAYER7;
+	if (playernum == 7) return MSG_PLAYER8;
+	return MSG_INFO;
+}
+
 /* Set the default logging function to 'func'. */
 void log_set_func( LogFunc func )
 {
