@@ -27,8 +27,6 @@
 #include "log.h"
 #include "server.h"
 
-#define DEBUG_LONGEST
-
 static void check_longest_road(Game *game)
 {
 	Map *map = game->params->map;
