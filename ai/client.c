@@ -72,6 +72,8 @@ static gboolean mode_buy_develop_response(StateMachine *sm, gint event);
 static gboolean mode_trade_maritime_response(StateMachine *sm, gint event);
 static void copy_player_name(gchar *name);
 
+static gboolean played_soldier_card = FALSE;
+
 /* Create the client state machine.  Currently in a nasty global
  * variable - have to fix this sometime.
  */
@@ -863,7 +865,11 @@ static gboolean mode_robber_response(StateMachine *sm, gint event)
 			robber_moved(my_player_num(), x, y);
 			client_chat(CHAT_MOVED_ROBBER, (void *)map_hex(map, x, y),
 						TRUE, 0);
-			sm_goto(sm, mode_turn);
+			if (played_soldier_card) {
+				sm_pop(sm);
+				played_soldier_card = FALSE;
+			} else 
+				sm_goto(sm, mode_turn);
 			return TRUE;
 		}
 
@@ -1137,6 +1143,7 @@ static gboolean mode_play_develop_response(StateMachine *sm, gint event)
 				sm_goto(sm, mode_year_of_plenty);
 				break;
 			case DEVEL_SOLDIER:
+				played_soldier_card = TRUE;
 				sm_goto(sm, mode_wait_for_robber);
 				break;
 			default:

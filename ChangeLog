@@ -1,3 +1,14 @@
+2004-08-29  0.8.1.34  Roland Clobus <rclobus@bigfoot.com>
+	* ai/client.c: Added global flag 'played_soldier_card' to fix stack
+	overflow.
+	* server/gnocatan-server-gtk.c(start_clicked_cb): Remembered game
+	did start with wrong map.
+	* client/common/resource.c(resource_modify), client/gtk/frontend.h:
+	Argument contains absolute value, not a difference.
+	* client/gtk/resource.c(resource_build_panel,
+	frontend_resource_change): Fixed size of resource counter to 2
+	positions.
+	
 2004-08-21  Jeff Breidenbach  <jbreiden@rode.parc.com>
 
 	* debian/control: added yelp dependency for gnocatan-help

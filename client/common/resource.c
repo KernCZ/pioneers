@@ -185,7 +185,7 @@ void resource_log_list(gint player_num, gchar *action, gint *resources)
 void resource_modify (Resource type, gint num)
 {
 	my_assets[type] += num;
-	callbacks.resource_change (type, num);
+	callbacks.resource_change (type, my_assets[type]);
 }
 
 gboolean can_afford(gint *cost)

@@ -134,7 +134,7 @@ void frontend_draw_hex (Hex *hex);
 void frontend_update_stock (void);*/
 void frontend_bought_develop (DevelType type, gboolean this_turn);
 void frontend_played_develop (gint player_num, gint card_idx, DevelType type);
-void frontend_resource_change (Resource type, gint num);
+void frontend_resource_change (Resource type, gint new_amount);
 void frontend_robber (void);
 void frontend_game_over (gint player, gint points);
 

@@ -181,9 +181,9 @@ static void start_clicked_cb(UNUSED(GtkButton *start_btn),
 		UNUSED(gpointer user_data))
 {
 	if (ui_enabled) {
-		if (params->title)
-			g_free(params->title);
-		params->title = strdup(select_game_get_active(SELECTGAME(select_game)));
+		const gchar *title;
+		title = select_game_get_active(SELECTGAME(select_game));
+		params = game_list_find_item(title);
 		params->random_terrain = game_settings_get_terrain(GAMESETTINGS(game_settings));
 		params->num_players = game_settings_get_players(GAMESETTINGS(game_settings));
 		params->victory_points = game_settings_get_victory_points(GAMESETTINGS(game_settings));
