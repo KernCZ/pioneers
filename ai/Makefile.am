@@ -1,3 +1,6 @@
+# This AI still depends on Gnome/Gtk.
+# The ai in client/ai is the same ai as this, but is a true console application
+
 configdir=$(datadir)/games/gnocatan
 
 bin_PROGRAMS = gnocatanai
@@ -6,13 +9,13 @@ include $(top_srcdir)/rules.make
 
 gnocatanai_DEPENDENCIES = ../common/libgnocatan.a ../common/libgnocatan_gtk.a
 
-INCLUDES = \
+AM_CPPFLAGS = \
 	-I$(srcdir)/../common -I. \
-	-DGNOMELOCALEDIR=\""$(datadir)/locale"\" \
 	$(ADMIN_GTK) \
-        -I$(includedir) \
+	-I$(includedir) \
 	$(GNOME2_CFLAGS) \
-	$(debug_includes)
+	$(debug_includes) \
+	$(extra_includes)
 
 gnocatanai_SOURCES = \
 	ai.c \
@@ -36,8 +39,7 @@ gnocatanai_SOURCES = \
 
 gnocatanai_LDADD = \
 	../common/libgnocatan.a \
-	../common/libgnocatan_gtk.a \
-	$(GLIB2_LIBS)
+	../common/libgnocatan_gtk.a 
 
 config_DATA = \
 	computer_names

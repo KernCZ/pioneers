@@ -35,8 +35,6 @@
 #include <string.h>
 #include <time.h>
 
-#include <gdk/gdk.h>
-
 #include "driver.h"
 #include "game.h"
 #include "cards.h"
@@ -48,7 +46,6 @@
 #include "server.h"
 #include "meta.h"
 #include "mt_rand.h"
-#include "gnocatan-path.h"
 
 typedef union {
 	struct sockaddr sa;

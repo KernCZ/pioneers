@@ -20,7 +20,8 @@
  */
 
 #include "ai.h"
-
+#include <stdio.h>
+#include <stdlib.h>
 /*
  * This is a rudimentary AI for gnocatan. 
  *
@@ -38,14 +39,6 @@ typedef struct resource_values_s {
 	float value[NO_RESOURCE];
 	MaritimeInfo info;
 } resource_values_t;
-
-static const char *resource_types[NO_RESOURCE] = {
-	_("brick"),
-	_("grain"),
-	_("ore"),
-	_("wool"),
-	_("lumber")
-};
 
 static Map *map;
 static int quote_num;
@@ -1536,7 +1529,6 @@ static void greedy_consider_quote(UNUSED (gint partner),
 	if (!we_supply[give])
 	    continue;
 	if (!my_assets[give]) {
-	    printf("Dont't have %s\n", resource_types[give]);
 	    continue;
 	}
 	for (take = 0; take < NO_RESOURCE; take++) {

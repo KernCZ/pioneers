@@ -22,9 +22,7 @@
 #define _ai_h
 
 #include <glib.h>
-#include <gnome.h>
 #include "callback.h"
-#include "gnocatan-path.h"
 
 void ai_wait (void);
 void ai_chat (const char *message);

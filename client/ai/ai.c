@@ -19,10 +19,14 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "ai.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <sys/param.h>
-#include "ai.h"
+#include <sys/types.h>
+#include <string.h>
+#include <unistd.h>
+#include <time.h>
 
 static const char *server = "127.0.0.1";
 static const char *port = "5556";
@@ -30,7 +34,7 @@ static char *ai;
 static int waittime = 1000;
 static int local_argc;
 static char **local_argv;
-static gboolean silent;
+static gboolean silent = FALSE;
 
 static const char *get_gnocatan_dir(void)
 {
@@ -94,7 +98,6 @@ static void ai_init (int argc, char **argv)
 
 	local_argc = argc;
 	local_argv = argv;
-	silent = FALSE;
 
 	while ( (c = getopt(argc, argv, "s:p:n:a:t:ch") ) != EOF)
 	{
@@ -167,17 +170,8 @@ void ai_chat (const char *message)
 		cb_chat (message);
 }
 
-void frontend_set_callbacks (int argc, char **argv)
+void frontend_set_callbacks (void)
 {
-	/* this should really not be done here.  It should be in
-	 * frontend_init.  However, i18n needs it to be done before
-	 * frontend_init is called, so it must be done here.  Please fix
-	 * this if you know how.  See also client/gui/offline.c and
-	 * client/common/gnocatan.c */
-	gnome_program_init (PACKAGE, VERSION, LIBGNOMEUI_MODULE, argc, argv,
-			GNOME_PARAM_POPT_TABLE, NULL, GNOME_PARAM_APP_DATADIR,
-			DATADIR, NULL);
-
 	callbacks.init = &ai_init;
 	callbacks.offline = &ai_offline;
 	callbacks.start_game = &ai_start_game;

@@ -19,6 +19,15 @@
 
 include $(top_srcdir)/rules.make
 
-SUBDIRS = common help gtk ai
+ALWAYS_SUBDIRS = common ai
+if HAVE_SCROLLKEEPER
+SCROLLKEEPER_SUBDIRS = help
+endif
+
+if HAVE_GNOME
+GNOME_SUBDIRS =gtk
+endif
+SUBDIRS = $(ALWAYS_SUBDIRS) $(SCROLLKEEPER_SUBDIRS) $(GNOME_SUBDIRS)
+DIST_SUBDIRS = common help gtk ai
 
 noinst_HEADERS = callback.h

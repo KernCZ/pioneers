@@ -25,7 +25,6 @@
 #include "client.h"
 #include "callback.h"
 #include <glib.h>
-#include "config-gnome.h"
 
 static void run_main (void)
 {
@@ -36,22 +35,14 @@ static void run_main (void)
 
 int main(int argc, char *argv[])
 {
-	config_init( "/gnocatan/" );
 	client_init ();
 	callbacks.mainloop = &run_main;
 
-	/* for now this function gets the commandline arguments, although
-	 * they really should not be needed.  They are currently needed
-	 * because it must call gnome_program_init. */
-	frontend_set_callbacks (argc, argv);
-
-	/* this should really be done before frontend_set_callbacks, but it
-	 * needs gnome_program_init, which is done in frontend_set_callbacks.
-	 * If someone knows how to fix this (so we can do without gnome),
-	 * then please do so. */
 #if ENABLE_NLS
 	init_nls();
 #endif
+
+	frontend_set_callbacks ();
 
 	/* this must come after the frontend_set_callbacks, because it sets the
 	 * mode to offline, which means a callback is called. */

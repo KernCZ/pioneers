@@ -1,23 +1,4 @@
-# Gnocatan - Implementation of the excellent Settlers of Catan board game.
-#   Go buy a copy.
 #
-# Copyright (C) 1999 the Free Software Foundation
-# 
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
-
 # No modifications of this Makefile should be necessary.
 #
 # To use this template:
@@ -52,13 +33,12 @@
 #
 
 
-# ************* Begin of section some packagers may need to modify  **************
+# **********  Begin of section some packagers may need to modify  **********
 # This variable (docdir) specifies where the documents should be installed.
 # This default value should work for most packages.
-# docdir = $(datadir)/@PACKAGE@/doc/$(docname)/$(lang)
 docdir = $(datadir)/gnome/help/$(docname)/$(lang)
 
-# **************  You should not have to edit below this line  *******************
+# **********  You should not have to edit below this line  **********
 xml_files = $(entities) $(docname).xml
 
 EXTRA_DIST = $(xml_files) $(omffile)
@@ -103,7 +83,7 @@ uninstall-local-doc:
 	-if test "$(figdir)"; then \
 	  for file in $(srcdir)/$(figdir)/*.png; do \
 	    basefile=`echo $$file | sed -e  's,^.*/,,'`; \
-	    rm -f $(docdir)/$(figdir)/$$basefile; \
+	    rm -f $(DESTDIR)$(docdir)/$(figdir)/$$basefile; \
 	  done; \
 	  rmdir $(DESTDIR)$(docdir)/$(figdir); \
 	fi
@@ -112,3 +92,4 @@ uninstall-local-doc:
 	done
 	-rmdir $(DESTDIR)$(docdir)
 
+clean-local: clean-local-omf

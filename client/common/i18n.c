@@ -20,14 +20,14 @@
  */
 
 #include "config.h"
-#include <math.h>
 #include <locale.h>
-#include <gnome.h>
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
 
 #if ENABLE_NLS
 
 #include "callback.h"
-#include "config-gnome.h"
 
 /* Needed below for a dirty trick */
 extern int _nl_msg_cat_cntr;
@@ -47,7 +47,7 @@ lang_desc languages[] = {
 };
 gchar *current_language = NULL;
 
-static lang_desc *find_lang_desc(const gchar *code)
+lang_desc *find_lang_desc(const gchar *code)
 {
 	lang_desc *ld;
 
@@ -63,9 +63,6 @@ void init_nls(void)
 	gchar *linguas;
 	gchar *p;
 	lang_desc *ld;
-	gchar *saved_lang;
-	const gchar *saved_locale;
-	gint novar;
 	const gchar *set_locale;
 
 	/* mark languages supported from ALL_LINGUAS (+English) */
@@ -76,23 +73,7 @@ void init_nls(void)
 	}
 	g_free(linguas);
 
- 	saved_lang = config_get_string("settings/language",&novar);
-	if (!novar && (ld = find_lang_desc(saved_lang)))
-		saved_locale = ld->localedef;
-	else
-		saved_locale = "C";
-
-	/* Change language, method found at 
-	 * http://www.gnu.org/software/gettext/manual/html_chapter/gettext_10.html#SEC154 
-	 */
-	setenv("LANGUAGE", saved_lang, 1);
-	setenv("LC_ALL", saved_locale, 1); /* Do this too, so setlocale works too */
-	/* Make change known */
-	++_nl_msg_cat_cntr;
-
 	set_locale = setlocale(LC_ALL, "");
-	if (!set_locale)
-		set_locale = "C";
 	bindtextdomain(PACKAGE, LOCALEDIR);
 	textdomain(PACKAGE);
 
@@ -117,7 +98,6 @@ void init_nls(void)
 			current_language = g_strdup("en");
 		}
 	}
-	g_free(saved_lang);
 }
 
 gboolean change_nls(lang_desc *ld)
@@ -129,12 +109,16 @@ gboolean change_nls(lang_desc *ld)
 		return FALSE;
 	}
 
-	/* dirty trick to make gettext aware of new catalog */
+	/* Change language, method found at 
+	 * http://www.gnu.org/software/gettext/manual/html_chapter/gettext_10.html#SEC154 
+	 */
+	setenv("LANGUAGE", ld->code, 1);
+	setenv("LC_ALL", ld->localedef, 1); /* Do this too, so setlocale works too */
+	/* Make change known */
 	++_nl_msg_cat_cntr;
 
 	g_free(current_language);
 	current_language = g_strdup(ld->code);
 	return TRUE;
 }
-
 #endif

@@ -653,7 +653,7 @@ int main(int argc, char *argv[])
 	/* FIXME: do I need to initialize i18n for Gnome2? */
 	/*gnome_i18n_init();*/
 	setlocale(LC_ALL, "");
-	bindtextdomain(PACKAGE, GNOMELOCALEDIR);
+	bindtextdomain(PACKAGE, LOCALEDIR);
 	textdomain(PACKAGE);
 
 	/* tell gettext to return UTF-8 strings */

@@ -46,17 +46,17 @@ ADMIN_GTK_FILES_ACTIVE =
 ADMIN_GTK_FILES_INACTIVE = admin-gtk.c
 endif
 
-INCLUDES = \
+AM_CPPFLAGS = \
 	-I$(srcdir)/.. \
 	-I$(srcdir)/../.. \
 	-I$(srcdir)/../../common \
-	-DGNOMELOCALEDIR=\""$(datadir)/locale"\" \
 	-DTHEMEDIR=\"$(themedir)\" \
 	-DDATADIR=\"$(datadir)\" \
 	$(ADMIN_GTK) \
         -I$(includedir) \
 	$(GNOME2_CFLAGS)  \
-	$(debug_includes)
+	$(debug_includes) \
+	$(extra_includes)
 
 EXTRA_gnocatan_SOURCES = $(ADMIN_GTK_FILES_INACTIVE)
 

@@ -17,6 +17,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+extra_includes = \
+	-DLOCALEDIR=\""$(datadir)/locale"\" \
+	-DGNOCATAN_DIR_DEFAULT=\""$(datadir)/games/gnocatan"\" \
+	-DGNOCATAN_SERVER_CONSOLE_PATH=\""$(bindir)/gnocatan-server-console"\" \
+	-DGNOCATAN_AI_PATH=\""$(bindir)/gnocatanai"\"
+
 if DEBUG
 debug_includes = \
 	-Wall \

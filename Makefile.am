@@ -20,7 +20,7 @@
 
 include $(top_srcdir)/rules.make
 
-SUBDIRS = po intl common client server meta-server ai docs
+SUBDIRS = po common client server meta-server ai docs
 
 EXTRA_DIST = autogen.sh gnocatan.spec xmldocs.make omf.make rules.make
 
@@ -39,3 +39,7 @@ dist-hook:
 distclean-local:
 	rm -f *~
 	rm -rf autom4te.cache
+
+# This line is added, because scrollkeeper leaves many files 
+# in /var/scrollkeeper, that makes 'make distcheck' fail
+distuninstallcheck_listfiles = find . -type f -print | grep -v '^\./var/scrollkeeper'

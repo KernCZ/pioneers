@@ -20,25 +20,21 @@
 
 include $(top_srcdir)/rules.make
 
-pixmapdir =$(datadir)/pixmaps/gnocatan
-Gamesdir=$(datadir)/gnome/apps/Games
+configdir = $(datadir)/games/gnocatan
 
 noinst_PROGRAMS = gnocatanai
 
 gnocatanai_DEPENDENCIES = \
 	../common/libgnocatanclient.a \
-	../../common/libgnocatan.a \
-	../../common/libgnocatan_gtk.a
+	../../common/libgnocatan.a 
 
-INCLUDES = \
+AM_CPPFLAGS = \
 	-I$(srcdir)/.. \
 	-I$(srcdir)/../.. \
 	-I$(srcdir)/../../common \
-	-DGNOMELOCALEDIR=\""$(datadir)/locale"\" \
         -I$(includedir) \
-	-DDATADIR=\"$(datadir)\" \
-	$(GNOME2_CFLAGS) \
-	$(debug_includes)
+	$(debug_includes) \
+	$(extra_includes)
 
 gnocatanai_SOURCES = \
 	ai.h \
@@ -47,6 +43,4 @@ gnocatanai_SOURCES = \
 
 gnocatanai_LDADD = \
 	../common/libgnocatanclient.a \
-	../../common/libgnocatan.a \
-	../../common/libgnocatan_gtk.a \
-	$(GNOME2_LIBS)
+	../../common/libgnocatan.a 

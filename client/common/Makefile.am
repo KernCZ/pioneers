@@ -24,15 +24,13 @@ noinst_LIBRARIES = libgnocatanclient.a
 
 libgnocatanclient_a_DEPENDENCIES = ../../common/libgnocatan.a
 
-INCLUDES = \
+AM_CPPFLAGS = \
 	-I$(srcdir)/.. \
 	-I$(srcdir)/../.. \
 	-I$(srcdir)/../../common \
-        -I$(includedir) \
-	-DLOCALEDIR=\""$(datadir)/locale"\" \
-	$(GLIB2_CFLAGS) \
-	$(GNOME2_CFLAGS) \
-	$(debug_includes)
+	-I$(includedir) \
+	$(debug_includes) \
+	$(extra_includes)
 
 libgnocatanclient_a_SOURCES = \
 	build.c \

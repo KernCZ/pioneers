@@ -45,7 +45,6 @@
 
 #include <glib.h>
 #include "config.h"
-#include "gnocatan-path.h"
 #include "meta.h"
 
 typedef enum {

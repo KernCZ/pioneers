@@ -3,19 +3,11 @@ include $(top_srcdir)/rules.make
 
 bin_PROGRAMS = gnocatan-meta-server
 
-INCLUDES = \
+AM_CPPFLAGS = \
 	-I$(srcdir)/../common -I. \
 	-I$(includedir) \
-	$(GNOME2_CFLAGS) \
-	$(debug_includes)
-
+	$(debug_includes) \
+	$(extra_includes)
 
 gnocatan_meta_server_SOURCES = \
 	gnocatan-meta-server.c
-
-gnocatan_meta_server_LDADD = \
-	$(GLIB2_LIBS)
-
-# We don't need this, do we?  -- egnor
-# install-data-local:
-#	-chgrp games $(bindir)/gnocatan-meta-server && chmod 2111 $(bindir)/gnocatan-meta-server

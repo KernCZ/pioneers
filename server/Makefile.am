@@ -26,13 +26,13 @@ bin_PROGRAMS = gnocatan-server-gtk gnocatan-server-console
 
 noinst_LIBRARIES = libgnocatan_server.a
 
-INCLUDES = \
+AM_CPPFLAGS = \
 	-I$(srcdir)/../common -I. \
-	-DGNOMELOCALEDIR=\""$(datadir)/locale"\" \
 	-DDATADIR=\"$(datadir)\" \
 	-I$(includedir) \
 	$(GNOME2_CFLAGS) \
-	$(debug_includes)
+	$(debug_includes) \
+	$(extra_includes)
 
 gnocatan_server_gtk_DEPENDENCIES = libgnocatan_server.a \
 	../common/libgnocatan.a ../common/libgnocatan_gtk.a
@@ -73,8 +73,7 @@ gnocatan_server_gtk_LDADD = \
 
 gnocatan_server_console_LDADD = \
 	libgnocatan_server.a \
-	../common/libgnocatan.a \
-	$(GLIB2_LIBS)
+	../common/libgnocatan.a 
 
 config_DATA = \
 	default.game \
@@ -103,7 +102,3 @@ Games_DATA = gnocatan-server.desktop
 EXTRA_DIST = \
 	$(config_DATA) \
 	$(Games_DATA)
-
-# We don't need this, do we?  -- egnor
-# install-data-local:
-#	-chgrp games $(bindir)/gnocatan-server && chmod 2111 $(bindir)/gnocatan-server

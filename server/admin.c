@@ -47,7 +47,6 @@
 
 #include "glib-driver.h"
 #include "gnocatan-server.h"
-#include "gnocatan-path.h"
 
 #define TERRAIN_DEFAULT	0
 #define TERRAIN_RANDOM	1

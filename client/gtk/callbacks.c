@@ -102,21 +102,8 @@ static void frontend_new_bank (const gint *new_bank)
 }
 
 /* set all the callbacks. */
-void frontend_set_callbacks (int argc, char **argv)
+void frontend_set_callbacks (void)
 {
-	/* this should really not be done here.  It should be in
-	 * frontend_init.  However, i18n needs it to be done before
-	 * frontend_init is called, so it must be done here.  Please fix
-	 * this if you know how.  See alse client/gui/offline.c and
-	 * client/common/gnocatan.c */
-	gnome_program_init (PACKAGE, VERSION,
-		LIBGNOMEUI_MODULE,
-		argc, argv,
-		GNOME_PARAM_POPT_TABLE, NULL,
-		GNOME_PARAM_APP_DATADIR, DATADIR,
-		NULL);
-
-	/* set the callbacks */
 	callbacks.init = &frontend_init;
 	callbacks.network_status = &frontend_network_status;
 	callbacks.instructions = &frontend_instructions;

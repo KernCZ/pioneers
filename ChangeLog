@@ -1,3 +1,19 @@
+2004-09-26  0.8.1.36  Roland Clobus <rclobus@bigfoot.com>
+	* Makefile.am, autogen.sh, configure.in, omf.make, rules.make,
+	xmldocs.make, ai/Makefile.am, client/Makefile.am,
+	client/ai/Makefile.am, client/common/Makefile.am, common/Makefile.am,
+	meta-server/Makefile.am, client/gtk/Makefile.am, server/Makefile.am,
+	server/gnocatan-server-gtk.c: New autogen.sh script, with optional
+	Gnome/Gtk and scrollkeeper.
+	* ai/ai.c, client/ai/ai.h, meta-server/gnocatan-meta-server.c,
+	server/gnocatan-server.h, server/server.c: Removed the need for the
+	generated file gnocatan-path.h
+	* client/callback.h, client/ai/ai.c, client/common/gnocatan.c,
+	client/common/i18n.c, client/gtk/callbacks.c, client/gtk/offline.c:
+	The new frontend_init uses the argc and argv, instead of set_callbacks
+	* client/ai/greedy.c, client/common/resource.c: Removed unneeded Gnome
+	dependency
+	
 2004-09-06  0.8.1.35  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/gui.c, client/gtk/gui.h: Made left pane resizable.
 	* client/gtk/identity.c: Made identity panel resizable.

@@ -23,7 +23,7 @@
 #define _callback_h
 
 /* this function should be defined by the frontend. */
-void frontend_set_callbacks (int argc, char **argv);
+void frontend_set_callbacks(void);
 
 /* this file should only include what the frontend needs, to prevent the
  * frontend's namespace to be too full.  Especially client.h should not
@@ -250,6 +250,7 @@ extern gchar *current_language;
 
 void init_nls(void);
 gboolean change_nls(lang_desc *ld);
+lang_desc *find_lang_desc(const gchar *code);
 #endif
 
 extern struct callbacks callbacks;

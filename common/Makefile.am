@@ -24,10 +24,11 @@ noinst_LIBRARIES = libgnocatan.a libgnocatan_gtk.a
 
 noinst_HEADERS = authors.h
 
-INCLUDES = \
-	-DGNOMELOCALEDIR=\""$(datadir)/locale"\" \
-        -I$(includedir) $(GNOME2_CFLAGS) \
-	$(debug_includes)
+AM_CPPFLAGS = \
+	-I$(includedir) \
+	$(GNOME2_CFLAGS) \
+	$(debug_includes) \
+	$(extra_includes)
 
 libgnocatan_a_SOURCES = \
 	buildrec.c \
@@ -42,7 +43,6 @@ libgnocatan_a_SOURCES = \
 	driver.h \
 	game.c \
 	game.h \
-	gnocatan-path.h.in \
 	log.c \
 	log.h \
 	map.c \
@@ -64,7 +64,7 @@ libgnocatan_a_LIBADD = \
 	$(MT_RAND_OBJ)
 
 libgnocatan_a_DEPENDENCIES = \
-	$(MT_RAND_OBJ) gnocatan-path.h
+	$(MT_RAND_OBJ)
 
 libgnocatan_gtk_a_SOURCES = \
 	common_gtk.c \
@@ -75,12 +75,6 @@ libgnocatan_gtk_a_SOURCES = \
 	game-settings.h \
 	select-game.c \
 	select-game.h
-
-gnocatan-path.h: gnocatan-path.h.in
-	rm -f $(<D)/$(@F)
-	ddir="`echo $(datadir)`"; \
-	bdir="`echo $(bindir)`"; \
-	sed -e "s,@datadir\@,$$ddir,g" -e "s,@bindir\@,$$bdir,g" $< >$(<D)/$(@F)
 
 authors.h: ../AUTHORS
 	echo -n "#define AUTHORLIST " > $@

@@ -20,7 +20,6 @@
 #include "map.h"
 #include "cards.h"
 #include "client.h"
-#include "gnocatan-path.h"
 
 
 static const char *get_gnocatan_dir(void)

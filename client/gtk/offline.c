@@ -22,6 +22,7 @@
 #include "frontend.h"
 #include <gnome.h>
 #include "common_gtk.h"
+#include "config-gnome.h"
 
 static gboolean have_dlg = FALSE;
 static gboolean connectable = FALSE;
@@ -92,23 +93,46 @@ static gint compare_int(gconstpointer a, gconstpointer  b)
 }
 
 /* this function is called to let the frontend initialize itself. */
-void frontend_init (UNUSED(int argc), UNUSED(char **argv))
+void frontend_init (int argc, char **argv)
 {
 	GtkWidget *app;
+	const char *server = "localhost";
+	const char *port = "5556";
+	const char *name = "Player";
+	gboolean quitaftergameover = FALSE;
 
 	frontend_widgets = g_hash_table_new (hash_int, compare_int);
 
 	set_ui_driver( &GTK_Driver );
-	/* this should really be done here, but i18n can't live without it.
-	 * Therefore this is moved to set_callbacks, which is called before
-	 * i18n initialization
+
+	config_init( "/gnocatan/" );
+
+	const struct poptOption options[] = {
+	{"server", 's', POPT_ARG_STRING, &server, 0, N_("Server"), server},
+	{"port", 'p', POPT_ARG_STRING, &port, 0, N_("Port"), port},
+	{"name", 'n', POPT_ARG_STRING, &name, 0, N_("Player name"), NULL},
+	{"quit", 'q', POPT_ARG_NONE, &quitaftergameover, -1, N_("Quit the game after game over"), NULL},
+	POPT_TABLEEND
+	};
+
 	gnome_program_init (PACKAGE, VERSION,
 		LIBGNOMEUI_MODULE,
 		argc, argv,
-		GNOME_PARAM_POPT_TABLE, NULL,
+		GNOME_PARAM_POPT_TABLE, NULL /* options */,
 		GNOME_PARAM_APP_DATADIR, DATADIR,
 		NULL);
-	*/
+
+#if ENABLE_NLS
+	/* Override the language if it is set in the config */
+	gint novar;
+	lang_desc *ld;
+	gchar *saved_lang;
+
+	saved_lang = config_get_string("settings/language",&novar);
+	if (!novar && (ld = find_lang_desc(saved_lang)))
+		change_nls(ld);
+	g_free(saved_lang);
+#endif
 
 	/* Create the application window
 	 */
