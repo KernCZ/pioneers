@@ -20,11 +20,14 @@
 #include "buildrec.h"
 #include "server.h"
 #include "meta.h"
+#include "common_gtk.h"
 
 static GtkWidget *app;
 static GameParams *params;
 static gboolean register_server;
 static int server_port = 5556;
+
+UIDriver *driver = NULL;
 
 static void quit_cb(GtkWidget *widget, void *data)
 {
@@ -478,6 +481,8 @@ static GtkWidget *build_interface()
 
 int main(int argc, char *argv[])
 {
+	driver = &GTK_Driver;
+
 	gnome_init("gnocatan-server", VERSION, argc, argv);
 
 	/* Create the application window

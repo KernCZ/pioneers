@@ -17,9 +17,13 @@
 #include "client.h"
 #include "common_gtk.h"
 
+UIDriver *driver = NULL;
+
 int main(int argc, char *argv[])
 {
 	GtkWidget *app;
+
+	driver = &GTK_Driver;
 
 	gnome_init("gnocatan", VERSION, argc, argv);
 

@@ -1,7 +1,10 @@
 2000-05-12  Steve Langasek <vorlon@dodds.net>
 
+	* client/gnocatan.c, server/gnocatan-server.c: Changed main() loops
+	to initialize an appropriate UIDriver.
+
 	* common/state.h: Exported [inc,dec]_use_count() so that they're
-	available to the interface drivers
+	available to the interface drivers.
 
 	* common/driver.h, common/game.h, common/state.h: Fixed some
 	header files so that they automatically include headers on which
