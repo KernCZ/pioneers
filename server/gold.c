@@ -151,9 +151,13 @@ static gboolean receive_gold_function (Player *player, gint event,
 	}
 	/* give the gold */
 	player->gold = 0;
-	cost_refund (resources, player->assets);
-	/* don't give them again when resources are dealt */
-	cost_refund (resources, player->prev_assets);
+	for (idx = 0; idx < NO_RESOURCE; ++idx) {
+		player->assets[idx] += resources[idx];
+		/* don't give them again when resources are dealt */
+		player->prev_assets[idx] += resources[idx];
+		/* take it out of the bank */
+		game->bank_deck[idx] -= resources[idx];
+	}
 	player_broadcast (player, PB_ALL, "chose-gold %R\n", resources);
 	if (sm_current (sm) == (StateFunc)mode_receive_gold)
 		sm_goto (sm, (StateFunc)mode_idle);

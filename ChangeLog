@@ -1,4 +1,9 @@
 2003-08-14  Bas Wijnen <b.wijnen@phys.rug.nl>
+	* server/gold.c, client/gold.c: fixed bug that gold was not taken out
+	of the bank.  Added support for giving out gold during setup.  Fixed
+	display of gold choosing dialog (update bank etc).
+
+2003-08-14  Bas Wijnen <b.wijnen@phys.rug.nl>
 	* server/pregame.c server/gold.c server/server.h: gold is now also
 	given out in setup phase.
 

@@ -268,6 +268,8 @@ void gold_choose_player_must(gint player_num, gint num, gint *bank,
 	gchar *row_data[3];
 	gchar buff[16];
 
+	if (player_num == my_player_num () ) gold.myturn = myturn;
+
 	if (gold.dlg != NULL) {
 		for (idx = 0; idx < NO_RESOURCE; ++idx) {
 			if (bank[idx] != gold.res[idx].bank) {
@@ -275,10 +277,9 @@ void gold_choose_player_must(gint player_num, gint num, gint *bank,
 				format_info (&gold.res[idx]);
 			}
 		}
+		if (player_num == my_player_num () ) gold.target = num;
 		check_total ();
 	}
-
-	if (player_num == my_player_num () ) gold.myturn = myturn;
 
 	row = gtk_clist_find_row_from_data(GTK_CLIST(gold_choose_clist),
 			player_get(player_num));
@@ -313,6 +314,19 @@ void gold_choose_player_did(gint player_num, gint *resources) {
 		GTK_SIGNAL_FUNC(ignore_close), NULL);
 		gnome_dialog_close(GNOME_DIALOG(gold.dlg));
 		gold.dlg = NULL;
+		return;
+	}
+	if (gold.dlg != NULL) {
+		gint num = 0, idx;
+		for (idx = 0; idx < NO_RESOURCE; ++idx) {
+			gold.res[idx].bank -= resources[idx];
+			if (gold.res[idx].take > gold.res[idx].bank)
+				gold.res[idx].take = gold.res[idx].bank;
+			num += gold.res[idx].bank;
+			format_info (&gold.res[idx]);
+		}
+		if (num < gold.target) gold.target = num;
+		check_total ();
 	}
 }
 
