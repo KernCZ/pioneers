@@ -21,6 +21,7 @@
 #include "state.h"
 #include "config-gnome.h"
 
+static GtkWidget *meta_create_button;
 static GtkWidget *meta_dlg;
 static GtkWidget *server_clist;
 static Session *ses;
@@ -30,12 +31,32 @@ static GtkWidget *port_entry;
 static GtkWidget *name_entry;
 static GtkWidget *meta_server_entry;
 
+static GtkWidget *server_waiting_dlg = NULL;
+
+static GtkWidget *cserver_dlg;
+
+static GtkWidget *game_combo;	/* select game type */
+static GtkWidget *terrain_toggle; /* random terrain Yes/No */
+static GtkWidget *seven_combo;	/* select sevens rule */
+static GtkWidget *victory_spin;	/* victory point target */
+static GtkWidget *players_spin;	/* number of players */
+static GtkWidget *register_toggle; /* register with meta server? */
+static GtkWidget *port_spin;	/* server port */
+
+static int cfg_terrain = 0, cfg_num_players = 4, cfg_victory_points = 10,
+		   cfg_sevens_rule = 1;
+static gchar *cfg_gametype = NULL;
+
 static enum {
 	MODE_SIGNON,
 	MODE_REDIRECT,
-	MODE_SERVER_LIST
-} mode;
+	MODE_LIST
+} meta_mode, gametype_mode, create_mode;
+static Session *gametype_ses;
+static Session *create_ses;
 
+static gint meta_server_version_major;
+static gint meta_server_version_minor;
 static gint num_redirects;
 
 #define STRARG_LEN 128
@@ -46,8 +67,10 @@ static gchar server_port[INTARG_LEN];
 static gchar server_version[INTARG_LEN];
 static gchar server_max[INTARG_LEN];
 static gchar server_curr[INTARG_LEN];
-static gchar server_map[STRARG_LEN];
-static gchar server_comment[STRARG_LEN];
+static gchar server_vpoints[STRARG_LEN];
+static gchar server_sevenrule[STRARG_LEN];
+static gchar server_terrain[STRARG_LEN];
+static gchar server_title[STRARG_LEN];
 
 gchar *meta_server = NULL, *meta_port = NULL;
 
@@ -57,11 +80,151 @@ static gchar *row_data[] = {
 	server_version,
 	server_max,
 	server_curr,
-	server_map,
-	server_comment
+	server_terrain,
+	server_vpoints,
+	server_sevenrule,
+	server_title
 };
 
 static void query_meta_server(gchar *server, gchar *port);
+static void show_waiting_box(GtkWidget *parent);
+static void close_waiting_box(void);
+
+static void show_waiting_box(GtkWidget *parent)
+{
+	GtkWidget *label, *vbox;
+
+	server_waiting_dlg = gnome_dialog_new(_("Receiving Data"), NULL);
+	gnome_dialog_set_parent(GNOME_DIALOG(server_waiting_dlg), GTK_WINDOW(parent));
+	gtk_widget_realize(server_waiting_dlg);
+	vbox = GNOME_DIALOG(server_waiting_dlg)->vbox;
+	gtk_widget_show(vbox);
+	gtk_container_border_width(GTK_CONTAINER(vbox), 5);
+	label = gtk_label_new(_("Receiving data from meta server..."));
+	gtk_box_pack_start(GTK_BOX(vbox), label, TRUE, TRUE, 0);
+	gtk_widget_show(label);
+	gtk_widget_show(server_waiting_dlg);
+
+	log_message( MSG_INFO, _("Receiving data from meta server...\n"));
+}
+
+static void close_waiting_box(void)
+{
+	if (server_waiting_dlg) {
+		gtk_widget_destroy(server_waiting_dlg);
+		log_message( MSG_INFO, _("finished.\n"));
+		server_waiting_dlg = NULL;
+	}
+}
+
+/* -------------------- get game types -------------------- */
+
+static void add_game_to_combo( gchar *name )
+{
+	GtkWidget *item;
+
+	item = gtk_list_item_new_with_label(name);
+	gtk_object_set_data(GTK_OBJECT(item), "params", strdup(name));
+	gtk_widget_show(item);
+	gtk_container_add(GTK_CONTAINER(((GtkCombo *)game_combo)->list), item);
+}
+
+static void meta_gametype_notify(NetEvent event, void *user_data, char *line)
+{
+	switch (event) {
+	case NET_CONNECT:
+		break;
+	case NET_CONNECT_FAIL:
+		net_free(gametype_ses);
+		gametype_ses = NULL;
+		break;
+	case NET_CLOSE:
+		if (gametype_mode == MODE_SIGNON)
+			log_message( MSG_ERROR, _("Meta-server kicked us off\n"));
+		net_free(gametype_ses);
+		close_waiting_box();
+		gametype_ses = NULL;
+		break;
+	case NET_READ:
+		switch (gametype_mode) {
+		case MODE_SIGNON:
+			net_printf(gametype_ses, "listtypes\n");
+			gametype_mode = MODE_LIST;
+			break;
+
+		case MODE_LIST:
+		case MODE_REDIRECT: /* make gcc happy */
+			/* A server description looks like this:
+			 * title=%s\n
+			 */
+			if (strncmp(line, "title=", 6) == 0)
+				add_game_to_combo(line+6);
+			break;
+		}
+		break;
+	}
+}
+
+static void get_meta_server_games_types(gchar *server, gchar *port)
+{
+	show_waiting_box(cserver_dlg);
+	gametype_ses = net_new(meta_gametype_notify, NULL);
+	if (net_connect(gametype_ses, server, port))
+		gametype_mode = MODE_SIGNON;
+	else {
+		net_free(gametype_ses);
+		gametype_ses = NULL;
+		close_waiting_box();
+	}
+}
+
+/* -------------------- create game server -------------------- */
+
+static void meta_create_notify(NetEvent event, void *user_data, char *line)
+{
+	switch (event) {
+	case NET_CONNECT:
+		break;
+	case NET_CONNECT_FAIL:
+		net_free(create_ses);
+		create_ses = NULL;
+		break;
+	case NET_CLOSE:
+		if (create_mode == MODE_SIGNON)
+			log_message( MSG_ERROR, _("Meta-server kicked us off\n"));
+		net_free(create_ses);
+		create_ses = NULL;
+		break;
+	case NET_READ:
+		switch (create_mode) {
+		case MODE_SIGNON:
+			net_printf(create_ses, "create %d %d %d %d %s\n",
+				   cfg_terrain, cfg_num_players,
+				   cfg_victory_points, cfg_sevens_rule, cfg_gametype);
+			create_mode = MODE_LIST;
+			break;
+
+		case MODE_LIST:
+		case MODE_REDIRECT: /* make gcc happy */
+			if (strncmp(line, "host=", 5) == 0)
+			    gtk_entry_set_text(GTK_ENTRY(server_entry), line+5);
+			else if (strncmp(line, "port=", 5) == 0)
+			    gtk_entry_set_text(GTK_ENTRY(port_entry), line+5);
+			else if (strcmp(line, "started") == 0) {
+			    log_message( MSG_INFO, _("New game server started on %s port %s\n"),
+					 gtk_entry_get_text(GTK_ENTRY(server_entry)),
+					 gtk_entry_get_text(GTK_ENTRY(port_entry)));
+			    gtk_widget_destroy(cserver_dlg);
+			    gtk_widget_destroy(meta_dlg);
+			}
+			else
+			    log_message( MSG_ERROR, "Meta-server: %s\n", line);
+			break;
+		}
+	}
+}
+
+/* -------------------- get running servers info -------------------- */
 
 static gboolean check_str_info(gchar *line, gchar *prefix, gchar *data)
 {
@@ -106,20 +269,21 @@ static void meta_notify(NetEvent event, void *user_data, char *line)
 		ses = NULL;
 		break;
 	case NET_CLOSE:
-		if (mode == MODE_SIGNON)
+		if (meta_mode == MODE_SIGNON)
 			log_message( MSG_ERROR, _("Meta-server kicked us off\n"));
+		close_waiting_box();
 		net_free(ses);
 		ses = NULL;
 		break;
 	case NET_READ:
-		switch (mode) {
+		switch (meta_mode) {
 		case MODE_SIGNON:
 		case MODE_REDIRECT:
 			if (strncmp(line, "goto ", 5) == 0) {
 				gchar server[NI_MAXHOST];
 				gchar port[NI_MAXSERV];
 
-				mode = MODE_REDIRECT;
+				meta_mode = MODE_REDIRECT;
 				net_close(ses);
 				ses = NULL;
 				if (num_redirects++ == 10) {
@@ -139,24 +303,34 @@ static void meta_notify(NetEvent event, void *user_data, char *line)
 					log_message( MSG_ERROR, _("Bad redirect line: %s\n"), line);
 				break;
 			}
-			/* Assume welcome message, ask for server list
-			 */
-			net_printf(ses, "client\n");
-			mode = MODE_SERVER_LIST;
+			meta_server_version_major = meta_server_version_minor = 0;
+			if (strncmp(line, "welcome ", 8) == 0) {
+				char *p = strstr(line, "version ");
+				if (p) {
+					p += 8;
+					meta_server_version_major = atoi(p);
+					p += strspn(p, "0123456789");
+					if (*p == '.')
+						meta_server_version_minor = atoi(p+1);
+				}
+			}
+			if (meta_server_version_major < 1) {
+				log_message(MSG_INFO, _("Meta server too old to create "
+										"servers (version %d.%d)\n"),
+							meta_server_version_major,
+							meta_server_version_minor);
+			}
+			else {
+				gtk_widget_set_sensitive(meta_create_button, TRUE);
+				net_printf(ses, "version %s\n", META_PROTOCOL_VERSION);
+			}
+			
+			net_printf(ses, meta_server_version_major >= 1 ?
+					   "listservers\n" : "client\n");
+			meta_mode = MODE_LIST;
 			break;
 
-		case MODE_SERVER_LIST:
-			/* A server description looks like this:
-			 * server\n
-			 * host=%s\n
-			 * port=%d\n
-			 * version=%s\n
-			 * max=%d\n
-			 * curr=%d\n
-			 * map=%s\n
-			 * comment=%s\n
-			 * end
-			 */
+		case MODE_LIST:
 			if (strcmp(line, "server") == 0)
 				server_start();
 			else if (strcmp(line, "end") == 0)
@@ -166,8 +340,13 @@ static void meta_notify(NetEvent event, void *user_data, char *line)
 				 || check_str_info(line, "version=", server_version)
 				 || check_int_info(line, "max=", server_max)
 				 || check_int_info(line, "curr=", server_curr)
-				 || check_str_info(line, "map=", server_map)
-				 || check_str_info(line, "comment=", server_comment))
+				 || check_str_info(line, "vpoints=", server_vpoints)
+				 || check_str_info(line, "sevenrule=", server_sevenrule)
+				 || check_str_info(line, "terrain=", server_terrain)
+				 || check_str_info(line, "title=", server_title)
+				 /* meta-protocol 0 compat */
+				 || check_str_info(line, "map=", server_terrain)
+				 || check_str_info(line, "comment=", server_title))
 					;
 			break;
 		}
@@ -177,6 +356,7 @@ static void meta_notify(NetEvent event, void *user_data, char *line)
 
 static void query_meta_server(gchar *server, gchar *port)
 {
+	show_waiting_box(meta_dlg);
 	if (num_redirects > 0)
 		log_message( MSG_INFO, _("Redirected to meta-server at %s, port %s\n"),
 			 server, port);
@@ -186,12 +366,254 @@ static void query_meta_server(gchar *server, gchar *port)
 
 	ses = net_new(meta_notify, NULL);
 	if (net_connect(ses, server, port))
-		mode = MODE_SIGNON;
+		meta_mode = MODE_SIGNON;
 	else {
 		net_free(ses);
 		ses = NULL;
+		close_waiting_box();
 	}
 }
+
+/* -------------------- create server dialog -------------------- */
+
+static void start_clicked_cb(GtkWidget *start_btn, gpointer user_data)
+{
+	log_message( MSG_INFO, _("Requesting new game server\n"));
+	
+	create_ses = net_new(meta_create_notify, NULL);
+	if (net_connect(create_ses, meta_server, meta_port))
+		create_mode = MODE_SIGNON;
+	else {
+		net_free(create_ses);
+		create_ses = NULL;
+	}
+}
+
+static void show_terrain()
+{
+	GtkWidget *label;
+
+	if (terrain_toggle == NULL)
+		return;
+	label = GTK_BIN(terrain_toggle)->child;
+	if (label == NULL)
+		return;
+
+	gtk_label_set_text(GTK_LABEL(label),cfg_terrain ? _("Random") : _("Default"));
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(terrain_toggle),cfg_terrain);
+}
+
+static void players_spin_changed_cb(GtkWidget* widget, gpointer user_data)
+{
+	cfg_num_players = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(widget));
+}
+
+static void victory_spin_changed_cb(GtkWidget* widget, gpointer user_data)
+{
+	cfg_victory_points = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(widget));
+}
+
+static void game_select_cb(GtkWidget *list, gpointer user_data)
+{
+	GList *selected = GTK_LIST(list)->selection;
+
+	if (selected != NULL)
+		cfg_gametype = gtk_object_get_data(GTK_OBJECT(selected->data), "params");
+}
+
+static void terrain_toggle_cb(GtkToggleButton *toggle, gpointer user_data)
+{
+	cfg_terrain = gtk_toggle_button_get_active(toggle);
+	show_terrain();
+}
+
+static void sevens_rule_select_cb(GtkWidget *list, gpointer user_data)
+{
+	GList *selected = GTK_LIST(list)->selection;
+
+	if (selected != NULL)
+		cfg_sevens_rule = atoi(gtk_object_get_data(GTK_OBJECT(selected->data), "params"));
+}
+
+
+
+static GtkWidget *build_create_interface()
+{
+	GtkWidget *vbox;
+	GtkWidget *hbox;
+	GtkWidget *frame;
+	GtkWidget *table;
+	GtkWidget *label;
+	GtkObject *adj;
+	GtkWidget *start_btn;
+	GtkWidget *scroll_win;
+	GtkWidget *message_text;
+	GtkWidget *sevens_combo;
+	GtkWidget *item, *items[3];
+
+	static gchar *titles[] = {
+		N_("Name"), N_("Location")
+	};
+
+	vbox = gtk_vbox_new(FALSE, 0);
+	gtk_widget_show(vbox);
+	gtk_container_border_width(GTK_CONTAINER(vbox), 5);
+
+	hbox = gtk_hbox_new(FALSE, 5);
+	gtk_widget_show(hbox);
+	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);
+
+	frame = gtk_frame_new(_("Server Parameters"));
+	gtk_widget_show(frame);
+	gtk_box_pack_start(GTK_BOX(hbox), frame, FALSE, TRUE, 0);
+
+	table = gtk_table_new(5, 2, FALSE);
+	gtk_widget_show(table);
+	gtk_container_add(GTK_CONTAINER(frame), table);
+	gtk_container_border_width(GTK_CONTAINER(table), 3);
+	gtk_table_set_row_spacings(GTK_TABLE(table), 3);
+	gtk_table_set_col_spacings(GTK_TABLE(table), 5);
+
+	label = gtk_label_new(_("Game Name"));
+	gtk_widget_show(label);
+	gtk_table_attach(GTK_TABLE(table), label, 0, 1, 0, 1,
+			 (GtkAttachOptions)GTK_FILL,
+			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+
+	game_combo = gtk_combo_new();
+	gtk_editable_set_editable(GTK_EDITABLE(GTK_COMBO(game_combo)->entry),
+				  FALSE);
+	gtk_widget_set_usize(game_combo, 150, -1);
+	gtk_signal_connect(GTK_OBJECT(GTK_COMBO(game_combo)->list),
+			   "select_child",
+			   GTK_SIGNAL_FUNC(game_select_cb), NULL);
+	gtk_widget_show(game_combo);
+	gtk_table_attach(GTK_TABLE(table), game_combo, 1, 2, 0, 1,
+			 (GtkAttachOptions)GTK_FILL,
+			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
+
+	label = gtk_label_new(_("Map Terrain"));
+	gtk_widget_show(label);
+	gtk_table_attach(GTK_TABLE(table), label, 0, 1, 1, 2,
+			 (GtkAttachOptions)GTK_FILL,
+			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+
+	terrain_toggle = gtk_toggle_button_new_with_label(_(""));
+	gtk_widget_show(terrain_toggle);
+	gtk_table_attach(GTK_TABLE(table), terrain_toggle, 1, 2, 1, 2,
+			 (GtkAttachOptions)GTK_FILL,
+			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_signal_connect(GTK_OBJECT(terrain_toggle), "toggled",
+			   GTK_SIGNAL_FUNC(terrain_toggle_cb), NULL);
+	show_terrain();
+	if (cfg_terrain)
+		gtk_toggle_button_toggled(GTK_TOGGLE_BUTTON(terrain_toggle));
+
+	label = gtk_label_new("Sevens Rule");
+	gtk_widget_show(label);
+	gtk_table_attach(GTK_TABLE(table), label, 0, 1, 2, 3,
+			 (GtkAttachOptions)GTK_FILL,
+			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+
+	sevens_combo = gtk_combo_new();
+	gtk_editable_set_editable(GTK_EDITABLE(GTK_COMBO(sevens_combo)->entry),
+				  FALSE);
+	gtk_widget_set_usize(sevens_combo, 150, -1);
+	gtk_signal_connect(GTK_OBJECT(GTK_COMBO(sevens_combo)->list),
+			   "select_child",
+			   GTK_SIGNAL_FUNC(sevens_rule_select_cb), NULL);
+	gtk_widget_show(sevens_combo);
+	gtk_table_attach(GTK_TABLE(table), sevens_combo, 1, 2, 2, 3,
+			 (GtkAttachOptions)GTK_FILL,
+			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
+
+	item = items[0] = gtk_list_item_new_with_label("Normal");
+	gtk_object_set_data(GTK_OBJECT(item), "params", "0");
+	gtk_widget_show(item);
+	gtk_container_add(GTK_CONTAINER(((GtkCombo *)sevens_combo)->list), item);
+	item = items[1] = gtk_list_item_new_with_label("Reroll on 1st 2 turns");
+	gtk_object_set_data(GTK_OBJECT(item), "params", "1");
+	gtk_widget_show(item);
+	gtk_container_add(GTK_CONTAINER(((GtkCombo *)sevens_combo)->list), item);
+	item = items[2] = gtk_list_item_new_with_label("Reroll all 7s");
+	gtk_object_set_data(GTK_OBJECT(item), "params", "2");
+	gtk_widget_show(item);
+	gtk_container_add(GTK_CONTAINER(((GtkCombo *)sevens_combo)->list), item);
+	gtk_list_select_child(GTK_LIST(((GtkCombo *)sevens_combo)->list),
+						  items[cfg_sevens_rule]);
+
+	label = gtk_label_new(_("Number of Players"));
+	gtk_widget_show(label);
+	gtk_table_attach(GTK_TABLE(table), label, 0, 1, 3, 4,
+			 (GtkAttachOptions)GTK_FILL,
+			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+
+	adj = gtk_adjustment_new(4, 2, MAX_PLAYERS, 1, 1, 1);
+	players_spin = gtk_spin_button_new(GTK_ADJUSTMENT(adj), 1, 0);
+	gtk_widget_show(players_spin);
+	gtk_table_attach(GTK_TABLE(table), players_spin, 1, 2, 3, 4,
+			 (GtkAttachOptions)GTK_FILL,
+			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_signal_connect(GTK_OBJECT(players_spin), "changed",
+			   GTK_SIGNAL_FUNC(players_spin_changed_cb), NULL);
+
+	label = gtk_label_new(_("Victory Point Target"));
+	gtk_widget_show(label);
+	gtk_table_attach(GTK_TABLE(table), label, 0, 1, 4, 5,
+			 (GtkAttachOptions)GTK_FILL,
+			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+
+	adj = gtk_adjustment_new(10, 5, 20, 1, 1, 1);
+	victory_spin = gtk_spin_button_new(GTK_ADJUSTMENT(adj), 1, 0);
+	gtk_widget_show(victory_spin);
+	gtk_table_attach(GTK_TABLE(table), victory_spin, 1, 2, 4, 5,
+			 (GtkAttachOptions)GTK_FILL,
+			 (GtkAttachOptions)GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_signal_connect(GTK_OBJECT(victory_spin), "changed",
+			   GTK_SIGNAL_FUNC(victory_spin_changed_cb), NULL);
+
+	start_btn = gtk_button_new_with_label(_("Start Server"));
+	gtk_widget_show(start_btn);
+	gtk_container_add(GTK_CONTAINER(vbox), start_btn);
+	gtk_signal_connect(GTK_OBJECT(start_btn), "clicked",
+			   GTK_SIGNAL_FUNC(start_clicked_cb), NULL);
+
+	get_meta_server_games_types(meta_server, meta_port);
+
+	return vbox;
+}
+
+void create_server_dlg(GtkWidget *widget, GtkWidget *parent)
+{
+	GtkWidget *dlg_vbox;
+	GtkWidget *vbox;
+	GtkWidget *scroll_win;
+
+	cserver_dlg = gnome_dialog_new(_("Create New Gnocatan Server"),
+				    GNOME_STOCK_BUTTON_CLOSE, NULL);
+	gnome_dialog_set_parent(GNOME_DIALOG(cserver_dlg), GTK_WINDOW(parent));
+	gtk_signal_connect(GTK_OBJECT(cserver_dlg), "destroy",
+			   GTK_SIGNAL_FUNC(gtk_widget_destroyed), &cserver_dlg);
+	gtk_widget_realize(cserver_dlg);
+
+	dlg_vbox = GNOME_DIALOG(cserver_dlg)->vbox;
+	gtk_widget_show(dlg_vbox);
+
+	vbox = build_create_interface();
+	gtk_widget_show(vbox);
+	gtk_box_pack_start(GTK_BOX(dlg_vbox), vbox, TRUE, TRUE, 0);
+	gtk_container_border_width(GTK_CONTAINER(vbox), 5);
+
+	gnome_dialog_set_close(GNOME_DIALOG(cserver_dlg), TRUE);
+	gtk_widget_show(cserver_dlg);
+}
+
+/* -------------------- select server dialog -------------------- */
 
 static void select_server_cb(GtkWidget *clist, gint row, gint column,
 			     GdkEventButton* event, gpointer user_data)
@@ -216,8 +638,10 @@ static void create_meta_dlg(GtkWidget *widget, GtkWidget *parent)
 		N_("Version"),
 		N_("Max"),
 		N_("Curr"),
-		N_("Map"),
-		N_("Comment")
+		N_("Terrain"),
+		N_("Vic. Points"),
+		N_("Sevens Rule"),
+		N_("Map Name")
 	};
 
 	meta_server = gtk_entry_get_text(GTK_ENTRY(meta_server_entry));
@@ -255,13 +679,13 @@ static void create_meta_dlg(GtkWidget *widget, GtkWidget *parent)
 
 	scroll_win = gtk_scrolled_window_new(NULL, NULL);
 	gtk_widget_show(scroll_win);
-	gtk_widget_set_usize(scroll_win, 470, 150);
+	gtk_widget_set_usize(scroll_win, 640, 150);
 	gtk_box_pack_start(GTK_BOX(vbox), scroll_win, TRUE, TRUE, 0);
 	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scroll_win),
 				       GTK_POLICY_AUTOMATIC,
 				       GTK_POLICY_AUTOMATIC);
 
-	server_clist = gtk_clist_new_with_titles(7, titles);
+	server_clist = gtk_clist_new_with_titles(9, titles);
         gtk_signal_connect(GTK_OBJECT(server_clist), "destroy",
 			   GTK_SIGNAL_FUNC(gtk_widget_destroyed), &server_clist);
 	gtk_widget_show(server_clist);
@@ -272,12 +696,21 @@ static void create_meta_dlg(GtkWidget *widget, GtkWidget *parent)
 	gtk_clist_set_column_width(GTK_CLIST(server_clist), 3, 25);
 	gtk_clist_set_column_width(GTK_CLIST(server_clist), 4, 25);
 	gtk_clist_set_column_width(GTK_CLIST(server_clist), 5, 45);
-	gtk_clist_set_column_width(GTK_CLIST(server_clist), 6, 100);
+	gtk_clist_set_column_width(GTK_CLIST(server_clist), 6, 60);
+	gtk_clist_set_column_width(GTK_CLIST(server_clist), 7, 70);
+	gtk_clist_set_column_width(GTK_CLIST(server_clist), 8, 100);
 	gtk_clist_column_titles_show(GTK_CLIST(server_clist));
 	gtk_signal_connect(GTK_OBJECT(server_clist), "select_row",
 			   GTK_SIGNAL_FUNC(select_server_cb), NULL);
 
 	gnome_dialog_set_close(GNOME_DIALOG(meta_dlg), TRUE);
+
+	meta_create_button = gtk_button_new_with_label("Create New Server");
+	gtk_signal_connect(GTK_OBJECT(meta_create_button), "clicked",
+			   GTK_SIGNAL_FUNC(create_server_dlg), meta_dlg);
+	gtk_widget_set_sensitive(meta_create_button, FALSE);
+	gtk_widget_show(meta_create_button);
+	gtk_box_pack_start(GTK_BOX(vbox), meta_create_button, TRUE, TRUE, 0);
 
 	gtk_widget_show(meta_dlg);
 
