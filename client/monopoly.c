@@ -135,6 +135,7 @@ void monopoly_destroy_dlg()
 void monopoly_player(gint player_num, gint victim_num, gint num, Resource type)
 {
 	gchar buf[128];
+	gchar *tmp;
 
 	player_modify_statistic(player_num, STAT_RESOURCES, num);
 	player_modify_statistic(victim_num, STAT_RESOURCES, -num);
@@ -158,7 +159,8 @@ void monopoly_player(gint player_num, gint victim_num, gint num, Resource type)
 	}
 	/* I am a bystander
 	 */
-	log_message( MSG_STEAL, _("%s took %s from"),
-		 player_name(player_num, TRUE), buf);
-	log_message( MSG_STEAL, _(" %s.\n"), player_name(victim_num, FALSE));
+	tmp = g_strdup(player_name(player_num, TRUE));
+	log_message( MSG_STEAL, _("%s took %s from %s.\n"),
+		 tmp, buf, player_name(victim_num, FALSE));
+	g_free(tmp);
 }
