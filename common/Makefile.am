@@ -17,6 +17,7 @@ libgnocatan_a_SOURCES = \
 	driver.h \
 	game.c \
 	game.h \
+	gnocatan-path.h \
 	log.c \
 	log.h \
 	map.c \
