@@ -1,6 +1,9 @@
 2004-10-24  0.8.1.40  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/gui.c, client/gtk/gui.h, client/gtk/trade.c: Removed the
 	second global variable map. (The other is client/common/client.[ch])
+	* client/gtk/guimap.c, client/gtk/guimap.h, client/gtk/histogram.c:
+	Reenabled the dots that indicate the probability (when enough space in
+	the hex/chit is available)
 
 2004-10-17  0.8.1.39  Roland Clobus <rclobus@bigfoot.com>
 	* common/map.h, common/map_query.c: Fixed longest road detection

@@ -100,7 +100,7 @@ void guimap_bridge_polygon(const GuiMap *gmap, const Edge *edge, Polygon *poly);
 void guimap_city_polygon(const GuiMap *gmap, const Node *node, Polygon *poly);
 void guimap_settlement_polygon(const GuiMap *gmap, const Node *node, Polygon *poly);
 
-gint guimap_get_chit_radius(PangoLayout *layout);
+gint guimap_get_chit_radius(PangoLayout *layout, gboolean show_dots);
 void draw_dice_roll(PangoLayout *layout, GdkPixmap *pixmap, GdkGC *gc,
 		    gint x_offset, gint y_offset, gint radius,
 		    gint n, gint terrain, gboolean highlight);

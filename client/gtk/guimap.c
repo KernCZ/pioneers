@@ -765,11 +765,12 @@ static void build_hex_region(GuiMap *gmap)
 }
 
 /** @return The radius of the chit for the current font size */
-gint guimap_get_chit_radius(PangoLayout *layout)
+gint guimap_get_chit_radius(PangoLayout *layout, gboolean show_dots)
 {
 	gint width, height;
 	gint size_for_99_sqr;
 	gint size_for_port_sqr;
+	gint size_for_text_sqr;
 
 	/* Calculate the maximum size of the text in the chits */
 	pango_layout_set_markup(layout, "<b>99</b>", -1);
@@ -780,8 +781,14 @@ gint guimap_get_chit_radius(PangoLayout *layout)
 	pango_layout_get_pixel_size(layout, &width, &height);
 	size_for_port_sqr = sqr(width) + sqr(height);
 
+	size_for_text_sqr = MAX(size_for_99_sqr, size_for_port_sqr);
+	if (show_dots) {
+		gint size_with_dots = sqr(height/2 + 2) + sqr(6 * 2);
+		if (size_with_dots*4 > size_for_text_sqr)
+			return sqrt(size_with_dots);
+	}
 	/* Divide: calculations should have been sqr(width/2)+sqr(height/2) */
-	return sqrt(MAX(size_for_99_sqr, size_for_port_sqr)) /2;
+	return sqrt(size_for_text_sqr) /2;
 }
 
 void guimap_display(GuiMap *gmap)
@@ -826,14 +833,20 @@ void guimap_display(GuiMap *gmap)
 	 */
 	maximum_size = gmap->hex_radius * 2 / 3;
 
+	/* First try to fix the text and the dots in the chit */
+	pango_font_description_set_size(pfd, font_size);
+	pango_layout_set_font_description(gmap->layout, pfd);
+
+	size_for_text = guimap_get_chit_radius(gmap->layout, TRUE);
+
 	/* Shrink the font size until the letters fit in the chit */
-	do {
+	while (maximum_size < size_for_text && font_size > 0) {
 		pango_font_description_set_size(pfd, font_size);
 		pango_layout_set_font_description(gmap->layout, pfd);
 		font_size -= PANGO_SCALE;
 
-		size_for_text = guimap_get_chit_radius(gmap->layout);
-	} while (maximum_size < size_for_text && font_size > 0);
+		size_for_text = guimap_get_chit_radius(gmap->layout, FALSE);
+	};
 
 	gmap->chit_radius = size_for_text;
 

@@ -126,11 +126,11 @@ static gboolean expose_histogram_cb(GtkWidget *area, UNUSED(GdkEventExpose *even
 	layout = gtk_widget_create_pango_layout(area, buff);
 	pango_layout_get_pixel_size(layout, &label_width, &label_height);
 	
-	CHIT_RADIUS = guimap_get_chit_radius(layout);
+	CHIT_RADIUS = guimap_get_chit_radius(layout, TRUE);
 
 	/* Determine if the drawing area is large enough to draw the labels */
 	draw_labels_and_chits = TRUE;
-	if (label_width + CHIT_RADIUS * 2 * 11 > w) draw_labels_and_chits = FALSE;
+	if (label_width + (CHIT_RADIUS+1) * 2 * 11 > w) draw_labels_and_chits = FALSE;
 	if (label_height * 5 + CHIT_RADIUS * 2 > h) draw_labels_and_chits = FALSE;
 
 	grid_offset_x = (draw_labels_and_chits ? label_width : 0) + SPACING_AROUND;
@@ -179,8 +179,8 @@ static gboolean expose_histogram_cb(GtkWidget *area, UNUSED(GdkEventExpose *even
 
 			draw_dice_roll(layout, area->window, histogram_gc, 
 					x + bar_width / 2, 
-					h - CHIT_RADIUS, 
-					CHIT_RADIUS - 1, 
+					h - CHIT_RADIUS - 1, 
+					CHIT_RADIUS, 
 					i, 
 					SEA_TERRAIN, 
 					i == last_roll);
