@@ -227,6 +227,10 @@ gint new_computer_player(gchar *server, gchar *port)
 	return -1;
     } else if (pid == 0) {
 	/* child */
+	int i;
+	for(i = 3; i < 256; ++i) close(i);
+	close(0);
+	open("/dev/null", O_RDONLY);
 
 	/* start a second child to avoid zombies */
 	pid2 = fork();
@@ -245,7 +249,7 @@ gint new_computer_player(gchar *server, gchar *port)
 	}
 	else {
 	    /* parent */
-	    exit(0);
+	    _exit(0);
 	}
     } else {
 	/* parent */
