@@ -1,7 +1,7 @@
 Summary: 	Playable implementation of the Settlers of Catan 
 Name: 		gnocatan
 Version: 	0.7.1.90
-Release: 	2
+Release: 	3
 Group: 		X11/Games
 Copyright: 	GPL
 Url: 		http://gnocatan.sourceforge.net/
@@ -112,7 +112,11 @@ make install prefix=$RPM_BUILD_ROOT/usr
 /usr/bin/gnocatan
 /usr/share/gnome/apps/Games/gnocatan.desktop
 /usr/share/pixmaps/gnome-gnocatan.png
+/usr/share/pixmaps/gnocatan/*
 /usr/share/games/gnocatan/images/*
+/usr/man/man6/gnocatan.6.gz
+/usr/share/locale/es/LC_MESSAGES/gnocatan.mo
+/usr/share/locale/de/LC_MESSAGES/gnocatan.mo
 
 %files help
 %defattr(-,root,root)
@@ -134,12 +138,14 @@ make install prefix=$RPM_BUILD_ROOT/usr
 %defattr(-,root,root)
 %doc AUTHORS COPYING ChangeLog INSTALL README NEWS 
 /usr/bin/gnocatan-server-console
+/usr/man/man6/gnocatan-server-console.6.gz
 
 %files server-gtk
 %defattr(-,root,root)
 %doc AUTHORS COPYING ChangeLog INSTALL README NEWS 
 /usr/bin/gnocatan-server-gtk
 /usr/share/gnome/apps/Games/gnocatan-server.desktop
+/usr/man/man6/gnocatan-server-gtk.6.gz
 
 %files server-data
 %defattr(-,root,root)
