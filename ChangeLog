@@ -1,4 +1,10 @@
 2003-09-29  Bas Wijnen <b.wijnen@phys.rug.nl>
+	* ai/client.c, client/client.c, server/turn.c: made ship move back
+	more logical in protocol.
+	* server/buildutil.c, server/buildutil.c: bugfixes.
+	* common/map_query.c: Made query more general.
+
+2003-09-29  Bas Wijnen <b.wijnen@phys.rug.nl>
 	* server/buildutil.c, server/server.h, server/turn.c: Fixed longest
 	road bug.
 	* ai/client.h: Fixed bug.

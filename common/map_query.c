@@ -146,19 +146,18 @@ gboolean is_node_spacing_ok(Node *node)
 
 	for (idx = 0; idx < numElem(node->edges); idx++) {
 		Edge *edge = node->edges[idx];
+		gint idx2;
 
 		if (edge == NULL)
 			continue;
 		if (node->map->have_bridges && !is_edge_on_land(edge))
 			continue;
-		else {
-			if (edge->nodes[0] == node) {
-				if (edge->nodes[1]->type != BUILD_NONE)
-					return FALSE;
-			} else {
-				if (edge->nodes[0]->type != BUILD_NONE)
-					return FALSE;
-			}
+		else for (idx2 = 0; idx2 < numElem(edge->nodes); ++idx2) {
+			Node *scan = edge->nodes[idx2];
+			if (scan == node)
+				continue;
+			if (scan->type != BUILD_NONE)
+				return FALSE;
 		}
 	}
 

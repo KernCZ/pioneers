@@ -280,8 +280,12 @@ static gboolean check_other_players(StateMachine *sm)
 					player_num == my_player_num(), 0);
 	    return TRUE;
 	}
-	if (sm_recv(sm, "move %d %d %d %d %d %d %d", &sx, &sy, &spos, &dx, &dy, &dpos, &isundo)) {
-		player_build_move(player_num, sx, sy, spos, dx, dy, dpos, isundo);
+	if (sm_recv(sm, "move %d %d %d %d %d %d", &sx, &sy, &spos, &dx, &dy, &dpos)) {
+		player_build_move(player_num, sx, sy, spos, dx, dy, dpos, FALSE);
+		return TRUE;
+	}
+	if (sm_recv(sm, "move-back %d %d %d %d %d %d", &sx, &sy, &spos, &dx, &dy, &dpos)) {
+		player_build_move(player_num, sx, sy, spos, dx, dy, dpos, TRUE);
 		return TRUE;
 	}
 	if (sm_recv(sm, "remove %B %d %d %d", &build_type, &x, &y, &pos)) {

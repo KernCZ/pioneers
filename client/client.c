@@ -292,8 +292,12 @@ static gboolean check_other_players(StateMachine *sm)
 		player_build_add(player_num, build_type, x, y, pos, TRUE);
 		return TRUE;
 	}
-	if (sm_recv(sm, "move %d %d %d %d %d %d %d", &sx, &sy, &spos, &dx, &dy, &dpos, &isundo)) {
-		player_build_move(player_num, sx, sy, spos, dx, dy, dpos, isundo);
+	if (sm_recv(sm, "move %d %d %d %d %d %d", &sx, &sy, &spos, &dx, &dy, &dpos)) {
+		player_build_move(player_num, sx, sy, spos, dx, dy, dpos, FALSE);
+		return TRUE;
+	}
+	if (sm_recv(sm, "move-back %d %d %d %d %d %d", &sx, &sy, &spos, &dx, &dy, &dpos)) {
+		player_build_move(player_num, sx, sy, spos, dx, dy, dpos, TRUE);
 		return TRUE;
 	}
 	if (sm_recv(sm, "remove %B %d %d %d", &build_type, &x, &y, &pos)) {
@@ -997,9 +1001,9 @@ static gboolean mode_move_response(StateMachine *sm, gint event)
 		chat_set_focus();
 		break;
 	case SM_RECV:
-		if (sm_recv(sm, "move %d %d %d %d %d %d 0",
+		if (sm_recv(sm, "move %d %d %d %d %d %d",
 			    &sx, &sy, &spos, &dx, &dy, &dpos)) {
-		build_move(sx, sy, spos, dx, dy, dpos, 0);
+		build_move(sx, sy, spos, dx, dy, dpos, FALSE);
 			waiting_for_network(FALSE);
 			sm_pop(sm);
 			return TRUE;
@@ -1919,9 +1923,9 @@ static gboolean mode_turn_undo_response(StateMachine *sm, gint event)
 			sm_goto(sm, mode_turn_rolled);
 			return TRUE;
 		}
-		if (sm_recv(sm, "move %d %d %d %d %d %d 1",
+		if (sm_recv(sm, "move-back %d %d %d %d %d %d",
 			    &sx, &sy, &spos, &dx, &dy, &dpos)) {
-			build_move(sx, sy, spos, dx, dy, dpos, 1);
+			build_move(sx, sy, spos, dx, dy, dpos, TRUE);
 			waiting_for_network(FALSE);
 			ship_moved = FALSE;
 			sm_goto(sm, mode_turn_rolled);

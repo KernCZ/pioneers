@@ -122,44 +122,46 @@ static void build_add(Player *player, BuildType type, gint x, gint y, gint pos)
 		sm_send(sm, "ERR bad-pos\n");
 		return;
 	}
-	/* Make sure the building connects to a road
-	 */
-	if (!map_building_connect_ok(map, player->num, type, x, y, pos)) {
-		sm_send(sm, "ERR bad-pos\n");
-		return;
-	}
-	/* Make sure the player can afford the building
-	 */
-	if (type == BUILD_SETTLEMENT) {
-		/* Make sure that there are some settlements left to use!
-		 */
-		if (player->num_settlements == game->params->num_build_type[BUILD_SETTLEMENT]) {
-			sm_send(sm, "ERR too-many settlement\n");
-			return;
-		}
-		if (!cost_can_afford(cost_settlement(), player->assets)) {
-			sm_send(sm, "ERR too-expensive\n");
-			return;
-		}
-	} else {
+
+	if (type == BUILD_CITY && can_settlement_be_upgraded (map_node(map, x, y, pos), player->num)) {
 		/* Make sure that there are some cities left to use!
 		 */
 		if (player->num_cities == game->params->num_build_type[BUILD_CITY]) {
 			sm_send(sm, "ERR too-many city\n");
 			return;
 		}
-		if (can_settlement_be_upgraded(map_node(map, x, y, pos),
-					       player->num)) {
-			if (!cost_can_afford(cost_upgrade_settlement(),
-					     player->assets)) {
+		if (!cost_can_afford(cost_upgrade_settlement(),
+				     player->assets)) {
+			sm_send(sm, "ERR too-expensive\n");
+			return;
+		}
+	} else {
+		/* New building: make sure it connects to a road
+		 */
+		if (!map_building_connect_ok(map, player->num, type, x, y, pos)) {
+			sm_send(sm, "ERR bad-pos\n");
+			return;
+		}
+		/* Make sure that there are some settlements left to use!
+		 * Also when building a city, there must be an intermediate
+		 * settlement.
+		 */
+		if (player->num_settlements == game->params->num_build_type[BUILD_SETTLEMENT]) {
+			sm_send(sm, "ERR too-many settlement\n");
+			return;
+		}
+		/* Make sure the player can afford the building
+		 */
+		if (type == BUILD_SETTLEMENT) {
+			if (!cost_can_afford(cost_settlement(), player->assets)) {
 				sm_send(sm, "ERR too-expensive\n");
 				return;
 			}
 		} else {
-			/* Make sure that there are some settlements left to
-			 * use (there must be an intermediate settlement) */
-			if (player->num_settlements == game->params->num_build_type[BUILD_SETTLEMENT]) {
-				sm_send(sm, "ERR too-many settlement\n");
+			/* Make sure that there are some cities left to use!
+			 */
+			if (player->num_cities == game->params->num_build_type[BUILD_CITY]) {
+				sm_send(sm, "ERR too-many city\n");
 				return;
 			}
 			if (!cost_can_afford(cost_city(), player->assets)) {
@@ -215,7 +217,7 @@ static void build_move (Player *player, gint sx, gint sy, gint spos,
 	}
 
 	/* everything is fine, tell everybode the ship has moved */
-	player_broadcast(player, PB_RESPOND, "move %d %d %d %d %d %d 0\n", sx, sy, spos, dx, dy, dpos);
+	player_broadcast(player, PB_RESPOND, "move %d %d %d %d %d %d\n", sx, sy, spos, dx, dy, dpos);
 
 	/* put the move in the undo information */
 	rec = g_malloc0(sizeof(*rec));
@@ -229,6 +231,7 @@ static void build_move (Player *player, gint sx, gint sy, gint spos,
 	rec->prev_pos = spos;
 	rec->longest_road = game->longest_road ? game->longest_road->num : -1;
 	player->build_list = g_list_append(player->build_list, rec);
+	player->has_ship_moved = TRUE;
 
 	/* check the longest road while the ship is moving */
 	check_longest_road (game, FALSE);

@@ -346,7 +346,9 @@ gboolean perform_undo(Player *player)
 		hex = map_hex(map, rec->prev_x, rec->prev_y);
 		hex->edges[rec->prev_pos]->owner = player->num;
 		hex->edges[rec->prev_pos]->type = BUILD_SHIP;
-		player_broadcast(player, PB_RESPOND, "move %d %d %d %d %d %d 1\n",
+		player->has_ship_moved = FALSE;
+		player_broadcast(player, PB_RESPOND,
+				"move-back %d %d %d %d %d %d\n",
 				rec->prev_x, rec->prev_y, rec->prev_pos,
 				rec->x, rec->y, rec->pos);
 		break;
