@@ -1,5 +1,18 @@
 2002-05-20  Roman Hodek  <roman@hodek.net>
 
+	* client/gui.[ch], client/client.c: on startup show a splash
+	screen that disappears on the first connect. Image contributed by
+	Tobias Jakobs.
+	
+	* client/gui.c (help_about_cb): collected more names from
+	the ChangeLog and added them to the about box.
+
+	* client/histogram.c: paint chips as x axis labelling like on map;
+	probability is a triangle rather Gaussian!! fix drawing.
+
+	* client/guimap.c (display_hex): separate out drawing of dice chip
+	into draw_dice_roll (needed by histogram also now).
+
 	* ai/client.c (global_filter): if net connection was close, print
 	message and exit.
 	
