@@ -1,10 +1,15 @@
+2000-05-25  Steve Langasek <vorlon@dodds.net>
+
+	* client/client.c: Squashed that nasty robber bug.  If it comes
+	back to life, we know it's a roach.
+
 2000-05-22  Andy Heroff <aheroff@mediaone.net>
 
 	* server/buildutils.c: Removed longest road debug define to prevent
-	  spamming the server's console. The debug code is still in there.
+	spamming the server's console. The debug code is still in there.
 
 	* client/gui.c: Built a settings dialog. It only has one setting,
-	  and it doesn't work yet. That's next.
+	and it doesn't work yet. That's next.
 
 2000-05-22  Roderick Schertler <roderick@argon.org>
 
@@ -406,6 +411,7 @@
 	the game.
 	
 1999-11-20  Dave Cole <dave@dccs.com.au>
+
 	* client/guimap.c: Replaced all of the bogus hand building of
 	ships, roads, settlements and cities with a single shape for each
 	which is scaled and rotated as required.
@@ -413,6 +419,7 @@
 	* client/chat.c: Small code reformat.
 	
 1999-09-04  Dave Cole <dave@dccs.com.au>
+
 	* gnocatan.spec, debian/gnocatan-server.files,
 	server/Makefile.am, server/small.game: Added small.game.
 
@@ -439,6 +446,7 @@
 	player.
 	
 1999-09-03  Dave Cole <dave@dccs.com.au>
+
 	* common/game.[ch]: Added params_copy() to create an independant
 	copy of a GameParams structure.
 
@@ -464,6 +472,7 @@
 	Updated to include new 0.4.0 files.
 	
 1999-09-02  Dave Cole <dave@dccs.com.au>
+
 	* client/client.c: Removed global Map @game_map and replaced it
 	with GameParams @game_params, which includes the game map.
 	Removed mode_map(), mode_map_load() and replaced them with
@@ -546,6 +555,7 @@
 	server/trade.c: Removed obsolete FIND_STUPID_RESOURCE_BUG code.
 
 1999-06-29  JT <jtraub@dragoncat.net>
+
 	* server/*.c: Made sure the server reset features were correct.
 
 1999-06-16  JT <jtraub@dragoncat.net>

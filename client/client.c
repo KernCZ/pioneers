@@ -936,6 +936,7 @@ static void move_robber(gint x, gint y, gint victim_num)
 
 static void rob_building(Node *node, gint player_num, Hex *hex)
 {
+	gui_cursor_none();
 	move_robber(hex->x, hex->y, node->owner);
 }
 
