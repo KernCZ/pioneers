@@ -57,6 +57,7 @@ void cb_connect (const gchar *server, const gchar *port)
 void cb_disconnect ()
 {
 	sm_close (SM() );
+	callback_mode = MODE_INIT;
 	callbacks.offline ();
 }
 

@@ -30,8 +30,8 @@ gint legend_page_enabled;
 
 GtkWidget *gui_get_dialog_button(GtkDialog *dlg, gint button);
 
-void gui_set_instructions(const gchar *fmt, ...);
-void gui_set_vp_target_value( gint vp );
+void gui_set_instructions(const gchar *text);
+void gui_set_vp_target_value(gint vp);
 void gui_set_net_status(gchar *text);
 
 void gui_show_trade_page(gboolean show);
@@ -50,14 +50,13 @@ void gui_cursor_none(void);
 void gui_cursor_set(CursorType type,
 		    CheckFunc check_func, SelectFunc select_func,
 		    const MapElement *user_data);
-void gui_draw_hex(Hex *hex);
-void gui_draw_edge(Edge *edge);
-void gui_draw_node(Node *node);
+void gui_draw_hex(const Hex *hex);
+void gui_draw_edge(const Edge *edge);
+void gui_draw_node(const Node *node);
 
 void gui_set_game_params(const GameParams *params);
 void gui_setup_mode(gint player_num);
 void gui_double_setup_mode(gint player_num);
-void gui_new_turn(gint player_num);
 void gui_highlight_chits(gint roll);
 
 GtkWidget *gui_build_interface(void);
@@ -70,7 +69,16 @@ extern GtkWidget *app_window;	/* main application window */
 /* gui states */
 typedef void (*GuiState)(GuiEvent event);
 
-void set_gui_state (GuiState state);
+#ifdef DEBUG
+	#define set_gui_state(A) \
+		g_print("New GUI_state: %s\n", #A); \
+		set_gui_state_nomacro(A)
+#else
+	#define set_gui_state(A) \
+		set_gui_state_nomacro(A)
+#endif
+void set_gui_state_nomacro(GuiState state);
+
 GuiState get_gui_state (void);
 void route_gui_event (GuiEvent event);
 

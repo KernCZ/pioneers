@@ -19,10 +19,7 @@
  */
 
 #include "config.h"
-#include <gtk/gtk.h>
-
 #include "frontend.h"
-#include "cost.h"
 
 GtkWidget *gameover_create_dlg(gint player_num, gint num_points)
 {

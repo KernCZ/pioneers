@@ -21,11 +21,8 @@
  */
 
 #include "config.h"
-#include <gtk/gtk.h>
-
 #include "frontend.h"
 #include "cost.h"
-#include "gui.h"
 
 static void trade_update(void);
 

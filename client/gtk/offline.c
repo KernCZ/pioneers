@@ -65,6 +65,7 @@ static void frontend_offline_gui (GuiEvent event)
 	case GUI_UPDATE:
 		frontend_gui_check (GUI_CONNECT_TRY, TRUE);
 		frontend_gui_check (GUI_CONNECT, !have_dlg && connectable);
+		frontend_gui_check (GUI_DISCONNECT, !have_dlg && !connectable);
 		break;
 	case GUI_CONNECT_TRY:
 		gui_show_splash_page(FALSE);
@@ -91,6 +92,8 @@ static void frontend_offline_gui (GuiEvent event)
 /* this function is called when offline mode is entered. */
 void frontend_offline ()
 {
+	gui_cursor_none(); /* Clear possible cursor */
+
 	connectable = TRUE;
 	if (have_dlg) return;
 
@@ -107,25 +110,12 @@ void frontend_offline ()
 		gui_show_splash_page(FALSE);
 		cb_connect(server, port);
 		quit_when_offline = TRUE;
+		port = NULL;
+		server = NULL;
+		frontend_gui_update ();
 	} else {
 		frontend_offline_start_connect_cb ();
 	}
-}
-
-static guint hash_int(gconstpointer key)
-{
-	guint hash_val = 0;
-	const char* ptr = (const char*)&key;
-	int idx;
-
-	for (idx = 0; idx < sizeof(key); idx++)
-		hash_val = hash_val * 33 + *ptr++;
-	return hash_val;
-}
-
-static gint compare_int(gconstpointer a, gconstpointer  b)
-{
-	return a == b;
 }
 
 /* this function is called to let the frontend initialize itself. */
@@ -137,7 +127,7 @@ void frontend_init (int argc, char **argv)
 	lang_desc *ld;
 #endif
 
-	frontend_widgets = g_hash_table_new (hash_int, compare_int);
+	frontend_gui_register_init();
 
 	set_ui_driver( &GTK_Driver );
 

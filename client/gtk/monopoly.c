@@ -21,7 +21,6 @@
  */
 
 #include "config.h"
-#include <gtk/gtk.h>
 #include "frontend.h"
 
 static GtkWidget *monop_dlg;
@@ -76,7 +75,7 @@ void monopoly_create_dlg()
         g_signal_connect(G_OBJECT(monop_dlg), "destroy",
 			G_CALLBACK(gtk_widget_destroyed), &monop_dlg);
 	gtk_widget_realize(monop_dlg);
-	/* Disable close: */
+	/* Disable close */
 	gdk_window_set_functions(monop_dlg->window, GDK_FUNC_ALL | GDK_FUNC_CLOSE);
 
 	dlg_vbox = GTK_DIALOG(monop_dlg)->vbox;

@@ -20,8 +20,9 @@
 
 #include "config.h"
 #include "frontend.h"
-#include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
+
+static const int MAX_NUMBER_OF_WIDGETS_PER_EVENT = 2;
 
 GHashTable *frontend_widgets;
 gboolean frontend_waiting_for_network;
@@ -38,28 +39,15 @@ static void set_sensitive (UNUSED(void *key), GuiWidgetState *gui,
 		gui->next = FALSE;
 
 	if (gui->widget != NULL && gui->next != gui->current) {
-		gtk_widget_set_sensitive((GtkWidget *)gui->widget, gui->next);
-		/* Hack alert! -- Bad code ahead :)
-		 * If mouse is over a toolbar button that becomes sensitive,
-		 * one can't click it without moving the mouse out and in
-		 * again. Seems to be a GTK bug. The workaround tests if the
-		 * mouse is inside the currently sensitivized button, and if
-		 * yes calls button_enter(). */
-		if (gui->next && GTK_IS_BUTTON(gui->widget)) {
-			gint x, y, state;
-			gtk_widget_get_pointer((GtkWidget *)gui->widget, &x, &y);
-			state = GTK_WIDGET_STATE((GtkWidget *)gui->widget);
-			if (state == GTK_STATE_NORMAL &&
-				x >= 0 && y >= 0 &&
-				x < ((GtkWidget *)gui->widget)->allocation.width &&
-				y < ((GtkWidget *)gui->widget)->allocation.height) {
-				gtk_button_enter(GTK_BUTTON(gui->widget));
-				GTK_BUTTON(gui->widget)->in_button = 1;
-			}
-		}
+		gtk_widget_set_sensitive(gui->widget, gui->next);
 	}
 	gui->current = gui->next;
 	gui->next = FALSE;
+}
+
+void frontend_gui_register_init ()
+{
+	frontend_widgets = g_hash_table_new(NULL, NULL);
 }
 
 void frontend_gui_update ()
@@ -71,24 +59,49 @@ void frontend_gui_update ()
 void frontend_gui_check (GuiEvent event, gboolean sensitive)
 {
 	GuiWidgetState *gui;
-	gui = g_hash_table_lookup(frontend_widgets, GINT_TO_POINTER(event));
-	if (gui != NULL)
-		gui->next = sensitive;
+	gint i;
+	gint key = event * MAX_NUMBER_OF_WIDGETS_PER_EVENT;
+	
+	/* Set all related widgets */
+	for (i = 0; i < MAX_NUMBER_OF_WIDGETS_PER_EVENT; ++i) {
+		gui = g_hash_table_lookup(frontend_widgets, 
+				GINT_TO_POINTER(key+i));
+		if (gui != NULL)
+			gui->next = sensitive;
+	}
 }
 
 static GuiWidgetState *gui_new (void *widget, gint id)
 {
+	gint i;
+	gint key = id * MAX_NUMBER_OF_WIDGETS_PER_EVENT;
 	GuiWidgetState *gui = g_malloc0(sizeof(*gui));
 	gui->widget = widget;
 	gui->id = id;
-	g_hash_table_insert(frontend_widgets, GINT_TO_POINTER(gui->id), gui);
+
+	/* Find an empty key */
+	i = 0;
+	while (i < MAX_NUMBER_OF_WIDGETS_PER_EVENT) {
+		if (g_hash_table_lookup(frontend_widgets, 
+				GINT_TO_POINTER(key + i))) 
+			++i;
+		else
+			break;
+	}	
+	g_assert(i != MAX_NUMBER_OF_WIDGETS_PER_EVENT);
+	g_hash_table_insert(frontend_widgets, GINT_TO_POINTER(key + i), gui);
 	return gui;
 }
 
 static void gui_free (GuiWidgetState *gui)
 {
-	g_hash_table_remove(frontend_widgets, GINT_TO_POINTER(gui->id));
-	g_free(gui);
+	gint i;
+	gint key = gui->id * MAX_NUMBER_OF_WIDGETS_PER_EVENT;
+
+	/* Find an empty key */
+	for (i = 0; i < MAX_NUMBER_OF_WIDGETS_PER_EVENT; ++i) {
+		g_hash_table_remove(frontend_widgets, GINT_TO_POINTER(key + i));
+	}	
 }
 
 static void route_event (UNUSED(void *widget), GuiWidgetState *gui)
@@ -107,31 +120,31 @@ static void destroy_route_event_cb (UNUSED(void *widget), GuiWidgetState *gui)
 	gui_free (gui);
 }
 
-void frontend_gui_register_destroy (void *widget, gint id)
+void frontend_gui_register_destroy (GtkWidget *widget, GuiEvent id)
 {
 	GuiWidgetState *gui = gui_new(widget, id);
 	gui->destroy_only = TRUE;
-	g_signal_connect(G_OBJECT((GtkWidget *)widget), "destroy",
+	g_signal_connect(G_OBJECT(widget), "destroy",
 			G_CALLBACK(destroy_route_event_cb), gui);
 }
 
-void frontend_gui_register (void *widget, gint id, const gchar *signal)
+void frontend_gui_register (GtkWidget *widget, GuiEvent id, const gchar *signal)
 {
 	GuiWidgetState *gui = gui_new(widget, id);
 	gui->signal = signal;
 	gui->current = TRUE;
 	gui->next = FALSE;
-	g_signal_connect(G_OBJECT((GtkWidget *)widget), "destroy",
+	g_signal_connect(G_OBJECT(widget), "destroy",
 		G_CALLBACK(destroy_event_cb), gui);
 	if (signal != NULL)
-		g_signal_connect(G_OBJECT((GtkWidget *)widget), signal,
+		g_signal_connect(G_OBJECT(widget), signal,
 			G_CALLBACK(route_event), gui);
 }
 
 gint hotkeys_handler (UNUSED(GtkWidget *w), GdkEvent *e, UNUSED(gpointer data))
 {
 	GuiWidgetState *gui;
-	gint arg = -1;
+	GuiEvent arg;
 	switch (e->key.keyval) {
 	case GDK_F1:
 		arg = GUI_ROLL;
@@ -172,7 +185,8 @@ gint hotkeys_handler (UNUSED(GtkWidget *w), GdkEvent *e, UNUSED(gpointer data))
 	default:
 		return 0; /* not handled */
 	}
-	gui = g_hash_table_lookup (frontend_widgets, GINT_TO_POINTER(arg));
+	gui = g_hash_table_lookup (frontend_widgets, 
+			GINT_TO_POINTER(arg * MAX_NUMBER_OF_WIDGETS_PER_EVENT));
 	if (!gui || !gui->current) return 0; /* not handled */
 	route_gui_event (arg);
 	return 1; /* handled */

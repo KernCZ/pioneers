@@ -21,21 +21,11 @@
 #ifndef _frontend_h
 #define _frontend_h
 
+#include <gtk/gtk.h>
 #include <stdio.h>
 #include <string.h>
 #include "callback.h"
-#include "config.h"
 #include "quoteinfo.h"
-
-/* Information about a GUI component */
-typedef struct {
-	void *widget;           /* the GTK widget */
-	gint id;                /* widget id */
-	gboolean destroy_only;  /* react to destroy signal */
-	const gchar *signal;    /* signal attached */
-	gboolean current;       /* is widget currently sensitive? */
-	gboolean next;          /* should widget be sensitive? */
-} GuiWidgetState;
 
 /* All graphics events. */
 typedef enum {
@@ -43,6 +33,7 @@ typedef enum {
 	GUI_CONNECT,
 	GUI_CONNECT_TRY,
 	GUI_CONNECT_CANCEL,
+	GUI_DISCONNECT,
 	GUI_CHANGE_NAME,
 	GUI_QUIT,
 	GUI_ROLL,
@@ -71,25 +62,35 @@ typedef enum {
 
 #include "gui.h"
 
-/* list of widgets. */
-extern GHashTable *frontend_widgets;
+/* Information about a GUI component */
+typedef struct {
+	GtkWidget *widget;      /* the GTK widget */
+	GuiEvent id;            /* widget id */
+	gboolean destroy_only;  /* react to destroy signal */
+	const gchar *signal;    /* signal attached */
+	gboolean current;       /* is widget currently sensitive? */
+	gboolean next;          /* should widget be sensitive? */
+} GuiWidgetState;
 
-/* all widgets are inactive while waiting for network. */
+/** all widgets are inactive while waiting for network. */
 extern gboolean frontend_waiting_for_network;
 
-/* set all widgets to their programmed state. */
+/** set all widgets to their programmed state. */
 void frontend_gui_update (void);
 
-/* program the state of a widget for when frontend_gui_update is called. */
+/** program the state of a widget for when frontend_gui_update is called. */
 void frontend_gui_check (GuiEvent event, gboolean sensitive);
 
-/* register a new destroy-only widget. */
-void frontend_gui_register_destroy (void *widget, gint id);
+/** initialise the frontend_gui_register_* functions */
+void frontend_gui_register_init (void);
 
-/* register a new "normal" widget. */
-void frontend_gui_register (void *widget, gint id, const gchar *signal);
+/** register a new destroy-only widget. */
+void frontend_gui_register_destroy (GtkWidget *widget, GuiEvent id);
 
-/* route an event to the gui event function */
+/** register a new "normal" widget. */
+void frontend_gui_register (GtkWidget *widget, GuiEvent id, const gchar *signal);
+
+/** route an event to the gui event function */
 void frontend_gui_route_event (GuiEvent event);
 
 /* callbacks */
@@ -128,10 +129,6 @@ void frontend_quote_end (void);
 void frontend_quote_monitor (void);
 void frontend_rolled_dice (gint die1, gint die2, gint player_num);
 void frontend_beep (void);
-/*void frontend_draw_edge (Edge *edge);
-void frontend_draw_node (Node *node);
-void frontend_draw_hex (Hex *hex);
-void frontend_update_stock (void);*/
 void frontend_bought_develop (DevelType type);
 void frontend_played_develop (gint player_num, gint card_idx, DevelType type);
 void frontend_resource_change (Resource type, gint new_amount);

@@ -20,8 +20,6 @@
  */
 
 #include "config.h"
-#include <gtk/gtk.h>
-
 #include "frontend.h"
 
 static GtkWidget *discard_clist; /* list of players who must discard */

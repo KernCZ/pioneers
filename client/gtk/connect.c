@@ -23,7 +23,6 @@
 #include "config.h"
 #include <ctype.h>
 #include <netdb.h>
-#include <gtk/gtk.h>
 #include <stdlib.h>
 #include <unistd.h> /* For usleep */
 

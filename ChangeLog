@@ -8,6 +8,17 @@
 	client/gtk/gold.c, client/gtk/gui.c, client/gtk/player.c,
 	client/gtk/resource.c: Main screen consistent again, now without
 	frames
+	* client/common/callback.c, client/gtk/connect.c,
+	client/gtk/develop.c, client/gtk/discard.c, client/gtk/frontend.c,
+	client/gtk/frontend.h, client/gtk/gameover.c, client/gtk/gold.c,
+	client/gtk/gui.c, client/gtk/gui.h, client/gtk/guimap.c,
+	client/gtk/guimap.h, client/gtk/histogram.c, client/gtk/identity.c,
+	client/gtk/legend.c, client/gtk/monopoly.c, client/gtk/offline.c,
+	client/gtk/player.c, client/gtk/plenty.c, client/gtk/quote.c,
+	client/gtk/resource.c, client/gtk/settingscreen.c, client/gtk/state.c,
+	client/gtk/trade.c: Preparations for 'Leave Game', added some
+	constness, chat disabled when offline, frontend_gui_register_* can
+	handle more than one widget, removed toolbar hack (not needed anymore)
 	
 2004-11-12 Roland Clobus <rclobus@bigfoot.com>
 	* Actually updated the build number to 0.8.1.42

@@ -26,6 +26,7 @@
 #include <assert.h>
 #include <gnome.h>
 
+#include "frontend.h"
 #include "cards.h"
 #include "cost.h"
 #include "log.h"
@@ -33,7 +34,6 @@
 #include "histogram.h"
 #include "theme.h"
 #include "config-gnome.h"
-#include "frontend.h"
 
 static GtkWidget *preferences_dlg;
 GtkWidget *app_window;		/* main application window */
@@ -76,6 +76,10 @@ static GnomeUIInfo game_menu[] = {
 	  (gpointer)route_widget_event, (gpointer)GUI_CONNECT, NULL,
 	  GNOME_APP_PIXMAP_STOCK, GTK_STOCK_NEW,
 	  'n', GDK_CONTROL_MASK, NULL },
+	{ GNOME_APP_UI_ITEM, N_("_Leave game"), N_("Leave this game"),
+	  (gpointer)route_widget_event, (gpointer)GUI_DISCONNECT, NULL,
+	  GNOME_APP_PIXMAP_STOCK, GTK_STOCK_STOP,
+	  0, 0, NULL },
 #ifdef ADMIN_GTK
 	{ GNOME_APP_UI_ITEM, N_("_Admin"), N_("Administer Gnocatan server"),
 	  (gpointer)show_admin_interface, NULL, NULL,
@@ -223,15 +227,8 @@ GtkWidget *gui_get_dialog_button(GtkDialog *dlg, gint button)
 	return NULL;
 }
 
-void gui_set_instructions(const gchar *fmt, ...)
+void gui_set_instructions(const gchar *text)
 {
-	va_list ap;
-	char text[256];
-
-	va_start(ap, fmt);
-	g_vsnprintf(text, sizeof(text), fmt, ap);
-	va_end(ap);
-
 	gnome_appbar_set_status(GNOME_APPBAR(app_bar), text);
 }
 
@@ -265,19 +262,19 @@ void gui_cursor_set(CursorType type,
 			  check_func, select_func, user_data, FALSE);
 }
 
-void gui_draw_hex(Hex *hex)
+void gui_draw_hex(const Hex *hex)
 {
 	if (gmap->pixmap != NULL)
 		guimap_draw_hex(gmap, hex);
 }
 
-void gui_draw_edge(Edge *edge)
+void gui_draw_edge(const Edge *edge)
 {
 	if (gmap->pixmap != NULL)
 		guimap_draw_edge(gmap, edge);
 }
 
-void gui_draw_node(Node *node)
+void gui_draw_node(const Node *node)
 {
 	if (gmap->pixmap != NULL)
 		guimap_draw_node(gmap, node);
@@ -605,6 +602,7 @@ static GtkWidget *build_main_interface(void)
 	GtkWidget *vbox;
 	GtkWidget *hpaned;
 	GtkWidget *vpaned;
+	GtkWidget *panel;
 
 	hpaned = gtk_hpaned_new();
 	gtk_widget_show(hpaned);
@@ -632,8 +630,9 @@ static GtkWidget *build_main_interface(void)
 	vbox = gtk_vbox_new(FALSE, 0);
 	gtk_widget_show(vbox);
 
-	gtk_box_pack_start(GTK_BOX(vbox),
-			   chat_build_panel(), FALSE, TRUE, 0);
+	panel = chat_build_panel();
+	frontend_gui_register(panel, GUI_DISCONNECT, NULL);
+	gtk_box_pack_start(GTK_BOX(vbox), panel, FALSE, TRUE, 0);
 	gtk_box_pack_start(GTK_BOX(vbox),
 			   build_messages_panel(), TRUE, TRUE, 0);
 

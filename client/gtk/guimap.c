@@ -937,7 +937,7 @@ static void find_edge(GuiMap *gmap, gint x, gint y, MapElement *element)
 	element->pointer = NULL;
 }
 
-static Node *find_hex_node(GuiMap *gmap, Hex *hex, gint x, gint y)
+static Node *find_hex_node(GuiMap *gmap, const Hex *hex, gint x, gint y)
 {
 	gint x_offset, y_offset;
 	int idx;
@@ -1013,8 +1013,8 @@ static void find_node(GuiMap *gmap, gint x, gint y, MapElement *element)
 	build_node_regions(gmap);
 	for (x_hex = 0; x_hex < gmap->map->x_size; x_hex++)
 		for (y_hex = 0; y_hex < gmap->map->y_size; y_hex++) {
-			Hex *hex;
-			Node *node;
+			const Hex *hex;
+			const Node *node;
 
 			hex = gmap->map->grid[y_hex][x_hex];
 			if (hex != NULL) {
@@ -1343,7 +1343,7 @@ static void draw_robber_cursor(GuiMap *gmap)
 	gdk_window_invalidate_rect(gmap->area->window, &rect, FALSE);
 }
 
-static gboolean highlight_chits(UNUSED(Map *map), Hex *hex,
+static gboolean highlight_chits(UNUSED(Map *map), const Hex *hex,
 		HighlightInfo *closure)
 {
 	GuiMap *gmap = closure->gmap;
@@ -1379,7 +1379,7 @@ void guimap_highlight_chits(GuiMap *gmap, gint roll)
 	map_traverse(gmap->map, (HexFunc)highlight_chits, &closure);
 }
 
-void guimap_draw_edge(GuiMap *gmap, Edge *edge)
+void guimap_draw_edge(GuiMap *gmap, const Edge *edge)
 {
 	if(edge->type == BUILD_ROAD) {
 		redraw_road(gmap, edge);
@@ -1390,7 +1390,7 @@ void guimap_draw_edge(GuiMap *gmap, Edge *edge)
 	}
 }
 
-void guimap_draw_node(GuiMap *gmap, Node *node)
+void guimap_draw_node(GuiMap *gmap, const Node *node)
 {
 	GdkPoint points[MAX_POINTS];
 	Polygon poly = { points, numElem(points) };
@@ -1402,7 +1402,7 @@ void guimap_draw_node(GuiMap *gmap, Node *node)
 	redraw_node(gmap, node, &poly);
 }
 
-void guimap_draw_hex(GuiMap *gmap, Hex *hex)
+void guimap_draw_hex(GuiMap *gmap, const Hex *hex)
 {
 	GdkPoint points[MAX_POINTS];
 	Polygon poly = { points, numElem(points) };

@@ -20,8 +20,6 @@
  */
 
 #include "config.h"
-#include <gtk/gtk.h>
-
 #include "frontend.h"
 
 enum { TYPE_NUM,

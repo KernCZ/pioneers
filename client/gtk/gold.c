@@ -21,7 +21,6 @@
 
 #include "config.h"
 #include "frontend.h"
-#include <gtk/gtk.h>
 
 static GtkWidget *gold_choose_clist; /* list of players who receive gold */
 

@@ -20,10 +20,7 @@
  */
 
 #include "config.h"
-#include <gtk/gtk.h>
-
 #include "frontend.h"
-#include "cost.h"
 #include "theme.h"
 
 /* The order of the terrain_names is EXTREMELY important!  The order

@@ -21,7 +21,6 @@
 
 #include "config.h"
 #include "frontend.h"
-#include <gtk/gtk.h>
 
 /* label widgets showing resources */
 static GtkWidget *asset_labels[NO_RESOURCE];

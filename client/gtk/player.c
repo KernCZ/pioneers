@@ -21,10 +21,7 @@
  */
 
 #include "config.h"
-#include <gtk/gtk.h>
-
 #include "frontend.h"
-#include "cost.h"
 #include "log.h"
 
 static void player_show_connected_at_iter(gint player_num, gboolean connected,

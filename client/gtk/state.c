@@ -20,15 +20,11 @@
 
 #include "config.h"
 #include "frontend.h"
-#include "log.h"
 
 static GuiState current_state;
 
-void set_gui_state (GuiState state)
+void set_gui_state_nomacro (GuiState state)
 {
-#ifdef DEBUG
-	debug ("state %p -> %p\n", current_state, state);
-#endif
 	current_state = state;
 	frontend_gui_update ();
 }
@@ -44,10 +40,18 @@ void route_gui_event (GuiEvent event)
 	case GUI_UPDATE:
 		frontend_gui_check (GUI_CHANGE_NAME, TRUE);
 		frontend_gui_check (GUI_QUIT, TRUE);
+		/* The routed event could disable disconnect again */
+		frontend_gui_check (GUI_DISCONNECT, TRUE);
 		break;
 	case GUI_CHANGE_NAME:
 		name_create_dlg();
 		return;
+	case GUI_DISCONNECT:
+		/* quit_when_offline = FALSE */
+		cb_disconnect(); /* @todo RC 2004-11-09 Use frontend calls */
+		/* @todo RC 2004-11-18 Connection to another game does not
+		 * work 100%, for now: quit when leaving the game... */
+		/* Fall through */
 	case GUI_QUIT:
 #ifdef DEBUG
 		debug ("quitting\n");

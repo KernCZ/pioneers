@@ -110,9 +110,9 @@ void guimap_scale_to_size(GuiMap *gmap, gint width, gint height);
 void guimap_display(GuiMap *gmap);
 
 void guimap_highlight_chits(GuiMap *gmap, gint roll);
-void guimap_draw_edge(GuiMap *gmap, Edge *edge);
-void guimap_draw_node(GuiMap *gmap, Node *node);
-void guimap_draw_hex(GuiMap *gmap, Hex *hex);
+void guimap_draw_edge(GuiMap *gmap, const Edge *edge);
+void guimap_draw_node(GuiMap *gmap, const Node *node);
+void guimap_draw_hex(GuiMap *gmap, const Hex *hex);
 
 void guimap_cursor_set(GuiMap *gmap, CursorType cursor_type, gint owner,
 		       CheckFunc check_func, SelectFunc select_func,

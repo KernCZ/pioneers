@@ -20,12 +20,8 @@
  */
 
 #include "config.h"
-#include <gtk/gtk.h>
-
 #include "frontend.h"
-#include "cost.h"
 #include "quoteinfo.h"
-#include "gui.h"
 
 static gint trade_player;
 
