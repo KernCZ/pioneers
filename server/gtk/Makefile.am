@@ -2,8 +2,6 @@
 #   Go buy a copy.
 #
 # Copyright (C) 1999 the Free Software Foundation
-# Copyright (C) 2003 Bas Wijnen <b.wijnen@phys.rug.nl>
-# Copyright (C) 2004 Roland Clobus <rclobus@bigfoot.com>
 # 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -21,58 +19,36 @@
 
 include $(top_srcdir)/rules.make
 
-noinst_LIBRARIES = libgnocatan.a 
+configdir=$(datadir)/games/gnocatan
+Gamesdir=$(datadir)/gnome/apps/Games
 
-if HAVE_GNOME
-SUBDIRS = gtk
-endif
-
-DIST_SUBDIRS = gtk
-
-noinst_HEADERS = authors.h
+bin_PROGRAMS = gnocatan-server-gtk
 
 AM_CPPFLAGS = \
+	-I $(srcdir)/../../common \
+	-I $(srcdir)/../../common/gtk \
+	-I $(srcdir)/.. \
+	-DDATADIR=\"$(datadir)\" \
 	-I$(includedir) \
+	$(GNOME2_CFLAGS) \
 	$(debug_includes) \
 	$(extra_includes)
 
-libgnocatan_a_SOURCES = \
-	buildrec.c \
-	buildrec.h \
-	cards.c \
-	cards.h \
-	common_glib.c \
-	common_glib.h \
-	cost.c \
-	cost.h \
-	driver.c \
-	driver.h \
-	game.c \
-	game.h \
-	log.c \
-	log.h \
-	map.c \
-	map.h \
-	map_query.c \
-	meta.h \
-	network.c \
-	network.h \
-	quoteinfo.c \
-	quoteinfo.h \
-	state.c \
-	state.h
+gnocatan_server_gtk_DEPENDENCIES = \
+	../libgnocatan_server.a \
+	../../common/libgnocatan.a \
+	../../common/gtk/libgnocatan_gtk.a
 
-EXTRA_libgnocatan_a_SOURCES = \
-	mt_rand.c \
-	mt_rand.h
+gnocatan_server_gtk_SOURCES = \
+	gnocatan-server-gtk.c
 
-libgnocatan_a_LIBADD = \
-	$(MT_RAND_OBJ)
+gnocatan_server_gtk_LDADD = \
+	../libgnocatan_server.a \
+	../../common/libgnocatan.a \
+	../../common/gtk/libgnocatan_gtk.a \
+	$(GNOME2_LIBS)
 
-libgnocatan_a_DEPENDENCIES = \
-	$(MT_RAND_OBJ)
+Games_DATA = gnocatan-server.desktop
 
-authors.h: ../AUTHORS
-	echo -n "#define AUTHORLIST " > $@
-	sed -e's/ <.*//; s/$$/", \\/; s/^/"/; /^"[[:space:]]*", \\$$/d' $< >> $@
-	echo "NULL" >> $@
+EXTRA_DIST = \
+	$(Games_DATA)

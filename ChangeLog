@@ -1,3 +1,29 @@
+2004-10-01  0.8.1.37  Roland Clobus <rclobus@bigfoot.com>
+	* client/help/C/gnocatan-C.omf: Added line with DTD to make xmllint
+	happy.
+	* ai/computer_names: moved to client/ai
+	* server/gnocatan-server-gtk.c, server/gnocatan-server.desktop: moved
+	to server/gtk
+	* common/select-game.c, common/select-game.h, common/config-gnome.c,
+	common/config-gnome.h, common/common_gtk.c, common/common_gtk.h,
+	common/game-settings.c, common/game-settings.h: moved to common/gtk.
+	All gtk related code is now in separate subdirectories.
+	* server/gtk/.cvsignore, server/gtk/Makefile.am,
+	common/gtk/.cvsignore, common/gtk/Makefile.am: Initial versions, based
+	on the parent directories.
+	* Makefile.am: Don't try to build ai, if no gnome found
+	* ai/Makefile.am: Removed dependency on gtk libraries, installation
+	of computer_names move to client/ai/Makefile.am
+	* client/ai/Makefile.am: Now installs computer_names
+	* configure.in, client/gtk/Makefile.am, common/Makefile.am, 
+	server/.cvsignore, server/Makefile.am: Adjustment for the new
+	directories.
+	* common/.cvsignore: Removed gnocatan-path.h
+	* po/ChangeLog: Add changes regarding the po directory will be loggged
+	in po/ChangeLog, and not in this file.
+	* configure.in, ai/Makefile.am, client/ai/Makefile.am, ai/ai.c: Added
+	option to install new or old ai. Current default: old ai
+	
 2004-09-26  0.8.1.36  Roland Clobus <rclobus@bigfoot.com>
 	* Makefile.am, autogen.sh, configure.in, omf.make, rules.make,
 	xmldocs.make, ai/Makefile.am, client/Makefile.am,

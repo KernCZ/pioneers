@@ -20,9 +20,14 @@
 include $(top_srcdir)/rules.make
 
 configdir=$(datadir)/games/gnocatan
-Gamesdir=$(datadir)/gnome/apps/Games
 
-bin_PROGRAMS = gnocatan-server-gtk gnocatan-server-console
+if HAVE_GNOME
+SUBDIRS = . gtk
+endif
+
+DIST_SUBDIRS = gtk
+
+bin_PROGRAMS = gnocatan-server-console
 
 noinst_LIBRARIES = libgnocatan_server.a
 
@@ -30,12 +35,8 @@ AM_CPPFLAGS = \
 	-I$(srcdir)/../common -I. \
 	-DDATADIR=\"$(datadir)\" \
 	-I$(includedir) \
-	$(GNOME2_CFLAGS) \
 	$(debug_includes) \
 	$(extra_includes)
-
-gnocatan_server_gtk_DEPENDENCIES = libgnocatan_server.a \
-	../common/libgnocatan.a ../common/libgnocatan_gtk.a
 
 gnocatan_server_console_DEPENDENCIES = libgnocatan_server.a \
 	../common/libgnocatan.a
@@ -57,19 +58,10 @@ libgnocatan_server_a_SOURCES = \
 	trade.c \
 	turn.c
 
-gnocatan_server_gtk_SOURCES = \
-	gnocatan-server-gtk.c
-
 gnocatan_server_console_SOURCES = \
 	gnocatan-server-console.c \
 	glib-driver.c \
 	glib-driver.h
-
-gnocatan_server_gtk_LDADD = \
-	libgnocatan_server.a \
-	../common/libgnocatan.a \
-	../common/libgnocatan_gtk.a \
-	$(GNOME2_LIBS)
 
 gnocatan_server_console_LDADD = \
 	libgnocatan_server.a \
@@ -97,8 +89,5 @@ config_DATA = \
 	henjes.game \
 	lorindol.game
 
-Games_DATA = gnocatan-server.desktop
-
 EXTRA_DIST = \
-	$(config_DATA) \
-	$(Games_DATA)
+	$(config_DATA)

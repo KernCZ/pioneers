@@ -1,4 +1,5 @@
 Makefile.in
 Makefile
 .deps
-authors.h
+.libs
+gnocatan-server-gtk

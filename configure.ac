@@ -20,7 +20,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 AC_PREREQ(2.53)
-AC_INIT([gnocatan],[0.8.1.36])
+AC_INIT([gnocatan],[0.8.1.37])
 AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
 AC_CONFIG_SRCDIR([client])
 AM_CONFIG_HEADER(config.h)
@@ -60,11 +60,27 @@ PKG_CHECK_MODULES(GLIB2, glib-2.0)
 AC_SUBST(CFLAGS, "$CFLAGS $GLIB2_CFLAGS")
 AC_SUBST(LIBS, "$LIBS $GLIB2_LIBS")
 
+# Use the old ai when gnome is present
+# This is for compatibility
+# FIXME: If the ai has been tested enough, set default to no
+if test x$have_gnome = xyes; then
+  AC_ARG_ENABLE([old-ai],
+  [  --enable-old-ai         Use the old ai.],
+  [case "${enableval}" in
+    yes) use_old_ai=yes ;;
+    "")  use_old_ai=yes ;;
+    *)   use_old_ai=no ;;
+    esac], [use_old_ai=yes])
+else
+use_old_ai="no, because GNOME2 not found"
+fi
+AM_CONDITIONAL(USE_OLD_AI, [test x$use_old_ai = xyes])
+
 AC_TRY_COMPILE([#include <glib.h>],
 	[g_rand_new_with_seed(0)],
 	have_glib_random=yes,
 	have_glib_random=no)
-	
+
 AC_ARG_ENABLE([old-random],
 [  --enable-old-random     Use the old random generator.],
 [case "${enableval}" in
@@ -142,12 +158,14 @@ AC_CONFIG_FILES([ \
 	docs/Makefile \
 	])
 AC_CONFIG_FILES([ \
+	common/gtk/Makefile \
 	client/gtk/Makefile \
 	client/gtk/data/Makefile \
 	client/gtk/data/themes/Makefile \
 	client/gtk/data/themes/FreeCIV-like/Makefile \
 	client/gtk/data/themes/Iceland/Makefile \
 	client/gtk/data/themes/Tiny/Makefile \
+	server/gtk/Makefile
 	])
 AC_CONFIG_FILES([ \
 	client/help/Makefile \
@@ -159,10 +177,13 @@ AC_OUTPUT
 AC_MSG_NOTICE([
 $PACKAGE v$VERSION configuration:
 
-	Source code location:              ${srcdir}
-	Compiler:                          ${CC}
-	Build GNOME/GTK applications       $have_gnome
-	Build help                         $have_scrollkeeper
-	Use old random generator           $use_old_random
-	Use verbose DEBUG logging          $debug_support
+        Source code location:              ${srcdir}
+        Compiler:                          ${CC}
+        Build GNOME/GTK+ applications      $have_gnome
+        Build help                         $have_scrollkeeper
+    Compatibility:
+        Use old random generator           $use_old_random
+        Use old ai                         $use_old_ai
+    Developers only:
+        Use verbose DEBUG logging          $debug_support
 ])

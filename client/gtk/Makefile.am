@@ -31,7 +31,7 @@ bin_PROGRAMS = gnocatan
 
 gnocatan_DEPENDENCIES = \
 	../common/libgnocatanclient.a \
-	../../common/libgnocatan_gtk.a \
+	../../common/gtk/libgnocatan_gtk.a \
 	../../common/libgnocatan.a
 
 # if anyone knows a cleaner way to do this, be my guest.  Automake screamed
@@ -50,6 +50,7 @@ AM_CPPFLAGS = \
 	-I$(srcdir)/.. \
 	-I$(srcdir)/../.. \
 	-I$(srcdir)/../../common \
+	-I$(srcdir)/../../common/gtk \
 	-DTHEMEDIR=\"$(themedir)\" \
 	-DDATADIR=\"$(datadir)\" \
 	$(ADMIN_GTK) \
@@ -98,5 +99,5 @@ gnocatan_SOURCES = \
 gnocatan_LDADD = \
 	../common/libgnocatanclient.a \
 	../../common/libgnocatan.a \
-	../../common/libgnocatan_gtk.a \
+	../../common/gtk/libgnocatan_gtk.a \
 	$(GNOME2_LIBS)

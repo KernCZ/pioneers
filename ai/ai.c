@@ -75,7 +75,7 @@ void ai_chat (const char *message)
 static void
 usage(void)
 {
-    printf("Usage: gnocatanai [args]\n"
+    printf("Usage of the old ai: gnocatanai [args]\n"
 	   "\n"
 	   "s - server\n"
 	   "p - port\n"

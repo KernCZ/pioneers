@@ -3,7 +3,6 @@
 #
 # Copyright (C) 1999 the Free Software Foundation
 # Copyright (C) 2003 Bas Wijnen <b.wijnen@phys.rug.nl>
-# Copyright (C) 2004 Roland Clobus <rclobus@bigfoot.com>
 # 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -21,58 +20,21 @@
 
 include $(top_srcdir)/rules.make
 
-noinst_LIBRARIES = libgnocatan.a 
-
-if HAVE_GNOME
-SUBDIRS = gtk
-endif
-
-DIST_SUBDIRS = gtk
-
-noinst_HEADERS = authors.h
+noinst_LIBRARIES = libgnocatan_gtk.a
 
 AM_CPPFLAGS = \
 	-I$(includedir) \
+	-I$(srcdir)/.. \
+	-I$(GNOME2_CFLAGS) \
 	$(debug_includes) \
 	$(extra_includes)
 
-libgnocatan_a_SOURCES = \
-	buildrec.c \
-	buildrec.h \
-	cards.c \
-	cards.h \
-	common_glib.c \
-	common_glib.h \
-	cost.c \
-	cost.h \
-	driver.c \
-	driver.h \
-	game.c \
-	game.h \
-	log.c \
-	log.h \
-	map.c \
-	map.h \
-	map_query.c \
-	meta.h \
-	network.c \
-	network.h \
-	quoteinfo.c \
-	quoteinfo.h \
-	state.c \
-	state.h
-
-EXTRA_libgnocatan_a_SOURCES = \
-	mt_rand.c \
-	mt_rand.h
-
-libgnocatan_a_LIBADD = \
-	$(MT_RAND_OBJ)
-
-libgnocatan_a_DEPENDENCIES = \
-	$(MT_RAND_OBJ)
-
-authors.h: ../AUTHORS
-	echo -n "#define AUTHORLIST " > $@
-	sed -e's/ <.*//; s/$$/", \\/; s/^/"/; /^"[[:space:]]*", \\$$/d' $< >> $@
-	echo "NULL" >> $@
+libgnocatan_gtk_a_SOURCES = \
+	common_gtk.c \
+	common_gtk.h \
+	config-gnome.c \
+	config-gnome.h \
+	game-settings.c \
+	game-settings.h \
+	select-game.c \
+	select-game.h

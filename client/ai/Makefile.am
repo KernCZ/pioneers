@@ -22,7 +22,11 @@ include $(top_srcdir)/rules.make
 
 configdir = $(datadir)/games/gnocatan
 
+if USE_OLD_AI
 noinst_PROGRAMS = gnocatanai
+else
+bin_PROGRAMS = gnocatanai
+endif
 
 gnocatanai_DEPENDENCIES = \
 	../common/libgnocatanclient.a \
@@ -44,3 +48,9 @@ gnocatanai_SOURCES = \
 gnocatanai_LDADD = \
 	../common/libgnocatanclient.a \
 	../../common/libgnocatan.a 
+
+config_DATA = \
+	computer_names
+
+EXTRA_DIST = \
+	$(config_DATA)

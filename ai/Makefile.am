@@ -3,11 +3,15 @@
 
 configdir=$(datadir)/games/gnocatan
 
+if USE_OLD_AI
 bin_PROGRAMS = gnocatanai
+else
+noinst_PROGRAMS = gnocatanai
+endif
 
 include $(top_srcdir)/rules.make
 
-gnocatanai_DEPENDENCIES = ../common/libgnocatan.a ../common/libgnocatan_gtk.a
+gnocatanai_DEPENDENCIES = ../common/libgnocatan.a 
 
 AM_CPPFLAGS = \
 	-I$(srcdir)/../common -I. \
@@ -38,11 +42,4 @@ gnocatanai_SOURCES = \
 	turn.c
 
 gnocatanai_LDADD = \
-	../common/libgnocatan.a \
-	../common/libgnocatan_gtk.a 
-
-config_DATA = \
-	computer_names
-
-EXTRA_DIST = \
-	$(config_DATA)
+	../common/libgnocatan.a
