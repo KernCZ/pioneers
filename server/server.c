@@ -9,6 +9,7 @@
  */
 #include <fcntl.h>
 #include <ctype.h>
+#include <stdlib.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -16,7 +17,7 @@
 #include <netdb.h>
 #include <errno.h>
 
-#include <gnome.h>
+#include <gtk/gtk.h>
 
 #include "game.h"
 #include "cards.h"

@@ -9,6 +9,7 @@
  */
 #include <fcntl.h>
 #include <ctype.h>
+#include <stdio.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -16,7 +17,10 @@
 #include <netdb.h>
 #include <errno.h>
 
-#include <gnome.h>
+/* FIXME: we should eliminate the dependency here on gtk and gnome, moving
+   all of the graphics code to a separate file. */
+#include <gtk/gtk.h>
+#include <glib.h>
 
 #include "game.h"
 #include "map.h"

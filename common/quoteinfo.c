@@ -9,7 +9,8 @@
  */
 #include <math.h>
 #include <ctype.h>
-#include <gnome.h>
+
+#include <glib.h>
 
 #include "game.h"
 #include "quoteinfo.h"

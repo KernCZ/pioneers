@@ -16,7 +16,7 @@
 #include <netdb.h>
 #include <errno.h>
 
-#include <gnome.h>
+#include <gtk/gtk.h>
 
 #include "game.h"
 #include "cards.h"

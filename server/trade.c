@@ -16,7 +16,7 @@
 #include <netdb.h>
 #include <errno.h>
 
-#include <gnome.h>
+#include <gtk/gtk.h>
 
 #include "game.h"
 #include "cards.h"
@@ -25,7 +25,6 @@
 #include "network.h"
 #include "cost.h"
 #include "quoteinfo.h"
-#include "log.h"
 #include "server.h"
 
 void trade_perform_maritime(Player *player,

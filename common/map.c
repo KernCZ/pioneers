@@ -7,9 +7,11 @@
  * Implementation of the excellent Settlers of Catan board game.  Go
  * buy a copy.
  */
+#include <stdio.h>
 #include <math.h>
 #include <ctype.h>
-#include <gnome.h>
+
+#include <glib.h>
 
 #include "game.h"
 #include "map.h"

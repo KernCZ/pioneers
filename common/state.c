@@ -10,7 +10,8 @@
 
 #include <ctype.h>
 #include <stdarg.h>
-#include <gnome.h>
+
+#include <gtk/gtk.h>
 
 #include "game.h"
 #include "cards.h"
