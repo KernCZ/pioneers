@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnocatan 0.7.1\n"
 "POT-Creation-Date: 2003-01-23 23:38-0600\n"
-"PO-Revision-Date: 2003-01-21 23:32+0100\n"
+"PO-Revision-Date: 2003-09-25 17:27+0200\n"
 "Last-Translator: Roman Hodek <roman@hodek.net>\n"
 "Language-Team: de <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -408,7 +408,7 @@ msgstr "%s hat %s %s gratis gegeben.\n"
 #: ai/player.c:314 client/player.c:595
 #, c-format
 msgid "%s gave %s %s in exchange for %s.\n"
-msgstr "%s hat %s %s geben für %s.\n"
+msgstr "%s hat von %s %4$s für %3$s bekommen.\n"
 
 #: ai/player.c:330 client/player.c:616
 #, c-format
