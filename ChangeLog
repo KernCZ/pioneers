@@ -1,3 +1,8 @@
+2000-06-12  Andy Heroff <aheroff@mediaone.net>
+
+	* debian/gnocatan-server.files: Applied patch from Aaron Denney
+	  that fixes build problems with the Debian packages.
+
 2000-06-08  Bibek Sahu <scorpio@dodds.net>
 
 	* common/network.c: changed net_write() to queue data on in-progress
