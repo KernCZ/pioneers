@@ -23,22 +23,48 @@ static GtkWidget *chat_entry;	/* messages text widget */
 void chat_parser( gint player_num, char chat_str[MAX_CHAT] )
 {
 	int tempchatcolor = MSG_INFO;
+	gchar *slashcommand, *slasharg;
+	gint idx;
 
-	log_message( MSG_INFO, _("%s"), player_name(player_num, TRUE));
+	if (chat_str[0] == '/') {
+		chat_str += 1;
+
+		slashcommand = strtok(chat_str, " ");
+		slasharg = strtok(NULL, "");
+
+		if (!strcmp(slashcommand, "beep")) {
+			/* Generate a beep sound if the player name specified
+			 * is the argument is the name of the current player.
+			 */
+			if (slasharg != NULL) {
+				for (idx = 0; idx < game_params->num_players; idx++) {
+					if (!strcmp(slasharg, player_name(idx, TRUE)) && idx == my_player_num()) {
+						gdk_beep();
+						log_message( MSG_INFO, _("%s beeped you.\n"), player_name(player_num, TRUE));
+					}
+				}
+			}
+		}
+
+		return;
+	} else {
+		log_message( MSG_INFO, _("%s"), player_name(player_num, TRUE));
+	}
+
 	switch( chat_str[0] )
 	{
-	 case ':':
-		chat_str += 1;
-		log_timestamp = 0;
-		log_message( MSG_INFO, _(" "));
-		break;
-	 case ';':
-		chat_str += 1;
-		break;
-	 default:
-		log_timestamp = 0;
-		log_message( MSG_INFO, _(" said: "));
-		break;
+		case ':':
+			chat_str += 1;
+			log_timestamp = 0;
+			log_message( MSG_INFO, _(" "));
+			break;
+		case ';':
+			chat_str += 1;
+			break;
+		default:
+			log_timestamp = 0;
+			log_message( MSG_INFO, _(" said: "));
+			break;
 	}
 
 	switch( player_num )

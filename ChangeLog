@@ -1,3 +1,13 @@
+2001-02-23  Matt Waggoner  <matt@waggoner.com>
+
+	* Changed client/chat.c to intercept chat text that begins with a
+		slash.  This could be the start of a general-purpose slash-command
+		syntax.  The only command that is intercepted now is /beep NAME,
+		where NAME is a name of one of the players in the game.  If you are
+		the player whose name is NAME, a beep sound is generated; otherwise,
+		it is ignored.  The purpose of this command is for players to be 
+		able to get someone's attention.
+
 2001-02-22  David Fallon  <davef@getacard.com>
 
 	* Added walrusmonkey's port background patch. (SF Patch #103768)
