@@ -10,7 +10,12 @@
 #ifndef __histogram_h
 #define __histogram_h
 
-enum { DICE_HISTOGRAM_RECORD, DICE_HISTOGRAM_RETRIEVE, DICE_HISTOGRAM_MAX};
+enum {
+	DICE_HISTOGRAM_RECORD,
+	DICE_HISTOGRAM_RETRIEVE,
+	DICE_HISTOGRAM_MAX,
+	DICE_HISTOGRAM_TOTAL
+};
 
 gint dice_histogram(gint command, gint roll);
 

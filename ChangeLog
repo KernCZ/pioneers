@@ -7,6 +7,9 @@
 		the player whose name is NAME, a beep sound is generated; otherwise,
 		it is ignored.  The purpose of this command is for players to be 
 		able to get someone's attention.
+	* Changed client/histogram.c to include number of times each value
+		was rolled, percentage of the time each value was rolled, and
+		text labels along the left side.
 
 2001-02-22  David Fallon  <davef@getacard.com>
 
