@@ -1,3 +1,11 @@
+2002-06-03  Roman Hodek  <roman@hodek.net>
+
+	* client/gui.c (splash_build_page): use a viewport widget around
+	the splash pixmap to avoid it is drawn over the tab area if space
+	is too small for it.
+
+	* po/.cvsignore, intl/.cvsignore: new
+
 2002-06-02  Roman Hodek  <roman@hodek.net>
 
 	* configure.in: bumped version to 0.7.1 (prelim.), enabled NLS
