@@ -3,7 +3,7 @@
  *
  * Copyright (C) 1999 the Free Software Foundation
  * Copyright (C) 2003 Bas Wijnen <b.wijnen@phys.rug.nl>
- * Copyright (C) 2004 Roland Clobus <rclobus@bigfoot.com>
+ * Copyright (C) 2004-2005 Roland Clobus <rclobus@bigfoot.com>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -61,6 +61,8 @@ static GtkListStore *store;	/* shows player connection status */
 
 static gboolean ui_enabled;	/* is the ui accessible? */
 static gchar *hostname;		/* reported hostname */
+static gchar *server_port = NULL;	/* port of the game */
+static gboolean register_server = TRUE;	/* Register at the meta server */
 
 /* Local function prototypes */
 static void add_game_to_list(gpointer name, UNUSED(gpointer user_data));
@@ -106,10 +108,9 @@ static void port_entry_changed_cb(GtkWidget * widget,
 	const gchar *text;
 
 	text = gtk_entry_get_text(GTK_ENTRY(widget));
-	while (*text != '\0' && isspace(*text))
-		text++;
-	strncpy(server_port, text, sizeof(server_port));
-	server_port[sizeof(server_port) - 1] = 0;
+	if (server_port)
+		g_free(server_port);
+	server_port = g_strstrip(g_strdup(text));
 }
 
 static void register_toggle_cb(GtkToggleButton * toggle,
@@ -220,6 +221,7 @@ static void start_clicked_cb(UNUSED(GtkButton * start_btn),
 		    game_settings_get_sevens_rule(GAMESETTINGS
 						  (game_settings));
 		update_game_settings();
+		g_assert(server_port != NULL);
 		if (start_server(hostname, server_port, register_server)) {
 			gui_ui_enable(FALSE);
 			config_set_string("server/meta-server",
@@ -249,6 +251,7 @@ static void start_clicked_cb(UNUSED(GtkButton * start_btn),
 static void addcomputer_clicked_cb(UNUSED(GtkButton * start_btn),
 				   UNUSED(gpointer user_data))
 {
+	g_assert(server_port != NULL);
 	new_computer_player(NULL, server_port);
 }
 
@@ -532,11 +535,9 @@ static GtkWidget *build_interface(void)
 			     _("Randomize turn order"), NULL);
 
 	/* Initialize server-settings */
-	strncpy(server_port,
-		config_get_string("server/port="
-				  GNOCATAN_DEFAULT_GAME_PORT, &novar),
-		sizeof(server_port));
-	server_port[sizeof(server_port) - 1] = 0;
+	server_port = config_get_string("server/port="
+					GNOCATAN_DEFAULT_GAME_PORT,
+					&novar);
 	gtk_entry_set_text(GTK_ENTRY(port_entry), server_port);
 
 	novar = 0;

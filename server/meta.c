@@ -22,7 +22,6 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <netdb.h>
 #include "server.h"
 
 const gchar *meta_server_name = NULL;
@@ -52,8 +51,7 @@ void meta_start_game()
 #ifdef CLOSE_META_AT_START
 	if (ses != NULL) {
 		net_printf(ses, "begin\n");
-		net_close(ses);
-		ses = NULL;
+		net_free(&ses);
 	}
 #endif
 }
@@ -118,34 +116,34 @@ static void meta_event(NetEvent event, Game * game, char *line)
 		case MODE_SIGNON:
 		case MODE_REDIRECT:
 			if (strncmp(line, "goto ", 5) == 0) {
-				gchar server[NI_MAXHOST];
-				gchar port[NI_MAXSERV];
-
+				gchar **split_result;
+				const gchar *port;
 				meta_mode = MODE_REDIRECT;
-				net_close(ses);
-				ses = NULL;
+				net_free(&ses);
 				if (num_redirects++ == 10) {
 					log_message(MSG_INFO,
 						    _
 						    ("Too many meta-server redirects\n"));
 					return;
 				}
-				if (sscanf
-				    (line, "goto %s %s", server,
-				     port) == 2)
-					meta_register(server, port, game);
-				else if (sscanf(line, "goto %s", server) ==
-					 1)
-					meta_register(server,
-						      GNOCATAN_DEFAULT_META_PORT,
-						      game);
-				else
+				split_result = g_strsplit(line, " ", 0);
+				g_assert(split_result[0] != NULL);
+				g_assert(!strcmp(split_result[0], "goto"));
+				if (split_result[1]) {
+					port = GNOCATAN_DEFAULT_META_PORT;
+					if (split_result[2])
+						port = split_result[2];
+					meta_register(split_result[1],
+						      port, game);
+				} else {
 					log_message(MSG_ERROR,
 						    _
 						    ("Bad redirect line: %s\n"),
 						    line);
-				break;
+				};
+				g_strfreev(split_result);
 			}
+
 			meta_server_version_major =
 			    meta_server_version_minor = 0;
 			if (strncmp(line, "welcome ", 8) == 0) {
@@ -198,7 +196,7 @@ void meta_register(const gchar * server, const gchar * port, Game * game)
 			    server, port);
 
 	if (ses != NULL)
-		net_close(ses);
+		net_free(&ses);
 
 	ses = net_new((NetNotifyFunc) meta_event, game);
 	if (net_connect(ses, server, port))

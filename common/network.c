@@ -38,6 +38,12 @@
 #include "network.h"
 #include "log.h"
 
+typedef union {
+	struct sockaddr sa;
+	struct sockaddr_in in;
+	struct sockaddr_in6 in6;
+} sockaddr_t;
+
 #ifdef DEBUG
 void debug(const gchar * fmt, ...)
 {
@@ -512,4 +518,134 @@ const gchar *get_gnocatan_dir(void)
 	if (!gnocatan_dir)
 		gnocatan_dir = GNOCATAN_DIR_DEFAULT;
 	return gnocatan_dir;
+}
+
+int net_open_listening_socket(const gchar * port, gchar ** error_message)
+{
+	int err;
+	struct addrinfo hints, *ai, *aip;
+	int yes;
+	gint fd = -1;
+
+	memset(&hints, 0, sizeof(hints));
+
+	hints.ai_family = AF_UNSPEC;
+	hints.ai_socktype = SOCK_STREAM;
+	hints.ai_protocol = IPPROTO_TCP;
+	hints.ai_flags = AI_PASSIVE;
+
+	if ((err = getaddrinfo(NULL, port, &hints, &ai)) || !ai) {
+		*error_message =
+		    g_strdup_printf(_
+				    ("Error creating struct addrinfo: %s"),
+				    gai_strerror(err));
+		return -1;
+	}
+
+	for (aip = ai; aip; aip = aip->ai_next) {
+		fd = socket(aip->ai_family, SOCK_STREAM, 0);
+		if (fd < 0) {
+			continue;
+		}
+		yes = 1;
+
+		/* setsockopt() before bind(); otherwise it has no effect! -- egnor */
+		if (setsockopt
+		    (fd, SOL_SOCKET, SO_REUSEADDR, &yes,
+		     sizeof(yes)) < 0) {
+			close(fd);
+			continue;
+		}
+		if (bind(fd, aip->ai_addr, aip->ai_addrlen) < 0) {
+			close(fd);
+			continue;
+		}
+
+		break;
+	}
+
+	if (!aip) {
+		*error_message =
+		    g_strdup_printf(_
+				    ("Error creating listening socket: %s\n"),
+				    g_strerror(errno));
+		freeaddrinfo(ai);
+		return -1;
+	}
+
+	freeaddrinfo(ai);
+
+	if (fcntl(fd, F_SETFL, O_NDELAY) < 0) {
+		*error_message =
+		    g_strdup_printf(_
+				    ("Error setting socket non-blocking: %s\n"),
+				    g_strerror(errno));
+		close(fd);
+		return -1;
+	}
+
+	if (listen(fd, 5) < 0) {
+		*error_message =
+		    g_strdup_printf(_
+				    ("Error during listen on socket: %s\n"),
+				    g_strerror(errno));
+		close(fd);
+		return -1;
+	}
+	*error_message = NULL;
+	return fd;
+}
+
+gboolean net_get_peer_name(gint fd, gchar ** hostname, gchar ** servname,
+			   gchar ** error_message)
+{
+	sockaddr_t peer;
+	socklen_t peer_len;
+
+	*hostname = g_strdup(_("unknown"));
+	*servname = g_strdup(_("unknown"));
+
+	peer_len = sizeof(peer);
+	if (getpeername(fd, &peer.sa, &peer_len) < 0) {
+		*error_message =
+		    g_strdup_printf(_("Error getting peer name: %s"),
+				    strerror(errno));
+		return FALSE;
+	} else {
+		int err;
+		char host[NI_MAXHOST];
+		char port[NI_MAXSERV];
+
+		if ((err =
+		     getnameinfo(&peer.sa, peer_len, host, NI_MAXHOST,
+				 port, NI_MAXSERV, 0))) {
+			*error_message =
+			    g_strdup_printf(_
+					    ("Error resolving address: %s"),
+					    gai_strerror(err));
+			return FALSE;
+		} else {
+			g_free(*hostname);
+			g_free(*servname);
+			*hostname = g_strdup(host);
+			*servname = g_strdup(port);
+			return TRUE;
+		}
+	}
+}
+
+gint net_accept(gint accept_fd, gchar ** error_message)
+{
+	gint fd;
+	sockaddr_t addr;
+	socklen_t addr_len;
+
+	addr_len = sizeof(addr);
+	fd = accept(accept_fd, &addr.sa, &addr_len);
+	if (fd < 0) {
+		*error_message =
+		    g_strdup_printf(_("Error accepting connection: %s"),
+				    g_strerror(errno));
+	}
+	return fd;
 }

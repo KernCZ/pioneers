@@ -66,6 +66,31 @@ gboolean net_connect(Session * ses, const gchar * host,
 		     const gchar * port);
 gboolean net_connected(Session * ses);
 
+/** Open a socket for listening.
+ *  @param port The port
+ *  @retval error_message If opening fails, a description of the error
+ *          You should g_free the error_message
+ *  @return A file descriptor if succesfull, or -1 if it fails
+ */
+int net_open_listening_socket(const gchar * port, gchar ** error_message);
+
+/** Get peer name
+ *  @param fd File descriptor to resolve
+ *  @retval hostname The resolved hostname
+ *  @retval servname The resolved port name/service name
+ *  @retval error_message The error message when it fails
+ *  @return TRUE is successful
+ */
+gboolean net_get_peer_name(gint fd, gchar ** hostname, gchar ** servname,
+			   gchar ** error_message);
+
+/** Accept incoming connections
+ * @param accept_fd The file descriptor
+ * @retval error_message The message if it fails
+ * @return The file descriptor of the connection
+ */
+gint net_accept(gint accept_fd, gchar ** error_message);
+
 void net_close(Session * ses);
 void net_close_when_flushed(Session * ses);
 void net_wait_for_close(Session * ses);

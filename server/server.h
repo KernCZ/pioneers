@@ -196,7 +196,7 @@ gboolean server_startup(GameParams * params, const gchar * hostname,
 gboolean server_stop(void);
 gboolean server_is_running(void);
 gint accept_connection(gint in_fd, gchar ** location);
-gint open_listen_socket(gchar * port);
+gint open_listen_socket(const gchar * port);
 
 /* trade.c */
 void trade_perform_maritime(Player * player,

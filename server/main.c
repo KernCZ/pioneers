@@ -76,14 +76,17 @@ static void usage(void)
 int main(int argc, char *argv[])
 {
 	int c, i;
-	gint num_players = 0, num_points = 0, port = 0, admin_port = 0,
+	gint num_players = 0, num_points = 0,
 	    sevens_rule = 0, terrain = -1, timeout = 0, num_ai_players = 0;
+	gchar *server_port = g_strdup(GNOCATAN_DEFAULT_GAME_PORT);
+	gchar *admin_port = g_strdup(GNOCATAN_DEFAULT_ADMIN_PORT);
 
 	gboolean disable_game_start = FALSE;
 	GMainLoop *event_loop;
 	gint tournament_time = -1;
 	gboolean quit_when_done = FALSE;
 	gchar *hostname = NULL;
+	gboolean register_server = FALSE;
 
 	/* set the UI driver to Glib_Driver, since we're using glib */
 	set_ui_driver(&Glib_Driver);
@@ -103,7 +106,8 @@ int main(int argc, char *argv[])
 			if (!optarg) {
 				break;
 			}
-			admin_port = atoi(optarg);
+			g_free(admin_port);
+			admin_port = g_strdup(optarg);
 			break;
 		case 'c':
 			if (!optarg) {
@@ -124,7 +128,7 @@ int main(int argc, char *argv[])
 			if (!optarg) {
 				break;
 			}
-			meta_server_name = optarg;
+			meta_server_name = g_strdup(optarg);
 			register_server = TRUE;
 			break;
 		case 'n':
@@ -143,7 +147,8 @@ int main(int argc, char *argv[])
 			if (!optarg) {
 				break;
 			}
-			port = atoi(optarg);
+			g_free(server_port);
+			server_port = g_strdup(optarg);
 			break;
 		case 'R':
 			if (!optarg) {
@@ -188,14 +193,8 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	if (port) {
-		snprintf(server_port, sizeof(server_port), "%d", port);
-	}
-
-	if (admin_port) {
-		snprintf(server_admin_port, sizeof(server_admin_port),
-			 "%d", admin_port);
-	}
+	g_assert(server_port != NULL);
+	g_assert(admin_port != NULL);
 
 	if (num_players) {
 		cfg_set_num_players(num_players);
@@ -225,7 +224,7 @@ int main(int argc, char *argv[])
 		cfg_set_timeout(timeout);
 	}
 
-	admin_listen(server_admin_port);
+	admin_listen(admin_port);
 
 	if (!disable_game_start) {
 		if (start_server(hostname, server_port, register_server)) {
@@ -235,14 +234,11 @@ int main(int argc, char *argv[])
 			event_loop = g_main_new(0);
 			g_main_run(event_loop);
 			g_main_destroy(event_loop);
-
 		} else {
-
 			usage();
 		}
 
 	} else {
-
 		/* Ugly... But needed to preserve the original functionality
 		   if the disable_game_start flag is set... Even if it doesn't
 		   really -do- anything. */
@@ -255,5 +251,7 @@ int main(int argc, char *argv[])
 	}
 
 	g_free(hostname);
+	g_free(server_port);
+	g_free(admin_port);
 	return 0;
 }

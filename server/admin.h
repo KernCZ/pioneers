@@ -22,8 +22,6 @@
 #ifndef __gnocatan_server_h
 #define __gnocatan_server_h
 
-#include <netdb.h>
-
 #define TERRAIN_DEFAULT	0
 #define TERRAIN_RANDOM	1
 
@@ -34,9 +32,6 @@ typedef struct _comm_info {
 } comm_info;
 
 /**** global variables ****/
-extern gboolean register_server;
-extern gchar server_port[NI_MAXSERV];
-extern gchar server_admin_port[NI_MAXSERV];
 extern gboolean random_order;
 
 extern GameParams *params;
@@ -66,15 +61,16 @@ void server_init(void);
 /**** backend functions for network administration of the server ****/
 
 /* parse 'line' and run the command requested */
-void admin_run_command(Session * admin_session, gchar * line);
+void admin_run_command(Session * admin_session, const gchar * line);
 
 /* network event handler, just like the one in meta.c, state.c, etc. */
-void admin_event(NetEvent event, Session * admin_session, gchar * line);
+void admin_event(NetEvent event, Session * admin_session,
+		 const gchar * line);
 
 /* accept a connection made to the admin port */
 void admin_connect(comm_info * admin_info);
 
 /* set up the administration port */
-void admin_listen(gchar * port);
+void admin_listen(const gchar * port);
 
 #endif				/* __gnocatan_server_h */

@@ -23,22 +23,11 @@
 #include <fcntl.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netdb.h>
-#include <errno.h>
 #include <string.h>
 #include <time.h>
-#include <netinet/in.h>
 #include <signal.h>
 
 #include "server.h"
-
-typedef union {
-	struct sockaddr sa;
-	struct sockaddr_in in;
-	struct sockaddr_in6 in6;
-} sockaddr_t;
 
 static Game *curr_game;
 gint no_player_timeout = 0;
@@ -69,75 +58,17 @@ gint get_rand(gint range)
 	return g_rand_int_range(g_rand_ctx, 0, range);
 }
 
-gint open_listen_socket(char *port)
+gint open_listen_socket(const gchar * port)
 {
-	int err;
-	struct addrinfo hints, *ai, *aip;
-	int yes;
-	gint fd = -1;
+	int fd;
+	gchar *error_message;
 
-
-	memset(&hints, 0, sizeof(hints));
-
-	hints.ai_family = AF_UNSPEC;
-	hints.ai_socktype = SOCK_STREAM;
-	hints.ai_protocol = IPPROTO_TCP;
-	hints.ai_flags = AI_PASSIVE;
-
-	if ((err = getaddrinfo(NULL, port, &hints, &ai)) || !ai) {
-		log_message(MSG_ERROR,
-			    _("Error creating struct addrinfo: %s"),
-			    gai_strerror(err));
-		return FALSE;
-	}
-
-	for (aip = ai; aip; aip = aip->ai_next) {
-		fd = socket(aip->ai_family, SOCK_STREAM, 0);
-		if (fd < 0) {
-			continue;;
-		}
-		yes = 1;
-
-		/* setsockopt() before bind(); otherwise it has no effect! -- egnor */
-		if (setsockopt
-		    (fd, SOL_SOCKET, SO_REUSEADDR, &yes,
-		     sizeof(yes)) < 0) {
-			close(fd);
-			continue;
-		}
-		if (bind(fd, aip->ai_addr, aip->ai_addrlen) < 0) {
-			close(fd);
-			continue;
-		}
-
-		break;
-	}
-
-	freeaddrinfo(ai);
-
-	if (!aip) {
-		log_message(MSG_ERROR,
-			    _("Error creating listening socket: %s\n"),
-			    g_strerror(errno));
+	fd = net_open_listening_socket(port, &error_message);
+	if (fd == -1) {
+		log_message(MSG_ERROR, "%s\n", error_message);
+		g_free(error_message);
 		return -1;
 	}
-
-	if (fcntl(fd, F_SETFL, O_NDELAY) < 0) {
-		log_message(MSG_ERROR,
-			    _("Error setting socket non-blocking: %s\n"),
-			    g_strerror(errno));
-		close(fd);
-		return -1;
-	}
-
-	if (listen(fd, 5) < 0) {
-		log_message(MSG_ERROR,
-			    _("Error during listen on socket: %s\n"),
-			    g_strerror(errno));
-		close(fd);
-		return -1;
-	}
-
 	start_timeout();
 	return fd;
 }
@@ -183,44 +114,22 @@ void game_free(Game * game)
 gint accept_connection(gint in_fd, gchar ** location)
 {
 	int fd;
-	sockaddr_t addr;
-	socklen_t addr_len;
-	sockaddr_t peer;
-	socklen_t peer_len;
+	gchar *error_message;
+	gchar *port;
 
-	addr_len = sizeof(addr);
-	fd = accept(in_fd, &addr.sa, &addr_len);
+	fd = net_accept(in_fd, &error_message);
 	if (fd < 0) {
-		log_message(MSG_ERROR,
-			    _("Error accepting connection: %s\n"),
-			    g_strerror(errno));
+		log_message(MSG_ERROR, "%s\n", error_message);
+		g_free(error_message);
 		return -1;
 	}
 
-	peer_len = sizeof(peer);
-	if (location) {
-		if (getpeername(fd, &peer.sa, &peer_len) < 0) {
-			log_message(MSG_ERROR,
-				    _("Error getting peer name: %s\n"),
-				    g_strerror(errno));
-			*location = g_strdup(_("unknown"));
-		} else {
-			int err;
-			char host[NI_MAXHOST];
-			char port[NI_MAXSERV];
-
-			if ((err =
-			     getnameinfo(&peer.sa, peer_len, host,
-					 NI_MAXHOST, port, NI_MAXSERV,
-					 0))) {
-				log_message(MSG_ERROR,
-					    "resolving address: %s",
-					    gai_strerror(err));
-				*location = g_strdup(_("unknown"));
-			} else
-				*location = g_strdup(host);
-		}
+	g_assert(location != NULL);
+	if (!net_get_peer_name(in_fd, location, &port, &error_message)) {
+		log_message(MSG_ERROR, "%s\n", error_message);
+		g_free(error_message);
 	}
+	g_free(port);
 	return fd;
 }
 
@@ -265,6 +174,7 @@ static void player_connect(Game * game)
 		if (player_new(game, fd, location) != NULL)
 			stop_timeout();
 	}
+	g_free(location);
 }
 
 static gboolean game_server_start(Game * game)

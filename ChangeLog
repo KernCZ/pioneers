@@ -1,3 +1,13 @@
+2005-04-06  0.9.6 Roland Clobus <rclobus@bigfoot.com>
+	* configure.ac, common/network.c, common/network.h,
+	meta-server/gnocatan-meta-server.c, server/gnocatan-server-console.c,
+	server/gnocatan-server.c, server/gnocatan-server.h, server/meta.c,
+	server/server.c, server/server.h, server/gtk/gnocatan-server-gtk.c:
+	Removed global variables for serverhostname and port. Moved duplicate
+	code of server and meta-server to common/network.c. All ports are now
+	strings (service names), there are no conversions to integers left.
+	Upgraded meta-server protocol to 1.2.
+
 2005-04-03  Brian Wellington <bwelling@xbill.org>
 	* configure.ac, common/Makefile.am, common/map.[ch],
 	common/mt_rand.[ch], server/server.c: Remove the old random

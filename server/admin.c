@@ -30,7 +30,6 @@
 #include <getopt.h>
 #endif
 #include <glib.h>
-#include <netdb.h>
 #include <signal.h>
 
 #include "driver.h"
@@ -50,9 +49,6 @@
 
 static GSList *_game_list = NULL;	/* The sorted list of game titles */
 
-gboolean register_server = FALSE;
-gchar server_port[NI_MAXSERV] = GNOCATAN_DEFAULT_GAME_PORT;
-gchar server_admin_port[NI_MAXSERV] = GNOCATAN_DEFAULT_ADMIN_PORT;
 gboolean random_order = TRUE;
 extern gint no_player_timeout;
 
@@ -272,11 +268,13 @@ void server_init(void)
 comm_info *_accept_info = NULL;
 
 /* parse 'line' and run the command requested */
-void admin_run_command(Session * admin_session, gchar * line)
+void admin_run_command(Session * admin_session, const gchar * line)
 {
 	gchar command[100];
 	gchar value_str[100];
 	gint value_int;
+	static gchar *server_port = NULL;
+	static gboolean register_server = TRUE;
 
 	/* parse the line down into command and value */
 	sscanf(line, "admin %99s %99s", command, value_str);
@@ -287,14 +285,17 @@ void admin_run_command(Session * admin_session, gchar * line)
 		if (value_int) {
 			if (server_is_running())
 				server_stop();
-			snprintf(server_port, sizeof(server_port), "%d",
-				 value_int);
+			if (server_port)
+				g_free(server_port);
+			server_port = g_strdup(value_str);
 		}
 
 		/* start the server */
 	} else if (!strcmp(command, "start-server")) {
 		if (server_is_running())
 			server_stop();
+		if (!server_port)
+			server_port = g_strdup(GNOCATAN_DEFAULT_GAME_PORT);
 		start_server(get_server_name(), server_port,
 			     register_server);
 
@@ -363,7 +364,8 @@ void admin_run_command(Session * admin_session, gchar * line)
 }
 
 /* network event handler, just like the one in meta.c, state.c, etc. */
-void admin_event(NetEvent event, Session * admin_session, gchar * line)
+void admin_event(NetEvent event, Session * admin_session,
+		 const gchar * line)
 {
 #ifdef PRINT_INFO
 	g_print
@@ -436,7 +438,7 @@ void admin_connect(comm_info * admin_info)
 }
 
 /* set up the administration port */
-void admin_listen(gchar * port)
+void admin_listen(const gchar * port)
 {
 	if (!_accept_info) {
 		_accept_info = g_malloc0(sizeof(comm_info));
