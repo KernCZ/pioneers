@@ -32,9 +32,6 @@
 #include <netinet/in.h>
 #include <signal.h>
 
-#ifndef HAVE_G_RAND_NEW_WITH_SEED
-#include "mt_rand.h"
-#endif
 #include "server.h"
 
 typedef union {
@@ -69,11 +66,7 @@ void stop_timeout(void)
 
 gint get_rand(gint range)
 {
-#ifdef HAVE_G_RAND_NEW_WITH_SEED
 	return g_rand_int_range(g_rand_ctx, 0, range);
-#else
-	return mt_random() % range;
-#endif
 }
 
 gint open_listen_socket(char *port)
@@ -298,24 +291,13 @@ gboolean server_startup(GameParams * params, const gchar * hostname,
 			const gchar * port, gboolean meta,
 			gboolean random_order)
 {
-	/* The mt_seed needs a gulong, g_rand_new_with_seed needs a guint32
-	 * The compiler will promote the datatypes if necessary
-	 */
 	guint32 randomseed = time(NULL);
 
-#ifdef HAVE_G_RAND_NEW_WITH_SEED
 	g_rand_ctx = g_rand_new_with_seed(randomseed);
-#else
-	mt_seed(randomseed);
-#endif
 	log_message(MSG_INFO, "%s #%" G_GUINT32_FORMAT ".%s.%03d\n",
 		    /* Server: preparing game #..... */
 		    _("Preparing game"), randomseed,
-#ifdef HAVE_G_RAND_NEW_WITH_SEED
 		    "G",
-#else
-		    "M",
-#endif
 		    get_rand(1000));
 
 	curr_game = game_new(params);

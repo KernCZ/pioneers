@@ -83,28 +83,6 @@ PKG_CHECK_MODULES(GLIB2, glib-2.0)
 AC_SUBST(CFLAGS, "$CFLAGS $GLIB2_CFLAGS")
 AC_SUBST(LIBS, "$LIBS $GLIB2_LIBS")
 
-AC_TRY_COMPILE([#include <glib.h>],
-	[g_rand_new_with_seed(0)],
-	have_glib_random=yes,
-	have_glib_random=no)
-
-AC_ARG_ENABLE([old-random],
-[  --enable-old-random     Use the old random generator.],
-[case "${enableval}" in
-  yes)  use_old_random=yes ;;
-  "")   use_old_random=yes ;;
-  *)    use_old_random=no ;;
-esac], [use_old_random=no])
-if test x$have_glib_random = xno; then
-  use_old_random=yes
-fi
-if test x$use_old_random = xyes; then
-  MT_RAND_OBJ="mt_rand.o"
-else
-  AC_DEFINE(HAVE_G_RAND_NEW_WITH_SEED, [],
-		[Define if there is a g_rand() function in glib.])
-fi
-
 AC_ARG_ENABLE([admin-gtk],
 [  --enable-admin-gtk      Turn on (unstable) network administration support.],
 [case "${enableval}" in
@@ -235,8 +213,6 @@ $PACKAGE v$VERSION configuration:
         Build console applications         yes
         Build graphical applications       $have_gnome
         Build help                         $have_scrollkeeper
-    Compatibility:
-        Use old random generator           $use_old_random
     Developers only:
         Use verbose DEBUG logging          $debug_support
 ])

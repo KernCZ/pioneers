@@ -61,10 +61,6 @@ libgnocatan_a_SOURCES = \
 	state.c \
 	state.h
 
-EXTRA_libgnocatan_a_SOURCES = \
-	mt_rand.c \
-	mt_rand.h
-
 libgnocatan_a_LIBADD = \
 	$(MT_RAND_OBJ)
 

@@ -1,3 +1,8 @@
+2005-04-03  Brian Wellington <bwelling@xbill.org>
+	* configure.ac, common/Makefile.am, common/map.[ch],
+	common/mt_rand.[ch], server/server.c: Remove the old random
+	number generator.
+
 2005-04-03  0.9.5  Roland Clobus <rclobus@bigfoot.com>
 	* client/ai/greedy.c: AI can use gold (and prefer it) during setup.
 	The nosetup nodes are honoured. Year of Plenty will only be played

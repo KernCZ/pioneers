@@ -228,8 +228,6 @@ gboolean map_bridge_connect_ok(Map * map, gint owner, gint x, gint y,
 void map_longest_road(Map * map, gint * lengths, gint num_players);
 void map_maritime_info(Map * map, MaritimeInfo * info, gint owner);
 
-#ifdef HAVE_G_RAND_NEW_WITH_SEED
 extern GRand *g_rand_ctx;
-#endif
 
 #endif
