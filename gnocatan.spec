@@ -75,7 +75,7 @@ listening for client connections.
 Summary: 	Gnocatan Data
 Group: 		X11/Games
 
-%description 	data
+%description 	server-data
 Gnocatan is an Internet playable implementation of the Settlers of
 Catan board game.  The aim is to remain as faithful to the board game
 as is possible.
@@ -120,7 +120,6 @@ make install prefix=$RPM_BUILD_ROOT/usr
 %dir /usr/share/gnome/help/gnocatan/
 %dir /usr/share/gnome/help/gnocatan/C
 %dir /usr/share/gnome/help/gnocatan/C/images
-/usr/share/gnome/help/gnocatan/C/docbook.css
 /usr/share/gnome/help/gnocatan/C/topic.dat
 /usr/share/gnome/help/gnocatan/C/*.html
 /usr/share/gnome/help/gnocatan/C/images/*
