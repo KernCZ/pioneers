@@ -62,15 +62,39 @@ static gint sort_function(gconstpointer a, gconstpointer b)
 		       ((const GameParams *) b)->title));
 }
 
-static void game_list_add_item(GameParams * item)
+static gboolean game_list_add_item(GameParams * item)
 {
 
 	if (!_game_list) {
 		params = item;
 	}
 
+	/* check for name collisions */
+	if (item->title && game_list_find_item(item->title)) {
+
+		gchar *nt;
+		gint i;
+
+		/* append a number */
+		for (i=1; i<=INT_MAX; i++) {
+			nt = g_strdup_printf("%s%d", item->title, i);
+			if (!game_list_find_item(nt)) {
+				g_free(item->title);
+				item->title = nt;
+				break;
+			}
+			g_free(nt);
+		}
+		/* give up and skip this game */
+		if (item->title != nt) {
+			g_free(nt);
+			return FALSE;
+		}
+	}
+
 	_game_list =
-	    g_slist_insert_sorted(_game_list, item, sort_function);
+		g_slist_insert_sorted(_game_list, item, sort_function);
+	return TRUE;
 }
 
 /** Returns TRUE if the game list is empty */
@@ -137,8 +161,10 @@ void load_game_types(const gchar * path)
 		fullname = g_build_filename(path, fname, NULL);
 		params = load_game_desc(fullname);
 		g_free(fullname);
-		if (params)
-			game_list_add_item(params);
+		if (params) {
+			if (!game_list_add_item(params))
+				params_free(params);
+		}
 	}
 	g_dir_close(dir);
 	if (game_list_is_empty())

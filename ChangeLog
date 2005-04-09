@@ -1,3 +1,7 @@
+2005-04-09  0.9.7  Daniel <dgun@umpire.com>
+	* server/gnocatan-server.c: When duplicate game titles exist, a number
+	is added to the title.
+
 2005-04-06  Stephen Jacob <sj@sjacob.org>
 	* common/gtk/common-gtk.c: Change the text color of player 3's
 	messages, since light gray on white is really hard to read.
