@@ -1,32 +1,37 @@
-title Evil square
-num-players 4
-victory-points 12
+title Islands
+num-players 3
+victory-points 10
 domestic-trade
-num-roads 16
+num-roads 10
+num-ships 15
 num-settlements 4
 num-cities 4
-resource-count 40
-develop-road 3
-develop-monopoly 3
-develop-plenty 3
-develop-soldier 9
-
-
-chits 3,9,2,5,11,4,6,10,4,8,10,5,11,12,3,9,2,12,3,9,2,5,11,4,6,10,4,8,10,5,11,12,3,9
-
+num-bridges 2
+resource-count 15
+develop-road 2
+develop-monopoly 2
+develop-plenty 2
+develop-chapel 1
+develop-university 1
+develop-governor 1
+develop-library 1
+develop-market 1
+develop-soldier 11
+use-pirate
+chits 2,6,2,4,6,3,5,10,8,10,4,9,11,12,8,12,3,5,9,11,
 map
-s  , s  , s  , s  , s  , s  , s  , s  ,
- s  , p09, p10, p11, p12, p13, s  , s  ,
-s  , p17, f18, p19, p20, t21, p22, s  ,
- s  , p25, p26, p27, p28, p29, p30, s  ,
-s  , p33, p34, p35, p36, p37, p38, s  ,
- s  , p41, h42, p43, p44, m45, p46, s  ,
-s  , s  , p50, p51, p52, p53, p54, s  ,
- s  , s  , s  , s  , s  , s  , s  , s
+s   ,s   ,s   ,s   ,s   ,s   ,s   ,s   ,s   ,
+s   ,p0  ,h1  ,s   ,s   ,m2  ,p3  ,f4  ,s   ,
+s   ,f5  ,m6  ,sb5 ,m7  ,sl3 ,t8  ,h9  ,s   ,
+s   ,t10 ,sw2 ,t11 ,f12 ,so0 ,p13 ,s   ,s   ,
+s   ,s   ,s   ,p14 ,h15 ,s   ,s   ,s   ,s   ,
+s   ,s   ,s   ,s   ,s?0 ,m16 ,f17 ,s   ,s   ,
+s   ,s   ,d18 ,s   ,s   ,h19 ,t20 ,s   ,s   ,
+s   ,s   ,s   ,s   ,s   ,s   ,s   ,s   ,s   ,
 .
 
-# Evil_square.game
-# v1.3, 14/09/2003
+# iles.game
+# v1.0, 19/02/2004
 # by LT-P <LT-P@LT-P.net>
 
 # This program is free software; you can redistribute it and/or

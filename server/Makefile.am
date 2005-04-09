@@ -75,9 +75,11 @@ config_DATA = \
 	seafarers-gold.game \
 	small.game \
 	canyon.game \
+	coeur.game \
 	conquest.game \
 	conquest+ports.game \
 	crane_island.game \
+	iles.game \
 	pond.game \
 	square.game \
 	star.game \
