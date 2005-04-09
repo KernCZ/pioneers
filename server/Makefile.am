@@ -74,6 +74,7 @@ config_DATA = \
 	seafarers.game \
 	seafarers-gold.game \
 	small.game \
+	archipel_gold.game \
 	canyon.game \
 	coeur.game \
 	conquest.game \

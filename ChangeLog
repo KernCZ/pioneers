@@ -9,6 +9,9 @@
 	* iles.game, coeur.game: Added new maps
 	* Evil_square.game: Updated the map
 
+2005-04-09  Blyx <blyx@apshram.net>
+	* archipel_gold.game: Added a new map
+
 2005-04-06  Stephen Jacob <sj@sjacob.org>
 	* common/gtk/common-gtk.c: Change the text color of player 3's
 	messages, since light gray on white is really hard to read.
