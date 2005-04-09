@@ -77,6 +77,7 @@ config_DATA = \
 	canyon.game \
 	conquest.game \
 	conquest+ports.game \
+	crane_island.game \
 	pond.game \
 	square.game \
 	star.game \

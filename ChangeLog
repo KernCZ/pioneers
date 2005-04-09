@@ -2,6 +2,9 @@
 	* server/gnocatan-server.c: When duplicate game titles exist, a number
 	is added to the title.
 
+2005-04-09  Yusei <yusei@ragondux.com>
+	* crane_island.game: Added a new map
+
 2005-04-06  Stephen Jacob <sj@sjacob.org>
 	* common/gtk/common-gtk.c: Change the text color of player 3's
 	messages, since light gray on white is really hard to read.
