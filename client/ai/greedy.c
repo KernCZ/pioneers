@@ -1168,9 +1168,11 @@ static void greedy_turn(void)
 			Resource trade_away, want_resource;
 			if (will_do_maritime_trade
 			    (assets, &resval, &amount, &trade_away,
-			     &want_resource))
+			     &want_resource)) {
 				cb_maritime(amount, trade_away,
 					    want_resource);
+				return;
+			}
 		}
 	}
 
