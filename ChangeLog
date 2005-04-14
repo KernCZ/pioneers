@@ -10,6 +10,7 @@
 	* common/map.c (layout_chits): Use at most one robber per map.
 	* common/map.c (map_copy): Use robber and pirate hex from the copied
 	map, not the original map.
+	* configure.ac: Do not use Gtk+ for console-only applications.
 
 2005-04-09  0.9.7  Daniel <dgun@umpire.com>
 	* server/gnocatan-server.c: When duplicate game titles exist, a number

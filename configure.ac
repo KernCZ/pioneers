@@ -62,8 +62,6 @@ PKG_CHECK_MODULES(GTK2, gtk+-2.0 >= $GTK_REQUIRED_VERSION, have_gtk2=yes,
 		[have_gtk2="no, Gtk+ version too old"],
 		[have_gtk2="no, Gtk+ not installed"])
 	])
-AC_SUBST(CFLAGS, "$CFLAGS $GTK2_CFLAGS")
-AC_SUBST(LIBS, "$LIBS $GTK2_LIBS")
 AM_CONDITIONAL(HAVE_GTK2, [test "$have_gtk2" = "yes"])
 
 if test "$have_gtk2" = "yes"; then
