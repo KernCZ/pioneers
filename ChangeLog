@@ -5,6 +5,8 @@
 	server/square.game: Fixed the core dump which resulted in the
 	imcomplete file. Added some descriptions of the errors.
 	* client/ai/greedy.c (greedy_turn): Fix for bug introduced in 0.9.6.
+	* client/ai/greedy.c (trade_desired, greedy_consider_quote): Let the
+	AI accept free offers during trade.
 
 2005-04-09  0.9.7  Daniel <dgun@umpire.com>
 	* server/gnocatan-server.c: When duplicate game titles exist, a number

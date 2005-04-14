@@ -3,6 +3,7 @@
  *
  * Copyright (C) 1999 the Free Software Foundation
  * Copyright (C) 2003 Bas Wijnen <b.wijnen@phys.rug.nl>
+ * Copyright (C) 2005 Roland Clobus <rclobus@bigfoot.com>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +31,7 @@
  *
  * -Play monopoly development card
  * -Make roads explicitly to get the longest road card
- * -Trade with other players
+ * -Initiate trade with other players
  * -Do anything seafarers
  *
  */
@@ -1588,7 +1589,8 @@ static void greedy_quote_start(void)
 	quote_num = 0;
 }
 
-static int trade_desired(gint assets[NO_RESOURCE], gint give, gint take)
+static int trade_desired(gint assets[NO_RESOURCE], gint give, gint take,
+			 gboolean free_offer)
 {
 	int i, n;
 	int res = NO_RESOURCE;
@@ -1596,13 +1598,15 @@ static int trade_desired(gint assets[NO_RESOURCE], gint give, gint take)
 	float value = 0.0;
 	gint need[NO_RESOURCE];
 
-	/* don't give away cards we have only once */
-	if (assets[give] <= 1) {
-		return 0;
-	}
+	if (!free_offer) {
+		/* don't give away cards we have only once */
+		if (assets[give] <= 1) {
+			return 0;
+		}
 
-	/* make it as if we don't have what we're trading away */
-	assets[give] -= 1;
+		/* make it as if we don't have what we're trading away */
+		assets[give] -= 1;
+	}
 
 	for (n = 1; n <= 3; ++n) {
 		/* do i need something more for something? */
@@ -1627,7 +1631,8 @@ static int trade_desired(gint assets[NO_RESOURCE], gint give, gint take)
 				break;
 		}
 	}
-	assets[give] += 1;
+	if (!free_offer)
+		assets[give] += 1;
 	if (n <= 3)
 		return n;
 
@@ -1654,24 +1659,41 @@ static void greedy_consider_quote(UNUSED(gint partner),
 	gint give, take, ntake;
 	gint give_res[NO_RESOURCE], take_res[NO_RESOURCE],
 	    my_assets[NO_RESOURCE];
-	int i;
+	gint i;
+	gboolean free_offer;
 
-	for (i = 0; i < NO_RESOURCE; ++i)
+	free_offer = TRUE;
+	for (i = 0; i < NO_RESOURCE; ++i) {
 		my_assets[i] = resource_asset(i);
+		free_offer &= we_supply[i] == 0;
+	}
 
 	for (give = 0; give < NO_RESOURCE; give++) {
-		if (!we_supply[give])
-			continue;
-		if (!my_assets[give]) {
-			continue;
+		/* A free offer is always accepted */
+		if (!free_offer) {
+			if (we_supply[give] == 0)
+				continue;
+			if (my_assets[give] == 0)
+				continue;
 		}
 		for (take = 0; take < NO_RESOURCE; take++) {
-			if (!we_receive[take])
+			/* Don't do stupid offers */
+			if (!free_offer && take == give)
+				continue;
+			if (we_receive[take] == 0)
 				continue;
 			if ((ntake =
-			     trade_desired(my_assets, give, take)) > 0)
+			     trade_desired(my_assets, give, take,
+					   free_offer)) > 0)
 				goto doquote;
 		}
+	}
+
+	/* Do not decline anything for free, just take it all */
+	if (free_offer) {
+		cb_quote(quote_next_num(), we_supply, we_receive);
+		log_message(MSG_INFO, "Taking the whole free offer.\n");
+		return;
 	}
 
 	log_message(MSG_INFO, _("Rejecting trade.\n"));
@@ -1680,7 +1702,7 @@ static void greedy_consider_quote(UNUSED(gint partner),
 
       doquote:
 	for (i = 0; i < NO_RESOURCE; ++i) {
-		give_res[i] = give == i ? 1 : 0;
+		give_res[i] = (give == i && !free_offer) ? 1 : 0;
 		take_res[i] = take == i ? ntake : 0;
 	}
 	cb_quote(quote_next_num(), give_res, take_res);
