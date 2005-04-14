@@ -785,12 +785,12 @@ static gboolean disconnect_hex(UNUSED(Map * map), Hex * hex,
 	gint idx;
 
 	for (idx = 0; idx < 6; idx++) {
-		Node *node = hex->nodes[idx];
-		Edge *edge = hex->edges[idx];
+		const Node *node = hex->nodes[idx];
+		const Edge *edge = hex->edges[idx];
 
-		if (node->x != hex->x || node->y != hex->y)
+		if (node && (node->x != hex->x || node->y != hex->y))
 			hex->nodes[idx] = NULL;
-		if (edge->x != hex->x || edge->y != hex->y)
+		if (edge && (edge->x != hex->x || edge->y != hex->y))
 			hex->edges[idx] = NULL;
 	}
 

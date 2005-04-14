@@ -443,14 +443,26 @@ GameParams *params_copy(GameParams * params)
 /** Returns TRUE if the params are valid */
 gboolean params_load_finish(GameParams * params)
 {
-	if (!params->map)
+	if (!params->map) {
+		g_warning("Missing map");
 		return FALSE;
-	if (!params->chits)
+	}
+	if (params->parsing_map) {
+		g_warning("Map not complete. Missing . after the map?");
 		return FALSE;
-	if (params->chits->len < 1)
+	}
+	if (!params->chits) {
+		g_warning("No chits defined");
 		return FALSE;
-	if (!params->title)
+	}
+	if (params->chits->len < 1) {
+		g_warning("At least one chit must be defined");
 		return FALSE;
+	}
+	if (!params->title) {
+		g_warning("Game has no title");
+		return FALSE;
+	}
 	params->map->have_bridges =
 	    params->num_build_type[BUILD_BRIDGE] > 0;
 	params->map->has_pirate = params->use_pirate;

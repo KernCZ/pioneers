@@ -1,6 +1,9 @@
 2004-09-14  0.9.8  Roland Clobus <rclobus@bigfoot.com>
 	* server/server.c (accept_connection): Used wrong file descriptor, bug
 	was introduced in 0.9.6
+	* common/game.c (params_copy), common/map.c (disconnect_hex),
+	server/square.game: Fixed the core dump which resulted in the
+	imcomplete file. Added some descriptions of the errors.
 
 2005-04-09  0.9.7  Daniel <dgun@umpire.com>
 	* server/gnocatan-server.c: When duplicate game titles exist, a number
