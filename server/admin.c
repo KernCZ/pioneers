@@ -76,7 +76,7 @@ static gboolean game_list_add_item(GameParams * item)
 		gint i;
 
 		/* append a number */
-		for (i=1; i<=INT_MAX; i++) {
+		for (i = 1; i <= INT_MAX; i++) {
 			nt = g_strdup_printf("%s%d", item->title, i);
 			if (!game_list_find_item(nt)) {
 				g_free(item->title);
@@ -93,7 +93,7 @@ static gboolean game_list_add_item(GameParams * item)
 	}
 
 	_game_list =
-		g_slist_insert_sorted(_game_list, item, sort_function);
+	    g_slist_insert_sorted(_game_list, item, sort_function);
 	return TRUE;
 }
 
