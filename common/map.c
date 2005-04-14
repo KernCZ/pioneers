@@ -337,9 +337,11 @@ static void layout_chits(Map * map)
 		if (hex->terrain == DESERT_TERRAIN) {
 			/* Robber always starts in the desert
 			 */
-			hex->robber = TRUE;
 			hex->roll = 0;
-			map->robber_hex = hex;
+			if (map->robber_hex == NULL) {
+				hex->robber = TRUE;
+				map->robber_hex = hex;
+			}
 		} else {
 			hex->robber = FALSE;
 			hex->roll =
@@ -514,8 +516,16 @@ Map *map_copy(Map * map)
 	map_traverse(copy, build_network, NULL);
 	map_traverse(copy, connect_network, NULL);
 	map_traverse(map, (HexFunc) set_nosetup_nodes, copy);
-	copy->robber_hex = map->robber_hex;
-	copy->pirate_hex = map->pirate_hex;
+	if (map->robber_hex == NULL)
+		copy->robber_hex = NULL;
+	else
+		copy->robber_hex =
+		    copy->grid[map->robber_hex->y][map->robber_hex->x];
+	if (map->pirate_hex == NULL)
+		copy->pirate_hex = NULL;
+	else
+		copy->pirate_hex =
+		    copy->grid[map->pirate_hex->y][map->pirate_hex->x];
 	copy->shrink_left = map->shrink_left;
 	copy->shrink_right = map->shrink_right;
 	copy->has_moved_ship = map->has_moved_ship;
