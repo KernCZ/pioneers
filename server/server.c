@@ -125,7 +125,7 @@ gint accept_connection(gint in_fd, gchar ** location)
 	}
 
 	g_assert(location != NULL);
-	if (!net_get_peer_name(in_fd, location, &port, &error_message)) {
+	if (!net_get_peer_name(fd, location, &port, &error_message)) {
 		log_message(MSG_ERROR, "%s\n", error_message);
 		g_free(error_message);
 	}
