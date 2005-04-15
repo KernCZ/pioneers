@@ -472,9 +472,11 @@ gboolean mode_pre_game(Player * player, gint event)
 			return TRUE;
 		}
 		if (sm_recv(sm, "game")) {
+			sm_send(sm, "game\n");
 			params_write_lines(game->params, FALSE,
 					   (WriteLineFunc) send_game_line,
 					   player);
+			sm_send(sm, "end\n");
 			return TRUE;
 		}
 		if (sm_recv(sm, "gameinfo")) {

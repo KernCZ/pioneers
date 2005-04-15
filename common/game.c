@@ -209,7 +209,6 @@ void params_write_lines(GameParams * params, gboolean write_secrets,
 	gchar buff[512];
 	gchar *str;
 
-	func(user_data, "game");
 	switch (params->variant) {
 	case VAR_DEFAULT:
 		func(user_data, "variant default");
@@ -271,7 +270,6 @@ void params_write_lines(GameParams * params, gboolean write_secrets,
 		tmp.func = func;
 		map_traverse(params->map, (HexFunc) find_no_setup, &tmp);
 	}
-	func(user_data, "end");
 }
 
 void params_load_line(GameParams * params, gchar * line)

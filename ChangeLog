@@ -1,4 +1,8 @@
-2004-09-14  0.9.8  Roland Clobus <rclobus@bigfoot.com>
+2005-04-14  Brian Wellington <bwelling@xbill.org>
+	* common/game.c, server/pregame.c: Make params_write_file() create a
+	valid game file.
+
+2004-04-14  0.9.8  Roland Clobus <rclobus@bigfoot.com>
 	* server/server.c (accept_connection): Used wrong file descriptor, bug
 	was introduced in 0.9.6
 	* common/game.c (params_copy), common/map.c (disconnect_hex),
