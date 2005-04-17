@@ -133,23 +133,28 @@ gint accept_connection(gint in_fd, gchar ** location)
 	return fd;
 }
 
-gint new_computer_player(const gchar * server, const gchar * port)
+gint new_computer_player(const gchar * server, const gchar * port,
+			 gboolean want_chat)
 {
-	gchar *child_argv[7];
+	gchar *child_argv[8];
 	GError *error;
 	gint ret = 0;
+	gint n = 0;
 	gint i;
 
 	if (!server)
 		server = GNOCATAN_DEFAULT_GAME_HOST;
 
-	child_argv[0] = g_strdup(GNOCATAN_AI_PATH);
-	child_argv[1] = g_strdup(GNOCATAN_AI_PATH);
-	child_argv[2] = g_strdup("-s");
-	child_argv[3] = g_strdup(server);
-	child_argv[4] = g_strdup("-p");
-	child_argv[5] = g_strdup(port);
-	child_argv[6] = NULL;
+	child_argv[n++] = g_strdup(GNOCATAN_AI_PATH);
+	child_argv[n++] = g_strdup(GNOCATAN_AI_PATH);
+	child_argv[n++] = g_strdup("-s");
+	child_argv[n++] = g_strdup(server);
+	child_argv[n++] = g_strdup("-p");
+	child_argv[n++] = g_strdup(port);
+	if (!want_chat)
+		child_argv[n++] = g_strdup("-c");
+	child_argv[n++] = NULL;
+	g_assert(n < 8);
 
 	if (!g_spawn_async(NULL, child_argv, NULL, 0, NULL, NULL,
 			   NULL, &error)) {

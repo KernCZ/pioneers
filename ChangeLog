@@ -1,6 +1,9 @@
 2005-04-18  Brian Wellington <bwelling@xbill.org>
 	* client/gtk/plenty.c: Remove duplicated and deprecated code
 	by using the resource table widget.
+	* server/gnocatan-server-console.c, server/player.c,
+	server/server.c, server/server.h, server/gtk/gnocatan-server-gtk.c:
+	Add the ability to disable AI chatting from gnocatan-server-gtk.
 
 2005-04-17  Stephen Jacob <sj@sjacob.org>
 	* client/callback.h, client/ai/greedy.c, client/common/callback.c,

@@ -48,6 +48,7 @@ static GtkWidget *select_game;	/* select game type */
 static GtkWidget *game_settings;	/* the settings of the game */
 static GtkWidget *server_frame;	/* the frame containing all settings regarding the server */
 static GtkWidget *register_toggle;	/* register with meta server? */
+static GtkWidget *chat_toggle;	/* disable AI chatting? */
 static GtkWidget *meta_entry;	/* name of meta server */
 static GtkWidget *hostname_entry;	/* name of server (allows masquerading) */
 static GtkWidget *port_entry;	/* server port */
@@ -63,6 +64,7 @@ static gboolean ui_enabled;	/* is the ui accessible? */
 static gchar *hostname;		/* reported hostname */
 static gchar *server_port = NULL;	/* port of the game */
 static gboolean register_server = TRUE;	/* Register at the meta server */
+static gboolean want_ai_chat = TRUE;
 
 /* Local function prototypes */
 static void add_game_to_list(gpointer name, UNUSED(gpointer user_data));
@@ -133,6 +135,16 @@ static void random_toggle_cb(GtkToggleButton * toggle,
 	random_order = gtk_toggle_button_get_active(toggle);
 	gtk_label_set_text(GTK_LABEL(label),
 			   random_order ? _("Yes") : _("No"));
+}
+
+static void chat_toggle_cb(GtkToggleButton * toggle,
+			   UNUSED(gpointer user_data))
+{
+	GtkWidget *label = GTK_BIN(toggle)->child;
+
+	want_ai_chat = gtk_toggle_button_get_active(toggle);
+	gtk_label_set_text(GTK_LABEL(label),
+			   want_ai_chat ? _("Yes") : _("No"));
 }
 
 /* The server does not need to respond to changed game settings directly
@@ -231,6 +243,8 @@ static void start_clicked_cb(UNUSED(GtkButton * start_btn),
 			config_set_string("server/hostname", hostname);
 			config_set_int("server/random-seating-order",
 				       random_order);
+			config_set_int("server/enable-ai-chat",
+				       want_ai_chat);
 
 			config_set_string("game/name", params->title);
 			config_set_int("game/random-terrain",
@@ -252,7 +266,7 @@ static void addcomputer_clicked_cb(UNUSED(GtkButton * start_btn),
 				   UNUSED(gpointer user_data))
 {
 	g_assert(server_port != NULL);
-	new_computer_player(NULL, server_port);
+	new_computer_player(NULL, server_port, want_ai_chat);
 }
 
 
@@ -534,6 +548,21 @@ static GtkWidget *build_interface(void)
 	gtk_tooltips_set_tip(tooltips, random_toggle,
 			     _("Randomize turn order"), NULL);
 
+	label = gtk_label_new(_("Enable AI Chat"));
+	gtk_widget_show(label);
+	gtk_table_attach(GTK_TABLE(table), label, 0, 1, 5, 6,
+			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+
+	chat_toggle = gtk_toggle_button_new_with_label(_("No"));
+	gtk_widget_show(chat_toggle);
+	gtk_table_attach(GTK_TABLE(table), chat_toggle, 1, 2, 5, 6,
+			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
+	g_signal_connect(G_OBJECT(chat_toggle), "toggled",
+			 G_CALLBACK(chat_toggle_cb), NULL);
+	gtk_tooltips_set_tip(tooltips, chat_toggle,
+			     _("Enable AI chat messages"), NULL);
+
 	/* Initialize server-settings */
 	server_port = config_get_string("server/port="
 					GNOCATAN_DEFAULT_GAME_PORT,
@@ -563,6 +592,11 @@ static GtkWidget *build_interface(void)
 					TRUE);
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(random_toggle),
 				     random_order);
+
+	want_ai_chat = config_get_int_with_default("server/enable-ai-chat",
+						   TRUE);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(chat_toggle),
+				     want_ai_chat);
 
 	start_btn = gtk_button_new();
 	gtk_widget_show(start_btn);

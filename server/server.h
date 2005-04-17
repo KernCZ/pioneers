@@ -189,7 +189,8 @@ void stop_timeout(void);
 gint get_rand(gint range);
 Game *game_new(GameParams * params);
 void game_free(Game * game);
-gint new_computer_player(const gchar * server, const gchar * port);
+gint new_computer_player(const gchar * server, const gchar * port,
+			 gboolean want_chat);
 gboolean server_startup(GameParams * params, const gchar * hostname,
 			const gchar * port, gboolean meta,
 			gboolean random_order);
