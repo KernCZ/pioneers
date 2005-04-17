@@ -112,6 +112,18 @@ gchar *player_name(gint player_num, gboolean word_caps)
 	return buff;
 }
 
+gint player_get_score(gint player_num)
+{
+	Player *player = player_get(player_num);
+	gint i, score;
+
+	for (i = 0, score = 0; i < numElem(player->statistics); i++) {
+		score += stat_get_vp_value(i) * player->statistics[i];
+	}
+
+	return score;
+}
+
 gint my_player_num()
 {
 	return my_player_id;

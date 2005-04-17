@@ -39,25 +39,23 @@ static GdkColor ps_building = { 0, 0x0b00, 0xed00, 0x8900 };
 typedef struct {
 	const gchar *singular;
 	const gchar *plural;
-	gint victory_mult;
 	GdkColor *textcolor;
 } Statistic;
 
 static Statistic statistics[] = {
-	{N_("Settlement"), N_("Settlements"), 1, &ps_settlement},
-	{N_("City"), N_("Cities"), 2, &ps_city},
-	{N_("Largest Army"), NULL, 2, &ps_largest},
-	{N_("Longest Road"), NULL, 2, &ps_largest},
-	{N_("Chapel"), N_("Chapels"), 1, &ps_building},
-	{N_("University of Gnocatan"), N_("Universities of Gnocatan"), 1,
+	{N_("Settlement"), N_("Settlements"), &ps_settlement},
+	{N_("City"), N_("Cities"), &ps_city},
+	{N_("Largest Army"), NULL, &ps_largest},
+	{N_("Longest Road"), NULL, &ps_largest},
+	{N_("Chapel"), N_("Chapels"), &ps_building},
+	{N_("University of Gnocatan"), N_("Universities of Gnocatan"),
 	 &ps_building},
-	{N_("Governor's House"), N_("Governor's Houses"), 1, &ps_building},
-	{N_("Library"), N_("Libraries"), 1, &ps_building},
-	{N_("Market"), N_("Markets"), 1, &ps_building},
-	{N_("Soldier"), N_("Soldiers"), 0, &ps_soldier},
-	{N_("Resource card"), N_("Resource cards"), 0, &ps_resource},
-	{N_("Development card"), N_("Development cards"), 0,
-	 &ps_development}
+	{N_("Governor's House"), N_("Governor's Houses"), &ps_building},
+	{N_("Library"), N_("Libraries"), &ps_building},
+	{N_("Market"), N_("Markets"), &ps_building},
+	{N_("Soldier"), N_("Soldiers"), &ps_soldier},
+	{N_("Resource card"), N_("Resource cards"), &ps_resource},
+	{N_("Development card"), N_("Development cards"), &ps_development}
 };
 
 enum {
@@ -236,20 +234,14 @@ static gboolean summary_locate_statistic(GtkTreeModel * model,
 /** Function to redisplay the running point total for the indicated player */
 static void refresh_victory_point_total(int player_num)
 {
-	Player *player;
-	gint tot;
 	StatisticType type;
 	gchar points[16];
 
 	if (player_num < 0 || player_num >= numElem(players))
 		return;
 
-	player = player_get(player_num);
-	for (tot = 0, type = 0; type < numElem(statistics); type++) {
-		tot += statistics[type].victory_mult
-		    * player->statistics[type];
-	}
-	snprintf(points, sizeof(points), "%d", tot);
+	snprintf(points, sizeof(points), "%d",
+		 player_get_score(player_num));
 
 	summary_found_flag = STORE_NO_MATCH;
 	gtk_tree_model_foreach(GTK_TREE_MODEL(summary_store),
@@ -304,7 +296,7 @@ void frontend_new_statistics(gint player_num, StatisticType type,
 	struct Player_statistic ps;
 
 	value = player->statistics[type];
-	if (statistics[type].victory_mult > 0)
+	if (stat_get_vp_value(type) > 0)
 		refresh_victory_point_total(player_num);
 
 	summary_found_flag = STORE_NO_MATCH;
@@ -329,9 +321,9 @@ void frontend_new_statistics(gint player_num, StatisticType type,
 		} else
 			sprintf(desc, "%d %s", value,
 				gettext(statistics[type].plural));
-		if (statistics[type].victory_mult > 0)
+		if (stat_get_vp_value(type) > 0)
 			sprintf(points, "%d",
-				value * statistics[type].victory_mult);
+				value * stat_get_vp_value(type));
 		else
 			strcpy(points, "");
 

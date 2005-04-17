@@ -1180,13 +1180,36 @@ static void greedy_turn(void)
 	/* play developement cards */
 	if (can_play_any_develop()) {
 		const DevelDeck *deck = get_devel_deck();
+		gint num_victory_cards = 0;
+		gint victory_point_target, my_points;
 
 		for (i = 0; i < deck->num_cards; i++) {
 			DevelType cardtype = deck_card_type(deck, i);
 
+			/* if it's a vp card, note this for later */
+			if (is_victory_card(cardtype)) {
+				num_victory_cards++;
+				continue;
+			}
+
 			/* can't play card we just bought */
 			if (can_play_develop(i)) {
 				if (will_play_development_card(cardtype)) {
+					cb_play_develop(i);
+					return;
+				}
+			}
+		}
+
+		/* if we have enough victory cards to win, then play them */
+		victory_point_target = game_victory_points();
+		my_points = player_get_score(my_player_num());
+		if (num_victory_cards + my_points >= victory_point_target) {
+			for (i = 0; i < deck->num_cards; i++) {
+				DevelType cardtype =
+				    deck_card_type(deck, i);
+
+				if (is_victory_card(cardtype)) {
 					cb_play_develop(i);
 					return;
 				}

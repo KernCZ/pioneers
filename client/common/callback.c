@@ -317,6 +317,32 @@ gint game_resources()
 	return game_params->resource_count;
 }
 
+gint game_victory_points()
+{
+	return game_params->victory_points;
+}
+
+gint stat_get_vp_value(StatisticType type)
+{
+	/* victory point values of all the statistic types */
+	static gint stat_vp_values[] = {
+		1,		/* settlement */
+		2,		/* city */
+		2,		/* largest army */
+		2,		/* longest road */
+		1,		/* chapel */
+		1,		/* university of gnocatan */
+		1,		/* governor's house */
+		1,		/* library */
+		1,		/* market */
+		0,		/* soldier */
+		0,		/* resource card */
+		0,		/* development card */
+	};
+
+	return stat_vp_values[type];
+}
+
 gboolean can_undo(void)
 {
 	return build_can_undo();

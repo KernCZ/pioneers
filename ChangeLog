@@ -1,3 +1,8 @@
+2005-04-17  Stephen Jacob <sj@sjacob.org>
+	* client/callback.h, client/ai/greedy.c, client/common/callback.c,
+	client/common/player.c, client/gtk/player.c: The AI now holds VP
+	dev cards until it has enough points to win.
+
 2005-04-14  Brian Wellington <bwelling@xbill.org>
 	* common/game.c, server/pregame.c: Make params_write_file() create a
 	valid game file.
