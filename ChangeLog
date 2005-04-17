@@ -1,3 +1,7 @@
+2005-04-18  Brian Wellington <bwelling@xbill.org>
+	* client/gtk/plenty.c: Remove duplicated and deprecated code
+	by using the resource table widget.
+
 2005-04-17  Stephen Jacob <sj@sjacob.org>
 	* client/callback.h, client/ai/greedy.c, client/common/callback.c,
 	client/common/player.c, client/gtk/player.c: The AI now holds VP
