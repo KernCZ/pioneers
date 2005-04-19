@@ -67,8 +67,6 @@ gnocatan_SOURCES = \
 	gui.h \
 	guimap.h \
 	histogram.h \
-	polygon.h \
-	theme.h \
 	callbacks.c \
 	chat.c \
 	connect.c \
@@ -87,7 +85,6 @@ gnocatan_SOURCES = \
 	name.c \
 	offline.c \
 	plenty.c \
-	polygon.c \
 	player.c \
 	quote.c \
 	resource.c \
@@ -95,7 +92,6 @@ gnocatan_SOURCES = \
 	resource-table.h \
 	settingscreen.c \
 	state.c \
-	theme.c \
 	trade.c
 
 gnocatan_LDADD = \

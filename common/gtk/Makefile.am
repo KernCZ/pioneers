@@ -22,10 +22,13 @@ include $(top_srcdir)/rules.make
 
 noinst_LIBRARIES = libgnocatan_gtk.a
 
+themedir  =$(datadir)/games/gnocatan/themes
+
 AM_CPPFLAGS = \
 	-I$(includedir) \
 	-I$(srcdir)/.. \
 	-DDATADIR=\"$(datadir)\" \
+	-DTHEMEDIR=\"$(themedir)\" \
 	-I$(GNOME2_CFLAGS) \
 	$(debug_includes) \
 	$(extra_includes)
@@ -39,5 +42,9 @@ libgnocatan_gtk_a_SOURCES = \
 	config-gnome.h \
 	game-settings.c \
 	game-settings.h \
+	polygon.c \
+	polygon.h \
 	select-game.c \
-	select-game.h
+	select-game.h \
+	theme.c \
+	theme.h
