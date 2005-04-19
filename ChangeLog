@@ -1,3 +1,6 @@
+2005-04-19  Brian Wellington <bwelling@xbill.org>
+	* configure.ac, Makefile.am, editor: Add gnocatan-editor.
+
 2005-04-18  Brian Wellington <bwelling@xbill.org>
 	* client/gtk/plenty.c: Remove duplicated and deprecated code
 	by using the resource table widget.

@@ -184,6 +184,7 @@ AC_CONFIG_FILES([ \
 	client/ai/Makefile \
 	server/Makefile \
 	meta-server/Makefile \
+	editor/Makefile \
 	docs/Makefile \
 	])
 AC_CONFIG_FILES([ \
@@ -194,7 +195,8 @@ AC_CONFIG_FILES([ \
 	client/gtk/data/themes/FreeCIV-like/Makefile \
 	client/gtk/data/themes/Iceland/Makefile \
 	client/gtk/data/themes/Tiny/Makefile \
-	server/gtk/Makefile
+	server/gtk/Makefile \
+	editor/gtk/Makefile
 	])
 AC_CONFIG_FILES([ \
 	client/help/Makefile \
