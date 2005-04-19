@@ -8,6 +8,7 @@
 	client/gtk/Makefile.am, common/gtk/polygon.[ch],
 	common/gtk/theme.[ch], common/gtk/Makefile.am: Move theme and polygon
 	code from client/gtk to common/gtk.
+	* client/ai/greedy.c: The AI can now play monopoly cards.
 
 2005-04-17  Stephen Jacob <sj@sjacob.org>
 	* client/callback.h, client/ai/greedy.c, client/common/callback.c,

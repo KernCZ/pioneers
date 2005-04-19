@@ -29,7 +29,6 @@
  *
  * What it does _NOT_ do:
  *
- * -Play monopoly development card
  * -Make roads explicitly to get the longest road card
  * -Initiate trade with other players
  * -Do anything seafarers
@@ -1046,6 +1045,8 @@ static gboolean will_do_maritime_trade(gint assets[NO_RESOURCE],
  */
 static gboolean will_play_development_card(DevelType cardtype)
 {
+	gint amount, cards, i;
+
 	if (is_victory_card(cardtype)) {
 		return TRUE;
 	}
@@ -1053,15 +1054,13 @@ static gboolean will_play_development_card(DevelType cardtype)
 	switch (cardtype) {
 	case DEVEL_SOLDIER:
 		return TRUE;
-	case DEVEL_YEAR_OF_PLENTY:{
-			/* only when the bank is full enough */
-			gint i;
-			gint amount = 0;
-			for (i = 0; i < NO_RESOURCE; i++)
-				amount += get_bank()[i];
-			if (amount >= 2) {
-				return TRUE;
-			}
+	case DEVEL_YEAR_OF_PLENTY:
+		/* only when the bank is full enough */
+		amount = 0;
+		for (i = 0; i < NO_RESOURCE; i++)
+			amount += get_bank()[i];
+		if (amount >= 2) {
+			return TRUE;
 		}
 		break;
 	case DEVEL_ROAD_BUILDING:
@@ -1069,6 +1068,14 @@ static gboolean will_play_development_card(DevelType cardtype)
 		if (stock_num_roads() < 2)
 			break;
 		return TRUE;
+	case DEVEL_MONOPOLY:
+		/* don't unless there are enough cards out */
+		for (i = 0, cards = 0; i < num_players(); i++)
+			if (i != my_player_num())
+				cards += player_get_num_resource(i);
+		if (cards >= 6)
+			return TRUE;
+		break;
 	default:
 		break;
 	}
@@ -1476,6 +1483,37 @@ static void greedy_year_of_plenty(gint bank[NO_RESOURCE])
 	want[r2]++;
 
 	cb_choose_plenty(want);
+}
+
+/*
+ * We played a monopoly card.  Pick a resource
+ */
+
+static void greedy_monopoly(void)
+{
+	const gint *bank = get_bank();
+	gint resources = game_resources();
+	gint assets[NO_RESOURCE];
+	int i;
+	int r;
+	resource_values_t resval;
+
+	ai_wait();
+	for (i = 0; i < NO_RESOURCE; i++)
+		assets[i] = resource_asset(i);
+
+	/* order resources by preference */
+	reevaluate_resources(&resval);
+
+	/* this could only infinite loop if no other players had any cards */
+	while (TRUE) {
+		r = resource_desire(assets, &resval, NO_RESOURCE, 0);
+		if (bank[r] + assets[r] < resources) {
+			cb_choose_monopoly(r);
+			return;
+		}
+		resval.value[r] = 0;
+	}
 }
 
 
@@ -1902,6 +1940,7 @@ void greedy_init(UNUSED(int argc), UNUSED(char **argv))
 	callbacks.robber = &greedy_place_robber;
 	callbacks.roadbuilding = &greedy_roadbuilding;
 	callbacks.plenty = &greedy_year_of_plenty;
+	callbacks.monopoly = &greedy_monopoly;
 	callbacks.discard_add = &greedy_discard_add;
 	callbacks.quote_start = &greedy_quote_start;
 	callbacks.quote = &greedy_consider_quote;
