@@ -2,7 +2,7 @@
 
 #include <string.h>
 
-#include <gnome.h>
+#include <libgnome/libgnome.h>
 
 #include "aboutbox.h"
 #include "config-gnome.h"
