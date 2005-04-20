@@ -6,6 +6,10 @@
 	* client/common/callback.c, client/gtk/gui.c, client/gtk/interface.c:
 	No direct build of a city in the client. First a settlement has to be
 	built.
+	* common/network.c, meta-server/gnocatan-meta-server.c: Added code
+	that will allow the tarball to be built under Cygwin. The client uses
+	IPv4 functions, the server will not create listening sockets, and the
+	metaserver will not create new games.
 
 2005-04-19  Brian Wellington <bwelling@xbill.org>
 	* configure.ac, Makefile.am, editor: Add gnocatan-editor.

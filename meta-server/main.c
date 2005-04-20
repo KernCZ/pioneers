@@ -414,6 +414,7 @@ static const gchar *get_server_path(void)
 
 static void client_create_new_server(Client * client, gchar * line)
 {
+#ifdef HAVE_GETADDRINFO_ET_AL
 	char *terrain, *numplayers, *points, *sevens_rule, *numai, *type;
 	int fd, port_used;
 	gboolean found_used = TRUE;
@@ -565,6 +566,9 @@ static void client_create_new_server(Client * client, gchar * line)
 	return;
       bad:
 	client_printf(client, "Badly formatted request\n");
+#else /* HAVE_GETADDRINFO_ET_AL */
+	client_printf(client, "Create new server not yet supported on this platform'n");
+#endif /* HAVE_GETADDRINFO_ET_AL */
 }
 
 static gboolean check_str_info(gchar * line, const gchar * prefix,
@@ -1027,7 +1031,9 @@ int main(int argc, char *argv[])
 		server_name = g_find_program_in_path(get_server_path());
 		if (server_name) {
 			g_free(server_name);
+#ifdef HAVE_GETADDRINFO_ET_AL
 			can_create_games = TRUE;
+#endif /* HAVE_GETADDRINFO_ET_AL */
 		}
 	}
 
