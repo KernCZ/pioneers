@@ -25,6 +25,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "callback.h"
+#include "colors.h"
 #include "quoteinfo.h"
 
 /* All graphics events. */

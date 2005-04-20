@@ -36,6 +36,8 @@ AM_CPPFLAGS = \
 libgnocatan_gtk_a_SOURCES = \
 	aboutbox.c \
 	aboutbox.h \
+	colors.c \
+	colors.h \
 	common_gtk.c \
 	common_gtk.h \
 	config-gnome.c \

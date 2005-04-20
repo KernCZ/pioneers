@@ -22,21 +22,17 @@
 
 #include "config.h"
 #include <math.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <gtk/gtk.h>
 
-#include "frontend.h"
+#include "game.h"
+#include "map.h"
+#include "colors.h"
+#include "guimap.h"
 #include "log.h"
 #include "theme.h"
 
-GdkColor black = { 0, 0, 0, 0 };
-GdkColor white = { 0, 0xff00, 0xff00, 0xff00 };
-GdkColor red = { 0, 0xff00, 0, 0 };
-GdkColor green = { 0, 0, 0xff00, 0 };
-GdkColor blue = { 0, 0, 0, 0xff00 };
-GdkColor lightblue = { 0, 0xbe00, 0xbe00, 0xff00 };
-
-static GdkColormap *cmap;
 static gboolean single_click_build_active = FALSE;
 
 typedef struct {
@@ -68,23 +64,13 @@ GuiMap *guimap_new()
 	gmap = g_malloc0(sizeof(*gmap));
 	gmap->highlight_chit = -1;
 	gmap->initial_font_size = -1;
-	if (cmap != NULL)
-		return gmap;
-
-	cmap = gdk_colormap_get_system();
-	gdk_colormap_alloc_color(cmap, &black, FALSE, TRUE);
-	gdk_colormap_alloc_color(cmap, &white, FALSE, TRUE);
-	gdk_colormap_alloc_color(cmap, &red, FALSE, TRUE);
-	gdk_colormap_alloc_color(cmap, &green, FALSE, TRUE);
-	gdk_colormap_alloc_color(cmap, &blue, FALSE, TRUE);
-	gdk_colormap_alloc_color(cmap, &lightblue, FALSE, TRUE);
-
 	return gmap;
 }
 
 void guimap_reset(GuiMap * gmap)
 {
 	gmap->highlight_chit = -1;
+	gmap->player_num = -1;
 }
 
 static GdkPoint settlement_points[] = {
@@ -619,7 +605,7 @@ static gboolean display_hex(const Map * map, const Hex * hex,
 			g_assert_not_reached();
 			break;
 		}
-		gdk_gc_set_foreground(gmap->gc, player_color(edge->owner));
+		gdk_gc_set_foreground(gmap->gc, colors_get_player(edge->owner));
 		poly_draw(gmap->pixmap, gmap->gc, TRUE, &poly);
 		gdk_gc_set_foreground(gmap->gc, &black);
 		poly_draw(gmap->pixmap, gmap->gc, FALSE, &poly);
@@ -638,7 +624,7 @@ static gboolean display_hex(const Map * map, const Hex * hex,
 		else
 			guimap_settlement_polygon(gmap, node, &poly);
 
-		gdk_gc_set_foreground(gmap->gc, player_color(node->owner));
+		gdk_gc_set_foreground(gmap->gc, colors_get_player(node->owner));
 		poly_draw(gmap->pixmap, gmap->gc, TRUE, &poly);
 		gdk_gc_set_foreground(gmap->gc, &black);
 		poly_draw(gmap->pixmap, gmap->gc, FALSE, &poly);
@@ -1109,7 +1095,7 @@ static void draw_cursor(GuiMap * gmap, gint owner, const Polygon * poly)
 	gdk_gc_set_line_attributes(gmap->gc, 2, GDK_LINE_SOLID,
 				   GDK_CAP_BUTT, GDK_JOIN_MITER);
 	gdk_gc_set_fill(gmap->gc, GDK_SOLID);
-	gdk_gc_set_foreground(gmap->gc, player_color(owner));
+	gdk_gc_set_foreground(gmap->gc, colors_get_player(owner));
 	poly_draw(gmap->pixmap, gmap->gc, TRUE, poly);
 
 	gdk_gc_set_foreground(gmap->gc, &green);
@@ -1533,26 +1519,25 @@ void guimap_cursor_move(GuiMap * gmap, gint x, gint y,
 		if (element->pointer) {
 			can_build_road = (roadM
 					  && roadF(*element,
-						   current_player(),
+						   gmap->player_num,
 						   dummyElement));
 			can_build_ship = (shipM
 					  && shipF(*element,
-						   current_player(),
+						   gmap->player_num,
 						   dummyElement));
 			can_build_bridge = (bridgeM
 					    && bridgeF(*element,
-						       current_player(),
+						       gmap->player_num,
 						       dummyElement));
 
 			find_node(gmap, x, y, element);
 			can_build_settlement = (settlementM
 						&& settlementF(*element,
-							       current_player
-							       (),
+							       gmap->player_num,
 							       dummyElement));
 			can_build_city = (cityM
 					  && cityF(*element,
-						   current_player(),
+						   gmap->player_num,
 						   dummyElement));
 		}
 		can_build_edge = can_build_road || can_build_ship
@@ -1565,23 +1550,23 @@ void guimap_cursor_move(GuiMap * gmap, gint x, gint y,
 
 		if (can_build_road)
 			guimap_cursor_set(gmap, ROAD_CURSOR,
-					  current_player(), roadF, roadS,
+					  gmap->player_num, roadF, roadS,
 					  NULL, TRUE);
 		else if (can_build_ship)
 			guimap_cursor_set(gmap, SHIP_CURSOR,
-					  current_player(), shipF, shipS,
+					  gmap->player_num, shipF, shipS,
 					  NULL, TRUE);
 		else if (can_build_bridge)
 			guimap_cursor_set(gmap, BRIDGE_CURSOR,
-					  current_player(), bridgeF,
+					  gmap->player_num, bridgeF,
 					  bridgeS, NULL, TRUE);
 		else if (can_build_settlement)
 			guimap_cursor_set(gmap, SETTLEMENT_CURSOR,
-					  current_player(), settlementF,
+					  gmap->player_num, settlementF,
 					  settlementS, NULL, TRUE);
 		else if (can_build_city)
 			guimap_cursor_set(gmap, CITY_CURSOR,
-					  current_player(), cityF, cityS,
+					  gmap->player_num, cityF, cityS,
 					  NULL, TRUE);
 	}
 

@@ -21,6 +21,7 @@
  */
 
 #include "config.h"
+#include "colors.h"
 #include "frontend.h"
 #include "log.h"
 
@@ -90,27 +91,14 @@ struct Player_statistic {
 static GtkWidget *turn_area;	/** turn indicator in status bar */
 static const gint turn_area_icon_width = 30;
 
-static GdkColor token_colors[MAX_PLAYERS] = {
-	{0, 0xCD00, 0x0000, 0x0000},	/* red */
-	{0, 0x1E00, 0x9000, 0xFF00},	/* blue */
-	{0, 0xE800, 0xE800, 0xE800},	/* white */
-	{0, 0xFF00, 0x7F00, 0x0000},	/* orange */
-	{0, 0xEE00, 0xEE00, 0x0000},	/* yellow */
-	{0, 0x8E00, 0xE500, 0xEE00},	/* cyan */
-	{0, 0xD100, 0x5F00, 0xEE00},	/* magenta */
-	{0, 0x0000, 0xEE00, 0x7600}	/* green */
-};
-
 void player_init()
 {
 	gint idx;
 	GdkColormap *cmap;
 
+	colors_init();
 	cmap = gdk_colormap_get_system();
-	for (idx = 0; idx < numElem(token_colors); idx++) {
-		/* allocate colours for the players */
-		gdk_colormap_alloc_color(cmap, &token_colors[idx], FALSE,
-					 TRUE);
+	for (idx = 0; idx < MAX_PLAYERS; idx++) {
 		/* initialize their pixmap to 0 so it isn't unref'd */
 		players[idx].user_data = NULL;
 	}
@@ -118,9 +106,7 @@ void player_init()
 
 GdkColor *player_color(gint player_num)
 {
-	g_assert(player_num >= 0);
-	g_assert(player_num < MAX_PLAYERS);
-	return &token_colors[player_num];
+	return colors_get_player(player_num);
 }
 
 GdkColor *player_or_viewer_color(gint player_num)
@@ -129,7 +115,7 @@ GdkColor *player_or_viewer_color(gint player_num)
 		/* viewer color is always black */
 		return &black;
 	}
-	return &token_colors[player_num];
+	return colors_get_player(player_num);
 }
 
 GdkPixbuf *player_create_icon(GtkWidget * widget, gint player_num,

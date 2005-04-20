@@ -1,3 +1,9 @@
+2005-04-20  Brian Wellington <bwelling@xbill.org>
+	* client/gtk/frontend.h, client/gtk/gui.c, client/gtk/guimap.c,
+	client/gtk/guimap.h, client/gtk/player.c, common/gtk/Makefile.am,
+	common/gtk/colors.c, common/gtk/colors.h: Move non-client-specific
+	code to common/gtk.
+
 2005-04-20  0.9.9  Roland Clobus <rclobus@bigfoot.com>
 	* rules.make, server/gnocatan-server-console.c: Add
 	G_DISABLE_DEPRECATED, and replace the old functions.

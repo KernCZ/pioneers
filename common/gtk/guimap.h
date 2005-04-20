@@ -82,14 +82,8 @@ typedef struct {
 	gint y_margin;		   /**< margin to leave empty */
 	gint width;		   /**< pixel width of map */
 	gint height;		   /**< pixel height of map */
+	gint player_num;	   /**< player displaying this map */
 } GuiMap;
-
-extern GdkColor black;
-extern GdkColor white;
-extern GdkColor red;
-extern GdkColor green;
-extern GdkColor blue;
-extern GdkColor lightblue;
 
 GuiMap *guimap_new(void);
 void guimap_reset(GuiMap * gmap);

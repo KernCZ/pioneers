@@ -925,6 +925,7 @@ static void show_uiinfo(EventType event, gboolean show)
 void gui_set_game_params(const GameParams * params)
 {
 	gmap->map = params->map;
+	gmap->player_num = my_player_num();
 	gtk_widget_queue_resize(gmap->area);
 
 	show_uiinfo(GUI_ROAD, params->num_build_type[BUILD_ROAD] > 0);
