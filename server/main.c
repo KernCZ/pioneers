@@ -231,9 +231,10 @@ int main(int argc, char *argv[])
 			for (i = 0; i < num_ai_players; ++i)
 				new_computer_player(NULL, server_port, TRUE);
 
-			event_loop = g_main_new(0);
-			g_main_run(event_loop);
-			g_main_destroy(event_loop);
+			event_loop = g_main_loop_new(NULL, FALSE);
+			g_main_loop_run(event_loop);
+			g_main_loop_unref(event_loop);
+
 		} else {
 			usage();
 		}
@@ -245,9 +246,9 @@ int main(int argc, char *argv[])
 		for (i = 0; i < num_ai_players; ++i)
 			new_computer_player(NULL, server_port, TRUE);
 
-		event_loop = g_main_new(0);
-		g_main_run(event_loop);
-		g_main_destroy(event_loop);
+		event_loop = g_main_loop_new(NULL, FALSE);
+		g_main_loop_run(event_loop);
+		g_main_loop_unref(event_loop);
 	}
 
 	g_free(hostname);
