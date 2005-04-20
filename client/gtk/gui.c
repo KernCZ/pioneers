@@ -370,13 +370,14 @@ static gint motion_notify_map_cb(GtkWidget * area, GdkEventMotion * event,
 static gint button_press_map_cb(GtkWidget * area, GdkEventButton * event,
 				UNUSED(gpointer user_data))
 {
-	if (area->window == NULL || gmap->map == NULL
-	    || event->button != 1)
+	if (area->window == NULL || gmap->map == NULL)
 		return FALSE;
 
-	guimap_cursor_select(gmap, event->x, event->y);
-
-	return TRUE;
+	if (event->button == 1 && event->type == GDK_BUTTON_PRESS) {
+		guimap_cursor_select(gmap, event->x, event->y);
+		return TRUE;
+	}
+	return FALSE;
 }
 
 static GtkWidget *build_map_area(void)

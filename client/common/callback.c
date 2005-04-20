@@ -409,10 +409,8 @@ gboolean turn_can_build_city()
 {
 	return have_rolled_dice()
 	    && stock_num_cities() > 0
-	    && ((can_afford(cost_upgrade_settlement())
-		 && map_can_upgrade_settlement(map, my_player_num()))
-		|| (can_afford(cost_city())
-		    && map_can_place_settlement(map, my_player_num())));
+	    && can_afford(cost_upgrade_settlement())
+	    && map_can_upgrade_settlement(map, my_player_num());
 }
 
 gboolean turn_can_trade()

@@ -282,10 +282,7 @@ static void frontend_state_turn(GuiEvent event)
 						can_settlement_be_built,
 						build_settlement_cb,
 						turn_can_build_city(),
-						can_afford(cost_city())?
 						(CheckFunc)
-						can_city_be_built
-						: (CheckFunc)
 						can_settlement_be_upgraded,
 						build_city_cb);
 		break;
@@ -321,14 +318,9 @@ static void frontend_state_turn(GuiEvent event)
 			       build_settlement_cb, NULL);
 		return;
 	case GUI_CITY:
-		if (can_afford(cost_city()))
-			gui_cursor_set(CITY_CURSOR,
-				       (CheckFunc) can_city_be_built,
-				       build_city_cb, NULL);
-		else
-			gui_cursor_set(CITY_CURSOR, (CheckFunc)
-				       can_settlement_be_upgraded,
-				       build_city_cb, NULL);
+		gui_cursor_set(CITY_CURSOR, 
+			       (CheckFunc) can_settlement_be_upgraded,
+			       build_city_cb, NULL);
 		return;
 	case GUI_TRADE:
 		trade_begin();

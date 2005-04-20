@@ -3,6 +3,9 @@
 	G_DISABLE_DEPRECATED, and replace the old functions.
 	* server/gtk/gnocatan-server-gtk.c: Replace libgnomeui calls with
 	libgnome and Gtk+ calls.
+	* client/common/callback.c, client/gtk/gui.c, client/gtk/interface.c:
+	No direct build of a city in the client. First a settlement has to be
+	built.
 
 2005-04-19  Brian Wellington <bwelling@xbill.org>
 	* configure.ac, Makefile.am, editor: Add gnocatan-editor.
