@@ -1,7 +1,9 @@
 2005-04-20  0.9.9  Roland Clobus <rclobus@bigfoot.com>
 	* rules.make, server/gnocatan-server-console.c: Add
 	G_DISABLE_DEPRECATED, and replace the old functions.
-	
+	* server/gtk/gnocatan-server-gtk.c: Replace libgnomeui calls with
+	libgnome and Gtk+ calls.
+
 2005-04-19  Brian Wellington <bwelling@xbill.org>
 	* configure.ac, Makefile.am, editor: Add gnocatan-editor.
 

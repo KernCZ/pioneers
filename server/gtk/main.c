@@ -21,8 +21,9 @@
  */
 
 #include "config.h"
+#include <libgnome/libgnome.h>
 #include <ctype.h>
-#include <gnome.h>
+#include <gtk/gtk.h>
 #include <string.h>
 
 #include "aboutbox.h"
@@ -33,15 +34,10 @@
 #include "config-gnome.h"
 #include "server.h"
 
-#ifdef ENABLE_NLS
-#include <locale.h>
-#endif
-
 #include "select-game.h"	/* Custom widget */
 #include "game-settings.h"	/* Custom widget */
 
 #define GNOCATAN_ICON_FILE	"gnome-gnocatan.png"
-static gchar app_name[] = "gnocatan-server";
 
 static GtkWidget *game_frame;	/* the frame containing all settings regarding the game */
 static GtkWidget *select_game;	/* select game type */
@@ -69,7 +65,7 @@ static gboolean want_ai_chat = TRUE;
 /* Local function prototypes */
 static void add_game_to_list(gpointer name, UNUSED(gpointer user_data));
 static void quit_cb(void);
-static void help_about_cb(UNUSED(GtkWidget * widget), UNUSED(void *data));
+static void help_about_cb(void);
 
 enum {
 	PLAYER_COLUMN_CONNECTED,
@@ -80,29 +76,29 @@ enum {
 	PLAYER_COLUMN_LAST
 };
 
-static GnomeUIInfo file_menu[] = {
-	{GNOME_APP_UI_ITEM, N_("_Quit"), N_("Quit the program"),
-	 (gpointer) quit_cb, NULL, NULL, GNOME_APP_PIXMAP_STOCK,
-	 GTK_STOCK_QUIT,
-	 'q', GDK_CONTROL_MASK, NULL},
-
-	GNOMEUIINFO_END
+/* Normal items */
+static GtkActionEntry entries[] = {
+	{"GameMenu", NULL, N_("_Game"), NULL, NULL, NULL},
+	{"HelpMenu", NULL, N_("_Help"), NULL, NULL, NULL},
+	{"GameQuit", GTK_STOCK_QUIT, N_("_Quit"), "<control>Q",
+	 N_("Quit the program"), quit_cb},
+	{"HelpAbout", NULL, N_("_About Gnocatan Server"), NULL,
+	 N_("Information about Gnocatan Server"), help_about_cb}
 };
 
-static GnomeUIInfo help_menu[] = {
-	{GNOME_APP_UI_ITEM,
-	 N_("_About Gnocatan Server"),
-	 N_("Information about Gnocatan Server"),
-	 (gpointer) help_about_cb, NULL, NULL, GNOME_APP_PIXMAP_STOCK,
-	 GNOME_STOCK_ABOUT, 0, 0, NULL},
-	GNOMEUIINFO_END
-};
-
-static GnomeUIInfo main_menu[] = {
-	GNOMEUIINFO_SUBTREE(N_("_File"), file_menu),
-	GNOMEUIINFO_SUBTREE(N_("_Help"), help_menu),
-	GNOMEUIINFO_END
-};
+/* *INDENT-OFF* */
+static const char *ui_description =
+"<ui>"
+"  <menubar name='MainMenu'>"
+"    <menu action='GameMenu'>"
+"      <menuitem action='GameQuit' />"
+"    </menu>"
+"    <menu action='HelpMenu'>"
+"      <menuitem action='HelpAbout' />"
+"    </menu>" 
+"  </menubar>"
+"</ui>";
+/* *INDENT-ON* */
 
 static void port_entry_changed_cb(GtkWidget * widget,
 				  UNUSED(gpointer user_data))
@@ -734,7 +730,7 @@ static void quit_cb(void)
 	gtk_main_quit();
 }
 
-static void help_about_cb(UNUSED(GtkWidget * widget), UNUSED(void *data))
+static void help_about_cb(void)
 {
 	const gchar *authors[] = {
 		"Dave Cole",
@@ -745,8 +741,14 @@ static void help_about_cb(UNUSED(GtkWidget * widget), UNUSED(void *data))
 
 int main(int argc, char *argv[])
 {
-	GtkWidget *app;
 	gchar *icon_file;
+	GtkWidget *window;
+	GtkWidget *vbox;
+	GtkWidget *menubar;
+	GtkActionGroup *action_group;
+	GtkUIManager *ui_manager;
+	GtkAccelGroup *accel_group;
+	GError *error;
 
 	/* set the UI driver to GTK_Driver, since we're using gtk */
 	set_ui_driver(&GTK_Driver);
@@ -757,31 +759,54 @@ int main(int argc, char *argv[])
 	driver->player_removed = gui_player_remove;
 	driver->player_change = gui_player_change;
 
-#ifdef ENABLE_NLS
-	/* FIXME: do I need to initialize i18n for Gnome2? */
-	/*gnome_i18n_init(); */
-	setlocale(LC_ALL, "");
-	bindtextdomain(PACKAGE, LOCALEDIR);
-	textdomain(PACKAGE);
-
-	/* tell gettext to return UTF-8 strings */
-	bind_textdomain_codeset(PACKAGE, "UTF-8");
-#endif
 	/* Initialize frontend inspecific things */
 	server_init();
 
-	gnome_program_init(app_name, VERSION,
-			   LIBGNOMEUI_MODULE,
-			   argc, argv,
-			   GNOME_PARAM_POPT_TABLE, NULL,
-			   GNOME_PARAM_APP_DATADIR, DATADIR, NULL);
-	config_init("/gnocatan-server/");
-
-	/* Create the application window
+	/* @todo RC 2005-04-10 If the client does not need libgnomeui
+	 * anymore, perhaps the gnome_program_init call could be moved
+	 * to config-gnome.c, which would allow a GNOME-free application,
+	 * for architectures that don't have GNOME libraries.
 	 */
-	app = gnome_app_new(app_name,
-			    /* Name in the titlebar of the server */
-			    _("Gnocatan Server"));
+	gnome_program_init("gnocatan-server", VERSION,
+			   LIBGNOME_MODULE,
+			   argc, argv, GNOME_PARAM_POPT_TABLE, NULL, NULL);
+
+	/* Initialize the widget set */
+	gtk_init(&argc, &argv);
+
+#ifdef ENABLE_NLS
+	/* Gtk+ handles the locale, we must bind the translations */
+	bindtextdomain(PACKAGE, LOCALEDIR);
+	textdomain(PACKAGE);
+	bind_textdomain_codeset(PACKAGE, "UTF-8");
+#endif
+
+	window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+	/* Name in the titlebar of the server */
+	gtk_window_set_title(GTK_WINDOW(window), _("Gnocatan Server"));
+
+	vbox = gtk_vbox_new(FALSE, 0);
+	gtk_container_add(GTK_CONTAINER(window), vbox);
+
+	action_group = gtk_action_group_new("MenuActions");
+	gtk_action_group_add_actions(action_group, entries,
+				     G_N_ELEMENTS(entries), window);
+
+	ui_manager = gtk_ui_manager_new();
+	gtk_ui_manager_insert_action_group(ui_manager, action_group, 0);
+
+	accel_group = gtk_ui_manager_get_accel_group(ui_manager);
+	gtk_window_add_accel_group(GTK_WINDOW(window), accel_group);
+
+	error = NULL;
+	if (!gtk_ui_manager_add_ui_from_string
+	    (ui_manager, ui_description, -1, &error)) {
+		g_message(_("Building menus failed: %s"), error->message);
+		g_error_free(error);
+		return 1;
+	}
+
+	config_init("/gnocatan-server/");
 
 	icon_file =
 	    g_build_filename(DATADIR, "pixmaps", GNOCATAN_ICON_FILE, NULL);
@@ -792,15 +817,15 @@ int main(int argc, char *argv[])
 	}
 	g_free(icon_file);
 
-	gtk_widget_realize(app);
-	g_signal_connect(G_OBJECT(app), "delete_event",
+	menubar = gtk_ui_manager_get_widget(ui_manager, "/MainMenu");
+	gtk_box_pack_start(GTK_BOX(vbox), menubar, FALSE, FALSE, 0);
+
+	gtk_box_pack_start(GTK_BOX(vbox), build_interface(), TRUE, TRUE,
+			   0);
+
+	gtk_widget_show_all(window);
+	g_signal_connect(G_OBJECT(window), "delete_event",
 			 G_CALLBACK(quit_cb), NULL);
-
-	gnome_app_create_menus(GNOME_APP(app), main_menu);
-
-	gnome_app_set_contents(GNOME_APP(app), build_interface());
-
-	gtk_widget_show(app);
 
 	/* in theory, all windows are created now...
 	 *   set logging to message window */
