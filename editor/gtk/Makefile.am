@@ -21,10 +21,15 @@ AM_CPPFLAGS = \
 gnocatan_editor_SOURCES = \
 	editor.c \
 	game-parameters.c \
+	game-parameters.h \
 	game-devcards.c \
+	game-devcards.h \
 	game-buildings.c \
+	game-buildings.h \
 	game-resources.c \
-	guimap.c
+	game-resources.h \
+	guimap.c \
+	guimap.h
 
 gnocatan_editor_LDADD = \
 	../../common/libgnocatan.a \
