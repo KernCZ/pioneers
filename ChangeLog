@@ -1,3 +1,9 @@
+2005-04-21  0.9.10  Roland Clobus <rclobus@bigfoot.com>
+	* client/callback.h, client/common/resource.c, common/buildrec.h,
+	common/cost.c, common/cost.h, server/resource.c, server/server.h: Add
+	const for function prototypes.
+	* client/ai/greedy.c: Use cost_* functions
+
 2005-04-20  Brian Wellington <bwelling@xbill.org>
 	* client/gtk/frontend.h, client/gtk/gui.c, client/gtk/guimap.c,
 	client/gtk/guimap.h, client/gtk/player.c, common/gtk/Makefile.am,

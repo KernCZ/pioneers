@@ -175,8 +175,8 @@ void resource_maritime_trade(Player * player,
 			     gint ratio);
 void resource_start(Game * game);
 void resource_end(Game * game, const gchar * action, gint mult);
-void resource_spend(Player * player, gint * cost);
-void resource_refund(Player * player, gint * cost);
+void resource_spend(Player * player, const gint * cost);
+void resource_refund(Player * player, const gint * cost);
 
 /* robber.c */
 void robber_place(Player * player);

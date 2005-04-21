@@ -22,6 +22,7 @@
 
 #include "config.h"
 #include "ai.h"
+#include "cost.h"
 #include <stdio.h>
 #include <stdlib.h>
 /*
@@ -116,15 +117,27 @@ static void for_each_node(iterate_node_func_t * func, void *rock)
 
 }
 
-/*
- * How many short of this resource?
+/** Determine the required resources.
+ *  @param assets The resources that are available
+ *  @param cost   The cost to buy something
+ *  @retval need  The additional resources required to buy this
+ *  @return TRUE if the assets are enough
  */
-static int num_short(gint have, int need)
-{
-	if (have >= need)
-		return 0;
+static gboolean can_buy(const gint assets[NO_RESOURCE], 
+	const gint cost[NO_RESOURCE], gint need[NO_RESOURCE]) {
+	gint i;
+	gboolean have_enough;
 
-	return need - have;
+	have_enough = TRUE;
+	for (i = 0; i < NO_RESOURCE; i++) {
+		if (assets[i] > cost[i])
+			need[i] = 0;
+		else {
+			need[i] = cost[i] - assets[i];
+			have_enough = FALSE;
+		}
+	}
+	return have_enough;
 }
 
 /*
@@ -133,71 +146,22 @@ static int num_short(gint have, int need)
  */
 #define DEVEL_CARD 222
 
-static int has_resources(gint assets[NO_RESOURCE], BuildType bt,
+static gboolean has_resources(const gint assets[NO_RESOURCE], BuildType bt,
 			 gint need[NO_RESOURCE])
 {
-	int i;
-	for (i = 0; i < NO_RESOURCE; i++)
-		need[i] = 0;
-
 	switch (bt) {
 	case BUILD_CITY:
-		if ((assets[ORE_RESOURCE] >= 3) &&
-		    (assets[GRAIN_RESOURCE] >= 2))
-			return 1;
-
-		need[ORE_RESOURCE] = num_short(assets[ORE_RESOURCE], 3);
-		need[GRAIN_RESOURCE] =
-		    num_short(assets[GRAIN_RESOURCE], 2);
-
-		break;
+		return can_buy(assets, cost_upgrade_settlement(), need);
 	case BUILD_SETTLEMENT:
-		if ((assets[BRICK_RESOURCE] >= 1) &&
-		    (assets[GRAIN_RESOURCE] >= 1) &&
-		    (assets[WOOL_RESOURCE] >= 1) &&
-		    (assets[LUMBER_RESOURCE] >= 1))
-			return 1;
-
-		need[BRICK_RESOURCE] =
-		    num_short(assets[BRICK_RESOURCE], 1);
-		need[GRAIN_RESOURCE] =
-		    num_short(assets[GRAIN_RESOURCE], 1);
-		need[WOOL_RESOURCE] = num_short(assets[WOOL_RESOURCE], 1);
-		need[LUMBER_RESOURCE] =
-		    num_short(assets[LUMBER_RESOURCE], 1);
-
-		break;
+		return can_buy(assets, cost_settlement(), need);
 	case BUILD_ROAD:
-		if ((assets[BRICK_RESOURCE] >= 1) &&
-		    (assets[LUMBER_RESOURCE] >= 1))
-			return 1;
-
-		need[BRICK_RESOURCE] =
-		    num_short(assets[BRICK_RESOURCE], 1);
-		need[LUMBER_RESOURCE] =
-		    num_short(assets[LUMBER_RESOURCE], 1);
-
-		break;
-
+		return can_buy(assets, cost_road(), need);
 	case DEVEL_CARD:
-		if ((assets[ORE_RESOURCE] >= 1) &&
-		    (assets[GRAIN_RESOURCE] >= 1) &&
-		    (assets[WOOL_RESOURCE] >= 1))
-			return 1;
-
-		need[ORE_RESOURCE] = num_short(assets[ORE_RESOURCE], 1);
-		need[GRAIN_RESOURCE] =
-		    num_short(assets[GRAIN_RESOURCE], 1);
-		need[WOOL_RESOURCE] = num_short(assets[WOOL_RESOURCE], 1);
-
-		break;
-
+		return can_buy(assets, cost_development(), need);
 	default:
 		/* xxx bridge, ship */
-		return 0;
+		return FALSE;
 	}
-
-	return 0;
 }
 
 /*
@@ -1527,12 +1491,12 @@ static void greedy_monopoly(void)
 static int least_valuable(gint assets[NO_RESOURCE],
 			  resource_values_t * resval)
 {
-	int ret = -1;
+	int ret = NO_RESOURCE;
 	int res;
 	int most = 0;
 	float mostval = -1;
 
-	for (res = 0; res != NO_RESOURCE; res++) {
+	for (res = 0; res < NO_RESOURCE; res++) {
 		if (assets[res] > most) {
 			if (resval->value[res] > mostval) {
 				ret = res;
@@ -1564,43 +1528,37 @@ static int resource_desire_least(gint my_assets[NO_RESOURCE],
 
 	/* eliminate things we need to build stuff */
 	if (has_resources(assets, BUILD_CITY, need)) {
-		assets[ORE_RESOURCE] -= 3;
-		assets[GRAIN_RESOURCE] -= 2;
+		cost_buy(cost_upgrade_settlement(), assets);
 	}
 
 	if (has_resources(assets, BUILD_SETTLEMENT, need)) {
-		assets[GRAIN_RESOURCE] -= 1;
-		assets[BRICK_RESOURCE] -= 1;
-		assets[WOOL_RESOURCE] -= 1;
-		assets[LUMBER_RESOURCE] -= 1;
+		cost_buy(cost_settlement(), assets);
 	}
 	if (has_resources(assets, BUILD_ROAD, need)) {
-		assets[BRICK_RESOURCE] -= 1;
-		assets[LUMBER_RESOURCE] -= 1;
+		cost_buy(cost_road(), assets);
 	}
 	if (has_resources(assets, DEVEL_CARD, need)) {
-		assets[GRAIN_RESOURCE] -= 1;
-		assets[WOOL_RESOURCE] -= 1;
-		assets[ORE_RESOURCE] -= 1;
+		cost_buy(cost_development(), assets);
 	}
 
 	/* of what's left what do do we care for least */
 	leastval = least_valuable(assets, resval);
-	if (leastval != -1)
+	if (leastval != NO_RESOURCE)
 		return leastval;
 
 	/* otherwise least valuable of what we have in total */
 	leastval = least_valuable(my_assets, resval);
-	if (leastval != -1)
+	if (leastval != NO_RESOURCE)
 		return leastval;
 
 	/* last resort just pick something */
-	for (res = 0; res != NO_RESOURCE; res++) {
+	for (res = 0; res < NO_RESOURCE; res++) {
 		if (my_assets[res] > 0)
 			return res;
 	}
 
 	/* Should never get here */
+	g_assert_not_reached();
 	return 0;
 }
 

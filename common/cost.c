@@ -25,7 +25,7 @@
 #include "game.h"
 #include "cost.h"
 
-gint *cost_road()
+const gint *cost_road()
 {
 	static gint cost[NO_RESOURCE] = {
 		1,		/* brick */
@@ -37,7 +37,7 @@ gint *cost_road()
 	return cost;
 }
 
-gint *cost_ship()
+const gint *cost_ship()
 {
 	static gint cost[NO_RESOURCE] = {
 		0,		/* brick */
@@ -49,7 +49,7 @@ gint *cost_ship()
 	return cost;
 }
 
-gint *cost_bridge()
+const gint *cost_bridge()
 {
 	static gint cost[NO_RESOURCE] = {
 		1,		/* brick */
@@ -61,7 +61,7 @@ gint *cost_bridge()
 	return cost;
 }
 
-gint *cost_settlement()
+const gint *cost_settlement()
 {
 	static gint cost[NO_RESOURCE] = {
 		1,		/* brick */
@@ -73,7 +73,7 @@ gint *cost_settlement()
 	return cost;
 }
 
-gint *cost_upgrade_settlement()
+const gint *cost_upgrade_settlement()
 {
 	static gint cost[NO_RESOURCE] = {
 		0,		/* brick */
@@ -85,7 +85,7 @@ gint *cost_upgrade_settlement()
 	return cost;
 }
 
-gint *cost_city()
+const gint *cost_city()
 {
 	static gint cost[NO_RESOURCE] = {
 		1,		/* brick */
@@ -97,7 +97,7 @@ gint *cost_city()
 	return cost;
 }
 
-gint *cost_development()
+const gint *cost_development()
 {
 	static gint cost[NO_RESOURCE] = {
 		0,		/* brick */
@@ -109,7 +109,7 @@ gint *cost_development()
 	return cost;
 }
 
-gboolean cost_buy(gint * cost, gint * assets)
+gboolean cost_buy(const gint * cost, gint * assets)
 {
 	gint idx;
 
@@ -121,7 +121,7 @@ gboolean cost_buy(gint * cost, gint * assets)
 	return TRUE;
 }
 
-void cost_refund(gint * cost, gint * assets)
+void cost_refund(const gint * cost, gint * assets)
 {
 	gint idx;
 
@@ -129,10 +129,14 @@ void cost_refund(gint * cost, gint * assets)
 		assets[idx] += cost[idx];
 }
 
-gboolean cost_can_afford(gint * cost, gint * assets)
+gboolean cost_can_afford(const gint * cost, const gint * assets)
 {
 	gint tmp[NO_RESOURCE];
 
-	memcpy(tmp, assets, sizeof(tmp));
+	gint idx;
+
+	for (idx = 0; idx < NO_RESOURCE; idx++)
+		tmp[idx] = assets[idx];
+
 	return cost_buy(cost, tmp);
 }

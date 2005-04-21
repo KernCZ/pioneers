@@ -97,7 +97,7 @@ void resource_end(Game * game, const gchar * action, gint mult)
 	}
 }
 
-void resource_spend(Player * player, gint * cost)
+void resource_spend(Player * player, const gint * cost)
 {
 	Game *game = player->game;
 
@@ -106,7 +106,7 @@ void resource_spend(Player * player, gint * cost)
 	resource_end(game, "spent", -1);
 }
 
-void resource_refund(Player * player, gint * cost)
+void resource_refund(Player * player, const gint * cost)
 {
 	Game *game = player->game;
 

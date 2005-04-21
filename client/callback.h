@@ -345,7 +345,7 @@ gboolean turn_can_build_settlement(void);
 gboolean turn_can_build_city(void);
 gboolean turn_can_trade(void);
 gboolean turn_can_finish(void);
-gboolean can_afford(gint * cost);
+gboolean can_afford(const gint * cost);
 gboolean setup_can_undo(void);
 gboolean setup_can_build_road(void);
 gboolean setup_can_build_ship(void);

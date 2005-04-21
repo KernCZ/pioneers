@@ -23,16 +23,16 @@
 
 #include <glib.h>
 
-gint *cost_road(void);
-gint *cost_ship(void);
-gint *cost_bridge(void);
-gint *cost_settlement(void);
-gint *cost_upgrade_settlement(void);
-gint *cost_city(void);
-gint *cost_development(void);
+const gint *cost_road(void);
+const gint *cost_ship(void);
+const gint *cost_bridge(void);
+const gint *cost_settlement(void);
+const gint *cost_upgrade_settlement(void);
+const gint *cost_city(void);
+const gint *cost_development(void);
 
-gboolean cost_buy(gint * cost, gint * assets);
-void cost_refund(gint * cost, gint * assets);
-gboolean cost_can_afford(gint * cost, gint * assets);
+gboolean cost_buy(const gint * cost, gint * assets);
+void cost_refund(const gint * cost, gint * assets);
+gboolean cost_can_afford(const gint * cost, const gint * assets);
 
 #endif

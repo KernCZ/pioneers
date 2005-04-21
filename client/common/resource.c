@@ -189,7 +189,7 @@ void resource_modify(Resource type, gint num)
 	callbacks.resource_change(type, my_assets[type]);
 }
 
-gboolean can_afford(gint * cost)
+gboolean can_afford(const gint * cost)
 {
 	return cost_can_afford(cost, my_assets);
 }
