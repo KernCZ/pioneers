@@ -1453,13 +1453,15 @@ static void greedy_year_of_plenty(gint bank[NO_RESOURCE])
  * We played a monopoly card.  Pick a resource
  */
 
+static gint other_players_have(Resource res) {
+	return game_resources() - get_bank()[res] - resource_asset(res);
+}
+
 static void greedy_monopoly(void)
 {
-	const gint *bank = get_bank();
-	gint resources = game_resources();
 	gint assets[NO_RESOURCE];
 	int i;
-	int r;
+	int r, best;
 	resource_values_t resval;
 
 	ai_wait();
@@ -1472,12 +1474,22 @@ static void greedy_monopoly(void)
 	/* this could only infinite loop if no other players had any cards */
 	while (TRUE) {
 		r = resource_desire(assets, &resval, NO_RESOURCE, 0);
-		if (bank[r] + assets[r] < resources) {
+		if (r == NO_RESOURCE)
+			break;
+		if (other_players_have(r) > 0) {
 			cb_choose_monopoly(r);
 			return;
 		}
 		resval.value[r] = 0;
 	}
+
+	/* there's nothing we really need, so get what we can get most of. */
+	best = 0;
+	for (r = 1; r < NO_RESOURCE; r++) {
+		if (other_players_have(r) > other_players_have(best))
+			best = r;
+	}
+	cb_choose_monopoly(best);
 }
 
 

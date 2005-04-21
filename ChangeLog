@@ -1,3 +1,7 @@
+2005-04-20  Brian Wellington <bwelling@xbill.org>
+	* client/ai/greedy.c: Fix a problem with the AI's monopoly card
+	support.
+
 2005-04-21  0.9.10  Roland Clobus <rclobus@bigfoot.com>
 	* client/callback.h, client/common/resource.c, common/buildrec.h,
 	common/cost.c, common/cost.h, server/resource.c, server/server.h: Add
