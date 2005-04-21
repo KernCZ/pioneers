@@ -44,6 +44,8 @@ libgnocatan_gtk_a_SOURCES = \
 	config-gnome.h \
 	game-settings.c \
 	game-settings.h \
+	guimap.c \
+	guimap.h \
 	polygon.c \
 	polygon.h \
 	select-game.c \

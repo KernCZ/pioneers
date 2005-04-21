@@ -1,6 +1,9 @@
 2005-04-20  Brian Wellington <bwelling@xbill.org>
 	* client/ai/greedy.c: Fix a problem with the AI's monopoly card
 	support.
+	* client/gtk/guimap.[ch], client/gtk/Makefile.am,
+	common/gtk/guimap.[ch], common/gtk/Makefile.am: Move map display
+	code to common/gtk.
 
 2005-04-21  0.9.10  Roland Clobus <rclobus@bigfoot.com>
 	* client/callback.h, client/common/resource.c, common/buildrec.h,

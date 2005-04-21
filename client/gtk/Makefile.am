@@ -65,7 +65,6 @@ gnocatan_SOURCES = \
 	$(ADMIN_GTK_FILES_ACTIVE) \
 	frontend.h \
 	gui.h \
-	guimap.h \
 	histogram.h \
 	callbacks.c \
 	chat.c \
@@ -76,7 +75,6 @@ gnocatan_SOURCES = \
 	gameover.c \
 	gold.c \
 	gui.c \
-	guimap.c \
 	histogram.c \
 	identity.c \
 	interface.c \
