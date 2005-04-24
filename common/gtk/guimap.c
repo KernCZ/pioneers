@@ -1038,7 +1038,7 @@ static void find_node(GuiMap * gmap, gint x, gint y, MapElement * element)
 	element->pointer = NULL;
 }
 
-static void find_hex(GuiMap * gmap, gint x, gint y, MapElement * element)
+static Hex * find_hex_internal(GuiMap * gmap, gint x, gint y)
 {
 	gint y_hex;
 	gint x_hex;
@@ -1056,14 +1056,17 @@ static void find_hex(GuiMap * gmap, gint x, gint y, MapElement * element)
 				     &x_offset, &y_offset);
 			x -= x_offset;
 			y -= y_offset;
-			if (gdk_region_point_in(gmap->hex_region, x, y)) {
-				element->hex = hex;
-				return;
-			}
+			if (gdk_region_point_in(gmap->hex_region, x, y))
+				return hex;
 			x += x_offset;
 			y += y_offset;
 		}
-	element->pointer = NULL;
+	return NULL;
+}
+
+static void find_hex(GuiMap * gmap, gint x, gint y, MapElement * element)
+{
+	element->hex = find_hex_internal(gmap, x, y);
 }
 
 static void redraw_edge(GuiMap * gmap, const Edge * edge,
@@ -1474,6 +1477,11 @@ void guimap_draw_hex(GuiMap * gmap, const Hex * hex)
 	poly_bound_rect(&poly, 1, &rect);
 
 	gdk_window_invalidate_rect(gmap->area->window, &rect, FALSE);
+}
+
+Hex * guimap_find_hex(GuiMap * gmap, gint x, gint y)
+{
+	return find_hex_internal(gmap, x, y);
 }
 
 typedef struct {
