@@ -27,9 +27,7 @@ gnocatan_editor_SOURCES = \
 	game-buildings.c \
 	game-buildings.h \
 	game-resources.c \
-	game-resources.h \
-	guimap.c \
-	guimap.h
+	game-resources.h
 
 gnocatan_editor_LDADD = \
 	../../common/libgnocatan.a \
