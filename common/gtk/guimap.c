@@ -1045,7 +1045,7 @@ static Hex * find_hex_internal(GuiMap * gmap, gint x, gint y)
 
 	for (x_hex = 0; x_hex < gmap->map->x_size; x_hex++)
 		for (y_hex = 0; y_hex < gmap->map->y_size; y_hex++) {
-			const Hex *hex;
+			Hex *hex;
 			gint x_offset, y_offset;
 
 			hex = gmap->map->grid[y_hex][x_hex];
