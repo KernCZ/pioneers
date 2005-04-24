@@ -153,7 +153,7 @@ gint new_computer_player(const gchar * server, const gchar * port,
 	child_argv[n++] = g_strdup(port);
 	if (!want_chat)
 		child_argv[n++] = g_strdup("-c");
-	child_argv[n++] = NULL;
+	child_argv[n] = NULL;
 	g_assert(n < 8);
 
 	if (!g_spawn_async(NULL, child_argv, NULL, 0, NULL, NULL,
