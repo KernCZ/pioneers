@@ -1,3 +1,7 @@
+2005-04-26 Roland Clobus <rclobus@bigfoot.com>
+	* nl.po: Updated Dutch translations to CVS 0.9.10
+	* it.po: Removed clearly wrong Italian translations
+	
 2005-03-20 Roland Clobus <rclobus@bigfoot.com>
 	* Updated to build 0.8.1.57
 	
