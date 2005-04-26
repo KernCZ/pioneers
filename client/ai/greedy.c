@@ -130,7 +130,7 @@ static gboolean can_buy(const gint assets[NO_RESOURCE],
 
 	have_enough = TRUE;
 	for (i = 0; i < NO_RESOURCE; i++) {
-		if (assets[i] > cost[i])
+		if (assets[i] >= cost[i])
 			need[i] = 0;
 		else {
 			need[i] = cost[i] - assets[i];
