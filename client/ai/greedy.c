@@ -1125,7 +1125,7 @@ static void greedy_turn(void)
 		}
 	}
 
-	/* if we can buy a developement card and there are some left */
+	/* if we can buy a development card and there are some left */
 	if (has_resources(assets, DEVEL_CARD, need)) {
 		if (can_buy_develop()) {
 			cb_buy_develop();
@@ -1133,7 +1133,7 @@ static void greedy_turn(void)
 		}
 	}
 
-	/* if have a lot of cards see if we can trade anything */
+	/* if we have a lot of cards see if we can trade anything */
 	if (num_assets(assets) >= 3) {
 		if (can_trade_maritime()) {
 			gint amount;
@@ -1148,7 +1148,7 @@ static void greedy_turn(void)
 		}
 	}
 
-	/* play developement cards */
+	/* play development cards */
 	if (can_play_any_develop()) {
 		const DevelDeck *deck = get_devel_deck();
 		gint num_victory_cards = 0;
