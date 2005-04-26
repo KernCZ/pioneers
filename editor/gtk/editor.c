@@ -61,6 +61,7 @@ static const gchar *port_names[] = {
 	N_("Any (3:1)")
 };
 
+/* East, Northeast, Northwest, West, Southwest, Southeast */
 static const gchar *port_direction_names[] = {
 	N_("E"), N_("NE"), N_("NW"), N_("W"), N_("SW"), N_("SE")
 };
@@ -633,8 +634,8 @@ static GtkWidget *build_settings(void)
 	game_devcards = GAMEDEVCARDS(game_devcards_new());
 	game_buildings = GAMEBUILDINGS(game_buildings_new());
 
-	build_frame(lvbox, _("Game Settings"), GTK_WIDGET(game_settings));
-	build_frame(lvbox, _("Game Parameters"), GTK_WIDGET(game_parameters));
+	build_frame(lvbox, _("Game Parameters"), GTK_WIDGET(game_settings));
+	build_frame(lvbox, _("Rules"), GTK_WIDGET(game_parameters));
 	build_frame(lvbox, _("Resources"), GTK_WIDGET(game_resources));
 	build_frame(rvbox, _("Buildings"), GTK_WIDGET(game_buildings));
 	build_frame(rvbox, _("Development Cards"), GTK_WIDGET(game_devcards));
@@ -915,11 +916,11 @@ static GtkActionEntry entries[] = {
 
 	{"New", GTK_STOCK_NEW, N_("_New"), "<control>N",
 	 N_("Create a new game"), new_game_menu_cb},
-	{"Open", GTK_STOCK_OPEN, N_("_Open"), "<control>O",
+	{"Open", GTK_STOCK_OPEN, N_("_Open..."), "<control>O",
 	 N_("Open an existing game"), load_game_menu_cb},
 	{"Save", GTK_STOCK_SAVE, N_("_Save"), "<control>S",
 	 N_("Save game"), save_game_menu_cb},
-	{"SaveAs", GTK_STOCK_SAVE, N_("_Save as..."), "<control><shift>S",
+	{"SaveAs", GTK_STOCK_SAVE, N_("Save _As..."), "<control><shift>S",
 	 N_("Save as"), save_as_menu_cb},
 	{"ChangeTitle", NULL, N_("_Change title"), "<control>T",
 	 N_("Change game title"), change_title_menu_cb},
