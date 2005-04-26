@@ -2332,7 +2332,7 @@ msgstr "Verander de title van het spel"
 
 #: ../editor/gtk/editor.c:927
 msgid "Quit"
-msgstr "_Afsluiten"
+msgstr "Sluit het programma af"
 
 #: ../editor/gtk/editor.c:929
 msgid "_Contents"
