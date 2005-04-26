@@ -611,6 +611,9 @@ void map_format_line(Map * map, gboolean write_secrets, gchar * line,
 			}
 			*line++ = hex->facing + '0';
 			break;
+		case LAST_TERRAIN:
+			*line++ = '-';
+			break;
 		default:
 			g_assert_not_reached();
 			break;
@@ -858,4 +861,20 @@ Map *map_load(gchar * name)
 	map_parse_finish(map);
 
 	return map;
+}
+
+Hex *
+map_add_hex(Map *map, gint x, gint y) {
+	Hex *hex;
+
+	g_assert(x < map->x_size);
+	g_assert(y < map->y_size);
+	hex = g_malloc0(sizeof(*hex));
+	hex->map = map;
+	hex->y = y;
+	hex->x = x;
+	map->grid[y][x] = hex;
+	build_network(map, hex, NULL);
+	connect_network(map, hex, NULL);
+	return hex;
 }

@@ -175,6 +175,7 @@ void map_parse_finish(Map * map);
 void map_set_chits(Map * map, GArray * chits);
 void map_free(Map * map);
 Map *map_load(char *name);
+Hex *map_add_hex(Map *map, gint x, gint y);
 
 /* map_query.c
  */
