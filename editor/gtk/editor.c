@@ -14,6 +14,7 @@
 #include "game-resources.h"
 #include "guimap.h"
 #include "theme.h"
+#include "colors.h"
 
 #define MAP_WIDTH 550		/* default map width */
 #define MAP_HEIGHT 400		/* default map height */
@@ -37,8 +38,6 @@ static GtkWidget *hresize_buttons[2];
 static GtkWidget *vresize_buttons[2];
 static GuiMap *gmap;
 static Hex *current_hex;
-
-#define FREE_HEX(hex) do {g_free(hex); hex = NULL;} while (0)
 
 static const gchar *terrain_names[] = {
 	N_("Hill"),
@@ -85,10 +84,18 @@ static void error_dialog(const char *fmt, ...)
 	gtk_widget_destroy(dialog);
 }
 
+static void
+clear_hex(Hex *hex) {
+	hex->terrain = LAST_TERRAIN;
+	hex->resource = NO_RESOURCE;
+	hex->chit_pos = -1;
+	hex->roll = 0;
+	hex->shuffle = TRUE;
+}
+
 static void fill_map(Map * map)
 {
 	gint x, y;
-	Hex *hex;
 
 	for (y = 0; y < map->y_size; y++) {
 		for (x = 0; x < map->x_size; x++) {
@@ -96,16 +103,7 @@ static void fill_map(Map * map)
 				continue;
 			if (map->grid[y][x] != NULL)
 				continue;
-			hex = g_malloc0(sizeof(*hex));
-			hex->map = map;
-			hex->y = y;
-			hex->x = x;
-			hex->terrain = LAST_TERRAIN;
-			hex->resource = NO_RESOURCE;
-			hex->facing = 0;
-			hex->chit_pos = -1;
-			hex->shuffle = TRUE;
-			map->grid[y][x] = hex;
+			clear_hex(map_add_hex(map, x, y));
 		}
 	}
 }
@@ -122,10 +120,6 @@ static void canonicalize_map(GameParams * params, Map * map)
 			hex = map->grid[y][x];
 			if (hex == NULL)
 				continue;
-			if (hex->terrain == LAST_TERRAIN) {
-				FREE_HEX(map->grid[y][x]);
-				continue;
-			}
 			if (hex->roll > 0) {
 				g_array_append_val(chits, hex->roll);
 				hex->chit_pos = chits->len - 1;
@@ -147,12 +141,12 @@ static Hex *hex_in_direction(Map * map, Hex * hex, gint direction)
 		x++;
 		break;
 	case 1:		/* NE */
-		if (y % 2 == 0)
+		if (y % 2 == 1)
 			x++;
 		y--;
 		break;
 	case 2:		/* NW */
-		if (y % 2 == 1)
+		if (y % 2 == 0)
 			x--;
 		y--;
 		break;
@@ -215,53 +209,12 @@ build_map_resize(GtkWidget * table, gint row, gint col, GtkOrientation dir,
 			 GTK_FILL, GTK_FILL, 0, 0);
 }
 
-static gint
-expose_map_cb(GtkWidget * area, GdkEventExpose * event, gpointer user_data)
-{
-	GuiMap *gmap = user_data;
-
-	if (area->window == NULL || gmap->map == NULL)
-		return FALSE;
-
-	if (gmap->pixmap == NULL) {
-		gmap->pixmap = gdk_pixmap_new(area->window,
-					      area->allocation.width,
-					      area->allocation.height, -1);
-		guimap_display(gmap);
-	}
-
-	gdk_draw_drawable(area->window,
-			  area->style->fg_gc[GTK_WIDGET_STATE(area)],
-			  gmap->pixmap,
-			  event->area.x, event->area.y,
-			  event->area.x, event->area.y,
-			  event->area.width, event->area.height);
-	return FALSE;
-}
-
 static void scale_map(GuiMap *gmap)
 {
 	guimap_scale_to_size(gmap,
 			     gmap->area->allocation.width,
 			     gmap->area->allocation.height);
 	gtk_widget_queue_draw(gmap->area);
-}
-
-static gint configure_map_cb(GtkWidget * area,
-			     UNUSED(GdkEventConfigure * event),
-			     gpointer user_data)
-{
-	GuiMap *gmap = user_data;
-
-	if (area->window == NULL || gmap->map == NULL)
-		return FALSE;
-
-	if (gmap->pixmap) {
-		g_object_unref(gmap->pixmap);
-		gmap->pixmap = NULL;
-	}
-	scale_map(gmap);
-	return FALSE;
 }
 
 static gint button_press_map_cb(GtkWidget * area, GdkEventButton * event,
@@ -372,7 +325,7 @@ static void
 post_change(gint *size, GtkWidget **buttons, gint amt) {
 	*size += amt;
 	gtk_widget_set_sensitive(buttons[0], *size < MAP_SIZE);
-	gtk_widget_set_sensitive(buttons[1], *size > 1);
+	gtk_widget_set_sensitive(buttons[1], *size > 2);
 	fill_map(gmap->map);
 	scale_map(gmap);
 	guimap_display(gmap);
@@ -383,7 +336,7 @@ static void change_height(UNUSED(GtkWidget * menu), gpointer user_data)
 	if ((gint) user_data < 0) {
 		gint x;
 		for (x = 0; x < gmap->map->x_size; x++)
-			FREE_HEX(gmap->map->grid[gmap->map->y_size - 1][x]);
+			clear_hex(gmap->map->grid[gmap->map->y_size - 1][x]);
 	}
 	post_change(&gmap->map->y_size, vresize_buttons, (gint) user_data);
 }
@@ -391,9 +344,14 @@ static void change_height(UNUSED(GtkWidget * menu), gpointer user_data)
 static void change_width(UNUSED(GtkWidget * menu), gpointer user_data)
 {
 	if ((gint) user_data < 0) {
-		gint y;
-		for (y = 0; y < gmap->map->y_size; y++)
-			FREE_HEX(gmap->map->grid[y][gmap->map->x_size - 1]);
+		gint x, y;
+		for (y = 0; y < gmap->map->y_size; y++) {
+			if (y % 2 == 0)
+				x = gmap->map->x_size - 1;
+			else
+				x = gmap->map->x_size - 2;
+			clear_hex(gmap->map->grid[y][x]);
+		}
 	}
 	post_change(&gmap->map->x_size, hresize_buttons, (gint) user_data);
 }
@@ -401,26 +359,19 @@ static void change_width(UNUSED(GtkWidget * menu), gpointer user_data)
 static GtkWidget *build_map(void)
 {
 	GtkWidget *table;
+	GtkWidget *area;
 
 	table = gtk_table_new(2, 2, FALSE);
 
 	gmap = guimap_new();
-	gmap->area = gtk_drawing_area_new();
-	GTK_WIDGET_SET_FLAGS(gmap->area, GTK_CAN_FOCUS);
-	gtk_widget_set_events(gmap->area, GDK_EXPOSURE_MASK
-			      | GDK_ENTER_NOTIFY_MASK
-			      | GDK_LEAVE_NOTIFY_MASK
+	area = guimap_build_drawingarea(gmap, MAP_WIDTH, MAP_HEIGHT);
+
+	GTK_WIDGET_SET_FLAGS(area, GTK_CAN_FOCUS);
+	gtk_widget_add_events(gmap->area, GDK_ENTER_NOTIFY_MASK
 			      | GDK_BUTTON_PRESS_MASK
-			      | GDK_POINTER_MOTION_MASK
-			      | GDK_POINTER_MOTION_HINT_MASK
 			      | GDK_KEY_PRESS_MASK);
-	gtk_widget_set_size_request(gmap->area, MAP_WIDTH, MAP_HEIGHT);
 	g_signal_connect(G_OBJECT(gmap->area), "enter_notify_event",
 			 G_CALLBACK(gtk_widget_grab_focus), gmap);
-	g_signal_connect(G_OBJECT(gmap->area), "expose_event",
-			 G_CALLBACK(expose_map_cb), gmap);
-	g_signal_connect(G_OBJECT(gmap->area), "configure_event",
-			 G_CALLBACK(configure_map_cb), gmap);
 	g_signal_connect(G_OBJECT(gmap->area), "button_press_event",
 			 G_CALLBACK(button_press_map_cb), gmap);
 	g_signal_connect(G_OBJECT(gmap->area), "key_press_event",
@@ -455,33 +406,6 @@ static gint select_terrain_cb(UNUSED(GtkWidget * menu), gpointer user_data)
 
 	if (terrain != SEA_TERRAIN)
 		current_hex->resource = NO_RESOURCE;
-	if (terrain != LAST_TERRAIN) {
-		for (i = 0; i < numElem(current_hex->edges); i++) {
-			Edge *edge = current_hex->edges[i];
-			if (edge == NULL) {
-				edge = g_malloc0(sizeof(*edge));
-				edge->map = gmap->map;
-				edge->owner = -1;
-				edge->x = current_hex->x;
-				edge->y = current_hex->y;
-				edge->pos = i;
-				current_hex->edges[i] = edge;
-			}
-		}
-
-		for (i = 0; i < numElem(current_hex->nodes); i++) {
-			Node *node = current_hex->nodes[i];
-			if (node == NULL) {
-				node = g_malloc0(sizeof(*node));
-				node->map = gmap->map;
-				node->owner = -1;
-				node->x = current_hex->x;
-				node->y = current_hex->y;
-				node->pos = i;
-				current_hex->nodes[i] = node;
-			}
-		}
-	}
 	if (terrain == SEA_TERRAIN || terrain == LAST_TERRAIN) {
 		for (i = 0; i < 6; i++) {
 			adjacent = hex_in_direction(gmap->map, current_hex, i);
@@ -596,6 +520,23 @@ static GtkWidget *build_roll_menu(void)
 static gint
 select_port_resource_cb(UNUSED(GtkWidget * menu), gpointer user_data)
 {
+	gint i;
+
+	if (current_hex->resource == NO_RESOURCE) {
+		for (i = 0; i < 6; i++) {
+			Hex *adjacent;
+
+			adjacent = hex_in_direction(gmap->map,
+						    current_hex,
+						    i);
+			if (adjacent != NULL &&
+			    adjacent->terrain != LAST_TERRAIN &&
+			    adjacent->terrain != SEA_TERRAIN) {
+				current_hex->facing = i;
+				break;
+			}
+		}
+	}
 	current_hex->resource = (Resource) user_data;
 	guimap_draw_hex(gmap, current_hex);
 	return TRUE;
@@ -1063,6 +1004,7 @@ int main(int argc, char *argv[])
 	config_init("/gnocatan-editor/");
 
 	themes_init();
+	colors_init();
 
 	notebook = gtk_notebook_new();
 	gtk_notebook_set_tab_pos(GTK_NOTEBOOK(notebook), GTK_POS_TOP);
