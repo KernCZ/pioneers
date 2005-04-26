@@ -300,73 +300,6 @@ void gui_highlight_chits(gint roll)
 	guimap_highlight_chits(gmap, roll);
 }
 
-static gint expose_map_cb(GtkWidget * area, GdkEventExpose * event,
-			  UNUSED(gpointer user_data))
-{
-	if (area->window == NULL || gmap->map == NULL)
-		return FALSE;
-
-	if (gmap->pixmap == NULL) {
-		gmap->pixmap = gdk_pixmap_new(area->window,
-					      area->allocation.width,
-					      area->allocation.height, -1);
-		guimap_display(gmap);
-	}
-
-	gdk_draw_drawable(area->window,
-			  area->style->fg_gc[GTK_WIDGET_STATE(area)],
-			  gmap->pixmap,
-			  event->area.x, event->area.y,
-			  event->area.x, event->area.y,
-			  event->area.width, event->area.height);
-	return FALSE;
-}
-
-static gint configure_map_cb(GtkWidget * area,
-			     UNUSED(GdkEventConfigure * event),
-			     UNUSED(gpointer user_data))
-{
-	if (area->window == NULL || gmap->map == NULL)
-		return FALSE;
-
-	if (gmap->pixmap) {
-		g_object_unref(gmap->pixmap);
-		gmap->pixmap = NULL;
-	}
-	guimap_scale_to_size(gmap,
-			     area->allocation.width,
-			     area->allocation.height);
-
-	gtk_widget_queue_draw(area);
-	return FALSE;
-}
-
-static gint motion_notify_map_cb(GtkWidget * area, GdkEventMotion * event,
-				 UNUSED(gpointer user_data))
-{
-	gint x;
-	gint y;
-	GdkModifierType state;
-	MapElement dummyElement;
-	g_assert(area != NULL);
-
-	if (area->window == NULL || gmap->map == NULL)
-		return FALSE;
-
-	if (event->is_hint)
-		gdk_window_get_pointer(event->window, &x, &y, &state);
-	else {
-		x = event->x;
-		y = event->y;
-		state = event->state;
-	}
-
-	dummyElement.pointer = NULL;
-	guimap_cursor_move(gmap, x, y, &dummyElement);
-
-	return TRUE;
-}
-
 static gint button_press_map_cb(GtkWidget * area, GdkEventButton * event,
 				UNUSED(gpointer user_data))
 {
@@ -382,27 +315,13 @@ static gint button_press_map_cb(GtkWidget * area, GdkEventButton * event,
 
 static GtkWidget *build_map_area(void)
 {
-	gmap->area = gtk_drawing_area_new();
-
-	gtk_widget_set_events(gmap->area, GDK_EXPOSURE_MASK
-			      | GDK_BUTTON_PRESS_MASK
-			      | GDK_POINTER_MOTION_MASK
-			      | GDK_POINTER_MOTION_HINT_MASK);
-
-	gtk_widget_set_size_request(gmap->area, MAP_WIDTH, MAP_HEIGHT);
-	g_signal_connect(G_OBJECT(gmap->area), "expose_event",
-			 G_CALLBACK(expose_map_cb), NULL);
-	g_signal_connect(G_OBJECT(gmap->area), "configure_event",
-			 G_CALLBACK(configure_map_cb), NULL);
-
-	g_signal_connect(G_OBJECT(gmap->area), "motion_notify_event",
-			 G_CALLBACK(motion_notify_map_cb), NULL);
-	g_signal_connect(G_OBJECT(gmap->area), "button_press_event",
+	GtkWidget *map_area = guimap_build_drawingarea(gmap, MAP_WIDTH,
+						       MAP_HEIGHT);
+	gtk_widget_add_events(map_area, GDK_BUTTON_PRESS_MASK);
+	g_signal_connect(G_OBJECT(map_area), "button_press_event",
 			 G_CALLBACK(button_press_map_cb), NULL);
 
-	gtk_widget_show(gmap->area);
-
-	return gmap->area;
+	return map_area;
 }
 
 static GtkWidget *build_messages_panel(void)

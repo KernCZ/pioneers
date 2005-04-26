@@ -73,6 +73,100 @@ void guimap_reset(GuiMap * gmap)
 	gmap->player_num = -1;
 }
 
+static gint expose_map_cb(GtkWidget * area, GdkEventExpose * event,
+			  gpointer user_data)
+{
+	GuiMap *gmap = user_data;
+
+	if (area->window == NULL || gmap->map == NULL)
+		return FALSE;
+
+	if (gmap->pixmap == NULL) {
+		gmap->pixmap = gdk_pixmap_new(area->window,
+					      area->allocation.width,
+					      area->allocation.height, -1);
+		guimap_display(gmap);
+	}
+
+	gdk_draw_drawable(area->window,
+			  area->style->fg_gc[GTK_WIDGET_STATE(area)],
+			  gmap->pixmap,
+			  event->area.x, event->area.y,
+			  event->area.x, event->area.y,
+			  event->area.width, event->area.height);
+	return FALSE;
+}
+
+static gint configure_map_cb(GtkWidget * area,
+			     UNUSED(GdkEventConfigure * event),
+			     gpointer user_data)
+{
+	GuiMap *gmap = user_data;
+
+	if (area->window == NULL || gmap->map == NULL)
+		return FALSE;
+
+	if (gmap->pixmap) {
+		g_object_unref(gmap->pixmap);
+		gmap->pixmap = NULL;
+	}
+	guimap_scale_to_size(gmap,
+			     area->allocation.width,
+			     area->allocation.height);
+
+	gtk_widget_queue_draw(area);
+	return FALSE;
+}
+
+static gint motion_notify_map_cb(GtkWidget * area, GdkEventMotion * event,
+				 gpointer user_data)
+{
+	GuiMap *gmap = user_data;
+	gint x;
+	gint y;
+	GdkModifierType state;
+	MapElement dummyElement;
+	g_assert(area != NULL);
+
+	if (area->window == NULL || gmap->map == NULL)
+		return FALSE;
+
+	if (event->is_hint)
+		gdk_window_get_pointer(event->window, &x, &y, &state);
+	else {
+		x = event->x;
+		y = event->y;
+		state = event->state;
+	}
+
+	dummyElement.pointer = NULL;
+	guimap_cursor_move(gmap, x, y, &dummyElement);
+
+	return TRUE;
+}
+
+GtkWidget *guimap_build_drawingarea(GuiMap *gmap, gint width, gint height)
+{
+	gmap->area = gtk_drawing_area_new();
+
+	gtk_widget_set_events(gmap->area, GDK_EXPOSURE_MASK
+			      | GDK_POINTER_MOTION_MASK
+			      | GDK_POINTER_MOTION_HINT_MASK);
+
+	gtk_widget_set_size_request(gmap->area, width, height);
+	g_signal_connect(G_OBJECT(gmap->area), "expose_event",
+			 G_CALLBACK(expose_map_cb), gmap);
+	g_signal_connect(G_OBJECT(gmap->area), "configure_event",
+			 G_CALLBACK(configure_map_cb), gmap);
+
+	g_signal_connect(G_OBJECT(gmap->area), "motion_notify_event",
+			 G_CALLBACK(motion_notify_map_cb), gmap);
+
+	gtk_widget_show(gmap->area);
+
+	return gmap->area;
+}
+
 static GdkPoint settlement_points[] = {
 	{20, 20}, {20, -8}, {0, -28}, {-20, -8},
 	{-20, 20}, {20, 20}

@@ -1,5 +1,7 @@
 2005-04-24  Brian Wellington <bwelling@xbill.org>
 	* common/map.[ch]: Add map_add_hex().
+	* client/gtk/gui.c, common/gtk/guimap.[ch]: Move map widget and
+	event handling code to guimap.c
 
 2005-04-24  Brian Wellington <bwelling@xbill.org>
 	* common/gtk/guimap.[ch]: Add guimap_find_hex().
