@@ -789,6 +789,7 @@ int main(int argc, char *argv[])
 	gtk_container_add(GTK_CONTAINER(window), vbox);
 
 	action_group = gtk_action_group_new("MenuActions");
+	gtk_action_group_set_translation_domain(action_group, PACKAGE);
 	gtk_action_group_add_actions(action_group, entries,
 				     G_N_ELEMENTS(entries), window);
 

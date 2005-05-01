@@ -1,3 +1,7 @@
+2005-05-01  0.9.11  Roland Clobus <rclobus@bigfoot.com>
+	* server/gtk/gnocatan-server-gtk.c (main): Enabled translations in the
+	menu.
+
 2005-04-24  Brian Wellington <bwelling@xbill.org>
 	* common/map.[ch]: Add map_add_hex().
 	* client/gtk/gui.c, common/gtk/guimap.[ch]: Move map widget and
