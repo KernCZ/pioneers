@@ -10,9 +10,10 @@
 #include "game-devcards.h"
 
 static const gchar *devcard_names[NUM_DEVEL_TYPES] = {
-	"Road Building", "Monopoly", "Year of Plenty", "Chapel",
-	"University of Catan", "Governor's House", "Library", "Market",
-	"Soldier"
+	N_("Road Building"), N_("Monopoly"), N_("Year of Plenty"),
+	N_("Chapel"), N_("University of Gnocatan"),
+	N_("Governor's House"), N_("Library"), N_("Market"),
+	N_("Soldier")
 };
 
 static void game_devcards_init(GameDevCards * gd);
@@ -56,7 +57,7 @@ static void game_devcards_init(GameDevCards * gd)
 	gtk_table_set_homogeneous(GTK_TABLE(gd), TRUE);
 
 	for (row = 0; row < NUM_DEVEL_TYPES; row++) {
-		label = gtk_label_new(devcard_names[row]);
+		label = gtk_label_new(gettext(devcard_names[row]));
 		gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 		gtk_table_attach_defaults(GTK_TABLE(gd), label,
 					  0, 1, row, row + 1);

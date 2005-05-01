@@ -10,7 +10,8 @@
 #include "game-buildings.h"
 
 static const gchar *building_names[NUM_BUILD_TYPES] = {
-	NULL, "Road", "Bridge", "Ship", "Settlement", "City"
+	NULL, N_("Road"), N_("Bridge"), N_("Ship"), N_("Settlement"),
+	    N_("City")
 };
 
 static void game_buildings_init(GameBuildings * gb);
@@ -54,7 +55,7 @@ static void game_buildings_init(GameBuildings * gb)
 	gtk_table_set_homogeneous(GTK_TABLE(gb), TRUE);
 
 	for (row = 1; row < NUM_BUILD_TYPES; row++) {
-		label = gtk_label_new(building_names[row]);
+		label = gtk_label_new(gettext(building_names[row]));
 		gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 		gtk_table_attach_defaults(GTK_TABLE(gb), label,
 					  0, 1, row - 1, row);

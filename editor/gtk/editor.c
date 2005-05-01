@@ -61,9 +61,19 @@ static const gchar *port_names[] = {
 	N_("Any (3:1)")
 };
 
-/* East, Northeast, Northwest, West, Southwest, Southeast */
 static const gchar *port_direction_names[] = {
-	N_("E"), N_("NE"), N_("NW"), N_("W"), N_("SW"), N_("SE")
+	/* East */
+	N_("E"),
+	/* North east */
+	N_("NE"),
+	/* North west */
+	N_("NW"),
+	/* West */
+	N_("W"),
+	/* South west */
+	N_("SW"),
+	/* South east */
+	N_("SE")
 };
 
 static void error_dialog(const char *fmt, ...)
@@ -85,8 +95,8 @@ static void error_dialog(const char *fmt, ...)
 	gtk_widget_destroy(dialog);
 }
 
-static void
-clear_hex(Hex *hex) {
+static void clear_hex(Hex * hex)
+{
 	hex->terrain = LAST_TERRAIN;
 	hex->resource = NO_RESOURCE;
 	hex->chit_pos = -1;
@@ -172,8 +182,8 @@ static Hex *hex_in_direction(Map * map, Hex * hex, gint direction)
 	return map->grid[y][x];
 }
 
-static gboolean
-terrain_has_chit(Terrain terrain) {
+static gboolean terrain_has_chit(Terrain terrain)
+{
 	if (terrain == HILL_TERRAIN || terrain == FIELD_TERRAIN ||
 	    terrain == MOUNTAIN_TERRAIN || terrain == PASTURE_TERRAIN ||
 	    terrain == FOREST_TERRAIN || terrain == GOLD_TERRAIN)
@@ -183,10 +193,10 @@ terrain_has_chit(Terrain terrain) {
 
 static void
 build_map_resize(GtkWidget * table, gint row, gint col, GtkOrientation dir,
-		 GtkWidget **buttons, GCallback resize_callback)
+		 GtkWidget ** buttons, GCallback resize_callback)
 {
-	static const char *symbols[] = {"+", "--"};
-	static gpointer values[] = {(gpointer) 1, (gpointer) -1};
+	static const char *symbols[] = { "+", "--" };
+	static gint values[] = { +1, -1 };
 	GtkWidget *box;
 	gint i;
 
@@ -199,9 +209,11 @@ build_map_resize(GtkWidget * table, gint row, gint col, GtkOrientation dir,
 
 	for (i = 0; i < 2; i++) {
 		buttons[i] = gtk_button_new_with_label(symbols[i]);
-		gtk_box_pack_start(GTK_BOX(box), buttons[i], FALSE, TRUE, 0);
+		gtk_box_pack_start(GTK_BOX(box), buttons[i], FALSE, TRUE,
+				   0);
 		g_signal_connect(G_OBJECT(buttons[i]), "clicked",
-				 resize_callback, values[i]);
+				 resize_callback,
+				 GINT_TO_POINTER(values[i]));
 	}
 
 	gtk_box_pack_start(GTK_BOX(box), gtk_fixed_new(), TRUE, TRUE, 0);
@@ -210,7 +222,7 @@ build_map_resize(GtkWidget * table, gint row, gint col, GtkOrientation dir,
 			 GTK_FILL, GTK_FILL, 0, 0);
 }
 
-static void scale_map(GuiMap *gmap)
+static void scale_map(GuiMap * gmap)
 {
 	guimap_scale_to_size(gmap,
 			     gmap->area->allocation.width,
@@ -246,8 +258,7 @@ static gint button_press_map_cb(GtkWidget * area, GdkEventButton * event,
 		num_ports = 0;
 		for (i = 0; i < 6; i++) {
 			adjacent = hex_in_direction(gmap->map,
-						    current_hex,
-						    i);
+						    current_hex, i);
 			port_ok = FALSE;
 			if (adjacent != NULL &&
 			    adjacent->terrain != LAST_TERRAIN &&
@@ -322,8 +333,8 @@ static gint key_press_map_cb(GtkWidget * area, GdkEventKey * event,
 	return TRUE;
 }
 
-static void
-post_change(gint *size, GtkWidget **buttons, gint amt) {
+static void post_change(gint * size, GtkWidget ** buttons, gint amt)
+{
 	*size += amt;
 	gtk_widget_set_sensitive(buttons[0], *size < MAP_SIZE);
 	gtk_widget_set_sensitive(buttons[1], *size > 2);
@@ -337,9 +348,11 @@ static void change_height(UNUSED(GtkWidget * menu), gpointer user_data)
 	if ((gint) user_data < 0) {
 		gint x;
 		for (x = 0; x < gmap->map->x_size; x++)
-			clear_hex(gmap->map->grid[gmap->map->y_size - 1][x]);
+			clear_hex(gmap->map->
+				  grid[gmap->map->y_size - 1][x]);
 	}
-	post_change(&gmap->map->y_size, vresize_buttons, (gint) user_data);
+	post_change(&gmap->map->y_size, vresize_buttons,
+		    GPOINTER_TO_INT(user_data));
 }
 
 static void change_width(UNUSED(GtkWidget * menu), gpointer user_data)
@@ -391,7 +404,7 @@ static GtkWidget *build_map(void)
 
 static gint select_terrain_cb(UNUSED(GtkWidget * menu), gpointer user_data)
 {
-	Terrain terrain = (gint) user_data;
+	Terrain terrain = GPOINTER_TO_INT(user_data);
 	Hex *adjacent;
 	gint i;
 
@@ -409,7 +422,8 @@ static gint select_terrain_cb(UNUSED(GtkWidget * menu), gpointer user_data)
 		current_hex->resource = NO_RESOURCE;
 	if (terrain == SEA_TERRAIN || terrain == LAST_TERRAIN) {
 		for (i = 0; i < 6; i++) {
-			adjacent = hex_in_direction(gmap->map, current_hex, i);
+			adjacent =
+			    hex_in_direction(gmap->map, current_hex, i);
 			if (adjacent != NULL
 			    && adjacent->resource != NO_RESOURCE
 			    && adjacent->facing == 6 - i) {
@@ -439,12 +453,14 @@ static GtkWidget *build_terrain_menu(void)
 	menu = gtk_menu_new();
 
 	for (i = 0; i <= LAST_TERRAIN; i++) {
-		item = gtk_image_menu_item_new_with_label(terrain_names[i]);
+		item =
+		    gtk_image_menu_item_new_with_label(gettext
+						       (terrain_names[i]));
 
 		gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
 		g_signal_connect(G_OBJECT(item), "activate",
 				 G_CALLBACK(select_terrain_cb),
-				 (gpointer) i);
+				 GINT_TO_POINTER(i));
 
 		pixmap = theme->terrain_tiles[i];
 		if (i == LAST_TERRAIN || pixmap == NULL)
@@ -461,7 +477,7 @@ static GtkWidget *build_terrain_menu(void)
 
 static gint select_roll_cb(UNUSED(GtkWidget * menu), gpointer user_data)
 {
-	current_hex->roll = (gint) user_data;
+	current_hex->roll = GPOINTER_TO_INT(user_data);
 	guimap_draw_hex(gmap, current_hex);
 	return TRUE;
 }
@@ -469,7 +485,8 @@ static gint select_roll_cb(UNUSED(GtkWidget * menu), gpointer user_data)
 static gint
 select_shuffle_cb(UNUSED(GtkWidget * menu), UNUSED(gpointer user_data))
 {
-	current_hex->shuffle = gtk_check_menu_item_get_active(shuffle_tile);
+	current_hex->shuffle =
+	    gtk_check_menu_item_get_active(shuffle_tile);
 	return TRUE;
 }
 
@@ -492,7 +509,8 @@ static GtkWidget *build_roll_menu(void)
 
 		tcolor = (i == 6 || i == 8) ? TC_CHIP_H_FG : TC_CHIP_FG;
 		color = &theme->colors[tcolor].color;
-		sprintf(buffer, "<span foreground=\"#%04x%04x%04x\">%d</span>",
+		sprintf(buffer,
+			"<span foreground=\"#%04x%04x%04x\">%d</span>",
 			color->red, color->green, color->blue, i);
 
 		item = gtk_menu_item_new();
@@ -502,13 +520,14 @@ static GtkWidget *build_roll_menu(void)
 
 		gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
 		g_signal_connect(G_OBJECT(item), "activate",
-				 G_CALLBACK(select_roll_cb), (gpointer) i);
+				 G_CALLBACK(select_roll_cb),
+				 GINT_TO_POINTER(i));
 	}
 
 	gtk_menu_shell_append(GTK_MENU_SHELL(menu),
 			      gtk_separator_menu_item_new());
 
-	item = gtk_check_menu_item_new_with_label(N_("Shuffle"));
+	item = gtk_check_menu_item_new_with_label(_("Shuffle"));
 	gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
 	g_signal_connect(G_OBJECT(item), "activate",
 			 G_CALLBACK(select_shuffle_cb), NULL);
@@ -528,8 +547,7 @@ select_port_resource_cb(UNUSED(GtkWidget * menu), gpointer user_data)
 			Hex *adjacent;
 
 			adjacent = hex_in_direction(gmap->map,
-						    current_hex,
-						    i);
+						    current_hex, i);
 			if (adjacent != NULL &&
 			    adjacent->terrain != LAST_TERRAIN &&
 			    adjacent->terrain != SEA_TERRAIN) {
@@ -538,7 +556,7 @@ select_port_resource_cb(UNUSED(GtkWidget * menu), gpointer user_data)
 			}
 		}
 	}
-	current_hex->resource = (Resource) user_data;
+	current_hex->resource = GPOINTER_TO_INT(user_data);
 	guimap_draw_hex(gmap, current_hex);
 	return TRUE;
 }
@@ -546,7 +564,7 @@ select_port_resource_cb(UNUSED(GtkWidget * menu), gpointer user_data)
 static gint
 select_port_direction_cb(UNUSED(GtkWidget * menu), gpointer user_data)
 {
-	current_hex->facing = (gint) user_data;
+	current_hex->facing = GPOINTER_TO_INT(user_data);
 	guimap_draw_hex(gmap, current_hex);
 	return TRUE;
 }
@@ -563,12 +581,14 @@ static GtkWidget *build_port_menu(void)
 	menu = gtk_menu_new();
 
 	for (i = 0; i <= ANY_RESOURCE; i++) {
-		item = gtk_image_menu_item_new_with_label(port_names[i]);
+		item =
+		    gtk_image_menu_item_new_with_label(gettext
+						       (port_names[i]));
 
 		gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
 		g_signal_connect(G_OBJECT(item), "activate",
 				 G_CALLBACK(select_port_resource_cb),
-				 (gpointer) i);
+				 GINT_TO_POINTER(i));
 
 		pixmap = theme->port_tiles[i];
 		if (i >= NO_RESOURCE || pixmap == NULL)
@@ -581,12 +601,15 @@ static GtkWidget *build_port_menu(void)
 	gtk_menu_shell_append(GTK_MENU_SHELL(menu),
 			      gtk_separator_menu_item_new());
 	for (i = 0; i < 6; i++) {
-		item = gtk_menu_item_new_with_label(port_direction_names[i]);
+		item =
+		    gtk_menu_item_new_with_label(gettext
+						 (port_direction_names
+						  [i]));
 
 		gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
 		g_signal_connect(G_OBJECT(item), "activate",
 				 G_CALLBACK(select_port_direction_cb),
-				 (gpointer) i);
+				 GINT_TO_POINTER(i));
 		port_directions[i] = item;
 	}
 	gtk_widget_show_all(menu);
@@ -634,11 +657,13 @@ static GtkWidget *build_settings(void)
 	game_devcards = GAMEDEVCARDS(game_devcards_new());
 	game_buildings = GAMEBUILDINGS(game_buildings_new());
 
-	build_frame(lvbox, _("Game Parameters"), GTK_WIDGET(game_settings));
+	build_frame(lvbox, _("Game Parameters"),
+		    GTK_WIDGET(game_settings));
 	build_frame(lvbox, _("Rules"), GTK_WIDGET(game_parameters));
 	build_frame(lvbox, _("Resources"), GTK_WIDGET(game_resources));
 	build_frame(rvbox, _("Buildings"), GTK_WIDGET(game_buildings));
-	build_frame(rvbox, _("Development Cards"), GTK_WIDGET(game_devcards));
+	build_frame(rvbox, _("Development Cards"),
+		    GTK_WIDGET(game_devcards));
 
 	return vbox;
 }
@@ -652,7 +677,8 @@ static void set_window_title(const gchar * title)
 		window_title = NULL;
 	} else
 		window_title = g_strdup(title);
-	g_snprintf(str, sizeof(str), "%s: %s", _("Gnocatan Editor"), title);
+	g_snprintf(str, sizeof(str), "%s: %s", _("Gnocatan Editor"),
+		   title);
 
 	gtk_window_set_title(GTK_WINDOW(toplevel), str);
 }
@@ -741,7 +767,7 @@ static void load_game(const gchar * file)
 
 	new_params = params_load_file(gamefile);
 	if (new_params == NULL) {
-		error_dialog("Failed to load '%s'", file);
+		error_dialog(_("Failed to load '%s'"), file);
 		return;
 	}
 
@@ -753,7 +779,8 @@ static void load_game(const gchar * file)
 		new_params->map->x_size = 6;
 		new_params->map->y_size = 6;
 		g_array_free(new_params->chits, TRUE);
-		new_params->chits = g_array_new(FALSE, FALSE, sizeof(gint));
+		new_params->chits =
+		    g_array_new(FALSE, FALSE, sizeof(gint));
 		new_filename = NULL;
 	} else {
 		new_filename = g_strdup(file);
@@ -775,7 +802,7 @@ static void save_game(const gchar * file)
 	params = get_params();
 	canonicalize_map(params, gmap->map);
 	if (!params_write_file(params, file))
-		error_dialog("Failed to save to '%s'", file);
+		error_dialog(_("Failed to save to '%s'"), file);
 	fill_map(gmap->map);
 }
 
@@ -788,17 +815,20 @@ static void load_game_menu_cb(void)
 {
 	GtkWidget *dialog;
 
-	dialog = gtk_file_chooser_dialog_new("Open Game",
+	dialog = gtk_file_chooser_dialog_new(_("Open Game"),
 					     GTK_WINDOW(toplevel),
 					     GTK_FILE_CHOOSER_ACTION_OPEN,
 					     GTK_STOCK_CANCEL,
 					     GTK_RESPONSE_CANCEL,
 					     GTK_STOCK_OPEN,
 					     GTK_RESPONSE_OK, NULL);
-	gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(dialog), default_game);
+	gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(dialog),
+				      default_game);
 	if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_OK) {
 		char *file;
-		file = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
+		file =
+		    gtk_file_chooser_get_filename(GTK_FILE_CHOOSER
+						  (dialog));
 		load_game(file);
 		g_free(file);
 		scale_map(gmap);
@@ -822,7 +852,9 @@ static void save_as_menu_cb(void)
 					GTK_RESPONSE_ACCEPT);
 	if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
 		char *file;
-		file = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
+		file =
+		    gtk_file_chooser_get_filename(GTK_FILE_CHOOSER
+						  (dialog));
 		save_game(file);
 		g_free(file);
 	}
@@ -895,7 +927,7 @@ static void contents_menu_cb(void)
 					GTK_DIALOG_DESTROY_WITH_PARENT,
 					GTK_MESSAGE_WARNING,
 					GTK_BUTTONS_CLOSE,
-					"There is no help");
+					_("There is no help"));
 	gtk_dialog_run(GTK_DIALOG(dialog));
 	gtk_widget_destroy(dialog);
 }
@@ -911,8 +943,8 @@ static void about_menu_cb(void)
 }
 
 static GtkActionEntry entries[] = {
-	{"FileMenu", NULL, "_File", NULL, NULL, NULL},
-	{"HelpMenu", NULL, "_Help", NULL, NULL, NULL},
+	{"FileMenu", NULL, N_("_File"), NULL, NULL, NULL},
+	{"HelpMenu", NULL, N_("_Help"), NULL, NULL, NULL},
 
 	{"New", GTK_STOCK_NEW, N_("_New"), "<control>N",
 	 N_("Create a new game"), new_game_menu_cb},
@@ -980,11 +1012,17 @@ int main(int argc, char *argv[])
 
 	gtk_init(&argc, &argv);
 
+	/* Gtk+ handles the locale, we must bind the translations */
+	bindtextdomain(PACKAGE, LOCALEDIR);
+	textdomain(PACKAGE);
+	bind_textdomain_codeset(PACKAGE, "UTF-8");
+
 	toplevel = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	g_signal_connect(G_OBJECT(toplevel), "delete_event",
 			 G_CALLBACK(exit_cb), NULL);
 
 	action_group = gtk_action_group_new("MenuActions");
+	gtk_action_group_set_translation_domain(action_group, PACKAGE);
 	gtk_action_group_add_actions(action_group, entries,
 				     G_N_ELEMENTS(entries), toplevel);
 
