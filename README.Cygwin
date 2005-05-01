@@ -1,0 +1,66 @@
+Short guide to install Gnocatan in Cygwin
+
+Install a minimal setup
+=======================
+1) Get 'setup.exe' from the Cygwin site (www.cygwin.com)
+2) Let it run once without selection additional packages,
+   to install the base system
+3) Start the Cygwin shell, to verify the base install works, and
+   to create the default settings
+4) Exit the shell ('exit')
+5) Start the setup program again, and select:
+   Category Gnome:
+      libgnomeui2
+      libxml2-devel
+   Category Graphics:
+      jpeg
+   Category X11:
+      xorg-x11-f100
+      xorg-x11-fsrv
+      xorg-fscl
+6) Start the setup program for the third time, and select:
+   Category Devel:
+      ORBit2-devel
+      atk-devel
+      gcc
+      gtk-x11-devel
+      intltool
+      libXft-devel
+      libbonobo2-devel
+      libesound-devel
+      libtool-devel
+      make
+      openssl-devel
+      pango-devel
+      pkg-config
+You now have a minimal setup needed to build and run Gnocatan.
+
+I had to start the installation program three times, because I had 
+problems downloading some packages.
+
+Install Gnocatan
+================
+1) Download the source tarball to your Cygwin home directory
+   (c:\cygwin\home\%username%)
+2) Start the Cygwin shell
+3) Expand the source tarball
+   (tar xvzf gnocatan-%versionnumber%.tar.gz)
+4) Enter the source directory (cd gnocatan-%versionnumber%)
+5) Configure, build and install
+     ./configure
+     make
+     make install
+
+Start Gnocatan
+==============
+6) Start the X server (startx)
+7) Start Gnocatan from the XTerm (gnocatan)
+
+Known limitations
+=================
+* The help is not built
+* The server will not create new games
+* The metaserver does not work
+
+Roland Clobus
+2005-05-01 (Gnocatan 0.9.11)
