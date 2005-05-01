@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.9.10\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-04-26 22:29+0200\n"
+"POT-Creation-Date: 2005-05-01 15:01+0200\n"
 "PO-Revision-Date: 2004-01-26 16:51+0100\n"
 "Last-Translator: Roland Clobus <rclobus@bigfoot.com>\n"
 "Language-Team: Bas Wijnen <b.wijnen@phys.rug.nl> Roland Clobus "
@@ -303,39 +303,47 @@ msgstr "Het spel is afgelopen."
 msgid "%s takes %s.\n"
 msgstr "%s neemt %s.\n"
 
-#: ../client/common/develop.c:43
+#: ../client/common/develop.c:43 ../editor/gtk/game-devcards.c:13
 msgid "Road Building"
 msgstr "Stratenbouw"
 
 #: ../client/common/develop.c:44 ../client/gtk/monopoly.c:76
+#: ../editor/gtk/game-devcards.c:13
 msgid "Monopoly"
 msgstr "Monopolie"
 
 #: ../client/common/develop.c:45 ../client/gtk/plenty.c:49
+#: ../editor/gtk/game-devcards.c:13
 msgid "Year of Plenty"
 msgstr "Goed Jaar"
 
 #: ../client/common/develop.c:46 ../client/gtk/player.c:51
+#: ../editor/gtk/game-devcards.c:14
 msgid "Chapel"
 msgstr "Kapel"
 
 #: ../client/common/develop.c:47 ../client/gtk/player.c:52
+#: ../editor/gtk/game-devcards.c:14
 msgid "University of Gnocatan"
 msgstr "Universiteit"
 
 #: ../client/common/develop.c:48 ../client/gtk/player.c:54
+#: ../editor/gtk/game-devcards.c:15
 msgid "Governor's House"
 msgstr "Gouverneurshuis"
 
 #: ../client/common/develop.c:49 ../client/gtk/player.c:55
+#: ../editor/gtk/game-devcards.c:15
 msgid "Library"
 msgstr "Bibliotheek"
 
 #: ../client/common/develop.c:50 ../client/gtk/player.c:56
+#: ../editor/gtk/game-devcards.c:15
 msgid "Market"
 msgstr "Markt"
 
 #: ../client/common/develop.c:51 ../client/gtk/player.c:57
+#: ../editor/gtk/game-devcards.c:16
 msgid "Soldier"
 msgstr "Ridder"
 
@@ -1099,7 +1107,7 @@ msgstr "Verander naam"
 msgid "Change your player name"
 msgstr "Verander de naam van je speler"
 
-#: ../client/gtk/gui.c:97 ../editor/gtk/editor.c:926
+#: ../client/gtk/gui.c:97 ../editor/gtk/editor.c:959
 #: ../server/gtk/gnocatan-server-gtk.c:83
 msgid "_Quit"
 msgstr "_Afsluiten"
@@ -1156,7 +1164,8 @@ msgstr "_Spel"
 msgid "_Settings"
 msgstr "_Instellingen"
 
-#: ../client/gtk/gui.c:148 ../server/gtk/gnocatan-server-gtk.c:82
+#: ../client/gtk/gui.c:148 ../editor/gtk/editor.c:947
+#: ../server/gtk/gnocatan-server-gtk.c:82
 msgid "_Help"
 msgstr "_Help"
 
@@ -1259,7 +1268,7 @@ msgid "<b>Messages</b>"
 msgstr "<b>Berichten</b>"
 
 #. Tab page name
-#: ../client/gtk/gui.c:439 ../editor/gtk/editor.c:1013
+#: ../client/gtk/gui.c:439 ../editor/gtk/editor.c:1052
 msgid "Map"
 msgstr "Kaart"
 
@@ -1344,7 +1353,7 @@ msgstr "Welkom bij Gnocatan!"
 #. Missing pixmap
 #. Missing pixmap, main icon file
 #: ../client/gtk/gui.c:919 ../client/gtk/gui.c:951
-#: ../server/gtk/gnocatan-server-gtk.c:816
+#: ../server/gtk/gnocatan-server-gtk.c:817
 #, c-format
 msgid "Pixmap not found: %s\n"
 msgstr "Plaatje \"%s\" werd niet gevonden\n"
@@ -1410,7 +1419,7 @@ msgstr "Terreinopbrengsten"
 msgid "Building Costs"
 msgstr "Bouwkosten"
 
-#: ../client/gtk/legend.c:182
+#: ../client/gtk/legend.c:182 ../editor/gtk/game-buildings.c:13
 msgid "Road"
 msgstr "Weg"
 
@@ -1418,7 +1427,7 @@ msgstr "Weg"
 msgid "brick + lumber"
 msgstr "baksteen + hout"
 
-#: ../client/gtk/legend.c:184
+#: ../client/gtk/legend.c:184 ../editor/gtk/game-buildings.c:13
 msgid "Ship"
 msgstr "Schip"
 
@@ -1426,7 +1435,7 @@ msgstr "Schip"
 msgid "wool + lumber"
 msgstr "wol + hout"
 
-#: ../client/gtk/legend.c:187
+#: ../client/gtk/legend.c:187 ../editor/gtk/game-buildings.c:13
 msgid "Bridge"
 msgstr "Brug"
 
@@ -1435,6 +1444,7 @@ msgid "brick + wool + lumber"
 msgstr "baksteen + wol + hout"
 
 #: ../client/gtk/legend.c:189 ../client/gtk/player.c:47
+#: ../editor/gtk/game-buildings.c:13
 msgid "Settlement"
 msgstr "Dorp"
 
@@ -1443,6 +1453,7 @@ msgid "brick + grain + wool + lumber"
 msgstr "baksteen + graan + wol + hout"
 
 #: ../client/gtk/legend.c:191 ../client/gtk/player.c:48
+#: ../editor/gtk/game-buildings.c:14
 msgid "City"
 msgstr "Stad"
 
@@ -1750,7 +1761,7 @@ msgid "Chapel Cards:"
 msgstr "Kapel:"
 
 #: ../client/gtk/settingscreen.c:244
-msgid "University of Catan Cards:"
+msgid "University of Gnocatan Cards:"
 msgstr "Universiteit:"
 
 #: ../client/gtk/settingscreen.c:249
@@ -1903,26 +1914,33 @@ msgid "2:1"
 msgstr "2:1"
 
 #. Port indicator: trade 3 for 1
+#. General port indicator
 #: ../common/gtk/guimap.c:637 ../common/gtk/guimap.c:662
 msgid "3:1"
 msgstr "3:1"
 
+#. Port indicator for brick
 #: ../common/gtk/guimap.c:642
 msgid "B"
 msgstr "B"
 
+#. Port indicator for grain
 #: ../common/gtk/guimap.c:646
 msgid "G"
 msgstr "G"
 
+#. Port indicator for ore
 #: ../common/gtk/guimap.c:650
 msgid "O"
 msgstr "IJ"
 
-#: ../common/gtk/guimap.c:654 ../editor/gtk/editor.c:65
+#. Port indicator for wool
+#. West
+#: ../common/gtk/guimap.c:654 ../editor/gtk/editor.c:72
 msgid "W"
 msgstr "W"
 
+#. Port indicator for lumber
 #: ../common/gtk/guimap.c:658
 msgid "L"
 msgstr "H"
@@ -2226,136 +2244,163 @@ msgstr "Hout (2:1)"
 msgid "Any (3:1)"
 msgstr "Haven (3:1)"
 
-#: ../editor/gtk/editor.c:65
+#. East
+#: ../editor/gtk/editor.c:66
 msgid "E"
 msgstr "O"
 
-#: ../editor/gtk/editor.c:65
+#. North east
+#: ../editor/gtk/editor.c:68
 msgid "NE"
 msgstr "NO"
 
-#: ../editor/gtk/editor.c:65
+#. North west
+#: ../editor/gtk/editor.c:70
 msgid "NW"
 msgstr "NW"
 
-#: ../editor/gtk/editor.c:65
+#. South west
+#: ../editor/gtk/editor.c:74
 msgid "SW"
 msgstr "ZW"
 
-#: ../editor/gtk/editor.c:65
+#. South east
+#: ../editor/gtk/editor.c:76
 msgid "SE"
 msgstr "ZO"
 
-#: ../editor/gtk/editor.c:510
+#: ../editor/gtk/editor.c:530
 msgid "Shuffle"
 msgstr "Schudden"
 
-#: ../editor/gtk/editor.c:636
-msgid "Game Settings"
-msgstr "Spel instellingen"
-
-#: ../editor/gtk/editor.c:637 ../server/gtk/gnocatan-server-gtk.c:356
+#: ../editor/gtk/editor.c:660 ../server/gtk/gnocatan-server-gtk.c:356
 msgid "Game Parameters"
 msgstr "Spelinstellingen"
 
-#: ../editor/gtk/editor.c:638
+#: ../editor/gtk/editor.c:662
+msgid "Rules"
+msgstr "Spelregels"
+
+#: ../editor/gtk/editor.c:663
 msgid "Resources"
 msgstr "Grondstoffen"
 
-#: ../editor/gtk/editor.c:639
+#: ../editor/gtk/editor.c:664
 msgid "Buildings"
 msgstr "Gebouwen"
 
-#: ../editor/gtk/editor.c:640
+#: ../editor/gtk/editor.c:665
 msgid "Development Cards"
 msgstr "Ontwikkelingskaarten"
 
-#: ../editor/gtk/editor.c:654
+#: ../editor/gtk/editor.c:680
 msgid "Gnocatan Editor"
 msgstr "Gnocatan Editor"
 
-#: ../editor/gtk/editor.c:813
+#: ../editor/gtk/editor.c:770
+#, c-format
+msgid "Failed to load '%s'"
+msgstr "Kan '%s' niet openen"
+
+#: ../editor/gtk/editor.c:805
+#, c-format
+msgid "Failed to save to '%s'"
+msgstr "Kan '%s' niet opslaan"
+
+#: ../editor/gtk/editor.c:818
+msgid "Open Game"
+msgstr "Open spel"
+
+#: ../editor/gtk/editor.c:844
 msgid "Save as..."
 msgstr "Opslaan als..."
 
-#: ../editor/gtk/editor.c:843
+#: ../editor/gtk/editor.c:876
 msgid "Change Title"
 msgstr "Verander titel"
 
-#: ../editor/gtk/editor.c:865
+#: ../editor/gtk/editor.c:898
 msgid "New Title:"
 msgstr "Nieuwe titel:"
 
-#: ../editor/gtk/editor.c:909
+#: ../editor/gtk/editor.c:930
+msgid "There is no help"
+msgstr "Er is geen help"
+
+#: ../editor/gtk/editor.c:942
 msgid "Gnocatan Game Editor"
 msgstr "Gnocatan Spel Editor"
 
-#: ../editor/gtk/editor.c:916
+#: ../editor/gtk/editor.c:946
+msgid "_File"
+msgstr "_Bestand"
+
+#: ../editor/gtk/editor.c:949
 msgid "_New"
 msgstr "_Nieuw"
 
-#: ../editor/gtk/editor.c:917
+#: ../editor/gtk/editor.c:950
 msgid "Create a new game"
 msgstr "Maak een nieuw spel"
 
-#: ../editor/gtk/editor.c:918
-msgid "_Open"
-msgstr "_Openen"
+#: ../editor/gtk/editor.c:951
+msgid "_Open..."
+msgstr "_Openen..."
 
-#: ../editor/gtk/editor.c:919
+#: ../editor/gtk/editor.c:952
 msgid "Open an existing game"
 msgstr "Open een bestaand spel"
 
-#: ../editor/gtk/editor.c:920
+#: ../editor/gtk/editor.c:953
 msgid "_Save"
 msgstr "Op_slaan"
 
-#: ../editor/gtk/editor.c:921
+#: ../editor/gtk/editor.c:954
 msgid "Save game"
 msgstr "Sla het spel op"
 
-#: ../editor/gtk/editor.c:922
-msgid "_Save as..."
+#: ../editor/gtk/editor.c:955
+msgid "Save _As..."
 msgstr "Opslaan _als..."
 
-#: ../editor/gtk/editor.c:923
+#: ../editor/gtk/editor.c:956
 msgid "Save as"
 msgstr "Sla het spel op onder een andere naam"
 
-#: ../editor/gtk/editor.c:924
+#: ../editor/gtk/editor.c:957
 msgid "_Change title"
 msgstr "_Verander titel"
 
-#: ../editor/gtk/editor.c:925
+#: ../editor/gtk/editor.c:958
 msgid "Change game title"
 msgstr "Verander de title van het spel"
 
-#: ../editor/gtk/editor.c:927
+#: ../editor/gtk/editor.c:960
 msgid "Quit"
 msgstr "Sluit het programma af"
 
-#: ../editor/gtk/editor.c:929
+#: ../editor/gtk/editor.c:962
 msgid "_Contents"
 msgstr "_Inhoud"
 
-#: ../editor/gtk/editor.c:930
+#: ../editor/gtk/editor.c:963
 msgid "Contents"
 msgstr "Inhoud"
 
-#: ../editor/gtk/editor.c:931
+#: ../editor/gtk/editor.c:964
 msgid "_About Gnocatan Editor"
 msgstr "_Over Gnocatan Editor"
 
-#: ../editor/gtk/editor.c:932
+#: ../editor/gtk/editor.c:965
 msgid "Information about Gnocatan Editor"
 msgstr "Informatie over Gnocatan Editor"
 
-#: ../editor/gtk/editor.c:999 ../server/gtk/gnocatan-server-gtk.c:804
+#: ../editor/gtk/editor.c:1038 ../server/gtk/gnocatan-server-gtk.c:805
 #, c-format
 msgid "Building menus failed: %s"
 msgstr "Opbouw menu niet gelukt: %s"
 
-#: ../editor/gtk/editor.c:1016
+#: ../editor/gtk/editor.c:1055
 msgid "Settings"
 msgstr "Instellingen"
 
@@ -2580,6 +2625,12 @@ msgstr "Voorbereiden spel"
 msgid "Tried to assign resources to NULL player.\n"
 msgstr "Poging om grondstoffen aan de NULL speler te geven.\n"
 
+#~ msgid "Game Settings"
+#~ msgstr "Spel instellingen"
+
+#~ msgid "_Save as..."
+#~ msgstr "Opslaan _als..."
+
 #~ msgid "%s receives %s\n"
 #~ msgstr "%s krijgt %s\n"
 
@@ -2651,9 +2702,6 @@ msgstr "Poging om grondstoffen aan de NULL speler te geven.\n"
 
 #~ msgid "bits per color component must be 4, 8, 12, or 16: #%s"
 #~ msgstr "bits per kleurcomponent moet 4, 8, 12, of 16 zijn: #%s"
-
-#~ msgid "_File"
-#~ msgstr "_Bestand"
 
 #~ msgid "Create a new public game"
 #~ msgstr "Maak een nieuw openbaar spel"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-04-26 22:29+0200\n"
+"POT-Creation-Date: 2005-05-01 15:01+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -302,39 +302,47 @@ msgstr ""
 msgid "%s takes %s.\n"
 msgstr ""
 
-#: ../client/common/develop.c:43
+#: ../client/common/develop.c:43 ../editor/gtk/game-devcards.c:13
 msgid "Road Building"
 msgstr ""
 
 #: ../client/common/develop.c:44 ../client/gtk/monopoly.c:76
+#: ../editor/gtk/game-devcards.c:13
 msgid "Monopoly"
 msgstr ""
 
 #: ../client/common/develop.c:45 ../client/gtk/plenty.c:49
+#: ../editor/gtk/game-devcards.c:13
 msgid "Year of Plenty"
 msgstr ""
 
 #: ../client/common/develop.c:46 ../client/gtk/player.c:51
+#: ../editor/gtk/game-devcards.c:14
 msgid "Chapel"
 msgstr ""
 
 #: ../client/common/develop.c:47 ../client/gtk/player.c:52
+#: ../editor/gtk/game-devcards.c:14
 msgid "University of Gnocatan"
 msgstr ""
 
 #: ../client/common/develop.c:48 ../client/gtk/player.c:54
+#: ../editor/gtk/game-devcards.c:15
 msgid "Governor's House"
 msgstr ""
 
 #: ../client/common/develop.c:49 ../client/gtk/player.c:55
+#: ../editor/gtk/game-devcards.c:15
 msgid "Library"
 msgstr ""
 
 #: ../client/common/develop.c:50 ../client/gtk/player.c:56
+#: ../editor/gtk/game-devcards.c:15
 msgid "Market"
 msgstr ""
 
 #: ../client/common/develop.c:51 ../client/gtk/player.c:57
+#: ../editor/gtk/game-devcards.c:16
 msgid "Soldier"
 msgstr ""
 
@@ -1094,7 +1102,7 @@ msgstr ""
 msgid "Change your player name"
 msgstr ""
 
-#: ../client/gtk/gui.c:97 ../editor/gtk/editor.c:926
+#: ../client/gtk/gui.c:97 ../editor/gtk/editor.c:959
 #: ../server/gtk/gnocatan-server-gtk.c:83
 msgid "_Quit"
 msgstr ""
@@ -1151,7 +1159,8 @@ msgstr ""
 msgid "_Settings"
 msgstr ""
 
-#: ../client/gtk/gui.c:148 ../server/gtk/gnocatan-server-gtk.c:82
+#: ../client/gtk/gui.c:148 ../editor/gtk/editor.c:947
+#: ../server/gtk/gnocatan-server-gtk.c:82
 msgid "_Help"
 msgstr ""
 
@@ -1232,7 +1241,7 @@ msgid "<b>Messages</b>"
 msgstr ""
 
 #. Tab page name
-#: ../client/gtk/gui.c:439 ../editor/gtk/editor.c:1013
+#: ../client/gtk/gui.c:439 ../editor/gtk/editor.c:1052
 msgid "Map"
 msgstr ""
 
@@ -1317,7 +1326,7 @@ msgstr ""
 #. Missing pixmap
 #. Missing pixmap, main icon file
 #: ../client/gtk/gui.c:919 ../client/gtk/gui.c:951
-#: ../server/gtk/gnocatan-server-gtk.c:816
+#: ../server/gtk/gnocatan-server-gtk.c:817
 #, c-format
 msgid "Pixmap not found: %s\n"
 msgstr ""
@@ -1383,7 +1392,7 @@ msgstr ""
 msgid "Building Costs"
 msgstr ""
 
-#: ../client/gtk/legend.c:182
+#: ../client/gtk/legend.c:182 ../editor/gtk/game-buildings.c:13
 msgid "Road"
 msgstr ""
 
@@ -1391,7 +1400,7 @@ msgstr ""
 msgid "brick + lumber"
 msgstr ""
 
-#: ../client/gtk/legend.c:184
+#: ../client/gtk/legend.c:184 ../editor/gtk/game-buildings.c:13
 msgid "Ship"
 msgstr ""
 
@@ -1399,7 +1408,7 @@ msgstr ""
 msgid "wool + lumber"
 msgstr ""
 
-#: ../client/gtk/legend.c:187
+#: ../client/gtk/legend.c:187 ../editor/gtk/game-buildings.c:13
 msgid "Bridge"
 msgstr ""
 
@@ -1408,6 +1417,7 @@ msgid "brick + wool + lumber"
 msgstr ""
 
 #: ../client/gtk/legend.c:189 ../client/gtk/player.c:47
+#: ../editor/gtk/game-buildings.c:13
 msgid "Settlement"
 msgstr ""
 
@@ -1416,6 +1426,7 @@ msgid "brick + grain + wool + lumber"
 msgstr ""
 
 #: ../client/gtk/legend.c:191 ../client/gtk/player.c:48
+#: ../editor/gtk/game-buildings.c:14
 msgid "City"
 msgstr ""
 
@@ -1723,7 +1734,7 @@ msgid "Chapel Cards:"
 msgstr ""
 
 #: ../client/gtk/settingscreen.c:244
-msgid "University of Catan Cards:"
+msgid "University of Gnocatan Cards:"
 msgstr ""
 
 #: ../client/gtk/settingscreen.c:249
@@ -1872,26 +1883,33 @@ msgid "2:1"
 msgstr ""
 
 #. Port indicator: trade 3 for 1
+#. General port indicator
 #: ../common/gtk/guimap.c:637 ../common/gtk/guimap.c:662
 msgid "3:1"
 msgstr ""
 
+#. Port indicator for brick
 #: ../common/gtk/guimap.c:642
 msgid "B"
 msgstr ""
 
+#. Port indicator for grain
 #: ../common/gtk/guimap.c:646
 msgid "G"
 msgstr ""
 
+#. Port indicator for ore
 #: ../common/gtk/guimap.c:650
 msgid "O"
 msgstr ""
 
-#: ../common/gtk/guimap.c:654 ../editor/gtk/editor.c:65
+#. Port indicator for wool
+#. West
+#: ../common/gtk/guimap.c:654 ../editor/gtk/editor.c:72
 msgid "W"
 msgstr ""
 
+#. Port indicator for lumber
 #: ../common/gtk/guimap.c:658
 msgid "L"
 msgstr ""
@@ -2194,136 +2212,163 @@ msgstr ""
 msgid "Any (3:1)"
 msgstr ""
 
-#: ../editor/gtk/editor.c:65
+#. East
+#: ../editor/gtk/editor.c:66
 msgid "E"
 msgstr ""
 
-#: ../editor/gtk/editor.c:65
+#. North east
+#: ../editor/gtk/editor.c:68
 msgid "NE"
 msgstr ""
 
-#: ../editor/gtk/editor.c:65
+#. North west
+#: ../editor/gtk/editor.c:70
 msgid "NW"
 msgstr ""
 
-#: ../editor/gtk/editor.c:65
+#. South west
+#: ../editor/gtk/editor.c:74
 msgid "SW"
 msgstr ""
 
-#: ../editor/gtk/editor.c:65
+#. South east
+#: ../editor/gtk/editor.c:76
 msgid "SE"
 msgstr ""
 
-#: ../editor/gtk/editor.c:510
+#: ../editor/gtk/editor.c:530
 msgid "Shuffle"
 msgstr ""
 
-#: ../editor/gtk/editor.c:636
-msgid "Game Settings"
-msgstr ""
-
-#: ../editor/gtk/editor.c:637 ../server/gtk/gnocatan-server-gtk.c:356
+#: ../editor/gtk/editor.c:660 ../server/gtk/gnocatan-server-gtk.c:356
 msgid "Game Parameters"
 msgstr ""
 
-#: ../editor/gtk/editor.c:638
+#: ../editor/gtk/editor.c:662
+msgid "Rules"
+msgstr ""
+
+#: ../editor/gtk/editor.c:663
 msgid "Resources"
 msgstr ""
 
-#: ../editor/gtk/editor.c:639
+#: ../editor/gtk/editor.c:664
 msgid "Buildings"
 msgstr ""
 
-#: ../editor/gtk/editor.c:640
+#: ../editor/gtk/editor.c:665
 msgid "Development Cards"
 msgstr ""
 
-#: ../editor/gtk/editor.c:654
+#: ../editor/gtk/editor.c:680
 msgid "Gnocatan Editor"
 msgstr ""
 
-#: ../editor/gtk/editor.c:813
+#: ../editor/gtk/editor.c:770
+#, c-format
+msgid "Failed to load '%s'"
+msgstr ""
+
+#: ../editor/gtk/editor.c:805
+#, c-format
+msgid "Failed to save to '%s'"
+msgstr ""
+
+#: ../editor/gtk/editor.c:818
+msgid "Open Game"
+msgstr ""
+
+#: ../editor/gtk/editor.c:844
 msgid "Save as..."
 msgstr ""
 
-#: ../editor/gtk/editor.c:843
+#: ../editor/gtk/editor.c:876
 msgid "Change Title"
 msgstr ""
 
-#: ../editor/gtk/editor.c:865
+#: ../editor/gtk/editor.c:898
 msgid "New Title:"
 msgstr ""
 
-#: ../editor/gtk/editor.c:909
+#: ../editor/gtk/editor.c:930
+msgid "There is no help"
+msgstr ""
+
+#: ../editor/gtk/editor.c:942
 msgid "Gnocatan Game Editor"
 msgstr ""
 
-#: ../editor/gtk/editor.c:916
+#: ../editor/gtk/editor.c:946
+msgid "_File"
+msgstr ""
+
+#: ../editor/gtk/editor.c:949
 msgid "_New"
 msgstr ""
 
-#: ../editor/gtk/editor.c:917
+#: ../editor/gtk/editor.c:950
 msgid "Create a new game"
 msgstr ""
 
-#: ../editor/gtk/editor.c:918
-msgid "_Open"
+#: ../editor/gtk/editor.c:951
+msgid "_Open..."
 msgstr ""
 
-#: ../editor/gtk/editor.c:919
+#: ../editor/gtk/editor.c:952
 msgid "Open an existing game"
 msgstr ""
 
-#: ../editor/gtk/editor.c:920
+#: ../editor/gtk/editor.c:953
 msgid "_Save"
 msgstr ""
 
-#: ../editor/gtk/editor.c:921
+#: ../editor/gtk/editor.c:954
 msgid "Save game"
 msgstr ""
 
-#: ../editor/gtk/editor.c:922
-msgid "_Save as..."
+#: ../editor/gtk/editor.c:955
+msgid "Save _As..."
 msgstr ""
 
-#: ../editor/gtk/editor.c:923
+#: ../editor/gtk/editor.c:956
 msgid "Save as"
 msgstr ""
 
-#: ../editor/gtk/editor.c:924
+#: ../editor/gtk/editor.c:957
 msgid "_Change title"
 msgstr ""
 
-#: ../editor/gtk/editor.c:925
+#: ../editor/gtk/editor.c:958
 msgid "Change game title"
 msgstr ""
 
-#: ../editor/gtk/editor.c:927
+#: ../editor/gtk/editor.c:960
 msgid "Quit"
 msgstr ""
 
-#: ../editor/gtk/editor.c:929
+#: ../editor/gtk/editor.c:962
 msgid "_Contents"
 msgstr ""
 
-#: ../editor/gtk/editor.c:930
+#: ../editor/gtk/editor.c:963
 msgid "Contents"
 msgstr ""
 
-#: ../editor/gtk/editor.c:931
+#: ../editor/gtk/editor.c:964
 msgid "_About Gnocatan Editor"
 msgstr ""
 
-#: ../editor/gtk/editor.c:932
+#: ../editor/gtk/editor.c:965
 msgid "Information about Gnocatan Editor"
 msgstr ""
 
-#: ../editor/gtk/editor.c:999 ../server/gtk/gnocatan-server-gtk.c:804
+#: ../editor/gtk/editor.c:1038 ../server/gtk/gnocatan-server-gtk.c:805
 #, c-format
 msgid "Building menus failed: %s"
 msgstr ""
 
-#: ../editor/gtk/editor.c:1016
+#: ../editor/gtk/editor.c:1055
 msgid "Settings"
 msgstr ""
 
