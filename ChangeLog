@@ -1,3 +1,8 @@
+2005-05-15  Brian Wellington <bwelling@xbill.org>
+	* client/ai/greedy.c: Rework the AI's maritime trading code to
+	reduce the number of pointless trades and increase the effectiveness
+	of trades.
+
 2005-05-15  0.9.12  Roland Clobus <rclobus@bigfoot.com>
 	* common/gtk/common_gtk.c: Removed GTK compatibility code. It is not
 	needed since 2.4 is required.

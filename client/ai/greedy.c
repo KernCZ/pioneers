@@ -36,6 +36,8 @@
  *
  */
 
+#define DEVEL_CARD 222
+
 typedef struct resource_values_s {
 	float value[NO_RESOURCE];
 	MaritimeInfo info;
@@ -47,13 +49,26 @@ static int quote_num;
  * must discard resources */
 static gboolean discard_starting;
 
+/* things we can buy, in the order that we want them. */
+static BuildType build_preferences[] = {BUILD_CITY, BUILD_SETTLEMENT,
+					BUILD_ROAD, DEVEL_CARD};
+
 /*
  * Forward declarations
  */
 static Edge *best_road_to_road_spot(Node * n, float *score,
-				    resource_values_t * resval);
+				    const resource_values_t * resval);
 
-static Edge *best_road_spot(resource_values_t * resval);
+static Edge *best_road_to_road(const resource_values_t * resval);
+
+static Edge *best_road_spot(const resource_values_t * resval);
+
+static Node *best_city_spot(const resource_values_t * resval);
+
+static Node *best_settlement_spot(gboolean during_setup,
+				  const resource_values_t * resval);
+
+static int places_can_build_settlement(void);
 
 /*
  * Functions to keep track of what nodes we've visited
@@ -123,7 +138,7 @@ static void for_each_node(iterate_node_func_t * func, void *rock)
  *  @retval need  The additional resources required to buy this
  *  @return TRUE if the assets are enough
  */
-static gboolean can_buy(const gint assets[NO_RESOURCE], 
+static gboolean can_pay_for(const gint assets[NO_RESOURCE], 
 	const gint cost[NO_RESOURCE], gint need[NO_RESOURCE]) {
 	gint i;
 	gboolean have_enough;
@@ -140,28 +155,67 @@ static gboolean can_buy(const gint assets[NO_RESOURCE],
 	return have_enough;
 }
 
-/*
- * Do I have the resources to buy this?
- *
- */
-#define DEVEL_CARD 222
-
-static gboolean has_resources(const gint assets[NO_RESOURCE], BuildType bt,
-			 gint need[NO_RESOURCE])
+/* How much does this cost to build? */
+static const gint * cost_of(BuildType bt)
 {
 	switch (bt) {
 	case BUILD_CITY:
-		return can_buy(assets, cost_upgrade_settlement(), need);
+		return cost_upgrade_settlement();
 	case BUILD_SETTLEMENT:
-		return can_buy(assets, cost_settlement(), need);
+		return cost_settlement();
 	case BUILD_ROAD:
-		return can_buy(assets, cost_road(), need);
+		return cost_road();
 	case DEVEL_CARD:
-		return can_buy(assets, cost_development(), need);
+		return cost_development();
+	default:
+		g_assert(0);
+		return NULL;
+	}
+}
+
+/*
+ * Do I have the resources to buy this, is it available, and do I want it?
+ */
+static gboolean should_buy(const gint assets[NO_RESOURCE], BuildType bt,
+			   const resource_values_t *resval,
+			   gint need[NO_RESOURCE])
+{
+	if (!can_pay_for(assets, cost_of(bt), need))
+		return FALSE;
+
+	switch (bt) {
+	case BUILD_CITY:
+		return (stock_num_cities() > 0 &&
+			best_city_spot(resval) != NULL);
+	case BUILD_SETTLEMENT:
+		return (stock_num_settlements() > 0 &&
+			best_settlement_spot(FALSE, resval) != NULL);
+	case BUILD_ROAD:
+		/* don't sprawl :) */
+		return (stock_num_roads() > 0 &&
+			places_can_build_settlement() <= 2 &&
+			(best_road_spot(resval) != NULL ||
+			 best_road_to_road(resval) != NULL));
+	case DEVEL_CARD:
+		return (can_buy_develop());
 	default:
 		/* xxx bridge, ship */
 		return FALSE;
 	}
+}
+
+/*
+ * If I buy this, what will I have left?  Note that some values in need[]
+ * can be negative if I can't afford it.
+ */
+static void leftover_resources(const gint assets[NO_RESOURCE], BuildType bt,
+			       gint need[NO_RESOURCE])
+{
+	gint i;
+	const gint *cost = cost_of(bt);
+
+	for (i = 0; i < NO_RESOURCE; i++)
+		need[i] = assets[i] - cost[i];
 }
 
 /*
@@ -295,7 +349,8 @@ static void reevaluate_resources(resource_values_t * outval)
 /*
  *
  */
-static float resource_value(Resource resource, resource_values_t * resval)
+static float resource_value(Resource resource,
+			    const resource_values_t * resval)
 {
 	if (resource < NO_RESOURCE)
 		return resval->value[resource];
@@ -309,7 +364,7 @@ static float resource_value(Resource resource, resource_values_t * resval)
 /*
  * How valuable is this hex to me?
  */
-static float score_hex(Hex * hex, resource_values_t * resval)
+static float score_hex(Hex * hex, const resource_values_t * resval)
 {
 	float score;
 
@@ -350,7 +405,8 @@ static float default_score_hex(Hex * hex)
  * Give a numerical score to how valuable putting a settlement/city on this spot is
  *
  */
-static float score_node(Node * node, int city, resource_values_t * resval)
+static float score_node(Node * node, int city,
+			const resource_values_t * resval)
 {
 	int i;
 	float score = 0;
@@ -403,7 +459,7 @@ static int road_connects(Node * n)
  *                     Normal play:  settlement must be next to a road we own.
  */
 static Node *best_settlement_spot(gboolean during_setup,
-				  resource_values_t * resval)
+				  const resource_values_t * resval)
 {
 	int i, j, k;
 	Node *best = NULL;
@@ -442,7 +498,7 @@ static Node *best_settlement_spot(gboolean during_setup,
  * What is the best settlement to upgrade to a city?
  *
  */
-static Node *best_city_spot(resource_values_t * resval)
+static Node *best_city_spot(const resource_values_t * resval)
 {
 	int i, j, k;
 	Node *best = NULL;
@@ -489,7 +545,7 @@ static Node *other_node(Edge * e, Node * n)
  *
  */
 static Edge *traverse_out(Node * n, node_seen_set_t * set, float *score,
-			  resource_values_t * resval)
+			  const resource_values_t * resval)
 {
 	float bscore = 0.0;
 	Edge *best = NULL;
@@ -547,7 +603,7 @@ static Edge *traverse_out(Node * n, node_seen_set_t * set, float *score,
  *
  */
 static Edge *best_road_to_road_spot(Node * n, float *score,
-				    resource_values_t * resval)
+				    const resource_values_t * resval)
 {
 	int bscore = -1.0;
 	Edge *best = NULL;
@@ -590,7 +646,7 @@ static Edge *best_road_to_road_spot(Node * n, float *score,
  * Best road to road on whole map
  *
  */
-static Edge *best_road_to_road(resource_values_t * resval)
+static Edge *best_road_to_road(const resource_values_t * resval)
 {
 	int i, j, k;
 	Edge *best = NULL;
@@ -623,7 +679,7 @@ static Edge *best_road_to_road(resource_values_t * resval)
  * Best road spot
  *
  */
-static Edge *best_road_spot(resource_values_t * resval)
+static Edge *best_road_spot(const resource_values_t * resval)
 {
 	int i, j, k;
 	Edge *best = NULL;
@@ -795,69 +851,33 @@ static int which_resource(gint assets[NO_RESOURCE])
 /* Don't want what isn't available anymore... */
 
 static int resource_desire(gint assets[NO_RESOURCE],
-			   const resource_values_t * resval, int trade,
-			   int tradenum)
+			   const resource_values_t * resval)
 {
 	int i;
 	int res = NO_RESOURCE;
 	float value = 0.0;
 	gint need[NO_RESOURCE];
 
-	/* make it as if we don't have what we're trading away */
-	if (trade != NO_RESOURCE) {
-		assets[trade] -= tradenum;
-	}
-
 	/* do i need just 1 more for something? */
-	if (!has_resources(assets, BUILD_CITY, need)) {
-		if (which_one(need) != NO_RESOURCE)
-			goto oneneed;
-	}
-	if (!has_resources(assets, BUILD_SETTLEMENT, need)) {
-		if (which_one(need) != NO_RESOURCE)
-			goto oneneed;
-	}
-	if (!has_resources(assets, BUILD_ROAD, need)) {
-		if (which_one(need) != NO_RESOURCE)
-			goto oneneed;
-	}
-	if (!has_resources(assets, DEVEL_CARD, need)) {
-		if (which_one(need) != NO_RESOURCE)
-			goto oneneed;
-	}
-
-	if (trade != NO_RESOURCE) {
-		assets[trade] += tradenum;
+	for (i = 0; i < numElem(build_preferences); i++) {
+		if (should_buy(assets, build_preferences[i], resval, need))
+			continue;
+		res = which_one(need);
+		if (res == NO_RESOURCE)
+			continue;
+		return res;
 	}
 
 	/* desire the one we don't produce the most */
 	for (i = 0; i < NO_RESOURCE; i++) {
-
 		if ((resval->value[i] > value) && (assets[i] < 2)) {
 			res = i;
 			value = resval->value[i];
 		}
 	}
 
-	/* don't do stupid trades :) */
-	if (res == trade)
-		return NO_RESOURCE;
-
-	return res;
-
-      oneneed:
-	if (trade != NO_RESOURCE) {
-		assets[trade] += tradenum;
-	}
-	res = which_one(need);
-
-	/* don't do stupid trades :) */
-	if (res == trade)
-		return NO_RESOURCE;
-
 	return res;
 }
-
 
 
 static void findit_iterator(Node * n, void *rock)
@@ -942,6 +962,54 @@ static void greedy_setup_road(void)
 	cb_build_road(e);
 }
 
+/*
+ * Determine if there are any trades that I can do which will give me
+ * enough to buy something.
+ */
+static gboolean find_optimal_trade(gint assets[NO_RESOURCE],
+				   const resource_values_t * resval,
+				   gint ports[NO_RESOURCE],
+				   gint * amount,
+				   Resource * trade_away,
+				   Resource * want_resource)
+{
+	int i;
+	Resource res = NO_RESOURCE;
+	Resource temp;
+	gint need[NO_RESOURCE];
+	BuildType bt = BUILD_NONE;
+
+	for (i = 0; i < numElem(build_preferences); i++) {
+		bt = build_preferences[i];
+
+		/* If we should buy something, why haven't we bought it? */
+		if (should_buy(assets, bt, resval, need))
+			continue;
+
+		/* See what we need, and if we can get it. */
+		res = which_one(need);
+		if (res == NO_RESOURCE || get_bank()[res] == 0)
+			continue;
+
+		/* See what we have left after we buy this (one value
+		 * will be negative), and whether we have enough of something
+		 * to trade for what's missing.
+		 */
+		leftover_resources(assets, bt, need);
+		for (temp = 0; temp < numElem(build_preferences); temp++) {
+			if (temp == res)
+				continue;
+			if (need[temp] > ports[temp]) {
+				*amount = ports[temp];
+				*trade_away = temp;
+				*want_resource = res;
+				return TRUE;
+			}
+		}
+	}
+	return FALSE;
+}
+
 /** I am allowed to do a maritime trade, but will I do it?
  * @param assets The resources I already have
  * @param resval The value of the resources
@@ -957,49 +1025,60 @@ static gboolean will_do_maritime_trade(gint assets[NO_RESOURCE],
 				       Resource * want_resource)
 {
 	MaritimeInfo info;
+	Resource res, want, discard;
+	gint ports[NO_RESOURCE];
 
 	map_maritime_info(map, &info, my_player_num());
 
-	/* trade if possible. Try to trade every resource.
-	 * First try trading 2:1, then 3:1, then 4:1
-	 */
-	for (*amount = 2; *amount <= 4; ++*amount) {
-		Resource try;
-		for (try = 0; try < NO_RESOURCE; ++try) {
-			Resource res;
-			/* first check if the trade is possible */
-			switch (*amount) {
-			case 2:
-				/* do we have a 2 to 1 harbour for this resource? */
-				if (!info.specific_resource[try])
-					continue;
-				break;
-			case 3:
-				/* do we have a 3 to 1 harbour? */
-				if (!info.any_resource)
-					continue;
-				break;
-			case 4:
-				/* always possible */
-				break;
-			}
-
-			if (assets[try] >= *amount) {	/* I have enough to trade away */
-				res =
-				    resource_desire(assets, resval, try,
-						    *amount);
-				if (res != NO_RESOURCE)
-					if (get_bank()[res] == 0)
-						res = NO_RESOURCE;
-
-				if (res != NO_RESOURCE && (try != res)) {
-					*trade_away = try;
-					*want_resource = res;
-					return TRUE;
-				}
-			}
-		}
+	for (res = 0; res < NO_RESOURCE; res++) {
+		if (info.specific_resource[res])
+			ports[res] = 2;
+		else if (info.any_resource)
+			ports[res] = 3;
+		else
+			ports[res] = 4;
 	}
+
+	/* See if we can trade at all. */
+	for (res = 0; res < NO_RESOURCE; res++) {
+		if (assets[res] >= ports[res])
+			break;
+	}
+	if (res == NO_RESOURCE)
+		return FALSE;
+
+	/* See if we can do a single trade that allows us to buy something. */
+	if (find_optimal_trade(assets, resval, ports, amount, trade_away,
+			       want_resource))
+		return TRUE;
+
+	/*
+	 * We can trade, but we won't be able to buy anything.
+	 *
+	 * Try a simple heuristic - if there's a resource we can trade away
+	 * and still have at least 1 left, and we need something, do the
+	 * trade.  Try to use the best port for this.
+	 */
+	want = resource_desire(assets, resval);
+	if (want == NO_RESOURCE)
+		return FALSE;
+
+	discard = NO_RESOURCE;
+	for (res = 0; res < NO_RESOURCE; res++) {
+		if (res == want)
+			continue;
+		if (assets[res] > ports[res] &&
+		    (discard == NO_RESOURCE || ports[discard] > ports[res]))
+			discard = res;
+	}
+
+	if (discard != NO_RESOURCE) {
+		*trade_away = discard;
+		*want_resource = want;
+		*amount = ports[discard];
+		return TRUE;
+	}
+
 	return FALSE;
 }
 
@@ -1070,14 +1149,9 @@ static void greedy_turn(void)
 	reevaluate_resources(&resval);
 
 	/* if can then buy city */
-	if (has_resources(assets, BUILD_CITY, need)) {
+	if (should_buy(assets, BUILD_CITY, &resval, need)) {
 
 		Node *n = best_city_spot(&resval);
-
-		/* don't if no cities left */
-		if (stock_num_cities() <= 0)
-			n = NULL;
-
 		if (n != NULL) {
 			cb_build_city(n);
 			return;
@@ -1085,14 +1159,9 @@ static void greedy_turn(void)
 	}
 
 	/* if can then buy settlement */
-	if (has_resources(assets, BUILD_SETTLEMENT, need)) {
+	if (should_buy(assets, BUILD_SETTLEMENT, &resval, need)) {
 
 		Node *n = best_settlement_spot(FALSE, &resval);
-
-		/* don't if no settlements left */
-		if (stock_num_settlements() <= 0)
-			n = NULL;
-
 		if (n != NULL) {
 			cb_build_settlement(n);
 			return;
@@ -1100,24 +1169,13 @@ static void greedy_turn(void)
 
 	}
 
-	if (has_resources(assets, BUILD_ROAD, need)) {
+	if (should_buy(assets, BUILD_ROAD, &resval, need)) {
 
-		Edge *e;
-
-		e = best_road_spot(&resval);
+		Edge *e = best_road_spot(&resval);
 
 		if (e == NULL) {
 			e = best_road_to_road(&resval);
 		}
-
-		/* don't sprawl :) */
-		if (places_can_build_settlement() >= 2) {
-			e = NULL;
-		}
-
-		/* don't if no roads left */
-		if (stock_num_roads() <= 0)
-			e = NULL;
 
 		if (e != NULL) {
 			cb_build_road(e);
@@ -1126,11 +1184,9 @@ static void greedy_turn(void)
 	}
 
 	/* if we can buy a development card and there are some left */
-	if (has_resources(assets, DEVEL_CARD, need)) {
-		if (can_buy_develop()) {
-			cb_buy_develop();
-			return;
-		}
+	if (should_buy(assets, DEVEL_CARD, &resval, need)) {
+		cb_buy_develop();
+		return;
 	}
 
 	/* if we have a lot of cards see if we can trade anything */
@@ -1416,7 +1472,7 @@ static void greedy_year_of_plenty(gint bank[NO_RESOURCE])
 	/* what two resources do we desire most */
 	reevaluate_resources(&resval);
 
-	r1 = resource_desire(assets, &resval, NO_RESOURCE, 0);
+	r1 = resource_desire(assets, &resval);
 
 	/* If we don't desire anything anymore, ask for a road.
 	 * This happens if we have at least 2 of each resource
@@ -1428,7 +1484,7 @@ static void greedy_year_of_plenty(gint bank[NO_RESOURCE])
 
 	reevaluate_resources(&resval);
 
-	r2 = resource_desire(assets, &resval, NO_RESOURCE, 0);
+	r2 = resource_desire(assets, &resval);
 
 	if (r2 == NO_RESOURCE)
 		r2 = LUMBER_RESOURCE;
@@ -1473,7 +1529,7 @@ static void greedy_monopoly(void)
 
 	/* this could only infinite loop if no other players had any cards */
 	while (TRUE) {
-		r = resource_desire(assets, &resval, NO_RESOURCE, 0);
+		r = resource_desire(assets, &resval);
 		if (r == NO_RESOURCE)
 			break;
 		if (other_players_have(r) > 0) {
@@ -1528,6 +1584,7 @@ static int least_valuable(gint assets[NO_RESOURCE],
 static int resource_desire_least(gint my_assets[NO_RESOURCE],
 				 resource_values_t * resval)
 {
+	int i;
 	int res;
 	gint assets[NO_RESOURCE];
 	gint need[NO_RESOURCE];
@@ -1539,18 +1596,11 @@ static int resource_desire_least(gint my_assets[NO_RESOURCE],
 	}
 
 	/* eliminate things we need to build stuff */
-	if (has_resources(assets, BUILD_CITY, need)) {
-		cost_buy(cost_upgrade_settlement(), assets);
-	}
-
-	if (has_resources(assets, BUILD_SETTLEMENT, need)) {
-		cost_buy(cost_settlement(), assets);
-	}
-	if (has_resources(assets, BUILD_ROAD, need)) {
-		cost_buy(cost_road(), assets);
-	}
-	if (has_resources(assets, DEVEL_CARD, need)) {
-		cost_buy(cost_development(), assets);
+	for (i = 0; i < numElem(build_preferences); i++) {
+		BuildType bt = build_preferences[i];
+		if (should_buy(assets, bt, resval, need)) {
+			cost_buy(cost_of(bt), assets);
+		}
 	}
 
 	/* of what's left what do do we care for least */
@@ -1641,22 +1691,22 @@ static int trade_desired(gint assets[NO_RESOURCE], gint give, gint take,
 
 	for (n = 1; n <= 3; ++n) {
 		/* do i need something more for something? */
-		if (!has_resources(assets, BUILD_CITY, need)) {
+		if (!should_buy(assets, BUILD_CITY, &resval, need)) {
 			if ((res = which_resource(need)) == take
 			    && need[res] == n)
 				break;
 		}
-		if (!has_resources(assets, BUILD_SETTLEMENT, need)) {
+		if (!should_buy(assets, BUILD_SETTLEMENT, &resval, need)) {
 			if ((res = which_resource(need)) == take
 			    && need[res] == n)
 				break;
 		}
-		if (!has_resources(assets, BUILD_ROAD, need)) {
+		if (!should_buy(assets, BUILD_ROAD, &resval, need)) {
 			if ((res = which_resource(need)) == take
 			    && need[res] == n)
 				break;
 		}
-		if (!has_resources(assets, DEVEL_CARD, need)) {
+		if (!should_buy(assets, DEVEL_CARD, &resval, need)) {
 			if ((res = which_resource(need)) == take
 			    && need[res] == n)
 				break;
@@ -1797,7 +1847,7 @@ static void greedy_gold_choose(gint gold_num, gint * bank)
 	for (i = 0; i < gold_num; i++) {
 		reevaluate_resources(&resval);
 
-		r1 = resource_desire(assets, &resval, NO_RESOURCE, 0);
+		r1 = resource_desire(assets, &resval);
 		/* If we don't want anything, start emptying the bank */
 		if (r1 == NO_RESOURCE) {
 			r1 = 0;
