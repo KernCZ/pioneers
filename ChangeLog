@@ -1,6 +1,8 @@
 2005-05-15  0.9.12  Roland Clobus <rclobus@bigfoot.com>
 	* common/gtk/common_gtk.c: Removed GTK compatibility code. It is not
 	needed since 2.4 is required.
+	* common/gtk/guimap.c: Moved comments back that were moved by a make
+	indent, such that the translators see them again.
 	
 2005-05-01  0.9.11  Roland Clobus <rclobus@bigfoot.com>
 	* server/gtk/gnocatan-server-gtk.c (main): Enabled translations in the

@@ -637,28 +637,28 @@ static gboolean display_hex(const Map * map, const Hex * hex,
 					str = _("3:1");
 			} else {
 				switch (hex->resource) {
-					/* Port indicator for brick */
 				case BRICK_RESOURCE:
+					/* Port indicator for brick */
 					str = _("B");
 					break;
-					/* Port indicator for grain */
 				case GRAIN_RESOURCE:
+					/* Port indicator for grain */
 					str = _("G");
 					break;
-					/* Port indicator for ore */
 				case ORE_RESOURCE:
+					/* Port indicator for ore */
 					str = _("O");
 					break;
-					/* Port indicator for wool */
 				case WOOL_RESOURCE:
+					/* Port indicator for wool */
 					str = _("W");
 					break;
-					/* Port indicator for lumber */
 				case LUMBER_RESOURCE:
+					/* Port indicator for lumber */
 					str = _("L");
 					break;
-					/* General port indicator */
 				default:
+					/* General port indicator */
 					str = _("3:1");
 					break;
 				}
