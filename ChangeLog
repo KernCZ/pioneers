@@ -1,3 +1,6 @@
+2005-05-17  0.9.14  Roland Clobus <rclobus@bigfoot.com>
+	* client/ai/greedy.c (resource_desire): Fixed a typo from 0.9.13
+
 2005-05-16  0.9.13  Roland Clobus <rclobus@bigfoot.com>
 	* client/ai/greedy.c (resource_desire): Don't consider resources that
 	have no value (fixes monopoly deadlock)

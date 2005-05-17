@@ -863,7 +863,7 @@ static int resource_desire(gint assets[NO_RESOURCE],
 		if (should_buy(assets, build_preferences[i], resval, need))
 			continue;
 		res = which_one(need);
-		if (res == NO_RESOURCE || resval->values[res] == 0)
+		if (res == NO_RESOURCE || resval->value[res] == 0)
 			continue;
 		return res;
 	}
