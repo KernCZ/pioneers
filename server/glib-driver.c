@@ -26,7 +26,7 @@
 #include "glib-driver.h"
 
 /* callbacks for the server */
-void srv_glib_player_added(UNUSED(void *data))
+void srv_glib_player_added(G_GNUC_UNUSED void *data)
 {
 #ifdef PRINT_INFO
 	Player *player = (Player *) data;
@@ -35,7 +35,7 @@ void srv_glib_player_added(UNUSED(void *data))
 #endif
 }
 
-void srv_glib_player_renamed(UNUSED(void *data))
+void srv_glib_player_renamed(G_GNUC_UNUSED void *data)
 {
 #ifdef PRINT_INFO
 	Player *player = (Player *) data;
@@ -44,7 +44,7 @@ void srv_glib_player_renamed(UNUSED(void *data))
 #endif
 }
 
-void srv_player_removed(UNUSED(void *data))
+void srv_player_removed(G_GNUC_UNUSED void *data)
 {
 #ifdef PRINT_INFO
 	Player *player = (Player *) data;
@@ -54,7 +54,7 @@ void srv_player_removed(UNUSED(void *data))
 }
 
 
-void srv_player_change(UNUSED(void *data))
+void srv_player_change(G_GNUC_UNUSED void *data)
 {
 #ifdef PRINT_INFO
 	GList *current;

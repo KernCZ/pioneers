@@ -58,7 +58,7 @@ void player_reset()
 			players[i].points =
 			    g_list_remove(players[i].points, points);
 		}
-		for (idx = 0; idx < numElem(players[i].statistics); ++idx)
+		for (idx = 0; idx < G_N_ELEMENTS(players[i].statistics); ++idx)
 			players[i].statistics[idx] = 0;
 	}
 }
@@ -117,7 +117,7 @@ gint player_get_score(gint player_num)
 	Player *player = player_get(player_num);
 	gint i, score;
 
-	for (i = 0, score = 0; i < numElem(player->statistics); i++) {
+	for (i = 0, score = 0; i < G_N_ELEMENTS(player->statistics); i++) {
 		score += stat_get_vp_value(i) * player->statistics[i];
 	}
 

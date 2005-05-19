@@ -32,7 +32,7 @@ DevelDeck *deck_new(GameParams * params)
 	gint idx;
 
 	deck = g_malloc0(sizeof(*deck));
-	for (num = idx = 0; idx < numElem(params->num_develop_type); idx++)
+	for (num = idx = 0; idx < G_N_ELEMENTS(params->num_develop_type); idx++)
 		num += params->num_develop_type[idx];
 	deck->max_cards = num;
 	deck->cards = g_malloc0(deck->max_cards * sizeof(*deck->cards));

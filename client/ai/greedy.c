@@ -859,7 +859,7 @@ static int resource_desire(gint assets[NO_RESOURCE],
 	gint need[NO_RESOURCE];
 
 	/* do i need just 1 more for something? */
-	for (i = 0; i < numElem(build_preferences); i++) {
+	for (i = 0; i < G_N_ELEMENTS(build_preferences); i++) {
 		if (should_buy(assets, build_preferences[i], resval, need))
 			continue;
 		res = which_one(need);
@@ -951,7 +951,7 @@ static void greedy_setup_road(void)
 
 	/* if didn't find one just pick one randomly */
 	if (e == NULL) {
-		for (i = 0; i < numElem(node->edges); i++) {
+		for (i = 0; i < G_N_ELEMENTS(node->edges); i++) {
 			if (is_edge_on_land(node->edges[i])) {
 				e = node->edges[i];
 				break;
@@ -979,7 +979,7 @@ static gboolean find_optimal_trade(gint assets[NO_RESOURCE],
 	gint need[NO_RESOURCE];
 	BuildType bt = BUILD_NONE;
 
-	for (i = 0; i < numElem(build_preferences); i++) {
+	for (i = 0; i < G_N_ELEMENTS(build_preferences); i++) {
 		bt = build_preferences[i];
 
 		/* If we should buy something, why haven't we bought it? */
@@ -996,7 +996,7 @@ static gboolean find_optimal_trade(gint assets[NO_RESOURCE],
 		 * to trade for what's missing.
 		 */
 		leftover_resources(assets, bt, need);
-		for (temp = 0; temp < numElem(build_preferences); temp++) {
+		for (temp = 0; temp < G_N_ELEMENTS(build_preferences); temp++) {
 			if (temp == res)
 				continue;
 			if (need[temp] > ports[temp]) {
@@ -1248,9 +1248,9 @@ static void greedy_turn(void)
 
 #define randchat(array,nochat_percent)				\
 	do {							\
-		int p = (numElem(array)*1000/nochat_percent);	\
+		int p = (G_N_ELEMENTS(array)*1000/nochat_percent);	\
 		int n = (rand() % p) / 10;			\
-		if (n < numElem(array) )			\
+		if (n < G_N_ELEMENTS(array) )			\
 			ai_chat (array[n]);			\
 	} while(0)
 
@@ -1596,7 +1596,7 @@ static int resource_desire_least(gint my_assets[NO_RESOURCE],
 	}
 
 	/* eliminate things we need to build stuff */
-	for (i = 0; i < numElem(build_preferences); i++) {
+	for (i = 0; i < G_N_ELEMENTS(build_preferences); i++) {
 		BuildType bt = build_preferences[i];
 		if (should_buy(assets, bt, resval, need)) {
 			cost_buy(cost_of(bt), assets);
@@ -1733,7 +1733,7 @@ static int trade_desired(gint assets[NO_RESOURCE], gint give, gint take,
 	return 0;
 }
 
-static void greedy_consider_quote(UNUSED(gint partner),
+static void greedy_consider_quote(G_GNUC_UNUSED gint partner,
 				  gint we_receive[NO_RESOURCE],
 				  gint we_supply[NO_RESOURCE])
 {
@@ -1876,7 +1876,7 @@ static void greedy_error(const gchar * message)
 	cb_disconnect();
 }
 
-static void greedy_game_over(gint player_num, UNUSED(gint points))
+static void greedy_game_over(gint player_num, G_GNUC_UNUSED gint points)
 {
 	if (player_num == my_player_num())
 		ai_chat(N_("Yippie!"));
@@ -1892,11 +1892,11 @@ static void greedy_player_turn(gint player)
 		randchat(chat_turn_start, 70);
 }
 
-static void greedy_robber_moved(UNUSED(Hex * old), Hex * new)
+static void greedy_robber_moved(G_GNUC_UNUSED Hex * old, Hex * new)
 {
 	int idx;
 	gboolean iam_affected = FALSE;
-	for (idx = 0; idx < numElem(new->nodes); idx++) {
+	for (idx = 0; idx < G_N_ELEMENTS(new->nodes); idx++) {
 		if (new->nodes[idx]->owner == my_player_num())
 			iam_affected = TRUE;
 	}
@@ -1904,8 +1904,8 @@ static void greedy_robber_moved(UNUSED(Hex * old), Hex * new)
 		randchat(chat_moved_robber_to_me, 20);
 }
 
-static void greedy_player_robbed(UNUSED(gint robber_num), gint victim_num,
-				 UNUSED(Resource resource))
+static void greedy_player_robbed(G_GNUC_UNUSED gint robber_num, gint victim_num,
+				 G_GNUC_UNUSED Resource resource)
 {
 	if (victim_num == my_player_num())
 		randchat(chat_stole_from_me, 15);
@@ -1926,7 +1926,7 @@ static void greedy_get_rolled_resources(gint player_num,
 		randchat(chat_other_receive_many, 30);
 }
 
-static void greedy_played_develop(gint player_num, UNUSED(gint card_idx),
+static void greedy_played_develop(gint player_num, G_GNUC_UNUSED gint card_idx,
 				  DevelType type)
 {
 	if (player_num != my_player_num() && type == DEVEL_MONOPOLY)
@@ -1951,7 +1951,7 @@ static void greedy_new_statistics(gint player_num, StatisticType type,
 	}
 }
 
-void greedy_init(UNUSED(int argc), UNUSED(char **argv))
+void greedy_init(G_GNUC_UNUSED int argc, G_GNUC_UNUSED char **argv)
 {
 	map = get_map();
 

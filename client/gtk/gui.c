@@ -301,7 +301,7 @@ void gui_highlight_chits(gint roll)
 }
 
 static gint button_press_map_cb(GtkWidget * area, GdkEventButton * event,
-				UNUSED(gpointer user_data))
+				G_GNUC_UNUSED gpointer user_data)
 {
 	if (area->window == NULL || gmap->map == NULL)
 		return FALSE;
@@ -578,12 +578,12 @@ static GtkWidget *build_main_interface(void)
 	return hpaned;
 }
 
-static void quit_cb(UNUSED(GtkWidget * widget), UNUSED(void *data))
+static void quit_cb(G_GNUC_UNUSED GtkWidget * widget, G_GNUC_UNUSED void *data)
 {
 	gtk_main_quit();
 }
 
-static void theme_change_cb(GtkWidget * widget, UNUSED(void *data))
+static void theme_change_cb(GtkWidget * widget, G_GNUC_UNUSED void *data)
 {
 	gint index = gtk_combo_box_get_active(GTK_COMBO_BOX(widget));
 	MapTheme *theme = g_list_nth_data(theme_get_list(), index);
@@ -603,7 +603,7 @@ static void theme_change_cb(GtkWidget * widget, UNUSED(void *data))
 }
 
 static void show_legend_cb(GtkToggleButton * widget,
-			   UNUSED(gpointer user_data))
+			   G_GNUC_UNUSED gpointer user_data)
 {
 	legend_page_enabled = gtk_toggle_button_get_active(widget);
 	gui_show_legend_page(legend_page_enabled);
@@ -611,7 +611,7 @@ static void show_legend_cb(GtkToggleButton * widget,
 }
 
 static void message_color_cb(GtkToggleButton * widget,
-			     UNUSED(gpointer user_data))
+			     G_GNUC_UNUSED gpointer user_data)
 {
 	color_messages_enabled = gtk_toggle_button_get_active(widget);
 	config_set_int("settings/color_messages", color_messages_enabled);
@@ -619,22 +619,22 @@ static void message_color_cb(GtkToggleButton * widget,
 }
 
 static void chat_color_cb(GtkToggleButton * widget,
-			  UNUSED(gpointer user_data))
+			  G_GNUC_UNUSED gpointer user_data)
 {
 	color_chat_enabled = gtk_toggle_button_get_active(widget);
 	config_set_int("settings/color_chat", color_chat_enabled);
 }
 
 static void summary_color_cb(GtkToggleButton * widget,
-			     UNUSED(gpointer user_data))
+			     G_GNUC_UNUSED gpointer user_data)
 {
 	gboolean color_summary = gtk_toggle_button_get_active(widget);
 	config_set_int("settings/color_summary", color_summary);
 	set_color_summary(color_summary);
 }
 
-static void preferences_cb(UNUSED(GtkWidget * widget),
-			   UNUSED(void *user_data))
+static void preferences_cb(G_GNUC_UNUSED GtkWidget * widget,
+			   G_GNUC_UNUSED void *user_data)
 {
 	GtkWidget *dlg_vbox;
 	GtkWidget *theme_label;
@@ -772,13 +772,13 @@ static void preferences_cb(UNUSED(GtkWidget * widget),
 	row++;
 }
 
-static void route_widget_event(UNUSED(GtkWidget * w), gpointer data)
+static void route_widget_event(G_GNUC_UNUSED GtkWidget * w, gpointer data)
 {
 	route_gui_event((GuiEvent) data);
 }
 
-static void help_about_cb(UNUSED(GtkWidget * widget),
-			  UNUSED(void *user_data))
+static void help_about_cb(G_GNUC_UNUSED GtkWidget * widget,
+			  G_GNUC_UNUSED void *user_data)
 {
 	const gchar *authors[] = {
 		AUTHORLIST
@@ -786,20 +786,20 @@ static void help_about_cb(UNUSED(GtkWidget * widget),
 	aboutbox_display(_("The Gnocatan Game"), authors);
 }
 
-static void help_legend_cb(UNUSED(GtkWidget * widget),
-			   UNUSED(void *user_data))
+static void help_legend_cb(G_GNUC_UNUSED GtkWidget * widget,
+			   G_GNUC_UNUSED void *user_data)
 {
 	legend_create_dlg();
 }
 
-static void help_histogram_cb(UNUSED(GtkWidget * widget),
-			      UNUSED(void *user_data))
+static void help_histogram_cb(G_GNUC_UNUSED GtkWidget * widget,
+			      G_GNUC_UNUSED void *user_data)
 {
 	histogram_create_dlg();
 }
 
-static void help_settings_cb(UNUSED(GtkWidget * widget),
-			     UNUSED(void *user_data))
+static void help_settings_cb(G_GNUC_UNUSED GtkWidget * widget,
+			     G_GNUC_UNUSED void *user_data)
 {
 	settings_create_dlg();
 }
@@ -900,7 +900,7 @@ static void register_gnocatan_pixmaps(void)
 
 	GtkIconFactory *factory = gtk_icon_factory_new();
 
-	for (idx = 0; idx < numElem(gnocatan_pixmaps); idx++) {
+	for (idx = 0; idx < G_N_ELEMENTS(gnocatan_pixmaps); idx++) {
 		gchar *filename;
 		GtkIconSet *icon;
 

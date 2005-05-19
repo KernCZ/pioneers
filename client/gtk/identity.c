@@ -141,7 +141,7 @@ static void show_die(GdkGC * gc, GtkWidget * area, gint x_offset, gint num)
 	static GdkPoint die_points[4] = {
 		{0, 0}, {30, 0}, {30, 30}, {0, 30}
 	};
-	static Polygon die_shape = { die_points, numElem(die_points) };
+	static Polygon die_shape = { die_points, G_N_ELEMENTS(die_points) };
 	static GdkPoint dot_pos[7] = {
 		{7, 7}, {22, 7},
 		{7, 15}, {15, 15}, {22, 15},
@@ -181,15 +181,15 @@ static void show_die(GdkGC * gc, GtkWidget * area, gint x_offset, gint num)
 }
 
 static void identity_resize_cb(GtkWidget * area,
-			       UNUSED(GtkAllocation * allocation),
-			       UNUSED(gpointer user_data))
+			       G_GNUC_UNUSED GtkAllocation * allocation,
+			       G_GNUC_UNUSED gpointer user_data)
 {
 	calculate_optimum_size(area, 50);
 }
 
 static gint expose_identity_area_cb(GtkWidget * area,
-				    UNUSED(GdkEventExpose * event),
-				    UNUSED(gpointer user_data))
+				    G_GNUC_UNUSED GdkEventExpose * event,
+				    G_GNUC_UNUSED gpointer user_data)
 {
 	GdkPoint points[MAX_POINTS];
 	Polygon poly;

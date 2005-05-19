@@ -157,7 +157,7 @@ static void allocate_resources(Player * player, BuildRec * rec)
 	node = map_node(map, rec->x, rec->y, rec->pos);
 
 	resource_start(game);
-	for (idx = 0; idx < numElem(node->hexes); idx++) {
+	for (idx = 0; idx < G_N_ELEMENTS(node->hexes); idx++) {
 		Hex *hex = node->hexes[idx];
 		if (hex && hex->roll > 0) {
 			if (hex->terrain == GOLD_TERRAIN)
@@ -367,7 +367,7 @@ gboolean send_gameinfo(Map * map, Hex * hex, Player * player)
 {
 	StateMachine *sm = player->sm;
 	gint i;
-	for (i = 0; i < numElem(hex->nodes); i++) {
+	for (i = 0; i < G_N_ELEMENTS(hex->nodes); i++) {
 		if (!hex->nodes[i] || hex->nodes[i]->x != hex->x
 		    || hex->nodes[i]->y != hex->y)
 			continue;
@@ -387,7 +387,7 @@ gboolean send_gameinfo(Map * map, Hex * hex, Player * player)
 		}
 	}
 
-	for (i = 0; i < numElem(hex->edges); i++) {
+	for (i = 0; i < G_N_ELEMENTS(hex->edges); i++) {
 		if (!hex->edges[i] || hex->edges[i]->x != hex->x
 		    || hex->edges[i]->y != hex->y)
 			continue;

@@ -44,19 +44,19 @@ static gboolean gold_busy = FALSE, discard_busy = FALSE, robber_busy =
     FALSE;
 static gboolean have_turn = FALSE;
 
-static void frontend_state_idle(UNUSED(GuiEvent event))
+static void frontend_state_idle(G_GNUC_UNUSED GuiEvent event)
 {
 	/* don't react on any event when idle. */
 	/* (except of course chat and name change events, but they are
 	 * handled in route_event) */
 }
 
-void build_road_cb(MapElement edge, UNUSED(MapElement extra))
+void build_road_cb(MapElement edge, G_GNUC_UNUSED MapElement extra)
 {
 	cb_build_road(edge.edge);
 }
 
-void build_ship_cb(MapElement edge, UNUSED(MapElement extra))
+void build_ship_cb(MapElement edge, G_GNUC_UNUSED MapElement extra)
 {
 	cb_build_ship(edge.edge);
 }
@@ -75,18 +75,18 @@ static void do_move_ship_cb(MapElement edge, MapElement ship_from)
  *     from its current location.
  */
 static gboolean can_ship_be_moved_to(MapElement ship_to,
-				     UNUSED(gint owner),
+				     G_GNUC_UNUSED gint owner,
 				     MapElement ship_from)
 {
 	return can_move_ship(ship_from.edge, ship_to.edge);
 }
 
-void build_bridge_cb(MapElement edge, UNUSED(MapElement extra))
+void build_bridge_cb(MapElement edge, G_GNUC_UNUSED MapElement extra)
 {
 	cb_build_bridge(edge.edge);
 }
 
-void move_ship_cb(MapElement edge, UNUSED(MapElement extra))
+void move_ship_cb(MapElement edge, G_GNUC_UNUSED MapElement extra)
 {
 	MapElement ship_from;
 	ship_from.edge = edge.edge;
@@ -94,12 +94,12 @@ void move_ship_cb(MapElement edge, UNUSED(MapElement extra))
 		       &ship_from);
 }
 
-void build_settlement_cb(MapElement node, UNUSED(MapElement extra))
+void build_settlement_cb(MapElement node, G_GNUC_UNUSED MapElement extra)
 {
 	cb_build_settlement(node.node);
 }
 
-void build_city_cb(MapElement node, UNUSED(MapElement extra))
+void build_city_cb(MapElement node, G_GNUC_UNUSED MapElement extra)
 {
 	cb_build_city(node.node);
 }
@@ -409,7 +409,7 @@ static void frontend_state_roadbuilding(GuiEvent event)
 	}
 }
 
-void frontend_roadbuilding(UNUSED(gint num_roads))
+void frontend_roadbuilding(G_GNUC_UNUSED gint num_roads)
 {
 	if (get_gui_state() == frontend_state_roadbuilding)
 		return;
@@ -609,7 +609,7 @@ static void rob_edge(MapElement edge, MapElement hex)
 }
 
 /* Return TRUE if the node can be robbed. */
-static gboolean can_building_be_robbed(Node * node, UNUSED(int owner),
+static gboolean can_building_be_robbed(Node * node, G_GNUC_UNUSED int owner,
 				       Hex * robber_hex)
 {
 	gint idx;
@@ -623,14 +623,14 @@ static gboolean can_building_be_robbed(Node * node, UNUSED(int owner),
 		return FALSE;
 
 	/* Can only steal from buildings adjacent to hex with robber */
-	for (idx = 0; idx < numElem(node->hexes); idx++)
+	for (idx = 0; idx < G_N_ELEMENTS(node->hexes); idx++)
 		if (node->hexes[idx] == robber_hex)
 			return TRUE;
 	return FALSE;
 }
 
 /** Returns TRUE if the edge can be robbed. */
-static gboolean can_edge_be_robbed(Edge * edge, UNUSED(int owner),
+static gboolean can_edge_be_robbed(Edge * edge, G_GNUC_UNUSED int owner,
 				   Hex * pirate_hex)
 {
 	gint idx;
@@ -644,7 +644,7 @@ static gboolean can_edge_be_robbed(Edge * edge, UNUSED(int owner),
 		return FALSE;
 
 	/* Can only steal from edges adjacent to hex with pirate */
-	for (idx = 0; idx < numElem(edge->hexes); idx++)
+	for (idx = 0; idx < G_N_ELEMENTS(edge->hexes); idx++)
 		if (edge->hexes[idx] == pirate_hex)
 			return TRUE;
 	return FALSE;
@@ -653,7 +653,7 @@ static gboolean can_edge_be_robbed(Edge * edge, UNUSED(int owner),
 /* User just placed the robber
  */
 static void place_robber_or_pirate_cb(MapElement hex,
-				      UNUSED(MapElement extra))
+				      G_GNUC_UNUSED MapElement extra)
 {
 	gint victim_list[6];
 	if (hex.hex->terrain == SEA_TERRAIN) {
@@ -790,8 +790,8 @@ static void frontend_mode_setup(GuiEvent event)
 	}
 }
 
-void frontend_setup(UNUSED(unsigned num_settlements),
-		    UNUSED(unsigned num_roads))
+void frontend_setup(G_GNUC_UNUSED unsigned num_settlements,
+		    G_GNUC_UNUSED unsigned num_roads)
 {
 	if (get_gui_state() == frontend_mode_setup) {
 		frontend_gui_update();

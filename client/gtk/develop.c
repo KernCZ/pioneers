@@ -36,8 +36,8 @@ gint develop_current_idx()
 	return selected_card_idx;
 }
 
-static gint develop_click_cb(UNUSED(GtkWidget * widget),
-			     UNUSED(GdkEventButton * event),
+static gint develop_click_cb(G_GNUC_UNUSED GtkWidget * widget,
+			     G_GNUC_UNUSED GdkEventButton * event,
 			     gpointer play_develop_btn)
 {
 	if (event->type == GDK_2BUTTON_PRESS) {
@@ -48,7 +48,7 @@ static gint develop_click_cb(UNUSED(GtkWidget * widget),
 }
 
 static void develop_select_cb(GtkTreeSelection * selection,
-			      UNUSED(gpointer user_data))
+			      G_GNUC_UNUSED gpointer user_data)
 {
 	GtkTreeIter iter;
 	GtkTreeModel *model;
@@ -165,7 +165,7 @@ void frontend_bought_develop(DevelType type)
 }
 
 void frontend_played_develop(gint player_num, gint card_idx,
-			     UNUSED(DevelType type))
+			     G_GNUC_UNUSED DevelType type)
 {
 	GtkTreeIter iter;
 

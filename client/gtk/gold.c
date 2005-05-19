@@ -49,8 +49,8 @@ static struct {
 	GtkWidget *resource_widget;
 } gold;
 
-static void amount_changed_cb(UNUSED(ResourceTable * rt),
-			      UNUSED(gpointer user_data))
+static void amount_changed_cb(G_GNUC_UNUSED ResourceTable * rt,
+			      G_GNUC_UNUSED gpointer user_data)
 {
 	frontend_gui_update();
 }
@@ -116,7 +116,7 @@ void gold_choose_player_must(gint num, gint * bank)
 
 /** Locate a line suitable for a player */
 static gboolean gold_locate_player(GtkTreeModel * model,
-				   UNUSED(GtkTreePath * path),
+				   G_GNUC_UNUSED GtkTreePath * path,
 				   GtkTreeIter * iter, gpointer user_data)
 {
 	int wanted = GPOINTER_TO_INT(user_data);
@@ -170,7 +170,7 @@ void gold_choose_player_prepare(gint player_num, gint num)
 	g_object_unref(pixbuf);
 }
 
-void gold_choose_player_did(gint player_num, UNUSED(gint * resources))
+void gold_choose_player_did(gint player_num, G_GNUC_UNUSED gint * resources)
 {
 	/* check if the player was in the list.  If not, it is not an error.
 	 * That happens if the player auto-discards. */

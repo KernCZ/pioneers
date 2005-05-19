@@ -25,7 +25,7 @@
 /* Player should be idle - I will tell them when to do something
  */
 gboolean mode_wait_for_gold_choosing_players(Player * player,
-					     UNUSED(gint event))
+					     G_GNUC_UNUSED gint event)
 {
 	StateMachine *sm = player->sm;
 	sm_state_name(sm, "mode_wait_for_gold_choosing_players");

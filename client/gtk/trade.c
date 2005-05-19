@@ -130,7 +130,7 @@ static void update_rows(void)
 	gchar str[16];
 	const QuoteInfo *quote = trade_current_quote();
 
-	for (idx = 0; idx < numElem(we_supply_rows); idx++) {
+	for (idx = 0; idx < G_N_ELEMENTS(we_supply_rows); idx++) {
 		Resource resource = we_receive_rows[idx].resource;
 		if (!trade_valid_selection())
 			amount = 0;
@@ -171,7 +171,7 @@ gint *trade_we_supply()
 	static gint we_supply[NO_RESOURCE];
 	gint idx;
 
-	for (idx = 0; idx < numElem(we_supply); idx++)
+	for (idx = 0; idx < G_N_ELEMENTS(we_supply); idx++)
 		we_supply[idx] = we_supply_rows[idx].enabled;
 	return we_supply;
 }
@@ -182,7 +182,7 @@ gint *trade_we_receive()
 	static gint we_receive[NO_RESOURCE];
 	gint idx;
 
-	for (idx = 0; idx < numElem(we_receive); idx++)
+	for (idx = 0; idx < G_N_ELEMENTS(we_receive); idx++)
 		we_receive[idx] = we_receive_rows[idx].enabled;
 	return we_receive;
 }
@@ -314,7 +314,7 @@ static void trade_format_maritime(QuoteInfo * quote, gchar * desc)
  *  is set in quote_found_iter. The flag quote_found_flag is set to TRUE
  */
 static gboolean trade_locate_quote(GtkTreeModel * model,
-				   UNUSED(GtkTreePath * path),
+				   G_GNUC_UNUSED GtkTreePath * path,
 				   GtkTreeIter * iter, gpointer user_data)
 {
 	QuoteInfo *wanted = user_data;
@@ -334,7 +334,7 @@ static gboolean trade_locate_quote(GtkTreeModel * model,
  *  When quote_found_flag == FALSE, use _append.
  */
 static gboolean trade_locate_player(GtkTreeModel * model,
-				    UNUSED(GtkTreePath * path),
+				    G_GNUC_UNUSED GtkTreePath * path,
 				    GtkTreeIter * iter, gpointer user_data)
 {
 	int wanted = GPOINTER_TO_INT(user_data);
@@ -353,7 +353,7 @@ static gboolean trade_locate_player(GtkTreeModel * model,
  *  is set in quote_found_iter. The flag quote_found_flag is set to TRUE
  */
 static gboolean trade_locate_reject(GtkTreeModel * model,
-				    UNUSED(GtkTreePath * path),
+				    G_GNUC_UNUSED GtkTreePath * path,
 				    GtkTreeIter * iter, gpointer user_data)
 {
 	Player *wanted = user_data;
@@ -614,9 +614,9 @@ static void set_row_sensitive(TradeRow * row)
 /** Check if the quote still is valid. Update the icon.
  */
 static gboolean check_valid_trade(GtkTreeModel * model,
-				  UNUSED(GtkTreePath * path),
+				  G_GNUC_UNUSED GtkTreePath * path,
 				  GtkTreeIter * iter,
-				  UNUSED(gpointer user_data))
+				  G_GNUC_UNUSED gpointer user_data)
 {
 	QuoteInfo *quote;
 	gtk_tree_model_get(model, iter, TRADE_COLUMN_QUOTE, &quote, -1);
@@ -635,7 +635,7 @@ static void trade_update(void)
 {
 	gint idx;
 
-	for (idx = 0; idx < numElem(we_supply_rows); idx++) {
+	for (idx = 0; idx < G_N_ELEMENTS(we_supply_rows); idx++) {
 		if (resource_asset(idx) == 0) {
 			gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
 						     (we_supply_rows[idx].
@@ -652,7 +652,7 @@ static void trade_update(void)
 }
 
 /** Actions before a domestic trade is performed */
-void trade_perform_domestic(UNUSED(gint player_num), gint partner_num,
+void trade_perform_domestic(G_GNUC_UNUSED gint player_num, gint partner_num,
 			    gint quote_num, gint * they_supply,
 			    gint * they_receive)
 {
@@ -661,8 +661,8 @@ void trade_perform_domestic(UNUSED(gint player_num), gint partner_num,
 
 /** Actions after a domestic trade is performed */
 void frontend_trade_domestic(gint partner_num, gint quote_num,
-			     UNUSED(gint * we_supply),
-			     UNUSED(gint * we_receive))
+			     G_GNUC_UNUSED gint * we_supply,
+			     G_GNUC_UNUSED gint * we_receive)
 {
 	QuoteInfo *quote;
 
@@ -681,9 +681,9 @@ void trade_perform_maritime(gint ratio, Resource supply, Resource receive)
 }
 
 /** Actions after a maritime trade is performed */
-void frontend_trade_maritime(UNUSED(gint ratio),
-			     UNUSED(Resource we_supply),
-			     UNUSED(Resource we_receive))
+void frontend_trade_maritime(G_GNUC_UNUSED gint ratio,
+			     G_GNUC_UNUSED Resource we_supply,
+			     G_GNUC_UNUSED Resource we_receive)
 {
 	set_selected_quote(NULL);
 	trade_update();
@@ -766,7 +766,7 @@ void trade_begin()
 
 	quotelist_new(&quote_list);
 
-	for (idx = 0; idx < numElem(we_supply_rows); idx++) {
+	for (idx = 0; idx < G_N_ELEMENTS(we_supply_rows); idx++) {
 		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
 					     (we_supply_rows[idx].chk),
 					     FALSE);
@@ -794,9 +794,9 @@ void trade_begin()
 	gui_show_trade_page(TRUE);
 }
 
-static gint quote_click_cb(UNUSED(GtkWidget * widget),
-			   UNUSED(GdkEventButton * event),
-			   UNUSED(gpointer user_data))
+static gint quote_click_cb(G_GNUC_UNUSED GtkWidget * widget,
+			   G_GNUC_UNUSED GdkEventButton * event,
+			   G_GNUC_UNUSED gpointer user_data)
 {
 	if (event->type == GDK_2BUTTON_PRESS) {
 		if (trade_valid_selection())
@@ -806,7 +806,7 @@ static gint quote_click_cb(UNUSED(GtkWidget * widget),
 }
 
 static void quote_select_cb(GtkTreeSelection * selection,
-			    UNUSED(gpointer user_data))
+			    G_GNUC_UNUSED gpointer user_data)
 {
 	GtkTreeIter iter;
 	GtkTreeModel *model;

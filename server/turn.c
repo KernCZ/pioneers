@@ -220,7 +220,7 @@ static void build_move(Player * player, gint sx, gint sy, gint spos,
 	if (map->pirate_hex != NULL) {
 		gint idx;
 		/* check that the pirate is not on the from hexes */
-		for (idx = 0; idx < numElem(from->hexes); ++idx) {
+		for (idx = 0; idx < G_N_ELEMENTS(from->hexes); ++idx) {
 			if (map->pirate_hex == from->hexes[idx]) {
 				sm_send(sm, "ERR has-pirate\n");
 				return;
@@ -278,7 +278,7 @@ typedef struct {
 	int roll;
 } GameRoll;
 
-static gboolean distribute_resources(UNUSED(Map * map), Hex * hex,
+static gboolean distribute_resources(G_GNUC_UNUSED Map * map, Hex * hex,
 				     GameRoll * data)
 {
 	int idx;
@@ -287,7 +287,7 @@ static gboolean distribute_resources(UNUSED(Map * map), Hex * hex,
 		/* return false so the traverse function continues */
 		return FALSE;
 
-	for (idx = 0; idx < numElem(hex->nodes); idx++) {
+	for (idx = 0; idx < G_N_ELEMENTS(hex->nodes); idx++) {
 		Node *node = hex->nodes[idx];
 		Player *player;
 		int num;
@@ -313,7 +313,7 @@ static gboolean distribute_resources(UNUSED(Map * map), Hex * hex,
 	return FALSE;
 }
 
-static gboolean exit_func(UNUSED(gpointer data))
+static gboolean exit_func(G_GNUC_UNUSED gpointer data)
 {
 	exit(0);
 }
@@ -484,7 +484,7 @@ gboolean mode_turn(Player * player, gint event)
 
 /* Player should be idle - I will tell them when to do something
  */
-gboolean mode_idle(Player * player, UNUSED(gint event))
+gboolean mode_idle(Player * player, G_GNUC_UNUSED gint event)
 {
 	StateMachine *sm = player->sm;
 	sm_state_name(sm, "mode_idle");

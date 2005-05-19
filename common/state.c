@@ -464,7 +464,7 @@ static void push_new_state(StateMachine * sm)
 {
 	++sm->stack_ptr;
 	/* check for stack overflows */
-	if (sm->stack_ptr >= numElem(sm->stack)) {
+	if (sm->stack_ptr >= G_N_ELEMENTS(sm->stack)) {
 		log_message(MSG_ERROR,
 			    _
 			    ("State stack overflow. Stack dump sent to standard error.\n"));

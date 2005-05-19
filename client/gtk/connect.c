@@ -144,7 +144,7 @@ static void close_waiting_box(void);
 static void connect_set_field(gchar ** field, const gchar * value);
 static void connect_close_all(gboolean user_pressed_ok);
 static void set_meta_serverinfo(void);
-static void connect_private_dialog(UNUSED(GtkWidget * widget),
+static void connect_private_dialog(G_GNUC_UNUSED GtkWidget * widget,
 				   GtkWindow * parent);
 
 /* Public functions */
@@ -231,7 +231,7 @@ static void close_waiting_box(void)
 
 /* -------------------- get game types -------------------- */
 
-static void meta_gametype_notify(NetEvent event, UNUSED(void *user_data),
+static void meta_gametype_notify(NetEvent event, G_GNUC_UNUSED void *user_data,
 				 char *line)
 {
 	switch (event) {
@@ -281,7 +281,7 @@ static void get_meta_server_games_types(gchar * server, gchar * port)
 
 /* -------------------- create game server -------------------- */
 
-static void meta_create_notify(NetEvent event, UNUSED(void *user_data),
+static void meta_create_notify(NetEvent event, G_GNUC_UNUSED void *user_data,
 			       char *line)
 {
 	switch (event) {
@@ -375,7 +375,7 @@ static void server_end(void)
 	}
 }
 
-static void meta_notify(NetEvent event, UNUSED(void *user_data),
+static void meta_notify(NetEvent event, G_GNUC_UNUSED void *user_data,
 			char *line)
 {
 	switch (event) {
@@ -566,7 +566,7 @@ static void query_meta_server(const gchar * server, const gchar * port)
 
 /* -------------------- create server dialog -------------------- */
 
-static void player_change_cb(GameSettings * gs, UNUSED(gpointer user_data))
+static void player_change_cb(GameSettings * gs, G_GNUC_UNUSED gpointer user_data)
 {
 	guint players;
 	guint ai_players;
@@ -653,7 +653,7 @@ static GtkWidget *build_create_interface(void)
 }
 
 static void create_server_dlg_cb(GtkDialog * dlg, gint arg1,
-				 UNUSED(gpointer user_data))
+				 G_GNUC_UNUSED gpointer user_data)
 {
 	GameSettings *gs = GAMESETTINGS(game_settings);
 	SelectGame *sg = SELECTGAME(select_game);
@@ -687,8 +687,8 @@ static void create_server_dlg_cb(GtkDialog * dlg, gint arg1,
 }
 
 /** Launch the server gtk. */
-static void launch_server_gtk(UNUSED(GtkWidget * widget),
-			      UNUSED(GtkWindow * parent))
+static void launch_server_gtk(G_GNUC_UNUSED GtkWidget * widget,
+			      G_GNUC_UNUSED GtkWindow * parent)
 {
 	gchar *child_argv[3];
 	GSpawnFlags flags = G_SPAWN_STDOUT_TO_DEV_NULL |
@@ -711,7 +711,7 @@ static void launch_server_gtk(UNUSED(GtkWidget * widget),
 		g_free(child_argv[i]);
 }
 
-static void create_server_dlg(UNUSED(GtkWidget * widget),
+static void create_server_dlg(G_GNUC_UNUSED GtkWidget * widget,
 			      GtkWindow * parent)
 {
 	GtkWidget *dlg_vbox;
@@ -748,9 +748,9 @@ static void create_server_dlg(UNUSED(GtkWidget * widget),
 
 /* -------------------- select server dialog -------------------- */
 
-static gint meta_click_cb(UNUSED(GtkWidget * widget),
-			  UNUSED(GdkEventButton * event),
-			  UNUSED(gpointer user_data))
+static gint meta_click_cb(G_GNUC_UNUSED GtkWidget * widget,
+			  G_GNUC_UNUSED GdkEventButton * event,
+			  G_GNUC_UNUSED gpointer user_data)
 {
 	if (event->type == GDK_2BUTTON_PRESS) {
 		gtk_dialog_response(GTK_DIALOG(meta_dlg), GTK_RESPONSE_OK);
@@ -758,15 +758,15 @@ static gint meta_click_cb(UNUSED(GtkWidget * widget),
 	return FALSE;
 }
 
-static void meta_select_cb(UNUSED(GtkTreeSelection * selection),
-			   UNUSED(gpointer user_data))
+static void meta_select_cb(G_GNUC_UNUSED GtkTreeSelection * selection,
+			   G_GNUC_UNUSED gpointer user_data)
 {
 	gtk_dialog_set_response_sensitive(GTK_DIALOG(meta_dlg),
 					  GTK_RESPONSE_OK, TRUE);
 }
 
 static void meta_dlg_cb(GtkDialog * dlg, gint arg1,
-			UNUSED(gpointer userdata))
+			G_GNUC_UNUSED gpointer userdata)
 {
 	GtkTreePath *path;
 	GtkTreeViewColumn *column;
@@ -825,7 +825,7 @@ static void set_meta_serverinfo(void)
 		    g_strdup(GNOCATAN_DEFAULT_META_PORT);
 }
 
-static void create_meta_dlg(UNUSED(GtkWidget * widget), GtkWidget * parent)
+static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget, GtkWidget * parent)
 {
 	GtkWidget *dlg_vbox;
 	GtkWidget *vbox;
@@ -1046,8 +1046,8 @@ static void create_meta_dlg(UNUSED(GtkWidget * widget), GtkWidget * parent)
 	gtk_widget_set_size_request(scroll_win, -1, 150);
 }
 
-static void connect_dlg_cb(UNUSED(GtkDialog * dlg), UNUSED(gint arg1),
-			   UNUSED(gpointer userdata))
+static void connect_dlg_cb(G_GNUC_UNUSED GtkDialog * dlg, G_GNUC_UNUSED gint arg1,
+			   G_GNUC_UNUSED gpointer userdata)
 {
 	connect_close_all(FALSE);
 }
@@ -1274,7 +1274,7 @@ static void host_list_select_cb(GtkWidget * widget, gpointer user_data)
 
 
 static void connect_private_dlg_cb(GtkDialog * dlg, gint arg1,
-				   UNUSED(gpointer user_data))
+				   G_GNUC_UNUSED gpointer user_data)
 {
 	switch (arg1) {
 	case GTK_RESPONSE_OK:
@@ -1296,7 +1296,7 @@ static void connect_private_dlg_cb(GtkDialog * dlg, gint arg1,
 	};
 }
 
-static void connect_private_dialog(UNUSED(GtkWidget * widget),
+static void connect_private_dialog(G_GNUC_UNUSED GtkWidget * widget,
 				   GtkWindow * parent)
 {
 	GtkWidget *dlg_vbox;

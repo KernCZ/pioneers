@@ -53,7 +53,7 @@ static void check_finished_discard(Game * game, gboolean was_discard)
 /* Player should be idle - I will tell them when to do something
  */
 gboolean mode_wait_for_other_discarding_players(Player * player,
-						UNUSED(gint event))
+						G_GNUC_UNUSED gint event)
 {
 	StateMachine *sm = player->sm;
 	sm_state_name(sm, "mode_wait_for_other_discarding_players");
@@ -115,7 +115,7 @@ void discard_resources(Game * game)
 
 		num = 0;
 		num_types = 0;
-		for (idx = 0; idx < numElem(scan->assets); idx++) {
+		for (idx = 0; idx < G_N_ELEMENTS(scan->assets); idx++) {
 			num += scan->assets[idx];
 			if (scan->assets[idx] > 0)
 				++num_types;

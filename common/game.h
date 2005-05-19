@@ -25,14 +25,6 @@
 #include "map.h"
 #include "driver.h"
 
-#define numElem(a) (sizeof(a)/sizeof(a[0]))
-
-#ifdef __GNUC__
-#define UNUSED(var) var __attribute__ ((unused))
-#else
-#define UNUSED(var) var
-#endif
-
 typedef enum {
 	DEVEL_ROAD_BUILDING,
 	DEVEL_MONOPOLY,

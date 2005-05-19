@@ -48,7 +48,7 @@ void develop_shuffle(Game * game)
 
 		card_idx = get_rand(game->num_develop - idx);
 		for (shuffle_idx = 0;
-		     shuffle_idx < numElem(shuffle_counts);
+		     shuffle_idx < G_N_ELEMENTS(shuffle_counts);
 		     shuffle_idx++) {
 			card_idx -= shuffle_counts[shuffle_idx];
 			if (card_idx < 0) {
@@ -65,7 +65,7 @@ void develop_shuffle(Game * game)
 	       sizeof(shuffle_counts));
 	for (idx = 0; idx < game->num_develop; idx++)
 		shuffle_counts[game->develop_deck[idx]]--;
-	for (shuffle_idx = 0; shuffle_idx < numElem(shuffle_counts);
+	for (shuffle_idx = 0; shuffle_idx < G_N_ELEMENTS(shuffle_counts);
 	     shuffle_idx++)
 		if (shuffle_counts[shuffle_idx] != 0) {
 			log_message(MSG_ERROR, "Bad shuffle\n");

@@ -63,7 +63,7 @@ static gboolean register_server = TRUE;	/* Register at the meta server */
 static gboolean want_ai_chat = TRUE;
 
 /* Local function prototypes */
-static void add_game_to_list(gpointer name, UNUSED(gpointer user_data));
+static void add_game_to_list(gpointer name, gpointer user_data);
 static void quit_cb(void);
 static void help_about_cb(void);
 
@@ -101,7 +101,7 @@ static const char *ui_description =
 /* *INDENT-ON* */
 
 static void port_entry_changed_cb(GtkWidget * widget,
-				  UNUSED(gpointer user_data))
+				  G_GNUC_UNUSED gpointer user_data)
 {
 	const gchar *text;
 
@@ -112,7 +112,7 @@ static void port_entry_changed_cb(GtkWidget * widget,
 }
 
 static void register_toggle_cb(GtkToggleButton * toggle,
-			       UNUSED(gpointer user_data))
+			       G_GNUC_UNUSED gpointer user_data)
 {
 	GtkWidget *label = GTK_BIN(toggle)->child;
 
@@ -124,7 +124,7 @@ static void register_toggle_cb(GtkToggleButton * toggle,
 }
 
 static void random_toggle_cb(GtkToggleButton * toggle,
-			     UNUSED(gpointer user_data))
+			     G_GNUC_UNUSED gpointer user_data)
 {
 	GtkWidget *label = GTK_BIN(toggle)->child;
 
@@ -134,7 +134,7 @@ static void random_toggle_cb(GtkToggleButton * toggle,
 }
 
 static void chat_toggle_cb(GtkToggleButton * toggle,
-			   UNUSED(gpointer user_data))
+			   G_GNUC_UNUSED gpointer user_data)
 {
 	GtkWidget *label = GTK_BIN(toggle)->child;
 
@@ -145,7 +145,7 @@ static void chat_toggle_cb(GtkToggleButton * toggle,
 
 /* The server does not need to respond to changed game settings directly
  * RC: Leaving this code here, for when the admin-interface will be built
-static void game_settings_change_cb(GameSettings *gs, UNUSED(gpointer user_data)) 
+static void game_settings_change_cb(GameSettings *gs, G_GNUC_UNUSED gpointer user_data) 
 {
 	printf("Settings: %d %d %d %d\n", 
 			game_settings_get_terrain(gs),
@@ -177,7 +177,7 @@ static void update_game_settings(void)
 	cfg_set_sevens_rule(params->sevens_rule);
 }
 
-static void game_activate(GtkWidget * widget, UNUSED(gpointer user_data))
+static void game_activate(GtkWidget * widget, G_GNUC_UNUSED gpointer user_data)
 {
 	const gchar *title;
 
@@ -211,8 +211,8 @@ static void gui_ui_enable(gboolean sensitive)
 	gtk_widget_set_sensitive(addcomputer_btn, addcomputer_btn_enabled);
 }
 
-static void start_clicked_cb(UNUSED(GtkButton * start_btn),
-			     UNUSED(gpointer user_data))
+static void start_clicked_cb(G_GNUC_UNUSED GtkButton * start_btn,
+			     G_GNUC_UNUSED gpointer user_data)
 {
 	if (ui_enabled) {
 		const gchar *title;
@@ -258,8 +258,8 @@ static void start_clicked_cb(UNUSED(GtkButton * start_btn),
 	}
 }
 
-static void addcomputer_clicked_cb(UNUSED(GtkButton * start_btn),
-				   UNUSED(gpointer user_data))
+static void addcomputer_clicked_cb(G_GNUC_UNUSED GtkButton * start_btn,
+				   G_GNUC_UNUSED gpointer user_data)
 {
 	g_assert(server_port != NULL);
 	new_computer_player(NULL, server_port, want_ai_chat);
@@ -313,14 +313,14 @@ static void gui_player_change(void *data)
 	playerlist_dec_use_count(game);
 }
 
-static void add_game_to_list(gpointer name, UNUSED(gpointer user_data))
+static void add_game_to_list(gpointer name, G_GNUC_UNUSED gpointer user_data)
 {
 	GameParams *a = (GameParams *) name;
 	select_game_add(SELECTGAME(select_game), a->title);
 }
 
 static void hostname_changed_cb(GtkEntry * widget,
-				UNUSED(gpointer user_data))
+				G_GNUC_UNUSED gpointer user_data)
 {
 	const gchar *text;
 
@@ -333,7 +333,7 @@ static void hostname_changed_cb(GtkEntry * widget,
 }
 
 static void meta_server_changed_cb(GtkWidget * widget,
-				   UNUSED(gpointer user_data))
+				   G_GNUC_UNUSED gpointer user_data)
 {
 	const gchar *text;
 
@@ -404,7 +404,7 @@ static GtkWidget *build_game_settings(GtkWidget * parent)
 }
 
 static void
-my_cell_player_viewer_to_text(UNUSED(GtkTreeViewColumn * tree_column),
+my_cell_player_viewer_to_text(G_GNUC_UNUSED GtkTreeViewColumn * tree_column,
 			      GtkCellRenderer * cell,
 			      GtkTreeModel * tree_model,
 			      GtkTreeIter * iter, gpointer data)

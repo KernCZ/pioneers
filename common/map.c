@@ -183,7 +183,7 @@ static ChainPart node_chain[] = {
 
 /* Build ring of nodes and edges around the current hex
  */
-static gboolean build_network(Map * map, Hex * hex, UNUSED(void *closure))
+static gboolean build_network(Map * map, Hex * hex, G_GNUC_UNUSED void *closure)
 {
 	Hex *adjacent[6];
 	gint idx;
@@ -253,7 +253,7 @@ static ChainConnect node_connect[] = {
 /* Connect the the ring of nodes and edges to each other
  */
 static gboolean connect_network(Map * map, Hex * hex,
-				UNUSED(void *closure))
+				G_GNUC_UNUSED void *closure)
 {
 	Hex *adjacent[6];
 	gint idx;
@@ -403,7 +403,7 @@ void map_shuffle_terrain(Map * map)
 				num =
 				    g_rand_int_range(g_rand_ctx, 0,
 						     num_port);
-				for (idx = 0; idx < numElem(port_count);
+				for (idx = 0; idx < G_N_ELEMENTS(port_count);
 				     idx++) {
 					num -= port_count[idx];
 					if (num < 0)
@@ -415,7 +415,7 @@ void map_shuffle_terrain(Map * map)
 			} else {
 				num = g_rand_int_range(g_rand_ctx, 0,
 						       num_terrain);
-				for (idx = 0; idx < numElem(terrain_count);
+				for (idx = 0; idx < G_N_ELEMENTS(terrain_count);
 				     idx++) {
 					num -= terrain_count[idx];
 					if (num < 0)
@@ -485,10 +485,10 @@ static Hex *copy_hex(Map * map, Hex * hex)
 	return copy;
 }
 
-static gboolean set_nosetup_nodes(UNUSED(Map * map), Hex * hex, Map * copy)
+static gboolean set_nosetup_nodes(G_GNUC_UNUSED Map * map, Hex * hex, Map * copy)
 {
 	gint idx;
-	for (idx = 0; idx < numElem(hex->nodes); ++idx) {
+	for (idx = 0; idx < G_N_ELEMENTS(hex->nodes); ++idx) {
 		Node *node = hex->nodes[idx];
 		/* only handle nodes which are owned by the hex, to
 		 * prevent doing every node three times */
@@ -792,8 +792,8 @@ void map_set_chits(Map * map, GArray * chits)
 
 /* Disconnect a hex from all nodes and edges that it does not "own"
  */
-static gboolean disconnect_hex(UNUSED(Map * map), Hex * hex,
-			       UNUSED(void *closure))
+static gboolean disconnect_hex(G_GNUC_UNUSED Map * map, Hex * hex,
+			       G_GNUC_UNUSED void *closure)
 {
 	gint idx;
 
@@ -812,8 +812,8 @@ static gboolean disconnect_hex(UNUSED(Map * map), Hex * hex,
 
 /* Free a node and all of the hexes and nodes that it is connected to.
  */
-static gboolean free_hex(UNUSED(Map * map), Hex * hex,
-			 UNUSED(void *closure))
+static gboolean free_hex(G_GNUC_UNUSED Map * map, Hex * hex,
+			 G_GNUC_UNUSED void *closure)
 {
 	gint idx;
 

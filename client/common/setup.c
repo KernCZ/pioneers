@@ -109,28 +109,28 @@ gboolean setup_can_finish()
 
 /* Place some restrictions on road placement during setup phase
  */
-gboolean setup_check_road(const Edge * edge, UNUSED(gint owner))
+gboolean setup_check_road(const Edge * edge, G_GNUC_UNUSED gint owner)
 {
 	return build_can_setup_road(edge, double_setup);
 }
 
 /* Place some restrictions on ship placement during setup phase
  */
-gboolean setup_check_ship(const Edge * edge, UNUSED(gint owner))
+gboolean setup_check_ship(const Edge * edge, G_GNUC_UNUSED gint owner)
 {
 	return build_can_setup_ship(edge, double_setup);
 }
 
 /* Place some restrictions on bridge placement during setup phase
  */
-gboolean setup_check_bridge(const Edge * edge, UNUSED(gint owner))
+gboolean setup_check_bridge(const Edge * edge, G_GNUC_UNUSED gint owner)
 {
 	return build_can_setup_bridge(edge, double_setup);
 }
 
 /* Place some restrictions on settlement placement during setup phase
  */
-gboolean setup_check_settlement(const Node * node, UNUSED(gint owner))
+gboolean setup_check_settlement(const Node * node, G_GNUC_UNUSED gint owner)
 {
 	return build_can_setup_settlement(node, double_setup);
 }

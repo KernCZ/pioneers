@@ -70,7 +70,7 @@ gboolean is_edge_on_land(const Edge * edge)
 {
 	gint idx;
 
-	for (idx = 0; idx < numElem(edge->hexes); idx++) {
+	for (idx = 0; idx < G_N_ELEMENTS(edge->hexes); idx++) {
 		Hex *hex = edge->hexes[idx];
 		if (hex != NULL && hex->terrain != SEA_TERRAIN)
 			return TRUE;
@@ -88,13 +88,13 @@ gboolean is_edge_on_sea(const Edge * edge)
 	/* If the pirate is currently next to the edge, then specific sea
 	 * actions should not be possible (building ships is the only
 	 * specific sea action). */
-	for (idx = 0; idx < numElem(edge->hexes); idx++) {
+	for (idx = 0; idx < G_N_ELEMENTS(edge->hexes); idx++) {
 		Hex *hex = edge->hexes[idx];
 		if (hex && edge->map->pirate_hex == hex)
 			return FALSE;
 	}
 	/* The pirate is not next to the edge, return true if there is sea */
-	for (idx = 0; idx < numElem(edge->hexes); idx++) {
+	for (idx = 0; idx < G_N_ELEMENTS(edge->hexes); idx++) {
 		Hex *hex = edge->hexes[idx];
 		if (hex != NULL && hex->terrain == SEA_TERRAIN)
 			return TRUE;
@@ -110,7 +110,7 @@ gboolean is_node_on_land(const Node * node)
 {
 	gint idx;
 
-	for (idx = 0; idx < numElem(node->hexes); idx++) {
+	for (idx = 0; idx < G_N_ELEMENTS(node->hexes); idx++) {
 		Hex *hex = node->hexes[idx];
 		if (hex != NULL && hex->terrain != SEA_TERRAIN)
 			return TRUE;
@@ -127,7 +127,7 @@ gboolean node_has_edge_owned_by(const Node * node, gint owner,
 {
 	gint idx;
 
-	for (idx = 0; idx < numElem(node->edges); idx++)
+	for (idx = 0; idx < G_N_ELEMENTS(node->edges); idx++)
 		if (node->edges[idx] != NULL
 		    && node->edges[idx]->owner == owner
 		    && node->edges[idx]->type == type)
@@ -166,7 +166,7 @@ gboolean is_node_spacing_ok(const Node * node)
 {
 	gint idx;
 
-	for (idx = 0; idx < numElem(node->edges); idx++) {
+	for (idx = 0; idx < G_N_ELEMENTS(node->edges); idx++) {
 		Edge *edge = node->edges[idx];
 		gint idx2;
 
@@ -175,7 +175,7 @@ gboolean is_node_spacing_ok(const Node * node)
 		if (node->map->have_bridges && !is_edge_on_land(edge))
 			continue;
 		else
-			for (idx2 = 0; idx2 < numElem(edge->nodes); ++idx2) {
+			for (idx2 = 0; idx2 < G_N_ELEMENTS(edge->nodes); ++idx2) {
 				Node *scan = edge->nodes[idx2];
 				if (scan == node)
 					continue;
@@ -193,7 +193,7 @@ gboolean is_node_next_to_robber(const Node * node)
 {
 	gint idx;
 
-	for (idx = 0; idx < numElem(node->hexes); idx++)
+	for (idx = 0; idx < G_N_ELEMENTS(node->hexes); idx++)
 		if (node->hexes[idx]->robber)
 			return TRUE;
 
@@ -214,7 +214,7 @@ gboolean is_road_valid(const Edge * edge, gint owner)
 	/* Road can be build adjacent to building we own, or a road we
 	 * own that is not separated by a building owned by someone else
 	 */
-	for (idx = 0; idx < numElem(edge->nodes); idx++) {
+	for (idx = 0; idx < G_N_ELEMENTS(edge->nodes); idx++) {
 		Node *node = edge->nodes[idx];
 
 		if (node->owner == owner)
@@ -244,7 +244,7 @@ gboolean is_ship_valid(const Edge * edge, gint owner)
 	/* Ship can be build adjacent to building we own, or a ship we
 	 * own that is not separated by a building owned by someone else
 	 */
-	for (idx = 0; idx < numElem(edge->nodes); idx++) {
+	for (idx = 0; idx < G_N_ELEMENTS(edge->nodes); idx++) {
 		Node *node = edge->nodes[idx];
 
 		if (node->owner == owner)
@@ -273,7 +273,7 @@ gboolean is_bridge_valid(const Edge * edge, gint owner)
 	/* Bridge can be build adjacent to building we own, or a road we
 	 * own that is not separated by a building owned by someone else
 	 */
-	for (idx = 0; idx < numElem(edge->nodes); idx++) {
+	for (idx = 0; idx < G_N_ELEMENTS(edge->nodes); idx++) {
 		Node *node = edge->nodes[idx];
 
 		if (node->owner == owner)
@@ -408,7 +408,7 @@ static gboolean can_ship_be_moved_node(const Node * node, gint owner,
 	if (node->type != BUILD_NONE)
 		return FALSE;
 	/* no buildings: check all edges for ships */
-	for (idx = 0; idx < numElem(node->edges); idx++) {
+	for (idx = 0; idx < G_N_ELEMENTS(node->edges); idx++) {
 		Edge *edge = node->edges[idx];
 		/* If this is a ship of the player, it is connected */
 		if (edge && edge->owner == owner && edge != not
@@ -438,7 +438,7 @@ gboolean can_ship_be_moved(const Edge * edge, gint owner)
 	if (!is_edge_on_sea(edge))
 		return FALSE;
 	/* check all nodes, until one is found that is not connected */
-	for (idx = 0; idx < numElem(edge->nodes); idx++)
+	for (idx = 0; idx < G_N_ELEMENTS(edge->nodes); idx++)
 		if (can_ship_be_moved_node(edge->nodes[idx], owner, edge))
 			return TRUE;
 	return FALSE;
@@ -547,7 +547,7 @@ gboolean can_city_be_built(const Node * node, gint owner)
  * 0).  We cannot move the robber to the same hex it is already on.
  * Also check if pirate can be moved.
  */
-gboolean can_robber_or_pirate_be_moved(const Hex * hex, UNUSED(gint owner))
+gboolean can_robber_or_pirate_be_moved(const Hex * hex, G_GNUC_UNUSED gint owner)
 {
 	if (hex->terrain == SEA_TERRAIN)
 		return (hex->map->has_pirate)
@@ -558,12 +558,12 @@ gboolean can_robber_or_pirate_be_moved(const Hex * hex, UNUSED(gint owner))
 
 /* Iterator function for map_can_place_road() query
  */
-static gboolean can_place_road_check(UNUSED(Map * map), Hex * hex,
+static gboolean can_place_road_check(G_GNUC_UNUSED Map * map, Hex * hex,
 				     gint * owner)
 {
 	gint idx;
 
-	for (idx = 0; idx < numElem(hex->edges); idx++)
+	for (idx = 0; idx < G_N_ELEMENTS(hex->edges); idx++)
 		if (can_road_be_built(hex->edges[idx], *owner))
 			return TRUE;
 	return FALSE;
@@ -571,12 +571,12 @@ static gboolean can_place_road_check(UNUSED(Map * map), Hex * hex,
 
 /* Iterator function for map_can_place_ship() query
  */
-static gboolean can_place_ship_check(UNUSED(Map * map), Hex * hex,
+static gboolean can_place_ship_check(G_GNUC_UNUSED Map * map, Hex * hex,
 				     gint * owner)
 {
 	gint idx;
 
-	for (idx = 0; idx < numElem(hex->edges); idx++)
+	for (idx = 0; idx < G_N_ELEMENTS(hex->edges); idx++)
 		if (can_ship_be_built(hex->edges[idx], *owner))
 			return TRUE;
 	return FALSE;
@@ -584,12 +584,12 @@ static gboolean can_place_ship_check(UNUSED(Map * map), Hex * hex,
 
 /* Iterator function for map_can_place_bridge() query
  */
-static gboolean can_place_bridge_check(UNUSED(Map * map), Hex * hex,
+static gboolean can_place_bridge_check(G_GNUC_UNUSED Map * map, Hex * hex,
 				       gint * owner)
 {
 	gint idx;
 
-	for (idx = 0; idx < numElem(hex->edges); idx++)
+	for (idx = 0; idx < G_N_ELEMENTS(hex->edges); idx++)
 		if (can_bridge_be_built(hex->edges[idx], *owner))
 			return TRUE;
 	return FALSE;
@@ -627,12 +627,12 @@ gboolean map_can_place_bridge(Map * map, gint owner)
 
 /* Iterator function for map_can_place_settlement() query
  */
-static gboolean can_place_settlement_check(UNUSED(Map * map), Hex * hex,
+static gboolean can_place_settlement_check(G_GNUC_UNUSED Map * map, Hex * hex,
 					   gint * owner)
 {
 	gint idx;
 
-	for (idx = 0; idx < numElem(hex->nodes); idx++)
+	for (idx = 0; idx < G_N_ELEMENTS(hex->nodes); idx++)
 		if (can_settlement_be_built(hex->nodes[idx], *owner))
 			return TRUE;
 	return FALSE;
@@ -651,12 +651,12 @@ gboolean map_can_place_settlement(Map * map, gint owner)
 
 /* Iterator function for map_can_upgrade_settlement() query
  */
-static gboolean can_upgrade_settlement_check(UNUSED(Map * map), Hex * hex,
+static gboolean can_upgrade_settlement_check(G_GNUC_UNUSED Map * map, Hex * hex,
 					     gint * owner)
 {
 	gint idx;
 
-	for (idx = 0; idx < numElem(hex->nodes); idx++)
+	for (idx = 0; idx < G_N_ELEMENTS(hex->nodes); idx++)
 		if (can_settlement_be_upgraded(hex->nodes[idx], *owner))
 			return TRUE;
 	return FALSE;
@@ -699,7 +699,7 @@ gboolean map_building_spacing_ok(Map * map, gint owner,
 /* Ignoring building spacing, check if the building connects to a road.
  */
 gboolean map_building_connect_ok(Map * map, gint owner,
-				 UNUSED(BuildType type), gint x, gint y,
+				 G_GNUC_UNUSED BuildType type, gint x, gint y,
 				 gint pos)
 {
 	Node *node = map_node(map, x, y, pos);
@@ -810,7 +810,7 @@ static gint find_longest_road_recursive(Edge * edge)
 	gint nodeidx, edgeidx;
 	edge->visited = TRUE;
 	/* check all nodes to see which one make the longer road. */
-	for (nodeidx = 0; nodeidx < numElem(edge->nodes); nodeidx++) {
+	for (nodeidx = 0; nodeidx < G_N_ELEMENTS(edge->nodes); nodeidx++) {
 		Node *node = edge->nodes[nodeidx];
 		/* don't go back to where we came from */
 		if (node->visited)
@@ -822,7 +822,7 @@ static gint find_longest_road_recursive(Edge * edge)
 		/* don't let other go back here */
 		node->visited = TRUE;
 		/* try all edges */
-		for (edgeidx = 0; edgeidx < numElem(node->edges);
+		for (edgeidx = 0; edgeidx < G_N_ELEMENTS(node->edges);
 		     edgeidx++) {
 			Edge *here = node->edges[edgeidx];
 			if (here && !here->visited
@@ -849,11 +849,11 @@ static gint find_longest_road_recursive(Edge * edge)
 	return len + 1;
 }
 
-static gboolean find_longest_road(UNUSED(Map * map), Hex * hex,
+static gboolean find_longest_road(G_GNUC_UNUSED Map * map, Hex * hex,
 				  gint * lengths)
 {
 	gint idx;
-	for (idx = 0; idx < numElem(hex->edges); idx++) {
+	for (idx = 0; idx < G_N_ELEMENTS(hex->edges); idx++) {
 		Edge *edge = hex->edges[idx];
 		gint len;
 		/* skip unowned edges, and edges that will be handled by
@@ -870,16 +870,16 @@ static gboolean find_longest_road(UNUSED(Map * map), Hex * hex,
 
 /* Zero the visited attribute for all edges and nodes.
  */
-static gboolean zero_visited(UNUSED(Map * map), Hex * hex,
-			     UNUSED(void *closure))
+static gboolean zero_visited(G_GNUC_UNUSED Map * map, Hex * hex,
+			     G_GNUC_UNUSED void *closure)
 {
 	gint idx;
 
-	for (idx = 0; idx < numElem(hex->edges); idx++) {
+	for (idx = 0; idx < G_N_ELEMENTS(hex->edges); idx++) {
 		Edge *edge = hex->edges[idx];
 		edge->visited = FALSE;
 	}
-	for (idx = 0; idx < numElem(hex->nodes); idx++) {
+	for (idx = 0; idx < G_N_ELEMENTS(hex->nodes); idx++) {
 		Node *node = hex->nodes[idx];
 		node->visited = FALSE;
 	}
@@ -900,7 +900,7 @@ void map_longest_road(Map * map, gint * lengths, gint num_players)
 
 /* Determine the maritime trading capabilities for the specified player
  */
-static gboolean find_maritime(UNUSED(Map * map), Hex * hex,
+static gboolean find_maritime(G_GNUC_UNUSED Map * map, Hex * hex,
 			      MaritimeInfo * info)
 {
 	if (hex->terrain != SEA_TERRAIN || hex->resource == NO_RESOURCE)

@@ -302,7 +302,7 @@ static gboolean theme_initialize(MapTheme * t, const gchar * subdir)
 	GdkColormap *cmap;
 
 	/* load terrain tiles */
-	for (i = 0; i < numElem(t->terrain_tiles); ++i) {
+	for (i = 0; i < G_N_ELEMENTS(t->terrain_tiles); ++i) {
 		GdkPixbuf *pixbuf, *pixbuf_copy;
 		gchar *file;
 		/* if a theme doesn't define a terrain tile, use the default
@@ -353,7 +353,7 @@ static gboolean theme_initialize(MapTheme * t, const gchar * subdir)
 	}
 
 	/* load port tiles */
-	for (i = 0; i < numElem(t->port_tiles); ++i) {
+	for (i = 0; i < G_N_ELEMENTS(t->port_tiles); ++i) {
 		/* if a theme doesn't define a port tile, it will be drawn with
 		 * its resource letter instead */
 		if (t->port_tile_names[i]) {
@@ -402,7 +402,7 @@ static gboolean theme_initialize(MapTheme * t, const gchar * subdir)
 	/* allocate defined colors */
 	cmap = gdk_colormap_get_system();
 
-	for (i = 0; i < numElem(t->colors); ++i) {
+	for (i = 0; i < G_N_ELEMENTS(t->colors); ++i) {
 		TColor *tc = &(t->colors[i]);
 		if (!tc->set)
 			*tc = default_theme.colors[i];
@@ -455,7 +455,7 @@ void theme_rescale(int new_width)
 	if (new_width == 0)
 		new_width = 1;
 
-	for (i = 0; i < numElem(current_theme->terrain_tiles); ++i) {
+	for (i = 0; i < G_N_ELEMENTS(current_theme->terrain_tiles); ++i) {
 		if (i == BOARD_TILE)
 			continue;	/* Don't scale the board-tile */
 		/* rescale the pixbuf */

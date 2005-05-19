@@ -32,7 +32,7 @@
 static Game *curr_game;
 gint no_player_timeout = 0;
 
-void timed_out(UNUSED(int signum))
+void timed_out(G_GNUC_UNUSED int signum)
 {
 	g_print
 	    ("Was hanging around for too long without players... bye.\n");
@@ -84,7 +84,7 @@ Game *game_new(GameParams * params)
 	game->params = params_copy(params);
 	game->curr_player = -1;
 
-	for (idx = 0; idx < numElem(game->bank_deck); idx++)
+	for (idx = 0; idx < G_N_ELEMENTS(game->bank_deck); idx++)
 		game->bank_deck[idx] = game->params->resource_count;
 	develop_shuffle(game);
 	if (params->random_terrain)

@@ -1,3 +1,7 @@
+2005-05-19  0.9.15  Roland Clobus <rclobus@bigfoot.com>
+	* nearly all: replaced numElems and UNUSED macros by the GLib macros
+	G_N_ELEMENTS and G_GNUC_UNUSED
+	
 2005-05-17  0.9.14  Roland Clobus <rclobus@bigfoot.com>
 	* client/ai/greedy.c (resource_desire): Fixed a typo from 0.9.13
 

@@ -343,7 +343,7 @@ static void post_change(gint * size, GtkWidget ** buttons, gint amt)
 	guimap_display(gmap);
 }
 
-static void change_height(UNUSED(GtkWidget * menu), gpointer user_data)
+static void change_height(G_GNUC_UNUSED GtkWidget * menu, gpointer user_data)
 {
 	if ((gint) user_data < 0) {
 		gint x;
@@ -355,7 +355,7 @@ static void change_height(UNUSED(GtkWidget * menu), gpointer user_data)
 		    GPOINTER_TO_INT(user_data));
 }
 
-static void change_width(UNUSED(GtkWidget * menu), gpointer user_data)
+static void change_width(G_GNUC_UNUSED GtkWidget * menu, gpointer user_data)
 {
 	if ((gint) user_data < 0) {
 		gint x, y;
@@ -402,7 +402,7 @@ static GtkWidget *build_map(void)
 	return table;
 }
 
-static gint select_terrain_cb(UNUSED(GtkWidget * menu), gpointer user_data)
+static gint select_terrain_cb(G_GNUC_UNUSED GtkWidget * menu, gpointer user_data)
 {
 	Terrain terrain = GPOINTER_TO_INT(user_data);
 	Hex *adjacent;
@@ -475,7 +475,7 @@ static GtkWidget *build_terrain_menu(void)
 	return menu;
 }
 
-static gint select_roll_cb(UNUSED(GtkWidget * menu), gpointer user_data)
+static gint select_roll_cb(G_GNUC_UNUSED GtkWidget * menu, gpointer user_data)
 {
 	current_hex->roll = GPOINTER_TO_INT(user_data);
 	guimap_draw_hex(gmap, current_hex);
@@ -483,7 +483,7 @@ static gint select_roll_cb(UNUSED(GtkWidget * menu), gpointer user_data)
 }
 
 static gint
-select_shuffle_cb(UNUSED(GtkWidget * menu), UNUSED(gpointer user_data))
+select_shuffle_cb(G_GNUC_UNUSED GtkWidget * menu, G_GNUC_UNUSED gpointer user_data)
 {
 	current_hex->shuffle =
 	    gtk_check_menu_item_get_active(shuffle_tile);
@@ -538,7 +538,7 @@ static GtkWidget *build_roll_menu(void)
 }
 
 static gint
-select_port_resource_cb(UNUSED(GtkWidget * menu), gpointer user_data)
+select_port_resource_cb(G_GNUC_UNUSED GtkWidget * menu, gpointer user_data)
 {
 	gint i;
 
@@ -562,7 +562,7 @@ select_port_resource_cb(UNUSED(GtkWidget * menu), gpointer user_data)
 }
 
 static gint
-select_port_direction_cb(UNUSED(GtkWidget * menu), gpointer user_data)
+select_port_direction_cb(G_GNUC_UNUSED GtkWidget * menu, gpointer user_data)
 {
 	current_hex->facing = GPOINTER_TO_INT(user_data);
 	guimap_draw_hex(gmap, current_hex);

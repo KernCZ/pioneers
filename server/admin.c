@@ -271,7 +271,7 @@ gboolean start_server(const gchar * hostname, const gchar * port,
 			      random_order);
 }
 
-static void handle_sigpipe(UNUSED(int signum))
+static void handle_sigpipe(G_GNUC_UNUSED int signum)
 {
 	/* reset the signal handler */
 	signal(SIGPIPE, handle_sigpipe);

@@ -59,7 +59,7 @@ void develop_init()
 	if (develop_deck != NULL)
 		deck_free(develop_deck);
 	develop_deck = deck_new(game_params);
-	for (idx = 0; idx < numElem(devel_cards); idx++)
+	for (idx = 0; idx < G_N_ELEMENTS(devel_cards); idx++)
 		devel_cards[idx].is_unique =
 		    game_params->num_develop_type[idx] == 1;
 }

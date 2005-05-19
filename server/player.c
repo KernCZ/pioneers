@@ -199,13 +199,13 @@ Player *player_new(Game * game, int fd, gchar * location)
 
 	/* give player a name, some functions need it */
 	strcpy(name, "connecting");
-	for (i = strlen(name); i < numElem(name) - 1; ++i) {
+	for (i = strlen(name); i < G_N_ELEMENTS(name) - 1; ++i) {
 		if (player_by_name(game, name) == NULL)
 			break;
 		name[i] = '_';
 		name[i + 1] = 0;
 	}
-	if (i == numElem(name) - 1) {
+	if (i == G_N_ELEMENTS(name) - 1) {
 		/* there are too many pending connections */
 		write(fd, "Too many connections\n", 21);
 		close(fd);
@@ -338,13 +338,13 @@ void player_setup(Player * player, int playernum, gchar * name,
 			namep = nm;
 		}
 		/* add underscores until the name is unique */
-		for (i = strlen(nm); i < numElem(nm) - 1; ++i) {
+		for (i = strlen(nm); i < G_N_ELEMENTS(nm) - 1; ++i) {
 			if (player_by_name(game, nm) == NULL)
 				break;
 			nm[i] = '_';
 			nm[i + 1] = 0;
 		}
-		if (i == numElem(nm) - 1) {
+		if (i == G_N_ELEMENTS(nm) - 1) {
 			/* This should never happen */
 			/* use the connection name */
 			strncpy(nm, player->name, sizeof(nm));

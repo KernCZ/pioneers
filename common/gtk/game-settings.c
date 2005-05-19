@@ -249,7 +249,7 @@ static void game_settings_change_players(GtkSpinButton * widget,
 }
 
 /* Callback when the terrain button is pressed */
-static void game_settings_change_terrain(UNUSED(GtkWidget * widget),
+static void game_settings_change_terrain(G_GNUC_UNUSED GtkWidget * widget,
 					 GameSettings * gs)
 {
 	gs->random_terrain = !gs->random_terrain;

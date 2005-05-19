@@ -165,7 +165,7 @@ GdkPixbuf *player_create_icon(GtkWidget * widget, gint player_num,
 
 /** Locate a line suitable for a player */
 static gboolean summary_locate_player(GtkTreeModel * model,
-				      UNUSED(GtkTreePath * path),
+				      G_GNUC_UNUSED GtkTreePath * path,
 				      GtkTreeIter * iter,
 				      gpointer user_data)
 {
@@ -187,7 +187,7 @@ static gboolean summary_locate_player(GtkTreeModel * model,
 
 /** Locate a line suitable for the statistic */
 static gboolean summary_locate_statistic(GtkTreeModel * model,
-					 UNUSED(GtkTreePath * path),
+					 G_GNUC_UNUSED GtkTreePath * path,
 					 GtkTreeIter * iter,
 					 gpointer user_data)
 {
@@ -220,10 +220,9 @@ static gboolean summary_locate_statistic(GtkTreeModel * model,
 /** Function to redisplay the running point total for the indicated player */
 static void refresh_victory_point_total(int player_num)
 {
-	StatisticType type;
 	gchar points[16];
 
-	if (player_num < 0 || player_num >= numElem(players))
+	if (player_num < 0 || player_num >= G_N_ELEMENTS(players))
 		return;
 
 	snprintf(points, sizeof(points), "%d",
@@ -241,9 +240,9 @@ static void refresh_victory_point_total(int player_num)
 
 /** Locate a line suitable for a player */
 static gboolean summary_apply_colors(GtkTreeModel * model,
-				     UNUSED(GtkTreePath * path),
+				     G_GNUC_UNUSED GtkTreePath * path,
 				     GtkTreeIter * iter,
-				     UNUSED(gpointer user_data))
+				     G_GNUC_UNUSED gpointer user_data)
 {
 	gint current_statistic;
 
@@ -272,7 +271,7 @@ void set_color_summary(gboolean flag)
 }
 
 void frontend_new_statistics(gint player_num, StatisticType type,
-			     UNUSED(gint num))
+			     G_GNUC_UNUSED gint num)
 {
 	Player *player = player_get(player_num);
 	gint value;
@@ -546,8 +545,8 @@ GtkWidget *player_build_summary()
 }
 
 static gint expose_turn_area_cb(GtkWidget * area,
-				UNUSED(GdkEventExpose * event),
-				UNUSED(gpointer user_data))
+				G_GNUC_UNUSED GdkEventExpose * event,
+				G_GNUC_UNUSED gpointer user_data)
 {
 	static GdkGC *turn_gc;
 	gint offset;

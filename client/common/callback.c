@@ -430,11 +430,11 @@ gboolean turn_can_trade()
 	    || can_trade_domestic();
 }
 
-static gboolean really_try_move_ship(UNUSED(Map * map), Hex * hex,
+static gboolean really_try_move_ship(G_GNUC_UNUSED Map * map, Hex * hex,
 				     Edge * from)
 {
 	gint idx;
-	for (idx = 0; idx < numElem(hex->edges); ++idx) {
+	for (idx = 0; idx < G_N_ELEMENTS(hex->edges); ++idx) {
 		Edge *edge;
 		edge = hex->edges[idx];
 		if (edge->x != hex->x || edge->y != hex->y)
@@ -469,7 +469,7 @@ gboolean can_move_ship(const Edge * from, const Edge * to)
 static gboolean try_move_ship(Map * map, Hex * hex)
 {
 	gint idx;
-	for (idx = 0; idx < numElem(hex->edges); ++idx) {
+	for (idx = 0; idx < G_N_ELEMENTS(hex->edges); ++idx) {
 		Edge *edge;
 		edge = hex->edges[idx];
 		if (edge->x != hex->x || edge->y != hex->y)
@@ -503,7 +503,7 @@ int robber_count_victims(const Hex * hex, gint * victim_list)
 	for (idx = 0; idx < num_players(); idx++)
 		victim_list[idx] = -1;
 	num_victims = 0;
-	for (node_idx = 0; node_idx < numElem(hex->nodes); node_idx++) {
+	for (node_idx = 0; node_idx < G_N_ELEMENTS(hex->nodes); node_idx++) {
 		Node *node = hex->nodes[node_idx];
 		Player *owner;
 
@@ -539,10 +539,10 @@ int pirate_count_victims(const Hex * hex, gint * victim_list)
 	/* If there is no-one to steal from, or the players have no
 	 * resources, we do not go into steal_resource.
 	 */
-	for (idx = 0; idx < numElem(hex->edges); idx++)
+	for (idx = 0; idx < G_N_ELEMENTS(hex->edges); idx++)
 		victim_list[idx] = -1;
 	num_victims = 0;
-	for (edge_idx = 0; edge_idx < numElem(hex->edges); edge_idx++) {
+	for (edge_idx = 0; edge_idx < G_N_ELEMENTS(hex->edges); edge_idx++) {
 		Edge *edge = hex->edges[edge_idx];
 		Player *owner;
 

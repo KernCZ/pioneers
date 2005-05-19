@@ -183,11 +183,11 @@ struct nosetup_t {
 	gpointer user_data;
 };
 
-static gboolean find_no_setup(UNUSED(Map * map), Hex * hex,
+static gboolean find_no_setup(G_GNUC_UNUSED Map * map, Hex * hex,
 			      struct nosetup_t *data)
 {
 	gint idx;
-	for (idx = 0; idx < numElem(hex->nodes); ++idx) {
+	for (idx = 0; idx < G_N_ELEMENTS(hex->nodes); ++idx) {
 		Node *node = hex->nodes[idx];
 		if (node->no_setup) {
 			gchar buff[512];
@@ -220,7 +220,7 @@ void params_write_lines(GameParams * params, gboolean write_secrets,
 		func(user_data, "variant intimate");
 		break;
 	}
-	for (idx = 0; idx < numElem(game_params); idx++) {
+	for (idx = 0; idx < G_N_ELEMENTS(game_params); idx++) {
 		Param *param = game_params + idx;
 
 		switch (param->type) {
@@ -321,7 +321,7 @@ void params_load_line(GameParams * params, gchar * line)
 		return;
 	}
 
-	for (idx = 0; idx < numElem(game_params); idx++) {
+	for (idx = 0; idx < G_N_ELEMENTS(game_params); idx++) {
 		Param *param = game_params + idx;
 		gchar *str;
 		GArray *array;
@@ -405,7 +405,7 @@ GameParams *params_copy(GameParams * params)
 	copy->map = map_copy(params->map);
 	copy->variant = params->variant;
 
-	for (idx = 0; idx < numElem(game_params); idx++) {
+	for (idx = 0; idx < G_N_ELEMENTS(game_params); idx++) {
 		Param *param = game_params + idx;
 
 		switch (param->type) {

@@ -90,7 +90,7 @@ static void frontend_trade(void)
 	frontend_gui_update();
 }
 
-static void frontend_robber_moved(UNUSED(Hex * old), UNUSED(Hex * new))
+static void frontend_robber_moved(G_GNUC_UNUSED Hex * old, G_GNUC_UNUSED Hex * new)
 {
 	gui_prompt_hide();
 }

@@ -63,8 +63,8 @@ gboolean can_discard()
 					    (discard.resource_widget));
 }
 
-static void amount_changed_cb(UNUSED(ResourceTable * rt),
-			      UNUSED(gpointer user_data))
+static void amount_changed_cb(G_GNUC_UNUSED ResourceTable * rt,
+			      G_GNUC_UNUSED gpointer user_data)
 {
 	frontend_gui_update();
 }
@@ -128,7 +128,7 @@ gint *discard_get_list()
 
 /** Locate a line suitable for a player */
 static gboolean discard_locate_player(GtkTreeModel * model,
-				      UNUSED(GtkTreePath * path),
+				      G_GNUC_UNUSED GtkTreePath * path,
 				      GtkTreeIter * iter,
 				      gpointer user_data)
 {
@@ -149,7 +149,7 @@ static gboolean discard_locate_player(GtkTreeModel * model,
 }
 
 
-void discard_player_did(gint player_num, UNUSED(gint * resources))
+void discard_player_did(gint player_num, G_GNUC_UNUSED gint * resources)
 {
 	/* check if the player was in the list.  If not, it is not an error.
 	 * That happens if the player auto-discards. */

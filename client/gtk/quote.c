@@ -108,7 +108,7 @@ gint *quote_we_supply()
 	static gint we_supply[NO_RESOURCE];
 	gint idx;
 
-	for (idx = 0; idx < numElem(we_supply); idx++)
+	for (idx = 0; idx < G_N_ELEMENTS(we_supply); idx++)
 		we_supply[idx] = we_supply_rows[idx].num;
 	return we_supply;
 }
@@ -118,7 +118,7 @@ gint *quote_we_receive()
 	static gint we_receive[NO_RESOURCE];
 	gint idx;
 
-	for (idx = 0; idx < numElem(we_receive); idx++)
+	for (idx = 0; idx < G_N_ELEMENTS(we_receive); idx++)
 		we_receive[idx] = we_receive_rows[idx].num;
 	return we_receive;
 }
@@ -206,7 +206,7 @@ static void quote_update(void)
 {
 	gint idx;
 
-	for (idx = 0; idx < numElem(we_supply_rows); idx++) {
+	for (idx = 0; idx < G_N_ELEMENTS(we_supply_rows); idx++) {
 		if (resource_asset(idx) < we_supply_rows[idx].num)
 			we_supply_rows[idx].num = resource_asset(idx);
 		if (!we_supply[idx])
@@ -431,7 +431,7 @@ void quote_begin(gint player_num, gint * we_receive, gint * we_supply)
 	gui_show_quote_page(TRUE);
 }
 
-static void less_resource_cb(UNUSED(void *widget), QuoteRow * row)
+static void less_resource_cb(G_GNUC_UNUSED void *widget, QuoteRow * row)
 {
 	row->num--;
 	if (row->num == 0)
@@ -443,7 +443,7 @@ static void less_resource_cb(UNUSED(void *widget), QuoteRow * row)
 	frontend_gui_update();
 }
 
-static void more_resource_cb(UNUSED(void *widget), QuoteRow * row)
+static void more_resource_cb(G_GNUC_UNUSED void *widget, QuoteRow * row)
 {
 	row->num++;
 	if (row->num == game_resources()
@@ -518,8 +518,8 @@ static void add_quote_row(GtkWidget * table, QuoteRow * row,
 }
 
 static gint expose_desc_area_cb(GtkWidget * area,
-				UNUSED(GdkEventExpose * event),
-				UNUSED(gpointer user_data))
+				G_GNUC_UNUSED GdkEventExpose * event,
+				G_GNUC_UNUSED gpointer user_data)
 {
 	static GdkGC *desc_gc;
 
@@ -544,9 +544,9 @@ static gint expose_desc_area_cb(GtkWidget * area,
 }
 
 static void select_quote_cb(GtkWidget * clist, gint row,
-			    UNUSED(gint column),
-			    UNUSED(GdkEventButton * event),
-			    UNUSED(gpointer user_data))
+			    G_GNUC_UNUSED gint column,
+			    G_GNUC_UNUSED GdkEventButton * event,
+			    G_GNUC_UNUSED gpointer user_data)
 {
 	selected_quote = gtk_clist_get_row_data(GTK_CLIST(clist), row);
 	frontend_gui_update();
@@ -675,9 +675,9 @@ GtkWidget *quote_build_page(void)
 	return panel_vbox;
 }
 
-void frontend_quote_trade(UNUSED(gint player_num), gint partner_num,
-			  gint quote_num, UNUSED(gint * they_supply),
-			  UNUSED(gint * they_receive))
+void frontend_quote_trade(G_GNUC_UNUSED gint player_num, gint partner_num,
+			  gint quote_num, G_GNUC_UNUSED gint * they_supply,
+			  G_GNUC_UNUSED gint * they_receive)
 {
 	/* a quote has been accepted, remove it from the list. */
 	QuoteInfo *quote;

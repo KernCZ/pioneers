@@ -42,8 +42,8 @@ void evl_glib_input_remove(guint tag);
 
 
 /* event-loop related functions */
-static gboolean evl_glib_call_func(UNUSED(GIOChannel * source),
-				   UNUSED(GIOCondition condition),
+static gboolean evl_glib_call_func(G_GNUC_UNUSED GIOChannel * source,
+				   G_GNUC_UNUSED GIOCondition condition,
 				   gpointer data)
 {
 	evl_io_func *io_func = (evl_io_func *) data;

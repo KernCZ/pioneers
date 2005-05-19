@@ -29,7 +29,7 @@ static gboolean chat_grab_focus_on_update = FALSE; /**< Flag to indicate
  * whether the chat widget should grab the focus whenever a GUI_UPDATE is sent */
 
 
-static void chat_cb(GtkEntry * entry, UNUSED(gpointer user_data))
+static void chat_cb(GtkEntry * entry, G_GNUC_UNUSED gpointer user_data)
 {
 	const gchar *text = gtk_entry_get_text(entry);
 

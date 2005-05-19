@@ -38,7 +38,7 @@ static const gchar *terrain_names[] = {
 };
 
 static gint expose_legend_cb(GtkWidget * area,
-			     UNUSED(GdkEventExpose * event),
+			     G_GNUC_UNUSED GdkEventExpose * event,
 			     Terrain terrain)
 {
 	MapTheme *theme = theme_get_current();

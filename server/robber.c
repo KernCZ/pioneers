@@ -34,7 +34,7 @@ static void steal_card_from(Player * player, Player * victim)
 	/* Work out how many cards the victim has
 	 */
 	num = 0;
-	for (idx = 0; idx < numElem(victim->assets); idx++)
+	for (idx = 0; idx < G_N_ELEMENTS(victim->assets); idx++)
 		num += victim->assets[idx];
 	if (num == 0) {
 		sm_send(sm, "ERR no-resources\n");
@@ -44,7 +44,7 @@ static void steal_card_from(Player * player, Player * victim)
 	/* Work out which card to steal from the victim
 	 */
 	steal = get_rand(num);
-	for (idx = 0; idx < numElem(victim->assets); idx++) {
+	for (idx = 0; idx < G_N_ELEMENTS(victim->assets); idx++) {
 		steal -= victim->assets[idx];
 		if (steal < 0)
 			break;
@@ -112,7 +112,7 @@ gboolean mode_place_robber(Player * player, gint event)
 		 */
 		num_victims = 0;
 		victim_ok = FALSE;
-		for (idx = 0; !victim_ok && idx < numElem(hex->edges);
+		for (idx = 0; !victim_ok && idx < G_N_ELEMENTS(hex->edges);
 		     ++idx) {
 			Edge *edge = hex->edges[idx];
 			Player *owner;
@@ -169,7 +169,7 @@ gboolean mode_place_robber(Player * player, gint event)
 	 */
 	num_victims = 0;
 	victim_ok = FALSE;
-	for (idx = 0; !victim_ok && idx < numElem(hex->nodes); idx++) {
+	for (idx = 0; !victim_ok && idx < G_N_ELEMENTS(hex->nodes); idx++) {
 		Node *node = hex->nodes[idx];
 		Player *owner;
 		Resource resource;

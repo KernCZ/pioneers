@@ -48,7 +48,7 @@ void colors_init(void)
 	gint idx;
 
 	cmap = gdk_colormap_get_system();
-	for (idx = 0; idx < numElem(token_colors); idx++) {
+	for (idx = 0; idx < G_N_ELEMENTS(token_colors); idx++) {
 		/* allocate colours for the players */
 		gdk_colormap_alloc_color(cmap, &token_colors[idx], FALSE,
 					 TRUE);

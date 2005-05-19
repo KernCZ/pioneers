@@ -28,8 +28,8 @@ static struct {
 	GtkWidget *resource_widget;
 } plenty;
 
-static void amount_changed_cb(UNUSED(ResourceTable * rt),
-			      UNUSED(gpointer user_data))
+static void amount_changed_cb(G_GNUC_UNUSED ResourceTable * rt,
+			      G_GNUC_UNUSED gpointer user_data)
 {
 	frontend_gui_update();
 }

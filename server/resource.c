@@ -70,7 +70,7 @@ void resource_end(Game * game, const gchar * action, gint mult)
 		int idx;
 		gboolean send_message = FALSE;
 
-		for (idx = 0; idx < numElem(player->assets); idx++) {
+		for (idx = 0; idx < G_N_ELEMENTS(player->assets); idx++) {
 			gint num;
 
 			num =

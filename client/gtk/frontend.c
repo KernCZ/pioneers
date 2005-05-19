@@ -27,8 +27,8 @@ static const int MAX_NUMBER_OF_WIDGETS_PER_EVENT = 2;
 GHashTable *frontend_widgets;
 gboolean frontend_waiting_for_network;
 
-static void set_sensitive(UNUSED(void *key), GuiWidgetState * gui,
-			  UNUSED(void *user_data))
+static void set_sensitive(G_GNUC_UNUSED void *key, GuiWidgetState * gui,
+			  G_GNUC_UNUSED void *user_data)
 {
 	if (gui->destroy_only)
 		/* Do not modify sensitivity on destroy only events
@@ -126,17 +126,17 @@ static void gui_free(GuiWidgetState * gui)
 	}
 }
 
-static void route_event(UNUSED(void *widget), GuiWidgetState * gui)
+static void route_event(G_GNUC_UNUSED void *widget, GuiWidgetState * gui)
 {
 	route_gui_event(gui->id);
 }
 
-static void destroy_event_cb(UNUSED(void *widget), GuiWidgetState * gui)
+static void destroy_event_cb(G_GNUC_UNUSED void *widget, GuiWidgetState * gui)
 {
 	gui_free(gui);
 }
 
-static void destroy_route_event_cb(UNUSED(void *widget),
+static void destroy_route_event_cb(G_GNUC_UNUSED void *widget,
 				   GuiWidgetState * gui)
 {
 	route_gui_event(gui->id);
@@ -165,8 +165,8 @@ void frontend_gui_register(GtkWidget * widget, GuiEvent id,
 				 G_CALLBACK(route_event), gui);
 }
 
-gint hotkeys_handler(UNUSED(GtkWidget * w), GdkEvent * e,
-		     UNUSED(gpointer data))
+gint hotkeys_handler(G_GNUC_UNUSED GtkWidget * w, GdkEvent * e,
+		     G_GNUC_UNUSED gpointer data)
 {
 	GuiWidgetState *gui;
 	GuiEvent arg;

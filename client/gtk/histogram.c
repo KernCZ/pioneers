@@ -45,7 +45,7 @@ static int histogram[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
  *
  */
 
-void histogram_dice_rolled(gint roll, UNUSED(gint playernum))
+void histogram_dice_rolled(gint roll, G_GNUC_UNUSED gint playernum)
 {
 	g_assert(roll >= 2 && roll <= 12);
 
@@ -68,7 +68,7 @@ static gint histogram_dice_retrieve(gint roll)
 
 /* Draw the histogram */
 static gboolean expose_histogram_cb(GtkWidget * area,
-				    UNUSED(GdkEventExpose * event),
+				    G_GNUC_UNUSED GdkEventExpose * event,
 				    GdkPixmap * pixmap)
 {
 	gint w;

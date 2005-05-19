@@ -43,7 +43,7 @@ static const gchar *yesno(gboolean val)
 }
 
 static void flip_toggle(GtkToggleButton * toggle,
-			UNUSED(gpointer user_data))
+			G_GNUC_UNUSED gpointer user_data)
 {
 	GtkWidget *label = GTK_BIN(toggle)->child;
 	gboolean value = gtk_toggle_button_get_active(toggle);

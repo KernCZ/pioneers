@@ -158,7 +158,7 @@ static gboolean edge_has_place_for_settlement(const Edge * edge)
 {
 	gint idx;
 
-	for (idx = 0; idx < numElem(edge->nodes); idx++) {
+	for (idx = 0; idx < G_N_ELEMENTS(edge->nodes); idx++) {
 		const Node *node = edge->nodes[idx];
 		if (node->type == BUILD_NONE && is_node_on_land(node)
 		    && is_node_spacing_ok(node))
@@ -190,7 +190,7 @@ static gboolean can_setup_edge_0(GList * list, Map * map,
 	 * placed.
 	 */
 	other_edge = map_edge(map, rec->x, rec->y, rec->pos);
-	for (idx = 0; idx < numElem(edge->nodes); idx++) {
+	for (idx = 0; idx < G_N_ELEMENTS(edge->nodes); idx++) {
 		Node *node = edge->nodes[idx];
 
 		if (node->type == BUILD_NONE && is_node_spacing_ok(node)) {
@@ -353,9 +353,9 @@ gboolean buildrec_can_setup_bridge(GList * list, Map * map,
 
 /* Check if we can place this settlement with 0 existing edges during setup
  */
-static gboolean can_setup_settlement_0(UNUSED(GList * list),
-				       UNUSED(Map * map),
-				       UNUSED(const Node * node))
+static gboolean can_setup_settlement_0(G_GNUC_UNUSED GList * list,
+				       G_GNUC_UNUSED Map * map,
+				       G_GNUC_UNUSED const Node * node)
 {
 	return TRUE;
 }
