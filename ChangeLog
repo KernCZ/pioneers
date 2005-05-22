@@ -1,6 +1,6 @@
 2005-05-22  Roland Clobus <rclobus@bigfoot.com>
 	* apply 'make indent' again
-	
+
 2005-05-19  0.9.15  Roland Clobus <rclobus@bigfoot.com>
 	* nearly all: replaced numElems and UNUSED macros by the GLib macros
 	G_N_ELEMENTS and G_GNUC_UNUSED
