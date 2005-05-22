@@ -141,7 +141,8 @@ static void show_die(GdkGC * gc, GtkWidget * area, gint x_offset, gint num)
 	static GdkPoint die_points[4] = {
 		{0, 0}, {30, 0}, {30, 30}, {0, 30}
 	};
-	static Polygon die_shape = { die_points, G_N_ELEMENTS(die_points) };
+	static Polygon die_shape =
+	    { die_points, G_N_ELEMENTS(die_points) };
 	static GdkPoint dot_pos[7] = {
 		{7, 7}, {22, 7},
 		{7, 15}, {15, 15}, {22, 15},

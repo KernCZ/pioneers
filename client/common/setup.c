@@ -130,7 +130,8 @@ gboolean setup_check_bridge(const Edge * edge, G_GNUC_UNUSED gint owner)
 
 /* Place some restrictions on settlement placement during setup phase
  */
-gboolean setup_check_settlement(const Node * node, G_GNUC_UNUSED gint owner)
+gboolean setup_check_settlement(const Node * node,
+				G_GNUC_UNUSED gint owner)
 {
 	return build_can_setup_settlement(node, double_setup);
 }

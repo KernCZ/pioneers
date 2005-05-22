@@ -50,8 +50,9 @@ static int quote_num;
 static gboolean discard_starting;
 
 /* things we can buy, in the order that we want them. */
-static BuildType build_preferences[] = {BUILD_CITY, BUILD_SETTLEMENT,
-					BUILD_ROAD, DEVEL_CARD};
+static BuildType build_preferences[] = { BUILD_CITY, BUILD_SETTLEMENT,
+	BUILD_ROAD, DEVEL_CARD
+};
 
 /*
  * Forward declarations
@@ -138,8 +139,10 @@ static void for_each_node(iterate_node_func_t * func, void *rock)
  *  @retval need  The additional resources required to buy this
  *  @return TRUE if the assets are enough
  */
-static gboolean can_pay_for(const gint assets[NO_RESOURCE], 
-	const gint cost[NO_RESOURCE], gint need[NO_RESOURCE]) {
+static gboolean can_pay_for(const gint assets[NO_RESOURCE],
+			    const gint cost[NO_RESOURCE],
+			    gint need[NO_RESOURCE])
+{
 	gint i;
 	gboolean have_enough;
 
@@ -156,7 +159,7 @@ static gboolean can_pay_for(const gint assets[NO_RESOURCE],
 }
 
 /* How much does this cost to build? */
-static const gint * cost_of(BuildType bt)
+static const gint *cost_of(BuildType bt)
 {
 	switch (bt) {
 	case BUILD_CITY:
@@ -177,7 +180,7 @@ static const gint * cost_of(BuildType bt)
  * Do I have the resources to buy this, is it available, and do I want it?
  */
 static gboolean should_buy(const gint assets[NO_RESOURCE], BuildType bt,
-			   const resource_values_t *resval,
+			   const resource_values_t * resval,
 			   gint need[NO_RESOURCE])
 {
 	if (!can_pay_for(assets, cost_of(bt), need))
@@ -208,8 +211,8 @@ static gboolean should_buy(const gint assets[NO_RESOURCE], BuildType bt,
  * If I buy this, what will I have left?  Note that some values in need[]
  * can be negative if I can't afford it.
  */
-static void leftover_resources(const gint assets[NO_RESOURCE], BuildType bt,
-			       gint need[NO_RESOURCE])
+static void leftover_resources(const gint assets[NO_RESOURCE],
+			       BuildType bt, gint need[NO_RESOURCE])
 {
 	gint i;
 	const gint *cost = cost_of(bt);
@@ -996,7 +999,8 @@ static gboolean find_optimal_trade(gint assets[NO_RESOURCE],
 		 * to trade for what's missing.
 		 */
 		leftover_resources(assets, bt, need);
-		for (temp = 0; temp < G_N_ELEMENTS(build_preferences); temp++) {
+		for (temp = 0; temp < G_N_ELEMENTS(build_preferences);
+		     temp++) {
 			if (temp == res)
 				continue;
 			if (need[temp] > ports[temp]) {
@@ -1068,7 +1072,8 @@ static gboolean will_do_maritime_trade(gint assets[NO_RESOURCE],
 		if (res == want)
 			continue;
 		if (assets[res] > ports[res] &&
-		    (discard == NO_RESOURCE || ports[discard] > ports[res]))
+		    (discard == NO_RESOURCE
+		     || ports[discard] > ports[res]))
 			discard = res;
 	}
 
@@ -1509,7 +1514,8 @@ static void greedy_year_of_plenty(gint bank[NO_RESOURCE])
  * We played a monopoly card.  Pick a resource
  */
 
-static gint other_players_have(Resource res) {
+static gint other_players_have(Resource res)
+{
 	return game_resources() - get_bank()[res] - resource_asset(res);
 }
 
@@ -1904,7 +1910,8 @@ static void greedy_robber_moved(G_GNUC_UNUSED Hex * old, Hex * new)
 		randchat(chat_moved_robber_to_me, 20);
 }
 
-static void greedy_player_robbed(G_GNUC_UNUSED gint robber_num, gint victim_num,
+static void greedy_player_robbed(G_GNUC_UNUSED gint robber_num,
+				 gint victim_num,
 				 G_GNUC_UNUSED Resource resource)
 {
 	if (victim_num == my_player_num())
@@ -1926,7 +1933,8 @@ static void greedy_get_rolled_resources(gint player_num,
 		randchat(chat_other_receive_many, 30);
 }
 
-static void greedy_played_develop(gint player_num, G_GNUC_UNUSED gint card_idx,
+static void greedy_played_develop(gint player_num,
+				  G_GNUC_UNUSED gint card_idx,
 				  DevelType type)
 {
 	if (player_num != my_player_num() && type == DEVEL_MONOPOLY)

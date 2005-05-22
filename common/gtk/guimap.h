@@ -87,7 +87,8 @@ typedef struct {
 
 GuiMap *guimap_new(void);
 void guimap_reset(GuiMap * gmap);
-GtkWidget *guimap_build_drawingarea(GuiMap * gmap, gint width, gint height);
+GtkWidget *guimap_build_drawingarea(GuiMap * gmap, gint width,
+				    gint height);
 GdkPixmap *guimap_terrain(Terrain terrain);
 
 void guimap_road_polygon(const GuiMap * gmap, const Edge * edge,
@@ -115,7 +116,7 @@ void guimap_draw_edge(GuiMap * gmap, const Edge * edge);
 void guimap_draw_node(GuiMap * gmap, const Node * node);
 void guimap_draw_hex(GuiMap * gmap, const Hex * hex);
 
-Hex * guimap_find_hex(GuiMap * gmap, gint x, gint y);
+Hex *guimap_find_hex(GuiMap * gmap, gint x, gint y);
 
 void guimap_cursor_set(GuiMap * gmap, CursorType cursor_type, gint owner,
 		       CheckFunc check_func, SelectFunc select_func,

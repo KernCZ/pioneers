@@ -578,7 +578,8 @@ static GtkWidget *build_main_interface(void)
 	return hpaned;
 }
 
-static void quit_cb(G_GNUC_UNUSED GtkWidget * widget, G_GNUC_UNUSED void *data)
+static void quit_cb(G_GNUC_UNUSED GtkWidget * widget,
+		    G_GNUC_UNUSED void *data)
 {
 	gtk_main_quit();
 }

@@ -46,7 +46,8 @@ void stock_init()
 	num_cities = game_params->num_build_type[BUILD_CITY];
 
 	num_develop = 0;
-	for (idx = 0; idx < G_N_ELEMENTS(game_params->num_develop_type); idx++)
+	for (idx = 0; idx < G_N_ELEMENTS(game_params->num_develop_type);
+	     idx++)
 		num_develop += game_params->num_develop_type[idx];
 }
 

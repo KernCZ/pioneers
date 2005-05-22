@@ -131,7 +131,8 @@ static void route_event(G_GNUC_UNUSED void *widget, GuiWidgetState * gui)
 	route_gui_event(gui->id);
 }
 
-static void destroy_event_cb(G_GNUC_UNUSED void *widget, GuiWidgetState * gui)
+static void destroy_event_cb(G_GNUC_UNUSED void *widget,
+			     GuiWidgetState * gui)
 {
 	gui_free(gui);
 }

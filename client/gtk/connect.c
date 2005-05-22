@@ -231,8 +231,8 @@ static void close_waiting_box(void)
 
 /* -------------------- get game types -------------------- */
 
-static void meta_gametype_notify(NetEvent event, G_GNUC_UNUSED void *user_data,
-				 char *line)
+static void meta_gametype_notify(NetEvent event,
+				 G_GNUC_UNUSED void *user_data, char *line)
 {
 	switch (event) {
 	case NET_CONNECT:
@@ -281,8 +281,8 @@ static void get_meta_server_games_types(gchar * server, gchar * port)
 
 /* -------------------- create game server -------------------- */
 
-static void meta_create_notify(NetEvent event, G_GNUC_UNUSED void *user_data,
-			       char *line)
+static void meta_create_notify(NetEvent event,
+			       G_GNUC_UNUSED void *user_data, char *line)
 {
 	switch (event) {
 	case NET_CONNECT:
@@ -566,7 +566,8 @@ static void query_meta_server(const gchar * server, const gchar * port)
 
 /* -------------------- create server dialog -------------------- */
 
-static void player_change_cb(GameSettings * gs, G_GNUC_UNUSED gpointer user_data)
+static void player_change_cb(GameSettings * gs,
+			     G_GNUC_UNUSED gpointer user_data)
 {
 	guint players;
 	guint ai_players;
@@ -825,7 +826,8 @@ static void set_meta_serverinfo(void)
 		    g_strdup(GNOCATAN_DEFAULT_META_PORT);
 }
 
-static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget, GtkWidget * parent)
+static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
+			    GtkWidget * parent)
 {
 	GtkWidget *dlg_vbox;
 	GtkWidget *vbox;
@@ -1046,7 +1048,8 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget, GtkWidget * parent
 	gtk_widget_set_size_request(scroll_win, -1, 150);
 }
 
-static void connect_dlg_cb(G_GNUC_UNUSED GtkDialog * dlg, G_GNUC_UNUSED gint arg1,
+static void connect_dlg_cb(G_GNUC_UNUSED GtkDialog * dlg,
+			   G_GNUC_UNUSED gint arg1,
 			   G_GNUC_UNUSED gpointer userdata)
 {
 	connect_close_all(FALSE);

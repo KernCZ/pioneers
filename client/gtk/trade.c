@@ -652,9 +652,9 @@ static void trade_update(void)
 }
 
 /** Actions before a domestic trade is performed */
-void trade_perform_domestic(G_GNUC_UNUSED gint player_num, gint partner_num,
-			    gint quote_num, gint * they_supply,
-			    gint * they_receive)
+void trade_perform_domestic(G_GNUC_UNUSED gint player_num,
+			    gint partner_num, gint quote_num,
+			    gint * they_supply, gint * they_receive)
 {
 	cb_trade(partner_num, quote_num, they_supply, they_receive);
 }

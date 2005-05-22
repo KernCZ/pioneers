@@ -58,7 +58,8 @@ void player_reset()
 			players[i].points =
 			    g_list_remove(players[i].points, points);
 		}
-		for (idx = 0; idx < G_N_ELEMENTS(players[i].statistics); ++idx)
+		for (idx = 0; idx < G_N_ELEMENTS(players[i].statistics);
+		     ++idx)
 			players[i].statistics[idx] = 0;
 	}
 }

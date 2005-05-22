@@ -145,7 +145,7 @@ static gint motion_notify_map_cb(GtkWidget * area, GdkEventMotion * event,
 	return TRUE;
 }
 
-GtkWidget *guimap_build_drawingarea(GuiMap *gmap, gint width, gint height)
+GtkWidget *guimap_build_drawingarea(GuiMap * gmap, gint width, gint height)
 {
 	gmap->area = gtk_drawing_area_new();
 
@@ -699,7 +699,8 @@ static gboolean display_hex(const Map * map, const Hex * hex,
 			g_assert_not_reached();
 			break;
 		}
-		gdk_gc_set_foreground(gmap->gc, colors_get_player(edge->owner));
+		gdk_gc_set_foreground(gmap->gc,
+				      colors_get_player(edge->owner));
 		poly_draw(gmap->pixmap, gmap->gc, TRUE, &poly);
 		gdk_gc_set_foreground(gmap->gc, &black);
 		poly_draw(gmap->pixmap, gmap->gc, FALSE, &poly);
@@ -718,7 +719,8 @@ static gboolean display_hex(const Map * map, const Hex * hex,
 		else
 			guimap_settlement_polygon(gmap, node, &poly);
 
-		gdk_gc_set_foreground(gmap->gc, colors_get_player(node->owner));
+		gdk_gc_set_foreground(gmap->gc,
+				      colors_get_player(node->owner));
 		poly_draw(gmap->pixmap, gmap->gc, TRUE, &poly);
 		gdk_gc_set_foreground(gmap->gc, &black);
 		poly_draw(gmap->pixmap, gmap->gc, FALSE, &poly);
@@ -1132,7 +1134,7 @@ static void find_node(GuiMap * gmap, gint x, gint y, MapElement * element)
 	element->pointer = NULL;
 }
 
-static Hex * find_hex_internal(GuiMap * gmap, gint x, gint y)
+static Hex *find_hex_internal(GuiMap * gmap, gint x, gint y)
 {
 	gint y_hex;
 	gint x_hex;
@@ -1573,7 +1575,7 @@ void guimap_draw_hex(GuiMap * gmap, const Hex * hex)
 	gdk_window_invalidate_rect(gmap->area->window, &rect, FALSE);
 }
 
-Hex * guimap_find_hex(GuiMap * gmap, gint x, gint y)
+Hex *guimap_find_hex(GuiMap * gmap, gint x, gint y)
 {
 	return find_hex_internal(gmap, x, y);
 }
@@ -1635,7 +1637,8 @@ void guimap_cursor_move(GuiMap * gmap, gint x, gint y,
 			find_node(gmap, x, y, element);
 			can_build_settlement = (settlementM
 						&& settlementF(*element,
-							       gmap->player_num,
+							       gmap->
+							       player_num,
 							       dummyElement));
 			can_build_city = (cityM
 					  && cityF(*element,

@@ -318,7 +318,7 @@ static void frontend_state_turn(GuiEvent event)
 			       build_settlement_cb, NULL);
 		return;
 	case GUI_CITY:
-		gui_cursor_set(CITY_CURSOR, 
+		gui_cursor_set(CITY_CURSOR,
 			       (CheckFunc) can_settlement_be_upgraded,
 			       build_city_cb, NULL);
 		return;
@@ -609,7 +609,8 @@ static void rob_edge(MapElement edge, MapElement hex)
 }
 
 /* Return TRUE if the node can be robbed. */
-static gboolean can_building_be_robbed(Node * node, G_GNUC_UNUSED int owner,
+static gboolean can_building_be_robbed(Node * node,
+				       G_GNUC_UNUSED int owner,
 				       Hex * robber_hex)
 {
 	gint idx;

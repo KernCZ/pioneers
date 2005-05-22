@@ -183,7 +183,8 @@ static ChainPart node_chain[] = {
 
 /* Build ring of nodes and edges around the current hex
  */
-static gboolean build_network(Map * map, Hex * hex, G_GNUC_UNUSED void *closure)
+static gboolean build_network(Map * map, Hex * hex,
+			      G_GNUC_UNUSED void *closure)
 {
 	Hex *adjacent[6];
 	gint idx;
@@ -403,7 +404,8 @@ void map_shuffle_terrain(Map * map)
 				num =
 				    g_rand_int_range(g_rand_ctx, 0,
 						     num_port);
-				for (idx = 0; idx < G_N_ELEMENTS(port_count);
+				for (idx = 0;
+				     idx < G_N_ELEMENTS(port_count);
 				     idx++) {
 					num -= port_count[idx];
 					if (num < 0)
@@ -415,7 +417,8 @@ void map_shuffle_terrain(Map * map)
 			} else {
 				num = g_rand_int_range(g_rand_ctx, 0,
 						       num_terrain);
-				for (idx = 0; idx < G_N_ELEMENTS(terrain_count);
+				for (idx = 0;
+				     idx < G_N_ELEMENTS(terrain_count);
 				     idx++) {
 					num -= terrain_count[idx];
 					if (num < 0)
@@ -485,7 +488,8 @@ static Hex *copy_hex(Map * map, Hex * hex)
 	return copy;
 }
 
-static gboolean set_nosetup_nodes(G_GNUC_UNUSED Map * map, Hex * hex, Map * copy)
+static gboolean set_nosetup_nodes(G_GNUC_UNUSED Map * map, Hex * hex,
+				  Map * copy)
 {
 	gint idx;
 	for (idx = 0; idx < G_N_ELEMENTS(hex->nodes); ++idx) {
@@ -863,8 +867,8 @@ Map *map_load(gchar * name)
 	return map;
 }
 
-Hex *
-map_add_hex(Map *map, gint x, gint y) {
+Hex *map_add_hex(Map * map, gint x, gint y)
+{
 	Hex *hex;
 
 	g_assert(x < map->x_size);

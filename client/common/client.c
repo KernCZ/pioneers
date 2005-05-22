@@ -140,20 +140,23 @@ static void dummy_discard_done(void)
 static void dummy_gold(void)
 {;
 }
-static void dummy_gold_add(G_GNUC_UNUSED gint player_num, G_GNUC_UNUSED gint gold_num)
+static void dummy_gold_add(G_GNUC_UNUSED gint player_num,
+			   G_GNUC_UNUSED gint gold_num)
 {;
 }
 static void dummy_gold_remove(G_GNUC_UNUSED gint player_num,
 			      G_GNUC_UNUSED gint * resources)
 {;
 }
-static void dummy_gold_choose(G_GNUC_UNUSED gint gold_num, G_GNUC_UNUSED gint * bank)
+static void dummy_gold_choose(G_GNUC_UNUSED gint gold_num,
+			      G_GNUC_UNUSED gint * bank)
 {;
 }
 static void dummy_gold_done(void)
 {;
 }
-static void dummy_game_over(G_GNUC_UNUSED gint player_num, G_GNUC_UNUSED gint points)
+static void dummy_game_over(G_GNUC_UNUSED gint player_num,
+			    G_GNUC_UNUSED gint points)
 {;
 }
 static void dummy_init_game(void)
@@ -242,7 +245,8 @@ static void dummy_quote_trade(G_GNUC_UNUSED gint player_num,
 			      G_GNUC_UNUSED gint * they_receive)
 {;
 }
-static void dummy_rolled_dice(G_GNUC_UNUSED gint die1, G_GNUC_UNUSED gint die2,
+static void dummy_rolled_dice(G_GNUC_UNUSED gint die1,
+			      G_GNUC_UNUSED gint die2,
 			      G_GNUC_UNUSED gint player_num)
 {;
 }
@@ -263,7 +267,8 @@ static void dummy_played_develop(G_GNUC_UNUSED gint player_num,
 				 G_GNUC_UNUSED DevelType type)
 {;
 }
-static void dummy_resource_change(G_GNUC_UNUSED Resource type, G_GNUC_UNUSED gint num)
+static void dummy_resource_change(G_GNUC_UNUSED Resource type,
+				  G_GNUC_UNUSED gint num)
 {;
 }
 static void dummy_draw_hex(G_GNUC_UNUSED Hex * hex)
@@ -275,7 +280,8 @@ static void dummy_update_stock(void)
 static void dummy_robber(void)
 {;
 }
-static void dummy_robber_moved(G_GNUC_UNUSED Hex * old, G_GNUC_UNUSED Hex * new)
+static void dummy_robber_moved(G_GNUC_UNUSED Hex * old,
+			       G_GNUC_UNUSED Hex * new)
 {;
 }
 static void dummy_player_robbed(G_GNUC_UNUSED gint robber_num,
@@ -284,7 +290,8 @@ static void dummy_player_robbed(G_GNUC_UNUSED gint robber_num,
 {;
 }
 static void dummy_get_rolled_resources(G_GNUC_UNUSED gint player_num,
-				       G_GNUC_UNUSED const gint * resources)
+				       G_GNUC_UNUSED const gint *
+				       resources)
 {;
 }
 static void dummy_new_statistics(G_GNUC_UNUSED gint player_num,

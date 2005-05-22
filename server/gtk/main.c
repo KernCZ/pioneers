@@ -177,7 +177,8 @@ static void update_game_settings(void)
 	cfg_set_sevens_rule(params->sevens_rule);
 }
 
-static void game_activate(GtkWidget * widget, G_GNUC_UNUSED gpointer user_data)
+static void game_activate(GtkWidget * widget,
+			  G_GNUC_UNUSED gpointer user_data)
 {
 	const gchar *title;
 
@@ -313,7 +314,8 @@ static void gui_player_change(void *data)
 	playerlist_dec_use_count(game);
 }
 
-static void add_game_to_list(gpointer name, G_GNUC_UNUSED gpointer user_data)
+static void add_game_to_list(gpointer name,
+			     G_GNUC_UNUSED gpointer user_data)
 {
 	GameParams *a = (GameParams *) name;
 	select_game_add(SELECTGAME(select_game), a->title);
@@ -404,8 +406,8 @@ static GtkWidget *build_game_settings(GtkWidget * parent)
 }
 
 static void
-my_cell_player_viewer_to_text(G_GNUC_UNUSED GtkTreeViewColumn * tree_column,
-			      GtkCellRenderer * cell,
+my_cell_player_viewer_to_text(G_GNUC_UNUSED GtkTreeViewColumn *
+			      tree_column, GtkCellRenderer * cell,
 			      GtkTreeModel * tree_model,
 			      GtkTreeIter * iter, gpointer data)
 {

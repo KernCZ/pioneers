@@ -175,7 +175,8 @@ gboolean is_node_spacing_ok(const Node * node)
 		if (node->map->have_bridges && !is_edge_on_land(edge))
 			continue;
 		else
-			for (idx2 = 0; idx2 < G_N_ELEMENTS(edge->nodes); ++idx2) {
+			for (idx2 = 0; idx2 < G_N_ELEMENTS(edge->nodes);
+			     ++idx2) {
 				Node *scan = edge->nodes[idx2];
 				if (scan == node)
 					continue;
@@ -547,7 +548,8 @@ gboolean can_city_be_built(const Node * node, gint owner)
  * 0).  We cannot move the robber to the same hex it is already on.
  * Also check if pirate can be moved.
  */
-gboolean can_robber_or_pirate_be_moved(const Hex * hex, G_GNUC_UNUSED gint owner)
+gboolean can_robber_or_pirate_be_moved(const Hex * hex,
+				       G_GNUC_UNUSED gint owner)
 {
 	if (hex->terrain == SEA_TERRAIN)
 		return (hex->map->has_pirate)
@@ -627,8 +629,8 @@ gboolean map_can_place_bridge(Map * map, gint owner)
 
 /* Iterator function for map_can_place_settlement() query
  */
-static gboolean can_place_settlement_check(G_GNUC_UNUSED Map * map, Hex * hex,
-					   gint * owner)
+static gboolean can_place_settlement_check(G_GNUC_UNUSED Map * map,
+					   Hex * hex, gint * owner)
 {
 	gint idx;
 
@@ -651,8 +653,8 @@ gboolean map_can_place_settlement(Map * map, gint owner)
 
 /* Iterator function for map_can_upgrade_settlement() query
  */
-static gboolean can_upgrade_settlement_check(G_GNUC_UNUSED Map * map, Hex * hex,
-					     gint * owner)
+static gboolean can_upgrade_settlement_check(G_GNUC_UNUSED Map * map,
+					     Hex * hex, gint * owner)
 {
 	gint idx;
 
@@ -699,8 +701,8 @@ gboolean map_building_spacing_ok(Map * map, gint owner,
 /* Ignoring building spacing, check if the building connects to a road.
  */
 gboolean map_building_connect_ok(Map * map, gint owner,
-				 G_GNUC_UNUSED BuildType type, gint x, gint y,
-				 gint pos)
+				 G_GNUC_UNUSED BuildType type, gint x,
+				 gint y, gint pos)
 {
 	Node *node = map_node(map, x, y, pos);
 	if (node == NULL)

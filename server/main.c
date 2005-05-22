@@ -229,7 +229,8 @@ int main(int argc, char *argv[])
 	if (!disable_game_start) {
 		if (start_server(hostname, server_port, register_server)) {
 			for (i = 0; i < num_ai_players; ++i)
-				new_computer_player(NULL, server_port, TRUE);
+				new_computer_player(NULL, server_port,
+						    TRUE);
 
 			event_loop = g_main_loop_new(NULL, FALSE);
 			g_main_loop_run(event_loop);

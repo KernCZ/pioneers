@@ -32,8 +32,8 @@
 #include <netinet/in.h>
 
 #ifndef HAVE_GETADDRINFO_ET_AL
-#include <stdlib.h> /* For atoi */
-#endif /* ndef HAVE_GETADDRINFO_ET_AL */
+#include <stdlib.h>		/* For atoi */
+#endif				/* ndef HAVE_GETADDRINFO_ET_AL */
 
 #include "config.h"
 #include "driver.h"
@@ -47,7 +47,7 @@ typedef union {
 	struct sockaddr_in in;
 #ifdef HAVE_GETADDRINFO_ET_AL
 	struct sockaddr_in6 in6;
-#endif /* HAVE_GETADDRINFO_ET_AL */
+#endif				/* HAVE_GETADDRINFO_ET_AL */
 } sockaddr_t;
 
 #ifdef DEBUG
@@ -402,7 +402,7 @@ gboolean net_connect(Session * ses, const gchar * host, const gchar * port)
 	gint iii;
 	struct hostent *he;
 	struct sockaddr_in addr;
-#endif /* HAVE_GETADDRINFO_ET_AL */
+#endif				/* HAVE_GETADDRINFO_ET_AL */
 
 	net_close(ses);
 	if (ses->host != NULL)
@@ -429,15 +429,15 @@ gboolean net_connect(Session * ses, const gchar * host, const gchar * port)
 			    host, port);
 		return FALSE;
 	}
-#endif /* HAVE_GETADDRINFO_ET_AL */
+#endif				/* HAVE_GETADDRINFO_ET_AL */
 
 #ifdef HAVE_GETADDRINFO_ET_AL
 	for (aip = ai; aip; aip = aip->ai_next) {
 		ses->fd = socket(aip->ai_family, SOCK_STREAM, 0);
-#else /* HAVE_GETADDRINFO_ET_AL */
-	for (iii=0; iii < 1; ++iii) { /* Loop only once */
+#else				/* HAVE_GETADDRINFO_ET_AL */
+	for (iii = 0; iii < 1; ++iii) {	/* Loop only once */
 		ses->fd = socket(AF_INET, SOCK_STREAM, 0);
-#endif /* HAVE_GETADDRINFO_ET_AL */
+#endif				/* HAVE_GETADDRINFO_ET_AL */
 		if (ses->fd < 0) {
 			log_message(MSG_ERROR,
 				    _("Error creating socket: %s\n"),
@@ -462,17 +462,18 @@ gboolean net_connect(Session * ses, const gchar * host, const gchar * port)
 			ses->fd = -1;
 			continue;
 		}
-
 #ifdef HAVE_GETADDRINFO_ET_AL
 		if (connect(ses->fd, aip->ai_addr, aip->ai_addrlen) < 0) {
-#else /* HAVE_GETADDRINFO_ET_AL */
+#else				/* HAVE_GETADDRINFO_ET_AL */
 		he = gethostbyname(host);
 		addr.sin_family = AF_INET;
 		addr.sin_port = htons(atoi(port));
-		addr.sin_addr = *((struct in_addr *)he->h_addr);
+		addr.sin_addr = *((struct in_addr *) he->h_addr);
 		memset(&addr.sin_zero, 0, 8);
-		if (connect(ses->fd, (struct sockaddr*)&addr, sizeof(struct sockaddr)) < 0) {
-#endif /* HAVE_GETADDRINFO_ET_AL */
+		if (connect
+		    (ses->fd, (struct sockaddr *) &addr,
+		     sizeof(struct sockaddr)) < 0) {
+#endif				/* HAVE_GETADDRINFO_ET_AL */
 			if (errno == EINPROGRESS) {
 				ses->connect_in_progress = TRUE;
 				listen_write(ses, TRUE);
@@ -492,7 +493,7 @@ gboolean net_connect(Session * ses, const gchar * host, const gchar * port)
 
 #ifdef HAVE_GETADDRINFO_ET_AL
 	freeaddrinfo(ai);
-#endif /* HAVE_GETADDRINFO_ET_AL */
+#endif				/* HAVE_GETADDRINFO_ET_AL */
 
 	if (ses->fd >= 0)
 		return TRUE;
@@ -625,10 +626,11 @@ int net_open_listening_socket(const gchar * port, gchar ** error_message)
 	}
 	*error_message = NULL;
 	return fd;
-#else /* HAVE_GETADDRINFO_ET_AL */
-	*error_message = g_strdup(_("Listening not yet supported on this platform."));
+#else				/* HAVE_GETADDRINFO_ET_AL */
+	*error_message =
+	    g_strdup(_("Listening not yet supported on this platform."));
 	return -1;
-#endif /* HAVE_GETADDRINFO_ET_AL */
+#endif				/* HAVE_GETADDRINFO_ET_AL */
 }
 
 gboolean net_get_peer_name(gint fd, gchar ** hostname, gchar ** servname,
@@ -637,7 +639,7 @@ gboolean net_get_peer_name(gint fd, gchar ** hostname, gchar ** servname,
 #ifdef HAVE_GETADDRINFO_ET_AL
 	sockaddr_t peer;
 	socklen_t peer_len;
-#endif /* HAVE_GETADDRINFO_ET_AL */
+#endif				/* HAVE_GETADDRINFO_ET_AL */
 
 	*hostname = g_strdup(_("unknown"));
 	*servname = g_strdup(_("unknown"));
@@ -670,10 +672,12 @@ gboolean net_get_peer_name(gint fd, gchar ** hostname, gchar ** servname,
 			return TRUE;
 		}
 	}
-#else /* HAVE_GETADDRINFO_ET_AL */
-	*error_message = g_strdup(_("Net_get_peer_name not yet supported on this platform."));
+#else				/* HAVE_GETADDRINFO_ET_AL */
+	*error_message =
+	    g_strdup(_
+		     ("Net_get_peer_name not yet supported on this platform."));
 	return FALSE;
-#endif /* HAVE_GETADDRINFO_ET_AL */
+#endif				/* HAVE_GETADDRINFO_ET_AL */
 }
 
 gint net_accept(gint accept_fd, gchar ** error_message)

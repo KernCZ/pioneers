@@ -74,7 +74,8 @@ void plenty_create_dlg(gint * bank)
 				 _("Total resources"), 2);
 	resource_table_limit_bank(RESOURCETABLE(plenty.resource_widget),
 				  TRUE);
-	resource_table_set_bank(RESOURCETABLE(plenty.resource_widget), bank);
+	resource_table_set_bank(RESOURCETABLE(plenty.resource_widget),
+				bank);
 
 	gtk_widget_show(plenty.resource_widget);
 	gtk_box_pack_start(GTK_BOX(vbox), plenty.resource_widget, FALSE,

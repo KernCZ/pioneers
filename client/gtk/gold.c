@@ -170,7 +170,8 @@ void gold_choose_player_prepare(gint player_num, gint num)
 	g_object_unref(pixbuf);
 }
 
-void gold_choose_player_did(gint player_num, G_GNUC_UNUSED gint * resources)
+void gold_choose_player_did(gint player_num,
+			    G_GNUC_UNUSED gint * resources)
 {
 	/* check if the player was in the list.  If not, it is not an error.
 	 * That happens if the player auto-discards. */
