@@ -559,6 +559,12 @@ gboolean mode_pre_game(Player * player, gint event)
 			 */
 			sm_send(sm, "bank %R\n", game->bank_deck);
 
+			/* Send the number of development cards played, so the
+			 * client knows how many are left.
+			 */
+			sm_send(sm, "development-bought %d\n",
+				game->develop_next);
+
 			/* send player info about what he has:
 			   resources, dev cards, roads, # roads,
 			   # bridges, # ships, # settles, # cities,

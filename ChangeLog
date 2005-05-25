@@ -1,3 +1,8 @@
+2005-05-25  Brian Wellington <bwelling@xbill.org>
+	* client/common/client.c, server/pregame.c: Send the number
+	of development cards that have been bought to connecting clients,
+	so that the client's state is correct after a reconnect.
+
 2005-05-22  Roland Clobus <rclobus@bigfoot.com>
 	* apply 'make indent' again
 

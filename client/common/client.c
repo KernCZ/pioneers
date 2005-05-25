@@ -895,6 +895,7 @@ static gboolean mode_load_gameinfo(StateMachine * sm, gint event)
 	BuildType btype;
 	gint resources[NO_RESOURCE];
 	gint tmp_bank[NO_RESOURCE];
+	gint devbought;
 
 	sm_state_name(sm, "mode_load_gameinfo");
 	if (event == SM_ENTER) {
@@ -927,6 +928,12 @@ static gboolean mode_load_gameinfo(StateMachine * sm, gint event)
 	if (sm_recv(sm, "bank %R", tmp_bank)) {
 		set_bank(tmp_bank);
 		have_bank = TRUE;
+		return TRUE;
+	}
+	if (sm_recv(sm, "development-bought %d", &devbought)) {
+		gint i;
+		for (i = 0; i < devbought; i++)
+			stock_use_develop();
 		return TRUE;
 	}
 	if (sm_recv(sm, "turn num %d", &rinfo.turnnum)) {
