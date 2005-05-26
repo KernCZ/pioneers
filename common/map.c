@@ -352,6 +352,7 @@ static void layout_chits(Map * map)
 				chit_idx = 0;
 		}
 	}
+	g_free(hexes);
 }
 
 /* Randomise a map.  We do this by shuffling all of the land hexes,

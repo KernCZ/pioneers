@@ -1,3 +1,9 @@
+2005-05-26  0.9.16  Roland Clobus <rclobus@bigfoot.com>
+	* common/game.c, common/game.h: Constness for params_copy.
+	* common/map.c (layout_chits), server/server.c (game_free),
+	server/gtk/gnocatan-server-gtk.c (build_game_settings): Fixed memory
+	leaks.
+	
 2005-05-25  Brian Wellington <bwelling@xbill.org>
 	* client/common/client.c, server/pregame.c: Send the number
 	of development cards that have been bought to connecting clients,

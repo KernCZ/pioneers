@@ -384,6 +384,7 @@ static GtkWidget *build_game_settings(GtkWidget * parent)
 	    config_get_string("game/name=Default", &default_returned);
 	select_game_set_default(SELECTGAME(select_game), gamename);
 	game_list_foreach(add_game_to_list, NULL);
+	g_free(gamename);
 
 	/* If a setting is not found, don't override the settings that came
 	 * with the game */

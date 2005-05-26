@@ -396,7 +396,7 @@ GameParams *params_load_file(const gchar * fname)
 	return params;
 }
 
-GameParams *params_copy(GameParams * params)
+GameParams *params_copy(const GameParams * params)
 {
 	GameParams *copy;
 	gint idx;

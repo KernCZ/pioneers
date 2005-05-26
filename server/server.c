@@ -108,6 +108,7 @@ void game_free(Game * game)
 	}
 	if (game->server_port != NULL)
 		g_free(game->server_port);
+	params_free(game->params);
 	g_free(game);
 }
 
