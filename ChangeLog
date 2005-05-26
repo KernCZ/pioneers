@@ -3,6 +3,9 @@
 	* common/map.c (layout_chits), server/server.c (game_free),
 	server/gtk/gnocatan-server-gtk.c (build_game_settings): Fixed memory
 	leaks.
+	* common/gtk/guimap.c: Implemented the todo in the single click
+	building. The cursor will switch between node and edge, whichever is
+	closest.
 	
 2005-05-25  Brian Wellington <bwelling@xbill.org>
 	* client/common/client.c, server/pregame.c: Send the number

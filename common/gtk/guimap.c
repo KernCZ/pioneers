@@ -1603,6 +1603,31 @@ gboolean roadM, shipM, bridgeM, settlementM, cityM;
 CheckFunc roadF, shipF, bridgeF, settlementF, cityF;
 SelectFunc roadS, shipS, bridgeS, settlementS, cityS;
 
+/** Calculate the distance between the element and the cursor.
+ *  @param gmap The GuiMap
+ *  @param element An Edge or a Node
+ *  @param isEdge TRUE if element is an Edge
+ *  @param cursor_x X position of the cursor
+ *  @param cursor_y Y position of the cursor
+ *  @return The square of the distance
+ */
+static gint distance_cursor(GuiMap * gmap, const MapElement * element,
+			    gboolean isEdge, gint cursor_x, gint cursor_y)
+{
+	static GdkPoint single_point = { 0, 0 };
+	static const Polygon simple_poly = { &single_point, 1 };
+	GdkPoint translated_point;
+	Polygon poly;
+	poly.num_points = 1;
+	poly.points = &translated_point;
+	if (isEdge)
+		calc_edge_poly(gmap, element->edge, &simple_poly, &poly);
+	else
+		calc_node_poly(gmap, element->node, &simple_poly, &poly);
+	return sqr(cursor_x - poly.points[0].x) + sqr(cursor_y -
+						      poly.points[0].y);
+}
+
 void guimap_cursor_move(GuiMap * gmap, gint x, gint y,
 			MapElement * element)
 {
@@ -1615,8 +1640,10 @@ void guimap_cursor_move(GuiMap * gmap, gint x, gint y,
 		gboolean can_build_bridge = FALSE;
 		gboolean can_build_settlement = FALSE;
 		gboolean can_build_city = FALSE;
-		gboolean can_build_edge;
-		gboolean can_build_node;
+		gboolean can_build_edge = FALSE;
+		gboolean can_build_node = FALSE;
+		gint distance_edge = 0;
+		gint distance_node = 0;
 
 		dummyElement.pointer = NULL;
 		find_edge(gmap, x, y, element);
@@ -1633,8 +1660,16 @@ void guimap_cursor_move(GuiMap * gmap, gint x, gint y,
 					    && bridgeF(*element,
 						       gmap->player_num,
 						       dummyElement));
+			can_build_edge = can_build_road || can_build_ship
+			    || can_build_bridge;
+			if (can_build_edge)
+				distance_edge =
+				    distance_cursor(gmap, element, TRUE, x,
+						    y);
+		}
 
-			find_node(gmap, x, y, element);
+		find_node(gmap, x, y, element);
+		if (element->pointer) {
 			can_build_settlement = (settlementM
 						&& settlementF(*element,
 							       gmap->
@@ -1644,32 +1679,43 @@ void guimap_cursor_move(GuiMap * gmap, gint x, gint y,
 					  && cityF(*element,
 						   gmap->player_num,
 						   dummyElement));
+			can_build_node = can_build_settlement
+			    || can_build_city;
+			if (can_build_node)
+				distance_node =
+				    distance_cursor(gmap, element, FALSE,
+						    x, y);
 		}
-		can_build_edge = can_build_road || can_build_ship
-		    || can_build_bridge;
-		can_build_node = can_build_settlement || can_build_city;
 
+		/* When both edge and node can be built,
+		 * build closest to the cursor.
+		 * When equidistant, prefer the node.
+		 */
 		if (can_build_edge && can_build_node) {
-			g_message("Conflict: todo determine the closest");
+			if (distance_node <= distance_edge)
+				can_build_edge = FALSE;
+			else
+				can_build_node = FALSE;
 		}
 
-		if (can_build_road)
-			guimap_cursor_set(gmap, ROAD_CURSOR,
-					  gmap->player_num, roadF, roadS,
-					  NULL, TRUE);
-		else if (can_build_ship)
-			guimap_cursor_set(gmap, SHIP_CURSOR,
-					  gmap->player_num, shipF, shipS,
-					  NULL, TRUE);
-		else if (can_build_bridge)
+		/* Prefer the most special road segment, if possible */
+		if (can_build_bridge && can_build_edge)
 			guimap_cursor_set(gmap, BRIDGE_CURSOR,
 					  gmap->player_num, bridgeF,
 					  bridgeS, NULL, TRUE);
-		else if (can_build_settlement)
+		else if (can_build_ship && can_build_edge)
+			guimap_cursor_set(gmap, SHIP_CURSOR,
+					  gmap->player_num, shipF, shipS,
+					  NULL, TRUE);
+		else if (can_build_road && can_build_edge)
+			guimap_cursor_set(gmap, ROAD_CURSOR,
+					  gmap->player_num, roadF, roadS,
+					  NULL, TRUE);
+		else if (can_build_settlement && can_build_node)
 			guimap_cursor_set(gmap, SETTLEMENT_CURSOR,
 					  gmap->player_num, settlementF,
 					  settlementS, NULL, TRUE);
-		else if (can_build_city)
+		else if (can_build_city && can_build_node)
 			guimap_cursor_set(gmap, CITY_CURSOR,
 					  gmap->player_num, cityF, cityS,
 					  NULL, TRUE);
