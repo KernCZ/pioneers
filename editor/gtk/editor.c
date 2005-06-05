@@ -119,7 +119,7 @@ static void fill_map(Map * map)
 	}
 }
 
-static void canonicalize_map(GameParams * params, Map * map)
+static void canonicalize_map(Map * map)
 {
 	GArray *chits;
 	Hex *hex;
@@ -137,10 +137,9 @@ static void canonicalize_map(GameParams * params, Map * map)
 			}
 		}
 	}
-	if (params->chits != NULL)
-		g_array_free(params->chits, TRUE);
-	params->chits = chits;
-	map_set_chits(map, chits);
+	if (map->chits != NULL)
+		g_array_free(map->chits, TRUE);
+	map->chits = chits;
 }
 
 static Hex *hex_in_direction(Map * map, Hex * hex, gint direction)
@@ -782,8 +781,7 @@ static void load_game(const gchar * file)
 		new_params->map = map_new();
 		new_params->map->x_size = 6;
 		new_params->map->y_size = 6;
-		g_array_free(new_params->chits, TRUE);
-		new_params->chits =
+		new_params->map->chits =
 		    g_array_new(FALSE, FALSE, sizeof(gint));
 		new_filename = NULL;
 	} else {
@@ -804,7 +802,7 @@ static void load_game(const gchar * file)
 static void save_game(const gchar * file)
 {
 	params = get_params();
-	canonicalize_map(params, gmap->map);
+	canonicalize_map(gmap->map);
 	if (!params_write_file(params, file))
 		error_dialog(_("Failed to save to '%s'"), file);
 	fill_map(gmap->map);

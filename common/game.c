@@ -32,7 +32,6 @@
 typedef enum {
 	PARAM_STRING,
 	PARAM_INT,
-	PARAM_INT_LIST,
 	PARAM_BOOL
 } ParamType;
 
@@ -69,7 +68,6 @@ static Param game_params[] = {
 	{PARAM_V(develop-library, PARAM_INT, num_develop_type[DEVEL_LIBRARY])},
 	{PARAM_V(develop-market, PARAM_INT, num_develop_type[DEVEL_MARKET])},
 	{PARAM_V(develop-soldier, PARAM_INT, num_develop_type[DEVEL_SOLDIER])},
-	{PARAM(chits, PARAM_INT_LIST)},
 	{PARAM_V(tournament-time, PARAM_INT, tournament_time)},
 	{PARAM_V(use-pirate, PARAM_BOOL, use_pirate)}
 };
@@ -92,8 +90,6 @@ void params_free(GameParams * params)
 		g_free(params->title);
 	if (params->map != NULL)
 		map_free(params->map);
-	if (params->chits != NULL)
-		g_array_free(params->chits, TRUE);
 	g_free(params);
 }
 
@@ -167,17 +163,6 @@ static void format_int_list(const gchar * name, GArray * array, char *str,
 	}
 }
 
-static GArray *copy_int_list(GArray * array)
-{
-	GArray *copy = g_array_new(FALSE, FALSE, sizeof(gint));
-	int idx;
-
-	for (idx = 0; idx < array->len; idx++)
-		g_array_append_val(copy, g_array_index(array, gint, idx));
-
-	return copy;
-}
-
 struct nosetup_t {
 	WriteLineFunc func;
 	gpointer user_data;
@@ -241,13 +226,6 @@ void params_write_lines(GameParams * params, gboolean write_secrets,
 						   param->offset));
 			func(user_data, buff);
 			break;
-		case PARAM_INT_LIST:
-			format_int_list(param->name,
-					G_STRUCT_MEMBER(GArray *, params,
-							param->offset),
-					buff, sizeof(buff));
-			func(user_data, buff);
-			break;
 		case PARAM_BOOL:
 			if (G_STRUCT_MEMBER
 			    (gboolean, params, param->offset)) {
@@ -258,6 +236,8 @@ void params_write_lines(GameParams * params, gboolean write_secrets,
 			break;
 		}
 	}
+	format_int_list("chits", params->map->chits, buff, sizeof(buff));
+	func(user_data, buff);
 	func(user_data, "map");
 	for (y = 0; y < params->map->y_size; y++) {
 		map_format_line(params->map, write_secrets, buff, y);
@@ -276,10 +256,11 @@ void params_load_line(GameParams * params, gchar * line)
 {
 	gint idx;
 
+	if (params->map == NULL)
+		params->map = map_new();
 	if (params->parsing_map) {
 		if (strcmp(line, ".") == 0) {
 			params->parsing_map = FALSE;
-			map_set_chits(params->map, params->chits);
 			map_parse_finish(params->map);
 		} else
 			map_parse_line(params->map, line);
@@ -300,8 +281,19 @@ void params_load_line(GameParams * params, gchar * line)
 		return;
 	}
 	if (match_word(&line, "map")) {
-		params->map = map_new();
 		params->parsing_map = TRUE;
+		return;
+	}
+	if (match_word(&line, "chits")) {
+		if (params->map->chits != NULL)
+			g_array_free(params->map->chits, TRUE);
+		params->map->chits = g_array_new(FALSE, FALSE, sizeof(gint));
+		build_int_list(params->map->chits, line);
+		if (params->map->chits->len == 0) {
+			g_warning("Zero length chits array");
+			g_array_free(params->map->chits, FALSE);
+			params->map->chits = NULL;
+		}
 		return;
 	}
 	if (match_word(&line, "nosetup")) {
@@ -324,7 +316,6 @@ void params_load_line(GameParams * params, gchar * line)
 	for (idx = 0; idx < G_N_ELEMENTS(game_params); idx++) {
 		Param *param = game_params + idx;
 		gchar *str;
-		GArray *array;
 
 		if (!match_word(&line, param->name))
 			continue;
@@ -342,23 +333,6 @@ void params_load_line(GameParams * params, gchar * line)
 		case PARAM_INT:
 			G_STRUCT_MEMBER(gint, params, param->offset) =
 			    atoi(line);
-			return;
-		case PARAM_INT_LIST:
-			array =
-			    G_STRUCT_MEMBER(GArray *, params,
-					    param->offset);
-			if (array != NULL)
-				g_array_free(array, TRUE);
-			array = g_array_new(FALSE, FALSE, sizeof(gint));
-			build_int_list(array, line);
-			if (array->len > 0) {
-				G_STRUCT_MEMBER(GArray *, params,
-						param->offset) = array;
-			} else {
-				g_warning("Zero length array for %s",
-					  param->name);
-				g_array_free(array, FALSE);
-			}
 			return;
 		case PARAM_BOOL:
 			G_STRUCT_MEMBER(gboolean, params, param->offset) =
@@ -419,13 +393,6 @@ GameParams *params_copy(const GameParams * params)
 			G_STRUCT_MEMBER(gint, copy, param->offset)
 			    = G_STRUCT_MEMBER(gint, params, param->offset);
 			break;
-		case PARAM_INT_LIST:
-			G_STRUCT_MEMBER(GArray *, copy, param->offset)
-			    =
-			    copy_int_list(G_STRUCT_MEMBER
-					  (GArray *, params,
-					   param->offset));
-			break;
 		case PARAM_BOOL:
 			G_STRUCT_MEMBER(gboolean, copy, param->offset)
 			    = G_STRUCT_MEMBER(gboolean, params,
@@ -449,11 +416,11 @@ gboolean params_load_finish(GameParams * params)
 		g_warning("Map not complete. Missing . after the map?");
 		return FALSE;
 	}
-	if (!params->chits) {
+	if (!params->map->chits) {
 		g_warning("No chits defined");
 		return FALSE;
 	}
-	if (params->chits->len < 1) {
+	if (params->map->chits->len < 1) {
 		g_warning("At least one chit must be defined");
 		return FALSE;
 	}

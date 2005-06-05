@@ -144,7 +144,7 @@ struct _Map {
 
 	gboolean shrink_left;	/* shrink left x-margin? */
 	gboolean shrink_right;	/* shrink right x-margin? */
-	GArray *chits;		/* chit number sequence (not owned by map) */
+	GArray *chits;		/* chit number sequence */
 };
 
 typedef struct {
@@ -172,7 +172,6 @@ void map_format_line(Map * map, gboolean write_secrets, gchar * line,
 		     gint y);
 void map_parse_line(Map * map, char *line);
 void map_parse_finish(Map * map);
-void map_set_chits(Map * map, GArray * chits);
 void map_free(Map * map);
 Map *map_load(char *name);
 Hex *map_add_hex(Map * map, gint x, gint y);

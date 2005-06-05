@@ -60,7 +60,6 @@ typedef struct {
 	gint num_build_type[NUM_BUILD_TYPES];	/* number of each build type */
 	gint resource_count;	/* number of each resource */
 	gint num_develop_type[NUM_DEVEL_TYPES];	/* number of each development */
-	GArray *chits;		/* chit sequence */
 	Map *map;		/* the game map */
 	gboolean parsing_map;	/* currently parsing map? *//* Not in game_params[] */
 	gint tournament_time;	/* time to start tournament time in minutes */

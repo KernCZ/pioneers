@@ -505,6 +505,17 @@ static gboolean set_nosetup_nodes(G_GNUC_UNUSED Map * map, Hex * hex,
 	return FALSE;
 }
 
+static GArray *copy_int_list(GArray * array)
+{
+	GArray *copy = g_array_new(FALSE, FALSE, sizeof(gint));
+	int idx;
+
+	for (idx = 0; idx < array->len; idx++)
+		g_array_append_val(copy, g_array_index(array, gint, idx));
+
+	return copy;
+}
+
 /* Make a copy of an existing map
  */
 Map *map_copy(Map * map)
@@ -538,9 +549,7 @@ Map *map_copy(Map * map)
 	copy->has_pirate = map->has_pirate;
 	copy->shrink_left = map->shrink_left;
 	copy->shrink_right = map->shrink_right;
-	/* chits is not owned by the map, i.e. not allocated / freed
-	 */
-	copy->chits = map->chits;
+	copy->chits = copy_int_list(map->chits);
 
 	return copy;
 }
@@ -790,11 +799,6 @@ void map_parse_finish(Map * map)
 		}
 }
 
-void map_set_chits(Map * map, GArray * chits)
-{
-	map->chits = chits;
-}
-
 /* Disconnect a hex from all nodes and edges that it does not "own"
  */
 static gboolean disconnect_hex(G_GNUC_UNUSED Map * map, Hex * hex,
@@ -842,6 +846,7 @@ void map_free(Map * map)
 {
 	map_traverse(map, disconnect_hex, NULL);
 	map_traverse(map, free_hex, NULL);
+	g_array_free(map->chits, TRUE);
 	g_free(map);
 }
 
