@@ -1,4 +1,7 @@
-2005-05-01 Roland CLobus <rclobus@bigfoot.com>
+2005-06-5 Roland Clobus <rclobus@bigfoot.com>
+	* fr.po, nl.po: Updated for Q_() patch
+	
+2005-05-01 Roland Clobus <rclobus@bigfoot.com>
 	* Updated to build 0.9.11
 	
 2005-04-26 Roland Clobus <rclobus@bigfoot.com>
