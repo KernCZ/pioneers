@@ -1,2 +1,3 @@
 ?package(gnocatan-server-console):needs="text" section="Games/Board"\
-  title="Gnocatan Server Console" command="/usr/games/gnocatan-server-console"
+  title="Gnocatan Server Console" command="/usr/games/gnocatan-server-console"\
+  icon="/usr/share/pixmaps/gnome-gnocatan.png"

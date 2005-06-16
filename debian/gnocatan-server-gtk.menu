@@ -1,2 +1,3 @@
 ?package(gnocatan-server-gtk):needs="X11" section="Games/Board"\
-  title="Gnocatan Server GTK" command="/usr/games/gnocatan-server-gtk"
+  title="Gnocatan Server GTK" command="/usr/games/gnocatan-server-gtk"\
+  icon="/usr/share/pixmaps/gnome-gnocatan.png"
