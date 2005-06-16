@@ -1,9 +1,13 @@
-files
 gnocatan-ai
 gnocatan-ai.postinst.debhelper
 gnocatan-ai.postrm.debhelper
 gnocatan-ai.prerm.debhelper
 gnocatan-ai.substvars
+gnocatan-client
+gnocatan-client.postinst.debhelper
+gnocatan-client.postrm.debhelper
+gnocatan-client.prerm.debhelper
+gnocatan-client.substvars
 gnocatan-help
 gnocatan-help.postinst.debhelper
 gnocatan-help.postrm.debhelper

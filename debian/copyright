@@ -3,9 +3,12 @@ Sat,  8 May 1999 20:35:36 +1000.
 
 It was downloaded from http://download.sourceforge.net/gnocatan
 
-This software is copyright (c) 2000 the Free Software Foundation.
+This software is copyright (c) 2000-2005 the Free Software Foundation
+and many others.  See Help->About for a full list.
 
-You are free to distribute this software under the terms of
-the GNU General Public License.
+You are free to modify and redistribute this software under the terms of
+the GNU General Public License version 2, or (at your option) any later
+version, as published by the Free Software Foundation.
+
 On Debian systems, the complete text of the GNU General Public
-License can be found in /usr/share/common-licenses/GPL file.
+License can be found in /usr/share/common-licenses/GPL.

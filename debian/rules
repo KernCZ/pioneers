@@ -10,19 +10,17 @@
 build: build-stamp
 build-stamp:
 	dh_testdir
-
-	# Add here commands to compile the package.
+	# Commands to compile the package.
 	-[ ! -f Makefile.in ] && NOCONFIGURE=yes ./autogen.sh
-	./configure --prefix=/usr --bindir=/usr/games --mandir=/usr/share/man
+	./configure --prefix=/usr --bindir=/usr/games --mandir=/usr/share/man \
+		--datadir=/usr/share
 	$(MAKE)
 	touch build-stamp
 
 clean:
 	dh_testdir
-	dh_testroot
 	rm -f build-stamp install-stamp
-
-	# Add here commands to clean up after the build process.
+	# Commands to clean up after the build process.
 	-$(MAKE) distclean
 	dh_clean
 
@@ -32,14 +30,12 @@ install-stamp: build-stamp
 	dh_testroot
 	dh_clean -k
 	dh_installdirs
-
-	# Add here commands to install the package into debian/tmp.
-	$(MAKE) prefix=`pwd`/debian/tmp/usr bindir=`pwd`/debian/tmp/usr/games \
-	        datadir=`pwd`/debian/tmp/usr/share \
-	        mandir=`pwd`/debian/tmp/usr/share/man install
+	# Commands to install the package into debian/tmp.
+	$(MAKE) DESTDIR=$(CURDIR)/debian/tmp install
 	install -m644 server/*.game debian/tmp/usr/share/games/gnocatan
 	rm -rf debian/tmp/usr/var
-	dh_movefiles
+	dh_install --fail-missing -X usr/share/man/man6/ -X usr/games/gnocatan-editor
+	dh_installman
 	rm -rf debian/tmp/usr/share/gnome/help
 	touch install-stamp
 
@@ -82,4 +78,4 @@ source diff:
 	@echo >&2 'source and diff are obsolete - use dpkg-source -b'; false
 
 binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary install
+.PHONY: configure build clean binary-indep binary-arch binary install

@@ -1,0 +1,3 @@
+?package(gnocatan-client):needs="X11" section="Games/Board"\
+  title="Gnocatan" command="/usr/games/gnocatan" \
+  icon="/usr/share/pixmaps/gnome-gnocatan.png"

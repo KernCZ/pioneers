@@ -1,0 +1,5 @@
+debian/tmp/usr/games/gnocatan
+debian/tmp/usr/share/games/gnocatan/themes
+debian/tmp/usr/share/gnome/apps/Games/gnocatan.desktop
+debian/tmp/usr/share/locale
+debian/tmp/usr/share/pixmaps

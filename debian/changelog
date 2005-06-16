@@ -1,3 +1,9 @@
+gnocatan (0.9.17-1) unstable; urgency=low
+
+  * New maintainer, adjust the package a bit to my liking.
+
+ -- Bas Wijnen <shevek@fmf.nl>  Thu, 16 Jun 2005 17:54:12 +0200
+
 gnocatan (0.8.1.42-1) unstable; urgency=low
 
   * try to fix the packaging catastrophe from 0.8.1.41-1 
