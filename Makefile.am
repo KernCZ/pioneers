@@ -41,4 +41,4 @@ indent:
 	find . -name '*.[ch]' -exec indent -kr -i8 '{}' ';'
 
 restorepo:
-	cvs update -C po/*.po po/gnocatan.pot
+	cvs update -C po/*.po po/pioneers.pot
