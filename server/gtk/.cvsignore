@@ -2,4 +2,4 @@ Makefile.in
 Makefile
 .deps
 .libs
-gnocatan-server-gtk
+pioneers-server-gtk
