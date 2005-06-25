@@ -1,4 +1,4 @@
-configdir=$(datadir)/games/gnocatan
+configdir=$(datadir)/games/pioneers
 
 bin_PROGRAMS = pioneers-editor
 

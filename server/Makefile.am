@@ -19,7 +19,7 @@
 
 include $(top_srcdir)/rules.make
 
-configdir=$(datadir)/games/gnocatan
+configdir=$(datadir)/games/pioneers
 
 if HAVE_GNOME
 SUBDIRS = . gtk
