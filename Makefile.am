@@ -42,5 +42,3 @@ indent:
 
 restorepo:
 	cvs update -C po/*.po po/gnocatan.pot
-
-ACLOCAL_AMFLAGS = -I m4 -I macros

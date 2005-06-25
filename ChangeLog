@@ -5,8 +5,6 @@
 	  (should now be configure.ac).
 	* Makefile.am: drop the dist hook for debian/, it doesn't belong
 	  in the tarball
-	* Makefile.am: set ACLOCAL_AMFLAGS for upwards compatibility
-	  with newer versions of gettext
 	* configure.ac, rules.make, client/Makefile.am,
 	  client/ai/Makefile.am, client/common/Makefile.am,
 	  client/gtk/Makefile.am, client/gtk/connect.c,
