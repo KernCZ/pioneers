@@ -19,7 +19,7 @@
 
 include $(top_srcdir)/rules.make
 
-themedir = $(datadir)/games/gnocatan/themes/Iceland
+themedir = $(datadir)/games/pioneers/themes/Iceland
 
 theme_DATA = \
 	desert.png \

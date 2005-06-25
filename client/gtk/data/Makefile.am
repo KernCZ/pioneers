@@ -22,9 +22,9 @@ include $(top_srcdir)/rules.make
 
 SUBDIRS = themes
 
-themedir  =$(datadir)/games/gnocatan/themes
+themedir  =$(datadir)/games/pioneers/themes
 appicondir=$(datadir)/pixmaps
-pixmapdir =$(datadir)/pixmaps/gnocatan
+pixmapdir =$(datadir)/pixmaps/pioneers
 Gamesdir=$(datadir)/gnome/apps/Games
 
 appicon_DATA = gnome-pioneers.png

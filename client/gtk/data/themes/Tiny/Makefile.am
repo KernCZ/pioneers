@@ -19,7 +19,7 @@
 
 include $(top_srcdir)/rules.make
 
-themedir = $(datadir)/games/gnocatan/themes/Tiny
+themedir = $(datadir)/games/pioneers/themes/Tiny
 
 theme_DATA = \
 	board.png \

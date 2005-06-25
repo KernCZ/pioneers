@@ -21,7 +21,7 @@ include $(top_srcdir)/rules.make
 
 SUBDIRS = FreeCIV-like Iceland Tiny
 
-themesdir = $(datadir)/games/gnocatan/themes
+themesdir = $(datadir)/games/pioneers/themes
 
 themes_DATA = \
 	board.png \

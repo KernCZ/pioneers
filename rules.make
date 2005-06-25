@@ -19,7 +19,7 @@
 
 extra_includes = \
 	-DLOCALEDIR=\""$(datadir)/locale"\" \
-	-DGNOCATAN_DIR_DEFAULT=\""$(datadir)/games/gnocatan"\" \
+	-DGNOCATAN_DIR_DEFAULT=\""$(datadir)/games/pioneers"\" \
 	-DGNOCATAN_SERVER_CONSOLE_PATH=\""$(bindir)/pioneers-server-console"\" \
 	-DGNOCATAN_SERVER_GTK_PATH=\""$(bindir)/pioneers-server-gtk"\" \
 	-DGNOCATAN_AI_PATH=\""$(bindir)/pioneersai"\"

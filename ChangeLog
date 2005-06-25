@@ -48,6 +48,14 @@
 	  client/gtk/data/Makefile.am, client/help/C/Makefile.am,
 	  client/gtk/gui.c, server/gtk/gnocatan-server-gtk.c: fix the
 	  names of installed data files
+	* rules.make, client/ai/Makefile.am, client/gtk/Makefile.am,
+	  client/gtk/data/Makefile.am,
+	  client/gtk/data/themes/Makefile.am,
+	  client/gtk/data/themes/FreeCIV-like/Makefile.am,
+	  client/gtk/data/themes/Iceland/Makefile.am,
+	  client/gtk/data/themes/Tiny/Makefile.am,
+	  common/gtk/Makefile.am: fix remaining paths where data files
+	  are installed
 
 2005-06-05  Brian Wellington <bwelling@xbill.org>
 	* common/game.c, common/game.h, common/map.c, common/map.h,

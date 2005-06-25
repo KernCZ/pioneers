@@ -19,7 +19,7 @@
 
 include $(top_srcdir)/rules.make
 
-themedir = $(datadir)/games/gnocatan/themes/FreeCIV-like
+themedir = $(datadir)/games/pioneers/themes/FreeCIV-like
 
 theme_DATA = \
 	desert.png \

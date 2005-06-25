@@ -20,7 +20,7 @@
 
 include $(top_srcdir)/rules.make
 
-configdir = $(datadir)/games/gnocatan
+configdir = $(datadir)/games/pioneers
 
 bin_PROGRAMS = pioneersai
 

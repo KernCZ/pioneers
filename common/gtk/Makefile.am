@@ -22,7 +22,7 @@ include $(top_srcdir)/rules.make
 
 noinst_LIBRARIES = libpioneers_gtk.a
 
-themedir  =$(datadir)/games/gnocatan/themes
+themedir  =$(datadir)/games/pioneers/themes
 
 AM_CPPFLAGS = \
 	-I$(includedir) \
