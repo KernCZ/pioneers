@@ -5,6 +5,41 @@
 	  in the tarball
 	* Makefile.am: set ACLOCAL_AMFLAGS for upwards compatibility
 	  with newer versions of gettext
+	* configure.ac, rules.make, client/Makefile.am,
+	  client/ai/Makefile.am, client/common/Makefile.am,
+	  client/gtk/Makefile.am, client/gtk/connect.c,
+	  client/gtk/gui.c, client/gtk/data/Makefile.am,
+	  client/gtk/data/themes/Makefile.am,
+	  client/gtk/data/themes/FreeCIV-like/Makefile.am,
+	  client/gtk/data/themes/Iceland/Makefile.am,
+	  client/gtk/data/themes/Tiny/Makefile.am,
+	  client/help/Makfile.am, client/help/C/Makefile.am,
+	  common/Makefile.am, common/gtk/Makefile.am, editor/Makefile.am,
+	  meta-server/gnocatan-meta-server.c, server/Makefile.am,
+	  server/gnocatan-server-console.c, server/gnocatan-server.c,
+	  server/gtk/Makefile.am, server/gtk/gnocatan-server-gtk.c: fix
+	  uses of the name "Gnocatan" in the source
+	* configure.ac: change the PACKAGE name to "pioneers"
+	* configure.ac, client/help/C/gnocatan.xml,
+	  meta-server/meta-report: change the default metaserver to
+	  pioneers.debian.net
+	* client/ai/Makefile.am, client/common/Makefile.am,
+	  client/gtk/Makefile.am, common/Makefile.am,
+	  common/gtk/Makefile.am, editor/gtk/Makefile.am,
+	  meta-server/Makefile.am, server/Makefile.am,
+	  server/gtk/Makefile.am: change the names of the binaries being
+	  built
+	* docs/Makefile.am, docs/pioneers.6, docs/pioneers-server-gtk.6,
+	  docs/pioneers-server-console.6, docs/pioneersai.6,
+	  docs/pioneers-meta-server.6: rename the manpages to match
+	* rules.make, server/gnocatan-server-console.c: fix up all
+	  embedded paths to binaries to use the new names
+	* client/gtk/connect.c, client/gtk/gui.c, common/gtk/aboutbox.c,
+	  editor/gtk/editor.c, meta-server/gnocatan-meta-server.c,
+	  server/gtk/gnocatan-server-gtk.c: fix names embedded in the GUI
+	* client/gtk/data/gnocatan.desktop,
+	  server/gtk/gnocatan-server.desktop: fix both the display names
+	  and the paths to the binaries
 
 2005-06-05  Brian Wellington <bwelling@xbill.org>
 	* common/game.c, common/game.h, common/map.c, common/map.h,

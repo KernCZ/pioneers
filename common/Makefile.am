@@ -1,4 +1,4 @@
-# Gnocatan - Implementation of the excellent Settlers of Catan board game.
+# Pioneers - Implementation of the excellent Settlers of Catan board game.
 #   Go buy a copy.
 #
 # Copyright (C) 1999 the Free Software Foundation
@@ -21,7 +21,7 @@
 
 include $(top_srcdir)/rules.make
 
-noinst_LIBRARIES = libgnocatan.a 
+noinst_LIBRARIES = libpioneers.a 
 
 if HAVE_GNOME
 SUBDIRS = gtk
@@ -36,7 +36,7 @@ AM_CPPFLAGS = \
 	$(debug_includes) \
 	$(extra_includes)
 
-libgnocatan_a_SOURCES = \
+libpioneers_a_SOURCES = \
 	buildrec.c \
 	buildrec.h \
 	cards.c \
@@ -61,10 +61,10 @@ libgnocatan_a_SOURCES = \
 	state.c \
 	state.h
 
-libgnocatan_a_LIBADD = \
+libpioneers_a_LIBADD = \
 	$(MT_RAND_OBJ)
 
-libgnocatan_a_DEPENDENCIES = \
+libpioneers_a_DEPENDENCIES = \
 	$(MT_RAND_OBJ)
 
 authors.h: ../AUTHORS

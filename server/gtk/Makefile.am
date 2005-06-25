@@ -1,4 +1,4 @@
-# Gnocatan - Implementation of the excellent Settlers of Catan board game.
+# Pioneers - Implementation of the excellent Settlers of Catan board game.
 #   Go buy a copy.
 #
 # Copyright (C) 1999 the Free Software Foundation
@@ -22,7 +22,7 @@ include $(top_srcdir)/rules.make
 configdir=$(datadir)/games/gnocatan
 Gamesdir=$(datadir)/gnome/apps/Games
 
-bin_PROGRAMS = gnocatan-server-gtk
+bin_PROGRAMS = pioneers-server-gtk
 
 AM_CPPFLAGS = \
 	-I $(srcdir)/../../common \
@@ -34,18 +34,18 @@ AM_CPPFLAGS = \
 	$(debug_includes) \
 	$(extra_includes)
 
-gnocatan_server_gtk_DEPENDENCIES = \
-	../libgnocatan_server.a \
-	../../common/libgnocatan.a \
-	../../common/gtk/libgnocatan_gtk.a
+pioneers_server_gtk_DEPENDENCIES = \
+	../libpioneers_server.a \
+	../../common/libpioneers.a \
+	../../common/gtk/libpioneers_gtk.a
 
-gnocatan_server_gtk_SOURCES = \
+pioneers_server_gtk_SOURCES = \
 	gnocatan-server-gtk.c
 
-gnocatan_server_gtk_LDADD = \
-	../libgnocatan_server.a \
-	../../common/libgnocatan.a \
-	../../common/gtk/libgnocatan_gtk.a \
+pioneers_server_gtk_LDADD = \
+	../libpioneers_server.a \
+	../../common/libpioneers.a \
+	../../common/gtk/libpioneers_gtk.a \
 	$(GNOME2_LIBS)
 
 Games_DATA = gnocatan-server.desktop

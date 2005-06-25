@@ -1,7 +1,7 @@
 
 include $(top_srcdir)/rules.make
 
-bin_PROGRAMS = gnocatan-meta-server
+bin_PROGRAMS = pioneers-meta-server
 
 AM_CPPFLAGS = \
 	-I$(srcdir)/../common -I. \
@@ -9,8 +9,8 @@ AM_CPPFLAGS = \
 	$(debug_includes) \
 	$(extra_includes)
 
-gnocatan_meta_server_SOURCES = \
+pioneers_meta_server_SOURCES = \
 	gnocatan-meta-server.c
 
-gnocatan_meta_server_LDADD = \
-	../common/libgnocatan.a
+pioneers_meta_server_LDADD = \
+	../common/libpioneers.a

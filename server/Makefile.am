@@ -1,4 +1,4 @@
-# Gnocatan - Implementation of the excellent Settlers of Catan board game.
+# Pioneers - Implementation of the excellent Settlers of Catan board game.
 #   Go buy a copy.
 #
 # Copyright (C) 1999 the Free Software Foundation
@@ -27,9 +27,9 @@ endif
 
 DIST_SUBDIRS = gtk
 
-bin_PROGRAMS = gnocatan-server-console
+bin_PROGRAMS = pioneers-server-console
 
-noinst_LIBRARIES = libgnocatan_server.a
+noinst_LIBRARIES = libpioneers_server.a
 
 AM_CPPFLAGS = \
 	-I$(srcdir)/../common -I. \
@@ -38,10 +38,10 @@ AM_CPPFLAGS = \
 	$(debug_includes) \
 	$(extra_includes)
 
-gnocatan_server_console_DEPENDENCIES = libgnocatan_server.a \
-	../common/libgnocatan.a
+pioneers_server_console_DEPENDENCIES = libpioneers_server.a \
+	../common/libpioneers.a
 
-libgnocatan_server_a_SOURCES = \
+libpioneers_server_a_SOURCES = \
 	buildutil.c \
 	develop.c \
 	discard.c \
@@ -58,14 +58,14 @@ libgnocatan_server_a_SOURCES = \
 	trade.c \
 	turn.c
 
-gnocatan_server_console_SOURCES = \
+pioneers_server_console_SOURCES = \
 	gnocatan-server-console.c \
 	glib-driver.c \
 	glib-driver.h
 
-gnocatan_server_console_LDADD = \
-	libgnocatan_server.a \
-	../common/libgnocatan.a 
+pioneers_server_console_LDADD = \
+	libpioneers_server.a \
+	../common/libpioneers.a 
 
 config_DATA = \
 	default.game \

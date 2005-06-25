@@ -1,3 +1,0 @@
-?package(gnocatan-ai):needs="text" section="Games/Board"\
-  title="Gnocatan AI Player" command="/usr/games/gnocatanai"\
-  icon="/usr/share/pixmaps/gnome-gnocatan.png"

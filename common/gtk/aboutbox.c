@@ -49,7 +49,7 @@ void aboutbox_display(const gchar * title, const gchar ** authors)
 				   "weight", PANGO_WEIGHT_BOLD, NULL);
 
 	gtk_text_buffer_insert(GTK_TEXT_BUFFER(buffer), &iter,
-			       _("Gnocatan is based upon the excellent\n"
+			       _("Pioneers is based upon the excellent\n"
 				 "Settlers of Catan board game.\n"), -1);
 	gtk_text_buffer_insert(buffer, &iter, VERSION, -1);
 	gtk_text_buffer_insert_with_tags_by_name(buffer, &iter,
@@ -75,7 +75,7 @@ void aboutbox_display(const gchar * title, const gchar ** authors)
 	   "name", title,
 	   "version", VERSION,
 	   "copyright", _("(C) 2002 the Free Software Foundation"),
-	   _("Gnocatan is based upon the excellent"
+	   _("Pioneers is based upon the excellent"
 	   "Settlers of Catan board game"),
 	   "authors", authors,
 	   "documentors", NULL,

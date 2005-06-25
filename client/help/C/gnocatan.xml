@@ -560,7 +560,7 @@
 
 	<para>The dialog displays a list of Gnocatan games
           that are currently running on the Internet. The default
-	  meta server is <url>gnocatan.debian.net</url></para>
+	  meta server is <url>pioneers.debian.net</url></para>
 
 	<figure id="gnocatan-FIG-servers-dialog">
 	  <title>The Join a public game dialog.</title>

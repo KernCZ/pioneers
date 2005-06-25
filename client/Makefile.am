@@ -1,4 +1,4 @@
-# Gnocatan - Implementation of the excellent Settlers of Catan board game.
+# Pioneers - Implementation of the excellent Settlers of Catan board game.
 #   Go buy a copy.
 #
 # Copyright (C) 2003 Bas Wijnen <b.wijnen@phys.rug.nl>

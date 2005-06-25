@@ -1,4 +1,4 @@
-# Gnocatan - Implementation of the excellent Settlers of Catan board game.
+# Pioneers - Implementation of the excellent Settlers of Catan board game.
 #   Go buy a copy.
 #
 # Copyright (C) 1999 the Free Software Foundation
@@ -27,12 +27,12 @@ appicondir=$(datadir)/pixmaps
 pixmapdir =$(datadir)/pixmaps/gnocatan
 Gamesdir=$(datadir)/gnome/apps/Games
 
-bin_PROGRAMS = gnocatan
+bin_PROGRAMS = pioneers
 
-gnocatan_DEPENDENCIES = \
-	../common/libgnocatanclient.a \
-	../../common/gtk/libgnocatan_gtk.a \
-	../../common/libgnocatan.a
+pioneers_DEPENDENCIES = \
+	../common/libpioneersclient.a \
+	../../common/gtk/libpioneers_gtk.a \
+	../../common/libpioneers.a
 
 # if anyone knows a cleaner way to do this, be my guest.  Automake screamed
 #   at me when I tried to do it more directly.
@@ -59,9 +59,9 @@ AM_CPPFLAGS = \
 	$(debug_includes) \
 	$(extra_includes)
 
-EXTRA_gnocatan_SOURCES = $(ADMIN_GTK_FILES_INACTIVE)
+EXTRA_pioneers_SOURCES = $(ADMIN_GTK_FILES_INACTIVE)
 
-gnocatan_SOURCES = \
+pioneers_SOURCES = \
 	$(ADMIN_GTK_FILES_ACTIVE) \
 	frontend.h \
 	gui.h \
@@ -92,8 +92,8 @@ gnocatan_SOURCES = \
 	state.c \
 	trade.c
 
-gnocatan_LDADD = \
-	../common/libgnocatanclient.a \
-	../../common/libgnocatan.a \
-	../../common/gtk/libgnocatan_gtk.a \
+pioneers_LDADD = \
+	../common/libpioneersclient.a \
+	../../common/libpioneers.a \
+	../../common/gtk/libpioneers_gtk.a \
 	$(GNOME2_LIBS)

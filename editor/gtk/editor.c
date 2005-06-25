@@ -680,7 +680,7 @@ static void set_window_title(const gchar * title)
 		window_title = NULL;
 	} else
 		window_title = g_strdup(title);
-	g_snprintf(str, sizeof(str), "%s: %s", _("Gnocatan Editor"),
+	g_snprintf(str, sizeof(str), "%s: %s", _("Pioneers Editor"),
 		   title);
 
 	gtk_window_set_title(GTK_WINDOW(toplevel), str);
@@ -941,7 +941,7 @@ static void about_menu_cb(void)
 		NULL
 	};
 
-	aboutbox_display(_("Gnocatan Game Editor"), authors);
+	aboutbox_display(_("Pioneers Game Editor"), authors);
 }
 
 static GtkActionEntry entries[] = {
@@ -1009,7 +1009,7 @@ int main(int argc, char *argv[])
 	default_game = g_build_filename(get_gnocatan_dir(), "default.game",
 					NULL);
 
-	gnome_program_init("gnocatan-editor", VERSION, LIBGNOME_MODULE,
+	gnome_program_init("pioneers-editor", VERSION, LIBGNOME_MODULE,
 			   argc, argv, GNOME_PARAM_POPT_TABLE, NULL, NULL);
 
 	gtk_init(&argc, &argv);

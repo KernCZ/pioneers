@@ -1,4 +1,4 @@
-# Gnocatan - Implementation of the excellent Settlers of Catan board game.
+# Pioneers - Implementation of the excellent Settlers of Catan board game.
 #   Go buy a copy.
 #
 # Copyright (C) 1999 the Free Software Foundation
@@ -20,7 +20,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 AC_PREREQ(2.53)
-AC_INIT([gnocatan],[0.9.17])
+AC_INIT([pioneers],[0.9.17])
 AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
 AC_CONFIG_SRCDIR([client])
 AM_CONFIG_HEADER(config.h)
@@ -31,7 +31,7 @@ GNOCATAN_DEFAULT_GAME_PORT=5556
 GNOCATAN_DEFAULT_GAME_HOST=localhost
 GNOCATAN_DEFAULT_ADMIN_PORT=5555
 GNOCATAN_DEFAULT_META_PORT=5557
-GNOCATAN_DEFAULT_META_SERVER=gnocatan.debian.net
+GNOCATAN_DEFAULT_META_SERVER=pioneers.debian.net
 
 GLIB_REQUIRED_VERSION=2.4
 GTK_REQUIRED_VERSION=2.4
@@ -161,7 +161,7 @@ AC_DEFINE_UNQUOTED(GNOCATAN_DEFAULT_META_SERVER,
 ## internationalization support
 ALL_LINGUAS="de es fr nl it"
 
-GETTEXT_PACKAGE=gnocatan
+GETTEXT_PACKAGE=pioneers
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE", [The gettext package name])
 AM_GLIB_GNU_GETTEXT

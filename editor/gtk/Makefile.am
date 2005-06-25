@@ -1,12 +1,12 @@
 configdir=$(datadir)/games/gnocatan
 
-bin_PROGRAMS = gnocatan-editor
+bin_PROGRAMS = pioneers-editor
 
 include $(top_srcdir)/rules.make
 
-gnocatan_editor_DEPENDENCIES = \
-	../../common/libgnocatan.a \
-	../../common/gtk/libgnocatan_gtk.a
+pioneers_editor_DEPENDENCIES = \
+	../../common/libpioneers.a \
+	../../common/gtk/libpioneers_gtk.a
 
 AM_CPPFLAGS = \
 	-I$(srcdir)/../../common -I. \
@@ -18,7 +18,7 @@ AM_CPPFLAGS = \
 	$(debug_includes) \
 	$(extra_includes)
 
-gnocatan_editor_SOURCES = \
+pioneers_editor_SOURCES = \
 	editor.c \
 	game-parameters.c \
 	game-parameters.h \
@@ -29,7 +29,7 @@ gnocatan_editor_SOURCES = \
 	game-resources.c \
 	game-resources.h
 
-gnocatan_editor_LDADD = \
-	../../common/libgnocatan.a \
-	../../common/gtk/libgnocatan_gtk.a \
+pioneers_editor_LDADD = \
+	../../common/libpioneers.a \
+	../../common/gtk/libpioneers_gtk.a \
 	$(GNOME2_LIBS)

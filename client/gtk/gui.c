@@ -1,4 +1,4 @@
-/* Gnocatan - Implementation of the excellent Settlers of Catan board game.
+/* Pioneers - Implementation of the excellent Settlers of Catan board game.
  *   Go buy a copy.
  *
  * Copyright (C) 1999 the Free Software Foundation
@@ -82,7 +82,7 @@ static GnomeUIInfo game_menu[] = {
 	 GNOME_APP_PIXMAP_STOCK, GTK_STOCK_STOP,
 	 0, 0, NULL},
 #ifdef ADMIN_GTK
-	{GNOME_APP_UI_ITEM, N_("_Admin"), N_("Administer Gnocatan server"),
+	{GNOME_APP_UI_ITEM, N_("_Admin"), N_("Administer Pioneers server"),
 	 (gpointer) show_admin_interface, NULL, NULL,
 	 GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_BLANK,
 	 'a', GDK_CONTROL_MASK, NULL},
@@ -117,7 +117,7 @@ static void help_settings_cb(GtkWidget * widget, void *user_data);
 
 /* put this in non-const memory, because GNOMEUIINFO_HELP doesn't want a
  * const pointer. */
-static gchar app_name[] = "gnocatan";
+static gchar app_name[] = "pioneers";
 static GnomeUIInfo help_menu[] = {
 	{GNOME_APP_UI_ITEM, N_("_Legend"),
 	 N_("Terrain legend and building costs"),
@@ -131,8 +131,8 @@ static GnomeUIInfo help_menu[] = {
 	 N_("Histogram of dice rolls"),
 	 (gpointer) help_histogram_cb, NULL, NULL, GNOME_APP_PIXMAP_STOCK,
 	 GTK_STOCK_DIALOG_INFO, 0, 0, NULL},
-	{GNOME_APP_UI_ITEM, N_("_About Gnocatan"),
-	 N_("Information about Gnocatan"),
+	{GNOME_APP_UI_ITEM, N_("_About Pioneers"),
+	 N_("Information about Pioneers"),
 	 (gpointer) help_about_cb, NULL, NULL, GNOME_APP_PIXMAP_STOCK,
 	 GNOME_STOCK_ABOUT, 0, 0, NULL},
 
@@ -467,7 +467,7 @@ static GtkWidget *build_map_panel(void)
 		gui_show_legend_page(FALSE);
 
 	/* Tab page name, shown for the splash screen */
-	lbl = gtk_label_new(_("Welcome to Gnocatan"));
+	lbl = gtk_label_new(_("Welcome to Pioneers"));
 	gtk_widget_show(lbl);
 	splash_page = splash_build_page();
 	gtk_notebook_insert_page(GTK_NOTEBOOK(map_notebook),
@@ -655,7 +655,7 @@ static void preferences_cb(G_GNUC_UNUSED GtkWidget * widget,
 
 	/* Caption of preferences dialog */
 	preferences_dlg = gtk_dialog_new_with_buttons(_
-						      ("Gnocatan Preferences"),
+						      ("Pioneers Preferences"),
 						      GTK_WINDOW
 						      (app_window),
 						      GTK_DIALOG_DESTROY_WITH_PARENT,
@@ -784,7 +784,7 @@ static void help_about_cb(G_GNUC_UNUSED GtkWidget * widget,
 	const gchar *authors[] = {
 		AUTHORLIST
 	};
-	aboutbox_display(_("The Gnocatan Game"), authors);
+	aboutbox_display(_("The Pioneers Game"), authors);
 }
 
 static void help_legend_cb(G_GNUC_UNUSED GtkWidget * widget,
@@ -890,7 +890,7 @@ static GtkWidget *build_status_bar(void)
 			   player_build_turn_area(), FALSE, TRUE, 0);
 
 	/* Initial text in status bar */
-	gui_set_instructions(_("Welcome to Gnocatan!"));
+	gui_set_instructions(_("Welcome to Pioneers!"));
 
 	return app_bar;
 }
@@ -938,9 +938,9 @@ GtkWidget *gui_build_interface()
 	gmap = guimap_new();
 
 	register_gnocatan_pixmaps();
-	app_window = gnome_app_new("gnocatan",
+	app_window = gnome_app_new("pioneers",
 				   /* The name of the application */
-				   _("Gnocatan"));
+				   _("Pioneers"));
 
 
 	icon_file =

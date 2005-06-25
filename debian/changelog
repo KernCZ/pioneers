@@ -1,3 +1,9 @@
+pioneers (0.9.17-2) unstable; urgency=low
+
+  * Upstream rename due to trademark concerns.
+
+ -- Steve Langasek <vorlon@debian.org>  Sat, 25 Jun 2005 05:28:02 -0700
+
 gnocatan (0.9.17-1) unstable; urgency=low
 
   * New maintainer, adjust the package a bit to my liking.

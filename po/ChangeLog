@@ -1,3 +1,9 @@
+2005-06-25 Steve Langasek <vorlon@debian.org>
+	* de.po, es.po, fr.po, it.po, nl.po: sync translations to
+	  match the Gnocatan->Pioneers rebranding, where possible
+	* de.po, nl.po: fix up a C string translation in each of these
+	  files which gets rejected by current gettext as being invalid
+
 2005-06-5 Roland Clobus <rclobus@bigfoot.com>
 	* fr.po, nl.po: Updated for Q_() patch
 	

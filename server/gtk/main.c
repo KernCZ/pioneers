@@ -1,4 +1,4 @@
-/* Gnocatan - Implementation of the excellent Settlers of Catan board game.
+/* Pioneers - Implementation of the excellent Settlers of Catan board game.
  *   Go buy a copy.
  *
  * Copyright (C) 1999 the Free Software Foundation
@@ -770,7 +770,7 @@ int main(int argc, char *argv[])
 	 * to config-gnome.c, which would allow a GNOME-free application,
 	 * for architectures that don't have GNOME libraries.
 	 */
-	gnome_program_init("gnocatan-server", VERSION,
+	gnome_program_init("pioneers-server", VERSION,
 			   LIBGNOME_MODULE,
 			   argc, argv, GNOME_PARAM_POPT_TABLE, NULL, NULL);
 
@@ -786,7 +786,7 @@ int main(int argc, char *argv[])
 
 	window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	/* Name in the titlebar of the server */
-	gtk_window_set_title(GTK_WINDOW(window), _("Gnocatan Server"));
+	gtk_window_set_title(GTK_WINDOW(window), _("Pioneers Server"));
 
 	vbox = gtk_vbox_new(FALSE, 0);
 	gtk_container_add(GTK_CONTAINER(window), vbox);

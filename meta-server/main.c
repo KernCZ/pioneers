@@ -1,4 +1,4 @@
-/* Gnocatan - Implementation of the excellent Settlers of Catan board game.
+/* Pioneers - Implementation of the excellent Settlers of Catan board game.
  *   Go buy a copy.
  *
  * Copyright (C) 1999 the Free Software Foundation
@@ -1020,7 +1020,7 @@ int main(int argc, char *argv[])
 			break;
 		}
 
-	openlog("gnocatan-meta", LOG_PID, LOG_USER);
+	openlog("pioneers-meta", LOG_PID, LOG_USER);
 	if (make_daemon)
 		convert_to_daemon();
 
@@ -1043,7 +1043,7 @@ int main(int argc, char *argv[])
 	if (!setup_accept_sock(GNOCATAN_DEFAULT_META_PORT))
 		return 1;
 
-	syslog(LOG_INFO, "Gnocatan meta server started.");
+	syslog(LOG_INFO, "Pioneers meta server started.");
 	select_loop();
 
 	return 0;

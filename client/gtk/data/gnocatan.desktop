@@ -1,7 +1,7 @@
 [Desktop Entry]
-Name=Gnocatan
-Comment=Gnocatan game client
-Exec=gnocatan
+Name=Pioneers
+Comment=Pioneers game client
+Exec=pioneers
 Icon=gnome-gnocatan.png
 Terminal=0
 Type=Application

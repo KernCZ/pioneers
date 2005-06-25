@@ -1,0 +1,3 @@
+?package(pioneers-client):needs="X11" section="Games/Board"\
+  title="Pioneers" command="/usr/games/pioneers" \
+  icon="/usr/share/pixmaps/gnome-gnocatan.png"
