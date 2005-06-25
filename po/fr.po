@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnocatan 0.8.1.41\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-06-25 00:07-0700\n"
+"POT-Creation-Date: 2005-06-25 06:13-0700\n"
 "PO-Revision-Date: 2003-11-20 16:00-0600\n"
 "Last-Translator: LT-P <LT-P@lt-p.net>\n"
 "Language-Team: Français <LL@li.org>, Arnaud MALON <moko@geumeuleu.com>\n"
@@ -16,6 +16,9 @@ msgstr ""
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#. Default name for the AI when the computer_names file
+#. * is not found or empty.
+#.
 #: client/ai/ai.c:53 client/ai/ai.c:69
 msgid "Computer Player"
 msgstr ""
@@ -205,6 +208,7 @@ msgstr "Absent"
 msgid "We have been kicked out of the game.\n"
 msgstr "Nous avons été expulsé de la partie.\n"
 
+#. Network status: offline
 #: client/common/client.c:426 client/common/client.c:804 client/gtk/gui.c:881
 msgid "Offline"
 msgstr "Déconnecté"
@@ -372,11 +376,15 @@ msgstr "%s joue une carte de développement %s.\n"
 msgid "You have run out of road segments.\n"
 msgstr "Vous êtes à court de routes.\n"
 
+#. I get the cards!
+#.
 #: client/common/develop.c:188
 #, c-format
 msgid "You get %s from %s.\n"
 msgstr "Vous recevez %s de %s.\n"
 
+#. I lose the cards!
+#.
 #: client/common/develop.c:196
 #, c-format
 msgid "%s took %s from you.\n"
@@ -450,6 +458,8 @@ msgstr "%s a la route la plus longue.\n"
 msgid "Waiting for %s."
 msgstr "En attende de %s."
 
+#. We are not in on the action
+#. someone stole a resource from someone else
 #: client/common/player.c:305
 #, c-format
 msgid "%s stole a resource from %s.\n"
@@ -555,6 +565,7 @@ msgstr "%s a annulé un mouvement de bateau.\n"
 msgid "%s moved a ship.\n"
 msgstr "%s déplace un bateau.\n"
 
+#. tell the user that someone got something
 #: client/common/player.c:621
 #, c-format
 msgid "%s received %s.\n"
@@ -564,6 +575,7 @@ msgstr "%s a reçu %s.\n"
 msgid "server asks to lose invalid point.\n"
 msgstr "le serveur demande la perte du point incorrect.\n"
 
+#. tell the user the point is lost
 #: client/common/player.c:644
 #, c-format
 msgid "%s lost %s.\n"
@@ -573,6 +585,7 @@ msgstr "%s perd %s.\n"
 msgid "server asks to move invalid point.\n"
 msgstr "le serveur demande de déplacer le point incorrect.\n"
 
+#. tell the user someone lost something to someone else
 #: client/common/player.c:674
 #, c-format
 msgid "%s lost %s to %s.\n"
@@ -892,6 +905,7 @@ msgstr "Pts de Vic."
 msgid "Points needed to win"
 msgstr "Points requis pour gagner: %i"
 
+#. Label for customising a game
 #: client/gtk/connect.c:982 common/gtk/game-settings.c:173
 msgid "Sevens Rule"
 msgstr "Règle des sept"
@@ -964,6 +978,7 @@ msgstr "Rejoindre une partie privée"
 msgid "Join a private game"
 msgstr "Rejoindre une partie privée"
 
+#. Commandline option of client: hostname of the server
 #: client/gtk/connect.c:1366 client/gtk/offline.c:43
 msgid "Server Host"
 msgstr "Adresse du serveur"
@@ -972,6 +987,7 @@ msgstr "Adresse du serveur"
 msgid "Name of the host of the game"
 msgstr "Nom du serveur hébergeant la partie"
 
+#. Commandline option of client: port of the server
 #: client/gtk/connect.c:1382 client/gtk/offline.c:46
 #: server/gtk/gnocatan-server-gtk.c:472
 msgid "Server Port"
@@ -1010,6 +1026,7 @@ msgstr "Vous devez jeter %d ressources"
 msgid "Total discards"
 msgstr "Total des cartes jetées"
 
+#. Caption for list of player that must discard cards
 #: client/gtk/discard.c:240
 msgid "<b>Waiting for players to discard</b>"
 msgstr "<b>En attente des joueurs jetant des cartes</b>"
@@ -1047,6 +1064,8 @@ msgstr "Vous pouvez choisir 1 ressource"
 msgid "You may choose %d resources"
 msgstr "Vous pouvez choisir %d ressources"
 
+#. Text for total in choose gold dialog
+#. Text for total in year of plenty dialog
 #: client/gtk/gold.c:101 client/gtk/plenty.c:74
 msgid "Total resources"
 msgstr "Total des ressources"
@@ -1233,6 +1252,7 @@ msgstr ""
 "Carte de Dév.\n"
 "(F11)"
 
+#. Victory points target in statusbar
 #: client/gtk/gui.c:253
 #, c-format
 msgid "Points Needed to Win: %i"
@@ -1242,22 +1262,27 @@ msgstr "Pts requis pour gagner: %i"
 msgid "<b>Messages</b>"
 msgstr "<b>Messages</b>"
 
+#. Tab page name
 #: client/gtk/gui.c:439 editor/gtk/editor.c:1054
 msgid "Map"
 msgstr "Carte"
 
+#. Tab page name
 #: client/gtk/gui.c:445
 msgid "Trade"
 msgstr "Échanges"
 
+#. Tab page name
 #: client/gtk/gui.c:453 client/gtk/quote.c:632
 msgid "Quote"
 msgstr "Offre"
 
+#. Tab page name
 #: client/gtk/gui.c:461 client/gtk/legend.c:213
 msgid "Legend"
 msgstr "Légende"
 
+#. Tab page name, shown for the splash screen
 #: client/gtk/gui.c:470
 msgid "Welcome to Pioneers"
 msgstr "Bienvenue à Pioneers"
@@ -1267,6 +1292,7 @@ msgstr "Bienvenue à Pioneers"
 msgid "Pioneers Preferences"
 msgstr "Serveur Pioneers"
 
+#. Label for changing the theme, in the preferences dialog
 #: client/gtk/gui.c:688
 msgid "Theme:"
 msgstr "Thème:"
@@ -1275,14 +1301,17 @@ msgstr "Thème:"
 msgid "Choose one of the themes"
 msgstr "Choisissez un thème"
 
+#. Label for the option to show the legend
 #: client/gtk/gui.c:715
 msgid "Show legend"
 msgstr "Montrer la légende"
 
+#. Tooltip for the option to show the legend
 #: client/gtk/gui.c:725
 msgid "Show the legend as a page beside the map"
 msgstr "Afficher la légende en dessous de la carte"
 
+#. Label for the option to display log messages in color
 #: client/gtk/gui.c:730
 msgid "Messages with color"
 msgstr "Afficher les messages en couleur"
@@ -1299,6 +1328,7 @@ msgstr "Afficher les dialogues en couleur"
 msgid "Show new chat messages in the color of the player"
 msgstr "Afficher les nouveaux messages des joueurs en couleurs"
 
+#. Label for the option to display the summary with colors
 #: client/gtk/gui.c:761
 msgid "Summary with color"
 msgstr "Afficher les joueurs en couleur"
@@ -1312,16 +1342,20 @@ msgstr "Utiliser des couleurs pour afficher les joueurs"
 msgid "The Pioneers Game"
 msgstr "Pioneers"
 
+#. Initial text in status bar
 #: client/gtk/gui.c:893
 msgid "Welcome to Pioneers!"
 msgstr "Bienvenue à Pioneers!"
 
+#. Missing pixmap
+#. Missing pixmap, main icon file
 #: client/gtk/gui.c:920 client/gtk/gui.c:952
 #: server/gtk/gnocatan-server-gtk.c:820
 #, c-format
 msgid "Pixmap not found: %s\n"
 msgstr "Pixmap introuvable: %s\n"
 
+#. The name of the application
 #: client/gtk/gui.c:943
 msgid "Pioneers"
 msgstr "Pioneers"
@@ -1444,6 +1478,7 @@ msgstr "Renommer"
 msgid "Player Name:"
 msgstr "Nom du joueur:"
 
+#. Commandline option of client: name of the player
 #: client/gtk/offline.c:49
 msgid "Player name"
 msgstr "Nom du joueur"
@@ -1517,6 +1552,7 @@ msgstr "Carte de développement"
 msgid "Development cards"
 msgstr "Cartes de développement"
 
+#. Caption for the overview of the points and card of other players
 #: client/gtk/player.c:481
 msgid "<b>Player Summary</b>"
 msgstr "<b>Les joueurs</b>"
@@ -1525,6 +1561,7 @@ msgstr "<b>Les joueurs</b>"
 msgid "Please choose two resources from the bank"
 msgstr "Prenez deux ressources à la banque"
 
+#. Trade: a player has rejected trade
 #: client/gtk/quote.c:257 client/gtk/trade.c:454
 msgid "Rejected trade"
 msgstr "Offre refusée"
@@ -1542,10 +1579,12 @@ msgstr "<moins"
 msgid "more>"
 msgstr "plus>"
 
+#. Frame title, trade: I want to trade these resources
 #: client/gtk/quote.c:594 client/gtk/trade.c:860
 msgid "I Want"
 msgstr "Je voudrais"
 
+#. Frame title, trade: I want these resources in return
 #: client/gtk/quote.c:611 client/gtk/trade.c:875
 msgid "Give Them"
 msgstr "Accepter"
@@ -1558,6 +1597,7 @@ msgstr "Effacer"
 msgid "Reject Domestic Trade"
 msgstr "Refuser l'offre"
 
+#. Caption for overview of the resources of the player
 #: client/gtk/resource.c:50
 msgid "<b>Resources</b>"
 msgstr "<b>Ressources</b>"
@@ -1566,26 +1606,32 @@ msgstr "<b>Ressources</b>"
 msgid "Total"
 msgstr "Total"
 
+#. Tooltip for the amount of resources in the hand
 #: client/gtk/resource-table.c:178
 msgid "Amount in hand"
 msgstr "Ressources en main"
 
+#. Tooltip for decreasing the selected amount
 #: client/gtk/resource-table.c:193
 msgid "Decrease the selected amount"
 msgstr ""
 
+#. Tooltip for the amount of resources in the bank
 #: client/gtk/resource-table.c:207
 msgid "Amount in the bank"
 msgstr ""
 
+#. Tooltip for increasing the selected amount
 #: client/gtk/resource-table.c:223
 msgid "Increase the selected amount"
 msgstr ""
 
+#. Tooltip for the selected amount
 #: client/gtk/resource-table.c:240
 msgid "Selected amount"
 msgstr ""
 
+#. Tooltip for the total selected amount
 #: client/gtk/resource-table.c:285
 msgid "Total selected amount"
 msgstr ""
@@ -1647,6 +1693,7 @@ msgstr "Autoriser les échanges avant de construire ?"
 msgid "Amount of Each Resource:"
 msgstr "Nombre de chaque ressource:"
 
+#. Sevens rule: normal
 #: client/gtk/settingscreen.c:160 common/gtk/game-settings.c:181
 msgid "Normal"
 msgstr "Normal"
@@ -1728,47 +1775,60 @@ msgstr "Cartes Marché:"
 msgid "Soldier Cards:"
 msgstr "Cartes Chevalier:"
 
+#. trade: you ask for something for free
 #: client/gtk/trade.c:286
 #, c-format
 msgid "ask for %s for free"
 msgstr "demande %s gratuitement"
 
+#. trade: you give something away for free
 #: client/gtk/trade.c:291
 #, c-format
 msgid "give %s for free"
 msgstr "donne %s gratuitement"
 
+#. trade: you trade something for something else
 #: client/gtk/trade.c:296
 #, c-format
 msgid "give %s for %s"
 msgstr "donne %s contre %s"
 
+#. trade: maritime quote: %1 resources of type %2 for
+#. * one resource of type %3
 #: client/gtk/trade.c:307
 #, c-format
 msgid "%d:1 %s for %s"
 msgstr "%d:1 %s pour %s"
 
+#. I want some resources, and give them some resources
 #: client/gtk/trade.c:481
 #, c-format
 msgid "I want %s, and give them %s"
 msgstr "Je voudrais %s, et donner %s"
 
+#. Button text, trade: call for quotes from other players
 #: client/gtk/trade.c:894
 msgid "_Call for Quotes"
 msgstr "_Appel d'offre"
 
+#. Now create columns
+#. Table header: Player who trades
+#. Role of the player: player
 #: client/gtk/trade.c:936 server/gtk/gnocatan-server-gtk.c:424
 msgid "Player"
 msgstr "Joueur"
 
+#. Table header: Quote
 #: client/gtk/trade.c:951
 msgid "Quotes"
 msgstr "Offres"
 
+#. Button text: Trade page, accept selected quote
 #: client/gtk/trade.c:965
 msgid "_Accept Quote"
 msgstr "_Accepter l'offre"
 
+#. Button text: Trade page, finish trading
 #: client/gtk/trade.c:971
 msgid "_Finish Trading"
 msgstr "_Fin des échanges"
@@ -1790,30 +1850,37 @@ msgstr ""
 "\n"
 "Écrit par:\n"
 
+#. Label for customising a game
 #: common/gtk/game-settings.c:113
 msgid "Map Terrain"
 msgstr "Carte"
 
+#. Tooltip for Map Terrain
 #: common/gtk/game-settings.c:127
 msgid "Default map or a random map"
 msgstr "Carte par défaut ou carte aléatoire"
 
+#. Label text for customising a game
 #: common/gtk/game-settings.c:130
 msgid "Number of Players"
 msgstr "Nombre de joueurs"
 
+#. Tooltip for 'Number of Players'
 #: common/gtk/game-settings.c:148
 msgid "The number of players"
 msgstr "Nombre de joueurs"
 
+#. Label for customising a game
 #: common/gtk/game-settings.c:151
 msgid "Victory Point Target"
 msgstr "Pts de victoire requis"
 
+#. Tooltip for Victory Point Target
 #: common/gtk/game-settings.c:170
 msgid "The points needed to win the game"
 msgstr "Pts requis pour gagner: %i"
 
+#. Tooltip for sevens rule normal
 #: common/gtk/game-settings.c:201
 msgid "All sevens move the robber or pirate"
 msgstr "Sur 7, il faut déplacer le voleur ou le pirate"
@@ -1822,51 +1889,64 @@ msgstr "Sur 7, il faut déplacer le voleur ou le pirate"
 msgid "In the first two turns all sevens are rerolled"
 msgstr "Durant les 2 premier tours, on relance les 7"
 
+#. Tooltip for sevens rule reroll all
 #: common/gtk/game-settings.c:210
 msgid "All sevens are rerolled"
 msgstr "Touss les 7 sont relancés"
 
+#. Button text: random terrain
 #: common/gtk/game-settings.c:365
 msgid "Random"
 msgstr "Aléatoire"
 
+#. Button text: default terrain
 #: common/gtk/game-settings.c:367
 msgid "Default"
 msgstr "Par défaut"
 
+#. Port indicator for a resource: trade 2 for 1
 #: common/gtk/guimap.c:634
 msgid "2:1"
 msgstr "2:1"
 
+#. Port indicator: trade 3 for 1
+#. General port indicator
 #: common/gtk/guimap.c:637 common/gtk/guimap.c:662
 msgid "3:1"
 msgstr "3:1"
 
+#. Port indicator for brick
 #: common/gtk/guimap.c:642
 #, fuzzy
 msgid "B"
 msgstr "Argile"
 
+#. Port indicator for grain
 #: common/gtk/guimap.c:646
 #, fuzzy
 msgid "G"
 msgstr "Blé"
 
+#. Port indicator for ore
 #: common/gtk/guimap.c:650
 #, fuzzy
 msgid "O"
 msgstr "Pierre"
 
+#. Port indicator for wool
+#. West
 #: common/gtk/guimap.c:654 editor/gtk/editor.c:72
 #, fuzzy
 msgid "W"
 msgstr "Laine"
 
+#. Port indicator for lumber
 #: common/gtk/guimap.c:658
 #, fuzzy
 msgid "L"
 msgstr "Bois"
 
+#. Tooltip for the list of games
 #: common/gtk/select-game.c:93
 msgid "Select a game"
 msgstr "Serveurs récents"
@@ -2165,22 +2245,27 @@ msgstr "Bois (2:1)"
 msgid "Any (3:1)"
 msgstr ""
 
+#. East
 #: editor/gtk/editor.c:66
 msgid "E"
 msgstr "E"
 
+#. North east
 #: editor/gtk/editor.c:68
 msgid "NE"
 msgstr "NE"
 
+#. North west
 #: editor/gtk/editor.c:70
 msgid "NW"
 msgstr "NO"
 
+#. South west
 #: editor/gtk/editor.c:74
 msgid "SW"
 msgstr "SO"
 
+#. South east
 #: editor/gtk/editor.c:76
 msgid "SE"
 msgstr "SE"
@@ -2383,6 +2468,7 @@ msgstr "Départ du joueur %s depuis %s\n"
 msgid "Player %d is now %s\n"
 msgstr "Le joueur %d s'appelle maintenant %s\n"
 
+#. Role of the player: viewer
 #: server/gtk/gnocatan-server-gtk.c:422
 msgid "Viewer"
 msgstr "Spectateur"
@@ -2501,6 +2587,7 @@ msgstr "Messaage du serveur"
 msgid "The Pioneers Game Server"
 msgstr "Le serveur Pioneers"
 
+#. Name in the titlebar of the server
 #: server/gtk/gnocatan-server-gtk.c:789
 msgid "Pioneers Server"
 msgstr "Serveur Pioneers"
@@ -2533,6 +2620,7 @@ msgstr "La partie est terminée."
 msgid "NOTE Expecting version %s, not %s\n"
 msgstr ""
 
+#. Server: preparing game #.....
 #: server/server.c:215
 msgid "Preparing game"
 msgstr "Préparation de la partie"

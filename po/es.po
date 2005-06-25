@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnocatan 0.7.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-06-25 00:07-0700\n"
+"POT-Creation-Date: 2005-06-25 06:13-0700\n"
 "PO-Revision-Date: 2003-01-25 00:08-0600\n"
 "Last-Translator: Steve Langasek <vorlon@dodds.net>\n"
 "Language-Team: Spanish <debian-l10n-spanish@lists.debian.org>\n"
@@ -16,6 +16,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#. Default name for the AI when the computer_names file
+#. * is not found or empty.
+#.
 #: client/ai/ai.c:53 client/ai/ai.c:69
 #, fuzzy
 msgid "Computer Player"
@@ -204,6 +207,7 @@ msgstr ""
 msgid "We have been kicked out of the game.\n"
 msgstr "Has sido expulsado del partido.\n"
 
+#. Network status: offline
 #: client/common/client.c:426 client/common/client.c:804 client/gtk/gui.c:881
 msgid "Offline"
 msgstr ""
@@ -371,11 +375,15 @@ msgstr "%s ha usado una carta de desarrollo «%s».\n"
 msgid "You have run out of road segments.\n"
 msgstr ""
 
+#. I get the cards!
+#.
 #: client/common/develop.c:188
 #, c-format
 msgid "You get %s from %s.\n"
 msgstr "Recibes %s de %s.\n"
 
+#. I lose the cards!
+#.
 #: client/common/develop.c:196
 #, c-format
 msgid "%s took %s from you.\n"
@@ -449,6 +457,8 @@ msgstr "%s tiene el camino más largo.\n"
 msgid "Waiting for %s."
 msgstr "Esperando a %s."
 
+#. We are not in on the action
+#. someone stole a resource from someone else
 #: client/common/player.c:305
 #, c-format
 msgid "%s stole a resource from %s.\n"
@@ -554,6 +564,7 @@ msgstr ""
 msgid "%s moved a ship.\n"
 msgstr ""
 
+#. tell the user that someone got something
 #: client/common/player.c:621
 #, fuzzy, c-format
 msgid "%s received %s.\n"
@@ -563,6 +574,7 @@ msgstr "%s recibe %s.\n"
 msgid "server asks to lose invalid point.\n"
 msgstr ""
 
+#. tell the user the point is lost
 #: client/common/player.c:644
 #, fuzzy, c-format
 msgid "%s lost %s.\n"
@@ -572,6 +584,7 @@ msgstr "%s gasta %s.\n"
 msgid "server asks to move invalid point.\n"
 msgstr ""
 
+#. tell the user someone lost something to someone else
 #: client/common/player.c:674
 #, c-format
 msgid "%s lost %s to %s.\n"
@@ -894,6 +907,7 @@ msgstr ""
 msgid "Points needed to win"
 msgstr ""
 
+#. Label for customising a game
 #: client/gtk/connect.c:982 common/gtk/game-settings.c:173
 msgid "Sevens Rule"
 msgstr "Regla de los sietes"
@@ -968,6 +982,7 @@ msgstr ""
 msgid "Join a private game"
 msgstr ""
 
+#. Commandline option of client: hostname of the server
 #: client/gtk/connect.c:1366 client/gtk/offline.c:43
 msgid "Server Host"
 msgstr "Servidor"
@@ -976,6 +991,7 @@ msgstr "Servidor"
 msgid "Name of the host of the game"
 msgstr ""
 
+#. Commandline option of client: port of the server
 #: client/gtk/connect.c:1382 client/gtk/offline.c:46
 #: server/gtk/gnocatan-server-gtk.c:472
 msgid "Server Port"
@@ -1017,6 +1033,7 @@ msgstr "Tienes que descartar %d cartas de recurso"
 msgid "Total discards"
 msgstr ""
 
+#. Caption for list of player that must discard cards
 #: client/gtk/discard.c:240
 #, fuzzy
 msgid "<b>Waiting for players to discard</b>"
@@ -1056,6 +1073,8 @@ msgstr "Tienes que descartar 1 carta de recurso"
 msgid "You may choose %d resources"
 msgstr "Tienes que descartar %d cartas de recurso"
 
+#. Text for total in choose gold dialog
+#. Text for total in year of plenty dialog
 #: client/gtk/gold.c:101 client/gtk/plenty.c:74
 msgid "Total resources"
 msgstr ""
@@ -1241,6 +1260,7 @@ msgstr ""
 "Desarrollar\n"
 "(F11)"
 
+#. Victory points target in statusbar
 #: client/gtk/gui.c:253
 #, c-format
 msgid "Points Needed to Win: %i"
@@ -1251,22 +1271,27 @@ msgstr ""
 msgid "<b>Messages</b>"
 msgstr "<b>Mensajes</b>"
 
+#. Tab page name
 #: client/gtk/gui.c:439 editor/gtk/editor.c:1054
 msgid "Map"
 msgstr "Mapa"
 
+#. Tab page name
 #: client/gtk/gui.c:445
 msgid "Trade"
 msgstr "Comercio"
 
+#. Tab page name
 #: client/gtk/gui.c:453 client/gtk/quote.c:632
 msgid "Quote"
 msgstr "Presupuestos"
 
+#. Tab page name
 #: client/gtk/gui.c:461 client/gtk/legend.c:213
 msgid "Legend"
 msgstr "Leyenda"
 
+#. Tab page name, shown for the splash screen
 #: client/gtk/gui.c:470
 #, fuzzy
 msgid "Welcome to Pioneers"
@@ -1276,6 +1301,7 @@ msgstr "Bienvenido al Gnocatán"
 msgid "Pioneers Preferences"
 msgstr ""
 
+#. Label for changing the theme, in the preferences dialog
 #: client/gtk/gui.c:688
 msgid "Theme:"
 msgstr "Tema:"
@@ -1284,15 +1310,18 @@ msgstr "Tema:"
 msgid "Choose one of the themes"
 msgstr ""
 
+#. Label for the option to show the legend
 #: client/gtk/gui.c:715
 msgid "Show legend"
 msgstr ""
 
+#. Tooltip for the option to show the legend
 #: client/gtk/gui.c:725
 #, fuzzy
 msgid "Show the legend as a page beside the map"
 msgstr "¿Mostrar la leyenda como una página junto al mapa?"
 
+#. Label for the option to display log messages in color
 #: client/gtk/gui.c:730
 #, fuzzy
 msgid "Messages with color"
@@ -1311,6 +1340,7 @@ msgstr ""
 msgid "Show new chat messages in the color of the player"
 msgstr ""
 
+#. Label for the option to display the summary with colors
 #: client/gtk/gui.c:761
 msgid "Summary with color"
 msgstr ""
@@ -1323,17 +1353,21 @@ msgstr ""
 msgid "The Pioneers Game"
 msgstr ""
 
+#. Initial text in status bar
 #: client/gtk/gui.c:893
 #, fuzzy
 msgid "Welcome to Pioneers!"
 msgstr "¡Bienvenido a Gnocatán!"
 
+#. Missing pixmap
+#. Missing pixmap, main icon file
 #: client/gtk/gui.c:920 client/gtk/gui.c:952
 #: server/gtk/gnocatan-server-gtk.c:820
 #, c-format
 msgid "Pixmap not found: %s\n"
 msgstr ""
 
+#. The name of the application
 #: client/gtk/gui.c:943
 msgid "Pioneers"
 msgstr ""
@@ -1456,6 +1490,7 @@ msgstr "Cambiar tu nombre de jugador"
 msgid "Player Name:"
 msgstr "Nombre de jugador:"
 
+#. Commandline option of client: name of the player
 #: client/gtk/offline.c:49
 #, fuzzy
 msgid "Player name"
@@ -1534,6 +1569,7 @@ msgstr "Carta de desarrollo"
 msgid "Development cards"
 msgstr "Cartas de desarrollo"
 
+#. Caption for the overview of the points and card of other players
 #: client/gtk/player.c:481
 #, fuzzy
 msgid "<b>Player Summary</b>"
@@ -1543,6 +1579,7 @@ msgstr "<b>Resumen de jugadores</b>"
 msgid "Please choose two resources from the bank"
 msgstr ""
 
+#. Trade: a player has rejected trade
 #: client/gtk/quote.c:257 client/gtk/trade.c:454
 msgid "Rejected trade"
 msgstr ""
@@ -1560,10 +1597,12 @@ msgstr "<menos"
 msgid "more>"
 msgstr "más>"
 
+#. Frame title, trade: I want to trade these resources
 #: client/gtk/quote.c:594 client/gtk/trade.c:860
 msgid "I Want"
 msgstr "Quiero..."
 
+#. Frame title, trade: I want these resources in return
 #: client/gtk/quote.c:611 client/gtk/trade.c:875
 msgid "Give Them"
 msgstr "Dales..."
@@ -1576,6 +1615,7 @@ msgstr ""
 msgid "Reject Domestic Trade"
 msgstr ""
 
+#. Caption for overview of the resources of the player
 #: client/gtk/resource.c:50
 #, fuzzy
 msgid "<b>Resources</b>"
@@ -1585,27 +1625,33 @@ msgstr "<b>Recursos</b>"
 msgid "Total"
 msgstr ""
 
+#. Tooltip for the amount of resources in the hand
 #: client/gtk/resource-table.c:178
 #, fuzzy
 msgid "Amount in hand"
 msgstr "Cartas de recurso en mano"
 
+#. Tooltip for decreasing the selected amount
 #: client/gtk/resource-table.c:193
 msgid "Decrease the selected amount"
 msgstr ""
 
+#. Tooltip for the amount of resources in the bank
 #: client/gtk/resource-table.c:207
 msgid "Amount in the bank"
 msgstr ""
 
+#. Tooltip for increasing the selected amount
 #: client/gtk/resource-table.c:223
 msgid "Increase the selected amount"
 msgstr ""
 
+#. Tooltip for the selected amount
 #: client/gtk/resource-table.c:240
 msgid "Selected amount"
 msgstr ""
 
+#. Tooltip for the total selected amount
 #: client/gtk/resource-table.c:285
 msgid "Total selected amount"
 msgstr ""
@@ -1667,6 +1713,7 @@ msgstr ""
 msgid "Amount of Each Resource:"
 msgstr "Cantidad de cada recurso:"
 
+#. Sevens rule: normal
 #: client/gtk/settingscreen.c:160 common/gtk/game-settings.c:181
 msgid "Normal"
 msgstr "Normal"
@@ -1748,49 +1795,62 @@ msgstr "Cartas de mercado:"
 msgid "Soldier Cards:"
 msgstr "Cartas de soldado:"
 
+#. trade: you ask for something for free
 #: client/gtk/trade.c:286
 #, fuzzy, c-format
 msgid "ask for %s for free"
 msgstr "pide %s gratis"
 
+#. trade: you give something away for free
 #: client/gtk/trade.c:291
 #, c-format
 msgid "give %s for free"
 msgstr "ofrece %s gratis"
 
+#. trade: you trade something for something else
 #: client/gtk/trade.c:296
 #, c-format
 msgid "give %s for %s"
 msgstr "ofrece %s por %s"
 
+#. trade: maritime quote: %1 resources of type %2 for
+#. * one resource of type %3
 #: client/gtk/trade.c:307
 #, c-format
 msgid "%d:1 %s for %s"
 msgstr "%d:1 %s por %s"
 
+#. I want some resources, and give them some resources
 #: client/gtk/trade.c:481
 #, c-format
 msgid "I want %s, and give them %s"
 msgstr ""
 
+#. Button text, trade: call for quotes from other players
 #: client/gtk/trade.c:894
 #, fuzzy
 msgid "_Call for Quotes"
 msgstr "Pedir presupuestos"
 
+#. Now create columns
+#. Table header: Player who trades
+#. Role of the player: player
 #: client/gtk/trade.c:936 server/gtk/gnocatan-server-gtk.c:424
 msgid "Player"
 msgstr "Jugador"
 
+#. Table header: Quote
 #: client/gtk/trade.c:951
 #, fuzzy
 msgid "Quotes"
 msgstr "Presupuestos"
 
+#. Button text: Trade page, accept selected quote
 #: client/gtk/trade.c:965
 msgid "_Accept Quote"
 msgstr ""
 
+#. Button text: Trade page, finish trading
 #: client/gtk/trade.c:971
 msgid "_Finish Trading"
 msgstr ""
@@ -1809,31 +1869,38 @@ msgstr ""
 "\n"
 "Escrito por:\n"
 
+#. Label for customising a game
 #: common/gtk/game-settings.c:113
 msgid "Map Terrain"
 msgstr ""
 
+#. Tooltip for Map Terrain
 #: common/gtk/game-settings.c:127
 msgid "Default map or a random map"
 msgstr ""
 
+#. Label text for customising a game
 #: common/gtk/game-settings.c:130
 msgid "Number of Players"
 msgstr "Número de jugadores"
 
+#. Tooltip for 'Number of Players'
 #: common/gtk/game-settings.c:148
 #, fuzzy
 msgid "The number of players"
 msgstr "Número de adversarios"
 
+#. Label for customising a game
 #: common/gtk/game-settings.c:151
 msgid "Victory Point Target"
 msgstr ""
 
+#. Tooltip for Victory Point Target
 #: common/gtk/game-settings.c:170
 msgid "The points needed to win the game"
 msgstr ""
 
+#. Tooltip for sevens rule normal
 #: common/gtk/game-settings.c:201
 msgid "All sevens move the robber or pirate"
 msgstr ""
@@ -1842,47 +1909,60 @@ msgstr ""
 msgid "In the first two turns all sevens are rerolled"
 msgstr ""
 
+#. Tooltip for sevens rule reroll all
 #: common/gtk/game-settings.c:210
 msgid "All sevens are rerolled"
 msgstr ""
 
+#. Button text: random terrain
 #: common/gtk/game-settings.c:365
 msgid "Random"
 msgstr "Al azar"
 
+#. Button text: default terrain
 #: common/gtk/game-settings.c:367
 msgid "Default"
 msgstr ""
 
+#. Port indicator for a resource: trade 2 for 1
 #: common/gtk/guimap.c:634
 msgid "2:1"
 msgstr "2:1"
 
+#. Port indicator: trade 3 for 1
+#. General port indicator
 #: common/gtk/guimap.c:637 common/gtk/guimap.c:662
 msgid "3:1"
 msgstr "3:1"
 
+#. Port indicator for brick
 #: common/gtk/guimap.c:642
 msgid "B"
 msgstr "Ld"
 
+#. Port indicator for grain
 #: common/gtk/guimap.c:646
 msgid "G"
 msgstr "C"
 
+#. Port indicator for ore
 #: common/gtk/guimap.c:650
 msgid "O"
 msgstr "Mi"
 
+#. Port indicator for wool
+#. West
 #: common/gtk/guimap.c:654 editor/gtk/editor.c:72
 #, fuzzy
 msgid "W"
 msgstr "Ln"
 
+#. Port indicator for lumber
 #: common/gtk/guimap.c:658
 msgid "L"
 msgstr "Ma"
 
+#. Tooltip for the list of games
 #: common/gtk/select-game.c:93
 msgid "Select a game"
 msgstr ""
@@ -2183,22 +2263,27 @@ msgstr "Madera (2:1)"
 msgid "Any (3:1)"
 msgstr ""
 
+#. East
 #: editor/gtk/editor.c:66
 msgid "E"
 msgstr ""
 
+#. North east
 #: editor/gtk/editor.c:68
 msgid "NE"
 msgstr ""
 
+#. North west
 #: editor/gtk/editor.c:70
 msgid "NW"
 msgstr ""
 
+#. South west
 #: editor/gtk/editor.c:74
 msgid "SW"
 msgstr ""
 
+#. South east
 #: editor/gtk/editor.c:76
 msgid "SE"
 msgstr ""
@@ -2403,6 +2488,7 @@ msgstr ""
 msgid "Player %d is now %s\n"
 msgstr ""
 
+#. Role of the player: viewer
 #: server/gtk/gnocatan-server-gtk.c:422
 msgid "Viewer"
 msgstr ""
@@ -2523,6 +2609,7 @@ msgstr ""
 msgid "The Pioneers Game Server"
 msgstr ""
 
+#. Name in the titlebar of the server
 #: server/gtk/gnocatan-server-gtk.c:789
 #, fuzzy
 msgid "Pioneers Server"
@@ -2557,6 +2644,7 @@ msgstr "El partido ha terminado."
 msgid "NOTE Expecting version %s, not %s\n"
 msgstr ""
 
+#. Server: preparing game #.....
 #: server/server.c:215
 msgid "Preparing game"
 msgstr ""
