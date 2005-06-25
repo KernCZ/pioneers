@@ -419,7 +419,7 @@ static void meta_notify(NetEvent event, G_GNUC_UNUSED void *user_data,
 					if (metaserver_info.port)
 						g_free(metaserver_info.
 						       port);
-					port = GNOCATAN_DEFAULT_META_PORT;
+					port = PIONEERS_DEFAULT_META_PORT;
 					if (split_result[2])
 						port = split_result[2];
 					metaserver_info.port =
@@ -697,15 +697,15 @@ static void launch_server_gtk(G_GNUC_UNUSED GtkWidget * widget,
 	GError *error;
 	gint i;
 
-	child_argv[0] = g_strdup(GNOCATAN_SERVER_GTK_PATH);
-	child_argv[1] = g_strdup(GNOCATAN_SERVER_GTK_PATH);
+	child_argv[0] = g_strdup(PIONEERS_SERVER_GTK_PATH);
+	child_argv[1] = g_strdup(PIONEERS_SERVER_GTK_PATH);
 	child_argv[2] = NULL;
 	if (!g_spawn_async(NULL, child_argv, NULL, flags, NULL, NULL, NULL,
 			   &error)) {
 		/* Error message when program %1 is started, reason is %2 */
 		log_message(MSG_ERROR,
 			    _("Error starting %s: %s"),
-			    GNOCATAN_SERVER_GTK_PATH, error->message);
+			    PIONEERS_SERVER_GTK_PATH, error->message);
 		g_error_free(error);
 	}
 	for (i = 0; child_argv[i] != NULL; i++)
@@ -823,7 +823,7 @@ static void set_meta_serverinfo(void)
 	metaserver_info.server = meta_tmp;	/* Take-over of the pointer */
 	if (!metaserver_info.port)
 		metaserver_info.port =
-		    g_strdup(GNOCATAN_DEFAULT_META_PORT);
+		    g_strdup(PIONEERS_DEFAULT_META_PORT);
 }
 
 static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
@@ -1174,7 +1174,7 @@ void connect_create_dlg(void)
 	gtk_tooltips_set_tip(tooltips, btn, _("Create a game"), NULL);
 	g_signal_connect(G_OBJECT(btn), "clicked",
 			 G_CALLBACK(launch_server_gtk), app_window);
-	fullname = g_find_program_in_path(GNOCATAN_SERVER_GTK_PATH);
+	fullname = g_find_program_in_path(PIONEERS_SERVER_GTK_PATH);
 	if (fullname) {
 		g_free(fullname);
 	} else {
@@ -1326,12 +1326,12 @@ static void connect_private_dialog(G_GNUC_UNUSED GtkWidget * widget,
 
 	/* initialize server value */
 	saved_server =
-	    config_get_string("connect/server=" GNOCATAN_DEFAULT_GAME_HOST,
+	    config_get_string("connect/server=" PIONEERS_DEFAULT_GAME_HOST,
 			      &default_returned);
 
 	/* initialize port value */
 	saved_port =
-	    config_get_string("connect/port=" GNOCATAN_DEFAULT_GAME_PORT,
+	    config_get_string("connect/port=" PIONEERS_DEFAULT_GAME_PORT,
 			      &default_returned);
 
 	connect_private_dlg =

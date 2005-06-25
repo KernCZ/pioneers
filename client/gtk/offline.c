@@ -1,4 +1,4 @@
-/* Gnocatan - Implementation of the excellent Settlers of Catan board game.
+/* Pioneers - Implementation of the excellent Settlers of Catan board game.
  *   Go buy a copy.
  *
  * Copyright (C) 1999 the Free Software Foundation
@@ -41,10 +41,10 @@ static const gchar *override_language = NULL;
 const struct poptOption options[] = {
 	/* Commandline option of client: hostname of the server */
 	{"server", 's', POPT_ARG_STRING, &server, 0, N_("Server Host"),
-	 GNOCATAN_DEFAULT_GAME_HOST},
+	 PIONEERS_DEFAULT_GAME_HOST},
 	/* Commandline option of client: port of the server */
 	{"port", 'p', POPT_ARG_STRING, &port, 0, N_("Server Port"),
-	 GNOCATAN_DEFAULT_GAME_PORT},
+	 PIONEERS_DEFAULT_GAME_PORT},
 	/* Commandline option of client: name of the player */
 	{"name", 'n', POPT_ARG_STRING, &name, 0, N_("Player name"), NULL},
 #ifdef ENABLE_NLS

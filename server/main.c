@@ -78,8 +78,8 @@ int main(int argc, char *argv[])
 	int c, i;
 	gint num_players = 0, num_points = 0,
 	    sevens_rule = 0, terrain = -1, timeout = 0, num_ai_players = 0;
-	gchar *server_port = g_strdup(GNOCATAN_DEFAULT_GAME_PORT);
-	gchar *admin_port = g_strdup(GNOCATAN_DEFAULT_ADMIN_PORT);
+	gchar *server_port = g_strdup(PIONEERS_DEFAULT_GAME_PORT);
+	gchar *admin_port = g_strdup(PIONEERS_DEFAULT_ADMIN_PORT);
 
 	gboolean disable_game_start = FALSE;
 	GMainLoop *event_loop;

@@ -362,9 +362,9 @@ static GList *load_game_types(void)
 	const gchar *fname;
 	gchar *fullname;
 
-	const gchar *gnocatan_dir = get_gnocatan_dir();
+	const gchar *pioneers_dir = get_gnocatan_dir();
 
-	if ((dir = g_dir_open(gnocatan_dir, 0, NULL)) == NULL) {
+	if ((dir = g_dir_open(pioneers_dir, 0, NULL)) == NULL) {
 		return NULL;
 	}
 
@@ -373,7 +373,7 @@ static GList *load_game_types(void)
 
 		if (len < 6 || strcmp(fname + len - 5, ".game") != 0)
 			continue;
-		fullname = g_build_filename(gnocatan_dir, fname, NULL);
+		fullname = g_build_filename(pioneers_dir, fname, NULL);
 		if (fullname) {
 			titles = load_game_desc(fullname, titles);
 			g_free(fullname);
@@ -407,8 +407,9 @@ static void client_list_capability(Client * client)
 static const gchar *get_server_path(void)
 {
 	const gchar *console_server;
-	if (!(console_server = g_getenv("GNOCATAN_SERVER_CONSOLE")))
-		console_server = GNOCATAN_SERVER_CONSOLE_PATH;
+	if (!(console_server = g_getenv("PIONEERS_SERVER_CONSOLE")))
+		if (!(console_server = g_getenv("GNOCATAN_SERVER_CONSOLE")))
+			console_server = PIONEERS_SERVER_CONSOLE_PATH;
 	return console_server;
 }
 
@@ -1040,7 +1041,7 @@ int main(int argc, char *argv[])
 
 	if (!myhostname)
 		myhostname = get_meta_server_name(FALSE);
-	if (!setup_accept_sock(GNOCATAN_DEFAULT_META_PORT))
+	if (!setup_accept_sock(PIONEERS_DEFAULT_META_PORT))
 		return 1;
 
 	syslog(LOG_INFO, "Pioneers meta server started.");

@@ -19,10 +19,10 @@
 
 extra_includes = \
 	-DLOCALEDIR=\""$(datadir)/locale"\" \
-	-DGNOCATAN_DIR_DEFAULT=\""$(datadir)/games/pioneers"\" \
-	-DGNOCATAN_SERVER_CONSOLE_PATH=\""$(bindir)/pioneers-server-console"\" \
-	-DGNOCATAN_SERVER_GTK_PATH=\""$(bindir)/pioneers-server-gtk"\" \
-	-DGNOCATAN_AI_PATH=\""$(bindir)/pioneersai"\"
+	-DPIONEERS_DIR_DEFAULT=\""$(datadir)/games/pioneers"\" \
+	-DPIONEERS_SERVER_CONSOLE_PATH=\""$(bindir)/pioneers-server-console"\" \
+	-DPIONEERS_SERVER_GTK_PATH=\""$(bindir)/pioneers-server-gtk"\" \
+	-DPIONEERS_AI_PATH=\""$(bindir)/pioneersai"\"
 
 if DEBUG
 debug_includes = \

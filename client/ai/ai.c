@@ -1,4 +1,4 @@
-/* Gnocatan - Implementation of the excellent Settlers of Catan board game.
+/* Pioneers - Implementation of the excellent Settlers of Catan board game.
  *   Go buy a copy.
  *
  * Copyright (C) 1999 the Free Software Foundation
@@ -26,8 +26,8 @@
 #include <unistd.h>
 #include <time.h>
 
-static const char *server = GNOCATAN_DEFAULT_GAME_HOST;
-static const char *port = GNOCATAN_DEFAULT_GAME_PORT;
+static const char *server = PIONEERS_DEFAULT_GAME_HOST;
+static const char *port = PIONEERS_DEFAULT_GAME_PORT;
 static char *ai;
 static int waittime = 1000;
 static int local_argc;

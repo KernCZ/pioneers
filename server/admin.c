@@ -321,7 +321,7 @@ void admin_run_command(Session * admin_session, const gchar * line)
 		if (server_is_running())
 			server_stop();
 		if (!server_port)
-			server_port = g_strdup(GNOCATAN_DEFAULT_GAME_PORT);
+			server_port = g_strdup(PIONEERS_DEFAULT_GAME_PORT);
 		start_server(get_server_name(), server_port,
 			     register_server);
 

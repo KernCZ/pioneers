@@ -1,4 +1,4 @@
-/* Gnocatan - Implementation of the excellent Settlers of Catan board game.
+/* Pioneers - Implementation of the excellent Settlers of Catan board game.
  *   Go buy a copy.
  *
  * Copyright (C) 1999 the Free Software Foundation
@@ -103,7 +103,7 @@ void net_write(Session * ses, const gchar * data);
 gchar *get_my_hostname(void);
 
 /** Get the name of the meta server.
- *  First the environment variable GNOCATAN_META_SERVER is queried
+ *  First the environment variable PIONEERS_META_SERVER is queried
  *  If it is not set, the use_default flag is used.
  * @param use_default If true, return the default meta server if the
  *                    environment variable is not set.
@@ -113,7 +113,7 @@ gchar *get_my_hostname(void);
 gchar *get_meta_server_name(gboolean use_default);
 
 /** Get the directory of the game related files.
- *  First the environment variable GNOCATAN_DIR is queried
+ *  First the environment variable PIONEERS_DIR is queried
  *  If it is not set, the default value is returned
  */
 const gchar *get_gnocatan_dir(void);

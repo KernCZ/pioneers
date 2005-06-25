@@ -37,7 +37,7 @@
 #include "select-game.h"	/* Custom widget */
 #include "game-settings.h"	/* Custom widget */
 
-#define GNOCATAN_ICON_FILE	"gnome-pioneers.png"
+#define PIONEERS_ICON_FILE	"gnome-pioneers.png"
 
 static GtkWidget *game_frame;	/* the frame containing all settings regarding the game */
 static GtkWidget *select_game;	/* select game type */
@@ -202,7 +202,7 @@ static void gui_ui_enable(gboolean sensitive)
 			     NULL);
 
 	if (addcomputer_btn_enabled) {
-		gchar *fullname = g_find_program_in_path(GNOCATAN_AI_PATH);
+		gchar *fullname = g_find_program_in_path(PIONEERS_AI_PATH);
 		if (fullname) {
 			g_free(fullname);
 		} else {
@@ -564,7 +564,7 @@ static GtkWidget *build_interface(void)
 
 	/* Initialize server-settings */
 	server_port = config_get_string("server/port="
-					GNOCATAN_DEFAULT_GAME_PORT,
+					PIONEERS_DEFAULT_GAME_PORT,
 					&novar);
 	gtk_entry_set_text(GTK_ENTRY(port_entry), server_port);
 
@@ -813,7 +813,7 @@ int main(int argc, char *argv[])
 	config_init("/gnocatan-server/");
 
 	icon_file =
-	    g_build_filename(DATADIR, "pixmaps", GNOCATAN_ICON_FILE, NULL);
+	    g_build_filename(DATADIR, "pixmaps", PIONEERS_ICON_FILE, NULL);
 	if (g_file_test(icon_file, G_FILE_TEST_EXISTS)) {
 		gtk_window_set_default_icon_from_file(icon_file, NULL);
 	} else {

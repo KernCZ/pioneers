@@ -1,4 +1,4 @@
-/* Gnocatan - Implementation of the excellent Settlers of Catan board game.
+/* Pioneers - Implementation of the excellent Settlers of Catan board game.
  *   Go buy a copy.
  *
  * Copyright (C) 1999 the Free Software Foundation
@@ -532,10 +532,12 @@ gchar *get_meta_server_name(gboolean use_default)
 {
 	gchar *temp;
 
-	temp = g_strdup(g_getenv("GNOCATAN_META_SERVER"));
+	temp = g_strdup(g_getenv("PIONEERS_META_SERVER"));
+	if (!temp)
+		temp = g_strdup(g_getenv("GNOCATAN_META_SERVER"));
 	if (!temp) {
 		if (use_default)
-			temp = g_strdup(GNOCATAN_DEFAULT_META_SERVER);
+			temp = g_strdup(PIONEERS_DEFAULT_META_SERVER);
 		else {
 			temp = get_my_hostname();
 		}
@@ -545,10 +547,12 @@ gchar *get_meta_server_name(gboolean use_default)
 
 const gchar *get_gnocatan_dir(void)
 {
-	const gchar *gnocatan_dir = g_getenv("GNOCATAN_DIR");
-	if (!gnocatan_dir)
-		gnocatan_dir = GNOCATAN_DIR_DEFAULT;
-	return gnocatan_dir;
+	const gchar *pioneers_dir = g_getenv("PIONEERS_DIR");
+	if (!pioneers_dir)
+		pioneers_dir = g_getenv("GNOCATAN_DIR");
+	if (!pioneers_dir)
+		pioneers_dir = PIONEERS_DIR_DEFAULT;
+	return pioneers_dir;
 }
 
 int net_open_listening_socket(const gchar * port, gchar ** error_message)

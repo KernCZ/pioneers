@@ -42,7 +42,7 @@ GtkWidget *app_window;		/* main application window */
 #define MAP_WIDTH 550		/* default map width */
 #define MAP_HEIGHT 400		/* default map height */
 
-#define GNOCATAN_ICON_FILE	"gnome-pioneers.png"
+#define PIONEERS_ICON_FILE	"gnome-pioneers.png"
 
 static GuiMap *gmap;		/* handle to map drawing code */
 
@@ -149,69 +149,69 @@ static GnomeUIInfo main_menu[] = {
 	GNOMEUIINFO_END
 };
 
-#define GNOCATAN_PIXMAP_DICE "gnocatan/dice.png"
-#define GNOCATAN_PIXMAP_TRADE "gnocatan/trade.png"
-#define GNOCATAN_PIXMAP_ROAD "gnocatan/road.png"
-#define GNOCATAN_PIXMAP_SHIP "gnocatan/ship.png"
-#define GNOCATAN_PIXMAP_SHIP_MOVEMENT "gnocatan/ship_move.png"
-#define GNOCATAN_PIXMAP_BRIDGE "gnocatan/bridge.png"
-#define GNOCATAN_PIXMAP_SETTLEMENT "gnocatan/settlement.png"
-#define GNOCATAN_PIXMAP_CITY "gnocatan/city.png"
-#define GNOCATAN_PIXMAP_DEVELOP "gnocatan/develop.png"
-#define GNOCATAN_PIXMAP_FINISH "gnocatan/finish.png"
+#define PIONEERS_PIXMAP_DICE "gnocatan/dice.png"
+#define PIONEERS_PIXMAP_TRADE "gnocatan/trade.png"
+#define PIONEERS_PIXMAP_ROAD "gnocatan/road.png"
+#define PIONEERS_PIXMAP_SHIP "gnocatan/ship.png"
+#define PIONEERS_PIXMAP_SHIP_MOVEMENT "gnocatan/ship_move.png"
+#define PIONEERS_PIXMAP_BRIDGE "gnocatan/bridge.png"
+#define PIONEERS_PIXMAP_SETTLEMENT "gnocatan/settlement.png"
+#define PIONEERS_PIXMAP_CITY "gnocatan/city.png"
+#define PIONEERS_PIXMAP_DEVELOP "gnocatan/develop.png"
+#define PIONEERS_PIXMAP_FINISH "gnocatan/finish.png"
 
-#define GNOCATAN_PIXMAP_SPLASH "gnocatan/splash.png"
+#define PIONEERS_PIXMAP_SPLASH "gnocatan/splash.png"
 
-static const gchar *gnocatan_pixmaps[] = {
-	GNOCATAN_PIXMAP_DICE,
-	GNOCATAN_PIXMAP_TRADE,
-	GNOCATAN_PIXMAP_ROAD,
-	GNOCATAN_PIXMAP_SHIP,
-	GNOCATAN_PIXMAP_SHIP_MOVEMENT,
-	GNOCATAN_PIXMAP_BRIDGE,
-	GNOCATAN_PIXMAP_SETTLEMENT,
-	GNOCATAN_PIXMAP_CITY,
-	GNOCATAN_PIXMAP_DEVELOP,
-	GNOCATAN_PIXMAP_FINISH
+static const gchar *pioneers_pixmaps[] = {
+	PIONEERS_PIXMAP_DICE,
+	PIONEERS_PIXMAP_TRADE,
+	PIONEERS_PIXMAP_ROAD,
+	PIONEERS_PIXMAP_SHIP,
+	PIONEERS_PIXMAP_SHIP_MOVEMENT,
+	PIONEERS_PIXMAP_BRIDGE,
+	PIONEERS_PIXMAP_SETTLEMENT,
+	PIONEERS_PIXMAP_CITY,
+	PIONEERS_PIXMAP_DEVELOP,
+	PIONEERS_PIXMAP_FINISH
 };
 
 static GnomeUIInfo toolbar_uiinfo[] = {
 	{GNOME_APP_UI_ITEM, N_("Roll Dice\n(F1)"), NULL,
 	 (gpointer) route_widget_event, (gpointer) GUI_ROLL, NULL,
-	 GNOME_APP_PIXMAP_STOCK, GNOCATAN_PIXMAP_DICE, 0, 0, NULL},
+	 GNOME_APP_PIXMAP_STOCK, PIONEERS_PIXMAP_DICE, 0, 0, NULL},
 	{GNOME_APP_UI_ITEM, N_("Trade\n(F2)"), NULL,
 	 (gpointer) route_widget_event, (gpointer) GUI_TRADE, NULL,
-	 GNOME_APP_PIXMAP_STOCK, GNOCATAN_PIXMAP_TRADE, 0, 0, NULL},
+	 GNOME_APP_PIXMAP_STOCK, PIONEERS_PIXMAP_TRADE, 0, 0, NULL},
 	{GNOME_APP_UI_ITEM, N_("Undo\n(F3)"), NULL,
 	 (gpointer) route_widget_event, (gpointer) GUI_UNDO, NULL,
 	 GNOME_APP_PIXMAP_STOCK, GTK_STOCK_UNDO, 0, 0, NULL},
 	{GNOME_APP_UI_ITEM, N_("Finish\n(F4)"), NULL,
 	 (gpointer) route_widget_event, (gpointer) GUI_FINISH, NULL,
-	 GNOME_APP_PIXMAP_STOCK, GNOCATAN_PIXMAP_FINISH, 0, 0, NULL},
+	 GNOME_APP_PIXMAP_STOCK, PIONEERS_PIXMAP_FINISH, 0, 0, NULL},
 
 	{GNOME_APP_UI_ITEM, N_("Road\n(F5)"), NULL,
 	 (gpointer) route_widget_event, (gpointer) GUI_ROAD, NULL,
-	 GNOME_APP_PIXMAP_STOCK, GNOCATAN_PIXMAP_ROAD, 0, 0, NULL},
+	 GNOME_APP_PIXMAP_STOCK, PIONEERS_PIXMAP_ROAD, 0, 0, NULL},
 	{GNOME_APP_UI_ITEM, N_("Ship\n(F6)"), NULL,
 	 (gpointer) route_widget_event, (gpointer) GUI_SHIP, NULL,
-	 GNOME_APP_PIXMAP_STOCK, GNOCATAN_PIXMAP_SHIP, 0, 0, NULL},
+	 GNOME_APP_PIXMAP_STOCK, PIONEERS_PIXMAP_SHIP, 0, 0, NULL},
 	{GNOME_APP_UI_ITEM, N_("Move Ship\n(F7)"), NULL,
 	 (gpointer) route_widget_event, (gpointer) GUI_MOVE_SHIP, NULL,
-	 GNOME_APP_PIXMAP_STOCK, GNOCATAN_PIXMAP_SHIP_MOVEMENT, 0, 0,
+	 GNOME_APP_PIXMAP_STOCK, PIONEERS_PIXMAP_SHIP_MOVEMENT, 0, 0,
 	 NULL},
 	{GNOME_APP_UI_ITEM, N_("Bridge\n(F8)"), NULL,
 	 (gpointer) route_widget_event, (gpointer) GUI_BRIDGE, NULL,
-	 GNOME_APP_PIXMAP_STOCK, GNOCATAN_PIXMAP_BRIDGE, 0, 0, NULL},
+	 GNOME_APP_PIXMAP_STOCK, PIONEERS_PIXMAP_BRIDGE, 0, 0, NULL},
 
 	{GNOME_APP_UI_ITEM, N_("Settlement\n(F9)"), NULL,
 	 (gpointer) route_widget_event, (gpointer) GUI_SETTLEMENT, NULL,
-	 GNOME_APP_PIXMAP_STOCK, GNOCATAN_PIXMAP_SETTLEMENT, 0, 0, NULL},
+	 GNOME_APP_PIXMAP_STOCK, PIONEERS_PIXMAP_SETTLEMENT, 0, 0, NULL},
 	{GNOME_APP_UI_ITEM, N_("City\n(F10)"), NULL,
 	 (gpointer) route_widget_event, (gpointer) GUI_CITY, NULL,
-	 GNOME_APP_PIXMAP_STOCK, GNOCATAN_PIXMAP_CITY, 0, 0, NULL},
+	 GNOME_APP_PIXMAP_STOCK, PIONEERS_PIXMAP_CITY, 0, 0, NULL},
 	{GNOME_APP_UI_ITEM, N_("Develop\n(F11)"), NULL,
 	 (gpointer) route_widget_event, (gpointer) GUI_BUY_DEVELOP, NULL,
-	 GNOME_APP_PIXMAP_STOCK, GNOCATAN_PIXMAP_DEVELOP, 0, 0, NULL},
+	 GNOME_APP_PIXMAP_STOCK, PIONEERS_PIXMAP_DEVELOP, 0, 0, NULL},
 
 	/* Only the first field matters.  Fill the whole struct with some
 	 * values anyway, to get rid of a compiler warning. */
@@ -901,14 +901,14 @@ static void register_gnocatan_pixmaps(void)
 
 	GtkIconFactory *factory = gtk_icon_factory_new();
 
-	for (idx = 0; idx < G_N_ELEMENTS(gnocatan_pixmaps); idx++) {
+	for (idx = 0; idx < G_N_ELEMENTS(pioneers_pixmaps); idx++) {
 		gchar *filename;
 		GtkIconSet *icon;
 
 		icon = gtk_icon_set_new();
 		/* determine full path to pixmap file */
 		filename = g_build_filename(DATADIR, "pixmaps",
-					    gnocatan_pixmaps[idx], NULL);
+					    pioneers_pixmaps[idx], NULL);
 		if (g_file_test(filename, G_FILE_TEST_EXISTS)) {
 			GtkIconSource *source;
 			source = gtk_icon_source_new();
@@ -920,7 +920,7 @@ static void register_gnocatan_pixmaps(void)
 			g_warning(_("Pixmap not found: %s\n"), filename);
 		}
 
-		gtk_icon_factory_add(factory, gnocatan_pixmaps[idx], icon);
+		gtk_icon_factory_add(factory, pioneers_pixmaps[idx], icon);
 		g_free(filename);
 		gtk_icon_set_unref(icon);
 	}
@@ -944,7 +944,7 @@ GtkWidget *gui_build_interface()
 
 
 	icon_file =
-	    g_build_filename(DATADIR, "pixmaps", GNOCATAN_ICON_FILE, NULL);
+	    g_build_filename(DATADIR, "pixmaps", PIONEERS_ICON_FILE, NULL);
 	if (g_file_test(icon_file, G_FILE_TEST_EXISTS)) {
 		gtk_window_set_default_icon_from_file(icon_file, NULL);
 	} else {

@@ -1,4 +1,4 @@
-/* Gnocatan - Implementation of the excellent Settlers of Catan board game.
+/* Pioneers - Implementation of the excellent Settlers of Catan board game.
  *   Go buy a copy.
  *
  * Copyright (C) 1999 the Free Software Foundation
@@ -144,10 +144,10 @@ gint new_computer_player(const gchar * server, const gchar * port,
 	gint i;
 
 	if (!server)
-		server = GNOCATAN_DEFAULT_GAME_HOST;
+		server = PIONEERS_DEFAULT_GAME_HOST;
 
-	child_argv[n++] = g_strdup(GNOCATAN_AI_PATH);
-	child_argv[n++] = g_strdup(GNOCATAN_AI_PATH);
+	child_argv[n++] = g_strdup(PIONEERS_AI_PATH);
+	child_argv[n++] = g_strdup(PIONEERS_AI_PATH);
 	child_argv[n++] = g_strdup("-s");
 	child_argv[n++] = g_strdup(server);
 	child_argv[n++] = g_strdup("-p");
@@ -161,7 +161,7 @@ gint new_computer_player(const gchar * server, const gchar * port,
 			   NULL, &error)) {
 		log_message(MSG_ERROR,
 			    _("Error starting %s: %s"),
-			    GNOCATAN_AI_PATH, error->message);
+			    PIONEERS_AI_PATH, error->message);
 		g_error_free(error);
 		ret = -1;
 	}
@@ -198,7 +198,7 @@ static gboolean game_server_start(Game * game)
 						  player_connect, game);
 
 	if (game->register_server)
-		meta_register(meta_server_name, GNOCATAN_DEFAULT_META_PORT,
+		meta_register(meta_server_name, PIONEERS_DEFAULT_META_PORT,
 			      game);
 	return TRUE;
 }

@@ -56,6 +56,14 @@
 	  client/gtk/data/themes/Tiny/Makefile.am, server/Makefile.am,
 	  server/gtk/Makefile.am, common/gtk/Makefile.am: fix remaining
 	  paths where data files are installed
+	* configure.ac, rules.make, client/ai/ai.c,
+	  client/gtk/connect.c, client/gtk/gui.c, client/gtk/offline.c,
+	  common/network.c, common/network.h,
+	  meta-server/gnocatan-meta-server.c, meta-server/meta-report,
+	  server/gnocatan-server-console.c, server/gnocatan-server.c,
+	  server/meta.c, server/server.c, server/gtk/gnocatan-server-gtk.c:
+	  fix up all variables in the source, including environmental
+	  variables; support using old env variable names as fallbacks.
 
 2005-06-05  Brian Wellington <bwelling@xbill.org>
 	* common/game.c, common/game.h, common/map.c, common/map.h,
