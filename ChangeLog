@@ -1,3 +1,7 @@
+2005-06-25  Steve Langasek <vorlon@dodds.net>
+	* macros/autogen.sh: fix broken references to configure.in
+	  (should now be configure.ac).
+
 2005-06-05  Brian Wellington <bwelling@xbill.org>
 	* common/game.c, common/game.h, common/map.c, common/map.h,
 	  editor/gtk/editor.c: Remove the chits field in the GameParams
