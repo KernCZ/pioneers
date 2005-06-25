@@ -1,4 +1,6 @@
 2005-06-25  Steve Langasek <vorlon@debian.org>
+	* autogen.sh: tested with automake-1.8, so allow the package to
+	  be built using that version
 	* macros/autogen.sh: fix broken references to configure.in
 	  (should now be configure.ac).
 	* Makefile.am: drop the dist hook for debian/, it doesn't belong
