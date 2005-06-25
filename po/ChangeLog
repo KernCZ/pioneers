@@ -1,4 +1,5 @@
 2005-06-25 Steve Langasek <vorlon@debian.org>
+	* pioneers.pot: new gettext package name
 	* de.po, es.po, fr.po, it.po, nl.po: sync translations to
 	  match the Gnocatan->Pioneers rebranding, where possible
 	* de.po, nl.po: fix up a C string translation in each of these
