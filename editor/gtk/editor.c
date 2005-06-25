@@ -963,8 +963,8 @@ static GtkActionEntry entries[] = {
 
 	{"Contents", GTK_STOCK_HELP, N_("_Contents"), "F1",
 	 N_("Contents"), contents_menu_cb},
-	{"About", NULL, N_("_About Gnocatan Editor"), NULL,
-	 N_("Information about Gnocatan Editor"), about_menu_cb}
+	{"About", NULL, N_("_About Pioneers Editor"), NULL,
+	 N_("Information about Pioneers Editor"), about_menu_cb}
 };
 
 /* *INDENT-OFF* */

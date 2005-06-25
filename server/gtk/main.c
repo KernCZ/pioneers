@@ -82,8 +82,8 @@ static GtkActionEntry entries[] = {
 	{"HelpMenu", NULL, N_("_Help"), NULL, NULL, NULL},
 	{"GameQuit", GTK_STOCK_QUIT, N_("_Quit"), "<control>Q",
 	 N_("Quit the program"), quit_cb},
-	{"HelpAbout", NULL, N_("_About Gnocatan Server"), NULL,
-	 N_("Information about Gnocatan Server"), help_about_cb}
+	{"HelpAbout", NULL, N_("_About Pioneers Server"), NULL,
+	 N_("Information about Pioneers Server"), help_about_cb}
 };
 
 /* *INDENT-OFF* */
@@ -739,7 +739,7 @@ static void help_about_cb(void)
 		"Dave Cole",
 		NULL
 	};
-	aboutbox_display(_("The Gnocatan Game Server"), authors);
+	aboutbox_display(_("The Pioneers Game Server"), authors);
 }
 
 int main(int argc, char *argv[])
