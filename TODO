@@ -1,3 +1,14 @@
+ - Rebranding:
+   * Rename the remaining data files that have gnocatan in the name, to
+     avoid file collisions
+   * Fix variable names (incl. env var names?)
+   * Add support for importing preferences from old config directories
+   * Add support for automatically mapping gnocatan.debian.net ->
+     pioneers.debian.net
+   * Documentation fixes?
+   * Fix up all mentions of gnocatan in the source
+   * Figure out how to translate "University of Gnocatan"?
+   * Only at the very end, change filenames of source files
 
  - If the trade page is already shown, and the player initiating the
    trade asks for new quotes, it's easy to oversee the changed trade
