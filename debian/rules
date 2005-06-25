@@ -33,7 +33,7 @@ install-stamp: build-stamp
 	dh_installdirs
 	# Commands to install the package into debian/tmp.
 	$(MAKE) DESTDIR=$(CURDIR)/debian/tmp install
-	install -m644 server/*.game debian/tmp/usr/share/pioneers/gnocatan
+	install -m644 server/*.game debian/tmp/usr/share/games/pioneers
 	rm -rf debian/tmp/usr/var
 	dh_install --fail-missing -X usr/share/man/man6/ -X usr/games/pioneers-editor
 	dh_installman
