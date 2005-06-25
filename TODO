@@ -1,6 +1,4 @@
  - Rebranding:
-   * Rename the remaining data files that have gnocatan in the name, to
-     avoid file collisions
    * Fix variable names (incl. env var names?)
    * Add support for importing preferences from old config directories
    * Add support for automatically mapping gnocatan.debian.net ->
