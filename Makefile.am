@@ -1,4 +1,4 @@
-# Gnocatan - Implementation of the excellent Settlers of Catan board game.
+# Pioneers - Implementation of the excellent Settlers of Catan board game.
 #   Go buy a copy.
 #
 # Copyright (C) 1999 the Free Software Foundation
@@ -25,14 +25,6 @@ SUBDIRS = po common client server meta-server editor docs
 EXTRA_DIST = autogen.sh gnocatan.spec xmldocs.make omf.make rules.make
 
 dist-hook:
-	mkdir $(distdir)/debian
-	set -e; for f in control changelog rules copyright dirs menu; do \
-		cp -p $(srcdir)/debian/$$f $(distdir)/debian; \
-	done
-	cp -p $(srcdir)/debian/*.files $(distdir)/debian
-	cp -p $(srcdir)/debian/*.menu $(distdir)/debian
-	cp -p $(srcdir)/debian/*.undocumented $(distdir)/debian
-	cp -p $(srcdir)/debian/*.init $(distdir)/debian
 	tar -c -f - -C $(srcdir) macros | tar -x -f - -C $(distdir)
 	find $(distdir)/macros -name CVS | xargs rm -rf
 
@@ -50,3 +42,5 @@ indent:
 
 restorepo:
 	cvs update -C po/*.po po/gnocatan.pot
+
+ACLOCAL_AMFLAGS = -I m4 -I macros

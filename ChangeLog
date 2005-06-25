@@ -1,6 +1,10 @@
-2005-06-25  Steve Langasek <vorlon@dodds.net>
+2005-06-25  Steve Langasek <vorlon@debian.org>
 	* macros/autogen.sh: fix broken references to configure.in
 	  (should now be configure.ac).
+	* Makefile.am: drop the dist hook for debian/, it doesn't belong
+	  in the tarball
+	* Makefile.am: set ACLOCAL_AMFLAGS for upwards compatibility
+	  with newer versions of gettext
 
 2005-06-05  Brian Wellington <bwelling@xbill.org>
 	* common/game.c, common/game.h, common/map.c, common/map.h,
