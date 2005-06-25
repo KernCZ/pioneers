@@ -40,8 +40,8 @@
 	* client/gtk/data/gnocatan.desktop,
 	  server/gtk/gnocatan-server.desktop: fix both the display names
 	  and the paths to the binaries
-	* configure.ac, pioneers.spec.in: fix up the RPM packaging to
-	  match
+	* Makefile.am, configure.ac, pioneers.spec.in: fix up the RPM
+	  packaging to match
 	* client/gtk/data/pioneers.desktop, client/help/C/pioneers-C.omf,
 	  client/gtk/data/gnome-pioneers.png, client/help/C/pioneers.xml,
 	  server/gtk/pioneers-server.desktop, server/gtk/Makefile.am,

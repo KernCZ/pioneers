@@ -22,7 +22,7 @@ include $(top_srcdir)/rules.make
 
 SUBDIRS = po common client server meta-server editor docs
 
-EXTRA_DIST = autogen.sh gnocatan.spec xmldocs.make omf.make rules.make
+EXTRA_DIST = autogen.sh pioneers.spec xmldocs.make omf.make rules.make
 
 dist-hook:
 	tar -c -f - -C $(srcdir) macros | tar -x -f - -C $(distdir)
