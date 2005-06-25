@@ -177,7 +177,7 @@ AC_DEFINE_UNQUOTED(ALL_LINGUAS, "$ALL_LINGUAS", [Available languages])
 
 AC_CONFIG_FILES([ \
 	Makefile \
-	gnocatan.spec \
+	pioneers.spec \
 	po/Makefile.in \
 	common/Makefile \
 	client/Makefile \

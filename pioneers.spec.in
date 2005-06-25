@@ -10,57 +10,57 @@ Source: 	http://prdownloads.sourceforge.net/@PACKAGE_NAME@/@PACKAGE_TARNAME@-@VE
 BuildRoot: 	%{_tmppath}/%{name}-%{version}-%{release}-root
 
 %description 
-Gnocatan is an Internet playable implementation of the Settlers of
+Pioneers is an Internet playable implementation of the Settlers of
 Catan board game.  The aim is to remain as faithful to the board game
 as is possible.
 
 %package 	client
-Summary: 	Gnocatan Client
+Summary: 	Pioneers Client
 Group: 		Amusements/Games
 
 %description 	client
-Gnocatan is an Internet playable implementation of the Settlers of
+Pioneers is an Internet playable implementation of the Settlers of
 Catan board game.  The aim is to remain as faithful to the board game
 as is possible.
 
 This is the client software to play the game.
 
 %package 	help
-Summary: 	Gnocatan Help
+Summary: 	Pioneers Help
 Group: 		Amusements/Games
 
 %description 	help
-Gnocatan is an Internet playable implementation of the Settlers of
+Pioneers is an Internet playable implementation of the Settlers of
 Catan board game.  The aim is to remain as faithful to the board game
 as is possible.
 
 This package contains the help files.
 
 %package 	ai
-Summary:	Gnocatan AI Player
+Summary:	Pioneers AI Player
 Group:		Amusements/Games
 %description 	ai
-Gnocatan is an Internet playable implementation of the Settlers of
+Pioneers is an Internet playable implementation of the Settlers of
 Catan board game.  The aim is to remain as faithful to the board game
 as is possible.
 
-This package contains a computer player that can take part in Gnocatan games.
+This package contains a computer player that can take part in Pioneers games.
 
 %package 	server-console
-Summary:	Gnocatan Console Server
+Summary:	Pioneers Console Server
 Group:		Amusements/Games
-Requires:	gnocatan-server-data
+Requires:	pioneers-server-data
 %description 	server-console
-Gnocatan is an Internet playable implementation of the Settlers of
+Pioneers is an Internet playable implementation of the Settlers of
 Catan board game.  The aim is to remain as faithful to the board game
 as is possible.
 
 %package 	server-gtk
-Summary:	Gnocatan GTK Server
+Summary:	Pioneers GTK Server
 Group:		Amusements/Games
-Requires:	gnocatan-server-data
+Requires:	pioneers-server-data
 %description 	server-gtk
-Gnocatan is an Internet playable implementation of the Settlers of
+Pioneers is an Internet playable implementation of the Settlers of
 Catan board game.  The aim is to remain as faithful to the board game
 as is possible.
 
@@ -71,22 +71,22 @@ parameters, press the Start Server button, and the server will start
 listening for client connections.
 
 %package 	server-data
-Summary: 	Gnocatan Data
+Summary: 	Pioneers Data
 Group: 		Amusements/Games
 
 %description 	server-data
-Gnocatan is an Internet playable implementation of the Settlers of
+Pioneers is an Internet playable implementation of the Settlers of
 Catan board game.  The aim is to remain as faithful to the board game
 as is possible.
 
 This package contains the data files for a game server.
 
 %package 	meta-server
-Summary:	Gnocatan Meta Server
+Summary:	Pioneers Meta Server
 Group:		Amusements/Games
-Requires:	gnocatan-server-console
+Requires:	pioneers-server-console
 %description 	meta-server
-Gnocatan is an Internet playable implementation of the Settlers of
+Pioneers is an Internet playable implementation of the Settlers of
 Catan board game.  The aim is to remain as faithful to the board game
 as is possible.
 
@@ -111,27 +111,27 @@ rm -rf $RPM_BUILD_ROOT
 %files client
 %defattr(-,root,root)
 %doc AUTHORS COPYING ChangeLog INSTALL README NEWS 
-%doc /usr/man/man6/gnocatan.6.gz
-%{_bindir}/gnocatan
-%{_datadir}/gnome/apps/Games/gnocatan.desktop
-%{_datadir}/pixmaps/gnome-gnocatan.png
-%{_datadir}/pixmaps/gnocatan/*
-%{_datadir}/games/gnocatan/themes/*
-%{_datadir}/locale/es/LC_MESSAGES/gnocatan.mo
-%{_datadir}/locale/de/LC_MESSAGES/gnocatan.mo
-%{_datadir}/locale/fr/LC_MESSAGES/gnocatan.mo
-%{_datadir}/locale/it/LC_MESSAGES/gnocatan.mo
-%{_datadir}/locale/nl/LC_MESSAGES/gnocatan.mo
+%doc /usr/man/man6/pioneers.6.gz
+%{_bindir}/pioneers
+%{_datadir}/gnome/apps/Games/pioneers.desktop
+%{_datadir}/pixmaps/gnome-pioneers.png
+%{_datadir}/pixmaps/pioneers/*
+%{_datadir}/games/pioneers/themes/*
+%{_datadir}/locale/es/LC_MESSAGES/pioneers.mo
+%{_datadir}/locale/de/LC_MESSAGES/pioneers.mo
+%{_datadir}/locale/fr/LC_MESSAGES/pioneers.mo
+%{_datadir}/locale/it/LC_MESSAGES/pioneers.mo
+%{_datadir}/locale/nl/LC_MESSAGES/pioneers.mo
 
 %files help
 %defattr(-,root,root)
 %doc AUTHORS COPYING ChangeLog INSTALL README NEWS
-%{_datadir}/gnome/help/gnocatan/C/*.xml
-%{_datadir}/gnome/help/gnocatan/C/images/*
-%{_datadir}/omf/gnocatan/gnocatan-C.omf
+%{_datadir}/gnome/help/pioneers/C/*.xml
+%{_datadir}/gnome/help/pioneers/C/images/*
+%{_datadir}/omf/pioneers/pioneers-C.omf
 
 %post help
-if which scrollkeeper-update>/dev/null 2>&1; then scrollkeeper-update -q -o %{_datadir}/omf/gnocatan; fi
+if which scrollkeeper-update>/dev/null 2>&1; then scrollkeeper-update -q -o %{_datadir}/omf/pioneers; fi
 
 %postun help
 if which scrollkeeper-update>/dev/null 2>&1; then scrollkeeper-update -q; fi
@@ -139,30 +139,30 @@ if which scrollkeeper-update>/dev/null 2>&1; then scrollkeeper-update -q; fi
 %files ai
 %defattr(-,root,root)
 %doc AUTHORS COPYING ChangeLog INSTALL README NEWS 
-%doc /usr/man/man6/gnocatanai.6.gz
-%{_bindir}/gnocatanai
-%{_datadir}/games/gnocatan/computer_names
+%doc /usr/man/man6/pioneersai.6.gz
+%{_bindir}/pioneersai
+%{_datadir}/games/pioneers/computer_names
 
 %files server-console
 %defattr(-,root,root)
 %doc AUTHORS COPYING ChangeLog INSTALL README NEWS 
-%doc /usr/man/man6/gnocatan-server-console.6.gz
-%{_bindir}/gnocatan-server-console
+%doc /usr/man/man6/pioneers-server-console.6.gz
+%{_bindir}/pioneers-server-console
 
 %files server-gtk
 %defattr(-,root,root)
 %doc AUTHORS COPYING ChangeLog INSTALL README NEWS 
-%doc /usr/man/man6/gnocatan-server-gtk.6.gz
-%{_bindir}/gnocatan-server-gtk
-%{_datadir}/gnome/apps/Games/gnocatan-server.desktop
+%doc /usr/man/man6/pioneers-server-gtk.6.gz
+%{_bindir}/pioneers-server-gtk
+%{_datadir}/gnome/apps/Games/pioneers-server.desktop
 
 %files server-data
 %defattr(-,root,root)
 %doc AUTHORS COPYING ChangeLog INSTALL README NEWS 
-%{_datadir}/games/gnocatan/*.game
+%{_datadir}/games/pioneers/*.game
 
 %files meta-server
 %defattr(-,root,root)
-%doc /usr/man/man6/gnocatan-meta-server.6.gz
+%doc /usr/man/man6/pioneers-meta-server.6.gz
 %doc AUTHORS COPYING ChangeLog INSTALL README NEWS 
-%{_bindir}/gnocatan-meta-server
+%{_bindir}/pioneers-meta-server

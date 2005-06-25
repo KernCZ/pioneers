@@ -40,6 +40,8 @@
 	* client/gtk/data/gnocatan.desktop,
 	  server/gtk/gnocatan-server.desktop: fix both the display names
 	  and the paths to the binaries
+	* configure.ac, pioneers.spec.in: fix up the RPM packaging to
+	  match
 
 2005-06-05  Brian Wellington <bwelling@xbill.org>
 	* common/game.c, common/game.h, common/map.c, common/map.h,
