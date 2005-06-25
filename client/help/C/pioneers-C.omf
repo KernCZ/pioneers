@@ -24,7 +24,7 @@
      user's guide
     </type>
     <format mime="text/xml" dtd="-//OASIS//DTD DocBook XML V4.1.2//EN"/>
-    <identifier url="file://usr/share/gnome/help/gnocatan/C/gnocatan.xml"/>
+    <identifier url="file://usr/share/gnome/help/pioneers/C/pioneers.xml"/>
     <language code="C"/>
 <!-- for information on how Scrollkeeper uses the following relation element,
   see http://scrollkeeper.sourceforge.net/documentation/writing_scrollkeeper_omf_files/index.html -->

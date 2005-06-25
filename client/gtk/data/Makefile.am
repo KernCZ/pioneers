@@ -27,7 +27,7 @@ appicondir=$(datadir)/pixmaps
 pixmapdir =$(datadir)/pixmaps/gnocatan
 Gamesdir=$(datadir)/gnome/apps/Games
 
-appicon_DATA = gnome-gnocatan.png
+appicon_DATA = gnome-pioneers.png
 
 theme_DATA = \
 	cross.png \
@@ -46,7 +46,7 @@ pixmap_DATA = \
 	splash.png \
 	trade.png
 
-Games_DATA = gnocatan.desktop
+Games_DATA = pioneers.desktop
 
 EXTRA_DIST = \
 	$(appicon_DATA) \

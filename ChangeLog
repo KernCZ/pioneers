@@ -42,6 +42,12 @@
 	  and the paths to the binaries
 	* configure.ac, pioneers.spec.in: fix up the RPM packaging to
 	  match
+	* client/gtk/data/pioneers.desktop, client/help/C/pioneers-C.omf,
+	  client/gtk/data/gnome-pioneers.png, client/help/C/pioneers.xml,
+	  server/gtk/pioneers-server.desktop, server/gtk/Makefile.am,
+	  client/gtk/data/Makefile.am, client/help/C/Makefile.am,
+	  client/gtk/gui.c, server/gtk/gnocatan-server-gtk.c: fix the
+	  names of installed data files
 
 2005-06-05  Brian Wellington <bwelling@xbill.org>
 	* common/game.c, common/game.h, common/map.c, common/map.h,

@@ -2,6 +2,6 @@
 Name=Pioneers
 Comment=Pioneers game client
 Exec=pioneers
-Icon=gnome-gnocatan.png
+Icon=gnome-pioneers.png
 Terminal=0
 Type=Application

@@ -48,7 +48,7 @@ pioneers_server_gtk_LDADD = \
 	../../common/gtk/libpioneers_gtk.a \
 	$(GNOME2_LIBS)
 
-Games_DATA = gnocatan-server.desktop
+Games_DATA = pioneers-server.desktop
 
 EXTRA_DIST = \
 	$(Games_DATA)

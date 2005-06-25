@@ -37,7 +37,7 @@
 #include "select-game.h"	/* Custom widget */
 #include "game-settings.h"	/* Custom widget */
 
-#define GNOCATAN_ICON_FILE	"gnome-gnocatan.png"
+#define GNOCATAN_ICON_FILE	"gnome-pioneers.png"
 
 static GtkWidget *game_frame;	/* the frame containing all settings regarding the game */
 static GtkWidget *select_game;	/* select game type */

@@ -22,9 +22,9 @@
 include $(top_srcdir)/rules.make
 
 figdir = images
-docname = gnocatan
+docname = pioneers
 lang = C
-omffile = gnocatan-C.omf
+omffile = pioneers-C.omf
 entities = legal.xml
 include $(top_srcdir)/xmldocs.make
 dist-hook: app-dist-hook
