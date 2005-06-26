@@ -48,9 +48,9 @@
 	  client/gtk/data/Makefile.am, client/help/C/Makefile.am,
 	  client/gtk/gui.c, server/gtk/gnocatan-server-gtk.c: fix the
 	  names of installed data files
-	* rules.make, editor/gtk/Makefile.am, client/ai/Makefile.am,
-	  client/gtk/Makefile.am, client/gtk/data/Makefile.am,
-	  client/gtk/data/themes/Makefile.am,
+	* rules.make, editor/gtk/Makefile.am, common/gtk/aboutbox.c,
+	  client/ai/Makefile.am, client/gtk/Makefile.am,
+	  client/gtk/data/Makefile.am, client/gtk/data/themes/Makefile.am,
 	  client/gtk/data/themes/FreeCIV-like/Makefile.am,
 	  client/gtk/data/themes/Iceland/Makefile.am,
 	  client/gtk/data/themes/Tiny/Makefile.am, server/Makefile.am,

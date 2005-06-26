@@ -36,7 +36,7 @@ void aboutbox_display(const gchar * title, const gchar ** authors)
 	vbox = gtk_vbox_new(FALSE, 0);
 	gtk_container_add(GTK_CONTAINER(about), vbox);
 
-	imagefile = g_build_filename(DATADIR, "pixmaps", "gnocatan",
+	imagefile = g_build_filename(DATADIR, "pixmaps", "pioneers",
 				     "splash.png", NULL);
 	splash = gtk_image_new_from_file(imagefile);
 	g_free(imagefile);
