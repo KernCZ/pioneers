@@ -149,18 +149,18 @@ static GnomeUIInfo main_menu[] = {
 	GNOMEUIINFO_END
 };
 
-#define PIONEERS_PIXMAP_DICE "gnocatan/dice.png"
-#define PIONEERS_PIXMAP_TRADE "gnocatan/trade.png"
-#define PIONEERS_PIXMAP_ROAD "gnocatan/road.png"
-#define PIONEERS_PIXMAP_SHIP "gnocatan/ship.png"
-#define PIONEERS_PIXMAP_SHIP_MOVEMENT "gnocatan/ship_move.png"
-#define PIONEERS_PIXMAP_BRIDGE "gnocatan/bridge.png"
-#define PIONEERS_PIXMAP_SETTLEMENT "gnocatan/settlement.png"
-#define PIONEERS_PIXMAP_CITY "gnocatan/city.png"
-#define PIONEERS_PIXMAP_DEVELOP "gnocatan/develop.png"
-#define PIONEERS_PIXMAP_FINISH "gnocatan/finish.png"
+#define PIONEERS_PIXMAP_DICE "pioneers/dice.png"
+#define PIONEERS_PIXMAP_TRADE "pioneers/trade.png"
+#define PIONEERS_PIXMAP_ROAD "pioneers/road.png"
+#define PIONEERS_PIXMAP_SHIP "pioneers/ship.png"
+#define PIONEERS_PIXMAP_SHIP_MOVEMENT "pioneers/ship_move.png"
+#define PIONEERS_PIXMAP_BRIDGE "pioneers/bridge.png"
+#define PIONEERS_PIXMAP_SETTLEMENT "pioneers/settlement.png"
+#define PIONEERS_PIXMAP_CITY "pioneers/city.png"
+#define PIONEERS_PIXMAP_DEVELOP "pioneers/develop.png"
+#define PIONEERS_PIXMAP_FINISH "pioneers/finish.png"
 
-#define PIONEERS_PIXMAP_SPLASH "gnocatan/splash.png"
+#define PIONEERS_PIXMAP_SPLASH "pioneers/splash.png"
 
 static const gchar *pioneers_pixmaps[] = {
 	PIONEERS_PIXMAP_DICE,
