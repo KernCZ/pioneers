@@ -1,3 +1,7 @@
+2005-06-26  Roland Clobus <rclobus@bigfoot.com>
+	* client/gtk/data/splash.svg, client/gtk/data/splash.png: Set name to
+	Pioneers
+	
 2005-06-25  Steve Langasek <vorlon@debian.org>
 	* autogen.sh: tested with automake-1.8, so allow the package to
 	  be built using that version
