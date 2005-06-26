@@ -1,7 +1,5 @@
  - Rebranding:
    * Add support for importing preferences from old config directories
-   * Add support for automatically mapping gnocatan.debian.net ->
-     pioneers.debian.net
    * Documentation fixes?
    * Fix up all mentions of gnocatan in the source
    * Figure out how to translate "University of Gnocatan"?

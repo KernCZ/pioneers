@@ -1080,7 +1080,9 @@ void connect_create_dlg(void)
 	default_returned = FALSE;
 	saved_meta_server =
 	    config_get_string("connect/meta-server", &default_returned);
-	if (default_returned) {
+	if (default_returned
+	    || !strncmp(saved_meta_server,"gnocatan.debian.net",strlen(saved_meta_server)+1))
+	{
 		g_free(saved_meta_server);
 		saved_meta_server = get_meta_server_name(TRUE);
 	}

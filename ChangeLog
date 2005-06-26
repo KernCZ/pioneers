@@ -1,3 +1,9 @@
+2005-06-26  Steve Langasek <vorlon@debian.org>
+	* client/gtk/connect.c, server/gtk/gnocatan-server-gtk.c:
+	  Auto-migrate metaserver values from 'gnocatan.debian.net'
+	  to 'pioneers.debian.net' (done in a pretty ugly, hard-coded
+	  fashion, but this should be just a temporary hack)
+
 2005-06-26  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/data/splash.svg, client/gtk/data/splash.png: Set name to
 	Pioneers
