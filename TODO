@@ -1,5 +1,4 @@
  - Rebranding:
-   * Fix variable names (incl. env var names?)
    * Add support for importing preferences from old config directories
    * Add support for automatically mapping gnocatan.debian.net ->
      pioneers.debian.net
