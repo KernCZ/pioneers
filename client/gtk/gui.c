@@ -410,7 +410,7 @@ static GtkWidget *splash_build_page(void)
 	GtkWidget *viewport;
 	gchar *filename;
 
-	filename = g_build_filename(DATADIR, "pixmaps", "gnocatan",
+	filename = g_build_filename(DATADIR, "pixmaps", "pioneers",
 				    "splash.png", NULL);
 	pm = gtk_image_new_from_file(filename);
 	g_free(filename);
@@ -895,7 +895,7 @@ static GtkWidget *build_status_bar(void)
 	return app_bar;
 }
 
-static void register_gnocatan_pixmaps(void)
+static void register_pixmaps(void)
 {
 	gint idx;
 
@@ -937,7 +937,7 @@ GtkWidget *gui_build_interface()
 
 	gmap = guimap_new();
 
-	register_gnocatan_pixmaps();
+	register_pixmaps();
 	app_window = gnome_app_new("pioneers",
 				   /* The name of the application */
 				   _("Pioneers"));
