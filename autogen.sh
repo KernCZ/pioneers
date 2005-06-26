@@ -4,7 +4,7 @@
 srcdir=`dirname $0`
 test -z "$srcdir" && srcdir=.
 
-PKG_NAME="Gnocatan"
+PKG_NAME="Pioneers"
 
 # Tested with automake1.4 and automake1.7
 # The next two lines are needed because gnome-common only tries to use
