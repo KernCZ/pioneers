@@ -2,7 +2,6 @@
    * Add support for importing preferences from old config directories
    * Documentation fixes?
    * Fix up all mentions of gnocatan in the source
-   * Figure out how to translate "University of Gnocatan"?
    * Only at the very end, change filenames of source files
 
  - If the trade page is already shown, and the player initiating the

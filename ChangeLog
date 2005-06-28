@@ -1,3 +1,8 @@
+2005-06-28  Roland Clobus <rclobus@bigfoot.com>
+	* client/common/develop.c, client/gtk/player.c,
+	client/gtk/settingscreen.c, editor/gtk/game-devcards.c: change the
+	development card to 'Pioneer University'
+
 2005-06-26  Steve Langasek <vorlon@debian.org>
 	* client/gtk/connect.c, server/gtk/gnocatan-server-gtk.c:
 	  Auto-migrate metaserver values from 'gnocatan.debian.net'

@@ -44,7 +44,7 @@ static struct {
 	N_("Monopoly"), FALSE}, {
 	N_("Year of Plenty"), FALSE}, {
 	N_("Chapel"), TRUE}, {
-	N_("University of Gnocatan"), TRUE}, {
+	N_("Pioneer University"), TRUE}, {
 	N_("Governor's House"), TRUE}, {
 	N_("Library"), TRUE}, {
 	N_("Market"), TRUE}, {

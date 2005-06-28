@@ -11,7 +11,7 @@
 
 static const gchar *devcard_names[NUM_DEVEL_TYPES] = {
 	N_("Road Building"), N_("Monopoly"), N_("Year of Plenty"),
-	N_("Chapel"), N_("University of Gnocatan"),
+	N_("Chapel"), N_("Pioneer University"),
 	N_("Governor's House"), N_("Library"), N_("Market"),
 	N_("Soldier")
 };

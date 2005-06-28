@@ -49,7 +49,7 @@ static Statistic statistics[] = {
 	{N_("Largest Army"), NULL, &ps_largest},
 	{N_("Longest Road"), NULL, &ps_largest},
 	{N_("Chapel"), N_("Chapels"), &ps_building},
-	{N_("University of Gnocatan"), N_("Universities of Gnocatan"),
+	{N_("Pioneer University"), N_("Pioneer Universities"),
 	 &ps_building},
 	{N_("Governor's House"), N_("Governor's Houses"), &ps_building},
 	{N_("Library"), N_("Libraries"), &ps_building},
