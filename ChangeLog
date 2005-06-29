@@ -15,7 +15,16 @@
           common/gtk/game-settings.c, common/gtk/game-settings.h,
           common/gtk/guimap.c, common/gtk/guimap.h, common/gtk/polygon.c,
           common/gtk/polygon.h, common/gtk/select-game.c,
-          common/gtk/select-game.h, common/gtk/theme.c, common/gtk/theme.h: 
+          common/gtk/select-game.h, common/gtk/theme.c, common/gtk/theme.h,
+          client/gtk/admin-gtk.c, client/gtk/callbacks.c, client/gtk/chat.c,
+          client/gtk/develop.c, client/gtk/discard.c, client/gtk/frontend.c,
+          client/gtk/frontend.h, client/gtk/gameover.c, client/gtk/gold.c,
+          client/gtk/gui.h, client/gtk/histogram.c, client/gtk/histogram.h,
+          client/gtk/identity.c, client/gtk/interface.c, client/gtk/legend.c,
+          client/gtk/monopoly.c, client/gtk/name.c, client/gtk/player.c,
+          client/gtk/plenty.c, client/gtk/quote.c, client/gtk/resource-table.c,
+          client/gtk/resource-table.h, client/gtk/resource.c,
+          client/gtk/settingscreen.c, client/gtk/state.c, client/gtk/trade.c: 
           fix uses of the name "Gnocatan" in the header comments
 
 2005-06-28  Roland Clobus <rclobus@bigfoot.com>

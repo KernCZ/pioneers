@@ -4,7 +4,7 @@
  * http://www.gtk.org/tutorial/app-codeexamples.html
  * http://www.gtk.org/tutorial/sec-gtkdial.html
  *
- * Adaptation for Gnocatan: 2004 Roland Clobus
+ * Adaptation for Pioneers: 2004 Roland Clobus
  *
  */
 #ifndef __RESOURCETABLE_H__
