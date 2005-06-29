@@ -55,7 +55,7 @@ GtkWidget *gameover_create_dlg(gint player_num, gint num_points)
 	gtk_widget_show(lbl);
 	gtk_box_pack_start(GTK_BOX(vbox), lbl, FALSE, TRUE, 0);
 
-	sprintf(buff, _("All praise %s, Lord of All Gnocatan!"),
+	sprintf(buff, _("All praise %s, Lord of the known world!"),
 		player_name(player_num, TRUE));
 	lbl = gtk_label_new(buff);
 	gtk_widget_show(lbl);

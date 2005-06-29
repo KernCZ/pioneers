@@ -1,4 +1,5 @@
 2005-06-29  Roland Clobus <rclobus@bigfoot.com>
+	* client/gtk/gameover.c: Last translatable string with Gnocatan.
 	* README, README.Cygwin, client/ai/ai.c, common/network.c,
 	  common/network.h, editor/gtk/editor.c, meta-server/README.protocol,
 	  meta-server/gnocatan-meta-server.c, server/archipel_gold.game,
