@@ -282,7 +282,7 @@ static void handle_sigpipe(G_GNUC_UNUSED int signum)
 /* server initialization */
 void server_init(void)
 {
-	load_game_types(get_gnocatan_dir());
+	load_game_types(get_pioneers_dir());
 
 	/* Broken pipes can happen when multiple players disconnect
 	 * simultaneously.  This mostly happens to AI's, which disconnect

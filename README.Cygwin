@@ -1,4 +1,4 @@
-Short guide to install Gnocatan in Cygwin
+Short guide to install Pioneers in Cygwin
 
 Install a minimal setup
 =======================
@@ -33,28 +33,28 @@ Install a minimal setup
       openssl-devel
       pango-devel
       pkg-config
-You now have a minimal setup needed to build and run Gnocatan.
+You now have a minimal setup needed to build and run Pioneers.
 
 I had to start the installation program three times, because I had 
 problems downloading some packages.
 
-Install Gnocatan
+Install Pioneers
 ================
 1) Download the source tarball to your Cygwin home directory
    (c:\cygwin\home\%username%)
 2) Start the Cygwin shell
 3) Expand the source tarball
-   (tar xvzf gnocatan-%versionnumber%.tar.gz)
-4) Enter the source directory (cd gnocatan-%versionnumber%)
+   (tar xvzf pioneers-%versionnumber%.tar.gz)
+4) Enter the source directory (cd pioneers-%versionnumber%)
 5) Configure, build and install
      ./configure
      make
      make install
 
-Start Gnocatan
+Start Pioneers
 ==============
 6) Start the X server (startx)
-7) Start Gnocatan from the XTerm (gnocatan)
+7) Start Pioneers from the XTerm (pioneers)
 
 Known limitations
 =================
@@ -63,4 +63,4 @@ Known limitations
 * The metaserver does not work
 
 Roland Clobus
-2005-05-01 (Gnocatan 0.9.11)
+2005-06-30 (Pioneers 0.9.17)

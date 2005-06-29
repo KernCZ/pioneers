@@ -1006,7 +1006,7 @@ int main(int argc, char *argv[])
 	else
 		filename = NULL;
 
-	default_game = g_build_filename(get_gnocatan_dir(), "default.game",
+	default_game = g_build_filename(get_pioneers_dir(), "default.game",
 					NULL);
 
 	gnome_program_init("pioneers-editor", VERSION, LIBGNOME_MODULE,
@@ -1042,7 +1042,7 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	config_init("/gnocatan-editor/");
+	config_init("/pioneers-editor/");
 
 	themes_init();
 	colors_init();

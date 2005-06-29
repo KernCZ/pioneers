@@ -116,6 +116,6 @@ gchar *get_meta_server_name(gboolean use_default);
  *  First the environment variable PIONEERS_DIR is queried
  *  If it is not set, the default value is returned
  */
-const gchar *get_gnocatan_dir(void);
+const gchar *get_pioneers_dir(void);
 
 #endif

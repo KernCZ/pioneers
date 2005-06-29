@@ -545,7 +545,7 @@ gchar *get_meta_server_name(gboolean use_default)
 	return temp;
 }
 
-const gchar *get_gnocatan_dir(void)
+const gchar *get_pioneers_dir(void)
 {
 	const gchar *pioneers_dir = g_getenv("PIONEERS_DIR");
 	if (!pioneers_dir)

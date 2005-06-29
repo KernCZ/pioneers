@@ -43,7 +43,7 @@ static gchar *random_name(void)
 	int num = 1;
 
 	filename =
-	    g_build_filename(get_gnocatan_dir(), "computer_names", NULL);
+	    g_build_filename(get_pioneers_dir(), "computer_names", NULL);
 	stream = fopen(filename, "r");
 	if (!stream) {
 		g_warning("Unable to open %s", filename);
@@ -75,7 +75,7 @@ static gchar *random_name(void)
 
 static void usage(int retval)
 {
-	printf("Usage: gnocatanai [args]\n"
+	printf("Usage: pioneersai [args]\n"
 	       "\n"
 	       "s - server\n"
 	       "p - port\n"

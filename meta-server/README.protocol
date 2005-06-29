@@ -1,7 +1,7 @@
 
-Here I try to describe the details of Gnocatans meta server protocol.
+Here I try to describe the details of Pioneers' meta server protocol.
 This is the protocol the meta server speaks, the remote instances are
-either Gnocatan clients or Gnocatan servers.
+either Pioneers clients or Pioneers servers.
 
 For each instance speaking the protocol (meta server, server, and
 client) I list accepted messages, sent replies and actions taken. I
@@ -48,7 +48,7 @@ listens on port 5557
 accepts conns from clients (searches) and from servers (registrations)
 has a list of locally installed games
 
-MS on accept prints "welcome to the gnocatan-meta-server version FOO"
+MS on accept prints "welcome to the pioneers-meta-server version FOO"
 and sets peer state to UNKNOWN
 
 Exception: If MS started with -r (redirect) option, it just sends

@@ -1,4 +1,12 @@
 2005-06-29  Roland Clobus <rclobus@bigfoot.com>
+	* README, README.Cygwin, client/ai/ai.c, common/network.c,
+	  common/network.h, editor/gtk/editor.c, meta-server/README.protocol,
+	  meta-server/gnocatan-meta-server.c, server/archipel_gold.game,
+	  server/crane_island.game, server/gnocatan-server.c, server/pregame.c,
+	  server/gtk/gnocatan-server-gtk.c: Use "Pioneers" in the README
+	  files, renamed 'get_gnocatan_dir' to 'get_pioneers_dir', updated
+	  protocol for the hello message, use settings for Pioneers.
+	  
 	* server/buildutil.c, server/develop.c, server/discard.c,
 	  server/glib-driver.c, server/glib-driver.h, server/gnocatan-server.h,
           server/gold.c, server/player.c, server/pregame.c, server/resource.c,

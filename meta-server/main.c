@@ -112,7 +112,7 @@ static void debug(const gchar * fmt, ...)
 
 	if (fp == NULL) {
 		char name[64];
-		sprintf(name, "/tmp/gnocatan-meta.%d", getpid());
+		sprintf(name, "/tmp/pioneers-meta.%d", getpid());
 		fp = fopen(name, "w");
 	}
 	if (fp == NULL)
@@ -362,7 +362,7 @@ static GList *load_game_types(void)
 	const gchar *fname;
 	gchar *fullname;
 
-	const gchar *pioneers_dir = get_gnocatan_dir();
+	const gchar *pioneers_dir = get_pioneers_dir();
 
 	if ((dir = g_dir_open(pioneers_dir, 0, NULL)) == NULL) {
 		return NULL;
@@ -815,7 +815,7 @@ static void accept_new_client(void)
 		client->waiting_for_close = TRUE;
 	} else {
 		client_printf(client,
-			      "welcome to the gnocatan-meta-server version %s\n",
+			      "welcome to the pioneers-meta-server version %s\n",
 			      META_PROTOCOL_VERSION);
 		FD_SET(client->fd, &read_fds);
 	}
@@ -993,7 +993,7 @@ int main(int argc, char *argv[])
 			redirect_location = optarg;
 			break;
 		case 'h':
-			printf("Usage: gnocatan-meta-server [options]\n");
+			printf("Usage: pioneers-meta-server [options]\n");
 			printf("Options:\n");
 			printf
 			    ("  -h               Display this help text\n");

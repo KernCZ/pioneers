@@ -451,7 +451,7 @@ gboolean mode_pre_game(Player * player, gint event)
 	switch (event) {
 	case SM_ENTER:
 		sm_send(sm,
-			"player %d of %d, welcome to gnocatan server %s\n",
+			"player %d of %d, welcome to pioneers server %s\n",
 			player->num, game->params->num_players, VERSION);
 		/* Tell the player that he exists.  This is not done in
 		 * player_set_name, because at that point the client doesn't

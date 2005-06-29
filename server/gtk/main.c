@@ -811,7 +811,7 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	config_init("/gnocatan-server/");
+	config_init("/pioneers-server/");
 
 	icon_file =
 	    g_build_filename(DATADIR, "pixmaps", PIONEERS_ICON_FILE, NULL);
