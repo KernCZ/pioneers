@@ -137,7 +137,7 @@ void frontend_init(int argc, char **argv)
 
 	set_ui_driver(&GTK_Driver);
 
-	config_init("/gnocatan/");
+	config_init("/pioneers/");
 
 	gnome_program_init(PACKAGE, VERSION,
 			   LIBGNOMEUI_MODULE,
