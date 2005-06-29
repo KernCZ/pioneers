@@ -1,12 +1,12 @@
 docs/README.states - information about docs/{client,server}_states.fig
 
 client_states.fig and server_states.fig are an attempt to visualize the
-state machines of gnocatan.  Read this file before trying to interpret them.
+state machines of Pioneers.  Read this file before trying to interpret them.
 
 
 State machines
 ==============
-The center of gnocatan is the state machine.  The client program has one,
+The center of Pioneers is the state machine.  The client program has one,
 the server has one for every client.  The idea is to simplify programming
 because only things that are sensible in the context have to be implemented.
 Functions also become more readable once you understand how they work.
