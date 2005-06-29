@@ -1,4 +1,4 @@
-/* Gnocatan - Implementation of the excellent Settlers of Catan board game.
+/* Pioneers - Implementation of the excellent Settlers of Catan board game.
  *   Go buy a copy.
  *
  * Copyright (C) 1999 the Free Software Foundation
@@ -26,7 +26,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 /*
- * This is a rudimentary AI for gnocatan. 
+ * This is a rudimentary AI for Pioneers. 
  *
  * What it does _NOT_ do:
  *

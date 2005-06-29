@@ -24,7 +24,8 @@
           client/gtk/monopoly.c, client/gtk/name.c, client/gtk/player.c,
           client/gtk/plenty.c, client/gtk/quote.c, client/gtk/resource-table.c,
           client/gtk/resource-table.h, client/gtk/resource.c,
-          client/gtk/settingscreen.c, client/gtk/state.c, client/gtk/trade.c: 
+          client/gtk/settingscreen.c, client/gtk/state.c, client/gtk/trade.c,
+          client/callback.h, client/ai/ai.h, client/ai/greedy.c: 
           fix uses of the name "Gnocatan" in the header comments
 
 2005-06-28  Roland Clobus <rclobus@bigfoot.com>
