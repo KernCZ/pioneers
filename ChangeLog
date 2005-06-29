@@ -1,3 +1,10 @@
+2005-06-29  Roland Clobus <rclobus@bigfoot.com>
+	* server/buildutil.c, server/develop.c, server/discard.c,
+	  server/glib-driver.c, server/glib-driver.h, server/gnocatan-server.h,
+          server/gold.c, server/player.c, server/pregame.c, server/resource.c,
+          server/robber.c, server/server.h, server/trade.c, server/turn.c:
+          fix uses of the name "Gnocatan" in the header comments
+
 2005-06-28  Roland Clobus <rclobus@bigfoot.com>
 	* client/common/develop.c, client/gtk/player.c,
 	client/gtk/settingscreen.c, editor/gtk/game-devcards.c: change the
