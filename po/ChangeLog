@@ -1,3 +1,6 @@
+2005-06-30 Roland Clobus <rclobus@bigfoot.com>
+	* nl.po, pioneers.pot: Complete Gnocatan free
+
 2005-06-25 Steve Langasek <vorlon@debian.org>
 	* pioneers.pot: new gettext package name
 	* de.po, es.po, fr.po, it.po, nl.po: sync translations to
