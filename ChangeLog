@@ -25,7 +25,13 @@
           client/gtk/plenty.c, client/gtk/quote.c, client/gtk/resource-table.c,
           client/gtk/resource-table.h, client/gtk/resource.c,
           client/gtk/settingscreen.c, client/gtk/state.c, client/gtk/trade.c,
-          client/callback.h, client/ai/ai.h, client/ai/greedy.c: 
+          client/callback.h, client/ai/ai.h, client/ai/greedy.c,
+	  client/common/build.c, client/common/callback.c,
+	  client/common/chat.c, client/common/client.c, client/common/client.h,
+	  client/common/develop.c, client/common/gnocatan.c,
+	  client/common/i18n.c, client/common/player.c,
+	  client/common/resource.c, client/common/robber.c,
+	  client/common/setup.c, client/common/stock.c, client/common/turn.c: 
           fix uses of the name "Gnocatan" in the header comments
 
 2005-06-28  Roland Clobus <rclobus@bigfoot.com>

@@ -1,4 +1,4 @@
-/* Gnocatan - Implementation of the excellent Settlers of Catan board game.
+/* Pioneers - Implementation of the excellent Settlers of Catan board game.
  *   Go buy a copy.
  *
  * Copyright (C) 2003 Bas Wijnen <b.wijnen@phys.rug.nl>
@@ -331,7 +331,7 @@ gint stat_get_vp_value(StatisticType type)
 		2,		/* largest army */
 		2,		/* longest road */
 		1,		/* chapel */
-		1,		/* university of gnocatan */
+		1,		/* pioneer university */
 		1,		/* governor's house */
 		1,		/* library */
 		1,		/* market */
