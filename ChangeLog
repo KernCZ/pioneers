@@ -2,7 +2,19 @@
 	* server/buildutil.c, server/develop.c, server/discard.c,
 	  server/glib-driver.c, server/glib-driver.h, server/gnocatan-server.h,
           server/gold.c, server/player.c, server/pregame.c, server/resource.c,
-          server/robber.c, server/server.h, server/trade.c, server/turn.c:
+          server/robber.c, server/server.h, server/trade.c, server/turn.c,
+	  common/buildrec.c, common/buildrec.h, common/cards.c, common/cards.h,
+          common/common_glib.c, common/common_glib.h, common/cost.c,
+          common/cost.h, common/driver.c, common/driver.h, common/game.c,
+          common/game.h, common/log.c, common/log.h, common/map.c,
+          common/map.h, common/quoteinfo.c, common/quoteinfo.h, common/state.c,
+          common/state.h, common/gtk/colors.c, common/gtk/colors.h,
+          common/gtk/common_gtk.c, common/gtk/common_gtk.h,
+          common/gtk/config-gnome.c, common/gtk/config-gnome.h,
+          common/gtk/game-settings.c, common/gtk/game-settings.h,
+          common/gtk/guimap.c, common/gtk/guimap.h, common/gtk/polygon.c,
+          common/gtk/polygon.h, common/gtk/select-game.c,
+          common/gtk/select-game.h, common/gtk/theme.c, common/gtk/theme.h: 
           fix uses of the name "Gnocatan" in the header comments
 
 2005-06-28  Roland Clobus <rclobus@bigfoot.com>

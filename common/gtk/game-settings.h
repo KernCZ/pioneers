@@ -3,7 +3,7 @@
  * The code is based on the TICTACTOE example
  * www.gtk.oorg/tutorial/app-codeexamples.html#SEC-TICTACTOE
  *
- * Adaptation for Gnocatan: 2004 Roland Clobus
+ * Adaptation for Pioneers: 2004 Roland Clobus
  *
  */
 #ifndef __GAMESETTINGS_H__

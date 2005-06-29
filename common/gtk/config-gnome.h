@@ -1,4 +1,4 @@
-/* Gnocatan - Implementation of the excellent Settlers of Catan board game.
+/* Pioneers - Implementation of the excellent Settlers of Catan board game.
  *   Go buy a copy.
  *
  * Copyright (C) 2000 the Free Software Foundation
@@ -19,7 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-/* config-gnome.h	-- gnocatan configuration via. gnome-config (header)
+/* config-gnome.h	-- configuration via. gnome-config (header)
  * initial draft
  *
  * 19 July 2000

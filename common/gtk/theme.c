@@ -1,4 +1,4 @@
-/* Gnocatan - Implementation of the excellent Settlers of Catan board game.
+/* Pioneers - Implementation of the excellent Settlers of Catan board game.
  *   Go buy a copy.
  *
  * Copyright (C) 1999 the Free Software Foundation
@@ -187,7 +187,7 @@ void themes_init(void)
 	g_assert(theme_list == NULL);
 	theme_list = g_list_append(NULL, &default_theme);
 
-	/* scan gnocatan image dir for theme descriptor files */
+	/* scan image dir for theme descriptor files */
 	if (!(dir = g_dir_open(THEMEDIR, 0, NULL)))
 		return;
 	while ((dirname = g_dir_read_name(dir))) {
