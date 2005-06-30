@@ -1,4 +1,7 @@
 2005-06-29  Roland Clobus <rclobus@bigfoot.com>
+	* docs/pioneers-meta-server.6, docs/pioneers-server-console.6, 
+	  docs/pioneers-server-gtk.6, docs/pioneers.6, docs/pioneersai.6:
+	  updated man pages
 	* client/gtk/offline: use Pioneers settings
 	* docs/README.states: fix use of "Gnocatan"
 	* client/gtk/gameover.c: Last translatable string with Gnocatan.
