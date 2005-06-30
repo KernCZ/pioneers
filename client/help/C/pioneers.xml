@@ -5,7 +5,7 @@
 ]>
 
 <book id="index" lang="en">
-  <title>Gnocatan player's guide</title>
+  <title>Pioneers player's guide</title>
   <bookinfo>
     <authorgroup>
       <author>
@@ -39,7 +39,7 @@
     <sect1 id="bugs">
       <title>Reporting Bugs</title>
       <para>
-        Information on reporting bugs can be found on the Gnocatan project
+        Information on reporting bugs can be found on the Pioneers project
         webpage, hosted on SourceForge. The URL is:
         <ulink url="http://sourceforge.net/projects/gnocatan/">
          http://sourceforge.net/projects/gnocatan/
@@ -50,11 +50,12 @@
     <sect1 id="Authors">
       <title>Authors and History</title>
       <para>
-        Gnocatan is a GNOME game based upon the board game Settlers of Catan
-        created by Mayfair Games. Gnocatan was originally authored by Dave
-        Cole in the spring and summer of 1999. Dave wanted to be able to
+        Pioneers is a GNOME game based upon the board game Settlers of Catan
+        created by Mayfair Games. Pioneers was originally authored by Dave
+        Cole in the spring and summer of 1999, under the name Gnocatan.
+	Dave wanted to be able to
         play the game without having to travel, so he developed a computer
-        implementation of the game. The Gnocatan project stalled in the late
+        implementation of the game. The Pioneers project stalled in the late
         summer of 1999 and saw little development until the early spring of
         2000 when the project was taken over by Andy Heroff and moved to
         SourceForge. Andy recruited several developers (including Dave) and
@@ -62,11 +63,15 @@
         fixed bugs that have been found in older versions.
       </para>
       <para>
-        After summer 2002 Gnocatan lay dormant again, when in summer 2003 Bas
+        After summer 2002 the Pioneers project lay dormant again, when 
+	in summer 2003 Bas
 	Wijnen found some security bugs, and started programming new features.
 	A little later he was joined by Roland Clobus. Bas made the split 
 	between the core code and the user interface, while Roland was working
 	on the user interface.
+      </para>
+      <para>
+        In June 2005 the project was renamed from Gnocatan to Pioneers.
       </para>
       <para>
         To be continued...
@@ -74,14 +79,14 @@
     </sect1>
   </chapter>
 
-  <chapter id="gnocatan_ui">
-    <title>The Gnocatan user interface</title>
+  <chapter id="pioneers_ui">
+    <title>The Pioneers user interface</title>
 
-    <para>When you start <symbol>Gnocatan</symbol>, the application
+    <para>When you start <symbol>Pioneers</symbol>, the application
       window is displayed.  The user interface is built up from a
       number of panels.</para>
 
-      <figure id="gnocatan-FIG-clientui">
+      <figure id="pioneers-FIG-clientui">
 	<title>The client user interface.</title>
 	<screenshot>
 	  <graphic fileref="images/client.png"></graphic>
@@ -100,7 +105,7 @@
       <para>Once the game play starts, the last dice roll performed by
         a player is also displayed.</para>
 
-      <figure id="gnocatan-FIG-identity">
+      <figure id="pioneers-FIG-identity">
 	<title>The identity panel.</title>
 	<screenshot>
 	  <graphic fileref="images/identity.png"></graphic>
@@ -127,14 +132,14 @@
 	  Only the actions that you are allowed to perform will be
 	  enabled.</para>
 	
-	<figure id="gnocatan-FIG-actions">
+	<figure id="pioneers-FIG-actions">
 	  <title>The actions buttons</title>
 	  <screenshot>
 	    <graphic fileref="images/actions.png"></graphic>
 	  </screenshot>
 	</figure>
 
-	<table frame="none" id="gnocatan-TBL-actions">
+	<table frame="none" id="pioneers-TBL-actions">
 	  <title>Action panel buttons</title>
 	  <tgroup cols="2">
 	    <thead>
@@ -203,7 +208,7 @@
 	  those players.  Next to each player name is the number of
 	  resources that they must discard.</para>
 	
-	<figure id="gnocatan-FIG-discards">
+	<figure id="pioneers-FIG-discards">
 	  <title>The discard list.</title>
 	  <screenshot>
 	    <graphic fileref="images/discards.png"></graphic>
@@ -223,7 +228,7 @@
 	  the robber on the map.  The actions panel is replaced by a
 	  prompt to that effect.</para>
 
-	<figure id="gnocatan-FIG-place-robber">
+	<figure id="pioneers-FIG-place-robber">
 	  <title>The place robber prompt.</title>
 	  <screenshot>
 	    <graphic fileref="images/place-robber.png"></graphic>
@@ -242,7 +247,7 @@
 	  you to chose the victim of the robber by selecting one of
 	  the buildings on the hex.</para>
 	
-	<figure id="gnocatan-FIG-steal-from">
+	<figure id="pioneers-FIG-steal-from">
 	  <title>The steal from prompt.</title>
 	  <screenshot>
 	    <graphic fileref="images/steal-from.png"></graphic>
@@ -258,7 +263,7 @@
 	resources panel displays how many of each resource type you
 	are holding.</para>
 
-      <figure id="gnocatan-FIG-resources">
+      <figure id="pioneers-FIG-resources">
 	<title>The resources panel.</title>
 	<screenshot>
 	  <graphic fileref="images/resources.png"></graphic>
@@ -277,7 +282,7 @@
 	are holding, not the types of those cards.  Once you play a
 	development card, it will be removed from this list.</para>
 
-      <figure id="gnocatan-FIG-develop-cards">
+      <figure id="pioneers-FIG-develop-cards">
 	<title>The development cards panel.</title>
 	<screenshot>
 	  <graphic fileref="images/develop-cards.png"></graphic>
@@ -298,7 +303,7 @@
 	space, it will automatically scroll to display the summary
 	about the current player.</para>
 
-      <figure id="gnocatan-FIG-player-summary">
+      <figure id="pioneers-FIG-player-summary">
 	<title>The player summary panel.</title>
 	<screenshot>
 	  <graphic fileref="images/player-summary.png"></graphic>
@@ -307,16 +312,16 @@
     </sect1>
 
     <sect1 id="map">
-      <title>The Gnocatan map.</title>
+      <title>The Pioneers map.</title>
 
-      <figure id="gnocatan-FIG-map">
-      	<title>The Gnocatan map.</title>
+      <figure id="pioneers-FIG-map">
+      	<title>The Pioneers map.</title>
       	<screenshot>
       	  <graphic fileref="images/map.png"></graphic>
       	</screenshot>
       </figure>
 
-      <para>Gnocatan is played on a map which is built up from a grid
+      <para>Pioneers is played on a map which is built up from a grid
         of terrain hexes.  Each hex on the map has a terrain type
         which defines the resources, if any, that are produced by that
         hex.</para>
@@ -349,8 +354,8 @@
       <para>The following table shows each terrain type, and the resources
         produced by that terrain.</para>
 
-      <table frame="none" id="gnocatan-TBL-terrain-types">
-        <title>Gnocatan terrain types</title>
+      <table frame="none" id="pioneers-TBL-terrain-types">
+        <title>Pioneers terrain types</title>
 	<tgroup cols="5">
 	  <thead>
 	    <row>
@@ -433,7 +438,7 @@
 	you type a message and press <keycap>Return</keycap>, the
 	message will be broadcast to all players.</para>
 
-      <figure id="gnocatan-FIG-chat">
+      <figure id="pioneers-FIG-chat">
 	<title>The chat panel.</title>
 	<screenshot>
 	  <graphic fileref="images/chat.png"></graphic>
@@ -449,7 +454,7 @@
 
       <para>The chat also knows some special commands that start with
       "<userinput>/</userinput>". The commands currently defined are:
-      <table frame="none" id="gnocatan-TBL-chatcommands">
+      <table frame="none" id="pioneers-TBL-chatcommands">
         <title>Chat Commands</title>
 	<tgroup cols="3">
 	  <thead>
@@ -485,7 +490,7 @@
       <para>Underneath the chat panel is a message area where all
         interesting game events are logged.</para>
 
-      <figure id="gnocatan-FIG-messages">
+      <figure id="pioneers-FIG-messages">
 	<title>The messages panel.</title>
 	<screenshot>
 	  <graphic fileref="images/messages.png"></graphic>
@@ -510,7 +515,7 @@
         area identifies the player turn sequence.  The current player
         is highlighted with a thick black border.</para>
 
-      <figure id="gnocatan-FIG-status">
+      <figure id="pioneers-FIG-status">
 	<title>The status bar.</title>
 	<screenshot>
 	  <graphic fileref="images/status.png"></graphic>
@@ -520,13 +525,13 @@
   </chapter>
 
   <chapter id="playing">
-    <title>Playing Gnocatan</title>
+    <title>Playing Pioneers</title>
 
     <sect1 id="joining">
-      <title>Joining a Gnocatan game</title>
+      <title>Joining a Pioneers game</title>
 
-      <para>The Gnocatan client program is
-        "<application>gnocatan</application>". When you run this
+      <para>The Pioneers client program is
+        "<application>pioneers</application>". When you run this
         program, you will be presented with the connect dialog.</para>
 
       <sect2 id="connect-dialog">
@@ -534,14 +539,14 @@
 
 	<para>Using the connect dialog, you identify the game which
           you wish to join. This dialog is automatically invoked when
-          you start Gnocatan. If the initial
+          you start Pioneers. If the initial
           connection fails, you can invoke the dialog from the
           <guimenu>Game</guimenu>/<guimenuitem>New game</guimenuitem>
           menu, or by using the
           <keycombo><keycap>Ctrl</keycap><keycap>N</keycap></keycombo>
           keyboard shortcut.</para>
 
-	<figure id="gnocatan-FIG-connect-dialog">
+	<figure id="pioneers-FIG-connect-dialog">
 	  <title>The connect dialog.</title>
 	  <screenshot>
 	    <graphic fileref="images/connect-dialog.png"></graphic>
@@ -551,18 +556,18 @@
 	<para>Enter your name, and join an existing game or create a
 	new game.</para>
 
-	<para>Only if <application>gnocatan-server-gtk</application> is
+	<para>Only if <application>pioneers-server-gtk</application> is
 	 installed, you can create new games.</para>
       </sect2>
 
       <sect2 id="server-dialog">
         <title>Join public game</title>
 
-	<para>The dialog displays a list of Gnocatan games
+	<para>The dialog displays a list of Pioneers games
           that are currently running on the Internet. The default
 	  meta server is <url>pioneers.debian.net</url></para>
 
-	<figure id="gnocatan-FIG-servers-dialog">
+	<figure id="pioneers-FIG-servers-dialog">
 	  <title>The Join a public game dialog.</title>
 	  <screenshot>
 	    <graphic fileref="images/servers-dialog.png"></graphic>
@@ -590,7 +595,7 @@
 	  to reach, which sevens rule to apply 
 	  and how many AI players should join the game.</para>
 
-	<figure id="gnocatan-FIG-server-create">
+	<figure id="pioneers-FIG-server-create">
 	  <title>The Create a public game dialog.</title>
 	  <screenshot>
 	    <graphic fileref="images/server-create.png"></graphic>
@@ -608,7 +613,7 @@
         automatically when the game is finished, or if sits around for
         more than 20 minutes without any connected players. Please
         also note that adding AI players will silently fail if the
-        <application>gnocatanai</application> program is not installed
+        <application>pioneersai</application> program is not installed
         on the meta server.</para>
 
       </sect2>
@@ -620,7 +625,7 @@
           Server Port fields. The hostname/port combinations you used
           recently are remembered. You can recall them quickly with the Recent
           Games button at the bottom.</para>
-	<figure id="gnocatan-FIG-join-private-game">
+	<figure id="pioneers-FIG-join-private-game">
 	  <title>The Join a private game dialog.</title>
 	  <screenshot>
 	    <graphic fileref="images/join-private-dialog.png"></graphic>
@@ -631,9 +636,9 @@
     </sect1>
 
     <sect1 id="setup">
-      <title>Gnocatan setup phase.</title>
+      <title>Pioneers setup phase.</title>
 
-      <para>Once you have successfully connected to a Gnocatan game
+      <para>Once you have successfully connected to a Pioneers game
         server, the game map will be downloaded from the server and
         displayed in the map area of the display.  You will be
         assigned a player color, which will be displayed in the
@@ -659,7 +664,7 @@
     </sect1>
 
     <sect1 id="turn">
-      <title>Gnocatan turn sequence.</title>
+      <title>Pioneers turn sequence.</title>
 
       <para>When it is your turn, the actions panel will show all of
         the actions that you can perform.  Some care must be
@@ -667,7 +672,7 @@
         turn, and other actions can only be performed in strict
         sequence.</para>
 
-      <procedure id="gnocatan-turn-sequence">
+      <procedure id="pioneers-turn-sequence">
       	<title>Simplified turn sequence</title>
       	<step>
       	  <para>Roll the dice.</para>
@@ -695,7 +700,7 @@
         if you buy a development card, you will not be able to trade
         for the rest of the turn.</para>
 
-      <sect2 id="gnocatan-dice-roll">
+      <sect2 id="pioneers-dice-roll">
         <title>Dice roll / resource collection</title>
 
 	<para>When the dice are rolled, they are added together,
@@ -726,7 +731,7 @@
 	  resources dialog will be displayed for all players who must
 	  discard.</para>
 
-	<figure id="gnocatan-FIG-discard-dialog">
+	<figure id="pioneers-FIG-discard-dialog">
 	  <title>The discard dialog.</title>
 	  <screenshot>
 	    <graphic fileref="images/discard-dialog.png"></graphic>
@@ -772,7 +777,7 @@
 	  button in the actions panel and the trade interface will be
 	  displayed.</para>
 	  
-	<figure id="gnocatan-FIG-trade">
+	<figure id="pioneers-FIG-trade">
 	  <title>The trade interface.</title>
 	  <screenshot>
 	    <graphic fileref="images/trade.png"></graphic>
@@ -789,7 +794,7 @@
 	  describes one resource.  From left to right, the columns
 	  are;</para>
 
-	<table frame="none" id="gnocatan-TBL-resource-controls">
+	<table frame="none" id="pioneers-TBL-resource-controls">
 	  <title>Resource controls</title>
 	  <tgroup cols="2">
 	    <tbody>
@@ -851,7 +856,7 @@
 	    perform maritime trading, the bank will quote for each
 	    possible trade.</para>
 
-	  <procedure id="gnocatan-bank-trading-procedure">
+	  <procedure id="pioneers-bank-trading-procedure">
 	    <step>
 	      <para>Players who have built on a port with a resource
 	  	label may trade two identical resources of that type
@@ -895,7 +900,7 @@
 	    in the trade interface, the quote interface will be
 	    displayed.</para>
 
-	  <figure id="gnocatan-FIG-quote">
+	  <figure id="pioneers-FIG-quote">
 	    <title>The quote interface.</title>
 	    <screenshot>
 	      <graphic fileref="images/quote.png"></graphic>
@@ -919,7 +924,7 @@
 	    have, the corresponding row in the Give Them table will be
 	    disabled.  From left to right, the columns are;</para>
 	  
-	  <table frame="none" id="gnocatan-TBL-quote-controls">
+	  <table frame="none" id="pioneers-TBL-quote-controls">
 	    <title>Resource controls</title>
 	    <tgroup cols="2">
 	      <tbody>
@@ -984,7 +989,7 @@
 	development cards have special effects as described
 	below.</para>
 
-      <table frame="none" id="gnocatan-TBL-development-cards">
+      <table frame="none" id="pioneers-TBL-development-cards">
 	<title>Development cards</title>
 	<tgroup cols="4">
 	  <thead>
@@ -1036,7 +1041,7 @@
 	    </row>
 	    <row>
 	      <entry>1</entry>
-	      <entry>University of Gnocatan</entry>
+	      <entry>Pioneer University</entry>
 	      <entry>1</entry>
 	      <entry>No special effects.</entry>
 	    </row>
@@ -1068,7 +1073,7 @@
 	<para>When you play the monopoly development card, the
 	  monopoly dialog will be displayed.</para>
 
-	<figure id="gnocatan-FIG-monopoly-dialog">
+	<figure id="pioneers-FIG-monopoly-dialog">
 	  <title>The monopoly dialog.</title>
 	  <screenshot>
 	    <graphic fileref="images/monopoly-dialog.png"></graphic>
@@ -1087,7 +1092,7 @@
 	<para>When you play the year of plenty development card, the
 	  year of plenty dialog will be displayed.</para>
 
-	<figure id="gnocatan-FIG-plenty-dialog">
+	<figure id="pioneers-FIG-plenty-dialog">
 	  <title>The year of plenty dialog.</title>
 	  <screenshot>
 	    <graphic fileref="images/plenty-dialog.png"></graphic>
@@ -1121,7 +1126,7 @@
 	game you can check the resource cost of each type of building
 	by consulting the legend dialog.</para>
 
-      <figure id="gnocatan-FIG-legend-dialog">
+      <figure id="pioneers-FIG-legend-dialog">
 	<title>The legend dialog.</title>
 	<screenshot>
 	  <graphic fileref="images/legend-dialog.png"></graphic>
@@ -1212,7 +1217,7 @@
 	<para>Once you have won the game, all players will to notified
 	  of your glorious victory.</para>
 
-	<figure id="gnocatan-FIG-gameover-dialog">
+	<figure id="pioneers-FIG-gameover-dialog">
 	  <title>The game over dialog.</title>
 	  <screenshot>
 	    <graphic fileref="images/gameover-dialog.png"></graphic>
@@ -1226,19 +1231,19 @@
     <title>The AI Player</title>
 
     <para>
-      Starting with version 0.7.0, Gnocatan comes with
-      <application>gnocatanai</application>, a computer player
+      Starting with version 0.7.0, Pioneers comes with
+      <application>pioneersai</application>, a computer player
       implementation. This AI player isn't too bad at the moment, but
       not finished yet. Most notably, it cannot take part in domenstic
       trade yet.
     </para>
 
     <para>
-      <application>gnocatanai</application> is a terminal application
+      <application>pioneersai</application> is a terminal application
       without GUI. Its command line options are:
 
-      <table frame="none" id="gnocatan-TBL-ai-options">
-	<title><application>gnocatanai</application> options</title>
+      <table frame="none" id="pioneers-TBL-ai-options">
+	<title><application>pioneersai</application> options</title>
 	<tgroup cols="3">
 	  <thead>
 	    <row>
@@ -1288,7 +1293,7 @@
 
     <para>
       However, most of the time you won't start
-      <application>gnocatanai</application> manually. Both game
+      <application>pioneersai</application> manually. Both game
       servers offer ways to start a number of AI players.
     </para>
 
@@ -1298,7 +1303,7 @@
       <warning>
         <para>
         This chapter is included for the people who wish to control
-        exactly the way <symbol>Gnocatan</symbol> is running.
+        exactly the way <symbol>Pioneers</symbol> is running.
 	</para>
       </warning>
       <para>The extra configuration options are processed in this order:
@@ -1310,7 +1315,7 @@
 	</orderedlist>
 	</para>
       <sect1 id="configuration-client">
-      <title><application>gnocatan</application></title>
+      <title><application>pioneers</application></title>
         <para>
           The client is controlled by the command line, the environment
           and the settings file.
@@ -1362,7 +1367,7 @@
 	  Server and port need both to be set, or not at all.
 	</para>
 	<table id="configuration-client-settingsfile">
-	  <title>Settings file <application>~/.gnome2/gnocatan</application></title>
+	  <title>Settings file <application>~/.gnome2/pioneers</application></title>
 	  <tgroup cols="2">
 	    <thead>
 	      <row>
@@ -1459,7 +1464,7 @@
 	    </thead>
 	    <tbody>
 	      <row>
-	        <entry>GNOCATAN_META_SERVER</entry>
+	        <entry>PIONEERS_META_SERVER</entry>
 		<entry>The host name of the meta server</entry>
 	      </row>
 	    </tbody>
@@ -1468,11 +1473,11 @@
 	<para>
           When the host name is not provided in the client, this environment
 	  variable will be used. If it is not set, the default
-	  (<symbol>gnocatan.debian.org</symbol>) will be used.
+	  (<symbol>pioneers.debian.org</symbol>) will be used.
 	</para>
       </sect1>
       <sect1 id="configuration-server">
-      <title><application>gnocatan-server-console</application></title>
+      <title><application>pioneers-server-console</application></title>
 	<table id="configuration-server-console-commandline">
 	  <title>Command line</title>
 	  <tgroup cols="3">
@@ -1598,11 +1603,11 @@
 	    </thead>
 	    <tbody>
               <row>
-                <entry>GNOCATAN_DIR</entry>
+                <entry>PIONEERS_DIR</entry>
                 <entry>The location of the *.game files</entry>
               </row>
 	      <row>
-	        <entry>GNOCATAN_META_SERVER</entry>
+	        <entry>PIONEERS_META_SERVER</entry>
 		<entry>The host name of the meta server</entry>
 	      </row>
 	    </tbody>

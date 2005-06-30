@@ -1,4 +1,6 @@
 2005-06-29  Roland Clobus <rclobus@bigfoot.com>
+	* client/help/C/pioneers-C.omf, client/help/C/pioneers.xml: 
+	  updated help pages
 	* docs/pioneers-meta-server.6, docs/pioneers-server-console.6, 
 	  docs/pioneers-server-gtk.6, docs/pioneers.6, docs/pioneersai.6:
 	  updated man pages
