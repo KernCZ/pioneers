@@ -789,7 +789,7 @@ gboolean mode_start(StateMachine * sm, gint event)
 			return TRUE;
 		}
 	}
-	if (sm_recv(sm, "player %d of %d, welcome to gnocatan server %S",
+	if (sm_recv(sm, "player %d of %d, welcome to pioneers server %S",
 		    &player_num, &total_num, version, sizeof(version))) {
 		player_set_my_num(player_num);
 		player_set_total_num(total_num);
