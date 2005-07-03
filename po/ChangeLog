@@ -1,3 +1,9 @@
+2005-07-03 Roland Clobus <rclobus@bigfoot.com>
+	* Updated for Q_() patch
+
+2005-07-03 Jens Seidel <jensseidel@users.sf.net>
+	* de.po: Minor translation update (Debian bug #314082)
+	
 2005-06-30 Roland Clobus <rclobus@bigfoot.com>
 	* nl.po, pioneers.pot: Complete Gnocatan free
 
@@ -8,7 +14,7 @@
 	* de.po, nl.po: fix up a C string translation in each of these
 	  files which gets rejected by current gettext as being invalid
 
-2005-06-5 Roland Clobus <rclobus@bigfoot.com>
+2005-06-05 Roland Clobus <rclobus@bigfoot.com>
 	* fr.po, nl.po: Updated for Q_() patch
 	
 2005-05-01 Roland Clobus <rclobus@bigfoot.com>

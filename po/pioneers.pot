@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-06-30 01:52+0200\n"
+"POT-Creation-Date: 2005-07-03 12:32+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1102,7 +1102,7 @@ msgstr ""
 msgid "Change your player name"
 msgstr ""
 
-#: ../client/gtk/gui.c:97 ../editor/gtk/editor.c:961
+#: ../client/gtk/gui.c:97 ../editor/gtk/editor.c:959
 #: ../server/gtk/gnocatan-server-gtk.c:83
 msgid "_Quit"
 msgstr ""
@@ -1159,7 +1159,7 @@ msgstr ""
 msgid "_Settings"
 msgstr ""
 
-#: ../client/gtk/gui.c:148 ../editor/gtk/editor.c:949
+#: ../client/gtk/gui.c:148 ../editor/gtk/editor.c:947
 #: ../server/gtk/gnocatan-server-gtk.c:82
 msgid "_Help"
 msgstr ""
@@ -1241,7 +1241,7 @@ msgid "<b>Messages</b>"
 msgstr ""
 
 #. Tab page name
-#: ../client/gtk/gui.c:439 ../editor/gtk/editor.c:1054
+#: ../client/gtk/gui.c:439 ../editor/gtk/editor.c:1052
 msgid "Map"
 msgstr ""
 
@@ -1890,28 +1890,27 @@ msgstr ""
 
 #. Port indicator for brick
 #: ../common/gtk/guimap.c:642
-msgid "B"
+msgid "Brick port|B"
 msgstr ""
 
 #. Port indicator for grain
 #: ../common/gtk/guimap.c:646
-msgid "G"
+msgid "Grain port|G"
 msgstr ""
 
 #. Port indicator for ore
 #: ../common/gtk/guimap.c:650
-msgid "O"
+msgid "Ore port|O"
 msgstr ""
 
 #. Port indicator for wool
-#. West
-#: ../common/gtk/guimap.c:654 ../editor/gtk/editor.c:72
-msgid "W"
+#: ../common/gtk/guimap.c:654
+msgid "Wool port|W"
 msgstr ""
 
 #. Port indicator for lumber
 #: ../common/gtk/guimap.c:658
-msgid "L"
+msgid "Lumber port|L"
 msgstr ""
 
 #. Tooltip for the list of games
@@ -2214,161 +2213,166 @@ msgstr ""
 
 #. East
 #: ../editor/gtk/editor.c:66
-msgid "E"
+msgid "East|E"
 msgstr ""
 
 #. North east
 #: ../editor/gtk/editor.c:68
-msgid "NE"
+msgid "North East|NE"
 msgstr ""
 
 #. North west
 #: ../editor/gtk/editor.c:70
-msgid "NW"
+msgid "North West|NW"
+msgstr ""
+
+#. West
+#: ../editor/gtk/editor.c:72
+msgid "West|W"
 msgstr ""
 
 #. South west
 #: ../editor/gtk/editor.c:74
-msgid "SW"
+msgid "South West|SW"
 msgstr ""
 
 #. South east
 #: ../editor/gtk/editor.c:76
-msgid "SE"
+msgid "South East|SE"
 msgstr ""
 
 #: ../editor/gtk/editor.c:533
 msgid "Shuffle"
 msgstr ""
 
-#: ../editor/gtk/editor.c:663 ../server/gtk/gnocatan-server-gtk.c:358
+#: ../editor/gtk/editor.c:661 ../server/gtk/gnocatan-server-gtk.c:358
 msgid "Game Parameters"
 msgstr ""
 
-#: ../editor/gtk/editor.c:665
+#: ../editor/gtk/editor.c:663
 msgid "Rules"
 msgstr ""
 
-#: ../editor/gtk/editor.c:666
+#: ../editor/gtk/editor.c:664
 msgid "Resources"
 msgstr ""
 
-#: ../editor/gtk/editor.c:667
+#: ../editor/gtk/editor.c:665
 msgid "Buildings"
 msgstr ""
 
-#: ../editor/gtk/editor.c:668
+#: ../editor/gtk/editor.c:666
 msgid "Development Cards"
 msgstr ""
 
-#: ../editor/gtk/editor.c:683
+#: ../editor/gtk/editor.c:681
 msgid "Pioneers Editor"
 msgstr ""
 
-#: ../editor/gtk/editor.c:773
+#: ../editor/gtk/editor.c:771
 #, c-format
 msgid "Failed to load '%s'"
 msgstr ""
 
-#: ../editor/gtk/editor.c:807
+#: ../editor/gtk/editor.c:805
 #, c-format
 msgid "Failed to save to '%s'"
 msgstr ""
 
-#: ../editor/gtk/editor.c:820
+#: ../editor/gtk/editor.c:818
 msgid "Open Game"
 msgstr ""
 
-#: ../editor/gtk/editor.c:846
+#: ../editor/gtk/editor.c:844
 msgid "Save as..."
 msgstr ""
 
-#: ../editor/gtk/editor.c:878
+#: ../editor/gtk/editor.c:876
 msgid "Change Title"
 msgstr ""
 
-#: ../editor/gtk/editor.c:900
+#: ../editor/gtk/editor.c:898
 msgid "New Title:"
 msgstr ""
 
-#: ../editor/gtk/editor.c:932
+#: ../editor/gtk/editor.c:930
 msgid "There is no help"
 msgstr ""
 
-#: ../editor/gtk/editor.c:944
+#: ../editor/gtk/editor.c:942
 msgid "Pioneers Game Editor"
 msgstr ""
 
-#: ../editor/gtk/editor.c:948
+#: ../editor/gtk/editor.c:946
 msgid "_File"
 msgstr ""
 
-#: ../editor/gtk/editor.c:951
+#: ../editor/gtk/editor.c:949
 msgid "_New"
 msgstr ""
 
-#: ../editor/gtk/editor.c:952
+#: ../editor/gtk/editor.c:950
 msgid "Create a new game"
 msgstr ""
 
-#: ../editor/gtk/editor.c:953
+#: ../editor/gtk/editor.c:951
 msgid "_Open..."
 msgstr ""
 
-#: ../editor/gtk/editor.c:954
+#: ../editor/gtk/editor.c:952
 msgid "Open an existing game"
 msgstr ""
 
-#: ../editor/gtk/editor.c:955
+#: ../editor/gtk/editor.c:953
 msgid "_Save"
 msgstr ""
 
-#: ../editor/gtk/editor.c:956
+#: ../editor/gtk/editor.c:954
 msgid "Save game"
 msgstr ""
 
-#: ../editor/gtk/editor.c:957
+#: ../editor/gtk/editor.c:955
 msgid "Save _As..."
 msgstr ""
 
-#: ../editor/gtk/editor.c:958
+#: ../editor/gtk/editor.c:956
 msgid "Save as"
 msgstr ""
 
-#: ../editor/gtk/editor.c:959
+#: ../editor/gtk/editor.c:957
 msgid "_Change title"
 msgstr ""
 
-#: ../editor/gtk/editor.c:960
+#: ../editor/gtk/editor.c:958
 msgid "Change game title"
 msgstr ""
 
-#: ../editor/gtk/editor.c:962
+#: ../editor/gtk/editor.c:960
 msgid "Quit"
 msgstr ""
 
-#: ../editor/gtk/editor.c:964
+#: ../editor/gtk/editor.c:962
 msgid "_Contents"
 msgstr ""
 
-#: ../editor/gtk/editor.c:965
+#: ../editor/gtk/editor.c:963
 msgid "Contents"
 msgstr ""
 
-#: ../editor/gtk/editor.c:966
+#: ../editor/gtk/editor.c:964
 msgid "_About Pioneers Editor"
 msgstr ""
 
-#: ../editor/gtk/editor.c:967
+#: ../editor/gtk/editor.c:965
 msgid "Information about Pioneers Editor"
 msgstr ""
 
-#: ../editor/gtk/editor.c:1040 ../server/gtk/gnocatan-server-gtk.c:809
+#: ../editor/gtk/editor.c:1038 ../server/gtk/gnocatan-server-gtk.c:809
 #, c-format
 msgid "Building menus failed: %s"
 msgstr ""
 
-#: ../editor/gtk/editor.c:1057
+#: ../editor/gtk/editor.c:1055
 msgid "Settings"
 msgstr ""
 
