@@ -63,17 +63,17 @@ static const gchar *port_names[] = {
 
 static const gchar *port_direction_names[] = {
 	/* East */
-	N_("E"),
+	N_("East|E"),
 	/* North east */
-	N_("NE"),
+	N_("North East|NE"),
 	/* North west */
-	N_("NW"),
+	N_("North West|NW"),
 	/* West */
-	N_("W"),
+	N_("West|W"),
 	/* South west */
-	N_("SW"),
+	N_("South West|SW"),
 	/* South east */
-	N_("SE")
+	N_("South East|SE")
 };
 
 static void error_dialog(const char *fmt, ...)
@@ -605,9 +605,7 @@ static GtkWidget *build_port_menu(void)
 			      gtk_separator_menu_item_new());
 	for (i = 0; i < 6; i++) {
 		item =
-		    gtk_menu_item_new_with_label(gettext
-						 (port_direction_names
-						  [i]));
+		    gtk_menu_item_new_with_label(Q_(port_direction_names[i]));
 
 		gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
 		g_signal_connect(G_OBJECT(item), "activate",

@@ -639,23 +639,23 @@ static gboolean display_hex(const Map * map, const Hex * hex,
 				switch (hex->resource) {
 				case BRICK_RESOURCE:
 					/* Port indicator for brick */
-					str = _("B");
+					str = Q_("Brick port|B");
 					break;
 				case GRAIN_RESOURCE:
 					/* Port indicator for grain */
-					str = _("G");
+					str = Q_("Grain port|G");
 					break;
 				case ORE_RESOURCE:
 					/* Port indicator for ore */
-					str = _("O");
+					str = Q_("Ore port|O");
 					break;
 				case WOOL_RESOURCE:
 					/* Port indicator for wool */
-					str = _("W");
+					str = Q_("Wool port|W");
 					break;
 				case LUMBER_RESOURCE:
 					/* Port indicator for lumber */
-					str = _("L");
+					str = Q_("Lumber port|L");
 					break;
 				default:
 					/* General port indicator */

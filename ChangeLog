@@ -1,3 +1,7 @@
+2005-07-03  Roland Clobus <rclobus@bigfoot.com>
+	* common/gtk/guimap.c, editor/gtk/editor.c: Use the Q_() macro for the
+	short translatable strings
+	
 2005-07-02  Roland Clobus <rclobus@bigfoot.com>
 	* client/help/C/pioneers.xml: Updated link to homepage
 	* client/common/client.c: fixed the hello string (protocol change)
