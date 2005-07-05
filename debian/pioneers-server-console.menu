@@ -1,3 +1,0 @@
-?package(pioneers-server-console):needs="text" section="Games/Board"\
-  title="Pioneers Server Console" command="/usr/games/pioneers-server-console"\
-  icon="/usr/share/pixmaps/gnome-pioneers.png"

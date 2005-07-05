@@ -1,3 +1,0 @@
-?package(pioneers-ai):needs="text" section="Games/Board"\
-  title="Pioneers AI Player" command="/usr/games/pioneersai"\
-  icon="/usr/share/pixmaps/gnome-pioneers.png"
