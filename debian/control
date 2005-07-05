@@ -3,8 +3,8 @@ Section: games
 Priority: optional
 Maintainer: Bas Wijnen <shevek@fmf.nl>
 Uploaders: Steve Langasek <vorlon@debian.org>, Roman Hodek <roman@debian.org>
-Build-Depends: debhelper (>= 4.0.0), libgnome-dev, libgnomeui-dev, scrollkeeper, gnome-common
-Standards-Version: 3.6.1
+Build-Depends: debhelper (>= 4.0.0), libgnome-dev, libgnomeui-dev, scrollkeeper, gnome-common, imagemagick
+Standards-Version: 3.6.2
 
 Package: pioneers-client
 Architecture: any
