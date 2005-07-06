@@ -1,15 +1,15 @@
 # Pioneers - Settlers of Catan for GNOME.
 # Copyright (C) 1999-2001 Dave Cole
 # Copyright (C) 2000-2002 Andy Heroff
-# This file is distributed under the same license as the gnocatan package.
-# Giancarlo Capella <giancarlo@comm.cc>, 2004.
+# This file is distributed under the same license as the pioneers package.
+# Giancarlo Capella <giancarlo@comm.cc>, 2005.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gnocatan 0.8.1.32\n"
+"Project-Id-Version: pioneers 0.9.17\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-07-03 12:32+0200\n"
-"PO-Revision-Date: 2004-07-15 21:00+0200\n"
+"POT-Creation-Date: 2005-07-06 20:35+0200\n"
+"PO-Revision-Date: 2005-07-06 20:35+0200\n"
 "Last-Translator: Giancarlo Capella <giancarlo@comm.cc>\n"
 "Language-Team: it <it@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -25,7 +25,7 @@ msgstr "Giocatore AI"
 
 #: ../client/ai/ai.c:159
 msgid "The game is already full. I'm leaving."
-msgstr ""
+msgstr "La partita è completa. Esco."
 
 #: ../client/ai/greedy.c:1263
 msgid "Ok, let's go!"
@@ -170,7 +170,7 @@ msgstr "Nessun commercio.\n"
 #: ../client/ai/greedy.c:1878
 #, c-format
 msgid "Received error from server: %s.  Quitting\n"
-msgstr ""
+msgstr "Ricevuto un errore dal server: %s. In uscita.\n"
 
 #: ../client/ai/greedy.c:1888
 msgid "Yippie!"
@@ -204,7 +204,7 @@ msgstr "Inattivo"
 
 #: ../client/common/client.c:423
 msgid "We have been kicked out of the game.\n"
-msgstr "Siamo stati buttati fuori dal gioco.\n"
+msgstr "Siamo stati buttati fuori dalla partita.\n"
 
 #. Network status: offline
 #: ../client/common/client.c:426 ../client/common/client.c:804
@@ -295,7 +295,7 @@ msgstr "Mi dispiace, %s disponibile.\n"
 
 #: ../client/common/client.c:2242
 msgid "The game is over."
-msgstr "Il gioco è finito"
+msgstr "La pratita è finita"
 
 #: ../client/common/client.c:2404
 #, c-format
@@ -324,7 +324,7 @@ msgstr "Chiesa"
 #: ../client/common/develop.c:47 ../client/gtk/player.c:52
 #: ../editor/gtk/game-devcards.c:14
 msgid "Pioneer University"
-msgstr ""
+msgstr "Università del Pioniere"
 
 #: ../client/common/develop.c:48 ../client/gtk/player.c:54
 #: ../editor/gtk/game-devcards.c:15
@@ -427,7 +427,7 @@ msgstr "%s è ora %s.\n"
 #: ../client/common/player.c:187
 #, c-format
 msgid "Player %d is now %s.\n"
-msgstr "Giocatore %d è ora %s.\n"
+msgstr "Il giocatore %d è ora %s.\n"
 
 #: ../client/common/player.c:219
 #, c-format
@@ -572,7 +572,7 @@ msgstr "%s ha ricevuto %s.\n"
 
 #: ../client/common/player.c:639
 msgid "server asks to lose invalid point.\n"
-msgstr "server richiede di perdere punto invalido.\n"
+msgstr "il server richiede di perdere un punto invalido.\n"
 
 #. tell the user the point is lost
 #: ../client/common/player.c:644
@@ -582,7 +582,7 @@ msgstr "%s ha perso %s.\n"
 
 #: ../client/common/player.c:667
 msgid "server asks to move invalid point.\n"
-msgstr "server richiede di spostare punto invalido.\n"
+msgstr "il server richiede di spostare un punto invalido.\n"
 
 #. tell the user someone lost something to someone else
 #: ../client/common/player.c:674
@@ -713,7 +713,7 @@ msgstr " e %s"
 #: ../client/common/resource.c:165
 #, c-format
 msgid "%s, "
-msgstr ""
+msgstr "%s, "
 
 #: ../client/common/robber.c:57
 #, c-format
@@ -756,7 +756,7 @@ msgstr "Inizia il turno %d per %s.\n"
 
 #: ../client/gtk/chat.c:63
 msgid "<b>Chat</b>"
-msgstr ""
+msgstr "<b>Chat</b>"
 
 #: ../client/gtk/connect.c:219
 #, c-format
@@ -774,12 +774,12 @@ msgstr "Il meta-server ci ha buttati fuori\n"
 
 #: ../client/gtk/connect.c:271
 msgid "Receiving game names from the meta server.\n"
-msgstr "Ricezione dei nomi gioco dal meta server.\n"
+msgstr "Ricezione dei nomi partita dal meta server.\n"
 
 #: ../client/gtk/connect.c:319
 #, c-format
 msgid "New game server requested on %s port %s\n"
-msgstr "Nuovo server di gioco richiesto su %s porta %s\n"
+msgstr "Nuovo server di partita richiesto su %s porta %s\n"
 
 #: ../client/gtk/connect.c:328
 #, c-format
@@ -823,50 +823,50 @@ msgid ""
 "\tThe metaserver does not send information about the games.\n"
 "\tPlease set appropriate values yourself."
 msgstr ""
-"<b>Note</b>:\n"
-"\tIl metaserver non invia informazioni relative ai giochi.\n"
+"<b>Nota</b>:\n"
+"\tIl metaserver non invia informazioni relative ale partite.\n"
 "\tImposta i valori appropriati."
 
 #: ../client/gtk/connect.c:664
 msgid "Requesting new game server\n"
-msgstr "Richiesta nuovo server di gioco\n"
+msgstr "Richiesta nuovo server di partita\n"
 
 #: ../client/gtk/connect.c:707 ../server/server.c:163
 #, c-format
 msgid "Error starting %s: %s"
-msgstr ""
+msgstr "Errore avviando %s: %s"
 
 #: ../client/gtk/connect.c:728
 msgid "Create a public game"
-msgstr "Crea un gioco pubblico"
+msgstr "Crea una partita pubblica"
 
 #: ../client/gtk/connect.c:857 ../client/gtk/connect.c:1169
 msgid "Join a public game"
-msgstr "Unisci a gioco pubblico"
+msgstr "Unisciti a partita pubblica"
 
 #: ../client/gtk/connect.c:862
 msgid "_New remote game"
-msgstr ""
+msgstr "_Nuova partita remota"
 
 #: ../client/gtk/connect.c:876
 msgid "Refresh the list of games"
-msgstr "Aggiorna la lista dei giochi"
+msgstr "Aggiorna la lista delle partita"
 
 #: ../client/gtk/connect.c:881
 msgid "Create a new public game at the meta server"
-msgstr "Registra questo gioco sul meta server"
+msgstr "Registra questa partita sul meta server"
 
 #: ../client/gtk/connect.c:886
 msgid "Don't join a public game"
-msgstr "Non unirti a gioco pubblico"
+msgstr "Non unirti a partita pubblica"
 
 #: ../client/gtk/connect.c:890
 msgid "Join the selected game"
-msgstr "Unisciti al gioco selezionato"
+msgstr "Unisciti alla partita selezionata"
 
 #: ../client/gtk/connect.c:925
 msgid "Select a game to join"
-msgstr "Seleziona un gioco a cui unirti"
+msgstr "Seleziona una partita a cui unirti"
 
 #: ../client/gtk/connect.c:928
 msgid "Map Name"
@@ -874,7 +874,7 @@ msgstr "Nome mappa"
 
 #: ../client/gtk/connect.c:936
 msgid "Name of the game"
-msgstr "Nome del gioco"
+msgstr "Nome della partita"
 
 #: ../client/gtk/connect.c:941
 msgid "Curr"
@@ -882,7 +882,7 @@ msgstr "Corr"
 
 #: ../client/gtk/connect.c:947
 msgid "Number of players in the game"
-msgstr "Numero di giocatori nel gioco"
+msgstr "Numero di giocatori in partita"
 
 #: ../client/gtk/connect.c:952
 msgid "Max"
@@ -923,7 +923,7 @@ msgstr "Host"
 
 #: ../client/gtk/connect.c:1000
 msgid "Host of the game"
-msgstr "Host del gioco"
+msgstr "Host della partita"
 
 #: ../client/gtk/connect.c:1005
 msgid "Port"
@@ -931,7 +931,7 @@ msgstr "Porta"
 
 #: ../client/gtk/connect.c:1011
 msgid "Port of the the game"
-msgstr "Porta del gioco"
+msgstr "Porta della partita"
 
 #: ../client/gtk/connect.c:1014
 msgid "Version"
@@ -943,7 +943,7 @@ msgstr "Versione dell'host"
 
 #: ../client/gtk/connect.c:1094 ../client/gtk/gui.c:76
 msgid "Start a new game"
-msgstr "Inizia un nuovo gioco"
+msgstr "Inizia una nuova partita"
 
 #: ../client/gtk/connect.c:1119
 msgid "Player Name"
@@ -963,23 +963,23 @@ msgstr "Lascia vuoti per il meta server di default"
 
 #: ../client/gtk/connect.c:1164
 msgid "Join public game"
-msgstr "Unisciti a gioco pubblico"
+msgstr "Unisciti a partita pubblica"
 
 #: ../client/gtk/connect.c:1173
 msgid "Create game"
-msgstr "Crea gioco"
+msgstr "Crea partita"
 
 #: ../client/gtk/connect.c:1176
 msgid "Create a game"
-msgstr "Crea un gioco"
+msgstr "Crea una partita"
 
 #: ../client/gtk/connect.c:1186
 msgid "Join private game"
-msgstr "Unisciti a gioco privato"
+msgstr "Unisciti a partita privata"
 
 #: ../client/gtk/connect.c:1190 ../client/gtk/connect.c:1340
 msgid "Join a private game"
-msgstr "Unisciti ad un gioco privato"
+msgstr "Unisciti ad un partita privata"
 
 #. Commandline option of client: hostname of the server
 #: ../client/gtk/connect.c:1368 ../client/gtk/offline.c:43
@@ -988,7 +988,7 @@ msgstr ""
 
 #: ../client/gtk/connect.c:1381
 msgid "Name of the host of the game"
-msgstr "Nome dell'host del gioco"
+msgstr "Nome dell'host della partita"
 
 #. Commandline option of client: port of the server
 #: ../client/gtk/connect.c:1384 ../client/gtk/offline.c:46
@@ -998,15 +998,15 @@ msgstr "Porta Server"
 
 #: ../client/gtk/connect.c:1400
 msgid "Port of the host of the game"
-msgstr "Porta dell'host del gioco"
+msgstr "Porta dell'host della partita"
 
 #: ../client/gtk/connect.c:1440
 msgid "Recent games"
-msgstr "Giochi recenti"
+msgstr "Partite recenti"
 
 #: ../client/gtk/connect.c:1442
 msgid "Recent Games"
-msgstr "Giochi Recenti"
+msgstr "Partite Recenti"
 
 #: ../client/gtk/develop.c:93
 msgid "<b>Development Cards</b>"
@@ -1036,22 +1036,22 @@ msgstr "<b>In attesa degli scarti dei giocatori</b>"
 
 #: ../client/gtk/gameover.c:32
 msgid "Game over"
-msgstr "Fine gioco"
+msgstr "Fine partita"
 
 #: ../client/gtk/gameover.c:49
 #, c-format
 msgid "%s has won the game with %d victory points!"
-msgstr "%s ha vinto il gioco con %d punti vittoria!"
+msgstr "%s ha vinto la partita con %d punti vittoria!"
 
 #: ../client/gtk/gameover.c:52
 #, c-format
 msgid "%s has won the game with %d victory points!\n"
-msgstr "%s ha vinto il gioco con %d punti vittoria!\n"
+msgstr "%s ha vinto la partita con %d punti vittoria!\n"
 
 #: ../client/gtk/gameover.c:58
-#, fuzzy, c-format
+#, c-format
 msgid "All praise %s, Lord of the known world!"
-msgstr "Onori a %s, Signore di Tutto Gnocatan!"
+msgstr "Onori a %s, Signore del Mondo conosciuto!"
 
 #: ../client/gtk/gold.c:73
 msgid "Choose resources"
@@ -1079,15 +1079,15 @@ msgstr "<b>In attesa di scelta dei giocatori</b>"
 
 #: ../client/gtk/gui.c:76
 msgid "_New game"
-msgstr ""
+msgstr "_Nuova partita"
 
 #: ../client/gtk/gui.c:80
 msgid "_Leave game"
-msgstr ""
+msgstr "_Lascia partita"
 
 #: ../client/gtk/gui.c:80
 msgid "Leave this game"
-msgstr ""
+msgstr "Lascia questa partita"
 
 #: ../client/gtk/gui.c:85
 msgid "_Admin"
@@ -1116,11 +1116,11 @@ msgstr "Esci dal programma"
 
 #: ../client/gtk/gui.c:106
 msgid "Prefere_nces"
-msgstr ""
+msgstr "Prefere_nze"
 
 #: ../client/gtk/gui.c:107
 msgid "Configure the application"
-msgstr ""
+msgstr "Configura l'applicazione"
 
 #: ../client/gtk/gui.c:122
 msgid "_Legend"
@@ -1132,11 +1132,11 @@ msgstr "Legenda terreno e costi di costruzione"
 
 #: ../client/gtk/gui.c:126
 msgid "_Game Settings"
-msgstr "Impostazioni _Gioco"
+msgstr "Impostazioni _Partita"
 
 #: ../client/gtk/gui.c:127
 msgid "Settings for the current game"
-msgstr "Impostazioni per il gioco corrente"
+msgstr "Impostazioni per la partita corrente"
 
 #: ../client/gtk/gui.c:130
 msgid "_Dice Histogram"
@@ -1148,7 +1148,7 @@ msgstr "Istogramma dei tiri dei dadi"
 
 #: ../client/gtk/gui.c:134
 msgid "_About Pioneers"
-msgstr ""
+msgstr "_Riguardo Pioneers"
 
 #: ../client/gtk/gui.c:135
 msgid "Information about Pioneers"
@@ -1156,7 +1156,7 @@ msgstr "Informazioni su Pioneers"
 
 #: ../client/gtk/gui.c:146 ../server/gtk/gnocatan-server-gtk.c:81
 msgid "_Game"
-msgstr "_Gioco"
+msgstr "_Partita"
 
 #: ../client/gtk/gui.c:147
 msgid "_Settings"
@@ -1292,7 +1292,7 @@ msgstr "Benvenuto a Pioneers"
 
 #: ../client/gtk/gui.c:658
 msgid "Pioneers Preferences"
-msgstr ""
+msgstr "Preferenze Pioneers"
 
 #. Label for changing the theme, in the preferences dialog
 #: ../client/gtk/gui.c:688
@@ -1301,47 +1301,43 @@ msgstr "Tema:"
 
 #: ../client/gtk/gui.c:711
 msgid "Choose one of the themes"
-msgstr ""
+msgstr "Scegli uno dei temi"
 
 #. Label for the option to show the legend
 #: ../client/gtk/gui.c:715
 msgid "Show legend"
-msgstr ""
+msgstr "Visualizza legenda"
 
 #. Tooltip for the option to show the legend
 #: ../client/gtk/gui.c:725
-#, fuzzy
 msgid "Show the legend as a page beside the map"
-msgstr "Visualizza legenda a lato della mappa?"
+msgstr "Visualizza legenda a lato della mappa"
 
 #. Label for the option to display log messages in color
 #: ../client/gtk/gui.c:730
-#, fuzzy
 msgid "Messages with color"
-msgstr "Visualizza messaggi colorati?"
+msgstr "Messaggi colorati"
 
 #: ../client/gtk/gui.c:740
-#, fuzzy
 msgid "Show new messages with color"
-msgstr "Visualizza messaggi colorati?"
+msgstr "Visualizza nuovi messaggi colorati"
 
 #: ../client/gtk/gui.c:745
 msgid "Chat in color of player"
-msgstr ""
+msgstr "Chatta a colori"
 
 #: ../client/gtk/gui.c:756
 msgid "Show new chat messages in the color of the player"
-msgstr ""
+msgstr "Visualizza i nuovi messaggi di chat a colori"
 
 #. Label for the option to display the summary with colors
 #: ../client/gtk/gui.c:761
-#, fuzzy
 msgid "Summary with color"
-msgstr "Visualizza riassunto giocatore colorato?"
+msgstr "Riassunto giocatore colorato"
 
 #: ../client/gtk/gui.c:772
 msgid "Use colors in the player summary"
-msgstr ""
+msgstr "Usa i colori nel riassunto giocatore"
 
 #: ../client/gtk/gui.c:787
 msgid "The Pioneers Game"
@@ -1383,7 +1379,9 @@ msgstr "Seleziona la costruzione da cui rubare."
 
 #: ../client/gtk/interface.c:693
 msgid "Select the building to steal from"
-msgstr "Seleziona la costruzione da cui rubare"
+msgstr ""
+"Seleziona la costruzione\n"
+"da cui rubare"
 
 #: ../client/gtk/legend.c:30 ../editor/gtk/editor.c:43
 msgid "Hill"
@@ -1490,7 +1488,7 @@ msgstr "Nome Giocatore"
 
 #: ../client/gtk/offline.c:53
 msgid "Override the language of the system"
-msgstr ""
+msgstr "Scavalca la lingua del sistema"
 
 #: ../client/gtk/offline.c:77
 msgid "Connecting"
@@ -1498,7 +1496,7 @@ msgstr "Connessione"
 
 #: ../client/gtk/offline.c:178
 msgid "Only server or port set, ignoring command line"
-msgstr ""
+msgstr "Impostato solo il server o la porta, ignoro la linea di comando"
 
 #: ../client/gtk/player.c:47
 msgid "Settlements"
@@ -1522,7 +1520,7 @@ msgstr "Cappelle"
 
 #: ../client/gtk/player.c:52
 msgid "Pioneer Universities"
-msgstr ""
+msgstr "Università del Pioniere"
 
 #: ../client/gtk/player.c:54
 msgid "Governor's Houses"
@@ -1612,38 +1610,37 @@ msgstr "Totale"
 
 #. Tooltip for the amount of resources in the hand
 #: ../client/gtk/resource-table.c:178
-#, fuzzy
 msgid "Amount in hand"
-msgstr "Materie prime in mano"
+msgstr "Ammontare in mano"
 
 #. Tooltip for decreasing the selected amount
 #: ../client/gtk/resource-table.c:193
 msgid "Decrease the selected amount"
-msgstr ""
+msgstr "Decrementa l'ammontare selezionato"
 
 #. Tooltip for the amount of resources in the bank
 #: ../client/gtk/resource-table.c:207
 msgid "Amount in the bank"
-msgstr ""
+msgstr "Ammontare in banca"
 
 #. Tooltip for increasing the selected amount
 #: ../client/gtk/resource-table.c:223
 msgid "Increase the selected amount"
-msgstr ""
+msgstr "Incrementa l'ammontare selezionato"
 
 #. Tooltip for the selected amount
 #: ../client/gtk/resource-table.c:240
 msgid "Selected amount"
-msgstr ""
+msgstr "Ammontare selezionato"
 
 #. Tooltip for the total selected amount
 #: ../client/gtk/resource-table.c:285
 msgid "Total selected amount"
-msgstr ""
+msgstr "Ammontare selezionato totale"
 
 #: ../client/gtk/resource-table.c:306
 msgid "The bank cannot be emptied"
-msgstr ""
+msgstr "La banca non può essere svuotata"
 
 #: ../client/gtk/settingscreen.c:58 ../editor/gtk/game-parameters.c:42
 #: ../server/gtk/gnocatan-server-gtk.c:121
@@ -1668,11 +1665,11 @@ msgstr "Sconosciuto"
 
 #: ../client/gtk/settingscreen.c:101
 msgid "Current Game Settings"
-msgstr "Impostazioni di Gioco Correnti"
+msgstr "Impostazioni per la partita corrente"
 
 #: ../client/gtk/settingscreen.c:118
 msgid "No game in progress..."
-msgstr "Nessun gioco in corso..."
+msgstr "Nessuna partita in corso..."
 
 #: ../client/gtk/settingscreen.c:127
 msgid "General Settings"
@@ -1764,9 +1761,8 @@ msgid "Chapel Cards:"
 msgstr "Carte Chiesa:"
 
 #: ../client/gtk/settingscreen.c:244
-#, fuzzy
 msgid "Pioneer University Cards:"
-msgstr "Carte Università di Gnocatan:"
+msgstr "Carte Università del Pioniere:"
 
 #: ../client/gtk/settingscreen.c:249
 msgid "Governor's House Cards:"
@@ -1794,13 +1790,13 @@ msgstr "chiedi %s gratis"
 #: ../client/gtk/trade.c:291
 #, c-format
 msgid "give %s for free"
-msgstr "dà via %s gratis"
+msgstr "cede %s gratis"
 
 #. trade: you trade something for something else
 #: ../client/gtk/trade.c:296
 #, c-format
 msgid "give %s for %s"
-msgstr "dà via %s per %s"
+msgstr "cede %s per %s"
 
 #. trade: maritime quote: %1 resources of type %2 for
 #. * one resource of type %3
@@ -1843,11 +1839,12 @@ msgid "_Finish Trading"
 msgstr "_Termina Contrattazioni"
 
 #: ../common/gtk/aboutbox.c:52
-#, fuzzy
 msgid ""
 "Pioneers is based upon the excellent\n"
 "Settlers of Catan board game.\n"
-msgstr "Pioneers è basato sull'eccellente gioco I Coloni di Catan.\n"
+msgstr ""
+"Pioneers è basato sull'eccellente\n"
+"gioco I Coloni di Catan.\n"
 
 #: ../common/gtk/aboutbox.c:56
 msgid ""
@@ -1855,7 +1852,7 @@ msgid ""
 "Authors:\n"
 msgstr ""
 "\n"
-"Scritto da:\n"
+"Autori:\n"
 
 #. Label for customising a game
 #: ../common/gtk/game-settings.c:113
@@ -1865,7 +1862,7 @@ msgstr "Mappa Terreno"
 #. Tooltip for Map Terrain
 #: ../common/gtk/game-settings.c:127
 msgid "Default map or a random map"
-msgstr "Mappa di defalti o mappa casuale"
+msgstr "Mappa di default o mappa casuale"
 
 #. Label text for customising a game
 #: ../common/gtk/game-settings.c:130
@@ -1894,7 +1891,7 @@ msgstr "Tutti i sette muovono il brigante o i pirati"
 
 #: ../common/gtk/game-settings.c:206
 msgid "In the first two turns all sevens are rerolled"
-msgstr "Neiprimi due turni tutti i sette vengono ritirati"
+msgstr "Nei primi due turni tutti i sette vengono ritirati"
 
 #. Tooltip for sevens rule reroll all
 #: ../common/gtk/game-settings.c:210
@@ -1912,49 +1909,49 @@ msgid "Default"
 msgstr "Default"
 
 #. Port indicator for a resource: trade 2 for 1
-#: ../common/gtk/guimap.c:634
+#: ../common/gtk/guimap.c:627
 msgid "2:1"
-msgstr ""
+msgstr "2:1"
 
 #. Port indicator: trade 3 for 1
 #. General port indicator
-#: ../common/gtk/guimap.c:637 ../common/gtk/guimap.c:662
+#: ../common/gtk/guimap.c:630 ../common/gtk/guimap.c:655
 msgid "3:1"
-msgstr ""
+msgstr "3:1"
 
 #. Port indicator for brick
-#: ../common/gtk/guimap.c:642
+#: ../common/gtk/guimap.c:635
 msgid "Brick port|B"
 msgstr "A"
 
 #. Port indicator for grain
-#: ../common/gtk/guimap.c:646
+#: ../common/gtk/guimap.c:639
 msgid "Grain port|G"
 msgstr "G"
 
 #. Port indicator for ore
-#: ../common/gtk/guimap.c:650
+#: ../common/gtk/guimap.c:643
 msgid "Ore port|O"
 msgstr "M"
 
 #. Port indicator for wool
-#: ../common/gtk/guimap.c:654
+#: ../common/gtk/guimap.c:647
 msgid "Wool port|W"
 msgstr "La"
 
 #. Port indicator for lumber
-#: ../common/gtk/guimap.c:658
+#: ../common/gtk/guimap.c:651
 msgid "Lumber port|L"
 msgstr "Le"
 
 #. Tooltip for the list of games
 #: ../common/gtk/select-game.c:93
 msgid "Select a game"
-msgstr "Seleziona un gioco a cui unirti"
+msgstr "Seleziona una partita"
 
 #: ../common/gtk/theme.c:185
 msgid "Could not initialize default theme."
-msgstr ""
+msgstr "Impossibile inizializzare il tema di default."
 
 #: ../common/gtk/theme.c:205 ../common/gtk/theme.c:210
 #, c-format
@@ -2003,7 +2000,7 @@ msgstr "valore mancante"
 #: ../common/gtk/theme.c:615
 #, c-format
 msgid "invalid color: %s"
-msgstr ""
+msgstr "colore non valido: %s"
 
 #: ../common/gtk/theme.c:696
 #, c-format
@@ -2021,11 +2018,11 @@ msgstr "*ERRORE*"
 
 #: ../common/log.c:56
 msgid "- "
-msgstr ""
+msgstr "- "
 
 #: ../common/log.c:59
 msgid "CHAT: "
-msgstr ""
+msgstr "CHAT: "
 
 #: ../common/log.c:63
 msgid "Resource: "
@@ -2179,7 +2176,7 @@ msgstr "Errore di ascolto sul socket: %s\n"
 
 #: ../common/network.c:635
 msgid "Listening not yet supported on this platform."
-msgstr ""
+msgstr "Ascolto non ancora supportato su questa piattaforma."
 
 #: ../common/network.c:648 ../common/network.c:649
 msgid "unknown"
@@ -2193,16 +2190,16 @@ msgstr "Errore recupero nome: %s"
 #: ../common/network.c:668
 #, c-format
 msgid "Error resolving address: %s"
-msgstr ""
+msgstr "Errore in risoluzione dell'indirizzo: %s"
 
 #: ../common/network.c:682
 msgid "Net_get_peer_name not yet supported on this platform."
-msgstr ""
+msgstr "Net_get_peer_name non ancora supportato su questa piattaforma."
 
 #: ../common/network.c:697
-#, fuzzy, c-format
+#, c-format
 msgid "Error accepting connection: %s"
-msgstr "Errore nell'accettazione della connessione: %s"
+msgstr "Errore accettando la connessione: %s"
 
 #: ../common/state.c:156
 #, c-format
@@ -2221,7 +2218,7 @@ msgstr "Overflow dello stack di stato"
 
 #: ../editor/gtk/editor.c:51 ../editor/gtk/editor.c:60
 msgid "None"
-msgstr ""
+msgstr "Nulla"
 
 #: ../editor/gtk/editor.c:55
 msgid "Brick (2:1)"
@@ -2241,68 +2238,65 @@ msgstr "Lana (2:1)"
 
 #: ../editor/gtk/editor.c:59
 msgid "Lumber (2:1)"
-msgstr "Legno"
+msgstr "Legno (2:1)"
 
 #: ../editor/gtk/editor.c:61
-#, fuzzy
 msgid "Any (3:1)"
 msgstr "Qualunque (3:1)"
 
 #. East
 #: ../editor/gtk/editor.c:66
 msgid "East|E"
-msgstr ""
+msgstr "E"
 
 #. North east
 #: ../editor/gtk/editor.c:68
 msgid "North East|NE"
-msgstr ""
+msgstr "NE"
 
 #. North west
 #: ../editor/gtk/editor.c:70
 msgid "North West|NW"
-msgstr ""
+msgstr "NO"
 
 #. West
 #: ../editor/gtk/editor.c:72
 msgid "West|W"
-msgstr ""
+msgstr "O"
 
 #. South west
 #: ../editor/gtk/editor.c:74
 msgid "South West|SW"
-msgstr ""
+msgstr "SO"
 
 #. South east
 #: ../editor/gtk/editor.c:76
 msgid "South East|SE"
-msgstr ""
+msgstr "SE"
 
 #: ../editor/gtk/editor.c:533
 msgid "Shuffle"
-msgstr ""
+msgstr "Mescola"
 
 #: ../editor/gtk/editor.c:661 ../server/gtk/gnocatan-server-gtk.c:358
 msgid "Game Parameters"
-msgstr "Parametri di Gioco"
+msgstr "Parametri di Partita"
 
 #: ../editor/gtk/editor.c:663
 msgid "Rules"
-msgstr ""
+msgstr "Regole"
 
 #: ../editor/gtk/editor.c:664
-#, fuzzy
 msgid "Resources"
-msgstr "Materia prima"
+msgstr "Materie prime"
 
 #: ../editor/gtk/editor.c:665
 msgid "Buildings"
-msgstr ""
+msgstr "Costruzioni"
 
 #: ../editor/gtk/editor.c:666
-#, fuzzy
 msgid "Development Cards"
-msgstr "Carta Sviluppo"
+msgstr "Carte Sviluppo"
 
 #: ../editor/gtk/editor.c:681
 msgid "Pioneers Editor"
@@ -2311,32 +2305,32 @@ msgstr ""
 #: ../editor/gtk/editor.c:771
 #, c-format
 msgid "Failed to load '%s'"
-msgstr ""
+msgstr "Impossibile caricare '%s'"
 
 #: ../editor/gtk/editor.c:805
 #, c-format
 msgid "Failed to save to '%s'"
-msgstr ""
+msgstr "Impossibile salvare '%s'"
 
 #: ../editor/gtk/editor.c:818
 msgid "Open Game"
-msgstr ""
+msgstr "Carica partita"
 
 #: ../editor/gtk/editor.c:844
 msgid "Save as..."
-msgstr ""
+msgstr "Salva come..."
 
 #: ../editor/gtk/editor.c:876
 msgid "Change Title"
-msgstr ""
+msgstr "Cambia Titolo"
 
 #: ../editor/gtk/editor.c:898
 msgid "New Title:"
-msgstr ""
+msgstr "Nuovo Titolo:"
 
 #: ../editor/gtk/editor.c:930
 msgid "There is no help"
-msgstr ""
+msgstr "Non c'è aiuto"
 
 #: ../editor/gtk/editor.c:942
 msgid "Pioneers Game Editor"
@@ -2344,48 +2338,47 @@ msgstr ""
 
 #: ../editor/gtk/editor.c:946
 msgid "_File"
-msgstr ""
+msgstr "_File"
 
 #: ../editor/gtk/editor.c:949
 msgid "_New"
-msgstr ""
+msgstr "_Nuovo"
 
 #: ../editor/gtk/editor.c:950
-#, fuzzy
 msgid "Create a new game"
-msgstr "Crea un gioco"
+msgstr "Crea una nuova partita"
 
 #: ../editor/gtk/editor.c:951
 msgid "_Open..."
-msgstr ""
+msgstr "_Apri..."
 
 #: ../editor/gtk/editor.c:952
 msgid "Open an existing game"
-msgstr ""
+msgstr "Apri una partita esistente"
 
 #: ../editor/gtk/editor.c:953
 msgid "_Save"
-msgstr ""
+msgstr "_Salva"
 
 #: ../editor/gtk/editor.c:954
 msgid "Save game"
-msgstr ""
+msgstr "Salva partita"
 
 #: ../editor/gtk/editor.c:955
 msgid "Save _As..."
-msgstr ""
+msgstr "S_alva come..."
 
 #: ../editor/gtk/editor.c:956
 msgid "Save as"
-msgstr ""
+msgstr "Salva come"
 
 #: ../editor/gtk/editor.c:957
 msgid "_Change title"
-msgstr ""
+msgstr "_Cambia titolo"
 
 #: ../editor/gtk/editor.c:958
 msgid "Change game title"
-msgstr ""
+msgstr "Cambia il titolo della partita"
 
 #: ../editor/gtk/editor.c:960
 msgid "Quit"
@@ -2393,15 +2386,15 @@ msgstr "Esci"
 
 #: ../editor/gtk/editor.c:962
 msgid "_Contents"
-msgstr ""
+msgstr "_Contenuti"
 
 #: ../editor/gtk/editor.c:963
 msgid "Contents"
-msgstr ""
+msgstr "Contenuti"
 
 #: ../editor/gtk/editor.c:964
 msgid "_About Pioneers Editor"
-msgstr ""
+msgstr "_Riguardo Pioneers Editor"
 
 #: ../editor/gtk/editor.c:965
 msgid "Information about Pioneers Editor"
@@ -2410,7 +2403,7 @@ msgstr "Informazioni su Pioneers Editor"
 #: ../editor/gtk/editor.c:1038 ../server/gtk/gnocatan-server-gtk.c:809
 #, c-format
 msgid "Building menus failed: %s"
-msgstr ""
+msgstr "Costruzione menù fallita: %s"
 
 #: ../editor/gtk/editor.c:1055
 msgid "Settings"
@@ -2418,28 +2411,27 @@ msgstr "Impostazioni"
 
 #: ../editor/gtk/game-parameters.c:80
 msgid "Use Pirate"
-msgstr ""
+msgstr "Usa i pirati"
 
 #: ../editor/gtk/game-parameters.c:81
 msgid "Strict Trade"
-msgstr ""
+msgstr "Commercio ristretto"
 
 #: ../editor/gtk/game-parameters.c:82
 msgid "Domestic Trade"
-msgstr ""
+msgstr "Commercio domestico"
 
 #: ../editor/gtk/game-resources.c:51
-#, fuzzy
 msgid "Resource Count"
-msgstr "Materia prima"
+msgstr "Conto materie prime"
 
 #: ../server/gnocatan-server.c:151
 msgid "Missing game directory\n"
-msgstr "Manca la directory di gioco\n"
+msgstr "Manca la directory di partita\n"
 
 #: ../server/gtk/gnocatan-server-gtk.c:85
 msgid "_About Pioneers Server"
-msgstr ""
+msgstr "_Riguardo Server Pioneers"
 
 #: ../server/gtk/gnocatan-server-gtk.c:86
 msgid "Information about Pioneers Server"
@@ -2464,12 +2456,12 @@ msgstr "Ferma il Server"
 #: ../server/gtk/gnocatan-server-gtk.c:273
 #, c-format
 msgid "Player %s from %s entered\n"
-msgstr "Giocatore %s da %s entrato\n"
+msgstr "Entrato giocatore %s da %s\n"
 
 #: ../server/gtk/gnocatan-server-gtk.c:280
 #, c-format
 msgid "Player %s from %s left\n"
-msgstr "Giocatore %s da %s uscito\n"
+msgstr "Uscito giocatore %s da %s\n"
 
 #: ../server/gtk/gnocatan-server-gtk.c:287
 #, c-format
@@ -2487,7 +2479,7 @@ msgstr "Parametri Server"
 
 #: ../server/gtk/gnocatan-server-gtk.c:485
 msgid "The port for the game server"
-msgstr "La porta del server di gioco"
+msgstr "La porta del server di partita"
 
 #: ../server/gtk/gnocatan-server-gtk.c:487
 msgid "Register Server"
@@ -2495,7 +2487,7 @@ msgstr "Registra Server"
 
 #: ../server/gtk/gnocatan-server-gtk.c:500
 msgid "Register this game at the meta server"
-msgstr "Registra questo gioco sul meta server"
+msgstr "Registra questa partita sul meta server"
 
 #: ../server/gtk/gnocatan-server-gtk.c:516
 msgid "The address of the meta server"
@@ -2514,19 +2506,19 @@ msgstr ""
 
 #: ../server/gtk/gnocatan-server-gtk.c:535
 msgid "Random Turn Order"
-msgstr ""
+msgstr "Ordine casuale dei turni"
 
 #: ../server/gtk/gnocatan-server-gtk.c:548
 msgid "Randomize turn order"
-msgstr ""
+msgstr "Rendi casuale l'ordine dei turni"
 
 #: ../server/gtk/gnocatan-server-gtk.c:550
 msgid "Enable AI Chat"
-msgstr ""
+msgstr "Abilita chat AI"
 
 #: ../server/gtk/gnocatan-server-gtk.c:563
 msgid "Enable AI chat messages"
-msgstr ""
+msgstr "Abilita i messaggi chat della AI"
 
 #: ../server/gtk/gnocatan-server-gtk.c:610
 msgid "Add Computer Player"
@@ -2534,7 +2526,7 @@ msgstr "Aggiungi Giocatore AI"
 
 #: ../server/gtk/gnocatan-server-gtk.c:618
 msgid "Add a computer player to the game"
-msgstr "Aggiungi un giocatore del computer al gioco"
+msgstr "Aggiungi alla partita un giocatore controllato dal computer"
 
 #: ../server/gtk/gnocatan-server-gtk.c:620
 msgid "Players Connected"
@@ -2594,12 +2586,12 @@ msgstr "Messaggi dal server"
 
 #: ../server/gtk/gnocatan-server-gtk.c:743
 msgid "The Pioneers Game Server"
-msgstr ""
+msgstr "Server della partita di Pioneers"
 
 #. Name in the titlebar of the server
 #: ../server/gtk/gnocatan-server-gtk.c:790
 msgid "Pioneers Server"
-msgstr ""
+msgstr "Server Pioneers"
 
 #: ../server/meta.c:197
 #, c-format
@@ -2609,7 +2601,7 @@ msgstr "Registra sul meta-server %s, porta %s\n"
 #: ../server/player.c:226
 #, c-format
 msgid "Player from %s is refused: game is over\n"
-msgstr "Giocatore da %s rifiutato: il gioco è finito\n"
+msgstr "Giocatore da %s rifiutato: la partita è terminata\n"
 
 #: ../server/player.c:275
 msgid "Name not changed: new name is already in use"
@@ -2622,181 +2614,18 @@ msgstr "NOTA il giocatore %d (%s) si è riconnesso.\n"
 
 #: ../server/player.c:618
 msgid "Sorry, game is over."
-msgstr "Mi dispiace, il gioco è finito."
+msgstr "Mi dispiace, la partita è terminata."
 
 #: ../server/player.c:654
 #, c-format
 msgid "NOTE Expecting version %s, not %s\n"
-msgstr ""
+msgstr "NOTA: Attesa versione %s, non %s\n"
 
 #. Server: preparing game #.....
 #: ../server/server.c:215
 msgid "Preparing game"
-msgstr "Gioco in preparazione"
+msgstr "Partita in preparazione"
 
 #: ../server/turn.c:308
 msgid "Tried to assign resources to NULL player.\n"
-msgstr ""
-
-#~ msgid "University of Gnocatan"
-#~ msgstr "Università di Gnocatan"
-
-#~ msgid "Universities of Gnocatan"
-#~ msgstr "Università di Gnocatan"
-
-#~ msgid "B"
-#~ msgstr "A"
-
-#~ msgid "G"
-#~ msgstr "G"
-
-#~ msgid "O"
-#~ msgstr "M"
-
-#~ msgid "W"
-#~ msgstr "La"
-
-#~ msgid "L"
-#~ msgstr "Le"
-
-#~ msgid "Game Settings"
-#~ msgstr "Impostazioni Gioco"
-
-#~ msgid "%s receives %s\n"
-#~ msgstr "%s riceve %s\n"
-
-#~ msgid "%s spent %s\n"
-#~ msgstr "%s ha speso %s\n"
-
-#~ msgid "%s is refunded %s\n"
-#~ msgstr "%s è rimborsato con %s\n"
-
-#~ msgid "%s discarded %s\n"
-#~ msgstr "%s ha scartato %s\n"
-
-#~ msgid "The game is over.\n"
-#~ msgstr "Il gioco è finito.\n"
-
-#~ msgid "Sorry, I do not know how to play with gold.\n"
-#~ msgstr "Mi dispiace, non so come usare l'oro.\n"
-
-#~ msgid "Player %d is now anonymous.\n"
-#~ msgstr "Giocatore %d è ora anonimo.\n"
-
-#~ msgid "%s is now anonymous.\n"
-#~ msgstr "%s è ora anonimo.\n"
-
-#~ msgid "%s moved robber.\n"
-#~ msgstr "%s ha mosso il brigante.\n"
-
-#~ msgid "ask"
-#~ msgstr "chiedi"
-
-#~ msgid "give "
-#~ msgstr "ricevi "
-
-#~ msgid "for free"
-#~ msgstr "gratis"
-
-#~ msgid " for "
-#~ msgstr " per "
-
-#~ msgid "Trading started by %s\n"
-#~ msgstr "Commercio avviato da %s\n"
-
-#~ msgid "Trading restarted by %s\n"
-#~ msgstr "Commercio riavviato da %s\n"
-
-#~ msgid "Quote from player %d: %s.\n"
-#~ msgstr "Quotazioni dal giocatore %d: %s.\n"
-
-#~ msgid "Removed quote from player %d: %s\n"
-#~ msgstr "Rimossa quotazione dal giocatore %d: %s\n"
-
-#~ msgid "Trading finished.\n"
-#~ msgstr "Commercio terminato.\n"
-
-#~ msgid "Cannot determine bank, expect out of resource errors\n"
-#~ msgstr ""
-#~ "Non riesco a determinale la banca, aspettati errori di fine materie "
-#~ "prime\n"
-
-#~ msgid "Warning - there are shortages."
-#~ msgstr "Attenzione - ci sono scarsità."
-
-#~ msgid "Resource to take"
-#~ msgstr "Materie prime da prendere"
-
-#~ msgid "color must be 'none' or start with '#': %s"
-#~ msgstr "il colore deve essere 'none' o iniziare con '#': %s"
-
-#~ msgid "color value contains non-hex character '%c'"
-#~ msgstr "il valore del colore contiene caratteri non esadecimali: '%c'"
-
-#~ msgid "bits per color component must be 4, 8, 12, or 16: #%s"
-#~ msgstr "i bits per i componenti colore devono essere 4, 8, 12 o 16: #%s"
-
-#~ msgid "Create a new public game"
-#~ msgstr "Crea nuovo gioco pubblico"
-
-#~ msgid "Take"
-#~ msgstr "Prendi"
-
-#~ msgid "Hand"
-#~ msgstr "Mano"
-
-#~ msgid "Discards"
-#~ msgstr "Scarti"
-
-#~ msgid "Connect to Gnocatan server"
-#~ msgstr "Connetti a server Gnocatan"
-
-#~ msgid "Player _Name"
-#~ msgstr "_Nome Giocatore"
-
-#~ msgid "Gnocatan client settings"
-#~ msgstr "Impostazioni client Gnocatan"
-
-#~ msgid "Appearance"
-#~ msgstr "Apparenze"
-
-#~ msgid "Show Toolbar As"
-#~ msgstr "Visualizza Barra Strumenti Come"
-
-#~ msgid "Text Only"
-#~ msgstr "Solo Testo"
-
-#~ msgid "Icons Only"
-#~ msgstr "Solo Icone"
-
-#~ msgid "Both Icons and Text"
-#~ msgstr "Icone e Testo"
-
-#~ msgid "Color Settings"
-#~ msgstr "Impostazione Colori"
-
-#~ msgid "Display chat messages in user's color?"
-#~ msgstr "Visualizza messaggi giocatore colorati?"
-
-#~ msgid "Language"
-#~ msgstr "Lingua"
-
-#~ msgid "Language setting takes full effect only after client restart!"
-#~ msgstr ""
-#~ "Le impostazioni di lingua avranno effetto dopo il riavvio del client!"
-
-#~ msgid "Resource Type"
-#~ msgstr "Tipo di Materia prima"
-
-#~ msgid "player %d resource count wrong: server=%d, me=%d"
-#~ msgstr "giocatore %d conto materie prime errato: server=%d, io=%d"
-
-#~ msgid "resources wrong:"
-#~ msgstr "materie prime errate:"
-
-#~ msgid ""
-#~ "\n"
-#~ "%s: server=%d, me=%d"
-#~ msgstr ""
-#~ "\n"
-#~ "%s: server=%d, io=%d"
+msgstr "Si è cercato di assegnare le materie prime al giocatore NULL\n"
