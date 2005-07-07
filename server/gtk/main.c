@@ -30,7 +30,6 @@
 #include "game.h"
 #include "common_gtk.h"
 
-#include "gnocatan-server.h"
 #include "config-gnome.h"
 #include "server.h"
 

@@ -43,7 +43,7 @@
 
 #include "glib-driver.h"
 
-#include "gnocatan-server.h"
+#include "admin.h"
 
 static void usage(void)
 {

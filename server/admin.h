@@ -19,44 +19,14 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef __gnocatan_server_h
-#define __gnocatan_server_h
-
-#define TERRAIN_DEFAULT	0
-#define TERRAIN_RANDOM	1
+#ifndef __admin_h
+#define __admin_h
 
 typedef struct _comm_info {
 	gint fd;
 	guint read_tag;
 	guint write_tag;
 } comm_info;
-
-/**** global variables ****/
-extern gboolean random_order;
-
-extern GameParams *params;
-
-/**** game list control functions ****/
-GameParams *game_list_find_item(const gchar * title);
-void game_list_foreach(GFunc func, gpointer user_data);
-void load_game_types(const gchar * path);
-
-/**** callbacks to set parameters ****/
-void cfg_set_num_players(gint num_players);
-void cfg_set_sevens_rule(gint sevens_rule);
-void cfg_set_victory_points(gint victory_points);
-void cfg_set_game(const gchar * game);
-void cfg_set_terrain_type(gint terrain_type);
-void cfg_set_tournament_time(gint tournament_time);
-void cfg_set_quit(gboolean quitdone);
-void cfg_set_timeout(gint to);
-
-/* callbacks related to server starting / stopping */
-gboolean start_server(const gchar * hostname,
-		      const gchar * port, gboolean register_server);
-
-/* initialize the server */
-void server_init(void);
 
 /**** backend functions for network administration of the server ****/
 
@@ -73,4 +43,4 @@ void admin_connect(comm_info * admin_info);
 /* set up the administration port */
 void admin_listen(const gchar * port);
 
-#endif				/* __gnocatan_server_h */
+#endif				/* __admin_h */

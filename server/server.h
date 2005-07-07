@@ -28,6 +28,9 @@
 #include "quoteinfo.h"
 #include "state.h"
 
+#define TERRAIN_DEFAULT	0
+#define TERRAIN_RANDOM	1
+
 typedef struct Game Game;
 typedef struct {
 	StateMachine *sm;	/* state machine for this player */
@@ -101,6 +104,12 @@ struct Game {
 	gchar *server_port;	/* port to run game on */
 	gboolean random_order;	/* is turn order randomized? */
 };
+
+/**** global variables ****/
+extern gboolean random_order;
+
+extern GameParams *params;
+
 
 /* buildutil.c */
 void check_longest_road(Game * game, gboolean can_cut);
@@ -198,6 +207,29 @@ gboolean server_stop(void);
 gboolean server_is_running(void);
 gint accept_connection(gint in_fd, gchar ** location);
 gint open_listen_socket(const gchar * port);
+
+/**** game list control functions ****/
+GameParams *game_list_find_item(const gchar * title);
+void game_list_foreach(GFunc func, gpointer user_data);
+void load_game_types(const gchar * path);
+
+/**** callbacks to set parameters ****/
+void cfg_set_num_players(gint num_players);
+void cfg_set_sevens_rule(gint sevens_rule);
+void cfg_set_victory_points(gint victory_points);
+void cfg_set_game(const gchar * game);
+void cfg_set_terrain_type(gint terrain_type);
+void cfg_set_tournament_time(gint tournament_time);
+void cfg_set_quit(gboolean quitdone);
+void cfg_set_timeout(gint to);
+
+/* callbacks related to server starting / stopping */
+gboolean start_server(const gchar * hostname,
+		      const gchar * port, gboolean register_server);
+
+/* initialize the server */
+void server_init(void);
+
 
 /* trade.c */
 void trade_perform_maritime(Player * player,

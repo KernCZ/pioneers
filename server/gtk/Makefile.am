@@ -40,7 +40,7 @@ pioneers_server_gtk_DEPENDENCIES = \
 	../../common/gtk/libpioneers_gtk.a
 
 pioneers_server_gtk_SOURCES = \
-	gnocatan-server-gtk.c
+	main.c
 
 pioneers_server_gtk_LDADD = \
 	../libpioneers_server.a \

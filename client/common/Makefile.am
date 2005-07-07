@@ -39,8 +39,8 @@ libpioneersclient_a_SOURCES = \
 	client.c \
 	client.h \
 	develop.c \
-	gnocatan.c \
 	i18n.c \
+	main.c \
 	player.c \
 	resource.c \
 	robber.c \

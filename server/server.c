@@ -29,8 +29,19 @@
 
 #include "server.h"
 
+static GameParams *load_game_desc(const gchar * fname);
+
 static Game *curr_game;
 gint no_player_timeout = 0;
+
+static GSList *_game_list = NULL;	/* The sorted list of game titles */
+
+gboolean random_order = TRUE;
+
+GameParams *params = NULL;
+
+#define TERRAIN_DEFAULT	0
+#define TERRAIN_RANDOM	1
 
 void timed_out(G_GNUC_UNUSED int signum)
 {
@@ -239,3 +250,238 @@ gboolean server_is_running(void)
 {
 	return curr_game != NULL;
 }
+
+static gint sort_function(gconstpointer a, gconstpointer b)
+{
+	return (strcmp(((const GameParams *) a)->title,
+		       ((const GameParams *) b)->title));
+}
+
+static gboolean game_list_add_item(GameParams * item)
+{
+
+	if (!_game_list) {
+		params = item;
+	}
+
+	/* check for name collisions */
+	if (item->title && game_list_find_item(item->title)) {
+
+		gchar *nt;
+		gint i;
+
+		/* append a number */
+		for (i = 1; i <= INT_MAX; i++) {
+			nt = g_strdup_printf("%s%d", item->title, i);
+			if (!game_list_find_item(nt)) {
+				g_free(item->title);
+				item->title = nt;
+				break;
+			}
+			g_free(nt);
+		}
+		/* give up and skip this game */
+		if (item->title != nt) {
+			g_free(nt);
+			return FALSE;
+		}
+	}
+
+	_game_list =
+	    g_slist_insert_sorted(_game_list, item, sort_function);
+	return TRUE;
+}
+
+/** Returns TRUE if the game list is empty */
+static gboolean game_list_is_empty(void)
+{
+	return _game_list == NULL;
+}
+
+static gint game_list_locate(gconstpointer param, gconstpointer argument)
+{
+	const GameParams *data = param;
+	const gchar *title = argument;
+	return strcmp(data->title, title);
+}
+
+GameParams *game_list_find_item(const gchar * title)
+{
+	GSList *result;
+	if (!_game_list) {
+		return NULL;
+	}
+
+	result = g_slist_find_custom(_game_list, title, game_list_locate);
+	if (result)
+		return result->data;
+	else
+		return NULL;
+}
+
+void game_list_foreach(GFunc func, gpointer user_data)
+{
+	if (_game_list) {
+		g_slist_foreach(_game_list, func, user_data);
+	}
+}
+
+GameParams *load_game_desc(const gchar * fname)
+{
+	GameParams *params;
+
+	params = params_load_file(fname);
+	if (params == NULL)
+		g_warning("Skipping: %s", fname);
+	return params;
+}
+
+void load_game_types(const gchar * path)
+{
+	GDir *dir;
+	const gchar *fname;
+	gchar *fullname;
+
+	if ((dir = g_dir_open(path, 0, NULL)) == NULL) {
+		log_message(MSG_ERROR, _("Missing game directory\n"));
+		return;
+	}
+
+	while ((fname = g_dir_read_name(dir))) {
+		GameParams *params;
+		gint len = strlen(fname);
+
+		if (len < 6 || strcmp(fname + len - 5, ".game") != 0)
+			continue;
+		fullname = g_build_filename(path, fname, NULL);
+		params = load_game_desc(fullname);
+		g_free(fullname);
+		if (params) {
+			if (!game_list_add_item(params))
+				params_free(params);
+		}
+	}
+	g_dir_close(dir);
+	if (game_list_is_empty())
+		g_error("No games available");
+}
+
+/* game configuration functions / callbacks */
+void cfg_set_num_players(gint num_players)
+{
+#ifdef PRINT_INFO
+	g_print("cfg_set_num_players: %d\n", num_players);
+#endif
+	if (params)
+		params->num_players = num_players;
+}
+
+void cfg_set_sevens_rule(gint sevens_rule)
+{
+#ifdef PRINT_INFO
+	g_print("cfg_set_sevens_rule: %d\n", sevens_rule);
+#endif
+	if (params)
+		params->sevens_rule = sevens_rule;
+}
+
+void cfg_set_victory_points(gint victory_points)
+{
+#ifdef PRINT_INFO
+	g_print("cfg_set_victory_points: %d\n", victory_points);
+#endif
+	if (params)
+		params->victory_points = victory_points;
+}
+
+void cfg_set_game(const gchar * game)
+{
+#ifdef PRINT_INFO
+	g_print("cfg_set_game: %s\n", game);
+#endif
+	if (params)
+		params = game_list_find_item(game);
+}
+
+void cfg_set_terrain_type(gint terrain_type)
+{
+#ifdef PRINT_INFO
+	g_print("cfg_set_terrain_type: %d\n", terrain_type);
+#endif
+	if (params)
+		params->random_terrain =
+		    (terrain_type == TERRAIN_RANDOM) ? 1 : 0;
+}
+
+void cfg_set_tournament_time(gint tournament_time)
+{
+#ifdef PRINT_INFO
+	g_print("cfg_set_tournament_time: %d\n", tournament_time);
+#endif
+	if (params)
+		params->tournament_time = tournament_time;
+}
+
+void cfg_set_quit(gboolean quitdone)
+{
+#ifdef PRINT_INFO
+	g_print("cfg_set_quit: %d\n", quitdone);
+#endif
+	if (params)
+		params->quit_when_done = quitdone;
+}
+
+void cfg_set_timeout(gint to)
+{
+#ifdef PRINT_INFO
+	g_print("cfg_set_timeout: %d\n", to);
+#endif
+	no_player_timeout = to;
+}
+
+gboolean start_server(const gchar * hostname, const gchar * port,
+		      gboolean register_server)
+{
+	if (!params) {
+		cfg_set_game("Default");
+	}
+
+	if (params) {
+#ifdef PRINT_INFO
+		g_print("game type: %s\n", params->title);
+		g_print("num players: %d\n", params->num_players);
+		g_print("victory points: %d\n", params->victory_points);
+		g_print("terrain type: %s\n",
+			(params->random_terrain) ? "random" : "default");
+		g_print("Tournament time: %d\n", params->tournament_time);
+		g_print("Quit when done: %d\n", params->quit_when_done);
+#endif
+
+	} else {
+		g_critical("Game parameters not set!");
+		return FALSE;
+	}
+
+	return server_startup(params, hostname, port, register_server,
+			      random_order);
+}
+
+static void handle_sigpipe(G_GNUC_UNUSED int signum)
+{
+	/* reset the signal handler */
+	signal(SIGPIPE, handle_sigpipe);
+	/* no need to actually handle anything, this will be done by 
+	 * write returning error */
+}
+
+/* server initialization */
+void server_init(void)
+{
+	load_game_types(get_pioneers_dir());
+
+	/* Broken pipes can happen when multiple players disconnect
+	 * simultaneously.  This mostly happens to AI's, which disconnect
+	 * when the game is over. */
+	signal(SIGPIPE, handle_sigpipe);
+}
+

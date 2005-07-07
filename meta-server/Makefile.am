@@ -10,7 +10,7 @@ AM_CPPFLAGS = \
 	$(extra_includes)
 
 pioneers_meta_server_SOURCES = \
-	gnocatan-meta-server.c
+	main.c
 
 pioneers_meta_server_LDADD = \
 	../common/libpioneers.a

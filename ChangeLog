@@ -1,3 +1,18 @@
+2005-07-07  Roland Clobus <rclobus@bigfoot.com>
+	* client/common/gnocatan.c renamed to main.c
+	* meta-server/gnocatan-meta-server.c renamed to main.c
+	* server/server.c renamed to main.c
+	* server/gnocatan-server.c renamed to admin.c, contains only admin
+	code
+	* server/gnocatan-server.h renamed to admin.h, contains only admin
+	code
+	* server/gtk/gnocatan-server-gtk.c renamed to main.c
+	* server/server.c, server/server.h: moved server code from admin.c and
+	admin.h to these files
+	* client/common/Makefile.am, meta-server/Makefile.am, po/POTFILES.in,
+	server/Makefile.am, server/gtk/Makefile.am: use the renamed files
+	* pioneers.spec.in: Updated home page
+	
 2005-07-03  Roland Clobus <rclobus@bigfoot.com>
 	* common/gtk/guimap.c, editor/gtk/editor.c: Use the Q_() macro for the
 	short translatable strings

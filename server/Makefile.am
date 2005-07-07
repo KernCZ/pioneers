@@ -42,12 +42,12 @@ pioneers_server_console_DEPENDENCIES = libpioneers_server.a \
 	../common/libpioneers.a
 
 libpioneers_server_a_SOURCES = \
+	admin.c \
+	admin.h \
 	buildutil.c \
 	develop.c \
 	discard.c \
 	gold.c \
-	gnocatan-server.c \
-	gnocatan-server.h \
 	meta.c \
 	player.c \
 	pregame.c \
@@ -59,7 +59,7 @@ libpioneers_server_a_SOURCES = \
 	turn.c
 
 pioneers_server_console_SOURCES = \
-	gnocatan-server-console.c \
+	main.c \
 	glib-driver.c \
 	glib-driver.h
 

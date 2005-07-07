@@ -1,8 +1,5 @@
  - Rebranding:
    * Add support for importing preferences from old config directories
-   * Documentation fixes?
-   * Fix up all mentions of gnocatan in the source
-   * Only at the very end, change filenames of source files
 
  - If the trade page is already shown, and the player initiating the
    trade asks for new quotes, it's easy to oversee the changed trade
