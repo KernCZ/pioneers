@@ -93,6 +93,18 @@ as is possible.
 The meta server registers available game servers and offers them to new
 players. It can also create new servers on client request.
 
+%package	editor
+Summary:	Pioneers Game Editor
+Group:		Amusements/Games
+Requires:	pioneers-client, pioneers-server-data
+%description	editor
+Pioneers is an Internet playable implementation of the Settlers of
+Catan board game.  The aim is to remain as faithful to the board game
+as is possible.
+
+The game editor allows maps and game descriptions to be created and edited
+graphically.
+
 %prep
 %setup -q
 
@@ -166,3 +178,9 @@ if which scrollkeeper-update>/dev/null 2>&1; then scrollkeeper-update -q; fi
 %doc /usr/man/man6/pioneers-meta-server.6.gz
 %doc AUTHORS COPYING ChangeLog INSTALL README NEWS 
 %{_bindir}/pioneers-meta-server
+
+%files editor
+%defattr(-,root,root)
+%doc AUTHORS COPYING ChangeLog INSTALL README NEWS 
+%{_bindir}/pioneers-editor
+
