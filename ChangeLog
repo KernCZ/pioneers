@@ -1,3 +1,8 @@
+2005-07-09  0.9.18  Roland Clobus <rclobus@bigfoot.com>
+	* common/gtk/guimap.c: Single click build: when a ship and road can be
+	built, a ship is chosen when the cursor is at sea, a road is chosen
+	when the cursor is over land.
+	
 2005-07-07  Roland Clobus <rclobus@bigfoot.com>
 	* client/common/gnocatan.c renamed to main.c
 	* meta-server/gnocatan-meta-server.c renamed to main.c

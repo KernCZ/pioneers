@@ -40,11 +40,20 @@ typedef struct {
 	gint old_highlight;
 } HighlightInfo;
 
+enum MapElementType {
+	MAP_EDGE,
+	MAP_NODE,
+	MAP_HEX
+};
+
 /* Local function prototypes */
 static void calc_edge_poly(const GuiMap * gmap, const Edge * edge,
 			   const Polygon * shape, Polygon * poly);
 static void calc_node_poly(const GuiMap * gmap, const Node * node,
 			   const Polygon * shape, Polygon * poly);
+static void calc_hex_poly(const GuiMap * gmap, const Hex * hex,
+			  const Polygon * shape, Polygon * poly,
+			  double scale_factor, gint x_shift);
 
 /* Square */
 static gint sqr(gint a)
@@ -357,6 +366,36 @@ static void calc_node_poly(const GuiMap * gmap, const Node * node,
 	}
 }
 
+static void calc_hex_poly(const GuiMap * gmap, const Hex * hex,
+			  const Polygon * shape, Polygon * poly,
+			  double scale_factor, gint x_shift)
+{
+	GdkPoint *poly_point, *shape_point;
+	double scale;
+	gint x_offset, y_offset;
+	gint idx;
+
+	g_assert(poly->num_points >= shape->num_points);
+	poly->num_points = shape->num_points;
+	scale = (2 * gmap->y_point) / scale_factor;
+
+	if (hex != NULL) {
+		calc_hex_pos(gmap, hex->x, hex->y, &x_offset, &y_offset);
+		x_offset += rint(scale * x_shift);
+	} else
+		x_offset = y_offset = 0;
+
+	/* Scale all points, offset to right
+	 */
+	poly_point = poly->points;
+	shape_point = shape->points;
+	for (idx = 0; idx < shape->num_points;
+	     idx++, shape_point++, poly_point++) {
+		poly_point->x = x_offset + rint(scale * shape_point->x);
+		poly_point->y = y_offset + rint(scale * shape_point->y);
+	}
+}
+
 void guimap_road_polygon(const GuiMap * gmap, const Edge * edge,
 			 Polygon * poly)
 {
@@ -390,59 +429,13 @@ void guimap_settlement_polygon(const GuiMap * gmap, const Node * node,
 static void guimap_robber_polygon(const GuiMap * gmap, const Hex * hex,
 				  Polygon * poly)
 {
-	GdkPoint *poly_point, *robber_point;
-	double scale;
-	gint x_offset, y_offset;
-	gint idx;
-
-	g_assert(poly->num_points >= robber_poly.num_points);
-	poly->num_points = robber_poly.num_points;
-	scale = (2 * gmap->y_point) / 140.0;
-
-	if (hex != NULL) {
-		calc_hex_pos(gmap, hex->x, hex->y, &x_offset, &y_offset);
-		x_offset += rint(scale * 50);
-	} else
-		x_offset = y_offset = 0;
-
-	/* Scale all points, offset to right
-	 */
-	poly_point = poly->points;
-	robber_point = robber_poly.points;
-	for (idx = 0; idx < robber_poly.num_points;
-	     idx++, robber_point++, poly_point++) {
-		poly_point->x = x_offset + rint(scale * robber_point->x);
-		poly_point->y = y_offset + rint(scale * robber_point->y);
-	}
+	calc_hex_poly(gmap, hex, &robber_poly, poly, 140.0, 50);
 }
-
 
 static void guimap_pirate_polygon(const GuiMap * gmap, const Hex * hex,
 				  Polygon * poly)
 {
-	GdkPoint *poly_point, *pirate_point;
-	double scale;
-	gint x_offset, y_offset;
-	gint idx;
-
-	g_assert(poly->num_points >= pirate_poly.num_points);
-	poly->num_points = pirate_poly.num_points;
-	scale = (2 * gmap->y_point) / 80.0;
-
-	if (hex != NULL) {
-		calc_hex_pos(gmap, hex->x, hex->y, &x_offset, &y_offset);
-	} else
-		x_offset = y_offset = 0;
-
-	/* Scale all points, offset to right
-	 */
-	poly_point = poly->points;
-	pirate_point = pirate_poly.points;
-	for (idx = 0; idx < pirate_poly.num_points;
-	     idx++, pirate_point++, poly_point++) {
-		poly_point->x = x_offset + rint(scale * pirate_point->x);
-		poly_point->y = y_offset + rint(scale * pirate_point->y);
-	}
+	calc_hex_poly(gmap, hex, &pirate_poly, poly, 80.0, 0);
 }
 
 void draw_dice_roll(PangoLayout * layout, GdkPixmap * pixmap, GdkGC * gc,
@@ -1612,7 +1605,7 @@ SelectFunc roadS, shipS, bridgeS, settlementS, cityS;
  *  @return The square of the distance
  */
 static gint distance_cursor(GuiMap * gmap, const MapElement * element,
-			    gboolean isEdge, gint cursor_x, gint cursor_y)
+			    enum MapElementType type, gint cursor_x, gint cursor_y)
 {
 	static GdkPoint single_point = { 0, 0 };
 	static const Polygon simple_poly = { &single_point, 1 };
@@ -1620,10 +1613,17 @@ static gint distance_cursor(GuiMap * gmap, const MapElement * element,
 	Polygon poly;
 	poly.num_points = 1;
 	poly.points = &translated_point;
-	if (isEdge)
-		calc_edge_poly(gmap, element->edge, &simple_poly, &poly);
-	else
-		calc_node_poly(gmap, element->node, &simple_poly, &poly);
+	switch (type) {
+		case MAP_EDGE:
+			calc_edge_poly(gmap, element->edge, &simple_poly, &poly);
+			break;
+		case MAP_NODE:
+			calc_node_poly(gmap, element->node, &simple_poly, &poly);
+			break;
+		case MAP_HEX:
+			calc_hex_poly(gmap, element->hex, &simple_poly, &poly, 120.0, 0);
+			break;
+	}
 	return sqr(cursor_x - poly.points[0].x) + sqr(cursor_y -
 						      poly.points[0].y);
 }
@@ -1660,11 +1660,35 @@ void guimap_cursor_move(GuiMap * gmap, gint x, gint y,
 					    && bridgeF(*element,
 						       gmap->player_num,
 						       dummyElement));
+
+			/* When both a road and a ship can be built,
+			 * build a road when the cursor is over land,
+			 * build a ship when the cursor is over sea
+			 */
+			if (can_build_road && can_build_ship) {
+				MapElement hex1, hex2;
+				gint distance1, distance2;
+				hex1.hex = element->edge->hexes[0];
+				hex2.hex = element->edge->hexes[1];
+				distance1 = distance_cursor(gmap, &hex1, MAP_HEX, x, y);
+				distance2 = distance_cursor(gmap, &hex2, MAP_HEX, x, y);
+				if (distance1 == distance2)
+					can_build_ship = FALSE;
+				else {
+					if (distance2 < distance1)
+						hex1.hex = hex2.hex;
+					if (hex1.hex->terrain == SEA_TERRAIN)
+						can_build_road = FALSE;
+					else
+						can_build_ship = FALSE;
+				}
+			}
+			
 			can_build_edge = can_build_road || can_build_ship
 			    || can_build_bridge;
 			if (can_build_edge)
 				distance_edge =
-				    distance_cursor(gmap, element, TRUE, x,
+				    distance_cursor(gmap, element, MAP_EDGE, x,
 						    y);
 		}
 
@@ -1683,7 +1707,7 @@ void guimap_cursor_move(GuiMap * gmap, gint x, gint y,
 			    || can_build_city;
 			if (can_build_node)
 				distance_node =
-				    distance_cursor(gmap, element, FALSE,
+				    distance_cursor(gmap, element, MAP_NODE,
 						    x, y);
 		}
 
