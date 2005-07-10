@@ -25,9 +25,9 @@
 #include <gtk/gtk.h>
 
 typedef struct {
-	gboolean set:1;
-	gboolean transparent:1;
-	gboolean allocated:1;
+	gboolean set;
+	gboolean transparent;
+	gboolean allocated;
 	GdkColor color;
 } TColor;
 
