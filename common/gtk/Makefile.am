@@ -29,7 +29,8 @@ AM_CPPFLAGS = \
 	-I$(srcdir)/.. \
 	-DDATADIR=\"$(datadir)\" \
 	-DTHEMEDIR=\"$(themedir)\" \
-	-I$(GNOME2_CFLAGS) \
+	$(GNOME2_CFLAGS) \
+	$(GTK2_CFLAGS) \
 	$(debug_includes) \
 	$(extra_includes)
 

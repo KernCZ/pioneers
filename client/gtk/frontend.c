@@ -38,6 +38,22 @@ static void set_sensitive(G_GNUC_UNUSED void *key, GuiWidgetState * gui,
 	if (frontend_waiting_for_network)
 		gui->next = FALSE;
 
+	if (gui->widget != NULL && gui->next != gui->current
+            && GTK_IS_ACTION(gui->widget)) {
+		GSList *widgets;
+		widgets = gtk_action_get_proxies(GTK_ACTION(gui->widget));
+		while (widgets) {
+			gtk_widget_set_sensitive(GTK_WIDGET(widgets->data), gui->next);
+			widgets = g_slist_next(widgets);
+		};
+/** @todo RC 2005-07-12 Instead of the GSList, use gtk_action_set_sensitive */
+/*		gtk_action_set_sensitive(GTK_ACTION(gui->widget),
+				gui->next);
+*/
+		gui->current = gui->next;
+		gui->next = FALSE;
+		return;
+	}
 	if (gui->widget != NULL && gui->next != gui->current) {
 		gtk_widget_set_sensitive(gui->widget, gui->next);
 		/* HACK Workaround for Gtk bug 157932, fixed in Gtk+-2.5.4
@@ -152,6 +168,14 @@ void frontend_gui_register_destroy(GtkWidget * widget, GuiEvent id)
 			 G_CALLBACK(destroy_route_event_cb), gui);
 }
 
+void frontend_gui_register_action(GtkAction * action, GuiEvent id)
+{
+	GuiWidgetState *gui = gui_new(action, id);
+	gui->signal = NULL;
+	gui->current = TRUE;
+	gui->next = FALSE;
+}
+
 void frontend_gui_register(GtkWidget * widget, GuiEvent id,
 			   const gchar * signal)
 {
@@ -172,39 +196,6 @@ gint hotkeys_handler(G_GNUC_UNUSED GtkWidget * w, GdkEvent * e,
 	GuiWidgetState *gui;
 	GuiEvent arg;
 	switch (e->key.keyval) {
-	case GDK_F1:
-		arg = GUI_ROLL;
-		break;
-	case GDK_F2:
-		arg = GUI_TRADE;
-		break;
-	case GDK_F3:
-		arg = GUI_UNDO;
-		break;
-	case GDK_F4:
-		arg = GUI_FINISH;
-		break;
-	case GDK_F5:
-		arg = GUI_ROAD;
-		break;
-	case GDK_F6:
-		arg = GUI_SHIP;
-		break;
-	case GDK_F7:
-		arg = GUI_MOVE_SHIP;
-		break;
-	case GDK_F8:
-		arg = GUI_BRIDGE;
-		break;
-	case GDK_F9:
-		arg = GUI_SETTLEMENT;
-		break;
-	case GDK_F10:
-		arg = GUI_CITY;
-		break;
-	case GDK_F11:
-		arg = GUI_BUY_DEVELOP;
-		break;
 	case GDK_Escape:
 		arg = GUI_QUOTE_REJECT;
 		break;

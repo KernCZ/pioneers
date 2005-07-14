@@ -66,10 +66,10 @@ PKG_CHECK_MODULES(GTK2, gtk+-2.0 >= $GTK_REQUIRED_VERSION, have_gtk2=yes,
 AM_CONDITIONAL(HAVE_GTK2, [test "$have_gtk2" = "yes"])
 
 if test "$have_gtk2" = "yes"; then
-	# libgnomeui-2.0 support
-	PKG_CHECK_MODULES(GNOME2, libgnomeui-2.0, 
+	# libgnome-2.0 support
+	PKG_CHECK_MODULES(GNOME2, libgnome-2.0, 
 		[have_gnome="yes"], 
-		[have_gnome="no, libgnomeui-2.0 not installed"])
+		[have_gnome="no, libgnome-2.0 not installed"])
 	AC_SUBST(GNOME2_CFLAGS)
 	AC_SUBST(GNOME2_LIBS)
 else

@@ -22,7 +22,7 @@
 
 #include "config.h"
 #include "frontend.h"
-#include <gnome.h>
+#include <libgnome/libgnome.h>
 #include "common_gtk.h"
 #include "config-gnome.h"
 #include "theme.h"
@@ -140,12 +140,20 @@ void frontend_init(int argc, char **argv)
 	config_init("/pioneers/");
 
 	gnome_program_init(PACKAGE, VERSION,
-			   LIBGNOMEUI_MODULE,
+			   LIBGNOME_MODULE,
 			   argc, argv,
 			   GNOME_PARAM_POPT_TABLE, options,
 			   GNOME_PARAM_APP_DATADIR, DATADIR, NULL);
 
+	/* Initialize the widget set */
+	gtk_init(&argc, &argv);
+
 #if ENABLE_NLS
+	/* Gtk+ handles the locale, we must bind the translations */
+	bindtextdomain(PACKAGE, LOCALEDIR);
+	textdomain(PACKAGE);
+	bind_textdomain_codeset(PACKAGE, "UTF-8");
+
 	/* Override the language if it is set in the command line */
 	if (override_language && (ld = find_lang_desc(override_language)))
 		change_nls(ld);

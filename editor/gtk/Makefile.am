@@ -15,6 +15,7 @@ AM_CPPFLAGS = \
 	$(ADMIN_GTK) \
 	-I$(includedir) \
 	$(GNOME2_CFLAGS) \
+	$(GTK2_CFLAGS) \
 	$(debug_includes) \
 	$(extra_includes)
 
@@ -32,4 +33,5 @@ pioneers_editor_SOURCES = \
 pioneers_editor_LDADD = \
 	../../common/libpioneers.a \
 	../../common/gtk/libpioneers_gtk.a \
-	$(GNOME2_LIBS)
+	$(GNOME2_LIBS) \
+	$(GTK2_LIBS)

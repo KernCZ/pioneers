@@ -31,6 +31,7 @@ AM_CPPFLAGS = \
 	-DDATADIR=\"$(datadir)\" \
 	-I$(includedir) \
 	$(GNOME2_CFLAGS) \
+	$(GTK2_CFLAGS) \
 	$(debug_includes) \
 	$(extra_includes)
 
@@ -46,7 +47,8 @@ pioneers_server_gtk_LDADD = \
 	../libpioneers_server.a \
 	../../common/libpioneers.a \
 	../../common/gtk/libpioneers_gtk.a \
-	$(GNOME2_LIBS)
+	$(GNOME2_LIBS) \
+	$(GTK2_LIBS)
 
 Games_DATA = pioneers-server.desktop
 
