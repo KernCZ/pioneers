@@ -1605,7 +1605,8 @@ SelectFunc roadS, shipS, bridgeS, settlementS, cityS;
  *  @return The square of the distance
  */
 static gint distance_cursor(GuiMap * gmap, const MapElement * element,
-			    enum MapElementType type, gint cursor_x, gint cursor_y)
+			    enum MapElementType type, gint cursor_x,
+			    gint cursor_y)
 {
 	static GdkPoint single_point = { 0, 0 };
 	static const Polygon simple_poly = { &single_point, 1 };
@@ -1614,15 +1615,16 @@ static gint distance_cursor(GuiMap * gmap, const MapElement * element,
 	poly.num_points = 1;
 	poly.points = &translated_point;
 	switch (type) {
-		case MAP_EDGE:
-			calc_edge_poly(gmap, element->edge, &simple_poly, &poly);
-			break;
-		case MAP_NODE:
-			calc_node_poly(gmap, element->node, &simple_poly, &poly);
-			break;
-		case MAP_HEX:
-			calc_hex_poly(gmap, element->hex, &simple_poly, &poly, 120.0, 0);
-			break;
+	case MAP_EDGE:
+		calc_edge_poly(gmap, element->edge, &simple_poly, &poly);
+		break;
+	case MAP_NODE:
+		calc_node_poly(gmap, element->node, &simple_poly, &poly);
+		break;
+	case MAP_HEX:
+		calc_hex_poly(gmap, element->hex, &simple_poly, &poly,
+			      120.0, 0);
+		break;
 	}
 	return sqr(cursor_x - poly.points[0].x) + sqr(cursor_y -
 						      poly.points[0].y);
@@ -1670,26 +1672,31 @@ void guimap_cursor_move(GuiMap * gmap, gint x, gint y,
 				gint distance1, distance2;
 				hex1.hex = element->edge->hexes[0];
 				hex2.hex = element->edge->hexes[1];
-				distance1 = distance_cursor(gmap, &hex1, MAP_HEX, x, y);
-				distance2 = distance_cursor(gmap, &hex2, MAP_HEX, x, y);
+				distance1 =
+				    distance_cursor(gmap, &hex1, MAP_HEX,
+						    x, y);
+				distance2 =
+				    distance_cursor(gmap, &hex2, MAP_HEX,
+						    x, y);
 				if (distance1 == distance2)
 					can_build_ship = FALSE;
 				else {
 					if (distance2 < distance1)
 						hex1.hex = hex2.hex;
-					if (hex1.hex->terrain == SEA_TERRAIN)
+					if (hex1.hex->terrain ==
+					    SEA_TERRAIN)
 						can_build_road = FALSE;
 					else
 						can_build_ship = FALSE;
 				}
 			}
-			
+
 			can_build_edge = can_build_road || can_build_ship
 			    || can_build_bridge;
 			if (can_build_edge)
 				distance_edge =
-				    distance_cursor(gmap, element, MAP_EDGE, x,
-						    y);
+				    distance_cursor(gmap, element,
+						    MAP_EDGE, x, y);
 		}
 
 		find_node(gmap, x, y, element);
@@ -1707,8 +1714,8 @@ void guimap_cursor_move(GuiMap * gmap, gint x, gint y,
 			    || can_build_city;
 			if (can_build_node)
 				distance_node =
-				    distance_cursor(gmap, element, MAP_NODE,
-						    x, y);
+				    distance_cursor(gmap, element,
+						    MAP_NODE, x, y);
 		}
 
 		/* When both edge and node can be built,

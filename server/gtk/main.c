@@ -570,7 +570,8 @@ static GtkWidget *build_interface(void)
 	novar = 0;
 	meta_server_name = config_get_string("server/meta-server", &novar);
 	if (novar || !strlen(meta_server_name)
-	    || !strncmp(meta_server_name,"gnocatan.debian.net",strlen(meta_server_name)+1))
+	    || !strncmp(meta_server_name, "gnocatan.debian.net",
+			strlen(meta_server_name) + 1))
 		meta_server_name = get_meta_server_name(TRUE);
 	gtk_entry_set_text(GTK_ENTRY(meta_entry), meta_server_name);
 

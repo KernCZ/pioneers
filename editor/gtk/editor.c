@@ -605,7 +605,9 @@ static GtkWidget *build_port_menu(void)
 			      gtk_separator_menu_item_new());
 	for (i = 0; i < 6; i++) {
 		item =
-		    gtk_menu_item_new_with_label(Q_(port_direction_names[i]));
+		    gtk_menu_item_new_with_label(Q_
+						 (port_direction_names
+						  [i]));
 
 		gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
 		g_signal_connect(G_OBJECT(item), "activate",

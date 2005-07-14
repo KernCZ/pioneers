@@ -287,7 +287,8 @@ void params_load_line(GameParams * params, gchar * line)
 	if (match_word(&line, "chits")) {
 		if (params->map->chits != NULL)
 			g_array_free(params->map->chits, TRUE);
-		params->map->chits = g_array_new(FALSE, FALSE, sizeof(gint));
+		params->map->chits =
+		    g_array_new(FALSE, FALSE, sizeof(gint));
 		build_int_list(params->map->chits, line);
 		if (params->map->chits->len == 0) {
 			g_warning("Zero length chits array");

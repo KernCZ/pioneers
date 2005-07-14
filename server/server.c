@@ -484,4 +484,3 @@ void server_init(void)
 	 * when the game is over. */
 	signal(SIGPIPE, handle_sigpipe);
 }
-

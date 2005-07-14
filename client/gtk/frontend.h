@@ -89,7 +89,7 @@ void frontend_gui_register_init(void);
 void frontend_gui_register_destroy(GtkWidget * widget, GuiEvent id);
 
 /** register an action. */
-void frontend_gui_register_action(GtkAction *action, GuiEvent id);
+void frontend_gui_register_action(GtkAction * action, GuiEvent id);
 
 /** register a new "normal" widget. */
 void frontend_gui_register(GtkWidget * widget, GuiEvent id,

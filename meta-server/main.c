@@ -408,7 +408,8 @@ static const gchar *get_server_path(void)
 {
 	const gchar *console_server;
 	if (!(console_server = g_getenv("PIONEERS_SERVER_CONSOLE")))
-		if (!(console_server = g_getenv("GNOCATAN_SERVER_CONSOLE")))
+		if (!
+		    (console_server = g_getenv("GNOCATAN_SERVER_CONSOLE")))
 			console_server = PIONEERS_SERVER_CONSOLE_PATH;
 	return console_server;
 }

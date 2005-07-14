@@ -39,11 +39,12 @@ static void set_sensitive(G_GNUC_UNUSED void *key, GuiWidgetState * gui,
 		gui->next = FALSE;
 
 	if (gui->widget != NULL && gui->next != gui->current
-            && GTK_IS_ACTION(gui->widget)) {
+	    && GTK_IS_ACTION(gui->widget)) {
 		GSList *widgets;
 		widgets = gtk_action_get_proxies(GTK_ACTION(gui->widget));
 		while (widgets) {
-			gtk_widget_set_sensitive(GTK_WIDGET(widgets->data), gui->next);
+			gtk_widget_set_sensitive(GTK_WIDGET(widgets->data),
+						 gui->next);
 			widgets = g_slist_next(widgets);
 		};
 /** @todo RC 2005-07-12 Instead of the GSList, use gtk_action_set_sensitive */
