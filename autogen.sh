@@ -10,7 +10,7 @@ PKG_NAME="Pioneers"
 # The next two lines are needed because gnome-common only tries to use
 # automake-1.4, even when a newer version is present.
 REQUIRED_AUTOMAKE_VERSION="any"
-automake_progs="automake-1.8 automake-1.7 automake-1.4"
+automake_progs="automake-1.9 automake-1.8 automake-1.7 automake-1.4"
  
 
 (test -f $srcdir/configure.ac \

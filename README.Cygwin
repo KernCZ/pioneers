@@ -3,12 +3,7 @@ Short guide to install Pioneers in Cygwin
 Install a minimal setup
 =======================
 1) Get 'setup.exe' from the Cygwin site (www.cygwin.com)
-2) Let it run once without selection additional packages,
-   to install the base system
-3) Start the Cygwin shell, to verify the base install works, and
-   to create the default settings
-4) Exit the shell ('exit')
-5) Start the setup program again, and select:
+2) Select (additional packages will automatically be selected):
    Category Gnome:
       libgnomeui2
       libxml2-devel
@@ -18,7 +13,6 @@ Install a minimal setup
       xorg-x11-f100
       xorg-x11-fsrv
       xorg-fscl
-6) Start the setup program for the third time, and select:
    Category Devel:
       ORBit2-devel
       atk-devel
@@ -28,15 +22,36 @@ Install a minimal setup
       libXft-devel
       libbonobo2-devel
       libesound-devel
-      libtool-devel
+      libtool1.5
       make
       openssl-devel
       pango-devel
       pkg-config
 You now have a minimal setup needed to build and run Pioneers.
 
-I had to start the installation program three times, because I had 
-problems downloading some packages.
+Build Pioneers from cvs
+=======================
+If you only want to use released versions, skip to the 'Install Pioneers'
+section.
+
+To compile Pioneers from cvs, you need some extra packages:
+   Category devel:
+      cvs
+      gnome-common
+
+   Category net:
+      openssh
+
+1) Modify /usr/lib/libpangoxft-1.0.la
+     Remove '/usr/X11R6/lib/libXrender.la'
+2) Get the code from CVS (when prompted for a password, press enter)
+     cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/pio login 
+     cvs -z3 -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/pio co -P pioneers
+3) Go to the pioneers directory
+4) Run automake, build and install
+     ./autogen.sh
+     make
+     make install
 
 Install Pioneers
 ================
@@ -63,4 +78,4 @@ Known limitations
 * The metaserver does not work
 
 Roland Clobus
-2005-06-30 (Pioneers 0.9.17)
+2005-07-10 (Pioneers 0.9.18)
