@@ -5,6 +5,7 @@
 	client/gtk/frontend.h, client/gtk/gui.c, client/gtk/offline.c,
 	common/gtk/Makefile.am, editor/gtk/Makefile.am,
 	server/gtk/Makefile.am: use libgnome+gtk instead of libgnomeui
+	* Makefile.am: Renamed indent make target to reindent
 	
 2005-07-09  0.9.18  Roland Clobus <rclobus@bigfoot.com>
 	* common/gtk/guimap.c: Single click build: when a ship and road can be

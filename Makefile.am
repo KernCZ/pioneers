@@ -37,7 +37,7 @@ distclean-local:
 distuninstallcheck_listfiles = find . -type f -print | grep -v '^\./var/scrollkeeper'
 
 # Reformat the code.
-indent:
+reindent:
 	find . -name '*.[ch]' -exec indent -kr -i8 '{}' ';'
 
 restorepo:
