@@ -1,8 +1,5 @@
 #!/usr/bin/make -f
-# Sample debian/rules that uses debhelper. GNU copyright 1997 by Joey Hess.
-# This version is for a hypothetical package that builds an
-# architecture-dependant package, as well as an architecture-independent
-# package.
+# Based on sample debian/rules by Joey Hess.
 
 # Uncomment this to turn on verbose mode. 
 #export DH_VERBOSE=1
@@ -11,9 +8,8 @@ build: build-stamp
 build-stamp:
 	dh_testdir
 	# Commands to compile the package.
-	-[ ! -f Makefile.in ] && NOCONFIGURE=yes ./autogen.sh
-	./configure --prefix=/usr --bindir=/usr/games --mandir=/usr/share/man \
-		--datadir=/usr/share
+	./autogen.sh --prefix=/usr --bindir=/usr/games \
+		--mandir=/usr/share/man --datadir=/usr/share
 	$(MAKE)
 	convert -resize 32x32 client/gtk/data/gnome-pioneers.png pioneers.xpm
 	touch build-stamp
@@ -23,7 +19,9 @@ clean:
 	dh_testroot
 	rm -f build-stamp install-stamp pioneers.xpm
 	# Commands to clean up after the build process.
-	-$(MAKE) distclean
+	-$(MAKE) maintainer-clean
+	find . -name Makefile.in | xargs rm
+	-rm configure INSTALL missing aclocal.m4 depcomp install-sh mkinstalldirs
 	dh_clean
 
 install: install-stamp
@@ -34,9 +32,9 @@ install-stamp: build-stamp
 	dh_installdirs
 	# Commands to install the package into debian/tmp.
 	$(MAKE) DESTDIR=$(CURDIR)/debian/tmp install
-	install -m644 server/*.game debian/tmp/usr/share/games/pioneers
-	install -m644 pioneers.xpm debian/tmp/usr/share/pixmaps/pioneers-client.xpm
-	install -m644 pioneers.xpm debian/tmp/usr/share/pixmaps/pioneers-server.xpm
+	install -D -m644 server/*.game debian/tmp/usr/share/games/pioneers
+	install -D -m644 pioneers.xpm debian/tmp/usr/share/pixmaps/pioneers-client.xpm
+	install -D -m644 pioneers.xpm debian/tmp/usr/share/pixmaps/pioneers-server.xpm
 	rm -rf debian/tmp/usr/var
 	dh_install --fail-missing -X usr/share/man/man6/ -X usr/games/pioneers-editor
 	dh_installman
