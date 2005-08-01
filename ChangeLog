@@ -1,6 +1,8 @@
 2005-08-01  0.9.20  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/player.c (player_build_summary): Add missing line in
 	summary for Gtk+-2.6
+	* common/gtk/aboutbox.c (aboutbox_display): Add close button to about
+	dialog
 	
 2005-07-14  0.9.19  Roland Clobus <rclobus@bigfoot.com>
 	* README.cygwin: Added instructions for building from CVS.
