@@ -1,3 +1,7 @@
+2005-08-01  0.9.20  Roland Clobus <rclobus@bigfoot.com>
+	* client/gtk/player.c (player_build_summary): Add missing line in
+	summary for Gtk+-2.6
+	
 2005-07-14  0.9.19  Roland Clobus <rclobus@bigfoot.com>
 	* README.cygwin: Added instructions for building from CVS.
 	* autogen.sh: Added automake-1.9
