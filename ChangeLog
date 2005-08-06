@@ -1,3 +1,6 @@
+2005-08-05  0.9.21  Stefan Walter <sw@gegenunendlich.de>
+	* meta-server/main.c: Added missing #includes for FreeBSD
+	
 2005-08-01  0.9.20  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/player.c (player_build_summary): Add missing line in
 	summary for Gtk+-2.6
