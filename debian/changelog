@@ -1,3 +1,10 @@
+pioneers (0.9.19-2) unstable; urgency=low
+
+  * Made short descriptions more descriptive (Closes: #320870)
+  * Updated some Depends: and Recommends:.
+
+ -- Bas Wijnen <shevek@fmf.nl>  Fri,  5 Aug 2005 00:32:12 +0200
+
 pioneers (0.9.19-1) unstable; urgency=low
 
   * Snapshot from upstream CVS.

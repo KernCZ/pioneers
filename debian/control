@@ -9,8 +9,8 @@ Standards-Version: 3.6.2
 Package: pioneers-client
 Architecture: any
 Depends: ${shlibs:Depends}
-Recommends: pioneers-help, pioneers-server-gtk, pioneers-server-console
-Description: Pioneers client - a game for Gnome
+Recommends: pioneers-help, pioneers-server-gtk | pioneers-server-console
+Description: computer version of the settlers of Catan boardgame - client
  Pioneers, formerly known as Gnocatan, is an emulation of the Settlers
  of Catan board game which can be played over the internet.
  .
@@ -22,7 +22,7 @@ Package: pioneers-server-console
 Architecture: any
 Depends: pioneers-server-data, ${shlibs:Depends}
 Recommends: pioneers-client, pioneers-ai
-Description: Pioneers server - a game for Gnome
+Description: computer version of the settlers of Catan boardgame - console server
  Pioneers, formerly known as Gnocatan, is an emulation of the Settlers
  of Catan board game which can be played over the internet.
  .
@@ -34,7 +34,7 @@ Package: pioneers-server-gtk
 Architecture: any
 Depends: pioneers-server-data, ${shlibs:Depends}
 Recommends: pioneers-client, pioneers-ai
-Description: Pioneers server - a game for Gnome
+Description: computer version of the settlers of Catan boardgame - gtk server
  Pioneers, formerly known as Gnocatan, is an emulation of the Settlers
  of Catan board game which can be played over the internet.
  .
@@ -54,8 +54,9 @@ Description: Data required by the Pioneers server
 
 Package: pioneers-meta-server
 Architecture: any
-Depends: pioneers-server-console, ${shlibs:Depends}
-Description: Pioneers meta server - a game for Gnome
+Depends: ${shlibs:Depends}
+Recommends: pioneers-server-console
+Description: computer version of the settlers of Catan boardgame - meta server
  Pioneers, formerly known as Gnocatan, is an emulation of the Settlers
  of Catan board game which can be played over the internet.
  .
@@ -65,7 +66,7 @@ Description: Pioneers meta server - a game for Gnome
 Package: pioneers-ai
 Architecture: any
 Depends: ${shlibs:Depends}
-Description: Pioneers computer player - a game for Gnome
+Description: computer version of the settlers of Catan boardgame - AI player
  Pioneers, formerly known as Gnocatan, is an emulation of the Settlers
  of Catan board game which can be played over the internet.
  .
