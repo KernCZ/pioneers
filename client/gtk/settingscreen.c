@@ -87,7 +87,7 @@ GtkWidget *settings_create_dlg()
 	const GameParams *game_params;
 	static GtkWidget *settings_dlg;
 	GtkWidget *dlg_vbox;
-	GtkWidget *frame;
+	GtkWidget *alignment;
 	GtkWidget *vbox;
 	GtkWidget *hbox;
 	GtkWidget *table;
@@ -110,6 +110,13 @@ GtkWidget *settings_create_dlg()
 	dlg_vbox = GTK_DIALOG(settings_dlg)->vbox;
 	gtk_widget_show(dlg_vbox);
 
+	/* Create some space inside the dialog */
+	vbox = gtk_vbox_new(FALSE, 6);
+	gtk_container_set_border_width(GTK_CONTAINER(vbox), 6);
+	gtk_widget_show(vbox);
+	gtk_box_pack_start(GTK_BOX(dlg_vbox), vbox, FALSE, FALSE, 0);
+	dlg_vbox = vbox;
+
 	g_signal_connect(settings_dlg, "response",
 			 G_CALLBACK(gtk_widget_destroy), NULL);
 
@@ -117,24 +124,30 @@ GtkWidget *settings_create_dlg()
 	if (game_params == NULL) {
 		label = gtk_label_new(_("No game in progress..."));
 		gtk_box_pack_start(GTK_BOX(dlg_vbox), label, TRUE, TRUE,
-				   5);
+				   6);
 		gtk_widget_show(label);
 		gtk_widget_show(settings_dlg);
 
 		return settings_dlg;
 	}
 
-	frame = gtk_frame_new(_("General Settings"));
-	gtk_widget_show(frame);
-	gtk_box_pack_start(GTK_BOX(dlg_vbox), frame, FALSE, TRUE, 0);
-	gtk_container_set_border_width(GTK_CONTAINER(frame), 5);
+	label = gtk_label_new(NULL);
+	gtk_label_set_markup(GTK_LABEL(label),
+			     _("<b>General Settings</b>"));
+	gtk_widget_show(label);
+	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+	gtk_box_pack_start(GTK_BOX(dlg_vbox), label, FALSE, TRUE, 0);
+
+	alignment = gtk_alignment_new(0.0, 0.0, 0.0, 0.0);
+	gtk_alignment_set_padding(GTK_ALIGNMENT(alignment), 0, 0, 12, 0);
+	gtk_widget_show(alignment);
+	gtk_box_pack_start(GTK_BOX(dlg_vbox), alignment, FALSE, FALSE, 0);
 
 	table = gtk_table_new(7, 2, FALSE);
 	gtk_widget_show(table);
-	gtk_container_add(GTK_CONTAINER(frame), table);
-	gtk_container_set_border_width(GTK_CONTAINER(table), 5);
+	gtk_container_add(GTK_CONTAINER(alignment), table);
 	gtk_table_set_row_spacings(GTK_TABLE(table), 3);
-	gtk_table_set_col_spacings(GTK_TABLE(table), 5);
+	gtk_table_set_col_spacings(GTK_TABLE(table), 6);
 
 	add_setting_desc(table, 0, 0, _("Number of players:"));
 	add_setting_val(table, 0, 1, TYPE_NUM, game_params->num_players,
@@ -169,24 +182,32 @@ GtkWidget *settings_create_dlg()
 	add_setting_desc(table, 6, 0, _("Sevens Rule:"));
 	add_setting_val(table, 6, 1, TYPE_STRING, 0, sevens_desc, FALSE);
 
-	hbox = gtk_hbox_new(FALSE, 0);
+	/* Double space, otherwise the columns are too close */
+	hbox = gtk_hbox_new(FALSE, 24);
 	gtk_widget_show(hbox);
 	gtk_box_pack_start(GTK_BOX(dlg_vbox), hbox, TRUE, FALSE, 0);
 
-	vbox = gtk_vbox_new(FALSE, 5);
+	vbox = gtk_vbox_new(FALSE, 6);
 	gtk_widget_show(vbox);
-	gtk_box_pack_start(GTK_BOX(hbox), vbox, FALSE, FALSE, 5);
+	gtk_box_pack_start(GTK_BOX(hbox), vbox, FALSE, FALSE, 0);
 
-	frame = gtk_frame_new(_("Building Quotas"));
-	gtk_widget_show(frame);
-	gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, TRUE, 0);
+	label = gtk_label_new(NULL);
+	gtk_label_set_markup(GTK_LABEL(label),
+			     _("<b>Building Quotas</b>"));
+	gtk_widget_show(label);
+	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+	gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, TRUE, 0);
+
+	alignment = gtk_alignment_new(0.0, 0.0, 0.0, 0.0);
+	gtk_alignment_set_padding(GTK_ALIGNMENT(alignment), 0, 0, 12, 0);
+	gtk_widget_show(alignment);
+	gtk_box_pack_start(GTK_BOX(vbox), alignment, FALSE, TRUE, 0);
 
 	table = gtk_table_new(5, 2, FALSE);
 	gtk_widget_show(table);
-	gtk_container_add(GTK_CONTAINER(frame), table);
-	gtk_container_set_border_width(GTK_CONTAINER(table), 5);
+	gtk_container_add(GTK_CONTAINER(alignment), table);
 	gtk_table_set_row_spacings(GTK_TABLE(table), 3);
-	gtk_table_set_col_spacings(GTK_TABLE(table), 5);
+	gtk_table_set_col_spacings(GTK_TABLE(table), 6);
 
 	add_setting_desc(table, 0, 0, _("Roads:"));
 	add_setting_val(table, 0, 1, TYPE_NUM,
@@ -209,20 +230,27 @@ GtkWidget *settings_create_dlg()
 			game_params->num_build_type[BUILD_BRIDGE], NULL,
 			TRUE);
 
-	vbox = gtk_vbox_new(FALSE, 5);
+	vbox = gtk_vbox_new(FALSE, 6);
 	gtk_widget_show(vbox);
 	gtk_box_pack_start(GTK_BOX(hbox), vbox, FALSE, TRUE, 0);
 
-	frame = gtk_frame_new(_("Development Card Deck"));
-	gtk_widget_show(frame);
-	gtk_box_pack_start(GTK_BOX(hbox), frame, FALSE, TRUE, 0);
+	label = gtk_label_new(NULL);
+	gtk_label_set_markup(GTK_LABEL(label),
+			     _("<b>Development Card Deck</b>"));
+	gtk_widget_show(label);
+	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+	gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, TRUE, 0);
+
+	alignment = gtk_alignment_new(0.0, 0.0, 0.0, 0.0);
+	gtk_alignment_set_padding(GTK_ALIGNMENT(alignment), 0, 0, 12, 0);
+	gtk_widget_show(alignment);
+	gtk_box_pack_start(GTK_BOX(vbox), alignment, FALSE, TRUE, 0);
 
 	table = gtk_table_new(9, 2, FALSE);
 	gtk_widget_show(table);
-	gtk_container_add(GTK_CONTAINER(frame), table);
-	gtk_container_set_border_width(GTK_CONTAINER(table), 5);
+	gtk_container_add(GTK_CONTAINER(alignment), table);
 	gtk_table_set_row_spacings(GTK_TABLE(table), 3);
-	gtk_table_set_col_spacings(GTK_TABLE(table), 5);
+	gtk_table_set_col_spacings(GTK_TABLE(table), 6);
 
 	add_setting_desc(table, 0, 0, _("Road Building Cards:"));
 	add_setting_val(table, 0, 1, TYPE_NUM,

@@ -3,6 +3,8 @@
 	* client/gtk/interface.c: Fixed build cursor is shown for wrong player
 	* client/common/client.c (setup_msg): Removed extra comma in setup
 	message
+	* client/gtk/settingscreen.c: Replaced the GtkFrame with GNOME style
+	labels and indentation
 
 2005-08-05  0.9.21  Stefan Walter <sw@gegenunendlich.de>
 	* meta-server/main.c: Added missing #includes for FreeBSD
