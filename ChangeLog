@@ -9,6 +9,9 @@
 	showing numbers
 	* client/gtk/legend.c: Replaced the GtkFrame with GNOME style labels
 	and indentation, and use cost_* functions
+	* client/callback.h, client/common/client.c, client/gtk/gui.c,
+	client/gtk/interface.c: Enable the left pane for messages: road
+	building, place the robber, move a ship
 
 2005-08-14  Bas Wijnen <shevek@fmf.nl>
 	* client/gtk/connect.c: Fixed buffer overrun

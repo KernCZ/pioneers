@@ -1447,6 +1447,21 @@ static gboolean mode_wait_for_robber(StateMachine * sm, gint event)
  * Road building
  */
 
+const gchar *road_building_message(gint build_amount)
+{
+	switch (build_amount) {
+	case 0:
+		return _("Finish the road building action.");
+	case 1:
+		return _("Build one road segment.");
+	case 2:
+		return _("Build two road segments.");
+	default:
+		g_error("Unknown road building amount");
+		return "";
+	};
+}
+
 static gboolean mode_road_building(StateMachine * sm, gint event)
 {
 	gint build_amount;	/* The amount of available 'roads' */
@@ -1465,24 +1480,7 @@ static gboolean mode_road_building(StateMachine * sm, gint event)
 		/* Now determine the amount of segments left to play */
 		build_amount = MIN(build_amount, 2 - build_count_edges());
 		callbacks.roadbuilding(build_amount);
-		switch (build_amount) {
-		case 0:
-			callbacks.
-			    instructions(_
-					 ("Finish the road building action."));
-			break;
-		case 1:
-			callbacks.
-			    instructions(_("Build one road segment."));
-			break;
-		case 2:
-			callbacks.
-			    instructions(_("Build two road segments."));
-			break;
-		default:
-			g_error("Unknown road building amount");
-			break;
-		};
+                callbacks.instructions(road_building_message(build_amount));
 		break;
 	case SM_RECV:
 		if (check_other_players(sm))

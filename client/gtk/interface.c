@@ -64,6 +64,7 @@ void build_ship_cb(MapElement edge, G_GNUC_UNUSED MapElement extra)
 static void do_move_ship_cb(MapElement edge, MapElement ship_from)
 {
 	cb_move_ship(ship_from.edge, edge.edge);
+        gui_prompt_hide();
 }
 
 /** Edge cursor check function.
@@ -90,6 +91,8 @@ void move_ship_cb(MapElement edge, G_GNUC_UNUSED MapElement extra)
 {
 	MapElement ship_from;
 	ship_from.edge = edge.edge;
+        callbacks.instructions(_("Select a new location for the ship."));
+        gui_prompt_show(_("Select a new location for the ship."));
 	gui_cursor_set(SHIP_CURSOR, can_ship_be_moved_to, do_move_ship_cb,
 		       &ship_from);
 }
@@ -403,14 +406,16 @@ static void frontend_state_roadbuilding(GuiEvent event)
 		cb_end_turn();
 		gui_cursor_none();	/* Finish single click build */
 		set_gui_state(frontend_state_turn);
+                gui_prompt_hide();
 		return;
 	default:
 		break;
 	}
 }
 
-void frontend_roadbuilding(G_GNUC_UNUSED gint num_roads)
+void frontend_roadbuilding(gint num_roads)
 {
+	gui_prompt_show(road_building_message(num_roads));
 	if (get_gui_state() == frontend_state_roadbuilding)
 		return;
 	set_gui_state(frontend_state_roadbuilding);
@@ -706,6 +711,7 @@ void frontend_robber()
 	gui_cursor_set(ROBBER_CURSOR,
 		       (CheckFunc) can_robber_or_pirate_be_moved,
 		       place_robber_or_pirate_cb, NULL);
+	gui_prompt_show(_("Place the robber"));
 	frontend_gui_update();
 }
 

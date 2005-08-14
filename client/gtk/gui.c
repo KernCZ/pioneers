@@ -586,6 +586,10 @@ void gui_gold_hide()
 void gui_prompt_show(const gchar * message)
 {
 	gtk_label_set_text(GTK_LABEL(prompt_lbl), message);
+	/* Force resize of the notebook, this is needed because
+	 * GTK does not redraw when the text in a label changes.
+	 */
+	gtk_container_check_resize(GTK_CONTAINER(develop_notebook));
 	gtk_notebook_set_current_page(GTK_NOTEBOOK(develop_notebook), 3);
 }
 

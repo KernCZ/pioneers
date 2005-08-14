@@ -366,4 +366,7 @@ const DevelDeck *get_devel_deck(void);
 const gchar *get_devel_name(DevelType type);
 Map *get_map(void);
 
+/** Returns instructions for the user */
+const gchar *road_building_message(gint build_amount);
+
 #endif
