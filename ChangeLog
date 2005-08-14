@@ -5,6 +5,10 @@
 	message
 	* client/gtk/settingscreen.c: Replaced the GtkFrame with GNOME style
 	labels and indentation
+	* client/common/resource.c (resource_format_type): Added support for
+	showing numbers
+	* client/gtk/legend.c: Replaced the GtkFrame with GNOME style labels
+	and indentation, and use cost_* functions
 
 2005-08-05  0.9.21  Stefan Walter <sw@gegenunendlich.de>
 	* meta-server/main.c: Added missing #includes for FreeBSD

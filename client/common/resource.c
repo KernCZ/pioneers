@@ -240,10 +240,13 @@ void resource_format_type(gchar * str, const gint * resources)
 			continue;
 
 		if (add_comma) {
-			strcpy(str, "+");
+			strcpy(str, " + ");
 			str += strlen(str);
 		}
-		sprintf(str, "%s", resource_name(idx, FALSE));
+		if (num > 1)
+			sprintf(str, "%d %s", num, resource_name(idx, FALSE));
+		else
+			sprintf(str, "%s", resource_name(idx, FALSE));
 		add_comma = TRUE;
 		str += strlen(str);
 	}

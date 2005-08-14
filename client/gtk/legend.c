@@ -22,6 +22,7 @@
 #include "config.h"
 #include "frontend.h"
 #include "theme.h"
+#include "cost.h"
 
 /* The order of the terrain_names is EXTREMELY important!  The order
  * must match the enum Terrain.
@@ -104,9 +105,10 @@ static void add_legend_terrain(GtkWidget * table, gint row, gint col,
 }
 
 static void add_legend_cost(GtkWidget * table, gint row,
-			    const gchar * item, const gchar * cost)
+			    const gchar * item, const gint * cost)
 {
 	GtkWidget *label;
+	gchar buffer[1024];
 
 	label = gtk_label_new(item);
 	gtk_widget_show(label);
@@ -114,7 +116,8 @@ static void add_legend_cost(GtkWidget * table, gint row,
 			 GTK_FILL, GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 
-	label = gtk_label_new(cost);
+	resource_format_type(buffer, cost);
+	label = gtk_label_new(buffer);
 	gtk_widget_show(label);
 	gtk_table_attach(GTK_TABLE(table), label, 1, 2, row, row + 1,
 			 GTK_FILL, GTK_FILL, 0, 0);
@@ -125,27 +128,34 @@ GtkWidget *legend_create_content()
 {
 	GtkWidget *hbox;
 	GtkWidget *vbox;
-	GtkWidget *frame;
+	GtkWidget *label;
 	GtkWidget *table;
 	GtkWidget *vsep;
+	GtkWidget *alignment;
 	gint num_rows;
 
-	hbox = gtk_hbox_new(FALSE, 5);
-	gtk_container_set_border_width(GTK_CONTAINER(hbox), 5);
+	hbox = gtk_hbox_new(FALSE, 6);
+	gtk_container_set_border_width(GTK_CONTAINER(hbox), 6);
 
-	vbox = gtk_vbox_new(FALSE, 5);
-	gtk_container_set_border_width(GTK_CONTAINER(vbox), 5);
+	vbox = gtk_vbox_new(FALSE, 6);
+	gtk_container_set_border_width(GTK_CONTAINER(vbox), 6);
 
-	frame = gtk_frame_new(_("Terrain Yield"));
-	gtk_widget_show(frame);
-	gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, TRUE, 0);
+	label = gtk_label_new(NULL);
+	gtk_label_set_markup(GTK_LABEL(label), _("<b>Terrain Yield</b>"));
+	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+	gtk_widget_show(label);
+	gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, TRUE, 0);
+
+	alignment = gtk_alignment_new(0.0, 0.0, 0.0, 0.0);
+	gtk_alignment_set_padding(GTK_ALIGNMENT(alignment), 0, 0, 12, 0);
+	gtk_widget_show(alignment);
+	gtk_box_pack_start(GTK_BOX(vbox), alignment, FALSE, FALSE, 0);
 
 	table = gtk_table_new(4, 7, FALSE);
 	gtk_widget_show(table);
-	gtk_container_add(GTK_CONTAINER(frame), table);
-	gtk_container_set_border_width(GTK_CONTAINER(table), 5);
+	gtk_container_add(GTK_CONTAINER(alignment), table);
 	gtk_table_set_row_spacings(GTK_TABLE(table), 3);
-	gtk_table_set_col_spacings(GTK_TABLE(table), 5);
+	gtk_table_set_col_spacings(GTK_TABLE(table), 6);
 
 	add_legend_terrain(table, 0, 0, HILL_TERRAIN, BRICK_RESOURCE);
 	add_legend_terrain(table, 1, 0, FIELD_TERRAIN, GRAIN_RESOURCE);
@@ -162,9 +172,16 @@ GtkWidget *legend_create_content()
 	add_legend_terrain(table, 2, 4, DESERT_TERRAIN, NO_RESOURCE);
 	add_legend_terrain(table, 3, 4, SEA_TERRAIN, NO_RESOURCE);
 
-	frame = gtk_frame_new(_("Building Costs"));
-	gtk_widget_show(frame);
-	gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, TRUE, 0);
+	label = gtk_label_new(NULL);
+	gtk_label_set_markup(GTK_LABEL(label), _("<b>Building Costs</b>"));
+	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+	gtk_widget_show(label);
+	gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, TRUE, 0);
+
+	alignment = gtk_alignment_new(0.0, 0.0, 0.0, 0.0);
+	gtk_alignment_set_padding(GTK_ALIGNMENT(alignment), 0, 0, 12, 0);
+	gtk_widget_show(alignment);
+	gtk_box_pack_start(GTK_BOX(vbox), alignment, FALSE, FALSE, 0);
 
 	num_rows = 4;
 	if (have_ships())
@@ -173,25 +190,23 @@ GtkWidget *legend_create_content()
 		num_rows++;
 	table = gtk_table_new(num_rows, 2, FALSE);
 	gtk_widget_show(table);
-	gtk_container_add(GTK_CONTAINER(frame), table);
-	gtk_container_set_border_width(GTK_CONTAINER(table), 5);
+	gtk_container_add(GTK_CONTAINER(alignment), table);
 	gtk_table_set_row_spacings(GTK_TABLE(table), 3);
 	gtk_table_set_col_spacings(GTK_TABLE(table), 5);
 
 	num_rows = 0;
-	add_legend_cost(table, num_rows++, _("Road"), _("brick + lumber"));
+	add_legend_cost(table, num_rows++, _("Road"), cost_road());
 	if (have_ships())
-		add_legend_cost(table, num_rows++, _("Ship"),
-				_("wool + lumber"));
+		add_legend_cost(table, num_rows++, _("Ship"), cost_ship());
 	if (have_bridges())
 		add_legend_cost(table, num_rows++, _("Bridge"),
-				_("brick + wool + lumber"));
+				cost_bridge());
 	add_legend_cost(table, num_rows++, _("Settlement"),
-			_("brick + grain + wool + lumber"));
+			cost_settlement());
 	add_legend_cost(table, num_rows++, _("City"),
-			_("2 grain + 3 ore"));
+			cost_upgrade_settlement());
 	add_legend_cost(table, num_rows++, _("Development Card"),
-			_("grain + ore + wool"));
+			cost_development());
 
 	gtk_widget_show(vbox);
 	gtk_box_pack_start(GTK_BOX(hbox), vbox, FALSE, FALSE, 0);
