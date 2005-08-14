@@ -345,7 +345,7 @@ static void post_change(gint * size, GtkWidget ** buttons, gint amt)
 static void change_height(G_GNUC_UNUSED GtkWidget * menu,
 			  gpointer user_data)
 {
-	if ((gint) user_data < 0) {
+	if (GPOINTER_TO_INT(user_data) < 0) {
 		gint x;
 		for (x = 0; x < gmap->map->x_size; x++)
 			clear_hex(gmap->map->
@@ -358,7 +358,7 @@ static void change_height(G_GNUC_UNUSED GtkWidget * menu,
 static void change_width(G_GNUC_UNUSED GtkWidget * menu,
 			 gpointer user_data)
 {
-	if ((gint) user_data < 0) {
+	if (GPOINTER_TO_INT(user_data) < 0) {
 		gint x, y;
 		for (y = 0; y < gmap->map->y_size; y++) {
 			if (y % 2 == 0)
@@ -368,7 +368,8 @@ static void change_width(G_GNUC_UNUSED GtkWidget * menu,
 			clear_hex(gmap->map->grid[y][x]);
 		}
 	}
-	post_change(&gmap->map->x_size, hresize_buttons, (gint) user_data);
+	post_change(&gmap->map->x_size, hresize_buttons,
+		    GPOINTER_TO_INT(user_data));
 }
 
 static GtkWidget *build_map(void)
