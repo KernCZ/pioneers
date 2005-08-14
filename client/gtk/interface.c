@@ -334,8 +334,8 @@ static void frontend_state_turn(GuiEvent event)
 		return;
 	case GUI_FINISH:
 		have_turn = FALSE;
-		gui_cursor_none();	/* Finish single click build */
 		cb_end_turn();
+		gui_cursor_none();	/* Finish single click build */
 		set_gui_state(frontend_state_idle);
 		return;
 	default:
@@ -400,8 +400,8 @@ static void frontend_state_roadbuilding(GuiEvent event)
 			       build_bridge_cb, NULL);
 		return;
 	case GUI_FINISH:
-		gui_cursor_none();	/* Finish single click build */
 		cb_end_turn();
+		gui_cursor_none();	/* Finish single click build */
 		set_gui_state(frontend_state_turn);
 		return;
 	default:
@@ -782,8 +782,8 @@ static void frontend_mode_setup(GuiEvent event)
 			       build_settlement_cb, NULL);
 		return;
 	case GUI_FINISH:
-		gui_cursor_none();	/* Finish single click build */
 		cb_end_turn();
+		gui_cursor_none();	/* Finish single click build */
 		set_gui_state(frontend_state_idle);
 		return;
 	default:

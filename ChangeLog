@@ -1,6 +1,7 @@
 2005-08-14  0.9.22  Roland Clobus <rclobus@bigfoot.com.
 	* editor/gtk/editor.c: Use GPOINTER_TO_INT instead of (gint) cast
-	
+	* client/gtk/interface.c: Fixed build cursor is shown for wrong player
+
 2005-08-05  0.9.21  Stefan Walter <sw@gegenunendlich.de>
 	* meta-server/main.c: Added missing #includes for FreeBSD
 	
