@@ -127,8 +127,8 @@ NULL, NULL, 0, 0, 0, FALSE, FALSE};
 #define INTARG_LEN 16
 
 static gchar server_host[STRARG_LEN];
-static gchar server_port[INTARG_LEN];
-static gchar server_version[INTARG_LEN];
+static gchar server_port[STRARG_LEN];
+static gchar server_version[STRARG_LEN];
 static gchar server_max[INTARG_LEN];
 static gchar server_curr[INTARG_LEN];
 static gchar server_vpoints[STRARG_LEN];

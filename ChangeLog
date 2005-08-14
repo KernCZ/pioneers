@@ -10,6 +10,9 @@
 	* client/gtk/legend.c: Replaced the GtkFrame with GNOME style labels
 	and indentation, and use cost_* functions
 
+2005-08-14  Bas Wijnen <shevek@fmf.nl>
+	* client/gtk/connect.c: Fixed buffer overrun
+
 2005-08-05  0.9.21  Stefan Walter <sw@gegenunendlich.de>
 	* meta-server/main.c: Added missing #includes for FreeBSD
 	
