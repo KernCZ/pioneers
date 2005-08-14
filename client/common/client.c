@@ -1248,10 +1248,11 @@ static char *setup_msg(void)
 	msg_end = msg + strlen(msg);
 	for (idx = 0; idx < num_parts; idx++) {
 		if (idx > 0) {
-			*msg_end++ = ',';
 			if (idx == num_parts - 1) {
 				strcpy(msg_end, _(" or"));
 				msg_end += 3;
+			} else {
+				*msg_end++ = ',';
 			}
 		}
 		*msg_end++ = ' ';
