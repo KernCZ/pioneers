@@ -72,7 +72,6 @@ static GtkWidget *vp_target_status;
 static GtkUIManager *ui_manager = NULL;	/* The manager of the GtkActions */
 static GtkWidget *toolbar = NULL;	/* The toolbar */
 
-static gboolean toolbar_visible = TRUE;
 static gboolean toolbar_show_accelerators = TRUE;
 
 #define PIONEERS_PIXMAP_DICE "pioneers/dice.png"
@@ -101,7 +100,7 @@ static const gchar *pioneers_pixmaps[] = {
 	PIONEERS_PIXMAP_FINISH
 };
 
-static void gui_set_toolbar_visible(gboolean visible);
+static void gui_set_toolbar_visible(void);
 static void gui_toolbar_show_accelerators(gboolean show_accelerators);
 
 static void game_new_cb(void)
@@ -723,7 +722,7 @@ static void summary_color_cb(GtkToggleButton * widget,
 
 static void showhide_toolbar_cb(void)
 {
-	gui_set_toolbar_visible(!toolbar_visible);
+	gui_set_toolbar_visible();
 }
 
 static void toolbar_shortcuts_cb(void)
@@ -983,32 +982,23 @@ static GtkAction *getAction(GuiEvent id)
 }
 
 /** Set the visibility of the toolbar */
-static void gui_set_toolbar_visible(gboolean visible)
+static void gui_set_toolbar_visible(void)
 {
-	GtkToggleAction *toggle_action;
 	GSList *list;
-
-	toolbar_visible = visible;
-
-	/* Block signals when settings the visibility */
-	toggle_action =
-	    GTK_TOGGLE_ACTION(gtk_ui_manager_get_action
-			      (ui_manager,
-			       "ui/MainMenu/SettingsMenu/ShowHideToolbar"));
-	g_signal_handlers_block_by_func(toggle_action, showhide_toolbar_cb,
-					NULL);
-	gtk_toggle_action_set_active(toggle_action, toolbar_visible);
-	g_signal_handlers_unblock_by_func(toggle_action,
-					  showhide_toolbar_cb, NULL);
+	gboolean visible;
 
 	list = gtk_ui_manager_get_toplevels(ui_manager,
 					    GTK_UI_MANAGER_TOOLBAR);
 	g_assert(g_slist_length(list) == 1);
-	if (toolbar_visible)
+	visible = gtk_toggle_action_get_active(GTK_TOGGLE_ACTION
+					       (gtk_ui_manager_get_action
+						(ui_manager,
+						 "ui/MainMenu/SettingsMenu/ShowHideToolbar")));
+	if (visible)
 		gtk_widget_show(GTK_WIDGET(list->data));
 	else
 		gtk_widget_hide(GTK_WIDGET(list->data));
-	config_set_int("settings/show_toolbar", toolbar_visible);
+	config_set_int("settings/show_toolbar", visible);
 	g_slist_free(list);
 }
 
@@ -1271,8 +1261,12 @@ GtkWidget *gui_build_interface()
 	gtk_box_pack_start(GTK_BOX(vbox), build_status_bar(), FALSE, FALSE,
 			   0);
 
-	gui_set_toolbar_visible(config_get_int_with_default
-				("settings/show_toolbar", TRUE));
+	gtk_toggle_action_set_active(GTK_TOGGLE_ACTION
+				     (gtk_ui_manager_get_action
+				      (ui_manager,
+				       "ui/MainMenu/SettingsMenu/ShowHideToolbar")),
+				     config_get_int_with_default
+				     ("settings/show_toolbar", TRUE));
 
 	g_signal_connect(G_OBJECT(app_window), "key_press_event",
 			 G_CALLBACK(hotkeys_handler), NULL);

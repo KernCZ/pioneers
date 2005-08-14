@@ -12,6 +12,7 @@
 
 2005-08-14  Bas Wijnen <shevek@fmf.nl>
 	* client/gtk/connect.c: Fixed buffer overrun
+	* client/gtk/gui.c: Fix for crash at startup with toolbar hidden
 
 2005-08-05  0.9.21  Stefan Walter <sw@gegenunendlich.de>
 	* meta-server/main.c: Added missing #includes for FreeBSD
