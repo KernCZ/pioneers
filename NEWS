@@ -1,3 +1,68 @@
+CVS Snapshot release 0.9.23
+* Fixed: Several bug fixes
+* New: Left panel shows information during the game
+
+First release of Pioneers 0.9.19
+* An editor has been added
+* The AI is stronger, can also play on maps with gold
+* We have a new name: Pioneers
+* Pioneers client runs under Cygwin (server not yet implemented)
+* New maps have been added
+* Bug fixes, and code cleanup
+
+CVS Snapshot release 0.8.1.59
+Random player seating order
+Metaserver can serve a limited number of games
+Updated man pages
+
+CVS Snapshot release 0.8.1.54
+Fix for maritime trade
+
+CVS Snapshot release 0.8.1.53
+Update of gnocatan.spec
+Fixed about dialog
+Less severe errors when writing new themes or games
+Disabled 'Add Computer Player' button in server when gnocatanai is not installed
+New functionality in meta server: it will tell whether it supports creation of new games
+
+CVS Snapshot release 0.8.1.51
+Restored compatibility with Gtk+-2.0 and 2.2
+Restored compatibility with FreeBSD
+
+CVS Snapshot release 0.8.1.50
+Fixed reconnect during distribution of gold
+Tiles can be excluded from shuffling
+
+CVS Snapshot release 0.8.1.48
+New about dialog
+Player did not get a turn when playing a second game with the same client
+Made rules for building roads near 'nosetup' nodes more strict
+
+CVS Snapshot release 0.8.1.45
+Reconnect fixed when robber active
+Cosmetic fix on initial size of the map
+
+CVS Snapshot release 0.8.1.43
+Bugfixes
+Fixed crash with cursor on the border of a map
+
+CVS Snapshot release 0.8.1.42
+New preference dialog
+Development cards cleared when playing second game
+
+CVS Snapshot release 0.8.1.40
+New again: probability dots are back
+Code cleanup
+
+CVS Snapshot release 0.8.1.39
+New: single click building
+Fixed: longest road detection
+
+CVS Snapshot release 0.8.1.38
+New: commandline for the client
+New: compiles with Gtk-2.0, 2.2 and 2.4
+Fixed: replaces 127.0.0.1 with localhost
+
 CVS Snapshot release 0.8.1.37
 
 What's new/fixed:
@@ -9,12 +74,6 @@ What's new/fixed:
 * Quick fix applied for crash after pressing 'Reject Trade'
 * Italian translation added
 * Removed a few memory leaks
-
-Some known issues (see also SourceForge)
-* Reconnect works badly. Workaround: Try to reconnect only when the game is 'idle'.
-* Longest road sometimes not noticed/given to wrong player
-* Client can crash after playing/moving the robber in the last turn.
-* Playing several games with the same client will retain some things from previous games.
 
 Release 0.8.1.30
 

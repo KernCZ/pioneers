@@ -1,3 +1,7 @@
+2005-08-17  0.9.23  Roland Clobus <rclobus@bigfoot.com>
+	* client/gtk/frontend.c (set_sensitive): Disable the hotkeys when the
+	GtkAction is disabled
+	
 2005-08-14  0.9.22  Roland Clobus <rclobus@bigfoot.com.
 	* editor/gtk/editor.c: Use GPOINTER_TO_INT instead of (gint) cast
 	* client/gtk/interface.c: Fixed build cursor is shown for wrong player
