@@ -407,6 +407,8 @@ gboolean net_connect(Session * ses, const gchar * host, const gchar * port)
 	net_close(ses);
 	if (ses->host != NULL)
 		g_free(ses->host);
+	if (ses->port != NULL)
+		g_free(ses->port);
 	ses->host = g_strdup(host);
 	ses->port = g_strdup(port);
 
@@ -508,6 +510,8 @@ void net_free(Session ** ses)
 
 	if ((*ses)->host != NULL)
 		g_free((*ses)->host);
+	if ((*ses)->port != NULL)
+		g_free((*ses)->port);
 	g_free(*ses);
 	*ses = NULL;
 }

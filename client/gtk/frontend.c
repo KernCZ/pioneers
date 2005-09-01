@@ -145,6 +145,7 @@ static void gui_free(GuiWidgetState * gui)
 		g_hash_table_remove(frontend_widgets,
 				    GINT_TO_POINTER(key + i));
 	}
+	g_free(gui);
 }
 
 static void route_event(G_GNUC_UNUSED void *widget, GuiWidgetState * gui)

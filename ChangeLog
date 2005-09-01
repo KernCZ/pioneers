@@ -1,3 +1,8 @@
+2005-09-01  0.9.24  Roland Clobus <rclobus@bigfoot.com>
+	* client/gtk/connect.c (meta_dlg_cb), client/gtk/frontend.c
+	(gui_free), common/network.c (net_connect, net_free): Fixed memory
+	leaks
+	
 2005-08-17  0.9.23  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/frontend.c (set_sensitive): Disable the hotkeys when the
 	GtkAction is disabled

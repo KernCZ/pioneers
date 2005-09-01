@@ -800,6 +800,7 @@ static void meta_dlg_cb(GtkDialog * dlg, gint arg1,
 			connect_set_field(&connect_port, port);
 			g_free(host);
 			g_free(port);
+			gtk_tree_path_free(path);
 			connect_close_all(TRUE);
 		}
 		break;
