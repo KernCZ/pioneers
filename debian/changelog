@@ -1,3 +1,9 @@
+pioneers (0.9.23-1) unstable; urgency=low
+
+  * Snapshot from upstream CVS. (Closes: #322704, #322737)
+
+ -- Bas Wijnen <shevek@fmf.nl>  Thu, 18 Aug 2005 00:02:32 +0200
+
 pioneers (0.9.19-2) unstable; urgency=low
 
   * Made short descriptions more descriptive (Closes: #320870)

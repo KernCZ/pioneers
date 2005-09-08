@@ -20,7 +20,7 @@ clean:
 	rm -f build-stamp install-stamp pioneers.xpm
 	# Commands to clean up after the build process.
 	-$(MAKE) maintainer-clean
-	find . -name Makefile.in | xargs rm
+	-find . -name Makefile.in | xargs rm
 	-rm configure INSTALL missing aclocal.m4 depcomp install-sh mkinstalldirs
 	dh_clean
 
