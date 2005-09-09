@@ -1,3 +1,6 @@
+2005-09-09 Ferenc Bánhidi <banhidi@inf.elte.hu>
+	* hu.po: Added Hungarian translation
+	
 2005-08-14 Roland Clobus <rclobus@bigfoot.com>
 	* Added formatting tags to modified strings in 0.9.22
 	* nl.po: Added a new string

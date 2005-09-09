@@ -43,6 +43,7 @@ static lang_desc languages[] = {
 	{"it", "Italiano", "it_IT", FALSE, NULL},
 	{"es", "Español", "es_ES", FALSE, NULL},
 	{"nl", "Nederlands", "nl_NL", FALSE, NULL},
+	{"hu", "Hungarian", "hu_HU", FALSE, NULL},
 	{NULL, NULL, NULL, FALSE, NULL}
 };
 
