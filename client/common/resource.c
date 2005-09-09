@@ -244,7 +244,8 @@ void resource_format_type(gchar * str, const gint * resources)
 			str += strlen(str);
 		}
 		if (num > 1)
-			sprintf(str, "%d %s", num, resource_name(idx, FALSE));
+			sprintf(str, "%d %s", num,
+				resource_name(idx, FALSE));
 		else
 			sprintf(str, "%s", resource_name(idx, FALSE));
 		add_comma = TRUE;

@@ -1480,7 +1480,8 @@ static gboolean mode_road_building(StateMachine * sm, gint event)
 		/* Now determine the amount of segments left to play */
 		build_amount = MIN(build_amount, 2 - build_count_edges());
 		callbacks.roadbuilding(build_amount);
-                callbacks.instructions(road_building_message(build_amount));
+		callbacks.
+		    instructions(road_building_message(build_amount));
 		break;
 	case SM_RECV:
 		if (check_other_players(sm))

@@ -51,10 +51,12 @@ static void set_sensitive(G_GNUC_UNUSED void *key, GuiWidgetState * gui,
 /*		gtk_action_set_sensitive(GTK_ACTION(gui->widget),
 				gui->next);
 */
-                if (gui->next)
-                        gtk_action_connect_accelerator(GTK_ACTION(gui->widget));
-                else
-                        gtk_action_disconnect_accelerator(GTK_ACTION(gui->widget));
+		if (gui->next)
+			gtk_action_connect_accelerator(GTK_ACTION
+						       (gui->widget));
+		else
+			gtk_action_disconnect_accelerator(GTK_ACTION
+							  (gui->widget));
 		gui->current = gui->next;
 		gui->next = FALSE;
 		return;

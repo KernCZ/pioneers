@@ -64,7 +64,7 @@ void build_ship_cb(MapElement edge, G_GNUC_UNUSED MapElement extra)
 static void do_move_ship_cb(MapElement edge, MapElement ship_from)
 {
 	cb_move_ship(ship_from.edge, edge.edge);
-        gui_prompt_hide();
+	gui_prompt_hide();
 }
 
 /** Edge cursor check function.
@@ -91,8 +91,8 @@ void move_ship_cb(MapElement edge, G_GNUC_UNUSED MapElement extra)
 {
 	MapElement ship_from;
 	ship_from.edge = edge.edge;
-        callbacks.instructions(_("Select a new location for the ship."));
-        gui_prompt_show(_("Select a new location for the ship."));
+	callbacks.instructions(_("Select a new location for the ship."));
+	gui_prompt_show(_("Select a new location for the ship."));
 	gui_cursor_set(SHIP_CURSOR, can_ship_be_moved_to, do_move_ship_cb,
 		       &ship_from);
 }
@@ -406,7 +406,7 @@ static void frontend_state_roadbuilding(GuiEvent event)
 		cb_end_turn();
 		gui_cursor_none();	/* Finish single click build */
 		set_gui_state(frontend_state_turn);
-                gui_prompt_hide();
+		gui_prompt_hide();
 		return;
 	default:
 		break;
