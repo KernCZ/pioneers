@@ -1,7 +1,10 @@
 2005-09-09  0.9.25  Ferenc Bánhidi <banhidi@inf.elte.hu>
 	* configure.ac, client/common/i18n.c, po/hu.po: Added Hungarian
 	translationn
-	
+
+2005-09-09  Roland Clobus <rclobus@bigfoot.com>
+	* client/common/client.c (mode_build_response): Remove debug code
+
 2005-09-01  0.9.24  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/connect.c (meta_dlg_cb), client/gtk/frontend.c
 	(gui_free), common/network.c (net_connect, net_free): Fixed memory

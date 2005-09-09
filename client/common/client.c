@@ -1141,8 +1141,6 @@ gboolean mode_build_response(StateMachine * sm, gint event)
 	BuildType build_type;
 	gint x, y, pos;
 
-	g_print("Mode_build_response\n");
-	sm_stack_dump(sm);
 	sm_state_name(sm, "mode_build_response");
 	switch (event) {
 	case SM_ENTER:
