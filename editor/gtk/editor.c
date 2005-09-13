@@ -921,6 +921,8 @@ static void exit_cb(void)
 	gtk_main_quit();
 }
 
+#ifdef HAVE_HELP
+/* Commented out, until the help is written
 static void contents_menu_cb(void)
 {
 	GtkWidget *dialog;
@@ -934,6 +936,8 @@ static void contents_menu_cb(void)
 	gtk_dialog_run(GTK_DIALOG(dialog));
 	gtk_widget_destroy(dialog);
 }
+*/
+#endif
 
 static void about_menu_cb(void)
 {
@@ -962,8 +966,12 @@ static GtkActionEntry entries[] = {
 	{"Quit", GTK_STOCK_QUIT, N_("_Quit"), "<control>Q",
 	 N_("Quit"), exit_cb},
 
-	{"Contents", GTK_STOCK_HELP, N_("_Contents"), "F1",
-	 N_("Contents"), contents_menu_cb},
+#ifdef HAVE_HELP
+	/* Disable this item, until the help is written
+	   {"Contents", GTK_STOCK_HELP, N_("_Contents"), "F1",
+	   N_("Contents"), contents_menu_cb},
+	 */
+#endif
 	{"About", NULL, N_("_About Pioneers Editor"), NULL,
 	 N_("Information about Pioneers Editor"), about_menu_cb}
 };
@@ -983,8 +991,12 @@ static const char *ui_description =
 "      <menuitem action='Quit'/>"
 "    </menu>"
 "    <menu action='HelpMenu'>"
+#ifdef HAVE_HELP
+/* Disable this menu item, until the help is written
 "      <menuitem action='Contents'/>"
 "      <separator/>"
+*/
+#endif
 "      <menuitem action='About'/>"
 "    </menu>"
 "  </menubar>"

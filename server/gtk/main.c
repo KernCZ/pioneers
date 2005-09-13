@@ -754,6 +754,8 @@ int main(int argc, char *argv[])
 	GtkAccelGroup *accel_group;
 	GError *error;
 
+	net_init();
+
 	/* set the UI driver to GTK_Driver, since we're using gtk */
 	set_ui_driver(&GTK_Driver);
 
@@ -838,5 +840,6 @@ int main(int argc, char *argv[])
 
 	gtk_main();
 
+	net_finish();
 	return 0;
 }

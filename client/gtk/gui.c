@@ -24,7 +24,9 @@
 #include <math.h>
 #include <ctype.h>
 #include <assert.h>
+#ifdef HAVE_HELP
 #include <libgnome/libgnome.h>
+#endif
 
 #include "aboutbox.h"
 #include "frontend.h"
@@ -238,8 +240,10 @@ static GtkActionEntry entries[] = {
 	 NULL, N_("Histogram of dice rolls"), help_histogram_cb},
 	{"HelpAbout", NULL, N_("_About Pioneers"), NULL,
 	 N_("Information about Pioneers"), help_about_cb},
+#ifdef HAVE_HELP
 	{"HelpManual", GTK_STOCK_HELP, N_("_Help"), "<control>H",
 	 N_("Show the manual"), help_manual_cb}
+#endif
 };
 
 /* Toggle items */
@@ -287,7 +291,9 @@ static const char *ui_description =
 "      <menuitem action='DiceHistogram'/>"
 "      <separator/>"
 "      <menuitem action='HelpAbout'/>"
+#ifdef HAVE_HELP
 "      <menuitem action='HelpManual'/>"
+#endif
 "    </menu>"
 "  </menubar>"
 "  <toolbar name='MainToolbar'>"
@@ -912,10 +918,12 @@ static void help_settings_cb(void)
 	settings_create_dlg();
 }
 
+#ifdef HAVE_HELP
 static void help_manual_cb(void)
 {
 	gnome_help_display("pioneers", NULL, NULL);
 }
+#endif
 
 static GtkAction *getAction(GuiEvent id)
 {

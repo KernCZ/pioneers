@@ -1024,6 +1024,7 @@ int main(int argc, char *argv[])
 			break;
 		}
 
+	net_init();
 	openlog("pioneers-meta", LOG_PID, LOG_USER);
 	if (make_daemon)
 		convert_to_daemon();
@@ -1050,5 +1051,6 @@ int main(int argc, char *argv[])
 	syslog(LOG_INFO, "Pioneers meta server started.");
 	select_loop();
 
+	net_finish();
 	return 0;
 }

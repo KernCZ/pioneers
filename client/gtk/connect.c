@@ -23,7 +23,6 @@
 #include "config.h"
 #include <ctype.h>
 #include <stdlib.h>
-#include <unistd.h>		/* For usleep */
 #include <errno.h>
 #include <fcntl.h>
 
@@ -320,7 +319,7 @@ static void meta_create_notify(NetEvent event,
 					    connect_server, connect_port);
 				/* The meta server is now busy creating the new game.
 				 * UGLY FIX: Wait for some time */
-				usleep(500000);
+				g_usleep(500000);
 				connect_close_all(TRUE);
 			} else
 				log_message(MSG_ERROR,

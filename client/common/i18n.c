@@ -114,8 +114,8 @@ gboolean change_nls(lang_desc * ld)
 	/* Change language, method found at 
 	 * http://www.gnu.org/software/gettext/manual/html_chapter/gettext_10.html#SEC154 
 	 */
-	setenv("LANGUAGE", ld->code, 1);
-	setenv("LC_ALL", ld->localedef, 1);	/* Do this too, so setlocale works too */
+	g_setenv("LANGUAGE", ld->code, TRUE);
+	g_setenv("LC_ALL", ld->localedef, TRUE);	/* Do this too, so setlocale works too */
 	/* Make change known */
 	++_nl_msg_cat_cntr;
 

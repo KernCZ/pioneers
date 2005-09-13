@@ -35,6 +35,8 @@ static void run_main(void)
 
 int main(int argc, char *argv[])
 {
+	net_init();
+
 	client_init();
 	callbacks.mainloop = &run_main;
 
@@ -50,5 +52,6 @@ int main(int argc, char *argv[])
 
 	callbacks.mainloop();
 
+	net_finish();
 	return 0;
 }

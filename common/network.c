@@ -703,3 +703,13 @@ gint net_accept(gint accept_fd, gchar ** error_message)
 	}
 	return fd;
 }
+
+void net_init(void)
+{
+	/* Do nothing on unix like platforms */
+}
+
+void net_finish(void)
+{
+	/* Do nothing on unix like platforms */
+}

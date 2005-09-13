@@ -224,6 +224,8 @@ int main(int argc, char *argv[])
 		cfg_set_timeout(timeout);
 	}
 
+	net_init();
+
 	admin_listen(admin_port);
 
 	if (!disable_game_start) {
@@ -251,6 +253,8 @@ int main(int argc, char *argv[])
 		g_main_loop_run(event_loop);
 		g_main_loop_unref(event_loop);
 	}
+
+	net_finish();
 
 	g_free(hostname);
 	g_free(server_port);

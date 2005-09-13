@@ -20,7 +20,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 AC_PREREQ(2.53)
-AC_INIT([pioneers],[0.9.25])
+AC_INIT([pioneers],[0.9.26])
 AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
 AC_CONFIG_SRCDIR([client])
 AM_CONFIG_HEADER(config.h)
@@ -56,6 +56,10 @@ else
 	have_scrollkeeper=yes;
 fi
 AM_CONDITIONAL(HAVE_SCROLLKEEPER, [test x$have_scrollkeeper = xyes])
+if test $have_scrollkeeper = yes; then
+	AC_DEFINE(HAVE_HELP, 1,
+		[Defined when online help is present])
+fi
 
 # Gtk+ support
 PKG_CHECK_MODULES(GTK2, gtk+-2.0 >= $GTK_REQUIRED_VERSION, have_gtk2=yes, 

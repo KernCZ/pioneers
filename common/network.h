@@ -58,6 +58,12 @@ struct _Session {
 void debug(const gchar * fmt, ...);
 #endif
 
+/** Initialize the network drivers */
+void net_init(void);
+
+/* Finish the network drivers */
+void net_finish(void);
+
 Session *net_new(NetNotifyFunc notify_func, void *user_data);
 void net_free(Session ** ses);
 

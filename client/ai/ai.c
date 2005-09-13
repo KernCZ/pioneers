@@ -166,7 +166,7 @@ static void ai_start_game(void)
 
 void ai_wait(void)
 {
-	usleep(waittime * 1000);
+	g_usleep(waittime * 1000);
 }
 
 void ai_chat(const char *message)
