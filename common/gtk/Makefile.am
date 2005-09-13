@@ -45,6 +45,8 @@ libpioneers_gtk_a_SOURCES = \
 	config-gnome.h \
 	game-settings.c \
 	game-settings.h \
+	gtkbugs.c \
+	gtkbugs.h \
 	guimap.c \
 	guimap.h \
 	polygon.c \

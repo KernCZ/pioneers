@@ -23,6 +23,7 @@
 #include "config.h"
 #include "frontend.h"
 #include "resource-table.h"
+#include "gtkbugs.h"
 
 enum {
 	GOLD_COLUMN_PLAYER_ICON, /**< Player icon */
@@ -265,6 +266,7 @@ GtkWidget *gold_build_page()
 							  NULL);
 	gtk_tree_view_column_set_sizing(column,
 					GTK_TREE_VIEW_COLUMN_GROW_ONLY);
+	set_pixbuf_tree_view_column_autogrow(gold_widget, column);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(gold_widget), column);
 
 	column = gtk_tree_view_column_new_with_attributes("",

@@ -24,6 +24,7 @@
 #include "colors.h"
 #include "frontend.h"
 #include "log.h"
+#include "gtkbugs.h"
 
 static void player_show_connected_at_iter(gint player_num,
 					  gboolean connected,
@@ -499,29 +500,7 @@ GtkWidget *player_build_summary()
 							  NULL);
 	gtk_tree_view_column_set_sizing(column,
 					GTK_TREE_VIEW_COLUMN_GROW_ONLY);
-	/** @bug 2005-07-25 In Gtk+ 2.6 the pixbuf column is 
-	 *  one pixel too small, the focus_line_width is not used correctly.
-	 *  See also http://bugzilla.gnome.org/show_bug.cgi?id=147867
-	 */
-	if (gtk_major_version == 2
-	    && (gtk_minor_version >= 5 && gtk_minor_version <= 6)) {
-		gint horizontal_separator, focus_line_width, icon_width;
-
-		gtk_tree_view_column_set_sizing(column,
-						GTK_TREE_VIEW_COLUMN_FIXED);
-		gtk_widget_style_get(summary_widget,
-				     "horizontal_separator",
-				     &horizontal_separator,
-				     "focus-line-width", &focus_line_width,
-				     NULL);
-		gtk_icon_size_lookup(GTK_ICON_SIZE_MENU, &icon_width,
-				     NULL);
-		gtk_tree_view_column_set_fixed_width(column,
-						     icon_width +
-						     2 *
-						     horizontal_separator +
-						     focus_line_width);
-	}
+	set_pixbuf_tree_view_column_autogrow(summary_widget, column);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(summary_widget), column);
 
 	column = gtk_tree_view_column_new_with_attributes("",
