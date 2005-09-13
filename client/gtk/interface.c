@@ -463,7 +463,7 @@ static void frontend_state_plenty(GuiEvent event)
 	}
 }
 
-void frontend_plenty(gint * bank)
+void frontend_plenty(const gint * bank)
 {
 	plenty_create_dlg(bank);
 	set_gui_state(frontend_state_plenty);
@@ -555,7 +555,7 @@ void frontend_gold_add(gint player_num, gint gold_num)
 	frontend_gui_update();
 }
 
-void frontend_gold_choose(gint gold_num, gint * bank)
+void frontend_gold_choose(gint gold_num, const gint * bank)
 {
 	gold_choose_player_must(gold_num, bank);
 	frontend_gui_update();

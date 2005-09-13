@@ -290,7 +290,7 @@ void resource_table_set_total(ResourceTable * rt, const gchar * text,
 	resource_table_update(rt);
 }
 
-void resource_table_set_bank(ResourceTable * rt, gint * bank)
+void resource_table_set_bank(ResourceTable * rt, const gint * bank)
 {
 	gint i;
 

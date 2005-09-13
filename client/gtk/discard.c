@@ -69,6 +69,12 @@ static void amount_changed_cb(G_GNUC_UNUSED ResourceTable * rt,
 	frontend_gui_update();
 }
 
+static void button_destroyed(G_GNUC_UNUSED GtkWidget *w, gpointer num)
+{
+	if (callback_mode == MODE_DISCARD)
+		discard_create_dlg(GPOINTER_TO_INT(num));
+}
+
 static GtkWidget *discard_create_dlg(gint num)
 {
 	GtkWidget *dlg_vbox;
@@ -108,7 +114,14 @@ static GtkWidget *discard_create_dlg(gint num)
 	frontend_gui_register(gui_get_dialog_button
 			      (GTK_DIALOG(discard.dlg), 0), GUI_DISCARD,
 			      "clicked");
+	/* This _must_ be after frontend_gui_register, otherwise the
+	 * regeneration of the button happens before the destruction, which
+	 * results in an incorrectly sensitive OK button. */
+	g_signal_connect(gui_get_dialog_button(GTK_DIALOG(discard.dlg), 0),
+			 "destroy", G_CALLBACK(button_destroyed),
+			 GINT_TO_POINTER(num));
 	gtk_widget_show(discard.dlg);
+	frontend_gui_update();
 
 	return discard.dlg;
 }

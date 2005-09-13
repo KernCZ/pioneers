@@ -64,7 +64,13 @@ gint *choose_gold_get_list(gint * choice)
 	return choice;
 }
 
-void gold_choose_player_must(gint num, gint * bank)
+static void button_destroyed(G_GNUC_UNUSED GtkWidget *w, gpointer num)
+{
+	if (callback_mode == MODE_GOLD)
+		gold_choose_player_must(GPOINTER_TO_INT(num), get_bank());
+}
+
+void gold_choose_player_must(gint num, const gint * bank)
 {
 	GtkWidget *dlg_vbox;
 	GtkWidget *vbox;
@@ -111,6 +117,13 @@ void gold_choose_player_must(gint num, gint * bank)
 	frontend_gui_register(gui_get_dialog_button
 			      (GTK_DIALOG(gold.dlg), 0), GUI_CHOOSE_GOLD,
 			      "clicked");
+	/* This _must_ be after frontend_gui_register, otherwise the
+	 * regeneration of the button happens before the destruction, which
+	 * results in an incorrectly sensitive OK button. */
+	g_signal_connect(gui_get_dialog_button(GTK_DIALOG(gold.dlg), 0),
+			 "destroy", G_CALLBACK(button_destroyed),
+			 GINT_TO_POINTER(num));
+	frontend_gui_update();
 	gtk_widget_show(gold.dlg);
 }
 

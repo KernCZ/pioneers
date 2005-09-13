@@ -149,7 +149,7 @@ static void dummy_gold_remove(G_GNUC_UNUSED gint player_num,
 {;
 }
 static void dummy_gold_choose(G_GNUC_UNUSED gint gold_num,
-			      G_GNUC_UNUSED gint * bank)
+			      G_GNUC_UNUSED const gint * bank)
 {;
 }
 static void dummy_gold_done(void)
@@ -180,7 +180,7 @@ static void dummy_roadbuilding(G_GNUC_UNUSED gint num_roads)
 static void dummy_monopoly(void)
 {;
 }
-static void dummy_plenty(G_GNUC_UNUSED gint * bank)
+static void dummy_plenty(G_GNUC_UNUSED const gint * bank)
 {;
 }
 static void dummy_turn(void)

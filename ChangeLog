@@ -1,4 +1,4 @@
-2009-09-13  0.9.26  Roland Clobus <rclobus@bigfoot.com>, based on the patch by
+2005-09-13  0.9.26  Roland Clobus <rclobus@bigfoot.com>, based on the patch by
 	Ferenc Bánhidi <banhidi@inf.elte.hu>
 	* configure.ac, client/gtk/gui.c, editor/gtk/editor.c: Disable online
 	help if it cannot be built
@@ -8,6 +8,14 @@
 	meta-server/main.c (main), server/main.c (main) serverk/gtk/main.c
 	(main): Use new functions net_init and net_cleanup, as preparation for
 	the Windows native port
+
+2005-09-13  Bas Wijnen <shevek@fmf.rug.nl>
+	* client/callback.h, client/ai/greedy.c, client/common/client.c,
+	client/gtk/frontend.h, client/gtk/interface.c, client/gtk/plenty.c,
+	client/gtk/resource-table.c, client/gtk/resource-table.h: Made
+	function prototype with const bank
+	* client/gtk/discard.c, client/gtk/gold.c: If somehow the dialog was
+	closed, show it again
 
 2005-09-09  0.9.25  Ferenc Bánhidi <banhidi@inf.elte.hu>
 	* configure.ac, client/common/i18n.c, po/hu.po: Added Hungarian

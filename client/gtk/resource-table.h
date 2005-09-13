@@ -68,7 +68,7 @@ GtkWidget *resource_table_new(const gchar * title,
 void resource_table_limit_bank(ResourceTable * rt, gboolean limit);
 void resource_table_set_total(ResourceTable * rt, const gchar * text,
 			      gint total);
-void resource_table_set_bank(ResourceTable * rt, gint * bank);
+void resource_table_set_bank(ResourceTable * rt, const gint * bank);
 void resource_table_get_amount(ResourceTable * rt, gint * amount);
 gboolean resource_table_is_total_reached(ResourceTable * rt);
 

@@ -40,7 +40,7 @@ void plenty_resources(gint * resources)
 				  resources);
 }
 
-void plenty_create_dlg(gint * bank)
+void plenty_create_dlg(const gint * bank)
 {
 	GtkWidget *dlg_vbox;
 	GtkWidget *vbox;

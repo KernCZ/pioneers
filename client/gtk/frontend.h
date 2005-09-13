@@ -114,14 +114,14 @@ void frontend_discard_done(void);
 void frontend_gold(void);
 void frontend_gold_add(gint player_num, gint gold_num);
 void frontend_gold_remove(gint player_num, gint * resources);
-void frontend_gold_choose(gint gold_num, gint * bank);
+void frontend_gold_choose(gint gold_num, const gint * bank);
 void frontend_gold_done(void);
 void frontend_setup(unsigned num_settlements, unsigned num_roads);
 void frontend_quote(gint player_num, gint * they_supply,
 		    gint * they_receive);
 void frontend_roadbuilding(gint num_roads);
 void frontend_monopoly(void);
-void frontend_plenty(gint * bank);
+void frontend_plenty(const gint * bank);
 void frontend_turn(void);
 void frontend_trade_player_end(gint player_num);
 void frontend_trade_add_quote(gint player_num, gint quote_num,
@@ -218,7 +218,7 @@ gboolean can_choose_gold(void);
 gint *choose_gold_get_list(gint * choice);
 void gold_choose_begin(void);
 void gold_choose_player_prepare(gint player_num, gint gold_num);
-void gold_choose_player_must(gint gold_num, gint * bank);
+void gold_choose_player_must(gint gold_num, const gint * bank);
 void gold_choose_player_did(gint player_num, gint * resource_list);
 void gold_choose_end(void);
 
@@ -271,7 +271,7 @@ void monopoly_create_dlg(void);
 /* plenty.c */
 void plenty_resources(gint * plenty);
 void plenty_destroy_dlg(void);
-void plenty_create_dlg(gint * bank);
+void plenty_create_dlg(const gint * bank);
 
 /* gameover.c */
 GtkWidget *gameover_create_dlg(gint player_num, gint num_points);

@@ -120,7 +120,7 @@ struct callbacks {
 	/* someone chose gold resources */
 	void (*gold_remove) (gint player_num, gint * resources);
 	/* You must choose the resources for your gold. */
-	void (*gold_choose) (gint gold_num, gint * bank);
+	void (*gold_choose) (gint gold_num, const gint * bank);
 	/* all players chose their gold, the game continues. */
 	void (*gold_done) (void);
 	/* the game is over, someone won. */
@@ -140,7 +140,7 @@ struct callbacks {
 	/* choose your monopoly. */
 	void (*monopoly) (void);
 	/* choose the resources for your year of plenty. */
-	void (*plenty) (gint * bank);
+	void (*plenty) (const gint * bank);
 	/* it's your turn, do something */
 	void (*turn) (void);
 	/* it's someone else's turn */

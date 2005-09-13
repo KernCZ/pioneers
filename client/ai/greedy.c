@@ -1460,7 +1460,7 @@ static void greedy_free_road(void)
  * We played a year of plenty card. pick the two resources we most need
  */
 
-static void greedy_year_of_plenty(gint bank[NO_RESOURCE])
+static void greedy_year_of_plenty(const gint bank[NO_RESOURCE])
 {
 	gint want[NO_RESOURCE];
 	gint assets[NO_RESOURCE];
@@ -1835,7 +1835,7 @@ static void greedy_discard_add(gint player_num, gint discard_num)
 	}
 }
 
-static void greedy_gold_choose(gint gold_num, gint * bank)
+static void greedy_gold_choose(gint gold_num, const gint * bank)
 {
 	resource_values_t resval;
 	gint assets[NO_RESOURCE];
