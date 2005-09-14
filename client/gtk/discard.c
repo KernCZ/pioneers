@@ -70,7 +70,7 @@ static void amount_changed_cb(G_GNUC_UNUSED ResourceTable * rt,
 	frontend_gui_update();
 }
 
-static void button_destroyed(G_GNUC_UNUSED GtkWidget *w, gpointer num)
+static void button_destroyed(G_GNUC_UNUSED GtkWidget * w, gpointer num)
 {
 	if (callback_mode == MODE_DISCARD)
 		discard_create_dlg(GPOINTER_TO_INT(num));

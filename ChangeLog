@@ -1,3 +1,10 @@
+2005-09-14  0.9.27  Bas Wijnen <shevek@fmf.nl>
+
+	* editor/gtk/editor.c: Warn instead of crash when clearing nonexistant
+	hex.  Set minimum map size to 1, not 2.  Set sensitivity of correct
+	buttons when resize limits are hit.  Let ports disappear correctly.  
+	* client/gtk/gold.c, client/gtk/discard.c: Reindented.
+
 2005-09-13  0.9.26  Roland Clobus <rclobus@bigfoot.com>, based on the patch by
 	Ferenc Bánhidi <banhidi@inf.elte.hu>
 	* configure.ac, client/gtk/gui.c, editor/gtk/editor.c: Disable online

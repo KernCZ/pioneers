@@ -97,6 +97,7 @@ static void error_dialog(const char *fmt, ...)
 
 static void clear_hex(Hex * hex)
 {
+	g_return_if_fail(hex != NULL);
 	hex->terrain = LAST_TERRAIN;
 	hex->resource = NO_RESOURCE;
 	hex->chit_pos = -1;
@@ -336,7 +337,7 @@ static void post_change(gint * size, GtkWidget ** buttons, gint amt)
 {
 	*size += amt;
 	gtk_widget_set_sensitive(buttons[0], *size < MAP_SIZE);
-	gtk_widget_set_sensitive(buttons[1], *size > 2);
+	gtk_widget_set_sensitive(buttons[1], *size > 1);
 	fill_map(gmap->map);
 	scale_map(gmap);
 	guimap_display(gmap);
@@ -397,9 +398,9 @@ static GtkWidget *build_map(void)
 			 0);
 
 	build_map_resize(table, 0, 1, GTK_ORIENTATION_HORIZONTAL,
-			 hresize_buttons, G_CALLBACK(change_height));
+			 vresize_buttons, G_CALLBACK(change_height));
 	build_map_resize(table, 1, 0, GTK_ORIENTATION_VERTICAL,
-			 vresize_buttons, G_CALLBACK(change_width));
+			 hresize_buttons, G_CALLBACK(change_width));
 
 	return table;
 }
@@ -429,7 +430,7 @@ static gint select_terrain_cb(G_GNUC_UNUSED GtkWidget * menu,
 			    hex_in_direction(gmap->map, current_hex, i);
 			if (adjacent != NULL
 			    && adjacent->resource != NO_RESOURCE
-			    && adjacent->facing == 6 - i) {
+			    && adjacent->facing == (i + 3) % 6) {
 				adjacent->resource = NO_RESOURCE;
 				adjacent->facing = 0;
 				guimap_draw_hex(gmap, adjacent);

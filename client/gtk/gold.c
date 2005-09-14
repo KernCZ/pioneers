@@ -65,7 +65,7 @@ gint *choose_gold_get_list(gint * choice)
 	return choice;
 }
 
-static void button_destroyed(G_GNUC_UNUSED GtkWidget *w, gpointer num)
+static void button_destroyed(G_GNUC_UNUSED GtkWidget * w, gpointer num)
 {
 	if (callback_mode == MODE_GOLD)
 		gold_choose_player_must(GPOINTER_TO_INT(num), get_bank());
