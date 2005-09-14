@@ -43,8 +43,31 @@ static void set_sensitive(G_GNUC_UNUSED void *key, GuiWidgetState * gui,
 		GSList *widgets;
 		widgets = gtk_action_get_proxies(GTK_ACTION(gui->widget));
 		while (widgets) {
+			GtkWidget *button;
 			gtk_widget_set_sensitive(GTK_WIDGET(widgets->data),
 						 gui->next);
+			/* HACK Workaround for Gtk bug 56070.  If mouse is
+			 * over a toolbar button that becomes sensitive, one
+			 * can't click it without moving the mouse out and in
+			 * again.  This bug is registered in Bugzilla as a Gtk
+			 * bug.  The workaround tests if the mouse is inside
+			 * the currently sensitivized button, and if yes calls
+			 * button_enter().  See also below.  */
+			button = gtk_bin_get_child(GTK_BIN(widgets->data));
+			if (gui->next && GTK_IS_BUTTON(button)) {
+				gint x, y, state;
+				gtk_widget_get_pointer(button, &x, &y);
+				state = GTK_WIDGET_STATE(button);
+				if (state == GTK_STATE_NORMAL &&
+				    x >= 0 && y >= 0 &&
+				    x < button->allocation.width &&
+				    y < button->allocation.height) {
+					gtk_button_enter(GTK_BUTTON
+							 (button));
+					GTK_BUTTON(button)->in_button =
+					    TRUE;
+				}
+			}
 			widgets = g_slist_next(widgets);
 		};
 /** @todo RC 2005-07-12 Instead of the GSList, use gtk_action_set_sensitive */
@@ -63,13 +86,7 @@ static void set_sensitive(G_GNUC_UNUSED void *key, GuiWidgetState * gui,
 	}
 	if (gui->widget != NULL && gui->next != gui->current) {
 		gtk_widget_set_sensitive(gui->widget, gui->next);
-		/* HACK Workaround for Gtk bug 157932, fixed in Gtk+-2.5.4
-		 * If mouse is over a toolbar button that becomes sensitive,
-		 * one can't click it without moving the mouse out and in
-		 * again. This bug is registered in Bugzilla as a Gtk bug.
-		 * The workaround tests if the
-		 * mouse is inside the currently sensitivized button, and if
-		 * yes calls button_enter(). */
+		/* HACK Workaround for Gtk bug 56070, like above.  */
 		if (gui->next && GTK_IS_BUTTON(gui->widget)) {
 			gint x, y, state;
 			gtk_widget_get_pointer(gui->widget, &x, &y);
