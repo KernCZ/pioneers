@@ -35,6 +35,7 @@ AM_CPPFLAGS = \
 	-I$(srcdir)/../common -I. \
 	-DDATADIR=\"$(datadir)\" \
 	-I$(includedir) \
+	$(GLIB2_CFLAGS) \
 	$(debug_includes) \
 	$(extra_includes)
 
@@ -65,7 +66,8 @@ pioneers_server_console_SOURCES = \
 
 pioneers_server_console_LDADD = \
 	libpioneers_server.a \
-	../common/libpioneers.a 
+	../common/libpioneers.a \
+	$(GLIB2_LIBS)
 
 config_DATA = \
 	default.game \

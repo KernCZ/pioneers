@@ -83,8 +83,6 @@ AM_CONDITIONAL(HAVE_GNOME, [test "$have_gnome" = "yes"])
 
 # glib is always needed
 PKG_CHECK_MODULES(GLIB2, glib-2.0 >= $GLIB_REQUIRED_VERSION)
-AC_SUBST(CFLAGS, "$CFLAGS $GLIB2_CFLAGS")
-AC_SUBST(LIBS, "$LIBS $GLIB2_LIBS")
 
 AC_ARG_ENABLE([admin-gtk],
 [  --enable-admin-gtk      Turn on (unstable) network administration support.],

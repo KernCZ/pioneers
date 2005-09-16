@@ -33,6 +33,7 @@ AM_CPPFLAGS = \
 	-I$(srcdir)/../.. \
 	-I$(srcdir)/../../common \
         -I$(includedir) \
+	$(GLIB2_CFLAGS) \
 	$(debug_includes) \
 	$(extra_includes)
 
@@ -43,7 +44,8 @@ pioneersai_SOURCES = \
 
 pioneersai_LDADD = \
 	../common/libpioneersclient.a \
-	../../common/libpioneers.a 
+	../../common/libpioneers.a \
+	$(GLIB2_LIBS)
 
 config_DATA = \
 	computer_names

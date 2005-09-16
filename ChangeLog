@@ -1,5 +1,8 @@
 2005-09-16  0.9.29  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/gui.c: Add #ifdef HAVE_HELP around static declaration
+	* configure.ac, client/ai/Makefile.am, client/common/Makefile.am,
+	common/Makefile.am, meta-server/Makefile.am, server/Makefile.am: Use
+	GLib includes in Makefile.am where needed
 	
 2005-09-14  0.9.28  Bas Wijnen <shevek@fmf.nl>
 
