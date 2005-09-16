@@ -187,7 +187,9 @@ static void help_about_cb(void);
 static void help_legend_cb(void);
 static void help_histogram_cb(void);
 static void help_settings_cb(void);
+#ifdef HAVE_HELP
 static void help_manual_cb(void);
+#endif
 
 /* Normal items */
 static GtkActionEntry entries[] = {

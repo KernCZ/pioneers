@@ -1,3 +1,6 @@
+2005-09-16  0.9.29  Roland Clobus <rclobus@bigfoot.com>
+	* client/gtk/gui.c: Add #ifdef HAVE_HELP around static declaration
+	
 2005-09-14  0.9.28  Bas Wijnen <shevek@fmf.nl>
 
 	* client/gtk/frontend.c: Apply workaround for Gtk bug to action
