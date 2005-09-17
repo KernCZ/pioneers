@@ -4,12 +4,23 @@
 # Uncomment this to turn on verbose mode. 
 #export DH_VERBOSE=1
 
+ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
+	CFLAGS += -O0
+else
+	CFLAGS += -O2
+endif
+
+ifneq (,$(findstring debug,$(DEB_BUILD_OPTIONS)))
+	CONFIGUREFLAGS += --enable-debug
+endif
+
 build: build-stamp
 build-stamp:
 	dh_testdir
 	# Commands to compile the package.
 	./autogen.sh --prefix=/usr --bindir=/usr/games \
-		--mandir=/usr/share/man --datadir=/usr/share
+		--mandir=/usr/share/man --datadir=/usr/share \
+		$(CONFIGUREFLAGS)
 	$(MAKE)
 	convert -resize 32x32 client/gtk/data/gnome-pioneers.png pioneers.xpm
 	touch build-stamp
