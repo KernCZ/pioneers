@@ -1,3 +1,6 @@
+2005-09-17  Roland Clobus <rclobus@bigfoot.com>
+	* README.Cygwin: Added gettext-devel as required package
+
 2005-09-16  0.9.29  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/gui.c: Add #ifdef HAVE_HELP around static declaration
 	* configure.ac, client/ai/Makefile.am, client/common/Makefile.am,
