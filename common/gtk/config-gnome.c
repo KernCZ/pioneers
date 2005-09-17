@@ -65,6 +65,10 @@ on the surface.
 	void config_set_int( string relative_path, int value )
 */
 
+#ifdef GNOME_DISABLE_DEPRECATED
+#undef GNOME_DISABLE_DEPRECATED
+#endif
+
 #include "config.h"
 #include <glib.h>
 #include <libgnome/gnome-config.h>

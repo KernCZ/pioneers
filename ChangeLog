@@ -1,3 +1,7 @@
+2005-09-17  0.9.30  Roland Clobus <rclobus@bigfoot.com>
+	* client/gtk/quote.c, common/gtk/config-gnome.c: Removed the
+	definition of *_DISABLED_DEPRECATED to make the source build again
+
 2005-09-17  Roland Clobus <rclobus@bigfoot.com>
 	* README.Cygwin: Added gettext-devel as required package
 

@@ -19,7 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifdef DEBUG
+#ifdef GTK_DISABLE_DEPRECATED
 /** @todo 2005-04-05 Replace Gtk deprecated calls
  */
 #undef GTK_DISABLE_DEPRECATED
