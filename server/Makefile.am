@@ -36,7 +36,6 @@ AM_CPPFLAGS = \
 	-DDATADIR=\"$(datadir)\" \
 	-I$(includedir) \
 	$(GLIB2_CFLAGS) \
-	$(debug_includes) \
 	$(extra_includes)
 
 pioneers_server_console_DEPENDENCIES = libpioneers_server.a \

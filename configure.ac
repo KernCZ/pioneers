@@ -20,7 +20,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 AC_PREREQ(2.53)
-AC_INIT([pioneers],[0.9.30])
+AC_INIT([pioneers],[0.9.31])
 AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
 AC_CONFIG_SRCDIR([client])
 AM_CONFIG_HEADER(config.h)
@@ -43,6 +43,118 @@ AC_PROG_LIBTOOL
 AC_PROG_CC
 AC_HEADER_STDC
 
+if test $USE_MAINTAINER_MODE = yes; then
+	warnings=yes;
+	debug=yes;
+	logging=yes;
+	deprecationChecks=yes;
+else
+	warnings=no;
+	debug=no;
+	logging=no;
+	deprecationChecks=no;
+fi
+
+AC_ARG_ENABLE([warnings],
+[  --enable-warnings       Compile with check for compiler warnings (gcc-only).],
+[case "${enableval}" in
+  full) warnings=full;;
+  yes)  warnings=yes ;;
+  "")   warnings=yes ;;
+  *)    warnings=no  ;;
+esac])
+
+AC_ARG_ENABLE([debug],
+[  --enable-debug          Enable debug information.],
+[case "${enableval}" in
+  yes)  debug=yes ;;
+  "")   debug=yes ;;
+  *)    debug=no  ;;
+esac])
+
+AC_ARG_ENABLE([logging],
+[  --enable-logging        Enable network logging.],
+[case "${enableval}" in
+  yes)  logging=yes ;;
+  "")   logging=yes ;;
+  *)    logging=no  ;;
+esac])
+
+AC_ARG_ENABLE([deprecation-checks],
+[  --enable-deprecation-checks
+                          Enable strict deprecation checks.],
+[case "${enableval}" in
+  yes)  deprecationChecks=yes ;;
+  "")   deprecationChecks=yes ;;
+  *)    deprecationChecks=no  ;;
+esac])
+
+## The warnings are in the same order as in 'man gcc'
+if test "x$GCC" = xyes; then
+	if test $warnings = yes -o $warnings = full; then
+		AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -Wall")
+		AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -W")
+		AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -Wpointer-arith")
+		AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -Wcast-qual")
+		AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -Wwrite-strings")
+		AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -Wno-sign-compare") # Turn off
+		AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -Waggregate-return")
+		AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -Wstrict-prototypes")
+		AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -Wmissing-prototypes")
+		AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -Wmissing-declarations")
+		AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -Wredundant-decls")
+		AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -Wnested-externs")
+		AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -O")
+	fi
+	if test $warnings = full; then
+		flags="-Wfloat-equal";
+		flags="$flags -Wdeclaration-after-statement";
+		flags="$flags -Wundef";
+		flags="$flags -Wendif-labels";
+		flags="$flags -Wshadow";
+		flags="$flags -Wbad-function-cast";
+		flags="$flags -Wconversion";
+		flags="$flags -Wold-style-definition";
+		flags="$flags -Wunreachable-code";
+		flags="$flags -pedantic";
+
+		# This for loop comes from gnome-compiler-flags.m4
+		for option in $flags; do
+			SAVE_CFLAGS="$CFLAGS"
+			CFLAGS="$CFLAGS $option"
+			AC_MSG_CHECKING([whether gcc understands $option])
+			AC_TRY_COMPILE([], [],
+				has_option=yes,
+				has_option=no,)
+			CFLAGS="$SAVE_CFLAGS"
+			AC_MSG_RESULT($has_option)
+			if test $has_option = yes; then
+				AC_SUBST(AM_CFLAGS, "$AM_CFLAGS $option")
+			fi
+			unset has_option
+			unset SAVE_CFLAGS
+		done
+		unset option
+		unset flags
+	fi
+fi
+
+if test $debug=yes; then
+	AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -ggdb3")
+fi
+
+if test $logging=yes; then
+	AC_DEFINE_UNQUOTED(DEBUG, [1], [Defined when logging is enabled])
+fi
+
+if test $deprecationChecks=yes; then
+	## TODO: These defines should be in AM_CPPFLAGS instead of AM_CFLAGS
+	AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -DG_DISABLE_DEPRECATED")
+	AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -DGDK_DISABLE_DEPRECATED")
+	AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -DGTK_DISABLE_DEPRECATED")
+	AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -DGNOME_DISABLE_DEPRECATED")
+fi
+	
 ## Scrollkeeper dependency test taken from gnome-games 2.6.2
 ## Begin tests for scrollkeeper
 # SCROLLKEEPER_REQUIRED is never used?
@@ -92,15 +204,6 @@ AC_ARG_ENABLE([admin-gtk],
   *)   admin_gtk_support=no ;;
 esac], [admin_gtk_support=no])
 AM_CONDITIONAL(ADMIN_GTK_SUPPORT, [test x$admin_gtk_support = xyes])
-
-AC_ARG_ENABLE([debug],
-[  --enable-debug          Compile with lots of warnings and have verbose logging.],
-[case "${enableval}" in
-  yes) debug_support=yes ;;
-  "")  debug_support=yes ;;
-  *)   debug_support=no  ;;
-esac], [debug_support=no])
-AM_CONDITIONAL(DEBUG, [test x$debug_support = xyes])
 
 AC_CHECK_HEADERS([getopt.h])
 AC_CHECK_HEADERS([netdb.h fcntl.h netinet/in.h sys/socket.h])
@@ -167,14 +270,6 @@ GETTEXT_PACKAGE=pioneers
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE", [The gettext package name])
 AM_GLIB_GNU_GETTEXT
-ac_sources="$nls_cv_header_libgt"
-ac_dests="$nls_cv_header_intl"
-while test -n "$ac_sources"; do
-  set $ac_dests; ac_dest=$1; shift; ac_dests=$*
-  set $ac_sources; ac_source=$1; shift; ac_sources=$*
-  ac_config_links_1="$ac_config_links_1 $ac_dest:$ac_source"
-done
-AC_CONFIG_LINKS([$ac_config_links_1])
 AC_DEFINE_UNQUOTED(ALL_LINGUAS, "$ALL_LINGUAS", [Available languages])
 
 AC_CONFIG_FILES([ \
@@ -217,5 +312,8 @@ $PACKAGE v$VERSION configuration:
         Build graphical applications       $have_gnome
         Build help                         $have_scrollkeeper
     Developers only:
-        Use verbose DEBUG logging          $debug_support
+        Use compiler warnings              $warnings
+        Add debug information              $debug
+        Enable network logging             $logging
+        Enable deprecation checks          $deprecationChecks
 ])

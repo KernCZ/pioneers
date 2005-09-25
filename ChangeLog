@@ -1,3 +1,15 @@
+2005-09-25  0.9.31  Roland Clobus <rclobus@bigfoot.com>
+	* configure.ac, rules.make, client/ai/Makefile.am,
+	client/common/Makefile.am, client/gtk/Makefile.am, common/Makefile.am,
+	common/gtk/Makefile.am, editor/gtk/Makefile.am,
+	meta-server/Makefile.am, server/Makefile.am, server/gtk/Makefile.am:
+	Moved $(debug_includes) from rules.make to configure.ac. There are now
+	four new commandline options to ./configure. All four are per default
+	enabled when --enable-maintainer-mode is given. The four are:
+	--enable-warnings, --enable-debug, --enable-logging,
+	--enable-deprecation-checks. This patch is based on a patch by Bas
+	Wijnen.
+
 2005-09-17  0.9.30  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/quote.c, common/gtk/config-gnome.c: Removed the
 	definition of *_DISABLED_DEPRECATED to make the source build again

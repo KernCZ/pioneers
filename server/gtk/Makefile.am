@@ -32,7 +32,6 @@ AM_CPPFLAGS = \
 	-I$(includedir) \
 	$(GNOME2_CFLAGS) \
 	$(GTK2_CFLAGS) \
-	$(debug_includes) \
 	$(extra_includes)
 
 pioneers_server_gtk_DEPENDENCIES = \

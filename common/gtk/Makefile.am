@@ -31,7 +31,6 @@ AM_CPPFLAGS = \
 	-DTHEMEDIR=\"$(themedir)\" \
 	$(GNOME2_CFLAGS) \
 	$(GTK2_CFLAGS) \
-	$(debug_includes) \
 	$(extra_includes)
 
 libpioneers_gtk_a_SOURCES = \

@@ -7,7 +7,6 @@ AM_CPPFLAGS = \
 	-I$(srcdir)/../common -I. \
 	-I$(includedir) \
 	$(GLIB2_CFLAGS) \
-	$(debug_includes) \
 	$(extra_includes)
 
 pioneers_meta_server_SOURCES = \

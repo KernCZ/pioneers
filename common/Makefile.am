@@ -34,7 +34,6 @@ noinst_HEADERS = authors.h
 AM_CPPFLAGS = \
 	-I$(includedir) \
 	$(GLIB2_CFLAGS) \
-	$(debug_includes) \
 	$(extra_includes)
 
 libpioneers_a_SOURCES = \
