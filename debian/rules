@@ -11,16 +11,18 @@ else
 endif
 
 ifneq (,$(findstring debug,$(DEB_BUILD_OPTIONS)))
-	CONFIGUREFLAGS += --enable-debug
+	CONFIGUREFLAGS += --enable-maintainer-mode
 endif
 
 build: build-stamp
 build-stamp:
 	dh_testdir
 	# Commands to compile the package.
-	./autogen.sh --prefix=/usr --bindir=/usr/games \
-		--mandir=/usr/share/man --datadir=/usr/share \
-		$(CONFIGUREFLAGS)
+	# --enable-maintainer-mode is implicit for autogen.sh
+	# So don't run configure from it.
+	NOCONFIGURE=true ./autogen.sh
+	./configure --prefix=/usr --bindir=/usr/games --mandir=/usr/share/man \
+		--datadir=/usr/share $(CONFIGUREFLAGS) --enable-warnings
 	$(MAKE)
 	convert -resize 32x32 client/gtk/data/gnome-pioneers.png pioneers.xpm
 	touch build-stamp
@@ -32,7 +34,7 @@ clean:
 	# Commands to clean up after the build process.
 	-$(MAKE) maintainer-clean
 	-find . -name Makefile.in | xargs rm
-	-rm configure INSTALL missing aclocal.m4 depcomp install-sh mkinstalldirs
+	-rm configure INSTALL missing aclocal.m4 depcomp install-sh mkinstalldirs ltmain.sh
 	dh_clean
 
 install: install-stamp
