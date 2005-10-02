@@ -253,7 +253,7 @@ AC_CHECK_FUNCS([rint sqrt])
 AC_CHECK_FUNCS([strrchr strspn strstr strcspn])
 AC_CHECK_FUNCS([memmove memset])
 # Network and I/O functions
-AC_CHECK_FUNCS([gethostbyname gethostname select socket strerror])
+AC_CHECK_FUNCS([gethostbyname gethostname select socket])
 # getaddrinfo and friends
 AC_CHECK_FUNCS([getaddrinfo gai_strerror freeaddrinfo], 
 	AC_DEFINE_UNQUOTED(HAVE_GETADDRINFO_ET_AL, [1],

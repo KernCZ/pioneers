@@ -251,7 +251,7 @@ static void client_do_write(Client * client)
 			if (errno == EAGAIN)
 				break;
 			syslog(LOG_ERR, "writing socket: %s",
-			       strerror(errno));
+			       g_strerror(errno));
 			client_close(client);
 			return;
 		} else if (num == len) {
@@ -476,13 +476,13 @@ static void client_create_new_server(Client * client, gchar * line)
 	fd = socket(AF_INET, SOCK_STREAM, 0);
 	if (fd < 0) {
 		client_printf(client, "Creating socket failed: %s\n",
-			      strerror(errno));
+			      g_strerror(errno));
 		return;
 	}
 	if (setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes)) <
 	    0) {
 		client_printf(client, "Setting socket reuse failed: %s\n",
-			      strerror(errno));
+			      g_strerror(errno));
 		return;
 	}
 	sa.sin_family = AF_INET;
@@ -514,14 +514,14 @@ static void client_create_new_server(Client * client, gchar * line)
 	sa.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
 	if (bind(fd, (struct sockaddr *) &sa, sizeof(sa)) < 0) {
 		client_printf(client, "Binding socket failed: %s\n",
-			      strerror(errno));
+			      g_strerror(errno));
 		return;
 	}
 	yes = sizeof(sa);
 	if (getsockname(fd, (struct sockaddr *) &sa, &yes) < 0) {
 		client_printf(client,
 			      "Getting socket address failed: %s\n",
-			      strerror(errno));
+			      g_strerror(errno));
 		return;
 	}
 	sprintf(port, "%d", sa.sin_port);
@@ -750,7 +750,7 @@ static void client_do_read(Client * client)
 	if (num < 0) {
 		if (errno == EAGAIN)
 			return;
-		syslog(LOG_ERR, "reading socket: %s", strerror(errno));
+		syslog(LOG_ERR, "reading socket: %s", g_strerror(errno));
 		client_close(client);
 		return;
 	}
@@ -900,7 +900,7 @@ static void select_loop(void)
 				continue;
 			else {
 				syslog(LOG_ALERT, "could not select: %s",
-				       strerror(errno));
+				       g_strerror(errno));
 				exit(1);
 			}
 		}
@@ -958,7 +958,7 @@ static void convert_to_daemon(void)
 
 	pid = fork();
 	if (pid < 0) {
-		syslog(LOG_ALERT, "could not fork: %s", strerror(errno));
+		syslog(LOG_ALERT, "could not fork: %s", g_strerror(errno));
 		exit(1);
 	}
 	if (pid != 0)
@@ -970,12 +970,13 @@ static void convert_to_daemon(void)
 	/* Create a new session to become a process group leader
 	 */
 	if (setsid() < 0) {
-		syslog(LOG_ALERT, "could not setsid: %s", strerror(errno));
+		syslog(LOG_ALERT, "could not setsid: %s",
+		       g_strerror(errno));
 		exit(1);
 	}
 	if (chdir("/") < 0) {
 		syslog(LOG_ALERT, "could not chdir to /: %s",
-		       strerror(errno));
+		       g_strerror(errno));
 		exit(1);
 	}
 	umask(0);

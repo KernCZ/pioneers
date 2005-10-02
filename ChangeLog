@@ -9,6 +9,8 @@
 	CheckFunc by functions with the correct prototype. This allows player
 	of the PPC to play Pioneers again. Cleanup of unused arguments in the
 	used functions.
+	* configure.ac, common/network.c, meta-server/main.c: Replace the last
+	uses of strerror by g_strerror.
 
 2005-09-25  0.9.31  Roland Clobus <rclobus@bigfoot.com>
 	* configure.ac, rules.make, client/ai/Makefile.am,

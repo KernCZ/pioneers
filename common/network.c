@@ -657,7 +657,7 @@ gboolean net_get_peer_name(gint fd, gchar ** hostname, gchar ** servname,
 	if (getpeername(fd, &peer.sa, &peer_len) < 0) {
 		*error_message =
 		    g_strdup_printf(_("Error getting peer name: %s"),
-				    strerror(errno));
+				    g_strerror(errno));
 		return FALSE;
 	} else {
 		int err;
