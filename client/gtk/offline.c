@@ -22,7 +22,9 @@
 
 #include "config.h"
 #include "frontend.h"
+#ifdef HAVE_LIBGNOME
 #include <libgnome/libgnome.h>
+#endif
 #include "common_gtk.h"
 #include "config-gnome.h"
 #include "theme.h"
@@ -38,6 +40,7 @@ static gboolean quit_when_offline = FALSE;
 static const gchar *override_language = NULL;
 #endif
 
+#ifdef HAVE_LIBGNOME
 const struct poptOption options[] = {
 	/* Commandline option of client: hostname of the server */
 	{"server", 's', POPT_ARG_STRING, &server, 0, N_("Server Host"),
@@ -54,6 +57,7 @@ const struct poptOption options[] = {
 #endif
 	{NULL, '\0', 0, 0, 0, NULL, NULL}
 };
+#endif
 
 static void frontend_offline_start_connect_cb(void)
 {
@@ -137,13 +141,15 @@ void frontend_init(int argc, char **argv)
 
 	set_ui_driver(&GTK_Driver);
 
-	config_init("/pioneers/");
+	config_init("pioneers");
 
+#ifdef HAVE_LIBGNOME
 	gnome_program_init(PACKAGE, VERSION,
 			   LIBGNOME_MODULE,
 			   argc, argv,
 			   GNOME_PARAM_POPT_TABLE, options,
 			   GNOME_PARAM_APP_DATADIR, DATADIR, NULL);
+#endif
 
 	/* Initialize the widget set */
 	gtk_init(&argc, &argv);

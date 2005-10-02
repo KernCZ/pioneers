@@ -20,7 +20,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 AC_PREREQ(2.53)
-AC_INIT([pioneers],[0.9.31])
+AC_INIT([pioneers],[0.9.32])
 AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
 AC_CONFIG_SRCDIR([client])
 AM_CONFIG_HEADER(config.h)
@@ -33,6 +33,8 @@ PIONEERS_DEFAULT_ADMIN_PORT=5555
 PIONEERS_DEFAULT_META_PORT=5557
 PIONEERS_DEFAULT_META_SERVER=pioneers.debian.net
 
+## If GLIB_REQUIRED_VERSION is set to 2.6,
+## check the code for HAVE_GLIB_2_6
 GLIB_REQUIRED_VERSION=2.4
 GTK_REQUIRED_VERSION=2.4
  
@@ -167,34 +169,60 @@ if test x$SCROLLKEEPER_CONFIG = xno; then
 else
 	have_scrollkeeper=yes;
 fi
+
 AM_CONDITIONAL(HAVE_SCROLLKEEPER, [test x$have_scrollkeeper = xyes])
 if test $have_scrollkeeper = yes; then
 	AC_DEFINE(HAVE_HELP, 1,
 		[Defined when online help is present])
 fi
 
+# glib is always needed
+PKG_CHECK_MODULES(GLIB2, glib-2.0 >= $GLIB_REQUIRED_VERSION)
+
+PKG_CHECK_MODULES(GLIB2_6, glib-2.0 >= 2.6, 
+	have_glib_2_6=yes, have_glib_2_6=no)
+if test x$have_glib_2_6 = xyes; then
+	AC_DEFINE(HAVE_GLIB_2_6, [1], [Defined if GLib 2.6 or newer exists])
+fi
+
 # Gtk+ support
 PKG_CHECK_MODULES(GTK2, gtk+-2.0 >= $GTK_REQUIRED_VERSION, have_gtk2=yes, 
-	[PKG_CHECK_MODULES(GTK2OLD, gtk+-2.0,
+	[PKG_CHECK_MODULES(OLD_GTK2, gtk+-2.0,
 		[have_gtk2="no, Gtk+ version too old"],
 		[have_gtk2="no, Gtk+ not installed"])
 	])
 AM_CONDITIONAL(HAVE_GTK2, [test "$have_gtk2" = "yes"])
 
+# libgnome is only needed for help and old settingsfile
 if test "$have_gtk2" = "yes"; then
+	if test "$have_scrollkeeper" = "yes"; then
+		need_libgnome=yes;
+	else
+		if test "$have_glib_2_6" = "yes"; then
+			need_libgnome=no;
+		else
+			need_libgnome=yes;
+		fi
+	fi
+else
+	need_libgnome=no;
+fi
+
+if test "$need_libgnome" = "yes"; then
 	# libgnome-2.0 support
 	PKG_CHECK_MODULES(GNOME2, libgnome-2.0, 
 		[have_gnome="yes"], 
 		[have_gnome="no, libgnome-2.0 not installed"])
-	AC_SUBST(GNOME2_CFLAGS)
-	AC_SUBST(GNOME2_LIBS)
+	if test $have_gnome = yes; then
+		AC_DEFINE(HAVE_LIBGNOME, 1, 
+			[Defined is libgnome is present and needed])
+	fi
 else
 	have_gnome=$have_gtk2;
+	AC_SUBST(GNOME2_CFLAGS)
+	AC_SUBST(GNOME2_LIBS)
 fi
 AM_CONDITIONAL(HAVE_GNOME, [test "$have_gnome" = "yes"])
-
-# glib is always needed
-PKG_CHECK_MODULES(GLIB2, glib-2.0 >= $GLIB_REQUIRED_VERSION)
 
 AC_ARG_ENABLE([admin-gtk],
 [  --enable-admin-gtk      Turn on (unstable) network administration support.],

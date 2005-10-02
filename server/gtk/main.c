@@ -21,7 +21,9 @@
  */
 
 #include "config.h"
+#ifdef HAVE_LIBGNOME
 #include <libgnome/libgnome.h>
+#endif
 #include <ctype.h>
 #include <gtk/gtk.h>
 #include <string.h>
@@ -54,6 +56,7 @@ static GtkWidget *start_btn;	/* start/stop the server */
 static GtkTooltips *tooltips;	/* tooltips */
 
 static GtkListStore *store;	/* shows player connection status */
+
 
 static gboolean ui_enabled;	/* is the ui accessible? */
 static gchar *hostname;		/* reported hostname */
@@ -768,6 +771,7 @@ int main(int argc, char *argv[])
 	/* Initialize frontend inspecific things */
 	server_init();
 
+#ifdef HAVE_LIBGNOME
 	/* @todo RC 2005-04-10 If the client does not need libgnomeui
 	 * anymore, perhaps the gnome_program_init call could be moved
 	 * to config-gnome.c, which would allow a GNOME-free application,
@@ -776,6 +780,7 @@ int main(int argc, char *argv[])
 	gnome_program_init("pioneers-server", VERSION,
 			   LIBGNOME_MODULE,
 			   argc, argv, GNOME_PARAM_POPT_TABLE, NULL, NULL);
+#endif
 
 	/* Initialize the widget set */
 	gtk_init(&argc, &argv);
@@ -813,7 +818,7 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	config_init("/pioneers-server/");
+	config_init("pioneers-server");
 
 	icon_file =
 	    g_build_filename(DATADIR, "pixmaps", PIONEERS_ICON_FILE, NULL);
@@ -840,6 +845,7 @@ int main(int argc, char *argv[])
 
 	gtk_main();
 
+	config_finish();
 	net_finish();
 	return 0;
 }

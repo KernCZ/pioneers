@@ -2,7 +2,9 @@
 
 #include <string.h>
 
+#ifdef HAVE_LIBGNOME
 #include <libgnome/libgnome.h>
+#endif
 
 #include "aboutbox.h"
 #include "config-gnome.h"
@@ -777,7 +779,7 @@ static void load_game(const gchar * file)
 	}
 
 	if (file == NULL) {
-		free(new_params->title);
+		g_free(new_params->title);
 		new_params->title = g_strdup("Untitled");
 		map_free(new_params->map);
 		new_params->map = map_new();
@@ -1023,8 +1025,10 @@ int main(int argc, char *argv[])
 	default_game = g_build_filename(get_pioneers_dir(), "default.game",
 					NULL);
 
+#ifdef HAVE_LIBGNOME
 	gnome_program_init("pioneers-editor", VERSION, LIBGNOME_MODULE,
 			   argc, argv, GNOME_PARAM_POPT_TABLE, NULL, NULL);
+#endif
 
 	gtk_init(&argc, &argv);
 
@@ -1056,7 +1060,7 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	config_init("/pioneers-editor/");
+	config_init("pioneers-editor");
 
 	themes_init();
 	colors_init();
@@ -1089,5 +1093,6 @@ int main(int argc, char *argv[])
 
 	gtk_main();
 
+	config_finish();
 	return 0;
 }

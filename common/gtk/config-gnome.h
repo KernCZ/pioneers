@@ -65,6 +65,9 @@ on the surface.
  */
 void config_init(const gchar * path_prefix);
 
+/** Free resources */
+void config_finish(void);
+
 /**** get configuration settings ****/
 
 /* get a string.  If a default is sent as part of the path, and the default
