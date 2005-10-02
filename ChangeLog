@@ -1,3 +1,7 @@
+2005-10-02  0.9.33  Roland Clobus <rclobus@bigfoot.com>
+	* configure.ac: Enable debug, enable deprecation-check and enable
+	logging were always active.
+
 2005-10-02  0.9.32  Roland Clobus <rclobus@bigfoot.com>
 	* configure.ac, client/gtk/offline.c, common/gtk/config-gnome.c,
 	common/gtk/config-gnome.h, editor/gtk/editor.c, server/gtk/main.c:

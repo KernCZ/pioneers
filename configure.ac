@@ -20,7 +20,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 AC_PREREQ(2.53)
-AC_INIT([pioneers],[0.9.32])
+AC_INIT([pioneers],[0.9.33])
 AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
 AC_CONFIG_SRCDIR([client])
 AM_CONFIG_HEADER(config.h)
@@ -46,54 +46,54 @@ AC_PROG_CC
 AC_HEADER_STDC
 
 if test $USE_MAINTAINER_MODE = yes; then
-	warnings=yes;
-	debug=yes;
-	logging=yes;
-	deprecationChecks=yes;
+	pioneers_warnings=yes;
+	pioneers_debug=yes;
+	pioneers_logging=yes;
+	pioneers_deprecationChecks=yes;
 else
-	warnings=no;
-	debug=no;
-	logging=no;
-	deprecationChecks=no;
+	pioneers_warnings=no;
+	pioneers_debug=no;
+	pioneers_logging=no;
+	pioneers_deprecationChecks=no;
 fi
 
 AC_ARG_ENABLE([warnings],
 [  --enable-warnings       Compile with check for compiler warnings (gcc-only).],
 [case "${enableval}" in
-  full) warnings=full;;
-  yes)  warnings=yes ;;
-  "")   warnings=yes ;;
-  *)    warnings=no  ;;
+  full) pioneers_warnings=full;;
+  yes)  pioneers_warnings=yes ;;
+  "")   pioneers_warnings=yes ;;
+  *)    pioneers_warnings=no  ;;
 esac])
 
 AC_ARG_ENABLE([debug],
 [  --enable-debug          Enable debug information.],
 [case "${enableval}" in
-  yes)  debug=yes ;;
-  "")   debug=yes ;;
-  *)    debug=no  ;;
+  yes)  pioneers_debug=yes ;;
+  "")   pioneers_debug=yes ;;
+  *)    pioneers_debug=no  ;;
 esac])
 
 AC_ARG_ENABLE([logging],
 [  --enable-logging        Enable network logging.],
 [case "${enableval}" in
-  yes)  logging=yes ;;
-  "")   logging=yes ;;
-  *)    logging=no  ;;
+  yes)  pioneers_logging=yes ;;
+  "")   pioneers_logging=yes ;;
+  *)    pioneers_logging=no  ;;
 esac])
 
 AC_ARG_ENABLE([deprecation-checks],
 [  --enable-deprecation-checks
                           Enable strict deprecation checks.],
 [case "${enableval}" in
-  yes)  deprecationChecks=yes ;;
-  "")   deprecationChecks=yes ;;
-  *)    deprecationChecks=no  ;;
+  yes)  pioneers_deprecationChecks=yes ;;
+  "")   pioneers_deprecationChecks=yes ;;
+  *)    pioneers_deprecationChecks=no  ;;
 esac])
 
 ## The warnings are in the same order as in 'man gcc'
 if test "x$GCC" = xyes; then
-	if test $warnings = yes -o $warnings = full; then
+	if test "$pioneers_warnings" = yes -o "$pioneers_warnings" = full; then
 		AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -Wall")
 		AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -W")
 		AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -Wpointer-arith")
@@ -108,7 +108,7 @@ if test "x$GCC" = xyes; then
 		AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -Wnested-externs")
 		AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -O")
 	fi
-	if test $warnings = full; then
+	if test "$pioneers_warnings" = full; then
 		flags="-Wfloat-equal";
 		flags="$flags -Wdeclaration-after-statement";
 		flags="$flags -Wundef";
@@ -141,15 +141,15 @@ if test "x$GCC" = xyes; then
 	fi
 fi
 
-if test $debug=yes; then
+if test "$pioneers_debug" = yes; then
 	AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -ggdb3")
 fi
 
-if test $logging=yes; then
+if test "$pioneers_logging" = yes; then
 	AC_DEFINE_UNQUOTED(DEBUG, [1], [Defined when logging is enabled])
 fi
 
-if test $deprecationChecks=yes; then
+if test "$pioneers_deprecationChecks" = yes; then
 	## TODO: These defines should be in AM_CPPFLAGS instead of AM_CFLAGS
 	AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -DG_DISABLE_DEPRECATED")
 	AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -DGDK_DISABLE_DEPRECATED")
@@ -340,8 +340,8 @@ $PACKAGE v$VERSION configuration:
         Build graphical applications       $have_gnome
         Build help                         $have_scrollkeeper
     Developers only:
-        Use compiler warnings              $warnings
-        Add debug information              $debug
-        Enable network logging             $logging
-        Enable deprecation checks          $deprecationChecks
+        Use compiler warnings              $pioneers_warnings
+        Add debug information              $pioneers_debug
+        Enable network logging             $pioneers_logging
+        Enable deprecation checks          $pioneers_deprecationChecks
 ])
