@@ -1358,9 +1358,8 @@ static float score_hex_hurt_opponents(Hex * hex)
 	if (hex == NULL)
 		return -1000;
 
-	/* secord arg in can_robber_or_pirate_be_moved is not used.
-	   don't move the pirate. */
-	if (!can_robber_or_pirate_be_moved(hex, 0)
+	/* don't move the pirate. */
+	if (!can_robber_or_pirate_be_moved(hex)
 	    || hex->terrain == SEA_TERRAIN)
 		return -1000;
 

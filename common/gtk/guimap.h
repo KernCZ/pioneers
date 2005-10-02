@@ -46,7 +46,7 @@ typedef union {
 	gconstpointer pointer;
 } MapElement;
 
-typedef gboolean(*CheckFunc) (const MapElement obj, int owner,
+typedef gboolean(*CheckFunc) (const MapElement element, gint owner,
 			      const MapElement user_data);
 typedef void (*SelectFunc) (const MapElement obj,
 			    const MapElement user_data);

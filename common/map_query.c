@@ -548,8 +548,7 @@ gboolean can_city_be_built(const Node * node, gint owner)
  * 0).  We cannot move the robber to the same hex it is already on.
  * Also check if pirate can be moved.
  */
-gboolean can_robber_or_pirate_be_moved(const Hex * hex,
-				       G_GNUC_UNUSED gint owner)
+gboolean can_robber_or_pirate_be_moved(const Hex * hex)
 {
 	if (hex->terrain == SEA_TERRAIN)
 		return (hex->map->has_pirate)

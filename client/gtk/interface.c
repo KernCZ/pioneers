@@ -247,6 +247,42 @@ void frontend_quote_monitor()
 	set_gui_state(frontend_state_idle);
 }
 
+static gboolean check_road(MapElement element, gint owner,
+			   G_GNUC_UNUSED MapElement extra)
+{
+	return can_road_be_built(element.edge, owner);
+}
+
+static gboolean check_ship(MapElement element, gint owner,
+			   G_GNUC_UNUSED MapElement extra)
+{
+	return can_ship_be_built(element.edge, owner);
+}
+
+static gboolean check_ship_move(MapElement element, gint owner,
+				G_GNUC_UNUSED MapElement extra)
+{
+	return can_ship_be_moved(element.edge, owner);
+}
+
+static gboolean check_bridge(MapElement element, gint owner,
+			     G_GNUC_UNUSED MapElement extra)
+{
+	return can_bridge_be_built(element.edge, owner);
+}
+
+static gboolean check_settlement(MapElement element, gint owner,
+				 G_GNUC_UNUSED MapElement extra)
+{
+	return can_settlement_be_built(element.node, owner);
+}
+
+static gboolean check_city(MapElement element, gint owner,
+			   G_GNUC_UNUSED MapElement extra)
+{
+	return can_settlement_be_upgraded(element.node, owner);
+}
+
 /* turn */
 static void frontend_state_turn(GuiEvent event)
 {
@@ -269,25 +305,17 @@ static void frontend_state_turn(GuiEvent event)
 		frontend_gui_check(GUI_FINISH, have_rolled_dice());
 
 		guimap_start_single_click_build(turn_can_build_road(),
-						(CheckFunc)
-						can_road_be_built,
-						build_road_cb,
+						check_road, build_road_cb,
 						turn_can_build_ship(),
-						(CheckFunc)
-						can_ship_be_built,
-						build_ship_cb,
+						check_ship, build_ship_cb,
 						turn_can_build_bridge(),
-						(CheckFunc)
-						can_bridge_be_built,
+						check_bridge,
 						build_bridge_cb,
 						turn_can_build_settlement
-						(), (CheckFunc)
-						can_settlement_be_built,
+						(), check_settlement,
 						build_settlement_cb,
 						turn_can_build_city(),
-						(CheckFunc)
-						can_settlement_be_upgraded,
-						build_city_cb);
+						check_city, build_city_cb);
 		break;
 	case GUI_ROLL:
 		cb_roll();
@@ -296,34 +324,28 @@ static void frontend_state_turn(GuiEvent event)
 		cb_undo();
 		return;
 	case GUI_ROAD:
-		gui_cursor_set(ROAD_CURSOR,
-			       (CheckFunc) can_road_be_built,
-			       build_road_cb, NULL);
+		gui_cursor_set(ROAD_CURSOR, check_road, build_road_cb,
+			       NULL);
 		return;
 	case GUI_SHIP:
-		gui_cursor_set(SHIP_CURSOR,
-			       (CheckFunc) can_ship_be_built,
-			       build_ship_cb, NULL);
+		gui_cursor_set(SHIP_CURSOR, check_ship, build_ship_cb,
+			       NULL);
 		return;
 	case GUI_MOVE_SHIP:
-		gui_cursor_set(SHIP_CURSOR,
-			       (CheckFunc) can_ship_be_moved,
-			       move_ship_cb, NULL);
+		gui_cursor_set(SHIP_CURSOR, check_ship_move, move_ship_cb,
+			       NULL);
 		return;
 	case GUI_BRIDGE:
-		gui_cursor_set(BRIDGE_CURSOR,
-			       (CheckFunc) can_bridge_be_built,
+		gui_cursor_set(BRIDGE_CURSOR, check_bridge,
 			       build_bridge_cb, NULL);
 		return;
 	case GUI_SETTLEMENT:
-		gui_cursor_set(SETTLEMENT_CURSOR,
-			       (CheckFunc) can_settlement_be_built,
+		gui_cursor_set(SETTLEMENT_CURSOR, check_settlement,
 			       build_settlement_cb, NULL);
 		return;
 	case GUI_CITY:
-		gui_cursor_set(CITY_CURSOR,
-			       (CheckFunc) can_settlement_be_upgraded,
-			       build_city_cb, NULL);
+		gui_cursor_set(CITY_CURSOR, check_city, build_city_cb,
+			       NULL);
 		return;
 	case GUI_TRADE:
 		trade_begin();
@@ -376,30 +398,26 @@ static void frontend_state_roadbuilding(GuiEvent event)
 				   road_building_can_build_bridge());
 		frontend_gui_check(GUI_FINISH, road_building_can_finish());
 		guimap_start_single_click_build
-		    (road_building_can_build_road(),
-		     (CheckFunc) can_road_be_built, build_road_cb,
-		     road_building_can_build_ship(),
-		     (CheckFunc) can_ship_be_built, build_ship_cb,
-		     road_building_can_build_bridge(),
-		     (CheckFunc) can_bridge_be_built, build_bridge_cb,
-		     FALSE, NULL, NULL, FALSE, NULL, NULL);
+		    (road_building_can_build_road(), check_road,
+		     build_road_cb, road_building_can_build_ship(),
+		     check_ship, build_ship_cb,
+		     road_building_can_build_bridge(), check_bridge,
+		     build_bridge_cb, FALSE, NULL, NULL, FALSE, NULL,
+		     NULL);
 		break;
 	case GUI_UNDO:
 		cb_undo();
 		return;
 	case GUI_ROAD:
-		gui_cursor_set(ROAD_CURSOR,
-			       (CheckFunc) can_road_be_built,
-			       build_road_cb, NULL);
+		gui_cursor_set(ROAD_CURSOR, check_road, build_road_cb,
+			       NULL);
 		return;
 	case GUI_SHIP:
-		gui_cursor_set(SHIP_CURSOR,
-			       (CheckFunc) can_ship_be_built,
-			       build_ship_cb, NULL);
+		gui_cursor_set(SHIP_CURSOR, check_ship, build_ship_cb,
+			       NULL);
 		return;
 	case GUI_BRIDGE:
-		gui_cursor_set(BRIDGE_CURSOR,
-			       (CheckFunc) can_bridge_be_built,
+		gui_cursor_set(BRIDGE_CURSOR, check_bridge,
 			       build_bridge_cb, NULL);
 		return;
 	case GUI_FINISH:
@@ -614,44 +632,47 @@ static void rob_edge(MapElement edge, MapElement hex)
 }
 
 /* Return TRUE if the node can be robbed. */
-static gboolean can_building_be_robbed(Node * node,
+static gboolean can_building_be_robbed(MapElement node,
 				       G_GNUC_UNUSED int owner,
-				       Hex * robber_hex)
+				       MapElement robber)
 {
 	gint idx;
 
 	/* Can only steal from buildings that are not owned by me */
-	if (node->type == BUILD_NONE || node->owner == my_player_num())
+	if (node.node->type == BUILD_NONE
+	    || node.node->owner == my_player_num())
 		return FALSE;
 
 	/* Can only steal if the owner has some resources */
-	if (player_get(node->owner)->statistics[STAT_RESOURCES] == 0)
+	if (player_get(node.node->owner)->statistics[STAT_RESOURCES] == 0)
 		return FALSE;
 
 	/* Can only steal from buildings adjacent to hex with robber */
-	for (idx = 0; idx < G_N_ELEMENTS(node->hexes); idx++)
-		if (node->hexes[idx] == robber_hex)
+	for (idx = 0; idx < G_N_ELEMENTS(node.node->hexes); idx++)
+		if (node.node->hexes[idx] == robber.hex)
 			return TRUE;
 	return FALSE;
 }
 
 /** Returns TRUE if the edge can be robbed. */
-static gboolean can_edge_be_robbed(Edge * edge, G_GNUC_UNUSED int owner,
-				   Hex * pirate_hex)
+static gboolean can_edge_be_robbed(MapElement edge,
+				   G_GNUC_UNUSED int owner,
+				   MapElement pirate)
 {
 	gint idx;
 
 	/* Can only steal from ships that are not owned by me */
-	if (edge->type != BUILD_SHIP || edge->owner == my_player_num())
+	if (edge.edge->type != BUILD_SHIP
+	    || edge.edge->owner == my_player_num())
 		return FALSE;
 
 	/* Can only steal if the owner has some resources */
-	if (player_get(edge->owner)->statistics[STAT_RESOURCES] == 0)
+	if (player_get(edge.edge->owner)->statistics[STAT_RESOURCES] == 0)
 		return FALSE;
 
 	/* Can only steal from edges adjacent to hex with pirate */
-	for (idx = 0; idx < G_N_ELEMENTS(edge->hexes); idx++)
-		if (edge->hexes[idx] == pirate_hex)
+	for (idx = 0; idx < G_N_ELEMENTS(edge.edge->hexes); idx++)
+		if (edge.edge->hexes[idx] == pirate.hex)
 			return TRUE;
 	return FALSE;
 }
@@ -672,8 +693,7 @@ static void place_robber_or_pirate_cb(MapElement hex,
 			break;
 		default:
 			gui_cursor_set(STEAL_SHIP_CURSOR,
-				       (CheckFunc) can_edge_be_robbed,
-				       rob_edge, &hex);
+				       can_edge_be_robbed, rob_edge, &hex);
 			gui_set_instructions(_
 					     ("Select the ship to steal from."));
 			gui_prompt_show(_
@@ -690,7 +710,7 @@ static void place_robber_or_pirate_cb(MapElement hex,
 			break;
 		default:
 			gui_cursor_set(STEAL_BUILDING_CURSOR,
-				       (CheckFunc) can_building_be_robbed,
+				       can_building_be_robbed,
 				       rob_building, &hex);
 			gui_set_instructions(_
 					     ("Select the building to steal from."));
@@ -701,6 +721,13 @@ static void place_robber_or_pirate_cb(MapElement hex,
 	}
 }
 
+static gboolean check_move_robber_or_pirate(MapElement element,
+					    G_GNUC_UNUSED int owner,
+					    G_GNUC_UNUSED MapElement extra)
+{
+	return can_robber_or_pirate_be_moved(element.hex);
+}
+
 void frontend_robber()
 {
 	if (robber_busy)
@@ -709,10 +736,38 @@ void frontend_robber()
 	previous_state = get_gui_state();
 	set_gui_state(frontend_state_idle);
 	gui_cursor_set(ROBBER_CURSOR,
-		       (CheckFunc) can_robber_or_pirate_be_moved,
+		       check_move_robber_or_pirate,
 		       place_robber_or_pirate_cb, NULL);
 	gui_prompt_show(_("Place the robber"));
 	frontend_gui_update();
+}
+
+static gboolean check_road_setup(MapElement element,
+				 G_GNUC_UNUSED gint owner,
+				 G_GNUC_UNUSED MapElement extra)
+{
+	return setup_check_road(element.edge);
+}
+
+static gboolean check_ship_setup(MapElement element,
+				 G_GNUC_UNUSED gint owner,
+				 G_GNUC_UNUSED MapElement extra)
+{
+	return setup_check_ship(element.edge);
+}
+
+static gboolean check_bridge_setup(MapElement element,
+				   G_GNUC_UNUSED gint owner,
+				   G_GNUC_UNUSED MapElement extra)
+{
+	return setup_check_bridge(element.edge);
+}
+
+static gboolean check_settlement_setup(MapElement element,
+				       G_GNUC_UNUSED gint owner,
+				       G_GNUC_UNUSED MapElement extra)
+{
+	return setup_check_settlement(element.node);
 }
 
 static void frontend_mode_setup(GuiEvent event)
@@ -727,20 +782,16 @@ static void frontend_mode_setup(GuiEvent event)
 				   setup_can_build_settlement());
 		frontend_gui_check(GUI_FINISH, setup_can_finish());
 		guimap_start_single_click_build(setup_can_build_road(),
-						(CheckFunc)
-						setup_check_road,
+						check_road_setup,
 						build_road_cb,
 						setup_can_build_ship(),
-						(CheckFunc)
-						setup_check_ship,
+						check_ship_setup,
 						build_ship_cb,
 						setup_can_build_bridge(),
-						(CheckFunc)
-						setup_check_bridge,
+						check_bridge_setup,
 						build_bridge_cb,
 						setup_can_build_settlement
-						(), (CheckFunc)
-						setup_check_settlement,
+						(), check_settlement_setup,
 						build_settlement_cb, FALSE,
 						NULL, NULL);
 		break;
@@ -753,38 +804,20 @@ static void frontend_mode_setup(GuiEvent event)
 		cb_undo();
 		return;
 	case GUI_ROAD:
-		/* User pressed "Build Road", set the map cursor;
-		 *   shape = ROAD_CURSOR
-		 *   check-if-valid-pos = setup_check_road()
-		 *   place-road-callback = build_road_cb()
-		 */
 		gui_cursor_set(ROAD_CURSOR,
-			       (CheckFunc) setup_check_road,
-			       build_road_cb, NULL);
+			       check_road_setup, build_road_cb, NULL);
 		return;
 	case GUI_SHIP:
-		/* User pressed "Build Ship", set the map cursor;
-		 *   shape = SHIP_CURSOR
-		 *   check-if-valid-pos = setup_check_ship()
-		 *   place-ship-callback = build_ship_cb()
-		 */
 		gui_cursor_set(SHIP_CURSOR,
-			       (CheckFunc) setup_check_ship,
-			       build_ship_cb, NULL);
+			       check_ship_setup, build_ship_cb, NULL);
 		return;
 	case GUI_BRIDGE:
-		/* User pressed "Build Bridge", set the map cursor;
-		 *   shape = BRIDGE_CURSOR
-		 *   check-if-valid-pos = setup_check_bridge()
-		 *   place-ship-callback = build_bridge_cb()
-		 */
 		gui_cursor_set(BRIDGE_CURSOR,
-			       (CheckFunc) setup_check_bridge,
-			       build_bridge_cb, NULL);
+			       check_bridge_setup, build_bridge_cb, NULL);
 		return;
 	case GUI_SETTLEMENT:
 		gui_cursor_set(SETTLEMENT_CURSOR,
-			       (CheckFunc) setup_check_settlement,
+			       check_settlement_setup,
 			       build_settlement_cb, NULL);
 		return;
 	case GUI_FINISH:

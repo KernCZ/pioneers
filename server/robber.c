@@ -96,7 +96,7 @@ gboolean mode_place_robber(Player * player, gint event)
 		return FALSE;
 
 	hex = map_hex(map, x, y);
-	if (hex == NULL || !can_robber_or_pirate_be_moved(hex, 0)) {
+	if (hex == NULL || !can_robber_or_pirate_be_moved(hex)) {
 		sm_send(sm, "ERR bad-pos\n");
 		return TRUE;
 	}

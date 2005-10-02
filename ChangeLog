@@ -3,6 +3,12 @@
 	common/gtk/config-gnome.h, editor/gtk/editor.c, server/gtk/main.c:
 	Added optional support for GLib-2.6 (g_key_file). For environments that
 	cannot build the help, libgnome is no longer a build requirement.
+	* client/callback.h, client/ai/greedy.c, client/common/setup.c,
+	client/gtk/interface.c, common/map.h, common/map_query.c,
+	common/gtk/guimap.h, server/robber.c: Replaced all casts to
+	CheckFunc by functions with the correct prototype. This allows player
+	of the PPC to play Pioneers again. Cleanup of unused arguments in the
+	used functions.
 
 2005-09-25  0.9.31  Roland Clobus <rclobus@bigfoot.com>
 	* configure.ac, rules.make, client/ai/Makefile.am,

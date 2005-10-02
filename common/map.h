@@ -198,10 +198,10 @@ gboolean can_ship_be_moved(const Edge * edge, gint owner);
 gboolean can_bridge_be_setup(const Edge * edge);
 gboolean can_bridge_be_built(const Edge * edge, gint owner);
 gboolean can_settlement_be_setup(const Node * node);
-gboolean can_settlement_be_built(const Node * node, int owner);
-gboolean can_settlement_be_upgraded(const Node * node, int owner);
+gboolean can_settlement_be_built(const Node * node, gint owner);
+gboolean can_settlement_be_upgraded(const Node * node, gint owner);
 gboolean can_city_be_built(const Node * node, int owner);
-gboolean can_robber_or_pirate_be_moved(const Hex * hex, int owner);
+gboolean can_robber_or_pirate_be_moved(const Hex * hex);
 /* map global queries */
 gboolean map_can_place_road(Map * map, int owner);
 gboolean map_can_place_ship(Map * map, int owner);
