@@ -12,6 +12,10 @@
 	* configure.ac, common/network.c, meta-server/main.c: Replace the last
 	uses of strerror by g_strerror.
 
+2005-10-02  Bas Wijnen <shevek@fmf.nl>
+	* client/ai/greedy.c: Do not trade if the wanted resource is not in
+	the bank. (Fixes Debian bug #328880)
+
 2005-09-25  0.9.31  Roland Clobus <rclobus@bigfoot.com>
 	* configure.ac, rules.make, client/ai/Makefile.am,
 	client/common/Makefile.am, client/gtk/Makefile.am, common/Makefile.am,

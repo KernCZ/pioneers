@@ -1060,11 +1060,11 @@ static gboolean will_do_maritime_trade(gint assets[NO_RESOURCE],
 	 * We can trade, but we won't be able to buy anything.
 	 *
 	 * Try a simple heuristic - if there's a resource we can trade away
-	 * and still have at least 1 left, and we need something, do the
-	 * trade.  Try to use the best port for this.
+	 * and still have at least 1 left, and we need something (and we can
+	 * get it), do the trade.  Try to use the best port for this.
 	 */
 	want = resource_desire(assets, resval);
-	if (want == NO_RESOURCE)
+	if (want == NO_RESOURCE || get_bank()[want] == 0)
 		return FALSE;
 
 	discard = NO_RESOURCE;
