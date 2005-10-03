@@ -1,3 +1,13 @@
+CVS Snapshot release 0.9.33
+* Fixed infinite loop when AI tries to trade for something that is not in the
+  bank anymore
+* Fixed PPC: the cursor on the map is now working again
+* Introduced extra options to ./configure
+* Workaround for Gtk-bug with button
+* Added Hungarian translation
+* Several small bugs fixed
+* Added several portability patches
+
 CVS Snapshot release 0.9.23
 * Fixed: Several bug fixes
 * New: Left panel shows information during the game
