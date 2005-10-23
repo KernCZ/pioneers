@@ -30,7 +30,9 @@
 #include "callback.h"
 
 /* Needed below for a dirty trick */
+#ifndef G_OS_WIN32
 extern int _nl_msg_cat_cntr;
+#endif
 
 static lang_desc languages[] = {
 	/* language names not translated intentionally! */
@@ -117,7 +119,9 @@ gboolean change_nls(lang_desc * ld)
 	g_setenv("LANGUAGE", ld->code, TRUE);
 	g_setenv("LC_ALL", ld->localedef, TRUE);	/* Do this too, so setlocale works too */
 	/* Make change known */
+#ifndef G_OS_WIN32
 	++_nl_msg_cat_cntr;
+#endif
 
 	g_free(current_language);
 	current_language = g_strdup(ld->code);

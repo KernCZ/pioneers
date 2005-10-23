@@ -236,7 +236,9 @@ AM_CONDITIONAL(ADMIN_GTK_SUPPORT, [test x$admin_gtk_support = xyes])
 AC_CHECK_HEADERS([getopt.h])
 AC_CHECK_HEADERS([netdb.h fcntl.h netinet/in.h sys/socket.h])
 AC_CHECK_HEADERS([limits.h])
-AC_CHECK_HEADERS([syslog.h])
+AC_CHECK_HEADERS([syslog.h],
+	[pioneers_have_syslog=yes;],
+	[pioneers_have_syslog=no;])
 AC_CHECK_HEADERS([sys/param.h])
 AC_HEADER_SYS_WAIT
 AC_HEADER_TIME
@@ -253,11 +255,46 @@ AC_CHECK_FUNCS([rint sqrt])
 AC_CHECK_FUNCS([strrchr strspn strstr strcspn])
 AC_CHECK_FUNCS([memmove memset])
 # Network and I/O functions
-AC_CHECK_FUNCS([gethostbyname gethostname select socket])
+AC_CHECK_FUNCS([gethostname select socket])
+getsockopt_arg3="void *";
 # getaddrinfo and friends
 AC_CHECK_FUNCS([getaddrinfo gai_strerror freeaddrinfo], 
 	AC_DEFINE_UNQUOTED(HAVE_GETADDRINFO_ET_AL, [1],
 		[Defined when getaddrinfo. gai_strerror and freeaddrinfo are present]))
+
+# The Windows ports (Cygwin and MinGW) are client-only
+pioneers_is_mingw_port=no;
+case $host in
+	*-*-cygwin*)
+		pioneers_is_windows_port=yes;;
+	*-*-mingw*)
+		pioneers_is_windows_port=yes;
+		pioneers_is_mingw_port=yes;;
+	*)
+		pioneers_is_windows_port=no;;
+esac
+
+# Can a non-blocking socket be created?
+pioneers_have_non_blocking_sockets=no;
+AC_CHECK_FUNCS([fcntl],[pioneers_have_non_blocking_sockets=yes])
+if test "$pioneers_have_non_blocking_sockets" = "no"; then
+	# Only check for ws2tcpip now,
+	# because it will cause problems under Cygwin
+	AC_CHECK_HEADERS([ws2tcpip.h],
+		[pioneers_have_non_blocking_sockets=yes;
+		 getsockopt_arg3="char *";
+		])
+fi
+AC_DEFINE_UNQUOTED(GETSOCKOPT_ARG3, $getsockopt_arg3, [The type of the third argument of getsockopt])
+
+if test $pioneers_is_mingw_port = yes; then
+	# The check for WSACleanup in ws2_32 needs an include of ws2tcpip.h
+	# This is not possible with the AC_CHECK_LIB macro
+	# AC_CHECK_LIB(ws2_32, WSACleanup)
+	# Just add ws2_32 to the list of libraries
+	AC_SUBST(LIBS, "-lws2_32 $LIBS")
+	AC_SUBST(AM_CFLAGS, "-mms-bitfields $AM_CFLAGS")
+fi
 
 # Time out
 AC_CHECK_FUNCS([alarm])
@@ -300,6 +337,43 @@ AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE", [The gettext package nam
 AM_GLIB_GNU_GETTEXT
 AC_DEFINE_UNQUOTED(ALL_LINGUAS, "$ALL_LINGUAS", [Available languages])
 
+# All checks are completed.
+# Determine which executables cannot be built
+pioneers_build_client_ai=yes;
+pioneers_build_client_gtk=yes;
+pioneers_build_editor=yes;
+pioneers_build_server_console=yes;
+pioneers_build_server_gtk=yes;
+pioneers_build_metaserver=yes;
+
+if test $pioneers_have_syslog = no; then
+	pioneers_build_metaserver=no;
+fi
+if test $have_gnome != yes; then
+	pioneers_build_client_gtk=no;
+	pioneers_build_editor=no;
+	pioneers_build_server_gtk=no;
+fi
+if test $pioneers_have_non_blocking_sockets = no; then
+	pioneers_build_client_ai=no;
+	pioneers_build_client_gtk=no;
+	pioneers_build_server_console=no;
+	pioneers_build_server_gtk=no;
+	pioneers_build_metaserver=no;
+fi
+
+# The server functionality is not ported to MS Windows
+if test $pioneers_is_windows_port = yes; then
+	pioneers_build_server_console=no;
+	pioneers_build_server_gtk=no;
+	pioneers_build_metaserver=no;
+fi
+
+AM_CONDITIONAL(BUILD_CLIENT, [test $pioneers_build_client_gtk = yes -o $pioneers_build_client_ai = yes])
+AM_CONDITIONAL(BUILD_EDITOR, [test $pioneers_build_editor = yes])
+AM_CONDITIONAL(BUILD_SERVER, [test $pioneers_build_server_gtk = yes -o $pioneers_build_server_console = yes])
+AM_CONDITIONAL(BUILD_META_SERVER, [test $pioneers_build_metaserver = yes])
+
 AC_CONFIG_FILES([ \
 	Makefile \
 	pioneers.spec \
@@ -336,8 +410,12 @@ $PACKAGE v$VERSION configuration:
 
         Source code location:              ${srcdir}
         Compiler:                          ${CC}
-        Build console applications         yes
-        Build graphical applications       $have_gnome
+        Build graphical client             $pioneers_build_client_gtk
+        Build computer player              $pioneers_build_client_ai
+        Build game editor                  $pioneers_build_editor
+        Build graphical server             $pioneers_build_server_gtk
+        Build console server               $pioneers_build_server_console
+        Build metaserver                   $pioneers_build_metaserver
         Build help                         $have_scrollkeeper
     Developers only:
         Use compiler warnings              $pioneers_warnings

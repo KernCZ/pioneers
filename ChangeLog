@@ -1,6 +1,15 @@
 2005-10-23  0.9.34  Bas Wijnen <shevek@fmf.nl>
 	* client/common/callback.c: Removed some debug text.
-	
+
+2005-10-23  Roland Clobus <rclobus@bigfoot.com>
+	* Makefile.am, configure.ac: Whether the client, server, meta-server
+	or editor are built is controlled from the configure script.
+	* Makefile.am, README.MinGW: Added README.Cygwin and README.MinGW to
+	the distributed tarball.
+	* configure.ac, client/common/i18n.c, common/network.c,
+	common/network.h: The code can be configured and built from the MinGW
+	environment.
+
 2005-10-02  0.9.33  Roland Clobus <rclobus@bigfoot.com>
 	* configure.ac: Enable debug, enable deprecation-check and enable
 	logging were always active.
