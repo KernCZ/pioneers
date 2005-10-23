@@ -20,16 +20,28 @@
  */
 
 #include "config.h"
+#ifdef HAVE_WS2TCPIP_H
+#include <ws2tcpip.h>
+#endif
+#ifdef HAVE_FCNTL_H
 #include <fcntl.h>
+#endif
 #include <ctype.h>
-#include <stdio.h>
 #include <unistd.h>
+#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
+#endif
+#ifdef HAVE_SYS_SOCKET_H
 #include <sys/socket.h>
+#endif
+#ifdef HAVE_NETDB_H
 #include <netdb.h>
+#endif
 #include <errno.h>
 #include <string.h>
+#ifdef HAVE_NETINET_IN_H
 #include <netinet/in.h>
+#endif
 
 #ifndef HAVE_GETADDRINFO_ET_AL
 #include <stdlib.h>		/* For atoi */
@@ -64,23 +76,20 @@ void debug(const gchar * fmt, ...)
 
 	for (idx = 0; idx < len; idx++) {
 		if (isprint(buff[idx]) || idx == len - 1)
-			fputc(buff[idx], stderr);
+			g_print("%c", buff[idx]);
 		else
 			switch (buff[idx]) {
 			case '\n':
-				fputc('\\', stderr);
-				fputc('n', stderr);
+				g_print("\\n");
 				break;
 			case '\r':
-				fputc('\\', stderr);
-				fputc('r', stderr);
+				g_print("\\r");
 				break;
 			case '\t':
-				fputc('\\', stderr);
-				fputc('t', stderr);
+				g_print("\\t");
 				break;
 			default:
-				fprintf(stderr, "\\x%02x", buff[idx]);
+				g_print("\\x%02x", buff[idx]);
 				break;
 			}
 	}
@@ -172,7 +181,7 @@ static void write_ready(Session * ses)
 
 		error_len = sizeof(error);
 		if (getsockopt(ses->fd, SOL_SOCKET, SO_ERROR,
-			       &error, &error_len) < 0) {
+			      (GETSOCKOPT_ARG3)&error, &error_len) < 0) {
 			notify(ses, NET_CONNECT_FAIL, NULL);
 			log_message(MSG_ERROR,
 				    _
@@ -200,7 +209,7 @@ static void write_ready(Session * ses)
 		char *data = ses->write_queue->data;
 		int len = strlen(data);
 
-		num = write(ses->fd, data, len);
+		num = send(ses->fd, data, len, 0);
 #ifdef DEBUG
 		debug("write_ready: write(%d, \"%.*s\", %d) = %d\n",
 		      ses->fd, len, data, len, num);
@@ -250,7 +259,7 @@ void net_write(Session * ses, const gchar * data)
 		int num;
 
 		len = strlen(data);
-		num = write(ses->fd, data, len);
+		num = send(ses->fd, data, len, 0);
 #ifdef DEBUG
 		if (num > 0)
 			debug("(%d) --> %s\n", ses->fd, data);
@@ -316,8 +325,8 @@ static void read_ready(Session * ses)
 		return;
 	}
 
-	num = read(ses->fd, ses->read_buff + ses->read_len,
-		   sizeof(ses->read_buff) - ses->read_len);
+	num = recv(ses->fd, ses->read_buff + ses->read_len,
+		sizeof(ses->read_buff) - ses->read_len, 0);
 	if (num < 0) {
 		if (errno == EAGAIN)
 			return;
@@ -393,6 +402,39 @@ gboolean net_connected(Session * ses)
 	return ses->fd >= 0 && !ses->connect_in_progress;
 }
 
+/* Set the socket to non-blocking
+ * @param fd The file descriptor of the socket
+ * @return TRUE if an error occurred
+ */
+static gboolean net_set_socket_non_blocking(int fd)
+{
+#ifdef HAVE_FCNTL
+	return fcntl(fd, F_SETFL, O_NDELAY) < 0;
+#else /* HAVE_FCNTL */
+#ifdef HAVE_WS2TCPIP_H
+	unsigned long nonblocking = 1;
+	return ioctlsocket(fd, FIONBIO, &nonblocking) != 0;
+#else /* HAVE_FCNTL && HAVE_WS2TCPIP_H */
+#error "Don't know how to set a socket non-blocking"
+#error "Please contact the mailing list,"
+#error "and send the file config.h"
+	return TRUE;
+#endif
+#endif
+}
+
+/* Is the connection in progress?
+ * @return TRUE The connection is in progress
+ */
+static gboolean net_is_connection_in_progress(void)
+{
+#ifdef G_OS_WIN32
+	return WSAGetLastError() == WSAEWOULDBLOCK;
+#else
+	return errno == EINPROGRESS;
+#endif
+}
+
 gboolean net_connect(Session * ses, const gchar * host, const gchar * port)
 {
 #ifdef HAVE_GETADDRINFO_ET_AL
@@ -446,6 +488,8 @@ gboolean net_connect(Session * ses, const gchar * host, const gchar * port)
 				    g_strerror(errno));
 			continue;
 		}
+
+#ifdef HAVE_FCNTL
 		if (fcntl(ses->fd, F_SETFD, 1) < 0) {
 			log_message(MSG_ERROR,
 				    _
@@ -455,7 +499,8 @@ gboolean net_connect(Session * ses, const gchar * host, const gchar * port)
 			ses->fd = -1;
 			continue;
 		}
-		if (fcntl(ses->fd, F_SETFL, O_NDELAY) < 0) {
+#endif
+		if (net_set_socket_non_blocking(ses->fd)) {
 			log_message(MSG_ERROR,
 				    _
 				    ("Error setting socket non-blocking: %s\n"),
@@ -476,7 +521,7 @@ gboolean net_connect(Session * ses, const gchar * host, const gchar * port)
 		    (ses->fd, (struct sockaddr *) &addr,
 		     sizeof(struct sockaddr)) < 0) {
 #endif				/* HAVE_GETADDRINFO_ET_AL */
-			if (errno == EINPROGRESS) {
+			if (net_is_connection_in_progress()) {
 				ses->connect_in_progress = TRUE;
 				listen_write(ses, TRUE);
 				break;
@@ -518,18 +563,16 @@ void net_free(Session ** ses)
 
 gchar *get_my_hostname(void)
 {
-	char hbuf[256];
-	struct hostent *hp;
-
-	if (gethostname(hbuf, sizeof(hbuf))) {
-		perror("gethostname");
-		return NULL;
-	}
-	if (!(hp = gethostbyname(hbuf))) {
-		herror("gethostbyname");
-		return NULL;
-	}
-	return g_strdup(hp->h_name);
+/* The following code fragment is taken from glib-2.0 v2.8 */
+	gchar hostname[100];
+#ifndef G_OS_WIN32
+	gboolean hostname_fail = (gethostname(hostname, sizeof(hostname)) == -1);
+#else
+	DWORD size = sizeof(hostname);
+	gboolean hostname_fail = (!GetComputerName(hostname, &size));
+#endif
+	return g_strdup(hostname_fail ? "localhost" : hostname);
+/* End of copy from glib-2.0 v2.8 */
 }
 
 gchar *get_meta_server_name(gboolean use_default)
@@ -706,10 +749,25 @@ gint net_accept(gint accept_fd, gchar ** error_message)
 
 void net_init(void)
 {
+#ifdef G_OS_WIN32
+	WORD wVersionRequested;
+	WSADATA wsaData;
+
+	wVersionRequested = MAKEWORD(2, 2);
+
+	if (0 != WSAStartup(wVersionRequested, &wsaData)) {
+		g_error(_("No usable version of WinSock was found."));
+	}
+#else /* G_OS_WIN32 */
 	/* Do nothing on unix like platforms */
+#endif /* G_OS_WIN32 */
 }
 
 void net_finish(void)
 {
+#ifdef G_OS_WIN32
+	WSACleanup();
+#else /* G_OS_WIN32 */
 	/* Do nothing on unix like platforms */
+#endif /* G_OS_WIN32 */
 }

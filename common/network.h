@@ -104,7 +104,7 @@ void net_printf(Session * ses, const gchar * fmt, ...);
 void net_write(Session * ses, const gchar * data);
 
 /** Get the hostname of this computer.
- * @return NULL if the hostname could not be determined.
+ * @return "localhost" if the hostname could not be determined.
  */
 gchar *get_my_hostname(void);
 
