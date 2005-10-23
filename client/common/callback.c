@@ -173,7 +173,6 @@ void cb_domestic(gint * supply, gint * receive)
 	sm_send(SM(), "domestic-trade call supply %R receive %R\n",
 		supply, receive);
 	if (callback_mode == MODE_DOMESTIC) {
-		printf("call again\n");
 		sm_push(SM(), mode_trade_call_again_response);
 	} else {
 		sm_push(SM(), mode_trade_call_response);
