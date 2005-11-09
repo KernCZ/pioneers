@@ -800,6 +800,7 @@ static void load_game(const gchar * file, gboolean is_reload)
 	if (open_filename != NULL)
 		g_free(open_filename);
 	open_filename = new_filename;
+	map_move_robber(gmap->map, -1, -1);
 	fill_map(gmap->map);
 	if (is_reload) {
 		scale_map(gmap);
