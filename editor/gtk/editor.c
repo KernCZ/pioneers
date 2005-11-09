@@ -966,7 +966,7 @@ static GtkActionEntry entries[] = {
 	 N_("Open an existing game"), load_game_menu_cb},
 	{"Save", GTK_STOCK_SAVE, N_("_Save"), "<control>S",
 	 N_("Save game"), save_game_menu_cb},
-	{"SaveAs", GTK_STOCK_SAVE, N_("Save _As..."), "<control><shift>S",
+	{"SaveAs", GTK_STOCK_SAVE_AS, N_("Save _As..."), "<control><shift>S",
 	 N_("Save as"), save_as_menu_cb},
 	{"ChangeTitle", NULL, N_("_Change title"), "<control>T",
 	 N_("Change game title"), change_title_menu_cb},
