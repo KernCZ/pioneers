@@ -761,7 +761,7 @@ static GameParams *get_params(void)
 	return params;
 }
 
-static void load_game(const gchar * file)
+static void load_game(const gchar * file, gboolean is_reload)
 {
 	const gchar *gamefile;
 	GameParams *new_params;
@@ -801,6 +801,10 @@ static void load_game(const gchar * file)
 		g_free(open_filename);
 	open_filename = new_filename;
 	fill_map(gmap->map);
+	if (is_reload) {
+		scale_map(gmap);
+		guimap_display(gmap);
+	}
 }
 
 static void save_game(const gchar * file)
@@ -814,7 +818,7 @@ static void save_game(const gchar * file)
 
 static void new_game_menu_cb(void)
 {
-	load_game(NULL);
+	load_game(NULL, TRUE);
 }
 
 static void load_game_menu_cb(void)
@@ -835,7 +839,7 @@ static void load_game_menu_cb(void)
 		file =
 		    gtk_file_chooser_get_filename(GTK_FILE_CHOOSER
 						  (dialog));
-		load_game(file);
+		load_game(file, TRUE);
 		g_free(file);
 		scale_map(gmap);
 		guimap_display(gmap);
@@ -1085,7 +1089,7 @@ int main(int argc, char *argv[])
 	gtk_box_pack_start(GTK_BOX(vbox), menubar, FALSE, FALSE, 0);
 	gtk_box_pack_start(GTK_BOX(vbox), notebook, TRUE, TRUE, 0);
 
-	load_game(filename);
+	load_game(filename, FALSE);
 	if (params == NULL)
 		return 1;
 
