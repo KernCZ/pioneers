@@ -867,7 +867,10 @@ static void save_as_menu_cb(void)
 		    gtk_file_chooser_get_filename(GTK_FILE_CHOOSER
 						  (dialog));
 		save_game(file);
-		g_free(file);
+		if (open_filename == NULL)
+			open_filename = file;
+		else
+			g_free(file);
 	}
 	gtk_widget_destroy(dialog);
 }
