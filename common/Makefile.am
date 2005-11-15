@@ -19,8 +19,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-include $(top_srcdir)/rules.make
-
 noinst_LIBRARIES = libpioneers.a 
 
 if HAVE_GNOME
@@ -33,8 +31,7 @@ noinst_HEADERS = authors.h
 
 AM_CPPFLAGS = \
 	-I$(includedir) \
-	$(GLIB2_CFLAGS) \
-	$(extra_includes)
+	$(GLIB2_CFLAGS)
 
 libpioneers_a_SOURCES = \
 	buildrec.c \
@@ -60,12 +57,6 @@ libpioneers_a_SOURCES = \
 	quoteinfo.h \
 	state.c \
 	state.h
-
-libpioneers_a_LIBADD = \
-	$(MT_RAND_OBJ)
-
-libpioneers_a_DEPENDENCIES = \
-	$(MT_RAND_OBJ)
 
 authors.h: ../AUTHORS
 	echo -n "#define AUTHORLIST " > $@

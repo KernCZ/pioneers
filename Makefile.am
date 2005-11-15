@@ -18,15 +18,13 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-include $(top_srcdir)/rules.make
-
 if BUILD_CLIENT
 CLIENT_SUBDIRS = client
 endif
 
-if BUILD_SERVER
+#if BUILD_SERVER
 SERVER_SUBDIRS = server
-endif
+#endif
 
 if BUILD_META_SERVER
 META_SERVER_SUBDIRS = meta-server
@@ -39,7 +37,7 @@ endif
 SUBDIRS = po common $(CLIENT_SUBDIRS) $(SERVER_SUBDIRS) $(META_SERVER_SUBDIRS) $(EDITOR_SUBDIRS) docs
 DIST_SUBDIRS = po common client server meta-server editor docs
 
-EXTRA_DIST = autogen.sh pioneers.spec xmldocs.make omf.make rules.make README.Cygwin README.MinGW
+EXTRA_DIST = autogen.sh pioneers.spec xmldocs.make omf.make README.Cygwin README.MinGW
 
 dist-hook:
 	tar -c -f - -C $(srcdir) macros | tar -x -f - -C $(distdir)

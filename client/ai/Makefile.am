@@ -18,8 +18,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-include $(top_srcdir)/rules.make
-
 configdir = $(datadir)/games/pioneers
 
 bin_PROGRAMS = pioneersai
@@ -33,8 +31,7 @@ AM_CPPFLAGS = \
 	-I$(srcdir)/../.. \
 	-I$(srcdir)/../../common \
         -I$(includedir) \
-	$(GLIB2_CFLAGS) \
-	$(extra_includes)
+	$(GLIB2_CFLAGS)
 
 pioneersai_SOURCES = \
 	ai.h \

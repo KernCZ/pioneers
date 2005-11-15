@@ -18,11 +18,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-include $(top_srcdir)/rules.make
-
 SUBDIRS = data
 
-themedir  =$(datadir)/games/pioneers/themes
 appicondir=$(datadir)/pixmaps
 pixmapdir =$(datadir)/pixmaps/pioneers
 Gamesdir=$(datadir)/gnome/apps/Games
@@ -30,6 +27,7 @@ Gamesdir=$(datadir)/gnome/apps/Games
 bin_PROGRAMS = pioneers
 
 pioneers_DEPENDENCIES = \
+	$(WINDOWS_ICON) \
 	../common/libpioneersclient.a \
 	../../common/gtk/libpioneers_gtk.a \
 	../../common/libpioneers.a
@@ -51,13 +49,10 @@ AM_CPPFLAGS = \
 	-I$(srcdir)/../.. \
 	-I$(srcdir)/../../common \
 	-I$(srcdir)/../../common/gtk \
-	-DTHEMEDIR=\"$(themedir)\" \
-	-DDATADIR=\"$(datadir)\" \
 	$(ADMIN_GTK) \
         -I$(includedir) \
 	$(GNOME2_CFLAGS)  \
-	$(GTK2_CFLAGS) \
-	$(extra_includes)
+	$(GTK2_CFLAGS)
 
 EXTRA_pioneers_SOURCES = $(ADMIN_GTK_FILES_INACTIVE)
 
@@ -82,6 +77,7 @@ pioneers_SOURCES = \
 	monopoly.c \
 	name.c \
 	offline.c \
+	pioneers.rc \
 	plenty.c \
 	player.c \
 	quote.c \
@@ -96,5 +92,10 @@ pioneers_LDADD = \
 	../common/libpioneersclient.a \
 	../../common/libpioneers.a \
 	../../common/gtk/libpioneers_gtk.a \
+	$(WINDOWS_ICON) \
 	$(GNOME2_LIBS) \
 	$(GTK2_LIBS)
+
+# Will be used in Windows builds
+$(WINDOWS_ICON): pioneers.rc
+	windres -o $(WINDOWS_ICON) pioneers.rc

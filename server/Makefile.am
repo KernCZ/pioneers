@@ -17,15 +17,15 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-include $(top_srcdir)/rules.make
-
 configdir=$(datadir)/games/pioneers
+
+DIST_SUBDIRS = gtk
+
+if BUILD_SERVER
 
 if HAVE_GNOME
 SUBDIRS = . gtk
 endif
-
-DIST_SUBDIRS = gtk
 
 bin_PROGRAMS = pioneers-server-console
 
@@ -33,10 +33,8 @@ noinst_LIBRARIES = libpioneers_server.a
 
 AM_CPPFLAGS = \
 	-I$(srcdir)/../common -I. \
-	-DDATADIR=\"$(datadir)\" \
 	-I$(includedir) \
-	$(GLIB2_CFLAGS) \
-	$(extra_includes)
+	$(GLIB2_CFLAGS)
 
 pioneers_server_console_DEPENDENCIES = libpioneers_server.a \
 	../common/libpioneers.a
@@ -67,6 +65,8 @@ pioneers_server_console_LDADD = \
 	libpioneers_server.a \
 	../common/libpioneers.a \
 	$(GLIB2_LIBS)
+
+endif # BUILD_SERVER
 
 config_DATA = \
 	default.game \

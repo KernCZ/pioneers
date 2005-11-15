@@ -48,13 +48,14 @@ Install Pioneers
 
 Start Pioneers
 ==============
-6) Start Pioneers from the MSYS prompt (pioneers)
+6a) Start Pioneers by double clicking on the executable
+    (found in C:\msys\1.0\usr\local)
+6b) or start pioneers.exe from /usr/local in the shell
 
 Known limitations
 =================
 * The online help is not built
 * The server and metaserver are not built
-* You need to run pioneers.exe from the MSYS prompt
 
 Roland Clobus
-2005-10-18 (Pioneers-0.9.34)
+2005-11-15 (Pioneers-0.9.35)

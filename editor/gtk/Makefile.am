@@ -2,8 +2,6 @@ configdir=$(datadir)/games/pioneers
 
 bin_PROGRAMS = pioneers-editor
 
-include $(top_srcdir)/rules.make
-
 pioneers_editor_DEPENDENCIES = \
 	../../common/libpioneers.a \
 	../../common/gtk/libpioneers_gtk.a
@@ -11,12 +9,9 @@ pioneers_editor_DEPENDENCIES = \
 AM_CPPFLAGS = \
 	-I$(srcdir)/../../common -I. \
 	-I$(srcdir)/../../common/gtk -I. \
-	-DDATADIR=\"$(datadir)\" \
-	$(ADMIN_GTK) \
 	-I$(includedir) \
 	$(GNOME2_CFLAGS) \
-	$(GTK2_CFLAGS) \
-	$(extra_includes)
+	$(GTK2_CFLAGS)
 
 pioneers_editor_SOURCES = \
 	editor.c \

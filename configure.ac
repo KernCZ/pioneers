@@ -20,7 +20,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 AC_PREREQ(2.53)
-AC_INIT([pioneers],[0.9.34],[pio-temporary@lists.sourceforge.net])
+AC_INIT([pioneers],[0.9.35],[pio-develop@lists.sourceforge.net])
 AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
 AC_CONFIG_SRCDIR([client])
 AM_CONFIG_HEADER(config.h)
@@ -294,6 +294,32 @@ if test $pioneers_is_mingw_port = yes; then
 	# Just add ws2_32 to the list of libraries
 	AC_SUBST(LIBS, "-lws2_32 $LIBS")
 	AC_SUBST(AM_CFLAGS, "-mms-bitfields $AM_CFLAGS")
+	AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -DWIN32_LEAN_AND_MEAN")
+	# Don't use bin, lib and share subdirectories
+	datadir='${prefix}'
+	bindir='${prefix}'
+	libdir='${prefix}'
+	pioneers_datadir=.
+	pioneers_themedir_install=$datadir/themes
+	pioneers_themedir=themes
+	pioneers_localedir=locale
+else
+	pioneers_datadir=$datadir
+	pioneers_themedir_install=$datadir/games/pioneers/themes
+	pioneers_themedir=$pioneers_themedir_install
+	pioneers_localedir=$libdir/locale
+fi
+AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -DDATADIR=\\\""$pioneers_datadir"\\\"")
+AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -DTHEMEDIR=\\\""$pioneers_themedir"\\\"")
+AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -DLOCALEDIR=\\\""$pioneers_localedir"\\\"")
+AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -DPIONEERS_DIR_DEFAULT=\\\""$pioneers_datadir/games/pioneers"\\\"")
+AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -DPIONEERS_SERVER_CONSOLE_PATH=\\\""$bindir/pioneers-server-console"\\\"")
+AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -DPIONEERS_SERVER_GTK_PATH=\\\""$bindir/pioneers-server-gtk"\\\"")
+AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -DPIONEERS_AI_PATH=\\\""$bindir/pioneersai"\\\"")
+AC_SUBST(pioneers_themedir, $pioneers_themedir_install)
+
+if test $pioneers_is_windows_port = yes; then
+	AC_SUBST(WINDOWS_ICON, [windowsicon.o])
 fi
 
 # Time out

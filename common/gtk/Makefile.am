@@ -18,20 +18,13 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-include $(top_srcdir)/rules.make
-
 noinst_LIBRARIES = libpioneers_gtk.a
-
-themedir  =$(datadir)/games/pioneers/themes
 
 AM_CPPFLAGS = \
 	-I$(includedir) \
 	-I$(srcdir)/.. \
-	-DDATADIR=\"$(datadir)\" \
-	-DTHEMEDIR=\"$(themedir)\" \
 	$(GNOME2_CFLAGS) \
-	$(GTK2_CFLAGS) \
-	$(extra_includes)
+	$(GTK2_CFLAGS)
 
 libpioneers_gtk_a_SOURCES = \
 	aboutbox.c \

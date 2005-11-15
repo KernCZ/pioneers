@@ -1,3 +1,29 @@
+2005-11-15  0.9.35  Roland Clobus <rclobus@bigfoot.com> [Windows native port]
+	* rules.make: Removed, functionality moved to configure.ac
+	* client/gtk/pioneers.rc, client/gtk/data/pioneers.ico: Windows icon.
+	* Makefile.am, configure.ac, client/Makefile.am,
+	client/ai/Makefile.am, client/common/Makefile.am,
+	client/gtk/Makfile.am, client/gtk/data/Makefile.am,
+	client/gtk/data/themes/Makefile.am,
+	client/gtk/data/themes/FreeCIV-like/Makefile.am,
+	client/gtk/data/themes/Iceland/Makefile.am,
+	client/gtk/data/themes/Tiny/Makefile.am, client/help/Makefile.am,
+	client/help/C/Makefile.am, common/Makefile.am, common/gtk/Makefile.am,
+	docs/Makefile.am, editor/Makefile.am, editor/gtk/Makefile.am,
+	meta-server/Makefile.am, server/Makefile.am, server/gtk/Makefile.am:
+	Stop using rules.make, all is managed from configure.ac
+	* client/gtk/gui.c: Don't use gtk_icon_source_set_filename anymore, it
+	does not allow relative paths, as needed for Windows and klik.
+	* configure.ac: Use pio-develop@lists.sourceforge.net as contact email
+	address.
+	
+2005-11-14  Brian Wellington <bwelling@xbill.org>
+	* editor/gtk/editor.c: After a 'save as', remember the filename.
+
+2005-11-09  Brian Wellington <bwelling@xbill.org>
+	* editor/gtk/editor.c: File|New resets/redraws the map. Use the 'Save
+	as' icon. Don't show the robber in the editor.
+
 2005-10-23  0.9.34  Bas Wijnen <shevek@fmf.nl>
 	* client/common/callback.c: Removed some debug text.
 
@@ -8,7 +34,7 @@
 	the distributed tarball.
 	* configure.ac, client/common/i18n.c, common/network.c,
 	common/network.h: The code can be configured and built from the MinGW
-	environment.
+	environment. Use send and recv instead of write and read.
 
 2005-10-02  0.9.33  Roland Clobus <rclobus@bigfoot.com>
 	* configure.ac: Enable debug, enable deprecation-check and enable

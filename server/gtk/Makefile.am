@@ -17,9 +17,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-include $(top_srcdir)/rules.make
-
-configdir=$(datadir)/games/pioneers
 Gamesdir=$(datadir)/gnome/apps/Games
 
 bin_PROGRAMS = pioneers-server-gtk
@@ -28,11 +25,9 @@ AM_CPPFLAGS = \
 	-I $(srcdir)/../../common \
 	-I $(srcdir)/../../common/gtk \
 	-I $(srcdir)/.. \
-	-DDATADIR=\"$(datadir)\" \
 	-I$(includedir) \
 	$(GNOME2_CFLAGS) \
-	$(GTK2_CFLAGS) \
-	$(extra_includes)
+	$(GTK2_CFLAGS)
 
 pioneers_server_gtk_DEPENDENCIES = \
 	../libpioneers_server.a \

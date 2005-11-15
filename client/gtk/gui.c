@@ -1181,10 +1181,19 @@ static void register_pixmaps(void)
 					    pioneers_pixmaps[idx], NULL);
 		if (g_file_test(filename, G_FILE_TEST_EXISTS)) {
 			GtkIconSource *source;
-			source = gtk_icon_source_new();
-			gtk_icon_source_set_filename(source, filename);
-			gtk_icon_set_add_source(icon, source);
-			gtk_icon_source_free(source);
+			GdkPixbuf *pixbuf;
+			GError *error = NULL;
+			pixbuf = gdk_pixbuf_new_from_file(filename, &error);
+			if (error != NULL) {
+				g_warning("Error loading pixmap %s\n", filename);
+				g_error_free(error);
+			} else {
+				source = gtk_icon_source_new();
+				gtk_icon_source_set_pixbuf(source, pixbuf);
+				g_object_unref(pixbuf);
+				gtk_icon_set_add_source(icon, source);
+				gtk_icon_source_free(source);
+			}
 		} else {
 			/* Missing pixmap */
 			g_warning(_("Pixmap not found: %s\n"), filename);

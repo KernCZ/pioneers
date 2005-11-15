@@ -18,8 +18,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-include $(top_srcdir)/rules.make
-
 noinst_LIBRARIES = libpioneersclient.a
 
 libpioneersclient_a_DEPENDENCIES = ../../common/libpioneers.a
@@ -29,8 +27,7 @@ AM_CPPFLAGS = \
 	-I$(srcdir)/../.. \
 	-I$(srcdir)/../../common \
 	-I$(includedir) \
-	$(GLIB2_CFLAGS) \
-	$(extra_includes)
+	$(GLIB2_CFLAGS)
 
 libpioneersclient_a_SOURCES = \
 	build.c \

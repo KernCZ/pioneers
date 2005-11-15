@@ -18,16 +18,16 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-include $(top_srcdir)/rules.make
-
 SUBDIRS = themes
 
-themedir  =$(datadir)/games/pioneers/themes
+themedir  =$(pioneers_themedir)
 appicondir=$(datadir)/pixmaps
 pixmapdir =$(datadir)/pixmaps/pioneers
 Gamesdir=$(datadir)/gnome/apps/Games
 
 appicon_DATA = gnome-pioneers.png
+
+noinst_DATA = pioneers.ico
 
 theme_DATA = \
 	cross.png \
@@ -49,6 +49,7 @@ pixmap_DATA = \
 Games_DATA = pioneers.desktop
 
 EXTRA_DIST = \
+	$(noinst_DATA) \
 	$(appicon_DATA) \
 	$(theme_DATA) \
 	$(pixmap_DATA) \
