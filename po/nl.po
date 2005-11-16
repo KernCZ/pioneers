@@ -826,7 +826,7 @@ msgid ""
 "\tThe metaserver does not send information about the games.\n"
 "\tPlease set appropriate values yourself."
 msgstr ""
-"<b>Opmerkingen<b>:\n"
+"<b>Opmerkingen</b>:\n"
 "\tDe metaserver verstrekt geen informatie over de spellen.\n"
 "\tKies zelf geschikte instellingen."
 
@@ -1429,7 +1429,7 @@ msgstr "Zee"
 
 #: ../client/gtk/legend.c:144
 msgid "<b>Terrain Yield</b>"
-msgstr "<b>Terreinopbrengsteni</b>"
+msgstr "<b>Terreinopbrengsten</b>"
 
 #: ../client/gtk/legend.c:176
 msgid "<b>Building Costs</b>"
