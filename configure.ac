@@ -20,7 +20,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 AC_PREREQ(2.53)
-AC_INIT([pioneers],[0.9.35],[pio-develop@lists.sourceforge.net])
+AC_INIT([pioneers],[0.9.36],[pio-develop@lists.sourceforge.net])
 AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
 AC_CONFIG_SRCDIR([client])
 AM_CONFIG_HEADER(config.h)
@@ -295,6 +295,10 @@ if test $pioneers_is_mingw_port = yes; then
 	AC_SUBST(LIBS, "-lws2_32 $LIBS")
 	AC_SUBST(AM_CFLAGS, "-mms-bitfields $AM_CFLAGS")
 	AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -DWIN32_LEAN_AND_MEAN")
+	if test $pioneers_logging = no; then
+		# No console window for the graphical applications
+		AC_SUBST(GTK2_LIBS, "$GTK2_LIBS -mwindows")
+	fi
 	# Don't use bin, lib and share subdirectories
 	datadir='${prefix}'
 	bindir='${prefix}'

@@ -1,3 +1,7 @@
+2005-11-23  0.9.36  Roland Clobus <rclobus@bigfoot.com>
+	* configure.ac: No console window for graphical applications in MinGW
+	port. 
+	
 2005-11-15  0.9.35  Roland Clobus <rclobus@bigfoot.com> [Windows native port]
 	* rules.make: Removed, functionality moved to configure.ac
 	* client/gtk/pioneers.rc, client/gtk/data/pioneers.ico: Windows icon.
