@@ -1,3 +1,7 @@
+2005-12-05  0.9.37  Roland Clobus <rclobus@bigfoot.com>
+	* client/gtk/pioneers.svg, editor/gtk/pioneers-editor.svg,
+	server/gtk/pioneers-server.svg: Added icon files.
+
 2005-11-23  0.9.36  Roland Clobus <rclobus@bigfoot.com>
 	* configure.ac: No console window for graphical applications in MinGW
 	port. 
