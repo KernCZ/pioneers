@@ -18,6 +18,8 @@
 #include "theme.h"
 #include "colors.h"
 
+#define MAINICON_FILE "pioneers-editor.png"
+
 #define MAP_WIDTH 550		/* default map width */
 #define MAP_HEIGHT 400		/* default map height */
 
@@ -1024,6 +1026,7 @@ int main(int argc, char *argv[])
 	GtkWidget *menubar;
 	GtkAccelGroup *accel_group;
 	GError *error;
+	gchar *icon_file;
 
 	if (argc > 1)
 		filename = argv[1];
@@ -1069,6 +1072,15 @@ int main(int argc, char *argv[])
 	}
 
 	config_init("pioneers-editor");
+
+	icon_file = g_build_filename(DATADIR, "pixmaps", MAINICON_FILE, NULL);
+	if (g_file_test(icon_file, G_FILE_TEST_EXISTS)) {
+		gtk_window_set_default_icon_from_file(icon_file, NULL);
+	} else {
+		/* Missing pixmap, main icon file */
+		g_warning(_("Pixmap not found: %s\n"), icon_file);
+	}
+	g_free(icon_file);
 
 	themes_init();
 	colors_init();

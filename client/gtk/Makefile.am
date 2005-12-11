@@ -22,7 +22,6 @@ SUBDIRS = data
 
 appicondir=$(datadir)/pixmaps
 pixmapdir =$(datadir)/pixmaps/pioneers
-Gamesdir=$(datadir)/gnome/apps/Games
 
 bin_PROGRAMS = pioneers
 

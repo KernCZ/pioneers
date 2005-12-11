@@ -1,4 +1,10 @@
+appicondir=$(datadir)/pixmaps
 configdir=$(datadir)/games/pioneers
+desktopdir=$(datadir)/applications
+
+appicon_DATA = pioneers-editor.png
+
+noinst_DATA = pioneers-editor.svg
 
 bin_PROGRAMS = pioneers-editor
 
@@ -29,3 +35,16 @@ pioneers_editor_LDADD = \
 	../../common/gtk/libpioneers_gtk.a \
 	$(GNOME2_LIBS) \
 	$(GTK2_LIBS)
+
+desktop_DATA = pioneers-editor.desktop
+
+EXTRA_DIST = \
+	$(appicon_DATA) \
+	$(desktop_DATA) \
+	$(noinst_DATA)
+
+MAINTAINERCLEANFILES = $(appicon_DATA)
+
+pioneers-editor.png: pioneers-editor.svg
+	rsvg --width 48 $< $@
+

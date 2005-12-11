@@ -17,7 +17,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-Gamesdir=$(datadir)/gnome/apps/Games
+appicondir=$(datadir)/pixmaps
+desktopdir=$(datadir)/applications
+
+appicon_DATA = pioneers-server.png
+
+noinst_DATA = pioneers-server.svg
 
 bin_PROGRAMS = pioneers-server-gtk
 
@@ -44,7 +49,14 @@ pioneers_server_gtk_LDADD = \
 	$(GNOME2_LIBS) \
 	$(GTK2_LIBS)
 
-Games_DATA = pioneers-server.desktop
+desktop_DATA = pioneers-server.desktop
 
 EXTRA_DIST = \
-	$(Games_DATA)
+	$(appicon_DATA) \
+	$(desktop_DATA) \
+	$(noinst_DATA)
+
+MAINTAINERCLEANFILES = $(appicon_DATA)
+
+pioneers-server.png: pioneers-server.svg
+	rsvg --width 48 $< $@

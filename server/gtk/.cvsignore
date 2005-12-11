@@ -3,3 +3,4 @@ Makefile
 .deps
 .libs
 pioneers-server-gtk
+pioneers-server.png

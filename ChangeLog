@@ -1,3 +1,13 @@
+2005-12-11  0.9.38  Roland Clobus <rclobus@bigfoot.com>
+	* client/gtk/Makefile.am, client/gtk/gui.c,
+	client/gtk/data/Makefile.am, client/gtk/data/pioneers.desktop,
+	editor/gtk/Makefile.am, editor/gtk/editor.c,
+	editor/gtk/pioneers-editor.desktop, server/gtk/Makefile.am,
+	server/gtk/main.c, server/gtk/pioneer-server.desktop: Use the new
+	icons (automatically rendered from the svg files from 0.9.37)
+	* client/gtk/data/.cvsignore, editor/gtk/.cvsignore,
+	server/gtk/.cvsignore: Ignore the generated .png files
+
 2005-12-05  0.9.37  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/data/pioneers.svg, editor/gtk/pioneers-editor.svg,
 	server/gtk/pioneers-server.svg: Added icon files.

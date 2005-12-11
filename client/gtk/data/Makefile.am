@@ -23,11 +23,13 @@ SUBDIRS = themes
 themedir  =$(pioneers_themedir)
 appicondir=$(datadir)/pixmaps
 pixmapdir =$(datadir)/pixmaps/pioneers
-Gamesdir=$(datadir)/gnome/apps/Games
+desktopdir=$(datadir)/applications
 
-appicon_DATA = gnome-pioneers.png
+appicon_DATA = pioneers.png
 
-noinst_DATA = pioneers.ico
+noinst_DATA = \
+	pioneers.ico \
+	pioneers.svg
 
 theme_DATA = \
 	cross.png \
@@ -46,11 +48,16 @@ pixmap_DATA = \
 	splash.png \
 	trade.png
 
-Games_DATA = pioneers.desktop
+desktop_DATA = pioneers.desktop
 
 EXTRA_DIST = \
 	$(noinst_DATA) \
 	$(appicon_DATA) \
 	$(theme_DATA) \
 	$(pixmap_DATA) \
-	$(Games_DATA)
+	$(desktop_DATA)
+
+MAINTAINERCLEANFILES = $(appicon_DATA)
+
+pioneers.png: pioneers.svg
+	rsvg --width 48 $< $@

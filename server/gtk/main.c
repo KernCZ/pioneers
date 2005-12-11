@@ -38,7 +38,7 @@
 #include "select-game.h"	/* Custom widget */
 #include "game-settings.h"	/* Custom widget */
 
-#define PIONEERS_ICON_FILE	"gnome-pioneers.png"
+#define MAINICON_FILE	"pioneers-server.png"
 
 static GtkWidget *game_frame;	/* the frame containing all settings regarding the game */
 static GtkWidget *select_game;	/* select game type */
@@ -820,8 +820,7 @@ int main(int argc, char *argv[])
 
 	config_init("pioneers-server");
 
-	icon_file =
-	    g_build_filename(DATADIR, "pixmaps", PIONEERS_ICON_FILE, NULL);
+	icon_file = g_build_filename(DATADIR, "pixmaps", MAINICON_FILE, NULL);
 	if (g_file_test(icon_file, G_FILE_TEST_EXISTS)) {
 		gtk_window_set_default_icon_from_file(icon_file, NULL);
 	} else {
