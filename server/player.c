@@ -230,6 +230,11 @@ Player *player_new(Game * game, int fd, gchar * location)
 		return NULL;
 	}
 
+        /* Cache messages of the game in progress until all intial 
+         * messages have been sent
+         */
+        sm_set_use_cache(sm, TRUE);
+
 	player->game = game;
 	player->location = g_strdup(location);
 	player->devel = deck_new(game->params);
@@ -602,7 +607,7 @@ static gboolean mode_bad_version(Player * player, gint event)
 	sm_state_name(sm, "mode_bad_version");
 	switch (event) {
 	case SM_ENTER:
-		sm_send(sm, "ERR sorry, version conflict\n");
+		sm_send_uncached(sm, "ERR sorry, version conflict\n");
 		break;
 	}
 	return FALSE;
@@ -634,7 +639,7 @@ static gboolean mode_check_version(Player * player, gint event)
 	sm_state_name(sm, "mode_check_version");
 	switch (event) {
 	case SM_ENTER:
-		sm_send(sm, "version report\n");
+		sm_send_uncached(sm, "version report\n");
 		break;
 
 	case SM_RECV:
@@ -672,7 +677,7 @@ static gboolean mode_check_status(Player * player, gint event)
 	sm_state_name(sm, "mode_check_status");
 	switch (event) {
 	case SM_ENTER:
-		sm_send(sm, "status report\n");
+		sm_send_uncached(sm, "status report\n");
 		break;
 
 	case SM_RECV:

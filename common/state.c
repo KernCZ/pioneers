@@ -432,7 +432,16 @@ void sm_vnformat(gchar * buff, gint len, const gchar * fmt, va_list ap)
 
 void sm_write(StateMachine * sm, const gchar * str)
 {
-	net_write(sm->ses, str);
+	if (sm->use_cache) {
+		/* Protect against strange/slow connects */
+		if (g_list_length(sm->cache)>1000) {
+			net_write(sm->ses, "ERR connection too slow");
+			net_close_when_flushed(sm->ses);
+		} else {
+			sm->cache = g_list_append(sm->cache, g_strdup(str));
+		}
+	} else
+		net_write(sm->ses, str);
 }
 
 void sm_send(StateMachine * sm, const gchar * fmt, ...)
@@ -442,6 +451,53 @@ void sm_send(StateMachine * sm, const gchar * fmt, ...)
 
 	if (!sm->ses)
 		return;
+
+	va_start(ap, fmt);
+	sm_vnformat(buff, sizeof(buff), fmt, ap);
+	va_end(ap);
+
+	sm_write(sm, buff);
+}
+
+void sm_set_use_cache(StateMachine * sm, gboolean use_cache)
+{
+	if (sm->use_cache == use_cache)
+		return;
+
+	if (!use_cache) {
+		/* The cache is turned off, send the delayed data */
+		GList *list = sm->cache;
+		while (list) {
+			gchar *data = list->data;
+			net_write(sm->ses, data);
+			list = g_list_remove(list, data);
+			g_free(data);
+		}
+		sm->cache = NULL;
+	} else {
+		/* Be sure that the cache is empty */
+		g_assert(!sm->cache);
+	}
+	sm->use_cache = use_cache;
+}
+
+StateMachine *sm_copy_as_uncached(const StateMachine * sm)
+{
+	StateMachine *copy;
+	copy = g_malloc(sizeof(*sm));
+	memcpy(copy, sm, sizeof(*sm));
+	copy->use_cache = FALSE;
+	copy->cache = NULL;
+	return copy;
+}
+
+void sm_send_uncached(StateMachine * sm, const gchar * fmt, ...)
+{
+	va_list ap;
+	gchar buff[512];
+
+	g_assert(sm->ses);
+	g_assert(sm->use_cache);
 
 	va_start(ap, fmt);
 	sm_vnformat(buff, sizeof(buff), fmt, ap);

@@ -101,6 +101,11 @@ void net_close(Session * ses);
 void net_close_when_flushed(Session * ses);
 void net_wait_for_close(Session * ses);
 void net_printf(Session * ses, const gchar * fmt, ...);
+
+/** Write data.
+ * @param ses  The session
+ * @param data The data to send
+ */
 void net_write(Session * ses, const gchar * data);
 
 /** Get the hostname of this computer.

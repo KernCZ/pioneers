@@ -338,9 +338,8 @@ static void try_start_game(Game * game)
 
 /* Send the player list to the client
  */
-static void send_player_list(Player * player)
+static void send_player_list(StateMachine *sm, Player * player)
 {
-	StateMachine *sm = player->sm;
 	Game *game = player->game;
 	GList *list;
 
@@ -357,16 +356,15 @@ static void send_player_list(Player * player)
 
 /* Send the game parameters to the player
  */
-static void send_game_line(Player * player, gchar * str)
+static void send_game_line(StateMachine * sm, gchar * str)
 {
-	StateMachine *sm = player->sm;
 	sm_send(sm, "%s\n", str);
 }
 
-gboolean send_gameinfo(Map * map, Hex * hex, Player * player)
+gboolean send_gameinfo(Map * map, Hex * hex, StateMachine *sm)
 {
-	StateMachine *sm = player->sm;
 	gint i;
+
 	for (i = 0; i < G_N_ELEMENTS(hex->nodes); i++) {
 		if (!hex->nodes[i] || hex->nodes[i]->x != hex->x
 		    || hex->nodes[i]->y != hex->y)
@@ -426,7 +424,6 @@ gboolean send_gameinfo(Map * map, Hex * hex, Player * player)
  */
 gboolean mode_pre_game(Player * player, gint event)
 {
-	/* When entering this state: disconnect this player, and reconnect at the end */
 	static gboolean old_player_disconnected;
 	StateMachine *sm = player->sm;
 	Game *game = player->game;
@@ -448,6 +445,7 @@ gboolean mode_pre_game(Player * player, gint event)
 	}
 
 	sm_state_name(sm, "mode_pre_game");
+        sm = sm_copy_as_uncached(sm);
 	switch (event) {
 	case SM_ENTER:
 		sm_send(sm,
@@ -458,9 +456,8 @@ gboolean mode_pre_game(Player * player, gint event)
 		 * know how many players are in the game, and therefore if
 		 * he is a player of a viewer. */
 		old_player_disconnected = player->disconnected;
-		player->disconnected = TRUE;
 		/* Tell the other players about this player */
-		player_broadcast(player, PB_ALL, "is %s\n", player->name);
+		player_broadcast(player, PB_OTHERS, "is %s\n", player->name);
 		/* Tell this player his own name */
 		sm_send(sm, "player %d is %s\n", player->num,
 			player->name);
@@ -468,20 +465,22 @@ gboolean mode_pre_game(Player * player, gint event)
 
 	case SM_RECV:
 		if (sm_recv(sm, "players")) {
-			send_player_list(player);
+			send_player_list(sm, player);
+                        g_free(sm);
 			return TRUE;
 		}
 		if (sm_recv(sm, "game")) {
 			sm_send(sm, "game\n");
 			params_write_lines(game->params, FALSE,
 					   (WriteLineFunc) send_game_line,
-					   player);
+					   sm);
 			sm_send(sm, "end\n");
+                        g_free(sm);
 			return TRUE;
 		}
 		if (sm_recv(sm, "gameinfo")) {
 			sm_send(sm, "gameinfo\n");
-			map_traverse(map, (HexFunc) send_gameinfo, player);
+			map_traverse(map, (HexFunc) send_gameinfo, sm);
 			sm_send(sm, ".\n");
 
 			/* now, send state info */
@@ -636,6 +635,7 @@ gboolean mode_pre_game(Player * player, gint event)
 			}
 
 			sm_send(sm, "end\n");
+                        g_free(sm);
 			return TRUE;
 		}
 		if (sm_recv(sm, "start")) {
@@ -681,6 +681,10 @@ gboolean mode_pre_game(Player * player, gint event)
 			}
 
 			player->disconnected = old_player_disconnected;
+                        g_free(sm);
+                        sm = player->sm;
+                        sm_set_use_cache(sm, FALSE);
+                        
 			if (player->disconnected) {
 				player->disconnected = FALSE;
 				driver->player_change(game);
@@ -699,5 +703,6 @@ gboolean mode_pre_game(Player * player, gint event)
 	default:
 		break;
 	}
+        g_free(sm);
 	return FALSE;
 }
