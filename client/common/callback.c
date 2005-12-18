@@ -499,7 +499,7 @@ int robber_count_victims(const Hex * hex, gint * victim_list)
 	/* If there is no-one to steal from, or the players have no
 	 * resources, we do not go into steal_resource.
 	 */
-	for (idx = 0; idx < num_players(); idx++)
+	for (idx = 0; idx < G_N_ELEMENTS(hex->nodes); idx++)
 		victim_list[idx] = -1;
 	num_victims = 0;
 	for (node_idx = 0; node_idx < G_N_ELEMENTS(hex->nodes); node_idx++) {

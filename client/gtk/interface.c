@@ -682,8 +682,8 @@ static gboolean can_edge_be_robbed(MapElement edge,
 static void place_robber_or_pirate_cb(MapElement hex,
 				      G_GNUC_UNUSED MapElement extra)
 {
-	gint victim_list[6];
 	if (hex.hex->terrain == SEA_TERRAIN) {
+		gint victim_list[G_N_ELEMENTS(hex.hex->edges)];
 		switch (pirate_count_victims(hex.hex, victim_list)) {
 		case 0:
 			place_robber(hex.hex, -1);
@@ -701,6 +701,7 @@ static void place_robber_or_pirate_cb(MapElement hex,
 			break;
 		}
 	} else {
+		gint victim_list[G_N_ELEMENTS(hex.hex->nodes)];
 		switch (robber_count_victims(hex.hex, victim_list)) {
 		case 0:
 			place_robber(hex.hex, -1);

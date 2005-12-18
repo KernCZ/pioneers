@@ -1,3 +1,7 @@
+2005-12-18  0.9.39  Roland Clobus <rclobus@bigfoot.com>
+	* client/common/callback.c, client/gtk/interface.c: Fixed a crash when
+	a robber could be placed in a game with more than six players.
+	
 2005-12-11  0.9.38  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/Makefile.am, client/gtk/gui.c,
 	client/gtk/data/Makefile.am, client/gtk/data/pioneers.desktop,
