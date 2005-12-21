@@ -20,7 +20,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 AC_PREREQ(2.53)
-AC_INIT([pioneers],[0.9.39],[pio-develop@lists.sourceforge.net])
+AC_INIT([pioneers],[0.9.40],[pio-develop@lists.sourceforge.net])
 AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
 AC_CONFIG_SRCDIR([client])
 AM_CONFIG_HEADER(config.h)
@@ -407,6 +407,7 @@ AM_CONDITIONAL(BUILD_META_SERVER, [test $pioneers_build_metaserver = yes])
 AC_CONFIG_FILES([ \
 	Makefile \
 	pioneers.spec \
+	pioneers.nsi \
 	po/Makefile.in \
 	common/Makefile \
 	client/Makefile \
