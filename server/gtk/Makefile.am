@@ -59,4 +59,4 @@ EXTRA_DIST = \
 MAINTAINERCLEANFILES = $(appicon_DATA)
 
 pioneers-server.png: pioneers-server.svg
-	rsvg --width 48 $< $@
+	$(SVG_RENDERER) 48 $< $@

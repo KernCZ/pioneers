@@ -2,7 +2,10 @@
 	* configure.ac, pioneers.nsi.in: Windows installer script.
 	(nsis.sf.net)
 	* client/gtk/Makefile.am, meta-server/Makefile.am: Added extra include
-	for driver.o (needed for Fink port)
+	for driver.o (needed for Fink port, based on the patch by Tristan
+	Thiede)
+	* configure.ac, client/gtk/data/Makefile.am, editor/gtk/Makefile.am,
+	server/gtk/Makefile.am: Configurable SVG renderer.
 	
 2005-12-18  0.9.39  Roland Clobus <rclobus@bigfoot.com>
 	* client/common/callback.c, client/gtk/interface.c: Fixed a crash when

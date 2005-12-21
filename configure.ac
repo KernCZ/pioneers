@@ -57,6 +57,22 @@ else
 	pioneers_deprecationChecks=no;
 fi
 
+# Try to find a suitable renderer for the svg images
+AC_PATH_PROG(svg_renderer_path, rsvg)
+if test x$svg_renderer_path != x; then
+	AC_SUBST(SVG_RENDERER, ["$svg_renderer_path --width"])
+else
+AC_PATH_PROG(svg_renderer_path, convert)
+if test x$svg_renderer_path != x; then
+	AC_SUBST(SVG_RENDERER, ["$svg_renderer_path -background \"\#000001\" -transparent \"\#000001\" -resize"])
+else 
+	# Add other SVG rendering programs here
+	# Don't let configure fail, in the distributed tarballs is already
+	# a current .png file
+	AC_SUBST(SVG_RENDERER, [false])
+fi
+fi
+
 AC_ARG_ENABLE([warnings],
 [  --enable-warnings       Compile with check for compiler warnings (gcc-only).],
 [case "${enableval}" in
