@@ -27,3 +27,4 @@ mkinstalldirs
 acinclude.m4
 INSTALL
 pioneers.spec
+pioneers.nsi
