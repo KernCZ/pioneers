@@ -6,6 +6,10 @@
 	Thiede)
 	* configure.ac, client/gtk/data/Makefile.am, editor/gtk/Makefile.am,
 	server/gtk/Makefile.am: Configurable SVG renderer.
+	* .cvsignore: Ignore pioneers.nsi.
+	* client/gt/data/pioneers.ico: Updated to match the icons of 0.9.38.
+	* editor/gtk/Makefile.am, editor/gtk/pioneers-editor.ico,
+	editor/gtk/pioneers-editor.rc: Windows icon for the editor.
 	
 2005-12-18  0.9.39  Roland Clobus <rclobus@bigfoot.com>
 	* client/common/callback.c, client/gtk/interface.c: Fixed a crash when
