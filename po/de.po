@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnocatan 0.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-10-02 08:39+0200\n"
+"POT-Creation-Date: 2005-12-21 21:05+0100\n"
 "PO-Revision-Date: 2003-10-29 23:13+0100\n"
 "Last-Translator: Roman Hodek <roman@hodek.net>\n"
 "Language-Team: de <de@li.org>\n"
@@ -270,7 +270,7 @@ msgid "Waiting for your turn"
 msgstr "Warte auf deinen Zug"
 
 #: ../client/common/client.c:1403 ../client/common/client.c:1428
-#: ../client/gtk/interface.c:741
+#: ../client/gtk/interface.c:742
 msgid "Place the robber"
 msgstr "Setze den Räuber"
 
@@ -654,7 +654,7 @@ msgid "gold"
 msgstr "Gold"
 
 #: ../client/common/resource.c:42 ../client/gtk/legend.c:38
-#: ../editor/gtk/editor.c:52
+#: ../editor/gtk/editor.c:54
 msgid "Gold"
 msgstr "Gold"
 
@@ -1115,7 +1115,7 @@ msgstr "S_pielername"
 msgid "Change your player name"
 msgstr "Ändern des Spielernamens"
 
-#: ../client/gtk/gui.c:207 ../editor/gtk/editor.c:969 ../server/gtk/main.c:85
+#: ../client/gtk/gui.c:207 ../editor/gtk/editor.c:979 ../server/gtk/main.c:85
 msgid "_Quit"
 msgstr ""
 
@@ -1231,7 +1231,7 @@ msgstr ""
 msgid "Configure the application"
 msgstr ""
 
-#: ../client/gtk/gui.c:236 ../client/gtk/gui.c:246 ../editor/gtk/editor.c:957
+#: ../client/gtk/gui.c:236 ../client/gtk/gui.c:246 ../editor/gtk/editor.c:967
 #: ../server/gtk/main.c:84
 msgid "_Help"
 msgstr "_Hilfe"
@@ -1291,7 +1291,7 @@ msgid "<b>Messages</b>"
 msgstr "<b>Nachrichten</b>"
 
 #. Tab page name
-#: ../client/gtk/gui.c:533 ../editor/gtk/editor.c:1072
+#: ../client/gtk/gui.c:533 ../editor/gtk/editor.c:1092
 msgid "Map"
 msgstr "Karte"
 
@@ -1382,13 +1382,14 @@ msgstr "Willkommen zu Pioneers!"
 
 #. Missing pixmap
 #. Missing pixmap, main icon file
-#: ../client/gtk/gui.c:1190 ../client/gtk/gui.c:1252 ../server/gtk/main.c:828
+#: ../client/gtk/gui.c:1199 ../client/gtk/gui.c:1261
+#: ../editor/gtk/editor.c:1081 ../server/gtk/main.c:827
 #, c-format
 msgid "Pixmap not found: %s\n"
 msgstr ""
 
 #. The name of the application
-#: ../client/gtk/gui.c:1218
+#: ../client/gtk/gui.c:1227
 msgid "Pioneers"
 msgstr "Pioneers"
 
@@ -1410,39 +1411,39 @@ msgstr "Wähle das Schiff, von dem gestohlen werden soll."
 msgid "Select the ship to steal from"
 msgstr "Wähle das Schiff, von dem gestohlen werden soll"
 
-#: ../client/gtk/interface.c:716
+#: ../client/gtk/interface.c:717
 msgid "Select the building to steal from."
 msgstr "Wähle das Gebäude, von dem gestohlen werden soll."
 
-#: ../client/gtk/interface.c:718
+#: ../client/gtk/interface.c:719
 msgid "Select the building to steal from"
 msgstr "Wähle das Gebäude, von dem gestohlen werden soll"
 
-#: ../client/gtk/legend.c:31 ../editor/gtk/editor.c:45
+#: ../client/gtk/legend.c:31 ../editor/gtk/editor.c:47
 msgid "Hill"
 msgstr "Hügelland"
 
-#: ../client/gtk/legend.c:32 ../editor/gtk/editor.c:46
+#: ../client/gtk/legend.c:32 ../editor/gtk/editor.c:48
 msgid "Field"
 msgstr "Ackerland"
 
-#: ../client/gtk/legend.c:33 ../editor/gtk/editor.c:47
+#: ../client/gtk/legend.c:33 ../editor/gtk/editor.c:49
 msgid "Mountain"
 msgstr "Gebirge"
 
-#: ../client/gtk/legend.c:34 ../editor/gtk/editor.c:48
+#: ../client/gtk/legend.c:34 ../editor/gtk/editor.c:50
 msgid "Pasture"
 msgstr "Weideland"
 
-#: ../client/gtk/legend.c:35 ../editor/gtk/editor.c:49
+#: ../client/gtk/legend.c:35 ../editor/gtk/editor.c:51
 msgid "Forest"
 msgstr "Wald"
 
-#: ../client/gtk/legend.c:36 ../editor/gtk/editor.c:50
+#: ../client/gtk/legend.c:36 ../editor/gtk/editor.c:52
 msgid "Desert"
 msgstr "Wüste"
 
-#: ../client/gtk/legend.c:37 ../editor/gtk/editor.c:51
+#: ../client/gtk/legend.c:37 ../editor/gtk/editor.c:53
 msgid "Sea"
 msgstr "Meer"
 
@@ -2102,303 +2103,307 @@ msgstr "Zuschauer: "
 msgid "** UNKNOWN MESSAGE TYPE ** "
 msgstr "** UNBEKANNTER NACHRICHTENTYP ** "
 
-#: ../common/network.c:179
+#: ../common/network.c:188
 #, c-format
 msgid "Error checking connect status: %s\n"
 msgstr "Fehler beim Prüfen des Verbindungsstatus: %s\n"
 
-#: ../common/network.c:186
+#: ../common/network.c:195
 #, c-format
 msgid "Error connecting to host '%s': %s\n"
 msgstr "Fehler beim Verbinden zum Rechner '%s': %s\n"
 
-#: ../common/network.c:214
+#: ../common/network.c:223
 #, c-format
 msgid "Error writing socket: %s\n"
 msgstr "Fehler beim Schreiben auf Socket: %s\n"
 
-#: ../common/network.c:265
+#: ../common/network.c:274
 #, fuzzy, c-format
 msgid "Error writing to socket: %s\n"
 msgstr "Fehler beim Schreiben auf Socket: %s\n"
 
-#: ../common/network.c:314
+#: ../common/network.c:323
 msgid "Read buffer overflow - disconnecting\n"
 msgstr "Überlauf des Lesepuffers - Ende der Verbindung\n"
 
-#: ../common/network.c:324
+#: ../common/network.c:333
 #, c-format
 msgid "Error reading socket: %s\n"
 msgstr "Fehler beim Lesen des Sockets: %s\n"
 
-#: ../common/network.c:423
+#: ../common/network.c:465
 #, c-format
 msgid "Cannot resolve %s port %s: %s\n"
 msgstr "Kann %s Port %s nicht auflösen: %s\n"
 
-#: ../common/network.c:430
+#: ../common/network.c:472
 #, c-format
 msgid "Cannot resolve %s port %s: host not found\n"
 msgstr "Kann %s Port %s nicht auflösen: Rechner unbekannt\n"
 
-#: ../common/network.c:445
+#: ../common/network.c:487
 #, c-format
 msgid "Error creating socket: %s\n"
 msgstr "Fehler beim Anlegen eines Sockets: %s\n"
 
-#: ../common/network.c:452
+#: ../common/network.c:496
 #, c-format
 msgid "Error setting socket close-on-exec: %s\n"
 msgstr "Fehler beim Setzen von close-on-exec beim Socket: %s\n"
 
-#: ../common/network.c:461 ../common/network.c:621
+#: ../common/network.c:506 ../common/network.c:664
 #, c-format
 msgid "Error setting socket non-blocking: %s\n"
 msgstr "Fehler, den Socket nicht-blockierend zu machen: %s\n"
 
-#: ../common/network.c:486
+#: ../common/network.c:531
 #, c-format
 msgid "Error connecting to %s: %s\n"
 msgstr "Fehler beim Verbinden zu %s: %s\n"
 
-#: ../common/network.c:580
+#: ../common/network.c:623
 #, c-format
 msgid "Error creating struct addrinfo: %s"
 msgstr "Fehler beim Erzeugen einer struct addrinfo: %s"
 
-#: ../common/network.c:610
+#: ../common/network.c:653
 #, c-format
 msgid "Error creating listening socket: %s\n"
 msgstr "Fehler beim Anlegen des annehmenden Sockets: %s\n"
 
-#: ../common/network.c:630
+#: ../common/network.c:673
 #, c-format
 msgid "Error during listen on socket: %s\n"
 msgstr "Fehler beim Versetzen des Sockets in Annahme-Zustand: %s\n"
 
-#: ../common/network.c:639
+#: ../common/network.c:682
 msgid "Listening not yet supported on this platform."
 msgstr ""
 
-#: ../common/network.c:652 ../common/network.c:653
+#: ../common/network.c:695 ../common/network.c:696
 msgid "unknown"
 msgstr "unbekannt"
 
-#: ../common/network.c:659
+#: ../common/network.c:702
 #, fuzzy, c-format
 msgid "Error getting peer name: %s"
 msgstr "Fehler beim Holen des Namens des Kommunikationspartners: %s\n"
 
-#: ../common/network.c:672
+#: ../common/network.c:715
 #, c-format
 msgid "Error resolving address: %s"
 msgstr ""
 
-#: ../common/network.c:686
+#: ../common/network.c:729
 msgid "Net_get_peer_name not yet supported on this platform."
 msgstr ""
 
-#: ../common/network.c:701
+#: ../common/network.c:744
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "Fehler beim Annehmen einer Verbindung: %s"
+
+#: ../common/network.c:759
+msgid "No usable version of WinSock was found."
+msgstr ""
 
 #: ../common/state.c:156
 #, c-format
 msgid "Connecting to %s, port %s\n"
 msgstr "Verbinde zu %s Port %s\n"
 
-#: ../common/state.c:470
+#: ../common/state.c:526
 msgid "State stack overflow. Stack dump sent to standard error.\n"
 msgstr ""
 
-#: ../common/state.c:472
+#: ../common/state.c:528
 msgid "State stack overflow"
 msgstr ""
 
-#: ../editor/gtk/editor.c:53 ../editor/gtk/editor.c:62
+#: ../editor/gtk/editor.c:55 ../editor/gtk/editor.c:64
 msgid "None"
 msgstr ""
 
-#: ../editor/gtk/editor.c:57
+#: ../editor/gtk/editor.c:59
 msgid "Brick (2:1)"
 msgstr "Stein (2:1)"
 
-#: ../editor/gtk/editor.c:58
+#: ../editor/gtk/editor.c:60
 msgid "Grain (2:1)"
 msgstr "Getreide (2:1)"
 
-#: ../editor/gtk/editor.c:59
+#: ../editor/gtk/editor.c:61
 msgid "Ore (2:1)"
 msgstr "Erz (2:1)"
 
-#: ../editor/gtk/editor.c:60
+#: ../editor/gtk/editor.c:62
 msgid "Wool (2:1)"
 msgstr "Wolle (2:1)"
 
-#: ../editor/gtk/editor.c:61
+#: ../editor/gtk/editor.c:63
 msgid "Lumber (2:1)"
 msgstr "Holz (2:1)"
 
-#: ../editor/gtk/editor.c:63
+#: ../editor/gtk/editor.c:65
 msgid "Any (3:1)"
 msgstr ""
 
 #. East
-#: ../editor/gtk/editor.c:68
+#: ../editor/gtk/editor.c:70
 msgid "East|E"
 msgstr "O"
 
 #. North east
-#: ../editor/gtk/editor.c:70
+#: ../editor/gtk/editor.c:72
 msgid "North East|NE"
 msgstr "NO"
 
 #. North west
-#: ../editor/gtk/editor.c:72
+#: ../editor/gtk/editor.c:74
 msgid "North West|NW"
 msgstr "NW"
 
 #. West
-#: ../editor/gtk/editor.c:74
+#: ../editor/gtk/editor.c:76
 msgid "West|W"
 msgstr "W"
 
 #. South west
-#: ../editor/gtk/editor.c:76
+#: ../editor/gtk/editor.c:78
 msgid "South West|SW"
 msgstr "SW"
 
 #. South east
-#: ../editor/gtk/editor.c:78
+#: ../editor/gtk/editor.c:80
 msgid "South East|SE"
 msgstr "SO"
 
-#: ../editor/gtk/editor.c:537
+#: ../editor/gtk/editor.c:539
 msgid "Shuffle"
 msgstr ""
 
-#: ../editor/gtk/editor.c:667 ../server/gtk/main.c:360
+#: ../editor/gtk/editor.c:669 ../server/gtk/main.c:360
 msgid "Game Parameters"
 msgstr ""
 
-#: ../editor/gtk/editor.c:669
+#: ../editor/gtk/editor.c:671
 msgid "Rules"
 msgstr ""
 
-#: ../editor/gtk/editor.c:670
+#: ../editor/gtk/editor.c:672
 msgid "Resources"
 msgstr "Rohstoffe"
 
-#: ../editor/gtk/editor.c:671
+#: ../editor/gtk/editor.c:673
 #, fuzzy
 msgid "Buildings"
 msgstr "Gebäude"
 
-#: ../editor/gtk/editor.c:672
+#: ../editor/gtk/editor.c:674
 #, fuzzy
 msgid "Development Cards"
 msgstr "Entwicklungskarte"
 
-#: ../editor/gtk/editor.c:687
+#: ../editor/gtk/editor.c:689
 #, fuzzy
 msgid "Pioneers Editor"
 msgstr "Pioneers Editor"
 
-#: ../editor/gtk/editor.c:777
+#: ../editor/gtk/editor.c:779
 #, c-format
 msgid "Failed to load '%s'"
 msgstr ""
 
-#: ../editor/gtk/editor.c:811
+#: ../editor/gtk/editor.c:818
 #, c-format
 msgid "Failed to save to '%s'"
 msgstr ""
 
-#: ../editor/gtk/editor.c:824
+#: ../editor/gtk/editor.c:831
 msgid "Open Game"
 msgstr ""
 
-#: ../editor/gtk/editor.c:850
+#: ../editor/gtk/editor.c:857
 msgid "Save as..."
 msgstr ""
 
-#: ../editor/gtk/editor.c:882
+#: ../editor/gtk/editor.c:892
 msgid "Change Title"
 msgstr ""
 
-#: ../editor/gtk/editor.c:904
+#: ../editor/gtk/editor.c:914
 msgid "New Title:"
 msgstr ""
 
-#: ../editor/gtk/editor.c:952
+#: ../editor/gtk/editor.c:962
 msgid "Pioneers Game Editor"
 msgstr ""
 
-#: ../editor/gtk/editor.c:956
+#: ../editor/gtk/editor.c:966
 msgid "_File"
 msgstr "_Datei"
 
-#: ../editor/gtk/editor.c:959
+#: ../editor/gtk/editor.c:969
 msgid "_New"
 msgstr ""
 
-#: ../editor/gtk/editor.c:960
+#: ../editor/gtk/editor.c:970
 msgid "Create a new game"
 msgstr ""
 
-#: ../editor/gtk/editor.c:961
+#: ../editor/gtk/editor.c:971
 msgid "_Open..."
 msgstr ""
 
-#: ../editor/gtk/editor.c:962
+#: ../editor/gtk/editor.c:972
 msgid "Open an existing game"
 msgstr ""
 
-#: ../editor/gtk/editor.c:963
+#: ../editor/gtk/editor.c:973
 msgid "_Save"
 msgstr ""
 
-#: ../editor/gtk/editor.c:964
+#: ../editor/gtk/editor.c:974
 msgid "Save game"
 msgstr ""
 
-#: ../editor/gtk/editor.c:965
+#: ../editor/gtk/editor.c:975
 msgid "Save _As..."
 msgstr ""
 
-#: ../editor/gtk/editor.c:966
+#: ../editor/gtk/editor.c:976
 msgid "Save as"
 msgstr ""
 
-#: ../editor/gtk/editor.c:967
+#: ../editor/gtk/editor.c:977
 msgid "_Change title"
 msgstr ""
 
-#: ../editor/gtk/editor.c:968
+#: ../editor/gtk/editor.c:978
 msgid "Change game title"
 msgstr ""
 
-#: ../editor/gtk/editor.c:970
+#: ../editor/gtk/editor.c:980
 msgid "Quit"
 msgstr ""
 
-#: ../editor/gtk/editor.c:978
+#: ../editor/gtk/editor.c:988
 #, fuzzy
 msgid "_About Pioneers Editor"
 msgstr "Ü_ber Pioneers Editor"
 
-#: ../editor/gtk/editor.c:979
+#: ../editor/gtk/editor.c:989
 #, fuzzy
 msgid "Information about Pioneers Editor"
 msgstr "Informationen über Pioneers Editor"
 
-#: ../editor/gtk/editor.c:1058 ../server/gtk/main.c:816
+#: ../editor/gtk/editor.c:1069 ../server/gtk/main.c:816
 #, c-format
 msgid "Building menus failed: %s"
 msgstr ""
 
-#: ../editor/gtk/editor.c:1075
+#: ../editor/gtk/editor.c:1095
 msgid "Settings"
 msgstr "Einstellungen"
 
@@ -2593,21 +2598,21 @@ msgstr "Registriere bei Metaserver %s Port %s\n"
 msgid "Player from %s is refused: game is over\n"
 msgstr ""
 
-#: ../server/player.c:275
+#: ../server/player.c:280
 msgid "Name not changed: new name is already in use"
 msgstr "Name nicht geändert: neuer Name wird schon benutzt"
 
-#: ../server/player.c:550
+#: ../server/player.c:555
 #, c-format
 msgid "NOTE player %d (%s) has reconnected.\n"
 msgstr ""
 
-#: ../server/player.c:618
+#: ../server/player.c:623
 #, fuzzy
 msgid "Sorry, game is over."
 msgstr "Das Spiel ist beendet."
 
-#: ../server/player.c:654
+#: ../server/player.c:659
 #, c-format
 msgid "NOTE Expecting version %s, not %s\n"
 msgstr ""
