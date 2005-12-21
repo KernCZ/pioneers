@@ -1,3 +1,10 @@
+CVS Snapshot release 0.9.40
+* Released Microsoft Windows Native port, requires Gtk+ runtime libraries
+* Fink port patches integrated
+* New icons
+* Fixed the server to allow connections of many players at once
+* Several small bugs fixed
+
 CVS Snapshot release 0.9.33
 * Fixed infinite loop when AI tries to trade for something that is not in the
   bank anymore
