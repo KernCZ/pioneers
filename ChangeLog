@@ -1,6 +1,8 @@
 2005-12-21  0.9.40  Roland Clobus <rclobus@bigfoot.com>
 	* configure.ac, pioneers.nsi.in: Windows installer script.
 	(nsis.sf.net)
+	* client/gtk/Makefile.am, meta-server/Makefile.am: Added extra include
+	for driver.o (needed for Fink port)
 	
 2005-12-18  0.9.39  Roland Clobus <rclobus@bigfoot.com>
 	* client/common/callback.c, client/gtk/interface.c: Fixed a crash when

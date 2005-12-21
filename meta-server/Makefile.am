@@ -8,6 +8,8 @@ AM_CPPFLAGS = \
 pioneers_meta_server_SOURCES = \
 	main.c
 
+# Some linkers need an additional include of driver.o
 pioneers_meta_server_LDADD = \
 	../common/libpioneers.a \
+	../common/driver.o \
 	$(GLIB2_LIBS)
