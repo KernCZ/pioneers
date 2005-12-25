@@ -100,9 +100,8 @@ static void config_sync(void)
 	data = g_key_file_to_data(keyfile, &length, &error);
 
 	if (!error) {
-		int f =
-		    open(filename, O_WRONLY | O_CREAT | O_TRUNC,
-			 S_IRUSR | S_IWUSR);
+		int f = open(filename, O_WRONLY | O_CREAT | O_TRUNC,
+			     S_IRUSR | S_IWUSR);
 #ifndef G_OS_WIN32
 		if (f == -1) {
 			/* Create the config dir, if it is missing */

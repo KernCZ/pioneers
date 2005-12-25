@@ -1,3 +1,8 @@
+2005-12-25  Roland Clobus <rclobus@bigfoot.com>
+	* client/gtk/guic, common/network.c, common/state.c, common/state.h,
+	common/gtk/config-gnome.c, editor/gtk/editor.c, server/player.c,
+	server/pregame.c, server/gtk/main.c: make reindent
+	
 2005-12-21  0.9.40  Roland Clobus <rclobus@bigfoot.com>
 	* configure.ac, pioneers.nsi.in: Windows installer script.
 	(nsis.sf.net)

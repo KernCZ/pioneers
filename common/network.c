@@ -181,7 +181,8 @@ static void write_ready(Session * ses)
 
 		error_len = sizeof(error);
 		if (getsockopt(ses->fd, SOL_SOCKET, SO_ERROR,
-			      (GETSOCKOPT_ARG3)&error, &error_len) < 0) {
+			       (GETSOCKOPT_ARG3) & error,
+			       &error_len) < 0) {
 			notify(ses, NET_CONNECT_FAIL, NULL);
 			log_message(MSG_ERROR,
 				    _
@@ -326,7 +327,7 @@ static void read_ready(Session * ses)
 	}
 
 	num = recv(ses->fd, ses->read_buff + ses->read_len,
-		sizeof(ses->read_buff) - ses->read_len, 0);
+		   sizeof(ses->read_buff) - ses->read_len, 0);
 	if (num < 0) {
 		if (errno == EAGAIN)
 			return;
@@ -410,11 +411,11 @@ static gboolean net_set_socket_non_blocking(int fd)
 {
 #ifdef HAVE_FCNTL
 	return fcntl(fd, F_SETFL, O_NDELAY) < 0;
-#else /* HAVE_FCNTL */
+#else				/* HAVE_FCNTL */
 #ifdef HAVE_WS2TCPIP_H
 	unsigned long nonblocking = 1;
 	return ioctlsocket(fd, FIONBIO, &nonblocking) != 0;
-#else /* HAVE_FCNTL && HAVE_WS2TCPIP_H */
+#else				/* HAVE_FCNTL && HAVE_WS2TCPIP_H */
 #error "Don't know how to set a socket non-blocking"
 #error "Please contact the mailing list,"
 #error "and send the file config.h"
@@ -488,7 +489,6 @@ gboolean net_connect(Session * ses, const gchar * host, const gchar * port)
 				    g_strerror(errno));
 			continue;
 		}
-
 #ifdef HAVE_FCNTL
 		if (fcntl(ses->fd, F_SETFD, 1) < 0) {
 			log_message(MSG_ERROR,
@@ -566,7 +566,8 @@ gchar *get_my_hostname(void)
 /* The following code fragment is taken from glib-2.0 v2.8 */
 	gchar hostname[100];
 #ifndef G_OS_WIN32
-	gboolean hostname_fail = (gethostname(hostname, sizeof(hostname)) == -1);
+	gboolean hostname_fail =
+	    (gethostname(hostname, sizeof(hostname)) == -1);
 #else
 	DWORD size = sizeof(hostname);
 	gboolean hostname_fail = (!GetComputerName(hostname, &size));
@@ -758,16 +759,16 @@ void net_init(void)
 	if (0 != WSAStartup(wVersionRequested, &wsaData)) {
 		g_error(_("No usable version of WinSock was found."));
 	}
-#else /* G_OS_WIN32 */
+#else				/* G_OS_WIN32 */
 	/* Do nothing on unix like platforms */
-#endif /* G_OS_WIN32 */
+#endif				/* G_OS_WIN32 */
 }
 
 void net_finish(void)
 {
 #ifdef G_OS_WIN32
 	WSACleanup();
-#else /* G_OS_WIN32 */
+#else				/* G_OS_WIN32 */
 	/* Do nothing on unix like platforms */
-#endif /* G_OS_WIN32 */
+#endif				/* G_OS_WIN32 */
 }

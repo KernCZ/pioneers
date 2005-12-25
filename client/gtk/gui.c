@@ -1183,9 +1183,11 @@ static void register_pixmaps(void)
 			GtkIconSource *source;
 			GdkPixbuf *pixbuf;
 			GError *error = NULL;
-			pixbuf = gdk_pixbuf_new_from_file(filename, &error);
+			pixbuf =
+			    gdk_pixbuf_new_from_file(filename, &error);
 			if (error != NULL) {
-				g_warning("Error loading pixmap %s\n", filename);
+				g_warning("Error loading pixmap %s\n",
+					  filename);
 				g_error_free(error);
 			} else {
 				source = gtk_icon_source_new();

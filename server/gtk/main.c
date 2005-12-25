@@ -820,7 +820,8 @@ int main(int argc, char *argv[])
 
 	config_init("pioneers-server");
 
-	icon_file = g_build_filename(DATADIR, "pixmaps", MAINICON_FILE, NULL);
+	icon_file =
+	    g_build_filename(DATADIR, "pixmaps", MAINICON_FILE, NULL);
 	if (g_file_test(icon_file, G_FILE_TEST_EXISTS)) {
 		gtk_window_set_default_icon_from_file(icon_file, NULL);
 	} else {

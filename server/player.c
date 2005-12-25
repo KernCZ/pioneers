@@ -230,10 +230,10 @@ Player *player_new(Game * game, int fd, gchar * location)
 		return NULL;
 	}
 
-        /* Cache messages of the game in progress until all intial 
-         * messages have been sent
-         */
-        sm_set_use_cache(sm, TRUE);
+	/* Cache messages of the game in progress until all intial 
+	 * messages have been sent
+	 */
+	sm_set_use_cache(sm, TRUE);
 
 	player->game = game;
 	player->location = g_strdup(location);

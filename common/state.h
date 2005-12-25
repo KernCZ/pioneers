@@ -138,9 +138,9 @@ struct StateMachine {
 	Session *ses;		/* network session feeding state machine */
 	gint use_count;		/* # functions is in use by */
 	gboolean is_dead;	/* is this machine waiting to be killed? */
-        
-        gboolean use_cache;     /* cache the data that is sent */
-        GList *cache;           /* cache for the delayed data */
+
+	gboolean use_cache;	/* cache the data that is sent */
+	GList *cache;		/* cache for the delayed data */
 };
 
 StateMachine *sm_new(gpointer user_data);
@@ -159,14 +159,14 @@ void sm_send(StateMachine * sm, const gchar * fmt, ...);
  * @param sm The statemachine
  * @param use_cache Turn the caching on/off
  */
-void sm_set_use_cache(StateMachine *sm, gboolean use_cache);
+void sm_set_use_cache(StateMachine * sm, gboolean use_cache);
 /** Send the data, even when caching is turned on */
-void sm_send_uncached(StateMachine *sm, const gchar *fmt, ...);
+void sm_send_uncached(StateMachine * sm, const gchar * fmt, ...);
 /** Create a copy of the current statemachine.
  * The current statemachine must be cached.
  * The copy must be freed with g_free.
  */
-StateMachine *sm_copy_as_uncached(const StateMachine *sm);
+StateMachine *sm_copy_as_uncached(const StateMachine * sm);
 
 void sm_goto(StateMachine * sm, StateFunc new_state);
 void sm_goto_noenter(StateMachine * sm, StateFunc new_state);
