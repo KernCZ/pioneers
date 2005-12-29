@@ -125,8 +125,8 @@ rm -rf $RPM_BUILD_ROOT
 %doc AUTHORS COPYING ChangeLog INSTALL README NEWS 
 %doc /usr/man/man6/pioneers.6.gz
 %{_bindir}/pioneers
-%{_datadir}/gnome/apps/Games/pioneers.desktop
-%{_datadir}/pixmaps/gnome-pioneers.png
+%{_datadir}/applications/pioneers.desktop
+%{_datadir}/pixmaps/pioneers.png
 %{_datadir}/pixmaps/pioneers/*
 %{_datadir}/games/pioneers/themes/*
 %{_datadir}/locale/es/LC_MESSAGES/pioneers.mo
@@ -167,7 +167,8 @@ if which scrollkeeper-update>/dev/null 2>&1; then scrollkeeper-update -q; fi
 %doc AUTHORS COPYING ChangeLog INSTALL README NEWS 
 %doc /usr/man/man6/pioneers-server-gtk.6.gz
 %{_bindir}/pioneers-server-gtk
-%{_datadir}/gnome/apps/Games/pioneers-server.desktop
+%{_datadir}/pixmaps/pioneers-server.png
+%{_datadir}/applications/pioneers-server.desktop
 
 %files server-data
 %defattr(-,root,root)
@@ -184,4 +185,6 @@ if which scrollkeeper-update>/dev/null 2>&1; then scrollkeeper-update -q; fi
 %defattr(-,root,root)
 %doc AUTHORS COPYING ChangeLog INSTALL README NEWS 
 %{_bindir}/pioneers-editor
+%{_datadir}/pixmaps/pioneers-editor.png
+%{_datadir}/applications/pioneers-editor.desktop
 
