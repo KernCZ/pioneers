@@ -170,7 +170,7 @@ void config_finish(void)
 /* get configuration settings */
 
 /* get a string.  If a default is sent as part of the path, and the default
- * is returned, set *default_used to 1.
+ * is returned, set *default_used to TRUE.
  */
 gchar *config_get_string(const gchar * path, gboolean * default_used)
 {
@@ -198,6 +198,8 @@ gchar *config_get_string(const gchar * path, gboolean * default_used)
 			value = g_strdup(tokens[2]);
 		}
 		g_error_free(error);
+	} else {
+		*default_used = FALSE;
 	}
 	g_strfreev(tokens);
 	return value;
@@ -205,7 +207,7 @@ gchar *config_get_string(const gchar * path, gboolean * default_used)
 }
 
 /* get an integer.  If a default is sent as part of the path, and the
- * default is returned, set *default_used to 1.
+ * default is returned, set *default_used to TRUE.
  */
 gint config_get_int(const gchar * path, gboolean * default_used)
 {
@@ -233,6 +235,8 @@ gint config_get_int(const gchar * path, gboolean * default_used)
 			value = atoi(tokens[2]);
 		}
 		g_error_free(error);
+	} else {
+		*default_used = FALSE;
 	}
 	g_strfreev(tokens);
 	return value;

@@ -1,3 +1,10 @@
+2005-12-30  0.9.41 Roland Clobus <rclobus@bigfoot.com>
+	* common/gtk/config-gnome.c (config_get_string, config_get_int):
+	Set the default_used flag in all code paths.
+
+2005-12-29  Stephen Jacob <sj@sjacob.org>
+	* pioneers.spec.in: Added the new icons and desktop files
+
 2005-12-25  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/guic, common/network.c, common/state.c, common/state.h,
 	common/gtk/config-gnome.c, editor/gtk/editor.c, server/player.c,
