@@ -65,7 +65,7 @@ msgstr "Jij zou minder moeten krijgen!"
 
 #: ../client/ai/greedy.c:1280
 msgid "You don't know what to do with that many resources ;)"
-msgstr "Je weet niet wat je aan moet met all die grondstoffen ;-)"
+msgstr "Je weet niet wat je aan moet met al die grondstoffen ;-)"
 
 #: ../client/ai/greedy.c:1281
 msgid "Ey, wait for my robber and lose all this again!"
