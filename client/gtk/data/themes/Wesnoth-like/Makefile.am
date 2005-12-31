@@ -17,20 +17,18 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-SUBDIRS = FreeCIV-like Iceland Tiny Wesnoth-like
+themedir = $(pioneers_themedir)/Wesnoth-like
 
-themesdir = $(pioneers_themedir)
-
-themes_DATA = \
+theme_DATA = \
 	board.png \
 	desert.png \
 	field.png \
 	forest.png \
+	gold.png \
 	hill.png \
 	mountain.png \
 	pasture.png \
-	plain.png \
 	sea.png \
-	gold.png
+	theme.cfg
 
-EXTRA_DIST = $(themes_DATA)
+EXTRA_DIST = $(theme_DATA)

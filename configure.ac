@@ -442,6 +442,7 @@ AC_CONFIG_FILES([ \
 	client/gtk/data/themes/FreeCIV-like/Makefile \
 	client/gtk/data/themes/Iceland/Makefile \
 	client/gtk/data/themes/Tiny/Makefile \
+	client/gtk/data/themes/Wesnoth-like/Makefile \
 	server/gtk/Makefile \
 	editor/gtk/Makefile
 	])
