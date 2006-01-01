@@ -22,6 +22,7 @@
 #include "config.h"
 #include "frontend.h"
 #include "histogram.h"
+#include "theme.h"
 
 static const int DIALOG_HEIGHT = 270;
 static const int DIALOG_WIDTH = 450;
@@ -34,7 +35,6 @@ static void histogram_update(gint roll);
 
 static GtkWidget *histogram_dlg;
 static GtkWidget *histogram_area;
-static GdkGC *histogram_gc;
 static gint last_roll;
 
 static int histogram[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -69,7 +69,7 @@ static gint histogram_dice_retrieve(gint roll)
 /* Draw the histogram */
 static gboolean expose_histogram_cb(GtkWidget * area,
 				    G_GNUC_UNUSED GdkEventExpose * event,
-				    GdkPixmap * pixmap)
+				    gpointer terrain)
 {
 	gint w;
 	gint h;
@@ -93,17 +93,18 @@ static gboolean expose_histogram_cb(GtkWidget * area,
 	gboolean seven_thrown;
 	gboolean draw_labels_and_chits;
 	gint CHIT_RADIUS;
+	GdkPixmap *pixmap;
+	GdkGC *histogram_gc;
 
 	if (area->window == NULL)
 		return TRUE;
 
-	if (histogram_gc == NULL) {
-		histogram_gc = gdk_gc_new(area->window);
-		gdk_gc_set_line_attributes(histogram_gc, 1, GDK_LINE_SOLID,
-					   GDK_CAP_NOT_LAST,
-					   GDK_JOIN_MITER);
-		gdk_gc_set_tile(histogram_gc, pixmap);
-	}
+	pixmap = guimap_terrain(GPOINTER_TO_INT(terrain));
+
+	histogram_gc = gdk_gc_new(area->window);
+	gdk_gc_set_line_attributes(histogram_gc, 1, GDK_LINE_SOLID,
+				   GDK_CAP_NOT_LAST, GDK_JOIN_MITER);
+	gdk_gc_set_tile(histogram_gc, pixmap);
 
 	w = area->allocation.width;
 	h = area->allocation.height;
@@ -230,6 +231,7 @@ static gboolean expose_histogram_cb(GtkWidget * area,
 		      expected_high_y, ri, expected_low_y);
 
 	g_object_unref(layout);
+	g_object_unref(histogram_gc);
 	return TRUE;
 }
 
@@ -237,8 +239,6 @@ static void histogram_destroyed_cb(GtkWidget * widget, gpointer arg)
 {
 	gtk_widget_destroyed(widget, arg);
 	gtk_widget_destroyed(histogram_area, &histogram_area);
-	g_object_unref(histogram_gc);
-	histogram_gc = NULL;
 }
 
 GtkWidget *histogram_create_dlg()
@@ -266,7 +266,7 @@ GtkWidget *histogram_create_dlg()
 	histogram_area = gtk_drawing_area_new();
 	g_signal_connect(G_OBJECT(histogram_area), "expose_event",
 			 G_CALLBACK(expose_histogram_cb),
-			 guimap_terrain(SEA_TERRAIN));
+			 GINT_TO_POINTER(SEA_TERRAIN));
 	gtk_box_pack_start(GTK_BOX(dlg_vbox), histogram_area, TRUE, TRUE,
 			   SPACING_AROUND);
 	gtk_widget_show(histogram_area);
@@ -286,7 +286,18 @@ static void histogram_update(gint roll)
 	gtk_widget_queue_draw(histogram_area);
 }
 
+static void histogram_theme_changed(void)
+{
+	if (histogram_dlg && GTK_WIDGET_VISIBLE(histogram_dlg))
+		gtk_widget_queue_draw(histogram_area);
+}
+
 void histogram_init(void)
+{
+	theme_register_callback(G_CALLBACK(histogram_theme_changed));
+}
+
+void histogram_reset(void)
 {
 	gint i;
 	for (i = 2; i <= 12; ++i)

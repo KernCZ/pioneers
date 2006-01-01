@@ -107,4 +107,5 @@ void theme_set_current(MapTheme * t);
 MapTheme *theme_get_current(void);
 GList *theme_get_list(void);
 void themes_init(void);
+void theme_register_callback(GCallback callback);
 #endif

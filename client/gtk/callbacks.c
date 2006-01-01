@@ -44,7 +44,7 @@ static void frontend_init_game(void)
 {
 	player_clear_summary();
 	develop_reset();
-	histogram_init();
+	histogram_reset();
 	gui_reset();
 }
 

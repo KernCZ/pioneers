@@ -23,8 +23,11 @@
 #include "config.h"
 #include "frontend.h"
 #include "cost.h"
+#include "theme.h"
 
 static void trade_update(void);
+static void check_maritime_trades(void);
+static void remove_quote(QuoteInfo * quote);
 
 typedef struct {
 	GtkWidget *chk;	/**< Checkbox to activate trade in this resource */
@@ -197,6 +200,47 @@ gboolean trade_valid_selection()
 	return is_good_quote(selected_quote);
 }
 
+static void trade_theme_changed(void)
+{
+	int width, height;
+	GdkPixmap *pixmap;
+	GdkGC *gc;
+	QuoteInfo *quote;
+
+	gtk_icon_size_lookup(GTK_ICON_SIZE_MENU, &width, &height);
+
+	pixmap =
+	    gdk_pixmap_new(quotes->window, width, height,
+			   gtk_widget_get_visual(quotes)->depth);
+
+	gc = gdk_gc_new(pixmap);
+	gdk_gc_set_foreground(gc, &black);
+	gdk_draw_rectangle(pixmap, gc, TRUE, 0, 0, width, height);
+	gdk_gc_set_fill(gc, GDK_TILED);
+	gdk_gc_set_tile(gc, guimap_terrain(SEA_TERRAIN));
+	gdk_draw_rectangle(pixmap, gc, TRUE, 0, 0, width, height);
+	if (maritime_pixbuf)
+		g_object_unref(maritime_pixbuf);
+	maritime_pixbuf =
+	    gdk_pixbuf_get_from_drawable(NULL, pixmap, NULL, 0, 0, 0, 0,
+					 -1, -1);
+	g_object_unref(gc);
+	g_object_unref(pixmap);
+
+	/* Remove all maritime quotes */
+	quote = quotelist_first(quote_list);
+	while (quote != NULL) {
+		QuoteInfo *curr = quote;
+		quote = quotelist_next(quote);
+		if (curr->is_domestic)
+			break;
+		remove_quote(curr);
+	}
+
+	/* Add all of the maritime trades that can be performed */
+	check_maritime_trades();
+}
+
 /** Load/construct the images */
 static void load_pixmaps(void)
 {
@@ -242,6 +286,7 @@ static void load_pixmaps(void)
 	    gtk_widget_render_icon(quotes, GTK_STOCK_APPLY,
 				   GTK_ICON_SIZE_MENU, NULL);
 
+	theme_register_callback(G_CALLBACK(trade_theme_changed));
 	init = TRUE;
 }
 

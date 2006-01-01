@@ -26,4 +26,5 @@ void histogram_dice_rolled(gint roll, gint playernum);
 
 GtkWidget *histogram_create_dlg(void);
 void histogram_init(void);
+void histogram_reset(void);
 #endif

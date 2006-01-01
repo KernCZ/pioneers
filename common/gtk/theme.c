@@ -138,6 +138,7 @@ static MapTheme default_theme = {
 
 static GList *theme_list = NULL;
 static MapTheme *current_theme = NULL;
+static GList *callback_list = NULL;
 
 static gboolean theme_initialize(MapTheme * t, const gchar * subdir);
 static struct tvars *getvar(char **p, const gchar * filename, int lno);
@@ -233,7 +234,12 @@ void themes_init(void)
 
 void theme_set_current(MapTheme * t)
 {
+	GList *list = callback_list;
 	current_theme = t;
+	while (list) {
+		G_CALLBACK(list->data) ();
+		list = g_list_next(list);
+	}
 }
 
 MapTheme *theme_get_current(void)
@@ -710,4 +716,9 @@ static MapTheme *theme_config_parse(const gchar * themename,
 	g_free(t->name);
 	g_free(t);
 	return NULL;
+}
+
+void theme_register_callback(GCallback callback)
+{
+	callback_list = g_list_append(callback_list, callback);
 }

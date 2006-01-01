@@ -76,16 +76,7 @@ static GtkWidget *toolbar = NULL;	/* The toolbar */
 
 static gboolean toolbar_show_accelerators = TRUE;
 
-#define PIONEERS_PIXMAP_DICE "pioneers/dice.png"
-#define PIONEERS_PIXMAP_TRADE "pioneers/trade.png"
-#define PIONEERS_PIXMAP_ROAD "pioneers/road.png"
-#define PIONEERS_PIXMAP_SHIP "pioneers/ship.png"
-#define PIONEERS_PIXMAP_SHIP_MOVEMENT "pioneers/ship_move.png"
-#define PIONEERS_PIXMAP_BRIDGE "pioneers/bridge.png"
-#define PIONEERS_PIXMAP_SETTLEMENT "pioneers/settlement.png"
-#define PIONEERS_PIXMAP_CITY "pioneers/city.png"
-#define PIONEERS_PIXMAP_DEVELOP "pioneers/develop.png"
-#define PIONEERS_PIXMAP_FINISH "pioneers/finish.png"
+static GList *rules_callback_list = NULL;
 
 #define PIONEERS_PIXMAP_SPLASH "pioneers/splash.png"
 
@@ -477,6 +468,14 @@ void gui_show_quote_page(gboolean show)
 		gtk_widget_hide(quote_page);
 }
 
+static void gui_theme_changed(void)
+{
+	g_assert(legend_page != NULL);
+	gtk_widget_queue_draw(legend_page);
+	gtk_widget_queue_draw_area(gmap->area, 0, 0, gmap->width,
+				   gmap->height);
+}
+
 void gui_show_legend_page(gboolean show)
 {
 	if (show) {
@@ -559,6 +558,7 @@ static GtkWidget *build_map_panel(void)
 				 legend_page, lbl, LEGEND_PAGE);
 	if (!legend_page_enabled)
 		gui_show_legend_page(FALSE);
+	theme_register_callback(G_CALLBACK(gui_theme_changed));
 
 	/* Tab page name, shown for the splash screen */
 	lbl = gtk_label_new(_("Welcome to Pioneers"));
@@ -694,9 +694,6 @@ static void theme_change_cb(GtkWidget * widget, G_GNUC_UNUSED void *data)
 			gmap->pixmap = NULL;
 		}
 		theme_rescale(2 * gmap->x_point);
-		gtk_widget_queue_draw_area(gmap->area, 0, 0, gmap->width,
-					   gmap->height);
-		gtk_widget_queue_draw(legend_page);
 	}
 
 }
@@ -1107,8 +1104,16 @@ static void gui_toolbar_show_button(const gchar * path, gboolean visible)
 	g_free(fullpath);
 }
 
+void gui_rules_register_callback(GCallback callback)
+{
+	rules_callback_list = g_list_append(rules_callback_list, callback);
+}
+
 void gui_set_game_params(const GameParams * params)
 {
+	GList *list;
+	GtkWidget *label;
+
 	gmap->map = params->map;
 	gmap->player_num = my_player_num();
 	gtk_widget_queue_resize(gmap->area);
@@ -1128,6 +1133,23 @@ void gui_set_game_params(const GameParams * params)
 	identity_draw();
 
 	gui_set_vp_target_value(params->victory_points);
+
+	list = rules_callback_list;
+	while (list) {
+		G_CALLBACK(list->data) ();
+		list = g_list_next(list);
+	}
+
+	label =
+	    gtk_notebook_get_tab_label(GTK_NOTEBOOK(map_notebook),
+				       legend_page);
+	g_object_ref(label);
+
+	gtk_widget_destroy(legend_page);
+	legend_page = legend_create_content();
+	gtk_notebook_insert_page(GTK_NOTEBOOK(map_notebook),
+				 legend_page, label, LEGEND_PAGE);
+	g_object_unref(label);
 }
 
 static GtkWidget *build_status_bar(void)

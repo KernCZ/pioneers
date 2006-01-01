@@ -28,6 +28,7 @@
 #include "common_gtk.h"
 #include "config-gnome.h"
 #include "theme.h"
+#include "histogram.h"
 
 static gboolean have_dlg = FALSE;
 static gboolean connectable = FALSE;
@@ -168,6 +169,8 @@ void frontend_init(int argc, char **argv)
 	/* Create the application window
 	 */
 	themes_init();
+	settings_init();
+	histogram_init();
 	app = gui_build_interface();
 
 	callbacks.mainloop = &gtk_main;

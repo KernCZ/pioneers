@@ -261,6 +261,7 @@ void chat_set_focus(void);
 void name_create_dlg(void);
 
 /* settingscreen.c */
+void settings_init(void);
 GtkWidget *settings_create_dlg(void);
 
 /* monopoly.c */
@@ -275,5 +276,16 @@ void plenty_create_dlg(const gint * bank);
 
 /* gameover.c */
 GtkWidget *gameover_create_dlg(gint player_num, gint num_points);
+
+#define PIONEERS_PIXMAP_DICE "pioneers/dice.png"
+#define PIONEERS_PIXMAP_TRADE "pioneers/trade.png"
+#define PIONEERS_PIXMAP_ROAD "pioneers/road.png"
+#define PIONEERS_PIXMAP_SHIP "pioneers/ship.png"
+#define PIONEERS_PIXMAP_SHIP_MOVEMENT "pioneers/ship_move.png"
+#define PIONEERS_PIXMAP_BRIDGE "pioneers/bridge.png"
+#define PIONEERS_PIXMAP_SETTLEMENT "pioneers/settlement.png"
+#define PIONEERS_PIXMAP_CITY "pioneers/city.png"
+#define PIONEERS_PIXMAP_DEVELOP "pioneers/develop.png"
+#define PIONEERS_PIXMAP_FINISH "pioneers/finish.png"
 
 #endif

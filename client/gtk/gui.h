@@ -83,4 +83,5 @@ void set_gui_state_nomacro(GuiState state);
 GuiState get_gui_state(void);
 void route_gui_event(GuiEvent event);
 
+void gui_rules_register_callback(GCallback callback);
 #endif

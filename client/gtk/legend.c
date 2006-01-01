@@ -3,6 +3,7 @@
  *
  * Copyright (C) 1999 the Free Software Foundation
  * Copyright (C) 2003 Bas Wijnen <b.wijnen@phys.rug.nl>
+ * Copyright (C) 2005 Roland Clobus <rclobus@bigfoot.com>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,14 +39,21 @@ static const gchar *terrain_names[] = {
 	N_("Gold")
 };
 
+static GtkWidget *legend_dlg = NULL;
+static gboolean legend_did_connect = FALSE;
+
+static void legend_theme_changed(void);
+static void legend_rules_changed(void);
+
 static gint expose_legend_cb(GtkWidget * area,
 			     G_GNUC_UNUSED GdkEventExpose * event,
-			     Terrain terrain)
+			     gpointer terraindata)
 {
 	MapTheme *theme = theme_get_current();
 	static GdkGC *legend_gc;
 	GdkPixbuf *p;
 	gint height;
+	Terrain terrain = GPOINTER_TO_INT(terraindata);
 
 	if (area->window == NULL)
 		return FALSE;
@@ -83,7 +91,8 @@ static void add_legend_terrain(GtkWidget * table, gint row, gint col,
 			 (GtkAttachOptions) GTK_FILL, 0, 0);
 	gtk_widget_set_size_request(area, 30, 34);
 	g_signal_connect(G_OBJECT(area), "expose_event",
-			 G_CALLBACK(expose_legend_cb), (gpointer) terrain);
+			 G_CALLBACK(expose_legend_cb),
+			 GINT_TO_POINTER(terrain));
 
 	label = gtk_label_new(_(terrain_names[terrain]));
 	gtk_widget_show(label);
@@ -105,21 +114,27 @@ static void add_legend_terrain(GtkWidget * table, gint row, gint col,
 }
 
 static void add_legend_cost(GtkWidget * table, gint row,
-			    const gchar * item, const gint * cost)
+			    const gchar * iconname, const gchar * item,
+			    const gint * cost)
 {
 	GtkWidget *label;
 	gchar buffer[1024];
+	GtkWidget *icon;
 
+	icon = gtk_image_new_from_stock(iconname, GTK_ICON_SIZE_MENU);
+	gtk_widget_show(icon);
+	gtk_table_attach(GTK_TABLE(table), icon, 0, 1, row, row + 1,
+			 GTK_FILL, GTK_FILL, 0, 0);
 	label = gtk_label_new(item);
 	gtk_widget_show(label);
-	gtk_table_attach(GTK_TABLE(table), label, 0, 1, row, row + 1,
+	gtk_table_attach(GTK_TABLE(table), label, 1, 2, row, row + 1,
 			 GTK_FILL, GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 
 	resource_format_type(buffer, cost);
 	label = gtk_label_new(buffer);
 	gtk_widget_show(label);
-	gtk_table_attach(GTK_TABLE(table), label, 1, 2, row, row + 1,
+	gtk_table_attach(GTK_TABLE(table), label, 2, 3, row, row + 1,
 			 GTK_FILL, GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 }
@@ -188,25 +203,27 @@ GtkWidget *legend_create_content()
 		num_rows++;
 	if (have_bridges())
 		num_rows++;
-	table = gtk_table_new(num_rows, 2, FALSE);
+	table = gtk_table_new(num_rows, 3, FALSE);
 	gtk_widget_show(table);
 	gtk_container_add(GTK_CONTAINER(alignment), table);
 	gtk_table_set_row_spacings(GTK_TABLE(table), 3);
 	gtk_table_set_col_spacings(GTK_TABLE(table), 5);
 
 	num_rows = 0;
-	add_legend_cost(table, num_rows++, _("Road"), cost_road());
+	add_legend_cost(table, num_rows++, PIONEERS_PIXMAP_ROAD, _("Road"),
+			cost_road());
 	if (have_ships())
-		add_legend_cost(table, num_rows++, _("Ship"), cost_ship());
+		add_legend_cost(table, num_rows++, PIONEERS_PIXMAP_SHIP,
+				_("Ship"), cost_ship());
 	if (have_bridges())
-		add_legend_cost(table, num_rows++, _("Bridge"),
-				cost_bridge());
-	add_legend_cost(table, num_rows++, _("Settlement"),
-			cost_settlement());
-	add_legend_cost(table, num_rows++, _("City"),
+		add_legend_cost(table, num_rows++, PIONEERS_PIXMAP_BRIDGE,
+				_("Bridge"), cost_bridge());
+	add_legend_cost(table, num_rows++, PIONEERS_PIXMAP_SETTLEMENT,
+			_("Settlement"), cost_settlement());
+	add_legend_cost(table, num_rows++, PIONEERS_PIXMAP_CITY, _("City"),
 			cost_upgrade_settlement());
-	add_legend_cost(table, num_rows++, _("Development Card"),
-			cost_development());
+	add_legend_cost(table, num_rows++, PIONEERS_PIXMAP_DEVELOP,
+			_("Development Card"), cost_development());
 
 	gtk_widget_show(vbox);
 	gtk_box_pack_start(GTK_BOX(hbox), vbox, FALSE, FALSE, 0);
@@ -216,7 +233,6 @@ GtkWidget *legend_create_content()
 
 GtkWidget *legend_create_dlg(void)
 {
-	static GtkWidget *legend_dlg;
 	GtkWidget *dlg_vbox;
 	GtkWidget *vbox;
 
@@ -241,9 +257,40 @@ GtkWidget *legend_create_dlg(void)
 
 	gtk_widget_show(legend_dlg);
 
+	if (!legend_did_connect) {
+		theme_register_callback(G_CALLBACK(legend_theme_changed));
+		gui_rules_register_callback(G_CALLBACK
+					    (legend_rules_changed));
+		legend_did_connect = TRUE;
+	}
+
 	/* destroy dialog when OK is clicked */
 	g_signal_connect(legend_dlg, "response",
 			 G_CALLBACK(gtk_widget_destroy), NULL);
 
 	return legend_dlg;
+}
+
+static void legend_theme_changed(void)
+{
+	if (legend_dlg)
+		gtk_widget_queue_draw(legend_dlg);
+}
+
+static void legend_rules_changed(void)
+{
+	if (legend_dlg) {
+		GtkWidget *dlg_vbox = GTK_DIALOG(legend_dlg)->vbox;
+		GtkWidget *vbox;
+		GList *list =
+		    gtk_container_get_children(GTK_CONTAINER(dlg_vbox));
+
+		if (g_list_length(list) > 0)
+			gtk_widget_destroy(GTK_WIDGET(list->data));
+
+		vbox = legend_create_content();
+		gtk_box_pack_start(GTK_BOX(dlg_vbox), vbox, TRUE, TRUE, 0);
+
+		g_list_free(list);
+	}
 }
