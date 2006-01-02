@@ -1,7 +1,23 @@
 2006-01-02  0.9.43 Roland Clobus <rclobus@bigfoot.com>
 	* configure.ac: Build online help only when both libgnome and
 	scrollkeeper are present.
-	
+	* macros/gnome-autogen.sh: Added bootstrap script from gnome-common
+	2.12.0-1
+	* macros/ChangeLog, macros/Makefile.am, macros/aclocal-include.m4,
+	macros/autogen.sh, macros/compiler-flags.m4, macros/curses.m4,
+	macros/gnome-bonobo-check.m4, macros/gnome-common.m4,
+	macroos/gnome-cxx-check.m4, macros/gnome-fileutils.m4,
+	macros/gnome-gettext.m4, macros/gnome-ghttp-check.m4,
+	macros/gnome-gnorba-check.m4, macros/gnome-guile-checks.m4,
+	macros/gnome-libgtop-check.m4, macros/gnome-objc-checks.m4,
+	macros/gnome-orbit-check.m4, macros/gnome-print-check.m4,
+	macros/gnome-pthread-check.m4, macros/gnome-support.m4,
+	macros/gnome-undelfs.m4, macros/gnome-vfs.m4,
+	macros/gnome-x-checks.m4, macros/gnome-xml-check.m4, macros/gnome.m4,
+	macros/linger.m4, macros/macros.dep, macros/need-declaration.m4:
+	Remove the old GNOME1 macros.
+	* autogen.sh: Use the gnome-autogen.sh from the macros directory if
+	gnome-common not installed.
 2006-01-01  0.9.42 Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/callbacks.c, client/gtk/frontend.h, client/gtk/gui.c,
 	client/gtk/gui.h, client/gtk/histogram.c, client/gtk/histogram.h,

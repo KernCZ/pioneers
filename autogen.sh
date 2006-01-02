@@ -26,9 +26,8 @@ automake_progs="automake-1.9 automake-1.8 automake-1.7 automake-1.4"
 cp macros/type_socklen_t.m4 acinclude.m4
 
 which gnome-autogen.sh || {
-#    echo "You need to install gnome-common from the GNOME CVS"
-    echo "gnome-common not found, reverting to old macros directory"
-    . $srcdir/macros/autogen.sh
-    exit 1
+    echo "gnome-common not found, using the included version"
+    . $srcdir/macros/gnome-autogen.sh
+    exit 0
 }
-USE_GNOME2_MACROS=1 . gnome-autogen.sh
+. gnome-autogen.sh
