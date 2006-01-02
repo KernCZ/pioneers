@@ -19,6 +19,8 @@
 	Remove the old GNOME1 macros.
 	* autogen.sh: Use the gnome-autogen.sh from the macros directory if
 	gnome-common not installed.
+	* client/gtk/data/gnome-pioneers.png: Removed, is replaced by
+	pioneers.png
 
 2006-01-01  0.9.42 Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/callbacks.c, client/gtk/frontend.h, client/gtk/gui.c,
