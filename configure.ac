@@ -3,7 +3,7 @@
 #
 # Copyright (C) 1999 the Free Software Foundation
 # Copyright (C) 2003 Bas Wijnen <b.wijnen@phys.rug.nl>
-# Copyright (C) 2004-2005 Roland Clobus <rclobus@bigfoot.com>
+# Copyright (C) 2004-2006 Roland Clobus <rclobus@bigfoot.com>
 # 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 AC_PREREQ(2.53)
-AC_INIT([pioneers],[0.9.42],[pio-develop@lists.sourceforge.net])
+AC_INIT([pioneers],[0.9.43],[pio-develop@lists.sourceforge.net])
 AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
 AC_CONFIG_SRCDIR([client])
 AM_CONFIG_HEADER(config.h)
@@ -186,12 +186,6 @@ else
 	have_scrollkeeper=yes;
 fi
 
-AM_CONDITIONAL(HAVE_SCROLLKEEPER, [test x$have_scrollkeeper = xyes])
-if test $have_scrollkeeper = yes; then
-	AC_DEFINE(HAVE_HELP, 1,
-		[Defined when online help is present])
-fi
-
 # glib is always needed
 PKG_CHECK_MODULES(GLIB2, glib-2.0 >= $GLIB_REQUIRED_VERSION)
 
@@ -209,36 +203,54 @@ PKG_CHECK_MODULES(GTK2, gtk+-2.0 >= $GTK_REQUIRED_VERSION, have_gtk2=yes,
 	])
 AM_CONDITIONAL(HAVE_GTK2, [test "$have_gtk2" = "yes"])
 
+# Gtk Glib26 ScrollKeeper -> Test Need Build
+#                            libgnome  Help
+#  N    X         X           N    N    N
+#  Y    N         X           Y    Y    if have libgnome and scrollkeeper
+#  Y    Y         N           N    N    N
+#  Y    Y         Y           Y    N    if have libgnome
 # libgnome is only needed for help and old settingsfile
 if test "$have_gtk2" = "yes"; then
-	if test "$have_scrollkeeper" = "yes"; then
-		need_libgnome=yes;
+	if test "$have_glib_2_6" = "yes"; then
+		test_libgnome=$have_scrollkeeper;
+		need_libgnome=no;
 	else
-		if test "$have_glib_2_6" = "yes"; then
-			need_libgnome=no;
-		else
-			need_libgnome=yes;
-		fi
+		test_libgnome=yes;
+		need_libgnome=yes;
 	fi
 else
+	test_libgnome=no;
 	need_libgnome=no;
 fi
 
-if test "$need_libgnome" = "yes"; then
+if test "$test_libgnome" = "yes"; then
 	# libgnome-2.0 support
 	PKG_CHECK_MODULES(GNOME2, libgnome-2.0, 
 		[have_gnome="yes"], 
 		[have_gnome="no, libgnome-2.0 not installed"])
-	if test $have_gnome = yes; then
+	if test "$have_gnome" = "yes"; then
 		AC_DEFINE(HAVE_LIBGNOME, 1, 
-			[Defined is libgnome is present and needed])
+			[Defined if libgnome is present and needed])
+	fi
+	# Turn off the help if libgnome not installed
+	have_scrollkeeper=$have_gnome;
+	if test "$need_libgnome" = "no"; then
+		have_graphical=$have_gtk2;
+	else
+		have_graphical=$have_gnome;
 	fi
 else
-	have_gnome=$have_gtk2;
+	have_graphical=$have_gtk2;
 	AC_SUBST(GNOME2_CFLAGS)
 	AC_SUBST(GNOME2_LIBS)
 fi
-AM_CONDITIONAL(HAVE_GNOME, [test "$have_gnome" = "yes"])
+AM_CONDITIONAL(HAVE_GNOME, [test "$have_graphical" = "yes"])
+
+AM_CONDITIONAL(HAVE_SCROLLKEEPER, [test "$have_scrollkeeper" = "yes"])
+if test "$have_scrollkeeper" = "yes"; then
+	AC_DEFINE(HAVE_HELP, 1,
+		[Defined when online help is present])
+fi
 
 AC_ARG_ENABLE([admin-gtk],
 [  --enable-admin-gtk      Turn on (unstable) network administration support.],
@@ -395,7 +407,7 @@ pioneers_build_metaserver=yes;
 if test $pioneers_have_syslog = no; then
 	pioneers_build_metaserver=no;
 fi
-if test $have_gnome != yes; then
+if test $have_graphical != yes; then
 	pioneers_build_client_gtk=no;
 	pioneers_build_editor=no;
 	pioneers_build_server_gtk=no;

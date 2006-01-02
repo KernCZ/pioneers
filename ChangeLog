@@ -1,3 +1,7 @@
+2006-01-02  0.9.43 Roland Clobus <rclobus@bigfoot.com>
+	* configure.ac: Build online help only when both libgnome and
+	scrollkeeper are present.
+	
 2006-01-01  0.9.42 Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/callbacks.c, client/gtk/frontend.h, client/gtk/gui.c,
 	client/gtk/gui.h, client/gtk/histogram.c, client/gtk/histogram.h,
