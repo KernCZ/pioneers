@@ -2,6 +2,8 @@
 	* configure.ac, client/gtk/data/Makefile.am, editor/gtk/Makefile.am,
 	server/gtk/Makefile.am: The svg renderer is called with width and
 	height.
+	* client/gtk/Makefile.am: Reverted Fink patch of 0.9.40
+	* editor/gtk/Makefile.am: Patch for Fink
 	
 2006-01-02  0.9.43 Roland Clobus <rclobus@bigfoot.com>
 	* configure.ac: Build online help only when both libgnome and

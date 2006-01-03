@@ -34,8 +34,10 @@ pioneers_editor_SOURCES = \
 	game-resources.h \
 	pioneers-editor.rc
 
+# Some linkers need an additional include of driver.o
 pioneers_editor_LDADD = \
 	../../common/libpioneers.a \
+	../../common/driver.o \
 	../../common/gtk/libpioneers_gtk.a \
 	$(GNOME2_LIBS) \
 	$(GTK2_LIBS) \

@@ -87,11 +87,9 @@ pioneers_SOURCES = \
 	state.c \
 	trade.c
 
-# Some linkers need an additional include of driver.o
 pioneers_LDADD = \
 	../common/libpioneersclient.a \
 	../../common/libpioneers.a \
-	../../common/driver.o \
 	../../common/gtk/libpioneers_gtk.a \
 	$(WINDOWS_ICON) \
 	$(GNOME2_LIBS) \
