@@ -1,3 +1,8 @@
+2006-01-03  0.9.44 Roland Clobus <rclobus@bigfoot.com>
+	* configure.ac, client/gtk/data/Makefile.am, editor/gtk/Makefile.am,
+	server/gtk/Makefile.am: The svg renderer is called with width and
+	height.
+	
 2006-01-02  0.9.43 Roland Clobus <rclobus@bigfoot.com>
 	* configure.ac: Build online help only when both libgnome and
 	scrollkeeper are present.

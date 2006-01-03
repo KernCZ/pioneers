@@ -20,7 +20,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 AC_PREREQ(2.53)
-AC_INIT([pioneers],[0.9.43],[pio-develop@lists.sourceforge.net])
+AC_INIT([pioneers],[0.9.44],[pio-develop@lists.sourceforge.net])
 AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
 AC_CONFIG_SRCDIR([client])
 AM_CONFIG_HEADER(config.h)
@@ -59,17 +59,20 @@ fi
 
 # Try to find a suitable renderer for the svg images
 AC_PATH_PROG(svg_renderer_path, rsvg)
+AC_SUBST(whitespace_trick, [" "])
 if test x$svg_renderer_path != x; then
-	AC_SUBST(SVG_RENDERER, ["$svg_renderer_path --width"])
+	AC_SUBST(svg_renderer_width, ["--width \$(whitespace_trick)"])
+	AC_SUBST(svg_renderer_height, ["\$(whitespace_trick) --height \$(whitespace_trick)"])
 else
 AC_PATH_PROG(svg_renderer_path, convert)
 if test x$svg_renderer_path != x; then
-	AC_SUBST(SVG_RENDERER, ["$svg_renderer_path -background \"\#000001\" -transparent \"\#000001\" -resize"])
+	AC_SUBST(svg_renderer_width, ["-background \"\#000001\" -transparent \"\#000001\" -resize \$(whitespace_trick)"])
+	AC_SUBST(svg_renderer_height, ["x"])
 else 
 	# Add other SVG rendering programs here
 	# Don't let configure fail, in the distributed tarballs is already
 	# a current .png file
-	AC_SUBST(SVG_RENDERER, [false])
+	AC_SUBST(svg_renderer_path, [false])
 fi
 fi
 

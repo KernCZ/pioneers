@@ -60,4 +60,4 @@ EXTRA_DIST = \
 MAINTAINERCLEANFILES = $(appicon_DATA)
 
 pioneers.png: pioneers.svg
-	$(SVG_RENDERER) 48 $< $@
+	$(svg_renderer_path) $(svg_renderer_width)48$(svg_renderer_height)48 $< $@

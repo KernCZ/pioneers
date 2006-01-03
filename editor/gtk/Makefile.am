@@ -51,7 +51,7 @@ EXTRA_DIST = \
 MAINTAINERCLEANFILES = $(appicon_DATA)
 
 pioneers-editor.png: pioneers-editor.svg
-	$(SVG_RENDERER) 48 $< $@
+	$(svg_renderer_path) $(svg_renderer_width)48$(svg_renderer_height)48 $< $@
 
 # Will be used in Windows builds
 $(WINDOWS_ICON): pioneers-editor.rc
