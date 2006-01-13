@@ -1,3 +1,6 @@
+2006-01-13  0.9.45 Roland Clobus <rclobus@bigfoot.com>
+	* configure.ac: Added Swedish translation, fixed locale dir
+	
 2006-01-03  0.9.44 Roland Clobus <rclobus@bigfoot.com>
 	* configure.ac, client/gtk/data/Makefile.am, editor/gtk/Makefile.am,
 	server/gtk/Makefile.am: The svg renderer is called with width and

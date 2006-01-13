@@ -20,7 +20,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 AC_PREREQ(2.53)
-AC_INIT([pioneers],[0.9.44],[pio-develop@lists.sourceforge.net])
+AC_INIT([pioneers],[0.9.45],[pio-develop@lists.sourceforge.net])
 AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
 AC_CONFIG_SRCDIR([client])
 AM_CONFIG_HEADER(config.h)
@@ -342,7 +342,7 @@ else
 	pioneers_datadir=$datadir
 	pioneers_themedir_install=$datadir/games/pioneers/themes
 	pioneers_themedir=$pioneers_themedir_install
-	pioneers_localedir=$libdir/locale
+	pioneers_localedir=$datadir/locale
 fi
 AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -DDATADIR=\\\""$pioneers_datadir"\\\"")
 AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -DTHEMEDIR=\\\""$pioneers_themedir"\\\"")
@@ -390,7 +390,7 @@ AC_DEFINE_UNQUOTED(PIONEERS_DEFAULT_META_SERVER,
 	"$PIONEERS_DEFAULT_META_SERVER", [The default meta server])
 
 ## internationalization support
-ALL_LINGUAS="de es fr hu nl it"
+ALL_LINGUAS="de es fr hu nl it sv"
 
 GETTEXT_PACKAGE=pioneers
 AC_SUBST(GETTEXT_PACKAGE)
