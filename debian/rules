@@ -24,13 +24,18 @@ build-stamp:
 	./configure --prefix=/usr --bindir=/usr/games --mandir=/usr/share/man \
 		--datadir=/usr/share $(CONFIGUREFLAGS) --enable-warnings
 	$(MAKE)
-	convert -resize 32x32 client/gtk/data/gnome-pioneers.png pioneers.xpm
+	rsvg --width 32 --height 32 client/gtk/data/pioneers.svg pioneers32.png
+	convert pioneers32.png pioneers.xpm
+	rm pioneers32.png
+	rsvg --width 32 --height 32 server/gtk/pioneers-server.svg pioneers-server32.png
+	convert pioneers-server32.png pioneers-server.xpm
+	rm pioneers-server32.png
 	touch build-stamp
 
 clean:
 	dh_testdir
 	dh_testroot
-	rm -f build-stamp install-stamp pioneers.xpm
+	rm -f build-stamp install-stamp pioneers.xpm pioneers-server.xpm
 	# Commands to clean up after the build process.
 	-$(MAKE) maintainer-clean
 	-find . -name Makefile.in | xargs rm
@@ -47,9 +52,9 @@ install-stamp: build-stamp
 	$(MAKE) DESTDIR=$(CURDIR)/debian/tmp install
 	install -D -m644 server/*.game debian/tmp/usr/share/games/pioneers
 	install -D -m644 pioneers.xpm debian/tmp/usr/share/pixmaps/pioneers-client.xpm
-	install -D -m644 pioneers.xpm debian/tmp/usr/share/pixmaps/pioneers-server.xpm
+	install -D -m644 pioneers-server.xpm debian/tmp/usr/share/pixmaps/pioneers-server.xpm
 	rm -rf debian/tmp/usr/var
-	dh_install --fail-missing -X usr/share/man/man6/ -X usr/games/pioneers-editor
+	dh_install --fail-missing -X usr/share/man/man6/ -X usr/games/pioneers-editor -X usr/share/applications/pioneers-editor.desktop -X usr/share/pixmaps/pioneers-editor.png
 	dh_installman
 	rm -rf debian/tmp/usr/share/gnome/help
 	touch install-stamp

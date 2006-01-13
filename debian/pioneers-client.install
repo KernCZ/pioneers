@@ -1,7 +1,7 @@
 debian/tmp/usr/games/pioneers
 debian/tmp/usr/share/games/pioneers/themes
-debian/tmp/usr/share/gnome/apps/Games/pioneers.desktop
+debian/tmp/usr/share/applications/pioneers.desktop
 debian/tmp/usr/share/locale
 debian/tmp/usr/share/pixmaps/pioneers
-debian/tmp/usr/share/pixmaps/gnome-pioneers.png
+debian/tmp/usr/share/pixmaps/pioneers.png
 debian/tmp/usr/share/pixmaps/pioneers-client.xpm

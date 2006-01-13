@@ -1,3 +1,4 @@
 ?package(pioneers-server-gtk):needs="X11" section="Games/Board"\
-  title="Pioneers Server GTK" command="/usr/games/pioneers-server-gtk"\
+  title="Pioneers Server" longtitle="Host a game of Pioneers"\
+  command="/usr/games/pioneers-server-gtk"\
   icon="/usr/share/pixmaps/pioneers-server.xpm"
