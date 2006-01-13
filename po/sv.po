@@ -1968,17 +1968,17 @@ msgstr "Te"
 #. Port indicator for grain
 #: ../common/gtk/guimap.c:639
 msgid "Grain port|G"
-msgstr "S"
+msgstr "Sä"
 
 #. Port indicator for ore
 #: ../common/gtk/guimap.c:643
 msgid "Ore port|O"
-msgstr "M"
+msgstr "Ma"
 
 #. Port indicator for wool
 #: ../common/gtk/guimap.c:647
 msgid "Wool port|W"
-msgstr "U"
+msgstr "Ul"
 
 #. Port indicator for lumber
 #: ../common/gtk/guimap.c:651
