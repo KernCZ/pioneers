@@ -1,3 +1,8 @@
+2006-01-15  0.9.46 Roland Clobus <rclobus@bigfoot.com>
+	* client/common/chat.c, client/gtk/chat.c, client/gtk/connect.c,
+	client/gtk/name.c, common/game.h, server/player.c, server/server.h:
+	Limit the maximum length for the chat and player name.
+	
 2006-01-13  0.9.45 Roland Clobus <rclobus@bigfoot.com>
 	* configure.ac: Added Swedish translation, fixed locale dir
 	* debian/control, debian/pioneers-client.install,

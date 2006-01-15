@@ -22,8 +22,6 @@
 #include "config.h"
 #include "frontend.h"
 
-#define MAX_CHAT 512		/* maximum chat message size */
-
 static GtkWidget *chat_entry;	/* messages text widget */
 static gboolean chat_grab_focus_on_update = FALSE; /**< Flag to indicate 
  * whether the chat widget should grab the focus whenever a GUI_UPDATE is sent */
@@ -34,7 +32,7 @@ static void chat_cb(GtkEntry * entry, G_GNUC_UNUSED gpointer user_data)
 	const gchar *text = gtk_entry_get_text(entry);
 
 	if (text[0] != '\0') {
-		gchar buff[MAX_CHAT];
+		gchar buff[MAX_CHAT + 1];
 		gint idx;
 
 		strncpy(buff, text, sizeof(buff) - 1);

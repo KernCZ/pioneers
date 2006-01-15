@@ -149,8 +149,6 @@ typedef enum {
 	PB_OTHERS
 } BroadcastType;
 Player *player_new(Game * game, int fd, gchar * location);
-void player_setup(Player * player, int playernum, gchar * name, gboolean
-		  force_viewer);
 Player *player_by_name(Game * game, char *name);
 Player *player_by_num(Game * game, gint num);
 void player_set_name(Player * player, gchar * name);

@@ -39,6 +39,9 @@ typedef enum {
 #define NUM_DEVEL_TYPES (DEVEL_SOLDIER + 1)
 
 #define MAX_PLAYERS 8		/* maximum number of players supported */
+#define MAX_CHAT 496		/* maximum chat message size
+				 * (512 - strlen("player 0 chat \n") - 1) */
+#define MAX_NAME_LENGTH 30	/* maximum length for the name of a player */
 
 typedef enum {
 	VAR_DEFAULT,		/* plain out-of-the-box game */

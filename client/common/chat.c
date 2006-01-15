@@ -28,9 +28,7 @@
 #include "client.h"
 #include "callback.h"
 
-#define MAX_CHAT 512		/* maximum chat message size */
-
-void chat_parser(gint player_num, char chat_str[MAX_CHAT])
+void chat_parser(gint player_num, char *chat_str)
 {
 	int tempchatcolor = MSG_INFO;
 	gint idx;

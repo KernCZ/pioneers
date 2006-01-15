@@ -32,6 +32,9 @@ static gboolean mode_bad_version(Player * player, gint event);
 static gboolean mode_game_is_over(Player * player, gint event);
 static gboolean mode_global(Player * player, gint event);
 static gboolean mode_unhandled(Player * player, gint event);
+static void player_setup(Player * player, int playernum,
+			 const gchar * name, gboolean force_viewer);
+
 
 static gint next_player_num(Game * game, gboolean force_viewer)
 {
@@ -101,13 +104,20 @@ static gboolean mode_global(Player * player, gint event)
 		return TRUE;
 	case SM_RECV:
 		if (sm_recv(sm, "chat %S", text, sizeof(text))) {
-			player_broadcast(player, PB_ALL, "chat %s\n",
-					 text);
+			if (strlen(text) > MAX_CHAT)
+				sm_send(sm, "ERR %s\n",
+					_("chat too long"));
+			else
+				player_broadcast(player, PB_ALL,
+						 "chat %s\n", text);
 			return TRUE;
 		}
 		if (sm_recv(sm, "name %S", text, sizeof(text))) {
 			if (text[0] == 0)
 				sm_send(sm, "ERR invalid-name\n");
+			else if (strlen(text) > MAX_NAME_LENGTH)
+				sm_send(sm, "ERR %s\n",
+					_("name too long"));
 			else
 				player_set_name(player, text);
 			return TRUE;
@@ -293,11 +303,10 @@ static void player_set_name_real(Player * player, gchar * name,
 	driver->player_change(game);
 }
 
-void player_setup(Player * player, int playernum, gchar * name,
-		  gboolean force_viewer)
+static void player_setup(Player * player, int playernum,
+			 const gchar * name, gboolean force_viewer)
 {
-	gchar nm[100];
-	gchar *namep;
+	gchar nm[MAX_NAME_LENGTH + 1];
 	Game *game = player->game;
 	StateMachine *sm = player->sm;
 	Player *other;
@@ -321,27 +330,22 @@ void player_setup(Player * player, int playernum, gchar * name,
 	/* give the player her new name */
 	if (name == NULL) {
 		if (player_is_viewer(game, player->num)) {
-			gint num = 0;
+			gint num = 1;
 			do {
-				sprintf(nm, "Viewer %d", num++);
+				sprintf(nm, _("Viewer %d"), num++);
 			} while (player_by_name(game, nm) != NULL);
-			namep = nm;
 		} else {
-			sprintf(nm, "Player %d", player->num);
-			namep = nm;
+			sprintf(nm, _("Player %d"), player->num);
 		}
-	} else
-		namep = name;
+	} else {
+		strncpy(nm, name, G_N_ELEMENTS(nm));
+		nm[G_N_ELEMENTS(nm) - 1] = '\0';
+	}
 
 	/* if the new name exists, try padding it with underscores */
-	other = player_by_name(game, namep);
+	other = player_by_name(game, nm);
 	if (other != player && other != NULL) {
 		gint i;
-		/* put the name in the buffer, so it is editable */
-		if (namep != nm) {
-			strncpy(nm, namep, sizeof(nm));
-			namep = nm;
-		}
 		/* add underscores until the name is unique */
 		for (i = strlen(nm); i < G_N_ELEMENTS(nm) - 1; ++i) {
 			if (player_by_name(game, nm) == NULL)
@@ -349,17 +353,27 @@ void player_setup(Player * player, int playernum, gchar * name,
 			nm[i] = '_';
 			nm[i + 1] = 0;
 		}
-		if (i == G_N_ELEMENTS(nm) - 1) {
-			/* This should never happen */
-			/* use the connection name */
-			strncpy(nm, player->name, sizeof(nm));
+		/* Adding underscores was not enough to make the name unique.
+		 * While staying within the maximum name length,
+		 * create numbers at the end of the name.
+		 * Repeat until an unique name has been found.
+		 */
+		while (player_by_name(game, nm)) {
+			gint digit = 10;
+			i = G_N_ELEMENTS(nm) - 1;
+			while (digit == 10 && i > 0) {
+				/* Digit will be: 0..10 */
+				--i;
+				digit = g_ascii_digit_value(nm[i]) + 1;
+				nm[i] = '0' + digit % 10;
+			}
 		}
 	}
 	/* copy the (possibly new) name to dynamic memory */
 	/* don't broadcast the name.  This is done by mode_pre_game, after
 	 * telling the user how many players are in the game.
 	 * That should keep things easier for the client. */
-	player_set_name_real(player, namep, FALSE);
+	player_set_name_real(player, nm, FALSE);
 
 	/* add the info in the output device */
 	driver->player_added(player);

@@ -1123,7 +1123,7 @@ void connect_create_dlg(void)
 	gtk_misc_set_alignment(GTK_MISC(lbl), 0, 0.5);
 
 	name_entry = gtk_entry_new();
-	gtk_entry_set_max_length(GTK_ENTRY(name_entry), 30);
+	gtk_entry_set_max_length(GTK_ENTRY(name_entry), MAX_NAME_LENGTH);
 	gtk_widget_show(name_entry);
 	gtk_entry_set_text(GTK_ENTRY(name_entry), saved_name);
 	connect_set_field(&connect_name, saved_name);
