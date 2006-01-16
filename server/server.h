@@ -1,8 +1,8 @@
 /* Pioneers - Implementation of the excellent Settlers of Catan board game.
  *   Go buy a copy.
  *
- * Copyright (C) 1999 the Free Software Foundation
- * Copyright (C) 2003 Bas Wijnen <b.wijnen@phys.rug.nl>
+ * Copyright (C) 1999 Dave Cole
+ * Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
 #ifndef __server_h
@@ -149,7 +149,6 @@ typedef enum {
 	PB_OTHERS
 } BroadcastType;
 Player *player_new(Game * game, int fd, gchar * location);
-Player *player_by_name(Game * game, char *name);
 Player *player_by_num(Game * game, gint num);
 void player_set_name(Player * player, gchar * name);
 Player *player_none(Game * game);

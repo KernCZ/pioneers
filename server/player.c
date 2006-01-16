@@ -1,8 +1,8 @@
 /* Pioneers - Implementation of the excellent Settlers of Catan board game.
  *   Go buy a copy.
  *
- * Copyright (C) 1999 the Free Software Foundation
- * Copyright (C) 2003 Bas Wijnen <b.wijnen@phys.rug.nl>
+ * Copyright (C) 1999 Dave Cole
+ * Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
 #include "config.h"
@@ -34,6 +34,7 @@ static gboolean mode_global(Player * player, gint event);
 static gboolean mode_unhandled(Player * player, gint event);
 static void player_setup(Player * player, int playernum,
 			 const gchar * name, gboolean force_viewer);
+static Player *player_by_name(Game * game, char *name);
 
 
 static gint next_player_num(Game * game, gboolean force_viewer)
@@ -768,7 +769,7 @@ GList *player_next_real(GList * last)
 	return list;
 }
 
-Player *player_by_name(Game * game, char *name)
+static Player *player_by_name(Game * game, char *name)
 {
 	GList *list;
 

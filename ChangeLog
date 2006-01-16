@@ -1,3 +1,9 @@
+2006-01-17  0.9.47 Bas Wijnen <shevek@fmf.nl>
+	* (Almost) all files: Change FSF postal address, change my e-mail
+	address, fixed copyright statements.
+	* server/server.h, server/player.c (player_by_name): Make
+	player_by_name a static function.
+
 2006-01-15  0.9.46 Roland Clobus <rclobus@bigfoot.com>
 	* client/common/chat.c, client/gtk/chat.c, client/gtk/connect.c,
 	client/gtk/name.c, common/game.h, server/player.c, server/server.h:
