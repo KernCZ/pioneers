@@ -21,6 +21,7 @@
 
 AC_PREREQ(2.53)
 AC_INIT([pioneers],[0.9.48],[pio-develop@lists.sourceforge.net])
+AC_CONFIG_AUX_DIR([.])
 AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
 AC_CONFIG_SRCDIR([client])
 AM_CONFIG_HEADER(config.h)
