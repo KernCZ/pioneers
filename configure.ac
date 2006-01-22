@@ -20,7 +20,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 AC_PREREQ(2.53)
-AC_INIT([pioneers],[0.9.47],[pio-develop@lists.sourceforge.net])
+AC_INIT([pioneers],[0.9.48],[pio-develop@lists.sourceforge.net])
 AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
 AC_CONFIG_SRCDIR([client])
 AM_CONFIG_HEADER(config.h)
@@ -235,8 +235,10 @@ if test "$test_libgnome" = "yes"; then
 		AC_DEFINE(HAVE_LIBGNOME, 1, 
 			[Defined if libgnome is present and needed])
 	fi
-	# Turn off the help if libgnome not installed
-	have_scrollkeeper=$have_gnome;
+	if test "$have_scrollkeeper" = "yes"; then
+		# Turn off the help if libgnome not installed
+		have_scrollkeeper=$have_gnome;
+	fi
 	if test "$need_libgnome" = "no"; then
 		have_graphical=$have_gtk2;
 	else
@@ -407,15 +409,15 @@ pioneers_build_server_console=yes;
 pioneers_build_server_gtk=yes;
 pioneers_build_metaserver=yes;
 
-if test $pioneers_have_syslog = no; then
+if test "$pioneers_have_syslog" = "no"; then
 	pioneers_build_metaserver=no;
 fi
-if test $have_graphical != yes; then
+if test "$have_graphical" != "yes"; then
 	pioneers_build_client_gtk=no;
 	pioneers_build_editor=no;
 	pioneers_build_server_gtk=no;
 fi
-if test $pioneers_have_non_blocking_sockets = no; then
+if test "$pioneers_have_non_blocking_sockets" = "no"; then
 	pioneers_build_client_ai=no;
 	pioneers_build_client_gtk=no;
 	pioneers_build_server_console=no;
@@ -424,7 +426,7 @@ if test $pioneers_have_non_blocking_sockets = no; then
 fi
 
 # The server functionality is not ported to MS Windows
-if test $pioneers_is_windows_port = yes; then
+if test "$pioneers_is_windows_port" = "yes"; then
 	pioneers_build_server_console=no;
 	pioneers_build_server_gtk=no;
 	pioneers_build_metaserver=no;
