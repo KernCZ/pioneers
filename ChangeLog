@@ -2,6 +2,8 @@
 	* configure.ac: Scrollkeeper only built when present, and when libgnome
 	is present. Protect script variables with ""
 	* configure.ac: Added AC_CONFIG_AUX_DIR
+	* pioneers.nsi.in: Check the presence of the Gtk+ runtime before
+	installing.
 	
 2006-01-17  0.9.47 Bas Wijnen <shevek@fmf.nl>
 	* (Almost) all files: Change FSF postal address, change my e-mail
