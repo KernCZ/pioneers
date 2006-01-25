@@ -1,3 +1,11 @@
+CVS Snapshot release 0.9.49
+* New theme, based on Battle of Wesnoth
+* Configure script updated
+* Added Swedish translation
+* Client and server chat length limited to safer lengths
+* Windows installer checks for the Gtk+ runtime
+* Several small bugs fixed, code cleanup
+
 CVS Snapshot release 0.9.40
 * Released Microsoft Windows Native port, requires Gtk+ runtime libraries
 * Fink port patches integrated
