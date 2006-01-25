@@ -2,6 +2,7 @@
 	* client/gtk/frontend.c, common/gtk/gtkbugs.c, common/gtk/gtkbugs.h:
 	For Gtk+-2.6, don't disconnect the shortcut keys when the action is set
 	to insensitive.
+	* pioneers.nsi.in: Added Wesnoth-like theme
 	* NEWS, README.Cygwin: Updated for the release
 	
 2006-01-22  0.9.48 Roland Clobus <rclobus@bigfoot.com>
