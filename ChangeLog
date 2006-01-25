@@ -1,3 +1,8 @@
+2006-01-25  0.9.49 Roland Clobus <rclobus@bigfoot.com>
+	* client/gtk/frontend.c, common/gtk/gtkbugs.c, common/gtk/gtkbugs.h:
+	For Gtk+-2.6, don't disconnect the shortcut keys when the action is set
+	to insensitive.
+	
 2006-01-22  0.9.48 Roland Clobus <rclobus@bigfoot.com>
 	* configure.ac: Scrollkeeper only built when present, and when libgnome
 	is present. Protect script variables with ""

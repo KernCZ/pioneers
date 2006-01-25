@@ -31,4 +31,15 @@
 void set_pixbuf_tree_view_column_autogrow(GtkWidget * parent_widget,
 					  GtkTreeViewColumn * column);
 
+/** @bug 2006-01-15 In Gtk+ 2.4 it is not possible to disable actions.
+ *  This will be close to its functionality, but will show -/- in the 
+ *  menus for the shortcut keys.
+ */
+void action_set_sensitive(GtkAction * action, gboolean sensitive);
+
+/** @bug Gtk bug 56070. If the mouse is over a button that becomes
+ *  sensitive, one can't click it without moving the mouse out and in again.
+ */
+void widget_set_sensitive(GtkWidget * widget, gboolean sensitive);
+
 #endif

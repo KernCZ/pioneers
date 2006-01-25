@@ -44,3 +44,52 @@ void set_pixbuf_tree_view_column_autogrow(GtkWidget * parent_widget,
 						     focus_line_width);
 	}
 }
+
+void action_set_sensitive(GtkAction * action, gboolean sensitive)
+{
+#if GTK_MAJOR_VERSION == 2 && GTK_MINOR_VERSION == 4
+	GSList *widgets;
+	widgets = gtk_action_get_proxies(action);
+	while (widgets) {
+		widget_set_sensitive(GTK_WIDGET(widgets->data), sensitive);
+		widgets = g_slist_next(widgets);
+	};
+
+	if (sensitive)
+		gtk_action_connect_accelerator(action);
+	else
+		gtk_action_disconnect_accelerator(action);
+#else
+	gtk_action_set_sensitive(action, sensitive);
+#endif
+}
+
+void widget_set_sensitive(GtkWidget * widget, gboolean sensitive)
+{
+	GtkWidget *button;
+
+	gtk_widget_set_sensitive(widget, sensitive);
+
+	/** @bug Gtk bug 56070. If the mouse is over a toolbar button that
+	 *  becomes sensitive, one can't click it without moving the mouse out
+	 *  and in again. This bug is registered in Bugzilla as a Gtk bug. The
+	 *  workaround tests if the mouse is inside the currently sensitivized
+	 *  button, and if yes call button_enter()
+         */
+	if (!GTK_IS_BIN(widget))
+		return;
+
+	button = gtk_bin_get_child(GTK_BIN(widget));
+	if (sensitive && GTK_IS_BUTTON(button)) {
+		gint x, y, state;
+		gtk_widget_get_pointer(button, &x, &y);
+		state = GTK_WIDGET_STATE(button);
+		if (state == GTK_STATE_NORMAL &&
+		    x >= 0 && y >= 0 &&
+		    x < button->allocation.width &&
+		    y < button->allocation.height) {
+			gtk_button_enter(GTK_BUTTON(button));
+			GTK_BUTTON(button)->in_button = TRUE;
+		}
+	}
+}
