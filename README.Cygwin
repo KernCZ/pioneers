@@ -5,29 +5,21 @@ Install a minimal setup
 1) Get 'setup.exe' from the Cygwin site (www.cygwin.com)
 2) Select (additional packages will automatically be selected):
    Category Gnome:
-      libgnomeui2
-      libxml2-devel
-   Category Graphics:
-      jpeg
+      libgnome2
    Category X11:
-      xorg-x11-f100
+      xorg-x11-fscl
       xorg-x11-fsrv
-      xorg-fscl
    Category Devel:
-      ORBit2-devel
       atk-devel
       gcc
       gettext-devel
       gtk-x11-devel
       intltool
       libXft-devel
-      libbonobo2-devel
-      libesound-devel
       libtool1.5
       make
-      openssl-devel
       pango-devel
-      pkg-config
+      pkgconfig
 You now have a minimal setup needed to build and run Pioneers.
 
 Build Pioneers from cvs
@@ -39,17 +31,17 @@ To compile Pioneers from cvs, you need some extra packages:
    Category devel:
       cvs
       gnome-common
-
+   Category graphics:
+      ImageMagick
+      ghostscript-base
    Category net:
       openssh
 
-1) Modify /usr/lib/libpangoxft-1.0.la
-     Remove '/usr/X11R6/lib/libXrender.la'
-2) Get the code from CVS (when prompted for a password, press enter)
-     cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/pio login 
-     cvs -z3 -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/pio co -P pioneers
-3) Go to the pioneers directory
-4) Run automake, build and install
+1) Get the code from CVS (when prompted for a password, press enter)
+    cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/pio login 
+    cvs -z3 -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/pio co -P pioneers
+2) Go to the pioneers directory
+3) Run automake, build and install
      ./autogen.sh
      make
      make install
@@ -77,7 +69,6 @@ Known limitations
 * The help is not built
 * The server will not create new games
 * The metaserver does not work
-* This document uses libgnomeui, but Pioneers can be built with only libgnome
 
 Roland Clobus
-2005-09-23 (Pioneers 0.9.29)
+2006-01-25 (Pioneers 0.9.49)
