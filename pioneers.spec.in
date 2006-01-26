@@ -135,6 +135,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/locale/it/LC_MESSAGES/pioneers.mo
 %{_datadir}/locale/nl/LC_MESSAGES/pioneers.mo
 %{_datadir}/locale/hu/LC_MESSAGES/pioneers.mo
+%{_datadir}/locale/sv/LC_MESSAGES/pioneers.mo
 
 %files help
 %defattr(-,root,root)
