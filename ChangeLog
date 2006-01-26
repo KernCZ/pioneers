@@ -1,3 +1,6 @@
+2006-01-26  0.9.50 Brian Wellington <bwelling@xbill.org>
+	* pioneers.spec.in: Added Swedish translation
+
 2006-01-25  0.9.49 Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/frontend.c, common/gtk/gtkbugs.c, common/gtk/gtkbugs.h:
 	For Gtk+-2.6, don't disconnect the shortcut keys when the action is set
