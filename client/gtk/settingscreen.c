@@ -298,10 +298,10 @@ static void settings_rules_changed(void)
 	if (settings_dlg) {
 		GtkWidget *vbox;
 		GtkWidget *dlg_vbox;
+		GList *list;
 
 		dlg_vbox = GTK_DIALOG(settings_dlg)->vbox;
-		GList *list =
-		    gtk_container_get_children(GTK_CONTAINER(dlg_vbox));
+		list = gtk_container_get_children(GTK_CONTAINER(dlg_vbox));
 
 		if (g_list_length(list) > 0)
 			gtk_widget_destroy(GTK_WIDGET(list->data));
