@@ -1,3 +1,6 @@
+2006-02-02 Daniel Nylander <po@danielnylander.se>
+	* sv.po: Added the missing translations
+
 2006-01-25 Roland Clobus <rclobus@bigfoot.com>
 	* nl.po: Added the new strings
 	* de.po, fr.po, it.po: Removed some obviously wrong translated fuzzy

@@ -2546,11 +2546,11 @@ msgstr "Registrera mot metaservern på %s, port %s\n"
 
 #: ../server/player.c:110
 msgid "chat too long"
-msgstr ""
+msgstr "chatt för lång"
 
 #: ../server/player.c:121
 msgid "name too long"
-msgstr ""
+msgstr "namn för långt"
 
 #: ../server/player.c:237
 #, c-format
