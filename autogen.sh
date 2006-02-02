@@ -6,12 +6,7 @@ test -z "$srcdir" && srcdir=.
 
 PKG_NAME="Pioneers"
 
-# Tested with automake1.4 and automake1.7
-# The next two lines are needed because gnome-common only tries to use
-# automake-1.4, even when a newer version is present.
-REQUIRED_AUTOMAKE_VERSION="any"
-automake_progs="automake-1.9 automake-1.8 automake-1.7 automake-1.4"
- 
+REQUIRED_AUTOMAKE_VERSION="1.7"
 
 (test -f $srcdir/configure.ac \
   && test -f $srcdir/ChangeLog \
