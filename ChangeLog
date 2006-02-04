@@ -6,6 +6,11 @@
 	<shevek@fmf.nl>)
 	* common/gtk/guimap.c (guimap_cursor_move): Implemented single click 
 	build for ship/bridge situations
+	* README.Cygwin, configure.ac, client/gtk/data/Makefile.am,
+	editor/gtk/Makefile.am: The icons for Microsoft Windows executables 
+	are generated using netpbm.
+	* client/gtk/data/pioneers.ico, editor/gtk/pioneers-editor.ico:
+	Removed, they are now generated from the corresponding SVG files.
 
 2006-02-02  0.9.52 Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/callbacks.c (frontend_new_bank): Removed compiler warning.

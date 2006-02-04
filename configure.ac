@@ -77,6 +77,15 @@ else
 fi
 fi
 
+# Is netpbm installed (should be needed only for maintainer builds)
+# netpbm will generate the icon for the Windows executables
+AC_PATH_PROG(pngtopnm, pngtopnm)
+if test "$pngtopnm" = ""; then
+	# Don't let configure fail, in the distributed tarballs is already
+	# a current .png file
+	AC_SUBST(pngtopnm, [false])
+fi
+
 AC_ARG_ENABLE([warnings],
 [  --enable-warnings       Compile with check for compiler warnings (gcc-only).],
 [case "${enableval}" in
