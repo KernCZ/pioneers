@@ -1691,6 +1691,32 @@ void guimap_cursor_move(GuiMap * gmap, gint x, gint y,
 				}
 			}
 
+			/* When both a ship and a bridge can be built,
+			 * divide the edge in four segments.
+			 * The two segments near the nodes are for the 
+			 * bridge (the pillars).
+			 * The two segments in the middle are for the
+			 * ship (open sea).
+			 */
+			if (can_build_ship && can_build_bridge) {
+				MapElement node1, node2;
+				gint distanceNode, distanceEdge;
+				node1.node = element->edge->nodes[0];
+				node2.node = element->edge->nodes[1];
+				distanceNode =
+				    MIN(distance_cursor
+					(gmap, &node1, MAP_NODE, x, y),
+					distance_cursor(gmap, &node2,
+							MAP_NODE, x, y));
+				distanceEdge =
+				    distance_cursor(gmap, element,
+						    MAP_EDGE, x, y);
+				if (distanceNode < distanceEdge)
+					can_build_ship = FALSE;
+				else
+					can_build_bridge = FALSE;
+			}
+
 			can_build_edge = can_build_road || can_build_ship
 			    || can_build_bridge;
 			if (can_build_edge)

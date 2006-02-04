@@ -4,6 +4,8 @@
 	GTK server will enable its interface when all players have left.
 	* server/trade.c: Fixed a memory leak (based on a patch by Bas Wijnen
 	<shevek@fmf.nl>)
+	* common/gtk/guimap.c (guimap_cursor_move): Implemented single click 
+	build for ship/bridge situations
 
 2006-02-02  0.9.52 Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/callbacks.c (frontend_new_bank): Removed compiler warning.
