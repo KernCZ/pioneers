@@ -240,6 +240,8 @@ gboolean server_startup(GameParams * params, const gchar * hostname,
 
 gboolean server_stop()
 {
+	if (curr_game == NULL)
+		return FALSE;
 	game_free(curr_game);
 	curr_game = NULL;
 	return TRUE;
@@ -483,4 +485,14 @@ void server_init(void)
 	 * simultaneously.  This mostly happens to AI's, which disconnect
 	 * when the game is over. */
 	signal(SIGPIPE, handle_sigpipe);
+}
+
+void server_cleanup_static_data(void)
+{
+	GSList *games = _game_list;
+	while (games) {
+		params_free(games->data);
+		games = g_slist_next(games);
+	}
+	g_slist_free(_game_list);
 }

@@ -1,3 +1,10 @@
+2006-02-04  0.9.53 Roland Clobus <rclobus@bigfoot.com>
+	* server/main.c, server/player.c, server/server.c, server/server.h,
+	server/turn.c, server/gtk/main.c: Fixed memory leaks, at game over the
+	GTK server will enable its interface when all players have left.
+	* server/trade.c: Fixed a memory leak (based on a patch by Bas Wijnen
+	<shevek@fmf.nl>)
+
 2006-02-02  0.9.52 Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/callbacks.c (frontend_new_bank): Removed compiler warning.
 	* autogen.sh: Require automake1.7 as minimum version.

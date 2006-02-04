@@ -204,6 +204,7 @@ gboolean server_stop(void);
 gboolean server_is_running(void);
 gint accept_connection(gint in_fd, gchar ** location);
 gint open_listen_socket(const gchar * port);
+void server_cleanup_static_data(void);
 
 /**** game list control functions ****/
 GameParams *game_list_find_item(const gchar * title);
@@ -226,7 +227,7 @@ gboolean start_server(const gchar * hostname,
 
 /* initialize the server */
 void server_init(void);
-
+void game_is_over(Game * game);
 
 /* trade.c */
 void trade_perform_maritime(Player * player,

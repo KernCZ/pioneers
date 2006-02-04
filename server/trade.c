@@ -113,6 +113,27 @@ gboolean mode_wait_quote_exit(Player * player, gint event)
 	return FALSE;
 }
 
+/** The player has rejected/ended domestic trade.
+ *  Remove all quotes from that player
+ */
+static void end_quote(Player * player)
+{
+	for (;;) {
+		QuoteInfo *quote;
+		quote = quotelist_find_domestic(player->game->quotes,
+						player->num, -1);
+		if (quote == NULL)
+			break;
+		player_broadcast(player, PB_ALL,
+				 "domestic-quote delete %d\n",
+				 quote->var.d.quote_num);
+		quotelist_delete(player->game->quotes, quote);
+	}
+	player_broadcast(player, PB_RESPOND, "domestic-quote finish\n");
+
+	sm_goto(player->sm, (StateFunc) mode_wait_quote_exit);
+}
+
 gboolean mode_domestic_quote(Player * player, gint event)
 {
 	StateMachine *sm = player->sm;
@@ -126,24 +147,7 @@ gboolean mode_domestic_quote(Player * player, gint event)
 		return FALSE;
 
 	if (sm_recv(sm, "domestic-quote finish")) {
-		/* Player has rejected domestic trade - remove all
-		 * quotes from that player
-		 */
-		for (;;) {
-			QuoteInfo *quote;
-			quote = quotelist_find_domestic(game->quotes,
-							player->num, -1);
-			if (quote == NULL)
-				break;
-			player_broadcast(player, PB_ALL,
-					 "domestic-quote delete %d\n",
-					 quote->var.d.quote_num);
-			quotelist_delete(game->quotes, quote);
-		}
-		player_broadcast(player, PB_RESPOND,
-				 "domestic-quote finish\n");
-
-		sm_goto(sm, (StateFunc) mode_wait_quote_exit);
+		end_quote(player);
 		return TRUE;
 	}
 
@@ -204,8 +208,7 @@ void trade_finish_domestic(Player * player)
 	     list != NULL; list = player_next_real(list)) {
 		Player *scan = list->data;
 		if (scan != player && !player_is_viewer(game, scan->num))
-			sm_goto(scan->sm,
-				(StateFunc) mode_wait_quote_exit);
+			end_quote(scan);
 	}
 	quotelist_free(&game->quotes);
 }

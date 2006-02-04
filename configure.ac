@@ -20,7 +20,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 AC_PREREQ(2.53)
-AC_INIT([pioneers],[0.9.52],[pio-develop@lists.sourceforge.net])
+AC_INIT([pioneers],[0.9.53],[pio-develop@lists.sourceforge.net])
 AC_CONFIG_AUX_DIR([.])
 AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
 AC_CONFIG_SRCDIR([client])

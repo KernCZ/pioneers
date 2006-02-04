@@ -290,10 +290,18 @@ static void gui_player_rename(void *data)
 		    player->name);
 }
 
+static gboolean everybody_left(G_GNUC_UNUSED gpointer data)
+{
+	if (server_stop())
+		gui_ui_enable(TRUE);
+	return FALSE;
+}
+
 static void gui_player_change(void *data)
 {
 	Game *game = data;
 	GList *current;
+	guint number_of_players = 0;
 
 	gtk_list_store_clear(store);
 	playerlist_inc_use_count(game);
@@ -304,6 +312,9 @@ static void gui_player_change(void *data)
 		gboolean isViewer;
 
 		isViewer = player_is_viewer(p->game, p->num);
+		if (!isViewer && !p->disconnected)
+			number_of_players++;
+
 		gtk_list_store_append(store, &iter);
 		gtk_list_store_set(store, &iter,
 				   PLAYER_COLUMN_NAME, p->name,
@@ -314,6 +325,9 @@ static void gui_player_change(void *data)
 				   PLAYER_COLUMN_ISVIEWER, isViewer, -1);
 	}
 	playerlist_dec_use_count(game);
+	if (number_of_players == 0 && game->is_game_over) {
+		g_timeout_add(100, everybody_left, NULL);
+	}
 }
 
 static void add_game_to_list(gpointer name,
@@ -744,6 +758,14 @@ static void help_about_cb(void)
 		NULL
 	};
 	aboutbox_display(_("The Pioneers Game Server"), authors);
+}
+
+void game_is_over(G_GNUC_UNUSED Game * game)
+{
+	/* Wait for all players to disconnect,
+	 * then enable the UI
+	 */
+	log_message(MSG_INFO, _("The game is over.\n"));
 }
 
 int main(int argc, char *argv[])

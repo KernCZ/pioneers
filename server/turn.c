@@ -313,11 +313,6 @@ static gboolean distribute_resources(G_GNUC_UNUSED Map * map, Hex * hex,
 	return FALSE;
 }
 
-static gboolean exit_func(G_GNUC_UNUSED gpointer data)
-{
-	exit(0);
-}
-
 void check_victory(Player * player)
 {
 	Game *game = player->game;
@@ -345,11 +340,7 @@ void check_victory(Player * player)
 					    (StateFunc) mode_idle);
 		}
 
-		/* quit in ten seconds if configured */
-		if (game->params->quit_when_done) {
-			g_timeout_add(10 * 1000, &exit_func, NULL);
-		}
-
+		game_is_over(game);
 	}
 }
 

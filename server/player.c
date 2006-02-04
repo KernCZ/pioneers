@@ -510,16 +510,23 @@ void player_revive(Player * newp, char *name)
 	/* Don't use the old player's name */
 
 	/* copy over all the data from p */
+	g_assert(newp->build_list == NULL);
 	newp->build_list = p->build_list;
 	p->build_list = NULL;	/* prevent deletion */
+
 	memcpy(newp->prev_assets, p->prev_assets,
 	       sizeof(newp->prev_assets));
 	memcpy(newp->assets, p->assets, sizeof(newp->assets));
 	newp->gold = p->gold;
+	/* take over the development deck */
+	deck_free(newp->devel);
 	newp->devel = p->devel;
-	p->devel = NULL;	/* prevent deletion */
+	p->devel = NULL;
+
+	g_assert(newp->points == NULL);
 	newp->points = p->points;
 	p->points = NULL;	/* prevent deletion */
+
 	newp->discard_num = p->discard_num;
 	newp->num_roads = p->num_roads;
 	newp->num_bridges = p->num_bridges;

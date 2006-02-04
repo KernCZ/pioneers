@@ -45,6 +45,8 @@
 
 #include "admin.h"
 
+static GMainLoop *event_loop;
+
 static void usage(void)
 {
 	fprintf(stderr,
@@ -82,7 +84,6 @@ int main(int argc, char *argv[])
 	gchar *admin_port = g_strdup(PIONEERS_DEFAULT_ADMIN_PORT);
 
 	gboolean disable_game_start = FALSE;
-	GMainLoop *event_loop;
 	gint tournament_time = -1;
 	gboolean quit_when_done = FALSE;
 	gchar *hostname = NULL;
@@ -259,5 +260,20 @@ int main(int argc, char *argv[])
 	g_free(hostname);
 	g_free(server_port);
 	g_free(admin_port);
+	server_cleanup_static_data();
 	return 0;
+}
+
+static gboolean exit_func(G_GNUC_UNUSED gpointer data)
+{
+	g_main_loop_quit(event_loop);
+	return TRUE;
+}
+
+void game_is_over(Game * game)
+{
+	/* quit in ten seconds if configured */
+	if (game->params->quit_when_done) {
+		g_timeout_add(10 * 1000, &exit_func, NULL);
+	}
 }
