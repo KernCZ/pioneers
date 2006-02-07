@@ -1,5 +1,10 @@
 2006-02-07  0.9.54 Roland Clobus <rclobus@bigfoot.com>
 	* pioneers.nsi.in: Added Swedish translation to installer.
+	* client/gtk/connect.c, client/gtk/gui.c, editor/gtk/editor.c,
+	server/server.c, server/gtk/main.c: Initialize GError * to NULL
+	* meta-server/main.c: Fixes crashes in the metaserver that did allow
+	the creation of new servers even when the metaserver does not support
+	it.
 
 2006-02-04  0.9.53 Roland Clobus <rclobus@bigfoot.com>
 	* server/main.c, server/player.c, server/server.c, server/server.h,

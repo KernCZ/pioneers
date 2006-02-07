@@ -149,7 +149,7 @@ gint new_computer_player(const gchar * server, const gchar * port,
 			 gboolean want_chat)
 {
 	gchar *child_argv[8];
-	GError *error;
+	GError *error = NULL;
 	gint ret = 0;
 	gint n = 0;
 	gint i;

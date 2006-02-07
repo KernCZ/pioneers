@@ -1238,7 +1238,7 @@ GtkWidget *gui_build_interface()
 	GtkWidget *menubar;
 	GtkActionGroup *action_group;
 	GtkAccelGroup *accel_group;
-	GError *error;
+	GError *error = NULL;
 	gchar *icon_file;
 
 	player_init();

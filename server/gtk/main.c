@@ -777,7 +777,7 @@ int main(int argc, char *argv[])
 	GtkActionGroup *action_group;
 	GtkUIManager *ui_manager;
 	GtkAccelGroup *accel_group;
-	GError *error;
+	GError *error = NULL;
 
 	net_init();
 

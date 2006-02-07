@@ -693,7 +693,7 @@ static void launch_server_gtk(G_GNUC_UNUSED GtkWidget * widget,
 	gchar *child_argv[3];
 	GSpawnFlags flags = G_SPAWN_STDOUT_TO_DEV_NULL |
 	    G_SPAWN_STDERR_TO_DEV_NULL;
-	GError *error;
+	GError *error = NULL;
 	gint i;
 
 	child_argv[0] = g_strdup(PIONEERS_SERVER_GTK_PATH);

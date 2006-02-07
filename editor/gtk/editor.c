@@ -1026,7 +1026,7 @@ int main(int argc, char *argv[])
 	GtkWidget *vbox;
 	GtkWidget *menubar;
 	GtkAccelGroup *accel_group;
-	GError *error;
+	GError *error = NULL;
 	gchar *icon_file;
 
 	if (argc > 1)

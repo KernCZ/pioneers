@@ -62,6 +62,7 @@ struct _Client {
 	gboolean waiting_for_close;
 	gint protocol_major;
 	gint protocol_minor;
+	gboolean client_knows_we_can_create_games;
 
 	/* The rest of the structure is only used for META_SERVER clients
 	 */
@@ -398,8 +399,10 @@ static void client_list_types(Client * client)
 
 static void client_list_capability(Client * client)
 {
-	if (can_create_games)
+	if (can_create_games) {
 		client_printf(client, "create games\n");
+		client->client_knows_we_can_create_games = TRUE;
+	}
 	/** @todo RC 2005-01-30 Implement this in the metaserver */
 	if (FALSE)
 		client_printf(client, "send game settings\n");
@@ -431,7 +434,7 @@ static void client_create_new_server(Client * client, gchar * line)
 	GSpawnFlags spawn_flags = G_SPAWN_STDOUT_TO_DEV_NULL |
 	    G_SPAWN_STDERR_TO_DEV_NULL;
 	gchar *child_argv[32];
-	GError *error;
+	GError *error = NULL;
 
 	line += strspn(line, " \t");
 	terrain = line;
@@ -672,7 +675,8 @@ static void client_process_line(Client * client, gchar * line)
 			client->type = META_CLIENT;
 			client_list_types(client);
 			client->waiting_for_close = TRUE;
-		} else if (strncmp(line, "create ", 7) == 0) {
+		} else if (strncmp(line, "create ", 7) == 0
+			   && client->client_knows_we_can_create_games) {
 			client->type = META_CLIENT;
 			client_create_new_server(client, line + 7);
 			client->waiting_for_close = TRUE;
@@ -811,6 +815,7 @@ static void accept_new_client(void)
 	client->type = META_UNKNOWN;
 	client->protocol_major = 0;
 	client->protocol_minor = 0;
+	client->client_knows_we_can_create_games = FALSE;
 	client->fd = fd;
 
 	if (redirect_location != NULL) {
