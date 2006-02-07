@@ -71,6 +71,7 @@ var ICONS_GROUP
 !insertmacro MUI_LANGUAGE "German"
 !insertmacro MUI_LANGUAGE "Hungarian"
 !insertmacro MUI_LANGUAGE "Spanish"
+!insertmacro MUI_LANGUAGE "Swedish"
 
 ; Reserve files
 !insertmacro MUI_RESERVEFILE_INSTALLOPTIONS
@@ -107,6 +108,8 @@ Section "!Minimal install" SEC01
   File "..\..\..\local\locale\it\LC_MESSAGES\pioneers.mo"
   SetOutPath "$INSTDIR\locale\nl\LC_MESSAGES"
   File "..\..\..\local\locale\nl\LC_MESSAGES\pioneers.mo"
+  SetOutPath "$INSTDIR\locale\sv\LC_MESSAGES"
+  File "..\..\..\local\locale\sv\LC_MESSAGES\pioneers.mo"
 ; No man pages for Windows native distribution
 ;  SetOutPath "$INSTDIR\man\man6"
 ;  File "..\..\..\local\man\man6\pioneers-meta-server.6"
@@ -354,6 +357,7 @@ Section Uninstall
 ;  Delete "$INSTDIR\man\man6\pioneers-server-gtk.6"
 ;  Delete "$INSTDIR\man\man6\pioneers-server-console.6"
 ;  Delete "$INSTDIR\man\man6\pioneers-meta-server.6"
+  Delete "$INSTDIR\locale\sv\LC_MESSAGES\pioneers.mo"
   Delete "$INSTDIR\locale\nl\LC_MESSAGES\pioneers.mo"
   Delete "$INSTDIR\locale\it\LC_MESSAGES\pioneers.mo"
   Delete "$INSTDIR\locale\hu\LC_MESSAGES\pioneers.mo"
@@ -401,6 +405,8 @@ Section Uninstall
   RMDir "$INSTDIR\themes"
   RMDir "$INSTDIR\pixmaps\pioneers"
   RMDir "$INSTDIR\pixmaps"
+  RMDir "$INSTDIR\locale\sv\LC_MESSAGES"
+  RMDir "$INSTDIR\locale\sv"
   RMDir "$INSTDIR\locale\nl\LC_MESSAGES"
   RMDir "$INSTDIR\locale\nl"
   RMDir "$INSTDIR\locale\it\LC_MESSAGES"
