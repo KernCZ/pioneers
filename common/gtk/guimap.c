@@ -290,11 +290,12 @@ static void calc_edge_poly(const GuiMap * gmap, const Edge * edge,
 	g_assert(poly->num_points >= shape->num_points);
 	poly->num_points = shape->num_points;
 
-	/* Work out rotation - y axis is upside down, so rotate in
-	 * reverse direction
+	/* Determine the angle for the polygon:
+	 * Polygons on edges are rotated 0, 60 or 120 degrees CCW
+	 * Polygons without edges are rotated 90 degrees CCW
 	 */
-	theta = (edge != NULL) ? (2 * M_PI / 6.0) * edge->pos : M_PI / 2;
-	theta = 2 * M_PI - theta;
+	theta =
+	    2 * M_PI * (edge != NULL ? 1 - (edge->pos % 3) / 6.0 : -0.25);
 	cos_theta = cos(theta);
 	sin_theta = sin(theta);
 	scale = (2 * gmap->y_point) / 120.0;
@@ -321,6 +322,11 @@ static void calc_edge_poly(const GuiMap * gmap, const Edge * edge,
 	 */
 	if (edge != NULL) {
 		gint x_offset, y_offset;
+
+		/* Recalculate the angle for the position of the edge */
+		theta = 2 * M_PI * (1 - edge->pos / 6.0);
+		cos_theta = cos(theta);
+		sin_theta = sin(theta);
 
 		calc_hex_pos(gmap, edge->x, edge->y, &x_offset, &y_offset);
 		x_offset += gmap->x_point * cos_theta;

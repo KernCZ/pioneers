@@ -5,6 +5,8 @@
 	* meta-server/main.c: Fixes crashes in the metaserver that did allow
 	the creation of new servers even when the metaserver does not support
 	it.
+	* common/gtk/guimap.c (calc_edge_poly): Apply gravity to ships and
+	bridges.
 
 2006-02-04  0.9.53 Roland Clobus <rclobus@bigfoot.com>
 	* server/main.c, server/player.c, server/server.c, server/server.h,
