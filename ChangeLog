@@ -1,3 +1,6 @@
+2006-02-08  Roland Clobus <rclobus@bigfoot.com>
+	* client/gtk/data/.cvsignore, editor/gtk/.cvsignore: Ignore icons
+	
 2006-02-07  0.9.54 Roland Clobus <rclobus@bigfoot.com>
 	* pioneers.nsi.in: Added Swedish translation to installer.
 	* client/gtk/connect.c, client/gtk/gui.c, editor/gtk/editor.c,

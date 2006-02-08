@@ -3,4 +3,5 @@ Makefile
 pioneers-editor
 .deps
 .libs
+pioneers-editor.ico
 pioneers-editor.png
