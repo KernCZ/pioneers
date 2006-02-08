@@ -1,3 +1,21 @@
+pioneers (0.9.54-1) unstable; urgency=high
+
+  * Upstream CVS snapshot release.
+  * Fix for meta-server remote crash possibility (Closes: #351986)
+
+ -- Bas Wijnen <shevek@fmf.nl>  Wed,  8 Feb 2006 23:04:53 +0100
+
+pioneers (0.9.49-1) unstable; urgency=high
+
+  * Moved maintainance address to Debian games team.
+  * New upstream url in copyright file. (Closes: #346472)
+  * New location for desktop files.
+  * Extra icons and descriptions for menus.
+  * Close denial of service hole. (Closes: #350237)
+  * Upstream CVS snapshot release. (Closes: #347214)
+
+ -- Bas Wijnen <shevek@fmf.nl>  Sat, 28 Jan 2006  7:08:45 +0100
+
 pioneers (0.9.33-1) unstable; urgency=low
 
   * Upstream CVS snapshot release. (Closes: #328880, #289048, #327165)

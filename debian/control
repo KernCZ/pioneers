@@ -1,8 +1,8 @@
 Source: pioneers
 Section: games
 Priority: optional
-Maintainer: Bas Wijnen <shevek@fmf.nl>
-Uploaders: Steve Langasek <vorlon@debian.org>, Roman Hodek <roman@debian.org>
+Maintainer: Debian Games Group <pkg-games-devel@lists.alioth.debian.org>
+Uploaders: Bas Wijnen <shevek@fmf.nl>, Steve Langasek <vorlon@debian.org>, Roman Hodek <roman@debian.org>
 Build-Depends: debhelper (>= 4.0.0), libgnome2-dev, scrollkeeper, gnome-common, imagemagick, librsvg2-bin, libgtk2.0-dev, automake1.9
 Standards-Version: 3.6.2
 
