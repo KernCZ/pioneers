@@ -238,3 +238,9 @@ accepted messages in state LIST:
    create dialog is destroyed
  - anything else:
    reported as error message to user
+
+-----
+Change of protocol 1.2 -> 1.3
+-----
+When the meta server is not capable of creating new games, the 'create' command
+is disabled. A 'bad command' will be sent.

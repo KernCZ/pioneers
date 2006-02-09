@@ -1,3 +1,9 @@
+2005-02-09  0.9.55 Roland Clobus <rclobus@bigfoot.com>
+	* configure.ac, meta-server/README.protocol: New version for the meta
+	server
+	* meta-server/main.c: Partly reverse the patch for 0.9.54, disable the
+	'create' command globally, instead of per connection.
+	
 2006-02-08  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/data/.cvsignore, editor/gtk/.cvsignore: Ignore icons
 	
