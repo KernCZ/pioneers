@@ -35,4 +35,5 @@ postinst.debhelper
 postrm.debhelper
 prerm.debhelper
 substvars
+files
 tmp

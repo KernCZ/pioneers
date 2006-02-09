@@ -1,9 +1,9 @@
-pioneers (0.9.54-1) unstable; urgency=high
+pioneers (0.9.55-1) unstable; urgency=high
 
-  * Upstream CVS snapshot release.
+  * Upstream CVS snapshot release. (Closes: #351034)
   * Fix for meta-server remote crash possibility (Closes: #351986)
 
- -- Bas Wijnen <shevek@fmf.nl>  Wed,  8 Feb 2006 23:04:53 +0100
+ -- Bas Wijnen <shevek@fmf.nl>  Wed,  9 Feb 2006 11:19:00 +0100
 
 pioneers (0.9.49-1) unstable; urgency=high
 
