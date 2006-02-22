@@ -1,3 +1,9 @@
+pioneers (0.9.55-2) unstable; urgency=low
+
+  * Reset maintainer to myself.
+
+ -- Bas Wijnen <shevek@fmf.nl>  Wed, 22 Feb 2006 22:17:03 +0100
+
 pioneers (0.9.55-1) unstable; urgency=high
 
   * Upstream CVS snapshot release. (Closes: #351034)
