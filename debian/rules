@@ -14,6 +14,9 @@ ifneq (,$(findstring debug,$(DEB_BUILD_OPTIONS)))
 	CONFIGUREFLAGS += --enable-maintainer-mode
 endif
 
+AUTO_JUNK = config.guess config.sub configure depcomp INSTALL \
+        install-sh ltmain.sh missing mkinstalldirs aclocal.m4 config.h.in
+
 build: build-stamp
 build-stamp:
 	dh_testdir
@@ -37,9 +40,13 @@ clean:
 	dh_testroot
 	rm -f build-stamp install-stamp pioneers.xpm pioneers-server.xpm
 	# Commands to clean up after the build process.
-	-$(MAKE) maintainer-clean
-	-find . -name Makefile.in | xargs rm
-	-rm configure INSTALL missing aclocal.m4 depcomp install-sh mkinstalldirs ltmain.sh
+ifneq ($(wildcard Makefile),)
+	$(MAKE) maintainer-clean
+endif
+ifneq ($(wildcard ${AUTO_JUNK}),)
+	rm $(wildcard ${AUTO_JUNK})
+endif
+	find . -name Makefile.in -exec rm {} \;
 	dh_clean
 
 install: install-stamp
