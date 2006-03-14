@@ -1,3 +1,6 @@
+2005-03-14  0.9.56 Roland Clobus <rclobus@bigfoot.com>
+	* server/pregame.c: Show disconnected players when reconnecting
+	
 2005-02-09  0.9.55 Roland Clobus <rclobus@bigfoot.com>
 	* configure.ac, meta-server/README.protocol: New version for the meta
 	server

@@ -350,6 +350,8 @@ static void send_player_list(StateMachine * sm, Player * player)
 		if (player == scan || scan->num < 0)
 			continue;
 		sm_send(sm, "player %d is %s\n", scan->num, scan->name);
+		if (scan->disconnected)
+			sm_send(sm, "player %d has quit\n", scan->num);
 	}
 	sm_send(sm, ".\n");
 }
