@@ -304,7 +304,7 @@ gboolean can_play_any_develop(void);
 Player *player_get(gint num);
 gboolean player_is_viewer(gint num);
 Viewer *viewer_get(gint num);
-gchar *player_name(gint player_num, gboolean word_caps);
+const gchar *player_name(gint player_num, gboolean word_caps);
 gint player_get_score(gint player_num);
 gint my_player_num(void);
 const gchar *my_player_name(void);

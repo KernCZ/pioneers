@@ -65,7 +65,7 @@ gboolean mode_quote_delete_response(StateMachine * sm, gint event);
 
 /******** chat.c ************/
 /* parse an incoming chat message */
-void chat_parser(gint player_num, char *chat_str);
+void chat_parser(gint player_num, const gchar * chat_str);
 
 /******* player.c **********/
 void player_reset(void);
@@ -96,6 +96,7 @@ void player_get_point(gint player_num, gint id, const gchar * str,
 		      gint num);
 void player_lose_point(gint player_num, gint id);
 void player_take_point(gint player_num, gint id, gint old_owner);
+gint find_viewer_by_name(const gchar * name);
 
 /********* build.c **********/
 void build_clear(void);

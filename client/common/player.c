@@ -87,7 +87,22 @@ Viewer *viewer_get(gint num)
 	return NULL;
 }
 
-gchar *player_name(gint player_num, gboolean word_caps)
+/** Find a viewer with the given name.
+ *  @param name The name to find
+ *  @return -1 if the name is not found
+ */
+gint find_viewer_by_name(const gchar * name)
+{
+	GSList *list;
+	for (list = viewers; list != NULL; list = g_list_next(list)) {
+		Viewer *viewer = list->data;
+		if (!strcmp(viewer->name, name))
+			return viewer->num;
+	}
+	return -1;
+}
+
+const gchar *player_name(gint player_num, gboolean word_caps)
 {
 	static gchar buff[256];
 	if (player_num >= num_total_players) {
