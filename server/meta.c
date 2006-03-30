@@ -207,3 +207,11 @@ void meta_register(const gchar * server, const gchar * port, Game * game)
 		net_free(&ses);
 	}
 }
+
+void meta_unregister(void)
+{
+	if (ses != NULL) {
+		log_message(MSG_INFO, _("Unregister from meta-server\n"));
+		net_free(&ses);
+	}
+}

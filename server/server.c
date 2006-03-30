@@ -242,6 +242,7 @@ gboolean server_stop()
 {
 	if (curr_game == NULL)
 		return FALSE;
+	meta_unregister();
 	game_free(curr_game);
 	curr_game = NULL;
 	return TRUE;

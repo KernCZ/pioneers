@@ -4,6 +4,8 @@
 	* client/callback.h, client/common/chat.c, client/common/client.h,
 	client/common/player.c: Fixed a crash in the client when a /beep is
 	sent when not all players are present yet.
+	* server/meta.c, server/server.c, server/server.h: Unregister from the
+	meta-server when the server stops.
 
 2005-03-30 Samual Wright <sam@lykoszine.co.uk>
 	* client/help/C/pioneers.xml: Fixed a typo
