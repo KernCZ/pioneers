@@ -1,3 +1,12 @@
+2005-03-30  0.9.57 Roland Clobus <rclobus@bigfoot.com>
+	* client/help/C/pioneers.xml: Updated documentation. Corrected spelling
+	to en_us.
+
+2005-03-30 Samual Wright <sam@lykoszine.co.uk>
+	* client/help/C/pioneers.xml: Fixed a typo
+
+2005-03-30 Repository converted from cvs to svn
+
 2005-03-14  0.9.56 Roland Clobus <rclobus@bigfoot.com>
 	* server/pregame.c: Show disconnected players when reconnecting
 	
