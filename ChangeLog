@@ -6,6 +6,9 @@
 	sent when not all players are present yet.
 	* server/meta.c, server/server.c, server/server.h: Unregister from the
 	meta-server when the server stops.
+	* client/gtk/gui.c: Activate the map page when trade tabs have been
+	shown. Also hide the legend tab page after a connect (when turned off
+	in the preferences).
 
 2005-03-30 Samual Wright <sam@lykoszine.co.uk>
 	* client/help/C/pioneers.xml: Fixed a typo

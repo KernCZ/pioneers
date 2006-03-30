@@ -452,8 +452,10 @@ void gui_show_trade_page(gboolean show)
 		gtk_widget_show(trade_page);
 		gtk_notebook_set_current_page(GTK_NOTEBOOK(map_notebook),
 					      TRADE_PAGE);
-	} else
+	} else {
+		gtk_notebook_prev_page(GTK_NOTEBOOK(map_notebook));
 		gtk_widget_hide(trade_page);
+	}
 }
 
 void gui_show_quote_page(gboolean show)
@@ -464,8 +466,10 @@ void gui_show_quote_page(gboolean show)
 		gtk_widget_show(quote_page);
 		gtk_notebook_set_current_page(GTK_NOTEBOOK(map_notebook),
 					      QUOTE_PAGE);
-	} else
+	} else {
+		gtk_notebook_prev_page(GTK_NOTEBOOK(map_notebook));
 		gtk_widget_hide(quote_page);
+	}
 }
 
 static void gui_theme_changed(void)
@@ -1149,6 +1153,8 @@ void gui_set_game_params(const GameParams * params)
 	legend_page = legend_create_content();
 	gtk_notebook_insert_page(GTK_NOTEBOOK(map_notebook),
 				 legend_page, label, LEGEND_PAGE);
+	if (!legend_page_enabled)
+		gui_show_legend_page(FALSE);
 	g_object_unref(label);
 }
 
