@@ -86,7 +86,7 @@ binary-indep: build install
 binary-arch: build install
 	dh_testdir -a
 	dh_testroot -a
-	dh_installdocs -A README
+	dh_installdocs -A README AUTHORS
 	dh_installinit -a
 	dh_installexamples -a
 	dh_installmenu -a
