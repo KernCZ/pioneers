@@ -1,8 +1,9 @@
 pioneers (0.9.55-2) unstable; urgency=low
 
   * Reset maintainer to myself.
+  * Exclude all editor-related things instead of specific files.
 
- -- Bas Wijnen <shevek@fmf.nl>  Wed, 22 Feb 2006 22:17:03 +0100
+ -- Bas Wijnen <shevek@fmf.nl>  Sun,  2 Apr 2006 11:14:39 +0200
 
 pioneers (0.9.55-1) unstable; urgency=high
 

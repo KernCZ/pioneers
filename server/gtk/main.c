@@ -40,10 +40,12 @@
 
 #define MAINICON_FILE	"pioneers-server.png"
 
+static GtkWidget *settings_notebook; /* relevant settings */
 static GtkWidget *game_frame;	/* the frame containing all settings regarding the game */
 static GtkWidget *select_game;	/* select game type */
 static GtkWidget *game_settings;	/* the settings of the game */
 static GtkWidget *server_frame;	/* the frame containing all settings regarding the server */
+static GtkWidget *ai_frame;	/* the frame containing all settings regarding the ai */
 static GtkWidget *register_toggle;	/* register with meta server? */
 static GtkWidget *chat_toggle;	/* disable AI chatting? */
 static GtkWidget *meta_entry;	/* name of meta server */
@@ -56,9 +58,9 @@ static GtkWidget *start_btn;	/* start/stop the server */
 static GtkTooltips *tooltips;	/* tooltips */
 
 static GtkListStore *store;	/* shows player connection status */
+static gboolean is_running; /* current server status */
 
 
-static gboolean ui_enabled;	/* is the ui accessible? */
 static gchar *hostname;		/* reported hostname */
 static gchar *server_port = NULL;	/* port of the game */
 static gboolean register_server = TRUE;	/* Register at the meta server */
@@ -189,35 +191,36 @@ static void game_activate(GtkWidget * widget,
 	update_game_settings();
 }
 
-static void gui_ui_enable(gboolean sensitive)
+static void gui_set_server_state(gboolean running)
 {
-	gboolean addcomputer_btn_enabled = !sensitive;
+	gboolean ai_settings_enabled = TRUE;
 
-	ui_enabled = sensitive;
+	is_running = running;
 
-	gtk_widget_set_sensitive(game_frame, sensitive);
-	gtk_widget_set_sensitive(server_frame, sensitive);
-	gtk_button_set_label(GTK_BUTTON(start_btn), ui_enabled ?
-			     _("Start server") : _("Stop server"));
-	gtk_tooltips_set_tip(tooltips, start_btn, ui_enabled ?
-			     _("Start the server") : _("Stop the server"),
+	gtk_notebook_set_current_page(GTK_NOTEBOOK(settings_notebook),
+				      running ? 1 : 0);
+	gtk_button_set_label(GTK_BUTTON(start_btn), running ?
+			     _("Stop server") : _("Start server"));
+	gtk_tooltips_set_tip(tooltips, start_btn, running ?
+			     _("Stop the server") : _("Start the server"),
 			     NULL);
 
-	if (addcomputer_btn_enabled) {
-		gchar *fullname = g_find_program_in_path(PIONEERS_AI_PATH);
-		if (fullname) {
-			g_free(fullname);
-		} else {
-			addcomputer_btn_enabled = FALSE;
-		}
+	gchar *fullname = g_find_program_in_path(PIONEERS_AI_PATH);
+	if (fullname) {
+		g_free(fullname);
+	} else {
+		ai_settings_enabled = FALSE;
 	}
-	gtk_widget_set_sensitive(addcomputer_btn, addcomputer_btn_enabled);
+	gtk_widget_set_sensitive(ai_frame, ai_settings_enabled);
 }
 
 static void start_clicked_cb(G_GNUC_UNUSED GtkButton * start_btn,
 			     G_GNUC_UNUSED gpointer user_data)
 {
-	if (ui_enabled) {
+	if (is_running) {
+		if (server_stop())
+			gui_set_server_state(FALSE);
+	} else {		/* not running */
 		const gchar *title;
 		title = select_game_get_active(SELECTGAME(select_game));
 		params = game_list_find_item(title);
@@ -234,7 +237,7 @@ static void start_clicked_cb(G_GNUC_UNUSED GtkButton * start_btn,
 		update_game_settings();
 		g_assert(server_port != NULL);
 		if (start_server(hostname, server_port, register_server)) {
-			gui_ui_enable(FALSE);
+			gui_set_server_state(TRUE);
 			config_set_string("server/meta-server",
 					  meta_server_name);
 			config_set_string("server/port", server_port);
@@ -242,8 +245,6 @@ static void start_clicked_cb(G_GNUC_UNUSED GtkButton * start_btn,
 			config_set_string("server/hostname", hostname);
 			config_set_int("server/random-seating-order",
 				       random_order);
-			config_set_int("server/enable-ai-chat",
-				       want_ai_chat);
 
 			config_set_string("game/name", params->title);
 			config_set_int("game/random-terrain",
@@ -255,9 +256,6 @@ static void start_clicked_cb(G_GNUC_UNUSED GtkButton * start_btn,
 			config_set_int("game/sevens-rule",
 				       params->sevens_rule);
 		}
-	} else {		/* UI was not enabled */
-		if (server_stop())
-			gui_ui_enable(TRUE);
 	}
 }
 
@@ -266,6 +264,7 @@ static void addcomputer_clicked_cb(G_GNUC_UNUSED GtkButton * start_btn,
 {
 	g_assert(server_port != NULL);
 	new_computer_player(NULL, server_port, want_ai_chat);
+	config_set_int("ai/enable-chat", want_ai_chat);
 }
 
 
@@ -293,7 +292,7 @@ static void gui_player_rename(void *data)
 static gboolean everybody_left(G_GNUC_UNUSED gpointer data)
 {
 	if (server_stop())
-		gui_ui_enable(TRUE);
+		gui_set_server_state(FALSE);
 	return FALSE;
 }
 
@@ -444,7 +443,8 @@ static GtkWidget *build_interface(void)
 {
 	GtkWidget *vbox;
 	GtkWidget *vbox_settings;
-	GtkWidget *hbox;
+	GtkWidget *vbox_ai;
+	GtkWidget *hbox_ai;
 	GtkWidget *frame;
 	GtkWidget *table;
 	GtkWidget *label;
@@ -458,17 +458,20 @@ static GtkWidget *build_interface(void)
 
 	tooltips = gtk_tooltips_new();
 
-	vbox = gtk_vbox_new(FALSE, 0);
+	vbox = gtk_vbox_new(FALSE, 5);
 	gtk_widget_show(vbox);
 	gtk_container_set_border_width(GTK_CONTAINER(vbox), 5);
 
-	hbox = gtk_hbox_new(FALSE, 5);
-	gtk_widget_show(hbox);
-	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);
+	settings_notebook = gtk_notebook_new();
+	gtk_widget_show(settings_notebook);
+	gtk_notebook_set_show_tabs(GTK_NOTEBOOK(settings_notebook), FALSE);
+	gtk_notebook_set_show_border(GTK_NOTEBOOK(settings_notebook), FALSE);
+	gtk_box_pack_start(GTK_BOX(vbox), settings_notebook, FALSE, TRUE, 0);
 
 	vbox_settings = gtk_vbox_new(FALSE, 5);
 	gtk_widget_show(vbox_settings);
-	gtk_box_pack_start(GTK_BOX(hbox), vbox_settings, FALSE, TRUE, 0);
+	gtk_notebook_append_page(GTK_NOTEBOOK(settings_notebook),
+				 vbox_settings, NULL);
 
 	/* Game settings frame */
 	game_frame = build_game_settings(vbox_settings);
@@ -563,21 +566,6 @@ static GtkWidget *build_interface(void)
 	gtk_tooltips_set_tip(tooltips, random_toggle,
 			     _("Randomize turn order"), NULL);
 
-	label = gtk_label_new(_("Enable AI Chat"));
-	gtk_widget_show(label);
-	gtk_table_attach(GTK_TABLE(table), label, 0, 1, 5, 6,
-			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
-	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
-
-	chat_toggle = gtk_toggle_button_new_with_label(_("No"));
-	gtk_widget_show(chat_toggle);
-	gtk_table_attach(GTK_TABLE(table), chat_toggle, 1, 2, 5, 6,
-			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
-	g_signal_connect(G_OBJECT(chat_toggle), "toggled",
-			 G_CALLBACK(chat_toggle_cb), NULL);
-	gtk_tooltips_set_tip(tooltips, chat_toggle,
-			     _("Enable AI chat messages"), NULL);
-
 	/* Initialize server-settings */
 	server_port = config_get_string("server/port="
 					PIONEERS_DEFAULT_GAME_PORT,
@@ -610,33 +598,14 @@ static GtkWidget *build_interface(void)
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(random_toggle),
 				     random_order);
 
-	want_ai_chat = config_get_int_with_default("server/enable-ai-chat",
-						   TRUE);
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(chat_toggle),
-				     want_ai_chat);
-
-	start_btn = gtk_button_new();
-	gtk_widget_show(start_btn);
-
-	gtk_box_pack_start(GTK_BOX(vbox_settings), start_btn, FALSE, FALSE,
-			   0);
-	g_signal_connect(G_OBJECT(start_btn), "clicked",
-			 G_CALLBACK(start_clicked_cb), NULL);
-
-	addcomputer_btn =
-	    gtk_button_new_with_label(_("Add Computer Player"));
-	gtk_widget_show(addcomputer_btn);
-	gtk_box_pack_start(GTK_BOX(vbox_settings), addcomputer_btn, FALSE,
-			   FALSE, 0);
-	g_signal_connect(G_OBJECT(addcomputer_btn), "clicked",
-			 G_CALLBACK(addcomputer_clicked_cb), NULL);
-	gtk_widget_set_sensitive(addcomputer_btn, FALSE);
-	gtk_tooltips_set_tip(tooltips, addcomputer_btn,
-			     _("Add a computer player to the game"), NULL);
+	vbox_settings = gtk_vbox_new(FALSE, 5);
+	gtk_widget_show(vbox_settings);
+	gtk_notebook_append_page(GTK_NOTEBOOK(settings_notebook),
+				 vbox_settings, NULL);
 
 	frame = gtk_frame_new(_("Players Connected"));
 	gtk_widget_show(frame);
-	gtk_box_pack_start(GTK_BOX(hbox), frame, TRUE, TRUE, 0);
+	gtk_box_pack_start(GTK_BOX(vbox_settings), frame, TRUE, TRUE, 0);
 
 	scroll_win = gtk_scrolled_window_new(NULL, NULL);
 	gtk_widget_show(scroll_win);
@@ -721,6 +690,50 @@ static GtkWidget *build_interface(void)
 
 	gtk_widget_show(label);
 
+	ai_frame = gtk_frame_new(_("Computer Players"));
+	gtk_widget_show(ai_frame);
+	gtk_box_pack_start(GTK_BOX(vbox_settings), ai_frame, FALSE, FALSE, 0);
+	vbox_ai = gtk_vbox_new(FALSE, 5);
+	gtk_widget_show (vbox_ai);
+	gtk_container_set_border_width(GTK_CONTAINER(vbox_ai), 5);
+	gtk_container_add(GTK_CONTAINER(ai_frame), vbox_ai);
+	hbox_ai = gtk_hbox_new (FALSE, 5);
+	gtk_widget_show (hbox_ai);
+	gtk_box_pack_start(GTK_BOX(vbox_ai), hbox_ai, FALSE, FALSE, 0);
+
+	label = gtk_label_new(_("Enable Chat"));
+	gtk_widget_show(label);
+	gtk_box_pack_start(GTK_BOX(hbox_ai), label, FALSE, FALSE, 0);
+	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+
+	chat_toggle = gtk_toggle_button_new_with_label(_("No"));
+	gtk_widget_show(chat_toggle);
+	gtk_box_pack_start(GTK_BOX(hbox_ai), chat_toggle, TRUE, TRUE, 0);
+	g_signal_connect(G_OBJECT(chat_toggle), "toggled",
+			 G_CALLBACK(chat_toggle_cb), NULL);
+	gtk_tooltips_set_tip(tooltips, chat_toggle,
+			     _("Enable chat messages"), NULL);
+
+	want_ai_chat = config_get_int_with_default("ai/enable-chat", TRUE);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(chat_toggle),
+				     want_ai_chat);
+
+	addcomputer_btn =
+	    gtk_button_new_with_label(_("Add Computer Player"));
+	gtk_widget_show(addcomputer_btn);
+	gtk_box_pack_start(GTK_BOX(vbox_ai), addcomputer_btn, FALSE, FALSE, 0);
+	g_signal_connect(G_OBJECT(addcomputer_btn), "clicked",
+			 G_CALLBACK(addcomputer_clicked_cb), NULL);
+	gtk_tooltips_set_tip(tooltips, addcomputer_btn,
+			     _("Add a computer player to the game"), NULL);
+
+	start_btn = gtk_button_new();
+	gtk_widget_show(start_btn);
+
+	gtk_box_pack_start(GTK_BOX(vbox), start_btn, FALSE, FALSE, 0);
+	g_signal_connect(G_OBJECT(start_btn), "clicked",
+			 G_CALLBACK(start_clicked_cb), NULL);
+
 	frame = gtk_frame_new(_("Messages"));
 	gtk_widget_show(frame);
 	gtk_box_pack_start(GTK_BOX(vbox), frame, TRUE, TRUE, 0);
@@ -742,7 +755,7 @@ static GtkWidget *build_interface(void)
 			     _("Messages from the server"), NULL);
 	message_window_set_text(message_text);
 
-	gui_ui_enable(TRUE);
+	gui_set_server_state(FALSE);
 	return vbox;
 }
 

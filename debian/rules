@@ -61,7 +61,7 @@ install-stamp: build-stamp
 	install -D -m644 pioneers.xpm debian/tmp/usr/share/pixmaps/pioneers-client.xpm
 	install -D -m644 pioneers-server.xpm debian/tmp/usr/share/pixmaps/pioneers-server.xpm
 	rm -rf debian/tmp/usr/var
-	dh_install --fail-missing -X usr/share/man/man6/ -X usr/games/pioneers-editor -X usr/share/applications/pioneers-editor.desktop -X usr/share/pixmaps/pioneers-editor.png
+	dh_install --fail-missing -X usr/share/man/man6/ -X pioneers-editor
 	dh_installman
 	rm -rf debian/tmp/usr/share/gnome/help
 	touch install-stamp
