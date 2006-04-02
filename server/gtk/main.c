@@ -40,7 +40,7 @@
 
 #define MAINICON_FILE	"pioneers-server.png"
 
-static GtkWidget *settings_notebook; /* relevant settings */
+static GtkWidget *settings_notebook;	/* relevant settings */
 static GtkWidget *game_frame;	/* the frame containing all settings regarding the game */
 static GtkWidget *select_game;	/* select game type */
 static GtkWidget *game_settings;	/* the settings of the game */
@@ -58,7 +58,7 @@ static GtkWidget *start_btn;	/* start/stop the server */
 static GtkTooltips *tooltips;	/* tooltips */
 
 static GtkListStore *store;	/* shows player connection status */
-static gboolean is_running; /* current server status */
+static gboolean is_running;	/* current server status */
 
 
 static gchar *hostname;		/* reported hostname */
@@ -465,8 +465,10 @@ static GtkWidget *build_interface(void)
 	settings_notebook = gtk_notebook_new();
 	gtk_widget_show(settings_notebook);
 	gtk_notebook_set_show_tabs(GTK_NOTEBOOK(settings_notebook), FALSE);
-	gtk_notebook_set_show_border(GTK_NOTEBOOK(settings_notebook), FALSE);
-	gtk_box_pack_start(GTK_BOX(vbox), settings_notebook, FALSE, TRUE, 0);
+	gtk_notebook_set_show_border(GTK_NOTEBOOK(settings_notebook),
+				     FALSE);
+	gtk_box_pack_start(GTK_BOX(vbox), settings_notebook, FALSE, TRUE,
+			   0);
 
 	vbox_settings = gtk_vbox_new(FALSE, 5);
 	gtk_widget_show(vbox_settings);
@@ -692,13 +694,14 @@ static GtkWidget *build_interface(void)
 
 	ai_frame = gtk_frame_new(_("Computer Players"));
 	gtk_widget_show(ai_frame);
-	gtk_box_pack_start(GTK_BOX(vbox_settings), ai_frame, FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(vbox_settings), ai_frame, FALSE, FALSE,
+			   0);
 	vbox_ai = gtk_vbox_new(FALSE, 5);
-	gtk_widget_show (vbox_ai);
+	gtk_widget_show(vbox_ai);
 	gtk_container_set_border_width(GTK_CONTAINER(vbox_ai), 5);
 	gtk_container_add(GTK_CONTAINER(ai_frame), vbox_ai);
-	hbox_ai = gtk_hbox_new (FALSE, 5);
-	gtk_widget_show (hbox_ai);
+	hbox_ai = gtk_hbox_new(FALSE, 5);
+	gtk_widget_show(hbox_ai);
 	gtk_box_pack_start(GTK_BOX(vbox_ai), hbox_ai, FALSE, FALSE, 0);
 
 	label = gtk_label_new(_("Enable Chat"));
@@ -721,7 +724,8 @@ static GtkWidget *build_interface(void)
 	addcomputer_btn =
 	    gtk_button_new_with_label(_("Add Computer Player"));
 	gtk_widget_show(addcomputer_btn);
-	gtk_box_pack_start(GTK_BOX(vbox_ai), addcomputer_btn, FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(vbox_ai), addcomputer_btn, FALSE, FALSE,
+			   0);
 	g_signal_connect(G_OBJECT(addcomputer_btn), "clicked",
 			 G_CALLBACK(addcomputer_clicked_cb), NULL);
 	gtk_tooltips_set_tip(tooltips, addcomputer_btn,
