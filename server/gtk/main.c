@@ -197,13 +197,23 @@ static void gui_set_server_state(gboolean running)
 
 	is_running = running;
 
+	gtk_widget_set_sensitive(gtk_notebook_get_nth_page
+				 (GTK_NOTEBOOK(settings_notebook), 0),
+				 !running);
+	if (running)
+		gtk_widget_show(gtk_notebook_get_nth_page
+				(GTK_NOTEBOOK(settings_notebook), 1));
+	else
+		gtk_widget_hide(gtk_notebook_get_nth_page
+				(GTK_NOTEBOOK(settings_notebook), 1));
 	gtk_notebook_set_current_page(GTK_NOTEBOOK(settings_notebook),
 				      running ? 1 : 0);
-	gtk_button_set_label(GTK_BUTTON(start_btn), running ?
-			     _("Stop server") : _("Start server"));
-	gtk_tooltips_set_tip(tooltips, start_btn, running ?
-			     _("Stop the server") : _("Start the server"),
-			     NULL);
+	gtk_button_set_label(GTK_BUTTON(start_btn),
+			     running ? _("Stop server") :
+			     _("Start server"));
+	gtk_tooltips_set_tip(tooltips, start_btn,
+			     running ? _("Stop the server") :
+			     _("Start the server"), NULL);
 
 	gchar *fullname = g_find_program_in_path(PIONEERS_AI_PATH);
 	if (fullname) {
@@ -464,7 +474,6 @@ static GtkWidget *build_interface(void)
 
 	settings_notebook = gtk_notebook_new();
 	gtk_widget_show(settings_notebook);
-	gtk_notebook_set_show_tabs(GTK_NOTEBOOK(settings_notebook), FALSE);
 	gtk_notebook_set_show_border(GTK_NOTEBOOK(settings_notebook),
 				     FALSE);
 	gtk_box_pack_start(GTK_BOX(vbox), settings_notebook, FALSE, TRUE,
@@ -473,7 +482,8 @@ static GtkWidget *build_interface(void)
 	vbox_settings = gtk_vbox_new(FALSE, 5);
 	gtk_widget_show(vbox_settings);
 	gtk_notebook_append_page(GTK_NOTEBOOK(settings_notebook),
-				 vbox_settings, NULL);
+				 vbox_settings,
+				 gtk_label_new(_("Game Settings")));
 
 	/* Game settings frame */
 	game_frame = build_game_settings(vbox_settings);
@@ -601,9 +611,9 @@ static GtkWidget *build_interface(void)
 				     random_order);
 
 	vbox_settings = gtk_vbox_new(FALSE, 5);
-	gtk_widget_show(vbox_settings);
 	gtk_notebook_append_page(GTK_NOTEBOOK(settings_notebook),
-				 vbox_settings, NULL);
+				 vbox_settings,
+				 gtk_label_new(_("Running Game")));
 
 	frame = gtk_frame_new(_("Players Connected"));
 	gtk_widget_show(frame);
@@ -875,6 +885,7 @@ int main(int argc, char *argv[])
 			   0);
 
 	gtk_widget_show_all(window);
+	gui_set_server_state(FALSE);
 	g_signal_connect(G_OBJECT(window), "delete_event",
 			 G_CALLBACK(quit_cb), NULL);
 

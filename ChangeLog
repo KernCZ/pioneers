@@ -1,4 +1,4 @@
-2005-04-02  0.9.58 Bas Wijnen <shevek@fmf.nl>
+2005-04-02  0.9.60 Bas Wijnen <shevek@fmf.nl>
 	* server/gtk/main.c: Split interface for running and non-running
 	state.
 	* client/common/develop.c: Disallow road building if there's no place
