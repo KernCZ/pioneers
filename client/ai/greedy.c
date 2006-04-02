@@ -577,7 +577,7 @@ static Edge *traverse_out(Node * n, node_seen_set_t * set, float *score,
 				    traverse_out(othernode, set,
 						 &cur_score, resval);
 
-		} else if ((e->owner == -1) && (is_edge_on_land(e))) {
+		} else if (can_road_be_built(e, my_player_num())) {
 
 			/* no owner, how good is the other node ? */
 			cur_e = e;
@@ -617,13 +617,17 @@ static Edge *best_road_to_road_spot(Node * n, float *score,
 		if (e) {
 			Node *othernode = other_node(e, n);
 
-			if (is_edge_on_land(e) && e->owner == -1) {
+			if (can_road_be_built(e, my_player_num())) {
 
 				for (j = 0; j < 3; j++) {
 					Edge *e2 = othernode->edges[j];
 
+					/* We need to look further, temporarily mark this edge as having our road on it. */
+					e->owner = my_player_num();
+					e->type = BUILD_ROAD;
 
-					if ((e2) && (e2->owner == -1)) {
+					if (can_road_be_built
+					    (e2, my_player_num())) {
 						float score =
 						    score_node(other_node
 							       (e2,
@@ -635,6 +639,9 @@ static Edge *best_road_to_road_spot(Node * n, float *score,
 							best = e;
 						}
 					}
+					/* restore map to its real state */
+					e->owner = -1;
+					e->type = BUILD_NONE;
 				}
 			}
 
