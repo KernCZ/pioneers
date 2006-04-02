@@ -218,6 +218,12 @@ gboolean can_play_develop(gint card)
 	    || !deck_card_playable(develop_deck, played_develop, card,
 				   turn_num()))
 		return FALSE;
+	if (deck_card_type(develop_deck, card) == DEVEL_ROAD_BUILDING
+	    && !road_building_can_build_road ()
+	    && !road_building_can_build_ship ()
+	    && !road_building_can_build_bridge ())
+		return FALSE;
+
 	return TRUE;
 }
 

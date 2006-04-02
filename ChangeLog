@@ -1,6 +1,8 @@
 2005-04-02  0.9.58 Bas Wijnen <shevek@fmf.nl>
 	* server/gtk/main.c: Split interface for running and non-running
 	state.
+	* client/common/develop.c: Disallow road building if there's no place
+	to build it.
 
 2005-03-30  0.9.57 Roland Clobus <rclobus@bigfoot.com>
 	* client/help/C/pioneers.xml: Updated documentation. Corrected spelling
