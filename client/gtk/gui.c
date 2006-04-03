@@ -498,8 +498,11 @@ void gui_show_splash_page(gboolean show)
 		gtk_widget_show(splash_page);
 		gtk_notebook_set_current_page(GTK_NOTEBOOK(map_notebook),
 					      SPLASH_PAGE);
-	} else
+	} else {
 		gtk_widget_hide(splash_page);
+		gtk_notebook_set_current_page(GTK_NOTEBOOK(map_notebook),
+					      MAP_PAGE);
+	}
 }
 
 static GtkWidget *splash_build_page(void)
