@@ -1,3 +1,8 @@
+2005-04-03  Roland Clobus <rclobus@bigfoot.com>
+	* common/gtk/guimap.c, common/gtk/guimap.h, client/gtk/interface.c,
+	client/gtk/gui.c, client/gtk/gui.h: Implemented 'single click build'
+	for the movement of ships. (Click anywhere to cancel)
+
 2005-04-02  0.9.61 Bas Wijnen <shevek@fmf.nl>
 	* server/gtk/main.c: Split interface for running and non-running
 	state.

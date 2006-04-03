@@ -350,16 +350,17 @@ void gui_cursor_none()
 {
 	MapElement dummyElement;
 	dummyElement.pointer = NULL;
-	guimap_cursor_set(gmap, NO_CURSOR, -1, NULL, NULL, &dummyElement,
-			  FALSE);
+	guimap_cursor_set(gmap, NO_CURSOR, -1, NULL, NULL, NULL,
+			  &dummyElement, FALSE);
 }
 
 void gui_cursor_set(CursorType type,
 		    CheckFunc check_func, SelectFunc select_func,
-		    const MapElement * user_data)
+		    CancelFunc cancel_func, const MapElement * user_data)
 {
 	guimap_cursor_set(gmap, type, my_player_num(),
-			  check_func, select_func, user_data, FALSE);
+			  check_func, select_func, cancel_func, user_data,
+			  FALSE);
 }
 
 void gui_draw_hex(const Hex * hex)

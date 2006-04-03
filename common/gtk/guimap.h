@@ -50,6 +50,7 @@ typedef gboolean(*CheckFunc) (const MapElement element, gint owner,
 			      const MapElement user_data);
 typedef void (*SelectFunc) (const MapElement obj,
 			    const MapElement user_data);
+typedef void (*CancelFunc) (void);
 
 typedef struct _Mode Mode;
 typedef struct {
@@ -68,6 +69,7 @@ typedef struct {
 	gint cursor_owner;	   /**< owner of the cursor */
 	CheckFunc check_func;	   /**< check object under cursor */
 	SelectFunc check_select;   /**< when user selects cursor */
+	CancelFunc check_cancel;   /**< when user clicks in illegal position */
 	MapElement user_data;	   /**< passed to callback functions */
 	MapElement cursor;	   /**< current GUI mode edge/node/hex cursor */
 
@@ -120,6 +122,7 @@ Hex *guimap_find_hex(GuiMap * gmap, gint x, gint y);
 
 void guimap_cursor_set(GuiMap * gmap, CursorType cursor_type, gint owner,
 		       CheckFunc check_func, SelectFunc select_func,
+		       CancelFunc cancel_func,
 		       const MapElement * user_data,
 		       gboolean set_by_single_click);
 /* Single click building.
@@ -142,7 +145,11 @@ void guimap_start_single_click_build(gboolean road_mask,
 				     SelectFunc settlement_select_func,
 				     gboolean city_mask,
 				     CheckFunc city_check_func,
-				     SelectFunc city_select_func);
+				     SelectFunc city_select_func,
+				     gboolean ship_move_mask,
+				     CheckFunc ship_move_check_func,
+				     SelectFunc ship_move_select_func,
+				     CancelFunc ship_move_cancel_func);
 void guimap_cursor_move(GuiMap * gmap, gint x, gint y,
 			MapElement * element);
 void guimap_cursor_select(GuiMap * gmap, gint x, gint y);

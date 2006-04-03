@@ -87,6 +87,12 @@ void build_bridge_cb(MapElement edge, G_GNUC_UNUSED MapElement extra)
 	cb_build_bridge(edge.edge);
 }
 
+static void cancel_move_ship_cb(void)
+{
+	callbacks.instructions(_("Ship movement canceled."));
+	gui_prompt_hide();
+}
+
 void move_ship_cb(MapElement edge, G_GNUC_UNUSED MapElement extra)
 {
 	MapElement ship_from;
@@ -94,7 +100,7 @@ void move_ship_cb(MapElement edge, G_GNUC_UNUSED MapElement extra)
 	callbacks.instructions(_("Select a new location for the ship."));
 	gui_prompt_show(_("Select a new location for the ship."));
 	gui_cursor_set(SHIP_CURSOR, can_ship_be_moved_to, do_move_ship_cb,
-		       &ship_from);
+		       cancel_move_ship_cb, &ship_from);
 }
 
 void build_settlement_cb(MapElement node, G_GNUC_UNUSED MapElement extra)
@@ -315,7 +321,11 @@ static void frontend_state_turn(GuiEvent event)
 						(), check_settlement,
 						build_settlement_cb,
 						turn_can_build_city(),
-						check_city, build_city_cb);
+						check_city, build_city_cb,
+						turn_can_move_ship(),
+						check_ship_move,
+						move_ship_cb,
+						cancel_move_ship_cb);
 		break;
 	case GUI_ROLL:
 		cb_roll();
@@ -325,27 +335,27 @@ static void frontend_state_turn(GuiEvent event)
 		return;
 	case GUI_ROAD:
 		gui_cursor_set(ROAD_CURSOR, check_road, build_road_cb,
-			       NULL);
+			       NULL, NULL);
 		return;
 	case GUI_SHIP:
 		gui_cursor_set(SHIP_CURSOR, check_ship, build_ship_cb,
-			       NULL);
+			       NULL, NULL);
 		return;
 	case GUI_MOVE_SHIP:
 		gui_cursor_set(SHIP_CURSOR, check_ship_move, move_ship_cb,
-			       NULL);
+			       NULL, NULL);
 		return;
 	case GUI_BRIDGE:
 		gui_cursor_set(BRIDGE_CURSOR, check_bridge,
-			       build_bridge_cb, NULL);
+			       build_bridge_cb, NULL, NULL);
 		return;
 	case GUI_SETTLEMENT:
 		gui_cursor_set(SETTLEMENT_CURSOR, check_settlement,
-			       build_settlement_cb, NULL);
+			       build_settlement_cb, NULL, NULL);
 		return;
 	case GUI_CITY:
 		gui_cursor_set(CITY_CURSOR, check_city, build_city_cb,
-			       NULL);
+			       NULL, NULL);
 		return;
 	case GUI_TRADE:
 		trade_begin();
@@ -403,22 +413,22 @@ static void frontend_state_roadbuilding(GuiEvent event)
 		     check_ship, build_ship_cb,
 		     road_building_can_build_bridge(), check_bridge,
 		     build_bridge_cb, FALSE, NULL, NULL, FALSE, NULL,
-		     NULL);
+		     NULL, FALSE, NULL, NULL, NULL);
 		break;
 	case GUI_UNDO:
 		cb_undo();
 		return;
 	case GUI_ROAD:
 		gui_cursor_set(ROAD_CURSOR, check_road, build_road_cb,
-			       NULL);
+			       NULL, NULL);
 		return;
 	case GUI_SHIP:
 		gui_cursor_set(SHIP_CURSOR, check_ship, build_ship_cb,
-			       NULL);
+			       NULL, NULL);
 		return;
 	case GUI_BRIDGE:
 		gui_cursor_set(BRIDGE_CURSOR, check_bridge,
-			       build_bridge_cb, NULL);
+			       build_bridge_cb, NULL, NULL);
 		return;
 	case GUI_FINISH:
 		cb_end_turn();
@@ -693,7 +703,8 @@ static void place_robber_or_pirate_cb(MapElement hex,
 			break;
 		default:
 			gui_cursor_set(STEAL_SHIP_CURSOR,
-				       can_edge_be_robbed, rob_edge, &hex);
+				       can_edge_be_robbed, rob_edge, NULL,
+				       &hex);
 			gui_set_instructions(_
 					     ("Select the ship to steal from."));
 			gui_prompt_show(_
@@ -712,7 +723,7 @@ static void place_robber_or_pirate_cb(MapElement hex,
 		default:
 			gui_cursor_set(STEAL_BUILDING_CURSOR,
 				       can_building_be_robbed,
-				       rob_building, &hex);
+				       rob_building, NULL, &hex);
 			gui_set_instructions(_
 					     ("Select the building to steal from."));
 			gui_prompt_show(_
@@ -738,7 +749,7 @@ void frontend_robber()
 	set_gui_state(frontend_state_idle);
 	gui_cursor_set(ROBBER_CURSOR,
 		       check_move_robber_or_pirate,
-		       place_robber_or_pirate_cb, NULL);
+		       place_robber_or_pirate_cb, NULL, NULL);
 	gui_prompt_show(_("Place the robber"));
 	frontend_gui_update();
 }
@@ -794,6 +805,7 @@ static void frontend_mode_setup(GuiEvent event)
 						setup_can_build_settlement
 						(), check_settlement_setup,
 						build_settlement_cb, FALSE,
+						NULL, NULL, FALSE, NULL,
 						NULL, NULL);
 		break;
 	case GUI_UNDO:
@@ -806,20 +818,23 @@ static void frontend_mode_setup(GuiEvent event)
 		return;
 	case GUI_ROAD:
 		gui_cursor_set(ROAD_CURSOR,
-			       check_road_setup, build_road_cb, NULL);
+			       check_road_setup, build_road_cb, NULL,
+			       NULL);
 		return;
 	case GUI_SHIP:
 		gui_cursor_set(SHIP_CURSOR,
-			       check_ship_setup, build_ship_cb, NULL);
+			       check_ship_setup, build_ship_cb, NULL,
+			       NULL);
 		return;
 	case GUI_BRIDGE:
 		gui_cursor_set(BRIDGE_CURSOR,
-			       check_bridge_setup, build_bridge_cb, NULL);
+			       check_bridge_setup, build_bridge_cb, NULL,
+			       NULL);
 		return;
 	case GUI_SETTLEMENT:
 		gui_cursor_set(SETTLEMENT_CURSOR,
 			       check_settlement_setup,
-			       build_settlement_cb, NULL);
+			       build_settlement_cb, NULL, NULL);
 		return;
 	case GUI_FINISH:
 		cb_end_turn();

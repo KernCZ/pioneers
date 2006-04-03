@@ -1598,9 +1598,10 @@ static ModeCursor cursors[] = {
 	{find_hex, erase_robber_cursor, draw_robber_cursor}	/* ROBBER_CURSOR */
 };
 
-gboolean roadM, shipM, bridgeM, settlementM, cityM;
-CheckFunc roadF, shipF, bridgeF, settlementF, cityF;
-SelectFunc roadS, shipS, bridgeS, settlementS, cityS;
+gboolean roadM, shipM, bridgeM, settlementM, cityM, shipMoveM;
+CheckFunc roadF, shipF, bridgeF, settlementF, cityF, shipMoveF;
+SelectFunc roadS, shipS, bridgeS, settlementS, cityS, shipMoveS;
+CancelFunc shipMoveC;
 
 /** Calculate the distance between the element and the cursor.
  *  @param gmap The GuiMap
@@ -1610,7 +1611,8 @@ SelectFunc roadS, shipS, bridgeS, settlementS, cityS;
  *  @param cursor_y Y position of the cursor
  *  @return The square of the distance
  */
-static gint distance_cursor(GuiMap * gmap, const MapElement * element,
+static gint distance_cursor(const GuiMap * gmap,
+			    const MapElement * element,
 			    enum MapElementType type, gint cursor_x,
 			    gint cursor_y)
 {
@@ -1648,6 +1650,7 @@ void guimap_cursor_move(GuiMap * gmap, gint x, gint y,
 		gboolean can_build_bridge = FALSE;
 		gboolean can_build_settlement = FALSE;
 		gboolean can_build_city = FALSE;
+		gboolean can_move_ship = FALSE;
 		gboolean can_build_edge = FALSE;
 		gboolean can_build_node = FALSE;
 		gint distance_edge = 0;
@@ -1668,6 +1671,10 @@ void guimap_cursor_move(GuiMap * gmap, gint x, gint y,
 					    && bridgeF(*element,
 						       gmap->player_num,
 						       dummyElement));
+			can_move_ship = (shipMoveM &&
+					 shipMoveF(*element,
+						   gmap->player_num,
+						   dummyElement));
 
 			/* When both a road and a ship can be built,
 			 * build a road when the cursor is over land,
@@ -1724,7 +1731,7 @@ void guimap_cursor_move(GuiMap * gmap, gint x, gint y,
 			}
 
 			can_build_edge = can_build_road || can_build_ship
-			    || can_build_bridge;
+			    || can_build_bridge || can_move_ship;
 			if (can_build_edge)
 				distance_edge =
 				    distance_cursor(gmap, element,
@@ -1765,23 +1772,31 @@ void guimap_cursor_move(GuiMap * gmap, gint x, gint y,
 		if (can_build_bridge && can_build_edge)
 			guimap_cursor_set(gmap, BRIDGE_CURSOR,
 					  gmap->player_num, bridgeF,
-					  bridgeS, NULL, TRUE);
+					  bridgeS, NULL, NULL, TRUE);
 		else if (can_build_ship && can_build_edge)
 			guimap_cursor_set(gmap, SHIP_CURSOR,
 					  gmap->player_num, shipF, shipS,
-					  NULL, TRUE);
+					  NULL, NULL, TRUE);
 		else if (can_build_road && can_build_edge)
 			guimap_cursor_set(gmap, ROAD_CURSOR,
 					  gmap->player_num, roadF, roadS,
-					  NULL, TRUE);
+					  NULL, NULL, TRUE);
 		else if (can_build_settlement && can_build_node)
 			guimap_cursor_set(gmap, SETTLEMENT_CURSOR,
 					  gmap->player_num, settlementF,
-					  settlementS, NULL, TRUE);
+					  settlementS, NULL, NULL, TRUE);
 		else if (can_build_city && can_build_node)
 			guimap_cursor_set(gmap, CITY_CURSOR,
 					  gmap->player_num, cityF, cityS,
-					  NULL, TRUE);
+					  NULL, NULL, TRUE);
+		else if (can_move_ship && can_build_edge)
+			guimap_cursor_set(gmap, SHIP_CURSOR,
+					  gmap->player_num, shipMoveF,
+					  shipMoveS, NULL, NULL, TRUE);
+		else
+			guimap_cursor_set(gmap, NO_CURSOR,
+					  gmap->player_num, NULL, NULL,
+					  NULL, NULL, TRUE);
 	}
 
 	if (gmap->cursor_type == NO_CURSOR) {
@@ -1818,8 +1833,11 @@ void guimap_cursor_select(GuiMap * gmap, gint x, gint y)
 
 	if (gmap->check_func != NULL
 	    && !gmap->check_func(cursor, gmap->cursor_owner,
-				 gmap->user_data))
+				 gmap->user_data)) {
+		if (gmap->check_cancel != NULL)
+			gmap->check_cancel();
 		return;
+	}
 
 	if (gmap->check_select != NULL) {
 		/* Before processing the select, clear the cursor */
@@ -1840,15 +1858,19 @@ void guimap_cursor_select(GuiMap * gmap, gint x, gint y)
 
 void guimap_cursor_set(GuiMap * gmap, CursorType cursor_type, gint owner,
 		       CheckFunc check_func, SelectFunc check_select,
+		       CancelFunc cancel_func,
 		       const MapElement * user_data,
 		       gboolean set_by_single_click)
 {
 	single_click_build_active = set_by_single_click;
 	if (cursor_type != NO_CURSOR)
 		g_assert(owner >= 0);
+	if (gmap->check_cancel != NULL)
+		gmap->check_cancel();
 	gmap->cursor_owner = owner;
 	gmap->check_func = check_func;
 	gmap->check_select = check_select;
+	gmap->check_cancel = cancel_func;
 	if (user_data != NULL) {
 		gmap->user_data.pointer = user_data->pointer;
 	} else {
@@ -1879,7 +1901,11 @@ void guimap_start_single_click_build(gboolean road_mask,
 				     SelectFunc settlement_select_func,
 				     gboolean city_mask,
 				     CheckFunc city_check_func,
-				     SelectFunc city_select_func)
+				     SelectFunc city_select_func,
+				     gboolean ship_move_mask,
+				     CheckFunc ship_move_check_func,
+				     SelectFunc ship_move_select_func,
+				     CancelFunc ship_move_cancel_func)
 {
 	roadM = road_mask;
 	roadF = road_check_func;
@@ -1896,5 +1922,9 @@ void guimap_start_single_click_build(gboolean road_mask,
 	cityM = city_mask;
 	cityF = city_check_func;
 	cityS = city_select_func;
+	shipMoveM = ship_move_mask;
+	shipMoveF = ship_move_check_func;
+	shipMoveS = ship_move_select_func;
+	shipMoveC = ship_move_cancel_func;
 	single_click_build_active = TRUE;
 }

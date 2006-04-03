@@ -50,7 +50,7 @@ void gui_prompt_hide(void);
 void gui_cursor_none(void);
 void gui_cursor_set(CursorType type,
 		    CheckFunc check_func, SelectFunc select_func,
-		    const MapElement * user_data);
+		    CancelFunc cancel_func, const MapElement * user_data);
 void gui_draw_hex(const Hex * hex);
 void gui_draw_edge(const Edge * edge);
 void gui_draw_node(const Node * node);
