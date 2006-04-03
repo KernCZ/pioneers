@@ -34,14 +34,10 @@ if BUILD_EDITOR
 EDITOR_SUBDIRS = editor
 endif
 
-SUBDIRS = po common $(CLIENT_SUBDIRS) $(SERVER_SUBDIRS) $(META_SERVER_SUBDIRS) $(EDITOR_SUBDIRS) docs
-DIST_SUBDIRS = po common client server meta-server editor docs
+SUBDIRS = po common $(CLIENT_SUBDIRS) $(SERVER_SUBDIRS) $(META_SERVER_SUBDIRS) $(EDITOR_SUBDIRS) docs macros
+DIST_SUBDIRS = po common client server meta-server editor docs macros
 
 EXTRA_DIST = autogen.sh pioneers.spec xmldocs.make omf.make README.Cygwin README.MinGW
-
-dist-hook:
-	tar -c -f - -C $(srcdir) macros | tar -x -f - -C $(distdir)
-	find $(distdir)/macros -name CVS | xargs rm -rf
 
 distclean-local:
 	rm -f *~

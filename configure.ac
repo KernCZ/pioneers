@@ -460,6 +460,7 @@ AC_CONFIG_FILES([ \
 	meta-server/Makefile \
 	editor/Makefile \
 	docs/Makefile \
+	macros/Makefile \
 	])
 AC_CONFIG_FILES([ \
 	common/gtk/Makefile \
