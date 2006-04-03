@@ -21,6 +21,7 @@
 
 #include "config.h"
 #include <stdio.h>
+#include <string.h>
 
 #include "game.h"
 #include "map.h"
@@ -93,7 +94,7 @@ Viewer *viewer_get(gint num)
  */
 gint find_viewer_by_name(const gchar * name)
 {
-	GSList *list;
+	GList *list;
 	for (list = viewers; list != NULL; list = g_list_next(list)) {
 		Viewer *viewer = list->data;
 		if (!strcmp(viewer->name, name))

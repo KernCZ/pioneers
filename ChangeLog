@@ -6,6 +6,7 @@
 	* Makefile.am: let 'make restorepo' work with Subversion.
 	* configure.ac, Makefile.am, macros/Makefile.am: add the macros
 	subdirectory in the tarball (without the .svn directory)
+	* client/common/player.c: Remove compiler warnings
 
 2005-04-02  0.9.61 Bas Wijnen <shevek@fmf.nl>
 	* server/gtk/main.c: Split interface for running and non-running
