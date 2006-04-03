@@ -56,4 +56,4 @@ reindent:
 	find . -name '*.[ch]' -exec indent -kr -i8 '{}' ';'
 
 restorepo:
-	cvs update -C po/*.po po/pioneers.pot
+	svn revert po/*.po po/pioneers.pot

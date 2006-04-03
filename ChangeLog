@@ -3,6 +3,7 @@
 	client/gtk/gui.c, client/gtk/gui.h: Implemented 'single click build'
 	for the movement of ships. (Click anywhere to cancel)
 	* client/gtk/gui.c: Always show the map after a (re)connect.
+	* Makefile.am: let 'make restorepo' work with Subversion.
 
 2005-04-02  0.9.61 Bas Wijnen <shevek@fmf.nl>
 	* server/gtk/main.c: Split interface for running and non-running
