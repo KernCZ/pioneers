@@ -6,7 +6,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: pioneers 0.9.55\n"
+"Project-Id-Version: pioneers 0.9.61\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-04-04 00:17+0200\n"
 "PO-Revision-Date: 2006-04-03 09:00+0200\n"
@@ -113,7 +113,7 @@ msgstr "Saluta le tue carte... :)"
 
 #: ../client/ai/greedy.c:1307
 msgid "*evilgrin*"
-msgstr ""
+msgstr "*ghigno malefico*"
 
 #: ../client/ai/greedy.c:1308
 msgid "/me says farewell to your cards ;)"
@@ -182,7 +182,7 @@ msgstr "I miei complimenti"
 
 #: ../client/common/chat.c:44
 msgid "Beeper test.\n"
-msgstr ""
+msgstr "Suono di prova.\n"
 
 #: ../client/common/chat.c:47
 #, c-format
@@ -195,9 +195,8 @@ msgid "You beeped %s.\n"
 msgstr "Hai suonato a %s.\n"
 
 #: ../client/common/chat.c:100
-#, fuzzy, c-format
 msgid "You could not beep %s.\n"
-msgstr "Hai suonato a %s.\n"
+msgstr "Non puoi suonare a %s.\n"
 
 #: ../client/common/chat.c:124
 msgid " said: "
@@ -834,7 +833,7 @@ msgid ""
 "\tPlease set appropriate values yourself."
 msgstr ""
 "<b>Nota</b>:\n"
-"\tIl metaserver non invia informazioni relative ale partite.\n"
+"\tIl metaserver non invia informazioni relative alle partite.\n"
 "\tImposta i valori appropriati."
 
 #: ../client/gtk/connect.c:663
@@ -965,7 +964,7 @@ msgstr "Inserisci il tuo nome"
 
 #: ../client/gtk/connect.c:1141 ../server/gtk/main.c:534
 msgid "Meta Server"
-msgstr ""
+msgstr "Metaserver"
 
 #: ../client/gtk/connect.c:1156
 msgid "Leave empty for the default meta server"
@@ -994,7 +993,7 @@ msgstr "Unisciti ad un partita privata"
 #. Commandline option of client: hostname of the server
 #: ../client/gtk/connect.c:1368 ../client/gtk/offline.c:47
 msgid "Server Host"
-msgstr ""
+msgstr "Server Host"
 
 #: ../client/gtk/connect.c:1381
 msgid "Name of the host of the game"
@@ -1268,7 +1267,7 @@ msgstr "Visualizza il manuale"
 
 #: ../client/gtk/gui.c:244
 msgid "_Toolbar"
-msgstr ""
+msgstr "_Toolbar"
 
 #: ../client/gtk/gui.c:245
 msgid "Show or hide the toolbar"
@@ -1381,7 +1380,7 @@ msgstr ""
 #. The name of the application
 #: ../client/gtk/gui.c:1261
 msgid "Pioneers"
-msgstr ""
+msgstr "Pioneers"
 
 #: ../client/gtk/histogram.c:252
 msgid "Dice Histogram"
@@ -1389,7 +1388,7 @@ msgstr "Istogramma dei Tiri"
 
 #: ../client/gtk/interface.c:92
 msgid "Ship movement canceled."
-msgstr ""
+msgstr "Movimento della nave annullato."
 
 #: ../client/gtk/interface.c:100 ../client/gtk/interface.c:101
 msgid "Select a new location for the ship."
@@ -2181,7 +2180,7 @@ msgstr "Errore accettando la connessione: %s"
 
 #: ../common/network.c:760
 msgid "No usable version of WinSock was found."
-msgstr ""
+msgstr "E' stata rilevata una versione inutilizzabile di WinSock."
 
 #: ../common/state.c:156
 #, c-format
@@ -2440,9 +2439,8 @@ msgid "Viewer"
 msgstr "Spettatore"
 
 #: ../server/gtk/main.c:486
-#, fuzzy
 msgid "Game Settings"
-msgstr "Impostazioni _Partita"
+msgstr "Impostazioni Partita"
 
 #: ../server/gtk/main.c:491
 msgid "Server Parameters"
@@ -2485,7 +2483,7 @@ msgstr "Rendi casuale l'ordine dei turni"
 
 #: ../server/gtk/main.c:616
 msgid "Running Game"
-msgstr ""
+msgstr "Partita in corso"
 
 #: ../server/gtk/main.c:618
 msgid "Players Connected"
@@ -2536,19 +2534,16 @@ msgid "Player of viewer"
 msgstr "Giocatore o spettatore"
 
 #: ../server/gtk/main.c:705
-#, fuzzy
 msgid "Computer Players"
-msgstr "Giocatore AI"
+msgstr "Giocatori AI"
 
 #: ../server/gtk/main.c:717
-#, fuzzy
 msgid "Enable Chat"
-msgstr "Abilita chat AI"
+msgstr "Abilita chat"
 
 #: ../server/gtk/main.c:728
-#, fuzzy
 msgid "Enable chat messages"
-msgstr "Abilita i messaggi chat della AI"
+msgstr "Abilita i messaggi chat"
 
 #: ../server/gtk/main.c:735
 msgid "Add Computer Player"
@@ -2574,9 +2569,8 @@ msgstr "Server della partita di Pioneers"
 #. * then enable the UI
 #.
 #: ../server/gtk/main.c:795
-#, fuzzy
 msgid "The game is over.\n"
-msgstr "La pratita è finita"
+msgstr "La partita è finita.\n"
 
 #. Name in the titlebar of the server
 #: ../server/gtk/main.c:846
@@ -2589,9 +2583,8 @@ msgid "Register with meta-server at %s, port %s\n"
 msgstr "Registra sul meta-server %s, porta %s\n"
 
 #: ../server/meta.c:214
-#, fuzzy
 msgid "Unregister from meta-server\n"
-msgstr "Messaggio sconosciuto dal metaserver: %s\n"
+msgstr "Deregistra dal metaserver\n"
 
 #: ../server/player.c:110
 msgid "chat too long"
