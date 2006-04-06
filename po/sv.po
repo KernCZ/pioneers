@@ -2,12 +2,14 @@
 # Copyright (C) 2005 Daniel Nylander <po@danielnylander.se>
 # This file is distributed under the same license as the pioneers package.
 #
+# vim::set fileencoding=utf8
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: pioneers 0.9.40\n"
+"Project-Id-Version: pioneers 0.9.61\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-04-04 00:17+0200\n"
-"PO-Revision-Date: 2006-01-10 05:38+0100\n"
+"POT-Creation-Date: 2006-04-06 21:44+0200\n"
+"PO-Revision-Date: 2006-04-05 11:21+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "MIME-Version: 1.0\n"
@@ -180,7 +182,7 @@ msgstr "Mina gratulationer"
 
 #: ../client/common/chat.c:44
 msgid "Beeper test.\n"
-msgstr ""
+msgstr "Testa pip.\n"
 
 #: ../client/common/chat.c:47
 #, c-format
@@ -193,9 +195,9 @@ msgid "You beeped %s.\n"
 msgstr "Du pingade %s.\n"
 
 #: ../client/common/chat.c:100
-#, fuzzy, c-format
+#, c-format
 msgid "You could not beep %s.\n"
-msgstr "Du pingade %s.\n"
+msgstr "Du kunde inte skicka ett pip till %s.\n"
 
 #: ../client/common/chat.c:124
 msgid " said: "
@@ -1387,7 +1389,7 @@ msgstr "Tärningshistogram"
 
 #: ../client/gtk/interface.c:92
 msgid "Ship movement canceled."
-msgstr ""
+msgstr "Flyttning av skepp avbröts."
 
 #: ../client/gtk/interface.c:100 ../client/gtk/interface.c:101
 msgid "Select a new location for the ship."
@@ -2434,9 +2436,8 @@ msgid "Viewer"
 msgstr "Åskådare"
 
 #: ../server/gtk/main.c:486
-#, fuzzy
 msgid "Game Settings"
-msgstr "S_pelinställningar"
+msgstr "Spelinställningar"
 
 #: ../server/gtk/main.c:491
 msgid "Server Parameters"
@@ -2478,7 +2479,7 @@ msgstr "Slumpa fram turordning"
 
 #: ../server/gtk/main.c:616
 msgid "Running Game"
-msgstr ""
+msgstr "Pågående spel"
 
 #: ../server/gtk/main.c:618
 msgid "Players Connected"
@@ -2529,19 +2530,16 @@ msgid "Player of viewer"
 msgstr "Åskådare"
 
 #: ../server/gtk/main.c:705
-#, fuzzy
 msgid "Computer Players"
 msgstr "Datorspelare"
 
 #: ../server/gtk/main.c:717
-#, fuzzy
 msgid "Enable Chat"
-msgstr "Aktivera AI-chatt"
+msgstr "Aktivera chatt"
 
 #: ../server/gtk/main.c:728
-#, fuzzy
 msgid "Enable chat messages"
-msgstr "Aktivera AI-chattmeddelanden"
+msgstr "Aktivera chattmeddelanden"
 
 #: ../server/gtk/main.c:735
 msgid "Add Computer Player"
@@ -2567,9 +2565,8 @@ msgstr "Pioneers spelserver"
 #. * then enable the UI
 #.
 #: ../server/gtk/main.c:795
-#, fuzzy
 msgid "The game is over.\n"
-msgstr "Spelet är slut."
+msgstr "Spelet är över.\n"
 
 #. Name in the titlebar of the server
 #: ../server/gtk/main.c:846
@@ -2582,9 +2579,8 @@ msgid "Register with meta-server at %s, port %s\n"
 msgstr "Registrera mot metaservern på %s, port %s\n"
 
 #: ../server/meta.c:214
-#, fuzzy
 msgid "Unregister from meta-server\n"
-msgstr "Okänt meddelande från metaservern: %s\n"
+msgstr "Avregistrera från metaserver\n"
 
 #: ../server/player.c:110
 msgid "chat too long"
