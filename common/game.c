@@ -373,9 +373,15 @@ GameParams *params_load_file(const gchar * fname)
 
 GameParams *params_copy(const GameParams * params)
 {
+	/* Copy the const parameter to a non-const version, because
+	 * G_STRUCT_MEMBER doesn't want const values.  Note that this
+	 * variable does not own its pointers, that is, they don't have to
+	 * be freed when it goes out of scope. */
+	GameParams nonconst;
 	GameParams *copy;
 	gint idx;
 
+	memcpy (&nonconst, params, sizeof (GameParams));
 	copy = params_new();
 	copy->map = map_copy(params->map);
 	copy->variant = params->variant;
@@ -388,15 +394,15 @@ GameParams *params_copy(const GameParams * params)
 			G_STRUCT_MEMBER(gchar *, copy, param->offset)
 			    =
 			    g_strdup(G_STRUCT_MEMBER
-				     (gchar *, params, param->offset));
+				     (gchar *, &nonconst, param->offset));
 			break;
 		case PARAM_INT:
 			G_STRUCT_MEMBER(gint, copy, param->offset)
-			    = G_STRUCT_MEMBER(gint, params, param->offset);
+			    = G_STRUCT_MEMBER(gint, &nonconst, param->offset);
 			break;
 		case PARAM_BOOL:
 			G_STRUCT_MEMBER(gboolean, copy, param->offset)
-			    = G_STRUCT_MEMBER(gboolean, params,
+			    = G_STRUCT_MEMBER(gboolean, &nonconst,
 					      param->offset);
 			break;
 		}

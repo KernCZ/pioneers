@@ -1,3 +1,6 @@
+2005-04-06  Bas Wijnen <shevek@fmf.nl>
+	* common/game.c: Remove compiler warnings.
+
 2005-04-03  Roland Clobus <rclobus@bigfoot.com>
 	* common/gtk/guimap.c, common/gtk/guimap.h, client/gtk/interface.c,
 	client/gtk/gui.c, client/gtk/gui.h: Implemented 'single click build'
