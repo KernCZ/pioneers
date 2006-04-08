@@ -1,3 +1,6 @@
+2005-04-08  Roland Clobus <rclobus@bigfoot.com>
+	* client/gtk/gui.c: Disable the unused menu item 'Leave Game'
+	
 2005-04-06  Bas Wijnen <shevek@fmf.nl>
 	* common/game.c: Remove compiler warnings.
 

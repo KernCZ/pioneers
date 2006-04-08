@@ -101,10 +101,12 @@ static void game_new_cb(void)
 	route_gui_event(GUI_CONNECT);
 }
 
+#ifdef LEAVE_GAME_IS_IMPLEMENTED
 static void game_leave_cb(void)
 {
 	route_gui_event(GUI_DISCONNECT);
 }
+#endif
 
 static void playername_cb(void)
 {
@@ -187,8 +189,10 @@ static GtkActionEntry entries[] = {
 	{"GameMenu", NULL, N_("_Game"), NULL, NULL, NULL},
 	{"GameNew", GTK_STOCK_NEW, N_("_New game"), "<control>N",
 	 N_("Start a new game"), game_new_cb},
+#ifdef LEAVE_GAME_IS_IMPLEMENTED
 	{"GameLeave", GTK_STOCK_STOP, N_("_Leave game"), NULL,
 	 N_("Leave this game"), game_leave_cb},
+#endif
 #ifdef ADMIN_GTK
 	{"GameAdmin", NULL, N_("_Admin"), "<control>A",
 	 N_("Administer Pioneers server"), show_admin_interface},
@@ -251,7 +255,9 @@ static const char *ui_description =
 "  <menubar name='MainMenu'>"
 "    <menu action='GameMenu'>"
 "      <menuitem action='GameNew'/>"
+#ifdef LEAVE_GAME_IS_IMPLEMENTED
 "      <menuitem action='GameLeave'/>"
+#endif
 #ifdef ADMIN_GTK
 "      <menuitem action='GameAdmin'/>"
 #endif
