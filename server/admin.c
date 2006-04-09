@@ -200,6 +200,7 @@ void admin_connect(comm_info * admin_info)
 {
 	Session *admin_session;
 	gint new_fd;
+	gchar *location;
 
 	/* somebody connected to the administration port, so we... */
 
@@ -212,7 +213,7 @@ void admin_connect(comm_info * admin_info)
 	admin_session->user_data = admin_session;
 
 	/* (3) accept the connection into a new file descriptor */
-	new_fd = accept_connection(admin_info->fd, NULL);
+	new_fd = accept_connection(admin_info->fd, &location);
 
 	/* (4) tie the new file descriptor to the session we created earlier */
 	net_use_fd(admin_session, new_fd);

@@ -20,6 +20,8 @@
 	* docs/pioneers.6, docs/pioneers-server-console.6,
 	docs/pioneers-server-gtk.6: Updated the man pages
 	* common/gtk/config-gnome.c: Fixed the regression of 0.9.23
+	* server/admin.c: Fixed the assert when a connection is made to the
+	admin interface
 
 2005-04-08  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/gui.c: Disable the unused menu item 'Leave Game'
