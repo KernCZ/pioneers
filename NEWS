@@ -1,3 +1,14 @@
+Subversion Snapshot release 0.9.61
+* Manual updated
+* Several small fixes
+
+Security release 0.9.55
+* Fixes the meta server for meta servers that do allow the creation of new
+  games
+
+Security release 0.9.54 [revoked]
+* Fixes crashes in the public meta server
+
 CVS Snapshot release 0.9.49
 * New theme, based on Battle of Wesnoth
 * Configure script updated

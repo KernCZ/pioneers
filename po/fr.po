@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pioneers 0.9.61\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-04-09 09:02+0200\n"
+"POT-Creation-Date: 2006-04-09 16:11+0200\n"
 "PO-Revision-Date: 2006-04-05 11:52+0200\n"
 "Last-Translator: LT-P <LT-P@lt-p.net>\n"
 "Language-Team: Français <LL@li.org>, Arnaud MALON <moko@geumeuleu.com>\n"
@@ -296,20 +296,20 @@ msgstr "Construit un segment de route."
 msgid "Build two road segments."
 msgstr "Construit deux segments de route"
 
-#: ../client/common/client.c:1732 ../client/common/client.c:1819
+#: ../client/common/client.c:1734 ../client/common/client.c:1821
 msgid "It is your turn."
 msgstr "C'est votre tour."
 
-#: ../client/common/client.c:1915
+#: ../client/common/client.c:1917
 #, c-format
 msgid "Sorry, %s available.\n"
 msgstr "Désolé, %s indisponible.\n"
 
-#: ../client/common/client.c:2240
+#: ../client/common/client.c:2242
 msgid "The game is over."
 msgstr "La partie est finie."
 
-#: ../client/common/client.c:2402
+#: ../client/common/client.c:2404
 #, c-format
 msgid "%s takes %s.\n"
 msgstr "%s prend %s.\n"
@@ -318,12 +318,12 @@ msgstr "%s prend %s.\n"
 msgid "Road Building"
 msgstr "Construction de route"
 
-#: ../client/common/develop.c:44 ../client/gtk/monopoly.c:76
+#: ../client/common/develop.c:44 ../client/gtk/monopoly.c:83
 #: ../editor/gtk/game-devcards.c:13
 msgid "Monopoly"
 msgstr "Monopole"
 
-#: ../client/common/develop.c:45 ../client/gtk/plenty.c:49
+#: ../client/common/develop.c:45 ../client/gtk/plenty.c:58
 #: ../editor/gtk/game-devcards.c:13
 msgid "Year of Plenty"
 msgstr "Année faste"
@@ -1081,7 +1081,7 @@ msgstr "Vous pouvez choisir %d ressources"
 
 #. Text for total in choose gold dialog
 #. Text for total in year of plenty dialog
-#: ../client/gtk/gold.c:108 ../client/gtk/plenty.c:74
+#: ../client/gtk/gold.c:108 ../client/gtk/plenty.c:86
 msgid "Total resources"
 msgstr "Total des ressources"
 
@@ -1455,7 +1455,7 @@ msgstr "<b>Coûts de construction</b>"
 msgid "Development Card"
 msgstr "Carte de développement"
 
-#: ../client/gtk/monopoly.c:98
+#: ../client/gtk/monopoly.c:105
 msgid "Select the resource you wish to monopolise."
 msgstr "Choisissez la ressource à monopoliser"
 
@@ -1546,7 +1546,7 @@ msgstr "Cartes de développement"
 msgid "<b>Player Summary</b>"
 msgstr "<b>Les joueurs</b>"
 
-#: ../client/gtk/plenty.c:70
+#: ../client/gtk/plenty.c:82
 msgid "Please choose two resources from the bank"
 msgstr "Prenez deux ressources à la banque"
 
@@ -2616,16 +2616,16 @@ msgstr "Le joueur depuis %s a été rejeté car la partie est terminée\n"
 msgid "Name not changed: new name is already in use"
 msgstr "Le nom n'a pas été changé: le nouveau nom est déjà pris"
 
-#: ../server/player.c:583
+#: ../server/player.c:577
 #, c-format
 msgid "NOTE player %d (%s) has reconnected.\n"
 msgstr "NOTE le joueur %d (%s) a été reconnecté.\n"
 
-#: ../server/player.c:651
+#: ../server/player.c:645
 msgid "Sorry, game is over."
 msgstr "La partie est terminée."
 
-#: ../server/player.c:687
+#: ../server/player.c:681
 #, c-format
 msgid "NOTE Expecting version %s, not %s\n"
 msgstr "NOTE On attendait la version %s et non pas %s\n"

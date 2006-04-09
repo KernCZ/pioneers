@@ -1,8 +1,11 @@
-2004-04-09  Bas Wijnen <shevek@fmf.nl>
+2006-04-09  Roland Clobus <rclobus@bigfoot.com>
+	* Released version 0.9.61
+
+2006-04-09  Bas Wijnen <shevek@fmf.nl>
 	* client/callback.h, client/gtk/plenty.c, client/gtk/monopoly.c,
 	client/common/client.c: If somehow the dialog was closed, show it again
 
-2005-04-09  Roland Clobus <rclobus@bigfoot.com>
+2006-04-09  Roland Clobus <rclobus@bigfoot.com>
 	* client/help/C/pioneers.xml, client/help/C/images/discards.png,
 	client/help/C/images/place-robber.png, client/help/C/images/quote.png,
         client/help/C/images/trade.png, client/help/C/images/messages.png,
@@ -27,13 +30,13 @@
 	* server/admin.c: Fixed the assert when a connection is made to the
 	admin interface
 
-2005-04-08  Roland Clobus <rclobus@bigfoot.com>
+2006-04-08  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/gui.c: Disable the unused menu item 'Leave Game'
 	
-2005-04-06  Bas Wijnen <shevek@fmf.nl>
+2006-04-06  Bas Wijnen <shevek@fmf.nl>
 	* common/game.c: Remove compiler warnings.
 
-2005-04-03  Roland Clobus <rclobus@bigfoot.com>
+2006-04-03  Roland Clobus <rclobus@bigfoot.com>
 	* common/gtk/guimap.c, common/gtk/guimap.h, client/gtk/interface.c,
 	client/gtk/gui.c, client/gtk/gui.h: Implemented 'single click build'
 	for the movement of ships. (Click anywhere to cancel)
@@ -43,14 +46,14 @@
 	subdirectory in the tarball (without the .svn directory)
 	* client/common/player.c: Remove compiler warnings
 
-2005-04-02  0.9.61 Bas Wijnen <shevek@fmf.nl>
+2006-04-02  0.9.61 Bas Wijnen <shevek@fmf.nl>
 	* server/gtk/main.c: Split interface for running and non-running
 	state.
 	* client/common/develop.c: Disallow road building if there's no place
 	to build it.
 	* client/ai/greedy.c: Do a proper check for roadbuilding.
 
-2005-03-30  0.9.57 Roland Clobus <rclobus@bigfoot.com>
+2006-03-30  0.9.57 Roland Clobus <rclobus@bigfoot.com>
 	* client/help/C/pioneers.xml: Updated documentation. Corrected spelling
 	to en_us.
 	* client/callback.h, client/common/chat.c, client/common/client.h,
@@ -62,15 +65,15 @@
 	shown. Also hide the legend tab page after a connect (when turned off
 	in the preferences).
 
-2005-03-30 Samual Wright <sam@lykoszine.co.uk>
+2006-03-30 Samual Wright <sam@lykoszine.co.uk>
 	* client/help/C/pioneers.xml: Fixed a typo
 
-2005-03-30 Repository converted from cvs to svn
+2006-03-30 Repository converted from cvs to svn
 
-2005-03-14  0.9.56 Roland Clobus <rclobus@bigfoot.com>
+2006-03-14  0.9.56 Roland Clobus <rclobus@bigfoot.com>
 	* server/pregame.c: Show disconnected players when reconnecting
 	
-2005-02-09  0.9.55 Roland Clobus <rclobus@bigfoot.com>
+2006-02-09  0.9.55 Roland Clobus <rclobus@bigfoot.com>
 	* configure.ac, meta-server/README.protocol: New version for the meta
 	server
 	* meta-server/main.c: Partly reverse the patch for 0.9.54, disable the
