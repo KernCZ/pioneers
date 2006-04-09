@@ -151,37 +151,16 @@
 	    <tbody>
 	      <row>
 		<entry>Roll Dice</entry>
-		<entry>Press this button to roll the dice during your
-		  turn.</entry>
+		<entry>Roll the dice to start your turn.</entry>
 	      </row>
 	      <row>
 		<entry>Trade</entry>
-		<entry>Press this when you wish to perform trade with
-		  either the bank (maritime), or with other players
-		  (domestic).</entry>
-	      </row>
-	      <row>
-		<entry>Road</entry>
-		<entry>Press this when you wish to build a road
-		    segment.</entry>
-	      </row>
-	      <row>
-		<entry>Settlement</entry>
-		<entry>Press this when you wish to build a
-		    settlement.</entry>
-	      </row>
-	      <row>
-		<entry>City</entry>
-		<entry>Press this when you wish to build a city.</entry>
-	      </row>
-	      <row>
-		<entry> Develop</entry>
-		<entry>Press this when you wish to purchase a development
-		  card from the bank.</entry>
+		<entry>Perform trade with either the bank (maritime),
+		  or with other players (domestic).</entry>
 	      </row>
 	      <row>
 		<entry>Undo</entry>
-		<entry>Using this button you can undo road, settlement,
+		<entry>You can undo road, settlement,
 		  and city building that has just been performed.  As
 		  soon as you buy a development card, play a development
 		  card, or finish your turn, you will not be able to
@@ -189,9 +168,47 @@
 	      </row>
 	      <row>
 		<entry>Finish</entry>
-		<entry>Press this button to indicate that you have
-		  finished performing setup, your turn, or road
-		  building.</entry>
+		<entry>Indicate that you have finished performing setup,
+		  your turn, or road building.</entry>
+	      </row>
+	      <row>
+		<entry>Road</entry>
+		<entry>Build a road segment. It must join one of your own
+		  settlements or cities, or one of your own road. It can be
+		  built on land or on the coast.
+		</entry>
+	      </row>
+	      <row>
+	      	<entry>Ship</entry>
+		<entry>Build a ship. It must join one of your own settlements
+		  or cities at the coast, or another ship. It can be built
+		  on water or on the coast.
+		</entry>
+	      </row>
+	      <row>
+	        <entry>Move Ship</entry>
+		<entry>Move a ship that is at the end of the line to another
+		  place.
+		</entry>
+	      </row>
+	      <row>
+	        <entry>Bridge</entry>
+		<entry>Build a bridge. It must join one of you own settlements
+		  or cities on the coast, or another bridge. It can only be
+		  built on water.
+		</entry>
+	      </row>
+	      <row>
+		<entry>Settlement</entry>
+		<entry>Build a settlement.</entry>
+	      </row>
+	      <row>
+		<entry>City</entry>
+		<entry>Upgrade a settlement to a city.</entry>
+	      </row>
+	      <row>
+		<entry>Develop</entry>
+		<entry>Purchase a development card from the bank.</entry>
 	      </row>
 	    </tbody>
 	  </tgroup>
@@ -312,7 +329,7 @@
     </sect1>
 
     <sect1 id="map">
-      <title>The Pioneers map.</title>
+      <title>The Pioneers map</title>
 
       <figure id="pioneers-FIG-map">
       	<title>The Pioneers map.</title>
@@ -636,7 +653,7 @@
     </sect1>
 
     <sect1 id="setup">
-      <title>Pioneers setup phase.</title>
+      <title>Pioneers setup phase</title>
 
       <para>Once you have successfully connected to a Pioneers game
         server, the game map will be downloaded from the server and
@@ -664,7 +681,7 @@
     </sect1>
 
     <sect1 id="turn">
-      <title>Pioneers turn sequence.</title>
+      <title>Pioneers turn sequence</title>
 
       <para>When it is your turn, the actions panel will show all of
         the actions that you can perform.  Some care must be
@@ -974,7 +991,7 @@
     </sect1>
 
     <sect1 id="development">
-      <title>Development cards.</title>
+      <title>Development cards</title>
 
       <para>There are 25 development cards in the game, they are
 	shuffled at the start of the game.  When you buy a development
