@@ -1,3 +1,7 @@
+2004-04-09  Bas Wijnen <shevek@fmf.nl>
+	* client/callback.h, client/gtk/plenty.c, client/gtk/monopoly.c,
+	client/common/client.c: If somehow the dialog was closed, show it again
+
 2005-04-09  Roland Clobus <rclobus@bigfoot.com>
 	* client/help/C/pioneers.xml, client/help/C/images/discards.png,
 	client/help/C/images/place-robber.png, client/help/C/images/quote.png,

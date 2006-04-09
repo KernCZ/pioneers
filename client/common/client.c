@@ -1502,6 +1502,7 @@ gboolean mode_monopoly_response(StateMachine * sm, gint event)
 	sm_state_name(sm, "mode_monopoly_response");
 	switch (event) {
 	case SM_ENTER:
+		callback_mode = MODE_MONOPOLY_RESPONSE;
 		waiting_for_network(TRUE);
 		break;
 	case SM_RECV:
@@ -1550,6 +1551,7 @@ gboolean mode_year_of_plenty_response(StateMachine * sm, gint event)
 	sm_state_name(sm, "mode_year_of_plenty_response");
 	switch (event) {
 	case SM_ENTER:
+		callback_mode = MODE_PLENTY_RESPONSE;
 		waiting_for_network(TRUE);
 		break;
 	case SM_RECV:

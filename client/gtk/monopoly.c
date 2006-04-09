@@ -56,12 +56,19 @@ static GSList *add_resource_btn(GtkWidget * vbox,
 	return grp;
 }
 
-Resource monopoly_type()
+static void monopoly_destroyed(G_GNUC_UNUSED GtkWidget *widget,
+			       G_GNUC_UNUSED gpointer data)
+{
+	if (callback_mode == MODE_MONOPOLY)
+		monopoly_create_dlg();
+}
+
+Resource monopoly_type(void)
 {
 	return monop_type;
 }
 
-void monopoly_create_dlg()
+void monopoly_create_dlg(void)
 {
 	GtkWidget *dlg_vbox;
 	GtkWidget *vbox;
@@ -111,10 +118,16 @@ void monopoly_create_dlg()
 			      "clicked");
 	gtk_dialog_set_default_response(GTK_DIALOG(monop_dlg),
 					GTK_RESPONSE_OK);
+	/* This _must_ be after frontend_gui_register, otherwise the
+	 * regeneration of the button happens before the destruction, which
+	 * results in an incorrectly sensitive OK button. */
+	g_signal_connect(gui_get_dialog_button(GTK_DIALOG(monop_dlg), 0),
+			 "destroy", G_CALLBACK(monopoly_destroyed), NULL);
 	gtk_widget_show(monop_dlg);
+	frontend_gui_update();
 }
 
-void monopoly_destroy_dlg()
+void monopoly_destroy_dlg(void)
 {
 	if (monop_dlg == NULL)
 		return;

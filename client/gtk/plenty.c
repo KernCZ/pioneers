@@ -26,6 +26,7 @@
 static struct {
 	GtkWidget *dlg;
 	GtkWidget *resource_widget;
+	gint bank[NO_RESOURCE];
 } plenty;
 
 static void amount_changed_cb(G_GNUC_UNUSED ResourceTable * rt,
@@ -40,11 +41,19 @@ void plenty_resources(gint * resources)
 				  resources);
 }
 
+static void plenty_destroyed(G_GNUC_UNUSED GtkWidget *widget,
+			     G_GNUC_UNUSED gpointer data)
+{
+	if (callback_mode == MODE_PLENTY)
+		plenty_create_dlg(NULL);
+}
+
 void plenty_create_dlg(const gint * bank)
 {
 	GtkWidget *dlg_vbox;
 	GtkWidget *vbox;
 	const char *str;
+	gint r;
 
 	plenty.dlg = gtk_dialog_new_with_buttons(_("Year of Plenty"),
 						 GTK_WINDOW(app_window),
@@ -67,6 +76,9 @@ void plenty_create_dlg(const gint * bank)
 	gtk_box_pack_start(GTK_BOX(dlg_vbox), vbox, FALSE, TRUE, 0);
 	gtk_container_set_border_width(GTK_CONTAINER(vbox), 5);
 
+	if (bank != NULL)
+		for (r = 0; r < NO_RESOURCE; ++r)
+			plenty.bank[r] = bank[r];
 	str = _("Please choose two resources from the bank");
 	plenty.resource_widget = resource_table_new(str, TRUE, TRUE);
 	resource_table_set_total(RESOURCETABLE(plenty.resource_widget),
@@ -75,7 +87,7 @@ void plenty_create_dlg(const gint * bank)
 	resource_table_limit_bank(RESOURCETABLE(plenty.resource_widget),
 				  TRUE);
 	resource_table_set_bank(RESOURCETABLE(plenty.resource_widget),
-				bank);
+				plenty.bank);
 
 	gtk_widget_show(plenty.resource_widget);
 	gtk_box_pack_start(GTK_BOX(vbox), plenty.resource_widget, FALSE,
@@ -86,10 +98,16 @@ void plenty_create_dlg(const gint * bank)
 	frontend_gui_register(gui_get_dialog_button
 			      (GTK_DIALOG(plenty.dlg), 0), GUI_PLENTY,
 			      "clicked");
+	/* This _must_ be after frontend_gui_register, otherwise the
+	 * regeneration of the button happens before the destruction, which
+	 * results in an incorrectly sensitive OK button. */
+	g_signal_connect(gui_get_dialog_button(GTK_DIALOG(plenty.dlg), 0),
+			 "destroy", G_CALLBACK(plenty_destroyed), NULL);
 	gtk_widget_show(plenty.dlg);
+	frontend_gui_update();
 }
 
-void plenty_destroy_dlg()
+void plenty_destroy_dlg(void)
 {
 	if (plenty.dlg == NULL)
 		return;

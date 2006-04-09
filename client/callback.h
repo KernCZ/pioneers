@@ -70,7 +70,9 @@ enum callback_mode {
 	MODE_TURN,		/* your turn */
 	MODE_ROBBER,		/* place robber */
 	MODE_MONOPOLY,		/* choose monopoly resource */
+	MODE_MONOPOLY_RESPONSE,	/* chosen monopoly resource, waiting */
 	MODE_PLENTY,		/* choose year of plenty resources */
+	MODE_PLENTY_RESPONSE,	/* chosen year of plenty resources, waiting */
 	MODE_ROAD_BUILD,	/* build two roads/ships/bridges */
 	MODE_DOMESTIC,		/* called for quotes */
 	MODE_QUOTE,		/* got a call for quotes */
