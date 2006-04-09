@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pioneers 0.9.61\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-04-04 00:17+0200\n"
-"PO-Revision-Date: 2006-04-03 09:00+0200\n"
+"POT-Creation-Date: 2006-04-09 09:02+0200\n"
+"PO-Revision-Date: 2006-04-08 17:20+0200\n"
 "Last-Translator: Giancarlo Capella <giancarlo@comm.cc>\n"
 "Language-Team: it <it@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -133,7 +133,7 @@ msgstr "Ladri! Ladri!"
 
 #: ../client/ai/greedy.c:1314
 msgid "Wait for my revenge..."
-msgstr "Aspetta la mia vendetta..."
+msgstr "Aspettati la mia vendetta..."
 
 #: ../client/ai/greedy.c:1317
 msgid "Oh no :("
@@ -195,6 +195,7 @@ msgid "You beeped %s.\n"
 msgstr "Hai suonato a %s.\n"
 
 #: ../client/common/chat.c:100
+#, c-format
 msgid "You could not beep %s.\n"
 msgstr "Non puoi suonare a %s.\n"
 
@@ -216,7 +217,7 @@ msgstr "Siamo stati buttati fuori dalla partita.\n"
 
 #. Network status: offline
 #: ../client/common/client.c:426 ../client/common/client.c:804
-#: ../client/gtk/gui.c:1183
+#: ../client/gtk/gui.c:1189
 msgid "Offline"
 msgstr "Scollegato"
 
@@ -328,17 +329,17 @@ msgstr "Scoperta"
 #: ../client/common/develop.c:46 ../client/gtk/player.c:52
 #: ../editor/gtk/game-devcards.c:14
 msgid "Chapel"
-msgstr "Chiesa"
+msgstr "Cattedrale"
 
 #: ../client/common/develop.c:47 ../client/gtk/player.c:53
 #: ../editor/gtk/game-devcards.c:14
 msgid "Pioneer University"
-msgstr "Università del Pioniere"
+msgstr "Università"
 
 #: ../client/common/develop.c:48 ../client/gtk/player.c:55
 #: ../editor/gtk/game-devcards.c:15
 msgid "Governor's House"
-msgstr "Casa del Governatore"
+msgstr "Parlamento"
 
 #: ../client/common/develop.c:49 ../client/gtk/player.c:56
 #: ../editor/gtk/game-devcards.c:15
@@ -950,7 +951,7 @@ msgstr "Versione"
 msgid "Version of the host"
 msgstr "Versione dell'host"
 
-#: ../client/gtk/connect.c:1094 ../client/gtk/gui.c:189
+#: ../client/gtk/connect.c:1094 ../client/gtk/gui.c:191
 msgid "Start a new game"
 msgstr "Inizia una nuova partita"
 
@@ -1086,299 +1087,299 @@ msgstr "Materie prime totali"
 msgid "<b>Waiting for players to choose</b>"
 msgstr "<b>In attesa di scelta dei giocatori</b>"
 
-#: ../client/gtk/gui.c:187 ../server/gtk/main.c:85
+#: ../client/gtk/gui.c:189 ../server/gtk/main.c:85
 msgid "_Game"
 msgstr "_Partita"
 
-#: ../client/gtk/gui.c:188
+#: ../client/gtk/gui.c:190
 msgid "_New game"
 msgstr "_Nuova partita"
 
-#: ../client/gtk/gui.c:190
+#: ../client/gtk/gui.c:193
 msgid "_Leave game"
 msgstr "_Lascia partita"
 
-#: ../client/gtk/gui.c:191
+#: ../client/gtk/gui.c:194
 msgid "Leave this game"
 msgstr "Lascia questa partita"
 
-#: ../client/gtk/gui.c:193
+#: ../client/gtk/gui.c:197
 msgid "_Admin"
 msgstr "_Amministra"
 
-#: ../client/gtk/gui.c:194
+#: ../client/gtk/gui.c:198
 msgid "Administer Pioneers server"
 msgstr "Amministra server Pioneers"
 
-#: ../client/gtk/gui.c:196
+#: ../client/gtk/gui.c:200
 msgid "_Player name"
 msgstr "Nome _Giocatore"
 
-#: ../client/gtk/gui.c:197
+#: ../client/gtk/gui.c:201
 msgid "Change your player name"
 msgstr "Cambia il tuo nome di giocatore"
 
-#: ../client/gtk/gui.c:198 ../editor/gtk/editor.c:980 ../server/gtk/main.c:87
+#: ../client/gtk/gui.c:202 ../editor/gtk/editor.c:980 ../server/gtk/main.c:87
 msgid "_Quit"
 msgstr "_Esci"
 
-#: ../client/gtk/gui.c:199 ../server/gtk/main.c:88
+#: ../client/gtk/gui.c:203 ../server/gtk/main.c:88
 msgid "Quit the program"
 msgstr "Esci dal programma"
 
-#: ../client/gtk/gui.c:200
+#: ../client/gtk/gui.c:204
 msgid "_Actions"
 msgstr "_Azioni"
 
-#: ../client/gtk/gui.c:201
+#: ../client/gtk/gui.c:205
 msgid "Roll Dice"
 msgstr "Tira Dadi"
 
-#: ../client/gtk/gui.c:202
+#: ../client/gtk/gui.c:206
 msgid "Roll the dice"
 msgstr "Tira i dadi"
 
 #. Tab page name
-#: ../client/gtk/gui.c:203 ../client/gtk/gui.c:546
+#: ../client/gtk/gui.c:207 ../client/gtk/gui.c:552
 msgid "Trade"
 msgstr "Commercio"
 
-#: ../client/gtk/gui.c:205
+#: ../client/gtk/gui.c:209
 msgid "Undo"
 msgstr "Indietro"
 
-#: ../client/gtk/gui.c:206 ../client/gtk/gui.c:207
+#: ../client/gtk/gui.c:210 ../client/gtk/gui.c:211
 msgid "Finish"
 msgstr "Finito"
 
-#: ../client/gtk/gui.c:208 ../client/gtk/legend.c:213
+#: ../client/gtk/gui.c:212 ../client/gtk/legend.c:213
 #: ../editor/gtk/game-buildings.c:13
 msgid "Road"
 msgstr "Strada"
 
-#: ../client/gtk/gui.c:209
+#: ../client/gtk/gui.c:213
 msgid "Build a road"
 msgstr "Costruisci una strada"
 
-#: ../client/gtk/gui.c:210 ../client/gtk/legend.c:217
+#: ../client/gtk/gui.c:214 ../client/gtk/legend.c:217
 #: ../editor/gtk/game-buildings.c:13
 msgid "Ship"
 msgstr "Nave"
 
-#: ../client/gtk/gui.c:211
+#: ../client/gtk/gui.c:215
 msgid "Build a ship"
 msgstr "Costruisci una nave"
 
-#: ../client/gtk/gui.c:212
+#: ../client/gtk/gui.c:216
 msgid "Move Ship"
 msgstr "Muovi Nave"
 
-#: ../client/gtk/gui.c:213
+#: ../client/gtk/gui.c:217
 msgid "Move a ship"
 msgstr "Muovi una nave"
 
-#: ../client/gtk/gui.c:214 ../client/gtk/legend.c:220
+#: ../client/gtk/gui.c:218 ../client/gtk/legend.c:220
 #: ../editor/gtk/game-buildings.c:13
 msgid "Bridge"
 msgstr "Ponte"
 
-#: ../client/gtk/gui.c:215
+#: ../client/gtk/gui.c:219
 msgid "Build a bridge"
 msgstr "Costruisci un ponte"
 
-#: ../client/gtk/gui.c:216 ../client/gtk/legend.c:222
+#: ../client/gtk/gui.c:220 ../client/gtk/legend.c:222
 #: ../client/gtk/player.c:48 ../editor/gtk/game-buildings.c:13
 msgid "Settlement"
 msgstr "Colonia"
 
-#: ../client/gtk/gui.c:217
+#: ../client/gtk/gui.c:221
 msgid "Build a settlement"
 msgstr "Costruisci una colonia"
 
-#: ../client/gtk/gui.c:218 ../client/gtk/legend.c:223
+#: ../client/gtk/gui.c:222 ../client/gtk/legend.c:223
 #: ../client/gtk/player.c:49 ../editor/gtk/game-buildings.c:14
 msgid "City"
 msgstr "Città"
 
-#: ../client/gtk/gui.c:219
+#: ../client/gtk/gui.c:223
 msgid "Build a city"
 msgstr "Costruisci una città"
 
-#: ../client/gtk/gui.c:220
+#: ../client/gtk/gui.c:224
 msgid "Develop"
 msgstr "Sviluppo"
 
-#: ../client/gtk/gui.c:221
+#: ../client/gtk/gui.c:225
 msgid "Buy a development card"
 msgstr "Compra una carta sviluppo"
 
-#: ../client/gtk/gui.c:223
+#: ../client/gtk/gui.c:227
 msgid "_Settings"
 msgstr "_Impostazioni"
 
-#: ../client/gtk/gui.c:224
+#: ../client/gtk/gui.c:228
 msgid "Prefere_nces"
 msgstr "Prefere_nze"
 
-#: ../client/gtk/gui.c:225
+#: ../client/gtk/gui.c:229
 msgid "Configure the application"
 msgstr "Configura l'applicazione"
 
-#: ../client/gtk/gui.c:227 ../client/gtk/gui.c:237 ../editor/gtk/editor.c:967
+#: ../client/gtk/gui.c:231 ../client/gtk/gui.c:241 ../editor/gtk/editor.c:967
 #: ../server/gtk/main.c:86
 msgid "_Help"
 msgstr "_Aiuto"
 
-#: ../client/gtk/gui.c:228
+#: ../client/gtk/gui.c:232
 msgid "_Legend"
 msgstr "_Legenda"
 
-#: ../client/gtk/gui.c:229
+#: ../client/gtk/gui.c:233
 msgid "Terrain legend and building costs"
 msgstr "Legenda terreno e costi di costruzione"
 
-#: ../client/gtk/gui.c:230
+#: ../client/gtk/gui.c:234
 msgid "_Game Settings"
 msgstr "Impostazioni _Partita"
 
-#: ../client/gtk/gui.c:231
+#: ../client/gtk/gui.c:235
 msgid "Settings for the current game"
 msgstr "Impostazioni per la partita corrente"
 
-#: ../client/gtk/gui.c:232
+#: ../client/gtk/gui.c:236
 msgid "_Dice Histogram"
 msgstr "Istogramma _Tiri"
 
-#: ../client/gtk/gui.c:233
+#: ../client/gtk/gui.c:237
 msgid "Histogram of dice rolls"
 msgstr "Istogramma dei tiri dei dadi"
 
-#: ../client/gtk/gui.c:234
+#: ../client/gtk/gui.c:238
 msgid "_About Pioneers"
 msgstr "_Riguardo Pioneers"
 
-#: ../client/gtk/gui.c:235
+#: ../client/gtk/gui.c:239
 msgid "Information about Pioneers"
 msgstr "Informazioni su Pioneers"
 
-#: ../client/gtk/gui.c:238
+#: ../client/gtk/gui.c:242
 msgid "Show the manual"
 msgstr "Visualizza il manuale"
 
-#: ../client/gtk/gui.c:244
+#: ../client/gtk/gui.c:248
 msgid "_Toolbar"
 msgstr "_Toolbar"
 
-#: ../client/gtk/gui.c:245
+#: ../client/gtk/gui.c:249
 msgid "Show or hide the toolbar"
 msgstr "Mostra o nasconde la tollbar"
 
 #. Victory points target in statusbar
-#: ../client/gtk/gui.c:338
+#: ../client/gtk/gui.c:344
 #, c-format
 msgid "Points Needed to Win: %i"
 msgstr "Punti per Vincere: %i"
 
-#: ../client/gtk/gui.c:424
+#: ../client/gtk/gui.c:430
 msgid "<b>Messages</b>"
 msgstr "<b>Messaggi</b>"
 
 #. Tab page name
-#: ../client/gtk/gui.c:540 ../editor/gtk/editor.c:1094
+#: ../client/gtk/gui.c:546 ../editor/gtk/editor.c:1094
 msgid "Map"
 msgstr "Mappa"
 
 #. Tab page name
-#: ../client/gtk/gui.c:554 ../client/gtk/quote.c:632
+#: ../client/gtk/gui.c:560 ../client/gtk/quote.c:632
 msgid "Quote"
 msgstr "Quotazione"
 
 #. Tab page name
-#: ../client/gtk/gui.c:562 ../client/gtk/legend.c:244
+#: ../client/gtk/gui.c:568 ../client/gtk/legend.c:244
 msgid "Legend"
 msgstr "Legenda"
 
 #. Tab page name, shown for the splash screen
-#: ../client/gtk/gui.c:572
+#: ../client/gtk/gui.c:578
 msgid "Welcome to Pioneers"
 msgstr "Benvenuto a Pioneers"
 
-#: ../client/gtk/gui.c:771
+#: ../client/gtk/gui.c:777
 msgid "Pioneers Preferences"
 msgstr "Preferenze Pioneers"
 
 #. Label for changing the theme, in the preferences dialog
-#: ../client/gtk/gui.c:801
+#: ../client/gtk/gui.c:807
 msgid "Theme:"
 msgstr "Tema:"
 
-#: ../client/gtk/gui.c:824
+#: ../client/gtk/gui.c:830
 msgid "Choose one of the themes"
 msgstr "Scegli uno dei temi"
 
 #. Label for the option to show the legend
-#: ../client/gtk/gui.c:828
+#: ../client/gtk/gui.c:834
 msgid "Show legend"
 msgstr "Visualizza legenda"
 
 #. Tooltip for the option to show the legend
-#: ../client/gtk/gui.c:838
+#: ../client/gtk/gui.c:844
 msgid "Show the legend as a page beside the map"
 msgstr "Visualizza legenda a lato della mappa"
 
 #. Label for the option to display log messages in color
-#: ../client/gtk/gui.c:843
+#: ../client/gtk/gui.c:849
 msgid "Messages with color"
 msgstr "Messaggi colorati"
 
-#: ../client/gtk/gui.c:853
+#: ../client/gtk/gui.c:859
 msgid "Show new messages with color"
 msgstr "Visualizza nuovi messaggi colorati"
 
-#: ../client/gtk/gui.c:858
+#: ../client/gtk/gui.c:864
 msgid "Chat in color of player"
 msgstr "Chatta a colori"
 
-#: ../client/gtk/gui.c:869
+#: ../client/gtk/gui.c:875
 msgid "Show new chat messages in the color of the player"
 msgstr "Visualizza i nuovi messaggi di chat a colori"
 
 #. Label for the option to display the summary with colors
-#: ../client/gtk/gui.c:874
+#: ../client/gtk/gui.c:880
 msgid "Summary with color"
 msgstr "Riassunto giocatore colorato"
 
-#: ../client/gtk/gui.c:885
+#: ../client/gtk/gui.c:891
 msgid "Use colors in the player summary"
 msgstr "Usa i colori nel riassunto giocatore"
 
-#: ../client/gtk/gui.c:890
+#: ../client/gtk/gui.c:896
 msgid "Toolbar with shortcuts"
 msgstr "Toolbar con acceleratore"
 
-#: ../client/gtk/gui.c:900
+#: ../client/gtk/gui.c:906
 msgid "Show keyboard shortcuts in the toolbar"
 msgstr "Visulaizza acceleratori nella toolbar"
 
-#: ../client/gtk/gui.c:910
+#: ../client/gtk/gui.c:916
 msgid "The Pioneers Game"
 msgstr "Pioneers - Il gioco"
 
 #. Initial text in status bar
-#: ../client/gtk/gui.c:1195
+#: ../client/gtk/gui.c:1201
 msgid "Welcome to Pioneers!"
 msgstr "Benvenuto a Pioneers!"
 
 #. Missing pixmap
 #. Missing pixmap, main icon file
-#: ../client/gtk/gui.c:1233 ../client/gtk/gui.c:1295
+#: ../client/gtk/gui.c:1239 ../client/gtk/gui.c:1301
 #: ../editor/gtk/editor.c:1083 ../server/gtk/main.c:877
 #, c-format
 msgid "Pixmap not found: %s\n"
 msgstr ""
 
 #. The name of the application
-#: ../client/gtk/gui.c:1261
+#: ../client/gtk/gui.c:1267
 msgid "Pioneers"
 msgstr "Pioneers"
 
@@ -1731,15 +1732,15 @@ msgstr "Carte Scoperta:"
 
 #: ../client/gtk/settingscreen.c:266
 msgid "Chapel Cards:"
-msgstr "Carte Chiesa:"
+msgstr "Carte Cattedrale:"
 
 #: ../client/gtk/settingscreen.c:270
 msgid "Pioneer University Cards:"
-msgstr "Carte Università del Pioniere:"
+msgstr "Carte Università:"
 
 #: ../client/gtk/settingscreen.c:275
 msgid "Governor's House Cards:"
-msgstr "Carte Casa del Governatore:"
+msgstr "Carte Parlamento:"
 
 #: ../client/gtk/settingscreen.c:280
 msgid "Library Cards:"
@@ -1820,8 +1821,8 @@ msgid ""
 "Pioneers is based upon the excellent\n"
 "Settlers of Catan board game.\n"
 msgstr ""
-"Pioneers è basato sull'eccellente\n"
-"gioco I Coloni di Catan.\n"
+"Pioneers è basato sull'eccellente gioco\n"
+"I Coloni di Catan.\n"
 
 #: ../common/gtk/aboutbox.c:77
 msgid ""
@@ -2603,16 +2604,16 @@ msgstr "Giocatore da %s rifiutato: la partita è terminata\n"
 msgid "Name not changed: new name is already in use"
 msgstr "Nome non variato: il nuovo nome è già in uso"
 
-#: ../server/player.c:577
+#: ../server/player.c:583
 #, c-format
 msgid "NOTE player %d (%s) has reconnected.\n"
 msgstr "NOTA il giocatore %d (%s) si è riconnesso.\n"
 
-#: ../server/player.c:645
+#: ../server/player.c:651
 msgid "Sorry, game is over."
 msgstr "Mi dispiace, la partita è terminata."
 
-#: ../server/player.c:681
+#: ../server/player.c:687
 #, c-format
 msgid "NOTE Expecting version %s, not %s\n"
 msgstr "NOTA: Attesa versione %s, non %s\n"
