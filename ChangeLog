@@ -17,6 +17,8 @@
         client/help/C/images/connect-dialog.png,
         client/help/C/images/develop-cards.png
         client/help/C/images/legend-dialog.png: Updated screenshots for 0.9.61
+	* docs/pioneers.6, docs/pioneers-server-console.6,
+	docs/pioneers-server-gtk.6: Updated the man pages
 
 2005-04-08  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/gui.c: Disable the unused menu item 'Leave Game'

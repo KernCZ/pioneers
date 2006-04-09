@@ -1,4 +1,4 @@
-.TH pioneers-server-console 6 "March 5, 2005" "pioneers"
+.TH pioneers-server-console 6 "April 9, 2006" "pioneers"
 .SH NAME
 pioneers-server-console \- command-line game server for Pioneers
 
@@ -9,7 +9,7 @@ pioneers-server-console \- command-line game server for Pioneers
 ] [
 .BI \-c " AI count"
 ] [
-.BI \-g " game name"
+.BI \-g " game title"
 ]
 .if n .ti +5n
 [
@@ -62,15 +62,16 @@ Listen for administrative commands on port \fIport\fP.
 .BI \-c " num"
 Start up \fInum\fP computer players.
 .TP
-.BI \-g " name"
-Load the ruleset specified by \fIname\fP.
+.BI \-g " game title"
+Load the ruleset specified by \fIgame title\fP. The title can be found in
+the *.game files. You need quotes for titles with spaces.
 .TP
 .BI \-k " secs"
 Automatically stop the server if no one has connected after \fIsecs\fP
 seconds.
 .TP
 .BI \-m " metaserver"
-Register this server with the metaserver at the specified address.
+Register this server with the metaserver at the specified address. 
 .TP
 .BI \-n " hostname"
 Use this hostname instead of the hostname reported by 
@@ -93,7 +94,7 @@ player always re-rolls.
 Register with a meta server.  The meta server to use can be overriden
 with the
 .B \-m
-option.
+option. Default meta sever: pioneers.debian.net
 .TP
 .B \-s
 Don't start the game immediately; wait for a command on the admin port
