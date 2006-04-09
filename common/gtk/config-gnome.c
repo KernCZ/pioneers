@@ -191,12 +191,11 @@ gchar *config_get_string(const gchar * path, gboolean * default_used)
 	    g_key_file_get_string(keyfile, tokens[0], tokens[1], &error);
 	if (error != NULL) {
 		if (tokens[2] == NULL) {
-			*default_used = FALSE;
 			value = g_strdup("");
 		} else {
-			*default_used = TRUE;
 			value = g_strdup(tokens[2]);
 		}
+		*default_used = TRUE;
 		g_error_free(error);
 	} else {
 		*default_used = FALSE;
@@ -228,12 +227,11 @@ gint config_get_int(const gchar * path, gboolean * default_used)
 	    g_key_file_get_integer(keyfile, tokens[0], tokens[1], &error);
 	if (error != NULL) {
 		if (tokens[2] == NULL) {
-			*default_used = FALSE;
 			value = 0;
 		} else {
-			*default_used = TRUE;
 			value = atoi(tokens[2]);
 		}
+		*default_used = TRUE;
 		g_error_free(error);
 	} else {
 		*default_used = FALSE;
