@@ -381,7 +381,7 @@ GameParams *params_copy(const GameParams * params)
 	GameParams *copy;
 	gint idx;
 
-	memcpy (&nonconst, params, sizeof (GameParams));
+	memcpy(&nonconst, params, sizeof(GameParams));
 	copy = params_new();
 	copy->map = map_copy(params->map);
 	copy->variant = params->variant;
@@ -398,7 +398,8 @@ GameParams *params_copy(const GameParams * params)
 			break;
 		case PARAM_INT:
 			G_STRUCT_MEMBER(gint, copy, param->offset)
-			    = G_STRUCT_MEMBER(gint, &nonconst, param->offset);
+			    = G_STRUCT_MEMBER(gint, &nonconst,
+					      param->offset);
 			break;
 		case PARAM_BOOL:
 			G_STRUCT_MEMBER(gboolean, copy, param->offset)

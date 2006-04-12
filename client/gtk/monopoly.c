@@ -56,7 +56,7 @@ static GSList *add_resource_btn(GtkWidget * vbox,
 	return grp;
 }
 
-static void monopoly_destroyed(G_GNUC_UNUSED GtkWidget *widget,
+static void monopoly_destroyed(G_GNUC_UNUSED GtkWidget * widget,
 			       G_GNUC_UNUSED gpointer data)
 {
 	if (callback_mode == MODE_MONOPOLY)

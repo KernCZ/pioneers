@@ -41,7 +41,7 @@ void plenty_resources(gint * resources)
 				  resources);
 }
 
-static void plenty_destroyed(G_GNUC_UNUSED GtkWidget *widget,
+static void plenty_destroyed(G_GNUC_UNUSED GtkWidget * widget,
 			     G_GNUC_UNUSED gpointer data)
 {
 	if (callback_mode == MODE_PLENTY)
