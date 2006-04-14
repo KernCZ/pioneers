@@ -1,3 +1,6 @@
+2006-04-14  Roland CLobus <rclobus@bigfoot.com>
+	* common/network.c: Add the time to the logged network traffic.
+	
 2006-04-09  Roland Clobus <rclobus@bigfoot.com>
 	* Released version 0.9.61
 

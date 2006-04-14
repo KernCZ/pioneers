@@ -47,6 +47,7 @@
 #include <stdlib.h>		/* For atoi */
 #endif				/* ndef HAVE_GETADDRINFO_ET_AL */
 
+#include <time.h>
 #include "config.h"
 #include "driver.h"
 #include "game.h"
@@ -69,10 +70,18 @@ void debug(const gchar * fmt, ...)
 	gchar buff[16 * 1024];
 	gint len;
 	gint idx;
+	time_t t;
+	struct tm *alpha;
 
 	va_start(ap, fmt);
 	len = g_vsnprintf(buff, sizeof(buff), fmt, ap);
 	va_end(ap);
+
+	t = time(NULL);
+	alpha = localtime(&t);
+
+	g_print("%02d:%02d:%02d ", alpha->tm_hour,
+		alpha->tm_min, alpha->tm_sec);
 
 	for (idx = 0; idx < len; idx++) {
 		if (isprint(buff[idx]) || idx == len - 1)
