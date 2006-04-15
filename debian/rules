@@ -14,6 +14,9 @@ ifneq (,$(findstring debug,$(DEB_BUILD_OPTIONS)))
 	CONFIGUREFLAGS += --enable-maintainer-mode
 endif
 
+DEB_HOST_GNU_TYPE ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
+DEB_BUILD_GNU_TYPE ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
+
 AUTO_JUNK = config.guess config.sub configure depcomp INSTALL \
         install-sh ltmain.sh missing mkinstalldirs aclocal.m4 config.h.in
 
@@ -23,9 +26,10 @@ build-stamp:
 	# Commands to compile the package.
 	# --enable-maintainer-mode is implicit for autogen.sh
 	# So don't run configure from it.
-	NOCONFIGURE=true ./autogen.sh
+	NOCONFIGURE=true AUTOMAKE=automake-1.9 ACLOCAL=aclocal-1.9 ./autogen.sh
 	./configure --prefix=/usr --bindir=/usr/games --mandir=/usr/share/man \
-		--datadir=/usr/share $(CONFIGUREFLAGS) --enable-warnings
+		--datadir=/usr/share $(CONFIGUREFLAGS) --enable-warnings \
+		--host=$(DEB_HOST_GNU_TYPE) --build=$(DEB_BUILD_GNU_TYPE)
 	$(MAKE)
 	rsvg --width 32 --height 32 client/gtk/data/pioneers.svg pioneers32.png
 	convert pioneers32.png pioneers.xpm
