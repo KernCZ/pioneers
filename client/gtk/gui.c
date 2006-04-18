@@ -352,7 +352,7 @@ void gui_set_net_status(const gchar * text)
 	gtk_label_set_text(GTK_LABEL(net_status), text);
 }
 
-void gui_cursor_none()
+void gui_cursor_none(void)
 {
 	MapElement dummyElement;
 	dummyElement.pointer = NULL;
@@ -585,22 +585,22 @@ static GtkWidget *build_map_panel(void)
 	return map_notebook;
 }
 
-void gui_discard_show()
+void gui_discard_show(void)
 {
 	gtk_notebook_set_current_page(GTK_NOTEBOOK(develop_notebook), 1);
 }
 
-void gui_discard_hide()
+void gui_discard_hide(void)
 {
 	gtk_notebook_set_current_page(GTK_NOTEBOOK(develop_notebook), 0);
 }
 
-void gui_gold_show()
+void gui_gold_show(void)
 {
 	gtk_notebook_set_current_page(GTK_NOTEBOOK(develop_notebook), 2);
 }
 
-void gui_gold_hide()
+void gui_gold_hide(void)
 {
 	gtk_notebook_set_current_page(GTK_NOTEBOOK(develop_notebook), 0);
 }
@@ -615,7 +615,7 @@ void gui_prompt_show(const gchar * message)
 	gtk_notebook_set_current_page(GTK_NOTEBOOK(develop_notebook), 3);
 }
 
-void gui_prompt_hide()
+void gui_prompt_hide(void)
 {
 	gtk_notebook_set_current_page(GTK_NOTEBOOK(develop_notebook), 0);
 }
@@ -1248,7 +1248,7 @@ static void register_pixmaps(void)
 	g_object_unref(factory);
 }
 
-GtkWidget *gui_build_interface()
+GtkWidget *gui_build_interface(void)
 {
 	GtkWidget *vbox;
 	GtkWidget *menubar;

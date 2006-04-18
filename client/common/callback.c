@@ -53,14 +53,14 @@ void cb_connect(const gchar * server, const gchar * port)
 	}
 }
 
-void cb_disconnect()
+void cb_disconnect(void)
 {
 	sm_close(SM());
 	callback_mode = MODE_INIT;
 	callbacks.offline();
 }
 
-void cb_roll()
+void cb_roll(void)
 {
 	/* roll dice */
 	g_assert(callback_mode == MODE_TURN && !have_rolled_dice());
@@ -129,7 +129,7 @@ void cb_build_city(const Node * node)
 	sm_push(SM(), mode_build_response);
 }
 
-void cb_buy_develop()
+void cb_buy_develop(void)
 {
 	/* buy development card */
 	g_assert(callback_mode == MODE_TURN && can_buy_develop());
@@ -145,7 +145,7 @@ void cb_play_develop(int card)
 	sm_push(SM(), mode_play_develop_response);
 }
 
-void cb_undo()
+void cb_undo(void)
 {
 	/* undo a move */
 	g_assert(callback_mode == MODE_TURN
@@ -179,7 +179,7 @@ void cb_domestic(gint * supply, gint * receive)
 	}
 }
 
-void cb_end_turn()
+void cb_end_turn(void)
 {
 	/* end turn or road building or setup */
 	g_assert(callback_mode == MODE_TURN
@@ -224,7 +224,7 @@ void cb_trade(gint player, gint quote, gint * supply, gint * receive)
 	sm_push(SM(), mode_trade_domestic_response);
 }
 
-void cb_end_trade()
+void cb_end_trade(void)
 {
 	/* stop trading */
 	g_assert(callback_mode == MODE_DOMESTIC);
@@ -249,7 +249,7 @@ void cb_delete_quote(gint num)
 	sm_push(SM(), mode_quote_delete_response);
 }
 
-void cb_end_quote()
+void cb_end_quote(void)
 {
 	/* stop trading */
 	g_assert(callback_mode == MODE_QUOTE);
@@ -311,12 +311,12 @@ const GameParams *get_game_params(void)
 	return game_params;
 }
 
-gint game_resources()
+gint game_resources(void)
 {
 	return game_params->resource_count;
 }
 
-gint game_victory_points()
+gint game_victory_points(void)
 {
 	return game_params->victory_points;
 }
@@ -404,7 +404,7 @@ gboolean turn_can_build_settlement(void)
 	    && map_can_place_settlement(map, my_player_num());
 }
 
-gboolean turn_can_build_city()
+gboolean turn_can_build_city(void)
 {
 	return have_rolled_dice()
 	    && stock_num_cities() > 0
@@ -412,7 +412,7 @@ gboolean turn_can_build_city()
 	    && map_can_upgrade_settlement(map, my_player_num());
 }
 
-gboolean turn_can_trade()
+gboolean turn_can_trade(void)
 {
 	/* We are not allowed to trade before we have rolled the dice,
 	 * or after we have done built a settlement / city, or after
@@ -568,7 +568,7 @@ int pirate_count_victims(const Hex * hex, gint * victim_list)
 	return num_victims;
 }
 
-Map *get_map()
+Map *get_map(void)
 {
 	return map;
 }

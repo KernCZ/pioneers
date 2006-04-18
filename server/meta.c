@@ -48,7 +48,7 @@ gchar *get_server_name(void)
 	return server_name;
 }
 
-void meta_start_game()
+void meta_start_game(void)
 {
 #ifdef CLOSE_META_AT_START
 	if (ses != NULL) {

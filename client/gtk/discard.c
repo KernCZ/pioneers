@@ -54,7 +54,7 @@ static struct {
 static GtkWidget *discard_create_dlg(gint num);
 
 
-gboolean can_discard()
+gboolean can_discard(void)
 {
 	if (discard.dlg == NULL)
 		return FALSE;
@@ -127,7 +127,7 @@ static GtkWidget *discard_create_dlg(gint num)
 	return discard.dlg;
 }
 
-gint *discard_get_list()
+gint *discard_get_list(void)
 {
 	static gint discards[NO_RESOURCE];
 
@@ -220,18 +220,18 @@ void discard_player_must(gint player_num, gint num)
 	discard_create_dlg(num);
 }
 
-void discard_begin()
+void discard_begin(void)
 {
 	gtk_list_store_clear(GTK_LIST_STORE(discard_store));
 	gui_discard_show();
 }
 
-void discard_end()
+void discard_end(void)
 {
 	gui_discard_hide();
 }
 
-GtkWidget *discard_build_page()
+GtkWidget *discard_build_page(void)
 {
 	GtkWidget *vbox;
 	GtkWidget *label;

@@ -25,7 +25,7 @@
 #include "game.h"
 #include "cost.h"
 
-const gint *cost_road()
+const gint *cost_road(void)
 {
 	static gint cost[NO_RESOURCE] = {
 		1,		/* brick */
@@ -37,7 +37,7 @@ const gint *cost_road()
 	return cost;
 }
 
-const gint *cost_ship()
+const gint *cost_ship(void)
 {
 	static gint cost[NO_RESOURCE] = {
 		0,		/* brick */
@@ -49,7 +49,7 @@ const gint *cost_ship()
 	return cost;
 }
 
-const gint *cost_bridge()
+const gint *cost_bridge(void)
 {
 	static gint cost[NO_RESOURCE] = {
 		1,		/* brick */
@@ -61,7 +61,7 @@ const gint *cost_bridge()
 	return cost;
 }
 
-const gint *cost_settlement()
+const gint *cost_settlement(void)
 {
 	static gint cost[NO_RESOURCE] = {
 		1,		/* brick */
@@ -73,7 +73,7 @@ const gint *cost_settlement()
 	return cost;
 }
 
-const gint *cost_upgrade_settlement()
+const gint *cost_upgrade_settlement(void)
 {
 	static gint cost[NO_RESOURCE] = {
 		0,		/* brick */
@@ -85,7 +85,7 @@ const gint *cost_upgrade_settlement()
 	return cost;
 }
 
-const gint *cost_city()
+const gint *cost_city(void)
 {
 	static gint cost[NO_RESOURCE] = {
 		1,		/* brick */
@@ -97,7 +97,7 @@ const gint *cost_city()
 	return cost;
 }
 
-const gint *cost_development()
+const gint *cost_development(void)
 {
 	static gint cost[NO_RESOURCE] = {
 		0,		/* brick */

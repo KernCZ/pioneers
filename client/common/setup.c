@@ -31,12 +31,12 @@
 
 static gboolean double_setup;
 
-gboolean is_setup_double()
+gboolean is_setup_double(void)
 {
 	return double_setup;
 }
 
-gboolean setup_can_build_road()
+gboolean setup_can_build_road(void)
 {
 	if (game_params->num_build_type[BUILD_ROAD] == 0)
 		return FALSE;
@@ -53,7 +53,7 @@ gboolean setup_can_build_road()
 	}
 }
 
-gboolean setup_can_build_ship()
+gboolean setup_can_build_ship(void)
 {
 	if (game_params->num_build_type[BUILD_SHIP] == 0)
 		return FALSE;
@@ -70,7 +70,7 @@ gboolean setup_can_build_ship()
 	}
 }
 
-gboolean setup_can_build_bridge()
+gboolean setup_can_build_bridge(void)
 {
 	if (game_params->num_build_type[BUILD_BRIDGE] == 0)
 		return FALSE;
@@ -87,7 +87,7 @@ gboolean setup_can_build_bridge()
 	}
 }
 
-gboolean setup_can_build_settlement()
+gboolean setup_can_build_settlement(void)
 {
 	if (game_params->num_build_type[BUILD_SETTLEMENT] == 0)
 		return FALSE;
@@ -97,7 +97,7 @@ gboolean setup_can_build_settlement()
 		return build_count_settlements() < 1;
 }
 
-gboolean setup_can_finish()
+gboolean setup_can_finish(void)
 {
 	if (double_setup)
 		return build_count_edges() == 2

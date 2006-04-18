@@ -378,7 +378,7 @@ static void frontend_state_turn(GuiEvent event)
 	}
 }
 
-void frontend_turn()
+void frontend_turn(void)
 {
 	/* if it already is our turn, just update the gui (maybe something
 	 * happened), but don't beep */
@@ -466,7 +466,7 @@ static void frontend_state_monopoly(GuiEvent event)
 	}
 }
 
-void frontend_monopoly()
+void frontend_monopoly(void)
 {
 	monopoly_create_dlg();
 	set_gui_state(frontend_state_monopoly);
@@ -513,7 +513,7 @@ static void frontend_state_discard(GuiEvent event)
 	}
 }
 
-void frontend_discard()
+void frontend_discard(void)
 {
 	/* set state to idle until we must discard (or discard ends) */
 	if (!discard_busy) {
@@ -544,7 +544,7 @@ void frontend_discard_remove(gint player_num, gint * list)
 	frontend_gui_update();
 }
 
-void frontend_discard_done()
+void frontend_discard_done(void)
 {
 	discard_busy = FALSE;
 	discard_end();
@@ -567,7 +567,7 @@ static void frontend_state_gold(GuiEvent event)
 	}
 }
 
-void frontend_gold()
+void frontend_gold(void)
 {
 	if (!gold_busy) {
 		gold_busy = TRUE;
@@ -595,7 +595,7 @@ void frontend_gold_remove(gint player_num, gint * resources)
 	frontend_gui_update();
 }
 
-void frontend_gold_done()
+void frontend_gold_done(void)
 {
 	gold_busy = FALSE;
 	gold_choose_end();
@@ -618,7 +618,7 @@ void frontend_rolled_dice(gint die1, gint die2, gint player_num)
 	frontend_gui_update();
 }
 
-void frontend_beep()
+void frontend_beep(void)
 {
 	gdk_beep();
 	frontend_gui_update();
@@ -740,7 +740,7 @@ static gboolean check_move_robber_or_pirate(MapElement element,
 	return can_robber_or_pirate_be_moved(element.hex);
 }
 
-void frontend_robber()
+void frontend_robber(void)
 {
 	if (robber_busy)
 		return;

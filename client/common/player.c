@@ -39,7 +39,7 @@ static gint num_total_players = 4;	/* total number of players in the game */
 
 /* this function is called when the game starts, to clean up from the
  * previous game. */
-void player_reset()
+void player_reset(void)
 {
 	gint i, idx;
 
@@ -141,12 +141,12 @@ gint player_get_score(gint player_num)
 	return score;
 }
 
-gint my_player_num()
+gint my_player_num(void)
 {
 	return my_player_id;
 }
 
-gint num_players()
+gint num_players(void)
 {
 	return num_total_players;
 }
@@ -691,7 +691,7 @@ void player_take_point(gint player_num, gint id, gint old_owner)
 		    point->name, player->name);
 }
 
-gint current_player()
+gint current_player(void)
 {
 	return turn_player;
 }

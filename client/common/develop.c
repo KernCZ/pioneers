@@ -53,7 +53,7 @@ static struct {
 
 static DevelDeck *develop_deck;	/* our deck of development cards */
 
-void develop_init()
+void develop_init(void)
 {
 	int idx;
 	if (develop_deck != NULL)
@@ -206,7 +206,7 @@ void monopoly_player(gint player_num, gint victim_num, gint num,
 	g_free(tmp);
 }
 
-void develop_begin_turn()
+void develop_begin_turn(void)
 {
 	played_develop = FALSE;
 	bought_develop = FALSE;
@@ -227,7 +227,7 @@ gboolean can_play_develop(gint card)
 	return TRUE;
 }
 
-gboolean can_play_any_develop()
+gboolean can_play_any_develop(void)
 {
 	int i;
 	for (i = 0; i < develop_deck->num_cards; ++i)
@@ -236,13 +236,13 @@ gboolean can_play_any_develop()
 	return FALSE;
 }
 
-gboolean can_buy_develop()
+gboolean can_buy_develop(void)
 {
 	return have_rolled_dice()
 	    && stock_num_develop() > 0 && can_afford(cost_development());
 }
 
-gboolean have_bought_develop()
+gboolean have_bought_develop(void)
 {
 	return bought_develop;
 }

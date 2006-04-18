@@ -50,12 +50,12 @@ static void set_sensitive(G_GNUC_UNUSED void *key, GuiWidgetState * gui,
 	gui->next = FALSE;
 }
 
-void frontend_gui_register_init()
+void frontend_gui_register_init(void)
 {
 	frontend_widgets = g_hash_table_new(NULL, NULL);
 }
 
-void frontend_gui_update()
+void frontend_gui_update(void)
 {
 	route_gui_event(GUI_UPDATE);
 	g_hash_table_foreach(frontend_widgets, (GHFunc) set_sensitive,

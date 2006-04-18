@@ -64,7 +64,7 @@ static const gchar *resource_list(Resource type, ResourceListType grammar)
 }
 
 /* Clear all */
-void resource_init()
+void resource_init(void)
 {
 	gint idx;
 
@@ -117,7 +117,7 @@ gint resource_count(gint * resources)
 	return num;
 }
 
-gint resource_total()
+gint resource_total(void)
 {
 	return resource_count(my_assets);
 }

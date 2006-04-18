@@ -266,7 +266,7 @@ static gint expose_identity_area_cb(GtkWidget * area,
 	return TRUE;
 }
 
-void identity_draw()
+void identity_draw(void)
 {
 	gtk_widget_queue_draw(identity_area);
 }
@@ -278,7 +278,7 @@ void identity_set_dice(gint die1, gint die2)
 	gtk_widget_queue_draw(identity_area);
 }
 
-GtkWidget *identity_build_panel()
+GtkWidget *identity_build_panel(void)
 {
 	identity_area = gtk_drawing_area_new();
 	g_signal_connect(G_OBJECT(identity_area), "expose_event",
@@ -291,7 +291,7 @@ GtkWidget *identity_build_panel()
 	return identity_area;
 }
 
-void identity_reset()
+void identity_reset(void)
 {
 	die1_num = 0;
 	die2_num = 0;

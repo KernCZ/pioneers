@@ -66,7 +66,7 @@ GdkPixmap *guimap_terrain(Terrain terrain)
 	return theme_get_current()->terrain_tiles[terrain];
 }
 
-GuiMap *guimap_new()
+GuiMap *guimap_new(void)
 {
 	GuiMap *gmap;
 

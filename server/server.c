@@ -238,7 +238,7 @@ gboolean server_startup(GameParams * params, const gchar * hostname,
 	return FALSE;
 }
 
-gboolean server_stop()
+gboolean server_stop(void)
 {
 	if (curr_game == NULL)
 		return FALSE;

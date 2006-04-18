@@ -463,7 +463,7 @@ void map_move_pirate(Map * map, gint x, gint y)
 
 /* Allocate a new map
  */
-Map *map_new()
+Map *map_new(void)
 {
 	return g_malloc0(sizeof(Map));
 }

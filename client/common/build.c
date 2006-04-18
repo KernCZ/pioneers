@@ -34,13 +34,13 @@ static GList *build_list;
 static gboolean built;		/* have we buld road / settlement / city? */
 static gint num_edges, num_settlements;
 
-void build_clear()
+void build_clear(void)
 {
 	build_list = buildrec_free(build_list);
 	num_edges = num_settlements = 0;
 }
 
-void build_new_turn()
+void build_new_turn(void)
 {
 	build_list = buildrec_free(build_list);
 	built = FALSE;
@@ -99,7 +99,7 @@ void build_move(gint sx, gint sy, gint spos, gint dx, gint dy, gint dpos,
 		if (build_list == NULL)
 			built = FALSE;
 	} else {
-		BuildRec *rec = g_malloc0(sizeof(*rec));
+		rec = g_malloc0(sizeof(*rec));
 		build_list = g_list_append(build_list, rec);
 		built = TRUE;
 		map->has_moved_ship = TRUE;
@@ -136,12 +136,12 @@ void build_add(BuildType type, gint x, gint y, gint pos, gboolean newbuild)
 	}
 }
 
-gint build_count_edges()
+gint build_count_edges(void)
 {
 	return num_edges;
 }
 
-gint build_count_settlements()
+gint build_count_settlements(void)
 {
 	return num_settlements;
 }

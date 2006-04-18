@@ -113,7 +113,7 @@ static void add_legend_terrain(GtkWidget * table, gint row, gint col,
 	}
 }
 
-static void add_legend_cost(GtkWidget * table, gint row,
+static void add_legend_cost(GtkWidget * table, guint row,
 			    const gchar * iconname, const gchar * item,
 			    const gint * cost)
 {
@@ -139,7 +139,7 @@ static void add_legend_cost(GtkWidget * table, gint row,
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 }
 
-GtkWidget *legend_create_content()
+GtkWidget *legend_create_content(void)
 {
 	GtkWidget *hbox;
 	GtkWidget *vbox;
@@ -147,7 +147,7 @@ GtkWidget *legend_create_content()
 	GtkWidget *table;
 	GtkWidget *vsep;
 	GtkWidget *alignment;
-	gint num_rows;
+	guint num_rows;
 
 	hbox = gtk_hbox_new(FALSE, 6);
 	gtk_container_set_border_width(GTK_CONTAINER(hbox), 6);

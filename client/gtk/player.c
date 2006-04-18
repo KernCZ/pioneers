@@ -92,7 +92,7 @@ struct Player_statistic {
 static GtkWidget *turn_area;	/** turn indicator in status bar */
 static const gint turn_area_icon_width = 30;
 
-void player_init()
+void player_init(void)
 {
 	gint idx;
 	GdkColormap *cmap;
@@ -460,7 +460,7 @@ static void player_show_summary(gint player_num)
 	}
 }
 
-GtkWidget *player_build_summary()
+GtkWidget *player_build_summary(void)
 {
 	GtkWidget *vbox;
 	GtkWidget *label;
@@ -594,7 +594,7 @@ static gint expose_turn_area_cb(GtkWidget * area,
 	return FALSE;
 }
 
-GtkWidget *player_build_turn_area()
+GtkWidget *player_build_turn_area(void)
 {
 	turn_area = gtk_drawing_area_new();
 	g_signal_connect(G_OBJECT(turn_area), "expose_event",
@@ -619,7 +619,7 @@ void player_show_current(gint player_num)
 	player_show_summary(player_num);
 }
 
-void player_clear_summary()
+void player_clear_summary(void)
 {
 	gtk_list_store_clear(GTK_LIST_STORE(summary_store));
 }

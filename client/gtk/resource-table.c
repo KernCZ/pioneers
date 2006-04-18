@@ -66,7 +66,7 @@ GType resource_table_get_type(void)
 }
 
 /* Register the signals.
- * ResourceTable will emit two signals:
+ * ResourceTable will emit this signal:
  * 'change'         when any change in the amount occurs.
  */
 static void resource_table_class_init(ResourceTableClass * klass)

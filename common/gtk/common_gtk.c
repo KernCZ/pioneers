@@ -215,7 +215,7 @@ void message_window_set_text(GtkWidget * textWidget)
 	gtk_text_buffer_create_mark(buffer, "end-mark", &iter, FALSE);
 }
 
-static void gtk_event_cleanup()
+static void gtk_event_cleanup(void)
 {
 	while (gtk_events_pending())
 		gtk_main_iteration();

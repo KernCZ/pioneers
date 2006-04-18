@@ -194,6 +194,7 @@ static void game_activate(GtkWidget * widget,
 static void gui_set_server_state(gboolean running)
 {
 	gboolean ai_settings_enabled = TRUE;
+	gchar *fullname;
 
 	is_running = running;
 
@@ -215,7 +216,7 @@ static void gui_set_server_state(gboolean running)
 			     running ? _("Stop the server") :
 			     _("Start the server"), NULL);
 
-	gchar *fullname = g_find_program_in_path(PIONEERS_AI_PATH);
+	fullname = g_find_program_in_path(PIONEERS_AI_PATH);
 	if (fullname) {
 		g_free(fullname);
 	} else {

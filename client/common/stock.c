@@ -35,7 +35,7 @@ static gint num_settlements;	/* settlements available */
 static gint num_cities;		/* cities available */
 static gint num_develop;	/* development cards left */
 
-void stock_init()
+void stock_init(void)
 {
 	int idx;
 
@@ -51,97 +51,97 @@ void stock_init()
 		num_develop += game_params->num_develop_type[idx];
 }
 
-gint stock_num_roads()
+gint stock_num_roads(void)
 {
 	return num_roads;
 }
 
-void stock_use_road()
+void stock_use_road(void)
 {
 	num_roads--;
 	callbacks.update_stock();
 }
 
-void stock_replace_road()
+void stock_replace_road(void)
 {
 	num_roads++;
 	callbacks.update_stock();
 }
 
-gint stock_num_ships()
+gint stock_num_ships(void)
 {
 	return num_ships;
 }
 
-void stock_use_ship()
+void stock_use_ship(void)
 {
 	num_ships--;
 	callbacks.update_stock();
 }
 
-void stock_replace_ship()
+void stock_replace_ship(void)
 {
 	num_ships++;
 	callbacks.update_stock();
 }
 
-gint stock_num_bridges()
+gint stock_num_bridges(void)
 {
 	return num_bridges;
 }
 
-void stock_use_bridge()
+void stock_use_bridge(void)
 {
 	num_bridges--;
 	callbacks.update_stock();
 }
 
-void stock_replace_bridge()
+void stock_replace_bridge(void)
 {
 	num_bridges++;
 	callbacks.update_stock();
 }
 
-gint stock_num_settlements()
+gint stock_num_settlements(void)
 {
 	return num_settlements;
 }
 
-void stock_use_settlement()
+void stock_use_settlement(void)
 {
 	num_settlements--;
 	callbacks.update_stock();
 }
 
-void stock_replace_settlement()
+void stock_replace_settlement(void)
 {
 	num_settlements++;
 	callbacks.update_stock();
 }
 
-gint stock_num_cities()
+gint stock_num_cities(void)
 {
 	return num_cities;
 }
 
-void stock_use_city()
+void stock_use_city(void)
 {
 	num_cities--;
 	callbacks.update_stock();
 }
 
-void stock_replace_city()
+void stock_replace_city(void)
 {
 	num_cities++;
 	callbacks.update_stock();
 }
 
-gint stock_num_develop()
+gint stock_num_develop(void)
 {
 	return num_develop;
 }
 
-void stock_use_develop()
+void stock_use_develop(void)
 {
 	num_develop--;
 }

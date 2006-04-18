@@ -100,7 +100,7 @@ static void frontend_offline_gui(GuiEvent event)
 }
 
 /* this function is called when offline mode is entered. */
-void frontend_offline()
+void frontend_offline(void)
 {
 	gui_cursor_none();	/* Clear possible cursor */
 

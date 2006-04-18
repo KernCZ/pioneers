@@ -28,7 +28,7 @@ static GtkWidget *asset_labels[NO_RESOURCE];
 /* 'total' label widget */
 static GtkWidget *asset_total_label;
 
-GtkWidget *resource_build_panel()
+GtkWidget *resource_build_panel(void)
 {
 	GtkWidget *table;
 	GtkWidget *label;

@@ -202,13 +202,13 @@ void gold_choose_player_did(gint player_num,
 	}
 }
 
-void gold_choose_begin()
+void gold_choose_begin(void)
 {
 	gtk_list_store_clear(GTK_LIST_STORE(gold_store));
 	gui_gold_show();
 }
 
-void gold_choose_end()
+void gold_choose_end(void)
 {
 	gtk_list_store_clear(GTK_LIST_STORE(gold_store));
 	gui_gold_hide();
@@ -218,7 +218,7 @@ void gold_choose_end()
 	}
 }
 
-GtkWidget *gold_build_page()
+GtkWidget *gold_build_page(void)
 {
 	GtkWidget *vbox;
 	GtkWidget *label;
@@ -298,7 +298,7 @@ GtkWidget *gold_build_page()
 	return vbox;
 }
 
-gboolean can_choose_gold()
+gboolean can_choose_gold(void)
 {
 	if (gold.dlg == NULL)
 		return FALSE;

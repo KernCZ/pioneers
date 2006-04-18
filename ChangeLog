@@ -1,3 +1,16 @@
+2006-04-18  Roland Clobus <rclobus@bigfoot.com>
+	* common/gtk/guimap.c, common/gtk/common_gtk.c, common/cost.c,
+	common/game.c, common/map.c, server/gtk/main.c, server/meta.c,
+	server/server.c, client/gtk/interface.c, client/gtk/resource-table.c,
+	client/gtk/frontend.c, client/gtk/name.c, client/gtk/gold.c,
+	client/gtk/resource.c, client/gtk/player.c, client/gtk/develop.c,
+	client/gtk/legend.c, client/gtk/discard.c, client/gtk/offline.c,
+	client/gtk/gui.c, client/gtk/identity.c, client/gtk/histogram.c,
+	client/common/develop.c, client/common/build.c, client/common/setup.c,
+	client/common/client.c, client/common/stock.c, client/common/resource.c,
+	client/common/turn.c, client/common/player.c, client/common/callback.c:
+	Remove old-style function definition warnings.
+
 2006-04-14  Roland CLobus <rclobus@bigfoot.com>
 	* common/network.c: Add the time to the logged network traffic.
 	

@@ -31,7 +31,7 @@ enum {
 static GtkListStore *store;    /**< The data for the GUI */
 static gint selected_card_idx; /**< currently selected development card */
 
-gint develop_current_idx()
+gint develop_current_idx(void)
 {
 	return selected_card_idx;
 }

@@ -80,7 +80,7 @@ static void recover_from_disconnect(StateMachine * sm,
 
 /* Create and/or return the client state machine.
  */
-StateMachine *SM()
+StateMachine *SM(void)
 {
 	static StateMachine *state_machine;
 	if (state_machine == NULL) {

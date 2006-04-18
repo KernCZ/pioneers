@@ -73,7 +73,7 @@ static Param game_params[] = {
 };
 /* *INDENT-ON* */
 
-GameParams *params_new()
+GameParams *params_new(void)
 {
 	GameParams *params;
 

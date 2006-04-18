@@ -33,7 +33,7 @@ static void change_name_cb(GtkDialog * dlg, int response_id,
 	gtk_widget_destroy(GTK_WIDGET(dlg));
 }
 
-void name_create_dlg()
+void name_create_dlg(void)
 {
 	GtkWidget *dlg_vbox;
 	GtkWidget *hbox;

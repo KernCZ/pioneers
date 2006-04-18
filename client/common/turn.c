@@ -56,12 +56,12 @@ void turn_begin(gint player_num, gint num)
 	callbacks.player_turn(player_num);
 }
 
-gint turn_num()
+gint turn_num(void)
 {
 	return current_turn;
 }
 
-gboolean have_rolled_dice()
+gboolean have_rolled_dice(void)
 {
 	return rolled_dice;
 }
