@@ -21,11 +21,19 @@
 
 #include "config.h"
 #include "frontend.h"
+#include "common_gtk.h"
 
 static GtkWidget *chat_entry;	/* messages text widget */
+static GtkListStore *chat_completion_model = NULL;
 static gboolean chat_grab_focus_on_update = FALSE; /**< Flag to indicate 
  * whether the chat widget should grab the focus whenever a GUI_UPDATE is sent */
 
+enum {
+	CHAT_PLAYER_NUM, /**< Player number */
+	CHAT_PLAYER_ICON, /**< The player icon */
+	CHAT_BEEP_TEXT,	/**< Text for the completion */
+	CHAT_COLUMN_LAST
+};
 
 static void chat_cb(GtkEntry * entry, G_GNUC_UNUSED gpointer user_data)
 {
@@ -53,6 +61,8 @@ GtkWidget *chat_build_panel()
 {
 	GtkWidget *hbox;
 	GtkWidget *label;
+	GtkEntryCompletion *completion;
+	GtkCellRenderer *cell;
 
 	hbox = gtk_hbox_new(FALSE, 5);
 	gtk_widget_show(hbox);
@@ -69,6 +79,39 @@ GtkWidget *chat_build_panel()
 	gtk_widget_show(chat_entry);
 	gtk_box_pack_start_defaults(GTK_BOX(hbox), chat_entry);
 
+	completion = gtk_entry_completion_new();
+	gtk_entry_set_completion(GTK_ENTRY(chat_entry), completion);
+
+	chat_completion_model =
+	    gtk_list_store_new(CHAT_COLUMN_LAST, G_TYPE_INT,
+			       GDK_TYPE_PIXBUF, G_TYPE_STRING);
+	gtk_entry_completion_set_model(completion,
+				       GTK_TREE_MODEL
+				       (chat_completion_model));
+	g_object_unref(chat_completion_model);
+
+	/* In GTK 2.4 the text column cannot be set with g_object_set yet.
+	 * Set the column, clear the renderers, and add our own. */
+	gtk_entry_completion_set_text_column(completion, CHAT_BEEP_TEXT);
+
+	gtk_cell_layout_clear(GTK_CELL_LAYOUT(completion));
+
+	cell = gtk_cell_renderer_pixbuf_new();
+	gtk_cell_layout_pack_start(GTK_CELL_LAYOUT(completion),
+				   cell, FALSE);
+	gtk_cell_layout_set_attributes(GTK_CELL_LAYOUT(completion),
+				       cell,
+				       "pixbuf", CHAT_PLAYER_ICON, NULL);
+
+	cell = gtk_cell_renderer_text_new();
+	gtk_cell_layout_pack_start(GTK_CELL_LAYOUT(completion),
+				   cell, TRUE);
+	gtk_cell_layout_set_attributes(GTK_CELL_LAYOUT(completion),
+				       cell, "text", CHAT_BEEP_TEXT, NULL);
+
+	gtk_entry_completion_set_minimum_key_length(completion, 2);
+	g_object_unref(completion);
+
 	return hbox;
 }
 
@@ -83,4 +126,80 @@ void chat_set_focus(void)
 		gtk_widget_grab_focus(chat_entry);
 		gtk_editable_set_position(GTK_EDITABLE(chat_entry), -1);
 	}
+}
+
+void chat_player_name(gint player_num, const gchar * name)
+{
+	GtkTreeIter iter;
+	enum TFindResult found;
+	GdkPixbuf *pixbuf;
+
+	found =
+	    find_integer_in_tree(GTK_TREE_MODEL(chat_completion_model),
+				 &iter, CHAT_PLAYER_NUM, player_num);
+
+	switch (found) {
+	case FIND_NO_MATCH:
+		gtk_list_store_append(chat_completion_model, &iter);
+		break;
+	case FIND_MATCH_INSERT_BEFORE:
+		gtk_list_store_insert_before(chat_completion_model, &iter,
+					     &iter);
+		break;
+	case FIND_MATCH_EXACT:
+		break;
+	};
+
+	if (player_is_viewer(player_num)) {
+		pixbuf = NULL;
+	} else {
+		/* connected icon */
+		pixbuf = player_create_icon(chat_entry, player_num, TRUE);
+	}
+
+	gtk_list_store_set(chat_completion_model, &iter,
+			   CHAT_PLAYER_NUM, player_num,
+			   CHAT_PLAYER_ICON, pixbuf,
+			   CHAT_BEEP_TEXT, g_strdup_printf("/beep %s",
+							   name), -1);
+
+	if (pixbuf != NULL)
+		g_object_unref(pixbuf);
+}
+
+void chat_player_quit(gint player_num)
+{
+	GtkTreeIter iter;
+	enum TFindResult found;
+
+	found =
+	    find_integer_in_tree(GTK_TREE_MODEL(chat_completion_model),
+				 &iter, CHAT_PLAYER_NUM, player_num);
+	if (found == FIND_MATCH_EXACT) {
+		/* not connected icon */
+		GdkPixbuf *pixbuf =
+		    player_create_icon(chat_entry, player_num, FALSE);
+
+		gtk_list_store_set(chat_completion_model,
+				   &iter, CHAT_PLAYER_ICON, pixbuf, -1);
+		g_object_unref(pixbuf);
+	}
+}
+
+void chat_viewer_quit(gint viewer_num)
+{
+	GtkTreeIter iter;
+	enum TFindResult found;
+
+	found =
+	    find_integer_in_tree(GTK_TREE_MODEL(chat_completion_model),
+				 &iter, CHAT_PLAYER_NUM, viewer_num);
+	if (found == FIND_MATCH_EXACT) {
+		gtk_list_store_remove(chat_completion_model, &iter);
+	}
+}
+
+void chat_clear_names(void)
+{
+	gtk_list_store_clear(chat_completion_model);
 }

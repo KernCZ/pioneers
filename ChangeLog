@@ -1,3 +1,9 @@
+2006-04-21  Roland Clobus <rclobus@bigfoot.com>
+	* common/gtk/common_gtk.h, common/gtk/common_gtk.c,
+	client/gtk/callbacks.c, client/gtk/frontend.h, client/gtk/player.c,
+	client/gtk/trade.c, client/gtk/chat.c: Easier /beep
+	* client/gtk/player.c: Make disconnected icon symmetrical.
+	
 2006-04-18  Roland Clobus <rclobus@bigfoot.com>
 	* common/gtk/guimap.c, common/gtk/common_gtk.c, common/cost.c,
 	common/game.c, common/map.c, server/gtk/main.c, server/meta.c,

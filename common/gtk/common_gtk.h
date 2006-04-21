@@ -34,6 +34,16 @@ void log_set_func_message_color_enable(gboolean enable);
 /* set the text widget. */
 void message_window_set_text(GtkWidget * textWidget);
 
+enum TFindResult {
+	FIND_MATCH_EXACT,
+	FIND_MATCH_INSERT_BEFORE,
+	FIND_NO_MATCH
+};
+
+enum TFindResult find_integer_in_tree(GtkTreeModel * model,
+				      GtkTreeIter * iter, gint column,
+				      gint number);
+
 extern UIDriver GTK_Driver;
 
 #endif				/* __common_gtk_h */

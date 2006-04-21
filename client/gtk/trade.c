@@ -24,6 +24,7 @@
 #include "frontend.h"
 #include "cost.h"
 #include "theme.h"
+#include "common_gtk.h"
 
 static void trade_update(void);
 static void check_maritime_trades(void);
@@ -373,27 +374,6 @@ static gboolean trade_locate_quote(GtkTreeModel * model,
 	return FALSE;
 }
 
-/** Locate the best spot for inserting information about 
- * the player in user_data.
- *  When quote_found_flag == TRUE, use _insert_before on quote_found_iter.
- *  When quote_found_flag == FALSE, use _append.
- */
-static gboolean trade_locate_player(GtkTreeModel * model,
-				    G_GNUC_UNUSED GtkTreePath * path,
-				    GtkTreeIter * iter, gpointer user_data)
-{
-	int wanted = GPOINTER_TO_INT(user_data);
-	int current;
-	gtk_tree_model_get(model, iter, TRADE_COLUMN_PLAYER_NUM, &current,
-			   -1);
-	if (current > wanted) {
-		quote_found_flag = TRUE;
-		quote_found_iter = *iter;
-		return TRUE;
-	}
-	return FALSE;
-}
-
 /** Locate the Player* in user_data. Return TRUE if is found. The iter
  *  is set in quote_found_iter. The flag quote_found_flag is set to TRUE
  */
@@ -468,6 +448,7 @@ static void add_reject_row(gint player_num)
 	Player *player = player_get(player_num);
 	QuoteInfo *quote;
 	GtkTreeIter iter;
+	enum TFindResult found;
 
 	quote_found_flag = FALSE;
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store), trade_locate_reject,
@@ -484,12 +465,11 @@ static void add_reject_row(gint player_num)
 		else if (quote->var.d.player_num >= player_num)
 			break;
 
-	quote_found_flag = FALSE;
-	gtk_tree_model_foreach(GTK_TREE_MODEL(store), trade_locate_player,
-			       GINT_TO_POINTER(player_num));
-	if (quote_found_flag)
-		gtk_list_store_insert_before(store, &iter,
-					     &quote_found_iter);
+	found =
+	    find_integer_in_tree(GTK_TREE_MODEL(store), &iter,
+				 TRADE_COLUMN_PLAYER_NUM, player_num);
+	if (found != FIND_NO_MATCH)
+		gtk_list_store_insert_before(store, &iter, &iter);
 	else
 		gtk_list_store_append(store, &iter);
 	gtk_list_store_set(store, &iter,
@@ -738,9 +718,10 @@ void frontend_trade_maritime(G_GNUC_UNUSED gint ratio,
 void trade_add_quote(gint player_num,
 		     gint quote_num, gint * supply, gint * receive)
 {
+	GtkTreeIter iter;
+	enum TFindResult found;
 	QuoteInfo *quote;
 	gchar quote_desc[128];
-	GtkTreeIter iter;
 
 	/* If the trade is already listed, don't duplicate */
 	if (quotelist_find_domestic(quote_list, player_num, quote_num) !=
@@ -752,12 +733,12 @@ void trade_add_quote(gint player_num,
 				       receive);
 	trade_format_quote(quote, quote_desc);
 
-	quote_found_flag = FALSE;
-	gtk_tree_model_foreach(GTK_TREE_MODEL(store), trade_locate_player,
-			       GINT_TO_POINTER(player_num));
-	if (quote_found_flag)
-		gtk_list_store_insert_before(store, &iter,
-					     &quote_found_iter);
+	found =
+	    find_integer_in_tree(GTK_TREE_MODEL(store), &iter,
+				 TRADE_COLUMN_PLAYER_NUM, player_num + 1);
+
+	if (found != FIND_NO_MATCH)
+		gtk_list_store_insert_before(store, &iter, &iter);
 	else
 		gtk_list_store_append(store, &iter);
 	gtk_list_store_set(store, &iter,

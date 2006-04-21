@@ -238,3 +238,45 @@ UIDriver GTK_Driver = {
 	NULL,			/* player removed */
 	NULL			/* player renamed */
 };
+
+struct TFindData {
+	GtkTreeIter iter;
+	enum TFindResult result;
+	gint column;
+	gint number;
+};
+
+static gboolean find_integer_cb(GtkTreeModel * model,
+				G_GNUC_UNUSED GtkTreePath * path,
+				GtkTreeIter * iter, gpointer user_data)
+{
+	struct TFindData *data = (struct TFindData *) user_data;
+
+	int wanted = data->number;
+	int current;
+	gtk_tree_model_get(model, iter, data->column, &current, -1);
+	if (current > wanted) {
+		data->result = FIND_MATCH_INSERT_BEFORE;
+		data->iter = *iter;
+		return TRUE;
+	} else if (current == wanted) {
+		data->result = FIND_MATCH_EXACT;
+		data->iter = *iter;
+		return TRUE;
+	}
+	return FALSE;
+}
+
+enum TFindResult find_integer_in_tree(GtkTreeModel * model,
+				      GtkTreeIter * iter, gint column,
+				      gint number)
+{
+	struct TFindData data;
+	data.column = column;
+	data.number = number;
+	data.result = FIND_NO_MATCH;
+	gtk_tree_model_foreach(model, find_integer_cb, &data);
+	if (data.result != FIND_NO_MATCH)
+		*iter = data.iter;
+	return data.result;
+}

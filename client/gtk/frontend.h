@@ -256,6 +256,14 @@ GtkWidget *chat_build_panel(void);
 void chat_set_grab_focus_on_update(gboolean grab);
 /** Set the focus to the chat widget */
 void chat_set_focus(void);
+/** A player/viewer has changed his name */
+void chat_player_name(gint player_num, const gchar * name);
+/** A player has quit */
+void chat_player_quit(gint player_num);
+/** A viewer has quit */
+void chat_viewer_quit(gint viewer_num);
+/** Clear all names */
+void chat_clear_names(void);
 
 /* name.c */
 void name_create_dlg(void);

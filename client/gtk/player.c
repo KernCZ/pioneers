@@ -25,6 +25,7 @@
 #include "frontend.h"
 #include "log.h"
 #include "gtkbugs.h"
+#include "common_gtk.h"
 
 static void player_show_connected_at_iter(gint player_num,
 					  gboolean connected,
@@ -73,18 +74,12 @@ enum {
 static Player players[MAX_PLAYERS];
 static GtkListStore *summary_store; /**< the player summary data */
 static GtkWidget *summary_widget; /**< the player summary widget */
-/** The summary line is found here */
-static GtkTreeIter summary_found_iter;
-/** Has the summary line been found ? */
-enum {
-	STORE_MATCH_EXACT,
-	STORE_MATCH_INSERT_BEFORE,
-	STORE_NO_MATCH
-} summary_found_flag;
 static gboolean summary_color_enabled = TRUE;
 
 /** Structure to find combination of player and statistic */
 struct Player_statistic {
+	enum TFindResult result;
+	GtkTreeIter iter;
 	gint player_num;
 	gint statistic;
 };
@@ -142,9 +137,9 @@ GdkPixbuf *player_create_icon(GtkWidget * widget, gint player_num,
 	if (!connected) {
 		gdk_gc_set_foreground(gc, &black);
 		gdk_draw_rectangle(pixmap, gc, FALSE,
-				   3, 3, width - 6, height - 6);
+				   3, 3, width - 7, height - 7);
 		gdk_draw_rectangle(pixmap, gc, FALSE,
-				   6, 6, width - 12, height - 12);
+				   6, 6, width - 13, height - 13);
 	}
 
 	/* Store the pixmap in player->user_data. 
@@ -164,28 +159,6 @@ GdkPixbuf *player_create_icon(GtkWidget * widget, gint player_num,
 	return temp;
 }
 
-/** Locate a line suitable for a player */
-static gboolean summary_locate_player(GtkTreeModel * model,
-				      G_GNUC_UNUSED GtkTreePath * path,
-				      GtkTreeIter * iter,
-				      gpointer user_data)
-{
-	int wanted = GPOINTER_TO_INT(user_data);
-	int current;
-	gtk_tree_model_get(model, iter, SUMMARY_COLUMN_PLAYER_NUM,
-			   &current, -1);
-	if (current > wanted) {
-		summary_found_flag = STORE_MATCH_INSERT_BEFORE;
-		summary_found_iter = *iter;
-		return TRUE;
-	} else if (current == wanted) {
-		summary_found_flag = STORE_MATCH_EXACT;
-		summary_found_iter = *iter;
-		return TRUE;
-	}
-	return FALSE;
-}
-
 /** Locate a line suitable for the statistic */
 static gboolean summary_locate_statistic(GtkTreeModel * model,
 					 G_GNUC_UNUSED GtkTreePath * path,
@@ -201,17 +174,17 @@ static gboolean summary_locate_statistic(GtkTreeModel * model,
 			   SUMMARY_COLUMN_STATISTIC, &current_statistic,
 			   -1);
 	if (current_player > ps->player_num) {
-		summary_found_flag = STORE_MATCH_INSERT_BEFORE;
-		summary_found_iter = *iter;
+		ps->result = FIND_MATCH_INSERT_BEFORE;
+		ps->iter = *iter;
 		return TRUE;
 	} else if (current_player == ps->player_num) {
 		if (current_statistic > ps->statistic) {
-			summary_found_flag = STORE_MATCH_INSERT_BEFORE;
-			summary_found_iter = *iter;
+			ps->result = FIND_MATCH_INSERT_BEFORE;
+			ps->iter = *iter;
 			return TRUE;
 		} else if (current_statistic == ps->statistic) {
-			summary_found_flag = STORE_MATCH_EXACT;
-			summary_found_iter = *iter;
+			ps->result = FIND_MATCH_EXACT;
+			ps->iter = *iter;
 			return TRUE;
 		}
 	}
@@ -222,28 +195,29 @@ static gboolean summary_locate_statistic(GtkTreeModel * model,
 static void refresh_victory_point_total(int player_num)
 {
 	gchar points[16];
+	GtkTreeIter iter;
+	enum TFindResult found;
 
 	if (player_num < 0 || player_num >= G_N_ELEMENTS(players))
 		return;
 
-	snprintf(points, sizeof(points), "%d",
-		 player_get_score(player_num));
+	found =
+	    find_integer_in_tree(GTK_TREE_MODEL(summary_store), &iter,
+				 SUMMARY_COLUMN_PLAYER_NUM, player_num);
 
-	summary_found_flag = STORE_NO_MATCH;
-	gtk_tree_model_foreach(GTK_TREE_MODEL(summary_store),
-			       summary_locate_player,
-			       GINT_TO_POINTER(player_num));
-	if (summary_found_flag == STORE_MATCH_EXACT)
-		gtk_list_store_set(summary_store, &summary_found_iter,
+	if (found == FIND_MATCH_EXACT) {
+		snprintf(points, sizeof(points), "%d",
+			 player_get_score(player_num));
+		gtk_list_store_set(summary_store, &iter,
 				   SUMMARY_COLUMN_SCORE, points, -1);
-
+	}
 }
 
-/** Locate a line suitable for a player */
-static gboolean summary_apply_colors(GtkTreeModel * model,
-				     G_GNUC_UNUSED GtkTreePath * path,
-				     GtkTreeIter * iter,
-				     G_GNUC_UNUSED gpointer user_data)
+/** Apply colors to the summary */
+static gboolean summary_apply_colors_cb(GtkTreeModel * model,
+					G_GNUC_UNUSED GtkTreePath * path,
+					GtkTreeIter * iter,
+					G_GNUC_UNUSED gpointer user_data)
 {
 	gint current_statistic;
 
@@ -259,7 +233,6 @@ static gboolean summary_apply_colors(GtkTreeModel * model,
 	return FALSE;
 }
 
-
 void set_color_summary(gboolean flag)
 {
 	if (flag != summary_color_enabled) {
@@ -267,7 +240,8 @@ void set_color_summary(gboolean flag)
 		if (summary_store)
 			gtk_tree_model_foreach(GTK_TREE_MODEL
 					       (summary_store),
-					       summary_apply_colors, NULL);
+					       summary_apply_colors_cb,
+					       NULL);
 	}
 }
 
@@ -285,16 +259,15 @@ void frontend_new_statistics(gint player_num, StatisticType type,
 	if (stat_get_vp_value(type) > 0)
 		refresh_victory_point_total(player_num);
 
-	summary_found_flag = STORE_NO_MATCH;
+	ps.result = FIND_NO_MATCH;
 	ps.player_num = player_num;
 	ps.statistic = type + 1;
 	gtk_tree_model_foreach(GTK_TREE_MODEL(summary_store),
 			       summary_locate_statistic, &ps);
 
 	if (value == 0) {
-		if (summary_found_flag == STORE_MATCH_EXACT)
-			gtk_list_store_remove(summary_store,
-					      &summary_found_iter);
+		if (ps.result == FIND_MATCH_EXACT)
+			gtk_list_store_remove(summary_store, &ps.iter);
 	} else {
 		if (value == 1) {
 			if (statistics[type].plural != NULL)
@@ -313,16 +286,16 @@ void frontend_new_statistics(gint player_num, StatisticType type,
 		else
 			strcpy(points, "");
 
-		switch (summary_found_flag) {
-		case STORE_NO_MATCH:
+		switch (ps.result) {
+		case FIND_NO_MATCH:
 			gtk_list_store_append(summary_store, &iter);
 			break;
-		case STORE_MATCH_INSERT_BEFORE:
+		case FIND_MATCH_INSERT_BEFORE:
 			gtk_list_store_insert_before(summary_store, &iter,
-						     &summary_found_iter);
+						     &ps.iter);
 			break;
-		case STORE_MATCH_EXACT:
-			iter = summary_found_iter;
+		case FIND_MATCH_EXACT:
+			iter = ps.iter;
 			break;
 		default:
 			g_assert(FALSE);
@@ -343,27 +316,31 @@ void frontend_new_statistics(gint player_num, StatisticType type,
 
 static void player_create_find_player(gint player_num, GtkTreeIter * iter)
 {
+	GtkTreeIter found_iter;
+	enum TFindResult result;
+
 	/* Search for a place to add information about the player/viewer */
-	summary_found_flag = STORE_NO_MATCH;
-	gtk_tree_model_foreach(GTK_TREE_MODEL(summary_store),
-			       summary_locate_player,
-			       GINT_TO_POINTER(player_num));
-	switch (summary_found_flag) {
-	case STORE_NO_MATCH:
+	result =
+	    find_integer_in_tree(GTK_TREE_MODEL(summary_store),
+				 &found_iter, SUMMARY_COLUMN_PLAYER_NUM,
+				 player_num);
+
+	switch (result) {
+	case FIND_NO_MATCH:
 		gtk_list_store_append(summary_store, iter);
 		gtk_list_store_set(summary_store, iter,
 				   SUMMARY_COLUMN_PLAYER_NUM, player_num,
 				   -1);
 		break;
-	case STORE_MATCH_INSERT_BEFORE:
+	case FIND_MATCH_INSERT_BEFORE:
 		gtk_list_store_insert_before(summary_store, iter,
-					     &summary_found_iter);
+					     &found_iter);
 		gtk_list_store_set(summary_store, iter,
 				   SUMMARY_COLUMN_PLAYER_NUM, player_num,
 				   -1);
 		break;
-	case STORE_MATCH_EXACT:
-		*iter = summary_found_iter;
+	case FIND_MATCH_EXACT:
+		*iter = found_iter;
 		break;
 	default:
 		g_assert(FALSE);
@@ -379,6 +356,8 @@ void frontend_player_name(gint player_num, const gchar * name)
 			   SUMMARY_COLUMN_TEXT, name, -1);
 
 	player_show_connected_at_iter(player_num, TRUE, &iter);
+
+	chat_player_name(player_num, name);
 }
 
 void frontend_viewer_name(gint viewer_num, const gchar * name)
@@ -388,6 +367,8 @@ void frontend_viewer_name(gint viewer_num, const gchar * name)
 	player_create_find_player(viewer_num, &iter);
 	gtk_list_store_set(summary_store, &iter,
 			   SUMMARY_COLUMN_TEXT, name, -1);
+
+	chat_player_name(viewer_num, name);
 }
 
 void frontend_player_quit(gint player_num)
@@ -396,6 +377,8 @@ void frontend_player_quit(gint player_num)
 
 	player_create_find_player(player_num, &iter);
 	player_show_connected_at_iter(player_num, FALSE, &iter);
+
+	chat_player_quit(player_num);
 }
 
 void frontend_viewer_quit(gint viewer_num)
@@ -404,6 +387,8 @@ void frontend_viewer_quit(gint viewer_num)
 
 	player_create_find_player(viewer_num, &iter);
 	gtk_list_store_remove(summary_store, &iter);
+
+	chat_viewer_quit(viewer_num);
 }
 
 static void player_show_connected_at_iter(gint player_num,
@@ -423,18 +408,21 @@ static void player_show_connected_at_iter(gint player_num,
  */
 static void player_show_summary(gint player_num)
 {
+	GtkTreeIter found_iter;
+	enum TFindResult result;
 	gboolean scroll_to_end = FALSE;
 
-	summary_found_flag = STORE_NO_MATCH;
-	gtk_tree_model_foreach(GTK_TREE_MODEL(summary_store),
-			       summary_locate_player,
-			       GINT_TO_POINTER(player_num + 1));
-	if (summary_found_flag == STORE_NO_MATCH) {
+	result =
+	    find_integer_in_tree(GTK_TREE_MODEL(summary_store),
+				 &found_iter, SUMMARY_COLUMN_PLAYER_NUM,
+				 player_num + 1);
+
+	if (result == FIND_NO_MATCH) {
 		scroll_to_end = TRUE;
 	} else {
 		GtkTreePath *path =
 		    gtk_tree_model_get_path(GTK_TREE_MODEL(summary_store),
-					    &summary_found_iter);
+					    &found_iter);
 		if (gtk_tree_path_prev(path))
 			gtk_tree_view_scroll_to_cell(GTK_TREE_VIEW
 						     (summary_widget),
@@ -443,14 +431,14 @@ static void player_show_summary(gint player_num)
 		gtk_tree_path_free(path);
 	}
 
-	summary_found_flag = STORE_NO_MATCH;
-	gtk_tree_model_foreach(GTK_TREE_MODEL(summary_store),
-			       summary_locate_player,
-			       GINT_TO_POINTER(player_num));
-	if (summary_found_flag != STORE_NO_MATCH) {
+	result =
+	    find_integer_in_tree(GTK_TREE_MODEL(summary_store),
+				 &found_iter, SUMMARY_COLUMN_PLAYER_NUM,
+				 player_num);
+	if (result != FIND_NO_MATCH) {
 		GtkTreePath *path =
 		    gtk_tree_model_get_path(GTK_TREE_MODEL(summary_store),
-					    &summary_found_iter);
+					    &found_iter);
 		gtk_tree_view_scroll_to_cell(GTK_TREE_VIEW(summary_widget),
 					     path, NULL, scroll_to_end,
 					     0.0, 0.0);
