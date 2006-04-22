@@ -1,3 +1,7 @@
+2006-04-23  Roland Clobus <rclobus@bigfoot.com>
+	* docs/README.release: Added a small guide for the steps needed to 
+	make a release
+	
 2006-04-21  Roland Clobus <rclobus@bigfoot.com>
 	* common/gtk/common_gtk.h, common/gtk/common_gtk.c,
 	client/gtk/callbacks.c, client/gtk/frontend.h, client/gtk/player.c,
