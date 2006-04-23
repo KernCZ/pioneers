@@ -17,6 +17,13 @@ endif
 DEB_HOST_GNU_TYPE ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
 DEB_BUILD_GNU_TYPE ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
 
+ifeq ($(DEB_BUILD_GNU_TYPE), $(DEB_HOST_GNU_TYPE))
+	CONFIGUREFLAGS += --build $(DEB_HOST_GNU_TYPE)
+else
+	CONFIGUREFLAGS += --build $(DEB_BUILD_GNU_TYPE) --host $(DEB_HOST_GNU_TYPE)
+endif
+
+
 AUTO_JUNK = config.guess config.sub configure depcomp INSTALL \
         install-sh ltmain.sh missing mkinstalldirs aclocal.m4 config.h.in
 
@@ -28,8 +35,7 @@ build-stamp:
 	# So don't run configure from it.
 	NOCONFIGURE=true AUTOMAKE=automake-1.9 ACLOCAL=aclocal-1.9 ./autogen.sh
 	./configure --prefix=/usr --bindir=/usr/games --mandir=/usr/share/man \
-		--datadir=/usr/share $(CONFIGUREFLAGS) --enable-warnings \
-		--host=$(DEB_HOST_GNU_TYPE) --build=$(DEB_BUILD_GNU_TYPE)
+		--datadir=/usr/share $(CONFIGUREFLAGS) --enable-warnings
 	$(MAKE)
 	rsvg --width 32 --height 32 client/gtk/data/pioneers.svg pioneers32.png
 	convert pioneers32.png pioneers.xpm
