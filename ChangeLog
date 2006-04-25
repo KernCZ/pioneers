@@ -1,5 +1,6 @@
 2006-04-25  Roland Clobus <rclobus@bigfoot.com>
 	* README.Cygwin: Updated for Subversion
+	* client/gtk/gui.c: Message window as editable
 
 2006-04-23  Roland Clobus <rclobus@bigfoot.com>
 	* docs/README.release: Added a small guide for the steps needed to 
