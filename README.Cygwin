@@ -22,14 +22,15 @@ Install a minimal setup
       pkgconfig
 You now have a minimal setup needed to build and run Pioneers.
 
-Build Pioneers from cvs
-=======================
+Build Pioneers from the repository
+==================================
 If you only want to use released versions, skip to the 'Install Pioneers'
 section.
 
-To compile Pioneers from cvs, you need some extra packages:
+To compile Pioneers from the Subversion repository,
+you need some extra packages:
    Category devel:
-      cvs
+      subversion
       gnome-common
    Category graphics:
       ImageMagick
@@ -38,9 +39,8 @@ To compile Pioneers from cvs, you need some extra packages:
    Category net:
       openssh
 
-1) Get the code from CVS (when prompted for a password, press enter)
-    cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/pio login 
-    cvs -z3 -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/pio co -P pioneers
+1) Get the code from the Subversion repository
+   svn checkout https://svn.sourceforge.net/svnroot/pio/trunk/pioneers pioneers
 2) Go to the pioneers directory
 3) Run automake, build and install
      ./autogen.sh
@@ -72,4 +72,4 @@ Known limitations
 * The metaserver does not work
 
 Roland Clobus
-2006-01-25 (Pioneers 0.9.49)
+2006-04-18 (Pioneers 0.9.62)
