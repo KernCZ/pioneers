@@ -1,26 +1,40 @@
 #! /bin/sh
 
+# These defaults can be overridden in /etc/default/pioneers-meta-server
 DAEMON=/usr/games/pioneers-meta-server
-ARGS="--quiet --chuid nobody --chuid nobody:nogroup"
-test -x $DAEMON || exit 0
+ARGS="--quiet --chuid nobody:nogroup"
+META_SERVER_ARGS="-d"
+
+if test -r /etc/default/pioneers-meta-server ; then
+	. /etc/default/pioneers-meta-server
+fi
 
 case "$1" in
 	start)
-		echo -n "Starting Pioneers meta server: pioneers-meta-server"
-		start-stop-daemon --start $ARGS --exec $DAEMON -- -d
-		echo "."
+		echo -n "Starting Pioneers meta server: pioneers-meta-server..."
+		if start-stop-daemon --start $ARGS --exec $DAEMON -- $META_SERVER_ARGS ; then
+			echo "done."
+		else
+			echo "failed."
+		fi
 		;;
 	stop)
-		echo -n "Stopping Pioneers meta server: pioneers-meta-server"
-		start-stop-daemon --stop $ARGS --exec $DAEMON
-		echo "."
+		echo -n "Stopping Pioneers meta server: pioneers-meta-server..."
+		if start-stop-daemon --stop $ARGS --exec $DAEMON ; then
+			echo "done."
+		else
+			echo "failed."
+		fi
 		;;
 	restart|force-reload)
-		echo -n "Restarting Pioneers meta server: pioneers-meta-server... "
-		start-stop-daemon --stop --quiet --exec $DAEMON
+		echo -n "Restarting Pioneers meta server: pioneers-meta-server..."
+		start-stop-daemon --stop --quiet --exec $DAEMON || true
 		sleep 2
-		start-stop-daemon --start $ARGS --exec $DAEMON -- -d
-		echo "done."
+		if start-stop-daemon --start $ARGS --exec $DAEMON -- $META_SERVER_ARGS ; then
+			echo "done."
+		else
+			echo "failed."
+		fi
 		;;
 	*)
 		echo "Usage: /etc/init.d/pioneers-meta-server {start|stop|restart|force-reload}"

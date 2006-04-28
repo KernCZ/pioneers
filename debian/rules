@@ -70,17 +70,16 @@ install-stamp: build-stamp
 	install -D -m644 server/*.game debian/tmp/usr/share/games/pioneers
 	install -D -m644 pioneers.xpm debian/tmp/usr/share/pixmaps/pioneers-client.xpm
 	install -D -m644 pioneers-server.xpm debian/tmp/usr/share/pixmaps/pioneers-server.xpm
-	rm -rf debian/tmp/usr/var
+	install -D -m644 debian/pioneers-meta-server.default debian/tmp/etc/default/pioneers-meta-server
 	dh_install --fail-missing -X usr/share/man/man6/ -X pioneers-editor
 	dh_installman
-	rm -rf debian/tmp/usr/share/gnome/help
 	touch install-stamp
 
 # Build architecture-independent files here.
 binary-indep: build install
 	dh_testdir -i
 	dh_testroot -i
-	dh_installdocs -A README
+	dh_installdocs -i -A README AUTHORS
 	dh_scrollkeeper -v --package=pioneers-help ../client/help
 	dh_installmenu -i
 	dh_installchangelogs -i ChangeLog
@@ -96,7 +95,7 @@ binary-indep: build install
 binary-arch: build install
 	dh_testdir -a
 	dh_testroot -a
-	dh_installdocs -A README AUTHORS
+	dh_installdocs -a -A README AUTHORS
 	dh_installinit -a
 	dh_installexamples -a
 	dh_installmenu -a
@@ -115,4 +114,4 @@ source diff:
 	@echo >&2 'source and diff are obsolete - use dpkg-source -b'; false
 
 binary: binary-indep binary-arch
-.PHONY: configure build clean binary-indep binary-arch binary install
+.PHONY: configure build clean binary-indep binary-arch binary install source diff
