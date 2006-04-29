@@ -35,7 +35,7 @@ build-stamp:
 	# So don't run configure from it.
 	NOCONFIGURE=true AUTOMAKE=automake-1.9 ACLOCAL=aclocal-1.9 ./autogen.sh
 	./configure --prefix=/usr --bindir=/usr/games --mandir=/usr/share/man \
-		--datadir=/usr/share $(CONFIGUREFLAGS) --enable-warnings
+		$(CONFIGUREFLAGS) --enable-warnings
 	$(MAKE)
 	rsvg --width 32 --height 32 client/gtk/data/pioneers.svg pioneers32.png
 	convert pioneers32.png pioneers.xpm
