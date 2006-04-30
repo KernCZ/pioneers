@@ -3,7 +3,7 @@
  *
  * Copyright (C) 1999 Dave Cole
  * Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
- * Copyright (C) 2004-2005 Roland Clobus <rclobus@bigfoot.com>
+ * Copyright (C) 2004-2006 Roland Clobus <rclobus@bigfoot.com>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,8 +21,10 @@
  */
 
 #include "config.h"
+#ifndef HAVE_GLIB_2_6
 #ifdef HAVE_LIBGNOME
 #include <libgnome/libgnome.h>
+#endif
 #endif
 #include <ctype.h>
 #include <gtk/gtk.h>
@@ -796,6 +798,12 @@ void game_is_over(G_GNUC_UNUSED Game * game)
 	log_message(MSG_INFO, _("The game is over.\n"));
 }
 
+#ifdef HAVE_GLIB_2_6
+static GOptionEntry commandline_entries[] = {
+	{NULL, '\0', 0, 0, NULL, NULL, NULL}
+};
+#endif
+
 int main(int argc, char *argv[])
 {
 	gchar *icon_file;
@@ -806,6 +814,9 @@ int main(int argc, char *argv[])
 	GtkUIManager *ui_manager;
 	GtkAccelGroup *accel_group;
 	GError *error = NULL;
+#ifdef HAVE_GLIB_2_6
+	GOptionContext *context;
+#endif
 
 	net_init();
 
@@ -821,6 +832,22 @@ int main(int argc, char *argv[])
 	/* Initialize frontend inspecific things */
 	server_init();
 
+#ifdef ENABLE_NLS
+	setlocale(LC_ALL, "");
+	/* Gtk+ handles the locale, we must bind the translations */
+	bindtextdomain(PACKAGE, LOCALEDIR);
+	textdomain(PACKAGE);
+	bind_textdomain_codeset(PACKAGE, "UTF-8");
+#endif
+
+#ifdef HAVE_GLIB_2_6
+	/* Long description in the command line: --help */
+	context = g_option_context_new(_("- Host a game of Pioneers"));
+	g_option_context_add_main_entries(context, commandline_entries,
+					  PACKAGE);
+	g_option_context_add_group(context, gtk_get_option_group(TRUE));
+	g_option_context_parse(context, &argc, &argv, NULL);
+#else				/* HAVE_GLIB_2_6 */
 #ifdef HAVE_LIBGNOME
 	/* @todo RC 2005-04-10 If the client does not need libgnomeui
 	 * anymore, perhaps the gnome_program_init call could be moved
@@ -830,17 +857,11 @@ int main(int argc, char *argv[])
 	gnome_program_init("pioneers-server", VERSION,
 			   LIBGNOME_MODULE,
 			   argc, argv, GNOME_PARAM_POPT_TABLE, NULL, NULL);
-#endif
+#endif				/* HAVE_LIBGNOME */
 
 	/* Initialize the widget set */
 	gtk_init(&argc, &argv);
-
-#ifdef ENABLE_NLS
-	/* Gtk+ handles the locale, we must bind the translations */
-	bindtextdomain(PACKAGE, LOCALEDIR);
-	textdomain(PACKAGE);
-	bind_textdomain_codeset(PACKAGE, "UTF-8");
-#endif
+#endif				/* HAVE_GLIB_2_6 */
 
 	window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	/* Name in the titlebar of the server */
@@ -898,5 +919,8 @@ int main(int argc, char *argv[])
 
 	config_finish();
 	net_finish();
+#ifdef HAVE_GLIB_2_6
+	g_option_context_free(context);
+#endif
 	return 0;
 }

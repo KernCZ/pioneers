@@ -43,6 +43,7 @@ editor/gtk/game-parameters.c
 editor/gtk/game-resources.c
 server/admin.c
 server/gtk/main.c
+server/main.c
 server/meta.c
 server/player.c
 server/server.c

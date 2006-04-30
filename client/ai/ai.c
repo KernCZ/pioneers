@@ -26,8 +26,14 @@
 #include <unistd.h>
 #include <time.h>
 
+#ifdef HAVE_GLIB_2_6
+static char *server = NULL;
+static char *port = NULL;
+static char *name = NULL;
+#else
 static const char *server = PIONEERS_DEFAULT_GAME_HOST;
 static const char *port = PIONEERS_DEFAULT_GAME_PORT;
+#endif
 static char *ai;
 static int waittime = 1000;
 static int local_argc;
@@ -73,6 +79,7 @@ static gchar *random_name(void)
 	return name;
 }
 
+#ifndef HAVE_GLIB_2_6
 static void usage(int retval)
 {
 	printf("Usage: pioneersai [args]\n"
@@ -85,17 +92,64 @@ static void usage(int retval)
 	       "c - stop computer players from talking\n");
 	exit(retval);
 }
+#endif
 
 UIDriver Glib_Driver;
+
+#ifdef HAVE_GLIB_2_6
+static GOptionEntry commandline_entries[] = {
+	{"server", 's', 0, G_OPTION_ARG_STRING, &server,
+	 /* Commandline pioneersai: server */
+	 N_("Server Host"), PIONEERS_DEFAULT_GAME_HOST},
+	{"port", 'p', 0, G_OPTION_ARG_STRING, &port,
+	 /* Commandline pioneersai: port */
+	 N_("Server Port"), PIONEERS_DEFAULT_GAME_PORT},
+	{"name", 'n', 0, G_OPTION_ARG_STRING, &name,
+	 /* Commandline pioneersai: name */
+	 N_("Computer name (leave absent for random name)"), NULL},
+	{"time", 't', 0, G_OPTION_ARG_INT, &waittime,
+	 /* Commandline pioneersai: time */
+	 N_("Time to wait between turns (in milliseconds)"), "1000"},
+	{"chat-free", 'c', 0, G_OPTION_ARG_NONE, &silent,
+	 /* Commandline pioneersai: chat-free */
+	 N_("Stop computer player from talking"), NULL},
+	{"algorithm", 'a', 0, G_OPTION_ARG_STRING, &ai,
+	 /* Commandline pioneersai: algorithm */
+	 N_("Type of computer player"), "greedy"},
+	{NULL, '\0', 0, 0, NULL, NULL, NULL}
+};
+#endif
 
 /* this needs some tweaking.  It would be nice if anything not handled by
  * the AI program can be handled by the AI implementation that is playing.
  * -c is typically an option which should not be handled globally */
+/* RC 2006-04-23: I think -c is globally useful. The greedy player has
+ * no other commandline arguments, yet. */
 static void ai_init(int argc, char **argv)
 {
+#ifdef HAVE_GLIB_2_6
+	GOptionContext *context;
+#else
 	int c;
 	char *name = NULL;
+#endif
 
+#ifdef HAVE_GLIB_2_6
+	/* Long description in the commandline for pioneersai: help */
+	context =
+	    g_option_context_new(_("- Computer player for Pioneers"));
+	g_option_context_add_main_entries(context, commandline_entries,
+					  PACKAGE);
+	g_option_context_parse(context, &argc, &argv, NULL);
+
+	if (server == NULL)
+		server = g_strdup(PIONEERS_DEFAULT_GAME_HOST);
+	if (port == NULL)
+		port = g_strdup(PIONEERS_DEFAULT_GAME_PORT);
+
+	local_argc = argc;
+	local_argv = argv;
+#else
 	local_argc = argc;
 	local_argv = argv;
 
@@ -127,6 +181,7 @@ static void ai_init(int argc, char **argv)
 			/* does not return */
 		}
 	}
+#endif
 
 	printf("ai port is %s\n", port);
 

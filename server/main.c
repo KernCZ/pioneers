@@ -27,8 +27,10 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <limits.h>
+#ifndef HAVE_GLIB_2_6
 #ifdef HAVE_GETOPT_H
 #include <getopt.h>
+#endif
 #endif
 #include <glib.h>
 
@@ -47,6 +49,7 @@
 
 static GMainLoop *event_loop;
 
+#ifndef HAVE_GLIB_2_6
 static void usage(void)
 {
 	fprintf(stderr,
@@ -72,14 +75,98 @@ static void usage(void)
 
 	exit(1);
 }
+#endif
 
+#ifdef HAVE_GLIB_2_6
+static gint num_players = 0;
+static gint num_points = 0;
+static gint sevens_rule = -1;
+static gint terrain = -1;
+static gint timeout = 0;
+static gint num_ai_players = 0;
+static gchar *server_port = NULL;
+static gchar *admin_port = NULL;
+static gchar *game_title = NULL;
+static gboolean disable_game_start = FALSE;
+static gint tournament_time = -1;
+static gboolean quit_when_done = FALSE;
+static gchar *hostname = NULL;
+static gboolean register_server = FALSE;
+static gchar *metaname = NULL;
 
+static GOptionEntry commandline_game_entries[] = {
+	/* Commandline server-console: game-title */
+	{"game-title", 'g', 0, G_OPTION_ARG_STRING, &game_title,
+	 N_("Game title to use"), NULL},
+	/* Commandline server-console: port */
+	{"port", 'p', 0, G_OPTION_ARG_STRING, &server_port,
+	 N_("Port to listen on"), PIONEERS_DEFAULT_GAME_PORT},
+	/* Commandline server-console: players */
+	{"players", 'P', 0, G_OPTION_ARG_INT, &num_players,
+	 N_("Override number of players"), NULL},
+	/* Commandline server-console: points */
+	{"points", 'v', 0, G_OPTION_ARG_INT, &num_points,
+	 N_("Override number of points needed to win"), NULL},
+	/* Commandline server-console: seven-rule */
+	{"seven-rule", 'R', 0, G_OPTION_ARG_INT, &sevens_rule,
+	 N_("Override seven-rule handling"), "0|1|2"},
+	/* Commandline server-console: terrain */
+	{"terrain", 'T', 0, G_OPTION_ARG_INT, &terrain,
+	 N_("Override terrain type, 0=default 1=random"), "0|1"},
+	/* Commandline server-console: computer-players */
+	{"computer-players", 'c', 0, G_OPTION_ARG_INT, &num_ai_players,
+	 N_("Add N computer players"), "N"},
+	{NULL, '\0', 0, 0, NULL, NULL, NULL}
+};
+
+static GOptionEntry commandline_meta_entries[] = {
+	/* Commandline server-console: register */
+	{"register", 'r', 0, G_OPTION_ARG_NONE, &register_server,
+	 N_("Register server with meta-server"), NULL},
+	/* Commandline server-console: meta-server */
+	{"meta-server", 'm', 0, G_OPTION_ARG_STRING, &metaname,
+	 N_("Register at meta-server name (implies -r)"),
+	 PIONEERS_DEFAULT_META_SERVER},
+	/* Commandline server-console: hostname */
+	{"hostname", 'n', 0, G_OPTION_ARG_STRING, &hostname,
+	 N_("Use this hostname when registering"), NULL},
+	{NULL, '\0', 0, 0, NULL, NULL, NULL}
+};
+
+static GOptionEntry commandline_other_entries[] = {
+	/* Commandline server-console: auto-quit */
+	{"auto-quit", 'x', 0, G_OPTION_ARG_NONE, &quit_when_done,
+	 N_("Quit after a player has won"), NULL},
+	/* Commandline server-console: empty-timeout */
+	{"empty-timeout", 'k', 0, G_OPTION_ARG_INT, &timeout,
+	 N_("Quit after N seconds with no players"), "N"},
+	/* Commandline server-console: tournament */
+	{"tournament", 't', 0, G_OPTION_ARG_INT, &tournament_time,
+	 N_("Tournament mode, computer players added after N minutes"),
+	 "N"},
+	/* Commandline server-console: admin-port */
+	{"admin-port", 'a', 0, G_OPTION_ARG_STRING, &admin_port,
+	 N_("Admin port to listen on"), PIONEERS_DEFAULT_ADMIN_PORT},
+	/* Commandline server-console: admin-wait */
+	{"admin-wait", 's', 0, G_OPTION_ARG_NONE, &disable_game_start,
+	 N_
+	 ("Don't start game immediately, wait for a command on admin port"),
+	 NULL},
+	{NULL, '\0', 0, 0, NULL, NULL, NULL}
+};
+#endif				/* HAVE_GLIB_2_6 */
 
 int main(int argc, char *argv[])
 {
-	int c, i;
+	int i;
+#ifdef HAVE_GLIB_2_6
+	GOptionContext *context;
+	GOptionGroup *context_group;
+#else				/* HAVE_GLIB_2_6 */
+	int c;
 	gint num_players = 0, num_points = 0,
-	    sevens_rule = 0, terrain = -1, timeout = 0, num_ai_players = 0;
+	    sevens_rule = -1, terrain = -1, timeout = 0, num_ai_players =
+	    0;
 	gchar *server_port = g_strdup(PIONEERS_DEFAULT_GAME_PORT);
 	gchar *admin_port = g_strdup(PIONEERS_DEFAULT_ADMIN_PORT);
 
@@ -88,6 +175,7 @@ int main(int argc, char *argv[])
 	gboolean quit_when_done = FALSE;
 	gchar *hostname = NULL;
 	gboolean register_server = FALSE;
+#endif				/* HAVE_GLIB_2_6 */
 
 	/* set the UI driver to Glib_Driver, since we're using glib */
 	set_ui_driver(&Glib_Driver);
@@ -97,8 +185,57 @@ int main(int argc, char *argv[])
 
 	driver->player_change = srv_player_change;
 
+	setlocale(LC_ALL, "");
+	bindtextdomain(PACKAGE, LOCALEDIR);
+	textdomain(PACKAGE);
+
+	/* have gettext return strings in UTF-8 */
+	bind_textdomain_codeset(PACKAGE, "UTF-8");
+
 	server_init();
 
+#if HAVE_GLIB_2_6
+	/* Long description in the commandline for server-console: help */
+	context = g_option_context_new(_("- Host a game of Pioneers"));
+	g_option_context_add_main_entries(context,
+					  commandline_game_entries,
+					  PACKAGE);
+	context_group = g_option_group_new("meta",
+					   /* Commandline server-console: Short description of meta group */
+					   _("Meta-server Options"),
+					   /* Commandline server-console: Long description of meta group */
+					   _
+					   ("Options for the meta-server"),
+					   NULL, NULL);
+	g_option_group_set_translation_domain(context_group, PACKAGE);
+	g_option_group_add_entries(context_group,
+				   commandline_meta_entries);
+	g_option_context_add_group(context, context_group);
+	context_group = g_option_group_new("misc",
+					   /* Commandline server-console: Short description of misc group */
+					   _("Miscellaneous Options"),
+					   /* Commandline server-console: Long description of misc group */
+					   _("Miscellaneous options"),
+					   NULL, NULL);
+	g_option_group_set_translation_domain(context_group, PACKAGE);
+	g_option_group_add_entries(context_group,
+				   commandline_other_entries);
+	g_option_context_add_group(context, context_group);
+	g_option_context_parse(context, &argc, &argv, NULL);
+
+	if (server_port == NULL)
+		server_port = g_strdup(PIONEERS_DEFAULT_GAME_PORT);
+	if (admin_port == NULL)
+		admin_port = g_strdup(PIONEERS_DEFAULT_ADMIN_PORT);
+	if (game_title == NULL)
+		cfg_set_game("Default");
+	else
+		cfg_set_game(game_title);
+	if (meta_server_name != NULL)
+		register_server = TRUE;
+	if (sevens_rule != -1)
+		sevens_rule = CLAMP(sevens_rule, 0, 2);
+#else				/* HAVE_GLIB_2_6 */
 	while ((c =
 		getopt(argc, argv,
 		       "a:c:g:hk:m:n:P:p:rR:st:T:v:x")) != EOF) {
@@ -193,20 +330,21 @@ int main(int argc, char *argv[])
 			break;
 		}
 	}
+#endif				/* HAVE_GLIB_2_6 */
 
 	g_assert(server_port != NULL);
 	g_assert(admin_port != NULL);
 
 	if (num_players) {
-		cfg_set_num_players(num_players);
+		cfg_set_num_players(CLAMP(num_players, 2, MAX_PLAYERS));
 	}
 
-	if (sevens_rule) {
+	if (sevens_rule != -1) {
 		cfg_set_sevens_rule(sevens_rule);
 	}
 
 	if (num_points) {
-		cfg_set_victory_points(num_points);
+		cfg_set_victory_points(MIN(3, num_points));
 	}
 
 	if (tournament_time != -1) {
@@ -240,7 +378,9 @@ int main(int argc, char *argv[])
 			g_main_loop_unref(event_loop);
 
 		} else {
+#ifndef HAVE_GLIB_2_6
 			usage();
+#endif
 		}
 
 	} else {
@@ -260,6 +400,9 @@ int main(int argc, char *argv[])
 	g_free(hostname);
 	g_free(server_port);
 	g_free(admin_port);
+#ifdef HAVE_GLIB_2_6
+	g_option_context_free(context);
+#endif
 	server_cleanup_static_data();
 	return 0;
 }

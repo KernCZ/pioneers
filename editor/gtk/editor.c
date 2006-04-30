@@ -2,8 +2,10 @@
 
 #include <string.h>
 
+#ifndef HAVE_GLIB_2_6
 #ifdef HAVE_LIBGNOME
 #include <libgnome/libgnome.h>
+#endif
 #endif
 
 #include "aboutbox.h"
@@ -792,6 +794,7 @@ static void load_game(const gchar * file, gboolean is_reload)
 		new_filename = NULL;
 	} else {
 		new_filename = g_strdup(file);
+		config_set_string("editor/last-game", new_filename);
 	}
 
 	guimap_reset(gmap);
@@ -816,6 +819,8 @@ static void save_game(const gchar * file)
 	canonicalize_map(gmap->map);
 	if (!params_write_file(params, file))
 		error_dialog(_("Failed to save to '%s'"), file);
+	else
+		config_set_string("editor/last-game", file);
 	fill_map(gmap->map);
 }
 
@@ -1017,9 +1022,24 @@ static const char *ui_description =
 "</ui>";
 /* *INDENT-ON* */
 
+#ifdef HAVE_GLIB_2_6
+gchar **filenames;
+
+static GOptionEntry commandline_entries[] = {
+	{G_OPTION_REMAINING, '\0', 0, G_OPTION_ARG_FILENAME_ARRAY,
+	 &filenames,
+	 /* Long help for command line option: filename */
+	 N_("Open this file"),
+	 /* Command line option: filename */
+	 N_("filename")},
+	{NULL, '\0', 0, 0, NULL, NULL, NULL}
+};
+#endif
+
 int main(int argc, char *argv[])
 {
-	const gchar *filename;
+	gchar *filename;
+	gboolean default_used;
 	GtkWidget *notebook;
 	GtkActionGroup *action_group;
 	GtkUIManager *ui_manager;
@@ -1028,26 +1048,44 @@ int main(int argc, char *argv[])
 	GtkAccelGroup *accel_group;
 	GError *error = NULL;
 	gchar *icon_file;
-
-	if (argc > 1)
-		filename = argv[1];
-	else
-		filename = NULL;
+#ifdef HAVE_GLIB_2_6
+	GOptionContext *context;
+#endif
 
 	default_game = g_build_filename(get_pioneers_dir(), "default.game",
 					NULL);
 
-#ifdef HAVE_LIBGNOME
-	gnome_program_init("pioneers-editor", VERSION, LIBGNOME_MODULE,
-			   argc, argv, GNOME_PARAM_POPT_TABLE, NULL, NULL);
-#endif
-
-	gtk_init(&argc, &argv);
-
 	/* Gtk+ handles the locale, we must bind the translations */
+	setlocale(LC_ALL, "");
 	bindtextdomain(PACKAGE, LOCALEDIR);
 	textdomain(PACKAGE);
 	bind_textdomain_codeset(PACKAGE, "UTF-8");
+
+#ifdef HAVE_GLIB_2_6
+	/* Long description in the command line: --help */
+	context =
+	    g_option_context_new(_("- Editor for games of Pioneers"));
+	g_option_context_add_main_entries(context, commandline_entries,
+					  GETTEXT_PACKAGE);
+	g_option_context_add_group(context, gtk_get_option_group(TRUE));
+	g_option_context_parse(context, &argc, &argv, NULL);
+	if (filenames != NULL)
+		filename = g_strdup(filenames[0]);
+	else
+		filename = NULL;
+#else
+#ifdef HAVE_LIBGNOME
+	if (argc > 1)
+		filename = g_strdup(argv[1]);
+	else
+		filename = NULL;
+
+	gnome_program_init("pioneers-editor", VERSION, LIBGNOME_MODULE,
+			   argc, argv, GNOME_PARAM_POPT_TABLE, NULL, NULL);
+
+	gtk_init(&argc, &argv);
+#endif
+#endif
 
 	toplevel = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	g_signal_connect(G_OBJECT(toplevel), "delete_event",
@@ -1107,7 +1145,18 @@ int main(int argc, char *argv[])
 	gtk_box_pack_start(GTK_BOX(vbox), menubar, FALSE, FALSE, 0);
 	gtk_box_pack_start(GTK_BOX(vbox), notebook, TRUE, TRUE, 0);
 
+	if (filename == NULL) {
+		filename =
+		    config_get_string("editor/last-game", &default_used);
+		if (default_used
+		    || !g_file_test(filename, G_FILE_TEST_EXISTS)) {
+			g_free(filename);
+			filename = NULL;
+		}
+	}
+
 	load_game(filename, FALSE);
+	g_free(filename);
 	if (params == NULL)
 		return 1;
 
@@ -1116,5 +1165,9 @@ int main(int argc, char *argv[])
 	gtk_main();
 
 	config_finish();
+
+#ifdef HAVE_GLIB_2_6
+	g_option_context_free(context);
+#endif
 	return 0;
 }

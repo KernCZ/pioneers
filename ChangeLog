@@ -1,3 +1,9 @@
+2006-04-30  Roland Clobus <rclobus@bigfoot.com>
+	* editor/gtk/editor.c, server/gtk/main.c, server/main.c, po/POTFILES.in,
+	client/gtk/offline.c, client/ai/ai.c: Use GOptionContext for command
+	line parsing
+	* editor/gtk/editor.c: Make the last loaded/saved game persistent
+
 2006-04-25  Roland Clobus <rclobus@bigfoot.com>
 	* README.Cygwin: Updated for Subversion
 	* client/gtk/gui.c: Message window as editable
