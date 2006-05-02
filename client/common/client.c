@@ -38,6 +38,7 @@ static enum callback_mode previous_mode;
 GameParams *game_params;
 Map *map;
 static gchar *saved_name;
+static gboolean want_viewer;
 struct recovery_info_t {
 	gchar prevstate[40];
 	gint turnnum;
@@ -485,9 +486,10 @@ static gboolean global_unhandled(StateMachine * sm, gint event)
 /*----------------------------------------------------------------------
  * Hooks for GUI events that can happen at almost any time
  */
-void copy_player_name(const gchar * name)
+void copy_player_name(const gchar * name, gboolean viewer)
 {
 	char *tmp = g_strdup(name);
+	want_viewer = viewer;
 	tmp = g_strstrip(tmp);
 	if (*tmp != '\0') {
 		if (saved_name != NULL)
@@ -781,13 +783,22 @@ gboolean mode_start(StateMachine * sm, gint event)
 		return TRUE;
 	}
 	if (sm_recv(sm, "status report")) {
-		if (saved_name != NULL) {
-			sm_send(sm, "status reconnect %s\n", saved_name);
-			return TRUE;
+		if (want_viewer) {
+			if (saved_name != NULL) {
+				sm_send(sm, "status viewer %s\n",
+					saved_name);
+			} else {
+				sm_send(sm, "status newviewer\n");
+			}
 		} else {
-			sm_send(sm, "status newplayer\n");
-			return TRUE;
+			if (saved_name != NULL) {
+				sm_send(sm, "status reconnect %s\n",
+					saved_name);
+			} else {
+				sm_send(sm, "status newplayer\n");
+			}
 		}
+		return TRUE;
 	}
 	if (sm_recv(sm, "player %d of %d, welcome to pioneers server %S",
 		    &player_num, &total_num, version, sizeof(version))) {

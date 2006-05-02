@@ -39,7 +39,7 @@ void client_start(int argc, char **argv);	/* after frontend initialization */
 StateMachine *SM(void);
 
 /* handle a player name change */
-void copy_player_name(const gchar * name);
+void copy_player_name(const gchar * name, gboolean viewer);
 
 /* state machine modes */
 gboolean mode_connecting(StateMachine * sm, gint event);

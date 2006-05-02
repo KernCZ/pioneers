@@ -210,7 +210,7 @@ static gint expose_identity_area_cb(GtkWidget * area,
 			   area->allocation.width,
 			   area->allocation.height);
 
-	if (player_is_viewer(my_player_num()))
+	if (my_player_viewer())
 		colour = &white;
 	else
 		colour = &black;

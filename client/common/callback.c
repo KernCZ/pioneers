@@ -37,6 +37,7 @@ gboolean color_chat_enabled;
 
 /* The name of the player */
 static const gchar *saved_player_name = NULL;
+static gboolean saved_viewer = FALSE;
 
 void cb_connect(const gchar * server, const gchar * port)
 {
@@ -264,11 +265,12 @@ void cb_chat(const gchar * text)
 	sm_send(SM(), "chat %s\n", text);
 }
 
-void cb_name_change(const gchar * name)
+void cb_name_change(const gchar * name, gboolean viewer)
 {
 	saved_player_name = g_strdup(name);
+	saved_viewer = viewer;
 	/* change your name */
-	copy_player_name(name);
+	copy_player_name(name, viewer);
 	if (callback_mode != MODE_INIT)
 		sm_send(SM(), "name %s\n", name);
 }
@@ -276,6 +278,11 @@ void cb_name_change(const gchar * name)
 const gchar *my_player_name(void)
 {
 	return saved_player_name;
+}
+
+gboolean my_player_viewer(void)
+{
+	return saved_viewer;
 }
 
 void cb_discard(gint * resources)

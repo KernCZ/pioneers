@@ -147,6 +147,7 @@ void frontend_game_over(gint player, gint points);
 const gchar *connect_get_server(void);
 const gchar *connect_get_port(void);
 const gchar *connect_get_name(void);
+gboolean connect_get_viewer(void);
 void connect_create_dlg(void);
 
 /* trade.c */

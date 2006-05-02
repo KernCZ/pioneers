@@ -2,6 +2,11 @@
 	* client/gtk/interface.c, client/gtk/plenty.c, client/gtk/frontend.h:
 	Disable Ok button in Year of Plenty dialog when too few resources are
 	selected.
+	* server/pregame.c, client/callback.h, client/gtk/name.c,
+	client/gtk/frontend.h, client/gtk/offline.c, client/gtk/connect.c,
+	client/gtk/identity.c, client/common/client.c, client/common/client.h,
+	client/common/callback.c, client/ai/ai.c: Allow players to connect as
+	viewer.
 
 2006-04-30  Roland Clobus <rclobus@bigfoot.com>
 	* editor/gtk/editor.c, server/gtk/main.c, server/main.c, po/POTFILES.in,

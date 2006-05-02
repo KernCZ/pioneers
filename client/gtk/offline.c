@@ -36,6 +36,7 @@ static gboolean connectable = FALSE;
 static const gchar *server = NULL;
 static const gchar *port = NULL;
 static const gchar *name = NULL;
+static gboolean viewer = FALSE;
 static gboolean quit_when_offline = FALSE;
 #ifdef ENABLE_NLS
 static const gchar *override_language = NULL;
@@ -52,6 +53,9 @@ static GOptionEntry commandline_entries[] = {
 	/* Commandline option of client: name of the player */
 	{"name", 'n', 0, G_OPTION_ARG_STRING, &name, N_("Player name"),
 	 NULL},
+	/* Commandline option of client: do we want to be a viewer */
+	{"viewer", 'v', 0, G_OPTION_ARG_NONE, &viewer,
+	 N_("Connect as a viewer"), NULL},
 #ifdef ENABLE_NLS
 	/* Commandline option of client: override the language */
 	{"language", '\0', 0, G_OPTION_ARG_STRING, &override_language,
@@ -70,6 +74,9 @@ const struct poptOption options[] = {
 	 PIONEERS_DEFAULT_GAME_PORT},
 	/* Commandline option of client: name of the player */
 	{"name", 'n', POPT_ARG_STRING, &name, 0, N_("Player name"), NULL},
+	/* Commandline option of client: do we want to be a viewer */
+	{"viewer", 'v', POPT_ARG_NONE, &viewer, 0,
+	 N_("Connect as a viewer"), NULL},
 #ifdef ENABLE_NLS
 	/* Commandline option of client: override the language */
 	{"language", '\0', POPT_ARG_STRING, &override_language, 0,
@@ -103,7 +110,7 @@ static void frontend_offline_gui(GuiEvent event)
 
 		connectable = FALSE;
 		have_dlg = FALSE;
-		cb_name_change(connect_get_name());
+		cb_name_change(connect_get_name(), connect_get_viewer());
 		cb_connect(connect_get_server(), connect_get_port());
 		frontend_gui_update();
 		break;
@@ -221,8 +228,17 @@ void frontend_init(int argc, char **argv)
 		if (default_returned) {
 			name = g_strdup(g_get_user_name());
 		}
+		/* If --viewer is used, we are now a viewer.  If not, get the
+		 * correct value from the config file.
+		 * To allow specifying "don't be a viewer", only check the
+		 * config file if --name is not used.  */
+		if (!viewer) {
+			viewer =
+			    config_get_int_with_default("connect/viewer",
+							0) ? TRUE : FALSE;
+		}
 	}
-	cb_name_change(name);
+	cb_name_change(name, viewer);
 
 	if (server && port) {
 		/* Both are set, do nothing here */

@@ -292,7 +292,7 @@ void cb_quote(gint num, gint * supply, gint * receive);
 void cb_delete_quote(gint num);
 void cb_end_quote(void);
 void cb_chat(const gchar * text);
-void cb_name_change(const gchar * name);
+void cb_name_change(const gchar * name, gboolean viewer);
 void cb_discard(gint * resources);
 void cb_choose_gold(gint * resources);
 
@@ -310,6 +310,7 @@ const gchar *player_name(gint player_num, gboolean word_caps);
 gint player_get_score(gint player_num);
 gint my_player_num(void);
 const gchar *my_player_name(void);
+gboolean my_player_viewer(void);
 gint num_players(void);
 gint current_player(void);
 gint build_count_edges(void);

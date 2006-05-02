@@ -36,11 +36,13 @@
 const int PRIVATE_GAME_HISTORY_SIZE = 10;
 
 static gchar *connect_name;	/* Name of the player */
+static gboolean connect_viewer;	/* Prefer to be a viewer */
 static gchar *connect_server;	/* Name of the server */
 static gchar *connect_port;	/* Port of the server */
 
 static GtkWidget *connect_dlg;	/* Dialog for starting a new game */
 static GtkWidget *name_entry;	/* Name of the player */
+static GtkWidget *viewer_toggle;	/* Prefer to be a viewer */
 static GtkWidget *meta_server_entry;	/* Name of the metaserver */
 
 
@@ -152,6 +154,11 @@ const gchar *connect_get_name(void)
 	return connect_name;
 }
 
+gboolean connect_get_viewer(void)
+{
+	return connect_viewer;
+}
+
 const gchar *connect_get_server(void)
 {
 	return connect_server;
@@ -186,14 +193,18 @@ static void connect_set_field(gchar ** field, const gchar * value)
 static void connect_close_all(gboolean user_pressed_ok)
 {
 	if (user_pressed_ok) {
+		connect_set_field(&connect_name,
+				  gtk_entry_get_text(GTK_ENTRY
+						     (name_entry)));
+		connect_viewer =
+		    gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON
+						 (viewer_toggle));
 		/* Save connect dialogue entries */
 		config_set_string("connect/meta-server",
 				  connect_get_meta_server());
 		config_set_string("connect/name", connect_name);
+		config_set_int("connect/viewer", connect_viewer);
 
-		connect_set_field(&connect_name,
-				  gtk_entry_get_text(GTK_ENTRY
-						     (name_entry)));
 		frontend_gui_register_destroy(connect_dlg,
 					      GUI_CONNECT_TRY);
 	} else {
@@ -1109,7 +1120,7 @@ void connect_create_dlg(void)
 	dlg_vbox = GTK_DIALOG(connect_dlg)->vbox;
 	gtk_widget_show(dlg_vbox);
 
-	table = gtk_table_new(4, 2, FALSE);
+	table = gtk_table_new(4, 3, FALSE);
 	gtk_widget_show(table);
 	gtk_box_pack_start(GTK_BOX(dlg_vbox), table, FALSE, TRUE, 0);
 	gtk_container_set_border_width(GTK_CONTAINER(table), 5);
@@ -1133,9 +1144,19 @@ void connect_create_dlg(void)
 	gtk_tooltips_set_tip(tooltips, name_entry,
 			     _("Enter your name"), NULL);
 
+	viewer_toggle = gtk_check_button_new_with_label(_("Viewer"));
+	gtk_widget_show(viewer_toggle);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(viewer_toggle),
+				     my_player_viewer());
+
+	gtk_table_attach(GTK_TABLE(table), viewer_toggle, 2, 3, 0, 1, 0,
+			 GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_tooltips_set_tip(tooltips, viewer_toggle,
+			     _("Do you want to be a viewer?"), NULL);
+
 	sep = gtk_hseparator_new();
 	gtk_widget_show(sep);
-	gtk_table_attach(GTK_TABLE(table), sep, 0, 2, 1, 2,
+	gtk_table_attach(GTK_TABLE(table), sep, 0, 3, 1, 2,
 			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 6);
 
 	lbl = gtk_label_new(_("Meta Server"));
@@ -1147,7 +1168,7 @@ void connect_create_dlg(void)
 
 	meta_server_entry = gtk_entry_new();
 	gtk_widget_show(meta_server_entry);
-	gtk_table_attach(GTK_TABLE(table), meta_server_entry, 1, 2, 2, 3,
+	gtk_table_attach(GTK_TABLE(table), meta_server_entry, 1, 3, 2, 3,
 			 (GtkAttachOptions) GTK_EXPAND | GTK_FILL,
 			 (GtkAttachOptions) GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_entry_set_text(GTK_ENTRY(meta_server_entry),
@@ -1158,7 +1179,7 @@ void connect_create_dlg(void)
 
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_widget_show(hbox);
-	gtk_table_attach(GTK_TABLE(table), hbox, 0, 2, 3, 4,
+	gtk_table_attach(GTK_TABLE(table), hbox, 0, 3, 3, 4,
 			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 3);
 
 	btn = gtk_button_new_with_label(_("Join public game"));

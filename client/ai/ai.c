@@ -190,7 +190,7 @@ static void ai_init(int argc, char **argv)
 	if (!name) {
 		name = random_name();
 	}
-	cb_name_change(name);
+	cb_name_change(name, FALSE);
 	g_free(name);
 
 	set_ui_driver(&Glib_Driver);
@@ -210,7 +210,7 @@ static void ai_offline(void)
 
 static void ai_start_game(void)
 {
-	if (player_is_viewer(my_player_num())) {
+	if (my_player_viewer()) {
 		cb_chat(N_("The game is already full. I'm leaving."));
 		exit(1);
 	}

@@ -29,7 +29,8 @@ static void change_name_cb(GtkDialog * dlg, int response_id,
 			   G_GNUC_UNUSED gpointer user_data)
 {
 	if (response_id == GTK_RESPONSE_OK)
-		cb_name_change(gtk_entry_get_text(GTK_ENTRY(name_entry)));
+		cb_name_change(gtk_entry_get_text(GTK_ENTRY(name_entry)),
+			       my_player_viewer());
 	gtk_widget_destroy(GTK_WIDGET(dlg));
 }
 
