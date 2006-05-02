@@ -281,6 +281,7 @@ void monopoly_create_dlg(void);
 void plenty_resources(gint * plenty);
 void plenty_destroy_dlg(void);
 void plenty_create_dlg(const gint * bank);
+gboolean plenty_can_activate(void);
 
 /* gameover.c */
 GtkWidget *gameover_create_dlg(gint player_num, gint num_points);

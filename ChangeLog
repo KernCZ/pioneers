@@ -1,3 +1,8 @@
+2006-05-02  Bas Wijnen <shevek@fmf.nl>
+	* client/gtk/interface.c, client/gtk/plenty.c, client/gtk/frontend.h:
+	Disable Ok button in Year of Plenty dialog when too few resources are
+	selected.
+
 2006-04-30  Roland Clobus <rclobus@bigfoot.com>
 	* editor/gtk/editor.c, server/gtk/main.c, server/main.c, po/POTFILES.in,
 	client/gtk/offline.c, client/ai/ai.c: Use GOptionContext for command

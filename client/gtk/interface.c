@@ -478,7 +478,7 @@ static void frontend_state_plenty(GuiEvent event)
 	gint plenty[NO_RESOURCE];
 	switch (event) {
 	case GUI_UPDATE:
-		frontend_gui_check(GUI_PLENTY, TRUE);
+		frontend_gui_check(GUI_PLENTY, plenty_can_activate());
 		break;
 	case GUI_PLENTY:
 		plenty_resources(plenty);

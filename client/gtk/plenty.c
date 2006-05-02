@@ -54,6 +54,7 @@ void plenty_create_dlg(const gint * bank)
 	GtkWidget *vbox;
 	const char *str;
 	gint r;
+	gint total;
 
 	plenty.dlg = gtk_dialog_new_with_buttons(_("Year of Plenty"),
 						 GTK_WINDOW(app_window),
@@ -76,14 +77,23 @@ void plenty_create_dlg(const gint * bank)
 	gtk_box_pack_start(GTK_BOX(dlg_vbox), vbox, FALSE, TRUE, 0);
 	gtk_container_set_border_width(GTK_CONTAINER(vbox), 5);
 
+	total = 0;
 	if (bank != NULL)
-		for (r = 0; r < NO_RESOURCE; ++r)
+		for (r = 0; r < NO_RESOURCE; ++r) {
 			plenty.bank[r] = bank[r];
-	str = _("Please choose two resources from the bank");
+			total += bank[r];
+		}
+	if (total == 1)
+		str = _("Please choose one resource from the bank");
+	else if (total >= 2) {
+		total = 2;
+		str = _("Please choose two resources from the bank");
+	} else
+		str = _("The bank is empty");
 	plenty.resource_widget = resource_table_new(str, TRUE, TRUE);
 	resource_table_set_total(RESOURCETABLE(plenty.resource_widget),
 				 /* Text for total in year of plenty dialog */
-				 _("Total resources"), 2);
+				 _("Total resources"), total);
 	resource_table_limit_bank(RESOURCETABLE(plenty.resource_widget),
 				  TRUE);
 	resource_table_set_bank(RESOURCETABLE(plenty.resource_widget),
@@ -113,4 +123,11 @@ void plenty_destroy_dlg(void)
 		return;
 	gtk_widget_destroy(plenty.dlg);
 	plenty.dlg = NULL;
+}
+
+gboolean plenty_can_activate(void)
+{
+	return
+	    resource_table_is_total_reached(RESOURCETABLE
+					    (plenty.resource_widget));
 }
