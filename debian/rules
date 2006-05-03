@@ -27,8 +27,14 @@ endif
 AUTO_JUNK = config.guess config.sub configure depcomp INSTALL \
         install-sh ltmain.sh missing mkinstalldirs aclocal.m4 config.h.in
 
+check:
+	if diff debian/copyright AUTHORS | grep ^'>' >&2 ; then \
+		echo >&2 "The above lines are present in the AUTHORS file, but not in debian/copyright.  Please fix this" ; \
+		exit 1 ; \
+	fi
+
 build: build-stamp
-build-stamp:
+build-stamp: check
 	dh_testdir
 	# Commands to compile the package.
 	# --enable-maintainer-mode is implicit for autogen.sh
@@ -60,7 +66,7 @@ endif
 	dh_clean
 
 install: install-stamp
-install-stamp: build-stamp
+install-stamp: check build-stamp
 	dh_testdir
 	dh_testroot
 	dh_clean -k
@@ -114,4 +120,4 @@ source diff:
 	@echo >&2 'source and diff are obsolete - use dpkg-source -b'; false
 
 binary: binary-indep binary-arch
-.PHONY: configure build clean binary-indep binary-arch binary install source diff
+.PHONY: configure build clean binary-indep binary-arch binary install source diff check
