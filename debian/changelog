@@ -1,11 +1,3 @@
-pioneers (0.9.62-1) unstable; urgency=low
-
-  * Clean up build process.
-  * Added full list of authors to debian/copyright, and a check for
-    completeness to debian/rules.
-
- -- Bas Wijnen <shevek@fmf.nl>  Wed,  3 May 2006 18:39:18 +0200
-
 pioneers (0.9.61-1) unstable; urgency=low
 
   * Upstream svn snapshot release. (Closes: #359924, #331291)
@@ -15,8 +7,12 @@ pioneers (0.9.61-1) unstable; urgency=low
   * Allow cross-compiling.
   * Add autoconf as a direct dependency.
   * Force the use of automake-1.9.
+  * Added full list of authors to debian/copyright, and a check for
+    completeness to debian/rules.
+  * Clean up build process.
+  * Updated to policy version 3.7.2.  (No changes needed.)
 
- -- Bas Wijnen <shevek@fmf.nl>  Sat, 15 Apr 2006 10:54:35 +0200
+ -- Bas Wijnen <shevek@fmf.nl>  Sun,  7 May 2006 20:16:07 +0200
 
 pioneers (0.9.55-1) unstable; urgency=high
 

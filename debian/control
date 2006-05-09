@@ -3,8 +3,8 @@ Section: games
 Priority: optional
 Maintainer: Bas Wijnen <shevek@fmf.nl>
 Uploaders: Steve Langasek <vorlon@debian.org>, Roman Hodek <roman@debian.org>
-Build-Depends: debhelper (>= 5.0.0), libgnome2-dev, scrollkeeper, gnome-common, imagemagick, librsvg2-bin, netpbm, libgtk2.0-dev, automake1.9, autoconf (>= 2.52)
-Standards-Version: 3.6.2
+Build-Depends: debhelper (>= 5.0.0), libgnome2-dev, scrollkeeper, gnome-common, imagemagick, librsvg2-bin, netpbm, libgtk2.0-dev, automake1.9, autoconf (>= 2.53)
+Standards-Version: 3.7.2
 
 Package: pioneers-client
 Architecture: any
