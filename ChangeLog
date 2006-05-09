@@ -1,3 +1,6 @@
+2006-05-09  Bas Wijnen <shevek@fmf.nl>
+	* docs/pioneers-meta-server.6: Updated.
+
 2006-05-02  Bas Wijnen <shevek@fmf.nl>
 	* client/gtk/interface.c, client/gtk/plenty.c, client/gtk/frontend.h:
 	Disable Ok button in Year of Plenty dialog when too few resources are
