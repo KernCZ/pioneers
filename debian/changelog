@@ -11,8 +11,9 @@ pioneers (0.9.61-1) unstable; urgency=low
     completeness to debian/rules.
   * Clean up build process.
   * Updated to policy version 3.7.2.  (No changes needed.)
+  * Improved meta-server init script, added /etc/default script with settings.
 
- -- Bas Wijnen <shevek@fmf.nl>  Sun,  7 May 2006 20:16:07 +0200
+ -- Bas Wijnen <shevek@fmf.nl>  Wed, 10 May 2006 09:04:32 +0200
 
 pioneers (0.9.55-1) unstable; urgency=high
 

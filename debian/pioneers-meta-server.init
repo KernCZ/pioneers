@@ -12,9 +12,11 @@ ARGS="--quiet --chuid nobody:nogroup"
 META_SERVER_ARGS="-d -p 5560-5569"
 
 # Reported hostname for servers started by the meta-server.
-PIONEERS_META_SERVER="`hostname`.`dnsdomainname`"
+PIONEERS_META_SERVER="`dnsdomainname --fqdn`"
 
 # End of variable list.
+
+test -x "$DAEMON" || exit 0
 
 if test -r /etc/default/pioneers-meta-server ; then
 	. /etc/default/pioneers-meta-server
