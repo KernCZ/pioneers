@@ -1,9 +1,7 @@
 <?xml version="1.0"?>
-<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
-    "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
 <!ENTITY legal SYSTEM "legal.xml">
 ]>
-
 <book id="index" lang="en">
   <title>Pioneers player's guide</title>
   <bookinfo>
@@ -28,26 +26,36 @@
       <year>2000</year> <holder>Andy Heroff</holder>
     </copyright>
     <copyright>
-      <year>2004</year> <holder>Roland Clobus</holder>
+      <year>2004, 2006</year> <holder>Roland Clobus</holder>
     </copyright>
     &legal;
   </bookinfo>
 
-  <chapter id="introduction">
+  <part id="players">
+    <title>For players</title>
+  <preface id="introduction">
     <title>Introduction</title>
 
-    <sect1 id="bugs">
+    <simplesect id="download">
+      <title>Obtaining newer versions</title>
+      <para>
+        New versions of Pioneers are regularly made available.
+        See the <ulink url="http://pio.sourceforge.net">homepage</ulink>
+        for latest version.
+      </para>
+    </simplesect>
+
+    <simplesect id="bugs">
       <title>Reporting Bugs</title>
       <para>
-        Information on reporting bugs can be found on the Pioneers project
-        web page, hosted on SourceForge. The URL is:
-        <ulink url="http://sourceforge.net/projects/pio/">
-         http://sourceforge.net/projects/pio/
-        </ulink>
+        If you encounter a bug, report it with the bug tracker on SourceForge. 
+        (<ulink url="https://sourceforge.net/tracker/?group_id=5095&amp;atid=105095">
+         https://sourceforge.net/tracker/?group_id=5095&amp;atid=105095
+        </ulink>). Please check first if you have the latest version.
       </para>
-    </sect1>
+    </simplesect>
 
-    <sect1 id="Authors">
+    <simplesect id="Authors">
       <title>Authors and History</title>
       <para>
         Pioneers is a GNOME game based upon the board game Settlers of Catan
@@ -76,20 +84,19 @@
       <para>
         To be continued...
       </para>
-    </sect1>
-  </chapter>
-
+    </simplesect>
+  </preface>
   <chapter id="pioneers_ui">
     <title>The Pioneers user interface</title>
 
-    <para>When you start <symbol>Pioneers</symbol>, the application
+    <para>When you start <application>Pioneers</application>, the main
       window is displayed.  The user interface is built up from a
       number of panels.</para>
 
       <figure id="pioneers-FIG-clientui">
-	<title>The client user interface.</title>
+	<title>The client user interface</title>
 	<screenshot>
-	  <graphic fileref="images/client.png"></graphic>
+	  <graphic fileref="images/client.png"/>
 	</screenshot>
       </figure>
 
@@ -106,9 +113,9 @@
         a player is also displayed.</para>
 
       <figure id="pioneers-FIG-identity">
-	<title>The identity panel.</title>
+	<title>The identity panel</title>
 	<screenshot>
-	  <graphic fileref="images/identity.png"></graphic>
+	  <graphic fileref="images/identity.png"/>
 	</screenshot>
       </figure>
     </sect1>
@@ -135,11 +142,11 @@
 	<figure id="pioneers-FIG-actions">
 	  <title>The actions buttons</title>
 	  <screenshot>
-	    <graphic fileref="images/actions.png"></graphic>
+	    <graphic fileref="images/actions.png"/>
 	  </screenshot>
 	</figure>
 
-	<table frame="none" id="pioneers-TBL-actions">
+	<table id="pioneers-TBL-actions">
 	  <title>Action panel buttons</title>
 	  <tgroup cols="2">
 	    <thead>
@@ -174,15 +181,15 @@
 	      <row>
 		<entry>Road</entry>
 		<entry>Build a road segment. It must join one of your own
-		  settlements or cities, or one of your own road. It can be
+		  settlements or cities, or one of your own roads. It can be
 		  built on land or on the coast.
 		</entry>
 	      </row>
 	      <row>
 	      	<entry>Ship</entry>
 		<entry>Build a ship. It must join one of your own settlements
-		  or cities at the coast, or another ship. It can be built
-		  on water or on the coast.
+		  or cities at the coast, or one of your own ships.
+                  It can be built on water or on the coast.
 		</entry>
 	      </row>
 	      <row>
@@ -194,8 +201,8 @@
 	      <row>
 	        <entry>Bridge</entry>
 		<entry>Build a bridge. It must join one of you own settlements
-		  or cities on the coast, or another bridge. It can only be
-		  built on water.
+		  or cities on the coast, one of your own bridges, or a road.
+                  It can only be built on water.
 		</entry>
 	      </row>
 	      <row>
@@ -220,15 +227,15 @@
 
 	<para>If you roll 7 on the dice, all players who are holding
 	  more than 7 resources will be prompted to discard half of
-	  them.  While there are still players who have to discard
-	  resources, the actions panel will be replaced by a list of
+	  them (rounded down).  While there are still players who have to
+          discard resources, the actions panel will be replaced by a list of
 	  those players.  Next to each player name is the number of
 	  resources that they must discard.</para>
 	
 	<figure id="pioneers-FIG-discards">
-	  <title>The discard list.</title>
+	  <title>The discard list</title>
 	  <screenshot>
-	    <graphic fileref="images/discards.png"></graphic>
+	    <graphic fileref="images/discards.png"/>
 	  </screenshot>
 	</figure>
       </sect2>
@@ -246,9 +253,9 @@
 	  prompt to that effect.</para>
 
 	<figure id="pioneers-FIG-place-robber">
-	  <title>The place robber prompt.</title>
+	  <title>The place robber prompt</title>
 	  <screenshot>
-	    <graphic fileref="images/place-robber.png"></graphic>
+	    <graphic fileref="images/place-robber.png"/>
 	  </screenshot>
 	</figure>
       </sect2>
@@ -265,9 +272,9 @@
 	  the buildings on the hex.</para>
 	
 	<figure id="pioneers-FIG-steal-from">
-	  <title>The steal from prompt.</title>
+	  <title>The steal from prompt</title>
 	  <screenshot>
-	    <graphic fileref="images/steal-from.png"></graphic>
+	    <graphic fileref="images/steal-from.png"/>
 	  </screenshot>
 	</figure>
       </sect2>
@@ -281,9 +288,9 @@
 	are holding.</para>
 
       <figure id="pioneers-FIG-resources">
-	<title>The resources panel.</title>
+	<title>The resources panel</title>
 	<screenshot>
-	  <graphic fileref="images/resources.png"></graphic>
+	  <graphic fileref="images/resources.png"/>
 	</screenshot>
       </figure>
     </sect1>
@@ -300,9 +307,9 @@
 	development card, it will be removed from this list.</para>
 
       <figure id="pioneers-FIG-develop-cards">
-	<title>The development cards panel.</title>
+	<title>The development cards panel</title>
 	<screenshot>
-	  <graphic fileref="images/develop-cards.png"></graphic>
+	  <graphic fileref="images/develop-cards.png"/>
 	</screenshot>
       </figure>
     </sect1>
@@ -321,9 +328,9 @@
 	about the current player.</para>
 
       <figure id="pioneers-FIG-player-summary">
-	<title>The player summary panel.</title>
+	<title>The player summary panel</title>
 	<screenshot>
-	  <graphic fileref="images/player-summary.png"></graphic>
+	  <graphic fileref="images/player-summary.png"/>
 	</screenshot>
       </figure>
     </sect1>
@@ -332,9 +339,9 @@
       <title>The Pioneers map</title>
 
       <figure id="pioneers-FIG-map">
-      	<title>The Pioneers map.</title>
+      	<title>The Pioneers map</title>
       	<screenshot>
-      	  <graphic fileref="images/map.png"></graphic>
+      	  <graphic fileref="images/map.png"/>
       	</screenshot>
       </figure>
 
@@ -371,9 +378,10 @@
       <para>The following table shows each terrain type, and the resources
         produced by that terrain.</para>
 
-      <table frame="none" id="pioneers-TBL-terrain-types">
+      <table id="pioneers-TBL-terrain-types">
         <title>Pioneers terrain types</title>
-	<tgroup cols="5">
+	<tgroup cols="4">
+	  <colspec colnum="1" align="center"/>
 	  <thead>
 	    <row>
 	      <entry>Graphic</entry>
@@ -385,7 +393,7 @@
 	  <tbody>
 	    <row>
 	      <entry>
-	        <inlinegraphic fileref="images/hill.png"></inlinegraphic>
+	        <inlinegraphic fileref="images/hill.png"/>
 	      </entry>
 	      <entry>Hill</entry>
 	      <entry>Brick</entry>
@@ -394,7 +402,7 @@
 	    </row>
 	    <row>
 	      <entry>
-	        <inlinegraphic fileref="images/field.png"></inlinegraphic>
+	        <inlinegraphic fileref="images/field.png"/>
 	      </entry>
 	      <entry>Field</entry>
 	      <entry>Grain</entry>
@@ -403,7 +411,7 @@
 	    </row>
 	    <row>
 	      <entry>
-	        <inlinegraphic fileref="images/mountain.png"></inlinegraphic>
+	        <inlinegraphic fileref="images/mountain.png"/>
 	      </entry>
 	      <entry>Mountain</entry>
 	      <entry>Ore</entry>
@@ -411,7 +419,7 @@
 	    </row>
 	    <row>
 	      <entry>
-	        <inlinegraphic fileref="images/pasture.png"></inlinegraphic>
+	        <inlinegraphic fileref="images/pasture.png"/>
 	      </entry>
 	      <entry>Pasture</entry>
 	      <entry>Wool</entry>
@@ -419,7 +427,7 @@
 	    </row>
 	    <row>
 	      <entry>
-	        <inlinegraphic fileref="images/forest.png"></inlinegraphic>
+	        <inlinegraphic fileref="images/forest.png"/>
 	      </entry>
 	      <entry>Forest</entry>
 	      <entry>Lumber</entry>
@@ -427,18 +435,18 @@
 	    </row>
 	    <row>
 	      <entry>
-	        <inlinegraphic fileref="images/desert.png"></inlinegraphic>
+	        <inlinegraphic fileref="images/desert.png"/>
 	      </entry>
 	      <entry>Desert</entry>
-	      <entry></entry>
+	      <entry/>
 	      <entry>No resources are produced in the desert.</entry>
 	    </row>
 	    <row>
 	      <entry>
-	        <inlinegraphic fileref="images/sea.png"></inlinegraphic>
+	        <inlinegraphic fileref="images/sea.png"/>
 	      </entry>
 	      <entry>Sea</entry>
-	      <entry></entry>
+	      <entry/>
 	      <entry>No resources are produced in the sea, but
 	        maritime trading may be performed at ports.</entry>
 	    </row>
@@ -456,9 +464,9 @@
 	message will be broadcast to all players.</para>
 
       <figure id="pioneers-FIG-chat">
-	<title>The chat panel.</title>
+	<title>The chat panel</title>
 	<screenshot>
-	  <graphic fileref="images/chat.png"></graphic>
+	  <graphic fileref="images/chat.png"/>
 	</screenshot>
       </figure>
 
@@ -471,7 +479,7 @@
 
       <para>The chat also knows some special commands that start with
       "<userinput>/</userinput>". The commands currently defined are:
-      <table frame="none" id="pioneers-TBL-chatcommands">
+      <table id="pioneers-TBL-chatcommands">
         <title>Chat Commands</title>
 	<tgroup cols="3">
 	  <thead>
@@ -508,9 +516,9 @@
         interesting game events are logged.</para>
 
       <figure id="pioneers-FIG-messages">
-	<title>The messages panel.</title>
+	<title>The messages panel</title>
 	<screenshot>
-	  <graphic fileref="images/messages.png"></graphic>
+	  <graphic fileref="images/messages.png"/>
 	</screenshot>
       </figure>
     </sect1>
@@ -525,7 +533,7 @@
         which shows when the client program is waiting for response to
         a command sent to the server.  When packets are dropped
         between the server and client, the indicator will display the
-        text &quot;Waiting&quot;, and the game will be temporarily
+        text "Waiting", and the game will be temporarily
         unresponsive.</para>
 
       <para>Rightmost in the status bar is the turn indicator.  This
@@ -533,9 +541,9 @@
         is highlighted with a thick black border.</para>
 
       <figure id="pioneers-FIG-status">
-	<title>The status bar.</title>
+	<title>The status bar</title>
 	<screenshot>
-	  <graphic fileref="images/status.png"></graphic>
+	  <graphic fileref="images/status.png"/>
 	</screenshot>
       </figure>
     </sect1>
@@ -564,9 +572,9 @@
           keyboard shortcut.</para>
 
 	<figure id="pioneers-FIG-connect-dialog">
-	  <title>The connect dialog.</title>
+	  <title>The connect dialog</title>
 	  <screenshot>
-	    <graphic fileref="images/connect-dialog.png"></graphic>
+	    <graphic fileref="images/connect-dialog.png"/>
 	  </screenshot>
 	</figure>
 
@@ -585,9 +593,9 @@
 	  meta server is <symbol>pioneers.debian.net</symbol></para>
 
 	<figure id="pioneers-FIG-servers-dialog">
-	  <title>The Join a public game dialog.</title>
+	  <title>The Join a public game dialog</title>
 	  <screenshot>
-	    <graphic fileref="images/servers-dialog.png"></graphic>
+	    <graphic fileref="images/servers-dialog.png"/>
 	  </screenshot>
 	</figure>
 
@@ -613,9 +621,9 @@
 	  and how many AI players should join the game.</para>
 
 	<figure id="pioneers-FIG-server-create">
-	  <title>The Create a public game dialog.</title>
+	  <title>The Create a public game dialog</title>
 	  <screenshot>
-	    <graphic fileref="images/server-create.png"></graphic>
+	    <graphic fileref="images/server-create.png"/>
 	  </screenshot>
 	</figure>
 
@@ -643,9 +651,9 @@
           recently are remembered. You can recall them quickly with the Recent
           Games button at the bottom.</para>
 	<figure id="pioneers-FIG-join-private-game">
-	  <title>The Join a private game dialog.</title>
+	  <title>The Join a private game dialog</title>
 	  <screenshot>
-	    <graphic fileref="images/join-private-dialog.png"></graphic>
+	    <graphic fileref="images/join-private-dialog.png"/>
 	  </screenshot>
 	</figure>
 
@@ -749,9 +757,9 @@
 	  discard.</para>
 
 	<figure id="pioneers-FIG-discard-dialog">
-	  <title>The discard dialog.</title>
+	  <title>The discard dialog</title>
 	  <screenshot>
-	    <graphic fileref="images/discard-dialog.png"></graphic>
+	    <graphic fileref="images/discard-dialog.png"/>
 	  </screenshot>
 	</figure>
 
@@ -795,9 +803,9 @@
 	  displayed.</para>
 	  
 	<figure id="pioneers-FIG-trade">
-	  <title>The trade interface.</title>
+	  <title>The trade interface</title>
 	  <screenshot>
-	    <graphic fileref="images/trade.png"></graphic>
+	    <graphic fileref="images/trade.png"/>
 	  </screenshot>
 	</figure>
 
@@ -811,43 +819,32 @@
 	  describes one resource.  From left to right, the columns
 	  are;</para>
 
-	<table frame="none" id="pioneers-TBL-resource-controls">
-	  <title>Resource controls</title>
+	<table id="pioneers-TBL-resource-controls">
+	  <title>Trade resource controls</title>
 	  <tgroup cols="2">
 	    <tbody>
-	      <row>
-	    	<entry>Name</entry>
-	    	<entry>The resource type.</entry>
-	      </row>
-	      <row>
-	    	<entry>In hand</entry>
-	    	<entry>Shows how many of each resource type you have
-	    	  in hand.</entry>
-	      </row>
-	      <row>
+	     <row>
 	    	<entry>Check</entry>
 	    	<entry>Controls whether or not this resource will be
 	    	  involved in the trade.  Trade quotes submitted by
 	    	  either the bank or other players can only include
 	    	  resource types that are checked.</entry>
 	      </row>
-	      <row>
-	    	<entry>Less</entry>
-	    	<entry>Used later.</entry>
+ 	      <row>
+	    	<entry>Name</entry>
+	    	<entry>The resource type.</entry>
 	      </row>
-	      <row>
-	    	<entry>More</entry>
-	    	<entry>Used later.</entry>
-	      </row>
-	      <row>
-	    	<entry>Number to trade</entry>
-	    	<entry>Used later.</entry>
+             <row>	
+	    	<entry>In hand</entry>
+	    	<entry>Shows how many of each resource type you have
+	    	  in hand. If you select a valid trade, you see the
+                  amount you will have if you accept the quote.</entry>
 	      </row>
 	    </tbody>
 	  </tgroup>
 	</table>
 
-	<para>The Call For Quotes button underneath the two tables is
+	<para>The Call for Quotes button underneath the two tables is
 	  used to invite other players to trade resources with
 	  you.</para>
 
@@ -859,7 +856,9 @@
 	  whether or not you have the resources to perform the trade.
 	  As you select quotes from the list, the Accept Quote button
 	  sensitivity will also indicate whether or not you have the
-	  resources required to perform the trade.</para>
+	  resources required to perform the trade. Also the amount
+	  of each resource shows a preview how many you will have
+	  if you accept the quote.</para>
 
 	<para>To finish trading, press the Finish Trading button at
 	  the bottom right of the trading interface.</para>
@@ -873,22 +872,22 @@
 	    perform maritime trading, the bank will quote for each
 	    possible trade.</para>
 
-	  <procedure id="pioneers-bank-trading-procedure">
-	    <step>
+	  <itemizedlist id="pioneers-bank-trading-procedure">
+	    <listitem>
 	      <para>Players who have built on a port with a resource
 	  	label may trade two identical resources of that type
 	  	for single resource of their choice.</para>
-	    </step>
-	    <step>
+	    </listitem>
+	    <listitem>
 	      <para>Players who have built on a port with the question
 	  	mark label may trade three identical resources of any
 	  	type for single resource of their choice.</para>
-	    </step>
-	    <step>
+	    </listitem>
+	    <listitem>
 	      <para>All players may trade four identical resources of
 	  	any type for a single resource of their choice.</para>
-	  	</step>
-	  </procedure>
+	    </listitem>
+	  </itemizedlist>
 
 	  <para>Select the trade that you wish to perform, then press
 	    the Accept Quote button.</para>
@@ -918,9 +917,9 @@
 	    displayed.</para>
 
 	  <figure id="pioneers-FIG-quote">
-	    <title>The quote interface.</title>
+	    <title>The quote interface</title>
 	    <screenshot>
-	      <graphic fileref="images/quote.png"></graphic>
+	      <graphic fileref="images/quote.png"/>
 	    </screenshot>
 	  </figure>
 
@@ -941,8 +940,8 @@
 	    have, the corresponding row in the Give Them table will be
 	    disabled.  From left to right, the columns are;</para>
 	  
-	  <table frame="none" id="pioneers-TBL-quote-controls">
-	    <title>Resource controls</title>
+	  <table id="pioneers-TBL-quote-controls">
+	    <title>Quote resource controls</title>
 	    <tgroup cols="2">
 	      <tbody>
 	  	<row>
@@ -1006,9 +1005,11 @@
 	development cards have special effects as described
 	below.</para>
 
-      <table frame="none" id="pioneers-TBL-development-cards">
+      <table id="pioneers-TBL-development-cards">
 	<title>Development cards</title>
 	<tgroup cols="4">
+	  <colspec colnum="1" align="right"/>
+	  <colspec colnum="3" align="right"/>
 	  <thead>
 	    <row>
 	      <entry>VP</entry>
@@ -1019,7 +1020,7 @@
 	  </thead>
 	  <tbody>
 	    <row>
-	      <entry></entry>
+	      <entry/>
 	      <entry>Road Building</entry>
 	      <entry>2</entry>
 	      <entry>When you play this card, you can build two road
@@ -1027,7 +1028,7 @@
 		apply.</entry>
 	    </row>
 	    <row>
-	      <entry></entry>
+	      <entry/>
 	      <entry>Monopoly</entry>
 	      <entry>2</entry>
 	      <entry>When you play this card, you choose a resource type
@@ -1036,14 +1037,14 @@
 		hand.</entry>
 	    </row>
 	    <row>
-	      <entry></entry>
+	      <entry/>
 	      <entry>Year of Plenty</entry>
 	      <entry>2</entry>
 	      <entry>When you play this card you can take any two
 		resource cards from the bank.</entry>
 	    </row>
 	    <row>
-	      <entry></entry>
+	      <entry/>
 	      <entry>Soldier</entry>
 	      <entry>14</entry>
 	      <entry>When you play this card, you must move the robber
@@ -1085,15 +1086,15 @@
       </table>
 
       <sect2 id="monopolydlg">
-        <title>The monopoly dialog</title>
+        <title>The monopoly development card</title>
 
 	<para>When you play the monopoly development card, the
 	  monopoly dialog will be displayed.</para>
 
 	<figure id="pioneers-FIG-monopoly-dialog">
-	  <title>The monopoly dialog.</title>
+	  <title>The monopoly dialog</title>
 	  <screenshot>
-	    <graphic fileref="images/monopoly-dialog.png"></graphic>
+	    <graphic fileref="images/monopoly-dialog.png"/>
 	  </screenshot>
 	</figure>
 
@@ -1104,24 +1105,27 @@
       </sect2>
 
       <sect2 id="yearofplentydlg">
-        <title>The year of plenty dialog</title>
+        <title>The year of plenty development card</title>
 
 	<para>When you play the year of plenty development card, the
 	  year of plenty dialog will be displayed.</para>
 
 	<figure id="pioneers-FIG-plenty-dialog">
-	  <title>The year of plenty dialog.</title>
+	  <title>The year of plenty dialog</title>
 	  <screenshot>
-	    <graphic fileref="images/plenty-dialog.png"></graphic>
+	    <graphic fileref="images/plenty-dialog.png"/>
 	  </screenshot>
 	</figure>
 
 	<para>You must select any two resource cards that you wish to
 	  take from the bank.</para>
+	<para>If the bank has enough cards, <symbol>++</symbol> is shown
+	  between the less and more buttons. Otherwise, the amount in the
+	  bank is shown.</para>
       </sect2>
 
       <sect2 id="largest_army">
-        <title>Largest army</title>
+        <title>Largest army award</title>
 
 	<para>The first player to play three soldier cards will earn
 	  the largest army award.  This award is worth 2 victory
@@ -1144,9 +1148,9 @@
 	by consulting the legend dialog.</para>
 
       <figure id="pioneers-FIG-legend-dialog">
-	<title>The legend dialog.</title>
+	<title>The legend dialog</title>
 	<screenshot>
-	  <graphic fileref="images/legend-dialog.png"></graphic>
+	  <graphic fileref="images/legend-dialog.png"/>
 	</screenshot>
       </figure>
 
@@ -1158,13 +1162,10 @@
 
       <para>A city is built by upgrading a settlement.  When you
 	upgrade an existing settlement, that settlement is again
-	available for building somewhere else on the map.  If you have
-	sufficient resources, you can build a settlement and upgrade
-	it to a city in a single action, even when you do not have
-	settlements available.</para>
+	available for building somewhere else on the map.</para>
 
       <para>Buildings must not be placed next to each other.  This
-	means that a hex can have at most, three buildings on it.
+	means that a hex can have, at most, three buildings on it.
 	During game play, you can only place a building adjacent to
 	one of your road segments.</para>
 
@@ -1235,32 +1236,180 @@
 	  of your glorious victory.</para>
 
 	<figure id="pioneers-FIG-gameover-dialog">
-	  <title>The game over dialog.</title>
+	  <title>The game over dialog</title>
 	  <screenshot>
-	    <graphic fileref="images/gameover-dialog.png"></graphic>
+	    <graphic fileref="images/gameover-dialog.png"/>
 	  </screenshot>
 	</figure>
       </sect2>
     </sect1>
   </chapter>
-
+  <chapter id="faq">
+    <title>Frequently asked questions</title>
+    <qandaset defaultlabel="qanda">
+      <title>Playing games</title>
+      <qandaentry>
+      <question><para>
+        Where can I find games?
+      </para></question>
+      <answer><para>
+        You can find games at the metaserver (pioneers.debian.net)
+      </para></answer>
+      </qandaentry>
+      <qandaentry>
+      <question><para>
+        But there hardly are any games present?
+      </para></question>
+      <answer><para>Perhaps people don't register their games (it is optional),
+        or use their own metaservers.
+      </para></answer>
+      </qandaentry>
+      <qandaentry>
+      <question><para>
+        I've seen a game at the metaserver, but I cannot join?
+      </para></question>
+      <answer><para>
+        Is the Host something like 'localhost' or without dots? 
+        In that case someone did register the game, 
+        but it is not accessible from the outside of the intranet that hosts 
+        the game.
+      </para></answer>
+      </qandaentry>
+      <qandaentry>
+      <question><para>
+        The button 'New remote game' is always disabled. Why?
+      </para></question>
+      <answer><para>
+        The metaserver at pioneers.debian.net acts only as a point where games
+        can register. It has been configured not to create new games.
+      </para></answer>
+      </qandaentry>
+    </qandaset>
+    <qandaset defaultlabel="qanda">
+      <title>The chat room</title>
+      <qandaentry>
+      <question><para>
+        Why is nobody responding?
+      </para></question>
+      <answer><para>
+        If you enter the chat room, and see several squares in the icon before
+        the name of a player, it means that that player is disconnected.
+      </para></answer>
+      </qandaentry>
+      <qandaentry>
+      <question><para>
+        This game will never start. How can I play?
+      </para></question>
+      <answer><para>
+        One person has to create a new game. If it is set up, you can start a new
+        instance of <application>pioneers</application>, and connect to that game.
+        You can quit the instance of <application>pioneers</application> with the
+        chat room.
+      </para></answer>
+      </qandaentry>
+    </qandaset>
+    <qandaset defaultlabel="qanda">
+      <title>Creating games</title>
+      <qandaentry>
+      <question><para>
+        How do I do create new games?
+      </para></question>
+      <answer><para>
+        Run <application>pioneers-server-gtk</application>.
+        In the server parameters:
+        <itemizedlist>
+          <listitem><para>
+            Choose a port that is publicly accessible
+            (create a hole in your firewall if needed)
+          </para></listitem>
+          <listitem><para>
+            Set register to 'yes', so other people can
+            find the game
+          </para></listitem>
+          <listitem><para>
+            Leave metaserver empty, 
+            or use 'pioneers.debian.net'
+          </para></listitem>
+          <listitem><para>
+            Reported hostname should be your publicly
+            accessible hostname or ip address
+          </para></listitem>
+          <listitem><para>
+            Select a game of your liking,
+            and click 'Start Server'
+          </para></listitem>
+        </itemizedlist>
+      </para></answer>
+      </qandaentry>
+      <qandaentry>
+      <question><para>
+        What exactly does 'reported hostname' do?
+      </para></question>
+      <answer><para>
+        For computers directly connected to the Internet: it should 
+        contain your ip address or full hostname.
+      </para></answer>
+      <answer><para>
+        For computers connected to the Internet using an intranet: it 
+        should contain the ip address (or full hostname) of the connection to 
+        the Internet, AND you need to have your gateway set up for port 
+        forwarding, to accept incoming connections.
+      </para></answer>
+      </qandaentry>
+      <qandaentry>
+      <question><para>
+        How do I configure my router?
+      </para></question>
+      <answer><para>
+        Henner Ke&szlig;ler wrote a small 
+	<ulink url="http://people.freenet.de/aitsch/pio/howto.htm">HOWTO</ulink>
+        describing a possible way to configure your router, using dyndns.
+      </para></answer>
+      </qandaentry>
+      <qandaentry>
+      <question><para>
+        What if I only want to play against the computer players?
+      </para></question>
+      <answer><para>
+        Use the <application>pioneers-server-gtk</application>,
+        and set register to 'no', and add as many computer players as needed.
+        In the client, choose 'Join private game', the host is 'localhost',
+        and use the port you have selected in the server.
+      </para></answer>
+      </qandaentry>
+      <qandaentry>
+      <question><para>
+        What if I only want to play games inside my own intranet?
+      </para></question>
+      <answer><para>
+        Do not register your game at the metaserver, and choose 'Join 
+        private game' on each computer that joins the game. Use the ip address
+        of the server, and the port you have selected in the server.
+      </para></answer>
+      </qandaentry>
+    </qandaset>
+  </chapter>
+  </part>
+  <part id="gamemasters">
+    <title>For game masters</title>
   <chapter id="ai">
-    <title>The AI Player</title>
+    <title>The Computer Player</title>
 
     <para>
-      Starting with version 0.7.0, Pioneers comes with
-      <application>pioneersai</application>, a computer player
-      implementation. This AI player isn't too bad at the moment, but
-      not finished yet. Most notably, it cannot take part in domestic
-      trade yet.
+      Pioneers comes with a computer player, 
+      <application>pioneersai</application>.
+      This player isn't too bad at the moment, but
+      not finished yet. Most notably, it cannot initiate domestic
+      trade, and use the maritime rules yet.
     </para>
 
     <para>
       <application>pioneersai</application> is a terminal application
       without GUI. Its command line options are:
 
-      <table frame="none" id="pioneers-TBL-ai-options">
-	<title><application>pioneersai</application> options</title>
+      <table id="pioneers-TBL-ai-options">
+	<title><application>pioneersai</application> command line options
+	</title>
 	<tgroup cols="3">
 	  <thead>
 	    <row>
@@ -1300,7 +1449,7 @@
 	    </row>
 	    <row>
 	      <entry>-c</entry>
-	      <entry></entry>
+	      <entry/>
 	      <entry>Stop the computer player from giving comments.</entry>
 	    </row>
 	  </tbody>
@@ -1317,12 +1466,10 @@
   </chapter>
   <chapter id="configuration">
     <title>Configuration</title>
-      <warning>
-        <para>
+      <para>
         This chapter is included for the people who wish to control
         exactly the way <symbol>Pioneers</symbol> is running.
-	</para>
-      </warning>
+      </para>
       <para>The extra configuration options are processed in this order:
         <orderedlist>
 	  <listitem><para>Command line</para></listitem>
@@ -1339,7 +1486,8 @@
 	</para>
 
 	<table id="configuration-client-commandline">
-	  <title>Command line</title>
+	  <title><application>pioneers</application> command line options
+	  </title>
 	  <tgroup cols="3">
 	    <thead>
 	      <row>
@@ -1365,7 +1513,7 @@
 		<entry>Player name</entry>
 	      </row>
 	      <row>
-	        <entry></entry>
+	        <entry/>
 		<entry>--language</entry>
 		<entry>Override the language as set in the environment.
 		  Valid choices: de en es fr hu it nl sv
@@ -1477,7 +1625,7 @@
 	 </tgroup>
        </table>
 	<table id="configuration-client-environment">
-	  <title>Environment</title>
+	  <title><application>pioneers</application> environment</title>
 	  <tgroup cols="2">
 	    <thead>
 	      <row>
@@ -1502,7 +1650,8 @@
       <sect1 id="configuration-server">
       <title><application>pioneers-server-console</application></title>
 	<table id="configuration-server-console-commandline">
-	  <title>Command line</title>
+	  <title><application>pioneers-server-console</application>
+            command line</title>
 	  <tgroup cols="3">
 	    <thead>
 	      <row>
@@ -1514,7 +1663,7 @@
 	    </thead>
 	    <tbody>
 	      <row>
-                <entry></entry>
+                <entry/>
 	        <entry>-a</entry>
 		<entry>integer</entry>
 		<entry>Admin port to listen on</entry>
@@ -1532,9 +1681,9 @@
 		<entry>Game name to use</entry>
               </row>
 	      <row>
-                <entry></entry>
+                <entry/>
 	        <entry>-h</entry>
-		<entry></entry>
+		<entry/>
 		<entry>Show help</entry>
               </row>
 	      <row>
@@ -1544,13 +1693,13 @@
 		<entry>Kill after <symbol>n</symbol> seconds with no player</entry>
               </row>
 	      <row>
-                <entry></entry>
+                <entry/>
 	        <entry>-m</entry>
 		<entry>string</entry>
 		<entry>Register at meta-server name (implies -r)</entry>
               </row>
 	      <row>
-                <entry></entry>
+                <entry/>
 	        <entry>-n</entry>
 		<entry>string</entry>
 		<entry>Use this hostname when registering at the meta-server</entry>
@@ -1570,23 +1719,23 @@
 	      <row>
                 <entry>*</entry>
 	        <entry>-r</entry>
-		<entry></entry>
+		<entry/>
 		<entry>Register with meta-server</entry>
               </row>
 	      <row>
-                <entry></entry>
+                <entry/>
 	        <entry>-R</entry>
 		<entry>0|1|2</entry>
 		<entry>Seven rule</entry>
               </row>
 	      <row>
-                <entry></entry>
+                <entry/>
 	        <entry>-s</entry>
-		<entry></entry>
+		<entry/>
 		<entry>Don't start game immediately, wait for command on admin port</entry>
               </row>
 	      <row>
-                <entry></entry>
+                <entry/>
 	        <entry>-t</entry>
 		<entry>integer</entry>
 		<entry>Tournament mode. AI players added after %d minutes</entry>
@@ -1606,7 +1755,7 @@
 	      <row>
                 <entry>*</entry>
 	        <entry>-x</entry>
-		<entry></entry>
+		<entry/>
 		<entry>Quit after a player has won</entry>
               </row>
             </tbody>
@@ -1616,7 +1765,8 @@
           The column 'M' shows whether the switch is used by the meta-server
         </para>
 	<table id="configuration-server-console-environment">
-	  <title>Environment</title>
+	  <title><application>pioneers-server-console</application>
+	    environment</title>
 	  <tgroup cols="2">
 	    <thead>
 	      <row>
@@ -1712,4 +1862,5 @@
         </para>
       </sect1>
   </chapter>
+  </part>
 </book>

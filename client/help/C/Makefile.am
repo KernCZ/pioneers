@@ -26,3 +26,14 @@ omffile = pioneers-C.omf
 entities = legal.xml
 include $(top_srcdir)/xmldocs.make
 dist-hook: app-dist-hook
+
+# HTMLHelp is the compressed help format for Microsoft Windows
+htmlhelp: pioneers.xml
+	xmlto -m custom.xsl htmlhelp pioneers.xml
+	-/cygdrive/c/Program\ Files/HTML\ Help\ Workshop/hhc.exe htmlhelp.hhp
+	rm htmlhelp.hhp
+	rm toc.hhc
+	rm *.html
+
+html: pioneers.xml
+	xmlto -m custom.xsl html pioneers.xml
