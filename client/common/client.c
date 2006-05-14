@@ -39,7 +39,7 @@ GameParams *game_params;
 Map *map;
 static gchar *saved_name;
 static gboolean want_viewer;
-struct recovery_info_t {
+static struct recovery_info_t {
 	gchar prevstate[40];
 	gint turnnum;
 	gint playerturn;
@@ -50,7 +50,7 @@ struct recovery_info_t {
 	gboolean bought_develop;
 	GList *build_list;
 	gboolean ship_moved;
-};
+} recovery_info;
 
 static gboolean global_unhandled(StateMachine * sm, gint event);
 static gboolean global_filter(StateMachine * sm, gint event);
@@ -76,6 +76,8 @@ static gboolean mode_domestic_monitor(StateMachine * sm, gint event);
 static gboolean mode_game_over(StateMachine * sm, gint event);
 static gboolean mode_choose_gold(StateMachine * sm, gint event);
 static gboolean mode_wait_resources(StateMachine * sm, gint event);
+static gboolean mode_recovery_wait_start_response(StateMachine * sm,
+						  gint event);
 static void recover_from_disconnect(StateMachine * sm,
 				    struct recovery_info_t *rinfo);
 
@@ -870,6 +872,19 @@ static gboolean mode_load_game(StateMachine * sm, gint event)
 		map = game_params->map;
 		stock_init();
 		develop_init();
+		/* initialize global recovery info struct */
+		recovery_info.prevstate[0] = 0;
+		recovery_info.turnnum = -1;
+		recovery_info.playerturn = -1;
+		recovery_info.numdiscards = -1;
+		recovery_info.rolled_dice = FALSE;
+		recovery_info.die1 = -1;
+		recovery_info.die2 = -1;
+		recovery_info.played_develop = FALSE;
+		recovery_info.bought_develop = FALSE;
+		recovery_info.build_list = NULL;
+		recovery_info.ship_moved = FALSE;
+
 		sm_send(sm, "gameinfo\n");
 		sm_goto(sm, mode_load_gameinfo);
 		return TRUE;
@@ -889,9 +904,6 @@ static gboolean mode_load_gameinfo(StateMachine * sm, gint event)
 {
 	gchar str[512];
 	gint x, y, pos, owner;
-	static struct recovery_info_t rinfo = { "", -1, -1, -1, FALSE,
-		-1, -1, FALSE, FALSE, NULL, FALSE
-	};
 	static gboolean disconnected = FALSE;
 	static gboolean have_bank = FALSE;
 	static gint devcardidx = -1;
@@ -929,7 +941,7 @@ static gboolean mode_load_gameinfo(StateMachine * sm, gint event)
 		callback_mode = MODE_WAIT_TURN;	/* allow chatting */
 		callbacks.start_game();
 		if (disconnected) {
-			recover_from_disconnect(sm, &rinfo);
+			sm_goto(sm, mode_recovery_wait_start_response);
 		} else {
 			sm_send(sm, "start\n");
 			sm_goto(sm, mode_start_response);
@@ -947,29 +959,29 @@ static gboolean mode_load_gameinfo(StateMachine * sm, gint event)
 			stock_use_develop();
 		return TRUE;
 	}
-	if (sm_recv(sm, "turn num %d", &rinfo.turnnum)) {
+	if (sm_recv(sm, "turn num %d", &recovery_info.turnnum)) {
 		return TRUE;
 	}
-	if (sm_recv(sm, "player turn: %d", &rinfo.playerturn)) {
+	if (sm_recv(sm, "player turn: %d", &recovery_info.playerturn)) {
 		return TRUE;
 	}
-	if (sm_recv(sm, "dice rolled: %d %d", &rinfo.die1, &rinfo.die2)) {
-		rinfo.rolled_dice = TRUE;
+	if (sm_recv(sm, "dice rolled: %d %d", &recovery_info.die1, &recovery_info.die2)) {
+		recovery_info.rolled_dice = TRUE;
 		return TRUE;
 	}
-	if (sm_recv(sm, "dice value: %d %d", &rinfo.die1, &rinfo.die2)) {
+	if (sm_recv(sm, "dice value: %d %d", &recovery_info.die1, &recovery_info.die2)) {
 		return TRUE;
 	}
 	if (sm_recv(sm, "played develop")) {
-		rinfo.played_develop = TRUE;
+		recovery_info.played_develop = TRUE;
 		return TRUE;
 	}
 	if (sm_recv(sm, "moved ship")) {
-		rinfo.ship_moved = TRUE;
+		recovery_info.ship_moved = TRUE;
 		return TRUE;
 	}
 	if (sm_recv(sm, "bought develop")) {
-		rinfo.bought_develop = TRUE;
+		recovery_info.bought_develop = TRUE;
 		return TRUE;
 	}
 	if (sm_recv(sm, "player disconnected")) {
@@ -977,7 +989,8 @@ static gboolean mode_load_gameinfo(StateMachine * sm, gint event)
 		return TRUE;
 	}
 	if (sm_recv(sm, "state %S", str, sizeof(str))) {
-		strcpy(rinfo.prevstate, str);
+		strncpy(recovery_info.prevstate, str,
+			sizeof(recovery_info.prevstate));
 		return TRUE;
 	}
 	if (sm_recv(sm, "playerinfo: resources: %R", resources)) {
@@ -1091,7 +1104,7 @@ static gboolean mode_load_gameinfo(StateMachine * sm, gint event)
 		rec->x = x;
 		rec->y = y;
 		rec->pos = pos;
-		rinfo.build_list = g_list_append(rinfo.build_list, rec);
+		recovery_info.build_list = g_list_append(recovery_info.build_list, rec);
 		return TRUE;
 	}
 	if (sm_recv(sm, "RO%d,%d", &x, &y)) {
@@ -2272,7 +2285,7 @@ static gboolean mode_recovery_wait_start_response(StateMachine * sm,
 		break;
 	case SM_RECV:
 		if (sm_recv(sm, "OK")) {
-			sm_pop(sm);
+			recover_from_disconnect(sm, &recovery_info);
 			return TRUE;
 		}
 		break;
@@ -2288,6 +2301,7 @@ static void recover_from_disconnect(StateMachine * sm,
 	StateFunc modeturn;
 	GList *next;
 
+	callbacks.start_game();
 	if (rinfo->turnnum > 0)
 		turn_begin(rinfo->playerturn, rinfo->turnnum);
 	if (rinfo->rolled_dice) {
@@ -2308,18 +2322,42 @@ static void recover_from_disconnect(StateMachine * sm,
 						 rinfo->bought_develop);
 	}
 
+	/* setup_begin must be called before the build list is created,
+	 * because it contains a call to build_clear() */
+	if (strcmp(rinfo->prevstate, "SETUP") == 0 ||
+		   strcmp(rinfo->prevstate, "RSETUP") == 0 ||
+		   strcmp(rinfo->prevstate, "SETUPDOUBLE") == 0) {
+		if (strcmp(rinfo->prevstate, "SETUPDOUBLE") == 0) {
+			setup_begin_double(my_player_num());
+		} else {
+			setup_begin(my_player_num());
+		}
+	}
+
+	/* The build list must be created before the state is entered,
+	 * because when the state is entered the frontend is called and
+	 * it will want to have the build list present. */
+	if (rinfo->build_list) {
+		for (next = rinfo->build_list; next != NULL;
+		     next = g_list_next(next)) {
+			BuildRec *build = (BuildRec *) next->data;
+			build_add(build->type, build->x, build->y,
+				  build->pos, FALSE);
+		}
+		rinfo->build_list = buildrec_free(rinfo->build_list);
+	}
+
 	if (strcmp(rinfo->prevstate, "PREGAME") == 0) {
 		sm_goto(sm, mode_idle);
 	} else if (strcmp(rinfo->prevstate, "IDLE") == 0) {
 		sm_goto(sm, mode_idle);
 	} else if (strcmp(rinfo->prevstate, "SETUP") == 0 ||
+		   strcmp(rinfo->prevstate, "RSETUP") == 0 ||
 		   strcmp(rinfo->prevstate, "SETUPDOUBLE") == 0) {
-		if (strcmp(rinfo->prevstate, "SETUP") == 0) {
-			setup_begin(my_player_num());
-		} else {
-			setup_begin_double(my_player_num());
-		}
 		sm_goto_noenter(sm, mode_idle);
+		if (strcmp(rinfo->prevstate, "SETUP") != 0) {
+			sm_push_noenter(sm, mode_wait_resources);
+		}
 		sm_push(sm, mode_setup);
 	} else if (strcmp(rinfo->prevstate, "TURN") == 0) {
 		sm_goto_noenter(sm, mode_idle);
@@ -2355,21 +2393,10 @@ static void recover_from_disconnect(StateMachine * sm,
 		sm_push_noenter(sm, modeturn);
 		callback_mode = MODE_TURN;
 		sm_push(sm, mode_road_building);
-	}
-
-	if (rinfo->build_list) {
-		for (next = rinfo->build_list; next != NULL;
-		     next = g_list_next(next)) {
-			BuildRec *build = (BuildRec *) next->data;
-			build_add(build->type, build->x, build->y,
-				  build->pos, FALSE);
-		}
-		rinfo->build_list = buildrec_free(rinfo->build_list);
-	}
-
-	/* tell the server we have finished reconnecting and wait for
-	   its ok response */
-	sm_push(sm, mode_recovery_wait_start_response);
+	} else
+		g_warning(_("Not entering any state after reconnect, "
+			    "please report this as a bug.  "
+			    "Should enter state \"%s\""), rinfo->prevstate);
 }
 
 /*----------------------------------------------------------------------

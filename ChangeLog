@@ -1,3 +1,7 @@
+2006-05-14  Bas Wijnen <shevek@fmf.nl>
+	* server/pregame.c, client/common/client.c: Fix reconnect procedure,
+	add RSETUP state command.
+
 2006-05-13  Roland Clobus <rclobus@bigfoot.com>
 	* client/help/C/custom.xsl, client/help/C/pioneers.xml,
 	client/help/C/Makefile.am: Manual updates. Manual conversion to html
