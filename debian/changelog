@@ -1,3 +1,9 @@
+pioneers (0.9.61-2) unstable; urgency=low
+
+  * Optimize for one-time build.
+
+ -- Bas Wijnen <shevek@fmf.nl>  Tue, 16 May 2006 20:58:24 +0200
+
 pioneers (0.9.61-1) unstable; urgency=low
 
   * Upstream svn snapshot release. (Closes: #359924, #331291)
