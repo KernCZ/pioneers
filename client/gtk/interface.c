@@ -605,6 +605,10 @@ void frontend_gold_done(void)
 void frontend_game_over(gint player, gint points)
 {
 	gui_cursor_none();	/* Clear possible (robber) cursor */
+	if (robber_busy) {
+		robber_busy = FALSE;
+		gui_prompt_hide();
+	}
 	have_turn = FALSE;
 	gameover_create_dlg(player, points);
 	set_gui_state(frontend_state_idle);
