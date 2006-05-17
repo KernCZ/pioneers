@@ -1,8 +1,9 @@
-pioneers (0.9.61-2) unstable; urgency=low
+pioneers (0.9.62-1) unstable; urgency=low
 
+  * New upstream release.  (Closes: #367042)
   * Optimize for one-time build.
 
- -- Bas Wijnen <shevek@fmf.nl>  Tue, 16 May 2006 20:58:24 +0200
+ -- Bas Wijnen <shevek@fmf.nl>  Wed, 17 May 2006 09:39:16 +0200
 
 pioneers (0.9.61-1) unstable; urgency=low
 

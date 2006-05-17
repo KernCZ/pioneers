@@ -621,6 +621,8 @@ static Edge *best_road_to_road_spot(Node * n, float *score,
 
 				for (j = 0; j < 3; j++) {
 					Edge *e2 = othernode->edges[j];
+					if (e2 == NULL)
+						continue;
 
 					/* We need to look further, temporarily mark this edge as having our road on it. */
 					e->owner = my_player_num();
@@ -902,6 +904,8 @@ static void findit_iterator(Node * n, void *rock)
 
 	/* if i own this node */
 	for (i = 0; i < 3; i++) {
+		if (n->edges[i] == NULL)
+			continue;
 		if (n->edges[i]->owner == my_player_num())
 			return;
 	}

@@ -1,3 +1,6 @@
+2006-05-17  Bas Wijnen <shevek@fmf.nl>
+	* client/ai/greedy.c: Fix for AI segfault.
+
 2006-05-14  Bas Wijnen <shevek@fmf.nl>
 	* server/pregame.c, client/common/client.c: Fix reconnect procedure,
 	add RSETUP state command.
