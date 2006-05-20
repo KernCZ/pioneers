@@ -86,7 +86,7 @@ static void resource_table_class_init(ResourceTableClass * klass)
 /* Initialise the composite widget */
 static void resource_table_init(ResourceTable * rt)
 {
-	int i;
+	gint i;
 
 	for (i = 0; i < NO_RESOURCE; i++) {
 		rt->row[i].hand = 0;
@@ -105,6 +105,7 @@ static void resource_table_init(ResourceTable * rt)
 	rt->limit_bank = FALSE;
 	rt->with_bank = FALSE;
 	rt->with_total = FALSE;
+	rt->direction = RESOURCE_TABLE_MORE_IN_HAND;
 	rt->tooltips = gtk_tooltips_new();
 
 }
@@ -119,7 +120,9 @@ static void resource_table_set_limit(ResourceTable * rt, gint row)
 		    MIN(rt->total_target, rt->row[row].bank) :
 		    MIN(rt->total_target, rt->row[row].hand);
 	else
-		limit = rt->with_bank ? rt->row[row].bank : 999;
+		limit = rt->with_bank ? rt->row[row].bank :
+		    rt->direction ==
+		    RESOURCE_TABLE_MORE_IN_HAND ? 99 : rt->row[row].hand;
 	rt->row[row].limit = limit;
 	gtk_spin_button_set_range(GTK_SPIN_BUTTON
 				  (rt->row[row].amount_widget), 0, limit);
@@ -128,6 +131,7 @@ static void resource_table_set_limit(ResourceTable * rt, gint row)
 
 /* Create a new ResourceTable */
 GtkWidget *resource_table_new(const gchar * title,
+			      ResourceTableDirection direction,
 			      gboolean with_bank, gboolean with_total)
 {
 	ResourceTable *rt;
@@ -139,6 +143,8 @@ GtkWidget *resource_table_new(const gchar * title,
 
 	rt = g_object_new(resource_table_get_type(), NULL);
 
+	rt->direction = direction;
+
 	rt->with_bank = with_bank;
 	/* Don't set rt->with_total yet, wait for _set_total */
 
@@ -147,7 +153,7 @@ GtkWidget *resource_table_new(const gchar * title,
 			 NO_RESOURCE + 1 + with_total ? 1 : 0,
 			 5 + rt->bank_offset);
 	gtk_table_set_row_spacings(GTK_TABLE(rt), 3);
-	gtk_table_set_col_spacings(GTK_TABLE(rt), 5);
+	gtk_table_set_col_spacings(GTK_TABLE(rt), 6);
 
 	temp = g_strconcat("<b>", title, "</b>", NULL);
 	widget = gtk_label_new(NULL);
@@ -160,7 +166,10 @@ GtkWidget *resource_table_new(const gchar * title,
 
 	row = 1;
 	for (i = 0; i < NO_RESOURCE; i++) {
-		widget = gtk_label_new(resource_name(i, TRUE));
+		rt->row[i].filter = FALSE;
+
+		widget = rt->row[i].label_widget =
+		    gtk_label_new(resource_name(i, TRUE));
 		gtk_widget_show(widget);
 		gtk_table_attach_defaults(GTK_TABLE(rt), widget,
 					  0, 1, row, row + 1);
@@ -178,7 +187,6 @@ GtkWidget *resource_table_new(const gchar * title,
 				     _("Amount in hand"), NULL);
 
 		rt->row[i].hand = resource_asset(i);
-
 		widget = rt->row[i].less_widget =
 		    gtk_button_new_with_label(_("<less"));
 		gtk_widget_set_sensitive(widget, FALSE);
@@ -316,11 +324,18 @@ static void resource_table_update(ResourceTable * rt)
 	gchar buff[16];
 	gint i;
 	struct _ResourceRow *row;
+	gboolean less_enabled;
+	gboolean more_enabled;
 
 	g_assert(IS_RESOURCETABLE(rt));
 	rt->total_current = 0;
 	for (i = 0; i < NO_RESOURCE; i++)
 		rt->total_current += rt->row[i].amount;
+
+	if (rt->with_total) {
+		sprintf(buff, "%d", rt->total_current);
+		gtk_entry_set_text(GTK_ENTRY(rt->total_widget), buff);
+	}
 
 	for (i = 0; i < NO_RESOURCE; i++) {
 		row = &rt->row[i];
@@ -328,21 +343,13 @@ static void resource_table_update(ResourceTable * rt)
 		sprintf(buff, "%d", row->amount);
 		gtk_entry_set_text(GTK_ENTRY(row->amount_widget), buff);
 
-		if (rt->with_total) {
-			gtk_widget_set_sensitive(row->less_widget,
-						 row->amount > 0);
-			if (rt->total_current >= rt->total_target)
-				gtk_widget_set_sensitive(row->more_widget,
-							 FALSE);
-			else
-				gtk_widget_set_sensitive(row->more_widget,
-							 row->amount <
-							 row->limit);
-			sprintf(buff, "%d", rt->total_current);
-			gtk_entry_set_text(GTK_ENTRY(rt->total_widget),
-					   buff);
-		}
-		if (rt->with_bank)
+		less_enabled = row->amount > 0;
+		more_enabled = row->amount < row->limit;
+		if (rt->with_total
+		    && rt->total_current >= rt->total_target)
+			more_enabled = FALSE;
+
+		if (rt->direction == RESOURCE_TABLE_MORE_IN_HAND)
 			sprintf(buff, "%d", row->hand + row->amount);
 		else
 			sprintf(buff, "%d", row->hand - row->amount);
@@ -359,6 +366,15 @@ static void resource_table_update(ResourceTable * rt)
 			gtk_entry_set_text(GTK_ENTRY(row->bank_widget),
 					   buff);
 		}
+
+		gtk_widget_set_sensitive(row->label_widget, !row->filter);
+		gtk_widget_set_sensitive(row->less_widget, less_enabled
+					 && !row->filter);
+		gtk_widget_set_sensitive(row->more_widget, more_enabled
+					 && !row->filter);
+		gtk_widget_set_sensitive(row->amount_widget,
+					 (less_enabled || more_enabled)
+					 && !row->filter);
 	}
 }
 
@@ -408,4 +424,38 @@ gboolean resource_table_is_total_reached(ResourceTable * rt)
 {
 	g_assert(IS_RESOURCETABLE(rt));
 	return (rt->total_current == rt->total_target);
+}
+
+void resource_table_update_hand(ResourceTable * rt)
+{
+	gint i;
+
+	g_assert(IS_RESOURCETABLE(rt));
+	for (i = 0; i < NO_RESOURCE; i++) {
+		rt->row[i].hand = resource_asset(i);
+		resource_table_set_limit(rt, i);
+	}
+	resource_table_update(rt);
+}
+
+void resource_table_set_filter(ResourceTable * rt, const gint * resource)
+{
+	gint i;
+
+	g_assert(IS_RESOURCETABLE(rt));
+	for (i = 0; i < NO_RESOURCE; i++) {
+		rt->row[i].filter = resource[i] == 0;
+	}
+	resource_table_update(rt);
+}
+
+void resource_table_clear(ResourceTable * rt)
+{
+	gint i;
+
+	g_assert(IS_RESOURCETABLE(rt));
+	for (i = 0; i < NO_RESOURCE; i++) {
+		rt->row[i].amount = 0;
+	}
+	resource_table_update(rt);
 }

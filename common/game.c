@@ -137,8 +137,8 @@ static void build_int_list(GArray * array, char *str)
 	}
 }
 
-static void format_int_list(const gchar * name, GArray * array, char *str,
-			    int len)
+static void format_int_list(const gchar * name, GArray * array,
+			    gchar * str, guint len)
 {
 	int idx;
 

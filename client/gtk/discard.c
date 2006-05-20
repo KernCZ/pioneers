@@ -24,6 +24,7 @@
 #include "frontend.h"
 #include "resource-table.h"
 #include "gtkbugs.h"
+#include "common_gtk.h"
 
 enum {
 	DISCARD_COLUMN_PLAYER_ICON, /**< Player icon */
@@ -36,15 +37,6 @@ enum {
 static GtkListStore *discard_store; /**< the discard data */
 static GtkWidget *discard_widget;  /**< the discard widget */
 
-/** The summary line is found here */
-static GtkTreeIter discard_found_iter;
-/** Has the summary line been found ? */
-enum {
-	STORE_MATCH_EXACT,
-	STORE_MATCH_INSERT_BEFORE,
-	STORE_NO_MATCH
-} discard_found_flag;
-
 static struct {
 	GtkWidget *dlg;
 	GtkWidget *resource_widget;
@@ -52,7 +44,6 @@ static struct {
 
 /* Local function prototypes */
 static GtkWidget *discard_create_dlg(gint num);
-
 
 gboolean can_discard(void)
 {
@@ -97,13 +88,15 @@ static GtkWidget *discard_create_dlg(gint num)
 	dlg_vbox = GTK_DIALOG(discard.dlg)->vbox;
 	gtk_widget_show(dlg_vbox);
 
-	vbox = gtk_vbox_new(FALSE, 5);
+	vbox = gtk_vbox_new(FALSE, 6);
 	gtk_widget_show(vbox);
 	gtk_box_pack_start(GTK_BOX(dlg_vbox), vbox, FALSE, TRUE, 0);
-	gtk_container_set_border_width(GTK_CONTAINER(vbox), 5);
+	gtk_container_set_border_width(GTK_CONTAINER(vbox), 6);
 
 	sprintf(buff, _("You must discard %d resources"), num);
-	discard.resource_widget = resource_table_new(buff, FALSE, TRUE);
+	discard.resource_widget =
+	    resource_table_new(buff, RESOURCE_TABLE_LESS_IN_HAND, FALSE,
+			       TRUE);
 	resource_table_set_total(RESOURCETABLE(discard.resource_widget),
 				 _("Total discards"), num);
 	gtk_widget_show(discard.resource_widget);
@@ -127,52 +120,28 @@ static GtkWidget *discard_create_dlg(gint num)
 	return discard.dlg;
 }
 
-gint *discard_get_list(void)
+void discard_get_list(gint * discards)
 {
-	static gint discards[NO_RESOURCE];
-
-	memset(discards, 0, sizeof(discards));
 	if (discard.dlg != NULL)
 		resource_table_get_amount(RESOURCETABLE
 					  (discard.resource_widget),
 					  discards);
-	return discards;
+	else
+		memset(discards, 0, sizeof(discards));
 }
 
-
-/** Locate a line suitable for a player */
-static gboolean discard_locate_player(GtkTreeModel * model,
-				      G_GNUC_UNUSED GtkTreePath * path,
-				      GtkTreeIter * iter,
-				      gpointer user_data)
+void discard_player_did(gint player_num)
 {
-	int wanted = GPOINTER_TO_INT(user_data);
-	int current;
-	gtk_tree_model_get(model, iter, DISCARD_COLUMN_PLAYER_NUM,
-			   &current, -1);
-	if (current > wanted) {
-		discard_found_flag = STORE_MATCH_INSERT_BEFORE;
-		discard_found_iter = *iter;
-		return TRUE;
-	} else if (current == wanted) {
-		discard_found_flag = STORE_MATCH_EXACT;
-		discard_found_iter = *iter;
-		return TRUE;
-	}
-	return FALSE;
-}
-
-
-void discard_player_did(gint player_num, G_GNUC_UNUSED gint * resources)
-{
+	GtkTreeIter iter;
+	enum TFindResult found;
 	/* check if the player was in the list.  If not, it is not an error.
 	 * That happens if the player auto-discards. */
-	discard_found_flag = STORE_NO_MATCH;
-	gtk_tree_model_foreach(GTK_TREE_MODEL(discard_store),
-			       discard_locate_player,
-			       GINT_TO_POINTER(player_num));
-	if (discard_found_flag == STORE_MATCH_EXACT) {
-		gtk_list_store_remove(discard_store, &discard_found_iter);
+	found =
+	    find_integer_in_tree(GTK_TREE_MODEL(discard_store), &iter,
+				 DISCARD_COLUMN_PLAYER_NUM, player_num);
+
+	if (found == FIND_MATCH_EXACT) {
+		gtk_list_store_remove(discard_store, &iter);
 		if (player_num == my_player_num()) {
 			gtk_widget_destroy(discard.dlg);
 			discard.dlg = NULL;
@@ -184,25 +153,23 @@ void discard_player_must(gint player_num, gint num)
 {
 	GtkTreeIter iter;
 	GdkPixbuf *pixbuf;
+	enum TFindResult found;
 
 	/* Search for a place to add information about the player */
-	discard_found_flag = STORE_NO_MATCH;
-	gtk_tree_model_foreach(GTK_TREE_MODEL(discard_store),
-			       discard_locate_player,
-			       GINT_TO_POINTER(player_num));
-	switch (discard_found_flag) {
-	case STORE_NO_MATCH:
+	found =
+	    find_integer_in_tree(GTK_TREE_MODEL(discard_store), &iter,
+				 DISCARD_COLUMN_PLAYER_NUM, player_num);
+	switch (found) {
+	case FIND_NO_MATCH:
 		gtk_list_store_append(discard_store, &iter);
 		break;
-	case STORE_MATCH_INSERT_BEFORE:
-		gtk_list_store_insert_before(discard_store, &iter,
-					     &discard_found_iter);
+	case FIND_MATCH_INSERT_BEFORE:
+		gtk_list_store_insert_before(discard_store, &iter, &iter);
 		break;
-	case STORE_MATCH_EXACT:
-		iter = discard_found_iter;
+	case FIND_MATCH_EXACT:
 		break;
 	default:
-		g_assert(FALSE);
+		g_error("unknown case in discard_player_must");
 	};
 
 	pixbuf = player_create_icon(discard_widget, player_num, TRUE);
@@ -240,7 +207,7 @@ GtkWidget *discard_build_page(void)
 	GtkCellRenderer *renderer;
 	GtkTreeViewColumn *column;
 
-	vbox = gtk_vbox_new(FALSE, 5);
+	vbox = gtk_vbox_new(FALSE, 6);
 	gtk_widget_show(vbox);
 
 	alignment = gtk_alignment_new(0.0, 0.0, 1.0, 1.0);

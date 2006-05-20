@@ -3,7 +3,7 @@
  *
  * Copyright (C) 1999 Dave Cole
  * Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
- * Copyright (C) 2004 Roland Clobus <rclobus@bigfoot.com>
+ * Copyright (C) 2004,2006 Roland Clobus <rclobus@bigfoot.com>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,10 +25,9 @@
 #include "cost.h"
 #include "theme.h"
 #include "common_gtk.h"
+#include "quote-view.h"
 
 static void trade_update(void);
-static void check_maritime_trades(void);
-static void remove_quote(QuoteInfo * quote);
 
 typedef struct {
 	GtkWidget *chk;	/**< Checkbox to activate trade in this resource */
@@ -37,27 +36,14 @@ typedef struct {
 	gboolean enabled; /**< Trading enabled */
 } TradeRow;
 
-enum {
-	TRADE_COLUMN_PLAYER, /**< Player icon */
-	TRADE_COLUMN_POSSIBLE, /**< Good/bad trade icon */
-	TRADE_COLUMN_DESCRIPTION, /**< Trade description */
-	TRADE_COLUMN_QUOTE, /**< Internal data: contains the quotes. Not for display */
-	TRADE_COLUMN_REJECT, /**< Internal data: contains the rejected players. Not for display */
-	TRADE_COLUMN_PLAYER_NUM, /**< The player number, or -1 for maritime trade */
-	TRADE_COLUMN_LAST
-};
-
-/** The data for the GUI */
-static GtkListStore *store;
-/** The widget */
-static GtkWidget *quotes;
-/** The quote is found here */
-static GtkTreeIter quote_found_iter;
-/** Has the quote been found ? */
-static gboolean quote_found_flag;
+static GtkWidget *quoteview;
 
 static TradeRow we_supply_rows[NO_RESOURCE];
 static TradeRow we_receive_rows[NO_RESOURCE];
+
+static gint active_supply_request[NO_RESOURCE];
+static gint active_receive_request[NO_RESOURCE];
+static gboolean trade_since_selection_changed;
 
 /** This button can be hidden in games without interplayer trade */
 static GtkWidget *call_btn;
@@ -65,27 +51,9 @@ static GtkWidget *call_btn;
 static GtkWidget *we_receive_frame;
 /** The last quote that is called */
 static GtkWidget *active_quote_label;
-/** Accept the current quote */
-static GtkWidget *accept_btn;
-
-/** domestic trade quotes */
-static QuoteList *quote_list;
-/** Information about available maritime trades */
-static MaritimeInfo maritime_info;
-/** The currently selected quote, or NULL */
-static QuoteInfo *selected_quote;
-
-/** Bad/impossible trade */
-static GdkPixbuf *cross_pixbuf;
-/** Good/possible trade */
-static GdkPixbuf *tick_pixbuf;
-/** Icons for each player */
-static GdkPixbuf *player_pixbuf[MAX_PLAYERS];
-/** Icon for the maritime trade */
-static GdkPixbuf *maritime_pixbuf;
 
 /** @return TRUE is we can accept this domestic quote */
-static gboolean is_good_quote(QuoteInfo * quote)
+static gboolean is_good_quote(const QuoteInfo * quote)
 {
 	gint idx;
 	g_assert(quote != NULL);
@@ -101,14 +69,22 @@ static gboolean is_good_quote(QuoteInfo * quote)
 }
 
 /** @return TRUE if at least one resource is asked/offered */
-gboolean can_call_for_quotes()
+gboolean can_call_for_quotes(void)
 {
 	gint idx;
 	gboolean have_we_receive;
 	gboolean have_we_supply;
+	gboolean different_call;
 
+	different_call = FALSE;
 	have_we_receive = have_we_supply = FALSE;
 	for (idx = 0; idx < NO_RESOURCE; idx++) {
+		if (we_receive_rows[idx].enabled !=
+		    active_receive_request[idx])
+			different_call = TRUE;
+		if (we_supply_rows[idx].enabled !=
+		    active_supply_request[idx])
+			different_call = TRUE;
 		if (we_receive_rows[idx].enabled)
 			have_we_receive = TRUE;
 		if (we_supply_rows[idx].enabled)
@@ -117,13 +93,14 @@ gboolean can_call_for_quotes()
 	/* don't require both supply and receive, for resources may be
 	 * given away for free */
 	return (have_we_receive || have_we_supply)
-	    && can_trade_domestic();
+	    && can_trade_domestic()
+	    && (different_call || trade_since_selection_changed);
 }
 
 /** @return the current quote */
-QuoteInfo *trade_current_quote()
+const QuoteInfo *trade_current_quote(void)
 {
-	return selected_quote;
+	return quote_view_get_selected_quote(QUOTEVIEW(quoteview));
 }
 
 /** Show what the resources will be if the quote is accepted */
@@ -148,150 +125,44 @@ static void update_rows(void)
 			     resource ? quote->var.m.ratio : 0)
 			    - (quote->var.m.receive == resource ? 1 : 0);
 		sprintf(str, "%d", resource_asset(resource) - amount);
-		gtk_label_set_text(GTK_LABEL(we_receive_rows[idx].curr),
+		gtk_entry_set_text(GTK_ENTRY(we_receive_rows[idx].curr),
 				   str);
-		gtk_label_set_text(GTK_LABEL(we_supply_rows[idx].curr),
+		gtk_entry_set_text(GTK_ENTRY(we_supply_rows[idx].curr),
 				   str);
 	}
 }
 
-/** Activate a new quote. 
- * If the quote == NULL, clear the selection in the listview too */
-static void set_selected_quote(QuoteInfo * quote)
-{
-	if (selected_quote == quote)
-		return;		/* Don't do the same thing again */
-
-	selected_quote = quote;
-	if (quote == NULL)
-		gtk_tree_selection_unselect_all(gtk_tree_view_get_selection
-						(GTK_TREE_VIEW(quotes)));
-	update_rows();
-}
-
 /** @return all resources we supply */
-gint *trade_we_supply()
+const gint *trade_we_supply(void)
 {
-	static gint we_supply[NO_RESOURCE];
-	gint idx;
-
-	for (idx = 0; idx < G_N_ELEMENTS(we_supply); idx++)
-		we_supply[idx] = we_supply_rows[idx].enabled;
-	return we_supply;
+	return active_supply_request;
 }
 
 /** @return all resources we want to have */
-gint *trade_we_receive()
+const gint *trade_we_receive(void)
 {
-	static gint we_receive[NO_RESOURCE];
-	gint idx;
-
-	for (idx = 0; idx < G_N_ELEMENTS(we_receive); idx++)
-		we_receive[idx] = we_receive_rows[idx].enabled;
-	return we_receive;
+	return active_receive_request;
 }
 
 /** @return TRUE if a selection is made, and it is valid */
-gboolean trade_valid_selection()
+gboolean trade_valid_selection(void)
 {
-	if (selected_quote == NULL)
+	const QuoteInfo *quote;
+
+	quote = quote_view_get_selected_quote(QUOTEVIEW(quoteview));
+	if (quote == NULL)
 		return FALSE;
-	if (!selected_quote->is_domestic)
+	if (!quote->is_domestic)
 		return TRUE;
-	return is_good_quote(selected_quote);
+	return is_good_quote(quote);
 }
 
 static void trade_theme_changed(void)
 {
-	int width, height;
-	GdkPixmap *pixmap;
-	GdkGC *gc;
-	QuoteInfo *quote;
-
-	gtk_icon_size_lookup(GTK_ICON_SIZE_MENU, &width, &height);
-
-	pixmap =
-	    gdk_pixmap_new(quotes->window, width, height,
-			   gtk_widget_get_visual(quotes)->depth);
-
-	gc = gdk_gc_new(pixmap);
-	gdk_gc_set_foreground(gc, &black);
-	gdk_draw_rectangle(pixmap, gc, TRUE, 0, 0, width, height);
-	gdk_gc_set_fill(gc, GDK_TILED);
-	gdk_gc_set_tile(gc, guimap_terrain(SEA_TERRAIN));
-	gdk_draw_rectangle(pixmap, gc, TRUE, 0, 0, width, height);
-	if (maritime_pixbuf)
-		g_object_unref(maritime_pixbuf);
-	maritime_pixbuf =
-	    gdk_pixbuf_get_from_drawable(NULL, pixmap, NULL, 0, 0, 0, 0,
-					 -1, -1);
-	g_object_unref(gc);
-	g_object_unref(pixmap);
-
-	/* Remove all maritime quotes */
-	quote = quotelist_first(quote_list);
-	while (quote != NULL) {
-		QuoteInfo *curr = quote;
-		quote = quotelist_next(quote);
-		if (curr->is_domestic)
-			break;
-		remove_quote(curr);
-	}
-
-	/* Add all of the maritime trades that can be performed */
-	check_maritime_trades();
+	quote_view_theme_changed(QUOTEVIEW(quoteview));
 }
 
-/** Load/construct the images */
-static void load_pixmaps(void)
-{
-	static gboolean init = FALSE;
-	int width, height;
-	GdkPixmap *pixmap;
-	GdkGC *gc;
-	gint i;
-
-	if (init)
-		return;
-
-	gtk_icon_size_lookup(GTK_ICON_SIZE_MENU, &width, &height);
-
-	pixmap =
-	    gdk_pixmap_new(quotes->window, width, height,
-			   gtk_widget_get_visual(quotes)->depth);
-
-	gc = gdk_gc_new(pixmap);
-	gdk_gc_set_foreground(gc, &black);
-	gdk_draw_rectangle(pixmap, gc, TRUE, 0, 0, width, height);
-	for (i = 0; i < MAX_PLAYERS; ++i) {
-		gdk_gc_set_foreground(gc, player_color(i));
-		gdk_draw_rectangle(pixmap, gc, TRUE, 1, 1, width - 2,
-				   height - 2);
-		player_pixbuf[i] =
-		    gdk_pixbuf_get_from_drawable(NULL, pixmap, NULL, 0, 0,
-						 0, 0, -1, -1);
-	}
-	gdk_gc_set_fill(gc, GDK_TILED);
-	/** @todo RC Should be updated when the theme changes */
-	gdk_gc_set_tile(gc, guimap_terrain(SEA_TERRAIN));
-	gdk_draw_rectangle(pixmap, gc, TRUE, 0, 0, width, height);
-	maritime_pixbuf =
-	    gdk_pixbuf_get_from_drawable(NULL, pixmap, NULL, 0, 0, 0, 0,
-					 -1, -1);
-	g_object_unref(gc);
-
-	cross_pixbuf =
-	    gtk_widget_render_icon(quotes, GTK_STOCK_CANCEL,
-				   GTK_ICON_SIZE_MENU, NULL);
-	tick_pixbuf =
-	    gtk_widget_render_icon(quotes, GTK_STOCK_APPLY,
-				   GTK_ICON_SIZE_MENU, NULL);
-
-	theme_register_callback(G_CALLBACK(trade_theme_changed));
-	init = TRUE;
-}
-
-static void format_list(gchar * desc, gint * resources)
+static void format_list(gchar * desc, const gint * resources)
 {
 	gint idx;
 	gboolean is_first;
@@ -311,28 +182,18 @@ static void format_list(gchar * desc, gint * resources)
 		}
 }
 
-static gboolean empty_list(gint * resources)
-{
-	gint idx;
-
-	for (idx = 0; idx < NO_RESOURCE; idx++)
-		if (resources[idx] > 0)
-			return FALSE;
-	return TRUE;
-}
-
-void trade_format_quote(QuoteInfo * quote, gchar * desc)
+void trade_format_quote(const QuoteInfo * quote, gchar * desc)
 {
 	const gchar *format = NULL;
 	gchar buf1[128];
 	gchar buf2[128];
 
-	if (empty_list(quote->var.d.supply)) {
+	if (resource_count(quote->var.d.supply) == 0) {
 		/* trade: you ask for something for free */
 		format = _("ask for %s for free");
 		format_list(buf1, quote->var.d.receive);
 		sprintf(desc, format, buf1);
-	} else if (empty_list(quote->var.d.receive)) {
+	} else if (resource_count(quote->var.d.receive) == 0) {
 		/* trade: you give something away for free */
 		format = _("give %s for free");
 		format_list(buf1, quote->var.d.supply);
@@ -346,249 +207,44 @@ void trade_format_quote(QuoteInfo * quote, gchar * desc)
 	}
 }
 
-static void trade_format_maritime(QuoteInfo * quote, gchar * desc)
-{
-	/* trade: maritime quote: %1 resources of type %2 for
-	 * one resource of type %3 */
-	sprintf(desc, _("%d:1 %s for %s"),
-		quote->var.m.ratio,
-		resource_name(quote->var.m.supply, FALSE),
-		resource_name(quote->var.m.receive, FALSE));
-}
-
-/** Locate the QuoteInfo* in user_data. Return TRUE if is found. The iter
- *  is set in quote_found_iter. The flag quote_found_flag is set to TRUE
- */
-static gboolean trade_locate_quote(GtkTreeModel * model,
-				   G_GNUC_UNUSED GtkTreePath * path,
-				   GtkTreeIter * iter, gpointer user_data)
-{
-	QuoteInfo *wanted = user_data;
-	QuoteInfo *current;
-	gtk_tree_model_get(model, iter, TRADE_COLUMN_QUOTE, &current, -1);
-	if (current == wanted) {
-		quote_found_iter = *iter;
-		quote_found_flag = TRUE;
-		return TRUE;
-	}
-	return FALSE;
-}
-
-/** Locate the Player* in user_data. Return TRUE if is found. The iter
- *  is set in quote_found_iter. The flag quote_found_flag is set to TRUE
- */
-static gboolean trade_locate_reject(GtkTreeModel * model,
-				    G_GNUC_UNUSED GtkTreePath * path,
-				    GtkTreeIter * iter, gpointer user_data)
-{
-	Player *wanted = user_data;
-	Player *current;
-	gtk_tree_model_get(model, iter, TRADE_COLUMN_REJECT, &current, -1);
-	if (current == wanted) {
-		quote_found_iter = *iter;
-		quote_found_flag = TRUE;
-		return TRUE;
-	}
-	return FALSE;
-}
-
-/** Add a maritime trade */
-static void add_maritime_trade(gint ratio, Resource receive,
-			       Resource supply)
-{
-	QuoteInfo *quote;
-	QuoteInfo *prev;
-	gchar quote_desc[128];
-	GtkTreeIter iter;
-
-	for (quote = quotelist_first(quote_list);
-	     quote != NULL; quote = quotelist_next(quote))
-		if (quote->is_domestic)
-			break;
-		else if (quote->var.m.ratio == ratio
-			 && quote->var.m.supply == supply
-			 && quote->var.m.receive == receive)
-			return;
-
-	quote = quotelist_add_maritime(quote_list, ratio, supply, receive);
-
-	trade_format_maritime(quote, quote_desc);
-	prev = quotelist_prev(quote);
-
-	quote_found_flag = FALSE;
-	if (prev != NULL)
-		gtk_tree_model_foreach(GTK_TREE_MODEL(store),
-				       trade_locate_quote, prev);
-	if (quote_found_flag)
-		gtk_list_store_insert_after(store, &iter,
-					    &quote_found_iter);
-	else
-		gtk_list_store_prepend(store, &iter);
-	gtk_list_store_set(store, &iter, TRADE_COLUMN_PLAYER, maritime_pixbuf, TRADE_COLUMN_POSSIBLE, tick_pixbuf, TRADE_COLUMN_DESCRIPTION, quote_desc, TRADE_COLUMN_QUOTE, quote, TRADE_COLUMN_PLAYER_NUM, -1,	/* Maritime trade */
-			   -1);
-}
-
-/** Remove a quote from the list */
-static void remove_quote(QuoteInfo * quote)
-{
-	if (quote == selected_quote)
-		set_selected_quote(NULL);
-
-	quote_found_flag = FALSE;
-	gtk_tree_model_foreach(GTK_TREE_MODEL(store), trade_locate_quote,
-			       quote);
-	if (quote_found_flag)
-		gtk_list_store_remove(store, &quote_found_iter);
-	quotelist_delete(quote_list, quote);
-}
-
-/** Player <I>player_num</I> has rejected trade */
-static void add_reject_row(gint player_num)
-{
-	Player *player = player_get(player_num);
-	QuoteInfo *quote;
-	GtkTreeIter iter;
-	enum TFindResult found;
-
-	quote_found_flag = FALSE;
-	gtk_tree_model_foreach(GTK_TREE_MODEL(store), trade_locate_reject,
-			       player);
-	if (quote_found_flag)	/* Already removed */
-		return;
-
-	/* work out where to put the reject row
-	 */
-	for (quote = quotelist_first(quote_list);
-	     quote != NULL; quote = quotelist_next(quote))
-		if (!quote->is_domestic)
-			continue;
-		else if (quote->var.d.player_num >= player_num)
-			break;
-
-	found =
-	    find_integer_in_tree(GTK_TREE_MODEL(store), &iter,
-				 TRADE_COLUMN_PLAYER_NUM, player_num);
-	if (found != FIND_NO_MATCH)
-		gtk_list_store_insert_before(store, &iter, &iter);
-	else
-		gtk_list_store_append(store, &iter);
-	gtk_list_store_set(store, &iter,
-			   TRADE_COLUMN_PLAYER, player_pixbuf[player_num],
-			   TRADE_COLUMN_POSSIBLE, cross_pixbuf,
-			   /* Trade: a player has rejected trade */
-			   TRADE_COLUMN_DESCRIPTION, _("Rejected trade"),
-			   TRADE_COLUMN_QUOTE, NULL,
-			   TRADE_COLUMN_REJECT, player,
-			   TRADE_COLUMN_PLAYER_NUM, player_num, -1);
-}
-
 /** A new trade is started. Keep old quotes, and remove rejection messages.
  */
-void trade_new_trade()
+void trade_new_trade(void)
 {
 	gint idx;
 	gchar we_supply_desc[512];
 	gchar we_receive_desc[512];
 	gchar desc[512];
 
-	for (idx = 0; idx < num_players(); idx++) {
-		Player *player = player_get(idx);
-		quote_found_flag = FALSE;
-		gtk_tree_model_foreach(GTK_TREE_MODEL(store),
-				       trade_locate_reject, player);
-		if (quote_found_flag)
-			gtk_list_store_remove(store, &quote_found_iter);
-	}
+	quote_view_remove_rejected_quotes(QUOTEVIEW(quoteview));
 
-	resource_format_type(we_supply_desc, trade_we_supply());
-	resource_format_type(we_receive_desc, trade_we_receive());
+	for (idx = 0; idx < G_N_ELEMENTS(active_supply_request); idx++) {
+		active_supply_request[idx] = we_supply_rows[idx].enabled;
+		active_receive_request[idx] = we_receive_rows[idx].enabled;
+	}
+	trade_since_selection_changed = FALSE;
+
+	resource_format_type(we_supply_desc, active_supply_request);
+	resource_format_type(we_receive_desc, active_receive_request);
 	/* I want some resources, and give them some resources */
 	g_snprintf(desc, sizeof(desc), _("I want %s, and give them %s"),
 		   we_receive_desc, we_supply_desc);
 	gtk_label_set_text(GTK_LABEL(active_quote_label), desc);
 }
 
-/** Check if all existing maritime trades are valid.
- *  Add and remove maritime trades as needed
- */
-static void check_maritime_trades(void)
-{
-	QuoteInfo *quote;
-	gint idx;
-
-	quote = quotelist_first(quote_list);
-	while (quote != NULL) {
-		QuoteInfo *curr = quote;
-		gboolean is_valid;
-
-		quote = quotelist_next(quote);
-		if (curr->is_domestic)
-			break;
-
-		/* Is the current quote valid?
-		 */
-		is_valid = FALSE;
-		if (we_receive_rows[curr->var.m.receive].enabled)
-			switch (curr->var.m.ratio) {
-			case 2:
-				is_valid =
-				    maritime_info.specific_resource[curr->
-								    var.m.
-								    supply]
-				    && resource_asset(curr->var.m.
-						      supply) >= 2;
-				break;
-			case 3:
-				is_valid = maritime_info.any_resource
-				    && resource_asset(curr->var.m.
-						      supply) >= 3;
-				break;
-			case 4:
-				is_valid =
-				    resource_asset(curr->var.m.supply) >=
-				    4;
-				break;
-			}
-		if (!is_valid)
-			remove_quote(curr);
-	}
-
-	/* Add all of the maritime trades that can be performed
-	 */
-	for (idx = 0; idx < NO_RESOURCE; idx++) {
-		gint supply_idx;
-
-		if (!we_receive_rows[idx].enabled)
-			continue;
-
-		for (supply_idx = 0; supply_idx < NO_RESOURCE;
-		     supply_idx++) {
-			if (supply_idx == idx)
-				continue;
-			if (maritime_info.specific_resource[supply_idx]
-			    && resource_asset(supply_idx) >= 2) {
-				add_maritime_trade(2, idx, supply_idx);
-				continue;
-			}
-			if (maritime_info.any_resource
-			    && resource_asset(supply_idx) >= 3) {
-				add_maritime_trade(3, idx, supply_idx);
-				continue;
-			}
-			if (resource_asset(supply_idx) >= 4) {
-				add_maritime_trade(4, idx, supply_idx);
-				continue;
-			}
-		}
-	}
-}
-
 /** A resource checkbox is toggled */
 static void toggled_cb(GtkWidget * widget, TradeRow * row)
 {
+	gint idx;
+	gboolean filter[NO_RESOURCE];
+
 	row->enabled =
 	    gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget));
-	set_selected_quote(NULL);
+
+	for (idx = 0; idx < NO_RESOURCE; idx++)
+		filter[idx] = we_receive_rows[idx].enabled;
+	quote_view_clear_selected_quote(QUOTEVIEW(quoteview));
+	quote_view_set_maritime_filter(QUOTEVIEW(quoteview), filter);
 	trade_update();
 	frontend_gui_update();
 }
@@ -597,9 +253,7 @@ static void toggled_cb(GtkWidget * widget, TradeRow * row)
 static void add_trade_row(GtkWidget * table, TradeRow * row,
 			  Resource resource)
 {
-	GtkWidget *label;
 	gint col;
-	GtkWidget *frame;
 
 	col = 0;
 	row->resource = resource;
@@ -613,20 +267,14 @@ static void add_trade_row(GtkWidget * table, TradeRow * row,
 			 GTK_EXPAND | GTK_FILL, GTK_FILL, 0, 0);
 	col++;
 
-	/* Draw a border around the number */
-	frame = gtk_viewport_new(NULL, NULL);
-	gtk_viewport_set_shadow_type(GTK_VIEWPORT(frame), GTK_SHADOW_IN);
-	gtk_widget_show(frame);
-	gtk_table_attach(GTK_TABLE(table), frame,
+	row->curr = gtk_entry_new();
+	gtk_entry_set_width_chars(GTK_ENTRY(row->curr), 3);
+	gtk_entry_set_alignment(GTK_ENTRY(row->curr), 1.0);
+	gtk_widget_set_sensitive(row->curr, FALSE);
+	gtk_widget_show(row->curr);
+	gtk_table_attach(GTK_TABLE(table), row->curr,
 			 col, col + 1, resource, resource + 1,
-			 GTK_EXPAND | GTK_FILL, GTK_FILL, 0, 0);
-
-	/* Reserve space for 2 digits */
-	row->curr = label = gtk_label_new("00");
-	gtk_misc_set_alignment(GTK_MISC(label), 1, 1);
-	gtk_widget_show(label);
-	gtk_container_set_border_width(GTK_CONTAINER(frame), 0);
-	gtk_container_add(GTK_CONTAINER(frame), label);
+			 GTK_FILL, GTK_FILL, 0, 0);
 }
 
 /** Set the sensitivity of the row, and update the assets when applicable */
@@ -636,66 +284,22 @@ static void set_row_sensitive(TradeRow * row)
 				 resource_asset(row->resource) > 0);
 }
 
-/** Check if the quote still is valid. Update the icon.
- */
-static gboolean check_valid_trade(GtkTreeModel * model,
-				  G_GNUC_UNUSED GtkTreePath * path,
-				  GtkTreeIter * iter,
-				  G_GNUC_UNUSED gpointer user_data)
-{
-	QuoteInfo *quote;
-	gtk_tree_model_get(model, iter, TRADE_COLUMN_QUOTE, &quote, -1);
-	if (quote != NULL)
-		if (quote->is_domestic) {
-			gtk_list_store_set(store, iter,
-					   TRADE_COLUMN_POSSIBLE,
-					   is_good_quote(quote) ?
-					   tick_pixbuf : cross_pixbuf, -1);
-		}
-	return FALSE;
-}
-
-/** A trade is performed/a new trade is possible */
-static void trade_update(void)
-{
-	gint idx;
-
-	for (idx = 0; idx < G_N_ELEMENTS(we_supply_rows); idx++) {
-		if (resource_asset(idx) == 0) {
-			gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
-						     (we_supply_rows[idx].
-						      chk), FALSE);
-			we_supply_rows[idx].enabled = FALSE;
-		}
-		set_row_sensitive(we_supply_rows + idx);
-	}
-	check_maritime_trades();
-
-	/* Check if all quotes are still valid */
-	gtk_tree_model_foreach(GTK_TREE_MODEL(store), check_valid_trade,
-			       NULL);
-}
-
 /** Actions before a domestic trade is performed */
 void trade_perform_domestic(G_GNUC_UNUSED gint player_num,
 			    gint partner_num, gint quote_num,
-			    gint * they_supply, gint * they_receive)
+			    const gint * they_supply,
+			    const gint * they_receive)
 {
 	cb_trade(partner_num, quote_num, they_supply, they_receive);
 }
 
 /** Actions after a domestic trade is performed */
 void frontend_trade_domestic(gint partner_num, gint quote_num,
-			     G_GNUC_UNUSED gint * we_supply,
-			     G_GNUC_UNUSED gint * we_receive)
+			     G_GNUC_UNUSED const gint * we_supply,
+			     G_GNUC_UNUSED const gint * we_receive)
 {
-	QuoteInfo *quote;
-
-	g_assert(quote_list != NULL);
-	quote =
-	    quotelist_find_domestic(quote_list, partner_num, quote_num);
-	g_assert(quote != NULL);
-	remove_quote(quote);
+	quote_view_remove_quote(QUOTEVIEW(quoteview), partner_num,
+				quote_num);
 	trade_update();
 }
 
@@ -710,55 +314,23 @@ void frontend_trade_maritime(G_GNUC_UNUSED gint ratio,
 			     G_GNUC_UNUSED Resource we_supply,
 			     G_GNUC_UNUSED Resource we_receive)
 {
-	set_selected_quote(NULL);
+	quote_view_clear_selected_quote(QUOTEVIEW(quoteview));
 	trade_update();
 }
 
 /** Add a quote from a player */
 void trade_add_quote(gint player_num,
-		     gint quote_num, gint * supply, gint * receive)
+		     gint quote_num, const gint * supply,
+		     const gint * receive)
 {
-	GtkTreeIter iter;
-	enum TFindResult found;
-	QuoteInfo *quote;
-	gchar quote_desc[128];
-
-	/* If the trade is already listed, don't duplicate */
-	if (quotelist_find_domestic(quote_list, player_num, quote_num) !=
-	    NULL)
-		return;
-
-	quote = quotelist_add_domestic(quote_list,
-				       player_num, quote_num, supply,
-				       receive);
-	trade_format_quote(quote, quote_desc);
-
-	found =
-	    find_integer_in_tree(GTK_TREE_MODEL(store), &iter,
-				 TRADE_COLUMN_PLAYER_NUM, player_num + 1);
-
-	if (found != FIND_NO_MATCH)
-		gtk_list_store_insert_before(store, &iter, &iter);
-	else
-		gtk_list_store_append(store, &iter);
-	gtk_list_store_set(store, &iter,
-			   TRADE_COLUMN_PLAYER, player_pixbuf[player_num],
-			   TRADE_COLUMN_POSSIBLE, is_good_quote(quote) ?
-			   tick_pixbuf : cross_pixbuf,
-			   TRADE_COLUMN_DESCRIPTION, quote_desc,
-			   TRADE_COLUMN_QUOTE, quote,
-			   TRADE_COLUMN_PLAYER_NUM, player_num, -1);
+	quote_view_add_quote(QUOTEVIEW(quoteview), player_num, quote_num,
+			     supply, receive);
 }
 
 void trade_delete_quote(gint player_num, gint quote_num)
 {
-	QuoteInfo *quote;
-
-	quote = quotelist_find_domestic(quote_list, player_num, quote_num);
-	if (quote == NULL)
-		return;
-
-	remove_quote(quote);
+	quote_view_remove_quote(QUOTEVIEW(quoteview), player_num,
+				quote_num);
 }
 
 /** A player has rejected the trade. Removes all quotes, and adds a reject
@@ -766,31 +338,22 @@ void trade_delete_quote(gint player_num, gint quote_num)
  */
 void trade_player_finish(gint player_num)
 {
-	QuoteInfo *quote;
-	while ((quote =
-		quotelist_find_domestic(quote_list, player_num,
-					-1)) != NULL) {
-		remove_quote(quote);
-	}
-	add_reject_row(player_num);
+	quote_view_reject(QUOTEVIEW(quoteview), player_num);
 }
 
 /** The trade is finished, hide the page */
-void trade_finish()
+void trade_finish(void)
 {
-	if (quote_list != NULL)
-		quotelist_free(&quote_list);
+	quote_view_finish(QUOTEVIEW(quoteview));
 	gui_show_trade_page(FALSE);
 }
 
 /** Start a new trade */
-void trade_begin()
+void trade_begin(void)
 {
 	gint idx;
 
-	map_maritime_info(get_map(), &maritime_info, my_player_num());
-
-	quotelist_new(&quote_list);
+	quote_view_begin(QUOTEVIEW(quoteview));
 
 	for (idx = 0; idx < G_N_ELEMENTS(we_supply_rows); idx++) {
 		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
@@ -802,8 +365,9 @@ void trade_begin()
 					     (we_receive_rows[idx].chk),
 					     FALSE);
 		we_receive_rows[idx].enabled = FALSE;
+		active_receive_request[idx] = 0;
+		active_supply_request[idx] = 0;
 	}
-	gtk_list_store_clear(store);
 
 	if (!can_trade_domestic()) {
 		gtk_widget_hide(we_receive_frame);
@@ -815,36 +379,22 @@ void trade_begin()
 		gtk_widget_show(active_quote_label);
 		gtk_label_set_text(GTK_LABEL(active_quote_label), "");
 	}
-	set_selected_quote(NULL);
+	quote_view_clear_selected_quote(QUOTEVIEW(quoteview));
 	update_rows();		/* Always update */
 	gui_show_trade_page(TRUE);
 }
 
-static gint quote_click_cb(G_GNUC_UNUSED GtkWidget * widget,
-			   G_GNUC_UNUSED GdkEventButton * event,
-			   G_GNUC_UNUSED gpointer user_data)
+static void quote_dblclick_cb(G_GNUC_UNUSED QuoteView * quoteview,
+			      gpointer accept_btn)
 {
-	if (event->type == GDK_2BUTTON_PRESS) {
-		if (trade_valid_selection())
-			gtk_button_clicked(GTK_BUTTON(accept_btn));
-	};
-	return FALSE;
+	if (trade_valid_selection())
+		gtk_button_clicked(GTK_BUTTON(accept_btn));
 }
 
-static void quote_select_cb(GtkTreeSelection * selection,
-			    G_GNUC_UNUSED gpointer user_data)
+static void quote_selected_cb(G_GNUC_UNUSED QuoteView * quoteview,
+			      G_GNUC_UNUSED gpointer user_data)
 {
-	GtkTreeIter iter;
-	GtkTreeModel *model;
-	QuoteInfo *quote;
-
-	g_assert(selection != NULL);
-	if (gtk_tree_selection_get_selected(selection, &model, &iter))
-		gtk_tree_model_get(model, &iter, TRADE_COLUMN_QUOTE,
-				   &quote, -1);
-	else
-		quote = NULL;
-	set_selected_quote(quote);
+	update_rows();
 	frontend_gui_update();
 }
 
@@ -852,69 +402,80 @@ static void quote_select_cb(GtkTreeSelection * selection,
 GtkWidget *trade_build_page(void)
 {
 	GtkWidget *panel_mainbox;
-	GtkWidget *panel_hbox;
 	GtkWidget *vbox;
-	GtkWidget *frame;
+	GtkWidget *label;
+	GtkWidget *alignment;
 	GtkWidget *table;
 	GtkWidget *bbox;
-	GtkWidget *scroll_win;
 	GtkWidget *finish_btn;
+	GtkWidget *accept_btn;
 	gint idx;
 
-	GtkTreeViewColumn *column;
-
-	panel_mainbox = gtk_vbox_new(FALSE, 5);
+	panel_mainbox = gtk_hbox_new(FALSE, 6);
 	gtk_widget_show(panel_mainbox);
-	gtk_container_set_border_width(GTK_CONTAINER(panel_mainbox), 5);
+	gtk_container_set_border_width(GTK_CONTAINER(panel_mainbox), 6);
 
-	active_quote_label = gtk_label_new("");
-	gtk_widget_show(active_quote_label);
-	gtk_misc_set_alignment(GTK_MISC(active_quote_label), 0, 0.5);
-	gtk_box_pack_start(GTK_BOX(panel_mainbox), active_quote_label,
-			   FALSE, FALSE, 0);
-
-	panel_hbox = gtk_hbox_new(FALSE, 5);
-	gtk_widget_show(panel_hbox);
-	gtk_box_pack_start(GTK_BOX(panel_mainbox), panel_hbox, TRUE, TRUE,
-			   0);
-
-	vbox = gtk_vbox_new(FALSE, 3);
+	vbox = gtk_vbox_new(FALSE, 6);
 	gtk_widget_show(vbox);
-	gtk_box_pack_start(GTK_BOX(panel_hbox), vbox, FALSE, TRUE, 0);
+	gtk_box_pack_start(GTK_BOX(panel_mainbox), vbox, FALSE, TRUE, 0);
 
+	label = gtk_label_new(NULL);
 	/* Frame title, trade: I want to trade these resources */
-	frame = gtk_frame_new(_("I Want"));
-	gtk_widget_show(frame);
-	gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, TRUE, 0);
+	gtk_label_set_markup(GTK_LABEL(label), _("<b>I Want</b>"));
+	gtk_widget_show(label);
+	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+	gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, TRUE, 0);
+
+	alignment = gtk_alignment_new(0.0, 0.0, 0.0, 0.0);
+	gtk_alignment_set_padding(GTK_ALIGNMENT(alignment), 0, 3, 0 * 12,
+				  0);
+	gtk_widget_show(alignment);
+	gtk_box_pack_start(GTK_BOX(vbox), alignment, FALSE, FALSE, 0);
 
 	table = gtk_table_new(NO_RESOURCE, 2, FALSE);
 	gtk_widget_show(table);
-	gtk_container_add(GTK_CONTAINER(frame), table);
-	gtk_container_set_border_width(GTK_CONTAINER(table), 3);
+	gtk_container_add(GTK_CONTAINER(alignment), table);
+	gtk_container_set_border_width(GTK_CONTAINER(table), 0);
 	gtk_table_set_row_spacings(GTK_TABLE(table), 3);
 	gtk_table_set_col_spacings(GTK_TABLE(table), 3);
 
 	for (idx = 0; idx < NO_RESOURCE; ++idx)
 		add_trade_row(table, we_receive_rows + idx, idx);
 
-	/* Frame title, trade: I want these resources in return */
-	we_receive_frame = gtk_frame_new(_("Give Them"));
+	we_receive_frame = gtk_vbox_new(FALSE, 6);
 	gtk_widget_show(we_receive_frame);
 	gtk_box_pack_start(GTK_BOX(vbox), we_receive_frame, FALSE, TRUE,
 			   0);
 
+	label = gtk_label_new(NULL);
+	/* Frame title, trade: I want these resources in return */
+	gtk_label_set_markup(GTK_LABEL(label), _("<b>Give Them</b>"));
+	gtk_widget_show(label);
+	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+	gtk_box_pack_start(GTK_BOX(we_receive_frame), label, FALSE, TRUE,
+			   0);
+
+	alignment = gtk_alignment_new(0.0, 0.0, 0.0, 0.0);
+	gtk_alignment_set_padding(GTK_ALIGNMENT(alignment), 0, 3, 0 * 12,
+				  0);
+	gtk_widget_show(alignment);
+	gtk_box_pack_start(GTK_BOX(we_receive_frame), alignment, FALSE,
+			   FALSE, 0);
+
 	table = gtk_table_new(NO_RESOURCE, 2, FALSE);
 	gtk_widget_show(table);
-	gtk_container_add(GTK_CONTAINER(we_receive_frame), table);
-	gtk_container_set_border_width(GTK_CONTAINER(table), 3);
+	gtk_container_add(GTK_CONTAINER(alignment), table);
+	gtk_container_set_border_width(GTK_CONTAINER(table), 0);
 	gtk_table_set_row_spacings(GTK_TABLE(table), 3);
+	gtk_table_set_col_spacings(GTK_TABLE(table), 3);
 
 	for (idx = 0; idx < NO_RESOURCE; ++idx)
 		add_trade_row(table, we_supply_rows + idx, idx);
 
 	bbox = gtk_hbutton_box_new();
 	gtk_widget_show(bbox);
-	gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, TRUE, 0);
+	gtk_box_pack_start(GTK_BOX(we_receive_frame), bbox, FALSE, TRUE,
+			   0);
 
 	/* Button text, trade: call for quotes from other players */
 	call_btn = gtk_button_new_with_mnemonic(_("_Call for Quotes"));
@@ -922,65 +483,21 @@ GtkWidget *trade_build_page(void)
 	gtk_widget_show(call_btn);
 	gtk_container_add(GTK_CONTAINER(bbox), call_btn);
 
-	vbox = gtk_vbox_new(FALSE, 3);
+	vbox = gtk_vbox_new(FALSE, 6);
 	gtk_widget_show(vbox);
-	gtk_box_pack_start(GTK_BOX(panel_hbox), vbox, TRUE, TRUE, 0);
+	gtk_box_pack_start(GTK_BOX(panel_mainbox), vbox, TRUE, TRUE, 0);
 
-	/* Create model */
-	store = gtk_list_store_new(TRADE_COLUMN_LAST,
-				   GDK_TYPE_PIXBUF,
-				   GDK_TYPE_PIXBUF,
-				   G_TYPE_STRING,
-				   G_TYPE_POINTER,
-				   G_TYPE_POINTER, G_TYPE_INT);
+	active_quote_label = gtk_label_new("");
+	gtk_widget_show(active_quote_label);
+	gtk_misc_set_alignment(GTK_MISC(active_quote_label), 0, 0.5);
+	gtk_box_pack_start(GTK_BOX(vbox), active_quote_label,
+			   FALSE, FALSE, 0);
 
-	scroll_win = gtk_scrolled_window_new(NULL, NULL);
-	gtk_scrolled_window_set_shadow_type(GTK_SCROLLED_WINDOW
-					    (scroll_win), GTK_SHADOW_IN);
-	gtk_widget_show(scroll_win);
-	gtk_box_pack_start(GTK_BOX(vbox), scroll_win, TRUE, TRUE, 0);
-	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scroll_win),
-				       GTK_POLICY_NEVER,
-				       GTK_POLICY_AUTOMATIC);
-
-	/* Create graphical representation of the model */
-	quotes = gtk_tree_view_new_with_model(GTK_TREE_MODEL(store));
-	gtk_container_add(GTK_CONTAINER(scroll_win), quotes);
-
-	/* Register double-click */
-	g_signal_connect(G_OBJECT(quotes), "button_press_event",
-			 G_CALLBACK(quote_click_cb), NULL);
-
-	g_signal_connect(G_OBJECT
-			 (gtk_tree_view_get_selection
-			  (GTK_TREE_VIEW(quotes))), "changed",
-			 G_CALLBACK(quote_select_cb), NULL);
-
-	/* Now create columns */
-
-	/* Table header: Player who trades */
-	column = gtk_tree_view_column_new_with_attributes(_("Player"),
-							  gtk_cell_renderer_pixbuf_new
-							  (), "pixbuf",
-							  TRADE_COLUMN_PLAYER,
-							  NULL);
-	gtk_tree_view_append_column(GTK_TREE_VIEW(quotes), column);
-
-	column = gtk_tree_view_column_new_with_attributes("",
-							  gtk_cell_renderer_pixbuf_new
-							  (), "pixbuf",
-							  TRADE_COLUMN_POSSIBLE,
-							  NULL);
-	gtk_tree_view_append_column(GTK_TREE_VIEW(quotes), column);
-
-	/* Table header: Quote */
-	column = gtk_tree_view_column_new_with_attributes(_("Quotes"),
-							  gtk_cell_renderer_text_new
-							  (), "text",
-							  TRADE_COLUMN_DESCRIPTION,
-							  NULL);
-	gtk_tree_view_append_column(GTK_TREE_VIEW(quotes), column);
-	gtk_widget_show(quotes);
+	quoteview = quote_view_new(TRUE, is_good_quote);
+	gtk_widget_show(quoteview);
+	gtk_box_pack_start(GTK_BOX(vbox), quoteview, TRUE, TRUE, 0);
+	g_signal_connect(QUOTEVIEW(quoteview), "selection-changed",
+			 G_CALLBACK(quote_selected_cb), NULL);
 
 	bbox = gtk_hbutton_box_new();
 	gtk_widget_show(bbox);
@@ -999,7 +516,28 @@ GtkWidget *trade_build_page(void)
 	gtk_widget_show(finish_btn);
 	gtk_container_add(GTK_CONTAINER(bbox), finish_btn);
 
-	load_pixmaps();
+	g_signal_connect(G_OBJECT(quoteview), "selection-activated",
+			 G_CALLBACK(quote_dblclick_cb), accept_btn);
+
+	theme_register_callback(G_CALLBACK(trade_theme_changed));
 
 	return panel_mainbox;
+}
+
+/** A trade is performed/a new trade is possible */
+static void trade_update(void)
+{
+	gint idx;
+
+	for (idx = 0; idx < G_N_ELEMENTS(we_supply_rows); idx++) {
+		if (resource_asset(idx) == 0) {
+			gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
+						     (we_supply_rows[idx].
+						      chk), FALSE);
+			we_supply_rows[idx].enabled = FALSE;
+		}
+		set_row_sensitive(we_supply_rows + idx);
+	}
+	quote_view_check_validity_of_trades(QUOTEVIEW(quoteview));
+	trade_since_selection_changed = TRUE;
 }

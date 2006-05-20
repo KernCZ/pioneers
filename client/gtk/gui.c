@@ -763,7 +763,7 @@ static void preferences_cb(void)
 	GtkWidget *layout;
 	GtkTooltips *tooltips;
 
-	gint row;
+	guint row;
 	gint color_summary;
 	GList *theme_elt;
 	int i;

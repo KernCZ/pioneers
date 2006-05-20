@@ -74,7 +74,8 @@ void resource_init(void)
 	};
 }
 
-void resource_apply_list(gint player_num, gint * resources, gint mult)
+void resource_apply_list(gint player_num, const gint * resources,
+			 gint mult)
 {
 	gint idx;
 	gint bank_change[NO_RESOURCE];
@@ -92,7 +93,7 @@ void resource_apply_list(gint player_num, gint * resources, gint mult)
 	modify_bank(bank_change);
 }
 
-void resource_cards(gint num, Resource type, gchar * buf, gint buflen)
+void resource_cards(gint num, Resource type, gchar * buf, guint buflen)
 {
 	/* FIXME: this should be touched up to take advantage of the
 	   GNU ngettext API */
@@ -105,7 +106,7 @@ void resource_cards(gint num, Resource type, gchar * buf, gint buflen)
 	buf[buflen - 1] = '\0';
 }
 
-gint resource_count(gint * resources)
+gint resource_count(const gint * resources)
 {
 	gint num;
 	gint idx;
@@ -122,7 +123,7 @@ gint resource_total(void)
 	return resource_count(my_assets);
 }
 
-void resource_format_num(gchar * str, guint len, gint * resources)
+void resource_format_num(gchar * str, guint len, const gint * resources)
 {
 	gint idx;
 	gint num_types;
@@ -174,7 +175,7 @@ void resource_format_num(gchar * str, guint len, gint * resources)
 }
 
 void resource_log_list(gint player_num, const gchar * action,
-		       gint * resources)
+		       const gint * resources)
 {
 	char buff[512];
 

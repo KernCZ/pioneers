@@ -90,8 +90,8 @@ QuoteInfo *quotelist_add_maritime(QuoteList * list,
 }
 
 QuoteInfo *quotelist_add_domestic(QuoteList * list, gint player_num,
-				  gint quote_num, gint * supply,
-				  gint * receive)
+				  gint quote_num, const gint * supply,
+				  const gint * receive)
 {
 	QuoteInfo *quote;
 
@@ -136,7 +136,7 @@ QuoteInfo *quotelist_first(QuoteList * list)
 	return list->quotes->data;
 }
 
-QuoteInfo *quotelist_prev(QuoteInfo * quote)
+QuoteInfo *quotelist_prev(const QuoteInfo * quote)
 {
 	GList *list = g_list_previous(quote->list);
 
@@ -145,7 +145,7 @@ QuoteInfo *quotelist_prev(QuoteInfo * quote)
 	return list->data;
 }
 
-QuoteInfo *quotelist_next(QuoteInfo * quote)
+QuoteInfo *quotelist_next(const QuoteInfo * quote)
 {
 	GList *list = g_list_next(quote->list);
 
@@ -154,9 +154,9 @@ QuoteInfo *quotelist_next(QuoteInfo * quote)
 	return list->data;
 }
 
-gboolean quotelist_is_player_first(QuoteInfo * quote)
+gboolean quotelist_is_player_first(const QuoteInfo * quote)
 {
-	QuoteInfo *prev = quotelist_prev(quote);
+	const QuoteInfo *prev = quotelist_prev(quote);
 	return prev == NULL
 	    || !prev->is_domestic
 	    || prev->var.d.player_num != quote->var.d.player_num;

@@ -77,7 +77,7 @@ static gint expose_legend_cb(GtkWidget * area,
 	return FALSE;
 }
 
-static void add_legend_terrain(GtkWidget * table, gint row, gint col,
+static void add_legend_terrain(GtkWidget * table, guint row, guint col,
 			       Terrain terrain, Resource resource)
 {
 	GtkWidget *area;

@@ -27,9 +27,12 @@ typedef struct _ResourceTable ResourceTable;
 typedef struct _ResourceTableClass ResourceTableClass;
 
 struct _ResourceRow {
+	gboolean filter;
+
 	gint hand;
 	gint bank;
 	gint amount;
+	GtkWidget *label_widget;
 	GtkWidget *hand_widget;
 	GtkWidget *bank_widget;
 	GtkWidget *amount_widget;
@@ -38,6 +41,12 @@ struct _ResourceRow {
 	GtkWidget *less_widget;
 	GtkWidget *more_widget;
 };
+
+enum _ResourceTableDirection {
+	RESOURCE_TABLE_MORE_IN_HAND,
+	RESOURCE_TABLE_LESS_IN_HAND
+};
+typedef enum _ResourceTableDirection ResourceTableDirection;
 
 struct _ResourceTable {
 	GtkTable table;
@@ -53,6 +62,7 @@ struct _ResourceTable {
 	gboolean with_bank;
 	gboolean with_total;
 	gint bank_offset;
+	ResourceTableDirection direction;
 };
 
 struct _ResourceTableClass {
@@ -63,6 +73,7 @@ struct _ResourceTableClass {
 
 GType resource_table_get_type(void);
 GtkWidget *resource_table_new(const gchar * title,
+			      ResourceTableDirection direction,
 			      gboolean with_bank, gboolean with_total);
 
 void resource_table_limit_bank(ResourceTable * rt, gboolean limit);
@@ -71,6 +82,9 @@ void resource_table_set_total(ResourceTable * rt, const gchar * text,
 void resource_table_set_bank(ResourceTable * rt, const gint * bank);
 void resource_table_get_amount(ResourceTable * rt, gint * amount);
 gboolean resource_table_is_total_reached(ResourceTable * rt);
+void resource_table_update_hand(ResourceTable * rt);
+void resource_table_set_filter(ResourceTable * rt, const gint * resource);
+void resource_table_clear(ResourceTable * rt);
 
 G_END_DECLS
 #endif				/* __RESOURCETABLE_H__ */

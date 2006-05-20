@@ -24,6 +24,7 @@
 #include "frontend.h"
 #include "resource-table.h"
 #include "gtkbugs.h"
+#include "common_gtk.h"
 
 enum {
 	GOLD_COLUMN_PLAYER_ICON, /**< Player icon */
@@ -35,15 +36,6 @@ enum {
 
 static GtkListStore *gold_store; /**< the gold data */
 static GtkWidget *gold_widget;	/**< the gold widget */
-
-/** The player line is found here */
-static GtkTreeIter gold_found_iter;
-/** Has the player line been found ? */
-enum {
-	STORE_MATCH_EXACT,
-	STORE_MATCH_INSERT_BEFORE,
-	STORE_NO_MATCH
-} gold_found_flag;
 
 static struct {
 	GtkWidget *dlg;
@@ -57,12 +49,11 @@ static void amount_changed_cb(G_GNUC_UNUSED ResourceTable * rt,
 }
 
 /* fill an array with the current choice, to send to the server */
-gint *choose_gold_get_list(gint * choice)
+void choose_gold_get_list(gint * choice)
 {
 	if (gold.dlg != NULL)
 		resource_table_get_amount(RESOURCETABLE
 					  (gold.resource_widget), choice);
-	return choice;
 }
 
 static void button_destroyed(G_GNUC_UNUSED GtkWidget * w, gpointer num)
@@ -102,7 +93,9 @@ void gold_choose_player_must(gint num, const gint * bank)
 	else
 		sprintf(buff, _("You may choose %d resources"), num);
 
-	gold.resource_widget = resource_table_new(buff, TRUE, TRUE);
+	gold.resource_widget =
+	    resource_table_new(buff, RESOURCE_TABLE_MORE_IN_HAND, TRUE,
+			       TRUE);
 	resource_table_set_total(RESOURCETABLE(gold.resource_widget),
 				 /* Text for total in choose gold dialog */
 				 _("Total resources"), num);
@@ -128,50 +121,27 @@ void gold_choose_player_must(gint num, const gint * bank)
 	gtk_widget_show(gold.dlg);
 }
 
-/** Locate a line suitable for a player */
-static gboolean gold_locate_player(GtkTreeModel * model,
-				   G_GNUC_UNUSED GtkTreePath * path,
-				   GtkTreeIter * iter, gpointer user_data)
-{
-	int wanted = GPOINTER_TO_INT(user_data);
-	int current;
-	gtk_tree_model_get(model, iter, GOLD_COLUMN_PLAYER_NUM, &current,
-			   -1);
-	if (current > wanted) {
-		gold_found_flag = STORE_MATCH_INSERT_BEFORE;
-		gold_found_iter = *iter;
-		return TRUE;
-	} else if (current == wanted) {
-		gold_found_flag = STORE_MATCH_EXACT;
-		gold_found_iter = *iter;
-		return TRUE;
-	}
-	return FALSE;
-}
-
 void gold_choose_player_prepare(gint player_num, gint num)
 {
 	GtkTreeIter iter;
 	GdkPixbuf *pixbuf;
+	enum TFindResult found;
 
 	/* Search for a place to add information about the player */
-	gold_found_flag = STORE_NO_MATCH;
-	gtk_tree_model_foreach(GTK_TREE_MODEL(gold_store),
-			       gold_locate_player,
-			       GINT_TO_POINTER(player_num));
-	switch (gold_found_flag) {
-	case STORE_NO_MATCH:
+	found =
+	    find_integer_in_tree(GTK_TREE_MODEL(gold_store), &iter,
+				 GOLD_COLUMN_PLAYER_NUM, player_num);
+	switch (found) {
+	case FIND_NO_MATCH:
 		gtk_list_store_append(gold_store, &iter);
 		break;
-	case STORE_MATCH_INSERT_BEFORE:
-		gtk_list_store_insert_before(gold_store, &iter,
-					     &gold_found_iter);
+	case FIND_MATCH_INSERT_BEFORE:
+		gtk_list_store_insert_before(gold_store, &iter, &iter);
 		break;
-	case STORE_MATCH_EXACT:
-		iter = gold_found_iter;
+	case FIND_MATCH_EXACT:
 		break;
 	default:
-		g_assert(FALSE);
+		g_error("unknown case in gold_choose_player_prepare");
 	};
 
 	pixbuf = player_create_icon(gold_widget, player_num, TRUE);
@@ -187,14 +157,16 @@ void gold_choose_player_prepare(gint player_num, gint num)
 void gold_choose_player_did(gint player_num,
 			    G_GNUC_UNUSED gint * resources)
 {
+	GtkTreeIter iter;
+	enum TFindResult found;
+
 	/* check if the player was in the list.  If not, it is not an error.
 	 * That happens if the player auto-discards. */
-	gold_found_flag = STORE_NO_MATCH;
-	gtk_tree_model_foreach(GTK_TREE_MODEL(gold_store),
-			       gold_locate_player,
-			       GINT_TO_POINTER(player_num));
-	if (gold_found_flag == STORE_MATCH_EXACT) {
-		gtk_list_store_remove(gold_store, &gold_found_iter);
+	found =
+	    find_integer_in_tree(GTK_TREE_MODEL(gold_store), &iter,
+				 GOLD_COLUMN_PLAYER_NUM, player_num);
+	if (found == FIND_MATCH_EXACT) {
+		gtk_list_store_remove(gold_store, &iter);
 		if (player_num == my_player_num()) {
 			gtk_widget_destroy(gold.dlg);
 			gold.dlg = NULL;

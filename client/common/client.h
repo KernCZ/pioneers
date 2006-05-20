@@ -91,7 +91,7 @@ void player_build_remove(gint player_num, BuildType type, gint x, gint y,
 void player_build_move(gint player_num, gint sx, gint sy, gint spos,
 		       gint dx, gint dy, gint dpos, gint isundo);
 void player_resource_action(gint player_num, const gchar * action,
-			    gint * resource_list, gint mult);
+			    const gint * resource_list, gint mult);
 void player_get_point(gint player_num, gint id, const gchar * str,
 		      gint num);
 void player_lose_point(gint player_num, gint id);
@@ -144,14 +144,14 @@ void stock_use_develop(void);
 
 /********** resource.c **********/
 void resource_init(void);
-void resource_apply_list(gint player_num, gint * resources,
+void resource_apply_list(gint player_num, const gint * resources,
 			 gint multiplier);
 void resource_cards(gint num, Resource which, gchar * buffer,
-		    gint buf_size);
-gint resource_count(gint * resources);
-void resource_format_num(gchar * desc, guint desc_size, gint * resources);
+		    guint buf_size);
+void resource_format_num(gchar * desc, guint desc_size,
+			 const gint * resources);
 void resource_log_list(gint player_num, const gchar * action,
-		       gint * resources);
+		       const gint * resources);
 void resource_modify(Resource type, gint num);
 void set_bank(const gint * new_bank);
 void modify_bank(const gint * bank_change);

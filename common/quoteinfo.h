@@ -48,14 +48,14 @@ void quotelist_new(QuoteList ** list);
 /** Free the QuoteList (if needed), and set it to NULL */
 void quotelist_free(QuoteList ** list);
 QuoteInfo *quotelist_add_domestic(QuoteList * list, gint player_num,
-				  gint quote_num, gint * supply,
-				  gint * receive);
+				  gint quote_num, const gint * supply,
+				  const gint * receive);
 QuoteInfo *quotelist_add_maritime(QuoteList * list, gint ratio,
 				  Resource supply, Resource receive);
 QuoteInfo *quotelist_first(QuoteList * list);
-QuoteInfo *quotelist_prev(QuoteInfo * quote);
-QuoteInfo *quotelist_next(QuoteInfo * quote);
-gboolean quotelist_is_player_first(QuoteInfo * quote);
+QuoteInfo *quotelist_prev(const QuoteInfo * quote);
+QuoteInfo *quotelist_next(const QuoteInfo * quote);
+gboolean quotelist_is_player_first(const QuoteInfo * quote);
 QuoteInfo *quotelist_find_domestic(QuoteList * list, gint player_num,
 				   gint quote_num);
 void quotelist_delete(QuoteList * list, QuoteInfo * quote);

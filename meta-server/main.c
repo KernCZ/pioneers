@@ -239,7 +239,7 @@ static void client_do_write(Client * client)
 {
 	while (client->write_queue != NULL) {
 		char *data = client->write_queue->data;
-		int len = strlen(data);
+		guint len = strlen(data);
 		int num;
 
 		num = write(client->fd, data, len);
@@ -580,7 +580,7 @@ static void client_create_new_server(Client * client, gchar * line)
 static gboolean check_str_info(gchar * line, const gchar * prefix,
 			       gchar ** data)
 {
-	gint len = strlen(prefix);
+	guint len = strlen(prefix);
 
 	if (strncmp(line, prefix, len) != 0)
 		return FALSE;
@@ -593,7 +593,7 @@ static gboolean check_str_info(gchar * line, const gchar * prefix,
 static gboolean check_int_info(gchar * line, const gchar * prefix,
 			       gint * data)
 {
-	gint len = strlen(prefix);
+	guint len = strlen(prefix);
 
 	if (strncmp(line, prefix, len) != 0)
 		return FALSE;

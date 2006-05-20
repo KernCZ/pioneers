@@ -298,7 +298,7 @@ void frontend_new_statistics(gint player_num, StatisticType type,
 			iter = ps.iter;
 			break;
 		default:
-			g_assert(FALSE);
+			g_error("unknown case in frontend_new_statistics");
 		};
 		gtk_list_store_set(summary_store, &iter,
 				   SUMMARY_COLUMN_PLAYER_NUM, player_num,
@@ -343,7 +343,7 @@ static void player_create_find_player(gint player_num, GtkTreeIter * iter)
 		*iter = found_iter;
 		break;
 	default:
-		g_assert(FALSE);
+		g_error("unknown case in player_create_find_player");
 	};
 }
 

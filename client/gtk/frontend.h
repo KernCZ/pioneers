@@ -109,7 +109,7 @@ void frontend_viewer_quit(gint player_num);
 void frontend_offline(void);
 void frontend_discard(void);
 void frontend_discard_add(gint player_num, gint discard_num);
-void frontend_discard_remove(gint player_num, gint * list);
+void frontend_discard_remove(gint player_num);
 void frontend_discard_done(void);
 void frontend_gold(void);
 void frontend_gold_add(gint player_num, gint gold_num);
@@ -125,11 +125,13 @@ void frontend_plenty(const gint * bank);
 void frontend_turn(void);
 void frontend_trade_player_end(gint player_num);
 void frontend_trade_add_quote(gint player_num, gint quote_num,
-			      gint * they_supply, gint * they_receive);
+			      const gint * they_supply,
+			      const gint * they_receive);
 void frontend_trade_remove_quote(int player_num, int quote_num);
 void frontend_quote_player_end(gint player_num);
 void frontend_quote_add(gint player_num, gint quote_num,
-			gint * they_supply, gint * they_receive);
+			const gint * they_supply,
+			const gint * they_receive);
 void frontend_quote_remove(gint player_num, gint quote_num);
 void frontend_quote_start(void);
 void frontend_quote_end(void);
@@ -154,23 +156,24 @@ void connect_create_dlg(void);
 GtkWidget *trade_build_page(void);
 gboolean can_call_for_quotes(void);
 gboolean trade_valid_selection(void);
-gint *trade_we_supply(void);
-gint *trade_we_receive(void);
-QuoteInfo *trade_current_quote(void);
+const gint *trade_we_supply(void);
+const gint *trade_we_receive(void);
+const QuoteInfo *trade_current_quote(void);
 void trade_finish(void);
-void trade_add_quote(int player_num, int quote_num, gint * they_supply,
-		     gint * they_receive);
+void trade_add_quote(int player_num, int quote_num,
+		     const gint * they_supply, const gint * they_receive);
 void trade_delete_quote(int player_num, int quote_num);
 void trade_player_finish(gint player_num);
 void trade_begin(void);
-void trade_format_quote(QuoteInfo * quote, gchar * buffer);
+void trade_format_quote(const QuoteInfo * quote, gchar * buffer);
 void trade_new_trade(void);
 void trade_perform_maritime(gint ratio, Resource supply, Resource receive);
 void trade_perform_domestic(gint player_num, gint partner_num,
-			    gint quote_num, gint * they_supply,
-			    gint * they_receive);
+			    gint quote_num, const gint * they_supply,
+			    const gint * they_receive);
 void frontend_trade_domestic(gint partner_num, gint quote_num,
-			     gint * we_supply, gint * we_receive);
+			     const gint * we_supply,
+			     const gint * we_receive);
 void frontend_trade_maritime(gint ratio, Resource we_supply,
 			     Resource we_receive);
 
@@ -185,15 +188,16 @@ gint *quote_we_receive(void);
 QuoteInfo *quote_current_quote(void);
 void quote_begin_again(gint player_num, gint * they_supply,
 		       gint * they_receive);
-void quote_begin(gint player_num, gint * they_supply, gint * they_receive);
+void quote_begin(gint player_num, gint * they_supply,
+		 gint * they_receive);
 void quote_add_quote(gint player_num, gint quote_num,
-		     gint * they_supply, gint * they_receive);
+		     const gint * they_supply, const gint * they_receive);
 void quote_delete_quote(gint player_num, gint quote_num);
 void quote_player_finish(gint player_num);
 void quote_finish(void);
 void frontend_quote_trade(gint player_num, gint partner_num,
-			  gint quote_num, gint * they_supply,
-			  gint * they_receive);
+			  gint quote_num, const gint * they_supply,
+			  const gint * they_receive);
 
 /* legend.c */
 GtkWidget *legend_create_dlg(void);
@@ -207,16 +211,16 @@ void develop_reset(void);
 /* discard.c */
 GtkWidget *discard_build_page(void);
 gboolean can_discard(void);
-gint *discard_get_list(void);
+void discard_get_list(gint * discards);
 void discard_begin(void);
 void discard_player_must(gint player_num, gint discard_num);
-void discard_player_did(gint player_num, gint * resources);
+void discard_player_did(gint player_num);
 void discard_end(void);
 
 /* gold.c */
 GtkWidget *gold_build_page(void);
 gboolean can_choose_gold(void);
-gint *choose_gold_get_list(gint * choice);
+void choose_gold_get_list(gint * choice);
 void gold_choose_begin(void);
 void gold_choose_player_prepare(gint player_num, gint gold_num);
 void gold_choose_player_must(gint gold_num, const gint * bank);

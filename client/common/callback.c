@@ -166,7 +166,7 @@ void cb_maritime(gint ratio, Resource supply, Resource receive)
 	sm_push(SM(), mode_trade_maritime_response);
 }
 
-void cb_domestic(gint * supply, gint * receive)
+void cb_domestic(const gint * supply, const gint * receive)
 {
 	/* call for quotes */
 	g_assert(callback_mode == MODE_TURN
@@ -215,7 +215,8 @@ void cb_choose_plenty(gint * resources)
 	sm_push(SM(), mode_year_of_plenty_response);
 }
 
-void cb_trade(gint player, gint quote, gint * supply, gint * receive)
+void cb_trade(gint player, gint quote, const gint * supply,
+	      const gint * receive)
 {
 	/* accept a domestic trade */
 	g_assert(callback_mode == MODE_DOMESTIC);
@@ -233,7 +234,7 @@ void cb_end_trade(void)
 	sm_push(SM(), mode_domestic_finish_response);
 }
 
-void cb_quote(gint num, gint * supply, gint * receive)
+void cb_quote(gint num, const gint * supply, const gint * receive)
 {
 	/* make a quote */
 	g_assert(callback_mode == MODE_QUOTE);
@@ -285,7 +286,7 @@ gboolean my_player_viewer(void)
 	return saved_viewer;
 }
 
-void cb_discard(gint * resources)
+void cb_discard(const gint * resources)
 {
 	/* discard resources */
 	g_assert(callback_mode == MODE_DISCARD);
@@ -293,7 +294,7 @@ void cb_discard(gint * resources)
 	sm_send(SM(), "discard %R\n", resources);
 }
 
-void cb_choose_gold(gint * resources)
+void cb_choose_gold(const gint * resources)
 {
 	/* choose gold */
 	g_assert(callback_mode == MODE_GOLD);

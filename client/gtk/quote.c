@@ -296,7 +296,7 @@ static void remove_reject_rows(void)
 }
 
 void quote_add_quote(gint player_num,
-		     gint quote_num, gint * we_supply, gint * we_receive)
+		     gint quote_num, const gint * we_supply, const gint * we_receive)
 {
 	QuoteInfo *quote;
 	QuoteInfo *prev;
@@ -676,8 +676,8 @@ GtkWidget *quote_build_page(void)
 }
 
 void frontend_quote_trade(G_GNUC_UNUSED gint player_num, gint partner_num,
-			  gint quote_num, G_GNUC_UNUSED gint * they_supply,
-			  G_GNUC_UNUSED gint * they_receive)
+			  gint quote_num, G_GNUC_UNUSED const gint * they_supply,
+			  G_GNUC_UNUSED const gint * they_receive)
 {
 	/* a quote has been accepted, remove it from the list. */
 	QuoteInfo *quote;

@@ -111,7 +111,7 @@ struct callbacks {
 	 * call cb_discard. */
 	void (*discard_add) (gint player_num, gint discard_num);
 	/* a player discarded resources */
-	void (*discard_remove) (gint player_num, gint * resources);
+	void (*discard_remove) (gint player_num);
 	/* discard mode is finished. */
 	void (*discard_done) (void);
 	/* starting gold distribution */
@@ -153,12 +153,14 @@ struct callbacks {
 	void (*trade_player_end) (gint player_num);
 	/* while you're trading, someone else offers you a quote */
 	void (*trade_add_quote) (gint player_num, gint quote_num,
-				 gint * they_supply, gint * they_receive);
+				 const gint * they_supply,
+				 const gint * they_receive);
 	/* while you're trading, someone revokes a quote */
 	void (*trade_remove_quote) (gint player_num, gint quote_num);
 	/* you're trading, and a trade has just been performed. */
 	void (*trade_domestic) (gint partner_num, gint quote_num,
-				gint * we_supply, gint * we_receive);
+				const gint * we_supply,
+				const gint * we_receive);
 	/* you're trading, and a trade has just been performed. */
 	void (*trade_maritime) (gint ratio, Resource we_supply,
 				Resource we_receive);
@@ -166,7 +168,8 @@ struct callbacks {
 	void (*quote_player_end) (gint player_num);
 	/* while someone else is trading, a player makes a quote */
 	void (*quote_add) (gint player_num, gint quote_num,
-			   gint * they_supply, gint * they_receive);
+			   const gint * they_supply,
+			   const gint * they_receive);
 	/* while someone else is trading, a player revokes a quote */
 	void (*quote_remove) (gint player_num, gint quote_num);
 	/* someone else makes a call for quotes.  This is an initialization
@@ -181,8 +184,8 @@ struct callbacks {
 	void (*quote_monitor) (void);
 	/* while someone else is trading, a quote is accepted. */
 	void (*quote_trade) (gint player_num, gint partner_num,
-			     gint quote_num, gint * they_supply,
-			     gint * they_receive);
+			     gint quote_num, const gint * they_supply,
+			     const gint * they_receive);
 	/* the dice have been rolled */
 	void (*rolled_dice) (gint die1, gint die2, gint player_num);
 	/* the terminal should beep, if it likes to. */
@@ -280,21 +283,21 @@ void cb_buy_develop(void);
 void cb_play_develop(int card);
 void cb_undo(void);
 void cb_maritime(gint ratio, Resource supply, Resource receive);
-void cb_domestic(gint * supply, gint * receive);
+void cb_domestic(const gint * supply, const gint * receive);
 void cb_end_turn(void);
 void cb_place_robber(const Hex * hex, gint victim_num);
 void cb_choose_monopoly(gint resource);
 void cb_choose_plenty(gint * resources);
-void cb_trade_call(gint * we_supply, gint * we_receive);
-void cb_trade(gint player, gint quote, gint * supply, gint * receive);
+void cb_trade(gint player, gint quote, const gint * supply,
+	      const gint * receive);
 void cb_end_trade(void);
-void cb_quote(gint num, gint * supply, gint * receive);
+void cb_quote(gint num, const gint * supply, const gint * receive);
 void cb_delete_quote(gint num);
 void cb_end_quote(void);
 void cb_chat(const gchar * text);
 void cb_name_change(const gchar * name, gboolean viewer);
-void cb_discard(gint * resources);
-void cb_choose_gold(gint * resources);
+void cb_discard(const gint * resources);
+void cb_choose_gold(const gint * resources);
 
 /* check functions used by front ends and internally */
 /* these functions don't change anything in the program, they are used to get
@@ -323,6 +326,7 @@ gint stock_num_settlements(void);
 gint stock_num_cities(void);
 gint stock_num_develop(void);
 gint resource_asset(Resource which);
+gint resource_count(const gint * resources);
 gint resource_total(void);
 void resource_format_type(gchar * buffer, const gint * resources);
 const gchar *resource_name(Resource which, gboolean capital);

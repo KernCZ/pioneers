@@ -80,6 +80,8 @@ pioneers_SOURCES = \
 	plenty.c \
 	player.c \
 	quote.c \
+	quote-view.c \
+	quote-view.h \
 	resource.c \
 	resource-table.c \
 	resource-table.h \

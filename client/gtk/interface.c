@@ -117,7 +117,7 @@ void build_city_cb(MapElement node, G_GNUC_UNUSED MapElement extra)
 static void frontend_state_trade(GuiEvent event)
 {
 	static gboolean trading = FALSE;
-	QuoteInfo *quote;
+	const QuoteInfo *quote;
 	switch (event) {
 	case GUI_UPDATE:
 		frontend_gui_check(GUI_TRADE_CALL, can_call_for_quotes());
@@ -162,7 +162,8 @@ static void frontend_state_trade(GuiEvent event)
 }
 
 void frontend_trade_add_quote(int player_num, int quote_num,
-			      gint * they_supply, gint * they_receive)
+			      const gint * they_supply,
+			      const gint * they_receive)
 {
 	trade_add_quote(player_num, quote_num, they_supply, they_receive);
 	frontend_gui_update();
@@ -218,8 +219,9 @@ void frontend_quote(gint player_num, gint * they_supply,
 	frontend_gui_update();
 }
 
-void frontend_quote_add(int player_num, int quote_num, gint * they_supply,
-			gint * they_receive)
+void frontend_quote_add(int player_num, int quote_num,
+			const gint * they_supply,
+			const gint * they_receive)
 {
 	quote_add_quote(player_num, quote_num, they_supply, they_receive);
 	frontend_gui_update();
@@ -501,12 +503,15 @@ void frontend_plenty(const gint * bank)
 /* discard */
 static void frontend_state_discard(GuiEvent event)
 {
+	gint discards[NO_RESOURCE];
+
 	switch (event) {
 	case GUI_UPDATE:
 		frontend_gui_check(GUI_DISCARD, can_discard());
 		break;
 	case GUI_DISCARD:
-		cb_discard(discard_get_list());
+		discard_get_list(discards);
+		cb_discard(discards);
 		return;
 	default:
 		break;
@@ -534,10 +539,10 @@ void frontend_discard_add(gint player_num, gint discard_num)
 	frontend_gui_update();
 }
 
-void frontend_discard_remove(gint player_num, gint * list)
+void frontend_discard_remove(gint player_num)
 {
 	if (discard_busy) {
-		discard_player_did(player_num, list);
+		discard_player_did(player_num);
 		if (player_num == my_player_num())
 			set_gui_state(frontend_state_idle);
 	}
@@ -560,7 +565,8 @@ static void frontend_state_gold(GuiEvent event)
 		frontend_gui_check(GUI_CHOOSE_GOLD, can_choose_gold());
 		break;
 	case GUI_CHOOSE_GOLD:
-		cb_choose_gold(choose_gold_get_list(gold));
+		choose_gold_get_list(gold);
+		cb_choose_gold(gold);
 		return;
 	default:
 		break;

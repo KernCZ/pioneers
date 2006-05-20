@@ -133,8 +133,7 @@ static void dummy_discard_add(G_GNUC_UNUSED gint player_num,
 			      G_GNUC_UNUSED gint discard_num)
 {;
 }
-static void dummy_discard_remove(G_GNUC_UNUSED gint player_num,
-				 G_GNUC_UNUSED gint * resources)
+static void dummy_discard_remove(G_GNUC_UNUSED gint player_num)
 {;
 }
 static void dummy_discard_done(void)
@@ -200,8 +199,8 @@ static void dummy_trade_player_end(G_GNUC_UNUSED gint player_num)
 }
 static void dummy_trade_add_quote(G_GNUC_UNUSED gint player_num,
 				  G_GNUC_UNUSED gint quote_num,
-				  G_GNUC_UNUSED gint * they_supply,
-				  G_GNUC_UNUSED gint * they_receive)
+				  G_GNUC_UNUSED const gint * they_supply,
+				  G_GNUC_UNUSED const gint * they_receive)
 {;
 }
 static void dummy_trade_remove_quote(G_GNUC_UNUSED gint player_num,
@@ -210,8 +209,8 @@ static void dummy_trade_remove_quote(G_GNUC_UNUSED gint player_num,
 }
 static void dummy_trade_domestic(G_GNUC_UNUSED gint partner_num,
 				 G_GNUC_UNUSED gint quote_num,
-				 G_GNUC_UNUSED gint * we_supply,
-				 G_GNUC_UNUSED gint * we_receive)
+				 G_GNUC_UNUSED const gint * we_supply,
+				 G_GNUC_UNUSED const gint * we_receive)
 {;
 }
 static void dummy_trade_maritime(G_GNUC_UNUSED gint ratio,
@@ -224,8 +223,8 @@ static void dummy_quote_player_end(G_GNUC_UNUSED gint player_num)
 }
 static void dummy_quote_add(G_GNUC_UNUSED gint player_num,
 			    G_GNUC_UNUSED gint quote_num,
-			    G_GNUC_UNUSED gint * they_supply,
-			    G_GNUC_UNUSED gint * they_receive)
+			    G_GNUC_UNUSED const gint * they_supply,
+			    G_GNUC_UNUSED const gint * they_receive)
 {;
 }
 static void dummy_quote_remove(G_GNUC_UNUSED gint player_num,
@@ -244,8 +243,8 @@ static void dummy_quote_monitor(void)
 static void dummy_quote_trade(G_GNUC_UNUSED gint player_num,
 			      G_GNUC_UNUSED gint partner_num,
 			      G_GNUC_UNUSED gint quote_num,
-			      G_GNUC_UNUSED gint * they_supply,
-			      G_GNUC_UNUSED gint * they_receive)
+			      G_GNUC_UNUSED const gint * they_supply,
+			      G_GNUC_UNUSED const gint * they_receive)
 {;
 }
 static void dummy_rolled_dice(G_GNUC_UNUSED gint die1,
@@ -613,7 +612,7 @@ static gboolean check_other_players(StateMachine * sm)
 	if (sm_recv(sm, "discarded %R", resource_list)) {
 		player_resource_action(player_num, _("%s discarded %s.\n"),
 				       resource_list, -1);
-		callbacks.discard_remove(player_num, resource_list);
+		callbacks.discard_remove(player_num);
 		return TRUE;
 	}
 	if (sm_recv(sm, "prepare-gold %d", &gold_num)) {

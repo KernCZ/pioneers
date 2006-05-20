@@ -1,3 +1,19 @@
+2006-05-20  Roland Clobus <rclobus@bigfoot.com>
+	* common/quoteinfo.c, common/game.c, common/quoteinfo.h,
+	client/callback.h, client/gtk/interface.c, client/gtk/plenty.c,
+	client/gtk/frontend.h, client/gtk/gold.c, client/gtk/quote.c,
+	client/gtk/legend.c, client/gtk/trade.c, client/gtk/discard.c,
+	client/gtk/chat.c, client/common/client.c, client/common/client.h,
+	client/common/resource.c, client/common/callback.c,
+	client/common/player.c: Added const for resources
+	* client/gtk/Makefile.am: Added quote-view.c and quote-view.h
+	* client/gtk/trade.c, client/gtk/quote-view.c, client/gtk/quote-view.h:
+	Moved code from trade.c to quote-view.c and replaced frames
+	* client/gtk/player.c, client/gtk/discard.c: More descriptive asserts
+	* client/gtk/resource-table.c, client/gtk/resource-table.h:
+	New functions added for trade and quote
+	* meta-server/main.c, client/gtk/gui.c: Signed->unsigned cleanup
+	
 2006-05-17  Bas Wijnen <shevek@fmf.nl>
 	* client/ai/greedy.c: Fix for AI segfault.
 	* client/gtk/interface.c: Allow reuse of client after winning by

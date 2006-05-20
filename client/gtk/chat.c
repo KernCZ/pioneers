@@ -57,7 +57,7 @@ static void chat_cb(GtkEntry * entry, G_GNUC_UNUSED gpointer user_data)
 	}
 }
 
-GtkWidget *chat_build_panel()
+GtkWidget *chat_build_panel(void)
 {
 	GtkWidget *hbox;
 	GtkWidget *label;

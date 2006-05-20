@@ -615,7 +615,7 @@ void player_build_move(gint player_num, gint sx, gint sy, gint spos,
 }
 
 void player_resource_action(gint player_num, const gchar * action,
-			    gint * resource_list, gint mult)
+			    const gint * resource_list, gint mult)
 {
 	resource_log_list(player_num, action, resource_list);
 	resource_apply_list(player_num, resource_list, mult);
