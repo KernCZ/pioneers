@@ -647,15 +647,19 @@ gboolean mode_pre_game(Player * player, gint event)
 			sm_send(sm, "OK\n");
 
 			/* Some player was in the setup phase */
-			if (game->setup_player != NULL && (Player *)game->setup_player->data != player) {
-				gint num = ((Player *) (game->setup_player->
-						     data))->num;
+			if (game->setup_player != NULL
+			    && (Player *) game->setup_player->data !=
+			    player) {
+				gint num =
+				    ((Player *) (game->setup_player->
+						 data))->num;
 				if (game->double_setup)
-					sm_send(sm, "player %d setup-double\n",
-							num);
+					sm_send(sm,
+						"player %d setup-double\n",
+						num);
 				else
-					sm_send(sm, "player %d setup %d\n", num,
-						game->reverse_setup);
+					sm_send(sm, "player %d setup %d\n",
+						num, game->reverse_setup);
 			}
 
 			if (recover_from_plenty) {

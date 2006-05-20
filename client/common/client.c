@@ -964,11 +964,15 @@ static gboolean mode_load_gameinfo(StateMachine * sm, gint event)
 	if (sm_recv(sm, "player turn: %d", &recovery_info.playerturn)) {
 		return TRUE;
 	}
-	if (sm_recv(sm, "dice rolled: %d %d", &recovery_info.die1, &recovery_info.die2)) {
+	if (sm_recv
+	    (sm, "dice rolled: %d %d", &recovery_info.die1,
+	     &recovery_info.die2)) {
 		recovery_info.rolled_dice = TRUE;
 		return TRUE;
 	}
-	if (sm_recv(sm, "dice value: %d %d", &recovery_info.die1, &recovery_info.die2)) {
+	if (sm_recv
+	    (sm, "dice value: %d %d", &recovery_info.die1,
+	     &recovery_info.die2)) {
 		return TRUE;
 	}
 	if (sm_recv(sm, "played develop")) {
@@ -1103,7 +1107,8 @@ static gboolean mode_load_gameinfo(StateMachine * sm, gint event)
 		rec->x = x;
 		rec->y = y;
 		rec->pos = pos;
-		recovery_info.build_list = g_list_append(recovery_info.build_list, rec);
+		recovery_info.build_list =
+		    g_list_append(recovery_info.build_list, rec);
 		return TRUE;
 	}
 	if (sm_recv(sm, "RO%d,%d", &x, &y)) {
@@ -2324,8 +2329,8 @@ static void recover_from_disconnect(StateMachine * sm,
 	/* setup_begin must be called before the build list is created,
 	 * because it contains a call to build_clear() */
 	if (strcmp(rinfo->prevstate, "SETUP") == 0 ||
-		   strcmp(rinfo->prevstate, "RSETUP") == 0 ||
-		   strcmp(rinfo->prevstate, "SETUPDOUBLE") == 0) {
+	    strcmp(rinfo->prevstate, "RSETUP") == 0 ||
+	    strcmp(rinfo->prevstate, "SETUPDOUBLE") == 0) {
 		if (strcmp(rinfo->prevstate, "SETUPDOUBLE") == 0) {
 			setup_begin_double(my_player_num());
 		} else {
@@ -2395,7 +2400,8 @@ static void recover_from_disconnect(StateMachine * sm,
 	} else
 		g_warning(_("Not entering any state after reconnect, "
 			    "please report this as a bug.  "
-			    "Should enter state \"%s\""), rinfo->prevstate);
+			    "Should enter state \"%s\""),
+			  rinfo->prevstate);
 }
 
 /*----------------------------------------------------------------------

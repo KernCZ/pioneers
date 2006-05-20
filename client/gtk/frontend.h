@@ -188,8 +188,7 @@ gint *quote_we_receive(void);
 QuoteInfo *quote_current_quote(void);
 void quote_begin_again(gint player_num, gint * they_supply,
 		       gint * they_receive);
-void quote_begin(gint player_num, gint * they_supply,
-		 gint * they_receive);
+void quote_begin(gint player_num, gint * they_supply, gint * they_receive);
 void quote_add_quote(gint player_num, gint quote_num,
 		     const gint * they_supply, const gint * they_receive);
 void quote_delete_quote(gint player_num, gint quote_num);
