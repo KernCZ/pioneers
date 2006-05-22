@@ -234,6 +234,13 @@ void identity_reset(void);
 
 /* resource.c */
 GtkWidget *resource_build_panel(void);
+/** Draw the resources on the image.
+ *  @param image     The image to draw the resources on
+ *  @param resources The resources
+ *  @param max_width If > 0, use this for the maximum width
+ */
+void resource_format_type_image(GtkImage * image, const gint * resources,
+				gint max_width);
 
 /* player.c */
 GtkWidget *player_build_summary(void);
@@ -300,5 +307,11 @@ GtkWidget *gameover_create_dlg(gint player_num, gint num_points);
 #define PIONEERS_PIXMAP_CITY "pioneers/city.png"
 #define PIONEERS_PIXMAP_DEVELOP "pioneers/develop.png"
 #define PIONEERS_PIXMAP_FINISH "pioneers/finish.png"
+
+#define PIONEERS_PIXMAP_BRICK "pioneers/brick.png"
+#define PIONEERS_PIXMAP_GRAIN "pioneers/grain.png"
+#define PIONEERS_PIXMAP_LUMBER "pioneers/lumber.png"
+#define PIONEERS_PIXMAP_ORE "pioneers/ore.png"
+#define PIONEERS_PIXMAP_WOOL "pioneers/wool.png"
 
 #endif

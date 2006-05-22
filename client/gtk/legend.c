@@ -82,6 +82,8 @@ static void add_legend_terrain(GtkWidget * table, guint row, guint col,
 {
 	GtkWidget *area;
 	GtkWidget *label;
+	GdkPixmap *p;
+	GdkBitmap *b;
 
 	area = gtk_drawing_area_new();
 	gtk_widget_show(area);
@@ -102,11 +104,21 @@ static void add_legend_terrain(GtkWidget * table, guint row, guint col,
 			 (GtkAttachOptions) GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 
+	if (resource < NO_RESOURCE) {
+		gui_get_resource_pixmap(resource, &p, &b, NULL, NULL);
+		label = gtk_image_new_from_pixmap(p, b);
+		gtk_widget_show(label);
+		gtk_table_attach(GTK_TABLE(table), label,
+				 col + 2, col + 3, row, row + 1,
+				 (GtkAttachOptions) GTK_FILL,
+				 (GtkAttachOptions) GTK_FILL, 0, 0);
+	}
+
 	if (resource != NO_RESOURCE) {
 		label = gtk_label_new(resource_name(resource, TRUE));
 		gtk_widget_show(label);
 		gtk_table_attach(GTK_TABLE(table), label,
-				 col + 2, col + 3, row, row + 1,
+				 col + 3, col + 4, row, row + 1,
 				 (GtkAttachOptions) GTK_FILL,
 				 (GtkAttachOptions) GTK_FILL, 0, 0);
 		gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
@@ -118,7 +130,6 @@ static void add_legend_cost(GtkWidget * table, guint row,
 			    const gint * cost)
 {
 	GtkWidget *label;
-	gchar buffer[1024];
 	GtkWidget *icon;
 
 	icon = gtk_image_new_from_stock(iconname, GTK_ICON_SIZE_MENU);
@@ -131,8 +142,8 @@ static void add_legend_cost(GtkWidget * table, guint row,
 			 GTK_FILL, GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 
-	resource_format_type(buffer, cost);
-	label = gtk_label_new(buffer);
+	label = gtk_image_new();
+	resource_format_type_image(GTK_IMAGE(label), cost, -1);
 	gtk_widget_show(label);
 	gtk_table_attach(GTK_TABLE(table), label, 2, 3, row, row + 1,
 			 GTK_FILL, GTK_FILL, 0, 0);
@@ -166,7 +177,7 @@ GtkWidget *legend_create_content(void)
 	gtk_widget_show(alignment);
 	gtk_box_pack_start(GTK_BOX(vbox), alignment, FALSE, FALSE, 0);
 
-	table = gtk_table_new(4, 7, FALSE);
+	table = gtk_table_new(4, 9, FALSE);
 	gtk_widget_show(table);
 	gtk_container_add(GTK_CONTAINER(alignment), table);
 	gtk_table_set_row_spacings(GTK_TABLE(table), 3);
@@ -179,13 +190,13 @@ GtkWidget *legend_create_content(void)
 
 	vsep = gtk_vseparator_new();
 	gtk_widget_show(vsep);
-	gtk_table_attach(GTK_TABLE(table), vsep, 3, 4, 0, 4,
+	gtk_table_attach(GTK_TABLE(table), vsep, 4, 5, 0, 4,
 			 GTK_FILL, GTK_FILL, 0, 0);
 
-	add_legend_terrain(table, 0, 4, FOREST_TERRAIN, LUMBER_RESOURCE);
-	add_legend_terrain(table, 1, 4, GOLD_TERRAIN, GOLD_RESOURCE);
-	add_legend_terrain(table, 2, 4, DESERT_TERRAIN, NO_RESOURCE);
-	add_legend_terrain(table, 3, 4, SEA_TERRAIN, NO_RESOURCE);
+	add_legend_terrain(table, 0, 5, FOREST_TERRAIN, LUMBER_RESOURCE);
+	add_legend_terrain(table, 1, 5, GOLD_TERRAIN, GOLD_RESOURCE);
+	add_legend_terrain(table, 2, 5, DESERT_TERRAIN, NO_RESOURCE);
+	add_legend_terrain(table, 3, 5, SEA_TERRAIN, NO_RESOURCE);
 
 	label = gtk_label_new(NULL);
 	gtk_label_set_markup(GTK_LABEL(label), _("<b>Building Costs</b>"));

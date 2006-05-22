@@ -1,3 +1,11 @@
+2006-05-21  Giancarlo Capella <giancarlo@comm.cc>
+	* client/gtk/frontend.h, client/gtk/resource.c,
+	client/gtk/data/grain.png, client/gtk/data/wool.png,
+	client/gtk/data/ore.png, client/gtk/data/Makefile.am,
+	client/gtk/data/lumber.png, client/gtk/data/brick.png,
+	client/gtk/legend.c, client/gtk/gui.c, client/gtk/gui.h: Visual display
+	of the resources in the resources panel and the legend
+
 2006-05-20  Roland Clobus <rclobus@bigfoot.com>
 	* common/quoteinfo.c, common/game.c, common/quoteinfo.h,
 	client/callback.h, client/gtk/interface.c, client/gtk/plenty.c,

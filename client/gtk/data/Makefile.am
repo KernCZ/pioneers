@@ -47,7 +47,12 @@ pixmap_DATA = \
 	ship.png \
 	ship_move.png \
 	splash.png \
-	trade.png
+	trade.png \
+	brick.png \
+	grain.png \
+	lumber.png \
+	ore.png \
+	wool.png
 
 desktop_DATA = pioneers.desktop
 

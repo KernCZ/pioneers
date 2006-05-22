@@ -93,6 +93,21 @@ static const gchar *pioneers_pixmaps[] = {
 	PIONEERS_PIXMAP_FINISH
 };
 
+static const gchar *resources_pixmaps[] = {
+	PIONEERS_PIXMAP_BRICK,
+	PIONEERS_PIXMAP_GRAIN,
+	PIONEERS_PIXMAP_ORE,
+	PIONEERS_PIXMAP_WOOL,
+	PIONEERS_PIXMAP_LUMBER
+};
+
+static struct {
+	GdkPixmap *p;
+	GdkBitmap *b;
+	GdkGC *gcp, *gcb;
+} resource_pixmap[NO_RESOURCE];
+static gint resource_pixmap_res = 0;
+
 static void gui_set_toolbar_visible(void);
 static void gui_toolbar_show_accelerators(gboolean show_accelerators);
 
@@ -1247,6 +1262,51 @@ static void register_pixmaps(void)
 
 	gtk_icon_factory_add_default(factory);
 	g_object_unref(factory);
+
+	for (idx = 0; idx < NO_RESOURCE; idx++) {
+		gchar *filename;
+
+		/* determine full path to pixmap file */
+		filename = g_build_filename(DATADIR, "pixmaps",
+					    resources_pixmaps[idx], NULL);
+		if (g_file_test(filename, G_FILE_TEST_EXISTS)) {
+			GdkPixbuf *pixbuf;
+			GError *error = NULL;
+			pixbuf =
+			    gdk_pixbuf_new_from_file(filename, &error);
+			if (error != NULL) {
+				g_warning("Error loading pixmap %s\n",
+					  filename);
+				g_error_free(error);
+			} else {
+				gdk_pixbuf_render_pixmap_and_mask(pixbuf,
+								  &resource_pixmap
+								  [idx].p,
+								  &resource_pixmap
+								  [idx].b,
+								  128);
+				resource_pixmap[idx].gcb =
+				    gdk_gc_new(resource_pixmap[idx].b);
+				gdk_gc_set_function(resource_pixmap[idx].
+						    gcb, GDK_OR);
+				resource_pixmap[idx].gcp =
+				    gdk_gc_new(resource_pixmap[idx].p);
+				gdk_gc_set_clip_mask(resource_pixmap[idx].
+						     gcp,
+						     resource_pixmap[idx].
+						     b);
+				if (!resource_pixmap_res)
+					resource_pixmap_res =
+					    gdk_pixbuf_get_width(pixbuf);
+				g_object_unref(pixbuf);
+			}
+		} else {
+			/* Missing pixmap */
+			g_warning(_("Pixmap not found: %s\n"), filename);
+		}
+
+		g_free(filename);
+	}
 }
 
 GtkWidget *gui_build_interface(void)
@@ -1382,4 +1442,21 @@ GtkWidget *gui_build_interface(void)
 			 G_CALLBACK(quit_cb), NULL);
 
 	return app_window;
+}
+
+void gui_get_resource_pixmap(gint idx, GdkPixmap ** p, GdkBitmap ** b,
+			     GdkGC ** gcp, GdkGC ** gcb)
+{
+	g_assert(idx < NO_RESOURCE);
+	*p = resource_pixmap[idx].p;
+	*b = resource_pixmap[idx].b;
+	if (gcp)
+		*gcp = resource_pixmap[idx].gcp;
+	if (gcb)
+		*gcb = resource_pixmap[idx].gcb;
+}
+
+gint gui_get_resource_pixmap_res()
+{
+	return resource_pixmap_res;
 }
