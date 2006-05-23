@@ -841,7 +841,7 @@ int main(int argc, char *argv[])
 #endif
 
 #ifdef HAVE_GLIB_2_6
-	/* Long description in the command line: --help */
+	/* Long description in the commandline for server-gtk: help */
 	context = g_option_context_new(_("- Host a game of Pioneers"));
 	g_option_context_add_main_entries(context, commandline_entries,
 					  PACKAGE);

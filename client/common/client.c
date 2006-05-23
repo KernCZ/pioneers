@@ -2398,10 +2398,9 @@ static void recover_from_disconnect(StateMachine * sm,
 		callback_mode = MODE_TURN;
 		sm_push(sm, mode_road_building);
 	} else
-		g_warning(_("Not entering any state after reconnect, "
-			    "please report this as a bug.  "
-			    "Should enter state \"%s\""),
-			  rinfo->prevstate);
+		g_warning("Not entering any state after reconnect, "
+			  "please report this as a bug.  "
+			  "Should enter state \"%s\"", rinfo->prevstate);
 }
 
 /*----------------------------------------------------------------------

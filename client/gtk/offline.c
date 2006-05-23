@@ -175,7 +175,7 @@ void frontend_init(int argc, char **argv)
 	config_init("pioneers");
 
 #ifdef HAVE_GLIB_2_6
-	/* Long description in the command line: --help */
+	/* Long description in the commandline for pioneers: help */
 	context = g_option_context_new(_("- Play a game of Pioneers"));
 	g_option_context_add_main_entries(context, commandline_entries,
 					  PACKAGE);

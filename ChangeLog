@@ -1,3 +1,8 @@
+2006-05-23  Roland Clobus <rclobus@bigfoot.com>
+	* editor/gtk/editor.c, server/gtk/main.c, server/main.c,
+	client/gtk/offline.c: Updates comments for translators
+	* client/common/client.c: Removed g_warning() text from translations
+	
 2006-05-21  Giancarlo Capella <giancarlo@comm.cc>
 	* client/gtk/frontend.h, client/gtk/resource.c,
 	client/gtk/data/grain.png, client/gtk/data/wool.png,

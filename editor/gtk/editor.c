@@ -1028,9 +1028,9 @@ gchar **filenames;
 static GOptionEntry commandline_entries[] = {
 	{G_OPTION_REMAINING, '\0', 0, G_OPTION_ARG_FILENAME_ARRAY,
 	 &filenames,
-	 /* Long help for command line option: filename */
+	 /* Long help for commandline option (editor): filename */
 	 N_("Open this file"),
-	 /* Command line option: filename */
+	 /* Commandline option for editor: filename */
 	 N_("filename")},
 	{NULL, '\0', 0, 0, NULL, NULL, NULL}
 };

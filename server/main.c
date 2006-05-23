@@ -95,60 +95,60 @@ static gboolean register_server = FALSE;
 static gchar *metaname = NULL;
 
 static GOptionEntry commandline_game_entries[] = {
-	/* Commandline server-console: game-title */
 	{"game-title", 'g', 0, G_OPTION_ARG_STRING, &game_title,
+	 /* Commandline server-console: game-title */
 	 N_("Game title to use"), NULL},
-	/* Commandline server-console: port */
 	{"port", 'p', 0, G_OPTION_ARG_STRING, &server_port,
+	 /* Commandline server-console: port */
 	 N_("Port to listen on"), PIONEERS_DEFAULT_GAME_PORT},
-	/* Commandline server-console: players */
 	{"players", 'P', 0, G_OPTION_ARG_INT, &num_players,
+	 /* Commandline server-console: players */
 	 N_("Override number of players"), NULL},
-	/* Commandline server-console: points */
 	{"points", 'v', 0, G_OPTION_ARG_INT, &num_points,
+	 /* Commandline server-console: points */
 	 N_("Override number of points needed to win"), NULL},
-	/* Commandline server-console: seven-rule */
 	{"seven-rule", 'R', 0, G_OPTION_ARG_INT, &sevens_rule,
+	 /* Commandline server-console: seven-rule */
 	 N_("Override seven-rule handling"), "0|1|2"},
-	/* Commandline server-console: terrain */
 	{"terrain", 'T', 0, G_OPTION_ARG_INT, &terrain,
+	 /* Commandline server-console: terrain */
 	 N_("Override terrain type, 0=default 1=random"), "0|1"},
-	/* Commandline server-console: computer-players */
 	{"computer-players", 'c', 0, G_OPTION_ARG_INT, &num_ai_players,
+	 /* Commandline server-console: computer-players */
 	 N_("Add N computer players"), "N"},
 	{NULL, '\0', 0, 0, NULL, NULL, NULL}
 };
 
 static GOptionEntry commandline_meta_entries[] = {
-	/* Commandline server-console: register */
 	{"register", 'r', 0, G_OPTION_ARG_NONE, &register_server,
+	 /* Commandline server-console: register */
 	 N_("Register server with meta-server"), NULL},
-	/* Commandline server-console: meta-server */
 	{"meta-server", 'm', 0, G_OPTION_ARG_STRING, &metaname,
+	 /* Commandline server-console: meta-server */
 	 N_("Register at meta-server name (implies -r)"),
 	 PIONEERS_DEFAULT_META_SERVER},
-	/* Commandline server-console: hostname */
 	{"hostname", 'n', 0, G_OPTION_ARG_STRING, &hostname,
+	 /* Commandline server-console: hostname */
 	 N_("Use this hostname when registering"), NULL},
 	{NULL, '\0', 0, 0, NULL, NULL, NULL}
 };
 
 static GOptionEntry commandline_other_entries[] = {
-	/* Commandline server-console: auto-quit */
 	{"auto-quit", 'x', 0, G_OPTION_ARG_NONE, &quit_when_done,
+	 /* Commandline server-console: auto-quit */
 	 N_("Quit after a player has won"), NULL},
-	/* Commandline server-console: empty-timeout */
 	{"empty-timeout", 'k', 0, G_OPTION_ARG_INT, &timeout,
+	 /* Commandline server-console: empty-timeout */
 	 N_("Quit after N seconds with no players"), "N"},
-	/* Commandline server-console: tournament */
 	{"tournament", 't', 0, G_OPTION_ARG_INT, &tournament_time,
+	 /* Commandline server-console: tournament */
 	 N_("Tournament mode, computer players added after N minutes"),
 	 "N"},
-	/* Commandline server-console: admin-port */
 	{"admin-port", 'a', 0, G_OPTION_ARG_STRING, &admin_port,
+	 /* Commandline server-console: admin-port */
 	 N_("Admin port to listen on"), PIONEERS_DEFAULT_ADMIN_PORT},
-	/* Commandline server-console: admin-wait */
 	{"admin-wait", 's', 0, G_OPTION_ARG_NONE, &disable_game_start,
+	 /* Commandline server-console: admin-wait */
 	 N_
 	 ("Don't start game immediately, wait for a command on admin port"),
 	 NULL},
