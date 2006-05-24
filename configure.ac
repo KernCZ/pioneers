@@ -209,11 +209,16 @@ if test x$have_glib_2_6 = xyes; then
 fi
 
 # Gtk+ support
-PKG_CHECK_MODULES(GTK2, gtk+-2.0 >= $GTK_REQUIRED_VERSION, have_gtk2=yes, 
+if test x$with_gtk = xno; then
+	have_gtk2="no, disabled in configure"
+else
+	PKG_CHECK_MODULES(GTK2, gtk+-2.0 >= $GTK_REQUIRED_VERSION,
+	have_gtk2=yes, 
 	[PKG_CHECK_MODULES(OLD_GTK2, gtk+-2.0,
 		[have_gtk2="no, Gtk+ version too old"],
 		[have_gtk2="no, Gtk+ not installed"])
 	])
+fi
 AM_CONDITIONAL(HAVE_GTK2, [test "$have_gtk2" = "yes"])
 
 # Gtk Glib26 ScrollKeeper -> Test Need Build
@@ -262,10 +267,6 @@ fi
 AM_CONDITIONAL(HAVE_GNOME, [test "$have_graphical" = "yes"])
 
 AM_CONDITIONAL(HAVE_SCROLLKEEPER, [test "$have_scrollkeeper" = "yes"])
-if test "$have_scrollkeeper" = "yes"; then
-	AC_DEFINE(HAVE_HELP, 1,
-		[Defined when online help is present])
-fi
 
 AC_ARG_ENABLE([admin-gtk],
 [  --enable-admin-gtk      Turn on (unstable) network administration support.],
@@ -423,9 +424,9 @@ if test "$pioneers_have_syslog" = "no"; then
 	pioneers_build_metaserver=no;
 fi
 if test "$have_graphical" != "yes"; then
-	pioneers_build_client_gtk=no;
-	pioneers_build_editor=no;
-	pioneers_build_server_gtk=no;
+	pioneers_build_client_gtk=$have_graphical;
+	pioneers_build_editor=$have_graphical;
+	pioneers_build_server_gtk=$have_graphical;
 fi
 if test "$pioneers_have_non_blocking_sockets" = "no"; then
 	pioneers_build_client_ai=no;
@@ -437,15 +438,22 @@ fi
 
 # The server functionality is not ported to MS Windows
 if test "$pioneers_is_windows_port" = "yes"; then
-	pioneers_build_server_console=no;
-	pioneers_build_server_gtk=no;
-	pioneers_build_metaserver=no;
+	pioneers_build_server_console="no, not implemented for MS Windows";
+	pioneers_build_server_gtk="no, not implemented for MS Windows";
+	pioneers_build_metaserver="no, not implemented for MS Windows";
 fi
 
-AM_CONDITIONAL(BUILD_CLIENT, [test $pioneers_build_client_gtk = yes -o $pioneers_build_client_ai = yes])
-AM_CONDITIONAL(BUILD_EDITOR, [test $pioneers_build_editor = yes])
-AM_CONDITIONAL(BUILD_SERVER, [test $pioneers_build_server_gtk = yes -o $pioneers_build_server_console = yes])
-AM_CONDITIONAL(BUILD_META_SERVER, [test $pioneers_build_metaserver = yes])
+AM_CONDITIONAL(BUILD_CLIENT, [test "$pioneers_build_client_gtk" = "yes" -o "$pioneers_build_client_ai" = yes])
+AM_CONDITIONAL(BUILD_EDITOR, [test "$pioneers_build_editor" = "yes"])
+AM_CONDITIONAL(BUILD_SERVER, [test "$pioneers_build_server_gtk" = "yes" -o "$pioneers_build_server_console" = "yes"])
+AM_CONDITIONAL(BUILD_META_SERVER, [test "$pioneers_build_metaserver" = "yes"])
+
+pioneers_have_help=$have_scrollkeeper;
+if test "$have_scrollkeeper" = "yes"; then
+	AC_DEFINE(HAVE_HELP, 1,
+		[Defined when online help is present])
+	pioneers_have_help="yes, scrollkeeper";
+fi
 
 AC_CONFIG_FILES([ \
 	Makefile \
@@ -492,7 +500,7 @@ $PACKAGE v$VERSION configuration:
         Build graphical server             $pioneers_build_server_gtk
         Build console server               $pioneers_build_server_console
         Build metaserver                   $pioneers_build_metaserver
-        Build help                         $have_scrollkeeper
+        Build help                         $pioneers_have_help
     Developers only:
         Use compiler warnings              $pioneers_warnings
         Add debug information              $pioneers_debug
