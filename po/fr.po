@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: pioneers 0.9.61\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-05-23 22:34+0200\n"
-"PO-Revision-Date: 2006-04-05 11:52+0200\n"
+"PO-Revision-Date: 2006-05-24 22:26+0200\n"
 "Last-Translator: LT-P <LT-P@lt-p.net>\n"
 "Language-Team: Français <LL@li.org>, Arnaud MALON <moko@geumeuleu.com>\n"
 "MIME-Version: 1.0\n"
@@ -1746,9 +1746,8 @@ msgid "Sevens Rule:"
 msgstr "Règle des sept:"
 
 #: ../client/gtk/settingscreen.c:189
-#, fuzzy
 msgid "<b>Building Quotas</b>"
-msgstr "<b>Quotas de construction</b>"
+msgstr "<b>Constructions disponibles</b>"
 
 #: ../client/gtk/settingscreen.c:205
 msgid "Roads:"
@@ -1771,9 +1770,8 @@ msgid "Bridges:"
 msgstr "Ponts:"
 
 #: ../client/gtk/settingscreen.c:237
-#, fuzzy
 msgid "<b>Development Card Deck</b>"
-msgstr "<b>Cartes de développement</b>"
+msgstr "<b>Pioche des cartes de développement</b>"
 
 #: ../client/gtk/settingscreen.c:253
 msgid "Road Building Cards:"
