@@ -6,10 +6,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: pioneers 0.9.61\n"
+"Project-Id-Version: pioneers 0.9.62\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-05-23 22:34+0200\n"
-"PO-Revision-Date: 2006-04-08 17:20+0200\n"
+"POT-Creation-Date: 2006-05-24 22:20+0200\n"
+"PO-Revision-Date: 2006-05-24 10:00+0200\n"
 "Last-Translator: Giancarlo Capella <giancarlo@comm.cc>\n"
 "Language-Team: it <it@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -41,27 +41,26 @@ msgstr "Porta Server"
 #. Commandline pioneersai: name
 #: ../client/ai/ai.c:109
 msgid "Computer name (leave absent for random name)"
-msgstr ""
+msgstr "Nome giocatore AI (nome casuale se nulla)"
 
 #. Commandline pioneersai: time
 #: ../client/ai/ai.c:112
 msgid "Time to wait between turns (in milliseconds)"
-msgstr ""
+msgstr "Tempo di attesa tra i turni (in millisecondi)"
 
 #. Commandline pioneersai: chat-free
 #: ../client/ai/ai.c:115
 msgid "Stop computer player from talking"
-msgstr ""
+msgstr "Blocca il dialogo del giocatore AI"
 
 #. Commandline pioneersai: algorithm
 #: ../client/ai/ai.c:118
 msgid "Type of computer player"
-msgstr ""
+msgstr "Tipo di giocatore AI"
 
 #: ../client/ai/ai.c:140
-#, fuzzy
 msgid "- Computer player for Pioneers"
-msgstr "Giocatori AI"
+msgstr "- Giocatore AI di Pioneers"
 
 #: ../client/ai/ai.c:214
 msgid "The game is already full. I'm leaving."
@@ -567,7 +566,7 @@ msgstr "%s ha costruito una città.\n"
 #: ../client/common/player.c:493
 #, c-format
 msgid "player_build_add called with BUILD_NONE for user %s\n"
-msgstr ""
+msgstr "player_build_add chiamata con BUILD_NONE per l'utente %s\n"
 
 #: ../client/common/player.c:502
 #, c-format
@@ -597,7 +596,7 @@ msgstr "%s ha rimosso una città.\n"
 #: ../client/common/player.c:571
 #, c-format
 msgid "player_build_remove called with BUILD_NONE for user %s\n"
-msgstr ""
+msgstr "player_build_remove chiamata con BUILD_NONE per l'utente %s\n"
 
 #: ../client/common/player.c:579
 #, c-format
@@ -1010,7 +1009,7 @@ msgstr "Spettatore"
 
 #: ../client/gtk/connect.c:1155
 msgid "Do you want to be a viewer?"
-msgstr ""
+msgstr "Vuoi essere uno spettatore?"
 
 #: ../client/gtk/connect.c:1162 ../server/gtk/main.c:537
 msgid "Meta Server"
@@ -1414,7 +1413,7 @@ msgstr "Benvenuto a Pioneers!"
 #: ../editor/gtk/editor.c:1121 ../server/gtk/main.c:899
 #, c-format
 msgid "Pixmap not found: %s\n"
-msgstr ""
+msgstr "Pixmap non trovata: %s\n"
 
 #. The name of the application
 #: ../client/gtk/gui.c:1328
@@ -1510,7 +1509,7 @@ msgstr "Nome Giocatore"
 
 #: ../client/gtk/offline.c:58 ../client/gtk/offline.c:79
 msgid "Connect as a viewer"
-msgstr ""
+msgstr "Connetti come spettatore"
 
 #: ../client/gtk/offline.c:62 ../client/gtk/offline.c:83
 msgid "Override the language of the system"
@@ -1523,7 +1522,7 @@ msgstr "Connessione"
 #. Long description in the commandline for pioneers: help
 #: ../client/gtk/offline.c:179
 msgid "- Play a game of Pioneers"
-msgstr ""
+msgstr "- Gioca una partita a Pioneers"
 
 #: ../client/gtk/offline.c:247
 msgid "Only server or port set, ignoring command line"
@@ -1591,9 +1590,8 @@ msgid "<b>Player Summary</b>"
 msgstr "<b>Riassunto Giocatore</b>"
 
 #: ../client/gtk/plenty.c:87
-#, fuzzy
 msgid "Please choose one resource from the bank"
-msgstr "Prendi due materie prime dalla banca"
+msgstr "Scegli una materia prima dalla banca"
 
 #: ../client/gtk/plenty.c:90
 msgid "Please choose two resources from the bank"
@@ -1601,7 +1599,7 @@ msgstr "Prendi due materie prime dalla banca"
 
 #: ../client/gtk/plenty.c:92
 msgid "The bank is empty"
-msgstr ""
+msgstr "La banca è vuota"
 
 #: ../client/gtk/quote.c:257
 msgid "Rejected trade"
@@ -1983,22 +1981,22 @@ msgstr "Tema %s non caricato per errori."
 #: ../common/gtk/theme.c:275
 #, c-format
 msgid "Could not find '%s' pixmap file in theme '%s'."
-msgstr ""
+msgstr "Impossibile trovare la pixmap '%s' nel tema '%s'."
 
 #: ../common/gtk/theme.c:294
 #, c-format
 msgid "Could not load '%s' pixmap file in theme '%s'."
-msgstr ""
+msgstr "Impossibile caricare la pixmap '%s' nel tema '%s'."
 
 #: ../common/gtk/theme.c:338
 #, c-format
 msgid "Could not find default pixmap file: %s"
-msgstr ""
+msgstr "Impossibile trovare la pixmap di default: %s"
 
 #: ../common/gtk/theme.c:543
 #, c-format
 msgid "While reading %s at line %d:"
-msgstr ""
+msgstr "Leggendo %s alla linea %d:"
 
 #: ../common/gtk/theme.c:559
 #, c-format
@@ -2169,12 +2167,12 @@ msgstr "Errore creazione socket: %s\n"
 #: ../common/network.c:505
 #, c-format
 msgid "Error setting socket close-on-exec: %s\n"
-msgstr ""
+msgstr "Errore nell'impostazione close-on-exec per il socket: %s\n"
 
 #: ../common/network.c:515 ../common/network.c:674
 #, c-format
 msgid "Error setting socket non-blocking: %s\n"
-msgstr ""
+msgstr "Errore nell'impostazione non-blocking per il socket: %s\n"
 
 #: ../common/network.c:540
 #, c-format
@@ -2417,16 +2415,16 @@ msgstr "Informazioni su Pioneers Editor"
 #. Long help for commandline option (editor): filename
 #: ../editor/gtk/editor.c:1032
 msgid "Open this file"
-msgstr ""
+msgstr "Apri questo file"
 
 #. Commandline option for editor: filename
 #: ../editor/gtk/editor.c:1034
 msgid "filename"
-msgstr ""
+msgstr "nome file"
 
 #: ../editor/gtk/editor.c:1067
 msgid "- Editor for games of Pioneers"
-msgstr ""
+msgstr "- Editor per le partite di Pioneers"
 
 #: ../editor/gtk/editor.c:1108 ../server/gtk/main.c:887
 #, c-format
@@ -2635,7 +2633,7 @@ msgstr "La partita è finita.\n"
 #. Long description in the commandline for server-console: help
 #: ../server/gtk/main.c:845 ../server/main.c:199
 msgid "- Host a game of Pioneers"
-msgstr ""
+msgstr "- Ospita una partita di Pioneers"
 
 #. Name in the titlebar of the server
 #: ../server/gtk/main.c:868
@@ -2645,99 +2643,98 @@ msgstr "Server Pioneers"
 #. Commandline server-console: game-title
 #: ../server/main.c:100
 msgid "Game title to use"
-msgstr ""
+msgstr "Nome della partita"
 
 #. Commandline server-console: port
 #: ../server/main.c:103
 msgid "Port to listen on"
-msgstr ""
+msgstr "Porta su cui ascoltare"
 
 #. Commandline server-console: players
 #: ../server/main.c:106
-#, fuzzy
 msgid "Override number of players"
-msgstr "Il numero di giocatori"
+msgstr "Forza il numero di giocatori"
 
 #. Commandline server-console: points
 #: ../server/main.c:109
-#, fuzzy
 msgid "Override number of points needed to win"
-msgstr "Punti per vincere"
+msgstr "Forza il numero di punti vittoria"
 
 #. Commandline server-console: seven-rule
 #: ../server/main.c:112
 msgid "Override seven-rule handling"
-msgstr ""
+msgstr "Forza la gestione della regola sette"
 
 #. Commandline server-console: terrain
 #: ../server/main.c:115
 msgid "Override terrain type, 0=default 1=random"
-msgstr ""
+msgstr "Forza il tipo di terreno, 0=default 1=casuale"
 
 #. Commandline server-console: computer-players
 #: ../server/main.c:118
-#, fuzzy
 msgid "Add N computer players"
-msgstr "Aggiungi Giocatore AI"
+msgstr "Aggiungi N giocatori AI"
 
 #. Commandline server-console: register
 #: ../server/main.c:125
-#, fuzzy
 msgid "Register server with meta-server"
-msgstr "Registra questa partita sul meta server"
+msgstr "Registra il server sul meta server"
 
+# fuzzy
 #. Commandline server-console: meta-server
 #: ../server/main.c:128
 msgid "Register at meta-server name (implies -r)"
-msgstr ""
+msgstr "Registra sul metaserver con nome (implica -r)"
 
 #. Commandline server-console: hostname
 #: ../server/main.c:132
 msgid "Use this hostname when registering"
-msgstr ""
+msgstr "Usa questo hostname per la registrazione"
 
 #. Commandline server-console: auto-quit
 #: ../server/main.c:139
 msgid "Quit after a player has won"
-msgstr ""
+msgstr "Esci quando un giocatore vince"
 
 #. Commandline server-console: empty-timeout
 #: ../server/main.c:142
 msgid "Quit after N seconds with no players"
-msgstr ""
+msgstr "Esci dopo N secondi senza giocatori"
 
 #. Commandline server-console: tournament
 #: ../server/main.c:145
 msgid "Tournament mode, computer players added after N minutes"
-msgstr ""
+msgstr "Modalità torneo, giocatori AI aggiunti dopo N secondi"
 
 #. Commandline server-console: admin-port
 #: ../server/main.c:149
 msgid "Admin port to listen on"
-msgstr ""
+msgstr "Porta di admin su cui ascoltare"
 
 #: ../server/main.c:153
 msgid "Don't start game immediately, wait for a command on admin port"
 msgstr ""
+"Non iniziare la partita immediatamente, aspetta un comando dalla porta di "
+"admin"
 
 #. Commandline server-console: Short description of meta group
 #: ../server/main.c:205
 msgid "Meta-server Options"
-msgstr ""
+msgstr "Opzioni meta-server"
 
 #: ../server/main.c:208
 msgid "Options for the meta-server"
-msgstr ""
+msgstr "Opzioni per il meta-server"
 
 #. Commandline server-console: Short description of misc group
 #: ../server/main.c:216
 msgid "Miscellaneous Options"
-msgstr ""
+msgstr "Opzioni generiche"
 
 #. Commandline server-console: Long description of misc group
 #: ../server/main.c:218
 msgid "Miscellaneous options"
-msgstr ""
+msgstr "Opzioni generiche"
 
 #: ../server/meta.c:197
 #, c-format
@@ -2791,95 +2788,3 @@ msgstr "Manca la directory di partita\n"
 #: ../server/turn.c:308
 msgid "Tried to assign resources to NULL player.\n"
 msgstr "Si è cercato di assegnare le materie prime al giocatore NULL\n"
-
-#~ msgid "%d:1 %s for %s"
-#~ msgstr "%d:1 %s per %s"
-
-#~ msgid "Quotes"
-#~ msgstr "Quotazioni"
-
-#~ msgid "There is no help"
-#~ msgstr "Non c'è aiuto"
-
-#~ msgid "_Contents"
-#~ msgstr "_Contenuti"
-
-#~ msgid "Contents"
-#~ msgstr "Contenuti"
-
-#~ msgid "brick + lumber"
-#~ msgstr "argilla + legno"
-
-#~ msgid "wool + lumber"
-#~ msgstr "lana + legno"
-
-#~ msgid "brick + wool + lumber"
-#~ msgstr "argilla + lana + legno"
-
-#~ msgid "brick + grain + wool + lumber"
-#~ msgstr "argilla + grano + lana + legno"
-
-#~ msgid "2 grain + 3 ore"
-#~ msgstr "2 grano + 3 minerale"
-
-#~ msgid "grain + ore + wool"
-#~ msgstr "grano + minerale + lana"
-
-#~ msgid "Development Card Deck"
-#~ msgstr "Mazzo Carte Sviluppo"
-
-#~ msgid ""
-#~ "Trade\n"
-#~ "(F2)"
-#~ msgstr ""
-#~ "Commercia\n"
-#~ "(F2)"
-
-#~ msgid ""
-#~ "Finish\n"
-#~ "(F4)"
-#~ msgstr ""
-#~ "Fine\n"
-#~ "(F4)"
-
-#~ msgid ""
-#~ "Road\n"
-#~ "(F5)"
-#~ msgstr ""
-#~ "Strada\n"
-#~ "(F5)"
-
-#~ msgid ""
-#~ "Ship\n"
-#~ "(F6)"
-#~ msgstr ""
-#~ "Nave\n"
-#~ "(F6)"
-
-#~ msgid ""
-#~ "Bridge\n"
-#~ "(F8)"
-#~ msgstr ""
-#~ "Ponte\n"
-#~ "(F8)"
-
-#~ msgid ""
-#~ "Settlement\n"
-#~ "(F9)"
-#~ msgstr ""
-#~ "Colonia\n"
-#~ "(F9)"
-
-#~ msgid ""
-#~ "City\n"
-#~ "(F10)"
-#~ msgstr ""
-#~ "Città\n"
-#~ "(F10)"
-
-#~ msgid ""
-#~ "Develop\n"
-#~ "(F11)"
-#~ msgstr ""
-#~ "Sviluppo\n"
-#~ "(F11)"
