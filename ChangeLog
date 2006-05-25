@@ -1,3 +1,7 @@
+2006-05-25  Bas Wijnen
+	* common/state.c, common/state.h, server/player.c: Make server handle
+	broken pipe correctly.
+
 2006-05-25  Roland Clobus <rclobus@bigfoot.com>
 	* common/gtk/common_gtk.c, common/log.c, common/log.h,
 	client/common/chat.c:

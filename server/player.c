@@ -29,7 +29,6 @@
 static gboolean mode_check_version(Player * player, gint event);
 static gboolean mode_check_status(Player * player, gint event);
 static gboolean mode_bad_version(Player * player, gint event);
-static gboolean mode_game_is_over(Player * player, gint event);
 static gboolean mode_global(Player * player, gint event);
 static gboolean mode_unhandled(Player * player, gint event);
 static void player_setup(Player * player, int playernum,
@@ -93,6 +92,23 @@ static gboolean mode_global(Player * player, gint event)
 	gchar text[512];
 
 	switch (event) {
+	case SM_FREE:
+		if (player->name != NULL)
+			g_free(player->name);
+		if (player->location != NULL)
+			g_free(player->location);
+		if (player->client_version != NULL)
+			g_free(player->client_version);
+		if (player->devel != NULL)
+			deck_free(player->devel);
+		if (player->num >= 0 && !player_is_viewer(game, player->num)) {
+			game->num_players--;
+			meta_report_num_players(game->num_players);
+		}
+		g_list_free(player->build_list);
+		g_list_free(player->points);
+		g_free(player);
+		return TRUE;
 	case SM_NET_CLOSE:
 		player_remove(player);
 		if (player->num >= 0) {
@@ -223,23 +239,27 @@ Player *player_new(Game * game, int fd, gchar * location)
 		return NULL;
 	}
 
+	if (game->is_game_over) {
+		/* The game is over, don't accept new players */
+		Session *ses = net_new(NULL, NULL);
+		net_use_fd(ses, fd);
+		/* Message to send to the client when the game is already over
+		 * when a connection is made.
+		 * Don't translate the NOTE at the start. */
+		net_write(ses, _("NOTE Sorry, game is over.\n"));
+		log_message(MSG_INFO,
+			    _("Player from %s is refused: game is over\n"),
+			    location);
+		net_close_when_flushed(ses);
+		return NULL;
+	}
+
 	player = g_malloc0(sizeof(*player));
 	sm = player->sm = sm_new(player);
 
 	sm_global_set(sm, (StateFunc) mode_global);
 	sm_unhandled_set(sm, (StateFunc) mode_unhandled);
 	sm_use_fd(sm, fd);
-
-	if (game->is_game_over) {
-		/* The game is over, don't accept new players */
-		sm_goto(sm, (StateFunc) mode_game_is_over);
-		log_message(MSG_INFO,
-			    _("Player from %s is refused: game is over\n"),
-			    location);
-		sm_free(sm);
-		close(fd);
-		return NULL;
-	}
 
 	/* Cache messages of the game in progress until all intial 
 	 * messages have been sent
@@ -398,21 +418,6 @@ void player_free(Player * player)
 	driver->player_change(game);
 
 	sm_free(player->sm);
-	if (player->name != NULL)
-		g_free(player->name);
-	if (player->location != NULL)
-		g_free(player->location);
-	if (player->client_version != NULL)
-		g_free(player->client_version);
-	if (player->devel != NULL)
-		deck_free(player->devel);
-	if (player->num >= 0 && !player_is_viewer(game, player->num)) {
-		game->num_players--;
-		meta_report_num_players(game->num_players);
-	}
-	g_list_free(player->build_list);
-	g_list_free(player->points);
-	g_free(player);
 }
 
 void player_archive(Player * player)
@@ -630,19 +635,6 @@ static gboolean mode_bad_version(Player * player, gint event)
 	switch (event) {
 	case SM_ENTER:
 		sm_send_uncached(sm, "ERR sorry, version conflict\n");
-		break;
-	}
-	return FALSE;
-}
-
-static gboolean mode_game_is_over(Player * player, gint event)
-{
-	StateMachine *sm = player->sm;
-
-	sm_state_name(sm, "mode_game_is_over");
-	switch (event) {
-	case SM_ENTER:
-		sm_send(sm, "NOTE %s\n", _("Sorry, game is over."));
 		break;
 	}
 	return FALSE;

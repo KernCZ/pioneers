@@ -37,6 +37,8 @@
 #include "state.h"
 #include "cost.h"
 
+static void route_event(StateMachine * sm, gint event);
+
 void sm_inc_use_count(StateMachine * sm)
 {
 	sm->use_count++;
@@ -69,13 +71,21 @@ static void route_event(StateMachine * sm, gint event)
 	StateFunc curr_state;
 	gpointer user_data;
 
-	if (sm->is_dead)
-		return;
-
 	curr_state = sm_current(sm);
 	user_data = sm->user_data;
 	if (user_data == NULL)
 		user_data = sm;
+
+	/* send death notification even when dead */
+	if (event == SM_FREE) {
+		/* send death notifications only to global handler */
+		if (sm->global != NULL)
+			sm->global(user_data, event);
+		return;
+	}
+
+	if (sm->is_dead)
+		return;
 
 	switch (event) {
 	case SM_ENTER:
@@ -625,12 +635,15 @@ void sm_pop_all(StateMachine * sm)
 
 void sm_pop_all_and_goto(StateMachine * sm, StateFunc new_state)
 {
+	sm_inc_use_count(sm);
+
 	sm->stack_ptr = 0;
 	sm->stack[sm->stack_ptr] = new_state;
 	sm->stack_name[sm->stack_ptr] = NULL;
 	route_event(sm, SM_ENTER);
 	route_event(sm, SM_INIT);
 
+	sm_dec_use_count(sm);
 }
 
 /** Return the state at offset from the top of the stack.
@@ -675,8 +688,10 @@ void sm_free(StateMachine * sm)
 	}
 	if (sm->use_count > 0)
 		sm->is_dead = TRUE;
-	else
+	else {
+		route_event(sm, SM_FREE);
 		g_free(sm);
+	}
 }
 
 void sm_close(StateMachine * sm)

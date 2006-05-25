@@ -108,7 +108,8 @@ typedef enum {
 
 	SM_ENTER,
 	SM_INIT,
-	SM_RECV
+	SM_RECV,
+	SM_FREE
 } EventType;
 
 typedef struct StateMachine StateMachine;
