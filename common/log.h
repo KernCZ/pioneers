@@ -3,7 +3,8 @@
  *
  * Copyright (C) 1999 Dave Cole
  * Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
- * 
+ * Copyright (C) 2006 Roland Clobus <rclobus@bigfoot.com>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -25,13 +26,8 @@
 #include <glib.h>
 #include <glib/gi18n.h>
 
-/* Type of logging functions: takes int,char; returns nothing */
+/** Type of logging functions */
 typedef void (*LogFunc) (gint msg_type, const gchar * text);
-
-/* The default function to use to write messages, when nothing else has been
- * specified.
- */
-#define LOG_FUNC_DEFAULT log_message_string_console
 
 /* Message Types */
 #define MSG_ERROR	1
@@ -46,6 +42,7 @@ typedef void (*LogFunc) (gint msg_type, const gchar * text);
 #define MSG_LARGESTARMY	10
 #define MSG_LONGESTROAD	11
 #define MSG_BEEP	12
+#define MSG_TIMESTAMP	13
 #define MSG_PLAYER1	101
 #define MSG_PLAYER2	102
 #define MSG_PLAYER3	103
@@ -56,23 +53,23 @@ typedef void (*LogFunc) (gint msg_type, const gchar * text);
 #define MSG_PLAYER8	108
 #define MSG_VIEWER_CHAT	199
 
-/* Set the default logging function to 'func'. */
+/** Set the logging function to 'func'. */
 void log_set_func(LogFunc func);
 
-/* Set the default logging function to the system default (LOG_FUNC_DEFAULT,
- *   found in log.h).
- */
+/** Set the logging function to the system default (stderr) */
 void log_set_func_default(void);
 
-/* Write a message string to the console, adding a prefix depending on 
+/** Write a message string to the console, adding a prefix depending on 
  *   its type.
  */
 void log_message_string_console(gint msg_type, const gchar * text);
 
-/* Log a message, sending it through _log_func (or if that's NULL, then
- *   through LOG_FUNC_DEFAULT) after turning the params into a single
- *   string.
- */
+/** Log a message after turning the params into a single string. */
 void log_message(gint msg_type, const gchar * fmt, ...);
-void log_message_continue(gint msg_type, const gchar * fmt, ...);
+
+/** Log a chat message.
+ *  When the log function is not the default, only the chat is shown
+ *  with msg_type, the other parts are shown with MSG_INFO.
+ */
+void log_message_chat(const gchar *player_name, const gchar *joining_text, gint msg_type, const gchar *chat);
 #endif				/* __log_h */

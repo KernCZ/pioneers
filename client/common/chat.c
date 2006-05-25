@@ -61,6 +61,7 @@ void chat_parser(gint player_num, const gchar * chat)
 	gint idx;
 	gchar *chat_str;
 	gchar *chat_alloc;
+	const gchar *joining_text;
 
 	/* If the chat matches chat from the AI, translate it.
 	 * FIXME: There should be a flag to indicate the player is an AI,
@@ -110,18 +111,17 @@ void chat_parser(gint player_num, const gchar * chat)
 		chat_str[0] = ':';
 	}
 
-	log_message(MSG_INFO, "%s", player_name(player_num, TRUE));
-
 	switch (chat_str[0]) {
 	case ':':
 		chat_str += 1;
-		log_message_continue(MSG_INFO, " ");
+		joining_text = " ";
 		break;
 	case ';':
 		chat_str += 1;
+		joining_text = "";
 		break;
 	default:
-		log_message_continue(MSG_INFO, _(" said: "));
+		joining_text = _(" said: ");
 		break;
 	}
 
@@ -161,7 +161,7 @@ void chat_parser(gint player_num, const gchar * chat)
 	} else {
 		tempchatcolor = MSG_CHAT;
 	}
-	log_message_continue(tempchatcolor, "%s\n", chat_str);
+	log_message_chat(player_name(player_num, TRUE), joining_text, tempchatcolor, chat_str);
 	g_free(chat_alloc);
 	return;
 }

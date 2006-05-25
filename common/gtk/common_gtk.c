@@ -97,6 +97,7 @@ void message_window_log_message_string(gint msg_type, const gchar * text)
 			case MSG_ERROR:
 				tagname = "red";
 				break;
+			case MSG_TIMESTAMP:
 			case MSG_INFO:
 				tagname = "info";
 				break;

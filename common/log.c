@@ -27,37 +27,37 @@
 #include "log.h"
 #include "driver.h"
 
-/* Set the default logging function to 'func'. */
+/* The default function to use to write messages, when nothing else has been
+ * specified.
+ */
+#define LOG_FUNC_DEFAULT log_message_string_console
+
 void log_set_func(LogFunc func)
 {
-	driver->log_write = func;
+	if (func != NULL)
+		driver->log_write = func;
+	else
+		driver->log_write = LOG_FUNC_DEFAULT;
 }
 
-/* Set the default logging function to the system default (LOG_FUNC_DEFAULT,
- *   found in log.h).
- */
 void log_set_func_default(void)
 {
 	driver->log_write = LOG_FUNC_DEFAULT;
 }
 
-/* Write a message string to the console, adding a prefix depending on 
- *   its type.
- */
 void log_message_string_console(gint msg_type, const gchar * text)
 {
-	const gchar *prefix;
+	const gchar *prefix = NULL;
 
 	switch (msg_type) {
 	case MSG_ERROR:
 		prefix = _("*ERROR* ");
 		break;
 	case MSG_INFO:
-		prefix = _("- ");
+		prefix = "- ";
 		break;
 	case MSG_CHAT:
-		prefix = _("CHAT: ");
-		/* why the hell are you logging chat to the console? */
+		prefix = _("Chat: ");
 		break;
 	case MSG_RESOURCE:
 		prefix = _("Resource: ");
@@ -86,6 +86,8 @@ void log_message_string_console(gint msg_type, const gchar * text)
 	case MSG_BEEP:
 		prefix = _("*BEEP* ");
 		break;
+	case MSG_TIMESTAMP:
+		break; /* No prefix */
 	case MSG_PLAYER1:
 		prefix = _("Player 1: ");
 		break;
@@ -147,6 +149,8 @@ static const char *debug_type(int type)
 		return "DEVCARD";
 	case MSG_LARGESTARMY:
 		return "LARGESTARMY";
+	case MSG_LONGESTROAD:
+		return "LONGESTROAD";
 	case MSG_BEEP:
 		return "BEEP";
 	case MSG_PLAYER1:
@@ -173,26 +177,19 @@ static const char *debug_type(int type)
 }
 #endif
 
-/* Log a message, sending it through driver->log_write (or if that's NULL,
- *   then through LOG_FUNC_DEFAULT) after turning the params into a single
- *   string.
- */
-void log_message_continue(gint msg_type, const gchar * fmt, ...)
+void log_message_chat(const gchar *player_name, const gchar *joining_text, gint msg_type, const gchar *chat)
 {
-	gchar text[1024];
-	va_list ap;
-
-	va_start(ap, fmt);
-	g_vsnprintf(text, sizeof(text), fmt, ap);
-	va_end(ap);
-
+	if (driver->log_write && driver->log_write != LOG_FUNC_DEFAULT) {
+		log_message(MSG_INFO, "%s%s", player_name, joining_text);
 #ifdef DEBUG
-	debug("[%s]%s", debug_type(msg_type), text);
+		debug("[%s] %s", debug_type(msg_type), chat);
 #endif
-	if (driver->log_write)
-		driver->log_write(msg_type, text);
-	else
-		LOG_FUNC_DEFAULT(msg_type, text);
+		/* No timestamp here: */
+		driver->log_write(msg_type, chat);
+		driver->log_write(msg_type, "\n");
+	} else {
+		log_message(msg_type, "%s%s%s\n", player_name, joining_text, chat);
+	}
 }
 
 void log_message(gint msg_type, const gchar * fmt, ...)
@@ -207,22 +204,21 @@ void log_message(gint msg_type, const gchar * fmt, ...)
 	g_vsnprintf(text, sizeof(text), fmt, ap);
 	va_end(ap);
 
+#ifdef DEBUG
+	debug("[%s] %s", debug_type(msg_type), text);
+#endif
+
 	t = time(NULL);
 	alpha = localtime(&t);
 
 	sprintf(timestamp, "%02d:%02d:%02d ", alpha->tm_hour,
 		alpha->tm_min, alpha->tm_sec);
 
-	if (driver->log_write)
-		driver->log_write(MSG_INFO, timestamp);
-	else
-		LOG_FUNC_DEFAULT(MSG_INFO, timestamp);
-
-#ifdef DEBUG
-	debug("%s[%s]%s", timestamp, debug_type(msg_type), text);
-#endif
-	if (driver->log_write)
+	if (driver->log_write) {
+		driver->log_write(MSG_TIMESTAMP, timestamp);
 		driver->log_write(msg_type, text);
-	else
+	} else {
+		LOG_FUNC_DEFAULT(MSG_TIMESTAMP, timestamp);
 		LOG_FUNC_DEFAULT(msg_type, text);
+	}
 }

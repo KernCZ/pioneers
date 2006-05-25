@@ -1,3 +1,8 @@
+2006-05-25  Roland Clobus <rclobus@bigfoot.com>
+	* common/gtk/common_gtk.c, common/log.c, common/log.h,
+	client/common/chat.c:
+	Better layout for the log to the console
+	
 2006-05-24  Roland Clobus <rclobus@bigfoot.com>
 	* configure.ac: Nicer feedback when something is not built
 	
