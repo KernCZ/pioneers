@@ -161,7 +161,8 @@ void chat_parser(gint player_num, const gchar * chat)
 	} else {
 		tempchatcolor = MSG_CHAT;
 	}
-	log_message_chat(player_name(player_num, TRUE), joining_text, tempchatcolor, chat_str);
+	log_message_chat(player_name(player_num, TRUE), joining_text,
+			 tempchatcolor, chat_str);
 	g_free(chat_alloc);
 	return;
 }

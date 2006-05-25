@@ -87,7 +87,7 @@ void log_message_string_console(gint msg_type, const gchar * text)
 		prefix = _("*BEEP* ");
 		break;
 	case MSG_TIMESTAMP:
-		break; /* No prefix */
+		break;		/* No prefix */
 	case MSG_PLAYER1:
 		prefix = _("Player 1: ");
 		break;
@@ -177,7 +177,9 @@ static const char *debug_type(int type)
 }
 #endif
 
-void log_message_chat(const gchar *player_name, const gchar *joining_text, gint msg_type, const gchar *chat)
+void log_message_chat(const gchar * player_name,
+		      const gchar * joining_text, gint msg_type,
+		      const gchar * chat)
 {
 	if (driver->log_write && driver->log_write != LOG_FUNC_DEFAULT) {
 		log_message(MSG_INFO, "%s%s", player_name, joining_text);
@@ -188,7 +190,8 @@ void log_message_chat(const gchar *player_name, const gchar *joining_text, gint 
 		driver->log_write(msg_type, chat);
 		driver->log_write(msg_type, "\n");
 	} else {
-		log_message(msg_type, "%s%s%s\n", player_name, joining_text, chat);
+		log_message(msg_type, "%s%s%s\n", player_name,
+			    joining_text, chat);
 	}
 }
 

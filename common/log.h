@@ -70,6 +70,10 @@ void log_message(gint msg_type, const gchar * fmt, ...);
 /** Log a chat message.
  *  When the log function is not the default, only the chat is shown
  *  with msg_type, the other parts are shown with MSG_INFO.
+ *  This means that player_name and joining_text are shown black,
+ *  and the chat is in the colour of the player.
  */
-void log_message_chat(const gchar *player_name, const gchar *joining_text, gint msg_type, const gchar *chat);
+void log_message_chat(const gchar * player_name,
+		      const gchar * joining_text, gint msg_type,
+		      const gchar * chat);
 #endif				/* __log_h */
