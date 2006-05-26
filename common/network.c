@@ -98,7 +98,7 @@ void debug(const gchar * fmt, ...)
 				g_print("\\t");
 				break;
 			default:
-				g_print("\\x%02x", buff[idx]);
+				g_print("\\x%02x", (buff[idx] & 0xff));
 				break;
 			}
 	}
