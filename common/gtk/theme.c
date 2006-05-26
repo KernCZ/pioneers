@@ -458,20 +458,23 @@ void theme_rescale(int new_width)
 	}
 
 	/* if the size is 0, gdk_pixbuf_scale_simple fails */
-	if (new_width == 0)
+	if (new_width <= 0)
 		new_width = 1;
 
 	for (i = 0; i < G_N_ELEMENTS(current_theme->terrain_tiles); ++i) {
+		int new_height;
 		if (i == BOARD_TILE)
 			continue;	/* Don't scale the board-tile */
+		new_height = new_width / current_theme->scaledata[i].aspect;
+		/* gdk_pixbuf_scale_simple cannot handle 0 height */
+		if (new_height <= 0)
+			new_height = 1;
 		/* rescale the pixbuf */
 		gdk_pixbuf_unref(current_theme->scaledata[i].image);
 		current_theme->scaledata[i].image =
 		    gdk_pixbuf_scale_simple(current_theme->scaledata[i].
 					    native_image, new_width,
-					    new_width /
-					    current_theme->scaledata[i].
-					    aspect, GDK_INTERP_BILINEAR);
+					    new_height, GDK_INTERP_BILINEAR);
 
 		/* render a new pixmap */
 		g_object_unref(current_theme->terrain_tiles[i]);

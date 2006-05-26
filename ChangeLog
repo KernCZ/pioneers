@@ -1,5 +1,6 @@
 2006-05-26  Bas Wijnen <shevek@fmf.nl>
 	* common/network.c: Write logged escaped bytes as bytes, now words.
+	* common/gtk/theme.c: Allow scaling scalable themes to 0.
 
 2006-05-26  Roland CLobus <rclobus@bigfoot.com>
 	* editor/gtk/editor.c, server/gtk/main.c, server/main.c, 
