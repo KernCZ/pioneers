@@ -2,6 +2,7 @@
 	* editor/gtk/editor.c, server/gtk/main.c, server/main.c, 
 	client/gtk/offline.c, client/ai/ai.c: Quit when unknown commandline 
 	options are passed
+	* client/help/C/pioneers.xml: Describe all chat commands
 	
 2006-05-25  Bas Wijnen
 	* common/state.c, common/state.h, server/player.c: Make server handle

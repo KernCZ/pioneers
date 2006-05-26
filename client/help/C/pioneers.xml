@@ -491,21 +491,42 @@
 	  </thead>
 	  <tbody>
 	    <row>
+	      <entry><userinput>;</userinput></entry>
+	      <entry>chat message</entry>
+	      <entry>The chat message is added directly behind the name of
+	        the player.
+		Example: <userinput>;'s victory is imminent</userinput>
+		will become <quote>player name's victory is imminent</quote>
+	      </entry>
+	    </row>
+	    <row>
+	      <entry><userinput>:</userinput></entry>
+	      <entry>chat message</entry>
+	      <entry>The chat message is added after the name of the player
+	        with a space in between.
+		Example: <userinput>:needs lumber</userinput> will become
+		<quote>player name needs lumber</quote>
+	      </entry>
+	    </row>
+	    <row>
 	      <entry><userinput>/me</userinput></entry>
-	      <entry>(anything)</entry>
+	      <entry>chat message</entry>
 	      <entry>This is the same as the
 	      "<userinput>:</userinput>" described above, but IRC
 	      addicts might prefer this variant.</entry>
 	    </row>
 	    <row>
 	      <entry><userinput>/beep</userinput></entry>
-	      <entry><replaceable>username</replaceable></entry>
-	      <entry>Let <replaceable>username</replaceable>'s client
+	      <entry><replaceable>player name</replaceable></entry>
+	      <entry>Let <replaceable>player name</replaceable>'s client
 	      beep.</entry>
 	    </row>
 	  </tbody>
         </tgroup>
       </table>
+      </para>
+      <para>If you want to send a smiley that starts with a <symbol>:</symbol>
+        or <symbol>;</symbol>, type a <symbol>space</symbol> before the smiley.
       </para>
     </sect1>
 
