@@ -166,6 +166,7 @@ void frontend_init(int argc, char **argv)
 #endif
 #ifdef HAVE_GLIB_2_6
 	GOptionContext *context;
+	GError *error = NULL;
 #endif
 
 	frontend_gui_register_init();
@@ -180,7 +181,12 @@ void frontend_init(int argc, char **argv)
 	g_option_context_add_main_entries(context, commandline_entries,
 					  PACKAGE);
 	g_option_context_add_group(context, gtk_get_option_group(TRUE));
-	g_option_context_parse(context, &argc, &argv, NULL);
+	g_option_context_parse(context, &argc, &argv, &error);
+	if (error != NULL) {
+		g_print("%s\n", error->message);
+		g_error_free(error);
+		exit(1);
+	};
 
 #if defined(HAVE_HELP) && defined(HAVE_LIBGNOME)
 	gnome_program_init(PACKAGE, VERSION,

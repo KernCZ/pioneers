@@ -162,6 +162,7 @@ int main(int argc, char *argv[])
 #ifdef HAVE_GLIB_2_6
 	GOptionContext *context;
 	GOptionGroup *context_group;
+	GError *error = NULL;
 #else				/* HAVE_GLIB_2_6 */
 	int c;
 	gint num_players = 0, num_points = 0,
@@ -221,7 +222,12 @@ int main(int argc, char *argv[])
 	g_option_group_add_entries(context_group,
 				   commandline_other_entries);
 	g_option_context_add_group(context, context_group);
-	g_option_context_parse(context, &argc, &argv, NULL);
+	g_option_context_parse(context, &argc, &argv, &error);
+	if (error != NULL) {
+		g_print("%s\n", error->message);
+		g_error_free(error);
+		return 1;
+	};
 
 	if (server_port == NULL)
 		server_port = g_strdup(PIONEERS_DEFAULT_GAME_PORT);

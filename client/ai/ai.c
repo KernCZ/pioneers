@@ -129,6 +129,7 @@ static void ai_init(int argc, char **argv)
 {
 #ifdef HAVE_GLIB_2_6
 	GOptionContext *context;
+	GError *error = NULL;
 #else
 	int c;
 	char *name = NULL;
@@ -140,7 +141,12 @@ static void ai_init(int argc, char **argv)
 	    g_option_context_new(_("- Computer player for Pioneers"));
 	g_option_context_add_main_entries(context, commandline_entries,
 					  PACKAGE);
-	g_option_context_parse(context, &argc, &argv, NULL);
+	g_option_context_parse(context, &argc, &argv, &error);
+	if (error != NULL) {
+		g_print("%s\n", error->message);
+		g_error_free(error);
+		exit(1);
+	}
 
 	if (server == NULL)
 		server = g_strdup(PIONEERS_DEFAULT_GAME_HOST);

@@ -846,7 +846,12 @@ int main(int argc, char *argv[])
 	g_option_context_add_main_entries(context, commandline_entries,
 					  PACKAGE);
 	g_option_context_add_group(context, gtk_get_option_group(TRUE));
-	g_option_context_parse(context, &argc, &argv, NULL);
+	g_option_context_parse(context, &argc, &argv, &error);
+	if (error != NULL) {
+		g_print("%s\n", error->message);
+		g_error_free(error);
+		return 1;
+	};
 #else				/* HAVE_GLIB_2_6 */
 #ifdef HAVE_LIBGNOME
 	/* @todo RC 2005-04-10 If the client does not need libgnomeui
