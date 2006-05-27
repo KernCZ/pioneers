@@ -192,9 +192,9 @@ static void showhide_toolbar_cb(void);
 static void preferences_cb(void);
 
 static void help_about_cb(void);
-static void help_legend_cb(void);
-static void help_histogram_cb(void);
-static void help_settings_cb(void);
+static void game_legend_cb(void);
+static void game_histogram_cb(void);
+static void game_settings_cb(void);
 #ifdef HAVE_HELP
 static void help_manual_cb(void);
 #endif
@@ -214,6 +214,12 @@ static GtkActionEntry entries[] = {
 #endif
 	{"PlayerName", NULL, N_("_Player name"), "<control>P",
 	 N_("Change your player name"), playername_cb},
+	{"Legend", GTK_STOCK_DIALOG_INFO, N_("_Legend"), NULL,
+	 N_("Terrain legend and building costs"), game_legend_cb},
+	{"GameSettings", GTK_STOCK_DIALOG_INFO, N_("_Game Settings"), NULL,
+	 N_("Settings for the current game"), game_settings_cb},
+	{"DiceHistogram", GTK_STOCK_DIALOG_INFO, N_("_Dice Histogram"),
+	 NULL, N_("Histogram of dice rolls"), game_histogram_cb},
 	{"GameQuit", GTK_STOCK_QUIT, N_("_Quit"), "<control>Q",
 	 N_("Quit the program"), game_quit_cb},
 	{"ActionsMenu", NULL, N_("_Actions"), NULL, NULL, NULL},
@@ -244,12 +250,6 @@ static GtkActionEntry entries[] = {
 	 N_("Configure the application"), preferences_cb},
 
 	{"HelpMenu", NULL, N_("_Help"), NULL, NULL, NULL},
-	{"Legend", GTK_STOCK_DIALOG_INFO, N_("_Legend"), NULL,
-	 N_("Terrain legend and building costs"), help_legend_cb},
-	{"GameSettings", GTK_STOCK_DIALOG_INFO, N_("_Game Settings"), NULL,
-	 N_("Settings for the current game"), help_settings_cb},
-	{"DiceHistogram", GTK_STOCK_DIALOG_INFO, N_("_Dice Histogram"),
-	 NULL, N_("Histogram of dice rolls"), help_histogram_cb},
 	{"HelpAbout", NULL, N_("_About Pioneers"), NULL,
 	 N_("Information about Pioneers"), help_about_cb},
 #ifdef HAVE_HELP
@@ -279,6 +279,10 @@ static const char *ui_description =
 "      <separator/>"
 "      <menuitem action='PlayerName'/>"
 "      <separator/>"
+"      <menuitem action='Legend'/>"
+"      <menuitem action='GameSettings'/>"
+"      <menuitem action='DiceHistogram'/>"
+"      <separator/>"
 "      <menuitem action='GameQuit'/>"
 "    </menu>"
 "    <menu action='ActionsMenu'>"
@@ -300,10 +304,6 @@ static const char *ui_description =
 "      <menuitem action='Preferences'/>"
 "    </menu>"
 "    <menu action='HelpMenu'>"
-"      <menuitem action='Legend'/>"
-"      <menuitem action='GameSettings'/>"
-"      <menuitem action='DiceHistogram'/>"
-"      <separator/>"
 "      <menuitem action='HelpAbout'/>"
 #ifdef HAVE_HELP
 "      <menuitem action='HelpManual'/>"
@@ -932,17 +932,17 @@ static void help_about_cb(void)
 	aboutbox_display(_("The Pioneers Game"), authors);
 }
 
-static void help_legend_cb(void)
+static void game_legend_cb(void)
 {
 	legend_create_dlg();
 }
 
-static void help_histogram_cb(void)
+static void game_histogram_cb(void)
 {
 	histogram_create_dlg();
 }
 
-static void help_settings_cb(void)
+static void game_settings_cb(void)
 {
 	settings_create_dlg();
 }

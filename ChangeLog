@@ -1,3 +1,7 @@
+2006-05-27  Roland Clobus <rclobus@bigfoot.com>
+	* client/gtk/gui.c: Moved legend, game settings and dice histgram from
+	help to game menu.
+	
 2006-05-26  Bas Wijnen <shevek@fmf.nl>
 	* common/network.c: Write logged escaped bytes as bytes, now words.
 	* common/gtk/theme.c: Allow scaling scalable themes to 0.
