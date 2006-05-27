@@ -190,7 +190,8 @@ void frontend_init(int argc, char **argv)
 
 #if defined(HAVE_HELP) && defined(HAVE_LIBGNOME)
 	gnome_program_init(PACKAGE, VERSION,
-			   LIBGNOME_MODULE, argc, argv, NULL);
+			   LIBGNOME_MODULE, argc, argv,
+			   GNOME_PARAM_APP_DATADIR, DATADIR, NULL);
 #endif				/* HAVE_HELP && HAVE_LIBGNOME */
 #else				/* HAVE_GLIB_2_6 */
 #ifdef HAVE_LIBGNOME

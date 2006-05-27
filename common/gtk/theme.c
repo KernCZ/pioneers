@@ -465,7 +465,8 @@ void theme_rescale(int new_width)
 		int new_height;
 		if (i == BOARD_TILE)
 			continue;	/* Don't scale the board-tile */
-		new_height = new_width / current_theme->scaledata[i].aspect;
+		new_height =
+		    new_width / current_theme->scaledata[i].aspect;
 		/* gdk_pixbuf_scale_simple cannot handle 0 height */
 		if (new_height <= 0)
 			new_height = 1;
@@ -474,7 +475,8 @@ void theme_rescale(int new_width)
 		current_theme->scaledata[i].image =
 		    gdk_pixbuf_scale_simple(current_theme->scaledata[i].
 					    native_image, new_width,
-					    new_height, GDK_INTERP_BILINEAR);
+					    new_height,
+					    GDK_INTERP_BILINEAR);
 
 		/* render a new pixmap */
 		g_object_unref(current_theme->terrain_tiles[i]);

@@ -950,7 +950,13 @@ static void game_settings_cb(void)
 #ifdef HAVE_HELP
 static void help_manual_cb(void)
 {
-	gnome_help_display("pioneers", NULL, NULL);
+	GError *error = NULL;
+	gnome_help_display("pioneers", NULL, &error);
+	if (error) {
+		log_message(MSG_ERROR, "%s: %s\n", _("Show the manual"),
+			    error->message);
+		g_error_free(error);
+	}
 }
 #endif
 

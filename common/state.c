@@ -79,8 +79,8 @@ static void route_event(StateMachine * sm, gint event)
 	/* send death notification even when dead */
 	if (event == SM_FREE) {
 		/* send death notifications only to global handler */
-		if (sm->global != NULL)
-			sm->global(user_data, event);
+		if (sm->global !=NULL)
+			sm->global (user_data, event);
 		return;
 	}
 

@@ -101,7 +101,8 @@ static gboolean mode_global(Player * player, gint event)
 			g_free(player->client_version);
 		if (player->devel != NULL)
 			deck_free(player->devel);
-		if (player->num >= 0 && !player_is_viewer(game, player->num)) {
+		if (player->num >= 0
+		    && !player_is_viewer(game, player->num)) {
 			game->num_players--;
 			meta_report_num_players(game->num_players);
 		}
