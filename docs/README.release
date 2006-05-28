@@ -13,6 +13,7 @@ At release time:
 * Update (if needed): NEWS, README, README.Cygwin, README.MinGW, TODO
 * Create the tarball
 * Create a tag in the Subversion repository
+* Update the version number in configure.ac
 * Upload the tarball to upload.sourceforge.net
 * Update the Files section at SourceForge
 * Write a news item
