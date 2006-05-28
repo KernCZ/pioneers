@@ -1,6 +1,3 @@
- - Rebranding:
-   * Add support for importing preferences from old config directories
-
  - If the trade page is already shown, and the player initiating the
    trade asks for new quotes, it's easy to oversee the changed trade
    parameters in the top line. This should be made clearer somehow,
@@ -15,6 +12,7 @@
     - start only a certain max. number of servers on the local machine
     - if this number is reached, start servers on other machines
       (maybe with a proxy meta server running there, or via ssh)
+      [Done]
     - be able to restrict access in some forms, maybe based on host
       name and/or IP, and permission to request running server data
       and start new servers
