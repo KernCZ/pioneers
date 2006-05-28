@@ -202,8 +202,6 @@ void trade_finish_domestic(Player * player)
 	Game *game = player->game;
 	GList *list;
 
-	player_broadcast(player, PB_RESPOND, "domestic-trade finish\n");
-	sm_pop(sm);
 	for (list = player_first_real(game);
 	     list != NULL; list = player_next_real(list)) {
 		Player *scan = list->data;
@@ -211,6 +209,8 @@ void trade_finish_domestic(Player * player)
 			end_quote(scan);
 	}
 	quotelist_free(&game->quotes);
+	player_broadcast(player, PB_RESPOND, "domestic-trade finish\n");
+	sm_pop(sm);
 }
 
 void trade_accept_domestic(Player * player,
