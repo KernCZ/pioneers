@@ -39,8 +39,8 @@ enum callback_mode callback_mode;
 /* is chat currently colourful? */
 gboolean color_chat_enabled;
 
-void cb_connect(const gchar * server, const gchar * port, const gchar *name,
-		gboolean viewer)
+void cb_connect(const gchar * server, const gchar * port,
+		const gchar * name, gboolean viewer)
 {
 	/* connect to a server */
 	g_assert(callback_mode == MODE_INIT);
@@ -274,7 +274,7 @@ void cb_chat(const gchar * text)
 void cb_name_change(const gchar * name)
 {
 	/* change your name */
-	g_assert (callback_mode != MODE_INIT);
+	g_assert(callback_mode != MODE_INIT);
 	sm_send(SM(), "name %s\n", name);
 }
 

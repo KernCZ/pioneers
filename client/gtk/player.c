@@ -125,7 +125,9 @@ GdkPixbuf *player_create_icon(GtkWidget * widget, gint player_num,
 
 	gtk_icon_size_lookup(GTK_ICON_SIZE_MENU, &width, &height);
 
-	pixmap = gdk_pixmap_new(widget->window, width, height, -1);
+	pixmap =
+	    gdk_pixmap_new(widget->window, width, height,
+			   gdk_visual_get_system()->depth);
 
 	gc = gdk_gc_new(pixmap);
 	gdk_gc_set_foreground(gc, &black);

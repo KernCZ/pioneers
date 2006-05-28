@@ -25,8 +25,6 @@
 #include "cost.h"
 #include "histogram.h"
 
-static gboolean already_rejected = FALSE; /** @todo UGLY HACK, remove later */
-
 /* local functions */
 static void frontend_state_turn(GuiEvent event);
 static void build_road_cb(MapElement edge, MapElement extra);
@@ -187,7 +185,7 @@ static void frontend_state_quote(GuiEvent event)
 	case GUI_UPDATE:
 		frontend_gui_check(GUI_QUOTE_SUBMIT, can_submit_quote());
 		frontend_gui_check(GUI_QUOTE_DELETE, can_delete_quote());
-		frontend_gui_check(GUI_QUOTE_REJECT, !already_rejected);
+		frontend_gui_check(GUI_QUOTE_REJECT, can_reject_quote());
 		break;
 	case GUI_QUOTE_SUBMIT:
 		cb_quote(quote_next_num(), quote_we_supply(),
@@ -197,9 +195,8 @@ static void frontend_state_quote(GuiEvent event)
 		cb_delete_quote(quote_current_quote()->var.d.quote_num);
 		return;
 	case GUI_QUOTE_REJECT:
-		if (!already_rejected)
-			cb_end_quote();
-		already_rejected = TRUE;
+		quote_player_finish(my_player_num());
+		cb_end_quote();
 		return;
 	default:
 		break;
@@ -209,7 +206,6 @@ static void frontend_state_quote(GuiEvent event)
 void frontend_quote(gint player_num, gint * they_supply,
 		    gint * they_receive)
 {
-	already_rejected = FALSE;
 	if (get_gui_state() == frontend_state_quote) {
 		quote_begin_again(player_num, they_supply, they_receive);
 	} else {
@@ -239,18 +235,18 @@ void frontend_quote_player_end(gint player_num)
 	frontend_gui_update();
 }
 
-void frontend_quote_end()
+void frontend_quote_end(void)
 {
 	quote_finish();
 	set_gui_state(frontend_state_idle);
 }
 
-void frontend_quote_start()
+void frontend_quote_start(void)
 {
 	/*set_gui_state (frontend_state_quote); */
 }
 
-void frontend_quote_monitor()
+void frontend_quote_monitor(void)
 {
 	set_gui_state(frontend_state_idle);
 }

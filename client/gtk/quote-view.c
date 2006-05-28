@@ -46,12 +46,10 @@ static GtkTreeIter quote_found_iter;
 /** Has the quote been found ? */
 static gboolean quote_found_flag;
 
-/** Bad/impossible trade */
-static GdkPixbuf *cross_pixbuf;
-/** Good/possible trade */
-static GdkPixbuf *tick_pixbuf;
 /** Icons for each player */
 static GdkPixbuf *player_pixbuf[MAX_PLAYERS];
+/** Icon for rejected trade */
+static GdkPixbuf *cross_pixbuf;
 /** Icon for the maritime trade */
 static GdkPixbuf *maritime_pixbuf;
 
@@ -201,13 +199,30 @@ static void quote_view_init(QuoteView * qv)
 
 /* Create a new QuoteView */
 GtkWidget *quote_view_new(gboolean with_maritime,
-			  CheckQuoteFunc check_quote_func)
+			  CheckQuoteFunc check_quote_func,
+			  const gchar * true_pixbuf_id,
+			  const gchar * false_pixbuf_id)
 {
 	QuoteView *qv;
 
 	qv = g_object_new(quote_view_get_type(), NULL);
 	qv->with_maritime = with_maritime;
 	qv->check_quote_func = check_quote_func;
+
+	if (true_pixbuf_id)
+		qv->true_pixbuf =
+		    gtk_widget_render_icon(qv->quotes, true_pixbuf_id,
+					   GTK_ICON_SIZE_MENU, NULL);
+	else
+		qv->true_pixbuf = NULL;
+
+	if (false_pixbuf_id)
+		qv->false_pixbuf =
+		    gtk_widget_render_icon(qv->quotes, false_pixbuf_id,
+					   GTK_ICON_SIZE_MENU, NULL);
+	else
+		qv->false_pixbuf = NULL;
+
 	return GTK_WIDGET(qv);
 }
 
@@ -277,9 +292,6 @@ static void load_pixmaps(QuoteView * qv)
 	cross_pixbuf =
 	    gtk_widget_render_icon(qv->quotes, GTK_STOCK_CANCEL,
 				   GTK_ICON_SIZE_MENU, NULL);
-	tick_pixbuf =
-	    gtk_widget_render_icon(qv->quotes, GTK_STOCK_APPLY,
-				   GTK_ICON_SIZE_MENU, NULL);
 
 	init = TRUE;
 }
@@ -328,7 +340,8 @@ static void add_maritime_trade(QuoteView * qv, G_GNUC_UNUSED gint ratio,
 					    &quote_found_iter);
 	else
 		gtk_list_store_prepend(qv->store, &iter);
-	gtk_list_store_set(qv->store, &iter, TRADE_COLUMN_PLAYER, maritime_pixbuf, TRADE_COLUMN_POSSIBLE, tick_pixbuf, TRADE_COLUMN_DESCRIPTION, quote_desc, TRADE_COLUMN_QUOTE, quote, TRADE_COLUMN_PLAYER_NUM, -1,	/* Maritime trade */
+	gtk_list_store_set(qv->store, &iter, TRADE_COLUMN_PLAYER, maritime_pixbuf, TRADE_COLUMN_POSSIBLE, NULL, TRADE_COLUMN_DESCRIPTION, quote_desc, TRADE_COLUMN_QUOTE, quote, TRADE_COLUMN_PLAYER_NUM, -1,	/*
+																										   Maritime trade */
 			   -1);
 }
 
@@ -523,7 +536,8 @@ static gboolean check_valid_trade(GtkTreeModel * model,
 					   TRADE_COLUMN_POSSIBLE,
 					   quoteview->
 					   check_quote_func(quote) ?
-					   tick_pixbuf : cross_pixbuf, -1);
+					   quoteview->true_pixbuf :
+					   quoteview->false_pixbuf, -1);
 		}
 	return FALSE;
 }
@@ -563,8 +577,8 @@ void quote_view_add_quote(QuoteView * qv, gint player_num,
 			   TRADE_COLUMN_PLAYER, player_pixbuf[player_num],
 			   TRADE_COLUMN_POSSIBLE,
 			   qv->
-			   check_quote_func(quote) ? tick_pixbuf :
-			   cross_pixbuf, TRADE_COLUMN_DESCRIPTION,
+			   check_quote_func(quote) ? qv->true_pixbuf :
+			   qv->false_pixbuf, TRADE_COLUMN_DESCRIPTION,
 			   quote_desc, TRADE_COLUMN_QUOTE, quote,
 			   TRADE_COLUMN_PLAYER_NUM, player_num, -1);
 }

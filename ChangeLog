@@ -1,3 +1,8 @@
+2006-05-28  Roland Clbus <rclobus@bigfoot.com>
+	* client/gtk/interface.c, client/gtk/frontend.h, client/gtk/player.c,
+	client/gtk/quote.c, client/gtk/trade.c, client/gtk/quote-view.c,
+	client/gtk/quote-view.h: Rewrite of quote.c
+	
 2006-05-28  Bas Wijnen <shevek@fmf.nl>
 	* client/callback.h, client/gtk/name.c, client/gtk/frontend.h,
 	client/gtk/offline.c, client/gtk/connect.c, client/common/client.c,

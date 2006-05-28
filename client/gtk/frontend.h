@@ -150,11 +150,11 @@ const gchar *connect_get_server(void);
 const gchar *connect_get_port(void);
 const gchar *connect_get_name(void);
 gboolean connect_get_viewer(void);
-void connect_set_server(const gchar *server);
-void connect_set_port(const gchar *port);
-void connect_set_name(const gchar *name);
+void connect_set_server(const gchar * server);
+void connect_set_port(const gchar * port);
+void connect_set_name(const gchar * name);
 void connect_set_viewer(gboolean viewer);
-void connect_set_meta_server(const gchar *meta_server);
+void connect_set_meta_server(const gchar * meta_server);
 void connect_create_dlg(void);
 
 /* trade.c */
@@ -188,12 +188,13 @@ gboolean can_submit_quote(void);
 gboolean can_delete_quote(void);
 gboolean can_reject_quote(void);
 gint quote_next_num(void);
-gint *quote_we_supply(void);
-gint *quote_we_receive(void);
-QuoteInfo *quote_current_quote(void);
-void quote_begin_again(gint player_num, gint * they_supply,
-		       gint * they_receive);
-void quote_begin(gint player_num, gint * they_supply, gint * they_receive);
+const gint *quote_we_supply(void);
+const gint *quote_we_receive(void);
+const QuoteInfo *quote_current_quote(void);
+void quote_begin_again(gint player_num, const gint * they_supply,
+		       const gint * they_receive);
+void quote_begin(gint player_num, const gint * they_supply,
+		 const gint * they_receive);
 void quote_add_quote(gint player_num, gint quote_num,
 		     const gint * they_supply, const gint * they_receive);
 void quote_delete_quote(gint player_num, gint quote_num);

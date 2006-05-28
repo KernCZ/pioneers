@@ -61,6 +61,12 @@ struct _QuoteView {
 
 	/** The currently selected quote, or NULL */
 	const QuoteInfo *selected_quote;
+
+	/** CheckQuoteFunc returns true */
+	GdkPixbuf *true_pixbuf;
+
+	/** CheckQuoteFunc returns false */
+	GdkPixbuf *false_pixbuf;
 };
 
 struct _QuoteViewClass {
@@ -72,7 +78,9 @@ struct _QuoteViewClass {
 
 GType quote_view_get_type(void);
 GtkWidget *quote_view_new(gboolean with_maritime,
-			  CheckQuoteFunc check_quote_func);
+			  CheckQuoteFunc check_quote_func,
+			  const gchar * true_pixbuf_id,
+			  const gchar * false_pixbuf_id);
 void quote_view_begin(QuoteView * qv);
 void quote_view_add_quote(QuoteView * qv, gint player_num,
 			  gint quote_num, const gint * supply,

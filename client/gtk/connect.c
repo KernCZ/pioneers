@@ -163,7 +163,7 @@ const gchar *connect_get_name(void)
 	return connect_name;
 }
 
-void connect_set_name(const gchar *name)
+void connect_set_name(const gchar * name)
 {
 	connect_set_field(&connect_name, name);
 	if (name_entry != NULL)
@@ -179,7 +179,8 @@ void connect_set_viewer(gboolean viewer)
 {
 	connect_viewer = viewer;
 	if (viewer_toggle != NULL)
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(viewer_toggle),
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
+					     (viewer_toggle),
 					     connect_viewer);
 }
 
@@ -188,7 +189,7 @@ const gchar *connect_get_server(void)
 	return connect_server;
 }
 
-void connect_set_server(const gchar *server)
+void connect_set_server(const gchar * server)
 {
 	connect_set_field(&connect_server, server);
 }
@@ -205,7 +206,7 @@ static const gchar *connect_get_meta_server(void)
 	return text;
 }
 
-void connect_set_meta_server(const gchar *meta_server)
+void connect_set_meta_server(const gchar * meta_server)
 {
 	connect_set_field(&metaserver_info.server, meta_server);
 	if (meta_server_entry != NULL)
@@ -218,7 +219,7 @@ const gchar *connect_get_port(void)
 	return connect_port;
 }
 
-void connect_set_port(const gchar *port)
+void connect_set_port(const gchar * port)
 {
 	connect_set_field(&connect_port, port);
 }

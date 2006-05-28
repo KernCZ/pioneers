@@ -270,8 +270,8 @@ extern gboolean color_chat_enabled;
 /* these functions do things for the frontends, they should be used to make
  * changes to the board, etc.  The frontend should NEVER touch any game
  * structures directly (except for reading). */
-void cb_connect(const gchar * server, const gchar * port, const gchar *name,
-		gboolean viewer);
+void cb_connect(const gchar * server, const gchar * port,
+		const gchar * name, gboolean viewer);
 void cb_disconnect(void);
 void cb_roll(void);
 void cb_build_road(const Edge * edge);
