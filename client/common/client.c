@@ -2,7 +2,7 @@
  *   Go buy a copy.
  *
  * Copyright (C) 1999 Dave Cole
- * Copyright (C) 2003-2005 Bas Wijnen <shevek@fmf.nl>
+ * Copyright (C) 2003-2006 Bas Wijnen <shevek@fmf.nl>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,8 +37,6 @@
 static enum callback_mode previous_mode;
 GameParams *game_params;
 Map *map;
-static gchar *saved_name;
-static gboolean want_viewer;
 static struct recovery_info_t {
 	gchar prevstate[40];
 	gint turnnum;
@@ -485,22 +483,6 @@ static gboolean global_unhandled(StateMachine * sm, gint event)
 }
 
 /*----------------------------------------------------------------------
- * Hooks for GUI events that can happen at almost any time
- */
-void copy_player_name(const gchar * name, gboolean viewer)
-{
-	char *tmp = g_strdup(name);
-	want_viewer = viewer;
-	tmp = g_strstrip(tmp);
-	if (*tmp != '\0') {
-		if (saved_name != NULL)
-			g_free(saved_name);
-		saved_name = g_strdup(tmp);
-	}
-	g_free(tmp);
-}
-
-/*----------------------------------------------------------------------
  * Server notifcations about player name changes and chat messages.
  * These can happen in any state (maybe this should be moved to
  * global_filter()?).
@@ -784,17 +766,17 @@ gboolean mode_start(StateMachine * sm, gint event)
 		return TRUE;
 	}
 	if (sm_recv(sm, "status report")) {
-		if (want_viewer) {
-			if (saved_name != NULL) {
+		if (requested_viewer) {
+			if (requested_name[0] != '\0') {
 				sm_send(sm, "status viewer %s\n",
-					saved_name);
+					requested_name);
 			} else {
 				sm_send(sm, "status newviewer\n");
 			}
 		} else {
-			if (saved_name != NULL) {
+			if (requested_name[0] != '\0') {
 				sm_send(sm, "status reconnect %s\n",
-					saved_name);
+					requested_name);
 			} else {
 				sm_send(sm, "status newplayer\n");
 			}

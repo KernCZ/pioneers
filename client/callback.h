@@ -2,7 +2,7 @@
  *   Go buy a copy.
  *
  * Copyright (C) 1999 Dave Cole
- * Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
+ * Copyright (C) 2003,2006 Bas Wijnen <shevek@fmf.nl>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -270,7 +270,8 @@ extern gboolean color_chat_enabled;
 /* these functions do things for the frontends, they should be used to make
  * changes to the board, etc.  The frontend should NEVER touch any game
  * structures directly (except for reading). */
-void cb_connect(const gchar * server, const gchar * port);
+void cb_connect(const gchar * server, const gchar * port, const gchar *name,
+		gboolean viewer);
 void cb_disconnect(void);
 void cb_roll(void);
 void cb_build_road(const Edge * edge);
@@ -295,7 +296,7 @@ void cb_quote(gint num, const gint * supply, const gint * receive);
 void cb_delete_quote(gint num);
 void cb_end_quote(void);
 void cb_chat(const gchar * text);
-void cb_name_change(const gchar * name, gboolean viewer);
+void cb_name_change(const gchar * name);
 void cb_discard(const gint * resources);
 void cb_choose_gold(const gint * resources);
 

@@ -2,7 +2,7 @@
  *   Go buy a copy.
  *
  * Copyright (C) 1999 Dave Cole
- * Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
+ * Copyright (C) 2003,2006 Bas Wijnen <shevek@fmf.nl>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,11 +29,11 @@
 #ifdef HAVE_GLIB_2_6
 static char *server = NULL;
 static char *port = NULL;
-static char *name = NULL;
 #else
 static const char *server = PIONEERS_DEFAULT_GAME_HOST;
 static const char *port = PIONEERS_DEFAULT_GAME_PORT;
 #endif
+static char *name = NULL;
 static char *ai;
 static int waittime = 1000;
 static int local_argc;
@@ -132,7 +132,6 @@ static void ai_init(int argc, char **argv)
 	GError *error = NULL;
 #else
 	int c;
-	char *name = NULL;
 #endif
 
 #ifdef HAVE_GLIB_2_6
@@ -196,8 +195,6 @@ static void ai_init(int argc, char **argv)
 	if (!name) {
 		name = random_name();
 	}
-	cb_name_change(name, FALSE);
-	g_free(name);
 
 	set_ui_driver(&Glib_Driver);
 	log_set_func_default();
@@ -211,7 +208,8 @@ static void ai_quit(void)
 static void ai_offline(void)
 {
 	callbacks.offline = &ai_quit;
-	cb_connect(server, port);
+	cb_connect(server, port, name, FALSE);
+	g_free(name);
 }
 
 static void ai_start_game(void)

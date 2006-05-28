@@ -2,7 +2,7 @@
  *   Go buy a copy.
  *
  * Copyright (C) 1999 Dave Cole
- * Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
+ * Copyright (C) 2003,2006 Bas Wijnen <shevek@fmf.nl>
  * Copyright (C) 2004 Roland Clobus <rclobus@bigfoot.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -148,10 +148,26 @@ static void set_meta_serverinfo(void);
 static void connect_private_dialog(G_GNUC_UNUSED GtkWidget * widget,
 				   GtkWindow * parent);
 
+static void connect_set_field(gchar ** field, const gchar * value)
+{
+	gchar *temp = g_strdup(value);
+	if (*field)
+		g_free(*field);
+	*field = g_strdup(g_strstrip(temp));
+	g_free(temp);
+}
+
 /* Public functions */
 const gchar *connect_get_name(void)
 {
 	return connect_name;
+}
+
+void connect_set_name(const gchar *name)
+{
+	connect_set_field(&connect_name, name);
+	if (name_entry != NULL)
+		gtk_entry_set_text(GTK_ENTRY(name_entry), connect_name);
 }
 
 gboolean connect_get_viewer(void)
@@ -159,9 +175,22 @@ gboolean connect_get_viewer(void)
 	return connect_viewer;
 }
 
+void connect_set_viewer(gboolean viewer)
+{
+	connect_viewer = viewer;
+	if (viewer_toggle != NULL)
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(viewer_toggle),
+					     connect_viewer);
+}
+
 const gchar *connect_get_server(void)
 {
 	return connect_server;
+}
+
+void connect_set_server(const gchar *server)
+{
+	connect_set_field(&connect_server, server);
 }
 
 static const gchar *connect_get_meta_server(void)
@@ -176,18 +205,22 @@ static const gchar *connect_get_meta_server(void)
 	return text;
 }
 
+void connect_set_meta_server(const gchar *meta_server)
+{
+	connect_set_field(&metaserver_info.server, meta_server);
+	if (meta_server_entry != NULL)
+		gtk_entry_set_text(GTK_ENTRY(meta_server_entry),
+				   metaserver_info.server);
+}
+
 const gchar *connect_get_port(void)
 {
 	return connect_port;
 }
 
-static void connect_set_field(gchar ** field, const gchar * value)
+void connect_set_port(const gchar *port)
 {
-	gchar *temp = g_strdup(value);
-	if (*field)
-		g_free(*field);
-	*field = g_strdup(g_strstrip(temp));
-	g_free(temp);
+	connect_set_field(&connect_port, port);
 }
 
 static void connect_close_all(gboolean user_pressed_ok)
@@ -827,7 +860,8 @@ static void set_meta_serverinfo(void)
 
 	meta_tmp =
 	    g_strdup(gtk_entry_get_text(GTK_ENTRY(meta_server_entry)));
-	if (!meta_tmp || !strlen(meta_tmp)) {
+	if (meta_tmp[0] == '\0') {
+		g_free(meta_tmp);
 		meta_tmp = get_meta_server_name(TRUE);
 		gtk_entry_set_text(GTK_ENTRY(meta_server_entry), meta_tmp);
 	}
@@ -1076,9 +1110,6 @@ void connect_create_dlg(void)
 	GtkWidget *sep;
 	GtkTooltips *tooltips;
 	gchar *fullname;
-	gchar *saved_meta_server;
-	gchar *saved_name;
-	gboolean default_returned;
 
 	if (connect_dlg) {
 		gtk_window_present(GTK_WINDOW(connect_dlg));
@@ -1086,21 +1117,6 @@ void connect_create_dlg(void)
 	}
 
 	tooltips = gtk_tooltips_new();
-
-	/* initialize meta server value */
-	default_returned = FALSE;
-	saved_meta_server =
-	    config_get_string("connect/meta-server", &default_returned);
-	if (default_returned
-	    || !strncmp(saved_meta_server, "gnocatan.debian.net",
-			strlen(saved_meta_server) + 1)) {
-		g_free(saved_meta_server);
-		saved_meta_server = get_meta_server_name(TRUE);
-	}
-
-	/* initialize name value */
-	default_returned = FALSE;
-	saved_name = g_strdup(my_player_name());
 
 	connect_dlg = gtk_dialog_new_with_buttons(_("Start a new game"),
 						  GTK_WINDOW(app_window),
@@ -1136,8 +1152,7 @@ void connect_create_dlg(void)
 	name_entry = gtk_entry_new();
 	gtk_entry_set_max_length(GTK_ENTRY(name_entry), MAX_NAME_LENGTH);
 	gtk_widget_show(name_entry);
-	gtk_entry_set_text(GTK_ENTRY(name_entry), saved_name);
-	connect_set_field(&connect_name, saved_name);
+	gtk_entry_set_text(GTK_ENTRY(name_entry), connect_name);
 
 	gtk_table_attach(GTK_TABLE(table), name_entry, 1, 2, 0, 1,
 			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
@@ -1147,7 +1162,7 @@ void connect_create_dlg(void)
 	viewer_toggle = gtk_check_button_new_with_label(_("Viewer"));
 	gtk_widget_show(viewer_toggle);
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(viewer_toggle),
-				     my_player_viewer());
+				     connect_viewer);
 
 	gtk_table_attach(GTK_TABLE(table), viewer_toggle, 2, 3, 0, 1, 0,
 			 GTK_EXPAND | GTK_FILL, 0, 0);
@@ -1172,7 +1187,7 @@ void connect_create_dlg(void)
 			 (GtkAttachOptions) GTK_EXPAND | GTK_FILL,
 			 (GtkAttachOptions) GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_entry_set_text(GTK_ENTRY(meta_server_entry),
-			   saved_meta_server);
+			   metaserver_info.server);
 	gtk_tooltips_set_tip(tooltips, meta_server_entry,
 			     _("Leave empty for the default meta server"),
 			     NULL);
@@ -1217,9 +1232,6 @@ void connect_create_dlg(void)
 	gtk_widget_show(connect_dlg);
 
 	gtk_widget_grab_focus(name_entry);
-
-	g_free(saved_meta_server);
-	g_free(saved_name);
 }
 
 /* ------------ Join a private game dialog ------------------- */
@@ -1334,8 +1346,6 @@ static void connect_private_dialog(G_GNUC_UNUSED GtkWidget * widget,
 	GtkWidget *host_list;
 	GPtrArray *host_entries;
 
-	gchar *saved_server;
-	gchar *saved_port;
 	gint i;
 	gchar *host_name, *host_port, *host_name_port, temp_str[150];
 	gboolean default_returned;
@@ -1346,16 +1356,6 @@ static void connect_private_dialog(G_GNUC_UNUSED GtkWidget * widget,
 	}
 
 	tooltips = gtk_tooltips_new();
-
-	/* initialize server value */
-	saved_server =
-	    config_get_string("connect/server=" PIONEERS_DEFAULT_GAME_HOST,
-			      &default_returned);
-
-	/* initialize port value */
-	saved_port =
-	    config_get_string("connect/port=" PIONEERS_DEFAULT_GAME_PORT,
-			      &default_returned);
 
 	connect_private_dlg =
 	    gtk_dialog_new_with_buttons(_("Join a private game"),
@@ -1397,10 +1397,10 @@ static void connect_private_dialog(G_GNUC_UNUSED GtkWidget * widget,
 	gtk_table_attach(GTK_TABLE(table), host_entry, 1, 2, 0, 1,
 			 GTK_EXPAND | GTK_FILL,
 			 GTK_EXPAND | GTK_FILL, 0, 0);
-	gtk_entry_set_text(GTK_ENTRY(host_entry), saved_server);
+	gtk_entry_set_text(GTK_ENTRY(host_entry), connect_server);
 	gtk_tooltips_set_tip(tooltips, host_entry,
 			     _("Name of the host of the game"), NULL);
-	connect_set_field(&connect_server, saved_server);
+	connect_set_field(&connect_server, connect_server);
 
 	lbl = gtk_label_new(_("Server Port"));
 	gtk_widget_show(lbl);
@@ -1416,10 +1416,10 @@ static void connect_private_dialog(G_GNUC_UNUSED GtkWidget * widget,
 	port_entry = gtk_entry_new();
 	gtk_widget_show(port_entry);
 	gtk_box_pack_start(GTK_BOX(hbox), port_entry, FALSE, TRUE, 0);
-	gtk_entry_set_text(GTK_ENTRY(port_entry), saved_port);
+	gtk_entry_set_text(GTK_ENTRY(port_entry), connect_port);
 	gtk_tooltips_set_tip(tooltips, port_entry,
 			     _("Port of the host of the game"), NULL);
-	connect_set_field(&connect_port, saved_port);
+	connect_set_field(&connect_port, connect_port);
 
 	host_list = gtk_combo_box_new_text();
 	host_entries = g_ptr_array_new();
@@ -1470,7 +1470,4 @@ static void connect_private_dialog(G_GNUC_UNUSED GtkWidget * widget,
 	gtk_entry_set_activates_default(GTK_ENTRY(port_entry), TRUE);
 
 	gtk_widget_show(connect_private_dlg);
-
-	g_free(saved_server);
-	g_free(saved_port);
 }

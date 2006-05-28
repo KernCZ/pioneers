@@ -2,7 +2,7 @@
  *   Go buy a copy.
  *
  * Copyright (C) 1999 Dave Cole
- * Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
+ * Copyright (C) 2003,2006 Bas Wijnen <shevek@fmf.nl>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -694,4 +694,14 @@ void player_take_point(gint player_num, gint id, gint old_owner)
 gint current_player(void)
 {
 	return turn_player;
+}
+
+const gchar *my_player_name(void)
+{
+	return player_name(my_player_num(), TRUE);
+}
+
+gboolean my_player_viewer(void)
+{
+	return player_is_viewer(my_player_num());
 }

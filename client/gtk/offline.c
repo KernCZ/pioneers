@@ -2,7 +2,7 @@
  *   Go buy a copy.
  *
  * Copyright (C) 1999 Dave Cole
- * Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
+ * Copyright (C) 2003,2006 Bas Wijnen <shevek@fmf.nl>
  * Copyright (C) 2004,2006 Roland Clobus <rclobus@bigfoot.com>
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -33,10 +33,12 @@
 static gboolean have_dlg = FALSE;
 static gboolean connectable = FALSE;
 
-static const gchar *server = NULL;
-static const gchar *port = NULL;
 static const gchar *name = NULL;
 static gboolean viewer = FALSE;
+static const gchar *server = NULL;
+static const gchar *port = NULL;
+static const gchar *meta_server = NULL;
+static gboolean server_from_commandline = FALSE;
 static gboolean quit_when_offline = FALSE;
 #ifdef ENABLE_NLS
 static const gchar *override_language = NULL;
@@ -56,6 +58,9 @@ static GOptionEntry commandline_entries[] = {
 	/* Commandline option of client: do we want to be a viewer */
 	{"viewer", 'v', 0, G_OPTION_ARG_NONE, &viewer,
 	 N_("Connect as a viewer"), NULL},
+	/* Commandline option of client: hostname of the meta-server */
+	{"meta-server", 'm', 0, G_OPTION_ARG_STRING, &meta_server,
+	 N_("Meta-server Host"), PIONEERS_DEFAULT_META_SERVER},
 #ifdef ENABLE_NLS
 	/* Commandline option of client: override the language */
 	{"language", '\0', 0, G_OPTION_ARG_STRING, &override_language,
@@ -77,6 +82,9 @@ const struct poptOption options[] = {
 	/* Commandline option of client: do we want to be a viewer */
 	{"viewer", 'v', POPT_ARG_NONE, &viewer, 0,
 	 N_("Connect as a viewer"), NULL},
+	/* Commandline option of client: hostname of the meta-server */
+	{"meta-server", 'm', POPT_ARG_STRING, &meta_server, 0,
+	 N_("Meta-server Host"), PIONEERS_DEFAULT_META_SERVER},
 #ifdef ENABLE_NLS
 	/* Commandline option of client: override the language */
 	{"language", '\0', POPT_ARG_STRING, &override_language, 0,
@@ -110,8 +118,8 @@ static void frontend_offline_gui(GuiEvent event)
 
 		connectable = FALSE;
 		have_dlg = FALSE;
-		cb_name_change(connect_get_name(), connect_get_viewer());
-		cb_connect(connect_get_server(), connect_get_port());
+		cb_connect(connect_get_server(), connect_get_port(),
+			   connect_get_name(), connect_get_viewer());
 		frontend_gui_update();
 		break;
 	case GUI_CONNECT:
@@ -143,10 +151,10 @@ void frontend_offline(void)
 	}
 
 	/* Commandline overrides the dialog */
-	if (port && server) {
+	if (server_from_commandline) {
 		connectable = FALSE;
 		gui_show_splash_page(FALSE);
-		cb_connect(server, port);
+		cb_connect(server, port, name, viewer);
 		quit_when_offline = TRUE;
 		port = NULL;
 		server = NULL;
@@ -245,14 +253,29 @@ void frontend_init(int argc, char **argv)
 							0) ? TRUE : FALSE;
 		}
 	}
-	cb_name_change(name, viewer);
+	connect_set_name(name);
+	connect_set_viewer(viewer);
 
-	if (server && port) {
-		/* Both are set, do nothing here */
-	} else if (server || port) {
-		g_warning(_
-			  ("Only server or port set, ignoring command line"));
-		server = NULL;
-		port = NULL;
+	if (server && port && server[0] && port[0]) {
+		server_from_commandline = TRUE;
+	} else {
+		if ((server && server[0]) || (port && port[0]))
+			g_warning(_("Only server or port set, "
+				    "ignoring command line"));
+		server_from_commandline = FALSE;
+		server = config_get_string("connect/server="
+					   PIONEERS_DEFAULT_GAME_HOST,
+					   &default_returned);
+		port = config_get_string("connect/port="
+					 PIONEERS_DEFAULT_GAME_PORT,
+					 &default_returned);
 	}
+	connect_set_server(server);
+	connect_set_port(port);
+
+	if (!meta_server)
+		meta_server = config_get_string("connect/meta-server="
+						PIONEERS_DEFAULT_META_SERVER,
+						&default_returned);
+	connect_set_meta_server(meta_server);
 }

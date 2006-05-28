@@ -1,3 +1,11 @@
+2006-05-28  Bas Wijnen <shevek@fmf.nl>
+	* client/callback.h, client/gtk/name.c, client/gtk/frontend.h,
+	client/gtk/offline.c, client/gtk/connect.c, client/common/client.c,
+	client/common/client.h, client/common/callback.c,
+	client/common/player.c, client/ai/ai.c: Separate requested name and
+	viewerness from actual values during the game, add commandline-option
+	to select meta-server in gtk client.
+
 2006-05-27  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/gui.c: Moved legend, game settings and dice histgram from
 	help to game menu.

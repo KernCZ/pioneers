@@ -2,7 +2,7 @@
  *   Go buy a copy.
  *
  * Copyright (C) 1999 Dave Cole
- * Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
+ * Copyright (C) 2003,2006 Bas Wijnen <shevek@fmf.nl>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,8 +29,7 @@ static void change_name_cb(GtkDialog * dlg, int response_id,
 			   G_GNUC_UNUSED gpointer user_data)
 {
 	if (response_id == GTK_RESPONSE_OK)
-		cb_name_change(gtk_entry_get_text(GTK_ENTRY(name_entry)),
-			       my_player_viewer());
+		cb_name_change(gtk_entry_get_text(GTK_ENTRY(name_entry)));
 	gtk_widget_destroy(GTK_WIDGET(dlg));
 }
 

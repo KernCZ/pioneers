@@ -1,7 +1,7 @@
 /* Pioneers - Implementation of the excellent Settlers of Catan board game.
  *   Go buy a copy.
  *
- * Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
+ * Copyright (C) 2003,2006 Bas Wijnen <shevek@fmf.nl>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,6 +29,8 @@
 /* variables */
 extern Map *map;
 extern GameParams *game_params;
+extern const gchar *requested_name;
+extern gboolean requested_viewer;
 
 /********* client.c ***********/
 /* client initialization */
@@ -37,9 +39,6 @@ void client_start(int argc, char **argv);	/* after frontend initialization */
 
 /* access the state machine (a client has only one state machine) */
 StateMachine *SM(void);
-
-/* handle a player name change */
-void copy_player_name(const gchar * name, gboolean viewer);
 
 /* state machine modes */
 gboolean mode_connecting(StateMachine * sm, gint event);

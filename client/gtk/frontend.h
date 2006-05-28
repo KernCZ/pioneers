@@ -1,7 +1,7 @@
 /* Pioneers - Implementation of the excellent Settlers of Catan board game.
  *   Go buy a copy.
  *
- * Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
+ * Copyright (C) 2003,2006 Bas Wijnen <shevek@fmf.nl>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -150,6 +150,11 @@ const gchar *connect_get_server(void);
 const gchar *connect_get_port(void);
 const gchar *connect_get_name(void);
 gboolean connect_get_viewer(void);
+void connect_set_server(const gchar *server);
+void connect_set_port(const gchar *port);
+void connect_set_name(const gchar *name);
+void connect_set_viewer(gboolean viewer);
+void connect_set_meta_server(const gchar *meta_server);
 void connect_create_dlg(void);
 
 /* trade.c */
