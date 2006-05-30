@@ -21,6 +21,7 @@
  */
 
 #include "config.h"
+#include <stdlib.h>
 #include "frontend.h"
 #ifdef HAVE_LIBGNOME
 #include <libgnome/libgnome.h>

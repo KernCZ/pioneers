@@ -29,7 +29,6 @@
 static gint trade_player;
 
 static GtkWidget *player_icon;
-static GtkWidget *new_quote_icon;
 static GtkWidget *desc_lbl;
 static GtkWidget *submit_btn;
 static GtkWidget *delete_btn;
@@ -270,11 +269,6 @@ GtkWidget *quote_build_page(void)
 	player_icon = gtk_image_new();
 	gtk_widget_show(player_icon);
 	gtk_box_pack_start(GTK_BOX(hbox), player_icon, FALSE, FALSE, 0);
-
-	new_quote_icon =
-	    gtk_image_new_from_stock(GTK_STOCK_INFO, GTK_ICON_SIZE_MENU);
-	gtk_widget_show(new_quote_icon);
-	gtk_box_pack_end(GTK_BOX(hbox), new_quote_icon, FALSE, FALSE, 0);
 
 	desc_lbl = gtk_label_new("");
 	gtk_widget_show(desc_lbl);

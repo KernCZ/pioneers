@@ -30,7 +30,7 @@
 struct callbacks callbacks;
 
 /* these variables must be remembered between connect and handshake */
-const gchar *requested_name = NULL;
+gchar *requested_name = NULL;
 gboolean requested_viewer;
 
 /* current callback mode */

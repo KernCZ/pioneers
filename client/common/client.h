@@ -29,7 +29,7 @@
 /* variables */
 extern Map *map;
 extern GameParams *game_params;
-extern const gchar *requested_name;
+extern gchar *requested_name;
 extern gboolean requested_viewer;
 
 /********* client.c ***********/
