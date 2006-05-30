@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnocatan 0.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-05-28 11:50+0200\n"
+"POT-Creation-Date: 2006-05-30 21:01+0200\n"
 "PO-Revision-Date: 2003-10-29 23:13+0100\n"
 "Last-Translator: Roman Hodek <roman@hodek.net>\n"
 "Language-Team: de <de@li.org>\n"
@@ -26,14 +26,14 @@ msgstr "Computerspieler"
 #. Commandline pioneersai: server
 #. Commandline option of client: hostname of the server
 #: ../client/ai/ai.c:103 ../client/gtk/connect.c:1390
-#: ../client/gtk/offline.c:50 ../client/gtk/offline.c:75
+#: ../client/gtk/offline.c:51 ../client/gtk/offline.c:76
 msgid "Server Host"
 msgstr "Serverrechner"
 
 #. Commandline pioneersai: port
 #. Commandline option of client: port of the server
 #: ../client/ai/ai.c:106 ../client/gtk/connect.c:1406
-#: ../client/gtk/offline.c:53 ../client/gtk/offline.c:78
+#: ../client/gtk/offline.c:54 ../client/gtk/offline.c:79
 #: ../server/gtk/main.c:506
 msgid "Server Port"
 msgstr "Serverport"
@@ -1344,7 +1344,7 @@ msgid "Map"
 msgstr "Karte"
 
 #. Tab page name
-#: ../client/gtk/gui.c:576 ../client/gtk/quote.c:312
+#: ../client/gtk/gui.c:576 ../client/gtk/quote.c:306
 msgid "Quote"
 msgstr "Angebot"
 
@@ -1524,35 +1524,35 @@ msgid "Player Name:"
 msgstr "Spielername"
 
 #. Commandline option of client: name of the player
-#: ../client/gtk/offline.c:56 ../client/gtk/offline.c:81
+#: ../client/gtk/offline.c:57 ../client/gtk/offline.c:82
 #, fuzzy
 msgid "Player name"
 msgstr "Spielername"
 
-#: ../client/gtk/offline.c:60 ../client/gtk/offline.c:84
+#: ../client/gtk/offline.c:61 ../client/gtk/offline.c:85
 msgid "Connect as a viewer"
 msgstr ""
 
-#: ../client/gtk/offline.c:63 ../client/gtk/offline.c:87
+#: ../client/gtk/offline.c:64 ../client/gtk/offline.c:88
 #, fuzzy
 msgid "Meta-server Host"
 msgstr "Metaserver auf %s, Port %s"
 
-#: ../client/gtk/offline.c:67 ../client/gtk/offline.c:91
+#: ../client/gtk/offline.c:68 ../client/gtk/offline.c:92
 msgid "Override the language of the system"
 msgstr ""
 
-#: ../client/gtk/offline.c:117
+#: ../client/gtk/offline.c:118
 msgid "Connecting"
 msgstr "Verbinde"
 
 #. Long description in the commandline for pioneers: help
-#: ../client/gtk/offline.c:188
+#: ../client/gtk/offline.c:189
 #, fuzzy
 msgid "- Play a game of Pioneers"
 msgstr "Willkommen zu Pioneers"
 
-#: ../client/gtk/offline.c:263
+#: ../client/gtk/offline.c:264
 msgid "Only server or port set, ignoring command line"
 msgstr ""
 
@@ -1635,24 +1635,24 @@ msgstr "Bitte nimm zwei Rohstoffe von der Bank"
 msgid "The bank is empty"
 msgstr ""
 
-#: ../client/gtk/quote.c:187
+#: ../client/gtk/quote.c:186
 #, c-format
 msgid "%s has %s, and is looking for %s"
 msgstr "%s hat %s und möchte %s"
 
-#: ../client/gtk/quote.c:293
+#: ../client/gtk/quote.c:287
 msgid "I Want"
 msgstr "Ich will"
 
-#: ../client/gtk/quote.c:301
+#: ../client/gtk/quote.c:295
 msgid "Give Them"
 msgstr "Ich gebe dafür"
 
-#: ../client/gtk/quote.c:317
+#: ../client/gtk/quote.c:311
 msgid "Delete"
 msgstr "Löschen"
 
-#: ../client/gtk/quote.c:341
+#: ../client/gtk/quote.c:335
 #, fuzzy
 msgid "Reject Domestic Trade"
 msgstr "Handel ablehnen"
