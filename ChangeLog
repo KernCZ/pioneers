@@ -1,3 +1,12 @@
+2006-05-30  Roland Clobus <rclobus@bigfoot.com>
+	* Released version 0.9.63
+	
+2006-05-30  Roland Clobus <rclobus@bigfoot.com>
+	* configure.ac, client/gtk/quote.c, client/gtk/offline.c,
+	client/common/client.h, client/common/callback.c: Minimum requirement
+	is Glib 2.6 and Gtk+ 2.6. Remove use of Gtk+ 2.8 icon. Fixed compiler
+	warnings
+
 2006-05-28  Roland Clobus <rclobus@bigfoot.com>
 	* Released version 0.9.62
 	
