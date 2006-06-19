@@ -1,3 +1,6 @@
+Subversion Snapshot release 0.9.64
+* Fix for the bugs introduced in 0.9.63 and 0.9.62
+
 Subversion Snapshot release 0.9.63
 * Minimum required versions: Glib 2.6, Gtk+ 2.6
 * Does not use Gtk+ 2.8 icons anymore

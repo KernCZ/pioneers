@@ -1,3 +1,13 @@
+2006-06-06  Roland Clobus <rclobus@bigfoot.com>
+	* Released version 0.9.64
+	* Subversion commit date: 2006-06-19
+	
+2006-06-06  Roland Clobus <rclobus@bigfoot.com>
+	* server/main.c: Allow games with more than 3 victory points, when
+	started from the commandline
+	* server/trade.c: Restored to 0.9.52 version
+	* Subversion commit date: 2006-06-19
+	
 2006-05-30  Roland Clobus <rclobus@bigfoot.com>
 	* Released version 0.9.63
 	

@@ -350,7 +350,7 @@ int main(int argc, char *argv[])
 	}
 
 	if (num_points) {
-		cfg_set_victory_points(MIN(3, num_points));
+		cfg_set_victory_points(MAX(3, num_points));
 	}
 
 	if (tournament_time != -1) {
