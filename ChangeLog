@@ -1,3 +1,6 @@
+2006-06-23  Roland Clobus <rclobus@bigfoot.com>
+	* getVersions.sh: View the versions in the various distributions
+	
 2006-06-06  Roland Clobus <rclobus@bigfoot.com>
 	* Released version 0.9.64
 	* Subversion commit date: 2006-06-19
