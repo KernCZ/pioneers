@@ -6,10 +6,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: pioneers 0.9.61\n"
+"Project-Id-Version: pioneers 0.9.64\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-05-30 21:01+0200\n"
-"PO-Revision-Date: 2006-04-05 11:21+0100\n"
+"PO-Revision-Date: 2006-06-15 01:23+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "MIME-Version: 1.0\n"
@@ -41,29 +41,26 @@ msgstr "Serverport"
 #. Commandline pioneersai: name
 #: ../client/ai/ai.c:109
 msgid "Computer name (leave absent for random name)"
-msgstr ""
+msgstr "Datornamn (lämna blank för slumpmässigt namn)"
 
 #. Commandline pioneersai: time
 #: ../client/ai/ai.c:112
 msgid "Time to wait between turns (in milliseconds)"
-msgstr ""
+msgstr "Väntetid mellan turer (i millisekunder)"
 
 #. Commandline pioneersai: chat-free
 #: ../client/ai/ai.c:115
-#, fuzzy
 msgid "Stop computer player from talking"
-msgstr "Lägg till en datorspelare till spelet"
+msgstr "Stoppa datorspelare från att prata"
 
 #. Commandline pioneersai: algorithm
 #: ../client/ai/ai.c:118
-#, fuzzy
 msgid "Type of computer player"
-msgstr "Datorspelare"
+msgstr "Typ av datorspelare"
 
 #: ../client/ai/ai.c:140
-#, fuzzy
 msgid "- Computer player for Pioneers"
-msgstr "Datorspelare"
+msgstr "- Datorspelare för Pioneers"
 
 #: ../client/ai/ai.c:218
 msgid "The game is already full. I'm leaving."
@@ -877,7 +874,7 @@ msgid ""
 msgstr ""
 "<b>Notera</b>:\n"
 "\tMetaservern skickar inte information om spelen.\n"
-"\tVänligen ställ in lämpliga värden själv."
+"\tStäll in lämpliga värden själv."
 
 #: ../client/gtk/connect.c:708
 msgid "Requesting new game server\n"
@@ -1012,7 +1009,7 @@ msgstr "Åskådare"
 
 #: ../client/gtk/connect.c:1171
 msgid "Do you want to be a viewer?"
-msgstr ""
+msgstr "Vill du vara en åskådare?"
 
 #: ../client/gtk/connect.c:1178 ../server/gtk/main.c:537
 msgid "Meta Server"
@@ -1510,11 +1507,11 @@ msgstr "Spelarnamn"
 
 #: ../client/gtk/offline.c:61 ../client/gtk/offline.c:85
 msgid "Connect as a viewer"
-msgstr ""
+msgstr "Anslut som en åskådare"
 
 #: ../client/gtk/offline.c:64 ../client/gtk/offline.c:88
 msgid "Meta-server Host"
-msgstr ""
+msgstr "Metaservervärd"
 
 #: ../client/gtk/offline.c:68 ../client/gtk/offline.c:92
 msgid "Override the language of the system"
@@ -1526,9 +1523,8 @@ msgstr "Ansluter"
 
 #. Long description in the commandline for pioneers: help
 #: ../client/gtk/offline.c:189
-#, fuzzy
 msgid "- Play a game of Pioneers"
-msgstr "Välkommen till Pioneers"
+msgstr "- Spela en omgång av Pioneers"
 
 #: ../client/gtk/offline.c:264
 msgid "Only server or port set, ignoring command line"
@@ -1596,18 +1592,16 @@ msgid "<b>Player Summary</b>"
 msgstr "<b>Sammandrag för spelare</b>"
 
 #: ../client/gtk/plenty.c:87
-#, fuzzy
 msgid "Please choose one resource from the bank"
-msgstr "Vänligen välj två resurser från banken"
+msgstr "Välj en resurs från banken"
 
 #: ../client/gtk/plenty.c:90
 msgid "Please choose two resources from the bank"
-msgstr "Vänligen välj två resurser från banken"
+msgstr "Välj två resurser från banken"
 
 #: ../client/gtk/plenty.c:92
-#, fuzzy
 msgid "The bank is empty"
-msgstr "Banken kan inte tömmas"
+msgstr "Banken är tom"
 
 #: ../client/gtk/quote.c:186
 #, c-format
@@ -2413,17 +2407,16 @@ msgstr "Information om redigeraren för Pioneers"
 #. Long help for commandline option (editor): filename
 #: ../editor/gtk/editor.c:1032
 msgid "Open this file"
-msgstr ""
+msgstr "Öppna denna fil"
 
 #. Commandline option for editor: filename
 #: ../editor/gtk/editor.c:1034
-#, fuzzy
 msgid "filename"
-msgstr "Spelarnamn"
+msgstr "filnamn"
 
 #: ../editor/gtk/editor.c:1067
 msgid "- Editor for games of Pioneers"
-msgstr ""
+msgstr "- Redigerare för Pioneers-spel"
 
 #: ../editor/gtk/editor.c:1113 ../server/gtk/main.c:892
 #, c-format
@@ -2630,9 +2623,8 @@ msgstr "Spelet är över.\n"
 #. Long description in the commandline for server-gtk: help
 #. Long description in the commandline for server-console: help
 #: ../server/gtk/main.c:845 ../server/main.c:200
-#, fuzzy
 msgid "- Host a game of Pioneers"
-msgstr "Välkommen till Pioneers"
+msgstr "- Stå värd för en omgång av Pioneers"
 
 #. Name in the titlebar of the server
 #: ../server/gtk/main.c:873
@@ -2642,102 +2634,96 @@ msgstr "Pioneers-server"
 #. Commandline server-console: game-title
 #: ../server/main.c:100
 msgid "Game title to use"
-msgstr ""
+msgstr "Speltitel att använda"
 
 #. Commandline server-console: port
 #: ../server/main.c:103
 msgid "Port to listen on"
-msgstr ""
+msgstr "Port att lyssna på"
 
 #. Commandline server-console: players
 #: ../server/main.c:106
-#, fuzzy
 msgid "Override number of players"
-msgstr "Antalet spelare"
+msgstr "Åsidosätt antalet spelare"
 
 #. Commandline server-console: points
 #: ../server/main.c:109
-#, fuzzy
 msgid "Override number of points needed to win"
-msgstr "Poäng för vinst"
+msgstr "Åsidosätt antalet poäng som behövs för att vinna"
 
 #. Commandline server-console: seven-rule
 #: ../server/main.c:112
 msgid "Override seven-rule handling"
-msgstr ""
+msgstr "Åsidosätt hantering av 7-regeln"
 
 #. Commandline server-console: terrain
 #: ../server/main.c:115
 msgid "Override terrain type, 0=default 1=random"
-msgstr ""
+msgstr "Åsidosätt terrängtyp, 0=standard 1=slumpad"
 
 #. Commandline server-console: computer-players
 #: ../server/main.c:118
-#, fuzzy
 msgid "Add N computer players"
-msgstr "Lägg till datorspelare"
+msgstr "Lägg till N datorspelare"
 
 #. Commandline server-console: register
 #: ../server/main.c:125
-#, fuzzy
 msgid "Register server with meta-server"
-msgstr "Registrera detta spel på metaservern"
+msgstr "Registrera server med metaserver"
 
 #. Commandline server-console: meta-server
 #: ../server/main.c:128
-#, fuzzy
 msgid "Register at meta-server name (implies -r)"
-msgstr "Registrera mot metaservern på %s, port %s\n"
+msgstr "Registrera mot metaserver (förutsätter -r)"
 
 #. Commandline server-console: hostname
 #: ../server/main.c:132
 msgid "Use this hostname when registering"
-msgstr ""
+msgstr "Använd detta värdnamn vid registrering"
 
 #. Commandline server-console: auto-quit
 #: ../server/main.c:139
 msgid "Quit after a player has won"
-msgstr ""
+msgstr "Avsluta efter att en spelare har vunnit"
 
 #. Commandline server-console: empty-timeout
 #: ../server/main.c:142
 msgid "Quit after N seconds with no players"
-msgstr ""
+msgstr "Avsluta efter N sekunder utan spelare"
 
 #. Commandline server-console: tournament
 #: ../server/main.c:145
 msgid "Tournament mode, computer players added after N minutes"
-msgstr ""
+msgstr "Turneringsläge, datorspelare läggs till efter N minuter"
 
 #. Commandline server-console: admin-port
 #: ../server/main.c:149
 msgid "Admin port to listen on"
-msgstr ""
+msgstr "Administrationsport att lyssna på"
 
 #: ../server/main.c:153
 msgid "Don't start game immediately, wait for a command on admin port"
 msgstr ""
+"Starta inte spelet direkt, vänta på ett kommando på administrationsporten"
 
 #. Commandline server-console: Short description of meta group
 #: ../server/main.c:206
-#, fuzzy
 msgid "Meta-server Options"
-msgstr "Metaserver på %s, port %s"
+msgstr "Metaserveralternativ"
 
 #: ../server/main.c:209
-#, fuzzy
 msgid "Options for the meta-server"
-msgstr "Porten för spelservern"
+msgstr "Alternativ för metaservern"
 
 #. Commandline server-console: Short description of misc group
 #: ../server/main.c:217
 msgid "Miscellaneous Options"
-msgstr ""
+msgstr "Diverse alternativ"
 
 #. Commandline server-console: Long description of misc group
 #: ../server/main.c:219
 msgid "Miscellaneous options"
-msgstr ""
+msgstr "Diverse alternativ"
 
 #: ../server/meta.c:197
 #, c-format
