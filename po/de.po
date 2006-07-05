@@ -3,15 +3,17 @@
 # Copyright (C) 2000-2002 Andy Heroff
 # This file is distributed under the same license as the pioneers package.
 # Roman Hodek <roman@hodek.net>, 2002.
+# Pit Garbe <piiit@gmx.de>, 2006.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: pioneers 0.9.64\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-05-30 21:01+0200\n"
+"POT-Creation-Date: 2006-07-05 10:41+0200\n"
 "PO-Revision-Date: 2006-06-09 02:33+0200\n"
-"Last-Translator: Pit Garbe <piiit@gmx.de>\n"
-"Language-Team: Roman Hodek <roman@hodek.net>, de <de@li.org>\n"
+"Last-Translator: Ronny Standtke <Ronny.Standtke@gmx.net>\n"
+"Language-Team: Pit Garbe <piiit@gmx.de>, Roman Hodek <roman@hodek.net>, de "
+"<de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1407,14 +1409,6 @@ msgstr "Das Pioneers-Spiel"
 msgid "Welcome to Pioneers!"
 msgstr "Willkommen zu Pioneers!"
 
-#. Missing pixmap
-#. Missing pixmap, main icon file
-#: ../client/gtk/gui.c:1261 ../client/gtk/gui.c:1311 ../client/gtk/gui.c:1368
-#: ../editor/gtk/editor.c:1126 ../server/gtk/main.c:904
-#, c-format
-msgid "Pixmap not found: %s\n"
-msgstr "Pixmap nicht gefunden: %s\n"
-
 #. The name of the application
 #: ../client/gtk/gui.c:1334
 msgid "Pioneers"
@@ -1528,10 +1522,6 @@ msgstr "Verbinde"
 msgid "- Play a game of Pioneers"
 msgstr "- Spiel ein Spiel Pioneers"
 
-#: ../client/gtk/offline.c:264
-msgid "Only server or port set, ignoring command line"
-msgstr "Nur Server oder Port eingestellt, ignoriere Kommandozeile"
-
 #: ../client/gtk/player.c:49
 msgid "Settlements"
 msgstr "Siedlungen"
@@ -1625,6 +1615,30 @@ msgstr "Löschen"
 #: ../client/gtk/quote.c:335
 msgid "Reject Domestic Trade"
 msgstr "Handel ablehnen"
+
+#. Now create columns
+#. Table header: Player who trades
+#. Role of the player: player
+#: ../client/gtk/quote-view.c:171 ../server/gtk/main.c:452
+msgid "Player"
+msgstr "Spieler"
+
+#. Table header: Quote
+#: ../client/gtk/quote-view.c:186
+msgid "Quotes"
+msgstr "Angebote"
+
+#. trade: maritime quote: %1 resources of type %2 for
+#. * one resource of type %3
+#: ../client/gtk/quote-view.c:303
+#, c-format
+msgid "%d:1 %s for %s"
+msgstr "%d:1 %s für %s"
+
+#. Trade: a player has rejected trade
+#: ../client/gtk/quote-view.c:441
+msgid "Rejected trade"
+msgstr "Handel abgelehnt"
 
 #. Caption for overview of the resources of the player
 #: ../client/gtk/resource.c:113
@@ -1969,68 +1983,10 @@ msgstr "H"
 msgid "Select a game"
 msgstr "Wähle ein Spiel"
 
-#: ../common/gtk/theme.c:186
-msgid "Could not initialize default theme."
-msgstr "Konnte das Standard-Thema nicht initialisieren"
-
-#: ../common/gtk/theme.c:206 ../common/gtk/theme.c:211
-#, c-format
-msgid "Theme %s not loaded due to errors."
-msgstr "Thema %s nicht geladen auf Grund von Fehlern."
-
-#: ../common/gtk/theme.c:275
-#, c-format
-msgid "Could not find '%s' pixmap file in theme '%s'."
-msgstr "Bilddatei %s (Thema %s) nicht gefunden."
-
-#: ../common/gtk/theme.c:294
-#, c-format
-msgid "Could not load '%s' pixmap file in theme '%s'."
-msgstr "Bilddatei %s (Thema %s) konnte nicht geladen werden."
-
-#: ../common/gtk/theme.c:338
-#, c-format
-msgid "Could not find default pixmap file: %s"
-msgstr "Standard Bilddatei %s nicht gefunden."
-
-#: ../common/gtk/theme.c:548
-#, c-format
-msgid "While reading %s at line %d:"
-msgstr "Während des Lesens von %s in Zeile %d:"
-
-#: ../common/gtk/theme.c:564
-#, c-format
-msgid "variable name missing: %s"
-msgstr "Variablenname fehlt: %s"
-
-#: ../common/gtk/theme.c:575
-#, c-format
-msgid "unknown config variable '%s'"
-msgstr "Unbekannte Konfugurationsvariable '%s'"
-
-#: ../common/gtk/theme.c:583
-#, c-format
-msgid "'=' missing: %s"
-msgstr "'=' fehlt: %s"
-
-#: ../common/gtk/theme.c:600
-msgid "missing value"
-msgstr "fehlender Wert"
-
-#: ../common/gtk/theme.c:626
-#, c-format
-msgid "invalid color: %s"
-msgstr "unzulässige Farbe: %s"
-
 #: ../common/gtk/theme.c:707
 #, c-format
 msgid "bad scaling mode '%s'"
 msgstr "falscher Skaliermodus '%s'"
-
-#: ../common/gtk/theme.c:713
-#, c-format
-msgid "unexpected rest at end of line: '%s'"
-msgstr "Unerwarteter Rest am Zeilenende: '%s'"
 
 #: ../common/log.c:54
 msgid "*ERROR* "
@@ -2217,10 +2173,6 @@ msgstr "Net_get_peer_name wird auf dieser Plattform noch nicht unterstützt."
 msgid "Error accepting connection: %s"
 msgstr "Fehler beim Annehmen einer Verbindung: %s"
 
-#: ../common/network.c:769
-msgid "No usable version of WinSock was found."
-msgstr "Keine brauchbare Version von WinSock gefunden."
-
 #: ../common/state.c:166
 #, c-format
 msgid "Connecting to %s, port %s\n"
@@ -2228,10 +2180,6 @@ msgstr "Verbinde zu %s Port %s\n"
 
 #: ../common/state.c:537
 msgid "State stack overflow. Stack dump sent to standard error.\n"
-msgstr ""
-
-#: ../common/state.c:539
-msgid "State stack overflow"
 msgstr ""
 
 #: ../editor/gtk/editor.c:57 ../editor/gtk/editor.c:66
@@ -2483,11 +2431,6 @@ msgstr "Spieler %s von %s gegangen\n"
 #, c-format
 msgid "Player %d is now %s\n"
 msgstr "Spieler %d heißt jetzt %s.\n"
-
-#. Role of the player: player
-#: ../server/gtk/main.c:452
-msgid "Player"
-msgstr "Spieler"
 
 #: ../server/gtk/main.c:489
 msgid "Game Settings"
@@ -2784,6 +2727,51 @@ msgstr "Spielverzeichnis fehlt\n"
 #: ../server/turn.c:308
 msgid "Tried to assign resources to NULL player.\n"
 msgstr "Versuchte Ressourcen NULL Spieler zuzuteilen.\n"
+
+#~ msgid "Pixmap not found: %s\n"
+#~ msgstr "Pixmap nicht gefunden: %s\n"
+
+#~ msgid "Only server or port set, ignoring command line"
+#~ msgstr "Nur Server oder Port eingestellt, ignoriere Kommandozeile"
+
+#~ msgid "Could not initialize default theme."
+#~ msgstr "Konnte das Standard-Thema nicht initialisieren"
+
+#~ msgid "Theme %s not loaded due to errors."
+#~ msgstr "Thema %s nicht geladen auf Grund von Fehlern."
+
+#~ msgid "Could not find '%s' pixmap file in theme '%s'."
+#~ msgstr "Bilddatei %s (Thema %s) nicht gefunden."
+
+#~ msgid "Could not load '%s' pixmap file in theme '%s'."
+#~ msgstr "Bilddatei %s (Thema %s) konnte nicht geladen werden."
+
+#~ msgid "Could not find default pixmap file: %s"
+#~ msgstr "Standard Bilddatei %s nicht gefunden."
+
+#~ msgid "While reading %s at line %d:"
+#~ msgstr "Während des Lesens von %s in Zeile %d:"
+
+#~ msgid "variable name missing: %s"
+#~ msgstr "Variablenname fehlt: %s"
+
+#~ msgid "unknown config variable '%s'"
+#~ msgstr "Unbekannte Konfugurationsvariable '%s'"
+
+#~ msgid "'=' missing: %s"
+#~ msgstr "'=' fehlt: %s"
+
+#~ msgid "missing value"
+#~ msgstr "fehlender Wert"
+
+#~ msgid "invalid color: %s"
+#~ msgstr "unzulässige Farbe: %s"
+
+#~ msgid "unexpected rest at end of line: '%s'"
+#~ msgstr "Unerwarteter Rest am Zeilenende: '%s'"
+
+#~ msgid "No usable version of WinSock was found."
+#~ msgstr "Keine brauchbare Version von WinSock gefunden."
 
 #~ msgid "Type of computer player: %s\n"
 #~ msgstr "Computerspieler-Typ: %s\n"

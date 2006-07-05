@@ -1,8 +1,10 @@
 2006-07-05 Roland Clobus <rclobus@bigfoot.com>
-	* translation markup removed for g_error and g_warning messages
+	* Translation markup removed for g_error and g_warning messages
+	* Updated all templates
 
 2006-07-05 Ronny Standtke <Ronny.Standtke@gmx.net>
 	* POTFILES.in: added missing quote-view.c
+	* de.po: Added missing translations
 	
 2006-06-23 Daniel Nylander <po@danielnylander.se>
 	* sv.po: Updated for 0.9.64

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnocatan 0.7.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-05-30 21:01+0200\n"
+"POT-Creation-Date: 2006-07-05 10:41+0200\n"
 "PO-Revision-Date: 2003-01-25 00:08-0600\n"
 "Last-Translator: Steve Langasek <vorlon@dodds.net>\n"
 "Language-Team: Spanish <debian-l10n-spanish@lists.debian.org>\n"
@@ -1431,14 +1431,6 @@ msgstr ""
 msgid "Welcome to Pioneers!"
 msgstr "¡Bienvenido a Gnocatán!"
 
-#. Missing pixmap
-#. Missing pixmap, main icon file
-#: ../client/gtk/gui.c:1261 ../client/gtk/gui.c:1311 ../client/gtk/gui.c:1368
-#: ../editor/gtk/editor.c:1126 ../server/gtk/main.c:904
-#, c-format
-msgid "Pixmap not found: %s\n"
-msgstr ""
-
 #. The name of the application
 #: ../client/gtk/gui.c:1334
 msgid "Pioneers"
@@ -1552,10 +1544,6 @@ msgstr ""
 msgid "- Play a game of Pioneers"
 msgstr "Bienvenido al Gnocatán"
 
-#: ../client/gtk/offline.c:264
-msgid "Only server or port set, ignoring command line"
-msgstr ""
-
 #: ../client/gtk/player.c:49
 msgid "Settlements"
 msgstr "Pueblos"
@@ -1654,6 +1642,31 @@ msgstr ""
 
 #: ../client/gtk/quote.c:335
 msgid "Reject Domestic Trade"
+msgstr ""
+
+#. Now create columns
+#. Table header: Player who trades
+#. Role of the player: player
+#: ../client/gtk/quote-view.c:171 ../server/gtk/main.c:452
+msgid "Player"
+msgstr "Jugador"
+
+#. Table header: Quote
+#: ../client/gtk/quote-view.c:186
+#, fuzzy
+msgid "Quotes"
+msgstr "Presupuestos"
+
+#. trade: maritime quote: %1 resources of type %2 for
+#. * one resource of type %3
+#: ../client/gtk/quote-view.c:303
+#, c-format
+msgid "%d:1 %s for %s"
+msgstr "%d:1 %s por %s"
+
+#. Trade: a player has rejected trade
+#: ../client/gtk/quote-view.c:441
+msgid "Rejected trade"
 msgstr ""
 
 #. Caption for overview of the resources of the player
@@ -2004,67 +2017,9 @@ msgstr "Ma"
 msgid "Select a game"
 msgstr ""
 
-#: ../common/gtk/theme.c:186
-msgid "Could not initialize default theme."
-msgstr ""
-
-#: ../common/gtk/theme.c:206 ../common/gtk/theme.c:211
-#, c-format
-msgid "Theme %s not loaded due to errors."
-msgstr ""
-
-#: ../common/gtk/theme.c:275
-#, c-format
-msgid "Could not find '%s' pixmap file in theme '%s'."
-msgstr ""
-
-#: ../common/gtk/theme.c:294
-#, c-format
-msgid "Could not load '%s' pixmap file in theme '%s'."
-msgstr ""
-
-#: ../common/gtk/theme.c:338
-#, c-format
-msgid "Could not find default pixmap file: %s"
-msgstr ""
-
-#: ../common/gtk/theme.c:548
-#, c-format
-msgid "While reading %s at line %d:"
-msgstr ""
-
-#: ../common/gtk/theme.c:564
-#, c-format
-msgid "variable name missing: %s"
-msgstr ""
-
-#: ../common/gtk/theme.c:575
-#, c-format
-msgid "unknown config variable '%s'"
-msgstr ""
-
-#: ../common/gtk/theme.c:583
-#, c-format
-msgid "'=' missing: %s"
-msgstr ""
-
-#: ../common/gtk/theme.c:600
-msgid "missing value"
-msgstr ""
-
-#: ../common/gtk/theme.c:626
-#, c-format
-msgid "invalid color: %s"
-msgstr ""
-
 #: ../common/gtk/theme.c:707
 #, c-format
 msgid "bad scaling mode '%s'"
-msgstr ""
-
-#: ../common/gtk/theme.c:713
-#, c-format
-msgid "unexpected rest at end of line: '%s'"
 msgstr ""
 
 #: ../common/log.c:54
@@ -2256,10 +2211,6 @@ msgstr ""
 msgid "Error accepting connection: %s"
 msgstr ""
 
-#: ../common/network.c:769
-msgid "No usable version of WinSock was found."
-msgstr ""
-
 #: ../common/state.c:166
 #, c-format
 msgid "Connecting to %s, port %s\n"
@@ -2267,10 +2218,6 @@ msgstr ""
 
 #: ../common/state.c:537
 msgid "State stack overflow. Stack dump sent to standard error.\n"
-msgstr ""
-
-#: ../common/state.c:539
-msgid "State stack overflow"
 msgstr ""
 
 #: ../editor/gtk/editor.c:57 ../editor/gtk/editor.c:66
@@ -2529,11 +2476,6 @@ msgstr ""
 #, c-format
 msgid "Player %d is now %s\n"
 msgstr ""
-
-#. Role of the player: player
-#: ../server/gtk/main.c:452
-msgid "Player"
-msgstr "Jugador"
 
 #: ../server/gtk/main.c:489
 msgid "Game Settings"
@@ -2838,13 +2780,6 @@ msgstr ""
 #: ../server/turn.c:308
 msgid "Tried to assign resources to NULL player.\n"
 msgstr ""
-
-#~ msgid "%d:1 %s for %s"
-#~ msgstr "%d:1 %s por %s"
-
-#, fuzzy
-#~ msgid "Quotes"
-#~ msgstr "Presupuestos"
 
 #~ msgid "brick + lumber"
 #~ msgstr "ladrillo y madera"

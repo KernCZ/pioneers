@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pioneers 0.9.61\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-05-30 21:01+0200\n"
+"POT-Creation-Date: 2006-07-05 10:41+0200\n"
 "PO-Revision-Date: 2006-05-24 22:26+0200\n"
 "Last-Translator: LT-P <LT-P@lt-p.net>\n"
 "Language-Team: Français <LL@li.org>, Arnaud MALON <moko@geumeuleu.com>\n"
@@ -1410,14 +1410,6 @@ msgstr "Pioneers"
 msgid "Welcome to Pioneers!"
 msgstr "Bienvenue à Pioneers !"
 
-#. Missing pixmap
-#. Missing pixmap, main icon file
-#: ../client/gtk/gui.c:1261 ../client/gtk/gui.c:1311 ../client/gtk/gui.c:1368
-#: ../editor/gtk/editor.c:1126 ../server/gtk/main.c:904
-#, c-format
-msgid "Pixmap not found: %s\n"
-msgstr "Pixmap introuvable: %s\n"
-
 #. The name of the application
 #: ../client/gtk/gui.c:1334
 msgid "Pioneers"
@@ -1529,11 +1521,6 @@ msgstr "Connexion"
 msgid "- Play a game of Pioneers"
 msgstr ""
 
-#: ../client/gtk/offline.c:264
-msgid "Only server or port set, ignoring command line"
-msgstr ""
-"Seul le serveur ou le port a été défini, la ligne de commande a été ignorée"
-
 #: ../client/gtk/player.c:49
 msgid "Settlements"
 msgstr "Colonies"
@@ -1598,7 +1585,7 @@ msgstr "<b>Les joueurs</b>"
 #: ../client/gtk/plenty.c:87
 #, fuzzy
 msgid "Please choose one resource from the bank"
-msgstr "Prenez deux ressources à la banque"
+msgstr "Prenez une ressource à la banque"
 
 #: ../client/gtk/plenty.c:90
 msgid "Please choose two resources from the bank"
@@ -1607,7 +1594,7 @@ msgstr "Prenez deux ressources à la banque"
 #: ../client/gtk/plenty.c:92
 #, fuzzy
 msgid "The bank is empty"
-msgstr "La banque ne peut pas être vide"
+msgstr "La banque est vide"
 
 #: ../client/gtk/quote.c:186
 #, c-format
@@ -1629,6 +1616,30 @@ msgstr "Effacer"
 #: ../client/gtk/quote.c:335
 msgid "Reject Domestic Trade"
 msgstr "Refuser l'offre"
+
+#. Now create columns
+#. Table header: Player who trades
+#. Role of the player: player
+#: ../client/gtk/quote-view.c:171 ../server/gtk/main.c:452
+msgid "Player"
+msgstr "Joueur"
+
+#. Table header: Quote
+#: ../client/gtk/quote-view.c:186
+msgid "Quotes"
+msgstr "Offres"
+
+#. trade: maritime quote: %1 resources of type %2 for
+#. * one resource of type %3
+#: ../client/gtk/quote-view.c:303
+#, c-format
+msgid "%d:1 %s for %s"
+msgstr "%d:1 %s pour %s"
+
+#. Trade: a player has rejected trade
+#: ../client/gtk/quote-view.c:441
+msgid "Rejected trade"
+msgstr "Offre refusée"
 
 #. Caption for overview of the resources of the player
 #: ../client/gtk/resource.c:113
@@ -1973,68 +1984,10 @@ msgstr "Bo"
 msgid "Select a game"
 msgstr "Serveurs récents"
 
-#: ../common/gtk/theme.c:186
-msgid "Could not initialize default theme."
-msgstr "Impossible d'initialiser le thème par défaut"
-
-#: ../common/gtk/theme.c:206 ../common/gtk/theme.c:211
-#, c-format
-msgid "Theme %s not loaded due to errors."
-msgstr "Le thème %s n'a pas pu être chargé a cause d'une erreur."
-
-#: ../common/gtk/theme.c:275
-#, c-format
-msgid "Could not find '%s' pixmap file in theme '%s'."
-msgstr "Impossible de trouver le pixmap %s (%s)."
-
-#: ../common/gtk/theme.c:294
-#, c-format
-msgid "Could not load '%s' pixmap file in theme '%s'."
-msgstr "Impossible de charger le pixmap %s (%s)."
-
-#: ../common/gtk/theme.c:338
-#, c-format
-msgid "Could not find default pixmap file: %s"
-msgstr "Impossible de trouver le pixmap %s."
-
-#: ../common/gtk/theme.c:548
-#, c-format
-msgid "While reading %s at line %d:"
-msgstr "En lisant %s à la ligne %d:"
-
-#: ../common/gtk/theme.c:564
-#, c-format
-msgid "variable name missing: %s"
-msgstr "nom de variable manquant: %s"
-
-#: ../common/gtk/theme.c:575
-#, c-format
-msgid "unknown config variable '%s'"
-msgstr "variable inconnue '%s'"
-
-#: ../common/gtk/theme.c:583
-#, c-format
-msgid "'=' missing: %s"
-msgstr "'=' manquant: %s"
-
-#: ../common/gtk/theme.c:600
-msgid "missing value"
-msgstr "valeur manquante"
-
-#: ../common/gtk/theme.c:626
-#, c-format
-msgid "invalid color: %s"
-msgstr "couleur incorrecte: %s"
-
 #: ../common/gtk/theme.c:707
 #, c-format
 msgid "bad scaling mode '%s'"
 msgstr "mauvais mode scalaire '%s'"
-
-#: ../common/gtk/theme.c:713
-#, c-format
-msgid "unexpected rest at end of line: '%s'"
-msgstr "problème à la fin de la ligne %s"
 
 #: ../common/log.c:54
 msgid "*ERROR* "
@@ -2221,10 +2174,6 @@ msgstr "Net_get_peer_name n'est pas encore supporté sur cette plate-forme."
 msgid "Error accepting connection: %s"
 msgstr "Erreur en acceptant la connexion: %s"
 
-#: ../common/network.c:769
-msgid "No usable version of WinSock was found."
-msgstr "Aucune version exploitable de WinSock n'a été trouvée."
-
 #: ../common/state.c:166
 #, c-format
 msgid "Connecting to %s, port %s\n"
@@ -2234,10 +2183,6 @@ msgstr "Connexion à %s, port %s\n"
 msgid "State stack overflow. Stack dump sent to standard error.\n"
 msgstr ""
 "Débordement de la pile d'état. Copie de la pile sur la sortie d'erreur.\n"
-
-#: ../common/state.c:539
-msgid "State stack overflow"
-msgstr "Débordement de la pile d'état"
 
 #: ../editor/gtk/editor.c:57 ../editor/gtk/editor.c:66
 msgid "None"
@@ -2488,11 +2433,6 @@ msgstr "Départ du joueur %s depuis %s\n"
 #, c-format
 msgid "Player %d is now %s\n"
 msgstr "Le joueur %d s'appelle maintenant %s\n"
-
-#. Role of the player: player
-#: ../server/gtk/main.c:452
-msgid "Player"
-msgstr "Joueur"
 
 #: ../server/gtk/main.c:489
 msgid "Game Settings"
@@ -2791,14 +2731,55 @@ msgstr "Répertoire du jeu absent\n"
 msgid "Tried to assign resources to NULL player.\n"
 msgstr "tentative d'attribuer des ressources au joueur NULL.\n"
 
-#~ msgid "Rejected trade"
-#~ msgstr "Offre refusée"
+#~ msgid "Pixmap not found: %s\n"
+#~ msgstr "Pixmap introuvable: %s\n"
 
-#~ msgid "%d:1 %s for %s"
-#~ msgstr "%d:1 %s pour %s"
+#~ msgid "Only server or port set, ignoring command line"
+#~ msgstr ""
+#~ "Seul le serveur ou le port a été défini, la ligne de commande a été "
+#~ "ignorée"
 
-#~ msgid "Quotes"
-#~ msgstr "Offres"
+#~ msgid "Could not initialize default theme."
+#~ msgstr "Impossible d'initialiser le thème par défaut"
+
+#~ msgid "Theme %s not loaded due to errors."
+#~ msgstr "Le thème %s n'a pas pu être chargé a cause d'une erreur."
+
+#~ msgid "Could not find '%s' pixmap file in theme '%s'."
+#~ msgstr "Impossible de trouver le pixmap %s (%s)."
+
+#~ msgid "Could not load '%s' pixmap file in theme '%s'."
+#~ msgstr "Impossible de charger le pixmap %s (%s)."
+
+#~ msgid "Could not find default pixmap file: %s"
+#~ msgstr "Impossible de trouver le pixmap %s."
+
+#~ msgid "While reading %s at line %d:"
+#~ msgstr "En lisant %s à la ligne %d:"
+
+#~ msgid "variable name missing: %s"
+#~ msgstr "nom de variable manquant: %s"
+
+#~ msgid "unknown config variable '%s'"
+#~ msgstr "variable inconnue '%s'"
+
+#~ msgid "'=' missing: %s"
+#~ msgstr "'=' manquant: %s"
+
+#~ msgid "missing value"
+#~ msgstr "valeur manquante"
+
+#~ msgid "invalid color: %s"
+#~ msgstr "couleur incorrecte: %s"
+
+#~ msgid "unexpected rest at end of line: '%s'"
+#~ msgstr "problème à la fin de la ligne %s"
+
+#~ msgid "No usable version of WinSock was found."
+#~ msgstr "Aucune version exploitable de WinSock n'a été trouvée."
+
+#~ msgid "State stack overflow"
+#~ msgstr "Débordement de la pile d'état"
 
 #~ msgid "Development Card Deck"
 #~ msgstr "Pioche des cartes de développement"

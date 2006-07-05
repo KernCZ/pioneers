@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pioneers 0.9.61\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-05-30 21:01+0200\n"
+"POT-Creation-Date: 2006-07-05 10:41+0200\n"
 "PO-Revision-Date: 2006-04-08 18:53+0200\n"
 "Last-Translator: Ferenc Bánhidi <bferike@mailbox.hu>\n"
 "Language-Team: Hungarian <bferike@mailbox.hu>\n"
@@ -1412,14 +1412,6 @@ msgstr "Pioneers"
 msgid "Welcome to Pioneers!"
 msgstr "Üdvözlünk a Pioneersban!"
 
-#. Missing pixmap
-#. Missing pixmap, main icon file
-#: ../client/gtk/gui.c:1261 ../client/gtk/gui.c:1311 ../client/gtk/gui.c:1368
-#: ../editor/gtk/editor.c:1126 ../server/gtk/main.c:904
-#, c-format
-msgid "Pixmap not found: %s\n"
-msgstr "Nem található pixmap: %s\n"
-
 #. The name of the application
 #: ../client/gtk/gui.c:1334
 msgid "Pioneers"
@@ -1540,10 +1532,6 @@ msgstr "Kapcsolódás"
 msgid "- Play a game of Pioneers"
 msgstr "Üdvözlünk a Pioneersban"
 
-#: ../client/gtk/offline.c:264
-msgid "Only server or port set, ignoring command line"
-msgstr "Csak szerver vagy port beállítás, parancssor figyelmen kívûl hagyása"
-
 #: ../client/gtk/player.c:49
 msgid "Settlements"
 msgstr "Falu"
@@ -1639,6 +1627,30 @@ msgstr "Törlés"
 #: ../client/gtk/quote.c:335
 msgid "Reject Domestic Trade"
 msgstr "Elutasított belsõ üzlet"
+
+#. Now create columns
+#. Table header: Player who trades
+#. Role of the player: player
+#: ../client/gtk/quote-view.c:171 ../server/gtk/main.c:452
+msgid "Player"
+msgstr "Játékos"
+
+#. Table header: Quote
+#: ../client/gtk/quote-view.c:186
+msgid "Quotes"
+msgstr "Ajánlatok"
+
+#. trade: maritime quote: %1 resources of type %2 for
+#. * one resource of type %3
+#: ../client/gtk/quote-view.c:303
+#, c-format
+msgid "%d:1 %s for %s"
+msgstr "%d:1 %s:%s"
+
+#. Trade: a player has rejected trade
+#: ../client/gtk/quote-view.c:441
+msgid "Rejected trade"
+msgstr "Elutasított üzlet"
 
 #. Caption for overview of the resources of the player
 #: ../client/gtk/resource.c:113
@@ -1983,68 +1995,10 @@ msgstr "R"
 msgid "Select a game"
 msgstr "Válassz egy játékot"
 
-#: ../common/gtk/theme.c:186
-msgid "Could not initialize default theme."
-msgstr "Nem lehet inicializálni az alapértelmezett témát."
-
-#: ../common/gtk/theme.c:206 ../common/gtk/theme.c:211
-#, c-format
-msgid "Theme %s not loaded due to errors."
-msgstr "%s téma hibásan betöltve"
-
-#: ../common/gtk/theme.c:275
-#, c-format
-msgid "Could not find '%s' pixmap file in theme '%s'."
-msgstr "Hiányzó pixmap '%s', a következõ témában '%s'."
-
-#: ../common/gtk/theme.c:294
-#, c-format
-msgid "Could not load '%s' pixmap file in theme '%s'."
-msgstr "Nem betölthetõ pixmap '%s', a következõ témában '%s'."
-
-#: ../common/gtk/theme.c:338
-#, c-format
-msgid "Could not find default pixmap file: %s"
-msgstr "Hiányzó alapértelmezett pixmap fájl: %s"
-
-#: ../common/gtk/theme.c:548
-#, c-format
-msgid "While reading %s at line %d:"
-msgstr "%s olvasása %d. sorban:"
-
-#: ../common/gtk/theme.c:564
-#, c-format
-msgid "variable name missing: %s"
-msgstr "Hiányzó változó: %s"
-
-#: ../common/gtk/theme.c:575
-#, c-format
-msgid "unknown config variable '%s'"
-msgstr "ismeretlen konfigurációs változó '%s'"
-
-#: ../common/gtk/theme.c:583
-#, c-format
-msgid "'=' missing: %s"
-msgstr "hiányzó '=': %s"
-
-#: ../common/gtk/theme.c:600
-msgid "missing value"
-msgstr "hiányzó érték"
-
-#: ../common/gtk/theme.c:626
-#, c-format
-msgid "invalid color: %s"
-msgstr "érvénytelen szín: %s"
-
 #: ../common/gtk/theme.c:707
 #, c-format
 msgid "bad scaling mode '%s'"
 msgstr "Hibás mérték '%s'"
-
-#: ../common/gtk/theme.c:713
-#, c-format
-msgid "unexpected rest at end of line: '%s'"
-msgstr "Váratlan maradék a sor végén: '%s'"
 
 #: ../common/log.c:54
 msgid "*ERROR* "
@@ -2231,10 +2185,6 @@ msgstr "Ez a platform nem támogatja a net_get_peer_name függvényt."
 msgid "Error accepting connection: %s"
 msgstr "Hiba csatlakozás elfogadásakor: %s"
 
-#: ../common/network.c:769
-msgid "No usable version of WinSock was found."
-msgstr "Nem megfelelõ WinSock verzió."
-
 #: ../common/state.c:166
 #, c-format
 msgid "Connecting to %s, port %s\n"
@@ -2245,10 +2195,6 @@ msgid "State stack overflow. Stack dump sent to standard error.\n"
 msgstr ""
 "Állapot verem túlcsordulás. A verem tartalmát elküldtem a standard hiba "
 "kimenetre.\n"
-
-#: ../common/state.c:539
-msgid "State stack overflow"
-msgstr "Állapot verem túlcsordulás"
 
 #: ../editor/gtk/editor.c:57 ../editor/gtk/editor.c:66
 msgid "None"
@@ -2500,11 +2446,6 @@ msgstr "%s játékos kilépett a következõ géprõl %s\n"
 #, c-format
 msgid "Player %d is now %s\n"
 msgstr "%d. játékos most %s\n"
-
-#. Role of the player: player
-#: ../server/gtk/main.c:452
-msgid "Player"
-msgstr "Játékos"
 
 #: ../server/gtk/main.c:489
 msgid "Game Settings"
@@ -2806,14 +2747,54 @@ msgstr "Hiányzó játék könyvtár\n"
 msgid "Tried to assign resources to NULL player.\n"
 msgstr "NULL játékosnak próbált erõforrást kiosztani.\n"
 
-#~ msgid "Rejected trade"
-#~ msgstr "Elutasított üzlet"
+#~ msgid "Pixmap not found: %s\n"
+#~ msgstr "Nem található pixmap: %s\n"
 
-#~ msgid "%d:1 %s for %s"
-#~ msgstr "%d:1 %s:%s"
+#~ msgid "Only server or port set, ignoring command line"
+#~ msgstr ""
+#~ "Csak szerver vagy port beállítás, parancssor figyelmen kívûl hagyása"
 
-#~ msgid "Quotes"
-#~ msgstr "Ajánlatok"
+#~ msgid "Could not initialize default theme."
+#~ msgstr "Nem lehet inicializálni az alapértelmezett témát."
+
+#~ msgid "Theme %s not loaded due to errors."
+#~ msgstr "%s téma hibásan betöltve"
+
+#~ msgid "Could not find '%s' pixmap file in theme '%s'."
+#~ msgstr "Hiányzó pixmap '%s', a következõ témában '%s'."
+
+#~ msgid "Could not load '%s' pixmap file in theme '%s'."
+#~ msgstr "Nem betölthetõ pixmap '%s', a következõ témában '%s'."
+
+#~ msgid "Could not find default pixmap file: %s"
+#~ msgstr "Hiányzó alapértelmezett pixmap fájl: %s"
+
+#~ msgid "While reading %s at line %d:"
+#~ msgstr "%s olvasása %d. sorban:"
+
+#~ msgid "variable name missing: %s"
+#~ msgstr "Hiányzó változó: %s"
+
+#~ msgid "unknown config variable '%s'"
+#~ msgstr "ismeretlen konfigurációs változó '%s'"
+
+#~ msgid "'=' missing: %s"
+#~ msgstr "hiányzó '=': %s"
+
+#~ msgid "missing value"
+#~ msgstr "hiányzó érték"
+
+#~ msgid "invalid color: %s"
+#~ msgstr "érvénytelen szín: %s"
+
+#~ msgid "unexpected rest at end of line: '%s'"
+#~ msgstr "Váratlan maradék a sor végén: '%s'"
+
+#~ msgid "No usable version of WinSock was found."
+#~ msgstr "Nem megfelelõ WinSock verzió."
+
+#~ msgid "State stack overflow"
+#~ msgstr "Állapot verem túlcsordulás"
 
 #~ msgid "There is no help"
 #~ msgstr "Segítség nem elérhetõ"

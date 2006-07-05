@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pioneers 0.9.62\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-05-30 21:01+0200\n"
+"POT-Creation-Date: 2006-07-05 10:41+0200\n"
 "PO-Revision-Date: 2006-05-24 10:00+0200\n"
 "Last-Translator: Giancarlo Capella <giancarlo@comm.cc>\n"
 "Language-Team: it <it@li.org>\n"
@@ -1407,14 +1407,6 @@ msgstr "Pioneers - Il gioco"
 msgid "Welcome to Pioneers!"
 msgstr "Benvenuto a Pioneers!"
 
-#. Missing pixmap
-#. Missing pixmap, main icon file
-#: ../client/gtk/gui.c:1261 ../client/gtk/gui.c:1311 ../client/gtk/gui.c:1368
-#: ../editor/gtk/editor.c:1126 ../server/gtk/main.c:904
-#, c-format
-msgid "Pixmap not found: %s\n"
-msgstr "Pixmap non trovata: %s\n"
-
 #. The name of the application
 #: ../client/gtk/gui.c:1334
 msgid "Pioneers"
@@ -1528,10 +1520,6 @@ msgstr "Connessione"
 msgid "- Play a game of Pioneers"
 msgstr "- Gioca una partita a Pioneers"
 
-#: ../client/gtk/offline.c:264
-msgid "Only server or port set, ignoring command line"
-msgstr "Impostato solo il server o la porta, ignoro la linea di comando"
-
 #: ../client/gtk/player.c:49
 msgid "Settlements"
 msgstr "Colonie"
@@ -1625,6 +1613,31 @@ msgstr "Cancella"
 #: ../client/gtk/quote.c:335
 msgid "Reject Domestic Trade"
 msgstr "Rifiuta Commercio Interno"
+
+#. Now create columns
+#. Table header: Player who trades
+#. Role of the player: player
+#: ../client/gtk/quote-view.c:171 ../server/gtk/main.c:452
+msgid "Player"
+msgstr "Giocatore"
+
+#. Table header: Quote
+#: ../client/gtk/quote-view.c:186
+#, fuzzy
+msgid "Quotes"
+msgstr "Quotazione"
+
+#. trade: maritime quote: %1 resources of type %2 for
+#. * one resource of type %3
+#: ../client/gtk/quote-view.c:303
+#, fuzzy, c-format
+msgid "%d:1 %s for %s"
+msgstr "%d:1 %s per %s"
+
+#. Trade: a player has rejected trade
+#: ../client/gtk/quote-view.c:441
+msgid "Rejected trade"
+msgstr "Scambio rifiutato"
 
 #. Caption for overview of the resources of the player
 #: ../client/gtk/resource.c:113
@@ -1969,68 +1982,10 @@ msgstr "Le"
 msgid "Select a game"
 msgstr "Seleziona una partita"
 
-#: ../common/gtk/theme.c:186
-msgid "Could not initialize default theme."
-msgstr "Impossibile inizializzare il tema di default."
-
-#: ../common/gtk/theme.c:206 ../common/gtk/theme.c:211
-#, c-format
-msgid "Theme %s not loaded due to errors."
-msgstr "Tema %s non caricato per errori."
-
-#: ../common/gtk/theme.c:275
-#, c-format
-msgid "Could not find '%s' pixmap file in theme '%s'."
-msgstr "Impossibile trovare la pixmap '%s' nel tema '%s'."
-
-#: ../common/gtk/theme.c:294
-#, c-format
-msgid "Could not load '%s' pixmap file in theme '%s'."
-msgstr "Impossibile caricare la pixmap '%s' nel tema '%s'."
-
-#: ../common/gtk/theme.c:338
-#, c-format
-msgid "Could not find default pixmap file: %s"
-msgstr "Impossibile trovare la pixmap di default: %s"
-
-#: ../common/gtk/theme.c:548
-#, c-format
-msgid "While reading %s at line %d:"
-msgstr "Leggendo %s alla linea %d:"
-
-#: ../common/gtk/theme.c:564
-#, c-format
-msgid "variable name missing: %s"
-msgstr "nome della variabile mancante: %s"
-
-#: ../common/gtk/theme.c:575
-#, c-format
-msgid "unknown config variable '%s'"
-msgstr "variabile '%s' sconosciuta"
-
-#: ../common/gtk/theme.c:583
-#, c-format
-msgid "'=' missing: %s"
-msgstr "manca '=': %s"
-
-#: ../common/gtk/theme.c:600
-msgid "missing value"
-msgstr "valore mancante"
-
-#: ../common/gtk/theme.c:626
-#, c-format
-msgid "invalid color: %s"
-msgstr "colore non valido: %s"
-
 #: ../common/gtk/theme.c:707
 #, c-format
 msgid "bad scaling mode '%s'"
 msgstr "modo '%s' non riconosciuto"
-
-#: ../common/gtk/theme.c:713
-#, c-format
-msgid "unexpected rest at end of line: '%s'"
-msgstr "dati inattesi al termine della riga: '%s'"
 
 #: ../common/log.c:54
 msgid "*ERROR* "
@@ -2217,10 +2172,6 @@ msgstr "Net_get_peer_name non ancora supportato su questa piattaforma."
 msgid "Error accepting connection: %s"
 msgstr "Errore accettando la connessione: %s"
 
-#: ../common/network.c:769
-msgid "No usable version of WinSock was found."
-msgstr "E' stata rilevata una versione inutilizzabile di WinSock."
-
 #: ../common/state.c:166
 #, c-format
 msgid "Connecting to %s, port %s\n"
@@ -2231,10 +2182,6 @@ msgid "State stack overflow. Stack dump sent to standard error.\n"
 msgstr ""
 "Overflow dello stack di stato. Dump dello stack inviato sullo standard "
 "error.\n"
-
-#: ../common/state.c:539
-msgid "State stack overflow"
-msgstr "Overflow dello stack di stato"
 
 #: ../editor/gtk/editor.c:57 ../editor/gtk/editor.c:66
 msgid "None"
@@ -2486,11 +2433,6 @@ msgstr "Uscito giocatore %s da %s\n"
 msgid "Player %d is now %s\n"
 msgstr "Giocatore %d è ora %s\n"
 
-#. Role of the player: player
-#: ../server/gtk/main.c:452
-msgid "Player"
-msgstr "Giocatore"
-
 #: ../server/gtk/main.c:489
 msgid "Game Settings"
 msgstr "Impostazioni Partita"
@@ -2676,7 +2618,6 @@ msgstr "Aggiungi N giocatori AI"
 msgid "Register server with meta-server"
 msgstr "Registra il server sul meta server"
 
-# fuzzy
 #. Commandline server-console: meta-server
 #: ../server/main.c:128
 msgid "Register at meta-server name (implies -r)"
@@ -2788,5 +2729,50 @@ msgstr "Manca la directory di partita\n"
 msgid "Tried to assign resources to NULL player.\n"
 msgstr "Si è cercato di assegnare le materie prime al giocatore NULL\n"
 
-#~ msgid "Rejected trade"
-#~ msgstr "Scambio rifiutato"
+#~ msgid "Pixmap not found: %s\n"
+#~ msgstr "Pixmap non trovata: %s\n"
+
+#~ msgid "Only server or port set, ignoring command line"
+#~ msgstr "Impostato solo il server o la porta, ignoro la linea di comando"
+
+#~ msgid "Could not initialize default theme."
+#~ msgstr "Impossibile inizializzare il tema di default."
+
+#~ msgid "Theme %s not loaded due to errors."
+#~ msgstr "Tema %s non caricato per errori."
+
+#~ msgid "Could not find '%s' pixmap file in theme '%s'."
+#~ msgstr "Impossibile trovare la pixmap '%s' nel tema '%s'."
+
+#~ msgid "Could not load '%s' pixmap file in theme '%s'."
+#~ msgstr "Impossibile caricare la pixmap '%s' nel tema '%s'."
+
+#~ msgid "Could not find default pixmap file: %s"
+#~ msgstr "Impossibile trovare la pixmap di default: %s"
+
+#~ msgid "While reading %s at line %d:"
+#~ msgstr "Leggendo %s alla linea %d:"
+
+#~ msgid "variable name missing: %s"
+#~ msgstr "nome della variabile mancante: %s"
+
+#~ msgid "unknown config variable '%s'"
+#~ msgstr "variabile '%s' sconosciuta"
+
+#~ msgid "'=' missing: %s"
+#~ msgstr "manca '=': %s"
+
+#~ msgid "missing value"
+#~ msgstr "valore mancante"
+
+#~ msgid "invalid color: %s"
+#~ msgstr "colore non valido: %s"
+
+#~ msgid "unexpected rest at end of line: '%s'"
+#~ msgstr "dati inattesi al termine della riga: '%s'"
+
+#~ msgid "No usable version of WinSock was found."
+#~ msgstr "E' stata rilevata una versione inutilizzabile di WinSock."
+
+#~ msgid "State stack overflow"
+#~ msgstr "Overflow dello stack di stato"
