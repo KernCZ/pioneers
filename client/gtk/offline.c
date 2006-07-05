@@ -45,7 +45,6 @@ static gboolean quit_when_offline = FALSE;
 static const gchar *override_language = NULL;
 #endif
 
-#ifdef HAVE_GLIB_2_6
 static GOptionEntry commandline_entries[] = {
 	/* Commandline option of client: hostname of the server */
 	{"server", 's', 0, G_OPTION_ARG_STRING, &server, N_("Server Host"),
@@ -69,32 +68,6 @@ static GOptionEntry commandline_entries[] = {
 #endif
 	{NULL, '\0', 0, 0, 0, NULL, NULL}
 };
-#else
-#ifdef HAVE_LIBGNOME
-const struct poptOption options[] = {
-	/* Commandline option of client: hostname of the server */
-	{"server", 's', POPT_ARG_STRING, &server, 0, N_("Server Host"),
-	 PIONEERS_DEFAULT_GAME_HOST},
-	/* Commandline option of client: port of the server */
-	{"port", 'p', POPT_ARG_STRING, &port, 0, N_("Server Port"),
-	 PIONEERS_DEFAULT_GAME_PORT},
-	/* Commandline option of client: name of the player */
-	{"name", 'n', POPT_ARG_STRING, &name, 0, N_("Player name"), NULL},
-	/* Commandline option of client: do we want to be a viewer */
-	{"viewer", 'v', POPT_ARG_NONE, &viewer, 0,
-	 N_("Connect as a viewer"), NULL},
-	/* Commandline option of client: hostname of the meta-server */
-	{"meta-server", 'm', POPT_ARG_STRING, &meta_server, 0,
-	 N_("Meta-server Host"), PIONEERS_DEFAULT_META_SERVER},
-#ifdef ENABLE_NLS
-	/* Commandline option of client: override the language */
-	{"language", '\0', POPT_ARG_STRING, &override_language, 0,
-	 N_("Override the language of the system"), "en " ALL_LINGUAS},
-#endif
-	{NULL, '\0', 0, 0, 0, NULL, NULL}
-};
-#endif				/* HAVE_LIBGNOME */
-#endif				/* HAVE_GLIB_2_6 */
 
 static void frontend_offline_start_connect_cb(void)
 {
@@ -173,10 +146,8 @@ void frontend_init(int argc, char **argv)
 #if ENABLE_NLS
 	lang_desc *ld;
 #endif
-#ifdef HAVE_GLIB_2_6
 	GOptionContext *context;
 	GError *error = NULL;
-#endif
 
 	frontend_gui_register_init();
 
@@ -184,7 +155,6 @@ void frontend_init(int argc, char **argv)
 
 	config_init("pioneers");
 
-#ifdef HAVE_GLIB_2_6
 	/* Long description in the commandline for pioneers: help */
 	context = g_option_context_new(_("- Play a game of Pioneers"));
 	g_option_context_add_main_entries(context, commandline_entries,
@@ -202,17 +172,6 @@ void frontend_init(int argc, char **argv)
 			   LIBGNOME_MODULE, argc, argv,
 			   GNOME_PARAM_APP_DATADIR, DATADIR, NULL);
 #endif				/* HAVE_HELP && HAVE_LIBGNOME */
-#else				/* HAVE_GLIB_2_6 */
-#ifdef HAVE_LIBGNOME
-	gnome_program_init(PACKAGE, VERSION,
-			   LIBGNOME_MODULE,
-			   argc, argv,
-			   GNOME_PARAM_POPT_TABLE, options,
-			   GNOME_PARAM_APP_DATADIR, DATADIR, NULL);
-#endif				/* HAVE_LIBGNOME */
-	/* Initialize the widget set */
-	gtk_init(&argc, &argv);
-#endif				/* HAVE_GLIB_2_6 */
 
 #if ENABLE_NLS
 	/* Gtk+ handles the locale, we must bind the translations */

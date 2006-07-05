@@ -41,8 +41,8 @@
 static GtkWidget *preferences_dlg;
 GtkWidget *app_window;		/* main application window */
 
-#define MAP_WIDTH 550		/* default map width */
-#define MAP_HEIGHT 400		/* default map height */
+#define MAP_WIDTH 350		/* default map width */
+#define MAP_HEIGHT 200		/* default map height */
 
 #define PIONEERS_ICON_FILE	"pioneers.png"
 

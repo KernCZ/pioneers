@@ -34,8 +34,6 @@ PIONEERS_DEFAULT_ADMIN_PORT=5555
 PIONEERS_DEFAULT_META_PORT=5557
 PIONEERS_DEFAULT_META_SERVER=pioneers.debian.net
 
-## If GLIB_REQUIRED_VERSION is set to 2.6,
-## check the code for HAVE_GLIB_2_6
 GLIB_REQUIRED_VERSION=2.6
 GTK_REQUIRED_VERSION=2.6
  
@@ -202,12 +200,6 @@ fi
 # glib is always needed
 PKG_CHECK_MODULES(GLIB2, glib-2.0 >= $GLIB_REQUIRED_VERSION)
 
-PKG_CHECK_MODULES(GLIB2_6, glib-2.0 >= 2.6, 
-	have_glib_2_6=yes, have_glib_2_6=no)
-if test x$have_glib_2_6 = xyes; then
-	AC_DEFINE(HAVE_GLIB_2_6, [1], [Defined if GLib 2.6 or newer exists])
-fi
-
 # Gtk+ support
 if test x$with_gtk = xno; then
 	have_gtk2="no, disabled in configure"
@@ -221,48 +213,32 @@ else
 fi
 AM_CONDITIONAL(HAVE_GTK2, [test "$have_gtk2" = "yes"])
 
-# Gtk Glib26 ScrollKeeper -> Test Need Build
-#                            libgnome  Help
-#  N    X         X           N    N    N
-#  Y    N         X           Y    Y    if have libgnome and scrollkeeper
-#  Y    Y         N           N    N    N
-#  Y    Y         Y           Y    N    if have libgnome
-# libgnome is only needed for help and old settingsfile
+# Gtk ScrollKeeper -> Test     Build
+#                     libgnome Help
+#  N       X           N        N
+#  Y       N           N        N
+#  Y       Y           Y        if have libgnome
+# libgnome is only needed for help
 if test "$have_gtk2" = "yes"; then
-	if test "$have_glib_2_6" = "yes"; then
-		test_libgnome=$have_scrollkeeper;
-		need_libgnome=no;
-	else
-		test_libgnome=yes;
-		need_libgnome=yes;
-	fi
+	test_libgnome=$have_scrollkeeper;
 else
 	test_libgnome=no;
-	need_libgnome=no;
 fi
 
+have_graphical=$have_gtk2;
 if test "$test_libgnome" = "yes"; then
 	# libgnome-2.0 support
-	PKG_CHECK_MODULES(GNOME2, libgnome-2.0, 
-		[have_gnome="yes"], 
+	PKG_CHECK_MODULES(GNOME2, libgnome-2.0,
+		[have_gnome="yes"],
 		[have_gnome="no, libgnome-2.0 not installed"])
 	if test "$have_gnome" = "yes"; then
-		AC_DEFINE(HAVE_LIBGNOME, 1, 
+		AC_DEFINE(HAVE_LIBGNOME, 1,
 			[Defined if libgnome is present and needed])
 	fi
 	if test "$have_scrollkeeper" = "yes"; then
 		# Turn off the help if libgnome not installed
 		have_scrollkeeper=$have_gnome;
 	fi
-	if test "$need_libgnome" = "no"; then
-		have_graphical=$have_gtk2;
-	else
-		have_graphical=$have_gnome;
-	fi
-else
-	have_graphical=$have_gtk2;
-	AC_SUBST(GNOME2_CFLAGS)
-	AC_SUBST(GNOME2_LIBS)
 fi
 AM_CONDITIONAL(HAVE_GNOME, [test "$have_graphical" = "yes"])
 

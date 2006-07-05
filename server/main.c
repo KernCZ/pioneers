@@ -27,11 +27,6 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <limits.h>
-#ifndef HAVE_GLIB_2_6
-#ifdef HAVE_GETOPT_H
-#include <getopt.h>
-#endif
-#endif
 #include <glib.h>
 
 #include "driver.h"
@@ -49,35 +44,6 @@
 
 static GMainLoop *event_loop;
 
-#ifndef HAVE_GLIB_2_6
-static void usage(void)
-{
-	fprintf(stderr,
-		"Usage: pioneers-server-console [options]\n"
-		"  -a port   --  Admin port to listen on\n"
-		"  -c num    --  Start num computer players\n"
-		"  -g game   --  Game name to use\n"
-		"  -h        --  Show this help\n"
-		"  -k secs   --  Kill after 'secs' seconds with no players\n"
-		"  -m meta   --  Register at meta-server name (implies -r)\n"
-		"  -n name   --  Use this hostname when registering\n"
-		"  -P num    --  Set Number of players\n"
-		"  -p port   --  Port to listen on\n"
-		"  -r        --  Register server with meta-server\n"
-		"  -R 0|1|2  --  Set seven-rule handling\n"
-		"  -s        --  Don't start game immediately, wait for a "
-		"command on admin port\n"
-		"  -t mins   --  Tournament mode, ai players added after "
-		"'mins' minutes\n"
-		"  -T 0|1    --  select terrain type, 0=default 1=random\n"
-		"  -v points --  Number of points needed to win\n"
-		"  -x        --  Quit after a player has won\n");
-
-	exit(1);
-}
-#endif
-
-#ifdef HAVE_GLIB_2_6
 static gint num_players = 0;
 static gint num_points = 0;
 static gint sevens_rule = -1;
@@ -154,29 +120,13 @@ static GOptionEntry commandline_other_entries[] = {
 	 NULL},
 	{NULL, '\0', 0, 0, NULL, NULL, NULL}
 };
-#endif				/* HAVE_GLIB_2_6 */
 
 int main(int argc, char *argv[])
 {
 	int i;
-#ifdef HAVE_GLIB_2_6
 	GOptionContext *context;
 	GOptionGroup *context_group;
 	GError *error = NULL;
-#else				/* HAVE_GLIB_2_6 */
-	int c;
-	gint num_players = 0, num_points = 0,
-	    sevens_rule = -1, terrain = -1, timeout = 0, num_ai_players =
-	    0;
-	gchar *server_port = g_strdup(PIONEERS_DEFAULT_GAME_PORT);
-	gchar *admin_port = g_strdup(PIONEERS_DEFAULT_ADMIN_PORT);
-
-	gboolean disable_game_start = FALSE;
-	gint tournament_time = -1;
-	gboolean quit_when_done = FALSE;
-	gchar *hostname = NULL;
-	gboolean register_server = FALSE;
-#endif				/* HAVE_GLIB_2_6 */
 
 	/* set the UI driver to Glib_Driver, since we're using glib */
 	set_ui_driver(&Glib_Driver);
@@ -195,7 +145,6 @@ int main(int argc, char *argv[])
 
 	server_init();
 
-#if HAVE_GLIB_2_6
 	/* Long description in the commandline for server-console: help */
 	context = g_option_context_new(_("- Host a game of Pioneers"));
 	g_option_context_add_main_entries(context,
@@ -241,102 +190,6 @@ int main(int argc, char *argv[])
 		register_server = TRUE;
 	if (sevens_rule != -1)
 		sevens_rule = CLAMP(sevens_rule, 0, 2);
-#else				/* HAVE_GLIB_2_6 */
-	while ((c =
-		getopt(argc, argv,
-		       "a:c:g:hk:m:n:P:p:rR:st:T:v:x")) != EOF) {
-		switch (c) {
-		case 'a':
-			if (!optarg) {
-				break;
-			}
-			g_free(admin_port);
-			admin_port = g_strdup(optarg);
-			break;
-		case 'c':
-			if (!optarg) {
-				break;
-			}
-			num_ai_players = atoi(optarg);
-			break;
-		case 'g':
-			cfg_set_game(optarg);
-			break;
-		case 'k':
-			if (!optarg) {
-				break;
-			}
-			timeout = atoi(optarg);
-			break;
-		case 'm':
-			if (!optarg) {
-				break;
-			}
-			meta_server_name = g_strdup(optarg);
-			register_server = TRUE;
-			break;
-		case 'n':
-			if (!optarg) {
-				break;
-			}
-			hostname = g_strdup(optarg);
-			break;
-		case 'P':
-			if (!optarg) {
-				break;
-			}
-			num_players = atoi(optarg);
-			break;
-		case 'p':
-			if (!optarg) {
-				break;
-			}
-			g_free(server_port);
-			server_port = g_strdup(optarg);
-			break;
-		case 'R':
-			if (!optarg) {
-				break;
-			}
-			sevens_rule = atoi(optarg);
-			if (sevens_rule < 0 || sevens_rule > 2) {
-				sevens_rule = 0;
-			}
-			break;
-		case 'r':
-			register_server = TRUE;
-			break;
-		case 's':
-			disable_game_start = TRUE;
-			break;
-		case 't':
-			if (!optarg) {
-				usage();
-			}
-			tournament_time = atoi(optarg);
-			break;
-		case 'T':
-			if (!optarg) {
-				break;
-			}
-			terrain = atoi(optarg);
-			break;
-		case 'v':
-			if (!optarg) {
-				usage();
-			}
-			num_points = atoi(optarg);
-			break;
-		case 'x':
-			quit_when_done = TRUE;
-			break;
-		case 'h':
-		default:
-			usage();
-			break;
-		}
-	}
-#endif				/* HAVE_GLIB_2_6 */
 
 	g_assert(server_port != NULL);
 	g_assert(admin_port != NULL);
@@ -382,13 +235,7 @@ int main(int argc, char *argv[])
 			event_loop = g_main_loop_new(NULL, FALSE);
 			g_main_loop_run(event_loop);
 			g_main_loop_unref(event_loop);
-
-		} else {
-#ifndef HAVE_GLIB_2_6
-			usage();
-#endif
 		}
-
 	} else {
 		/* Ugly... But needed to preserve the original functionality
 		   if the disable_game_start flag is set... Even if it doesn't
@@ -406,9 +253,7 @@ int main(int argc, char *argv[])
 	g_free(hostname);
 	g_free(server_port);
 	g_free(admin_port);
-#ifdef HAVE_GLIB_2_6
 	g_option_context_free(context);
-#endif
 	server_cleanup_static_data();
 	return 0;
 }

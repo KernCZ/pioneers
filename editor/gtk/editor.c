@@ -1,13 +1,6 @@
 #include "config.h"
 
 #include <string.h>
-
-#ifndef HAVE_GLIB_2_6
-#ifdef HAVE_LIBGNOME
-#include <libgnome/libgnome.h>
-#endif
-#endif
-
 #include "aboutbox.h"
 #include "config-gnome.h"
 #include "game.h"
@@ -1022,7 +1015,6 @@ static const char *ui_description =
 "</ui>";
 /* *INDENT-ON* */
 
-#ifdef HAVE_GLIB_2_6
 gchar **filenames;
 
 static GOptionEntry commandline_entries[] = {
@@ -1034,7 +1026,6 @@ static GOptionEntry commandline_entries[] = {
 	 N_("filename")},
 	{NULL, '\0', 0, 0, NULL, NULL, NULL}
 };
-#endif
 
 int main(int argc, char *argv[])
 {
@@ -1048,9 +1039,7 @@ int main(int argc, char *argv[])
 	GtkAccelGroup *accel_group;
 	GError *error = NULL;
 	gchar *icon_file;
-#ifdef HAVE_GLIB_2_6
 	GOptionContext *context;
-#endif
 
 	default_game = g_build_filename(get_pioneers_dir(), "default.game",
 					NULL);
@@ -1061,7 +1050,6 @@ int main(int argc, char *argv[])
 	textdomain(PACKAGE);
 	bind_textdomain_codeset(PACKAGE, "UTF-8");
 
-#ifdef HAVE_GLIB_2_6
 	/* Long description in the command line: --help */
 	context =
 	    g_option_context_new(_("- Editor for games of Pioneers"));
@@ -1078,19 +1066,6 @@ int main(int argc, char *argv[])
 		filename = g_strdup(filenames[0]);
 	else
 		filename = NULL;
-#else
-#ifdef HAVE_LIBGNOME
-	if (argc > 1)
-		filename = g_strdup(argv[1]);
-	else
-		filename = NULL;
-
-	gnome_program_init("pioneers-editor", VERSION, LIBGNOME_MODULE,
-			   argc, argv, GNOME_PARAM_POPT_TABLE, NULL, NULL);
-
-	gtk_init(&argc, &argv);
-#endif
-#endif
 
 	toplevel = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	g_signal_connect(G_OBJECT(toplevel), "delete_event",
@@ -1171,8 +1146,6 @@ int main(int argc, char *argv[])
 
 	config_finish();
 
-#ifdef HAVE_GLIB_2_6
 	g_option_context_free(context);
-#endif
 	return 0;
 }

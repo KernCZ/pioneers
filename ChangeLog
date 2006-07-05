@@ -6,6 +6,9 @@
 	g_warning
 	* docs/README.release: Update steps for a release
 	* server/lobby.game: Added an empty map, for the lobby
+	* editor/gtk/editor.c, common/gtk/config-gnome.c, configure.ac,
+	server/gtk/main.c, client/gtk/offline.c, client/gtk/gui.c,
+	client/ai/ai.c: Removed Glib 2.6 #ifdef code
 	
 2006-06-23  Roland Clobus <rclobus@bigfoot.com>
 	* getVersions.sh: View the versions in the various distributions

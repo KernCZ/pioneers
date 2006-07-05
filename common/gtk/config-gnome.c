@@ -69,23 +69,15 @@ on the surface.
 
 #include "config.h"
 #include <glib.h>
-#ifdef HAVE_GLIB_2_6
 #include <glib/gi18n.h>
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <unistd.h>
 #include <stdlib.h>
-#else				/* HAVE_GLIB_2_6 */
-#ifdef GNOME_DISABLE_DEPRECATED
-#undef GNOME_DISABLE_DEPRECATED
-#endif				/* GNOME_DISABLE_DEPRECATED */
-#include <libgnome/gnome-config.h>
-#endif				/* HAVE_GLIB_2_6 */
 #include "config-gnome.h"
 
 /* initialize configuration setup */
 
-#ifdef HAVE_GLIB_2_6
 static GKeyFile *keyfile = NULL;
 static gchar *filename = NULL;
 
@@ -124,19 +116,12 @@ static void config_sync(void)
 	}
 }
 
-#endif				/* HAVE_GLIB_2_6 */
-
-/* set the prefix in some static manner so that we don't need to hard-code 
+/* set the prefix in some static manner so that we don't need to hard-code
  * it in the main code.  Thus, different architectures can have different 
  * prefixes depending on what's relevant for said arch.
  */
 void config_init(const gchar * path_prefix)
 {
-#ifndef HAVE_GLIB_2_6
-	gchar *path = g_strdup_printf("/%s/", path_prefix);
-	gnome_config_push_prefix(path);
-	g_free(path);
-#else				/* HAVE_GLIB_2_6 */
 	GError *error = NULL;
 
 	/* Don't initialize more than once */
@@ -156,15 +141,12 @@ void config_init(const gchar * path_prefix)
 			  error->message);
 		g_error_free(error);
 	}
-#endif				/* HAVE_GLIB_2_6 */
 }
 
 void config_finish(void)
 {
-#ifdef HAVE_GLIB_2_6
 	g_free(filename);
 	g_key_file_free(keyfile);
-#endif				/* HAVE_GLIB_2_6 */
 }
 
 /* get configuration settings */
@@ -174,11 +156,6 @@ void config_finish(void)
  */
 gchar *config_get_string(const gchar * path, gboolean * default_used)
 {
-#ifndef HAVE_GLIB_2_6
-	/* gnome_config takes care of setting *default_used */
-	return gnome_config_get_string_with_default(path, default_used);
-#else				/* HAVE_GLIB_2_6 */
-
 	gchar **tokens;
 	gchar *value;
 	GError *error = NULL;
@@ -202,7 +179,6 @@ gchar *config_get_string(const gchar * path, gboolean * default_used)
 	}
 	g_strfreev(tokens);
 	return value;
-#endif				/* HAVE_GLIB_2_6 */
 }
 
 /* get an integer.  If a default is sent as part of the path, and the
@@ -210,11 +186,6 @@ gchar *config_get_string(const gchar * path, gboolean * default_used)
  */
 gint config_get_int(const gchar * path, gboolean * default_used)
 {
-#ifndef HAVE_GLIB_2_6
-	/* gnome_config takes care of setting *default_used */
-	return gnome_config_get_int_with_default(path, default_used);
-#else				/* HAVE_GLIB_2_6 */
-
 	gchar **tokens;
 	gint value;
 	GError *error = NULL;
@@ -238,19 +209,11 @@ gint config_get_int(const gchar * path, gboolean * default_used)
 	}
 	g_strfreev(tokens);
 	return value;
-#endif				/* HAVE_GLIB_2_6 */
 }
 
 /* get an integer.  If the setting is not found, return the default value */
 gint config_get_int_with_default(const gchar * path, gint default_value)
 {
-#ifndef HAVE_GLIB_2_6
-	gchar temp[256];
-	gboolean default_used;
-
-	snprintf(temp, sizeof(temp), "%s=%d", path, default_value);
-	return gnome_config_get_int_with_default(temp, &default_used);
-#else				/* HAVE_GLIB_2_6 */
 	gboolean default_used;
 	gchar *temp;
 	gint value;
@@ -259,7 +222,6 @@ gint config_get_int_with_default(const gchar * path, gint default_value)
 	value = config_get_int(temp, &default_used);
 	g_free(temp);
 	return value;
-#endif				/* HAVE_GLIB_2_6 */
 }
 
 /* set configuration settings */
@@ -268,11 +230,6 @@ gint config_get_int_with_default(const gchar * path, gint default_value)
 /* set a string; make sure the configuration set is sync'd afterwards. */
 void config_set_string(const gchar * path, const gchar * value)
 {
-#ifndef HAVE_GLIB_2_6
-	gnome_config_set_string(path, value);
-	gnome_config_sync();
-#else				/* HAVE_GLIB_2_6 */
-
 	gchar **tokens;
 
 	g_return_if_fail(keyfile != NULL);
@@ -287,17 +244,11 @@ void config_set_string(const gchar * path, const gchar * value)
 	}
 	g_strfreev(tokens);
 	config_sync();
-#endif				/* HAVE_GLIB_2_6 */
 }
 
 /* set an int; make sure the configuration set is sync'd afterwards. */
 void config_set_int(const gchar * path, gint value)
 {
-#ifndef HAVE_GLIB_2_6
-	gnome_config_set_int(path, value);
-	gnome_config_sync();
-#else				/* HAVE_GLIB_2_6 */
-
 	gchar **tokens;
 
 	g_return_if_fail(keyfile != NULL);
@@ -312,5 +263,4 @@ void config_set_int(const gchar * path, gint value)
 	}
 	g_strfreev(tokens);
 	config_sync();
-#endif				/* HAVE_GLIB_2_6 */
 }

@@ -26,13 +26,8 @@
 #include <unistd.h>
 #include <time.h>
 
-#ifdef HAVE_GLIB_2_6
 static char *server = NULL;
 static char *port = NULL;
-#else
-static const char *server = PIONEERS_DEFAULT_GAME_HOST;
-static const char *port = PIONEERS_DEFAULT_GAME_PORT;
-#endif
 static char *name = NULL;
 static char *ai;
 static int waittime = 1000;
@@ -79,24 +74,8 @@ static gchar *random_name(void)
 	return name;
 }
 
-#ifndef HAVE_GLIB_2_6
-static void usage(int retval)
-{
-	printf("Usage: pioneersai [args]\n"
-	       "\n"
-	       "s - server\n"
-	       "p - port\n"
-	       "n - computer name (leave absent for random name)\n"
-	       "a - AI player (possible values: greedy)\n"
-	       "t - time to wait between turns (in milliseconds; default 1000)\n"
-	       "c - stop computer players from talking\n");
-	exit(retval);
-}
-#endif
-
 UIDriver Glib_Driver;
 
-#ifdef HAVE_GLIB_2_6
 static GOptionEntry commandline_entries[] = {
 	{"server", 's', 0, G_OPTION_ARG_STRING, &server,
 	 /* Commandline pioneersai: server */
@@ -118,7 +97,6 @@ static GOptionEntry commandline_entries[] = {
 	 N_("Type of computer player"), "greedy"},
 	{NULL, '\0', 0, 0, NULL, NULL, NULL}
 };
-#endif
 
 /* this needs some tweaking.  It would be nice if anything not handled by
  * the AI program can be handled by the AI implementation that is playing.
@@ -127,14 +105,9 @@ static GOptionEntry commandline_entries[] = {
  * no other commandline arguments, yet. */
 static void ai_init(int argc, char **argv)
 {
-#ifdef HAVE_GLIB_2_6
 	GOptionContext *context;
 	GError *error = NULL;
-#else
-	int c;
-#endif
 
-#ifdef HAVE_GLIB_2_6
 	/* Long description in the commandline for pioneersai: help */
 	context =
 	    g_option_context_new(_("- Computer player for Pioneers"));
@@ -154,39 +127,6 @@ static void ai_init(int argc, char **argv)
 
 	local_argc = argc;
 	local_argv = argv;
-#else
-	local_argc = argc;
-	local_argv = argv;
-
-	while ((c = getopt(argc, argv, "s:p:n:a:t:ch")) != EOF) {
-		switch (c) {
-		case 'c':
-			silent = TRUE;
-			break;
-		case 's':
-			server = optarg;
-			break;
-		case 'p':
-			port = optarg;
-			break;
-		case 'n':
-			name = g_strdup(optarg);
-			break;
-		case 'a':
-			ai = optarg;
-			break;
-		case 't':
-			waittime = atoi(optarg);
-			break;
-		case 'h':
-			usage(0);
-			/* does not return */
-		default:
-			usage(1);
-			/* does not return */
-		}
-	}
-#endif
 
 	printf("ai port is %s\n", port);
 
