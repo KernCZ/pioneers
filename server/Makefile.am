@@ -92,7 +92,8 @@ config_DATA = \
 	GuerreDe100ans.game \
 	Mini_another_swimming_pool_in_the_wall.game \
 	henjes.game \
-	lorindol.game
+	lorindol.game \
+	lobby.game
 
 EXTRA_DIST = \
 	$(config_DATA)

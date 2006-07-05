@@ -5,6 +5,7 @@
 	client/common/player.c: Removed translation tags in g_error and
 	g_warning
 	* docs/README.release: Update steps for a release
+	* server/lobby.game: Added an empty map, for the lobby
 	
 2006-06-23  Roland Clobus <rclobus@bigfoot.com>
 	* getVersions.sh: View the versions in the various distributions

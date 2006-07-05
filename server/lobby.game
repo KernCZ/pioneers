@@ -1,0 +1,34 @@
+# This is the lobby
+# People can gather here to meet, and talk about games to start.
+#
+# It is the smallest possible map: no map!
+#
+# At least one building element MUST be present, or the client will crash
+# At least one chit must be present, or the server will complain
+#
+variant default
+title Lobby
+strict-trade
+domestic-trade
+num-players 8
+sevens-rule 0
+victory-points 99
+num-roads 0
+num-bridges 0
+num-ships 0
+num-settlements 0
+num-cities 1
+resource-count 1
+develop-road 0
+develop-monopoly 0
+develop-plenty 0
+develop-chapel 0
+develop-university 0
+develop-governor 0
+develop-library 0
+develop-market 0
+develop-soldier 0
+tournament-time 0
+chits 7
+map
+.
