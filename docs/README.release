@@ -12,6 +12,9 @@ Before a release:
 At release time:
 * Update (if needed): NEWS, README, README.Cygwin, README.MinGW, TODO
 * Create the tarball
+* Sign the tarball
+  gpg -u packager@foo.net --armor --output tarball.sig --detach-sig tarball.tar.gz
+  (Verify with gpg --verify tarball.sig tarball.tar.gz)
 * Create a tag in the Subversion repository
 * Update the version number in configure.ac
 * Upload the tarball to upload.sourceforge.net
@@ -21,6 +24,6 @@ At release time:
 * Update the released information at freshmeat.net and tucows
 * Reboot to Windows
 * Download the tarball
-* Create the installer under Cygwin
+* Create the installer under MinGW
 * Upload the installer to SourceForge
 * Update the released information at gnomefiles

@@ -1,3 +1,6 @@
+2006-07-05  Roland Clobus <rclobus@bigfoot.com>
+	* docs/README.release: Update steps for a release
+	
 2006-06-23  Roland Clobus <rclobus@bigfoot.com>
 	* getVersions.sh: View the versions in the various distributions
 	
