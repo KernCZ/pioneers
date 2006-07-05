@@ -24,6 +24,7 @@ client/gtk/offline.c
 client/gtk/player.c
 client/gtk/plenty.c
 client/gtk/quote.c
+client/gtk/quote-view.c
 client/gtk/resource.c
 client/gtk/resource-table.c
 client/gtk/settingscreen.c

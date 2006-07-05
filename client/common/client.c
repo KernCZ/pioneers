@@ -440,7 +440,7 @@ static gboolean global_unhandled(StateMachine * sm, gint event)
 
 	switch (event) {
 	case SM_NET_CLOSE:
-		g_error("SM_NET_CLOSE not caught by global_filter.\n");
+		g_error("SM_NET_CLOSE not caught by global_filter");
 	case SM_RECV:
 		/* all errors start with ERR */
 		if (sm_recv(sm, "ERR %S", str, sizeof(str))) {

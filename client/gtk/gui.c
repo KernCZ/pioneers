@@ -1258,7 +1258,7 @@ static void register_pixmaps(void)
 			}
 		} else {
 			/* Missing pixmap */
-			g_warning(_("Pixmap not found: %s\n"), filename);
+			g_warning("Pixmap not found: %s", filename);
 		}
 
 		gtk_icon_factory_add(factory, pioneers_pixmaps[idx], icon);
@@ -1308,7 +1308,7 @@ static void register_pixmaps(void)
 			}
 		} else {
 			/* Missing pixmap */
-			g_warning(_("Pixmap not found: %s\n"), filename);
+			g_warning("Pixmap not found: %s", filename);
 		}
 
 		g_free(filename);
@@ -1365,7 +1365,7 @@ GtkWidget *gui_build_interface(void)
 		gtk_window_set_default_icon_from_file(icon_file, NULL);
 	} else {
 		/* Missing pixmap, main icon file */
-		g_warning(_("Pixmap not found: %s\n"), icon_file);
+		g_warning("Pixmap not found: %s", icon_file);
 	}
 	g_free(icon_file);
 

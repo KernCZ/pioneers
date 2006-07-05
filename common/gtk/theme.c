@@ -183,7 +183,7 @@ void themes_init(void)
 
 	/* initialize default theme */
 	if (!theme_initialize(&default_theme, "")) {
-		g_error(_("Could not initialize default theme."));
+		g_error("Could not initialize default theme.");
 	}
 	g_assert(theme_list == NULL);
 	theme_list = g_list_append(NULL, &default_theme);
@@ -202,14 +202,14 @@ void themes_init(void)
 					    (theme_list, t,
 					     theme_insert_sorted);
 				} else {
-					g_warning(_
-						  ("Theme %s not loaded due to errors."),
-						  t->name);
+					g_warning
+					    ("Theme %s not loaded due to errors.",
+					     t->name);
 				}
 			} else {
-				g_warning(_
-					  ("Theme %s not loaded due to errors."),
-					  dirname);
+				g_warning
+				    ("Theme %s not loaded due to errors.",
+				     dirname);
 			}
 			g_free(path);
 		}
@@ -271,9 +271,9 @@ gboolean theme_load_pixmap(const gchar * file, const gchar * themename,
 
 	/* check that file exists */
 	if (!g_file_test(file, G_FILE_TEST_EXISTS)) {
-		g_warning(_
-			  ("Could not find \'%s\' pixmap file in theme \'%s\'."),
-			  file, themename);
+		g_warning
+		    ("Could not find \'%s\' pixmap file in theme \'%s\'.",
+		     file, themename);
 		return FALSE;
 	}
 
@@ -290,9 +290,9 @@ gboolean theme_load_pixmap(const gchar * file, const gchar * themename,
 	if (*pixmap_return == NULL) {
 		if (*pixbuf)
 			g_object_unref(*pixbuf);
-		g_warning(_
-			  ("Could not load \'%s\' pixmap file in theme \'%s\'."),
-			  file, themename);
+		g_warning
+		    ("Could not load \'%s\' pixmap file in theme \'%s\'.",
+		     file, themename);
 		return FALSE;
 	}
 	return TRUE;
@@ -334,9 +334,9 @@ static gboolean theme_initialize(MapTheme * t, const gchar * subdir)
 			if (!theme_load_pixmap
 			    (file, t->name, &pixbuf,
 			     &(t->terrain_tiles[i]), NULL)) {
-				g_error(_
-					("Could not find default pixmap file: %s"),
-					file);
+				g_error
+				    ("Could not find default pixmap file: %s",
+				     file);
 				g_free(file);
 				exit(1);
 			}
@@ -545,7 +545,7 @@ static struct tvars {
 };
 
 #define ERR1(formatstring, argument) \
-	g_warning(_("While reading %s at line %d:"), filename, lno); \
+	g_warning("While reading %s at line %d:", filename, lno); \
 	g_warning(formatstring, argument);
 #define ERR0(string) \
 	ERR1("%s", string);
@@ -561,7 +561,7 @@ static struct tvars *getvar(char **p, const gchar * filename, int lno)
 
 	q = *p + strcspn(*p, " \t=\n");
 	if (q == *p) {
-		ERR1(_("variable name missing: %s"), *p);
+		ERR1("variable name missing: %s", *p);
 		return NULL;
 	}
 	qsave = *q;
@@ -572,7 +572,7 @@ static struct tvars *getvar(char **p, const gchar * filename, int lno)
 			break;
 	}
 	if (!tv->name) {
-		ERR1(_("unknown config variable '%s'"), *p);
+		ERR1("unknown config variable '%s'", *p);
 		return NULL;
 	}
 
@@ -580,7 +580,7 @@ static struct tvars *getvar(char **p, const gchar * filename, int lno)
 	if (qsave != '=') {
 		*p += strspn(*p, " \t");
 		if (**p != '=') {
-			ERR1(_("'=' missing: %s"), *p);
+			ERR1("'=' missing: %s", *p);
 			return NULL;
 		}
 		++*p;
@@ -597,7 +597,7 @@ static char *getval(char **p, const gchar * filename, int lno)
 	q = *p;
 	*p += strcspn(*p, " \t\n");
 	if (q == *p) {
-		ERR0(_("missing value"));
+		ERR0("missing value");
 		return FALSE;
 	}
 	if (**p) {
@@ -623,7 +623,7 @@ static gboolean parsecolor(char *p, TColor * tc, const gchar * filename,
 	}
 	tc->transparent = FALSE;
 	if (!gdk_color_parse(p, &tc->color)) {
-		ERR1(_("invalid color: %s"), p);
+		ERR1("invalid color: %s", p);
 		return FALSE;
 	}
 
@@ -710,7 +710,7 @@ static MapTheme *theme_config_parse(const gchar * themename,
 			break;
 		}
 		if (!checkend(p)) {
-			ERR1(_("unexpected rest at end of line: '%s'"), p);
+			ERR1("unexpected rest at end of line: '%s'", p);
 			ok = FALSE;
 		}
 	}

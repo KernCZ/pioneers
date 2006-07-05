@@ -901,7 +901,7 @@ int main(int argc, char *argv[])
 	if (g_file_test(icon_file, G_FILE_TEST_EXISTS)) {
 		gtk_window_set_default_icon_from_file(icon_file, NULL);
 	} else {
-		g_warning(_("Pixmap not found: %s\n"), icon_file);
+		g_warning("Pixmap not found: %s", icon_file);
 	}
 	g_free(icon_file);
 

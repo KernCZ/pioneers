@@ -536,7 +536,7 @@ static void push_new_state(StateMachine * sm)
 			    _
 			    ("State stack overflow. Stack dump sent to standard error.\n"));
 		sm_stack_dump(sm);
-		g_error(_("State stack overflow"));
+		g_error("State stack overflow");
 	}
 	sm->stack[sm->stack_ptr] = NULL;
 	sm->stack_name[sm->stack_ptr] = NULL;

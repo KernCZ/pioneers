@@ -115,10 +115,10 @@ static void config_sync(void)
 			write(f, data, length);
 			close(f);
 		} else {
-			g_warning(_("Could not write settings file"));
+			g_warning("Could not write settings file");
 		}
 	} else {
-		g_warning(_("Could not write settings file: %s"),
+		g_warning("Could not write settings file: %s",
 			  error->message);
 		g_error_free(error);
 	}
@@ -152,7 +152,7 @@ void config_init(const gchar * path_prefix)
 				  G_KEY_FILE_KEEP_TRANSLATIONS, &error);
 
 	if (error != NULL) {
-		g_warning(_("Error while loading settings: %s"),
+		g_warning("Error while loading settings: %s",
 			  error->message);
 		g_error_free(error);
 	}
@@ -280,7 +280,7 @@ void config_set_string(const gchar * path, const gchar * value)
 	tokens = g_strsplit_set(path, "/", 2);
 
 	if (tokens[1] == NULL) {
-		g_warning(_("Key is missing"));
+		g_warning("Key is missing");
 	} else {
 		g_key_file_set_string(keyfile, tokens[0], tokens[1],
 				      value);
@@ -305,7 +305,7 @@ void config_set_int(const gchar * path, gint value)
 	tokens = g_strsplit_set(path, "/", 2);
 
 	if (tokens[1] == NULL) {
-		g_warning(_("Key is missing"));
+		g_warning("Key is missing");
 	} else {
 		g_key_file_set_integer(keyfile, tokens[0], tokens[1],
 				       value);

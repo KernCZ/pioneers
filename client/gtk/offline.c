@@ -261,8 +261,8 @@ void frontend_init(int argc, char **argv)
 		server_from_commandline = TRUE;
 	} else {
 		if ((server && server[0]) || (port && port[0]))
-			g_warning(_("Only server or port set, "
-				    "ignoring command line"));
+			g_warning("Only server or port set, "
+				  "ignoring command line");
 		server_from_commandline = FALSE;
 		server = config_get_string("connect/server="
 					   PIONEERS_DEFAULT_GAME_HOST,

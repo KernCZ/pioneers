@@ -307,9 +307,9 @@ void params_load_line(GameParams * params, gchar * line)
 		if (node) {
 			node->no_setup = TRUE;
 		} else {
-			g_warning(_
-				  ("Nosetup node %d %d %d is not in the map"),
-				  x, y, pos);
+			g_warning
+			    ("Nosetup node %d %d %d is not in the map", x,
+			     y, pos);
 		}
 		return;
 	}

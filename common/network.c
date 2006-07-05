@@ -766,7 +766,7 @@ void net_init(void)
 	wVersionRequested = MAKEWORD(2, 2);
 
 	if (0 != WSAStartup(wVersionRequested, &wsaData)) {
-		g_error(_("No usable version of WinSock was found."));
+		g_error("No usable version of WinSock was found.");
 	}
 #else				/* G_OS_WIN32 */
 	/* Do nothing on unix like platforms */

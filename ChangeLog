@@ -1,4 +1,9 @@
 2006-07-05  Roland Clobus <rclobus@bigfoot.com>
+	* editor/gtk/editor.c, common/gtk/theme.c, common/gtk/config-gnome.c,
+	common/game.c, common/state.c, common/network.c, server/gtk/main.c,
+	client/gtk/offline.c, client/gtk/gui.c, client/common/client.c,
+	client/common/player.c: Removed translation tags in g_error and
+	g_warning
 	* docs/README.release: Update steps for a release
 	
 2006-06-23  Roland Clobus <rclobus@bigfoot.com>
