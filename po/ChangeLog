@@ -1,3 +1,6 @@
+2006-07-24 Roland Clobus <rclobus@bigfoot.com>
+	* it.po: Restored old translations for quote-view.c
+	
 2006-07-05 Roland Clobus <rclobus@bigfoot.com>
 	* Translation markup removed for g_error and g_warning messages
 	* Updated all templates

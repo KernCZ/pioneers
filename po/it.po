@@ -1623,14 +1623,13 @@ msgstr "Giocatore"
 
 #. Table header: Quote
 #: ../client/gtk/quote-view.c:186
-#, fuzzy
 msgid "Quotes"
 msgstr "Quotazione"
 
 #. trade: maritime quote: %1 resources of type %2 for
 #. * one resource of type %3
 #: ../client/gtk/quote-view.c:303
-#, fuzzy, c-format
+#, c-format
 msgid "%d:1 %s for %s"
 msgstr "%d:1 %s per %s"
 
