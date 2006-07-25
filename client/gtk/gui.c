@@ -75,6 +75,8 @@ static GtkUIManager *ui_manager = NULL;	/* The manager of the GtkActions */
 static GtkWidget *toolbar = NULL;	/* The toolbar */
 
 static gboolean toolbar_show_accelerators = TRUE;
+static gboolean color_messages_enabled = TRUE;
+static gboolean legend_page_enabled = TRUE;
 
 static GList *rules_callback_list = NULL;
 
@@ -759,6 +761,14 @@ static void summary_color_cb(GtkToggleButton * widget,
 	set_color_summary(color_summary);
 }
 
+static void announce_player_cb(GtkToggleButton * widget,
+			       G_GNUC_UNUSED gpointer user_data)
+{
+	gboolean announce_player = gtk_toggle_button_get_active(widget);
+	config_set_int("settings/announce_player", announce_player);
+	set_announce_player(announce_player);
+}
+
 static void showhide_toolbar_cb(void)
 {
 	gui_set_toolbar_visible();
@@ -920,6 +930,23 @@ static void preferences_cb(void)
 	/* Tooltip for the option to display keyboard accelerators in the toolbar */
 	gtk_tooltips_set_tip(tooltips, widget,
 			     _("Show keyboard shortcuts in the toolbar"),
+			     NULL);
+	row++;
+
+	/* Label for the option to announce when players/viewer enter */
+	widget =
+	    gtk_check_button_new_with_label(_("Announce new players"));
+	gtk_widget_show(widget);
+	gtk_table_attach_defaults(GTK_TABLE(layout), widget,
+				  0, 2, row, row + 1);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget),
+				     toolbar_show_accelerators);
+	g_signal_connect(G_OBJECT(widget), "toggled",
+			 G_CALLBACK(announce_player_cb), NULL);
+	/* Tooltip for the option to use sound */
+	gtk_tooltips_set_tip(tooltips, widget,
+			     _
+			     ("Make a sound when a new player or viewer enters the game"),
 			     NULL);
 	row++;
 }
@@ -1378,6 +1405,9 @@ GtkWidget *gui_build_interface(void)
 
 	set_color_summary(config_get_int_with_default
 			  ("settings/color_summary", TRUE));
+
+	set_announce_player(config_get_int_with_default
+			    ("settings/announce_player", TRUE));
 
 	legend_page_enabled =
 	    config_get_int_with_default("settings/legend_page", FALSE);

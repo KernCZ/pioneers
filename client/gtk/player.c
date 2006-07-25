@@ -75,6 +75,7 @@ static Player players[MAX_PLAYERS];
 static GtkListStore *summary_store; /**< the player summary data */
 static GtkWidget *summary_widget; /**< the player summary widget */
 static gboolean summary_color_enabled = TRUE;
+static gboolean announce_player = FALSE;
 
 /** Structure to find combination of player and statistic */
 struct Player_statistic {
@@ -247,6 +248,16 @@ void set_color_summary(gboolean flag)
 	}
 }
 
+gboolean get_announce_player(void)
+{
+	return announce_player;
+}
+
+void set_announce_player(gboolean announce)
+{
+	announce_player = announce;
+}
+
 void frontend_new_statistics(gint player_num, StatisticType type,
 			     G_GNUC_UNUSED gint num)
 {
@@ -358,6 +369,8 @@ void frontend_player_name(gint player_num, const gchar * name)
 			   SUMMARY_COLUMN_TEXT, name, -1);
 
 	player_show_connected_at_iter(player_num, TRUE, &iter);
+	if (announce_player)
+		gdk_beep();
 
 	chat_player_name(player_num, name);
 }
@@ -369,6 +382,8 @@ void frontend_viewer_name(gint viewer_num, const gchar * name)
 	player_create_find_player(viewer_num, &iter);
 	gtk_list_store_set(summary_store, &iter,
 			   SUMMARY_COLUMN_TEXT, name, -1);
+	if (announce_player)
+		gdk_beep();
 
 	chat_player_name(viewer_num, name);
 }
