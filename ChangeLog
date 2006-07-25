@@ -1,5 +1,7 @@
 2006-07-25  Roland Clobus <rclobus@bigfoot.com>
 	* server/lobby.game: New, non-empty map
+	* server/main.c: create a listening admin socket only when requested
+	from the command line
 	
 2006-07-05  Roland Clobus <rclobus@bigfoot.com>
 	* editor/gtk/editor.c, common/gtk/theme.c, common/gtk/config-gnome.c,

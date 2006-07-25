@@ -180,8 +180,9 @@ int main(int argc, char *argv[])
 
 	if (server_port == NULL)
 		server_port = g_strdup(PIONEERS_DEFAULT_GAME_PORT);
-	if (admin_port == NULL)
-		admin_port = g_strdup(PIONEERS_DEFAULT_ADMIN_PORT);
+	if (disable_game_start)
+		if (admin_port == NULL)
+			admin_port = g_strdup(PIONEERS_DEFAULT_ADMIN_PORT);
 	if (game_title == NULL)
 		cfg_set_game("Default");
 	else
@@ -192,7 +193,6 @@ int main(int argc, char *argv[])
 		sevens_rule = CLAMP(sevens_rule, 0, 2);
 
 	g_assert(server_port != NULL);
-	g_assert(admin_port != NULL);
 
 	if (num_players) {
 		cfg_set_num_players(CLAMP(num_players, 2, MAX_PLAYERS));
@@ -224,7 +224,8 @@ int main(int argc, char *argv[])
 
 	net_init();
 
-	admin_listen(admin_port);
+	if (admin_port != NULL)
+		admin_listen(admin_port);
 
 	if (!disable_game_start) {
 		if (start_server(hostname, server_port, register_server)) {
