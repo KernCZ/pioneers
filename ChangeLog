@@ -1,3 +1,6 @@
+2006-07-25  Roland Clobus <rclobus@bigfoot.com>
+	* server/lobby.game: New, non-empty map
+	
 2006-07-05  Roland Clobus <rclobus@bigfoot.com>
 	* editor/gtk/editor.c, common/gtk/theme.c, common/gtk/config-gnome.c,
 	common/game.c, common/state.c, common/network.c, server/gtk/main.c,
