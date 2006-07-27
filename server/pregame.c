@@ -427,7 +427,6 @@ gboolean send_gameinfo(Map * map, Hex * hex, StateMachine * sm)
  */
 gboolean mode_pre_game(Player * player, gint event)
 {
-	static gboolean old_player_disconnected;
 	StateMachine *sm = player->sm;
 	Game *game = player->game;
 	Map *map = game->params->map;
@@ -458,7 +457,6 @@ gboolean mode_pre_game(Player * player, gint event)
 		 * player_set_name, because at that point the client doesn't
 		 * know how many players are in the game, and therefore if
 		 * he is a player or a viewer. */
-		old_player_disconnected = player->disconnected;
 		/* Tell the other players about this player */
 		player_broadcast(player, PB_OTHERS, "is %s\n",
 				 player->name);
@@ -509,7 +507,7 @@ gboolean mode_pre_game(Player * player, gint event)
 			if (game->bought_develop) {
 				sm_send(sm, "bought develop\n");
 			}
-			if (old_player_disconnected) {
+			if (player->disconnected) {
 				sm_send(sm, "player disconnected\n");
 			}
 			stack_offset = 1;
@@ -696,7 +694,6 @@ gboolean mode_pre_game(Player * player, gint event)
 					player->gold, limited_bank);
 			}
 
-			player->disconnected = old_player_disconnected;
 			g_free(sm);
 			sm = player->sm;
 			sm_set_use_cache(sm, FALSE);

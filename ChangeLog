@@ -13,6 +13,7 @@
 	client/common/Makefile.am, client/help/Makefile.am,
 	client/ai/Makefile.am, client/Makefile.am: Move to a single-Makefile
 	system.
+	* server/pregame.c: Remove unused static variable.
 
 2006-07-25  Roland Clobus <rclobus@bigfoot.com>
 	* server/lobby.game: New, non-empty map
