@@ -2,6 +2,7 @@
 #   Go buy a copy.
 #
 # Copyright (C) 2006 Roland Clobus <rclobus@bigfoot.com>
+# Copyright (C) 2006 Bas Wijnen <shevek@fmf.nl>
 # 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,4 +18,4 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-EXTRA_DIST = gnome-autogen.sh type_socklen_t.m4
+EXTRA_DIST += macros/gnome-autogen.sh macros/type_socklen_t.m4

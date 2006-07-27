@@ -1,7 +1,7 @@
 # Pioneers - Implementation of the excellent Settlers of Catan board game.
 #   Go buy a copy.
 #
-# Copyright (C) 2003 Bas Wijnen <b.wijnen@phys.rug.nl>
+# Copyright (C) 2003, 2006 Bas Wijnen <shevek@fmf.nl>
 # 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,18 +17,18 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-themedir = $(pioneers_themedir)/Wesnoth-like
+wesnoththemedir = $(pioneers_themedir)/Wesnoth-like
 
-theme_DATA = \
-	board.png \
-	desert.png \
-	field.png \
-	forest.png \
-	gold.png \
-	hill.png \
-	mountain.png \
-	pasture.png \
-	sea.png \
-	theme.cfg
+wesnoththeme_DATA = \
+	client/gtk/data/themes/Wesnoth-like/board.png \
+	client/gtk/data/themes/Wesnoth-like/desert.png \
+	client/gtk/data/themes/Wesnoth-like/field.png \
+	client/gtk/data/themes/Wesnoth-like/forest.png \
+	client/gtk/data/themes/Wesnoth-like/gold.png \
+	client/gtk/data/themes/Wesnoth-like/hill.png \
+	client/gtk/data/themes/Wesnoth-like/mountain.png \
+	client/gtk/data/themes/Wesnoth-like/pasture.png \
+	client/gtk/data/themes/Wesnoth-like/sea.png \
+	client/gtk/data/themes/Wesnoth-like/theme.cfg
 
-EXTRA_DIST = $(theme_DATA)
+EXTRA_DIST += $(wesnoththeme_DATA)

@@ -1,7 +1,7 @@
 # Pioneers - Implementation of the excellent Settlers of Catan board game.
 #   Go buy a copy.
 #
-# Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
+# Copyright (C) 2003, 2006 Bas Wijnen <shevek@fmf.nl>
 # 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,17 +17,17 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-themedir = $(pioneers_themedir)/FreeCIV-like
+freecivthemedir = $(pioneers_themedir)/FreeCIV-like
 
-theme_DATA = \
-	desert.png \
-	forest.png \
-	mountain.png \
-	sea.png \
-	board.png \
-	field.png \
-	hill.png \
-	pasture.png \
-	theme.cfg
+freecivtheme_DATA = \
+	client/gtk/data/themes/FreeCIV-like/desert.png \
+	client/gtk/data/themes/FreeCIV-like/forest.png \
+	client/gtk/data/themes/FreeCIV-like/mountain.png \
+	client/gtk/data/themes/FreeCIV-like/sea.png \
+	client/gtk/data/themes/FreeCIV-like/board.png \
+	client/gtk/data/themes/FreeCIV-like/field.png \
+	client/gtk/data/themes/FreeCIV-like/hill.png \
+	client/gtk/data/themes/FreeCIV-like/pasture.png \
+	client/gtk/data/themes/FreeCIV-like/theme.cfg
 
-EXTRA_DIST = $(theme_DATA)
+EXTRA_DIST += $(freecivtheme_DATA)

@@ -30,6 +30,7 @@
 
 #include "aboutbox.h"
 #include "game.h"
+#include "version.h"
 
 static GtkWidget *about = NULL;	/* The about window */
 
@@ -72,7 +73,7 @@ void aboutbox_display(const gchar * title, const gchar ** authors)
 	gtk_text_buffer_insert(GTK_TEXT_BUFFER(buffer), &iter,
 			       _("Pioneers is based upon the excellent\n"
 				 "Settlers of Catan board game.\n"), -1);
-	gtk_text_buffer_insert(buffer, &iter, VERSION, -1);
+	gtk_text_buffer_insert(buffer, &iter, FULL_VERSION, -1);
 	gtk_text_buffer_insert_with_tags_by_name(buffer, &iter,
 						 _("\nAuthors:\n"), -1,
 						 "bold", NULL);
@@ -94,7 +95,7 @@ void aboutbox_display(const gchar * title, const gchar ** authors)
 
 	/* XXX GTK+ 2.6
 	   gtk_show_about_dialog(NULL,
-	   "version", VERSION,
+	   "version", FULL_VERSION,
 	   "copyright", _("(C) 2002 the Free Software Foundation"),
 	   "comments",
 	   _("Pioneers is based upon the excellent\n"

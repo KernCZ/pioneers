@@ -1,7 +1,7 @@
 # Pioneers - Implementation of the excellent Settlers of Catan board game.
 #   Go buy a copy.
 #
-# Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
+# Copyright (C) 2003, 2006 Bas Wijnen <shevek@fmf.nl>
 # 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,20 +17,19 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-SUBDIRS = FreeCIV-like Iceland Tiny Wesnoth-like
+include client/gtk/data/themes/FreeCIV-like/Makefile.am
+include client/gtk/data/themes/Iceland/Makefile.am
+include client/gtk/data/themes/Tiny/Makefile.am
+include client/gtk/data/themes/Wesnoth-like/Makefile.am
 
-themesdir = $(pioneers_themedir)
-
-themes_DATA = \
-	board.png \
-	desert.png \
-	field.png \
-	forest.png \
-	hill.png \
-	mountain.png \
-	pasture.png \
-	plain.png \
-	sea.png \
-	gold.png
-
-EXTRA_DIST = $(themes_DATA)
+theme_DATA += \
+	client/gtk/data/themes/board.png \
+	client/gtk/data/themes/desert.png \
+	client/gtk/data/themes/field.png \
+	client/gtk/data/themes/forest.png \
+	client/gtk/data/themes/hill.png \
+	client/gtk/data/themes/mountain.png \
+	client/gtk/data/themes/pasture.png \
+	client/gtk/data/themes/plain.png \
+	client/gtk/data/themes/sea.png \
+	client/gtk/data/themes/gold.png

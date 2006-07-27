@@ -24,6 +24,7 @@
 #include <string.h>
 #include "buildrec.h"
 #include "server.h"
+#include "version.h"
 
 static void build_add(Player * player, BuildType type, gint x, gint y,
 		      gint pos)
@@ -452,7 +453,7 @@ gboolean mode_pre_game(Player * player, gint event)
 	case SM_ENTER:
 		sm_send(sm,
 			"player %d of %d, welcome to pioneers server %s\n",
-			player->num, game->params->num_players, VERSION);
+			player->num, game->params->num_players, FULL_VERSION);
 		/* Tell the player that he exists.  This is not done in
 		 * player_set_name, because at that point the client doesn't
 		 * know how many players are in the game, and therefore if

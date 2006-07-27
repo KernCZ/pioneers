@@ -2,7 +2,7 @@
 #   Go buy a copy.
 #
 # Copyright (C) 1999 Dave Cole
-# Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
+# Copyright (C) 2003, 2006 Bas Wijnen <shevek@fmf.nl>
 # 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,32 +18,23 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-noinst_LIBRARIES = libpioneersclient.a
+noinst_LIBRARIES += libpioneersclient.a
 
-libpioneersclient_a_DEPENDENCIES = ../../common/libpioneers.a
-
-AM_CPPFLAGS = \
-	-I$(srcdir)/.. \
-	-I$(srcdir)/../.. \
-	-I$(srcdir)/../../common \
-	-I$(includedir) \
-	$(GLIB2_CFLAGS)
+libpioneersclient_a_CPPFLAGS = -I$(top_srcdir)/client $(console_cflags)
 
 libpioneersclient_a_SOURCES = \
-	build.c \
-	callback.c \
-	chat.c \
-	client.c \
-	client.h \
-	develop.c \
-	i18n.c \
-	main.c \
-	player.c \
-	resource.c \
-	robber.c \
-	setup.c \
-	stock.c \
-	turn.c
-
-libpioneersclient_a_LIBADD = \
-	../../common/libpioneers.a
+	client/callback.h \
+	client/common/build.c \
+	client/common/callback.c \
+	client/common/chat.c \
+	client/common/client.c \
+	client/common/client.h \
+	client/common/develop.c \
+	client/common/i18n.c \
+	client/common/main.c \
+	client/common/player.c \
+	client/common/resource.c \
+	client/common/robber.c \
+	client/common/setup.c \
+	client/common/stock.c \
+	client/common/turn.c

@@ -6,7 +6,7 @@ test -z "$srcdir" && srcdir=.
 
 PKG_NAME="Pioneers"
 
-REQUIRED_AUTOMAKE_VERSION="1.7"
+REQUIRED_AUTOMAKE_VERSION="1.9"
 
 (test -f $srcdir/configure.ac \
   && test -f $srcdir/ChangeLog \

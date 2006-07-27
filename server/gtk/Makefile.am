@@ -2,6 +2,7 @@
 #   Go buy a copy.
 #
 # Copyright (C) 1999 Dave Cole
+# Copyright (C) 2006 Bas Wijnen <shevek@fmf.nl>
 # 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,46 +18,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-appicondir=$(datadir)/pixmaps
-desktopdir=$(datadir)/applications
+icon_DATA += server/gtk/pioneers-server.png
+desktop_DATA += server/gtk/pioneers-server.desktop
+bin_PROGRAMS += pioneers-server-gtk
 
-appicon_DATA = pioneers-server.png
-
-noinst_DATA = pioneers-server.svg
-
-bin_PROGRAMS = pioneers-server-gtk
-
-AM_CPPFLAGS = \
-	-I $(srcdir)/../../common \
-	-I $(srcdir)/../../common/gtk \
-	-I $(srcdir)/.. \
-	-I$(includedir) \
-	$(GNOME2_CFLAGS) \
-	$(GTK2_CFLAGS)
-
-pioneers_server_gtk_DEPENDENCIES = \
-	../libpioneers_server.a \
-	../../common/libpioneers.a \
-	../../common/gtk/libpioneers_gtk.a
+pioneers_server_gtk_CPPFLAGS = $(gtk_cflags) -I $(srcdir)/server
+pioneers_server_gtk_LDADD = libpioneers_server.a $(gtk_libs)
 
 pioneers_server_gtk_SOURCES = \
-	main.c
-
-pioneers_server_gtk_LDADD = \
-	../libpioneers_server.a \
-	../../common/libpioneers.a \
-	../../common/gtk/libpioneers_gtk.a \
-	$(GNOME2_LIBS) \
-	$(GTK2_LIBS)
-
-desktop_DATA = pioneers-server.desktop
-
-EXTRA_DIST = \
-	$(appicon_DATA) \
-	$(desktop_DATA) \
-	$(noinst_DATA)
-
-MAINTAINERCLEANFILES = $(appicon_DATA)
-
-pioneers-server.png: pioneers-server.svg
-	$(svg_renderer_path) $(svg_renderer_width)48$(svg_renderer_height)48 $< $@
+	server/gtk/main.c

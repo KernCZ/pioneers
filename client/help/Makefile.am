@@ -2,6 +2,7 @@
 #   Go buy a copy.
 #
 # Copyright (C) 1999 Dave Cole
+# Copyright (C) 2006 Bas Wijnen <shevek@fmf.nl>
 # 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,4 +18,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-SUBDIRS = C
+# I don't know enough about the po build system, so I'll use a recursive
+# make for it.
+SUBDIRS += client/help/C

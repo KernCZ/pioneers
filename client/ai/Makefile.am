@@ -2,7 +2,7 @@
 #   Go buy a copy.
 #
 # Copyright (C) 1999 Dave Cole
-# Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
+# Copyright (C) 2003, 2006 Bas Wijnen <shevek@fmf.nl>
 # 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,33 +18,17 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-configdir = $(datadir)/games/pioneers
+bin_PROGRAMS += pioneersai
 
-bin_PROGRAMS = pioneersai
-
-pioneersai_DEPENDENCIES = \
-	../common/libpioneersclient.a \
-	../../common/libpioneers.a 
-
-AM_CPPFLAGS = \
-	-I$(srcdir)/.. \
-	-I$(srcdir)/../.. \
-	-I$(srcdir)/../../common \
-        -I$(includedir) \
-	$(GLIB2_CFLAGS)
+pioneersai_CPPFLAGS = -I$(top_srcdir)/client $(console_cflags)
 
 pioneersai_SOURCES = \
-	ai.h \
-	ai.c \
-	greedy.c
+	client/callback.h \
+	client/ai/ai.h \
+	client/ai/ai.c \
+	client/ai/greedy.c
 
-pioneersai_LDADD = \
-	../common/libpioneersclient.a \
-	../../common/libpioneers.a \
-	$(GLIB2_LIBS)
+pioneersai_LDADD = libpioneersclient.a $(console_libs)
 
-config_DATA = \
-	computer_names
-
-EXTRA_DIST = \
-	$(config_DATA)
+config_DATA += \
+	client/ai/computer_names

@@ -30,6 +30,7 @@
 #include "config-gnome.h"
 #include "theme.h"
 #include "histogram.h"
+#include "version.h"
 
 static gboolean have_dlg = FALSE;
 static gboolean connectable = FALSE;
@@ -168,7 +169,7 @@ void frontend_init(int argc, char **argv)
 	};
 
 #if defined(HAVE_HELP) && defined(HAVE_LIBGNOME)
-	gnome_program_init(PACKAGE, VERSION,
+	gnome_program_init(PACKAGE, FULL_VERSION,
 			   LIBGNOME_MODULE, argc, argv,
 			   GNOME_PARAM_APP_DATADIR, DATADIR, NULL);
 #endif				/* HAVE_HELP && HAVE_LIBGNOME */

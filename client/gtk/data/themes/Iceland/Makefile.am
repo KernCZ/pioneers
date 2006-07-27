@@ -1,7 +1,7 @@
 # Pioneers - Implementation of the excellent Settlers of Catan board game.
 #   Go buy a copy.
 #
-# Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
+# Copyright (C) 2003, 2006 Bas Wijnen <shevek@fmf.nl>
 # 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,16 +17,16 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-themedir = $(pioneers_themedir)/Iceland
+icelandthemedir = $(pioneers_themedir)/Iceland
 
-theme_DATA = \
-	desert.png \
-	field_grain.png \
-	forest_lumber.png \
-	gold.png \
-	hill_brick.png \
-	mountain_ore.png \
-	pasture_wool.png \
-	theme.cfg
+icelandtheme_DATA = \
+	client/gtk/data/themes/Iceland/desert.png \
+	client/gtk/data/themes/Iceland/field_grain.png \
+	client/gtk/data/themes/Iceland/forest_lumber.png \
+	client/gtk/data/themes/Iceland/gold.png \
+	client/gtk/data/themes/Iceland/hill_brick.png \
+	client/gtk/data/themes/Iceland/mountain_ore.png \
+	client/gtk/data/themes/Iceland/pasture_wool.png \
+	client/gtk/data/themes/Iceland/theme.cfg
 
-EXTRA_DIST = $(theme_DATA)
+EXTRA_DIST += $(icelandtheme_DATA)

@@ -2,7 +2,7 @@
 #   Go buy a copy.
 #
 # Copyright (C) 1999 Dave Cole
-# Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
+# Copyright (C) 2003, 2006 Bas Wijnen <shevek@fmf.nl>
 # 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,32 +18,28 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-noinst_LIBRARIES = libpioneers_gtk.a
+noinst_LIBRARIES += libpioneers_gtk.a
 
-AM_CPPFLAGS = \
-	-I$(includedir) \
-	-I$(srcdir)/.. \
-	$(GNOME2_CFLAGS) \
-	$(GTK2_CFLAGS)
+libpioneers_gtk_a_CPPFLAGS = $(gtk_cflags)
 
 libpioneers_gtk_a_SOURCES = \
-	aboutbox.c \
-	aboutbox.h \
-	colors.c \
-	colors.h \
-	common_gtk.c \
-	common_gtk.h \
-	config-gnome.c \
-	config-gnome.h \
-	game-settings.c \
-	game-settings.h \
-	gtkbugs.c \
-	gtkbugs.h \
-	guimap.c \
-	guimap.h \
-	polygon.c \
-	polygon.h \
-	select-game.c \
-	select-game.h \
-	theme.c \
-	theme.h
+	common/gtk/aboutbox.c \
+	common/gtk/aboutbox.h \
+	common/gtk/colors.c \
+	common/gtk/colors.h \
+	common/gtk/common_gtk.c \
+	common/gtk/common_gtk.h \
+	common/gtk/config-gnome.c \
+	common/gtk/config-gnome.h \
+	common/gtk/game-settings.c \
+	common/gtk/game-settings.h \
+	common/gtk/gtkbugs.c \
+	common/gtk/gtkbugs.h \
+	common/gtk/guimap.c \
+	common/gtk/guimap.h \
+	common/gtk/polygon.c \
+	common/gtk/polygon.h \
+	common/gtk/select-game.c \
+	common/gtk/select-game.h \
+	common/gtk/theme.c \
+	common/gtk/theme.h

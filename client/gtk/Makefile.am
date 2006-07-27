@@ -2,7 +2,7 @@
 #   Go buy a copy.
 #
 # Copyright (C) 1999 Dave Cole
-# Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
+# Copyright (C) 2003, 2006 Bas Wijnen <shevek@fmf.nl>
 # 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,85 +18,62 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-SUBDIRS = data
+include client/gtk/data/Makefile.am
 
-appicondir=$(datadir)/pixmaps
-pixmapdir =$(datadir)/pixmaps/pioneers
-
-bin_PROGRAMS = pioneers
-
-pioneers_DEPENDENCIES = \
-	$(WINDOWS_ICON) \
-	../common/libpioneersclient.a \
-	../../common/gtk/libpioneers_gtk.a \
-	../../common/libpioneers.a
+bin_PROGRAMS += pioneers
 
 # if anyone knows a cleaner way to do this, be my guest.  Automake screamed
 #   at me when I tried to do it more directly.
 if ADMIN_GTK_SUPPORT
 ADMIN_GTK = -DADMIN_GTK
-ADMIN_GTK_FILES_ACTIVE = admin-gtk.c
+ADMIN_GTK_FILES_ACTIVE = client/gtk/admin-gtk.c
 ADMIN_GTK_FILES_INACTIVE =
 else
 ADMIN_GTK =
 ADMIN_GTK_FILES_ACTIVE =
-ADMIN_GTK_FILES_INACTIVE = admin-gtk.c
+ADMIN_GTK_FILES_INACTIVE = client/gtk/admin-gtk.c
 endif
 
-AM_CPPFLAGS = \
-	-I$(srcdir)/.. \
-	-I$(srcdir)/../.. \
-	-I$(srcdir)/../../common \
-	-I$(srcdir)/../../common/gtk \
-	$(ADMIN_GTK) \
-        -I$(includedir) \
-	$(GNOME2_CFLAGS)  \
-	$(GTK2_CFLAGS)
+pioneers_CPPFLAGS = -I$(top_srcdir)/client $(gtk_cflags) $(ADMIN_GTK)
 
 EXTRA_pioneers_SOURCES = $(ADMIN_GTK_FILES_INACTIVE)
 
 pioneers_SOURCES = \
 	$(ADMIN_GTK_FILES_ACTIVE) \
-	frontend.h \
-	gui.h \
-	histogram.h \
-	callbacks.c \
-	chat.c \
-	connect.c \
-	develop.c \
-	discard.c \
-	frontend.c \
-	gameover.c \
-	gold.c \
-	gui.c \
-	histogram.c \
-	identity.c \
-	interface.c \
-	legend.c \
-	monopoly.c \
-	name.c \
-	offline.c \
-	pioneers.rc \
-	plenty.c \
-	player.c \
-	quote.c \
-	quote-view.c \
-	quote-view.h \
-	resource.c \
-	resource-table.c \
-	resource-table.h \
-	settingscreen.c \
-	state.c \
-	trade.c
+	client/callback.h \
+	client/gtk/frontend.h \
+	client/gtk/gui.h \
+	client/gtk/histogram.h \
+	client/gtk/callbacks.c \
+	client/gtk/chat.c \
+	client/gtk/connect.c \
+	client/gtk/develop.c \
+	client/gtk/discard.c \
+	client/gtk/frontend.c \
+	client/gtk/gameover.c \
+	client/gtk/gold.c \
+	client/gtk/gui.c \
+	client/gtk/histogram.c \
+	client/gtk/identity.c \
+	client/gtk/interface.c \
+	client/gtk/legend.c \
+	client/gtk/monopoly.c \
+	client/gtk/name.c \
+	client/gtk/offline.c \
+	client/gtk/data/pioneers.rc \
+	client/gtk/plenty.c \
+	client/gtk/player.c \
+	client/gtk/quote.c \
+	client/gtk/quote-view.c \
+	client/gtk/quote-view.h \
+	client/gtk/resource.c \
+	client/gtk/resource-table.c \
+	client/gtk/resource-table.h \
+	client/gtk/settingscreen.c \
+	client/gtk/state.c \
+	client/gtk/trade.c
 
-pioneers_LDADD = \
-	../common/libpioneersclient.a \
-	../../common/libpioneers.a \
-	../../common/gtk/libpioneers_gtk.a \
-	$(WINDOWS_ICON) \
-	$(GNOME2_LIBS) \
-	$(GTK2_LIBS)
-
-# Will be used in Windows builds
-$(WINDOWS_ICON): pioneers.rc
-	windres -o $(WINDOWS_ICON) pioneers.rc
+pioneers_LDADD = libpioneersclient.a $(gtk_libs)
+if WINDOWS_ICON
+pioneers_LDADD += client/gtk/data/pioneers-icon.o
+endif

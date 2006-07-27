@@ -1,3 +1,19 @@
+2006-07-27  Bas Wijnen <shevek@fmf.nl>
+	* macros/Makefile.am, editor/gtk/Makefile.am,
+	editor/gtk/pioneers-editor.rc, editor/Makefile.am, docs/Makefile.am,
+	common/gtk/aboutbox.c, common/gtk/Makefile.am, common/Makefile.am,
+	meta-server/Makefile.am, configure.ac, server/gtk/Makefile.am,
+	server/pregame.c, server/Makefile.am, Makefile.am, autogen.sh,
+	client/gtk/pioneers.rc, client/gtk/data/themes/Tiny/Makefile.am,
+	client/gtk/data/themes/Iceland/Makefile.am,
+	client/gtk/data/themes/FreeCIV-like/Makefile.am,
+	client/gtk/data/themes/Wesnoth-like/Makefile.am,
+	client/gtk/data/themes/Makefile.am, client/gtk/data/Makefile.am,
+	client/gtk/offline.c, client/gtk/Makefile.am,
+	client/common/Makefile.am, client/help/Makefile.am,
+	client/ai/Makefile.am, client/Makefile.am: Move to a single-Makefile
+	system.
+
 2006-07-25  Roland Clobus <rclobus@bigfoot.com>
 	* server/lobby.game: New, non-empty map
 	* server/main.c: create a listening admin socket only when requested

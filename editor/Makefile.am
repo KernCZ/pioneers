@@ -1,7 +1,7 @@
 # Pioneers - Implementation of the excellent Settlers of Catan board game.
 #   Go buy a copy.
 #
-# Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
+# Copyright (C) 2003, 2006 Bas Wijnen <shevek@fmf.nl>
 # 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,10 +17,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-ALWAYS_SUBDIRS =
-
 if HAVE_GNOME
-GNOME_SUBDIRS = gtk
+include editor/gtk/Makefile.am
 endif
-SUBDIRS = $(ALWAYS_SUBDIRS) $(GNOME_SUBDIRS)
-DIST_SUBDIRS = gtk

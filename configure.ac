@@ -2,7 +2,7 @@
 #   Go buy a copy.
 #
 # Copyright (C) 1999 Dave Cole
-# Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
+# Copyright (C) 2003, 2006 Bas Wijnen <shevek@fmf.nl>
 # Copyright (C) 2004-2006 Roland Clobus <rclobus@bigfoot.com>
 # 
 # This program is free software; you can redistribute it and/or modify
@@ -42,6 +42,8 @@ AM_MAINTAINER_MODE
 AC_PROG_LIBTOOL
 
 AC_PROG_CC
+AM_PROG_CC_C_O
+AM_PROG_MKDIR_P
 AC_HEADER_STDC
 
 if test $USE_MAINTAINER_MODE = yes; then
@@ -84,8 +86,8 @@ if test "$pngtopnm" = ""; then
 	AC_SUBST(pngtopnm, [false])
 fi
 
-AC_ARG_ENABLE([warnings],
-[  --enable-warnings       Compile with check for compiler warnings (gcc-only).],
+AC_ARG_ENABLE([warnings], AC_HELP_STRING([--enable-warnings],
+	[Compile with check for compiler warnings (gcc-only).]),
 [case "${enableval}" in
   full) pioneers_warnings=full;;
   yes)  pioneers_warnings=yes ;;
@@ -93,16 +95,16 @@ AC_ARG_ENABLE([warnings],
   *)    pioneers_warnings=no  ;;
 esac])
 
-AC_ARG_ENABLE([debug],
-[  --enable-debug          Enable debug information.],
+AC_ARG_ENABLE([debug], AC_HELP_STRING([--enable-debug],
+	[Enable debug information.]),
 [case "${enableval}" in
   yes)  pioneers_debug=yes ;;
   "")   pioneers_debug=yes ;;
   *)    pioneers_debug=no  ;;
 esac])
 
-AC_ARG_ENABLE([logging],
-[  --enable-logging        Enable network logging.],
+AC_ARG_ENABLE([logging], AC_HELP_STRING([--enable-logging],
+	[Enable network logging.]),
 [case "${enableval}" in
   yes)  pioneers_logging=yes ;;
   "")   pioneers_logging=yes ;;
@@ -110,8 +112,8 @@ AC_ARG_ENABLE([logging],
 esac])
 
 AC_ARG_ENABLE([deprecation-checks],
-[  --enable-deprecation-checks
-                          Enable strict deprecation checks.],
+	AC_HELP_STRING([--enable-deprecation-checks],
+		[Enable strict deprecation checks.]),
 [case "${enableval}" in
   yes)  pioneers_deprecationChecks=yes ;;
   "")   pioneers_deprecationChecks=yes ;;
@@ -244,8 +246,8 @@ AM_CONDITIONAL(HAVE_GNOME, [test "$have_graphical" = "yes"])
 
 AM_CONDITIONAL(HAVE_SCROLLKEEPER, [test "$have_scrollkeeper" = "yes"])
 
-AC_ARG_ENABLE([admin-gtk],
-[  --enable-admin-gtk      Turn on (unstable) network administration support.],
+AC_ARG_ENABLE([admin-gtk], AC_HELP_STRING([--enable-admin-gtk],
+	[Turn on (unstable) network administration support.]),
 [case "${enableval}" in
   yes) admin_gtk_support=yes  ;;
   "")  admin_gtk_support=yes  ;;
@@ -342,9 +344,7 @@ AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -DPIONEERS_SERVER_GTK_PATH=\\\""$bindir/pioneers
 AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -DPIONEERS_AI_PATH=\\\""$bindir/pioneersai"\\\"")
 AC_SUBST(pioneers_themedir, $pioneers_themedir_install)
 
-if test $pioneers_is_windows_port = yes; then
-	AC_SUBST(WINDOWS_ICON, [windowsicon.o])
-fi
+AM_CONDITIONAL(WINDOWS_ICON, [test $pioneers_is_windows_port = yes])
 
 # Time out
 AC_CHECK_FUNCS([alarm])
@@ -436,30 +436,6 @@ AC_CONFIG_FILES([ \
 	pioneers.spec \
 	pioneers.nsi \
 	po/Makefile.in \
-	common/Makefile \
-	client/Makefile \
-	client/common/Makefile \
-	client/ai/Makefile \
-	server/Makefile \
-	meta-server/Makefile \
-	editor/Makefile \
-	docs/Makefile \
-	macros/Makefile \
-	])
-AC_CONFIG_FILES([ \
-	common/gtk/Makefile \
-	client/gtk/Makefile \
-	client/gtk/data/Makefile \
-	client/gtk/data/themes/Makefile \
-	client/gtk/data/themes/FreeCIV-like/Makefile \
-	client/gtk/data/themes/Iceland/Makefile \
-	client/gtk/data/themes/Tiny/Makefile \
-	client/gtk/data/themes/Wesnoth-like/Makefile \
-	server/gtk/Makefile \
-	editor/gtk/Makefile
-	])
-AC_CONFIG_FILES([ \
-	client/help/Makefile \
 	client/help/C/Makefile \
 	])
 

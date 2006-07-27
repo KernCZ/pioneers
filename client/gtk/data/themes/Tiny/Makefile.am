@@ -1,7 +1,7 @@
 # Pioneers - Implementation of the excellent Settlers of Catan board game.
 #   Go buy a copy.
 #
-# Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
+# Copyright (C) 2003, 2006 Bas Wijnen <shevek@fmf.nl>
 # 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,23 +17,23 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-themedir = $(pioneers_themedir)/Tiny
+tinythemedir = $(pioneers_themedir)/Tiny
 
-theme_DATA = \
-	board.png \
-	brick-lorindol.png \
-	brick-port.png \
-	desert-lorindol.png \
-	gold-lorindol.png \
-	grain-lorindol.png \
-	grain-port.png \
-	lumber-lorindol.png \
-	lumber-port.png \
-	ore-lorindol.png \
-	ore-port.png \
-	sea-lorindol.png \
-	theme.cfg \
-	wool-lorindol.png \
-	wool-port.png
+tinytheme_DATA = \
+	client/gtk/data/themes/Tiny/board.png \
+	client/gtk/data/themes/Tiny/brick-lorindol.png \
+	client/gtk/data/themes/Tiny/brick-port.png \
+	client/gtk/data/themes/Tiny/desert-lorindol.png \
+	client/gtk/data/themes/Tiny/gold-lorindol.png \
+	client/gtk/data/themes/Tiny/grain-lorindol.png \
+	client/gtk/data/themes/Tiny/grain-port.png \
+	client/gtk/data/themes/Tiny/lumber-lorindol.png \
+	client/gtk/data/themes/Tiny/lumber-port.png \
+	client/gtk/data/themes/Tiny/ore-lorindol.png \
+	client/gtk/data/themes/Tiny/ore-port.png \
+	client/gtk/data/themes/Tiny/sea-lorindol.png \
+	client/gtk/data/themes/Tiny/theme.cfg \
+	client/gtk/data/themes/Tiny/wool-lorindol.png \
+	client/gtk/data/themes/Tiny/wool-port.png
 
-EXTRA_DIST = $(theme_DATA)
+EXTRA_DIST += $(tinytheme_DATA)

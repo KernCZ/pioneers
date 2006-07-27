@@ -2,6 +2,7 @@
 #   Go buy a copy.
 #
 # Copyright (C) 1999 Dave Cole
+# Copyright (C) 2006 Bas Wijnen <shevek@fmf.nl>
 # 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,83 +18,67 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-configdir=$(datadir)/games/pioneers
-
-DIST_SUBDIRS = gtk
-
 if BUILD_SERVER
 
 if HAVE_GNOME
-SUBDIRS = . gtk
+include server/gtk/Makefile.am
 endif
 
-bin_PROGRAMS = pioneers-server-console
+bin_PROGRAMS += pioneers-server-console
+noinst_LIBRARIES += libpioneers_server.a
 
-noinst_LIBRARIES = libpioneers_server.a
-
-AM_CPPFLAGS = \
-	-I$(srcdir)/../common -I. \
-	-I$(includedir) \
-	$(GLIB2_CFLAGS)
-
-pioneers_server_console_DEPENDENCIES = libpioneers_server.a \
-	../common/libpioneers.a
+pioneers_server_console_CPPFLAGS = $(console_cflags)
+libpioneers_server_a_CPPFLAGS = $(console_cflags)
 
 libpioneers_server_a_SOURCES = \
-	admin.c \
-	admin.h \
-	buildutil.c \
-	develop.c \
-	discard.c \
-	gold.c \
-	meta.c \
-	player.c \
-	pregame.c \
-	resource.c \
-	robber.c \
-	server.c \
-	server.h \
-	trade.c \
-	turn.c
+	server/admin.c \
+	server/admin.h \
+	server/buildutil.c \
+	server/develop.c \
+	server/discard.c \
+	server/gold.c \
+	server/meta.c \
+	server/player.c \
+	server/pregame.c \
+	server/resource.c \
+	server/robber.c \
+	server/server.c \
+	server/server.h \
+	server/trade.c \
+	server/turn.c
 
 pioneers_server_console_SOURCES = \
-	main.c \
-	glib-driver.c \
-	glib-driver.h
+	server/main.c \
+	server/glib-driver.c \
+	server/glib-driver.h
 
-pioneers_server_console_LDADD = \
-	libpioneers_server.a \
-	../common/libpioneers.a \
-	$(GLIB2_LIBS)
+pioneers_server_console_LDADD = libpioneers_server.a $(console_libs)
 
 endif # BUILD_SERVER
 
-config_DATA = \
-	default.game \
-	5-6-player.game \
-	four-islands.game \
-	seafarers.game \
-	seafarers-gold.game \
-	small.game \
-	archipel_gold.game \
-	canyon.game \
-	coeur.game \
-	conquest.game \
-	conquest+ports.game \
-	crane_island.game \
-	iles.game \
-	pond.game \
-	square.game \
-	star.game \
-	x.game \
-	Cube.game \
-	Another_swimming_pool_in_the_wall.game \
-	Evil_square.game \
-	GuerreDe100ans.game \
-	Mini_another_swimming_pool_in_the_wall.game \
-	henjes.game \
-	lorindol.game \
-	lobby.game
-
-EXTRA_DIST = \
-	$(config_DATA)
+config_DATA += \
+	server/default.game \
+	server/5-6-player.game \
+	server/four-islands.game \
+	server/seafarers.game \
+	server/seafarers-gold.game \
+	server/small.game \
+	server/archipel_gold.game \
+	server/canyon.game \
+	server/coeur.game \
+	server/conquest.game \
+	server/conquest+ports.game \
+	server/crane_island.game \
+	server/iles.game \
+	server/pond.game \
+	server/square.game \
+	server/star.game \
+	server/x.game \
+	server/Cube.game \
+	server/Another_swimming_pool_in_the_wall.game \
+	server/Evil_square.game \
+	server/GuerreDe100ans.game \
+	server/Mini_another_swimming_pool_in_the_wall.game \
+	server/henjes.game \
+	server/lorindol.game \
+	server/lobby.game
