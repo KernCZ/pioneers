@@ -4,6 +4,9 @@
 # Uncomment this to turn on verbose mode. 
 #export DH_VERBOSE=1
 
+export AUTOMAKE=automake-1.9
+export ACLOCAL=aclocal-1.9
+
 ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
 	CFLAGS += -O0
 else
@@ -38,7 +41,7 @@ build-stamp:
 	# Commands to compile the package.
 	# --enable-maintainer-mode is implicit for autogen.sh
 	# So don't run configure from it.
-	NOCONFIGURE=true AUTOMAKE=automake-1.9 ACLOCAL=aclocal-1.9 ./autogen.sh
+	NOCONFIGURE=true ./autogen.sh
 	./configure --prefix=/usr --bindir=/usr/games --mandir=/usr/share/man \
 		$(CONFIGUREFLAGS) --enable-warnings --disable-dependency-tracking
 	$(MAKE)
