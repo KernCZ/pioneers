@@ -2471,14 +2471,7 @@ static gboolean mode_wait_resources(StateMachine * sm, gint event)
 
 gboolean can_trade_domestic(void)
 {
-	gint idx;
-	/* Check if we can do domestic trading */
-	if (!game_params->domestic_trade)
-		return FALSE;
-	for (idx = 0; idx < NO_RESOURCE; idx++)
-		if (resource_asset(idx) > 0)
-			return TRUE;
-	return FALSE;
+	return game_params->domestic_trade;
 }
 
 gboolean can_trade_maritime(void)
