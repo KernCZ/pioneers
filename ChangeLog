@@ -11,6 +11,7 @@
 	dynamic instead of static memory to allow arbitrary large strings in
 	most situations.  Still use static strings for network traffic, to
 	avoid denial of service opportunities.
+	* server/gtk/main.c: Show all authors.
 
 2006-07-27  Bas Wijnen <shevek@fmf.nl>
 	* macros/Makefile.am, editor/gtk/Makefile.am,

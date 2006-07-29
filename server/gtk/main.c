@@ -25,6 +25,7 @@
 #include <gtk/gtk.h>
 #include <string.h>
 
+#include "authors.h"
 #include "aboutbox.h"
 #include "game.h"
 #include "common_gtk.h"
@@ -779,8 +780,7 @@ static void quit_cb(void)
 static void help_about_cb(void)
 {
 	const gchar *authors[] = {
-		"Dave Cole",
-		NULL
+		AUTHORLIST
 	};
 	aboutbox_display(_("The Pioneers Game Server"), authors);
 }
