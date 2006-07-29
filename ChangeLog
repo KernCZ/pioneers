@@ -1,3 +1,6 @@
+2006-07-29  Roland Clobus <rclobus@bigfoot.com>
+	* editor/gtk/editor.c: Added keyboard shortcuts to the editor
+	
 2006-07-27  Bas Wijnen <shevek@fmf.nl>
 	* editor/gtk/editor.c, common/gtk/theme.c, common/gtk/select-game.c,
 	common/game.c, common/map.c, common/game.h, common/state.c,

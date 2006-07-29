@@ -1,3 +1,24 @@
+/* Pioneers - Implementation of the excellent Settlers of Catan board game.
+ *   Go buy a copy.
+ *
+ * Copyright (C) 2005 Brian Wellington
+ * Copyright (C) 2005,2006 Roland Clobus
+ * Copyright (C) 2005,2006 Bas Wijnen
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ */
 #include "config.h"
 
 #include <string.h>
@@ -30,6 +51,7 @@ static GameBuildings *game_buildings;
 static GameResources *game_resources;
 static GtkWidget *terrain_menu;
 static GtkWidget *roll_menu;
+static GtkWidget *roll_numbers[12 + 1];
 static GtkCheckMenuItem *shuffle_tile;
 static GtkWidget *port_menu;
 static GtkWidget *port_directions[6];
@@ -39,25 +61,25 @@ static GuiMap *gmap;
 static Hex *current_hex;
 
 static const gchar *terrain_names[] = {
-	N_("Hill"),
-	N_("Field"),
-	N_("Mountain"),
-	N_("Pasture"),
-	N_("Forest"),
-	N_("Desert"),
-	N_("Sea"),
-	N_("Gold"),
-	N_("None")
+	N_("_Hill"),
+	N_("_Field"),
+	N_("_Mountain"),
+	N_("_Pasture"),
+	N_("F_orest"),
+	N_("_Desert"),
+	N_("_Sea"),
+	N_("_Gold"),
+	N_("_None")
 };
 
 static const gchar *port_names[] = {
-	N_("Brick (2:1)"),
-	N_("Grain (2:1)"),
-	N_("Ore (2:1)"),
-	N_("Wool (2:1)"),
-	N_("Lumber (2:1)"),
-	N_("None"),
-	N_("Any (3:1)")
+	N_("_Brick (2:1)"),
+	N_("_Grain (2:1)"),
+	N_("_Ore (2:1)"),
+	N_("_Wool (2:1)"),
+	N_("_Lumber (2:1)"),
+	N_("_None"),
+	N_("_Any (3:1)")
 };
 
 static const gchar *port_direction_names[] = {
@@ -252,6 +274,12 @@ static gint button_press_map_cb(GtkWidget * area, GdkEventButton * event,
 		menu = terrain_menu;
 	else if (current_hex->roll > 0) {
 		menu = roll_menu;
+		for (i = 2; i <= 12; i++) {
+			if (roll_numbers[i] != NULL)
+				gtk_check_menu_item_set_active
+				    (GTK_CHECK_MENU_ITEM(roll_numbers[i]),
+				     current_hex->roll == i);
+		}
 		gtk_check_menu_item_set_active(shuffle_tile,
 					       current_hex->shuffle);
 	} else if (current_hex->terrain == SEA_TERRAIN) {
@@ -269,6 +297,12 @@ static gint button_press_map_cb(GtkWidget * area, GdkEventButton * event,
 			}
 			gtk_widget_set_sensitive(port_directions[i],
 						 port_ok);
+			gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM
+						       (port_directions
+							[i]),
+						       current_hex->
+						       facing == i
+						       && port_ok);
 		}
 
 		if (num_ports > 0)
@@ -458,8 +492,9 @@ static GtkWidget *build_terrain_menu(void)
 
 	for (i = 0; i <= LAST_TERRAIN; i++) {
 		item =
-		    gtk_image_menu_item_new_with_label(gettext
-						       (terrain_names[i]));
+		    gtk_image_menu_item_new_with_mnemonic(gettext
+							  (terrain_names
+							   [i]));
 
 		gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
 		g_signal_connect(G_OBJECT(item), "activate",
@@ -479,20 +514,19 @@ static GtkWidget *build_terrain_menu(void)
 	return menu;
 }
 
-static gint select_roll_cb(G_GNUC_UNUSED GtkWidget * menu,
+static void select_roll_cb(GtkCheckMenuItem * menu_item,
 			   gpointer user_data)
 {
-	current_hex->roll = GPOINTER_TO_INT(user_data);
-	guimap_draw_hex(gmap, current_hex);
-	return TRUE;
+	if (gtk_check_menu_item_get_active(menu_item)) {
+		current_hex->roll = GPOINTER_TO_INT(user_data);
+		guimap_draw_hex(gmap, current_hex);
+	}
 }
 
-static gint select_shuffle_cb(G_GNUC_UNUSED GtkWidget * menu,
+static void select_shuffle_cb(GtkCheckMenuItem * menu_item,
 			      G_GNUC_UNUSED gpointer user_data)
 {
-	current_hex->shuffle =
-	    gtk_check_menu_item_get_active(shuffle_tile);
-	return TRUE;
+	current_hex->shuffle = gtk_check_menu_item_get_active(menu_item);
 }
 
 static GtkWidget *build_roll_menu(void)
@@ -518,15 +552,18 @@ static GtkWidget *build_roll_menu(void)
 			"<span foreground=\"#%04x%04x%04x\">%d</span>",
 			color->red, color->green, color->blue, i);
 
-		item = gtk_menu_item_new();
+		item = gtk_check_menu_item_new();
 		label = gtk_label_new("");
 		gtk_label_set_markup(GTK_LABEL(label), buffer);
 		gtk_container_add(GTK_CONTAINER(item), label);
 
 		gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
-		g_signal_connect(G_OBJECT(item), "activate",
+		g_signal_connect(G_OBJECT(item), "toggled",
 				 G_CALLBACK(select_roll_cb),
 				 GINT_TO_POINTER(i));
+		gtk_check_menu_item_set_draw_as_radio(GTK_CHECK_MENU_ITEM
+						      (item), TRUE);
+		roll_numbers[i] = item;
 	}
 
 	gtk_menu_shell_append(GTK_MENU_SHELL(menu),
@@ -534,7 +571,7 @@ static GtkWidget *build_roll_menu(void)
 
 	item = gtk_check_menu_item_new_with_label(_("Shuffle"));
 	gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
-	g_signal_connect(G_OBJECT(item), "activate",
+	g_signal_connect(G_OBJECT(item), "toggled",
 			 G_CALLBACK(select_shuffle_cb), NULL);
 	shuffle_tile = GTK_CHECK_MENU_ITEM(item);
 
@@ -566,12 +603,13 @@ static gint select_port_resource_cb(G_GNUC_UNUSED GtkWidget * menu,
 	return TRUE;
 }
 
-static gint select_port_direction_cb(G_GNUC_UNUSED GtkWidget * menu,
+static void select_port_direction_cb(GtkCheckMenuItem * menu_item,
 				     gpointer user_data)
 {
-	current_hex->facing = GPOINTER_TO_INT(user_data);
-	guimap_draw_hex(gmap, current_hex);
-	return TRUE;
+	if (gtk_check_menu_item_get_active(menu_item)) {
+		current_hex->facing = GPOINTER_TO_INT(user_data);
+		guimap_draw_hex(gmap, current_hex);
+	}
 }
 
 static GtkWidget *build_port_menu(void)
@@ -587,8 +625,8 @@ static GtkWidget *build_port_menu(void)
 
 	for (i = 0; i <= ANY_RESOURCE; i++) {
 		item =
-		    gtk_image_menu_item_new_with_label(gettext
-						       (port_names[i]));
+		    gtk_image_menu_item_new_with_mnemonic(gettext
+							  (port_names[i]));
 
 		gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
 		g_signal_connect(G_OBJECT(item), "activate",
@@ -607,12 +645,13 @@ static GtkWidget *build_port_menu(void)
 			      gtk_separator_menu_item_new());
 	for (i = 0; i < 6; i++) {
 		item =
-		    gtk_menu_item_new_with_label(Q_
-						 (port_direction_names
-						  [i]));
-
+		    gtk_check_menu_item_new_with_label(Q_
+						       (port_direction_names
+							[i]));
+		gtk_check_menu_item_set_draw_as_radio(GTK_CHECK_MENU_ITEM
+						      (item), TRUE);
 		gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
-		g_signal_connect(G_OBJECT(item), "activate",
+		g_signal_connect(G_OBJECT(item), "toggled",
 				 G_CALLBACK(select_port_direction_cb),
 				 GINT_TO_POINTER(i));
 		port_directions[i] = item;
