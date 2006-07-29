@@ -54,7 +54,7 @@ void route_gui_event(GuiEvent event)
 		/* Fall through */
 	case GUI_QUIT:
 #ifdef DEBUG
-		debug("quitting\n");
+		debug("quitting");
 #endif
 		gtk_main_quit();
 		return;

@@ -635,7 +635,7 @@ static MapTheme *theme_config_parse(const gchar * themename,
 				    const gchar * filename)
 {
 	FILE *f;
-	char line[512];
+	gchar *line = NULL;
 	char *p, *q;
 	int lno;
 	MapTheme *t;
@@ -650,14 +650,17 @@ static MapTheme *theme_config_parse(const gchar * themename,
 	t->name = g_filename_to_utf8(themename, -1, NULL, NULL, NULL);
 
 	lno = 0;
-	while (fgets(line, sizeof(line), f)) {
+	while (read_line_from_file(&line, f)) {
 		++lno;
-		if (line[0] == '#')
+		if (line[0] == '#') {
+			g_free(line);
 			continue;
+		}
 		p = line;
 		if (!(tv = getvar(&p, filename, lno)) ||
 		    !(q = getval(&p, filename, lno))) {
 			ok = FALSE;
+			g_free(line);
 			continue;
 		}
 
@@ -691,6 +694,7 @@ static MapTheme *theme_config_parse(const gchar * themename,
 			if (!parsecolor
 			    (q, &telem(TColor, t, tv), filename, lno)) {
 				ok = FALSE;
+				g_free(line);
 				continue;
 			}
 			break;
@@ -713,6 +717,7 @@ static MapTheme *theme_config_parse(const gchar * themename,
 			ERR1("unexpected rest at end of line: '%s'", p);
 			ok = FALSE;
 		}
+		g_free(line);
 	}
 	fclose(f);
 

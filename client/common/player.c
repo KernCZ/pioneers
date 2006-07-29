@@ -288,10 +288,11 @@ void player_set_current(gint player_num)
 {
 	turn_player = player_num;
 	if (player_num != my_player_num()) {
-		char buffer[100];
-		snprintf(buffer, sizeof(buffer), _("Waiting for %s."),
-			 player_name(player_num, FALSE));
+		gchar *buffer;
+		buffer = g_strdup_printf(_("Waiting for %s."),
+					 player_name(player_num, FALSE));
 		callbacks.instructions(buffer);
+		g_free(buffer);
 		return;
 	}
 	build_new_turn();
@@ -304,8 +305,6 @@ void player_set_total_num(gint num)
 
 void player_stole_from(gint player_num, gint victim_num, Resource resource)
 {
-	gchar buf[128];
-
 	player_modify_statistic(player_num, STAT_RESOURCES, 1);
 	player_modify_statistic(victim_num, STAT_RESOURCES, -1);
 
@@ -322,7 +321,9 @@ void player_stole_from(gint player_num, gint victim_num, Resource resource)
 			    player_name(player_num, TRUE),
 			    player_name(victim_num, FALSE));
 	} else {
-		resource_cards(1, resource, buf, sizeof(buf));
+		gchar *buf;
+
+		buf = resource_cards(1, resource);
 		if (player_num == my_player_num()) {
 			/* We stole a card :-) */
 			log_message(MSG_STEAL,
@@ -336,6 +337,7 @@ void player_stole_from(gint player_num, gint victim_num, Resource resource)
 				    player_name(player_num, TRUE), buf);
 			resource_modify(resource, -1);
 		}
+		g_free(buf);
 	}
 	callbacks.player_robbed(player_num, victim_num, resource);
 }
@@ -343,8 +345,8 @@ void player_stole_from(gint player_num, gint victim_num, Resource resource)
 void player_domestic_trade(gint player_num, gint partner_num,
 			   gint * supply, gint * receive)
 {
-	gchar supply_desc[512];
-	gchar receive_desc[512];
+	gchar *supply_desc;
+	gchar *receive_desc;
 	gint diff;
 	gint idx;
 
@@ -369,38 +371,38 @@ void player_domestic_trade(gint player_num, gint partner_num,
 				    player_name(player_num, TRUE),
 				    player_name(partner_num, FALSE));
 		} else {
-			resource_format_num(receive_desc,
-					    sizeof(receive_desc), receive);
+			receive_desc = resource_format_num(receive);
 			log_message(MSG_TRADE,
 				    _("%s gave %s %s for free.\n"),
 				    player_name(player_num, TRUE),
 				    player_name(partner_num, FALSE),
 				    receive_desc);
+			g_free(receive_desc);
 		}
 	} else if (!resource_count(receive)) {
-		resource_format_num(supply_desc, sizeof(supply_desc),
-				    supply);
+		supply_desc = resource_format_num(supply);
 		log_message(MSG_TRADE, _("%s gave %s %s for free.\n"),
 			    player_name(partner_num, TRUE),
 			    player_name(player_num, FALSE), supply_desc);
+		g_free(supply_desc);
 	} else {
-		resource_format_num(supply_desc, sizeof(supply_desc),
-				    supply);
-		resource_format_num(receive_desc, sizeof(receive_desc),
-				    receive);
+		supply_desc = resource_format_num(supply);
+		receive_desc = resource_format_num(receive);
 		log_message(MSG_TRADE,
 			    _("%s gave %s %s in exchange for %s.\n"),
 			    player_name(player_num, TRUE),
 			    player_name(partner_num, FALSE), receive_desc,
 			    supply_desc);
+		g_free(supply_desc);
+		g_free(receive_desc);
 	}
 }
 
 void player_maritime_trade(gint player_num,
 			   gint ratio, Resource supply, Resource receive)
 {
-	gchar buf_give[128];
-	gchar buf_receive[128];
+	gchar *buf_give;
+	gchar *buf_receive;
 	gint resources[NO_RESOURCE];
 	gint idx;
 
@@ -416,10 +418,12 @@ void player_maritime_trade(gint player_num,
 		resource_modify(receive, 1);
 	}
 
-	resource_cards(ratio, supply, buf_give, sizeof(buf_give));
-	resource_cards(1, receive, buf_receive, sizeof(buf_receive));
+	buf_give = resource_cards(ratio, supply);
+	buf_receive = resource_cards(1, receive);
 	log_message(MSG_TRADE, _("%s exchanged %s for %s.\n"),
 		    player_name(player_num, TRUE), buf_give, buf_receive);
+	g_free(buf_give);
+	g_free(buf_receive);
 }
 
 void player_build_add(gint player_num,

@@ -38,7 +38,7 @@ static enum callback_mode previous_mode;
 GameParams *game_params;
 Map *map;
 static struct recovery_info_t {
-	gchar prevstate[40];
+	gchar *prevstate;
 	gint turnnum;
 	gint playerturn;
 	gint numdiscards;
@@ -436,39 +436,43 @@ static gboolean global_filter(StateMachine * sm, gint event)
  */
 static gboolean global_unhandled(StateMachine * sm, gint event)
 {
-	char str[512];
+	gchar *str;
 
 	switch (event) {
 	case SM_NET_CLOSE:
 		g_error("SM_NET_CLOSE not caught by global_filter");
 	case SM_RECV:
 		/* all errors start with ERR */
-		if (sm_recv(sm, "ERR %S", str, sizeof(str))) {
+		if (sm_recv(sm, "ERR %S", &str)) {
 			log_message(MSG_ERROR, "Error (%s): %s\n",
 				    sm_current_name(sm), str);
 			callbacks.error(str);
+			g_free(str);
 			return TRUE;
 		}
 		/* notices which are not errors should appear in the message
 		 * window */
-		if (sm_recv(sm, "NOTE %S", str, sizeof(str))) {
+		if (sm_recv(sm, "NOTE %S", &str)) {
 			log_message(MSG_ERROR, "Notice: %s\n", str);
+			g_free(str);
 			return TRUE;
 		}
 		/* protocol extensions which may be ignored have this prefix
 		 * before the next protocol changing version of the game is
 		 * released.  Notify the client about it anyway. */
-		if (sm_recv(sm, "extension %S", str, sizeof(str))) {
+		if (sm_recv(sm, "extension %S", &str)) {
 			log_message(MSG_INFO,
 				    "Ignoring extension used by server: %s\n",
 				    str);
+			g_free(str);
 			return TRUE;
 		}
 		/* we're receiving strange things */
-		if (sm_recv(sm, "%S", str, sizeof(str))) {
+		if (sm_recv(sm, "%S", &str)) {
 			log_message(MSG_ERROR,
 				    "Unknown message in %s: %s\n",
 				    sm_current_name(sm), str);
+			g_free(str);
 			return TRUE;
 		}
 		/* this is never reached: everything matches "%S" */
@@ -490,15 +494,16 @@ static gboolean global_unhandled(StateMachine * sm, gint event)
 static gboolean check_chat_or_name(StateMachine * sm)
 {
 	gint player_num;
-	char str[512];
+	gchar *str;
 
-	if (sm_recv
-	    (sm, "player %d chat %S", &player_num, str, sizeof(str))) {
+	if (sm_recv(sm, "player %d chat %S", &player_num, &str)) {
 		chat_parser(player_num, str);
+		g_free(str);
 		return TRUE;
 	}
-	if (sm_recv(sm, "player %d is %S", &player_num, str, sizeof(str))) {
+	if (sm_recv(sm, "player %d is %S", &player_num, &str)) {
 		player_change_name(player_num, str);
+		g_free(str);
 		return TRUE;
 	}
 	return FALSE;
@@ -520,7 +525,7 @@ static gboolean check_other_players(StateMachine * sm)
 	gint id;
 	gint resource_list[NO_RESOURCE];
 	gint sx, sy, spos, dx, dy, dpos;
-	gchar str[512];
+	gchar *str;
 
 	if (check_chat_or_name(sm))
 		return TRUE;
@@ -633,8 +638,9 @@ static gboolean check_other_players(StateMachine * sm)
 		player_longest_road(player_num);
 		return TRUE;
 	}
-	if (sm_recv(sm, "get-point %d %d %S", &id, &num, str, sizeof(str))) {
+	if (sm_recv(sm, "get-point %d %d %S", &id, &num, &str)) {
 		player_get_point(player_num, id, str, num);
+		g_free(str);
 		return TRUE;
 	}
 	if (sm_recv(sm, "lose-point %d", &id)) {
@@ -749,7 +755,7 @@ gboolean mode_connecting(StateMachine * sm, gint event)
 gboolean mode_start(StateMachine * sm, gint event)
 {
 	gint player_num, total_num;
-	gchar version[512];
+	gchar *version;
 
 	sm_state_name(sm, "mode_start");
 
@@ -784,7 +790,8 @@ gboolean mode_start(StateMachine * sm, gint event)
 		return TRUE;
 	}
 	if (sm_recv(sm, "player %d of %d, welcome to pioneers server %S",
-		    &player_num, &total_num, version, sizeof(version))) {
+		    &player_num, &total_num, &version)) {
+		g_free(version);
 		player_set_my_num(player_num);
 		player_set_total_num(total_num);
 		sm_send(sm, "players\n");
@@ -837,7 +844,7 @@ static gboolean mode_player_list(StateMachine * sm, gint event)
  */
 static gboolean mode_load_game(StateMachine * sm, gint event)
 {
-	gchar str[512];
+	gchar *str;
 
 	sm_state_name(sm, "mode_load_game");
 	if (event != SM_RECV)
@@ -854,7 +861,7 @@ static gboolean mode_load_game(StateMachine * sm, gint event)
 		stock_init();
 		develop_init();
 		/* initialize global recovery info struct */
-		recovery_info.prevstate[0] = 0;
+		recovery_info.prevstate = NULL;
 		recovery_info.turnnum = -1;
 		recovery_info.playerturn = -1;
 		recovery_info.numdiscards = -1;
@@ -872,8 +879,9 @@ static gboolean mode_load_game(StateMachine * sm, gint event)
 	}
 	if (check_other_players(sm))
 		return TRUE;
-	if (sm_recv(sm, "%S", str, sizeof(str))) {
+	if (sm_recv(sm, "%S", &str)) {
 		params_load_line(game_params, str);
+		g_free(str);
 		return TRUE;
 	}
 	return FALSE;
@@ -883,7 +891,6 @@ static gboolean mode_load_game(StateMachine * sm, gint event)
  */
 static gboolean mode_load_gameinfo(StateMachine * sm, gint event)
 {
-	gchar str[512];
 	gint x, y, pos, owner;
 	static gboolean disconnected = FALSE;
 	static gboolean have_bank = FALSE;
@@ -973,9 +980,7 @@ static gboolean mode_load_gameinfo(StateMachine * sm, gint event)
 		disconnected = TRUE;
 		return TRUE;
 	}
-	if (sm_recv(sm, "state %S", str, sizeof(str))) {
-		strncpy(recovery_info.prevstate, str,
-			sizeof(recovery_info.prevstate));
+	if (sm_recv(sm, "state %S", &recovery_info.prevstate)) {
 		return TRUE;
 	}
 	if (sm_recv(sm, "playerinfo: resources: %R", resources)) {
@@ -1234,17 +1239,16 @@ gboolean mode_done_response(StateMachine * sm, gint event)
 
 static char *setup_msg(void)
 {
-	static char msg[1024];
-	char *msg_end;
+	gchar *msg;
 	const gchar *parts[3];
 	int num_parts;
 	int idx;
 
 	if (is_setup_double())
-		strcpy(msg,
-		       _("Build two settlements, each with a connecting"));
+		msg = g_strdup(_("Build two settlements, "
+				 "each with a connecting"));
 	else
-		strcpy(msg, _("Build a settlement with a connecting"));
+		msg = g_strdup(_("Build a settlement with a connecting"));
 	num_parts = 0;
 	if (setup_can_build_road())
 		parts[num_parts++] = _("road");
@@ -1253,21 +1257,24 @@ static char *setup_msg(void)
 	if (setup_can_build_ship())
 		parts[num_parts++] = _("ship");
 
-	msg_end = msg + strlen(msg);
 	for (idx = 0; idx < num_parts; idx++) {
+		gchar *old;
 		if (idx > 0) {
 			if (idx == num_parts - 1) {
-				strcpy(msg_end, _(" or"));
-				msg_end += 3;
+				old = msg;
+				msg =
+				    g_strdup_printf("%s%s", msg, _(" or"));
+				g_free(old);
 			} else {
-				*msg_end++ = ',';
+				old = msg;
+				msg = g_strdup_printf("%s,", msg);
+				g_free(old);
 			}
 		}
-		*msg_end++ = ' ';
-		strcpy(msg_end, parts[idx]);
-		msg_end += strlen(msg_end);
+		old = msg;
+		msg = g_strdup_printf("%s %s", msg, parts[idx]);
+		g_free(old);
 	}
-	*msg_end = '\0';
 
 	return msg;
 }
@@ -1920,12 +1927,12 @@ gboolean mode_trade_maritime_response(StateMachine * sm, gint event)
 	case SM_RECV:
 		/* Handle out-of-resource-cards */
 		if (sm_recv(sm, "ERR no-cards %r", &no_receive)) {
-			gchar buf_receive[128];
+			gchar *buf_receive;
 
-			resource_cards(0, no_receive, buf_receive,
-				       sizeof(buf_receive));
+			buf_receive = resource_cards(0, no_receive);
 			log_message(MSG_TRADE, _("Sorry, %s available.\n"),
 				    buf_receive);
+			g_free(buf_receive);
 			waiting_for_network(FALSE);
 			sm_pop(sm);
 			return TRUE;
@@ -2383,6 +2390,7 @@ static void recover_from_disconnect(StateMachine * sm,
 		g_warning("Not entering any state after reconnect, "
 			  "please report this as a bug.  "
 			  "Should enter state \"%s\"", rinfo->prevstate);
+	g_free(rinfo->prevstate);
 }
 
 /*----------------------------------------------------------------------

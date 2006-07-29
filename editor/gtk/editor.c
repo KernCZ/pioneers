@@ -78,11 +78,11 @@ static const gchar *port_direction_names[] = {
 static void error_dialog(const char *fmt, ...)
 {
 	GtkWidget *dialog;
-	gchar buf[1024];
+	gchar *buf;
 	va_list ap;
 
 	va_start(ap, fmt);
-	g_vsnprintf(buf, sizeof(buf), fmt, ap);
+	buf = g_strdup_vprintf(fmt, ap);
 	va_end(ap);
 
 	dialog = gtk_message_dialog_new(GTK_WINDOW(toplevel),
@@ -90,6 +90,7 @@ static void error_dialog(const char *fmt, ...)
 					GTK_DIALOG_DESTROY_WITH_PARENT,
 					GTK_MESSAGE_ERROR,
 					GTK_BUTTONS_CLOSE, "%s", buf);
+	g_free(buf);
 	gtk_dialog_run(GTK_DIALOG(dialog));
 	gtk_widget_destroy(dialog);
 }
@@ -674,17 +675,17 @@ static GtkWidget *build_settings(void)
 
 static void set_window_title(const gchar * title)
 {
-	gchar str[100];
+	gchar *str;
 	g_free(window_title);
 	if (title == NULL) {
 		title = "Untitled";
 		window_title = NULL;
 	} else
 		window_title = g_strdup(title);
-	g_snprintf(str, sizeof(str), "%s: %s", _("Pioneers Editor"),
-		   title);
+	str = g_strdup_printf("%s: %s", _("Pioneers Editor"), title);
 
 	gtk_window_set_title(GTK_WINDOW(toplevel), str);
+	g_free(str);
 }
 
 static void apply_params(GameParams * params)

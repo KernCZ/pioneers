@@ -145,10 +145,8 @@ void stock_use_develop(void);
 void resource_init(void);
 void resource_apply_list(gint player_num, const gint * resources,
 			 gint multiplier);
-void resource_cards(gint num, Resource which, gchar * buffer,
-		    guint buf_size);
-void resource_format_num(gchar * desc, guint desc_size,
-			 const gint * resources);
+gchar *resource_cards(gint num, Resource which);
+gchar *resource_format_num(const gint * resources);
 void resource_log_list(gint player_num, const gchar * action,
 		       const gint * resources);
 void resource_modify(Resource type, gint num);

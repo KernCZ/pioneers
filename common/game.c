@@ -137,30 +137,31 @@ static void build_int_list(GArray * array, char *str)
 	}
 }
 
-static void format_int_list(const gchar * name, GArray * array,
-			    gchar * str, guint len)
+/* This function allocates a buffer and returns it.  It must be freed by the
+ * caller.  */
+static gchar *format_int_list(const gchar * name, GArray * array)
 {
+	gchar *old, *str = NULL;
 	int idx;
 
 	if (array->len == 0) {
-		strncpy(str, name, len);
-		return;
+		str = g_strdup(name);
+		return str;
 	}
-	*str = '\0';
 	for (idx = 0; idx < array->len; idx++) {
-		gint num;
-
+		old = str;
 		if (idx == 0)
-			num = g_snprintf(str, len, "%s %d", name,
-					 g_array_index(array, gint, idx));
+			str = g_strdup_printf("%s %d", name,
+					      g_array_index(array, gint,
+							    idx));
 		else
-			num = g_snprintf(str, len, ",%d",
-					 g_array_index(array, gint, idx));
-		if (num <= 0)
-			return;
-		str += num;
-		len -= num;
+			str = g_strdup_printf("%s,%d", str,
+					      g_array_index(array, gint,
+							    idx));
+		if (old)
+			g_free(old);
 	}
+	return str;
 }
 
 struct nosetup_t {
@@ -175,7 +176,7 @@ static gboolean find_no_setup(G_GNUC_UNUSED Map * map, Hex * hex,
 	for (idx = 0; idx < G_N_ELEMENTS(hex->nodes); ++idx) {
 		Node *node = hex->nodes[idx];
 		if (node->no_setup) {
-			gchar buff[512];
+			gchar buff[50];
 			if (node->x != hex->x || node->y != hex->y)
 				continue;
 			snprintf(buff, sizeof(buff), "nosetup %d %d %d",
@@ -191,7 +192,7 @@ void params_write_lines(GameParams * params, gboolean write_secrets,
 {
 	gint idx;
 	gint y;
-	gchar buff[512];
+	gchar *buff;
 	gchar *str;
 
 	switch (params->variant) {
@@ -215,33 +216,35 @@ void params_write_lines(GameParams * params, gboolean write_secrets,
 					    param->offset);
 			if (!str)
 				continue;
-			g_snprintf(buff, sizeof(buff), "%s %s",
-				   param->name, str);
+			buff = g_strdup_printf("%s %s", param->name, str);
 			func(user_data, buff);
+			g_free(buff);
 			break;
 		case PARAM_INT:
-			g_snprintf(buff, sizeof(buff), "%s %d",
-				   param->name,
-				   G_STRUCT_MEMBER(gint, params,
-						   param->offset));
+			buff = g_strdup_printf("%s %d", param->name,
+					       G_STRUCT_MEMBER(gint,
+							       params,
+							       param->
+							       offset));
 			func(user_data, buff);
+			g_free(buff);
 			break;
 		case PARAM_BOOL:
 			if (G_STRUCT_MEMBER
 			    (gboolean, params, param->offset)) {
-				g_snprintf(buff, sizeof(buff), "%s",
-					   param->name);
-				func(user_data, buff);
+				func(user_data, param->name);
 			}
 			break;
 		}
 	}
-	format_int_list("chits", params->map->chits, buff, sizeof(buff));
+	buff = format_int_list("chits", params->map->chits);
 	func(user_data, buff);
+	g_free(buff);
 	func(user_data, "map");
 	for (y = 0; y < params->map->y_size; y++) {
-		map_format_line(params->map, write_secrets, buff, y);
+		buff = map_format_line(params->map, write_secrets, y);
 		func(user_data, buff);
+		g_free(buff);
 	}
 	func(user_data, ".");
 	if (params->map) {
@@ -344,10 +347,37 @@ void params_load_line(GameParams * params, gchar * line)
 	g_warning("Unknown keyword: %s", line);
 }
 
+/* read a line from a file.  The memory needed is allocated.  The returned line
+ * is unbounded.  Returns FALSE if no (partial) line could be read */
+gboolean read_line_from_file(gchar ** line, FILE * f)
+{
+	gchar part[512];
+	gint len;
+
+	if (fgets(part, sizeof(part), f) == NULL)
+		return FALSE;
+
+	len = strlen(part);
+	g_assert(len > 0);
+	*line = g_strdup(part);
+	while ((*line)[len - 1] != '\n') {
+		gchar *oldline;
+		if (fgets(part, sizeof(part), f) == NULL)
+			break;
+		oldline = *line;
+		*line = g_strdup_printf("%s%s", *line, part);
+		g_free(oldline);
+		len = strlen(*line);
+	}
+	g_assert((*line)[len - 1] == '\n');
+	(*line)[len - 1] = '\0';
+	return TRUE;
+}
+
 GameParams *params_load_file(const gchar * fname)
 {
 	FILE *fp;
-	gchar line[512];
+	gchar *line;
 	GameParams *params;
 
 	if ((fp = fopen(fname, "r")) == NULL) {
@@ -356,12 +386,9 @@ GameParams *params_load_file(const gchar * fname)
 	}
 
 	params = params_new();
-	while (fgets(line, sizeof(line), fp) != NULL) {
-		gint len = strlen(line);
-
-		if (len > 0 && line[len - 1] == '\n')
-			line[len - 1] = '\0';
+	while (read_line_from_file(&line, fp)) {
 		params_load_line(params, line);
+		g_free(line);
 	}
 	fclose(fp);
 	if (!params_load_finish(params)) {

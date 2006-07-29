@@ -22,6 +22,7 @@
 #ifndef __game_h
 #define __game_h
 
+#include <stdio.h>
 #include "map.h"
 #include "driver.h"
 
@@ -87,4 +88,6 @@ void params_write_lines(GameParams * params, gboolean write_secrets,
 gboolean params_write_file(GameParams * params, const gchar * fname);
 void params_load_line(GameParams * params, gchar * line);
 gboolean params_load_finish(GameParams * params);
+
+gboolean read_line_from_file(gchar ** line, FILE * f);
 #endif

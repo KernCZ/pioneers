@@ -41,6 +41,7 @@
 
 #include <glib.h>
 #include "network.h"
+#include "game.h"
 
 typedef enum {
 	META_UNKNOWN,
@@ -108,8 +109,7 @@ static void debug(const gchar * fmt, ...)
 {
 	static FILE *fp;
 	va_list ap;
-	gchar buff[16 * 1024];
-	gint len;
+	gchar *buff;
 	gint idx;
 
 	if (fp == NULL) {
@@ -121,11 +121,11 @@ static void debug(const gchar * fmt, ...)
 		return;
 
 	va_start(ap, fmt);
-	len = g_vsnprintf(buff, sizeof(buff), fmt, ap);
+	buff = g_strdup_vprintf(fmt, ap);
 	va_end(ap);
 
 	for (idx = 0; idx < len; idx++) {
-		if (isprint(buff[idx]) || idx == len - 1)
+		if (isprint(buff[idx]) || idx == strlen(buff) - 1)
 			fputc(buff[idx], fp);
 		else
 			switch (buff[idx]) {
@@ -142,11 +142,12 @@ static void debug(const gchar * fmt, ...)
 				fputc('t', fp);
 				break;
 			default:
-				fprintf(fp, "\\x%02x", buff[idx]);
+				fprintf(fp, "\\x%02x", (buff[idx] & 0xff));
 				break;
 			}
 	}
 	fflush(fp);
+	g_free(buff);
 }
 #endif
 
@@ -279,15 +280,14 @@ static void client_do_write(Client * client)
 
 static void client_printf(Client * client, const char *fmt, ...)
 {
-	gchar buff[10240];
+	gchar *buff;
 	va_list ap;
 
 	va_start(ap, fmt);
-	g_vsnprintf(buff, sizeof(buff), fmt, ap);
+	buff = g_strdup_vprintf(fmt, ap);
 	va_end(ap);
 
-	client->write_queue =
-	    g_list_append(client->write_queue, g_strdup(buff));
+	client->write_queue = g_list_append(client->write_queue, buff);
 	FD_SET(client->fd, &write_fds);
 
 	set_client_event_at(client);
@@ -333,17 +333,13 @@ static void client_list_servers(Client * client)
 static GList *load_game_desc(gchar * fname, GList * titles)
 {
 	FILE *fp;
-	gchar line[512], *title;
+	gchar *line, *title;
 
 	if ((fp = fopen(fname, "r")) == NULL) {
 		g_warning("could not open '%s'", fname);
 		return NULL;
 	}
-	while (fgets(line, sizeof(line), fp) != NULL) {
-		gint len = strlen(line);
-
-		if (len > 0 && line[len - 1] == '\n')
-			line[len - 1] = '\0';
+	while (read_line_from_file(&line, fp)) {
 		if (strncmp(line, "title ", 6) == 0) {
 			title = line + 6;
 			title += strspn(title, " \t");
@@ -352,6 +348,7 @@ static GList *load_game_desc(gchar * fname, GList * titles)
 						 (GCompareFunc) strcmp);
 			break;
 		}
+		g_free(line);
 	}
 	fclose(fp);
 	return titles;
@@ -425,13 +422,13 @@ static void client_create_new_server(Client * client, gchar * line)
 	gboolean found_used = TRUE;
 	socklen_t yes = 1;
 	struct sockaddr_in sa;
-	char port[20];
 	const char *console_server;
 	unsigned int n;
 	GList *list;
 	GSpawnFlags spawn_flags = G_SPAWN_STDOUT_TO_DEV_NULL |
 	    G_SPAWN_STDERR_TO_DEV_NULL;
 	gchar *child_argv[32];
+	gchar *port;
 	GError *error = NULL;
 
 	line += strspn(line, " \t");
@@ -525,7 +522,7 @@ static void client_create_new_server(Client * client, gchar * line)
 			      g_strerror(errno));
 		return;
 	}
-	sprintf(port, "%d", sa.sin_port);
+	port = g_strdup_printf("%d", sa.sin_port);
 
 	n = 0;
 	child_argv[n++] = g_strdup(console_server);
@@ -568,6 +565,7 @@ static void client_create_new_server(Client * client, gchar * line)
 	client_printf(client, "port=%s\n", port);
 	client_printf(client, "started\n");
 	syslog(LOG_INFO, "new server started on port %s", port);
+	g_free(port);
 	return;
       bad:
 	client_printf(client, "Badly formatted request\n");

@@ -20,6 +20,7 @@
  */
 
 #include "config.h"
+#include "game.h"
 #include "ai.h"
 #include <stdlib.h>
 #include <stdio.h>
@@ -39,7 +40,7 @@ static gchar *random_name(void)
 {
 	gchar *filename;
 	FILE *stream;
-	char line[512];
+	gchar *line;
 	gchar *name = NULL;
 	int num = 1;
 
@@ -53,7 +54,7 @@ static gchar *random_name(void)
 		 */
 		name = g_strdup(_("Computer Player"));
 	} else {
-		while (fgets(line, sizeof(line) - 1, stream)) {
+		while (read_line_from_file(&line, stream)) {
 			if (g_random_int_range(0, num) == 0) {
 				if (name)
 					g_free(name);

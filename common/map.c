@@ -556,91 +556,102 @@ Map *map_copy(Map * map)
 
 /* Maps are sent from the server to the client a line at a time.  This
  * routine formats a line of a map for just that purpose.
+ * It returns an allocated buffer, which must be freed by the caller.
  */
-void map_format_line(Map * map, gboolean write_secrets, gchar * line,
-		     gint y)
+gchar *map_format_line(Map * map, gboolean write_secrets, gint y)
 {
+	gchar *line = NULL;
+	gchar buffer[20];	/* Buffer for the info about one hex */
 	gint x;
 
 	for (x = 0; x < map->x_size; x++) {
+		gchar *bufferpos = buffer;
 		Hex *hex = map->grid[y][x];
 
 		if (x > 0)
-			*line++ = ',';
+			*bufferpos++ = ',';
 		if (hex == NULL) {
-			*line++ = '-';
-			continue;
-		}
-		switch (hex->terrain) {
-		case HILL_TERRAIN:
-			*line++ = 'h';
-			break;
-		case FIELD_TERRAIN:
-			*line++ = 'f';
-			break;
-		case MOUNTAIN_TERRAIN:
-			*line++ = 'm';
-			break;
-		case PASTURE_TERRAIN:
-			*line++ = 'p';
-			break;
-		case FOREST_TERRAIN:
-			*line++ = 't';	/* tree */
-			break;
-		case DESERT_TERRAIN:
-			*line++ = 'd';
-			break;
-		case GOLD_TERRAIN:
-			*line++ = 'g';
-			break;
-		case SEA_TERRAIN:
-			*line++ = 's';
-			if (hex == map->pirate_hex)
-				*line++ = 'R';
-			if (hex->resource == NO_RESOURCE)
+			*bufferpos++ = '-';
+		} else {
+			switch (hex->terrain) {
+			case HILL_TERRAIN:
+				*bufferpos++ = 'h';
 				break;
-			switch (hex->resource) {
-			case BRICK_RESOURCE:
-				*line++ = 'b';
+			case FIELD_TERRAIN:
+				*bufferpos++ = 'f';
 				break;
-			case GRAIN_RESOURCE:
-				*line++ = 'g';
+			case MOUNTAIN_TERRAIN:
+				*bufferpos++ = 'm';
 				break;
-			case ORE_RESOURCE:
-				*line++ = 'o';
+			case PASTURE_TERRAIN:
+				*bufferpos++ = 'p';
 				break;
-			case WOOL_RESOURCE:
-				*line++ = 'w';
+			case FOREST_TERRAIN:
+				*bufferpos++ = 't';	/* tree */
 				break;
-			case LUMBER_RESOURCE:
-				*line++ = 'l';
+			case DESERT_TERRAIN:
+				*bufferpos++ = 'd';
 				break;
-			case ANY_RESOURCE:
-				*line++ = '?';
+			case GOLD_TERRAIN:
+				*bufferpos++ = 'g';
 				break;
-			case NO_RESOURCE:
+			case SEA_TERRAIN:
+				*bufferpos++ = 's';
+				if (hex == map->pirate_hex)
+					*bufferpos++ = 'R';
+				if (hex->resource == NO_RESOURCE)
+					break;
+				switch (hex->resource) {
+				case BRICK_RESOURCE:
+					*bufferpos++ = 'b';
+					break;
+				case GRAIN_RESOURCE:
+					*bufferpos++ = 'g';
+					break;
+				case ORE_RESOURCE:
+					*bufferpos++ = 'o';
+					break;
+				case WOOL_RESOURCE:
+					*bufferpos++ = 'w';
+					break;
+				case LUMBER_RESOURCE:
+					*bufferpos++ = 'l';
+					break;
+				case ANY_RESOURCE:
+					*bufferpos++ = '?';
+					break;
+				case NO_RESOURCE:
+					break;
+				case GOLD_RESOURCE:
+					g_assert_not_reached();
+				}
+				*bufferpos++ = hex->facing + '0';
 				break;
-			case GOLD_RESOURCE:
-				g_assert(0);
+			case LAST_TERRAIN:
+				*bufferpos++ = '-';
+				break;
+			default:
+				g_assert_not_reached();
+				break;
 			}
-			*line++ = hex->facing + '0';
-			break;
-		case LAST_TERRAIN:
-			*line++ = '-';
-			break;
-		default:
-			g_assert_not_reached();
-			break;
+			if (hex->chit_pos >= 0) {
+				sprintf(bufferpos, "%d", hex->chit_pos);
+				bufferpos += strlen(bufferpos);
+			}
+			if (write_secrets && !hex->shuffle) {
+				*bufferpos++ = '+';
+			}
 		}
-		if (hex->chit_pos >= 0) {
-			sprintf(line, "%d", hex->chit_pos);
-			line += strlen(line);
-		}
-		if (write_secrets && !hex->shuffle) {
-			*line++ = '+';
+		*bufferpos = '\0';
+		if (line) {
+			gchar *old = line;
+			line = g_strdup_printf("%s%s", line, buffer);
+			g_free(old);
+		} else {
+			line = g_strdup(buffer);
 		}
 	}
-	*line = '\0';
+	return line;
 }
 
 /* Read a map line into the grid
@@ -854,7 +865,7 @@ void map_free(Map * map)
  */
 Map *map_load(gchar * name)
 {
-	gchar line[512];
+	gchar *line;
 	FILE *fp;
 	Map *map;
 
@@ -864,8 +875,10 @@ Map *map_load(gchar * name)
 
 	map = map_new();
 
-	while (fgets(line, sizeof(line), fp) != NULL)
+	while (read_line_from_file(&line, fp)) {
 		map_parse_line(map, line);
+		g_free(line);
+	}
 	fclose(fp);
 
 	map_parse_finish(map);

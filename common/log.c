@@ -197,14 +197,14 @@ void log_message_chat(const gchar * player_name,
 
 void log_message(gint msg_type, const gchar * fmt, ...)
 {
-	gchar text[1024];
-	gchar timestamp[1024];
+	gchar *text;
+	gchar *timestamp;
 	va_list ap;
 	time_t t;
 	struct tm *alpha;
 
 	va_start(ap, fmt);
-	g_vsnprintf(text, sizeof(text), fmt, ap);
+	text = g_strdup_vprintf(fmt, ap);
 	va_end(ap);
 
 #ifdef DEBUG
@@ -214,8 +214,8 @@ void log_message(gint msg_type, const gchar * fmt, ...)
 	t = time(NULL);
 	alpha = localtime(&t);
 
-	sprintf(timestamp, "%02d:%02d:%02d ", alpha->tm_hour,
-		alpha->tm_min, alpha->tm_sec);
+	timestamp = g_strdup_printf("%02d:%02d:%02d ", alpha->tm_hour,
+				    alpha->tm_min, alpha->tm_sec);
 
 	if (driver->log_write) {
 		driver->log_write(MSG_TIMESTAMP, timestamp);
@@ -224,4 +224,6 @@ void log_message(gint msg_type, const gchar * fmt, ...)
 		LOG_FUNC_DEFAULT(MSG_TIMESTAMP, timestamp);
 		LOG_FUNC_DEFAULT(msg_type, text);
 	}
+	g_free(text);
+	g_free(timestamp);
 }

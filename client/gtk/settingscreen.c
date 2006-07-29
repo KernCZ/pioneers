@@ -62,33 +62,34 @@ static void add_setting_val(GtkWidget * table, gint row, gint col,
 			    const gchar * char_val, gboolean right_aligned)
 {
 	GtkWidget *label;
-	gchar label_var[50];
+	gchar *label_var;
 
 	switch (type) {
 	case TYPE_NUM:
-		g_snprintf(label_var, sizeof(label_var), "%i", int_val);
+		label_var = g_strdup_printf("%i", int_val);
 		break;
 
 	case TYPE_BOOL:
 		if (int_val != 0) {
-			g_snprintf(label_var, sizeof(label_var), _("Yes"));
+			label_var = g_strdup(_("Yes"));
 		} else {
-			g_snprintf(label_var, sizeof(label_var), _("No"));
+			label_var = g_strdup(_("No"));
 		}
 		break;
 	case TYPE_STRING:
 		if (char_val == NULL) {
 			char_val = " ";
 		}
-		g_snprintf(label_var, sizeof(label_var), "%s", char_val);
+		label_var = g_strdup_printf("%s", char_val);
 		break;
 
 	default:
-		g_snprintf(label_var, sizeof(label_var), _("Unknown"));
+		label_var = g_strdup(_("Unknown"));
 		break;
 	}
 
 	label = gtk_label_new(label_var);
+	g_free(label_var);
 	gtk_widget_show(label);
 	gtk_table_attach(GTK_TABLE(table), label,
 			 col, col + 1, row, row + 1,

@@ -89,7 +89,7 @@ static gboolean mode_global(Player * player, gint event)
 {
 	StateMachine *sm = player->sm;
 	Game *game = player->game;
-	gchar text[512];
+	gchar *text;
 
 	switch (event) {
 	case SM_FREE:
@@ -121,23 +121,25 @@ static gboolean mode_global(Player * player, gint event)
 		driver->player_change(game);
 		return TRUE;
 	case SM_RECV:
-		if (sm_recv(sm, "chat %S", text, sizeof(text))) {
+		if (sm_recv(sm, "chat %S", &text)) {
 			if (strlen(text) > MAX_CHAT)
 				sm_send(sm, "ERR %s\n",
 					_("chat too long"));
 			else
 				player_broadcast(player, PB_ALL,
 						 "chat %s\n", text);
+			g_free(text);
 			return TRUE;
 		}
-		if (sm_recv(sm, "name %S", text, sizeof(text))) {
-			if (text[0] == 0)
+		if (sm_recv(sm, "name %S", &text)) {
+			if (text[0] == '\0')
 				sm_send(sm, "ERR invalid-name\n");
 			else if (strlen(text) > MAX_NAME_LENGTH)
 				sm_send(sm, "ERR %s\n",
 					_("name too long"));
 			else
 				player_set_name(player, text);
+			g_free(text);
 			return TRUE;
 		}
 		break;
@@ -150,15 +152,16 @@ static gboolean mode_global(Player * player, gint event)
 static gboolean mode_unhandled(Player * player, gint event)
 {
 	StateMachine *sm = player->sm;
-	gchar text[512];
+	gchar *text;
 
 	switch (event) {
 	case SM_RECV:
-		if (sm_recv(sm, "extension %S", text, sizeof(text))) {
+		if (sm_recv(sm, "extension %S", &text)) {
 			sm_send(sm, "NOTE ignoring unknown extension\n");
 			log_message(MSG_INFO,
 				    "ignoring unknown extension from %s: %s\n",
 				    player->name, text);
+			g_free(text);
 			return TRUE;
 		}
 		break;
@@ -649,7 +652,6 @@ static gboolean check_versions(gchar * client_version)
 static gboolean mode_check_version(Player * player, gint event)
 {
 	StateMachine *sm = player->sm;
-	gchar version[512];
 
 	sm_state_name(sm, "mode_check_version");
 	switch (event) {
@@ -658,24 +660,24 @@ static gboolean mode_check_version(Player * player, gint event)
 		break;
 
 	case SM_RECV:
-		if (sm_recv(sm, "version %S", version, sizeof(version))) {
-			player->client_version = g_strdup(version);
-			if (check_versions(version)) {
+		if (sm_recv(sm, "version %S", &player->client_version)) {
+			if (check_versions(player->client_version)) {
 				sm_goto(sm, (StateFunc) mode_check_status);
-				return TRUE;
 			} else {
 				/* Version mismatch. 
 				 * %1 = expected version, 
 				 * %2 = version of the client. 
 				 * Don't translate the NOTE at 
 				 * the beginning of the text */
-				sm_send(sm,
-					_
-					("NOTE Expecting version %s, not %s\n"),
-					PROTOCOL_VERSION, version);
+				sm_send_uncached(sm,
+						 _
+						 ("NOTE Expecting version %s,"
+						  " not %s\n"),
+						 PROTOCOL_VERSION,
+						 player->client_version);
 				sm_goto(sm, (StateFunc) mode_bad_version);
-				return TRUE;
 			}
+			return TRUE;
 		}
 		break;
 	default:
@@ -687,7 +689,7 @@ static gboolean mode_check_version(Player * player, gint event)
 static gboolean mode_check_status(Player * player, gint event)
 {
 	StateMachine *sm = player->sm;
-	gchar playername[512];
+	gchar *playername;
 
 	sm_state_name(sm, "mode_check_status");
 	switch (event) {
@@ -700,19 +702,19 @@ static gboolean mode_check_status(Player * player, gint event)
 			player_setup(player, -1, NULL, FALSE);
 			return TRUE;
 		}
-		if (sm_recv(sm, "status reconnect %S", playername,
-			    sizeof(playername))) {
+		if (sm_recv(sm, "status reconnect %S", &playername)) {
 			/* if possible, try to revive the player */
 			player_revive(player, playername);
+			g_free(playername);
 			return TRUE;
 		}
 		if (sm_recv(sm, "status newviewer")) {
 			player_setup(player, -1, NULL, TRUE);
 			return TRUE;
 		}
-		if (sm_recv(sm, "status viewer %S", playername,
-			    sizeof(playername))) {
+		if (sm_recv(sm, "status viewer %S", &playername)) {
 			player_setup(player, -1, playername, TRUE);
+			g_free(playername);
 			return TRUE;
 		}
 		break;
@@ -839,12 +841,12 @@ void player_broadcast(Player * player, BroadcastType type, const char *fmt,
 		      ...)
 {
 	Game *game = player->game;
-	char buff[4096];
+	gchar *buff;
 	GList *list;
 	va_list ap;
 
 	va_start(ap, fmt);
-	sm_vnformat(buff, sizeof(buff), fmt, ap);
+	buff = sm_vformat(fmt, ap);
 	va_end(ap);
 
 	playerlist_inc_use_count(game);
@@ -861,6 +863,7 @@ void player_broadcast(Player * player, BroadcastType type, const char *fmt,
 				buff);
 	}
 	playerlist_dec_use_count(game);
+	g_free(buff);
 }
 
 void player_set_name(Player * player, gchar * name)

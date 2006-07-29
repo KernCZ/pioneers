@@ -100,7 +100,7 @@ static void frontend_robber_moved(G_GNUC_UNUSED Hex * old,
 static void frontend_new_bank(G_GNUC_UNUSED const gint * new_bank)
 {
 #ifdef DEBUG
-	debug("New bank: %d %d %d %d %d\n", new_bank[0], new_bank[1],
+	debug("New bank: %d %d %d %d %d", new_bank[0], new_bank[1],
 	      new_bank[2], new_bank[3], new_bank[4]);
 #endif
 }

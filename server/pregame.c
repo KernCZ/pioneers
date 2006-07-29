@@ -431,7 +431,7 @@ gboolean mode_pre_game(Player * player, gint event)
 	Game *game = player->game;
 	Map *map = game->params->map;
 	StateFunc state;
-	gchar prevstate[40];
+	const gchar *prevstate;
 	gint i;
 	GList *next;
 	gint longestroadpnum = -1;
@@ -522,38 +522,38 @@ gboolean mode_pre_game(Player * player, gint event)
 			}
 
 			if (state == (StateFunc) mode_idle)
-				strcpy(prevstate, "IDLE");
+				prevstate = "IDLE";
 			else if (state == (StateFunc) mode_turn)
-				strcpy(prevstate, "TURN");
+				prevstate = "TURN";
 			else if (state ==
 				 (StateFunc) mode_discard_resources)
-				strcpy(prevstate, "DISCARD");
+				prevstate = "DISCARD";
 			else if (state == (StateFunc)
 				 mode_wait_for_other_discarding_players)
-				strcpy(prevstate, "DISCARD");
+				prevstate = "DISCARD";
 			else if (state == (StateFunc) mode_place_robber)
-				strcpy(prevstate, "YOUAREROBBER");
+				prevstate = "YOUAREROBBER";
 			else if (state == (StateFunc) mode_road_building)
-				strcpy(prevstate, "ROADBUILDING");
+				prevstate = "ROADBUILDING";
 			else if (state == (StateFunc) mode_monopoly)
-				strcpy(prevstate, "MONOPOLY");
+				prevstate = "MONOPOLY";
 			else if (state ==
 				 (StateFunc) mode_plenty_resources) {
 				recover_from_plenty = TRUE;
-				strcpy(prevstate, "PLENTY");
+				prevstate = "PLENTY";
 			} else if (state == (StateFunc) mode_setup) {
 				if (game->double_setup)
-					strcpy(prevstate, "SETUPDOUBLE");
+					prevstate = "SETUPDOUBLE";
 				else if (game->reverse_setup)
-					strcpy(prevstate, "RSETUP");
+					prevstate = "RSETUP";
 				else
-					strcpy(prevstate, "SETUP");
+					prevstate = "SETUP";
 				/* If player is selecting gold, the state 
 				 * should be IDLE instead */
 				if (stack_offset != 1)
-					strcpy(prevstate, "IDLE");
+					prevstate = "IDLE";
 			} else
-				strcpy(prevstate, "PREGAME");
+				prevstate = "PREGAME";
 
 			sm_send(sm, "state %s\n", prevstate);
 

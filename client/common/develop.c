@@ -175,35 +175,34 @@ void develop_played(gint player_num, gint card_idx, DevelType type)
 void monopoly_player(gint player_num, gint victim_num, gint num,
 		     Resource type)
 {
-	gchar buf[128];
+	gchar *buf;
 	gchar *tmp;
 
 	player_modify_statistic(player_num, STAT_RESOURCES, num);
 	player_modify_statistic(victim_num, STAT_RESOURCES, -num);
 
-	resource_cards(num, type, buf, sizeof(buf));
+	buf = resource_cards(num, type);
 	if (player_num == my_player_num()) {
 		/* I get the cards!
 		 */
 		log_message(MSG_STEAL, _("You get %s from %s.\n"),
 			    buf, player_name(victim_num, FALSE));
 		resource_modify(type, num);
-		return;
-	}
-	if (victim_num == my_player_num()) {
+	} else if (victim_num == my_player_num()) {
 		/* I lose the cards!
 		 */
 		log_message(MSG_STEAL, _("%s took %s from you.\n"),
 			    player_name(player_num, TRUE), buf);
 		resource_modify(type, -num);
-		return;
+	} else {
+		/* I am a bystander
+		 */
+		tmp = g_strdup(player_name(player_num, TRUE));
+		log_message(MSG_STEAL, _("%s took %s from %s.\n"),
+			    tmp, buf, player_name(victim_num, FALSE));
+		g_free(tmp);
 	}
-	/* I am a bystander
-	 */
-	tmp = g_strdup(player_name(player_num, TRUE));
-	log_message(MSG_STEAL, _("%s took %s from %s.\n"),
-		    tmp, buf, player_name(victim_num, FALSE));
-	g_free(tmp);
+	g_free(buf);
 }
 
 void develop_begin_turn(void)

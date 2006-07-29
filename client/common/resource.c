@@ -93,17 +93,16 @@ void resource_apply_list(gint player_num, const gint * resources,
 	modify_bank(bank_change);
 }
 
-void resource_cards(gint num, Resource type, gchar * buf, guint buflen)
+gchar *resource_cards(gint num, Resource type)
 {
 	/* FIXME: this should be touched up to take advantage of the
 	   GNU ngettext API */
 	if (num != 1)
-		snprintf(buf, buflen,
-			 resource_list(type, RESOURCE_MULTICARD), num);
+		return
+		    g_strdup_printf(resource_list
+				    (type, RESOURCE_MULTICARD), num);
 	else
-		strncpy(buf, resource_list(type, RESOURCE_SINGLECARD),
-			buflen - 1);
-	buf[buflen - 1] = '\0';
+		return g_strdup(resource_list(type, RESOURCE_SINGLECARD));
 }
 
 gint resource_count(const gint * resources)
@@ -123,10 +122,11 @@ gint resource_total(void)
 	return resource_count(my_assets);
 }
 
-void resource_format_num(gchar * str, guint len, const gint * resources)
+gchar *resource_format_num(const gint * resources)
 {
 	gint idx;
 	gint num_types;
+	gchar *str;
 
 	/* Count how many different resources in list
 	 */
@@ -136,9 +136,7 @@ void resource_format_num(gchar * str, guint len, const gint * resources)
 			num_types++;
 
 	if (num_types == 0) {
-		snprintf(str, len - 1, _("nothing"));
-		str[len - 1] = '\0';
-		return;
+		return g_strdup(_("nothing"));
 	}
 
 	if (num_types == 1) {
@@ -146,42 +144,43 @@ void resource_format_num(gchar * str, guint len, const gint * resources)
 			gint num = resources[idx];
 			if (num == 0)
 				continue;
-			resource_cards(num, idx, str, len);
+			return g_strdup(resource_cards(num, idx));
 		}
-		return;
 	}
 
+	str = g_strdup("");
 	for (idx = 0; idx < NO_RESOURCE; idx++) {
-		gchar buf[128];
+		gchar *old;
 		gint num = resources[idx];
 		if (num == 0)
 			continue;
 
+		old = str;
 		if (num_types == 1) {
-			resource_cards(num, idx, buf, sizeof(buf));
-			snprintf(str, len - 1, _(", and %s"), buf);
-			str[len - 1] = '\0';
+			str = g_strdup_printf(_("%s, and %s"), str,
+					      resource_cards(num, idx));
 		} else if (num_types > 2) {
-			resource_cards(num, idx, buf, sizeof(buf));
-			snprintf(str, len - 1, _("%s, "), buf);
-			str[len - 1] = '\0';
+			str = g_strdup_printf(_("%s, %s"),
+					      resource_cards(num, idx),
+					      str);
 		} else {
-			resource_cards(num, idx, str, len);
+			str = g_strdup(resource_cards(num, idx));
 		}
-		len -= strlen(str);
-		str += strlen(str);
+		g_free(old);
 		num_types--;
 	}
+	return str;
 }
 
 void resource_log_list(gint player_num, const gchar * action,
 		       const gint * resources)
 {
-	char buff[512];
+	gchar *buff;
 
-	resource_format_num(buff, sizeof(buff), resources);
+	buff = resource_format_num(resources);
 	log_message(MSG_RESOURCE, action,
 		    player_name(player_num, TRUE), buff);
+	g_free(buff);
 }
 
 void resource_modify(Resource type, gint num)

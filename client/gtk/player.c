@@ -263,7 +263,6 @@ void frontend_new_statistics(gint player_num, StatisticType type,
 {
 	Player *player = player_get(player_num);
 	gint value;
-	gchar desc[128];
 	gchar points[16];
 	GtkTreeIter iter;
 	struct Player_statistic ps;
@@ -282,17 +281,20 @@ void frontend_new_statistics(gint player_num, StatisticType type,
 		if (ps.result == FIND_MATCH_EXACT)
 			gtk_list_store_remove(summary_store, &ps.iter);
 	} else {
+		gchar *desc;
 		if (value == 1) {
 			if (statistics[type].plural != NULL)
-				sprintf(desc, "%d %s", value,
-					gettext(statistics[type].
-						singular));
+				desc = g_strdup_printf("%d %s", value,
+						       gettext(statistics
+							       [type].
+							       singular));
 			else
-				strcpy(desc,
-				       gettext(statistics[type].singular));
+				desc = strdup(gettext
+					      (statistics[type].singular));
 		} else
-			sprintf(desc, "%d %s", value,
-				gettext(statistics[type].plural));
+			desc = g_strdup_printf("%d %s", value,
+					       gettext(statistics[type].
+						       plural));
 		if (stat_get_vp_value(type) > 0)
 			sprintf(points, "%d",
 				value * stat_get_vp_value(type));
@@ -321,8 +323,7 @@ void frontend_new_statistics(gint player_num, StatisticType type,
 				   statistics[type].textcolor : &black,
 				   SUMMARY_COLUMN_STATISTIC, type + 1,
 				   SUMMARY_COLUMN_SCORE, points, -1);
-
-
+		g_free(desc);
 	}
 	frontend_gui_update();
 }

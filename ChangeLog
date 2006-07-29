@@ -1,4 +1,18 @@
 2006-07-27  Bas Wijnen <shevek@fmf.nl>
+	* editor/gtk/editor.c, common/gtk/theme.c, common/gtk/select-game.c,
+	common/game.c, common/map.c, common/game.h, common/state.c,
+	common/log.c, common/map.h, common/state.h, common/network.c,
+	meta-server/main.c, server/player.c, server/pregame.c,
+	client/gtk/callbacks.c, client/gtk/player.c,
+	client/gtk/settingscreen.c, client/gtk/state.c, client/gtk/gui.c,
+	client/gtk/connect.c, client/common/develop.c, client/common/robber.c,
+	client/common/client.c, client/common/client.h,
+	client/common/resource.c, client/common/player.c, client/ai/ai.c: Use
+	dynamic instead of static memory to allow arbitrary large strings in
+	most situations.  Still use static strings for network traffic, to
+	avoid denial of service opportunities.
+
+2006-07-27  Bas Wijnen <shevek@fmf.nl>
 	* macros/Makefile.am, editor/gtk/Makefile.am,
 	editor/gtk/pioneers-editor.rc, editor/Makefile.am, docs/Makefile.am,
 	common/gtk/aboutbox.c, common/gtk/Makefile.am, common/Makefile.am,

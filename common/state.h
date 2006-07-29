@@ -31,7 +31,8 @@
  * [fmt] format string is modelled on the printf format string.  It
  * understands the following types:
  *	%S - string from current position to end of line
- *		this takes two arguments: the gchar * and the buffer size
+ *		this takes a gchar ** argument, in which an allocated buffer
+ *		is returned.  It must be freed by the caller.
  *	%d - integer
  *	%B - build type;
  *		'road' = BUILD_ROAD,
@@ -152,7 +153,7 @@ void sm_state_name(StateMachine * sm, const gchar * name);
 gboolean sm_recv(StateMachine * sm, const gchar * fmt, ...);
 gboolean sm_recv_prefix(StateMachine * sm, const gchar * fmt, ...);
 void sm_cancel_prefix(StateMachine * sm);
-void sm_vnformat(gchar * buff, gint len, const gchar * fmt, va_list ap);
+gchar *sm_vformat(const gchar * fmt, va_list ap);
 void sm_write(StateMachine * sm, const gchar * str);
 void sm_send(StateMachine * sm, const gchar * fmt, ...);
 /** Cache the messages that are sent.

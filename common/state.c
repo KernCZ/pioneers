@@ -215,7 +215,7 @@ static gint try_recv(StateMachine * sm, const gchar * fmt, va_list ap)
 	gchar *line = sm->line + sm->line_offset;
 
 	while (*fmt != '\0' && line[offset] != '\0') {
-		gchar *str;
+		gchar **str;
 		gint *num;
 		gint idx;
 		gint len;
@@ -233,11 +233,9 @@ static gint try_recv(StateMachine * sm, const gchar * fmt, va_list ap)
 
 		switch (*fmt++) {
 		case 'S':	/* string from current position to end of line */
-			str = va_arg(ap, gchar *);
-			len = va_arg(ap, gint);
-			strncpy(str, line + offset, len - 1);
-			str[len - 1] = '\0';
-			offset += strlen(str);
+			str = va_arg(ap, gchar **);
+			*str = g_strdup(line + offset);
+			offset += strlen(*str);
 			break;
 		case 'd':	/* integer */
 			num = va_arg(ap, gint *);
@@ -335,109 +333,86 @@ gboolean sm_recv_prefix(StateMachine * sm, const gchar * fmt, ...)
 	return TRUE;
 }
 
-static gint buff_append(gchar * buff, gint len, gint offset,
-			const gchar * str)
+#define buff_append(result, format, value) \
+	do { \
+		gchar *old = result; \
+		result = g_strdup_printf("%s" format, result, value); \
+		g_free(old); \
+	} while (0)
+
+gchar *sm_vformat(const gchar * fmt, va_list ap)
 {
-	gint str_len = strlen(str);
+	/* initialize result to an allocated empty string */
+	gchar *result = g_strdup("");
 
-	g_assert(offset + str_len < len);
-	strncpy(buff + offset, str, str_len);
-	return offset + str_len;
-}
-
-void sm_vnformat(gchar * buff, gint len, const gchar * fmt, va_list ap)
-{
-	gint offset = 0;
-
-	while (*fmt != '\0' && offset < len) {
-		gchar tmp[64];
-		gchar *str;
-		gint val;
-		gint *num;
-		gint idx;
-		BuildType build_type;
-		Resource resource;
-
-		if (*fmt != '%') {
-			buff[offset++] = *fmt++;
-			continue;
+	while (*fmt != '\0') {
+		gchar *pos = strchr(fmt, '%');
+		if (pos == NULL) {
+			buff_append(result, "%s", fmt);
+			break;
 		}
-		fmt++;
+		/* add format until next % to result */
+		result = g_realloc(result, strlen(result) + pos - fmt + 1);
+		result[strlen(result) + pos - fmt] = '\0';
+		memcpy(&result[strlen(result)], fmt, pos - fmt);
+		fmt = pos + 1;
 
 		switch (*fmt++) {
+			BuildType build_type;
+			const gint *num;
+			gint idx;
 		case 's':	/* string */
-			str = va_arg(ap, gchar *);
-			offset = buff_append(buff, len, offset, str);
+			buff_append(result, "%s", va_arg(ap, gchar *));
 			break;
 		case 'd':	/* integer */
-			val = va_arg(ap, gint);
-			sprintf(tmp, "%d", val);
-			offset = buff_append(buff, len, offset, tmp);
+		case 'D':	/* development card type */
+			buff_append(result, "%d", va_arg(ap, gint));
 			break;
 		case 'B':	/* build type */
 			build_type = va_arg(ap, BuildType);
 			switch (build_type) {
 			case BUILD_ROAD:
-				offset =
-				    buff_append(buff, len, offset, "road");
+				buff_append(result, "%s", "road");
 				break;
 			case BUILD_BRIDGE:
-				offset =
-				    buff_append(buff, len, offset,
-						"bridge");
+				buff_append(result, "%s", "bridge");
 				break;
 			case BUILD_SHIP:
-				offset =
-				    buff_append(buff, len, offset, "ship");
+				buff_append(result, "%s", "ship");
 				break;
 			case BUILD_SETTLEMENT:
-				offset =
-				    buff_append(buff, len, offset,
-						"settlement");
+				buff_append(result, "%s", "settlement");
 				break;
 			case BUILD_CITY:
-				offset =
-				    buff_append(buff, len, offset, "city");
+				buff_append(result, "%s", "city");
 				break;
 			case BUILD_NONE:
-				g_error
-				    ("BUILD_NONE passed to sm_vnformat");
+				g_error("BUILD_NONE passed to sm_vformat");
 				break;
 			case BUILD_MOVE_SHIP:
 				g_error
-				    ("BUILD_MOVE_SHIP passed to sm_vnformat");
+				    ("BUILD_MOVE_SHIP passed to sm_vformat");
 				break;
 			}
 			break;
 		case 'R':	/* list of 5 integer resource counts */
 			num = va_arg(ap, gint *);
-			for (idx = 0; idx < NO_RESOURCE && offset < len;
-			     idx++) {
+			for (idx = 0; idx < NO_RESOURCE; idx++) {
 				if (idx > 0)
-					sprintf(tmp, " %d", *num);
+					buff_append(result, " %d",
+						    num[idx]);
 				else
-					sprintf(tmp, "%d", *num);
-				offset =
-				    buff_append(buff, len, offset, tmp);
-				num++;
+					buff_append(result, "%d",
+						    num[idx]);
 			}
 			break;
-		case 'D':	/* development card type */
-			val = va_arg(ap, gint);
-			sprintf(tmp, "%d", val);
-			offset = buff_append(buff, len, offset, tmp);
-			break;
 		case 'r':	/* resource type */
-			resource = va_arg(ap, Resource);
-			offset =
-			    buff_append(buff, len, offset,
-					resource_types[resource]);
+			buff_append(result, "%s",
+				    resource_types[va_arg(ap, Resource)]);
 			break;
 		}
 	}
-	if (offset == len)
-		offset--;
-	buff[offset] = '\0';
+	return result;
 }
 
 void sm_write(StateMachine * sm, const gchar * str)
@@ -458,16 +433,17 @@ void sm_write(StateMachine * sm, const gchar * str)
 void sm_send(StateMachine * sm, const gchar * fmt, ...)
 {
 	va_list ap;
-	gchar buff[512];
+	gchar *buff;
 
 	if (!sm->ses)
 		return;
 
 	va_start(ap, fmt);
-	sm_vnformat(buff, sizeof(buff), fmt, ap);
+	buff = sm_vformat(fmt, ap);
 	va_end(ap);
 
 	sm_write(sm, buff);
+	g_free(buff);
 }
 
 void sm_set_use_cache(StateMachine * sm, gboolean use_cache)
@@ -505,16 +481,17 @@ StateMachine *sm_copy_as_uncached(const StateMachine * sm)
 void sm_send_uncached(StateMachine * sm, const gchar * fmt, ...)
 {
 	va_list ap;
-	gchar buff[512];
+	gchar *buff;
 
 	g_assert(sm->ses);
 	g_assert(sm->use_cache);
 
 	va_start(ap, fmt);
-	sm_vnformat(buff, sizeof(buff), fmt, ap);
+	buff = sm_vformat(fmt, ap);
 	va_end(ap);
 
 	net_write(sm->ses, buff);
+	g_free(buff);
 }
 
 void sm_global_set(StateMachine * sm, StateFunc state)
@@ -583,7 +560,7 @@ static void do_push(StateMachine * sm, StateFunc new_state, gboolean enter)
 		route_event(sm, SM_ENTER);
 	route_event(sm, SM_INIT);
 #ifdef STACK_DEBUG
-	debug("sm_push -> %d:%s (enter=%d)\n", sm->stack_ptr,
+	debug("sm_push -> %d:%s (enter=%d)", sm->stack_ptr,
 	      sm->current_state, enter);
 #endif
 	sm_dec_use_count(sm);
@@ -607,7 +584,7 @@ void sm_pop(StateMachine * sm)
 	sm->stack_ptr--;
 	route_event(sm, SM_ENTER);
 #ifdef STACK_DEBUG
-	debug("sm_pop  -> %d:%s\n", sm->stack_ptr, sm->current_state);
+	debug("sm_pop  -> %d:%s", sm->stack_ptr, sm->current_state);
 #endif
 	route_event(sm, SM_INIT);
 	sm_dec_use_count(sm);
@@ -621,7 +598,7 @@ void sm_multipop(StateMachine * sm, gint depth)
 	sm->stack_ptr -= depth;
 	route_event(sm, SM_ENTER);
 #ifdef STACK_DEBUG
-	debug("sm_multipop  -> %d:%s\n", sm->stack_ptr, sm->current_state);
+	debug("sm_multipop  -> %d:%s", sm->stack_ptr, sm->current_state);
 #endif
 	route_event(sm, SM_INIT);
 

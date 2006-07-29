@@ -355,13 +355,13 @@ void gui_set_instructions(const gchar * text)
 
 void gui_set_vp_target_value(gint vp)
 {
-	gchar vp_text[30];
+	gchar *vp_text;
 
 	/* Victory points target in statusbar */
-	g_snprintf(vp_text, sizeof(vp_text), _("Points Needed to Win: %i"),
-		   vp);
+	vp_text = g_strdup_printf(_("Points Needed to Win: %i"), vp);
 
 	gtk_label_set_text(GTK_LABEL(vp_target_status), vp_text);
+	g_free(vp_text);
 }
 
 void gui_set_net_status(const gchar * text)

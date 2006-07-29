@@ -73,8 +73,9 @@ void pirate_moved(gint player_num, gint x, gint y)
 
 void robber_begin_move(gint player_num)
 {
-	char buffer[512];
-	snprintf(buffer, 512, _("%s must move the robber."),
-		 player_name(player_num, TRUE));
+	gchar *buffer;
+	buffer = g_strdup_printf(_("%s must move the robber."),
+				 player_name(player_num, TRUE));
 	callbacks.instructions(buffer);
+	g_free(buffer);
 }

@@ -67,14 +67,13 @@ typedef union {
 void debug(const gchar * fmt, ...)
 {
 	va_list ap;
-	gchar buff[16 * 1024];
-	gint len;
+	gchar *buff;
 	gint idx;
 	time_t t;
 	struct tm *alpha;
 
 	va_start(ap, fmt);
-	len = g_vsnprintf(buff, sizeof(buff), fmt, ap);
+	buff = g_strdup_vprintf(fmt, ap);
 	va_end(ap);
 
 	t = time(NULL);
@@ -83,8 +82,8 @@ void debug(const gchar * fmt, ...)
 	g_print("%02d:%02d:%02d ", alpha->tm_hour,
 		alpha->tm_min, alpha->tm_sec);
 
-	for (idx = 0; idx < len; idx++) {
-		if (isprint(buff[idx]) || idx == len - 1)
+	for (idx = 0; buff[idx] != '\0'; idx++) {
+		if (isprint(buff[idx]))
 			g_print("%c", buff[idx]);
 		else
 			switch (buff[idx]) {
@@ -102,6 +101,7 @@ void debug(const gchar * fmt, ...)
 				break;
 			}
 	}
+	g_print("\n");
 }
 #endif
 
@@ -221,7 +221,7 @@ static void write_ready(Session * ses)
 
 		num = send(ses->fd, data, len, 0);
 #ifdef DEBUG
-		debug("write_ready: write(%d, \"%.*s\", %d) = %d\n",
+		debug("write_ready: write(%d, \"%.*s\", %d) = %d",
 		      ses->fd, len, data, len, num);
 #endif
 		if (num < 0) {
@@ -272,9 +272,9 @@ void net_write(Session * ses, const gchar * data)
 		num = send(ses->fd, data, len, 0);
 #ifdef DEBUG
 		if (num > 0)
-			debug("(%d) --> %s\n", ses->fd, data);
+			debug("(%d) --> %s", ses->fd, data);
 		else if (errno != EAGAIN)
-			debug("(%d) --- Error writing to socket.\n",
+			debug("(%d) --- Error writing to socket.",
 			      ses->fd);
 #endif
 		if (num < 0) {
@@ -298,14 +298,15 @@ void net_write(Session * ses, const gchar * data)
 
 void net_printf(Session * ses, const gchar * fmt, ...)
 {
-	char buff[4096];
+	char *buff;
 	va_list ap;
 
 	va_start(ap, fmt);
-	g_vsnprintf(buff, sizeof(buff), fmt, ap);
+	buff = g_strdup_vprintf(fmt, ap);
 	va_end(ap);
 
 	net_write(ses, buff);
+	g_free(buff);
 }
 
 static int find_line(char *buff, int len)
@@ -368,7 +369,7 @@ static void read_ready(Session * ses)
 		offset += len + 1;
 
 #ifdef DEBUG
-		debug("(%d) <-- %s\n", ses->fd, line);
+		debug("(%d) <-- %s", ses->fd, line);
 #endif
 		notify(ses, NET_READ, line);
 	}

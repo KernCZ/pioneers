@@ -136,7 +136,6 @@ static void select_game_item_changed(G_GNUC_UNUSED GtkWidget * widget,
 
 const gchar *select_game_get_active(SelectGame * sg)
 {
-	gint index =
-	    gtk_combo_box_get_active(GTK_COMBO_BOX(sg->combo_box));
-	return g_ptr_array_index(sg->game_names, index);
+	gint idx = gtk_combo_box_get_active(GTK_COMBO_BOX(sg->combo_box));
+	return g_ptr_array_index(sg->game_names, idx);
 }

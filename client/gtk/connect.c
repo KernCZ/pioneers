@@ -1239,10 +1239,10 @@ void connect_create_dlg(void)
 
 static void update_recent_servers_list(void)
 {
-	gchar keyname1[150], keyname2[150];
-	gchar temp_name[150] = "", temp_port[150] = "";
-	gchar cur_name[150], cur_port[150];
-	gchar conn_name[150], conn_port[150];
+	gchar keyname1[50], keyname2[50];
+	gchar *temp_name, *temp_port;
+	gchar *cur_name, *cur_port;
+	gchar *conn_name, *conn_port;
 	gboolean default_used;
 	gboolean done;
 	gint i;
@@ -1250,21 +1250,21 @@ static void update_recent_servers_list(void)
 	done = FALSE;
 	i = 0;
 
-	strcpy(conn_name, connect_get_server());
-	strcpy(conn_port, connect_get_port());
+	conn_name = g_strdup(connect_get_server());
+	conn_port = g_strdup(connect_get_port());
 
-	strcpy(temp_name, conn_name);
-	strcpy(temp_port, conn_port);
+	temp_name = g_strdup(conn_name);
+	temp_port = g_strdup(conn_port);
 
 	do {
 		sprintf(keyname1, "favorites/server%dname=", i);
 		sprintf(keyname2, "favorites/server%dport=", i);
-		strcpy(cur_name,
-		       config_get_string(keyname1, &default_used));
-		strcpy(cur_port,
-		       config_get_string(keyname2, &default_used));
+		cur_name =
+		    g_strdup(config_get_string(keyname1, &default_used));
+		cur_port =
+		    g_strdup(config_get_string(keyname2, &default_used));
 
-		if (strlen(temp_name)) {
+		if (temp_name) {
 			sprintf(keyname1, "favorites/server%dname", i);
 			sprintf(keyname2, "favorites/server%dport", i);
 			config_set_string(keyname1, temp_name);
@@ -1279,18 +1279,28 @@ static void update_recent_servers_list(void)
 
 		if (!strcmp(cur_name, conn_name)
 		    && !strcmp(cur_port, conn_port)) {
-			strcpy(temp_name, "");
-			strcpy(temp_port, "");
+			temp_name = NULL;
+			temp_port = NULL;
 		} else {
-			strcpy(temp_name, cur_name);
-			strcpy(temp_port, cur_port);
+			g_free(temp_name);
+			g_free(temp_port);
+			temp_name = g_strdup(cur_name);
+			temp_port = g_strdup(cur_port);
 		}
 
 		i++;
 		if (i > PRIVATE_GAME_HISTORY_SIZE) {
 			done = TRUE;
 		}
+		g_free(cur_name);
+		g_free(cur_port);
 	} while (!done);
+	g_free(cur_name);
+	g_free(cur_port);
+	g_free(temp_name);
+	g_free(temp_port);
+	g_free(conn_name);
+	g_free(conn_port);
 }
 
 static void host_list_select_cb(GtkWidget * widget, gpointer user_data)
@@ -1348,7 +1358,7 @@ static void connect_private_dialog(G_GNUC_UNUSED GtkWidget * widget,
 	GPtrArray *host_entries;
 
 	gint i;
-	gchar *host_name, *host_port, *host_name_port, temp_str[150];
+	gchar *host_name, *host_port, *host_name_port, temp_str[50];
 	gboolean default_returned;
 
 	if (connect_private_dlg) {
