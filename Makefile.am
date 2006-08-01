@@ -23,13 +23,24 @@ console_cflags = \
 	-I$(top_srcdir)/common \
 	-I$(top_builddir)/common \
 	-I$(includedir) \
-	$(GLIB2_CFLAGS)
+	$(GLIB2_CFLAGS) \
+	$(WARNINGS) \
+	$(DEBUGGING) \
+	$(GLIB_DEPRECATION) \
+	-DDATADIR=\""$(pioneers_datadir)"\" \
+	-DTHEMEDIR=\""$(pioneers_themedir)"\" \
+	-DLOCALEDIR=\""$(pioneers_localedir)"\" \
+	-DPIONEERS_DIR_DEFAULT=\""$(pioneers_datadir)/games/pioneers"\" \
+	-DPIONEERS_SERVER_CONSOLE_PATH=\""$(bindir)/pioneers-server-console"\" \
+	-DPIONEERS_SERVER_GTK_PATH=\""$(bindir)/pioneers-server-gtk"\" \
+	-DPIONEERS_AI_PATH=\""$(bindir)/pioneersai"\"
 
 gtk_cflags = \
 	$(console_cflags) \
 	-I$(top_srcdir)/common/gtk/ \
 	$(GNOME2_CFLAGS) \
-	$(GTK2_CFLAGS)
+	$(GTK2_CFLAGS) \
+	$(GTK_DEPRECATION)
 
 # The Fink port needs an explicit reference to driver.o
 console_libs = \

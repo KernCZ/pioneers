@@ -123,31 +123,31 @@ esac])
 ## The warnings are in the same order as in 'man gcc'
 if test "x$GCC" = xyes; then
 	if test "$pioneers_warnings" = yes -o "$pioneers_warnings" = full; then
-		AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -Wall")
-		AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -W")
-		AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -Wpointer-arith")
-		AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -Wcast-qual")
-		AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -Wwrite-strings")
-		AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -Wno-sign-compare") # Turn off
-		AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -Waggregate-return")
-		AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -Wstrict-prototypes")
-		AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -Wmissing-prototypes")
-		AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -Wmissing-declarations")
-		AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -Wredundant-decls")
-		AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -Wnested-externs")
-		AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -O")
+		AC_SUBST(WARNINGS, "-Wall")
+		AC_SUBST(WARNINGS, "$WARNINGS -W")
+		AC_SUBST(WARNINGS, "$WARNINGS -Wpointer-arith")
+		AC_SUBST(WARNINGS, "$WARNINGS -Wcast-qual")
+		AC_SUBST(WARNINGS, "$WARNINGS -Wwrite-strings")
+		AC_SUBST(WARNINGS, "$WARNINGS -Wno-sign-compare")
+		AC_SUBST(WARNINGS, "$WARNINGS -Waggregate-return")
+		AC_SUBST(WARNINGS, "$WARNINGS -Wstrict-prototypes")
+		AC_SUBST(WARNINGS, "$WARNINGS -Wmissing-prototypes")
+		AC_SUBST(WARNINGS, "$WARNINGS -Wmissing-declarations")
+		AC_SUBST(WARNINGS, "$WARNINGS -Wredundant-decls")
+		AC_SUBST(WARNINGS, "$WARNINGS -Wnested-externs")
+		AC_SUBST(WARNINGS, "$WARNINGS -O")
 	fi
 	if test "$pioneers_warnings" = full; then
-		flags="-Wfloat-equal";
-		flags="$flags -Wdeclaration-after-statement";
-		flags="$flags -Wundef";
-		flags="$flags -Wendif-labels";
-		flags="$flags -Wshadow";
-		flags="$flags -Wbad-function-cast";
-		flags="$flags -Wconversion";
-		flags="$flags -Wold-style-definition";
-		flags="$flags -Wunreachable-code";
-		flags="$flags -pedantic";
+		flags="-Wfloat-equal"
+		flags="$flags -Wdeclaration-after-statement"
+		flags="$flags -Wundef"
+		flags="$flags -Wendif-labels"
+		flags="$flags -Wshadow"
+		flags="$flags -Wbad-function-cast"
+		flags="$flags -Wconversion"
+		flags="$flags -Wold-style-definition"
+		flags="$flags -Wunreachable-code"
+		flags="$flags -pedantic"
 
 		# This for loop comes from gnome-compiler-flags.m4
 		for option in $flags; do
@@ -160,7 +160,7 @@ if test "x$GCC" = xyes; then
 			CFLAGS="$SAVE_CFLAGS"
 			AC_MSG_RESULT($has_option)
 			if test $has_option = yes; then
-				AC_SUBST(AM_CFLAGS, "$AM_CFLAGS $option")
+				AC_SUBST(WARNINGS, "$WARNINGS $option")
 			fi
 			unset has_option
 			unset SAVE_CFLAGS
@@ -169,23 +169,26 @@ if test "x$GCC" = xyes; then
 		unset flags
 	fi
 fi
+AC_SUBST(WARNINGS)
 
 if test "$pioneers_debug" = yes; then
-	AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -ggdb3")
+	AC_SUBST(DEBUGGING, "-ggdb3")
 fi
+AC_SUBST(DEBUGGING)
 
 if test "$pioneers_logging" = yes; then
 	AC_DEFINE_UNQUOTED(DEBUG, [1], [Defined when logging is enabled])
 fi
 
 if test "$pioneers_deprecationChecks" = yes; then
-	## TODO: These defines should be in AM_CPPFLAGS instead of AM_CFLAGS
-	AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -DG_DISABLE_DEPRECATED")
-	AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -DGDK_DISABLE_DEPRECATED")
-	AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -DGTK_DISABLE_DEPRECATED")
-	AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -DGNOME_DISABLE_DEPRECATED")
+	AC_SUBST(GLIB_DEPRECATION, "-DG_DISABLE_DEPRECATED")
+	AC_SUBST(GTK_DEPRECATION, "-DGDK_DISABLE_DEPRECATED")
+	AC_SUBST(GTK_DEPRECATION, "$GTK_DEPRECATION -DGTK_DISABLE_DEPRECATED")
+	AC_SUBST(GTK_DEPRECATION, "$GTK_DEPRECATION -DGNOME_DISABLE_DEPRECATED")
 fi
-	
+AC_SUBST(GLIB_DEPRECATION)
+AC_SUBST(GTK_DEPRECATION)
+
 ## Scrollkeeper dependency test taken from gnome-games 2.6.2
 ## Begin tests for scrollkeeper
 # SCROLLKEEPER_REQUIRED is never used?
@@ -335,14 +338,10 @@ else
 	pioneers_themedir=$pioneers_themedir_install
 	pioneers_localedir=$datadir/locale
 fi
-AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -DDATADIR=\\\""$pioneers_datadir"\\\"")
-AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -DTHEMEDIR=\\\""$pioneers_themedir"\\\"")
-AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -DLOCALEDIR=\\\""$pioneers_localedir"\\\"")
-AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -DPIONEERS_DIR_DEFAULT=\\\""$pioneers_datadir/games/pioneers"\\\"")
-AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -DPIONEERS_SERVER_CONSOLE_PATH=\\\""$bindir/pioneers-server-console"\\\"")
-AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -DPIONEERS_SERVER_GTK_PATH=\\\""$bindir/pioneers-server-gtk"\\\"")
-AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -DPIONEERS_AI_PATH=\\\""$bindir/pioneersai"\\\"")
+AC_SUBST(pioneers_datadir)
+AC_SUBST(pioneers_themedir_install)
 AC_SUBST(pioneers_themedir, $pioneers_themedir_install)
+AC_SUBST(pioneers_localedir)
 
 AM_CONDITIONAL(WINDOWS_ICON, [test $pioneers_is_windows_port = yes])
 
@@ -359,8 +358,6 @@ AC_TYPE_SIZE_T
 # Check if socklen_t is present
 TYPE_SOCKLEN_T
 
-AC_SUBST(CFLAGS)
-AC_SUBST(LDFLAGS)
 AC_SUBST(MT_RAND_OBJ)
 # Defines, accessible for all source files
 AC_DEFINE_UNQUOTED(PROTOCOL_VERSION, "$PROTOCOL_VERSION",
@@ -445,6 +442,7 @@ AC_MSG_NOTICE([
 $PACKAGE v$VERSION configuration:
 
         Source code location:              ${srcdir}
+        Install location:                  ${prefix}
         Compiler:                          ${CC}
         Build graphical client             $pioneers_build_client_gtk
         Build computer player              $pioneers_build_client_ai

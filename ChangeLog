@@ -1,3 +1,8 @@
+2006-08-01  Bas Wijnen <shevek@fmf.nl>
+	* configure.ac: Mention install root in notification.
+	* configure.ac, Makefile.am: Let configure.ac not touch AM_*
+	variables.
+
 2006-07-29  Roland Clobus <rclobus@bigfoot.com>
 	* editor/gtk/editor.c: Added keyboard shortcuts to the editor
 	* client/common/client.c: Allow a player to initiate trade when he has
