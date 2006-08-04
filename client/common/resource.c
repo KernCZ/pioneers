@@ -148,23 +148,27 @@ gchar *resource_format_num(const gint * resources)
 		}
 	}
 
-	str = g_strdup("");
+	str = NULL;
 	for (idx = 0; idx < NO_RESOURCE; idx++) {
 		gchar *old;
 		gint num = resources[idx];
 		if (num == 0)
 			continue;
 
+		if (str == NULL) {
+			str = g_strdup(resource_cards(num, idx));
+			num_types--;
+			continue;
+		}
 		old = str;
 		if (num_types == 1) {
-			str = g_strdup_printf(_("%s, and %s"), str,
+			/* Construct "A, B and C" for resources */
+			str = g_strdup_printf(_("%s and %s"), str,
 					      resource_cards(num, idx));
-		} else if (num_types > 2) {
-			str = g_strdup_printf(_("%s, %s"),
-					      resource_cards(num, idx),
-					      str);
 		} else {
-			str = g_strdup(resource_cards(num, idx));
+			/* Construct "A, B and C" for resources */
+			str = g_strdup_printf(_("%s, %s"), str,
+					      resource_cards(num, idx));
 		}
 		g_free(old);
 		num_types--;
