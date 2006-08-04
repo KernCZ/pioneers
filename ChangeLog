@@ -5,6 +5,7 @@
 	viewers.
 	* client/ai/greedy.c: AI can trade lumber again.
 	* server/turn.c: Unregister from the metaserver at game over.
+	* server/coeur.game: Don't shuffle gold tiles.
 	
 2006-08-01  Bas Wijnen <shevek@fmf.nl>
 	* configure.ac: Mention install root in notification.
