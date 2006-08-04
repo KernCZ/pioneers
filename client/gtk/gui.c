@@ -940,7 +940,7 @@ static void preferences_cb(void)
 	gtk_table_attach_defaults(GTK_TABLE(layout), widget,
 				  0, 2, row, row + 1);
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget),
-				     toolbar_show_accelerators);
+				     get_announce_player());
 	g_signal_connect(G_OBJECT(widget), "toggled",
 			 G_CALLBACK(announce_player_cb), NULL);
 	/* Tooltip for the option to use sound */
