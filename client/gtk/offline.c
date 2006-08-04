@@ -109,14 +109,23 @@ static void frontend_offline_gui(GuiEvent event)
 	}
 }
 
+void frontend_disconnect(void)
+{
+	quit_when_offline = FALSE;
+	cb_disconnect();
+}
+
 /* this function is called when offline mode is entered. */
 void frontend_offline(void)
 {
-	gui_cursor_none();	/* Clear possible cursor */
-
 	connectable = TRUE;
+
 	if (have_dlg)
 		return;
+
+	gui_cursor_none();	/* Clear possible cursor */
+	frontend_discard_done();
+	frontend_gold_done();
 
 	/* set the callback for gui events */
 	set_gui_state(frontend_offline_gui);
@@ -127,13 +136,9 @@ void frontend_offline(void)
 
 	/* Commandline overrides the dialog */
 	if (server_from_commandline) {
-		connectable = FALSE;
-		gui_show_splash_page(FALSE);
-		cb_connect(server, port, name, viewer);
+		server_from_commandline = FALSE;
 		quit_when_offline = TRUE;
-		port = NULL;
-		server = NULL;
-		frontend_gui_update();
+		route_gui_event(GUI_CONNECT_TRY);
 	} else {
 		frontend_offline_start_connect_cb();
 	}
@@ -217,10 +222,10 @@ void frontend_init(int argc, char **argv)
 	connect_set_name(name);
 	connect_set_viewer(viewer);
 
-	if (server && port && server[0] && port[0]) {
+	if (server && port) {
 		server_from_commandline = TRUE;
 	} else {
-		if ((server && server[0]) || (port && port[0]))
+		if (server || port)
 			g_warning("Only server or port set, "
 				  "ignoring command line");
 		server_from_commandline = FALSE;

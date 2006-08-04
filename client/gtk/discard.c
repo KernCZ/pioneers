@@ -195,6 +195,11 @@ void discard_begin(void)
 
 void discard_end(void)
 {
+	if (discard.dlg) {
+		gtk_widget_destroy(discard.dlg);
+		discard.dlg = NULL;
+	}
+
 	gui_discard_hide();
 }
 

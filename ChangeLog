@@ -20,6 +20,9 @@
 	client/common/chat.c, client/ai/ai.h, client/ai/greedy.c,
 	client/ai/Makefile.am, client/ai/ai.c, client/ai/lobbybot.c: Added
 	robot for the lobby.
+	* client/gtk/interface.c, client/gtk/frontend.h, client/gtk/discard.c,
+	client/gtk/state.c, client/gtk/offline.c, client/gtk/gui.c: Leave a
+	game without quitting the client.
 	
 2006-08-01  Bas Wijnen <shevek@fmf.nl>
 	* configure.ac: Mention install root in notification.

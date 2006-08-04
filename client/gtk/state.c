@@ -47,11 +47,8 @@ void route_gui_event(GuiEvent event)
 		name_create_dlg();
 		return;
 	case GUI_DISCONNECT:
-		/* quit_when_offline = FALSE */
-		cb_disconnect();	/* @todo RC 2004-11-09 Use frontend calls */
-		/* @todo RC 2004-11-18 Connection to another game does not
-		 * work 100%, for now: quit when leaving the game... */
-		/* Fall through */
+		frontend_disconnect();
+		return;
 	case GUI_QUIT:
 #ifdef DEBUG
 		debug("quitting");

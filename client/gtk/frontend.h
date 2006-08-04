@@ -106,6 +106,7 @@ void frontend_viewer_name(gint viewer_num, const gchar * name);
 void frontend_player_name(gint player_num, const gchar * name);
 void frontend_player_quit(gint player_num);
 void frontend_viewer_quit(gint player_num);
+void frontend_disconnect(void);
 void frontend_offline(void);
 void frontend_discard(void);
 void frontend_discard_add(gint player_num, gint discard_num);

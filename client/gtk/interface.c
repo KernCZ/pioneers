@@ -38,8 +38,7 @@ static void build_city_cb(MapElement node, MapElement extra);
 /* for gold and discard, remember the previous gui state */
 static GuiState previous_state;
 
-static gboolean gold_busy = FALSE, discard_busy = FALSE, robber_busy =
-    FALSE;
+static gboolean discard_busy = FALSE, robber_busy = FALSE;
 
 static void frontend_state_idle(G_GNUC_UNUSED GuiEvent event)
 {
@@ -546,7 +545,9 @@ void frontend_discard_done(void)
 {
 	discard_busy = FALSE;
 	discard_end();
-	set_gui_state(previous_state);
+	if (get_gui_state() == frontend_state_discard
+	    || get_gui_state() == frontend_state_idle)
+		set_gui_state(previous_state);
 }
 
 /* gold */
@@ -568,8 +569,7 @@ static void frontend_state_gold(GuiEvent event)
 
 void frontend_gold(void)
 {
-	if (!gold_busy) {
-		gold_busy = TRUE;
+	if (get_gui_state() != frontend_state_gold) {
 		gold_choose_begin();
 		previous_state = get_gui_state();
 		set_gui_state(frontend_state_gold);
@@ -596,9 +596,9 @@ void frontend_gold_remove(gint player_num, gint * resources)
 
 void frontend_gold_done(void)
 {
-	gold_busy = FALSE;
 	gold_choose_end();
-	set_gui_state(previous_state);
+	if (get_gui_state() == frontend_state_gold)
+		set_gui_state(previous_state);
 }
 
 void frontend_game_over(gint player, gint points)
