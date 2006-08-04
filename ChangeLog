@@ -12,7 +12,14 @@
 	* editor/gtk/editor.c, common/gtk/guimap.c, common/gtk/guimap.h,
 	client/gtk/callbacks.c, client/gtk/gui.c, client/gtk/gui.h: Show
 	nosetup nodes in the editor and in the client (for players only).
-	* client/common/resource.c: Fix regression of 2006-07-27
+	* client/common/resource.c: Fix regression of 2006-07-27.
+	* docs/README.release, client/callback.h, client/gtk/interface.c,
+	client/gtk/callbacks.c, client/gtk/frontend.h, client/gtk/chat.c,
+	client/common/client.c, client/common/client.h,
+	client/common/Makefile.am, client/common/player.c,
+	client/common/chat.c, client/ai/ai.h, client/ai/greedy.c,
+	client/ai/Makefile.am, client/ai/ai.c, client/ai/lobbybot.c: Added
+	robot for the lobby.
 	
 2006-08-01  Bas Wijnen <shevek@fmf.nl>
 	* configure.ac: Mention install root in notification.
