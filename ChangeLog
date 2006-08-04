@@ -4,6 +4,7 @@
 	* client/common/client.c: Don't show waiting for your turn for
 	viewers.
 	* client/ai/greedy.c: AI can trade lumber again.
+	* server/turn.c: Unregister from the metaserver at game over.
 	
 2006-08-01  Bas Wijnen <shevek@fmf.nl>
 	* configure.ac: Mention install root in notification.

@@ -339,6 +339,7 @@ void check_victory(Player * player)
 			sm_pop_all_and_goto(scan->sm,
 					    (StateFunc) mode_idle);
 		}
+		meta_unregister();
 
 		game_is_over(game);
 	}
