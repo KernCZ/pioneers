@@ -1010,8 +1010,7 @@ static gboolean find_optimal_trade(gint assets[NO_RESOURCE],
 		 * to trade for what's missing.
 		 */
 		leftover_resources(assets, bt, need);
-		for (temp = 0; temp < G_N_ELEMENTS(build_preferences);
-		     temp++) {
+		for (temp = 0; temp < NO_RESOURCE; temp++) {
 			if (temp == res)
 				continue;
 			if (need[temp] > ports[temp]) {
