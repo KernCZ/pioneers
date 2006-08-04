@@ -43,7 +43,6 @@ typedef struct resource_values_s {
 	MaritimeInfo info;
 } resource_values_t;
 
-static Map *map;
 static int quote_num;
 /* used to avoid multiple chat messages when more than one other player
  * must discard resources */
@@ -120,10 +119,10 @@ static void for_each_node(iterate_node_func_t * func, void *rock)
 {
 	int i, j, k;
 
-	for (i = 0; i < map->x_size; i++) {
-		for (j = 0; j < map->y_size; j++) {
+	for (i = 0; i < get_map()->x_size; i++) {
+		for (j = 0; j < get_map()->y_size; j++) {
 			for (k = 0; k < 6; k++) {
-				Node *n = map_node(map, i, j, k);
+				Node *n = map_node(get_map(), i, j, k);
 
 				if (n)
 					func(n, rock);
@@ -345,7 +344,7 @@ static void reevaluate_resources(resource_values_t * outval)
 	/*
 	 * Save the maritime info too so we know if we can do port trades
 	 */
-	map_maritime_info(map, &outval->info, my_player_num());
+	map_maritime_info(get_map(), &outval->info, my_player_num());
 }
 
 
@@ -469,10 +468,10 @@ static Node *best_settlement_spot(gboolean during_setup,
 	float bestscore = -1.0;
 	float score;
 
-	for (i = 0; i < map->x_size; i++) {
-		for (j = 0; j < map->y_size; j++) {
+	for (i = 0; i < get_map()->x_size; i++) {
+		for (j = 0; j < get_map()->y_size; j++) {
 			for (k = 0; k < 6; k++) {
-				Node *n = map_node(map, i, j, k);
+				Node *n = map_node(get_map(), i, j, k);
 				if (!n)
 					continue;
 				if (during_setup) {
@@ -507,10 +506,10 @@ static Node *best_city_spot(const resource_values_t * resval)
 	Node *best = NULL;
 	float bestscore = -1.0;
 
-	for (i = 0; i < map->x_size; i++) {
-		for (j = 0; j < map->y_size; j++) {
+	for (i = 0; i < get_map()->x_size; i++) {
+		for (j = 0; j < get_map()->y_size; j++) {
 			for (k = 0; k < 6; k++) {
-				Node *n = map_node(map, i, j, k);
+				Node *n = map_node(get_map(), i, j, k);
 				if (!n)
 					continue;
 				if ((n->owner == my_player_num())
@@ -664,10 +663,10 @@ static Edge *best_road_to_road(const resource_values_t * resval)
 	Edge *best = NULL;
 	float bestscore = -1.0;
 
-	for (i = 0; i < map->x_size; i++) {
-		for (j = 0; j < map->y_size; j++) {
+	for (i = 0; i < get_map()->x_size; i++) {
+		for (j = 0; j < get_map()->y_size; j++) {
 			for (k = 0; k < 6; k++) {
-				Node *n = map_node(map, i, j, k);
+				Node *n = map_node(get_map(), i, j, k);
 				Edge *e;
 				float score;
 
@@ -706,10 +705,10 @@ static Edge *best_road_spot(const resource_values_t * resval)
 	 * xxx loops
 	 */
 
-	for (i = 0; i < map->x_size; i++) {
-		for (j = 0; j < map->y_size; j++) {
+	for (i = 0; i < get_map()->x_size; i++) {
+		for (j = 0; j < get_map()->y_size; j++) {
 			for (k = 0; k < 6; k++) {
-				Node *n = map_node(map, i, j, k);
+				Node *n = map_node(get_map(), i, j, k);
 
 				if ((n != NULL)
 				    && (n->owner == my_player_num())) {
@@ -1042,7 +1041,7 @@ static gboolean will_do_maritime_trade(gint assets[NO_RESOURCE],
 	Resource res, want, discard;
 	gint ports[NO_RESOURCE];
 
-	map_maritime_info(map, &info, my_player_num());
+	map_maritime_info(get_map(), &info, my_player_num());
 
 	for (res = 0; res < NO_RESOURCE; res++) {
 		if (info.specific_resource[res])
@@ -1396,9 +1395,9 @@ static void greedy_place_robber(void)
 	int victim_resources = -1;
 
 	ai_wait();
-	for (i = 0; i < map->x_size; i++) {
-		for (j = 0; j < map->y_size; j++) {
-			Hex *hex = map_hex(map, i, j);
+	for (i = 0; i < get_map()->x_size; i++) {
+		for (j = 0; j < get_map()->y_size; j++) {
+			Hex *hex = map_hex(get_map(), i, j);
 			float score = score_hex_hurt_opponents(hex);
 
 			if (score > bestscore) {
@@ -1970,8 +1969,6 @@ static void greedy_new_statistics(gint player_num, StatisticType type,
 
 void greedy_init(G_GNUC_UNUSED int argc, G_GNUC_UNUSED char **argv)
 {
-	map = get_map();
-
 	callbacks.setup = &greedy_setup;
 	callbacks.turn = &greedy_turn;
 	callbacks.robber = &greedy_place_robber;

@@ -62,10 +62,6 @@ gboolean mode_quote_finish_response(StateMachine * sm, gint event);
 gboolean mode_quote_submit_response(StateMachine * sm, gint event);
 gboolean mode_quote_delete_response(StateMachine * sm, gint event);
 
-/******** chat.c ************/
-/* parse an incoming chat message */
-void chat_parser(gint player_num, const gchar * chat_str);
-
 /******* player.c **********/
 void player_reset(void);
 void player_set_my_num(gint player_num);

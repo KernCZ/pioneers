@@ -188,8 +188,6 @@ struct callbacks {
 			     const gint * they_receive);
 	/* the dice have been rolled */
 	void (*rolled_dice) (gint die1, gint die2, gint player_num);
-	/* the terminal should beep, if it likes to. */
-	void (*beep) (void);
 	/* An edge changed, it should be drawn */
 	void (*draw_edge) (Edge * edge);
 	/* A node changed, it should be drawn */
@@ -237,6 +235,8 @@ struct callbacks {
 	void (*player_quit) (gint player_num);
 	/* a viewer left the game */
 	void (*viewer_quit) (gint player_num);
+	/* respond to incoming chat messages */
+	void (*incoming_chat) (gint player_num, const gchar * chat);
 	/* something changed in the bank. */
 	void (*new_bank) (const gint * new_bank);
 	/* some communication error occurred, and it has already been logged */
@@ -317,6 +317,11 @@ const gchar *my_player_name(void);
 gboolean my_player_viewer(void);
 gint num_players(void);
 gint current_player(void);
+/** Find the player or viewer with name
+ *  @param name The name to search for
+ *  @return the player/viewer number or -1 if the name was not found
+ */
+gint find_player_by_name(const gchar * name);
 gint build_count_edges(void);
 gint build_count_settlements(void);
 gint build_count(BuildType type);

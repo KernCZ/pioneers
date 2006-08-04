@@ -137,7 +137,6 @@ void frontend_quote_start(void);
 void frontend_quote_end(void);
 void frontend_quote_monitor(void);
 void frontend_rolled_dice(gint die1, gint die2, gint player_num);
-void frontend_beep(void);
 void frontend_bought_develop(DevelType type);
 void frontend_played_develop(gint player_num, gint card_idx,
 			     DevelType type);
@@ -281,6 +280,8 @@ void chat_player_quit(gint player_num);
 void chat_viewer_quit(gint viewer_num);
 /** Clear all names */
 void chat_clear_names(void);
+/** Parse the chat for commands */
+void chat_parser(gint player_num, const gchar * chat_str);
 
 /* name.c */
 void name_create_dlg(void);

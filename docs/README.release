@@ -11,6 +11,7 @@ Before a release:
 
 At release time:
 * Update (if needed): NEWS, README, README.Cygwin, README.MinGW, TODO
+* Update: client/ai/lobbybot.c
 * Create the tarball
 * Sign the tarball
   gpg -u packager@foo.net --armor --output tarball.sig --detach-sig tarball.tar.gz

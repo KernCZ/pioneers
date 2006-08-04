@@ -620,12 +620,6 @@ void frontend_rolled_dice(gint die1, gint die2, gint player_num)
 	frontend_gui_update();
 }
 
-void frontend_beep(void)
-{
-	gdk_beep();
-	frontend_gui_update();
-}
-
 static void place_robber(const Hex * hex, gint victim)
 {
 	cb_place_robber(hex, victim);

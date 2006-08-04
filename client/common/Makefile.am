@@ -26,7 +26,6 @@ libpioneersclient_a_SOURCES = \
 	client/callback.h \
 	client/common/build.c \
 	client/common/callback.c \
-	client/common/chat.c \
 	client/common/client.c \
 	client/common/client.h \
 	client/common/develop.c \

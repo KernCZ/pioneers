@@ -26,7 +26,8 @@ pioneersai_SOURCES = \
 	client/callback.h \
 	client/ai/ai.h \
 	client/ai/ai.c \
-	client/ai/greedy.c
+	client/ai/greedy.c \
+	client/ai/lobbybot.c
 
 pioneersai_LDADD = libpioneersclient.a $(console_libs)
 

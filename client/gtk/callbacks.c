@@ -148,7 +148,6 @@ void frontend_set_callbacks(void)
 	callbacks.rolled_dice = &frontend_rolled_dice;
 	callbacks.gold_choose = &frontend_gold_choose;
 	callbacks.gold_done = &frontend_gold_done;
-	callbacks.beep = &frontend_beep;
 	callbacks.draw_edge = &frontend_draw_edge;
 	callbacks.draw_node = &frontend_draw_node;
 	callbacks.bought_develop = &frontend_bought_develop;
@@ -163,5 +162,6 @@ void frontend_set_callbacks(void)
 	callbacks.player_name = &frontend_player_name;
 	callbacks.player_quit = &frontend_player_quit;
 	callbacks.viewer_quit = &frontend_viewer_quit;
+	callbacks.incoming_chat = &chat_parser;
 	callbacks.new_bank = &frontend_new_bank;
 }

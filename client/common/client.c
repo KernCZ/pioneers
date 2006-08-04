@@ -250,9 +250,6 @@ static void dummy_rolled_dice(G_GNUC_UNUSED gint die1,
 			      G_GNUC_UNUSED gint player_num)
 {;
 }
-static void dummy_beep(void)
-{;
-}
 static void dummy_draw_edge(G_GNUC_UNUSED Edge * edge)
 {;
 }
@@ -313,6 +310,10 @@ static void dummy_player_quit(G_GNUC_UNUSED gint player_num)
 static void dummy_viewer_quit(G_GNUC_UNUSED gint player_num)
 {;
 }
+static void dummy_incoming_chat(G_GNUC_UNUSED gint player_num,
+				G_GNUC_UNUSED const gchar * chat)
+{;
+}
 static void dummy_new_bank(G_GNUC_UNUSED const gint * new_bank)
 {;
 }
@@ -367,7 +368,6 @@ void client_init(void)
 	callbacks.quote_monitor = &dummy_quote_monitor;
 	callbacks.quote_trade = &dummy_quote_trade;
 	callbacks.rolled_dice = &dummy_rolled_dice;
-	callbacks.beep = &dummy_beep;
 	callbacks.draw_edge = &dummy_draw_edge;
 	callbacks.draw_node = &dummy_draw_node;
 	callbacks.bought_develop = &dummy_bought_develop;
@@ -384,6 +384,7 @@ void client_init(void)
 	callbacks.player_name = &dummy_player_name;
 	callbacks.player_quit = &dummy_player_quit;
 	callbacks.viewer_quit = &dummy_viewer_quit;
+	callbacks.incoming_chat = &dummy_incoming_chat;
 	callbacks.new_bank = &dummy_new_bank;
 	callbacks.error = &dummy_error;
 	/* mainloop is not set here */
@@ -497,7 +498,7 @@ static gboolean check_chat_or_name(StateMachine * sm)
 	gchar *str;
 
 	if (sm_recv(sm, "player %d chat %S", &player_num, &str)) {
-		chat_parser(player_num, str);
+		callbacks.incoming_chat(player_num, str);
 		g_free(str);
 		return TRUE;
 	}

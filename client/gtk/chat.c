@@ -203,3 +203,118 @@ void chat_clear_names(void)
 {
 	gtk_list_store_clear(chat_completion_model);
 }
+
+/** Beep a player (if the name is found)
+ * @param beeping_player The player that sent the /beep
+ * @param name           The name of the beeped player
+ */
+static void beep_player(gint beeping_player, const gchar * name)
+{
+	gint beeped_player = find_player_by_name(name);
+	if (beeped_player != -1) {
+		if (beeped_player == my_player_num()) {
+			gdk_beep();
+			frontend_gui_update();
+			if (beeping_player == my_player_num())
+				log_message(MSG_BEEP, _("Beeper test.\n"));
+			else
+				log_message(MSG_BEEP,
+					    _("%s beeped you.\n"),
+					    player_name(beeping_player,
+							TRUE));
+		} else if (beeping_player == my_player_num()) {
+			log_message(MSG_BEEP, _("You beeped %s.\n"), name);
+		}
+	} else {
+		if (beeping_player == my_player_num()) {
+			/* No success */
+			log_message(MSG_BEEP,
+				    _("You could not beep %s.\n"), name);
+		}
+	}
+}
+
+void chat_parser(gint player_num, const gchar * chat)
+{
+	int tempchatcolor = MSG_INFO;
+	gchar *chat_str;
+	gchar *chat_alloc;
+	const gchar *joining_text;
+
+	/* If the chat matches chat from the AI, translate it.
+	 * FIXME: There should be a flag to indicate the player is an AI,
+	 *        so that chat from human players will not be translated
+	 */
+	chat_alloc = g_strdup(_(chat));
+	chat_str = chat_alloc;
+
+	if (!strncmp(chat_str, "/beep", 5)) {
+		chat_str += 5;
+		chat_str += strspn(chat_str, " \t");
+		if (chat_str != NULL) {
+			beep_player(player_num, chat_str);
+		}
+		g_free(chat_alloc);
+		return;
+	} else if (!strncmp(chat_str, "/me", 3)) {
+		/* IRC-compatible /me */
+		chat_str += 3;
+		chat_str += strspn(chat_str, " \t") - 1;
+		chat_str[0] = ':';
+	}
+
+	switch (chat_str[0]) {
+	case ':':
+		chat_str += 1;
+		joining_text = " ";
+		break;
+	case ';':
+		chat_str += 1;
+		joining_text = "";
+		break;
+	default:
+		joining_text = _(" said: ");
+		break;
+	}
+
+	if (color_chat_enabled) {
+		if (player_is_viewer(player_num))
+			tempchatcolor = MSG_VIEWER_CHAT;
+		else
+			switch (player_num) {
+			case 0:
+				tempchatcolor = MSG_PLAYER1;
+				break;
+			case 1:
+				tempchatcolor = MSG_PLAYER2;
+				break;
+			case 2:
+				tempchatcolor = MSG_PLAYER3;
+				break;
+			case 3:
+				tempchatcolor = MSG_PLAYER4;
+				break;
+			case 4:
+				tempchatcolor = MSG_PLAYER5;
+				break;
+			case 5:
+				tempchatcolor = MSG_PLAYER6;
+				break;
+			case 6:
+				tempchatcolor = MSG_PLAYER7;
+				break;
+			case 7:
+				tempchatcolor = MSG_PLAYER8;
+				break;
+			default:
+				g_assert_not_reached();
+				break;
+			}
+	} else {
+		tempchatcolor = MSG_CHAT;
+	}
+	log_message_chat(player_name(player_num, TRUE), joining_text,
+			 tempchatcolor, chat_str);
+	g_free(chat_alloc);
+	return;
+}

@@ -26,15 +26,31 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <time.h>
+#include <string.h>
 
 static char *server = NULL;
 static char *port = NULL;
 static char *name = NULL;
 static char *ai;
 static int waittime = 1000;
-static int local_argc;
-static char **local_argv;
 static gboolean silent = FALSE;
+
+static const struct algorithm_info {
+	/** Name of the algorithm (for commandline) */
+	const gchar *name;
+	/** Init function */
+	void (*init_func) (int argc, char **argv);
+	/** Request to be a player? */
+	gboolean request_player;
+	/** Quit if request not honoured */
+	gboolean quit_if_not_request;
+} algorithms[] = {
+/* *INDENT-OFF* */
+	{ "greedy", &greedy_init, TRUE, TRUE},
+	{ "lobbybot", &lobbybot_init, FALSE, TRUE},
+/* *INDENT-ON* */
+};
+static int active_algorithm = 0;
 
 static gchar *random_name(void)
 {
@@ -99,11 +115,6 @@ static GOptionEntry commandline_entries[] = {
 	{NULL, '\0', 0, 0, NULL, NULL, NULL}
 };
 
-/* this needs some tweaking.  It would be nice if anything not handled by
- * the AI program can be handled by the AI implementation that is playing.
- * -c is typically an option which should not be handled globally */
-/* RC 2006-04-23: I think -c is globally useful. The greedy player has
- * no other commandline arguments, yet. */
 static void ai_init(int argc, char **argv)
 {
 	GOptionContext *context;
@@ -126,9 +137,6 @@ static void ai_init(int argc, char **argv)
 	if (port == NULL)
 		port = g_strdup(PIONEERS_DEFAULT_GAME_PORT);
 
-	local_argc = argc;
-	local_argv = argv;
-
 	printf("ai port is %s\n", port);
 
 	g_random_set_seed(time(NULL) + getpid());
@@ -139,6 +147,17 @@ static void ai_init(int argc, char **argv)
 
 	set_ui_driver(&Glib_Driver);
 	log_set_func_default();
+
+	if (ai != NULL) {
+		gint i;
+		for (i = 0; i < G_N_ELEMENTS(algorithms); i++) {
+			if (!strcmp(algorithms[i].name, ai))
+				active_algorithm = i;
+		}
+	}
+	log_message(MSG_INFO, _("Type of computer player: %s\n"),
+		    algorithms[active_algorithm].name);
+	algorithms[active_algorithm].init_func(argc, argv);
 }
 
 static void ai_quit(void)
@@ -149,19 +168,19 @@ static void ai_quit(void)
 static void ai_offline(void)
 {
 	callbacks.offline = &ai_quit;
-	cb_connect(server, port, name, FALSE);
+	cb_connect(server, port, name,
+		   !algorithms[active_algorithm].request_player);
 	g_free(name);
 }
 
 static void ai_start_game(void)
 {
-	if (my_player_viewer()) {
+	if (algorithms[active_algorithm].request_player ==
+	    my_player_viewer()
+	    && algorithms[active_algorithm].quit_if_not_request) {
 		cb_chat(N_("The game is already full. I'm leaving."));
 		exit(1);
 	}
-
-	/** @todo choose which ai implementation to use */
-	greedy_init(local_argc, local_argv);
 }
 
 void ai_wait(void)

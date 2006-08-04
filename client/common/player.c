@@ -709,3 +709,22 @@ gboolean my_player_viewer(void)
 {
 	return player_is_viewer(my_player_num());
 }
+
+gint find_player_by_name(const gchar * name)
+{
+	gint i;
+	GList *list;
+
+	for (i = 0; i < num_total_players; i++) {
+		Player *player = player_get(i);
+		if (player->name && !strcmp(player->name, name))
+			return i;
+	}
+
+	for (list = viewers; list != NULL; list = g_list_next(list)) {
+		Viewer *viewer = list->data;
+		if (!strcmp(viewer->name, name))
+			return viewer->num;
+	}
+	return -1;
+}
