@@ -54,6 +54,7 @@ static void frontend_start_game(void)
 	gui_set_game_params(get_game_params());
 	set_num_players(num_players());
 	identity_reset();
+	gui_set_show_no_setup_nodes(!player_is_viewer(my_player_num()));
 	frontend_gui_update();
 }
 
@@ -83,6 +84,7 @@ static void frontend_update_stock(void)
 
 static void frontend_player_turn(gint player)
 {
+	gui_set_show_no_setup_nodes(FALSE);
 	player_show_current(player);
 }
 

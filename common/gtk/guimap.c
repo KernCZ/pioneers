@@ -73,6 +73,7 @@ GuiMap *guimap_new(void)
 	gmap = g_malloc0(sizeof(*gmap));
 	gmap->highlight_chit = -1;
 	gmap->initial_font_size = -1;
+	gmap->show_nosetup_nodes = FALSE;
 	return gmap;
 }
 
@@ -191,6 +192,14 @@ static GdkPoint city_points[] = {
 static Polygon city_poly = {
 	city_points,
 	G_N_ELEMENTS(city_points)
+};
+static GdkPoint nosetup_points[] = {
+	{0, 30}, {26, 15}, {26, -15}, {0, -30},
+	{-26, -15}, {-26, 15}, {0, 30}
+};
+static Polygon nosetup_poly = {
+	nosetup_points,
+	G_N_ELEMENTS(nosetup_points)
 };
 static GdkPoint road_points[] = {
 	{10, 40}, {10, -40}, {-10, -40}, {-10, 40},
@@ -430,6 +439,12 @@ void guimap_settlement_polygon(const GuiMap * gmap, const Node * node,
 			       Polygon * poly)
 {
 	calc_node_poly(gmap, node, &settlement_poly, poly);
+}
+
+static void guimap_nosetup_polygon(const GuiMap * gmap, const Node * node,
+				   Polygon * poly)
+{
+	calc_node_poly(gmap, node, &nosetup_poly, poly);
 }
 
 static void guimap_robber_polygon(const GuiMap * gmap, const Hex * hex,
@@ -708,18 +723,27 @@ static gboolean display_hex(const Map * map, const Hex * hex,
 	/* Draw all buildings */
 	for (idx = 0; idx < G_N_ELEMENTS(hex->nodes); idx++) {
 		const Node *node = hex->nodes[idx];
-		if (node->owner < 0)
+		if (node->owner < 0 && !gmap->show_nosetup_nodes)
 			continue;
 
-		/* Draw the building */
 		poly.num_points = G_N_ELEMENTS(points);
-		if (node->type == BUILD_CITY)
-			guimap_city_polygon(gmap, node, &poly);
-		else
-			guimap_settlement_polygon(gmap, node, &poly);
+		if (node->owner < 0) {
+			if (!node->no_setup)
+				continue;
+			guimap_nosetup_polygon(gmap, node, &poly);
+			gdk_gc_set_foreground(gmap->gc, &white);
+		} else {
+			/* Draw the building */
+			if (node->type == BUILD_CITY)
+				guimap_city_polygon(gmap, node, &poly);
+			else
+				guimap_settlement_polygon(gmap, node,
+							  &poly);
+			gdk_gc_set_foreground(gmap->gc,
+					      colors_get_player(node->
+								owner));
+		}
 
-		gdk_gc_set_foreground(gmap->gc,
-				      colors_get_player(node->owner));
 		poly_draw(gmap->pixmap, gmap->gc, TRUE, &poly);
 		gdk_gc_set_foreground(gmap->gc, &black);
 		poly_draw(gmap->pixmap, gmap->gc, FALSE, &poly);
@@ -898,6 +922,9 @@ void guimap_display(GuiMap * gmap)
 	PangoContext *pc;
 	PangoFontDescription *pfd;
 	gint font_size;
+
+	if (gmap->pixmap == NULL)
+		return;
 
 	if (gmap->gc != NULL) {
 		/* Unref old gc */
@@ -1927,4 +1954,15 @@ void guimap_start_single_click_build(gboolean road_mask,
 	shipMoveS = ship_move_select_func;
 	shipMoveC = ship_move_cancel_func;
 	single_click_build_active = TRUE;
+}
+
+void guimap_set_show_no_setup_nodes(GuiMap * gmap, gboolean show)
+{
+	gboolean old_show = gmap->show_nosetup_nodes;
+	gmap->show_nosetup_nodes = show;
+	if (old_show != show) {
+		/* Repaint and redraw the map */
+		guimap_display(gmap);
+		gtk_widget_queue_draw(gmap->area);
+	}
 }

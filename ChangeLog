@@ -9,6 +9,9 @@
 	* client/gtk/gui.c: Settings used wrong variable.
 	* README.subversion: Information about building from the subversion
 	repository.
+	* editor/gtk/editor.c, common/gtk/guimap.c, common/gtk/guimap.h,
+	client/gtk/callbacks.c, client/gtk/gui.c, client/gtk/gui.h: Show
+	nosetup nodes in the editor and in the client (for players only).
 	
 2006-08-01  Bas Wijnen <shevek@fmf.nl>
 	* configure.ac: Mention install root in notification.

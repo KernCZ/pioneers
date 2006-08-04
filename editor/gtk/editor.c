@@ -415,6 +415,7 @@ static GtkWidget *build_map(void)
 	table = gtk_table_new(2, 2, FALSE);
 
 	gmap = guimap_new();
+	guimap_set_show_no_setup_nodes(gmap, TRUE);
 	area = guimap_build_drawingarea(gmap, MAP_WIDTH, MAP_HEIGHT);
 
 	GTK_WIDGET_SET_FLAGS(area, GTK_CAN_FOCUS);

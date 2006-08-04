@@ -64,6 +64,7 @@ typedef struct {
 	gint initial_font_size;	   /**< initial font size */
 
 	Map *map;		   /**< map that is displayed */
+	gboolean show_nosetup_nodes; /**< show the nosetup nodes */
 
 	CursorType cursor_type;	   /**< current cursor type */
 	gint cursor_owner;	   /**< owner of the cursor */
@@ -153,5 +154,5 @@ void guimap_start_single_click_build(gboolean road_mask,
 void guimap_cursor_move(GuiMap * gmap, gint x, gint y,
 			MapElement * element);
 void guimap_cursor_select(GuiMap * gmap, gint x, gint y);
-
+void guimap_set_show_no_setup_nodes(GuiMap * gmap, gboolean show);
 #endif

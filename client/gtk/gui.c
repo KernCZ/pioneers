@@ -1496,3 +1496,8 @@ gint gui_get_resource_pixmap_res()
 {
 	return resource_pixmap_res;
 }
+
+void gui_set_show_no_setup_nodes(gboolean show)
+{
+	guimap_set_show_no_setup_nodes(gmap, show);
+}
