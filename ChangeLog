@@ -1,3 +1,7 @@
+2006-08-04  Roland Clobus <rclobus@bigfoot.com>
+	* client/gtk/interface.c: Enable roll dice for the second game of the
+	same instance of the client.
+	
 2006-08-01  Bas Wijnen <shevek@fmf.nl>
 	* configure.ac: Mention install root in notification.
 	* configure.ac, Makefile.am: Let configure.ac not touch AM_*
