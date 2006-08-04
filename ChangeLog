@@ -1,6 +1,8 @@
 2006-08-04  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/interface.c: Enable roll dice for the second game of the
 	same instance of the client.
+	* client/common/client.c: Don't show waiting for your turn for
+	viewers.
 	
 2006-08-01  Bas Wijnen <shevek@fmf.nl>
 	* configure.ac: Mention install root in notification.

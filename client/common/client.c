@@ -1320,7 +1320,8 @@ static gboolean mode_idle(StateMachine * sm, gint event)
 	switch (event) {
 	case SM_ENTER:
 		callback_mode = MODE_WAIT_TURN;
-		callbacks.instructions(_("Waiting for your turn"));
+		if (!player_is_viewer(my_player_num()))
+			callbacks.instructions(_("Waiting for your turn"));
 		break;
 	case SM_RECV:
 		if (sm_recv(sm, "setup %d", &backwards)) {
