@@ -71,6 +71,10 @@ void cb_roll(void)
 	/* roll dice */
 	g_assert(callback_mode == MODE_TURN && !have_rolled_dice());
 	sm_send(SM(), "roll\n");
+	/* This should really be sm_push, but on return it should be
+	 * sm_pop_noenter; sm_goto_noenter; sm_push, and since sm_pop_noenter
+	 * doesn't exist, the combination is changed into
+	 * sm_goto here and sm_goto_noenter; sm_push later. */
 	sm_goto(SM(), mode_roll_response);
 }
 
@@ -140,7 +144,7 @@ void cb_buy_develop(void)
 	/* buy development card */
 	g_assert(callback_mode == MODE_TURN && can_buy_develop());
 	sm_send(SM(), "buy-develop\n");
-	sm_goto(SM(), mode_buy_develop_response);
+	sm_push(SM(), mode_buy_develop_response);
 }
 
 void cb_play_develop(int card)
@@ -261,7 +265,7 @@ void cb_end_quote(void)
 	/* stop trading */
 	g_assert(callback_mode == MODE_QUOTE);
 	sm_send(SM(), "domestic-quote finish\n");
-	sm_goto(SM(), mode_quote_finish_response);
+	sm_push(SM(), mode_quote_finish_response);
 }
 
 void cb_chat(const gchar * text)

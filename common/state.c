@@ -605,11 +605,6 @@ void sm_multipop(StateMachine * sm, gint depth)
 	sm_dec_use_count(sm);
 }
 
-void sm_pop_all(StateMachine * sm)
-{
-	sm->stack_ptr = -1;
-}
-
 void sm_pop_all_and_goto(StateMachine * sm, StateFunc new_state)
 {
 	sm_inc_use_count(sm);

@@ -94,9 +94,8 @@
  * 	Pop a number of states off the stack and set a new current state
  * 	accordingly.
  *
- * sm_pop_all()
- *	Clear the state stack, set the current state to the state that
- *	was on the bottom of the stack.
+ * sm_pop_all_and_goto(new_state)
+ *	Clear the state stack, set the current state to [new_state]
  *
  * sm_stack_inspect()
  *	Return the state at offset from the top of the stack.
@@ -176,7 +175,6 @@ void sm_push(StateMachine * sm, StateFunc new_state);
 void sm_push_noenter(StateMachine * sm, StateFunc new_state);
 void sm_pop(StateMachine * sm);
 void sm_multipop(StateMachine * sm, gint depth);
-void sm_pop_all(StateMachine * sm);
 void sm_pop_all_and_goto(StateMachine * sm, StateFunc new_state);
 StateFunc sm_current(StateMachine * sm);
 StateFunc sm_stack_inspect(const StateMachine * sm, guint offset);

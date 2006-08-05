@@ -72,7 +72,6 @@ static gboolean mode_domestic_trade(StateMachine * sm, gint event);
 static gboolean mode_domestic_quote(StateMachine * sm, gint event);
 static gboolean mode_domestic_monitor(StateMachine * sm, gint event);
 static gboolean mode_game_over(StateMachine * sm, gint event);
-static gboolean mode_choose_gold(StateMachine * sm, gint event);
 static gboolean mode_wait_resources(StateMachine * sm, gint event);
 static gboolean mode_recovery_wait_start_response(StateMachine * sm,
 						  gint event);
@@ -422,8 +421,8 @@ static gboolean global_filter(StateMachine * sm, gint event)
 	case SM_NET_CLOSE:
 		log_message(MSG_ERROR,
 			    _("We have been kicked out of the game.\n"));
-		sm_pop_all(sm);
-		sm_goto(sm, mode_offline);
+		waiting_for_network(FALSE);
+		sm_pop_all_and_goto(sm, mode_offline);
 		callbacks.network_status(_("Offline"));
 		return TRUE;
 	default:
@@ -521,7 +520,7 @@ static gboolean check_other_players(StateMachine * sm)
 	DevelType devel_type;
 	Resource resource_type, supply_type, receive_type;
 	gint player_num, victim_num, card_idx, backwards;
-	gint turn_num, discard_num, gold_num, num, ratio, die1, die2, x, y,
+	gint turn_num, discard_num, num, ratio, die1, die2, x, y,
 	    pos;
 	gint id;
 	gint resource_list[NO_RESOURCE];
@@ -601,11 +600,6 @@ static gboolean check_other_players(StateMachine * sm)
 		player_resource_action(player_num, _("%s discarded %s.\n"),
 				       resource_list, -1);
 		callbacks.discard_remove(player_num);
-		return TRUE;
-	}
-	if (sm_recv(sm, "prepare-gold %d", &gold_num)) {
-		sm_goto(sm, mode_choose_gold);
-		callbacks.gold_add(player_num, gold_num);
 		return TRUE;
 	}
 	if (sm_recv(sm, "is-robber")) {
@@ -801,8 +795,7 @@ gboolean mode_start(StateMachine * sm, gint event)
 		return TRUE;
 	}
 	if (sm_recv(sm, "ERR sorry, version conflict")) {
-		sm_pop_all(sm);
-		sm_goto(sm, mode_offline);
+		sm_pop_all_and_goto(sm, mode_offline);
 		callbacks.network_status(_("Offline"));
 		callbacks.instructions(_("Version mismatch"));
 		log_message(MSG_ERROR,
@@ -1172,8 +1165,6 @@ gboolean mode_build_response(StateMachine * sm, gint event)
 		}
 		if (check_other_players(sm))
 			return TRUE;
-		waiting_for_network(FALSE);
-		sm_pop(sm);
 		break;
 	}
 	return FALSE;
@@ -1200,8 +1191,6 @@ gboolean mode_move_response(StateMachine * sm, gint event)
 		}
 		if (check_other_players(sm))
 			return TRUE;
-		waiting_for_network(FALSE);
-		sm_pop(sm);
 		break;
 	}
 	return FALSE;
@@ -1230,9 +1219,6 @@ gboolean mode_done_response(StateMachine * sm, gint event)
 		}
 		if (check_other_players(sm))
 			return TRUE;
-		waiting_for_network(FALSE);
-		/* pop back to parent if "done" didn't work */
-		sm_pop(sm);
 		break;
 	}
 	return FALSE;
@@ -1403,9 +1389,6 @@ gboolean mode_robber_response(StateMachine * sm, gint event)
 		}
 		if (check_other_players(sm))
 			return TRUE;
-		waiting_for_network(FALSE);
-		/* pop to parent if move failed */
-		sm_pop(sm);
 		break;
 	}
 	return FALSE;
@@ -1533,9 +1516,6 @@ gboolean mode_monopoly_response(StateMachine * sm, gint event)
 		}
 		if (check_other_players(sm))
 			return TRUE;
-		/* pop to parent if it didn't work */
-		sm_pop(sm);
-		waiting_for_network(FALSE);
 		break;
 	}
 	return FALSE;
@@ -1582,9 +1562,6 @@ gboolean mode_year_of_plenty_response(StateMachine * sm, gint event)
 		}
 		if (check_other_players(sm))
 			return TRUE;
-		waiting_for_network(FALSE);
-		/* if it fails, go back to parent */
-		sm_pop(sm);
 		break;
 	}
 	return FALSE;
@@ -1634,6 +1611,11 @@ gboolean mode_play_develop_response(StateMachine * sm, gint event)
 			waiting_for_network(FALSE);
 			develop_played(my_player_num(), card_idx,
 				       card_type);
+			/* This mode should be popped off after the response
+			 * has been handled.  However, for the development
+			 * card, a new mode must be pushed immediately.  Due
+			 * to the lack of sm_pop_noenter this is combined as
+			 * sm_goto */
 			switch (card_type) {
 			case DEVEL_ROAD_BUILDING:
 				sm_goto(sm, mode_road_building);
@@ -1655,8 +1637,6 @@ gboolean mode_play_develop_response(StateMachine * sm, gint event)
 		}
 		if (check_other_players(sm))
 			return TRUE;
-		waiting_for_network(FALSE);
-		sm_pop(sm);
 		break;
 	}
 	return FALSE;
@@ -1737,8 +1717,6 @@ gboolean mode_roll_response(StateMachine * sm, gint event)
 		}
 		if (check_other_players(sm))
 			return TRUE;
-		waiting_for_network(FALSE);
-		sm_goto(sm, mode_turn);
 		break;
 	}
 	return FALSE;
@@ -1781,14 +1759,12 @@ gboolean mode_buy_develop_response(StateMachine * sm, gint event)
 	case SM_RECV:
 		if (sm_recv(sm, "bought-develop %D", &card_type)) {
 			develop_bought_card(card_type);
-			sm_goto(sm, mode_turn_rolled);
+			sm_pop(sm);
 			waiting_for_network(FALSE);
 			return TRUE;
 		}
 		if (check_other_players(sm))
 			return TRUE;
-		sm_goto(sm, mode_turn_rolled);
-		waiting_for_network(FALSE);
 		break;
 	}
 	return FALSE;
@@ -1824,8 +1800,6 @@ gboolean mode_undo_response(StateMachine * sm, gint event)
 		}
 		if (check_other_players(sm))
 			return TRUE;
-		waiting_for_network(FALSE);
-		sm_pop(sm);
 		break;
 	}
 	return FALSE;
@@ -1899,13 +1873,12 @@ gboolean mode_trade_call_response(StateMachine * sm, gint event)
 		if (sm_recv(sm, "domestic-trade call supply %R receive %R",
 			    we_supply, we_receive)) {
 			waiting_for_network(FALSE);
+			/* pop response state + push trade state == goto */
 			sm_goto(sm, mode_domestic_trade);
 			return TRUE;
 		}
 		if (check_trading(sm) || check_other_players(sm))
 			return TRUE;
-		waiting_for_network(FALSE);
-		sm_pop(sm);
 		break;
 	}
 	return FALSE;
@@ -1951,8 +1924,6 @@ gboolean mode_trade_maritime_response(StateMachine * sm, gint event)
 		}
 		if (check_trading(sm) || check_other_players(sm))
 			return TRUE;
-		waiting_for_network(FALSE);
-		sm_pop(sm);
 		break;
 	}
 	return FALSE;
@@ -1979,8 +1950,6 @@ gboolean mode_trade_call_again_response(StateMachine * sm, gint event)
 		}
 		if (check_trading(sm) || check_other_players(sm))
 			return TRUE;
-		waiting_for_network(FALSE);
-		sm_pop(sm);
 		break;
 	}
 	return FALSE;
@@ -2017,8 +1986,6 @@ gboolean mode_trade_domestic_response(StateMachine * sm, gint event)
 		}
 		if (check_trading(sm) || check_other_players(sm))
 			return TRUE;
-		waiting_for_network(FALSE);
-		sm_pop(sm);
 		break;
 	}
 	return FALSE;
@@ -2043,9 +2010,6 @@ gboolean mode_domestic_finish_response(StateMachine * sm, gint event)
 		}
 		if (check_trading(sm) || check_other_players(sm))
 			return TRUE;
-		waiting_for_network(FALSE);
-		/* pop back to parent if finish fails */
-		sm_pop(sm);
 		break;
 	}
 	return FALSE;
@@ -2075,7 +2039,8 @@ static gboolean mode_domestic_trade(StateMachine * sm, gint event)
  * Quote processing - all quoting done inside a nested state machine.
  */
 
-static gboolean check_quoting(StateMachine * sm)
+static gboolean check_quoting(StateMachine * sm, gint exitdepth,
+			      gboolean monitor)
 {
 	gint player_num, partner_num, quote_num;
 	gint they_supply[NO_RESOURCE];
@@ -2100,6 +2065,8 @@ static gboolean check_quoting(StateMachine * sm)
 	}
 	if (sm_recv(sm, "domestic-trade call supply %R receive %R",
 		    they_supply, they_receive)) {
+		if (monitor)
+			sm_pop(sm);
 		callbacks.quote(player_num, they_supply, they_receive);
 		return TRUE;
 	}
@@ -2117,7 +2084,7 @@ static gboolean check_quoting(StateMachine * sm)
 		callback_mode = previous_mode;
 		callbacks.quote_end();
 		sm_send(sm, "domestic-quote exit\n");
-		sm_pop(sm);
+		sm_multipop(sm, exitdepth);
 		return TRUE;
 	}
 
@@ -2137,14 +2104,13 @@ gboolean mode_quote_finish_response(StateMachine * sm, gint event)
 	case SM_RECV:
 		if (sm_recv(sm, "domestic-quote finish")) {
 			waiting_for_network(FALSE);
+			/* pop response + push monitor == goto */
 			sm_goto(sm, mode_domestic_monitor);
+			callbacks.quote_monitor();
 			return TRUE;
 		}
-		if (check_quoting(sm) || check_other_players(sm))
+		if (check_quoting(sm, 2, FALSE) || check_other_players(sm))
 			return TRUE;
-		waiting_for_network(FALSE);
-		sm_goto(sm, mode_domestic_quote);
-		callbacks.quote_monitor();
 		break;
 	}
 	return FALSE;
@@ -2173,10 +2139,8 @@ gboolean mode_quote_submit_response(StateMachine * sm, gint event)
 			sm_pop(sm);
 			return TRUE;
 		}
-		if (check_quoting(sm) || check_other_players(sm))
+		if (check_quoting(sm, 2, FALSE) || check_other_players(sm))
 			return TRUE;
-		waiting_for_network(FALSE);
-		sm_pop(sm);
 		break;
 	}
 	return FALSE;
@@ -2200,10 +2164,8 @@ gboolean mode_quote_delete_response(StateMachine * sm, gint event)
 			sm_pop(sm);
 			return TRUE;
 		}
-		if (check_quoting(sm) || check_other_players(sm))
+		if (check_quoting(sm, 2, FALSE) || check_other_players(sm))
 			return TRUE;
-		waiting_for_network(FALSE);
-		sm_pop(sm);
 		break;
 	}
 	return FALSE;
@@ -2223,7 +2185,7 @@ static gboolean mode_domestic_quote(StateMachine * sm, gint event)
 		}
 		break;
 	case SM_RECV:
-		if (check_quoting(sm) || check_other_players(sm))
+		if (check_quoting(sm, 1, FALSE) || check_other_players(sm))
 			return TRUE;
 		break;
 	default:
@@ -2239,7 +2201,7 @@ static gboolean mode_domestic_monitor(StateMachine * sm, gint event)
 	sm_state_name(sm, "mode_domestic_monitor");
 	switch (event) {
 	case SM_RECV:
-		if (check_quoting(sm) || check_other_players(sm))
+		if (check_quoting(sm, 2, TRUE) || check_other_players(sm))
 			return TRUE;
 		break;
 	default:
@@ -2382,7 +2344,7 @@ static void recover_from_disconnect(StateMachine * sm,
 		sm_goto_noenter(sm, mode_idle);
 		sm_push_noenter(sm, modeturn);
 		callback_mode = MODE_TURN;
-		sm_push(sm, mode_choose_gold);
+		sm_push(sm, mode_wait_resources);
 	} else if (strcmp(rinfo->prevstate, "ROADBUILDING") == 0) {
 		sm_goto_noenter(sm, mode_idle);
 		sm_push_noenter(sm, modeturn);
@@ -2396,8 +2358,11 @@ static void recover_from_disconnect(StateMachine * sm,
 }
 
 /*----------------------------------------------------------------------
- * Nested state machine for handling resource card choice.  We enter
- * gold-choose mode whenever any player has to choose resources.
+ * Nested state machine for handling resource card distribution.  We enter
+ * here whenever resources might be distributed.
+ *
+ * This also includes choosing gold.  Gold-choose mode is entered the first
+ * time prepare-gold is received.
  * 
  * When in gold-choose mode, as in discard mode, a section of the GUI
  * changes to list all players who must choose resources.  This is
@@ -2406,24 +2371,22 @@ static void recover_from_disconnect(StateMachine * sm,
  * Only the top player in the list can actually choose, the rest is waiting
  * for their turn.
  */
-static gboolean mode_choose_gold(StateMachine * sm, gint event)
+static gboolean mode_wait_resources(StateMachine * sm, gint event)
 {
 	gint resource_list[NO_RESOURCE], bank[NO_RESOURCE];
 	gint player_num, gold_num;
 
-	sm_state_name(sm, "mode_choose_gold");
+	sm_state_name(sm, "mode_wait_resources");
 	switch (event) {
-	case SM_ENTER:
-		if (callback_mode != MODE_GOLD
-		    && callback_mode != MODE_GOLD_WAIT) {
-			previous_mode = callback_mode;
-			callback_mode = MODE_GOLD_WAIT;
-		}
-		callbacks.gold();
-		break;
 	case SM_RECV:
 		if (sm_recv(sm, "player %d prepare-gold %d", &player_num,
 			    &gold_num)) {
+			if (callback_mode != MODE_GOLD
+			    && callback_mode != MODE_GOLD_WAIT) {
+				previous_mode = callback_mode;
+				callback_mode = MODE_GOLD_WAIT;
+				callbacks.gold();
+			}
 			callbacks.gold_add(player_num, gold_num);
 			return TRUE;
 		}
@@ -2441,8 +2404,11 @@ static gboolean mode_choose_gold(StateMachine * sm, gint event)
 			return TRUE;
 		}
 		if (sm_recv(sm, "done-resources")) {
-			callback_mode = previous_mode;
-			callbacks.gold_done();
+			if (callback_mode == MODE_GOLD
+			    || callback_mode == MODE_GOLD_WAIT) {
+				callback_mode = previous_mode;
+				callbacks.gold_done();
+			}
 			sm_pop(sm);
 			return TRUE;
 		}
@@ -2450,22 +2416,6 @@ static gboolean mode_choose_gold(StateMachine * sm, gint event)
 			return TRUE;
 		break;
 	default:
-		break;
-	}
-	return FALSE;
-}
-
-static gboolean mode_wait_resources(StateMachine * sm, gint event)
-{
-	sm_state_name(sm, "mode_wait_resources");
-	switch (event) {
-	case SM_RECV:
-		if (sm_recv(sm, "done-resources")) {
-			sm_pop(sm);
-			return TRUE;
-		}
-		if (check_other_players(sm))
-			return TRUE;
 		break;
 	}
 	return FALSE;

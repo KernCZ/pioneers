@@ -2,6 +2,10 @@
 	* client/gtk/connect.c: Avoid use of comma-operator.
 	* client/ai/greedy.c: Fix possible infinite loop after playing
 	monopoly card.
+	* docs/README.states, docs/client_states.fig: Updated to new
+	situation (the changes below, and changes which had been made before).
+	* common/state.c, common/state.h, client/common/client.c,
+	client/common/callback.c: Improved state handling.
 
 2006-08-04  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/interface.c: Enable roll dice for the second game of the
