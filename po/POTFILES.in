@@ -1,6 +1,6 @@
 client/ai/ai.c
 client/ai/greedy.c
-client/common/chat.c
+client/ai/lobbybot.c
 client/common/client.c
 client/common/develop.c
 client/common/player.c
