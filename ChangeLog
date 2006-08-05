@@ -1,3 +1,6 @@
+2006-08-05  Bas Wijnen <shevek@fmf.nl>
+	* client/gtk/connect.c: Avoid use of comma-operator.
+
 2006-08-04  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/interface.c: Enable roll dice for the second game of the
 	same instance of the client.

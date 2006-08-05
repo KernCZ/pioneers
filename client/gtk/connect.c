@@ -707,11 +707,11 @@ static void create_server_dlg_cb(GtkDialog * dlg, gint arg1,
 	case GTK_RESPONSE_OK:
 		log_message(MSG_INFO, _("Requesting new game server\n"));
 
-		cfg_terrain = game_settings_get_terrain(gs),
-		    cfg_num_players = game_settings_get_players(gs),
-		    cfg_victory_points =
-		    game_settings_get_victory_points(gs), cfg_sevens_rule =
-		    game_settings_get_sevens_rule(gs), cfg_ai_players =
+		cfg_terrain = game_settings_get_terrain(gs);
+		cfg_num_players = game_settings_get_players(gs);
+		cfg_victory_points = game_settings_get_victory_points(gs);
+		cfg_sevens_rule = game_settings_get_sevens_rule(gs);
+		cfg_ai_players =
 		    gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON
 						     (aiplayers_spin));
 		cfg_gametype = select_game_get_active(sg);
