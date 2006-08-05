@@ -1963,6 +1963,7 @@ void guimap_set_show_no_setup_nodes(GuiMap * gmap, gboolean show)
 	if (old_show != show) {
 		/* Repaint and redraw the map */
 		guimap_display(gmap);
-		gtk_widget_queue_draw(gmap->area);
+		if (gmap->area)
+			gtk_widget_queue_draw(gmap->area);
 	}
 }

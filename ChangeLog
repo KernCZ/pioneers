@@ -2,6 +2,7 @@
 	* server/gtk/main.c, server/meta.c, server/server.c, server/server.h,
 	server/main.c, server/admin.c: Replaced a variable of global scope
 	with a variable of file scope to make -r implied when -m is specified.
+	* common/gtk/guimap.c: Use gmap->area when it exists.
 
 2006-08-05  Bas Wijnen <shevek@fmf.nl>
 	* client/gtk/connect.c: Avoid use of comma-operator.
