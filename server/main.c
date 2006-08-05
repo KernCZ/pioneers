@@ -58,7 +58,7 @@ static gint tournament_time = -1;
 static gboolean quit_when_done = FALSE;
 static gchar *hostname = NULL;
 static gboolean register_server = FALSE;
-static gchar *metaname = NULL;
+static gchar *meta_server_name = NULL;
 
 static GOptionEntry commandline_game_entries[] = {
 	{"game-title", 'g', 0, G_OPTION_ARG_STRING, &game_title,
@@ -89,7 +89,7 @@ static GOptionEntry commandline_meta_entries[] = {
 	{"register", 'r', 0, G_OPTION_ARG_NONE, &register_server,
 	 /* Commandline server-console: register */
 	 N_("Register server with meta-server"), NULL},
-	{"meta-server", 'm', 0, G_OPTION_ARG_STRING, &metaname,
+	{"meta-server", 'm', 0, G_OPTION_ARG_STRING, &meta_server_name,
 	 /* Commandline server-console: meta-server */
 	 N_("Register at meta-server name (implies -r)"),
 	 PIONEERS_DEFAULT_META_SERVER},
@@ -189,6 +189,8 @@ int main(int argc, char *argv[])
 		cfg_set_game(game_title);
 	if (meta_server_name != NULL)
 		register_server = TRUE;
+	if (register_server && meta_server_name == NULL)
+		meta_server_name = get_meta_server_name(TRUE);
 	if (sevens_rule != -1)
 		sevens_rule = CLAMP(sevens_rule, 0, 2);
 
@@ -228,7 +230,9 @@ int main(int argc, char *argv[])
 		admin_listen(admin_port);
 
 	if (!disable_game_start) {
-		if (start_server(hostname, server_port, register_server)) {
+		if (start_server
+		    (hostname, server_port, register_server,
+		     meta_server_name)) {
 			for (i = 0; i < num_ai_players; ++i)
 				new_computer_player(NULL, server_port,
 						    TRUE);

@@ -194,12 +194,9 @@ static void player_connect(Game * game)
 	g_free(location);
 }
 
-static gboolean game_server_start(Game * game)
+static gboolean game_server_start(Game * game, gboolean register_server,
+				  const gchar * meta_server_name)
 {
-	if (!meta_server_name) {
-		meta_server_name = get_meta_server_name(TRUE);
-	}
-
 	game->accept_fd = open_listen_socket(game->server_port);
 	if (game->accept_fd < 0)
 		return FALSE;
@@ -208,14 +205,15 @@ static gboolean game_server_start(Game * game)
 						  (InputFunc)
 						  player_connect, game);
 
-	if (game->register_server)
-		meta_register(meta_server_name, PIONEERS_DEFAULT_META_PORT,
-			      game);
+	if (register_server)
+		g_assert(meta_server_name != NULL);
+	meta_register(meta_server_name, PIONEERS_DEFAULT_META_PORT, game);
 	return TRUE;
 }
 
 gboolean server_startup(GameParams * params, const gchar * hostname,
-			const gchar * port, gboolean meta,
+			const gchar * port, gboolean register_server,
+			const gchar * meta_server_name,
 			gboolean random_order)
 {
 	guint32 randomseed = time(NULL);
@@ -228,10 +226,10 @@ gboolean server_startup(GameParams * params, const gchar * hostname,
 	curr_game = game_new(params);
 	g_assert(curr_game->server_port == NULL);
 	curr_game->server_port = g_strdup(port);
-	curr_game->register_server = meta;
 	curr_game->hostname = g_strdup(hostname);
 	curr_game->random_order = random_order;
-	if (game_server_start(curr_game))
+	if (game_server_start
+	    (curr_game, register_server, meta_server_name))
 		return TRUE;
 	game_free(curr_game);
 	curr_game = NULL;
@@ -443,7 +441,8 @@ void cfg_set_timeout(gint to)
 }
 
 gboolean start_server(const gchar * hostname, const gchar * port,
-		      gboolean register_server)
+		      gboolean register_server,
+		      const gchar * meta_server_name)
 {
 	if (!params) {
 		cfg_set_game("Default");
@@ -466,7 +465,7 @@ gboolean start_server(const gchar * hostname, const gchar * port,
 	}
 
 	return server_startup(params, hostname, port, register_server,
-			      random_order);
+			      meta_server_name, random_order);
 }
 
 static void handle_sigpipe(G_GNUC_UNUSED int signum)

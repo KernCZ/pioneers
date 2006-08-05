@@ -100,7 +100,6 @@ struct Game {
 	gint *develop_deck;	/* development cards */
 	gint develop_next;	/* next development card to deal */
 
-	gboolean register_server;	/* register game with meta-server? */
 	gchar *server_port;	/* port to run game on */
 	gboolean random_order;	/* is turn order randomized? */
 };
@@ -134,7 +133,6 @@ gboolean mode_wait_others_place_robber(Player * player, gint event);
 gboolean mode_discard_resources_place_robber(Player * player, gint event);
 
 /* meta.c */
-extern const gchar *meta_server_name;
 gchar *get_server_name(void);
 void meta_register(const gchar * server, const gchar * port, Game * game);
 void meta_unregister(void);
@@ -199,7 +197,8 @@ void game_free(Game * game);
 gint new_computer_player(const gchar * server, const gchar * port,
 			 gboolean want_chat);
 gboolean server_startup(GameParams * params, const gchar * hostname,
-			const gchar * port, gboolean meta,
+			const gchar * port, gboolean meta_register,
+			const gchar * meta_name_server,
 			gboolean random_order);
 gboolean server_stop(void);
 gboolean server_is_running(void);
@@ -223,8 +222,9 @@ void cfg_set_quit(gboolean quitdone);
 void cfg_set_timeout(gint to);
 
 /* callbacks related to server starting / stopping */
-gboolean start_server(const gchar * hostname,
-		      const gchar * port, gboolean register_server);
+gboolean start_server(const gchar * hostname, const gchar * port,
+		      gboolean register_server,
+		      const gchar * meta_server_name);
 
 /* initialize the server */
 void server_init(void);

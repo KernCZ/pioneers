@@ -1,3 +1,8 @@
+2006-08-05  Roland Clobus <rclobus@bigfoot.com>
+	* server/gtk/main.c, server/meta.c, server/server.c, server/server.h,
+	server/main.c, server/admin.c: Replaced a variable of global scope
+	with a variable of file scope to make -r implied when -m is specified.
+
 2006-08-05  Bas Wijnen <shevek@fmf.nl>
 	* client/gtk/connect.c: Avoid use of comma-operator.
 	* client/ai/greedy.c: Fix possible infinite loop after playing

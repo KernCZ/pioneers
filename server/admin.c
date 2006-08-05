@@ -73,12 +73,14 @@ void admin_run_command(Session * admin_session, const gchar * line)
 
 		/* start the server */
 	} else if (!strcmp(command, "start-server")) {
+		gchar *meta_server_name = get_meta_server_name(TRUE);
 		if (server_is_running())
 			server_stop();
 		if (!server_port)
 			server_port = g_strdup(PIONEERS_DEFAULT_GAME_PORT);
 		start_server(get_server_name(), server_port,
-			     register_server);
+			     register_server, meta_server_name);
+		g_free(meta_server_name);
 
 	} else if (!strcmp(command, "stop-server")) {
 		server_stop();

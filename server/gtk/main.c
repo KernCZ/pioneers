@@ -62,6 +62,7 @@ static gboolean is_running;	/* current server status */
 static gchar *hostname;		/* reported hostname */
 static gchar *server_port = NULL;	/* port of the game */
 static gboolean register_server = TRUE;	/* Register at the meta server */
+static const gchar *meta_server_name = NULL;	/* hostname of the meta server */
 static gboolean want_ai_chat = TRUE;
 
 /* Local function prototypes */
@@ -245,7 +246,9 @@ static void start_clicked_cb(G_GNUC_UNUSED GtkButton * start_btn,
 						  (game_settings));
 		update_game_settings();
 		g_assert(server_port != NULL);
-		if (start_server(hostname, server_port, register_server)) {
+		if (start_server
+		    (hostname, server_port, register_server,
+		     meta_server_name)) {
 			gui_set_server_state(TRUE);
 			config_set_string("server/meta-server",
 					  meta_server_name);
