@@ -106,8 +106,8 @@ static void lobbybot_chat_parser(gint player_num, const gchar * chat)
 		ai_chat(N_("'/help' shows this message again"));
 
 		/* Translators: don't translate '/why' */
-		ai_chat(N_
-			("'/why' explains the purpose of this strange board layout"));
+		ai_chat(N_("'/why' explains the purpose of this strange "
+			   "board layout"));
 		/* Translators: don't translate '/news' */
 		ai_chat(N_("'/news' tells the last released version"));
 		return;

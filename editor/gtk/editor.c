@@ -61,24 +61,40 @@ static GuiMap *gmap;
 static Hex *current_hex;
 
 static const gchar *terrain_names[] = {
+	/* Use an unique shortcut key for each resource */
 	N_("_Hill"),
+	/* Use an unique shortcut key for each resource */
 	N_("_Field"),
+	/* Use an unique shortcut key for each resource */
 	N_("_Mountain"),
+	/* Use an unique shortcut key for each resource */
 	N_("_Pasture"),
+	/* Use an unique shortcut key for each resource */
 	N_("F_orest"),
+	/* Use an unique shortcut key for each resource */
 	N_("_Desert"),
+	/* Use an unique shortcut key for each resource */
 	N_("_Sea"),
+	/* Use an unique shortcut key for each resource */
 	N_("_Gold"),
+	/* Use an unique shortcut key for each resource */
 	N_("_None")
 };
 
 static const gchar *port_names[] = {
+	/* Use an unique shortcut key for each port type */
 	N_("_Brick (2:1)"),
+	/* Use an unique shortcut key for each port type */
 	N_("_Grain (2:1)"),
+	/* Use an unique shortcut key for each port type */
 	N_("_Ore (2:1)"),
+	/* Use an unique shortcut key for each port type */
 	N_("_Wool (2:1)"),
+	/* Use an unique shortcut key for each port type */
 	N_("_Lumber (2:1)"),
+	/* Use an unique shortcut key for each port type */
 	N_("_None"),
+	/* Use an unique shortcut key for each port type */
 	N_("_Any (3:1)")
 };
 
