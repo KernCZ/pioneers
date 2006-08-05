@@ -857,10 +857,9 @@ static int which_resource(gint assets[NO_RESOURCE])
 /*
  * What resource do we want the most?
  *
+ * NOTE: If a resource is not available (players or bank), the
+ * resval->value[resource] should be zero.
  */
-
-/* Don't want what isn't available anymore... */
-
 static int resource_desire(gint assets[NO_RESOURCE],
 			   const resource_values_t * resval)
 {
@@ -880,6 +879,7 @@ static int resource_desire(gint assets[NO_RESOURCE],
 	}
 
 	/* desire the one we don't produce the most */
+	res = NO_RESOURCE;
 	for (i = 0; i < NO_RESOURCE; i++) {
 		if ((resval->value[i] > value) && (assets[i] < 2)) {
 			res = i;
@@ -1541,7 +1541,7 @@ static void greedy_monopoly(void)
 	/* order resources by preference */
 	reevaluate_resources(&resval);
 
-	/* this could only infinite loop if no other players had any cards */
+	/* try to get something we need */
 	while (TRUE) {
 		r = resource_desire(assets, &resval);
 		if (r == NO_RESOURCE)
