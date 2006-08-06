@@ -643,11 +643,11 @@ msgstr "%s hat %s an %s verloren.\n"
 
 #: ../client/common/resource.c:35
 msgid "brick"
-msgstr "Stein"
+msgstr "Lehm"
 
 #: ../client/common/resource.c:35
 msgid "Brick"
-msgstr "Stein"
+msgstr "Lehm"
 
 #: ../client/common/resource.c:36
 msgid "grain"
@@ -708,12 +708,12 @@ msgstr "Gold"
 
 #: ../client/common/resource.c:47
 msgid "a brick card"
-msgstr "eine Stein-Karte"
+msgstr "eine Lehm-Karte"
 
 #: ../client/common/resource.c:47
 #, c-format
 msgid "%d brick cards"
-msgstr "%d Stein-Karten"
+msgstr "%d Lehm-Karten"
 
 #: ../client/common/resource.c:48
 msgid "a grain card"
@@ -2188,7 +2188,7 @@ msgstr "Keine"
 
 #: ../editor/gtk/editor.c:61
 msgid "Brick (2:1)"
-msgstr "Stein (2:1)"
+msgstr "Lehm (2:1)"
 
 #: ../editor/gtk/editor.c:62
 msgid "Grain (2:1)"
