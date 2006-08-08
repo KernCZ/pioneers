@@ -520,8 +520,7 @@ static gboolean check_other_players(StateMachine * sm)
 	DevelType devel_type;
 	Resource resource_type, supply_type, receive_type;
 	gint player_num, victim_num, card_idx, backwards;
-	gint turn_num, discard_num, num, ratio, die1, die2, x, y,
-	    pos;
+	gint turn_num, discard_num, num, ratio, die1, die2, x, y, pos;
 	gint id;
 	gint resource_list[NO_RESOURCE];
 	gint sx, sy, spos, dx, dy, dpos;
