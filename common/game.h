@@ -66,7 +66,7 @@ typedef struct {
 	gint num_develop_type[NUM_DEVEL_TYPES];	/* number of each development */
 	Map *map;		/* the game map */
 	gboolean parsing_map;	/* currently parsing map? *//* Not in game_params[] */
-	gint tournament_time;	/* time to start tournament time in minutes */
+	gint tournament_time;	/* time to start tournament time in minutes *//* Not in game_params[] */
 	gboolean quit_when_done;	/* server quits after someone wins *//* Not in game_params[] */
 	gboolean use_pirate;	/* is there a pirate in this game? */
 } GameParams;

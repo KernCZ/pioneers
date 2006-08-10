@@ -68,7 +68,6 @@ static Param game_params[] = {
 	{PARAM_V(develop-library, PARAM_INT, num_develop_type[DEVEL_LIBRARY])},
 	{PARAM_V(develop-market, PARAM_INT, num_develop_type[DEVEL_MARKET])},
 	{PARAM_V(develop-soldier, PARAM_INT, num_develop_type[DEVEL_SOLDIER])},
-	{PARAM_V(tournament-time, PARAM_INT, tournament_time)},
 	{PARAM_V(use-pirate, PARAM_BOOL, use_pirate)}
 };
 /* *INDENT-ON* */
@@ -437,6 +436,7 @@ GameParams *params_copy(const GameParams * params)
 	}
 
 	copy->quit_when_done = params->quit_when_done;
+	copy->tournament_time = params->tournament_time;
 	return copy;
 }
 

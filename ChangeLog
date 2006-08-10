@@ -5,6 +5,7 @@
 	close connection when a bad version is encountered, clearer message
 	when entering a tournament game.
 	* configure.ac: Protocol is now 0.10
+	* common/game.c, common/game.h: Don't broadcast tournament-time.
 	
 2006-08-05  Roland Clobus <rclobus@bigfoot.com>
 	* server/gtk/main.c, server/meta.c, server/server.c, server/server.h,
