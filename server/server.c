@@ -36,7 +36,7 @@ gint no_player_timeout = 0;
 
 static GSList *_game_list = NULL;	/* The sorted list of game titles */
 
-gboolean random_order = TRUE;
+static gboolean random_order = TRUE;
 
 GameParams *params = NULL;
 

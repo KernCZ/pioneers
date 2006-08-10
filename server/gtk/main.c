@@ -64,6 +64,7 @@ static gchar *server_port = NULL;	/* port of the game */
 static gboolean register_server = TRUE;	/* Register at the meta server */
 static const gchar *meta_server_name = NULL;	/* hostname of the meta server */
 static gboolean want_ai_chat = TRUE;
+static gboolean random_order = TRUE; /* random seating order */
 
 /* Local function prototypes */
 static void add_game_to_list(gpointer name, gpointer user_data);

@@ -105,8 +105,6 @@ struct Game {
 };
 
 /**** global variables ****/
-extern gboolean random_order;
-
 extern GameParams *params;
 
 

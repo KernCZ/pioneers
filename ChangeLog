@@ -12,6 +12,8 @@
 	server/pond.game, server/seafarers.game, server/lorindol.game,
 	server/seafarers-gold.game: Deserts need chit sequence numbers, chit
 	length must be correct.
+	* server/gtk/main.c, server/server.c, server/server.h: Replace global
+	'random_order'.
 	
 2006-08-05  Roland Clobus <rclobus@bigfoot.com>
 	* server/gtk/main.c, server/meta.c, server/server.c, server/server.h,
