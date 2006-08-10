@@ -1,5 +1,6 @@
 2006-08-10  Roland Clobus <rclobus@bigfoot.com>
 	* client/common/client.c: Don't say 'A is now A' in the client.
+	* server/serer.c: Fix for a scope bug made 2006-08-05.
 	
 2006-08-05  Roland Clobus <rclobus@bigfoot.com>
 	* server/gtk/main.c, server/meta.c, server/server.c, server/server.h,

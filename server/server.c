@@ -205,9 +205,11 @@ static gboolean game_server_start(Game * game, gboolean register_server,
 						  (InputFunc)
 						  player_connect, game);
 
-	if (register_server)
+	if (register_server) {
 		g_assert(meta_server_name != NULL);
-	meta_register(meta_server_name, PIONEERS_DEFAULT_META_PORT, game);
+		meta_register(meta_server_name, PIONEERS_DEFAULT_META_PORT,
+			      game);
+	}
 	return TRUE;
 }
 
