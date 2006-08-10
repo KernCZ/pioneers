@@ -20,9 +20,6 @@
  */
 
 #include "config.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
 #include <ctype.h>
 #include <string.h>
 #include <glib.h>
@@ -291,27 +288,32 @@ static gboolean connect_network(Map * map, Hex * hex,
  * By making the program perform the layout, we have the ability to
  * shuffle the terrain hexes and then lay the chits out accounting for
  * the new position of the desert.
+ * Returns TRUE if the chits could be distributed without errors
  */
-static void layout_chits(Map * map)
+static gboolean layout_chits(Map * map)
 {
 	Hex **hexes;
 	gint num_chits;
 	gint x, y;
 	gint idx;
 	gint chit_idx;
+	gint num_deserts;
 
-	g_return_if_fail(map != NULL);
-	g_return_if_fail(map->chits != NULL);
-	g_return_if_fail(map->chits->len > 0);
+	g_return_val_if_fail(map != NULL, FALSE);
+	g_return_val_if_fail(map->chits != NULL, FALSE);
+	g_return_val_if_fail(map->chits->len > 0, FALSE);
 
 	/* Count the number of hexes that have chits on them
 	 */
 	num_chits = 0;
+	num_deserts = 0;
 	for (x = 0; x < map->x_size; x++)
 		for (y = 0; y < map->y_size; y++) {
 			Hex *hex = map->grid[y][x];
 			if (hex != NULL && hex->chit_pos >= num_chits)
 				num_chits = hex->chit_pos + 1;
+			if (hex != NULL && hex->terrain == DESERT_TERRAIN)
+				num_deserts++;
 		}
 
 	/* Traverse the map and build an array of hexes in chit layout
@@ -323,8 +325,23 @@ static void layout_chits(Map * map)
 			Hex *hex = map->grid[y][x];
 			if (hex == NULL || hex->chit_pos < 0)
 				continue;
+			if (hexes[hex->chit_pos] != NULL) {
+				g_warning("Sequence number %d used again",
+					  hex->chit_pos);
+				return FALSE;
+			}
 			hexes[hex->chit_pos] = hex;
 		}
+
+	/* Check the number of chits */
+	if (num_chits < map->chits->len + num_deserts) {
+		g_warning("More chits (%d + %d) than available tiles (%d)",
+			  map->chits->len, num_deserts, num_chits);
+		return FALSE;
+	}
+	/* If less chits are defined than tiles that need chits,
+	 * the sequence is used again
+	 */
 
 	/* Now layout the chits in the sequence specified, skipping
 	 * the desert hex.
@@ -353,6 +370,7 @@ static void layout_chits(Map * map)
 		}
 	}
 	g_free(hexes);
+	return TRUE;
 }
 
 /* Randomise a map.  We do this by shuffling all of the land hexes,
@@ -656,7 +674,7 @@ gchar *map_format_line(Map * map, gboolean write_secrets, gint y)
 
 /* Read a map line into the grid
  */
-void map_parse_line(Map * map, gchar * line)
+gboolean map_parse_line(Map * map, const gchar * line)
 {
 	gint x = 0;
 
@@ -667,7 +685,7 @@ void map_parse_line(Map * map, gchar * line)
 		case '\0':
 		case '\n':
 			map->y++;
-			return;
+			return TRUE;
 		case '-':
 			x++;
 			continue;
@@ -773,6 +791,12 @@ void map_parse_line(Map * map, gchar * line)
 			hex->shuffle = FALSE;
 			line++;
 		}
+		if (hex->chit_pos < 0 && hex->terrain != SEA_TERRAIN) {
+			g_warning
+			    ("Land tile without chit sequence number");
+			return FALSE;
+		}
+
 		map->grid[map->y][x] = hex;
 		if (x >= map->x_size)
 			map->x_size = x + 1;
@@ -780,18 +804,21 @@ void map_parse_line(Map * map, gchar * line)
 			map->y_size = map->y + 1;
 		x++;
 	}
+	return TRUE;
 }
 
 /* Finalise the map loading by building a network of nodes, edges and
  * hexes.  Since every second row of hexes is offset, we might be able
  * to shrink the left / right margins depending on the distribution of
  * hexes.
+ * Returns true if the map could be finalised.
  */
-void map_parse_finish(Map * map)
+gboolean map_parse_finish(Map * map)
 {
 	gint y;
+	gboolean success;
 
-	layout_chits(map);
+	success = layout_chits(map);
 
 	map_traverse(map, build_network, NULL);
 	map_traverse(map, connect_network, NULL);
@@ -808,6 +835,7 @@ void map_parse_finish(Map * map)
 			map->shrink_right = FALSE;
 			break;
 		}
+	return success;
 }
 
 /* Disconnect a hex from all nodes and edges that it does not "own"
@@ -859,31 +887,6 @@ void map_free(Map * map)
 	map_traverse(map, free_hex, NULL);
 	g_array_free(map->chits, TRUE);
 	g_free(map);
-}
-
-/* Load a map from a file
- */
-Map *map_load(gchar * name)
-{
-	gchar *line;
-	FILE *fp;
-	Map *map;
-
-	fp = fopen(name, "r");
-	if (fp == NULL)
-		return NULL;
-
-	map = map_new();
-
-	while (read_line_from_file(&line, fp)) {
-		map_parse_line(map, line);
-		g_free(line);
-	}
-	fclose(fp);
-
-	map_parse_finish(map);
-
-	return map;
 }
 
 Hex *map_add_hex(Map * map, gint x, gint y)

@@ -163,8 +163,10 @@ static void canonicalize_map(Map * map)
 	GArray *chits;
 	Hex *hex;
 	gint x, y;
+	gint sequence_number;
 
 	chits = g_array_new(FALSE, FALSE, sizeof(gint));
+	sequence_number = 0;
 	for (y = 0; y < map->y_size; y++) {
 		for (x = 0; x < map->x_size; x++) {
 			hex = map->grid[y][x];
@@ -172,7 +174,9 @@ static void canonicalize_map(Map * map)
 				continue;
 			if (hex->roll > 0) {
 				g_array_append_val(chits, hex->roll);
-				hex->chit_pos = chits->len - 1;
+				hex->chit_pos = sequence_number++;
+			} else if (hex->terrain == DESERT_TERRAIN) {
+				hex->chit_pos = sequence_number++;
 			}
 		}
 	}

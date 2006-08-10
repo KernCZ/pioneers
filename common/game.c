@@ -254,7 +254,7 @@ void params_write_lines(GameParams * params, gboolean write_secrets,
 	}
 }
 
-void params_load_line(GameParams * params, gchar * line)
+gboolean params_load_line(GameParams * params, gchar * line)
 {
 	gint idx;
 
@@ -263,16 +263,20 @@ void params_load_line(GameParams * params, gchar * line)
 	if (params->parsing_map) {
 		if (strcmp(line, ".") == 0) {
 			params->parsing_map = FALSE;
-			map_parse_finish(params->map);
+			if (!map_parse_finish(params->map)) {
+				map_free(params->map);
+				params->map = NULL;
+				return FALSE;
+			}
 		} else
-			map_parse_line(params->map, line);
-		return;
+			return map_parse_line(params->map, line);
+		return TRUE;
 	}
 	line = skip_space(line);
 	if (*line == '#')
-		return;
+		return TRUE;
 	if (*line == 0)
-		return;
+		return TRUE;
 	if (match_word(&line, "variant")) {
 		if (match_word(&line, "islands"))
 			params->variant = VAR_ISLANDS;
@@ -280,11 +284,11 @@ void params_load_line(GameParams * params, gchar * line)
 			params->variant = VAR_INTIMATE;
 		else
 			params->variant = VAR_DEFAULT;
-		return;
+		return TRUE;
 	}
 	if (match_word(&line, "map")) {
 		params->parsing_map = TRUE;
-		return;
+		return TRUE;
 	}
 	if (match_word(&line, "chits")) {
 		if (params->map->chits != NULL)
@@ -296,8 +300,9 @@ void params_load_line(GameParams * params, gchar * line)
 			g_warning("Zero length chits array");
 			g_array_free(params->map->chits, FALSE);
 			params->map->chits = NULL;
+			return FALSE;
 		}
-		return;
+		return TRUE;
 	}
 	if (match_word(&line, "nosetup")) {
 		gint x = 0, y = 0, pos = 0;
@@ -313,7 +318,7 @@ void params_load_line(GameParams * params, gchar * line)
 			    ("Nosetup node %d %d %d is not in the map", x,
 			     y, pos);
 		}
-		return;
+		return TRUE;
 	}
 
 	for (idx = 0; idx < G_N_ELEMENTS(game_params); idx++) {
@@ -332,18 +337,19 @@ void params_load_line(GameParams * params, gchar * line)
 			str = g_strchomp(g_strdup(line));
 			G_STRUCT_MEMBER(gchar *, params, param->offset) =
 			    str;
-			return;
+			return TRUE;
 		case PARAM_INT:
 			G_STRUCT_MEMBER(gint, params, param->offset) =
 			    atoi(line);
-			return;
+			return TRUE;
 		case PARAM_BOOL:
 			G_STRUCT_MEMBER(gboolean, params, param->offset) =
 			    TRUE;
-			return;
+			return TRUE;
 		}
 	}
 	g_warning("Unknown keyword: %s", line);
+	return FALSE;
 }
 
 /* read a line from a file.  The memory needed is allocated.  The returned line
@@ -385,12 +391,15 @@ GameParams *params_load_file(const gchar * fname)
 	}
 
 	params = params_new();
-	while (read_line_from_file(&line, fp)) {
-		params_load_line(params, line);
+	while (read_line_from_file(&line, fp) && params) {
+		if (!params_load_line(params, line)) {
+			params_free(params);
+			params = NULL;
+		}
 		g_free(line);
 	}
 	fclose(fp);
-	if (!params_load_finish(params)) {
+	if (params && !params_load_finish(params)) {
 		params_free(params);
 		return NULL;
 	}

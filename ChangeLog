@@ -7,6 +7,11 @@
 	* configure.ac: Protocol is now 0.10
 	* common/game.c, common/game.h: Don't broadcast tournament-time.
 	* docs/README.game: Information about *.game files
+	* editor/gtk/editor.c, common/game.c, common/map.c, common/game.h,
+	common/map.h, server/x.game, server/star.game, server/canyon.game,
+	server/pond.game, server/seafarers.game, server/lorindol.game,
+	server/seafarers-gold.game: Deserts need chit sequence numbers, chit
+	length must be correct.
 	
 2006-08-05  Roland Clobus <rclobus@bigfoot.com>
 	* server/gtk/main.c, server/meta.c, server/server.c, server/server.h,
