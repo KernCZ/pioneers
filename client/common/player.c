@@ -202,7 +202,7 @@ void player_change_name(gint player_num, const gchar * name)
 	if (old_name == NULL)
 		log_message(MSG_INFO, _("Player %d is now %s.\n"),
 			    player_num, name);
-	else
+	else if (strcmp(old_name, name))
 		log_message(MSG_INFO, _("%s is now %s.\n"), old_name,
 			    name);
 	if (old_name != NULL)
