@@ -20,13 +20,13 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 AC_PREREQ(2.53)
-AC_INIT([pioneers],[0.9.65],[pio-develop@lists.sourceforge.net])
+AC_INIT([pioneers],[0.10.1],[pio-develop@lists.sourceforge.net])
 AC_CONFIG_AUX_DIR([.])
 AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
 AC_CONFIG_SRCDIR([client])
 AM_CONFIG_HEADER(config.h)
  
-PROTOCOL_VERSION=0.9
+PROTOCOL_VERSION=0.10
 META_PROTOCOL_VERSION=1.3
 PIONEERS_DEFAULT_GAME_PORT=5556
 PIONEERS_DEFAULT_GAME_HOST=localhost

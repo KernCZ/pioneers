@@ -444,7 +444,7 @@ static gboolean global_unhandled(StateMachine * sm, gint event)
 	case SM_RECV:
 		/* all errors start with ERR */
 		if (sm_recv(sm, "ERR %S", &str)) {
-			log_message(MSG_ERROR, "Error (%s): %s\n",
+			log_message(MSG_ERROR, _("Error (%s): %s\n"),
 				    sm_current_name(sm), str);
 			callbacks.error(str);
 			g_free(str);
@@ -453,7 +453,20 @@ static gboolean global_unhandled(StateMachine * sm, gint event)
 		/* notices which are not errors should appear in the message
 		 * window */
 		if (sm_recv(sm, "NOTE %S", &str)) {
-			log_message(MSG_ERROR, "Notice: %s\n", str);
+			log_message(MSG_ERROR, _("Notice: %s\n"), _(str));
+			g_free(str);
+			return TRUE;
+		}
+		/* A notice with 1 argument */
+		if (sm_recv(sm, "NOTE1 %S", &str)) {
+			gchar *message;
+			gchar **parts;
+
+			parts = g_strsplit(str, "|", 2);
+			message = g_strdup_printf(_(parts[1]), parts[0]);
+			log_message(MSG_ERROR, _("Notice: %s\n"), message);
+			g_strfreev(parts);
+			g_free(message);
 			g_free(str);
 			return TRUE;
 		}

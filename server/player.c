@@ -157,7 +157,8 @@ static gboolean mode_unhandled(Player * player, gint event)
 	switch (event) {
 	case SM_RECV:
 		if (sm_recv(sm, "extension %S", &text)) {
-			sm_send(sm, "NOTE ignoring unknown extension\n");
+			sm_send(sm, "NOTE %s\n",
+				N_("ignoring unknown extension"));
 			log_message(MSG_INFO,
 				    "ignoring unknown extension from %s: %s\n",
 				    player->name, text);
@@ -185,8 +186,8 @@ static gboolean tournament_start_cb(gpointer data)
 	if (game->num_players == game->params->num_players)
 		return FALSE;
 
-	player_broadcast(player, PB_SILENT,
-			 "NOTE Game starts, adding computer players\n");
+	player_broadcast(player, PB_SILENT, "NOTE %s\n",
+			 N_("Game starts, adding computer players"));
 	/* add computer players to start game */
 	for (i = game->num_players; i < game->params->num_players; i++) {
 		new_computer_player(NULL, game->server_port, TRUE);
@@ -203,15 +204,20 @@ static gboolean talk_about_tournament_cb(gpointer data)
 {
 	Player *player = (Player *) data;
 	Game *game = player->game;
+	const gchar *message;
 
 	/* if game already started */
 	if (game->num_players == game->params->num_players)
 		return FALSE;
 
+	/* FIXME: Use ngettext here? */
+	message = game->params->tournament_time != 1 ?
+	    N_("The game starts in %s minutes.") :
+	    N_("The game starts in %s minute.");
+
 	player_broadcast(player, PB_SILENT,
-			 "NOTE Game starts in %d minute%s\n",
-			 game->params->tournament_time,
-			 game->params->tournament_time != 1 ? "s" : "");
+			 "NOTE1 %d|%s\n",
+			 game->params->tournament_time, message);
 	game->params->tournament_time--;
 
 	if (game->params->tournament_time > 0)
@@ -246,15 +252,19 @@ Player *player_new(Game * game, int fd, gchar * location)
 	if (game->is_game_over) {
 		/* The game is over, don't accept new players */
 		Session *ses = net_new(NULL, NULL);
+		gchar *message;
 		net_use_fd(ses, fd);
 		/* Message to send to the client when the game is already over
-		 * when a connection is made.
-		 * Don't translate the NOTE at the start. */
-		net_write(ses, _("NOTE Sorry, game is over.\n"));
+		 * when a connection is made. */
+		message =
+		    g_strdup_printf("NOTE %s\n",
+				    N_("Sorry, game is over."));
+		net_write(ses, message);
 		log_message(MSG_INFO,
 			    _("Player from %s is refused: game is over\n"),
 			    location);
 		net_close_when_flushed(ses);
+		g_free(message);
 		return NULL;
 	}
 
@@ -283,12 +293,18 @@ Player *player_new(Game * game, int fd, gchar * location)
 	player->disconnected = FALSE;
 	player->name = g_strdup(name);
 
-	/* if first player in and this is a tournament start the timer */
-	if ((game->num_players == 0)
-	    && (game->params->tournament_time > 0)) {
-		g_timeout_add(game->params->tournament_time * 60 * 1000 +
-			      500, &tournament_start_cb, player);
-		g_timeout_add(1000, &talk_about_tournament_cb, player);
+	if (game->params->tournament_time > 0) {
+		/* if first player in and this is a tournament start the timer */
+		if (game->num_players == 0) {
+			g_timeout_add(game->params->tournament_time * 60 *
+				      1000 + 500, &tournament_start_cb,
+				      player);
+			g_timeout_add(1000, &talk_about_tournament_cb,
+				      player);
+		} else {
+			sm_send_uncached(sm, "NOTE %s\n",
+					 N_("This game will start soon."));
+		}
 	}
 
 	sm_goto(sm, (StateFunc) mode_check_version);
@@ -312,7 +328,8 @@ static void player_set_name_real(Player * player, gchar * name,
 		/* make it a note, not an error, so nothing bad happens
 		 * (on error the AI would disconnect) */
 		sm_send(sm, "NOTE %s\n",
-			_("Name not changed: new name is already in use"));
+			N_
+			("Name not changed: new name is already in use"));
 		return;
 	}
 
@@ -473,6 +490,7 @@ void player_revive(Player * newp, char *name)
 	GList *current = NULL;
 	Player *p = NULL;
 	gboolean reviving_player_in_setup;
+	gchar *safe_name;
 
 	/* first see if a player with the given name exists */
 	if (name) {
@@ -582,9 +600,13 @@ void player_revive(Player * newp, char *name)
 
 	player_free(p);
 
-	player_broadcast(newp, PB_SILENT,
-			 _("NOTE player %d (%s) has reconnected.\n"),
-			 newp->num, newp->name);
+	/* Make sure the name in the broadcast doesn't contain the separator */
+	safe_name = g_strdup(newp->name);
+	g_strdelimit(safe_name, "|", '_');
+	player_broadcast(newp, PB_SILENT, "NOTE1 %s|%s\n", safe_name,
+			 /* %s is the name of the reconnecting player */
+			 N_("%s has reconnected."));
+	g_free(safe_name);
 	return;
 }
 
@@ -639,6 +661,7 @@ static gboolean mode_bad_version(Player * player, gint event)
 	switch (event) {
 	case SM_ENTER:
 		sm_send_uncached(sm, "ERR sorry, version conflict\n");
+		player_free(player);
 		break;
 	}
 	return FALSE;
@@ -664,17 +687,18 @@ static gboolean mode_check_version(Player * player, gint event)
 			if (check_versions(player->client_version)) {
 				sm_goto(sm, (StateFunc) mode_check_status);
 			} else {
-				/* Version mismatch. 
-				 * %1 = expected version, 
-				 * %2 = version of the client. 
-				 * Don't translate the NOTE at 
-				 * the beginning of the text */
-				sm_send_uncached(sm,
-						 _
-						 ("NOTE Expecting version %s,"
-						  " not %s\n"),
-						 PROTOCOL_VERSION,
-						 player->client_version);
+				gchar *mismatch =
+				    g_strdup_printf("%s <-> %s",
+						    PROTOCOL_VERSION,
+						    player->
+						    client_version);
+				/* Make sure the argument does not contain the separator */
+				g_strdelimit(mismatch, "|", '_');
+				sm_send_uncached(sm, "NOTE1 %s|%s\n",
+						 mismatch,
+						 N_
+						 ("Version mismatch: %s"));
+				g_free(mismatch);
 				sm_goto(sm, (StateFunc) mode_bad_version);
 			}
 			return TRUE;
