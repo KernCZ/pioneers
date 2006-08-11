@@ -811,7 +811,8 @@ gboolean mode_start(StateMachine * sm, gint event)
 		callbacks.network_status(_("Offline"));
 		callbacks.instructions(_("Version mismatch"));
 		log_message(MSG_ERROR,
-			    "Connect Error: Version mismatch! Please make sure client and server are up to date.\n");
+			    _("Version mismatch. Please make sure client "
+			      "and server are up to date.\n"));
 		return TRUE;
 	}
 	return check_chat_or_name(sm);
