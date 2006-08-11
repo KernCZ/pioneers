@@ -1,5 +1,6 @@
 2006-08-11  Roland Clobus <rclobus@bigfoot.com>
-	* client/common/client.c: Marked a string for translation
+	* client/common/client.c: Marked a string for translation.
+	* client/gtk/interface.c: More robust gui_state changes.
 	
 2006-08-10  Roland Clobus <rclobus@bigfoot.com>
 	* client/common/client.c: Don't say 'A is now A' in the client.

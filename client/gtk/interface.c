@@ -34,9 +34,12 @@ static void move_ship_cb(MapElement edge, MapElement extra);
 static void build_settlement_cb(MapElement node, MapElement extra);
 static void build_city_cb(MapElement node, MapElement extra);
 
+static void dummy_state(G_GNUC_UNUSED GuiEvent event)
+{
+}
 
 /* for gold and discard, remember the previous gui state */
-static GuiState previous_state;
+static GuiState previous_state = dummy_state;
 
 static gboolean discard_busy = FALSE, robber_busy = FALSE;
 
@@ -377,7 +380,8 @@ void frontend_turn(void)
 {
 	/* if it already is our turn, just update the gui (maybe something
 	 * happened), but don't beep */
-	if (get_gui_state() == frontend_state_turn) {
+	if (get_gui_state() == frontend_state_turn
+	    || get_gui_state() == frontend_state_trade) {
 		/* this is in the if, because it gets called from set_gui_state
 		 * anyway. */
 		frontend_gui_update();
@@ -516,6 +520,7 @@ void frontend_discard(void)
 	if (!discard_busy) {
 		discard_busy = TRUE;
 		discard_begin();
+		g_assert(previous_state == dummy_state);
 		previous_state = get_gui_state();
 		set_gui_state(frontend_state_idle);
 	}
@@ -545,9 +550,10 @@ void frontend_discard_done(void)
 {
 	discard_busy = FALSE;
 	discard_end();
-	if (get_gui_state() == frontend_state_discard
-	    || get_gui_state() == frontend_state_idle)
+	if (previous_state != dummy_state) {
 		set_gui_state(previous_state);
+		previous_state = dummy_state;
+	}
 }
 
 /* gold */
@@ -571,6 +577,7 @@ void frontend_gold(void)
 {
 	if (get_gui_state() != frontend_state_gold) {
 		gold_choose_begin();
+		g_assert(previous_state == dummy_state);
 		previous_state = get_gui_state();
 		set_gui_state(frontend_state_gold);
 	}
@@ -597,8 +604,10 @@ void frontend_gold_remove(gint player_num, gint * resources)
 void frontend_gold_done(void)
 {
 	gold_choose_end();
-	if (get_gui_state() == frontend_state_gold)
+	if (previous_state != dummy_state) {
 		set_gui_state(previous_state);
+		previous_state = dummy_state;
+	}
 }
 
 void frontend_game_over(gint player, gint points)
@@ -624,7 +633,10 @@ static void place_robber(const Hex * hex, gint victim)
 {
 	cb_place_robber(hex, victim);
 	robber_busy = FALSE;
-	set_gui_state(previous_state);
+	if (previous_state != dummy_state) {
+		set_gui_state(previous_state);
+		previous_state = dummy_state;
+	}
 }
 
 static void rob_building(MapElement node, MapElement hex)
@@ -741,6 +753,7 @@ void frontend_robber(void)
 	if (robber_busy)
 		return;
 	robber_busy = TRUE;
+	g_assert(previous_state == dummy_state);
 	previous_state = get_gui_state();
 	set_gui_state(frontend_state_idle);
 	gui_cursor_set(ROBBER_CURSOR,
