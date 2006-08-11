@@ -2558,7 +2558,7 @@ msgstr "Spieler %d heiﬂt jetzt %s.\n"
 
 #: ../server/gtk/main.c:489
 msgid "Game Settings"
-msgstr "_Spieleinstellungen"
+msgstr "Spieleinstellungen"
 
 #: ../server/gtk/main.c:494
 msgid "Server Parameters"
