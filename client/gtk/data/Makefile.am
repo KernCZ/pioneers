@@ -48,7 +48,6 @@ pixmap_DATA += \
 desktop_DATA += client/gtk/data/pioneers.desktop
 
 if USE_WINDOWS_ICON
-pioneers_SOURCES += client/gtk/data/pioneers.rc
 pioneers_LDADD += client/gtk/data/pioneers-icon.o
 endif
 

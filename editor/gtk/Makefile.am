@@ -39,7 +39,6 @@ pioneers_editor_SOURCES = \
 pioneers_editor_LDADD = $(gtk_libs)
 
 if USE_WINDOWS_ICON
-pioneers_editor_SOURCES += editor/gtk/pioneers-editor.rc
 pioneers_editor_LDADD += editor/gtk/pioneers-editor-icon.o
 endif
 

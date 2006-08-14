@@ -1,3 +1,7 @@
+2006-08-14  Bas Wijnen <shevek@fmf.nl>
+	* client/gtk/data/Makefile.am, editor/gtk/Makefile.am: Remove
+	incorrect direct dependency on *.rc files by executables.
+
 2006-08-14  Roland Clobus <rclobus@bigfoot.com>
 	* editor/gtk/Makefile.am, README.subversion, configure.ac,
 	Makefile.am, client/gtk/data/Makefile.am, client/gtk/Makefile.am:
