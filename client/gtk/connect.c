@@ -133,8 +133,8 @@ static gchar server_version[STRARG_LEN];
 static gchar server_max[INTARG_LEN];
 static gchar server_curr[INTARG_LEN];
 static gchar server_vpoints[STRARG_LEN];
-static gchar server_sevenrule[STRARG_LEN];
-static gchar server_terrain[STRARG_LEN];
+static gchar *server_sevenrule = NULL;
+static gchar *server_terrain = NULL;
 static gchar server_title[STRARG_LEN];
 
 static void query_meta_server(const gchar * server, const gchar * port);
@@ -422,6 +422,8 @@ static void server_end(void)
 static void meta_notify(NetEvent event, G_GNUC_UNUSED void *user_data,
 			char *line)
 {
+	gchar argument[STRARG_LEN];
+
 	switch (event) {
 	case NET_CONNECT:
 		break;
@@ -567,13 +569,49 @@ static void meta_notify(NetEvent event, G_GNUC_UNUSED void *user_data,
 				 (line, "vpoints=", server_vpoints))
 				break;
 			else if (check_str_info
-				 (line, "sevenrule=", server_sevenrule))
+				 (line, "sevenrule=", argument)) {
+				if (server_sevenrule)
+					g_free(server_sevenrule);
+				if (!strcmp(argument, "normal")) {
+					server_sevenrule =
+					    g_strdup(_("Normal"));
+				} else
+				    if (!strcmp
+					(argument, "reroll first 2")) {
+					server_sevenrule =
+					    g_strdup(_
+						     ("Reroll on 1st 2 turns"));
+				} else if (!strcmp(argument, "reroll all")) {
+					server_sevenrule =
+					    g_strdup(_("Reroll all 7s"));
+				} else {
+					g_warning("Unknown seven rule: %s",
+						  argument);
+					server_sevenrule =
+					    g_strdup(argument);
+				}
 				break;
-			else if (check_str_info
-				 (line, "terrain=", server_terrain))
+			} else if (check_str_info
+				   (line, "terrain=", argument)) {
+				if (server_terrain)
+					g_free(server_terrain);
+				if (!strcmp(argument, "default"))
+					server_terrain =
+					    g_strdup(_("Default"));
+				else if (!strcmp(argument, "random"))
+					server_terrain =
+					    g_strdup(_("Random"));
+				else {
+					g_warning
+					    ("Unknown terrain type: %s",
+					     argument);
+					server_terrain =
+					    g_strdup(argument);
+				}
 				break;
-			else if (check_str_info
-				 (line, "title=", server_title))
+			} else
+			    if (check_str_info
+				(line, "title=", server_title))
 				break;
 			/* meta-protocol 0 compat */
 			else if (check_str_info
