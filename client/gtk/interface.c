@@ -124,6 +124,7 @@ static void frontend_state_trade(GuiEvent event)
 				   trade_valid_selection());
 		frontend_gui_check(GUI_TRADE_FINISH, TRUE);
 		frontend_gui_check(GUI_TRADE, TRUE);
+		gui_cursor_none();	/* Finish single click build */
 		break;
 	case GUI_TRADE_CALL:
 		trading = TRUE;

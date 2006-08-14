@@ -4,6 +4,7 @@
 	Reduce the need for netpbm.
 	* client/gtk/connect.c: Translate the data from the meta server.
 	* server/lobby.game: Tournament-time is not a keyword anymore.
+	* client/gtk/interface.c: No build cursor during trade.
 
 2006-08-14  Bas Wijnen <shevek@fmf.nl>
 	* client/callback.h, client/gtk/offline.h, client/common/client.c,
