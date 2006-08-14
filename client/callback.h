@@ -244,6 +244,10 @@ struct callbacks {
 	/* mainloop.  This is initialized to run the glib main loop.  It can
 	 * be overridden */
 	void (*mainloop) (void);
+	/* exit the main loop.  The program will then quit.  This is
+	 * initialized to quit the main loop.  It should be overridden if
+	 * mainloop is. */
+	void (*quit) (void);
 };
 
 #if ENABLE_NLS

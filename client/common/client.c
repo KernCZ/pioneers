@@ -386,7 +386,7 @@ void client_init(void)
 	callbacks.incoming_chat = &dummy_incoming_chat;
 	callbacks.new_bank = &dummy_new_bank;
 	callbacks.error = &dummy_error;
-	/* mainloop is not set here */
+	/* mainloop and quit are not set here */
 	resource_init();
 }
 

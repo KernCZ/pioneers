@@ -26,11 +26,18 @@
 #include "callback.h"
 #include <glib.h>
 
+static GMainLoop *loop;
+
 static void run_main(void)
 {
-	GMainLoop *loop = g_main_loop_new(NULL, FALSE);
+	loop = g_main_loop_new(NULL, FALSE);
 	g_main_loop_run(loop);
 	g_main_loop_unref(loop);
+}
+
+static void quit(void)
+{
+	g_main_loop_quit(loop);
 }
 
 int main(int argc, char *argv[])
@@ -39,6 +46,7 @@ int main(int argc, char *argv[])
 
 	client_init();
 	callbacks.mainloop = &run_main;
+	callbacks.quit = &quit;
 
 #if ENABLE_NLS
 	init_nls();

@@ -160,14 +160,15 @@ static void ai_init(int argc, char **argv)
 	algorithms[active_algorithm].init_func(argc, argv);
 }
 
-static void ai_quit(void)
+void ai_panic(const char *message)
 {
-	exit(0);
+	cb_chat(message);
+	callbacks.quit();
 }
 
 static void ai_offline(void)
 {
-	callbacks.offline = &ai_quit;
+	callbacks.offline = callbacks.quit;
 	cb_connect(server, port, name,
 		   !algorithms[active_algorithm].request_player);
 	g_free(name);
@@ -178,8 +179,7 @@ static void ai_start_game(void)
 	if (algorithms[active_algorithm].request_player ==
 	    my_player_viewer()
 	    && algorithms[active_algorithm].quit_if_not_request) {
-		cb_chat(N_("The game is already full. I'm leaving."));
-		exit(1);
+		ai_panic(N_("The game is already full. I'm leaving."));
 	}
 }
 

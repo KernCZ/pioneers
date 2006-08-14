@@ -937,7 +937,18 @@ static void greedy_setup_house(void)
 
 	reevaluate_resources(&resval);
 
+	if (stock_num_settlements() == 0) {
+		ai_panic(N_("No settlements in stock to use for setup"));
+		return;
+	}
+
 	node = best_settlement_spot(TRUE, &resval);
+
+	if (node == NULL)
+	{
+		ai_panic(N_("There is no place to setup a settlement"));
+		return;
+	}
 
 	/*node_add(player, BUILD_SETTLEMENT, node->x, node->y, node->pos, FALSE); */
 	cb_build_settlement(node);
@@ -958,6 +969,11 @@ static void greedy_setup_road(void)
 
 	reevaluate_resources(&resval);
 
+	if (stock_num_roads() == 0) {
+		ai_panic(N_("No roads in stock to use for setup"));
+		return;
+	}
+
 	node = void_settlement();
 
 	e = best_road_to_road_spot(node, &tmp, &resval);
@@ -969,6 +985,10 @@ static void greedy_setup_road(void)
 				e = node->edges[i];
 				break;
 			}
+		}
+		if (e == NULL) {
+			ai_panic(N_("There is no place to setup a road"));
+			return;
 		}
 	}
 

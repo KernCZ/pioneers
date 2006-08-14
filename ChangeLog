@@ -1,3 +1,9 @@
+2006-08-14  Bas Wijnen <shevek@fmf.nl>
+	* client/callback.h, client/gtk/offline.h, client/common/client.c,
+	client/common/main.c, client/ai/ai.h, client/ai/greedy.c,
+	client/ai/ai/c: Make AI quit nicely instead of calling exit.  Also
+	quit nicely if setup is impossible instead of crashing.
+
 2006-08-11  Roland Clobus <rclobus@bigfoot.com>
 	* client/common/client.c: Marked a string for translation.
 	* client/gtk/interface.c: More robust gui_state changes.

@@ -24,6 +24,7 @@
 #include <glib.h>
 #include "callback.h"
 
+void ai_panic(const char *message);
 void ai_wait(void);
 void ai_chat(const char *message);
 void greedy_init(int argc, char **argv);

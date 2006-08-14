@@ -198,6 +198,7 @@ void frontend_init(int argc, char **argv)
 	app = gui_build_interface();
 
 	callbacks.mainloop = &gtk_main;
+	callbacks.quit = &gtk_main_quit;
 
 	/* in theory, all windows are created now... 
 	 *   set logging to message window */
