@@ -36,8 +36,6 @@ gint no_player_timeout = 0;
 
 static GSList *_game_list = NULL;	/* The sorted list of game titles */
 
-static gboolean random_order = TRUE;
-
 GameParams *params = NULL;
 
 #define TERRAIN_DEFAULT	0
@@ -444,7 +442,8 @@ void cfg_set_timeout(gint to)
 
 gboolean start_server(const gchar * hostname, const gchar * port,
 		      gboolean register_server,
-		      const gchar * meta_server_name)
+		      const gchar * meta_server_name,
+		      gboolean random_order)
 {
 	if (!params) {
 		cfg_set_game("Default");

@@ -64,7 +64,7 @@ static gchar *server_port = NULL;	/* port of the game */
 static gboolean register_server = TRUE;	/* Register at the meta server */
 static const gchar *meta_server_name = NULL;	/* hostname of the meta server */
 static gboolean want_ai_chat = TRUE;
-static gboolean random_order = TRUE; /* random seating order */
+static gboolean random_order = TRUE;	/* random seating order */
 
 /* Local function prototypes */
 static void add_game_to_list(gpointer name, gpointer user_data);
@@ -249,7 +249,7 @@ static void start_clicked_cb(G_GNUC_UNUSED GtkButton * start_btn,
 		g_assert(server_port != NULL);
 		if (start_server
 		    (hostname, server_port, register_server,
-		     meta_server_name)) {
+		     meta_server_name, random_order)) {
 			gui_set_server_state(TRUE);
 			config_set_string("server/meta-server",
 					  meta_server_name);

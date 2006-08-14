@@ -79,7 +79,7 @@ void admin_run_command(Session * admin_session, const gchar * line)
 		if (!server_port)
 			server_port = g_strdup(PIONEERS_DEFAULT_GAME_PORT);
 		start_server(get_server_name(), server_port,
-			     register_server, meta_server_name);
+			     register_server, meta_server_name, TRUE);
 		g_free(meta_server_name);
 
 	} else if (!strcmp(command, "stop-server")) {

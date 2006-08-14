@@ -222,7 +222,8 @@ void cfg_set_timeout(gint to);
 /* callbacks related to server starting / stopping */
 gboolean start_server(const gchar * hostname, const gchar * port,
 		      gboolean register_server,
-		      const gchar * meta_server_name);
+		      const gchar * meta_server_name,
+		      gboolean random_order);
 
 /* initialize the server */
 void server_init(void);

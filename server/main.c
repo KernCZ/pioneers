@@ -59,6 +59,7 @@ static gboolean quit_when_done = FALSE;
 static gchar *hostname = NULL;
 static gboolean register_server = FALSE;
 static gchar *meta_server_name = NULL;
+static gboolean fixed_seating_order = FALSE;
 
 static GOptionEntry commandline_game_entries[] = {
 	{"game-title", 'g', 0, G_OPTION_ARG_STRING, &game_title,
@@ -118,7 +119,13 @@ static GOptionEntry commandline_other_entries[] = {
 	 N_
 	 ("Don't start game immediately, wait for a command on admin port"),
 	 NULL},
-	{NULL, '\0', 0, 0, NULL, NULL, NULL}
+	{NULL, '\0', 0, 0, NULL, NULL, NULL},
+	{"fixed-seating-order", 0, 0, G_OPTION_ARG_NONE,
+	 &fixed_seating_order,
+	 /* Commandline server-console: fixed-seating-order */
+	 N_
+	 ("Give players numbers according to the order they enter the game"),
+	 NULL}
 };
 
 int main(int argc, char *argv[])
@@ -232,7 +239,7 @@ int main(int argc, char *argv[])
 	if (!disable_game_start) {
 		if (start_server
 		    (hostname, server_port, register_server,
-		     meta_server_name)) {
+		     meta_server_name, !fixed_seating_order)) {
 			for (i = 0; i < num_ai_players; ++i)
 				new_computer_player(NULL, server_port,
 						    TRUE);

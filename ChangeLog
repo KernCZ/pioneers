@@ -5,6 +5,8 @@
 	* client/gtk/connect.c: Translate the data from the meta server.
 	* server/lobby.game: Tournament-time is not a keyword anymore.
 	* client/gtk/interface.c: No build cursor during trade.
+	* server/gtk/main.c, server/server.c, server/server.h, server/main.c,
+	server/admin.c: Fix regression of random seating order dd 2006-08-10
 
 2006-08-14  Bas Wijnen <shevek@fmf.nl>
 	* client/callback.h, client/gtk/offline.h, client/common/client.c,
