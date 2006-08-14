@@ -68,14 +68,19 @@ Interesting options are:
 	configure with a different prefix than before was run, to make sure
 	all files with paths in them are rebuilt.
 --enable-maintainer-mode
-    This has two effects:
+    This has four effects:
     - It changes the defaults for warnings, deprecation-checks, debug, and
       logging to "yes" (but they can be overridden again by using
       --disable-warnings, etc).
     - It will add rules to the Makefile to rebuild and rerun configure if its
       source files have changed (configure.ac, Makefile.am).
+    - It will enable the generation of Microsoft Windows icons.
+    - 'make dist' will be enabled.
     Note that --enable-maintainer-mode is automatically passed to configure
     when it is run from autogen.sh.
+--without-ms-icons
+    Turns off the generation of the icons. Only useful in conjunction with
+    --enable-maintainer-mode. As a side effect 'make dist' is disabled.
 --enable-warnings=[yes|no|full]
     Turn on compiler warnings (some gcc specific)
     The default is no, unless --enable-maintainer-mode is used.

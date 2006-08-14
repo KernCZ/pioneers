@@ -343,8 +343,6 @@ AC_SUBST(pioneers_themedir_install)
 AC_SUBST(pioneers_themedir, $pioneers_themedir_install)
 AC_SUBST(pioneers_localedir)
 
-AM_CONDITIONAL(WINDOWS_ICON, [test $pioneers_is_windows_port = yes])
-
 # Time out
 AC_CHECK_FUNCS([alarm])
 # Functions needed for the hack to override the language
@@ -416,6 +414,30 @@ if test "$pioneers_is_windows_port" = "yes"; then
 	pioneers_build_metaserver="no, not implemented for MS Windows";
 fi
 
+# Construct a nice text about Microsoft Windows icons
+if test $USE_MAINTAINER_MODE = yes; then
+	if test "$with_ms_icons" = "no"; then
+		if test $pioneers_is_windows_port = yes; then
+			AC_MSG_ERROR([Icons cannot be disabled in maintainermode in MS Windows])
+		fi
+		pioneers_ms_icons="Disabled, make dist is disabled too"
+	else
+		if test "$pngtopnm" = "false"; then
+			AC_MSG_ERROR([Icons cannot be generated, rerun configure with --without-ms-icons or install netpbm])
+		fi
+		pioneers_ms_icons="Icons generated"
+	fi
+else
+	if test $pioneers_is_windows_port = yes; then
+		pioneers_ms_icons="Icons are used"
+	else
+		pioneers_ms_icons="Not needed"
+	fi
+fi
+
+AM_CONDITIONAL(CREATE_WINDOWS_ICON, [test $USE_MAINTAINER_MODE = yes -a "$with_ms_icons" != "no"])
+AM_CONDITIONAL(USE_WINDOWS_ICON, [test $pioneers_is_windows_port = yes])
+
 AM_CONDITIONAL(BUILD_CLIENT, [test "$pioneers_build_client_gtk" = "yes" -o "$pioneers_build_client_ai" = yes])
 AM_CONDITIONAL(BUILD_EDITOR, [test "$pioneers_build_editor" = "yes"])
 AM_CONDITIONAL(BUILD_SERVER, [test "$pioneers_build_server_gtk" = "yes" -o "$pioneers_build_server_console" = "yes"])
@@ -456,4 +478,6 @@ $PACKAGE v$VERSION configuration:
         Add debug information              $pioneers_debug
         Enable network logging             $pioneers_logging
         Enable deprecation checks          $pioneers_deprecationChecks
+   Maintainers only:
+        Microsoft Windows icons            $pioneers_ms_icons
 ])

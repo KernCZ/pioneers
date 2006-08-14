@@ -1,3 +1,8 @@
+2006-08-14  Roland Clobus <rclobus@bigfoot.com>
+	* editor/gtk/Makefile.am, README.subversion, configure.ac,
+	Makefile.am, client/gtk/data/Makefile.am, client/gtk/Makefile.am:
+	Reduce the need for netpbm.
+
 2006-08-14  Bas Wijnen <shevek@fmf.nl>
 	* client/callback.h, client/gtk/offline.h, client/common/client.c,
 	client/common/main.c, client/ai/ai.h, client/ai/greedy.c,

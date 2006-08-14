@@ -34,11 +34,12 @@ pioneers_editor_SOURCES = \
 	editor/gtk/game-buildings.c \
 	editor/gtk/game-buildings.h \
 	editor/gtk/game-resources.c \
-	editor/gtk/game-resources.h \
-	editor/gtk/pioneers-editor.rc
+	editor/gtk/game-resources.h
 
 pioneers_editor_LDADD = $(gtk_libs)
-if WINDOWS_ICON
+
+if USE_WINDOWS_ICON
+pioneers_editor_SOURCES += editor/gtk/pioneers-editor.rc
 pioneers_editor_LDADD += editor/gtk/pioneers-editor-icon.o
 endif
 

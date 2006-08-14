@@ -18,8 +18,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-include client/gtk/data/Makefile.am
-
 bin_PROGRAMS += pioneers
 
 # if anyone knows a cleaner way to do this, be my guest.  Automake screamed
@@ -60,7 +58,6 @@ pioneers_SOURCES = \
 	client/gtk/monopoly.c \
 	client/gtk/name.c \
 	client/gtk/offline.c \
-	client/gtk/data/pioneers.rc \
 	client/gtk/plenty.c \
 	client/gtk/player.c \
 	client/gtk/quote.c \
@@ -74,6 +71,7 @@ pioneers_SOURCES = \
 	client/gtk/trade.c
 
 pioneers_LDADD = libpioneersclient.a $(gtk_libs)
-if WINDOWS_ICON
-pioneers_LDADD += client/gtk/data/pioneers-icon.o
-endif
+
+# Include the data here, not at the top,
+# it can add extra resources to the executable
+include client/gtk/data/Makefile.am

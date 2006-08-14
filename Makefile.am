@@ -85,6 +85,8 @@ windows_icons =
 	@mkdir_p@ $(dir $@)
 	$(svg_renderer_path) $(svg_renderer_width)48$(svg_renderer_height)48 $< $@
 
+if CREATE_WINDOWS_ICON
+# Only maintainers need to do this. It is distributed in the tarball
 %.ico: %.svg
 	@mkdir_p@ $(dir $@)
 	$(svg_renderer_path) $(svg_renderer_width)16$(svg_renderer_height)16 $< $@-p16.png
@@ -108,8 +110,14 @@ windows_icons =
 	rm $@-p32a.pnm
 	rm $@-p32colormap.pnm
 	rm $@-p32256.pnm
+else
+%.ico: %.svg
+	@$(ECHO) Microsoft Windows icons cannot be generated
+	@$(ECHO) Run configure again with --enable-maintainer-mode
+	@exit 1
+endif
 
-if WINDOWS_ICON
+if USE_WINDOWS_ICON
 # Will be used in Windows builds
 %-icon.o: %.rc
 	@mkdir_p@ $(dir $@)
