@@ -40,6 +40,7 @@ pioneers_editor_LDADD = $(gtk_libs)
 
 if USE_WINDOWS_ICON
 pioneers_editor_LDADD += editor/gtk/pioneers-editor-icon.o
+CLEANFILES += editor/gtk/pioneers-editor-icon.o
 endif
 
 windows_icons += editor/gtk/pioneers-editor.ico

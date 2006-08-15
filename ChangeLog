@@ -7,6 +7,8 @@
 	client/gtk/gui.h, client/ai/ai.c: Added --debug for debug messages,
 	instead of --enable-logging in configure.
 	* Makefile.am: Added dependency for icons.
+	* editor/gtk/Makefile.am, client/gtk/data/Makefile.am: Cleanup
+	the *-icon.o files. (Enables 'make distcheck' on Cygwin)
 	
 2006-08-14  Bas Wijnen <shevek@fmf.nl>
 	* client/gtk/data/Makefile.am, editor/gtk/Makefile.am: Remove
