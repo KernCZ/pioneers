@@ -10,6 +10,7 @@
 	* editor/gtk/Makefile.am, client/gtk/data/Makefile.am: Cleanup
 	the *-icon.o files. (Enables 'make distcheck' on Cygwin)
 	* common/gtk/aboutbox.c: Added homepage, and cleanup.
+	* README.subversion, configure.ac: Added --without-help.
 	
 2006-08-14  Bas Wijnen <shevek@fmf.nl>
 	* client/gtk/data/Makefile.am, editor/gtk/Makefile.am: Remove

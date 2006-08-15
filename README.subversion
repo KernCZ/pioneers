@@ -103,6 +103,9 @@ Interesting options are:
 --without-gtk
     Turn off the building of the (graphical) executables that depend on Gtk+.
     Even when the library is present, those executables will not be built.
+--without-help
+    Turn off the building of the online help. This removes the dependency on
+    scrollkeeper and libgnome.
 
 Some musings
 ============
@@ -139,4 +142,4 @@ substitutions on the values.
 
 Roland Clobus
 Bas Wijnen
-2006-08-01 (Pioneers 0.9.65)
+2006-08-15 (Pioneers 0.10.1)

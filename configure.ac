@@ -175,17 +175,24 @@ fi
 AC_SUBST(GLIB_DEPRECATION)
 AC_SUBST(GTK_DEPRECATION)
 
-## Scrollkeeper dependency test taken from gnome-games 2.6.2
-## Begin tests for scrollkeeper
-# SCROLLKEEPER_REQUIRED is never used?
-SCROLLKEEPER_REQUIRED=0.3.8
-AC_SUBST(SCROLLKEEPER_REQUIRED)
-
-AC_PATH_PROG(SCROLLKEEPER_CONFIG, scrollkeeper-config,no)
-if test x$SCROLLKEEPER_CONFIG = xno; then 
-	have_scrollkeeper=no;
+if test "$with_help" = no; then
+	pioneers_help="no, disabled in configure"
+	have_scrollkeeper=no
 else
-	have_scrollkeeper=yes;
+	## Scrollkeeper dependency test taken from gnome-games 2.6.2
+	## Begin tests for scrollkeeper
+	# SCROLLKEEPER_REQUIRED is never used?
+	SCROLLKEEPER_REQUIRED=0.3.8
+	AC_SUBST(SCROLLKEEPER_REQUIRED)
+
+	AC_PATH_PROG(SCROLLKEEPER_CONFIG, scrollkeeper-config,no)
+	if test x$SCROLLKEEPER_CONFIG = xno; then 
+		have_scrollkeeper=no
+		pioneers_help="no, scrollkeeper not found"
+	else
+		have_scrollkeeper=yes
+		pioneers_help="yes"
+	fi
 fi
 
 # glib is always needed
@@ -427,11 +434,10 @@ AM_CONDITIONAL(BUILD_EDITOR, [test "$pioneers_build_editor" = "yes"])
 AM_CONDITIONAL(BUILD_SERVER, [test "$pioneers_build_server_gtk" = "yes" -o "$pioneers_build_server_console" = "yes"])
 AM_CONDITIONAL(BUILD_META_SERVER, [test "$pioneers_build_metaserver" = "yes"])
 
-pioneers_have_help=$have_scrollkeeper;
 if test "$have_scrollkeeper" = "yes"; then
 	AC_DEFINE(HAVE_HELP, 1,
 		[Defined when online help is present])
-	pioneers_have_help="yes, scrollkeeper";
+	pioneers_help="yes, scrollkeeper";
 fi
 
 AC_CONFIG_FILES([ \
@@ -456,7 +462,7 @@ $PACKAGE v$VERSION configuration:
         Build graphical server             $pioneers_build_server_gtk
         Build console server               $pioneers_build_server_console
         Build metaserver                   $pioneers_build_metaserver
-        Build help                         $pioneers_have_help
+        Build help                         $pioneers_help
     Developers only:
         Use compiler warnings              $pioneers_warnings
         Add debug information              $pioneers_debug
