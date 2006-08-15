@@ -37,6 +37,7 @@ const int PRIVATE_GAME_HISTORY_SIZE = 10;
 
 static gchar *connect_name;	/* Name of the player */
 static gboolean connect_viewer;	/* Prefer to be a viewer */
+static gboolean connect_viewer_allowed;	/* Viewer allowed */
 static gchar *connect_server;	/* Name of the server */
 static gchar *connect_port;	/* Port of the server */
 
@@ -143,7 +144,8 @@ static void show_waiting_box(const gchar * message, const gchar * server,
 static void close_waiting_box(void);
 
 static void connect_set_field(gchar ** field, const gchar * value);
-static void connect_close_all(gboolean user_pressed_ok);
+static void connect_close_all(gboolean user_pressed_ok,
+			      gboolean can_be_viewer);
 static void set_meta_serverinfo(void);
 static void connect_private_dialog(G_GNUC_UNUSED GtkWidget * widget,
 				   GtkWindow * parent);
@@ -172,12 +174,13 @@ void connect_set_name(const gchar * name)
 
 gboolean connect_get_viewer(void)
 {
-	return connect_viewer;
+	return connect_viewer && connect_viewer_allowed;
 }
 
 void connect_set_viewer(gboolean viewer)
 {
 	connect_viewer = viewer;
+	connect_viewer_allowed = TRUE;
 	if (viewer_toggle != NULL)
 		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
 					     (viewer_toggle),
@@ -224,8 +227,10 @@ void connect_set_port(const gchar * port)
 	connect_set_field(&connect_port, port);
 }
 
-static void connect_close_all(gboolean user_pressed_ok)
+static void connect_close_all(gboolean user_pressed_ok,
+			      gboolean can_be_viewer)
 {
+	connect_viewer_allowed = can_be_viewer;
 	if (user_pressed_ok) {
 		connect_set_field(&connect_name,
 				  gtk_entry_get_text(GTK_ENTRY
@@ -365,7 +370,7 @@ static void meta_create_notify(NetEvent event,
 				/* The meta server is now busy creating the new game.
 				 * UGLY FIX: Wait for some time */
 				g_usleep(500000);
-				connect_close_all(TRUE);
+				connect_close_all(TRUE, FALSE);
 			} else
 				log_message(MSG_ERROR,
 					    _
@@ -883,7 +888,7 @@ static void meta_dlg_cb(GtkDialog * dlg, gint arg1,
 			g_free(host);
 			g_free(port);
 			gtk_tree_path_free(path);
-			connect_close_all(TRUE);
+			connect_close_all(TRUE, TRUE);
 		}
 		break;
 	case GTK_RESPONSE_CANCEL:	/* Cancel */
@@ -1136,7 +1141,7 @@ static void connect_dlg_cb(G_GNUC_UNUSED GtkDialog * dlg,
 			   G_GNUC_UNUSED gint arg1,
 			   G_GNUC_UNUSED gpointer userdata)
 {
-	connect_close_all(FALSE);
+	connect_close_all(FALSE, FALSE);
 }
 
 void connect_create_dlg(void)
@@ -1374,7 +1379,7 @@ static void connect_private_dlg_cb(GtkDialog * dlg, gint arg1,
 		update_recent_servers_list();
 		config_set_string("connect/server", connect_server);
 		config_set_string("connect/port", connect_port);
-		connect_close_all(TRUE);
+		connect_close_all(TRUE, TRUE);
 		break;
 	case GTK_RESPONSE_CANCEL:
 	default:		/* For the compiler */

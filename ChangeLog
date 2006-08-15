@@ -1,3 +1,7 @@
+2006-08-15  Roland Clobus <rclobus@bigfoot.com>
+	* client/gtk/connect.c: Don't connect to a new game at the meta server
+	as a viewer.
+	
 2006-08-14  Bas Wijnen <shevek@fmf.nl>
 	* client/gtk/data/Makefile.am, editor/gtk/Makefile.am: Remove
 	incorrect direct dependency on *.rc files by executables.
