@@ -6,6 +6,7 @@
 	client/gtk/callbacks.c, client/gtk/state.c, client/gtk/offline.c,
 	client/gtk/gui.h, client/ai/ai.c: Added --debug for debug messages,
 	instead of --enable-logging in configure.
+	* Makefile.am: Added dependency for icons.
 	
 2006-08-14  Bas Wijnen <shevek@fmf.nl>
 	* client/gtk/data/Makefile.am, editor/gtk/Makefile.am: Remove

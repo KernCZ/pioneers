@@ -119,7 +119,7 @@ endif
 
 if USE_WINDOWS_ICON
 # Will be used in Windows builds
-%-icon.o: %.rc
+%-icon.o: %.rc %.ico
 	@mkdir_p@ $(dir $@)
 	windres -I$(top_srcdir) -o $@ $<
 endif
