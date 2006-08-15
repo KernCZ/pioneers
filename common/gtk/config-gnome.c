@@ -94,15 +94,13 @@ static void config_sync(void)
 	if (!error) {
 		int f = open(filename, O_WRONLY | O_CREAT | O_TRUNC,
 			     S_IRUSR | S_IWUSR);
-#ifndef G_OS_WIN32
 		if (f == -1) {
 			/* Create the config dir, if it is missing */
 			/* Access mode: 0700 (drwx------) */
-			mkdir(g_get_user_config_dir(), S_IRWXU);
+			g_mkdir(g_get_user_config_dir(), S_IRWXU);
 			f = open(filename, O_WRONLY | O_CREAT | O_TRUNC,
 				 S_IRUSR | S_IWUSR);
 		};
-#endif
 		if (f != -1) {
 			write(f, data, length);
 			close(f);

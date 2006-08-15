@@ -26,9 +26,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#ifdef HAVE_GETOPT_H
-#include <getopt.h>
-#endif
 #include <glib.h>
 #include <signal.h>
 

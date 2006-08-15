@@ -257,7 +257,6 @@ AC_CHECK_HEADERS([limits.h])
 AC_CHECK_HEADERS([syslog.h],
 	[pioneers_have_syslog=yes;],
 	[pioneers_have_syslog=no;])
-AC_CHECK_HEADERS([sys/param.h])
 AC_HEADER_SYS_WAIT
 AC_HEADER_TIME
 
@@ -270,10 +269,10 @@ AC_FUNC_SELECT_ARGTYPES
 # Mathematics
 AC_CHECK_FUNCS([rint sqrt])
 # String functions
-AC_CHECK_FUNCS([strrchr strspn strstr strcspn])
+AC_CHECK_FUNCS([strchr strspn strstr strcspn])
 AC_CHECK_FUNCS([memmove memset])
 # Network and I/O functions
-AC_CHECK_FUNCS([gethostname select socket])
+AC_CHECK_FUNCS([gethostname gethostbyname select socket])
 getsockopt_arg3="void *";
 # getaddrinfo and friends
 AC_CHECK_FUNCS([getaddrinfo gai_strerror freeaddrinfo], 
@@ -347,7 +346,6 @@ AC_TYPE_SIZE_T
 # Check if socklen_t is present
 TYPE_SOCKLEN_T
 
-AC_SUBST(MT_RAND_OBJ)
 # Defines, accessible for all source files
 AC_DEFINE_UNQUOTED(PROTOCOL_VERSION, "$PROTOCOL_VERSION",
                    [Protocol version used by the program])

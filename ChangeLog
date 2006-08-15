@@ -11,6 +11,9 @@
 	the *-icon.o files. (Enables 'make distcheck' on Cygwin)
 	* common/gtk/aboutbox.c: Added homepage, and cleanup.
 	* README.subversion, configure.ac: Added --without-help.
+	* configure.ac, server/admin.c, client/gtk/player.c,
+	common/gtk/config-gnome.c: Cleanup configure.ac.
+	* Makefile.am: Remove trailing slash.
 	
 2006-08-14  Bas Wijnen <shevek@fmf.nl>
 	* client/gtk/data/Makefile.am, editor/gtk/Makefile.am: Remove

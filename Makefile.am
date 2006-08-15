@@ -37,7 +37,7 @@ console_cflags = \
 
 gtk_cflags = \
 	$(console_cflags) \
-	-I$(top_srcdir)/common/gtk/ \
+	-I$(top_srcdir)/common/gtk \
 	$(GNOME2_CFLAGS) \
 	$(GTK2_CFLAGS) \
 	$(GTK_DEPRECATION)
