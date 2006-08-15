@@ -66,17 +66,28 @@ void aboutbox_display(const gchar * title, const gchar ** authors)
 			   FALSE, 0);
 
 	buffer = gtk_text_buffer_new(NULL);
-	gtk_text_buffer_get_start_iter(GTK_TEXT_BUFFER(buffer), &iter);
-	gtk_text_buffer_create_tag(GTK_TEXT_BUFFER(buffer), "bold",
+	gtk_text_buffer_get_start_iter(buffer, &iter);
+	gtk_text_buffer_create_tag(buffer, "bold",
 				   "weight", PANGO_WEIGHT_BOLD, NULL);
 
-	gtk_text_buffer_insert(GTK_TEXT_BUFFER(buffer), &iter,
+	gtk_text_buffer_insert(buffer, &iter,
 			       _("Pioneers is based upon the excellent\n"
 				 "Settlers of Catan board game.\n"), -1);
-	gtk_text_buffer_insert(buffer, &iter, FULL_VERSION, -1);
 	gtk_text_buffer_insert_with_tags_by_name(buffer, &iter,
-						 _("\nAuthors:\n"), -1,
+						 _("Version"), -1,
 						 "bold", NULL);
+	gtk_text_buffer_insert(buffer, &iter, ": ", -1);
+	gtk_text_buffer_insert(buffer, &iter, FULL_VERSION, -1);
+	gtk_text_buffer_insert(buffer, &iter, "\n", -1);
+	gtk_text_buffer_insert_with_tags_by_name(buffer, &iter,
+						 _("Homepage"), -1,
+						 "bold", NULL);
+	gtk_text_buffer_insert(buffer, &iter,
+			       ": http://pio.sourceforge.net\n", -1);
+	gtk_text_buffer_insert_with_tags_by_name(buffer, &iter,
+						 _("Authors"), -1, "bold",
+						 NULL);
+	gtk_text_buffer_insert(buffer, &iter, ":\n", -1);
 
 	for (i = 0; authors[i] != NULL; i++) {
 		if (i != 0)
@@ -85,10 +96,10 @@ void aboutbox_display(const gchar * title, const gchar ** authors)
 		gtk_text_buffer_insert(buffer, &iter, authors[i], -1);
 	}
 
-	gtk_text_buffer_get_start_iter(GTK_TEXT_BUFFER(buffer), &iter);
-	gtk_text_buffer_place_cursor(GTK_TEXT_BUFFER(buffer), &iter);
+	gtk_text_buffer_get_start_iter(buffer, &iter);
+	gtk_text_buffer_place_cursor(buffer, &iter);
 
-	view = gtk_text_view_new_with_buffer(GTK_TEXT_BUFFER(buffer));
+	view = gtk_text_view_new_with_buffer(buffer);
 	gtk_text_view_set_editable(GTK_TEXT_VIEW(view), FALSE);
 	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(about)->vbox), view, FALSE,
 			   FALSE, 0);
