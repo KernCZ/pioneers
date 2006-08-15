@@ -70,14 +70,9 @@ extern GtkWidget *app_window;	/* main application window */
 /* gui states */
 typedef void (*GuiState) (GuiEvent event);
 
-#ifdef DEBUG
-#define set_gui_state(A) \
-		{ g_print("New GUI_state: %s\n", #A); \
-		set_gui_state_nomacro(A); }
-#else
-#define set_gui_state(A) \
-		set_gui_state_nomacro(A)
-#endif
+#define set_gui_state(A) do \
+		{ debug("New GUI_state: %s\n", #A); \
+		set_gui_state_nomacro(A); } while (0)
 void set_gui_state_nomacro(GuiState state);
 
 GuiState get_gui_state(void);

@@ -65,6 +65,7 @@ static gboolean register_server = TRUE;	/* Register at the meta server */
 static const gchar *meta_server_name = NULL;	/* hostname of the meta server */
 static gboolean want_ai_chat = TRUE;
 static gboolean random_order = TRUE;	/* random seating order */
+static gboolean enable_debug = FALSE;
 
 /* Local function prototypes */
 static void add_game_to_list(gpointer name, gpointer user_data);
@@ -798,6 +799,9 @@ void game_is_over(G_GNUC_UNUSED Game * game)
 }
 
 static GOptionEntry commandline_entries[] = {
+	{"debug", '\0', 0, G_OPTION_ARG_NONE, &enable_debug,
+	 /* Commandline option of server-gtk: enable debug logging */
+	 N_("Enable debug messages"), NULL},
 	{NULL, '\0', 0, 0, NULL, NULL, NULL}
 };
 
@@ -846,6 +850,8 @@ int main(int argc, char *argv[])
 		g_error_free(error);
 		return 1;
 	};
+
+	set_enable_debug(enable_debug);
 
 	window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	/* Name in the titlebar of the server */

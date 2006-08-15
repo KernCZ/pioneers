@@ -1,6 +1,11 @@
 2006-08-15  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/connect.c: Don't connect to a new game at the meta server
 	as a viewer.
+	* common/network.h, common/log.c, common/network.c, README.subversion,
+	configure.ac, server/gtk/main.c, server/main.c,
+	client/gtk/callbacks.c, client/gtk/state.c, client/gtk/offline.c,
+	client/gtk/gui.h, client/ai/ai.c: Added --debug for debug messages,
+	instead of --enable-logging in configure.
 	
 2006-08-14  Bas Wijnen <shevek@fmf.nl>
 	* client/gtk/data/Makefile.am, editor/gtk/Makefile.am: Remove

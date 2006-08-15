@@ -45,6 +45,7 @@ static gboolean quit_when_offline = FALSE;
 #ifdef ENABLE_NLS
 static const gchar *override_language = NULL;
 #endif
+static gboolean enable_debug = FALSE;
 
 static GOptionEntry commandline_entries[] = {
 	/* Commandline option of client: hostname of the server */
@@ -67,7 +68,10 @@ static GOptionEntry commandline_entries[] = {
 	{"language", '\0', 0, G_OPTION_ARG_STRING, &override_language,
 	 N_("Override the language of the system"), "en " ALL_LINGUAS},
 #endif
-	{NULL, '\0', 0, 0, 0, NULL, NULL}
+	{"debug", '\0', 0, G_OPTION_ARG_NONE, &enable_debug,
+	 /* Commandline option of client: enable debug logging */
+	 N_("Enable debug messages"), NULL},
+	{NULL, '\0', 0, 0, NULL, NULL, NULL}
 };
 
 static void frontend_offline_start_connect_cb(void)
@@ -172,6 +176,8 @@ void frontend_init(int argc, char **argv)
 		g_error_free(error);
 		exit(1);
 	};
+
+	set_enable_debug(enable_debug);
 
 #if defined(HAVE_HELP) && defined(HAVE_LIBGNOME)
 	gnome_program_init(PACKAGE, FULL_VERSION,

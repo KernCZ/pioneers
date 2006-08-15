@@ -60,6 +60,7 @@ static gchar *hostname = NULL;
 static gboolean register_server = FALSE;
 static gchar *meta_server_name = NULL;
 static gboolean fixed_seating_order = FALSE;
+static gboolean enable_debug = FALSE;
 
 static GOptionEntry commandline_game_entries[] = {
 	{"game-title", 'g', 0, G_OPTION_ARG_STRING, &game_title,
@@ -119,13 +120,16 @@ static GOptionEntry commandline_other_entries[] = {
 	 N_
 	 ("Don't start game immediately, wait for a command on admin port"),
 	 NULL},
-	{NULL, '\0', 0, 0, NULL, NULL, NULL},
 	{"fixed-seating-order", 0, 0, G_OPTION_ARG_NONE,
 	 &fixed_seating_order,
 	 /* Commandline server-console: fixed-seating-order */
 	 N_
 	 ("Give players numbers according to the order they enter the game"),
-	 NULL}
+	 NULL},
+	{"debug", '\0', 0, G_OPTION_ARG_NONE, &enable_debug,
+	 /* Commandline option of server: enable debug logging */
+	 N_("Enable debug messages"), NULL},
+	{NULL, '\0', 0, 0, NULL, NULL, NULL}
 };
 
 int main(int argc, char *argv[])
@@ -184,6 +188,8 @@ int main(int argc, char *argv[])
 		g_error_free(error);
 		return 1;
 	};
+
+	set_enable_debug(enable_debug);
 
 	if (server_port == NULL)
 		server_port = g_strdup(PIONEERS_DEFAULT_GAME_PORT);

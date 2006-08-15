@@ -54,9 +54,8 @@ struct _Session {
 	NetNotifyFunc notify_func;
 };
 
-#ifdef DEBUG
+void set_enable_debug(gboolean enabled);
 void debug(const gchar * fmt, ...);
-#endif
 
 /** Initialize the network drivers */
 void net_init(void);

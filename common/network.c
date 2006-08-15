@@ -3,7 +3,8 @@
  *
  * Copyright (C) 1999 Dave Cole
  * Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
- * 
+ * Copyright (C) 2005,2006 Roland Clobus <rclobus@bigfoot.com>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -63,7 +64,13 @@ typedef union {
 #endif				/* HAVE_GETADDRINFO_ET_AL */
 } sockaddr_t;
 
-#ifdef DEBUG
+static gboolean debug_enabled = FALSE;
+
+void set_enable_debug(gboolean enabled)
+{
+	debug_enabled = enabled;
+}
+
 void debug(const gchar * fmt, ...)
 {
 	va_list ap;
@@ -71,6 +78,9 @@ void debug(const gchar * fmt, ...)
 	gint idx;
 	time_t t;
 	struct tm *alpha;
+
+	if (!debug_enabled)
+		return;
 
 	va_start(ap, fmt);
 	buff = g_strdup_vprintf(fmt, ap);
@@ -103,7 +113,6 @@ void debug(const gchar * fmt, ...)
 	}
 	g_print("\n");
 }
-#endif
 
 static void read_ready(Session * ses);
 static void write_ready(Session * ses);
@@ -220,10 +229,8 @@ static void write_ready(Session * ses)
 		int len = strlen(data);
 
 		num = send(ses->fd, data, len, 0);
-#ifdef DEBUG
 		debug("write_ready: write(%d, \"%.*s\", %d) = %d",
 		      ses->fd, len, data, len, num);
-#endif
 		if (num < 0) {
 			if (errno == EAGAIN)
 				break;
@@ -270,13 +277,11 @@ void net_write(Session * ses, const gchar * data)
 
 		len = strlen(data);
 		num = send(ses->fd, data, len, 0);
-#ifdef DEBUG
 		if (num > 0)
 			debug("(%d) --> %s", ses->fd, data);
 		else if (errno != EAGAIN)
 			debug("(%d) --- Error writing to socket.",
 			      ses->fd);
-#endif
 		if (num < 0) {
 			if (errno != EAGAIN) {
 				log_message(MSG_ERROR,
@@ -368,9 +373,7 @@ static void read_ready(Session * ses)
 		line[len] = '\0';
 		offset += len + 1;
 
-#ifdef DEBUG
 		debug("(%d) <-- %s", ses->fd, line);
-#endif
 		notify(ses, NET_READ, line);
 	}
 

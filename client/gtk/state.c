@@ -50,9 +50,7 @@ void route_gui_event(GuiEvent event)
 		frontend_disconnect();
 		return;
 	case GUI_QUIT:
-#ifdef DEBUG
 		debug("quitting");
-#endif
 		gtk_main_quit();
 		return;
 	default:

@@ -125,7 +125,6 @@ void log_message_string_console(gint msg_type, const gchar * text)
 		fprintf(stderr, "%s", text);
 }
 
-#ifdef DEBUG
 static const char *debug_type(int type)
 {
 	switch (type) {
@@ -175,7 +174,6 @@ static const char *debug_type(int type)
 		return "*UNKNOWN MESSAGE TYPE*";
 	}
 }
-#endif
 
 void log_message_chat(const gchar * player_name,
 		      const gchar * joining_text, gint msg_type,
@@ -183,9 +181,8 @@ void log_message_chat(const gchar * player_name,
 {
 	if (driver->log_write && driver->log_write != LOG_FUNC_DEFAULT) {
 		log_message(MSG_INFO, "%s%s", player_name, joining_text);
-#ifdef DEBUG
 		debug("[%s] %s", debug_type(msg_type), chat);
-#endif
+
 		/* No timestamp here: */
 		driver->log_write(msg_type, chat);
 		driver->log_write(msg_type, "\n");
@@ -207,9 +204,7 @@ void log_message(gint msg_type, const gchar * fmt, ...)
 	text = g_strdup_vprintf(fmt, ap);
 	va_end(ap);
 
-#ifdef DEBUG
 	debug("[%s] %s", debug_type(msg_type), text);
-#endif
 
 	t = time(NULL);
 	alpha = localtime(&t);

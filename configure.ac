@@ -49,12 +49,10 @@ AC_HEADER_STDC
 if test $USE_MAINTAINER_MODE = yes; then
 	pioneers_warnings=yes;
 	pioneers_debug=yes;
-	pioneers_logging=yes;
 	pioneers_deprecationChecks=yes;
 else
 	pioneers_warnings=no;
 	pioneers_debug=no;
-	pioneers_logging=no;
 	pioneers_deprecationChecks=no;
 fi
 
@@ -101,14 +99,6 @@ AC_ARG_ENABLE([debug], AC_HELP_STRING([--enable-debug],
   yes)  pioneers_debug=yes ;;
   "")   pioneers_debug=yes ;;
   *)    pioneers_debug=no  ;;
-esac])
-
-AC_ARG_ENABLE([logging], AC_HELP_STRING([--enable-logging],
-	[Enable network logging.]),
-[case "${enableval}" in
-  yes)  pioneers_logging=yes ;;
-  "")   pioneers_logging=yes ;;
-  *)    pioneers_logging=no  ;;
 esac])
 
 AC_ARG_ENABLE([deprecation-checks],
@@ -175,10 +165,6 @@ if test "$pioneers_debug" = yes; then
 	AC_SUBST(DEBUGGING, "-ggdb3")
 fi
 AC_SUBST(DEBUGGING)
-
-if test "$pioneers_logging" = yes; then
-	AC_DEFINE_UNQUOTED(DEBUG, [1], [Defined when logging is enabled])
-fi
 
 if test "$pioneers_deprecationChecks" = yes; then
 	AC_SUBST(GLIB_DEPRECATION, "-DG_DISABLE_DEPRECATED")
@@ -320,10 +306,8 @@ if test $pioneers_is_mingw_port = yes; then
 	AC_SUBST(LIBS, "-lws2_32 $LIBS")
 	AC_SUBST(AM_CFLAGS, "-mms-bitfields $AM_CFLAGS")
 	AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -DWIN32_LEAN_AND_MEAN")
-	if test $pioneers_logging = no; then
-		# No console window for the graphical applications
-		AC_SUBST(GTK2_LIBS, "$GTK2_LIBS -mwindows")
-	fi
+	# No console window for the graphical applications
+	AC_SUBST(GTK2_LIBS, "$GTK2_LIBS -mwindows")
 	# Don't use bin, lib and share subdirectories
 	datadir='${prefix}'
 	bindir='${prefix}'
@@ -476,7 +460,6 @@ $PACKAGE v$VERSION configuration:
     Developers only:
         Use compiler warnings              $pioneers_warnings
         Add debug information              $pioneers_debug
-        Enable network logging             $pioneers_logging
         Enable deprecation checks          $pioneers_deprecationChecks
    Maintainers only:
         Microsoft Windows icons            $pioneers_ms_icons

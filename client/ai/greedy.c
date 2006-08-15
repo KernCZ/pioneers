@@ -944,8 +944,7 @@ static void greedy_setup_house(void)
 
 	node = best_settlement_spot(TRUE, &resval);
 
-	if (node == NULL)
-	{
+	if (node == NULL) {
 		ai_panic(N_("There is no place to setup a settlement"));
 		return;
 	}

@@ -93,11 +93,6 @@ Interesting options are:
     stripped either.  If you want to install stripped executables, use "make
     install-strip" instead of "make install".
     This option is on by default when --enable-maintainer-mode is used.
---enable-logging
-    Enable (quite verbose) logging of the network communication to standard
-    output.
-    This option is turned off by default, unless --enable-maintainer-mode is
-    specified.
 --enable-deprecation-checks
     Enable strict checks for the functions in the libraries Pioneers uses.
     This option is turned off by default, unless --enable-maintainer-mode is

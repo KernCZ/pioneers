@@ -34,6 +34,7 @@ static char *name = NULL;
 static char *ai;
 static int waittime = 1000;
 static gboolean silent = FALSE;
+static gboolean enable_debug = FALSE;
 
 static const struct algorithm_info {
 	/** Name of the algorithm (for commandline) */
@@ -112,6 +113,9 @@ static GOptionEntry commandline_entries[] = {
 	{"algorithm", 'a', 0, G_OPTION_ARG_STRING, &ai,
 	 /* Commandline pioneersai: algorithm */
 	 N_("Type of computer player"), "greedy"},
+	{"debug", '\0', 0, G_OPTION_ARG_NONE, &enable_debug,
+	 /* Commandline option of ai: enable debug logging */
+	 N_("Enable debug messages"), NULL},
 	{NULL, '\0', 0, 0, NULL, NULL, NULL}
 };
 
@@ -131,6 +135,8 @@ static void ai_init(int argc, char **argv)
 		g_error_free(error);
 		exit(1);
 	}
+
+	set_enable_debug(enable_debug);
 
 	if (server == NULL)
 		server = g_strdup(PIONEERS_DEFAULT_GAME_HOST);
