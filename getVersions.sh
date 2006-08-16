@@ -24,7 +24,7 @@ wget -o /dev/null -O - "http://packages.qa.debian.org/p/pioneers.html" | gawk '$
 wget -o /dev/null -O - "http://pdb.finkproject.org/pdb/package.php/pioneers" | gawk '$0 ~ "10.4/powerpc" { gsub("<[^>]+>", " "); n = split($0, b, " "); print "Fink," b[n] }' | head -1
 
 # FreeBSD
-wget -o /dev/null -O - --user-agent="" "http://www.freebsd.org/cgi/ports.cgi?query=pioneers&stype=all" | tee freeBSD | gawk '$0 ~ "A NAME" { gsub("<[^>]+>", ""); gsub("pioneers-", ""); print "FreeBSD," $1 }' 
+wget -o /dev/null -O - --user-agent="" "http://www.freebsd.org/cgi/ports.cgi?query=pioneers&stype=all" | gawk '$0 ~ "A NAME" { gsub("<[^>]+>", ""); gsub("pioneers-", ""); print "FreeBSD," $1 }' 
 
 # Gentoo
 wget -o /dev/null -O - --user-agent="" "http://packages.gentoo.org/search/?sstring=pioneers" | gawk '$0 ~ "<th class=\"releases\">" { gsub("<[^>]+>", ""); print $1 }' | head -1 | gawk '{ print "Gentoo," $1 }'
