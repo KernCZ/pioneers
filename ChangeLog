@@ -4,6 +4,15 @@
 	* server/gtk/main.c, server/server.c, server/server.h, server/main.c,
 	server/admin.c: No global GameParams object. Added --file to
 	server-console.
+	* docs/README.game, common/buildrec.h, common/map_query.c,
+	common/game.c, common/game.h, common/map.h, common/buildrec.c,
+	server/turn.c, server/conquest.game, server/conquest+ports.game,
+	server/player.c, server/server.h, server/pregame.c,
+	server/four-islands.game, server/buildutil.c, client/callback.h,
+	client/gtk/callbacks.c, client/gtk/frontend.h, client/gtk/player.c,
+	client/gtk/settingscreen.c, client/common/client.c,
+	client/common/build.c, client/common/client.h, client/common/player.c:
+	Added island-discovery-bonus keyword.
 	
 2006-08-17  Bas Wijnen <shevek@fmf.nl>
 	* AUTHORS, editor/gtk/editor.c: Show full authorlist in editor's

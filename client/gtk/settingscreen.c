@@ -108,6 +108,7 @@ static GtkWidget *settings_create_content(void)
 	GtkWidget *table;
 	GtkWidget *label;
 	gchar *sevens_desc;
+	gchar *island_bonus;
 
 	/* Create some space inside the dialog */
 	dlg_vbox = gtk_vbox_new(FALSE, 6);
@@ -136,7 +137,7 @@ static GtkWidget *settings_create_content(void)
 	gtk_widget_show(alignment);
 	gtk_box_pack_start(GTK_BOX(dlg_vbox), alignment, FALSE, FALSE, 0);
 
-	table = gtk_table_new(7, 2, FALSE);
+	table = gtk_table_new(9, 2, FALSE);
 	gtk_widget_show(table);
 	gtk_container_add(GTK_CONTAINER(alignment), table);
 	gtk_table_set_row_spacings(GTK_TABLE(table), 3);
@@ -175,6 +176,38 @@ static GtkWidget *settings_create_content(void)
 	add_setting_desc(table, 6, 0, _("Sevens Rule:"));
 	add_setting_val(table, 6, 1, TYPE_STRING, 0, sevens_desc, FALSE);
 	g_free(sevens_desc);
+
+	add_setting_desc(table, 7, 0, _("Use Pirate:"));
+	add_setting_val(table, 7, 1, TYPE_BOOL, game_params->use_pirate,
+			NULL, FALSE);
+
+	if (game_params->island_discovery_bonus) {
+		gint idx;
+		island_bonus =
+		    g_strdup_printf("%d",
+				    g_array_index(game_params->
+						  island_discovery_bonus,
+						  gint, 0));
+		for (idx = 1;
+		     idx < game_params->island_discovery_bonus->len;
+		     idx++) {
+			gchar *old = island_bonus;
+			gchar *number = g_strdup_printf("%d",
+							g_array_index
+							(game_params->
+							 island_discovery_bonus,
+							 gint, idx));
+			island_bonus =
+			    g_strconcat(island_bonus, ", ", number, NULL);
+			g_free(old);
+			g_free(number);
+		}
+	} else {
+		island_bonus = g_strdup(_("No"));
+	}
+	add_setting_desc(table, 8, 0, _("Island Discovery Bonuses:"));
+	add_setting_val(table, 8, 1, TYPE_STRING, 0, island_bonus, FALSE);
+	g_free(island_bonus);
 
 	/* Double space, otherwise the columns are too close */
 	hbox = gtk_hbox_new(FALSE, 24);

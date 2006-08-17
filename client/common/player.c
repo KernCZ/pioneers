@@ -54,10 +54,10 @@ void player_reset(void)
 		}
 		while (players[i].points != NULL) {
 			Points *points = players[i].points->data;
-			g_free(points->name);
-			g_free(points);
 			players[i].points =
 			    g_list_remove(players[i].points, points);
+			points_free(points);
+			g_free(points);
 		}
 		for (idx = 0; idx < G_N_ELEMENTS(players[i].statistics);
 		     ++idx)
@@ -132,12 +132,19 @@ const gchar *player_name(gint player_num, gboolean word_caps)
 gint player_get_score(gint player_num)
 {
 	Player *player = player_get(player_num);
+	GList *list;
 	gint i, score;
 
 	for (i = 0, score = 0; i < G_N_ELEMENTS(player->statistics); i++) {
 		score += stat_get_vp_value(i) * player->statistics[i];
 	}
 
+	list = player->points;
+	while (list) {
+		Points *points = list->data;
+		score += points->points;
+		list = g_list_next(list);
+	}
 	return score;
 }
 
@@ -161,6 +168,15 @@ void player_modify_statistic(gint player_num, StatisticType type, gint num)
 	Player *player = player_get(player_num);
 	player->statistics[type] += num;
 	callbacks.new_statistics(player_num, type, num);
+}
+
+void player_modify_points(gint player_num, Points * points, gboolean added)
+{
+	Player *player = player_get(player_num);
+	/* if !added -> is already removed */
+	if (added)
+		player->points = g_list_append(player->points, points);
+	callbacks.new_points(player_num, points, added);
 }
 
 void player_change_name(gint player_num, const gchar * name)
@@ -630,13 +646,9 @@ void player_get_point(gint player_num, gint id, const gchar * str,
 		      gint num)
 {
 	Player *player = player_get(player_num);
-	/* create the memory and fill it */
-	Points *point = g_malloc0(sizeof(*point));
-	point->id = id;
-	point->name = g_strdup(str);
-	point->points = num;
-	/* put the point in the list */
-	player->points = g_list_append(player->points, point);
+	/* create the point */
+	Points *point = points_new(id, str, num);
+	player_modify_points(player_num, point, TRUE);
 	/* tell the user that someone got something */
 	log_message(MSG_INFO, _("%s received %s.\n"), player->name, str);
 }
@@ -660,11 +672,12 @@ void player_lose_point(gint player_num, gint id)
 		return;
 	}
 	player->points = g_list_remove(player->points, point);
+	player_modify_points(player_num, point, FALSE);
 	/* tell the user the point is lost */
 	log_message(MSG_INFO, _("%s lost %s.\n"), player->name,
 		    point->name);
 	/* free the memory */
-	g_free(point->name);
+	points_free(point);
 	g_free(point);
 }
 
@@ -690,7 +703,7 @@ void player_take_point(gint player_num, gint id, gint old_owner)
 	/* move the point in memory */
 	victim->points = g_list_remove(victim->points, point);
 	player->points = g_list_append(player->points, point);
-	/* tell the user someone lost something to someone else */
+	/* tell the user someone (1) lost something (2) to someone else (3) */
 	log_message(MSG_INFO, _("%s lost %s to %s.\n"), victim->name,
 		    point->name, player->name);
 }

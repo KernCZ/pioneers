@@ -3,7 +3,8 @@
  *
  * Copyright (C) 1999 Dave Cole
  * Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
- * 
+ * Copyright (C) 2006 Roland Clobus <rclobus@bigfoot.com>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -69,6 +70,7 @@ typedef struct {
 	gint tournament_time;	/* time to start tournament time in minutes *//* Not in game_params[] */
 	gboolean quit_when_done;	/* server quits after someone wins *//* Not in game_params[] */
 	gboolean use_pirate;	/* is there a pirate in this game? */
+	GArray *island_discovery_bonus;	/* list of VPs for discovering an island */
 } GameParams;
 
 typedef struct {
@@ -90,4 +92,7 @@ gboolean params_load_line(GameParams * params, gchar * line);
 gboolean params_load_finish(GameParams * params);
 
 gboolean read_line_from_file(gchar ** line, FILE * f);
+
+Points *points_new(gint id, const gchar * name, gint points);
+void points_free(Points * points);
 #endif

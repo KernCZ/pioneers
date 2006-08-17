@@ -3,7 +3,8 @@
  *
  * Copyright (C) 1999 Dave Cole
  * Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
- * 
+ * Copyright (C) 2006 Roland Clobus <rclobus@bigfoot.com>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -897,6 +898,67 @@ void map_longest_road(Map * map, gint * lengths, gint num_players)
 	map_traverse(map, (HexFunc) zero_visited, NULL);
 	memset(lengths, 0, num_players * sizeof(*lengths));
 	map_traverse(map, (HexFunc) find_longest_road, lengths);
+}
+
+static gboolean map_island_recursive(Map * map, Node * node, gint owner)
+{
+	gint idx;
+	gboolean discovered;
+
+	if (node == NULL)
+		return FALSE;
+	if (node->owner == owner)
+		return TRUE;	/* Already discovered */
+	if (node->visited)
+		return FALSE;	/* Not discovered */
+	node->visited = TRUE;
+
+	discovered = FALSE;
+	for (idx = 0; idx < G_N_ELEMENTS(node->edges) && !discovered;
+	     idx++) {
+		gint num_sea;
+		gint idx2;
+		Edge *edge = node->edges[idx];
+		if (edge == NULL)
+			continue;
+		if (edge->visited)
+			continue;
+		edge->visited = TRUE;
+
+		/* If the edge points into the sea, or along the border, 
+		 * don't follow it */
+		num_sea = 0;
+		for (idx2 = 0; idx2 < G_N_ELEMENTS(edge->hexes); idx2++) {
+			const Hex *hex = edge->hexes[idx2];
+			if (hex == NULL) {
+				num_sea++;
+				continue;
+			}
+			if (hex->terrain == SEA_TERRAIN)
+				num_sea++;
+		}
+		if (num_sea == G_N_ELEMENTS(edge->hexes))
+			continue;
+
+		/* Follow the other node */
+		for (idx2 = 0;
+		     idx2 < G_N_ELEMENTS(edge->nodes) && !discovered;
+		     ++idx2) {
+			Node *node2 = edge->nodes[idx2];
+			if (node == node2)
+				continue;
+			discovered |=
+			    map_island_recursive(map, node2, owner);
+		}
+	}
+	return discovered;
+}
+
+/* Has anything be built by this player on this island */
+gboolean map_is_island_discovered(Map * map, Node * node, gint owner)
+{
+	map_traverse(map, (HexFunc) zero_visited, NULL);
+	return map_island_recursive(map, node, owner);
 }
 
 /* Determine the maritime trading capabilities for the specified player

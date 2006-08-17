@@ -37,11 +37,13 @@ typedef struct {
 	/* this is an int, because only the server uses it, and the client
 	 * doesn't know about Players. */
 	int longest_road;      /**< who had the longest road before this build */
+	int special_points_id; /**< Id of the special points or -1 */
 } BuildRec;
 
 int buildrec_count_type(GList * list, BuildType type);
 BuildRec *buildrec_get(GList * list, BuildType type, gint idx);
 BuildRec *buildrec_get_edge(GList * list, gint idx);
+BuildRec *buildrec_new(BuildType type, gint x, gint y, gint pos);
 GList *buildrec_free(GList * list);
 gboolean buildrec_is_valid(GList * list, Map * map, int owner);
 gboolean buildrec_can_setup_road(GList * list, Map * map,

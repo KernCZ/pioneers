@@ -120,7 +120,7 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 		sm_send(sm, "ERR bad-pos\n");
 		return;
 	}
-	node_add(player, BUILD_SETTLEMENT, x, y, pos, FALSE);
+	node_add(player, BUILD_SETTLEMENT, x, y, pos, FALSE, NULL);
 }
 
 static void build_remove(Player * player)
@@ -576,6 +576,8 @@ gboolean mode_pre_game(Player * player, gint event)
 			   who has longest road/army */
 			/* Only send this when the player is not a viewer */
 			if (!player_is_viewer(game, player->num)) {
+				GList *list;
+
 				sm_send(sm, "playerinfo: resources: %R\n",
 					player->assets);
 				sm_send(sm,
@@ -606,11 +608,24 @@ gboolean mode_pre_game(Player * player, gint event)
 					player->market_played,
 					(player->num == longestroadpnum),
 					(player->num == largestarmypnum));
+
+				/* Send special points */
+				list = player->special_points;
+				while (list) {
+					Points *points = list->data;
+					sm_send(sm,
+						"get-point %d %d %d %s\n",
+						player->num, points->id,
+						points->points,
+						points->name);
+					list = g_list_next(list);
+				}
 			}
 			/* send info about other players */
 			for (next = player_first_real(game); next != NULL;
 			     next = player_next_real(next)) {
 				Player *p = (Player *) next->data;
+				GList *list;
 				gint numassets = 0;
 				if (p->num == player->num)
 					continue;
@@ -626,6 +641,18 @@ gboolean mode_pre_game(Player * player, gint event)
 					p->libr_played, p->market_played,
 					(p->num == longestroadpnum),
 					(p->num == largestarmypnum));
+
+				/* Send special points */
+				list = p->special_points;
+				while (list) {
+					Points *points = list->data;
+					sm_send(sm,
+						"get-point %d %d %d %s\n",
+						p->num, points->id,
+						points->points,
+						points->name);
+					list = g_list_next(list);
+				}
 			}
 
 			/* send build info for the current player

@@ -224,6 +224,7 @@ gboolean map_bridge_connect_ok(Map * map, gint owner, gint x, gint y,
 			       gint pos);
 /* information gathering */
 void map_longest_road(Map * map, gint * lengths, gint num_players);
+gboolean map_is_island_discovered(Map * map, Node * node, gint owner);
 void map_maritime_info(Map * map, MaritimeInfo * info, gint owner);
 
 extern GRand *g_rand_ctx;

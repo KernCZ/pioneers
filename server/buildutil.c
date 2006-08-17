@@ -164,7 +164,8 @@ void check_longest_road(Game * game, gboolean can_cut)
 
 /* build something on a node */
 void node_add(Player * player,
-	      BuildType type, int x, int y, int pos, gboolean paid_for)
+	      BuildType type, int x, int y, int pos, gboolean paid_for,
+	      Points * points)
 {
 	Game *game = player->game;
 	Map *map = game->params->map;
@@ -181,14 +182,11 @@ void node_add(Player * player,
 	}
 
 	/* fill the backup struct */
-	rec = g_malloc0(sizeof(*rec));
-	rec->type = type;
+	rec = buildrec_new(type, x, y, pos);
 	rec->prev_status = node->type;
-	rec->x = x;
-	rec->y = y;
-	rec->pos = pos;
 	rec->longest_road =
 	    game->longest_road ? game->longest_road->num : -1;
+	rec->special_points_id = -1;
 
 	/* compute the cost */
 	if (paid_for) {
@@ -204,6 +202,10 @@ void node_add(Player * player,
 	} else
 		rec->cost = NULL;
 
+	if (points != NULL) {
+		rec->special_points_id = points->id;
+	}
+
 	/* put the struct in the undo list */
 	player->build_list = g_list_append(player->build_list, rec);
 
@@ -214,6 +216,13 @@ void node_add(Player * player,
 	/* tell everybody about it */
 	player_broadcast(player, PB_RESPOND,
 			 "built %B %d %d %d\n", type, x, y, pos);
+
+	if (points != NULL) {
+		player->special_points =
+		    g_list_append(player->special_points, points);
+		player_broadcast(player, PB_ALL, "get-point %d %d %s\n",
+				 points->id, points->points, points->name);
+	}
 
 	/* see if the longest road was cut */
 	check_longest_road(game, TRUE);
@@ -229,11 +238,7 @@ void edge_add(Player * player, BuildType type, int x, int y, int pos,
 	BuildRec *rec;
 
 	/* fill the undo struct */
-	rec = g_malloc0(sizeof(*rec));
-	rec->type = type;
-	rec->x = x;
-	rec->y = y;
-	rec->pos = pos;
+	rec = buildrec_new(type, x, y, pos);
 	rec->longest_road =
 	    game->longest_road ? game->longest_road->num : -1;
 
@@ -292,6 +297,14 @@ void edge_add(Player * player, BuildType type, int x, int y, int pos,
 
 	/* perhaps the longest road changed owner */
 	check_longest_road(game, FALSE);
+}
+
+static gint find_points_by_id(gconstpointer a, gconstpointer b)
+{
+	const Points *points = a;
+	gint id = GPOINTER_TO_INT(b);
+
+	return points->id == id ? 0 : points->id < id ? -1 : +1;
 }
 
 /* undo a build action */
@@ -401,6 +414,30 @@ gboolean perform_undo(Player * player)
 	}
 	game->longest_road = player_by_num(game, rec->longest_road);
 
+	if (rec->special_points_id != -1) {
+		GList *points;
+		if (game->params->island_discovery_bonus != NULL) {
+			if (!map_is_island_discovered
+			    (map, map_node(map, rec->x, rec->y, rec->pos),
+			     player->num)) {
+				player->islands_discovered--;
+			}
+		}
+
+		player_broadcast(player, PB_ALL, "lose-point %d\n",
+				 rec->special_points_id);
+		points =
+		    g_list_find_custom(player->special_points,
+				       GINT_TO_POINTER(rec->
+						       special_points_id),
+				       find_points_by_id);
+		if (points != NULL) {
+			points_free(points->data);
+			player->special_points =
+			    g_list_remove(player->special_points,
+					  points->data);
+		}
+	}
 	/* free the memory */
 	g_free(rec);
 

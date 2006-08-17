@@ -227,6 +227,11 @@ struct callbacks {
 	 * done by the client. */
 	void (*new_statistics) (gint player_num, StatisticType type,
 				gint num);
+	/* Something happened to someones special points. As with
+	 * resource_change, the value must not be updated by the frontend,
+	 * it has already been done by the client. */
+	void (*new_points) (gint player_num, Points * points,
+			    gboolean added);
 	/* a viewer changed his/her name */
 	void (*viewer_name) (gint viewer_num, const gchar * name);
 	/* a player changed his/her name */

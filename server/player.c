@@ -3,7 +3,8 @@
  *
  * Copyright (C) 1999 Dave Cole
  * Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
- * 
+ * Copyright (C) 2005,2006 Roland Clobus <rclobus@bigfoot.com>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -107,7 +108,7 @@ static gboolean mode_global(Player * player, gint event)
 			meta_report_num_players(game->num_players);
 		}
 		g_list_free(player->build_list);
-		g_list_free(player->points);
+		g_list_free(player->special_points);
 		g_free(player);
 		return TRUE;
 	case SM_NET_CLOSE:
@@ -290,8 +291,11 @@ Player *player_new(Game * game, int fd, gchar * location)
 	player->gov_played = 0;
 	player->libr_played = 0;
 	player->market_played = 0;
+	player->islands_discovered = 0;
 	player->disconnected = FALSE;
 	player->name = g_strdup(name);
+	player->special_points = NULL;
+	player->special_points_next_id = 0;
 
 	if (game->params->tournament_time > 0) {
 		/* if first player in and this is a tournament start the timer */
@@ -550,9 +554,9 @@ void player_revive(Player * newp, char *name)
 	newp->devel = p->devel;
 	p->devel = NULL;
 
-	g_assert(newp->points == NULL);
-	newp->points = p->points;
-	p->points = NULL;	/* prevent deletion */
+	g_assert(newp->special_points == NULL);
+	newp->special_points = p->special_points;
+	p->special_points = NULL;	/* prevent deletion */
 
 	newp->discard_num = p->discard_num;
 	newp->num_roads = p->num_roads;

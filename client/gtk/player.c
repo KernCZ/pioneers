@@ -68,6 +68,7 @@ enum {
 	SUMMARY_COLUMN_TEXT_COLOUR, /**< Colour of the description */
 	SUMMARY_COLUMN_SCORE, /**< Score of the items (as string) */
 	SUMMARY_COLUMN_STATISTIC, /**< enum Statistic value+1, or 0 if not in the enum */
+	SUMMARY_COLUMN_POINTS_ID, /**< Id of points, or -1 */
 	SUMMARY_COLUMN_LAST
 };
 
@@ -83,6 +84,14 @@ struct Player_statistic {
 	GtkTreeIter iter;
 	gint player_num;
 	gint statistic;
+};
+
+/** Structure to find combination of player and points */
+struct Player_point {
+	enum TFindResult result;
+	GtkTreeIter iter;
+	gint player_num;
+	gint point_id;
 };
 
 static GtkWidget *turn_area;	/** turn indicator in status bar */
@@ -170,8 +179,8 @@ static gboolean summary_locate_statistic(GtkTreeModel * model,
 {
 	struct Player_statistic *ps =
 	    (struct Player_statistic *) user_data;
-	int current_player;
-	int current_statistic;
+	gint current_player;
+	gint current_statistic;
 	gtk_tree_model_get(model, iter,
 			   SUMMARY_COLUMN_PLAYER_NUM, &current_player,
 			   SUMMARY_COLUMN_STATISTIC, &current_statistic,
@@ -188,6 +197,45 @@ static gboolean summary_locate_statistic(GtkTreeModel * model,
 		} else if (current_statistic == ps->statistic) {
 			ps->result = FIND_MATCH_EXACT;
 			ps->iter = *iter;
+			return TRUE;
+		}
+	}
+	return FALSE;
+}
+
+/** Locate a line suitable for the statistic */
+static gboolean summary_locate_point(GtkTreeModel * model,
+				     G_GNUC_UNUSED GtkTreePath * path,
+				     GtkTreeIter * iter,
+				     gpointer user_data)
+{
+	struct Player_point *pp = (struct Player_point *) user_data;
+	gint current_player;
+	gint current_point_id;
+	gint current_statistic;
+
+	gtk_tree_model_get(model, iter,
+			   SUMMARY_COLUMN_PLAYER_NUM, &current_player,
+			   SUMMARY_COLUMN_STATISTIC, &current_statistic,
+			   SUMMARY_COLUMN_POINTS_ID, &current_point_id,
+			   -1);
+	if (current_player > pp->player_num) {
+		pp->result = FIND_MATCH_INSERT_BEFORE;
+		pp->iter = *iter;
+		return TRUE;
+	} else if (current_player == pp->player_num) {
+		if (current_statistic >= STAT_SOLDIERS) {
+			pp->result = FIND_MATCH_INSERT_BEFORE;
+			pp->iter = *iter;
+			return TRUE;
+		}
+		if (current_point_id > pp->point_id) {
+			pp->result = FIND_MATCH_INSERT_BEFORE;
+			pp->iter = *iter;
+			return TRUE;
+		} else if (current_point_id == pp->point_id) {
+			pp->result = FIND_MATCH_EXACT;
+			pp->iter = *iter;
 			return TRUE;
 		}
 	}
@@ -223,16 +271,22 @@ static gboolean summary_apply_colors_cb(GtkTreeModel * model,
 					G_GNUC_UNUSED gpointer user_data)
 {
 	gint current_statistic;
+	gint point_id;
 
 	gtk_tree_model_get(model, iter,
 			   SUMMARY_COLUMN_STATISTIC, &current_statistic,
-			   -1);
+			   SUMMARY_COLUMN_POINTS_ID, &point_id, -1);
 	if (current_statistic > 0)
 		gtk_list_store_set(summary_store, iter,
 				   SUMMARY_COLUMN_TEXT_COLOUR,
 				   summary_color_enabled ?
 				   statistics[current_statistic -
 					      1].textcolor : &black, -1);
+	else if (point_id >= 0)
+		gtk_list_store_set(summary_store, iter,
+				   SUMMARY_COLUMN_TEXT_COLOUR,
+				   summary_color_enabled ?
+				   &ps_largest : &black, -1);
 	return FALSE;
 }
 
@@ -290,7 +344,8 @@ void frontend_new_statistics(gint player_num, StatisticType type,
 							       singular));
 			else
 				desc = g_strdup(gettext
-					      (statistics[type].singular));
+						(statistics[type].
+						 singular));
 		} else
 			desc = g_strdup_printf("%d %s", value,
 					       gettext(statistics[type].
@@ -322,9 +377,58 @@ void frontend_new_statistics(gint player_num, StatisticType type,
 				   summary_color_enabled ?
 				   statistics[type].textcolor : &black,
 				   SUMMARY_COLUMN_STATISTIC, type + 1,
+				   SUMMARY_COLUMN_POINTS_ID, -1,
 				   SUMMARY_COLUMN_SCORE, points, -1);
 		g_free(desc);
 	}
+	frontend_gui_update();
+}
+
+void frontend_new_points(gint player_num, Points * points, gboolean added)
+{
+	GtkTreeIter iter;
+	struct Player_point pp;
+	gchar score[16];
+
+	refresh_victory_point_total(player_num);
+
+	pp.result = FIND_NO_MATCH;
+	pp.player_num = player_num;
+	pp.point_id = points->id;
+	gtk_tree_model_foreach(GTK_TREE_MODEL(summary_store),
+			       summary_locate_point, &pp);
+
+	if (!added) {
+		if (pp.result != FIND_MATCH_EXACT)
+			g_error("cannot remove point");
+		gtk_list_store_remove(summary_store, &pp.iter);
+		frontend_gui_update();
+		return;
+	}
+
+	switch (pp.result) {
+	case FIND_NO_MATCH:
+		gtk_list_store_append(summary_store, &iter);
+		break;
+	case FIND_MATCH_INSERT_BEFORE:
+		gtk_list_store_insert_before(summary_store, &iter,
+					     &pp.iter);
+		break;
+	case FIND_MATCH_EXACT:
+		iter = pp.iter;
+		break;
+	default:
+		g_error("unknown case in frontend_new_points");
+	};
+	snprintf(score, sizeof(score), "%d", points->points);
+	gtk_list_store_set(summary_store, &iter,
+			   SUMMARY_COLUMN_PLAYER_NUM, player_num,
+			   SUMMARY_COLUMN_TEXT, _(points->name),
+			   SUMMARY_COLUMN_TEXT_COLOUR,
+			   summary_color_enabled ? &ps_largest : &black,
+			   SUMMARY_COLUMN_STATISTIC, 0,
+			   SUMMARY_COLUMN_POINTS_ID, points->id,
+			   SUMMARY_COLUMN_SCORE, score, -1);
 	frontend_gui_update();
 }
 
@@ -344,14 +448,14 @@ static void player_create_find_player(gint player_num, GtkTreeIter * iter)
 		gtk_list_store_append(summary_store, iter);
 		gtk_list_store_set(summary_store, iter,
 				   SUMMARY_COLUMN_PLAYER_NUM, player_num,
-				   -1);
+				   SUMMARY_COLUMN_POINTS_ID, -1, -1);
 		break;
 	case FIND_MATCH_INSERT_BEFORE:
 		gtk_list_store_insert_before(summary_store, iter,
 					     &found_iter);
 		gtk_list_store_set(summary_store, iter,
 				   SUMMARY_COLUMN_PLAYER_NUM, player_num,
-				   -1);
+				   SUMMARY_COLUMN_POINTS_ID, -1, -1);
 		break;
 	case FIND_MATCH_EXACT:
 		*iter = found_iter;
@@ -495,7 +599,8 @@ GtkWidget *player_build_summary(void)
 					   G_TYPE_STRING,	/* text */
 					   GDK_TYPE_COLOR,	/* text colour */
 					   G_TYPE_STRING,	/* score */
-					   G_TYPE_INT);	/* statistic */
+					   G_TYPE_INT,	/* statistic */
+					   G_TYPE_INT);	/* points */
 	summary_widget =
 	    gtk_tree_view_new_with_model(GTK_TREE_MODEL(summary_store));
 

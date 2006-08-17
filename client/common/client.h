@@ -67,6 +67,8 @@ void player_reset(void);
 void player_set_my_num(gint player_num);
 void player_modify_statistic(gint player_num, StatisticType type,
 			     gint num);
+void player_modify_points(gint player_num, Points * points,
+			  gboolean added);
 void player_change_name(gint player_num, const gchar * name);
 void player_has_quit(gint player_num);
 void player_largest_army(gint player_num);

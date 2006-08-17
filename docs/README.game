@@ -11,33 +11,36 @@ B    keyword (if present, the option of the keyword is enabled)
 L    keyword, list of integers
 M    map specification
 
-Keyword          Type Description
-#                  C  A comment (see *1)
-title              S  Title of the game
-random-terrain     B  Shuffle the terrain hexes
-strict-trade       B  Trade is allowed only before building
-domestic-trade     B  Trade between players is allowed
-num-players        I  Number of players
-sevens-rule        I  Sevens rule (see *2)
-victory-points     I  Number of points required to win
-num-roads          I  Number of roads for each player
-num-bridges        I  Number of bridges for each player
-num-ships          I  Number of ships for each player
-num-settelements   I  Number of settlements for each player
-num-cities         I  Number of cities for each player
-resource-count     I  Number of cards for each resource in the bank
-develop-road       I  Number of road building development cards
-develop-monopoly   I  Number of monopoly development cards
-develop-plenty     I  Number of year of plenty development cards
-develop-chapel     I  Number of chapel victory point cards
-develop-university I  Number of university victory point cards
-develop-governor   I  Number of governors' house victory point cards
-develop-library    I  Number of library victory point cards
-develop-market     I  Number of market victory point cards
-develop-soldier    I  Number of soldier development cards
-use-pirate         I  Use the pirate too
-chits              L  Chits (see *3)
-map                M  Map (see *4)
+Keyword              Type Description
+#                      C  A comment (see *1)
+title                  S  Title of the game
+random-terrain         B  Shuffle the terrain hexes
+strict-trade           B  Trade is allowed only before building
+domestic-trade         B  Trade between players is allowed
+num-players            I  Number of players
+sevens-rule            I  Sevens rule (see *2)
+victory-points         I  Number of points required to win
+num-roads              I  Number of roads for each player
+num-bridges            I  Number of bridges for each player
+num-ships              I  Number of ships for each player
+num-settlements        I  Number of settlements for each player
+num-cities             I  Number of cities for each player
+resource-count         I  Number of cards for each resource in the bank
+develop-road           I  Number of road building development cards
+develop-monopoly       I  Number of monopoly development cards
+develop-plenty         I  Number of year of plenty development cards
+develop-chapel         I  Number of chapel victory point cards
+develop-university     I  Number of university victory point cards
+develop-governor       I  Number of governors' house victory point cards
+develop-library        I  Number of library victory point cards
+develop-market         I  Number of market victory point cards
+develop-soldier        I  Number of soldier development cards
+use-pirate             B  Use the pirate too
+island-discovery-bonus L  Give bonus victory points for building on new islands
+                          The last number in the list is used for the
+                          additional islands.
+chits                  L  Chits (see *3)
+map                    M  Map (see *4)
 
 *1) Comment
     A comment can be on every line.

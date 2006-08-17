@@ -295,6 +295,11 @@ static void dummy_new_statistics(G_GNUC_UNUSED gint player_num,
 				 G_GNUC_UNUSED gint num)
 {;
 }
+static void dummy_new_points(G_GNUC_UNUSED gint player_num,
+			     G_GNUC_UNUSED Points * points,
+			     G_GNUC_UNUSED gboolean added)
+{
+}
 static void dummy_viewer_name(G_GNUC_UNUSED gint viewer_num,
 			      G_GNUC_UNUSED const gchar * name)
 {;
@@ -379,6 +384,7 @@ void client_init(void)
 	callbacks.player_robbed = &dummy_player_robbed;
 	callbacks.get_rolled_resources = &dummy_get_rolled_resources;
 	callbacks.new_statistics = &dummy_new_statistics;
+	callbacks.new_points = &dummy_new_points;
 	callbacks.viewer_name = &dummy_viewer_name;
 	callbacks.player_name = &dummy_player_name;
 	callbacks.player_quit = &dummy_player_quit;
@@ -908,6 +914,8 @@ static gboolean mode_load_gameinfo(StateMachine * sm, gint event)
 	gint opnum, opnassets, opncards, opnsoldiers;
 	gboolean pchapel, puniv, pgov, plibr, pmarket, plongestroad,
 	    plargestarmy;
+	gint point_id, point_points;
+	gchar *point_name;
 	DevelType devcard;
 	gint devcardturnbought;
 	BuildType btype;
@@ -1057,6 +1065,15 @@ static gboolean mode_load_gameinfo(StateMachine * sm, gint event)
 		}
 		return TRUE;
 	}
+	if (sm_recv
+	    (sm, "get-point %d %d %d %S", &opnum, &point_id, &point_points,
+	     &point_name)) {
+		Points *points =
+		    points_new(point_id, point_name, point_points);
+		player_modify_points(opnum, points, TRUE);	/* Added */
+		return TRUE;
+	}
+
 	if (sm_recv
 	    (sm, "otherplayerinfo: %d %d %d %d %d %d %d %d %d %d %d",
 	     &opnum, &opnassets, &opncards, &opnsoldiers, &pchapel, &puniv,

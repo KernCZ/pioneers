@@ -158,6 +158,7 @@ void frontend_set_callbacks(void)
 	callbacks.robber = &frontend_robber;
 	callbacks.robber_moved = &frontend_robber_moved;
 	callbacks.new_statistics = &frontend_new_statistics;
+	callbacks.new_points = &frontend_new_points;
 	callbacks.viewer_name = &frontend_viewer_name;
 	callbacks.player_name = &frontend_player_name;
 	callbacks.player_quit = &frontend_player_quit;

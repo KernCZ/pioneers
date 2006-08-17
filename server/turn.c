@@ -3,7 +3,8 @@
  *
  * Copyright (C) 1999 Dave Cole
  * Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
- * 
+ * Copyright (C) 2006 Roland Clobus <rclobus@bigfoot.com>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -31,6 +32,7 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 	StateMachine *sm = player->sm;
 	Game *game = player->game;
 	Map *map = game->params->map;
+	Points *special_points;
 
 	if (!game->rolled_dice) {
 		sm_send(sm, "ERR roll-dice\n");
@@ -180,7 +182,40 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 		}
 	}
 
-	node_add(player, type, x, y, pos, TRUE);
+	special_points = NULL;
+	if (game->params->island_discovery_bonus != NULL) {
+		if (!map_is_island_discovered
+		    (map, map_node(map, x, y, pos), player->num)) {
+			gboolean first_island;
+			gint points;
+
+			first_island = (player->islands_discovered == 0);
+			/* Use the last entry in island_discovery_bonus,
+			 * or the current island
+			 */
+			points =
+			    g_array_index(game->params->
+					  island_discovery_bonus, gint,
+					  MIN(game->params->
+					      island_discovery_bonus->len -
+					      1,
+					      player->islands_discovered));
+
+			if (points != 0)
+				special_points =
+				    points_new(player->
+					       special_points_next_id++,
+					       first_island ?
+					       N_("Island Discovery Bonus")
+					       :
+					       N_
+					       ("Additional Island Bonus"),
+					       points);
+			player->islands_discovered++;
+		}
+	}
+	node_add(player, type, x, y, pos, TRUE, special_points);
+
 }
 
 static void build_remove(Player * player)
@@ -248,11 +283,7 @@ static void build_move(Player * player, gint sx, gint sy, gint spos,
 			 sx, sy, spos, dx, dy, dpos);
 
 	/* put the move in the undo information */
-	rec = g_malloc0(sizeof(*rec));
-	rec->type = BUILD_MOVE_SHIP;
-	rec->x = dx;
-	rec->y = dy;
-	rec->pos = dpos;
+	rec = buildrec_new(BUILD_MOVE_SHIP, dx, dy, dpos);
 	rec->cost = NULL;
 	rec->prev_x = sx;
 	rec->prev_y = sy;
@@ -316,6 +347,7 @@ static gboolean distribute_resources(G_GNUC_UNUSED Map * map, Hex * hex,
 void check_victory(Player * player)
 {
 	Game *game = player->game;
+	GList *list;
 	gint points;
 
 	points = player->num_settlements
@@ -325,6 +357,13 @@ void check_victory(Player * player)
 		points += 2;
 	if (game->largest_army == player)
 		points += 2;
+
+	list = player->special_points;
+	while (list) {
+		Points *point = list->data;
+		points += point->points;
+		list = g_list_next(list);
+	}
 
 	if (points >= game->params->victory_points) {
 		GList *list;

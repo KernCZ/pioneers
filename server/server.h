@@ -46,7 +46,8 @@ typedef struct {
 	gint assets[NO_RESOURCE];	/* our resources */
 	gint gold;		/* how much gold will we recieve? */
 	DevelDeck *devel;	/* development cards we own */
-	GList *points;		/* points from special actions */
+	GList *special_points;	/* points from special actions */
+	gint special_points_next_id;	/* Next id for the special points */
 	gint discard_num;	/* number of resources we must discard */
 
 	gint num_roads;		/* number of roads available */
@@ -63,6 +64,7 @@ typedef struct {
 	gint gov_played;	/* number of Governors cards played */
 	gint libr_played;	/* number of Library cards played */
 	gint market_played;	/* number of Market cards played */
+	gint islands_discovered;	/* number of islands discovered */
 	gboolean disconnected;
 } Player;
 
@@ -108,9 +110,10 @@ struct Game {
 /* buildutil.c */
 void check_longest_road(Game * game, gboolean can_cut);
 void node_add(Player * player,
-	      BuildType type, int x, int y, int pos, gboolean paid_for);
-void edge_add(Player * player,
-	      BuildType type, int x, int y, int pos, gboolean paid_for);
+	      BuildType type, int x, int y, int pos, gboolean paid_for,
+	      Points * special_points);
+void edge_add(Player * player, BuildType type, int x, int y, int pos,
+	      gboolean paid_for);
 gboolean perform_undo(Player * player);
 
 /* develop.c */

@@ -34,6 +34,17 @@ static gboolean buildrec_can_setup_edge(GList * list, Map * map,
 					gboolean is_double);
 
 
+BuildRec *buildrec_new(BuildType type, gint x, gint y, gint pos)
+{
+	BuildRec *rec = g_malloc0(sizeof(*rec));
+	rec->type = type;
+	rec->x = x;
+	rec->y = y;
+	rec->pos = pos;
+	rec->special_points_id = -1;
+	return rec;
+}
+
 GList *buildrec_free(GList * list)
 {
 	while (list != NULL) {

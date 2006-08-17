@@ -3,7 +3,8 @@
  *
  * Copyright (C) 1999 Dave Cole
  * Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
- * 
+ * Copyright (C) 2006 Roland Clobus <rclobus@bigfoot.com>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -32,7 +33,8 @@
 typedef enum {
 	PARAM_STRING,
 	PARAM_INT,
-	PARAM_BOOL
+	PARAM_BOOL,
+	PARAM_INTLIST
 } ParamType;
 
 typedef struct {
@@ -68,7 +70,8 @@ static Param game_params[] = {
 	{PARAM_V(develop-library, PARAM_INT, num_develop_type[DEVEL_LIBRARY])},
 	{PARAM_V(develop-market, PARAM_INT, num_develop_type[DEVEL_MARKET])},
 	{PARAM_V(develop-soldier, PARAM_INT, num_develop_type[DEVEL_SOLDIER])},
-	{PARAM_V(use-pirate, PARAM_BOOL, use_pirate)}
+	{PARAM_V(use-pirate, PARAM_BOOL, use_pirate)},
+	{PARAM_V(island-discovery-bonus, PARAM_INTLIST, island_discovery_bonus)}
 };
 /* *INDENT-ON* */
 
@@ -112,28 +115,41 @@ static gboolean match_word(gchar ** str, const gchar * word)
 	return FALSE;
 }
 
-static void build_int_list(GArray * array, char *str)
+/* Create a new array, filled with the list in str.
+ * If the array has length zero, NULL is returned.
+ */
+static GArray *build_int_list(const gchar * str)
 {
+	GArray *array = g_array_new(FALSE, FALSE, sizeof(gint));
 	while (*str != '\0') {
 		gint num;
+		gint sign = +1;
 
-		/* Skip leading space
-		 */
+		/* Skip leading space */
 		while (isspace(*str))
 			str++;
 		if (*str == '\0')
 			break;
-		/* Get the next number and add it to the array
-		 */
+		/* Get the next number and add it to the array */
 		num = 0;
+		if (*str == '-') {
+			sign = -1;
+			str++;
+		}
 		while (isdigit(*str))
 			num = num * 10 + *str++ - '0';
+		num *= sign;
 		g_array_append_val(array, num);
-		/* Get comma (if any)
-		 */
-		if (*str == ',')
+
+		/* Skip the non-digits */
+		while (!isdigit(*str) && *str != '-' && *str != '\0')
 			str++;
 	}
+	if (array->len == 0) {
+		g_array_free(array, FALSE);
+		array = NULL;
+	}
+	return array;
 }
 
 /* This function allocates a buffer and returns it.  It must be freed by the
@@ -142,6 +158,9 @@ static gchar *format_int_list(const gchar * name, GArray * array)
 {
 	gchar *old, *str = NULL;
 	int idx;
+
+	if (array == NULL)
+		return NULL;
 
 	if (array->len == 0) {
 		str = g_strdup(name);
@@ -234,6 +253,19 @@ void params_write_lines(GameParams * params, gboolean write_secrets,
 				func(user_data, param->name);
 			}
 			break;
+		case PARAM_INTLIST:
+			buff =
+			    format_int_list(param->name,
+					    G_STRUCT_MEMBER(GArray *,
+							    params,
+							    param->
+							    offset));
+			/* Don't send empty intlists */
+			if (buff != NULL) {
+				func(user_data, buff);
+				g_free(buff);
+			}
+			break;
 		}
 	}
 	buff = format_int_list("chits", params->map->chits);
@@ -293,13 +325,9 @@ gboolean params_load_line(GameParams * params, gchar * line)
 	if (match_word(&line, "chits")) {
 		if (params->map->chits != NULL)
 			g_array_free(params->map->chits, TRUE);
-		params->map->chits =
-		    g_array_new(FALSE, FALSE, sizeof(gint));
-		build_int_list(params->map->chits, line);
-		if (params->map->chits->len == 0) {
+		params->map->chits = build_int_list(line);
+		if (params->map->chits == NULL) {
 			g_warning("Zero length chits array");
-			g_array_free(params->map->chits, FALSE);
-			params->map->chits = NULL;
 			return FALSE;
 		}
 		return TRUE;
@@ -324,6 +352,7 @@ gboolean params_load_line(GameParams * params, gchar * line)
 	for (idx = 0; idx < G_N_ELEMENTS(game_params); idx++) {
 		Param *param = game_params + idx;
 		gchar *str;
+		GArray *array;
 
 		if (!match_word(&line, param->name))
 			continue;
@@ -346,6 +375,20 @@ gboolean params_load_line(GameParams * params, gchar * line)
 			G_STRUCT_MEMBER(gboolean, params, param->offset) =
 			    TRUE;
 			return TRUE;
+		case PARAM_INTLIST:
+			array =
+			    G_STRUCT_MEMBER(GArray *, params,
+					    param->offset);
+			if (array != NULL)
+				g_array_free(array, TRUE);
+			array = build_int_list(line);
+			if (array == NULL) {
+				g_warning("Zero length array for %s",
+					  param->name);
+			}
+			G_STRUCT_MEMBER(GArray *, params, param->offset) =
+			    array;
+			return array != NULL;
 		}
 	}
 	g_warning("Unknown keyword: %s", line);
@@ -415,6 +458,7 @@ GameParams *params_copy(const GameParams * params)
 	GameParams nonconst;
 	GameParams *copy;
 	gint idx;
+	gchar *buff;
 
 	memcpy(&nonconst, params, sizeof(GameParams));
 	copy = params_new();
@@ -440,6 +484,20 @@ GameParams *params_copy(const GameParams * params)
 			G_STRUCT_MEMBER(gboolean, copy, param->offset)
 			    = G_STRUCT_MEMBER(gboolean, &nonconst,
 					      param->offset);
+			break;
+		case PARAM_INTLIST:
+			buff =
+			    format_int_list("",
+					    G_STRUCT_MEMBER(GArray *,
+							    &nonconst,
+							    param->
+							    offset));
+			if (buff != NULL) {
+				G_STRUCT_MEMBER(GArray *, copy,
+						param->offset) =
+				    build_int_list(buff);
+				g_free(buff);
+			}
 			break;
 		}
 	}
@@ -497,4 +555,18 @@ gboolean params_write_file(GameParams * params, const gchar * fname)
 	fclose(fp);
 
 	return TRUE;
+}
+
+Points *points_new(gint id, const gchar * name, gint points)
+{
+	Points *p = g_malloc0(sizeof(Points));
+	p->id = id;
+	p->name = g_strdup(name);
+	p->points = points;
+	return p;
+}
+
+void points_free(Points * points)
+{
+	g_free(points->name);
 }

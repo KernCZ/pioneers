@@ -91,6 +91,13 @@ void build_move(gint sx, gint sy, gint spos, gint dx, gint dy, gint dpos,
 		map->has_moved_ship = FALSE;
 		list = g_list_last(build_list);
 		rec = list->data;
+		if (rec->type != BUILD_MOVE_SHIP && rec->x != sx
+		    && rec->y != sy && rec->pos != spos) {
+			log_message(MSG_ERROR,
+				    "undo ship move mismatch: %d<->%d %d<->%d %d<->%d %d<->%d\n",
+				    BUILD_MOVE_SHIP, rec->type, sx, rec->x,
+				    sy, rec->y, spos, rec->pos);
+		}
 		build_list = g_list_remove(build_list, rec);
 		g_free(rec);
 		/* If the build_list is now empty (no more items to undo),
@@ -99,7 +106,7 @@ void build_move(gint sx, gint sy, gint spos, gint dx, gint dy, gint dpos,
 		if (build_list == NULL)
 			built = FALSE;
 	} else {
-		rec = g_malloc0(sizeof(*rec));
+		rec = buildrec_new(BUILD_MOVE_SHIP, sx, sy, spos);
 		build_list = g_list_append(build_list, rec);
 		built = TRUE;
 		map->has_moved_ship = TRUE;
@@ -110,11 +117,7 @@ void build_move(gint sx, gint sy, gint spos, gint dx, gint dy, gint dpos,
 
 void build_add(BuildType type, gint x, gint y, gint pos, gboolean newbuild)
 {
-	BuildRec *rec = g_malloc0(sizeof(*rec));
-	rec->type = type;
-	rec->x = x;
-	rec->y = y;
-	rec->pos = pos;
+	BuildRec *rec = buildrec_new(type, x, y, pos);
 	build_list = g_list_append(build_list, rec);
 	built = TRUE;
 
