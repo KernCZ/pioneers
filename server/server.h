@@ -105,9 +105,6 @@ struct Game {
 };
 
 /**** global variables ****/
-extern GameParams *params;
-
-
 /* buildutil.c */
 void check_longest_road(Game * game, gboolean can_cut);
 void node_add(Player * player,
@@ -190,11 +187,11 @@ void timed_out(int signum);
 void start_timeout(void);
 void stop_timeout(void);
 gint get_rand(gint range);
-Game *game_new(GameParams * params);
+Game *game_new(const GameParams * params);
 void game_free(Game * game);
 gint new_computer_player(const gchar * server, const gchar * port,
 			 gboolean want_chat);
-gboolean server_startup(GameParams * params, const gchar * hostname,
+gboolean server_startup(const GameParams * params, const gchar * hostname,
 			const gchar * port, gboolean meta_register,
 			const gchar * meta_name_server,
 			gboolean random_order);
@@ -205,23 +202,24 @@ gint open_listen_socket(const gchar * port);
 void server_cleanup_static_data(void);
 
 /**** game list control functions ****/
-GameParams *game_list_find_item(const gchar * title);
+const GameParams *game_list_find_item(const gchar * title);
 void game_list_foreach(GFunc func, gpointer user_data);
 void load_game_types(const gchar * path);
 
 /**** callbacks to set parameters ****/
-void cfg_set_num_players(gint num_players);
-void cfg_set_sevens_rule(gint sevens_rule);
-void cfg_set_victory_points(gint victory_points);
-void cfg_set_game(const gchar * game);
-void cfg_set_terrain_type(gint terrain_type);
-void cfg_set_tournament_time(gint tournament_time);
-void cfg_set_quit(gboolean quitdone);
+GameParams *cfg_set_game(const gchar * game);
+GameParams *cfg_set_game_file(const gchar * game_filename);
+void cfg_set_num_players(GameParams * params, gint num_players);
+void cfg_set_sevens_rule(GameParams * params, gint sevens_rule);
+void cfg_set_victory_points(GameParams * params, gint victory_points);
+void cfg_set_terrain_type(GameParams * params, gint terrain_type);
+void cfg_set_tournament_time(GameParams * params, gint tournament_time);
+void cfg_set_quit(GameParams * params, gboolean quitdone);
 void cfg_set_timeout(gint to);
 
 /* callbacks related to server starting / stopping */
-gboolean start_server(const gchar * hostname, const gchar * port,
-		      gboolean register_server,
+gboolean start_server(const GameParams * params, const gchar * hostname,
+		      const gchar * port, gboolean register_server,
 		      const gchar * meta_server_name,
 		      gboolean random_order);
 

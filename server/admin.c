@@ -53,6 +53,7 @@ void admin_run_command(Session * admin_session, const gchar * line)
 	gint value_int;
 	static gchar *server_port = NULL;
 	static gboolean register_server = TRUE;
+	static GameParams *params = NULL;
 
 	/* parse the line down into command and value */
 	sscanf(line, "admin %99s %99s", command, value_str);
@@ -75,7 +76,7 @@ void admin_run_command(Session * admin_session, const gchar * line)
 			server_stop();
 		if (!server_port)
 			server_port = g_strdup(PIONEERS_DEFAULT_GAME_PORT);
-		start_server(get_server_name(), server_port,
+		start_server(params, get_server_name(), server_port,
 			     register_server, meta_server_name, TRUE);
 		g_free(meta_server_name);
 
@@ -95,7 +96,7 @@ void admin_run_command(Session * admin_session, const gchar * line)
 		if (value_int) {
 			if (server_is_running())
 				server_stop();
-			cfg_set_num_players(value_int);
+			cfg_set_num_players(params, value_int);
 		}
 
 		/* set the sevens rule */
@@ -103,7 +104,7 @@ void admin_run_command(Session * admin_session, const gchar * line)
 		if (value_int) {
 			if (server_is_running())
 				server_stop();
-			cfg_set_sevens_rule(value_int);
+			cfg_set_sevens_rule(params, value_int);
 		}
 
 		/* set the victory points */
@@ -111,7 +112,7 @@ void admin_run_command(Session * admin_session, const gchar * line)
 		if (value_int) {
 			if (server_is_running())
 				server_stop();
-			cfg_set_victory_points(value_int);
+			cfg_set_victory_points(params, value_int);
 		}
 
 		/* set whether to use random terrain */
@@ -119,7 +120,7 @@ void admin_run_command(Session * admin_session, const gchar * line)
 		if (value_int) {
 			if (server_is_running())
 				server_stop();
-			cfg_set_terrain_type(value_int);
+			cfg_set_terrain_type(params, value_int);
 		}
 
 		/* set the game type (by name) */
@@ -127,7 +128,9 @@ void admin_run_command(Session * admin_session, const gchar * line)
 		if (value_str) {
 			if (server_is_running())
 				server_stop();
-			cfg_set_game(value_str);
+			if (params)
+				params_free(params);
+			params = cfg_set_game(value_str);
 		}
 
 		/* request to close the connection */

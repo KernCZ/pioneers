@@ -1,6 +1,9 @@
 2006-08-17  Roland Clobus <rclobus@bigfoot.com>
 	* server/player.c: Use ERR as prefix when too many connections are
 	made.
+	* server/gtk/main.c, server/server.c, server/server.h, server/main.c,
+	server/admin.c: No global GameParams object. Added --file to
+	server-console.
 	
 2006-08-17  Bas Wijnen <shevek@fmf.nl>
 	* AUTHORS, editor/gtk/editor.c: Show full authorlist in editor's

@@ -53,6 +53,7 @@ static gint num_ai_players = 0;
 static gchar *server_port = NULL;
 static gchar *admin_port = NULL;
 static gchar *game_title = NULL;
+static gchar *game_file = NULL;
 static gboolean disable_game_start = FALSE;
 static gint tournament_time = -1;
 static gboolean quit_when_done = FALSE;
@@ -66,6 +67,9 @@ static GOptionEntry commandline_game_entries[] = {
 	{"game-title", 'g', 0, G_OPTION_ARG_STRING, &game_title,
 	 /* Commandline server-console: game-title */
 	 N_("Game title to use"), NULL},
+	{"file", 0, 0, G_OPTION_ARG_STRING, &game_file,
+	 /* Commandline server-console: file */
+	 N_("Game file to use"), NULL},
 	{"port", 'p', 0, G_OPTION_ARG_STRING, &server_port,
 	 /* Commandline server-console: port */
 	 N_("Port to listen on"), PIONEERS_DEFAULT_GAME_PORT},
@@ -138,6 +142,7 @@ int main(int argc, char *argv[])
 	GOptionContext *context;
 	GOptionGroup *context_group;
 	GError *error = NULL;
+	GameParams *params;
 
 	/* set the UI driver to Glib_Driver, since we're using glib */
 	set_ui_driver(&Glib_Driver);
@@ -196,46 +201,52 @@ int main(int argc, char *argv[])
 	if (disable_game_start)
 		if (admin_port == NULL)
 			admin_port = g_strdup(PIONEERS_DEFAULT_ADMIN_PORT);
-	if (game_title == NULL)
-		cfg_set_game("Default");
-	else
-		cfg_set_game(game_title);
+
+	if (game_title && game_file) {
+		g_print
+		    ("Cannot set game title and filename at the same time");
+		return 2;
+	}
+	if (game_file == NULL) {
+		load_game_types(get_pioneers_dir());
+		if (game_title == NULL)
+			params = cfg_set_game("Default");
+		else
+			params = cfg_set_game(game_title);
+	} else {
+		params = cfg_set_game_file(game_file);
+	}
+	if (params == NULL) {
+		g_print("Could not set the game");
+		return 3;
+	}
+
 	if (meta_server_name != NULL)
 		register_server = TRUE;
 	if (register_server && meta_server_name == NULL)
 		meta_server_name = get_meta_server_name(TRUE);
-	if (sevens_rule != -1)
-		sevens_rule = CLAMP(sevens_rule, 0, 2);
 
 	g_assert(server_port != NULL);
 
-	if (num_players) {
-		cfg_set_num_players(CLAMP(num_players, 2, MAX_PLAYERS));
-	}
+	if (num_players)
+		cfg_set_num_players(params, num_players);
 
-	if (sevens_rule != -1) {
-		cfg_set_sevens_rule(sevens_rule);
-	}
+	if (sevens_rule != -1)
+		cfg_set_sevens_rule(params, sevens_rule);
 
-	if (num_points) {
-		cfg_set_victory_points(MAX(3, num_points));
-	}
+	if (num_points)
+		cfg_set_victory_points(params, num_points);
 
-	if (tournament_time != -1) {
-		cfg_set_tournament_time(tournament_time);
-	}
+	if (tournament_time != -1)
+		cfg_set_tournament_time(params, tournament_time);
 
-	if (quit_when_done) {
-		cfg_set_quit(quit_when_done);
-	}
+	cfg_set_quit(params, quit_when_done);
 
-	if (terrain != -1) {
-		cfg_set_terrain_type(terrain ? 1 : 0);
-	}
+	if (terrain != -1)
+		cfg_set_terrain_type(params, terrain ? 1 : 0);
 
-	if (timeout) {
+	if (timeout)
 		cfg_set_timeout(timeout);
-	}
 
 	net_init();
 
@@ -244,7 +255,7 @@ int main(int argc, char *argv[])
 
 	if (!disable_game_start) {
 		if (start_server
-		    (hostname, server_port, register_server,
+		    (params, hostname, server_port, register_server,
 		     meta_server_name, !fixed_seating_order)) {
 			for (i = 0; i < num_ai_players; ++i)
 				new_computer_player(NULL, server_port,
@@ -272,6 +283,7 @@ int main(int argc, char *argv[])
 	g_free(server_port);
 	g_free(admin_port);
 	g_option_context_free(context);
+	params_free(params);
 	server_cleanup_static_data();
 	return 0;
 }

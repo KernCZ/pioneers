@@ -161,9 +161,9 @@ static void game_settings_change_cb(GameSettings *gs, G_GNUC_UNUSED gpointer use
 }
 */
 
-static void update_game_settings(void)
+static void update_game_settings(const GameParams * params)
 {
-	g_assert(params != NULL);
+	g_return_if_fail(params != NULL);
 
 	/* Update the UI */
 	game_settings_set_terrain(GAMESETTINGS(game_settings),
@@ -174,22 +174,17 @@ static void update_game_settings(void)
 					 params->victory_points);
 	game_settings_set_sevens_rule(GAMESETTINGS(game_settings),
 				      params->sevens_rule);
-
-	/* Update the global structure */
-	cfg_set_terrain_type(params->random_terrain);
-	cfg_set_num_players(params->num_players);
-	cfg_set_victory_points(params->victory_points);
-	cfg_set_sevens_rule(params->sevens_rule);
 }
 
 static void game_activate(GtkWidget * widget,
 			  G_GNUC_UNUSED gpointer user_data)
 {
 	const gchar *title;
+	const GameParams *params;
 
 	title = select_game_get_active(SELECTGAME(widget));
 	params = game_list_find_item(title);
-	update_game_settings();
+	update_game_settings(params);
 }
 
 static void gui_set_server_state(gboolean running)
@@ -234,22 +229,26 @@ static void start_clicked_cb(G_GNUC_UNUSED GtkButton * start_btn,
 			gui_set_server_state(FALSE);
 	} else {		/* not running */
 		const gchar *title;
+		GameParams *params;
+
 		title = select_game_get_active(SELECTGAME(select_game));
-		params = game_list_find_item(title);
-		params->random_terrain =
-		    game_settings_get_terrain(GAMESETTINGS(game_settings));
-		params->num_players =
-		    game_settings_get_players(GAMESETTINGS(game_settings));
-		params->victory_points =
-		    game_settings_get_victory_points(GAMESETTINGS
-						     (game_settings));
-		params->sevens_rule =
-		    game_settings_get_sevens_rule(GAMESETTINGS
-						  (game_settings));
-		update_game_settings();
+		params = params_copy(game_list_find_item(title));
+		cfg_set_terrain_type(params,
+				     game_settings_get_terrain(GAMESETTINGS
+							       (game_settings)));
+		cfg_set_num_players(params,
+				    game_settings_get_players(GAMESETTINGS
+							      (game_settings)));
+		cfg_set_victory_points(params,
+				       game_settings_get_victory_points
+				       (GAMESETTINGS(game_settings)));
+		cfg_set_sevens_rule(params,
+				    game_settings_get_sevens_rule
+				    (GAMESETTINGS(game_settings)));
+		update_game_settings(params);
 		g_assert(server_port != NULL);
 		if (start_server
-		    (hostname, server_port, register_server,
+		    (params, hostname, server_port, register_server,
 		     meta_server_name, random_order)) {
 			gui_set_server_state(TRUE);
 			config_set_string("server/meta-server",
@@ -270,6 +269,7 @@ static void start_clicked_cb(G_GNUC_UNUSED GtkButton * start_btn,
 			config_set_int("game/sevens-rule",
 				       params->sevens_rule);
 		}
+		params_free(params);
 	}
 }
 
@@ -381,6 +381,7 @@ static GtkWidget *build_game_settings(GtkWidget * parent)
 	gboolean default_returned;
 	gchar *gamename;
 	gint temp;
+	GameParams *params;
 
 	tooltips = gtk_tooltips_new();
 
@@ -411,6 +412,10 @@ static GtkWidget *build_game_settings(GtkWidget * parent)
 	/* Fill the GUI with the saved settings */
 	gamename =
 	    config_get_string("game/name=Default", &default_returned);
+	load_game_types(get_pioneers_dir());
+	params = cfg_set_game(gamename);
+	if (params == NULL)
+		params = cfg_set_game("Default");
 	select_game_set_default(SELECTGAME(select_game), gamename);
 	game_list_foreach(add_game_to_list, NULL);
 	g_free(gamename);
@@ -420,18 +425,19 @@ static GtkWidget *build_game_settings(GtkWidget * parent)
 	g_assert(params != NULL);
 	temp = config_get_int("game/random-terrain", &default_returned);
 	if (!default_returned)
-		params->random_terrain = temp;
+		cfg_set_terrain_type(params, temp);
 	temp = config_get_int("game/num-players", &default_returned);
 	if (!default_returned)
-		params->num_players = temp;
+		cfg_set_num_players(params, temp);
 	temp = config_get_int("game/victory-points", &default_returned);
 	if (!default_returned)
-		params->victory_points = temp;
+		cfg_set_victory_points(params, temp);
 	temp = config_get_int("game/sevens-rule", &default_returned);
 	if (!default_returned)
-		params->sevens_rule = temp;
+		cfg_set_sevens_rule(params, temp);
 
-	update_game_settings();
+	update_game_settings(params);
+	params_free(params);
 	return frame;
 }
 
