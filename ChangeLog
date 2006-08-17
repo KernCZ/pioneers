@@ -1,3 +1,7 @@
+2006-08-17  Bas Wijnen <shevek@fmf.nl>
+	* AUTHORS, editor/gtk/editor.c: Show full authorlist in editor's
+	help->about, and add Brian to the full list.
+
 2006-08-15  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/connect.c: Don't connect to a new game at the meta server
 	as a viewer.

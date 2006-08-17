@@ -22,6 +22,7 @@
 #include "config.h"
 
 #include <string.h>
+#include "authors.h"
 #include "aboutbox.h"
 #include "config-gnome.h"
 #include "game.h"
@@ -1014,8 +1015,7 @@ static void contents_menu_cb(void)
 static void about_menu_cb(void)
 {
 	const gchar *authors[] = {
-		"Brian Wellington",
-		NULL
+		AUTHORLIST
 	};
 
 	aboutbox_display(_("Pioneers Game Editor"), authors);
