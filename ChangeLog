@@ -1,3 +1,7 @@
+2006-08-17  Roland Clobus <rclobus@bigfoot.com>
+	* server/player.c: Use ERR as prefix when too many connections are
+	made.
+	
 2006-08-17  Bas Wijnen <shevek@fmf.nl>
 	* AUTHORS, editor/gtk/editor.c: Show full authorlist in editor's
 	help->about, and add Brian to the full list.
