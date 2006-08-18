@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: pioneers 0.10.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-08-17 23:46+0200\n"
-"PO-Revision-Date: 2006-08-18 07:53+0100\n"
+"PO-Revision-Date: 2006-08-18 10:50+0200\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "MIME-Version: 1.0\n"
@@ -2331,12 +2331,12 @@ msgstr "_Berg"
 #. Use an unique shortcut key for each resource
 #: ../editor/gtk/editor.c:72
 msgid "_Pasture"
-msgstr "_Betesmark"
+msgstr "Be_tesmark"
 
 #. Use an unique shortcut key for each resource
 #: ../editor/gtk/editor.c:74
 msgid "F_orest"
-msgstr "S_kog"
+msgstr "_Skog"
 
 #. Use an unique shortcut key for each resource
 #: ../editor/gtk/editor.c:76
@@ -2362,7 +2362,7 @@ msgstr "_Ingen"
 #. Use an unique shortcut key for each port type
 #: ../editor/gtk/editor.c:87
 msgid "_Brick (2:1)"
-msgstr "_Tegel (2:1)"
+msgstr "Te_gel (2:1)"
 
 #. Use an unique shortcut key for each port type
 #: ../editor/gtk/editor.c:89
