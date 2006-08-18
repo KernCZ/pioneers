@@ -6,10 +6,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: pioneers 0.9.64\n"
+"Project-Id-Version: pioneers 0.10.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-08-17 23:46+0200\n"
-"PO-Revision-Date: 2006-06-15 01:23+0100\n"
+"PO-Revision-Date: 2006-08-18 07:53+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "MIME-Version: 1.0\n"
@@ -20,25 +20,26 @@ msgstr ""
 #: ../NotImplementedYetButWillBeSoon.c:4
 #, c-format
 msgid "%s has requested a connection check."
-msgstr ""
+msgstr "%s har begärt en anslutningskontroll."
 
 #. %s = dotted IP address
 #: ../NotImplementedYetButWillBeSoon.c:6
 #, c-format
 msgid "The metaserver has rejected the reported hostname. Try %s instead."
 msgstr ""
+"Metaservern har vägrat ta emot det rapporterade värdnamet. Prova %s istället."
 
 #. (1) = player name, (2) = resource type name
 #: ../NotImplementedYetButWillBeSoon.c:9
 #, c-format
 msgid "%s does not receive any %s, because the bank is empty."
-msgstr ""
+msgstr "%s tar inte emot några %s, därför att banken är tom."
 
 #. (1) = player name, (2) = lists of resources
 #: ../NotImplementedYetButWillBeSoon.c:12
 #, c-format
 msgid "%s only receives %s, because the bank didn't have more."
-msgstr ""
+msgstr "%s tar endast emot %s, därför att banken inte hade mer."
 
 #. Default name for the AI when the computer_names file
 #. * is not found or empty.
@@ -88,14 +89,14 @@ msgstr "Typ av datorspelare"
 #: ../client/ai/ai.c:118 ../client/gtk/offline.c:73 ../server/gtk/main.c:810
 #: ../server/main.c:135
 msgid "Enable debug messages"
-msgstr ""
+msgstr "Aktivera felsökningsmeddelanden"
 
 #: ../client/ai/ai.c:129
 msgid "- Computer player for Pioneers"
 msgstr "- Datorspelare för Pioneers"
 
 #: ../client/ai/ai.c:164
-#, fuzzy, c-format
+#, c-format
 msgid "Type of computer player: %s\n"
 msgstr "Typ av datorspelare: %s\n"
 
@@ -105,19 +106,19 @@ msgstr "Spelet är redan fullt. Jag lämnar det."
 
 #: ../client/ai/greedy.c:941
 msgid "No settlements in stock to use for setup"
-msgstr ""
+msgstr "Inga bosättningar i lager att använda för detta"
 
 #: ../client/ai/greedy.c:948
 msgid "There is no place to setup a settlement"
-msgstr ""
+msgstr "Det finns ingen plats för att bygga en bosättning"
 
 #: ../client/ai/greedy.c:972
 msgid "No roads in stock to use for setup"
-msgstr ""
+msgstr "Inga vägar på lager att använda för detta"
 
 #: ../client/ai/greedy.c:989
 msgid "There is no place to setup a road"
-msgstr ""
+msgstr "Det finns ingen plats för att anlägga en väg"
 
 #: ../client/ai/greedy.c:1291
 msgid "Ok, let's go!"
@@ -278,21 +279,23 @@ msgid ""
 "Hello, welcome to the lobby. I am a simple robot. Type '/help' in the chat "
 "to see the list of commands I know."
 msgstr ""
+"Hej, välkommen till lobbyn. Jag är en enkel robot. Skriv \"/help\" i chatten "
+"för att se en lista på kommandon jag känner till."
 
 #. Translators: don't translate '/help'
 #: ../client/ai/lobbybot.c:106
 msgid "'/help' shows this message again"
-msgstr ""
+msgstr "\"/help\" visar detta meddelande igen"
 
 #. Translators: don't translate '/why'
 #: ../client/ai/lobbybot.c:109
 msgid "'/why' explains the purpose of this strange board layout"
-msgstr ""
+msgstr "\"/why\" förklarar meningen med denna konstiga brädlayout"
 
 #. Translators: don't translate '/news'
 #: ../client/ai/lobbybot.c:112
 msgid "'/news' tells the last released version"
-msgstr ""
+msgstr "\"/news\" talar om den senaste utgivna versionen"
 
 #: ../client/ai/lobbybot.c:117
 msgid ""
@@ -302,14 +305,19 @@ msgid ""
 "registers it at the metaserver. The other players can subsequently "
 "disconnect from the lobby, and enter that game."
 msgstr ""
+"Denna bräda är inte tänkt att vara ett spel som kan spelas. Istället kan "
+"spelare hitta varandra här, och bestämma vilken bräda de vill spela på. "
+"Sedan kan en av spelarna stå värd för det tänkta spelet genom att starta en "
+"server, och registrera den på metaservern. De andra spelarna kan därefter "
+"koppla ner från lobbyn, och ansluta till det spelet."
 
 #: ../client/ai/lobbybot.c:128
 msgid "The last released version of Pioneers is"
-msgstr ""
+msgstr "\"Den senaste utgivna versionen av Pioneers är"
 
 #: ../client/ai/lobbybot.c:143
 msgid "The game is starting. I'm not needed anymore. Goodbye."
-msgstr ""
+msgstr "Spelet startar. Jag behövs inte längre. Adjö."
 
 #: ../client/common/client.c:103
 msgid "Waiting"
@@ -332,12 +340,12 @@ msgstr "Offline"
 #: ../client/common/client.c:453
 #, c-format
 msgid "Error (%s): %s\n"
-msgstr ""
+msgstr "Fel (%s): %s\n"
 
 #: ../client/common/client.c:462 ../client/common/client.c:473
 #, c-format
 msgid "Notice: %s\n"
-msgstr ""
+msgstr "Notera: %s\n"
 
 #: ../client/common/client.c:576
 #, c-format
@@ -370,6 +378,7 @@ msgstr "Version stämmer inte"
 #: ../client/common/client.c:820
 msgid "Version mismatch. Please make sure client and server are up to date.\n"
 msgstr ""
+"Versionen stämmer inte. Se till att klient och server är uppdaterade.\n"
 
 #: ../client/common/client.c:1265
 msgid "Build two settlements, each with a connecting"
@@ -732,11 +741,11 @@ msgstr "Tegel"
 
 #: ../client/common/resource.c:36
 msgid "grain"
-msgstr "säd"
+msgstr "spannmål"
 
 #: ../client/common/resource.c:36
 msgid "Grain"
-msgstr "Säd"
+msgstr "Spannmål"
 
 #: ../client/common/resource.c:37
 msgid "ore"
@@ -797,12 +806,12 @@ msgstr "%d tegelkort"
 
 #: ../client/common/resource.c:48
 msgid "a grain card"
-msgstr "ett sädeskort"
+msgstr "ett spannmålskort"
 
 #: ../client/common/resource.c:48
 #, c-format
 msgid "%d grain cards"
-msgstr "%d sädeskort"
+msgstr "%d spannmålskort"
 
 #: ../client/common/resource.c:49
 msgid "an ore card"
@@ -837,13 +846,13 @@ msgstr "ingenting"
 
 #. Construct "A, B and C" for resources
 #: ../client/common/resource.c:166
-#, fuzzy, c-format
+#, c-format
 msgid "%s and %s"
 msgstr "%s och %s"
 
 #. Construct "A, B and C" for resources
 #: ../client/common/resource.c:170
-#, fuzzy, c-format
+#, c-format
 msgid "%s, %s"
 msgstr "%s, %s"
 
@@ -1532,11 +1541,11 @@ msgstr "Visa tangentbordsgenvägar i verktygsraden"
 
 #: ../client/gtk/gui.c:932
 msgid "Announce new players"
-msgstr ""
+msgstr "Annonsera nya spelare"
 
 #: ../client/gtk/gui.c:943
 msgid "Make a sound when a new player or viewer enters the game"
-msgstr ""
+msgstr "Spela ett ljud när en ny spelare eller åskådare kommer in i spelet"
 
 #: ../client/gtk/gui.c:953
 msgid "The Pioneers Game"
@@ -1880,13 +1889,12 @@ msgid "Sevens Rule:"
 msgstr "Regel för 7:an:"
 
 #: ../client/gtk/settingscreen.c:180
-#, fuzzy
 msgid "Use Pirate:"
 msgstr "Använd pirat:"
 
 #: ../client/gtk/settingscreen.c:208
 msgid "Island Discovery Bonuses:"
-msgstr ""
+msgstr "Bonusar för upptäckter av öar:"
 
 #: ../client/gtk/settingscreen.c:223
 msgid "<b>Building Quotas</b>"
@@ -2015,7 +2023,7 @@ msgstr ""
 
 #: ../common/gtk/aboutbox.c:83
 msgid "Homepage"
-msgstr ""
+msgstr "Hemsida"
 
 #: ../common/gtk/aboutbox.c:88
 msgid "Authors"
@@ -2307,94 +2315,79 @@ msgstr "Överflöde i statusstack. Stackdump skickar till standard fel.\n"
 
 #. Use an unique shortcut key for each resource
 #: ../editor/gtk/editor.c:66
-#, fuzzy
 msgid "_Hill"
-msgstr "Kulle"
+msgstr "_Kulle"
 
 #. Use an unique shortcut key for each resource
 #: ../editor/gtk/editor.c:68
-#, fuzzy
 msgid "_Field"
-msgstr "Fält"
+msgstr "_Fält"
 
 #. Use an unique shortcut key for each resource
 #: ../editor/gtk/editor.c:70
-#, fuzzy
 msgid "_Mountain"
-msgstr "Berg"
+msgstr "_Berg"
 
 #. Use an unique shortcut key for each resource
 #: ../editor/gtk/editor.c:72
-#, fuzzy
 msgid "_Pasture"
-msgstr "Betesmark"
+msgstr "_Betesmark"
 
 #. Use an unique shortcut key for each resource
 #: ../editor/gtk/editor.c:74
-#, fuzzy
 msgid "F_orest"
-msgstr "Skog"
+msgstr "S_kog"
 
 #. Use an unique shortcut key for each resource
 #: ../editor/gtk/editor.c:76
-#, fuzzy
 msgid "_Desert"
-msgstr "Öken"
+msgstr "Ök_en"
 
 #. Use an unique shortcut key for each resource
 #: ../editor/gtk/editor.c:78
-#, fuzzy
 msgid "_Sea"
-msgstr "Hav"
+msgstr "_Hav"
 
 #. Use an unique shortcut key for each resource
 #: ../editor/gtk/editor.c:80
-#, fuzzy
 msgid "_Gold"
-msgstr "Guld"
+msgstr "_Guld"
 
 #. Use an unique shortcut key for each resource
 #. Use an unique shortcut key for each port type
 #: ../editor/gtk/editor.c:82 ../editor/gtk/editor.c:97
-#, fuzzy
 msgid "_None"
-msgstr "Ingen"
+msgstr "_Ingen"
 
 #. Use an unique shortcut key for each port type
 #: ../editor/gtk/editor.c:87
-#, fuzzy
 msgid "_Brick (2:1)"
-msgstr "Tegel (2:1)"
+msgstr "_Tegel (2:1)"
 
 #. Use an unique shortcut key for each port type
 #: ../editor/gtk/editor.c:89
-#, fuzzy
 msgid "_Grain (2:1)"
-msgstr "Säd (2:1)"
+msgstr "_Spannmål (2:1)"
 
 #. Use an unique shortcut key for each port type
 #: ../editor/gtk/editor.c:91
-#, fuzzy
 msgid "_Ore (2:1)"
-msgstr "Malm (2:1)"
+msgstr "_Malm (2:1)"
 
 #. Use an unique shortcut key for each port type
 #: ../editor/gtk/editor.c:93
-#, fuzzy
 msgid "_Wool (2:1)"
-msgstr "Ull (2:1)"
+msgstr "_Ull (2:1)"
 
 #. Use an unique shortcut key for each port type
 #: ../editor/gtk/editor.c:95
-#, fuzzy
 msgid "_Lumber (2:1)"
-msgstr "Timmer (2:1)"
+msgstr "_Timmer (2:1)"
 
 #. Use an unique shortcut key for each port type
 #: ../editor/gtk/editor.c:99
-#, fuzzy
 msgid "_Any (3:1)"
-msgstr "Någon (3:1)"
+msgstr "_Någon (3:1)"
 
 #. East
 #: ../editor/gtk/editor.c:104
@@ -2770,7 +2763,7 @@ msgstr "Speltitel att använda"
 #. Commandline server-console: file
 #: ../server/main.c:72
 msgid "Game file to use"
-msgstr ""
+msgstr "Spelfil att använda"
 
 #. Commandline server-console: port
 #: ../server/main.c:75
@@ -2844,7 +2837,7 @@ msgstr ""
 
 #: ../server/main.c:131
 msgid "Give players numbers according to the order they enter the game"
-msgstr ""
+msgstr "Ge spelare nummer enligt den ordning de kom in i spelet"
 
 #. Commandline server-console: Short description of meta group
 #: ../server/main.c:171
@@ -2884,21 +2877,21 @@ msgstr "namn för långt"
 
 #: ../server/player.c:162
 msgid "ignoring unknown extension"
-msgstr ""
+msgstr "ignorerar okänd utökning"
 
 #: ../server/player.c:191
 msgid "Game starts, adding computer players"
-msgstr ""
+msgstr "Spelet startar, lägger till datorspelare"
 
 #: ../server/player.c:216
 #, c-format
 msgid "The game starts in %s minutes."
-msgstr ""
+msgstr "Spelet startar om %s minuter."
 
 #: ../server/player.c:217
 #, c-format
 msgid "The game starts in %s minute."
-msgstr ""
+msgstr "Spelet startar om %s minut."
 
 #: ../server/player.c:262
 msgid "Sorry, game is over."
@@ -2911,7 +2904,7 @@ msgstr "Spelare från %s nekas: spelet är över\n"
 
 #: ../server/player.c:310
 msgid "This game will start soon."
-msgstr ""
+msgstr "Detta spel kommer strax att startas."
 
 #: ../server/player.c:336
 msgid "Name not changed: new name is already in use"
@@ -2919,14 +2912,14 @@ msgstr "Namn inte ändrat: nytt namn används redan"
 
 #. %s is the name of the reconnecting player
 #: ../server/player.c:612
-#, fuzzy, c-format
+#, c-format
 msgid "%s has reconnected."
 msgstr "%s har återanslutit."
 
 #: ../server/player.c:704
-#, fuzzy, c-format
+#, c-format
 msgid "Version mismatch: %s"
-msgstr "Version stämmer inte: %s"
+msgstr "Versionen stämmer inte: %s"
 
 #. Server: preparing game #.....
 #: ../server/server.c:222
@@ -2939,11 +2932,11 @@ msgstr "Saknar spelkatalog\n"
 
 #: ../server/turn.c:209
 msgid "Island Discovery Bonus"
-msgstr ""
+msgstr "Bonus för upptäckt av ö"
 
 #: ../server/turn.c:212
 msgid "Additional Island Bonus"
-msgstr ""
+msgstr "Bonus för ytterligare ö"
 
 #: ../server/turn.c:339
 msgid "Tried to assign resources to NULL player.\n"
