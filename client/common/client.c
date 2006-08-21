@@ -287,7 +287,8 @@ static void dummy_player_robbed(G_GNUC_UNUSED gint robber_num,
 }
 static void dummy_get_rolled_resources(G_GNUC_UNUSED gint player_num,
 				       G_GNUC_UNUSED const gint *
-				       resources)
+				       resources,
+				       G_GNUC_UNUSED const gint * wanted)
 {;
 }
 static void dummy_new_statistics(G_GNUC_UNUSED gint player_num,
@@ -541,7 +542,7 @@ static gboolean check_other_players(StateMachine * sm)
 	gint player_num, victim_num, card_idx, backwards;
 	gint turn_num, discard_num, num, ratio, die1, die2, x, y, pos;
 	gint id;
-	gint resource_list[NO_RESOURCE];
+	gint resource_list[NO_RESOURCE], wanted_list[NO_RESOURCE];
 	gint sx, sy, spos, dx, dy, dpos;
 	gchar *str;
 
@@ -572,10 +573,40 @@ static gboolean check_other_players(StateMachine * sm)
 		player_build_remove(player_num, build_type, x, y, pos);
 		return TRUE;
 	}
-	if (sm_recv(sm, "receives %R", resource_list)) {
-		player_resource_action(player_num, _("%s receives %s.\n"),
-				       resource_list, 1);
-		callbacks.get_rolled_resources(player_num, resource_list);
+	if (sm_recv(sm, "receives %R %R", resource_list, wanted_list)) {
+		gint i;
+		for (i = 0; i < NO_RESOURCE; ++i) {
+			if (resource_list[i] == wanted_list[i])
+				continue;
+			if (resource_list[i] == 0) {
+				log_message(MSG_RESOURCE,
+					    _
+					    ("%s does not receive any %s, because the bank is empty.\n"),
+					    player_name(player_num, TRUE),
+					    resource_name(i, FALSE));
+			} else {
+				gint j, list[NO_RESOURCE];
+				gchar *buff;
+				for (j = 0; j < NO_RESOURCE; ++j)
+					list[j] = 0;
+				list[i] = resource_list[i];
+				resource_list[i] = 0;
+				buff = resource_format_num(list);
+				log_message(MSG_RESOURCE,
+					    _
+					    ("%s only receives %s, because the bank didn't have any more.\n"),
+					    player_name(player_num, TRUE),
+					    buff);
+				g_free(buff);
+				resource_apply_list(player_num, list, 1);
+			}
+		}
+		if (resource_count(resource_list) != 0)
+			player_resource_action(player_num,
+					       _("%s receives %s.\n"),
+					       resource_list, 1);
+		callbacks.get_rolled_resources(player_num, resource_list,
+					       wanted_list);
 		return TRUE;
 	}
 	if (sm_recv(sm, "spent %R", resource_list)) {

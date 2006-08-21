@@ -71,7 +71,7 @@ static void distribute_next(GList * list)
 
 	/* give resources until someone should choose gold */
 	for (; list != NULL; list = next_player_loop(list, player)) {
-		gint resource[NO_RESOURCE];
+		gint resource[NO_RESOURCE], wanted[NO_RESOURCE];
 		gboolean send_message = FALSE;
 		Player *scan = list->data;
 
@@ -79,6 +79,7 @@ static void distribute_next(GList * list)
 		for (idx = 0; idx < NO_RESOURCE; ++idx) {
 			gint num;
 			num = scan->assets[idx] - scan->prev_assets[idx];
+			wanted[idx] = num;
 			if (game->bank_deck[idx] - num < 0) {
 				num = game->bank_deck[idx];
 				scan->assets[idx]
@@ -88,12 +89,12 @@ static void distribute_next(GList * list)
 			resource[idx] = num;
 			/* don't let a player receive the resources twice */
 			scan->prev_assets[idx] = scan->assets[idx];
-			if (num > 0)
+			if (wanted[idx] > 0)
 				send_message = TRUE;
 		}
 		if (send_message)
-			player_broadcast(scan, PB_ALL, "receives %R\n",
-					 resource);
+			player_broadcast(scan, PB_ALL, "receives %R %R\n",
+					 resource, wanted);
 
 		/* give out gold (and return so gold-done is not broadcast) */
 		if (scan->gold > 0) {

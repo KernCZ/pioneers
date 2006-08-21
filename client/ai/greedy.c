@@ -1946,7 +1946,8 @@ static void greedy_player_robbed(G_GNUC_UNUSED gint robber_num,
 }
 
 static void greedy_get_rolled_resources(gint player_num,
-					const gint * resources)
+					const gint * resources,
+					G_GNUC_UNUSED const gint * wanted)
 {
 	gint total = 0, i;
 	for (i = 0; i < NO_RESOURCE; ++i)

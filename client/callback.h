@@ -219,9 +219,12 @@ struct callbacks {
 	 * frontend should also be able to handle players not getting any
 	 * resources, because it may be called for all players in the future
 	 * The value of the resources has already been updated, and there has
-	 * been a call to resource_change when this is called. */
+	 * been a call to resource_change when this is called.
+	 * If resources is different from wanted, the player should have
+	 * received resources, but the bank was empty.  */
 	void (*get_rolled_resources) (gint player_num,
-				      const gint * resources);
+				      const gint * resources,
+				      const gint * wanted);
 	/* Something happened to someones stats.  As with resource_change,
 	 * the value must not be updated by the frontend, it has already been
 	 * done by the client. */
