@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: pioneers 0.10.1\n"
 "Report-Msgid-Bugs-To: pio-develop@lists.sourceforge.net\n"
 "POT-Creation-Date: 2006-08-17 17:51+0200\n"
-"PO-Revision-Date: 2003-01-25 00:08-0600\n"
+"PO-Revision-Date: 2006-08-23 15:14+0200\n"
 "Last-Translator: Marco Antonio Giraldo <m.a.giraldo@rug.nl>\n"
 "Language-Team: Spanish <debian-l10n-spanish@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -348,7 +348,7 @@ msgstr "Bajando"
 
 #: client/common/client.c:812
 msgid "Version mismatch"
-msgstr "Version no cincide"
+msgstr "Versión no coincide"
 
 #: client/common/client.c:814
 msgid "Version mismatch. Please make sure client and server are up to date.\n"
@@ -370,15 +370,15 @@ msgstr "camino"
 
 #: client/common/client.c:1256
 msgid "bridge"
-msgstr "Puente"
+msgstr "puente"
 
 #: client/common/client.c:1258
 msgid "ship"
-msgstr "Barco"
+msgstr "barco"
 
 #: client/common/client.c:1266
 msgid " or"
-msgstr "o"
+msgstr " o"
 
 #: client/common/client.c:1324
 msgid "Waiting for your turn"
@@ -519,7 +519,7 @@ msgstr "Visor %d"
 #: client/common/player.c:118
 #, c-format
 msgid "viewer %d"
-msgstr "Visor %d"
+msgstr "visor %d"
 
 #: client/common/player.c:126 server/player.c:380
 #, c-format
@@ -634,7 +634,7 @@ msgstr "%s edifica una ciudad.\n"
 #: client/common/player.c:497
 #, c-format
 msgid "player_build_add called with BUILD_NONE for user %s\n"
-msgstr "Se llamó player_biuld_add con BUILD_NONE para el usuario %s\n"
+msgstr "Se llamó player_build_add con BUILD_NONE para el usuario %s\n"
 
 #: client/common/player.c:506
 #, c-format
@@ -765,7 +765,7 @@ msgstr "Cualquier recurso (gusano)"
 
 #: client/common/resource.c:42
 msgid "gold"
-msgstr "Oro"
+msgstr "oro"
 
 #: client/common/resource.c:42 client/gtk/legend.c:39
 msgid "Gold"
@@ -1126,7 +1126,7 @@ msgstr "Visor"
 
 #: client/gtk/connect.c:1214
 msgid "Do you want to be a viewer?"
-msgstr "Quiere tener un visor?"
+msgstr "¿Quiere tener un visor?"
 
 #: client/gtk/connect.c:1221 server/gtk/main.c:544
 msgid "Meta Server"
@@ -1154,7 +1154,7 @@ msgstr "Adherir a juego privado"
 
 #: client/gtk/connect.c:1270 client/gtk/connect.c:1415
 msgid "Join a private game"
-msgstr "adherir a juego privado"
+msgstr "Adherir a juego privado"
 
 #: client/gtk/connect.c:1456
 msgid "Name of the host of the game"
@@ -1247,11 +1247,11 @@ msgstr "_Juego"
 
 #: client/gtk/gui.c:205
 msgid "_New game"
-msgstr "Nuevo juego"
+msgstr "_Nuevo juego"
 
 #: client/gtk/gui.c:207
 msgid "_Leave game"
-msgstr "Dejar juego"
+msgstr "_Dejar juego"
 
 #: client/gtk/gui.c:208
 msgid "Leave this game"
@@ -1267,7 +1267,7 @@ msgstr "Administrar servidor de Pioneers"
 
 #: client/gtk/gui.c:213
 msgid "_Player name"
-msgstr "Nombre de jugador"
+msgstr "Nombre de _jugador"
 
 #: client/gtk/gui.c:214
 msgid "Change your player name"
@@ -1283,7 +1283,7 @@ msgstr "Leyenda de terreno y costos de construccion"
 
 #: client/gtk/gui.c:217
 msgid "_Game Settings"
-msgstr "Ajustes de juego"
+msgstr "_Ajustes de juego"
 
 #: client/gtk/gui.c:218
 msgid "Settings for the current game"
@@ -1299,7 +1299,7 @@ msgstr "Histograma de las tiradas"
 
 #: client/gtk/gui.c:221 editor/gtk/editor.c:1039 server/gtk/main.c:88
 msgid "_Quit"
-msgstr "Salir"
+msgstr "_Salir"
 
 #: client/gtk/gui.c:222 server/gtk/main.c:89
 msgid "Quit the program"
@@ -1390,7 +1390,7 @@ msgstr "Comprar una carta de desarrollo"
 
 #: client/gtk/gui.c:246
 msgid "_Settings"
-msgstr "Ajustes"
+msgstr "_Ajustes"
 
 #: client/gtk/gui.c:247
 msgid "Prefere_nces"
@@ -1419,7 +1419,7 @@ msgstr "Mostrar el manual"
 
 #: client/gtk/gui.c:261
 msgid "_Toolbar"
-msgstr "Barra de herramientas"
+msgstr "_Barra de herramientas"
 
 #: client/gtk/gui.c:262
 msgid "Show or hide the toolbar"
@@ -1489,7 +1489,7 @@ msgstr "¿Usar colores en los mensajes nuevos?"
 
 #: client/gtk/gui.c:884
 msgid "Chat in color of player"
-msgstr "Charlar con el color del jugador?"
+msgstr "¿Charlar con el color del jugador?"
 
 #: client/gtk/gui.c:895
 msgid "Show new chat messages in the color of the player"
@@ -1592,7 +1592,7 @@ msgstr "Mar"
 
 #: client/gtk/legend.c:170
 msgid "<b>Terrain Yield</b>"
-msgstr "Produccion de terreno"
+msgstr "<b>Produccion de terreno</b>"
 
 #: client/gtk/legend.c:202
 msgid "<b>Building Costs</b>"
@@ -1638,7 +1638,7 @@ msgstr "Conectando"
 #. Long description in the commandline for pioneers: help
 #: client/gtk/offline.c:169
 msgid "- Play a game of Pioneers"
-msgstr "Bienvenido a Pioneers"
+msgstr "- Jugar un juego de Pioneers"
 
 #: client/gtk/player.c:49
 msgid "Settlements"
@@ -1830,7 +1830,7 @@ msgstr "No hay juego en proceso"
 
 #: client/gtk/settingscreen.c:129
 msgid "<b>General Settings</b>"
-msgstr "Ajuste general"
+msgstr "<b>Ajuste general</b>"
 
 #: client/gtk/settingscreen.c:145
 msgid "Number of players:"
@@ -1842,7 +1842,7 @@ msgstr "Punto de victoria:"
 
 #: client/gtk/settingscreen.c:151
 msgid "Random Terrain?"
-msgstr "terreno aleatorio"
+msgstr "¿Terreno Aleatorio?"
 
 #: client/gtk/settingscreen.c:154
 msgid "Interplayer Trading Allowed?"
@@ -1850,7 +1850,7 @@ msgstr "¿Se permite comercio entre los jugadores?"
 
 #: client/gtk/settingscreen.c:158
 msgid "Trading allowed only before build/buy?"
-msgstr "Comercio permitido solo antes de construir/comprar?"
+msgstr "¿Comercio permitido solo antes de construir/comprar?"
 
 #: client/gtk/settingscreen.c:161
 msgid "Amount of Each Resource:"
@@ -1862,7 +1862,7 @@ msgstr "Regla de los sietes:"
 
 #: client/gtk/settingscreen.c:190
 msgid "<b>Building Quotas</b>"
-msgstr "Costes de construcción"
+msgstr "<b>Costes de construcción</b>"
 
 #: client/gtk/settingscreen.c:206
 msgid "Roads:"
@@ -2056,11 +2056,11 @@ msgstr "Seleccione un juego"
 #: common/gtk/theme.c:711
 #, c-format
 msgid "bad scaling mode '%s'"
-msgstr "Mal modo de escala'%s'"
+msgstr "Mal modo de escala '%s'"
 
 #: common/log.c:54
 msgid "*ERROR* "
-msgstr "*ERROR*"
+msgstr "*ERROR* "
 
 #: common/log.c:60
 msgid "Chat: "
@@ -2100,7 +2100,7 @@ msgstr "Camino: "
 
 #: common/log.c:87
 msgid "*BEEP* "
-msgstr "*PITO*"
+msgstr "*PITO* "
 
 #: common/log.c:92
 msgid "Player 1: "
@@ -2316,7 +2316,7 @@ msgstr "Mine_rales (2:1)"
 #. Use an unique shortcut key for each port type
 #: editor/gtk/editor.c:93
 msgid "_Wool (2:1)"
-msgstr "Lana(2:1)"
+msgstr "_Lana (2:1)"
 
 #. Use an unique shortcut key for each port type
 #: editor/gtk/editor.c:95
@@ -2422,15 +2422,15 @@ msgstr "_Archivo"
 
 #: editor/gtk/editor.c:1028
 msgid "_New"
-msgstr "Nuevo"
+msgstr "_Nuevo"
 
 #: editor/gtk/editor.c:1029
 msgid "Create a new game"
-msgstr "Crear un uevo juego"
+msgstr "Crear un nuevo juego"
 
 #: editor/gtk/editor.c:1030
 msgid "_Open..."
-msgstr "Abrir"
+msgstr "_Abrir"
 
 #: editor/gtk/editor.c:1031
 msgid "Open an existing game"
@@ -2438,7 +2438,7 @@ msgstr "Abrir un juego existente"
 
 #: editor/gtk/editor.c:1032
 msgid "_Save"
-msgstr "grabar"
+msgstr "_Grabar"
 
 #: editor/gtk/editor.c:1033
 msgid "Save game"
@@ -2446,7 +2446,7 @@ msgstr "Grabar juego"
 
 #: editor/gtk/editor.c:1034
 msgid "Save _As..."
-msgstr "Grabar como..."
+msgstr "Grabar _como..."
 
 #: editor/gtk/editor.c:1036
 msgid "Save as"
@@ -2454,7 +2454,7 @@ msgstr "Grabar como"
 
 #: editor/gtk/editor.c:1037
 msgid "_Change title"
-msgstr "Cambiar titulo"
+msgstr "Cambiar _titulo"
 
 #: editor/gtk/editor.c:1038
 msgid "Change game title"
@@ -2466,7 +2466,7 @@ msgstr "Salir"
 
 #: editor/gtk/editor.c:1048
 msgid "_About Pioneers Editor"
-msgstr "Acerca de Editor de Pioneers"
+msgstr "_Acerca de Editor de Pioneers"
 
 #: editor/gtk/editor.c:1049
 msgid "Information about Pioneers Editor"
@@ -2475,7 +2475,7 @@ msgstr "Informacion acerca de Editor de Pioneers"
 #. Long help for commandline option (editor): filename
 #: editor/gtk/editor.c:1085
 msgid "Open this file"
-msgstr "abrir este archivo"
+msgstr "Abrir este archivo"
 
 #. Commandline option for editor: filename
 #: editor/gtk/editor.c:1087
@@ -2698,7 +2698,7 @@ msgstr "Servidor de Pioneers"
 #. Commandline server-console: game-title
 #: server/main.c:69
 msgid "Game title to use"
-msgstr "titulo de juego para usar"
+msgstr "Titulo de juego para usar"
 
 #. Commandline server-console: file
 #: server/main.c:72
@@ -2743,7 +2743,7 @@ msgstr "Hacer incribirse el servidor con el Meta-servidor"
 #. Commandline server-console: meta-server
 #: server/main.c:100
 msgid "Register at meta-server name (implies -r)"
-msgstr "Registro en nombre deMeta-servidor(supone -r)"
+msgstr "Registro en nombre de Meta-servidor (supone -r)"
 
 #. Commandline server-console: hostname
 #: server/main.c:104
@@ -2822,7 +2822,7 @@ msgstr "ignorar extension desconocida"
 
 #: server/player.c:190
 msgid "Game starts, adding computer players"
-msgstr "el juego comienza, añadir un adversario electrónico"
+msgstr "El juego comienza, añadir un adversario electrónico"
 
 #: server/player.c:215
 #, c-format
@@ -2886,7 +2886,7 @@ msgid "%s does not receive any %s, because the bank is empty."
 msgstr "%s no recibe %s, porque el banco está vacío"
 
 msgid "%s only receives %s, because the bank didn't have any more."
-msgstr "%s sólo recibe %s, porque el banco no tiene más"
+msgstr "%s sólo recibe %s, porque el banco no tiene más."
 
 #~ msgid "Brick port|B"
 #~ msgstr "Ld"
