@@ -1,5 +1,8 @@
 2008-08-26  Roland Clobus <rclobus@bigfoot.com>
 	* client/ai/lobbybot.c: Make it build with gcc-2.95 again.
+	* server/gtk/main.c, server/meta.c: Changed reported hostname to
+	overridden hostname. If it is left empty, the metaserver will do a 
+	hostname lookup.
 	
 2006-08-26  Bas Wijnen <shevek@fmf.nl>
 	* common/network.h, common/state.c, common/state.h, common/network.c,

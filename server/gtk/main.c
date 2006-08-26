@@ -47,7 +47,7 @@ static GtkWidget *ai_frame;	/* the frame containing all settings regarding the a
 static GtkWidget *register_toggle;	/* register with meta server? */
 static GtkWidget *chat_toggle;	/* disable AI chatting? */
 static GtkWidget *meta_entry;	/* name of meta server */
-static GtkWidget *hostname_entry;	/* name of server (allows masquerading) */
+static GtkWidget *overridden_hostname_entry;	/* name of server (allows masquerading) */
 static GtkWidget *port_entry;	/* server port */
 static GtkWidget *random_toggle;	/* randomize seating order? */
 static GtkWidget *addcomputer_btn;	/* button to add computer players */
@@ -59,7 +59,7 @@ static GtkListStore *store;	/* shows player connection status */
 static gboolean is_running;	/* current server status */
 
 
-static gchar *hostname;		/* reported hostname */
+static gchar *overridden_hostname;	/* override reported hostname */
 static gchar *server_port = NULL;	/* port of the game */
 static gboolean register_server = TRUE;	/* Register at the meta server */
 static const gchar *meta_server_name = NULL;	/* hostname of the meta server */
@@ -125,7 +125,8 @@ static void register_toggle_cb(GtkToggleButton * toggle,
 	gtk_label_set_text(GTK_LABEL(label),
 			   register_server ? _("Yes") : _("No"));
 	gtk_widget_set_sensitive(meta_entry, register_server);
-	gtk_widget_set_sensitive(hostname_entry, register_server);
+	gtk_widget_set_sensitive(overridden_hostname_entry,
+				 register_server);
 }
 
 static void random_toggle_cb(GtkToggleButton * toggle,
@@ -248,14 +249,15 @@ static void start_clicked_cb(G_GNUC_UNUSED GtkButton * start_btn,
 		update_game_settings(params);
 		g_assert(server_port != NULL);
 		if (start_server
-		    (params, hostname, server_port, register_server,
-		     meta_server_name, random_order)) {
+		    (params, overridden_hostname, server_port,
+		     register_server, meta_server_name, random_order)) {
 			gui_set_server_state(TRUE);
 			config_set_string("server/meta-server",
 					  meta_server_name);
 			config_set_string("server/port", server_port);
 			config_set_int("server/register", register_server);
-			config_set_string("server/hostname", hostname);
+			config_set_string("server/overridden-hostname",
+					  overridden_hostname);
 			config_set_int("server/random-seating-order",
 				       random_order);
 
@@ -350,17 +352,18 @@ static void add_game_to_list(gpointer name,
 	select_game_add(SELECTGAME(select_game), a->title);
 }
 
-static void hostname_changed_cb(GtkEntry * widget,
-				G_GNUC_UNUSED gpointer user_data)
+static void overridden_hostname_changed_cb(GtkEntry * widget,
+					   G_GNUC_UNUSED gpointer
+					   user_data)
 {
 	const gchar *text;
 
 	text = gtk_entry_get_text(widget);
 	while (*text != '\0' && isspace(*text))
 		text++;
-	if (hostname)
-		g_free(hostname);
-	hostname = g_strdup(text);
+	if (overridden_hostname)
+		g_free(overridden_hostname);
+	overridden_hostname = g_strdup(text);
 }
 
 static void meta_server_changed_cb(GtkWidget * widget,
@@ -562,13 +565,13 @@ static GtkWidget *build_interface(void)
 			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 
-	hostname_entry = gtk_entry_new();
-	g_signal_connect(G_OBJECT(hostname_entry), "changed",
-			 G_CALLBACK(hostname_changed_cb), NULL);
-	gtk_widget_show(hostname_entry);
-	gtk_table_attach(GTK_TABLE(table), hostname_entry, 1, 2, 3, 4,
-			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
-	gtk_tooltips_set_tip(tooltips, hostname_entry,
+	overridden_hostname_entry = gtk_entry_new();
+	g_signal_connect(G_OBJECT(overridden_hostname_entry), "changed",
+			 G_CALLBACK(overridden_hostname_changed_cb), NULL);
+	gtk_widget_show(overridden_hostname_entry);
+	gtk_table_attach(GTK_TABLE(table), overridden_hostname_entry, 1, 2,
+			 3, 4, GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_tooltips_set_tip(tooltips, overridden_hostname_entry,
 			     _
 			     ("The public name of this computer (needed when playing behind a firewall)"),
 			     NULL);
@@ -603,10 +606,12 @@ static GtkWidget *build_interface(void)
 	gtk_entry_set_text(GTK_ENTRY(meta_entry), meta_server_name);
 
 	novar = 0;
-	hostname = config_get_string("server/hostname", &novar);
-	if (novar || !strlen(hostname))
-		hostname = get_server_name();
-	gtk_entry_set_text(GTK_ENTRY(hostname_entry), hostname);
+	overridden_hostname =
+	    config_get_string("server/overridden-hostname", &novar);
+	if (novar)
+		overridden_hostname = g_strdup("");
+	gtk_entry_set_text(GTK_ENTRY(overridden_hostname_entry),
+			   overridden_hostname);
 
 	register_server =
 	    config_get_int_with_default("server/register", TRUE);

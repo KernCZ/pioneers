@@ -80,11 +80,10 @@ void meta_send_details(Game * game)
 		g_free(game->hostname);
 		game->hostname = NULL;
 	}
-	/* No hostname set, use default */
-	if (!game->hostname) {
-		game->hostname = get_server_name();
+	/* No hostname set, let the metaserver figure out our name */
+	if (game->hostname) {
+		net_printf(ses, "host=%s\n", game->hostname);
 	}
-	net_printf(ses, "host=%s\n", game->hostname);
 	if (meta_server_version_major >= 1) {
 		net_printf(ses,
 			   "vpoints=%d\n"
