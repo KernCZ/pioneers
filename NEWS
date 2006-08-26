@@ -1,3 +1,14 @@
+Subversion Snapshot release 0.10.1
+* Build script updated for easier building
+* Switch between games without quitting the client
+* Victory points for discovering an island
+* More strings are translatable
+* Announce new players when they enter the game
+* Lobby + robot
+* Better handling for disconnected players
+* Register games with the correct hostname at the metaserver
+* Various bugfixes
+
 Subversion Snapshot release 0.9.64
 * Fix for the bugs introduced in 0.9.63 and 0.9.62
 
