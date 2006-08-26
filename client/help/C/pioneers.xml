@@ -639,7 +639,7 @@
 	  from the meta-server), default or random terrain, 
 	  the number of players, victory points
 	  to reach, which sevens rule to apply 
-	  and how many AI players should join the game.</para>
+	  and how many computer players should join the game.</para>
 
 	<figure id="pioneers-FIG-server-create">
 	  <title>The Create a public game dialog</title>
@@ -658,7 +658,7 @@
       <para>The server started remotely will terminate itself
         automatically when the game is finished, or if sits around for
         more than 20 minutes without any connected players. Please
-        also note that adding AI players will silently fail if the
+        also note that adding computer players will silently fail if the
         <application>pioneersai</application> program is not installed
         on the meta server.</para>
 
@@ -1459,7 +1459,7 @@
 	    <row>
 	      <entry>-a</entry>
 	      <entry><replaceable>playertype</replaceable></entry>
-	      <entry>Choose the type of AI player. Currently, there is
+	      <entry>Choose the type of computer player. Currently, there is
 	      only one type <userinput>greedy</userinput>, which is
 	      obviously also the default.</entry>
 	    </row>
@@ -1481,7 +1481,7 @@
     <para>
       However, most of the time you won't start
       <application>pioneersai</application> manually. Both game
-      servers offer ways to start a number of AI players.
+      servers offer ways to start a number of computer players.
     </para>
 
   </chapter>
@@ -1759,7 +1759,7 @@
                 <entry/>
 	        <entry>-t</entry>
 		<entry>integer</entry>
-		<entry>Tournament mode. AI players added after %d minutes</entry>
+		<entry>Tournament mode. Computer players are added after %d minutes</entry>
               </row>
 	      <row>
                 <entry>*</entry>
