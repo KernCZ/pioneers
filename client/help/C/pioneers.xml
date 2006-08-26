@@ -1298,23 +1298,47 @@
       </qandaentry>
       <qandaentry>
       <question><para>
-        The button 'New remote game' is always disabled. Why?
+        I get the error: <quote>Error connecting to host 'AA.BB.CC.DD':
+	Connection refused</quote>, what now?
+      </para></question>
+      <answer><para>The person hosting the game has incorrectly
+	configured his firewall. See also 'Creating games'.
+      </para></answer>
+      </qandaentry>
+      <qandaentry>
+      <question><para>
+        The button '<guibutton>New remote game</guibutton>' is always disabled.
+	Why?
       </para></question>
       <answer><para>
         The metaserver at pioneers.debian.net acts only as a point where games
         can register. It has been configured not to create new games.
       </para></answer>
       </qandaentry>
+      <qandaentry>
+      <question><para>
+        How can I play against the computer players, without starting a server?
+      </para></question>
+      <answer><para>
+        You can play games at an alternative metaserver
+	<quote>pioneers.game-host.org</quote>. It has a limited number
+	of games that can be started. <guibutton>New remote game</guibutton>
+	is available on this metaserver.
+      </para></answer>
+      </qandaentry>
     </qandaset>
     <qandaset defaultlabel="qanda">
-      <title>The chat room</title>
+      <title>The Lobby</title>
       <qandaentry>
       <question><para>
         Why is nobody responding?
       </para></question>
       <answer><para>
-        If you enter the chat room, and see several squares in the icon before
+        If you enter the lobby, and see several squares in the icon before
         the name of a player, it means that that player is disconnected.
+      </para></answer>
+      <answer><para>
+        Perhaps they are playing another game, and don't monitor the Lobby.
       </para></answer>
       </qandaentry>
       <qandaentry>
@@ -1322,10 +1346,9 @@
         This game will never start. How can I play?
       </para></question>
       <answer><para>
-        One person has to create a new game. If it is set up, you can start a new
-        instance of <application>pioneers</application>, and connect to that game.
-        You can quit the instance of <application>pioneers</application> with the
-        chat room.
+        One person has to create a new game. If it is set up, you can leave
+	the lobby, and join that game (<guimenu>Game</guimenu>-&gt;
+	<guimenuitem>Leave game</guimenuitem>).
       </para></answer>
       </qandaentry>
     </qandaset>
@@ -1336,46 +1359,49 @@
         How do I do create new games?
       </para></question>
       <answer><para>
-        Run <application>pioneers-server-gtk</application>.
-        In the server parameters:
+        Start <application>pioneers-server-gtk</application>.
+        In the <guilabel>Server Parameters</guilabel>:
         <itemizedlist>
           <listitem><para>
-            Choose a port that is publicly accessible
-            (create a hole in your firewall if needed)
+            Choose a <guilabel>Server Port</guilabel> that is publicly
+	    accessible (create a hole in your firewall if needed)
           </para></listitem>
           <listitem><para>
-            Set register to 'yes', so other people can
-            find the game
+            Set <guilabel>Register Server</guilabel> to 'yes', so other people
+	    can find the game
           </para></listitem>
           <listitem><para>
-            Leave metaserver empty, 
+            Leave <guilabel>Meta Server</guilabel> empty, 
             or use 'pioneers.debian.net'
           </para></listitem>
           <listitem><para>
-            Reported hostname should be your publicly
-            accessible hostname or ip address
+            <guilabel>Reported hostname</guilabel> can be left empty
           </para></listitem>
           <listitem><para>
-            Select a game of your liking,
-            and click 'Start Server'
+            Select a game of your liking, and click on 
+	    <guibutton>Start Server</guibutton>
           </para></listitem>
         </itemizedlist>
       </para></answer>
       </qandaentry>
       <qandaentry>
       <question><para>
-        What exactly does 'reported hostname' do?
+        What exactly does '<guilabel>Reported hostname</guilabel>' do?
       </para></question>
-      <answer><para>
-        For computers directly connected to the Internet: it should 
-        contain your ip address or full hostname.
-      </para></answer>
-      <answer><para>
-        For computers connected to the Internet using an intranet: it 
-        should contain the ip address (or full hostname) of the connection to 
-        the Internet, AND you need to have your gateway set up for port 
-        forwarding, to accept incoming connections.
-      </para></answer>
+      <answer><para>It overrides the hostname that is automatically
+        detected by the metaserver.</para>
+	<para>Only in special cases do you need to enter something:
+	  <itemizedlist>
+	    <listitem><para>You have an extra DNS name, and would like
+	    to show that name instead of your normal DNS name.
+	    </para></listitem>
+	    <listitem><para>You run a private, publicly accessible metaserver,
+	      and start a game from inside your local network.
+	    </para></listitem>
+	 </itemizedlist></para>
+	 <para>In all other cases, you are advised to keep it
+	   <emphasis>empty</emphasis>.</para>
+	 </answer>
       </qandaentry>
       <qandaentry>
       <question><para>
@@ -1392,10 +1418,17 @@
         What if I only want to play against the computer players?
       </para></question>
       <answer><para>
-        Use the <application>pioneers-server-gtk</application>,
-        and set register to 'no', and add as many computer players as needed.
-        In the client, choose 'Join private game', the host is 'localhost',
+        Start <application>pioneers-server-gtk</application>,
+        and set <guilabel>Register Server</guilabel> to 'no', and add as many
+	computer players as needed.
+        In the client, choose '<guibutton>Join private game</guibutton>',
+	the host is 'localhost',
         and use the port you have selected in the server.
+      </para></answer>
+      <answer><para>
+        You can play games at an alternative metaserver
+	<quote>pioneers.game-host.org</quote>. It has a limited number
+	of games that can be started.
       </para></answer>
       </qandaentry>
       <qandaentry>
