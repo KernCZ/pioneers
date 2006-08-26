@@ -524,6 +524,7 @@ void frontend_discard(void)
 		g_assert(previous_state == dummy_state);
 		previous_state = get_gui_state();
 		set_gui_state(frontend_state_idle);
+		gui_cursor_none();	/* Clear possible cursor */
 	}
 }
 
@@ -581,6 +582,7 @@ void frontend_gold(void)
 		g_assert(previous_state == dummy_state);
 		previous_state = get_gui_state();
 		set_gui_state(frontend_state_gold);
+		gui_cursor_none();	/* Clear possible cursor */
 	}
 }
 

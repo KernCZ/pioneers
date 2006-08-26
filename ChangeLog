@@ -7,6 +7,8 @@
 	* client/help/C/pioneers.xml: Rename AI -> computer player.
 	* client/common/client.c, server/develop.c: Year of Plenty
 	communicates with "plenty %R" instead of "receives %R".
+	* client/gtk/interface.c: Disable single click cursor until all
+	players have discarded or chosen gold.
 	
 2006-08-26  Bas Wijnen <shevek@fmf.nl>
 	* common/network.h, common/state.c, common/state.h, common/network.c,
