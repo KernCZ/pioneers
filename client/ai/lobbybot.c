@@ -92,13 +92,14 @@ static void lobbybot_player_quit(gint player_num)
 
 static void lobbybot_chat_parser(gint player_num, const gchar * chat)
 {
+	PlayerInfo *info;
+
 	if (player_num == my_player_num()) {
 		/* Don't log own responses */
 		return;
 	}
 
-	PlayerInfo *info =
-	    g_hash_table_lookup(players, GINT_TO_POINTER(player_num));
+	info = g_hash_table_lookup(players, GINT_TO_POINTER(player_num));
 	g_assert(info != NULL);
 
 	if (!strncmp(chat, "/help", 5)) {
