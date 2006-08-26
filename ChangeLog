@@ -5,6 +5,8 @@
 	hostname lookup.
 	* common/network.h: Include time.h too.
 	* client/help/C/pioneers.xml: Rename AI -> computer player.
+	* client/common/client.c, server/develop.c: Year of Plenty
+	communicates with "plenty %R" instead of "receives %R".
 	
 2006-08-26  Bas Wijnen <shevek@fmf.nl>
 	* common/network.h, common/state.c, common/state.h, common/network.c,

@@ -257,7 +257,7 @@ gboolean mode_plenty_resources(Player * player, gint event)
 	 */
 	resource_start(game);
 	cost_refund(plenty, player->assets);
-	resource_end(game, "receives", 1);
+	resource_end(game, "plenty", 1);
 	sm_send(sm, "OK\n");
 	sm_pop(sm);
 	return TRUE;

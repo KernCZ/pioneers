@@ -609,6 +609,12 @@ static gboolean check_other_players(StateMachine * sm)
 					       wanted_list);
 		return TRUE;
 	}
+	if (sm_recv(sm, "plenty %R", resource_list)) {
+		/* Year of Plenty */
+		player_resource_action(player_num, _("%s takes %s.\n"),
+				       resource_list, 1);
+		return TRUE;
+	}
 	if (sm_recv(sm, "spent %R", resource_list)) {
 		player_resource_action(player_num, _("%s spent %s.\n"),
 				       resource_list, -1);
