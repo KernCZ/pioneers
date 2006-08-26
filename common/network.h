@@ -39,6 +39,7 @@ typedef struct _Session Session;
 struct _Session {
 	int fd;
 	time_t last_response;	/* used for activity detection.  */
+	guint timer_id;
 	void *user_data;
 
 	gboolean connect_in_progress;

@@ -154,6 +154,11 @@ static void notify(Session * ses, NetEvent event, gchar * line)
 
 void net_close(Session * ses)
 {
+	if (ses->timer_id != 0) {
+		g_source_remove(ses->timer_id);
+		ses->timer_id = 0;
+	}
+
 	if (ses->fd >= 0) {
 		listen_read(ses, FALSE);
 		listen_write(ses, FALSE);
@@ -207,11 +212,13 @@ static gboolean ping_function(gpointer s)
 		/* There was no activity.
 		 * Send a ping (but don't update activity time).  */
 		net_write(ses, "hello\n");
-		g_timeout_add(PING_PERIOD * 1000, ping_function, s);
+		ses->timer_id =
+		    g_timeout_add(PING_PERIOD * 1000, ping_function, s);
 	} else {
 		/* Everything is fine.  Reschedule this check.  */
-		g_timeout_add((PING_PERIOD - interval) * 1000,
-			      ping_function, s);
+		ses->timer_id =
+		    g_timeout_add((PING_PERIOD - interval) * 1000,
+				  ping_function, s);
 	}
 	/* Return FALSE to not reschedule this timeout.  If it needed to be
 	 * rescheduled, it has been done explicitly above (with a different
@@ -454,7 +461,8 @@ void net_use_fd(Session * ses, int fd, gboolean do_ping)
 	ses->fd = fd;
 	if (do_ping) {
 		ses->last_response = time(NULL);
-		g_timeout_add(PING_PERIOD * 1000, ping_function, ses);
+		ses->timer_id =
+		    g_timeout_add(PING_PERIOD * 1000, ping_function, ses);
 	}
 	listen_read(ses, TRUE);
 }
