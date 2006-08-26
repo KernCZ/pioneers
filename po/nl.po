@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 0.10.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-17 23:46+0200\n"
+"POT-Creation-Date: 2006-08-26 23:21+0200\n"
 "PO-Revision-Date: 2006-08-17 23:46+0200\n"
 "Last-Translator: Roland Clobus <rclobus@bigfoot.com>\n"
 "Language-Team: Bas Wijnen <shevek@fmf.nl> Roland Clobus <rclobus@bigfoot."
@@ -16,32 +16,6 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-#. %s = player name
-#: ../NotImplementedYetButWillBeSoon.c:4
-#, c-format
-msgid "%s has requested a connection check."
-msgstr "%s heeft een verbindingscontrole aangevraagd."
-
-#. %s = dotted IP address
-#: ../NotImplementedYetButWillBeSoon.c:6
-#, c-format
-msgid "The metaserver has rejected the reported hostname. Try %s instead."
-msgstr ""
-"De metaserver heeft de geregistreerde computernaam verworpen. Probeer %s "
-"eens."
-
-#. (1) = player name, (2) = resource type name
-#: ../NotImplementedYetButWillBeSoon.c:9
-#, c-format
-msgid "%s does not receive any %s, because the bank is empty."
-msgstr "%s heeft geen %s ontvangen, omdat de bank leeg is."
-
-#. (1) = player name, (2) = lists of resources
-#: ../NotImplementedYetButWillBeSoon.c:12
-#, c-format
-msgid "%s only receives %s, because the bank didn't have more."
-msgstr "%s ontvangt slechts %s, omdat de bank niet meer bevat."
 
 #. Default name for the AI when the computer_names file
 #. * is not found or empty.
@@ -60,7 +34,7 @@ msgstr "Computer"
 #. Commandline pioneersai: port
 #. Commandline option of client: port of the server
 #: ../client/ai/ai.c:103 ../client/gtk/connect.c:1459
-#: ../client/gtk/offline.c:55 ../server/gtk/main.c:513
+#: ../client/gtk/offline.c:55 ../server/gtk/main.c:516
 msgid "Server Port"
 msgstr "Poort"
 
@@ -88,7 +62,7 @@ msgstr "Soort computerspeler"
 #. Commandline option of client: enable debug logging
 #. Commandline option of server-gtk: enable debug logging
 #. Commandline option of server: enable debug logging
-#: ../client/ai/ai.c:118 ../client/gtk/offline.c:73 ../server/gtk/main.c:810
+#: ../client/ai/ai.c:118 ../client/gtk/offline.c:73 ../server/gtk/main.c:815
 #: ../server/main.c:135
 msgid "Enable debug messages"
 msgstr "Toon debug boodschappen"
@@ -286,21 +260,21 @@ msgstr ""
 "help' in de chat om de lijst van commando's te zien."
 
 #. Translators: don't translate '/help'
-#: ../client/ai/lobbybot.c:106
+#: ../client/ai/lobbybot.c:107
 msgid "'/help' shows this message again"
 msgstr "'/help' toont deze boodschap opnieuw"
 
 #. Translators: don't translate '/why'
-#: ../client/ai/lobbybot.c:109
+#: ../client/ai/lobbybot.c:110
 msgid "'/why' explains the purpose of this strange board layout"
 msgstr "'/why' verklaart het doel van dit bord"
 
 #. Translators: don't translate '/news'
-#: ../client/ai/lobbybot.c:112
+#: ../client/ai/lobbybot.c:113
 msgid "'/news' tells the last released version"
 msgstr "'/news' geeft de laatst vrijgegeven versie"
 
-#: ../client/ai/lobbybot.c:117
+#: ../client/ai/lobbybot.c:118
 msgid ""
 "This board is not intended to be a game that can be played. Instead, players "
 "can find eachother here, and decide which board they want to play. Then, one "
@@ -314,11 +288,11 @@ msgstr ""
 "een server te starten en die te registreren op de metaserver. Vervolgens "
 "kunnen de andere spelers de ontvangstruimte verlaten en het spel binnengaan."
 
-#: ../client/ai/lobbybot.c:128
+#: ../client/ai/lobbybot.c:129
 msgid "The last released version of Pioneers is"
 msgstr "De laatst vrijgegeven versie van Pioneers is"
 
-#: ../client/ai/lobbybot.c:143
+#: ../client/ai/lobbybot.c:144
 msgid "The game is starting. I'm not needed anymore. Goodbye."
 msgstr "Het spel begint. Ik ben niet meer nodig. Tot ziens."
 
@@ -326,124 +300,135 @@ msgstr "Het spel begint. Ik ben niet meer nodig. Tot ziens."
 msgid "Waiting"
 msgstr "Wachten op reaktie van de server."
 
-#: ../client/common/client.c:105 ../client/common/client.c:1166
+#: ../client/common/client.c:105 ../client/common/client.c:1203
 msgid "Idle"
 msgstr "Klaar"
 
-#: ../client/common/client.c:429
+#: ../client/common/client.c:430
 msgid "We have been kicked out of the game.\n"
 msgstr "De verbinding met de server is verbroken.\n"
 
 #. Network status: offline
-#: ../client/common/client.c:432 ../client/common/client.c:817
+#: ../client/common/client.c:433 ../client/common/client.c:854
 #: ../client/gtk/gui.c:1232
 msgid "Offline"
 msgstr "Er is geen verbinding met een server."
 
-#: ../client/common/client.c:453
+#: ../client/common/client.c:454
 #, c-format
 msgid "Error (%s): %s\n"
 msgstr "Fout (%s): %s\n"
 
-#: ../client/common/client.c:462 ../client/common/client.c:473
+#: ../client/common/client.c:463 ../client/common/client.c:474
 #, c-format
 msgid "Notice: %s\n"
 msgstr "Bericht: %s\n"
 
-#: ../client/common/client.c:576
+#: ../client/common/client.c:584
+#, c-format
+msgid "%s does not receive any %s, because the bank is empty.\n"
+msgstr "%s heeft geen %s ontvangen, omdat de bank leeg is.\n"
+
+#: ../client/common/client.c:597
+#, c-format
+msgid "%s only receives %s, because the bank didn't have any more.\n"
+msgstr "%s ontvangt slechts %s, omdat de bank niet meer bevat.\n"
+
+#: ../client/common/client.c:606
 #, c-format
 msgid "%s receives %s.\n"
 msgstr "%s krijgt %s.\n"
 
-#: ../client/common/client.c:582
+#. Year of Plenty
+#: ../client/common/client.c:614 ../client/common/client.c:2468
+#, c-format
+msgid "%s takes %s.\n"
+msgstr "%s neemt %s.\n"
+
+#: ../client/common/client.c:619
 #, c-format
 msgid "%s spent %s.\n"
 msgstr "%s betaalt %s.\n"
 
-#: ../client/common/client.c:588
+#: ../client/common/client.c:625
 #, c-format
 msgid "%s is refunded %s.\n"
 msgstr "%s krijgt %s terug.\n"
 
-#: ../client/common/client.c:618
+#: ../client/common/client.c:655
 #, c-format
 msgid "%s discarded %s.\n"
 msgstr "%s gooit %s weg.\n"
 
-#: ../client/common/client.c:776
+#: ../client/common/client.c:813
 msgid "Loading"
 msgstr "Het spel wordt gestart"
 
-#: ../client/common/client.c:818
+#: ../client/common/client.c:855
 msgid "Version mismatch"
 msgstr "Versie verschillend"
 
-#: ../client/common/client.c:820
+#: ../client/common/client.c:857
 msgid "Version mismatch. Please make sure client and server are up to date.\n"
 msgstr "De versies van de de server en de client komen niet overeen.\n"
 
-#: ../client/common/client.c:1265
+#: ../client/common/client.c:1302
 msgid "Build two settlements, each with a connecting"
 msgstr "Bouw twee dorpen, elk met een aangesloten"
 
-#: ../client/common/client.c:1268
+#: ../client/common/client.c:1305
 msgid "Build a settlement with a connecting"
 msgstr "Bouw een dorp met een aangesloten"
 
-#: ../client/common/client.c:1271
+#: ../client/common/client.c:1308
 msgid "road"
 msgstr "straat"
 
-#: ../client/common/client.c:1273
+#: ../client/common/client.c:1310
 msgid "bridge"
 msgstr "brug"
 
-#: ../client/common/client.c:1275
+#: ../client/common/client.c:1312
 msgid "ship"
 msgstr "schip"
 
-#: ../client/common/client.c:1283
+#: ../client/common/client.c:1320
 msgid " or"
 msgstr " of"
 
-#: ../client/common/client.c:1341
+#: ../client/common/client.c:1378
 msgid "Waiting for your turn"
 msgstr "Wacht op je beurt."
 
-#: ../client/common/client.c:1435 ../client/common/client.c:1460
-#: ../client/gtk/interface.c:763
+#: ../client/common/client.c:1472 ../client/common/client.c:1497
+#: ../client/gtk/interface.c:765
 msgid "Place the robber"
 msgstr "Plaats de struikrover"
 
-#: ../client/common/client.c:1484
+#: ../client/common/client.c:1521
 msgid "Finish the road building action."
 msgstr "Beëindig de bouwkaart"
 
-#: ../client/common/client.c:1486
+#: ../client/common/client.c:1523
 msgid "Build one road segment."
 msgstr "Bouw een straat."
 
-#: ../client/common/client.c:1488
+#: ../client/common/client.c:1525
 msgid "Build two road segments."
 msgstr "Bouw twee straten."
 
-#: ../client/common/client.c:1761 ../client/common/client.c:1844
+#: ../client/common/client.c:1798 ../client/common/client.c:1881
 msgid "It is your turn."
 msgstr "Je bent aan de beurt."
 
-#: ../client/common/client.c:1938
+#: ../client/common/client.c:1975
 #, c-format
 msgid "Sorry, %s available.\n"
 msgstr "Sorry, %s beschikbaar.\n"
 
-#: ../client/common/client.c:2253
+#: ../client/common/client.c:2290
 msgid "The game is over."
 msgstr "Het spel is afgelopen."
-
-#: ../client/common/client.c:2431
-#, c-format
-msgid "%s takes %s.\n"
-msgstr "%s neemt %s.\n"
 
 #: ../client/common/develop.c:43 ../editor/gtk/game-devcards.c:13
 msgid "Road Building"
@@ -935,7 +920,7 @@ msgid "Finished.\n"
 msgstr "Klaar.\n"
 
 #: ../client/gtk/connect.c:295 ../client/gtk/connect.c:345
-#: ../client/gtk/connect.c:442 ../server/meta.c:176
+#: ../client/gtk/connect.c:442 ../server/meta.c:175
 msgid "Meta-server kicked us off\n"
 msgstr "De metaserver heeft de verbinding verbroken.\n"
 
@@ -953,11 +938,11 @@ msgstr "Er is een nieuwe server gestart op %s, poort %s.\n"
 msgid "Unknown message from the metaserver: %s\n"
 msgstr "Onbekende gegevens ontvangen van de metaserver: %s\n"
 
-#: ../client/gtk/connect.c:458 ../server/meta.c:126
+#: ../client/gtk/connect.c:458 ../server/meta.c:125
 msgid "Too many meta-server redirects\n"
 msgstr "Teveel metaserver omleidingen.\n"
 
-#: ../client/gtk/connect.c:485 ../server/meta.c:141
+#: ../client/gtk/connect.c:485 ../server/meta.c:140
 #, c-format
 msgid "Bad redirect line: %s\n"
 msgstr "Foute omleiding: %s\n"
@@ -993,7 +978,7 @@ msgstr "Standaard"
 msgid "Random"
 msgstr "Willekeurig"
 
-#: ../client/gtk/connect.c:639 ../server/meta.c:190
+#: ../client/gtk/connect.c:639 ../server/meta.c:189
 #, c-format
 msgid "Redirected to meta-server at %s, port %s\n"
 msgstr "We worden doorgestuurd naar de metaserver op %s, poort %s.\n"
@@ -1147,7 +1132,7 @@ msgid "Enter your name"
 msgstr "Geef je naam"
 
 #. Role of the player: viewer
-#: ../client/gtk/connect.c:1206 ../server/gtk/main.c:457
+#: ../client/gtk/connect.c:1206 ../server/gtk/main.c:460
 msgid "Viewer"
 msgstr "Toeschouwer"
 
@@ -1155,7 +1140,7 @@ msgstr "Toeschouwer"
 msgid "Do you want to be a viewer?"
 msgstr "Meespelen als toeschouwer"
 
-#: ../client/gtk/connect.c:1221 ../server/gtk/main.c:544
+#: ../client/gtk/connect.c:1221 ../server/gtk/main.c:547
 msgid "Meta Server"
 msgstr "Metaserver"
 
@@ -1576,19 +1561,19 @@ msgstr "Verplaatsen van het schip is geannuleerd."
 msgid "Select a new location for the ship."
 msgstr "Selecteer een nieuwe plek voor het schip."
 
-#: ../client/gtk/interface.c:718
+#: ../client/gtk/interface.c:720
 msgid "Select the ship to steal from."
 msgstr "Kies een schip om te bestelen."
 
-#: ../client/gtk/interface.c:720
+#: ../client/gtk/interface.c:722
 msgid "Select the ship to steal from"
 msgstr "Kies een schip om te bestelen"
 
-#: ../client/gtk/interface.c:737
+#: ../client/gtk/interface.c:739
 msgid "Select the building to steal from."
 msgstr "Kies een gebouw om te bestelen"
 
-#: ../client/gtk/interface.c:739
+#: ../client/gtk/interface.c:741
 msgid "Select the building to steal from"
 msgstr "Kies een gebouw om te bestelen"
 
@@ -1767,24 +1752,24 @@ msgstr "Handel afwijzen"
 #. Now create columns
 #. Table header: Player who trades
 #. Role of the player: player
-#: ../client/gtk/quote-view.c:171 ../server/gtk/main.c:459
+#: ../client/gtk/quote-view.c:172 ../server/gtk/main.c:462
 msgid "Player"
 msgstr "Speler"
 
 #. Table header: Quote
-#: ../client/gtk/quote-view.c:186
+#: ../client/gtk/quote-view.c:187
 msgid "Quotes"
 msgstr "Handelsaanbod"
 
 #. trade: maritime quote: %1 resources of type %2 for
 #. * one resource of type %3
-#: ../client/gtk/quote-view.c:303
+#: ../client/gtk/quote-view.c:304
 #, c-format
 msgid "%d:1 %s for %s"
 msgstr "%d:1 %s in ruil voor %s"
 
 #. Trade: a player has rejected trade
-#: ../client/gtk/quote-view.c:441
+#: ../client/gtk/quote-view.c:442
 msgid "Rejected trade"
 msgstr "Handel afgewezen"
 
@@ -1840,14 +1825,14 @@ msgid "The bank cannot be emptied"
 msgstr "De bank kan niet leeg gemaakt worden"
 
 #: ../client/gtk/settingscreen.c:74 ../editor/gtk/game-parameters.c:42
-#: ../server/gtk/main.c:126 ../server/gtk/main.c:138 ../server/gtk/main.c:148
+#: ../server/gtk/main.c:126 ../server/gtk/main.c:139 ../server/gtk/main.c:149
 msgid "Yes"
 msgstr "Ja"
 
 #: ../client/gtk/settingscreen.c:76 ../client/gtk/settingscreen.c:206
 #: ../editor/gtk/game-parameters.c:42 ../server/gtk/main.c:126
-#: ../server/gtk/main.c:138 ../server/gtk/main.c:148 ../server/gtk/main.c:534
-#: ../server/gtk/main.c:582 ../server/gtk/main.c:732
+#: ../server/gtk/main.c:139 ../server/gtk/main.c:149 ../server/gtk/main.c:537
+#: ../server/gtk/main.c:585 ../server/gtk/main.c:737
 msgid "No"
 msgstr "Nee"
 
@@ -1992,27 +1977,27 @@ msgid "I want %s, and give them %s"
 msgstr "Ik vraag %s en bied %s"
 
 #. Frame title, trade: I want to trade these resources
-#: ../client/gtk/trade.c:424
+#: ../client/gtk/trade.c:427
 msgid "<b>I Want</b>"
 msgstr "<b>Ik wil</b>"
 
 #. Frame title, trade: I want these resources in return
-#: ../client/gtk/trade.c:452
+#: ../client/gtk/trade.c:455
 msgid "<b>Give Them</b>"
 msgstr "<b>Ik geef</b>"
 
 #. Button text, trade: call for quotes from other players
-#: ../client/gtk/trade.c:481
+#: ../client/gtk/trade.c:484
 msgid "_Call for Quotes"
 msgstr "Vraag om voorstellen"
 
 #. Button text: Trade page, accept selected quote
-#: ../client/gtk/trade.c:509
+#: ../client/gtk/trade.c:512
 msgid "_Accept Quote"
 msgstr "Accepteer voorstel"
 
 #. Button text: Trade page, finish trading
-#: ../client/gtk/trade.c:515
+#: ../client/gtk/trade.c:518
 msgid "_Finish Trading"
 msgstr "Beëindig handelsfase"
 
@@ -2206,103 +2191,103 @@ msgstr "Toeschouwer: "
 msgid "** UNKNOWN MESSAGE TYPE ** "
 msgstr "** ONBEKEND BERICHTTYPE ** "
 
-#: ../common/network.c:207
+#: ../common/network.c:246
 #, c-format
 msgid "Error checking connect status: %s\n"
 msgstr "Fout bij het controleren van verbinding: %s\n"
 
-#: ../common/network.c:214
+#: ../common/network.c:253
 #, c-format
 msgid "Error connecting to host '%s': %s\n"
 msgstr "Kan geen verbinding maken met computer \"%s\": %s\n"
 
-#: ../common/network.c:240
+#: ../common/network.c:279
 #, c-format
 msgid "Error writing socket: %s\n"
 msgstr "Fout bij het schrijven naar netwerk: %s\n"
 
-#: ../common/network.c:289
+#: ../common/network.c:328
 #, c-format
 msgid "Error writing to socket: %s\n"
 msgstr "Fout bij het schrijven naar netwerk: %s\n"
 
-#: ../common/network.c:339
+#: ../common/network.c:381
 msgid "Read buffer overflow - disconnecting\n"
 msgstr "Leesbuffer is vol - de verbinding wordt verbroken\n"
 
-#: ../common/network.c:349
+#: ../common/network.c:391
 #, c-format
 msgid "Error reading socket: %s\n"
 msgstr "Fout bij het lezen van netwerk: %s\n"
 
-#: ../common/network.c:479
+#: ../common/network.c:535
 #, c-format
 msgid "Cannot resolve %s port %s: %s\n"
 msgstr "Onbekende computer %s (poort %s): %s\n"
 
-#: ../common/network.c:486
+#: ../common/network.c:542
 #, c-format
 msgid "Cannot resolve %s port %s: host not found\n"
 msgstr "Computer %s (poort %s) kan niet gevonden worden\n"
 
-#: ../common/network.c:501
+#: ../common/network.c:557
 #, c-format
 msgid "Error creating socket: %s\n"
 msgstr "Fout bij het maken van een netwerkverbinding: %s\n"
 
-#: ../common/network.c:509
+#: ../common/network.c:565
 #, c-format
 msgid "Error setting socket close-on-exec: %s\n"
 msgstr "Fout bij het instellen van netwerkverbinding op close-on-exec: %s\n"
 
-#: ../common/network.c:519 ../common/network.c:678
+#: ../common/network.c:575 ../common/network.c:734
 #, c-format
 msgid "Error setting socket non-blocking: %s\n"
 msgstr "Fout bij het instellen van netwerkverbinding op non-blocking: %s\n"
 
-#: ../common/network.c:544
+#: ../common/network.c:600
 #, c-format
 msgid "Error connecting to %s: %s\n"
 msgstr "Fout bij het verbinden naar %s: %s\n"
 
-#: ../common/network.c:637
+#: ../common/network.c:693
 #, c-format
 msgid "Error creating struct addrinfo: %s"
 msgstr "Fout bij het maken van struct addrinfo: %s"
 
-#: ../common/network.c:667
+#: ../common/network.c:723
 #, c-format
 msgid "Error creating listening socket: %s\n"
 msgstr "Fout bij het opzetten van de netwerkverbinding: %s\n"
 
-#: ../common/network.c:687
+#: ../common/network.c:743
 #, c-format
 msgid "Error during listen on socket: %s\n"
 msgstr "Fout bij het wachten op verbindingen: %s\n"
 
-#: ../common/network.c:696
+#: ../common/network.c:752
 msgid "Listening not yet supported on this platform."
 msgstr "Luisterende verbindingen nog niet ondersteund op dit platform."
 
-#: ../common/network.c:709 ../common/network.c:710
+#: ../common/network.c:765 ../common/network.c:766
 msgid "unknown"
 msgstr "onbekend"
 
-#: ../common/network.c:716
+#: ../common/network.c:772
 #, c-format
 msgid "Error getting peer name: %s"
 msgstr "Fout bij het opzoeken van de computernaam: %s"
 
-#: ../common/network.c:729
+#: ../common/network.c:785
 #, c-format
 msgid "Error resolving address: %s"
 msgstr "Fout bij het opzoeken van de computernaam: %s"
 
-#: ../common/network.c:743
+#: ../common/network.c:799
 msgid "Net_get_peer_name not yet supported on this platform."
 msgstr "De functie Net_get_peer_name is nog niet ondersteund op dit platform."
 
-#: ../common/network.c:758
+#: ../common/network.c:814
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "Fout bij het accepteren van een verbinding: %s"
@@ -2427,7 +2412,7 @@ msgstr "ZO"
 msgid "Shuffle"
 msgstr "Schudden"
 
-#: ../editor/gtk/editor.c:726 ../server/gtk/main.c:388
+#: ../editor/gtk/editor.c:726 ../server/gtk/main.c:391
 msgid "Game Parameters"
 msgstr "Spelinstellingen"
 
@@ -2551,7 +2536,7 @@ msgstr "bestandsnaam"
 msgid "- Editor for games of Pioneers"
 msgstr "- Editor for spellen Pioniers"
 
-#: ../editor/gtk/editor.c:1149 ../server/gtk/main.c:883
+#: ../editor/gtk/editor.c:1149 ../server/gtk/main.c:888
 #, c-format
 msgid "Building menus failed: %s"
 msgstr "Opbouw menu niet gelukt: %s"
@@ -2584,179 +2569,179 @@ msgstr "_Over Pioniers server"
 msgid "Information about Pioneers Server"
 msgstr "Informatie over de Pioniers server"
 
-#: ../server/gtk/main.c:209
+#: ../server/gtk/main.c:210
 msgid "Stop server"
 msgstr "Stop server"
 
-#: ../server/gtk/main.c:210
+#: ../server/gtk/main.c:211
 msgid "Start server"
 msgstr "Start server"
 
-#: ../server/gtk/main.c:212
+#: ../server/gtk/main.c:213
 msgid "Stop the server"
 msgstr "Stop de server"
 
-#: ../server/gtk/main.c:213
+#: ../server/gtk/main.c:214
 msgid "Start the server"
 msgstr "Start de server"
 
-#: ../server/gtk/main.c:288
+#: ../server/gtk/main.c:290
 #, c-format
 msgid "Player %s from %s entered\n"
 msgstr "Nieuwe speler: %s vanaf %s\n"
 
-#: ../server/gtk/main.c:295
+#: ../server/gtk/main.c:297
 #, c-format
 msgid "Player %s from %s left\n"
 msgstr "Speler %s vanaf %s heeft de verbinding verbroken\n"
 
-#: ../server/gtk/main.c:302
+#: ../server/gtk/main.c:304
 #, c-format
 msgid "Player %d is now %s\n"
 msgstr "Speler %d is nu %s\n"
 
-#: ../server/gtk/main.c:496
+#: ../server/gtk/main.c:499
 msgid "Game Settings"
 msgstr "Spelinstellingen"
 
-#: ../server/gtk/main.c:501
+#: ../server/gtk/main.c:504
 msgid "Server Parameters"
 msgstr "Serverinstellingen"
 
-#: ../server/gtk/main.c:526
+#: ../server/gtk/main.c:529
 msgid "The port for the game server"
 msgstr "De poort van de server"
 
-#: ../server/gtk/main.c:528
+#: ../server/gtk/main.c:531
 msgid "Register Server"
 msgstr "Registreer server"
 
-#: ../server/gtk/main.c:541
+#: ../server/gtk/main.c:544
 msgid "Register this game at the meta server"
 msgstr "Registreer dit spel bij de metaserver"
 
-#: ../server/gtk/main.c:557
+#: ../server/gtk/main.c:560
 msgid "The address of the meta server"
 msgstr "Het adres van de metaserver"
 
-#: ../server/gtk/main.c:559
+#: ../server/gtk/main.c:562
 msgid "Reported Hostname"
 msgstr "Geregistreerde computernaam"
 
-#: ../server/gtk/main.c:573
+#: ../server/gtk/main.c:576
 msgid ""
 "The public name of this computer (needed when playing behind a firewall)"
 msgstr ""
 "De naam van deze computer (is nodig om een spel te registreren vanachter een "
 "firewall)"
 
-#: ../server/gtk/main.c:576
+#: ../server/gtk/main.c:579
 msgid "Random Turn Order"
 msgstr "Volgorde willekeurig"
 
-#: ../server/gtk/main.c:589
+#: ../server/gtk/main.c:592
 msgid "Randomize turn order"
 msgstr "Is de spelervolgorde willekeurig"
 
-#: ../server/gtk/main.c:626
+#: ../server/gtk/main.c:631
 msgid "Running Game"
 msgstr "Lopend spel"
 
-#: ../server/gtk/main.c:628
+#: ../server/gtk/main.c:633
 msgid "Players Connected"
 msgstr "Huidige spelers"
 
-#: ../server/gtk/main.c:655
+#: ../server/gtk/main.c:660
 msgid "Shows all players and viewers connected to the server"
 msgstr "Toont alle verbonden spelers en toeschouwers"
 
-#: ../server/gtk/main.c:660
+#: ../server/gtk/main.c:665
 msgid "Connected"
 msgstr "Verbonden"
 
-#: ../server/gtk/main.c:667
+#: ../server/gtk/main.c:672
 msgid "Is the player currently connected?"
 msgstr "Is de speler op het moment verbonden?"
 
-#: ../server/gtk/main.c:670
+#: ../server/gtk/main.c:675
 msgid "Name"
 msgstr "Naam"
 
-#: ../server/gtk/main.c:677
+#: ../server/gtk/main.c:682
 msgid "Name of the player"
 msgstr "Naam van de speler"
 
-#: ../server/gtk/main.c:679
+#: ../server/gtk/main.c:684
 msgid "Location"
 msgstr "Computer"
 
-#: ../server/gtk/main.c:686
+#: ../server/gtk/main.c:691
 msgid "Host name of the player"
 msgstr "Computernaam van de speler"
 
-#: ../server/gtk/main.c:690
+#: ../server/gtk/main.c:695
 msgid "Number"
 msgstr "Nummer"
 
-#: ../server/gtk/main.c:697
+#: ../server/gtk/main.c:702
 msgid "Player number"
 msgstr "Speler nummer"
 
-#: ../server/gtk/main.c:701
+#: ../server/gtk/main.c:706
 msgid "Role"
 msgstr "Rol"
 
-#: ../server/gtk/main.c:705
+#: ../server/gtk/main.c:710
 msgid "Player of viewer"
 msgstr "Speler of toeschouwer"
 
-#: ../server/gtk/main.c:715
+#: ../server/gtk/main.c:720
 msgid "Computer Players"
 msgstr "Computer spelers"
 
-#: ../server/gtk/main.c:727
+#: ../server/gtk/main.c:732
 msgid "Enable Chat"
 msgstr "Chat mogelijk"
 
-#: ../server/gtk/main.c:738
+#: ../server/gtk/main.c:743
 msgid "Enable chat messages"
 msgstr "De computer speler mag chat boodschappen versturen"
 
-#: ../server/gtk/main.c:745
+#: ../server/gtk/main.c:750
 msgid "Add Computer Player"
 msgstr "Voeg computerspeler toe"
 
-#: ../server/gtk/main.c:752
+#: ../server/gtk/main.c:757
 msgid "Add a computer player to the game"
 msgstr "Voeg computerspeler toe aan het spel"
 
-#: ../server/gtk/main.c:761
+#: ../server/gtk/main.c:766
 msgid "Messages"
 msgstr "Berichten"
 
-#: ../server/gtk/main.c:779
+#: ../server/gtk/main.c:784
 msgid "Messages from the server"
 msgstr "Berichten van de server"
 
-#: ../server/gtk/main.c:796
+#: ../server/gtk/main.c:801
 msgid "The Pioneers Game Server"
 msgstr "De Pioniers server"
 
 #. Wait for all players to disconnect,
 #. * then enable the UI
 #.
-#: ../server/gtk/main.c:804
+#: ../server/gtk/main.c:809
 msgid "The game is over.\n"
 msgstr "Het spel is afgelopen.\n"
 
 #. Long description in the commandline for server-gtk: help
 #. Long description in the commandline for server-console: help
-#: ../server/gtk/main.c:849 ../server/main.c:165
+#: ../server/gtk/main.c:854 ../server/main.c:165
 msgid "- Host a game of Pioneers"
 msgstr "- Creeer een spel Pioniers"
 
 #. Name in the titlebar of the server
-#: ../server/gtk/main.c:864
+#: ../server/gtk/main.c:869
 msgid "Pioneers Server"
 msgstr "Pioniers Server"
 
@@ -2862,12 +2847,12 @@ msgstr "Diverse opties"
 msgid "Miscellaneous options"
 msgstr "Diverse opties"
 
-#: ../server/meta.c:195
+#: ../server/meta.c:194
 #, c-format
 msgid "Register with meta-server at %s, port %s\n"
 msgstr "Bezig te verbinden met metaserver op %s, poort %s\n"
 
-#: ../server/meta.c:212
+#: ../server/meta.c:211
 msgid "Unregister from meta-server\n"
 msgstr "Verbreek de verbinding met de metaserver\n"
 
@@ -2945,6 +2930,14 @@ msgstr "Extra eiland bonus"
 #: ../server/turn.c:339
 msgid "Tried to assign resources to NULL player.\n"
 msgstr "Poging om grondstoffen aan de NULL speler te geven.\n"
+
+#~ msgid "%s has requested a connection check."
+#~ msgstr "%s heeft een verbindingscontrole aangevraagd."
+
+#~ msgid "The metaserver has rejected the reported hostname. Try %s instead."
+#~ msgstr ""
+#~ "De metaserver heeft de geregistreerde computernaam verworpen. Probeer %s "
+#~ "eens."
 
 #~ msgid "NOTE Expecting version %s, not %s\n"
 #~ msgstr "NOTE Verwachtte versie %s, niet %s\n"
