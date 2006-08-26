@@ -1,3 +1,8 @@
+2006-08-26  Bas Wijnen <shevek@fmf.nl>
+	* common/network.h, common/state.c, common/state.h, common/network.c,
+	server/player.c, server/admin.c: Send keepalive packets when
+	connection is idle, and disconnect when no reply is received.
+
 2006-08-21  Bas Wijnen <shevek@fmf.nl>
 	* common/gtk/config-gnome.c: Added include file.
 	* server/gold.c, client/callback.h, client/common/client.c,

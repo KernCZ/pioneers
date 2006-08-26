@@ -2,7 +2,7 @@
  *   Go buy a copy.
  *
  * Copyright (C) 1999 Dave Cole
- * Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
+ * Copyright (C) 2003, 2006 Bas Wijnen <shevek@fmf.nl>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -172,13 +172,13 @@ gboolean sm_connect(StateMachine * sm, const gchar * host,
 	return FALSE;
 }
 
-void sm_use_fd(StateMachine * sm, gint fd)
+void sm_use_fd(StateMachine * sm, gint fd, gboolean do_ping)
 {
 	if (sm->ses != NULL)
 		net_free(&(sm->ses));
 
 	sm->ses = net_new((NetNotifyFunc) net_event, sm);
-	net_use_fd(sm->ses, fd);
+	net_use_fd(sm->ses, fd, do_ping);
 }
 
 static gint get_num(gchar * str, gint * num)

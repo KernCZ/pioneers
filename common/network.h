@@ -2,7 +2,7 @@
  *   Go buy a copy.
  *
  * Copyright (C) 1999 Dave Cole
- * Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
+ * Copyright (C) 2003, 2006 Bas Wijnen <shevek@fmf.nl>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,6 +37,7 @@ typedef void (*NetNotifyFunc) (NetEvent event, void *user_data,
 typedef struct _Session Session;
 struct _Session {
 	int fd;
+	time_t last_response;	/* used for activity detection.  */
 	void *user_data;
 
 	gboolean connect_in_progress;
@@ -66,7 +67,7 @@ void net_finish(void);
 Session *net_new(NetNotifyFunc notify_func, void *user_data);
 void net_free(Session ** ses);
 
-void net_use_fd(Session * ses, int fd);
+void net_use_fd(Session * ses, int fd, gboolean do_ping);
 gboolean net_connect(Session * ses, const gchar * host,
 		     const gchar * port);
 gboolean net_connected(Session * ses);

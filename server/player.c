@@ -2,7 +2,7 @@
  *   Go buy a copy.
  *
  * Copyright (C) 1999 Dave Cole
- * Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
+ * Copyright (C) 2003, 2006 Bas Wijnen <shevek@fmf.nl>
  * Copyright (C) 2005,2006 Roland Clobus <rclobus@bigfoot.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -254,7 +254,7 @@ Player *player_new(Game * game, int fd, gchar * location)
 		/* The game is over, don't accept new players */
 		Session *ses = net_new(NULL, NULL);
 		gchar *message;
-		net_use_fd(ses, fd);
+		net_use_fd(ses, fd, FALSE);
 		/* Message to send to the client when the game is already over
 		 * when a connection is made. */
 		message =
@@ -274,7 +274,7 @@ Player *player_new(Game * game, int fd, gchar * location)
 
 	sm_global_set(sm, (StateFunc) mode_global);
 	sm_unhandled_set(sm, (StateFunc) mode_unhandled);
-	sm_use_fd(sm, fd);
+	sm_use_fd(sm, fd, TRUE);
 
 	/* Cache messages of the game in progress until all intial 
 	 * messages have been sent

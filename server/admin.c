@@ -2,7 +2,7 @@
  *   Go buy a copy.
  *
  * Copyright (C) 1999 Dave Cole
- * Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
+ * Copyright (C) 2003, 2006 Bas Wijnen <shevek@fmf.nl>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -217,8 +217,9 @@ void admin_connect(comm_info * admin_info)
 	/* (3) accept the connection into a new file descriptor */
 	new_fd = accept_connection(admin_info->fd, &location);
 
-	/* (4) tie the new file descriptor to the session we created earlier */
-	net_use_fd(admin_session, new_fd);
+	/* (4) tie the new file descriptor to the session we created earlier.
+	 * Don't use keepalive pings on this connection.  */
+	net_use_fd(admin_session, new_fd, FALSE);
 }
 
 /* set up the administration port */

@@ -2,7 +2,7 @@
  *   Go buy a copy.
  *
  * Copyright (C) 1999 Dave Cole
- * Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
+ * Copyright (C) 2003, 2006 Bas Wijnen <shevek@fmf.nl>
  * Copyright (C) 2005,2006 Roland Clobus <rclobus@bigfoot.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -65,6 +65,10 @@ typedef union {
 } sockaddr_t;
 
 static gboolean debug_enabled = FALSE;
+
+/* Number of seconds between pings
+ * (in the absence of other network activity).  */
+static const int PING_PERIOD = 30;
 
 void set_enable_debug(gboolean enabled)
 {
@@ -185,6 +189,34 @@ static void close_and_callback(Session * ses)
 {
 	net_close(ses);
 	notify(ses, NET_CLOSE, NULL);
+}
+
+static gboolean ping_function(gpointer s)
+{
+	Session *ses = (Session *) s;
+	double interval = difftime(time(NULL), ses->last_response);
+	/* Ask for activity every PING_PERIOD seconds, but don't ask if there
+	 * was activity anyway.  */
+	if (interval >= 2 * PING_PERIOD) {
+		/* There was no response to the ping in time.  The connection
+		 * should be considered dead.  */
+		log_message(MSG_ERROR,
+			    "No activity and no response to ping.  Closing connection");
+		close_and_callback(ses);
+	} else if (interval >= PING_PERIOD) {
+		/* There was no activity.
+		 * Send a ping (but don't update activity time).  */
+		net_write(ses, "hello\n");
+		g_timeout_add(PING_PERIOD * 1000, ping_function, s);
+	} else {
+		/* Everything is fine.  Reschedule this check.  */
+		g_timeout_add((PING_PERIOD - interval) * 1000,
+			      ping_function, s);
+	}
+	/* Return FALSE to not reschedule this timeout.  If it needed to be
+	 * rescheduled, it has been done explicitly above (with a different
+	 * timeout).  */
+	return FALSE;
 }
 
 static void write_ready(Session * ses)
@@ -329,6 +361,9 @@ static void read_ready(Session * ses)
 	int num;
 	int offset;
 
+	/* There is data from this connection: record the time.  */
+	ses->last_response = time(NULL);
+
 	if (ses->read_len == sizeof(ses->read_buff)) {
 		/* We are in trouble now - the application has not
 		 * been processing the data we have been
@@ -374,6 +409,15 @@ static void read_ready(Session * ses)
 		offset += len + 1;
 
 		debug("(%d) <-- %s", ses->fd, line);
+
+		if (!strcmp(line, "hello")) {
+			net_write(ses, "yes\n");
+			continue;
+		}
+		if (!strcmp(line, "yes")) {
+			continue;	/* Don't notify the program */
+		}
+
 		notify(ses, NET_READ, line);
 	}
 
@@ -405,9 +449,13 @@ Session *net_new(NetNotifyFunc notify_func, void *user_data)
 	return ses;
 }
 
-void net_use_fd(Session * ses, int fd)
+void net_use_fd(Session * ses, int fd, gboolean do_ping)
 {
 	ses->fd = fd;
+	if (do_ping) {
+		ses->last_response = time(NULL);
+		g_timeout_add(PING_PERIOD * 1000, ping_function, ses);
+	}
 	listen_read(ses, TRUE);
 }
 
