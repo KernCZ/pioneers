@@ -2,7 +2,7 @@
  *   Go buy a copy.
  *
  * Copyright (C) 1999 Dave Cole
- * Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
+ * Copyright (C) 2003, 2006 Bas Wijnen <shevek@fmf.nl>
  * Copyright (C) 2004 Roland Clobus <rclobus@bigfoot.com>
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -474,7 +474,7 @@ void frontend_player_name(gint player_num, const gchar * name)
 			   SUMMARY_COLUMN_TEXT, name, -1);
 
 	player_show_connected_at_iter(player_num, TRUE, &iter);
-	if (announce_player)
+	if (announce_player && callback_mode != MODE_INIT)
 		gdk_beep();
 
 	chat_player_name(player_num, name);
@@ -487,7 +487,7 @@ void frontend_viewer_name(gint viewer_num, const gchar * name)
 	player_create_find_player(viewer_num, &iter);
 	gtk_list_store_set(summary_store, &iter,
 			   SUMMARY_COLUMN_TEXT, name, -1);
-	if (announce_player)
+	if (announce_player && callback_mode != MODE_INIT)
 		gdk_beep();
 
 	chat_player_name(viewer_num, name);
