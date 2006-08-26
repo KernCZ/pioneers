@@ -15,6 +15,8 @@
 	* common/network.c, common/network.h: Cleanup the timer when the
 	session is closed.
 	* client/help/C/pioneers.xml: Updated the FAQ.
+	* server/conquest.game, server/conquest+ports.game: Added nosetup for
+	the smaller islands.
 	
 2006-08-26  Bas Wijnen <shevek@fmf.nl>
 	* common/network.h, common/state.c, common/state.h, common/network.c,
