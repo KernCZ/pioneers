@@ -3,6 +3,7 @@
 	* server/gtk/main.c, server/meta.c: Changed reported hostname to
 	overridden hostname. If it is left empty, the metaserver will do a 
 	hostname lookup.
+	* common/network.h: Include time.h too.
 	
 2006-08-26  Bas Wijnen <shevek@fmf.nl>
 	* common/network.h, common/state.c, common/state.h, common/network.c,

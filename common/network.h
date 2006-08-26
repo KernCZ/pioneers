@@ -23,6 +23,7 @@
 #define __network_h
 
 #include <glib.h>
+#include <time.h>
 
 typedef enum {
 	NET_CONNECT,
