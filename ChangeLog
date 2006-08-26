@@ -4,6 +4,9 @@
 	connection is idle, and disconnect when no reply is received.
 	* client/gtk/player.c: Don't beep for players which are seen during
 	connecting.
+	* client/gtk/trade.c, client/gtk/quote-view.c,
+	client/gtk/quote-view.h: Show maritime trades only when they match the
+	supply, or no supply is specified.
 
 2006-08-21  Bas Wijnen <shevek@fmf.nl>
 	* common/gtk/config-gnome.c: Added include file.

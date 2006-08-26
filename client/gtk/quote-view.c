@@ -2,6 +2,7 @@
  *   Go buy a copy.
  *
  * Copyright (C) 2004-2006 Roland Clobus <rclobus@bigfoot.com>
+ * Copyright (C) 2006 Bas Wijnen <shevek@fmf.nl>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -444,6 +445,22 @@ void quote_view_reject(QuoteView * qv, gint player_num)
 			   TRADE_COLUMN_PLAYER_NUM, player_num, -1);
 }
 
+/** How many of this resource do we need for a maritime trade?  If the trade is
+ *  not possible, return 0.
+ */
+static gint maritime_amount(QuoteView * qv, gint resource)
+{
+	if (qv->maritime_info.specific_resource[resource]) {
+		if (resource_asset(resource) >= 2)
+			return 2;
+	} else if (qv->maritime_info.any_resource) {
+		if (resource_asset(resource) >= 3)
+			return 3;
+	} else if (resource_asset(resource) >= 4)
+		return 4;
+	return 0;
+}
+
 /** Check if all existing maritime trades are valid.
  *  Add and remove maritime trades as needed
  */
@@ -451,43 +468,39 @@ static void check_maritime_trades(QuoteView * qv)
 {
 	QuoteInfo *quote;
 	gint idx;
+	gboolean check_supply = FALSE;
+	gint maritime_supply[NO_RESOURCE];
 
 	if (!qv->with_maritime)
 		return;
 
+	/* Check supply whenever any supply box is selected.  */
+	for (idx = 0; idx < NO_RESOURCE; ++idx) {
+		if (qv->maritime_filter_supply[idx])
+			check_supply = TRUE;
+	}
+
+	/* Check how many of which resources can be used for maritime supply.
+	 */
+	for (idx = 0; idx < NO_RESOURCE; ++idx) {
+		if (check_supply && !qv->maritime_filter_supply[idx])
+			maritime_supply[idx] = 0;
+		else
+			maritime_supply[idx] = maritime_amount(qv, idx);
+	}
+
+	/* Remove invalid quotes.  */
 	quote = quotelist_first(qv->quote_list);
 	while (quote != NULL) {
 		QuoteInfo *curr = quote;
-		gboolean is_valid;
 
 		quote = quotelist_next(quote);
 		if (curr->is_domestic)
 			break;
 
-		/* Is the current quote valid?
-		 */
-		is_valid = FALSE;
-		if (qv->maritime_filter[curr->var.m.receive])
-			switch (curr->var.m.ratio) {
-			case 2:
-				is_valid =
-				    qv->maritime_info.
-				    specific_resource[curr->var.m.supply]
-				    && resource_asset(curr->var.m.
-						      supply) >= 2;
-				break;
-			case 3:
-				is_valid = qv->maritime_info.any_resource
-				    && resource_asset(curr->var.m.
-						      supply) >= 3;
-				break;
-			case 4:
-				is_valid =
-				    resource_asset(curr->var.m.supply) >=
-				    4;
-				break;
-			}
-		if (!is_valid)
+		/* Is the current quote valid?  */
+		if (qv->maritime_filter_receive[curr->var.m.receive] == 0
+		    || maritime_supply[curr->var.m.supply] == 0)
 			remove_quote(qv, curr);
 	}
 
@@ -496,27 +509,23 @@ static void check_maritime_trades(QuoteView * qv)
 	for (idx = 0; idx < NO_RESOURCE; idx++) {
 		gint supply_idx;
 
-		if (!qv->maritime_filter[idx])
+		if (!qv->maritime_filter_receive[idx])
 			continue;
 
 		for (supply_idx = 0; supply_idx < NO_RESOURCE;
 		     supply_idx++) {
 			if (supply_idx == idx)
 				continue;
-			if (qv->maritime_info.specific_resource[supply_idx]
-			    && resource_asset(supply_idx) >= 2) {
-				add_maritime_trade(qv, 2, idx, supply_idx);
+
+			if (!maritime_supply[supply_idx])
 				continue;
-			}
-			if (qv->maritime_info.any_resource
-			    && resource_asset(supply_idx) >= 3) {
-				add_maritime_trade(qv, 3, idx, supply_idx);
-				continue;
-			}
-			if (resource_asset(supply_idx) >= 4) {
-				add_maritime_trade(qv, 4, idx, supply_idx);
-				continue;
-			}
+
+			if (resource_asset(supply_idx)
+			    >= maritime_supply[supply_idx])
+				add_maritime_trade(qv,
+						   maritime_supply
+						   [supply_idx], idx,
+						   supply_idx);
 		}
 	}
 }
@@ -670,13 +679,16 @@ void quote_view_remove_rejected_quotes(QuoteView * qv)
 	}
 }
 
-void quote_view_set_maritime_filter(QuoteView * qv,
-				    const gboolean * filter)
+void quote_view_set_maritime_filters(QuoteView * qv,
+				     const gboolean * filter_supply,
+				     const gboolean * filter_receive)
 {
 	gint idx;
 
-	for (idx = 0; idx < NO_RESOURCE; idx++)
-		qv->maritime_filter[idx] = filter[idx];
+	for (idx = 0; idx < NO_RESOURCE; idx++) {
+		qv->maritime_filter_supply[idx] = filter_supply[idx];
+		qv->maritime_filter_receive[idx] = filter_receive[idx];
+	}
 	check_maritime_trades(qv);
 }
 

@@ -2,6 +2,7 @@
  *   Go buy a copy.
  *
  * Copyright (C) 2006 Roland Clobus <rclobus@bigfoot.com>
+ * Copyright (C) 2006 Bas Wijnen <shevek@fmf.nl>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -55,7 +56,8 @@ struct _QuoteView {
 	/** Information about available maritime trades */
 	MaritimeInfo maritime_info;
 
-	gboolean maritime_filter[NO_RESOURCE];
+	gboolean maritime_filter_supply[NO_RESOURCE];
+	gboolean maritime_filter_receive[NO_RESOURCE];
 
 	CheckQuoteFunc check_quote_func;
 
@@ -93,8 +95,9 @@ void quote_view_check_validity_of_trades(QuoteView * qv);
 void quote_view_clear_selected_quote(QuoteView * qv);
 const QuoteInfo *quote_view_get_selected_quote(QuoteView * qv);
 void quote_view_remove_rejected_quotes(QuoteView * qv);
-void quote_view_set_maritime_filter(QuoteView * qv,
-				    const gboolean * filter);
+void quote_view_set_maritime_filters(QuoteView * qv,
+				     const gboolean * filter_supply,
+				     const gboolean * filter_receive);
 void quote_view_theme_changed(QuoteView * qv);
 gboolean quote_view_trade_exists(QuoteView * qv, const gint * supply,
 				 const gint * receive);

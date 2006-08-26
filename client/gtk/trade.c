@@ -2,7 +2,7 @@
  *   Go buy a copy.
  *
  * Copyright (C) 1999 Dave Cole
- * Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
+ * Copyright (C) 2003, 2006 Bas Wijnen <shevek@fmf.nl>
  * Copyright (C) 2004,2006 Roland Clobus <rclobus@bigfoot.com>
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -236,15 +236,18 @@ void trade_new_trade(void)
 static void toggled_cb(GtkWidget * widget, TradeRow * row)
 {
 	gint idx;
-	gboolean filter[NO_RESOURCE];
+	gboolean filter[2][NO_RESOURCE];
 
 	row->enabled =
 	    gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget));
 
-	for (idx = 0; idx < NO_RESOURCE; idx++)
-		filter[idx] = we_receive_rows[idx].enabled;
+	for (idx = 0; idx < NO_RESOURCE; idx++) {
+		filter[0][idx] = we_supply_rows[idx].enabled;
+		filter[1][idx] = we_receive_rows[idx].enabled;
+	}
 	quote_view_clear_selected_quote(QUOTEVIEW(quoteview));
-	quote_view_set_maritime_filter(QUOTEVIEW(quoteview), filter);
+	quote_view_set_maritime_filters(QUOTEVIEW(quoteview), filter[0],
+					filter[1]);
 	trade_update();
 	frontend_gui_update();
 }
