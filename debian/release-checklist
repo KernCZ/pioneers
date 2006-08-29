@@ -1,0 +1,17 @@
+What to do for a release of a new version in Debian:
+- Get released tarball
+- Copy debian directory from subversion
+- rm -rf debian/.svn
+- In Makefile.am:
+  $(GLIB2_LIBS) -> -lglib-2.0,
+  $(GNOME2_LIBS) -> -lgnome-2,
+  $(GTK2_LIBS) -> -lgtk-x11-2.0
+- dch -i, mark bugs as closed
+- pdebuild
+- debuild
+- piuparts
+- upload
+- update subversion debian directory
+- svn copy https://svn.sourceforge.net/svnroot/pio/trunk/pioneers/debian \
+  https://svn.sourceforge.net/svnroot/pio/tags/debian-release-X.XX.XX-1 \
+  -m "tag debian release"
