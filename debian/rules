@@ -7,6 +7,10 @@
 export AUTOMAKE=automake-1.9
 export ACLOCAL=aclocal-1.9
 
+# Hack workaround for bashism in gnome-autogen.sh.  Can be removed when it is
+# fixed.
+export AUTOMAKE_VERSION=1.9
+
 ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
 	CFLAGS += -O0
 else
