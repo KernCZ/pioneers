@@ -9,6 +9,11 @@ Before a release:
 * Check the pioneers.nsi file
 * Check the Debian files
 
+If the protocol has changed:
+* Check configure.ac, AC_INIT and PROTOCOL_VERSION
+* If the protocol is backwards compatible, adjust the version checks
+* Update client/gtk/data/splash.svg
+
 At release time:
 * Update (if needed): NEWS, README, README.Cygwin, README.MinGW, TODO
 * Update: client/ai/lobbybot.c
