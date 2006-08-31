@@ -71,5 +71,12 @@ Known limitations
 * The server will not create new games
 * The metaserver does not work
 
+Miscellaneous
+=============
+I've added the Cygwin Ports project (cygwinports.dotsrc.org)
+URL: ftp://sunsite.dk/projects/cygwinports 
+It adds rsvg and newer versions of Gtk+.
+More news later...
+
 Roland Clobus
-2006-04-18 (Pioneers 0.9.62)
+2006-08-31 (Pioneers 0.10.1)
