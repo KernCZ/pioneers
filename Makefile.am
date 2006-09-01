@@ -78,7 +78,8 @@ CLEANFILES =
 MAINTAINERCLEANFILES =
 EXTRA_DIST = autogen.sh pioneers.spec xmldocs.make omf.make README.Cygwin README.MinGW
 BUILT_SOURCES =
-windows_icons =
+windows_resources_input =
+windows_resources_output =
 
 # creating icons
 %.png: %.svg
@@ -119,9 +120,9 @@ endif
 
 if USE_WINDOWS_ICON
 # Will be used in Windows builds
-%-icon.o: %.rc %.ico
+%.res: %.rc %.ico
 	@mkdir_p@ $(dir $@)
-	windres -I$(top_srcdir) -o $@ $<
+	windres -I$(top_srcdir) -O coff -o $@ $<
 endif
 
 if BUILD_CLIENT
@@ -146,7 +147,7 @@ include macros/Makefile.am
 
 # Make use of some of the variables that were filled in by the included
 # Makefile.ams
-MAINTAINERCLEANFILES += $(icon_DATA) $(windows_icons)
+MAINTAINERCLEANFILES += $(icon_DATA) $(windows_resources_output)
 EXTRA_DIST += \
 	$(man_MANS) \
 	$(desktop_DATA) \
@@ -155,7 +156,8 @@ EXTRA_DIST += \
 	$(pixmap_DATA) \
 	$(icon_DATA) \
 	$(subst png,svg,$(icon_DATA)) \
-	$(windows_icons)
+	$(windows_resources_input) \
+	$(windows_resources_output)
 
 # po doesn't use automake, but creates its own Makefile
 SUBDIRS += po
