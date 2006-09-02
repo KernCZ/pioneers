@@ -28,7 +28,7 @@ console_cflags = \
 	$(DEBUGGING) \
 	$(GLIB_DEPRECATION) \
 	-DDATADIR=\""$(pioneers_datadir)"\" \
-	-DTHEMEDIR=\""$(pioneers_themedir)"\" \
+	-DTHEMEDIR=\""$(pioneers_themedir_embed)"\" \
 	-DLOCALEDIR=\""$(pioneers_localedir)"\" \
 	-DPIONEERS_DIR_DEFAULT=\""$(pioneers_datadir)/games/pioneers"\" \
 	-DPIONEERS_SERVER_CONSOLE_PATH=\""$(bindir)/pioneers-server-console"\" \
@@ -58,7 +58,6 @@ configdir = $(datadir)/games/pioneers
 icondir = $(datadir)/pixmaps
 pixmapdir = $(datadir)/pixmaps/pioneers
 desktopdir = $(datadir)/applications
-themedir = $(pioneers_themedir)
 
 # Let object files be generated in their own subdirectories
 AUTOMAKE_OPTIONS = subdir-objects
@@ -73,7 +72,6 @@ config_DATA =
 icon_DATA =
 pixmap_DATA =
 desktop_DATA =
-theme_DATA =
 CLEANFILES =
 MAINTAINERCLEANFILES =
 EXTRA_DIST = autogen.sh pioneers.spec xmldocs.make omf.make README.Cygwin README.MinGW
@@ -152,7 +150,6 @@ EXTRA_DIST += \
 	$(man_MANS) \
 	$(desktop_DATA) \
 	$(config_DATA) \
-	$(theme_DATA) \
 	$(pixmap_DATA) \
 	$(icon_DATA) \
 	$(subst png,svg,$(icon_DATA)) \

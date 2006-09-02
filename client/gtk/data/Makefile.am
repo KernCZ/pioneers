@@ -23,10 +23,6 @@ include client/gtk/data/themes/Makefile.am
 
 icon_DATA += client/gtk/data/pioneers.png
 
-theme_DATA += \
-	client/gtk/data/cross.png \
-	client/gtk/data/tick.png
-	
 pixmap_DATA += \
 	client/gtk/data/bridge.png \
 	client/gtk/data/city.png \

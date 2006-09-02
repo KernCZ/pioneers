@@ -319,18 +319,18 @@ if test $pioneers_is_mingw_port = yes; then
 	bindir='${prefix}'
 	libdir='${prefix}'
 	pioneers_datadir=.
-	pioneers_themedir_install=$datadir/themes
-	pioneers_themedir=themes
+	pioneers_themedir=$datadir/themes
+	pioneers_themedir_embed=themes
 	pioneers_localedir=locale
 else
 	pioneers_datadir=$datadir
-	pioneers_themedir_install=$datadir/games/pioneers/themes
-	pioneers_themedir=$pioneers_themedir_install
+	pioneers_themedir=$datadir/games/pioneers/themes
+	pioneers_themedir_embed=$pioneers_themedir
 	pioneers_localedir=$datadir/locale
 fi
 AC_SUBST(pioneers_datadir)
-AC_SUBST(pioneers_themedir_install)
-AC_SUBST(pioneers_themedir, $pioneers_themedir_install)
+AC_SUBST(pioneers_themedir)
+AC_SUBST(pioneers_themedir_embed)
 AC_SUBST(pioneers_localedir)
 
 # Time out

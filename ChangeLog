@@ -1,5 +1,9 @@
 2006-09-02  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/data/splash.png: Removed, replaced by splash.svg
+	* configure.ac, Makefile.am, client/gtk/Makefile.am,
+	client/gtk/data/Makefile.am: Fix themedir for Windows.
+	* pioneers.nsi.in, client/gtk/data/tick.png, client/gtk/data/cross.png:
+	Images are no longer in use.
 
 2006-09-01  Roland Clobus <rclobus@bigfoot.com>
 	* editor/gtk/Makefile.am, client/gtk/data/Makefile.am, Makefile.am:

@@ -22,7 +22,9 @@ include client/gtk/data/themes/Iceland/Makefile.am
 include client/gtk/data/themes/Tiny/Makefile.am
 include client/gtk/data/themes/Wesnoth-like/Makefile.am
 
-theme_DATA += \
+defaultthemedir = $(pioneers_themedir)
+
+defaulttheme_DATA = \
 	client/gtk/data/themes/board.png \
 	client/gtk/data/themes/desert.png \
 	client/gtk/data/themes/field.png \
@@ -33,3 +35,5 @@ theme_DATA += \
 	client/gtk/data/themes/plain.png \
 	client/gtk/data/themes/sea.png \
 	client/gtk/data/themes/gold.png
+
+EXTRA_DIST += $(defaulttheme_DATA)
