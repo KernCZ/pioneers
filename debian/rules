@@ -7,6 +7,8 @@
 export AUTOMAKE=automake-1.9
 export ACLOCAL=aclocal-1.9
 
+LIBFLAGS = GNOME2_LIBS=-lgnome-2 GTK2_LIBS=-lgtk-x11-2.0 GLIB2_LIBS=-lglib-2.0
+
 # Hack workaround for bashism in gnome-autogen.sh.  Can be removed when it is
 # fixed.
 export AUTOMAKE_VERSION=1.9
@@ -48,7 +50,7 @@ build-stamp:
 	NOCONFIGURE=true ./autogen.sh
 	./configure --prefix=/usr --bindir=/usr/games --mandir=/usr/share/man \
 		$(CONFIGUREFLAGS) --enable-warnings --disable-dependency-tracking
-	$(MAKE)
+	$(MAKE) $(LIBFLAGS)
 	rsvg --width 32 --height 32 client/gtk/data/pioneers.svg pioneers32.png
 	convert pioneers32.png pioneers.xpm
 	rm pioneers32.png
@@ -78,7 +80,7 @@ install-stamp: build-stamp
 	dh_clean -k
 	dh_installdirs
 	# Commands to install the package into debian/tmp.
-	$(MAKE) DESTDIR=$(CURDIR)/debian/tmp install
+	$(MAKE) DESTDIR=$(CURDIR)/debian/tmp install $(LIBFLAGS)
 	install -D -m644 server/*.game debian/tmp/usr/share/games/pioneers
 	install -D -m644 pioneers.xpm debian/tmp/usr/share/pixmaps/pioneers-client.xpm
 	install -D -m644 pioneers-server.xpm debian/tmp/usr/share/pixmaps/pioneers-server.xpm
