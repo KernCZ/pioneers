@@ -1,3 +1,6 @@
+2006-09-02  Roland Clobus <rclobus@bigfoot.com>
+	* client/gtk/data/splash.png: Removed, replaced by splash.svg
+
 2006-09-01  Roland Clobus <rclobus@bigfoot.com>
 	* editor/gtk/Makefile.am, client/gtk/data/Makefile.am, Makefile.am:
 	Add the resource files for Microsoft Windows to the tarball.
