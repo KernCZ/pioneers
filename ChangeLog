@@ -4,6 +4,8 @@
 	client/gtk/data/Makefile.am: Fix themedir for Windows.
 	* pioneers.nsi.in, client/gtk/data/tick.png, client/gtk/data/cross.png:
 	Images are no longer in use.
+	* configure.ac: Nicer feedback from configure script when Gtk not
+	present.
 
 2006-09-01  Roland Clobus <rclobus@bigfoot.com>
 	* editor/gtk/Makefile.am, client/gtk/data/Makefile.am, Makefile.am:

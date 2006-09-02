@@ -204,9 +204,10 @@ if test x$with_gtk = xno; then
 else
 	PKG_CHECK_MODULES(GTK2, gtk+-2.0 >= $GTK_REQUIRED_VERSION,
 	have_gtk2=yes, 
-	[PKG_CHECK_MODULES(OLD_GTK2, gtk+-2.0,
+	[PKG_CHECK_EXISTS(gtk+-2.0,
 		[have_gtk2="no, Gtk+ version too old"],
 		[have_gtk2="no, Gtk+ not installed"])
+	AC_MSG_RESULT($have_gtk2)
 	])
 fi
 AM_CONDITIONAL(HAVE_GTK2, [test "$have_gtk2" = "yes"])
@@ -228,7 +229,8 @@ if test "$test_libgnome" = "yes"; then
 	# libgnome-2.0 support
 	PKG_CHECK_MODULES(GNOME2, libgnome-2.0,
 		[have_gnome="yes"],
-		[have_gnome="no, libgnome-2.0 not installed"])
+		[have_gnome="no, libgnome-2.0 not installed"
+		AC_MSG_RESULT($have_gnome)])
 	if test "$have_gnome" = "yes"; then
 		AC_DEFINE(HAVE_LIBGNOME, 1,
 			[Defined if libgnome is present and needed])
