@@ -1,3 +1,7 @@
+2006-09-03  Roland Clobus <rclobus@bigfoot.com>
+	* client/gtk/data/Makefile.am, editor/gtk/Makefile.am: Remove the *.res
+	files from the tarball (partly revert 2006-09-01)
+
 2006-09-02  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/data/splash.png: Removed, replaced by splash.svg
 	* configure.ac, Makefile.am, client/gtk/Makefile.am,

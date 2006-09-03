@@ -45,8 +45,8 @@ desktop_DATA += client/gtk/data/pioneers.desktop
 
 if USE_WINDOWS_ICON
 pioneers_LDADD += client/gtk/data/pioneers.res
+CLEANFILES += client/gtk/data/pioneers.res
 endif
 
-windows_resources_output += client/gtk/data/pioneers.res
 windows_resources_output += client/gtk/data/pioneers.ico
 windows_resources_input += client/gtk/data/pioneers.rc

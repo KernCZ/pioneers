@@ -40,8 +40,8 @@ pioneers_editor_LDADD = $(gtk_libs)
 
 if USE_WINDOWS_ICON
 pioneers_editor_LDADD += editor/gtk/pioneers-editor.res
+CLEANFILES += editor/gtk/pioneers-editor.res
 endif
 
-windows_resources_output += editor/gtk/pioneers-editor.res
 windows_resources_output += editor/gtk/pioneers-editor.ico
 windows_resources_input += editor/gtk/pioneers-editor.rc
