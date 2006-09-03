@@ -1,6 +1,13 @@
+// File encoding: utf8. Enter ChangeLog entries below this line
+
+2006-09-03  Thomas Sch√ºrger <thomas@schuerger.com>
+	* common/gtk/gtkbugs.c: Enabled workaround for toolbuttons that could
+	not be pressed twice.
+
 2006-09-03  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/data/Makefile.am, editor/gtk/Makefile.am: Remove the *.res
 	files from the tarball (partly revert 2006-09-01)
+	* Changed ChangeLog to utf8.
 
 2006-09-02  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/data/splash.png: Removed, replaced by splash.svg
@@ -741,7 +748,7 @@
 	* client/gtk/gold.c, client/gtk/discard.c: Reindented.
 
 2005-09-13  0.9.26  Roland Clobus <rclobus@bigfoot.com>, based on the patch by
-	Ferenc B·nhidi <banhidi@inf.elte.hu>
+	Ferenc B√°nhidi <banhidi@inf.elte.hu>
 	* configure.ac, client/gtk/gui.c, editor/gtk/editor.c: Disable online
 	help if it cannot be built
 	* client/ai/ai.c (ai_start_game), client/common/i18n.c (change_nls),
@@ -764,7 +771,7 @@
 	client/gtk/discard.c, client/gtk/gold.c, client/gtk/player.c: Moved
 	fix for bug in Gtk-2.6 to gtkbugs.c
 	
-2005-09-09  0.9.25  Ferenc B·nhidi <banhidi@inf.elte.hu>
+2005-09-09  0.9.25  Ferenc B√°nhidi <banhidi@inf.elte.hu>
 	* configure.ac, client/common/i18n.c, po/hu.po: Added Hungarian
 	translation
 

@@ -45,9 +45,13 @@ void set_pixbuf_tree_view_column_autogrow(GtkWidget * parent_widget,
 	}
 }
 
+/** In Gtk+ 2.4 the buttons did not become sensitive.
+ *  In Gtk+ 2.8 you cannot press a button twice.
+ */
 void action_set_sensitive(GtkAction * action, gboolean sensitive)
 {
-#if GTK_MAJOR_VERSION == 2 && GTK_MINOR_VERSION == 4
+/* #if GTK_MAJOR_VERSION == 2 && GTK_MINOR_VERSION == 4 */
+#if 1==1
 	GSList *widgets;
 	widgets = gtk_action_get_proxies(action);
 	while (widgets) {
