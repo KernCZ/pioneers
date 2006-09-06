@@ -1,7 +1,7 @@
 Source: pioneers
 Section: games
 Priority: optional
-Maintainer: Bas Wijnen <shevek@fmf.nl>
+Maintainer: Bas Wijnen <wijnen@debian.org>
 Uploaders: Steve Langasek <vorlon@debian.org>, Roman Hodek <roman@debian.org>
 Build-Depends: debhelper (>= 5.0.0), libgnome2-dev, scrollkeeper, gnome-common, imagemagick, librsvg2-bin, netpbm, libgtk2.0-dev, automake1.9, autoconf (>= 2.53)
 Standards-Version: 3.7.2
