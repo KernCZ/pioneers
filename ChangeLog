@@ -1,5 +1,8 @@
 // File encoding: utf8. Enter ChangeLog entries below this line
 
+2006-09-07  Roland Clobus <rclobus@bigfoot.com>
+	* client/gtk/data/Makefile.am: Add rule for splash.png
+
 2006-09-03  Thomas Schürger <thomas@schuerger.com>
 	* common/gtk/gtkbugs.c: Enabled workaround for toolbuttons that could
 	not be pressed twice.
