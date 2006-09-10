@@ -43,6 +43,9 @@ pixmap_DATA += \
 
 desktop_DATA += client/gtk/data/pioneers.desktop
 
+EXTRA_DIST += client/gtk/data/splash.svg
+MAINTAINERCLEANFILES += client/gtk/data/splash.png
+
 client/gtk/data/splash.png: client/gtk/data/splash.svg
 	@mkdir_p@ $(dir $@)
 	$(svg_renderer_path) $(svg_renderer_width)400$(svg_renderer_height)400 $< $@
