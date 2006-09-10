@@ -1,5 +1,9 @@
 // File encoding: utf8. Enter ChangeLog entries below this line
 
+2006-09-10  Bas Wijnen <wijnen@debian.org>
+	* common/game.c: Treat errors in files as end-of-file, and an
+	incomplete line at the end as a complete line.
+
 2006-09-10  LT-P <LT-P@LT-P.net>
 	* server/iles.game, server/GuerreDe100ans.game: Added
 	island-discovery-bonus.

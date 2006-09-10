@@ -417,8 +417,10 @@ gboolean read_line_from_file(gchar ** line, FILE * f)
 		g_free(oldline);
 		len = strlen(*line);
 	}
-	g_assert((*line)[len - 1] == '\n');
-	(*line)[len - 1] = '\0';
+	/* In case of error or EOF, just return the part we have.
+	 * Otherwise, strip the newline.  */
+	if ((*line)[len - 1] == '\n')
+		(*line)[len - 1] = '\0';
 	return TRUE;
 }
 
