@@ -13,6 +13,12 @@ pioneers (0.10.1-1) unstable; urgency=low
 
  -- Bas Wijnen <shevek@fmf.nl>  Tue, 29 Aug 2006 11:03:33 +0200
 
+pioneers (0.9.64-1) unstable; urgency=low
+
+  * New upstream release. (Closes: #371086)
+
+ -- Bas Wijnen <shevek@fmf.nl>  Wed,  7 Jun 2006 20:31:48 +0200
+
 pioneers (0.9.63-1) unstable; urgency=low
 
   * New upstream release.  (Closes: #367042)
