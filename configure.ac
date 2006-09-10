@@ -253,7 +253,6 @@ AC_ARG_ENABLE([admin-gtk], AC_HELP_STRING([--enable-admin-gtk],
 esac], [admin_gtk_support=no])
 AM_CONDITIONAL(ADMIN_GTK_SUPPORT, [test x$admin_gtk_support = xyes])
 
-AC_CHECK_HEADERS([getopt.h])
 AC_CHECK_HEADERS([netdb.h fcntl.h netinet/in.h sys/socket.h])
 AC_CHECK_HEADERS([limits.h])
 AC_CHECK_HEADERS([syslog.h],

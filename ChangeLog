@@ -1,5 +1,10 @@
 // File encoding: utf8. Enter ChangeLog entries below this line
 
+2006-09-10  Roland Clobus <rclobus@bigfoot.com>
+	* configure.ac, meta-server/main.c: Added glib commandline parsing,
+	--debug, --syslog-debug, --version. Fixed a bug for the current number
+	of players. Added the servername to the syslog output.
+
 2006-09-07  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/data/Makefile.am: Add rule for splash.png
 

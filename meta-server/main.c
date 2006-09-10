@@ -3,7 +3,8 @@
  *
  * Copyright (C) 1999 Dave Cole
  * Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
- * 
+ * Copyright (C) 2006 Roland Clobus <rclobus@bigfoot.com>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -26,12 +27,10 @@
 #include <ctype.h>
 #include <unistd.h>
 #include <errno.h>
-#ifdef HAVE_GETOPT_H
-#include <getopt.h>
-#endif
 #include <netinet/in.h>
 #include <fcntl.h>
 #include <syslog.h>
+#include <stdarg.h>
 #include <sys/wait.h>
 #include <sys/socket.h>
 #include <sys/types.h>
@@ -42,6 +41,7 @@
 #include <glib.h>
 #include "network.h"
 #include "game.h"
+#include "version.h"
 
 typedef enum {
 	META_UNKNOWN,
@@ -71,12 +71,11 @@ struct _Client {
 	gchar *version;
 	gint max;
 	gint curr;
+	gint previous_curr;
 	gchar *terrain;
 	gchar *title;
 	gchar *vpoints;
 	gchar *sevenrule;
-
-	gboolean send_hello;
 };
 
 static gchar *redirect_location = NULL;
@@ -92,6 +91,13 @@ static fd_set write_fds;
 static int accept_fd;
 static gint max_fd;
 
+/* Command line data */
+static gboolean make_daemon = FALSE;
+static gchar *port_range = NULL;
+static gboolean enable_debug = FALSE;
+static gboolean enable_syslog_debug = FALSE;
+static gboolean show_version = FALSE;
+
 static void client_printf(Client * client, const char *fmt, ...);
 
 #define MINUTE 60
@@ -99,23 +105,45 @@ static void client_printf(Client * client, const char *fmt, ...);
 
 #define MODE_TIMEOUT (2 * MINUTE)	/* delay allowed to define mode */
 #define CLIENT_TIMEOUT (2 * MINUTE)	/* delay allowed while listing servers */
-#define SERVER_TIMEOUT (48 * HOUR)	/* delay allowed between server updates */
 #define HELLO_TIMEOUT (8 * MINUTE)	/* delay allowed between server hello */
 
-/* #define LOG */
+static void my_syslog(gint type, const gchar * fmt, ...)
+{
+	va_list ap;
+	gchar *buff;
 
-#ifdef LOG
-static void debug(const gchar * fmt, ...)
+	va_start(ap, fmt);
+	buff = g_strdup_vprintf(fmt, ap);
+	va_end(ap);
+
+	syslog(type, buff);
+
+	if (enable_syslog_debug)
+		g_print("Syslog %d: %s\n", type, buff);
+
+	g_free(buff);
+}
+
+static void meta_debug(const gchar * fmt, ...)
 {
 	static FILE *fp;
 	va_list ap;
 	gchar *buff;
 	gint idx;
+	gint len;
+
+	if (!enable_debug)
+		return;
 
 	if (fp == NULL) {
-		char name[64];
-		sprintf(name, "/tmp/pioneers-meta.%d", getpid());
-		fp = fopen(name, "w");
+		gchar *fullpath;
+		gchar *filename;
+		filename = g_strdup_printf("pioneers-meta.%d", getpid());
+		fullpath =
+		    g_build_filename(g_get_tmp_dir(), filename, NULL);
+		fp = fopen(fullpath, "w");
+		g_free(fullpath);
+		g_free(filename);
 	}
 	if (fp == NULL)
 		return;
@@ -124,8 +152,9 @@ static void debug(const gchar * fmt, ...)
 	buff = g_strdup_vprintf(fmt, ap);
 	va_end(ap);
 
+	len = strlen(buff);
 	for (idx = 0; idx < len; idx++) {
-		if (isprint(buff[idx]) || idx == strlen(buff) - 1)
+		if (isprint(buff[idx]) || idx == len - 1)
 			fputc(buff[idx], fp);
 		else
 			switch (buff[idx]) {
@@ -147,9 +176,10 @@ static void debug(const gchar * fmt, ...)
 			}
 	}
 	fflush(fp);
+
+	debug(buff);
 	g_free(buff);
 }
-#endif
 
 static void find_new_max_fd(void)
 {
@@ -167,8 +197,23 @@ static void find_new_max_fd(void)
 static void client_free(Client * client)
 {
 	if (client->type == META_SERVER)
-		syslog(LOG_INFO, "server on port %s unregistered",
-		       client->port);
+		my_syslog(LOG_INFO, "server %s on port %s unregistered",
+			  client->host, client->port);
+
+	if (client->host != NULL)
+		g_free(client->host);
+	if (client->port != NULL)
+		g_free(client->port);
+	if (client->version != NULL)
+		g_free(client->version);
+	if (client->terrain != NULL)
+		g_free(client->terrain);
+	if (client->title != NULL)
+		g_free(client->title);
+	if (client->vpoints != NULL)
+		g_free(client->vpoints);
+	if (client->sevenrule != NULL)
+		g_free(client->sevenrule);
 	g_free(client);
 }
 
@@ -193,19 +238,6 @@ static void client_close(Client * client)
 
 	client->waiting_for_close = FALSE;
 	client->fd = -1;
-
-	if (client->host != NULL)
-		g_free(client->host);
-	if (client->version != NULL)
-		g_free(client->version);
-	if (client->terrain != NULL)
-		g_free(client->terrain);
-	if (client->title != NULL)
-		g_free(client->title);
-	if (client->vpoints != NULL)
-		g_free(client->vpoints);
-	if (client->sevenrule != NULL)
-		g_free(client->sevenrule);
 }
 
 static void client_hello(Client * client)
@@ -216,7 +248,6 @@ static void client_hello(Client * client)
 static void set_client_event_at(Client * client)
 {
 	time_t now = time(NULL);
-
 	client->event_func = client_close;
 	switch (client->type) {
 	case META_UNKNOWN:
@@ -227,11 +258,8 @@ static void set_client_event_at(Client * client)
 		break;
 	case META_SERVER_ALMOST:
 	case META_SERVER:
-		if (client->send_hello) {
-			client->event_at = now + HELLO_TIMEOUT;
-			client->event_func = client_hello;
-		} else
-			client->event_at = now + SERVER_TIMEOUT;
+		client->event_at = now + HELLO_TIMEOUT;
+		client->event_func = client_hello;
 		break;
 	}
 }
@@ -244,15 +272,14 @@ static void client_do_write(Client * client)
 		int num;
 
 		num = write(client->fd, data, len);
-#ifdef LOG
-		debug("client_do_write: write(%d, \"%.*s\", %d) = %d\n",
-		      client->fd, len, data, len, num);
-#endif
+		meta_debug
+		    ("client_do_write: write(%d, \"%.*s\", %d) = %d\n",
+		     client->fd, len, data, len, num);
 		if (num < 0) {
 			if (errno == EAGAIN)
 				break;
-			syslog(LOG_ERR, "writing socket: %s",
-			       g_strerror(errno));
+			my_syslog(LOG_ERR, "writing socket: %s",
+				  g_strerror(errno));
 			client_close(client);
 			return;
 		} else if (num == len) {
@@ -554,8 +581,8 @@ static void client_create_new_server(Client * client, gchar * line)
 
 	if (!g_spawn_async(NULL, child_argv, NULL, spawn_flags, NULL, NULL,
 			   NULL, &error)) {
-		syslog(LOG_ERR, "cannot exec %s: %s", console_server,
-		       error->message);
+		my_syslog(LOG_ERR, "cannot exec %s: %s", console_server,
+			  error->message);
 		g_error_free(error);
 	}
 	for (n = 0; child_argv[n] != NULL; n++)
@@ -564,7 +591,7 @@ static void client_create_new_server(Client * client, gchar * line)
 	client_printf(client, "host=%s\n", myhostname);
 	client_printf(client, "port=%s\n", port);
 	client_printf(client, "started\n");
-	syslog(LOG_INFO, "new server started on port %s", port);
+	my_syslog(LOG_INFO, "new local server started on port %s", port);
 	g_free(port);
 	return;
       bad:
@@ -601,15 +628,15 @@ static gboolean check_int_info(gchar * line, const gchar * prefix,
 
 static void try_make_server_complete(Client * client)
 {
-	int ok = 0;
+	gboolean ok = FALSE;
 
 	if (client->type == META_SERVER) {
-		static int prev_curr = -1;
-		if (client->curr != prev_curr) {
-			syslog(LOG_INFO,
-			       "server on port %s: now %d players",
-			       client->port, client->curr);
-			prev_curr = client->curr;
+		if (client->curr != client->previous_curr) {
+			my_syslog(LOG_INFO,
+				  "server %s on port %s: now %d of %d players",
+				  client->host, client->port, client->curr,
+				  client->max);
+			client->previous_curr = client->curr;
 		}
 		return;
 	}
@@ -625,17 +652,19 @@ static void try_make_server_complete(Client * client)
 				client->vpoints = g_strdup("?");
 			if (!client->sevenrule)
 				client->sevenrule = g_strdup("?");
-			ok = 1;
+			ok = TRUE;
 		} else {
 			if (client->vpoints != NULL
 			    && client->sevenrule != NULL)
-				ok = 1;
+				ok = TRUE;
 		}
 	}
 
 	if (ok) {
 		client->type = META_SERVER;
-		client->send_hello = strcmp(client->version, "0.3.0") >= 0;
+		my_syslog(LOG_INFO,
+			  "server %s on port %s registered",
+			  client->host, client->port);
 	}
 }
 
@@ -644,7 +673,7 @@ static void get_peer_name(gint fd, gchar ** hostname, gchar ** servname)
 	gchar *error_message;
 
 	if (!net_get_peer_name(fd, hostname, servname, &error_message)) {
-		syslog(LOG_ERR, "%s", error_message);
+		my_syslog(LOG_ERR, "%s", error_message);
 		g_free(error_message);
 	}
 }
@@ -679,6 +708,7 @@ static void client_process_line(Client * client, gchar * line)
 		} else if (strcmp(line, "server") == 0) {
 			client->type = META_SERVER_ALMOST;
 			client->max = client->curr = -1;
+			client->previous_curr = -1;
 			get_peer_name(client->fd, &client->host,
 				      &client->port);
 		} else if (strcmp(line, "capability") == 0) {
@@ -731,30 +761,29 @@ static void client_do_read(Client * client)
 		/* We are in trouble now - something has gone
 		 * seriously wrong.
 		 */
-		syslog(LOG_ERR, "read buffer overflow - disconnecting");
+		my_syslog(LOG_ERR, "read buffer overflow - disconnecting");
 		client_close(client);
 		return;
 	}
 
 	num = read(client->fd, client->read_buff + client->read_len,
 		   sizeof(client->read_buff) - client->read_len);
-#ifdef LOG
-	debug("client_do_read: read(%d, %d) = %d",
-	      client->fd, sizeof(client->read_buff) - client->read_len,
-	      num);
-	if (num > 0)
-		debug(", \"%.*s\"",
-		      num, client->read_buff + client->read_len);
-	debug("\n");
-#endif
-	if (num < 0) {
+
+	if (num > 0) {
+		meta_debug("client_do_read: read(%d, %d) = %d, \"%.*s\"\n",
+			   client->fd,
+			   sizeof(client->read_buff) - client->read_len,
+			   num, num, client->read_buff + client->read_len);
+	} else if (num < 0) {
 		if (errno == EAGAIN)
 			return;
-		syslog(LOG_ERR, "reading socket: %s", g_strerror(errno));
+		my_syslog(LOG_ERR, "reading socket: %s",
+			  g_strerror(errno));
 		client_close(client);
 		return;
-	}
-	if (num == 0) {
+	} else {
+		meta_debug("client_do_read: EOF seen on fd %d\n",
+			   client->fd);
 		client_close(client);
 		return;
 	}
@@ -798,7 +827,7 @@ static void accept_new_client(void)
 
 	fd = net_accept(accept_fd, &error_message);
 	if (fd < 0) {
-		syslog(LOG_ERR, "%s", error_message);
+		my_syslog(LOG_ERR, "%s", error_message);
 		g_free(error_message);
 		return;
 	}
@@ -899,8 +928,9 @@ static void select_loop(void)
 			if (errno == EINTR)
 				continue;
 			else {
-				syslog(LOG_ALERT, "could not select: %s",
-				       g_strerror(errno));
+				my_syslog(LOG_ALERT,
+					  "could not select: %s",
+					  g_strerror(errno));
 				exit(1);
 			}
 		}
@@ -943,7 +973,7 @@ static gboolean setup_accept_sock(const gchar * port)
 
 	fd = net_open_listening_socket(port, &error_message);
 	if (fd == -1) {
-		syslog(LOG_ERR, "%s", error_message);
+		my_syslog(LOG_ERR, "%s", error_message);
 		g_free(error_message);
 		return FALSE;
 	}
@@ -958,7 +988,8 @@ static void convert_to_daemon(void)
 
 	pid = fork();
 	if (pid < 0) {
-		syslog(LOG_ALERT, "could not fork: %s", g_strerror(errno));
+		my_syslog(LOG_ALERT, "could not fork: %s",
+			  g_strerror(errno));
 		exit(1);
 	}
 	if (pid != 0)
@@ -970,60 +1001,95 @@ static void convert_to_daemon(void)
 	/* Create a new session to become a process group leader
 	 */
 	if (setsid() < 0) {
-		syslog(LOG_ALERT, "could not setsid: %s",
-		       g_strerror(errno));
+		my_syslog(LOG_ALERT, "could not setsid: %s",
+			  g_strerror(errno));
 		exit(1);
 	}
 	if (chdir("/") < 0) {
-		syslog(LOG_ALERT, "could not chdir to /: %s",
-		       g_strerror(errno));
+		my_syslog(LOG_ALERT, "could not chdir to /: %s",
+			  g_strerror(errno));
 		exit(1);
 	}
 	umask(0);
 }
 
+static GOptionEntry commandline_entries[] = {
+	{"daemon", 'd', 0, G_OPTION_ARG_NONE, &make_daemon,
+	 /* Commandline meta-server: daemon */
+	 N_("Daemonize the metaserver on start"), NULL},
+	{"redirect", 'r', 0, G_OPTION_ARG_STRING, &redirect_location,
+	 /* Commandline meta-server: redirect */
+	 N_("Redirect clients to another metaserver"), NULL},
+	{"servername", 's', 0, G_OPTION_ARG_STRING, &myhostname,
+	 /* Commandline meta-server: server */
+	 N_("Use this hostname when creating new games"),
+	 /* Commandline meta-server: server argument */
+	 N_("hostname")},
+	{"port-range", 'p', 0, G_OPTION_ARG_STRING, &port_range,
+	 /* Commandline meta-server: port-range */
+	 N_("Use this ports range when creating new games"),
+	 /* Commandline meta-server: port-range argument */
+	 N_("from-to")},
+	{"debug", '\0', 0, G_OPTION_ARG_NONE, &enable_debug,
+	 /* Commandline option of meta server: enable debug logging */
+	 N_("Enable debug messages"), NULL},
+	{"syslog-debug", '\0', 0, G_OPTION_ARG_NONE, &enable_syslog_debug,
+	 /* Commandline option of meta server: syslog-debug */
+	 N_("Debug syslog messages"), NULL},
+	{"version", '\0', 0, G_OPTION_ARG_NONE, &show_version,
+	 /* Commandline option of meta server: version */
+	 N_("Show version information"), NULL},
+	{NULL, '\0', 0, 0, NULL, NULL, NULL}
+};
+
 int main(int argc, char *argv[])
 {
-	int c, count;
-	gboolean make_daemon = FALSE;
+	GOptionContext *context;
+	GError *error = NULL;
 	GList *game_list;
 
-	while ((c = getopt(argc, argv, "dr:hs:p:")) != EOF)
-		switch (c) {
-		case 'd':
-			make_daemon = TRUE;
-			break;
-		case 'r':
-			redirect_location = optarg;
-			break;
-		case 'h':
-			printf("Usage: pioneers-meta-server [options]\n");
-			printf("Options:\n");
-			printf
-			    ("  -h               Display this help text\n");
-			printf
-			    ("  -d               Daemonize the metaserver on start\n");
-			printf
-			    ("  -r <server>      Redirect clients to another metaserver\n");
-			printf
-			    ("  -s <hostname>    Use this hostname when creating new games\n");
-			printf
-			    ("  -p <from>-<to>   Use this ports range when creating new games\n");
-			exit(1);
-			break;
-		case 's':
-			myhostname = g_strdup(optarg);
-			break;
-		case 'p':
-			count =
-			    sscanf(optarg, "%d-%d", &port_low, &port_high);
-			if ((port_low < 0) || (port_low > port_high)
-			    || (count != 2)) {
-				port_low = 0;
-				port_high = 0;
-			}
-			break;
+	setlocale(LC_ALL, "");
+	bindtextdomain(PACKAGE, LOCALEDIR);
+	textdomain(PACKAGE);
+
+	/* have gettext return strings in UTF-8 */
+	bind_textdomain_codeset(PACKAGE, "UTF-8");
+
+	/* Long description in the commandline for server-console: help */
+	context = g_option_context_new(_("- Meta server for Pioneers"));
+	g_option_context_add_main_entries(context,
+					  commandline_entries, PACKAGE);
+	g_option_context_parse(context, &argc, &argv, &error);
+	if (error != NULL) {
+		g_print("%s\n", error->message);
+		g_error_free(error);
+		return 1;
+	};
+
+	if (show_version) {
+		g_print(_("Pioneers version:"));
+		g_print(" ");
+		g_print(FULL_VERSION);
+		g_print(", ");
+		g_print(_("metaserver protocol:"));
+		g_print(" ");
+		g_print(META_PROTOCOL_VERSION);
+		g_print("\n");
+		return 0;
+	}
+	set_enable_debug(enable_debug);
+
+	if (port_range) {
+		gint count;
+
+		count = sscanf(port_range, "%d-%d", &port_low, &port_high);
+		if ((count != 2) || (port_low < 0)
+		    || (port_low > port_high)) {
+			g_print("Port range '%s' is not valid\n",
+				port_range);
+			return 1;
 		}
+	}
 
 	net_init();
 	openlog("pioneers-meta", LOG_PID, LOG_USER);
@@ -1049,7 +1115,7 @@ int main(int argc, char *argv[])
 	if (!setup_accept_sock(PIONEERS_DEFAULT_META_PORT))
 		return 1;
 
-	syslog(LOG_INFO, "Pioneers meta server started.");
+	my_syslog(LOG_INFO, "Pioneers meta server started.");
 	select_loop();
 
 	net_finish();
