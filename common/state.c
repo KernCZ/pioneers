@@ -537,6 +537,10 @@ static void do_goto(StateMachine * sm, StateFunc new_state, gboolean enter)
 		route_event(sm, SM_ENTER);
 	route_event(sm, SM_INIT);
 
+#ifdef STACK_DEBUG
+	debug("sm_goto  -> %d:%s", sm->stack_ptr, sm->current_state);
+#endif
+
 	sm_dec_use_count(sm);
 }
 

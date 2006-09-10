@@ -89,6 +89,8 @@ struct Game {
 	Player *largest_army;	/* who has largest army */
 
 	QuoteList *quotes;	/* domestic trade quotes */
+	gint quote_supply[NO_RESOURCE];	/* only valid when trading */
+	gint quote_receive[NO_RESOURCE];	/* only valid when trading */
 
 	gint curr_player;	/* whose turn is it? */
 	gint curr_turn;		/* current turn number */

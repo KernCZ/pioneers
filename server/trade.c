@@ -284,6 +284,12 @@ static void process_call_domestic(Player * player, gint * supply,
 {
 	Game *game = player->game;
 	GList *list;
+	gint i;
+
+	for (i = 0; i < NO_RESOURCE; i++) {
+		game->quote_supply[i] = supply[i];
+		game->quote_receive[i] = receive[i];
+	}
 
 	player_broadcast(player, PB_RESPOND,
 			 "domestic-trade call supply %R receive %R\n",

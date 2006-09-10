@@ -722,6 +722,51 @@ gboolean mode_pre_game(Player * player, gint event)
 					player->gold, limited_bank);
 			}
 
+			/* Trade was in progress */
+			if (game->curr_player != -1 &&
+			    (StateFunc) mode_domestic_initiate ==
+			    sm_stack_inspect(player_by_num
+					     (game, game->curr_player)->sm,
+					     0)) {
+				QuoteInfo *quote =
+				    quotelist_first(game->quotes);
+
+				sm_send(sm,
+					"player %d domestic-trade call supply %R receive %R\n",
+					game->curr_player,
+					game->quote_supply,
+					game->quote_receive);
+				while (quote) {
+					if (quote->is_domestic) {
+						sm_send(sm,
+							"player %d domestic-quote quote %d supply %R receive %R\n",
+							quote->var.d.
+							player_num,
+							quote->var.d.
+							quote_num,
+							quote->var.d.
+							supply,
+							quote->var.d.
+							receive);
+					}
+					quote = quotelist_next(quote);
+				}
+				/* The player already rejected all quotes,
+				 * send reject again */
+				if (state !=
+				    (StateFunc) mode_domestic_quote) {
+					sm_send(sm,
+						"player %d domestic-quote finish\n",
+						player->num);
+					/* Restore the stack */
+					sm_goto_noenter(player->sm,
+							(StateFunc)
+							mode_wait_quote_exit);
+					sm_push_noenter(player->sm,
+							(StateFunc)
+							mode_pre_game);
+				}
+			}
 			g_free(sm);
 			sm = player->sm;
 			sm_set_use_cache(sm, FALSE);

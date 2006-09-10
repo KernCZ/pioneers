@@ -460,8 +460,10 @@ void player_archive(Player * player)
 	   machine and inform others as necessary */
 	state = sm_current(player->sm);
 	if (state == (StateFunc) mode_wait_quote_exit) {
+		/* Fake the acknowledgement */
 		sm_pop(player->sm);
 	} else if (state == (StateFunc) mode_domestic_quote) {
+		/* Retract all quotes */
 		for (;;) {
 			QuoteInfo *quote;
 			quote = quotelist_find_domestic(game->quotes,
@@ -469,12 +471,12 @@ void player_archive(Player * player)
 			if (quote == NULL)
 				break;
 			quotelist_delete(game->quotes, quote);
+			player_broadcast(player, PB_RESPOND,
+					 "domestic-quote delete %d\n",
+					 quote->var.d.quote_num);
 		}
-		player_broadcast(player, PB_RESPOND,
-				 "domestic-quote finish\n");
-
-		sm_pop(player->sm);
 	} else if (state == (StateFunc) mode_domestic_initiate) {
+		/* End the trade */
 		trade_finish_domestic(player);
 	}
 
