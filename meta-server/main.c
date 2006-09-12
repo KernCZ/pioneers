@@ -56,6 +56,7 @@ struct _Client {
 	gint fd;
 	time_t event_at;	/* when is the next timeout for this client? */
 	void (*event_func) (Client * client);
+	gboolean read_anything;	/* Is anything read since the last event? */
 
 	char read_buff[16 * 1024];
 	int read_len;
@@ -242,7 +243,15 @@ static void client_close(Client * client)
 
 static void client_hello(Client * client)
 {
-	client_printf(client, "hello\n");
+	if (client->read_anything) {
+		client_printf(client, "hello\n");
+		client->read_anything = FALSE;
+	} else {
+		my_syslog(LOG_INFO,
+			  "server %s on port %s did not respond, deregistering",
+			  client->host, client->port);
+		client_close(client);
+	}
 }
 
 static void set_client_event_at(Client * client)
@@ -428,6 +437,7 @@ static void client_list_capability(Client * client)
 	/** @todo RC 2005-01-30 Implement this in the metaserver */
 	if (FALSE)
 		client_printf(client, "send game settings\n");
+	client_printf(client, "deregister dead connections\n");
 	client_printf(client, "end\n");
 }
 
@@ -774,6 +784,7 @@ static void client_do_read(Client * client)
 			   client->fd,
 			   sizeof(client->read_buff) - client->read_len,
 			   num, num, client->read_buff + client->read_len);
+		client->read_anything = TRUE;
 	} else if (num < 0) {
 		if (errno == EAGAIN)
 			return;

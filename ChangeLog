@@ -1,5 +1,10 @@
 // File encoding: utf8. Enter ChangeLog entries below this line
 
+2006-09-12  Roland Clobus <rclobus@bigfoot.com>
+	* server/meta.c, meta-server/main.c: Meta server disconnects
+	unresponsive servers. Server shows a message when the meta server
+	disconnects.
+
 2006-09-10  Bas Wijnen <wijnen@debian.org>
 	* common/game.c: Treat errors in files as end-of-file, and an
 	incomplete line at the end as a complete line.

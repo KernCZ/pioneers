@@ -162,17 +162,10 @@ static void meta_event(NetEvent event, Game * game, char *line)
 			meta_mode = MODE_SERVER_LIST;
 			meta_send_details(game);
 			break;
-
-		case MODE_SERVER_LIST:
-			if (strcmp(line, "hello") == 0)
-				net_printf(ses, "yes\n");
-			break;
 		}
 		break;
 	case NET_CLOSE:
-		if (meta_mode == MODE_SIGNON)
-			log_message(MSG_ERROR,
-				    _("Meta-server kicked us off\n"));
+		log_message(MSG_ERROR, _("Meta-server kicked us off\n"));
 		net_free(&ses);
 		break;
 	case NET_CONNECT:
