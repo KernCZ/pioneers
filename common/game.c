@@ -462,6 +462,9 @@ GameParams *params_copy(const GameParams * params)
 	gint idx;
 	gchar *buff;
 
+	if (params == NULL)
+		return NULL;
+
 	memcpy(&nonconst, params, sizeof(GameParams));
 	copy = params_new();
 	copy->map = map_copy(params->map);

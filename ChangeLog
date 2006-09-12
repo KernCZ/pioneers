@@ -6,6 +6,7 @@
 	disconnects.
 	* client/gtk/interface.c: Don't change GUI state when a second quote
 	is issued.
+	* common/game.c: Return NULL pointer when game not found.
 
 2006-09-10  Bas Wijnen <wijnen@debian.org>
 	* common/game.c: Treat errors in files as end-of-file, and an
