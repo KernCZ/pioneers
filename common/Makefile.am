@@ -64,7 +64,7 @@ common/authors.h: AUTHORS
 build_version:
 	@mkdir_p@ common
 	echo -n '#define FULL_VERSION "$(VERSION)' >> common/version.new
-	if svn info &>/dev/null ; then					\
+	if svn info > /dev/null 2>&1; then				\
 		echo -n ".r`svn info | grep Revision | cut -f2 -d\ `"	\
 			>> common/version.new				;\
 		if svn status | grep -vq ^\? ; then			\
@@ -72,7 +72,7 @@ build_version:
 		fi							;\
 	fi
 	echo '"' >> common/version.new
-	if diff common/version.h common/version.new &>/dev/null ; then	\
+	if diff common/version.h common/version.new > /dev/null 2>&1; then \
 		rm common/version.new					;\
 	else								\
 		mv common/version.new common/version.h			;\

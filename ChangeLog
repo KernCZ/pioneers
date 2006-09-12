@@ -1,5 +1,8 @@
 // File encoding: utf8. Enter ChangeLog entries below this line
 
+2006-09-12  Stefan Walter <sw@gegenunendlich.de>
+	* common/Makefile.am: Creation of version.h compatible with FreeBSD.
+
 2006-09-12  Roland Clobus <rclobus@bigfoot.com>
 	* server/meta.c, meta-server/main.c: Meta server disconnects
 	unresponsive servers. Server shows a message when the meta server
