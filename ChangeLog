@@ -4,6 +4,8 @@
 	* server/meta.c, meta-server/main.c: Meta server disconnects
 	unresponsive servers. Server shows a message when the meta server
 	disconnects.
+	* client/gtk/interface.c: Don't change GUI state when a second quote
+	is issued.
 
 2006-09-10  Bas Wijnen <wijnen@debian.org>
 	* common/game.c: Treat errors in files as end-of-file, and an

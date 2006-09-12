@@ -250,7 +250,6 @@ void frontend_quote_start(void)
 
 void frontend_quote_monitor(void)
 {
-	set_gui_state(frontend_state_idle);
 }
 
 static gboolean check_road(MapElement element, gint owner,
