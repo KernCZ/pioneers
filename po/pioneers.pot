@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-26 23:21+0200\n"
+"POT-Creation-Date: 2006-09-13 07:57+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -59,10 +59,11 @@ msgstr ""
 
 #. Commandline option of ai: enable debug logging
 #. Commandline option of client: enable debug logging
+#. Commandline option of meta server: enable debug logging
 #. Commandline option of server-gtk: enable debug logging
 #. Commandline option of server: enable debug logging
-#: ../client/ai/ai.c:118 ../client/gtk/offline.c:73 ../server/gtk/main.c:815
-#: ../server/main.c:135
+#: ../client/ai/ai.c:118 ../client/gtk/offline.c:73 ../meta-server/main.c:1046
+#: ../server/gtk/main.c:815 ../server/main.c:135
 msgid "Enable debug messages"
 msgstr ""
 
@@ -392,7 +393,7 @@ msgid "Waiting for your turn"
 msgstr ""
 
 #: ../client/common/client.c:1472 ../client/common/client.c:1497
-#: ../client/gtk/interface.c:765
+#: ../client/gtk/interface.c:764
 msgid "Place the robber"
 msgstr ""
 
@@ -910,7 +911,7 @@ msgid "Finished.\n"
 msgstr ""
 
 #: ../client/gtk/connect.c:295 ../client/gtk/connect.c:345
-#: ../client/gtk/connect.c:442 ../server/meta.c:175
+#: ../client/gtk/connect.c:442 ../server/meta.c:168
 msgid "Meta-server kicked us off\n"
 msgstr ""
 
@@ -968,7 +969,7 @@ msgstr ""
 msgid "Random"
 msgstr ""
 
-#: ../client/gtk/connect.c:639 ../server/meta.c:189
+#: ../client/gtk/connect.c:639 ../server/meta.c:182
 #, c-format
 msgid "Redirected to meta-server at %s, port %s\n"
 msgstr ""
@@ -1548,19 +1549,19 @@ msgstr ""
 msgid "Select a new location for the ship."
 msgstr ""
 
-#: ../client/gtk/interface.c:720
+#: ../client/gtk/interface.c:719
 msgid "Select the ship to steal from."
 msgstr ""
 
-#: ../client/gtk/interface.c:722
+#: ../client/gtk/interface.c:721
 msgid "Select the ship to steal from"
 msgstr ""
 
-#: ../client/gtk/interface.c:739
+#: ../client/gtk/interface.c:738
 msgid "Select the building to steal from."
 msgstr ""
 
-#: ../client/gtk/interface.c:741
+#: ../client/gtk/interface.c:740
 msgid "Select the building to steal from"
 msgstr ""
 
@@ -2545,6 +2546,59 @@ msgstr ""
 msgid "Resource Count"
 msgstr ""
 
+#. Commandline meta-server: daemon
+#: ../meta-server/main.c:1030
+msgid "Daemonize the metaserver on start"
+msgstr ""
+
+#. Commandline meta-server: redirect
+#: ../meta-server/main.c:1033
+msgid "Redirect clients to another metaserver"
+msgstr ""
+
+#. Commandline meta-server: server
+#: ../meta-server/main.c:1036
+msgid "Use this hostname when creating new games"
+msgstr ""
+
+#. Commandline meta-server: server argument
+#: ../meta-server/main.c:1038
+msgid "hostname"
+msgstr ""
+
+#. Commandline meta-server: port-range
+#: ../meta-server/main.c:1041
+msgid "Use this ports range when creating new games"
+msgstr ""
+
+#. Commandline meta-server: port-range argument
+#: ../meta-server/main.c:1043
+msgid "from-to"
+msgstr ""
+
+#. Commandline option of meta server: syslog-debug
+#: ../meta-server/main.c:1049
+msgid "Debug syslog messages"
+msgstr ""
+
+#. Commandline option of meta server: version
+#: ../meta-server/main.c:1052
+msgid "Show version information"
+msgstr ""
+
+#. Long description in the commandline for server-console: help
+#: ../meta-server/main.c:1070
+msgid "- Meta server for Pioneers"
+msgstr ""
+
+#: ../meta-server/main.c:1081
+msgid "Pioneers version:"
+msgstr ""
+
+#: ../meta-server/main.c:1085
+msgid "metaserver protocol:"
+msgstr ""
+
 #: ../server/gtk/main.c:90
 msgid "_About Pioneers Server"
 msgstr ""
@@ -2829,12 +2883,12 @@ msgstr ""
 msgid "Miscellaneous options"
 msgstr ""
 
-#: ../server/meta.c:194
+#: ../server/meta.c:187
 #, c-format
 msgid "Register with meta-server at %s, port %s\n"
 msgstr ""
 
-#: ../server/meta.c:211
+#: ../server/meta.c:204
 msgid "Unregister from meta-server\n"
 msgstr ""
 
@@ -2882,12 +2936,12 @@ msgid "Name not changed: new name is already in use"
 msgstr ""
 
 #. %s is the name of the reconnecting player
-#: ../server/player.c:612
+#: ../server/player.c:614
 #, c-format
 msgid "%s has reconnected."
 msgstr ""
 
-#: ../server/player.c:704
+#: ../server/player.c:706
 #, c-format
 msgid "Version mismatch: %s"
 msgstr ""

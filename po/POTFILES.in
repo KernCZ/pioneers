@@ -42,6 +42,7 @@ editor/gtk/game-buildings.c
 editor/gtk/game-devcards.c
 editor/gtk/game-parameters.c
 editor/gtk/game-resources.c
+meta-server/main.c
 server/admin.c
 server/gtk/main.c
 server/main.c

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pioneers 0.9.61\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-26 23:21+0200\n"
+"POT-Creation-Date: 2006-09-13 07:57+0200\n"
 "PO-Revision-Date: 2006-04-08 18:53+0200\n"
 "Last-Translator: Ferenc Bánhidi <bferike@mailbox.hu>\n"
 "Language-Team: Hungarian <bferike@mailbox.hu>\n"
@@ -60,10 +60,11 @@ msgstr ""
 
 #. Commandline option of ai: enable debug logging
 #. Commandline option of client: enable debug logging
+#. Commandline option of meta server: enable debug logging
 #. Commandline option of server-gtk: enable debug logging
 #. Commandline option of server: enable debug logging
-#: ../client/ai/ai.c:118 ../client/gtk/offline.c:73 ../server/gtk/main.c:815
-#: ../server/main.c:135
+#: ../client/ai/ai.c:118 ../client/gtk/offline.c:73 ../meta-server/main.c:1046
+#: ../server/gtk/main.c:815 ../server/main.c:135
 msgid "Enable debug messages"
 msgstr ""
 
@@ -393,7 +394,7 @@ msgid "Waiting for your turn"
 msgstr "Várj a körödre."
 
 #: ../client/common/client.c:1472 ../client/common/client.c:1497
-#: ../client/gtk/interface.c:765
+#: ../client/gtk/interface.c:764
 msgid "Place the robber"
 msgstr "Helyezd el a rablót"
 
@@ -912,7 +913,7 @@ msgid "Finished.\n"
 msgstr "Kész.\n"
 
 #: ../client/gtk/connect.c:295 ../client/gtk/connect.c:345
-#: ../client/gtk/connect.c:442 ../server/meta.c:175
+#: ../client/gtk/connect.c:442 ../server/meta.c:168
 msgid "Meta-server kicked us off\n"
 msgstr "A meta szerver kirúgott minket\n"
 
@@ -970,7 +971,7 @@ msgstr "Alapértelmezett"
 msgid "Random"
 msgstr "Véletlen"
 
-#: ../client/gtk/connect.c:639 ../server/meta.c:189
+#: ../client/gtk/connect.c:639 ../server/meta.c:182
 #, c-format
 msgid "Redirected to meta-server at %s, port %s\n"
 msgstr "Átirányítva %s meta szerverhez, %s portra\n"
@@ -1553,25 +1554,25 @@ msgstr "Hajó mozgás törölve."
 msgid "Select a new location for the ship."
 msgstr "Válaszd ki a hajó új helyét."
 
-#: ../client/gtk/interface.c:720
+#: ../client/gtk/interface.c:719
 msgid "Select the ship to steal from."
 msgstr ""
 "Válaszd ki a hajót\n"
 "akitõl lopni szeretnél."
 
-#: ../client/gtk/interface.c:722
+#: ../client/gtk/interface.c:721
 msgid "Select the ship to steal from"
 msgstr ""
 "Válaszd ki a hajót\n"
 "akitõl lopni szeretnél"
 
-#: ../client/gtk/interface.c:739
+#: ../client/gtk/interface.c:738
 msgid "Select the building to steal from."
 msgstr ""
 "Válaszd ki az épüetet\n"
 "akitõl lopni szeretnél."
 
-#: ../client/gtk/interface.c:741
+#: ../client/gtk/interface.c:740
 msgid "Select the building to steal from"
 msgstr ""
 "Válaszd ki az épületet\n"
@@ -2582,6 +2583,59 @@ msgstr "Játékosok közötti kereskedés"
 msgid "Resource Count"
 msgstr "Nyersanyagok száma"
 
+#. Commandline meta-server: daemon
+#: ../meta-server/main.c:1030
+msgid "Daemonize the metaserver on start"
+msgstr ""
+
+#. Commandline meta-server: redirect
+#: ../meta-server/main.c:1033
+msgid "Redirect clients to another metaserver"
+msgstr ""
+
+#. Commandline meta-server: server
+#: ../meta-server/main.c:1036
+msgid "Use this hostname when creating new games"
+msgstr ""
+
+#. Commandline meta-server: server argument
+#: ../meta-server/main.c:1038
+msgid "hostname"
+msgstr ""
+
+#. Commandline meta-server: port-range
+#: ../meta-server/main.c:1041
+msgid "Use this ports range when creating new games"
+msgstr ""
+
+#. Commandline meta-server: port-range argument
+#: ../meta-server/main.c:1043
+msgid "from-to"
+msgstr ""
+
+#. Commandline option of meta server: syslog-debug
+#: ../meta-server/main.c:1049
+msgid "Debug syslog messages"
+msgstr ""
+
+#. Commandline option of meta server: version
+#: ../meta-server/main.c:1052
+msgid "Show version information"
+msgstr ""
+
+#. Long description in the commandline for server-console: help
+#: ../meta-server/main.c:1070
+msgid "- Meta server for Pioneers"
+msgstr ""
+
+#: ../meta-server/main.c:1081
+msgid "Pioneers version:"
+msgstr ""
+
+#: ../meta-server/main.c:1085
+msgid "metaserver protocol:"
+msgstr ""
+
 #: ../server/gtk/main.c:90
 msgid "_About Pioneers Server"
 msgstr "_Pioneers szerverrõl"
@@ -2872,12 +2926,12 @@ msgstr ""
 msgid "Miscellaneous options"
 msgstr ""
 
-#: ../server/meta.c:194
+#: ../server/meta.c:187
 #, c-format
 msgid "Register with meta-server at %s, port %s\n"
 msgstr "Regisztrálás a meta szerverrel %s, port %s\n"
 
-#: ../server/meta.c:211
+#: ../server/meta.c:204
 msgid "Unregister from meta-server\n"
 msgstr "Ismeretlen üzenet a metaszervertõl\n"
 
@@ -2925,12 +2979,12 @@ msgid "Name not changed: new name is already in use"
 msgstr "Név nincs megváltoztatva: az új név már használatban"
 
 #. %s is the name of the reconnecting player
-#: ../server/player.c:612
+#: ../server/player.c:614
 #, fuzzy, c-format
 msgid "%s has reconnected."
 msgstr "%s újra csatlakozott."
 
-#: ../server/player.c:704
+#: ../server/player.c:706
 #, fuzzy, c-format
 msgid "Version mismatch: %s"
 msgstr "Eltérõ verzió: %s"
