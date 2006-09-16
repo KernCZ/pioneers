@@ -1,6 +1,9 @@
 // File encoding: utf8. Enter ChangeLog entries below this line
 
 2006-09-16  Roland Clobus <rclobus@bigfoot.com>
+	* configure.ac: Subversion repository is at 0.10.3.
+
+2006-09-16  Roland Clobus <rclobus@bigfoot.com>
 	* Released version 0.10.2
 
 2006-09-16  Roland Clobus <rclobus@bigfoot.com>
