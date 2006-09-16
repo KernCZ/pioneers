@@ -2,6 +2,8 @@
 
 2006-09-16  Roland Clobus <rclobus@bigfoot.com>
 	* configure.ac: Subversion repository is at 0.10.3.
+	* server/gtk/Makefile.am, server/gtk/pioneers-server.rc: Add Windows
+	icon for the server.
 
 2006-09-16  Roland Clobus <rclobus@bigfoot.com>
 	* Released version 0.10.2
