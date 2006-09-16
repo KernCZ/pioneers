@@ -246,7 +246,7 @@ Player *player_new(Game * game, int fd, gchar * location)
 	if (i == G_N_ELEMENTS(name) - 1) {
 		/* there are too many pending connections */
 		write(fd, "ERR Too many connections\n", 25);
-		close(fd);
+		net_closesocket(fd);
 		return NULL;
 	}
 

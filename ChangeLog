@@ -3,6 +3,10 @@
 2006-09-16  Roland Clobus <rclobus@bigfoot.com>
 	* editor/gtk/editor.c, server/gtk/main.c, server/main.c,
 	client/gtk/offline.c, client/ai/ai.c: Added --version.
+	* common/network.h, common/network.c, meta-server/main.c,
+	server/player.c, server/server.c, server/server.h, server/admin.c: Use
+	net_closesocket to close a socket (Windows port closes sockets
+	differently).
 
 2006-09-12  Stefan Walter <sw@gegenunendlich.de>
 	* common/Makefile.am: Creation of version.h compatible with FreeBSD.

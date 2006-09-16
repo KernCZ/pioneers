@@ -203,7 +203,6 @@ gboolean server_startup(const GameParams * params, const gchar * hostname,
 gboolean server_stop(void);
 gboolean server_is_running(void);
 gint accept_connection(gint in_fd, gchar ** location);
-gint open_listen_socket(const gchar * port);
 void server_cleanup_static_data(void);
 
 /**** game list control functions ****/

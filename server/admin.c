@@ -225,12 +225,20 @@ void admin_connect(comm_info * admin_info)
 /* set up the administration port */
 void admin_listen(const gchar * port)
 {
+	gchar *error_message;
+
 	if (!_accept_info) {
 		_accept_info = g_malloc0(sizeof(comm_info));
 	}
 
 	/* open up a socket on which to listen for connections */
-	_accept_info->fd = open_listen_socket(port);
+	_accept_info->fd = net_open_listening_socket(port, &error_message);
+	if (_accept_info->fd == -1) {
+		log_message(MSG_ERROR, "%s\n", error_message);
+		g_free(error_message);
+		return;
+	}
+
 #ifdef PRINT_INFO
 	g_print("admin_listen: fd = %d\n", _accept_info->fd);
 #endif

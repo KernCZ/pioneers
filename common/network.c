@@ -162,7 +162,7 @@ void net_close(Session * ses)
 	if (ses->fd >= 0) {
 		listen_read(ses, FALSE);
 		listen_write(ses, FALSE);
-		close(ses->fd);
+		net_closesocket(ses->fd);
 		ses->fd = -1;
 
 		while (ses->write_queue != NULL) {
@@ -564,7 +564,7 @@ gboolean net_connect(Session * ses, const gchar * host, const gchar * port)
 				    _
 				    ("Error setting socket close-on-exec: %s\n"),
 				    g_strerror(errno));
-			close(ses->fd);
+			net_closesocket(ses->fd);
 			ses->fd = -1;
 			continue;
 		}
@@ -574,7 +574,7 @@ gboolean net_connect(Session * ses, const gchar * host, const gchar * port)
 				    _
 				    ("Error setting socket non-blocking: %s\n"),
 				    g_strerror(errno));
-			close(ses->fd);
+			net_closesocket(ses->fd);
 			ses->fd = -1;
 			continue;
 		}
@@ -599,7 +599,7 @@ gboolean net_connect(Session * ses, const gchar * host, const gchar * port)
 					    _
 					    ("Error connecting to %s: %s\n"),
 					    host, g_strerror(errno));
-				close(ses->fd);
+				net_closesocket(ses->fd);
 				ses->fd = -1;
 				continue;
 			}
@@ -706,11 +706,11 @@ int net_open_listening_socket(const gchar * port, gchar ** error_message)
 		if (setsockopt
 		    (fd, SOL_SOCKET, SO_REUSEADDR, &yes,
 		     sizeof(yes)) < 0) {
-			close(fd);
+			net_closesocket(fd);
 			continue;
 		}
 		if (bind(fd, aip->ai_addr, aip->ai_addrlen) < 0) {
-			close(fd);
+			net_closesocket(fd);
 			continue;
 		}
 
@@ -733,7 +733,7 @@ int net_open_listening_socket(const gchar * port, gchar ** error_message)
 		    g_strdup_printf(_
 				    ("Error setting socket non-blocking: %s\n"),
 				    g_strerror(errno));
-		close(fd);
+		net_closesocket(fd);
 		return -1;
 	}
 
@@ -742,7 +742,7 @@ int net_open_listening_socket(const gchar * port, gchar ** error_message)
 		    g_strdup_printf(_
 				    ("Error during listen on socket: %s\n"),
 				    g_strerror(errno));
-		close(fd);
+		net_closesocket(fd);
 		return -1;
 	}
 	*error_message = NULL;
@@ -752,6 +752,15 @@ int net_open_listening_socket(const gchar * port, gchar ** error_message)
 	    g_strdup(_("Listening not yet supported on this platform."));
 	return -1;
 #endif				/* HAVE_GETADDRINFO_ET_AL */
+}
+
+void net_closesocket(int fd)
+{
+#ifdef G_OS_WIN32
+	closesocket(fd);
+#else /* G_OS_WIN32 */
+	close(fd);
+#endif /* G_OS_WIN32 */
 }
 
 gboolean net_get_peer_name(gint fd, gchar ** hostname, gchar ** servname,

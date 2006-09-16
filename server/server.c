@@ -65,21 +65,6 @@ gint get_rand(gint range)
 	return g_rand_int_range(g_rand_ctx, 0, range);
 }
 
-gint open_listen_socket(const gchar * port)
-{
-	int fd;
-	gchar *error_message;
-
-	fd = net_open_listening_socket(port, &error_message);
-	if (fd == -1) {
-		log_message(MSG_ERROR, "%s\n", error_message);
-		g_free(error_message);
-		return -1;
-	}
-	start_timeout();
-	return fd;
-}
-
 Game *game_new(const GameParams * params)
 {
 	Game *game;
@@ -193,9 +178,15 @@ static void player_connect(Game * game)
 static gboolean game_server_start(Game * game, gboolean register_server,
 				  const gchar * meta_server_name)
 {
-	game->accept_fd = open_listen_socket(game->server_port);
-	if (game->accept_fd < 0)
+	gchar *error_message;
+
+	game->accept_fd = net_open_listening_socket(game->server_port, &error_message);
+	if (game->accept_fd == -1) {
+		log_message(MSG_ERROR, "%s\n", error_message);
+		g_free(error_message);
 		return FALSE;
+	}
+	start_timeout();
 
 	game->accept_tag = driver->input_add_read(game->accept_fd,
 						  (InputFunc)

@@ -227,7 +227,7 @@ static void client_close(Client * client)
 
 	FD_CLR(client->fd, &read_fds);
 	FD_CLR(client->fd, &write_fds);
-	close(client->fd);
+	net_closesocket(client->fd);
 
 	while (client->write_queue != NULL) {
 		char *data = client->write_queue->data;

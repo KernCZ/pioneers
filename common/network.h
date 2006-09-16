@@ -82,6 +82,10 @@ gboolean net_connected(Session * ses);
  */
 int net_open_listening_socket(const gchar * port, gchar ** error_message);
 
+/** Close a socket
+ */
+void net_closesocket(int fd);
+
 /** Get peer name
  *  @param fd File descriptor to resolve
  *  @retval hostname The resolved hostname
