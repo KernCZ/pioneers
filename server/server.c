@@ -180,7 +180,8 @@ static gboolean game_server_start(Game * game, gboolean register_server,
 {
 	gchar *error_message;
 
-	game->accept_fd = net_open_listening_socket(game->server_port, &error_message);
+	game->accept_fd =
+	    net_open_listening_socket(game->server_port, &error_message);
 	if (game->accept_fd == -1) {
 		log_message(MSG_ERROR, "%s\n", error_message);
 		g_free(error_message);

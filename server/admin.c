@@ -238,7 +238,6 @@ void admin_listen(const gchar * port)
 		g_free(error_message);
 		return;
 	}
-
 #ifdef PRINT_INFO
 	g_print("admin_listen: fd = %d\n", _accept_info->fd);
 #endif

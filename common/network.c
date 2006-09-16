@@ -758,9 +758,9 @@ void net_closesocket(int fd)
 {
 #ifdef G_OS_WIN32
 	closesocket(fd);
-#else /* G_OS_WIN32 */
+#else				/* G_OS_WIN32 */
 	close(fd);
-#endif /* G_OS_WIN32 */
+#endif				/* G_OS_WIN32 */
 }
 
 gboolean net_get_peer_name(gint fd, gchar ** hostname, gchar ** servname,
