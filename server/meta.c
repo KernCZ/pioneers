@@ -162,6 +162,12 @@ static void meta_event(NetEvent event, Game * game, char *line)
 			meta_mode = MODE_SERVER_LIST;
 			meta_send_details(game);
 			break;
+		default:
+			log_message(MSG_ERROR,
+				    _
+				    ("Unknown message from the meta-server: %s\n"),
+				    line);
+			break;
 		}
 		break;
 	case NET_CLOSE:

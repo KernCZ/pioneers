@@ -11,6 +11,8 @@
 	cursor out and in again. The workaround depends on the runtime version
 	of Gtk+, not the version at compile time. (Refinement of the patch
 	2006-09-03)
+	* server/meta.c: Log when unknown messages are sent from the meta
+	server.
 
 2006-09-12  Stefan Walter <sw@gegenunendlich.de>
 	* common/Makefile.am: Creation of version.h compatible with FreeBSD.
