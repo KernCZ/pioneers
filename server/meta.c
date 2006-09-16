@@ -165,7 +165,7 @@ static void meta_event(NetEvent event, Game * game, char *line)
 		default:
 			log_message(MSG_ERROR,
 				    _
-				    ("Unknown message from the meta-server: %s\n"),
+				    ("Unknown message from the metaserver: %s\n"),
 				    line);
 			break;
 		}
