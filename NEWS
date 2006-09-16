@@ -1,3 +1,10 @@
+Subversion Snapshot release 0.10.2
+* Added --version for all executables
+* Workaround for a Gtk+ bug
+* The metaserver unregisters inactive servers
+* The contents of the tarball is more complete
+* Various bugfixes
+
 Subversion Snapshot release 0.10.1
 * Build script updated for easier building
 * Switch between games without quitting the client
