@@ -45,27 +45,21 @@ void set_pixbuf_tree_view_column_autogrow(GtkWidget * parent_widget,
 	}
 }
 
-/** In Gtk+ 2.4 the buttons did not become sensitive.
- *  In Gtk+ 2.8 you cannot press a button twice.
+/** In Gtk+ 2.6 and 2.8 you cannot press a button twice, without moving the
+ *  mouse.
  */
 void action_set_sensitive(GtkAction * action, gboolean sensitive)
 {
-/* #if GTK_MAJOR_VERSION == 2 && GTK_MINOR_VERSION == 4 */
-#if 1==1
-	GSList *widgets;
-	widgets = gtk_action_get_proxies(action);
-	while (widgets) {
-		widget_set_sensitive(GTK_WIDGET(widgets->data), sensitive);
-		widgets = g_slist_next(widgets);
-	};
-
-	if (sensitive)
-		gtk_action_connect_accelerator(action);
-	else
-		gtk_action_disconnect_accelerator(action);
-#else
+	if (gtk_major_version == 2 && gtk_minor_version <= 8) {
+		GSList *widgets;
+		widgets = gtk_action_get_proxies(action);
+		while (widgets) {
+			widget_set_sensitive(GTK_WIDGET(widgets->data),
+					     sensitive);
+			widgets = g_slist_next(widgets);
+		}
+	}
 	gtk_action_set_sensitive(action, sensitive);
-#endif
 }
 
 void widget_set_sensitive(GtkWidget * widget, gboolean sensitive)
@@ -88,12 +82,13 @@ void widget_set_sensitive(GtkWidget * widget, gboolean sensitive)
 		gint x, y, state;
 		gtk_widget_get_pointer(button, &x, &y);
 		state = GTK_WIDGET_STATE(button);
-		if (state == GTK_STATE_NORMAL &&
-		    x >= 0 && y >= 0 &&
-		    x < button->allocation.width &&
-		    y < button->allocation.height) {
+		if ((state == GTK_STATE_NORMAL
+		     || state == GTK_STATE_PRELIGHT) && x >= 0 && y >= 0
+		    && x < button->allocation.width
+		    && y < button->allocation.height) {
 			gtk_button_enter(GTK_BUTTON(button));
 			GTK_BUTTON(button)->in_button = TRUE;
+			gtk_widget_set_state(widget, GTK_STATE_PRELIGHT);
 		}
 	}
 }

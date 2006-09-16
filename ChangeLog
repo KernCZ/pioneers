@@ -7,6 +7,10 @@
 	server/player.c, server/server.c, server/server.h, server/admin.c: Use
 	net_closesocket to close a socket (Windows port closes sockets
 	differently).
+	* common/gtk/gtkbugs.c: Cannot press a button twice without moving the
+	cursor out and in again. The workaround depends on the runtime version
+	of Gtk+, not the version at compile time. (Refinement of the patch
+	2006-09-03)
 
 2006-09-12  Stefan Walter <sw@gegenunendlich.de>
 	* common/Makefile.am: Creation of version.h compatible with FreeBSD.
