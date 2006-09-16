@@ -1,5 +1,9 @@
 // File encoding: utf8. Enter ChangeLog entries below this line
 
+2006-09-16  Roland Clobus <rclobus@bigfoot.com>
+	* editor/gtk/editor.c, server/gtk/main.c, server/main.c,
+	client/gtk/offline.c, client/ai/ai.c: Added --version.
+
 2006-09-12  Stefan Walter <sw@gegenunendlich.de>
 	* common/Makefile.am: Creation of version.h compatible with FreeBSD.
 

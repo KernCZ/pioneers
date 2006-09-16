@@ -20,6 +20,7 @@
  */
 
 #include "config.h"
+#include "version.h"
 #include "game.h"
 #include "ai.h"
 #include <stdlib.h>
@@ -35,6 +36,7 @@ static char *ai;
 static int waittime = 1000;
 static gboolean silent = FALSE;
 static gboolean enable_debug = FALSE;
+static gboolean show_version = FALSE;
 
 static const struct algorithm_info {
 	/** Name of the algorithm (for commandline) */
@@ -116,6 +118,9 @@ static GOptionEntry commandline_entries[] = {
 	{"debug", '\0', 0, G_OPTION_ARG_NONE, &enable_debug,
 	 /* Commandline option of ai: enable debug logging */
 	 N_("Enable debug messages"), NULL},
+	{"version", '\0', 0, G_OPTION_ARG_NONE, &show_version,
+	 /* Commandline option of ai: version */
+	 N_("Show version information"), NULL},
 	{NULL, '\0', 0, 0, NULL, NULL, NULL}
 };
 
@@ -134,6 +139,13 @@ static void ai_init(int argc, char **argv)
 		g_print("%s\n", error->message);
 		g_error_free(error);
 		exit(1);
+	}
+	if (show_version) {
+		g_print(_("Pioneers version:"));
+		g_print(" ");
+		g_print(FULL_VERSION);
+		g_print("\n");
+		exit(0);
 	}
 
 	set_enable_debug(enable_debug);

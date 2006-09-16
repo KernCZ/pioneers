@@ -46,6 +46,7 @@ static gboolean quit_when_offline = FALSE;
 static const gchar *override_language = NULL;
 #endif
 static gboolean enable_debug = FALSE;
+static gboolean show_version = FALSE;
 
 static GOptionEntry commandline_entries[] = {
 	/* Commandline option of client: hostname of the server */
@@ -71,6 +72,9 @@ static GOptionEntry commandline_entries[] = {
 	{"debug", '\0', 0, G_OPTION_ARG_NONE, &enable_debug,
 	 /* Commandline option of client: enable debug logging */
 	 N_("Enable debug messages"), NULL},
+	{"version", '\0', 0, G_OPTION_ARG_NONE, &show_version,
+	 /* Commandline option of client: version */
+	 N_("Show version information"), NULL},
 	{NULL, '\0', 0, 0, NULL, NULL, NULL}
 };
 
@@ -175,7 +179,15 @@ void frontend_init(int argc, char **argv)
 		g_print("%s\n", error->message);
 		g_error_free(error);
 		exit(1);
-	};
+	}
+	if (show_version) {
+		g_print(_("Pioneers version:"));
+		g_print(" ");
+		g_print(FULL_VERSION);
+		g_print("\n");
+		exit(0);
+	}
+
 
 	set_enable_debug(enable_debug);
 

@@ -21,6 +21,7 @@
 /* Pioneers Console Server
  */
 #include "config.h"
+#include "version.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -62,6 +63,7 @@ static gboolean register_server = FALSE;
 static gchar *meta_server_name = NULL;
 static gboolean fixed_seating_order = FALSE;
 static gboolean enable_debug = FALSE;
+static gboolean show_version = FALSE;
 
 static GOptionEntry commandline_game_entries[] = {
 	{"game-title", 'g', 0, G_OPTION_ARG_STRING, &game_title,
@@ -88,6 +90,9 @@ static GOptionEntry commandline_game_entries[] = {
 	{"computer-players", 'c', 0, G_OPTION_ARG_INT, &num_ai_players,
 	 /* Commandline server-console: computer-players */
 	 N_("Add N computer players"), "N"},
+	{"version", '\0', 0, G_OPTION_ARG_NONE, &show_version,
+	 /* Commandline option of server-console: version */
+	 N_("Show version information"), NULL},
 	{NULL, '\0', 0, 0, NULL, NULL, NULL}
 };
 
@@ -192,7 +197,14 @@ int main(int argc, char *argv[])
 		g_print("%s\n", error->message);
 		g_error_free(error);
 		return 1;
-	};
+	}
+	if (show_version) {
+		g_print(_("Pioneers version:"));
+		g_print(" ");
+		g_print(FULL_VERSION);
+		g_print("\n");
+		return 0;
+	}
 
 	set_enable_debug(enable_debug);
 

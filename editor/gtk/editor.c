@@ -20,6 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 #include "config.h"
+#include "version.h"
 
 #include <string.h>
 #include "authors.h"
@@ -1077,6 +1078,7 @@ static const char *ui_description =
 /* *INDENT-ON* */
 
 gchar **filenames;
+gboolean show_version = FALSE;
 
 static GOptionEntry commandline_entries[] = {
 	{G_OPTION_REMAINING, '\0', 0, G_OPTION_ARG_FILENAME_ARRAY,
@@ -1085,6 +1087,9 @@ static GOptionEntry commandline_entries[] = {
 	 N_("Open this file"),
 	 /* Commandline option for editor: filename */
 	 N_("filename")},
+	{"version", '\0', 0, G_OPTION_ARG_NONE, &show_version,
+	 /* Commandline option of editor: version */
+	 N_("Show version information"), NULL},
 	{NULL, '\0', 0, 0, NULL, NULL, NULL}
 };
 
@@ -1122,7 +1127,15 @@ int main(int argc, char *argv[])
 		g_print("%s\n", error->message);
 		g_error_free(error);
 		return 1;
-	};
+	}
+	if (show_version) {
+		g_print(_("Pioneers version:"));
+		g_print(" ");
+		g_print(FULL_VERSION);
+		g_print("\n");
+		return 0;
+	}
+
 	if (filenames != NULL)
 		filename = g_strdup(filenames[0]);
 	else
