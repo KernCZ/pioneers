@@ -13,6 +13,7 @@
 	2006-09-03)
 	* server/meta.c: Log when unknown messages are sent from the meta
 	server.
+	* Makefile.am: Add 48x48 icons (for Windows XP, Thumbnail view).
 
 2006-09-12  Stefan Walter <sw@gegenunendlich.de>
 	* common/Makefile.am: Creation of version.h compatible with FreeBSD.
