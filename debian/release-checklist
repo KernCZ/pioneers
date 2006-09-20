@@ -1,13 +1,44 @@
-What to do for a release of a new version in Debian:
-- Get released tarball
-- Copy debian directory from subversion
-- rm -rf debian/.svn
-- dch -i, mark bugs as closed
-- pdebuild
-- debuild
-- piuparts
-- upload
-- update subversion debian directory
-- svn copy https://svn.sourceforge.net/svnroot/pio/trunk/pioneers/debian \
-  https://svn.sourceforge.net/svnroot/pio/tags/debian-release-X.XX.XX-1 \
-  -m "tag debian release"
+#!/bin/sh -ex
+# What to do for a release of a new version in Debian:
+#- Get released tarball
+cd "`dirname "$0"`"/..
+uscan
+dir="`mktemp -d`"
+cp ../pioneers*orig.tar.gz "$dir/"
+tar -xzf - -C "$dir" < "$dir"/*
+
+#- Copy debian directory from subversion
+cp -a debian "$dir"/pioneers-[0-9]*
+
+cd "$dir"/pioneers-[0-9]*
+#- remove revision control files
+rm -rf debian/.svn
+
+#- dch, mark bugs as closed
+dch
+
+#- pdebuild
+pdebuild
+
+#- read ../pioneers*diff.gz
+vim ../pioneers*diff.gz
+
+#- debuild
+debuild
+
+#- install, test
+sudo dpkg -i ../*deb
+pioneers-server-console &
+pioneers-ai &
+pioneers-ai &
+pioneers-ai &
+pioneers
+
+#- piuparts
+piuparts ../*deb
+
+#- upload
+#- update subversion debian directory
+#- svn copy https://svn.sourceforge.net/svnroot/pio/trunk/pioneers/debian \
+#  https://svn.sourceforge.net/svnroot/pio/tags/debian-release-X.XX.XX-1 \
+#  -m "tag debian release"

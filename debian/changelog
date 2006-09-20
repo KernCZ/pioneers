@@ -1,10 +1,13 @@
-pioneers (0.10.1-2) unstable; urgency=low
+pioneers (0.10.2-1) unstable; urgency=low
 
+  * New upstream release.  (Closes: #386425)
   * Change debian/rules to avoid the need for patching the code for linking
     only directly used libraries.
   * Change maintainer e-mail to my new debian.org address.
+  * Make meta-server init script LSB compliant (add comment block and status
+    command).
 
- -- Bas Wijnen <wijnen@debian.org>  Wed,  6 Sep 2006 12:10:02 +0200
+ -- Bas Wijnen <wijnen@debian.org>  Tue, 19 Sep 2006 11:44:45 +0200
 
 pioneers (0.10.1-1) unstable; urgency=low
 
