@@ -33,6 +33,7 @@ console_cflags = \
 	-DPIONEERS_DIR_DEFAULT=\""$(pioneers_datadir)/games/pioneers"\" \
 	-DPIONEERS_SERVER_CONSOLE_PATH=\""$(bindir)/pioneers-server-console"\" \
 	-DPIONEERS_SERVER_GTK_PATH=\""$(bindir)/pioneers-server-gtk"\" \
+	-DPIONEERS_CLIENT_GTK_PATH=\""$(bindir)/pioneers"\" \
 	-DPIONEERS_AI_PATH=\""$(bindir)/pioneersai"\"
 
 gtk_cflags = \

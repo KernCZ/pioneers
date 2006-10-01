@@ -52,6 +52,7 @@ static GtkWidget *overridden_hostname_entry;	/* name of server (allows masquerad
 static GtkWidget *port_entry;	/* server port */
 static GtkWidget *random_toggle;	/* randomize seating order? */
 static GtkWidget *addcomputer_btn;	/* button to add computer players */
+static GtkWidget *launchclient_btn;	/* button to launch client window */
 
 static GtkWidget *start_btn;	/* start/stop the server */
 static GtkTooltips *tooltips;	/* tooltips */
@@ -274,6 +275,42 @@ static void start_clicked_cb(G_GNUC_UNUSED GtkButton * start_btn,
 				       params->sevens_rule);
 		}
 		params_free(params);
+	}
+}
+
+static void launchclient_clicked_cb(G_GNUC_UNUSED GtkButton * start_btn,
+				    G_GNUC_UNUSED gpointer user_data)
+{
+	gchar *child_argv[7];
+	GSpawnFlags child_flags = G_SPAWN_STDOUT_TO_DEV_NULL |
+	    G_SPAWN_STDERR_TO_DEV_NULL;
+	GError *error = NULL;
+	gint i;
+
+	g_assert(server_port != NULL);
+
+	/* Populate argv. */
+	child_argv[0] = g_strdup(PIONEERS_CLIENT_GTK_PATH);
+	child_argv[1] = g_strdup(PIONEERS_CLIENT_GTK_PATH);
+	child_argv[2] = g_strdup("-s");
+	child_argv[3] = g_strdup("localhost");
+	child_argv[4] = g_strdup("-p");
+	child_argv[5] = g_strdup(server_port);
+	child_argv[6] = NULL;
+
+	/* Spawn the child. */
+	if (!g_spawn_async(NULL, child_argv, NULL, child_flags,
+			   NULL, NULL, NULL, &error)) {
+		/* Error message when program %1 is started, reason is %2 */
+		log_message(MSG_ERROR,
+			    _("Error starting %s: %s"),
+			    PIONEERS_CLIENT_GTK_PATH, error->message);
+		g_error_free(error);
+	}
+
+	/* Clean up after ourselves. */
+	for (i = 0; child_argv[i] != NULL; i++) {
+		g_free(child_argv[i]);
 	}
 }
 
@@ -757,6 +794,16 @@ static GtkWidget *build_interface(void)
 			 G_CALLBACK(addcomputer_clicked_cb), NULL);
 	gtk_tooltips_set_tip(tooltips, addcomputer_btn,
 			     _("Add a computer player to the game"), NULL);
+
+	launchclient_btn =
+	    gtk_button_new_with_label(_("Launch Pioneers Client"));
+	gtk_widget_show(launchclient_btn);
+	gtk_box_pack_start(GTK_BOX(vbox_ai), launchclient_btn, FALSE,
+			   FALSE, 0);
+	g_signal_connect(G_OBJECT(launchclient_btn), "clicked",
+			 G_CALLBACK(launchclient_clicked_cb), NULL);
+	gtk_tooltips_set_tip(tooltips, launchclient_btn,
+			     _("Launch the Pioneers Client"), NULL);
 
 	start_btn = gtk_button_new();
 	gtk_widget_show(start_btn);
