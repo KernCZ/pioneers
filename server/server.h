@@ -188,7 +188,6 @@ void robber_place(Player * player);
 gboolean mode_place_robber(Player * player, gint event);
 
 /* server.c */
-void timed_out(int signum);
 void start_timeout(void);
 void stop_timeout(void);
 gint get_rand(gint range);
@@ -230,6 +229,7 @@ gboolean start_server(const GameParams * params, const gchar * hostname,
 /* initialize the server */
 void server_init(void);
 void game_is_over(Game * game);
+void request_server_stop(void);
 
 /* trade.c */
 void trade_perform_maritime(Player * player,

@@ -313,3 +313,9 @@ void game_is_over(Game * game)
 		g_timeout_add(10 * 1000, &exit_func, NULL);
 	}
 }
+
+void request_server_stop(void)
+{
+	server_stop();
+	g_main_loop_quit(event_loop);
+}

@@ -33,32 +33,37 @@ static GameParams *load_game_desc(const gchar * fname);
 
 static Game *curr_game;
 gint no_player_timeout = 0;
+guint no_player_timer = 0;
 
 static GSList *_game_list = NULL;	/* The sorted list of game titles */
 
 #define TERRAIN_DEFAULT	0
 #define TERRAIN_RANDOM	1
 
-void timed_out(G_GNUC_UNUSED int signum)
+static gboolean timed_out(G_GNUC_UNUSED gpointer data)
 {
-	g_print
-	    ("Was hanging around for too long without players... bye.\n");
-	exit(5);
+	log_message(MSG_INFO,
+		    _
+		    ("Was hanging around for too long without players... bye.\n"));
+	request_server_stop();
+	return FALSE;
 }
 
 void start_timeout(void)
 {
 	if (!no_player_timeout)
 		return;
-	signal(SIGALRM, timed_out);
-	alarm(no_player_timeout);
+	no_player_timer =
+	    g_timeout_add(no_player_timeout * 1000, timed_out, NULL);
 }
 
 void stop_timeout(void)
 {
-	alarm(0);
+	if (no_player_timer != 0) {
+		g_source_remove(no_player_timer);
+		no_player_timer = 0;
+	}
 }
-
 
 gint get_rand(gint range)
 {
@@ -451,6 +456,7 @@ gboolean start_server(const GameParams * params, const gchar * hostname,
 			      meta_server_name, random_order);
 }
 
+#ifndef G_OS_WIN32
 static void handle_sigpipe(G_GNUC_UNUSED int signum)
 {
 	/* reset the signal handler */
@@ -458,6 +464,7 @@ static void handle_sigpipe(G_GNUC_UNUSED int signum)
 	/* no need to actually handle anything, this will be done by 
 	 * write returning error */
 }
+#endif				/* G_OS_WIN32 */
 
 /* server initialization */
 void server_init(void)
@@ -465,7 +472,10 @@ void server_init(void)
 	/* Broken pipes can happen when multiple players disconnect
 	 * simultaneously.  This mostly happens to AI's, which disconnect
 	 * when the game is over. */
+	/* SIGPIPE does not exist for G_OS_WIN32 */
+#ifndef G_OS_WIN32
 	signal(SIGPIPE, handle_sigpipe);
+#endif				/* G_OS_WIN32 */
 }
 
 void server_cleanup_static_data(void)

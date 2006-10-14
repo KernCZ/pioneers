@@ -858,6 +858,12 @@ void game_is_over(G_GNUC_UNUSED Game * game)
 	log_message(MSG_INFO, _("The game is over.\n"));
 }
 
+void request_server_stop(void)
+{
+	if (server_stop())
+		gui_set_server_state(FALSE);
+}
+
 static GOptionEntry commandline_entries[] = {
 	{"debug", '\0', 0, G_OPTION_ARG_NONE, &enable_debug,
 	 /* Commandline option of server-gtk: enable debug logging */

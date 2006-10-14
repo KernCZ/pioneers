@@ -334,8 +334,6 @@ AC_SUBST(pioneers_themedir)
 AC_SUBST(pioneers_themedir_embed)
 AC_SUBST(pioneers_localedir)
 
-# Time out
-AC_CHECK_FUNCS([alarm])
 # Functions needed for the hack to override the language
 AC_CHECK_FUNCS([setlocale])
 
