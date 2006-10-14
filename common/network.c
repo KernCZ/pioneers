@@ -152,6 +152,18 @@ static void notify(Session * ses, NetEvent event, gchar * line)
 		ses->notify_func(event, ses->user_data, line);
 }
 
+/* Returns the message for error# number */
+static const gchar *net_errormsg_nr(gint number)
+{
+	return g_strerror(number);
+}
+
+/* Returns the message for the current error */
+static const gchar *net_errormsg(void)
+{
+	return net_errormsg_nr(errno);
+}
+
 void net_close(Session * ses)
 {
 	if (ses->timer_id != 0) {
@@ -244,14 +256,14 @@ static void write_ready(Session * ses)
 			log_message(MSG_ERROR,
 				    _
 				    ("Error checking connect status: %s\n"),
-				    g_strerror(errno));
+				    net_errormsg());
 			net_close(ses);
 		} else if (error != 0) {
 			notify(ses, NET_CONNECT_FAIL, NULL);
 			log_message(MSG_ERROR,
 				    _
 				    ("Error connecting to host '%s': %s\n"),
-				    ses->host, g_strerror(error));
+				    ses->host, net_errormsg_nr(error));
 			net_close(ses);
 		} else {
 			ses->connect_in_progress = FALSE;
@@ -277,7 +289,7 @@ static void write_ready(Session * ses)
 				log_message(MSG_ERROR,
 					    _
 					    ("Error writing socket: %s\n"),
-					    g_strerror(errno));
+					    net_errormsg());
 			close_and_callback(ses);
 			return;
 		} else if (num == len) {
@@ -326,7 +338,7 @@ void net_write(Session * ses, const gchar * data)
 				log_message(MSG_ERROR,
 					    _
 					    ("Error writing to socket: %s\n"),
-					    g_strerror(errno));
+					    net_errormsg());
 				close_and_callback(ses);
 				return;
 			}
@@ -389,7 +401,7 @@ static void read_ready(Session * ses)
 		if (errno == EAGAIN)
 			return;
 		log_message(MSG_ERROR, _("Error reading socket: %s\n"),
-			    g_strerror(errno));
+			    net_errormsg());
 		close_and_callback(ses);
 		return;
 	}
@@ -555,7 +567,7 @@ gboolean net_connect(Session * ses, const gchar * host, const gchar * port)
 		if (ses->fd < 0) {
 			log_message(MSG_ERROR,
 				    _("Error creating socket: %s\n"),
-				    g_strerror(errno));
+				    net_errormsg());
 			continue;
 		}
 #ifdef HAVE_FCNTL
@@ -563,7 +575,7 @@ gboolean net_connect(Session * ses, const gchar * host, const gchar * port)
 			log_message(MSG_ERROR,
 				    _
 				    ("Error setting socket close-on-exec: %s\n"),
-				    g_strerror(errno));
+				    net_errormsg());
 			net_closesocket(ses->fd);
 			ses->fd = -1;
 			continue;
@@ -573,7 +585,7 @@ gboolean net_connect(Session * ses, const gchar * host, const gchar * port)
 			log_message(MSG_ERROR,
 				    _
 				    ("Error setting socket non-blocking: %s\n"),
-				    g_strerror(errno));
+				    net_errormsg());
 			net_closesocket(ses->fd);
 			ses->fd = -1;
 			continue;
@@ -598,7 +610,7 @@ gboolean net_connect(Session * ses, const gchar * host, const gchar * port)
 				log_message(MSG_ERROR,
 					    _
 					    ("Error connecting to %s: %s\n"),
-					    host, g_strerror(errno));
+					    host, net_errormsg());
 				net_closesocket(ses->fd);
 				ses->fd = -1;
 				continue;
@@ -721,7 +733,7 @@ int net_open_listening_socket(const gchar * port, gchar ** error_message)
 		*error_message =
 		    g_strdup_printf(_
 				    ("Error creating listening socket: %s\n"),
-				    g_strerror(errno));
+				    net_errormsg());
 		freeaddrinfo(ai);
 		return -1;
 	}
@@ -732,7 +744,7 @@ int net_open_listening_socket(const gchar * port, gchar ** error_message)
 		*error_message =
 		    g_strdup_printf(_
 				    ("Error setting socket non-blocking: %s\n"),
-				    g_strerror(errno));
+				    net_errormsg());
 		net_closesocket(fd);
 		return -1;
 	}
@@ -741,7 +753,7 @@ int net_open_listening_socket(const gchar * port, gchar ** error_message)
 		*error_message =
 		    g_strdup_printf(_
 				    ("Error during listen on socket: %s\n"),
-				    g_strerror(errno));
+				    net_errormsg());
 		net_closesocket(fd);
 		return -1;
 	}
@@ -779,7 +791,7 @@ gboolean net_get_peer_name(gint fd, gchar ** hostname, gchar ** servname,
 	if (getpeername(fd, &peer.sa, &peer_len) < 0) {
 		*error_message =
 		    g_strdup_printf(_("Error getting peer name: %s"),
-				    g_strerror(errno));
+				    net_errormsg());
 		return FALSE;
 	} else {
 		int err;
@@ -821,7 +833,7 @@ gint net_accept(gint accept_fd, gchar ** error_message)
 	if (fd < 0) {
 		*error_message =
 		    g_strdup_printf(_("Error accepting connection: %s"),
-				    g_strerror(errno));
+				    net_errormsg());
 	}
 	return fd;
 }
