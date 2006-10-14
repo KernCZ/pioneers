@@ -71,6 +71,9 @@ static GtkWidget *app_bar;
 static GtkWidget *net_status;
 static GtkWidget *vp_target_status;
 
+static GtkWidget *main_paned;	/* Horizontal for 16:9, Vertical for 4:3 mode */
+static GtkWidget *chat_panel = NULL;	/* Panel for chat, placed below or to the right */
+
 static GtkUIManager *ui_manager = NULL;	/* The manager of the GtkActions */
 static GtkWidget *toolbar = NULL;	/* The toolbar */
 
@@ -659,6 +662,47 @@ static GtkWidget *build_develop_panel(void)
 	return develop_notebook;
 }
 
+static gboolean get_16_9_layout(void)
+{
+	g_return_val_if_fail(main_paned != NULL, FALSE);
+	g_return_val_if_fail(chat_panel != NULL, FALSE);
+
+	GtkWidget *paned = gtk_paned_get_child1(GTK_PANED(main_paned));
+	if (gtk_widget_get_parent(chat_panel) == paned)
+		return FALSE;
+	return TRUE;
+}
+
+static void set_16_9_layout(gboolean layout_16_9)
+{
+	GtkWidget *paned;
+	gboolean can_remove;
+
+	g_return_if_fail(main_paned != NULL);
+	g_return_if_fail(chat_panel != NULL);
+
+	paned = gtk_paned_get_child1(GTK_PANED(main_paned));
+
+	/* Increase reference count, otherwise it will be destroyed */
+	g_object_ref(chat_panel);
+
+	/* Initially the widget has no parent, and cannot be removed */
+	can_remove = gtk_widget_get_parent(chat_panel) != NULL;
+
+	if (layout_16_9) {
+		if (can_remove)
+			gtk_container_remove(GTK_CONTAINER(paned),
+					     chat_panel);
+		gtk_container_add(GTK_CONTAINER(main_paned), chat_panel);
+	} else {
+		if (can_remove)
+			gtk_container_remove(GTK_CONTAINER(main_paned),
+					     chat_panel);
+		gtk_container_add(GTK_CONTAINER(paned), chat_panel);
+	}
+	g_object_unref(chat_panel);
+}
+
 static GtkWidget *build_main_interface(void)
 {
 	GtkWidget *vbox;
@@ -682,23 +726,29 @@ static GtkWidget *build_main_interface(void)
 	gtk_box_pack_start(GTK_BOX(vbox),
 			   player_build_summary(), TRUE, TRUE, 0);
 
+	main_paned = gtk_hpaned_new();
+	gtk_widget_show(main_paned);
+
 	vpaned = gtk_vpaned_new();
 	gtk_widget_show(vpaned);
-	gtk_paned_pack2(GTK_PANED(hpaned), vpaned, TRUE, TRUE);
+
+	gtk_paned_pack1(GTK_PANED(main_paned), vpaned, TRUE, TRUE);
 
 	gtk_paned_pack1(GTK_PANED(vpaned), build_map_panel(), TRUE, TRUE);
 
-	vbox = gtk_vbox_new(FALSE, 0);
-	gtk_widget_show(vbox);
+	chat_panel = gtk_vbox_new(FALSE, 0);
+	gtk_widget_show(chat_panel);
 
 	panel = chat_build_panel();
 	frontend_gui_register(panel, GUI_DISCONNECT, NULL);
-	gtk_box_pack_start(GTK_BOX(vbox), panel, FALSE, TRUE, 0);
-	gtk_box_pack_start(GTK_BOX(vbox),
+	gtk_box_pack_start(GTK_BOX(chat_panel), panel, FALSE, TRUE, 0);
+	gtk_box_pack_start(GTK_BOX(chat_panel),
 			   build_messages_panel(), TRUE, TRUE, 0);
 
-	gtk_paned_pack2(GTK_PANED(vpaned), vbox, FALSE, TRUE);
+	set_16_9_layout(config_get_int_with_default
+			("settings/layout_16_9", FALSE));
 
+	gtk_paned_pack2(GTK_PANED(hpaned), main_paned, TRUE, TRUE);
 	return hpaned;
 }
 
@@ -761,6 +811,14 @@ static void announce_player_cb(GtkToggleButton * widget,
 	gboolean announce_player = gtk_toggle_button_get_active(widget);
 	config_set_int("settings/announce_player", announce_player);
 	set_announce_player(announce_player);
+}
+
+static void toggle_16_9_cb(GtkToggleButton * widget,
+			   G_GNUC_UNUSED gpointer user_data)
+{
+	gboolean layout_16_9 = gtk_toggle_button_get_active(widget);
+	config_set_int("settings/layout_16_9", layout_16_9);
+	set_16_9_layout(layout_16_9);
 }
 
 static void showhide_toolbar_cb(void)
@@ -943,6 +1001,23 @@ static void preferences_cb(void)
 			     ("Make a sound when a new player or viewer enters the game"),
 			     NULL);
 	row++;
+
+	/* Label for the option to use the 16:9 layout. */
+	widget = gtk_check_button_new_with_label(_("Use 16:9 layout"));
+	gtk_widget_show(widget);
+	gtk_table_attach_defaults(GTK_TABLE(layout), widget,
+				  0, 2, row, row + 1);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget),
+				     get_16_9_layout());
+	g_signal_connect(G_OBJECT(widget), "toggled",
+			 G_CALLBACK(toggle_16_9_cb), NULL);
+	/* Tooltip for 16:9 option. */
+	gtk_tooltips_set_tip(tooltips, widget,
+			     _
+			     ("Use a 16:9 friendly layout for the window"),
+			     NULL);
+	row++;
+
 }
 
 static void help_about_cb(void)

@@ -1,4 +1,10 @@
-// File encoding: utf8. Enter ChangeLog entries below this line
+﻿
+2006-10-14  Roland Clobus <rclobus@bigfoot.com>
+	* client/gtk/gui.c: Move the chat panel to the right or the bottom of
+	the screen. Based on a patch by Rich Harkins <rich@worldsinfinite.com>
+	which required a restart.
+	* ChangeLog: Enabled a BOM, so the comment about utf-8 is no longer
+	required.
 
 2006-10-01  Rich Harkins <rich@worldsinfinite.com>
 	* Makefile.am, server/gtk/main.c: Launch the client from the server.
