@@ -339,7 +339,7 @@ msgstr ""
 #: ../client/common/client.c:584
 #, c-format
 msgid "%s does not receive any %s, because the bank is empty.\n"
-msgstr ""
+msgstr "%s bekommt kein %s, weil die Bank leer is.\n"
 
 #: ../client/common/client.c:597
 #, c-format
@@ -845,13 +845,13 @@ msgstr "nichts"
 
 #. Construct "A, B and C" for resources
 #: ../client/common/resource.c:166
-#, fuzzy, c-format
+#, c-format
 msgid "%s and %s"
 msgstr "%s und %s"
 
 #. Construct "A, B and C" for resources
 #: ../client/common/resource.c:170
-#, fuzzy, c-format
+#, c-format
 msgid "%s, %s"
 msgstr "%s, %s"
 
@@ -2317,94 +2317,79 @@ msgstr ""
 
 #. Use an unique shortcut key for each resource
 #: ../editor/gtk/editor.c:67
-#, fuzzy
 msgid "_Hill"
-msgstr "Hügelland"
+msgstr "_Hügelland"
 
 #. Use an unique shortcut key for each resource
 #: ../editor/gtk/editor.c:69
-#, fuzzy
 msgid "_Field"
-msgstr "Ackerland"
+msgstr "_Ackerland"
 
 #. Use an unique shortcut key for each resource
 #: ../editor/gtk/editor.c:71
-#, fuzzy
 msgid "_Mountain"
-msgstr "Gebirge"
+msgstr "_Gebirge"
 
 #. Use an unique shortcut key for each resource
 #: ../editor/gtk/editor.c:73
-#, fuzzy
 msgid "_Pasture"
-msgstr "Weideland"
+msgstr "We_ideland"
 
 #. Use an unique shortcut key for each resource
 #: ../editor/gtk/editor.c:75
-#, fuzzy
 msgid "F_orest"
-msgstr "Wald"
+msgstr "Wa_ld"
 
 #. Use an unique shortcut key for each resource
 #: ../editor/gtk/editor.c:77
-#, fuzzy
 msgid "_Desert"
-msgstr "Wüste"
+msgstr "Wü_ste"
 
 #. Use an unique shortcut key for each resource
 #: ../editor/gtk/editor.c:79
-#, fuzzy
 msgid "_Sea"
-msgstr "Meer"
+msgstr "_Meer"
 
 #. Use an unique shortcut key for each resource
 #: ../editor/gtk/editor.c:81
-#, fuzzy
 msgid "_Gold"
-msgstr "Gold"
+msgstr "G_old"
 
 #. Use an unique shortcut key for each resource
 #. Use an unique shortcut key for each port type
 #: ../editor/gtk/editor.c:83 ../editor/gtk/editor.c:98
-#, fuzzy
 msgid "_None"
-msgstr "Keine"
+msgstr "_Keine"
 
 #. Use an unique shortcut key for each port type
 #: ../editor/gtk/editor.c:88
-#, fuzzy
 msgid "_Brick (2:1)"
-msgstr "Lehm (2:1)"
+msgstr "_Lehm (2:1)"
 
 #. Use an unique shortcut key for each port type
 #: ../editor/gtk/editor.c:90
-#, fuzzy
 msgid "_Grain (2:1)"
-msgstr "Getreide (2:1)"
+msgstr "_Getreide (2:1)"
 
 #. Use an unique shortcut key for each port type
 #: ../editor/gtk/editor.c:92
-#, fuzzy
 msgid "_Ore (2:1)"
-msgstr "Erz (2:1)"
+msgstr "_Erz (2:1)"
 
 #. Use an unique shortcut key for each port type
 #: ../editor/gtk/editor.c:94
-#, fuzzy
 msgid "_Wool (2:1)"
-msgstr "Wolle (2:1)"
+msgstr "_Wolle (2:1)"
 
 #. Use an unique shortcut key for each port type
 #: ../editor/gtk/editor.c:96
-#, fuzzy
 msgid "_Lumber (2:1)"
-msgstr "Holz (2:1)"
+msgstr "_Holz (2:1)"
 
 #. Use an unique shortcut key for each port type
 #: ../editor/gtk/editor.c:100
-#, fuzzy
 msgid "_Any (3:1)"
-msgstr "Alles (3:1)"
+msgstr "_Alles (3:1)"
 
 #. East
 #: ../editor/gtk/editor.c:105
