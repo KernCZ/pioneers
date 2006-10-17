@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: pioneers 0.10.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-09-16 21:44+0200\n"
-"PO-Revision-Date: 2006-08-18 11:00+0200\n"
+"PO-Revision-Date: 2006-09-21 14:50+0200\n"
 "Last-Translator: Giancarlo Capella <giancarlo@comm.cc>\n"
 "Language-Team: it <it@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -77,7 +77,7 @@ msgstr "Abilita messaggi di debug"
 #: ../editor/gtk/editor.c:1092 ../meta-server/main.c:1052
 #: ../server/gtk/main.c:820 ../server/main.c:95
 msgid "Show version information"
-msgstr ""
+msgstr "Mostra informazioni di versione"
 
 #: ../client/ai/ai.c:134
 msgid "- Computer player for Pioneers"
@@ -87,7 +87,7 @@ msgstr "- Giocatore AI di Pioneers"
 #: ../editor/gtk/editor.c:1132 ../meta-server/main.c:1081
 #: ../server/gtk/main.c:870 ../server/main.c:202
 msgid "Pioneers version:"
-msgstr ""
+msgstr "Pioneers, versione:"
 
 #: ../client/ai/ai.c:176
 #, c-format
@@ -2586,46 +2586,46 @@ msgstr "Conto materie prime"
 #. Commandline meta-server: daemon
 #: ../meta-server/main.c:1030
 msgid "Daemonize the metaserver on start"
-msgstr ""
+msgstr "Demonizza il metaserver all'avvio"
 
 #. Commandline meta-server: redirect
 #: ../meta-server/main.c:1033
 msgid "Redirect clients to another metaserver"
-msgstr ""
+msgstr "Redirigi i client ad un altro metaserver"
 
 #. Commandline meta-server: server
 #: ../meta-server/main.c:1036
 msgid "Use this hostname when creating new games"
-msgstr ""
+msgstr "Utilizza questo hostname creando nuove partite"
 
 #. Commandline meta-server: server argument
 #: ../meta-server/main.c:1038
 msgid "hostname"
-msgstr ""
+msgstr "hostname"
 
 #. Commandline meta-server: port-range
 #: ../meta-server/main.c:1041
 msgid "Use this ports range when creating new games"
-msgstr ""
+msgstr "Usa queste porte creando nuove partite"
 
 #. Commandline meta-server: port-range argument
 #: ../meta-server/main.c:1043
 msgid "from-to"
-msgstr ""
+msgstr "da-a"
 
 #. Commandline option of meta server: syslog-debug
 #: ../meta-server/main.c:1049
 msgid "Debug syslog messages"
-msgstr ""
+msgstr "Messaggi di debug su syslog"
 
 #. Long description in the commandline for server-console: help
 #: ../meta-server/main.c:1070
 msgid "- Meta server for Pioneers"
-msgstr ""
+msgstr "- Meta server per Pioneers"
 
 #: ../meta-server/main.c:1085
 msgid "metaserver protocol:"
-msgstr ""
+msgstr "protocollo metaserver:"
 
 #: ../server/gtk/main.c:92
 msgid "_About Pioneers Server"
