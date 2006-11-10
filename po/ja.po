@@ -1,0 +1,3132 @@
+# Pioneers - Settlers of Catan for GNOME.
+# Copyright (C) 1999-2001 Dave Cole
+# Copyright (C) 2000-2002 Andy Heroff
+# This file is distributed under the same license as the pioneers package.
+# Yasuhiko Takasugi <takasugi@flcl.org>, 2006.
+#
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Pioneers 0.10.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2006-11-10 21:13+0100\n"
+"PO-Revision-Date: 2006-11-03 10:23+0900\n"
+"Last-Translator: Yasuhiko Takasugi<takasugi@flcl.org>\n"
+"Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. Default name for the AI when the computer_names file
+#. * is not found or empty.
+#.
+#: ../client/ai/ai.c:74 ../client/ai/ai.c:90
+msgid "Computer Player"
+msgstr "コンピュータ プレイヤー"
+
+#. Commandline pioneersai: server
+#. Commandline option of client: hostname of the server
+#: ../client/ai/ai.c:102 ../client/gtk/connect.c:1443
+#: ../client/gtk/offline.c:53
+msgid "Server Host"
+msgstr "サーバ　ホスト"
+
+#. Commandline pioneersai: port
+#. Commandline option of client: port of the server
+#: ../client/ai/ai.c:105 ../client/gtk/connect.c:1459
+#: ../client/gtk/offline.c:56 ../server/gtk/main.c:518
+msgid "Server Port"
+msgstr "サーバ　ポート"
+
+#. Commandline pioneersai: name
+#: ../client/ai/ai.c:108
+msgid "Computer name (leave absent for random name)"
+msgstr "コンピュータ名（自動でつける場合は空白にしてください。）"
+
+#. Commandline pioneersai: time
+#: ../client/ai/ai.c:111
+msgid "Time to wait between turns (in milliseconds)"
+msgstr "ターン間の待ち時間（ミリ秒単位）"
+
+#. Commandline pioneersai: chat-free
+#: ../client/ai/ai.c:114
+msgid "Stop computer player from talking"
+msgstr "会話からコンピュータプレイヤーを停止"
+
+#. Commandline pioneersai: algorithm
+#: ../client/ai/ai.c:117
+msgid "Type of computer player"
+msgstr "コンピュータプレイヤーの種類"
+
+#. Commandline option of ai: enable debug logging
+#. Commandline option of client: enable debug logging
+#. Commandline option of meta server: enable debug logging
+#. Commandline option of server-gtk: enable debug logging
+#. Commandline option of server: enable debug logging
+#: ../client/ai/ai.c:120 ../client/gtk/offline.c:74 ../meta-server/main.c:1046
+#: ../server/gtk/main.c:817 ../server/main.c:140
+msgid "Enable debug messages"
+msgstr "デバッグメッセージを可能にする"
+
+#. Commandline option of ai: version
+#. Commandline option of client: version
+#. Commandline option of editor: version
+#. Commandline option of meta server: version
+#. Commandline option of server-gtk: version
+#. Commandline option of server-console: version
+#: ../client/ai/ai.c:123 ../client/gtk/offline.c:77
+#: ../editor/gtk/editor.c:1092 ../meta-server/main.c:1052
+#: ../server/gtk/main.c:820 ../server/main.c:95
+msgid "Show version information"
+msgstr "バージョン情報を表示"
+
+#: ../client/ai/ai.c:134
+msgid "- Computer player for Pioneers"
+msgstr "- パイオニアのコンピュータプレイヤー"
+
+#: ../client/ai/ai.c:144 ../client/gtk/offline.c:184
+#: ../editor/gtk/editor.c:1132 ../meta-server/main.c:1081
+#: ../server/gtk/main.c:870 ../server/main.c:202
+msgid "Pioneers version:"
+msgstr "パイオニアバージョン"
+
+#: ../client/ai/ai.c:176
+#, c-format
+msgid "Type of computer player: %s\n"
+msgstr "コンピュータプレイヤーの種類: %s\n"
+
+#: ../client/ai/ai.c:200
+msgid "The game is already full. I'm leaving."
+msgstr "ゲームはすでに一杯です。私は抜けます。"
+
+#: ../client/ai/greedy.c:941
+msgid "No settlements in stock to use for setup"
+msgstr "セットアップのためにこれ以上たまっている植民地はありません。"
+
+#: ../client/ai/greedy.c:948
+msgid "There is no place to setup a settlement"
+msgstr "植民地を配置する余地がありません。"
+
+#: ../client/ai/greedy.c:972
+msgid "No roads in stock to use for setup"
+msgstr "セットアップのためにこれ以上たまっている道はありません。"
+
+#: ../client/ai/greedy.c:989
+msgid "There is no place to setup a road"
+msgstr "道を設置する余地はありません。"
+
+#: ../client/ai/greedy.c:1291
+msgid "Ok, let's go!"
+msgstr "OK, レッツゴー!"
+
+#: ../client/ai/greedy.c:1292
+msgid "I'll beat you all now! ;)"
+msgstr "やっつけてやる！"
+
+#: ../client/ai/greedy.c:1293
+msgid "Now for another try..."
+msgstr "別なトライ開始中..."
+
+#: ../client/ai/greedy.c:1297
+msgid "At least I get something..."
+msgstr "少なくとも何かとれた..."
+
+#: ../client/ai/greedy.c:1298
+msgid "One is better than none..."
+msgstr "いいものが何もない..."
+
+#: ../client/ai/greedy.c:1302
+msgid "Wow!"
+msgstr "おぉ！"
+
+#: ../client/ai/greedy.c:1303
+msgid "Ey, I'm becoming rich ;)"
+msgstr "いぇい、金持ちになった。"
+
+#: ../client/ai/greedy.c:1304
+msgid "This is really a good year!"
+msgstr "良い年だ！"
+
+#: ../client/ai/greedy.c:1307
+msgid "You really don't deserve that much!"
+msgstr "そんなに受け入れられない！"
+
+#: ../client/ai/greedy.c:1308
+msgid "You don't know what to do with that many resources ;)"
+msgstr "こんなに多くの資源で何をすればいいかわからない。"
+
+#: ../client/ai/greedy.c:1309
+msgid "Ey, wait for my robber and lose all this again!"
+msgstr "あぁ、盗賊を待つか、また、全部なくした！"
+
+#: ../client/ai/greedy.c:1312
+msgid "Hehe!"
+msgstr "へへ！"
+
+#: ../client/ai/greedy.c:1313
+msgid "Go, robber, go!"
+msgstr "いけ、盗賊だ！"
+
+#: ../client/ai/greedy.c:1316
+msgid "You bastard!"
+msgstr "ろくでなし！"
+
+#: ../client/ai/greedy.c:1317
+msgid "Can't you move that robber somewhere else?!"
+msgstr "盗賊をどっか他に移せないの?!"
+
+#: ../client/ai/greedy.c:1318
+msgid "Why always me??"
+msgstr "なんで、いつも私！"
+
+#: ../client/ai/greedy.c:1321
+msgid "Oh no!"
+msgstr "オー、ノー！"
+
+#: ../client/ai/greedy.c:1322
+msgid "Grrr!"
+msgstr "がー！"
+
+#: ../client/ai/greedy.c:1323
+msgid "Who the hell rolled that 7??"
+msgstr "7 の目をだしたのはだれだ??"
+
+#: ../client/ai/greedy.c:1324
+msgid "Why always me?!?"
+msgstr "何でいつも私?!?"
+
+#: ../client/ai/greedy.c:1327
+msgid "Say good bye to your cards... :)"
+msgstr "いただきー"
+
+#: ../client/ai/greedy.c:1328
+msgid "*evilgrin*"
+msgstr "*evilgrin*"
+
+#: ../client/ai/greedy.c:1329
+#, fuzzy
+msgid "/me says farewell to your cards ;)"
+msgstr "金持ちになるための費用か..."
+
+#: ../client/ai/greedy.c:1330
+#, fuzzy
+msgid "That's the price for being rich... :)"
+msgstr "金持ちになるための費用か..."
+
+#: ../client/ai/greedy.c:1333
+msgid "Ey! Where's that card gone?"
+msgstr "ああ！カードはどこにいっていまったの？"
+
+#: ../client/ai/greedy.c:1334
+msgid "Thieves! Thieves!!"
+msgstr "泥棒！泥棒！"
+
+#: ../client/ai/greedy.c:1335
+msgid "Wait for my revenge..."
+msgstr "復讐してやる...."
+
+#: ../client/ai/greedy.c:1338
+msgid "Oh no :("
+msgstr "おー、のー"
+
+#: ../client/ai/greedy.c:1339
+msgid "Must this happen NOW??"
+msgstr "今、これがおこるのか??"
+
+#: ../client/ai/greedy.c:1340
+msgid "Args"
+msgstr "Args"
+
+#: ../client/ai/greedy.c:1343
+msgid "Hehe, my soldiers rule!"
+msgstr "へへ、兵士を支配！"
+
+#: ../client/ai/greedy.c:1346
+msgid "First robbing us, then grabbing the points..."
+msgstr "最初に私たちが奪われ、そうしてポイントが奪われる..."
+
+#: ../client/ai/greedy.c:1349
+msgid "See that road!"
+msgstr "道をみろ!"
+
+#: ../client/ai/greedy.c:1352
+msgid "Pf, you won't win with roads alone..."
+msgstr "ふぅ、道だけじゃ勝てないよ.."
+
+#: ../client/ai/greedy.c:1813
+msgid "Rejecting trade.\n"
+msgstr "交易拒否\n"
+
+#: ../client/ai/greedy.c:1905
+#, c-format
+msgid "Received error from server: %s.  Quitting\n"
+msgstr "サーバ: %s からエラーを受け取った.  終了する。\n"
+
+#: ../client/ai/greedy.c:1915
+msgid "Yippie!"
+msgstr "イッピー！"
+
+#: ../client/ai/greedy.c:1917
+msgid "My congratulations"
+msgstr "おめでとう"
+
+#. Translators: don't translate '/help'
+#: ../client/ai/lobbybot.c:80
+msgid ""
+"Hello, welcome to the lobby. I am a simple robot. Type '/help' in the chat "
+"to see the list of commands I know."
+msgstr ""
+"こんにちは、ようこそロビーへ。私は単純なロボットです。私が知っているコマンド"
+"の一覧を見るためには、チャットで'/help'と打ち込んでください。"
+
+#. Translators: don't translate '/help'
+#: ../client/ai/lobbybot.c:107
+msgid "'/help' shows this message again"
+msgstr "'/help' は、このメッセージを再度表示します。"
+
+#. Translators: don't translate '/why'
+#: ../client/ai/lobbybot.c:110
+msgid "'/why' explains the purpose of this strange board layout"
+msgstr "'/why'は、この不思議なボード配置の目的を説明する"
+
+#. Translators: don't translate '/news'
+#: ../client/ai/lobbybot.c:113
+msgid "'/news' tells the last released version"
+msgstr "'/news'は、最新のリリースバージョンを表示"
+
+#: ../client/ai/lobbybot.c:118
+msgid ""
+"This board is not intended to be a game that can be played. Instead, players "
+"can find eachother here, and decide which board they want to play. Then, one "
+"of the players will host the proposed game by starting a server, and "
+"registers it at the metaserver. The other players can subsequently "
+"disconnect from the lobby, and enter that game."
+msgstr ""
+"このボートはゲームをするには向いていない。その代わり、プレイヤーはここで他の"
+"プレイヤーを見つけて、どのボードで遊びたいかをきめる。そうして、プレイヤーの"
+"一人がサーバをスタートさせることでホストになり、それをメタサーバに登録する。"
+"その次に、他のプレイヤーはロビーからはなれ、ゲームを開始する。"
+
+#: ../client/ai/lobbybot.c:129
+msgid "The last released version of Pioneers is"
+msgstr "パイオニアの最新バージョンは"
+
+#: ../client/ai/lobbybot.c:144
+msgid "The game is starting. I'm not needed anymore. Goodbye."
+msgstr "ゲーム開始。私の仕事は終わり。では。"
+
+#: ../client/common/client.c:103
+msgid "Waiting"
+msgstr "待機中"
+
+#: ../client/common/client.c:105 ../client/common/client.c:1203
+msgid "Idle"
+msgstr "待機"
+
+#: ../client/common/client.c:430
+msgid "We have been kicked out of the game.\n"
+msgstr "ゲームからはじき出された。\n"
+
+#. Network status: offline
+#: ../client/common/client.c:433 ../client/common/client.c:854
+#: ../client/gtk/gui.c:1232
+msgid "Offline"
+msgstr "オフライン"
+
+#: ../client/common/client.c:454
+#, c-format
+msgid "Error (%s): %s\n"
+msgstr "エラー (%s): %s\n"
+
+#: ../client/common/client.c:463 ../client/common/client.c:474
+#, c-format
+msgid "Notice: %s\n"
+msgstr "警告: %s\n"
+
+#: ../client/common/client.c:584
+#, c-format
+msgid "%s does not receive any %s, because the bank is empty.\n"
+msgstr "%s はどんな %s をも受け取らない, なぜなら、山は空だから。\n"
+
+#: ../client/common/client.c:597
+#, c-format
+msgid "%s only receives %s, because the bank didn't have any more.\n"
+msgstr "%s は、 %sだけ受け取る, なぜなら、山はもうなにもなくなったから。\n"
+
+#: ../client/common/client.c:606
+#, c-format
+msgid "%s receives %s.\n"
+msgstr "%s は、 %s を受けとった。\n"
+
+#. Year of Plenty
+#: ../client/common/client.c:614 ../client/common/client.c:2468
+#, c-format
+msgid "%s takes %s.\n"
+msgstr "%s は、%s　をとる。\n"
+
+#: ../client/common/client.c:619
+#, c-format
+msgid "%s spent %s.\n"
+msgstr "%s は、 %s　を使用した。.\n"
+
+#: ../client/common/client.c:625
+#, c-format
+msgid "%s is refunded %s.\n"
+msgstr "%s は %s を見つけられた.\n"
+
+#: ../client/common/client.c:655
+#, c-format
+msgid "%s discarded %s.\n"
+msgstr "%s は、 %s　を失った.\n"
+
+#: ../client/common/client.c:813
+msgid "Loading"
+msgstr "ロード中"
+
+#: ../client/common/client.c:855
+msgid "Version mismatch"
+msgstr "バージョン不整合"
+
+#: ../client/common/client.c:857
+msgid "Version mismatch. Please make sure client and server are up to date.\n"
+msgstr "バージョン不整合。クライアントをチェックしてください。\n"
+
+#: ../client/common/client.c:1302
+msgid "Build two settlements, each with a connecting"
+msgstr "２つの植民地を建てとそれらをつなぐ"
+
+#: ../client/common/client.c:1305
+msgid "Build a settlement with a connecting"
+msgstr "接続した植民地を建築"
+
+#: ../client/common/client.c:1308
+msgid "road"
+msgstr "道"
+
+#: ../client/common/client.c:1310
+msgid "bridge"
+msgstr "橋"
+
+#: ../client/common/client.c:1312
+msgid "ship"
+msgstr "船"
+
+#: ../client/common/client.c:1320
+msgid " or"
+msgstr " または"
+
+#: ../client/common/client.c:1378
+msgid "Waiting for your turn"
+msgstr "あなたの順番待ち"
+
+#: ../client/common/client.c:1472 ../client/common/client.c:1497
+#: ../client/gtk/interface.c:764
+msgid "Place the robber"
+msgstr "盗賊配置"
+
+#: ../client/common/client.c:1521
+msgid "Finish the road building action."
+msgstr "道建設終了"
+
+#: ../client/common/client.c:1523
+msgid "Build one road segment."
+msgstr "道１つ建築"
+
+#: ../client/common/client.c:1525
+msgid "Build two road segments."
+msgstr "道２つ建築"
+
+#: ../client/common/client.c:1798 ../client/common/client.c:1881
+msgid "It is your turn."
+msgstr "あなたの番"
+
+#: ../client/common/client.c:1975
+#, fuzzy, c-format
+msgid "Sorry, %s available.\n"
+msgstr ""
+"すみません、 %s 使用可能\n"
+"ゲーム終了"
+
+#: ../client/common/client.c:2290
+#, fuzzy
+msgid "The game is over."
+msgstr ""
+"すみません、 %s 使用可能\n"
+"ゲーム終了"
+
+#: ../client/common/develop.c:43 ../editor/gtk/game-devcards.c:13
+msgid "Road Building"
+msgstr "道路建築"
+
+#: ../client/common/develop.c:44 ../client/gtk/monopoly.c:83
+#: ../editor/gtk/game-devcards.c:13
+msgid "Monopoly"
+msgstr "モノポリー"
+
+#: ../client/common/develop.c:45 ../client/gtk/plenty.c:59
+#: ../editor/gtk/game-devcards.c:13
+msgid "Year of Plenty"
+msgstr "豊年"
+
+#: ../client/common/develop.c:46 ../client/gtk/player.c:53
+#: ../editor/gtk/game-devcards.c:14
+msgid "Chapel"
+msgstr "教会"
+
+#: ../client/common/develop.c:47 ../client/gtk/player.c:54
+#: ../editor/gtk/game-devcards.c:14
+msgid "Pioneer University"
+msgstr "パイオニア大学"
+
+#: ../client/common/develop.c:48 ../client/gtk/player.c:56
+#: ../editor/gtk/game-devcards.c:15
+msgid "Governor's House"
+msgstr "官舎"
+
+#: ../client/common/develop.c:49 ../client/gtk/player.c:57
+#: ../editor/gtk/game-devcards.c:15
+msgid "Library"
+msgstr "図書館"
+
+#: ../client/common/develop.c:50 ../client/gtk/player.c:58
+#: ../editor/gtk/game-devcards.c:15
+msgid "Market"
+msgstr "市場"
+
+#: ../client/common/develop.c:51 ../client/gtk/player.c:59
+#: ../editor/gtk/game-devcards.c:16
+msgid "Soldier"
+msgstr "兵士"
+
+#: ../client/common/develop.c:82
+#, c-format
+msgid "You bought the %s development card.\n"
+msgstr "%s 開発カードを買った\n"
+
+#: ../client/common/develop.c:88
+#, c-format
+msgid "You bought a %s development card.\n"
+msgstr "%s 開発カードを買った。\n"
+
+#: ../client/common/develop.c:110
+#, c-format
+msgid "%s bought a development card.\n"
+msgstr "%s は、開発カードを買った。\n"
+
+#: ../client/common/develop.c:129
+#, c-format
+msgid "%s played the %s development card.\n"
+msgstr "%s は、開発カード %s を使った\n"
+
+#: ../client/common/develop.c:134
+#, c-format
+msgid "%s played a %s development card.\n"
+msgstr "%s は、開発カード %s を使った。\n"
+
+#: ../client/common/develop.c:147
+msgid "You have run out of road segments.\n"
+msgstr "建設できる道がありません。\n"
+
+#. I get the cards!
+#.
+#: ../client/common/develop.c:188
+#, c-format
+msgid "You get %s from %s.\n"
+msgstr "%s を %s から得た。\n"
+
+#. I lose the cards!
+#.
+#: ../client/common/develop.c:194
+#, c-format
+msgid "%s took %s from you.\n"
+msgstr "%s は、あなたから %s を奪った\n"
+
+#: ../client/common/develop.c:201
+#, c-format
+msgid "%s took %s from %s.\n"
+msgstr "%s は、%s を %sからとった。\n"
+
+#: ../client/common/player.c:116 ../server/player.c:381
+#, c-format
+msgid "Viewer %d"
+msgstr "観戦者 %d"
+
+#: ../client/common/player.c:118
+#, c-format
+msgid "viewer %d"
+msgstr "観戦者 %d"
+
+#: ../client/common/player.c:126 ../server/player.c:384
+#, c-format
+msgid "Player %d"
+msgstr "プレイヤー %d"
+
+#: ../client/common/player.c:128
+#, c-format
+msgid "player %d"
+msgstr "プレイヤー %d"
+
+#: ../client/common/player.c:203
+#, c-format
+msgid "New viewer: %s.\n"
+msgstr "新しい観戦者: %s.\n"
+
+#: ../client/common/player.c:206 ../client/common/player.c:222
+#, c-format
+msgid "%s is now %s.\n"
+msgstr "%s は、今 %s \n"
+
+#: ../client/common/player.c:219
+#, c-format
+msgid "Player %d is now %s.\n"
+msgstr "プレイヤー %d は、今、 %s.\n"
+
+#: ../client/common/player.c:251
+#, c-format
+msgid "%s has quit\n"
+msgstr "%s は、止めた\n"
+
+#: ../client/common/player.c:260
+msgid "There is no largest army.\n"
+msgstr "最大兵力なし\n"
+
+#: ../client/common/player.c:263
+#, c-format
+msgid "%s has the largest army.\n"
+msgstr "%s が最大兵力\n"
+
+#: ../client/common/player.c:284
+msgid "There is no longest road.\n"
+msgstr "最長道はない\n"
+
+#: ../client/common/player.c:287
+#, c-format
+msgid "%s has the longest road.\n"
+msgstr "%s は、最長道をもった。\n"
+
+#: ../client/common/player.c:308
+#, c-format
+msgid "Waiting for %s."
+msgstr "%s　を待ってる."
+
+#. We are not in on the action
+#. someone stole a resource from someone else
+#: ../client/common/player.c:336
+#, c-format
+msgid "%s stole a resource from %s.\n"
+msgstr "%s は、資源を %s から盗んだ。\n"
+
+#: ../client/common/player.c:346
+#, c-format
+msgid "You stole %s from %s.\n"
+msgstr "%s を %s から盗んだ。\n"
+
+#: ../client/common/player.c:352
+#, c-format
+msgid "%s stole %s from you.\n"
+msgstr "%s は、%s をあなたから盗んだ。\n"
+
+#: ../client/common/player.c:386
+#, c-format
+msgid "%s gave %s nothing!?\n"
+msgstr "%s は、%s に何も与えない!?\n"
+
+#: ../client/common/player.c:392 ../client/common/player.c:400
+#, c-format
+msgid "%s gave %s %s for free.\n"
+msgstr "%s は、無料で %s に %s をあげた。\n"
+
+#: ../client/common/player.c:408
+#, c-format
+msgid "%s gave %s %s in exchange for %s.\n"
+msgstr "%s は、 %s に %s を %s と交換で与えた。\n"
+
+#: ../client/common/player.c:439
+#, c-format
+msgid "%s exchanged %s for %s.\n"
+msgstr "%s は、%s を %sに交換した。\n"
+
+#: ../client/common/player.c:459
+#, c-format
+msgid "%s built a road.\n"
+msgstr "%s は、道を建築した。\n"
+
+#: ../client/common/player.c:471
+#, c-format
+msgid "%s built a ship.\n"
+msgstr "%s は、船を造船した。\n"
+
+#: ../client/common/player.c:484
+#, c-format
+msgid "%s built a settlement.\n"
+msgstr "%s は、植民地を建築した。\n"
+
+#: ../client/common/player.c:503
+#, c-format
+msgid "%s built a city.\n"
+msgstr "%s は、都市を建築した。\n"
+
+#: ../client/common/player.c:513
+#, c-format
+msgid "player_build_add called with BUILD_NONE for user %s\n"
+msgstr "player_build_add called with BUILD_NONE for user %s\n"
+
+#: ../client/common/player.c:522
+#, c-format
+msgid "%s built a bridge.\n"
+msgstr "%s は、橋を建築した。\n"
+
+#: ../client/common/player.c:548
+#, c-format
+msgid "%s removed a road.\n"
+msgstr "%s は、道を取り除いた。\n"
+
+#: ../client/common/player.c:558
+#, c-format
+msgid "%s removed a ship.\n"
+msgstr "%s は、船を取り除いた。\n"
+
+#: ../client/common/player.c:568
+#, c-format
+msgid "%s removed a settlement.\n"
+msgstr "%s は、植民地を取り除いた。\n"
+
+#: ../client/common/player.c:579
+#, c-format
+msgid "%s removed a city.\n"
+msgstr "%s は、都市を取り除いた。\n"
+
+#: ../client/common/player.c:591
+#, c-format
+msgid "player_build_remove called with BUILD_NONE for user %s\n"
+msgstr "player_build_remove alled with BUILD_NONE for user %s\n"
+
+#: ../client/common/player.c:599
+#, c-format
+msgid "%s removed a bridge.\n"
+msgstr "%s は、橋を取り除いた。\n"
+
+#: ../client/common/player.c:630
+#, c-format
+msgid "%s has cancelled a ship's movement.\n"
+msgstr "%s は、船の移動を取り消した。\n"
+
+#: ../client/common/player.c:633
+#, c-format
+msgid "%s moved a ship.\n"
+msgstr "%s は、船を移動した。\n"
+
+#. tell the user that someone got something
+#: ../client/common/player.c:653
+#, c-format
+msgid "%s received %s.\n"
+msgstr "%s は、%s　を受け取った。 \n"
+
+#: ../client/common/player.c:671
+msgid "server asks to lose invalid point.\n"
+msgstr "サーバは不正な接続といってる\n"
+
+#. tell the user the point is lost
+#: ../client/common/player.c:677
+#, c-format
+msgid "%s lost %s.\n"
+msgstr "%s は、%s を失った。\n"
+
+#: ../client/common/player.c:700
+msgid "server asks to move invalid point.\n"
+msgstr "サーバは不正な端末を移動してよいかと訪ねている\n"
+
+#. tell the user someone (1) lost something (2) to someone else (3)
+#: ../client/common/player.c:707
+#, c-format
+msgid "%s lost %s to %s.\n"
+msgstr "%s は、%s に %s で負ける。\n"
+
+#: ../client/common/resource.c:35
+msgid "brick"
+msgstr "煉瓦"
+
+#: ../client/common/resource.c:35
+msgid "Brick"
+msgstr "煉瓦"
+
+#: ../client/common/resource.c:36
+msgid "grain"
+msgstr "麦"
+
+#: ../client/common/resource.c:36
+msgid "Grain"
+msgstr "麦"
+
+#: ../client/common/resource.c:37
+msgid "ore"
+msgstr "鉱石"
+
+#: ../client/common/resource.c:37
+msgid "Ore"
+msgstr "鉱石"
+
+#: ../client/common/resource.c:38
+msgid "wool"
+msgstr "羊毛"
+
+#: ../client/common/resource.c:38
+msgid "Wool"
+msgstr "羊毛"
+
+#: ../client/common/resource.c:39
+msgid "lumber"
+msgstr "木材"
+
+#: ../client/common/resource.c:39
+msgid "Lumber"
+msgstr "木材"
+
+#: ../client/common/resource.c:40
+msgid "no resource (bug)"
+msgstr "no resource (bug)"
+
+#: ../client/common/resource.c:40
+msgid "No resource (bug)"
+msgstr "no resource (bug)"
+
+#: ../client/common/resource.c:41
+msgid "any resource (bug)"
+msgstr "any resource (bug)"
+
+#: ../client/common/resource.c:41
+msgid "Any resource (bug)"
+msgstr "Any resource (bug)"
+
+#: ../client/common/resource.c:42
+msgid "gold"
+msgstr "金"
+
+#: ../client/common/resource.c:42 ../client/gtk/legend.c:39
+msgid "Gold"
+msgstr "金"
+
+#: ../client/common/resource.c:47
+msgid "a brick card"
+msgstr "煉瓦カード"
+
+#: ../client/common/resource.c:47
+#, c-format
+msgid "%d brick cards"
+msgstr "%d 枚煉瓦カード"
+
+#: ../client/common/resource.c:48
+msgid "a grain card"
+msgstr "麦カード"
+
+#: ../client/common/resource.c:48
+#, c-format
+msgid "%d grain cards"
+msgstr "%d 枚麦カード"
+
+#: ../client/common/resource.c:49
+msgid "an ore card"
+msgstr "鉱石カード"
+
+#: ../client/common/resource.c:49
+#, c-format
+msgid "%d ore cards"
+msgstr "%d 枚鉱石カード"
+
+#: ../client/common/resource.c:50
+msgid "a wool card"
+msgstr "羊毛カード"
+
+#: ../client/common/resource.c:50
+#, c-format
+msgid "%d wool cards"
+msgstr "%d 枚羊毛カード"
+
+#: ../client/common/resource.c:51
+msgid "a lumber card"
+msgstr "木材カード"
+
+#: ../client/common/resource.c:51
+#, c-format
+msgid "%d lumber cards"
+msgstr "%d 枚木材カード"
+
+#: ../client/common/resource.c:139 ../client/common/resource.c:225
+msgid "nothing"
+msgstr "なし"
+
+#. Construct "A, B and C" for resources
+#: ../client/common/resource.c:166
+#, c-format
+msgid "%s and %s"
+msgstr "%s そして、%s"
+
+#. Construct "A, B and C" for resources
+#: ../client/common/resource.c:170
+#, c-format
+msgid "%s, %s"
+msgstr "%s, %s"
+
+#: ../client/common/robber.c:57
+#, c-format
+msgid "%s moved the robber.\n"
+msgstr "%s は、盗賊を移動した。\n"
+
+#: ../client/common/robber.c:61 ../client/common/robber.c:71
+msgid "Continue with your turn."
+msgstr "あなたの番が進行中"
+
+#: ../client/common/robber.c:67
+#, c-format
+msgid "%s moved the pirate.\n"
+msgstr "%s は、海賊を移動した。\n"
+
+#: ../client/common/robber.c:77
+#, c-format
+msgid "%s must move the robber."
+msgstr "%s は、盗賊を移動しなけばならない。"
+
+#: ../client/common/setup.c:140
+#, c-format
+msgid "Setup for %s.\n"
+msgstr "%s の準備.\n"
+
+#: ../client/common/setup.c:152
+#, c-format
+msgid "Double setup for %s.\n"
+msgstr "%s の二重設定\n"
+
+#: ../client/common/turn.c:37
+#, fuzzy, c-format
+msgid "%s rolled %d.\n"
+msgstr "%s は、%s　を受け取った。 \n"
+
+#: ../client/common/turn.c:50
+#, fuzzy, c-format
+msgid "Begin turn %d for %s.\n"
+msgstr "%s の準備.\n"
+
+#: ../client/gtk/chat.c:71
+msgid "<b>Chat</b>"
+msgstr ""
+
+#: ../client/gtk/chat.c:219
+msgid "Beeper test.\n"
+msgstr "Beeper揃test.\n"
+
+#: ../client/gtk/chat.c:222
+#, fuzzy, c-format
+msgid "%s beeped you.\n"
+msgstr "%s　を呼び出した.\n"
+
+#: ../client/gtk/chat.c:226
+#, fuzzy, c-format
+msgid "You beeped %s.\n"
+msgstr "%s　を呼び出すことができない.\n"
+
+#: ../client/gtk/chat.c:232
+#, c-format
+msgid "You could not beep %s.\n"
+msgstr "%s　を呼び出すことができない.\n"
+
+#: ../client/gtk/chat.c:276
+msgid " said: "
+msgstr "揃荅宴:·"
+
+#: ../client/gtk/connect.c:268
+#, c-format
+msgid "Meta-server at %s, port %s"
+msgstr "メタサーバ %s, ポート %s"
+
+#: ../client/gtk/connect.c:278
+msgid "Finished.\n"
+msgstr "終了\n"
+
+#: ../client/gtk/connect.c:295 ../client/gtk/connect.c:345
+#: ../client/gtk/connect.c:442 ../server/meta.c:174
+msgid "Meta-server kicked us off\n"
+msgstr "メタサーバが我々をけり出した。\n"
+
+#: ../client/gtk/connect.c:320
+msgid "Receiving game names from the meta server.\n"
+msgstr "メタサーバからゲーム名を受信中 \n"
+
+#: ../client/gtk/connect.c:368
+#, c-format
+msgid "New game server requested on %s port %s\n"
+msgstr "新しいゲームサーが %s ポート 5s で要求されている\n"
+
+#: ../client/gtk/connect.c:377 ../server/meta.c:168
+#, c-format
+msgid "Unknown message from the metaserver: %s\n"
+msgstr "メタサーバからの不明メッセージ: %s\n"
+
+#: ../client/gtk/connect.c:458 ../server/meta.c:125
+msgid "Too many meta-server redirects\n"
+msgstr "メタサーバのリダイレクトが多すぎる\n"
+
+#: ../client/gtk/connect.c:485 ../server/meta.c:140
+#, c-format
+msgid "Bad redirect line: %s\n"
+msgstr "不正なリダイレクト: %s\n"
+
+#: ../client/gtk/connect.c:511
+#, c-format
+msgid "Meta server too old to create servers (version %d.%d)\n"
+msgstr "メタサーバは古すぎてサーバ(バージョン %d.%d)を作ることができない\n"
+
+#. Sevens rule: normal
+#: ../client/gtk/connect.c:582 ../client/gtk/settingscreen.c:167
+#: ../common/gtk/game-settings.c:181
+msgid "Normal"
+msgstr "通常"
+
+#: ../client/gtk/connect.c:588 ../client/gtk/settingscreen.c:169
+#: ../common/gtk/game-settings.c:188
+msgid "Reroll on 1st 2 turns"
+msgstr "最初の2ターンふり直し"
+
+#: ../client/gtk/connect.c:591 ../client/gtk/settingscreen.c:171
+#: ../common/gtk/game-settings.c:195
+msgid "Reroll all 7s"
+msgstr "すべての7の目でふり直し"
+
+#. Button text: default terrain
+#: ../client/gtk/connect.c:605 ../common/gtk/game-settings.c:367
+msgid "Default"
+msgstr "標準"
+
+#. Button text: random terrain
+#: ../client/gtk/connect.c:608 ../common/gtk/game-settings.c:365
+msgid "Random"
+msgstr "ランダム"
+
+#: ../client/gtk/connect.c:639 ../server/meta.c:188
+#, c-format
+msgid "Redirected to meta-server at %s, port %s\n"
+msgstr "%s のポート %s のメタサーバにリダイレクト\n"
+
+#: ../client/gtk/connect.c:642
+msgid "Receiving a list of Pioneers servers from the meta server.\n"
+msgstr "メタサーバからパイオニアサーバの一覧を取得中\n"
+
+#: ../client/gtk/connect.c:706
+msgid "Number of AI Players"
+msgstr "AIプレイヤーの数"
+
+#: ../client/gtk/connect.c:725
+msgid "The number of AI players"
+msgstr "AIプレイヤーの数"
+
+#: ../client/gtk/connect.c:730
+msgid ""
+"<b>Note</b>:\n"
+"\tThe metaserver does not send information about the games.\n"
+"\tPlease set appropriate values yourself."
+msgstr ""
+"<b>注意</b>:\n"
+"\tメタサーバはゲームについての情報を送らない。\n"
+"\t自分で必要な値を設定してください。"
+
+#: ../client/gtk/connect.c:751
+msgid "Requesting new game server\n"
+msgstr "新しいゲームサーバを要求中\n"
+
+#: ../client/gtk/connect.c:794 ../server/server.c:155
+#, c-format
+msgid "Error starting %s: %s"
+msgstr "Error揃starting揃%s:揃%s"
+
+#: ../client/gtk/connect.c:815
+msgid "Create a public game"
+msgstr "公開ゲーム作成"
+
+#: ../client/gtk/connect.c:946 ../client/gtk/connect.c:1249
+msgid "Join a public game"
+msgstr "公開ゲームに参加"
+
+#: ../client/gtk/connect.c:951
+msgid "_New remote game"
+msgstr "_New揃remote揃game"
+
+#: ../client/gtk/connect.c:965
+msgid "Refresh the list of games"
+msgstr "ゲームリストを更新"
+
+#: ../client/gtk/connect.c:970
+msgid "Create a new public game at the meta server"
+msgstr "メタサーバに新しい公開ゲームを作成"
+
+#: ../client/gtk/connect.c:975
+msgid "Don't join a public game"
+msgstr "公開ゲームに参加しない"
+
+#: ../client/gtk/connect.c:979
+msgid "Join the selected game"
+msgstr "公開ゲームに参加"
+
+#: ../client/gtk/connect.c:1014
+msgid "Select a game to join"
+msgstr "参加するゲームを選択"
+
+#: ../client/gtk/connect.c:1017
+msgid "Map Name"
+msgstr "地図名"
+
+#: ../client/gtk/connect.c:1025
+msgid "Name of the game"
+msgstr "ゲームの名前"
+
+#: ../client/gtk/connect.c:1030
+msgid "Curr"
+msgstr "現在"
+
+#: ../client/gtk/connect.c:1036
+msgid "Number of players in the game"
+msgstr "ゲーム内のプレイヤーの数"
+
+#: ../client/gtk/connect.c:1041
+msgid "Max"
+msgstr "最大"
+
+#: ../client/gtk/connect.c:1047
+msgid "Maximum players for the game"
+msgstr "ゲームの最大プレイヤー数"
+
+#: ../client/gtk/connect.c:1050
+msgid "Terrain"
+msgstr "地形"
+
+#: ../client/gtk/connect.c:1057
+msgid "Random of default terrain"
+msgstr "標準陸地のランダム"
+
+#: ../client/gtk/connect.c:1062
+msgid "Vic. Points"
+msgstr "勝利得点"
+
+#: ../client/gtk/connect.c:1068
+msgid "Points needed to win"
+msgstr "勝利に必要なポイント"
+
+#. Label for customising a game
+#: ../client/gtk/connect.c:1071 ../common/gtk/game-settings.c:173
+msgid "Sevens Rule"
+msgstr "7ルール"
+
+#: ../client/gtk/connect.c:1077
+msgid "Sevens rule"
+msgstr "7ルール"
+
+#: ../client/gtk/connect.c:1081
+msgid "Host"
+msgstr "ホスト"
+
+#: ../client/gtk/connect.c:1089
+msgid "Host of the game"
+msgstr "ゲームホスト"
+
+#: ../client/gtk/connect.c:1094
+msgid "Port"
+msgstr "ポート"
+
+#: ../client/gtk/connect.c:1100
+msgid "Port of the the game"
+msgstr "ゲームサーバのポート"
+
+#: ../client/gtk/connect.c:1103 ../common/gtk/aboutbox.c:77
+msgid "Version"
+msgstr "バージョン"
+
+#: ../client/gtk/connect.c:1110
+msgid "Version of the host"
+msgstr ""
+
+#: ../client/gtk/connect.c:1165 ../client/gtk/gui.c:206
+msgid "Start a new game"
+msgstr ""
+
+#: ../client/gtk/connect.c:1190
+#, fuzzy
+msgid "Player Name"
+msgstr "プレイヤー %d"
+
+#: ../client/gtk/connect.c:1204
+msgid "Enter your name"
+msgstr ""
+
+#. Role of the player: viewer
+#: ../client/gtk/connect.c:1206 ../server/gtk/main.c:462
+#, fuzzy
+msgid "Viewer"
+msgstr "観戦者 %d"
+
+#: ../client/gtk/connect.c:1214
+msgid "Do you want to be a viewer?"
+msgstr ""
+
+#: ../client/gtk/connect.c:1221 ../server/gtk/main.c:549
+msgid "Meta Server"
+msgstr ""
+
+#: ../client/gtk/connect.c:1236
+msgid "Leave empty for the default meta server"
+msgstr ""
+
+#: ../client/gtk/connect.c:1244
+#, fuzzy
+msgid "Join public game"
+msgstr "公開ゲームに参加"
+
+#: ../client/gtk/connect.c:1253
+#, fuzzy
+msgid "Create game"
+msgstr "公開ゲーム作成"
+
+#: ../client/gtk/connect.c:1256
+#, fuzzy
+msgid "Create a game"
+msgstr "公開ゲーム作成"
+
+#: ../client/gtk/connect.c:1266
+#, fuzzy
+msgid "Join private game"
+msgstr "公開ゲームに参加"
+
+#: ../client/gtk/connect.c:1270 ../client/gtk/connect.c:1415
+#, fuzzy
+msgid "Join a private game"
+msgstr "公開ゲームに参加"
+
+#: ../client/gtk/connect.c:1456
+#, fuzzy
+msgid "Name of the host of the game"
+msgstr "ゲームの名前"
+
+#: ../client/gtk/connect.c:1475
+#, fuzzy
+msgid "Port of the host of the game"
+msgstr "ゲームサーバのポート"
+
+#: ../client/gtk/connect.c:1515
+msgid "Recent games"
+msgstr ""
+
+#: ../client/gtk/connect.c:1517
+msgid "Recent Games"
+msgstr ""
+
+#: ../client/gtk/develop.c:93
+msgid "<b>Development Cards</b>"
+msgstr ""
+
+#: ../client/gtk/develop.c:121
+#, fuzzy
+msgid "Play Card"
+msgstr "プレイヤー %d"
+
+#: ../client/gtk/discard.c:76
+msgid "Discard resources"
+msgstr ""
+
+#: ../client/gtk/discard.c:96
+#, c-format
+msgid "You must discard %d resources"
+msgstr ""
+
+#: ../client/gtk/discard.c:101
+msgid "Total discards"
+msgstr ""
+
+#. Caption for list of player that must discard cards
+#: ../client/gtk/discard.c:226
+msgid "<b>Waiting for players to discard</b>"
+msgstr ""
+
+#: ../client/gtk/gameover.c:32
+msgid "Game over"
+msgstr ""
+
+#: ../client/gtk/gameover.c:49
+#, c-format
+msgid "%s has won the game with %d victory points!"
+msgstr ""
+
+#: ../client/gtk/gameover.c:52
+#, c-format
+msgid "%s has won the game with %d victory points!\n"
+msgstr ""
+
+#: ../client/gtk/gameover.c:58
+#, c-format
+msgid "All praise %s, Lord of the known world!"
+msgstr ""
+
+#: ../client/gtk/gold.c:71
+#, fuzzy
+msgid "Choose resources"
+msgstr "no resource (bug)"
+
+#: ../client/gtk/gold.c:92
+#, c-format
+msgid "You may choose 1 resource"
+msgstr ""
+
+#: ../client/gtk/gold.c:94
+#, c-format
+msgid "You may choose %d resources"
+msgstr ""
+
+#. Text for total in choose gold dialog
+#. Text for total in year of plenty dialog
+#: ../client/gtk/gold.c:101 ../client/gtk/plenty.c:98
+#, fuzzy
+msgid "Total resources"
+msgstr "no resource (bug)"
+
+#: ../client/gtk/gold.c:213
+msgid "<b>Waiting for players to choose</b>"
+msgstr ""
+
+#: ../client/gtk/gui.c:204 ../server/gtk/main.c:88
+msgid "_Game"
+msgstr ""
+
+#: ../client/gtk/gui.c:205
+#, fuzzy
+msgid "_New game"
+msgstr "_New揃remote揃game"
+
+#: ../client/gtk/gui.c:207
+msgid "_Leave game"
+msgstr ""
+
+#: ../client/gtk/gui.c:208
+#, fuzzy
+msgid "Leave this game"
+msgstr "ゲームの名前"
+
+#: ../client/gtk/gui.c:210
+msgid "_Admin"
+msgstr ""
+
+#: ../client/gtk/gui.c:211
+msgid "Administer Pioneers server"
+msgstr ""
+
+#: ../client/gtk/gui.c:213
+#, fuzzy
+msgid "_Player name"
+msgstr "プレイヤー %d"
+
+#: ../client/gtk/gui.c:214
+msgid "Change your player name"
+msgstr ""
+
+#: ../client/gtk/gui.c:215
+msgid "_Legend"
+msgstr ""
+
+#: ../client/gtk/gui.c:216
+msgid "Terrain legend and building costs"
+msgstr ""
+
+#: ../client/gtk/gui.c:217
+msgid "_Game Settings"
+msgstr ""
+
+#: ../client/gtk/gui.c:218
+msgid "Settings for the current game"
+msgstr ""
+
+#: ../client/gtk/gui.c:219
+msgid "_Dice Histogram"
+msgstr ""
+
+#: ../client/gtk/gui.c:220
+msgid "Histogram of dice rolls"
+msgstr ""
+
+#: ../client/gtk/gui.c:221 ../editor/gtk/editor.c:1040 ../server/gtk/main.c:90
+msgid "_Quit"
+msgstr ""
+
+#: ../client/gtk/gui.c:222 ../server/gtk/main.c:91
+msgid "Quit the program"
+msgstr ""
+
+#: ../client/gtk/gui.c:223
+msgid "_Actions"
+msgstr ""
+
+#: ../client/gtk/gui.c:224
+msgid "Roll Dice"
+msgstr ""
+
+#: ../client/gtk/gui.c:225
+msgid "Roll the dice"
+msgstr ""
+
+#. Tab page name
+#: ../client/gtk/gui.c:226 ../client/gtk/gui.c:564
+#, fuzzy
+msgid "Trade"
+msgstr "道"
+
+#: ../client/gtk/gui.c:228
+#, fuzzy
+msgid "Undo"
+msgstr "ランダム"
+
+#: ../client/gtk/gui.c:229 ../client/gtk/gui.c:230
+#, fuzzy
+msgid "Finish"
+msgstr "終了\n"
+
+#: ../client/gtk/gui.c:231 ../client/gtk/legend.c:224
+#: ../editor/gtk/game-buildings.c:13
+#, fuzzy
+msgid "Road"
+msgstr "道"
+
+#: ../client/gtk/gui.c:232
+#, fuzzy
+msgid "Build a road"
+msgstr "%s は、道を建築した。\n"
+
+#: ../client/gtk/gui.c:233 ../client/gtk/legend.c:228
+#: ../editor/gtk/game-buildings.c:13
+#, fuzzy
+msgid "Ship"
+msgstr "船"
+
+#: ../client/gtk/gui.c:234
+#, fuzzy
+msgid "Build a ship"
+msgstr "%s は、船を造船した。\n"
+
+#: ../client/gtk/gui.c:235
+msgid "Move Ship"
+msgstr ""
+
+#: ../client/gtk/gui.c:236
+#, fuzzy
+msgid "Move a ship"
+msgstr "%s は、船を移動した。\n"
+
+#: ../client/gtk/gui.c:237 ../client/gtk/legend.c:231
+#: ../editor/gtk/game-buildings.c:13
+#, fuzzy
+msgid "Bridge"
+msgstr "橋"
+
+#: ../client/gtk/gui.c:238
+#, fuzzy
+msgid "Build a bridge"
+msgstr "%s は、橋を建築した。\n"
+
+#: ../client/gtk/gui.c:239 ../client/gtk/legend.c:233
+#: ../client/gtk/player.c:49 ../editor/gtk/game-buildings.c:13
+msgid "Settlement"
+msgstr ""
+
+#: ../client/gtk/gui.c:240
+#, fuzzy
+msgid "Build a settlement"
+msgstr "%s は、植民地を建築した。\n"
+
+#: ../client/gtk/gui.c:241 ../client/gtk/legend.c:234
+#: ../client/gtk/player.c:50 ../editor/gtk/game-buildings.c:14
+msgid "City"
+msgstr ""
+
+#: ../client/gtk/gui.c:242
+#, fuzzy
+msgid "Build a city"
+msgstr "%s は、都市を建築した。\n"
+
+#: ../client/gtk/gui.c:243
+msgid "Develop"
+msgstr ""
+
+#: ../client/gtk/gui.c:244
+#, fuzzy
+msgid "Buy a development card"
+msgstr "%s は、開発カードを買った。\n"
+
+#: ../client/gtk/gui.c:246
+msgid "_Settings"
+msgstr ""
+
+#: ../client/gtk/gui.c:247
+msgid "Prefere_nces"
+msgstr ""
+
+#: ../client/gtk/gui.c:248
+msgid "Configure the application"
+msgstr ""
+
+#: ../client/gtk/gui.c:250 ../client/gtk/gui.c:254 ../editor/gtk/editor.c:1027
+#: ../server/gtk/main.c:89
+msgid "_Help"
+msgstr ""
+
+#: ../client/gtk/gui.c:251
+msgid "_About Pioneers"
+msgstr ""
+
+#: ../client/gtk/gui.c:252
+msgid "Information about Pioneers"
+msgstr ""
+
+#: ../client/gtk/gui.c:255 ../client/gtk/gui.c:977
+msgid "Show the manual"
+msgstr ""
+
+#: ../client/gtk/gui.c:261
+msgid "_Toolbar"
+msgstr ""
+
+#: ../client/gtk/gui.c:262
+msgid "Show or hide the toolbar"
+msgstr ""
+
+#. Victory points target in statusbar
+#: ../client/gtk/gui.c:355
+#, fuzzy, c-format
+msgid "Points Needed to Win: %i"
+msgstr "勝利に必要なポイント"
+
+#: ../client/gtk/gui.c:441
+msgid "<b>Messages</b>"
+msgstr ""
+
+#. Tab page name
+#: ../client/gtk/gui.c:558 ../editor/gtk/editor.c:1186
+#, fuzzy
+msgid "Map"
+msgstr "最大"
+
+#. Tab page name
+#: ../client/gtk/gui.c:572 ../client/gtk/quote.c:306
+msgid "Quote"
+msgstr ""
+
+#. Tab page name
+#: ../client/gtk/gui.c:580 ../client/gtk/legend.c:255
+msgid "Legend"
+msgstr ""
+
+#. Tab page name, shown for the splash screen
+#: ../client/gtk/gui.c:590
+msgid "Welcome to Pioneers"
+msgstr ""
+
+#: ../client/gtk/gui.c:797
+#, fuzzy
+msgid "Pioneers Preferences"
+msgstr "パイオニアバージョン"
+
+#. Label for changing the theme, in the preferences dialog
+#: ../client/gtk/gui.c:827
+msgid "Theme:"
+msgstr ""
+
+#: ../client/gtk/gui.c:850
+#, fuzzy
+msgid "Choose one of the themes"
+msgstr "ゲームサーバのポート"
+
+#. Label for the option to show the legend
+#: ../client/gtk/gui.c:854
+msgid "Show legend"
+msgstr ""
+
+#. Tooltip for the option to show the legend
+#: ../client/gtk/gui.c:864
+msgid "Show the legend as a page beside the map"
+msgstr ""
+
+#. Label for the option to display log messages in color
+#: ../client/gtk/gui.c:869
+msgid "Messages with color"
+msgstr ""
+
+#: ../client/gtk/gui.c:879
+msgid "Show new messages with color"
+msgstr ""
+
+#: ../client/gtk/gui.c:884
+msgid "Chat in color of player"
+msgstr ""
+
+#: ../client/gtk/gui.c:895
+msgid "Show new chat messages in the color of the player"
+msgstr ""
+
+#. Label for the option to display the summary with colors
+#: ../client/gtk/gui.c:900
+msgid "Summary with color"
+msgstr ""
+
+#: ../client/gtk/gui.c:911
+msgid "Use colors in the player summary"
+msgstr ""
+
+#: ../client/gtk/gui.c:916
+msgid "Toolbar with shortcuts"
+msgstr ""
+
+#: ../client/gtk/gui.c:926
+msgid "Show keyboard shortcuts in the toolbar"
+msgstr ""
+
+#: ../client/gtk/gui.c:932
+msgid "Announce new players"
+msgstr ""
+
+#: ../client/gtk/gui.c:943
+msgid "Make a sound when a new player or viewer enters the game"
+msgstr ""
+
+#: ../client/gtk/gui.c:953
+msgid "The Pioneers Game"
+msgstr ""
+
+#. Initial text in status bar
+#: ../client/gtk/gui.c:1244
+msgid "Welcome to Pioneers!"
+msgstr ""
+
+#. The name of the application
+#: ../client/gtk/gui.c:1355
+#, fuzzy
+msgid "Pioneers"
+msgstr "パイオニアバージョン"
+
+#: ../client/gtk/histogram.c:252
+msgid "Dice Histogram"
+msgstr ""
+
+#: ../client/gtk/interface.c:91
+msgid "Ship movement canceled."
+msgstr ""
+
+#: ../client/gtk/interface.c:99 ../client/gtk/interface.c:100
+msgid "Select a new location for the ship."
+msgstr ""
+
+#: ../client/gtk/interface.c:719
+msgid "Select the ship to steal from."
+msgstr ""
+
+#: ../client/gtk/interface.c:721
+msgid "Select the ship to steal from"
+msgstr ""
+
+#: ../client/gtk/interface.c:738
+msgid "Select the building to steal from."
+msgstr ""
+
+#: ../client/gtk/interface.c:740
+msgid "Select the building to steal from"
+msgstr ""
+
+#: ../client/gtk/legend.c:32
+msgid "Hill"
+msgstr ""
+
+#: ../client/gtk/legend.c:33
+msgid "Field"
+msgstr ""
+
+#: ../client/gtk/legend.c:34
+msgid "Mountain"
+msgstr ""
+
+#: ../client/gtk/legend.c:35
+msgid "Pasture"
+msgstr ""
+
+#: ../client/gtk/legend.c:36
+#, fuzzy
+msgid "Forest"
+msgstr "鉱石"
+
+#: ../client/gtk/legend.c:37
+msgid "Desert"
+msgstr ""
+
+#: ../client/gtk/legend.c:38
+msgid "Sea"
+msgstr ""
+
+#: ../client/gtk/legend.c:170
+msgid "<b>Terrain Yield</b>"
+msgstr ""
+
+#: ../client/gtk/legend.c:202
+msgid "<b>Building Costs</b>"
+msgstr ""
+
+#: ../client/gtk/legend.c:237
+#, fuzzy
+msgid "Development Card"
+msgstr "%s は、開発カードを買った。\n"
+
+#: ../client/gtk/monopoly.c:105
+msgid "Select the resource you wish to monopolise."
+msgstr ""
+
+#: ../client/gtk/name.c:47
+msgid "Change player name"
+msgstr ""
+
+#: ../client/gtk/name.c:69
+#, fuzzy
+msgid "Player Name:"
+msgstr "プレイヤー %d"
+
+#. Commandline option of client: name of the player
+#: ../client/gtk/offline.c:59
+#, fuzzy
+msgid "Player name"
+msgstr "プレイヤー %d"
+
+#: ../client/gtk/offline.c:63
+msgid "Connect as a viewer"
+msgstr ""
+
+#: ../client/gtk/offline.c:66
+#, fuzzy
+msgid "Meta-server Host"
+msgstr "サーバ　ホスト"
+
+#: ../client/gtk/offline.c:70
+msgid "Override the language of the system"
+msgstr ""
+
+#: ../client/gtk/offline.c:100
+msgid "Connecting"
+msgstr ""
+
+#. Long description in the commandline for pioneers: help
+#: ../client/gtk/offline.c:173
+#, fuzzy
+msgid "- Play a game of Pioneers"
+msgstr "- パイオニアのコンピュータプレイヤー"
+
+#: ../client/gtk/player.c:49
+msgid "Settlements"
+msgstr ""
+
+#: ../client/gtk/player.c:50
+msgid "Cities"
+msgstr ""
+
+#: ../client/gtk/player.c:51
+msgid "Largest Army"
+msgstr ""
+
+#: ../client/gtk/player.c:52
+msgid "Longest Road"
+msgstr ""
+
+#: ../client/gtk/player.c:53
+#, fuzzy
+msgid "Chapels"
+msgstr "教会"
+
+#: ../client/gtk/player.c:54
+#, fuzzy
+msgid "Pioneer Universities"
+msgstr "パイオニア大学"
+
+#: ../client/gtk/player.c:56
+#, fuzzy
+msgid "Governor's Houses"
+msgstr "官舎"
+
+#: ../client/gtk/player.c:57
+#, fuzzy
+msgid "Libraries"
+msgstr "図書館"
+
+#: ../client/gtk/player.c:58
+#, fuzzy
+msgid "Markets"
+msgstr "市場"
+
+#: ../client/gtk/player.c:59
+#, fuzzy
+msgid "Soldiers"
+msgstr "兵士"
+
+#: ../client/gtk/player.c:60
+#, fuzzy
+msgid "Resource card"
+msgstr "鉱石カード"
+
+#: ../client/gtk/player.c:60
+#, fuzzy
+msgid "Resource cards"
+msgstr "%d 枚鉱石カード"
+
+#: ../client/gtk/player.c:61
+#, fuzzy
+msgid "Development card"
+msgstr "%s は、開発カードを買った。\n"
+
+#: ../client/gtk/player.c:61
+#, fuzzy
+msgid "Development cards"
+msgstr "%s は、開発カードを買った。\n"
+
+#. Caption for the overview of the points and card of other players
+#: ../client/gtk/player.c:592
+msgid "<b>Player Summary</b>"
+msgstr ""
+
+#: ../client/gtk/plenty.c:87
+msgid "Please choose one resource from the bank"
+msgstr ""
+
+#: ../client/gtk/plenty.c:90
+msgid "Please choose two resources from the bank"
+msgstr ""
+
+#: ../client/gtk/plenty.c:92
+msgid "The bank is empty"
+msgstr ""
+
+#: ../client/gtk/quote.c:186
+#, fuzzy, c-format
+msgid "%s has %s, and is looking for %s"
+msgstr "%s は、 %s に %s を %s と交換で与えた。\n"
+
+#: ../client/gtk/quote.c:287
+msgid "I Want"
+msgstr ""
+
+#: ../client/gtk/quote.c:295
+msgid "Give Them"
+msgstr ""
+
+#: ../client/gtk/quote.c:311
+#, fuzzy
+msgid "Delete"
+msgstr "標準"
+
+#: ../client/gtk/quote.c:335
+#, fuzzy
+msgid "Reject Domestic Trade"
+msgstr "交易拒否\n"
+
+#. Now create columns
+#. Table header: Player who trades
+#. Role of the player: player
+#: ../client/gtk/quote-view.c:172 ../server/gtk/main.c:464
+#, fuzzy
+msgid "Player"
+msgstr "プレイヤー %d"
+
+#. Table header: Quote
+#: ../client/gtk/quote-view.c:187
+msgid "Quotes"
+msgstr ""
+
+#. trade: maritime quote: %1 resources of type %2 for
+#. * one resource of type %3
+#: ../client/gtk/quote-view.c:304
+#, fuzzy, c-format
+msgid "%d:1 %s for %s"
+msgstr "%s は、%s を %sに交換した。\n"
+
+#. Trade: a player has rejected trade
+#: ../client/gtk/quote-view.c:442
+#, fuzzy
+msgid "Rejected trade"
+msgstr "交易拒否\n"
+
+#. Caption for overview of the resources of the player
+#: ../client/gtk/resource.c:113
+msgid "<b>Resources</b>"
+msgstr ""
+
+#: ../client/gtk/resource.c:129
+msgid "Total"
+msgstr ""
+
+#. Tooltip for the amount of resources in the hand
+#: ../client/gtk/resource-table.c:187
+msgid "Amount in hand"
+msgstr ""
+
+#: ../client/gtk/resource-table.c:191
+msgid "<less"
+msgstr ""
+
+#. Tooltip for decreasing the selected amount
+#: ../client/gtk/resource-table.c:201
+#, fuzzy
+msgid "Decrease the selected amount"
+msgstr "公開ゲームに参加"
+
+#. Tooltip for the amount of resources in the bank
+#: ../client/gtk/resource-table.c:215
+msgid "Amount in the bank"
+msgstr ""
+
+#: ../client/gtk/resource-table.c:219
+#, fuzzy
+msgid "more>"
+msgstr "鉱石"
+
+#. Tooltip for increasing the selected amount
+#: ../client/gtk/resource-table.c:231
+#, fuzzy
+msgid "Increase the selected amount"
+msgstr "公開ゲームに参加"
+
+#. Tooltip for the selected amount
+#: ../client/gtk/resource-table.c:248
+#, fuzzy
+msgid "Selected amount"
+msgstr "参加するゲームを選択"
+
+#. Tooltip for the total selected amount
+#: ../client/gtk/resource-table.c:293
+#, fuzzy
+msgid "Total selected amount"
+msgstr "公開ゲームに参加"
+
+#: ../client/gtk/resource-table.c:314
+msgid "The bank cannot be emptied"
+msgstr ""
+
+#: ../client/gtk/settingscreen.c:74 ../editor/gtk/game-parameters.c:42
+#: ../server/gtk/main.c:128 ../server/gtk/main.c:141 ../server/gtk/main.c:151
+msgid "Yes"
+msgstr ""
+
+#: ../client/gtk/settingscreen.c:76 ../client/gtk/settingscreen.c:206
+#: ../editor/gtk/game-parameters.c:42 ../server/gtk/main.c:128
+#: ../server/gtk/main.c:141 ../server/gtk/main.c:151 ../server/gtk/main.c:539
+#: ../server/gtk/main.c:587 ../server/gtk/main.c:739
+msgid "No"
+msgstr ""
+
+#: ../client/gtk/settingscreen.c:87 ../client/gtk/settingscreen.c:173
+msgid "Unknown"
+msgstr ""
+
+#: ../client/gtk/settingscreen.c:120
+msgid "No game in progress..."
+msgstr ""
+
+#: ../client/gtk/settingscreen.c:130
+msgid "<b>General Settings</b>"
+msgstr ""
+
+#: ../client/gtk/settingscreen.c:146
+#, fuzzy
+msgid "Number of players:"
+msgstr "AIプレイヤーの数"
+
+#: ../client/gtk/settingscreen.c:149
+msgid "Victory Point Target:"
+msgstr ""
+
+#: ../client/gtk/settingscreen.c:152
+#, fuzzy
+msgid "Random Terrain?"
+msgstr "標準陸地のランダム"
+
+#: ../client/gtk/settingscreen.c:155
+msgid "Interplayer Trading Allowed?"
+msgstr ""
+
+#: ../client/gtk/settingscreen.c:159
+msgid "Trading allowed only before build/buy?"
+msgstr ""
+
+#: ../client/gtk/settingscreen.c:162
+msgid "Amount of Each Resource:"
+msgstr ""
+
+#: ../client/gtk/settingscreen.c:176
+#, fuzzy
+msgid "Sevens Rule:"
+msgstr "7ルール"
+
+#: ../client/gtk/settingscreen.c:180
+msgid "Use Pirate:"
+msgstr ""
+
+#: ../client/gtk/settingscreen.c:208
+msgid "Island Discovery Bonuses:"
+msgstr ""
+
+#: ../client/gtk/settingscreen.c:223
+msgid "<b>Building Quotas</b>"
+msgstr ""
+
+#: ../client/gtk/settingscreen.c:239
+#, fuzzy
+msgid "Roads:"
+msgstr "道"
+
+#: ../client/gtk/settingscreen.c:244
+msgid "Settlements:"
+msgstr ""
+
+#: ../client/gtk/settingscreen.c:249
+msgid "Cities:"
+msgstr ""
+
+#: ../client/gtk/settingscreen.c:254
+#, fuzzy
+msgid "Ships:"
+msgstr "船"
+
+#: ../client/gtk/settingscreen.c:259
+#, fuzzy
+msgid "Bridges:"
+msgstr "橋"
+
+#: ../client/gtk/settingscreen.c:271
+msgid "<b>Development Card Deck</b>"
+msgstr ""
+
+#: ../client/gtk/settingscreen.c:287
+#, fuzzy
+msgid "Road Building Cards:"
+msgstr "道路建築"
+
+#: ../client/gtk/settingscreen.c:291
+#, fuzzy
+msgid "Monopoly Cards:"
+msgstr "モノポリー"
+
+#: ../client/gtk/settingscreen.c:295
+#, fuzzy
+msgid "Year of Plenty Cards:"
+msgstr "豊年"
+
+#: ../client/gtk/settingscreen.c:300
+#, fuzzy
+msgid "Chapel Cards:"
+msgstr "教会"
+
+#: ../client/gtk/settingscreen.c:304
+#, fuzzy
+msgid "Pioneer University Cards:"
+msgstr "パイオニア大学"
+
+#: ../client/gtk/settingscreen.c:309
+#, fuzzy
+msgid "Governor's House Cards:"
+msgstr "官舎"
+
+#: ../client/gtk/settingscreen.c:314
+#, fuzzy
+msgid "Library Cards:"
+msgstr "図書館"
+
+#: ../client/gtk/settingscreen.c:318
+#, fuzzy
+msgid "Market Cards:"
+msgstr "市場"
+
+#: ../client/gtk/settingscreen.c:322
+#, fuzzy
+msgid "Soldier Cards:"
+msgstr "兵士"
+
+#: ../client/gtk/settingscreen.c:359
+msgid "Current Game Settings"
+msgstr ""
+
+#. trade: you ask for something for free
+#: ../client/gtk/trade.c:193
+#, fuzzy, c-format
+msgid "ask for %s for free"
+msgstr "%s は、無料で %s に %s をあげた。\n"
+
+#. trade: you give something away for free
+#: ../client/gtk/trade.c:198
+#, fuzzy, c-format
+msgid "give %s for free"
+msgstr "%s は、無料で %s に %s をあげた。\n"
+
+#. trade: you trade something for something else
+#: ../client/gtk/trade.c:203
+#, fuzzy, c-format
+msgid "give %s for %s"
+msgstr "%s を %s から得た。\n"
+
+#. I want some resources, and give them some resources
+#: ../client/gtk/trade.c:230
+#, c-format
+msgid "I want %s, and give them %s"
+msgstr ""
+
+#. Frame title, trade: I want to trade these resources
+#: ../client/gtk/trade.c:427
+msgid "<b>I Want</b>"
+msgstr ""
+
+#. Frame title, trade: I want these resources in return
+#: ../client/gtk/trade.c:455
+msgid "<b>Give Them</b>"
+msgstr ""
+
+#. Button text, trade: call for quotes from other players
+#: ../client/gtk/trade.c:484
+msgid "_Call for Quotes"
+msgstr ""
+
+#. Button text: Trade page, accept selected quote
+#: ../client/gtk/trade.c:512
+msgid "_Accept Quote"
+msgstr ""
+
+#. Button text: Trade page, finish trading
+#: ../client/gtk/trade.c:518
+msgid "_Finish Trading"
+msgstr ""
+
+#: ../common/gtk/aboutbox.c:74
+msgid ""
+"Pioneers is based upon the excellent\n"
+"Settlers of Catan board game.\n"
+msgstr ""
+
+#: ../common/gtk/aboutbox.c:83
+msgid "Homepage"
+msgstr ""
+
+#: ../common/gtk/aboutbox.c:88
+msgid "Authors"
+msgstr ""
+
+#. Label for customising a game
+#: ../common/gtk/game-settings.c:113
+#, fuzzy
+msgid "Map Terrain"
+msgstr "地形"
+
+#. Tooltip for Map Terrain
+#: ../common/gtk/game-settings.c:127
+msgid "Default map or a random map"
+msgstr ""
+
+#. Label text for customising a game
+#: ../common/gtk/game-settings.c:130
+#, fuzzy
+msgid "Number of Players"
+msgstr "AIプレイヤーの数"
+
+#. Tooltip for 'Number of Players'
+#: ../common/gtk/game-settings.c:148
+#, fuzzy
+msgid "The number of players"
+msgstr "AIプレイヤーの数"
+
+#. Label for customising a game
+#: ../common/gtk/game-settings.c:151
+msgid "Victory Point Target"
+msgstr ""
+
+#. Tooltip for Victory Point Target
+#: ../common/gtk/game-settings.c:170
+#, fuzzy
+msgid "The points needed to win the game"
+msgstr "勝利に必要なポイント"
+
+#. Tooltip for sevens rule normal
+#: ../common/gtk/game-settings.c:201
+#, fuzzy
+msgid "All sevens move the robber or pirate"
+msgstr "%s は、盗賊を移動しなけばならない。"
+
+#: ../common/gtk/game-settings.c:206
+msgid "In the first two turns all sevens are rerolled"
+msgstr ""
+
+#. Tooltip for sevens rule reroll all
+#: ../common/gtk/game-settings.c:210
+msgid "All sevens are rerolled"
+msgstr ""
+
+#. Port indicator for a resource: trade 2 for 1
+#: ../common/gtk/guimap.c:648
+msgid "2:1"
+msgstr ""
+
+#. Port indicator: trade 3 for 1
+#. General port indicator
+#: ../common/gtk/guimap.c:651 ../common/gtk/guimap.c:676
+msgid "3:1"
+msgstr ""
+
+#. Port indicator for brick
+#: ../common/gtk/guimap.c:656
+msgid "Brick port|B"
+msgstr ""
+
+#. Port indicator for grain
+#: ../common/gtk/guimap.c:660
+msgid "Grain port|G"
+msgstr ""
+
+#. Port indicator for ore
+#: ../common/gtk/guimap.c:664
+msgid "Ore port|O"
+msgstr ""
+
+#. Port indicator for wool
+#: ../common/gtk/guimap.c:668
+msgid "Wool port|W"
+msgstr ""
+
+#. Port indicator for lumber
+#: ../common/gtk/guimap.c:672
+#, fuzzy
+msgid "Lumber port|L"
+msgstr "木材"
+
+#. Tooltip for the list of games
+#: ../common/gtk/select-game.c:93
+#, fuzzy
+msgid "Select a game"
+msgstr "参加するゲームを選択"
+
+#: ../common/gtk/theme.c:711
+#, c-format
+msgid "bad scaling mode '%s'"
+msgstr ""
+
+#: ../common/log.c:54
+msgid "*ERROR* "
+msgstr ""
+
+#: ../common/log.c:60
+msgid "Chat: "
+msgstr ""
+
+#: ../common/log.c:63
+msgid "Resource: "
+msgstr ""
+
+#: ../common/log.c:66
+msgid "Build: "
+msgstr ""
+
+#: ../common/log.c:69
+msgid "Dice: "
+msgstr ""
+
+#: ../common/log.c:72
+msgid "Steal: "
+msgstr ""
+
+#: ../common/log.c:75
+msgid "Trade: "
+msgstr ""
+
+#: ../common/log.c:78
+msgid "Development: "
+msgstr ""
+
+#: ../common/log.c:81
+msgid "Army: "
+msgstr ""
+
+#: ../common/log.c:84
+#, fuzzy
+msgid "Road: "
+msgstr "揃荅宴:·"
+
+#: ../common/log.c:87
+msgid "*BEEP* "
+msgstr ""
+
+#: ../common/log.c:92
+#, fuzzy
+msgid "Player 1: "
+msgstr "プレイヤー %d"
+
+#: ../common/log.c:95
+#, fuzzy
+msgid "Player 2: "
+msgstr "プレイヤー %d"
+
+#: ../common/log.c:98
+#, fuzzy
+msgid "Player 3: "
+msgstr "プレイヤー %d"
+
+#: ../common/log.c:101
+#, fuzzy
+msgid "Player 4: "
+msgstr "プレイヤー %d"
+
+#: ../common/log.c:104
+#, fuzzy
+msgid "Player 5: "
+msgstr "プレイヤー %d"
+
+#: ../common/log.c:107
+#, fuzzy
+msgid "Player 6: "
+msgstr "プレイヤー %d"
+
+#: ../common/log.c:110
+#, fuzzy
+msgid "Player 7: "
+msgstr "プレイヤー %d"
+
+#: ../common/log.c:113
+#, fuzzy
+msgid "Player 8: "
+msgstr "プレイヤー %d"
+
+#: ../common/log.c:116
+#, fuzzy
+msgid "Viewer: "
+msgstr "観戦者 %d"
+
+#: ../common/log.c:119
+msgid "** UNKNOWN MESSAGE TYPE ** "
+msgstr ""
+
+#: ../common/network.c:246
+#, c-format
+msgid "Error checking connect status: %s\n"
+msgstr ""
+
+#: ../common/network.c:253
+#, fuzzy, c-format
+msgid "Error connecting to host '%s': %s\n"
+msgstr "Error揃starting揃%s:揃%s"
+
+#: ../common/network.c:279
+#, fuzzy, c-format
+msgid "Error writing socket: %s\n"
+msgstr "Error揃starting揃%s:揃%s"
+
+#: ../common/network.c:328
+#, fuzzy, c-format
+msgid "Error writing to socket: %s\n"
+msgstr "Error揃starting揃%s:揃%s"
+
+#: ../common/network.c:381
+msgid "Read buffer overflow - disconnecting\n"
+msgstr ""
+
+#: ../common/network.c:391
+#, fuzzy, c-format
+msgid "Error reading socket: %s\n"
+msgstr "Error揃starting揃%s:揃%s"
+
+#: ../common/network.c:535
+#, c-format
+msgid "Cannot resolve %s port %s: %s\n"
+msgstr ""
+
+#: ../common/network.c:542
+#, c-format
+msgid "Cannot resolve %s port %s: host not found\n"
+msgstr ""
+
+#: ../common/network.c:557
+#, fuzzy, c-format
+msgid "Error creating socket: %s\n"
+msgstr "Error揃starting揃%s:揃%s"
+
+#: ../common/network.c:565
+#, fuzzy, c-format
+msgid "Error setting socket close-on-exec: %s\n"
+msgstr "Error揃starting揃%s:揃%s"
+
+#: ../common/network.c:575 ../common/network.c:734
+#, fuzzy, c-format
+msgid "Error setting socket non-blocking: %s\n"
+msgstr "Error揃starting揃%s:揃%s"
+
+#: ../common/network.c:600
+#, fuzzy, c-format
+msgid "Error connecting to %s: %s\n"
+msgstr "Error揃starting揃%s:揃%s"
+
+#: ../common/network.c:693
+#, fuzzy, c-format
+msgid "Error creating struct addrinfo: %s"
+msgstr "Error揃starting揃%s:揃%s"
+
+#: ../common/network.c:723
+#, c-format
+msgid "Error creating listening socket: %s\n"
+msgstr ""
+
+#: ../common/network.c:743
+#, c-format
+msgid "Error during listen on socket: %s\n"
+msgstr ""
+
+#: ../common/network.c:752
+msgid "Listening not yet supported on this platform."
+msgstr ""
+
+#: ../common/network.c:774 ../common/network.c:775
+msgid "unknown"
+msgstr ""
+
+#: ../common/network.c:781
+#, fuzzy, c-format
+msgid "Error getting peer name: %s"
+msgstr "Error揃starting揃%s:揃%s"
+
+#: ../common/network.c:794
+#, fuzzy, c-format
+msgid "Error resolving address: %s"
+msgstr "Error揃starting揃%s:揃%s"
+
+#: ../common/network.c:808
+msgid "Net_get_peer_name not yet supported on this platform."
+msgstr ""
+
+#: ../common/network.c:823
+#, fuzzy, c-format
+msgid "Error accepting connection: %s"
+msgstr "Error揃starting揃%s:揃%s"
+
+#: ../common/state.c:166
+#, fuzzy, c-format
+msgid "Connecting to %s, port %s\n"
+msgstr "メタサーバ %s, ポート %s"
+
+#: ../common/state.c:514
+msgid "State stack overflow. Stack dump sent to standard error.\n"
+msgstr ""
+
+#. Use an unique shortcut key for each resource
+#: ../editor/gtk/editor.c:67
+msgid "_Hill"
+msgstr ""
+
+#. Use an unique shortcut key for each resource
+#: ../editor/gtk/editor.c:69
+msgid "_Field"
+msgstr ""
+
+#. Use an unique shortcut key for each resource
+#: ../editor/gtk/editor.c:71
+msgid "_Mountain"
+msgstr ""
+
+#. Use an unique shortcut key for each resource
+#: ../editor/gtk/editor.c:73
+msgid "_Pasture"
+msgstr ""
+
+#. Use an unique shortcut key for each resource
+#: ../editor/gtk/editor.c:75
+#, fuzzy
+msgid "F_orest"
+msgstr "鉱石"
+
+#. Use an unique shortcut key for each resource
+#: ../editor/gtk/editor.c:77
+msgid "_Desert"
+msgstr ""
+
+#. Use an unique shortcut key for each resource
+#: ../editor/gtk/editor.c:79
+msgid "_Sea"
+msgstr ""
+
+#. Use an unique shortcut key for each resource
+#: ../editor/gtk/editor.c:81
+#, fuzzy
+msgid "_Gold"
+msgstr "金"
+
+#. Use an unique shortcut key for each resource
+#. Use an unique shortcut key for each port type
+#: ../editor/gtk/editor.c:83 ../editor/gtk/editor.c:98
+msgid "_None"
+msgstr ""
+
+#. Use an unique shortcut key for each port type
+#: ../editor/gtk/editor.c:88
+msgid "_Brick (2:1)"
+msgstr ""
+
+#. Use an unique shortcut key for each port type
+#: ../editor/gtk/editor.c:90
+msgid "_Grain (2:1)"
+msgstr ""
+
+#. Use an unique shortcut key for each port type
+#: ../editor/gtk/editor.c:92
+msgid "_Ore (2:1)"
+msgstr ""
+
+#. Use an unique shortcut key for each port type
+#: ../editor/gtk/editor.c:94
+msgid "_Wool (2:1)"
+msgstr ""
+
+#. Use an unique shortcut key for each port type
+#: ../editor/gtk/editor.c:96
+#, fuzzy
+msgid "_Lumber (2:1)"
+msgstr "木材"
+
+#. Use an unique shortcut key for each port type
+#: ../editor/gtk/editor.c:100
+msgid "_Any (3:1)"
+msgstr ""
+
+#. East
+#: ../editor/gtk/editor.c:105
+msgid "East|E"
+msgstr ""
+
+#. North east
+#: ../editor/gtk/editor.c:107
+msgid "North East|NE"
+msgstr ""
+
+#. North west
+#: ../editor/gtk/editor.c:109
+msgid "North West|NW"
+msgstr ""
+
+#. West
+#: ../editor/gtk/editor.c:111
+msgid "West|W"
+msgstr ""
+
+#. South west
+#: ../editor/gtk/editor.c:113
+msgid "South West|SW"
+msgstr ""
+
+#. South east
+#: ../editor/gtk/editor.c:115
+msgid "South East|SE"
+msgstr ""
+
+#: ../editor/gtk/editor.c:595
+msgid "Shuffle"
+msgstr ""
+
+#: ../editor/gtk/editor.c:727 ../server/gtk/main.c:393
+msgid "Game Parameters"
+msgstr ""
+
+#: ../editor/gtk/editor.c:729
+msgid "Rules"
+msgstr ""
+
+#: ../editor/gtk/editor.c:730
+msgid "Resources"
+msgstr ""
+
+#: ../editor/gtk/editor.c:731
+#, fuzzy
+msgid "Buildings"
+msgstr "道路建築"
+
+#: ../editor/gtk/editor.c:732
+msgid "Development Cards"
+msgstr ""
+
+#: ../editor/gtk/editor.c:747
+#, fuzzy
+msgid "Pioneers Editor"
+msgstr "パイオニアバージョン"
+
+#: ../editor/gtk/editor.c:837
+#, c-format
+msgid "Failed to load '%s'"
+msgstr ""
+
+#: ../editor/gtk/editor.c:877
+#, c-format
+msgid "Failed to save to '%s'"
+msgstr ""
+
+#: ../editor/gtk/editor.c:892
+msgid "Open Game"
+msgstr ""
+
+#: ../editor/gtk/editor.c:918
+msgid "Save as..."
+msgstr ""
+
+#: ../editor/gtk/editor.c:953
+msgid "Change Title"
+msgstr ""
+
+#: ../editor/gtk/editor.c:975
+msgid "New Title:"
+msgstr ""
+
+#: ../editor/gtk/editor.c:1022
+#, fuzzy
+msgid "Pioneers Game Editor"
+msgstr "パイオニアバージョン"
+
+#: ../editor/gtk/editor.c:1026
+msgid "_File"
+msgstr ""
+
+#: ../editor/gtk/editor.c:1029
+msgid "_New"
+msgstr ""
+
+#: ../editor/gtk/editor.c:1030
+#, fuzzy
+msgid "Create a new game"
+msgstr "公開ゲーム作成"
+
+#: ../editor/gtk/editor.c:1031
+msgid "_Open..."
+msgstr ""
+
+#: ../editor/gtk/editor.c:1032
+msgid "Open an existing game"
+msgstr ""
+
+#: ../editor/gtk/editor.c:1033
+msgid "_Save"
+msgstr ""
+
+#: ../editor/gtk/editor.c:1034
+msgid "Save game"
+msgstr ""
+
+#: ../editor/gtk/editor.c:1035
+msgid "Save _As..."
+msgstr ""
+
+#: ../editor/gtk/editor.c:1037
+msgid "Save as"
+msgstr ""
+
+#: ../editor/gtk/editor.c:1038
+msgid "_Change title"
+msgstr ""
+
+#: ../editor/gtk/editor.c:1039
+msgid "Change game title"
+msgstr ""
+
+#: ../editor/gtk/editor.c:1041
+msgid "Quit"
+msgstr ""
+
+#: ../editor/gtk/editor.c:1049
+msgid "_About Pioneers Editor"
+msgstr ""
+
+#: ../editor/gtk/editor.c:1050
+msgid "Information about Pioneers Editor"
+msgstr ""
+
+#. Long help for commandline option (editor): filename
+#: ../editor/gtk/editor.c:1087
+msgid "Open this file"
+msgstr ""
+
+#. Commandline option for editor: filename
+#: ../editor/gtk/editor.c:1089
+msgid "filename"
+msgstr ""
+
+#: ../editor/gtk/editor.c:1121
+#, fuzzy
+msgid "- Editor for games of Pioneers"
+msgstr "- パイオニアのコンピュータプレイヤー"
+
+#: ../editor/gtk/editor.c:1162 ../server/gtk/main.c:900
+#, c-format
+msgid "Building menus failed: %s"
+msgstr ""
+
+#: ../editor/gtk/editor.c:1189
+msgid "Settings"
+msgstr ""
+
+#: ../editor/gtk/game-parameters.c:80
+msgid "Use Pirate"
+msgstr ""
+
+#: ../editor/gtk/game-parameters.c:81
+msgid "Strict Trade"
+msgstr ""
+
+#: ../editor/gtk/game-parameters.c:82
+msgid "Domestic Trade"
+msgstr ""
+
+#: ../editor/gtk/game-resources.c:51
+msgid "Resource Count"
+msgstr ""
+
+#. Commandline meta-server: daemon
+#: ../meta-server/main.c:1030
+msgid "Daemonize the metaserver on start"
+msgstr ""
+
+#. Commandline meta-server: redirect
+#: ../meta-server/main.c:1033
+msgid "Redirect clients to another metaserver"
+msgstr ""
+
+#. Commandline meta-server: server
+#: ../meta-server/main.c:1036
+msgid "Use this hostname when creating new games"
+msgstr ""
+
+#. Commandline meta-server: server argument
+#: ../meta-server/main.c:1038
+msgid "hostname"
+msgstr ""
+
+#. Commandline meta-server: port-range
+#: ../meta-server/main.c:1041
+msgid "Use this ports range when creating new games"
+msgstr ""
+
+#. Commandline meta-server: port-range argument
+#: ../meta-server/main.c:1043
+msgid "from-to"
+msgstr ""
+
+#. Commandline option of meta server: syslog-debug
+#: ../meta-server/main.c:1049
+#, fuzzy
+msgid "Debug syslog messages"
+msgstr "デバッグメッセージを可能にする"
+
+#. Long description in the commandline for server-console: help
+#: ../meta-server/main.c:1070
+#, fuzzy
+msgid "- Meta server for Pioneers"
+msgstr "- パイオニアのコンピュータプレイヤー"
+
+#: ../meta-server/main.c:1085
+msgid "metaserver protocol:"
+msgstr ""
+
+#: ../server/gtk/main.c:92
+#, fuzzy
+msgid "_About Pioneers Server"
+msgstr "パイオニアバージョン"
+
+#: ../server/gtk/main.c:93
+msgid "Information about Pioneers Server"
+msgstr ""
+
+#: ../server/gtk/main.c:212
+msgid "Stop server"
+msgstr ""
+
+#: ../server/gtk/main.c:213
+msgid "Start server"
+msgstr ""
+
+#: ../server/gtk/main.c:215
+msgid "Stop the server"
+msgstr ""
+
+#: ../server/gtk/main.c:216
+msgid "Start the server"
+msgstr ""
+
+#: ../server/gtk/main.c:292
+#, fuzzy, c-format
+msgid "Player %s from %s entered\n"
+msgstr "プレイヤー %d は、今、 %s.\n"
+
+#: ../server/gtk/main.c:299
+#, fuzzy, c-format
+msgid "Player %s from %s left\n"
+msgstr "プレイヤー %d は、今、 %s.\n"
+
+#: ../server/gtk/main.c:306
+#, fuzzy, c-format
+msgid "Player %d is now %s\n"
+msgstr "プレイヤー %d は、今、 %s.\n"
+
+#: ../server/gtk/main.c:501
+msgid "Game Settings"
+msgstr ""
+
+#: ../server/gtk/main.c:506
+#, fuzzy
+msgid "Server Parameters"
+msgstr "サーバ　ポート"
+
+#: ../server/gtk/main.c:531
+msgid "The port for the game server"
+msgstr ""
+
+#: ../server/gtk/main.c:533
+msgid "Register Server"
+msgstr ""
+
+#: ../server/gtk/main.c:546
+#, fuzzy
+msgid "Register this game at the meta server"
+msgstr "メタサーバに新しい公開ゲームを作成"
+
+#: ../server/gtk/main.c:562
+#, fuzzy
+msgid "The address of the meta server"
+msgstr "メタサーバからゲーム名を受信中 \n"
+
+#: ../server/gtk/main.c:564
+msgid "Reported Hostname"
+msgstr ""
+
+#: ../server/gtk/main.c:578
+msgid ""
+"The public name of this computer (needed when playing behind a firewall)"
+msgstr ""
+
+#: ../server/gtk/main.c:581
+msgid "Random Turn Order"
+msgstr ""
+
+#: ../server/gtk/main.c:594
+msgid "Randomize turn order"
+msgstr ""
+
+#: ../server/gtk/main.c:633
+msgid "Running Game"
+msgstr ""
+
+#: ../server/gtk/main.c:635
+#, fuzzy
+msgid "Players Connected"
+msgstr "プレイヤー %d"
+
+#: ../server/gtk/main.c:662
+msgid "Shows all players and viewers connected to the server"
+msgstr ""
+
+#: ../server/gtk/main.c:667
+msgid "Connected"
+msgstr ""
+
+#: ../server/gtk/main.c:674
+msgid "Is the player currently connected?"
+msgstr ""
+
+#: ../server/gtk/main.c:677
+#, fuzzy
+msgid "Name"
+msgstr "地図名"
+
+#: ../server/gtk/main.c:684
+#, fuzzy
+msgid "Name of the player"
+msgstr "ゲームの名前"
+
+#: ../server/gtk/main.c:686
+#, fuzzy
+msgid "Location"
+msgstr "ロード中"
+
+#: ../server/gtk/main.c:693
+#, fuzzy
+msgid "Host name of the player"
+msgstr "ゲームホスト"
+
+#: ../server/gtk/main.c:697
+#, fuzzy
+msgid "Number"
+msgstr "木材"
+
+#: ../server/gtk/main.c:704
+#, fuzzy
+msgid "Player number"
+msgstr "プレイヤー %d"
+
+#: ../server/gtk/main.c:708
+msgid "Role"
+msgstr ""
+
+#: ../server/gtk/main.c:712
+msgid "Player of viewer"
+msgstr ""
+
+#: ../server/gtk/main.c:722
+#, fuzzy
+msgid "Computer Players"
+msgstr "コンピュータ プレイヤー"
+
+#: ../server/gtk/main.c:734
+msgid "Enable Chat"
+msgstr ""
+
+#: ../server/gtk/main.c:745
+#, fuzzy
+msgid "Enable chat messages"
+msgstr "デバッグメッセージを可能にする"
+
+#: ../server/gtk/main.c:752
+#, fuzzy
+msgid "Add Computer Player"
+msgstr "コンピュータ プレイヤー"
+
+#: ../server/gtk/main.c:759
+#, fuzzy
+msgid "Add a computer player to the game"
+msgstr "ゲームの最大プレイヤー数"
+
+#: ../server/gtk/main.c:768
+msgid "Messages"
+msgstr ""
+
+#: ../server/gtk/main.c:786
+#, fuzzy
+msgid "Messages from the server"
+msgstr "メタサーバからの不明メッセージ: %s\n"
+
+#: ../server/gtk/main.c:803
+msgid "The Pioneers Game Server"
+msgstr ""
+
+#. Wait for all players to disconnect,
+#. * then enable the UI
+#.
+#: ../server/gtk/main.c:811
+#, fuzzy
+msgid "The game is over.\n"
+msgstr ""
+"すみません、 %s 使用可能\n"
+"ゲーム終了"
+
+#. Long description in the commandline for server-gtk: help
+#. Long description in the commandline for server-console: help
+#: ../server/gtk/main.c:859 ../server/main.c:170
+#, fuzzy
+msgid "- Host a game of Pioneers"
+msgstr "- パイオニアのコンピュータプレイヤー"
+
+#. Name in the titlebar of the server
+#: ../server/gtk/main.c:881
+#, fuzzy
+msgid "Pioneers Server"
+msgstr "パイオニアバージョン"
+
+#. Commandline server-console: game-title
+#: ../server/main.c:71
+msgid "Game title to use"
+msgstr ""
+
+#. Commandline server-console: file
+#: ../server/main.c:74
+msgid "Game file to use"
+msgstr ""
+
+#. Commandline server-console: port
+#: ../server/main.c:77
+msgid "Port to listen on"
+msgstr ""
+
+#. Commandline server-console: players
+#: ../server/main.c:80
+#, fuzzy
+msgid "Override number of players"
+msgstr "AIプレイヤーの数"
+
+#. Commandline server-console: points
+#: ../server/main.c:83
+#, fuzzy
+msgid "Override number of points needed to win"
+msgstr "勝利に必要なポイント"
+
+#. Commandline server-console: seven-rule
+#: ../server/main.c:86
+msgid "Override seven-rule handling"
+msgstr ""
+
+#. Commandline server-console: terrain
+#: ../server/main.c:89
+msgid "Override terrain type, 0=default 1=random"
+msgstr ""
+
+#. Commandline server-console: computer-players
+#: ../server/main.c:92
+#, fuzzy
+msgid "Add N computer players"
+msgstr "コンピュータプレイヤーの種類"
+
+#. Commandline server-console: register
+#: ../server/main.c:102
+#, fuzzy
+msgid "Register server with meta-server"
+msgstr "メタサーバからパイオニアサーバの一覧を取得中\n"
+
+#. Commandline server-console: meta-server
+#: ../server/main.c:105
+#, fuzzy
+msgid "Register at meta-server name (implies -r)"
+msgstr "%s のポート %s のメタサーバにリダイレクト\n"
+
+#. Commandline server-console: hostname
+#: ../server/main.c:109
+msgid "Use this hostname when registering"
+msgstr ""
+
+#. Commandline server-console: auto-quit
+#: ../server/main.c:116
+msgid "Quit after a player has won"
+msgstr ""
+
+#. Commandline server-console: empty-timeout
+#: ../server/main.c:119
+msgid "Quit after N seconds with no players"
+msgstr ""
+
+#. Commandline server-console: tournament
+#: ../server/main.c:122
+msgid "Tournament mode, computer players added after N minutes"
+msgstr ""
+
+#. Commandline server-console: admin-port
+#: ../server/main.c:126
+msgid "Admin port to listen on"
+msgstr ""
+
+#: ../server/main.c:130
+msgid "Don't start game immediately, wait for a command on admin port"
+msgstr ""
+
+#: ../server/main.c:136
+msgid "Give players numbers according to the order they enter the game"
+msgstr ""
+
+#. Commandline server-console: Short description of meta group
+#: ../server/main.c:176
+#, fuzzy
+msgid "Meta-server Options"
+msgstr "メタサーバ %s, ポート %s"
+
+#: ../server/main.c:179
+#, fuzzy
+msgid "Options for the meta-server"
+msgstr "メタサーバからの不明メッセージ: %s\n"
+
+#. Commandline server-console: Short description of misc group
+#: ../server/main.c:187
+msgid "Miscellaneous Options"
+msgstr ""
+
+#. Commandline server-console: Long description of misc group
+#: ../server/main.c:189
+msgid "Miscellaneous options"
+msgstr ""
+
+#: ../server/meta.c:193
+#, fuzzy, c-format
+msgid "Register with meta-server at %s, port %s\n"
+msgstr "%s のポート %s のメタサーバにリダイレクト\n"
+
+#: ../server/meta.c:210
+#, fuzzy
+msgid "Unregister from meta-server\n"
+msgstr "メタサーバからの不明メッセージ: %s\n"
+
+#: ../server/player.c:128
+msgid "chat too long"
+msgstr ""
+
+#: ../server/player.c:140
+msgid "name too long"
+msgstr ""
+
+#: ../server/player.c:162
+msgid "ignoring unknown extension"
+msgstr ""
+
+#: ../server/player.c:191
+#, fuzzy
+msgid "Game starts, adding computer players"
+msgstr "コンピュータプレイヤーの種類"
+
+#: ../server/player.c:216
+#, c-format
+msgid "The game starts in %s minutes."
+msgstr ""
+
+#: ../server/player.c:217
+#, c-format
+msgid "The game starts in %s minute."
+msgstr ""
+
+#: ../server/player.c:262
+#, fuzzy
+msgid "Sorry, game is over."
+msgstr ""
+"すみません、 %s 使用可能\n"
+"ゲーム終了"
+
+#: ../server/player.c:265
+#, c-format
+msgid "Player from %s is refused: game is over\n"
+msgstr ""
+
+#: ../server/player.c:310
+msgid "This game will start soon."
+msgstr ""
+
+#: ../server/player.c:336
+msgid "Name not changed: new name is already in use"
+msgstr ""
+
+#. %s is the name of the reconnecting player
+#: ../server/player.c:614
+#, fuzzy, c-format
+msgid "%s has reconnected."
+msgstr "%s は、最長道をもった。\n"
+
+#: ../server/player.c:706
+#, fuzzy, c-format
+msgid "Version mismatch: %s"
+msgstr "バージョン不整合"
+
+#. Server: preparing game #.....
+#: ../server/server.c:214
+msgid "Preparing game"
+msgstr ""
+
+#: ../server/server.c:332
+msgid "Missing game directory\n"
+msgstr ""
+
+#: ../server/turn.c:209
+msgid "Island Discovery Bonus"
+msgstr ""
+
+#: ../server/turn.c:212
+msgid "Additional Island Bonus"
+msgstr ""
+
+#: ../server/turn.c:339
+msgid "Tried to assign resources to NULL player.\n"
+msgstr ""
+
+#~ msgid ""
+#~ "%s rolled %d.\n"
+#~ "Begin turn %d for %s.\n"
+#~ "<b>Chat</b>"
+#~ msgstr "<b>チャット</b>"
