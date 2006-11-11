@@ -13,6 +13,8 @@ LIBFLAGS = GNOME2_LIBS=-lgnome-2 GTK2_LIBS=-lgtk-x11-2.0 GLIB2_LIBS=-lglib-2.0
 # fixed.
 export AUTOMAKE_VERSION=1.9
 
+CFLAGS = -Wall -g
+
 ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
 	CFLAGS += -O0
 else
@@ -49,7 +51,8 @@ build-stamp:
 	# So don't run configure from it.
 	NOCONFIGURE=true ./autogen.sh
 	./configure --prefix=/usr --bindir=/usr/games --mandir=/usr/share/man \
-		$(CONFIGUREFLAGS) --enable-warnings --disable-dependency-tracking
+		$(CONFIGUREFLAGS) --enable-warnings \
+		CFLAGS="$(CFLAGS)" --disable-dependency-tracking
 	$(MAKE) $(LIBFLAGS)
 	rsvg --width 32 --height 32 client/gtk/data/pioneers.svg pioneers32.png
 	convert pioneers32.png pioneers.xpm

@@ -1,3 +1,10 @@
+pioneers (0.10.2-2) unstable; urgency=low
+
+  * Use CFLAGS, so DEB_BUILD_OPTIONS=noopt actually works.  (Thanks to A
+    Mennucc, Closes: #389165)
+
+ -- Bas Wijnen <wijnen@debian.org>  Sat, 11 Nov 2006 01:05:28 +0100
+
 pioneers (0.10.2-1) unstable; urgency=low
 
   * New upstream release.  (Closes: #386425)
