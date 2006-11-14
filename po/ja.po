@@ -895,9 +895,9 @@ msgid "%s rolled %d.\n"
 msgstr "%s は、%d をだした。 \n"
 
 #: ../client/common/turn.c:50
-#, fuzzy, c-format
+#, c-format
 msgid "Begin turn %d for %s.\n"
-msgstr "%2s に対して ターン %1d が始まる.\n"
+msgstr "%2$s に対して ターン %1$d が始まる.\n"
 
 #: ../client/gtk/chat.c:71
 msgid "<b>Chat</b>"
