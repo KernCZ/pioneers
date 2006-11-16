@@ -9,16 +9,18 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 0.10.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-11-10 22:53+0100\n"
-"PO-Revision-Date: 2006-10-29 21:54+0100\n"
+"POT-Creation-Date: 2006-11-16 22:28+0100\n"
+"PO-Revision-Date: 2006-11-12 20:19+0100\n"
 "Last-Translator: Jean-Charles GRANGER <traduction@vecteur.org>\n"
-"Language-Team: Français <LL@li.org>, Arnaud MALON <moko@geumeuleu.com>, Jean-"
-"Charles GRANGER <traduction@vecteur.org>\n"
+"Language-Team: Français <LL@li.org>, LT-P <LT-P@LT-P.net>, Yusei "
+"<yusei@ragondux.com>, Arnaud MALON <moko@geumeuleu.com>, Jean-Charles "
+"GRANGER <traduction@vecteur.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Country: FRANCE\n"
 "X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Language: French\n"
 
 #. Default name for the AI when the computer_names file
 #. * is not found or empty.
@@ -103,28 +105,24 @@ msgid "The game is already full. I'm leaving."
 msgstr "Tous les joueurs sont déjà présents. On arrête."
 
 #: ../client/ai/greedy.c:941
-#, fuzzy
 msgid "No settlements in stock to use for setup"
-msgstr "Aucune colonie en stock"
+msgstr "Il n'y a plus de colonie en réserve pour le placement"
 
 #: ../client/ai/greedy.c:948
-#, fuzzy
 msgid "There is no place to setup a settlement"
-msgstr "Aucune place pour installer une colonie"
+msgstr "Il n'y a plus de place pour fonder une colonie"
 
 #: ../client/ai/greedy.c:972
-#, fuzzy
 msgid "No roads in stock to use for setup"
-msgstr "Aucune route en stock disponible pour la construction"
+msgstr "Il n'y a pas de route en réserve pour le placement"
 
 #: ../client/ai/greedy.c:989
-#, fuzzy
 msgid "There is no place to setup a road"
-msgstr "Il n'y a pas de place pour construire une route"
+msgstr "Il n'y a plus de place pour construire une route"
 
 #: ../client/ai/greedy.c:1291
 msgid "Ok, let's go!"
-msgstr "Ok, allons-y!"
+msgstr "Ok, allons-y !"
 
 #: ../client/ai/greedy.c:1292
 msgid "I'll beat you all now! ;)"
@@ -267,7 +265,7 @@ msgstr "Offre rejetée.\n"
 #: ../client/ai/greedy.c:1905
 #, c-format
 msgid "Received error from server: %s.  Quitting\n"
-msgstr "Reçu une erreur du serveur: %s.  Sortie\n"
+msgstr "Reçu une erreur du serveur : %s.  Sortie\n"
 
 #: ../client/ai/greedy.c:1915
 msgid "Yippie!"
@@ -283,6 +281,9 @@ msgid ""
 "Hello, welcome to the lobby. I am a simple robot. Type '/help' in the chat "
 "to see the list of commands I know."
 msgstr ""
+"Bonjour, bienvenue dans le Hall d'Accueil. Je suis un simple robot. Tapez la "
+"commande '/help' dans la zone de discussion pour voir la liste des commandes "
+"que je connais."
 
 #. Translators: don't translate '/help'
 #: ../client/ai/lobbybot.c:107
@@ -292,12 +293,12 @@ msgstr "'/help' affiche ce message à nouveau"
 #. Translators: don't translate '/why'
 #: ../client/ai/lobbybot.c:110
 msgid "'/why' explains the purpose of this strange board layout"
-msgstr ""
+msgstr "'/why' explique le pourquoi de cet étrange plateau de jeu"
 
 #. Translators: don't translate '/news'
 #: ../client/ai/lobbybot.c:113
 msgid "'/news' tells the last released version"
-msgstr "'/news' indique la dernière version publiée"
+msgstr "'/news' indique quelle est la dernière version de Pioneers"
 
 #: ../client/ai/lobbybot.c:118
 msgid ""
@@ -310,7 +311,7 @@ msgstr ""
 
 #: ../client/ai/lobbybot.c:129
 msgid "The last released version of Pioneers is"
-msgstr ""
+msgstr "La dernière version de Pioneers est"
 
 #: ../client/ai/lobbybot.c:144
 msgid "The game is starting. I'm not needed anymore. Goodbye."
@@ -566,7 +567,7 @@ msgstr "joueur %d"
 #: ../client/common/player.c:203
 #, c-format
 msgid "New viewer: %s.\n"
-msgstr "Nouveau spectateur: %s.\n"
+msgstr "Nouveau spectateur : %s.\n"
 
 #: ../client/common/player.c:206 ../client/common/player.c:222
 #, c-format
@@ -651,7 +652,7 @@ msgstr "%s construit une route.\n"
 #: ../client/common/player.c:471
 #, c-format
 msgid "%s built a ship.\n"
-msgstr "%s construit un navire.\n"
+msgstr "%s construire un navire.\n"
 
 #: ../client/common/player.c:484
 #, c-format
@@ -928,7 +929,7 @@ msgstr "Vous ne pouved pas biper %s.\n"
 
 #: ../client/gtk/chat.c:276
 msgid " said: "
-msgstr " a dit: "
+msgstr " a dit : "
 
 #: ../client/gtk/connect.c:268
 #, c-format
@@ -956,7 +957,7 @@ msgstr "Une nouvelle partie commence sur le serveur %s, port %s.\n"
 #: ../client/gtk/connect.c:377 ../server/meta.c:168
 #, c-format
 msgid "Unknown message from the metaserver: %s\n"
-msgstr "Message inconnu du métaserveur: %s\n"
+msgstr "Message inconnu du métaserveur : %s\n"
 
 #: ../client/gtk/connect.c:458 ../server/meta.c:125
 msgid "Too many meta-server redirects\n"
@@ -1021,7 +1022,7 @@ msgid ""
 "\tThe metaserver does not send information about the games.\n"
 "\tPlease set appropriate values yourself."
 msgstr ""
-"<b>Note</b>:\n"
+"<b>Note</b> :\n"
 "\tLe métaserver n'envoit pas d'information sur les parties.\n"
 "\tA vous de les définir vous-même."
 
@@ -1404,7 +1405,7 @@ msgstr "Colonie"
 
 #: ../client/gtk/gui.c:240
 msgid "Build a settlement"
-msgstr "Construire une colonie"
+msgstr "Fonder une colonie"
 
 #: ../client/gtk/gui.c:241 ../client/gtk/legend.c:234
 #: ../client/gtk/player.c:50 ../editor/gtk/game-buildings.c:14
@@ -1413,7 +1414,7 @@ msgstr "Ville"
 
 #: ../client/gtk/gui.c:242
 msgid "Build a city"
-msgstr "Ériger une cité"
+msgstr "Eriger une cité"
 
 #: ../client/gtk/gui.c:243
 msgid "Develop"
@@ -1464,7 +1465,7 @@ msgstr "Afficher ou masquer la barre d'outils"
 #: ../client/gtk/gui.c:355
 #, c-format
 msgid "Points Needed to Win: %i"
-msgstr "Pts requis pour gagner: %i"
+msgstr "Pts requis pour gagner : %i"
 
 #: ../client/gtk/gui.c:441
 msgid "<b>Messages</b>"
@@ -1875,7 +1876,7 @@ msgstr "Nombre de joueurs :"
 
 #: ../client/gtk/settingscreen.c:149
 msgid "Victory Point Target:"
-msgstr "Pts de Victoire requis"
+msgstr "Pts de Victoire requis :"
 
 #: ../client/gtk/settingscreen.c:152
 msgid "Random Terrain?"
@@ -2031,7 +2032,6 @@ msgstr ""
 "jeu de plateau 'Les colons de Catan'.\n"
 
 #: ../common/gtk/aboutbox.c:83
-#, fuzzy
 msgid "Homepage"
 msgstr "Page d'accueil"
 
@@ -2155,11 +2155,11 @@ msgstr "Vole : "
 
 #: ../common/log.c:75
 msgid "Trade: "
-msgstr "Echanges"
+msgstr "Echanges :"
 
 #: ../common/log.c:78
 msgid "Development: "
-msgstr "Carte de développement"
+msgstr "Carte de développement :"
 
 #: ../common/log.c:81
 msgid "Army: "
@@ -2829,15 +2829,13 @@ msgstr ""
 
 #. Commandline server-console: players
 #: ../server/main.c:80
-#, fuzzy
 msgid "Override number of players"
-msgstr "Nombre de joueurs"
+msgstr "Outrepasser le nombre de joueurs"
 
 #. Commandline server-console: points
 #: ../server/main.c:83
-#, fuzzy
 msgid "Override number of points needed to win"
-msgstr "Points requis pour gagner"
+msgstr "Outrepasser le nombre de points requis pour gagner"
 
 #. Commandline server-console: seven-rule
 #: ../server/main.c:86
@@ -2851,9 +2849,8 @@ msgstr ""
 
 #. Commandline server-console: computer-players
 #: ../server/main.c:92
-#, fuzzy
 msgid "Add N computer players"
-msgstr "Ajouter une IA"
+msgstr "Ajouter N joueurs IA"
 
 #. Commandline server-console: register
 #: ../server/main.c:102
@@ -2960,7 +2957,7 @@ msgstr "La partie est terminée."
 #: ../server/player.c:265
 #, c-format
 msgid "Player from %s is refused: game is over\n"
-msgstr "Le joueur depuis %s a été rejeté car la partie est terminée\n"
+msgstr "Le joueur depuis %s a été rejeté : la partie est terminée\n"
 
 #: ../server/player.c:310
 msgid "This game will start soon."
@@ -2991,14 +2988,12 @@ msgid "Missing game directory\n"
 msgstr "Répertoire du jeu absent\n"
 
 #: ../server/turn.c:209
-#, fuzzy
 msgid "Island Discovery Bonus"
-msgstr "Bonus 'découverte d'île'"
+msgstr "Bonus de découverte d'île"
 
 #: ../server/turn.c:212
-#, fuzzy
 msgid "Additional Island Bonus"
-msgstr "Bonus 'île supplémentaire'"
+msgstr "Bonus dîle supplémentaire"
 
 #: ../server/turn.c:339
 msgid "Tried to assign resources to NULL player.\n"
