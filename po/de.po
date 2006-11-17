@@ -7,7 +7,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: pioneers 0.9.64\n"
+"Project-Id-Version: Pioneers 0.9.64\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-09-16 21:44+0200\n"
 "PO-Revision-Date: 2006-06-09 02:33+0200\n"
