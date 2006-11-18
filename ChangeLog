@@ -1,4 +1,7 @@
 ﻿
+2006-11-18  Roland Clobus <rclobus@bigfoot.com>
+	* client/ai/computer_names: Fixed a typo (present since 2000 :-)
+	
 2006-10-14  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/gui.c: Move the chat panel to the right or the bottom of
 	the screen. Based on a patch by Rich Harkins <rich@worldsinfinite.com>
