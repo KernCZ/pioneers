@@ -22,9 +22,47 @@
 
 #include "config.h"
 #include "frontend.h"
+#include "common_gtk.h"
+
+/** Reorder the development types:
+ *  Road building
+ *  Monopoly
+ *  Year of Plenty
+ *  Soldier
+ *  Victory points
+ */
+static gint develtype_to_sortorder(DevelType type)
+{
+	switch (type) {
+	case DEVEL_ROAD_BUILDING:
+		return 0;
+	case DEVEL_MONOPOLY:
+		return 1;
+	case DEVEL_YEAR_OF_PLENTY:
+		return 2;
+	case DEVEL_SOLDIER:
+		return 10;
+	case DEVEL_CHAPEL:
+		return 20;
+	case DEVEL_UNIVERSITY:
+		return 21;
+	case DEVEL_GOVERNORS_HOUSE:
+		return 22;
+	case DEVEL_LIBRARY:
+		return 23;
+	case DEVEL_MARKET:
+		return 24;
+	default:
+		g_assert_not_reached();
+		return 99;
+	};
+};
 
 enum {
+	DEVELOP_COLUMN_TYPE, /**< Development card type */
+	DEVELOP_COLUMN_ORDER, /**< Sort order */
 	DEVELOP_COLUMN_DESCRIPTION, /**< Description of the card */
+	DEVELOP_COLUMN_AMOUNT, /**< Amount of the cards */
 	DEVELOP_COLUMN_LAST
 };
 
@@ -52,17 +90,14 @@ static void develop_select_cb(GtkTreeSelection * selection,
 {
 	GtkTreeIter iter;
 	GtkTreeModel *model;
-	GtkTreePath *path;
 
 	g_assert(selection != NULL);
 	if (gtk_tree_selection_get_selected(selection, &model, &iter)) {
-		/* @todo RC 2004-10-28 This code is not prepared for sorted
-		 * lists. The index number of the card must strictly follow
-		 * the order in the DevelDeck 
-		 */
-		path = gtk_tree_model_get_path(model, &iter);
-		selected_card_idx = gtk_tree_path_get_indices(path)[0];
-		gtk_tree_path_free(path);
+		DevelType type;
+		gtk_tree_model_get(model, &iter, DEVELOP_COLUMN_TYPE,
+				   &type, -1);
+		selected_card_idx =
+		    deck_card_oldest_card(get_devel_deck(), type);
 	} else
 		selected_card_idx = -1;
 	frontend_gui_update();
@@ -76,6 +111,7 @@ GtkWidget *develop_build_page(void)
 	GtkWidget *bbox;
 	GtkWidget *alignment;
 	GtkTreeViewColumn *column;
+	GtkCellRenderer *renderer;
 	GtkWidget *play_develop_btn;
 	GtkWidget *develop_list;
 
@@ -96,7 +132,10 @@ GtkWidget *develop_build_page(void)
 	gtk_container_add(GTK_CONTAINER(alignment), label);
 
 	/* Create model */
-	store = gtk_list_store_new(DEVELOP_COLUMN_LAST, G_TYPE_STRING);
+	store = gtk_list_store_new(DEVELOP_COLUMN_LAST,
+				   G_TYPE_INT,
+				   G_TYPE_INT,
+				   G_TYPE_STRING, G_TYPE_STRING);
 
 	scroll_win = gtk_scrolled_window_new(NULL, NULL);
 	gtk_widget_set_size_request(scroll_win, -1, 100);
@@ -138,7 +177,24 @@ GtkWidget *develop_build_page(void)
 								 "text",
 								 DEVELOP_COLUMN_DESCRIPTION,
 								 NULL);
+	gtk_tree_view_column_set_sizing(column,
+					GTK_TREE_VIEW_COLUMN_AUTOSIZE);
+	gtk_tree_view_column_set_expand(column, TRUE);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(develop_list), column);
+
+	renderer = gtk_cell_renderer_text_new();
+	column = gtk_tree_view_column_new_with_attributes(
+								 /* Not translated: it is not visible */
+								 "Amount",
+								 renderer,
+								 "text",
+								 DEVELOP_COLUMN_AMOUNT,
+								 NULL);
+	g_object_set(renderer, "xalign", 1.0f, NULL);
+	gtk_tree_view_column_set_sizing(column,
+					GTK_TREE_VIEW_COLUMN_GROW_ONLY);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(develop_list), column);
+
 	gtk_widget_show(develop_list);
 
 	bbox = gtk_hbutton_box_new();
@@ -150,37 +206,76 @@ GtkWidget *develop_build_page(void)
 	gtk_widget_show(play_develop_btn);
 	gtk_container_add(GTK_CONTAINER(bbox), play_develop_btn);
 
+	selected_card_idx = -1;
 	return vbox;
+}
+
+static void update_model(GtkTreeIter * iter, DevelType type)
+{
+	gchar amount_string[16];
+	gint amount;
+
+	/* Only show the amount when you have more than one */
+	amount = deck_card_amount(get_devel_deck(), type);
+	if (amount == 1)
+		amount_string[0] = '\0';
+	else
+		snprintf(amount_string, sizeof(amount_string), "%d",
+			 amount);
+
+	gtk_list_store_set(store, iter,
+			   DEVELOP_COLUMN_DESCRIPTION,
+			   get_devel_name(type), DEVELOP_COLUMN_AMOUNT,
+			   amount_string, DEVELOP_COLUMN_TYPE, type,
+			   DEVELOP_COLUMN_ORDER,
+			   develtype_to_sortorder(type), -1);
 }
 
 void frontend_bought_develop(DevelType type)
 {
-	const gchar *text = get_devel_name(type);
 	GtkTreeIter iter;
+	enum TFindResult found;
 
-	gtk_list_store_append(store, &iter);
-	gtk_list_store_set(store, &iter,
-			   DEVELOP_COLUMN_DESCRIPTION, text, -1);
+	found =
+	    find_integer_in_tree(GTK_TREE_MODEL(store), &iter,
+				 DEVELOP_COLUMN_ORDER,
+				 develtype_to_sortorder(type));
 
+	switch (found) {
+	case FIND_MATCH_EXACT:
+		/* Don't add new items */
+		break;
+	case FIND_MATCH_INSERT_BEFORE:
+		gtk_list_store_insert_before(store, &iter, &iter);
+		break;
+	case FIND_NO_MATCH:
+		gtk_list_store_append(store, &iter);
+	};
+
+	update_model(&iter, type);
 }
 
-void frontend_played_develop(gint player_num, gint card_idx,
-			     G_GNUC_UNUSED DevelType type)
+void frontend_played_develop(gint player_num, G_GNUC_UNUSED gint card_idx,
+			     DevelType type)
 {
 	GtkTreeIter iter;
+	enum TFindResult found;
 
 	if (player_num == my_player_num()) {
-		/* @todo RC 2004-10-28 This code is not prepared for sorted
-		 * lists. The index number of the card must strictly follow
-		 * the order in the DevelDeck 
-		 */
-		gtk_tree_model_iter_nth_child(GTK_TREE_MODEL(store), &iter,
-					      NULL, card_idx);
-		gtk_list_store_remove(store, &iter);
+		found =
+		    find_integer_in_tree(GTK_TREE_MODEL(store), &iter,
+					 DEVELOP_COLUMN_ORDER,
+					 develtype_to_sortorder(type));
+		g_assert(found == FIND_MATCH_EXACT);
+		if (deck_card_amount(get_devel_deck(), type) == 0)
+			gtk_list_store_remove(store, &iter);
+		else
+			update_model(&iter, type);
 	};
 }
 
 void develop_reset(void)
 {
+	selected_card_idx = -1;
 	gtk_list_store_clear(store);
 }
