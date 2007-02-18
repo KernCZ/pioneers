@@ -37,52 +37,51 @@ static void player_setup(Player * player, int playernum,
 static Player *player_by_name(Game * game, char *name);
 
 
-static gint next_player_num(Game * game, gboolean force_viewer)
+/** Find a free number for a connecting player.
+ *  @param game The game
+ *  @param force_viewer The connecting player must be a viewer
+ */
+static gint next_free_player_num(Game * game, gboolean force_viewer)
 {
-	gint idx = game->params->num_players;
+	gint idx;
 
 	if (!force_viewer) {
 		GList *list;
-		gboolean players[MAX_PLAYERS];
-		memset(players, 0, sizeof(players));
+		gboolean player_taken[MAX_PLAYERS];
+		gint available = game->params->num_players;
+
+		memset(player_taken, 0, sizeof(player_taken));
 		playerlist_inc_use_count(game);
 		for (list = game->player_list;
 		     list != NULL; list = g_list_next(list)) {
 			Player *player = list->data;
 			if (player->num >= 0
 			    && !player_is_viewer(game, player->num)
-			    && !player->disconnected)
-				players[player->num] = TRUE;
+			    && !player->disconnected) {
+				player_taken[player->num] = TRUE;
+				--available;
+			}
 		}
 		playerlist_dec_use_count(game);
 
-		if (game->random_order) {
-			gint empty = 0, skip;
-			for (idx = 0; idx < game->params->num_players;
-			     idx++)
-				if (!players[idx])
-					empty++;
-			if (empty > 0) {
-				skip = get_rand(empty);
-				for (idx = 0;
-				     idx < game->params->num_players;
-				     idx++)
-					if (!players[idx] && skip-- == 0)
-						break;
+		if (available > 0) {
+			gint skip;
+			if (game->random_order) {
+				skip = get_rand(available);
 			} else {
-				idx = game->params->num_players;
+				skip = 0;
 			}
-		} else {
-			for (idx = 0; idx < game->params->num_players;
-			     idx++)
-				if (!players[idx])
-					break;
+			idx = 0;
+			while (player_taken[idx] || skip-- != 0)
+				++idx;
+			return idx;
 		}
 	}
-	if (idx == game->params->num_players)
-		while (player_by_num(game, idx) != NULL)
-			++idx;
 
+	/* No players available/wanted, look for a viewer number */
+	idx = game->params->num_players;
+	while (player_by_num(game, idx) != NULL)
+		++idx;
 	return idx;
 }
 
@@ -359,7 +358,7 @@ static void player_setup(Player * player, int playernum,
 
 	player->num = playernum;
 	if (player->num < 0) {
-		player->num = next_player_num(game, force_viewer);
+		player->num = next_free_player_num(game, force_viewer);
 	}
 
 	if (!player_is_viewer(game, player->num)) {
@@ -505,7 +504,8 @@ void player_revive(Player * newp, char *name)
 		     current = g_list_next(current)) {
 			p = current->data;
 			if (!strcmp(name, p->name))
-				if (p->disconnected && p != newp)
+				if (p->disconnected && !p->sm->use_cache
+				    && p != newp)
 					break;
 		}
 		playerlist_dec_use_count(game);
@@ -516,7 +516,8 @@ void player_revive(Player * newp, char *name)
 		for (current = game->player_list; current != NULL;
 		     current = g_list_next(current)) {
 			p = current->data;
-			if (p->disconnected && p != newp)
+			if (p->disconnected && !p->sm->use_cache
+			    && p != newp)
 				break;
 		}
 		playerlist_dec_use_count(game);
@@ -629,7 +630,7 @@ gboolean mode_viewer(Player * player, gint event)
 	/* first see if this is a valid event for this mode */
 	if (sm_recv(sm, "play")) {
 		/* try to be the first available player */
-		num = next_player_num(game, FALSE);
+		num = next_free_player_num(game, FALSE);
 		if (num >= game->params->num_players) {
 			sm_send(sm, "ERR game-full");
 			return TRUE;
