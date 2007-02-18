@@ -2,6 +2,10 @@
 2007-02-18  Roland Clobus <rclobus@bigfoot.com>
 	* server/player.c: Fix for #1473765. Don't recycle player objects when
 	a (re)connect is in progress.
+	* common/game.c, common/game.h, common/state.h, common/cards.c,
+	server/develop.c, client/callback.h, client/gtk/settingscreen.c,
+	client/common/client.c, client/common/develop.c: Renamed
+	STAT_UNIVERSITY enum.
 
 2006-11-18  Roland Clobus <rclobus@bigfoot.com>
 	* client/ai/computer_names: Fixed a typo (present since 2000 :-)

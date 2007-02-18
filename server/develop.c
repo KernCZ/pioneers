@@ -398,7 +398,7 @@ void develop_play(Player * player, gint idx)
 		sm_push(sm, (StateFunc) mode_plenty_resources);
 		break;
 	case DEVEL_CHAPEL:
-	case DEVEL_UNIVERSITY_OF_CATAN:
+	case DEVEL_UNIVERSITY:
 	case DEVEL_GOVERNORS_HOUSE:
 	case DEVEL_LIBRARY:
 	case DEVEL_MARKET:
@@ -407,7 +407,7 @@ void develop_play(Player * player, gint idx)
 		case DEVEL_CHAPEL:
 			++player->chapel_played;
 			break;
-		case DEVEL_UNIVERSITY_OF_CATAN:
+		case DEVEL_UNIVERSITY:
 			++player->univ_played;
 			break;
 		case DEVEL_GOVERNORS_HOUSE:

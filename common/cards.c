@@ -59,7 +59,7 @@ void deck_card_add(DevelDeck * deck, DevelType type, gint turn_bought)
 gboolean is_victory_card(DevelType type)
 {
 	return type == DEVEL_CHAPEL
-	    || type == DEVEL_UNIVERSITY_OF_CATAN
+	    || type == DEVEL_UNIVERSITY
 	    || type == DEVEL_GOVERNORS_HOUSE
 	    || type == DEVEL_LIBRARY || type == DEVEL_MARKET;
 }

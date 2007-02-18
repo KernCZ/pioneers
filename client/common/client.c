@@ -1077,8 +1077,7 @@ static gboolean mode_load_gameinfo(StateMachine * sm, gint event)
 		}
 		if (puniv) {
 			player_modify_statistic(my_player_num(),
-						STAT_UNIVERSITY_OF_CATAN,
-						1);
+						STAT_UNIVERSITY, 1);
 		}
 		if (pgov) {
 			player_modify_statistic(my_player_num(),
@@ -1124,9 +1123,7 @@ static gboolean mode_load_gameinfo(StateMachine * sm, gint event)
 			player_modify_statistic(opnum, STAT_CHAPEL, 1);
 		}
 		if (puniv) {
-			player_modify_statistic(opnum,
-						STAT_UNIVERSITY_OF_CATAN,
-						1);
+			player_modify_statistic(opnum, STAT_UNIVERSITY, 1);
 		}
 		if (pgov) {
 			player_modify_statistic(opnum,

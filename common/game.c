@@ -65,7 +65,7 @@ static Param game_params[] = {
 	{PARAM_V(develop-monopoly, PARAM_INT, num_develop_type[DEVEL_MONOPOLY])},
 	{PARAM_V(develop-plenty, PARAM_INT, num_develop_type[DEVEL_YEAR_OF_PLENTY])},
 	{PARAM_V(develop-chapel, PARAM_INT, num_develop_type[DEVEL_CHAPEL])},
-	{PARAM_V(develop-university, PARAM_INT, num_develop_type[DEVEL_UNIVERSITY_OF_CATAN])},
+	{PARAM_V(develop-university, PARAM_INT, num_develop_type[DEVEL_UNIVERSITY])},
 	{PARAM_V(develop-governor, PARAM_INT, num_develop_type[DEVEL_GOVERNORS_HOUSE])},
 	{PARAM_V(develop-library, PARAM_INT, num_develop_type[DEVEL_LIBRARY])},
 	{PARAM_V(develop-market, PARAM_INT, num_develop_type[DEVEL_MARKET])},

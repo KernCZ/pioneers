@@ -304,8 +304,7 @@ static GtkWidget *settings_create_content(void)
 	add_setting_desc(table, 4, 0, _("Pioneer University Cards:"));
 	add_setting_val(table, 4, 1, TYPE_NUM,
 			game_params->
-			num_develop_type[DEVEL_UNIVERSITY_OF_CATAN], NULL,
-			TRUE);
+			num_develop_type[DEVEL_UNIVERSITY], NULL, TRUE);
 	add_setting_desc(table, 5, 0, _("Governor's House Cards:"));
 	add_setting_val(table, 5, 1, TYPE_NUM,
 			game_params->

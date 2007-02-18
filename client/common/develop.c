@@ -150,9 +150,8 @@ void develop_played(gint player_num, gint card_idx, DevelType type)
 	case DEVEL_CHAPEL:
 		player_modify_statistic(player_num, STAT_CHAPEL, 1);
 		break;
-	case DEVEL_UNIVERSITY_OF_CATAN:
-		player_modify_statistic(player_num,
-					STAT_UNIVERSITY_OF_CATAN, 1);
+	case DEVEL_UNIVERSITY:
+		player_modify_statistic(player_num, STAT_UNIVERSITY, 1);
 		break;
 	case DEVEL_GOVERNORS_HOUSE:
 		player_modify_statistic(player_num, STAT_GOVERNORS_HOUSE,
