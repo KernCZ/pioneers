@@ -26,6 +26,7 @@
 #include <gtk/gtk.h>
 
 #define MAX_POINTS 32		/* maximum points in a polygon */
+#define MIN_HEX_RADIUS 3	/* minimum hex_radius */
 
 typedef enum {
 	NO_CURSOR,

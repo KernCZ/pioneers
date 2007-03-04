@@ -796,6 +796,9 @@ void guimap_scale_with_radius(GuiMap * gmap, gint radius)
 {
 	int idx;
 
+	if (radius < MIN_HEX_RADIUS)
+		radius = MIN_HEX_RADIUS;
+
 	gmap->hex_radius = radius;
 	gmap->x_point = radius * cos(M_PI / 6.0);
 	gmap->y_point = radius * sin(M_PI / 6.0);

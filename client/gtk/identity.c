@@ -64,6 +64,9 @@ static void calculate_optimum_size(GtkWidget * area, gint size)
 
 	guimap_scale_with_radius(&bogus_map, size);
 
+	if (bogus_map.hex_radius <= MIN_HEX_RADIUS)
+		return;
+
 	fixedwidth = 0;
 	variablewidth = 0;
 
@@ -102,8 +105,6 @@ static void calculate_optimum_size(GtkWidget * area, gint size)
 	new_size = bogus_map.hex_radius *
 	    (area->allocation.width - 75 - fixedwidth) / variablewidth;
 	if (new_size < bogus_map.hex_radius) {
-		if (new_size < 0)
-			new_size = 0;
 		calculate_optimum_size(area, new_size);
 	}
 }

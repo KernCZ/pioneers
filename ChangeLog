@@ -1,4 +1,9 @@
 ﻿
+2007-03-04  Roland CLobus <rclobus@bigfoot.com>
+	* common/gtk/guimap.c, common/gtk/guimap.h, client/gtk/identify.c: Fix
+	for #1589423. Sets a minimum size, to avoid drawing a polygon with
+	only (0,0) as coordinates.
+	
 2007-02-18  Roland Clobus <rclobus@bigfoot.com>
 	* server/player.c: Fix for #1473765. Don't recycle player objects when
 	a (re)connect is in progress.
