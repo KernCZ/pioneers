@@ -6,10 +6,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Pioneers 0.10.1\n"
+"Project-Id-Version: Pioneers 0.10.2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-09-16 21:44+0200\n"
-"PO-Revision-Date: 2006-08-18 10:50+0200\n"
+"PO-Revision-Date: 2007-01-10 15:53+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "MIME-Version: 1.0\n"
@@ -77,7 +77,7 @@ msgstr "Aktivera felsökningsmeddelanden"
 #: ../editor/gtk/editor.c:1092 ../meta-server/main.c:1052
 #: ../server/gtk/main.c:820 ../server/main.c:95
 msgid "Show version information"
-msgstr ""
+msgstr "Visa versionsinformation"
 
 #: ../client/ai/ai.c:134
 msgid "- Computer player for Pioneers"
@@ -87,7 +87,7 @@ msgstr "- Datorspelare för Pioneers"
 #: ../editor/gtk/editor.c:1132 ../meta-server/main.c:1081
 #: ../server/gtk/main.c:870 ../server/main.c:202
 msgid "Pioneers version:"
-msgstr ""
+msgstr "Pioneers version:"
 
 #: ../client/ai/ai.c:176
 #, c-format
@@ -2580,46 +2580,46 @@ msgstr "Resurser"
 #. Commandline meta-server: daemon
 #: ../meta-server/main.c:1030
 msgid "Daemonize the metaserver on start"
-msgstr ""
+msgstr "Kör metaservern i bakgrunden vid uppstart"
 
 #. Commandline meta-server: redirect
 #: ../meta-server/main.c:1033
 msgid "Redirect clients to another metaserver"
-msgstr ""
+msgstr "Omdirigera klienter till en annan metaserver"
 
 #. Commandline meta-server: server
 #: ../meta-server/main.c:1036
 msgid "Use this hostname when creating new games"
-msgstr ""
+msgstr "Använd det här värdnamnet när nya spel skapas"
 
 #. Commandline meta-server: server argument
 #: ../meta-server/main.c:1038
 msgid "hostname"
-msgstr ""
+msgstr "värdnamn"
 
 #. Commandline meta-server: port-range
 #: ../meta-server/main.c:1041
 msgid "Use this ports range when creating new games"
-msgstr ""
+msgstr "Använd det här portintervallet när nya spel skapas"
 
 #. Commandline meta-server: port-range argument
 #: ../meta-server/main.c:1043
 msgid "from-to"
-msgstr ""
+msgstr "från-till"
 
 #. Commandline option of meta server: syslog-debug
 #: ../meta-server/main.c:1049
 msgid "Debug syslog messages"
-msgstr ""
+msgstr "Felsökningsmeddelanden till syslog"
 
 #. Long description in the commandline for server-console: help
 #: ../meta-server/main.c:1070
 msgid "- Meta server for Pioneers"
-msgstr ""
+msgstr "- Metaserver för Pioneers"
 
 #: ../meta-server/main.c:1085
 msgid "metaserver protocol:"
-msgstr ""
+msgstr "protokoll för metaserver:"
 
 #: ../server/gtk/main.c:92
 msgid "_About Pioneers Server"
