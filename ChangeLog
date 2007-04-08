@@ -1,4 +1,7 @@
 ﻿
+2007-04-08  Roland Clobus <rclobus@bigfoot.com>
+	* configure.ac: Reorder the language codes (now alphabetical)
+	
 2007-03-04  Roland CLobus <rclobus@bigfoot.com>
 	* common/gtk/guimap.c, common/gtk/guimap.h, client/gtk/identify.c: Fix
 	for #1589423. Sets a minimum size, to avoid drawing a polygon with
