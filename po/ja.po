@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: Pioneers 0.10.2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-09-16 21:44+0200\n"
-"PO-Revision-Date: 2006-11-12 18:40+0900\n"
+"PO-Revision-Date: 2007-01-28\n"
 "Last-Translator: Yasuhiko Takasugi<takasugi@flcl.org> <>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
@@ -177,7 +177,7 @@ msgstr "盗賊をどっか他に移せないの?!"
 
 #: ../client/ai/greedy.c:1318
 msgid "Why always me??"
-msgstr "なんで、いつも私！"
+msgstr "何でいつも私??"
 
 #: ../client/ai/greedy.c:1321
 msgid "Oh no!"
@@ -600,7 +600,7 @@ msgstr "%s は、最長道をもった。\n"
 #: ../client/common/player.c:308
 #, c-format
 msgid "Waiting for %s."
-msgstr "%s　を待ってる."
+msgstr "%s を待ってる."
 
 #. We are not in on the action
 #. someone stole a resource from someone else
@@ -727,7 +727,7 @@ msgstr "%s は、%s を失った。\n"
 
 #: ../client/common/player.c:700
 msgid "server asks to move invalid point.\n"
-msgstr "サーバは不正な端末を移動してよいかと訪ねている\n"
+msgstr "サーバは不正な端末を削除してよいかと訪ねている\n"
 
 #. tell the user someone (1) lost something (2) to someone else (3)
 #: ../client/common/player.c:707
@@ -905,26 +905,26 @@ msgstr "<b>チャット</b>"
 
 #: ../client/gtk/chat.c:219
 msgid "Beeper test.\n"
-msgstr "Beeper揃test.\n"
+msgstr "Beeper test.\n"
 
 #: ../client/gtk/chat.c:222
 #, c-format
 msgid "%s beeped you.\n"
-msgstr "%s　が貴方を呼び出した.\n"
+msgstr "%s が貴方を呼び出した.\n"
 
 #: ../client/gtk/chat.c:226
 #, c-format
 msgid "You beeped %s.\n"
-msgstr "%s　を呼び出す.\n"
+msgstr "%s を呼び出す.\n"
 
 #: ../client/gtk/chat.c:232
 #, c-format
 msgid "You could not beep %s.\n"
-msgstr "%s　を呼び出すことができない.\n"
+msgstr "%s を呼び出すことができない.\n"
 
 #: ../client/gtk/chat.c:276
 msgid " said: "
-msgstr "揃荅宴:·"
+msgstr "言った:·"
 
 #: ../client/gtk/connect.c:268
 #, c-format
@@ -1028,7 +1028,7 @@ msgstr "新しいゲームサーバを要求中\n"
 #: ../client/gtk/connect.c:794 ../server/server.c:155
 #, c-format
 msgid "Error starting %s: %s"
-msgstr "Error揃starting揃%s:揃%s"
+msgstr "Error starting %s: %s"
 
 #: ../client/gtk/connect.c:815
 msgid "Create a public game"
@@ -1040,7 +1040,7 @@ msgstr "公開ゲームに参加"
 
 #: ../client/gtk/connect.c:951
 msgid "_New remote game"
-msgstr "_New揃remote揃game"
+msgstr "_New remote game"
 
 #: ../client/gtk/connect.c:965
 msgid "Refresh the list of games"
