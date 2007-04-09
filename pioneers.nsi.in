@@ -1,17 +1,12 @@
 ; Script generated with the aid of the HM NIS Edit Script Wizard.
 ; Adapted for Pioneers by Roland Clobus <rclobus@bigfoot.com>
-;
-; GTK+ Runtime version check as taken from Gaim [2006-01-21]:
-;   Original Author: Herman Bloggs <hermanator12002@yahoo.com>
-;   Updated By: Daniel Atallah <daniel_atallah@yahoo.com>
 
 ;Global Variables
-Var GTK_FOLDER
+Var FOUND_GTK_VERSION
 
 !define GTK_VERSION "2.6"
-!define GTK_REG_KEY "SOFTWARE\GTK\2.0"
-
-!define GTK_VERSION_TEXT "You need to install the Gtk+ runtime first. (Minimum version: ${GTK_VERSION}) The runtime can be downloaded from http://gimp-win.sourceforge.net/stable.html"
+!define GTK_UPGRADE_TEXT "(Minimum version: ${GTK_VERSION}, current version: $FOUND_GTK_VERSION)"
+!define GTK_NOT_FOUND_TEXT "(Minimum version: ${GTK_VERSION}) If you just installed the runtime, try to reboot first."
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "Pioneers"
@@ -435,139 +430,57 @@ Section Uninstall
   SetAutoClose true
 SectionEnd
 
-
-; CheckGtkVersion
-; inputs: Push 2 GTK+ version strings to check. The major value needs to
-; be equal and the minor value needs to be greater or equal.
-;
-; Usage:
-;   Push "2.1.0"  ; Reference version
-;   Push "2.2.1"  ; Version to check
-;   Call CheckGtkVersion
-;   Pop $R0
-;   $R0 will now equal "1", because 2.2 is greater than 2.1
-;
-Function CheckGtkVersion
-  ; Version we want to check
-  Exch $R0
-  Exch
-  ; Reference version
-  Exch $R1
-  Push $R2
-  Push $R3
-
-  ; Check that the string to check is at least 5 chars long (i.e. x.x.x)
-  StrLen $R2 $R0
-  IntCmp $R2 5 0 bad_version
-
-  ; Major version check
-  StrCpy $R2 $R0 1
-  StrCpy $R3 $R1 1
-  IntCmp $R2 $R3 check_minor bad_version bad_version
-
-  check_minor:
-    StrCpy $R2 $R0 1 2
-    StrCpy $R3 $R1 1 2
-    IntCmp $R2 $R3 good_version bad_version good_version
-
-  bad_version:
-    StrCpy $R0 "0"
-    Goto done
-
-  good_version:
-    StrCpy $R0 "1"
-
-  done:
-    Pop $R3
-    Pop $R2
-    Pop $R1
-    Exch $R0
-FunctionEnd
-
+!include "WordFunc.nsh"
+!insertMacro VersionCompare
 ;
 ; Usage:
 ; Call DoWeNeedGtk
 ; First Pop:
 ;   0 - We have the correct version
-;       Second Pop: Key where Version was found
+;       Second Pop: Current version
 ;   1 - We have an old version that needs to be upgraded
-;       Second Pop: HKLM or HKCU depending on where GTK was found.
+;       Second Pop: Current version
 ;   2 - We don't have Gtk+ at all
-;       Second Pop: "NONE, HKLM or HKCU" depending on our rights..
+;       Second Pop: "GTK+ not found"
+;
+; The version of the Gtk dll will be checked.
+; This means that the DLL must be found in the path,
+; using the default DLL location functions that Pioneers uses.
 ;
 Function DoWeNeedGtk
-  ; Logic should be:
-  ; - Check what user rights we have (HKLM or HKCU)
-  ;   - If HKLM rights..
-  ;     - Only check HKLM key for GTK+
-  ;       - If installed to HKLM, check it and return.
-  ;   - If HKCU rights..
-  ;     - First check HKCU key for GTK+
-  ;       - if good or bad exists stop and ret.
-  ;     - If no hkcu gtk+ install, check HKLM
-  ;       - If HKLM ver exists but old, return as if no ver exits.
-  ;   - If no rights
-  ;     - Check HKLM
   Push $0
   Push $2
   Push $3
   Push $4
   Push $5
 
-  Call CheckUserInstallRights
-  Pop $3
-  StrCmp $3 "HKLM" check_hklm
-  StrCmp $3 "HKCU" check_hkcu check_hklm
-    check_hkcu:
-      ReadRegStr $0 HKCU ${GTK_REG_KEY} "Version"
-      StrCpy $5 "HKCU"
-      StrCmp $0 "" check_hklm have_gtk
+  GetDllVersion "libgtk-win32-2.0-0.dll" $R0 $R1
+  IfErrors no_gtk
+  IntOp $R2 $R0 / 0x00010000
+  IntOp $R3 $R0 & 0x0000FFFF
+  IntOp $R4 $R1 / 0x00010000
+  IntOp $R5 $R1 & 0x0000FFFF
+  StrCpy $0 "$R2.$R3.$R4.$R5"
 
-    check_hklm:
-      ReadRegStr $0 HKLM ${GTK_REG_KEY} "Version"
-      StrCpy $5 "HKLM"
-      StrCmp $0 "" no_gtk have_gtk
-
-
-  have_gtk:
-    ; GTK+ is already installed.. check version.
-    Push ${GTK_VERSION} ; Minimum GTK+ version needed
+  ; GTK+ is already installed.. check version.
+  ${VersionCompare} ${GTK_VERSION} $0 $2
+  StrCmp $2 "1" bad_version good_version
+  bad_version:
+    StrCpy $2 "1"
     Push $0
-    Call CheckGtkVersion
-    Pop $2
-    StrCmp $2 "1" good_version bad_version
-    bad_version:
-      ; Bad version. If hklm ver and we have hkcu or no rights.. return no gtk
-      StrCmp $3 "NONE" no_gtk  ; if no rights.. can't upgrade
-      StrCmp $3 "HKCU" 0 upgrade_gtk ; if HKLM can upgrade..
-        StrCmp $5 "HKLM" no_gtk upgrade_gtk ; have hkcu rights.. if found hklm ver can't upgrade..
-
-      upgrade_gtk:
-        StrCpy $2 "1"
-        Push $5
-        Push $2
-        Goto done
+    Push $2
+    Goto done
 
   good_version:
-    StrCmp $5 "HKLM" have_hklm_gtk have_hkcu_gtk
-      have_hkcu_gtk:
-        ; Have HKCU version
-        ReadRegStr $4 HKCU ${GTK_REG_KEY} "Path"
-        Goto good_version_cont
-
-      have_hklm_gtk:
-        ReadRegStr $4 HKLM ${GTK_REG_KEY} "Path"
-        Goto good_version_cont
-
-    good_version_cont:
-      StrCpy $2 "0"
-      Push $4  ; The path to existing GTK+
-      Push $2
-      Goto done
+    StrCpy $2 "0"
+    Push $0
+    Push $2
+    Goto done
 
   no_gtk:
     StrCpy $2 "2"
-    Push $3 ; our rights
+    StrCpy $0 "GTK not found"
+    Push $0
     Push $2
     Goto done
 
@@ -587,51 +500,29 @@ Function preWelcomePage
   ; We do this here an not in .onInit because language change in
   ; .onInit doesn't take effect until it is finished.
     Push $R0
+    Push $R1
     Call DoWeNeedGtk
     Pop $R0
-    Pop $GTK_FOLDER
+    Pop $R1
+    StrCpy $FOUND_GTK_VERSION "$R1"
 
-    StrCmp $R0 "0" have_gtk need_gtk
+    StrCmp $R0 "0" have_gtk might_need_gtk
+    might_need_gtk:
+     StrCmp $R0 "1" upgrade_gtk need_gtk
+    upgrade_gtk:
+      StrCpy $R0 "${GTK_UPGRADE_TEXT}"
+      Goto gtk_display_message
     need_gtk:
-      IfSilent skip_mb
-        MessageBox MB_ICONSTOP|MB_OK "${GTK_VERSION_TEXT}"
-      skip_mb:
+      StrCpy $R0 "${GTK_NOT_FOUND_TEXT}"
+      Goto gtk_display_message
+    gtk_display_message:
+      Push $R2
+      StrCpy $R2 "You need to the Gtk+ runtime first.$\n$R0$\n$\nThe runtime can be downloaded from$\nhttp://gimp-win.sourceforge.net/stable.html$\n$\nDo you want to continue anyway?"
+      MessageBox MB_ICONQUESTION|MB_YESNO "$R2" IDYES have_gtk IDNO no_gtk
+      Pop $R2
+    no_gtk:
       Quit
     have_gtk:
+    Pop $R1
     Pop $R0
-FunctionEnd
-
-Function CheckUserInstallRights
-  Push $0
-  Push $1
-  ClearErrors
-  UserInfo::GetName
-  IfErrors Win9x
-  Pop $0
-  UserInfo::GetAccountType
-  Pop $1
-
-  StrCmp $1 "Admin" 0 +3
-    StrCpy $1 "HKLM"
-    Goto done
-  StrCmp $1 "Power" 0 +3
-    StrCpy $1 "HKLM"
-    Goto done
-  StrCmp $1 "User" 0 +3
-    StrCpy $1 "HKCU"
-    Goto done
-  StrCmp $1 "Guest" 0 +3
-    StrCpy $1 "NONE"
-    Goto done
-  ; Unknown error
-  StrCpy $1 "NONE"
-  Goto done
-
-  Win9x:
-    StrCpy $1 "HKLM"
-
-  done:
-    Exch $1
-    Exch
-    Pop $0
 FunctionEnd

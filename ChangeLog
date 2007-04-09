@@ -1,4 +1,8 @@
 ﻿
+2007-04-09  Roland Clobus <rclobus@bigfoot.com>
+	* pioneers.nsi.in: Added a better check for the Gtk+ runtime, and
+        allow the installer to continue, even when no runtime is found.
+
 2007-04-08  Roland Clobus <rclobus@bigfoot.com>
 	* configure.ac: Reorder the language codes (now alphabetical)
 	
