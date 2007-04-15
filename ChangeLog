@@ -1,4 +1,8 @@
 ﻿
+2007-04-15  Bernd Ernesti <veega@users.sourceforge.net>
+	* editor/gtk/editor.c, meta-server/main.c, server/gtk/main.c,
+	server/main.c: #include <locale.h> where needed.
+
 2007-04-09  Roland Clobus <rclobus@bigfoot.com>
 	* pioneers.nsi.in: Added a better check for the Gtk+ runtime, and
         allow the installer to continue, even when no runtime is found.
