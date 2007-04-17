@@ -23,8 +23,8 @@
 #include "config.h"
 #include "version.h"
 
-#ifdef HAVE_LOCALE_H  
-#include <locale.h>  
+#ifdef HAVE_LOCALE_H
+#include <locale.h>
 #endif
 #include <stdio.h>
 #include <stdlib.h>
