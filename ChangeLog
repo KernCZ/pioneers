@@ -1,4 +1,8 @@
 ﻿
+2007-04-17  Roland Clobus <rclobus@bigfoot.com>
+	* common/state.c, server/pregame.c: Disconnect during mode_pregame
+	could crash the server.
+	
 2007-04-15  Bernd Ernesti <veega@users.sourceforge.net>
 	* editor/gtk/editor.c, meta-server/main.c, server/gtk/main.c,
 	server/main.c: #include <locale.h> where needed.

@@ -774,7 +774,13 @@ gboolean mode_pre_game(Player * player, gint event)
 			if (player->disconnected) {
 				player->disconnected = FALSE;
 				driver->player_change(game);
-				sm_pop(sm);
+				if (!sm_is_connected(sm))
+					/* This happens when the connection is
+					 * dropped when the cache is sent */
+					sm_goto(sm,
+						(StateFunc) mode_viewer);
+				else
+					sm_pop(sm);
 			} else {
 				if (!player_is_viewer(game, player->num))
 					sm_goto(sm, (StateFunc) mode_idle);

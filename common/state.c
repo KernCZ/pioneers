@@ -110,7 +110,7 @@ static void route_event(StateMachine * sm, gint event)
 			sm->unhandled(user_data, event);
 		break;
 	case SM_NET_CLOSE:
-		net_free(&(sm->ses));
+		sm_close(sm);
 	default:
 		curr_state(user_data, event);
 		if (!sm->is_dead && sm->global !=NULL)
