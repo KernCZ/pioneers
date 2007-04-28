@@ -309,22 +309,19 @@ static void frontend_state_turn(GuiEvent event)
 		frontend_gui_check(GUI_BUY_DEVELOP, can_buy_develop());
 		frontend_gui_check(GUI_FINISH, have_rolled_dice());
 
-		guimap_start_single_click_build(turn_can_build_road(),
-						check_road, build_road_cb,
-						turn_can_build_ship(),
-						check_ship, build_ship_cb,
-						turn_can_build_bridge(),
-						check_bridge,
-						build_bridge_cb,
-						turn_can_build_settlement
-						(), check_settlement,
-						build_settlement_cb,
-						turn_can_build_city(),
-						check_city, build_city_cb,
-						turn_can_move_ship(),
-						check_ship_move,
-						move_ship_cb,
-						cancel_move_ship_cb);
+		guimap_single_click_set_functions(check_road,
+						  build_road_cb,
+						  check_ship,
+						  build_ship_cb,
+						  check_bridge,
+						  build_bridge_cb,
+						  check_settlement,
+						  build_settlement_cb,
+						  check_city,
+						  build_city_cb,
+						  check_ship_move,
+						  move_ship_cb,
+						  cancel_move_ship_cb);
 		break;
 	case GUI_ROLL:
 		cb_roll();
@@ -405,13 +402,14 @@ static void frontend_state_roadbuilding(GuiEvent event)
 		frontend_gui_check(GUI_BRIDGE,
 				   road_building_can_build_bridge());
 		frontend_gui_check(GUI_FINISH, road_building_can_finish());
-		guimap_start_single_click_build
-		    (road_building_can_build_road(), check_road,
-		     build_road_cb, road_building_can_build_ship(),
-		     check_ship, build_ship_cb,
-		     road_building_can_build_bridge(), check_bridge,
-		     build_bridge_cb, FALSE, NULL, NULL, FALSE, NULL,
-		     NULL, FALSE, NULL, NULL, NULL);
+		guimap_single_click_set_functions(check_road,
+						  build_road_cb,
+						  check_ship,
+						  build_ship_cb,
+						  check_bridge,
+						  build_bridge_cb,
+						  NULL, NULL, NULL,
+						  NULL, NULL, NULL, NULL);
 		break;
 	case GUI_UNDO:
 		cb_undo();
@@ -804,20 +802,16 @@ static void frontend_mode_setup(GuiEvent event)
 		frontend_gui_check(GUI_SETTLEMENT,
 				   setup_can_build_settlement());
 		frontend_gui_check(GUI_FINISH, setup_can_finish());
-		guimap_start_single_click_build(setup_can_build_road(),
-						check_road_setup,
-						build_road_cb,
-						setup_can_build_ship(),
-						check_ship_setup,
-						build_ship_cb,
-						setup_can_build_bridge(),
-						check_bridge_setup,
-						build_bridge_cb,
-						setup_can_build_settlement
-						(), check_settlement_setup,
-						build_settlement_cb, FALSE,
-						NULL, NULL, FALSE, NULL,
-						NULL, NULL);
+		guimap_single_click_set_functions(check_road_setup,
+						  build_road_cb,
+						  check_ship_setup,
+						  build_ship_cb,
+						  check_bridge_setup,
+						  build_bridge_cb,
+						  check_settlement_setup,
+						  build_settlement_cb,
+						  NULL, NULL, NULL,
+						  NULL, NULL);
 		break;
 	case GUI_UNDO:
 		/* The user has pressed the "Undo" button.  Send a

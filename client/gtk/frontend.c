@@ -46,6 +46,30 @@ static void set_sensitive(G_GNUC_UNUSED void *key, GuiWidgetState * gui,
 		else
 			widget_set_sensitive(gui->widget, gui->next);
 	}
+	if (gui->next != gui->current) {
+		switch (gui->id) {
+		case GUI_ROAD:
+			guimap_single_click_set_road_mask(gui->next);
+			break;
+		case GUI_SHIP:
+			guimap_single_click_set_ship_mask(gui->next);
+			break;
+		case GUI_BRIDGE:
+			guimap_single_click_set_bridge_mask(gui->next);
+			break;
+		case GUI_SETTLEMENT:
+			guimap_single_click_set_settlement_mask(gui->next);
+			break;
+		case GUI_CITY:
+			guimap_single_click_set_city_mask(gui->next);
+			break;
+		case GUI_MOVE_SHIP:
+			guimap_single_click_set_ship_move_mask(gui->next);
+			break;
+		default:
+			break;
+		}
+	}
 	gui->current = gui->next;
 	gui->next = FALSE;
 }

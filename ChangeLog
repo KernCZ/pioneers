@@ -1,4 +1,9 @@
 ﻿
+2007-04-28  Roland Clobus <rclobus@bigfoot.com>
+	* common/gtk/guimap.c, common/gtk/guimap.h, client/gtk/interface.c,
+	client/gtk/frontend.c: Single click actions are set enabled with the
+	same mechanism as the GtkActions.
+
 2007-04-17  Roland Clobus <rclobus@bigfoot.com>
 	* common/state.c, server/pregame.c: Disconnect during mode_pregame
 	could crash the server.

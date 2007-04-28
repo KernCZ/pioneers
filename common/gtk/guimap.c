@@ -3,7 +3,7 @@
  *
  * Copyright (C) 1999 Dave Cole
  * Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
- * Copyright (C) 2004 Roland Clobus <rclobus@bigfoot.com>
+ * Copyright (C) 2004-2007 Roland Clobus <rclobus@bigfoot.com>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -54,6 +54,8 @@ static void calc_node_poly(const GuiMap * gmap, const Node * node,
 static void calc_hex_poly(const GuiMap * gmap, const Hex * hex,
 			  const Polygon * shape, Polygon * poly,
 			  double scale_factor, gint x_shift);
+static void guimap_cursor_move(GuiMap * gmap, gint x, gint y,
+			       MapElement * element);
 
 /* Square */
 static gint sqr(gint a)
@@ -1917,46 +1919,68 @@ void guimap_cursor_set(GuiMap * gmap, CursorType cursor_type, gint owner,
 	gmap->cursor.pointer = NULL;
 }
 
-void guimap_start_single_click_build(gboolean road_mask,
-				     CheckFunc road_check_func,
-				     SelectFunc road_select_func,
-				     gboolean ship_mask,
-				     CheckFunc ship_check_func,
-				     SelectFunc ship_select_func,
-				     gboolean bridge_mask,
-				     CheckFunc bridge_check_func,
-				     SelectFunc bridge_select_func,
-				     gboolean settlement_mask,
-				     CheckFunc settlement_check_func,
-				     SelectFunc settlement_select_func,
-				     gboolean city_mask,
-				     CheckFunc city_check_func,
-				     SelectFunc city_select_func,
-				     gboolean ship_move_mask,
-				     CheckFunc ship_move_check_func,
-				     SelectFunc ship_move_select_func,
-				     CancelFunc ship_move_cancel_func)
+void guimap_single_click_set_functions(CheckFunc road_check_func,
+				       SelectFunc road_select_func,
+				       CheckFunc ship_check_func,
+				       SelectFunc ship_select_func,
+				       CheckFunc bridge_check_func,
+				       SelectFunc bridge_select_func,
+				       CheckFunc
+				       settlement_check_func,
+				       SelectFunc
+				       settlement_select_func,
+				       CheckFunc city_check_func,
+				       SelectFunc city_select_func,
+				       CheckFunc
+				       ship_move_check_func,
+				       SelectFunc
+				       ship_move_select_func,
+				       CancelFunc ship_move_cancel_func)
 {
-	roadM = road_mask;
 	roadF = road_check_func;
 	roadS = road_select_func;
-	shipM = ship_mask;
 	shipF = ship_check_func;
 	shipS = ship_select_func;
-	bridgeM = bridge_mask;
 	bridgeF = bridge_check_func;
 	bridgeS = bridge_select_func;
-	settlementM = settlement_mask;
 	settlementF = settlement_check_func;
 	settlementS = settlement_select_func;
-	cityM = city_mask;
 	cityF = city_check_func;
 	cityS = city_select_func;
-	shipMoveM = ship_move_mask;
 	shipMoveF = ship_move_check_func;
 	shipMoveS = ship_move_select_func;
 	shipMoveC = ship_move_cancel_func;
 	single_click_build_active = TRUE;
+}
+
+void guimap_single_click_set_road_mask(gboolean mask)
+{
+	roadM = mask;
+}
+
+void guimap_single_click_set_ship_mask(gboolean mask)
+{
+	shipM = mask;
+}
+
+void guimap_single_click_set_bridge_mask(gboolean mask)
+{
+	bridgeM = mask;
+}
+
+void guimap_single_click_set_settlement_mask(gboolean mask)
+{
+	settlementM = mask;
+}
+
+void guimap_single_click_set_city_mask(gboolean mask)
+{
+	cityM = mask;
+}
+
+void guimap_single_click_set_ship_move_mask(gboolean mask)
+{
+	shipMoveM = mask;
 }
 
 void guimap_set_show_no_setup_nodes(GuiMap * gmap, gboolean show)
