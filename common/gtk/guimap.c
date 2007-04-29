@@ -189,7 +189,7 @@ static Polygon settlement_poly = {
 };
 static GdkPoint city_points[] = {
 	{40, 20}, {40, -16}, {2, -16}, {2, -28},
-	{-18, -48}, {-40, -28}, {-40, 20}, {40, 20}
+	{-19, -48}, {-40, -28}, {-40, 20}, {40, 20}
 };
 static Polygon city_poly = {
 	city_points,
@@ -202,6 +202,23 @@ static GdkPoint nosetup_points[] = {
 static Polygon nosetup_poly = {
 	nosetup_points,
 	G_N_ELEMENTS(nosetup_points)
+};
+
+/* Update this when a node polygon is changed */
+#define NODE_MIN_X -40
+#define NODE_MAX_X 40
+#define NODE_MIN_Y -48
+#define NODE_MAX_Y 30
+
+static GdkPoint largest_node_points[] = {
+	{NODE_MIN_X, NODE_MIN_Y},
+	{NODE_MIN_X, NODE_MAX_Y},
+	{NODE_MAX_X, NODE_MAX_Y},
+	{NODE_MAX_X, NODE_MIN_Y}
+};
+static Polygon largest_node_poly = {
+	largest_node_points,
+	G_N_ELEMENTS(largest_node_points)
 };
 static GdkPoint road_points[] = {
 	{10, 40}, {10, -40}, {-10, -40}, {-10, 40},
@@ -230,6 +247,24 @@ static Polygon bridge_poly = {
 	bridge_points,
 	G_N_ELEMENTS(bridge_points)
 };
+
+/* Update this when an edge polygon is changed */
+#define EDGE_MIN_X -14
+#define EDGE_MAX_X 50
+#define EDGE_MIN_Y -40
+#define EDGE_MAX_Y 40
+
+static GdkPoint largest_edge_points[] = {
+	{EDGE_MIN_X, EDGE_MIN_Y},
+	{EDGE_MIN_X, EDGE_MAX_Y},
+	{EDGE_MAX_X, EDGE_MAX_Y},
+	{EDGE_MAX_X, EDGE_MIN_Y}
+};
+static Polygon largest_edge_poly = {
+	largest_edge_points,
+	G_N_ELEMENTS(largest_edge_points)
+};
+
 static GdkPoint robber_points[] = {
 	{30, 60}, {30, 4}, {28, -6}, {22, -15},
 	{12, -20}, {22, -32}, {22, -48}, {10, -60},
@@ -1196,13 +1231,20 @@ static void find_hex(GuiMap * gmap, gint x, gint y, MapElement * element)
 	element->hex = find_hex_internal(gmap, x, y);
 }
 
-static void redraw_edge(GuiMap * gmap, const Edge * edge,
-			const Polygon * poly)
+void guimap_draw_edge(GuiMap * gmap, const Edge * edge)
 {
 	GdkRectangle rect;
 	gint idx;
+	Polygon poly;
+	GdkPoint points[MAX_POINTS];
 
-	poly_bound_rect(poly, 1, &rect);
+	g_return_if_fail(edge != NULL);
+	g_return_if_fail(gmap->pixmap != NULL);
+
+	poly.num_points = G_N_ELEMENTS(points);
+	poly.points = points;
+	calc_edge_poly(gmap, edge, &largest_edge_poly, &poly);
+	poly_bound_rect(&poly, 1, &rect);
 	gdk_gc_set_fill(gmap->gc, GDK_TILED);
 	gdk_gc_set_tile(gmap->gc,
 			theme_get_current()->terrain_tiles[BOARD_TILE]);
@@ -1213,7 +1255,7 @@ static void redraw_edge(GuiMap * gmap, const Edge * edge,
 		if (edge->hexes[idx] != NULL)
 			display_hex(gmap->map, edge->hexes[idx], gmap);
 
-	gdk_window_invalidate_rect(gmap->area->window, &rect, FALSE);	/* @todo FALSE or TRUE ? */
+	gdk_window_invalidate_rect(gmap->area->window, &rect, FALSE);
 }
 
 static void draw_cursor(GuiMap * gmap, gint owner, const Polygon * poly)
@@ -1232,64 +1274,13 @@ static void draw_cursor(GuiMap * gmap, gint owner, const Polygon * poly)
 	poly_draw(gmap->pixmap, gmap->gc, FALSE, poly);
 
 	poly_bound_rect(poly, 1, &rect);
-	gdk_window_invalidate_rect(gmap->area->window, &rect, FALSE);	/* @todo FALSE or TRUE */
+	gdk_window_invalidate_rect(gmap->area->window, &rect, FALSE);
 }
 
-static void redraw_road(GuiMap * gmap, const Edge * edge)
-{
-	GdkPoint points[MAX_POINTS];
-	Polygon poly;
-
-	g_return_if_fail(edge != NULL);
-
-	poly.points = points;
-	poly.num_points = G_N_ELEMENTS(points);
-	guimap_road_polygon(gmap, edge, &poly);
-	redraw_edge(gmap, edge, &poly);
-}
-
-static void redraw_ship(GuiMap * gmap, const Edge * edge)
-{
-	GdkPoint points[MAX_POINTS];
-	Polygon poly;
-
-	g_return_if_fail(edge != NULL);
-
-	poly.points = points;
-	poly.num_points = G_N_ELEMENTS(points);
-	guimap_ship_polygon(gmap, edge, &poly);
-	redraw_edge(gmap, edge, &poly);
-}
-
-static void redraw_bridge(GuiMap * gmap, const Edge * edge)
-{
-	GdkPoint points[MAX_POINTS];
-	Polygon poly;
-
-	g_return_if_fail(edge != NULL);
-
-	poly.points = points;
-	poly.num_points = G_N_ELEMENTS(points);
-	guimap_bridge_polygon(gmap, edge, &poly);
-	redraw_edge(gmap, edge, &poly);
-}
-
-static void erase_road_cursor(GuiMap * gmap)
+static void erase_edge_cursor(GuiMap * gmap)
 {
 	g_return_if_fail(gmap->cursor.pointer != NULL);
-	redraw_road(gmap, gmap->cursor.edge);
-}
-
-static void erase_ship_cursor(GuiMap * gmap)
-{
-	g_return_if_fail(gmap->cursor.pointer != NULL);
-	redraw_ship(gmap, gmap->cursor.edge);
-}
-
-static void erase_bridge_cursor(GuiMap * gmap)
-{
-	g_return_if_fail(gmap->cursor.pointer != NULL);
-	redraw_bridge(gmap, gmap->cursor.edge);
+	guimap_draw_edge(gmap, gmap->cursor.edge);
 }
 
 static void draw_road_cursor(GuiMap * gmap)
@@ -1331,25 +1322,25 @@ static void draw_bridge_cursor(GuiMap * gmap)
 	draw_cursor(gmap, gmap->cursor_owner, &poly);
 }
 
-static void redraw_node(GuiMap * gmap, const Node * node,
-			const Polygon * poly)
+void guimap_draw_node(GuiMap * gmap, const Node * node)
 {
 	GdkRectangle rect;
 	int idx;
+	Polygon poly;
+	GdkPoint points[MAX_POINTS];
 
 	g_return_if_fail(node != NULL);
 	g_return_if_fail(gmap->pixmap != NULL);
-	/* don't do anything if pixmap is not ready */
-	if (gmap->pixmap == NULL)
-		return;
 
-	poly_bound_rect(poly, 1, &rect);
+	poly.num_points = G_N_ELEMENTS(points);
+	poly.points = points;
+	calc_node_poly(gmap, node, &largest_node_poly, &poly);
+	poly_bound_rect(&poly, 1, &rect);
 	gdk_gc_set_fill(gmap->gc, GDK_TILED);
 	gdk_gc_set_tile(gmap->gc,
 			theme_get_current()->terrain_tiles[BOARD_TILE]);
 	gdk_draw_rectangle(gmap->pixmap, gmap->gc, TRUE,
 			   rect.x, rect.y, rect.width, rect.height);
-
 	for (idx = 0; idx < G_N_ELEMENTS(node->hexes); idx++)
 		if (node->hexes[idx] != NULL)
 			display_hex(gmap->map, node->hexes[idx], gmap);
@@ -1357,17 +1348,10 @@ static void redraw_node(GuiMap * gmap, const Node * node,
 	gdk_window_invalidate_rect(gmap->area->window, &rect, FALSE);
 }
 
-static void erase_settlement_cursor(GuiMap * gmap)
+static void erase_node_cursor(GuiMap * gmap)
 {
-	GdkPoint points[MAX_POINTS];
-	Polygon poly;
-
 	g_return_if_fail(gmap->cursor.pointer != NULL);
-
-	poly.points = points;
-	poly.num_points = G_N_ELEMENTS(points);
-	guimap_settlement_polygon(gmap, gmap->cursor.node, &poly);
-	redraw_node(gmap, gmap->cursor.node, &poly);
+	guimap_draw_node(gmap, gmap->cursor.node);
 }
 
 static void draw_settlement_cursor(GuiMap * gmap)
@@ -1383,19 +1367,6 @@ static void draw_settlement_cursor(GuiMap * gmap)
 	draw_cursor(gmap, gmap->cursor_owner, &poly);
 }
 
-static void erase_city_cursor(GuiMap * gmap)
-{
-	GdkPoint points[MAX_POINTS];
-	Polygon poly;
-
-	g_return_if_fail(gmap->cursor.pointer != NULL);
-
-	poly.points = points;
-	poly.num_points = G_N_ELEMENTS(points);
-	guimap_city_polygon(gmap, gmap->cursor.node, &poly);
-	redraw_node(gmap, gmap->cursor.node, &poly);
-}
-
 static void draw_city_cursor(GuiMap * gmap)
 {
 	GdkPoint points[MAX_POINTS];
@@ -1407,19 +1378,6 @@ static void draw_city_cursor(GuiMap * gmap)
 	poly.num_points = G_N_ELEMENTS(points);
 	guimap_city_polygon(gmap, gmap->cursor.node, &poly);
 	draw_cursor(gmap, gmap->cursor_owner, &poly);
-}
-
-static void erase_steal_building_cursor(GuiMap * gmap)
-{
-	GdkPoint points[MAX_POINTS];
-	Polygon poly;
-
-	g_return_if_fail(gmap->cursor.pointer != NULL);
-
-	poly.points = points;
-	poly.num_points = G_N_ELEMENTS(points);
-	guimap_city_polygon(gmap, gmap->cursor.node, &poly);
-	redraw_node(gmap, gmap->cursor.node, &poly);
 }
 
 static void draw_steal_building_cursor(GuiMap * gmap)
@@ -1559,31 +1517,6 @@ void guimap_highlight_chits(GuiMap * gmap, gint roll)
 			     &closure);
 }
 
-void guimap_draw_edge(GuiMap * gmap, const Edge * edge)
-{
-	if (edge->type == BUILD_ROAD) {
-		redraw_road(gmap, edge);
-	} else if (edge->type == BUILD_SHIP) {
-		redraw_ship(gmap, edge);
-	} else if (edge->type == BUILD_BRIDGE) {
-		redraw_bridge(gmap, edge);
-	}
-}
-
-void guimap_draw_node(GuiMap * gmap, const Node * node)
-{
-	GdkPoint points[MAX_POINTS];
-	Polygon poly;
-
-	poly.points = points;
-	poly.num_points = G_N_ELEMENTS(points);
-	if (node->type == BUILD_SETTLEMENT)
-		guimap_settlement_polygon(gmap, node, &poly);
-	else
-		guimap_city_polygon(gmap, node, &poly);
-	redraw_node(gmap, node, &poly);
-}
-
 void guimap_draw_hex(GuiMap * gmap, const Hex * hex)
 {
 	GdkPoint points[MAX_POINTS];
@@ -1620,13 +1553,13 @@ typedef struct {
 /* This array must follow the enum CursorType */
 static ModeCursor cursors[] = {
 	{NULL, NULL, NULL},	/* NO_CURSOR */
-	{find_edge, erase_road_cursor, draw_road_cursor},	/* ROAD_CURSOR */
-	{find_edge, erase_ship_cursor, draw_ship_cursor},	/* SHIP_CURSOR */
-	{find_edge, erase_bridge_cursor, draw_bridge_cursor},	/* BRIDGE_CURSOR */
-	{find_node, erase_settlement_cursor, draw_settlement_cursor},	/* SETTLEMENT_CURSOR */
-	{find_node, erase_city_cursor, draw_city_cursor},	/* CITY_CURSOR */
-	{find_node, erase_steal_building_cursor, draw_steal_building_cursor},	/* STEAL_BUILDING_CURSOR */
-	{find_edge, erase_ship_cursor, draw_steal_ship_cursor},	/* STEAL_SHIP_CURSOR */
+	{find_edge, erase_edge_cursor, draw_road_cursor},	/* ROAD_CURSOR */
+	{find_edge, erase_edge_cursor, draw_ship_cursor},	/* SHIP_CURSOR */
+	{find_edge, erase_edge_cursor, draw_bridge_cursor},	/* BRIDGE_CURSOR */
+	{find_node, erase_node_cursor, draw_settlement_cursor},	/* SETTLEMENT_CURSOR */
+	{find_node, erase_node_cursor, draw_city_cursor},	/* CITY_CURSOR */
+	{find_node, erase_node_cursor, draw_steal_building_cursor},	/* STEAL_BUILDING_CURSOR */
+	{find_edge, erase_edge_cursor, draw_steal_ship_cursor},	/* STEAL_SHIP_CURSOR */
 	{find_hex, erase_robber_cursor, draw_robber_cursor}	/* ROBBER_CURSOR */
 };
 
