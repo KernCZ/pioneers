@@ -1182,7 +1182,8 @@ static void gui_toolbar_show_accelerators(gboolean show_accelerators)
 				if (show_accelerators) {
 					gchar *label;
 
-					if (strlen(entries[j].accelerator)
+					if (entries[j].accelerator == NULL ||
+					    strlen(entries[j].accelerator)
 					    == 0)
 						label =
 						    g_strdup_printf("%s\n",
