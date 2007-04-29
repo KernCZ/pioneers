@@ -750,16 +750,16 @@ static gboolean display_hex(const Map * map, const Hex * hex,
 			g_assert_not_reached();
 			break;
 		}
-		gdk_gc_set_foreground(gmap->gc,
-				      colors_get_player(edge->owner));
-		poly_draw(gmap->pixmap, gmap->gc, TRUE, &poly);
-		gdk_gc_set_foreground(gmap->gc, &black);
-		poly_draw(gmap->pixmap, gmap->gc, FALSE, &poly);
+		poly_draw_with_border(gmap->pixmap, gmap->gc,
+				      colors_get_player(edge->owner), &black,
+				      &poly);
 	}
 
 	/* Draw all buildings */
 	for (idx = 0; idx < G_N_ELEMENTS(hex->nodes); idx++) {
 		const Node *node = hex->nodes[idx];
+		const GdkColor *color;
+
 		if (node->owner < 0 && !gmap->show_nosetup_nodes)
 			continue;
 
@@ -767,23 +767,20 @@ static gboolean display_hex(const Map * map, const Hex * hex,
 		if (node->owner < 0) {
 			if (!node->no_setup)
 				continue;
+			color = &white;
 			guimap_nosetup_polygon(gmap, node, &poly);
-			gdk_gc_set_foreground(gmap->gc, &white);
 		} else {
 			/* Draw the building */
+			color = colors_get_player(node->owner);
 			if (node->type == BUILD_CITY)
 				guimap_city_polygon(gmap, node, &poly);
 			else
 				guimap_settlement_polygon(gmap, node,
 							  &poly);
-			gdk_gc_set_foreground(gmap->gc,
-					      colors_get_player(node->
-								owner));
 		}
 
-		poly_draw(gmap->pixmap, gmap->gc, TRUE, &poly);
-		gdk_gc_set_foreground(gmap->gc, &black);
-		poly_draw(gmap->pixmap, gmap->gc, FALSE, &poly);
+		poly_draw_with_border(gmap->pixmap, gmap->gc, color, &black,
+				      &poly);
 	}
 
 	/* Draw the robber */
@@ -1267,11 +1264,8 @@ static void draw_cursor(GuiMap * gmap, gint owner, const Polygon * poly)
 	gdk_gc_set_line_attributes(gmap->gc, 2, GDK_LINE_SOLID,
 				   GDK_CAP_BUTT, GDK_JOIN_MITER);
 	gdk_gc_set_fill(gmap->gc, GDK_SOLID);
-	gdk_gc_set_foreground(gmap->gc, colors_get_player(owner));
-	poly_draw(gmap->pixmap, gmap->gc, TRUE, poly);
-
-	gdk_gc_set_foreground(gmap->gc, &green);
-	poly_draw(gmap->pixmap, gmap->gc, FALSE, poly);
+	poly_draw_with_border(gmap->pixmap, gmap->gc,
+			      colors_get_player(owner), &green, poly);
 
 	poly_bound_rect(poly, 1, &rect);
 	gdk_window_invalidate_rect(gmap->area->window, &rect, FALSE);

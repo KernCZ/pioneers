@@ -69,3 +69,16 @@ void poly_draw(GdkDrawable * drawable, GdkGC * gc, gint filled,
 	gdk_draw_polygon(drawable, gc, filled, poly->points,
 			 poly->num_points);
 }
+
+void poly_draw_with_border(GdkDrawable * drawable, GdkGC * gc,
+			   const GdkColor * color,
+			   const GdkColor * border_color,
+			   const Polygon * poly)
+{
+	gdk_gc_set_foreground(gc, color);
+	poly_draw(drawable, gc, TRUE, poly);
+
+	gdk_gc_set_foreground(gc, border_color);
+	poly_draw(drawable, gc, FALSE, poly);
+}
+

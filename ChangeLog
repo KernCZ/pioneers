@@ -1,5 +1,9 @@
 ﻿
 2007-04-29  Brian Wellington <bwelling@xbill.org>
+	* common/gtk/polygon.c, common/gtk/polygon.h, common/gtk/guimap.c:
+	Add the poly_draw_with_border() function to draw bordered polygons.
+
+2007-04-29  Brian Wellington <bwelling@xbill.org>
 	* client/gtk/gui.c: Add support for NULL pointer for shortcuts.
 
 2007-04-29  Roland Clobus <rclobus@bigfoot.com>
