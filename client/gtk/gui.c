@@ -1164,6 +1164,14 @@ static void gui_toolbar_show_accelerators(gboolean show_accelerators)
 
 		ti = gtk_toolbar_get_nth_item(tb, i);
 		tbtn = GTK_TOOL_BUTTON(ti);
+		if (gtk_major_version == 2 && gtk_minor_version == 10) {
+			/* Work around a gtk+ 2.10 bug (#434261) that
+			 * mishandles strings like (Fn) in labels.
+			 */
+			/** @todo BW 2007-04-29 Remove this when gtk 2.10
+			 * is no longer supported. */
+			gtk_tool_button_set_use_underline(tbtn, FALSE);
+		}
 		g_assert(tbtn != NULL);
 		text = g_strdup(gtk_tool_button_get_label(tbtn));
 		if (strchr(text, '\n'))

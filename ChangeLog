@@ -1,4 +1,8 @@
 ﻿
+2007-04-29  Brian Wellington <bwelling@xbill.org>
+	* client/gtk/gui.c: Add a workaround for gtk bug #434261 that
+	  causes strings like (Fn) in toolbar labels to be mishandled.
+
 2007-04-29  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/gui.c: Upgraded the code to 2.6, and allow for
 	toolbuttons without shortcut keys.
