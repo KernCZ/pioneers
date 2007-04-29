@@ -2,6 +2,7 @@
 2007-04-29  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/gui.c: Upgraded the code to 2.6, and allow for
 	toolbuttons without shortcut keys.
+	* common/network.c: Don't log the keepalive messages.
 
 2007-04-28  Roland Clobus <rclobus@bigfoot.com>
 	* common/gtk/guimap.c, common/gtk/guimap.h, client/gtk/interface.c,

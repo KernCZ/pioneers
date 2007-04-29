@@ -328,9 +328,11 @@ void net_write(Session * ses, const gchar * data)
 
 		len = strlen(data);
 		num = send(ses->fd, data, len, 0);
-		if (num > 0)
-			debug("(%d) --> %s", ses->fd, data);
-		else if (errno != EAGAIN)
+		if (num > 0) {
+			if (strcmp(data, "yes\n")
+			    && strcmp(data, "hello\n"))
+				debug("(%d) --> %s", ses->fd, data);
+		} else if (errno != EAGAIN)
 			debug("(%d) --- Error writing to socket.",
 			      ses->fd);
 		if (num < 0) {
@@ -427,8 +429,6 @@ static void read_ready(Session * ses)
 		line[len] = '\0';
 		offset += len + 1;
 
-		debug("(%d) <-- %s", ses->fd, line);
-
 		if (!strcmp(line, "hello")) {
 			net_write(ses, "yes\n");
 			continue;
@@ -436,6 +436,8 @@ static void read_ready(Session * ses)
 		if (!strcmp(line, "yes")) {
 			continue;	/* Don't notify the program */
 		}
+
+		debug("(%d) <-- %s", ses->fd, line);
 
 		notify(ses, NET_READ, line);
 	}
