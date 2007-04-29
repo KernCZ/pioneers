@@ -1,4 +1,7 @@
 ﻿
+2007-04-29  Brian Wellington <bwelling@xbill.org>
+	* client/gtk/gui.c: Add support for NULL pointer for shortcuts.
+
 2007-04-29  Roland Clobus <rclobus@bigfoot.com>
 	* common/gtk/guimap.c: Simplified code to handle better updates.
 
