@@ -1159,46 +1159,49 @@ static void gui_toolbar_show_accelerators(gboolean show_accelerators)
 	for (i = 0; i < n; i++) {
 		GtkToolItem *ti;
 		GtkToolButton *tbtn;
-		const gchar *text;
+		gchar *text;
 		gint j;
 
 		ti = gtk_toolbar_get_nth_item(tb, i);
 		tbtn = GTK_TOOL_BUTTON(ti);
 		g_assert(tbtn != NULL);
-		text = gtk_tool_button_get_label(tbtn);
+		text = g_strdup(gtk_tool_button_get_label(tbtn));
+		if (strchr(text, '\n'))
+			*strchr(text, '\n') = '\0';
 		/* Find the matching entry */
 		for (j = 0; j < G_N_ELEMENTS(entries); j++) {
-			if (g_str_has_prefix(text, _(entries[j].label))) {
+			if (strcmp(text, _(entries[j].label)) == 0) {
 				if (show_accelerators) {
-					gchar *accelerator_text;
 					gchar *label;
-					/*
-					   guint accelerator_key;
-					   GdkModifierType accelerator_mods;
 
-					   gtk_accelerator_parse(entries[j].accelerator, &accelerator_key, &accelerator_mods);
-					 */
-					accelerator_text =
-					    g_strdup(entries[j].
-						     accelerator);
-					/** @todo RC 2005-07-10 When Gtk+-2.6 
-					 * is required, use the line below
-					 * instead.
-					 * For now it is not a real problem,
-					 * since the shortcuts are function
-					 * keys (Fn)
-					 */
-					/*
-					   accelerator_text = gtk_accelerator_get_label(accelerator_key, accelerator_mods);
-					 */
-					label =
-					    g_strdup_printf("%s\n(%s)",
-							    text,
-							    accelerator_text);
+					if (strlen(entries[j].accelerator)
+					    == 0)
+						label =
+						    g_strdup_printf("%s\n",
+								    text);
+					else {
+						gchar *accelerator_text;
+						guint accelerator_key;
+						GdkModifierType
+						    accelerator_mods;
+						gtk_accelerator_parse
+						    (entries[j].
+						     accelerator,
+						     &accelerator_key,
+						     &accelerator_mods);
+						accelerator_text =
+						    gtk_accelerator_get_label
+						    (accelerator_key,
+						     accelerator_mods);
+						label =
+						    g_strdup_printf
+						    ("%s\n(%s)", text,
+						     accelerator_text);
+						g_free(accelerator_text);
+					}
 					gtk_tool_button_set_label(tbtn,
 								  label);
 					g_free(label);
-					g_free(accelerator_text);
 				} else {
 					gtk_tool_button_set_label(tbtn,
 								  _(entries
@@ -1208,6 +1211,7 @@ static void gui_toolbar_show_accelerators(gboolean show_accelerators)
 				break;
 			}
 		}
+		g_free(text);
 	}
 	config_set_int("settings/toolbar_show_accelerators",
 		       toolbar_show_accelerators);
