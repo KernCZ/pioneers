@@ -13,6 +13,7 @@
 #include <glib.h>
 #include <glib-object.h>
 #include <gtk/gtktable.h>
+#include <gtk/gtk.h>
 
 G_BEGIN_DECLS
 #define SELECTGAME_TYPE            (select_game_get_type ())
@@ -27,6 +28,7 @@ struct _SelectGame {
 	GtkTable table;
 
 	GtkWidget *combo_box;
+	GtkListStore *data;
 	GPtrArray *game_names;
 	gchar *default_game;
 };
@@ -41,6 +43,8 @@ GType select_game_get_type(void);
 GtkWidget *select_game_new(void);
 void select_game_set_default(SelectGame * sg, const gchar * game_title);
 void select_game_add(SelectGame * sg, const gchar * game_title);
+void select_game_add_with_map(SelectGame * sg, const gchar * game_title,
+			      Map * map);
 const gchar *select_game_get_active(SelectGame * sg);
 
 G_END_DECLS

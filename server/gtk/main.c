@@ -40,6 +40,7 @@
 
 #include "select-game.h"	/* Custom widget */
 #include "game-settings.h"	/* Custom widget */
+#include "theme.h"
 
 #define MAINICON_FILE	"pioneers-server.png"
 
@@ -392,7 +393,8 @@ static void add_game_to_list(gpointer name,
 			     G_GNUC_UNUSED gpointer user_data)
 {
 	GameParams *a = (GameParams *) name;
-	select_game_add(SELECTGAME(select_game), a->title);
+	select_game_add_with_map(SELECTGAME(select_game), a->title,
+				 a->map);
 }
 
 static void overridden_hostname_changed_cb(GtkEntry * widget,
@@ -932,6 +934,8 @@ int main(int argc, char *argv[])
 	}
 
 	set_enable_debug(enable_debug);
+
+	themes_init();
 
 	window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	/* Name in the titlebar of the server */

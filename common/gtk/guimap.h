@@ -91,6 +91,7 @@ typedef struct {
 } GuiMap;
 
 GuiMap *guimap_new(void);
+void guimap_delete(GuiMap * gmap);
 void guimap_reset(GuiMap * gmap);
 GtkWidget *guimap_build_drawingarea(GuiMap * gmap, gint width,
 				    gint height);

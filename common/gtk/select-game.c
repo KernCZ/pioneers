@@ -17,6 +17,7 @@
 #include <gtk/gtkmenuitem.h>
 #include <gtk/gtklabel.h>
 #include <string.h>
+#include "guimap.h"
 
 #include "select-game.h"
 
@@ -80,11 +81,28 @@ static void select_game_class_init(SelectGameClass * klass)
 /* Build the composite widget */
 static void select_game_init(SelectGame * sg)
 {
+	GtkCellRenderer *cell;
 	GtkTooltips *tooltips;
 
 	tooltips = gtk_tooltips_new();
 
-	sg->combo_box = gtk_combo_box_new_text();
+	/* Create model */
+	sg->data = gtk_list_store_new(2, G_TYPE_STRING, GDK_TYPE_PIXBUF);
+	sg->combo_box =
+	    gtk_combo_box_new_with_model(GTK_TREE_MODEL(sg->data));
+
+	cell = gtk_cell_renderer_text_new();
+	gtk_cell_layout_pack_start(GTK_CELL_LAYOUT(sg->combo_box),
+				   cell, TRUE);
+	gtk_cell_layout_set_attributes(GTK_CELL_LAYOUT(sg->combo_box),
+				       cell, "text", 0, NULL);
+
+	cell = gtk_cell_renderer_pixbuf_new();
+	gtk_cell_layout_pack_start(GTK_CELL_LAYOUT(sg->combo_box),
+				   cell, FALSE);
+	gtk_cell_layout_set_attributes(GTK_CELL_LAYOUT(sg->combo_box),
+				       cell, "pixbuf", 1, NULL);
+
 	sg->game_names = g_ptr_array_new();
 
 	gtk_widget_show(sg->combo_box);
@@ -118,10 +136,56 @@ void select_game_set_default(SelectGame * sg, const gchar * game_title)
  */
 void select_game_add(SelectGame * sg, const gchar * game_title)
 {
+	GtkTreeIter iter;
 	gchar *title = g_strdup(game_title);
 
 	g_ptr_array_add(sg->game_names, title);
-	gtk_combo_box_append_text(GTK_COMBO_BOX(sg->combo_box), title);
+	gtk_list_store_insert_with_values(sg->data, &iter, 999,
+					  0, game_title, -1);
+
+	if (!strcmp(game_title, sg->default_game))
+		gtk_combo_box_set_active(GTK_COMBO_BOX(sg->combo_box),
+					 sg->game_names->len - 1);
+}
+
+/* Add a game title to the list, and add the map.
+ * The default game will be the active item.
+ */
+void select_game_add_with_map(SelectGame * sg, const gchar * game_title,
+			      Map * map)
+{
+	GtkTreeIter iter;
+	gchar *title = g_strdup(game_title);
+
+	int width, height;
+	GdkPixbuf *pixbuf;
+
+	GuiMap *gmap;
+
+	width = 64;
+	height = 48;
+
+	gmap = guimap_new();
+	gmap->pixmap =
+	    gdk_pixmap_new(sg->combo_box->window, width, height,
+			   gdk_visual_get_system()->depth);
+	gmap->width = width;
+	gmap->height = height;
+	gmap->area = sg->combo_box;
+	g_object_ref(gmap->area);
+	gmap->map = map;
+	guimap_scale_to_size(gmap, width, height);
+	guimap_display(gmap);
+
+	pixbuf =
+	    gdk_pixbuf_get_from_drawable(NULL, gmap->pixmap, NULL, 0, 0, 0,
+					 0, -1, -1);
+	guimap_delete(gmap);
+
+	g_ptr_array_add(sg->game_names, title);
+	gtk_list_store_insert_with_values(sg->data, &iter, 999,
+					  0, game_title, 1, pixbuf, -1);
+	g_object_unref(pixbuf);
 
 	if (!strcmp(game_title, sg->default_game))
 		gtk_combo_box_set_active(GTK_COMBO_BOX(sg->combo_box),

@@ -1223,6 +1223,8 @@ int main(int argc, char *argv[])
 	gtk_main();
 
 	config_finish();
+	guimap_delete(gmap);
+	g_free(default_game);
 
 	g_option_context_free(context);
 	return 0;

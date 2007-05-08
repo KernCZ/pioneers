@@ -1,4 +1,9 @@
 ﻿
+2007-05-08  Roland Clobus <rclobus@bigfoot.com>
+	* editor/gtk/editor.c, common/gtk/guimap.c, common/gtk/select-game.c,
+	common/gtk/guimap.h, common/gtk/select-game.h, server/gtk/main.c,
+	client/gtk/gui.c: Map preview in the server.
+	
 2007-04-29  Brian Wellington <bwelling@xbill.org>
 	* common/gtk/polygon.c, common/gtk/polygon.h, common/gtk/guimap.c:
 	Add the poly_draw_with_border() function to draw bordered polygons.

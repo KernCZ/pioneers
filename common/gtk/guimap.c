@@ -79,6 +79,44 @@ GuiMap *guimap_new(void)
 	return gmap;
 }
 
+void guimap_delete(GuiMap * gmap)
+{
+	gint idx;
+
+	if (gmap->area != NULL) {
+		g_object_unref(gmap->area);
+		gmap->area = NULL;
+	}
+	if (gmap->pixmap != NULL) {
+		g_object_unref(gmap->pixmap);
+		gmap->pixmap = NULL;
+	}
+	if (gmap->gc != NULL) {
+		g_object_unref(gmap->gc);
+		gmap->gc = NULL;
+	}
+	if (gmap->hex_region != NULL) {
+		gdk_region_destroy(gmap->hex_region);
+		gmap->hex_region = NULL;
+	}
+	for (idx = 0; idx < 6; idx++) {
+		if (gmap->edge_region[idx] != NULL) {
+			gdk_region_destroy(gmap->edge_region[idx]);
+			gmap->edge_region[idx] = NULL;
+		}
+		if (gmap->node_region[idx] != NULL) {
+			gdk_region_destroy(gmap->node_region[idx]);
+			gmap->node_region[idx] = NULL;
+		}
+	}
+	if (gmap->layout) {
+		g_object_unref(gmap->layout);
+		gmap->layout = NULL;
+	}
+	gmap->map = NULL;
+	g_free(gmap);
+}
+
 void guimap_reset(GuiMap * gmap)
 {
 	gmap->highlight_chit = -1;
