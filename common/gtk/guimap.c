@@ -751,8 +751,8 @@ static gboolean display_hex(const Map * map, const Hex * hex,
 			break;
 		}
 		poly_draw_with_border(gmap->pixmap, gmap->gc,
-				      colors_get_player(edge->owner), &black,
-				      &poly);
+				      colors_get_player(edge->owner),
+				      &black, &poly);
 	}
 
 	/* Draw all buildings */
@@ -779,8 +779,8 @@ static gboolean display_hex(const Map * map, const Hex * hex,
 							  &poly);
 		}
 
-		poly_draw_with_border(gmap->pixmap, gmap->gc, color, &black,
-				      &poly);
+		poly_draw_with_border(gmap->pixmap, gmap->gc, color,
+				      &black, &poly);
 	}
 
 	/* Draw the robber */

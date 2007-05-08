@@ -81,4 +81,3 @@ void poly_draw_with_border(GdkDrawable * drawable, GdkGC * gc,
 	gdk_gc_set_foreground(gc, border_color);
 	poly_draw(drawable, gc, FALSE, poly);
 }
-
