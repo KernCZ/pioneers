@@ -10,6 +10,7 @@
 	from game settings.
 	* editor/gtk/game-settings.c -> common/gtk/game-rules.c,
 	editor/gtk/game-settings.h -> common/gtk/game-rules.h: Renamed
+	* pioneers.spec.in: Sorted the language list, added af and ja.
 
 2007-05-13  Brian Wellington <bwelling@xbill.org>
 	* editor/gtk/game-buildings.c, common/map_query.c,
