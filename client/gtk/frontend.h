@@ -47,6 +47,7 @@ typedef enum {
 	GUI_BRIDGE,
 	GUI_SETTLEMENT,
 	GUI_CITY,
+	GUI_CITY_WALL,
 	GUI_BUY_DEVELOP,
 	GUI_PLAY_DEVELOP,
 	GUI_MONOPOLY,
@@ -314,6 +315,7 @@ GtkWidget *gameover_create_dlg(gint player_num, gint num_points);
 #define PIONEERS_PIXMAP_BRIDGE "pioneers/bridge.png"
 #define PIONEERS_PIXMAP_SETTLEMENT "pioneers/settlement.png"
 #define PIONEERS_PIXMAP_CITY "pioneers/city.png"
+#define PIONEERS_PIXMAP_CITY_WALL "pioneers/city_wall.png"
 #define PIONEERS_PIXMAP_DEVELOP "pioneers/develop.png"
 #define PIONEERS_PIXMAP_FINISH "pioneers/finish.png"
 

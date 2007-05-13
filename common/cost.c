@@ -97,6 +97,18 @@ const gint *cost_city(void)
 	return cost;
 }
 
+const gint *cost_city_wall(void)
+{
+	static gint cost[NO_RESOURCE] = {
+		2,		/* brick */
+		0,		/* grain */
+		0,		/* ore */
+		0,		/* wool */
+		0		/* lumber */
+	};
+	return cost;
+}
+
 const gint *cost_development(void)
 {
 	static gint cost[NO_RESOURCE] = {

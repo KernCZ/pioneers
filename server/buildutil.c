@@ -175,10 +175,12 @@ void node_add(Player * player,
 	/* administrate the built number of structures */
 	if (type == BUILD_SETTLEMENT)
 		player->num_settlements++;
-	else {
+	else if (type == BUILD_CITY) {
 		if (node->type == BUILD_SETTLEMENT)
 			player->num_settlements--;
 		player->num_cities++;
+	} else if (type == BUILD_CITY_WALL) {
+		player->num_city_walls++;
 	}
 
 	/* fill the backup struct */
@@ -195,8 +197,10 @@ void node_add(Player * player,
 				rec->cost = cost_upgrade_settlement();
 			else
 				rec->cost = cost_city();
-		else
+		else if (type == BUILD_SETTLEMENT)
 			rec->cost = cost_settlement();
+		else if (type == BUILD_CITY_WALL)
+			rec->cost = cost_city_wall();
 
 		resource_spend(player, rec->cost);
 	} else
@@ -211,12 +215,16 @@ void node_add(Player * player,
 
 	/* update the node information */
 	node->owner = player->num;
-	node->type = type;
-
-	/* tell everybody about it */
-	player_broadcast(player, PB_RESPOND,
-			 "built %B %d %d %d\n", type, x, y, pos);
-
+	if (type == BUILD_CITY_WALL) {
+		node->city_wall = TRUE;
+		player_broadcast_extension(player, PB_RESPOND,
+					   "built %B %d %d %d\n", type, x,
+					   y, pos);
+	} else {
+		node->type = type;
+		player_broadcast(player, PB_RESPOND,
+				 "built %B %d %d %d\n", type, x, y, pos);
+	}
 	if (points != NULL) {
 		player->special_points =
 		    g_list_append(player->special_points, points);
@@ -257,6 +265,7 @@ void edge_add(Player * player, BuildType type, int x, int y, int pos,
 		case BUILD_MOVE_SHIP:
 		case BUILD_SETTLEMENT:
 		case BUILD_CITY:
+		case BUILD_CITY_WALL:
 		case BUILD_NONE:
 			log_message(MSG_ERROR,
 				    "In buildutils.c::edge_add() - Invalid build type.\n");
@@ -283,6 +292,7 @@ void edge_add(Player * player, BuildType type, int x, int y, int pos,
 	case BUILD_MOVE_SHIP:
 	case BUILD_SETTLEMENT:
 	case BUILD_CITY:
+	case BUILD_CITY_WALL:
 	case BUILD_NONE:
 		log_message(MSG_ERROR,
 			    "In buildutils.c::edge_add() - Invalid build type.\n");
@@ -382,6 +392,14 @@ gboolean perform_undo(Player * player)
 				 rec->x, rec->y, rec->pos);
 		hex->nodes[rec->pos]->type = BUILD_NONE;
 		hex->nodes[rec->pos]->owner = -1;
+		break;
+	case BUILD_CITY_WALL:
+		player->num_city_walls--;
+		player_broadcast_extension(player, PB_RESPOND,
+					   "remove %B %d %d %d\n",
+					   BUILD_CITY_WALL, rec->x, rec->y,
+					   rec->pos);
+		hex->nodes[rec->pos]->city_wall = FALSE;
 		break;
 	case BUILD_MOVE_SHIP:
 		hex->edges[rec->pos]->owner = -1;

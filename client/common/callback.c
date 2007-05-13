@@ -139,6 +139,15 @@ void cb_build_city(const Node * node)
 	sm_push(SM(), mode_build_response);
 }
 
+void cb_build_city_wall(const Node * node)
+{
+	/* build city */
+	g_assert(callback_mode == MODE_TURN);
+	sm_send(SM(), "build city_wall %d %d %d\n", node->x, node->y,
+		node->pos);
+	sm_push(SM(), mode_build_response);
+}
+
 void cb_buy_develop(void)
 {
 	/* buy development card */
@@ -310,6 +319,12 @@ gboolean have_bridges(void)
 	    || game_params->num_build_type[BUILD_BRIDGE] > 0;
 }
 
+gboolean have_city_walls(void)
+{
+	return game_params == NULL
+	    || game_params->num_build_type[BUILD_CITY_WALL] > 0;
+}
+
 const GameParams *get_game_params(void)
 {
 	return game_params;
@@ -331,6 +346,7 @@ gint stat_get_vp_value(StatisticType type)
 	static gint stat_vp_values[] = {
 		1,		/* settlement */
 		2,		/* city */
+		0,		/* city wall */
 		2,		/* largest army */
 		2,		/* longest road */
 		1,		/* chapel */
@@ -414,6 +430,13 @@ gboolean turn_can_build_city(void)
 	    && stock_num_cities() > 0
 	    && can_afford(cost_upgrade_settlement())
 	    && map_can_upgrade_settlement(map, my_player_num());
+}
+
+gboolean turn_can_build_city_wall(void)
+{
+	return have_rolled_dice()
+	    && stock_num_city_walls() > 0 && can_afford(cost_city_wall())
+	    && map_can_place_city_wall(map, my_player_num());
 }
 
 gboolean turn_can_trade(void)

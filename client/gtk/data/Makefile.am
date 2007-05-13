@@ -26,6 +26,7 @@ icon_DATA += client/gtk/data/pioneers.png
 pixmap_DATA += \
 	client/gtk/data/bridge.png \
 	client/gtk/data/city.png \
+	client/gtk/data/city_wall.png \
 	client/gtk/data/develop.png \
 	client/gtk/data/dice.png \
 	client/gtk/data/finish.png \

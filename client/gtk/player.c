@@ -33,6 +33,7 @@ static void player_show_connected_at_iter(gint player_num,
 
 static GdkColor ps_settlement = { 0, 0xbb00, 0x0000, 0x0000 };
 static GdkColor ps_city = { 0, 0xff00, 0x0000, 0x0000 };
+static GdkColor ps_city_wall = { 0, 0xff00, 0x0000, 0x0000 };
 static GdkColor ps_largest = { 0, 0x1c00, 0xb500, 0xed00 };
 static GdkColor ps_soldier = { 0, 0xe500, 0x8f00, 0x1600 };
 static GdkColor ps_resource = { 0, 0x0000, 0x0000, 0xFF00 };
@@ -48,6 +49,7 @@ typedef struct {
 static Statistic statistics[] = {
 	{N_("Settlement"), N_("Settlements"), &ps_settlement},
 	{N_("City"), N_("Cities"), &ps_city},
+	{N_("City Wall"), N_("City Walls"), &ps_city_wall},
 	{N_("Largest Army"), NULL, &ps_largest},
 	{N_("Longest Road"), NULL, &ps_largest},
 	{N_("Chapel"), N_("Chapels"), &ps_building},

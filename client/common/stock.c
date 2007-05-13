@@ -33,6 +33,7 @@ static gint num_ships;		/* number of ships available */
 static gint num_bridges;	/* number of bridges available */
 static gint num_settlements;	/* settlements available */
 static gint num_cities;		/* cities available */
+static gint num_city_walls;	/* city walls available */
 static gint num_develop;	/* development cards left */
 
 void stock_init(void)
@@ -44,6 +45,7 @@ void stock_init(void)
 	num_bridges = game_params->num_build_type[BUILD_BRIDGE];
 	num_settlements = game_params->num_build_type[BUILD_SETTLEMENT];
 	num_cities = game_params->num_build_type[BUILD_CITY];
+	num_city_walls = game_params->num_build_type[BUILD_CITY_WALL];
 
 	num_develop = 0;
 	for (idx = 0; idx < G_N_ELEMENTS(game_params->num_develop_type);
@@ -135,6 +137,24 @@ void stock_replace_city(void)
 	num_cities++;
 	callbacks.update_stock();
 }
+
+gint stock_num_city_walls(void)
+{
+	return num_city_walls;
+}
+
+void stock_use_city_wall(void)
+{
+	num_city_walls--;
+	callbacks.update_stock();
+}
+
+void stock_replace_city_wall(void)
+{
+	num_city_walls++;
+	callbacks.update_stock();
+}
+
 
 gint stock_num_develop(void)
 {

@@ -29,6 +29,7 @@ const gint *cost_bridge(void);
 const gint *cost_settlement(void);
 const gint *cost_upgrade_settlement(void);
 const gint *cost_city(void);
+const gint *cost_city_wall(void);
 const gint *cost_development(void);
 
 gboolean cost_buy(const gint * cost, gint * assets);

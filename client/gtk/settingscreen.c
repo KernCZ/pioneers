@@ -109,6 +109,7 @@ static GtkWidget *settings_create_content(void)
 	GtkWidget *label;
 	gchar *sevens_desc;
 	gchar *island_bonus;
+	guint row;
 
 	/* Create some space inside the dialog */
 	dlg_vbox = gtk_vbox_new(FALSE, 6);
@@ -230,35 +231,46 @@ static GtkWidget *settings_create_content(void)
 	gtk_widget_show(alignment);
 	gtk_box_pack_start(GTK_BOX(vbox), alignment, FALSE, TRUE, 0);
 
-	table = gtk_table_new(5, 3, FALSE);
+	table = gtk_table_new(6, 3, FALSE);
 	gtk_widget_show(table);
 	gtk_container_add(GTK_CONTAINER(alignment), table);
 	gtk_table_set_row_spacings(GTK_TABLE(table), 3);
 	gtk_table_set_col_spacings(GTK_TABLE(table), 6);
+	row = 0;
 
-	add_setting_desc_with_image(table, 0, 0, _("Roads:"),
+	add_setting_desc_with_image(table, row, 0, _("Roads:"),
 				    PIONEERS_PIXMAP_ROAD);
-	add_setting_val(table, 0, 2, TYPE_NUM,
+	add_setting_val(table, row, 2, TYPE_NUM,
 			game_params->num_build_type[BUILD_ROAD], NULL,
 			TRUE);
-	add_setting_desc_with_image(table, 1, 0, _("Settlements:"),
+	row++;
+	add_setting_desc_with_image(table, row, 0, _("Settlements:"),
 				    PIONEERS_PIXMAP_SETTLEMENT);
-	add_setting_val(table, 1, 2, TYPE_NUM,
+	add_setting_val(table, row, 2, TYPE_NUM,
 			game_params->num_build_type[BUILD_SETTLEMENT],
 			NULL, TRUE);
-	add_setting_desc_with_image(table, 2, 0, _("Cities:"),
+	row++;
+	add_setting_desc_with_image(table, row, 0, _("Cities:"),
 				    PIONEERS_PIXMAP_CITY);
-	add_setting_val(table, 2, 2, TYPE_NUM,
+	add_setting_val(table, row, 2, TYPE_NUM,
 			game_params->num_build_type[BUILD_CITY], NULL,
 			TRUE);
-	add_setting_desc_with_image(table, 3, 0, _("Ships:"),
+	row++;
+	add_setting_desc_with_image(table, row, 0, _("City Walls:"),
+				    PIONEERS_PIXMAP_CITY_WALL);
+	add_setting_val(table, row, 2, TYPE_NUM,
+			game_params->num_build_type[BUILD_CITY_WALL], NULL,
+			TRUE);
+	row++;
+	add_setting_desc_with_image(table, row, 0, _("Ships:"),
 				    PIONEERS_PIXMAP_SHIP);
-	add_setting_val(table, 3, 2, TYPE_NUM,
+	add_setting_val(table, row, 2, TYPE_NUM,
 			game_params->num_build_type[BUILD_SHIP], NULL,
 			TRUE);
-	add_setting_desc_with_image(table, 4, 0, _("Bridges:"),
+	row++;
+	add_setting_desc_with_image(table, row, 0, _("Bridges:"),
 				    PIONEERS_PIXMAP_BRIDGE);
-	add_setting_val(table, 4, 2, TYPE_NUM,
+	add_setting_val(table, row, 2, TYPE_NUM,
 			game_params->num_build_type[BUILD_BRIDGE], NULL,
 			TRUE);
 

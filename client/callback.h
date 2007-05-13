@@ -39,6 +39,7 @@ void frontend_set_callbacks(void);
 typedef enum {
 	STAT_SETTLEMENTS,
 	STAT_CITIES,
+	STAT_CITY_WALLS,
 	STAT_LARGEST_ARMY,
 	STAT_LONGEST_ROAD,
 	STAT_CHAPEL,
@@ -292,6 +293,7 @@ void cb_build_bridge(const Edge * edge);
 void cb_move_ship(const Edge * from, const Edge * to);
 void cb_build_settlement(const Node * node);
 void cb_build_city(const Node * node);
+void cb_build_city_wall(const Node * node);
 void cb_buy_develop(void);
 void cb_play_develop(int card);
 void cb_undo(void);
@@ -342,6 +344,7 @@ gint stock_num_ships(void);
 gint stock_num_bridges(void);
 gint stock_num_settlements(void);
 gint stock_num_cities(void);
+gint stock_num_city_walls(void);
 gint stock_num_develop(void);
 gint resource_asset(Resource which);
 gint resource_count(const gint * resources);
@@ -368,6 +371,7 @@ gboolean turn_can_move_ship(void);
 gboolean turn_can_build_bridge(void);
 gboolean turn_can_build_settlement(void);
 gboolean turn_can_build_city(void);
+gboolean turn_can_build_city_wall(void);
 gboolean turn_can_trade(void);
 gboolean turn_can_finish(void);
 gboolean can_afford(const gint * cost);
@@ -383,6 +387,7 @@ gboolean setup_check_bridge(const Edge * edge);
 gboolean setup_check_settlement(const Node * node);
 gboolean have_ships(void);
 gboolean have_bridges(void);
+gboolean have_city_walls(void);
 const GameParams *get_game_params(void);
 int pirate_count_victims(const Hex * hex, gint * victim_list);
 int robber_count_victims(const Hex * hex, gint * victim_list);

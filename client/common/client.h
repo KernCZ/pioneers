@@ -137,6 +137,8 @@ void stock_use_settlement(void);
 void stock_replace_settlement(void);
 void stock_use_city(void);
 void stock_replace_city(void);
+void stock_use_city_wall(void);
+void stock_replace_city_wall(void);
 void stock_use_develop(void);
 
 /********** resource.c **********/

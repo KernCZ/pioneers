@@ -33,6 +33,7 @@ static void build_bridge_cb(MapElement edge, MapElement extra);
 static void move_ship_cb(MapElement edge, MapElement extra);
 static void build_settlement_cb(MapElement node, MapElement extra);
 static void build_city_cb(MapElement node, MapElement extra);
+static void build_city_wall_cb(MapElement node, MapElement extra);
 
 static void dummy_state(G_GNUC_UNUSED GuiEvent event)
 {
@@ -110,6 +111,11 @@ void build_settlement_cb(MapElement node, G_GNUC_UNUSED MapElement extra)
 void build_city_cb(MapElement node, G_GNUC_UNUSED MapElement extra)
 {
 	cb_build_city(node.node);
+}
+
+void build_city_wall_cb(MapElement node, G_GNUC_UNUSED MapElement extra)
+{
+	cb_build_city_wall(node.node);
 }
 
 /* trade */
@@ -288,6 +294,12 @@ static gboolean check_city(MapElement element, gint owner,
 	return can_settlement_be_upgraded(element.node, owner);
 }
 
+static gboolean check_city_wall(MapElement element, gint owner,
+				G_GNUC_UNUSED MapElement extra)
+{
+	return can_city_wall_be_built(element.node, owner);
+}
+
 /* turn */
 static void frontend_state_turn(GuiEvent event)
 {
@@ -302,6 +314,8 @@ static void frontend_state_turn(GuiEvent event)
 		frontend_gui_check(GUI_SETTLEMENT,
 				   turn_can_build_settlement());
 		frontend_gui_check(GUI_CITY, turn_can_build_city());
+		frontend_gui_check(GUI_CITY_WALL,
+				   turn_can_build_city_wall());
 		frontend_gui_check(GUI_TRADE, turn_can_trade());
 		frontend_gui_check(GUI_PLAY_DEVELOP,
 				   can_play_develop(develop_current_idx
@@ -319,6 +333,8 @@ static void frontend_state_turn(GuiEvent event)
 						  build_settlement_cb,
 						  check_city,
 						  build_city_cb,
+						  check_city_wall,
+						  build_city_wall_cb,
 						  check_ship_move,
 						  move_ship_cb,
 						  cancel_move_ship_cb);
@@ -352,6 +368,10 @@ static void frontend_state_turn(GuiEvent event)
 	case GUI_CITY:
 		gui_cursor_set(CITY_CURSOR, check_city, build_city_cb,
 			       NULL, NULL);
+		return;
+	case GUI_CITY_WALL:
+		gui_cursor_set(CITY_WALL_CURSOR, check_city_wall,
+			       build_city_wall_cb, NULL, NULL);
 		return;
 	case GUI_TRADE:
 		trade_begin();
@@ -409,7 +429,8 @@ static void frontend_state_roadbuilding(GuiEvent event)
 						  check_bridge,
 						  build_bridge_cb,
 						  NULL, NULL, NULL,
-						  NULL, NULL, NULL, NULL);
+						  NULL, NULL, NULL,
+						  NULL, NULL, NULL);
 		break;
 	case GUI_UNDO:
 		cb_undo();
@@ -811,7 +832,7 @@ static void frontend_mode_setup(GuiEvent event)
 						  check_settlement_setup,
 						  build_settlement_cb,
 						  NULL, NULL, NULL,
-						  NULL, NULL);
+						  NULL, NULL, NULL, NULL);
 		break;
 	case GUI_UNDO:
 		/* The user has pressed the "Undo" button.  Send a

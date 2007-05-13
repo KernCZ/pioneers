@@ -11,7 +11,7 @@
 
 static const gchar *building_names[NUM_BUILD_TYPES] = {
 	NULL, N_("Road"), N_("Bridge"), N_("Ship"), N_("Settlement"),
-	N_("City")
+	N_("City"), N_("City Wall")
 };
 
 static void game_buildings_init(GameBuildings * gb);

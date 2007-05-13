@@ -64,10 +64,11 @@ typedef enum {
 	BUILD_SHIP,		/* ship was built */
 	BUILD_SETTLEMENT,	/* settlement was built */
 	BUILD_CITY,		/* city was built */
+	BUILD_CITY_WALL,	/* city wall was built */
 	BUILD_MOVE_SHIP		/* a ship was moved (only used for undo list) */
 } BuildType;
 
-#define NUM_BUILD_TYPES (BUILD_CITY + 1)
+#define NUM_BUILD_TYPES (BUILD_CITY_WALL + 1)
 
 /* Maps are built up from a network of hexes, edges, and nodes.
  *
@@ -109,6 +110,7 @@ struct _Node {
 
 	gboolean visited;	/* used for longest road */
 	gboolean no_setup;	/* setup is not allowed on this node */
+	gboolean city_wall;	/* has city wall */
 };
 
 struct _Edge {
@@ -199,12 +201,14 @@ gboolean can_settlement_be_setup(const Node * node);
 gboolean can_settlement_be_built(const Node * node, gint owner);
 gboolean can_settlement_be_upgraded(const Node * node, gint owner);
 gboolean can_city_be_built(const Node * node, int owner);
+gboolean can_city_wall_be_built(const Node * node, int owner);
 gboolean can_robber_or_pirate_be_moved(const Hex * hex);
 /* map global queries */
 gboolean map_can_place_road(Map * map, int owner);
 gboolean map_can_place_ship(Map * map, int owner);
 gboolean map_can_place_bridge(Map * map, int owner);
 gboolean map_can_place_settlement(Map * map, int owner);
+gboolean map_can_place_city_wall(Map * map, int owner);
 gboolean map_can_upgrade_settlement(Map * map, int owner);
 
 gboolean map_building_spacing_ok(Map * map, gint owner, BuildType type,

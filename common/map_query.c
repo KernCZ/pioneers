@@ -541,6 +541,17 @@ gboolean can_city_be_built(const Node * node, gint owner)
 	    && is_node_spacing_ok(node);
 }
 
+/* Node cursor check function.
+ *
+ * Determine whether or not a city wall can be built by
+ * the specified player.
+ */
+gboolean can_city_wall_be_built(const Node * node, gint owner)
+{
+	return node->owner == owner && node->type == BUILD_CITY &&
+	    !node->city_wall;
+}
+
 /* Hex cursor check function.
  *
  * Determine whether or not the robber be moved to the specified hex.
@@ -675,6 +686,30 @@ gboolean map_can_upgrade_settlement(Map * map, gint owner)
 			    &owner);
 }
 
+/* Iterator function for map_can_place_city_wall() query
+ */
+static gboolean can_place_city_wall_check(G_GNUC_UNUSED Map * map,
+					  Hex * hex, gint * owner)
+{
+	gint idx;
+
+	for (idx = 0; idx < G_N_ELEMENTS(hex->nodes); idx++)
+		if (can_city_wall_be_built(hex->nodes[idx], *owner))
+			return TRUE;
+	return FALSE;
+}
+
+/* Query.
+ *
+ * Determine if there are any nodes on the map where a player can
+ * place a settlement
+ */
+gboolean map_can_place_city_wall(Map * map, gint owner)
+{
+	return map_traverse(map, (HexFunc) can_place_city_wall_check,
+			    &owner);
+}
+
 /* Ignoring road connectivity, decide whether or not a settlement/city
  * can be placed at the specified location.
  */
@@ -732,6 +767,9 @@ gboolean map_building_vacant(Map * map, BuildType type,
 	case BUILD_MOVE_SHIP:
 	case BUILD_BRIDGE:
 		g_error("map_building_vacant() called with edge");
+		return FALSE;
+	case BUILD_CITY_WALL:
+		g_error("map_building_vacant() called with city wall");
 		return FALSE;
 	}
 	return FALSE;

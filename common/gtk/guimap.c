@@ -233,6 +233,13 @@ static Polygon city_poly = {
 	city_points,
 	G_N_ELEMENTS(city_points)
 };
+static GdkPoint city_wall_points[] = {
+	{50, 36}, {50, -64}, {-50, -64}, {-50, 36}
+};
+static Polygon city_wall_poly = {
+	city_wall_points,
+	G_N_ELEMENTS(city_wall_points)
+};
 static GdkPoint nosetup_points[] = {
 	{0, 30}, {26, 15}, {26, -15}, {0, -30},
 	{-26, -15}, {-26, 15}, {0, 30}
@@ -243,10 +250,10 @@ static Polygon nosetup_poly = {
 };
 
 /* Update this when a node polygon is changed */
-#define NODE_MIN_X -40
-#define NODE_MAX_X 40
-#define NODE_MIN_Y -48
-#define NODE_MAX_Y 30
+#define NODE_MIN_X -50
+#define NODE_MAX_X 50
+#define NODE_MIN_Y -64
+#define NODE_MAX_Y 36
 
 static GdkPoint largest_node_points[] = {
 	{NODE_MIN_X, NODE_MIN_Y},
@@ -514,6 +521,12 @@ void guimap_settlement_polygon(const GuiMap * gmap, const Node * node,
 			       Polygon * poly)
 {
 	calc_node_poly(gmap, node, &settlement_poly, poly);
+}
+
+void guimap_city_wall_polygon(const GuiMap * gmap, const Node * node,
+			      Polygon * poly)
+{
+	calc_node_poly(gmap, node, &city_wall_poly, poly);
 }
 
 static void guimap_nosetup_polygon(const GuiMap * gmap, const Node * node,
@@ -801,15 +814,27 @@ static gboolean display_hex(const Map * map, const Hex * hex,
 		if (node->owner < 0 && !gmap->show_nosetup_nodes)
 			continue;
 
-		poly.num_points = G_N_ELEMENTS(points);
 		if (node->owner < 0) {
 			if (!node->no_setup)
 				continue;
 			color = &white;
+			poly.num_points = G_N_ELEMENTS(points);
 			guimap_nosetup_polygon(gmap, node, &poly);
 		} else {
+			color = colors_get_player(node->owner);
+
+			/* If there are city walls, draw them. */
+			if (node->city_wall) {
+				poly.num_points = G_N_ELEMENTS(points);
+				guimap_city_wall_polygon(gmap, node,
+							 &poly);
+				poly_draw_with_border(gmap->pixmap,
+						      gmap->gc, color,
+						      &black, &poly);
+			}
 			/* Draw the building */
 			color = colors_get_player(node->owner);
+			poly.num_points = G_N_ELEMENTS(points);
 			if (node->type == BUILD_CITY)
 				guimap_city_polygon(gmap, node, &poly);
 			else
@@ -1412,6 +1437,24 @@ static void draw_city_cursor(GuiMap * gmap)
 	draw_cursor(gmap, gmap->cursor_owner, &poly);
 }
 
+static void draw_city_wall_cursor(GuiMap * gmap)
+{
+	GdkPoint points[MAX_POINTS];
+	Polygon poly;
+
+	g_return_if_fail(gmap->cursor.pointer != NULL);
+
+	poly.points = points;
+	poly.num_points = G_N_ELEMENTS(points);
+	guimap_city_wall_polygon(gmap, gmap->cursor.node, &poly);
+	draw_cursor(gmap, gmap->cursor_owner, &poly);
+
+	poly.points = points;
+	poly.num_points = G_N_ELEMENTS(points);
+	guimap_city_polygon(gmap, gmap->cursor.node, &poly);
+	draw_cursor(gmap, gmap->cursor_owner, &poly);
+}
+
 static void draw_steal_building_cursor(GuiMap * gmap)
 {
 	GdkPoint points[MAX_POINTS];
@@ -1590,14 +1633,15 @@ static ModeCursor cursors[] = {
 	{find_edge, erase_edge_cursor, draw_bridge_cursor},	/* BRIDGE_CURSOR */
 	{find_node, erase_node_cursor, draw_settlement_cursor},	/* SETTLEMENT_CURSOR */
 	{find_node, erase_node_cursor, draw_city_cursor},	/* CITY_CURSOR */
+	{find_node, erase_node_cursor, draw_city_wall_cursor},	/* CITY_WALL_CURSOR */
 	{find_node, erase_node_cursor, draw_steal_building_cursor},	/* STEAL_BUILDING_CURSOR */
 	{find_edge, erase_edge_cursor, draw_steal_ship_cursor},	/* STEAL_SHIP_CURSOR */
 	{find_hex, erase_robber_cursor, draw_robber_cursor}	/* ROBBER_CURSOR */
 };
 
-gboolean roadM, shipM, bridgeM, settlementM, cityM, shipMoveM;
-CheckFunc roadF, shipF, bridgeF, settlementF, cityF, shipMoveF;
-SelectFunc roadS, shipS, bridgeS, settlementS, cityS, shipMoveS;
+gboolean roadM, shipM, bridgeM, settlementM, cityM, cityWallM, shipMoveM;
+CheckFunc roadF, shipF, bridgeF, settlementF, cityF, cityWallF, shipMoveF;
+SelectFunc roadS, shipS, bridgeS, settlementS, cityS, cityWallS, shipMoveS;
 CancelFunc shipMoveC;
 
 /** Calculate the distance between the element and the cursor.
@@ -1647,6 +1691,7 @@ void guimap_cursor_move(GuiMap * gmap, gint x, gint y,
 		gboolean can_build_bridge = FALSE;
 		gboolean can_build_settlement = FALSE;
 		gboolean can_build_city = FALSE;
+		gboolean can_build_city_wall = FALSE;
 		gboolean can_move_ship = FALSE;
 		gboolean can_build_edge = FALSE;
 		gboolean can_build_node = FALSE;
@@ -1746,8 +1791,13 @@ void guimap_cursor_move(GuiMap * gmap, gint x, gint y,
 					  && cityF(*element,
 						   gmap->player_num,
 						   dummyElement));
+			can_build_city_wall = (cityWallM
+					       && cityWallF(*element,
+							    gmap->
+							    player_num,
+							    dummyElement));
 			can_build_node = can_build_settlement
-			    || can_build_city;
+			    || can_build_city || can_build_city_wall;
 			if (can_build_node)
 				distance_node =
 				    distance_cursor(gmap, element,
@@ -1786,6 +1836,10 @@ void guimap_cursor_move(GuiMap * gmap, gint x, gint y,
 			guimap_cursor_set(gmap, CITY_CURSOR,
 					  gmap->player_num, cityF, cityS,
 					  NULL, NULL, TRUE);
+		else if (can_build_city_wall && can_build_node)
+			guimap_cursor_set(gmap, CITY_WALL_CURSOR,
+					  gmap->player_num, cityWallF,
+					  cityWallS, NULL, NULL, TRUE);
 		else if (can_move_ship && can_build_edge)
 			guimap_cursor_set(gmap, SHIP_CURSOR,
 					  gmap->player_num, shipMoveF,
@@ -1896,6 +1950,8 @@ void guimap_single_click_set_functions(CheckFunc road_check_func,
 				       settlement_select_func,
 				       CheckFunc city_check_func,
 				       SelectFunc city_select_func,
+				       CheckFunc city_wall_check_func,
+				       SelectFunc city_wall_select_func,
 				       CheckFunc
 				       ship_move_check_func,
 				       SelectFunc
@@ -1912,6 +1968,8 @@ void guimap_single_click_set_functions(CheckFunc road_check_func,
 	settlementS = settlement_select_func;
 	cityF = city_check_func;
 	cityS = city_select_func;
+	cityWallF = city_wall_check_func;
+	cityWallS = city_wall_select_func;
 	shipMoveF = ship_move_check_func;
 	shipMoveS = ship_move_select_func;
 	shipMoveC = ship_move_cancel_func;
@@ -1941,6 +1999,11 @@ void guimap_single_click_set_settlement_mask(gboolean mask)
 void guimap_single_click_set_city_mask(gboolean mask)
 {
 	cityM = mask;
+}
+
+void guimap_single_click_set_city_wall_mask(gboolean mask)
+{
+	cityWallM = mask;
 }
 
 void guimap_single_click_set_ship_move_mask(gboolean mask)

@@ -55,6 +55,7 @@ typedef struct {
 	gint num_ships;		/* number of ships available */
 	gint num_settlements;	/* settlements available */
 	gint num_cities;	/* cities available */
+	gint num_city_walls;	/* city walls available */
 
 	gint num_soldiers;	/* number of soldiers played */
 	gint road_len;		/* last longest road */

@@ -385,6 +385,10 @@ gboolean send_gameinfo(Map * map, Hex * hex, StateMachine * sm)
 			default:
 				;
 			}
+			if (hex->nodes[i]->city_wall)
+				sm_send(sm, "extension W%d,%d,%d,%d\n",
+					hex->x, hex->y, i,
+					hex->nodes[i]->owner);
 		}
 	}
 

@@ -260,6 +260,10 @@ static gint try_recv(StateMachine * sm, const gchar * fmt, va_list ap)
 				   == 0) {
 				*build_type = BUILD_SETTLEMENT;
 				offset += 10;
+			} else if (strncmp(line + offset, "city_wall", 9)
+				   == 0) {
+				*build_type = BUILD_CITY_WALL;
+				offset += 9;
 			} else if (strncmp(line + offset, "city", 4) == 0) {
 				*build_type = BUILD_CITY;
 				offset += 4;
@@ -385,6 +389,9 @@ gchar *sm_vformat(const gchar * fmt, va_list ap)
 				break;
 			case BUILD_CITY:
 				buff_append(result, "%s", "city");
+				break;
+			case BUILD_CITY_WALL:
+				buff_append(result, "%s", "city_wall");
 				break;
 			case BUILD_NONE:
 				g_error("BUILD_NONE passed to sm_vformat");

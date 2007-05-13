@@ -94,6 +94,7 @@ static const gchar *pioneers_pixmaps[] = {
 	PIONEERS_PIXMAP_BRIDGE,
 	PIONEERS_PIXMAP_SETTLEMENT,
 	PIONEERS_PIXMAP_CITY,
+	PIONEERS_PIXMAP_CITY_WALL,
 	PIONEERS_PIXMAP_DEVELOP,
 	PIONEERS_PIXMAP_FINISH
 };
@@ -191,6 +192,11 @@ static void buy_development_cb(void)
 	route_gui_event(GUI_BUY_DEVELOP);
 }
 
+static void build_city_wall_cb(void)
+{
+	route_gui_event(GUI_CITY_WALL);
+}
+
 static void showhide_toolbar_cb(void);
 static void preferences_cb(void);
 
@@ -245,6 +251,8 @@ static GtkActionEntry entries[] = {
 	 N_("Build a city"), build_city_cb},
 	{"BuyDevelopment", PIONEERS_PIXMAP_DEVELOP, N_("Develop"), "F11",
 	 N_("Buy a development card"), buy_development_cb},
+	{"BuildCityWall", PIONEERS_PIXMAP_CITY_WALL, N_("City Wall"), NULL,
+	 N_("Build a city wall"), build_city_wall_cb},
 
 	{"SettingsMenu", NULL, N_("_Settings"), NULL, NULL, NULL},
 	{"Preferences", GTK_STOCK_PREFERENCES, N_("Prefere_nces"), NULL,
@@ -297,6 +305,7 @@ static const char *ui_description =
 "      <menuitem action='BuildSettlement'/>"
 "      <menuitem action='BuildCity'/>"
 "      <menuitem action='BuyDevelopment'/>"
+"      <menuitem action='BuildCityWall'/>"
 "    </menu>"
 "    <menu action='SettingsMenu'>"
 "      <menuitem action='ShowHideToolbar'/>"
@@ -321,6 +330,7 @@ static const char *ui_description =
 "    <toolitem action='BuildSettlement'/>"
 "    <toolitem action='BuildCity'/>"
 "    <toolitem action='BuyDevelopment'/>"
+"    <toolitem action='BuildCityWall'/>"
 "  </toolbar>"
 "</ui>";
 /* *INDENT-ON* */
@@ -1112,6 +1122,9 @@ static GtkAction *getAction(GuiEvent id)
 	case GUI_BUY_DEVELOP:
 		path = "ActionsMenu/BuyDevelopment";
 		break;
+	case GUI_CITY_WALL:
+		path = "ActionsMenu/BuildCityWall";
+		break;
 	default:
 		break;
 	};
@@ -1165,6 +1178,7 @@ static void gui_toolbar_show_accelerators(gboolean show_accelerators)
 
 		ti = gtk_toolbar_get_nth_item(tb, i);
 		tbtn = GTK_TOOL_BUTTON(ti);
+		g_assert(tbtn != NULL);
 		if (gtk_major_version == 2 && gtk_minor_version == 10) {
 			/* Work around a gtk+ 2.10 bug (#434261) that
 			 * mishandles strings like (Fn) in labels.
@@ -1173,7 +1187,6 @@ static void gui_toolbar_show_accelerators(gboolean show_accelerators)
 			 * is no longer supported. */
 			gtk_tool_button_set_use_underline(tbtn, FALSE);
 		}
-		g_assert(tbtn != NULL);
 		text = g_strdup(gtk_tool_button_get_label(tbtn));
 		if (strchr(text, '\n'))
 			*strchr(text, '\n') = '\0';
@@ -1276,6 +1289,9 @@ void gui_set_game_params(const GameParams * params)
 	/* In theory, it is possible to play a game without cities */
 	gui_toolbar_show_button("BuildCity",
 				params->num_build_type[BUILD_CITY] > 0);
+	gui_toolbar_show_button("BuildCityWall",
+				params->num_build_type[BUILD_CITY_WALL] >
+				0);
 
 	identity_draw();
 
@@ -1543,6 +1559,8 @@ GtkWidget *gui_build_interface(void)
 	frontend_gui_register_action(getAction(GUI_CITY), GUI_CITY);
 	frontend_gui_register_action(getAction(GUI_BUY_DEVELOP),
 				     GUI_BUY_DEVELOP);
+	frontend_gui_register_action(getAction(GUI_CITY_WALL),
+				     GUI_CITY_WALL);
 #if 0
 	frontend_gui_register_destroy(gtk_ui_manager_get_action
 				      (manager, "GameQuit"), GUI_QUIT);

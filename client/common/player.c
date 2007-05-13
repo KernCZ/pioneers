@@ -507,6 +507,21 @@ void player_build_add(gint player_num,
 		if (player_num == my_player_num())
 			stock_use_city();
 		break;
+	case BUILD_CITY_WALL:
+		node = map_node(map, x, y, pos);
+		node->city_wall = TRUE;
+		node->owner = player_num;
+		callbacks.draw_node(node);
+		if (log_changes) {
+			log_message(MSG_BUILD,
+				    _("%s built a city wall.\n"),
+				    player_name(player_num, TRUE));
+		}
+		player_modify_statistic(player_num, STAT_CITY_WALLS, 1);
+		if (player_num == my_player_num())
+			stock_use_city_wall();
+		break;
+
 	case BUILD_NONE:
 		log_message(MSG_ERROR,
 			    _
@@ -585,6 +600,18 @@ void player_build_remove(gint player_num,
 			stock_replace_city();
 		}
 		break;
+	case BUILD_CITY_WALL:
+		node = map_node(map, x, y, pos);
+		node->city_wall = FALSE;
+		node->owner = player_num;
+		callbacks.draw_node(node);
+		log_message(MSG_BUILD, _("%s removed a city wall.\n"),
+			    player_name(player_num, TRUE));
+		player_modify_statistic(player_num, STAT_CITY_WALLS, -1);
+		if (player_num == my_player_num())
+			stock_replace_city_wall();
+		break;
+
 	case BUILD_NONE:
 		log_message(MSG_ERROR,
 			    _

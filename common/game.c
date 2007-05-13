@@ -60,6 +60,7 @@ static Param game_params[] = {
 	{PARAM_V(num-ships, PARAM_INT, num_build_type[BUILD_SHIP])},
 	{PARAM_V(num-settlements, PARAM_INT, num_build_type[BUILD_SETTLEMENT])},
 	{PARAM_V(num-cities, PARAM_INT, num_build_type[BUILD_CITY])},
+	{PARAM_V(num-city-walls, PARAM_INT, num_build_type[BUILD_CITY_WALL])},
 	{PARAM_V(resource-count, PARAM_INT, resource_count)},
 	{PARAM_V(develop-road, PARAM_INT, num_develop_type[DEVEL_ROAD_BUILDING])},
 	{PARAM_V(develop-monopoly, PARAM_INT, num_develop_type[DEVEL_MONOPOLY])},

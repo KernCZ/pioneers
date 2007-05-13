@@ -120,7 +120,7 @@ void discard_resources(Game * game)
 			if (scan->assets[idx] > 0)
 				++num_types;
 		}
-		if (num > 7) {
+		if (num > 7 + scan->num_city_walls * 2) {
 			scan->discard_num = num / 2;
 			/* discard random resources of disconnected players */
 			/* also do auto-discard if there is no choice */

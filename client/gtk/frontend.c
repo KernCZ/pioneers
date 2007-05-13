@@ -63,6 +63,9 @@ static void set_sensitive(G_GNUC_UNUSED void *key, GuiWidgetState * gui,
 		case GUI_CITY:
 			guimap_single_click_set_city_mask(gui->next);
 			break;
+		case GUI_CITY_WALL:
+			guimap_single_click_set_city_wall_mask(gui->next);
+			break;
 		case GUI_MOVE_SHIP:
 			guimap_single_click_set_ship_move_mask(gui->next);
 			break;

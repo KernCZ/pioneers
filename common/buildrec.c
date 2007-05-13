@@ -152,6 +152,7 @@ gboolean buildrec_is_valid(GList * list, Map * map, gint owner)
 			continue;
 		case BUILD_SETTLEMENT:
 		case BUILD_CITY:
+		case BUILD_CITY_WALL:
 			/* Buildings must be adjacent to a road
 			 */
 			if (!map_building_connect_ok(map, owner, rec->type,

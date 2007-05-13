@@ -119,6 +119,27 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 		return;
 	}
 
+	if (type == BUILD_CITY_WALL) {
+		if (!can_city_wall_be_built(map_node(map, x, y, pos),
+					    player->num)) {
+			sm_send(sm, "ERR bad-pos\n");
+			return;
+		}
+		/* Make sure that there are some city walls left to use!
+		 */
+		if (player->num_city_walls ==
+		    game->params->num_build_type[BUILD_CITY_WALL]) {
+			sm_send(sm, "ERR too-many city wall\n");
+			return;
+		}
+		if (!cost_can_afford(cost_city_wall(), player->assets)) {
+			sm_send(sm, "ERR too-expensive\n");
+			return;
+		}
+		node_add(player, type, x, y, pos, TRUE, NULL);
+		return;
+	}
+
 	/* Build the settlement/city
 	 */
 	if (!map_building_vacant(map, type, x, y, pos)

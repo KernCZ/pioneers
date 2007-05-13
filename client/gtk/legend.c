@@ -214,6 +214,8 @@ GtkWidget *legend_create_content(void)
 		num_rows++;
 	if (have_bridges())
 		num_rows++;
+	if (have_city_walls())
+		num_rows++;
 	table = gtk_table_new(num_rows, 3, FALSE);
 	gtk_widget_show(table);
 	gtk_container_add(GTK_CONTAINER(alignment), table);
@@ -233,6 +235,10 @@ GtkWidget *legend_create_content(void)
 			_("Settlement"), cost_settlement());
 	add_legend_cost(table, num_rows++, PIONEERS_PIXMAP_CITY, _("City"),
 			cost_upgrade_settlement());
+	if (have_city_walls())
+		add_legend_cost(table, num_rows++,
+				PIONEERS_PIXMAP_CITY_WALL, _("City Wall"),
+				cost_city_wall());
 	add_legend_cost(table, num_rows++, PIONEERS_PIXMAP_DEVELOP,
 			_("Development Card"), cost_development());
 

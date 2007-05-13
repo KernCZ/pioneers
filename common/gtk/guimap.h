@@ -36,6 +36,7 @@ typedef enum {
 	BRIDGE_CURSOR,
 	SETTLEMENT_CURSOR,
 	CITY_CURSOR,
+	CITY_WALL_CURSOR,
 	STEAL_BUILDING_CURSOR,
 	STEAL_SHIP_CURSOR,
 	ROBBER_CURSOR
@@ -107,6 +108,8 @@ void guimap_city_polygon(const GuiMap * gmap, const Node * node,
 			 Polygon * poly);
 void guimap_settlement_polygon(const GuiMap * gmap, const Node * node,
 			       Polygon * poly);
+void guimap_city_wall_polygon(const GuiMap * gmap, const Node * node,
+			      Polygon * poly);
 
 gint guimap_get_chit_radius(PangoLayout * layout, gboolean show_dots);
 void draw_dice_roll(PangoLayout * layout, GdkPixmap * pixmap, GdkGC * gc,
@@ -147,6 +150,8 @@ void guimap_single_click_set_functions(CheckFunc road_check_func,
 				       settlement_select_func,
 				       CheckFunc city_check_func,
 				       SelectFunc city_select_func,
+				       CheckFunc city_wall_check_func,
+				       SelectFunc city_wall_select_func,
 				       CheckFunc
 				       ship_move_check_func,
 				       SelectFunc
@@ -161,6 +166,7 @@ void guimap_single_click_set_ship_mask(gboolean mask);
 void guimap_single_click_set_bridge_mask(gboolean mask);
 void guimap_single_click_set_settlement_mask(gboolean mask);
 void guimap_single_click_set_city_mask(gboolean mask);
+void guimap_single_click_set_city_wall_mask(gboolean mask);
 void guimap_single_click_set_ship_move_mask(gboolean mask);
 
 void guimap_cursor_select(GuiMap * gmap, gint x, gint y);

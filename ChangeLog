@@ -1,4 +1,18 @@
 ﻿
+2007-05-13  Brian Wellington <bwelling@xbill.org>
+	* editor/gtk/game-buildings.c, common/map_query.c,
+	common/gtk/guimap.c, common/gtk/guimap.h, common/cost.c,
+	common/game.c, common/cost.h, common/state.c, common/map.h,
+	common/buildrec.h, server/turn.c, server/discard.c, server/server.h,
+	server/pregame.c, server/buildutil.c, client/callback.h,
+	client/gtk/interface.c, client/gtk/frontend.c, client/gtk/frontend.h,
+	client/gtk/data/Makefile.am, client/gtk/data/city_wall.png,
+	client/gtk/player.c, client/gtk/legend.c, client/gtk/settingscreen.c,
+	client/gtk/gui.c, client/gtk/identity.c, client/common/client.c,
+	client/common/client.h, client/common/stock.c,
+	client/common/callback.c, client/common/player.c: Added support for
+	city walls (using 'extension' in the protocol)
+
 2005-05-13  Roland Clobus <rclobus@bigfoot.com>
 	* server/player.c, server/server.h: Use 'extension' for broadcasts.
 	

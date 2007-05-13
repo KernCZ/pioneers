@@ -101,6 +101,12 @@ static void calculate_optimum_size(GtkWidget * area, gint size)
 		calculate_width(area, &poly, stock_num_cities(),
 				&fixedwidth, &variablewidth);
 	}
+	if (game_params->num_build_type[BUILD_CITY_WALL] > 0) {
+		poly.num_points = MAX_POINTS;
+		guimap_city_wall_polygon(&bogus_map, NULL, &poly);
+		calculate_width(area, &poly, stock_num_city_walls(),
+				&fixedwidth, &variablewidth);
+	}
 
 	new_size = bogus_map.hex_radius *
 	    (area->allocation.width - 75 - fixedwidth) / variablewidth;
@@ -255,6 +261,13 @@ static gint expose_identity_area_cb(GtkWidget * area,
 		offset = draw_building_and_count(identity_gc, area, offset,
 						 &poly,
 						 stock_num_cities());
+	}
+	if (game_params->num_build_type[BUILD_CITY_WALL] > 0) {
+		poly.num_points = MAX_POINTS;
+		guimap_city_wall_polygon(&bogus_map, NULL, &poly);
+		offset = draw_building_and_count(identity_gc, area, offset,
+						 &poly,
+						 stock_num_city_walls());
 	}
 
 	if (die1_num > 0 && die2_num > 0) {
