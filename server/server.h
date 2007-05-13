@@ -153,6 +153,8 @@ void player_set_name(Player * player, gchar * name);
 Player *player_none(Game * game);
 void player_broadcast(Player * player, BroadcastType type, const char *fmt,
 		      ...);
+void player_broadcast_extension(Player * player, BroadcastType type,
+				const char *fmt, ...);
 void player_remove(Player * player);
 void player_free(Player * player);
 void player_archive(Player * player);

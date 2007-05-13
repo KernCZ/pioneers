@@ -1,4 +1,7 @@
 ﻿
+2005-05-13  Roland Clobus <rclobus@bigfoot.com>
+	* server/player.c, server/server.h: Use 'extension' for broadcasts.
+	
 2007-05-08  Roland Clobus <rclobus@bigfoot.com>
 	* editor/gtk/editor.c, common/gtk/guimap.c, common/gtk/select-game.c,
 	common/gtk/guimap.h, common/gtk/select-game.h, server/gtk/main.c,

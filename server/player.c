@@ -858,8 +858,9 @@ Player *player_none(Game * game)
 	return &player;
 }
 
-/* Broadcast a message to all players and viewers - prepend "player %d " to all
- * players except the one generating the message.
+/** Broadcast a message to all players and viewers - prepend "player %d " to
+ * all players except the one generating the message.
+ * Also prepend 'extension' when this message is a protocol extension.
  *
  *  send to  PB_SILENT PB_RESPOND PB_ALL PB_OTHERS
  *  player      -           -       +        **
@@ -868,17 +869,12 @@ Player *player_none(Game * game)
  * +  = prepend 'player %d' to the message
  * -  = don't alter the message
  */
-void player_broadcast(Player * player, BroadcastType type, const char *fmt,
-		      ...)
+static void player_broadcast_internal(Player * player, BroadcastType type,
+				      const gchar * message,
+				      gboolean is_extension)
 {
 	Game *game = player->game;
-	gchar *buff;
 	GList *list;
-	va_list ap;
-
-	va_start(ap, fmt);
-	buff = sm_vformat(fmt, ap);
-	va_end(ap);
 
 	playerlist_inc_use_count(game);
 	for (list = game->player_list; list != NULL;
@@ -887,13 +883,53 @@ void player_broadcast(Player * player, BroadcastType type, const char *fmt,
 		if (scan->disconnected || scan->num < 0)
 			continue;
 		if (type == PB_SILENT
-		    || (scan == player && type == PB_RESPOND))
-			sm_write(scan->sm, buff);
-		else if (scan != player || type == PB_ALL)
-			sm_send(scan->sm, "player %d %s", player->num,
-				buff);
+		    || (scan == player && type == PB_RESPOND)) {
+			if (is_extension) {
+				sm_send(scan->sm, "extension %s", message);
+			} else {
+				sm_write(scan->sm, message);
+			}
+		} else if (scan != player || type == PB_ALL) {
+			if (is_extension) {
+				sm_send(scan->sm, "extension player %d %s",
+					player->num, message);
+			} else {
+				sm_send(scan->sm, "player %d %s",
+					player->num, message);
+			}
+
+		}
 	}
 	playerlist_dec_use_count(game);
+}
+
+/** As player_broadcast, but will add the 'extension' keyword */
+void player_broadcast_extension(Player * player, BroadcastType type,
+				const char *fmt, ...)
+{
+	gchar *buff;
+	va_list ap;
+
+	va_start(ap, fmt);
+	buff = sm_vformat(fmt, ap);
+	va_end(ap);
+
+	player_broadcast_internal(player, type, buff, TRUE);
+	g_free(buff);
+}
+
+/** Broadcast a message to all players and viewers */
+void player_broadcast(Player * player, BroadcastType type, const char *fmt,
+		      ...)
+{
+	gchar *buff;
+	va_list ap;
+
+	va_start(ap, fmt);
+	buff = sm_vformat(fmt, ap);
+	va_end(ap);
+
+	player_broadcast_internal(player, type, buff, FALSE);
 	g_free(buff);
 }
 
