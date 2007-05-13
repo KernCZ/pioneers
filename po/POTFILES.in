@@ -30,6 +30,7 @@ client/gtk/resource-table.c
 client/gtk/settingscreen.c
 client/gtk/trade.c
 common/gtk/aboutbox.c
+common/gtk/game-rules.c
 common/gtk/game-settings.c
 common/gtk/guimap.c
 common/gtk/select-game.c
@@ -40,7 +41,6 @@ common/state.c
 editor/gtk/editor.c
 editor/gtk/game-buildings.c
 editor/gtk/game-devcards.c
-editor/gtk/game-parameters.c
 editor/gtk/game-resources.c
 meta-server/main.c
 server/admin.c
