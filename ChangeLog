@@ -8,6 +8,8 @@
 	common/map.c, common/game.h, common/map.h, server/gtk/main.c,
 	client/gtk/connect.c: Added victory point check. Game rules are split
 	from game settings.
+	* editor/gtk/game-settings.c -> common/gtk/game-rules.c,
+	editor/gtk/game-settings.h -> common/gtk/game-rules.h: Renamed
 
 2007-05-13  Brian Wellington <bwelling@xbill.org>
 	* editor/gtk/game-buildings.c, common/map_query.c,
