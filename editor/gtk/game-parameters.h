@@ -1,5 +1,5 @@
-#ifndef __GAMEPARAMETERS_H__
-#define __GAMEPARAMETERS_H__
+#ifndef __GAMERULES_H__
+#define __GAMERULES_H__
 
 
 #include <glib.h>
@@ -7,35 +7,45 @@
 #include <gtk/gtktable.h>
 
 G_BEGIN_DECLS
-#define GAMEPARAMETERS_TYPE            (game_parameters_get_type ())
-#define GAMEPARAMETERS(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GAMEPARAMETERS_TYPE, GameParameters))
-#define GAMEPARAMETERS_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GAMEPARAMETERS_TYPE, GameParametersClass))
-#define IS_GAMEPARAMETERS(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GAMEPARAMETERS_TYPE))
-#define IS_GAMEPARAMETERS_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GAMEPARAMETERS_TYPE))
-typedef struct _GameParameters GameParameters;
-typedef struct _GameParametersClass GameParametersClass;
+#define GAMERULES_TYPE            (game_rules_get_type ())
+#define GAMERULES(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GAMERULES_TYPE, GameRules))
+#define GAMERULES_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GAMERULES_TYPE, GameRulesClass))
+#define IS_GAMERULES(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GAMERULES_TYPE))
+#define IS_GAMERULES_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GAMERULES_TYPE))
+typedef struct _GameRules GameRules;
+typedef struct _GameRulesClass GameRulesClass;
 
-struct _GameParameters {
+struct _GameRules {
 	GtkTable table;
 
-	GtkToggleButton *use_pirate;
-	GtkToggleButton *strict_trade;
-	GtkToggleButton *domestic_trade;
+	GtkTooltips *tooltips;
+
+	GtkCheckButton *random_terrain;
+	GtkWidget *radio_sevens[3];	/* radio buttons for sevens rules */
+	GtkCheckButton *use_pirate;
+	GtkCheckButton *strict_trade;
+	GtkCheckButton *domestic_trade;
 };
 
-struct _GameParametersClass {
+struct _GameRulesClass {
 	GtkTableClass parent_class;
 };
 
-GType game_parameters_get_type(void);
-GtkWidget *game_parameters_new(void);
+GType game_rules_get_type(void);
+GtkWidget *game_rules_new(void);
+GtkWidget *game_rules_new_metaserver(void);
 
-void game_parameters_set_use_pirate(GameParameters * gp, gboolean val);
-gboolean game_parameters_get_use_pirate(GameParameters * gp);
-void game_parameters_set_strict_trade(GameParameters * gp, gboolean val);
-gboolean game_parameters_get_strict_trade(GameParameters * gp);
-void game_parameters_set_domestic_trade(GameParameters * gp, gboolean val);
-gboolean game_parameters_get_domestic_trade(GameParameters * gp);
+void game_rules_set_random_terrain(GameRules * gr, gboolean val);
+gboolean game_rules_get_random_terrain(GameRules * gr);
+void game_rules_set_sevens_rule(GameRules * gr, guint sevens_rule);
+guint game_rules_get_sevens_rule(GameRules * gr);
+void game_rules_set_use_pirate(GameRules * gr, gboolean val,
+			       gint num_ships);
+gboolean game_rules_get_use_pirate(GameRules * gr);
+void game_rules_set_strict_trade(GameRules * gr, gboolean val);
+gboolean game_rules_get_strict_trade(GameRules * gr);
+void game_rules_set_domestic_trade(GameRules * gr, gboolean val);
+gboolean game_rules_get_domestic_trade(GameRules * gr);
 
 G_END_DECLS
-#endif				/* __GAMEPARAMETERS_H__ */
+#endif				/* __GAMERULES_H__ */

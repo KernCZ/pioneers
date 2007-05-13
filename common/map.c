@@ -37,6 +37,42 @@ Hex *map_hex(Map * map, gint x, gint y)
 	return map->grid[y][x];
 }
 
+Hex *hex_in_direction(Map * map, const Hex * hex, HexDirection direction)
+{
+	gint x = hex->x;
+	gint y = hex->y;
+
+	switch (direction) {
+	case HEX_DIR_E:
+		x++;
+		break;
+	case HEX_DIR_NE:
+		if (y % 2 == 1)
+			x++;
+		y--;
+		break;
+	case HEX_DIR_NW:
+		if (y % 2 == 0)
+			x--;
+		y--;
+		break;
+	case HEX_DIR_W:
+		x--;
+		break;
+	case HEX_DIR_SW:
+		if (y % 2 == 0)
+			x--;
+		y++;
+		break;
+	case HEX_DIR_SE:
+		if (y % 2 == 1)
+			x++;
+		y++;
+		break;
+	}
+	return map_hex(map, x, y);
+}
+
 Node *map_node(Map * map, gint x, gint y, gint pos)
 {
 	Hex *hex;

@@ -26,15 +26,12 @@ typedef struct _GameSettingsClass GameSettingsClass;
 struct _GameSettings {
 	GtkTable table;
 
-	GtkWidget *terrain_toggle;	/* random terrain Yes/No */
 	GtkWidget *victory_spin;	/* victory point target */
 	GtkWidget *players_spin;	/* number of players */
-	GtkWidget *radio_sevens[3];	/* radio buttons for sevens rules */
+	GtkWidget *check_button;	/* check whether the game can be won */
 
-	gboolean random_terrain;	/* Use random terrain */
 	guint players;		/* The number of players */
 	guint victory_points;	/* The points needed to win */
-	guint sevens_rule;	/* Sevens rule: 0-2 */
 };
 
 struct _GameSettingsClass {
@@ -42,20 +39,17 @@ struct _GameSettingsClass {
 
 	void (*change) (GameSettings * gs);
 	void (*change_players) (GameSettings * gs);
+	void (*check) (GameSettings * gs);
 };
 
 GType game_settings_get_type(void);
-GtkWidget *game_settings_new(void);
+GtkWidget *game_settings_new(gboolean with_check_button);
 
-void game_settings_set_terrain(GameSettings * gs, gboolean random_terrain);
-gboolean game_settings_get_terrain(GameSettings * gs);
 void game_settings_set_players(GameSettings * gs, guint players);
 guint game_settings_get_players(GameSettings * gs);
 void game_settings_set_victory_points(GameSettings * gs,
 				      guint victory_points);
 guint game_settings_get_victory_points(GameSettings * gs);
-void game_settings_set_sevens_rule(GameSettings * gs, guint sevens_rule);
-guint game_settings_get_sevens_rule(GameSettings * gs);
 
 G_END_DECLS
 #endif				/* __GAMESETTINGS_H__ */

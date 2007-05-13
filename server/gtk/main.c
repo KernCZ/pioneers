@@ -3,7 +3,7 @@
  *
  * Copyright (C) 1999 Dave Cole
  * Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
- * Copyright (C) 2004-2006 Roland Clobus <rclobus@bigfoot.com>
+ * Copyright (C) 2004-2007 Roland Clobus <rclobus@bigfoot.com>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,14 +40,17 @@
 
 #include "select-game.h"	/* Custom widget */
 #include "game-settings.h"	/* Custom widget */
+#include "game-rules.h"
 #include "theme.h"
 
 #define MAINICON_FILE	"pioneers-server.png"
 
 static GtkWidget *settings_notebook;	/* relevant settings */
 static GtkWidget *game_frame;	/* the frame containing all settings regarding the game */
+static GtkWidget *rules_frame;	/* the frame containing all rules regarding the game */
 static GtkWidget *select_game;	/* select game type */
 static GtkWidget *game_settings;	/* the settings of the game */
+static GtkWidget *game_rules;	/* the rules of the game */
 static GtkWidget *server_frame;	/* the frame containing all settings regarding the server */
 static GtkWidget *ai_frame;	/* the frame containing all settings regarding the ai */
 static GtkWidget *register_toggle;	/* register with meta server? */
@@ -77,6 +80,7 @@ static gboolean show_version = FALSE;
 
 /* Local function prototypes */
 static void add_game_to_list(gpointer name, gpointer user_data);
+static void check_vp_cb(GObject * caller, gpointer main_window);
 static void quit_cb(void);
 static void help_about_cb(void);
 
@@ -93,6 +97,9 @@ enum {
 static GtkActionEntry entries[] = {
 	{"GameMenu", NULL, N_("_Game"), NULL, NULL, NULL},
 	{"HelpMenu", NULL, N_("_Help"), NULL, NULL, NULL},
+	{"GameCheckVP", GTK_STOCK_APPLY, N_("_Check Victory Point Target"),
+	 NULL,
+	 N_("Check whether the game can be won"), G_CALLBACK(check_vp_cb)},
 	{"GameQuit", GTK_STOCK_QUIT, N_("_Quit"), "<control>Q",
 	 N_("Quit the program"), quit_cb},
 	{"HelpAbout", NULL, N_("_About Pioneers Server"), NULL,
@@ -104,6 +111,8 @@ static const char *ui_description =
 "<ui>"
 "  <menubar name='MainMenu'>"
 "    <menu action='GameMenu'>"
+"      <menuitem action='GameCheckVP' />"
+"      <separator/>"
 "      <menuitem action='GameQuit' />"
 "    </menu>"
 "    <menu action='HelpMenu'>"
@@ -175,14 +184,21 @@ static void update_game_settings(const GameParams * params)
 	g_return_if_fail(params != NULL);
 
 	/* Update the UI */
-	game_settings_set_terrain(GAMESETTINGS(game_settings),
-				  params->random_terrain);
 	game_settings_set_players(GAMESETTINGS(game_settings),
 				  params->num_players);
 	game_settings_set_victory_points(GAMESETTINGS(game_settings),
 					 params->victory_points);
-	game_settings_set_sevens_rule(GAMESETTINGS(game_settings),
-				      params->sevens_rule);
+	game_rules_set_random_terrain(GAMERULES(game_rules),
+				      params->random_terrain);
+	game_rules_set_sevens_rule(GAMERULES(game_rules),
+				   params->sevens_rule);
+	game_rules_set_domestic_trade(GAMERULES(game_rules),
+				      params->domestic_trade);
+	game_rules_set_strict_trade(GAMERULES(game_rules),
+				    params->strict_trade);
+	game_rules_set_use_pirate(GAMERULES(game_rules),
+				  params->use_pirate,
+				  params->num_build_type[BUILD_SHIP]);
 }
 
 static void game_activate(GtkWidget * widget,
@@ -242,9 +258,6 @@ static void start_clicked_cb(G_GNUC_UNUSED GtkButton * start_btn,
 
 		title = select_game_get_active(SELECTGAME(select_game));
 		params = params_copy(game_list_find_item(title));
-		cfg_set_terrain_type(params,
-				     game_settings_get_terrain(GAMESETTINGS
-							       (game_settings)));
 		cfg_set_num_players(params,
 				    game_settings_get_players(GAMESETTINGS
 							      (game_settings)));
@@ -252,9 +265,19 @@ static void start_clicked_cb(G_GNUC_UNUSED GtkButton * start_btn,
 				       game_settings_get_victory_points
 				       (GAMESETTINGS(game_settings)));
 		cfg_set_sevens_rule(params,
-				    game_settings_get_sevens_rule
-				    (GAMESETTINGS(game_settings)));
+				    game_rules_get_sevens_rule
+				    (GAMERULES(game_rules)));
+		cfg_set_terrain_type(params,
+				     game_rules_get_random_terrain
+				     (GAMERULES(game_rules)));
+		params->strict_trade =
+		    game_rules_get_strict_trade(GAMERULES(game_rules));
+		params->use_pirate =
+		    game_rules_get_use_pirate(GAMERULES(game_rules));
+		params->domestic_trade =
+		    game_rules_get_domestic_trade(GAMERULES(game_rules));
 		update_game_settings(params);
+
 		g_assert(server_port != NULL);
 		if (start_server
 		    (params, overridden_hostname, server_port,
@@ -278,6 +301,12 @@ static void start_clicked_cb(G_GNUC_UNUSED GtkButton * start_btn,
 				       params->victory_points);
 			config_set_int("game/sevens-rule",
 				       params->sevens_rule);
+			config_set_int("game/use-pirate",
+				       params->use_pirate);
+			config_set_int("game/strict-trade",
+				       params->strict_trade);
+			config_set_int("game/domestic-trade",
+				       params->domestic_trade);
 		}
 		params_free(params);
 	}
@@ -422,14 +451,11 @@ static void meta_server_changed_cb(GtkWidget * widget,
 	meta_server_name = text;
 }
 
-static GtkWidget *build_game_settings(GtkWidget * parent)
+static GtkWidget *build_game_settings(GtkWidget * parent,
+				      GtkWindow * main_window)
 {
 	GtkWidget *frame;
 	GtkWidget *vbox;
-	gboolean default_returned;
-	gchar *gamename;
-	gint temp;
-	GameParams *params;
 
 	tooltips = gtk_tooltips_new();
 
@@ -448,14 +474,102 @@ static GtkWidget *build_game_settings(GtkWidget * parent)
 			 G_CALLBACK(game_activate), NULL);
 	gtk_box_pack_start(GTK_BOX(vbox), select_game, FALSE, FALSE, 0);
 
-	game_settings = game_settings_new();
+	game_settings = game_settings_new(TRUE);
 	gtk_widget_show(game_settings);
 	gtk_box_pack_start(GTK_BOX(vbox), game_settings, TRUE, TRUE, 0);
-	/* The server does not need to respond directly to each change.
-	 * The parameters will be read when the start button is clicked
-	 g_signal_connect(G_OBJECT(game_settings), "change",
-	 G_CALLBACK(game_settings_change_cb), NULL);
-	 */
+
+	g_signal_connect(G_OBJECT(game_settings), "check",
+			 G_CALLBACK(check_vp_cb), main_window);
+
+	return frame;
+}
+
+static GtkWidget *build_game_rules(GtkWidget * parent)
+{
+	GtkWidget *frame;
+	GtkWidget *vbox;
+
+	tooltips = gtk_tooltips_new();
+
+	frame = gtk_frame_new(_("Rules"));
+	gtk_widget_show(frame);
+	gtk_box_pack_start(GTK_BOX(parent), frame, FALSE, TRUE, 0);
+
+	vbox = gtk_vbox_new(FALSE, 3);
+	gtk_widget_show(vbox);
+	gtk_container_add(GTK_CONTAINER(frame), vbox);
+	gtk_container_set_border_width(GTK_CONTAINER(vbox), 3);
+
+	game_rules = game_rules_new();
+	gtk_widget_show(game_rules);
+	gtk_box_pack_start(GTK_BOX(vbox), game_rules, TRUE, TRUE, 0);
+
+	return frame;
+}
+
+static void
+my_cell_player_viewer_to_text(G_GNUC_UNUSED GtkTreeViewColumn *
+			      tree_column, GtkCellRenderer * cell,
+			      GtkTreeModel * tree_model,
+			      GtkTreeIter * iter, gpointer data)
+{
+	gboolean b;
+
+	/* Get the value from the model. */
+	gtk_tree_model_get(tree_model, iter, GPOINTER_TO_INT(data), &b,
+			   -1);
+	g_object_set(cell, "text", b ?
+		     /* Role of the player: viewer */
+		     _("Viewer") :
+		     /* Role of the player: player */
+		     _("Player"), NULL);
+}
+
+static GtkWidget *build_interface(GtkWindow * main_window)
+{
+	GtkWidget *vbox;
+	GtkWidget *vbox_settings;
+	GtkWidget *vbox_ai;
+	GtkWidget *hbox_ai;
+	GtkWidget *frame;
+	GtkWidget *table;
+	GtkWidget *label;
+	GtkWidget *scroll_win;
+	GtkWidget *message_text;
+	GtkTooltips *tooltips;
+	gint novar;
+	gboolean default_returned;
+	gchar *gamename;
+	gint temp;
+	GameParams *params;
+
+	GtkCellRenderer *renderer;
+	GtkTreeViewColumn *column;
+
+	tooltips = gtk_tooltips_new();
+
+	vbox = gtk_vbox_new(FALSE, 5);
+	gtk_widget_show(vbox);
+	gtk_container_set_border_width(GTK_CONTAINER(vbox), 5);
+
+	settings_notebook = gtk_notebook_new();
+	gtk_widget_show(settings_notebook);
+	gtk_notebook_set_show_border(GTK_NOTEBOOK(settings_notebook),
+				     FALSE);
+	gtk_box_pack_start(GTK_BOX(vbox), settings_notebook, FALSE, TRUE,
+			   0);
+
+	vbox_settings = gtk_vbox_new(FALSE, 5);
+	gtk_widget_show(vbox_settings);
+	gtk_notebook_append_page(GTK_NOTEBOOK(settings_notebook),
+				 vbox_settings,
+				 gtk_label_new(_("Game Settings")));
+
+	/* Game settings frame */
+	game_frame = build_game_settings(vbox_settings, main_window);
+
+	/* Rules frame */
+	rules_frame = build_game_rules(vbox_settings);
 
 	/* Fill the GUI with the saved settings */
 	gamename =
@@ -483,68 +597,17 @@ static GtkWidget *build_game_settings(GtkWidget * parent)
 	temp = config_get_int("game/sevens-rule", &default_returned);
 	if (!default_returned)
 		cfg_set_sevens_rule(params, temp);
-
+	temp = config_get_int("game/use-pirate", &default_returned);
+	if (!default_returned)
+		params->use_pirate = temp;
+	temp = config_get_int("game/strict-trade", &default_returned);
+	if (!default_returned)
+		params->strict_trade = temp;
+	temp = config_get_int("game/domestic-trade", &default_returned);
+	if (!default_returned)
+		params->domestic_trade = temp;
 	update_game_settings(params);
 	params_free(params);
-	return frame;
-}
-
-static void
-my_cell_player_viewer_to_text(G_GNUC_UNUSED GtkTreeViewColumn *
-			      tree_column, GtkCellRenderer * cell,
-			      GtkTreeModel * tree_model,
-			      GtkTreeIter * iter, gpointer data)
-{
-	gboolean b;
-
-	/* Get the value from the model. */
-	gtk_tree_model_get(tree_model, iter, GPOINTER_TO_INT(data), &b,
-			   -1);
-	g_object_set(cell, "text", b ?
-		     /* Role of the player: viewer */
-		     _("Viewer") :
-		     /* Role of the player: player */
-		     _("Player"), NULL);
-}
-
-static GtkWidget *build_interface(void)
-{
-	GtkWidget *vbox;
-	GtkWidget *vbox_settings;
-	GtkWidget *vbox_ai;
-	GtkWidget *hbox_ai;
-	GtkWidget *frame;
-	GtkWidget *table;
-	GtkWidget *label;
-	GtkWidget *scroll_win;
-	GtkWidget *message_text;
-	GtkTooltips *tooltips;
-	gint novar;
-
-	GtkCellRenderer *renderer;
-	GtkTreeViewColumn *column;
-
-	tooltips = gtk_tooltips_new();
-
-	vbox = gtk_vbox_new(FALSE, 5);
-	gtk_widget_show(vbox);
-	gtk_container_set_border_width(GTK_CONTAINER(vbox), 5);
-
-	settings_notebook = gtk_notebook_new();
-	gtk_widget_show(settings_notebook);
-	gtk_notebook_set_show_border(GTK_NOTEBOOK(settings_notebook),
-				     FALSE);
-	gtk_box_pack_start(GTK_BOX(vbox), settings_notebook, FALSE, TRUE,
-			   0);
-
-	vbox_settings = gtk_vbox_new(FALSE, 5);
-	gtk_widget_show(vbox_settings);
-	gtk_notebook_append_page(GTK_NOTEBOOK(settings_notebook),
-				 vbox_settings,
-				 gtk_label_new(_("Game Settings")));
-
-	/* Game settings frame */
-	game_frame = build_game_settings(vbox_settings);
 
 	server_frame = gtk_frame_new(_("Server Parameters"));
 	gtk_widget_show(server_frame);
@@ -843,6 +906,37 @@ static GtkWidget *build_interface(void)
 	return vbox;
 }
 
+static void check_vp_cb(G_GNUC_UNUSED GObject * caller,
+			gpointer main_window)
+{
+	const gchar *title;
+	GameParams *params;
+
+	title = select_game_get_active(SELECTGAME(select_game));
+	params = params_copy(game_list_find_item(title));
+	cfg_set_num_players(params,
+			    game_settings_get_players(GAMESETTINGS
+						      (game_settings)));
+	cfg_set_victory_points(params,
+			       game_settings_get_victory_points
+			       (GAMESETTINGS(game_settings)));
+	cfg_set_sevens_rule(params,
+			    game_rules_get_sevens_rule
+			    (GAMERULES(game_rules)));
+	cfg_set_terrain_type(params,
+			     game_rules_get_random_terrain
+			     (GAMERULES(game_rules)));
+	params->strict_trade =
+	    game_rules_get_strict_trade(GAMERULES(game_rules));
+	params->use_pirate =
+	    game_rules_get_use_pirate(GAMERULES(game_rules));
+	params->domestic_trade =
+	    game_rules_get_domestic_trade(GAMERULES(game_rules));
+	update_game_settings(params);
+
+	check_victory_points(params, main_window);
+}
+
 static void quit_cb(void)
 {
 	gtk_main_quit();
@@ -977,7 +1071,8 @@ int main(int argc, char *argv[])
 	menubar = gtk_ui_manager_get_widget(ui_manager, "/MainMenu");
 	gtk_box_pack_start(GTK_BOX(vbox), menubar, FALSE, FALSE, 0);
 
-	gtk_box_pack_start(GTK_BOX(vbox), build_interface(), TRUE, TRUE,
+	gtk_box_pack_start(GTK_BOX(vbox),
+			   build_interface(GTK_WINDOW(window)), TRUE, TRUE,
 			   0);
 
 	gtk_widget_show_all(window);

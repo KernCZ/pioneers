@@ -1027,3 +1027,48 @@ void map_maritime_info(Map * map, MaritimeInfo * info, gint owner)
 	info->owner = owner;
 	map_traverse(map, (HexFunc) find_maritime, info);
 }
+
+typedef struct {
+	gboolean visited[MAP_SIZE][MAP_SIZE];
+	guint count;
+	guint recursion_level;
+} IslandCount;
+
+static gboolean count_islands(Map * map, Hex * hex, gpointer info)
+{
+	IslandCount *count = info;
+	HexDirection direction;
+
+	if (hex == NULL)
+		return FALSE;
+
+	if (count->visited[hex->y][hex->x])
+		return FALSE;
+
+	if (hex->terrain == SEA_TERRAIN)
+		return FALSE;
+
+	count->visited[hex->y][hex->x] = TRUE;
+	count->recursion_level++;
+	for (direction = 0; direction < 6; direction++) {
+		count_islands(map, hex_in_direction(map, hex, direction),
+			      count);
+	}
+	count->recursion_level--;
+	if (count->recursion_level == 0)
+		count->count++;
+	return FALSE;
+}
+
+guint map_count_islands(Map * map)
+{
+	IslandCount island_count;
+
+	memset(island_count.visited, 0, sizeof(island_count.visited));
+	island_count.count = 0;
+	island_count.recursion_level = 0;
+
+	map_traverse(map, count_islands, &island_count);
+
+	return island_count.count;
+}

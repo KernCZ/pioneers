@@ -79,6 +79,13 @@ typedef struct {
 	gint points;		/* number of points */
 } Points;
 
+typedef enum {
+	PARAMS_WINNABLE,	/* the game can be won */
+	PARAMS_WIN_BUILD_ALL,	/* the game can be won by building all */
+	PARAMS_WIN_PERHAPS,	/* the game could be won */
+	PARAMS_NO_WIN		/* the game cannot be won */
+} WinnableState;
+
 typedef void (*WriteLineFunc) (gpointer user_data, const gchar *);
 
 GameParams *params_new(void);
@@ -90,8 +97,16 @@ void params_write_lines(GameParams * params, gboolean write_secrets,
 gboolean params_write_file(GameParams * params, const gchar * fname);
 gboolean params_load_line(GameParams * params, gchar * line);
 gboolean params_load_finish(GameParams * params);
-
 gboolean read_line_from_file(gchar ** line, FILE * f);
+/** Check whether, in theory, the game could be won by a player.
+ * @param params The game parameters
+ * @retval win_message A message describing how/when the game can be won
+ * @retval point_specification A message describing how the points are distributed
+ * @return Whether the game can be won
+ */
+WinnableState params_check_winnable_state(const GameParams * params,
+					  gchar ** win_message,
+					  gchar ** point_specification);
 
 Points *points_new(gint id, const gchar * name, gint points);
 void points_free(Points * points);

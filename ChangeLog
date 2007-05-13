@@ -1,4 +1,14 @@
 ﻿
+2007-05-13  Roland Clobus <rclobus@bigfoot.com>
+	* editor/gtk/game-parameters.h, editor/gtk/editor.c,
+	editor/gtk/Makefile.am, editor/gtk/game-parameters.c,
+	common/map-query.c, common/gtk/common_gtk.h,
+	common/gtk/game-settings.c, common/gtk/game-settings.h,
+	common/gtk/Makefile.am, common/gtk/commmon_gtk.c, common/game.c,
+	common/map.c, common/game.h, common/map.h, server/gtk/main.c,
+	client/gtk/connect.c: Added victory point check. Game rules are split
+	from game settings.
+
 2007-05-13  Brian Wellington <bwelling@xbill.org>
 	* editor/gtk/game-buildings.c, common/map_query.c,
 	common/gtk/guimap.c, common/gtk/guimap.h, common/cost.c,

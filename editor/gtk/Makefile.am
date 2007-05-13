@@ -27,8 +27,6 @@ pioneers_editor_CPPFLAGS = $(gtk_cflags)
 
 pioneers_editor_SOURCES = \
 	editor/gtk/editor.c \
-	editor/gtk/game-parameters.c \
-	editor/gtk/game-parameters.h \
 	editor/gtk/game-devcards.c \
 	editor/gtk/game-devcards.h \
 	editor/gtk/game-buildings.c \

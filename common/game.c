@@ -29,6 +29,7 @@
 #include <stdio.h>
 
 #include "game.h"
+#include "cards.h"
 
 typedef enum {
 	PARAM_STRING,
@@ -561,6 +562,101 @@ gboolean params_write_file(GameParams * params, const gchar * fname)
 	fclose(fp);
 
 	return TRUE;
+}
+
+WinnableState params_check_winnable_state(const GameParams * params,
+					  gchar ** win_message,
+					  gchar ** point_specification)
+{
+	gint target, building, development;
+	gint road, army;
+	gint idx;
+	WinnableState return_value;
+	gint total_island, max_island;
+	guint number_of_islands;
+
+	if (params == NULL) {
+		*win_message = g_strdup("Error: no GameParams provided");
+		*point_specification = g_strdup("");
+		return PARAMS_NO_WIN;
+	}
+
+	/* Check whether the game is winnable at all */
+	target = params->victory_points;
+	building =
+	    params->num_build_type[BUILD_SETTLEMENT] +
+	    (params->num_build_type[BUILD_SETTLEMENT] > 0 ?
+	     params->num_build_type[BUILD_CITY] * 2 : 0);
+	road =
+	    (params->num_build_type[BUILD_ROAD] +
+	     params->num_build_type[BUILD_SHIP] +
+	     params->num_build_type[BUILD_BRIDGE]) >= 5 ? 2 : 0;
+	army = params->num_develop_type[DEVEL_SOLDIER] >= 3 ? 2 : 0;
+	development = 0;
+	for (idx = 0; idx < NUM_DEVEL_TYPES; idx++) {
+		if (is_victory_card(idx))
+			development += params->num_develop_type[idx];
+	}
+
+	number_of_islands = map_count_islands(params->map);
+	if (number_of_islands == 0) {
+		*win_message = g_strdup(_("This game cannot be won."));
+		*point_specification = g_strdup(_("There is no land."));
+		return PARAMS_NO_WIN;
+	}
+
+	/* It is not guaranteed that the islands can be reached */
+	total_island = 0;
+	max_island = 0;
+	if (params->island_discovery_bonus != NULL
+	    && params->island_discovery_bonus->len > 0
+	    && (params->num_build_type[BUILD_SHIP] +
+		params->num_build_type[BUILD_BRIDGE] > 0)) {
+		gint i;
+		for (i = 0; i < number_of_islands - 1; i++) {
+			total_island +=
+			    g_array_index(params->island_discovery_bonus,
+					  gint,
+					  MIN(params->
+					      island_discovery_bonus->len -
+					      1, i));
+			/* The island score can be negative */
+			if (max_island < total_island)
+				max_island = total_island;
+		}
+	}
+
+	if (target > building) {
+		if (target >
+		    building + development + road + army + max_island) {
+			*win_message =
+			    g_strdup(_("This game cannot be won."));
+			return_value = PARAMS_NO_WIN;
+		} else {
+			*win_message =
+			    g_strdup(_
+				     ("It is possible that this "
+				      "game cannot be won."));
+			return_value = PARAMS_WIN_PERHAPS;
+		}
+	} else {
+		*win_message = g_strdup(_("This game can be won by only "
+					  "building all settlements and "
+					  "cities."));
+		return_value = PARAMS_WIN_BUILD_ALL;
+	}
+	*point_specification =
+	    g_strdup_printf(_
+			    ("Required victory points: %d\n"
+			     "Points obtained by building all: %d\n"
+			     "Points in development cards: %d\n"
+			     "Longest road/largest army: %d+%d\n"
+			     "Maximum island discovery bonus: %d\n"
+			     "Total: %d"), target, building, development,
+			    road, army, max_island,
+			    building + development + road + army +
+			    max_island);
+	return return_value;
 }
 
 Points *points_new(gint id, const gchar * name, gint points)

@@ -155,9 +155,19 @@ typedef struct {
 	gboolean specific_resource[NO_RESOURCE];
 } MaritimeInfo;
 
+typedef enum {
+	HEX_DIR_E,
+	HEX_DIR_NE,
+	HEX_DIR_NW,
+	HEX_DIR_W,
+	HEX_DIR_SW,
+	HEX_DIR_SE
+} HexDirection;
+
 /* map.c
  */
 Hex *map_hex(Map * map, gint x, gint y);
+Hex *hex_in_direction(Map * map, const Hex * hex, HexDirection direction);
 Edge *map_edge(Map * map, gint x, gint y, gint pos);
 Node *map_node(Map * map, gint x, gint y, gint pos);
 typedef gboolean(*HexFunc) (Map * map, Hex * hex, void *closure);
@@ -230,6 +240,7 @@ gboolean map_bridge_connect_ok(Map * map, gint owner, gint x, gint y,
 void map_longest_road(Map * map, gint * lengths, gint num_players);
 gboolean map_is_island_discovered(Map * map, Node * node, gint owner);
 void map_maritime_info(Map * map, MaritimeInfo * info, gint owner);
+guint map_count_islands(Map * map);
 
 extern GRand *g_rand_ctx;
 

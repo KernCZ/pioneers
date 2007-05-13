@@ -32,6 +32,7 @@
 #include "config-gnome.h"
 #include "select-game.h"
 #include "game-settings.h"
+#include "game-rules.h"
 
 const int PRIVATE_GAME_HISTORY_SIZE = 10;
 
@@ -76,6 +77,7 @@ static GtkWidget *cserver_dlg;	/* Dialog for creating a public game */
 static GtkWidget *select_game;	/* select game type */
 static GtkWidget *game_settings;	/* game settings widget */
 static GtkWidget *aiplayers_spin;	/* number of AI players */
+static GtkWidget *game_rules;	/* Adjust some rules */
 
 static gboolean cfg_terrain;	/* Random terrain */
 static guint cfg_num_players, cfg_victory_points, cfg_sevens_rule;
@@ -693,9 +695,19 @@ static GtkWidget *build_create_interface(void)
 	 G_CALLBACK(game_select_cb), NULL);
 	 */
 
-	game_settings = game_settings_new();
+	if (!metaserver_info.can_send_game_settings) {
+		label = gtk_label_new(NULL);
+		gtk_label_set_markup(GTK_LABEL(label),
+				     _("<b>Note</b>:\n"
+				       "\tThe metaserver does not send information about the games.\n"
+				       "\tPlease set appropriate values yourself."));
+		gtk_widget_show(label);
+		gtk_box_pack_start_defaults(GTK_BOX(vbox), label);
+	}
+
+	game_settings = game_settings_new(FALSE);
 	gtk_widget_show(game_settings);
-	gtk_box_pack_end(GTK_BOX(vbox), game_settings, FALSE, FALSE, 3);
+	gtk_box_pack_start(GTK_BOX(vbox), game_settings, FALSE, FALSE, 3);
 
 	/* Dynamically adjust the maximum number of AI's */
 	g_signal_connect(G_OBJECT(game_settings),
@@ -724,15 +736,9 @@ static GtkWidget *build_create_interface(void)
 	gtk_tooltips_set_tip(tooltips, aiplayers_spin,
 			     _("The number of AI players"), NULL);
 
-	if (!metaserver_info.can_send_game_settings) {
-		label = gtk_label_new(NULL);
-		gtk_label_set_markup(GTK_LABEL(label),
-				     _("<b>Note</b>:\n"
-				       "\tThe metaserver does not send information about the games.\n"
-				       "\tPlease set appropriate values yourself."));
-		gtk_widget_show(label);
-		gtk_box_pack_end_defaults(GTK_BOX(vbox), label);
-	}
+	game_rules = game_rules_new_metaserver();
+	gtk_widget_show(game_rules);
+	gtk_box_pack_start(GTK_BOX(vbox), game_rules, FALSE, FALSE, 3);
 
 	get_meta_server_games_types(metaserver_info.server,
 				    metaserver_info.port);
@@ -745,20 +751,23 @@ static void create_server_dlg_cb(GtkDialog * dlg, gint arg1,
 {
 	GameSettings *gs = GAMESETTINGS(game_settings);
 	SelectGame *sg = SELECTGAME(select_game);
+	GameRules *gr = GAMERULES(game_rules);
 
 	switch (arg1) {
 	case GTK_RESPONSE_OK:
 		log_message(MSG_INFO, _("Requesting new game server\n"));
 
-		cfg_terrain = game_settings_get_terrain(gs);
+		cfg_terrain = game_rules_get_random_terrain(gr);
 		cfg_num_players = game_settings_get_players(gs);
 		cfg_victory_points = game_settings_get_victory_points(gs);
-		cfg_sevens_rule = game_settings_get_sevens_rule(gs);
+		cfg_sevens_rule = game_rules_get_sevens_rule(gr);
 		cfg_ai_players =
 		    gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON
 						     (aiplayers_spin));
 		cfg_gametype = select_game_get_active(sg);
 
+		g_print("terrain: %d player %d seven %d\n", cfg_terrain,
+			cfg_num_players, cfg_sevens_rule);
 		create_ses = net_new(meta_create_notify, NULL);
 		if (net_connect
 		    (create_ses, metaserver_info.server,

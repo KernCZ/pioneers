@@ -31,6 +31,8 @@ libpioneers_gtk_a_SOURCES = \
 	common/gtk/common_gtk.h \
 	common/gtk/config-gnome.c \
 	common/gtk/config-gnome.h \
+	common/gtk/game-rules.c \
+	common/gtk/game-rules.h \
 	common/gtk/game-settings.c \
 	common/gtk/game-settings.h \
 	common/gtk/gtkbugs.c \

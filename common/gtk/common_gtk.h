@@ -44,6 +44,13 @@ enum TFindResult find_integer_in_tree(GtkTreeModel * model,
 				      GtkTreeIter * iter, gint column,
 				      gint number);
 
+/** Check whether the game can be won, and display a messagebox
+ *  about the distribution of the points.
+ * @param param The game
+ * @param main_window The main window for the dialog
+ */
+void check_victory_points(GameParams * param, GtkWindow * main_window);
+
 extern UIDriver GTK_Driver;
 
 #endif				/* __common_gtk_h */

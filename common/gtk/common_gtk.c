@@ -25,6 +25,7 @@
 #include "game.h"
 #include "state.h"
 #include "common_gtk.h"
+#include "cards.h"
 
 static GtkWidget *message_txt;
 static gboolean msg_colors = TRUE;
@@ -280,4 +281,47 @@ enum TFindResult find_integer_in_tree(GtkTreeModel * model,
 	if (data.result != FIND_NO_MATCH)
 		*iter = data.iter;
 	return data.result;
+}
+
+void check_victory_points(GameParams * params, GtkWindow * main_window)
+{
+	gchar *win_message;
+	gchar *point_specification;
+	WinnableState state;
+	GtkMessageType message_type;
+	GtkWidget *dialog;
+
+	state =
+	    params_check_winnable_state(params, &win_message,
+					&point_specification);
+
+	switch (state) {
+	case PARAMS_WINNABLE:
+		message_type = GTK_MESSAGE_INFO;
+		break;
+	case PARAMS_WIN_BUILD_ALL:
+		message_type = GTK_MESSAGE_INFO;
+		break;
+	case PARAMS_WIN_PERHAPS:
+		message_type = GTK_MESSAGE_WARNING;
+		break;
+	case PARAMS_NO_WIN:
+		message_type = GTK_MESSAGE_ERROR;
+		break;
+	default:
+		message_type = GTK_MESSAGE_ERROR;
+		break;		/* Avoid a GCC warning about message_type being possibly uninitialized */
+	}
+	dialog = gtk_message_dialog_new(main_window,
+					GTK_DIALOG_DESTROY_WITH_PARENT,
+					message_type,
+					GTK_BUTTONS_OK, win_message);
+
+	gtk_message_dialog_format_secondary_text
+	    (GTK_MESSAGE_DIALOG(dialog), "%s", point_specification);
+	gtk_dialog_run(GTK_DIALOG(dialog));
+	gtk_widget_destroy(dialog);
+
+	g_free(win_message);
+	g_free(point_specification);
 }

@@ -32,13 +32,15 @@
 #include "config-gnome.h"
 #include "game.h"
 #include "game-settings.h"
-#include "game-parameters.h"
+#include "game-rules.h"
 #include "game-devcards.h"
 #include "game-buildings.h"
 #include "game-resources.h"
 #include "guimap.h"
 #include "theme.h"
 #include "colors.h"
+#include "common_gtk.h"
+#include "cards.h"
 
 #define MAINICON_FILE "pioneers-editor.png"
 
@@ -51,7 +53,7 @@ static GameParams *params;
 static gchar *window_title;
 static gchar *open_filename;
 static GameSettings *game_settings;
-static GameParameters *game_parameters;
+static GameRules *game_rules;
 static GameDevCards *game_devcards;
 static GameBuildings *game_buildings;
 static GameResources *game_resources;
@@ -118,6 +120,8 @@ static const gchar *port_direction_names[] = {
 	/* South east */
 	N_("South East|SE")
 };
+
+static void check_vp_cb(GObject * caller, gpointer main_window);
 
 static void error_dialog(const char *fmt, ...)
 {
@@ -189,45 +193,6 @@ static void canonicalize_map(Map * map)
 	if (map->chits != NULL)
 		g_array_free(map->chits, TRUE);
 	map->chits = chits;
-}
-
-static Hex *hex_in_direction(Map * map, Hex * hex, gint direction)
-{
-	gint x = hex->x;
-	gint y = hex->y;
-	switch (direction) {
-	case 0:		/* E */
-		x++;
-		break;
-	case 1:		/* NE */
-		if (y % 2 == 1)
-			x++;
-		y--;
-		break;
-	case 2:		/* NW */
-		if (y % 2 == 0)
-			x--;
-		y--;
-		break;
-	case 3:		/* W */
-		x--;
-		break;
-	case 4:		/* SW */
-		if (y % 2 == 0)
-			x--;
-		y++;
-		break;
-	case 5:		/* SE */
-		if (y % 2 == 1)
-			x++;
-		y++;
-		break;
-	default:
-		g_assert(0);
-	}
-	if (x < 0 || x >= map->x_size || y < 0 || y >= map->y_size)
-		return NULL;
-	return map->grid[y][x];
 }
 
 static gboolean terrain_has_chit(Terrain terrain)
@@ -695,18 +660,18 @@ static GtkWidget *build_frame(GtkWidget * parent, const gchar * title,
 	GtkWidget *vbox;
 
 	frame = gtk_frame_new(title);
-	gtk_box_pack_start(GTK_BOX(parent), frame, TRUE, TRUE, 0);
+	gtk_box_pack_start(GTK_BOX(parent), frame, FALSE, TRUE, 0);
 
 	vbox = gtk_vbox_new(FALSE, 3);
 	gtk_container_add(GTK_CONTAINER(frame), vbox);
 	gtk_container_set_border_width(GTK_CONTAINER(vbox), 3);
 
-	gtk_box_pack_start(GTK_BOX(vbox), element, TRUE, TRUE, 0);
+	gtk_box_pack_start(GTK_BOX(vbox), element, FALSE, TRUE, 0);
 
 	return frame;
 }
 
-static GtkWidget *build_settings(void)
+static GtkWidget *build_settings(GtkWindow * main_window)
 {
 	GtkWidget *vbox, *hbox, *lvbox, *rvbox;
 
@@ -722,20 +687,22 @@ static GtkWidget *build_settings(void)
 	rvbox = gtk_vbox_new(FALSE, 5);
 	gtk_box_pack_start(GTK_BOX(hbox), rvbox, FALSE, TRUE, 0);
 
-	game_settings = GAMESETTINGS(game_settings_new());
-	game_parameters = GAMEPARAMETERS(game_parameters_new());
+	game_settings = GAMESETTINGS(game_settings_new(TRUE));
+	game_rules = GAMERULES(game_rules_new());
 	game_resources = GAMERESOURCES(game_resources_new());
 	game_devcards = GAMEDEVCARDS(game_devcards_new());
 	game_buildings = GAMEBUILDINGS(game_buildings_new());
 
 	build_frame(lvbox, _("Game Parameters"),
 		    GTK_WIDGET(game_settings));
-	build_frame(lvbox, _("Rules"), GTK_WIDGET(game_parameters));
+	build_frame(lvbox, _("Rules"), GTK_WIDGET(game_rules));
 	build_frame(lvbox, _("Resources"), GTK_WIDGET(game_resources));
 	build_frame(rvbox, _("Buildings"), GTK_WIDGET(game_buildings));
 	build_frame(rvbox, _("Development Cards"),
 		    GTK_WIDGET(game_devcards));
 
+	g_signal_connect(G_OBJECT(game_settings), "check",
+			 G_CALLBACK(check_vp_cb), main_window);
 	return vbox;
 }
 
@@ -760,18 +727,16 @@ static void apply_params(GameParams * params)
 
 	set_window_title(params->title);
 
-	game_parameters_set_use_pirate(game_parameters,
-				       params->use_pirate);
-	game_parameters_set_strict_trade(game_parameters,
-					 params->strict_trade);
-	game_parameters_set_domestic_trade(game_parameters,
-					   params->domestic_trade);
+	game_rules_set_random_terrain(game_rules, params->random_terrain);
+	game_rules_set_sevens_rule(game_rules, params->sevens_rule);
+	/* Do not disable the pirate rule if currently no ships are present */
+	game_rules_set_use_pirate(game_rules, params->use_pirate, 1);
+	game_rules_set_strict_trade(game_rules, params->strict_trade);
+	game_rules_set_domestic_trade(game_rules, params->domestic_trade);
 
-	game_settings_set_terrain(game_settings, params->random_terrain);
 	game_settings_set_players(game_settings, params->num_players);
 	game_settings_set_victory_points(game_settings,
 					 params->victory_points);
-	game_settings_set_sevens_rule(game_settings, params->sevens_rule);
 
 	game_resources_set_num_resources(game_resources,
 					 params->resource_count);
@@ -796,18 +761,15 @@ static GameParams *get_params(void)
 
 	params->title = g_strdup(window_title);
 
-	params->use_pirate =
-	    game_parameters_get_use_pirate(game_parameters);
-	params->strict_trade =
-	    game_parameters_get_strict_trade(game_parameters);
-	params->domestic_trade =
-	    game_parameters_get_domestic_trade(game_parameters);
+	params->random_terrain = game_rules_get_random_terrain(game_rules);
+	params->sevens_rule = game_rules_get_sevens_rule(game_rules);
+	params->use_pirate = game_rules_get_use_pirate(game_rules);
+	params->strict_trade = game_rules_get_strict_trade(game_rules);
+	params->domestic_trade = game_rules_get_domestic_trade(game_rules);
 
-	params->random_terrain = game_settings_get_terrain(game_settings);
 	params->num_players = game_settings_get_players(game_settings);
 	params->victory_points =
 	    game_settings_get_victory_points(game_settings);
-	params->sevens_rule = game_settings_get_sevens_rule(game_settings);
 
 	params->resource_count =
 	    game_resources_get_num_resources(game_resources);
@@ -994,6 +956,15 @@ static void change_title_menu_cb(void)
 	gtk_widget_destroy(dialog);
 }
 
+static void check_vp_cb(G_GNUC_UNUSED GObject * caller,
+			gpointer main_window)
+{
+	GameParams *params;
+
+	params = get_params();
+	check_victory_points(params, main_window);
+}
+
 static void exit_cb(void)
 {
 	gtk_main_quit();
@@ -1041,6 +1012,9 @@ static GtkActionEntry entries[] = {
 	 N_("Save as"), save_as_menu_cb},
 	{"ChangeTitle", NULL, N_("_Change title"), "<control>T",
 	 N_("Change game title"), change_title_menu_cb},
+	{"CheckVP", GTK_STOCK_APPLY, N_("_Check Victory Point Target"),
+	 NULL,
+	 N_("Check whether the game can be won"), G_CALLBACK(check_vp_cb)},
 	{"Quit", GTK_STOCK_QUIT, N_("_Quit"), "<control>Q",
 	 N_("Quit"), exit_cb},
 
@@ -1064,6 +1038,7 @@ static const char *ui_description =
 "      <menuitem action='Save'/>"
 "      <menuitem action='SaveAs'/>"
 "      <separator/>"
+"      <menuitem action='CheckVP'/>"
 "      <menuitem action='ChangeTitle'/>"
 "      <separator/>"
 "      <menuitem action='Quit'/>"
@@ -1189,7 +1164,8 @@ int main(int argc, char *argv[])
 	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), build_map(),
 				 gtk_label_new(_("Map")));
 
-	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), build_settings(),
+	gtk_notebook_append_page(GTK_NOTEBOOK(notebook),
+				 build_settings(GTK_WINDOW(toplevel)),
 				 gtk_label_new(_("Settings")));
 
 	terrain_menu = build_terrain_menu();
