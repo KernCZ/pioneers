@@ -35,6 +35,7 @@ common/gtk/game-settings.c
 common/gtk/guimap.c
 common/gtk/select-game.c
 common/gtk/theme.c
+common/game.c
 common/log.c
 common/network.c
 common/state.c

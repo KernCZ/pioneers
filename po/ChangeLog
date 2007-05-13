@@ -1,6 +1,7 @@
 2007-05-13 Roland Clobus <rclobus@bigfoot.com>
 	* POTFILES.in: editor/gtk/game-settings.c was renamed to
 	common/gtk/game-rules.c
+	* POTFILES.in: common/game.c also contains translatable strings
 
 2007-04-08 Yasuhiko Takasugi <takasugi@flcl.org>
 	* ja.po: Updated (File date 2007-01-28)
