@@ -766,8 +766,6 @@ static void create_server_dlg_cb(GtkDialog * dlg, gint arg1,
 						     (aiplayers_spin));
 		cfg_gametype = select_game_get_active(sg);
 
-		g_print("terrain: %d player %d seven %d\n", cfg_terrain,
-			cfg_num_players, cfg_sevens_rule);
 		create_ses = net_new(meta_create_notify, NULL);
 		if (net_connect
 		    (create_ses, metaserver_info.server,
