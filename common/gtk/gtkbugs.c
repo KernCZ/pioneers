@@ -45,19 +45,16 @@ void set_pixbuf_tree_view_column_autogrow(GtkWidget * parent_widget,
 	}
 }
 
-/** In Gtk+ 2.6 and 2.8 you cannot press a button twice, without moving the
+/** Since Gtk+ 2.6 you cannot press a button twice, without moving the
  *  mouse.
  */
 void action_set_sensitive(GtkAction * action, gboolean sensitive)
 {
-	if (gtk_major_version == 2 && gtk_minor_version <= 8) {
-		GSList *widgets;
-		widgets = gtk_action_get_proxies(action);
-		while (widgets) {
-			widget_set_sensitive(GTK_WIDGET(widgets->data),
-					     sensitive);
-			widgets = g_slist_next(widgets);
-		}
+	GSList *widgets;
+	widgets = gtk_action_get_proxies(action);
+	while (widgets) {
+		widget_set_sensitive(GTK_WIDGET(widgets->data), sensitive);
+		widgets = g_slist_next(widgets);
 	}
 	gtk_action_set_sensitive(action, sensitive);
 }

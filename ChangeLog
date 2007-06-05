@@ -1,4 +1,8 @@
 ﻿
+2007-06-05  Roland Clobus <rclobus@bigfoot.com>
+	* common/gtk/gtkbugs.c: action_set_sensitive is still (Gtk+-2.10) not
+	fixed, so the version check is disabled.
+	
 2007-05-13  Roland Clobus <rclobus@bigfoot.com>
 	* editor/gtk/game-parameters.h, editor/gtk/editor.c,
 	editor/gtk/Makefile.am, editor/gtk/game-parameters.c,
