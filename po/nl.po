@@ -6,10 +6,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Pioneers 0.10.2\n"
+"Project-Id-Version: Pioneers 0.11.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-07-12 21:45+0200\n"
-"PO-Revision-Date: 2006-08-30 20:30+0200\n"
+"PO-Revision-Date: 2007-07-12 22:00+0200\n"
 "Last-Translator: Roland Clobus <rclobus@bigfoot.com>\n"
 "Language-Team: Bas Wijnen <shevek@fmf.nl> Roland Clobus <rclobus@bigfoot."
 "com>\n"
@@ -19,21 +19,21 @@ msgstr ""
 
 #: ../po/NotInSVNYetButWillBeInTheRelease.c:3
 msgid "Face:"
-msgstr ""
+msgstr "Gezicht:"
 
 #: ../po/NotInSVNYetButWillBeInTheRelease.c:4
 msgid "Variant:"
-msgstr ""
+msgstr "Variant:"
 
 #: ../po/NotInSVNYetButWillBeInTheRelease.c:5
-#, fuzzy, c-format
+#, c-format
 msgid "%s has undone the pirate movement.\n"
-msgstr "%s laat het schip toch maar niet varen.\n"
+msgstr "%s heeft de piraat teruggezet.\n"
 
 #: ../po/NotInSVNYetButWillBeInTheRelease.c:6
-#, fuzzy, c-format
+#, c-format
 msgid "%s has undone the robber movement.\n"
-msgstr "%s moet de struikrover verplaatsen."
+msgstr "%s heeft de struikrover teruggezet.\n"
 
 #. Default name for the AI when the computer_names file
 #. * is not found or empty.
@@ -680,9 +680,9 @@ msgid "%s built a city.\n"
 msgstr "%s bouwt een stad.\n"
 
 #: ../client/common/player.c:517
-#, fuzzy, c-format
+#, c-format
 msgid "%s built a city wall.\n"
-msgstr "%s bouwt een stad.\n"
+msgstr "%s bouwt een stadsmuur.\n"
 
 #: ../client/common/player.c:528
 #, c-format
@@ -715,9 +715,9 @@ msgid "%s removed a city.\n"
 msgstr "%s haalt een stad weg.\n"
 
 #: ../client/common/player.c:608
-#, fuzzy, c-format
+#, c-format
 msgid "%s removed a city wall.\n"
-msgstr "%s haalt een stad weg.\n"
+msgstr "%s haalt een stadsmuur weg.\n"
 
 #: ../client/common/player.c:618
 #, c-format
@@ -1450,14 +1450,12 @@ msgstr "Koop een ontwikkelingskaart"
 
 #: ../client/gtk/gui.c:254 ../client/gtk/legend.c:240
 #: ../client/gtk/player.c:52 ../editor/gtk/game-buildings.c:14
-#, fuzzy
 msgid "City Wall"
-msgstr "Stad"
+msgstr "Stadsmuur"
 
 #: ../client/gtk/gui.c:255
-#, fuzzy
 msgid "Build a city wall"
-msgstr "Bouw een stad"
+msgstr "Bouw een stadsmuur"
 
 #: ../client/gtk/gui.c:257
 msgid "_Settings"
@@ -1594,11 +1592,11 @@ msgstr "Maak geluid wanneer een nieuwe speler of toeschouwer het spel betreedt"
 #. Label for the option to use the 16:9 layout.
 #: ../client/gtk/gui.c:1017
 msgid "Use 16:9 layout"
-msgstr ""
+msgstr "Gebruik 16:9 layout"
 
 #: ../client/gtk/gui.c:1028
 msgid "Use a 16:9 friendly layout for the window"
-msgstr ""
+msgstr "Gebruik een 16:9 vriendelijke layout"
 
 #: ../client/gtk/gui.c:1039
 msgid "The Pioneers Game"
@@ -1636,7 +1634,7 @@ msgstr "Kies een schip om te bestelen"
 
 #: ../client/gtk/interface.c:757
 msgid "Select the building to steal from."
-msgstr "Kies een gebouw om te bestelen"
+msgstr "Kies een gebouw om te bestelen."
 
 #: ../client/gtk/interface.c:759
 msgid "Select the building to steal from"
@@ -1730,7 +1728,7 @@ msgstr "Steden"
 
 #: ../client/gtk/player.c:52
 msgid "City Walls"
-msgstr ""
+msgstr "Stadsmuren"
 
 #: ../client/gtk/player.c:53
 msgid "Largest Army"
@@ -1970,7 +1968,7 @@ msgstr "Steden:"
 
 #: ../client/gtk/settingscreen.c:259
 msgid "City Walls:"
-msgstr ""
+msgstr "Stadsmuren:"
 
 #: ../client/gtk/settingscreen.c:265
 msgid "Ships:"
@@ -2104,14 +2102,12 @@ msgid "All sevens are rerolled"
 msgstr "Alle zevens worden opnieuw gerold"
 
 #: ../common/gtk/game-rules.c:121
-#, fuzzy
 msgid "Randomize Terrain"
-msgstr "Willekeurig terrein?"
+msgstr "Willekeurig terrein"
 
 #: ../common/gtk/game-rules.c:121
-#, fuzzy
 msgid "Randomize the terrain"
-msgstr "Willekeurig terrein?"
+msgstr "Willekeurig terrein maken"
 
 #: ../common/gtk/game-rules.c:123
 msgid "Use Pirate"
@@ -2119,16 +2115,15 @@ msgstr "Gebruik piraat"
 
 #: ../common/gtk/game-rules.c:123
 msgid "Use the pirate to block ships"
-msgstr ""
+msgstr "Gebruik de piraat om schepen te blokkeren"
 
 #: ../common/gtk/game-rules.c:125
 msgid "Strict Trade"
 msgstr "Handel voor bouwen"
 
 #: ../common/gtk/game-rules.c:126
-#, fuzzy
 msgid "Allow trade only before building or buying"
-msgstr "Handelen alleen toegestaan voor het bouwen?"
+msgstr "Handelen alleen toegestaan voor het bouwen"
 
 #: ../common/gtk/game-rules.c:128
 msgid "Domestic Trade"
@@ -2136,7 +2131,7 @@ msgstr "Handel tussen spelers"
 
 #: ../common/gtk/game-rules.c:128
 msgid "Allow trade between players"
-msgstr ""
+msgstr "Sta handel tussen spelers toe"
 
 #. Label text for customising a game
 #: ../common/gtk/game-settings.c:118
@@ -2160,9 +2155,8 @@ msgstr "Het aantal benodigde punten om te winnen"
 
 #. Tooltip for the check button
 #: ../common/gtk/game-settings.c:172
-#, fuzzy
 msgid "Is it possible to win this game?"
-msgstr "Het aantal benodigde punten om te winnen"
+msgstr "Is het mogelijk dit spel te winnen?"
 
 #. Port indicator for a resource: trade 2 for 1
 #: ../common/gtk/guimap.c:736
@@ -2211,22 +2205,22 @@ msgid "bad scaling mode '%s'"
 msgstr "Ongeldig schaaltype \"%s\""
 
 #: ../common/game.c:603 ../common/game.c:633
-#, fuzzy
 msgid "This game cannot be won."
-msgstr "Dit spel start binnenkort."
+msgstr "Dit spel kan niet gewonnen worden."
 
 #: ../common/game.c:604
-#, fuzzy
 msgid "There is no land."
-msgstr "Er is geen langste handelsroute.\n"
+msgstr "Er is geen land."
 
 #: ../common/game.c:638
 msgid "It is possible that this game cannot be won."
-msgstr ""
+msgstr "Het is mogelijk dat dit spel niet gewonnen kan worden."
 
 #: ../common/game.c:643
 msgid "This game can be won by only building all settlements and cities."
 msgstr ""
+"Dit spel kan gewonnen worden door uitsluitend alle dorpen en steden te "
+"bouwen."
 
 #: ../common/game.c:650
 #, c-format
@@ -2238,6 +2232,12 @@ msgid ""
 "Maximum island discovery bonus: %d\n"
 "Total: %d"
 msgstr ""
+"Benodigd aantal overwinningspunten: %d\n"
+"Punten door alles te bouwen: %d\n"
+"Punten in ontwikkelingskaarten: %d\n"
+"Langste weg/grootste leger: %d+%d\n"
+"Hoogste aantal ontdekkingspunten: %d\n"
+"Totaal: %d"
 
 #: ../common/log.c:54
 msgid "*ERROR* "
@@ -2643,13 +2643,12 @@ msgid "Change game title"
 msgstr "Verander de title van het spel"
 
 #: ../editor/gtk/editor.c:1015 ../server/gtk/main.c:100
-#, fuzzy
 msgid "_Check Victory Point Target"
-msgstr "Aantal winstpunten"
+msgstr "_Controleer winstpunten"
 
 #: ../editor/gtk/editor.c:1017 ../server/gtk/main.c:102
 msgid "Check whether the game can be won"
-msgstr ""
+msgstr "Controleer of het mogelijk is dit spel te winnen"
 
 #: ../editor/gtk/editor.c:1019
 msgid "Quit"
@@ -2889,14 +2888,12 @@ msgid "Add a computer player to the game"
 msgstr "Voeg computerspeler toe aan het spel"
 
 #: ../server/gtk/main.c:868
-#, fuzzy
 msgid "Launch Pioneers Client"
-msgstr "Pioniers"
+msgstr "Start Pioniers"
 
 #: ../server/gtk/main.c:875
-#, fuzzy
 msgid "Launch the Pioneers Client"
-msgstr "Pioniers"
+msgstr "Start Pioniers"
 
 #: ../server/gtk/main.c:884
 msgid "Messages"
@@ -3095,7 +3092,7 @@ msgstr "De versies van de server en de client komen niet overeen: %s"
 
 #: ../server/server.c:47
 msgid "Was hanging around for too long without players... bye.\n"
-msgstr ""
+msgstr "Na lang wachten zijn er nog steeds geen spelers... Doei.\n"
 
 #. Server: preparing game #.....
 #: ../server/server.c:219
