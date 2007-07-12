@@ -8,13 +8,31 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 0.10.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-09-16 21:44+0200\n"
+"POT-Creation-Date: 2007-07-12 21:45+0200\n"
 "PO-Revision-Date: 2007-01-10 15:53+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: ../po/NotInSVNYetButWillBeInTheRelease.c:3
+msgid "Face:"
+msgstr ""
+
+#: ../po/NotInSVNYetButWillBeInTheRelease.c:4
+msgid "Variant:"
+msgstr ""
+
+#: ../po/NotInSVNYetButWillBeInTheRelease.c:5
+#, fuzzy, c-format
+msgid "%s has undone the pirate movement.\n"
+msgstr "%s har avbrutit flyttning av ett skepp.\n"
+
+#: ../po/NotInSVNYetButWillBeInTheRelease.c:6
+#, fuzzy, c-format
+msgid "%s has undone the robber movement.\n"
+msgstr "%s måste flytta rånaren."
 
 #. Default name for the AI when the computer_names file
 #. * is not found or empty.
@@ -25,15 +43,15 @@ msgstr "Datorspelare"
 
 #. Commandline pioneersai: server
 #. Commandline option of client: hostname of the server
-#: ../client/ai/ai.c:102 ../client/gtk/connect.c:1443
+#: ../client/ai/ai.c:102 ../client/gtk/connect.c:1450
 #: ../client/gtk/offline.c:53
 msgid "Server Host"
 msgstr "Servervärd"
 
 #. Commandline pioneersai: port
 #. Commandline option of client: port of the server
-#: ../client/ai/ai.c:105 ../client/gtk/connect.c:1459
-#: ../client/gtk/offline.c:56 ../server/gtk/main.c:518
+#: ../client/ai/ai.c:105 ../client/gtk/connect.c:1466
+#: ../client/gtk/offline.c:56 ../server/gtk/main.c:624
 msgid "Server Port"
 msgstr "Serverport"
 
@@ -62,8 +80,8 @@ msgstr "Typ av datorspelare"
 #. Commandline option of meta server: enable debug logging
 #. Commandline option of server-gtk: enable debug logging
 #. Commandline option of server: enable debug logging
-#: ../client/ai/ai.c:120 ../client/gtk/offline.c:74 ../meta-server/main.c:1046
-#: ../server/gtk/main.c:817 ../server/main.c:140
+#: ../client/ai/ai.c:120 ../client/gtk/offline.c:74 ../meta-server/main.c:1049
+#: ../server/gtk/main.c:970 ../server/main.c:144
 msgid "Enable debug messages"
 msgstr "Aktivera felsökningsmeddelanden"
 
@@ -74,8 +92,8 @@ msgstr "Aktivera felsökningsmeddelanden"
 #. Commandline option of server-gtk: version
 #. Commandline option of server-console: version
 #: ../client/ai/ai.c:123 ../client/gtk/offline.c:77
-#: ../editor/gtk/editor.c:1092 ../meta-server/main.c:1052
-#: ../server/gtk/main.c:820 ../server/main.c:95
+#: ../editor/gtk/editor.c:1071 ../meta-server/main.c:1055
+#: ../server/gtk/main.c:973 ../server/main.c:99
 msgid "Show version information"
 msgstr "Visa versionsinformation"
 
@@ -84,8 +102,8 @@ msgid "- Computer player for Pioneers"
 msgstr "- Datorspelare för Pioneers"
 
 #: ../client/ai/ai.c:144 ../client/gtk/offline.c:184
-#: ../editor/gtk/editor.c:1132 ../meta-server/main.c:1081
-#: ../server/gtk/main.c:870 ../server/main.c:202
+#: ../editor/gtk/editor.c:1111 ../meta-server/main.c:1084
+#: ../server/gtk/main.c:1023 ../server/main.c:206
 msgid "Pioneers version:"
 msgstr "Pioneers version:"
 
@@ -317,7 +335,7 @@ msgstr "Spelet startar. Jag behövs inte längre. Adjö."
 msgid "Waiting"
 msgstr "Väntar"
 
-#: ../client/common/client.c:105 ../client/common/client.c:1203
+#: ../client/common/client.c:105 ../client/common/client.c:1221
 msgid "Idle"
 msgstr "Overksam"
 
@@ -326,8 +344,8 @@ msgid "We have been kicked out of the game.\n"
 msgstr "Vi har blivit utsparkade från spelet.\n"
 
 #. Network status: offline
-#: ../client/common/client.c:433 ../client/common/client.c:854
-#: ../client/gtk/gui.c:1232
+#: ../client/common/client.c:433 ../client/common/client.c:871
+#: ../client/gtk/gui.c:1338
 msgid "Offline"
 msgstr "Offline"
 
@@ -341,110 +359,110 @@ msgstr "Fel (%s): %s\n"
 msgid "Notice: %s\n"
 msgstr "Notera: %s\n"
 
-#: ../client/common/client.c:584
+#: ../client/common/client.c:601
 #, c-format
 msgid "%s does not receive any %s, because the bank is empty.\n"
 msgstr "%s tar inte emot några %s, därför att banken är tom.\n"
 
-#: ../client/common/client.c:597
+#: ../client/common/client.c:614
 #, c-format
 msgid "%s only receives %s, because the bank didn't have any more.\n"
 msgstr "%s tar endast emot %s, därför att banken inte hade mer.\n"
 
-#: ../client/common/client.c:606
+#: ../client/common/client.c:623
 #, c-format
 msgid "%s receives %s.\n"
 msgstr "%s tar emot %s.\n"
 
 #. Year of Plenty
-#: ../client/common/client.c:614 ../client/common/client.c:2468
+#: ../client/common/client.c:631 ../client/common/client.c:2500
 #, c-format
 msgid "%s takes %s.\n"
 msgstr "%s tar %s.\n"
 
-#: ../client/common/client.c:619
+#: ../client/common/client.c:636
 #, c-format
 msgid "%s spent %s.\n"
 msgstr "%s spenderade %s.\n"
 
-#: ../client/common/client.c:625
+#: ../client/common/client.c:642
 #, c-format
 msgid "%s is refunded %s.\n"
 msgstr "%s blir återbetalad %s.\n"
 
-#: ../client/common/client.c:655
+#: ../client/common/client.c:672
 #, c-format
 msgid "%s discarded %s.\n"
 msgstr "%s kastade %s.\n"
 
-#: ../client/common/client.c:813
+#: ../client/common/client.c:830
 msgid "Loading"
 msgstr "Läser in"
 
-#: ../client/common/client.c:855
+#: ../client/common/client.c:872
 msgid "Version mismatch"
 msgstr "Version stämmer inte"
 
-#: ../client/common/client.c:857
+#: ../client/common/client.c:874
 msgid "Version mismatch. Please make sure client and server are up to date.\n"
 msgstr ""
 "Versionen stämmer inte. Se till att klient och server är uppdaterade.\n"
 
-#: ../client/common/client.c:1302
+#: ../client/common/client.c:1327
 msgid "Build two settlements, each with a connecting"
 msgstr "Bygg två bosättningar, båda med en anslutande"
 
-#: ../client/common/client.c:1305
+#: ../client/common/client.c:1330
 msgid "Build a settlement with a connecting"
 msgstr "Bygg en bosättning med en anslutande"
 
-#: ../client/common/client.c:1308
+#: ../client/common/client.c:1333
 msgid "road"
 msgstr "väg"
 
-#: ../client/common/client.c:1310
+#: ../client/common/client.c:1335
 msgid "bridge"
 msgstr "bro"
 
-#: ../client/common/client.c:1312
+#: ../client/common/client.c:1337
 msgid "ship"
 msgstr "skepp"
 
-#: ../client/common/client.c:1320
+#: ../client/common/client.c:1345
 msgid " or"
 msgstr " eller"
 
-#: ../client/common/client.c:1378
+#: ../client/common/client.c:1403
 msgid "Waiting for your turn"
 msgstr "Väntar på din tur"
 
-#: ../client/common/client.c:1472 ../client/common/client.c:1497
-#: ../client/gtk/interface.c:764
+#: ../client/common/client.c:1497 ../client/common/client.c:1522
+#: ../client/gtk/interface.c:783
 msgid "Place the robber"
 msgstr "Placera ut rånaren"
 
-#: ../client/common/client.c:1521
+#: ../client/common/client.c:1546
 msgid "Finish the road building action."
 msgstr "Gör klar vägbyggnationen."
 
-#: ../client/common/client.c:1523
+#: ../client/common/client.c:1548
 msgid "Build one road segment."
 msgstr "Bygg ett vägsegment."
 
-#: ../client/common/client.c:1525
+#: ../client/common/client.c:1550
 msgid "Build two road segments."
 msgstr "Bygg två vägsegment."
 
-#: ../client/common/client.c:1798 ../client/common/client.c:1881
+#: ../client/common/client.c:1823 ../client/common/client.c:1913
 msgid "It is your turn."
 msgstr "Det är din tur."
 
-#: ../client/common/client.c:1975
+#: ../client/common/client.c:2007
 #, c-format
 msgid "Sorry, %s available.\n"
 msgstr "Tyvärr, %s tillgänglig.\n"
 
-#: ../client/common/client.c:2290
+#: ../client/common/client.c:2322
 msgid "The game is over."
 msgstr "Spelet är slut."
 
@@ -462,32 +480,32 @@ msgstr "Monopol"
 msgid "Year of Plenty"
 msgstr "Guldår"
 
-#: ../client/common/develop.c:46 ../client/gtk/player.c:53
+#: ../client/common/develop.c:46 ../client/gtk/player.c:55
 #: ../editor/gtk/game-devcards.c:14
 msgid "Chapel"
 msgstr "Kapell"
 
-#: ../client/common/develop.c:47 ../client/gtk/player.c:54
+#: ../client/common/develop.c:47 ../client/gtk/player.c:56
 #: ../editor/gtk/game-devcards.c:14
 msgid "Pioneer University"
 msgstr "Pioneer Universitet"
 
-#: ../client/common/develop.c:48 ../client/gtk/player.c:56
+#: ../client/common/develop.c:48 ../client/gtk/player.c:58
 #: ../editor/gtk/game-devcards.c:15
 msgid "Governor's House"
 msgstr "Guvernörens hus"
 
-#: ../client/common/develop.c:49 ../client/gtk/player.c:57
+#: ../client/common/develop.c:49 ../client/gtk/player.c:59
 #: ../editor/gtk/game-devcards.c:15
 msgid "Library"
 msgstr "Bibliotek"
 
-#: ../client/common/develop.c:50 ../client/gtk/player.c:58
+#: ../client/common/develop.c:50 ../client/gtk/player.c:60
 #: ../editor/gtk/game-devcards.c:15
 msgid "Market"
 msgstr "Marknad"
 
-#: ../client/common/develop.c:51 ../client/gtk/player.c:59
+#: ../client/common/develop.c:51 ../client/gtk/player.c:61
 #: ../editor/gtk/game-devcards.c:16
 msgid "Soldier"
 msgstr "Soldat"
@@ -523,24 +541,24 @@ msgstr "Du har slut på vägsegment.\n"
 
 #. I get the cards!
 #.
-#: ../client/common/develop.c:188
+#: ../client/common/develop.c:187
 #, c-format
 msgid "You get %s from %s.\n"
 msgstr "Du får %s från %s.\n"
 
 #. I lose the cards!
 #.
-#: ../client/common/develop.c:194
+#: ../client/common/develop.c:193
 #, c-format
 msgid "%s took %s from you.\n"
 msgstr "%s tog %s från dig.\n"
 
-#: ../client/common/develop.c:201
+#: ../client/common/develop.c:200
 #, c-format
 msgid "%s took %s from %s.\n"
 msgstr "%s tog %s från %s.\n"
 
-#: ../client/common/player.c:116 ../server/player.c:381
+#: ../client/common/player.c:116 ../server/player.c:380
 #, c-format
 msgid "Viewer %d"
 msgstr "Åskådare %d"
@@ -550,7 +568,7 @@ msgstr "Åskådare %d"
 msgid "viewer %d"
 msgstr "åskådare %d"
 
-#: ../client/common/player.c:126 ../server/player.c:384
+#: ../client/common/player.c:126 ../server/player.c:383
 #, c-format
 msgid "Player %d"
 msgstr "Spelare %d"
@@ -660,78 +678,88 @@ msgstr "%s byggde en bosättning.\n"
 msgid "%s built a city.\n"
 msgstr "%s byggde en stad.\n"
 
-#: ../client/common/player.c:513
+#: ../client/common/player.c:517
+#, fuzzy, c-format
+msgid "%s built a city wall.\n"
+msgstr "%s byggde en stad.\n"
+
+#: ../client/common/player.c:528
 #, c-format
 msgid "player_build_add called with BUILD_NONE for user %s\n"
 msgstr "player_build_add anropades med BUILD_NONE för användare %s\n"
 
-#: ../client/common/player.c:522
+#: ../client/common/player.c:537
 #, c-format
 msgid "%s built a bridge.\n"
 msgstr "%s byggde en bro.\n"
 
-#: ../client/common/player.c:548
+#: ../client/common/player.c:563
 #, c-format
 msgid "%s removed a road.\n"
 msgstr "%s tog bort en väg.\n"
 
-#: ../client/common/player.c:558
+#: ../client/common/player.c:573
 #, c-format
 msgid "%s removed a ship.\n"
 msgstr "%s tog bort ett skepp.\n"
 
-#: ../client/common/player.c:568
+#: ../client/common/player.c:583
 #, c-format
 msgid "%s removed a settlement.\n"
 msgstr "%s tog bort en bosättning.\n"
 
-#: ../client/common/player.c:579
+#: ../client/common/player.c:594
 #, c-format
 msgid "%s removed a city.\n"
 msgstr "%s tog bort en stad.\n"
 
-#: ../client/common/player.c:591
+#: ../client/common/player.c:608
+#, fuzzy, c-format
+msgid "%s removed a city wall.\n"
+msgstr "%s tog bort en stad.\n"
+
+#: ../client/common/player.c:618
 #, c-format
 msgid "player_build_remove called with BUILD_NONE for user %s\n"
 msgstr "player_build_remove anropades med BUILD_NONE för användare %s\n"
 
-#: ../client/common/player.c:599
+#: ../client/common/player.c:626
 #, c-format
 msgid "%s removed a bridge.\n"
 msgstr "%s tog bort en bro.\n"
 
-#: ../client/common/player.c:630
+#: ../client/common/player.c:657
 #, c-format
 msgid "%s has cancelled a ship's movement.\n"
 msgstr "%s har avbrutit flyttning av ett skepp.\n"
 
-#: ../client/common/player.c:633
+#: ../client/common/player.c:660
 #, c-format
 msgid "%s moved a ship.\n"
 msgstr "%s flyttade ett skepp.\n"
 
 #. tell the user that someone got something
-#: ../client/common/player.c:653
+#: ../client/common/player.c:680
 #, c-format
 msgid "%s received %s.\n"
 msgstr "%s mottog %s.\n"
 
-#: ../client/common/player.c:671
+#: ../client/common/player.c:698
 msgid "server asks to lose invalid point.\n"
 msgstr "server frågar om att förlora ogiltig poäng.\n"
 
 #. tell the user the point is lost
-#: ../client/common/player.c:677
+#: ../client/common/player.c:704
 #, c-format
 msgid "%s lost %s.\n"
 msgstr "%s förlorade %s.\n"
 
-#: ../client/common/player.c:700
+#: ../client/common/player.c:727
 msgid "server asks to move invalid point.\n"
 msgstr "server frågar om att flytta ogiltig poäng.\n"
 
 #. tell the user someone (1) lost something (2) to someone else (3)
-#: ../client/common/player.c:707
+#: ../client/common/player.c:734
 #, c-format
 msgid "%s lost %s to %s.\n"
 msgstr "%s förlorade %s till %s.\n"
@@ -927,92 +955,82 @@ msgstr "Du kunde inte skicka ett pip till %s.\n"
 msgid " said: "
 msgstr " säger: "
 
-#: ../client/gtk/connect.c:268
+#: ../client/gtk/connect.c:270
 #, c-format
 msgid "Meta-server at %s, port %s"
 msgstr "Metaserver på %s, port %s"
 
-#: ../client/gtk/connect.c:278
+#: ../client/gtk/connect.c:280
 msgid "Finished.\n"
 msgstr "Klar.\n"
 
-#: ../client/gtk/connect.c:295 ../client/gtk/connect.c:345
-#: ../client/gtk/connect.c:442 ../server/meta.c:174
+#: ../client/gtk/connect.c:297 ../client/gtk/connect.c:347
+#: ../client/gtk/connect.c:444 ../server/meta.c:174
 msgid "Meta-server kicked us off\n"
 msgstr "Metaserver sparkade ut oss\n"
 
-#: ../client/gtk/connect.c:320
+#: ../client/gtk/connect.c:322
 msgid "Receiving game names from the meta server.\n"
 msgstr "Tar emot spelnamn från metaservern.\n"
 
-#: ../client/gtk/connect.c:368
+#: ../client/gtk/connect.c:370
 #, c-format
 msgid "New game server requested on %s port %s\n"
 msgstr "Ny spelserver begärd på %s port %s\n"
 
-#: ../client/gtk/connect.c:377 ../server/meta.c:168
+#: ../client/gtk/connect.c:379 ../server/meta.c:168
 #, c-format
 msgid "Unknown message from the metaserver: %s\n"
 msgstr "Okänt meddelande från metaservern: %s\n"
 
-#: ../client/gtk/connect.c:458 ../server/meta.c:125
+#: ../client/gtk/connect.c:460 ../server/meta.c:125
 msgid "Too many meta-server redirects\n"
 msgstr "För många omdirigeringar för metaserver\n"
 
-#: ../client/gtk/connect.c:485 ../server/meta.c:140
+#: ../client/gtk/connect.c:487 ../server/meta.c:140
 #, c-format
 msgid "Bad redirect line: %s\n"
 msgstr "Felaktig rad för omdirigering: %s\n"
 
-#: ../client/gtk/connect.c:511
+#: ../client/gtk/connect.c:513
 #, c-format
 msgid "Meta server too old to create servers (version %d.%d)\n"
 msgstr "Metaserver för gammal för att skapa servrar (version %d.%d)\n"
 
 #. Sevens rule: normal
-#: ../client/gtk/connect.c:582 ../client/gtk/settingscreen.c:167
-#: ../common/gtk/game-settings.c:181
+#: ../client/gtk/connect.c:584 ../client/gtk/settingscreen.c:168
+#: ../common/gtk/game-rules.c:81
 msgid "Normal"
 msgstr "Normal"
 
-#: ../client/gtk/connect.c:588 ../client/gtk/settingscreen.c:169
-#: ../common/gtk/game-settings.c:188
+#: ../client/gtk/connect.c:590 ../client/gtk/settingscreen.c:170
+#: ../common/gtk/game-rules.c:88
 msgid "Reroll on 1st 2 turns"
 msgstr "Slå om på de första 2 turerna"
 
-#: ../client/gtk/connect.c:591 ../client/gtk/settingscreen.c:171
-#: ../common/gtk/game-settings.c:195
+#: ../client/gtk/connect.c:593 ../client/gtk/settingscreen.c:172
+#: ../common/gtk/game-rules.c:95
 msgid "Reroll all 7s"
 msgstr "Slå om alla 7:or"
 
-#. Button text: default terrain
-#: ../client/gtk/connect.c:605 ../common/gtk/game-settings.c:367
+#: ../client/gtk/connect.c:607
 msgid "Default"
 msgstr "Förvald"
 
-#. Button text: random terrain
-#: ../client/gtk/connect.c:608 ../common/gtk/game-settings.c:365
+#: ../client/gtk/connect.c:610
 msgid "Random"
 msgstr "Slumpad"
 
-#: ../client/gtk/connect.c:639 ../server/meta.c:188
+#: ../client/gtk/connect.c:641 ../server/meta.c:188
 #, c-format
 msgid "Redirected to meta-server at %s, port %s\n"
 msgstr "Omdirigerad till metaserver på %s, port %s\n"
 
-#: ../client/gtk/connect.c:642
+#: ../client/gtk/connect.c:644
 msgid "Receiving a list of Pioneers servers from the meta server.\n"
 msgstr "Tar emot en lista av Pioneers-servrar från metaservern.\n"
 
-#: ../client/gtk/connect.c:706
-msgid "Number of AI Players"
-msgstr "Antal AI-spelare"
-
-#: ../client/gtk/connect.c:725
-msgid "The number of AI players"
-msgstr "Antalet AI-spelare"
-
-#: ../client/gtk/connect.c:730
+#: ../client/gtk/connect.c:701
 msgid ""
 "<b>Note</b>:\n"
 "\tThe metaserver does not send information about the games.\n"
@@ -1022,190 +1040,197 @@ msgstr ""
 "\tMetaservern skickar inte information om spelen.\n"
 "\tStäll in lämpliga värden själv."
 
-#: ../client/gtk/connect.c:751
+#: ../client/gtk/connect.c:718
+msgid "Number of AI Players"
+msgstr "Antal AI-spelare"
+
+#: ../client/gtk/connect.c:737
+msgid "The number of AI players"
+msgstr "Antalet AI-spelare"
+
+#: ../client/gtk/connect.c:758
 msgid "Requesting new game server\n"
 msgstr "Begär en ny spelserver\n"
 
-#: ../client/gtk/connect.c:794 ../server/server.c:155
+#: ../client/gtk/connect.c:801 ../server/gtk/main.c:340 ../server/server.c:160
 #, c-format
 msgid "Error starting %s: %s"
 msgstr "Fel vid start av %s: %s"
 
-#: ../client/gtk/connect.c:815
+#: ../client/gtk/connect.c:822
 msgid "Create a public game"
 msgstr "Skapa ett publikt spel"
 
-#: ../client/gtk/connect.c:946 ../client/gtk/connect.c:1249
+#: ../client/gtk/connect.c:953 ../client/gtk/connect.c:1256
 msgid "Join a public game"
 msgstr "Gå in i ett publikt spel"
 
-#: ../client/gtk/connect.c:951
+#: ../client/gtk/connect.c:958
 msgid "_New remote game"
 msgstr "_Nytt fjärrspel"
 
-#: ../client/gtk/connect.c:965
+#: ../client/gtk/connect.c:972
 msgid "Refresh the list of games"
 msgstr "Uppdatera listan av spel"
 
-#: ../client/gtk/connect.c:970
+#: ../client/gtk/connect.c:977
 msgid "Create a new public game at the meta server"
 msgstr "Skapa ett nytt publikt spel på metaservern"
 
-#: ../client/gtk/connect.c:975
+#: ../client/gtk/connect.c:982
 msgid "Don't join a public game"
 msgstr "Gå inte in i ett publikt spel"
 
-#: ../client/gtk/connect.c:979
+#: ../client/gtk/connect.c:986
 msgid "Join the selected game"
 msgstr "Gå in i valt spel"
 
-#: ../client/gtk/connect.c:1014
+#: ../client/gtk/connect.c:1021
 msgid "Select a game to join"
 msgstr "Välj ett spel att gå in i"
 
-#: ../client/gtk/connect.c:1017
+#: ../client/gtk/connect.c:1024
 msgid "Map Name"
 msgstr "Kartnamn"
 
-#: ../client/gtk/connect.c:1025
+#: ../client/gtk/connect.c:1032
 msgid "Name of the game"
 msgstr "Spelets namn"
 
-#: ../client/gtk/connect.c:1030
+#: ../client/gtk/connect.c:1037
 msgid "Curr"
 msgstr "Nuvar"
 
-#: ../client/gtk/connect.c:1036
+#: ../client/gtk/connect.c:1043
 msgid "Number of players in the game"
 msgstr "Antal spelare i spelet"
 
-#: ../client/gtk/connect.c:1041
+#: ../client/gtk/connect.c:1048
 msgid "Max"
 msgstr "Max"
 
-#: ../client/gtk/connect.c:1047
+#: ../client/gtk/connect.c:1054
 msgid "Maximum players for the game"
 msgstr "Max antal spelare för spelet"
 
-#: ../client/gtk/connect.c:1050
+#: ../client/gtk/connect.c:1057
 msgid "Terrain"
 msgstr "Terräng"
 
-#: ../client/gtk/connect.c:1057
+#: ../client/gtk/connect.c:1064
 msgid "Random of default terrain"
 msgstr "Slumpmässig standardterräng"
 
-#: ../client/gtk/connect.c:1062
+#: ../client/gtk/connect.c:1069
 msgid "Vic. Points"
 msgstr "Segerpoäng"
 
-#: ../client/gtk/connect.c:1068
+#: ../client/gtk/connect.c:1075
 msgid "Points needed to win"
 msgstr "Poäng för vinst"
 
-#. Label for customising a game
-#: ../client/gtk/connect.c:1071 ../common/gtk/game-settings.c:173
+#: ../client/gtk/connect.c:1078 ../common/gtk/game-rules.c:73
 msgid "Sevens Rule"
 msgstr "Regel för 7:an"
 
-#: ../client/gtk/connect.c:1077
+#: ../client/gtk/connect.c:1084
 msgid "Sevens rule"
 msgstr "Regel för 7:an"
 
-#: ../client/gtk/connect.c:1081
+#: ../client/gtk/connect.c:1088
 msgid "Host"
 msgstr "Värd"
 
-#: ../client/gtk/connect.c:1089
+#: ../client/gtk/connect.c:1096
 msgid "Host of the game"
 msgstr "Värd för spelet"
 
-#: ../client/gtk/connect.c:1094
+#: ../client/gtk/connect.c:1101
 msgid "Port"
 msgstr "Port"
 
-#: ../client/gtk/connect.c:1100
+#: ../client/gtk/connect.c:1107
 msgid "Port of the the game"
 msgstr "Port för spelet"
 
-#: ../client/gtk/connect.c:1103 ../common/gtk/aboutbox.c:77
+#: ../client/gtk/connect.c:1110 ../common/gtk/aboutbox.c:77
 msgid "Version"
 msgstr "Version"
 
-#: ../client/gtk/connect.c:1110
+#: ../client/gtk/connect.c:1117
 msgid "Version of the host"
 msgstr "Version hos värden"
 
-#: ../client/gtk/connect.c:1165 ../client/gtk/gui.c:206
+#: ../client/gtk/connect.c:1172 ../client/gtk/gui.c:215
 msgid "Start a new game"
 msgstr "Starta ett nytt spel"
 
-#: ../client/gtk/connect.c:1190
+#: ../client/gtk/connect.c:1197
 msgid "Player Name"
 msgstr "Spelarens namn"
 
-#: ../client/gtk/connect.c:1204
+#: ../client/gtk/connect.c:1211
 msgid "Enter your name"
 msgstr "Ange ditt namn"
 
 #. Role of the player: viewer
-#: ../client/gtk/connect.c:1206 ../server/gtk/main.c:462
+#: ../client/gtk/connect.c:1213 ../server/gtk/main.c:523
 msgid "Viewer"
 msgstr "Åskådare"
 
-#: ../client/gtk/connect.c:1214
+#: ../client/gtk/connect.c:1221
 msgid "Do you want to be a viewer?"
 msgstr "Vill du vara en åskådare?"
 
-#: ../client/gtk/connect.c:1221 ../server/gtk/main.c:549
+#: ../client/gtk/connect.c:1228 ../server/gtk/main.c:655
 msgid "Meta Server"
 msgstr "Metaserver"
 
-#: ../client/gtk/connect.c:1236
+#: ../client/gtk/connect.c:1243
 msgid "Leave empty for the default meta server"
 msgstr "Lämna blank för den förvalda metaservern"
 
-#: ../client/gtk/connect.c:1244
+#: ../client/gtk/connect.c:1251
 msgid "Join public game"
 msgstr "Gå in i ett publikt spel"
 
-#: ../client/gtk/connect.c:1253
+#: ../client/gtk/connect.c:1260
 msgid "Create game"
 msgstr "Skapa spel"
 
-#: ../client/gtk/connect.c:1256
+#: ../client/gtk/connect.c:1263
 msgid "Create a game"
 msgstr "Skapa ett spel"
 
-#: ../client/gtk/connect.c:1266
+#: ../client/gtk/connect.c:1273
 msgid "Join private game"
 msgstr "Gå in i privat spel"
 
-#: ../client/gtk/connect.c:1270 ../client/gtk/connect.c:1415
+#: ../client/gtk/connect.c:1277 ../client/gtk/connect.c:1422
 msgid "Join a private game"
 msgstr "Gå in i ett privat spel"
 
-#: ../client/gtk/connect.c:1456
+#: ../client/gtk/connect.c:1463
 msgid "Name of the host of the game"
 msgstr "Namn på värden som kör spelet"
 
-#: ../client/gtk/connect.c:1475
+#: ../client/gtk/connect.c:1482
 msgid "Port of the host of the game"
 msgstr "Port på värden som kör spelet"
 
-#: ../client/gtk/connect.c:1515
+#: ../client/gtk/connect.c:1522
 msgid "Recent games"
 msgstr "Tidigare spel"
 
-#: ../client/gtk/connect.c:1517
+#: ../client/gtk/connect.c:1524
 msgid "Recent Games"
 msgstr "Tidigare spel"
 
-#: ../client/gtk/develop.c:93
+#: ../client/gtk/develop.c:129
 msgid "<b>Development Cards</b>"
 msgstr "<b>Utvecklingskort</b>"
 
-#: ../client/gtk/develop.c:121
+#: ../client/gtk/develop.c:160
 msgid "Play Card"
 msgstr "Spela kort"
 
@@ -1270,299 +1295,320 @@ msgstr "Totala resurser"
 msgid "<b>Waiting for players to choose</b>"
 msgstr "<b>Väntar på att spelare ska välja</b>"
 
-#: ../client/gtk/gui.c:204 ../server/gtk/main.c:88
+#: ../client/gtk/gui.c:213 ../server/gtk/main.c:98
 msgid "_Game"
 msgstr "_Spel"
 
-#: ../client/gtk/gui.c:205
+#: ../client/gtk/gui.c:214
 msgid "_New game"
 msgstr "_Nytt spel"
 
-#: ../client/gtk/gui.c:207
+#: ../client/gtk/gui.c:216
 msgid "_Leave game"
 msgstr "_Lämna spel"
 
-#: ../client/gtk/gui.c:208
+#: ../client/gtk/gui.c:217
 msgid "Leave this game"
 msgstr "Lämna detta spel"
 
-#: ../client/gtk/gui.c:210
+#: ../client/gtk/gui.c:219
 msgid "_Admin"
 msgstr "_Administrera"
 
-#: ../client/gtk/gui.c:211
+#: ../client/gtk/gui.c:220
 msgid "Administer Pioneers server"
 msgstr "Administrera Pioneers-servern"
 
-#: ../client/gtk/gui.c:213
+#: ../client/gtk/gui.c:222
 msgid "_Player name"
 msgstr "_Spelarnamn"
 
-#: ../client/gtk/gui.c:214
+#: ../client/gtk/gui.c:223
 msgid "Change your player name"
 msgstr "Ändra ditt spelarnamn"
 
-#: ../client/gtk/gui.c:215
+#: ../client/gtk/gui.c:224
 msgid "_Legend"
 msgstr "_Förklaring"
 
-#: ../client/gtk/gui.c:216
+#: ../client/gtk/gui.c:225
 msgid "Terrain legend and building costs"
 msgstr "Terrängförklaring och byggnadskostnader"
 
-#: ../client/gtk/gui.c:217
+#: ../client/gtk/gui.c:226
 msgid "_Game Settings"
 msgstr "S_pelinställningar"
 
-#: ../client/gtk/gui.c:218
+#: ../client/gtk/gui.c:227
 msgid "Settings for the current game"
 msgstr "Inställningar för nuvarande spel"
 
-#: ../client/gtk/gui.c:219
+#: ../client/gtk/gui.c:228
 msgid "_Dice Histogram"
 msgstr "_Tärningshistogram"
 
-#: ../client/gtk/gui.c:220
+#: ../client/gtk/gui.c:229
 msgid "Histogram of dice rolls"
 msgstr "Histogram för tärningskast"
 
-#: ../client/gtk/gui.c:221 ../editor/gtk/editor.c:1040 ../server/gtk/main.c:90
+#: ../client/gtk/gui.c:230 ../editor/gtk/editor.c:1018
+#: ../server/gtk/main.c:103
 msgid "_Quit"
 msgstr "_Avsluta"
 
-#: ../client/gtk/gui.c:222 ../server/gtk/main.c:91
+#: ../client/gtk/gui.c:231 ../server/gtk/main.c:104
 msgid "Quit the program"
 msgstr "Avsluta programmet"
 
-#: ../client/gtk/gui.c:223
+#: ../client/gtk/gui.c:232
 msgid "_Actions"
 msgstr "_Åtgärder"
 
-#: ../client/gtk/gui.c:224
+#: ../client/gtk/gui.c:233
 msgid "Roll Dice"
 msgstr "Kasta tärning"
 
-#: ../client/gtk/gui.c:225
+#: ../client/gtk/gui.c:234
 msgid "Roll the dice"
 msgstr "Kasta tärningen"
 
 #. Tab page name
-#: ../client/gtk/gui.c:226 ../client/gtk/gui.c:564
+#: ../client/gtk/gui.c:235 ../client/gtk/gui.c:577
 msgid "Trade"
 msgstr "Handla"
 
-#: ../client/gtk/gui.c:228
+#: ../client/gtk/gui.c:237
 msgid "Undo"
 msgstr "Ångra"
 
-#: ../client/gtk/gui.c:229 ../client/gtk/gui.c:230
+#: ../client/gtk/gui.c:238 ../client/gtk/gui.c:239
 msgid "Finish"
 msgstr "Klar"
 
-#: ../client/gtk/gui.c:231 ../client/gtk/legend.c:224
+#: ../client/gtk/gui.c:240 ../client/gtk/legend.c:226
 #: ../editor/gtk/game-buildings.c:13
 msgid "Road"
 msgstr "Väg"
 
-#: ../client/gtk/gui.c:232
+#: ../client/gtk/gui.c:241
 msgid "Build a road"
 msgstr "Bygg en väg"
 
-#: ../client/gtk/gui.c:233 ../client/gtk/legend.c:228
+#: ../client/gtk/gui.c:242 ../client/gtk/legend.c:230
 #: ../editor/gtk/game-buildings.c:13
 msgid "Ship"
 msgstr "Skepp"
 
-#: ../client/gtk/gui.c:234
+#: ../client/gtk/gui.c:243
 msgid "Build a ship"
 msgstr "Bygg ett skepp"
 
-#: ../client/gtk/gui.c:235
+#: ../client/gtk/gui.c:244
 msgid "Move Ship"
 msgstr "Flytta skepp"
 
-#: ../client/gtk/gui.c:236
+#: ../client/gtk/gui.c:245
 msgid "Move a ship"
 msgstr "Flytta ett skepp"
 
-#: ../client/gtk/gui.c:237 ../client/gtk/legend.c:231
+#: ../client/gtk/gui.c:246 ../client/gtk/legend.c:233
 #: ../editor/gtk/game-buildings.c:13
 msgid "Bridge"
 msgstr "Bro"
 
-#: ../client/gtk/gui.c:238
+#: ../client/gtk/gui.c:247
 msgid "Build a bridge"
 msgstr "Bygg en bro"
 
-#: ../client/gtk/gui.c:239 ../client/gtk/legend.c:233
-#: ../client/gtk/player.c:49 ../editor/gtk/game-buildings.c:13
+#: ../client/gtk/gui.c:248 ../client/gtk/legend.c:235
+#: ../client/gtk/player.c:50 ../editor/gtk/game-buildings.c:13
 msgid "Settlement"
 msgstr "Bosättning"
 
-#: ../client/gtk/gui.c:240
+#: ../client/gtk/gui.c:249
 msgid "Build a settlement"
 msgstr "Bygg en bosättning"
 
-#: ../client/gtk/gui.c:241 ../client/gtk/legend.c:234
-#: ../client/gtk/player.c:50 ../editor/gtk/game-buildings.c:14
+#: ../client/gtk/gui.c:250 ../client/gtk/legend.c:236
+#: ../client/gtk/player.c:51 ../editor/gtk/game-buildings.c:14
 msgid "City"
 msgstr "Stad"
 
-#: ../client/gtk/gui.c:242
+#: ../client/gtk/gui.c:251
 msgid "Build a city"
 msgstr "Bygg en stad"
 
-#: ../client/gtk/gui.c:243
+#: ../client/gtk/gui.c:252
 msgid "Develop"
 msgstr "Utveckla"
 
-#: ../client/gtk/gui.c:244
+#: ../client/gtk/gui.c:253
 msgid "Buy a development card"
 msgstr "Köp ett utvecklingskort"
 
-#: ../client/gtk/gui.c:246
+#: ../client/gtk/gui.c:254 ../client/gtk/legend.c:240
+#: ../client/gtk/player.c:52 ../editor/gtk/game-buildings.c:14
+#, fuzzy
+msgid "City Wall"
+msgstr "Stad"
+
+#: ../client/gtk/gui.c:255
+#, fuzzy
+msgid "Build a city wall"
+msgstr "Bygg en stad"
+
+#: ../client/gtk/gui.c:257
 msgid "_Settings"
 msgstr "_Inställningar"
 
-#: ../client/gtk/gui.c:247
+#: ../client/gtk/gui.c:258
 msgid "Prefere_nces"
 msgstr "Inställ_ningar"
 
-#: ../client/gtk/gui.c:248
+#: ../client/gtk/gui.c:259
 msgid "Configure the application"
 msgstr "Konfigurera programmet"
 
-#: ../client/gtk/gui.c:250 ../client/gtk/gui.c:254 ../editor/gtk/editor.c:1027
-#: ../server/gtk/main.c:89
+#: ../client/gtk/gui.c:261 ../client/gtk/gui.c:265 ../editor/gtk/editor.c:1002
+#: ../server/gtk/main.c:99
 msgid "_Help"
 msgstr "_Hjälp"
 
-#: ../client/gtk/gui.c:251
+#: ../client/gtk/gui.c:262
 msgid "_About Pioneers"
 msgstr "_Om Pioneers"
 
-#: ../client/gtk/gui.c:252
+#: ../client/gtk/gui.c:263
 msgid "Information about Pioneers"
 msgstr "Information om Pioneers"
 
-#: ../client/gtk/gui.c:255 ../client/gtk/gui.c:977
+#: ../client/gtk/gui.c:266 ../client/gtk/gui.c:1063
 msgid "Show the manual"
 msgstr "Visa manualen"
 
-#: ../client/gtk/gui.c:261
+#: ../client/gtk/gui.c:272
 msgid "_Toolbar"
 msgstr "_Verktygsrad"
 
-#: ../client/gtk/gui.c:262
+#: ../client/gtk/gui.c:273
 msgid "Show or hide the toolbar"
 msgstr "Visa eller göm verktygsraden"
 
 #. Victory points target in statusbar
-#: ../client/gtk/gui.c:355
+#: ../client/gtk/gui.c:368
 #, c-format
 msgid "Points Needed to Win: %i"
 msgstr "Poäng krävs för vinst: %i"
 
-#: ../client/gtk/gui.c:441
+#: ../client/gtk/gui.c:454
 msgid "<b>Messages</b>"
 msgstr "<b>Meddelanden</b>"
 
 #. Tab page name
-#: ../client/gtk/gui.c:558 ../editor/gtk/editor.c:1186
+#: ../client/gtk/gui.c:571 ../editor/gtk/editor.c:1165
 msgid "Map"
 msgstr "Karta"
 
 #. Tab page name
-#: ../client/gtk/gui.c:572 ../client/gtk/quote.c:306
+#: ../client/gtk/gui.c:585 ../client/gtk/quote.c:306
 msgid "Quote"
 msgstr "Pris"
 
 #. Tab page name
-#: ../client/gtk/gui.c:580 ../client/gtk/legend.c:255
+#: ../client/gtk/gui.c:593 ../client/gtk/legend.c:261
 msgid "Legend"
 msgstr "Förklaring"
 
 #. Tab page name, shown for the splash screen
-#: ../client/gtk/gui.c:590
+#: ../client/gtk/gui.c:603
 msgid "Welcome to Pioneers"
 msgstr "Välkommen till Pioneers"
 
-#: ../client/gtk/gui.c:797
+#: ../client/gtk/gui.c:866
 msgid "Pioneers Preferences"
 msgstr "Inställningar för Pioneers"
 
 #. Label for changing the theme, in the preferences dialog
-#: ../client/gtk/gui.c:827
+#: ../client/gtk/gui.c:896
 msgid "Theme:"
 msgstr "Tema:"
 
-#: ../client/gtk/gui.c:850
+#: ../client/gtk/gui.c:919
 msgid "Choose one of the themes"
 msgstr "Välj ett av dessa teman"
 
 #. Label for the option to show the legend
-#: ../client/gtk/gui.c:854
+#: ../client/gtk/gui.c:923
 msgid "Show legend"
 msgstr "Visa förklaring"
 
 #. Tooltip for the option to show the legend
-#: ../client/gtk/gui.c:864
+#: ../client/gtk/gui.c:933
 msgid "Show the legend as a page beside the map"
 msgstr "Visa förklaringen som en sida bredvid kartan"
 
 #. Label for the option to display log messages in color
-#: ../client/gtk/gui.c:869
+#: ../client/gtk/gui.c:938
 msgid "Messages with color"
 msgstr "Meddelanden med färg"
 
-#: ../client/gtk/gui.c:879
+#: ../client/gtk/gui.c:948
 msgid "Show new messages with color"
 msgstr "Visa nya meddelanden med färg"
 
-#: ../client/gtk/gui.c:884
+#: ../client/gtk/gui.c:953
 msgid "Chat in color of player"
 msgstr "Chatt i spelarens färg"
 
-#: ../client/gtk/gui.c:895
+#: ../client/gtk/gui.c:964
 msgid "Show new chat messages in the color of the player"
 msgstr "Visa nya chattmeddelanden i samma färg som spelaren"
 
 #. Label for the option to display the summary with colors
-#: ../client/gtk/gui.c:900
+#: ../client/gtk/gui.c:969
 msgid "Summary with color"
 msgstr "Sammanfattning i färg"
 
-#: ../client/gtk/gui.c:911
+#: ../client/gtk/gui.c:980
 msgid "Use colors in the player summary"
 msgstr "Använd färger i spelarnas sammanfattning"
 
-#: ../client/gtk/gui.c:916
+#: ../client/gtk/gui.c:985
 msgid "Toolbar with shortcuts"
 msgstr "Verktygsrad med genvägar"
 
-#: ../client/gtk/gui.c:926
+#: ../client/gtk/gui.c:995
 msgid "Show keyboard shortcuts in the toolbar"
 msgstr "Visa tangentbordsgenvägar i verktygsraden"
 
-#: ../client/gtk/gui.c:932
+#: ../client/gtk/gui.c:1001
 msgid "Announce new players"
 msgstr "Annonsera nya spelare"
 
-#: ../client/gtk/gui.c:943
+#: ../client/gtk/gui.c:1012
 msgid "Make a sound when a new player or viewer enters the game"
 msgstr "Spela ett ljud när en ny spelare eller åskådare kommer in i spelet"
 
-#: ../client/gtk/gui.c:953
+#. Label for the option to use the 16:9 layout.
+#: ../client/gtk/gui.c:1017
+msgid "Use 16:9 layout"
+msgstr ""
+
+#: ../client/gtk/gui.c:1028
+msgid "Use a 16:9 friendly layout for the window"
+msgstr ""
+
+#: ../client/gtk/gui.c:1039
 msgid "The Pioneers Game"
 msgstr "Spelet Pioneers"
 
 #. Initial text in status bar
-#: ../client/gtk/gui.c:1244
+#: ../client/gtk/gui.c:1350
 msgid "Welcome to Pioneers!"
 msgstr "Välkommen till Pioneers!"
 
 #. The name of the application
-#: ../client/gtk/gui.c:1355
+#: ../client/gtk/gui.c:1461
 msgid "Pioneers"
 msgstr "Pioneers"
 
@@ -1570,27 +1616,27 @@ msgstr "Pioneers"
 msgid "Dice Histogram"
 msgstr "Tärningshistogram"
 
-#: ../client/gtk/interface.c:91
+#: ../client/gtk/interface.c:92
 msgid "Ship movement canceled."
 msgstr "Flyttning av skepp avbröts."
 
-#: ../client/gtk/interface.c:99 ../client/gtk/interface.c:100
+#: ../client/gtk/interface.c:100 ../client/gtk/interface.c:101
 msgid "Select a new location for the ship."
 msgstr "Välj en ny plats för skeppet."
 
-#: ../client/gtk/interface.c:719
+#: ../client/gtk/interface.c:738
 msgid "Select the ship to steal from."
 msgstr "Välj det skepp du vill stjäla från."
 
-#: ../client/gtk/interface.c:721
+#: ../client/gtk/interface.c:740
 msgid "Select the ship to steal from"
 msgstr "Välj det skepp du vill stjäla från"
 
-#: ../client/gtk/interface.c:738
+#: ../client/gtk/interface.c:757
 msgid "Select the building to steal from."
 msgstr "Välj den byggnad du vill stjäla från."
 
-#: ../client/gtk/interface.c:740
+#: ../client/gtk/interface.c:759
 msgid "Select the building to steal from"
 msgstr "Välj den byggnad du vill stjäla från"
 
@@ -1630,7 +1676,7 @@ msgstr "<b>Terrängavkastning</b>"
 msgid "<b>Building Costs</b>"
 msgstr "<b>Byggnadskostnader</b>"
 
-#: ../client/gtk/legend.c:237
+#: ../client/gtk/legend.c:243
 msgid "Development Card"
 msgstr "Utvecklingskort"
 
@@ -1672,64 +1718,68 @@ msgstr "Ansluter"
 msgid "- Play a game of Pioneers"
 msgstr "- Spela en omgång av Pioneers"
 
-#: ../client/gtk/player.c:49
+#: ../client/gtk/player.c:50
 msgid "Settlements"
 msgstr "Bosättningar"
 
-#: ../client/gtk/player.c:50
+#: ../client/gtk/player.c:51
 msgid "Cities"
 msgstr "Städer"
 
-#: ../client/gtk/player.c:51
+#: ../client/gtk/player.c:52
+msgid "City Walls"
+msgstr ""
+
+#: ../client/gtk/player.c:53
 msgid "Largest Army"
 msgstr "Största armé"
 
-#: ../client/gtk/player.c:52
+#: ../client/gtk/player.c:54
 msgid "Longest Road"
 msgstr "Längsta väg"
 
-#: ../client/gtk/player.c:53
+#: ../client/gtk/player.c:55
 msgid "Chapels"
 msgstr "Kapell"
 
-#: ../client/gtk/player.c:54
+#: ../client/gtk/player.c:56
 msgid "Pioneer Universities"
 msgstr "Pioneer Universitet"
 
-#: ../client/gtk/player.c:56
+#: ../client/gtk/player.c:58
 msgid "Governor's Houses"
 msgstr "Guvenörshus"
 
-#: ../client/gtk/player.c:57
+#: ../client/gtk/player.c:59
 msgid "Libraries"
 msgstr "Bibliotek"
 
-#: ../client/gtk/player.c:58
+#: ../client/gtk/player.c:60
 msgid "Markets"
 msgstr "Marknader"
 
-#: ../client/gtk/player.c:59
+#: ../client/gtk/player.c:61
 msgid "Soldiers"
 msgstr "Soldater"
 
-#: ../client/gtk/player.c:60
+#: ../client/gtk/player.c:62
 msgid "Resource card"
 msgstr "Resurskort"
 
-#: ../client/gtk/player.c:60
+#: ../client/gtk/player.c:62
 msgid "Resource cards"
 msgstr "Resurskort"
 
-#: ../client/gtk/player.c:61
+#: ../client/gtk/player.c:63
 msgid "Development card"
 msgstr "Utvecklingskort"
 
-#: ../client/gtk/player.c:61
+#: ../client/gtk/player.c:63
 msgid "Development cards"
 msgstr "Utvecklingskort"
 
 #. Caption for the overview of the points and card of other players
-#: ../client/gtk/player.c:592
+#: ../client/gtk/player.c:594
 msgid "<b>Player Summary</b>"
 msgstr "<b>Sammandrag för spelare</b>"
 
@@ -1769,7 +1819,7 @@ msgstr "Vägra inrikeshandel"
 #. Now create columns
 #. Table header: Player who trades
 #. Role of the player: player
-#: ../client/gtk/quote-view.c:172 ../server/gtk/main.c:464
+#: ../client/gtk/quote-view.c:172 ../server/gtk/main.c:525
 msgid "Player"
 msgstr "Spelare"
 
@@ -1841,131 +1891,134 @@ msgstr "Totalt vald mängd"
 msgid "The bank cannot be emptied"
 msgstr "Banken kan inte tömmas"
 
-#: ../client/gtk/settingscreen.c:74 ../editor/gtk/game-parameters.c:42
-#: ../server/gtk/main.c:128 ../server/gtk/main.c:141 ../server/gtk/main.c:151
+#: ../client/gtk/settingscreen.c:74 ../server/gtk/main.c:143
+#: ../server/gtk/main.c:156 ../server/gtk/main.c:166
 msgid "Yes"
 msgstr "Ja"
 
-#: ../client/gtk/settingscreen.c:76 ../client/gtk/settingscreen.c:206
-#: ../editor/gtk/game-parameters.c:42 ../server/gtk/main.c:128
-#: ../server/gtk/main.c:141 ../server/gtk/main.c:151 ../server/gtk/main.c:539
-#: ../server/gtk/main.c:587 ../server/gtk/main.c:739
+#: ../client/gtk/settingscreen.c:76 ../client/gtk/settingscreen.c:207
+#: ../server/gtk/main.c:143 ../server/gtk/main.c:156 ../server/gtk/main.c:166
+#: ../server/gtk/main.c:645 ../server/gtk/main.c:693 ../server/gtk/main.c:845
 msgid "No"
 msgstr "Nej"
 
-#: ../client/gtk/settingscreen.c:87 ../client/gtk/settingscreen.c:173
+#: ../client/gtk/settingscreen.c:87 ../client/gtk/settingscreen.c:174
 msgid "Unknown"
 msgstr "Okänd"
 
-#: ../client/gtk/settingscreen.c:120
+#: ../client/gtk/settingscreen.c:121
 msgid "No game in progress..."
 msgstr "Inget spel pågår..."
 
-#: ../client/gtk/settingscreen.c:130
+#: ../client/gtk/settingscreen.c:131
 msgid "<b>General Settings</b>"
 msgstr "<b>Allmänna inställningar</b>"
 
-#: ../client/gtk/settingscreen.c:146
+#: ../client/gtk/settingscreen.c:147
 msgid "Number of players:"
 msgstr "Antal spelare:"
 
-#: ../client/gtk/settingscreen.c:149
+#: ../client/gtk/settingscreen.c:150
 msgid "Victory Point Target:"
 msgstr "Poängmål för seger:"
 
-#: ../client/gtk/settingscreen.c:152
+#: ../client/gtk/settingscreen.c:153
 msgid "Random Terrain?"
 msgstr "Slumpad terräng?"
 
-#: ../client/gtk/settingscreen.c:155
+#: ../client/gtk/settingscreen.c:156
 msgid "Interplayer Trading Allowed?"
 msgstr "Tillåta handel mellan spelare?"
 
-#: ../client/gtk/settingscreen.c:159
+#: ../client/gtk/settingscreen.c:160
 msgid "Trading allowed only before build/buy?"
 msgstr "Handel tillåtet endast före byggnation/köp?"
 
-#: ../client/gtk/settingscreen.c:162
+#: ../client/gtk/settingscreen.c:163
 msgid "Amount of Each Resource:"
 msgstr "Mängd av varje resurs:"
 
-#: ../client/gtk/settingscreen.c:176
+#: ../client/gtk/settingscreen.c:177
 msgid "Sevens Rule:"
 msgstr "Regel för 7:an:"
 
-#: ../client/gtk/settingscreen.c:180
+#: ../client/gtk/settingscreen.c:181
 msgid "Use Pirate:"
 msgstr "Använd pirat:"
 
-#: ../client/gtk/settingscreen.c:208
+#: ../client/gtk/settingscreen.c:209
 msgid "Island Discovery Bonuses:"
 msgstr "Bonusar för upptäckter av öar:"
 
-#: ../client/gtk/settingscreen.c:223
+#: ../client/gtk/settingscreen.c:224
 msgid "<b>Building Quotas</b>"
 msgstr "<b>Byggkostnad</b>"
 
-#: ../client/gtk/settingscreen.c:239
+#: ../client/gtk/settingscreen.c:241
 msgid "Roads:"
 msgstr "Vägar:"
 
-#: ../client/gtk/settingscreen.c:244
+#: ../client/gtk/settingscreen.c:247
 msgid "Settlements:"
 msgstr "Bosättningar:"
 
-#: ../client/gtk/settingscreen.c:249
+#: ../client/gtk/settingscreen.c:253
 msgid "Cities:"
 msgstr "Städer:"
 
-#: ../client/gtk/settingscreen.c:254
+#: ../client/gtk/settingscreen.c:259
+msgid "City Walls:"
+msgstr ""
+
+#: ../client/gtk/settingscreen.c:265
 msgid "Ships:"
 msgstr "Skepp:"
 
-#: ../client/gtk/settingscreen.c:259
+#: ../client/gtk/settingscreen.c:271
 msgid "Bridges:"
 msgstr "Broar:"
 
-#: ../client/gtk/settingscreen.c:271
+#: ../client/gtk/settingscreen.c:283
 msgid "<b>Development Card Deck</b>"
 msgstr "<b>Kortlek för utvecklingskort</b>"
 
-#: ../client/gtk/settingscreen.c:287
+#: ../client/gtk/settingscreen.c:299
 msgid "Road Building Cards:"
 msgstr "Vägbyggnadskort:"
 
-#: ../client/gtk/settingscreen.c:291
+#: ../client/gtk/settingscreen.c:303
 msgid "Monopoly Cards:"
 msgstr "Monopolkort:"
 
-#: ../client/gtk/settingscreen.c:295
+#: ../client/gtk/settingscreen.c:307
 msgid "Year of Plenty Cards:"
 msgstr "Kort för Guldår:"
 
-#: ../client/gtk/settingscreen.c:300
+#: ../client/gtk/settingscreen.c:312
 msgid "Chapel Cards:"
 msgstr "Kapellkort:"
 
-#: ../client/gtk/settingscreen.c:304
+#: ../client/gtk/settingscreen.c:316
 msgid "Pioneer University Cards:"
 msgstr "Kort för Pioneer Universitet:"
 
-#: ../client/gtk/settingscreen.c:309
+#: ../client/gtk/settingscreen.c:320
 msgid "Governor's House Cards:"
 msgstr "Kort för Guvenörshus:"
 
-#: ../client/gtk/settingscreen.c:314
+#: ../client/gtk/settingscreen.c:325
 msgid "Library Cards:"
 msgstr "Bibliotekskort:"
 
-#: ../client/gtk/settingscreen.c:318
+#: ../client/gtk/settingscreen.c:329
 msgid "Market Cards:"
 msgstr "Marknadskort:"
 
-#: ../client/gtk/settingscreen.c:322
+#: ../client/gtk/settingscreen.c:333
 msgid "Soldier Cards:"
 msgstr "Soldatkort:"
 
-#: ../client/gtk/settingscreen.c:359
+#: ../client/gtk/settingscreen.c:370
 msgid "Current Game Settings"
 msgstr "Inställningar för nuvarande spel"
 
@@ -2034,88 +2087,119 @@ msgstr "Hemsida"
 msgid "Authors"
 msgstr "Upphovsmän"
 
-#. Label for customising a game
-#: ../common/gtk/game-settings.c:113
-msgid "Map Terrain"
-msgstr "Kartterräng"
-
-#. Tooltip for Map Terrain
-#: ../common/gtk/game-settings.c:127
-msgid "Default map or a random map"
-msgstr "Förvald karta eller en slumpad karta"
-
-#. Label text for customising a game
-#: ../common/gtk/game-settings.c:130
-msgid "Number of Players"
-msgstr "Antal spelare"
-
-#. Tooltip for 'Number of Players'
-#: ../common/gtk/game-settings.c:148
-msgid "The number of players"
-msgstr "Antalet spelare"
-
-#. Label for customising a game
-#: ../common/gtk/game-settings.c:151
-msgid "Victory Point Target"
-msgstr "Poäng för vinst"
-
-#. Tooltip for Victory Point Target
-#: ../common/gtk/game-settings.c:170
-msgid "The points needed to win the game"
-msgstr "Poäng som krävs för att vinna spelet"
-
 #. Tooltip for sevens rule normal
-#: ../common/gtk/game-settings.c:201
+#: ../common/gtk/game-rules.c:101
 msgid "All sevens move the robber or pirate"
 msgstr "Alla 7:or flyttar rånaren eller piraten"
 
-#: ../common/gtk/game-settings.c:206
+#: ../common/gtk/game-rules.c:106
 msgid "In the first two turns all sevens are rerolled"
 msgstr "De två första turerna slås alla 7:or om"
 
 #. Tooltip for sevens rule reroll all
-#: ../common/gtk/game-settings.c:210
+#: ../common/gtk/game-rules.c:110
 msgid "All sevens are rerolled"
 msgstr "Alla sjuor slås om"
 
+#: ../common/gtk/game-rules.c:121
+#, fuzzy
+msgid "Randomize Terrain"
+msgstr "Slumpad terräng?"
+
+#: ../common/gtk/game-rules.c:121
+#, fuzzy
+msgid "Randomize the terrain"
+msgstr "Slumpad terräng?"
+
+#: ../common/gtk/game-rules.c:123
+msgid "Use Pirate"
+msgstr "Använd pirat"
+
+#: ../common/gtk/game-rules.c:123
+msgid "Use the pirate to block ships"
+msgstr ""
+
+#: ../common/gtk/game-rules.c:125
+msgid "Strict Trade"
+msgstr "Strikt handel"
+
+#: ../common/gtk/game-rules.c:126
+#, fuzzy
+msgid "Allow trade only before building or buying"
+msgstr "Handel tillåtet endast före byggnation/köp?"
+
+#: ../common/gtk/game-rules.c:128
+msgid "Domestic Trade"
+msgstr "Inrikeshandel"
+
+#: ../common/gtk/game-rules.c:128
+msgid "Allow trade between players"
+msgstr ""
+
+#. Label text for customising a game
+#: ../common/gtk/game-settings.c:118
+msgid "Number of Players"
+msgstr "Antal spelare"
+
+#. Tooltip for 'Number of Players'
+#: ../common/gtk/game-settings.c:136
+msgid "The number of players"
+msgstr "Antalet spelare"
+
+#. Label for customising a game
+#: ../common/gtk/game-settings.c:139
+msgid "Victory Point Target"
+msgstr "Poäng för vinst"
+
+#. Tooltip for Victory Point Target
+#: ../common/gtk/game-settings.c:159
+msgid "The points needed to win the game"
+msgstr "Poäng som krävs för att vinna spelet"
+
+#. Tooltip for the check button
+#: ../common/gtk/game-settings.c:172
+#, fuzzy
+msgid "Is it possible to win this game?"
+msgstr "Poäng som krävs för att vinna spelet"
+
 #. Port indicator for a resource: trade 2 for 1
-#: ../common/gtk/guimap.c:648
+#: ../common/gtk/guimap.c:736
 msgid "2:1"
 msgstr "2:1"
 
 #. Port indicator: trade 3 for 1
 #. General port indicator
-#: ../common/gtk/guimap.c:651 ../common/gtk/guimap.c:676
+#: ../common/gtk/guimap.c:739 ../common/gtk/guimap.c:764
 msgid "3:1"
 msgstr "3:1"
 
 #. Port indicator for brick
-#: ../common/gtk/guimap.c:656
+#: ../common/gtk/guimap.c:744
 msgid "Brick port|B"
 msgstr "Te"
 
 #. Port indicator for grain
-#: ../common/gtk/guimap.c:660
+#: ../common/gtk/guimap.c:748
 msgid "Grain port|G"
 msgstr "Sä"
 
 #. Port indicator for ore
-#: ../common/gtk/guimap.c:664
+#: ../common/gtk/guimap.c:752
 msgid "Ore port|O"
 msgstr "Ma"
 
 #. Port indicator for wool
-#: ../common/gtk/guimap.c:668
+#: ../common/gtk/guimap.c:756
 msgid "Wool port|W"
 msgstr "Ul"
 
 #. Port indicator for lumber
-#: ../common/gtk/guimap.c:672
+#: ../common/gtk/guimap.c:760
 msgid "Lumber port|L"
 msgstr "Ti"
 
 #. Tooltip for the list of games
-#: ../common/gtk/select-game.c:93
+#: ../common/gtk/select-game.c:111
 msgid "Select a game"
 msgstr "Välj ett spel"
 
@@ -2123,6 +2207,35 @@ msgstr "Välj ett spel"
 #, c-format
 msgid "bad scaling mode '%s'"
 msgstr "fel skalläge \"%s\""
+
+#: ../common/game.c:603 ../common/game.c:633
+#, fuzzy
+msgid "This game cannot be won."
+msgstr "Detta spel kommer strax att startas."
+
+#: ../common/game.c:604
+#, fuzzy
+msgid "There is no land."
+msgstr "Det finns ingen längsta väg.\n"
+
+#: ../common/game.c:638
+msgid "It is possible that this game cannot be won."
+msgstr ""
+
+#: ../common/game.c:643
+msgid "This game can be won by only building all settlements and cities."
+msgstr ""
+
+#: ../common/game.c:650
+#, c-format
+msgid ""
+"Required victory points: %d\n"
+"Points obtained by building all: %d\n"
+"Points in development cards: %d\n"
+"Longest road/largest army: %d+%d\n"
+"Maximum island discovery bonus: %d\n"
+"Total: %d"
+msgstr ""
 
 #: ../common/log.c:54
 msgid "*ERROR* "
@@ -2208,103 +2321,103 @@ msgstr "Åskådare: "
 msgid "** UNKNOWN MESSAGE TYPE ** "
 msgstr "** OKÄND MEDDELANDETYP ** "
 
-#: ../common/network.c:246
+#: ../common/network.c:258
 #, c-format
 msgid "Error checking connect status: %s\n"
 msgstr "Fel vid kontroll av anslutningsstatus: %s\n"
 
-#: ../common/network.c:253
+#: ../common/network.c:265
 #, c-format
 msgid "Error connecting to host '%s': %s\n"
 msgstr "Fel vid anslutning till värd \"%s\": %s\n"
 
-#: ../common/network.c:279
+#: ../common/network.c:291
 #, c-format
 msgid "Error writing socket: %s\n"
 msgstr "Fel vid skrivning till uttag: %s\n"
 
-#: ../common/network.c:328
+#: ../common/network.c:342
 #, c-format
 msgid "Error writing to socket: %s\n"
 msgstr "Fel vid skrivning till uttag: %s\n"
 
-#: ../common/network.c:381
+#: ../common/network.c:395
 msgid "Read buffer overflow - disconnecting\n"
 msgstr "Överflöde i läsbuffert - kopplar ned\n"
 
-#: ../common/network.c:391
+#: ../common/network.c:405
 #, c-format
 msgid "Error reading socket: %s\n"
 msgstr "Fel vid läsning av uttag: %s\n"
 
-#: ../common/network.c:535
+#: ../common/network.c:549
 #, c-format
 msgid "Cannot resolve %s port %s: %s\n"
 msgstr "Kan inte slå upp %s port %s: %s\n"
 
-#: ../common/network.c:542
+#: ../common/network.c:556
 #, c-format
 msgid "Cannot resolve %s port %s: host not found\n"
 msgstr "Kan inte slå upp %s port %s: värd hittades inte\n"
 
-#: ../common/network.c:557
+#: ../common/network.c:571
 #, c-format
 msgid "Error creating socket: %s\n"
 msgstr "Fel vid skapandet av uttag: %s\n"
 
-#: ../common/network.c:565
+#: ../common/network.c:579
 #, c-format
 msgid "Error setting socket close-on-exec: %s\n"
 msgstr "Fel vid inställande av uttag \"close-on-exec\": %s\n"
 
-#: ../common/network.c:575 ../common/network.c:734
+#: ../common/network.c:589 ../common/network.c:748
 #, c-format
 msgid "Error setting socket non-blocking: %s\n"
 msgstr "Fel vid inställande av icke-blockerande uttag: %s\n"
 
-#: ../common/network.c:600
+#: ../common/network.c:614
 #, c-format
 msgid "Error connecting to %s: %s\n"
 msgstr "Fel vid anslutning till %s: %s\n"
 
-#: ../common/network.c:693
+#: ../common/network.c:707
 #, c-format
 msgid "Error creating struct addrinfo: %s"
 msgstr "Fel vid skapande av adressinfo: %s"
 
-#: ../common/network.c:723
+#: ../common/network.c:737
 #, c-format
 msgid "Error creating listening socket: %s\n"
 msgstr "Fel vid skapandet av lyssningsuttag: %s\n"
 
-#: ../common/network.c:743
+#: ../common/network.c:757
 #, c-format
 msgid "Error during listen on socket: %s\n"
 msgstr "Fel vid lyssning på uttag: %s\n"
 
-#: ../common/network.c:752
+#: ../common/network.c:766
 msgid "Listening not yet supported on this platform."
 msgstr "Lyssning stöds ännu inte på denna plattform."
 
-#: ../common/network.c:774 ../common/network.c:775
+#: ../common/network.c:788 ../common/network.c:789
 msgid "unknown"
 msgstr "okänd"
 
-#: ../common/network.c:781
+#: ../common/network.c:795
 #, c-format
 msgid "Error getting peer name: %s"
 msgstr "Fel vid läsning av motpartens namn: %s"
 
-#: ../common/network.c:794
+#: ../common/network.c:808
 #, c-format
 msgid "Error resolving address: %s"
 msgstr "Fel vid uppslag av adress: %s"
 
-#: ../common/network.c:808
+#: ../common/network.c:822
 msgid "Net_get_peer_name not yet supported on this platform."
 msgstr "Net_get_peer_name stöds ännu inte på denna plattform."
 
-#: ../common/network.c:823
+#: ../common/network.c:837
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "Fel vid mottagning av anslutning: %s"
@@ -2314,596 +2427,603 @@ msgstr "Fel vid mottagning av anslutning: %s"
 msgid "Connecting to %s, port %s\n"
 msgstr "Ansluter till %s, port %s\n"
 
-#: ../common/state.c:514
+#: ../common/state.c:521
 msgid "State stack overflow. Stack dump sent to standard error.\n"
 msgstr "Överflöde i statusstack. Stackdump skickar till standard fel.\n"
 
 #. Use an unique shortcut key for each resource
-#: ../editor/gtk/editor.c:67
+#: ../editor/gtk/editor.c:73
 msgid "_Hill"
 msgstr "_Kulle"
 
 #. Use an unique shortcut key for each resource
-#: ../editor/gtk/editor.c:69
+#: ../editor/gtk/editor.c:75
 msgid "_Field"
 msgstr "_Fält"
 
 #. Use an unique shortcut key for each resource
-#: ../editor/gtk/editor.c:71
+#: ../editor/gtk/editor.c:77
 msgid "_Mountain"
 msgstr "_Berg"
 
 #. Use an unique shortcut key for each resource
-#: ../editor/gtk/editor.c:73
+#: ../editor/gtk/editor.c:79
 msgid "_Pasture"
 msgstr "Be_tesmark"
 
 #. Use an unique shortcut key for each resource
-#: ../editor/gtk/editor.c:75
+#: ../editor/gtk/editor.c:81
 msgid "F_orest"
 msgstr "_Skog"
 
 #. Use an unique shortcut key for each resource
-#: ../editor/gtk/editor.c:77
+#: ../editor/gtk/editor.c:83
 msgid "_Desert"
 msgstr "Ök_en"
 
 #. Use an unique shortcut key for each resource
-#: ../editor/gtk/editor.c:79
+#: ../editor/gtk/editor.c:85
 msgid "_Sea"
 msgstr "_Hav"
 
 #. Use an unique shortcut key for each resource
-#: ../editor/gtk/editor.c:81
+#: ../editor/gtk/editor.c:87
 msgid "_Gold"
 msgstr "_Guld"
 
 #. Use an unique shortcut key for each resource
 #. Use an unique shortcut key for each port type
-#: ../editor/gtk/editor.c:83 ../editor/gtk/editor.c:98
+#: ../editor/gtk/editor.c:89 ../editor/gtk/editor.c:104
 msgid "_None"
 msgstr "_Ingen"
 
 #. Use an unique shortcut key for each port type
-#: ../editor/gtk/editor.c:88
+#: ../editor/gtk/editor.c:94
 msgid "_Brick (2:1)"
 msgstr "Te_gel (2:1)"
 
 #. Use an unique shortcut key for each port type
-#: ../editor/gtk/editor.c:90
+#: ../editor/gtk/editor.c:96
 msgid "_Grain (2:1)"
 msgstr "_Spannmål (2:1)"
 
 #. Use an unique shortcut key for each port type
-#: ../editor/gtk/editor.c:92
+#: ../editor/gtk/editor.c:98
 msgid "_Ore (2:1)"
 msgstr "_Malm (2:1)"
 
 #. Use an unique shortcut key for each port type
-#: ../editor/gtk/editor.c:94
+#: ../editor/gtk/editor.c:100
 msgid "_Wool (2:1)"
 msgstr "_Ull (2:1)"
 
 #. Use an unique shortcut key for each port type
-#: ../editor/gtk/editor.c:96
+#: ../editor/gtk/editor.c:102
 msgid "_Lumber (2:1)"
 msgstr "_Timmer (2:1)"
 
 #. Use an unique shortcut key for each port type
-#: ../editor/gtk/editor.c:100
+#: ../editor/gtk/editor.c:106
 msgid "_Any (3:1)"
 msgstr "_Någon (3:1)"
 
 #. East
-#: ../editor/gtk/editor.c:105
+#: ../editor/gtk/editor.c:111
 msgid "East|E"
 msgstr "Ö"
 
 #. North east
-#: ../editor/gtk/editor.c:107
+#: ../editor/gtk/editor.c:113
 msgid "North East|NE"
 msgstr "NÖ"
 
 #. North west
-#: ../editor/gtk/editor.c:109
+#: ../editor/gtk/editor.c:115
 msgid "North West|NW"
 msgstr "NV"
 
 #. West
-#: ../editor/gtk/editor.c:111
+#: ../editor/gtk/editor.c:117
 msgid "West|W"
 msgstr "V"
 
 #. South west
-#: ../editor/gtk/editor.c:113
+#: ../editor/gtk/editor.c:119
 msgid "South West|SW"
 msgstr "SV"
 
 #. South east
-#: ../editor/gtk/editor.c:115
+#: ../editor/gtk/editor.c:121
 msgid "South East|SE"
 msgstr "SÖ"
 
-#: ../editor/gtk/editor.c:595
+#: ../editor/gtk/editor.c:564
 msgid "Shuffle"
 msgstr "Blanda"
 
-#: ../editor/gtk/editor.c:727 ../server/gtk/main.c:393
+#: ../editor/gtk/editor.c:696 ../server/gtk/main.c:462
 msgid "Game Parameters"
 msgstr "Spelparametrar"
 
-#: ../editor/gtk/editor.c:729
+#: ../editor/gtk/editor.c:698 ../server/gtk/main.c:494
 msgid "Rules"
 msgstr "Regler"
 
-#: ../editor/gtk/editor.c:730
+#: ../editor/gtk/editor.c:699
 msgid "Resources"
 msgstr "Resurser"
 
-#: ../editor/gtk/editor.c:731
+#: ../editor/gtk/editor.c:700
 msgid "Buildings"
 msgstr "Byggnader"
 
-#: ../editor/gtk/editor.c:732
+#: ../editor/gtk/editor.c:701
 msgid "Development Cards"
 msgstr "Utvecklingskort"
 
-#: ../editor/gtk/editor.c:747
+#: ../editor/gtk/editor.c:718
 msgid "Pioneers Editor"
 msgstr "Redigerare för Pioneers"
 
-#: ../editor/gtk/editor.c:837
+#: ../editor/gtk/editor.c:803
 #, c-format
 msgid "Failed to load '%s'"
 msgstr "Misslyckades att läsa in \"%s\""
 
-#: ../editor/gtk/editor.c:877
+#: ../editor/gtk/editor.c:843
 #, c-format
 msgid "Failed to save to '%s'"
 msgstr "Misslyckades att spara till \"%s"
 
-#: ../editor/gtk/editor.c:892
+#: ../editor/gtk/editor.c:858
 msgid "Open Game"
 msgstr "Öppna spel"
 
-#: ../editor/gtk/editor.c:918
+#: ../editor/gtk/editor.c:884
 msgid "Save as..."
 msgstr "Spara som..."
 
-#: ../editor/gtk/editor.c:953
+#: ../editor/gtk/editor.c:919
 msgid "Change Title"
 msgstr "Ändra titel"
 
-#: ../editor/gtk/editor.c:975
+#: ../editor/gtk/editor.c:941
 msgid "New Title:"
 msgstr "Ny titel:"
 
-#: ../editor/gtk/editor.c:1022
+#: ../editor/gtk/editor.c:997
 msgid "Pioneers Game Editor"
 msgstr "Spelredigerare för Pioneers"
 
-#: ../editor/gtk/editor.c:1026
+#: ../editor/gtk/editor.c:1001
 msgid "_File"
 msgstr "_Fil"
 
-#: ../editor/gtk/editor.c:1029
+#: ../editor/gtk/editor.c:1004
 msgid "_New"
 msgstr "_Ny"
 
-#: ../editor/gtk/editor.c:1030
+#: ../editor/gtk/editor.c:1005
 msgid "Create a new game"
 msgstr "Skapa ett nytt spel"
 
-#: ../editor/gtk/editor.c:1031
+#: ../editor/gtk/editor.c:1006
 msgid "_Open..."
 msgstr "_Öppna..."
 
-#: ../editor/gtk/editor.c:1032
+#: ../editor/gtk/editor.c:1007
 msgid "Open an existing game"
 msgstr "Öppna ett existerande spel"
 
-#: ../editor/gtk/editor.c:1033
+#: ../editor/gtk/editor.c:1008
 msgid "_Save"
 msgstr "_Spara"
 
-#: ../editor/gtk/editor.c:1034
+#: ../editor/gtk/editor.c:1009
 msgid "Save game"
 msgstr "Spara spel"
 
-#: ../editor/gtk/editor.c:1035
+#: ../editor/gtk/editor.c:1010
 msgid "Save _As..."
 msgstr "Spar_a som..."
 
-#: ../editor/gtk/editor.c:1037
+#: ../editor/gtk/editor.c:1012
 msgid "Save as"
 msgstr "Spara som"
 
-#: ../editor/gtk/editor.c:1038
+#: ../editor/gtk/editor.c:1013
 msgid "_Change title"
 msgstr "Ändra tit_el"
 
-#: ../editor/gtk/editor.c:1039
+#: ../editor/gtk/editor.c:1014
 msgid "Change game title"
 msgstr "Ändra spelets titel"
 
-#: ../editor/gtk/editor.c:1041
+#: ../editor/gtk/editor.c:1015 ../server/gtk/main.c:100
+#, fuzzy
+msgid "_Check Victory Point Target"
+msgstr "Poäng för vinst"
+
+#: ../editor/gtk/editor.c:1017 ../server/gtk/main.c:102
+msgid "Check whether the game can be won"
+msgstr ""
+
+#: ../editor/gtk/editor.c:1019
 msgid "Quit"
 msgstr "Avsluta"
 
-#: ../editor/gtk/editor.c:1049
+#: ../editor/gtk/editor.c:1027
 msgid "_About Pioneers Editor"
 msgstr "_Om redigeraren för Pioneers"
 
-#: ../editor/gtk/editor.c:1050
+#: ../editor/gtk/editor.c:1028
 msgid "Information about Pioneers Editor"
 msgstr "Information om redigeraren för Pioneers"
 
 #. Long help for commandline option (editor): filename
-#: ../editor/gtk/editor.c:1087
+#: ../editor/gtk/editor.c:1066
 msgid "Open this file"
 msgstr "Öppna denna fil"
 
 #. Commandline option for editor: filename
-#: ../editor/gtk/editor.c:1089
+#: ../editor/gtk/editor.c:1068
 msgid "filename"
 msgstr "filnamn"
 
-#: ../editor/gtk/editor.c:1121
+#: ../editor/gtk/editor.c:1100
 msgid "- Editor for games of Pioneers"
 msgstr "- Redigerare för Pioneers-spel"
 
-#: ../editor/gtk/editor.c:1162 ../server/gtk/main.c:900
+#: ../editor/gtk/editor.c:1141 ../server/gtk/main.c:1055
 #, c-format
 msgid "Building menus failed: %s"
 msgstr "Misslyckade att bygga menyer: %s"
 
-#: ../editor/gtk/editor.c:1189
+#: ../editor/gtk/editor.c:1169
 msgid "Settings"
 msgstr "Inställningar"
-
-#: ../editor/gtk/game-parameters.c:80
-msgid "Use Pirate"
-msgstr "Använd pirat"
-
-#: ../editor/gtk/game-parameters.c:81
-msgid "Strict Trade"
-msgstr "Strikt handel"
-
-#: ../editor/gtk/game-parameters.c:82
-msgid "Domestic Trade"
-msgstr "Inrikeshandel"
 
 #: ../editor/gtk/game-resources.c:51
 msgid "Resource Count"
 msgstr "Resurser"
 
 #. Commandline meta-server: daemon
-#: ../meta-server/main.c:1030
+#: ../meta-server/main.c:1033
 msgid "Daemonize the metaserver on start"
 msgstr "Kör metaservern i bakgrunden vid uppstart"
 
 #. Commandline meta-server: redirect
-#: ../meta-server/main.c:1033
+#: ../meta-server/main.c:1036
 msgid "Redirect clients to another metaserver"
 msgstr "Omdirigera klienter till en annan metaserver"
 
 #. Commandline meta-server: server
-#: ../meta-server/main.c:1036
+#: ../meta-server/main.c:1039
 msgid "Use this hostname when creating new games"
 msgstr "Använd det här värdnamnet när nya spel skapas"
 
 #. Commandline meta-server: server argument
-#: ../meta-server/main.c:1038
+#: ../meta-server/main.c:1041
 msgid "hostname"
 msgstr "värdnamn"
 
 #. Commandline meta-server: port-range
-#: ../meta-server/main.c:1041
+#: ../meta-server/main.c:1044
 msgid "Use this ports range when creating new games"
 msgstr "Använd det här portintervallet när nya spel skapas"
 
 #. Commandline meta-server: port-range argument
-#: ../meta-server/main.c:1043
+#: ../meta-server/main.c:1046
 msgid "from-to"
 msgstr "från-till"
 
 #. Commandline option of meta server: syslog-debug
-#: ../meta-server/main.c:1049
+#: ../meta-server/main.c:1052
 msgid "Debug syslog messages"
 msgstr "Felsökningsmeddelanden till syslog"
 
 #. Long description in the commandline for server-console: help
-#: ../meta-server/main.c:1070
+#: ../meta-server/main.c:1073
 msgid "- Meta server for Pioneers"
 msgstr "- Metaserver för Pioneers"
 
-#: ../meta-server/main.c:1085
+#: ../meta-server/main.c:1088
 msgid "metaserver protocol:"
 msgstr "protokoll för metaserver:"
 
-#: ../server/gtk/main.c:92
+#: ../server/gtk/main.c:105
 msgid "_About Pioneers Server"
 msgstr "_Om Pioneers Server"
 
-#: ../server/gtk/main.c:93
+#: ../server/gtk/main.c:106
 msgid "Information about Pioneers Server"
 msgstr "Information om Pioneers Server"
 
-#: ../server/gtk/main.c:212
+#: ../server/gtk/main.c:234
 msgid "Stop server"
 msgstr "Stoppa server"
 
-#: ../server/gtk/main.c:213
+#: ../server/gtk/main.c:235
 msgid "Start server"
 msgstr "Starta server"
 
-#: ../server/gtk/main.c:215
+#: ../server/gtk/main.c:237
 msgid "Stop the server"
 msgstr "Stoppa servern"
 
-#: ../server/gtk/main.c:216
+#: ../server/gtk/main.c:238
 msgid "Start the server"
 msgstr "Starta servern"
 
-#: ../server/gtk/main.c:292
+#: ../server/gtk/main.c:363
 #, c-format
 msgid "Player %s from %s entered\n"
 msgstr "Spelaren %s från %s kom in\n"
 
-#: ../server/gtk/main.c:299
+#: ../server/gtk/main.c:370
 #, c-format
 msgid "Player %s from %s left\n"
 msgstr "Spelaren %s från %s lämnade\n"
 
-#: ../server/gtk/main.c:306
+#: ../server/gtk/main.c:377
 #, c-format
 msgid "Player %d is now %s\n"
 msgstr "Spelare %d är nu %s\n"
 
-#: ../server/gtk/main.c:501
+#: ../server/gtk/main.c:566
 msgid "Game Settings"
 msgstr "Spelinställningar"
 
-#: ../server/gtk/main.c:506
+#: ../server/gtk/main.c:612
 msgid "Server Parameters"
 msgstr "Serverparametrar"
 
-#: ../server/gtk/main.c:531
+#: ../server/gtk/main.c:637
 msgid "The port for the game server"
 msgstr "Porten för spelservern"
 
-#: ../server/gtk/main.c:533
+#: ../server/gtk/main.c:639
 msgid "Register Server"
 msgstr "Registrera server"
 
-#: ../server/gtk/main.c:546
+#: ../server/gtk/main.c:652
 msgid "Register this game at the meta server"
 msgstr "Registrera detta spel på metaservern"
 
-#: ../server/gtk/main.c:562
+#: ../server/gtk/main.c:668
 msgid "The address of the meta server"
 msgstr "Adressen för metaservern"
 
-#: ../server/gtk/main.c:564
+#: ../server/gtk/main.c:670
 msgid "Reported Hostname"
 msgstr "Rapporterat värdnamn"
 
-#: ../server/gtk/main.c:578
+#: ../server/gtk/main.c:684
 msgid ""
 "The public name of this computer (needed when playing behind a firewall)"
 msgstr ""
 "Det publika namnet för denna dator (behövs vid spel bakom en brandvägg)"
 
-#: ../server/gtk/main.c:581
+#: ../server/gtk/main.c:687
 msgid "Random Turn Order"
 msgstr "Slumpad turordning"
 
-#: ../server/gtk/main.c:594
+#: ../server/gtk/main.c:700
 msgid "Randomize turn order"
 msgstr "Slumpa fram turordning"
 
-#: ../server/gtk/main.c:633
+#: ../server/gtk/main.c:739
 msgid "Running Game"
 msgstr "Pågående spel"
 
-#: ../server/gtk/main.c:635
+#: ../server/gtk/main.c:741
 msgid "Players Connected"
 msgstr "Anslutna spelare"
 
-#: ../server/gtk/main.c:662
+#: ../server/gtk/main.c:768
 msgid "Shows all players and viewers connected to the server"
 msgstr "Visar alla spelare och åskådare anslutna till servern"
 
-#: ../server/gtk/main.c:667
+#: ../server/gtk/main.c:773
 msgid "Connected"
 msgstr "Ansluten"
 
-#: ../server/gtk/main.c:674
+#: ../server/gtk/main.c:780
 msgid "Is the player currently connected?"
 msgstr "Är spelaren ansluten för närvarande?"
 
-#: ../server/gtk/main.c:677
+#: ../server/gtk/main.c:783
 msgid "Name"
 msgstr "Namn"
 
-#: ../server/gtk/main.c:684
+#: ../server/gtk/main.c:790
 msgid "Name of the player"
 msgstr "Spelarens namn"
 
-#: ../server/gtk/main.c:686
+#: ../server/gtk/main.c:792
 msgid "Location"
 msgstr "Plats"
 
-#: ../server/gtk/main.c:693
+#: ../server/gtk/main.c:799
 msgid "Host name of the player"
 msgstr "Värdnamn för spelaren"
 
-#: ../server/gtk/main.c:697
+#: ../server/gtk/main.c:803
 msgid "Number"
 msgstr "Nummer"
 
-#: ../server/gtk/main.c:704
+#: ../server/gtk/main.c:810
 msgid "Player number"
 msgstr "Spelarens nummer"
 
-#: ../server/gtk/main.c:708
+#: ../server/gtk/main.c:814
 msgid "Role"
 msgstr "Roll"
 
-#: ../server/gtk/main.c:712
+#: ../server/gtk/main.c:818
 msgid "Player of viewer"
 msgstr "Åskådare"
 
-#: ../server/gtk/main.c:722
+#: ../server/gtk/main.c:828
 msgid "Computer Players"
 msgstr "Datorspelare"
 
-#: ../server/gtk/main.c:734
+#: ../server/gtk/main.c:840
 msgid "Enable Chat"
 msgstr "Aktivera chatt"
 
-#: ../server/gtk/main.c:745
+#: ../server/gtk/main.c:851
 msgid "Enable chat messages"
 msgstr "Aktivera chattmeddelanden"
 
-#: ../server/gtk/main.c:752
+#: ../server/gtk/main.c:858
 msgid "Add Computer Player"
 msgstr "Lägg till datorspelare"
 
-#: ../server/gtk/main.c:759
+#: ../server/gtk/main.c:865
 msgid "Add a computer player to the game"
 msgstr "Lägg till en datorspelare till spelet"
 
-#: ../server/gtk/main.c:768
+#: ../server/gtk/main.c:868
+#, fuzzy
+msgid "Launch Pioneers Client"
+msgstr "Spelet Pioneers"
+
+#: ../server/gtk/main.c:875
+#, fuzzy
+msgid "Launch the Pioneers Client"
+msgstr "Spelet Pioneers"
+
+#: ../server/gtk/main.c:884
 msgid "Messages"
 msgstr "Meddelanden"
 
-#: ../server/gtk/main.c:786
+#: ../server/gtk/main.c:902
 msgid "Messages from the server"
 msgstr "Meddelanden från servern"
 
-#: ../server/gtk/main.c:803
+#: ../server/gtk/main.c:950
 msgid "The Pioneers Game Server"
 msgstr "Pioneers spelserver"
 
 #. Wait for all players to disconnect,
 #. * then enable the UI
 #.
-#: ../server/gtk/main.c:811
+#: ../server/gtk/main.c:958
 msgid "The game is over.\n"
 msgstr "Spelet är över.\n"
 
 #. Long description in the commandline for server-gtk: help
 #. Long description in the commandline for server-console: help
-#: ../server/gtk/main.c:859 ../server/main.c:170
+#: ../server/gtk/main.c:1012 ../server/main.c:174
 msgid "- Host a game of Pioneers"
 msgstr "- Stå värd för en omgång av Pioneers"
 
 #. Name in the titlebar of the server
-#: ../server/gtk/main.c:881
+#: ../server/gtk/main.c:1036
 msgid "Pioneers Server"
 msgstr "Pioneers-server"
 
 #. Commandline server-console: game-title
-#: ../server/main.c:71
+#: ../server/main.c:75
 msgid "Game title to use"
 msgstr "Speltitel att använda"
 
 #. Commandline server-console: file
-#: ../server/main.c:74
+#: ../server/main.c:78
 msgid "Game file to use"
 msgstr "Spelfil att använda"
 
 #. Commandline server-console: port
-#: ../server/main.c:77
+#: ../server/main.c:81
 msgid "Port to listen on"
 msgstr "Port att lyssna på"
 
 #. Commandline server-console: players
-#: ../server/main.c:80
+#: ../server/main.c:84
 msgid "Override number of players"
 msgstr "Åsidosätt antalet spelare"
 
 #. Commandline server-console: points
-#: ../server/main.c:83
+#: ../server/main.c:87
 msgid "Override number of points needed to win"
 msgstr "Åsidosätt antalet poäng som behövs för att vinna"
 
 #. Commandline server-console: seven-rule
-#: ../server/main.c:86
+#: ../server/main.c:90
 msgid "Override seven-rule handling"
 msgstr "Åsidosätt hantering av 7-regeln"
 
 #. Commandline server-console: terrain
-#: ../server/main.c:89
+#: ../server/main.c:93
 msgid "Override terrain type, 0=default 1=random"
 msgstr "Åsidosätt terrängtyp, 0=standard 1=slumpad"
 
 #. Commandline server-console: computer-players
-#: ../server/main.c:92
+#: ../server/main.c:96
 msgid "Add N computer players"
 msgstr "Lägg till N datorspelare"
 
 #. Commandline server-console: register
-#: ../server/main.c:102
+#: ../server/main.c:106
 msgid "Register server with meta-server"
 msgstr "Registrera server med metaserver"
 
 #. Commandline server-console: meta-server
-#: ../server/main.c:105
+#: ../server/main.c:109
 msgid "Register at meta-server name (implies -r)"
 msgstr "Registrera mot metaserver (förutsätter -r)"
 
 #. Commandline server-console: hostname
-#: ../server/main.c:109
+#: ../server/main.c:113
 msgid "Use this hostname when registering"
 msgstr "Använd detta värdnamn vid registrering"
 
 #. Commandline server-console: auto-quit
-#: ../server/main.c:116
+#: ../server/main.c:120
 msgid "Quit after a player has won"
 msgstr "Avsluta efter att en spelare har vunnit"
 
 #. Commandline server-console: empty-timeout
-#: ../server/main.c:119
+#: ../server/main.c:123
 msgid "Quit after N seconds with no players"
 msgstr "Avsluta efter N sekunder utan spelare"
 
 #. Commandline server-console: tournament
-#: ../server/main.c:122
+#: ../server/main.c:126
 msgid "Tournament mode, computer players added after N minutes"
 msgstr "Turneringsläge, datorspelare läggs till efter N minuter"
 
 #. Commandline server-console: admin-port
-#: ../server/main.c:126
+#: ../server/main.c:130
 msgid "Admin port to listen on"
 msgstr "Administrationsport att lyssna på"
 
-#: ../server/main.c:130
+#: ../server/main.c:134
 msgid "Don't start game immediately, wait for a command on admin port"
 msgstr ""
 "Starta inte spelet direkt, vänta på ett kommando på administrationsporten"
 
-#: ../server/main.c:136
+#: ../server/main.c:140
 msgid "Give players numbers according to the order they enter the game"
 msgstr "Ge spelare nummer enligt den ordning de kom in i spelet"
 
 #. Commandline server-console: Short description of meta group
-#: ../server/main.c:176
+#: ../server/main.c:180
 msgid "Meta-server Options"
 msgstr "Metaserveralternativ"
 
-#: ../server/main.c:179
+#: ../server/main.c:183
 msgid "Options for the meta-server"
 msgstr "Alternativ för metaservern"
 
 #. Commandline server-console: Short description of misc group
-#: ../server/main.c:187
+#: ../server/main.c:191
 msgid "Miscellaneous Options"
 msgstr "Diverse alternativ"
 
 #. Commandline server-console: Long description of misc group
-#: ../server/main.c:189
+#: ../server/main.c:193
 msgid "Miscellaneous options"
 msgstr "Diverse alternativ"
 
@@ -2916,80 +3036,90 @@ msgstr "Registrera mot metaservern på %s, port %s\n"
 msgid "Unregister from meta-server\n"
 msgstr "Avregistrera från metaserver\n"
 
-#: ../server/player.c:128
+#: ../server/player.c:127
 msgid "chat too long"
 msgstr "chatt för lång"
 
-#: ../server/player.c:140
+#: ../server/player.c:139
 msgid "name too long"
 msgstr "namn för långt"
 
-#: ../server/player.c:162
+#: ../server/player.c:161
 msgid "ignoring unknown extension"
 msgstr "ignorerar okänd utökning"
 
-#: ../server/player.c:191
+#: ../server/player.c:190
 msgid "Game starts, adding computer players"
 msgstr "Spelet startar, lägger till datorspelare"
 
-#: ../server/player.c:216
+#: ../server/player.c:215
 #, c-format
 msgid "The game starts in %s minutes."
 msgstr "Spelet startar om %s minuter."
 
-#: ../server/player.c:217
+#: ../server/player.c:216
 #, c-format
 msgid "The game starts in %s minute."
 msgstr "Spelet startar om %s minut."
 
-#: ../server/player.c:262
+#: ../server/player.c:261
 msgid "Sorry, game is over."
 msgstr "Tyvärr, spelet är över."
 
-#: ../server/player.c:265
+#: ../server/player.c:264
 #, c-format
 msgid "Player from %s is refused: game is over\n"
 msgstr "Spelare från %s nekas: spelet är över\n"
 
-#: ../server/player.c:310
+#: ../server/player.c:309
 msgid "This game will start soon."
 msgstr "Detta spel kommer strax att startas."
 
-#: ../server/player.c:336
+#: ../server/player.c:335
 msgid "Name not changed: new name is already in use"
 msgstr "Namn inte ändrat: nytt namn används redan"
 
 #. %s is the name of the reconnecting player
-#: ../server/player.c:614
+#: ../server/player.c:615
 #, c-format
 msgid "%s has reconnected."
 msgstr "%s har återanslutit."
 
-#: ../server/player.c:706
+#: ../server/player.c:707
 #, c-format
 msgid "Version mismatch: %s"
 msgstr "Versionen stämmer inte: %s"
 
+#: ../server/server.c:47
+msgid "Was hanging around for too long without players... bye.\n"
+msgstr ""
+
 #. Server: preparing game #.....
-#: ../server/server.c:214
+#: ../server/server.c:219
 msgid "Preparing game"
 msgstr "Förbereder spel"
 
-#: ../server/server.c:332
+#: ../server/server.c:337
 msgid "Missing game directory\n"
 msgstr "Saknar spelkatalog\n"
 
-#: ../server/turn.c:209
+#: ../server/turn.c:230
 msgid "Island Discovery Bonus"
 msgstr "Bonus för upptäckt av ö"
 
-#: ../server/turn.c:212
+#: ../server/turn.c:233
 msgid "Additional Island Bonus"
 msgstr "Bonus för ytterligare ö"
 
-#: ../server/turn.c:339
+#: ../server/turn.c:360
 msgid "Tried to assign resources to NULL player.\n"
 msgstr "Försökte tilldela resurser till NOLL spelare.\n"
+
+#~ msgid "Map Terrain"
+#~ msgstr "Kartterräng"
+
+#~ msgid "Default map or a random map"
+#~ msgstr "Förvald karta eller en slumpad karta"
 
 #~ msgid "%s has requested a connection check."
 #~ msgstr "%s har begärt en anslutningskontroll."

@@ -1,3 +1,8 @@
+2007-07-12 Roland Clobus <rclobus@bigfoot.com>
+	* All: updated the *.po files for the pending release
+	  The strings for player shape and the robber fix have also been
+	  added.
+
 2007-05-13 Roland Clobus <rclobus@bigfoot.com>
 	* POTFILES.in: editor/gtk/game-settings.c was renamed to
 	common/gtk/game-rules.c
