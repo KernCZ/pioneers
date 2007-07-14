@@ -3,15 +3,15 @@
 # Copyright (C) 2000-2002 Andy Heroff
 # This file is distributed under the same license as the pioneers package.
 # Roman Hodek <roman@hodek.net>, 2002.
-# Pit Garbe <piiit@gmx.de>, 2006.
+# Pit Garbe <piiit@gmx.de>, 2007.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Pioneers 0.9.64\n"
+"Project-Id-Version: Pioneers 0.11.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-07-12 21:45+0200\n"
-"PO-Revision-Date: 2006-06-09 02:33+0200\n"
-"Last-Translator: Ronny Standtke <Ronny.Standtke@gmx.net>\n"
+"PO-Revision-Date: 2007-07-12 22:53+0000\n"
+"Last-Translator: Pit Garbe <piiit@gmx.de>\n"
 "Language-Team: Pit Garbe <piiit@gmx.de>, Roman Hodek <roman@hodek.net>, de "
 "<de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -24,17 +24,17 @@ msgstr ""
 
 #: ../po/NotInSVNYetButWillBeInTheRelease.c:4
 msgid "Variant:"
-msgstr ""
+msgstr "Variante:"
 
 #: ../po/NotInSVNYetButWillBeInTheRelease.c:5
-#, fuzzy, c-format
+#, c-format
 msgid "%s has undone the pirate movement.\n"
-msgstr "%s hat eine Schiffsbewegung zurückgenommen.\n"
+msgstr "%s hat eine Piratenbewegung zurückgenommen.\n"
 
 #: ../po/NotInSVNYetButWillBeInTheRelease.c:6
-#, fuzzy, c-format
+#, c-format
 msgid "%s has undone the robber movement.\n"
-msgstr "%s muß den Räuber setzen."
+msgstr "%s hat den Räuber zurückgesetzt.\n"
 
 #. Default name for the AI when the computer_names file
 #. * is not found or empty.
@@ -60,7 +60,7 @@ msgstr "Serverport"
 #. Commandline pioneersai: name
 #: ../client/ai/ai.c:108
 msgid "Computer name (leave absent for random name)"
-msgstr "Computername (leer lassen für zufälligen Namen)"
+msgstr "Computername (frei lassen für zufälligen Namen)"
 
 #. Commandline pioneersai: time
 #: ../client/ai/ai.c:111
@@ -85,7 +85,7 @@ msgstr "Computerspieler-Typ"
 #: ../client/ai/ai.c:120 ../client/gtk/offline.c:74 ../meta-server/main.c:1049
 #: ../server/gtk/main.c:970 ../server/main.c:144
 msgid "Enable debug messages"
-msgstr ""
+msgstr "Debug-Nachrichten einschalten"
 
 #. Commandline option of ai: version
 #. Commandline option of client: version
@@ -97,7 +97,7 @@ msgstr ""
 #: ../editor/gtk/editor.c:1071 ../meta-server/main.c:1055
 #: ../server/gtk/main.c:973 ../server/main.c:99
 msgid "Show version information"
-msgstr ""
+msgstr "Versionsnummer anzeigen"
 
 #: ../client/ai/ai.c:134
 msgid "- Computer player for Pioneers"
@@ -107,7 +107,7 @@ msgstr "- Computerspieler für Pioneers"
 #: ../editor/gtk/editor.c:1111 ../meta-server/main.c:1084
 #: ../server/gtk/main.c:1023 ../server/main.c:206
 msgid "Pioneers version:"
-msgstr ""
+msgstr "Pioneers Version:"
 
 #: ../client/ai/ai.c:176
 #, c-format
@@ -120,23 +120,23 @@ msgstr "Das Spiel ist schon voll, ich gehe."
 
 #: ../client/ai/greedy.c:941
 msgid "No settlements in stock to use for setup"
-msgstr ""
+msgstr "Keine Siedlungen mehr übrig"
 
 #: ../client/ai/greedy.c:948
 msgid "There is no place to setup a settlement"
-msgstr ""
+msgstr "Es gibt keinen Platz für eine Siedlung"
 
 #: ../client/ai/greedy.c:972
 msgid "No roads in stock to use for setup"
-msgstr ""
+msgstr "Keine Straßen mehr übrig"
 
 #: ../client/ai/greedy.c:989
 msgid "There is no place to setup a road"
-msgstr ""
+msgstr "Es gibt keinen Platz für eine Straße"
 
 #: ../client/ai/greedy.c:1291
 msgid "Ok, let's go!"
-msgstr "Auf gehts!"
+msgstr "Auf geht's!"
 
 #: ../client/ai/greedy.c:1292
 msgid "I'll beat you all now! ;)"
@@ -240,7 +240,7 @@ msgstr "Diebe! Diebe!!"
 
 #: ../client/ai/greedy.c:1335
 msgid "Wait for my revenge..."
-msgstr "Wart auf meine Rache..."
+msgstr "Warte auf meine Rache..."
 
 #: ../client/ai/greedy.c:1338
 msgid "Oh no :("
@@ -293,21 +293,23 @@ msgid ""
 "Hello, welcome to the lobby. I am a simple robot. Type '/help' in the chat "
 "to see the list of commands I know."
 msgstr ""
+"Willkommen in der Lobby. Ich bin ein einfacher Roboter. Sende '/help' im "
+"Chatum die Liste der Befehle, die ich kenne, zu sehen."
 
 #. Translators: don't translate '/help'
 #: ../client/ai/lobbybot.c:107
 msgid "'/help' shows this message again"
-msgstr ""
+msgstr "'/help' zeigt diese Nachricht nochmals"
 
 #. Translators: don't translate '/why'
 #: ../client/ai/lobbybot.c:110
 msgid "'/why' explains the purpose of this strange board layout"
-msgstr ""
+msgstr "'/why' erklärt den Grund für dieses komische Brettlayout"
 
 #. Translators: don't translate '/news'
 #: ../client/ai/lobbybot.c:113
 msgid "'/news' tells the last released version"
-msgstr ""
+msgstr "'/news' zeigt die zuletzt erschienene Version"
 
 #: ../client/ai/lobbybot.c:118
 msgid ""
@@ -317,14 +319,19 @@ msgid ""
 "registers it at the metaserver. The other players can subsequently "
 "disconnect from the lobby, and enter that game."
 msgstr ""
+"Dieses Brett ist nicht zum Spielen vorgesehen. Dafür können sich Spieler "
+"hier treffen und entscheiden, auf welchem Brett sie miteinander spielen "
+"wollen. Dann muss einer der Spieler das Spiel eröffnen, indem er einen "
+"Server startet und ihn beim Metaserver registriert. Die anderen Spieler "
+"können dann die Lobby verlassen und das neue Spiel betreten."
 
 #: ../client/ai/lobbybot.c:129
 msgid "The last released version of Pioneers is"
-msgstr ""
+msgstr "Die zuletzt veröffentlichte Version von Pioneers ist"
 
 #: ../client/ai/lobbybot.c:144
 msgid "The game is starting. I'm not needed anymore. Goodbye."
-msgstr ""
+msgstr "Das Spiel beginnt. Ich werde nicht mehr benötigt. Auf Wiedersehen."
 
 #: ../client/common/client.c:103
 msgid "Waiting"
@@ -347,22 +354,22 @@ msgstr "Offline"
 #: ../client/common/client.c:454
 #, c-format
 msgid "Error (%s): %s\n"
-msgstr ""
+msgstr "Fehler (%s): %s\n"
 
 #: ../client/common/client.c:463 ../client/common/client.c:474
 #, c-format
 msgid "Notice: %s\n"
-msgstr ""
+msgstr "Mitteilung: %s\n"
 
 #: ../client/common/client.c:601
 #, c-format
 msgid "%s does not receive any %s, because the bank is empty.\n"
-msgstr "%s bekommt kein %s, weil die Bank leer is.\n"
+msgstr "%s bekommt kein  %s, weil die Bank leer is.\n"
 
 #: ../client/common/client.c:614
 #, c-format
 msgid "%s only receives %s, because the bank didn't have any more.\n"
-msgstr ""
+msgstr "%s bekommt nur %s, weil die Bank nicht mehr davon hat.\n"
 
 #: ../client/common/client.c:623
 #, c-format
@@ -396,11 +403,13 @@ msgstr "Lade"
 
 #: ../client/common/client.c:872
 msgid "Version mismatch"
-msgstr "Versionsfehler"
+msgstr "Versionsunterschied"
 
 #: ../client/common/client.c:874
 msgid "Version mismatch. Please make sure client and server are up to date.\n"
 msgstr ""
+"Versionsunterschied. Bitte stelle sicher, dass der Client und der Server auf "
+"dem neuesten Stand sind.\n"
 
 #: ../client/common/client.c:1327
 msgid "Build two settlements, each with a connecting"
@@ -673,9 +682,9 @@ msgid "%s built a city.\n"
 msgstr "%s hat eine Stadt gebaut.\n"
 
 #: ../client/common/player.c:517
-#, fuzzy, c-format
+#, c-format
 msgid "%s built a city wall.\n"
-msgstr "%s hat eine Stadt gebaut.\n"
+msgstr "%s hat eine Stadtmauer gebaut.\n"
 
 #: ../client/common/player.c:528
 #, c-format
@@ -710,7 +719,7 @@ msgstr "%s hat eine Stadt entfernt.\n"
 #: ../client/common/player.c:608
 #, fuzzy, c-format
 msgid "%s removed a city wall.\n"
-msgstr "%s hat eine Stadt entfernt.\n"
+msgstr "%s hat eine Stadtmauer entfernt.\n"
 
 #: ../client/common/player.c:618
 #, c-format
@@ -928,7 +937,7 @@ msgstr "<b>Chat</b>"
 
 #: ../client/gtk/chat.c:219
 msgid "Beeper test.\n"
-msgstr "Piepser Test.\n"
+msgstr "Piepser-Test.\n"
 
 #: ../client/gtk/chat.c:222
 #, c-format
@@ -1442,14 +1451,12 @@ msgstr "Kaufe eine Entwicklungskarte"
 
 #: ../client/gtk/gui.c:254 ../client/gtk/legend.c:240
 #: ../client/gtk/player.c:52 ../editor/gtk/game-buildings.c:14
-#, fuzzy
 msgid "City Wall"
-msgstr "Stadt"
+msgstr "Stadtmauer"
 
 #: ../client/gtk/gui.c:255
-#, fuzzy
 msgid "Build a city wall"
-msgstr "Baue eine Stadt"
+msgstr "Baue eine Stadtmauer"
 
 #: ../client/gtk/gui.c:257
 msgid "_Settings"
@@ -1577,20 +1584,21 @@ msgstr "Tastatur-Shortcuts in der Werkzeugleiste zeigen"
 
 #: ../client/gtk/gui.c:1001
 msgid "Announce new players"
-msgstr ""
+msgstr "Neue Spieler ankündigen"
 
 #: ../client/gtk/gui.c:1012
 msgid "Make a sound when a new player or viewer enters the game"
 msgstr ""
+"Spiele ein Geräusch, wenn ein neuer Spieler oder Zuschauer das Spiel betritt"
 
 #. Label for the option to use the 16:9 layout.
 #: ../client/gtk/gui.c:1017
 msgid "Use 16:9 layout"
-msgstr ""
+msgstr "Benutze 16:9 Layout"
 
 #: ../client/gtk/gui.c:1028
 msgid "Use a 16:9 friendly layout for the window"
-msgstr ""
+msgstr "Benutze ein 16:9-freundliches Layout für das Fenster"
 
 #: ../client/gtk/gui.c:1039
 msgid "The Pioneers Game"
@@ -1621,7 +1629,7 @@ msgstr "Wähle die neue Position des Schiffes."
 #: ../client/gtk/interface.c:738
 msgid "Select the ship to steal from."
 msgstr ""
-"Wähle das Schiff,\n"
+"Wähle das Schiff, von dem du stehlen willst.Wähle das Schiff,\n"
 "von dem gestohlen werden soll."
 
 #: ../client/gtk/interface.c:740
@@ -1724,7 +1732,7 @@ msgstr "Städte"
 
 #: ../client/gtk/player.c:52
 msgid "City Walls"
-msgstr ""
+msgstr "Stadtmauern"
 
 #: ../client/gtk/player.c:53
 msgid "Largest Army"
@@ -1939,13 +1947,12 @@ msgid "Sevens Rule:"
 msgstr "7-Regel:"
 
 #: ../client/gtk/settingscreen.c:181
-#, fuzzy
 msgid "Use Pirate:"
-msgstr "Pirat benutzen:"
+msgstr "Pirat verwenden:"
 
 #: ../client/gtk/settingscreen.c:209
 msgid "Island Discovery Bonuses:"
-msgstr ""
+msgstr "Insel-Entdeckungs-Bonus:"
 
 #: ../client/gtk/settingscreen.c:224
 msgid "<b>Building Quotas</b>"
@@ -1965,7 +1972,7 @@ msgstr "Städte:"
 
 #: ../client/gtk/settingscreen.c:259
 msgid "City Walls:"
-msgstr ""
+msgstr "Stadtmauern:"
 
 #: ../client/gtk/settingscreen.c:265
 msgid "Ships:"
@@ -2078,7 +2085,7 @@ msgstr ""
 
 #: ../common/gtk/aboutbox.c:83
 msgid "Homepage"
-msgstr ""
+msgstr "Homepage"
 
 #: ../common/gtk/aboutbox.c:88
 msgid "Authors"
@@ -2099,12 +2106,10 @@ msgid "All sevens are rerolled"
 msgstr "Jede 7 wird wiederholt gewürfelt"
 
 #: ../common/gtk/game-rules.c:121
-#, fuzzy
 msgid "Randomize Terrain"
 msgstr "Zufällige Geländeverteilung?"
 
 #: ../common/gtk/game-rules.c:121
-#, fuzzy
 msgid "Randomize the terrain"
 msgstr "Zufällige Geländeverteilung?"
 
@@ -2114,16 +2119,15 @@ msgstr "Pirat benutzen"
 
 #: ../common/gtk/game-rules.c:123
 msgid "Use the pirate to block ships"
-msgstr ""
+msgstr "Den Pirat benutzen, um Schiffe zu blockieren"
 
 #: ../common/gtk/game-rules.c:125
 msgid "Strict Trade"
 msgstr "Strenger Handel"
 
 #: ../common/gtk/game-rules.c:126
-#, fuzzy
 msgid "Allow trade only before building or buying"
-msgstr "Handel nur vor dem Bauen erlaubt?"
+msgstr "Handel nur vor dem Bauen oder Kaufen erlauben"
 
 #: ../common/gtk/game-rules.c:128
 msgid "Domestic Trade"
@@ -2131,7 +2135,7 @@ msgstr "Binnenhandel"
 
 #: ../common/gtk/game-rules.c:128
 msgid "Allow trade between players"
-msgstr ""
+msgstr "Handel unter den Spielern erlauben"
 
 #. Label text for customising a game
 #: ../common/gtk/game-settings.c:118
@@ -2155,9 +2159,8 @@ msgstr "Punkte für Sieg"
 
 #. Tooltip for the check button
 #: ../common/gtk/game-settings.c:172
-#, fuzzy
 msgid "Is it possible to win this game?"
-msgstr "Punkte für Sieg"
+msgstr "Ist es möglich, dieses Spiel zu gewinnen?"
 
 #. Port indicator for a resource: trade 2 for 1
 #: ../common/gtk/guimap.c:736
@@ -2206,22 +2209,22 @@ msgid "bad scaling mode '%s'"
 msgstr "falscher Skaliermodus '%s'"
 
 #: ../common/game.c:603 ../common/game.c:633
-#, fuzzy
 msgid "This game cannot be won."
-msgstr "Die Bank kann nicht geleert werden"
+msgstr "Dieses Spiel kann nicht gewonnen werden."
 
 #: ../common/game.c:604
-#, fuzzy
 msgid "There is no land."
-msgstr "Es gibt keine längste Handelsstraße.\n"
+msgstr "Hier gibt es kein Land."
 
 #: ../common/game.c:638
 msgid "It is possible that this game cannot be won."
-msgstr ""
+msgstr "Es ist möglich, dass dieses Spiel unentschieden endet."
 
 #: ../common/game.c:643
 msgid "This game can be won by only building all settlements and cities."
 msgstr ""
+"Dieses Spiel kann nur noch durch das Bauen aller Siedlungen und Städte "
+"gewonnen werden."
 
 #: ../common/game.c:650
 #, c-format
@@ -2233,6 +2236,12 @@ msgid ""
 "Maximum island discovery bonus: %d\n"
 "Total: %d"
 msgstr ""
+"Benötigte Siegpunkte: %d\n"
+"Punkte durch Gebäude: %d\n"
+"Punkte durch Entwicklungskarten: %d\n"
+"Längste Straße/Stärkste Rittermacht: %d+%d\n"
+"Größter Insel-Entdeckungs-Bonus: %d\n"
+"Gesamt: %d"
 
 #: ../common/log.c:54
 msgid "*ERROR* "
@@ -2426,7 +2435,7 @@ msgstr "Verbinde zu %s Port %s\n"
 
 #: ../common/state.c:521
 msgid "State stack overflow. Stack dump sent to standard error.\n"
-msgstr ""
+msgstr "Zustandsstack-Überlauf. Stack dump an 'standard error' gesendet.\n"
 
 #. Use an unique shortcut key for each resource
 #: ../editor/gtk/editor.c:73
@@ -2637,13 +2646,12 @@ msgid "Change game title"
 msgstr "Spieltitel ändern"
 
 #: ../editor/gtk/editor.c:1015 ../server/gtk/main.c:100
-#, fuzzy
 msgid "_Check Victory Point Target"
-msgstr "Siegpunkte"
+msgstr "Zeige die Anzahl der benötigten Sieg_punkte"
 
 #: ../editor/gtk/editor.c:1017 ../server/gtk/main.c:102
 msgid "Check whether the game can be won"
-msgstr ""
+msgstr "Überprüfe, ob das Spiel gewonnen werden kann"
 
 #: ../editor/gtk/editor.c:1019
 msgid "Quit"
@@ -2687,46 +2695,46 @@ msgstr "Rohstoffe"
 #. Commandline meta-server: daemon
 #: ../meta-server/main.c:1033
 msgid "Daemonize the metaserver on start"
-msgstr ""
+msgstr "Metaserver als Daemon starten"
 
 #. Commandline meta-server: redirect
 #: ../meta-server/main.c:1036
 msgid "Redirect clients to another metaserver"
-msgstr ""
+msgstr "Leitet Spieler auf einen anderen Metaserver um"
 
 #. Commandline meta-server: server
 #: ../meta-server/main.c:1039
 msgid "Use this hostname when creating new games"
-msgstr ""
+msgstr "Diesen Host beim Erstellen neuer Spiele benutzen"
 
 #. Commandline meta-server: server argument
 #: ../meta-server/main.c:1041
 msgid "hostname"
-msgstr ""
+msgstr "Hostname"
 
 #. Commandline meta-server: port-range
 #: ../meta-server/main.c:1044
 msgid "Use this ports range when creating new games"
-msgstr ""
+msgstr "Diese Ports beim Erstellen neuer Spiele benutzen"
 
 #. Commandline meta-server: port-range argument
 #: ../meta-server/main.c:1046
 msgid "from-to"
-msgstr ""
+msgstr "von-bis"
 
 #. Commandline option of meta server: syslog-debug
 #: ../meta-server/main.c:1052
 msgid "Debug syslog messages"
-msgstr ""
+msgstr "Debugge Syslog Nachrichten"
 
 #. Long description in the commandline for server-console: help
 #: ../meta-server/main.c:1073
 msgid "- Meta server for Pioneers"
-msgstr ""
+msgstr "- Metaserver für Pioneers"
 
 #: ../meta-server/main.c:1088
 msgid "metaserver protocol:"
-msgstr ""
+msgstr "Metaserver Protokoll:"
 
 #: ../server/gtk/main.c:105
 msgid "_About Pioneers Server"
@@ -2883,14 +2891,12 @@ msgid "Add a computer player to the game"
 msgstr "Einen Computerspieler hinzufügen"
 
 #: ../server/gtk/main.c:868
-#, fuzzy
 msgid "Launch Pioneers Client"
-msgstr "Das Pioneers-Spiel"
+msgstr "Pioneers-Client starten"
 
 #: ../server/gtk/main.c:875
-#, fuzzy
 msgid "Launch the Pioneers Client"
-msgstr "Das Pioneers-Spiel"
+msgstr "Den Pioneers-Client starten"
 
 #: ../server/gtk/main.c:884
 msgid "Messages"
@@ -2930,7 +2936,7 @@ msgstr "Zu benutzender Spieltitel"
 #. Commandline server-console: file
 #: ../server/main.c:78
 msgid "Game file to use"
-msgstr ""
+msgstr "Zu verwendende Spieldatei"
 
 #. Commandline server-console: port
 #: ../server/main.c:81
@@ -3005,7 +3011,7 @@ msgstr ""
 
 #: ../server/main.c:140
 msgid "Give players numbers according to the order they enter the game"
-msgstr ""
+msgstr "Den Spielern in der Reihenfolge der Teilnahme Nummern zuteilen"
 
 #. Commandline server-console: Short description of meta group
 #: ../server/main.c:180
@@ -3045,21 +3051,21 @@ msgstr "Name ist zu lang"
 
 #: ../server/player.c:161
 msgid "ignoring unknown extension"
-msgstr ""
+msgstr "ignoriere unbekannte Erweiterung"
 
 #: ../server/player.c:190
 msgid "Game starts, adding computer players"
-msgstr ""
+msgstr "Das Spiel beginnt, füge Computerspieler hinzu"
 
 #: ../server/player.c:215
 #, c-format
 msgid "The game starts in %s minutes."
-msgstr ""
+msgstr "Das Spiel beginnt in %s Minuten."
 
 #: ../server/player.c:216
 #, c-format
 msgid "The game starts in %s minute."
-msgstr ""
+msgstr "Das Spiel beginnt in %s minute."
 
 #: ../server/player.c:261
 msgid "Sorry, game is over."
@@ -3072,7 +3078,7 @@ msgstr "Spieler von %s abgelehnt: Das Spiel ist vorbei\n"
 
 #: ../server/player.c:309
 msgid "This game will start soon."
-msgstr ""
+msgstr "Das Spiel beginnt bald."
 
 #: ../server/player.c:335
 msgid "Name not changed: new name is already in use"
@@ -3080,18 +3086,18 @@ msgstr "Name nicht geändert: neuer Name wird schon benutzt"
 
 #. %s is the name of the reconnecting player
 #: ../server/player.c:615
-#, fuzzy, c-format
+#, c-format
 msgid "%s has reconnected."
-msgstr "%s neu verbunden."
+msgstr "%s hat sich neu verbunden."
 
 #: ../server/player.c:707
-#, fuzzy, c-format
+#, c-format
 msgid "Version mismatch: %s"
-msgstr "Versionsfehler: %s"
+msgstr "Versionsunterschied: %s"
 
 #: ../server/server.c:47
 msgid "Was hanging around for too long without players... bye.\n"
-msgstr ""
+msgstr "Habe zu lange auf andere Spieler gewartet... tschüss.\n"
 
 #. Server: preparing game #.....
 #: ../server/server.c:219
@@ -3104,11 +3110,11 @@ msgstr "Spielverzeichnis fehlt\n"
 
 #: ../server/turn.c:230
 msgid "Island Discovery Bonus"
-msgstr ""
+msgstr "Insel-Entdeckungs-Bonus"
 
 #: ../server/turn.c:233
 msgid "Additional Island Bonus"
-msgstr ""
+msgstr "Extra Insel-Bonus"
 
 #: ../server/turn.c:360
 msgid "Tried to assign resources to NULL player.\n"
