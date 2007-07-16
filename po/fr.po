@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: Pioneers 0.10.2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-07-12 21:45+0200\n"
-"PO-Revision-Date: 2006-11-12 20:19+0100\n"
-"Last-Translator: Jean-Charles GRANGER <traduction@vecteur.org>\n"
+"PO-Revision-Date: 2007-07-15 14:24+0100\n"
+"Last-Translator: Jean-Charles GRANGER <traductions@vecteur.org>\n"
 "Language-Team: Français <LL@li.org>, LT-P <LT-P@LT-P.net>, Yusei "
 "<yusei@ragondux.com>, Arnaud MALON <moko@geumeuleu.com>, Jean-Charles "
 "GRANGER <traduction@vecteur.org>\n"
@@ -24,21 +24,21 @@ msgstr ""
 
 #: ../po/NotInSVNYetButWillBeInTheRelease.c:3
 msgid "Face:"
-msgstr ""
+msgstr "Figure :"
 
 #: ../po/NotInSVNYetButWillBeInTheRelease.c:4
 msgid "Variant:"
-msgstr ""
+msgstr "Variante :"
 
 #: ../po/NotInSVNYetButWillBeInTheRelease.c:5
-#, fuzzy, c-format
+#, c-format
 msgid "%s has undone the pirate movement.\n"
-msgstr "%s a annulé un mouvement de navire.\n"
+msgstr "%s a annulé le déplacement du pirate.\n"
 
 #: ../po/NotInSVNYetButWillBeInTheRelease.c:6
-#, fuzzy, c-format
+#, c-format
 msgid "%s has undone the robber movement.\n"
-msgstr "%s doit déplacer le voleur."
+msgstr "%s a annulé le déplacement du voleur.\n"
 
 #. Default name for the AI when the computer_names file
 #. * is not found or empty.
@@ -64,22 +64,22 @@ msgstr "Port du serveur"
 #. Commandline pioneersai: name
 #: ../client/ai/ai.c:108
 msgid "Computer name (leave absent for random name)"
-msgstr ""
+msgstr "Nom de l'AI (laisser vide pour un nom aléatoire)"
 
 #. Commandline pioneersai: time
 #: ../client/ai/ai.c:111
 msgid "Time to wait between turns (in milliseconds)"
-msgstr ""
+msgstr "Intervalle entre chaque tour (en millisecondes)"
 
 #. Commandline pioneersai: chat-free
 #: ../client/ai/ai.c:114
 msgid "Stop computer player from talking"
-msgstr ""
+msgstr "Empêcher l'AI de parler"
 
 #. Commandline pioneersai: algorithm
 #: ../client/ai/ai.c:117
 msgid "Type of computer player"
-msgstr ""
+msgstr "Type d'AI"
 
 #. Commandline option of ai: enable debug logging
 #. Commandline option of client: enable debug logging
@@ -105,7 +105,7 @@ msgstr "Voir les informations de version"
 
 #: ../client/ai/ai.c:134
 msgid "- Computer player for Pioneers"
-msgstr ""
+msgstr "- AI pour Pioneers"
 
 #: ../client/ai/ai.c:144 ../client/gtk/offline.c:184
 #: ../editor/gtk/editor.c:1111 ../meta-server/main.c:1084
@@ -116,7 +116,7 @@ msgstr "Version de Pioneers :"
 #: ../client/ai/ai.c:176
 #, c-format
 msgid "Type of computer player: %s\n"
-msgstr ""
+msgstr "Type d'AI : %s\n"
 
 #: ../client/ai/ai.c:200
 msgid "The game is already full. I'm leaving."
@@ -326,6 +326,11 @@ msgid ""
 "registers it at the metaserver. The other players can subsequently "
 "disconnect from the lobby, and enter that game."
 msgstr ""
+"Ce plateau n'est pas une partie où l'on peut jouer : c'est un lieu où l'on "
+"peut rencontrer d'autres joueurs et décider quel plateau jouer. L'un des "
+"joueurs hébergera la partie choisie en démarrant un serveur et en "
+"l'enregistrant sur le metaserveur. Les autres joueurs pourront ensuite se "
+"déconnecter du Hall d'Accueil, et entrer dans la partie."
 
 #: ../client/ai/lobbybot.c:129
 msgid "The last released version of Pioneers is"
@@ -333,7 +338,7 @@ msgstr "La dernière version de Pioneers est"
 
 #: ../client/ai/lobbybot.c:144
 msgid "The game is starting. I'm not needed anymore. Goodbye."
-msgstr ""
+msgstr "La partie démarre. Je ne vous suis plus d'aucune utilité. Au revoir."
 
 #: ../client/common/client.c:103
 msgid "Waiting"
@@ -345,7 +350,7 @@ msgstr "Inactif"
 
 #: ../client/common/client.c:430
 msgid "We have been kicked out of the game.\n"
-msgstr "Nous avons été expulsé de la partie.\n"
+msgstr "Vous avez été expulsé de la partie.\n"
 
 #. Network status: offline
 #: ../client/common/client.c:433 ../client/common/client.c:871
@@ -371,7 +376,7 @@ msgstr "%s n'a reçu aucune ressource %s (la banque est vide).\n"
 #: ../client/common/client.c:614
 #, c-format
 msgid "%s only receives %s, because the bank didn't have any more.\n"
-msgstr ""
+msgstr "%s a reçu uniquement %s, car la banque n'en a pas plus.\n"
 
 #: ../client/common/client.c:623
 #, c-format
@@ -604,12 +609,12 @@ msgstr "%s est parti\n"
 
 #: ../client/common/player.c:260
 msgid "There is no largest army.\n"
-msgstr "Il n'y a pas de plus grande armée.\n"
+msgstr "Il n'y a pas de chevalier le plus puissant.\n"
 
 #: ../client/common/player.c:263
 #, c-format
 msgid "%s has the largest army.\n"
-msgstr "%s détient la plus grande armée.\n"
+msgstr "%s détient le chevalier le plus puissant.\n"
 
 #: ../client/common/player.c:284
 msgid "There is no longest road.\n"
@@ -683,9 +688,9 @@ msgid "%s built a city.\n"
 msgstr "%s érige une ville.\n"
 
 #: ../client/common/player.c:517
-#, fuzzy, c-format
+#, c-format
 msgid "%s built a city wall.\n"
-msgstr "%s érige une ville.\n"
+msgstr "%s construit un rempart.\n"
 
 #: ../client/common/player.c:528
 #, c-format
@@ -718,9 +723,9 @@ msgid "%s removed a city.\n"
 msgstr "%s retire une ville.\n"
 
 #: ../client/common/player.c:608
-#, fuzzy, c-format
+#, c-format
 msgid "%s removed a city wall.\n"
-msgstr "%s retire une ville.\n"
+msgstr "%s supprime un rempart.\n"
 
 #: ../client/common/player.c:618
 #, c-format
@@ -962,7 +967,7 @@ msgstr " a dit : "
 #: ../client/gtk/connect.c:270
 #, c-format
 msgid "Meta-server at %s, port %s"
-msgstr "Métaserveur à l'adresse %s, port %s"
+msgstr "Meta-serveur à l'adresse %s, port %s"
 
 #: ../client/gtk/connect.c:280
 msgid "Finished.\n"
@@ -971,11 +976,11 @@ msgstr "Terminé.\n"
 #: ../client/gtk/connect.c:297 ../client/gtk/connect.c:347
 #: ../client/gtk/connect.c:444 ../server/meta.c:174
 msgid "Meta-server kicked us off\n"
-msgstr "Le métaserveur nous a expulsé\n"
+msgstr "Le meta-serveur nous a expulsé\n"
 
 #: ../client/gtk/connect.c:322
 msgid "Receiving game names from the meta server.\n"
-msgstr "Reception du nom des parties du métaserveur.\n"
+msgstr "Reception du nom des parties du meta-serveur.\n"
 
 #: ../client/gtk/connect.c:370
 #, c-format
@@ -985,11 +990,11 @@ msgstr "Une nouvelle partie commence sur le serveur %s, port %s.\n"
 #: ../client/gtk/connect.c:379 ../server/meta.c:168
 #, c-format
 msgid "Unknown message from the metaserver: %s\n"
-msgstr "Message inconnu du métaserveur : %s\n"
+msgstr "Message inconnu du meta-serveur : %s\n"
 
 #: ../client/gtk/connect.c:460 ../server/meta.c:125
 msgid "Too many meta-server redirects\n"
-msgstr "Trop de redirections du métaserveur\n"
+msgstr "Trop de redirections du meta-serveur\n"
 
 #: ../client/gtk/connect.c:487 ../server/meta.c:140
 #, c-format
@@ -999,7 +1004,8 @@ msgstr "Mauvaise redirection ligne %s\n"
 #: ../client/gtk/connect.c:513
 #, c-format
 msgid "Meta server too old to create servers (version %d.%d)\n"
-msgstr "Le métaserveur est trop vieux pour créer des parties (version %d.%d)\n"
+msgstr ""
+"Le meta-serveur est trop vieux pour créer des parties (version %d.%d)\n"
 
 #. Sevens rule: normal
 #: ../client/gtk/connect.c:584 ../client/gtk/settingscreen.c:168
@@ -1028,11 +1034,11 @@ msgstr "Aléatoire"
 #: ../client/gtk/connect.c:641 ../server/meta.c:188
 #, c-format
 msgid "Redirected to meta-server at %s, port %s\n"
-msgstr "Redirection sur le métaserveur %s, port %s.\n"
+msgstr "Redirection sur le meta-serveur %s, port %s.\n"
 
 #: ../client/gtk/connect.c:644
 msgid "Receiving a list of Pioneers servers from the meta server.\n"
-msgstr "Réception d'une liste de serveurs Pioneers depuis le métaserveur.\n"
+msgstr "Réception d'une liste de serveurs Pioneers depuis le meta-serveur.\n"
 
 #: ../client/gtk/connect.c:701
 msgid ""
@@ -1041,7 +1047,7 @@ msgid ""
 "\tPlease set appropriate values yourself."
 msgstr ""
 "<b>Note</b> :\n"
-"\tLe métaserver n'envoit pas d'information sur les parties.\n"
+"\tLe meta-server n'envoit pas d'information sur les parties.\n"
 "\tA vous de les définir vous-même."
 
 #: ../client/gtk/connect.c:718
@@ -1079,7 +1085,7 @@ msgstr "Rafraîchir la liste des parties"
 
 #: ../client/gtk/connect.c:977
 msgid "Create a new public game at the meta server"
-msgstr "Créer une nouvelle partie publique sur le métaserveur"
+msgstr "Créer une nouvelle partie publique sur le meta-serveur"
 
 #: ../client/gtk/connect.c:982
 msgid "Don't join a public game"
@@ -1188,11 +1194,11 @@ msgstr "Souhaitez-vous être spectateur ?"
 
 #: ../client/gtk/connect.c:1228 ../server/gtk/main.c:655
 msgid "Meta Server"
-msgstr "Métaserveur"
+msgstr "Meta-serveur"
 
 #: ../client/gtk/connect.c:1243
 msgid "Leave empty for the default meta server"
-msgstr "Laissez vide pour le métaserveur par défaut"
+msgstr "Laissez vide pour le meta-serveur par défaut"
 
 #: ../client/gtk/connect.c:1251
 msgid "Join public game"
@@ -1452,14 +1458,12 @@ msgstr "Acheter une carte de développement"
 
 #: ../client/gtk/gui.c:254 ../client/gtk/legend.c:240
 #: ../client/gtk/player.c:52 ../editor/gtk/game-buildings.c:14
-#, fuzzy
 msgid "City Wall"
-msgstr "Ville"
+msgstr "Rempart"
 
 #: ../client/gtk/gui.c:255
-#, fuzzy
 msgid "Build a city wall"
-msgstr "Eriger une cité"
+msgstr "Construire un rempart"
 
 #: ../client/gtk/gui.c:257
 msgid "_Settings"
@@ -1597,11 +1601,11 @@ msgstr ""
 #. Label for the option to use the 16:9 layout.
 #: ../client/gtk/gui.c:1017
 msgid "Use 16:9 layout"
-msgstr ""
+msgstr "Utiliser un plateau de jeu 16:9"
 
 #: ../client/gtk/gui.c:1028
 msgid "Use a 16:9 friendly layout for the window"
-msgstr ""
+msgstr "Utiliser pour la fenêtre un plateau de jeu compatible 16:9"
 
 #: ../client/gtk/gui.c:1039
 msgid "The Pioneers Game"
@@ -1708,7 +1712,7 @@ msgstr "Se connecter en tant que spectateur"
 
 #: ../client/gtk/offline.c:66
 msgid "Meta-server Host"
-msgstr ""
+msgstr "Hôte du meta-serveur"
 
 #: ../client/gtk/offline.c:70
 msgid "Override the language of the system"
@@ -1721,7 +1725,7 @@ msgstr "Connexion"
 #. Long description in the commandline for pioneers: help
 #: ../client/gtk/offline.c:173
 msgid "- Play a game of Pioneers"
-msgstr ""
+msgstr "- Jouer à une partie de Pionneers"
 
 #: ../client/gtk/player.c:50
 msgid "Settlements"
@@ -1733,11 +1737,11 @@ msgstr "Villes"
 
 #: ../client/gtk/player.c:52
 msgid "City Walls"
-msgstr ""
+msgstr "Rempart"
 
 #: ../client/gtk/player.c:53
 msgid "Largest Army"
-msgstr "La plus grande armée"
+msgstr "Le chevalier le plus puissant"
 
 #: ../client/gtk/player.c:54
 msgid "Longest Road"
@@ -1973,7 +1977,7 @@ msgstr "Villes :"
 
 #: ../client/gtk/settingscreen.c:259
 msgid "City Walls:"
-msgstr ""
+msgstr "Remparts :"
 
 #: ../client/gtk/settingscreen.c:265
 msgid "Ships:"
@@ -2107,14 +2111,12 @@ msgid "All sevens are rerolled"
 msgstr "Tous les 7 sont relancés"
 
 #: ../common/gtk/game-rules.c:121
-#, fuzzy
 msgid "Randomize Terrain"
-msgstr "Carte aléatoire ?"
+msgstr "Carte aléatoire"
 
 #: ../common/gtk/game-rules.c:121
-#, fuzzy
 msgid "Randomize the terrain"
-msgstr "Carte aléatoire ?"
+msgstr "Carte aléatoire"
 
 #: ../common/gtk/game-rules.c:123
 msgid "Use Pirate"
@@ -2122,16 +2124,15 @@ msgstr "Jouer avec le pirate"
 
 #: ../common/gtk/game-rules.c:123
 msgid "Use the pirate to block ships"
-msgstr ""
+msgstr "Utiliser le pirate pour bloquer les bateaux"
 
 #: ../common/gtk/game-rules.c:125
 msgid "Strict Trade"
 msgstr "Échanges stricts"
 
 #: ../common/gtk/game-rules.c:126
-#, fuzzy
 msgid "Allow trade only before building or buying"
-msgstr "Autoriser les échanges avant de construire ?"
+msgstr "Autoriser les échanges uniquement avant de construire ou d'acheter"
 
 #: ../common/gtk/game-rules.c:128
 msgid "Domestic Trade"
@@ -2139,7 +2140,7 @@ msgstr "Échanges commerciaux"
 
 #: ../common/gtk/game-rules.c:128
 msgid "Allow trade between players"
-msgstr ""
+msgstr "Autoriser les échanges entre joueurs"
 
 #. Label text for customising a game
 #: ../common/gtk/game-settings.c:118
@@ -2163,9 +2164,8 @@ msgstr "Pts requis pour gagner : %i"
 
 #. Tooltip for the check button
 #: ../common/gtk/game-settings.c:172
-#, fuzzy
 msgid "Is it possible to win this game?"
-msgstr "Pts requis pour gagner : %i"
+msgstr "Est-il possible de gagner ce jeu ?"
 
 #. Port indicator for a resource: trade 2 for 1
 #: ../common/gtk/guimap.c:736
@@ -2214,22 +2214,22 @@ msgid "bad scaling mode '%s'"
 msgstr "mauvais mode scalaire '%s'"
 
 #: ../common/game.c:603 ../common/game.c:633
-#, fuzzy
 msgid "This game cannot be won."
-msgstr "La partie va bientôt démarrer."
+msgstr "Cette partie ne peut pas être gagnée."
 
 #: ../common/game.c:604
-#, fuzzy
 msgid "There is no land."
-msgstr "Il n'y a pas de route la plus longue.\n"
+msgstr "Il n'y a pas de terrain."
 
 #: ../common/game.c:638
 msgid "It is possible that this game cannot be won."
-msgstr ""
+msgstr "Il est possible que ce jeu ne puissent pas être gagné."
 
 #: ../common/game.c:643
 msgid "This game can be won by only building all settlements and cities."
 msgstr ""
+"Cette partie ne peut pas être gagnée uniquement en construisant des colonies "
+"et des villes."
 
 #: ../common/game.c:650
 #, c-format
@@ -2241,6 +2241,12 @@ msgid ""
 "Maximum island discovery bonus: %d\n"
 "Total: %d"
 msgstr ""
+"Points de victoire requis : %d\n"
+"Points obtenus en tout construisant : %d\n"
+"Points dans les cartes de développement : %d\n"
+"Route la plus longue / chevalier le plus puissant : %d+%d\n"
+"Bonus maximum pour la découverte d'iles : %d\n"
+"Total : %d"
 
 #: ../common/log.c:54
 msgid "*ERROR* "
@@ -2480,7 +2486,6 @@ msgstr "_Or"
 #. Use an unique shortcut key for each resource
 #. Use an unique shortcut key for each port type
 #: ../editor/gtk/editor.c:89 ../editor/gtk/editor.c:104
-#, fuzzy
 msgid "_None"
 msgstr "Aucu_n"
 
@@ -2647,13 +2652,12 @@ msgid "Change game title"
 msgstr "Changer le nom de la partie"
 
 #: ../editor/gtk/editor.c:1015 ../server/gtk/main.c:100
-#, fuzzy
 msgid "_Check Victory Point Target"
-msgstr "Pts de victoire requis"
+msgstr "Vérifier les points de vi_ctoire requis"
 
 #: ../editor/gtk/editor.c:1017 ../server/gtk/main.c:102
 msgid "Check whether the game can be won"
-msgstr ""
+msgstr "Vérifier si le jeu peut être gagné"
 
 #: ../editor/gtk/editor.c:1019
 msgid "Quit"
@@ -2670,16 +2674,16 @@ msgstr "Informations à propos de l'éditeur de partie"
 #. Long help for commandline option (editor): filename
 #: ../editor/gtk/editor.c:1066
 msgid "Open this file"
-msgstr ""
+msgstr "Ouvrir le fichier"
 
 #. Commandline option for editor: filename
 #: ../editor/gtk/editor.c:1068
 msgid "filename"
-msgstr ""
+msgstr "nom de fichier"
 
 #: ../editor/gtk/editor.c:1100
 msgid "- Editor for games of Pioneers"
-msgstr ""
+msgstr "- Editeur de parties pour Pioneers"
 
 #: ../editor/gtk/editor.c:1141 ../server/gtk/main.c:1055
 #, c-format
@@ -2697,47 +2701,46 @@ msgstr "Nombre de ressources"
 #. Commandline meta-server: daemon
 #: ../meta-server/main.c:1033
 msgid "Daemonize the metaserver on start"
-msgstr ""
+msgstr "Démoniser le meta-serveur au démarrage"
 
 #. Commandline meta-server: redirect
 #: ../meta-server/main.c:1036
 msgid "Redirect clients to another metaserver"
-msgstr ""
+msgstr "Rediriger les clients vers un autre meta-serveur"
 
 #. Commandline meta-server: server
 #: ../meta-server/main.c:1039
 msgid "Use this hostname when creating new games"
-msgstr ""
+msgstr "Utiliser ce nom d'hôte lors de la création de nouvelles parties"
 
 #. Commandline meta-server: server argument
 #: ../meta-server/main.c:1041
 msgid "hostname"
-msgstr ""
+msgstr "nom d'hôte"
 
 #. Commandline meta-server: port-range
 #: ../meta-server/main.c:1044
 msgid "Use this ports range when creating new games"
-msgstr ""
+msgstr "Utiliser cette plage de ports lors de la création de nouvelles parties"
 
 #. Commandline meta-server: port-range argument
 #: ../meta-server/main.c:1046
 msgid "from-to"
-msgstr ""
+msgstr "de... à..."
 
 #. Commandline option of meta server: syslog-debug
 #: ../meta-server/main.c:1052
-#, fuzzy
 msgid "Debug syslog messages"
 msgstr "Messages de débogage système (syslog)"
 
 #. Long description in the commandline for server-console: help
 #: ../meta-server/main.c:1073
 msgid "- Meta server for Pioneers"
-msgstr ""
+msgstr "- Meta-serveur pour Pioneers"
 
 #: ../meta-server/main.c:1088
 msgid "metaserver protocol:"
-msgstr ""
+msgstr "protocole du meta-serveur"
 
 #: ../server/gtk/main.c:105
 msgid "_About Pioneers Server"
@@ -2796,11 +2799,11 @@ msgstr "Annoncer le serveur"
 
 #: ../server/gtk/main.c:652
 msgid "Register this game at the meta server"
-msgstr "Annoncer cette partie sur le métaserveur"
+msgstr "Annoncer cette partie sur le meta-serveur"
 
 #: ../server/gtk/main.c:668
 msgid "The address of the meta server"
-msgstr "L'adresse du métaserveur"
+msgstr "L'adresse du meta-serveur"
 
 #: ../server/gtk/main.c:670
 msgid "Reported Hostname"
@@ -2893,14 +2896,12 @@ msgid "Add a computer player to the game"
 msgstr "Ajouter une IA"
 
 #: ../server/gtk/main.c:868
-#, fuzzy
 msgid "Launch Pioneers Client"
-msgstr "Pioneers"
+msgstr "Lancer le client Pioneers"
 
 #: ../server/gtk/main.c:875
-#, fuzzy
 msgid "Launch the Pioneers Client"
-msgstr "Pioneers"
+msgstr "Lancer le client Pioneers"
 
 #: ../server/gtk/main.c:884
 msgid "Messages"
@@ -2925,7 +2926,7 @@ msgstr "La partie est terminée.\n"
 #. Long description in the commandline for server-console: help
 #: ../server/gtk/main.c:1012 ../server/main.c:174
 msgid "- Host a game of Pioneers"
-msgstr ""
+msgstr "- Héberger une partie de Pioneers"
 
 #. Name in the titlebar of the server
 #: ../server/gtk/main.c:1036
@@ -2945,7 +2946,7 @@ msgstr "Fichier de partie à utiliser"
 #. Commandline server-console: port
 #: ../server/main.c:81
 msgid "Port to listen on"
-msgstr ""
+msgstr "Port à écouter"
 
 #. Commandline server-console: players
 #: ../server/main.c:84
@@ -2960,12 +2961,12 @@ msgstr "Outrepasser le nombre de points requis pour gagner"
 #. Commandline server-console: seven-rule
 #: ../server/main.c:90
 msgid "Override seven-rule handling"
-msgstr ""
+msgstr "Outrepasser la gestion de la règle des 7"
 
 #. Commandline server-console: terrain
 #: ../server/main.c:93
 msgid "Override terrain type, 0=default 1=random"
-msgstr ""
+msgstr "Outrepasser le type de terrain : 0 = défaut, 1 = aléatoire"
 
 #. Commandline server-console: computer-players
 #: ../server/main.c:96
@@ -2974,19 +2975,18 @@ msgstr "Ajouter N joueurs IA"
 
 #. Commandline server-console: register
 #: ../server/main.c:106
-#, fuzzy
 msgid "Register server with meta-server"
-msgstr "Annoncer cette partie sur le métaserveur"
+msgstr "Annoncer cette partie sur le meta-serveur"
 
 #. Commandline server-console: meta-server
 #: ../server/main.c:109
 msgid "Register at meta-server name (implies -r)"
-msgstr ""
+msgstr "Nom du meta-serveur d'enregistrement (implique -r)"
 
 #. Commandline server-console: hostname
 #: ../server/main.c:113
 msgid "Use this hostname when registering"
-msgstr ""
+msgstr "Utiliser ce nom d'hôte lors de l'enregistrement"
 
 #. Commandline server-console: auto-quit
 #: ../server/main.c:120
@@ -3001,29 +3001,32 @@ msgstr "Quitter après N secondes sans joueurs"
 #. Commandline server-console: tournament
 #: ../server/main.c:126
 msgid "Tournament mode, computer players added after N minutes"
-msgstr ""
+msgstr "Mode tournoi, joueurs AI ajoutés après N minutes"
 
 #. Commandline server-console: admin-port
 #: ../server/main.c:130
 msgid "Admin port to listen on"
-msgstr ""
+msgstr "Port à écouter pour l'administration"
 
 #: ../server/main.c:134
 msgid "Don't start game immediately, wait for a command on admin port"
 msgstr ""
+"Ne pas démarrer la partie immédiatement, attendre une commande sur le port "
+"d'administration"
 
 #: ../server/main.c:140
 msgid "Give players numbers according to the order they enter the game"
 msgstr ""
+"Attribuer aux joueurs un numéro selon leur ordre d'arrivée dans la partie"
 
 #. Commandline server-console: Short description of meta group
 #: ../server/main.c:180
 msgid "Meta-server Options"
-msgstr "Options du métaserveur"
+msgstr "Options du meta-serveur"
 
 #: ../server/main.c:183
 msgid "Options for the meta-server"
-msgstr "Options du métaserveur"
+msgstr "Options du meta-serveur"
 
 #. Commandline server-console: Short description of misc group
 #: ../server/main.c:191
@@ -3038,11 +3041,11 @@ msgstr "Options diverses"
 #: ../server/meta.c:193
 #, c-format
 msgid "Register with meta-server at %s, port %s\n"
-msgstr "Annoncé sur le métaserveur : %s, port %s\n"
+msgstr "Annoncé sur le meta-serveur : %s, port %s\n"
 
 #: ../server/meta.c:210
 msgid "Unregister from meta-server\n"
-msgstr "Se désinscrire du métaserveur\n"
+msgstr "Se désinscrire du meta-serveur\n"
 
 #: ../server/player.c:127
 msgid "chat too long"
@@ -3101,6 +3104,8 @@ msgstr "Versions incompatibles : %s"
 #: ../server/server.c:47
 msgid "Was hanging around for too long without players... bye.\n"
 msgstr ""
+"Vous traînez ici depuis trop longtemps sans qu'il n'y ait de joueurs... Au "
+"revoir.\n"
 
 #. Server: preparing game #.....
 #: ../server/server.c:219
