@@ -1,15 +1,15 @@
 # Swedish translation of pioneers.
-# Copyright (C) 2005 Daniel Nylander <po@danielnylander.se>
+# Copyright (C) 2005-2007 Daniel Nylander <po@danielnylander.se>
 # This file is distributed under the same license as the pioneers package.
 #
 # vim::set fileencoding=utf8
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Pioneers 0.10.2\n"
+"Project-Id-Version: Pioneers 0.11.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-07-12 21:45+0200\n"
-"PO-Revision-Date: 2007-01-10 15:53+0100\n"
+"PO-Revision-Date: 2007-07-16 20:54+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "MIME-Version: 1.0\n"
@@ -18,21 +18,21 @@ msgstr ""
 
 #: ../po/NotInSVNYetButWillBeInTheRelease.c:3
 msgid "Face:"
-msgstr ""
+msgstr "Yta:"
 
 #: ../po/NotInSVNYetButWillBeInTheRelease.c:4
 msgid "Variant:"
-msgstr ""
+msgstr "Variant:"
 
 #: ../po/NotInSVNYetButWillBeInTheRelease.c:5
-#, fuzzy, c-format
+#, c-format
 msgid "%s has undone the pirate movement.\n"
-msgstr "%s har avbrutit flyttning av ett skepp.\n"
+msgstr "%s har ångrat förflyttning av piraten.\n"
 
 #: ../po/NotInSVNYetButWillBeInTheRelease.c:6
-#, fuzzy, c-format
+#, c-format
 msgid "%s has undone the robber movement.\n"
-msgstr "%s måste flytta rånaren."
+msgstr "%s har ångrat förflyttningen av rånaren.\n"
 
 #. Default name for the AI when the computer_names file
 #. * is not found or empty.
@@ -679,9 +679,9 @@ msgid "%s built a city.\n"
 msgstr "%s byggde en stad.\n"
 
 #: ../client/common/player.c:517
-#, fuzzy, c-format
+#, c-format
 msgid "%s built a city wall.\n"
-msgstr "%s byggde en stad.\n"
+msgstr "%s byggde en stadsmur.\n"
 
 #: ../client/common/player.c:528
 #, c-format
@@ -714,9 +714,9 @@ msgid "%s removed a city.\n"
 msgstr "%s tog bort en stad.\n"
 
 #: ../client/common/player.c:608
-#, fuzzy, c-format
+#, c-format
 msgid "%s removed a city wall.\n"
-msgstr "%s tog bort en stad.\n"
+msgstr "%s tog bort en stadsmur.\n"
 
 #: ../client/common/player.c:618
 #, c-format
@@ -1448,14 +1448,12 @@ msgstr "Köp ett utvecklingskort"
 
 #: ../client/gtk/gui.c:254 ../client/gtk/legend.c:240
 #: ../client/gtk/player.c:52 ../editor/gtk/game-buildings.c:14
-#, fuzzy
 msgid "City Wall"
-msgstr "Stad"
+msgstr "Stadsmur"
 
 #: ../client/gtk/gui.c:255
-#, fuzzy
 msgid "Build a city wall"
-msgstr "Bygg en stad"
+msgstr "Bygg en stadsmur"
 
 #: ../client/gtk/gui.c:257
 msgid "_Settings"
@@ -1592,11 +1590,11 @@ msgstr "Spela ett ljud när en ny spelare eller åskådare kommer in i spelet"
 #. Label for the option to use the 16:9 layout.
 #: ../client/gtk/gui.c:1017
 msgid "Use 16:9 layout"
-msgstr ""
+msgstr "Använd bredbildslayout"
 
 #: ../client/gtk/gui.c:1028
 msgid "Use a 16:9 friendly layout for the window"
-msgstr ""
+msgstr "Använd en bredbildsvänlig layout för fönstret"
 
 #: ../client/gtk/gui.c:1039
 msgid "The Pioneers Game"
@@ -1728,7 +1726,7 @@ msgstr "Städer"
 
 #: ../client/gtk/player.c:52
 msgid "City Walls"
-msgstr ""
+msgstr "Stadsmurar"
 
 #: ../client/gtk/player.c:53
 msgid "Largest Army"
@@ -1968,7 +1966,7 @@ msgstr "Städer:"
 
 #: ../client/gtk/settingscreen.c:259
 msgid "City Walls:"
-msgstr ""
+msgstr "Stadsmurar:"
 
 #: ../client/gtk/settingscreen.c:265
 msgid "Ships:"
@@ -2102,14 +2100,12 @@ msgid "All sevens are rerolled"
 msgstr "Alla sjuor slås om"
 
 #: ../common/gtk/game-rules.c:121
-#, fuzzy
 msgid "Randomize Terrain"
-msgstr "Slumpad terräng?"
+msgstr "Slumpa terräng"
 
 #: ../common/gtk/game-rules.c:121
-#, fuzzy
 msgid "Randomize the terrain"
-msgstr "Slumpad terräng?"
+msgstr "Slumpa terrängen"
 
 #: ../common/gtk/game-rules.c:123
 msgid "Use Pirate"
@@ -2117,16 +2113,15 @@ msgstr "Använd pirat"
 
 #: ../common/gtk/game-rules.c:123
 msgid "Use the pirate to block ships"
-msgstr ""
+msgstr "Använd piraten för att blockera skepp"
 
 #: ../common/gtk/game-rules.c:125
 msgid "Strict Trade"
 msgstr "Strikt handel"
 
 #: ../common/gtk/game-rules.c:126
-#, fuzzy
 msgid "Allow trade only before building or buying"
-msgstr "Handel tillåtet endast före byggnation/köp?"
+msgstr "Tillåt handel endast före byggnation eller köp"
 
 #: ../common/gtk/game-rules.c:128
 msgid "Domestic Trade"
@@ -2134,7 +2129,7 @@ msgstr "Inrikeshandel"
 
 #: ../common/gtk/game-rules.c:128
 msgid "Allow trade between players"
-msgstr ""
+msgstr "Tillåt handel mellan spelare"
 
 #. Label text for customising a game
 #: ../common/gtk/game-settings.c:118
@@ -2158,9 +2153,8 @@ msgstr "Poäng som krävs för att vinna spelet"
 
 #. Tooltip for the check button
 #: ../common/gtk/game-settings.c:172
-#, fuzzy
 msgid "Is it possible to win this game?"
-msgstr "Poäng som krävs för att vinna spelet"
+msgstr "Är det möjligt att vinna det här spelet?"
 
 #. Port indicator for a resource: trade 2 for 1
 #: ../common/gtk/guimap.c:736
@@ -2209,22 +2203,22 @@ msgid "bad scaling mode '%s'"
 msgstr "fel skalläge \"%s\""
 
 #: ../common/game.c:603 ../common/game.c:633
-#, fuzzy
 msgid "This game cannot be won."
-msgstr "Detta spel kommer strax att startas."
+msgstr "Detta spel kan inte vinnas."
 
 #: ../common/game.c:604
-#, fuzzy
 msgid "There is no land."
-msgstr "Det finns ingen längsta väg.\n"
+msgstr "Det finns inget land."
 
 #: ../common/game.c:638
 msgid "It is possible that this game cannot be won."
-msgstr ""
+msgstr "Det är möjligt att det här spelet inte kan vinnas."
 
 #: ../common/game.c:643
 msgid "This game can be won by only building all settlements and cities."
 msgstr ""
+"Det här spelet kan vinnas endast genom att bygga alla bosättningar och "
+"städer."
 
 #: ../common/game.c:650
 #, c-format
@@ -2236,6 +2230,12 @@ msgid ""
 "Maximum island discovery bonus: %d\n"
 "Total: %d"
 msgstr ""
+"Nödvändiga vinstpoäng: %d\n"
+"Poäng för att bygga allt: %d\n"
+"Poäng i utvecklingskort: %d\n"
+"Längsta väg/största arme: %d+%d\n"
+"Maximal upptäcktsbonus för öar: %d\n"
+"Totalt: %d"
 
 #: ../common/log.c:54
 msgid "*ERROR* "
@@ -2640,13 +2640,12 @@ msgid "Change game title"
 msgstr "Ändra spelets titel"
 
 #: ../editor/gtk/editor.c:1015 ../server/gtk/main.c:100
-#, fuzzy
 msgid "_Check Victory Point Target"
-msgstr "Poäng för vinst"
+msgstr "_Kontrollera poängmål för vinst"
 
 #: ../editor/gtk/editor.c:1017 ../server/gtk/main.c:102
 msgid "Check whether the game can be won"
-msgstr ""
+msgstr "Kontrollera huruvida spelet kan vinnas"
 
 #: ../editor/gtk/editor.c:1019
 msgid "Quit"
@@ -2885,14 +2884,12 @@ msgid "Add a computer player to the game"
 msgstr "Lägg till en datorspelare till spelet"
 
 #: ../server/gtk/main.c:868
-#, fuzzy
 msgid "Launch Pioneers Client"
-msgstr "Spelet Pioneers"
+msgstr "Starta Pioneers-klient"
 
 #: ../server/gtk/main.c:875
-#, fuzzy
 msgid "Launch the Pioneers Client"
-msgstr "Spelet Pioneers"
+msgstr "Starta Pioneers-klienten"
 
 #: ../server/gtk/main.c:884
 msgid "Messages"
@@ -3092,7 +3089,7 @@ msgstr "Versionen stämmer inte: %s"
 
 #: ../server/server.c:47
 msgid "Was hanging around for too long without players... bye.\n"
-msgstr ""
+msgstr "Väntade för länge utan några spelare... adjö.\n"
 
 #. Server: preparing game #.....
 #: ../server/server.c:219
