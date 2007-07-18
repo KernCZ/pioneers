@@ -2,14 +2,14 @@
 # Copyright (C) 1999-2001 Dave Cole
 # Copyright (C) 2000-2002 Andy Heroff
 # This file is distributed under the same license as the pioneers package.
-# Giancarlo Capella <giancarlo@comm.cc>, 2005-2006.
+# Giancarlo Capella <giancarlo@comm.cc>, 2005-2007.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Pioneers 0.10.1\n"
+"Project-Id-Version: Pioneers 0.11.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-07-12 21:45+0200\n"
-"PO-Revision-Date: 2006-09-21 14:50+0200\n"
+"PO-Revision-Date: 2007-07-13 14:50+0200\n"
 "Last-Translator: Giancarlo Capella <giancarlo@comm.cc>\n"
 "Language-Team: it <it@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -18,21 +18,21 @@ msgstr ""
 
 #: ../po/NotInSVNYetButWillBeInTheRelease.c:3
 msgid "Face:"
-msgstr ""
+msgstr "Volto:"
 
 #: ../po/NotInSVNYetButWillBeInTheRelease.c:4
 msgid "Variant:"
-msgstr ""
+msgstr "Variante:"
 
 #: ../po/NotInSVNYetButWillBeInTheRelease.c:5
-#, fuzzy, c-format
+#, c-format
 msgid "%s has undone the pirate movement.\n"
-msgstr "%s ha annullato un movimento di nave.\n"
+msgstr "%s ha annullato il movimento dei pirati.\n"
 
 #: ../po/NotInSVNYetButWillBeInTheRelease.c:6
-#, fuzzy, c-format
+#, c-format
 msgid "%s has undone the robber movement.\n"
-msgstr "%s deve muovere il brigante."
+msgstr "%s ha annullato il movimento del brigante.\n"
 
 #. Default name for the AI when the computer_names file
 #. * is not found or empty.
@@ -174,7 +174,7 @@ msgstr "Non sai nemmeno che farci con così tante materie prime ;)"
 
 #: ../client/ai/greedy.c:1309
 msgid "Ey, wait for my robber and lose all this again!"
-msgstr "Ehi, il mio birgante ti farà perdere di nuovo tutto questo!"
+msgstr "Vedrai, il mio brigante ti farà di nuovo perdere tutto!"
 
 #: ../client/ai/greedy.c:1312
 msgid "Hehe!"
@@ -194,7 +194,7 @@ msgstr "Non potevi mettere il brigante da qualche altra parte?!"
 
 #: ../client/ai/greedy.c:1318
 msgid "Why always me??"
-msgstr "Perchè sempre me??"
+msgstr "Perché sempre me??"
 
 #: ../client/ai/greedy.c:1321
 msgid "Oh no!"
@@ -210,7 +210,7 @@ msgstr "Chi diavolo ha tirato quel 7??"
 
 #: ../client/ai/greedy.c:1324
 msgid "Why always me?!?"
-msgstr "Perchè sempre me?!?"
+msgstr "Perché sempre me?!?"
 
 #: ../client/ai/greedy.c:1327
 msgid "Say good bye to your cards... :)"
@@ -317,7 +317,7 @@ msgid ""
 "registers it at the metaserver. The other players can subsequently "
 "disconnect from the lobby, and enter that game."
 msgstr ""
-"Questa disposizione non è una partita che possa essere giocata. Quì i "
+"Questa disposizione non è una partita che possa essere giocata. Qui i "
 "giocatori si possono incontrare e decidere quale disposizione vogliono "
 "giocare. Dopodiché uno dei giocatori ospiterà la partita proposta avviando "
 "un server e registrandolo sul metaserver. Gli altri giocatori si possono "
@@ -465,7 +465,7 @@ msgstr "Mi dispiace, %s disponibile.\n"
 
 #: ../client/common/client.c:2322
 msgid "The game is over."
-msgstr "La pratita è finita"
+msgstr "La partita è finita"
 
 #: ../client/common/develop.c:43 ../editor/gtk/game-devcards.c:13
 msgid "Road Building"
@@ -601,12 +601,12 @@ msgstr "%s ha lasciato\n"
 
 #: ../client/common/player.c:260
 msgid "There is no largest army.\n"
-msgstr "Non c'è armata più grande.\n"
+msgstr "Non c'è cavaliere più potente.\n"
 
 #: ../client/common/player.c:263
 #, c-format
 msgid "%s has the largest army.\n"
-msgstr "%s ha l'armata più grande.\n"
+msgstr "%s ha il cavaliere più potente.\n"
 
 #: ../client/common/player.c:284
 msgid "There is no longest road.\n"
@@ -680,9 +680,9 @@ msgid "%s built a city.\n"
 msgstr "%s ha costruito una città.\n"
 
 #: ../client/common/player.c:517
-#, fuzzy, c-format
+#, c-format
 msgid "%s built a city wall.\n"
-msgstr "%s ha costruito una città.\n"
+msgstr "%s ha costruito una fortificazione.\n"
 
 #: ../client/common/player.c:528
 #, c-format
@@ -715,9 +715,9 @@ msgid "%s removed a city.\n"
 msgstr "%s ha rimosso una città.\n"
 
 #: ../client/common/player.c:608
-#, fuzzy, c-format
+#, c-format
 msgid "%s removed a city wall.\n"
-msgstr "%s ha rimosso una città.\n"
+msgstr "%s ha rimosso una fortificazione.\n"
 
 #: ../client/common/player.c:618
 #, c-format
@@ -1449,14 +1449,12 @@ msgstr "Compra una carta sviluppo"
 
 #: ../client/gtk/gui.c:254 ../client/gtk/legend.c:240
 #: ../client/gtk/player.c:52 ../editor/gtk/game-buildings.c:14
-#, fuzzy
 msgid "City Wall"
-msgstr "Città"
+msgstr "Fortificazione"
 
 #: ../client/gtk/gui.c:255
-#, fuzzy
 msgid "Build a city wall"
-msgstr "Costruisci una città"
+msgstr "Costruisci una fortificazione"
 
 #: ../client/gtk/gui.c:257
 msgid "_Settings"
@@ -1493,7 +1491,7 @@ msgstr "_Toolbar"
 
 #: ../client/gtk/gui.c:273
 msgid "Show or hide the toolbar"
-msgstr "Mostra o nasconde la tollbar"
+msgstr "Mostra o nasconde la toolbar"
 
 #. Victory points target in statusbar
 #: ../client/gtk/gui.c:368
@@ -1594,11 +1592,11 @@ msgstr ""
 #. Label for the option to use the 16:9 layout.
 #: ../client/gtk/gui.c:1017
 msgid "Use 16:9 layout"
-msgstr ""
+msgstr "Usa disposizione 16:9"
 
 #: ../client/gtk/gui.c:1028
 msgid "Use a 16:9 friendly layout for the window"
-msgstr ""
+msgstr "Usa la disposizione 16:9 per la finestra"
 
 #: ../client/gtk/gui.c:1039
 msgid "The Pioneers Game"
@@ -1732,7 +1730,7 @@ msgstr "Città"
 
 #: ../client/gtk/player.c:52
 msgid "City Walls"
-msgstr ""
+msgstr "Fortificazioni"
 
 #: ../client/gtk/player.c:53
 msgid "Largest Army"
@@ -1972,7 +1970,7 @@ msgstr "Città:"
 
 #: ../client/gtk/settingscreen.c:259
 msgid "City Walls:"
-msgstr ""
+msgstr "Fortificazioni:"
 
 #: ../client/gtk/settingscreen.c:265
 msgid "Ships:"
@@ -2106,14 +2104,12 @@ msgid "All sevens are rerolled"
 msgstr "Tutti i sette vengono ritirati"
 
 #: ../common/gtk/game-rules.c:121
-#, fuzzy
 msgid "Randomize Terrain"
-msgstr "Terreno Casuale?"
+msgstr "Terreno Casuale"
 
 #: ../common/gtk/game-rules.c:121
-#, fuzzy
 msgid "Randomize the terrain"
-msgstr "Terreno Casuale?"
+msgstr "Rende il terreno casuale"
 
 #: ../common/gtk/game-rules.c:123
 msgid "Use Pirate"
@@ -2121,24 +2117,23 @@ msgstr "Usa i pirati"
 
 #: ../common/gtk/game-rules.c:123
 msgid "Use the pirate to block ships"
-msgstr ""
+msgstr "Usa i pirati per bloccare le navi"
 
 #: ../common/gtk/game-rules.c:125
 msgid "Strict Trade"
-msgstr "Commercio ristretto"
+msgstr "Commercio rigoroso"
 
 #: ../common/gtk/game-rules.c:126
-#, fuzzy
 msgid "Allow trade only before building or buying"
-msgstr "Commercio permesso solo prima di costruire/comprare?"
+msgstr "Commercio permesso solo prima di costruire/comprare"
 
 #: ../common/gtk/game-rules.c:128
 msgid "Domestic Trade"
-msgstr "Commercio domestico"
+msgstr "Commercio interno"
 
 #: ../common/gtk/game-rules.c:128
 msgid "Allow trade between players"
-msgstr ""
+msgstr "Commercio permesso tra i giocatori"
 
 #. Label text for customising a game
 #: ../common/gtk/game-settings.c:118
@@ -2162,9 +2157,8 @@ msgstr "I punti per vincere la partita"
 
 #. Tooltip for the check button
 #: ../common/gtk/game-settings.c:172
-#, fuzzy
 msgid "Is it possible to win this game?"
-msgstr "I punti per vincere la partita"
+msgstr "E' possibile vincere questa partita?"
 
 #. Port indicator for a resource: trade 2 for 1
 #: ../common/gtk/guimap.c:736
@@ -2213,22 +2207,21 @@ msgid "bad scaling mode '%s'"
 msgstr "modo '%s' non riconosciuto"
 
 #: ../common/game.c:603 ../common/game.c:633
-#, fuzzy
 msgid "This game cannot be won."
-msgstr "Questa partita inizierà presto."
+msgstr "Questa partita non può essere vinta."
 
 #: ../common/game.c:604
-#, fuzzy
 msgid "There is no land."
-msgstr "Non c'è la strada più lunga.\n"
+msgstr "Non c'è più terreno."
 
 #: ../common/game.c:638
 msgid "It is possible that this game cannot be won."
-msgstr ""
+msgstr "E' possibile che questa partita non possa essere vinta."
 
 #: ../common/game.c:643
 msgid "This game can be won by only building all settlements and cities."
 msgstr ""
+"Questa partita può essere solo vinta costruendo tutte le colonie e le città"
 
 #: ../common/game.c:650
 #, c-format
@@ -2240,6 +2233,12 @@ msgid ""
 "Maximum island discovery bonus: %d\n"
 "Total: %d"
 msgstr ""
+"Punti vittoria richiesti: %d\n"
+"Punti ottenuti costruendo tutto: %d\n"
+"Punti nelle carte sviluppo: %d\n"
+"Strada più lunga/cavaliere più potente: %d+%d\n"
+"Massimo bonus per scoperta isole: %d\n"
+"Totale: %d"
 
 #: ../common/log.c:54
 msgid "*ERROR* "
@@ -2646,13 +2645,12 @@ msgid "Change game title"
 msgstr "Cambia il titolo della partita"
 
 #: ../editor/gtk/editor.c:1015 ../server/gtk/main.c:100
-#, fuzzy
 msgid "_Check Victory Point Target"
-msgstr "Obiettivo Punti Vittoria"
+msgstr "_Verifica Obiettivo Punti Vittoria"
 
 #: ../editor/gtk/editor.c:1017 ../server/gtk/main.c:102
 msgid "Check whether the game can be won"
-msgstr ""
+msgstr "Verifica se la partita può essere vinta"
 
 #: ../editor/gtk/editor.c:1019
 msgid "Quit"
@@ -2892,14 +2890,12 @@ msgid "Add a computer player to the game"
 msgstr "Aggiungi alla partita un giocatore controllato dal computer"
 
 #: ../server/gtk/main.c:868
-#, fuzzy
 msgid "Launch Pioneers Client"
-msgstr "Pioneers - Il gioco"
+msgstr "Avvia Client Pioneers"
 
 #: ../server/gtk/main.c:875
-#, fuzzy
 msgid "Launch the Pioneers Client"
-msgstr "Pioneers - Il gioco"
+msgstr "Avvia il client di Pioneers"
 
 #: ../server/gtk/main.c:884
 msgid "Messages"
@@ -3010,7 +3006,7 @@ msgstr "Porta di admin su cui ascoltare"
 msgid "Don't start game immediately, wait for a command on admin port"
 msgstr ""
 "Non iniziare la partita immediatamente, aspetta un comando dalla porta di "
-"admin"
+"amministrazione"
 
 #: ../server/main.c:140
 msgid "Give players numbers according to the order they enter the game"
@@ -3101,7 +3097,7 @@ msgstr "Versione non corrispondente: %s"
 
 #: ../server/server.c:47
 msgid "Was hanging around for too long without players... bye.\n"
-msgstr ""
+msgstr "Rimasto in attesa senza giocatori per troppo tempo... addio.\n"
 
 #. Server: preparing game #.....
 #: ../server/server.c:219
@@ -3114,7 +3110,7 @@ msgstr "Manca la directory di partita\n"
 
 #: ../server/turn.c:230
 msgid "Island Discovery Bonus"
-msgstr "Bonus socperta isole"
+msgstr "Bonus scoperta isole"
 
 #: ../server/turn.c:233
 msgid "Additional Island Bonus"
@@ -3123,15 +3119,3 @@ msgstr "Bonus aggiuntivo isole"
 #: ../server/turn.c:360
 msgid "Tried to assign resources to NULL player.\n"
 msgstr "Si è cercato di assegnare le materie prime al giocatore NULL\n"
-
-#~ msgid "Map Terrain"
-#~ msgstr "Mappa Terreno"
-
-#~ msgid "Default map or a random map"
-#~ msgstr "Mappa di default o mappa casuale"
-
-#~ msgid "%s has requested a connection check."
-#~ msgstr "%s ha richiesto una verifica della connessione."
-
-#~ msgid "The metaserver has rejected the reported hostname. Try %s instead."
-#~ msgstr "Il metaserver ha rifiutato l'hostname indicato. Provare con %s."
