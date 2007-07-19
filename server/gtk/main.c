@@ -1029,8 +1029,6 @@ int main(int argc, char *argv[])
 
 	set_enable_debug(enable_debug);
 
-	themes_init();
-
 	window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	/* Name in the titlebar of the server */
 	gtk_window_set_title(GTK_WINDOW(window), _("Pioneers Server"));
@@ -1058,6 +1056,8 @@ int main(int argc, char *argv[])
 	}
 
 	config_init("pioneers-server");
+
+	themes_init();
 
 	icon_file =
 	    g_build_filename(DATADIR, "pixmaps", MAINICON_FILE, NULL);
