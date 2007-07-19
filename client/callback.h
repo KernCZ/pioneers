@@ -56,7 +56,6 @@ typedef struct {
 	gchar *name;
 	gint statistics[STAT_DEVELOPMENT + 1];
 	GList *points;		/* bonus points from special actions */
-	void *user_data;	/* used as pixmap in summary and discard list */
 } Player;
 
 typedef struct {

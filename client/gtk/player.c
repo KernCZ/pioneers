@@ -101,15 +101,7 @@ static const gint turn_area_icon_width = 30;
 
 void player_init(void)
 {
-	gint idx;
-	GdkColormap *cmap;
-
 	colors_init();
-	cmap = gdk_colormap_get_system();
-	for (idx = 0; idx < MAX_PLAYERS; idx++) {
-		/* initialize their pixmap to 0 so it isn't unref'd */
-		players[idx].user_data = NULL;
-	}
 }
 
 GdkColor *player_color(gint player_num)
@@ -155,15 +147,6 @@ GdkPixbuf *player_create_icon(GtkWidget * widget, gint player_num,
 		gdk_draw_rectangle(pixmap, gc, FALSE,
 				   6, 6, width - 13, height - 13);
 	}
-
-	/* Store the pixmap in player->user_data. 
-	 * This is needed when the gtk_clist is still used 
-	 */
-	player = player_get(player_num);
-	if (player->user_data)
-		g_object_unref(player->user_data);
-	player->user_data = pixmap;
-	g_object_ref(pixmap);
 
 	temp = gdk_pixbuf_get_from_drawable(NULL, pixmap, NULL,
 					    0, 0, 0, 0, -1, -1);
