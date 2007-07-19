@@ -2,16 +2,16 @@
 # Copyright (C) 1999-2001 Dave Cole
 # Copyright (C) 2000-2002 Andy Heroff
 # This file is distributed under the same license as the pioneers package.
-# Yasuhiko Takasugi <takasugi@flcl.org>, 2006.
-# 
-# 
+# Yasuhiko Takasugi <takasugi@flcl.org>, 2006-2007.
+#
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Pioneers 0.10.2\n"
+"Project-Id-Version: Pioneers 0.11.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-07-12 21:45+0200\n"
-"PO-Revision-Date: 2007-01-28\n"
-"Last-Translator: Yasuhiko Takasugi<takasugi@flcl.org> <>\n"
+"PO-Revision-Date: 2007-07-19 18:52+0900\n"
+"Last-Translator: Yasuhiko Takasugi <takasugi@flcl.org>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,21 +19,21 @@ msgstr ""
 
 #: ../po/NotInSVNYetButWillBeInTheRelease.c:3
 msgid "Face:"
-msgstr ""
+msgstr "顔:"
 
 #: ../po/NotInSVNYetButWillBeInTheRelease.c:4
 msgid "Variant:"
-msgstr ""
+msgstr "変更:"
 
 #: ../po/NotInSVNYetButWillBeInTheRelease.c:5
-#, fuzzy, c-format
+#, c-format
 msgid "%s has undone the pirate movement.\n"
-msgstr "%s は、船の移動を取り消した。\n"
+msgstr "%s は、海賊の移動を取り消した。\n"
 
 #: ../po/NotInSVNYetButWillBeInTheRelease.c:6
-#, fuzzy, c-format
+#, c-format
 msgid "%s has undone the robber movement.\n"
-msgstr "%s は、盗賊を移動しなけばならない。"
+msgstr "%s は、盗賊を移動を取り消した。\n"
 
 #. Default name for the AI when the computer_names file
 #. * is not found or empty.
@@ -678,9 +678,9 @@ msgid "%s built a city.\n"
 msgstr "%s は、都市を建築した。\n"
 
 #: ../client/common/player.c:517
-#, fuzzy, c-format
+#, c-format
 msgid "%s built a city wall.\n"
-msgstr "%s は、都市を建築した。\n"
+msgstr "%s は、都市城壁を建築した。\n"
 
 #: ../client/common/player.c:528
 #, c-format
@@ -713,9 +713,9 @@ msgid "%s removed a city.\n"
 msgstr "%s は、都市を取り除いた。\n"
 
 #: ../client/common/player.c:608
-#, fuzzy, c-format
+#, c-format
 msgid "%s removed a city wall.\n"
-msgstr "%s は、都市を取り除いた。\n"
+msgstr "%s は、都市城壁を取り除いた。\n"
 
 #: ../client/common/player.c:618
 #, c-format
@@ -1447,14 +1447,12 @@ msgstr "開発カード購入"
 
 #: ../client/gtk/gui.c:254 ../client/gtk/legend.c:240
 #: ../client/gtk/player.c:52 ../editor/gtk/game-buildings.c:14
-#, fuzzy
 msgid "City Wall"
-msgstr "都市"
+msgstr "都市城壁"
 
 #: ../client/gtk/gui.c:255
-#, fuzzy
 msgid "Build a city wall"
-msgstr "都市建築"
+msgstr "都市城壁建築"
 
 #: ../client/gtk/gui.c:257
 msgid "_Settings"
@@ -1591,11 +1589,11 @@ msgstr "新しプレイヤーや観戦者がゲームにはいったときに音
 #. Label for the option to use the 16:9 layout.
 #: ../client/gtk/gui.c:1017
 msgid "Use 16:9 layout"
-msgstr ""
+msgstr "16:9 レイアウトを使用"
 
 #: ../client/gtk/gui.c:1028
 msgid "Use a 16:9 friendly layout for the window"
-msgstr ""
+msgstr "ウィンドウに16:9の使い易いレイアウトを使用"
 
 #: ../client/gtk/gui.c:1039
 msgid "The Pioneers Game"
@@ -1727,7 +1725,7 @@ msgstr "都市"
 
 #: ../client/gtk/player.c:52
 msgid "City Walls"
-msgstr ""
+msgstr "都市城壁"
 
 #: ../client/gtk/player.c:53
 msgid "Largest Army"
@@ -1967,7 +1965,7 @@ msgstr "都市:"
 
 #: ../client/gtk/settingscreen.c:259
 msgid "City Walls:"
-msgstr ""
+msgstr "都市城壁:"
 
 #: ../client/gtk/settingscreen.c:265
 msgid "Ships:"
@@ -2101,14 +2099,12 @@ msgid "All sevens are rerolled"
 msgstr "全ての7の目は振り直し"
 
 #: ../common/gtk/game-rules.c:121
-#, fuzzy
 msgid "Randomize Terrain"
-msgstr "ランダム陸地?"
+msgstr "ランダム陸地"
 
 #: ../common/gtk/game-rules.c:121
-#, fuzzy
 msgid "Randomize the terrain"
-msgstr "ランダム陸地?"
+msgstr "ランダム陸地"
 
 #: ../common/gtk/game-rules.c:123
 msgid "Use Pirate"
@@ -2116,16 +2112,15 @@ msgstr "海賊使用"
 
 #: ../common/gtk/game-rules.c:123
 msgid "Use the pirate to block ships"
-msgstr ""
+msgstr "船を止めるために海賊を使う"
 
 #: ../common/gtk/game-rules.c:125
 msgid "Strict Trade"
 msgstr "制限交易"
 
 #: ../common/gtk/game-rules.c:126
-#, fuzzy
 msgid "Allow trade only before building or buying"
-msgstr "建築物/売買の前だけ交易を許可"
+msgstr "建築/売買の前だけ交易を許可"
 
 #: ../common/gtk/game-rules.c:128
 msgid "Domestic Trade"
@@ -2133,7 +2128,7 @@ msgstr "内地交易"
 
 #: ../common/gtk/game-rules.c:128
 msgid "Allow trade between players"
-msgstr ""
+msgstr "プレイヤー間の交易を許可"
 
 #. Label text for customising a game
 #: ../common/gtk/game-settings.c:118
@@ -2157,9 +2152,8 @@ msgstr "ゲーム勝利に必要なポイント"
 
 #. Tooltip for the check button
 #: ../common/gtk/game-settings.c:172
-#, fuzzy
 msgid "Is it possible to win this game?"
-msgstr "ゲーム勝利に必要なポイント"
+msgstr "このゲームに勝利可能か？"
 
 #. Port indicator for a resource: trade 2 for 1
 #: ../common/gtk/guimap.c:736
@@ -2208,22 +2202,20 @@ msgid "bad scaling mode '%s'"
 msgstr "不正スケーリングモード '%s'"
 
 #: ../common/game.c:603 ../common/game.c:633
-#, fuzzy
 msgid "This game cannot be won."
-msgstr "このゲームは直ぐに始まる"
+msgstr "このゲームに勝利不可能"
 
 #: ../common/game.c:604
-#, fuzzy
 msgid "There is no land."
-msgstr "最長道はない\n"
+msgstr "陸地はない"
 
 #: ../common/game.c:638
 msgid "It is possible that this game cannot be won."
-msgstr ""
+msgstr "このゲームが勝てないことができる。"
 
 #: ../common/game.c:643
 msgid "This game can be won by only building all settlements and cities."
-msgstr ""
+msgstr "全ての植民地や都市を建築するだけではこのゲームに勝てない."
 
 #: ../common/game.c:650
 #, c-format
@@ -2235,6 +2227,12 @@ msgid ""
 "Maximum island discovery bonus: %d\n"
 "Total: %d"
 msgstr ""
+"Required victory points: %d\n"
+"Points obtained by building all: %d\n"
+"Points in development cards: %d\n"
+"Longest road/largest army: %d+%d\n"
+"Maximum island discovery bonus: %d\n"
+"合計: %d"
 
 #: ../common/log.c:54
 msgid "*ERROR* "
@@ -2640,13 +2638,12 @@ msgid "Change game title"
 msgstr "ゲームタイトルを変更"
 
 #: ../editor/gtk/editor.c:1015 ../server/gtk/main.c:100
-#, fuzzy
 msgid "_Check Victory Point Target"
-msgstr "目標勝利ポイント"
+msgstr "_C 目標勝利ポイントチェック"
 
 #: ../editor/gtk/editor.c:1017 ../server/gtk/main.c:102
 msgid "Check whether the game can be won"
-msgstr ""
+msgstr "ゲームに勝利したかどうかチェック"
 
 #: ../editor/gtk/editor.c:1019
 msgid "Quit"
@@ -2884,14 +2881,12 @@ msgid "Add a computer player to the game"
 msgstr "ゲームにコンピュータプレイヤーを追加"
 
 #: ../server/gtk/main.c:868
-#, fuzzy
 msgid "Launch Pioneers Client"
-msgstr "パイオニアゲーム"
+msgstr "パイオニアゲーム クライアント起動"
 
 #: ../server/gtk/main.c:875
-#, fuzzy
 msgid "Launch the Pioneers Client"
-msgstr "パイオニアゲーム"
+msgstr "パイオニアゲーム クライアント起動"
 
 #: ../server/gtk/main.c:884
 msgid "Messages"
@@ -3090,7 +3085,7 @@ msgstr "バージョン不整合: %s"
 
 #: ../server/server.c:47
 msgid "Was hanging around for too long without players... bye.\n"
-msgstr ""
+msgstr "プレイヤーなしで長くとまりすぎ....ばい.\n"
 
 #. Server: preparing game #.....
 #: ../server/server.c:219
