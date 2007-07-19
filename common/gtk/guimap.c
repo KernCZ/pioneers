@@ -198,6 +198,7 @@ static gint motion_notify_map_cb(GtkWidget * area, GdkEventMotion * event,
 GtkWidget *guimap_build_drawingarea(GuiMap * gmap, gint width, gint height)
 {
 	gmap->area = gtk_drawing_area_new();
+	g_object_ref(gmap->area);
 
 	gtk_widget_set_events(gmap->area, GDK_EXPOSURE_MASK
 			      | GDK_POINTER_MOTION_MASK
