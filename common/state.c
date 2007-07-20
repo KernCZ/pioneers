@@ -437,6 +437,14 @@ void sm_write(StateMachine * sm, const gchar * str)
 		net_write(sm->ses, str);
 }
 
+void sm_write_uncached(StateMachine * sm, const gchar * str)
+{
+	g_assert(sm->ses);
+	g_assert(sm->use_cache);
+
+	net_write(sm->ses, str);
+}
+
 void sm_send(StateMachine * sm, const gchar * fmt, ...)
 {
 	va_list ap;
@@ -473,32 +481,6 @@ void sm_set_use_cache(StateMachine * sm, gboolean use_cache)
 		g_assert(!sm->cache);
 	}
 	sm->use_cache = use_cache;
-}
-
-StateMachine *sm_copy_as_uncached(const StateMachine * sm)
-{
-	StateMachine *copy;
-	copy = g_malloc(sizeof(*sm));
-	memcpy(copy, sm, sizeof(*sm));
-	copy->use_cache = FALSE;
-	copy->cache = NULL;
-	return copy;
-}
-
-void sm_send_uncached(StateMachine * sm, const gchar * fmt, ...)
-{
-	va_list ap;
-	gchar *buff;
-
-	g_assert(sm->ses);
-	g_assert(sm->use_cache);
-
-	va_start(ap, fmt);
-	buff = sm_vformat(fmt, ap);
-	va_end(ap);
-
-	net_write(sm->ses, buff);
-	g_free(buff);
 }
 
 void sm_global_set(StateMachine * sm, StateFunc state)

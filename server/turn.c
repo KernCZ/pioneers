@@ -29,13 +29,13 @@
 static void build_add(Player * player, BuildType type, gint x, gint y,
 		      gint pos)
 {
-	StateMachine *sm = player->sm;
 	Game *game = player->game;
 	Map *map = game->params->map;
 	Points *special_points;
 
 	if (!game->rolled_dice) {
-		sm_send(sm, "ERR roll-dice\n");
+		player_send(player, FIRST_VERSION, LATEST_VERSION,
+			    "ERR roll-dice\n");
 		return;
 	}
 
@@ -47,20 +47,23 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 		 */
 		if (!map_road_vacant(map, x, y, pos)
 		    || !map_road_connect_ok(map, player->num, x, y, pos)) {
-			sm_send(sm, "ERR bad-pos\n");
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
+				    "ERR bad-pos\n");
 			return;
 		}
 		/* Make sure the player can afford the road
 		 */
 		if (!cost_can_afford(cost_road(), player->assets)) {
-			sm_send(sm, "ERR too-expensive\n");
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
+				    "ERR too-expensive\n");
 			return;
 		}
 		/* Make sure that there are some roads left to use!
 		 */
 		if (player->num_roads ==
 		    game->params->num_build_type[BUILD_ROAD]) {
-			sm_send(sm, "ERR too-many road\n");
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
+				    "ERR too-many road\n");
 			return;
 		}
 		edge_add(player, BUILD_ROAD, x, y, pos, TRUE);
@@ -73,20 +76,23 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 		 */
 		if (!map_road_vacant(map, x, y, pos)
 		    || !map_bridge_connect_ok(map, player->num, x, y, pos)) {
-			sm_send(sm, "ERR bad-pos\n");
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
+				    "ERR bad-pos\n");
 			return;
 		}
 		/* Make sure the player can afford the bridge
 		 */
 		if (!cost_can_afford(cost_bridge(), player->assets)) {
-			sm_send(sm, "ERR too-expensive\n");
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
+				    "ERR too-expensive\n");
 			return;
 		}
 		/* Make sure that there are some roads left to use!
 		 */
 		if (player->num_bridges ==
 		    game->params->num_build_type[BUILD_BRIDGE]) {
-			sm_send(sm, "ERR too-many bridge\n");
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
+				    "ERR too-many bridge\n");
 			return;
 		}
 		edge_add(player, BUILD_BRIDGE, x, y, pos, TRUE);
@@ -99,20 +105,23 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 		 */
 		if (!map_ship_vacant(map, x, y, pos)
 		    || !map_ship_connect_ok(map, player->num, x, y, pos)) {
-			sm_send(sm, "ERR bad-pos\n");
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
+				    "ERR bad-pos\n");
 			return;
 		}
 		/* Make sure the player can afford the ship
 		 */
 		if (!cost_can_afford(cost_ship(), player->assets)) {
-			sm_send(sm, "ERR too-expensive\n");
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
+				    "ERR too-expensive\n");
 			return;
 		}
 		/* Make sure that there are some roads left to use!
 		 */
 		if (player->num_ships ==
 		    game->params->num_build_type[BUILD_SHIP]) {
-			sm_send(sm, "ERR too-many ship\n");
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
+				    "ERR too-many ship\n");
 			return;
 		}
 		edge_add(player, BUILD_SHIP, x, y, pos, TRUE);
@@ -122,18 +131,21 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 	if (type == BUILD_CITY_WALL) {
 		if (!can_city_wall_be_built(map_node(map, x, y, pos),
 					    player->num)) {
-			sm_send(sm, "ERR bad-pos\n");
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
+				    "ERR bad-pos\n");
 			return;
 		}
 		/* Make sure that there are some city walls left to use!
 		 */
 		if (player->num_city_walls ==
 		    game->params->num_build_type[BUILD_CITY_WALL]) {
-			sm_send(sm, "ERR too-many city wall\n");
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
+				    "ERR too-many city wall\n");
 			return;
 		}
 		if (!cost_can_afford(cost_city_wall(), player->assets)) {
-			sm_send(sm, "ERR too-expensive\n");
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
+				    "ERR too-expensive\n");
 			return;
 		}
 		node_add(player, type, x, y, pos, TRUE, NULL);
@@ -144,7 +156,8 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 	 */
 	if (!map_building_vacant(map, type, x, y, pos)
 	    || !map_building_spacing_ok(map, player->num, type, x, y, pos)) {
-		sm_send(sm, "ERR bad-pos\n");
+		player_send(player, FIRST_VERSION, LATEST_VERSION,
+			    "ERR bad-pos\n");
 		return;
 	}
 
@@ -155,12 +168,14 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 		 */
 		if (player->num_cities ==
 		    game->params->num_build_type[BUILD_CITY]) {
-			sm_send(sm, "ERR too-many city\n");
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
+				    "ERR too-many city\n");
 			return;
 		}
 		if (!cost_can_afford(cost_upgrade_settlement(),
 				     player->assets)) {
-			sm_send(sm, "ERR too-expensive\n");
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
+				    "ERR too-expensive\n");
 			return;
 		}
 	} else {
@@ -168,7 +183,8 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 		 */
 		if (!map_building_connect_ok
 		    (map, player->num, type, x, y, pos)) {
-			sm_send(sm, "ERR bad-pos\n");
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
+				    "ERR bad-pos\n");
 			return;
 		}
 		/* Make sure that there are some settlements left to use!
@@ -177,7 +193,8 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 		 */
 		if (player->num_settlements ==
 		    game->params->num_build_type[BUILD_SETTLEMENT]) {
-			sm_send(sm, "ERR too-many settlement\n");
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
+				    "ERR too-many settlement\n");
 			return;
 		}
 		/* Make sure the player can afford the building
@@ -185,7 +202,9 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 		if (type == BUILD_SETTLEMENT) {
 			if (!cost_can_afford
 			    (cost_settlement(), player->assets)) {
-				sm_send(sm, "ERR too-expensive\n");
+				player_send(player, FIRST_VERSION,
+					    LATEST_VERSION,
+					    "ERR too-expensive\n");
 				return;
 			}
 		} else {
@@ -193,11 +212,15 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 			 */
 			if (player->num_cities ==
 			    game->params->num_build_type[BUILD_CITY]) {
-				sm_send(sm, "ERR too-many city\n");
+				player_send(player, FIRST_VERSION,
+					    LATEST_VERSION,
+					    "ERR too-many city\n");
 				return;
 			}
 			if (!cost_can_afford(cost_city(), player->assets)) {
-				sm_send(sm, "ERR too-expensive\n");
+				player_send(player, FIRST_VERSION,
+					    LATEST_VERSION,
+					    "ERR too-expensive\n");
 				return;
 			}
 		}
@@ -241,17 +264,16 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 
 static void build_remove(Player * player)
 {
-	StateMachine *sm = player->sm;
 	/* Remove the settlement/road we just built
 	 */
 	if (!perform_undo(player))
-		sm_send(sm, "ERR bad-undo\n");
+		player_send(player, FIRST_VERSION, LATEST_VERSION,
+			    "ERR bad-undo\n");
 }
 
 static void build_move(Player * player, gint sx, gint sy, gint spos,
 		       gint dx, gint dy, gint dpos)
 {
-	StateMachine *sm = player->sm;
 	Game *game = player->game;
 	Map *map = game->params->map;
 	Edge *from = map_edge(map, sx, sy, spos),
@@ -260,7 +282,8 @@ static void build_move(Player * player, gint sx, gint sy, gint spos,
 
 	/* Allow only one move per turn */
 	if (map->has_moved_ship) {
-		sm_send(sm, "ERR already-moved\n");
+		player_send(player, FIRST_VERSION, LATEST_VERSION,
+			    "ERR already-moved\n");
 		return;
 	}
 
@@ -269,7 +292,8 @@ static void build_move(Player * player, gint sx, gint sy, gint spos,
 	    || to->owner >= 0
 	    || !can_ship_be_moved(map_edge(map, sx, sy, spos),
 				  player->num)) {
-		sm_send(sm, "ERR bad-pos\n");
+		player_send(player, FIRST_VERSION, LATEST_VERSION,
+			    "ERR bad-pos\n");
 		return;
 	}
 
@@ -278,7 +302,9 @@ static void build_move(Player * player, gint sx, gint sy, gint spos,
 		/* check that the pirate is not on the from hexes */
 		for (idx = 0; idx < G_N_ELEMENTS(from->hexes); ++idx) {
 			if (map->pirate_hex == from->hexes[idx]) {
-				sm_send(sm, "ERR has-pirate\n");
+				player_send(player, FIRST_VERSION,
+					    LATEST_VERSION,
+					    "ERR has-pirate\n");
 				return;
 			}
 		}
@@ -295,13 +321,15 @@ static void build_move(Player * player, gint sx, gint sy, gint spos,
 	    || !can_ship_be_built(to, player->num)) {
 		from->owner = player->num;
 		from->type = BUILD_SHIP;
-		sm_send(sm, "ERR bad-pos\n");
+		player_send(player, FIRST_VERSION, LATEST_VERSION,
+			    "ERR bad-pos\n");
 		return;
 	}
 
 	/* everything is fine, tell everybode the ship has moved */
-	player_broadcast(player, PB_RESPOND, "move %d %d %d %d %d %d\n",
-			 sx, sy, spos, dx, dy, dpos);
+	player_broadcast(player, PB_RESPOND, FIRST_VERSION, LATEST_VERSION,
+			 "move %d %d %d %d %d %d\n", sx, sy, spos, dx, dy,
+			 dpos);
 
 	/* put the move in the undo information */
 	rec = buildrec_new(BUILD_MOVE_SHIP, dx, dy, dpos);
@@ -389,7 +417,8 @@ void check_victory(Player * player)
 	if (points >= game->params->victory_points) {
 		GList *list;
 
-		player_broadcast(player, PB_ALL, "won with %d\n", points);
+		player_broadcast(player, PB_ALL, FIRST_VERSION,
+				 LATEST_VERSION, "won with %d\n", points);
 		game->is_game_over = TRUE;
 		/* Set all state machines to idle, to make sure nothing
 		 * happens. */
@@ -428,7 +457,8 @@ gboolean mode_turn(Player * player, gint event)
 		gint roll;
 
 		if (game->rolled_dice) {
-			sm_send(sm, "ERR already-rolled\n");
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
+				    "ERR already-rolled\n");
 			return TRUE;
 		}
 
@@ -452,7 +482,8 @@ gboolean mode_turn(Player * player, gint event)
 		}
 
 		/* let people know what we rolled */
-		player_broadcast(player, PB_RESPOND, "rolled %d %d\n",
+		player_broadcast(player, PB_RESPOND, FIRST_VERSION,
+				 LATEST_VERSION, "rolled %d %d\n",
 				 game->die1, game->die2);
 
 		if (roll == 7) {
@@ -474,11 +505,12 @@ gboolean mode_turn(Player * player, gint event)
 	/* try to end a turn */
 	if (sm_recv(sm, "done")) {
 		if (!game->rolled_dice) {
-			sm_send(sm, "ERR roll-dice\n");
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
+				    "ERR roll-dice\n");
 			return TRUE;
 		}
 		/* Ok, finish turn */
-		sm_send(sm, "OK\n");
+		player_send(player, FIRST_VERSION, LATEST_VERSION, "OK\n");
 		/* pop the state machine back to idle */
 		sm_pop(sm);
 		turn_next_player(game);
@@ -530,7 +562,6 @@ gboolean mode_turn(Player * player, gint event)
 		build_remove(player);
 		return TRUE;
 	}
-	/* sm_send (sm, "ERR unknown-command\n"); */
 	return FALSE;
 }
 
@@ -580,7 +611,8 @@ void turn_next_player(Game * game)
 	game->params->map->has_moved_ship = FALSE;
 
 	/* tell everyone what's happening */
-	player_broadcast(player, PB_RESPOND, "turn %d\n", game->curr_turn);
+	player_broadcast(player, PB_RESPOND, FIRST_VERSION, LATEST_VERSION,
+			 "turn %d\n", game->curr_turn);
 
 	/* put the player in the right state */
 	sm_push(player->sm, (StateFunc) mode_turn);

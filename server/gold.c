@@ -93,8 +93,10 @@ static void distribute_next(GList * list)
 				send_message = TRUE;
 		}
 		if (send_message)
-			player_broadcast(scan, PB_ALL, "receives %R %R\n",
-					 resource, wanted);
+			player_broadcast(scan, PB_ALL, FIRST_VERSION,
+					 LATEST_VERSION,
+					 "receives %R %R\n", resource,
+					 wanted);
 
 		/* give out gold (and return so gold-done is not broadcast) */
 		if (scan->gold > 0) {
@@ -131,11 +133,15 @@ static void distribute_next(GList * list)
 					--totalbank;
 				}
 				player_broadcast(scan, PB_ALL,
+						 FIRST_VERSION,
+						 LATEST_VERSION,
 						 "receive-gold %R\n",
 						 resource);
 			} else {
-				sm_send(scan->sm, "choose-gold %d %R\n",
-					scan->gold, limited_bank);
+				player_send(scan, FIRST_VERSION,
+					    LATEST_VERSION,
+					    "choose-gold %d %R\n",
+					    scan->gold, limited_bank);
 				sm_push(scan->sm,
 					(StateFunc) mode_choose_gold);
 				return;
@@ -144,7 +150,8 @@ static void distribute_next(GList * list)
 		/* no player is choosing gold, give resources to next player */
 	}			/* end loop over all players */
 	/* tell everyone the resource distribution is finished */
-	player_broadcast(player, PB_SILENT, "done-resources\n");
+	player_broadcast(player, PB_SILENT, FIRST_VERSION, LATEST_VERSION,
+			 "done-resources\n");
 	/* pop everyone back to the state before we started giving out
 	 * resources */
 	for (list = player_first_real(game); list != NULL;
@@ -183,13 +190,15 @@ gboolean mode_choose_gold(Player * player, gint event)
 	for (idx = 0; idx < NO_RESOURCE; ++idx) {
 		num += resources[idx];
 		if (game->bank_deck[idx] < resources[idx]) {
-			sm_send(sm, "ERR wrong-gold\n");
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
+				    "ERR wrong-gold\n");
 			return FALSE;
 		}
 	}
 	/* see if the right amount was taken */
 	if (num != player->gold) {
-		sm_send(sm, "ERR wrong-gold\n");
+		player_send(player, FIRST_VERSION, LATEST_VERSION,
+			    "ERR wrong-gold\n");
 		return FALSE;
 	}
 	/* give the gold */
@@ -201,7 +210,8 @@ gboolean mode_choose_gold(Player * player, gint event)
 		/* take it out of the bank */
 		game->bank_deck[idx] -= resources[idx];
 	}
-	player_broadcast(player, PB_ALL, "receive-gold %R\n", resources);
+	player_broadcast(player, PB_ALL, FIRST_VERSION, LATEST_VERSION,
+			 "receive-gold %R\n", resources);
 	/* pop back to mode_idle */
 	sm_pop(sm);
 	list = next_player_loop(list_from_player(player), player);
@@ -224,8 +234,9 @@ void distribute_first(GList * list)
 		if (player_is_viewer(game, scan->num))
 			continue;
 		if (scan->gold > 0) {
-			player_broadcast(scan, PB_ALL, "prepare-gold %d\n",
-					 scan->gold);
+			player_broadcast(scan, PB_ALL, FIRST_VERSION,
+					 LATEST_VERSION,
+					 "prepare-gold %d\n", scan->gold);
 		}
 		/* push everyone to idle, so nothing happens while giving out
 		 * gold after the distribution of resources is done, they are

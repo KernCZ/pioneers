@@ -2,7 +2,7 @@
  *   Go buy a copy.
  *
  * Copyright (C) 1999 Dave Cole
- * Copyright (C) 2003, 2006 Bas Wijnen <shevek@fmf.nl>
+ * Copyright (C) 2003-2007 Bas Wijnen <shevek@fmf.nl>
  * Copyright (C) 2005,2006 Roland Clobus <rclobus@bigfoot.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -97,8 +97,6 @@ static gboolean mode_global(Player * player, gint event)
 			g_free(player->name);
 		if (player->location != NULL)
 			g_free(player->location);
-		if (player->client_version != NULL)
-			g_free(player->client_version);
 		if (player->devel != NULL)
 			deck_free(player->devel);
 		if (player->num >= 0
@@ -113,7 +111,8 @@ static gboolean mode_global(Player * player, gint event)
 	case SM_NET_CLOSE:
 		player_remove(player);
 		if (player->num >= 0) {
-			player_broadcast(player, PB_OTHERS, "has quit\n");
+			player_broadcast(player, PB_OTHERS, FIRST_VERSION,
+					 LATEST_VERSION, "has quit\n");
 			player_archive(player);
 		} else {
 			player_free(player);
@@ -123,20 +122,26 @@ static gboolean mode_global(Player * player, gint event)
 	case SM_RECV:
 		if (sm_recv(sm, "chat %S", &text)) {
 			if (strlen(text) > MAX_CHAT)
-				sm_send(sm, "ERR %s\n",
-					_("chat too long"));
+				player_send(player, FIRST_VERSION,
+					    LATEST_VERSION, "ERR %s\n",
+					    _("chat too long"));
 			else
 				player_broadcast(player, PB_ALL,
+						 FIRST_VERSION,
+						 LATEST_VERSION,
 						 "chat %s\n", text);
 			g_free(text);
 			return TRUE;
 		}
 		if (sm_recv(sm, "name %S", &text)) {
 			if (text[0] == '\0')
-				sm_send(sm, "ERR invalid-name\n");
+				player_send(player, FIRST_VERSION,
+					    LATEST_VERSION,
+					    "ERR invalid-name\n");
 			else if (strlen(text) > MAX_NAME_LENGTH)
-				sm_send(sm, "ERR %s\n",
-					_("name too long"));
+				player_send(player, FIRST_VERSION,
+					    LATEST_VERSION, "ERR %s\n",
+					    _("name too long"));
 			else
 				player_set_name(player, text);
 			g_free(text);
@@ -157,8 +162,9 @@ static gboolean mode_unhandled(Player * player, gint event)
 	switch (event) {
 	case SM_RECV:
 		if (sm_recv(sm, "extension %S", &text)) {
-			sm_send(sm, "NOTE %s\n",
-				N_("ignoring unknown extension"));
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
+				    "NOTE %s\n",
+				    N_("ignoring unknown extension"));
 			log_message(MSG_INFO,
 				    "ignoring unknown extension from %s: %s\n",
 				    player->name, text);
@@ -186,7 +192,8 @@ static gboolean tournament_start_cb(gpointer data)
 	if (game->num_players == game->params->num_players)
 		return FALSE;
 
-	player_broadcast(player, PB_SILENT, "NOTE %s\n",
+	player_broadcast(player, PB_SILENT, FIRST_VERSION, LATEST_VERSION,
+			 "NOTE %s\n",
 			 N_("Game starts, adding computer players"));
 	/* add computer players to start game */
 	for (i = game->num_players; i < game->params->num_players; i++) {
@@ -215,7 +222,7 @@ static gboolean talk_about_tournament_cb(gpointer data)
 	    N_("The game starts in %s minutes.") :
 	    N_("The game starts in %s minute.");
 
-	player_broadcast(player, PB_SILENT,
+	player_broadcast(player, PB_SILENT, FIRST_VERSION, LATEST_VERSION,
 			 "NOTE1 %d|%s\n",
 			 game->params->tournament_time, message);
 	game->params->tournament_time--;
@@ -305,8 +312,10 @@ Player *player_new(Game * game, int fd, gchar * location)
 			g_timeout_add(1000, &talk_about_tournament_cb,
 				      player);
 		} else {
-			sm_send_uncached(sm, "NOTE %s\n",
-					 N_("This game will start soon."));
+			player_send_uncached(player, FIRST_VERSION,
+					     LATEST_VERSION, "NOTE %s\n",
+					     N_
+					     ("This game will start soon."));
 		}
 	}
 
@@ -322,7 +331,6 @@ Player *player_new(Game * game, int fd, gchar * location)
 static void player_set_name_real(Player * player, gchar * name,
 				 gboolean public)
 {
-	StateMachine *sm = player->sm;
 	Game *game = player->game;
 
 	g_assert(name[0] != 0);
@@ -330,9 +338,10 @@ static void player_set_name_real(Player * player, gchar * name,
 	if (player_by_name(game, name) != NULL) {
 		/* make it a note, not an error, so nothing bad happens
 		 * (on error the AI would disconnect) */
-		sm_send(sm, "NOTE %s\n",
-			N_
-			("Name not changed: new name is already in use"));
+		player_send(player, FIRST_VERSION, LATEST_VERSION,
+			    "NOTE %s\n",
+			    N_
+			    ("Name not changed: new name is already in use"));
 		return;
 	}
 
@@ -342,7 +351,8 @@ static void player_set_name_real(Player * player, gchar * name,
 	}
 
 	if (public)
-		player_broadcast(player, PB_ALL, "is %s\n", player->name);
+		player_broadcast(player, PB_ALL, FIRST_VERSION,
+				 LATEST_VERSION, "is %s\n", player->name);
 
 	driver->player_renamed(player);
 	driver->player_change(game);
@@ -470,7 +480,8 @@ void player_archive(Player * player)
 			if (quote == NULL)
 				break;
 			quotelist_delete(game->quotes, quote);
-			player_broadcast(player, PB_RESPOND,
+			player_broadcast(player, PB_RESPOND, FIRST_VERSION,
+					 LATEST_VERSION,
 					 "domestic-quote delete %d\n",
 					 quote->var.d.quote_num);
 		}
@@ -610,7 +621,8 @@ void player_revive(Player * newp, char *name)
 	/* Make sure the name in the broadcast doesn't contain the separator */
 	safe_name = g_strdup(newp->name);
 	g_strdelimit(safe_name, "|", '_');
-	player_broadcast(newp, PB_SILENT, "NOTE1 %s|%s\n", safe_name,
+	player_broadcast(newp, PB_SILENT, FIRST_VERSION, LATEST_VERSION,
+			 "NOTE1 %s|%s\n", safe_name,
 			 /* %s is the name of the reconnecting player */
 			 N_("%s has reconnected."));
 	g_free(safe_name);
@@ -632,14 +644,16 @@ gboolean mode_viewer(Player * player, gint event)
 		/* try to be the first available player */
 		num = next_free_player_num(game, FALSE);
 		if (num >= game->params->num_players) {
-			sm_send(sm, "ERR game-full");
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
+				    "ERR game-full");
 			return TRUE;
 		}
 	} else if (sm_recv(sm, "play %d", &num)) {
 		/* try to be the specified player number */
 		if (num >= game->params->num_players
 		    || !player_by_num(game, num)->disconnected) {
-			sm_send(sm, "ERR invalid-player");
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
+				    "ERR invalid-player");
 			return TRUE;
 		}
 	} else
@@ -649,8 +663,9 @@ gboolean mode_viewer(Player * player, gint event)
 
 	other = player_by_num(game, num);
 	if (other == NULL) {
-		sm_send(sm, "Ok\n");
-		player_broadcast(player, PB_ALL, "was viewer %d\n",
+		player_send(player, FIRST_VERSION, LATEST_VERSION, "Ok\n");
+		player_broadcast(player, PB_ALL, FIRST_VERSION,
+				 LATEST_VERSION, "was viewer %d\n",
 				 player->num);
 		player_setup(player, player->num, player->name, FALSE);
 		sm_goto(sm, (StateFunc) mode_pre_game);
@@ -667,47 +682,81 @@ static gboolean mode_bad_version(Player * player, gint event)
 	sm_state_name(sm, "mode_bad_version");
 	switch (event) {
 	case SM_ENTER:
-		sm_send_uncached(sm, "ERR sorry, version conflict\n");
+		player_send_uncached(player, FIRST_VERSION, LATEST_VERSION,
+				     "ERR sorry, version conflict\n");
 		player_free(player);
 		break;
 	}
 	return FALSE;
 }
 
-static gboolean check_versions(gchar * client_version)
+/* Supported version names.  Whenever this list changes, the enum in server.h
+ * must also change.  */
+static const gchar *client_version_type_to_string(ClientVersionType cvt)
 {
-	return !strcmp(client_version, PROTOCOL_VERSION);
+	switch (cvt) {
+	case V0_10:
+		return "0.10";
+	case V0_11:
+		return "0.11";
+	}
+	g_return_val_if_reached("");
+}
+
+static gboolean check_versions(const gchar * client_version,
+			       Player * client)
+{
+	ClientVersionType i;
+	for (i = FIRST_VERSION; i <= LATEST_VERSION; ++i) {
+		if (strcmp
+		    (client_version,
+		     client_version_type_to_string(i)) == 0) {
+			client->version = i;
+			return TRUE;
+		}
+	}
+	return FALSE;
 }
 
 static gboolean mode_check_version(Player * player, gint event)
 {
 	StateMachine *sm = player->sm;
+	gchar *version;
 
 	sm_state_name(sm, "mode_check_version");
 	switch (event) {
 	case SM_ENTER:
-		sm_send_uncached(sm, "version report\n");
+		player_send_uncached(player, FIRST_VERSION, LATEST_VERSION,
+				     "version report\n");
 		break;
 
 	case SM_RECV:
-		if (sm_recv(sm, "version %S", &player->client_version)) {
-			if (check_versions(player->client_version)) {
+		if (sm_recv(sm, "version %S", &version)) {
+			gboolean result = check_versions(version, player);
+			if (result) {
 				sm_goto(sm, (StateFunc) mode_check_status);
 			} else {
+				/* PROTOCOL_VERSION is the current version
+				 * of the client when building this server.
+				 * Although it's not the only supported
+				 * version, it's the best the user can have.
+				 */
 				gchar *mismatch =
 				    g_strdup_printf("%s <-> %s",
 						    PROTOCOL_VERSION,
-						    player->
-						    client_version);
+						    version);
 				/* Make sure the argument does not contain the separator */
 				g_strdelimit(mismatch, "|", '_');
-				sm_send_uncached(sm, "NOTE1 %s|%s\n",
-						 mismatch,
-						 N_
-						 ("Version mismatch: %s"));
+				player_send_uncached(player, FIRST_VERSION,
+						     LATEST_VERSION,
+						     "NOTE1 %s|%s\n",
+						     mismatch,
+						     N_
+						     ("Version mismatch: %s"));
 				g_free(mismatch);
 				sm_goto(sm, (StateFunc) mode_bad_version);
 			}
+			g_free(version);
 			return TRUE;
 		}
 		break;
@@ -725,7 +774,8 @@ static gboolean mode_check_status(Player * player, gint event)
 	sm_state_name(sm, "mode_check_status");
 	switch (event) {
 	case SM_ENTER:
-		sm_send_uncached(sm, "status report\n");
+		player_send_uncached(player, FIRST_VERSION, LATEST_VERSION,
+				     "status report\n");
 		break;
 
 	case SM_RECV:
@@ -871,7 +921,11 @@ Player *player_none(Game * game)
  */
 static void player_broadcast_internal(Player * player, BroadcastType type,
 				      const gchar * message,
-				      gboolean is_extension)
+				      gboolean is_extension,
+				      ClientVersionType
+				      first_supported_version,
+				      ClientVersionType
+				      last_supported_version)
 {
 	Game *game = player->game;
 	GList *list;
@@ -880,22 +934,32 @@ static void player_broadcast_internal(Player * player, BroadcastType type,
 	for (list = game->player_list; list != NULL;
 	     list = g_list_next(list)) {
 		Player *scan = list->data;
-		if (scan->disconnected || scan->num < 0)
+		if (scan->disconnected || scan->num < 0
+		    || scan->version < first_supported_version
+		    || scan->version > last_supported_version)
 			continue;
 		if (type == PB_SILENT
 		    || (scan == player && type == PB_RESPOND)) {
 			if (is_extension) {
-				sm_send(scan->sm, "extension %s", message);
+				player_send(scan, first_supported_version,
+					    last_supported_version,
+					    "extension %s", message);
 			} else {
-				sm_write(scan->sm, message);
+				player_send(scan, first_supported_version,
+					    last_supported_version, "%s",
+					    message);
 			}
 		} else if (scan != player || type == PB_ALL) {
 			if (is_extension) {
-				sm_send(scan->sm, "extension player %d %s",
-					player->num, message);
+				player_send(scan, first_supported_version,
+					    last_supported_version,
+					    "extension player %d %s",
+					    player->num, message);
 			} else {
-				sm_send(scan->sm, "player %d %s",
-					player->num, message);
+				player_send(scan, first_supported_version,
+					    last_supported_version,
+					    "player %d %s", player->num,
+					    message);
 			}
 
 		}
@@ -905,6 +969,8 @@ static void player_broadcast_internal(Player * player, BroadcastType type,
 
 /** As player_broadcast, but will add the 'extension' keyword */
 void player_broadcast_extension(Player * player, BroadcastType type,
+				ClientVersionType first_supported_version,
+				ClientVersionType last_supported_version,
 				const char *fmt, ...)
 {
 	gchar *buff;
@@ -914,13 +980,17 @@ void player_broadcast_extension(Player * player, BroadcastType type,
 	buff = sm_vformat(fmt, ap);
 	va_end(ap);
 
-	player_broadcast_internal(player, type, buff, TRUE);
+	player_broadcast_internal(player, type, buff, TRUE,
+				  first_supported_version,
+				  last_supported_version);
 	g_free(buff);
 }
 
 /** Broadcast a message to all players and viewers */
-void player_broadcast(Player * player, BroadcastType type, const char *fmt,
-		      ...)
+void player_broadcast(Player * player, BroadcastType type,
+		      ClientVersionType first_supported_version,
+		      ClientVersionType last_supported_version,
+		      const char *fmt, ...)
 {
 	gchar *buff;
 	va_list ap;
@@ -929,7 +999,51 @@ void player_broadcast(Player * player, BroadcastType type, const char *fmt,
 	buff = sm_vformat(fmt, ap);
 	va_end(ap);
 
-	player_broadcast_internal(player, type, buff, FALSE);
+	player_broadcast_internal(player, type, buff, FALSE,
+				  first_supported_version,
+				  last_supported_version);
+	g_free(buff);
+}
+
+/** Send a message to one player */
+void player_send(Player * player,
+		 ClientVersionType first_supported_version,
+		 ClientVersionType last_supported_version, const char *fmt,
+		 ...)
+{
+	gchar *buff;
+	va_list ap;
+
+	if (player->version < first_supported_version
+	    || player->version > last_supported_version)
+		return;
+
+	va_start(ap, fmt);
+	buff = sm_vformat(fmt, ap);
+	va_end(ap);
+
+	sm_write(player->sm, buff);
+	g_free(buff);
+}
+
+/** Send a message to one player, even when caching is turned on */
+void player_send_uncached(Player * player,
+			  ClientVersionType first_supported_version,
+			  ClientVersionType last_supported_version,
+			  const char *fmt, ...)
+{
+	gchar *buff;
+	va_list ap;
+
+	if (player->version < first_supported_version
+	    || player->version > last_supported_version)
+		return;
+
+	va_start(ap, fmt);
+	buff = sm_vformat(fmt, ap);
+	va_end(ap);
+
+	sm_write_uncached(player->sm, buff);
 	g_free(buff);
 }
 

@@ -29,7 +29,6 @@
 static void build_add(Player * player, BuildType type, gint x, gint y,
 		      gint pos)
 {
-	StateMachine *sm = player->sm;
 	Game *game = player->game;
 	Map *map = game->params->map;
 	gint num;
@@ -41,7 +40,8 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 	 */
 	num = buildrec_count_type(player->build_list, type);
 	if (num == num_allowed) {
-		sm_send(sm, "ERR too-many\n");
+		player_send(player, FIRST_VERSION, LATEST_VERSION,
+			    "ERR too-many\n");
 		return;
 	}
 
@@ -49,7 +49,8 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 		/* Make sure that there are some roads left to use */
 		if (player->num_roads ==
 		    game->params->num_build_type[BUILD_ROAD]) {
-			sm_send(sm, "ERR too-many road\n");
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
+				    "ERR too-many road\n");
 			return;
 		}
 
@@ -59,7 +60,8 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 		if (!buildrec_can_setup_road(player->build_list, map,
 					     map_edge(map, x, y, pos),
 					     game->double_setup)) {
-			sm_send(sm, "ERR bad-pos\n");
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
+				    "ERR bad-pos\n");
 			return;
 		}
 		edge_add(player, BUILD_ROAD, x, y, pos, FALSE);
@@ -70,7 +72,8 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 		/* Make sure that there are some bridges left to use */
 		if (player->num_bridges ==
 		    game->params->num_build_type[BUILD_BRIDGE]) {
-			sm_send(sm, "ERR too-many bridge\n");
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
+				    "ERR too-many bridge\n");
 			return;
 		}
 
@@ -80,7 +83,8 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 		if (!buildrec_can_setup_bridge(player->build_list, map,
 					       map_edge(map, x, y, pos),
 					       game->double_setup)) {
-			sm_send(sm, "ERR bad-pos\n");
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
+				    "ERR bad-pos\n");
 			return;
 		}
 		edge_add(player, BUILD_BRIDGE, x, y, pos, FALSE);
@@ -91,7 +95,8 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 		/* Make sure that there are some ships left to use */
 		if (player->num_ships ==
 		    game->params->num_build_type[BUILD_SHIP]) {
-			sm_send(sm, "ERR too-many ship\n");
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
+				    "ERR too-many ship\n");
 			return;
 		}
 
@@ -101,7 +106,8 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 		if (!buildrec_can_setup_ship(player->build_list, map,
 					     map_edge(map, x, y, pos),
 					     game->double_setup)) {
-			sm_send(sm, "ERR bad-pos\n");
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
+				    "ERR bad-pos\n");
 			return;
 		}
 		edge_add(player, BUILD_SHIP, x, y, pos, FALSE);
@@ -109,7 +115,8 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 	}
 
 	if (type != BUILD_SETTLEMENT) {
-		sm_send(sm, "ERR expected-road-or-settlement\n");
+		player_send(player, FIRST_VERSION, LATEST_VERSION,
+			    "ERR expected-road-or-settlement\n");
 		return;
 	}
 	/* Build the settlement
@@ -117,7 +124,8 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 	if (!buildrec_can_setup_settlement(player->build_list, map,
 					   map_node(map, x, y, pos),
 					   game->double_setup)) {
-		sm_send(sm, "ERR bad-pos\n");
+		player_send(player, FIRST_VERSION, LATEST_VERSION,
+			    "ERR bad-pos\n");
 		return;
 	}
 	node_add(player, BUILD_SETTLEMENT, x, y, pos, FALSE, NULL);
@@ -125,11 +133,11 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 
 static void build_remove(Player * player)
 {
-	StateMachine *sm = player->sm;
 	/* Remove the settlement/road we just built
 	 */
 	if (!perform_undo(player))
-		sm_send(sm, "ERR bad-pos\n");
+		player_send(player, FIRST_VERSION, LATEST_VERSION,
+			    "ERR bad-pos\n");
 }
 
 static void start_setup_player(Player * player)
@@ -140,9 +148,11 @@ static void start_setup_player(Player * player)
 	player->build_list = buildrec_free(player->build_list);
 
 	if (game->double_setup)
-		player_broadcast(player, PB_RESPOND, "setup-double\n");
+		player_broadcast(player, PB_RESPOND, FIRST_VERSION,
+				 LATEST_VERSION, "setup-double\n");
 	else
-		player_broadcast(player, PB_RESPOND, "setup %d\n",
+		player_broadcast(player, PB_RESPOND, FIRST_VERSION,
+				 LATEST_VERSION, "setup %d\n",
 				 game->reverse_setup);
 
 	sm_goto(sm, (StateFunc) mode_setup);
@@ -188,20 +198,22 @@ static void try_setup_done(Player * player)
 	if (buildrec_count_edges(player->build_list) != num_allowed
 	    || buildrec_count_type(player->build_list,
 				   BUILD_SETTLEMENT) != num_allowed) {
-		sm_send(sm, "ERR expected-build-or-remove\n");
+		player_send(player, FIRST_VERSION, LATEST_VERSION,
+			    "ERR expected-build-or-remove\n");
 		return;
 	}
 	/* We have the right number, now make sure that all roads are
 	 * connected to buildings and vice-versa
 	 */
 	if (!buildrec_is_valid(player->build_list, map, player->num)) {
-		sm_send(sm, "ERR unconnected\n");
+		player_send(player, FIRST_VERSION, LATEST_VERSION,
+			    "ERR unconnected\n");
 		return;
 	}
 	/* Player has finished setup phase - give resources for second
 	 * settlement
 	 */
-	sm_send(sm, "OK\n");
+	player_send(player, FIRST_VERSION, LATEST_VERSION, "OK\n");
 
 	if (game->double_setup)
 		allocate_resources(player,
@@ -339,34 +351,42 @@ static void try_start_game(Game * game)
 
 /* Send the player list to the client
  */
-static void send_player_list(StateMachine * sm, Player * player)
+static void send_player_list(Player * player)
 {
 	Game *game = player->game;
 	GList *list;
 
-	sm_send(sm, "players follow\n");
+	player_send_uncached(player, FIRST_VERSION, LATEST_VERSION,
+			     "players follow\n");
 	for (list = game->player_list; list != NULL;
 	     list = g_list_next(list)) {
 		Player *scan = list->data;
 		if (player == scan || scan->num < 0)
 			continue;
-		sm_send(sm, "player %d is %s\n", scan->num, scan->name);
+		player_send_uncached(player, FIRST_VERSION, LATEST_VERSION,
+				     "player %d is %s\n", scan->num,
+				     scan->name);
 		if (scan->disconnected)
-			sm_send(sm, "player %d has quit\n", scan->num);
+			player_send_uncached(player, FIRST_VERSION,
+					     LATEST_VERSION,
+					     "player %d has quit\n",
+					     scan->num);
 	}
-	sm_send(sm, ".\n");
+	player_send_uncached(player, FIRST_VERSION, LATEST_VERSION, ".\n");
 }
 
-/* Send the game parameters to the player
+/* Send the game parameters to the player (uncached)
  */
-static void send_game_line(StateMachine * sm, gchar * str)
+static void send_game_line(gpointer player, const gchar * str)
 {
-	sm_send(sm, "%s\n", str);
+	player_send_uncached((Player *) player, FIRST_VERSION,
+			     LATEST_VERSION, "%s\n", str);
 }
 
-gboolean send_gameinfo(Map * map, Hex * hex, StateMachine * sm)
+gboolean send_gameinfo_uncached(Map * map, Hex * hex, void *data)
 {
 	gint i;
+	Player *player = data;
 
 	for (i = 0; i < G_N_ELEMENTS(hex->nodes); i++) {
 		if (!hex->nodes[i] || hex->nodes[i]->x != hex->x
@@ -375,20 +395,33 @@ gboolean send_gameinfo(Map * map, Hex * hex, StateMachine * sm)
 		if (hex->nodes[i]->owner >= 0) {
 			switch (hex->nodes[i]->type) {
 			case BUILD_SETTLEMENT:
-				sm_send(sm, "S%d,%d,%d,%d\n", hex->x,
-					hex->y, i, hex->nodes[i]->owner);
+				player_send_uncached(player, FIRST_VERSION,
+						     LATEST_VERSION,
+						     "S%d,%d,%d,%d\n",
+						     hex->x, hex->y, i,
+						     hex->nodes[i]->owner);
 				break;
 			case BUILD_CITY:
-				sm_send(sm, "C%d,%d,%d,%d\n", hex->x,
-					hex->y, i, hex->nodes[i]->owner);
+				player_send_uncached(player, FIRST_VERSION,
+						     LATEST_VERSION,
+						     "C%d,%d,%d,%d\n",
+						     hex->x, hex->y, i,
+						     hex->nodes[i]->owner);
 				break;
 			default:
 				;
 			}
-			if (hex->nodes[i]->city_wall)
-				sm_send(sm, "extension W%d,%d,%d,%d\n",
-					hex->x, hex->y, i,
-					hex->nodes[i]->owner);
+			if (hex->nodes[i]->city_wall) {
+				/* Older clients see an extension message */
+				player_send_uncached(player, FIRST_VERSION,
+						     V0_10,
+						     "extension city wall\n");
+				player_send_uncached(player, V0_11,
+						     LATEST_VERSION,
+						     "W%d,%d,%d,%d\n",
+						     hex->x, hex->y, i,
+						     hex->nodes[i]->owner);
+			}
 		}
 	}
 
@@ -399,16 +432,25 @@ gboolean send_gameinfo(Map * map, Hex * hex, StateMachine * sm)
 		if (hex->edges[i]->owner >= 0) {
 			switch (hex->edges[i]->type) {
 			case BUILD_ROAD:
-				sm_send(sm, "R%d,%d,%d,%d\n", hex->x,
-					hex->y, i, hex->edges[i]->owner);
+				player_send_uncached(player, FIRST_VERSION,
+						     LATEST_VERSION,
+						     "R%d,%d,%d,%d\n",
+						     hex->x, hex->y, i,
+						     hex->edges[i]->owner);
 				break;
 			case BUILD_SHIP:
-				sm_send(sm, "SH%d,%d,%d,%d\n", hex->x,
-					hex->y, i, hex->edges[i]->owner);
+				player_send_uncached(player, FIRST_VERSION,
+						     LATEST_VERSION,
+						     "SH%d,%d,%d,%d\n",
+						     hex->x, hex->y, i,
+						     hex->edges[i]->owner);
 				break;
 			case BUILD_BRIDGE:
-				sm_send(sm, "B%d,%d,%d,%d\n", hex->x,
-					hex->y, i, hex->edges[i]->owner);
+				player_send_uncached(player, FIRST_VERSION,
+						     LATEST_VERSION,
+						     "B%d,%d,%d,%d\n",
+						     hex->x, hex->y, i,
+						     hex->edges[i]->owner);
 				break;
 			default:
 				;
@@ -417,11 +459,13 @@ gboolean send_gameinfo(Map * map, Hex * hex, StateMachine * sm)
 	}
 
 	if (hex->robber) {
-		sm_send(sm, "RO%d,%d\n", hex->x, hex->y);
+		player_send_uncached(player, FIRST_VERSION, LATEST_VERSION,
+				     "RO%d,%d\n", hex->x, hex->y);
 	}
 
 	if (hex == map->pirate_hex) {
-		sm_send(sm, "P%d,%d\n", hex->x, hex->y);
+		player_send_uncached(player, FIRST_VERSION, LATEST_VERSION,
+				     "P%d,%d\n", hex->x, hex->y);
 	}
 
 	return FALSE;
@@ -451,79 +495,104 @@ gboolean mode_pre_game(Player * player, gint event)
 	}
 
 	sm_state_name(sm, "mode_pre_game");
-	sm = sm_copy_as_uncached(sm);
 	switch (event) {
 	case SM_ENTER:
-		sm_send(sm,
-			"player %d of %d, welcome to pioneers server %s\n",
-			player->num, game->params->num_players,
-			FULL_VERSION);
+		player_send_uncached(player, FIRST_VERSION, LATEST_VERSION,
+				     "player %d of %d, welcome to pioneers server %s\n",
+				     player->num,
+				     game->params->num_players,
+				     FULL_VERSION);
 		/* Tell the player that he exists.  This is not done in
 		 * player_set_name, because at that point the client doesn't
 		 * know how many players are in the game, and therefore if
 		 * he is a player or a viewer. */
 		/* Tell the other players about this player */
-		player_broadcast(player, PB_OTHERS, "is %s\n",
-				 player->name);
+		player_broadcast(player, PB_OTHERS, FIRST_VERSION,
+				 LATEST_VERSION, "is %s\n", player->name);
 		/* Tell this player his own name */
-		sm_send(sm, "player %d is %s\n", player->num,
-			player->name);
+		player_send_uncached(player, FIRST_VERSION, LATEST_VERSION,
+				     "player %d is %s\n", player->num,
+				     player->name);
 		break;
 
 	case SM_RECV:
 		if (sm_recv(sm, "players")) {
-			send_player_list(sm, player);
-			g_free(sm);
+			send_player_list(player);
 			return TRUE;
 		}
 		if (sm_recv(sm, "game")) {
-			sm_send(sm, "game\n");
+			player_send_uncached(player, FIRST_VERSION,
+					     LATEST_VERSION, "game\n");
 			params_write_lines(game->params, FALSE,
-					   (WriteLineFunc) send_game_line,
-					   sm);
-			sm_send(sm, "end\n");
-			g_free(sm);
+					   send_game_line, player);
+			player_send_uncached(player, FIRST_VERSION,
+					     LATEST_VERSION, "end\n");
 			return TRUE;
 		}
 		if (sm_recv(sm, "gameinfo")) {
-			sm_send(sm, "gameinfo\n");
-			map_traverse(map, (HexFunc) send_gameinfo, sm);
-			sm_send(sm, ".\n");
+			player_send_uncached(player, FIRST_VERSION,
+					     LATEST_VERSION, "gameinfo\n");
+			map_traverse(map, send_gameinfo_uncached, player);
+			player_send_uncached(player, FIRST_VERSION,
+					     LATEST_VERSION, ".\n");
+
+			/* Notify old clients about new features */
+			if (game->params->num_build_type[BUILD_CITY_WALL] >
+			    0) {
+				player_send_uncached(player, FIRST_VERSION,
+						     V0_10,
+						     "extension city wall\n");
+			}
 
 			/* now, send state info */
-			sm_send(sm, "turn num %d\n", game->curr_turn);
+			player_send_uncached(player, FIRST_VERSION,
+					     LATEST_VERSION,
+					     "turn num %d\n",
+					     game->curr_turn);
 			if (game->curr_player >= 0) {
 				Player *playerturn
 				    =
 				    player_by_num(game, game->curr_player);
-				sm_send(sm, "player turn: %d\n",
-					playerturn->num);
+				player_send_uncached(player, FIRST_VERSION,
+						     LATEST_VERSION,
+						     "player turn: %d\n",
+						     playerturn->num);
 			}
 			if (game->rolled_dice) {
-				sm_send(sm, "dice rolled: %d %d\n",
-					game->die1, game->die2);
+				player_send_uncached(player, FIRST_VERSION,
+						     LATEST_VERSION,
+						     "dice rolled: %d %d\n",
+						     game->die1,
+						     game->die2);
 			} else if (game->die1 + game->die2 > 1) {
-				sm_send(sm, "dice value: %d %d\n",
-					game->die1, game->die2);
+				player_send_uncached(player, FIRST_VERSION,
+						     LATEST_VERSION,
+						     "dice value: %d %d\n",
+						     game->die1,
+						     game->die2);
 			}
 			if (game->played_develop) {
-				sm_send(sm, "played develop\n");
+				player_send_uncached(player, FIRST_VERSION,
+						     LATEST_VERSION,
+						     "played develop\n");
 			}
 			if (game->bought_develop) {
-				sm_send(sm, "bought develop\n");
+				player_send_uncached(player, FIRST_VERSION,
+						     LATEST_VERSION,
+						     "bought develop\n");
 			}
 			if (player->disconnected) {
-				sm_send(sm, "player disconnected\n");
+				player_send_uncached(player, FIRST_VERSION,
+						     LATEST_VERSION,
+						     "player disconnected\n");
 			}
 			stack_offset = 1;
-			state = sm_stack_inspect(player->sm, stack_offset);
+			state = sm_stack_inspect(sm, stack_offset);
 			while ((state == (StateFunc) mode_choose_gold) ||
 			       (state == (StateFunc)
 				mode_wait_for_gold_choosing_players)) {
 				++stack_offset;
-				state =
-				    sm_stack_inspect(player->sm,
-						     stack_offset);
+				state = sm_stack_inspect(sm, stack_offset);
 			}
 
 			if (state == (StateFunc) mode_idle)
@@ -560,18 +629,24 @@ gboolean mode_pre_game(Player * player, gint event)
 			} else
 				prevstate = "PREGAME";
 
-			sm_send(sm, "state %s\n", prevstate);
+			player_send_uncached(player, FIRST_VERSION,
+					     LATEST_VERSION, "state %s\n",
+					     prevstate);
 
 			/* Send the bank, so the client can count remaining 
 			 * resources
 			 */
-			sm_send(sm, "bank %R\n", game->bank_deck);
+			player_send_uncached(player, FIRST_VERSION,
+					     LATEST_VERSION, "bank %R\n",
+					     game->bank_deck);
 
 			/* Send the number of development cards played, so the
 			 * client knows how many are left.
 			 */
-			sm_send(sm, "development-bought %d\n",
-				game->develop_next);
+			player_send_uncached(player, FIRST_VERSION,
+					     LATEST_VERSION,
+					     "development-bought %d\n",
+					     game->develop_next);
 
 			/* send player info about what he has:
 			   resources, dev cards, roads, # roads,
@@ -582,46 +657,64 @@ gboolean mode_pre_game(Player * player, gint event)
 			if (!player_is_viewer(game, player->num)) {
 				GList *list;
 
-				sm_send(sm, "playerinfo: resources: %R\n",
-					player->assets);
-				sm_send(sm,
-					"playerinfo: numdevcards: %d\n",
-					player->devel->num_cards);
+				player_send_uncached(player, FIRST_VERSION,
+						     LATEST_VERSION,
+						     "playerinfo: resources: %R\n",
+						     player->assets);
+				player_send_uncached(player, FIRST_VERSION,
+						     LATEST_VERSION,
+						     "playerinfo: numdevcards: %d\n",
+						     player->devel->
+						     num_cards);
 				for (i = 0; i < player->devel->num_cards;
 				     i++) {
-					sm_send(sm,
-						"playerinfo: devcard: %d %d\n",
-						(gint) player->devel->
-						cards[i].type,
-						player->devel->cards[i].
-						turn_bought);
+					player_send_uncached(player,
+							     FIRST_VERSION,
+							     LATEST_VERSION,
+							     "playerinfo: devcard: %d %d\n",
+							     (gint)
+							     player->
+							     devel->
+							     cards[i].type,
+							     player->
+							     devel->
+							     cards[i].
+							     turn_bought);
 				}
-				sm_send(sm,
-					"playerinfo: %d %d %d %d %d %d %d %d %d %d %d %d %d %d\n",
-					player->num_roads,
-					player->num_bridges,
-					player->num_ships,
-					player->num_settlements,
-					player->num_cities,
-					player->num_soldiers,
-					player->road_len,
-					player->chapel_played,
-					player->univ_played,
-					player->gov_played,
-					player->libr_played,
-					player->market_played,
-					(player->num == longestroadpnum),
-					(player->num == largestarmypnum));
+				player_send_uncached(player, FIRST_VERSION,
+						     LATEST_VERSION,
+						     "playerinfo: %d %d %d %d %d %d %d %d %d %d %d %d %d %d\n",
+						     player->num_roads,
+						     player->num_bridges,
+						     player->num_ships,
+						     player->
+						     num_settlements,
+						     player->num_cities,
+						     player->num_soldiers,
+						     player->road_len,
+						     player->chapel_played,
+						     player->univ_played,
+						     player->gov_played,
+						     player->libr_played,
+						     player->market_played,
+						     (player->num ==
+						      longestroadpnum),
+						     (player->num ==
+						      largestarmypnum));
 
 				/* Send special points */
 				list = player->special_points;
 				while (list) {
 					Points *points = list->data;
-					sm_send(sm,
-						"get-point %d %d %d %s\n",
-						player->num, points->id,
-						points->points,
-						points->name);
+					player_send_uncached(player,
+							     FIRST_VERSION,
+							     LATEST_VERSION,
+							     "get-point %d %d %d %s\n",
+							     player->num,
+							     points->id,
+							     points->
+							     points,
+							     points->name);
 					list = g_list_next(list);
 				}
 			}
@@ -636,25 +729,35 @@ gboolean mode_pre_game(Player * player, gint event)
 				for (i = 0; i < NO_RESOURCE; i++) {
 					numassets += p->assets[i];
 				}
-				sm_send(sm,
-					"otherplayerinfo: %d %d %d %d %d %d %d %d %d %d %d\n",
-					p->num, numassets,
-					p->devel->num_cards,
-					p->num_soldiers, p->chapel_played,
-					p->univ_played, p->gov_played,
-					p->libr_played, p->market_played,
-					(p->num == longestroadpnum),
-					(p->num == largestarmypnum));
+				player_send_uncached(player, FIRST_VERSION,
+						     LATEST_VERSION,
+						     "otherplayerinfo: %d %d %d %d %d %d %d %d %d %d %d\n",
+						     p->num, numassets,
+						     p->devel->num_cards,
+						     p->num_soldiers,
+						     p->chapel_played,
+						     p->univ_played,
+						     p->gov_played,
+						     p->libr_played,
+						     p->market_played,
+						     (p->num ==
+						      longestroadpnum),
+						     (p->num ==
+						      largestarmypnum));
 
 				/* Send special points */
 				list = p->special_points;
 				while (list) {
 					Points *points = list->data;
-					sm_send(sm,
-						"get-point %d %d %d %s\n",
-						p->num, points->id,
-						points->points,
-						points->name);
+					player_send_uncached(player,
+							     FIRST_VERSION,
+							     LATEST_VERSION,
+							     "get-point %d %d %d %s\n",
+							     p->num,
+							     points->id,
+							     points->
+							     points,
+							     points->name);
 					list = g_list_next(list);
 				}
 			}
@@ -665,17 +768,20 @@ gboolean mode_pre_game(Player * player, gint event)
 			for (next = player->build_list;
 			     next != NULL; next = g_list_next(next)) {
 				BuildRec *build = (BuildRec *) next->data;
-				sm_send(sm, "buildinfo: %B %d %d %d\n",
-					build->type, build->x,
-					build->y, build->pos);
+				player_send_uncached(player, FIRST_VERSION,
+						     LATEST_VERSION,
+						     "buildinfo: %B %d %d %d\n",
+						     build->type, build->x,
+						     build->y, build->pos);
 			}
 
-			sm_send(sm, "end\n");
-			g_free(sm);
+			player_send_uncached(player, FIRST_VERSION,
+					     LATEST_VERSION, "end\n");
 			return TRUE;
 		}
 		if (sm_recv(sm, "start")) {
-			sm_send(sm, "OK\n");
+			player_send_uncached(player, FIRST_VERSION,
+					     LATEST_VERSION, "OK\n");
 
 			/* Some player was in the setup phase */
 			if (game->setup_player != NULL
@@ -685,17 +791,26 @@ gboolean mode_pre_game(Player * player, gint event)
 				    ((Player *) (game->setup_player->
 						 data))->num;
 				if (game->double_setup)
-					sm_send(sm,
-						"player %d setup-double\n",
-						num);
+					player_send_uncached(player,
+							     FIRST_VERSION,
+							     LATEST_VERSION,
+							     "player %d setup-double\n",
+							     num);
 				else
-					sm_send(sm, "player %d setup %d\n",
-						num, game->reverse_setup);
+					player_send_uncached(player,
+							     FIRST_VERSION,
+							     LATEST_VERSION,
+							     "player %d setup %d\n",
+							     num,
+							     game->
+							     reverse_setup);
 			}
 
 			if (recover_from_plenty) {
-				sm_send(sm, "plenty %R\n",
-					game->bank_deck);
+				player_send_uncached(player, FIRST_VERSION,
+						     LATEST_VERSION,
+						     "plenty %R\n",
+						     game->bank_deck);
 				recover_from_plenty = FALSE;
 			}
 
@@ -704,26 +819,36 @@ gboolean mode_pre_game(Player * player, gint event)
 			     next = player_next_real(next)) {
 				Player *p = (Player *) next->data;
 				if (p->discard_num > 0) {
-					sm_send(sm,
-						"player %d must-discard %d\n",
-						p->num, p->discard_num);
+					player_send_uncached(player,
+							     FIRST_VERSION,
+							     LATEST_VERSION,
+							     "player %d must-discard %d\n",
+							     p->num,
+							     p->
+							     discard_num);
 				}
 				if (p->gold > 0) {
-					sm_send(sm,
-						"player %d prepare-gold %d\n",
-						p->num, p->gold);
+					player_send_uncached(player,
+							     FIRST_VERSION,
+							     LATEST_VERSION,
+							     "player %d prepare-gold %d\n",
+							     p->num,
+							     p->gold);
 
 				}
 			}
 
 			/* The current player was choosing gold */
-			state = sm_stack_inspect(player->sm, 1);
+			state = sm_stack_inspect(sm, 1);
 			if (state == (StateFunc) mode_choose_gold) {
 				gint limited_bank[NO_RESOURCE];
 				gold_limited_bank(game, player->gold,
 						  limited_bank);
-				sm_send(sm, "choose-gold %d %R\n",
-					player->gold, limited_bank);
+				player_send_uncached(player, FIRST_VERSION,
+						     LATEST_VERSION,
+						     "choose-gold %d %R\n",
+						     player->gold,
+						     limited_bank);
 			}
 
 			/* Trade was in progress */
@@ -735,23 +860,24 @@ gboolean mode_pre_game(Player * player, gint event)
 				QuoteInfo *quote =
 				    quotelist_first(game->quotes);
 
-				sm_send(sm,
-					"player %d domestic-trade call supply %R receive %R\n",
-					game->curr_player,
-					game->quote_supply,
-					game->quote_receive);
+				player_send_uncached(player, FIRST_VERSION,
+						     LATEST_VERSION,
+						     "player %d domestic-trade call supply %R receive %R\n",
+						     game->curr_player,
+						     game->quote_supply,
+						     game->quote_receive);
 				while (quote) {
 					if (quote->is_domestic) {
-						sm_send(sm,
-							"player %d domestic-quote quote %d supply %R receive %R\n",
-							quote->var.d.
-							player_num,
-							quote->var.d.
-							quote_num,
-							quote->var.d.
-							supply,
-							quote->var.d.
-							receive);
+						player_send_uncached
+						    (player, FIRST_VERSION,
+						     LATEST_VERSION,
+						     "player %d domestic-quote quote %d supply %R receive %R\n",
+						     quote->var.d.
+						     player_num,
+						     quote->var.d.
+						     quote_num,
+						     quote->var.d.supply,
+						     quote->var.d.receive);
 					}
 					quote = quotelist_next(quote);
 				}
@@ -759,20 +885,18 @@ gboolean mode_pre_game(Player * player, gint event)
 				 * send reject again */
 				if (state !=
 				    (StateFunc) mode_domestic_quote) {
-					sm_send(sm,
-						"player %d domestic-quote finish\n",
-						player->num);
+					player_send_uncached(player,
+							     FIRST_VERSION,
+							     LATEST_VERSION,
+							     "player %d domestic-quote finish\n",
+							     player->num);
 					/* Restore the stack */
-					sm_goto_noenter(player->sm,
-							(StateFunc)
+					sm_goto_noenter(sm, (StateFunc)
 							mode_wait_quote_exit);
-					sm_push_noenter(player->sm,
-							(StateFunc)
+					sm_push_noenter(sm, (StateFunc)
 							mode_pre_game);
 				}
 			}
-			g_free(sm);
-			sm = player->sm;
 			sm_set_use_cache(sm, FALSE);
 
 			if (player->disconnected) {
@@ -799,6 +923,5 @@ gboolean mode_pre_game(Player * player, gint event)
 	default:
 		break;
 	}
-	g_free(sm);
 	return FALSE;
 }

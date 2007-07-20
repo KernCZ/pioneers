@@ -154,6 +154,8 @@ gboolean sm_recv_prefix(StateMachine * sm, const gchar * fmt, ...);
 void sm_cancel_prefix(StateMachine * sm);
 gchar *sm_vformat(const gchar * fmt, va_list ap);
 void sm_write(StateMachine * sm, const gchar * str);
+/** Send the data, even when caching is turned on */
+void sm_write_uncached(StateMachine * sm, const gchar * str);
 void sm_send(StateMachine * sm, const gchar * fmt, ...);
 /** Cache the messages that are sent.
  * When the caching is turned off, all cached data is sent.
@@ -161,13 +163,6 @@ void sm_send(StateMachine * sm, const gchar * fmt, ...);
  * @param use_cache Turn the caching on/off
  */
 void sm_set_use_cache(StateMachine * sm, gboolean use_cache);
-/** Send the data, even when caching is turned on */
-void sm_send_uncached(StateMachine * sm, const gchar * fmt, ...);
-/** Create a copy of the current statemachine.
- * The current statemachine must be cached.
- * The copy must be freed with g_free.
- */
-StateMachine *sm_copy_as_uncached(const StateMachine * sm);
 
 void sm_goto(StateMachine * sm, StateFunc new_state);
 void sm_goto_noenter(StateMachine * sm, StateFunc new_state);

@@ -86,6 +86,7 @@ void check_longest_road(Game * game, gboolean can_cut)
 			log_message(MSG_INFO, "lost longest road\n");
 #endif
 			player_broadcast(player_none(game), PB_ALL,
+					 FIRST_VERSION, LATEST_VERSION,
 					 "longest-road\n");
 			game->longest_road = NULL;
 			return;
@@ -117,6 +118,7 @@ void check_longest_road(Game * game, gboolean can_cut)
 		if (game->longest_road->road_len < new_longest->road_len
 		    || was_cut) {
 			player_broadcast(player_none(game), PB_ALL,
+					 FIRST_VERSION, LATEST_VERSION,
 					 "longest-road\n");
 			game->longest_road = NULL;
 #ifdef DEBUG_LONGEST
@@ -136,8 +138,8 @@ void check_longest_road(Game * game, gboolean can_cut)
 	 */
 	if (game->longest_road == NULL) {
 		game->longest_road = new_longest;
-		player_broadcast(game->longest_road, PB_ALL,
-				 "longest-road\n");
+		player_broadcast(game->longest_road, PB_ALL, FIRST_VERSION,
+				 LATEST_VERSION, "longest-road\n");
 #ifdef DEBUG_LONGEST
 		log_message(MSG_INFO, "%s has longest road\n",
 			    new_longest->name);
@@ -150,8 +152,8 @@ void check_longest_road(Game * game, gboolean can_cut)
 	    && road_len[new_longest->num] >
 	    road_len[game->longest_road->num]) {
 		game->longest_road = new_longest;
-		player_broadcast(game->longest_road, PB_ALL,
-				 "longest-road\n");
+		player_broadcast(game->longest_road, PB_ALL, FIRST_VERSION,
+				 LATEST_VERSION, "longest-road\n");
 #ifdef DEBUG_LONGEST
 		log_message(MSG_INFO, "%s has longest road\n",
 			    new_longest->name);
@@ -217,18 +219,23 @@ void node_add(Player * player,
 	node->owner = player->num;
 	if (type == BUILD_CITY_WALL) {
 		node->city_wall = TRUE;
+		/* Older clients see an extension message */
 		player_broadcast_extension(player, PB_RESPOND,
-					   "built %B %d %d %d\n", type, x,
-					   y, pos);
+					   FIRST_VERSION, V0_10,
+					   "built city wall\n");
+		player_broadcast(player, PB_RESPOND, V0_11, LATEST_VERSION,
+				 "built %B %d %d %d\n", type, x, y, pos);
 	} else {
 		node->type = type;
-		player_broadcast(player, PB_RESPOND,
-				 "built %B %d %d %d\n", type, x, y, pos);
+		player_broadcast(player, PB_RESPOND, FIRST_VERSION,
+				 LATEST_VERSION, "built %B %d %d %d\n",
+				 type, x, y, pos);
 	}
 	if (points != NULL) {
 		player->special_points =
 		    g_list_append(player->special_points, points);
-		player_broadcast(player, PB_ALL, "get-point %d %d %s\n",
+		player_broadcast(player, PB_ALL, FIRST_VERSION,
+				 LATEST_VERSION, "get-point %d %d %s\n",
 				 points->id, points->points, points->name);
 	}
 
@@ -302,7 +309,7 @@ void edge_add(Player * player, BuildType type, int x, int y, int pos,
 	/* update the board */
 	edge->owner = player->num;
 	edge->type = type;
-	player_broadcast(player, PB_RESPOND,
+	player_broadcast(player, PB_RESPOND, FIRST_VERSION, LATEST_VERSION,
 			 "built %B %d %d %d\n", type, x, y, pos);
 
 	/* perhaps the longest road changed owner */
@@ -348,27 +355,27 @@ gboolean perform_undo(Player * player)
 	case BUILD_ROAD:
 		player->num_roads--;
 
-		player_broadcast(player, PB_RESPOND,
-				 "remove %B %d %d %d\n", BUILD_ROAD,
-				 rec->x, rec->y, rec->pos);
+		player_broadcast(player, PB_RESPOND, FIRST_VERSION,
+				 LATEST_VERSION, "remove %B %d %d %d\n",
+				 BUILD_ROAD, rec->x, rec->y, rec->pos);
 		hex->edges[rec->pos]->owner = -1;
 		hex->edges[rec->pos]->type = BUILD_NONE;
 		break;
 	case BUILD_BRIDGE:
 		player->num_bridges--;
 
-		player_broadcast(player, PB_RESPOND,
-				 "remove %B %d %d %d\n", BUILD_BRIDGE,
-				 rec->x, rec->y, rec->pos);
+		player_broadcast(player, PB_RESPOND, FIRST_VERSION,
+				 LATEST_VERSION, "remove %B %d %d %d\n",
+				 BUILD_BRIDGE, rec->x, rec->y, rec->pos);
 		hex->edges[rec->pos]->owner = -1;
 		hex->edges[rec->pos]->type = BUILD_NONE;
 		break;
 	case BUILD_SHIP:
 		player->num_ships--;
 
-		player_broadcast(player, PB_RESPOND,
-				 "remove %B %d %d %d\n", BUILD_SHIP,
-				 rec->x, rec->y, rec->pos);
+		player_broadcast(player, PB_RESPOND, FIRST_VERSION,
+				 LATEST_VERSION, "remove %B %d %d %d\n",
+				 BUILD_SHIP, rec->x, rec->y, rec->pos);
 		hex->edges[rec->pos]->owner = -1;
 		hex->edges[rec->pos]->type = BUILD_NONE;
 		break;
@@ -376,9 +383,9 @@ gboolean perform_undo(Player * player)
 		player->num_cities--;
 		player->num_settlements++;
 
-		player_broadcast(player, PB_RESPOND,
-				 "remove %B %d %d %d\n", BUILD_CITY,
-				 rec->x, rec->y, rec->pos);
+		player_broadcast(player, PB_RESPOND, FIRST_VERSION,
+				 LATEST_VERSION, "remove %B %d %d %d\n",
+				 BUILD_CITY, rec->x, rec->y, rec->pos);
 		hex->nodes[rec->pos]->type = BUILD_SETTLEMENT;
 		if (rec->prev_status == BUILD_SETTLEMENT)
 			break;
@@ -387,18 +394,22 @@ gboolean perform_undo(Player * player)
 	case BUILD_SETTLEMENT:
 		player->num_settlements--;
 
-		player_broadcast(player, PB_RESPOND,
-				 "remove %B %d %d %d\n", BUILD_SETTLEMENT,
-				 rec->x, rec->y, rec->pos);
+		player_broadcast(player, PB_RESPOND, FIRST_VERSION,
+				 LATEST_VERSION, "remove %B %d %d %d\n",
+				 BUILD_SETTLEMENT, rec->x, rec->y,
+				 rec->pos);
 		hex->nodes[rec->pos]->type = BUILD_NONE;
 		hex->nodes[rec->pos]->owner = -1;
 		break;
 	case BUILD_CITY_WALL:
 		player->num_city_walls--;
+		/* Older clients see an extension message */
 		player_broadcast_extension(player, PB_RESPOND,
-					   "remove %B %d %d %d\n",
-					   BUILD_CITY_WALL, rec->x, rec->y,
-					   rec->pos);
+					   FIRST_VERSION, V0_10,
+					   "remove city wall\n");
+		player_broadcast(player, PB_RESPOND, V0_11, LATEST_VERSION,
+				 "remove %B %d %d %d\n", BUILD_CITY_WALL,
+				 rec->x, rec->y, rec->pos);
 		hex->nodes[rec->pos]->city_wall = FALSE;
 		break;
 	case BUILD_MOVE_SHIP:
@@ -408,7 +419,8 @@ gboolean perform_undo(Player * player)
 		hex->edges[rec->prev_pos]->owner = player->num;
 		hex->edges[rec->prev_pos]->type = BUILD_SHIP;
 		map->has_moved_ship = FALSE;
-		player_broadcast(player, PB_RESPOND,
+		player_broadcast(player, PB_RESPOND, FIRST_VERSION,
+				 LATEST_VERSION,
 				 "move-back %d %d %d %d %d %d\n",
 				 rec->prev_x, rec->prev_y, rec->prev_pos,
 				 rec->x, rec->y, rec->pos);
@@ -425,9 +437,11 @@ gboolean perform_undo(Player * player)
 		if (rec->longest_road >= 0)
 			player_broadcast(player_by_num
 					 (game, rec->longest_road), PB_ALL,
+					 FIRST_VERSION, LATEST_VERSION,
 					 "longest-road\n");
 		else
 			player_broadcast(player_none(game), PB_ALL,
+					 FIRST_VERSION, LATEST_VERSION,
 					 "longest-road\n");
 	}
 	game->longest_road = player_by_num(game, rec->longest_road);
@@ -442,7 +456,8 @@ gboolean perform_undo(Player * player)
 			}
 		}
 
-		player_broadcast(player, PB_ALL, "lose-point %d\n",
+		player_broadcast(player, PB_ALL, FIRST_VERSION,
+				 LATEST_VERSION, "lose-point %d\n",
 				 rec->special_points_id);
 		points =
 		    g_list_find_custom(player->special_points,

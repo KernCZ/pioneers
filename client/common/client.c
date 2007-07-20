@@ -548,22 +548,6 @@ static gboolean check_other_players(StateMachine * sm)
 
 	if (check_chat_or_name(sm))
 		return TRUE;
-	if (sm_recv
-	    (sm, "extension player %d built city_wall %d %d %d",
-	     &player_num, &x, &y, &pos)) {
-		player_build_add(player_num, BUILD_CITY_WALL, x, y, pos,
-				 TRUE);
-		return TRUE;
-	}
-	if (sm_recv
-	    (sm, "extension player %d remove city_wall %d %d %d",
-	     &player_num, &x, &y, &pos)) {
-		player_build_remove(player_num, BUILD_CITY_WALL, x, y,
-				    pos);
-		return TRUE;
-	}
-
-
 
 	if (!sm_recv_prefix(sm, "player %d ", &player_num))
 		return FALSE;
@@ -1190,7 +1174,7 @@ static gboolean mode_load_gameinfo(StateMachine * sm, gint event)
 		player_build_add(owner, BUILD_CITY, x, y, pos, FALSE);
 		return TRUE;
 	}
-	if (sm_recv(sm, "extension W%d,%d,%d,%d", &x, &y, &pos, &owner)) {
+	if (sm_recv(sm, "W%d,%d,%d,%d", &x, &y, &pos, &owner)) {
 		player_build_add(owner, BUILD_CITY_WALL, x, y, pos, FALSE);
 		return TRUE;
 	}
@@ -1241,13 +1225,6 @@ gboolean mode_build_response(StateMachine * sm, gint event)
 		waiting_for_network(TRUE);
 		break;
 	case SM_RECV:
-		if (sm_recv(sm, "extension built city_wall %d %d %d",
-			    &x, &y, &pos)) {
-			build_add(BUILD_CITY_WALL, x, y, pos, TRUE);
-			waiting_for_network(FALSE);
-			sm_pop(sm);
-			return TRUE;
-		}
 		if (sm_recv(sm, "built %B %d %d %d",
 			    &build_type, &x, &y, &pos)) {
 			build_add(build_type, x, y, pos, TRUE);
@@ -1876,13 +1853,6 @@ gboolean mode_undo_response(StateMachine * sm, gint event)
 		waiting_for_network(TRUE);
 		break;
 	case SM_RECV:
-		if (sm_recv(sm, "extension remove city_wall %d %d %d",
-			    &x, &y, &pos)) {
-			build_remove(BUILD_CITY_WALL, x, y, pos);
-			waiting_for_network(FALSE);
-			sm_pop(sm);
-			return TRUE;
-		}
 		if (sm_recv(sm, "remove %B %d %d %d",
 			    &build_type, &x, &y, &pos)) {
 			build_remove(build_type, x, y, pos);

@@ -2,7 +2,7 @@
  *   Go buy a copy.
  *
  * Copyright (C) 1999 Dave Cole
- * Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
+ * Copyright (C) 2003-2007 Bas Wijnen <shevek@fmf.nl>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +28,20 @@
 #include "quoteinfo.h"
 #include "state.h"
 
+/* Supported versions.  These are ordered, so that it is possible to see
+ * if versions are greater or smaller than each other.  The actual values do
+ * not matter and will change when older versions stop being supported.  No
+ * part of the program may depend on their exact value, all comparisons must
+ * always be done with the symbols.  */
+/* Names for the versions are defined in server/player.c, and must be
+ * changed when the enum changes.  */
+typedef enum {
+	V0_10, /**< Lowest supported version */
+	V0_11, /**< City walls */
+	FIRST_VERSION = V0_10,
+	LATEST_VERSION = V0_11
+} ClientVersionType;
+
 #define TERRAIN_DEFAULT	0
 #define TERRAIN_RANDOM	1
 
@@ -39,7 +53,7 @@ typedef struct {
 	gchar *location;	/* reverse lookup player hostname */
 	gint num;		/* number each player */
 	char *name;		/* give each player a name */
-	gchar *client_version;
+	ClientVersionType version;	/* version, so adapted messages can be sent */
 
 	GList *build_list;	/* list of building that can be undone */
 	gint prev_assets[NO_RESOURCE];	/* remember previous resources */
@@ -152,10 +166,22 @@ Player *player_new(Game * game, int fd, gchar * location);
 Player *player_by_num(Game * game, gint num);
 void player_set_name(Player * player, gchar * name);
 Player *player_none(Game * game);
-void player_broadcast(Player * player, BroadcastType type, const char *fmt,
-		      ...);
+void player_broadcast(Player * player, BroadcastType type,
+		      ClientVersionType first_supported_version,
+		      ClientVersionType last_supported_version,
+		      const char *fmt, ...);
 void player_broadcast_extension(Player * player, BroadcastType type,
+				ClientVersionType first_supported_version,
+				ClientVersionType last_supported_version,
 				const char *fmt, ...);
+void player_send(Player * player,
+		 ClientVersionType first_supported_version,
+		 ClientVersionType last_supported_version, const char *fmt,
+		 ...);
+void player_send_uncached(Player * player,
+			  ClientVersionType first_supported_version,
+			  ClientVersionType last_supported_version,
+			  const char *fmt, ...);
 void player_remove(Player * player);
 void player_free(Player * player);
 void player_archive(Player * player);
@@ -172,7 +198,7 @@ gboolean player_is_viewer(Game * game, gint player_num);
 /* pregame.c */
 gboolean mode_pre_game(Player * player, gint event);
 gboolean mode_setup(Player * player, gint event);
-gboolean send_gameinfo(Map * map, Hex * hex, StateMachine * sm);
+gboolean send_gameinfo_uncached(Map * map, Hex * hex, void *player);
 void next_setup_player(Game * game);
 
 /* resource.c */

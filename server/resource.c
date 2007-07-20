@@ -27,7 +27,6 @@
 gboolean resource_available(Player * player, gint * resources,
 			    gint * num_in_bank)
 {
-	StateMachine *sm = player->sm;
 	Game *game = player->game;
 	gint idx;
 
@@ -35,7 +34,8 @@ gboolean resource_available(Player * player, gint * resources,
 		*num_in_bank = 0;
 	for (idx = 0; idx < NO_RESOURCE; idx++) {
 		if (resources[idx] > game->bank_deck[idx]) {
-			sm_send(sm, "ERR no-cards %r\n", idx);
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
+				    "ERR no-cards %r\n", idx);
 			return FALSE;
 		}
 		if (num_in_bank != NULL)
@@ -91,7 +91,8 @@ void resource_end(Game * game, const gchar * action, gint mult)
 		if (send_message) {
 			for (idx = 0; idx < NO_RESOURCE; idx++)
 				resource[idx] *= mult;
-			player_broadcast(player, PB_ALL, "%s %R\n", action,
+			player_broadcast(player, PB_ALL, FIRST_VERSION,
+					 LATEST_VERSION, "%s %R\n", action,
 					 resource);
 		}
 	}

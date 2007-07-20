@@ -76,20 +76,22 @@ void develop_shuffle(Game * game)
 
 void develop_buy(Player * player)
 {
-	StateMachine *sm = player->sm;
 	Game *game = player->game;
 	DevelType card;
 
 	if (!game->rolled_dice) {
-		sm_send(sm, "ERR roll-dice\n");
+		player_send(player, FIRST_VERSION, LATEST_VERSION,
+			    "ERR roll-dice\n");
 		return;
 	}
 	if (!cost_can_afford(cost_development(), player->assets)) {
-		sm_send(sm, "ERR too-expensive\n");
+		player_send(player, FIRST_VERSION, LATEST_VERSION,
+			    "ERR too-expensive\n");
 		return;
 	}
 	if (game->develop_next >= game->num_develop) {
-		sm_send(sm, "ERR no-cards\n");
+		player_send(player, FIRST_VERSION, LATEST_VERSION,
+			    "ERR no-cards\n");
 		return;
 	}
 
@@ -98,12 +100,14 @@ void develop_buy(Player * player)
 	 */
 	player->build_list = buildrec_free(player->build_list);
 	resource_spend(player, cost_development());
-	player_broadcast(player, PB_OTHERS, "bought-develop\n");
+	player_broadcast(player, PB_OTHERS, FIRST_VERSION, LATEST_VERSION,
+			 "bought-develop\n");
 	game->bought_develop = TRUE;
 
 	card = game->develop_deck[game->develop_next++];
 	deck_card_add(player->devel, card, game->curr_turn);
-	sm_send(sm, "bought-develop %d\n", card);
+	player_send(player, FIRST_VERSION, LATEST_VERSION,
+		    "bought-develop %d\n", card);
 }
 
 gboolean mode_road_building(Player * player, gint event)
@@ -136,7 +140,8 @@ gboolean mode_road_building(Player * player, gint event)
 		     || (player->num_bridges <
 			 game->params->num_build_type[BUILD_BRIDGE]
 			 && map_can_place_bridge(map, player->num)))) {
-			sm_send(sm, "ERR expected-build\n");
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
+				    "ERR expected-build\n");
 			return TRUE;
 		}
 		/* We have the right number, now make sure that all
@@ -144,7 +149,8 @@ gboolean mode_road_building(Player * player, gint event)
 		 */
 		if (!buildrec_is_valid
 		    (player->build_list, map, player->num)) {
-			sm_send(sm, "ERR unconnected\n");
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
+				    "ERR unconnected\n");
 			return TRUE;
 		}
 
@@ -167,7 +173,7 @@ gboolean mode_road_building(Player * player, gint event)
 
 		/* Send ack to client, check for victory, and quit.
 		 */
-		sm_send(sm, "OK\n");
+		player_send(player, FIRST_VERSION, LATEST_VERSION, "OK\n");
 		check_victory(player);
 		sm_pop(sm);
 		return TRUE;
@@ -175,7 +181,8 @@ gboolean mode_road_building(Player * player, gint event)
 
 	if (sm_recv(sm, "build %B %d %d %d", &type, &x, &y, &pos)) {
 		if (buildrec_count_type(player->build_list, type) == 2) {
-			sm_send(sm, "ERR too-many\n");
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
+				    "ERR too-many\n");
 			return TRUE;
 		}
 
@@ -183,7 +190,8 @@ gboolean mode_road_building(Player * player, gint event)
 		 * correctly placed
 		 */
 		if (!map_road_vacant(map, x, y, pos)) {
-			sm_send(sm, "ERR bad-pos\n");
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
+				    "ERR bad-pos\n");
 			return TRUE;
 		}
 		switch (type) {
@@ -191,22 +199,26 @@ gboolean mode_road_building(Player * player, gint event)
 			if (map_road_connect_ok
 			    (map, player->num, x, y, pos))
 				break;
-			sm_send(sm, "ERR bad-pos\n");
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
+				    "ERR bad-pos\n");
 			return TRUE;
 		case BUILD_SHIP:
 			if (map_ship_connect_ok
 			    (map, player->num, x, y, pos))
 				break;
-			sm_send(sm, "ERR bad-pos\n");
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
+				    "ERR bad-pos\n");
 			return TRUE;
 		case BUILD_BRIDGE:
 			if (map_bridge_connect_ok
 			    (map, player->num, x, y, pos))
 				break;
-			sm_send(sm, "ERR bad-pos\n");
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
+				    "ERR bad-pos\n");
 			return TRUE;
 		default:
-			sm_send(sm, "ERR expected-road\n");
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
+				    "ERR expected-road\n");
 			return TRUE;
 		}
 
@@ -216,7 +228,8 @@ gboolean mode_road_building(Player * player, gint event)
 
 	if (sm_recv(sm, "undo")) {
 		if (!perform_undo(player))
-			sm_send(sm, "ERR bad-pos\n");
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
+				    "ERR bad-pos\n");
 		return TRUE;
 	}
 
@@ -244,12 +257,14 @@ gboolean mode_plenty_resources(Player * player, gint event)
 		num += plenty[idx];
 
 	if (!resource_available(player, plenty, &num_in_bank)) {
-		sm_send(sm, "ERR plenty-no-resources\n");
+		player_send(player, FIRST_VERSION, LATEST_VERSION,
+			    "ERR plenty-no-resources\n");
 		return TRUE;
 	}
 	if ((num_in_bank < 2 && num != num_in_bank)
 	    || (num_in_bank >= 2 && num != 2)) {
-		sm_send(sm, "ERR wrong-plenty\n");
+		player_send(player, FIRST_VERSION, LATEST_VERSION,
+			    "ERR wrong-plenty\n");
 		return TRUE;
 	}
 
@@ -258,7 +273,7 @@ gboolean mode_plenty_resources(Player * player, gint event)
 	resource_start(game);
 	cost_refund(plenty, player->assets);
 	resource_end(game, "plenty", 1);
-	sm_send(sm, "OK\n");
+	player_send(player, FIRST_VERSION, LATEST_VERSION, "OK\n");
 	sm_pop(sm);
 	return TRUE;
 }
@@ -279,7 +294,7 @@ gboolean mode_monopoly(Player * player, gint event)
 	if (!sm_recv(sm, "monopoly %r", &type))
 		return FALSE;
 
-	sm_send(sm, "OK\n");
+	player_send(player, FIRST_VERSION, LATEST_VERSION, "OK\n");
 	/* Now inform the various parties of the monopoly.
 	 */
 	for (list = player_first_real(game);
@@ -289,7 +304,8 @@ gboolean mode_monopoly(Player * player, gint event)
 		if (scan == player)
 			continue;
 
-		player_broadcast(player, PB_ALL,
+		player_broadcast(player, PB_ALL, FIRST_VERSION,
+				 LATEST_VERSION,
 				 "monopoly %d %r from %d\n",
 				 scan->assets[type], type, scan->num);
 
@@ -332,8 +348,8 @@ static void check_largest_army(Game * game)
 	 */
 	if (game->largest_army == NULL) {
 		game->largest_army = new_largest;
-		player_broadcast(game->largest_army, PB_ALL,
-				 "largest-army\n");
+		player_broadcast(game->largest_army, PB_ALL, FIRST_VERSION,
+				 LATEST_VERSION, "largest-army\n");
 		return;
 	}
 	/* Did largest army owner change?
@@ -342,8 +358,8 @@ static void check_largest_army(Game * game)
 	    && new_largest->num_soldiers >
 	    game->largest_army->num_soldiers) {
 		game->largest_army = new_largest;
-		player_broadcast(game->largest_army, PB_ALL,
-				 "largest-army\n");
+		player_broadcast(game->largest_army, PB_ALL, FIRST_VERSION,
+				 LATEST_VERSION, "largest-army\n");
 	}
 }
 
@@ -354,14 +370,16 @@ void develop_play(Player * player, gint idx)
 	DevelType card;
 
 	if (idx >= player->devel->num_cards) {
-		sm_send(sm, "ERR no-card\n");
+		player_send(player, FIRST_VERSION, LATEST_VERSION,
+			    "ERR no-card\n");
 		return;
 	}
 
 	card = player->devel->cards[idx].type;
 	if (!deck_card_play(player->devel,
 			    game->played_develop, idx, game->curr_turn)) {
-		sm_send(sm, "ERR wrong-time\n");
+		player_send(player, FIRST_VERSION, LATEST_VERSION,
+			    "ERR wrong-time\n");
 		return;
 	}
 
@@ -372,8 +390,8 @@ void develop_play(Player * player, gint idx)
 	 */
 	player->build_list = buildrec_free(player->build_list);
 
-	player_broadcast(player, PB_RESPOND, "play-develop %d %D\n", idx,
-			 card);
+	player_broadcast(player, PB_RESPOND, FIRST_VERSION, LATEST_VERSION,
+			 "play-develop %d %D\n", idx, card);
 
 	switch (card) {
 	case DEVEL_ROAD_BUILDING:
@@ -394,7 +412,8 @@ void develop_play(Player * player, gint idx)
 		 * resources or two of the same resource. They may
 		 * immediately be used to build.
 		 */
-		sm_send(sm, "plenty %R\n", game->bank_deck);
+		player_send(player, FIRST_VERSION, LATEST_VERSION,
+			    "plenty %R\n", game->bank_deck);
 		sm_push(sm, (StateFunc) mode_plenty_resources);
 		break;
 	case DEVEL_CHAPEL:
