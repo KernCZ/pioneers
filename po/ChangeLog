@@ -168,7 +168,7 @@
 2006-01-25 Roland Clobus <rclobus@bigfoot.com>
 	* nl.po: Added the new strings
 	* de.po, fr.po, it.po: Removed some obviously wrong translated fuzzy
-        entries
+	entries
 	* Updated line numbers to match 0.9.49
 
 2006-01-12 Daniel Nylander <po@danielnylander.se>

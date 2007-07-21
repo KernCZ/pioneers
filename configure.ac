@@ -347,19 +347,19 @@ TYPE_SOCKLEN_T
 
 # Defines, accessible for all source files
 AC_DEFINE_UNQUOTED(PROTOCOL_VERSION, "$PROTOCOL_VERSION",
-                   [Protocol version used by the program])
+		   [Protocol version used by the program])
 AC_DEFINE_UNQUOTED(META_PROTOCOL_VERSION, "$META_PROTOCOL_VERSION",
-                   [Protocol version used by the meta server])
+		   [Protocol version used by the meta server])
 AC_DEFINE_UNQUOTED(PIONEERS_DEFAULT_GAME_PORT, "$PIONEERS_DEFAULT_GAME_PORT",
-	[The default port for a new game])
+		   [The default port for a new game])
 AC_DEFINE_UNQUOTED(PIONEERS_DEFAULT_GAME_HOST, "$PIONEERS_DEFAULT_GAME_HOST",
-	[The default host for a new game])
+		   [The default host for a new game])
 AC_DEFINE_UNQUOTED(PIONEERS_DEFAULT_ADMIN_PORT, "$PIONEERS_DEFAULT_ADMIN_PORT",
-	[The default port for the admin interface])
+		   [The default port for the admin interface])
 AC_DEFINE_UNQUOTED(PIONEERS_DEFAULT_META_PORT, "$PIONEERS_DEFAULT_META_PORT",
-	[The port for the meta server])
+		   [The port for the meta server])
 AC_DEFINE_UNQUOTED(PIONEERS_DEFAULT_META_SERVER, 
-	"$PIONEERS_DEFAULT_META_SERVER", [The default meta server])
+		   "$PIONEERS_DEFAULT_META_SERVER", [The default meta server])
 
 ## internationalization support
 ALL_LINGUAS="af de es fr hu it ja nl sv"

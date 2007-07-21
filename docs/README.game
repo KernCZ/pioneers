@@ -62,23 +62,23 @@ map                    M  Map (see *4)
     Per tile:
     - = void (nothing)
     s = sea
-        If the next letter is a R, the pirate is here
-        The following letter (if present) specifies the port type
-        b = brick port
-        g = grain port
-        o = ore port
-        w = wool port
-        l = lumber port
-        m = gold port (???)
-        ? = 3:1 port
-        If a port is specified, the following number indicates the direction of
+	If the next letter is a R, the pirate is here
+	The following letter (if present) specifies the port type
+	b = brick port
+	g = grain port
+	o = ore port
+	w = wool port
+	l = lumber port
+	m = gold port (???)
+	? = 3:1 port
+	If a port is specified, the following number indicates the direction of
 	the port:
-          0 = East
-          1 = North east
-          2 = North west
-          3 = West
-          4 = South west
-          5 = South east
+	  0 = East
+	  1 = North east
+	  2 = North west
+	  3 = West
+	  4 = South west
+	  5 = South east
     t = tree (forest, brick)
     p = pasture
     f = field

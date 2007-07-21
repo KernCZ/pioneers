@@ -232,7 +232,7 @@ static void quote_selected_cb(G_GNUC_UNUSED QuoteView * quoteview,
 			      G_GNUC_UNUSED gpointer user_data)
 {
 	/** @todo RC 2006-05-27 Update the resource tables,
-         *  to show the effect of the selected quote
+	 *  to show the effect of the selected quote
 	 */
 	frontend_gui_update();
 }

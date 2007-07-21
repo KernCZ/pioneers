@@ -1,3 +1,9 @@
+
+2007-07-21  Bas Wijnen <shevek@fmf.nl>
+	* ChangeLog, docs/README.game, common/gtk/gtkbugs.c, common/state.c,
+	configure.ac, po/ChangeLog, client/gtk/quote.c,
+	client/help/C/custom.xsl: Clean up whitespace.
+
 2007-07-20  Roland Clobus<rclobus@bigfoot.com>
 	* common/state.c, common/state.h, configure.ac, server/gold.c,
 	server/resource.c, server/turn.c, server/player.c, server/develop.c,
@@ -5,7 +11,7 @@
 	server/pregame.c, server/buildutil.c, client/common/client.c:
 	Updating the protocol to 0.11. All messages sent by the server are
 	versioned. Based on a patch by Bas Wijnen <wijnen@debian.org>.
-﻿
+
 2007-07-19  Roland Clobus <rclobus@bigfoot.com>
 	* common/gtk/guimap.c: gmap->area was unref'd too often.
 	* client/callback.h, client/gtk/player.c: Cleanup of
@@ -86,7 +92,7 @@
 
 2007-04-09  Roland Clobus <rclobus@bigfoot.com>
 	* pioneers.nsi.in: Added a better check for the Gtk+ runtime, and
-        allow the installer to continue, even when no runtime is found.
+	allow the installer to continue, even when no runtime is found.
 
 2007-04-08  Roland Clobus <rclobus@bigfoot.com>
 	* configure.ac: Reorder the language codes (now alphabetical)
@@ -592,22 +598,22 @@
 2006-04-09  Roland Clobus <rclobus@bigfoot.com>
 	* client/help/C/pioneers.xml, client/help/C/images/discards.png,
 	client/help/C/images/place-robber.png, client/help/C/images/quote.png,
-        client/help/C/images/trade.png, client/help/C/images/messages.png,
+	client/help/C/images/trade.png, client/help/C/images/messages.png,
 	client/help/C/images/plenty-dialog.png,
 	client/help/C/images/monopoly-dialog.png,
 	client/help/C/images/steal-from.png, client/help/C/images/map.png,
-        client/help/C/images/chat.png,
-        client/help/C/images/player-summary.png,
-        client/help/C/images/identity.png, client/help/C/images/actions.png,
-        client/help/C/images/gameover-dialog.png,
-        client/help/C/images/join-private-dialog.png,
-        client/help/C/images/discard-dialog.png,
-        client/help/C/images/resources.png, client/help/C/images/client.png,
-        client/help/C/images/status.png,
-        client/help/C/images/servers-dialog.png,
-        client/help/C/images/connect-dialog.png,
-        client/help/C/images/develop-cards.png
-        client/help/C/images/legend-dialog.png: Updated screenshots for 0.9.61
+	client/help/C/images/chat.png,
+	client/help/C/images/player-summary.png,
+	client/help/C/images/identity.png, client/help/C/images/actions.png,
+	client/help/C/images/gameover-dialog.png,
+	client/help/C/images/join-private-dialog.png,
+	client/help/C/images/discard-dialog.png,
+	client/help/C/images/resources.png, client/help/C/images/client.png,
+	client/help/C/images/status.png,
+	client/help/C/images/servers-dialog.png,
+	client/help/C/images/connect-dialog.png,
+	client/help/C/images/develop-cards.png
+	client/help/C/images/legend-dialog.png: Updated screenshots for 0.9.61
 	* docs/pioneers.6, docs/pioneers-server-console.6,
 	docs/pioneers-server-gtk.6: Updated the man pages
 	* common/gtk/config-gnome.c: Fixed the regression of 0.9.23
@@ -1046,38 +1052,38 @@
 	  
 	* server/buildutil.c, server/develop.c, server/discard.c,
 	  server/glib-driver.c, server/glib-driver.h, server/gnocatan-server.h,
-          server/gold.c, server/player.c, server/pregame.c, server/resource.c,
-          server/robber.c, server/server.h, server/trade.c, server/turn.c,
+	  server/gold.c, server/player.c, server/pregame.c, server/resource.c,
+	  server/robber.c, server/server.h, server/trade.c, server/turn.c,
 	  common/buildrec.c, common/buildrec.h, common/cards.c, common/cards.h,
-          common/common_glib.c, common/common_glib.h, common/cost.c,
-          common/cost.h, common/driver.c, common/driver.h, common/game.c,
-          common/game.h, common/log.c, common/log.h, common/map.c,
-          common/map.h, common/map_query.c, common/quoteinfo.c,
-          common/quoteinfo.h, common/state.c,
-          common/state.h, common/gtk/colors.c, common/gtk/colors.h,
-          common/gtk/common_gtk.c, common/gtk/common_gtk.h,
-          common/gtk/config-gnome.c, common/gtk/config-gnome.h,
-          common/gtk/game-settings.c, common/gtk/game-settings.h,
-          common/gtk/guimap.c, common/gtk/guimap.h, common/gtk/polygon.c,
-          common/gtk/polygon.h, common/gtk/select-game.c,
-          common/gtk/select-game.h, common/gtk/theme.c, common/gtk/theme.h,
-          client/gtk/admin-gtk.c, client/gtk/callbacks.c, client/gtk/chat.c,
-          client/gtk/develop.c, client/gtk/discard.c, client/gtk/frontend.c,
-          client/gtk/frontend.h, client/gtk/gameover.c, client/gtk/gold.c,
-          client/gtk/gui.h, client/gtk/histogram.c, client/gtk/histogram.h,
-          client/gtk/identity.c, client/gtk/interface.c, client/gtk/legend.c,
-          client/gtk/monopoly.c, client/gtk/name.c, client/gtk/player.c,
-          client/gtk/plenty.c, client/gtk/quote.c, client/gtk/resource-table.c,
-          client/gtk/resource-table.h, client/gtk/resource.c,
-          client/gtk/settingscreen.c, client/gtk/state.c, client/gtk/trade.c,
-          client/callback.h, client/ai/ai.h, client/ai/greedy.c,
+	  common/common_glib.c, common/common_glib.h, common/cost.c,
+	  common/cost.h, common/driver.c, common/driver.h, common/game.c,
+	  common/game.h, common/log.c, common/log.h, common/map.c,
+	  common/map.h, common/map_query.c, common/quoteinfo.c,
+	  common/quoteinfo.h, common/state.c,
+	  common/state.h, common/gtk/colors.c, common/gtk/colors.h,
+	  common/gtk/common_gtk.c, common/gtk/common_gtk.h,
+	  common/gtk/config-gnome.c, common/gtk/config-gnome.h,
+	  common/gtk/game-settings.c, common/gtk/game-settings.h,
+	  common/gtk/guimap.c, common/gtk/guimap.h, common/gtk/polygon.c,
+	  common/gtk/polygon.h, common/gtk/select-game.c,
+	  common/gtk/select-game.h, common/gtk/theme.c, common/gtk/theme.h,
+	  client/gtk/admin-gtk.c, client/gtk/callbacks.c, client/gtk/chat.c,
+	  client/gtk/develop.c, client/gtk/discard.c, client/gtk/frontend.c,
+	  client/gtk/frontend.h, client/gtk/gameover.c, client/gtk/gold.c,
+	  client/gtk/gui.h, client/gtk/histogram.c, client/gtk/histogram.h,
+	  client/gtk/identity.c, client/gtk/interface.c, client/gtk/legend.c,
+	  client/gtk/monopoly.c, client/gtk/name.c, client/gtk/player.c,
+	  client/gtk/plenty.c, client/gtk/quote.c, client/gtk/resource-table.c,
+	  client/gtk/resource-table.h, client/gtk/resource.c,
+	  client/gtk/settingscreen.c, client/gtk/state.c, client/gtk/trade.c,
+	  client/callback.h, client/ai/ai.h, client/ai/greedy.c,
 	  client/common/build.c, client/common/callback.c,
 	  client/common/chat.c, client/common/client.c, client/common/client.h,
 	  client/common/develop.c, client/common/gnocatan.c,
 	  client/common/i18n.c, client/common/player.c,
 	  client/common/resource.c, client/common/robber.c,
 	  client/common/setup.c, client/common/stock.c, client/common/turn.c: 
-          fix uses of the name "Gnocatan" in the header comments
+	  fix uses of the name "Gnocatan" in the header comments
 
 2005-06-28  Roland Clobus <rclobus@bigfoot.com>
 	* client/common/develop.c, client/gtk/player.c,
@@ -3371,7 +3377,7 @@
 
 	* Added new games in server/, contributed by <piman@sacredchao.net>:
 	  canyon.game conquest.game  pond.game square.game star.game x.game
-          And one extended by me to have ports:
+	  And one extended by me to have ports:
 	  conquest+ports.game 
 	
 2002-03-10  Steve Langasek <vorlon@dodds.net>

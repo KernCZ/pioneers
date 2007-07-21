@@ -427,7 +427,7 @@ void sm_write(StateMachine * sm, const gchar * str)
 	if (sm->use_cache) {
 		/* Protect against strange/slow connects */
 		if (g_list_length(sm->cache) > 1000) {
-			net_write(sm->ses, "ERR connection too slow");
+			net_write(sm->ses, "ERR connection too slow\n");
 			net_close_when_flushed(sm->ses);
 		} else {
 			sm->cache =

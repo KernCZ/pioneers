@@ -70,7 +70,7 @@ void widget_set_sensitive(GtkWidget * widget, gboolean sensitive)
 	 *  and in again. This bug is registered in Bugzilla as a Gtk bug. The
 	 *  workaround tests if the mouse is inside the currently sensitivized
 	 *  button, and if yes call button_enter()
-         */
+	 */
 	if (!GTK_IS_BIN(widget))
 		return;
 
