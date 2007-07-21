@@ -37,7 +37,7 @@
  * changed when the enum changes.  */
 typedef enum {
 	V0_10, /**< Lowest supported version */
-	V0_11, /**< City walls, player style */
+	V0_11, /**< City walls, player style, robber undo */
 	FIRST_VERSION = V0_10,
 	LATEST_VERSION = V0_11
 } ClientVersionType;

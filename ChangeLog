@@ -1,5 +1,8 @@
 
 2007-07-21  Roland Clobus <rclobus@bigfoot.com>
+	* server/server.h: Added robber undo in 0.11 change list.
+
+2007-07-21  Roland Clobus <rclobus@bigfoot.com>
 	* common/gtk/player-icon.c, common/gtk/player-icon.h,
 	common/gtk/Makefile.am, server/player.c, server/server.h,
 	server/pregame.c, client/callback.h, client/gtk/callbacks.c,
