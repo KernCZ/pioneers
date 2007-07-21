@@ -318,6 +318,10 @@ static void dummy_player_name(G_GNUC_UNUSED gint player_num,
 			      G_GNUC_UNUSED const gchar * name)
 {;
 }
+static void dummy_player_style(G_GNUC_UNUSED gint player_num,
+			       G_GNUC_UNUSED const gchar * style)
+{;
+}
 static void dummy_player_quit(G_GNUC_UNUSED gint player_num)
 {;
 }
@@ -400,6 +404,7 @@ void client_init(void)
 	callbacks.new_points = &dummy_new_points;
 	callbacks.viewer_name = &dummy_viewer_name;
 	callbacks.player_name = &dummy_player_name;
+	callbacks.player_style = &dummy_player_style;
 	callbacks.player_quit = &dummy_player_quit;
 	callbacks.viewer_quit = &dummy_viewer_quit;
 	callbacks.incoming_chat = &dummy_incoming_chat;
@@ -535,6 +540,11 @@ static gboolean check_chat_or_name(StateMachine * sm)
 	}
 	if (sm_recv(sm, "player %d is %S", &player_num, &str)) {
 		player_change_name(player_num, str);
+		g_free(str);
+		return TRUE;
+	}
+	if (sm_recv(sm, "player %d style %S", &player_num, &str)) {
+		player_change_style(player_num, str);
 		g_free(str);
 		return TRUE;
 	}
@@ -869,6 +879,7 @@ gboolean mode_start(StateMachine * sm, gint event)
 		g_free(version);
 		player_set_my_num(player_num);
 		player_set_total_num(total_num);
+		sm_send(sm, "style %s\n", requested_style);
 		sm_send(sm, "players\n");
 		sm_goto(sm, mode_players);
 

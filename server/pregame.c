@@ -366,6 +366,9 @@ static void send_player_list(Player * player)
 		player_send_uncached(player, FIRST_VERSION, LATEST_VERSION,
 				     "player %d is %s\n", scan->num,
 				     scan->name);
+		player_send_uncached(player, V0_11, LATEST_VERSION,
+				     "player %d style %s\n", scan->num,
+				     scan->style);
 		if (scan->disconnected)
 			player_send_uncached(player, FIRST_VERSION,
 					     LATEST_VERSION,
@@ -486,6 +489,7 @@ gboolean mode_pre_game(Player * player, gint event)
 	gint largestarmypnum = -1;
 	static gboolean recover_from_plenty = FALSE;
 	guint stack_offset;
+	gchar *player_style;
 
 	if (game->longest_road) {
 		longestroadpnum = game->longest_road->num;
@@ -516,6 +520,18 @@ gboolean mode_pre_game(Player * player, gint event)
 		break;
 
 	case SM_RECV:
+		if (sm_recv(sm, "style %S", &player_style)) {
+			if (player->style)
+				g_free(player->style);
+			player->style = player_style;
+			player_broadcast(player, PB_OTHERS, V0_11,
+					 LATEST_VERSION, "style %s\n",
+					 player_style);
+			player_send_uncached(player, V0_11, LATEST_VERSION,
+					     "player %d style %s\n",
+					     player->num, player_style);
+			return TRUE;
+		}
 		if (sm_recv(sm, "players")) {
 			send_player_list(player);
 			return TRUE;

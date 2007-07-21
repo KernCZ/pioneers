@@ -106,6 +106,7 @@ void frontend_new_statistics(gint player_num, StatisticType type,
 void frontend_new_points(gint player_num, Points * points, gboolean added);
 void frontend_viewer_name(gint viewer_num, const gchar * name);
 void frontend_player_name(gint player_num, const gchar * name);
+void frontend_player_style(gint player_num, const gchar * style);
 void frontend_player_quit(gint player_num);
 void frontend_viewer_quit(gint player_num);
 void frontend_disconnect(void);
@@ -155,10 +156,12 @@ const gchar *connect_get_server(void);
 const gchar *connect_get_port(void);
 const gchar *connect_get_name(void);
 gboolean connect_get_viewer(void);
+const gchar *connect_get_style(void);
 void connect_set_server(const gchar * server);
 void connect_set_port(const gchar * port);
 void connect_set_name(const gchar * name);
 void connect_set_viewer(gboolean viewer);
+void connect_set_style(const gchar * style);
 void connect_set_meta_server(const gchar * meta_server);
 void connect_create_dlg(void);
 
@@ -280,6 +283,8 @@ void chat_set_grab_focus_on_update(gboolean grab);
 void chat_set_focus(void);
 /** A player/viewer has changed his name */
 void chat_player_name(gint player_num, const gchar * name);
+/** A player/viewer has changed his style */
+void chat_player_style(gint player_num);
 /** A player has quit */
 void chat_player_quit(gint player_num);
 /** A viewer has quit */

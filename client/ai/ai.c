@@ -186,9 +186,14 @@ void ai_panic(const char *message)
 
 static void ai_offline(void)
 {
+	gchar *style;
+
 	callbacks.offline = callbacks.quit;
+	style =
+	    g_strdup_printf("ai %s", algorithms[active_algorithm].name);
 	cb_connect(server, port, name,
-		   !algorithms[active_algorithm].request_player);
+		   !algorithms[active_algorithm].request_player, style);
+	g_free(style);
 	g_free(name);
 }
 

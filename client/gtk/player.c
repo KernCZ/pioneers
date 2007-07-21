@@ -21,11 +21,13 @@
  */
 
 #include "config.h"
+#include <stdlib.h>
 #include "colors.h"
 #include "frontend.h"
 #include "log.h"
 #include "gtkbugs.h"
 #include "common_gtk.h"
+#include "player-icon.h"
 
 static void player_show_connected_at_iter(gint player_num,
 					  gboolean connected,
@@ -102,6 +104,7 @@ static const gint turn_area_icon_width = 30;
 void player_init(void)
 {
 	colors_init();
+	playericon_init();
 }
 
 GdkColor *player_color(gint player_num)
@@ -121,39 +124,10 @@ GdkColor *player_or_viewer_color(gint player_num)
 GdkPixbuf *player_create_icon(GtkWidget * widget, gint player_num,
 			      gboolean connected)
 {
-	int width, height;
-	GdkPixbuf *temp;
-	GdkPixmap *pixmap;
-	GdkGC *gc;
-	Player *player;
-
-	gtk_icon_size_lookup(GTK_ICON_SIZE_MENU, &width, &height);
-
-	pixmap =
-	    gdk_pixmap_new(widget->window, width, height,
-			   gdk_visual_get_system()->depth);
-
-	gc = gdk_gc_new(pixmap);
-	gdk_gc_set_foreground(gc, &black);
-	gdk_draw_rectangle(pixmap, gc, TRUE, 0, 0, width, height);
-
-	gdk_gc_set_foreground(gc, player_color(player_num));
-	gdk_draw_rectangle(pixmap, gc, TRUE, 1, 1, width - 2, height - 2);
-
-	if (!connected) {
-		gdk_gc_set_foreground(gc, &black);
-		gdk_draw_rectangle(pixmap, gc, FALSE,
-				   3, 3, width - 7, height - 7);
-		gdk_draw_rectangle(pixmap, gc, FALSE,
-				   6, 6, width - 13, height - 13);
-	}
-
-	temp = gdk_pixbuf_get_from_drawable(NULL, pixmap, NULL,
-					    0, 0, 0, 0, -1, -1);
-
-	g_object_unref(gc);
-	g_object_unref(pixmap);
-	return temp;
+	return playericon_create_icon(widget, player_get_style(player_num),
+				      player_or_viewer_color(player_num),
+				      player_is_viewer(player_num),
+				      connected, FALSE);
 }
 
 /** Locate a line suitable for the statistic */
@@ -463,6 +437,16 @@ void frontend_player_name(gint player_num, const gchar * name)
 		gdk_beep();
 
 	chat_player_name(player_num, name);
+}
+
+void frontend_player_style(gint player_num,
+			   G_GNUC_UNUSED const gchar * style)
+{
+	GtkTreeIter iter;
+
+	player_create_find_player(player_num, &iter);
+	player_show_connected_at_iter(player_num, TRUE, &iter);
+	chat_player_style(player_num);
 }
 
 void frontend_viewer_name(gint viewer_num, const gchar * name)

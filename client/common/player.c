@@ -44,13 +44,21 @@ void player_reset(void)
 	gint i, idx;
 
 	/* remove all viewers */
-	while (viewers != NULL)
-		viewers = g_list_remove(viewers, viewers->data);
+	while (viewers != NULL) {
+		Viewer *viewer = viewers->data;
+		g_free(viewer->name);
+		g_free(viewer->style);
+		viewers = g_list_remove(viewers, viewer);
+	}
 	/* free player's memory */
 	for (i = 0; i < MAX_PLAYERS; ++i) {
 		if (players[i].name != NULL) {
 			g_free(players[i].name);
 			players[i].name = NULL;
+		}
+		if (players[i].style != NULL) {
+			g_free(players[i].style);
+			players[i].style = NULL;
 		}
 		while (players[i].points != NULL) {
 			Points *points = players[i].points->data;
@@ -195,6 +203,7 @@ void player_change_name(gint player_num, const gchar * name)
 			viewers = g_list_prepend(viewers, viewer);
 			viewer->num = player_num;
 			viewer->name = NULL;
+			viewer->style = g_strdup("square");
 			old_name = NULL;
 		} else {
 			old_name = viewer->name;
@@ -226,6 +235,12 @@ void player_change_name(gint player_num, const gchar * name)
 	callbacks.player_name(player_num, name);
 }
 
+void player_change_style(gint player_num, const gchar * style)
+{
+	player_set_style(player_num, style);
+	callbacks.player_style(player_num, style);
+}
+
 void player_has_quit(gint player_num)
 {
 	Player *player;
@@ -243,6 +258,7 @@ void player_has_quit(gint player_num)
 		callbacks.viewer_quit(player_num);
 		viewer = viewer_get(player_num);
 		g_free(viewer->name);
+		g_free(viewer->style);
 		viewers = g_list_remove(viewers, viewer);
 		return;
 	}
@@ -735,6 +751,34 @@ void player_take_point(gint player_num, gint id, gint old_owner)
 		    point->name, player->name);
 }
 
+void player_set_style(gint player_num, const gchar * style)
+{
+	if (player_num >= num_total_players) {
+		Viewer *viewer = viewer_get(player_num);
+		if (viewer->style)
+			g_free(viewer->style);
+		viewer->style = g_strdup(style);
+	} else if (player_num >= 0) {
+		Player *player = player_get(player_num);
+		if (player->style)
+			g_free(player->style);
+		player->style = g_strdup(style);
+	}
+}
+
+const gchar *player_get_style(gint player_num)
+{
+	const gchar *style = NULL;
+	if (player_num >= num_total_players) {
+		Viewer *viewer = viewer_get(player_num);
+		style = viewer->style;
+	} else if (player_num >= 0) {
+		Player *player = player_get(player_num);
+		style = player->style;
+	}
+	return style == NULL ? "square" : style;
+}
+
 gint current_player(void)
 {
 	return turn_player;
@@ -748,6 +792,11 @@ const gchar *my_player_name(void)
 gboolean my_player_viewer(void)
 {
 	return player_is_viewer(my_player_num());
+}
+
+const gchar *my_player_style(void)
+{
+	return player_get_style(my_player_num());
 }
 
 gint find_player_by_name(const gchar * name)

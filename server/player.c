@@ -95,6 +95,8 @@ static gboolean mode_global(Player * player, gint event)
 	case SM_FREE:
 		if (player->name != NULL)
 			g_free(player->name);
+		if (player->style != NULL)
+			g_free(player->style);
 		if (player->location != NULL)
 			g_free(player->location);
 		if (player->devel != NULL)
@@ -145,6 +147,15 @@ static gboolean mode_global(Player * player, gint event)
 			else
 				player_set_name(player, text);
 			g_free(text);
+			return TRUE;
+		}
+		if (sm_recv(sm, "style %S", &text)) {
+			if (player->style)
+				g_free(player->style);
+			player->style = text;
+			player_broadcast(player, PB_ALL, V0_11,
+					 LATEST_VERSION, "style %s\n",
+					 text);
 			return TRUE;
 		}
 		break;
@@ -300,6 +311,7 @@ Player *player_new(Game * game, int fd, gchar * location)
 	player->islands_discovered = 0;
 	player->disconnected = FALSE;
 	player->name = g_strdup(name);
+	player->style = g_strdup("square");
 	player->special_points = NULL;
 	player->special_points_next_id = 0;
 
@@ -332,10 +344,12 @@ static void player_set_name_real(Player * player, gchar * name,
 				 gboolean public)
 {
 	Game *game = player->game;
+	Player *player_temp;
 
 	g_assert(name[0] != 0);
 
-	if (player_by_name(game, name) != NULL) {
+	if (((player_temp = player_by_name(game, name)) != NULL) &&
+	    (player_temp != player)) {
 		/* make it a note, not an error, so nothing bad happens
 		 * (on error the AI would disconnect) */
 		player_send(player, FIRST_VERSION, LATEST_VERSION,

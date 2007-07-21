@@ -32,6 +32,7 @@ struct callbacks callbacks;
 /* these variables must be remembered between connect and handshake */
 gchar *requested_name = NULL;
 gboolean requested_viewer;
+gchar *requested_style = NULL;
 
 /* current callback mode */
 enum callback_mode callback_mode;
@@ -40,7 +41,7 @@ enum callback_mode callback_mode;
 gboolean color_chat_enabled;
 
 void cb_connect(const gchar * server, const gchar * port,
-		const gchar * name, gboolean viewer)
+		const gchar * name, gboolean viewer, const gchar * style)
 {
 	/* connect to a server */
 	g_assert(callback_mode == MODE_INIT);
@@ -48,6 +49,9 @@ void cb_connect(const gchar * server, const gchar * port,
 		g_free(requested_name);
 	requested_name = g_strdup(name);
 	requested_viewer = viewer;
+	if (requested_style)
+		g_free(requested_style);
+	requested_style = g_strdup(style);
 	if (sm_connect(SM(), server, port)) {
 		if (sm_is_connected(SM())) {
 			sm_goto(SM(), mode_start);
@@ -297,6 +301,13 @@ void cb_name_change(const gchar * name)
 	/* change your name */
 	g_assert(callback_mode != MODE_INIT);
 	sm_send(SM(), "name %s\n", name);
+}
+
+void cb_style_change(const gchar * style)
+{
+	/* change your style */
+	g_assert(callback_mode != MODE_INIT);
+	sm_send(SM(), "style %s\n", style);
 }
 
 void cb_discard(const gint * resources)

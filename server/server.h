@@ -37,7 +37,7 @@
  * changed when the enum changes.  */
 typedef enum {
 	V0_10, /**< Lowest supported version */
-	V0_11, /**< City walls */
+	V0_11, /**< City walls, player style */
 	FIRST_VERSION = V0_10,
 	LATEST_VERSION = V0_11
 } ClientVersionType;
@@ -53,6 +53,7 @@ typedef struct {
 	gchar *location;	/* reverse lookup player hostname */
 	gint num;		/* number each player */
 	char *name;		/* give each player a name */
+	gchar *style;		/* description of the player icon */
 	ClientVersionType version;	/* version, so adapted messages can be sent */
 
 	GList *build_list;	/* list of building that can be undone */

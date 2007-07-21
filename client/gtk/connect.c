@@ -41,6 +41,7 @@ static gboolean connect_viewer;	/* Prefer to be a viewer */
 static gboolean connect_viewer_allowed;	/* Viewer allowed */
 static gchar *connect_server;	/* Name of the server */
 static gchar *connect_port;	/* Port of the server */
+static gchar *connect_style = NULL;	/* Style of the player */
 
 static GtkWidget *connect_dlg;	/* Dialog for starting a new game */
 static GtkWidget *name_entry;	/* Name of the player */
@@ -227,6 +228,17 @@ const gchar *connect_get_port(void)
 void connect_set_port(const gchar * port)
 {
 	connect_set_field(&connect_port, port);
+}
+
+const gchar *connect_get_style(void)
+{
+	return connect_style;
+}
+
+void connect_set_style(const gchar * style)
+{
+	g_free(connect_style);
+	connect_style = g_strdup(style);
 }
 
 static void connect_close_all(gboolean user_pressed_ok,

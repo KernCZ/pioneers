@@ -47,8 +47,6 @@ static GtkTreeIter quote_found_iter;
 /** Has the quote been found ? */
 static gboolean quote_found_flag;
 
-/** Icons for each player */
-static GdkPixbuf *player_pixbuf[MAX_PLAYERS];
 /** Icon for rejected trade */
 static GdkPixbuf *cross_pixbuf;
 /** Icon for the maritime trade */
@@ -260,34 +258,24 @@ static void load_pixmaps(QuoteView * qv)
 	int width, height;
 	GdkPixmap *pixmap;
 	GdkGC *gc;
-	gint i;
 
 	if (init)
 		return;
 
 	gtk_icon_size_lookup(GTK_ICON_SIZE_MENU, &width, &height);
-
 	pixmap =
 	    gdk_pixmap_new(qv->quotes->window, width, height,
 			   gtk_widget_get_visual(qv->quotes)->depth);
 
 	gc = gdk_gc_new(pixmap);
-	gdk_gc_set_foreground(gc, &black);
-	gdk_draw_rectangle(pixmap, gc, TRUE, 0, 0, width, height);
-	for (i = 0; i < MAX_PLAYERS; ++i) {
-		gdk_gc_set_foreground(gc, player_color(i));
-		gdk_draw_rectangle(pixmap, gc, TRUE, 1, 1, width - 2,
-				   height - 2);
-		player_pixbuf[i] =
-		    gdk_pixbuf_get_from_drawable(NULL, pixmap, NULL, 0, 0,
-						 0, 0, -1, -1);
-	}
 	gdk_gc_set_fill(gc, GDK_TILED);
 	gdk_gc_set_tile(gc, guimap_terrain(SEA_TERRAIN));
+	gdk_gc_set_foreground(gc, &black);
 	gdk_draw_rectangle(pixmap, gc, TRUE, 0, 0, width, height);
 	maritime_pixbuf =
 	    gdk_pixbuf_get_from_drawable(NULL, pixmap, NULL, 0, 0, 0, 0,
 					 -1, -1);
+	g_object_unref(pixmap);
 	g_object_unref(gc);
 
 	cross_pixbuf =
@@ -403,6 +391,7 @@ void quote_view_reject(QuoteView * qv, gint player_num)
 	QuoteInfo *quote;
 	GtkTreeIter iter;
 	enum TFindResult found;
+	GdkPixbuf *pixbuf;
 
 	if (qv->quote_list == NULL)
 		return;
@@ -435,14 +424,15 @@ void quote_view_reject(QuoteView * qv, gint player_num)
 		gtk_list_store_insert_before(qv->store, &iter, &iter);
 	else
 		gtk_list_store_append(qv->store, &iter);
-	gtk_list_store_set(qv->store, &iter,
-			   TRADE_COLUMN_PLAYER, player_pixbuf[player_num],
+	pixbuf = player_create_icon(GTK_WIDGET(qv), player_num, TRUE);
+	gtk_list_store_set(qv->store, &iter, TRADE_COLUMN_PLAYER, pixbuf,
 			   TRADE_COLUMN_POSSIBLE, cross_pixbuf,
 			   /* Trade: a player has rejected trade */
 			   TRADE_COLUMN_DESCRIPTION, _("Rejected trade"),
 			   TRADE_COLUMN_QUOTE, NULL,
 			   TRADE_COLUMN_REJECT, player,
 			   TRADE_COLUMN_PLAYER_NUM, player_num, -1);
+	g_object_unref(pixbuf);
 }
 
 /** How many of this resource do we need for a maritime trade?  If the trade is
@@ -560,6 +550,7 @@ void quote_view_add_quote(QuoteView * qv, gint player_num,
 	enum TFindResult found;
 	QuoteInfo *quote;
 	gchar quote_desc[128];
+	GdkPixbuf *pixbuf;
 
 	if (qv->quote_list == NULL)
 		quotelist_new(&qv->quote_list);
@@ -582,14 +573,15 @@ void quote_view_add_quote(QuoteView * qv, gint player_num,
 		gtk_list_store_insert_before(qv->store, &iter, &iter);
 	else
 		gtk_list_store_append(qv->store, &iter);
-	gtk_list_store_set(qv->store, &iter,
-			   TRADE_COLUMN_PLAYER, player_pixbuf[player_num],
+	pixbuf = player_create_icon(GTK_WIDGET(qv), player_num, TRUE);
+	gtk_list_store_set(qv->store, &iter, TRADE_COLUMN_PLAYER, pixbuf,
 			   TRADE_COLUMN_POSSIBLE,
-			   qv->
-			   check_quote_func(quote) ? qv->true_pixbuf :
-			   qv->false_pixbuf, TRADE_COLUMN_DESCRIPTION,
-			   quote_desc, TRADE_COLUMN_QUOTE, quote,
+			   qv->check_quote_func(quote) ? qv->
+			   true_pixbuf : qv->false_pixbuf,
+			   TRADE_COLUMN_DESCRIPTION, quote_desc,
+			   TRADE_COLUMN_QUOTE, quote,
 			   TRADE_COLUMN_PLAYER_NUM, player_num, -1);
+	g_object_unref(pixbuf);
 }
 
 void quote_view_remove_quote(QuoteView * qv, gint partner_num,

@@ -163,6 +163,7 @@ void frontend_set_callbacks(void)
 	callbacks.new_points = &frontend_new_points;
 	callbacks.viewer_name = &frontend_viewer_name;
 	callbacks.player_name = &frontend_player_name;
+	callbacks.player_style = &frontend_player_style;
 	callbacks.player_quit = &frontend_player_quit;
 	callbacks.viewer_quit = &frontend_viewer_quit;
 	callbacks.incoming_chat = &chat_parser;

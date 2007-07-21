@@ -54,12 +54,14 @@ typedef enum {
 
 typedef struct {
 	gchar *name;
+	gchar *style;
 	gint statistics[STAT_DEVELOPMENT + 1];
 	GList *points;		/* bonus points from special actions */
 } Player;
 
 typedef struct {
 	gchar *name;
+	gchar *style;
 	gint num;
 } Viewer;
 
@@ -246,6 +248,8 @@ struct callbacks {
 	void (*viewer_name) (gint viewer_num, const gchar * name);
 	/* a player changed his/her name */
 	void (*player_name) (gint player_num, const gchar * name);
+	/* a player changed his/her style */
+	void (*player_style) (gint player_num, const gchar * style);
 	/* a player left the game */
 	void (*player_quit) (gint player_num);
 	/* a viewer left the game */
@@ -290,7 +294,7 @@ extern gboolean color_chat_enabled;
  * changes to the board, etc.  The frontend should NEVER touch any game
  * structures directly (except for reading). */
 void cb_connect(const gchar * server, const gchar * port,
-		const gchar * name, gboolean viewer);
+		const gchar * name, gboolean viewer, const gchar * style);
 void cb_disconnect(void);
 void cb_roll(void);
 void cb_build_road(const Edge * edge);
@@ -318,6 +322,7 @@ void cb_delete_quote(gint num);
 void cb_end_quote(void);
 void cb_chat(const gchar * text);
 void cb_name_change(const gchar * name);
+void cb_style_change(const gchar * name);
 void cb_discard(const gint * resources);
 void cb_choose_gold(const gint * resources);
 
@@ -336,6 +341,9 @@ gint player_get_score(gint player_num);
 gint my_player_num(void);
 const gchar *my_player_name(void);
 gboolean my_player_viewer(void);
+const gchar *my_player_style(void);
+const gchar *player_get_style(gint player_num);
+void player_set_style(gint player_num, const gchar * style);
 gint num_players(void);
 gint current_player(void);
 /** Find the player or viewer with name

@@ -150,21 +150,33 @@ void chat_player_name(gint player_num, const gchar * name)
 		break;
 	};
 
-	if (player_is_viewer(player_num)) {
-		pixbuf = NULL;
-	} else {
-		/* connected icon */
-		pixbuf = player_create_icon(chat_entry, player_num, TRUE);
-	}
-
+	/* connected icon */
+	pixbuf = player_create_icon(chat_entry, player_num, TRUE);
 	gtk_list_store_set(chat_completion_model, &iter,
 			   CHAT_PLAYER_NUM, player_num,
 			   CHAT_PLAYER_ICON, pixbuf,
 			   CHAT_BEEP_TEXT, g_strdup_printf("/beep %s",
 							   name), -1);
+	g_object_unref(pixbuf);
+}
 
-	if (pixbuf != NULL)
-		g_object_unref(pixbuf);
+void chat_player_style(gint player_num)
+{
+	GtkTreeIter iter;
+	enum TFindResult found;
+	GdkPixbuf *pixbuf;
+
+	found =
+	    find_integer_in_tree(GTK_TREE_MODEL(chat_completion_model),
+				 &iter, CHAT_PLAYER_NUM, player_num);
+
+	g_return_if_fail(found == FIND_MATCH_EXACT);
+
+	/* connected icon */
+	pixbuf = player_create_icon(chat_entry, player_num, TRUE);
+	gtk_list_store_set(chat_completion_model, &iter,
+			   CHAT_PLAYER_ICON, pixbuf, -1);
+	g_object_unref(pixbuf);
 }
 
 void chat_player_quit(gint player_num)

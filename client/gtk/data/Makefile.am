@@ -40,7 +40,16 @@ pixmap_DATA += \
 	client/gtk/data/grain.png \
 	client/gtk/data/lumber.png \
 	client/gtk/data/ore.png \
-	client/gtk/data/wool.png
+	client/gtk/data/wool.png \
+	client/gtk/data/style-human.png \
+	client/gtk/data/style-human-1.png \
+	client/gtk/data/style-human-2.png \
+	client/gtk/data/style-human-3.png \
+	client/gtk/data/style-human-4.png \
+	client/gtk/data/style-human-5.png \
+	client/gtk/data/style-human-6.png \
+	client/gtk/data/style-human-7.png \
+	client/gtk/data/style-ai.png
 
 desktop_DATA += client/gtk/data/pioneers.desktop
 

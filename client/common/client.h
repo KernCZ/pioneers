@@ -31,6 +31,7 @@ extern Map *map;
 extern GameParams *game_params;
 extern gchar *requested_name;
 extern gboolean requested_viewer;
+extern gchar *requested_style;
 
 /********* client.c ***********/
 /* client initialization */
@@ -94,6 +95,8 @@ void player_get_point(gint player_num, gint id, const gchar * str,
 		      gint num);
 void player_lose_point(gint player_num, gint id);
 void player_take_point(gint player_num, gint id, gint old_owner);
+void player_change_style(gint player_num, const gchar * style);
+
 gint find_viewer_by_name(const gchar * name);
 
 /********* build.c **********/
