@@ -4,7 +4,7 @@
 ;Global Variables
 Var FOUND_GTK_VERSION
 
-!define GTK_VERSION "2.6"
+!define GTK_VERSION "@GTK_REQUIRED_VERSION@"
 !define GTK_UPGRADE_TEXT "(Minimum version: ${GTK_VERSION}, current version: $FOUND_GTK_VERSION)"
 !define GTK_NOT_FOUND_TEXT "(Minimum version: ${GTK_VERSION}) If you just installed the runtime, try to reboot first."
 

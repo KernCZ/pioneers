@@ -3,7 +3,7 @@
 #
 # Copyright (C) 1999 Dave Cole
 # Copyright (C) 2003-2007 Bas Wijnen <shevek@fmf.nl>
-# Copyright (C) 2004-2006 Roland Clobus <rclobus@bigfoot.com>
+# Copyright (C) 2004-2007 Roland Clobus <rclobus@bigfoot.com>
 # 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -36,7 +36,10 @@ PIONEERS_DEFAULT_META_SERVER=pioneers.debian.net
 
 GLIB_REQUIRED_VERSION=2.6
 GTK_REQUIRED_VERSION=2.6
- 
+
+AC_SUBST(GLIB_REQUIRED_VERSION)
+AC_SUBST(GTK_REQUIRED_VERSION)
+
 AM_MAINTAINER_MODE
 
 AC_PROG_LIBTOOL

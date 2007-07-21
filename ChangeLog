@@ -1,4 +1,8 @@
 
+2007-07-21  Roland Clobus <rclobus@bigfoot.com>
+	* configure.ac, pioneers.nsi.in: Add minimum required Gtk+ version
+	from configure.ac in the installer builder script.
+	
 2007-07-21  Bas Wijnen <shevek@fmf.nl>
 	* ChangeLog, docs/README.game, common/gtk/gtkbugs.c, common/state.c,
 	configure.ac, po/ChangeLog, client/gtk/quote.c,
@@ -10,7 +14,7 @@
 	server/trade.c, server/discard.c, server/robber.c, server/server.h,
 	server/pregame.c, server/buildutil.c, client/common/client.c:
 	Updating the protocol to 0.11. All messages sent by the server are
-	versioned. Based on a patch by Bas Wijnen <wijnen@debian.org>.
+	versioned. Based on a patch by Bas Wijnen <shevek@fmf.nl>.
 
 2007-07-19  Roland Clobus <rclobus@bigfoot.com>
 	* common/gtk/guimap.c: gmap->area was unref'd too often.
