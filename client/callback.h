@@ -69,6 +69,7 @@ enum callback_mode {
 	MODE_SETUP,		/* do a setup */
 	MODE_TURN,		/* your turn */
 	MODE_ROBBER,		/* place robber */
+	MODE_ROB,		/* select a building/ship to rob */
 	MODE_MONOPOLY,		/* choose monopoly resource */
 	MODE_MONOPOLY_RESPONSE,	/* chosen monopoly resource, waiting */
 	MODE_PLENTY,		/* choose year of plenty resources */
@@ -205,10 +206,16 @@ struct callbacks {
 	void (*draw_hex) (Hex * hex);
 	/* something happened to your pieces stock (ships, roads, etc.) */
 	void (*update_stock) (void);
-	/* You should move the robber or pirate, and steal if allowed */
+	/* You should move the robber or pirate */
 	void (*robber) (void);
 	/* Someone moved the robber */
 	void (*robber_moved) (Hex * old, Hex * new);
+	/* You should steal something from a building */
+	void (*steal_building) (void);
+	/* The robber placement has finished, continue normally */
+	void (*robber_done) (void);
+	/* You should steal something from a ship */
+	void (*steal_ship) (void);
 	/* Someone has been robbed.  The frontend should allow player_num to
 	 * be negative, meaning noone was robbed.  This is not implemented
 	 * yet. */
@@ -299,7 +306,8 @@ void cb_undo(void);
 void cb_maritime(gint ratio, Resource supply, Resource receive);
 void cb_domestic(const gint * supply, const gint * receive);
 void cb_end_turn(void);
-void cb_place_robber(const Hex * hex, gint victim_num);
+void cb_place_robber(const Hex * hex);
+void cb_rob(gint victim_num);
 void cb_choose_monopoly(gint resource);
 void cb_choose_plenty(gint * resources);
 void cb_trade(gint player, gint quote, const gint * supply,
@@ -363,7 +371,6 @@ gboolean road_building_can_build_road(void);
 gboolean road_building_can_build_ship(void);
 gboolean road_building_can_build_bridge(void);
 gboolean road_building_can_finish(void);
-gboolean turn_can_undo(void);
 gboolean turn_can_build_road(void);
 gboolean turn_can_build_ship(void);
 gboolean turn_can_move_ship(void);
@@ -374,7 +381,6 @@ gboolean turn_can_build_city_wall(void);
 gboolean turn_can_trade(void);
 gboolean turn_can_finish(void);
 gboolean can_afford(const gint * cost);
-gboolean setup_can_undo(void);
 gboolean setup_can_build_road(void);
 gboolean setup_can_build_ship(void);
 gboolean setup_can_build_bridge(void);

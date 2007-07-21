@@ -96,7 +96,6 @@ static void frontend_trade(void)
 static void frontend_robber_moved(G_GNUC_UNUSED Hex * old,
 				  G_GNUC_UNUSED Hex * new)
 {
-	gui_prompt_hide();
 }
 
 static void frontend_new_bank(G_GNUC_UNUSED const gint * new_bank)
@@ -157,6 +156,9 @@ void frontend_set_callbacks(void)
 	callbacks.update_stock = &frontend_update_stock;
 	callbacks.robber = &frontend_robber;
 	callbacks.robber_moved = &frontend_robber_moved;
+	callbacks.steal_building = &frontend_steal_building;
+	callbacks.steal_ship = &frontend_steal_ship;
+	callbacks.robber_done = &frontend_robber_done;
 	callbacks.new_statistics = &frontend_new_statistics;
 	callbacks.new_points = &frontend_new_points;
 	callbacks.viewer_name = &frontend_viewer_name;

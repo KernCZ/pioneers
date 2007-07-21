@@ -215,6 +215,9 @@ void resource_refund(Player * player, const gint * cost);
 /* robber.c */
 void robber_place(Player * player);
 gboolean mode_place_robber(Player * player, gint event);
+gboolean mode_select_pirated(Player * player, gint event);
+gboolean mode_select_robbed(Player * player, gint event);
+void robber_undo(Player * player);
 
 /* server.c */
 void start_timeout(void);

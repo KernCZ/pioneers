@@ -145,6 +145,9 @@ void frontend_played_develop(gint player_num, gint card_idx,
 			     DevelType type);
 void frontend_resource_change(Resource type, gint new_amount);
 void frontend_robber(void);
+void frontend_steal_building(void);
+void frontend_steal_ship(void);
+void frontend_robber_done(void);
 void frontend_game_over(gint player, gint points);
 
 /* connect.c */

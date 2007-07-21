@@ -278,6 +278,15 @@ static void dummy_robber(void)
 }
 static void dummy_robber_moved(G_GNUC_UNUSED Hex * old,
 			       G_GNUC_UNUSED Hex * new)
+{
+};
+static void dummy_steal_building(void)
+{;
+}
+static void dummy_steal_ship(void)
+{;
+}
+static void dummy_robber_done(void)
 {;
 }
 static void dummy_player_robbed(G_GNUC_UNUSED gint robber_num,
@@ -382,6 +391,9 @@ void client_init(void)
 	callbacks.update_stock = &dummy_update_stock;
 	callbacks.robber = &dummy_robber;
 	callbacks.robber_moved = &dummy_robber_moved;
+	callbacks.steal_building = &dummy_steal_building;
+	callbacks.steal_ship = &dummy_steal_ship;
+	callbacks.robber_done = &dummy_robber_done;
 	callbacks.player_robbed = &dummy_player_robbed;
 	callbacks.get_rolled_resources = &dummy_get_rolled_resources;
 	callbacks.new_statistics = &dummy_new_statistics;
@@ -662,8 +674,20 @@ static gboolean check_other_players(StateMachine * sm)
 		robber_begin_move(player_num);
 		return TRUE;
 	}
-	if (sm_recv(sm, "robber %d %d", &x, &y)) {
-		robber_moved(player_num, x, y);
+	if (sm_recv(sm, "moved-robber %d %d", &x, &y)) {
+		robber_moved(player_num, x, y, FALSE);
+		return TRUE;
+	}
+	if (sm_recv(sm, "moved-pirate %d %d", &x, &y)) {
+		pirate_moved(player_num, x, y, FALSE);
+		return TRUE;
+	}
+	if (sm_recv(sm, "unmoved-robber %d %d", &x, &y)) {
+		robber_moved(player_num, x, y, TRUE);
+		return TRUE;
+	}
+	if (sm_recv(sm, "unmoved-pirate %d %d", &x, &y)) {
+		pirate_moved(player_num, x, y, TRUE);
 		return TRUE;
 	}
 	if (sm_recv(sm, "stole from %d", &victim_num)) {
@@ -1368,7 +1392,7 @@ static gboolean mode_setup(StateMachine * sm, gint event)
  */
 static gboolean mode_idle(StateMachine * sm, gint event)
 {
-	gint num, player_num, x, y, backwards;
+	gint num, player_num, backwards;
 	gint they_supply[NO_RESOURCE];
 	gint they_receive[NO_RESOURCE];
 
@@ -1398,16 +1422,6 @@ static gboolean mode_idle(StateMachine * sm, gint event)
 			sm_push(sm, mode_turn);
 			return TRUE;
 		}
-		if (sm_recv(sm, "player %d moved-robber %d %d",
-			    &player_num, &x, &y)) {
-			robber_moved(player_num, x, y);
-			return TRUE;
-		}
-		if (sm_recv(sm, "player %d moved-pirate %d %d",
-			    &player_num, &x, &y)) {
-			pirate_moved(player_num, x, y);
-			return TRUE;
-		}
 		if (sm_recv
 		    (sm,
 		     "player %d domestic-trade call supply %R receive %R",
@@ -1430,30 +1444,104 @@ static gboolean mode_idle(StateMachine * sm, gint event)
  * Nested state machine for robber handling
  */
 
+/* Get user to steal from a building
+ */
+static gboolean mode_robber_steal_building(StateMachine * sm, gint event)
+{
+	sm_state_name(sm, "mode_robber_steal_building");
+	switch (event) {
+	case SM_ENTER:
+		callback_mode = MODE_ROB;
+		callbacks.
+		    instructions(_("Select the building to steal from."));
+		callbacks.steal_building();
+		break;
+	case SM_RECV:
+		if (check_other_players(sm))
+			return TRUE;
+		break;
+	default:
+		break;
+	}
+	return FALSE;
+}
+
+/* Get user to steal from a ship
+ */
+static gboolean mode_robber_steal_ship(StateMachine * sm, gint event)
+{
+	sm_state_name(sm, "mode_robber_steal_ship");
+	switch (event) {
+	case SM_ENTER:
+		callback_mode = MODE_ROB;
+		callbacks.
+		    instructions(_("Select the ship to steal from."));
+		callbacks.steal_ship();
+		break;
+	case SM_RECV:
+		if (check_other_players(sm))
+			return TRUE;
+		break;
+	default:
+		break;
+	}
+	return FALSE;
+}
+
 /* Handle response to move robber
  */
-gboolean mode_robber_response(StateMachine * sm, gint event)
+gboolean mode_robber_move_response(StateMachine * sm, gint event)
 {
 	gint x, y;
 
+	sm_state_name(sm, "mode_robber_move_response");
+	switch (event) {
+	case SM_ENTER:
+		waiting_for_network(TRUE);
+		break;
+	case SM_RECV:
+		if (sm_recv(sm, "robber-done")) {
+			waiting_for_network(FALSE);
+			sm_multipop(sm, 2);
+			callbacks.robber_done();
+			return TRUE;
+		}
+		if (sm_recv(sm, "rob %d %d", &x, &y)) {
+			waiting_for_network(FALSE);
+			Hex *hex = map_hex(map, x, y);
+			if (hex->terrain == SEA_TERRAIN)
+				sm_push(sm, mode_robber_steal_ship);
+			else
+				sm_push(sm, mode_robber_steal_building);
+			return TRUE;
+		}
+		if (check_other_players(sm))
+			return TRUE;
+		break;
+	}
+	return FALSE;
+}
+
+/* Wait for server to say robber-done */
+gboolean mode_robber_response(StateMachine * sm, gint event)
+{
 	sm_state_name(sm, "mode_robber_response");
 	switch (event) {
 	case SM_ENTER:
 		waiting_for_network(TRUE);
 		break;
 	case SM_RECV:
-		if (sm_recv(sm, "moved-robber %d %d", &x, &y)) {
-			robber_moved(my_player_num(), x, y);
+		if (sm_recv(sm, "robber-done")) {
 			waiting_for_network(FALSE);
-			/* pop back to parent's parent if robber is moved */
-			sm_multipop(sm, 2);
-			return TRUE;
-		}
-		if (sm_recv(sm, "moved-pirate %d %d", &x, &y)) {
-			pirate_moved(my_player_num(), x, y);
-			waiting_for_network(FALSE);
-			/* pop back to parent's parent if pirate is moved */
-			sm_multipop(sm, 2);
+			sm_stack_dump(sm);
+			/* current state is response
+			 * parent is steal
+			 * parent is move_response
+			 * parent is mode_robber
+			 * all four must be popped.
+			 */
+			sm_multipop(sm, 4);
+			callbacks.robber_done();
 			return TRUE;
 		}
 		if (check_other_players(sm))
@@ -1496,10 +1584,11 @@ static gboolean mode_wait_for_robber(StateMachine * sm, gint event)
 	sm_state_name(sm, "mode_wait_for_robber");
 	switch (event) {
 	case SM_ENTER:
-		callbacks.instructions(_("Place the robber"));
+		waiting_for_network(TRUE);
 		break;
 	case SM_RECV:
 		if (sm_recv(sm, "you-are-robber")) {
+			waiting_for_network(FALSE);
 			sm_goto(sm, mode_robber);
 			return TRUE;
 		}
@@ -1865,6 +1954,17 @@ gboolean mode_undo_response(StateMachine * sm, gint event)
 			build_move(sx, sy, spos, dx, dy, dpos, TRUE);
 			waiting_for_network(FALSE);
 			sm_pop(sm);
+			return TRUE;
+		}
+		if (sm_recv(sm, "undo-robber")) {
+			waiting_for_network(FALSE);
+			/* current state is undo-response
+			 * parent is steal
+			 * parent is move_response
+			 * parent is mode_robber
+			 * the first three must be popped.
+			 */
+			sm_multipop(sm, 3);
 			return TRUE;
 		}
 		if (check_other_players(sm))

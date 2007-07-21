@@ -1,4 +1,11 @@
 
+2007-07-21  Bas Wijnen <shevek@fmf.nl>
+	* common/map.c, server/player.c, server/robber.c, server/server.h,
+	client/callback.h, client/gtk/interface.c, client/gtk/callbacks.c,
+	client/gtk/frontend.h, client/common/client.c, client/common/client.h,
+	client/common/robber.c, client/common/callback.c, client/ai/greedy.c:
+	Show the robber in the new place when choosing who to steal from.
+
 2007-07-21  Roland Clobus <rclobus@bigfoot.com>
 	* configure.ac, pioneers.nsi.in: Add minimum required Gtk+ version
 	from configure.ac in the installer builder script.

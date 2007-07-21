@@ -52,23 +52,29 @@ void pirate_move_on_map(gint x, gint y)
 	callbacks.robber_moved(old_pirate, hex);
 }
 
-void robber_moved(gint player_num, gint x, gint y)
+void robber_moved(gint player_num, gint x, gint y, gboolean is_undo)
 {
-	log_message(MSG_STEAL, _("%s moved the robber.\n"),
-		    player_name(player_num, TRUE));
 	robber_move_on_map(x, y);
-	if (player_num == my_player_num() && callbacks.instructions)
-		callbacks.instructions(_("Continue with your turn."));
+	if (is_undo)
+		log_message(MSG_STEAL,
+			    _("%s has undone the robber movement.\n"),
+			    player_name(player_num, TRUE));
+	else
+		log_message(MSG_STEAL, _("%s moved the robber.\n"),
+			    player_name(player_num, TRUE));
 }
 
 
-void pirate_moved(gint player_num, gint x, gint y)
+void pirate_moved(gint player_num, gint x, gint y, gboolean is_undo)
 {
-	log_message(MSG_STEAL, _("%s moved the pirate.\n"),
-		    player_name(player_num, TRUE));
 	pirate_move_on_map(x, y);
-	if (player_num == my_player_num() && callbacks.instructions)
-		callbacks.instructions(_("Continue with your turn."));
+	if (is_undo)
+		log_message(MSG_STEAL,
+			    _("%s has undone the pirate movement.\n"),
+			    player_name(player_num, TRUE));
+	else
+		log_message(MSG_STEAL, _("%s moved the pirate.\n"),
+			    player_name(player_num, TRUE));
 }
 
 void robber_begin_move(gint player_num)

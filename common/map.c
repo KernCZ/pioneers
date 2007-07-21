@@ -421,6 +421,14 @@ void map_shuffle_terrain(Map * map)
 	gint num_terrain;
 	gint num_port;
 
+	/* Remove robber, because the desert will probably move.
+	 * It will be restored by layout_chits.
+	 */
+	if (map->robber_hex) {
+		map->robber_hex->robber = FALSE;
+		map->robber_hex = NULL;
+	}
+
 	/* Count number of each terrain type
 	 */
 	memset(terrain_count, 0, sizeof(terrain_count));

@@ -22,6 +22,45 @@
 #include "config.h"
 #include "server.h"
 
+static Hex *previous_robber_hex;
+
+static void move_pirate(Player * player, Hex * hex, gboolean is_undo)
+{
+	Map *map = hex->map;
+
+	previous_robber_hex = map->pirate_hex;
+	map->pirate_hex = hex;
+	/* 0.10 didn't know about undo for movement, so move happens
+	 * only after stealing has been done.  */
+	if (is_undo) {
+		player_broadcast(player, PB_ALL, V0_11, LATEST_VERSION,
+				 "unmoved-pirate %d %d\n", hex->x, hex->y);
+	} else {
+		player_broadcast(player, PB_ALL, V0_11, LATEST_VERSION,
+				 "moved-pirate %d %d\n", hex->x, hex->y);
+	}
+}
+
+static void move_robber(Player * player, Hex * hex, gboolean is_undo)
+{
+	Map *map = hex->map;
+
+	previous_robber_hex = map->robber_hex;
+	if (map->robber_hex)
+		map->robber_hex->robber = FALSE;
+	map->robber_hex = hex;
+	map->robber_hex->robber = TRUE;
+	/* 0.10 didn't know about undo for movement, so move happens
+	 * only after stealing has been done.  */
+	if (is_undo) {
+		player_broadcast(player, PB_ALL, V0_11, LATEST_VERSION,
+				 "unmoved-robber %d %d\n", hex->x, hex->y);
+	} else {
+		player_broadcast(player, PB_ALL, V0_11, LATEST_VERSION,
+				 "moved-robber %d %d\n", hex->x, hex->y);
+	}
+}
+
 static void steal_card_from(Player * player, Player * victim)
 {
 	Game *game = player->game;
@@ -76,6 +115,166 @@ static void steal_card_from(Player * player, Player * victim)
 	victim->assets[idx]--;
 }
 
+static void done_robbing_pre_steal(Player * player)
+{
+	Game *game = player->game;
+	Map *map = game->params->map;
+	Hex *hex = map_robber_hex(map);
+	player_broadcast(player, PB_RESPOND, FIRST_VERSION, V0_10,
+			 "moved-robber %d %d\n", hex->x, hex->y);
+}
+
+static void done_robbing_post_steal(Player * player)
+{
+	sm_pop(player->sm);
+	player_send(player, V0_11, LATEST_VERSION, "robber-done\n");
+}
+
+static void do_select_robbed(Player * player, Hex * hex, gint victim_num)
+{
+	StateMachine *sm = player->sm;
+	Game *game = player->game;
+	Player *owner;
+	Resource resource;
+	gint idx;
+
+	/* Check if the victim has any resources
+	 */
+	owner = player_by_num(game, victim_num);
+	if (!owner) {
+		sm_send(sm, "ERR bad-player\n");
+		return;
+	}
+	for (resource = 0; resource < NO_RESOURCE; resource++)
+		if (owner->assets[resource] != 0)
+			break;
+	if (resource == NO_RESOURCE) {
+		sm_send(sm, "ERR bad-player\n");
+		return;
+	}
+	for (idx = 0; idx < G_N_ELEMENTS(hex->nodes); idx++) {
+		Node *node = hex->nodes[idx];
+
+		if (node->type == BUILD_NONE || node->owner != victim_num)
+			continue;
+
+		/* Victim has resources and has a building there: steal.  */
+		done_robbing_pre_steal(player);
+		steal_card_from(player, owner);
+		done_robbing_post_steal(player);
+		return;
+	}
+
+	sm_send(sm, "ERR bad-player\n");
+}
+
+/* Wait for the player to select a building to rob
+ */
+gboolean mode_select_robbed(Player * player, gint event)
+{
+	StateMachine *sm = player->sm;
+	Game *game = player->game;
+	Map *map = game->params->map;
+	gint victim_num;
+	Hex *hex;
+
+	sm_state_name(sm, "mode_select_robbed");
+
+	hex = map_robber_hex(map);
+
+	if (event == SM_ENTER) {
+		sm_send(sm, "rob %d %d\n", hex->x, hex->y);
+		return TRUE;
+	}
+
+	if (event != SM_RECV)
+		return FALSE;
+
+	if (sm_recv(sm, "undo")) {
+		robber_undo(player);
+		return TRUE;
+	}
+
+	if (!sm_recv(sm, "rob %d", &victim_num))
+		return FALSE;
+
+	do_select_robbed(player, hex, victim_num);
+	return TRUE;
+}
+
+
+static void do_select_pirated(Player * player, Hex * hex, gint victim_num)
+{
+	StateMachine *sm = player->sm;
+	Game *game = player->game;
+	Player *owner;
+	Resource resource;
+	gint idx;
+
+	/* Check if the victim has any resources
+	 */
+	owner = player_by_num(game, victim_num);
+	if (!owner) {
+		sm_send(sm, "ERR bad-player\n");
+		return;
+	}
+	for (resource = 0; resource < NO_RESOURCE; resource++)
+		if (owner->assets[resource] != 0)
+			break;
+	if (resource == NO_RESOURCE) {
+		sm_send(sm, "ERR bad-player\n");
+		return;
+	}
+	for (idx = 0; idx < G_N_ELEMENTS(hex->edges); ++idx) {
+		Edge *edge = hex->edges[idx];
+
+		if (edge->type != BUILD_SHIP || edge->owner != victim_num)
+			continue;
+
+		/* Victim has resources and has a ship there: steal.  */
+		done_robbing_pre_steal(player);
+		steal_card_from(player, owner);
+		done_robbing_post_steal(player);
+		return;
+	}
+
+	sm_send(sm, "ERR bad-player\n");
+}
+
+/* Wait for the player to select a ship to rob
+ */
+gboolean mode_select_pirated(Player * player, gint event)
+{
+	StateMachine *sm = player->sm;
+	Game *game = player->game;
+	Map *map = game->params->map;
+	gint victim_num;
+	Hex *hex;
+
+	sm_state_name(sm, "mode_select_pirated");
+
+	hex = map_pirate_hex(map);
+
+	if (event == SM_ENTER) {
+		sm_send(sm, "rob %d %d\n", hex->x, hex->y);
+		return TRUE;
+	}
+
+	if (event != SM_RECV)
+		return FALSE;
+
+	if (sm_recv(sm, "undo")) {
+		robber_undo(player);
+		return TRUE;
+	}
+
+	if (!sm_recv(sm, "rob %d", &victim_num))
+		return FALSE;
+
+	do_select_pirated(player, hex, victim_num);
+	return TRUE;
+}
+
 /* Wait for the player to place the robber
  */
 gboolean mode_place_robber(Player * player, gint event)
@@ -84,17 +283,22 @@ gboolean mode_place_robber(Player * player, gint event)
 	Game *game = player->game;
 	Map *map = game->params->map;
 	gint x, y;
-	gint victim_num;
 	Hex *hex;
 	gint idx;
-	gint num_victims;
-	gboolean victim_ok;
+	gint one_victim;
+	gint victim_num = -1;
+	gboolean old_style;
 
 	sm_state_name(sm, "mode_place_robber");
+
 	if (event != SM_RECV)
 		return FALSE;
 
-	if (!sm_recv(sm, "move-robber %d %d %d", &x, &y, &victim_num))
+	if (sm_recv(sm, "move-robber %d %d %d", &x, &y, &victim_num))
+		old_style = TRUE;
+	else if (sm_recv(sm, "move-robber %d %d", &x, &y))
+		old_style = FALSE;
+	else
 		return FALSE;
 
 	hex = map_hex(map, x, y);
@@ -104,20 +308,16 @@ gboolean mode_place_robber(Player * player, gint event)
 		return TRUE;
 	}
 
-	/* check if the pirate was moved. */
+	/* check if the pirate was moved.
+	 */
 	if (hex->terrain == SEA_TERRAIN) {
-		player_broadcast(player, PB_RESPOND, FIRST_VERSION,
-				 LATEST_VERSION, "moved-pirate %d %d\n", x,
-				 y);
-		map->pirate_hex = hex;
+		move_pirate(player, hex, FALSE);
 
 		/* If there is no-one to steal from, or the players have no
 		 * resources, we cannot steal resources.
 		 */
-		num_victims = 0;
-		victim_ok = FALSE;
-		for (idx = 0; !victim_ok && idx < G_N_ELEMENTS(hex->edges);
-		     ++idx) {
+		one_victim = -1;
+		for (idx = 0; idx < G_N_ELEMENTS(hex->edges); ++idx) {
 			Edge *edge = hex->edges[idx];
 			Player *owner;
 			Resource resource;
@@ -140,42 +340,52 @@ gboolean mode_place_robber(Player * player, gint event)
 
 			/* Has resources - we can steal
 			 */
-			num_victims++;
-			if (edge->owner == victim_num)
-				victim_ok = TRUE;
+			if (one_victim == owner->num)
+				/* We already knew about this player.
+				 */
+				continue;
+			if (one_victim >= 0)
+				/* This is the second victim, which means
+				 * there is choice.  That's all we need to
+				 * know.
+				 */
+				break;
+			one_victim = owner->num;
 		}
-		if (num_victims == 0) {
+		if (idx != G_N_ELEMENTS(hex->edges)) {
+			/* There is choice for stealing.  Wait for the
+			 * user to choose.  */
+			if (old_style) {
+				/* The user already chose.  */
+				do_select_pirated(player, hex, victim_num);
+			} else
+				sm_goto(sm,
+					(StateFunc) mode_select_pirated);
+			return TRUE;
+		}
+		if (one_victim < 0) {
 			/* No one to steal from - resume turn
 			 */
-			sm_pop(sm);
+			done_robbing_pre_steal(player);
+			done_robbing_post_steal(player);
 			return TRUE;
 		}
-		if (victim_ok) {
-			steal_card_from(player, player_by_num(game,
-							      victim_num));
-			sm_pop(sm);
-			return TRUE;
-		}
-		player_send(player, FIRST_VERSION, LATEST_VERSION,
-			    "ERR bad-player\n");
+		/* Only one victim: automatically steal.  */
+		done_robbing_pre_steal(player);
+		steal_card_from(player, player_by_num(game, one_victim));
+		done_robbing_post_steal(player);
 		return TRUE;
 	}
 
 	/* It wasn't the pirate; it was the robber. */
 
-	if (map->robber_hex != NULL)
-		map->robber_hex->robber = FALSE;
-	map->robber_hex = hex;
-	hex->robber = TRUE;
-	player_broadcast(player, PB_RESPOND, FIRST_VERSION, LATEST_VERSION,
-			 "moved-robber %d %d\n", x, y);
+	move_robber(player, hex, FALSE);
 
 	/* If there is no-one to steal from, or the players have no
 	 * resources, we cannot steal resources.
 	 */
-	num_victims = 0;
-	victim_ok = FALSE;
-	for (idx = 0; !victim_ok && idx < G_N_ELEMENTS(hex->nodes); idx++) {
+	one_victim = -1;
+	for (idx = 0; idx < G_N_ELEMENTS(hex->nodes); idx++) {
 		Node *node = hex->nodes[idx];
 		Player *owner;
 		Resource resource;
@@ -196,24 +406,39 @@ gboolean mode_place_robber(Player * player, gint event)
 
 		/* Has resources - we can steal
 		 */
-		num_victims++;
-		if (node->owner == victim_num)
-			victim_ok = TRUE;
+		if (one_victim == owner->num)
+			/* We already knew about this player.
+			 */
+			continue;
+		if (one_victim >= 0)
+			/* This is the second victim, which means
+			 * there is choice.  That's all we need to
+			 * know.
+			 */
+			break;
+		one_victim = owner->num;
 	}
-
-	if (num_victims == 0) {
+	if (idx != G_N_ELEMENTS(hex->nodes)) {
+		/* There is choice for stealing.  Wait for the user to choose.
+		 */
+		if (old_style) {
+			/* The user already chose.  */
+			do_select_robbed(player, hex, victim_num);
+		} else
+			sm_goto(sm, (StateFunc) mode_select_robbed);
+		return TRUE;
+	}
+	if (one_victim < 0) {
 		/* No one to steal from - resume turn
 		 */
-		sm_pop(sm);
+		done_robbing_pre_steal(player);
+		done_robbing_post_steal(player);
 		return TRUE;
 	}
-	if (victim_ok) {
-		steal_card_from(player, player_by_num(game, victim_num));
-		sm_pop(sm);
-		return TRUE;
-	}
-	player_send(player, FIRST_VERSION, LATEST_VERSION,
-		    "ERR bad-player\n");
+	/* Only one victim: automatically steal.  */
+	done_robbing_pre_steal(player);
+	steal_card_from(player, player_by_num(game, one_victim));
+	done_robbing_post_steal(player);
 	return TRUE;
 }
 
@@ -225,4 +450,14 @@ void robber_place(Player * player)
 	player_send(player, FIRST_VERSION, LATEST_VERSION,
 		    "you-are-robber\n");
 	sm_push(sm, (StateFunc) mode_place_robber);
+}
+
+void robber_undo(Player * player)
+{
+	if (previous_robber_hex->terrain == SEA_TERRAIN)
+		move_pirate(player, previous_robber_hex, TRUE);
+	else
+		move_robber(player, previous_robber_hex, TRUE);
+	sm_goto(player->sm, (StateFunc) mode_place_robber);
+	player_send(player, V0_11, LATEST_VERSION, "undo-robber\n");
 }

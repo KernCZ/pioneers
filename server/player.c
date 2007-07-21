@@ -490,6 +490,12 @@ void player_archive(Player * player)
 		trade_finish_domestic(player);
 	}
 
+	/* If the player was robbing something, auto-undo to robber
+	 * placement.  */
+	if (state == (StateFunc) mode_select_robbed
+	    || state == (StateFunc) mode_select_pirated)
+		robber_undo(player);
+
 	/* Mark the player as disconnected */
 	player->disconnected = TRUE;
 	game->num_players--;

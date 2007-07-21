@@ -47,6 +47,7 @@ gboolean mode_build_response(StateMachine * sm, gint event);
 gboolean mode_move_response(StateMachine * sm, gint event);
 gboolean mode_done_response(StateMachine * sm, gint event);
 gboolean mode_robber_response(StateMachine * sm, gint event);
+gboolean mode_robber_move_response(StateMachine * sm, gint event);
 gboolean mode_monopoly_response(StateMachine * sm, gint event);
 gboolean mode_year_of_plenty_response(StateMachine * sm, gint event);
 gboolean mode_play_develop_response(StateMachine * sm, gint event);
@@ -156,8 +157,8 @@ void modify_bank(const gint * bank_change);
 /********** robber.c **********/
 void robber_move_on_map(gint x, gint y);
 void pirate_move_on_map(gint x, gint y);
-void robber_moved(gint player_num, gint x, gint y);
-void pirate_moved(gint player_num, gint x, gint y);
+void robber_moved(gint player_num, gint x, gint y, gboolean is_undo);
+void pirate_moved(gint player_num, gint x, gint y, gboolean is_undo);
 void robber_begin_move(gint player_num);
 
 /********* setup.c *********/

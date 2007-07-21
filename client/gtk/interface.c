@@ -650,24 +650,30 @@ void frontend_rolled_dice(gint die1, gint die2, gint player_num)
 	frontend_gui_update();
 }
 
-static void place_robber(const Hex * hex, gint victim)
+static void frontend_state_robber(GuiEvent event)
 {
-	cb_place_robber(hex, victim);
-	robber_busy = FALSE;
-	if (previous_state != dummy_state) {
-		set_gui_state(previous_state);
-		previous_state = dummy_state;
+	switch (event) {
+	case GUI_UPDATE:
+		frontend_gui_check(GUI_UNDO, callback_mode == MODE_ROB);
+		break;
+	case GUI_UNDO:
+		cb_undo();
+		/* restart robber placement.  */
+		frontend_robber();
+		break;
+	default:
+		break;
 	}
 }
 
-static void rob_building(MapElement node, MapElement hex)
+static void rob_building(MapElement node, G_GNUC_UNUSED MapElement extra)
 {
-	place_robber(hex.hex, node.node->owner);
+	cb_rob(node.node->owner);
 }
 
-static void rob_edge(MapElement edge, MapElement hex)
+static void rob_edge(MapElement edge, G_GNUC_UNUSED MapElement extra)
 {
-	place_robber(hex.hex, edge.edge->owner);
+	cb_rob(edge.edge->owner);
 }
 
 /* Return TRUE if the node can be robbed. */
@@ -721,45 +727,37 @@ static gboolean can_edge_be_robbed(MapElement edge,
 static void place_robber_or_pirate_cb(MapElement hex,
 				      G_GNUC_UNUSED MapElement extra)
 {
-	if (hex.hex->terrain == SEA_TERRAIN) {
-		gint victim_list[G_N_ELEMENTS(hex.hex->edges)];
-		switch (pirate_count_victims(hex.hex, victim_list)) {
-		case 0:
-			place_robber(hex.hex, -1);
-			break;
-		case 1:
-			place_robber(hex.hex, victim_list[0]);
-			break;
-		default:
-			gui_cursor_set(STEAL_SHIP_CURSOR,
-				       can_edge_be_robbed, rob_edge, NULL,
-				       &hex);
-			gui_set_instructions(_
-					     ("Select the ship to steal from."));
-			gui_prompt_show(_
-					("Select the ship to steal from"));
-			break;
-		}
-	} else {
-		gint victim_list[G_N_ELEMENTS(hex.hex->nodes)];
-		switch (robber_count_victims(hex.hex, victim_list)) {
-		case 0:
-			place_robber(hex.hex, -1);
-			break;
-		case 1:
-			place_robber(hex.hex, victim_list[0]);
-			break;
-		default:
-			gui_cursor_set(STEAL_BUILDING_CURSOR,
-				       can_building_be_robbed,
-				       rob_building, NULL, &hex);
-			gui_set_instructions(_
-					     ("Select the building to steal from."));
-			gui_prompt_show(_
-					("Select the building to steal from"));
-			break;
-		}
+	cb_place_robber(hex.hex);
+}
+
+void frontend_steal_ship(void)
+{
+	MapElement hex;
+	hex.hex = map_pirate_hex(get_map());
+
+	gui_cursor_set(STEAL_SHIP_CURSOR, can_edge_be_robbed, rob_edge,
+		       NULL, &hex);
+	gui_prompt_show(_("Select the ship to steal from"));
+}
+
+void frontend_steal_building(void)
+{
+	MapElement hex;
+	hex.hex = map_robber_hex(get_map());
+
+	gui_cursor_set(STEAL_BUILDING_CURSOR, can_building_be_robbed,
+		       rob_building, NULL, &hex);
+	gui_prompt_show(_("Select the building to steal from"));
+}
+
+void frontend_robber_done(void)
+{
+	robber_busy = FALSE;
+	if (previous_state != dummy_state) {
+		set_gui_state(previous_state);
+		previous_state = dummy_state;
 	}
+	gui_prompt_hide();
 }
 
 static gboolean check_move_robber_or_pirate(MapElement element,
@@ -771,14 +769,15 @@ static gboolean check_move_robber_or_pirate(MapElement element,
 
 void frontend_robber(void)
 {
-	if (robber_busy)
-		return;
-	robber_busy = TRUE;
-	g_assert(previous_state == dummy_state);
-	previous_state = get_gui_state();
-	set_gui_state(frontend_state_idle);
-	gui_cursor_set(ROBBER_CURSOR,
-		       check_move_robber_or_pirate,
+	if (!robber_busy) {
+		/* Do this only once.  */
+		robber_busy = TRUE;
+		g_assert(previous_state == dummy_state);
+		previous_state = get_gui_state();
+	}
+	/* These things are redone at undo.  */
+	set_gui_state(frontend_state_robber);
+	gui_cursor_set(ROBBER_CURSOR, check_move_robber_or_pirate,
 		       place_robber_or_pirate_cb, NULL, NULL);
 	gui_prompt_show(_("Place the robber"));
 	frontend_gui_update();

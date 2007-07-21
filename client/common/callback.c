@@ -169,7 +169,8 @@ void cb_undo(void)
 	/* undo a move */
 	g_assert(callback_mode == MODE_TURN
 		 || callback_mode == MODE_ROAD_BUILD
-		 || callback_mode == MODE_SETUP);
+		 || callback_mode == MODE_SETUP
+		 || callback_mode == MODE_ROB);
 	sm_send(SM(), "undo\n");
 	sm_push(SM(), mode_undo_response);
 }
@@ -208,12 +209,19 @@ void cb_end_turn(void)
 	sm_push(SM(), mode_done_response);
 }
 
-void cb_place_robber(const Hex * hex, gint victim_num)
+void cb_place_robber(const Hex * hex)
 {
-	/* place robber and rob */
+	/* place robber */
 	g_assert(callback_mode == MODE_ROBBER);
-	sm_send(SM(), "move-robber %d %d %d\n", hex->x, hex->y,
-		victim_num);
+	sm_send(SM(), "move-robber %d %d\n", hex->x, hex->y);
+	sm_push(SM(), mode_robber_move_response);
+}
+
+void cb_rob(gint victim_num)
+{
+	/* after placing the robber, rob someone */
+	g_assert(callback_mode == MODE_ROB);
+	sm_send(SM(), "rob %d\n", victim_num);
 	sm_push(SM(), mode_robber_response);
 }
 

@@ -1410,8 +1410,6 @@ static void greedy_place_robber(void)
 	int i, j;
 	float bestscore = -1000;
 	Hex *besthex = NULL;
-	int victim = -1;
-	int victim_resources = -1;
 
 	ai_wait();
 	for (i = 0; i < get_map()->x_size; i++) {
@@ -1426,26 +1424,34 @@ static void greedy_place_robber(void)
 
 		}
 	}
+	cb_place_robber(besthex);
+}
+
+static void greedy_steal_building(void)
+{
+	int i;
+	int victim = -1;
+	int victim_resources = -1;
+	Hex *hex = map_robber_hex(get_map());
 
 	/* which opponent to steal from */
 	for (i = 0; i < 6; i++) {
 		int numres = 0;
 
 		/* if has owner (and isn't me) */
-		if ((besthex->nodes[i]->owner != -1) &&
-		    (besthex->nodes[i]->owner != my_player_num())) {
+		if ((hex->nodes[i]->owner != -1) &&
+		    (hex->nodes[i]->owner != my_player_num())) {
 
 			numres =
-			    player_get_num_resource(besthex->nodes[i]->
-						    owner);
+			    player_get_num_resource(hex->nodes[i]->owner);
 		}
 
 		if (numres > victim_resources) {
-			victim = besthex->nodes[i]->owner;
+			victim = hex->nodes[i]->owner;
 			victim_resources = numres;
 		}
 	}
-	cb_place_robber(besthex, victim);
+	cb_rob(victim);
 	randchat(chat_self_moved_robber, 15);
 }
 
@@ -1992,6 +1998,7 @@ void greedy_init(G_GNUC_UNUSED int argc, G_GNUC_UNUSED char **argv)
 	callbacks.setup = &greedy_setup;
 	callbacks.turn = &greedy_turn;
 	callbacks.robber = &greedy_place_robber;
+	callbacks.steal_building = &greedy_steal_building;
 	callbacks.roadbuilding = &greedy_roadbuilding;
 	callbacks.plenty = &greedy_year_of_plenty;
 	callbacks.monopoly = &greedy_monopoly;
