@@ -22,6 +22,8 @@
 #ifndef __admin_h
 #define __admin_h
 
+#include "network.h"
+
 typedef struct _comm_info {
 	gint fd;
 	guint read_tag;

@@ -252,6 +252,7 @@ void cfg_set_terrain_type(GameParams * params, gint terrain_type);
 void cfg_set_tournament_time(GameParams * params, gint tournament_time);
 void cfg_set_quit(GameParams * params, gboolean quitdone);
 void cfg_set_timeout(gint to);
+void admin_broadcast(const gchar * message);
 
 /* callbacks related to server starting / stopping */
 gboolean start_server(const GameParams * params, const gchar * hostname,

@@ -436,6 +436,13 @@ void cfg_set_timeout(gint to)
 	no_player_timeout = to;
 }
 
+void admin_broadcast(const gchar * message)
+{
+	/* The message that is sent must not be translated */
+	player_broadcast(player_none(curr_game), PB_SILENT, FIRST_VERSION,
+			 LATEST_VERSION, "NOTE1 %s|%s\n", message, "%s");
+}
+
 gboolean start_server(const GameParams * params, const gchar * hostname,
 		      const gchar * port, gboolean register_server,
 		      const gchar * meta_server_name,

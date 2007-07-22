@@ -3,7 +3,8 @@
  *
  * Copyright (C) 1999 Dave Cole
  * Copyright (C) 2003, 2006 Bas Wijnen <shevek@fmf.nl>
- * 
+ * Copyright (C) 2007 Roland Clobus <rclobus@bigfoot.com>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -19,131 +20,255 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-/* Pioneers Console Server
+/* Pioneers Console Server Adminstrator interface
+ *
+ * The strings in the admin interface are intentionally not translated.
+ * They would otherwise reflect the language of the server that is
+ * running the server, instead of the language of the connecting user.
  */
 #include "config.h"
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
-#include <glib.h>
-#include <signal.h>
 
-#include "driver.h"
-#include "game.h"
-#include "cards.h"
-#include "map.h"
-#include "network.h"
-#include "log.h"
-#include "buildrec.h"
-#include "server.h"
-
-#include "glib-driver.h"
 #include "admin.h"
-
+#include "game.h"
+#include "server.h"
 
 /* network administration functions */
 comm_info *_accept_info = NULL;
 
+typedef enum {
+	BADCOMMAND,
+	SETPORT,
+	STARTSERVER,
+	STOPSERVER,
+	REGISTERSERVER,
+	NUMPLAYERS,
+	SEVENSRULE,
+	VICTORYPOINTS,
+	RANDOMTERRAIN,
+	SETGAME,
+	QUIT,
+	MESSAGE,
+	HELP,
+	INFO
+} AdminCommandType;
+
+typedef struct {
+	AdminCommandType type;
+	const gchar *command;
+	gboolean need_argument;
+	gboolean stop_server;
+	gboolean need_gameparam;
+} AdminCommand;
+
+/* *INDENT-OFF* */
+static AdminCommand admin_commands[] = {
+	{ BADCOMMAND,     "",                    FALSE, FALSE, FALSE },
+	{ SETPORT,        "set-port",            TRUE,  TRUE,  TRUE  },
+	{ STARTSERVER,    "start-server",        FALSE, TRUE,  TRUE  },
+	{ STOPSERVER,     "stop-server",         FALSE, TRUE,  FALSE },
+	{ REGISTERSERVER, "set-register-server", TRUE,  TRUE,  FALSE },
+	{ NUMPLAYERS,     "set-num-players",     TRUE,  TRUE,  TRUE  },
+	{ SEVENSRULE,     "set-sevens-rule",     TRUE,  TRUE,  TRUE  },
+	{ VICTORYPOINTS,  "set-victory-points",  TRUE,  TRUE,  TRUE  },
+	{ RANDOMTERRAIN,  "set-random-terrain",  TRUE,  TRUE,  TRUE  },
+	{ SETGAME,        "set-game",            TRUE,  TRUE,  FALSE },
+	{ QUIT,           "quit",                FALSE, FALSE, FALSE },
+	{ MESSAGE,        "send-message",        TRUE,  FALSE, TRUE  },
+	{ HELP,           "help",                FALSE, FALSE, FALSE },
+	{ INFO,           "info",                FALSE, FALSE, FALSE }
+};
+/* *INDENT-ON* */
+
 /* parse 'line' and run the command requested */
 void admin_run_command(Session * admin_session, const gchar * line)
 {
-	gchar command[100];
-	gchar value_str[100];
-	gint value_int;
+	const gchar *command_start;
+	gchar *command;
+	gchar *argument;
+	gint command_number;
+
 	static gchar *server_port = NULL;
 	static gboolean register_server = TRUE;
 	static GameParams *params = NULL;
 
-	/* parse the line down into command and value */
-	sscanf(line, "admin %99s %99s", command, value_str);
-	value_int = atoi(value_str);
+	if (!g_str_has_prefix(line, "admin")) {
+		net_printf(admin_session,
+			   "no admin prefix in command: '%s'\n", line);
+		return;
+	}
 
-	/* set the GAME port */
-	if (!strcmp(command, "set-port")) {
-		if (value_int) {
-			if (server_is_running())
-				server_stop();
+	line += 5;		/* length of "admin" */
+	while (*line && g_ascii_isspace(*line))
+		++line;
+	if (!*line) {
+		net_printf(admin_session, "no command found: '%s'\n",
+			   line);
+		return;
+	}
+
+	/* parse the line down into command and argument */
+	command_start = line;
+	while (*line && !g_ascii_isspace(*line))
+		++line;
+	command = g_strndup(command_start, line - command_start);
+
+	if (*line) {
+		while (*line && g_ascii_isspace(*line))
+			++line;
+		argument = g_strdup(line);
+	} else {
+		argument = NULL;
+	}
+
+	/* command[0] is the fall-back */
+	for (command_number = 1;
+	     command_number < G_N_ELEMENTS(admin_commands);
+	     ++command_number) {
+		if (!strcmp
+		    (command, admin_commands[command_number].command)) {
+			break;
+		}
+	}
+	if (command_number == G_N_ELEMENTS(admin_commands)) {
+		command_number = 0;
+	}
+	if (admin_commands[command_number].need_argument
+	    && NULL == argument) {
+		net_printf(admin_session,
+			   "ERROR command '%s' needs an argument\n",
+			   command);
+	} else if (admin_commands[command_number].need_gameparam
+		   && NULL == params) {
+		net_printf(admin_session,
+			   "ERROR command '%s' needs a valid game\n",
+			   command);
+	} else {
+		if (admin_commands[command_number].stop_server
+		    && server_is_running()) {
+			server_stop();
+			net_write(admin_session, "INFO server stopped\n");
+		}
+		switch (admin_commands[command_number].type) {
+		case BADCOMMAND:
+			net_printf(admin_session,
+				   "ERROR unrecognized command: '%s'\n",
+				   command);
+			break;
+		case SETPORT:
 			if (server_port)
 				g_free(server_port);
-			server_port = g_strdup(value_str);
-		}
-
-		/* start the server */
-	} else if (!strcmp(command, "start-server")) {
-		gchar *meta_server_name = get_meta_server_name(TRUE);
-		if (server_is_running())
+			server_port = g_strdup(argument);
+			break;
+		case STARTSERVER:
+			{
+				gchar *meta_server_name =
+				    get_meta_server_name(TRUE);
+				if (!server_port)
+					server_port =
+					    g_strdup
+					    (PIONEERS_DEFAULT_GAME_PORT);
+				start_server(params, get_server_name(),
+					     server_port, register_server,
+					     meta_server_name, TRUE);
+				g_free(meta_server_name);
+			}
+			break;
+		case STOPSERVER:
 			server_stop();
-		if (!server_port)
-			server_port = g_strdup(PIONEERS_DEFAULT_GAME_PORT);
-		start_server(params, get_server_name(), server_port,
-			     register_server, meta_server_name, TRUE);
-		g_free(meta_server_name);
-
-	} else if (!strcmp(command, "stop-server")) {
-		server_stop();
-
-		/* set whether or not to register the server with a meta server */
-	} else if (!strcmp(command, "set-register-server")) {
-		if (value_int) {
-			if (server_is_running())
-				server_stop();
-			register_server = value_int;
-		}
-
-		/* set the number of players */
-	} else if (!strcmp(command, "set-num-players")) {
-		if (value_int) {
-			if (server_is_running())
-				server_stop();
-			cfg_set_num_players(params, value_int);
-		}
-
-		/* set the sevens rule */
-	} else if (!strcmp(command, "set-sevens-rule")) {
-		if (value_int) {
-			if (server_is_running())
-				server_stop();
-			cfg_set_sevens_rule(params, value_int);
-		}
-
-		/* set the victory points */
-	} else if (!strcmp(command, "set-victory-points")) {
-		if (value_int) {
-			if (server_is_running())
-				server_stop();
-			cfg_set_victory_points(params, value_int);
-		}
-
-		/* set whether to use random terrain */
-	} else if (!strcmp(command, "set-random-terrain")) {
-		if (value_int) {
-			if (server_is_running())
-				server_stop();
-			cfg_set_terrain_type(params, value_int);
-		}
-
-		/* set the game type (by name) */
-	} else if (!strcmp(command, "set-game")) {
-		if (value_str) {
-			if (server_is_running())
-				server_stop();
+			break;
+		case REGISTERSERVER:
+			register_server = atoi(argument);
+			break;
+		case NUMPLAYERS:
+			cfg_set_num_players(params, atoi(argument));
+			break;
+		case SEVENSRULE:
+			cfg_set_sevens_rule(params, atoi(argument));
+			break;
+		case VICTORYPOINTS:
+			cfg_set_victory_points(params, atoi(argument));
+			break;
+		case RANDOMTERRAIN:
+			cfg_set_terrain_type(params, atoi(argument));
+			break;
+		case SETGAME:
 			if (params)
 				params_free(params);
-			params = cfg_set_game(value_str);
+			params = cfg_set_game(argument);
+			if (!params) {
+				net_printf(admin_session,
+					   "ERROR game '%s' not set\n",
+					   argument);
+			}
+			break;
+		case QUIT:
+			net_close(admin_session);
+			/* Quit the server if the admin leaves */
+			if (!server_is_running())
+				exit(0);
+			break;
+		case MESSAGE:
+			g_strdelimit(argument, "|", '_');
+			if (server_is_running())
+				admin_broadcast(argument);
+			break;
+		case HELP:
+			for (command_number = 1;
+			     command_number < G_N_ELEMENTS(admin_commands);
+			     ++command_number) {
+				if (admin_commands[command_number].
+				    need_argument) {
+					net_printf(admin_session,
+						   "INFO %s argument\n",
+						   admin_commands
+						   [command_number].
+						   command);
+				} else {
+					net_printf(admin_session,
+						   "INFO %s\n",
+						   admin_commands
+						   [command_number].
+						   command);
+				}
+			}
+			break;
+		case INFO:
+			net_printf(admin_session, "INFO server-port %s\n",
+				   server_port ? server_port :
+				   PIONEERS_DEFAULT_GAME_PORT);
+			net_printf(admin_session,
+				   "INFO register-server %d\n",
+				   register_server);
+			net_printf(admin_session,
+				   "INFO server running %d\n",
+				   server_is_running());
+			if (params) {
+				net_printf(admin_session, "INFO game %s\n",
+					   params->title);
+				net_printf(admin_session,
+					   "INFO players %d\n",
+					   params->num_players);
+				net_printf(admin_session,
+					   "INFO victory-points %d\n",
+					   params->victory_points);
+				net_printf(admin_session,
+					   "INFO random-terrain %d\n",
+					   params->random_terrain);
+				net_printf(admin_session,
+					   "INFO sevens-rule %d\n",
+					   params->sevens_rule);
+			} else {
+				net_printf(admin_session,
+					   "INFO no game set\n");
+			}
+			break;
 		}
-
-		/* request to close the connection */
-	} else if (!strcmp(command, "quit")) {
-		net_close(admin_session);
-		/* Quit the server if the admin leaves */
-		if (!server_is_running())
-			exit(0);
-
-		/* fallthrough -- unknown command */
-	} else {
-		g_warning("unrecognized admin request: '%s'\n", line);
 	}
+	g_free(command);
+	if (argument)
+		g_free(argument);
 }
 
 /* network event handler, just like the one in meta.c, state.c, etc. */
@@ -165,7 +290,6 @@ void admin_event(NetEvent event, Session * admin_session,
 #endif
 		admin_run_command(admin_session, line);
 		break;
-
 	case NET_CLOSE:
 		/* connection has been closed */
 
@@ -174,7 +298,6 @@ void admin_event(NetEvent event, Session * admin_session,
 #endif
 		net_free(&admin_session);
 		break;
-
 	case NET_CONNECT:
 		/* connect() succeeded -- shouldn't get here */
 
@@ -182,7 +305,6 @@ void admin_event(NetEvent event, Session * admin_session,
 		g_print("admin_event: NET_CONNECT\n");
 #endif
 		break;
-
 	case NET_CONNECT_FAIL:
 		/* connect() failed -- shouldn't get here */
 
@@ -190,7 +312,6 @@ void admin_event(NetEvent event, Session * admin_session,
 		g_print("admin_event: NET_CONNECT_FAIL\n");
 #endif
 		break;
-
 	default:
 		/* To kill a warning... */
 		break;
@@ -243,8 +364,8 @@ void admin_listen(const gchar * port)
 #endif
 
 	/* set up the callback to handle connections */
-	_accept_info->read_tag = driver->input_add_read(_accept_info->fd,
-							(InputFunc)
-							admin_connect,
-							_accept_info);
+	_accept_info->read_tag =
+	    driver->input_add_read(_accept_info->fd,
+				   (InputFunc) admin_connect,
+				   _accept_info);
 }
