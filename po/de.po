@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: Pioneers 0.11.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-07-12 21:45+0200\n"
-"PO-Revision-Date: 2007-07-12 22:53+0000\n"
+"PO-Revision-Date: 2007-07-22 16:35+0000\n"
 "Last-Translator: Pit Garbe <piiit@gmx.de>\n"
 "Language-Team: Pit Garbe <piiit@gmx.de>, Roman Hodek <roman@hodek.net>, de "
 "<de@li.org>\n"
@@ -20,7 +20,7 @@ msgstr ""
 
 #: ../po/NotInSVNYetButWillBeInTheRelease.c:3
 msgid "Face:"
-msgstr ""
+msgstr "Gesicht:"
 
 #: ../po/NotInSVNYetButWillBeInTheRelease.c:4
 msgid "Variant:"
@@ -294,7 +294,7 @@ msgid ""
 "to see the list of commands I know."
 msgstr ""
 "Willkommen in der Lobby. Ich bin ein einfacher Roboter. Sende '/help' im "
-"Chatum die Liste der Befehle, die ich kenne, zu sehen."
+"Chat um die Liste der Befehle, die ich kenne, zu sehen."
 
 #. Translators: don't translate '/help'
 #: ../client/ai/lobbybot.c:107
@@ -364,7 +364,7 @@ msgstr "Mitteilung: %s\n"
 #: ../client/common/client.c:601
 #, c-format
 msgid "%s does not receive any %s, because the bank is empty.\n"
-msgstr "%s bekommt kein  %s, weil die Bank leer is.\n"
+msgstr "%s bekommt kein %s, weil die Bank leer is.\n"
 
 #: ../client/common/client.c:614
 #, c-format
@@ -717,7 +717,7 @@ msgid "%s removed a city.\n"
 msgstr "%s hat eine Stadt entfernt.\n"
 
 #: ../client/common/player.c:608
-#, fuzzy, c-format
+#, c-format
 msgid "%s removed a city wall.\n"
 msgstr "%s hat eine Stadtmauer entfernt.\n"
 
@@ -1628,9 +1628,7 @@ msgstr "Wähle die neue Position des Schiffes."
 
 #: ../client/gtk/interface.c:738
 msgid "Select the ship to steal from."
-msgstr ""
-"Wähle das Schiff, von dem du stehlen willst.Wähle das Schiff,\n"
-"von dem gestohlen werden soll."
+msgstr "Wähle das Schiff, von dem du stehlen willst."
 
 #: ../client/gtk/interface.c:740
 msgid "Select the ship to steal from"
@@ -2107,11 +2105,11 @@ msgstr "Jede 7 wird wiederholt gewürfelt"
 
 #: ../common/gtk/game-rules.c:121
 msgid "Randomize Terrain"
-msgstr "Zufällige Geländeverteilung?"
+msgstr "Zufällige Geländeverteilung"
 
 #: ../common/gtk/game-rules.c:121
 msgid "Randomize the terrain"
-msgstr "Zufällige Geländeverteilung?"
+msgstr "Zufällige Geländeverteilung"
 
 #: ../common/gtk/game-rules.c:123
 msgid "Use Pirate"
@@ -2647,7 +2645,7 @@ msgstr "Spieltitel ändern"
 
 #: ../editor/gtk/editor.c:1015 ../server/gtk/main.c:100
 msgid "_Check Victory Point Target"
-msgstr "Zeige die Anzahl der benötigten Sieg_punkte"
+msgstr "Zeige die Anzahl der benötigten Siegpunkte"
 
 #: ../editor/gtk/editor.c:1017 ../server/gtk/main.c:102
 msgid "Check whether the game can be won"
@@ -3065,7 +3063,7 @@ msgstr "Das Spiel beginnt in %s Minuten."
 #: ../server/player.c:216
 #, c-format
 msgid "The game starts in %s minute."
-msgstr "Das Spiel beginnt in %s minute."
+msgstr "Das Spiel beginnt in %s Minute."
 
 #: ../server/player.c:261
 msgid "Sorry, game is over."
