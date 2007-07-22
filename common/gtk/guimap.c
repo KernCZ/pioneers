@@ -110,6 +110,19 @@ void guimap_delete(GuiMap * gmap)
 		}
 	}
 	if (gmap->layout) {
+		/* Restore the font size */
+		PangoContext *pc;
+		PangoFontDescription *pfd;
+
+		pc = pango_layout_get_context(gmap->layout);
+		pfd = pango_context_get_font_description(pc);
+
+		if (gmap->initial_font_size != -1) {
+			pango_font_description_set_size(pfd,
+							gmap->
+							initial_font_size);
+		}
+
 		g_object_unref(gmap->layout);
 		gmap->layout = NULL;
 	}
@@ -651,7 +664,7 @@ static gboolean display_hex(const Map * map, const Hex * hex,
 	}
 
 	/* Draw the dice roll */
-	if (hex->roll > 0) {
+	if (hex->roll > 0 && gmap->chit_radius > 0) {
 		g_assert(gmap->layout);
 		draw_dice_roll(gmap->layout, gmap->pixmap, gmap->gc,
 			       x_offset, y_offset, gmap->chit_radius,
@@ -661,7 +674,7 @@ static gboolean display_hex(const Map * map, const Hex * hex,
 	}
 
 	/* Draw ports */
-	if (hex->resource != NO_RESOURCE) {
+	if (hex->resource != NO_RESOURCE && gmap->chit_radius > 0) {
 		const gchar *str = "";
 		gint width, height;
 		int tileno = hex->resource == ANY_RESOURCE ?
@@ -901,23 +914,15 @@ void guimap_scale_with_radius(GuiMap * gmap, gint radius)
 	gmap->x_point = radius * cos(M_PI / 6.0);
 	gmap->y_point = radius * sin(M_PI / 6.0);
 
-/* Unused calculations ...
-	gint edge_width = radius / 10;
-	gint edge_len = radius / 5;
-	gint edge_x = edge_len * cos(M_PI / 6.0);
-	gint edge_y = edge_len * sin(M_PI / 6.0);
-	gint edge_x_point = edge_width * cos(M_PI / 3.0);
-	gint edge_y_point = edge_width * sin(M_PI / 3.0);
-*/
-	gmap->x_margin = gmap->y_margin = 3;
+	gmap->x_margin = gmap->y_margin = 0;
 
 	if (gmap->map == NULL)
 		return;
 
-	gmap->width = 2 * gmap->x_margin
-	    + gmap->map->x_size * 2 * gmap->x_point + gmap->x_point;
-	gmap->height = 2 * gmap->y_margin
-	    + (gmap->map->y_size - 1) * (gmap->hex_radius + gmap->y_point)
+	gmap->width =
+	    gmap->map->x_size * 2 * gmap->x_point + gmap->x_point;
+	gmap->height =
+	    (gmap->map->y_size - 1) * (gmap->hex_radius + gmap->y_point)
 	    + 2 * gmap->hex_radius;
 
 	if (gmap->map->shrink_left)
@@ -951,14 +956,15 @@ void guimap_scale_with_radius(GuiMap * gmap, gint radius)
 
 void guimap_scale_to_size(GuiMap * gmap, gint width, gint height)
 {
+	const gint reserved_width = 0;
+	const gint reserved_height = 0;
 	gint width_radius;
 	gint height_radius;
-
-	width_radius = (width - 20)
+	width_radius = (width - reserved_width)
 	    / ((gmap->map->x_size * 2 + 1
 		- gmap->map->shrink_left
 		- gmap->map->shrink_right) * cos(M_PI / 6.0));
-	height_radius = (height - 20)
+	height_radius = (height - reserved_height)
 	    / ((gmap->map->y_size - 1)
 	       * (sin(M_PI / 6.0) + 1) + 2);
 
@@ -1062,7 +1068,7 @@ void guimap_display(GuiMap * gmap)
 	 */
 	maximum_size = gmap->hex_radius * 2 / 3;
 
-	/* First try to fix the text and the dots in the chit */
+	/* First attempt to fit the text and the dots in the chit */
 	pango_font_description_set_size(pfd, font_size);
 	pango_layout_set_font_description(gmap->layout, pfd);
 
@@ -1077,8 +1083,11 @@ void guimap_display(GuiMap * gmap)
 		size_for_text =
 		    guimap_get_chit_radius(gmap->layout, FALSE);
 	};
-
-	gmap->chit_radius = size_for_text;
+	if (font_size <= 0) {
+		gmap->chit_radius = 0;
+	} else {
+		gmap->chit_radius = size_for_text;
+	}
 
 	map_traverse(gmap->map, (HexFunc) display_hex, gmap);
 }
