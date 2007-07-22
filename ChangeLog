@@ -11,7 +11,8 @@
 	the server was effectively always 1pt.
 	* pioneers.nsi.in: Added Afrikaans and Japanese.
 	* pioneers.nsi.in: Added style-*.png
-	* client/ai/computer_names: Corrected spelling of 'Gödel' 
+	* client/ai/computer_names: Corrected spelling of 'Gödel'
+	* README, NEWS: Updated for 0.11.1
 	
 2007-07-21  Roland Clobus <rclobus@bigfoot.com>
 	* server/server.h: Added robber undo in 0.11 change list.

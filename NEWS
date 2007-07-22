@@ -1,3 +1,15 @@
+Subversion Snapshot release 0.11.1
+* New languages: Afrikaans and Japanese
+* Added costumizable player icons
+* Added winnable check in the server and editor
+* New game feature: city walls
+* Map preview in the server
+* Cluster development cards of the same type
+* The chat panel can be moved to the right
+* Lauch the client from the server
+* Cosmetic changes
+* Various bugfixes
+
 Subversion Snapshot release 0.10.2
 * Added --version for all executables
 * Workaround for a Gtk+ bug
