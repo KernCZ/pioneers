@@ -674,10 +674,12 @@ static GtkWidget *build_develop_panel(void)
 
 static gboolean get_16_9_layout(void)
 {
+	GtkWidget *paned;
+
 	g_return_val_if_fail(main_paned != NULL, FALSE);
 	g_return_val_if_fail(chat_panel != NULL, FALSE);
 
-	GtkWidget *paned = gtk_paned_get_child1(GTK_PANED(main_paned));
+	paned = gtk_paned_get_child1(GTK_PANED(main_paned));
 	if (gtk_widget_get_parent(chat_panel) == paned)
 		return FALSE;
 	return TRUE;

@@ -1518,8 +1518,9 @@ gboolean mode_robber_move_response(StateMachine * sm, gint event)
 			return TRUE;
 		}
 		if (sm_recv(sm, "rob %d %d", &x, &y)) {
+			Hex *hex;
 			waiting_for_network(FALSE);
-			Hex *hex = map_hex(map, x, y);
+			hex = map_hex(map, x, y);
 			if (hex->terrain == SEA_TERRAIN)
 				sm_push(sm, mode_robber_steal_ship);
 			else
