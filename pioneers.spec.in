@@ -8,37 +8,22 @@ Url: 		http://pio.sourceforge.net/
 Packager: 	Steve Langasek <vorlon@dodds.net>
 Source: 	http://prdownloads.sourceforge.net/pio/@PACKAGE_TARNAME@-@VERSION@.tar.gz
 BuildRoot: 	%{_tmppath}/%{name}-%{version}-%{release}-root
+BuildRequires:  libgnome-devel, scrollkeeper
+BuildRequires:	gtk2-devel >= @GTK_REQUIRED_VERSION@
+BuildRequires:	glib2-devel >= @GLIB_REQUIRED_VERSION@
+Requires(post):	scrollkeeper
 
 %description 
 Pioneers is an Internet playable implementation of the Settlers of
 Catan board game.  The aim is to remain as faithful to the board game
 as is possible.
 
-%package 	client
-Summary: 	Pioneers Client
-Group: 		Amusements/Games
-
-%description 	client
-Pioneers is an Internet playable implementation of the Settlers of
-Catan board game.  The aim is to remain as faithful to the board game
-as is possible.
-
 This is the client software to play the game.
-
-%package 	help
-Summary: 	Pioneers Help
-Group: 		Amusements/Games
-
-%description 	help
-Pioneers is an Internet playable implementation of the Settlers of
-Catan board game.  The aim is to remain as faithful to the board game
-as is possible.
-
-This package contains the help files.
 
 %package 	ai
 Summary:	Pioneers AI Player
 Group:		Amusements/Games
+
 %description 	ai
 Pioneers is an Internet playable implementation of the Settlers of
 Catan board game.  The aim is to remain as faithful to the board game
@@ -50,6 +35,7 @@ This package contains a computer player that can take part in Pioneers games.
 Summary:	Pioneers Console Server
 Group:		Amusements/Games
 Requires:	pioneers-server-data
+
 %description 	server-console
 Pioneers is an Internet playable implementation of the Settlers of
 Catan board game.  The aim is to remain as faithful to the board game
@@ -58,7 +44,8 @@ as is possible.
 %package 	server-gtk
 Summary:	Pioneers GTK Server
 Group:		Amusements/Games
-Requires:	pioneers-server-data
+Requires:	pioneers, pioneers-server-data
+
 %description 	server-gtk
 Pioneers is an Internet playable implementation of the Settlers of
 Catan board game.  The aim is to remain as faithful to the board game
@@ -84,7 +71,7 @@ This package contains the data files for a game server.
 %package 	meta-server
 Summary:	Pioneers Meta Server
 Group:		Amusements/Games
-Requires:	pioneers-server-console
+
 %description 	meta-server
 Pioneers is an Internet playable implementation of the Settlers of
 Catan board game.  The aim is to remain as faithful to the board game
@@ -96,7 +83,8 @@ players. It can also create new servers on client request.
 %package	editor
 Summary:	Pioneers Game Editor
 Group:		Amusements/Games
-Requires:	pioneers-client, pioneers-server-data
+Requires:	pioneers, pioneers-server-data
+
 %description	editor
 Pioneers is an Internet playable implementation of the Settlers of
 Catan board game.  The aim is to remain as faithful to the board game
@@ -109,66 +97,53 @@ graphically.
 %setup -q
 
 %build
-CFLAGS="$RPM_OPT_FLAGS" ./autogen.sh --prefix=/usr
+%configure
 make
 
 %install
-rm -rf $RPM_BUILD_ROOT
-make install prefix=$RPM_BUILD_ROOT/usr
-rm -rf $RPM_BUILD_ROOT/usr/var/scrollkeeper
+make install DESTDIR="%buildroot"
+rm -rf %{buildroot}%{localstatedir}/scrollkeeper/
+%find_lang %{name}
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
-%files client
+%files -f %name.lang
 %defattr(-,root,root)
 %doc AUTHORS COPYING ChangeLog INSTALL README NEWS 
-%doc /usr/man/man6/pioneers.6.gz
+%doc %_mandir/man6/pioneers.6.gz
 %{_bindir}/pioneers
 %{_datadir}/applications/pioneers.desktop
 %{_datadir}/pixmaps/pioneers.png
 %{_datadir}/pixmaps/pioneers/*
 %{_datadir}/games/pioneers/themes/*
-%{_datadir}/locale/af/LC_MESSAGES/pioneers.mo
-%{_datadir}/locale/de/LC_MESSAGES/pioneers.mo
-%{_datadir}/locale/es/LC_MESSAGES/pioneers.mo
-%{_datadir}/locale/fr/LC_MESSAGES/pioneers.mo
-%{_datadir}/locale/hu/LC_MESSAGES/pioneers.mo
-%{_datadir}/locale/it/LC_MESSAGES/pioneers.mo
-%{_datadir}/locale/ja/LC_MESSAGES/pioneers.mo
-%{_datadir}/locale/nl/LC_MESSAGES/pioneers.mo
-%{_datadir}/locale/sv/LC_MESSAGES/pioneers.mo
-
-%files help
-%defattr(-,root,root)
-%doc AUTHORS COPYING ChangeLog INSTALL README NEWS
 %{_datadir}/gnome/help/pioneers/C/*.xml
 %{_datadir}/gnome/help/pioneers/C/images/*
 %{_datadir}/omf/pioneers/pioneers-C.omf
 
-%post help
-if which scrollkeeper-update>/dev/null 2>&1; then scrollkeeper-update -q -o %{_datadir}/omf/pioneers; fi
+%post
+scrollkeeper-update -q -o %{_datadir}/omf/pioneers
 
-%postun help
-if which scrollkeeper-update>/dev/null 2>&1; then scrollkeeper-update -q; fi
+%postun
+scrollkeeper-update -q
 
 %files ai
 %defattr(-,root,root)
 %doc AUTHORS COPYING ChangeLog INSTALL README NEWS 
-%doc /usr/man/man6/pioneersai.6.gz
+%doc %_mandir/man6/pioneersai.6.gz
 %{_bindir}/pioneersai
 %{_datadir}/games/pioneers/computer_names
 
 %files server-console
 %defattr(-,root,root)
 %doc AUTHORS COPYING ChangeLog INSTALL README NEWS 
-%doc /usr/man/man6/pioneers-server-console.6.gz
+%doc %_mandir/man6/pioneers-server-console.6.gz
 %{_bindir}/pioneers-server-console
 
 %files server-gtk
 %defattr(-,root,root)
 %doc AUTHORS COPYING ChangeLog INSTALL README NEWS 
-%doc /usr/man/man6/pioneers-server-gtk.6.gz
+%doc %_mandir/man6/pioneers-server-gtk.6.gz
 %{_bindir}/pioneers-server-gtk
 %{_datadir}/pixmaps/pioneers-server.png
 %{_datadir}/applications/pioneers-server.desktop
@@ -180,7 +155,7 @@ if which scrollkeeper-update>/dev/null 2>&1; then scrollkeeper-update -q; fi
 
 %files meta-server
 %defattr(-,root,root)
-%doc /usr/man/man6/pioneers-meta-server.6.gz
+%doc %_mandir/man6/pioneers-meta-server.6.gz
 %doc AUTHORS COPYING ChangeLog INSTALL README NEWS 
 %{_bindir}/pioneers-meta-server
 
