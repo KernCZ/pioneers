@@ -9,6 +9,7 @@ Subversion Snapshot release 0.11.1
 * Lauch the client from the server
 * Cosmetic changes
 * Various bugfixes
+* The 0.11 server can also handle 0.10 clients
 
 Subversion Snapshot release 0.10.2
 * Added --version for all executables
