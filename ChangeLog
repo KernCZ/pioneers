@@ -1,5 +1,11 @@
 
 2007-07-22  Roland Clobus <rclobus@bigfoot.com>
+	* configure.ac: Work version is 0.11.2
+
+2007-07-22  Roland Clobus <rclobus@bigfoot.com>
+	* Released version 0.11.1
+
+2007-07-22  Roland Clobus <rclobus@bigfoot.com>
 	* pioneers.spec.in: Updated. It works for openSUSE 10.2.
 	* server/gtk/main.c: Cosmetic changes.
 	* server/server.c, server/server.h, server/admin.c, server/admin.h:
