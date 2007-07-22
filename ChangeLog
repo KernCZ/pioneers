@@ -3,6 +3,7 @@
 	* configure.ac: Work version is 0.11.2
 	* NEWS: Fixed a typo
 	* client/common/client.c, client/common/gui.c: Fixed for gcc-2.95
+	* client/gtk/name.c: make reindent
 
 2007-07-22  Roland Clobus <rclobus@bigfoot.com>
 	* Released version 0.11.1
