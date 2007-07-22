@@ -85,7 +85,7 @@
 #define TCOL_UNSET()		{ FALSE, FALSE, FALSE, { 0, 0, 0, 0 } }
 #define TSCALE				{ NULL, NULL, 0, 0.0 }
 
-static gchar default_name[] = "Default";
+static gchar default_name[] = "Classic";
 
 static MapTheme default_theme = {
 	default_name,
@@ -161,13 +161,11 @@ static gint theme_list_locate(gconstpointer item, gconstpointer data)
 	return strcmp(theme->name, name);
 }
 
-/** Insert the theme alphabetically in the list, but keep 'Default' first */
+/** Insert the theme alphabetically in the list */
 static gint theme_insert_sorted(gconstpointer new, gconstpointer first)
 {
 	const MapTheme *newTheme = new;
 	const MapTheme *firstTheme = first;
-	if (!strcmp(firstTheme->name, default_name))
-		return +1;
 	return strcmp(newTheme->name, firstTheme->name);
 }
 
@@ -218,8 +216,8 @@ void themes_init(void)
 	g_dir_close(dir);
 
 	t = NULL;
-	user_theme = config_get_string("settings/theme", &novar);
-	if (!(novar || !user_theme || !*user_theme)) {
+	user_theme = config_get_string("settings/theme=Tiny", &novar);
+	if (!(!user_theme || !*user_theme)) {
 		GList *result = g_list_find_custom(theme_list, user_theme,
 						   theme_list_locate);
 		if (result)
