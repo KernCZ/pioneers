@@ -9,6 +9,7 @@
 	* common/gtk/theme.c: The default theme is now 'Tiny'.
 	* common/gtk/guimap.c: Use the full size for the map. The font size in
 	the server was effectively always 1pt.
+	* pioneers.nsi.in: Added Afrikaans and Japanese.
 	
 2007-07-21  Roland Clobus <rclobus@bigfoot.com>
 	* server/server.h: Added robber undo in 0.11 change list.
