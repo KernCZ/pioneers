@@ -1,4 +1,7 @@
 
+2007-07-29  Roland Clobus <rclobus@bigfoot.com>
+	* pioneers.nsi.in: Added city_wall.png
+
 2007-07-22  Roland Clobus <rclobus@bigfoot.com>
 	* configure.ac: Work version is 0.11.2
 	* NEWS: Fixed a typo
