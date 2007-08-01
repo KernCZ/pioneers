@@ -19,6 +19,7 @@
 	client/help/C/images/servers-dialog.png,
 	client/help/C/images/lumber.png, client/help/C/images/mountain.png,
 	client/help/C/images/legend-dialog.png: Updated the manual
+	* docs/README.release: Added a note about the manual
 
 2007-07-29  Roland Clobus <rclobus@bigfoot.com>
 	* pioneers.nsi.in: Added city_wall.png
