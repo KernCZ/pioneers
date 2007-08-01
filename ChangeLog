@@ -1,4 +1,25 @@
 
+2007-08-01  Roland Clobus <rclobus@bigfoot.com>
+	* client/help/C/pioneers.xml, client/help/C/images/quote.png,
+	client/help/C/images/trade.png, client/help/C/images/server-create.png,
+	client/help/C/images/plenty-dialog.png, client/help/C/images/sea.png,
+	client/help/C/images/monopoly-dialog.png, client/help/C/images/map.png,
+	client/help/C/images/pasture.png, client/help/C/images/field.png,
+	client/help/C/images/desert.png,
+	client/help/C/images/player-summary.png, client/help/C/images/hill.png,
+	client/help/C/images/identity.png, client/help/C/images/brick.png,
+	client/help/C/images/grain.png, client/help/C/images/actions.png,
+	client/help/C/images/forest.png,
+	client/help/C/images/gameover-dialog.png,
+	client/help/C/images/join-private-dialog.png,
+	client/help/C/images/discard-dialog.png,
+	client/help/C/images/resources.png, client/help/C/images/client.png,
+	client/help/C/images/wool.png, client/help/C/images/gold.png,
+	client/help/C/images/ore.png, client/help/C/images/connect-dialog.png,
+	client/help/C/images/servers-dialog.png,
+	client/help/C/images/lumber.png, client/help/C/images/mountain.png,
+	client/help/C/images/legend-dialog.png: Updated the manual
+
 2007-07-29  Roland Clobus <rclobus@bigfoot.com>
 	* pioneers.nsi.in: Added city_wall.png
 

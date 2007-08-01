@@ -217,6 +217,12 @@
 		<entry>Develop</entry>
 		<entry>Purchase a development card from the bank.</entry>
 	      </row>
+	      <row>
+		<entry>City Wall</entry>
+		<entry>Build a wall around a city. Each city can have at most
+                  one wall. For each wall you are allowed to keep two more
+                  resource cards when a seven is thrown.</entry>
+	      </row>
 	    </tbody>
 	  </tgroup>
 	</table>
@@ -369,23 +375,23 @@
       <para>The sea hexes which have a circle in them have building
         sites for ports where maritime trading can be performed. The
         location of the building sites is indicated by a dashed line
-        drawn from the circle to a hex corner. The color of the circle
+        drawn from the circle to a hex corner. The image in the circle
         indicates the resource type which may be traded at the ports.
         At the blue circles all resource types can be traded.</para>
 
-      <para>The black bottle shape is the robber.</para>
+      <para>The brown bottle shape is the robber.</para>
 
       <para>The following table shows each terrain type, and the resources
         produced by that terrain.</para>
 
       <table id="pioneers-TBL-terrain-types">
         <title>Pioneers terrain types</title>
-	<tgroup cols="4">
-	  <colspec colnum="1" align="center"/>
+	<tgroup cols="5">
 	  <thead>
 	    <row>
 	      <entry>Graphic</entry>
 	      <entry>Terrain</entry>
+	      <entry>Graphic</entry>
 	      <entry>Resource</entry>
 	      <entry>Description</entry>
 	    </row>
@@ -396,6 +402,9 @@
 	        <inlinegraphic fileref="images/hill.png"/>
 	      </entry>
 	      <entry>Hill</entry>
+	      <entry>
+	        <inlinegraphic fileref="images/brick.png"/>
+	      </entry>
 	      <entry>Brick</entry>
 	      <entry>Bricks are produced from the clay found in
 	        hills.</entry>
@@ -405,6 +414,9 @@
 	        <inlinegraphic fileref="images/field.png"/>
 	      </entry>
 	      <entry>Field</entry>
+	      <entry>
+	        <inlinegraphic fileref="images/grain.png"/>
+	      </entry>
 	      <entry>Grain</entry>
 	      <entry>Grain is produced by crops grown in
 	        fields.</entry>
@@ -414,6 +426,9 @@
 	        <inlinegraphic fileref="images/mountain.png"/>
 	      </entry>
 	      <entry>Mountain</entry>
+	      <entry>
+	        <inlinegraphic fileref="images/ore.png"/>
+	      </entry>
 	      <entry>Ore</entry>
 	      <entry>Ore is produced by quarries in mountains.</entry>
 	    </row>
@@ -422,6 +437,9 @@
 	        <inlinegraphic fileref="images/pasture.png"/>
 	      </entry>
 	      <entry>Pasture</entry>
+	      <entry>
+	        <inlinegraphic fileref="images/wool.png"/>
+	      </entry>
 	      <entry>Wool</entry>
 	      <entry>Wool is produced by sheep in pastures.</entry>
 	    </row>
@@ -430,14 +448,27 @@
 	        <inlinegraphic fileref="images/forest.png"/>
 	      </entry>
 	      <entry>Forest</entry>
+	      <entry>
+	        <inlinegraphic fileref="images/lumber.png"/>
+	      </entry>
 	      <entry>Lumber</entry>
 	      <entry>Lumber is produced by trees in forests.</entry>
+	    </row>
+	    <row>
+	      <entry>
+	        <inlinegraphic fileref="images/gold.png"/>
+	      </entry>
+	      <entry>Gold mine</entry>
+	      <entry/>
+	      <entry>Any</entry>
+	      <entry>Any resource can be bought from the mined gold.</entry>
 	    </row>
 	    <row>
 	      <entry>
 	        <inlinegraphic fileref="images/desert.png"/>
 	      </entry>
 	      <entry>Desert</entry>
+	      <entry/>
 	      <entry/>
 	      <entry>No resources are produced in the desert.</entry>
 	    </row>
@@ -446,6 +477,7 @@
 	        <inlinegraphic fileref="images/sea.png"/>
 	      </entry>
 	      <entry>Sea</entry>
+	      <entry/>
 	      <entry/>
 	      <entry>No resources are produced in the sea, but
 	        maritime trading may be performed at ports.</entry>
@@ -624,10 +656,14 @@
           button in the connect dialog. To obtain an updated list, push
 	  the Refresh button.</para>
 
+        <para>Enter the 'Lobby' to meet other players and arrange that
+          one player will start the server with the game you've agreed
+          upon.</para>
+
 	<para>Some meta servers also allow you to start new games
-	  on their host. If this is possible, the New remote game 
-	  button will be active and will bring you to the
-	  Create a public game dialog.</para>
+	  on their host (e.g. <symbol>pioneers.game-host.org</symbol>).
+          If this is possible, the New remote game button will be active
+          and will bring you to the Create a public game dialog.</para>
 
       </sect2>
 
@@ -636,10 +672,10 @@
 
 	<para>In this dialog, you can select various parameters for
 	  the new game: board name (available types will be retrieved
-	  from the meta-server), default or random terrain, 
-	  the number of players, victory points
-	  to reach, which sevens rule to apply 
-	  and how many computer players should join the game.</para>
+	  from the meta-server), the number of players, victory points
+	  to reach, how many computer players should join the game,
+          which sevens rule to apply and whether the terrain should be
+          randomized.</para>
 
 	<figure id="pioneers-FIG-server-create">
 	  <title>The Create a public game dialog</title>
@@ -830,15 +866,14 @@
 	  </screenshot>
 	</figure>
 
-	<para>On the left side of the interface are two frames; the
-	  top frame is where you specify which resources you wish to
-	  receive in a trade, and the bottom frame is where you
+	<para>On the left side of the interface are two tables; the
+	  top table is where you specify which resources you wish to
+	  receive in a trade, and the bottom table is where you
 	  optionally specify which resources you wish to give to other
 	  players during a trade.</para>
 
-	<para>Each frame contains a table, and each row of the table
-	  describes one resource.  From left to right, the columns
-	  are;</para>
+	<para>Each row of the table describes one resource.
+          From left to right, the columns are:</para>
 
 	<table id="pioneers-TBL-resource-controls">
 	  <title>Trade resource controls</title>
@@ -871,9 +906,8 @@
 
 	<para>To the right of the tables is the list where all quotes
 	  will be displayed.  The bank quotes are listed first,
-	  followed by all quotes supplied by other players. The first
-	  quote from each player is highlighted with an indicator.
-	  Next to each player quote is tick or cross which indicates
+	  followed by all quotes supplied by other players.
+	  Next to each quote is tick or cross which indicates
 	  whether or not you have the resources to perform the trade.
 	  As you select quotes from the list, the Accept Quote button
 	  sensitivity will also indicate whether or not you have the
@@ -891,7 +925,8 @@
 	    perform maritime trading, check one or more resources in
 	    the I Want table.  If you have sufficient resources to
 	    perform maritime trading, the bank will quote for each
-	    possible trade.</para>
+	    possible trade. You don't have to press the Call for
+            Quotes button.</para>
 
 	  <itemizedlist id="pioneers-bank-trading-procedure">
 	    <listitem>
@@ -948,18 +983,18 @@
 	    which player initiated the trade.  It also describes the
 	    trade parameters.</para>
 
-	  <para>On the left side of the interface are two frames; the
-	    top frame is where you specify which resources you wish to
-	    receive in a trade, and the bottom frame is where you
+	  <para>On the left side of the interface are two tables; the
+	    top table is where you specify which resources you wish to
+	    receive in a trade, and the bottom table is where you
 	    specify which resources you wish to give to the player who
 	    initiated the trade exchange.</para>
 	  
-	  <para>Each frame contains a table, and each row of the table
+	  <para>Each row of the table
 	    describes one resource.  The player who initiated the
 	    trade controls which rows in each table can be used.  If
 	    the initiating player calls for a resource that you do not
 	    have, the corresponding row in the Give Them table will be
-	    disabled.  From left to right, the columns are;</para>
+	    disabled.  From left to right, the columns are:</para>
 	  
 	  <table id="pioneers-TBL-quote-controls">
 	    <title>Quote resource controls</title>
@@ -1013,7 +1048,7 @@
     <sect1 id="development">
       <title>Development cards</title>
 
-      <para>There are 25 development cards in the game, they are
+      <para>There are 24 development cards in the game, they are
 	shuffled at the start of the game.  When you buy a development
 	card from the bank, it is held secret in your hand.  Other
 	players only learn how many development cards you have, not
@@ -1067,7 +1102,7 @@
 	    <row>
 	      <entry/>
 	      <entry>Soldier</entry>
-	      <entry>14</entry>
+	      <entry>13</entry>
 	      <entry>When you play this card, you must move the robber
 		to a new hex.  The first player to play three soldiers
 		will earn the largest army award.</entry>
@@ -1711,6 +1746,7 @@
 	      <row>
                 <entry>M</entry>
 	        <entry>Short</entry>
+	        <entry>Long</entry>
 		<entry>Type</entry>
 		<entry>Description</entry>
 	      </row>
@@ -1718,100 +1754,145 @@
 	    <tbody>
 	      <row>
                 <entry/>
-	        <entry>-a</entry>
-		<entry>integer</entry>
-		<entry>Admin port to listen on</entry>
-	      </row>
-	      <row>
-                <entry>*</entry>
-	        <entry>-c</entry>
-		<entry>integer</entry>
-		<entry>Number of computer players to add</entry>
-	      </row>
-	      <row>
-                <entry>*</entry>
-	        <entry>-g</entry>
-		<entry>string</entry>
-		<entry>Game name to use</entry>
-              </row>
-	      <row>
-                <entry/>
 	        <entry>-h</entry>
+	        <entry>--help-all</entry>
 		<entry/>
 		<entry>Show help</entry>
               </row>
 	      <row>
                 <entry>*</entry>
-	        <entry>-k</entry>
-		<entry>integer</entry>
-		<entry>Kill after <symbol>n</symbol> seconds with no player</entry>
+	        <entry>-r</entry>
+	        <entry>--register</entry>
+		<entry/>
+		<entry>Register with meta-server</entry>
               </row>
 	      <row>
                 <entry/>
 	        <entry>-m</entry>
+	        <entry>--meta-server</entry>
 		<entry>string</entry>
 		<entry>Register at meta-server name (implies -r)</entry>
               </row>
 	      <row>
                 <entry/>
 	        <entry>-n</entry>
+	        <entry>--hostname</entry>
 		<entry>string</entry>
 		<entry>Use this hostname when registering at the meta-server</entry>
               </row>
 	      <row>
                 <entry>*</entry>
-	        <entry>-P</entry>
-		<entry>integer</entry>
-		<entry>Number of players</entry>
-              </row>
-	      <row>
-                <entry>*</entry>
-	        <entry>-p</entry>
-		<entry>string</entry>
-		<entry>Port to listen on</entry>
-              </row>
-	      <row>
-                <entry>*</entry>
-	        <entry>-r</entry>
+	        <entry>-x</entry>
+	        <entry>--auto-quit</entry>
 		<entry/>
-		<entry>Register with meta-server</entry>
+		<entry>Quit after a player has won</entry>
+              </row>
+	      <row>
+                <entry>*</entry>
+	        <entry>-k</entry>
+	        <entry>--empty-timeout</entry>
+		<entry>integer</entry>
+		<entry>Kill after <symbol>n</symbol> seconds with no player</entry>
               </row>
 	      <row>
                 <entry/>
-	        <entry>-R</entry>
-		<entry>0|1|2</entry>
-		<entry>Seven rule</entry>
+	        <entry>-t</entry>
+	        <entry>--tournament</entry>
+		<entry>integer</entry>
+		<entry>Tournament mode. Computer players are added after %d minutes</entry>
               </row>
+	      <row>
+                <entry/>
+	        <entry>-a</entry>
+	        <entry>--admin-port</entry>
+		<entry>integer</entry>
+		<entry>Admin port to listen on</entry>
+	      </row>
 	      <row>
                 <entry/>
 	        <entry>-s</entry>
+	        <entry>--admin-wait</entry>
 		<entry/>
 		<entry>Don't start game immediately, wait for command on admin port</entry>
               </row>
 	      <row>
                 <entry/>
-	        <entry>-t</entry>
+	        <entry/>
+	        <entry>--fixed-seating-order</entry>
+		<entry/>
+		<entry>Give players numbers according to the order they enter
+                  the game</entry>
+              </row>
+	      <row>
+                <entry/>
+	        <entry/>
+	        <entry>--debug</entry>
+		<entry/>
+		<entry>Enable debug messages</entry>
+              </row>
+	      <row>
+                <entry>*</entry>
+	        <entry>-g</entry>
+	        <entry>--game-title</entry>
+		<entry>string</entry>
+		<entry>Game name to use</entry>
+              </row>
+	      <row>
+                <entry/>
+	        <entry/>
+	        <entry>--file</entry>
+		<entry>string</entry>
+		<entry>Game file to use</entry>
+              </row>
+	      <row>
+                <entry>*</entry>
+	        <entry>-p</entry>
+	        <entry>--port</entry>
+		<entry>string</entry>
+		<entry>Port to listen on</entry>
+              </row>
+	      <row>
+                <entry>*</entry>
+	        <entry>-P</entry>
+	        <entry>--players</entry>
 		<entry>integer</entry>
-		<entry>Tournament mode. Computer players are added after %d minutes</entry>
+		<entry>Number of players</entry>
+              </row>
+	      <row>
+                <entry>*</entry>
+	        <entry>-v</entry>
+	        <entry>--point</entry>
+		<entry>integer</entry>
+		<entry>Number of points needed to win</entry>
+              </row>
+	      <row>
+                <entry/>
+	        <entry>-R</entry>
+	        <entry>--seven-rule</entry>
+		<entry>0|1|2</entry>
+		<entry>Seven rule</entry>
               </row>
 	      <row>
                 <entry>*</entry>
 	        <entry>-T</entry>
+	        <entry>--terrain</entry>
 		<entry>0|1</entry>
 		<entry>Select terrain type (0=default, 1=random)</entry>
               </row>
 	      <row>
                 <entry>*</entry>
-	        <entry>-v</entry>
+	        <entry>-c</entry>
+	        <entry>--computer-players</entry>
 		<entry>integer</entry>
-		<entry>Number of points needed to win</entry>
-              </row>
+		<entry>Number of computer players to add</entry>
+	      </row>
 	      <row>
-                <entry>*</entry>
-	        <entry>-x</entry>
+                <entry/>
+	        <entry/>
+	        <entry>--version</entry>
 		<entry/>
-		<entry>Quit after a player has won</entry>
-              </row>
+		<entry>Show version information</entry>
+	      </row>
             </tbody>
           </tgroup>
         </table>
@@ -1898,6 +1979,18 @@
                 <entry><userinput>admin quit</userinput></entry>
                 <entry>none</entry>
               </row>
+              <row>
+                <entry><userinput>admin send-message</userinput></entry>
+                <entry>string</entry>
+              </row>
+              <row>
+                <entry><userinput>admin help</userinput></entry>
+                <entry>none</entry>
+              </row>
+              <row>
+                <entry><userinput>admin info</userinput></entry>
+                <entry>none</entry>
+              </row>
            </tbody>
           </tgroup>
 	</table>
@@ -1912,7 +2005,7 @@
         </para></note>
         <para>
           When no game is running when <userinput>admin quit</userinput>
-          is issued, the application will quit.
+          is issued, the server will quit.
         </para>
       </sect1>
   </chapter>
