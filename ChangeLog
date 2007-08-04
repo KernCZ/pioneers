@@ -1,4 +1,8 @@
 
+2007-08-04  Roland Clobus <rclobus@bigfoot.com>
+	* common/map_query.c: Added checks against NULL pointers, based on
+	the patch by ffaadd (#1767378), which could crash the server.
+
 2007-08-01  Roland Clobus <rclobus@bigfoot.com>
 	* client/help/C/pioneers.xml, client/help/C/images/quote.png,
 	client/help/C/images/trade.png, client/help/C/images/server-create.png,

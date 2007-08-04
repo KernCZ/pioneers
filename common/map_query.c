@@ -62,6 +62,8 @@ gboolean is_bridge_valid(const Edge * edge, gint owner);
  */
 gboolean is_edge_adjacent_to_node(const Edge * edge, const Node * node)
 {
+	g_return_val_if_fail(edge != NULL, FALSE);
+	g_return_val_if_fail(node != NULL, FALSE);
 	return edge->nodes[0] == node || edge->nodes[1] == node;
 }
 
@@ -70,6 +72,8 @@ gboolean is_edge_adjacent_to_node(const Edge * edge, const Node * node)
 gboolean is_edge_on_land(const Edge * edge)
 {
 	gint idx;
+
+	g_return_val_if_fail(edge != NULL, FALSE);
 
 	for (idx = 0; idx < G_N_ELEMENTS(edge->hexes); idx++) {
 		Hex *hex = edge->hexes[idx];
@@ -85,6 +89,8 @@ gboolean is_edge_on_land(const Edge * edge)
 gboolean is_edge_on_sea(const Edge * edge)
 {
 	gint idx;
+
+	g_return_val_if_fail(edge != NULL, FALSE);
 
 	/* If the pirate is currently next to the edge, then specific sea
 	 * actions should not be possible (building ships is the only
@@ -111,6 +117,8 @@ gboolean is_node_on_land(const Node * node)
 {
 	gint idx;
 
+	g_return_val_if_fail(node != NULL, FALSE);
+
 	for (idx = 0; idx < G_N_ELEMENTS(node->hexes); idx++) {
 		Hex *hex = node->hexes[idx];
 		if (hex != NULL && hex->terrain != SEA_TERRAIN)
@@ -128,6 +136,8 @@ gboolean node_has_edge_owned_by(const Node * node, gint owner,
 {
 	gint idx;
 
+	g_return_val_if_fail(node != NULL, FALSE);
+
 	for (idx = 0; idx < G_N_ELEMENTS(node->edges); idx++)
 		if (node->edges[idx] != NULL
 		    && node->edges[idx]->owner == owner
@@ -141,6 +151,7 @@ gboolean node_has_edge_owned_by(const Node * node, gint owner,
  */
 gboolean node_has_road_owned_by(const Node * node, gint owner)
 {
+	g_return_val_if_fail(node != NULL, FALSE);
 	return node_has_edge_owned_by(node, owner, BUILD_ROAD);
 }
 
@@ -148,6 +159,7 @@ gboolean node_has_road_owned_by(const Node * node, gint owner)
  */
 gboolean node_has_ship_owned_by(const Node * node, gint owner)
 {
+	g_return_val_if_fail(node != NULL, FALSE);
 	return node_has_edge_owned_by(node, owner, BUILD_SHIP);
 }
 
@@ -155,6 +167,7 @@ gboolean node_has_ship_owned_by(const Node * node, gint owner)
  */
 gboolean node_has_bridge_owned_by(const Node * node, gint owner)
 {
+	g_return_val_if_fail(node != NULL, FALSE);
 	return node_has_edge_owned_by(node, owner, BUILD_BRIDGE);
 }
 
@@ -167,6 +180,7 @@ gboolean is_node_spacing_ok(const Node * node)
 {
 	gint idx;
 
+	g_return_val_if_fail(node != NULL, FALSE);
 	for (idx = 0; idx < G_N_ELEMENTS(node->edges); idx++) {
 		Edge *edge = node->edges[idx];
 		gint idx2;
@@ -195,6 +209,7 @@ gboolean is_node_next_to_robber(const Node * node)
 {
 	gint idx;
 
+	g_return_val_if_fail(node != NULL, FALSE);
 	for (idx = 0; idx < G_N_ELEMENTS(node->hexes); idx++)
 		if (node->hexes[idx]->robber)
 			return TRUE;
@@ -207,6 +222,8 @@ gboolean is_node_next_to_robber(const Node * node)
 gboolean is_road_valid(const Edge * edge, gint owner)
 {
 	gint idx;
+
+	g_return_val_if_fail(edge != NULL, FALSE);
 
 	/* Can only build road if edge is adjacent to a land hex
 	 */
@@ -238,6 +255,8 @@ gboolean is_ship_valid(const Edge * edge, gint owner)
 {
 	gint idx;
 
+	g_return_val_if_fail(edge != NULL, FALSE);
+
 	/* Can only build ship if edge is adjacent to a sea hex
 	 */
 	if (!is_edge_on_sea(edge))
@@ -266,6 +285,8 @@ gboolean is_ship_valid(const Edge * edge, gint owner)
 gboolean is_bridge_valid(const Edge * edge, gint owner)
 {
 	gint idx;
+
+	g_return_val_if_fail(edge != NULL, FALSE);
 
 	/* Can only build bridge if edge is not on land
 	 */
@@ -298,6 +319,7 @@ gboolean is_bridge_valid(const Edge * edge, gint owner)
  */
 static gboolean can_adjacent_settlement_be_built(const Edge * edge)
 {
+	g_return_val_if_fail(edge != NULL, FALSE);
 	return can_settlement_be_setup(edge->nodes[0]) ||
 	    can_settlement_be_setup(edge->nodes[1]) ||
 	    edge->nodes[0]->owner >= 0 || edge->nodes[1]->owner >= 0;
@@ -319,6 +341,7 @@ static gboolean can_adjacent_settlement_be_built(const Edge * edge)
  */
 gboolean can_road_be_setup(const Edge * edge)
 {
+	g_return_val_if_fail(edge != NULL, FALSE);
 	return edge->owner < 0 && is_edge_on_land(edge)
 	    && can_adjacent_settlement_be_built(edge);
 }
@@ -339,6 +362,7 @@ gboolean can_road_be_setup(const Edge * edge)
  */
 gboolean can_ship_be_setup(const Edge * edge)
 {
+	g_return_val_if_fail(edge != NULL, FALSE);
 	return edge->owner < 0 && is_edge_on_sea(edge)
 	    && can_adjacent_settlement_be_built(edge);
 }
@@ -359,6 +383,7 @@ gboolean can_ship_be_setup(const Edge * edge)
  */
 gboolean can_bridge_be_setup(const Edge * edge)
 {
+	g_return_val_if_fail(edge != NULL, FALSE);
 	return edge->owner < 0 && !is_edge_on_land(edge)
 	    && can_adjacent_settlement_be_built(edge);
 }
@@ -377,6 +402,7 @@ gboolean can_bridge_be_setup(const Edge * edge)
  */
 gboolean can_road_be_built(const Edge * edge, gint owner)
 {
+	g_return_val_if_fail(edge != NULL, FALSE);
 	return edge->owner < 0 && is_road_valid(edge, owner);
 }
 
@@ -394,6 +420,7 @@ gboolean can_road_be_built(const Edge * edge, gint owner)
  */
 gboolean can_ship_be_built(const Edge * edge, gint owner)
 {
+	g_return_val_if_fail(edge != NULL, FALSE);
 	return edge->owner < 0 && is_ship_valid(edge, owner);
 }
 
@@ -402,6 +429,10 @@ static gboolean can_ship_be_moved_node(const Node * node, gint owner,
 				       const Edge * not)
 {
 	gint idx;
+
+	g_return_val_if_fail(node != NULL, FALSE);
+	g_return_val_if_fail(not != NULL, FALSE);
+
 	/* if a building of a different player is on it, it is
 	 * unconnected */
 	if (node->type != BUILD_NONE && node->owner != owner)
@@ -433,6 +464,7 @@ static gboolean can_ship_be_moved_node(const Node * node, gint owner,
 gboolean can_ship_be_moved(const Edge * edge, gint owner)
 {
 	gint idx;
+	g_return_val_if_fail(edge != NULL, FALSE);
 	/* edge must be a ship of the correct user */
 	if (edge->owner != owner || edge->type != BUILD_SHIP)
 		return FALSE;
@@ -460,6 +492,7 @@ gboolean can_ship_be_moved(const Edge * edge, gint owner)
  */
 gboolean can_bridge_be_built(const Edge * edge, gint owner)
 {
+	g_return_val_if_fail(edge != NULL, FALSE);
 	return edge->owner < 0 && is_bridge_valid(edge, owner);
 }
 
@@ -481,6 +514,7 @@ gboolean can_bridge_be_built(const Edge * edge, gint owner)
  */
 gboolean can_settlement_be_setup(const Node * node)
 {
+	g_return_val_if_fail(node != NULL, FALSE);
 	return !node->no_setup && node->owner < 0 && is_node_on_land(node)
 	    && is_node_spacing_ok(node);
 }
@@ -497,6 +531,7 @@ gboolean can_settlement_be_setup(const Node * node)
  */
 gboolean can_settlement_be_built(const Node * node, gint owner)
 {
+	g_return_val_if_fail(node != NULL, FALSE);
 	return node->owner < 0 && (node_has_road_owned_by(node, owner)
 				   || node_has_ship_owned_by(node, owner)
 				   || node_has_bridge_owned_by(node,
@@ -512,6 +547,7 @@ gboolean can_settlement_be_built(const Node * node, gint owner)
  */
 gboolean can_settlement_be_upgraded(const Node * node, gint owner)
 {
+	g_return_val_if_fail(node != NULL, FALSE);
 	return node->owner == owner && node->type == BUILD_SETTLEMENT;
 }
 
@@ -530,6 +566,7 @@ gboolean can_settlement_be_upgraded(const Node * node, gint owner)
  */
 gboolean can_city_be_built(const Node * node, gint owner)
 {
+	g_return_val_if_fail(node != NULL, FALSE);
 	if (can_settlement_be_upgraded(node, owner))
 		return TRUE;
 
@@ -548,6 +585,7 @@ gboolean can_city_be_built(const Node * node, gint owner)
  */
 gboolean can_city_wall_be_built(const Node * node, gint owner)
 {
+	g_return_val_if_fail(node != NULL, FALSE);
 	return node->owner == owner && node->type == BUILD_CITY &&
 	    !node->city_wall;
 }
@@ -562,6 +600,7 @@ gboolean can_city_wall_be_built(const Node * node, gint owner)
  */
 gboolean can_robber_or_pirate_be_moved(const Hex * hex)
 {
+	g_return_val_if_fail(hex != NULL, FALSE);
 	if (hex->terrain == SEA_TERRAIN)
 		return (hex->map->has_pirate)
 		    && (hex != hex->map->pirate_hex);
@@ -576,6 +615,8 @@ static gboolean can_place_road_check(G_GNUC_UNUSED Map * map, Hex * hex,
 {
 	gint idx;
 
+	g_return_val_if_fail(hex != NULL, FALSE);
+	g_return_val_if_fail(owner != NULL, FALSE);
 	for (idx = 0; idx < G_N_ELEMENTS(hex->edges); idx++)
 		if (can_road_be_built(hex->edges[idx], *owner))
 			return TRUE;
@@ -589,6 +630,8 @@ static gboolean can_place_ship_check(G_GNUC_UNUSED Map * map, Hex * hex,
 {
 	gint idx;
 
+	g_return_val_if_fail(hex != NULL, FALSE);
+	g_return_val_if_fail(owner != NULL, FALSE);
 	for (idx = 0; idx < G_N_ELEMENTS(hex->edges); idx++)
 		if (can_ship_be_built(hex->edges[idx], *owner))
 			return TRUE;
@@ -602,6 +645,8 @@ static gboolean can_place_bridge_check(G_GNUC_UNUSED Map * map, Hex * hex,
 {
 	gint idx;
 
+	g_return_val_if_fail(hex != NULL, FALSE);
+	g_return_val_if_fail(owner != NULL, FALSE);
 	for (idx = 0; idx < G_N_ELEMENTS(hex->edges); idx++)
 		if (can_bridge_be_built(hex->edges[idx], *owner))
 			return TRUE;
@@ -615,6 +660,7 @@ static gboolean can_place_bridge_check(G_GNUC_UNUSED Map * map, Hex * hex,
  */
 gboolean map_can_place_road(Map * map, gint owner)
 {
+	g_return_val_if_fail(map != NULL, FALSE);
 	return map_traverse(map, (HexFunc) can_place_road_check, &owner);
 }
 
@@ -625,6 +671,7 @@ gboolean map_can_place_road(Map * map, gint owner)
  */
 gboolean map_can_place_ship(Map * map, gint owner)
 {
+	g_return_val_if_fail(map != NULL, FALSE);
 	return map_traverse(map, (HexFunc) can_place_ship_check, &owner);
 }
 
@@ -635,6 +682,7 @@ gboolean map_can_place_ship(Map * map, gint owner)
  */
 gboolean map_can_place_bridge(Map * map, gint owner)
 {
+	g_return_val_if_fail(map != NULL, FALSE);
 	return map_traverse(map, (HexFunc) can_place_bridge_check, &owner);
 }
 
@@ -645,6 +693,8 @@ static gboolean can_place_settlement_check(G_GNUC_UNUSED Map * map,
 {
 	gint idx;
 
+	g_return_val_if_fail(hex != NULL, FALSE);
+	g_return_val_if_fail(owner != NULL, FALSE);
 	for (idx = 0; idx < G_N_ELEMENTS(hex->nodes); idx++)
 		if (can_settlement_be_built(hex->nodes[idx], *owner))
 			return TRUE;
@@ -658,6 +708,7 @@ static gboolean can_place_settlement_check(G_GNUC_UNUSED Map * map,
  */
 gboolean map_can_place_settlement(Map * map, gint owner)
 {
+	g_return_val_if_fail(map != NULL, FALSE);
 	return map_traverse(map, (HexFunc) can_place_settlement_check,
 			    &owner);
 }
@@ -669,6 +720,8 @@ static gboolean can_upgrade_settlement_check(G_GNUC_UNUSED Map * map,
 {
 	gint idx;
 
+	g_return_val_if_fail(hex != NULL, FALSE);
+	g_return_val_if_fail(owner != NULL, FALSE);
 	for (idx = 0; idx < G_N_ELEMENTS(hex->nodes); idx++)
 		if (can_settlement_be_upgraded(hex->nodes[idx], *owner))
 			return TRUE;
@@ -682,6 +735,7 @@ static gboolean can_upgrade_settlement_check(G_GNUC_UNUSED Map * map,
  */
 gboolean map_can_upgrade_settlement(Map * map, gint owner)
 {
+	g_return_val_if_fail(map != NULL, FALSE);
 	return map_traverse(map, (HexFunc) can_upgrade_settlement_check,
 			    &owner);
 }
@@ -693,6 +747,8 @@ static gboolean can_place_city_wall_check(G_GNUC_UNUSED Map * map,
 {
 	gint idx;
 
+	g_return_val_if_fail(hex != NULL, FALSE);
+	g_return_val_if_fail(owner != NULL, FALSE);
 	for (idx = 0; idx < G_N_ELEMENTS(hex->nodes); idx++)
 		if (can_city_wall_be_built(hex->nodes[idx], *owner))
 			return TRUE;
@@ -706,6 +762,7 @@ static gboolean can_place_city_wall_check(G_GNUC_UNUSED Map * map,
  */
 gboolean map_can_place_city_wall(Map * map, gint owner)
 {
+	g_return_val_if_fail(map != NULL, FALSE);
 	return map_traverse(map, (HexFunc) can_place_city_wall_check,
 			    &owner);
 }
@@ -716,7 +773,9 @@ gboolean map_can_place_city_wall(Map * map, gint owner)
 gboolean map_building_spacing_ok(Map * map, gint owner,
 				 BuildType type, gint x, gint y, gint pos)
 {
-	Node *node = map_node(map, x, y, pos);
+	Node *node;
+	g_return_val_if_fail(map != NULL, FALSE);
+	node = map_node(map, x, y, pos);
 	if (node == NULL)
 		return FALSE;
 
@@ -739,7 +798,9 @@ gboolean map_building_connect_ok(Map * map, gint owner,
 				 G_GNUC_UNUSED BuildType type, gint x,
 				 gint y, gint pos)
 {
-	Node *node = map_node(map, x, y, pos);
+	Node *node;
+	g_return_val_if_fail(map != NULL, FALSE);
+	node = map_node(map, x, y, pos);
 	if (node == NULL)
 		return FALSE;
 
@@ -751,7 +812,9 @@ gboolean map_building_connect_ok(Map * map, gint owner,
 gboolean map_building_vacant(Map * map, BuildType type,
 			     gint x, gint y, gint pos)
 {
-	Node *node = map_node(map, x, y, pos);
+	Node *node;
+	g_return_val_if_fail(map != NULL, FALSE);
+	node = map_node(map, x, y, pos);
 	if (node == NULL)
 		return FALSE;
 
@@ -777,21 +840,27 @@ gboolean map_building_vacant(Map * map, BuildType type,
 
 gboolean map_road_vacant(Map * map, gint x, gint y, gint pos)
 {
-	Edge *edge = map_edge(map, x, y, pos);
+	Edge *edge;
+	g_return_val_if_fail(map != NULL, FALSE);
+	edge = map_edge(map, x, y, pos);
 
 	return edge != NULL && edge->owner < 0;
 }
 
 gboolean map_ship_vacant(Map * map, gint x, gint y, gint pos)
 {
-	Edge *edge = map_edge(map, x, y, pos);
+	Edge *edge;
+	g_return_val_if_fail(map != NULL, FALSE);
+	edge = map_edge(map, x, y, pos);
 
 	return edge != NULL && edge->owner < 0;
 }
 
 gboolean map_bridge_vacant(Map * map, gint x, gint y, gint pos)
 {
-	Edge *edge = map_edge(map, x, y, pos);
+	Edge *edge;
+	g_return_val_if_fail(map != NULL, FALSE);
+	edge = map_edge(map, x, y, pos);
 
 	return edge != NULL && edge->owner < 0;
 }
@@ -802,7 +871,9 @@ gboolean map_bridge_vacant(Map * map, gint x, gint y, gint pos)
 gboolean map_road_connect_ok(Map * map, gint owner, gint x, gint y,
 			     gint pos)
 {
-	Edge *edge = map_edge(map, x, y, pos);
+	Edge *edge;
+	g_return_val_if_fail(map != NULL, FALSE);
+	edge = map_edge(map, x, y, pos);
 	if (edge == NULL)
 		return FALSE;
 
@@ -815,7 +886,9 @@ gboolean map_road_connect_ok(Map * map, gint owner, gint x, gint y,
 gboolean map_ship_connect_ok(Map * map, gint owner, gint x, gint y,
 			     gint pos)
 {
-	Edge *edge = map_edge(map, x, y, pos);
+	Edge *edge;
+	g_return_val_if_fail(map != NULL, FALSE);
+	edge = map_edge(map, x, y, pos);
 	if (edge == NULL)
 		return FALSE;
 
@@ -828,7 +901,9 @@ gboolean map_ship_connect_ok(Map * map, gint owner, gint x, gint y,
 gboolean map_bridge_connect_ok(Map * map, gint owner, gint x, gint y,
 			       gint pos)
 {
-	Edge *edge = map_edge(map, x, y, pos);
+	Edge *edge;
+	g_return_val_if_fail(map != NULL, FALSE);
+	edge = map_edge(map, x, y, pos);
 	if (edge == NULL)
 		return FALSE;
 
@@ -848,6 +923,7 @@ static gint find_longest_road_recursive(Edge * edge)
 {
 	gint len = 0;
 	gint nodeidx, edgeidx;
+	g_return_val_if_fail(edge != NULL, 0);
 	edge->visited = TRUE;
 	/* check all nodes to see which one make the longer road. */
 	for (nodeidx = 0; nodeidx < G_N_ELEMENTS(edge->nodes); nodeidx++) {
@@ -893,6 +969,8 @@ static gboolean find_longest_road(G_GNUC_UNUSED Map * map, Hex * hex,
 				  gint * lengths)
 {
 	gint idx;
+	g_return_val_if_fail(hex != NULL, FALSE);
+	g_return_val_if_fail(lengths != NULL, FALSE);
 	for (idx = 0; idx < G_N_ELEMENTS(hex->edges); idx++) {
 		Edge *edge = hex->edges[idx];
 		gint len;
@@ -915,6 +993,7 @@ static gboolean zero_visited(G_GNUC_UNUSED Map * map, Hex * hex,
 {
 	gint idx;
 
+	g_return_val_if_fail(hex != NULL, FALSE);
 	for (idx = 0; idx < G_N_ELEMENTS(hex->edges); idx++) {
 		Edge *edge = hex->edges[idx];
 		edge->visited = FALSE;
@@ -933,6 +1012,9 @@ static gboolean zero_visited(G_GNUC_UNUSED Map * map, Hex * hex,
  */
 void map_longest_road(Map * map, gint * lengths, gint num_players)
 {
+	g_return_if_fail(map != NULL);
+	g_return_if_fail(lengths != NULL);
+
 	map_traverse(map, (HexFunc) zero_visited, NULL);
 	memset(lengths, 0, num_players * sizeof(*lengths));
 	map_traverse(map, (HexFunc) find_longest_road, lengths);
@@ -942,6 +1024,8 @@ static gboolean map_island_recursive(Map * map, Node * node, gint owner)
 {
 	gint idx;
 	gboolean discovered;
+
+	g_return_val_if_fail(map != NULL, FALSE);
 
 	if (node == NULL)
 		return FALSE;
@@ -995,6 +1079,8 @@ static gboolean map_island_recursive(Map * map, Node * node, gint owner)
 /* Has anything be built by this player on this island */
 gboolean map_is_island_discovered(Map * map, Node * node, gint owner)
 {
+	g_return_val_if_fail(map != NULL, FALSE);
+	g_return_val_if_fail(node != NULL, FALSE);
 	map_traverse(map, (HexFunc) zero_visited, NULL);
 	return map_island_recursive(map, node, owner);
 }
@@ -1004,6 +1090,9 @@ gboolean map_is_island_discovered(Map * map, Node * node, gint owner)
 static gboolean find_maritime(G_GNUC_UNUSED Map * map, Hex * hex,
 			      MaritimeInfo * info)
 {
+	g_return_val_if_fail(hex != NULL, FALSE);
+	g_return_val_if_fail(info != NULL, FALSE);
+
 	if (hex->terrain != SEA_TERRAIN || hex->resource == NO_RESOURCE)
 		return FALSE;
 
@@ -1023,6 +1112,8 @@ static gboolean find_maritime(G_GNUC_UNUSED Map * map, Hex * hex,
  */
 void map_maritime_info(Map * map, MaritimeInfo * info, gint owner)
 {
+	g_return_if_fail(map != NULL);
+	g_return_if_fail(info != NULL);
 	memset(info, 0, sizeof(*info));
 	info->owner = owner;
 	map_traverse(map, (HexFunc) find_maritime, info);
@@ -1038,6 +1129,8 @@ static gboolean count_islands(Map * map, Hex * hex, gpointer info)
 {
 	IslandCount *count = info;
 	HexDirection direction;
+
+	g_return_val_if_fail(map != NULL, FALSE);
 
 	if (hex == NULL)
 		return FALSE;
@@ -1063,6 +1156,8 @@ static gboolean count_islands(Map * map, Hex * hex, gpointer info)
 guint map_count_islands(Map * map)
 {
 	IslandCount island_count;
+
+	g_return_val_if_fail(map != NULL, 0u);
 
 	memset(island_count.visited, 0, sizeof(island_count.visited));
 	island_count.count = 0;
