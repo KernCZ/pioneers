@@ -218,7 +218,7 @@ static gboolean ping_function(gpointer s)
 		/* There was no response to the ping in time.  The connection
 		 * should be considered dead.  */
 		log_message(MSG_ERROR,
-			    "No activity and no response to ping.  Closing connection");
+			    "No activity and no response to ping.  Closing connection\n");
 		close_and_callback(ses);
 	} else if (interval >= PING_PERIOD) {
 		/* There was no activity.
