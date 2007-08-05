@@ -5,8 +5,8 @@ Release: 	1
 Group: 		Amusements/Games
 License: 	GPL
 Url: 		http://pio.sourceforge.net/
-Packager: 	Steve Langasek <vorlon@dodds.net>
-Source: 	http://prdownloads.sourceforge.net/pio/@PACKAGE_TARNAME@-@VERSION@.tar.gz
+Packager: 	The Pioneers developers <pio-develop@lists.sourceforge.net>
+Source: 	http://downloads.sourceforge.net/pio/@PACKAGE_TARNAME@-@VERSION@.tar.gz
 BuildRoot: 	%{_tmppath}/%{name}-%{version}-%{release}-root
 BuildRequires:  libgnome-devel, scrollkeeper
 BuildRequires:	gtk2-devel >= @GTK_REQUIRED_VERSION@
