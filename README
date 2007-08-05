@@ -42,14 +42,14 @@ This section is intended to make it easier for those people that wish to
 build RPMs from the source included in this package, but aren't sure how.
 
 1) Copy pioneers-<version>.tar.gz to your RPM SOURCES directory. Usually
-   this is /usr/src/SOURCES
+   this is /usr/src/packages/SOURCES
 
 2) In your RPM SOURCES directory, issue the command
    'rpmbuild -ta pioneers.spec'.
    This will cause rpm to extract the pioneers sources to a temporary
    directory, build them, and build rpm packages based on the information in
    the spec file. The binary rpms will be put into your RPM RPMS directory.
-   Usually this is /usr/src/RPMS/<platform>/.
+   Usually this is /usr/src/packages/RPMS/<platform>/.
 
 If you have any further questions, please refer to the RPM documentation.
 

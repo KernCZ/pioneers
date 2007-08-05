@@ -4,6 +4,7 @@
 	* common/network.c: Added \n after a log message.
 	* pioneers.spec.in: Corrected download location, changed packager name.
 	* docs/README.release: Updated release script
+	* README, NEWS, client/ai/lobbybot.c: Prepare for release 0.11.2
 
 2007-08-05  Bas Wijnen <shevek@fmf.nl>
 	* client/common/client.c: Fixed OK button in discard dialog

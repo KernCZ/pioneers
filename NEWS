@@ -1,3 +1,7 @@
+Subversion Snapshot release 0.11.2
+* Fixed a bug: It as not possible to press the OK button when discard cards
+  after a seven was rolled
+
 Subversion Snapshot release 0.11.1
 * New languages: Afrikaans and Japanese
 * Added customizable player icons
