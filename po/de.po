@@ -7,9 +7,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Pioneers 0.11.1\n"
+"Project-Id-Version: Pioneers 0.11.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-12 21:45+0200\n"
+"POT-Creation-Date: 2007-08-05 11:05+0200\n"
 "PO-Revision-Date: 2007-07-22 16:35+0000\n"
 "Last-Translator: Pit Garbe <piiit@gmx.de>\n"
 "Language-Team: Pit Garbe <piiit@gmx.de>, Roman Hodek <roman@hodek.net>, de "
@@ -319,7 +319,7 @@ msgstr "Das Spiel beginnt. Ich werde nicht mehr benötigt. Auf Wiedersehen."
 msgid "Waiting"
 msgstr "Warte"
 
-#: ../client/common/client.c:105 ../client/common/client.c:1240
+#: ../client/common/client.c:105 ../client/common/client.c:1241
 msgid "Idle"
 msgstr "Untätig"
 
@@ -328,8 +328,8 @@ msgid "We have been kicked out of the game.\n"
 msgstr "Du wurdest aus dem Spiel geworfen.\n"
 
 #. Network status: offline
-#: ../client/common/client.c:450 ../client/common/client.c:890
-#: ../client/gtk/gui.c:1338
+#: ../client/common/client.c:450 ../client/common/client.c:891
+#: ../client/gtk/gui.c:1340
 msgid "Offline"
 msgstr "Offline"
 
@@ -359,7 +359,7 @@ msgid "%s receives %s.\n"
 msgstr "%s bekommt %s.\n"
 
 #. Year of Plenty
-#: ../client/common/client.c:637 ../client/common/client.c:2581
+#: ../client/common/client.c:637 ../client/common/client.c:2586
 #, c-format
 msgid "%s takes %s.\n"
 msgstr "%s nimmt %s.\n"
@@ -374,87 +374,87 @@ msgstr "%s zahlt %s.\n"
 msgid "%s is refunded %s.\n"
 msgstr "%s erhält %s zurück.\n"
 
-#: ../client/common/client.c:678
+#: ../client/common/client.c:679
 #, c-format
 msgid "%s discarded %s.\n"
 msgstr "%s hat %s abgelegt.\n"
 
-#: ../client/common/client.c:848
+#: ../client/common/client.c:849
 msgid "Loading"
 msgstr "Lade"
 
-#: ../client/common/client.c:891
+#: ../client/common/client.c:892
 msgid "Version mismatch"
 msgstr "Versionsunterschied"
 
-#: ../client/common/client.c:893
+#: ../client/common/client.c:894
 msgid "Version mismatch. Please make sure client and server are up to date.\n"
 msgstr ""
 "Versionsunterschied. Bitte stelle sicher, dass der Client und der Server auf "
 "dem neuesten Stand sind.\n"
 
-#: ../client/common/client.c:1339
+#: ../client/common/client.c:1340
 msgid "Build two settlements, each with a connecting"
 msgstr "Baue zwei Siedlungen mit je einer verbundenen"
 
-#: ../client/common/client.c:1342
+#: ../client/common/client.c:1343
 msgid "Build a settlement with a connecting"
 msgstr "Baue eine Siedlung mit einer verbundenen"
 
-#: ../client/common/client.c:1345
+#: ../client/common/client.c:1346
 msgid "road"
 msgstr "Straße"
 
-#: ../client/common/client.c:1347
+#: ../client/common/client.c:1348
 msgid "bridge"
 msgstr "Brücke"
 
-#: ../client/common/client.c:1349
+#: ../client/common/client.c:1350
 msgid "ship"
 msgstr "Schiff"
 
-#: ../client/common/client.c:1357
+#: ../client/common/client.c:1358
 msgid " or"
 msgstr " oder"
 
-#: ../client/common/client.c:1415
+#: ../client/common/client.c:1416
 msgid "Waiting for your turn"
 msgstr "Warte auf deinen Zug"
 
-#: ../client/common/client.c:1467
+#: ../client/common/client.c:1468
 msgid "Select the building to steal from."
 msgstr "Wähle das Gebäude, von dem gestohlen werden soll."
 
-#: ../client/common/client.c:1489
+#: ../client/common/client.c:1490
 msgid "Select the ship to steal from."
 msgstr "Wähle das Schiff, von dem du stehlen willst."
 
-#: ../client/common/client.c:1573 ../client/gtk/interface.c:782
+#: ../client/common/client.c:1575 ../client/gtk/interface.c:782
 msgid "Place the robber"
 msgstr "Setze den Räuber"
 
-#: ../client/common/client.c:1623
+#: ../client/common/client.c:1625
 msgid "Finish the road building action."
 msgstr "Beende die Straßenbauaktion."
 
-#: ../client/common/client.c:1625
+#: ../client/common/client.c:1627
 msgid "Build one road segment."
 msgstr "Baue eine Straße."
 
-#: ../client/common/client.c:1627
+#: ../client/common/client.c:1629
 msgid "Build two road segments."
 msgstr "Baue zwei Straßen."
 
-#: ../client/common/client.c:1900 ../client/common/client.c:1994
+#: ../client/common/client.c:1902 ../client/common/client.c:1996
 msgid "It is your turn."
 msgstr "Du bist am Zug."
 
-#: ../client/common/client.c:2088
+#: ../client/common/client.c:2090
 #, c-format
 msgid "Sorry, %s available.\n"
 msgstr "Entschuldigung, %s verfügbar.\n"
 
-#: ../client/common/client.c:2403
+#: ../client/common/client.c:2405
 msgid "The game is over."
 msgstr "Das Spiel ist beendet."
 
@@ -1478,7 +1478,7 @@ msgstr "Ü_ber Pioneers"
 msgid "Information about Pioneers"
 msgstr "Informationen über Pioneers"
 
-#: ../client/gtk/gui.c:266 ../client/gtk/gui.c:1063
+#: ../client/gtk/gui.c:266 ../client/gtk/gui.c:1065
 msgid "Show the manual"
 msgstr "Das Handbuch zeigen"
 
@@ -1520,92 +1520,92 @@ msgstr "Erklärung"
 msgid "Welcome to Pioneers"
 msgstr "Willkommen zu Pioneers"
 
-#: ../client/gtk/gui.c:866
+#: ../client/gtk/gui.c:868
 msgid "Pioneers Preferences"
 msgstr "Pioneers Einstellungen"
 
 #. Label for changing the theme, in the preferences dialog
-#: ../client/gtk/gui.c:896
+#: ../client/gtk/gui.c:898
 msgid "Theme:"
 msgstr "Thema:"
 
-#: ../client/gtk/gui.c:919
+#: ../client/gtk/gui.c:921
 msgid "Choose one of the themes"
 msgstr "Wähle eins der Themen"
 
 #. Label for the option to show the legend
-#: ../client/gtk/gui.c:923
+#: ../client/gtk/gui.c:925
 msgid "Show legend"
 msgstr "Legende Anzeigen"
 
 #. Tooltip for the option to show the legend
-#: ../client/gtk/gui.c:933
+#: ../client/gtk/gui.c:935
 msgid "Show the legend as a page beside the map"
 msgstr "Erklärung als eigene Seite neben der Karte anzeigen"
 
 #. Label for the option to display log messages in color
-#: ../client/gtk/gui.c:938
+#: ../client/gtk/gui.c:940
 msgid "Messages with color"
 msgstr "Nachrichten mit Farben anzeigen"
 
-#: ../client/gtk/gui.c:948
+#: ../client/gtk/gui.c:950
 msgid "Show new messages with color"
 msgstr "Neue Nachrichten mit Farben anzeigen"
 
-#: ../client/gtk/gui.c:953
+#: ../client/gtk/gui.c:955
 msgid "Chat in color of player"
 msgstr "Chat in den Spielerfarben"
 
-#: ../client/gtk/gui.c:964
+#: ../client/gtk/gui.c:966
 msgid "Show new chat messages in the color of the player"
 msgstr "Neue Chatnachrichten in den Farben der Spieler zeigen"
 
 #. Label for the option to display the summary with colors
-#: ../client/gtk/gui.c:969
+#: ../client/gtk/gui.c:971
 msgid "Summary with color"
 msgstr "Zusammenfassung mit Farben anzeigen"
 
-#: ../client/gtk/gui.c:980
+#: ../client/gtk/gui.c:982
 msgid "Use colors in the player summary"
 msgstr "Farben in der Spielerzusammenfassung benutzen"
 
-#: ../client/gtk/gui.c:985
+#: ../client/gtk/gui.c:987
 msgid "Toolbar with shortcuts"
 msgstr "Werkzeugleiste mit Shortcuts"
 
-#: ../client/gtk/gui.c:995
+#: ../client/gtk/gui.c:997
 msgid "Show keyboard shortcuts in the toolbar"
 msgstr "Tastatur-Shortcuts in der Werkzeugleiste zeigen"
 
-#: ../client/gtk/gui.c:1001
+#: ../client/gtk/gui.c:1003
 msgid "Announce new players"
 msgstr "Neue Spieler ankündigen"
 
-#: ../client/gtk/gui.c:1012
+#: ../client/gtk/gui.c:1014
 msgid "Make a sound when a new player or viewer enters the game"
 msgstr ""
 "Spiele ein Geräusch, wenn ein neuer Spieler oder Zuschauer das Spiel betritt"
 
 #. Label for the option to use the 16:9 layout.
-#: ../client/gtk/gui.c:1017
+#: ../client/gtk/gui.c:1019
 msgid "Use 16:9 layout"
 msgstr "Benutze 16:9 Layout"
 
-#: ../client/gtk/gui.c:1028
+#: ../client/gtk/gui.c:1030
 msgid "Use a 16:9 friendly layout for the window"
 msgstr "Benutze ein 16:9-freundliches Layout für das Fenster"
 
-#: ../client/gtk/gui.c:1039
+#: ../client/gtk/gui.c:1041
 msgid "The Pioneers Game"
 msgstr "Das Pioneers-Spiel"
 
 #. Initial text in status bar
-#: ../client/gtk/gui.c:1350
+#: ../client/gtk/gui.c:1352
 msgid "Welcome to Pioneers!"
 msgstr "Willkommen zu Pioneers!"
 
 #. The name of the application
-#: ../client/gtk/gui.c:1461
+#: ../client/gtk/gui.c:1463
 msgid "Pioneers"
 msgstr "Pioneers"
 
@@ -1673,20 +1673,20 @@ msgstr "Entwicklungskarte"
 msgid "Select the resource you wish to monopolise."
 msgstr "Wähle den zu monopolisierenden Rohstoff."
 
-#: ../client/gtk/name.c:124
+#: ../client/gtk/name.c:123
 msgid "Change player name"
 msgstr "Spielernamen ändern"
 
-#: ../client/gtk/name.c:147
+#: ../client/gtk/name.c:146
 msgid "Player Name:"
 msgstr "Spielername:"
 
 #. Set icon preferences
-#: ../client/gtk/name.c:203
+#: ../client/gtk/name.c:202
 msgid "Face:"
 msgstr "Gesicht:"
 
-#: ../client/gtk/name.c:218
+#: ../client/gtk/name.c:217
 msgid "Variant:"
 msgstr "Variante:"
 

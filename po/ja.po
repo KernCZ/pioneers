@@ -7,9 +7,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Pioneers 0.11.1\n"
+"Project-Id-Version: Pioneers 0.11.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-12 21:45+0200\n"
+"POT-Creation-Date: 2007-08-05 11:05+0200\n"
 "PO-Revision-Date: 2007-07-20 05:45+0900\n"
 "Last-Translator: Yasuhiko Takasugi <takasugi@flcl.org>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -317,7 +317,7 @@ msgstr "ゲーム開始。私の仕事は終わり。では。"
 msgid "Waiting"
 msgstr "待機中"
 
-#: ../client/common/client.c:105 ../client/common/client.c:1240
+#: ../client/common/client.c:105 ../client/common/client.c:1241
 msgid "Idle"
 msgstr "待機"
 
@@ -326,8 +326,8 @@ msgid "We have been kicked out of the game.\n"
 msgstr "ゲームからはじき出された。\n"
 
 #. Network status: offline
-#: ../client/common/client.c:450 ../client/common/client.c:890
-#: ../client/gtk/gui.c:1338
+#: ../client/common/client.c:450 ../client/common/client.c:891
+#: ../client/gtk/gui.c:1340
 msgid "Offline"
 msgstr "オフライン"
 
@@ -357,7 +357,7 @@ msgid "%s receives %s.\n"
 msgstr "%s は、 %s を受けとった。\n"
 
 #. Year of Plenty
-#: ../client/common/client.c:637 ../client/common/client.c:2581
+#: ../client/common/client.c:637 ../client/common/client.c:2586
 #, c-format
 msgid "%s takes %s.\n"
 msgstr "%s は、%s　をとる。\n"
@@ -372,85 +372,85 @@ msgstr "%s は、 %s　を使用した。.\n"
 msgid "%s is refunded %s.\n"
 msgstr "%s は %s を見つけられた.\n"
 
-#: ../client/common/client.c:678
+#: ../client/common/client.c:679
 #, c-format
 msgid "%s discarded %s.\n"
 msgstr "%s は、 %s　を失った.\n"
 
-#: ../client/common/client.c:848
+#: ../client/common/client.c:849
 msgid "Loading"
 msgstr "ロード中"
 
-#: ../client/common/client.c:891
+#: ../client/common/client.c:892
 msgid "Version mismatch"
 msgstr "バージョン不整合"
 
-#: ../client/common/client.c:893
+#: ../client/common/client.c:894
 msgid "Version mismatch. Please make sure client and server are up to date.\n"
 msgstr "バージョン不整合。クライアントをチェックしてください。\n"
 
-#: ../client/common/client.c:1339
+#: ../client/common/client.c:1340
 msgid "Build two settlements, each with a connecting"
 msgstr "２つの植民地を建てとそれらをつなぐ"
 
-#: ../client/common/client.c:1342
+#: ../client/common/client.c:1343
 msgid "Build a settlement with a connecting"
 msgstr "接続した植民地を建築"
 
-#: ../client/common/client.c:1345
+#: ../client/common/client.c:1346
 msgid "road"
 msgstr "道"
 
-#: ../client/common/client.c:1347
+#: ../client/common/client.c:1348
 msgid "bridge"
 msgstr "橋"
 
-#: ../client/common/client.c:1349
+#: ../client/common/client.c:1350
 msgid "ship"
 msgstr "船"
 
-#: ../client/common/client.c:1357
+#: ../client/common/client.c:1358
 msgid " or"
 msgstr " または"
 
-#: ../client/common/client.c:1415
+#: ../client/common/client.c:1416
 msgid "Waiting for your turn"
 msgstr "あなたの順番待ち"
 
-#: ../client/common/client.c:1467
+#: ../client/common/client.c:1468
 msgid "Select the building to steal from."
 msgstr "強奪する建築物を選択"
 
-#: ../client/common/client.c:1489
+#: ../client/common/client.c:1490
 msgid "Select the ship to steal from."
 msgstr "強奪する船を選択"
 
-#: ../client/common/client.c:1573 ../client/gtk/interface.c:782
+#: ../client/common/client.c:1575 ../client/gtk/interface.c:782
 msgid "Place the robber"
 msgstr "盗賊配置"
 
-#: ../client/common/client.c:1623
+#: ../client/common/client.c:1625
 msgid "Finish the road building action."
 msgstr "道建設終了"
 
-#: ../client/common/client.c:1625
+#: ../client/common/client.c:1627
 msgid "Build one road segment."
 msgstr "道１つ建築"
 
-#: ../client/common/client.c:1627
+#: ../client/common/client.c:1629
 msgid "Build two road segments."
 msgstr "道２つ建築"
 
-#: ../client/common/client.c:1900 ../client/common/client.c:1994
+#: ../client/common/client.c:1902 ../client/common/client.c:1996
 msgid "It is your turn."
 msgstr "あなたの番"
 
-#: ../client/common/client.c:2088
+#: ../client/common/client.c:2090
 #, c-format
 msgid "Sorry, %s available.\n"
 msgstr "すみません、 %s 使用可能\n"
 
-#: ../client/common/client.c:2403
+#: ../client/common/client.c:2405
 msgid "The game is over."
 msgstr "ゲーム終了"
 
@@ -1474,7 +1474,7 @@ msgstr "_About·Pioneers"
 msgid "Information about Pioneers"
 msgstr "パイオニアに関しての情報"
 
-#: ../client/gtk/gui.c:266 ../client/gtk/gui.c:1063
+#: ../client/gtk/gui.c:266 ../client/gtk/gui.c:1065
 msgid "Show the manual"
 msgstr "マニュアルを見る"
 
@@ -1516,91 +1516,91 @@ msgstr "領域"
 msgid "Welcome to Pioneers"
 msgstr "パイオニアへようこそ"
 
-#: ../client/gtk/gui.c:866
+#: ../client/gtk/gui.c:868
 msgid "Pioneers Preferences"
 msgstr "パイオニア設定"
 
 #. Label for changing the theme, in the preferences dialog
-#: ../client/gtk/gui.c:896
+#: ../client/gtk/gui.c:898
 msgid "Theme:"
 msgstr "テーマ:"
 
-#: ../client/gtk/gui.c:919
+#: ../client/gtk/gui.c:921
 msgid "Choose one of the themes"
 msgstr "テーマの1つを選択"
 
 #. Label for the option to show the legend
-#: ../client/gtk/gui.c:923
+#: ../client/gtk/gui.c:925
 msgid "Show legend"
 msgstr "領域を見る"
 
 #. Tooltip for the option to show the legend
-#: ../client/gtk/gui.c:933
+#: ../client/gtk/gui.c:935
 msgid "Show the legend as a page beside the map"
 msgstr "地図の傍にページとして領域を見せます"
 
 #. Label for the option to display log messages in color
-#: ../client/gtk/gui.c:938
+#: ../client/gtk/gui.c:940
 msgid "Messages with color"
 msgstr "色付きメッセージ"
 
-#: ../client/gtk/gui.c:948
+#: ../client/gtk/gui.c:950
 msgid "Show new messages with color"
 msgstr "色付きで新しいメッセージを見せる"
 
-#: ../client/gtk/gui.c:953
+#: ../client/gtk/gui.c:955
 msgid "Chat in color of player"
 msgstr "プレイヤーの色でチャット"
 
-#: ../client/gtk/gui.c:964
+#: ../client/gtk/gui.c:966
 msgid "Show new chat messages in the color of the player"
 msgstr "プレイヤーの色でチャットの新しいメッセージを表示"
 
 #. Label for the option to display the summary with colors
-#: ../client/gtk/gui.c:969
+#: ../client/gtk/gui.c:971
 msgid "Summary with color"
 msgstr "色付きサマリー"
 
-#: ../client/gtk/gui.c:980
+#: ../client/gtk/gui.c:982
 msgid "Use colors in the player summary"
 msgstr "プレイヤー概要に色をつかう"
 
-#: ../client/gtk/gui.c:985
+#: ../client/gtk/gui.c:987
 msgid "Toolbar with shortcuts"
 msgstr "ショートカット付きツールバー"
 
-#: ../client/gtk/gui.c:995
+#: ../client/gtk/gui.c:997
 msgid "Show keyboard shortcuts in the toolbar"
 msgstr "ツールバーでキーボードショートカット表示"
 
-#: ../client/gtk/gui.c:1001
+#: ../client/gtk/gui.c:1003
 msgid "Announce new players"
 msgstr "新しプレイヤーをアナウンス"
 
-#: ../client/gtk/gui.c:1012
+#: ../client/gtk/gui.c:1014
 msgid "Make a sound when a new player or viewer enters the game"
 msgstr "新しプレイヤーや観戦者がゲームにはいったときに音をならす"
 
 #. Label for the option to use the 16:9 layout.
-#: ../client/gtk/gui.c:1017
+#: ../client/gtk/gui.c:1019
 msgid "Use 16:9 layout"
 msgstr "16:9 レイアウトを使用"
 
-#: ../client/gtk/gui.c:1028
+#: ../client/gtk/gui.c:1030
 msgid "Use a 16:9 friendly layout for the window"
 msgstr "ウィンドウに16:9の使い易いレイアウトを使用"
 
-#: ../client/gtk/gui.c:1039
+#: ../client/gtk/gui.c:1041
 msgid "The Pioneers Game"
 msgstr "パイオニアゲーム"
 
 #. Initial text in status bar
-#: ../client/gtk/gui.c:1350
+#: ../client/gtk/gui.c:1352
 msgid "Welcome to Pioneers!"
 msgstr "ようこそパイオニアへ!"
 
 #. The name of the application
-#: ../client/gtk/gui.c:1461
+#: ../client/gtk/gui.c:1463
 msgid "Pioneers"
 msgstr "パイオニア"
 
@@ -1668,20 +1668,20 @@ msgstr "開発カード"
 msgid "Select the resource you wish to monopolise."
 msgstr "集めたい資源を選択"
 
-#: ../client/gtk/name.c:124
+#: ../client/gtk/name.c:123
 msgid "Change player name"
 msgstr "プレイヤー名を変更"
 
-#: ../client/gtk/name.c:147
+#: ../client/gtk/name.c:146
 msgid "Player Name:"
 msgstr "プレイヤー名:"
 
 #. Set icon preferences
-#: ../client/gtk/name.c:203
+#: ../client/gtk/name.c:202
 msgid "Face:"
 msgstr "顔:"
 
-#: ../client/gtk/name.c:218
+#: ../client/gtk/name.c:217
 msgid "Variant:"
 msgstr "変更:"
 

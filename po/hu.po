@@ -7,9 +7,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Pioneers 0.11.1\n"
+"Project-Id-Version: Pioneers 0.11.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-12 21:45+0200\n"
+"POT-Creation-Date: 2007-08-05 11:05+0200\n"
 "PO-Revision-Date: 2007-07-20 05:47+0100\n"
 "Last-Translator: Ferenc Bánhidi <bferike@mailbox.hu>\n"
 "Language-Team: Hungarian <bferike@mailbox.hu>\n"
@@ -321,7 +321,7 @@ msgstr "A játék indul. Már nem kellek többet. Viszlát."
 msgid "Waiting"
 msgstr "Várj"
 
-#: ../client/common/client.c:105 ../client/common/client.c:1240
+#: ../client/common/client.c:105 ../client/common/client.c:1241
 msgid "Idle"
 msgstr "Tétlen"
 
@@ -330,8 +330,8 @@ msgid "We have been kicked out of the game.\n"
 msgstr "Minket kirúgtak a játékból.\n"
 
 #. Network status: offline
-#: ../client/common/client.c:450 ../client/common/client.c:890
-#: ../client/gtk/gui.c:1338
+#: ../client/common/client.c:450 ../client/common/client.c:891
+#: ../client/gtk/gui.c:1340
 msgid "Offline"
 msgstr "Nincs kapcsolatban"
 
@@ -361,7 +361,7 @@ msgid "%s receives %s.\n"
 msgstr "%s kap %s.\n"
 
 #. Year of Plenty
-#: ../client/common/client.c:637 ../client/common/client.c:2581
+#: ../client/common/client.c:637 ../client/common/client.c:2586
 #, c-format
 msgid "%s takes %s.\n"
 msgstr "%s felhasznál %s.\n"
@@ -376,91 +376,91 @@ msgstr "%s elhasznált %s.\n"
 msgid "%s is refunded %s.\n"
 msgstr "%s visszafizet %s.\n"
 
-#: ../client/common/client.c:678
+#: ../client/common/client.c:679
 #, c-format
 msgid "%s discarded %s.\n"
 msgstr "%s eldob %s.\n"
 
-#: ../client/common/client.c:848
+#: ../client/common/client.c:849
 msgid "Loading"
 msgstr "Betöltés"
 
-#: ../client/common/client.c:891
+#: ../client/common/client.c:892
 msgid "Version mismatch"
 msgstr "Eltérõ verzió"
 
-#: ../client/common/client.c:893
+#: ../client/common/client.c:894
 msgid "Version mismatch. Please make sure client and server are up to date.\n"
 msgstr ""
 "Verzió eltérés. Kérlek ellenõrizd van-e frissítés a klienshez és a "
 "szerverhez.\n"
 
-#: ../client/common/client.c:1339
+#: ../client/common/client.c:1340
 msgid "Build two settlements, each with a connecting"
 msgstr "Építs két falut, és mindegyikhez csatlakozzon egy"
 
-#: ../client/common/client.c:1342
+#: ../client/common/client.c:1343
 msgid "Build a settlement with a connecting"
 msgstr "Építs egy falut és csatlakozzon hozzá egy"
 
-#: ../client/common/client.c:1345
+#: ../client/common/client.c:1346
 msgid "road"
 msgstr "út"
 
-#: ../client/common/client.c:1347
+#: ../client/common/client.c:1348
 msgid "bridge"
 msgstr "híd"
 
-#: ../client/common/client.c:1349
+#: ../client/common/client.c:1350
 msgid "ship"
 msgstr "hajó"
 
-#: ../client/common/client.c:1357
+#: ../client/common/client.c:1358
 msgid " or"
 msgstr "vagy"
 
-#: ../client/common/client.c:1415
+#: ../client/common/client.c:1416
 msgid "Waiting for your turn"
 msgstr "Várj a körödre."
 
-#: ../client/common/client.c:1467
+#: ../client/common/client.c:1468
 msgid "Select the building to steal from."
 msgstr ""
 "Válaszd ki az épüetet\n"
 "akitõl lopni szeretnél."
 
-#: ../client/common/client.c:1489
+#: ../client/common/client.c:1490
 msgid "Select the ship to steal from."
 msgstr ""
 "Válaszd ki a hajót\n"
 "akitõl lopni szeretnél."
 
-#: ../client/common/client.c:1573 ../client/gtk/interface.c:782
+#: ../client/common/client.c:1575 ../client/gtk/interface.c:782
 msgid "Place the robber"
 msgstr "Helyezd el a rablót"
 
-#: ../client/common/client.c:1623
+#: ../client/common/client.c:1625
 msgid "Finish the road building action."
 msgstr "Vége az útépítésnek."
 
-#: ../client/common/client.c:1625
+#: ../client/common/client.c:1627
 msgid "Build one road segment."
 msgstr "Épít egy utat."
 
-#: ../client/common/client.c:1627
+#: ../client/common/client.c:1629
 msgid "Build two road segments."
 msgstr "Épít két utat."
 
-#: ../client/common/client.c:1900 ../client/common/client.c:1994
+#: ../client/common/client.c:1902 ../client/common/client.c:1996
 msgid "It is your turn."
 msgstr "Ez a te köröd."
 
-#: ../client/common/client.c:2088
+#: ../client/common/client.c:2090
 #, c-format
 msgid "Sorry, %s available.\n"
 msgstr "Bocs, %s használható.\n"
 
-#: ../client/common/client.c:2403
+#: ../client/common/client.c:2405
 msgid "The game is over."
 msgstr "A játéknak vége."
 
@@ -1485,7 +1485,7 @@ msgstr "Pioneers _névjegy"
 msgid "Information about Pioneers"
 msgstr "Információ a Pioneersrõl"
 
-#: ../client/gtk/gui.c:266 ../client/gtk/gui.c:1063
+#: ../client/gtk/gui.c:266 ../client/gtk/gui.c:1065
 msgid "Show the manual"
 msgstr "Kézikönyv"
 
@@ -1527,91 +1527,91 @@ msgstr "Jelmagyarázat"
 msgid "Welcome to Pioneers"
 msgstr "Üdvözlünk a Pioneersban"
 
-#: ../client/gtk/gui.c:866
+#: ../client/gtk/gui.c:868
 msgid "Pioneers Preferences"
 msgstr "Pioneers beállítások"
 
 #. Label for changing the theme, in the preferences dialog
-#: ../client/gtk/gui.c:896
+#: ../client/gtk/gui.c:898
 msgid "Theme:"
 msgstr "Téma:"
 
-#: ../client/gtk/gui.c:919
+#: ../client/gtk/gui.c:921
 msgid "Choose one of the themes"
 msgstr "Válassz egyett a témák közül"
 
 #. Label for the option to show the legend
-#: ../client/gtk/gui.c:923
+#: ../client/gtk/gui.c:925
 msgid "Show legend"
 msgstr "Jelmagyarázat megjelenítése"
 
 #. Tooltip for the option to show the legend
-#: ../client/gtk/gui.c:933
+#: ../client/gtk/gui.c:935
 msgid "Show the legend as a page beside the map"
 msgstr "Jelmagyarázat megjelenítése a térkép mellett"
 
 #. Label for the option to display log messages in color
-#: ../client/gtk/gui.c:938
+#: ../client/gtk/gui.c:940
 msgid "Messages with color"
 msgstr "Színes üzenetek"
 
-#: ../client/gtk/gui.c:948
+#: ../client/gtk/gui.c:950
 msgid "Show new messages with color"
 msgstr "Új üzenetek megjelenítése színesen"
 
-#: ../client/gtk/gui.c:953
+#: ../client/gtk/gui.c:955
 msgid "Chat in color of player"
 msgstr "Játékosok üzenetei színesen"
 
-#: ../client/gtk/gui.c:964
+#: ../client/gtk/gui.c:966
 msgid "Show new chat messages in the color of the player"
 msgstr "Új üzenetek megjelenítése a játékosok színével"
 
 #. Label for the option to display the summary with colors
-#: ../client/gtk/gui.c:969
+#: ../client/gtk/gui.c:971
 msgid "Summary with color"
 msgstr "Összesítés színesben"
 
-#: ../client/gtk/gui.c:980
+#: ../client/gtk/gui.c:982
 msgid "Use colors in the player summary"
 msgstr "Színek használata a játékos összesítésben"
 
-#: ../client/gtk/gui.c:985
+#: ../client/gtk/gui.c:987
 msgid "Toolbar with shortcuts"
 msgstr "Eszköztár gyorsbillentyûkkel"
 
-#: ../client/gtk/gui.c:995
+#: ../client/gtk/gui.c:997
 msgid "Show keyboard shortcuts in the toolbar"
 msgstr "Gyorsbillentyûk megjelenítése az eszköztáron"
 
-#: ../client/gtk/gui.c:1001
+#: ../client/gtk/gui.c:1003
 msgid "Announce new players"
 msgstr "Új játékosok jelzése"
 
-#: ../client/gtk/gui.c:1012
+#: ../client/gtk/gui.c:1014
 msgid "Make a sound when a new player or viewer enters the game"
 msgstr "Hangjelzés, amikor egy új játékos vagy szemlélõ belép a játékba"
 
 #. Label for the option to use the 16:9 layout.
-#: ../client/gtk/gui.c:1017
+#: ../client/gtk/gui.c:1019
 msgid "Use 16:9 layout"
 msgstr "16:9-es elrendezés"
 
-#: ../client/gtk/gui.c:1028
+#: ../client/gtk/gui.c:1030
 msgid "Use a 16:9 friendly layout for the window"
 msgstr "Elrendezés 16:9-es ablakhoz"
 
-#: ../client/gtk/gui.c:1039
+#: ../client/gtk/gui.c:1041
 msgid "The Pioneers Game"
 msgstr "Pioneers"
 
 #. Initial text in status bar
-#: ../client/gtk/gui.c:1350
+#: ../client/gtk/gui.c:1352
 msgid "Welcome to Pioneers!"
 msgstr "Üdvözlünk a Pioneersban!"
 
 #. The name of the application
-#: ../client/gtk/gui.c:1461
+#: ../client/gtk/gui.c:1463
 msgid "Pioneers"
 msgstr "Pioneers"
 
@@ -1683,20 +1683,20 @@ msgstr "Fejlesztés kártya"
 msgid "Select the resource you wish to monopolise."
 msgstr "Válassz monopól nyersanyagot"
 
-#: ../client/gtk/name.c:124
+#: ../client/gtk/name.c:123
 msgid "Change player name"
 msgstr "Játékos név módosítása"
 
-#: ../client/gtk/name.c:147
+#: ../client/gtk/name.c:146
 msgid "Player Name:"
 msgstr "Játékos neve:"
 
 #. Set icon preferences
-#: ../client/gtk/name.c:203
+#: ../client/gtk/name.c:202
 msgid "Face:"
 msgstr "Arc:"
 
-#: ../client/gtk/name.c:218
+#: ../client/gtk/name.c:217
 msgid "Variant:"
 msgstr "Változat:"
 

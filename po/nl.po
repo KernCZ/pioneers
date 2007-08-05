@@ -6,9 +6,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Pioneers 0.11.1\n"
+"Project-Id-Version: Pioneers 0.11.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-12 21:45+0200\n"
+"POT-Creation-Date: 2007-08-05 11:05+0200\n"
 "PO-Revision-Date: 2007-07-12 22:00+0200\n"
 "Last-Translator: Roland Clobus <rclobus@bigfoot.com>\n"
 "Language-Team: Bas Wijnen <shevek@fmf.nl> Roland Clobus <rclobus@bigfoot."
@@ -319,7 +319,7 @@ msgstr "Het spel begint. Ik ben niet meer nodig. Tot ziens."
 msgid "Waiting"
 msgstr "Wachten op reaktie van de server."
 
-#: ../client/common/client.c:105 ../client/common/client.c:1240
+#: ../client/common/client.c:105 ../client/common/client.c:1241
 msgid "Idle"
 msgstr "Klaar"
 
@@ -328,8 +328,8 @@ msgid "We have been kicked out of the game.\n"
 msgstr "De verbinding met de server is verbroken.\n"
 
 #. Network status: offline
-#: ../client/common/client.c:450 ../client/common/client.c:890
-#: ../client/gtk/gui.c:1338
+#: ../client/common/client.c:450 ../client/common/client.c:891
+#: ../client/gtk/gui.c:1340
 msgid "Offline"
 msgstr "Er is geen verbinding met een server."
 
@@ -359,7 +359,7 @@ msgid "%s receives %s.\n"
 msgstr "%s krijgt %s.\n"
 
 #. Year of Plenty
-#: ../client/common/client.c:637 ../client/common/client.c:2581
+#: ../client/common/client.c:637 ../client/common/client.c:2586
 #, c-format
 msgid "%s takes %s.\n"
 msgstr "%s neemt %s.\n"
@@ -374,85 +374,85 @@ msgstr "%s betaalt %s.\n"
 msgid "%s is refunded %s.\n"
 msgstr "%s krijgt %s terug.\n"
 
-#: ../client/common/client.c:678
+#: ../client/common/client.c:679
 #, c-format
 msgid "%s discarded %s.\n"
 msgstr "%s gooit %s weg.\n"
 
-#: ../client/common/client.c:848
+#: ../client/common/client.c:849
 msgid "Loading"
 msgstr "Het spel wordt gestart"
 
-#: ../client/common/client.c:891
+#: ../client/common/client.c:892
 msgid "Version mismatch"
 msgstr "Versie verschillend"
 
-#: ../client/common/client.c:893
+#: ../client/common/client.c:894
 msgid "Version mismatch. Please make sure client and server are up to date.\n"
 msgstr "De versies van de de server en de client komen niet overeen.\n"
 
-#: ../client/common/client.c:1339
+#: ../client/common/client.c:1340
 msgid "Build two settlements, each with a connecting"
 msgstr "Bouw twee dorpen, elk met een aangesloten"
 
-#: ../client/common/client.c:1342
+#: ../client/common/client.c:1343
 msgid "Build a settlement with a connecting"
 msgstr "Bouw een dorp met een aangesloten"
 
-#: ../client/common/client.c:1345
+#: ../client/common/client.c:1346
 msgid "road"
 msgstr "straat"
 
-#: ../client/common/client.c:1347
+#: ../client/common/client.c:1348
 msgid "bridge"
 msgstr "brug"
 
-#: ../client/common/client.c:1349
+#: ../client/common/client.c:1350
 msgid "ship"
 msgstr "schip"
 
-#: ../client/common/client.c:1357
+#: ../client/common/client.c:1358
 msgid " or"
 msgstr " of"
 
-#: ../client/common/client.c:1415
+#: ../client/common/client.c:1416
 msgid "Waiting for your turn"
 msgstr "Wacht op je beurt."
 
-#: ../client/common/client.c:1467
+#: ../client/common/client.c:1468
 msgid "Select the building to steal from."
 msgstr "Kies een gebouw om te bestelen."
 
-#: ../client/common/client.c:1489
+#: ../client/common/client.c:1490
 msgid "Select the ship to steal from."
 msgstr "Kies een schip om te bestelen."
 
-#: ../client/common/client.c:1573 ../client/gtk/interface.c:782
+#: ../client/common/client.c:1575 ../client/gtk/interface.c:782
 msgid "Place the robber"
 msgstr "Plaats de struikrover"
 
-#: ../client/common/client.c:1623
+#: ../client/common/client.c:1625
 msgid "Finish the road building action."
 msgstr "Beëindig de bouwkaart"
 
-#: ../client/common/client.c:1625
+#: ../client/common/client.c:1627
 msgid "Build one road segment."
 msgstr "Bouw een straat."
 
-#: ../client/common/client.c:1627
+#: ../client/common/client.c:1629
 msgid "Build two road segments."
 msgstr "Bouw twee straten."
 
-#: ../client/common/client.c:1900 ../client/common/client.c:1994
+#: ../client/common/client.c:1902 ../client/common/client.c:1996
 msgid "It is your turn."
 msgstr "Je bent aan de beurt."
 
-#: ../client/common/client.c:2088
+#: ../client/common/client.c:2090
 #, c-format
 msgid "Sorry, %s available.\n"
 msgstr "Sorry, %s beschikbaar.\n"
 
-#: ../client/common/client.c:2403
+#: ../client/common/client.c:2405
 msgid "The game is over."
 msgstr "Het spel is afgelopen."
 
@@ -1477,7 +1477,7 @@ msgstr "_Over Pioniers"
 msgid "Information about Pioneers"
 msgstr "Informatie over Pioniers"
 
-#: ../client/gtk/gui.c:266 ../client/gtk/gui.c:1063
+#: ../client/gtk/gui.c:266 ../client/gtk/gui.c:1065
 msgid "Show the manual"
 msgstr "Toon de handleiding"
 
@@ -1519,91 +1519,91 @@ msgstr "Legenda"
 msgid "Welcome to Pioneers"
 msgstr "Welkom bij Pioniers"
 
-#: ../client/gtk/gui.c:866
+#: ../client/gtk/gui.c:868
 msgid "Pioneers Preferences"
 msgstr "Pioniers Voorkeuren"
 
 #. Label for changing the theme, in the preferences dialog
-#: ../client/gtk/gui.c:896
+#: ../client/gtk/gui.c:898
 msgid "Theme:"
 msgstr "Thema:"
 
-#: ../client/gtk/gui.c:919
+#: ../client/gtk/gui.c:921
 msgid "Choose one of the themes"
 msgstr "Kies een van de thema's"
 
 #. Label for the option to show the legend
-#: ../client/gtk/gui.c:923
+#: ../client/gtk/gui.c:925
 msgid "Show legend"
 msgstr "Toon legenda"
 
 #. Tooltip for the option to show the legend
-#: ../client/gtk/gui.c:933
+#: ../client/gtk/gui.c:935
 msgid "Show the legend as a page beside the map"
 msgstr "Laat legenda zien naast de kaart"
 
 #. Label for the option to display log messages in color
-#: ../client/gtk/gui.c:938
+#: ../client/gtk/gui.c:940
 msgid "Messages with color"
 msgstr "Berichten in kleur"
 
-#: ../client/gtk/gui.c:948
+#: ../client/gtk/gui.c:950
 msgid "Show new messages with color"
 msgstr "Toon nieuwe berichten in kleur"
 
-#: ../client/gtk/gui.c:953
+#: ../client/gtk/gui.c:955
 msgid "Chat in color of player"
 msgstr "Chat in de kleur van de speler"
 
-#: ../client/gtk/gui.c:964
+#: ../client/gtk/gui.c:966
 msgid "Show new chat messages in the color of the player"
 msgstr "Toon de nieuwe chat in de kleur van de speler"
 
 #. Label for the option to display the summary with colors
-#: ../client/gtk/gui.c:969
+#: ../client/gtk/gui.c:971
 msgid "Summary with color"
 msgstr "Spelersoverzicht in kleur"
 
-#: ../client/gtk/gui.c:980
+#: ../client/gtk/gui.c:982
 msgid "Use colors in the player summary"
 msgstr "Gebruik kleur in het spelersoverzicht"
 
-#: ../client/gtk/gui.c:985
+#: ../client/gtk/gui.c:987
 msgid "Toolbar with shortcuts"
 msgstr "Knoppenbalk met sneltoetsen"
 
-#: ../client/gtk/gui.c:995
+#: ../client/gtk/gui.c:997
 msgid "Show keyboard shortcuts in the toolbar"
 msgstr "Toon de sneltoetsen in de knoppenbalk"
 
-#: ../client/gtk/gui.c:1001
+#: ../client/gtk/gui.c:1003
 msgid "Announce new players"
 msgstr "Kondig nieuwe spelers aan"
 
-#: ../client/gtk/gui.c:1012
+#: ../client/gtk/gui.c:1014
 msgid "Make a sound when a new player or viewer enters the game"
 msgstr "Maak geluid wanneer een nieuwe speler of toeschouwer het spel betreedt"
 
 #. Label for the option to use the 16:9 layout.
-#: ../client/gtk/gui.c:1017
+#: ../client/gtk/gui.c:1019
 msgid "Use 16:9 layout"
 msgstr "Gebruik 16:9 layout"
 
-#: ../client/gtk/gui.c:1028
+#: ../client/gtk/gui.c:1030
 msgid "Use a 16:9 friendly layout for the window"
 msgstr "Gebruik een 16:9 vriendelijke layout"
 
-#: ../client/gtk/gui.c:1039
+#: ../client/gtk/gui.c:1041
 msgid "The Pioneers Game"
 msgstr "Pioniers"
 
 #. Initial text in status bar
-#: ../client/gtk/gui.c:1350
+#: ../client/gtk/gui.c:1352
 msgid "Welcome to Pioneers!"
 msgstr "Welkom bij Pioniers!"
 
 #. The name of the application
-#: ../client/gtk/gui.c:1461
+#: ../client/gtk/gui.c:1463
 msgid "Pioneers"
 msgstr "Pioniers"
 
@@ -1671,20 +1671,20 @@ msgstr "Ontwikkelingskaart"
 msgid "Select the resource you wish to monopolise."
 msgstr "Kies de grondstof waar je een monopolie op wilt."
 
-#: ../client/gtk/name.c:124
+#: ../client/gtk/name.c:123
 msgid "Change player name"
 msgstr "Verander naam"
 
-#: ../client/gtk/name.c:147
+#: ../client/gtk/name.c:146
 msgid "Player Name:"
 msgstr "Naam:"
 
 #. Set icon preferences
-#: ../client/gtk/name.c:203
+#: ../client/gtk/name.c:202
 msgid "Face:"
 msgstr "Gezicht:"
 
-#: ../client/gtk/name.c:218
+#: ../client/gtk/name.c:217
 msgid "Variant:"
 msgstr "Variant:"
 
