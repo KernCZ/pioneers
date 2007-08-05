@@ -132,7 +132,6 @@ static void done_robbing_post_steal(Player * player)
 
 static void do_select_robbed(Player * player, Hex * hex, gint victim_num)
 {
-	StateMachine *sm = player->sm;
 	Game *game = player->game;
 	Player *owner;
 	Resource resource;
@@ -142,14 +141,16 @@ static void do_select_robbed(Player * player, Hex * hex, gint victim_num)
 	 */
 	owner = player_by_num(game, victim_num);
 	if (!owner) {
-		sm_send(sm, "ERR bad-player\n");
+		player_send(player, FIRST_VERSION, LATEST_VERSION,
+			    "ERR bad-player: not found\n");
 		return;
 	}
 	for (resource = 0; resource < NO_RESOURCE; resource++)
 		if (owner->assets[resource] != 0)
 			break;
 	if (resource == NO_RESOURCE) {
-		sm_send(sm, "ERR bad-player\n");
+		player_send(player, FIRST_VERSION, LATEST_VERSION,
+			    "ERR bad-player: no resources\n");
 		return;
 	}
 	for (idx = 0; idx < G_N_ELEMENTS(hex->nodes); idx++) {
@@ -165,7 +166,8 @@ static void do_select_robbed(Player * player, Hex * hex, gint victim_num)
 		return;
 	}
 
-	sm_send(sm, "ERR bad-player\n");
+	player_send(player, FIRST_VERSION, LATEST_VERSION,
+		    "ERR bad-player: no buildings\n");
 }
 
 /* Wait for the player to select a building to rob
@@ -183,7 +185,8 @@ gboolean mode_select_robbed(Player * player, gint event)
 	hex = map_robber_hex(map);
 
 	if (event == SM_ENTER) {
-		sm_send(sm, "rob %d %d\n", hex->x, hex->y);
+		player_send(player, FIRST_VERSION, LATEST_VERSION,
+			    "rob %d %d\n", hex->x, hex->y);
 		return TRUE;
 	}
 
@@ -205,7 +208,6 @@ gboolean mode_select_robbed(Player * player, gint event)
 
 static void do_select_pirated(Player * player, Hex * hex, gint victim_num)
 {
-	StateMachine *sm = player->sm;
 	Game *game = player->game;
 	Player *owner;
 	Resource resource;
@@ -215,14 +217,16 @@ static void do_select_pirated(Player * player, Hex * hex, gint victim_num)
 	 */
 	owner = player_by_num(game, victim_num);
 	if (!owner) {
-		sm_send(sm, "ERR bad-player\n");
+		player_send(player, FIRST_VERSION, LATEST_VERSION,
+			    "ERR bad-player: not found\n");
 		return;
 	}
 	for (resource = 0; resource < NO_RESOURCE; resource++)
 		if (owner->assets[resource] != 0)
 			break;
 	if (resource == NO_RESOURCE) {
-		sm_send(sm, "ERR bad-player\n");
+		player_send(player, FIRST_VERSION, LATEST_VERSION,
+			    "ERR bad-player: no resources\n");
 		return;
 	}
 	for (idx = 0; idx < G_N_ELEMENTS(hex->edges); ++idx) {
@@ -238,7 +242,8 @@ static void do_select_pirated(Player * player, Hex * hex, gint victim_num)
 		return;
 	}
 
-	sm_send(sm, "ERR bad-player\n");
+	player_send(player, FIRST_VERSION, LATEST_VERSION,
+		    "ERR bad-player: no ships\n");
 }
 
 /* Wait for the player to select a ship to rob
@@ -256,7 +261,8 @@ gboolean mode_select_pirated(Player * player, gint event)
 	hex = map_pirate_hex(map);
 
 	if (event == SM_ENTER) {
-		sm_send(sm, "rob %d %d\n", hex->x, hex->y);
+		player_send(player, FIRST_VERSION, LATEST_VERSION,
+			    "rob %d %d\n", hex->x, hex->y);
 		return TRUE;
 	}
 
