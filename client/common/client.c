@@ -668,6 +668,7 @@ static gboolean check_other_players(StateMachine * sm)
 		return TRUE;
 	}
 	if (sm_recv(sm, "must-discard %d", &discard_num)) {
+		waiting_for_network(FALSE);
 		sm_push(sm, mode_discard);
 		if (player_num == my_player_num())
 			callback_mode = MODE_DISCARD;
@@ -2510,6 +2511,9 @@ static void recover_from_disconnect(StateMachine * sm,
 			sm_push_noenter(sm, mode_turn_rolled);
 			sm_push_noenter(sm, mode_wait_for_robber);
 		}
+		/* Allow gui to fill previous_state when entering
+		 * mode_discard.  */
+		callbacks.turn ();
 		sm_push(sm, mode_discard);
 	} else if (strcmp(rinfo->prevstate, "MONOPOLY") == 0) {
 		sm_goto_noenter(sm, mode_idle);

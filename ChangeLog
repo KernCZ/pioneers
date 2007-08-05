@@ -1,4 +1,7 @@
 
+2007-08-05  Bas Wijnen <shevek@fmf.nl>
+	* client/common/client.c: Fixed OK button in discard dialog
+
 2007-08-04  Roland Clobus <rclobus@bigfoot.com>
 	* common/map_query.c: Added checks against NULL pointers, based on
 	the patch by ffaadd (#1767378), which could crash the server.
