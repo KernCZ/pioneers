@@ -25,7 +25,7 @@ At release time:
   gpg -u packager@foo.net --armor --output tarball.sig --detach-sig tarball.tar.gz
   (Verify with gpg --verify tarball.sig tarball.tar.gz)
 * Create a tag in the Subversion repository
-  svn copy https://svn.sourceforge.net/svnroot/pio/trunk https://svn.sourceforge.net/svnroot/pio/tags/Build_X_Y_Z
+  svn copy https://pio.svn.sourceforge.net/svnroot/pio/trunk https://pio.svn.sourceforge.net/svnroot/pio/tags/Build_X_Y_Z
 * Update the version number in configure.ac
 * Upload the tarball to upload.sourceforge.net
 * Update the Files section at SourceForge
