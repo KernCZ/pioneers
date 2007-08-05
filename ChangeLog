@@ -3,6 +3,7 @@
 	* server/robber.c: Do not use sm_send in the server, but player_send.
 	* common/network.c: Added \n after a log message.
 	* pioneers.spec.in: Corrected download location, changed packager name.
+	* docs/README.release: Updated release script
 
 2007-08-05  Bas Wijnen <shevek@fmf.nl>
 	* client/common/client.c: Fixed OK button in discard dialog
