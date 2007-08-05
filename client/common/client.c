@@ -2513,7 +2513,7 @@ static void recover_from_disconnect(StateMachine * sm,
 		}
 		/* Allow gui to fill previous_state when entering
 		 * mode_discard.  */
-		callbacks.turn ();
+		callbacks.turn();
 		sm_push(sm, mode_discard);
 	} else if (strcmp(rinfo->prevstate, "MONOPOLY") == 0) {
 		sm_goto_noenter(sm, mode_idle);
