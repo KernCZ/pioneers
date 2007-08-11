@@ -2,6 +2,8 @@
 2007-08-11  Roland Clobus <rclobus@bigfoot.com>
 	* common/network.c: Added net_would_block and net_write_error to help
 	porting the server to MS Windows (based on a patch by Keishi Suenaga).
+	* server/player.c: When a player is still connecting, don't reuse the
+	player number.
 
 2007-08-08  Roland Clobus <rclobus@bigfoot.com>
 	* getVersions.sh: Updated for SF

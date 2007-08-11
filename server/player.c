@@ -57,7 +57,8 @@ static gint next_free_player_num(Game * game, gboolean force_viewer)
 			Player *player = list->data;
 			if (player->num >= 0
 			    && !player_is_viewer(game, player->num)
-			    && !player->disconnected) {
+			    && (!player->disconnected
+				|| player->sm->use_cache)) {
 				player_taken[player->num] = TRUE;
 				--available;
 			}
