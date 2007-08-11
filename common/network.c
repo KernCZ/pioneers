@@ -3,7 +3,8 @@
  *
  * Copyright (C) 1999 Dave Cole
  * Copyright (C) 2003, 2006 Bas Wijnen <shevek@fmf.nl>
- * Copyright (C) 2005,2006 Roland Clobus <rclobus@bigfoot.com>
+ * Copyright (C) 2005-2007 Roland Clobus <rclobus@bigfoot.com>
+ * Copyright (C) 2005 Keishi Suenaga
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -152,6 +153,26 @@ static void notify(Session * ses, NetEvent event, gchar * line)
 		ses->notify_func(event, ses->user_data, line);
 }
 
+static gboolean net_would_block(void)
+{
+#ifdef G_OS_WIN32
+	return WSAGetLastError() == WSAEWOULDBLOCK;
+#else				/* G_OS_WIN32 */
+	return errno == EAGAIN;
+#endif				/* G_OS_WIN32 */
+}
+
+static gboolean net_write_error(void)
+{
+#ifdef G_OS_WIN32
+	int lerror = WSAGetLastError();
+	return (lerror != WSAECONNRESET
+		&& lerror != WSAECONNABORTED && lerror != WSAESHUTDOWN);
+#else				/* G_OS_WIN32 */
+	return errno != EPIPE;
+#endif				/* G_OS_WIN32 */
+}
+
 /* Returns the message for error# number */
 static const gchar *net_errormsg_nr(gint number)
 {
@@ -283,9 +304,9 @@ static void write_ready(Session * ses)
 		debug("write_ready: write(%d, \"%.*s\", %d) = %d",
 		      ses->fd, len, data, len, num);
 		if (num < 0) {
-			if (errno == EAGAIN)
+			if (net_would_block())
 				break;
-			if (errno != EPIPE)
+			if (net_write_error())
 				log_message(MSG_ERROR,
 					    _
 					    ("Error writing socket: %s\n"),
@@ -332,11 +353,11 @@ void net_write(Session * ses, const gchar * data)
 			if (strcmp(data, "yes\n")
 			    && strcmp(data, "hello\n"))
 				debug("(%d) --> %s", ses->fd, data);
-		} else if (errno != EAGAIN)
+		} else if (!net_would_block())
 			debug("(%d) --- Error writing to socket.",
 			      ses->fd);
 		if (num < 0) {
-			if (errno != EAGAIN) {
+			if (!net_would_block()) {
 				log_message(MSG_ERROR,
 					    _
 					    ("Error writing to socket: %s\n"),
@@ -400,7 +421,7 @@ static void read_ready(Session * ses)
 	num = recv(ses->fd, ses->read_buff + ses->read_len,
 		   sizeof(ses->read_buff) - ses->read_len, 0);
 	if (num < 0) {
-		if (errno == EAGAIN)
+		if (net_would_block())
 			return;
 		log_message(MSG_ERROR, _("Error reading socket: %s\n"),
 			    net_errormsg());
@@ -742,7 +763,7 @@ int net_open_listening_socket(const gchar * port, gchar ** error_message)
 
 	freeaddrinfo(ai);
 
-	if (fcntl(fd, F_SETFL, O_NDELAY) < 0) {
+	if (net_set_socket_non_blocking(fd)) {
 		*error_message =
 		    g_strdup_printf(_
 				    ("Error setting socket non-blocking: %s\n"),
