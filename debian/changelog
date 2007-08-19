@@ -1,3 +1,10 @@
+pioneers (0.10.2-3) unstable; urgency=low
+
+  * Updated Swedish translation.
+  * Added Afrikaans and Japanese translations.
+
+ -- Bas Wijnen <wijnen@debian.org>  Mon, 15 Jan 2007 15:56:41 +0100
+
 pioneers (0.10.2-2) unstable; urgency=low
 
   * Use CFLAGS, so DEB_BUILD_OPTIONS=noopt actually works.  (Thanks to A
