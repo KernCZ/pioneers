@@ -60,6 +60,9 @@ build-stamp:
 	rsvg --width 32 --height 32 server/gtk/pioneers-server.svg pioneers-server32.png
 	convert pioneers-server32.png pioneers-server.xpm
 	rm pioneers-server32.png
+	rsvg --width 32 --height 32 editor/gtk/pioneers-editor.svg pioneers-editor32.png
+	convert pioneers-editor32.png pioneers-editor.xpm
+	rm pioneers-editor32.png
 	touch build-stamp
 
 clean:
@@ -87,8 +90,9 @@ install-stamp: build-stamp
 	install -D -m644 server/*.game debian/tmp/usr/share/games/pioneers
 	install -D -m644 pioneers.xpm debian/tmp/usr/share/pixmaps/pioneers-client.xpm
 	install -D -m644 pioneers-server.xpm debian/tmp/usr/share/pixmaps/pioneers-server.xpm
-	install -D -m644 debian/pioneers-meta-server.default debian/tmp/etc/default/pioneers-meta-server
-	dh_install --fail-missing -X usr/share/man/man6/ -X pioneers-editor
+	install -D -m644 pioneers-editor.xpm debian/tmp/usr/share/pixmaps/pioneers-editor.xpm
+	install -D -m644 debian/pioneers-console.default debian/tmp/etc/default/pioneers-console
+	dh_install --fail-missing -X usr/share/man/man6/ -X etc/default/
 	dh_installman
 	touch install-stamp
 
@@ -96,7 +100,7 @@ install-stamp: build-stamp
 binary-indep: build install
 	dh_testdir -i
 	dh_testroot -i
-	dh_installdocs -i -A README AUTHORS
+	dh_installdocs -i -A README
 	dh_scrollkeeper -v --package=pioneers-help ../client/help
 	dh_installmenu -i
 	dh_installchangelogs -i ChangeLog
@@ -112,7 +116,7 @@ binary-indep: build install
 binary-arch: build install
 	dh_testdir -a
 	dh_testroot -a
-	dh_installdocs -a -A README AUTHORS
+	dh_installdocs -a -A README
 	dh_installinit -a
 	dh_installexamples -a
 	dh_installmenu -a

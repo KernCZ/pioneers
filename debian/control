@@ -5,80 +5,65 @@ Maintainer: Bas Wijnen <wijnen@debian.org>
 Uploaders: Steve Langasek <vorlon@debian.org>, Roman Hodek <roman@debian.org>
 Build-Depends: debhelper (>= 5.0.0), libgnome2-dev, scrollkeeper, gnome-common, imagemagick, librsvg2-bin, netpbm, libgtk2.0-dev, automake1.9, autoconf (>= 2.53)
 Standards-Version: 3.7.2
+Homepage: http://pio.sourceforge.net/
 
-Package: pioneers-client
+Package: pioneers
 Architecture: any
-Depends: ${shlibs:Depends}
-Recommends: pioneers-help, pioneers-server-gtk | pioneers-server-console
-Description: computer version of the Settlers of Catan board game - client
- Pioneers, formerly known as Gnocatan, is an emulation of the Settlers
- of Catan board game which can be played over the internet.
+Depends: pioneers-console (=${binary:Version}), pioneers-data (=${source:Version}), ${shlibs:Depends}, ${misc:Depends}
+Recommends: yelp
+Provides: pioneers-server-gtk, pioneers-client, pioneers-help
+Conflicts: pioneers-server-gtk, pioneers-client, pioneers-help
+Replaces: pioneers-server-gtk, pioneers-client, pioneers-help
+Description: the Settlers of Catan board game
+ Pioneers is a computer implementation of the Settlers of Catan board game.
+ It can be played over the internet.
  .
- This is the game client which displays the board and interacts with a
- player. It connects to a game server that can be local or on a remote
- host.
+ The game includes a server, a client, a computer player, an editor and a
+ meta-server (for locating running servers).
+ .
+  Homepage: http://pio.sourceforge.net/
 
-Package: pioneers-server-console
+Package: pioneers-console
 Architecture: any
-Depends: pioneers-server-data, ${shlibs:Depends}
-Recommends: pioneers-client, pioneers-ai
-Description: computer version of the Settlers of Catan board game - console server
- Pioneers, formerly known as Gnocatan, is an emulation of the Settlers
- of Catan board game which can be played over the internet.
+Depends: pioneers-data (=${source:Version}), ${shlibs:Depends}, ${misc:Depends}
+Suggests: pioneers
+Provides: pioneers-ai, pioneers-meta-server, pioneers-server-console
+Conflicts: pioneers-ai, pioneers-meta-server, pioneers-server-console
+Replaces: pioneers-ai, pioneers-meta-server, pioneers-server-console
+Description: the Settlers of Catan board game - console parts
+ Pioneers is a computer implementation of the Settlers of Catan board game.
+ It can be played over the internet.
  .
- This package contains the Pioneers game server for the console which
- accepts local or remote clients. One server instance must be running
- per game. The game parameters are selected via command line options.
-
-Package: pioneers-server-gtk
-Architecture: any
-Depends: pioneers-server-data, ${shlibs:Depends}
-Recommends: pioneers-client, pioneers-ai
-Description: computer version of the Settlers of Catan board game - gtk server
- Pioneers, formerly known as Gnocatan, is an emulation of the Settlers
- of Catan board game which can be played over the internet.
+ This package contains the console-parts of the game: the computer player, the
+ console server and the meta-server.
  .
- This package contains the GTK-based Pioneers game server which
- accepts local or remote clients. One server instance must be running
- per game. Game parameters can be selected in a GUI dialog, and you
- can also monitor connected players there.
+  Homepage: http://pio.sourceforge.net/
 
-Package: pioneers-server-data
+Package: pioneers-data
 Architecture: all
-Description: data required by the Pioneers server
- Pioneers, formerly known as Gnocatan, is an emulation of the Settlers
- of Catan board game which can be played over the internet.
+Depends: ${misc:Depends}
+Recommends: pioneers
+Conflicts: pioneers-server-data
+Replaces: pioneers-server-data
+Description: the Settlers of Catan board game - data files
+ Pioneers is a computer implementation of the Settlers of Catan board game.
+ It can be played over the internet.
  .
- The data package contains architecture independent data needed for the game
- server. 
-
-Package: pioneers-meta-server
-Architecture: any
-Depends: ${shlibs:Depends}
-Recommends: pioneers-server-console
-Description: computer version of the Settlers of Catan board game - meta server
- Pioneers, formerly known as Gnocatan, is an emulation of the Settlers
- of Catan board game which can be played over the internet.
+ This package contains architecture independent data for the game.
  .
- This meta server for Pioneers accepts requests by clients to create new
- game servers, and keeps a list of running servers one can connect to.
+  Homepage: http://pio.sourceforge.net/
 
-Package: pioneers-ai
-Architecture: any
-Depends: ${shlibs:Depends}
-Description: computer version of the Settlers of Catan board game - AI player
- Pioneers, formerly known as Gnocatan, is an emulation of the Settlers
- of Catan board game which can be played over the internet.
- .
- This package contains an AI player implementation that can take part in
- Pioneers games.
-
-Package: pioneers-help
+Package: pioneers-console-data
 Architecture: all
-Depends: ${misc:Depends}, yelp
-Description: online help for the Pioneers client
- Pioneers, formerly known as Gnocatan, is an emulation of the Settlers
- of Catan board game which can be played over the internet.
+Depends: ${misc:Depends}
+Recommends: pioneers-console
+Conflicts: pioneers-server-data, pioneers-console (<< 0.11.2)
+Replaces: pioneers-server-data, pioneers-console (<< 0.11.2)
+Description: the Settlers of Catan board game - data files
+ Pioneers is a computer implementation of the Settlers of Catan board game.
+ It can be played over the internet.
  .
- This help package contains HTML documentation for the Pioneers
- client.
+ This package contains architecture independent data for the console parts
+ of the game.
+ .
+  Homepage: http://pio.sourceforge.net/

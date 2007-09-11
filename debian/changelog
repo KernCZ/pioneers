@@ -1,3 +1,12 @@
+pioneers (0.11.2-1) unstable; urgency=low
+
+  * New upstream release.  (Closes: #436296, #392129, #398157)
+  * Restructure packaging into fewer packages.
+  * Add pioneers-editor to package.
+  * Update debian/copyright to be more clear about license choice.
+
+ -- Bas Wijnen <wijnen@debian.org>  Fri, 07 Sep 2007 00:35:00 +0200
+
 pioneers (0.10.2-3) unstable; urgency=low
 
   * Updated Swedish translation.

@@ -43,4 +43,11 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
 
 On Debian systems, the complete text of the GNU General Public
-License can be found in /usr/share/common-licenses/GPL.
+License can be found in the following files:
+Version 2: /usr/share/common-licenses/GPL-2
+Version 3: /usr/share/common-licenses/GPL-3
+The latest version: /usr/share/common-licenses/GPL
+
+Note that you can choose any version later than 3 as well once they are
+released.  The above links are only provided for your convenience, not to
+suggest an complete list.
