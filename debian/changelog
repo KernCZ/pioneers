@@ -1,3 +1,10 @@
+pioneers (0.11.2-2) unstable; urgency=low
+
+  * Let pioneers-console depend on pioneers-console-data, not on
+    pioneers-data.  (Closes: #441759)
+
+ -- Bas Wijnen <wijnen@debian.org>  Tue, 11 Sep 2007 12:30:34 +0200
+
 pioneers (0.11.2-1) unstable; urgency=low
 
   * New upstream release.  (Closes: #436296, #392129, #398157)

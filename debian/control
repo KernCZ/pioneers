@@ -25,7 +25,7 @@ Description: the Settlers of Catan board game
 
 Package: pioneers-console
 Architecture: any
-Depends: pioneers-data (=${source:Version}), ${shlibs:Depends}, ${misc:Depends}
+Depends: pioneers-console-data (=${source:Version}), ${shlibs:Depends}, ${misc:Depends}
 Suggests: pioneers
 Provides: pioneers-ai, pioneers-meta-server, pioneers-server-console
 Conflicts: pioneers-ai, pioneers-meta-server, pioneers-server-console
