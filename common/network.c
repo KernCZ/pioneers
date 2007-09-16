@@ -185,7 +185,7 @@ static const gchar *net_errormsg(void)
 	return net_errormsg_nr(errno);
 }
 
-void net_close(Session * ses)
+gboolean net_close(Session * ses)
 {
 	if (ses->timer_id != 0) {
 		g_source_remove(ses->timer_id);
@@ -206,6 +206,7 @@ void net_close(Session * ses)
 			g_free(data);
 		}
 	}
+	return !ses->entered;
 }
 
 void net_close_when_flushed(Session * ses)
@@ -214,8 +215,8 @@ void net_close_when_flushed(Session * ses)
 	if (ses->write_queue != NULL)
 		return;
 
-	net_close(ses);
-	notify(ses, NET_CLOSE, NULL);
+	if (net_close(ses))
+		notify(ses, NET_CLOSE, NULL);
 }
 
 void net_wait_for_close(Session * ses)
@@ -225,8 +226,8 @@ void net_wait_for_close(Session * ses)
 
 static void close_and_callback(Session * ses)
 {
-	net_close(ses);
-	notify(ses, NET_CLOSE, NULL);
+	if (net_close(ses))
+		notify(ses, NET_CLOSE, NULL);
 }
 
 static gboolean ping_function(gpointer s)
@@ -477,6 +478,9 @@ static void read_ready(Session * ses)
 		ses->read_len = 0;
 
 	ses->entered = FALSE;
+	if (ses->fd < 0) {
+		close_and_callback(ses);
+	}
 }
 
 Session *net_new(NetNotifyFunc notify_func, void *user_data)
@@ -652,11 +656,13 @@ gboolean net_connect(Session * ses, const gchar * host, const gchar * port)
 		return FALSE;
 }
 
-/* Free and NULL-ity the session *ses */
+/* Free and NULL-ify the session *ses */
 void net_free(Session ** ses)
 {
-	net_close(*ses);
-
+	/* If the sessions is still in use, do not free it */
+	if (!net_close(*ses)) {
+		return;
+	}
 	if ((*ses)->host != NULL)
 		g_free((*ses)->host);
 	if ((*ses)->port != NULL)

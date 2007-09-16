@@ -650,6 +650,7 @@ void sm_free(StateMachine * sm)
 {
 	if (sm->ses != NULL) {
 		net_free(&(sm->ses));
+		g_return_if_fail(sm->ses == NULL);
 	}
 	if (sm->use_count > 0)
 		sm->is_dead = TRUE;

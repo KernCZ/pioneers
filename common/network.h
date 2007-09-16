@@ -103,7 +103,11 @@ gboolean net_get_peer_name(gint fd, gchar ** hostname, gchar ** servname,
  */
 gint net_accept(gint accept_fd, gchar ** error_message);
 
-void net_close(Session * ses);
+/** Close a session
+ * @param ses The session to close
+ * @return TRUE if the session can be removed
+ */
+gboolean net_close(Session * ses);
 void net_close_when_flushed(Session * ses);
 void net_wait_for_close(Session * ses);
 void net_printf(Session * ses, const gchar * fmt, ...);
