@@ -343,7 +343,6 @@ AC_CHECK_FUNCS([setlocale])
 # Data types
 AC_STRUCT_TM
 AC_TYPE_PID_T
-AC_TYPE_SIGNAL
 AC_TYPE_SIZE_T
 # Check if socklen_t is present
 TYPE_SOCKLEN_T

@@ -1,4 +1,7 @@
 
+2007-10-03  Roland Clobus <rclobus@bigfoot.com>
+	* configure.ac, server/server.c: Use sigaction instead signal.
+
 2007-09-16  Roland Clobus <rclobus@bigfoot.com>
 	* common/network.h, common/state.c, common/network.c: The server could
 	crash when a SIGPIPE was received.
