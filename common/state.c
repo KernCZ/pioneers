@@ -663,6 +663,17 @@ void sm_free(StateMachine * sm)
 void sm_close(StateMachine * sm)
 {
 	net_free(&(sm->ses));
+	if (sm->use_cache) {
+		/* Purge the cache */
+		GList *list = sm->cache;
+		sm->cache = NULL;
+		sm_set_use_cache(sm, FALSE);
+		while (list) {
+			gchar *data = list->data;
+			list = g_list_remove(list, data);
+			g_free(data);
+		}
+	}
 }
 
 void sm_stack_dump(StateMachine * sm)
