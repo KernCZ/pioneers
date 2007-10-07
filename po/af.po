@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 0.10.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-05 11:05+0200\n"
+"POT-Creation-Date: 2007-10-07 20:33+0200\n"
 "PO-Revision-Date: 2006-11-11 01:38+0200\n"
 "Last-Translator: Petri Jooste <petri.jooste@gmail.com>\n"
 "Language-Team: Afrikaans <af@li.org>\n"
@@ -87,6 +87,7 @@ msgstr "- Robotspeler vir Pioniers"
 #: ../client/ai/ai.c:144 ../client/gtk/offline.c:186
 #: ../editor/gtk/editor.c:1111 ../meta-server/main.c:1084
 #: ../server/gtk/main.c:1005 ../server/main.c:206
+#, c-format
 msgid "Pioneers version:"
 msgstr "Pioniers weergawe:"
 
@@ -549,7 +550,7 @@ msgstr "%s het %s by jou gevat.\n"
 msgid "%s took %s from %s.\n"
 msgstr "%s het %s by %s gevat.\n"
 
-#: ../client/common/player.c:124 ../server/player.c:404
+#: ../client/common/player.c:124 ../server/player.c:405
 #, c-format
 msgid "Viewer %d"
 msgstr "Toeskouer %d"
@@ -559,7 +560,7 @@ msgstr "Toeskouer %d"
 msgid "viewer %d"
 msgstr "toeskouer %d"
 
-#: ../client/common/player.c:134 ../server/player.c:407
+#: ../client/common/player.c:134 ../server/player.c:408
 #, c-format
 msgid "Player %d"
 msgstr "Speler %d"
@@ -2316,103 +2317,103 @@ msgstr "Toeskouer: "
 msgid "** UNKNOWN MESSAGE TYPE ** "
 msgstr "** Onbekende boodskaptipe ** "
 
-#: ../common/network.c:258
+#: ../common/network.c:281
 #, c-format
 msgid "Error checking connect status: %s\n"
 msgstr "Fout met nagaan van konneksiestatus: %s\n"
 
-#: ../common/network.c:265
+#: ../common/network.c:288
 #, c-format
 msgid "Error connecting to host '%s': %s\n"
 msgstr "Fout met koppeling na gasheer '%s': %s\n"
 
-#: ../common/network.c:291
+#: ../common/network.c:314
 #, c-format
 msgid "Error writing socket: %s\n"
 msgstr "Fout tydens sokskrywing: %s\n"
 
-#: ../common/network.c:342
+#: ../common/network.c:365
 #, c-format
 msgid "Error writing to socket: %s\n"
 msgstr "Fout met skryf na sok: %s\n"
 
-#: ../common/network.c:395
+#: ../common/network.c:418
 msgid "Read buffer overflow - disconnecting\n"
 msgstr "Leesbuffer het oorgeloop - ontkoppel tans\n"
 
-#: ../common/network.c:405
+#: ../common/network.c:428
 #, c-format
 msgid "Error reading socket: %s\n"
 msgstr "Fout tydens lees van sok: %s\n"
 
-#: ../common/network.c:549
+#: ../common/network.c:575
 #, c-format
 msgid "Cannot resolve %s port %s: %s\n"
 msgstr "Kan nie %s poort %s uitvind nie: %s\n"
 
-#: ../common/network.c:556
+#: ../common/network.c:582
 #, c-format
 msgid "Cannot resolve %s port %s: host not found\n"
 msgstr "Kan nie %s se poort %s bepaal nie: gasheer nie gevind\n"
 
-#: ../common/network.c:571
+#: ../common/network.c:597
 #, c-format
 msgid "Error creating socket: %s\n"
 msgstr "Fout met skep van sok: %s\n"
 
-#: ../common/network.c:579
+#: ../common/network.c:605
 #, c-format
 msgid "Error setting socket close-on-exec: %s\n"
 msgstr "Fout met stel van sok na \"close-on-exec\": %s\n"
 
-#: ../common/network.c:589 ../common/network.c:748
+#: ../common/network.c:615 ../common/network.c:776
 #, c-format
 msgid "Error setting socket non-blocking: %s\n"
 msgstr "Fout met stel van sok na \"non-blocking\": %s\n"
 
-#: ../common/network.c:614
+#: ../common/network.c:640
 #, c-format
 msgid "Error connecting to %s: %s\n"
 msgstr "Kon nie aan %s koppel nie: %s\n"
 
-#: ../common/network.c:707
+#: ../common/network.c:735
 #, c-format
 msgid "Error creating struct addrinfo: %s"
 msgstr "Fout tydens skep van \"addrinfo\": %s"
 
-#: ../common/network.c:737
+#: ../common/network.c:765
 #, c-format
 msgid "Error creating listening socket: %s\n"
 msgstr "Fout tydens skep van luister-sok: %s\n"
 
-#: ../common/network.c:757
+#: ../common/network.c:785
 #, c-format
 msgid "Error during listen on socket: %s\n"
 msgstr "Fout tydens luister op sok: %s\n"
 
-#: ../common/network.c:766
+#: ../common/network.c:794
 msgid "Listening not yet supported on this platform."
 msgstr "Luister word nog nie ondersteun op hierdie platform nie."
 
-#: ../common/network.c:788 ../common/network.c:789
+#: ../common/network.c:816 ../common/network.c:817
 msgid "unknown"
 msgstr "onbekend"
 
-#: ../common/network.c:795
+#: ../common/network.c:823
 #, c-format
 msgid "Error getting peer name: %s"
 msgstr "Kon naam nie opspoor nie: %s"
 
-#: ../common/network.c:808
+#: ../common/network.c:836
 #, c-format
 msgid "Error resolving address: %s"
 msgstr "Kon nie masjienadres opspoor nie: %s"
 
-#: ../common/network.c:822
+#: ../common/network.c:850
 msgid "Net_get_peer_name not yet supported on this platform."
 msgstr "\"Net_get_peer_name\" word nog nie op hierdie platform ondersteun nie."
 
-#: ../common/network.c:837
+#: ../common/network.c:865
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "Kon nie die konneksie aanvaar nie: %s"
@@ -2723,6 +2724,7 @@ msgid "- Meta server for Pioneers"
 msgstr "- Metabediener vir Pioniers"
 
 #: ../meta-server/main.c:1088
+#, c-format
 msgid "metaserver protocol:"
 msgstr "metabediener protokol:"
 
@@ -3031,56 +3033,56 @@ msgstr "Registreer by metabediener %s, poort %s\n"
 msgid "Unregister from meta-server\n"
 msgstr "Verbreek koppeling met meta-bediener\n"
 
-#: ../server/player.c:129
+#: ../server/player.c:130
 msgid "chat too long"
 msgstr "geselslyn te lank"
 
-#: ../server/player.c:146
+#: ../server/player.c:147
 msgid "name too long"
 msgstr "naam te lank"
 
-#: ../server/player.c:178
+#: ../server/player.c:179
 msgid "ignoring unknown extension"
 msgstr "onbekende uitbreiding word geïgnoreer"
 
-#: ../server/player.c:208
+#: ../server/player.c:209
 msgid "Game starts, adding computer players"
 msgstr "Die spel begin, robotspelers word bygevoeg"
 
-#: ../server/player.c:233
+#: ../server/player.c:234
 #, c-format
 msgid "The game starts in %s minutes."
 msgstr "Die spel begin oor %s minute."
 
-#: ../server/player.c:234
+#: ../server/player.c:235
 #, c-format
 msgid "The game starts in %s minute."
 msgstr "Die spel begin oor %s minuut."
 
-#: ../server/player.c:279
+#: ../server/player.c:280
 msgid "Sorry, game is over."
 msgstr "Jammer, die spel is verby."
 
-#: ../server/player.c:282
+#: ../server/player.c:283
 #, c-format
 msgid "Player from %s is refused: game is over\n"
 msgstr "Speler vanaf %s word weggewys: spel is verby\n"
 
-#: ../server/player.c:330
+#: ../server/player.c:331
 msgid "This game will start soon."
 msgstr "Hierdie spel gaan binnekort begin."
 
-#: ../server/player.c:358
+#: ../server/player.c:359
 msgid "Name not changed: new name is already in use"
 msgstr "Naam is nie verander nie: nuwe naam word reeds gebruik"
 
 #. %s is the name of the reconnecting player
-#: ../server/player.c:647
+#: ../server/player.c:648
 #, c-format
 msgid "%s has reconnected."
 msgstr "%s het weer gekonnekteer."
 
-#: ../server/player.c:775
+#: ../server/player.c:776
 #, c-format
 msgid "Version mismatch: %s"
 msgstr "Weergawes pas nie: %s"
