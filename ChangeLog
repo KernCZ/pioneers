@@ -2,6 +2,7 @@
 2007-10-07  Roland Clobus <rclobus@bigfoot.com>
 	* common/state.c: Purge cache when disconnecting.
 	* server/player.c: Cached players must receive broadcasts.
+	* common/network.c: Log when a connection has a time out.
 
 2007-10-03  Roland Clobus <rclobus@bigfoot.com>
 	* configure.ac, server/server.c: Use sigaction instead signal.
