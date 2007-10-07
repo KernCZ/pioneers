@@ -1,3 +1,7 @@
+Subversion Snapshot release 0.11.3
+* Update for the server only: resolved issues for servers that run for a long
+  time.
+
 Subversion Snapshot release 0.11.2
 * Fixed a bug: It as not possible to press the OK button when discard cards
   after a seven was rolled
