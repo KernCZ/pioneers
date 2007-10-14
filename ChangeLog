@@ -1,4 +1,9 @@
 
+2007-10-14  Roland Clobus <rclobus@bigfoot.com>
+	* editor/gtk/pioneers-editor.desktop,
+	server/gtk/pioneers-server.desktop, client/gtk/data/pioneers.desktop:
+	Removed double menu entry (Reported by Jussi Schultink on launchpad.net)
+
 2007-10-07  Roland Clobus <rclobus@bigfoot.com>
 	* configure.ac: Work version is 0.11.4
 

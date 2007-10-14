@@ -7,4 +7,4 @@ Exec=pioneers-editor
 Icon=pioneers-editor.png
 Terminal=false
 Type=Application
-Categories=Game;BoardGame;StrategyGame;GNOME;GTK;
+Categories=Game;BoardGame;GNOME;GTK;
