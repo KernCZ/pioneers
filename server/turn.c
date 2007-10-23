@@ -393,11 +393,15 @@ static gboolean distribute_resources(G_GNUC_UNUSED Map * map, Hex * hex,
 	return FALSE;
 }
 
-void check_victory(Player * player)
+gboolean check_victory(Player * player)
 {
 	Game *game = player->game;
 	GList *list;
 	gint points;
+
+	if (player->num != game->curr_player)
+		/* Only the player that has the turn can win */
+		return FALSE;
 
 	points = player->num_settlements
 	    + player->num_cities * 2 + player->develop_points;
@@ -431,7 +435,9 @@ void check_victory(Player * player)
 		meta_unregister();
 
 		game_is_over(game);
+		return TRUE;
 	}
+	return FALSE;
 }
 
 /* Handle all actions that a player may perform in a turn
@@ -511,9 +517,11 @@ gboolean mode_turn(Player * player, gint event)
 		}
 		/* Ok, finish turn */
 		player_send(player, FIRST_VERSION, LATEST_VERSION, "OK\n");
-		/* pop the state machine back to idle */
-		sm_pop(sm);
-		turn_next_player(game);
+		if (!check_victory(player)) {
+			/* game isn't over, so pop the state machine back to idle */
+		    sm_pop(sm);
+		    turn_next_player(game);
+		}
 		return TRUE;
 	}
 	if (sm_recv(sm, "buy-develop")) {
@@ -522,7 +530,8 @@ gboolean mode_turn(Player * player, gint event)
 	}
 	if (sm_recv(sm, "play-develop %d", &idx, &devel_type)) {
 		develop_play(player, idx);
-		check_victory(player);
+		if(!game->params->check_victory_at_end_of_turn)
+			check_victory(player);
 		return TRUE;
 	}
 	if (sm_recv(sm, "maritime-trade %d supply %r receive %r",
@@ -548,14 +557,16 @@ gboolean mode_turn(Player * player, gint event)
 	}
 	if (sm_recv(sm, "build %B %d %d %d", &build_type, &x, &y, &pos)) {
 		build_add(player, build_type, x, y, pos);
-		check_victory(player);
+		if(!game->params->check_victory_at_end_of_turn)
+			check_victory(player);
 		return TRUE;
 	}
 	if (sm_recv
 	    (sm, "move %d %d %d %d %d %d", &sx, &sy, &spos, &dx, &dy,
 	     &dpos)) {
 		build_move(player, sx, sy, spos, dx, dy, dpos);
-		check_victory(player);
+		if(!game->params->check_victory_at_end_of_turn)
+			check_victory(player);
 		return TRUE;
 	}
 	if (sm_recv(sm, "undo")) {

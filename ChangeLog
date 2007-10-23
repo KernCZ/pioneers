@@ -1,4 +1,11 @@
 
+2007-10-23  Roland Clobus <rclobus@bigfoot.com>
+	* common/gtk/game-rules.c, common/gtk/game-rules.h, common/game.c,
+	common/game.h, server/gtk/main.c, server/turn.c, server/server.h,
+	client/gtk/settingscreen.c: Check for victory either at the end of the
+	turn, or when a point is scored. Many thanks to Lalo Martins
+	<lalo@users.sourceforge.net> for the original patch.
+
 2007-10-14  Roland Clobus <rclobus@bigfoot.com>
 	* editor/gtk/pioneers-editor.desktop,
 	server/gtk/pioneers-server.desktop, client/gtk/data/pioneers.desktop:

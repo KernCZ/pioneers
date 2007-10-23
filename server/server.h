@@ -281,7 +281,12 @@ void trade_begin_domestic(Player * player, gint * supply, gint * receive);
 gboolean mode_idle(Player * player, gint event);
 gboolean mode_turn(Player * player, gint event);
 void turn_next_player(Game * game);
-void check_victory(Player * player);
+/** Check whether this player has won the game.
+ *  If so, return TRUE and set all state machines to idle
+ *  @param player Has this player won?
+ *  @return TRUE if the given player has won
+ */
+gboolean check_victory(Player * player);
 
 /* gold.c */
 gboolean gold_limited_bank(const Game * game, int limit,

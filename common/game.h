@@ -62,6 +62,7 @@ typedef struct {
 	/* 0 = normal, 1 = no 7s on first 2 turns (official rule variant),
 	 * 2 = all 7s rerolled */
 	gint victory_points;	/* target number of victory points */
+	gboolean check_victory_at_end_of_turn;	/* check victory only at end of turn */
 	gint num_build_type[NUM_BUILD_TYPES];	/* number of each build type */
 	gint resource_count;	/* number of each resource */
 	gint num_develop_type[NUM_DEVEL_TYPES];	/* number of each development */

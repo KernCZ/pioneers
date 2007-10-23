@@ -127,6 +127,9 @@ static void game_rules_init(GameRules * gr)
 		&gr->strict_trade);
 	add_row(gr, _("Domestic Trade"), _("Allow trade between players"),
 		row++, &gr->domestic_trade);
+	add_row(gr, _("Victory At End Of Turn"),
+                _("Check for victory only at end of turn"),
+		row++, &gr->check_victory_at_end_of_turn);
 }
 
 /* Create a new instance of the widget */
@@ -143,6 +146,7 @@ GtkWidget *game_rules_new_metaserver(void)
 	gtk_widget_hide(GTK_WIDGET(widget->use_pirate));
 	gtk_widget_hide(GTK_WIDGET(widget->strict_trade));
 	gtk_widget_hide(GTK_WIDGET(widget->domestic_trade));
+	gtk_widget_hide(GTK_WIDGET(widget->check_victory_at_end_of_turn));
 	return GTK_WIDGET(widget);
 }
 
@@ -236,4 +240,18 @@ gboolean game_rules_get_domestic_trade(GameRules * gr)
 	return
 	    gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON
 					 (gr->domestic_trade));
+}
+
+void game_rules_set_victory_at_end_of_turn(GameRules * gr,
+				   gboolean val)
+{
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(gr->check_victory_at_end_of_turn),
+				     val);
+}
+
+gboolean game_rules_get_victory_at_end_of_turn(GameRules * gr)
+{
+	return
+	    gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON
+					 (gr->check_victory_at_end_of_turn));
 }
