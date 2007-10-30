@@ -38,7 +38,12 @@ void gui_set_net_status(const gchar * text);
 void gui_show_trade_page(gboolean show);
 void gui_show_quote_page(gboolean show);
 void gui_show_legend_page(gboolean show);
-void gui_show_splash_page(gboolean show);
+/** Show or hide the splash page.
+ *  @param show Show or hide
+ *  @param chat_widget When this function is called for the first time,
+ *                     registers the chat widget
+ */
+void gui_show_splash_page(gboolean show, GtkWidget * chat_widget);
 
 void gui_discard_show(void);
 void gui_discard_hide(void);

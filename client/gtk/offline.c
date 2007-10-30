@@ -96,7 +96,7 @@ static void frontend_offline_gui(GuiEvent event)
 				   && !connectable);
 		break;
 	case GUI_CONNECT_TRY:
-		gui_show_splash_page(FALSE);
+		gui_show_splash_page(FALSE, NULL);
 		gui_set_net_status(_("Connecting"));
 
 		connectable = FALSE;

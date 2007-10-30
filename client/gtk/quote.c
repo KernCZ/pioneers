@@ -253,14 +253,25 @@ static void amount_changed_cb(G_GNUC_UNUSED ResourceTable * rt,
 
 GtkWidget *quote_build_page(void)
 {
+	GtkWidget *scroll_win;
 	GtkWidget *panel_vbox;
 	GtkWidget *vbox;
 	GtkWidget *hbox;
 	GtkWidget *bbox;
 
+	scroll_win = gtk_scrolled_window_new(NULL, NULL);
+	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scroll_win),
+				       GTK_POLICY_AUTOMATIC,
+				       GTK_POLICY_AUTOMATIC);
+	gtk_scrolled_window_set_shadow_type(GTK_SCROLLED_WINDOW
+					    (scroll_win), GTK_SHADOW_NONE);
+	gtk_widget_show(scroll_win);
+
 	panel_vbox = gtk_vbox_new(FALSE, 3);
 	gtk_widget_show(panel_vbox);
 	gtk_container_set_border_width(GTK_CONTAINER(panel_vbox), 6);
+	gtk_scrolled_window_add_with_viewport(GTK_SCROLLED_WINDOW
+					      (scroll_win), panel_vbox);
 
 	hbox = gtk_hbox_new(FALSE, 6);
 	gtk_widget_show(hbox);
@@ -337,7 +348,7 @@ GtkWidget *quote_build_page(void)
 	gtk_widget_show(reject_btn);
 	gtk_container_add(GTK_CONTAINER(bbox), reject_btn);
 
-	return panel_vbox;
+	return scroll_win;
 }
 
 void frontend_quote_trade(G_GNUC_UNUSED gint player_num, gint partner_num,

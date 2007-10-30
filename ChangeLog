@@ -1,4 +1,9 @@
 
+2007-10-30  Roland Clobus <rclobus@bigfoot.com>
+	* client/gtk/quote.c, client/gtk/legend.c, client/gtk/trade.c,
+	client/gtk/offline.c, client/gtk/gui.c, client/gtk/gui.h: Use
+	scrollbars where needed. The splash screen hides the chat.
+
 2007-10-23  Roland Clobus <rclobus@bigfoot.com>
 	* common/gtk/game-rules.c, common/gtk/game-rules.h, common/game.c,
 	common/game.h, server/gtk/main.c, server/turn.c, server/server.h,

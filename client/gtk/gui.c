@@ -59,7 +59,7 @@ enum {
 static GtkWidget *map_notebook;	/* map area panel */
 static GtkWidget *trade_page;	/* trade page in map area */
 static GtkWidget *quote_page;	/* quote page in map area */
-static GtkWidget *legend_page;	/* splash page in map area */
+static GtkWidget *legend_page;	/* legend page in map area */
 static GtkWidget *splash_page;	/* splash page in map area */
 
 static GtkWidget *develop_notebook;	/* development card area panel */
@@ -522,17 +522,24 @@ void gui_show_legend_page(gboolean show)
 		gtk_widget_hide(legend_page);
 }
 
-void gui_show_splash_page(gboolean show)
+void gui_show_splash_page(gboolean show, GtkWidget * chat_widget)
 {
+	static GtkWidget *widget = NULL;
+	if (chat_widget != NULL)
+		widget = chat_widget;
+	g_assert(widget != NULL);
+
 	chat_set_grab_focus_on_update(TRUE);
 	if (show) {
 		gtk_widget_show(splash_page);
 		gtk_notebook_set_current_page(GTK_NOTEBOOK(map_notebook),
 					      SPLASH_PAGE);
+		gtk_widget_hide(widget);
 	} else {
 		gtk_widget_hide(splash_page);
 		gtk_notebook_set_current_page(GTK_NOTEBOOK(map_notebook),
 					      MAP_PAGE);
+		gtk_widget_show(widget);
 	}
 }
 
@@ -605,7 +612,6 @@ static GtkWidget *build_map_panel(void)
 	splash_page = splash_build_page();
 	gtk_notebook_insert_page(GTK_NOTEBOOK(map_notebook),
 				 splash_page, lbl, SPLASH_PAGE);
-	gui_show_splash_page(TRUE);
 
 	return map_notebook;
 }
@@ -749,7 +755,7 @@ static GtkWidget *build_main_interface(void)
 	gtk_paned_pack1(GTK_PANED(vpaned), build_map_panel(), TRUE, TRUE);
 
 	chat_panel = gtk_vbox_new(FALSE, 0);
-	gtk_widget_show(chat_panel);
+	gui_show_splash_page(TRUE, chat_panel);
 
 	panel = chat_build_panel();
 	frontend_gui_register(panel, GUI_DISCONNECT, NULL);

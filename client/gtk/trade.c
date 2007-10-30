@@ -404,6 +404,7 @@ static void quote_selected_cb(G_GNUC_UNUSED QuoteView * quoteview,
 /** Build the page */
 GtkWidget *trade_build_page(void)
 {
+	GtkWidget *scroll_win;
 	GtkWidget *panel_mainbox;
 	GtkWidget *vbox;
 	GtkWidget *label;
@@ -414,9 +415,19 @@ GtkWidget *trade_build_page(void)
 	GtkWidget *accept_btn;
 	gint idx;
 
+	scroll_win = gtk_scrolled_window_new(NULL, NULL);
+	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scroll_win),
+				       GTK_POLICY_AUTOMATIC,
+				       GTK_POLICY_AUTOMATIC);
+	gtk_scrolled_window_set_shadow_type(GTK_SCROLLED_WINDOW
+					    (scroll_win), GTK_SHADOW_NONE);
+	gtk_widget_show(scroll_win);
+
 	panel_mainbox = gtk_hbox_new(FALSE, 6);
 	gtk_widget_show(panel_mainbox);
 	gtk_container_set_border_width(GTK_CONTAINER(panel_mainbox), 6);
+	gtk_scrolled_window_add_with_viewport(GTK_SCROLLED_WINDOW
+					      (scroll_win), panel_mainbox);
 
 	vbox = gtk_vbox_new(FALSE, 6);
 	gtk_widget_show(vbox);
@@ -525,7 +536,7 @@ GtkWidget *trade_build_page(void)
 
 	theme_register_callback(G_CALLBACK(trade_theme_changed));
 
-	return panel_mainbox;
+	return scroll_win;
 }
 
 /** A trade is performed/a new trade is possible */

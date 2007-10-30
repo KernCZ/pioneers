@@ -152,6 +152,7 @@ static void add_legend_cost(GtkWidget * table, guint row,
 
 GtkWidget *legend_create_content(void)
 {
+	GtkWidget *scroll_win;
 	GtkWidget *hbox;
 	GtkWidget *vbox;
 	GtkWidget *label;
@@ -160,8 +161,18 @@ GtkWidget *legend_create_content(void)
 	GtkWidget *alignment;
 	guint num_rows;
 
+	scroll_win = gtk_scrolled_window_new(NULL, NULL);
+	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scroll_win),
+				       GTK_POLICY_AUTOMATIC,
+				       GTK_POLICY_AUTOMATIC);
+	gtk_scrolled_window_set_shadow_type(GTK_SCROLLED_WINDOW
+					    (scroll_win), GTK_SHADOW_NONE);
+	gtk_widget_show(scroll_win);
+
 	hbox = gtk_hbox_new(FALSE, 6);
 	gtk_container_set_border_width(GTK_CONTAINER(hbox), 6);
+	gtk_scrolled_window_add_with_viewport(GTK_SCROLLED_WINDOW
+					      (scroll_win), hbox);
 
 	vbox = gtk_vbox_new(FALSE, 6);
 	gtk_container_set_border_width(GTK_CONTAINER(vbox), 6);
@@ -245,7 +256,7 @@ GtkWidget *legend_create_content(void)
 	gtk_widget_show(vbox);
 	gtk_box_pack_start(GTK_BOX(hbox), vbox, FALSE, FALSE, 0);
 	gtk_widget_show(hbox);
-	return hbox;
+	return scroll_win;
 }
 
 GtkWidget *legend_create_dlg(void)
