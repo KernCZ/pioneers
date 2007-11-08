@@ -1,7 +1,7 @@
 #! /bin/sh
 
 ### BEGIN INIT INFO
-# Provides:		pioneers-meta-server
+# Provides:		pioneers-console
 # Required-Start:	$network
 # Required-Stop:	$network
 # Default-Start:	2 3 4 5
@@ -11,7 +11,10 @@
 #			clients to find servers.
 ### END INIT INFO
 
-# These defaults can be overridden in /etc/default/pioneers-meta-server
+# These defaults can be overridden in /etc/default/pioneers-console
+
+# Set this to "yes" (in /etc/default) to actually run the meta-server
+RUN_META_SERVER="no"
 
 # Program to run.
 DAEMON=/usr/games/pioneers-meta-server
@@ -32,9 +35,11 @@ PIDFILE=/var/run/pioneers-meta-server.pid
 
 test -x "$DAEMON" || exit 0
 
-if test -r /etc/default/pioneers-meta-server ; then
-	. /etc/default/pioneers-meta-server
+if test -r /etc/default/pioneers-console ; then
+	. /etc/default/pioneers-console
 fi
+
+test "$RUN_META_SERVER" == "yes" || exit 0
 
 export PIONEERS_META_SERVER
 NAME="Pioneers meta-server"
@@ -84,7 +89,7 @@ case "$1" in
 		fi
 		;;
 	*)
-		echo "Usage: /etc/init.d/pioneers-meta-server {start|stop|restart|force-reload|status}"
+		echo "Usage: /etc/init.d/pioneers-console {start|stop|restart|force-reload|status}"
 		exit 1
 		;;
 esac

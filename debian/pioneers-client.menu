@@ -1,4 +1,0 @@
-?package(pioneers-client):needs="X11" section="Games/Board"\
-  title="Pioneers" longtitle="Play a game of Pioneers"\
-  command="/usr/games/pioneers" \
-  icon="/usr/share/pixmaps/pioneers-client.xpm"
