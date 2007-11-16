@@ -1,3 +1,10 @@
+pioneers (0.11.3-1) unstable; urgency=low
+
+  * New upstream security release (Closes: #449541).
+  * Fix bashism in init script (Closes: #447379).
+
+ -- Bas Wijnen <wijnen@debian.org>  Mon, 12 Nov 2007 08:23:14 +0100
+
 pioneers (0.11.2-2) unstable; urgency=low
 
   * Let pioneers-console depend on pioneers-console-data, not on

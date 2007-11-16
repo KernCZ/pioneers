@@ -6,6 +6,8 @@ Uploaders: Steve Langasek <vorlon@debian.org>, Roman Hodek <roman@debian.org>
 Build-Depends: debhelper (>= 5.0.0), libgnome2-dev, scrollkeeper, gnome-common, imagemagick, librsvg2-bin, netpbm, libgtk2.0-dev, automake1.9, autoconf (>= 2.53)
 Standards-Version: 3.7.2
 Homepage: http://pio.sourceforge.net/
+XS-Vcs-Svn: https://pio.svn.sourceforge.net/svnroot/pio/trunk/pioneers
+XS-Vcs-Browser: http://pio.svn.sourceforge.net/viewvc/pio/trunk/pioneers/
 
 Package: pioneers
 Architecture: any

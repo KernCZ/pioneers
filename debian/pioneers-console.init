@@ -39,7 +39,7 @@ if test -r /etc/default/pioneers-console ; then
 	. /etc/default/pioneers-console
 fi
 
-test "$RUN_META_SERVER" == "yes" || exit 0
+test "$RUN_META_SERVER" = "yes" || exit 0
 
 export PIONEERS_META_SERVER
 NAME="Pioneers meta-server"
