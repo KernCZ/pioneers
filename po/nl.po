@@ -6,10 +6,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Pioneers 0.11.3\n"
+"Project-Id-Version: Pioneers 0.11.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-11-22 22:49+0100\n"
-"PO-Revision-Date: 2007-07-12 22:00+0200\n"
+"PO-Revision-Date: 2007-11-22 22:50+0200\n"
 "Last-Translator: Roland Clobus <rclobus@bigfoot.com>\n"
 "Language-Team: Bas Wijnen <shevek@fmf.nl> Roland Clobus <rclobus@bigfoot."
 "com>\n"
@@ -1929,9 +1929,8 @@ msgid "Trading allowed only before build/buy?"
 msgstr "Handelen alleen toegestaan voor het bouwen?"
 
 #: ../client/gtk/settingscreen.c:170
-#, fuzzy
 msgid "Check Victory Only At End Of Turn?"
-msgstr "_Controleer winstpunten"
+msgstr "Winst alleen bij einde beurt controleren?"
 
 #: ../client/gtk/settingscreen.c:175
 msgid "Amount of Each Resource:"
@@ -2134,11 +2133,11 @@ msgstr "Sta handel tussen spelers toe"
 
 #: ../common/gtk/game-rules.c:130
 msgid "Victory At End Of Turn"
-msgstr ""
+msgstr "Winst bij einde van de beurt"
 
 #: ../common/gtk/game-rules.c:131
 msgid "Check for victory only at end of turn"
-msgstr ""
+msgstr "Winst bij einde van de beurt controleren"
 
 #. Label text for customising a game
 #: ../common/gtk/game-settings.c:118
