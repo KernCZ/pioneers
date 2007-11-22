@@ -1,4 +1,8 @@
 
+2007-11-22  Roland Clobus <rclobus@bigfoot.com> and Bas Wijnen <shevek@fmf.nl>
+	* The patches 2007-11-22 and 2007-09-16 fix CVE-2007-5933.
+	(Both fixed bugs would cause a DoS by crashing the server)
+
 2007-11-22  Bas Wijnen <shevek@fmf.nl>
 	* common/state.c: Fix for an assert when a connection is broken before
 	the state machine has been properly initialized.
