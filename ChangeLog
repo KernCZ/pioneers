@@ -1,4 +1,8 @@
 
+2007-11-22  Roland Clobus <rclobus@bigfoot.com>
+	* client/ai/greedy.c: Don't attempt to buy a development card when the
+	stock is empty.
+
 2007-11-22  Roland Clobus <rclobus@bigfoot.com> and Bas Wijnen <shevek@fmf.nl>
 	* The patches 2007-11-22 and 2007-09-16 fix CVE-2007-5933.
 	(Both fixed bugs would cause a DoS by crashing the server)

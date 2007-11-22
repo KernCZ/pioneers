@@ -199,7 +199,7 @@ static gboolean should_buy(const gint assets[NO_RESOURCE], BuildType bt,
 			(best_road_spot(resval) != NULL ||
 			 best_road_to_road(resval) != NULL));
 	case DEVEL_CARD:
-		return (can_buy_develop());
+		return (stock_num_develop() > 0 && can_buy_develop());
 	default:
 		/* xxx bridge, ship */
 		return FALSE;
