@@ -1,4 +1,8 @@
 
+2007-11-22  Bas Wijnen <shevek@fmf.nl>
+	* common/state.c: Fix for an assert when a connection is broken before
+	the state machine has been properly initialized.
+
 2007-10-30  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/quote.c, client/gtk/legend.c, client/gtk/trade.c,
 	client/gtk/offline.c, client/gtk/gui.c, client/gtk/gui.h: Use
