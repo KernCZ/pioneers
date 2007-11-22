@@ -177,7 +177,8 @@ static void update_game_settings(const GameParams * params)
 	game_settings_set_victory_points(GAMESETTINGS(game_settings),
 					 params->victory_points);
 	game_rules_set_victory_at_end_of_turn(GAMERULES(game_rules),
-				      params->check_victory_at_end_of_turn);
+					      params->
+					      check_victory_at_end_of_turn);
 	game_rules_set_random_terrain(GAMERULES(game_rules),
 				      params->random_terrain);
 	game_rules_set_sevens_rule(GAMERULES(game_rules),
@@ -255,10 +256,11 @@ static void start_clicked_cb(G_GNUC_UNUSED GtkButton * start_btn,
 				       game_settings_get_victory_points
 				       (GAMESETTINGS(game_settings)));
 		params->check_victory_at_end_of_turn =
-		    game_rules_get_victory_at_end_of_turn(GAMERULES(game_rules));
+		    game_rules_get_victory_at_end_of_turn(GAMERULES
+							  (game_rules));
 		cfg_set_sevens_rule(params,
-				    game_rules_get_sevens_rule
-				    (GAMERULES(game_rules)));
+				    game_rules_get_sevens_rule(GAMERULES
+							       (game_rules)));
 		cfg_set_terrain_type(params,
 				     game_rules_get_random_terrain
 				     (GAMERULES(game_rules)));
@@ -292,7 +294,8 @@ static void start_clicked_cb(G_GNUC_UNUSED GtkButton * start_btn,
 			config_set_int("game/victory-points",
 				       params->victory_points);
 			config_set_int("game/check-victory-at-end-of-turn",
-				       params->check_victory_at_end_of_turn);
+				       params->
+				       check_victory_at_end_of_turn);
 			config_set_int("game/sevens-rule",
 				       params->sevens_rule);
 			config_set_int("game/use-pirate",
@@ -588,7 +591,9 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 	temp = config_get_int("game/victory-points", &default_returned);
 	if (!default_returned)
 		cfg_set_victory_points(params, temp);
-	temp = config_get_int("game/victory-at-end-of-turn", &default_returned);
+	temp =
+	    config_get_int("game/victory-at-end-of-turn",
+			   &default_returned);
 	if (!default_returned)
 		params->check_victory_at_end_of_turn = temp;
 	temp = config_get_int("game/sevens-rule", &default_returned);

@@ -150,8 +150,8 @@ static GtkWidget *settings_create_content(void)
 			NULL, FALSE);
 	row++;
 	add_setting_desc(table, row, 0, _("Victory Point Target:"));
-	add_setting_val(table, row, 1, TYPE_NUM, game_params->victory_points,
-			NULL, FALSE);
+	add_setting_val(table, row, 1, TYPE_NUM,
+			game_params->victory_points, NULL, FALSE);
 	row++;
 	add_setting_desc(table, row, 0, _("Random Terrain?"));
 	add_setting_val(table, row, 1, TYPE_BOOL,
@@ -163,16 +163,18 @@ static GtkWidget *settings_create_content(void)
 	row++;
 	add_setting_desc(table, row, 0,
 			 _("Trading allowed only before build/buy?"));
-	add_setting_val(table, row, 1, TYPE_BOOL, game_params->strict_trade,
-			NULL, FALSE);
-	row++;
-	add_setting_desc(table, row, 0, _("Check Victory Only At End Of Turn?"));
 	add_setting_val(table, row, 1, TYPE_BOOL,
-			game_params->check_victory_at_end_of_turn, NULL, FALSE);
+			game_params->strict_trade, NULL, FALSE);
+	row++;
+	add_setting_desc(table, row, 0,
+			 _("Check Victory Only At End Of Turn?"));
+	add_setting_val(table, row, 1, TYPE_BOOL,
+			game_params->check_victory_at_end_of_turn, NULL,
+			FALSE);
 	row++;
 	add_setting_desc(table, row, 0, _("Amount of Each Resource:"));
-	add_setting_val(table, row, 1, TYPE_NUM, game_params->resource_count,
-			NULL, FALSE);
+	add_setting_val(table, row, 1, TYPE_NUM,
+			game_params->resource_count, NULL, FALSE);
 
 	if (game_params->sevens_rule == 0) {
 		sevens_desc = g_strdup(_("Normal"));
@@ -219,7 +221,8 @@ static GtkWidget *settings_create_content(void)
 	}
 	row++;
 	add_setting_desc(table, row, 0, _("Island Discovery Bonuses:"));
-	add_setting_val(table, row, 1, TYPE_STRING, 0, island_bonus, FALSE);
+	add_setting_val(table, row, 1, TYPE_STRING, 0, island_bonus,
+			FALSE);
 	g_free(island_bonus);
 
 	/* Double space, otherwise the columns are too close */

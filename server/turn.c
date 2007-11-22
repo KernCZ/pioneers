@@ -519,8 +519,8 @@ gboolean mode_turn(Player * player, gint event)
 		player_send(player, FIRST_VERSION, LATEST_VERSION, "OK\n");
 		if (!check_victory(player)) {
 			/* game isn't over, so pop the state machine back to idle */
-		    sm_pop(sm);
-		    turn_next_player(game);
+			sm_pop(sm);
+			turn_next_player(game);
 		}
 		return TRUE;
 	}
@@ -530,7 +530,7 @@ gboolean mode_turn(Player * player, gint event)
 	}
 	if (sm_recv(sm, "play-develop %d", &idx, &devel_type)) {
 		develop_play(player, idx);
-		if(!game->params->check_victory_at_end_of_turn)
+		if (!game->params->check_victory_at_end_of_turn)
 			check_victory(player);
 		return TRUE;
 	}
@@ -557,7 +557,7 @@ gboolean mode_turn(Player * player, gint event)
 	}
 	if (sm_recv(sm, "build %B %d %d %d", &build_type, &x, &y, &pos)) {
 		build_add(player, build_type, x, y, pos);
-		if(!game->params->check_victory_at_end_of_turn)
+		if (!game->params->check_victory_at_end_of_turn)
 			check_victory(player);
 		return TRUE;
 	}
@@ -565,7 +565,7 @@ gboolean mode_turn(Player * player, gint event)
 	    (sm, "move %d %d %d %d %d %d", &sx, &sy, &spos, &dx, &dy,
 	     &dpos)) {
 		build_move(player, sx, sy, spos, dx, dy, dpos);
-		if(!game->params->check_victory_at_end_of_turn)
+		if (!game->params->check_victory_at_end_of_turn)
 			check_victory(player);
 		return TRUE;
 	}

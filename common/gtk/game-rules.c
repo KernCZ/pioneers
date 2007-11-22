@@ -128,7 +128,7 @@ static void game_rules_init(GameRules * gr)
 	add_row(gr, _("Domestic Trade"), _("Allow trade between players"),
 		row++, &gr->domestic_trade);
 	add_row(gr, _("Victory At End Of Turn"),
-                _("Check for victory only at end of turn"),
+		_("Check for victory only at end of turn"),
 		row++, &gr->check_victory_at_end_of_turn);
 }
 
@@ -242,10 +242,10 @@ gboolean game_rules_get_domestic_trade(GameRules * gr)
 					 (gr->domestic_trade));
 }
 
-void game_rules_set_victory_at_end_of_turn(GameRules * gr,
-				   gboolean val)
+void game_rules_set_victory_at_end_of_turn(GameRules * gr, gboolean val)
 {
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(gr->check_victory_at_end_of_turn),
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
+				     (gr->check_victory_at_end_of_turn),
 				     val);
 }
 
@@ -253,5 +253,6 @@ gboolean game_rules_get_victory_at_end_of_turn(GameRules * gr)
 {
 	return
 	    gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON
-					 (gr->check_victory_at_end_of_turn));
+					 (gr->
+					  check_victory_at_end_of_turn));
 }

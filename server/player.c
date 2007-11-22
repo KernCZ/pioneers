@@ -955,7 +955,8 @@ static void player_broadcast_internal(Player * player, BroadcastType type,
 	for (list = game->player_list; list != NULL;
 	     list = g_list_next(list)) {
 		Player *scan = list->data;
-		if ((scan->disconnected && !scan->sm->use_cache) || scan->num < 0
+		if ((scan->disconnected && !scan->sm->use_cache)
+		    || scan->num < 0
 		    || scan->version < first_supported_version
 		    || scan->version > last_supported_version)
 			continue;
