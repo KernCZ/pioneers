@@ -364,7 +364,7 @@ AC_DEFINE_UNQUOTED(PIONEERS_DEFAULT_META_SERVER,
 		   "$PIONEERS_DEFAULT_META_SERVER", [The default meta server])
 
 ## internationalization support
-ALL_LINGUAS="af de es fr hu it ja nl sv"
+ALL_LINGUAS="af da de es fr hu it ja nl sv"
 
 GETTEXT_PACKAGE=pioneers
 AC_SUBST(GETTEXT_PACKAGE)
