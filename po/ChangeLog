@@ -1,3 +1,7 @@
+2007-12-09 Roland Clobus <rclobus@bigfoot.com>
+	* all: Reverted changes made 2007-11-22, because it is not time for a 
+	release yet.
+
 2007-11-22 Roland Clobus <rclobus@bigfoot.com>
 	* all: Updated linenumbers for 0.11.4 release
 	* nl.po: Update for 0.11.4
