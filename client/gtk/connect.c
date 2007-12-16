@@ -689,9 +689,6 @@ static GtkWidget *build_create_interface(void)
 	GtkWidget *label;
 	GtkObject *adj;
 	guint row;
-	GtkTooltips *tooltips;
-
-	tooltips = gtk_tooltips_new();
 
 	vbox = gtk_vbox_new(FALSE, 0);
 	gtk_widget_show(vbox);
@@ -745,8 +742,8 @@ static GtkWidget *build_create_interface(void)
 	gtk_table_attach(GTK_TABLE(game_settings), aiplayers_spin,
 			 1, 2, row, row + 1,
 			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
-	gtk_tooltips_set_tip(tooltips, aiplayers_spin,
-			     _("The number of AI players"), NULL);
+	gtk_widget_set_tooltip_text(aiplayers_spin,
+				    _("The number of AI players"));
 
 	game_rules = game_rules_new_metaserver();
 	gtk_widget_show(game_rules);
@@ -940,7 +937,6 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
 	GtkWidget *dlg_vbox;
 	GtkWidget *vbox;
 	GtkWidget *scroll_win;
-	GtkTooltips *tooltips;
 	GtkTreeViewColumn *column;
 	GtkCellRenderer *renderer;
 
@@ -960,8 +956,6 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
 		return;
 	}
 
-	tooltips = gtk_tooltips_new();
-
 	meta_dlg = gtk_dialog_new_with_buttons(_("Join a public game"),
 					       GTK_WINDOW(parent),
 					       0,
@@ -978,24 +972,19 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
 	g_signal_connect(G_OBJECT(meta_dlg), "response",
 			 G_CALLBACK(meta_dlg_cb), NULL);
 	gtk_widget_realize(meta_dlg);
-	gtk_tooltips_set_tip(tooltips,
-			     gui_get_dialog_button(GTK_DIALOG(meta_dlg),
-						   0),
-			     _("Refresh the list of games"), NULL);
-	gtk_tooltips_set_tip(tooltips,
-			     gui_get_dialog_button(GTK_DIALOG(meta_dlg),
-						   1),
-			     _
-			     ("Create a new public game at the meta server"),
-			     NULL);
-	gtk_tooltips_set_tip(tooltips,
-			     gui_get_dialog_button(GTK_DIALOG(meta_dlg),
-						   2),
-			     _("Don't join a public game"), NULL);
-	gtk_tooltips_set_tip(tooltips,
-			     gui_get_dialog_button(GTK_DIALOG(meta_dlg),
-						   3),
-			     _("Join the selected game"), NULL);
+	gtk_widget_set_tooltip_text(gui_get_dialog_button
+				    (GTK_DIALOG(meta_dlg), 0),
+				    _("Refresh the list of games"));
+	gtk_widget_set_tooltip_text(gui_get_dialog_button
+				    (GTK_DIALOG(meta_dlg), 1),
+				    _
+				    ("Create a new public game at the meta server"));
+	gtk_widget_set_tooltip_text(gui_get_dialog_button
+				    (GTK_DIALOG(meta_dlg), 2),
+				    _("Don't join a public game"));
+	gtk_widget_set_tooltip_text(gui_get_dialog_button
+				    (GTK_DIALOG(meta_dlg), 3),
+				    _("Join the selected game"));
 
 	dlg_vbox = GTK_DIALOG(meta_dlg)->vbox;
 	gtk_widget_show(dlg_vbox);
@@ -1029,8 +1018,8 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
 	    gtk_tree_view_new_with_model(GTK_TREE_MODEL(meta_games_model));
 	gtk_widget_show(meta_games_view);
 	gtk_container_add(GTK_CONTAINER(scroll_win), meta_games_view);
-	gtk_tooltips_set_tip(tooltips, meta_games_view,
-			     _("Select a game to join"), NULL);
+	gtk_widget_set_tooltip_text(meta_games_view,
+				    _("Select a game to join"));
 
 	column =
 	    gtk_tree_view_column_new_with_attributes(_("Map Name"),
@@ -1040,8 +1029,7 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
 	gtk_tree_view_append_column(GTK_TREE_VIEW(meta_games_view),
 				    column);
 	gtk_tree_view_column_set_sort_column_id(column, C_META_MAP);
-	gtk_tooltips_set_tip(tooltips, column->button,
-			     _("Name of the game"), NULL);
+	gtk_widget_set_tooltip_text(column->button, _("Name of the game"));
 
 	renderer = gtk_cell_renderer_text_new();
 	g_object_set(renderer, "xalign", 1.0f, NULL);
@@ -1051,8 +1039,8 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
 						     NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(meta_games_view),
 				    column);
-	gtk_tooltips_set_tip(tooltips, column->button,
-			     _("Number of players in the game"), NULL);
+	gtk_widget_set_tooltip_text(column->button,
+				    _("Number of players in the game"));
 
 	renderer = gtk_cell_renderer_text_new();
 	g_object_set(renderer, "xalign", 1.0f, NULL);
@@ -1062,8 +1050,8 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
 						     NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(meta_games_view),
 				    column);
-	gtk_tooltips_set_tip(tooltips, column->button,
-			     _("Maximum players for the game"), NULL);
+	gtk_widget_set_tooltip_text(column->button,
+				    _("Maximum players for the game"));
 
 	column =
 	    gtk_tree_view_column_new_with_attributes(_("Terrain"),
@@ -1072,8 +1060,8 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
 						     C_META_TERRAIN, NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(meta_games_view),
 				    column);
-	gtk_tooltips_set_tip(tooltips, column->button,
-			     _("Random of default terrain"), NULL);
+	gtk_widget_set_tooltip_text(column->button,
+				    _("Random of default terrain"));
 
 	renderer = gtk_cell_renderer_text_new();
 	g_object_set(renderer, "xalign", 1.0f, NULL);
@@ -1083,8 +1071,8 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
 						     C_META_VICTORY, NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(meta_games_view),
 				    column);
-	gtk_tooltips_set_tip(tooltips, column->button,
-			     _("Points needed to win"), NULL);
+	gtk_widget_set_tooltip_text(column->button,
+				    _("Points needed to win"));
 
 	column =
 	    gtk_tree_view_column_new_with_attributes(_("Sevens Rule"),
@@ -1093,8 +1081,7 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
 						     C_META_SEVENS, NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(meta_games_view),
 				    column);
-	gtk_tooltips_set_tip(tooltips, column->button, _("Sevens rule"),
-			     NULL);
+	gtk_widget_set_tooltip_text(column->button, _("Sevens rule"));
 
 	column =
 	    gtk_tree_view_column_new_with_attributes(_("Host"),
@@ -1104,8 +1091,7 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
 	gtk_tree_view_append_column(GTK_TREE_VIEW(meta_games_view),
 				    column);
 	gtk_tree_view_column_set_sort_column_id(column, C_META_HOST);
-	gtk_tooltips_set_tip(tooltips, column->button,
-			     _("Host of the game"), NULL);
+	gtk_widget_set_tooltip_text(column->button, _("Host of the game"));
 
 	renderer = gtk_cell_renderer_text_new();
 	g_object_set(renderer, "xalign", 1.0f, NULL);
@@ -1115,8 +1101,8 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
 						     NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(meta_games_view),
 				    column);
-	gtk_tooltips_set_tip(tooltips, column->button,
-			     _("Port of the the game"), NULL);
+	gtk_widget_set_tooltip_text(column->button,
+				    _("Port of the the game"));
 
 	column =
 	    gtk_tree_view_column_new_with_attributes(_("Version"),
@@ -1125,8 +1111,8 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
 						     C_META_VERSION, NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(meta_games_view),
 				    column);
-	gtk_tooltips_set_tip(tooltips, column->button,
-			     _("Version of the host"), NULL);
+	gtk_widget_set_tooltip_text(column->button,
+				    _("Version of the host"));
 
 	/* Register double-click */
 	g_signal_connect(G_OBJECT(meta_games_view), "button_press_event",
@@ -1171,15 +1157,12 @@ void connect_create_dlg(void)
 	GtkWidget *hbox;
 	GtkWidget *btn;
 	GtkWidget *sep;
-	GtkTooltips *tooltips;
 	gchar *fullname;
 
 	if (connect_dlg) {
 		gtk_window_present(GTK_WINDOW(connect_dlg));
 		return;
 	}
-
-	tooltips = gtk_tooltips_new();
 
 	connect_dlg = gtk_dialog_new_with_buttons(_("Start a new game"),
 						  GTK_WINDOW(app_window),
@@ -1219,8 +1202,7 @@ void connect_create_dlg(void)
 
 	gtk_table_attach(GTK_TABLE(table), name_entry, 1, 2, 0, 1,
 			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
-	gtk_tooltips_set_tip(tooltips, name_entry,
-			     _("Enter your name"), NULL);
+	gtk_widget_set_tooltip_text(name_entry, _("Enter your name"));
 
 	viewer_toggle = gtk_check_button_new_with_label(_("Viewer"));
 	gtk_widget_show(viewer_toggle);
@@ -1229,8 +1211,8 @@ void connect_create_dlg(void)
 
 	gtk_table_attach(GTK_TABLE(table), viewer_toggle, 2, 3, 0, 1, 0,
 			 GTK_EXPAND | GTK_FILL, 0, 0);
-	gtk_tooltips_set_tip(tooltips, viewer_toggle,
-			     _("Do you want to be a viewer?"), NULL);
+	gtk_widget_set_tooltip_text(viewer_toggle,
+				    _("Do you want to be a viewer?"));
 
 	sep = gtk_hseparator_new();
 	gtk_widget_show(sep);
@@ -1251,9 +1233,9 @@ void connect_create_dlg(void)
 			 (GtkAttachOptions) GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_entry_set_text(GTK_ENTRY(meta_server_entry),
 			   metaserver_info.server);
-	gtk_tooltips_set_tip(tooltips, meta_server_entry,
-			     _("Leave empty for the default meta server"),
-			     NULL);
+	gtk_widget_set_tooltip_text(meta_server_entry,
+				    _
+				    ("Leave empty for the default meta server"));
 
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_widget_show(hbox);
@@ -1265,14 +1247,14 @@ void connect_create_dlg(void)
 	gtk_box_pack_start_defaults(GTK_BOX(hbox), btn);
 	g_signal_connect(G_OBJECT(btn), "clicked",
 			 G_CALLBACK(create_meta_dlg), app_window);
-	gtk_tooltips_set_tip(tooltips, btn, _("Join a public game"), NULL);
+	gtk_widget_set_tooltip_text(btn, _("Join a public game"));
 	GTK_WIDGET_SET_FLAGS(btn, GTK_CAN_DEFAULT);
 	gtk_widget_grab_default(btn);
 
 	btn = gtk_button_new_with_label(_("Create game"));
 	gtk_widget_show(btn);
 	gtk_box_pack_start_defaults(GTK_BOX(hbox), btn);
-	gtk_tooltips_set_tip(tooltips, btn, _("Create a game"), NULL);
+	gtk_widget_set_tooltip_text(btn, _("Create a game"));
 	g_signal_connect(G_OBJECT(btn), "clicked",
 			 G_CALLBACK(launch_server_gtk), app_window);
 	fullname = g_find_program_in_path(PIONEERS_SERVER_GTK_PATH);
@@ -1285,8 +1267,7 @@ void connect_create_dlg(void)
 	btn = gtk_button_new_with_label(_("Join private game"));
 	gtk_widget_show(btn);
 	gtk_box_pack_start_defaults(GTK_BOX(hbox), btn);
-	gtk_tooltips_set_tip(tooltips, btn,
-			     _("Join a private game"), NULL);
+	gtk_widget_set_tooltip_text(btn, _("Join a private game"));
 	g_signal_connect(G_OBJECT(btn), "clicked",
 			 G_CALLBACK(connect_private_dialog), app_window);
 
@@ -1414,7 +1395,6 @@ static void connect_private_dialog(G_GNUC_UNUSED GtkWidget * widget,
 	GtkWidget *table;
 	GtkWidget *lbl;
 	GtkWidget *hbox;
-	GtkTooltips *tooltips;
 
 	GtkWidget *host_list;
 	GPtrArray *host_entries;
@@ -1427,8 +1407,6 @@ static void connect_private_dialog(G_GNUC_UNUSED GtkWidget * widget,
 		gtk_window_present(GTK_WINDOW(connect_private_dlg));
 		return;
 	}
-
-	tooltips = gtk_tooltips_new();
 
 	connect_private_dlg =
 	    gtk_dialog_new_with_buttons(_("Join a private game"),
@@ -1471,8 +1449,8 @@ static void connect_private_dialog(G_GNUC_UNUSED GtkWidget * widget,
 			 GTK_EXPAND | GTK_FILL,
 			 GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_entry_set_text(GTK_ENTRY(host_entry), connect_server);
-	gtk_tooltips_set_tip(tooltips, host_entry,
-			     _("Name of the host of the game"), NULL);
+	gtk_widget_set_tooltip_text(host_entry,
+				    _("Name of the host of the game"));
 	connect_set_field(&connect_server, connect_server);
 
 	lbl = gtk_label_new(_("Server Port"));
@@ -1490,8 +1468,8 @@ static void connect_private_dialog(G_GNUC_UNUSED GtkWidget * widget,
 	gtk_widget_show(port_entry);
 	gtk_box_pack_start(GTK_BOX(hbox), port_entry, FALSE, TRUE, 0);
 	gtk_entry_set_text(GTK_ENTRY(port_entry), connect_port);
-	gtk_tooltips_set_tip(tooltips, port_entry,
-			     _("Port of the host of the game"), NULL);
+	gtk_widget_set_tooltip_text(port_entry,
+				    _("Port of the host of the game"));
 	connect_set_field(&connect_port, connect_port);
 
 	host_list = gtk_combo_box_new_text();
@@ -1531,7 +1509,7 @@ static void connect_private_dialog(G_GNUC_UNUSED GtkWidget * widget,
 
 	gtk_table_attach(GTK_TABLE(table), host_list, 1, 2, 2, 3,
 			 GTK_FILL, GTK_FILL, 0, 0);
-	gtk_tooltips_set_tip(tooltips, host_list, _("Recent games"), NULL);
+	gtk_widget_set_tooltip_text(host_list, _("Recent games"));
 
 	lbl = gtk_label_new(_("Recent Games"));
 	gtk_widget_show(lbl);

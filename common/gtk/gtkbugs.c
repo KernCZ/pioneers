@@ -89,3 +89,7 @@ void widget_set_sensitive(GtkWidget * widget, gboolean sensitive)
 		}
 	}
 }
+
+#if (GTK_MAJOR_VERSION == 2 && GTK_MINOR_VERSION < 12)
+GtkTooltips *tooltips = NULL;
+#endif

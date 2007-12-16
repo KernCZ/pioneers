@@ -1,4 +1,14 @@
 
+2007-12-16  Roland Clobus <rclobus@bigfoot.com>
+	* editor/gtk/game-resources.c, editor/gtk/game-devcards.c,
+	editor/gtk/game-buildings.c, common/gtk/game-rules.c,
+	common/gtk/gtkbugs.c, common/gtk/game-rules.h,
+	common/gtk/game-settings.c, common/gtk/gtkbugs.h,
+	common/gtk/select-game.c, server/gtk/main.c,
+	client/gtk/resource-table.c, client/gtk/resource-table.h,
+	client/gtk/resource.c, client/gtk/gui.c, client/gtk/connect.c:
+	Added support for the new tooltip API of GTK+ 2.12
+	
 2007-11-22  Roland Clobus <rclobus@bigfoot.com>
 	* client/ai/greedy.c: Don't attempt to buy a development card when the
 	stock is empty.

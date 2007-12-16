@@ -37,6 +37,7 @@
 #include "histogram.h"
 #include "theme.h"
 #include "config-gnome.h"
+#include "gtkbugs.h"
 
 static GtkWidget *preferences_dlg;
 GtkWidget *app_window;		/* main application window */
@@ -857,7 +858,6 @@ static void preferences_cb(void)
 	GtkWidget *theme_label;
 	GtkWidget *theme_list;
 	GtkWidget *layout;
-	GtkTooltips *tooltips;
 
 	guint row;
 	gint color_summary;
@@ -886,8 +886,6 @@ static void preferences_cb(void)
 	g_signal_connect(G_OBJECT(preferences_dlg), "response",
 			 G_CALLBACK(gtk_widget_destroy), NULL);
 	gtk_widget_show(preferences_dlg);
-
-	tooltips = gtk_tooltips_new();
 
 	dlg_vbox = GTK_DIALOG(preferences_dlg)->vbox;
 	gtk_widget_show(dlg_vbox);
@@ -922,9 +920,9 @@ static void preferences_cb(void)
 				  0, 1, row, row + 1);
 	gtk_table_attach_defaults(GTK_TABLE(layout), theme_list,
 				  1, 2, row, row + 1);
-	/* Tooltip for changing the theme in the preferences dialog */
-	gtk_tooltips_set_tip(tooltips, theme_list,
-			     _("Choose one of the themes"), NULL);
+	gtk_widget_set_tooltip_text(theme_list,
+				    /* Tooltip for changing the theme in the preferences dialog */
+				    _("Choose one of the themes"));
 	row++;
 
 	/* Label for the option to show the legend */
@@ -936,10 +934,10 @@ static void preferences_cb(void)
 			 G_CALLBACK(show_legend_cb), NULL);
 	gtk_table_attach_defaults(GTK_TABLE(layout), widget,
 				  0, 2, row, row + 1);
-	gtk_tooltips_set_tip(tooltips, widget,
-			     /* Tooltip for the option to show the legend */
-			     _("Show the legend as a page beside the map"),
-			     NULL);
+	gtk_widget_set_tooltip_text(widget,
+				    /* Tooltip for the option to show the legend */
+				    _
+				    ("Show the legend as a page beside the map"));
 	row++;
 
 	/* Label for the option to display log messages in color */
@@ -951,14 +949,15 @@ static void preferences_cb(void)
 				     color_messages_enabled);
 	g_signal_connect(G_OBJECT(widget), "toggled",
 			 G_CALLBACK(message_color_cb), NULL);
-	/* Tooltip for the option to display log messages in color */
-	gtk_tooltips_set_tip(tooltips, widget,
-			     _("Show new messages with color"), NULL);
+	gtk_widget_set_tooltip_text(widget,
+				    /* Tooltip for the option to display log messages in color */
+				    _("Show new messages with color"));
 	row++;
 
-	/* Label for the option to display chat in color of player */
-	widget = gtk_check_button_new_with_label(_
-						 ("Chat in color of player"));
+	widget = gtk_check_button_new_with_label(
+							/* Label for the option to display chat in color of player */
+							_
+							("Chat in color of player"));
 	gtk_widget_show(widget);
 	gtk_table_attach_defaults(GTK_TABLE(layout), widget,
 				  0, 2, row, row + 1);
@@ -966,11 +965,10 @@ static void preferences_cb(void)
 				     color_chat_enabled);
 	g_signal_connect(G_OBJECT(widget), "toggled",
 			 G_CALLBACK(chat_color_cb), NULL);
-	gtk_tooltips_set_tip(tooltips, widget,
-			     /* Tooltip for the option to display chat in color of player */
-			     _
-			     ("Show new chat messages in the color of the player"),
-			     NULL);
+	gtk_widget_set_tooltip_text(widget,
+				    /* Tooltip for the option to display chat in color of player */
+				    _
+				    ("Show new chat messages in the color of the player"));
 	row++;
 
 	/* Label for the option to display the summary with colors */
@@ -983,9 +981,9 @@ static void preferences_cb(void)
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), color_summary);	/* @todo RC use correct variable */
 	g_signal_connect(G_OBJECT(widget), "toggled",
 			 G_CALLBACK(summary_color_cb), NULL);
-	/* Tooltip for the option to display the summary with colors */
-	gtk_tooltips_set_tip(tooltips, widget,
-			     _("Use colors in the player summary"), NULL);
+	gtk_widget_set_tooltip_text(widget,
+				    /* Tooltip for the option to display the summary with colors */
+				    _("Use colors in the player summary"));
 	row++;
 
 	/* Label for the option to display keyboard accelerators in the toolbar */
@@ -998,10 +996,10 @@ static void preferences_cb(void)
 				     toolbar_show_accelerators);
 	g_signal_connect(G_OBJECT(widget), "toggled",
 			 G_CALLBACK(toolbar_shortcuts_cb), NULL);
-	/* Tooltip for the option to display keyboard accelerators in the toolbar */
-	gtk_tooltips_set_tip(tooltips, widget,
-			     _("Show keyboard shortcuts in the toolbar"),
-			     NULL);
+	gtk_widget_set_tooltip_text(widget,
+				    /* Tooltip for the option to display keyboard accelerators in the toolbar */
+				    _
+				    ("Show keyboard shortcuts in the toolbar"));
 	row++;
 
 	/* Label for the option to announce when players/viewer enter */
@@ -1014,11 +1012,10 @@ static void preferences_cb(void)
 				     get_announce_player());
 	g_signal_connect(G_OBJECT(widget), "toggled",
 			 G_CALLBACK(announce_player_cb), NULL);
-	/* Tooltip for the option to use sound */
-	gtk_tooltips_set_tip(tooltips, widget,
-			     _
-			     ("Make a sound when a new player or viewer enters the game"),
-			     NULL);
+	gtk_widget_set_tooltip_text(widget,
+				    /* Tooltip for the option to use sound */
+				    _
+				    ("Make a sound when a new player or viewer enters the game"));
 	row++;
 
 	/* Label for the option to use the 16:9 layout. */
@@ -1030,11 +1027,10 @@ static void preferences_cb(void)
 				     get_16_9_layout());
 	g_signal_connect(G_OBJECT(widget), "toggled",
 			 G_CALLBACK(toggle_16_9_cb), NULL);
-	/* Tooltip for 16:9 option. */
-	gtk_tooltips_set_tip(tooltips, widget,
-			     _
-			     ("Use a 16:9 friendly layout for the window"),
-			     NULL);
+	gtk_widget_set_tooltip_text(widget,
+				    /* Tooltip for 16:9 option. */
+				    _
+				    ("Use a 16:9 friendly layout for the window"));
 	row++;
 
 }

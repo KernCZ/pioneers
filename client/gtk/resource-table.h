@@ -50,7 +50,6 @@ typedef enum _ResourceTableDirection ResourceTableDirection;
 
 struct _ResourceTable {
 	GtkTable table;
-	GtkTooltips *tooltips;
 
 	struct _ResourceRow row[NO_RESOURCE];
 

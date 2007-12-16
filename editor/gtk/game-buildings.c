@@ -1,7 +1,6 @@
 #include "config.h"
 #include "game.h"
 #include <gtk/gtktable.h>
-#include <gtk/gtktooltips.h>
 #include <gtk/gtklabel.h>
 #include <gtk/gtkspinbutton.h>
 #include <string.h>

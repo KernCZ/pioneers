@@ -8,10 +8,8 @@
  */
 
 #include "config.h"
-#include "game.h"
 #include <gtk/gtksignal.h>
 #include <gtk/gtktable.h>
-#include <gtk/gtktooltips.h>
 #include <gtk/gtklabel.h>
 #include <gtk/gtkspinbutton.h>
 #include <gtk/gtkhbox.h>
@@ -23,6 +21,7 @@
 
 #include "game-settings.h"
 #include "game.h"
+#include "gtkbugs.h"
 
 /* The signals */
 enum {
@@ -103,12 +102,9 @@ static void game_settings_class_init(GameSettingsClass * klass)
 /* Build the composite widget */
 static void game_settings_init(GameSettings * gs)
 {
-	GtkTooltips *tooltips;
 	GtkWidget *label;
 	GtkWidget *hbox;
 	GtkObject *adj;
-
-	tooltips = gtk_tooltips_new();
 
 	gtk_table_resize(GTK_TABLE(gs), 4, 2);
 	gtk_table_set_row_spacings(GTK_TABLE(gs), 3);
@@ -131,9 +127,9 @@ static void game_settings_init(GameSettings * gs)
 			 GTK_EXPAND | GTK_FILL, GTK_FILL, 0, 0);
 	g_signal_connect(G_OBJECT(gs->players_spin), "value-changed",
 			 G_CALLBACK(game_settings_change_players), gs);
-	gtk_tooltips_set_tip(tooltips, gs->players_spin,
-			     /* Tooltip for 'Number of Players' */
-			     _("The number of players"), NULL);
+	gtk_widget_set_tooltip_text(gs->players_spin,
+				    /* Tooltip for 'Number of Players' */
+				    _("The number of players"));
 
 	/* Label for customising a game */
 	label = gtk_label_new(_("Victory Point Target"));
@@ -154,9 +150,10 @@ static void game_settings_init(GameSettings * gs)
 	g_signal_connect(G_OBJECT(gs->victory_spin), "value-changed",
 			 G_CALLBACK(game_settings_change_victory_points),
 			 gs);
-	gtk_tooltips_set_tip(tooltips, gs->victory_spin,
-			     /* Tooltip for Victory Point Target */
-			     _("The points needed to win the game"), NULL);
+	gtk_widget_set_tooltip_text(gs->victory_spin,
+				    /* Tooltip for Victory Point Target */
+				    _
+				    ("The points needed to win the game"));
 
 	gs->check_button = gtk_button_new();
 	gtk_button_set_image(GTK_BUTTON(gs->check_button),
@@ -167,9 +164,9 @@ static void game_settings_init(GameSettings * gs)
 			   0);
 	g_signal_connect(G_OBJECT(gs->check_button), "clicked",
 			 G_CALLBACK(game_settings_check), gs);
-	gtk_tooltips_set_tip(tooltips, gs->check_button,
-			     /* Tooltip for the check button */
-			     _("Is it possible to win this game?"), NULL);
+	gtk_widget_set_tooltip_text(gs->check_button,
+				    /* Tooltip for the check button */
+				    _("Is it possible to win this game?"));
 
 	gtk_table_attach(GTK_TABLE(gs), hbox, 1, 2, 2, 3,
 			 GTK_EXPAND | GTK_FILL, GTK_FILL, 0, 0);

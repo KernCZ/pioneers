@@ -23,15 +23,13 @@
 
 #include "config.h"
 #include "frontend.h"
+#include "gtkbugs.h"
 
 /* image widgets showing resources */
 static GtkWidget *asset_images[NO_RESOURCE];
 
 /* 'total' label widget */
 static GtkWidget *asset_total_label;
-
-/* tooltips for the resources */
-static GtkTooltips *tooltips = NULL;
 
 /* eventboxes for the tooltips */
 static GtkWidget *eventbox[NO_RESOURCE];
@@ -50,8 +48,7 @@ static void rebuild_single_resource(gint resource_type)
 	tooltip_text =
 	    g_strdup_printf("%s: %d", resource_name(resource_type, TRUE),
 			    resource_asset(resource_type));
-	gtk_tooltips_set_tip(tooltips, eventbox[resource_type],
-			     tooltip_text, NULL);
+	gtk_widget_set_tooltip_text(eventbox[resource_type], tooltip_text);
 	g_free(tooltip_text);
 }
 
@@ -82,8 +79,8 @@ static void create_resource_image(GtkTable * table, gint resource_type,
 	asset_images[resource_type] = image = gtk_image_new();
 	gtk_widget_show(image);
 	gtk_container_add(GTK_CONTAINER(box), image);
-	gtk_tooltips_set_tip(tooltips, box,
-			     resource_name(resource_type, TRUE), NULL);
+	gtk_widget_set_tooltip_text(box,
+				    resource_name(resource_type, TRUE));
 
 	g_signal_connect(G_OBJECT(image), "size_allocate",
 			 G_CALLBACK(on_image_size_allocate),
@@ -114,8 +111,6 @@ GtkWidget *resource_build_panel(void)
 	gtk_widget_show(label);
 	gtk_container_add(GTK_CONTAINER(alignment), label);
 	gtk_misc_set_alignment(GTK_MISC(label), 0.0, 0.5);
-
-	tooltips = gtk_tooltips_new();
 
 	create_resource_image(GTK_TABLE(table), BRICK_RESOURCE, 0, 1);
 	create_resource_image(GTK_TABLE(table), GRAIN_RESOURCE, 0, 2);

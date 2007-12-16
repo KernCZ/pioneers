@@ -11,7 +11,6 @@
 #include "config.h"
 #include <gtk/gtksignal.h>
 #include <gtk/gtktable.h>
-#include <gtk/gtktooltips.h>
 #include <gtk/gtklabel.h>
 #include <gtk/gtkentry.h>
 #include <gtk/gtkbutton.h>
@@ -21,7 +20,7 @@
 #include <glib.h>
 
 #include "resource-table.h"
-
+#include "gtkbugs.h"
 #include "callback.h"
 /* The signals */
 enum {
@@ -106,7 +105,6 @@ static void resource_table_init(ResourceTable * rt)
 	rt->with_bank = FALSE;
 	rt->with_total = FALSE;
 	rt->direction = RESOURCE_TABLE_MORE_IN_HAND;
-	rt->tooltips = gtk_tooltips_new();
 
 }
 
@@ -182,9 +180,9 @@ GtkWidget *resource_table_new(const gchar * title,
 		gtk_entry_set_width_chars(GTK_ENTRY(widget), 3);
 		gtk_widget_set_sensitive(widget, FALSE);
 		gtk_entry_set_alignment(GTK_ENTRY(widget), 1.0);
-		gtk_tooltips_set_tip(rt->tooltips, widget,
-				     /* Tooltip for the amount of resources in the hand */
-				     _("Amount in hand"), NULL);
+		gtk_widget_set_tooltip_text(widget,
+					    /* Tooltip for the amount of resources in the hand */
+					    _("Amount in hand"));
 
 		rt->row[i].hand = resource_asset(i);
 		widget = rt->row[i].less_widget =
@@ -196,10 +194,10 @@ GtkWidget *resource_table_new(const gchar * title,
 		gtk_widget_show(widget);
 		gtk_table_attach_defaults(GTK_TABLE(rt), widget,
 					  2, 3, row, row + 1);
-		gtk_tooltips_set_tip(rt->tooltips, widget,
-				     /* Tooltip for decreasing the selected amount */
-				     _("Decrease the selected amount"),
-				     NULL);
+		gtk_widget_set_tooltip_text(widget,
+					    /* Tooltip for decreasing the selected amount */
+					    _
+					    ("Decrease the selected amount"));
 
 		if (with_bank) {
 			rt->row[i].bank = get_bank()[i];
@@ -210,10 +208,10 @@ GtkWidget *resource_table_new(const gchar * title,
 			gtk_entry_set_width_chars(GTK_ENTRY(widget), 3);
 			gtk_widget_set_sensitive(widget, FALSE);
 			gtk_entry_set_alignment(GTK_ENTRY(widget), 1.0);
-			gtk_tooltips_set_tip(rt->tooltips, widget,
-					     /* Tooltip for the amount of resources in the bank */
-					     _("Amount in the bank"),
-					     NULL);
+			gtk_widget_set_tooltip_text(widget,
+						    /* Tooltip for the amount of resources in the bank */
+						    _
+						    ("Amount in the bank"));
 		}
 		widget = rt->row[i].more_widget =
 		    gtk_button_new_with_label(_("more>"));
@@ -226,10 +224,10 @@ GtkWidget *resource_table_new(const gchar * title,
 					  3 + rt->bank_offset,
 					  4 + rt->bank_offset, row,
 					  row + 1);
-		gtk_tooltips_set_tip(rt->tooltips, widget,
-				     /* Tooltip for increasing the selected amount */
-				     _("Increase the selected amount"),
-				     NULL);
+		gtk_widget_set_tooltip_text(widget,
+					    /* Tooltip for increasing the selected amount */
+					    _
+					    ("Increase the selected amount"));
 
 		widget = rt->row[i].amount_widget =
 		    gtk_spin_button_new_with_range(0, 99, 1);
@@ -243,9 +241,9 @@ GtkWidget *resource_table_new(const gchar * title,
 		g_signal_connect(G_OBJECT(widget), "value-changed",
 				 G_CALLBACK(value_changed_cb),
 				 &rt->row[i]);
-		gtk_tooltips_set_tip(rt->tooltips, widget,
-				     /* Tooltip for the selected amount */
-				     _("Selected amount"), NULL);
+		gtk_widget_set_tooltip_text(widget,
+					    /* Tooltip for the selected amount */
+					    _("Selected amount"));
 
 		resource_table_set_limit(rt, i);
 		row++;
@@ -288,9 +286,9 @@ void resource_table_set_total(ResourceTable * rt, const gchar * text,
 	gtk_entry_set_width_chars(GTK_ENTRY(widget), 3);
 	gtk_widget_set_sensitive(widget, FALSE);
 	gtk_entry_set_alignment(GTK_ENTRY(widget), 1.0);
-	gtk_tooltips_set_tip(rt->tooltips, widget,
-			     /* Tooltip for the total selected amount */
-			     _("Total selected amount"), NULL);
+	gtk_widget_set_tooltip_text(widget,
+				    /* Tooltip for the total selected amount */
+				    _("Total selected amount"));
 
 	for (i = 0; i < NO_RESOURCE; i++) {
 		resource_table_set_limit(rt, i);
@@ -307,12 +305,10 @@ void resource_table_set_bank(ResourceTable * rt, const gint * bank)
 		resource_table_set_limit(rt, i);
 		if (rt->limit_bank && rt->with_total
 		    && bank[i] > rt->total_target) {
-			gtk_tooltips_set_tip(rt->tooltips,
-					     rt->row[i].bank_widget,
-					     /* Tooltip when the bank cannot be emptied */
-					     _
-					     ("The bank cannot be emptied"),
-					     NULL);
+			gtk_widget_set_tooltip_text(rt->row[i].bank_widget,
+						    /* Tooltip when the bank cannot be emptied */
+						    _
+						    ("The bank cannot be emptied"));
 		}
 	}
 	resource_table_update(rt);

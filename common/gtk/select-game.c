@@ -11,13 +11,13 @@
 #include "game.h"
 #include <gtk/gtksignal.h>
 #include <gtk/gtktable.h>
-#include <gtk/gtktooltips.h>
 #include <gtk/gtkcombobox.h>
 #include <gtk/gtkmenu.h>
 #include <gtk/gtkmenuitem.h>
 #include <gtk/gtklabel.h>
 #include <string.h>
 #include "guimap.h"
+#include "gtkbugs.h"
 
 #include "select-game.h"
 
@@ -82,9 +82,6 @@ static void select_game_class_init(SelectGameClass * klass)
 static void select_game_init(SelectGame * sg)
 {
 	GtkCellRenderer *cell;
-	GtkTooltips *tooltips;
-
-	tooltips = gtk_tooltips_new();
 
 	/* Create model */
 	sg->data = gtk_list_store_new(2, G_TYPE_STRING, GDK_TYPE_PIXBUF);
@@ -106,9 +103,9 @@ static void select_game_init(SelectGame * sg)
 	sg->game_names = g_ptr_array_new();
 
 	gtk_widget_show(sg->combo_box);
-	gtk_tooltips_set_tip(tooltips, sg->combo_box,
-			     /* Tooltip for the list of games */
-			     _("Select a game"), NULL);
+	gtk_widget_set_tooltip_text(sg->combo_box,
+				    /* Tooltip for the list of games */
+				    _("Select a game"));
 	gtk_table_resize(GTK_TABLE(sg), 1, 1);
 	gtk_table_attach_defaults(GTK_TABLE(sg), sg->combo_box,
 				  0, 1, 0, 1);

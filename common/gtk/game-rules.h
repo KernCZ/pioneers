@@ -5,6 +5,7 @@
 #include <glib.h>
 #include <glib-object.h>
 #include <gtk/gtktable.h>
+#include "gtkbugs.h"
 
 G_BEGIN_DECLS
 #define GAMERULES_TYPE            (game_rules_get_type ())
@@ -17,8 +18,6 @@ typedef struct _GameRulesClass GameRulesClass;
 
 struct _GameRules {
 	GtkTable table;
-
-	GtkTooltips *tooltips;
 
 	GtkCheckButton *random_terrain;
 	GtkWidget *radio_sevens[3];	/* radio buttons for sevens rules */

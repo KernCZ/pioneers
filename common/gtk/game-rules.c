@@ -2,7 +2,6 @@
 #include "game.h"
 #include <gtk/gtksignal.h>
 #include <gtk/gtktable.h>
-#include <gtk/gtktooltips.h>
 #include <gtk/gtklabel.h>
 #include <gtk/gtkcheckbutton.h>
 #include <gtk/gtkradiobutton.h>
@@ -51,7 +50,7 @@ static void add_row(GameRules * gr, const gchar * name,
 				  0, 2, row, row + 1);
 	*check = GTK_CHECK_BUTTON(check_btn);
 
-	gtk_tooltips_set_tip(gr->tooltips, check_btn, tooltip, NULL);
+	gtk_widget_set_tooltip_text(check_btn, tooltip);
 }
 
 /* Build the composite widget */
@@ -61,8 +60,6 @@ static void game_rules_init(GameRules * gr)
 	GtkWidget *vbox_sevens;
 	gint idx;
 	gint row;
-
-	gr->tooltips = gtk_tooltips_new();
 
 	gtk_table_resize(GTK_TABLE(gr), 5, 2);
 	gtk_table_set_row_spacings(GTK_TABLE(gr), 3);
@@ -96,18 +93,17 @@ static void game_rules_init(GameRules * gr)
 
 	vbox_sevens = gtk_vbox_new(TRUE, 2);
 	gtk_widget_show(vbox_sevens);
-	gtk_tooltips_set_tip(gr->tooltips, gr->radio_sevens[0],
-			     /* Tooltip for sevens rule normal */
-			     _("All sevens move the robber or pirate"),
-			     NULL);
-	gtk_tooltips_set_tip(gr->tooltips, gr->radio_sevens[1],
-			     /* Tooltip for sevens rule reroll on 1st 2 turns */
-			     _
-			     ("In the first two turns all sevens are rerolled"),
-			     NULL);
-	gtk_tooltips_set_tip(gr->tooltips, gr->radio_sevens[2],
-			     /* Tooltip for sevens rule reroll all */
-			     _("All sevens are rerolled"), NULL);
+	gtk_widget_set_tooltip_text(gr->radio_sevens[0],
+				    /* Tooltip for sevens rule normal */
+				    _
+				    ("All sevens move the robber or pirate"));
+	gtk_widget_set_tooltip_text(gr->radio_sevens[1],
+				    /* Tooltip for sevens rule reroll on 1st 2 turns */
+				    _
+				    ("In the first two turns all sevens are rerolled"));
+	gtk_widget_set_tooltip_text(gr->radio_sevens[2],
+				    /* Tooltip for sevens rule reroll all */
+				    _("All sevens are rerolled"));
 
 	for (idx = 0; idx < 3; ++idx) {
 		gtk_widget_show(gr->radio_sevens[idx]);

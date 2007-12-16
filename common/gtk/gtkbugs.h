@@ -42,4 +42,16 @@ void action_set_sensitive(GtkAction * action, gboolean sensitive);
  */
 void widget_set_sensitive(GtkWidget * widget, gboolean sensitive);
 
+/* Not a Gtk+ bug, but a work around is presented here.
+ * In Gtk+ 2.12 GtkToolTips has been replaced by GtkToolTip.
+ */
+#if (GTK_MAJOR_VERSION == 2 && GTK_MINOR_VERSION < 12)
+#include <gtk/gtktooltips.h>
+extern GtkTooltips *tooltips;
+#define gtk_widget_set_tooltip_text(widget, text) \
+	if (tooltips == NULL) \
+		tooltips = gtk_tooltips_new(); \
+	gtk_tooltips_set_tip(tooltips, widget, text, NULL)
+#endif
+
 #endif
