@@ -1907,8 +1907,8 @@ static void greedy_error(const gchar * message)
 	gchar *buffer;
 
 	buffer =
-	    g_strdup_printf(_
-			    ("Received error from server: %s.  Quitting\n"),
+	    g_strdup_printf(_(""
+			      "Received error from server: %s.  Quitting\n"),
 			    message);
 	cb_chat(buffer);
 	g_free(buffer);

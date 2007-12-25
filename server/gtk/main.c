@@ -640,8 +640,8 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 	g_signal_connect(G_OBJECT(register_toggle), "toggled",
 			 G_CALLBACK(register_toggle_cb), NULL);
 	gtk_widget_set_tooltip_text(register_toggle,
-				    _
-				    ("Register this game at the meta server"));
+				    _(""
+				      "Register this game at the meta server"));
 
 	label = gtk_label_new(_("Meta Server"));
 	gtk_widget_show(label);
@@ -673,8 +673,9 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 			 3, 4, GTK_EXPAND | GTK_FILL,
 			 GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_widget_set_tooltip_text(overridden_hostname_entry,
-				    _
-				    ("The public name of this computer (needed when playing behind a firewall)"));
+				    _(""
+				      "The public name of this computer "
+				      "(needed when playing behind a firewall)"));
 
 	random_toggle =
 	    gtk_check_button_new_with_label(_("Random Turn Order"));
@@ -758,8 +759,8 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 	/* gtk_tree_view_set_rules_hint(GTK_TREE_VIEW(label), TRUE); */
 	gtk_container_add(GTK_CONTAINER(scroll_win), label);
 	gtk_widget_set_tooltip_text(label,
-				    _
-				    ("Shows all players and viewers connected to the server"));
+				    _(""
+				      "Shows all players and viewers connected to the server"));
 
 	/* Now create columns */
 	column =
@@ -770,8 +771,8 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 						     NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(label), column);
 	gtk_widget_set_tooltip_text(column->button,
-				    _
-				    ("Is the player currently connected?"));
+				    _(""
+				      "Is the player currently connected?"));
 	column =
 	    gtk_tree_view_column_new_with_attributes(_("Name"),
 						     gtk_cell_renderer_text_new
@@ -855,8 +856,8 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 	g_signal_connect(G_OBJECT(addcomputer_btn), "clicked",
 			 G_CALLBACK(addcomputer_clicked_cb), NULL);
 	gtk_widget_set_tooltip_text(addcomputer_btn,
-				    _
-				    ("Add a computer player to the game"));
+				    _(""
+				      "Add a computer player to the game"));
 
 	start_btn = gtk_button_new();
 	gtk_widget_show(start_btn);

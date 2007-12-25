@@ -252,8 +252,8 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 					       first_island ?
 					       N_("Island Discovery Bonus")
 					       :
-					       N_
-					       ("Additional Island Bonus"),
+					       N_(""
+						  "Additional Island Bonus"),
 					       points);
 			player->islands_discovered++;
 		}
@@ -384,8 +384,8 @@ static gboolean distribute_resources(G_GNUC_UNUSED Map * map, Hex * hex,
 		} else {
 			/* This should be fixed at some point. */
 			log_message(MSG_ERROR,
-				    _
-				    ("Tried to assign resources to NULL player.\n"));
+				    _(""
+				      "Tried to assign resources to NULL player.\n"));
 		}
 	}
 

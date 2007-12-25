@@ -121,8 +121,8 @@ static void meta_event(NetEvent event, Game * game, char *line)
 				net_free(&ses);
 				if (num_redirects++ == 10) {
 					log_message(MSG_INFO,
-						    _
-						    ("Too many meta-server redirects\n"));
+						    _(""
+						      "Too many meta-server redirects\n"));
 					return;
 				}
 				split_result = g_strsplit(line, " ", 0);
@@ -136,8 +136,8 @@ static void meta_event(NetEvent event, Game * game, char *line)
 						      port, game);
 				} else {
 					log_message(MSG_ERROR,
-						    _
-						    ("Bad redirect line: %s\n"),
+						    _(""
+						      "Bad redirect line: %s\n"),
 						    line);
 				};
 				g_strfreev(split_result);
@@ -164,8 +164,8 @@ static void meta_event(NetEvent event, Game * game, char *line)
 			break;
 		default:
 			log_message(MSG_ERROR,
-				    _
-				    ("Unknown message from the metaserver: %s\n"),
+				    _(""
+				      "Unknown message from the metaserver: %s\n"),
 				    line);
 			break;
 		}
@@ -184,13 +184,13 @@ void meta_register(const gchar * server, const gchar * port, Game * game)
 {
 	if (num_redirects > 0)
 		log_message(MSG_INFO,
-			    _
-			    ("Redirected to meta-server at %s, port %s\n"),
+			    _(""
+			      "Redirected to meta-server at %s, port %s\n"),
 			    server, port);
 	else
 		log_message(MSG_INFO,
-			    _
-			    ("Register with meta-server at %s, port %s\n"),
+			    _(""
+			      "Register with meta-server at %s, port %s\n"),
 			    server, port);
 
 	if (ses != NULL)

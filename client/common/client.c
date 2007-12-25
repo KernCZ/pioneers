@@ -603,8 +603,8 @@ static gboolean check_other_players(StateMachine * sm)
 				continue;
 			if (resource_list[i] == 0) {
 				log_message(MSG_RESOURCE,
-					    _
-					    ("%s does not receive any %s, because the bank is empty.\n"),
+					    _(""
+					      "%s does not receive any %s, because the bank is empty.\n"),
 					    player_name(player_num, TRUE),
 					    resource_name(i, FALSE));
 			} else {
@@ -616,8 +616,8 @@ static gboolean check_other_players(StateMachine * sm)
 				resource_list[i] = 0;
 				buff = resource_format_num(list);
 				log_message(MSG_RESOURCE,
-					    _
-					    ("%s only receives %s, because the bank didn't have any more.\n"),
+					    _(""
+					      "%s only receives %s, because the bank didn't have any more.\n"),
 					    player_name(player_num, TRUE),
 					    buff);
 				g_free(buff);

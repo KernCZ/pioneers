@@ -635,9 +635,9 @@ WinnableState params_check_winnable_state(const GameParams * params,
 			return_value = PARAMS_NO_WIN;
 		} else {
 			*win_message =
-			    g_strdup(_
-				     ("It is possible that this "
-				      "game cannot be won."));
+			    g_strdup(_(""
+				       "It is possible that this "
+				       "game cannot be won."));
 			return_value = PARAMS_WIN_PERHAPS;
 		}
 	} else {
@@ -647,13 +647,13 @@ WinnableState params_check_winnable_state(const GameParams * params,
 		return_value = PARAMS_WIN_BUILD_ALL;
 	}
 	*point_specification =
-	    g_strdup_printf(_
-			    ("Required victory points: %d\n"
-			     "Points obtained by building all: %d\n"
-			     "Points in development cards: %d\n"
-			     "Longest road/largest army: %d+%d\n"
-			     "Maximum island discovery bonus: %d\n"
-			     "Total: %d"), target, building, development,
+	    g_strdup_printf(_(""
+			      "Required victory points: %d\n"
+			      "Points obtained by building all: %d\n"
+			      "Points in development cards: %d\n"
+			      "Longest road/largest army: %d+%d\n"
+			      "Maximum island discovery bonus: %d\n"
+			      "Total: %d"), target, building, development,
 			    road, army, max_island,
 			    building + development + road + army +
 			    max_island);

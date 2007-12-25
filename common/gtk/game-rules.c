@@ -81,26 +81,26 @@ static void game_rules_init(GameRules * gr)
 							(gr->
 							 radio_sevens[0]),
 							/* Sevens rule: reroll on 1st 2 turns */
-							_
-							("Reroll on 1st 2 turns"));
+							_(""
+							  "Reroll on 1st 2 turns"));
 	gr->radio_sevens[2] =
 	    gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON
 							(gr->
 							 radio_sevens[0]),
 							/* Sevens rule: reroll all 7s */
-							_
-							("Reroll all 7s"));
+							_(""
+							  "Reroll all 7s"));
 
 	vbox_sevens = gtk_vbox_new(TRUE, 2);
 	gtk_widget_show(vbox_sevens);
 	gtk_widget_set_tooltip_text(gr->radio_sevens[0],
 				    /* Tooltip for sevens rule normal */
-				    _
-				    ("All sevens move the robber or pirate"));
+				    _(""
+				      "All sevens move the robber or pirate"));
 	gtk_widget_set_tooltip_text(gr->radio_sevens[1],
 				    /* Tooltip for sevens rule reroll on 1st 2 turns */
-				    _
-				    ("In the first two turns all sevens are rerolled"));
+				    _(""
+				      "In the first two turns all sevens are rerolled"));
 	gtk_widget_set_tooltip_text(gr->radio_sevens[2],
 				    /* Tooltip for sevens rule reroll all */
 				    _("All sevens are rerolled"));

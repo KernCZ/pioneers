@@ -43,8 +43,8 @@ static GSList *_game_list = NULL;	/* The sorted list of game titles */
 static gboolean timed_out(G_GNUC_UNUSED gpointer data)
 {
 	log_message(MSG_INFO,
-		    _
-		    ("Was hanging around for too long without players... bye.\n"));
+		    _(""
+		      "Was hanging around for too long without players... bye.\n"));
 	request_server_stop();
 	return FALSE;
 }

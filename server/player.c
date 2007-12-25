@@ -327,8 +327,8 @@ Player *player_new(Game * game, int fd, gchar * location)
 		} else {
 			player_send_uncached(player, FIRST_VERSION,
 					     LATEST_VERSION, "NOTE %s\n",
-					     N_
-					     ("This game will start soon."));
+					     N_(""
+						"This game will start soon."));
 		}
 	}
 
@@ -355,8 +355,8 @@ static void player_set_name_real(Player * player, gchar * name,
 		 * (on error the AI would disconnect) */
 		player_send(player, FIRST_VERSION, LATEST_VERSION,
 			    "NOTE %s\n",
-			    N_
-			    ("Name not changed: new name is already in use"));
+			    N_(""
+			       "Name not changed: new name is already in use"));
 		return;
 	}
 
@@ -772,8 +772,8 @@ static gboolean mode_check_version(Player * player, gint event)
 						     LATEST_VERSION,
 						     "NOTE1 %s|%s\n",
 						     mismatch,
-						     N_
-						     ("Version mismatch: %s"));
+						     N_(""
+							"Version mismatch: %s"));
 				g_free(mismatch);
 				sm_goto(sm, (StateFunc) mode_bad_version);
 			}

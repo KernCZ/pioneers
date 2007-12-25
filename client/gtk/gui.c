@@ -870,8 +870,8 @@ static void preferences_cb(void)
 	};
 
 	/* Caption of preferences dialog */
-	preferences_dlg = gtk_dialog_new_with_buttons(_
-						      ("Pioneers Preferences"),
+	preferences_dlg = gtk_dialog_new_with_buttons(_(""
+							"Pioneers Preferences"),
 						      GTK_WINDOW
 						      (app_window),
 						      GTK_DIALOG_DESTROY_WITH_PARENT,
@@ -936,8 +936,8 @@ static void preferences_cb(void)
 				  0, 2, row, row + 1);
 	gtk_widget_set_tooltip_text(widget,
 				    /* Tooltip for the option to show the legend */
-				    _
-				    ("Show the legend as a page beside the map"));
+				    _(""
+				      "Show the legend as a page beside the map"));
 	row++;
 
 	/* Label for the option to display log messages in color */
@@ -956,8 +956,8 @@ static void preferences_cb(void)
 
 	widget = gtk_check_button_new_with_label(
 							/* Label for the option to display chat in color of player */
-							_
-							("Chat in color of player"));
+							_(""
+							  "Chat in color of player"));
 	gtk_widget_show(widget);
 	gtk_table_attach_defaults(GTK_TABLE(layout), widget,
 				  0, 2, row, row + 1);
@@ -967,8 +967,8 @@ static void preferences_cb(void)
 			 G_CALLBACK(chat_color_cb), NULL);
 	gtk_widget_set_tooltip_text(widget,
 				    /* Tooltip for the option to display chat in color of player */
-				    _
-				    ("Show new chat messages in the color of the player"));
+				    _(""
+				      "Show new chat messages in the color of the player"));
 	row++;
 
 	/* Label for the option to display the summary with colors */
@@ -998,8 +998,8 @@ static void preferences_cb(void)
 			 G_CALLBACK(toolbar_shortcuts_cb), NULL);
 	gtk_widget_set_tooltip_text(widget,
 				    /* Tooltip for the option to display keyboard accelerators in the toolbar */
-				    _
-				    ("Show keyboard shortcuts in the toolbar"));
+				    _(""
+				      "Show keyboard shortcuts in the toolbar"));
 	row++;
 
 	/* Label for the option to announce when players/viewer enter */
@@ -1014,8 +1014,8 @@ static void preferences_cb(void)
 			 G_CALLBACK(announce_player_cb), NULL);
 	gtk_widget_set_tooltip_text(widget,
 				    /* Tooltip for the option to use sound */
-				    _
-				    ("Make a sound when a new player or viewer enters the game"));
+				    _(""
+				      "Make a sound when a new player or viewer enters the game"));
 	row++;
 
 	/* Label for the option to use the 16:9 layout. */
@@ -1029,8 +1029,8 @@ static void preferences_cb(void)
 			 G_CALLBACK(toggle_16_9_cb), NULL);
 	gtk_widget_set_tooltip_text(widget,
 				    /* Tooltip for 16:9 option. */
-				    _
-				    ("Use a 16:9 friendly layout for the window"));
+				    _(""
+				      "Use a 16:9 friendly layout for the window"));
 	row++;
 
 }

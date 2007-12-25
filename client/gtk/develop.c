@@ -156,8 +156,8 @@ GtkWidget *develop_build_page(void)
 	/* First create the button, it is used as user_data for the listview */
 	play_develop_btn = gtk_button_new_with_label(
 							    /* Button text: play development card */
-							    _
-							    ("Play Card"));
+							    _(""
+							      "Play Card"));
 
 	/* Register double-click */
 	g_signal_connect(G_OBJECT(develop_list), "button_press_event",

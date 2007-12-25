@@ -196,8 +196,8 @@ GtkWidget *resource_table_new(const gchar * title,
 					  2, 3, row, row + 1);
 		gtk_widget_set_tooltip_text(widget,
 					    /* Tooltip for decreasing the selected amount */
-					    _
-					    ("Decrease the selected amount"));
+					    _(""
+					      "Decrease the selected amount"));
 
 		if (with_bank) {
 			rt->row[i].bank = get_bank()[i];
@@ -210,8 +210,8 @@ GtkWidget *resource_table_new(const gchar * title,
 			gtk_entry_set_alignment(GTK_ENTRY(widget), 1.0);
 			gtk_widget_set_tooltip_text(widget,
 						    /* Tooltip for the amount of resources in the bank */
-						    _
-						    ("Amount in the bank"));
+						    _(""
+						      "Amount in the bank"));
 		}
 		widget = rt->row[i].more_widget =
 		    gtk_button_new_with_label(_("more>"));
@@ -226,8 +226,8 @@ GtkWidget *resource_table_new(const gchar * title,
 					  row + 1);
 		gtk_widget_set_tooltip_text(widget,
 					    /* Tooltip for increasing the selected amount */
-					    _
-					    ("Increase the selected amount"));
+					    _(""
+					      "Increase the selected amount"));
 
 		widget = rt->row[i].amount_widget =
 		    gtk_spin_button_new_with_range(0, 99, 1);
@@ -307,8 +307,8 @@ void resource_table_set_bank(ResourceTable * rt, const gint * bank)
 		    && bank[i] > rt->total_target) {
 			gtk_widget_set_tooltip_text(rt->row[i].bank_widget,
 						    /* Tooltip when the bank cannot be emptied */
-						    _
-						    ("The bank cannot be emptied"));
+						    _(""
+						      "The bank cannot be emptied"));
 		}
 	}
 	resource_table_update(rt);

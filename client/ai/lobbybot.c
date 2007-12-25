@@ -140,8 +140,10 @@ static void hash_data_free(gpointer data)
 
 static void lobbybot_turn(G_GNUC_UNUSED gint player_num)
 {
-	ai_chat(N_
-		("The game is starting. I'm not needed anymore. Goodbye."));
+	ai_chat(
+		       /* The lobbybot leaves when a game is starting */
+		       N_(""
+			  "The game is starting. I'm not needed anymore. Goodbye."));
 	cb_disconnect();
 }
 

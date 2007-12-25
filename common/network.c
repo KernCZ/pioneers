@@ -277,15 +277,15 @@ static void write_ready(Session * ses)
 			       &error_len) < 0) {
 			notify(ses, NET_CONNECT_FAIL, NULL);
 			log_message(MSG_ERROR,
-				    _
-				    ("Error checking connect status: %s\n"),
+				    _(""
+				      "Error checking connect status: %s\n"),
 				    net_errormsg());
 			net_close(ses);
 		} else if (error != 0) {
 			notify(ses, NET_CONNECT_FAIL, NULL);
 			log_message(MSG_ERROR,
-				    _
-				    ("Error connecting to host '%s': %s\n"),
+				    _(""
+				      "Error connecting to host '%s': %s\n"),
 				    ses->host, net_errormsg_nr(error));
 			net_close(ses);
 		} else {
@@ -310,8 +310,8 @@ static void write_ready(Session * ses)
 				break;
 			if (net_write_error())
 				log_message(MSG_ERROR,
-					    _
-					    ("Error writing socket: %s\n"),
+					    _(""
+					      "Error writing socket: %s\n"),
 					    net_errormsg());
 			close_and_callback(ses);
 			return;
@@ -361,8 +361,8 @@ void net_write(Session * ses, const gchar * data)
 		if (num < 0) {
 			if (!net_would_block()) {
 				log_message(MSG_ERROR,
-					    _
-					    ("Error writing to socket: %s\n"),
+					    _(""
+					      "Error writing to socket: %s\n"),
 					    net_errormsg());
 				close_and_callback(ses);
 				return;
@@ -578,8 +578,8 @@ gboolean net_connect(Session * ses, const gchar * host, const gchar * port)
 	}
 	if (!ai) {
 		log_message(MSG_ERROR,
-			    _
-			    ("Cannot resolve %s port %s: host not found\n"),
+			    _(""
+			      "Cannot resolve %s port %s: host not found\n"),
 			    host, port);
 		return FALSE;
 	}
@@ -601,8 +601,8 @@ gboolean net_connect(Session * ses, const gchar * host, const gchar * port)
 #ifdef HAVE_FCNTL
 		if (fcntl(ses->fd, F_SETFD, 1) < 0) {
 			log_message(MSG_ERROR,
-				    _
-				    ("Error setting socket close-on-exec: %s\n"),
+				    _(""
+				      "Error setting socket close-on-exec: %s\n"),
 				    net_errormsg());
 			net_closesocket(ses->fd);
 			ses->fd = -1;
@@ -611,8 +611,8 @@ gboolean net_connect(Session * ses, const gchar * host, const gchar * port)
 #endif
 		if (net_set_socket_non_blocking(ses->fd)) {
 			log_message(MSG_ERROR,
-				    _
-				    ("Error setting socket non-blocking: %s\n"),
+				    _(""
+				      "Error setting socket non-blocking: %s\n"),
 				    net_errormsg());
 			net_closesocket(ses->fd);
 			ses->fd = -1;
@@ -636,8 +636,8 @@ gboolean net_connect(Session * ses, const gchar * host, const gchar * port)
 				break;
 			} else {
 				log_message(MSG_ERROR,
-					    _
-					    ("Error connecting to %s: %s\n"),
+					    _(""
+					      "Error connecting to %s: %s\n"),
 					    host, net_errormsg());
 				net_closesocket(ses->fd);
 				ses->fd = -1;
@@ -731,8 +731,8 @@ int net_open_listening_socket(const gchar * port, gchar ** error_message)
 
 	if ((err = getaddrinfo(NULL, port, &hints, &ai)) || !ai) {
 		*error_message =
-		    g_strdup_printf(_
-				    ("Error creating struct addrinfo: %s"),
+		    g_strdup_printf(_(""
+				      "Error creating struct addrinfo: %s"),
 				    gai_strerror(err));
 		return -1;
 	}
@@ -761,8 +761,8 @@ int net_open_listening_socket(const gchar * port, gchar ** error_message)
 
 	if (!aip) {
 		*error_message =
-		    g_strdup_printf(_
-				    ("Error creating listening socket: %s\n"),
+		    g_strdup_printf(_(""
+				      "Error creating listening socket: %s\n"),
 				    net_errormsg());
 		freeaddrinfo(ai);
 		return -1;
@@ -772,8 +772,8 @@ int net_open_listening_socket(const gchar * port, gchar ** error_message)
 
 	if (net_set_socket_non_blocking(fd)) {
 		*error_message =
-		    g_strdup_printf(_
-				    ("Error setting socket non-blocking: %s\n"),
+		    g_strdup_printf(_(""
+				      "Error setting socket non-blocking: %s\n"),
 				    net_errormsg());
 		net_closesocket(fd);
 		return -1;
@@ -781,8 +781,8 @@ int net_open_listening_socket(const gchar * port, gchar ** error_message)
 
 	if (listen(fd, 5) < 0) {
 		*error_message =
-		    g_strdup_printf(_
-				    ("Error during listen on socket: %s\n"),
+		    g_strdup_printf(_(""
+				      "Error during listen on socket: %s\n"),
 				    net_errormsg());
 		net_closesocket(fd);
 		return -1;
@@ -832,8 +832,8 @@ gboolean net_get_peer_name(gint fd, gchar ** hostname, gchar ** servname,
 		     getnameinfo(&peer.sa, peer_len, host, NI_MAXHOST,
 				 port, NI_MAXSERV, 0))) {
 			*error_message =
-			    g_strdup_printf(_
-					    ("Error resolving address: %s"),
+			    g_strdup_printf(_(""
+					      "Error resolving address: %s"),
 					    gai_strerror(err));
 			return FALSE;
 		} else {
@@ -846,8 +846,8 @@ gboolean net_get_peer_name(gint fd, gchar ** hostname, gchar ** servname,
 	}
 #else				/* HAVE_GETADDRINFO_ET_AL */
 	*error_message =
-	    g_strdup(_
-		     ("Net_get_peer_name not yet supported on this platform."));
+	    g_strdup(_(""
+		       "Net_get_peer_name not yet supported on this platform."));
 	return FALSE;
 #endif				/* HAVE_GETADDRINFO_ET_AL */
 }

@@ -152,8 +152,8 @@ static void game_settings_init(GameSettings * gs)
 			 gs);
 	gtk_widget_set_tooltip_text(gs->victory_spin,
 				    /* Tooltip for Victory Point Target */
-				    _
-				    ("The points needed to win the game"));
+				    _(""
+				      "The points needed to win the game"));
 
 	gs->check_button = gtk_button_new();
 	gtk_button_set_image(GTK_BUTTON(gs->check_button),

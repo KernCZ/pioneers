@@ -1,4 +1,15 @@
 
+2007-12-25  Roland Clobus <rclobus@bigfoot.com>
+	* common/gtk/game-rules.c, common/gtk/game-settings.c, common/game.c,
+	common/state.c, common/network.c, server/gtk/main.c, server/meta.c,
+	server/turn.c, server/player.c, server/server.c, server/main.c,
+	client/gtk/resource-table.c, client/gtk/develop.c,
+	client/gtk/monopoly.c, client/gtk/gui.c, client/gtk/connect.c,
+	client/common/client.c, client/common/develop.c,
+	client/common/player.c, client/ai/greedy.c, client/ai/lobbybot.c:
+	Reactivate comments for translators that were deactivated by
+	'make reindent'.
+
 2007-12-16  Roland Clobus <rclobus@bigfoot.com>
 	* editor/gtk/game-resources.c, editor/gtk/game-devcards.c,
 	editor/gtk/game-buildings.c, common/gtk/game-rules.c,

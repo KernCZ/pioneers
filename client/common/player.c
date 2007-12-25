@@ -540,8 +540,8 @@ void player_build_add(gint player_num,
 
 	case BUILD_NONE:
 		log_message(MSG_ERROR,
-			    _
-			    ("player_build_add called with BUILD_NONE for user %s\n"),
+			    _(""
+			      "player_build_add called with BUILD_NONE for user %s\n"),
 			    player_name(player_num, TRUE));
 		break;
 	case BUILD_BRIDGE:
@@ -630,8 +630,8 @@ void player_build_remove(gint player_num,
 
 	case BUILD_NONE:
 		log_message(MSG_ERROR,
-			    _
-			    ("player_build_remove called with BUILD_NONE for user %s\n"),
+			    _(""
+			      "player_build_remove called with BUILD_NONE for user %s\n"),
 			    player_name(player_num, TRUE));
 		break;
 	case BUILD_BRIDGE:

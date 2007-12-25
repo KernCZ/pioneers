@@ -77,15 +77,15 @@ void develop_bought_card_turn(DevelType type, gint turnbought)
 		 */
 		if (devel_cards[type].is_unique)
 			log_message(MSG_DEVCARD,
-				    /* This card is unique */
-				    _
-				    ("You bought the %s development card.\n"),
+				    /* This development card is unique */
+				    _(""
+				      "You bought the %s development card.\n"),
 				    gettext(devel_cards[type].name));
 		else
 			log_message(MSG_DEVCARD,
-				    /* This card is not unique */
-				    _
-				    ("You bought a %s development card.\n"),
+				    /* This development card is not unique */
+				    _(""
+				      "You bought a %s development card.\n"),
 				    gettext(devel_cards[type].name));
 	};
 	player_modify_statistic(my_player_num(), STAT_DEVELOPMENT, 1);
@@ -143,8 +143,8 @@ void develop_played(gint player_num, gint card_idx, DevelType type)
 			    && stock_num_ships() == 0
 			    && stock_num_bridges() == 0)
 				log_message(MSG_INFO,
-					    _
-					    ("You have run out of road segments.\n"));
+					    _(""
+					      "You have run out of road segments.\n"));
 		}
 		break;
 	case DEVEL_CHAPEL:

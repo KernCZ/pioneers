@@ -378,8 +378,8 @@ static void meta_create_notify(NetEvent event,
 				connect_set_field(&connect_port, line + 5);
 			else if (strcmp(line, "started") == 0) {
 				log_message(MSG_INFO,
-					    _
-					    ("New game server requested on %s port %s\n"),
+					    _(""
+					      "New game server requested on %s port %s\n"),
 					    connect_server, connect_port);
 				/* The meta server is now busy creating the new game.
 				 * UGLY FIX: Wait for some time */
@@ -387,8 +387,8 @@ static void meta_create_notify(NetEvent event,
 				connect_close_all(TRUE, FALSE);
 			} else
 				log_message(MSG_ERROR,
-					    _
-					    ("Unknown message from the metaserver: %s\n"),
+					    _(""
+					      "Unknown message from the metaserver: %s\n"),
 					    line);
 			break;
 		}
@@ -468,8 +468,8 @@ static void meta_notify(NetEvent event, G_GNUC_UNUSED void *user_data,
 				net_close(ses);
 				if (metaserver_info.num_redirects++ == 10) {
 					log_message(MSG_INFO,
-						    _
-						    ("Too many meta-server redirects\n"));
+						    _(""
+						      "Too many meta-server redirects\n"));
 					return;
 				}
 				split_result = g_strsplit(line, " ", 0);
@@ -495,8 +495,8 @@ static void meta_notify(NetEvent event, G_GNUC_UNUSED void *user_data,
 							  port);
 				} else {
 					log_message(MSG_ERROR,
-						    _
-						    ("Bad redirect line: %s\n"),
+						    _(""
+						      "Bad redirect line: %s\n"),
 						    line);
 				};
 				g_strfreev(split_result);
@@ -521,9 +521,9 @@ static void meta_notify(NetEvent event, G_GNUC_UNUSED void *user_data,
 			}
 			if (metaserver_info.version_major < 1) {
 				log_message(MSG_INFO,
-					    _
-					    ("Meta server too old to create "
-					     "servers (version %d.%d)\n"),
+					    _(""
+					      "Meta server too old to create "
+					      "servers (version %d.%d)\n"),
 					    metaserver_info.version_major,
 					    metaserver_info.version_minor);
 			} else {
@@ -598,8 +598,8 @@ static void meta_notify(NetEvent event, G_GNUC_UNUSED void *user_data,
 				    if (!strcmp
 					(argument, "reroll first 2")) {
 					server_sevenrule =
-					    g_strdup(_
-						     ("Reroll on 1st 2 turns"));
+					    g_strdup(_(""
+						       "Reroll on 1st 2 turns"));
 				} else if (!strcmp(argument, "reroll all")) {
 					server_sevenrule =
 					    g_strdup(_("Reroll all 7s"));
@@ -649,11 +649,11 @@ static void query_meta_server(const gchar * server, const gchar * port)
 {
 	if (metaserver_info.num_redirects > 0)
 		log_message(MSG_INFO,
-			    _
-			    ("Redirected to meta-server at %s, port %s\n"),
+			    _(""
+			      "Redirected to meta-server at %s, port %s\n"),
 			    server, port);
-	show_waiting_box(_
-			 ("Receiving a list of Pioneers servers from the meta server.\n"),
+	show_waiting_box(_(""
+			   "Receiving a list of Pioneers servers from the meta server.\n"),
 			 server, port);
 
 	ses = net_new(meta_notify, NULL);
@@ -977,8 +977,8 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
 				    _("Refresh the list of games"));
 	gtk_widget_set_tooltip_text(gui_get_dialog_button
 				    (GTK_DIALOG(meta_dlg), 1),
-				    _
-				    ("Create a new public game at the meta server"));
+				    _(""
+				      "Create a new public game at the meta server"));
 	gtk_widget_set_tooltip_text(gui_get_dialog_button
 				    (GTK_DIALOG(meta_dlg), 2),
 				    _("Don't join a public game"));
@@ -1234,8 +1234,8 @@ void connect_create_dlg(void)
 	gtk_entry_set_text(GTK_ENTRY(meta_server_entry),
 			   metaserver_info.server);
 	gtk_widget_set_tooltip_text(meta_server_entry,
-				    _
-				    ("Leave empty for the default meta server"));
+				    _(""
+				      "Leave empty for the default meta server"));
 
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_widget_show(hbox);

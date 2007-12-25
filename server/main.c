@@ -130,14 +130,14 @@ static GOptionEntry commandline_other_entries[] = {
 	 N_("Admin port to listen on"), PIONEERS_DEFAULT_ADMIN_PORT},
 	{"admin-wait", 's', 0, G_OPTION_ARG_NONE, &disable_game_start,
 	 /* Commandline server-console: admin-wait */
-	 N_
-	 ("Don't start game immediately, wait for a command on admin port"),
+	 N_(""
+	    "Don't start game immediately, wait for a command on admin port"),
 	 NULL},
 	{"fixed-seating-order", 0, 0, G_OPTION_ARG_NONE,
 	 &fixed_seating_order,
 	 /* Commandline server-console: fixed-seating-order */
-	 N_
-	 ("Give players numbers according to the order they enter the game"),
+	 N_(""
+	    "Give players numbers according to the order they enter the game"),
 	 NULL},
 	{"debug", '\0', 0, G_OPTION_ARG_NONE, &enable_debug,
 	 /* Commandline option of server: enable debug logging */
@@ -179,8 +179,8 @@ int main(int argc, char *argv[])
 					   /* Commandline server-console: Short description of meta group */
 					   _("Meta-server Options"),
 					   /* Commandline server-console: Long description of meta group */
-					   _
-					   ("Options for the meta-server"),
+					   _(""
+					     "Options for the meta-server"),
 					   NULL, NULL);
 	g_option_group_set_translation_domain(context_group, PACKAGE);
 	g_option_group_add_entries(context_group,
