@@ -1303,6 +1303,7 @@
   <chapter id="faq">
     <title>Frequently asked questions</title>
     <qandaset defaultlabel="qanda">
+      <qandadiv id="faq_playing_games">
       <title>Playing games</title>
       <qandaentry>
       <question><para>
@@ -1361,8 +1362,8 @@
 	is available on this metaserver.
       </para></answer>
       </qandaentry>
-    </qandaset>
-    <qandaset defaultlabel="qanda">
+    </qandadiv>
+    <qandadiv id="faq_lobby">
       <title>The Lobby</title>
       <qandaentry>
       <question><para>
@@ -1386,8 +1387,8 @@
 	<guimenuitem>Leave game</guimenuitem>).
       </para></answer>
       </qandaentry>
-    </qandaset>
-    <qandaset defaultlabel="qanda">
+    </qandadiv>
+    <qandadiv id="faq_creating_games">
       <title>Creating games</title>
       <qandaentry>
       <question><para>
@@ -1476,6 +1477,7 @@
         of the server, and the port you have selected in the server.
       </para></answer>
       </qandaentry>
+      </qandadiv>
     </qandaset>
   </chapter>
   </part>
