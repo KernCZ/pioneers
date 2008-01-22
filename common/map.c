@@ -37,7 +37,17 @@ Hex *map_hex(Map * map, gint x, gint y)
 	return map->grid[y][x];
 }
 
-Hex *hex_in_direction(Map * map, const Hex * hex, HexDirection direction)
+const Hex *map_hex_const(const Map * map, gint x, gint y)
+{
+	if (x < 0 || x >= map->x_size || y < 0 || y >= map->y_size)
+		return NULL;
+
+	return map->grid[y][x];
+}
+
+/** Returns the hex in the given direction, or NULL
+ */
+Hex *hex_in_direction(const Hex * hex, HexDirection direction)
 {
 	gint x = hex->x;
 	gint y = hex->y;
@@ -70,12 +80,26 @@ Hex *hex_in_direction(Map * map, const Hex * hex, HexDirection direction)
 		y++;
 		break;
 	}
-	return map_hex(map, x, y);
+	return map_hex(hex->map, x, y);
 }
 
 Node *map_node(Map * map, gint x, gint y, gint pos)
 {
 	Hex *hex;
+
+	if (x < 0 || x >= map->x_size
+	    || y < 0 || y >= map->y_size || pos < 0 || pos >= 6)
+		return NULL;
+
+	hex = map->grid[y][x];
+	if (hex == NULL)
+		return NULL;
+	return hex->nodes[pos];
+}
+
+const Node *map_node_const(const Map * map, gint x, gint y, gint pos)
+{
+	const Hex *hex;
 
 	if (x < 0 || x >= map->x_size
 	    || y < 0 || y >= map->y_size || pos < 0 || pos >= 6)
@@ -101,12 +125,26 @@ Edge *map_edge(Map * map, gint x, gint y, gint pos)
 	return hex->edges[pos];
 }
 
-/* Traverse the map and perform processing at a each node.
+const Edge *map_edge_const(const Map * map, gint x, gint y, gint pos)
+{
+	const Hex *hex;
+
+	if (x < 0 || x >= map->x_size
+	    || y < 0 || y >= map->y_size || pos < 0 || pos >= 6)
+		return NULL;
+
+	hex = map->grid[y][x];
+	if (hex == NULL)
+		return NULL;
+	return hex->edges[pos];
+}
+
+/** Traverse the map and perform processing at a each node.
  *
  * If the callback function returns TRUE, stop traversal immediately
  * and return TRUE to caller,
  */
-gboolean map_traverse(Map * map, HexFunc func, void *closure)
+gboolean map_traverse(Map * map, HexFunc func, gpointer closure)
 {
 	gint x;
 
@@ -117,7 +155,33 @@ gboolean map_traverse(Map * map, HexFunc func, void *closure)
 			Hex *hex;
 
 			hex = map->grid[y][x];
-			if (hex != NULL && func(map, hex, closure))
+			if (hex != NULL && func(hex, closure))
+				return TRUE;
+		}
+	}
+
+	return FALSE;
+}
+
+/** Traverse the map and perform processing at a each node.
+ * The map is unmodified.
+ *
+ * If the callback function returns TRUE, stop traversal immediately
+ * and return TRUE to caller,
+ */
+gboolean map_traverse_const(const Map * map, ConstHexFunc func,
+			    gpointer closure)
+{
+	gint x;
+
+	for (x = 0; x < map->x_size; x++) {
+		gint y;
+
+		for (y = 0; y < map->y_size; y++) {
+			const Hex *hex;
+
+			hex = map->grid[y][x];
+			if (hex != NULL && func(hex, closure))
 				return TRUE;
 		}
 	}
@@ -216,14 +280,13 @@ static ChainPart node_chain[] = {
 
 /* Build ring of nodes and edges around the current hex
  */
-static gboolean build_network(Map * map, Hex * hex,
-			      G_GNUC_UNUSED void *closure)
+static gboolean build_network(Hex * hex, G_GNUC_UNUSED gpointer closure)
 {
 	Hex *adjacent[6];
 	gint idx;
 	ChainPart *part;
 
-	calc_adjacent(map, hex->x, hex->y, adjacent);
+	calc_adjacent(hex->map, hex->x, hex->y, adjacent);
 
 	for (idx = 0, part = node_chain; idx < 6; idx++, part++) {
 		Node *node = NULL;
@@ -236,7 +299,7 @@ static gboolean build_network(Map * map, Hex * hex,
 			    adjacent[(idx + 1) % 6]->nodes[part->hex1_pos];
 		if (node == NULL) {
 			node = g_malloc0(sizeof(*node));
-			node->map = map;
+			node->map = hex->map;
 			node->owner = -1;
 			node->x = hex->x;
 			node->y = hex->y;
@@ -249,7 +312,7 @@ static gboolean build_network(Map * map, Hex * hex,
 			edge = adjacent[idx]->edges[opposite(idx)];
 		if (edge == NULL) {
 			edge = g_malloc0(sizeof(*edge));
-			edge->map = map;
+			edge->map = hex->map;
 			edge->owner = -1;
 			edge->x = hex->x;
 			edge->y = hex->y;
@@ -286,14 +349,13 @@ static ChainConnect node_connect[] = {
 
 /* Connect the the ring of nodes and edges to each other
  */
-static gboolean connect_network(Map * map, Hex * hex,
-				G_GNUC_UNUSED void *closure)
+static gboolean connect_network(Hex * hex, G_GNUC_UNUSED gpointer closure)
 {
 	Hex *adjacent[6];
 	gint idx;
 	ChainConnect *connect;
 
-	calc_adjacent(map, hex->x, hex->y, adjacent);
+	calc_adjacent(hex->map, hex->x, hex->y, adjacent);
 
 	for (idx = 0, connect = node_connect; idx < 6; idx++, connect++) {
 		Node *node;
@@ -530,7 +592,13 @@ Map *map_new(void)
 	return g_malloc0(sizeof(Map));
 }
 
-static Hex *copy_hex(Map * map, Hex * hex)
+/** Copy a hex.
+ * @param map The new owner
+ * @param hex The original hex
+ * @return A copy of the original hex, with the new owner. 
+ *         The copy is not connected (nodes and edges are NULL)
+*/
+static Hex *copy_hex(Map * map, const Hex * hex)
 {
 	Hex *copy;
 
@@ -551,18 +619,20 @@ static Hex *copy_hex(Map * map, Hex * hex)
 	return copy;
 }
 
-static gboolean set_nosetup_nodes(G_GNUC_UNUSED Map * map, Hex * hex,
-				  Map * copy)
+static gboolean set_nosetup_nodes(const Hex * hex, gpointer closure)
 {
 	gint idx;
+	Map *copy = closure;
 	for (idx = 0; idx < G_N_ELEMENTS(hex->nodes); ++idx) {
-		Node *node = hex->nodes[idx];
+		const Node *node = hex->nodes[idx];
 		/* only handle nodes which are owned by the hex, to
 		 * prevent doing every node three times */
 		if (hex->x != node->x || hex->y != node->y)
 			continue;
-		map_node(copy, node->x, node->y, node->pos)->no_setup
-		    = node->no_setup;
+		g_assert(map_node(copy, node->x, node->y, node->pos) !=
+			 NULL);
+		map_node(copy, node->x, node->y, node->pos)->no_setup =
+		    node->no_setup;
 	}
 	return FALSE;
 }
@@ -580,7 +650,7 @@ static GArray *copy_int_list(GArray * array)
 
 /* Make a copy of an existing map
  */
-Map *map_copy(Map * map)
+Map *map_copy(const Map * map)
 {
 	Map *copy = map_new();
 	int x, y;
@@ -593,7 +663,7 @@ Map *map_copy(Map * map)
 			copy->grid[y][x] = copy_hex(copy, map->grid[y][x]);
 	map_traverse(copy, build_network, NULL);
 	map_traverse(copy, connect_network, NULL);
-	map_traverse(map, (HexFunc) set_nosetup_nodes, copy);
+	map_traverse_const(map, set_nosetup_nodes, copy);
 	if (map->robber_hex == NULL)
 		copy->robber_hex = NULL;
 	else
@@ -882,16 +952,15 @@ gboolean map_parse_finish(Map * map)
 	return success;
 }
 
-/* Disconnect a hex from all nodes and edges that it does not "own"
+/** Disconnect a hex from all nodes and edges that it does not "own"
  */
-static gboolean disconnect_hex(G_GNUC_UNUSED Map * map, Hex * hex,
-			       G_GNUC_UNUSED void *closure)
+static gboolean disconnect_hex(Hex * hex, G_GNUC_UNUSED gpointer closure)
 {
 	gint idx;
 
 	for (idx = 0; idx < 6; idx++) {
-		const Node *node = hex->nodes[idx];
-		const Edge *edge = hex->edges[idx];
+		Node *node = hex->nodes[idx];
+		Edge *edge = hex->edges[idx];
 
 		if (node && (node->x != hex->x || node->y != hex->y))
 			hex->nodes[idx] = NULL;
@@ -902,10 +971,9 @@ static gboolean disconnect_hex(G_GNUC_UNUSED Map * map, Hex * hex,
 	return FALSE;
 }
 
-/* Free a node and all of the hexes and nodes that it is connected to.
+/** Free a node and all of the hexes and nodes that it is connected to.
  */
-static gboolean free_hex(G_GNUC_UNUSED Map * map, Hex * hex,
-			 G_GNUC_UNUSED void *closure)
+static gboolean free_hex(Hex * hex, G_GNUC_UNUSED gpointer closure)
 {
 	gint idx;
 
@@ -944,7 +1012,7 @@ Hex *map_add_hex(Map * map, gint x, gint y)
 	hex->y = y;
 	hex->x = x;
 	map->grid[y][x] = hex;
-	build_network(map, hex, NULL);
-	connect_network(map, hex, NULL);
+	build_network(hex, NULL);
+	connect_network(hex, NULL);
 	return hex;
 }

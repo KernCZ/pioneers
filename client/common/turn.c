@@ -39,7 +39,7 @@ void turn_rolled_dice(gint player_num, gint die1, gint die2)
 
 	if (player_num == my_player_num()) {
 		rolled_dice = TRUE;
-		map->has_moved_ship = FALSE;
+		callbacks.get_map()->has_moved_ship = FALSE;
 	}
 	callbacks.rolled_dice(die1, die2, player_num);
 }

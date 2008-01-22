@@ -150,6 +150,8 @@ void frontend_steal_building(void);
 void frontend_steal_ship(void);
 void frontend_robber_done(void);
 void frontend_game_over(gint player, gint points);
+Map *frontend_get_map(void);
+void frontend_set_map(Map * map);
 
 /* connect.c */
 const gchar *connect_get_server(void);

@@ -733,7 +733,7 @@ static void place_robber_or_pirate_cb(MapElement hex,
 void frontend_steal_ship(void)
 {
 	MapElement hex;
-	hex.hex = map_pirate_hex(get_map());
+	hex.hex = map_pirate_hex(callbacks.get_map());
 
 	gui_cursor_set(STEAL_SHIP_CURSOR, can_edge_be_robbed, rob_edge,
 		       NULL, &hex);
@@ -743,7 +743,7 @@ void frontend_steal_ship(void)
 void frontend_steal_building(void)
 {
 	MapElement hex;
-	hex.hex = map_robber_hex(get_map());
+	hex.hex = map_robber_hex(callbacks.get_map());
 
 	gui_cursor_set(STEAL_BUILDING_CURSOR, can_building_be_robbed,
 		       rob_building, NULL, &hex);

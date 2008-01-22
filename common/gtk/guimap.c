@@ -621,14 +621,14 @@ void draw_dice_roll(PangoLayout * layout, GdkPixmap * pixmap, GdkGC * gc,
 	}
 }
 
-static gboolean display_hex(const Map * map, const Hex * hex,
-			    const GuiMap * gmap)
+static gboolean display_hex(const Hex * hex, gpointer closure)
 {
 	gint x_offset, y_offset;
 	GdkPoint points[MAX_POINTS];
 	Polygon poly;
 	int idx;
 	const MapTheme *theme = theme_get_current();
+	const GuiMap *gmap = closure;
 
 	calc_hex_pos(gmap, hex->x, hex->y, &x_offset, &y_offset);
 
@@ -881,7 +881,7 @@ static gboolean display_hex(const Map * map, const Hex * hex,
 	}
 
 	/* Draw the pirate */
-	if (hex == map->pirate_hex) {
+	if (hex == hex->map->pirate_hex) {
 		poly.num_points = G_N_ELEMENTS(points);
 		guimap_pirate_polygon(gmap, hex, &poly);
 		gdk_gc_set_line_attributes(gmap->gc, 1, GDK_LINE_SOLID,
@@ -1089,7 +1089,7 @@ void guimap_display(GuiMap * gmap)
 		gmap->chit_radius = size_for_text;
 	}
 
-	map_traverse(gmap->map, (HexFunc) display_hex, gmap);
+	map_traverse_const(gmap->map, display_hex, gmap);
 }
 
 static const Edge *find_hex_edge(GuiMap * gmap, const Hex * hex, gint x,
@@ -1323,7 +1323,7 @@ void guimap_draw_edge(GuiMap * gmap, const Edge * edge)
 
 	for (idx = 0; idx < G_N_ELEMENTS(edge->hexes); idx++)
 		if (edge->hexes[idx] != NULL)
-			display_hex(gmap->map, edge->hexes[idx], gmap);
+			display_hex(edge->hexes[idx], gmap);
 
 	gdk_window_invalidate_rect(gmap->area->window, &rect, FALSE);
 }
@@ -1410,7 +1410,7 @@ void guimap_draw_node(GuiMap * gmap, const Node * node)
 			   rect.x, rect.y, rect.width, rect.height);
 	for (idx = 0; idx < G_N_ELEMENTS(node->hexes); idx++)
 		if (node->hexes[idx] != NULL)
-			display_hex(gmap->map, node->hexes[idx], gmap);
+			display_hex(node->hexes[idx], gmap);
 
 	gdk_window_invalidate_rect(gmap->area->window, &rect, FALSE);
 }
@@ -1531,7 +1531,7 @@ static void erase_robber_cursor(GuiMap * gmap)
 		guimap_robber_polygon(gmap, hex, &poly);
 	poly_bound_rect(&poly, 1, &rect);
 
-	display_hex(gmap->map, hex, gmap);
+	display_hex(hex, gmap);
 
 	gdk_window_invalidate_rect(gmap->area->window, &rect, FALSE);
 }
@@ -1562,20 +1562,20 @@ static void draw_robber_cursor(GuiMap * gmap)
 	gdk_window_invalidate_rect(gmap->area->window, &rect, FALSE);
 }
 
-static gboolean highlight_chits(G_GNUC_UNUSED Map * map, const Hex * hex,
-				HighlightInfo * closure)
+static gboolean highlight_chits(const Hex * hex, gpointer closure)
 {
-	GuiMap *gmap = closure->gmap;
+	HighlightInfo *highlight_info = closure;
+	GuiMap *gmap = highlight_info->gmap;
 	GdkPoint points[6];
 	Polygon poly;
 	gint x_offset, y_offset;
 	GdkRectangle rect;
 
-	if (hex->roll != closure->old_highlight
+	if (hex->roll != highlight_info->old_highlight
 	    && hex->roll != gmap->highlight_chit)
 		return FALSE;
 
-	display_hex(gmap->map, hex, gmap);
+	display_hex(hex, gmap);
 
 	poly.points = points;
 	poly.num_points = G_N_ELEMENTS(points);
@@ -1598,8 +1598,7 @@ void guimap_highlight_chits(GuiMap * gmap, gint roll)
 	closure.old_highlight = gmap->highlight_chit;
 	gmap->highlight_chit = roll;
 	if (gmap->pixmap != NULL)
-		map_traverse(gmap->map, (HexFunc) highlight_chits,
-			     &closure);
+		map_traverse_const(gmap->map, highlight_chits, &closure);
 }
 
 void guimap_draw_hex(GuiMap * gmap, const Hex * hex)
@@ -1612,7 +1611,7 @@ void guimap_draw_hex(GuiMap * gmap, const Hex * hex)
 	if (hex == NULL)
 		return;
 
-	display_hex(gmap->map, hex, gmap);
+	display_hex(hex, gmap);
 
 	poly.points = points;
 	poly.num_points = G_N_ELEMENTS(points);

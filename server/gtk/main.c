@@ -272,6 +272,7 @@ static void start_clicked_cb(G_GNUC_UNUSED GtkButton * start_btn,
 		update_game_settings(params);
 
 		g_assert(server_port != NULL);
+
 		if (start_server
 		    (params, overridden_hostname, server_port,
 		     register_server, meta_server_name, random_order)) {
@@ -439,12 +440,8 @@ static void overridden_hostname_changed_cb(GtkEntry * widget,
 static void meta_server_changed_cb(GtkWidget * widget,
 				   G_GNUC_UNUSED gpointer user_data)
 {
-	const gchar *text;
-
-	text = gtk_entry_get_text(GTK_ENTRY(widget));
-	while (*text != '\0' && isspace(*text))
-		text++;
-	meta_server_name = text;
+	meta_server_name =
+	    g_strstrip(g_strdup(gtk_entry_get_text(GTK_ENTRY(widget))));
 }
 
 static GtkWidget *build_game_settings(GtkWidget * parent,

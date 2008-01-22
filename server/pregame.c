@@ -57,9 +57,9 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 		/* Building a road, make sure it is next to a
 		 * settlement/road
 		 */
-		if (!buildrec_can_setup_road(player->build_list, map,
-					     map_edge(map, x, y, pos),
-					     game->double_setup)) {
+		if (!buildrec_can_setup_road
+		    (player->build_list, map_edge(map, x, y, pos),
+		     game->double_setup)) {
 			player_send(player, FIRST_VERSION, LATEST_VERSION,
 				    "ERR bad-pos\n");
 			return;
@@ -80,9 +80,9 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 		/* Building a bridge, make sure it is next to a
 		 * settlement/road
 		 */
-		if (!buildrec_can_setup_bridge(player->build_list, map,
-					       map_edge(map, x, y, pos),
-					       game->double_setup)) {
+		if (!buildrec_can_setup_bridge
+		    (player->build_list, map_edge(map, x, y, pos),
+		     game->double_setup)) {
 			player_send(player, FIRST_VERSION, LATEST_VERSION,
 				    "ERR bad-pos\n");
 			return;
@@ -103,9 +103,9 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 		/* Building a ship, make sure it is next to a
 		 * settlement/ship
 		 */
-		if (!buildrec_can_setup_ship(player->build_list, map,
-					     map_edge(map, x, y, pos),
-					     game->double_setup)) {
+		if (!buildrec_can_setup_ship
+		    (player->build_list, map_edge(map, x, y, pos),
+		     game->double_setup)) {
 			player_send(player, FIRST_VERSION, LATEST_VERSION,
 				    "ERR bad-pos\n");
 			return;
@@ -121,9 +121,9 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 	}
 	/* Build the settlement
 	 */
-	if (!buildrec_can_setup_settlement(player->build_list, map,
-					   map_node(map, x, y, pos),
-					   game->double_setup)) {
+	if (!buildrec_can_setup_settlement
+	    (player->build_list, map_node(map, x, y, pos),
+	     game->double_setup)) {
 		player_send(player, FIRST_VERSION, LATEST_VERSION,
 			    "ERR bad-pos\n");
 		return;
@@ -386,7 +386,7 @@ static void send_game_line(gpointer player, const gchar * str)
 			     LATEST_VERSION, "%s\n", str);
 }
 
-gboolean send_gameinfo_uncached(Map * map, Hex * hex, void *data)
+gboolean send_gameinfo_uncached(const Hex * hex, void *data)
 {
 	gint i;
 	Player *player = data;
@@ -466,7 +466,7 @@ gboolean send_gameinfo_uncached(Map * map, Hex * hex, void *data)
 				     "RO%d,%d\n", hex->x, hex->y);
 	}
 
-	if (hex == map->pirate_hex) {
+	if (hex == hex->map->pirate_hex) {
 		player_send_uncached(player, FIRST_VERSION, LATEST_VERSION,
 				     "P%d,%d\n", hex->x, hex->y);
 	}
@@ -548,7 +548,8 @@ gboolean mode_pre_game(Player * player, gint event)
 		if (sm_recv(sm, "gameinfo")) {
 			player_send_uncached(player, FIRST_VERSION,
 					     LATEST_VERSION, "gameinfo\n");
-			map_traverse(map, send_gameinfo_uncached, player);
+			map_traverse_const(map, send_gameinfo_uncached,
+					   player);
 			player_send_uncached(player, FIRST_VERSION,
 					     LATEST_VERSION, ".\n");
 

@@ -390,21 +390,21 @@ gboolean road_building_can_build_road(void)
 {
 	return build_count_edges() < 2
 	    && stock_num_roads() > 0
-	    && map_can_place_road(map, my_player_num());
+	    && map_can_place_road(callbacks.get_map(), my_player_num());
 }
 
 gboolean road_building_can_build_ship(void)
 {
 	return build_count_edges() < 2
 	    && stock_num_ships() > 0
-	    && map_can_place_ship(map, my_player_num());
+	    && map_can_place_ship(callbacks.get_map(), my_player_num());
 }
 
 gboolean road_building_can_build_bridge(void)
 {
 	return build_count_edges() < 2
 	    && stock_num_bridges() > 0
-	    && map_can_place_bridge(map, my_player_num());
+	    && map_can_place_bridge(callbacks.get_map(), my_player_num());
 }
 
 gboolean road_building_can_finish(void)
@@ -419,28 +419,29 @@ gboolean turn_can_build_road(void)
 {
 	return have_rolled_dice()
 	    && stock_num_roads() > 0 && can_afford(cost_road())
-	    && map_can_place_road(map, my_player_num());
+	    && map_can_place_road(callbacks.get_map(), my_player_num());
 }
 
 gboolean turn_can_build_ship(void)
 {
 	return have_rolled_dice()
 	    && stock_num_ships() > 0 && can_afford(cost_ship())
-	    && map_can_place_ship(map, my_player_num());
+	    && map_can_place_ship(callbacks.get_map(), my_player_num());
 }
 
 gboolean turn_can_build_bridge(void)
 {
 	return have_rolled_dice()
 	    && stock_num_bridges() > 0 && can_afford(cost_bridge())
-	    && map_can_place_bridge(map, my_player_num());
+	    && map_can_place_bridge(callbacks.get_map(), my_player_num());
 }
 
 gboolean turn_can_build_settlement(void)
 {
 	return have_rolled_dice()
 	    && stock_num_settlements() > 0 && can_afford(cost_settlement())
-	    && map_can_place_settlement(map, my_player_num());
+	    && map_can_place_settlement(callbacks.get_map(),
+					my_player_num());
 }
 
 gboolean turn_can_build_city(void)
@@ -448,14 +449,16 @@ gboolean turn_can_build_city(void)
 	return have_rolled_dice()
 	    && stock_num_cities() > 0
 	    && can_afford(cost_upgrade_settlement())
-	    && map_can_upgrade_settlement(map, my_player_num());
+	    && map_can_upgrade_settlement(callbacks.get_map(),
+					  my_player_num());
 }
 
 gboolean turn_can_build_city_wall(void)
 {
 	return have_rolled_dice()
 	    && stock_num_city_walls() > 0 && can_afford(cost_city_wall())
-	    && map_can_place_city_wall(map, my_player_num());
+	    && map_can_place_city_wall(callbacks.get_map(),
+				       my_player_num());
 }
 
 gboolean turn_can_trade(void)
@@ -475,12 +478,12 @@ gboolean turn_can_trade(void)
 	    || can_trade_domestic();
 }
 
-static gboolean really_try_move_ship(G_GNUC_UNUSED Map * map, Hex * hex,
-				     Edge * from)
+static gboolean really_try_move_ship(const Hex * hex, gpointer closure)
 {
 	gint idx;
+	const Edge *from = closure;
 	for (idx = 0; idx < G_N_ELEMENTS(hex->edges); ++idx) {
-		Edge *edge;
+		const Edge *edge;
 		edge = hex->edges[idx];
 		if (edge->x != hex->x || edge->y != hex->y)
 			continue;
@@ -502,7 +505,7 @@ gboolean can_move_ship(const Edge * from, const Edge * to)
 	owner = from->owner;
 	if (!can_ship_be_moved(from, owner))
 		return FALSE;
-	ship_sailed_from_here = map_edge(map, from->x, from->y, from->pos);	/* Copy to non-const pointer */
+	ship_sailed_from_here = map_edge(callbacks.get_map(), from->x, from->y, from->pos);	/* Copy to non-const pointer */
 	ship_sailed_from_here->owner = -1;
 	ship_sailed_from_here->type = BUILD_NONE;
 	retval = can_ship_be_built(to, owner);
@@ -511,19 +514,20 @@ gboolean can_move_ship(const Edge * from, const Edge * to)
 	return retval;
 }
 
-static gboolean try_move_ship(Map * map, Hex * hex)
+static gboolean try_move_ship(const Hex * hex,
+			      G_GNUC_UNUSED gpointer closure)
 {
 	gint idx;
 	for (idx = 0; idx < G_N_ELEMENTS(hex->edges); ++idx) {
-		Edge *edge;
+		Edge *edge;	/* Huh? Can non-const be taken from const Hex ? */
 		edge = hex->edges[idx];
 		if (edge->x != hex->x || edge->y != hex->y)
 			continue;
 		if (edge->owner != my_player_num()
 		    || edge->type != BUILD_SHIP)
 			continue;
-		if (map_traverse
-		    (map, (HexFunc) really_try_move_ship, edge))
+		if (map_traverse_const
+		    (callbacks.get_map(), really_try_move_ship, edge))
 			return TRUE;
 	}
 	return FALSE;
@@ -531,9 +535,10 @@ static gboolean try_move_ship(Map * map, Hex * hex)
 
 gboolean turn_can_move_ship(void)
 {
-	if (!have_rolled_dice() || map->has_moved_ship)
+	if (!have_rolled_dice() || callbacks.get_map()->has_moved_ship)
 		return FALSE;
-	return map_traverse(map, (HexFunc) try_move_ship, NULL);
+	return map_traverse_const(callbacks.get_map(), try_move_ship,
+				  NULL);
 }
 
 int robber_count_victims(const Hex * hex, gint * victim_list)
@@ -612,9 +617,4 @@ int pirate_count_victims(const Hex * hex, gint * victim_list)
 	}
 
 	return num_victims;
-}
-
-Map *get_map(void)
-{
-	return map;
 }

@@ -467,7 +467,7 @@ void player_build_add(gint player_num,
 
 	switch (type) {
 	case BUILD_ROAD:
-		edge = map_edge(map, x, y, pos);
+		edge = map_edge(callbacks.get_map(), x, y, pos);
 		edge->owner = player_num;
 		edge->type = BUILD_ROAD;
 		callbacks.draw_edge(edge);
@@ -479,7 +479,7 @@ void player_build_add(gint player_num,
 			stock_use_road();
 		break;
 	case BUILD_SHIP:
-		edge = map_edge(map, x, y, pos);
+		edge = map_edge(callbacks.get_map(), x, y, pos);
 		edge->owner = player_num;
 		edge->type = BUILD_SHIP;
 		callbacks.draw_edge(edge);
@@ -491,7 +491,7 @@ void player_build_add(gint player_num,
 			stock_use_ship();
 		break;
 	case BUILD_SETTLEMENT:
-		node = map_node(map, x, y, pos);
+		node = map_node(callbacks.get_map(), x, y, pos);
 		node->type = BUILD_SETTLEMENT;
 		node->owner = player_num;
 		callbacks.draw_node(node);
@@ -505,7 +505,7 @@ void player_build_add(gint player_num,
 			stock_use_settlement();
 		break;
 	case BUILD_CITY:
-		node = map_node(map, x, y, pos);
+		node = map_node(callbacks.get_map(), x, y, pos);
 		if (node->type == BUILD_SETTLEMENT) {
 			player_modify_statistic(player_num,
 						STAT_SETTLEMENTS, -1);
@@ -524,7 +524,7 @@ void player_build_add(gint player_num,
 			stock_use_city();
 		break;
 	case BUILD_CITY_WALL:
-		node = map_node(map, x, y, pos);
+		node = map_node(callbacks.get_map(), x, y, pos);
 		node->city_wall = TRUE;
 		node->owner = player_num;
 		callbacks.draw_node(node);
@@ -545,7 +545,7 @@ void player_build_add(gint player_num,
 			    player_name(player_num, TRUE));
 		break;
 	case BUILD_BRIDGE:
-		edge = map_edge(map, x, y, pos);
+		edge = map_edge(callbacks.get_map(), x, y, pos);
 		edge->owner = player_num;
 		edge->type = BUILD_BRIDGE;
 		callbacks.draw_edge(edge);
@@ -572,7 +572,7 @@ void player_build_remove(gint player_num,
 
 	switch (type) {
 	case BUILD_ROAD:
-		edge = map_edge(map, x, y, pos);
+		edge = map_edge(callbacks.get_map(), x, y, pos);
 		edge->owner = -1;
 		callbacks.draw_edge(edge);
 		edge->type = BUILD_NONE;
@@ -582,7 +582,7 @@ void player_build_remove(gint player_num,
 			stock_replace_road();
 		break;
 	case BUILD_SHIP:
-		edge = map_edge(map, x, y, pos);
+		edge = map_edge(callbacks.get_map(), x, y, pos);
 		edge->owner = -1;
 		callbacks.draw_edge(edge);
 		edge->type = BUILD_NONE;
@@ -592,7 +592,7 @@ void player_build_remove(gint player_num,
 			stock_replace_ship();
 		break;
 	case BUILD_SETTLEMENT:
-		node = map_node(map, x, y, pos);
+		node = map_node(callbacks.get_map(), x, y, pos);
 		node->type = BUILD_NONE;
 		node->owner = -1;
 		callbacks.draw_node(node);
@@ -603,7 +603,7 @@ void player_build_remove(gint player_num,
 			stock_replace_settlement();
 		break;
 	case BUILD_CITY:
-		node = map_node(map, x, y, pos);
+		node = map_node(callbacks.get_map(), x, y, pos);
 		node->type = BUILD_SETTLEMENT;
 		node->owner = player_num;
 		callbacks.draw_node(node);
@@ -617,7 +617,7 @@ void player_build_remove(gint player_num,
 		}
 		break;
 	case BUILD_CITY_WALL:
-		node = map_node(map, x, y, pos);
+		node = map_node(callbacks.get_map(), x, y, pos);
 		node->city_wall = FALSE;
 		node->owner = player_num;
 		callbacks.draw_node(node);
@@ -635,7 +635,7 @@ void player_build_remove(gint player_num,
 			    player_name(player_num, TRUE));
 		break;
 	case BUILD_BRIDGE:
-		edge = map_edge(map, x, y, pos);
+		edge = map_edge(callbacks.get_map(), x, y, pos);
 		edge->owner = -1;
 		callbacks.draw_edge(edge);
 		edge->type = BUILD_NONE;
@@ -655,8 +655,8 @@ void player_build_remove(gint player_num,
 void player_build_move(gint player_num, gint sx, gint sy, gint spos,
 		       gint dx, gint dy, gint dpos, gint isundo)
 {
-	Edge *from = map_edge(map, sx, sy, spos),
-	    *to = map_edge(map, dx, dy, dpos);
+	Edge *from = map_edge(callbacks.get_map(), sx, sy, spos),
+	    *to = map_edge(callbacks.get_map(), dx, dy, dpos);
 	if (isundo) {
 		Edge *tmp = from;
 		from = to;

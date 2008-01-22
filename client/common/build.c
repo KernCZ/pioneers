@@ -88,7 +88,7 @@ void build_move(gint sx, gint sy, gint spos, gint dx, gint dy, gint dpos,
 	GList *list;
 	BuildRec *rec;
 	if (isundo) {
-		map->has_moved_ship = FALSE;
+		callbacks.get_map()->has_moved_ship = FALSE;
 		list = g_list_last(build_list);
 		rec = list->data;
 		if (rec->type != BUILD_MOVE_SHIP && rec->x != sx
@@ -109,7 +109,7 @@ void build_move(gint sx, gint sy, gint spos, gint dx, gint dy, gint dpos,
 		rec = buildrec_new(BUILD_MOVE_SHIP, sx, sy, spos);
 		build_list = g_list_append(build_list, rec);
 		built = TRUE;
-		map->has_moved_ship = TRUE;
+		callbacks.get_map()->has_moved_ship = TRUE;
 	}
 	player_build_move(my_player_num(), sx, sy, spos, dx, dy, dpos,
 			  isundo);
@@ -156,7 +156,8 @@ gint build_count(BuildType type)
 
 gboolean build_is_valid(void)
 {
-	return buildrec_is_valid(build_list, map, my_player_num());
+	return buildrec_is_valid(build_list, callbacks.get_map(),
+				 my_player_num());
 }
 
 gboolean build_can_undo(void)
@@ -173,24 +174,21 @@ gboolean have_built(void)
  */
 gboolean build_can_setup_road(const Edge * edge, gboolean double_setup)
 {
-	return buildrec_can_setup_road(build_list, map, edge,
-				       double_setup);
+	return buildrec_can_setup_road(build_list, edge, double_setup);
 }
 
 /* Place some restrictions on ship placement during setup phase
  */
 gboolean build_can_setup_ship(const Edge * edge, gboolean double_setup)
 {
-	return buildrec_can_setup_ship(build_list, map, edge,
-				       double_setup);
+	return buildrec_can_setup_ship(build_list, edge, double_setup);
 }
 
 /* Place some restrictions on bridge placement during setup phase
  */
 gboolean build_can_setup_bridge(const Edge * edge, gboolean double_setup)
 {
-	return buildrec_can_setup_bridge(build_list, map, edge,
-					 double_setup);
+	return buildrec_can_setup_bridge(build_list, edge, double_setup);
 }
 
 /* Place some restrictions on road placement during setup phase
@@ -198,6 +196,6 @@ gboolean build_can_setup_bridge(const Edge * edge, gboolean double_setup)
 gboolean build_can_setup_settlement(const Node * node,
 				    gboolean double_setup)
 {
-	return buildrec_can_setup_settlement(build_list, map, node,
+	return buildrec_can_setup_settlement(build_list, node,
 					     double_setup);
 }

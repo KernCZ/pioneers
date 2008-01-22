@@ -190,12 +190,12 @@ struct nosetup_t {
 	gpointer user_data;
 };
 
-static gboolean find_no_setup(G_GNUC_UNUSED Map * map, Hex * hex,
-			      struct nosetup_t *data)
+static gboolean find_no_setup(const Hex * hex, gpointer closure)
 {
 	gint idx;
+	struct nosetup_t *data = closure;
 	for (idx = 0; idx < G_N_ELEMENTS(hex->nodes); ++idx) {
-		Node *node = hex->nodes[idx];
+		const Node *node = hex->nodes[idx];
 		if (node->no_setup) {
 			gchar buff[50];
 			if (node->x != hex->x || node->y != hex->y)
@@ -285,7 +285,7 @@ void params_write_lines(GameParams * params, gboolean write_secrets,
 		struct nosetup_t tmp;
 		tmp.user_data = user_data;
 		tmp.func = func;
-		map_traverse(params->map, (HexFunc) find_no_setup, &tmp);
+		map_traverse_const(params->map, find_no_setup, &tmp);
 	}
 }
 

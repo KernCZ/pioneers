@@ -45,16 +45,15 @@ BuildRec *buildrec_get(GList * list, BuildType type, gint idx);
 BuildRec *buildrec_get_edge(GList * list, gint idx);
 BuildRec *buildrec_new(BuildType type, gint x, gint y, gint pos);
 GList *buildrec_free(GList * list);
-gboolean buildrec_is_valid(GList * list, Map * map, int owner);
-gboolean buildrec_can_setup_road(GList * list, Map * map,
-				 const Edge * edge, gboolean is_double);
-gboolean buildrec_can_setup_ship(GList * list, Map * map,
-				 const Edge * edge, gboolean is_double);
-gboolean buildrec_can_setup_settlement(GList * list, Map * map,
-				       const Node * node,
+gboolean buildrec_is_valid(GList * list, const Map * map, gint owner);
+gboolean buildrec_can_setup_road(GList * list, const Edge * edge,
+				 gboolean is_double);
+gboolean buildrec_can_setup_ship(GList * list, const Edge * edge,
+				 gboolean is_double);
+gboolean buildrec_can_setup_settlement(GList * list, const Node * node,
 				       gboolean is_double);
-gboolean buildrec_can_setup_bridge(GList * list, Map * map,
-				   const Edge * edge, gboolean is_double);
+gboolean buildrec_can_setup_bridge(GList * list, const Edge * edge,
+				   gboolean is_double);
 gint buildrec_count_edges(GList * list);
 
 #endif

@@ -168,4 +168,6 @@ void frontend_set_callbacks(void)
 	callbacks.viewer_quit = &frontend_viewer_quit;
 	callbacks.incoming_chat = &chat_parser;
 	callbacks.new_bank = &frontend_new_bank;
+	callbacks.get_map = &frontend_get_map;
+	callbacks.set_map = &frontend_set_map;
 }

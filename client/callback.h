@@ -260,6 +260,10 @@ struct callbacks {
 	void (*new_bank) (const gint * new_bank);
 	/* some communication error occurred, and it has already been logged */
 	void (*error) (const gchar * message);
+	/* get the map */
+	Map *(*get_map) (void);
+	/* set the map */
+	void (*set_map) (Map * map);
 	/* mainloop.  This is initialized to run the glib main loop.  It can
 	 * be overridden */
 	void (*mainloop) (void);
@@ -407,7 +411,6 @@ int robber_count_victims(const Hex * hex, gint * victim_list);
 const gint *get_bank(void);
 const DevelDeck *get_devel_deck(void);
 const gchar *get_devel_name(DevelType type);
-Map *get_map(void);
 
 /** Returns instructions for the user */
 const gchar *road_building_message(gint build_amount);

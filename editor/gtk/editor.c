@@ -248,7 +248,7 @@ static gint button_press_map_cb(GtkWidget * area, GdkEventButton * event,
 {
 	GuiMap *gmap = user_data;
 	GtkWidget *menu;
-	Hex *adjacent;
+	const Hex *adjacent;
 	gboolean port_ok;
 	gint num_ports;
 	gint i;
@@ -276,8 +276,7 @@ static gint button_press_map_cb(GtkWidget * area, GdkEventButton * event,
 	} else if (current_hex->terrain == SEA_TERRAIN) {
 		num_ports = 0;
 		for (i = 0; i < 6; i++) {
-			adjacent = hex_in_direction(gmap->map,
-						    current_hex, i);
+			adjacent = hex_in_direction(current_hex, i);
 			port_ok = FALSE;
 			if (adjacent != NULL &&
 			    adjacent->terrain != LAST_TERRAIN &&
@@ -452,8 +451,7 @@ static gint select_terrain_cb(G_GNUC_UNUSED GtkWidget * menu,
 		current_hex->resource = NO_RESOURCE;
 	if (terrain == SEA_TERRAIN || terrain == LAST_TERRAIN) {
 		for (i = 0; i < 6; i++) {
-			adjacent =
-			    hex_in_direction(gmap->map, current_hex, i);
+			adjacent = hex_in_direction(current_hex, i);
 			if (adjacent != NULL
 			    && adjacent->resource != NO_RESOURCE
 			    && adjacent->facing == (i + 3) % 6) {
@@ -578,10 +576,9 @@ static gint select_port_resource_cb(G_GNUC_UNUSED GtkWidget * menu,
 
 	if (current_hex->resource == NO_RESOURCE) {
 		for (i = 0; i < 6; i++) {
-			Hex *adjacent;
+			const Hex *adjacent;
 
-			adjacent = hex_in_direction(gmap->map,
-						    current_hex, i);
+			adjacent = hex_in_direction(current_hex, i);
 			if (adjacent != NULL &&
 			    adjacent->terrain != LAST_TERRAIN &&
 			    adjacent->terrain != SEA_TERRAIN) {

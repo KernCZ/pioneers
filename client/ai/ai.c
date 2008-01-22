@@ -37,6 +37,7 @@ static int waittime = 1000;
 static gboolean silent = FALSE;
 static gboolean enable_debug = FALSE;
 static gboolean show_version = FALSE;
+static Map *map = NULL;
 
 static const struct algorithm_info {
 	/** Name of the algorithm (for commandline) */
@@ -217,9 +218,21 @@ void ai_chat(const char *message)
 		cb_chat(message);
 }
 
+static Map *ai_get_map(void)
+{
+	return map;
+}
+
+static void ai_set_map(Map * new_map)
+{
+	map = new_map;
+}
+
 void frontend_set_callbacks(void)
 {
 	callbacks.init = &ai_init;
 	callbacks.offline = &ai_offline;
 	callbacks.start_game = &ai_start_game;
+	callbacks.get_map = &ai_get_map;
+	callbacks.set_map = &ai_set_map;
 }

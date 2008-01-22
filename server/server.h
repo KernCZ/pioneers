@@ -199,7 +199,7 @@ gboolean player_is_viewer(Game * game, gint player_num);
 /* pregame.c */
 gboolean mode_pre_game(Player * player, gint event);
 gboolean mode_setup(Player * player, gint event);
-gboolean send_gameinfo_uncached(Map * map, Hex * hex, void *player);
+gboolean send_gameinfo_uncached(const Hex * hex, void *player);
 void next_setup_player(Game * game);
 
 /* resource.c */

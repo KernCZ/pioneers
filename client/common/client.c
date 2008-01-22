@@ -36,7 +36,6 @@
 
 static enum callback_mode previous_mode;
 GameParams *game_params;
-Map *map;
 static struct recovery_info_t {
 	gchar *prevstate;
 	gint turnnum;
@@ -338,6 +337,13 @@ static void dummy_new_bank(G_GNUC_UNUSED const gint * new_bank)
 static void dummy_error(G_GNUC_UNUSED const gchar * message)
 {;
 }
+static Map *dummy_get_map(void)
+{
+	return NULL;
+}
+static void dummy_set_map(G_GNUC_UNUSED Map * map)
+{;
+}
 
 /*----------------------------------------------------------------------
  * Entry point for the client state machine
@@ -410,6 +416,8 @@ void client_init(void)
 	callbacks.incoming_chat = &dummy_incoming_chat;
 	callbacks.new_bank = &dummy_new_bank;
 	callbacks.error = &dummy_error;
+	callbacks.get_map = &dummy_get_map;
+	callbacks.set_map = &dummy_set_map;
 	/* mainloop and quit are not set here */
 	resource_init();
 }
@@ -944,7 +952,7 @@ static gboolean mode_load_game(StateMachine * sm, gint event)
 	}
 	if (sm_recv(sm, "end")) {
 		params_load_finish(game_params);
-		map = game_params->map;
+		callbacks.set_map(game_params->map);
 		stock_init();
 		develop_init();
 		/* initialize global recovery info struct */
@@ -1519,9 +1527,9 @@ gboolean mode_robber_move_response(StateMachine * sm, gint event)
 			return TRUE;
 		}
 		if (sm_recv(sm, "rob %d %d", &x, &y)) {
-			Hex *hex;
+			const Hex *hex;
 			waiting_for_network(FALSE);
-			hex = map_hex(map, x, y);
+			hex = map_hex_const(callbacks.get_map(), x, y);
 			if (hex->terrain == SEA_TERRAIN)
 				sm_push(sm, mode_robber_steal_ship);
 			else
@@ -2625,7 +2633,7 @@ gboolean can_trade_maritime(void)
 		return FALSE;
 	can_trade = FALSE;
 	/* Check if we can do a maritime trade */
-	map_maritime_info(map, &info, my_player_num());
+	map_maritime_info(callbacks.get_map(), &info, my_player_num());
 	for (idx = 0; idx < NO_RESOURCE; idx++)
 		if (info.specific_resource[idx]
 		    && resource_asset(idx) >= 2) {

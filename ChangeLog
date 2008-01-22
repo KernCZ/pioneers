@@ -7,6 +7,19 @@
 	* server/player.c: When reviving a player that was previously
 	reconnecting, do not push an extra mde_pre_game, otherwise an assert
 	will be triggered.
+	* editor/gtk/editor.c, common/buildrec.h, common/map_query.c,
+	common/gtk/guimap.c, common/game.c, common/map.c, common/map.h,
+	common/buildrec.c, server/gtk/main.c, server/turn.c, server/trade.c,
+	server/server.h, server/pregame.c, client/callback.h,
+	client/gtk/interface.c, client/gtk/callbacks.c, client/gtk/frontend.h,
+	client/gtk/quote-view.c, client/gtk/gui.c, client/common/client.c,
+	client/common/build.c, client/common/setup.c, client/common/client.h,
+	client/common/turn.c, client/common/robber.c, client/common/callback.c,
+	client/common/player.c, client/ai/greedy.c, client/ai/ai.c:
+	Refactoring of the map code. In the server code: use the map members of
+	the hex/edge/node instead of passing a map pointer. In the client code:
+	remove the static map object for the Gtk+ part, to fix a crash when
+	running on OpenBSD.
 
 2007-12-25  Roland Clobus <rclobus@bigfoot.com>
 	* common/gtk/game-rules.c, common/gtk/game-settings.c, common/game.c,

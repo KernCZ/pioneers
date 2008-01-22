@@ -44,12 +44,14 @@ gboolean setup_can_build_road(void)
 		if (build_count_edges() == 2)
 			return FALSE;
 		return build_count_settlements() < 2
-		    || map_can_place_road(map, my_player_num());
+		    || map_can_place_road(callbacks.get_map(),
+					  my_player_num());
 	} else {
 		if (build_count_edges() == 1)
 			return FALSE;
 		return build_count_settlements() < 1
-		    || map_can_place_road(map, my_player_num());
+		    || map_can_place_road(callbacks.get_map(),
+					  my_player_num());
 	}
 }
 
@@ -61,12 +63,14 @@ gboolean setup_can_build_ship(void)
 		if (build_count_edges() == 2)
 			return FALSE;
 		return build_count_settlements() < 2
-		    || map_can_place_ship(map, my_player_num());
+		    || map_can_place_ship(callbacks.get_map(),
+					  my_player_num());
 	} else {
 		if (build_count_edges() == 1)
 			return FALSE;
 		return build_count_settlements() < 1
-		    || map_can_place_ship(map, my_player_num());
+		    || map_can_place_ship(callbacks.get_map(),
+					  my_player_num());
 	}
 }
 
@@ -78,12 +82,14 @@ gboolean setup_can_build_bridge(void)
 		if (build_count_edges() == 2)
 			return FALSE;
 		return build_count_settlements() < 2
-		    || map_can_place_bridge(map, my_player_num());
+		    || map_can_place_bridge(callbacks.get_map(),
+					    my_player_num());
 	} else {
 		if (build_count_edges() == 1)
 			return FALSE;
 		return build_count_settlements() < 1
-		    || map_can_place_bridge(map, my_player_num());
+		    || map_can_place_bridge(callbacks.get_map(),
+					    my_player_num());
 	}
 }
 

@@ -181,8 +181,7 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 	} else {
 		/* New building: make sure it connects to a road
 		 */
-		if (!map_building_connect_ok
-		    (map, player->num, type, x, y, pos)) {
+		if (!map_building_connect_ok(map, player->num, x, y, pos)) {
 			player_send(player, FIRST_VERSION, LATEST_VERSION,
 				    "ERR bad-pos\n");
 			return;
@@ -358,19 +357,19 @@ typedef struct {
 	int roll;
 } GameRoll;
 
-static gboolean distribute_resources(G_GNUC_UNUSED Map * map, Hex * hex,
-				     GameRoll * data)
+static gboolean distribute_resources(const Hex * hex, gpointer closure)
 {
 	int idx;
+	GameRoll *data = closure;
 
 	if (hex->roll != data->roll || hex->robber)
 		/* return false so the traverse function continues */
 		return FALSE;
 
 	for (idx = 0; idx < G_N_ELEMENTS(hex->nodes); idx++) {
-		Node *node = hex->nodes[idx];
+		const Node *node = hex->nodes[idx];
 		Player *player;
-		int num;
+		gint num;
 
 		if (node->type == BUILD_NONE)
 			continue;
@@ -446,7 +445,7 @@ gboolean mode_turn(Player * player, gint event)
 {
 	StateMachine *sm = player->sm;
 	Game *game = player->game;
-	Map *map = game->params->map;
+	const Map *map = game->params->map;
 	BuildType build_type;
 	DevelType devel_type;
 	gint x, y, pos;
@@ -503,7 +502,7 @@ gboolean mode_turn(Player * player, gint event)
 		resource_start(game);
 		data.game = game;
 		data.roll = roll;
-		map_traverse(map, (HexFunc) distribute_resources, &data);
+		map_traverse_const(map, distribute_resources, &data);
 		/* distribute resources and gold (includes resource_end) */
 		distribute_first(list_from_player(player));
 		return TRUE;

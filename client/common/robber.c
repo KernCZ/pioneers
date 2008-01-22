@@ -30,6 +30,7 @@
 
 void robber_move_on_map(gint x, gint y)
 {
+	Map *map = callbacks.get_map();
 	Hex *hex = map_hex(map, x, y);
 	Hex *old_robber = map_robber_hex(map);
 
@@ -42,6 +43,7 @@ void robber_move_on_map(gint x, gint y)
 
 void pirate_move_on_map(gint x, gint y)
 {
+	Map *map = callbacks.get_map();
 	Hex *hex = map_hex(map, x, y);
 	Hex *old_pirate = map_pirate_hex(map);
 

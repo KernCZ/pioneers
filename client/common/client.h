@@ -27,7 +27,6 @@
 #include "callback.h"
 
 /* variables */
-extern Map *map;
 extern GameParams *game_params;
 extern gchar *requested_name;
 extern gboolean requested_viewer;

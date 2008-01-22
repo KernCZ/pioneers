@@ -607,7 +607,7 @@ void quote_view_begin(QuoteView * qv)
 {
 	quotelist_new(&qv->quote_list);
 	if (qv->with_maritime) {
-		map_maritime_info(get_map(), &qv->maritime_info,
+		map_maritime_info(callbacks.get_map(), &qv->maritime_info,
 				  my_player_num());
 	}
 

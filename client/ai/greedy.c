@@ -117,12 +117,14 @@ typedef void iterate_node_func_t(Node * n, void *rock);
  */
 static void for_each_node(iterate_node_func_t * func, void *rock)
 {
+	Map *map;
 	int i, j, k;
 
-	for (i = 0; i < get_map()->x_size; i++) {
-		for (j = 0; j < get_map()->y_size; j++) {
+	map = callbacks.get_map();
+	for (i = 0; i < map->x_size; i++) {
+		for (j = 0; j < map->y_size; j++) {
 			for (k = 0; k < 6; k++) {
-				Node *n = map_node(get_map(), i, j, k);
+				Node *n = map_node(map, i, j, k);
 
 				if (n)
 					func(n, rock);
@@ -344,7 +346,8 @@ static void reevaluate_resources(resource_values_t * outval)
 	/*
 	 * Save the maritime info too so we know if we can do port trades
 	 */
-	map_maritime_info(get_map(), &outval->info, my_player_num());
+	map_maritime_info(callbacks.get_map(), &outval->info,
+			  my_player_num());
 }
 
 
@@ -467,11 +470,12 @@ static Node *best_settlement_spot(gboolean during_setup,
 	Node *best = NULL;
 	float bestscore = -1.0;
 	float score;
+	Map *map = callbacks.get_map();
 
-	for (i = 0; i < get_map()->x_size; i++) {
-		for (j = 0; j < get_map()->y_size; j++) {
+	for (i = 0; i < map->x_size; i++) {
+		for (j = 0; j < map->y_size; j++) {
 			for (k = 0; k < 6; k++) {
-				Node *n = map_node(get_map(), i, j, k);
+				Node *n = map_node(map, i, j, k);
 				if (!n)
 					continue;
 				if (during_setup) {
@@ -505,11 +509,12 @@ static Node *best_city_spot(const resource_values_t * resval)
 	int i, j, k;
 	Node *best = NULL;
 	float bestscore = -1.0;
+	Map *map = callbacks.get_map();
 
-	for (i = 0; i < get_map()->x_size; i++) {
-		for (j = 0; j < get_map()->y_size; j++) {
+	for (i = 0; i < map->x_size; i++) {
+		for (j = 0; j < map->y_size; j++) {
 			for (k = 0; k < 6; k++) {
-				Node *n = map_node(get_map(), i, j, k);
+				Node *n = map_node(map, i, j, k);
 				if (!n)
 					continue;
 				if ((n->owner == my_player_num())
@@ -662,11 +667,12 @@ static Edge *best_road_to_road(const resource_values_t * resval)
 	int i, j, k;
 	Edge *best = NULL;
 	float bestscore = -1.0;
+	Map *map = callbacks.get_map();
 
-	for (i = 0; i < get_map()->x_size; i++) {
-		for (j = 0; j < get_map()->y_size; j++) {
+	for (i = 0; i < map->x_size; i++) {
+		for (j = 0; j < map->y_size; j++) {
 			for (k = 0; k < 6; k++) {
-				Node *n = map_node(get_map(), i, j, k);
+				Node *n = map_node(map, i, j, k);
 				Edge *e;
 				float score;
 
@@ -696,6 +702,7 @@ static Edge *best_road_spot(const resource_values_t * resval)
 	Edge *best = NULL;
 	float bestscore = -1.0;
 	node_seen_set_t nodeseen;
+	Map *map = callbacks.get_map();
 
 	/*
 	 * For every node that we're the owner of traverse out to find the best
@@ -705,10 +712,10 @@ static Edge *best_road_spot(const resource_values_t * resval)
 	 * xxx loops
 	 */
 
-	for (i = 0; i < get_map()->x_size; i++) {
-		for (j = 0; j < get_map()->y_size; j++) {
+	for (i = 0; i < map->x_size; i++) {
+		for (j = 0; j < map->y_size; j++) {
 			for (k = 0; k < 6; k++) {
-				Node *n = map_node(get_map(), i, j, k);
+				Node *n = map_node(map, i, j, k);
 
 				if ((n != NULL)
 				    && (n->owner == my_player_num())) {
@@ -1060,7 +1067,7 @@ static gboolean will_do_maritime_trade(gint assets[NO_RESOURCE],
 	Resource res, want, discard;
 	gint ports[NO_RESOURCE];
 
-	map_maritime_info(get_map(), &info, my_player_num());
+	map_maritime_info(callbacks.get_map(), &info, my_player_num());
 
 	for (res = 0; res < NO_RESOURCE; res++) {
 		if (info.specific_resource[res])
@@ -1410,11 +1417,12 @@ static void greedy_place_robber(void)
 	int i, j;
 	float bestscore = -1000;
 	Hex *besthex = NULL;
+	Map *map = callbacks.get_map();
 
 	ai_wait();
-	for (i = 0; i < get_map()->x_size; i++) {
-		for (j = 0; j < get_map()->y_size; j++) {
-			Hex *hex = map_hex(get_map(), i, j);
+	for (i = 0; i < map->x_size; i++) {
+		for (j = 0; j < map->y_size; j++) {
+			Hex *hex = map_hex(map, i, j);
 			float score = score_hex_hurt_opponents(hex);
 
 			if (score > bestscore) {
@@ -1432,7 +1440,7 @@ static void greedy_steal_building(void)
 	int i;
 	int victim = -1;
 	int victim_resources = -1;
-	Hex *hex = map_robber_hex(get_map());
+	Hex *hex = map_robber_hex(callbacks.get_map());
 
 	/* which opponent to steal from */
 	for (i = 0; i < 6; i++) {

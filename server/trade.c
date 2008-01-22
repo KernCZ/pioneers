@@ -28,7 +28,7 @@ void trade_perform_maritime(Player * player,
 			    gint ratio, Resource supply, Resource receive)
 {
 	Game *game = player->game;
-	Map *map = game->params->map;
+	const Map *map = game->params->map;
 	gint check[NO_RESOURCE];
 	MaritimeInfo info;
 

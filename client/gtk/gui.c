@@ -1607,3 +1607,15 @@ void gui_set_show_no_setup_nodes(gboolean show)
 {
 	guimap_set_show_no_setup_nodes(gmap, show);
 }
+
+Map *frontend_get_map(void)
+{
+	g_return_val_if_fail(gmap != NULL, NULL);
+	return gmap->map;
+}
+
+void frontend_set_map(Map * map)
+{
+	g_assert(gmap != NULL);
+	gmap->map = map;
+}

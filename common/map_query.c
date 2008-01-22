@@ -610,10 +610,10 @@ gboolean can_robber_or_pirate_be_moved(const Hex * hex)
 
 /* Iterator function for map_can_place_road() query
  */
-static gboolean can_place_road_check(G_GNUC_UNUSED Map * map, Hex * hex,
-				     gint * owner)
+static gboolean can_place_road_check(const Hex * hex, void *closure)
 {
 	gint idx;
+	gint *owner = closure;
 
 	g_return_val_if_fail(hex != NULL, FALSE);
 	g_return_val_if_fail(owner != NULL, FALSE);
@@ -625,10 +625,10 @@ static gboolean can_place_road_check(G_GNUC_UNUSED Map * map, Hex * hex,
 
 /* Iterator function for map_can_place_ship() query
  */
-static gboolean can_place_ship_check(G_GNUC_UNUSED Map * map, Hex * hex,
-				     gint * owner)
+static gboolean can_place_ship_check(const Hex * hex, void *closure)
 {
 	gint idx;
+	gint *owner = closure;
 
 	g_return_val_if_fail(hex != NULL, FALSE);
 	g_return_val_if_fail(owner != NULL, FALSE);
@@ -640,10 +640,10 @@ static gboolean can_place_ship_check(G_GNUC_UNUSED Map * map, Hex * hex,
 
 /* Iterator function for map_can_place_bridge() query
  */
-static gboolean can_place_bridge_check(G_GNUC_UNUSED Map * map, Hex * hex,
-				       gint * owner)
+static gboolean can_place_bridge_check(const Hex * hex, void *closure)
 {
 	gint idx;
+	gint *owner = closure;
 
 	g_return_val_if_fail(hex != NULL, FALSE);
 	g_return_val_if_fail(owner != NULL, FALSE);
@@ -658,10 +658,10 @@ static gboolean can_place_bridge_check(G_GNUC_UNUSED Map * map, Hex * hex,
  * Determine if there are any edges on the map where a player can
  * place a road.
  */
-gboolean map_can_place_road(Map * map, gint owner)
+gboolean map_can_place_road(const Map * map, gint owner)
 {
 	g_return_val_if_fail(map != NULL, FALSE);
-	return map_traverse(map, (HexFunc) can_place_road_check, &owner);
+	return map_traverse_const(map, can_place_road_check, &owner);
 }
 
 /* Query.
@@ -669,10 +669,10 @@ gboolean map_can_place_road(Map * map, gint owner)
  * Determine if there are any edges on the map where a player can
  * place a ship.
  */
-gboolean map_can_place_ship(Map * map, gint owner)
+gboolean map_can_place_ship(const Map * map, gint owner)
 {
 	g_return_val_if_fail(map != NULL, FALSE);
-	return map_traverse(map, (HexFunc) can_place_ship_check, &owner);
+	return map_traverse_const(map, can_place_ship_check, &owner);
 }
 
 /* Query.
@@ -680,18 +680,18 @@ gboolean map_can_place_ship(Map * map, gint owner)
  * Determine if there are any edges on the map where a player can
  * place a bridge.
  */
-gboolean map_can_place_bridge(Map * map, gint owner)
+gboolean map_can_place_bridge(const Map * map, gint owner)
 {
 	g_return_val_if_fail(map != NULL, FALSE);
-	return map_traverse(map, (HexFunc) can_place_bridge_check, &owner);
+	return map_traverse_const(map, can_place_bridge_check, &owner);
 }
 
 /* Iterator function for map_can_place_settlement() query
  */
-static gboolean can_place_settlement_check(G_GNUC_UNUSED Map * map,
-					   Hex * hex, gint * owner)
+static gboolean can_place_settlement_check(const Hex * hex, void *closure)
 {
 	gint idx;
+	gint *owner = (gint *) closure;
 
 	g_return_val_if_fail(hex != NULL, FALSE);
 	g_return_val_if_fail(owner != NULL, FALSE);
@@ -706,19 +706,19 @@ static gboolean can_place_settlement_check(G_GNUC_UNUSED Map * map,
  * Determine if there are any nodes on the map where a player can
  * place a settlement
  */
-gboolean map_can_place_settlement(Map * map, gint owner)
+gboolean map_can_place_settlement(const Map * map, gint owner)
 {
 	g_return_val_if_fail(map != NULL, FALSE);
-	return map_traverse(map, (HexFunc) can_place_settlement_check,
-			    &owner);
+	return map_traverse_const(map, can_place_settlement_check, &owner);
 }
 
 /* Iterator function for map_can_upgrade_settlement() query
  */
-static gboolean can_upgrade_settlement_check(G_GNUC_UNUSED Map * map,
-					     Hex * hex, gint * owner)
+static gboolean can_upgrade_settlement_check(const Hex * hex,
+					     void *closure)
 {
 	gint idx;
+	gint *owner = closure;
 
 	g_return_val_if_fail(hex != NULL, FALSE);
 	g_return_val_if_fail(owner != NULL, FALSE);
@@ -733,19 +733,19 @@ static gboolean can_upgrade_settlement_check(G_GNUC_UNUSED Map * map,
  * Determine if there are any nodes on the map where a player can
  * upgrade a settlement
  */
-gboolean map_can_upgrade_settlement(Map * map, gint owner)
+gboolean map_can_upgrade_settlement(const Map * map, gint owner)
 {
 	g_return_val_if_fail(map != NULL, FALSE);
-	return map_traverse(map, (HexFunc) can_upgrade_settlement_check,
-			    &owner);
+	return map_traverse_const(map, can_upgrade_settlement_check,
+				  &owner);
 }
 
 /* Iterator function for map_can_place_city_wall() query
  */
-static gboolean can_place_city_wall_check(G_GNUC_UNUSED Map * map,
-					  Hex * hex, gint * owner)
+static gboolean can_place_city_wall_check(const Hex * hex, void *closure)
 {
 	gint idx;
+	gint *owner = closure;
 
 	g_return_val_if_fail(hex != NULL, FALSE);
 	g_return_val_if_fail(owner != NULL, FALSE);
@@ -760,11 +760,10 @@ static gboolean can_place_city_wall_check(G_GNUC_UNUSED Map * map,
  * Determine if there are any nodes on the map where a player can
  * place a settlement
  */
-gboolean map_can_place_city_wall(Map * map, gint owner)
+gboolean map_can_place_city_wall(const Map * map, gint owner)
 {
 	g_return_val_if_fail(map != NULL, FALSE);
-	return map_traverse(map, (HexFunc) can_place_city_wall_check,
-			    &owner);
+	return map_traverse_const(map, can_place_city_wall_check, &owner);
 }
 
 /* Ignoring road connectivity, decide whether or not a settlement/city
@@ -794,13 +793,12 @@ gboolean map_building_spacing_ok(Map * map, gint owner,
 
 /* Ignoring building spacing, check if the building connects to a road.
  */
-gboolean map_building_connect_ok(Map * map, gint owner,
-				 G_GNUC_UNUSED BuildType type, gint x,
+gboolean map_building_connect_ok(const Map * map, gint owner, gint x,
 				 gint y, gint pos)
 {
-	Node *node;
+	const Node *node;
 	g_return_val_if_fail(map != NULL, FALSE);
-	node = map_node(map, x, y, pos);
+	node = map_node_const(map, x, y, pos);
 	if (node == NULL)
 		return FALSE;
 
@@ -868,12 +866,12 @@ gboolean map_bridge_vacant(Map * map, gint x, gint y, gint pos)
 /* Ignoring whether or not a road already exists at this point, check
  * that it has the right connectivity.
  */
-gboolean map_road_connect_ok(Map * map, gint owner, gint x, gint y,
+gboolean map_road_connect_ok(const Map * map, gint owner, gint x, gint y,
 			     gint pos)
 {
-	Edge *edge;
+	const Edge *edge;
 	g_return_val_if_fail(map != NULL, FALSE);
-	edge = map_edge(map, x, y, pos);
+	edge = map_edge_const(map, x, y, pos);
 	if (edge == NULL)
 		return FALSE;
 
@@ -883,12 +881,12 @@ gboolean map_road_connect_ok(Map * map, gint owner, gint x, gint y,
 /* Ignoring whether or not a ship already exists at this point, check
  * that it has the right connectivity.
  */
-gboolean map_ship_connect_ok(Map * map, gint owner, gint x, gint y,
+gboolean map_ship_connect_ok(const Map * map, gint owner, gint x, gint y,
 			     gint pos)
 {
-	Edge *edge;
+	const Edge *edge;
 	g_return_val_if_fail(map != NULL, FALSE);
-	edge = map_edge(map, x, y, pos);
+	edge = map_edge_const(map, x, y, pos);
 	if (edge == NULL)
 		return FALSE;
 
@@ -898,12 +896,12 @@ gboolean map_ship_connect_ok(Map * map, gint owner, gint x, gint y,
 /* Ignoring whether or not a bridge already exists at this point, check
  * that it has the right connectivity.
  */
-gboolean map_bridge_connect_ok(Map * map, gint owner, gint x, gint y,
+gboolean map_bridge_connect_ok(const Map * map, gint owner, gint x, gint y,
 			       gint pos)
 {
-	Edge *edge;
+	const Edge *edge;
 	g_return_val_if_fail(map != NULL, FALSE);
-	edge = map_edge(map, x, y, pos);
+	edge = map_edge_const(map, x, y, pos);
 	if (edge == NULL)
 		return FALSE;
 
@@ -965,10 +963,10 @@ static gint find_longest_road_recursive(Edge * edge)
 	return len + 1;
 }
 
-static gboolean find_longest_road(G_GNUC_UNUSED Map * map, Hex * hex,
-				  gint * lengths)
+static gboolean find_longest_road(Hex * hex, gpointer closure)
 {
 	gint idx;
+	gint *lengths = closure;
 	g_return_val_if_fail(hex != NULL, FALSE);
 	g_return_val_if_fail(lengths != NULL, FALSE);
 	for (idx = 0; idx < G_N_ELEMENTS(hex->edges); idx++) {
@@ -988,8 +986,7 @@ static gboolean find_longest_road(G_GNUC_UNUSED Map * map, Hex * hex,
 
 /* Zero the visited attribute for all edges and nodes.
  */
-static gboolean zero_visited(G_GNUC_UNUSED Map * map, Hex * hex,
-			     G_GNUC_UNUSED void *closure)
+static gboolean zero_visited(Hex * hex, G_GNUC_UNUSED gpointer closure)
 {
 	gint idx;
 
@@ -1015,9 +1012,9 @@ void map_longest_road(Map * map, gint * lengths, gint num_players)
 	g_return_if_fail(map != NULL);
 	g_return_if_fail(lengths != NULL);
 
-	map_traverse(map, (HexFunc) zero_visited, NULL);
+	map_traverse(map, zero_visited, NULL);
 	memset(lengths, 0, num_players * sizeof(*lengths));
-	map_traverse(map, (HexFunc) find_longest_road, lengths);
+	map_traverse(map, find_longest_road, lengths);
 }
 
 static gboolean map_island_recursive(Map * map, Node * node, gint owner)
@@ -1081,15 +1078,16 @@ gboolean map_is_island_discovered(Map * map, Node * node, gint owner)
 {
 	g_return_val_if_fail(map != NULL, FALSE);
 	g_return_val_if_fail(node != NULL, FALSE);
-	map_traverse(map, (HexFunc) zero_visited, NULL);
+	map_traverse(map, zero_visited, NULL);
 	return map_island_recursive(map, node, owner);
 }
 
 /* Determine the maritime trading capabilities for the specified player
  */
-static gboolean find_maritime(G_GNUC_UNUSED Map * map, Hex * hex,
-			      MaritimeInfo * info)
+static gboolean find_maritime(const Hex * hex, gpointer closure)
 {
+	MaritimeInfo *info = closure;
+
 	g_return_val_if_fail(hex != NULL, FALSE);
 	g_return_val_if_fail(info != NULL, FALSE);
 
@@ -1110,13 +1108,13 @@ static gboolean find_maritime(G_GNUC_UNUSED Map * map, Hex * hex,
 
 /* Determine the maritime trading capacity of the specified player
  */
-void map_maritime_info(Map * map, MaritimeInfo * info, gint owner)
+void map_maritime_info(const Map * map, MaritimeInfo * info, gint owner)
 {
 	g_return_if_fail(map != NULL);
 	g_return_if_fail(info != NULL);
 	memset(info, 0, sizeof(*info));
 	info->owner = owner;
-	map_traverse(map, (HexFunc) find_maritime, info);
+	map_traverse_const(map, find_maritime, info);
 }
 
 typedef struct {
@@ -1125,15 +1123,15 @@ typedef struct {
 	guint recursion_level;
 } IslandCount;
 
-static gboolean count_islands(Map * map, Hex * hex, gpointer info)
+static gboolean count_islands(const Hex * hex, gpointer info)
 {
 	IslandCount *count = info;
 	HexDirection direction;
 
-	g_return_val_if_fail(map != NULL, FALSE);
-
 	if (hex == NULL)
 		return FALSE;
+
+	g_return_val_if_fail(hex->map != NULL, FALSE);
 
 	if (count->visited[hex->y][hex->x])
 		return FALSE;
@@ -1144,8 +1142,7 @@ static gboolean count_islands(Map * map, Hex * hex, gpointer info)
 	count->visited[hex->y][hex->x] = TRUE;
 	count->recursion_level++;
 	for (direction = 0; direction < 6; direction++) {
-		count_islands(map, hex_in_direction(map, hex, direction),
-			      count);
+		count_islands(hex_in_direction(hex, direction), count);
 	}
 	count->recursion_level--;
 	if (count->recursion_level == 0)
@@ -1153,7 +1150,7 @@ static gboolean count_islands(Map * map, Hex * hex, gpointer info)
 	return FALSE;
 }
 
-guint map_count_islands(Map * map)
+guint map_count_islands(const Map * map)
 {
 	IslandCount island_count;
 
@@ -1163,7 +1160,7 @@ guint map_count_islands(Map * map)
 	island_count.count = 0;
 	island_count.recursion_level = 0;
 
-	map_traverse(map, count_islands, &island_count);
+	map_traverse_const(map, count_islands, &island_count);
 
 	return island_count.count;
 }
