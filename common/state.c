@@ -540,12 +540,19 @@ static void do_goto(StateMachine * sm, StateFunc new_state, gboolean enter)
 	sm_dec_use_count(sm);
 }
 
-void sm_goto(StateMachine * sm, StateFunc new_state)
+void sm_debug(const gchar * function, const gchar * state)
+{
+#ifdef STACK_DEBUG
+	debug("Call %s with %s\n", function, state);
+#endif
+}
+
+void sm_goto_nomacro(StateMachine * sm, StateFunc new_state)
 {
 	do_goto(sm, new_state, TRUE);
 }
 
-void sm_goto_noenter(StateMachine * sm, StateFunc new_state)
+void sm_goto_noenter_nomacro(StateMachine * sm, StateFunc new_state)
 {
 	do_goto(sm, new_state, FALSE);
 }
@@ -566,12 +573,12 @@ static void do_push(StateMachine * sm, StateFunc new_state, gboolean enter)
 	sm_dec_use_count(sm);
 }
 
-void sm_push(StateMachine * sm, StateFunc new_state)
+void sm_push_nomacro(StateMachine * sm, StateFunc new_state)
 {
 	do_push(sm, new_state, TRUE);
 }
 
-void sm_push_noenter(StateMachine * sm, StateFunc new_state)
+void sm_push_noenter_nomacro(StateMachine * sm, StateFunc new_state)
 {
 	do_push(sm, new_state, FALSE);
 }

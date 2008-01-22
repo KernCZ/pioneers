@@ -164,10 +164,15 @@ void sm_send(StateMachine * sm, const gchar * fmt, ...);
  */
 void sm_set_use_cache(StateMachine * sm, gboolean use_cache);
 
-void sm_goto(StateMachine * sm, StateFunc new_state);
-void sm_goto_noenter(StateMachine * sm, StateFunc new_state);
-void sm_push(StateMachine * sm, StateFunc new_state);
-void sm_push_noenter(StateMachine * sm, StateFunc new_state);
+void sm_debug(const gchar * function, const gchar * state);
+#define sm_goto(a, b) do { sm_debug("sm_goto", #b); sm_goto_nomacro(a, b); } while (0)
+void sm_goto_nomacro(StateMachine * sm, StateFunc new_state);
+#define sm_goto_noenter(a, b) do { sm_debug("sm_goto_noenter", #b); sm_goto_noenter_nomacro(a, b); } while (0)
+void sm_goto_noenter_nomacro(StateMachine * sm, StateFunc new_state);
+#define sm_push(a, b) do { sm_debug("sm_push", #b); sm_push_nomacro(a, b); } while (0)
+void sm_push_nomacro(StateMachine * sm, StateFunc new_state);
+#define sm_push_noenter(a, b) do { sm_debug("sm_push_noenter", #b); sm_push_noenter_nomacro(a, b); } while (0)
+void sm_push_noenter_nomacro(StateMachine * sm, StateFunc new_state);
 void sm_pop(StateMachine * sm);
 void sm_multipop(StateMachine * sm, gint depth);
 void sm_pop_all_and_goto(StateMachine * sm, StateFunc new_state);
