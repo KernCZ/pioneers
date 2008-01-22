@@ -1,4 +1,7 @@
 
+2008-01-22  Roland Cloubs <rclobus@bigfoot.com>
+	* client/help/C/Makefile.am: Create Yelp like output.
+
 2007-12-25  Roland Clobus <rclobus@bigfoot.com>
 	* common/gtk/game-rules.c, common/gtk/game-settings.c, common/game.c,
 	common/state.c, common/network.c, server/gtk/main.c, server/meta.c,

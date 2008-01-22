@@ -35,5 +35,9 @@ htmlhelp: pioneers.xml
 	rm toc.hhc
 	rm *.html
 
-html: pioneers.xml
+simplehtml: pioneers.xml
 	xmlto -m custom.xsl html pioneers.xml
+
+html: pioneers.xml
+	xsltproc /usr/share/xml/gnome/xslt/docbook/html/db2html.xsl pioneers.xml > index.html
+	cp /usr/share/gnome-doc-utils/icons/hicolor/48x48/admon-note.png  .
