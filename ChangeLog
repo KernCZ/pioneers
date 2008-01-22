@@ -4,6 +4,9 @@
 	* client/help/C/pioneers.xml: Add index to the FAQ entries.
 	* common/state.c, common/state.h: More stack information for push and
 	pop.
+	* server/player.c: When reviving a player that was previously
+	reconnecting, do not push an extra mde_pre_game, otherwise an assert
+	will be triggered.
 
 2007-12-25  Roland Clobus <rclobus@bigfoot.com>
 	* common/gtk/game-rules.c, common/gtk/game-settings.c, common/game.c,
