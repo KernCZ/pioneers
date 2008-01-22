@@ -20,6 +20,8 @@
 	the hex/edge/node instead of passing a map pointer. In the client code:
 	remove the static map object for the Gtk+ part, to fix a crash when
 	running on OpenBSD.
+	* server/player.c: When (re)connecting, reuse the disconnected players
+	when there are no empty players slots available.
 
 2007-12-25  Roland Clobus <rclobus@bigfoot.com>
 	* common/gtk/game-rules.c, common/gtk/game-settings.c, common/game.c,

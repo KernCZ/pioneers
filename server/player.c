@@ -38,6 +38,7 @@ static Player *player_by_name(Game * game, char *name);
 
 
 /** Find a free number for a connecting player.
+ * The number has not been used before.
  *  @param game The game
  *  @param force_viewer The connecting player must be a viewer
  */
@@ -56,15 +57,12 @@ static gint next_free_player_num(Game * game, gboolean force_viewer)
 		     list != NULL; list = g_list_next(list)) {
 			Player *player = list->data;
 			if (player->num >= 0
-			    && !player_is_viewer(game, player->num)
-			    && (!player->disconnected
-				|| player->sm->use_cache)) {
+			    && !player_is_viewer(game, player->num)) {
 				player_taken[player->num] = TRUE;
 				--available;
 			}
 		}
 		playerlist_dec_use_count(game);
-
 		if (available > 0) {
 			gint skip;
 			if (game->random_order) {
@@ -542,7 +540,17 @@ void player_revive(Player * newp, char *name)
 		}
 		playerlist_dec_use_count(game);
 	}
-	/* if not, see if any disconnected player exists */
+	/* if not, try to find an unused player number */
+	if (current == NULL) {
+		gint num;
+
+		num = next_free_player_num(game, FALSE);
+		if (num < game->params->num_players) {
+			player_setup(newp, -1, name, FALSE);
+			return;
+		}
+	}
+	/* if not, try to take over another disconnected player */
 	if (current == NULL) {
 		playerlist_inc_use_count(game);
 		for (current = game->player_list; current != NULL;
@@ -691,10 +699,12 @@ gboolean mode_viewer(Player * player, gint event)
 		player_broadcast(player, PB_ALL, FIRST_VERSION,
 				 LATEST_VERSION, "was viewer %d\n",
 				 player->num);
-		player_setup(player, player->num, player->name, FALSE);
+		sm_set_use_cache(player->sm, TRUE);
+		player_setup(player, -1, player->name, FALSE);
 		sm_goto(sm, (StateFunc) mode_pre_game);
 		return TRUE;
 	}
+	sm_set_use_cache(player->sm, TRUE);
 	player_revive(player, player->name);
 	return TRUE;
 }
