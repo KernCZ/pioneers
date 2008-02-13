@@ -20,7 +20,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 icon_DATA += editor/gtk/pioneers-editor.png
-desktop_DATA += editor/gtk/pioneers-editor.desktop
+desktop_in_files += editor/gtk/pioneers-editor.desktop.in
 bin_PROGRAMS += pioneers-editor
 
 pioneers_editor_CPPFLAGS = $(gtk_cflags)

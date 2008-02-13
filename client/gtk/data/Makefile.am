@@ -51,8 +51,6 @@ pixmap_DATA += \
 	client/gtk/data/style-human-7.png \
 	client/gtk/data/style-ai.png
 
-desktop_DATA += client/gtk/data/pioneers.desktop
-
 EXTRA_DIST += client/gtk/data/splash.svg
 MAINTAINERCLEANFILES += client/gtk/data/splash.png
 

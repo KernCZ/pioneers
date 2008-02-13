@@ -19,7 +19,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 icon_DATA += server/gtk/pioneers-server.png
-desktop_DATA += server/gtk/pioneers-server.desktop
+desktop_in_files += server/gtk/pioneers-server.desktop.in
 bin_PROGRAMS += pioneers-server-gtk
 
 pioneers_server_gtk_CPPFLAGS = $(gtk_cflags) -I $(srcdir)/server

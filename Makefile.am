@@ -72,8 +72,9 @@ man_MANS =
 config_DATA =
 icon_DATA =
 pixmap_DATA =
-desktop_DATA =
+desktop_in_files =
 CLEANFILES =
+DISTCLEANFILES =
 MAINTAINERCLEANFILES =
 EXTRA_DIST = autogen.sh pioneers.spec xmldocs.make omf.make README.Cygwin README.MinGW
 BUILT_SOURCES =
@@ -154,18 +155,25 @@ include common/Makefile.am
 include docs/Makefile.am
 include macros/Makefile.am
 
+desktop_DATA = $(desktop_in_files:.desktop.in=.desktop)
+@INTLTOOL_DESKTOP_RULE@
+
 # Make use of some of the variables that were filled in by the included
 # Makefile.ams
 MAINTAINERCLEANFILES += $(icon_DATA) $(windows_resources_output)
+DISTCLEANFILES += $(desktop_in_files:.desktop.in=.desktop) intltool-extract intltool-merge intltool-update
 EXTRA_DIST += \
 	$(man_MANS) \
-	$(desktop_DATA) \
+	$(desktop_in_files) \
 	$(config_DATA) \
 	$(pixmap_DATA) \
 	$(icon_DATA) \
 	$(subst png,svg,$(icon_DATA)) \
 	$(windows_resources_input) \
-	$(windows_resources_output)
+	$(windows_resources_output) \
+	intltool-extract.in \
+	intltool-merge.in \
+	intltool-update.in
 
 # po doesn't use automake, but creates its own Makefile
 SUBDIRS += po

@@ -365,6 +365,7 @@ AC_DEFINE_UNQUOTED(PIONEERS_DEFAULT_META_SERVER,
 
 ## internationalization support
 ALL_LINGUAS="af da de es fr hu it ja nl pt sv"
+AC_PROG_INTLTOOL([0.23])
 
 GETTEXT_PACKAGE=pioneers
 AC_SUBST(GETTEXT_PACKAGE)

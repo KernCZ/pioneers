@@ -19,6 +19,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 bin_PROGRAMS += pioneers
+desktop_in_files += client/gtk/pioneers.desktop.in
 
 # if anyone knows a cleaner way to do this, be my guest.  Automake screamed
 #   at me when I tried to do it more directly.

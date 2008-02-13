@@ -2,6 +2,16 @@
 2008-02-13  Roland Clobus <rclobus@bigfoot.com>
 	* server/turn.c, server/admin.c, server/admin.h: Added 'admin
 	fix-dice' to fix the dice roll.
+	* editor/gtk/pioneers-editor.desktop ->
+	editor/gtk/pioneers-editor.desktop.in, editor/gtk/Makefile.am,
+	configure.ac, server/gtk/pioneers-server.desktop ->
+	server/gtk/pioneers-server.desktop.in, server/gtk/Makefile.am,
+	Makefile.am, po/POTFILES.in, client/gtk/data/pioneers.desktop ->
+	client/gtk/pioneers.desktop.in, client/gtk/data/Makefile.am,
+	client/gtk/Makefile.am: Added i18n support for *.desktop files.
+	pioneers.desktop had to be moved, to keep 'make distcheck' happy.
+	* po/POTFILES.skip: Added the very old, unmaintained admin-gtk.c to
+	the list of excluded files for i18n.
 
 2008-01-22  Roland Clobus <rclobus@bigfoot.com>
 	* client/help/C/Makefile.am: Create Yelp like output.

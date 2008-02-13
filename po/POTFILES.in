@@ -21,6 +21,7 @@ client/gtk/legend.c
 client/gtk/monopoly.c
 client/gtk/name.c
 client/gtk/offline.c
+client/gtk/pioneers.desktop.in
 client/gtk/player.c
 client/gtk/plenty.c
 client/gtk/quote.c
@@ -29,13 +30,13 @@ client/gtk/resource.c
 client/gtk/resource-table.c
 client/gtk/settingscreen.c
 client/gtk/trade.c
+common/game.c
 common/gtk/aboutbox.c
 common/gtk/game-rules.c
 common/gtk/game-settings.c
 common/gtk/guimap.c
 common/gtk/select-game.c
 common/gtk/theme.c
-common/game.c
 common/log.c
 common/network.c
 common/state.c
@@ -43,9 +44,11 @@ editor/gtk/editor.c
 editor/gtk/game-buildings.c
 editor/gtk/game-devcards.c
 editor/gtk/game-resources.c
+editor/gtk/pioneers-editor.desktop.in
 meta-server/main.c
 server/admin.c
 server/gtk/main.c
+server/gtk/pioneers-server.desktop.in
 server/main.c
 server/meta.c
 server/player.c
