@@ -25,6 +25,7 @@
 #include "buildrec.h"
 #include "cost.h"
 #include "server.h"
+#include "admin.h"
 
 static void build_add(Player * player, BuildType type, gint x, gint y,
 		      gint pos)
@@ -484,6 +485,17 @@ gboolean mode_turn(Player * player, gint event)
 					continue;
 			/* sevens_rule == 0: don't reroll anything */
 			break;
+		}
+		/* The administrator can override the dice */
+		if (admin_dice_roll >= 2) {
+			game->die1 = admin_dice_roll > 6 ? 6 : 1;
+			game->die2 = admin_dice_roll - game->die1;
+			roll = admin_dice_roll;
+			player_broadcast(player, PB_SILENT, FIRST_VERSION,
+					 LATEST_VERSION, "NOTE %s\n",
+					 /* Cheat mode has been activated */
+					 N_(""
+					    "The dice roll has been determined by the administrator."));
 		}
 
 		/* let people know what we rolled */

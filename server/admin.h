@@ -30,6 +30,8 @@ typedef struct _comm_info {
 	guint write_tag;
 } comm_info;
 
+extern gint admin_dice_roll;
+
 /**** backend functions for network administration of the server ****/
 
 /* parse 'line' and run the command requested */

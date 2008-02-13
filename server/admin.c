@@ -37,6 +37,8 @@
 /* network administration functions */
 comm_info *_accept_info = NULL;
 
+gint admin_dice_roll = 0;
+
 typedef enum {
 	BADCOMMAND,
 	SETPORT,
@@ -51,7 +53,8 @@ typedef enum {
 	QUIT,
 	MESSAGE,
 	HELP,
-	INFO
+	INFO,
+	FIXDICE
 } AdminCommandType;
 
 typedef struct {
@@ -77,7 +80,8 @@ static AdminCommand admin_commands[] = {
 	{ QUIT,           "quit",                FALSE, FALSE, FALSE },
 	{ MESSAGE,        "send-message",        TRUE,  FALSE, TRUE  },
 	{ HELP,           "help",                FALSE, FALSE, FALSE },
-	{ INFO,           "info",                FALSE, FALSE, FALSE }
+	{ INFO,           "info",                FALSE, FALSE, FALSE },
+	{ FIXDICE,        "fix-dice",            TRUE,  FALSE, FALSE },
 };
 /* *INDENT-ON* */
 
@@ -263,7 +267,22 @@ void admin_run_command(Session * admin_session, const gchar * line)
 				net_printf(admin_session,
 					   "INFO no game set\n");
 			}
+			if (admin_dice_roll != 0)
+				net_printf(admin_session,
+					   "INFO dice fixed to %d\n",
+					   admin_dice_roll);
 			break;
+		case FIXDICE:
+			admin_dice_roll = CLAMP(atoi(argument), 0, 12);
+			if (admin_dice_roll == 1)
+				admin_dice_roll = 0;
+			if (admin_dice_roll != 0)
+				net_printf(admin_session,
+					   "INFO dice fixed to %d\n",
+					   admin_dice_roll);
+			else
+				net_printf(admin_session,
+					   "INFO dice rolled normally\n");
 		}
 	}
 	g_free(command);

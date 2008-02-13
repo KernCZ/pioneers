@@ -1,5 +1,9 @@
 
-2008-01-22  Roland Cloubs <rclobus@bigfoot.com>
+2008-02-13  Roland Clobus <rclobus@bigfoot.com>
+	* server/turn.c, server/admin.c, server/admin.h: Added 'admin
+	fix-dice' to fix the dice roll.
+
+2008-01-22  Roland Clobus <rclobus@bigfoot.com>
 	* client/help/C/Makefile.am: Create Yelp like output.
 	* client/help/C/pioneers.xml: Add index to the FAQ entries.
 	* common/state.c, common/state.h: More stack information for push and
