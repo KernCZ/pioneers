@@ -12,6 +12,7 @@
 	pioneers.desktop had to be moved, to keep 'make distcheck' happy.
 	* po/POTFILES.skip: Added the very old, unmaintained admin-gtk.c to
 	the list of excluded files for i18n.
+	* common/network.c: Only use AF_UNSPEC (instead of PF_UNSPEC too).
 
 2008-01-22  Roland Clobus <rclobus@bigfoot.com>
 	* client/help/C/Makefile.am: Create Yelp like output.
