@@ -207,7 +207,7 @@ static gboolean tournament_start_cb(gpointer data)
 			 N_("Game starts, adding computer players"));
 	/* add computer players to start game */
 	for (i = game->num_players; i < game->params->num_players; i++) {
-		new_computer_player(NULL, game->server_port, TRUE);
+		add_computer_player(game, TRUE);
 	}
 
 	return FALSE;
@@ -244,7 +244,115 @@ static gboolean talk_about_tournament_cb(gpointer data)
 	return FALSE;
 }
 
-Player *player_new(Game * game, int fd, gchar * location)
+/** Generate a name for a computer player.
+ * The name will be unique for the game.
+*/
+static gchar *generate_name_for_computer_player(Game * game)
+{
+	gchar *filename;
+	FILE *stream;
+	gchar *line;
+	gchar *name = NULL;
+	int num = 1;
+
+	filename =
+	    g_build_filename(get_pioneers_dir(), "computer_names", NULL);
+	stream = fopen(filename, "r");
+	if (!stream) {
+		g_warning("Unable to open %s", filename);
+		/* Default name for the AI when the computer_names file
+		 * is not found or empty.
+		 */
+	} else {
+		while (read_line_from_file(&line, stream)) {
+			if (player_by_name(game, line) == NULL) {
+				if (g_random_int_range(0, num) == 0) {
+					if (name)
+						g_free(name);
+					name = g_strdup(line);
+				}
+				num++;
+			}
+		}
+		fclose(stream);
+		if (num == 1) {
+			g_warning("Empty file or all names taken: %s",
+				  filename);
+		}
+	}
+	g_free(filename);
+
+	if (name == NULL) {
+		gint counter = 2;
+
+		/* Default name for the AI when the computer_names file
+		 * is not found or empty.
+		 */
+		name = g_strdup(_("Computer Player"));
+
+		while (player_by_name(game, name) != NULL) {
+			g_free(name);
+			name =
+			    g_strdup_printf("%s (%d)",
+					    _("Computer Player"),
+					    counter++);
+		}
+	}
+
+	return name;
+}
+
+/** Add a new computer player (disconnected)
+ */
+gchar *player_new_computer_player(Game * game)
+{
+	Player *player;
+	gchar *name;
+
+	name = generate_name_for_computer_player(game);
+	player = player_new(game, name, "square");
+	player->disconnected = TRUE;
+	sm_goto(player->sm, (StateFunc) mode_idle);
+	return name;
+}
+
+/** Allocate a new Player struct.
+ *  The StateMachine is not initialized.
+ *   */
+Player *player_new(Game * game, const gchar * name, const gchar * style)
+{
+	Player *player;
+	StateMachine *sm;
+
+	player = g_malloc0(sizeof(*player));
+	sm = player->sm = sm_new(player);
+
+	sm_global_set(sm, (StateFunc) mode_global);
+	sm_unhandled_set(sm, (StateFunc) mode_unhandled);
+
+	player->game = game;
+	player->location = g_strdup("not connected");
+	player->devel = deck_new(game->params);
+	game->player_list = g_list_append(game->player_list, player);
+	player->num = -1;
+	player->chapel_played = 0;
+	player->univ_played = 0;
+	player->gov_played = 0;
+	player->libr_played = 0;
+	player->market_played = 0;
+	player->islands_discovered = 0;
+	player->disconnected = FALSE;
+	player->name = g_strdup(name);
+	player->style = g_strdup(style);
+	player->special_points = NULL;
+	player->special_points_next_id = 0;
+
+	driver->player_change(game);
+
+	return player;
+}
+
+Player *player_new_connection(Game * game, int fd, const gchar * location)
 {
 	gchar name[100];
 	gint i;
@@ -285,34 +393,16 @@ Player *player_new(Game * game, int fd, gchar * location)
 		return NULL;
 	}
 
-	player = g_malloc0(sizeof(*player));
-	sm = player->sm = sm_new(player);
-
-	sm_global_set(sm, (StateFunc) mode_global);
-	sm_unhandled_set(sm, (StateFunc) mode_unhandled);
+	player = player_new(game, name, "square");
+	sm = player->sm;
 	sm_use_fd(sm, fd, TRUE);
+	g_free(player->location);
+	player->location = g_strdup(location);
 
 	/* Cache messages of the game in progress until all intial 
 	 * messages have been sent
 	 */
 	sm_set_use_cache(sm, TRUE);
-
-	player->game = game;
-	player->location = g_strdup(location);
-	player->devel = deck_new(game->params);
-	game->player_list = g_list_append(game->player_list, player);
-	player->num = -1;
-	player->chapel_played = 0;
-	player->univ_played = 0;
-	player->gov_played = 0;
-	player->libr_played = 0;
-	player->market_played = 0;
-	player->islands_discovered = 0;
-	player->disconnected = FALSE;
-	player->name = g_strdup(name);
-	player->style = g_strdup("square");
-	player->special_points = NULL;
-	player->special_points_next_id = 0;
 
 	if (game->params->tournament_time > 0) {
 		/* if first player in and this is a tournament start the timer */

@@ -1,4 +1,10 @@
 
+2008-03-12  Roland Clobus <rclobus@bigfoot.com>
+	* server/gtk/main.c, server/player.c, server/server.c, server/server.h,
+	server/main.c, server/admin.c, client/ai/ai.c: Make all names for the
+	computer players unique.
+	Based on a patch by chrysn@users.sourceforge.net
+
 2008-02-13  Roland Clobus <rclobus@bigfoot.com>
 	* server/turn.c, server/admin.c, server/admin.h: Added 'admin
 	fix-dice' to fix the dice roll.

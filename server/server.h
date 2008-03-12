@@ -120,8 +120,12 @@ struct Game {
 	gint *develop_deck;	/* development cards */
 	gint develop_next;	/* next development card to deal */
 
+	gboolean is_running;	/* is the server currently running? */
 	gchar *server_port;	/* port to run game on */
 	gboolean random_order;	/* is turn order randomized? */
+
+	gint no_player_timeout;	/* time to wait for players */
+	guint no_player_timer;	/* glib timer identifier */
 };
 
 /**** global variables ****/
@@ -163,7 +167,9 @@ typedef enum {
 	PB_SILENT,
 	PB_OTHERS
 } BroadcastType;
-Player *player_new(Game * game, int fd, gchar * location);
+gchar *player_new_computer_player(Game * game);
+Player *player_new(Game * game, const gchar * name, const gchar * style);
+Player *player_new_connection(Game * game, int fd, const gchar * location);
 Player *player_by_num(Game * game, gint num);
 void player_set_name(Player * player, gchar * name);
 Player *player_none(Game * game);
@@ -221,19 +227,17 @@ gboolean mode_select_robbed(Player * player, gint event);
 void robber_undo(Player * player);
 
 /* server.c */
-void start_timeout(void);
-void stop_timeout(void);
+void start_timeout(Game * game);
+void stop_timeout(Game * game);
 gint get_rand(gint range);
 Game *game_new(const GameParams * params);
 void game_free(Game * game);
-gint new_computer_player(const gchar * server, const gchar * port,
-			 gboolean want_chat);
-gboolean server_startup(const GameParams * params, const gchar * hostname,
-			const gchar * port, gboolean meta_register,
-			const gchar * meta_name_server,
-			gboolean random_order);
-gboolean server_stop(void);
-gboolean server_is_running(void);
+gint add_computer_player(Game * game, gboolean want_chat);
+Game *server_start(const GameParams * params, const gchar * hostname,
+		   const gchar * port, gboolean register_server,
+		   const gchar * meta_server_name, gboolean random_order);
+gboolean server_stop(Game * game);
+gboolean server_is_running(Game * game);
 gint accept_connection(gint in_fd, gchar ** location);
 void server_cleanup_static_data(void);
 
@@ -251,19 +255,12 @@ void cfg_set_victory_points(GameParams * params, gint victory_points);
 void cfg_set_terrain_type(GameParams * params, gint terrain_type);
 void cfg_set_tournament_time(GameParams * params, gint tournament_time);
 void cfg_set_quit(GameParams * params, gboolean quitdone);
-void cfg_set_timeout(gint to);
-void admin_broadcast(const gchar * message);
-
-/* callbacks related to server starting / stopping */
-gboolean start_server(const GameParams * params, const gchar * hostname,
-		      const gchar * port, gboolean register_server,
-		      const gchar * meta_server_name,
-		      gboolean random_order);
+void admin_broadcast(Game * game, const gchar * message);
 
 /* initialize the server */
 void server_init(void);
 void game_is_over(Game * game);
-void request_server_stop(void);
+void request_server_stop(Game * game);
 
 /* trade.c */
 void trade_perform_maritime(Player * player,

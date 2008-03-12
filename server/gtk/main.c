@@ -65,8 +65,7 @@ static GtkWidget *launchclient_btn;	/* button to launch client window */
 static GtkWidget *start_btn;	/* start/stop the server */
 
 static GtkListStore *store;	/* shows player connection status */
-static gboolean is_running;	/* current server status */
-
+static Game *game = NULL;	/* the current game */
 
 static gchar *overridden_hostname;	/* override reported hostname */
 static gchar *server_port = NULL;	/* port of the game */
@@ -207,8 +206,6 @@ static void gui_set_server_state(gboolean running)
 	gboolean ai_settings_enabled = TRUE;
 	gchar *fullname;
 
-	is_running = running;
-
 	gtk_widget_set_sensitive(gtk_notebook_get_nth_page
 				 (GTK_NOTEBOOK(settings_notebook), 0),
 				 !running);
@@ -239,9 +236,9 @@ static void gui_set_server_state(gboolean running)
 static void start_clicked_cb(G_GNUC_UNUSED GtkButton * start_btn,
 			     G_GNUC_UNUSED gpointer user_data)
 {
-	if (is_running) {
-		if (server_stop())
-			gui_set_server_state(FALSE);
+	if (server_is_running(game)) {
+		server_stop(game);
+		gui_set_server_state(server_is_running(game));
 	} else {		/* not running */
 		const gchar *title;
 		GameParams *params;
@@ -273,9 +270,13 @@ static void start_clicked_cb(G_GNUC_UNUSED GtkButton * start_btn,
 
 		g_assert(server_port != NULL);
 
-		if (start_server
-		    (params, overridden_hostname, server_port,
-		     register_server, meta_server_name, random_order)) {
+		if (game != NULL)
+			game_free(game);
+		game =
+		    server_start(params, overridden_hostname, server_port,
+				 register_server, meta_server_name,
+				 random_order);
+		if (server_is_running(game)) {
 			gui_set_server_state(TRUE);
 			config_set_string("server/meta-server",
 					  meta_server_name);
@@ -349,7 +350,7 @@ static void addcomputer_clicked_cb(G_GNUC_UNUSED GtkButton * start_btn,
 				   G_GNUC_UNUSED gpointer user_data)
 {
 	g_assert(server_port != NULL);
-	new_computer_player(NULL, server_port, want_ai_chat);
+	add_computer_player(game, want_ai_chat);
 	config_set_int("ai/enable-chat", want_ai_chat);
 }
 
@@ -377,8 +378,8 @@ static void gui_player_rename(void *data)
 
 static gboolean everybody_left(G_GNUC_UNUSED gpointer data)
 {
-	if (server_stop())
-		gui_set_server_state(FALSE);
+	server_stop(game);
+	gui_set_server_state(server_is_running(game));
 	return FALSE;
 }
 
@@ -942,10 +943,10 @@ void game_is_over(G_GNUC_UNUSED Game * game)
 	log_message(MSG_INFO, _("The game is over.\n"));
 }
 
-void request_server_stop(void)
+void request_server_stop(Game * game)
 {
-	if (server_stop())
-		gui_set_server_state(FALSE);
+	server_stop(game);
+	gui_set_server_state(server_is_running(game));
 }
 
 static GOptionEntry commandline_entries[] = {

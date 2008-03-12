@@ -152,6 +152,7 @@ int main(int argc, char *argv[])
 	GOptionGroup *context_group;
 	GError *error = NULL;
 	GameParams *params;
+	Game *game = NULL;
 
 	/* set the UI driver to Glib_Driver, since we're using glib */
 	set_ui_driver(&Glib_Driver);
@@ -219,8 +220,9 @@ int main(int argc, char *argv[])
 			admin_port = g_strdup(PIONEERS_DEFAULT_ADMIN_PORT);
 
 	if (game_title && game_file) {
-		g_print
-		    ("Cannot set game title and filename at the same time");
+		/* server-console commandline error */
+		g_print(_(""
+			  "Cannot set game title and filename at the same time\n"));
 		return 2;
 	}
 	if (game_file == NULL) {
@@ -233,7 +235,8 @@ int main(int argc, char *argv[])
 		params = cfg_set_game_file(game_file);
 	}
 	if (params == NULL) {
-		g_print("Could not set the game");
+		/* server-console commandline error */
+		g_print(_("Cannot load the parameters for the game\n"));
 		return 3;
 	}
 
@@ -261,37 +264,39 @@ int main(int argc, char *argv[])
 	if (terrain != -1)
 		cfg_set_terrain_type(params, terrain ? 1 : 0);
 
-	if (timeout)
-		cfg_set_timeout(timeout);
-
 	net_init();
 
 	if (admin_port != NULL)
 		admin_listen(admin_port);
 
-	if (!disable_game_start) {
-		if (start_server
-		    (params, hostname, server_port, register_server,
-		     meta_server_name, !fixed_seating_order)) {
-			for (i = 0; i < num_ai_players; ++i)
-				new_computer_player(NULL, server_port,
-						    TRUE);
+	if (disable_game_start && admin_port == NULL) {
+		/* server-console commandline error */
+		g_print(_(""
+			  "Admin port is not set, "
+			  "cannot disable game start too\n"));
+		return 4;
 
-			event_loop = g_main_loop_new(NULL, FALSE);
-			g_main_loop_run(event_loop);
-			g_main_loop_unref(event_loop);
-		}
-	} else {
-		/* Ugly... But needed to preserve the original functionality
-		   if the disable_game_start flag is set... Even if it doesn't
-		   really -do- anything. */
-		for (i = 0; i < num_ai_players; ++i)
-			new_computer_player(NULL, server_port, TRUE);
-
-		event_loop = g_main_loop_new(NULL, FALSE);
-		g_main_loop_run(event_loop);
-		g_main_loop_unref(event_loop);
 	}
+
+	if (!disable_game_start) {
+		game =
+		    server_start(params, hostname, server_port,
+				 register_server, meta_server_name,
+				 !fixed_seating_order);
+	}
+	if (game != NULL) {
+		game->no_player_timeout = timeout;
+		num_ai_players =
+		    CLAMP(num_ai_players, 0, game->params->num_players);
+		for (i = 0; i < num_ai_players; ++i)
+			add_computer_player(game, TRUE);
+	}
+
+	event_loop = g_main_loop_new(NULL, FALSE);
+	g_main_loop_run(event_loop);
+	g_main_loop_unref(event_loop);
+	game_free(game);
+	game = NULL;
 
 	net_finish();
 
@@ -318,8 +323,11 @@ void game_is_over(Game * game)
 	}
 }
 
-void request_server_stop(void)
+void request_server_stop(Game * game)
 {
-	server_stop();
-	g_main_loop_quit(event_loop);
+	if (server_stop(game)) {
+		game_free(game);
+		game = NULL;
+		g_main_loop_quit(event_loop);
+	}
 }

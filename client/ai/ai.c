@@ -56,45 +56,6 @@ static const struct algorithm_info {
 };
 static int active_algorithm = 0;
 
-static gchar *random_name(void)
-{
-	gchar *filename;
-	FILE *stream;
-	gchar *line;
-	gchar *name = NULL;
-	int num = 1;
-
-	filename =
-	    g_build_filename(get_pioneers_dir(), "computer_names", NULL);
-	stream = fopen(filename, "r");
-	if (!stream) {
-		g_warning("Unable to open %s", filename);
-		/* Default name for the AI when the computer_names file
-		 * is not found or empty.
-		 */
-		name = g_strdup(_("Computer Player"));
-	} else {
-		while (read_line_from_file(&line, stream)) {
-			if (g_random_int_range(0, num) == 0) {
-				if (name)
-					g_free(name);
-				name = g_strdup(line);
-			}
-			num++;
-		}
-		fclose(stream);
-		if (num == 1) {
-			g_warning("Empty file: %s", filename);
-			/* Default name for the AI when the computer_names file
-			 * is not found or empty.
-			 */
-			name = g_strdup(_("Computer Player"));
-		}
-	}
-	g_free(filename);
-	return name;
-}
-
 UIDriver Glib_Driver;
 
 static GOptionEntry commandline_entries[] = {
@@ -106,7 +67,7 @@ static GOptionEntry commandline_entries[] = {
 	 N_("Server Port"), PIONEERS_DEFAULT_GAME_PORT},
 	{"name", 'n', 0, G_OPTION_ARG_STRING, &name,
 	 /* Commandline pioneersai: name */
-	 N_("Computer name (leave absent for random name)"), NULL},
+	 N_("Computer name (mandatory)"), NULL},
 	{"time", 't', 0, G_OPTION_ARG_INT, &waittime,
 	 /* Commandline pioneersai: time */
 	 N_("Time to wait between turns (in milliseconds)"), "1000"},
@@ -161,7 +122,9 @@ static void ai_init(int argc, char **argv)
 	g_random_set_seed(time(NULL) + getpid());
 
 	if (!name) {
-		name = random_name();
+		/* ai commandline error */
+		g_print(_("A name must be provided.\n"));
+		exit(0);
 	}
 
 	set_ui_driver(&Glib_Driver);

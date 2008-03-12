@@ -96,6 +96,7 @@ void admin_run_command(Session * admin_session, const gchar * line)
 	static gchar *server_port = NULL;
 	static gboolean register_server = TRUE;
 	static GameParams *params = NULL;
+	static Game *game = NULL;
 
 	if (!g_str_has_prefix(line, "admin")) {
 		net_printf(admin_session,
@@ -150,8 +151,10 @@ void admin_run_command(Session * admin_session, const gchar * line)
 			   command);
 	} else {
 		if (admin_commands[command_number].stop_server
-		    && server_is_running()) {
-			server_stop();
+		    && server_is_running(game)) {
+			server_stop(game);
+			game_free(game);
+			game = NULL;
 			net_write(admin_session, "INFO server stopped\n");
 		}
 		switch (admin_commands[command_number].type) {
@@ -173,14 +176,18 @@ void admin_run_command(Session * admin_session, const gchar * line)
 					server_port =
 					    g_strdup
 					    (PIONEERS_DEFAULT_GAME_PORT);
-				start_server(params, get_server_name(),
-					     server_port, register_server,
-					     meta_server_name, TRUE);
+				if (game != NULL)
+					game_free(game);
+				game =
+				    server_start(params, get_server_name(),
+						 server_port,
+						 register_server,
+						 meta_server_name, TRUE);
 				g_free(meta_server_name);
 			}
 			break;
 		case STOPSERVER:
-			server_stop();
+			server_stop(game);
 			break;
 		case REGISTERSERVER:
 			register_server = atoi(argument);
@@ -210,13 +217,13 @@ void admin_run_command(Session * admin_session, const gchar * line)
 		case QUIT:
 			net_close(admin_session);
 			/* Quit the server if the admin leaves */
-			if (!server_is_running())
+			if (!server_is_running(game))
 				exit(0);
 			break;
 		case MESSAGE:
 			g_strdelimit(argument, "|", '_');
-			if (server_is_running())
-				admin_broadcast(argument);
+			if (server_is_running(game))
+				admin_broadcast(game, argument);
 			break;
 		case HELP:
 			for (command_number = 1;
@@ -247,7 +254,7 @@ void admin_run_command(Session * admin_session, const gchar * line)
 				   register_server);
 			net_printf(admin_session,
 				   "INFO server running %d\n",
-				   server_is_running());
+				   server_is_running(game));
 			if (params) {
 				net_printf(admin_session, "INFO game %s\n",
 					   params->title);

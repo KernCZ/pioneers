@@ -31,37 +31,34 @@
 
 static GameParams *load_game_desc(const gchar * fname);
 
-static Game *curr_game;
-gint no_player_timeout = 0;
-guint no_player_timer = 0;
-
 static GSList *_game_list = NULL;	/* The sorted list of game titles */
 
 #define TERRAIN_DEFAULT	0
 #define TERRAIN_RANDOM	1
 
-static gboolean timed_out(G_GNUC_UNUSED gpointer data)
+static gboolean timed_out(gpointer data)
 {
+	Game *game = data;
 	log_message(MSG_INFO,
 		    _(""
 		      "Was hanging around for too long without players... bye.\n"));
-	request_server_stop();
+	request_server_stop(game);
 	return FALSE;
 }
 
-void start_timeout(void)
+void start_timeout(Game * game)
 {
-	if (!no_player_timeout)
+	if (!game->no_player_timeout)
 		return;
-	no_player_timer =
-	    g_timeout_add(no_player_timeout * 1000, timed_out, NULL);
+	game->no_player_timer =
+	    g_timeout_add(game->no_player_timeout * 1000, timed_out, game);
 }
 
-void stop_timeout(void)
+void stop_timeout(Game * game)
 {
-	if (no_player_timer != 0) {
-		g_source_remove(no_player_timer);
-		no_player_timer = 0;
+	if (game->no_player_timer != 0) {
+		g_source_remove(game->no_player_timer);
+		game->no_player_timer = 0;
 	}
 }
 
@@ -77,6 +74,9 @@ Game *game_new(const GameParams * params)
 
 	game = g_malloc0(sizeof(*game));
 
+	game->accept_tag = 0;
+	game->accept_fd = -1;
+	game->is_running = FALSE;
 	game->is_game_over = FALSE;
 	game->params = params_copy(params);
 	game->curr_player = -1;
@@ -92,17 +92,12 @@ Game *game_new(const GameParams * params)
 
 void game_free(Game * game)
 {
-	if (game->accept_tag)
-		driver->input_remove(game->accept_tag);
-	if (game->accept_fd >= 0)
-		close(game->accept_fd);
+	if (game == NULL)
+		return;
+
+	server_stop(game);
 
 	g_assert(game->player_list_use_count == 0);
-	while (game->player_list != NULL) {
-		Player *player = game->player_list->data;
-		player_remove(player);
-		player_free(player);
-	}
 	if (game->server_port != NULL)
 		g_free(game->server_port);
 	params_free(game->params);
@@ -131,28 +126,26 @@ gint accept_connection(gint in_fd, gchar ** location)
 	return fd;
 }
 
-gint new_computer_player(const gchar * server, const gchar * port,
-			 gboolean want_chat)
+gint add_computer_player(Game * game, gboolean want_chat)
 {
-	gchar *child_argv[8];
+	gchar *child_argv[10];
 	GError *error = NULL;
 	gint ret = 0;
 	gint n = 0;
 	gint i;
 
-	if (!server)
-		server = PIONEERS_DEFAULT_GAME_HOST;
-
 	child_argv[n++] = g_strdup(PIONEERS_AI_PATH);
 	child_argv[n++] = g_strdup(PIONEERS_AI_PATH);
 	child_argv[n++] = g_strdup("-s");
-	child_argv[n++] = g_strdup(server);
+	child_argv[n++] = g_strdup(PIONEERS_DEFAULT_GAME_HOST);
 	child_argv[n++] = g_strdup("-p");
-	child_argv[n++] = g_strdup(port);
+	child_argv[n++] = g_strdup(game->server_port);
+	child_argv[n++] = g_strdup("-n");
+	child_argv[n++] = player_new_computer_player(game);
 	if (!want_chat)
 		child_argv[n++] = g_strdup("-c");
 	child_argv[n] = NULL;
-	g_assert(n < 8);
+	g_assert(n < 10);
 
 	if (!g_spawn_async(NULL, child_argv, NULL, 0, NULL, NULL,
 			   NULL, &error)) {
@@ -174,8 +167,8 @@ static void player_connect(Game * game)
 	gint fd = accept_connection(game->accept_fd, &location);
 
 	if (fd > 0) {
-		if (player_new(game, fd, location) != NULL)
-			stop_timeout();
+		if (player_new_connection(game, fd, location) != NULL)
+			stop_timeout(game);
 	}
 	g_free(location);
 }
@@ -192,7 +185,9 @@ static gboolean game_server_start(Game * game, gboolean register_server,
 		g_free(error_message);
 		return FALSE;
 	}
-	start_timeout();
+	game->is_running = TRUE;
+
+	start_timeout(game);
 
 	game->accept_tag = driver->input_add_read(game->accept_fd,
 						  (InputFunc)
@@ -206,45 +201,94 @@ static gboolean game_server_start(Game * game, gboolean register_server,
 	return TRUE;
 }
 
-gboolean server_startup(const GameParams * params, const gchar * hostname,
-			const gchar * port, gboolean register_server,
-			const gchar * meta_server_name,
-			gboolean random_order)
+/** Try to start a new server.
+ * @param params The parameters of the game
+ * @param hostname The hostname that will be visible in the meta server
+ * @param port The port to listen to
+ * @param register_server Register at the meta server
+ * @param meta_server_name The hostname of the meta server
+ * @param random_order Randomize the player number
+ * @return A pointer to the new game, or NULL
+*/
+Game *server_start(const GameParams * params, const gchar * hostname,
+		   const gchar * port, gboolean register_server,
+		   const gchar * meta_server_name, gboolean random_order)
 {
+	Game *game;
 	guint32 randomseed = time(NULL);
+
+	g_return_val_if_fail(params != NULL, NULL);
+	g_return_val_if_fail(port != NULL, NULL);
+
+#ifdef PRINT_INFO
+	g_print("game type: %s\n", params->title);
+	g_print("num players: %d\n", params->num_players);
+	g_print("victory points: %d\n", params->victory_points);
+	g_print("terrain type: %s\n",
+		(params->random_terrain) ? "random" : "default");
+	g_print("Tournament time: %d\n", params->tournament_time);
+	g_print("Quit when done: %d\n", params->quit_when_done);
+#endif
 
 	g_rand_ctx = g_rand_new_with_seed(randomseed);
 	log_message(MSG_INFO, "%s #%" G_GUINT32_FORMAT ".%s.%03d\n",
 		    /* Server: preparing game #..... */
 		    _("Preparing game"), randomseed, "G", get_rand(1000));
 
-	curr_game = game_new(params);
-	g_assert(curr_game->server_port == NULL);
-	curr_game->server_port = g_strdup(port);
-	curr_game->hostname = g_strdup(hostname);
-	curr_game->random_order = random_order;
-	if (game_server_start
-	    (curr_game, register_server, meta_server_name))
-		return TRUE;
-	game_free(curr_game);
-	curr_game = NULL;
-	return FALSE;
+	game = game_new(params);
+	g_assert(game->server_port == NULL);
+	game->server_port = g_strdup(port);
+	game->hostname = g_strdup(hostname);
+	game->random_order = random_order;
+	if (!game_server_start(game, register_server, meta_server_name)) {
+		game_free(game);
+		game = NULL;
+	}
+	return game;
 }
 
-gboolean server_stop(void)
+/** Stop the server.
+ * @param game A game
+ * @return TRUE if the game changed from running to stopped
+*/
+gboolean server_stop(Game * game)
 {
-	if (curr_game == NULL)
+	GList *current;
+
+	if (!server_is_running(game))
 		return FALSE;
+
 	meta_unregister();
-	game_free(curr_game);
-	curr_game = NULL;
+
+	game->is_running = FALSE;
+	if (game->accept_tag) {
+		driver->input_remove(game->accept_tag);
+		game->accept_tag = 0;
+	}
+	if (game->accept_fd >= 0) {
+		close(game->accept_fd);
+		game->accept_fd = -1;
+	}
+
+	playerlist_inc_use_count(game);
+	current = game->player_list;
+	while (current != NULL) {
+		Player *player = current->data;
+		player_remove(player);
+		player_free(player);
+		current = g_list_next(current);
+	}
+	playerlist_dec_use_count(game);
+
 	return TRUE;
 }
 
-/* Return true if a game is running */
-gboolean server_is_running(void)
+/** Return true if a game is running */
+gboolean server_is_running(Game * game)
 {
-	return curr_game != NULL;
+	if (game != NULL)
+		return game->is_running;
+	return FALSE;
 }
 
 static gint sort_function(gconstpointer a, gconstpointer b)
@@ -428,39 +472,11 @@ void cfg_set_quit(GameParams * params, gboolean quitdone)
 	params->quit_when_done = quitdone;
 }
 
-void cfg_set_timeout(gint to)
-{
-#ifdef PRINT_INFO
-	g_print("cfg_set_timeout: %d\n", to);
-#endif
-	no_player_timeout = to;
-}
-
-void admin_broadcast(const gchar * message)
+void admin_broadcast(Game * game, const gchar * message)
 {
 	/* The message that is sent must not be translated */
-	player_broadcast(player_none(curr_game), PB_SILENT, FIRST_VERSION,
+	player_broadcast(player_none(game), PB_SILENT, FIRST_VERSION,
 			 LATEST_VERSION, "NOTE1 %s|%s\n", message, "%s");
-}
-
-gboolean start_server(const GameParams * params, const gchar * hostname,
-		      const gchar * port, gboolean register_server,
-		      const gchar * meta_server_name,
-		      gboolean random_order)
-{
-	g_return_val_if_fail(params != NULL, FALSE);
-#ifdef PRINT_INFO
-	g_print("game type: %s\n", params->title);
-	g_print("num players: %d\n", params->num_players);
-	g_print("victory points: %d\n", params->victory_points);
-	g_print("terrain type: %s\n",
-		(params->random_terrain) ? "random" : "default");
-	g_print("Tournament time: %d\n", params->tournament_time);
-	g_print("Quit when done: %d\n", params->quit_when_done);
-#endif
-
-	return server_startup(params, hostname, port, register_server,
-			      meta_server_name, random_order);
 }
 
 /* server initialization */
