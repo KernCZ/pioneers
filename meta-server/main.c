@@ -1041,7 +1041,7 @@ static GOptionEntry commandline_entries[] = {
 	 N_("hostname")},
 	{"port-range", 'p', 0, G_OPTION_ARG_STRING, &port_range,
 	 /* Commandline meta-server: port-range */
-	 N_("Use this ports range when creating new games"),
+	 N_("Use this port range when creating new games"),
 	 /* Commandline meta-server: port-range argument */
 	 N_("from-to")},
 	{"debug", '\0', 0, G_OPTION_ARG_NONE, &enable_debug,
@@ -1123,6 +1123,7 @@ int main(int argc, char *argv[])
 #endif				/* HAVE_GETADDRINFO_ET_AL */
 		}
 	}
+	can_create_games = can_create_games && (port_range != NULL);
 
 	if (!myhostname)
 		myhostname = get_meta_server_name(FALSE);
