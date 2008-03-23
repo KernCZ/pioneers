@@ -2905,7 +2905,7 @@ msgstr "Der Pioneers-Spielserver"
 
 #. Wait for all players to disconnect,
 #. * then enable the UI
-#. 
+#.
 #: ../server/gtk/main.c:940
 msgid "The game is over.\n"
 msgstr "Ende des Spiels.\n"
