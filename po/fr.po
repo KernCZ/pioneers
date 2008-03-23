@@ -2244,7 +2244,7 @@ msgstr ""
 
 #: ../common/log.c:54
 msgid "*ERROR* "
-msgstr "*ERREUR*"
+msgstr "*ERREUR* "
 
 #: ../common/log.c:60
 msgid "Chat: "
@@ -2268,11 +2268,11 @@ msgstr "Vole : "
 
 #: ../common/log.c:75
 msgid "Trade: "
-msgstr "Echanges :"
+msgstr "Echanges : "
 
 #: ../common/log.c:78
 msgid "Development: "
-msgstr "Carte de développement :"
+msgstr "Carte de développement : "
 
 #: ../common/log.c:81
 msgid "Army: "
@@ -2280,11 +2280,11 @@ msgstr "Armée : "
 
 #: ../common/log.c:84
 msgid "Road: "
-msgstr "Route :"
+msgstr "Route : "
 
 #: ../common/log.c:87
 msgid "*BEEP* "
-msgstr "*BIP*"
+msgstr "*BIP* "
 
 #: ../common/log.c:92
 msgid "Player 1: "
@@ -3122,212 +3122,3 @@ msgstr "Bonus dîle supplémentaire"
 #: ../server/turn.c:388
 msgid "Tried to assign resources to NULL player.\n"
 msgstr "tentative d'attribuer des ressources au joueur NULL.\n"
-
-#~ msgid "Continue with your turn."
-#~ msgstr "Continuez votre tour."
-
-#~ msgid "Map Terrain"
-#~ msgstr "Carte"
-
-#~ msgid "Default map or a random map"
-#~ msgstr "Carte par défaut ou carte aléatoire"
-
-#~ msgid "NOTE Expecting version %s, not %s\n"
-#~ msgstr "NOTE On attendait la version %s et non pas %s\n"
-
-#~ msgid "Pixmap not found: %s\n"
-#~ msgstr "Pixmap introuvable: %s\n"
-
-#~ msgid "Only server or port set, ignoring command line"
-#~ msgstr ""
-#~ "Seul le serveur ou le port a été défini, la ligne de commande a été "
-#~ "ignorée"
-
-#~ msgid "Could not initialize default theme."
-#~ msgstr "Impossible d'initialiser le thème par défaut"
-
-#~ msgid "Theme %s not loaded due to errors."
-#~ msgstr "Le thème %s n'a pas pu être chargé a cause d'une erreur."
-
-#~ msgid "Could not find '%s' pixmap file in theme '%s'."
-#~ msgstr "Impossible de trouver le pixmap %s (%s)."
-
-#~ msgid "Could not load '%s' pixmap file in theme '%s'."
-#~ msgstr "Impossible de charger le pixmap %s (%s)."
-
-#~ msgid "Could not find default pixmap file: %s"
-#~ msgstr "Impossible de trouver le pixmap %s."
-
-#~ msgid "While reading %s at line %d:"
-#~ msgstr "En lisant %s à la ligne %d:"
-
-#~ msgid "variable name missing: %s"
-#~ msgstr "nom de variable manquant: %s"
-
-#~ msgid "unknown config variable '%s'"
-#~ msgstr "variable inconnue '%s'"
-
-#~ msgid "'=' missing: %s"
-#~ msgstr "'=' manquant: %s"
-
-#~ msgid "missing value"
-#~ msgstr "valeur manquante"
-
-#~ msgid "invalid color: %s"
-#~ msgstr "couleur incorrecte: %s"
-
-#~ msgid "unexpected rest at end of line: '%s'"
-#~ msgstr "problème à la fin de la ligne %s"
-
-#~ msgid "No usable version of WinSock was found."
-#~ msgstr "Aucune version exploitable de WinSock n'a été trouvée."
-
-#~ msgid "State stack overflow"
-#~ msgstr "Débordement de la pile d'état"
-
-#~ msgid "Development Card Deck"
-#~ msgstr "Pioche des cartes de développement"
-
-#~ msgid "%s receives %s\n"
-#~ msgstr "%s reçoit %s\n"
-
-#~ msgid "%s spent %s\n"
-#~ msgstr "%s dépense %s\n"
-
-#~ msgid "%s is refunded %s\n"
-#~ msgstr "%2s est remboursé de %1s\n"
-
-#~ msgid "%s discarded %s\n"
-#~ msgstr "%s jete %s\n"
-
-#~ msgid "Sorry, I do not know how to play with gold.\n"
-#~ msgstr "Désolé, je sais pas jouer avec l'or.\n"
-
-#~ msgid "Player %d is now anonymous.\n"
-#~ msgstr "Le joueur %d devient anonyme.\n"
-
-#~ msgid "%s is now anonymous.\n"
-#~ msgstr "%s devient anonyme.\n"
-
-#~ msgid "%s moved robber.\n"
-#~ msgstr "%s déplace le voleur.\n"
-
-#~ msgid "ask"
-#~ msgstr "demande"
-
-#~ msgid "give "
-#~ msgstr "donne "
-
-#~ msgid "for free"
-#~ msgstr "gratuitement"
-
-#~ msgid " for "
-#~ msgstr " pour "
-
-#~ msgid "Trading started by %s\n"
-#~ msgstr "%s propose des échanges.\n"
-
-#~ msgid "Trading restarted by %s\n"
-#~ msgstr "%s repropose des échanges.\n"
-
-#~ msgid "Quote from player %d: %s.\n"
-#~ msgstr "Offre du joueur %d: %s.\n"
-
-#~ msgid "Removed quote from player %d: %s\n"
-#~ msgstr "Offre annulée du joueur %d: %s\n"
-
-#~ msgid "Trading finished.\n"
-#~ msgstr "Fin des échanges.\n"
-
-#~ msgid "Cannot determine bank, expect out of resource errors\n"
-#~ msgstr ""
-#~ "Impossible de connaître le montant de la banque, attendez-vous à des "
-#~ "erreurs de ressources\n"
-
-#~ msgid "Warning - there are shortages."
-#~ msgstr "Attention, il y a une rupture de stocks !"
-
-#~ msgid "Resource to take"
-#~ msgstr "Ressource à prendrer"
-
-#~ msgid "color must be 'none' or start with '#': %s"
-#~ msgstr "la couleur doit être 'none' ou bien commencer par '#': %s"
-
-#~ msgid "color value contains non-hex character '%c'"
-#~ msgstr "la couleur contient de caractères non-héxadécimaux: '%c'"
-
-#~ msgid "bits per color component must be 4, 8, 12, or 16: #%s"
-#~ msgstr "les bits de couleurs doivent être 4, 8, 12 ou 16: #%s"
-
-#~ msgid "Create a new public game"
-#~ msgstr "Créer une nouvelle partie publique"
-
-#~ msgid "Take"
-#~ msgstr "Prend"
-
-#~ msgid "Hand"
-#~ msgstr "Main"
-
-#~ msgid "Discards"
-#~ msgstr "Jete"
-
-#~ msgid "(C) 2002 the Free Software Foundation"
-#~ msgstr "© 2002 Free Software Foundation"
-
-#~ msgid "Player _Name"
-#~ msgstr "_Nom du joueur"
-
-#~ msgid "Appearance"
-#~ msgstr "Apparence"
-
-#~ msgid "Text Only"
-#~ msgstr "Seulement du texte"
-
-#~ msgid "Icons Only"
-#~ msgstr "Seulement des icônes"
-
-#~ msgid "Both Icons and Text"
-#~ msgstr "Des icônes et du texte"
-
-#~ msgid "Color Settings"
-#~ msgstr "Jeu de couleurs"
-
-#~ msgid "Display chat messages in user's color?"
-#~ msgstr "Afficher les messages du chat dans les couleurs des utilisateurs?"
-
-#~ msgid "Language"
-#~ msgstr "Langue"
-
-#~ msgid "Language setting takes full effect only after client restart!"
-#~ msgstr ""
-#~ "Le changement de langue prendra effet seulement après un redémarrage!"
-
-#~ msgid "Resource Type"
-#~ msgstr "Type de ressource"
-
-#~ msgid "E_xit"
-#~ msgstr "_Quitter"
-
-#~ msgid "Game Name"
-#~ msgstr "Nom de la partie"
-
-#~ msgid "Query Meta Server"
-#~ msgstr "Interroger le meta-serveur"
-
-#~ msgid "Start Server"
-#~ msgstr "Démarrer le serveur"
-
-#~ msgid "no Resource (bug)"
-#~ msgstr "pas de ressources (bug)"
-
-#~ msgid "%s took %s from"
-#~ msgstr "%s prends %s à"
-
-#~ msgid " stole a resource from "
-#~ msgstr "vole une ressource à "
-
-#~ msgid "Create New Server"
-#~ msgstr "Créer un nouveau serveur"
-
-#~ msgid "Game is full"
-#~ msgstr "On a tout le monde qui nous faut!"
