@@ -19,6 +19,8 @@
 	specified, the meta server will not be able to create games.
 	* meta-server/main.c: Add tournament mode to games created on the
 	meta server.
+	* configure.ac: No need to attempt to create MS icons when Gtk+ is not
+	present.
 
 2008-03-12  Roland Clobus <rclobus@bigfoot.com>
 	* server/gtk/main.c, server/player.c, server/server.c, server/server.h,

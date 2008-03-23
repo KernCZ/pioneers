@@ -223,6 +223,7 @@ if test "$have_gtk2" = "yes"; then
 	test_libgnome=$have_scrollkeeper;
 else
 	test_libgnome=no;
+	with_ms_icons=no;
 fi
 
 have_graphical=$have_gtk2;
