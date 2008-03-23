@@ -2,7 +2,7 @@
 # Copyright (C) 1999-2001 Dave Cole
 # Copyright (C) 2000-2002 Andy Heroff
 # This file is distributed under the same license as the pioneers package.
-# Ferenc Bánhidi <bferike@mailbox.hu>, 2005-2007.
+# Ferenc BÃ¡nhidi <bferike@mailbox.hu>, 2005-2007.
 #
 #
 msgid ""
@@ -11,10 +11,10 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-10-07 20:33+0200\n"
 "PO-Revision-Date: 2007-07-20 05:47+0100\n"
-"Last-Translator: Ferenc Bánhidi <bferike@mailbox.hu>\n"
+"Last-Translator: Ferenc BÃ¡nhidi <bferike@mailbox.hu>\n"
 "Language-Team: Hungarian <bferike@mailbox.hu>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-2\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Poedit-Language: Hungarian\n"
@@ -25,14 +25,14 @@ msgstr ""
 #.
 #: ../client/ai/ai.c:74 ../client/ai/ai.c:90
 msgid "Computer Player"
-msgstr "Számítógép játékos"
+msgstr "SzÃ¡mÃ­tÃ³gÃ©p jÃ¡tÃ©kos"
 
 #. Commandline pioneersai: server
 #. Commandline option of client: hostname of the server
 #: ../client/ai/ai.c:102 ../client/gtk/connect.c:1462
 #: ../client/gtk/offline.c:53
 msgid "Server Host"
-msgstr "Szerver gép"
+msgstr "Szerver gÃ©p"
 
 #. Commandline pioneersai: port
 #. Commandline option of client: port of the server
@@ -44,22 +44,22 @@ msgstr "Szerver port"
 #. Commandline pioneersai: name
 #: ../client/ai/ai.c:108
 msgid "Computer name (leave absent for random name)"
-msgstr "Játékos neve (véletlen névhez hagyd üresen)"
+msgstr "JÃ¡tÃ©kos neve (vÃ©letlen nÃ©vhez hagyd Ã¼resen)"
 
 #. Commandline pioneersai: time
 #: ../client/ai/ai.c:111
 msgid "Time to wait between turns (in milliseconds)"
-msgstr "Körök között ennyit vár (milliszekundumban)"
+msgstr "KÃ¶rÃ¶k kÃ¶zÃ¶tt ennyit vÃ¡r (milliszekundumban)"
 
 #. Commandline pioneersai: chat-free
 #: ../client/ai/ai.c:114
 msgid "Stop computer player from talking"
-msgstr "Robot játékos nem beszél"
+msgstr "Robot jÃ¡tÃ©kos nem beszÃ©l"
 
 #. Commandline pioneersai: algorithm
 #: ../client/ai/ai.c:117
 msgid "Type of computer player"
-msgstr "A játékos típusa"
+msgstr "A jÃ¡tÃ©kos tÃ­pusa"
 
 #. Commandline option of ai: enable debug logging
 #. Commandline option of client: enable debug logging
@@ -69,7 +69,7 @@ msgstr "A játékos típusa"
 #: ../client/ai/ai.c:120 ../client/gtk/offline.c:74 ../meta-server/main.c:1049
 #: ../server/gtk/main.c:952 ../server/main.c:144
 msgid "Enable debug messages"
-msgstr "Debug üzenetek engedélyezése"
+msgstr "Debug Ã¼zenetek engedÃ©lyezÃ©se"
 
 #. Commandline option of ai: version
 #. Commandline option of client: version
@@ -81,63 +81,63 @@ msgstr "Debug üzenetek engedélyezése"
 #: ../editor/gtk/editor.c:1071 ../meta-server/main.c:1055
 #: ../server/gtk/main.c:955 ../server/main.c:99
 msgid "Show version information"
-msgstr "Verzió információ"
+msgstr "VerziÃ³ informÃ¡ciÃ³"
 
 #: ../client/ai/ai.c:134
 msgid "- Computer player for Pioneers"
-msgstr "- Robot játékos a Pioneers játékhoz"
+msgstr "- Robot jÃ¡tÃ©kos a Pioneers jÃ¡tÃ©khoz"
 
 #: ../client/ai/ai.c:144 ../client/gtk/offline.c:186
 #: ../editor/gtk/editor.c:1111 ../meta-server/main.c:1084
 #: ../server/gtk/main.c:1005 ../server/main.c:206
 #, c-format
 msgid "Pioneers version:"
-msgstr "Pioneers verzió"
+msgstr "Pioneers verziÃ³"
 
 #: ../client/ai/ai.c:176
 #, c-format
 msgid "Type of computer player: %s\n"
-msgstr "Robot játékos típusa: %s\n"
+msgstr "Robot jÃ¡tÃ©kos tÃ­pusa: %s\n"
 
 #: ../client/ai/ai.c:205
 msgid "The game is already full. I'm leaving."
-msgstr "Ez a játék már megtelt. Távozom."
+msgstr "Ez a jÃ¡tÃ©k mÃ¡r megtelt. TÃ¡vozom."
 
 #: ../client/ai/greedy.c:941
 msgid "No settlements in stock to use for setup"
-msgstr "Nincsenek települések a készletben"
+msgstr "Nincsenek telepÃ¼lÃ©sek a kÃ©szletben"
 
 #: ../client/ai/greedy.c:948
 msgid "There is no place to setup a settlement"
-msgstr "Nincs hely beállítani egy települést"
+msgstr "Nincs hely beÃ¡llÃ­tani egy telepÃ¼lÃ©st"
 
 #: ../client/ai/greedy.c:972
 msgid "No roads in stock to use for setup"
-msgstr "Nincsenek utak raktáron, melyek használhatók a beállításhoz"
+msgstr "Nincsenek utak raktÃ¡ron, melyek hasznÃ¡lhatÃ³k a beÃ¡llÃ­tÃ¡shoz"
 
 #: ../client/ai/greedy.c:989
 msgid "There is no place to setup a road"
-msgstr "Nincs hely beállíani egy utat"
+msgstr "Nincs hely beÃ¡llÃ­ani egy utat"
 
 #: ../client/ai/greedy.c:1291
 msgid "Ok, let's go!"
-msgstr "Oké, na rajta!"
+msgstr "OkÃ©, na rajta!"
 
 #: ../client/ai/greedy.c:1292
 msgid "I'll beat you all now! ;)"
-msgstr "Most mindenkit legyõzök ;)"
+msgstr "Most mindenkit legyÅ‘zÃ¶k ;)"
 
 #: ../client/ai/greedy.c:1293
 msgid "Now for another try..."
-msgstr "Most még egy kísérlet..."
+msgstr "Most mÃ©g egy kÃ­sÃ©rlet..."
 
 #: ../client/ai/greedy.c:1297
 msgid "At least I get something..."
-msgstr "Legalább kapok valami keveset..."
+msgstr "LegalÃ¡bb kapok valami keveset..."
 
 #: ../client/ai/greedy.c:1298
 msgid "One is better than none..."
-msgstr "Egy több mint a semmi..."
+msgstr "Egy tÃ¶bb mint a semmi..."
 
 #: ../client/ai/greedy.c:1302
 msgid "Wow!"
@@ -145,23 +145,23 @@ msgstr "Remek!"
 
 #: ../client/ai/greedy.c:1303
 msgid "Ey, I'm becoming rich ;)"
-msgstr "Én leszek a legjobb ;)"
+msgstr "Ã‰n leszek a legjobb ;)"
 
 #: ../client/ai/greedy.c:1304
 msgid "This is really a good year!"
-msgstr "Ez valóban egy jó év!"
+msgstr "Ez valÃ³ban egy jÃ³ Ã©v!"
 
 #: ../client/ai/greedy.c:1307
 msgid "You really don't deserve that much!"
-msgstr "Te valóban nem érdemelsz többet!"
+msgstr "Te valÃ³ban nem Ã©rdemelsz tÃ¶bbet!"
 
 #: ../client/ai/greedy.c:1308
 msgid "You don't know what to do with that many resources ;)"
-msgstr "Nem tudsz mit csinálni a rengeteg nyersanyaggal ;)"
+msgstr "Nem tudsz mit csinÃ¡lni a rengeteg nyersanyaggal ;)"
 
 #: ../client/ai/greedy.c:1309
 msgid "Ey, wait for my robber and lose all this again!"
-msgstr "Na, várj csak majd kirabollak, és elveszítesz mindent újból!"
+msgstr "Na, vÃ¡rj csak majd kirabollak, Ã©s elveszÃ­tesz mindent ÃºjbÃ³l!"
 
 #: ../client/ai/greedy.c:1312
 msgid "Hehe!"
@@ -169,23 +169,23 @@ msgstr "Hehe!"
 
 #: ../client/ai/greedy.c:1313
 msgid "Go, robber, go!"
-msgstr "Menj, rabló menj!"
+msgstr "Menj, rablÃ³ menj!"
 
 #: ../client/ai/greedy.c:1316
 msgid "You bastard!"
-msgstr "Szemét!"
+msgstr "SzemÃ©t!"
 
 #: ../client/ai/greedy.c:1317
 msgid "Can't you move that robber somewhere else?!"
-msgstr "Nem tennéd a rablót valahová máshová?!"
+msgstr "Nem tennÃ©d a rablÃ³t valahovÃ¡ mÃ¡shovÃ¡?!"
 
 #: ../client/ai/greedy.c:1318
 msgid "Why always me??"
-msgstr "Miért mindig én??"
+msgstr "MiÃ©rt mindig Ã©n??"
 
 #: ../client/ai/greedy.c:1321
 msgid "Oh no!"
-msgstr "Ó, ne!"
+msgstr "Ã“, ne!"
 
 #: ../client/ai/greedy.c:1322
 msgid "Grrr!"
@@ -193,31 +193,31 @@ msgstr "Grrr!"
 
 #: ../client/ai/greedy.c:1323
 msgid "Who the hell rolled that 7??"
-msgstr "Ki a bánat dobta azt a 7-est??"
+msgstr "Ki a bÃ¡nat dobta azt a 7-est??"
 
 #: ../client/ai/greedy.c:1324
 msgid "Why always me?!?"
-msgstr "Miért mindig én?!?"
+msgstr "MiÃ©rt mindig Ã©n?!?"
 
 #: ../client/ai/greedy.c:1327
 msgid "Say good bye to your cards... :)"
-msgstr "Búcsúzz el a kártyáidtól... :)"
+msgstr "BÃºcsÃºzz el a kÃ¡rtyÃ¡idtÃ³l... :)"
 
 #: ../client/ai/greedy.c:1328
 msgid "*evilgrin*"
-msgstr "*sátáni vigyor*"
+msgstr "*sÃ¡tÃ¡ni vigyor*"
 
 #: ../client/ai/greedy.c:1329
 msgid "/me says farewell to your cards ;)"
-msgstr "/mondtam, hogy mondj búcsút a kártyáidnak ;)"
+msgstr "/mondtam, hogy mondj bÃºcsÃºt a kÃ¡rtyÃ¡idnak ;)"
 
 #: ../client/ai/greedy.c:1330
 msgid "That's the price for being rich... :)"
-msgstr "Ez az ár a létezõ legjobb... ;)"
+msgstr "Ez az Ã¡r a lÃ©tezÅ‘ legjobb... ;)"
 
 #: ../client/ai/greedy.c:1333
 msgid "Ey! Where's that card gone?"
-msgstr "Ej! Hol veszet el az a kártya?"
+msgstr "Ej! Hol veszet el az a kÃ¡rtya?"
 
 #: ../client/ai/greedy.c:1334
 msgid "Thieves! Thieves!!"
@@ -225,15 +225,15 @@ msgstr "Tolvaj! Tolvaj!"
 
 #: ../client/ai/greedy.c:1335
 msgid "Wait for my revenge..."
-msgstr "Várd csak a bosszúmat..."
+msgstr "VÃ¡rd csak a bosszÃºmat..."
 
 #: ../client/ai/greedy.c:1338
 msgid "Oh no :("
-msgstr "Ó ne :("
+msgstr "Ã“ ne :("
 
 #: ../client/ai/greedy.c:1339
 msgid "Must this happen NOW??"
-msgstr "Csak ez adódik MOST??"
+msgstr "Csak ez adÃ³dik MOST??"
 
 #: ../client/ai/greedy.c:1340
 msgid "Args"
@@ -241,36 +241,36 @@ msgstr "Args"
 
 #: ../client/ai/greedy.c:1343
 msgid "Hehe, my soldiers rule!"
-msgstr "Hehe, én vagyok a hódító!"
+msgstr "Hehe, Ã©n vagyok a hÃ³dÃ­tÃ³!"
 
 #: ../client/ai/greedy.c:1346
 msgid "First robbing us, then grabbing the points..."
-msgstr "Kiraboltak minket, majd elvették a pontjainkat..."
+msgstr "Kiraboltak minket, majd elvettÃ©k a pontjainkat..."
 
 #: ../client/ai/greedy.c:1349
 msgid "See that road!"
-msgstr "Nézd az utat!"
+msgstr "NÃ©zd az utat!"
 
 #: ../client/ai/greedy.c:1352
 msgid "Pf, you won't win with roads alone..."
-msgstr "Pf, te csak utépíéssel akarsz nyerni..."
+msgstr "Pf, te csak utÃ©pÃ­Ã©ssel akarsz nyerni..."
 
 #: ../client/ai/greedy.c:1819
 msgid "Rejecting trade.\n"
-msgstr "Elutasított üzlet.\n"
+msgstr "ElutasÃ­tott Ã¼zlet.\n"
 
 #: ../client/ai/greedy.c:1911
 #, c-format
 msgid "Received error from server: %s.  Quitting\n"
-msgstr "Hiba vétele a szervertõl: %s.  Kilépés\n"
+msgstr "Hiba vÃ©tele a szervertÅ‘l: %s.  KilÃ©pÃ©s\n"
 
 #: ../client/ai/greedy.c:1921
 msgid "Yippie!"
-msgstr "Hurrá!"
+msgstr "HurrÃ¡!"
 
 #: ../client/ai/greedy.c:1923
 msgid "My congratulations"
-msgstr "Gratulálok"
+msgstr "GratulÃ¡lok"
 
 #. Translators: don't translate '/help'
 #: ../client/ai/lobbybot.c:80
@@ -278,23 +278,23 @@ msgid ""
 "Hello, welcome to the lobby. I am a simple robot. Type '/help' in the chat "
 "to see the list of commands I know."
 msgstr ""
-"Hello, üdvözöllek a hallban. Én egy egyszerû robot vagyok. Írd a chat-be '/"
-"help' és megmutatom milyen parancsokat ismerek."
+"Hello, Ã¼dvÃ¶zÃ¶llek a hallban. Ã‰n egy egyszerÅ± robot vagyok. Ãrd a chat-be '/"
+"help' Ã©s megmutatom milyen parancsokat ismerek."
 
 #. Translators: don't translate '/help'
 #: ../client/ai/lobbybot.c:107
 msgid "'/help' shows this message again"
-msgstr "'help' megmutatja ezt az üzenetet újra"
+msgstr "'help' megmutatja ezt az Ã¼zenetet Ãºjra"
 
 #. Translators: don't translate '/why'
 #: ../client/ai/lobbybot.c:110
 msgid "'/why' explains the purpose of this strange board layout"
-msgstr "'/why' elmagyarázza a célját, ennek a különleges táblának"
+msgstr "'/why' elmagyarÃ¡zza a cÃ©ljÃ¡t, ennek a kÃ¼lÃ¶nleges tÃ¡blÃ¡nak"
 
 #. Translators: don't translate '/news'
 #: ../client/ai/lobbybot.c:113
 msgid "'/news' tells the last released version"
-msgstr "'/news' megtudhatod az utolsó kiadott verziót"
+msgstr "'/news' megtudhatod az utolsÃ³ kiadott verziÃ³t"
 
 #: ../client/ai/lobbybot.c:118
 msgid ""
@@ -304,31 +304,31 @@ msgid ""
 "registers it at the metaserver. The other players can subsequently "
 "disconnect from the lobby, and enter that game."
 msgstr ""
-"Ez a tábla nem játékra lett tervezve. Helyette a játékosok itt "
-"megtalálhatják egymást, és eldönthetik melyik táblán akarnak játszani. "
-"Megállapodnak ki lesz a  tervezett játék gazdája. Õ indít egy szervert, "
-"melyet regisztrál a metaszerverhez. A többi játékos kilép a hallból, és "
-"csatlakozik ahhoz a játékhoz. "
+"Ez a tÃ¡bla nem jÃ¡tÃ©kra lett tervezve. Helyette a jÃ¡tÃ©kosok itt "
+"megtalÃ¡lhatjÃ¡k egymÃ¡st, Ã©s eldÃ¶nthetik melyik tÃ¡blÃ¡n akarnak jÃ¡tszani. "
+"MegÃ¡llapodnak ki lesz a  tervezett jÃ¡tÃ©k gazdÃ¡ja. Å indÃ­t egy szervert, "
+"melyet regisztrÃ¡l a metaszerverhez. A tÃ¶bbi jÃ¡tÃ©kos kilÃ©p a hallbÃ³l, Ã©s "
+"csatlakozik ahhoz a jÃ¡tÃ©khoz. "
 
 #: ../client/ai/lobbybot.c:129
 msgid "The last released version of Pioneers is"
-msgstr "Az utolsó kiadott Pioneers verzió:"
+msgstr "Az utolsÃ³ kiadott Pioneers verziÃ³:"
 
 #: ../client/ai/lobbybot.c:144
 msgid "The game is starting. I'm not needed anymore. Goodbye."
-msgstr "A játék indul. Már nem kellek többet. Viszlát."
+msgstr "A jÃ¡tÃ©k indul. MÃ¡r nem kellek tÃ¶bbet. ViszlÃ¡t."
 
 #: ../client/common/client.c:103
 msgid "Waiting"
-msgstr "Várj"
+msgstr "VÃ¡rj"
 
 #: ../client/common/client.c:105 ../client/common/client.c:1241
 msgid "Idle"
-msgstr "Tétlen"
+msgstr "TÃ©tlen"
 
 #: ../client/common/client.c:447
 msgid "We have been kicked out of the game.\n"
-msgstr "Minket kirúgtak a játékból.\n"
+msgstr "Minket kirÃºgtak a jÃ¡tÃ©kbÃ³l.\n"
 
 #. Network status: offline
 #: ../client/common/client.c:450 ../client/common/client.c:891
@@ -344,17 +344,17 @@ msgstr "Hiba (%s): %s\n"
 #: ../client/common/client.c:480 ../client/common/client.c:491
 #, c-format
 msgid "Notice: %s\n"
-msgstr "Figyelmeztetés: %s\n"
+msgstr "FigyelmeztetÃ©s: %s\n"
 
 #: ../client/common/client.c:607
 #, c-format
 msgid "%s does not receive any %s, because the bank is empty.\n"
-msgstr "A bank üres, %s nem kap semmi %s.\n"
+msgstr "A bank Ã¼res, %s nem kap semmi %s.\n"
 
 #: ../client/common/client.c:620
 #, c-format
 msgid "%s only receives %s, because the bank didn't have any more.\n"
-msgstr "%s kaphat csak %s, mert a banknak nincs több.\n"
+msgstr "%s kaphat csak %s, mert a banknak nincs tÃ¶bb.\n"
 
 #: ../client/common/client.c:629
 #, c-format
@@ -365,12 +365,12 @@ msgstr "%s kap %s.\n"
 #: ../client/common/client.c:637 ../client/common/client.c:2586
 #, c-format
 msgid "%s takes %s.\n"
-msgstr "%s felhasznál %s.\n"
+msgstr "%s felhasznÃ¡l %s.\n"
 
 #: ../client/common/client.c:642
 #, c-format
 msgid "%s spent %s.\n"
-msgstr "%s elhasznált %s.\n"
+msgstr "%s elhasznÃ¡lt %s.\n"
 
 #: ../client/common/client.c:648
 #, c-format
@@ -384,37 +384,37 @@ msgstr "%s eldob %s.\n"
 
 #: ../client/common/client.c:849
 msgid "Loading"
-msgstr "Betöltés"
+msgstr "BetÃ¶ltÃ©s"
 
 #: ../client/common/client.c:892
 msgid "Version mismatch"
-msgstr "Eltérõ verzió"
+msgstr "EltÃ©rÅ‘ verziÃ³"
 
 #: ../client/common/client.c:894
 msgid "Version mismatch. Please make sure client and server are up to date.\n"
 msgstr ""
-"Verzió eltérés. Kérlek ellenõrizd van-e frissítés a klienshez és a "
+"VerziÃ³ eltÃ©rÃ©s. KÃ©rlek ellenÅ‘rizd van-e frissÃ­tÃ©s a klienshez Ã©s a "
 "szerverhez.\n"
 
 #: ../client/common/client.c:1340
 msgid "Build two settlements, each with a connecting"
-msgstr "Építs két falut, és mindegyikhez csatlakozzon egy"
+msgstr "Ã‰pÃ­ts kÃ©t falut, Ã©s mindegyikhez csatlakozzon egy"
 
 #: ../client/common/client.c:1343
 msgid "Build a settlement with a connecting"
-msgstr "Építs egy falut és csatlakozzon hozzá egy"
+msgstr "Ã‰pÃ­ts egy falut Ã©s csatlakozzon hozzÃ¡ egy"
 
 #: ../client/common/client.c:1346
 msgid "road"
-msgstr "út"
+msgstr "Ãºt"
 
 #: ../client/common/client.c:1348
 msgid "bridge"
-msgstr "híd"
+msgstr "hÃ­d"
 
 #: ../client/common/client.c:1350
 msgid "ship"
-msgstr "hajó"
+msgstr "hajÃ³"
 
 #: ../client/common/client.c:1358
 msgid " or"
@@ -422,67 +422,67 @@ msgstr "vagy"
 
 #: ../client/common/client.c:1416
 msgid "Waiting for your turn"
-msgstr "Várj a körödre."
+msgstr "VÃ¡rj a kÃ¶rÃ¶dre."
 
 #: ../client/common/client.c:1468
 msgid "Select the building to steal from."
 msgstr ""
-"Válaszd ki az épüetet\n"
-"akitõl lopni szeretnél."
+"VÃ¡laszd ki az Ã©pÃ¼etet\n"
+"akitÅ‘l lopni szeretnÃ©l."
 
 #: ../client/common/client.c:1490
 msgid "Select the ship to steal from."
 msgstr ""
-"Válaszd ki a hajót\n"
-"akitõl lopni szeretnél."
+"VÃ¡laszd ki a hajÃ³t\n"
+"akitÅ‘l lopni szeretnÃ©l."
 
 #: ../client/common/client.c:1575 ../client/gtk/interface.c:782
 msgid "Place the robber"
-msgstr "Helyezd el a rablót"
+msgstr "Helyezd el a rablÃ³t"
 
 #: ../client/common/client.c:1625
 msgid "Finish the road building action."
-msgstr "Vége az útépítésnek."
+msgstr "VÃ©ge az ÃºtÃ©pÃ­tÃ©snek."
 
 #: ../client/common/client.c:1627
 msgid "Build one road segment."
-msgstr "Épít egy utat."
+msgstr "Ã‰pÃ­t egy utat."
 
 #: ../client/common/client.c:1629
 msgid "Build two road segments."
-msgstr "Épít két utat."
+msgstr "Ã‰pÃ­t kÃ©t utat."
 
 #: ../client/common/client.c:1902 ../client/common/client.c:1996
 msgid "It is your turn."
-msgstr "Ez a te köröd."
+msgstr "Ez a te kÃ¶rÃ¶d."
 
 #: ../client/common/client.c:2090
 #, c-format
 msgid "Sorry, %s available.\n"
-msgstr "Bocs, %s használható.\n"
+msgstr "Bocs, %s hasznÃ¡lhatÃ³.\n"
 
 #: ../client/common/client.c:2405
 msgid "The game is over."
-msgstr "A játéknak vége."
+msgstr "A jÃ¡tÃ©knak vÃ©ge."
 
 #: ../client/common/develop.c:43 ../editor/gtk/game-devcards.c:13
 msgid "Road Building"
-msgstr "Út építés"
+msgstr "Ãšt Ã©pÃ­tÃ©s"
 
 #: ../client/common/develop.c:44 ../client/gtk/monopoly.c:83
 #: ../editor/gtk/game-devcards.c:13
 msgid "Monopoly"
-msgstr "Monopólium"
+msgstr "MonopÃ³lium"
 
 #: ../client/common/develop.c:45 ../client/gtk/plenty.c:59
 #: ../editor/gtk/game-devcards.c:13
 msgid "Year of Plenty"
-msgstr "Bõség éve"
+msgstr "BÅ‘sÃ©g Ã©ve"
 
 #: ../client/common/develop.c:46 ../client/gtk/player.c:57
 #: ../editor/gtk/game-devcards.c:14
 msgid "Chapel"
-msgstr "Kápolna"
+msgstr "KÃ¡polna"
 
 #: ../client/common/develop.c:47 ../client/gtk/player.c:58
 #: ../editor/gtk/game-devcards.c:14
@@ -492,12 +492,12 @@ msgstr "Pioneers egyetem"
 #: ../client/common/develop.c:48 ../client/gtk/player.c:60
 #: ../editor/gtk/game-devcards.c:15
 msgid "Governor's House"
-msgstr "Kormányzók háza"
+msgstr "KormÃ¡nyzÃ³k hÃ¡za"
 
 #: ../client/common/develop.c:49 ../client/gtk/player.c:61
 #: ../editor/gtk/game-devcards.c:15
 msgid "Library"
-msgstr "Könyvtár"
+msgstr "KÃ¶nyvtÃ¡r"
 
 #: ../client/common/develop.c:50 ../client/gtk/player.c:62
 #: ../editor/gtk/game-devcards.c:15
@@ -512,75 +512,75 @@ msgstr "Katona"
 #: ../client/common/develop.c:82
 #, c-format
 msgid "You bought the %s development card.\n"
-msgstr "Vásároltál egy %s fejlesztés kártyát.\n"
+msgstr "VÃ¡sÃ¡roltÃ¡l egy %s fejlesztÃ©s kÃ¡rtyÃ¡t.\n"
 
 #: ../client/common/develop.c:88
 #, c-format
 msgid "You bought a %s development card.\n"
-msgstr "Vásároltál egy %s fejlesztés kártyát.\n"
+msgstr "VÃ¡sÃ¡roltÃ¡l egy %s fejlesztÃ©s kÃ¡rtyÃ¡t.\n"
 
 #: ../client/common/develop.c:110
 #, c-format
 msgid "%s bought a development card.\n"
-msgstr "%s vásárolt egy fejlesztés kártyát.\n"
+msgstr "%s vÃ¡sÃ¡rolt egy fejlesztÃ©s kÃ¡rtyÃ¡t.\n"
 
 #: ../client/common/develop.c:129
 #, c-format
 msgid "%s played the %s development card.\n"
-msgstr "%s kijátszotta %s fejlesztés kártyáját.\n"
+msgstr "%s kijÃ¡tszotta %s fejlesztÃ©s kÃ¡rtyÃ¡jÃ¡t.\n"
 
 #: ../client/common/develop.c:134
 #, c-format
 msgid "%s played a %s development card.\n"
-msgstr "%s kijátszotta egy %s fejlesztés kártyáját.\n"
+msgstr "%s kijÃ¡tszotta egy %s fejlesztÃ©s kÃ¡rtyÃ¡jÃ¡t.\n"
 
 #: ../client/common/develop.c:147
 msgid "You have run out of road segments.\n"
-msgstr "Nincs több köved az útépítéshez.\n"
+msgstr "Nincs tÃ¶bb kÃ¶ved az ÃºtÃ©pÃ­tÃ©shez.\n"
 
 #. I get the cards!
 #.
 #: ../client/common/develop.c:187
 #, c-format
 msgid "You get %s from %s.\n"
-msgstr "Kaptál %s %s játékostól.\n"
+msgstr "KaptÃ¡l %s %s jÃ¡tÃ©kostÃ³l.\n"
 
 #. I lose the cards!
 #.
 #: ../client/common/develop.c:193
 #, c-format
 msgid "%s took %s from you.\n"
-msgstr "%s elvesz tõled %s.\n"
+msgstr "%s elvesz tÅ‘led %s.\n"
 
 #: ../client/common/develop.c:200
 #, c-format
 msgid "%s took %s from %s.\n"
-msgstr "%s elvesz %s játékostól %s.\n"
+msgstr "%s elvesz %s jÃ¡tÃ©kostÃ³l %s.\n"
 
 #: ../client/common/player.c:124 ../server/player.c:405
 #, c-format
 msgid "Viewer %d"
-msgstr "Szemlélõ %d"
+msgstr "SzemlÃ©lÅ‘ %d"
 
 #: ../client/common/player.c:126
 #, c-format
 msgid "viewer %d"
-msgstr "szemlélõ %d"
+msgstr "szemlÃ©lÅ‘ %d"
 
 #: ../client/common/player.c:134 ../server/player.c:408
 #, c-format
 msgid "Player %d"
-msgstr "Játékos %d"
+msgstr "JÃ¡tÃ©kos %d"
 
 #: ../client/common/player.c:136
 #, c-format
 msgid "player %d"
-msgstr "játékos %d"
+msgstr "jÃ¡tÃ©kos %d"
 
 #: ../client/common/player.c:212
 #, c-format
 msgid "New viewer: %s.\n"
-msgstr "Új szemlélõ: %s.\n"
+msgstr "Ãšj szemlÃ©lÅ‘: %s.\n"
 
 #: ../client/common/player.c:215 ../client/common/player.c:231
 #, c-format
@@ -590,12 +590,12 @@ msgstr "%s most %s lett.\n"
 #: ../client/common/player.c:228
 #, c-format
 msgid "Player %d is now %s.\n"
-msgstr "%d játékos %s.\n"
+msgstr "%d jÃ¡tÃ©kos %s.\n"
 
 #: ../client/common/player.c:267
 #, c-format
 msgid "%s has quit\n"
-msgstr "%s kilépett\n"
+msgstr "%s kilÃ©pett\n"
 
 #: ../client/common/player.c:276
 msgid "There is no largest army.\n"
@@ -608,34 +608,34 @@ msgstr "%s vezeti a legnagyobb hasereget.\n"
 
 #: ../client/common/player.c:300
 msgid "There is no longest road.\n"
-msgstr "Az ott nem a leghosszabb út.\n"
+msgstr "Az ott nem a leghosszabb Ãºt.\n"
 
 #: ../client/common/player.c:303
 #, c-format
 msgid "%s has the longest road.\n"
-msgstr "%s építette a leghosszabb utat.\n"
+msgstr "%s Ã©pÃ­tette a leghosszabb utat.\n"
 
 #: ../client/common/player.c:324
 #, c-format
 msgid "Waiting for %s."
-msgstr "%s játékosra várunk."
+msgstr "%s jÃ¡tÃ©kosra vÃ¡runk."
 
 #. We are not in on the action
 #. someone stole a resource from someone else
 #: ../client/common/player.c:352
 #, c-format
 msgid "%s stole a resource from %s.\n"
-msgstr "%s lop egy nyersanyagot %s játékostól.\n"
+msgstr "%s lop egy nyersanyagot %s jÃ¡tÃ©kostÃ³l.\n"
 
 #: ../client/common/player.c:362
 #, c-format
 msgid "You stole %s from %s.\n"
-msgstr "Lopsz %s %s játékostól.\n"
+msgstr "Lopsz %s %s jÃ¡tÃ©kostÃ³l.\n"
 
 #: ../client/common/player.c:368
 #, c-format
 msgid "%s stole %s from you.\n"
-msgstr "%s lop tõled %s.\n"
+msgstr "%s lop tÅ‘led %s.\n"
 
 #: ../client/common/player.c:402
 #, c-format
@@ -650,93 +650,93 @@ msgstr "%s ad %s %s ingyen.\n"
 #: ../client/common/player.c:424
 #, c-format
 msgid "%s gave %s %s in exchange for %s.\n"
-msgstr "%s játékos ad %s játékosnak %s cserébe kap %s.\n"
+msgstr "%s jÃ¡tÃ©kos ad %s jÃ¡tÃ©kosnak %s cserÃ©be kap %s.\n"
 
 #: ../client/common/player.c:455
 #, c-format
 msgid "%s exchanged %s for %s.\n"
-msgstr "%s cserélt %s kapott érte %s.\n"
+msgstr "%s cserÃ©lt %s kapott Ã©rte %s.\n"
 
 #: ../client/common/player.c:475
 #, c-format
 msgid "%s built a road.\n"
-msgstr "%s épített egy utat.\n"
+msgstr "%s Ã©pÃ­tett egy utat.\n"
 
 #: ../client/common/player.c:487
 #, c-format
 msgid "%s built a ship.\n"
-msgstr "%s épített egy hajót.\n"
+msgstr "%s Ã©pÃ­tett egy hajÃ³t.\n"
 
 #: ../client/common/player.c:500
 #, c-format
 msgid "%s built a settlement.\n"
-msgstr "%s épített egy falut.\n"
+msgstr "%s Ã©pÃ­tett egy falut.\n"
 
 #: ../client/common/player.c:519
 #, c-format
 msgid "%s built a city.\n"
-msgstr "%s épített egy várost.\n"
+msgstr "%s Ã©pÃ­tett egy vÃ¡rost.\n"
 
 #: ../client/common/player.c:533
 #, c-format
 msgid "%s built a city wall.\n"
-msgstr "%s épített egy város falatt.\n"
+msgstr "%s Ã©pÃ­tett egy vÃ¡ros falatt.\n"
 
 #: ../client/common/player.c:544
 #, c-format
 msgid "player_build_add called with BUILD_NONE for user %s\n"
-msgstr "%s felhasználó a player_build_add függvényt 'BUILD_NONE'-val hívta\n"
+msgstr "%s felhasznÃ¡lÃ³ a player_build_add fÃ¼ggvÃ©nyt 'BUILD_NONE'-val hÃ­vta\n"
 
 #: ../client/common/player.c:553
 #, c-format
 msgid "%s built a bridge.\n"
-msgstr "%s épített egy hidat.\n"
+msgstr "%s Ã©pÃ­tett egy hidat.\n"
 
 #: ../client/common/player.c:579
 #, c-format
 msgid "%s removed a road.\n"
-msgstr "%s megszüntet egy utat.\n"
+msgstr "%s megszÃ¼ntet egy utat.\n"
 
 #: ../client/common/player.c:589
 #, c-format
 msgid "%s removed a ship.\n"
-msgstr "%s megszüntet egy hajót.\n"
+msgstr "%s megszÃ¼ntet egy hajÃ³t.\n"
 
 #: ../client/common/player.c:599
 #, c-format
 msgid "%s removed a settlement.\n"
-msgstr "%s megszüntet egy falut.\n"
+msgstr "%s megszÃ¼ntet egy falut.\n"
 
 #: ../client/common/player.c:610
 #, c-format
 msgid "%s removed a city.\n"
-msgstr "%s megszüntet egy várost.\n"
+msgstr "%s megszÃ¼ntet egy vÃ¡rost.\n"
 
 #: ../client/common/player.c:624
 #, c-format
 msgid "%s removed a city wall.\n"
-msgstr "%s megszüntet egy város falat.\n"
+msgstr "%s megszÃ¼ntet egy vÃ¡ros falat.\n"
 
 #: ../client/common/player.c:634
 #, c-format
 msgid "player_build_remove called with BUILD_NONE for user %s\n"
 msgstr ""
-"%s felhasználó a player_build_remove függvényt 'BUILD_NONE'-val hívta\n"
+"%s felhasznÃ¡lÃ³ a player_build_remove fÃ¼ggvÃ©nyt 'BUILD_NONE'-val hÃ­vta\n"
 
 #: ../client/common/player.c:642
 #, c-format
 msgid "%s removed a bridge.\n"
-msgstr "%s megszüntet egy hidat.\n"
+msgstr "%s megszÃ¼ntet egy hidat.\n"
 
 #: ../client/common/player.c:673
 #, c-format
 msgid "%s has cancelled a ship's movement.\n"
-msgstr "%s törölte a hajók mozgását.\n"
+msgstr "%s tÃ¶rÃ¶lte a hajÃ³k mozgÃ¡sÃ¡t.\n"
 
 #: ../client/common/player.c:676
 #, c-format
 msgid "%s moved a ship.\n"
-msgstr "%s mozgat egy hajót.\n"
+msgstr "%s mozgat egy hajÃ³t.\n"
 
 #. tell the user that someone got something
 #: ../client/common/player.c:696
@@ -746,7 +746,7 @@ msgstr "%s kap %s.\n"
 
 #: ../client/common/player.c:714
 msgid "server asks to lose invalid point.\n"
-msgstr "érvénytelen pont.\n"
+msgstr "Ã©rvÃ©nytelen pont.\n"
 
 #. tell the user the point is lost
 #: ../client/common/player.c:720
@@ -756,21 +756,21 @@ msgstr "%s elvesztett %s.\n"
 
 #: ../client/common/player.c:743
 msgid "server asks to move invalid point.\n"
-msgstr "érvénytelen pontra történõ mozgás.\n"
+msgstr "Ã©rvÃ©nytelen pontra tÃ¶rtÃ©nÅ‘ mozgÃ¡s.\n"
 
 #. tell the user someone (1) lost something (2) to someone else (3)
 #: ../client/common/player.c:750
 #, c-format
 msgid "%s lost %s to %s.\n"
-msgstr "%s elvesztett %s %s ért.\n"
+msgstr "%s elvesztett %s %s Ã©rt.\n"
 
 #: ../client/common/resource.c:35
 msgid "brick"
-msgstr "tégla"
+msgstr "tÃ©gla"
 
 #: ../client/common/resource.c:35
 msgid "Brick"
-msgstr "Tégla"
+msgstr "TÃ©gla"
 
 #: ../client/common/resource.c:36
 msgid "grain"
@@ -782,27 +782,27 @@ msgstr "Gabona"
 
 #: ../client/common/resource.c:37
 msgid "ore"
-msgstr "érc"
+msgstr "Ã©rc"
 
 #: ../client/common/resource.c:37
 msgid "Ore"
-msgstr "Érc"
+msgstr "Ã‰rc"
 
 #: ../client/common/resource.c:38
 msgid "wool"
-msgstr "gyapjú"
+msgstr "gyapjÃº"
 
 #: ../client/common/resource.c:38
 msgid "Wool"
-msgstr "Gyapjú"
+msgstr "GyapjÃº"
 
 #: ../client/common/resource.c:39
 msgid "lumber"
-msgstr "rönk"
+msgstr "rÃ¶nk"
 
 #: ../client/common/resource.c:39
 msgid "Lumber"
-msgstr "Rönk"
+msgstr "RÃ¶nk"
 
 #: ../client/common/resource.c:40
 msgid "no resource (bug)"
@@ -814,11 +814,11 @@ msgstr "Nincs nyersanyag (bug)"
 
 #: ../client/common/resource.c:41
 msgid "any resource (bug)"
-msgstr "bármelyik nyersanyag (bug)"
+msgstr "bÃ¡rmelyik nyersanyag (bug)"
 
 #: ../client/common/resource.c:41
 msgid "Any resource (bug)"
-msgstr "Bármelyik nyersanyag (bug)"
+msgstr "BÃ¡rmelyik nyersanyag (bug)"
 
 #: ../client/common/resource.c:42
 msgid "gold"
@@ -830,48 +830,48 @@ msgstr "Arany"
 
 #: ../client/common/resource.c:47
 msgid "a brick card"
-msgstr "egy darab tégla kártyát"
+msgstr "egy darab tÃ©gla kÃ¡rtyÃ¡t"
 
 #: ../client/common/resource.c:47
 #, c-format
 msgid "%d brick cards"
-msgstr "%d db tégla kártyát"
+msgstr "%d db tÃ©gla kÃ¡rtyÃ¡t"
 
 #: ../client/common/resource.c:48
 msgid "a grain card"
-msgstr "egy darab gabona kártyát"
+msgstr "egy darab gabona kÃ¡rtyÃ¡t"
 
 #: ../client/common/resource.c:48
 #, c-format
 msgid "%d grain cards"
-msgstr "%d db gabona kártyát"
+msgstr "%d db gabona kÃ¡rtyÃ¡t"
 
 #: ../client/common/resource.c:49
 msgid "an ore card"
-msgstr "egy darab érc kártyát"
+msgstr "egy darab Ã©rc kÃ¡rtyÃ¡t"
 
 #: ../client/common/resource.c:49
 #, c-format
 msgid "%d ore cards"
-msgstr "%d db érc kártyát"
+msgstr "%d db Ã©rc kÃ¡rtyÃ¡t"
 
 #: ../client/common/resource.c:50
 msgid "a wool card"
-msgstr "egy darab gyapjú kártyát"
+msgstr "egy darab gyapjÃº kÃ¡rtyÃ¡t"
 
 #: ../client/common/resource.c:50
 #, c-format
 msgid "%d wool cards"
-msgstr "%d db gyapjú kártyát"
+msgstr "%d db gyapjÃº kÃ¡rtyÃ¡t"
 
 #: ../client/common/resource.c:51
 msgid "a lumber card"
-msgstr "egy darab rönk kártyát"
+msgstr "egy darab rÃ¶nk kÃ¡rtyÃ¡t"
 
 #: ../client/common/resource.c:51
 #, c-format
 msgid "%d lumber cards"
-msgstr "%d db rönk kártyát"
+msgstr "%d db rÃ¶nk kÃ¡rtyÃ¡t"
 
 #: ../client/common/resource.c:139 ../client/common/resource.c:225
 msgid "nothing"
@@ -881,7 +881,7 @@ msgstr "semmit"
 #: ../client/common/resource.c:166
 #, c-format
 msgid "%s and %s"
-msgstr "%s és %s"
+msgstr "%s Ã©s %s"
 
 #. Construct "A, B and C" for resources
 #: ../client/common/resource.c:170
@@ -892,47 +892,47 @@ msgstr "%s, %s"
 #: ../client/common/robber.c:60
 #, c-format
 msgid "%s has undone the robber movement.\n"
-msgstr "%s törölte a rabló mozgását.\n"
+msgstr "%s tÃ¶rÃ¶lte a rablÃ³ mozgÃ¡sÃ¡t.\n"
 
 #: ../client/common/robber.c:63
 #, c-format
 msgid "%s moved the robber.\n"
-msgstr "%s áthelyezte a rablót.\n"
+msgstr "%s Ã¡thelyezte a rablÃ³t.\n"
 
 #: ../client/common/robber.c:73
 #, c-format
 msgid "%s has undone the pirate movement.\n"
-msgstr "%s törölte a hajók mozgását.\n"
+msgstr "%s tÃ¶rÃ¶lte a hajÃ³k mozgÃ¡sÃ¡t.\n"
 
 #: ../client/common/robber.c:76
 #, c-format
 msgid "%s moved the pirate.\n"
-msgstr "%s áthelyezte a kalózt.\n"
+msgstr "%s Ã¡thelyezte a kalÃ³zt.\n"
 
 #: ../client/common/robber.c:83
 #, c-format
 msgid "%s must move the robber."
-msgstr "%s mozgatja a rablót."
+msgstr "%s mozgatja a rablÃ³t."
 
 #: ../client/common/setup.c:140
 #, c-format
 msgid "Setup for %s.\n"
-msgstr "%s beállítása.\n"
+msgstr "%s beÃ¡llÃ­tÃ¡sa.\n"
 
 #: ../client/common/setup.c:152
 #, c-format
 msgid "Double setup for %s.\n"
-msgstr "%s kétszeres beállítása.\n"
+msgstr "%s kÃ©tszeres beÃ¡llÃ­tÃ¡sa.\n"
 
 #: ../client/common/turn.c:37
 #, c-format
 msgid "%s rolled %d.\n"
-msgstr "%s dobása %d.\n"
+msgstr "%s dobÃ¡sa %d.\n"
 
 #: ../client/common/turn.c:50
 #, c-format
 msgid "Begin turn %d for %s.\n"
-msgstr "%d. köre kezdõdik, %s játékosnak.\n"
+msgstr "%d. kÃ¶re kezdÅ‘dik, %s jÃ¡tÃ©kosnak.\n"
 
 #: ../client/gtk/chat.c:71
 msgid "<b>Chat</b>"
@@ -940,22 +940,22 @@ msgstr "<b>Chat</b>"
 
 #: ../client/gtk/chat.c:231
 msgid "Beeper test.\n"
-msgstr "Teszt sípolás.\n"
+msgstr "Teszt sÃ­polÃ¡s.\n"
 
 #: ../client/gtk/chat.c:234
 #, c-format
 msgid "%s beeped you.\n"
-msgstr "%s sípolt neked.\n"
+msgstr "%s sÃ­polt neked.\n"
 
 #: ../client/gtk/chat.c:238
 #, c-format
 msgid "You beeped %s.\n"
-msgstr "Te sípoltál %s.\n"
+msgstr "Te sÃ­poltÃ¡l %s.\n"
 
 #: ../client/gtk/chat.c:244
 #, c-format
 msgid "You could not beep %s.\n"
-msgstr "Te nem tudsz sípolni %s.\n"
+msgstr "Te nem tudsz sÃ­polni %s.\n"
 
 #: ../client/gtk/chat.c:288
 msgid " said: "
@@ -968,73 +968,73 @@ msgstr "Meta szerver: %s, port: %s"
 
 #: ../client/gtk/connect.c:292
 msgid "Finished.\n"
-msgstr "Kész.\n"
+msgstr "KÃ©sz.\n"
 
 #: ../client/gtk/connect.c:309 ../client/gtk/connect.c:359
 #: ../client/gtk/connect.c:456 ../server/meta.c:174
 msgid "Meta-server kicked us off\n"
-msgstr "A meta szerver kirúgott minket\n"
+msgstr "A meta szerver kirÃºgott minket\n"
 
 #: ../client/gtk/connect.c:334
 msgid "Receiving game names from the meta server.\n"
-msgstr "Játékok vétele a meta szerverrõl.\n"
+msgstr "JÃ¡tÃ©kok vÃ©tele a meta szerverrÅ‘l.\n"
 
 #: ../client/gtk/connect.c:382
 #, c-format
 msgid "New game server requested on %s port %s\n"
-msgstr "Szerver kérés új játékra: %s, port: %s\n"
+msgstr "Szerver kÃ©rÃ©s Ãºj jÃ¡tÃ©kra: %s, port: %s\n"
 
 #: ../client/gtk/connect.c:391 ../server/meta.c:168
 #, c-format
 msgid "Unknown message from the metaserver: %s\n"
-msgstr "Ismeretlen üzenet a metaszervertõl: %s\n"
+msgstr "Ismeretlen Ã¼zenet a metaszervertÅ‘l: %s\n"
 
 #: ../client/gtk/connect.c:472 ../server/meta.c:125
 msgid "Too many meta-server redirects\n"
-msgstr "Túl sok meta szerver átirányítás\n"
+msgstr "TÃºl sok meta szerver Ã¡tirÃ¡nyÃ­tÃ¡s\n"
 
 #: ../client/gtk/connect.c:499 ../server/meta.c:140
 #, c-format
 msgid "Bad redirect line: %s\n"
-msgstr "Hibás átirányított vonal: %s\n"
+msgstr "HibÃ¡s Ã¡tirÃ¡nyÃ­tott vonal: %s\n"
 
 #: ../client/gtk/connect.c:525
 #, c-format
 msgid "Meta server too old to create servers (version %d.%d)\n"
-msgstr "Meta szerver túl régi a szerver létrehozáshoz (verzió %d.%d)\n"
+msgstr "Meta szerver tÃºl rÃ©gi a szerver lÃ©trehozÃ¡shoz (verziÃ³ %d.%d)\n"
 
 #. Sevens rule: normal
 #: ../client/gtk/connect.c:596 ../client/gtk/settingscreen.c:168
 #: ../common/gtk/game-rules.c:81
 msgid "Normal"
-msgstr "Normál"
+msgstr "NormÃ¡l"
 
 #: ../client/gtk/connect.c:602 ../client/gtk/settingscreen.c:170
 #: ../common/gtk/game-rules.c:88
 msgid "Reroll on 1st 2 turns"
-msgstr "Elsõ két körben újradobás"
+msgstr "ElsÅ‘ kÃ©t kÃ¶rben ÃºjradobÃ¡s"
 
 #: ../client/gtk/connect.c:605 ../client/gtk/settingscreen.c:172
 #: ../common/gtk/game-rules.c:95
 msgid "Reroll all 7s"
-msgstr "Mindig újradobás"
+msgstr "Mindig ÃºjradobÃ¡s"
 
 #: ../client/gtk/connect.c:619
 msgid "Default"
-msgstr "Alapértelmezett"
+msgstr "AlapÃ©rtelmezett"
 
 #: ../client/gtk/connect.c:622
 msgid "Random"
-msgstr "Véletlen"
+msgstr "VÃ©letlen"
 
 #: ../client/gtk/connect.c:653 ../server/meta.c:188
 #, c-format
 msgid "Redirected to meta-server at %s, port %s\n"
-msgstr "Átirányítva %s meta szerverhez, %s portra\n"
+msgstr "ÃtirÃ¡nyÃ­tva %s meta szerverhez, %s portra\n"
 
 #: ../client/gtk/connect.c:656
 msgid "Receiving a list of Pioneers servers from the meta server.\n"
-msgstr "Pioneers szerver lista fogadása a meta szervertõl.\n"
+msgstr "Pioneers szerver lista fogadÃ¡sa a meta szervertÅ‘l.\n"
 
 #: ../client/gtk/connect.c:713
 msgid ""
@@ -1042,74 +1042,74 @@ msgid ""
 "\tThe metaserver does not send information about the games.\n"
 "\tPlease set appropriate values yourself."
 msgstr ""
-"<b>Megjegyzés</b>:\n"
-"\tA meta szerver nem küld információt a játékokról.\n"
-"\tKérlek állítds be magad a megfelelõ értékeket."
+"<b>MegjegyzÃ©s</b>:\n"
+"\tA meta szerver nem kÃ¼ld informÃ¡ciÃ³t a jÃ¡tÃ©kokrÃ³l.\n"
+"\tKÃ©rlek Ã¡llÃ­tds be magad a megfelelÅ‘ Ã©rtÃ©keket."
 
 #: ../client/gtk/connect.c:730
 msgid "Number of AI Players"
-msgstr "Robot játékosok száma"
+msgstr "Robot jÃ¡tÃ©kosok szÃ¡ma"
 
 #: ../client/gtk/connect.c:749
 msgid "The number of AI players"
-msgstr "A robot játékosok száma"
+msgstr "A robot jÃ¡tÃ©kosok szÃ¡ma"
 
 #: ../client/gtk/connect.c:770
 msgid "Requesting new game server\n"
-msgstr "Új játékszerver kérés\n"
+msgstr "Ãšj jÃ¡tÃ©kszerver kÃ©rÃ©s\n"
 
 #: ../client/gtk/connect.c:813 ../server/gtk/main.c:328 ../server/server.c:160
 #, c-format
 msgid "Error starting %s: %s"
-msgstr "Inditási hiba %s: %s"
+msgstr "InditÃ¡si hiba %s: %s"
 
 #: ../client/gtk/connect.c:834
 msgid "Create a public game"
-msgstr "Új játék"
+msgstr "Ãšj jÃ¡tÃ©k"
 
 #: ../client/gtk/connect.c:965 ../client/gtk/connect.c:1268
 msgid "Join a public game"
-msgstr "Játékba jelentkezés"
+msgstr "JÃ¡tÃ©kba jelentkezÃ©s"
 
 #: ../client/gtk/connect.c:970
 msgid "_New remote game"
-msgstr "Ú_j távoli játék"
+msgstr "Ãš_j tÃ¡voli jÃ¡tÃ©k"
 
 #: ../client/gtk/connect.c:984
 msgid "Refresh the list of games"
-msgstr "Játéklista frissitése"
+msgstr "JÃ¡tÃ©klista frissitÃ©se"
 
 #: ../client/gtk/connect.c:989
 msgid "Create a new public game at the meta server"
-msgstr "Új publikus játék létrehozása meta szerverre"
+msgstr "Ãšj publikus jÃ¡tÃ©k lÃ©trehozÃ¡sa meta szerverre"
 
 #: ../client/gtk/connect.c:994
 msgid "Don't join a public game"
-msgstr "Nem tud kapcsolódni nyilvános játékhoz"
+msgstr "Nem tud kapcsolÃ³dni nyilvÃ¡nos jÃ¡tÃ©khoz"
 
 #: ../client/gtk/connect.c:998
 msgid "Join the selected game"
-msgstr "Jelentkezés a kiválasztott játékba"
+msgstr "JelentkezÃ©s a kivÃ¡lasztott jÃ¡tÃ©kba"
 
 #: ../client/gtk/connect.c:1033
 msgid "Select a game to join"
-msgstr "Válassz egy játékot"
+msgstr "VÃ¡lassz egy jÃ¡tÃ©kot"
 
 #: ../client/gtk/connect.c:1036
 msgid "Map Name"
-msgstr "Térkép név"
+msgstr "TÃ©rkÃ©p nÃ©v"
 
 #: ../client/gtk/connect.c:1044
 msgid "Name of the game"
-msgstr "Játék neve"
+msgstr "JÃ¡tÃ©k neve"
 
 #: ../client/gtk/connect.c:1049
 msgid "Curr"
-msgstr "Belépett"
+msgstr "BelÃ©pett"
 
 #: ../client/gtk/connect.c:1055
 msgid "Number of players in the game"
-msgstr "Belépett játékosok száma"
+msgstr "BelÃ©pett jÃ¡tÃ©kosok szÃ¡ma"
 
 #: ../client/gtk/connect.c:1060
 msgid "Max"
@@ -1117,7 +1117,7 @@ msgstr "Maximum"
 
 #: ../client/gtk/connect.c:1066
 msgid "Maximum players for the game"
-msgstr "Játékosok száma maximum"
+msgstr "JÃ¡tÃ©kosok szÃ¡ma maximum"
 
 #: ../client/gtk/connect.c:1069
 msgid "Terrain"
@@ -1125,7 +1125,7 @@ msgstr "Terep"
 
 #: ../client/gtk/connect.c:1076
 msgid "Random of default terrain"
-msgstr "Véletlen vagy alapértelmezett táj"
+msgstr "VÃ©letlen vagy alapÃ©rtelmezett tÃ¡j"
 
 #: ../client/gtk/connect.c:1081
 msgid "Vic. Points"
@@ -1133,15 +1133,15 @@ msgstr "Gy. pontok"
 
 #: ../client/gtk/connect.c:1087
 msgid "Points needed to win"
-msgstr "Gyõzelemhez szükséges pontok"
+msgstr "GyÅ‘zelemhez szÃ¼ksÃ©ges pontok"
 
 #: ../client/gtk/connect.c:1090 ../common/gtk/game-rules.c:73
 msgid "Sevens Rule"
-msgstr "Hetes szabály"
+msgstr "Hetes szabÃ¡ly"
 
 #: ../client/gtk/connect.c:1096
 msgid "Sevens rule"
-msgstr "Hetes szabály"
+msgstr "Hetes szabÃ¡ly"
 
 #: ../client/gtk/connect.c:1100
 msgid "Host"
@@ -1149,7 +1149,7 @@ msgstr "Host"
 
 #: ../client/gtk/connect.c:1108
 msgid "Host of the game"
-msgstr "A játokot futtató számítógép"
+msgstr "A jÃ¡tokot futtatÃ³ szÃ¡mÃ­tÃ³gÃ©p"
 
 #: ../client/gtk/connect.c:1113
 msgid "Port"
@@ -1157,23 +1157,23 @@ msgstr "Port"
 
 #: ../client/gtk/connect.c:1119
 msgid "Port of the the game"
-msgstr "A játék portja"
+msgstr "A jÃ¡tÃ©k portja"
 
 #: ../client/gtk/connect.c:1122 ../common/gtk/aboutbox.c:77
 msgid "Version"
-msgstr "Verzió"
+msgstr "VerziÃ³"
 
 #: ../client/gtk/connect.c:1129
 msgid "Version of the host"
-msgstr "A host gép verziója"
+msgstr "A host gÃ©p verziÃ³ja"
 
 #: ../client/gtk/connect.c:1184 ../client/gtk/gui.c:215
 msgid "Start a new game"
-msgstr "Új játék indítása"
+msgstr "Ãšj jÃ¡tÃ©k indÃ­tÃ¡sa"
 
 #: ../client/gtk/connect.c:1209
 msgid "Player Name"
-msgstr "Játékos neve"
+msgstr "JÃ¡tÃ©kos neve"
 
 #: ../client/gtk/connect.c:1223
 msgid "Enter your name"
@@ -1182,11 +1182,11 @@ msgstr "Add meg a neved"
 #. Role of the player: viewer
 #: ../client/gtk/connect.c:1225 ../server/gtk/main.c:511
 msgid "Viewer"
-msgstr "Szemlélõ"
+msgstr "SzemlÃ©lÅ‘"
 
 #: ../client/gtk/connect.c:1233
 msgid "Do you want to be a viewer?"
-msgstr "Szemlélõ akarsz lenni?"
+msgstr "SzemlÃ©lÅ‘ akarsz lenni?"
 
 #: ../client/gtk/connect.c:1240 ../server/gtk/main.c:640
 msgid "Meta Server"
@@ -1194,55 +1194,55 @@ msgstr "Meta szerver"
 
 #: ../client/gtk/connect.c:1255
 msgid "Leave empty for the default meta server"
-msgstr "Hagyd üresen az alapértelmezett meta szerverhez"
+msgstr "Hagyd Ã¼resen az alapÃ©rtelmezett meta szerverhez"
 
 #: ../client/gtk/connect.c:1263
 msgid "Join public game"
-msgstr "Csatlakozás nyilvános játékhoz"
+msgstr "CsatlakozÃ¡s nyilvÃ¡nos jÃ¡tÃ©khoz"
 
 #: ../client/gtk/connect.c:1272
 msgid "Create game"
-msgstr "Játék létrehozása"
+msgstr "JÃ¡tÃ©k lÃ©trehozÃ¡sa"
 
 #: ../client/gtk/connect.c:1275
 msgid "Create a game"
-msgstr "Játék létrehozása"
+msgstr "JÃ¡tÃ©k lÃ©trehozÃ¡sa"
 
 #: ../client/gtk/connect.c:1285
 msgid "Join private game"
-msgstr "Csatlakozás privát játékhoz"
+msgstr "CsatlakozÃ¡s privÃ¡t jÃ¡tÃ©khoz"
 
 #: ../client/gtk/connect.c:1289 ../client/gtk/connect.c:1434
 msgid "Join a private game"
-msgstr "Csatlakozás egy privát játékhoz"
+msgstr "CsatlakozÃ¡s egy privÃ¡t jÃ¡tÃ©khoz"
 
 #: ../client/gtk/connect.c:1475
 msgid "Name of the host of the game"
-msgstr "A játékot futtató gép neve"
+msgstr "A jÃ¡tÃ©kot futtatÃ³ gÃ©p neve"
 
 #: ../client/gtk/connect.c:1494
 msgid "Port of the host of the game"
-msgstr "A játékot futtató gép portja"
+msgstr "A jÃ¡tÃ©kot futtatÃ³ gÃ©p portja"
 
 #: ../client/gtk/connect.c:1534
 msgid "Recent games"
-msgstr "Legutóbbi játékok"
+msgstr "LegutÃ³bbi jÃ¡tÃ©kok"
 
 #: ../client/gtk/connect.c:1536
 msgid "Recent Games"
-msgstr "Legutóbbi játékok"
+msgstr "LegutÃ³bbi jÃ¡tÃ©kok"
 
 #: ../client/gtk/develop.c:129
 msgid "<b>Development Cards</b>"
-msgstr "<b>Fejlesztés kátyák</b>"
+msgstr "<b>FejlesztÃ©s kÃ¡tyÃ¡k</b>"
 
 #: ../client/gtk/develop.c:160
 msgid "Play Card"
-msgstr "Kártya kijátszása"
+msgstr "KÃ¡rtya kijÃ¡tszÃ¡sa"
 
 #: ../client/gtk/discard.c:76
 msgid "Discard resources"
-msgstr "Nyersanyagok eldobása"
+msgstr "Nyersanyagok eldobÃ¡sa"
 
 #: ../client/gtk/discard.c:96
 #, c-format
@@ -1251,132 +1251,132 @@ msgstr "El kell dobnod %d db nyersanyagot"
 
 #: ../client/gtk/discard.c:101
 msgid "Total discards"
-msgstr "Összes eldobása"
+msgstr "Ã–sszes eldobÃ¡sa"
 
 #. Caption for list of player that must discard cards
 #: ../client/gtk/discard.c:226
 msgid "<b>Waiting for players to discard</b>"
-msgstr "<b>Várunk míg dobnak a játékosok</b>"
+msgstr "<b>VÃ¡runk mÃ­g dobnak a jÃ¡tÃ©kosok</b>"
 
 #: ../client/gtk/gameover.c:32
 msgid "Game over"
-msgstr "Játék vége"
+msgstr "JÃ¡tÃ©k vÃ©ge"
 
 #: ../client/gtk/gameover.c:49
 #, c-format
 msgid "%s has won the game with %d victory points!"
-msgstr "%s megnyerte a játékot, %d ponttal!"
+msgstr "%s megnyerte a jÃ¡tÃ©kot, %d ponttal!"
 
 #: ../client/gtk/gameover.c:52
 #, c-format
 msgid "%s has won the game with %d victory points!\n"
-msgstr "%s megnyerte a játékot, %d ponttal!\n"
+msgstr "%s megnyerte a jÃ¡tÃ©kot, %d ponttal!\n"
 
 #: ../client/gtk/gameover.c:58
 #, c-format
 msgid "All praise %s, Lord of the known world!"
-msgstr "%s minden elismerésünk. Te vagy a világ ura!"
+msgstr "%s minden elismerÃ©sÃ¼nk. Te vagy a vilÃ¡g ura!"
 
 #: ../client/gtk/gold.c:71
 msgid "Choose resources"
-msgstr "Válassz nyersanyagokat"
+msgstr "VÃ¡lassz nyersanyagokat"
 
 #: ../client/gtk/gold.c:92
 #, c-format
 msgid "You may choose 1 resource"
-msgstr "Választhatsz egy nyersanyagot"
+msgstr "VÃ¡laszthatsz egy nyersanyagot"
 
 #: ../client/gtk/gold.c:94
 #, c-format
 msgid "You may choose %d resources"
-msgstr "Választhatsz %d db nyersanyagot"
+msgstr "VÃ¡laszthatsz %d db nyersanyagot"
 
 #. Text for total in choose gold dialog
 #. Text for total in year of plenty dialog
 #: ../client/gtk/gold.c:101 ../client/gtk/plenty.c:98
 msgid "Total resources"
-msgstr "Összes nyersanyag"
+msgstr "Ã–sszes nyersanyag"
 
 #: ../client/gtk/gold.c:213
 msgid "<b>Waiting for players to choose</b>"
-msgstr "<b>Várunk a játékosokra, hogy válasszanak</b>"
+msgstr "<b>VÃ¡runk a jÃ¡tÃ©kosokra, hogy vÃ¡lasszanak</b>"
 
 #: ../client/gtk/gui.c:213 ../server/gtk/main.c:98
 msgid "_Game"
-msgstr "_Játék"
+msgstr "_JÃ¡tÃ©k"
 
 #: ../client/gtk/gui.c:214
 msgid "_New game"
-msgstr "Új já_ték"
+msgstr "Ãšj jÃ¡_tÃ©k"
 
 #: ../client/gtk/gui.c:216
 msgid "_Leave game"
-msgstr "Játék _elhagyása"
+msgstr "JÃ¡tÃ©k _elhagyÃ¡sa"
 
 #: ../client/gtk/gui.c:217
 msgid "Leave this game"
-msgstr "Játék elhagyása"
+msgstr "JÃ¡tÃ©k elhagyÃ¡sa"
 
 #: ../client/gtk/gui.c:219
 msgid "_Admin"
-msgstr "_Adminsztárció"
+msgstr "_AdminsztÃ¡rciÃ³"
 
 #: ../client/gtk/gui.c:220
 msgid "Administer Pioneers server"
-msgstr "Pioneers szerver adminisztrálás"
+msgstr "Pioneers szerver adminisztrÃ¡lÃ¡s"
 
 #: ../client/gtk/gui.c:222
 msgid "_Player name"
-msgstr "Játékos _neve"
+msgstr "JÃ¡tÃ©kos _neve"
 
 #: ../client/gtk/gui.c:223
 msgid "Change your player name"
-msgstr "Játékos neved módostása"
+msgstr "JÃ¡tÃ©kos neved mÃ³dostÃ¡sa"
 
 #: ../client/gtk/gui.c:224
 msgid "_Legend"
-msgstr "_Jelmagyarázat"
+msgstr "_JelmagyarÃ¡zat"
 
 #: ../client/gtk/gui.c:225
 msgid "Terrain legend and building costs"
-msgstr "Táj magyarázat és építmény árak"
+msgstr "TÃ¡j magyarÃ¡zat Ã©s Ã©pÃ­tmÃ©ny Ã¡rak"
 
 #: ../client/gtk/gui.c:226
 msgid "_Game Settings"
-msgstr "_Játék beállítások"
+msgstr "_JÃ¡tÃ©k beÃ¡llÃ­tÃ¡sok"
 
 #: ../client/gtk/gui.c:227
 msgid "Settings for the current game"
-msgstr "Aktuális játék beállitásai"
+msgstr "AktuÃ¡lis jÃ¡tÃ©k beÃ¡llitÃ¡sai"
 
 #: ../client/gtk/gui.c:228
 msgid "_Dice Histogram"
-msgstr "_Dobás statisztika"
+msgstr "_DobÃ¡s statisztika"
 
 #: ../client/gtk/gui.c:229
 msgid "Histogram of dice rolls"
-msgstr "Kocka dobások statisztikája"
+msgstr "Kocka dobÃ¡sok statisztikÃ¡ja"
 
 #: ../client/gtk/gui.c:230 ../editor/gtk/editor.c:1018
 #: ../server/gtk/main.c:103
 msgid "_Quit"
-msgstr "_Kilépés"
+msgstr "_KilÃ©pÃ©s"
 
 #: ../client/gtk/gui.c:231 ../server/gtk/main.c:104
 msgid "Quit the program"
-msgstr "Kilépés a programból"
+msgstr "KilÃ©pÃ©s a programbÃ³l"
 
 #: ../client/gtk/gui.c:232
 msgid "_Actions"
-msgstr "_Tevékenység"
+msgstr "_TevÃ©kenysÃ©g"
 
 #: ../client/gtk/gui.c:233
 msgid "Roll Dice"
-msgstr "Kocka dobás"
+msgstr "Kocka dobÃ¡s"
 
 #: ../client/gtk/gui.c:234
 msgid "Roll the dice"
-msgstr "A kocka dobása"
+msgstr "A kocka dobÃ¡sa"
 
 #. Tab page name
 #: ../client/gtk/gui.c:235 ../client/gtk/gui.c:577
@@ -1385,46 +1385,46 @@ msgstr "Kereskedelem"
 
 #: ../client/gtk/gui.c:237
 msgid "Undo"
-msgstr "Visszavonás"
+msgstr "VisszavonÃ¡s"
 
 #: ../client/gtk/gui.c:238 ../client/gtk/gui.c:239
 msgid "Finish"
-msgstr "Kész"
+msgstr "KÃ©sz"
 
 #: ../client/gtk/gui.c:240 ../client/gtk/legend.c:226
 #: ../editor/gtk/game-buildings.c:13
 msgid "Road"
-msgstr "Út"
+msgstr "Ãšt"
 
 #: ../client/gtk/gui.c:241
 msgid "Build a road"
-msgstr "Út építés"
+msgstr "Ãšt Ã©pÃ­tÃ©s"
 
 #: ../client/gtk/gui.c:242 ../client/gtk/legend.c:230
 #: ../editor/gtk/game-buildings.c:13
 msgid "Ship"
-msgstr "Hajó"
+msgstr "HajÃ³"
 
 #: ../client/gtk/gui.c:243
 msgid "Build a ship"
-msgstr "Hajó építés"
+msgstr "HajÃ³ Ã©pÃ­tÃ©s"
 
 #: ../client/gtk/gui.c:244
 msgid "Move Ship"
-msgstr "Hajó mozgatás"
+msgstr "HajÃ³ mozgatÃ¡s"
 
 #: ../client/gtk/gui.c:245
 msgid "Move a ship"
-msgstr "Hajó mozgatás"
+msgstr "HajÃ³ mozgatÃ¡s"
 
 #: ../client/gtk/gui.c:246 ../client/gtk/legend.c:233
 #: ../editor/gtk/game-buildings.c:13
 msgid "Bridge"
-msgstr "Híd"
+msgstr "HÃ­d"
 
 #: ../client/gtk/gui.c:247
 msgid "Build a bridge"
-msgstr "Híd építés"
+msgstr "HÃ­d Ã©pÃ­tÃ©s"
 
 #: ../client/gtk/gui.c:248 ../client/gtk/legend.c:235
 #: ../client/gtk/player.c:52 ../editor/gtk/game-buildings.c:13
@@ -1433,174 +1433,174 @@ msgstr "Falu"
 
 #: ../client/gtk/gui.c:249
 msgid "Build a settlement"
-msgstr "Falu építés"
+msgstr "Falu Ã©pÃ­tÃ©s"
 
 #: ../client/gtk/gui.c:250 ../client/gtk/legend.c:236
 #: ../client/gtk/player.c:53 ../editor/gtk/game-buildings.c:14
 msgid "City"
-msgstr "Város"
+msgstr "VÃ¡ros"
 
 #: ../client/gtk/gui.c:251
 msgid "Build a city"
-msgstr "Város építés"
+msgstr "VÃ¡ros Ã©pÃ­tÃ©s"
 
 #: ../client/gtk/gui.c:252
 msgid "Develop"
-msgstr "Fejlesztés"
+msgstr "FejlesztÃ©s"
 
 #: ../client/gtk/gui.c:253
 msgid "Buy a development card"
-msgstr "Fejlesztés kártya vásárlás"
+msgstr "FejlesztÃ©s kÃ¡rtya vÃ¡sÃ¡rlÃ¡s"
 
 #: ../client/gtk/gui.c:254 ../client/gtk/legend.c:240
 #: ../client/gtk/player.c:54 ../editor/gtk/game-buildings.c:14
 msgid "City Wall"
-msgstr "Város fal"
+msgstr "VÃ¡ros fal"
 
 #: ../client/gtk/gui.c:255
 msgid "Build a city wall"
-msgstr "Város építés"
+msgstr "VÃ¡ros Ã©pÃ­tÃ©s"
 
 #: ../client/gtk/gui.c:257
 msgid "_Settings"
-msgstr "_Beállítások"
+msgstr "_BeÃ¡llÃ­tÃ¡sok"
 
 #: ../client/gtk/gui.c:258
 msgid "Prefere_nces"
-msgstr "_Beállítások"
+msgstr "_BeÃ¡llÃ­tÃ¡sok"
 
 #: ../client/gtk/gui.c:259
 msgid "Configure the application"
-msgstr "Program konfigurálás"
+msgstr "Program konfigurÃ¡lÃ¡s"
 
 #: ../client/gtk/gui.c:261 ../client/gtk/gui.c:265 ../editor/gtk/editor.c:1002
 #: ../server/gtk/main.c:99
 msgid "_Help"
-msgstr "_Súgó"
+msgstr "_SÃºgÃ³"
 
 #: ../client/gtk/gui.c:262
 msgid "_About Pioneers"
-msgstr "Pioneers _névjegy"
+msgstr "Pioneers _nÃ©vjegy"
 
 #: ../client/gtk/gui.c:263
 msgid "Information about Pioneers"
-msgstr "Információ a Pioneersrõl"
+msgstr "InformÃ¡ciÃ³ a PioneersrÅ‘l"
 
 #: ../client/gtk/gui.c:266 ../client/gtk/gui.c:1065
 msgid "Show the manual"
-msgstr "Kézikönyv"
+msgstr "KÃ©zikÃ¶nyv"
 
 #: ../client/gtk/gui.c:272
 msgid "_Toolbar"
-msgstr "_Eszköztár"
+msgstr "_EszkÃ¶ztÃ¡r"
 
 #: ../client/gtk/gui.c:273
 msgid "Show or hide the toolbar"
-msgstr "Eszköztár megjelenítése vagy elrejtése"
+msgstr "EszkÃ¶ztÃ¡r megjelenÃ­tÃ©se vagy elrejtÃ©se"
 
 #. Victory points target in statusbar
 #: ../client/gtk/gui.c:368
 #, c-format
 msgid "Points Needed to Win: %i"
-msgstr "Nyeréshez szükséges pontok: %i"
+msgstr "NyerÃ©shez szÃ¼ksÃ©ges pontok: %i"
 
 #: ../client/gtk/gui.c:454
 msgid "<b>Messages</b>"
-msgstr "<b>Üzenetek</b>"
+msgstr "<b>Ãœzenetek</b>"
 
 #. Tab page name
 #: ../client/gtk/gui.c:571 ../editor/gtk/editor.c:1165
 msgid "Map"
-msgstr "Térkép"
+msgstr "TÃ©rkÃ©p"
 
 #. Tab page name
 #: ../client/gtk/gui.c:585 ../client/gtk/quote.c:306
 msgid "Quote"
-msgstr "Kínál"
+msgstr "KÃ­nÃ¡l"
 
 #. Tab page name
 #: ../client/gtk/gui.c:593 ../client/gtk/legend.c:261
 msgid "Legend"
-msgstr "Jelmagyarázat"
+msgstr "JelmagyarÃ¡zat"
 
 #. Tab page name, shown for the splash screen
 #: ../client/gtk/gui.c:603
 msgid "Welcome to Pioneers"
-msgstr "Üdvözlünk a Pioneersban"
+msgstr "ÃœdvÃ¶zlÃ¼nk a Pioneersban"
 
 #: ../client/gtk/gui.c:868
 msgid "Pioneers Preferences"
-msgstr "Pioneers beállítások"
+msgstr "Pioneers beÃ¡llÃ­tÃ¡sok"
 
 #. Label for changing the theme, in the preferences dialog
 #: ../client/gtk/gui.c:898
 msgid "Theme:"
-msgstr "Téma:"
+msgstr "TÃ©ma:"
 
 #: ../client/gtk/gui.c:921
 msgid "Choose one of the themes"
-msgstr "Válassz egyett a témák közül"
+msgstr "VÃ¡lassz egyett a tÃ©mÃ¡k kÃ¶zÃ¼l"
 
 #. Label for the option to show the legend
 #: ../client/gtk/gui.c:925
 msgid "Show legend"
-msgstr "Jelmagyarázat megjelenítése"
+msgstr "JelmagyarÃ¡zat megjelenÃ­tÃ©se"
 
 #. Tooltip for the option to show the legend
 #: ../client/gtk/gui.c:935
 msgid "Show the legend as a page beside the map"
-msgstr "Jelmagyarázat megjelenítése a térkép mellett"
+msgstr "JelmagyarÃ¡zat megjelenÃ­tÃ©se a tÃ©rkÃ©p mellett"
 
 #. Label for the option to display log messages in color
 #: ../client/gtk/gui.c:940
 msgid "Messages with color"
-msgstr "Színes üzenetek"
+msgstr "SzÃ­nes Ã¼zenetek"
 
 #: ../client/gtk/gui.c:950
 msgid "Show new messages with color"
-msgstr "Új üzenetek megjelenítése színesen"
+msgstr "Ãšj Ã¼zenetek megjelenÃ­tÃ©se szÃ­nesen"
 
 #: ../client/gtk/gui.c:955
 msgid "Chat in color of player"
-msgstr "Játékosok üzenetei színesen"
+msgstr "JÃ¡tÃ©kosok Ã¼zenetei szÃ­nesen"
 
 #: ../client/gtk/gui.c:966
 msgid "Show new chat messages in the color of the player"
-msgstr "Új üzenetek megjelenítése a játékosok színével"
+msgstr "Ãšj Ã¼zenetek megjelenÃ­tÃ©se a jÃ¡tÃ©kosok szÃ­nÃ©vel"
 
 #. Label for the option to display the summary with colors
 #: ../client/gtk/gui.c:971
 msgid "Summary with color"
-msgstr "Összesítés színesben"
+msgstr "Ã–sszesÃ­tÃ©s szÃ­nesben"
 
 #: ../client/gtk/gui.c:982
 msgid "Use colors in the player summary"
-msgstr "Színek használata a játékos összesítésben"
+msgstr "SzÃ­nek hasznÃ¡lata a jÃ¡tÃ©kos Ã¶sszesÃ­tÃ©sben"
 
 #: ../client/gtk/gui.c:987
 msgid "Toolbar with shortcuts"
-msgstr "Eszköztár gyorsbillentyûkkel"
+msgstr "EszkÃ¶ztÃ¡r gyorsbillentyÅ±kkel"
 
 #: ../client/gtk/gui.c:997
 msgid "Show keyboard shortcuts in the toolbar"
-msgstr "Gyorsbillentyûk megjelenítése az eszköztáron"
+msgstr "GyorsbillentyÅ±k megjelenÃ­tÃ©se az eszkÃ¶ztÃ¡ron"
 
 #: ../client/gtk/gui.c:1003
 msgid "Announce new players"
-msgstr "Új játékosok jelzése"
+msgstr "Ãšj jÃ¡tÃ©kosok jelzÃ©se"
 
 #: ../client/gtk/gui.c:1014
 msgid "Make a sound when a new player or viewer enters the game"
-msgstr "Hangjelzés, amikor egy új játékos vagy szemlélõ belép a játékba"
+msgstr "HangjelzÃ©s, amikor egy Ãºj jÃ¡tÃ©kos vagy szemlÃ©lÅ‘ belÃ©p a jÃ¡tÃ©kba"
 
 #. Label for the option to use the 16:9 layout.
 #: ../client/gtk/gui.c:1019
 msgid "Use 16:9 layout"
-msgstr "16:9-es elrendezés"
+msgstr "16:9-es elrendezÃ©s"
 
 #: ../client/gtk/gui.c:1030
 msgid "Use a 16:9 friendly layout for the window"
-msgstr "Elrendezés 16:9-es ablakhoz"
+msgstr "ElrendezÃ©s 16:9-es ablakhoz"
 
 #: ../client/gtk/gui.c:1041
 msgid "The Pioneers Game"
@@ -1609,7 +1609,7 @@ msgstr "Pioneers"
 #. Initial text in status bar
 #: ../client/gtk/gui.c:1352
 msgid "Welcome to Pioneers!"
-msgstr "Üdvözlünk a Pioneersban!"
+msgstr "ÃœdvÃ¶zlÃ¼nk a Pioneersban!"
 
 #. The name of the application
 #: ../client/gtk/gui.c:1463
@@ -1618,27 +1618,27 @@ msgstr "Pioneers"
 
 #: ../client/gtk/histogram.c:252
 msgid "Dice Histogram"
-msgstr "Dobás statisztka"
+msgstr "DobÃ¡s statisztka"
 
 #: ../client/gtk/interface.c:92
 msgid "Ship movement canceled."
-msgstr "Hajó mozgás törölve."
+msgstr "HajÃ³ mozgÃ¡s tÃ¶rÃ¶lve."
 
 #: ../client/gtk/interface.c:100 ../client/gtk/interface.c:101
 msgid "Select a new location for the ship."
-msgstr "Válaszd ki a hajó új helyét."
+msgstr "VÃ¡laszd ki a hajÃ³ Ãºj helyÃ©t."
 
 #: ../client/gtk/interface.c:740
 msgid "Select the ship to steal from"
 msgstr ""
-"Válaszd ki a hajót\n"
-"akitõl lopni szeretnél"
+"VÃ¡laszd ki a hajÃ³t\n"
+"akitÅ‘l lopni szeretnÃ©l"
 
 #: ../client/gtk/interface.c:750
 msgid "Select the building to steal from"
 msgstr ""
-"Válaszd ki az épületet\n"
-"akitõl lopni szeretnél"
+"VÃ¡laszd ki az Ã©pÃ¼letet\n"
+"akitÅ‘l lopni szeretnÃ©l"
 
 #: ../client/gtk/legend.c:32
 msgid "Hill"
@@ -1646,7 +1646,7 @@ msgstr "Domb"
 
 #: ../client/gtk/legend.c:33
 msgid "Field"
-msgstr "Szántóföld"
+msgstr "SzÃ¡ntÃ³fÃ¶ld"
 
 #: ../client/gtk/legend.c:34
 msgid "Mountain"
@@ -1654,11 +1654,11 @@ msgstr "Hegy"
 
 #: ../client/gtk/legend.c:35
 msgid "Pasture"
-msgstr "Legelõ"
+msgstr "LegelÅ‘"
 
 #: ../client/gtk/legend.c:36
 msgid "Forest"
-msgstr "Erdõ"
+msgstr "ErdÅ‘"
 
 #: ../client/gtk/legend.c:37
 msgid "Desert"
@@ -1670,27 +1670,27 @@ msgstr "Tenger"
 
 #: ../client/gtk/legend.c:170
 msgid "<b>Terrain Yield</b>"
-msgstr "<b>Vidék hozama:</b>"
+msgstr "<b>VidÃ©k hozama:</b>"
 
 #: ../client/gtk/legend.c:202
 msgid "<b>Building Costs</b>"
-msgstr "<b>Építmény árak:</b>"
+msgstr "<b>Ã‰pÃ­tmÃ©ny Ã¡rak:</b>"
 
 #: ../client/gtk/legend.c:243
 msgid "Development Card"
-msgstr "Fejlesztés kártya"
+msgstr "FejlesztÃ©s kÃ¡rtya"
 
 #: ../client/gtk/monopoly.c:105
 msgid "Select the resource you wish to monopolise."
-msgstr "Válassz monopól nyersanyagot"
+msgstr "VÃ¡lassz monopÃ³l nyersanyagot"
 
 #: ../client/gtk/name.c:123
 msgid "Change player name"
-msgstr "Játékos név módosítása"
+msgstr "JÃ¡tÃ©kos nÃ©v mÃ³dosÃ­tÃ¡sa"
 
 #: ../client/gtk/name.c:146
 msgid "Player Name:"
-msgstr "Játékos neve:"
+msgstr "JÃ¡tÃ©kos neve:"
 
 #. Set icon preferences
 #: ../client/gtk/name.c:202
@@ -1699,16 +1699,16 @@ msgstr "Arc:"
 
 #: ../client/gtk/name.c:217
 msgid "Variant:"
-msgstr "Változat:"
+msgstr "VÃ¡ltozat:"
 
 #. Commandline option of client: name of the player
 #: ../client/gtk/offline.c:59
 msgid "Player name"
-msgstr "Játékos neve"
+msgstr "JÃ¡tÃ©kos neve"
 
 #: ../client/gtk/offline.c:63
 msgid "Connect as a viewer"
-msgstr "Csatlakozás szemlélõként"
+msgstr "CsatlakozÃ¡s szemlÃ©lÅ‘kÃ©nt"
 
 #: ../client/gtk/offline.c:66
 msgid "Meta-server Host"
@@ -1716,16 +1716,16 @@ msgstr "Meta-szerver host"
 
 #: ../client/gtk/offline.c:70
 msgid "Override the language of the system"
-msgstr "A rendszer nyelvének felülbírálása"
+msgstr "A rendszer nyelvÃ©nek felÃ¼lbÃ­rÃ¡lÃ¡sa"
 
 #: ../client/gtk/offline.c:100
 msgid "Connecting"
-msgstr "Kapcsolódás"
+msgstr "KapcsolÃ³dÃ¡s"
 
 #. Long description in the commandline for pioneers: help
 #: ../client/gtk/offline.c:175
 msgid "- Play a game of Pioneers"
-msgstr "- Játzs egy játékot a  Pioneers-vel"
+msgstr "- JÃ¡tzs egy jÃ¡tÃ©kot a  Pioneers-vel"
 
 #: ../client/gtk/player.c:52
 msgid "Settlements"
@@ -1733,11 +1733,11 @@ msgstr "Falu"
 
 #: ../client/gtk/player.c:53
 msgid "Cities"
-msgstr "Városok"
+msgstr "VÃ¡rosok"
 
 #: ../client/gtk/player.c:54
 msgid "City Walls"
-msgstr "Város falak"
+msgstr "VÃ¡ros falak"
 
 #: ../client/gtk/player.c:55
 msgid "Largest Army"
@@ -1745,11 +1745,11 @@ msgstr "Legnagyobb hadsereg"
 
 #: ../client/gtk/player.c:56
 msgid "Longest Road"
-msgstr "Leghosszab út"
+msgstr "Leghosszab Ãºt"
 
 #: ../client/gtk/player.c:57
 msgid "Chapels"
-msgstr "Kápolnák"
+msgstr "KÃ¡polnÃ¡k"
 
 #: ../client/gtk/player.c:58
 msgid "Pioneer Universities"
@@ -1757,11 +1757,11 @@ msgstr "Pioneer egyetemek"
 
 #: ../client/gtk/player.c:60
 msgid "Governor's Houses"
-msgstr "Kormányzó házak"
+msgstr "KormÃ¡nyzÃ³ hÃ¡zak"
 
 #: ../client/gtk/player.c:61
 msgid "Libraries"
-msgstr "Könyvtárak"
+msgstr "KÃ¶nyvtÃ¡rak"
 
 #: ../client/gtk/player.c:62
 msgid "Markets"
@@ -1769,73 +1769,73 @@ msgstr "Piacok"
 
 #: ../client/gtk/player.c:63
 msgid "Soldiers"
-msgstr "Katonák"
+msgstr "KatonÃ¡k"
 
 #: ../client/gtk/player.c:64
 msgid "Resource card"
-msgstr "Nyersanyag kártya"
+msgstr "Nyersanyag kÃ¡rtya"
 
 #: ../client/gtk/player.c:64
 msgid "Resource cards"
-msgstr "Nyersanyag kártya"
+msgstr "Nyersanyag kÃ¡rtya"
 
 #: ../client/gtk/player.c:65
 msgid "Development card"
-msgstr "Fejlesztés kártya"
+msgstr "FejlesztÃ©s kÃ¡rtya"
 
 #: ../client/gtk/player.c:65
 msgid "Development cards"
-msgstr "Fejlesztés kártyák"
+msgstr "FejlesztÃ©s kÃ¡rtyÃ¡k"
 
 #. Caption for the overview of the points and card of other players
 #: ../client/gtk/player.c:561
 msgid "<b>Player Summary</b>"
-msgstr "<b>Játékos összesítés</b>"
+msgstr "<b>JÃ¡tÃ©kos Ã¶sszesÃ­tÃ©s</b>"
 
 #: ../client/gtk/plenty.c:87
 msgid "Please choose one resource from the bank"
-msgstr "Válassz két nyersanyagot a bankból"
+msgstr "VÃ¡lassz kÃ©t nyersanyagot a bankbÃ³l"
 
 #: ../client/gtk/plenty.c:90
 msgid "Please choose two resources from the bank"
-msgstr "Válassz két nyersanyagot a bankból"
+msgstr "VÃ¡lassz kÃ©t nyersanyagot a bankbÃ³l"
 
 #: ../client/gtk/plenty.c:92
 msgid "The bank is empty"
-msgstr "A bank üres"
+msgstr "A bank Ã¼res"
 
 #: ../client/gtk/quote.c:186
 #, c-format
 msgid "%s has %s, and is looking for %s"
-msgstr "%s kínál %s nyersanyagot, és cserébe szeretne %s nyersanyagot"
+msgstr "%s kÃ­nÃ¡l %s nyersanyagot, Ã©s cserÃ©be szeretne %s nyersanyagot"
 
 #: ../client/gtk/quote.c:287
 msgid "I Want"
-msgstr "Szeretnék"
+msgstr "SzeretnÃ©k"
 
 #: ../client/gtk/quote.c:295
 msgid "Give Them"
-msgstr "Adok érte"
+msgstr "Adok Ã©rte"
 
 #: ../client/gtk/quote.c:311
 msgid "Delete"
-msgstr "Törlés"
+msgstr "TÃ¶rlÃ©s"
 
 #: ../client/gtk/quote.c:335
 msgid "Reject Domestic Trade"
-msgstr "Elutasított belsõ üzlet"
+msgstr "ElutasÃ­tott belsÅ‘ Ã¼zlet"
 
 #. Now create columns
 #. Table header: Player who trades
 #. Role of the player: player
 #: ../client/gtk/quote-view.c:170 ../server/gtk/main.c:513
 msgid "Player"
-msgstr "Játékos"
+msgstr "JÃ¡tÃ©kos"
 
 #. Table header: Quote
 #: ../client/gtk/quote-view.c:185
 msgid "Quotes"
-msgstr "Ajánlatok"
+msgstr "AjÃ¡nlatok"
 
 #. trade: maritime quote: %1 resources of type %2 for
 #. * one resource of type %3
@@ -1847,7 +1847,7 @@ msgstr "%d:1 %s:%s"
 #. Trade: a player has rejected trade
 #: ../client/gtk/quote-view.c:431
 msgid "Rejected trade"
-msgstr "Elutasított üzlet"
+msgstr "ElutasÃ­tott Ã¼zlet"
 
 #. Caption for overview of the resources of the player
 #: ../client/gtk/resource.c:113
@@ -1856,12 +1856,12 @@ msgstr "<b>Nyersanyagok</b>"
 
 #: ../client/gtk/resource.c:129
 msgid "Total"
-msgstr "Összes"
+msgstr "Ã–sszes"
 
 #. Tooltip for the amount of resources in the hand
 #: ../client/gtk/resource-table.c:187
 msgid "Amount in hand"
-msgstr "Összeg a kézben"
+msgstr "Ã–sszeg a kÃ©zben"
 
 #: ../client/gtk/resource-table.c:191
 msgid "<less"
@@ -1870,35 +1870,35 @@ msgstr "<kevesebb"
 #. Tooltip for decreasing the selected amount
 #: ../client/gtk/resource-table.c:201
 msgid "Decrease the selected amount"
-msgstr "Kiválasztott mennyiség csökkentése"
+msgstr "KivÃ¡lasztott mennyisÃ©g csÃ¶kkentÃ©se"
 
 #. Tooltip for the amount of resources in the bank
 #: ../client/gtk/resource-table.c:215
 msgid "Amount in the bank"
-msgstr "Összeg a bankban"
+msgstr "Ã–sszeg a bankban"
 
 #: ../client/gtk/resource-table.c:219
 msgid "more>"
-msgstr ">több"
+msgstr ">tÃ¶bb"
 
 #. Tooltip for increasing the selected amount
 #: ../client/gtk/resource-table.c:231
 msgid "Increase the selected amount"
-msgstr "Kiválasztott mennyiség növelése"
+msgstr "KivÃ¡lasztott mennyisÃ©g nÃ¶velÃ©se"
 
 #. Tooltip for the selected amount
 #: ../client/gtk/resource-table.c:248
 msgid "Selected amount"
-msgstr "Kiválasztott összeg"
+msgstr "KivÃ¡lasztott Ã¶sszeg"
 
 #. Tooltip for the total selected amount
 #: ../client/gtk/resource-table.c:293
 msgid "Total selected amount"
-msgstr "Összes kválasztott összeg"
+msgstr "Ã–sszes kvÃ¡lasztott Ã¶sszeg"
 
 #: ../client/gtk/resource-table.c:314
 msgid "The bank cannot be emptied"
-msgstr "A bank nem lehet üres"
+msgstr "A bank nem lehet Ã¼res"
 
 #: ../client/gtk/settingscreen.c:74
 msgid "Yes"
@@ -1914,51 +1914,51 @@ msgstr "Ismeretlen"
 
 #: ../client/gtk/settingscreen.c:121
 msgid "No game in progress..."
-msgstr "Nincs játék folyamatban..."
+msgstr "Nincs jÃ¡tÃ©k folyamatban..."
 
 #: ../client/gtk/settingscreen.c:131
 msgid "<b>General Settings</b>"
-msgstr "<b>Általános beállítások</b>"
+msgstr "<b>ÃltalÃ¡nos beÃ¡llÃ­tÃ¡sok</b>"
 
 #: ../client/gtk/settingscreen.c:147
 msgid "Number of players:"
-msgstr "Játékosok száma:"
+msgstr "JÃ¡tÃ©kosok szÃ¡ma:"
 
 #: ../client/gtk/settingscreen.c:150
 msgid "Victory Point Target:"
-msgstr "Nyerõ pont:"
+msgstr "NyerÅ‘ pont:"
 
 #: ../client/gtk/settingscreen.c:153
 msgid "Random Terrain?"
-msgstr "Véletlen táj?"
+msgstr "VÃ©letlen tÃ¡j?"
 
 #: ../client/gtk/settingscreen.c:156
 msgid "Interplayer Trading Allowed?"
-msgstr "Játékosok közötti üzlet engedélyezett?"
+msgstr "JÃ¡tÃ©kosok kÃ¶zÃ¶tti Ã¼zlet engedÃ©lyezett?"
 
 #: ../client/gtk/settingscreen.c:160
 msgid "Trading allowed only before build/buy?"
-msgstr "Kereskedés csak építkezés / vásálás elõtt?"
+msgstr "KereskedÃ©s csak Ã©pÃ­tkezÃ©s / vÃ¡sÃ¡lÃ¡s elÅ‘tt?"
 
 #: ../client/gtk/settingscreen.c:163
 msgid "Amount of Each Resource:"
-msgstr "Összes nyersanyag száma:"
+msgstr "Ã–sszes nyersanyag szÃ¡ma:"
 
 #: ../client/gtk/settingscreen.c:177
 msgid "Sevens Rule:"
-msgstr "Hetes szabály:"
+msgstr "Hetes szabÃ¡ly:"
 
 #: ../client/gtk/settingscreen.c:181
 msgid "Use Pirate:"
-msgstr "Kalóz használat:"
+msgstr "KalÃ³z hasznÃ¡lat:"
 
 #: ../client/gtk/settingscreen.c:209
 msgid "Island Discovery Bonuses:"
-msgstr "Sziget felfedezés bónuszok:"
+msgstr "Sziget felfedezÃ©s bÃ³nuszok:"
 
 #: ../client/gtk/settingscreen.c:224
 msgid "<b>Building Quotas</b>"
-msgstr "<b>Épület árak</b>"
+msgstr "<b>Ã‰pÃ¼let Ã¡rak</b>"
 
 #: ../client/gtk/settingscreen.c:241
 msgid "Roads:"
@@ -1970,15 +1970,15 @@ msgstr "Falvak:"
 
 #: ../client/gtk/settingscreen.c:253
 msgid "Cities:"
-msgstr "Városok"
+msgstr "VÃ¡rosok"
 
 #: ../client/gtk/settingscreen.c:259
 msgid "City Walls:"
-msgstr "Város falak:"
+msgstr "VÃ¡ros falak:"
 
 #: ../client/gtk/settingscreen.c:265
 msgid "Ships:"
-msgstr "Hajók:"
+msgstr "HajÃ³k:"
 
 #: ../client/gtk/settingscreen.c:271
 msgid "Bridges:"
@@ -1986,53 +1986,53 @@ msgstr "Hidak:"
 
 #: ../client/gtk/settingscreen.c:283
 msgid "<b>Development Card Deck</b>"
-msgstr "<b>Fejlesztés kátyák</b>"
+msgstr "<b>FejlesztÃ©s kÃ¡tyÃ¡k</b>"
 
 #: ../client/gtk/settingscreen.c:299
 msgid "Road Building Cards:"
-msgstr "Útépítõ kártyák:"
+msgstr "ÃštÃ©pÃ­tÅ‘ kÃ¡rtyÃ¡k:"
 
 #: ../client/gtk/settingscreen.c:303
 msgid "Monopoly Cards:"
-msgstr "Monopólium kártyák:"
+msgstr "MonopÃ³lium kÃ¡rtyÃ¡k:"
 
 #: ../client/gtk/settingscreen.c:307
 msgid "Year of Plenty Cards:"
-msgstr "Bõség éve kártyák:"
+msgstr "BÅ‘sÃ©g Ã©ve kÃ¡rtyÃ¡k:"
 
 #: ../client/gtk/settingscreen.c:312
 msgid "Chapel Cards:"
-msgstr "Kápolna kártyák:"
+msgstr "KÃ¡polna kÃ¡rtyÃ¡k:"
 
 #: ../client/gtk/settingscreen.c:316
 msgid "Pioneer University Cards:"
-msgstr "Pioneer egyetem kártyák:"
+msgstr "Pioneer egyetem kÃ¡rtyÃ¡k:"
 
 #: ../client/gtk/settingscreen.c:320
 msgid "Governor's House Cards:"
-msgstr "Kormányzók háza kártyák:"
+msgstr "KormÃ¡nyzÃ³k hÃ¡za kÃ¡rtyÃ¡k:"
 
 #: ../client/gtk/settingscreen.c:325
 msgid "Library Cards:"
-msgstr "Könyvtár kártyák:"
+msgstr "KÃ¶nyvtÃ¡r kÃ¡rtyÃ¡k:"
 
 #: ../client/gtk/settingscreen.c:329
 msgid "Market Cards:"
-msgstr "Piac kártyák:"
+msgstr "Piac kÃ¡rtyÃ¡k:"
 
 #: ../client/gtk/settingscreen.c:333
 msgid "Soldier Cards:"
-msgstr "Katona kártyák:"
+msgstr "Katona kÃ¡rtyÃ¡k:"
 
 #: ../client/gtk/settingscreen.c:370
 msgid "Current Game Settings"
-msgstr "Aktuális játék beállítások"
+msgstr "AktuÃ¡lis jÃ¡tÃ©k beÃ¡llÃ­tÃ¡sok"
 
 #. trade: you ask for something for free
 #: ../client/gtk/trade.c:193
 #, c-format
 msgid "ask for %s for free"
-msgstr "%s nyersanyagot kérek ingyen"
+msgstr "%s nyersanyagot kÃ©rek ingyen"
 
 #. trade: you give something away for free
 #: ../client/gtk/trade.c:198
@@ -2044,46 +2044,46 @@ msgstr "Adok %s ingyen"
 #: ../client/gtk/trade.c:203
 #, c-format
 msgid "give %s for %s"
-msgstr "Ad %s kér %s"
+msgstr "Ad %s kÃ©r %s"
 
 #. I want some resources, and give them some resources
 #: ../client/gtk/trade.c:230
 #, c-format
 msgid "I want %s, and give them %s"
-msgstr "Szeretnék %s nyersanyagot, cserébe adok %s nyersanyagot"
+msgstr "SzeretnÃ©k %s nyersanyagot, cserÃ©be adok %s nyersanyagot"
 
 #. Frame title, trade: I want to trade these resources
 #: ../client/gtk/trade.c:427
 msgid "<b>I Want</b>"
-msgstr "<b>Szeretnék</b>"
+msgstr "<b>SzeretnÃ©k</b>"
 
 #. Frame title, trade: I want these resources in return
 #: ../client/gtk/trade.c:455
 msgid "<b>Give Them</b>"
-msgstr "<b>Adok érte</b>"
+msgstr "<b>Adok Ã©rte</b>"
 
 #. Button text, trade: call for quotes from other players
 #: ../client/gtk/trade.c:484
 msgid "_Call for Quotes"
-msgstr "_Ajánlatot kér"
+msgstr "_AjÃ¡nlatot kÃ©r"
 
 #. Button text: Trade page, accept selected quote
 #: ../client/gtk/trade.c:512
 msgid "_Accept Quote"
-msgstr "_Ajánlat elfogadása"
+msgstr "_AjÃ¡nlat elfogadÃ¡sa"
 
 #. Button text: Trade page, finish trading
 #: ../client/gtk/trade.c:518
 msgid "_Finish Trading"
-msgstr "_Kereskedés befejezése"
+msgstr "_KereskedÃ©s befejezÃ©se"
 
 #: ../common/gtk/aboutbox.c:74
 msgid ""
 "Pioneers is based upon the excellent\n"
 "Settlers of Catan board game.\n"
 msgstr ""
-"A Pioneers a kíváló táblajáték a\n"
-"Catan telepesei alapján készült.\n"
+"A Pioneers a kÃ­vÃ¡lÃ³ tÃ¡blajÃ¡tÃ©k a\n"
+"Catan telepesei alapjÃ¡n kÃ©szÃ¼lt.\n"
 
 #: ../common/gtk/aboutbox.c:83
 msgid "Homepage"
@@ -2091,78 +2091,78 @@ msgstr "Honlap"
 
 #: ../common/gtk/aboutbox.c:88
 msgid "Authors"
-msgstr "Szerzõk"
+msgstr "SzerzÅ‘k"
 
 #. Tooltip for sevens rule normal
 #: ../common/gtk/game-rules.c:101
 msgid "All sevens move the robber or pirate"
-msgstr "Minden hetes dobás mozgatja a rablót vagy a kalózt"
+msgstr "Minden hetes dobÃ¡s mozgatja a rablÃ³t vagy a kalÃ³zt"
 
 #: ../common/gtk/game-rules.c:106
 msgid "In the first two turns all sevens are rerolled"
-msgstr "Az elsõ két körben minden hetes dobás újradobandó"
+msgstr "Az elsÅ‘ kÃ©t kÃ¶rben minden hetes dobÃ¡s ÃºjradobandÃ³"
 
 #. Tooltip for sevens rule reroll all
 #: ../common/gtk/game-rules.c:110
 msgid "All sevens are rerolled"
-msgstr "Minden hetes dobás újradobandó"
+msgstr "Minden hetes dobÃ¡s ÃºjradobandÃ³"
 
 #: ../common/gtk/game-rules.c:121
 msgid "Randomize Terrain"
-msgstr "Véletlen táj?"
+msgstr "VÃ©letlen tÃ¡j?"
 
 #: ../common/gtk/game-rules.c:121
 msgid "Randomize the terrain"
-msgstr "Véletlen táj?"
+msgstr "VÃ©letlen tÃ¡j?"
 
 #: ../common/gtk/game-rules.c:123
 msgid "Use Pirate"
-msgstr "Kalóz használat"
+msgstr "KalÃ³z hasznÃ¡lat"
 
 #: ../common/gtk/game-rules.c:123
 msgid "Use the pirate to block ships"
-msgstr "Használj kalózt a hajók megállítására"
+msgstr "HasznÃ¡lj kalÃ³zt a hajÃ³k megÃ¡llÃ­tÃ¡sÃ¡ra"
 
 #: ../common/gtk/game-rules.c:125
 msgid "Strict Trade"
-msgstr "Szigorú kereskedés"
+msgstr "SzigorÃº kereskedÃ©s"
 
 #: ../common/gtk/game-rules.c:126
 msgid "Allow trade only before building or buying"
-msgstr "Kereskedés csak építkezés / vásárlás elõtt?"
+msgstr "KereskedÃ©s csak Ã©pÃ­tkezÃ©s / vÃ¡sÃ¡rlÃ¡s elÅ‘tt?"
 
 #: ../common/gtk/game-rules.c:128
 msgid "Domestic Trade"
-msgstr "Játékosok közötti kereskedés"
+msgstr "JÃ¡tÃ©kosok kÃ¶zÃ¶tti kereskedÃ©s"
 
 #: ../common/gtk/game-rules.c:128
 msgid "Allow trade between players"
-msgstr "Engedélyezett játékosok közötti kereskedés"
+msgstr "EngedÃ©lyezett jÃ¡tÃ©kosok kÃ¶zÃ¶tti kereskedÃ©s"
 
 #. Label text for customising a game
 #: ../common/gtk/game-settings.c:118
 msgid "Number of Players"
-msgstr "Játékosok száma"
+msgstr "JÃ¡tÃ©kosok szÃ¡ma"
 
 #. Tooltip for 'Number of Players'
 #: ../common/gtk/game-settings.c:136
 msgid "The number of players"
-msgstr "A játékosok száma"
+msgstr "A jÃ¡tÃ©kosok szÃ¡ma"
 
 #. Label for customising a game
 #: ../common/gtk/game-settings.c:139
 msgid "Victory Point Target"
-msgstr "Gyõzelemhez szükséges pontok"
+msgstr "GyÅ‘zelemhez szÃ¼ksÃ©ges pontok"
 
 #. Tooltip for Victory Point Target
 #: ../common/gtk/game-settings.c:159
 msgid "The points needed to win the game"
-msgstr "A gyõzelemhez szükséges pontok"
+msgstr "A gyÅ‘zelemhez szÃ¼ksÃ©ges pontok"
 
 #. Tooltip for the check button
 #: ../common/gtk/game-settings.c:172
 msgid "Is it possible to win this game?"
-msgstr "Meg lehet nyerni ezt a játékot?"
+msgstr "Meg lehet nyerni ezt a jÃ¡tÃ©kot?"
 
 #. Port indicator for a resource: trade 2 for 1
 #: ../common/gtk/guimap.c:750
@@ -2188,7 +2188,7 @@ msgstr "G"
 #. Port indicator for ore
 #: ../common/gtk/guimap.c:766
 msgid "Ore port|O"
-msgstr "É"
+msgstr "Ã‰"
 
 #. Port indicator for wool
 #: ../common/gtk/guimap.c:770
@@ -2203,28 +2203,28 @@ msgstr "R"
 #. Tooltip for the list of games
 #: ../common/gtk/select-game.c:111
 msgid "Select a game"
-msgstr "Válassz egy játékot"
+msgstr "VÃ¡lassz egy jÃ¡tÃ©kot"
 
 #: ../common/gtk/theme.c:709
 #, c-format
 msgid "bad scaling mode '%s'"
-msgstr "Hibás mérték '%s'"
+msgstr "HibÃ¡s mÃ©rtÃ©k '%s'"
 
 #: ../common/game.c:603 ../common/game.c:633
 msgid "This game cannot be won."
-msgstr "A játékot nem lehet megnyerni."
+msgstr "A jÃ¡tÃ©kot nem lehet megnyerni."
 
 #: ../common/game.c:604
 msgid "There is no land."
-msgstr "Nincs vidék"
+msgstr "Nincs vidÃ©k"
 
 #: ../common/game.c:638
 msgid "It is possible that this game cannot be won."
-msgstr "Lehet, hogy a játékot nem lehet megnyerni."
+msgstr "Lehet, hogy a jÃ¡tÃ©kot nem lehet megnyerni."
 
 #: ../common/game.c:643
 msgid "This game can be won by only building all settlements and cities."
-msgstr "A játékot csak az összes falu és város megépítésével lehet megnyerni."
+msgstr "A jÃ¡tÃ©kot csak az Ã¶sszes falu Ã©s vÃ¡ros megÃ©pÃ­tÃ©sÃ©vel lehet megnyerni."
 
 #: ../common/game.c:650
 #, c-format
@@ -2236,12 +2236,12 @@ msgid ""
 "Maximum island discovery bonus: %d\n"
 "Total: %d"
 msgstr ""
-"Gyõzelemhez szükséges pontok: %d\n"
-"Elérhetõ pontok mindent felépítve: %d\n"
-"Pontok fejlesztés kártyákban: %d\n"
-"Leghosszabb út / legnagyobb hadsereg: %d+%d\n"
-"Maximum sziget felfedezés bónusz: %d\n"
-"Összesen: %d"
+"GyÅ‘zelemhez szÃ¼ksÃ©ges pontok: %d\n"
+"ElÃ©rhetÅ‘ pontok mindent felÃ©pÃ­tve: %d\n"
+"Pontok fejlesztÃ©s kÃ¡rtyÃ¡kban: %d\n"
+"Leghosszabb Ãºt / legnagyobb hadsereg: %d+%d\n"
+"Maximum sziget felfedezÃ©s bÃ³nusz: %d\n"
+"Ã–sszesen: %d"
 
 #: ../common/log.c:54
 msgid "*ERROR* "
@@ -2257,7 +2257,7 @@ msgstr "Nyersanyag: "
 
 #: ../common/log.c:66
 msgid "Build: "
-msgstr "Épít:"
+msgstr "Ã‰pÃ­t:"
 
 #: ../common/log.c:69
 msgid "Dice: "
@@ -2281,7 +2281,7 @@ msgstr "Hadsereg: "
 
 #: ../common/log.c:84
 msgid "Road: "
-msgstr "Út: "
+msgstr "Ãšt: "
 
 #: ../common/log.c:87
 msgid "*BEEP* "
@@ -2289,72 +2289,72 @@ msgstr "*BEEP "
 
 #: ../common/log.c:92
 msgid "Player 1: "
-msgstr "1. játékos:"
+msgstr "1. jÃ¡tÃ©kos:"
 
 #: ../common/log.c:95
 msgid "Player 2: "
-msgstr "2. játékos:"
+msgstr "2. jÃ¡tÃ©kos:"
 
 #: ../common/log.c:98
 msgid "Player 3: "
-msgstr "3. játékos:"
+msgstr "3. jÃ¡tÃ©kos:"
 
 #: ../common/log.c:101
 msgid "Player 4: "
-msgstr "4. játékos:"
+msgstr "4. jÃ¡tÃ©kos:"
 
 #: ../common/log.c:104
 msgid "Player 5: "
-msgstr "5. játékos:"
+msgstr "5. jÃ¡tÃ©kos:"
 
 #: ../common/log.c:107
 msgid "Player 6: "
-msgstr "6. játékos:"
+msgstr "6. jÃ¡tÃ©kos:"
 
 #: ../common/log.c:110
 msgid "Player 7: "
-msgstr "7. játékos:"
+msgstr "7. jÃ¡tÃ©kos:"
 
 #: ../common/log.c:113
 msgid "Player 8: "
-msgstr "8. játékos:"
+msgstr "8. jÃ¡tÃ©kos:"
 
 #: ../common/log.c:116
 msgid "Viewer: "
-msgstr "Szemlélõ:"
+msgstr "SzemlÃ©lÅ‘:"
 
 #: ../common/log.c:119
 msgid "** UNKNOWN MESSAGE TYPE ** "
-msgstr "** ISMERETLEN ÜZENET TÍPUS **"
+msgstr "** ISMERETLEN ÃœZENET TÃPUS **"
 
 #: ../common/network.c:281
 #, c-format
 msgid "Error checking connect status: %s\n"
-msgstr "Hiba csatlakozás státusz vizsgálat: %s\n"
+msgstr "Hiba csatlakozÃ¡s stÃ¡tusz vizsgÃ¡lat: %s\n"
 
 #: ../common/network.c:288
 #, c-format
 msgid "Error connecting to host '%s': %s\n"
-msgstr "Hiba a csatlakozáskor '%s': %s\n"
+msgstr "Hiba a csatlakozÃ¡skor '%s': %s\n"
 
 #: ../common/network.c:314
 #, c-format
 msgid "Error writing socket: %s\n"
-msgstr "Hiba socket írásakor: %s\n"
+msgstr "Hiba socket Ã­rÃ¡sakor: %s\n"
 
 #: ../common/network.c:365
 #, c-format
 msgid "Error writing to socket: %s\n"
-msgstr "Hiba socket írásakor: %s\n"
+msgstr "Hiba socket Ã­rÃ¡sakor: %s\n"
 
 #: ../common/network.c:418
 msgid "Read buffer overflow - disconnecting\n"
-msgstr "Olvasási tároló túlcsordulás - kapcsolat bontás\n"
+msgstr "OlvasÃ¡si tÃ¡rolÃ³ tÃºlcsordulÃ¡s - kapcsolat bontÃ¡s\n"
 
 #: ../common/network.c:428
 #, c-format
 msgid "Error reading socket: %s\n"
-msgstr "Hiba socket olvasáskor: %s\n"
+msgstr "Hiba socket olvasÃ¡skor: %s\n"
 
 #: ../common/network.c:575
 #, c-format
@@ -2364,46 +2364,46 @@ msgstr "Nem lehet feloldani %s port %s: %s\n"
 #: ../common/network.c:582
 #, c-format
 msgid "Cannot resolve %s port %s: host not found\n"
-msgstr "Nem lehet feloldni %s port %s: gép nem található\n"
+msgstr "Nem lehet feloldni %s port %s: gÃ©p nem talÃ¡lhatÃ³\n"
 
 #: ../common/network.c:597
 #, c-format
 msgid "Error creating socket: %s\n"
-msgstr "Hiba a socket létrehozásakor: %s\n"
+msgstr "Hiba a socket lÃ©trehozÃ¡sakor: %s\n"
 
 #: ../common/network.c:605
 #, c-format
 msgid "Error setting socket close-on-exec: %s\n"
-msgstr "Hiba a socket beállításakor 'close-on-exec': %s\n"
+msgstr "Hiba a socket beÃ¡llÃ­tÃ¡sakor 'close-on-exec': %s\n"
 
 #: ../common/network.c:615 ../common/network.c:776
 #, c-format
 msgid "Error setting socket non-blocking: %s\n"
-msgstr "Hiba a socket beállításakor 'non-blocking': %s\n"
+msgstr "Hiba a socket beÃ¡llÃ­tÃ¡sakor 'non-blocking': %s\n"
 
 #: ../common/network.c:640
 #, c-format
 msgid "Error connecting to %s: %s\n"
-msgstr "Hiba a csatlakozáskor %s: %s\n"
+msgstr "Hiba a csatlakozÃ¡skor %s: %s\n"
 
 #: ../common/network.c:735
 #, c-format
 msgid "Error creating struct addrinfo: %s"
-msgstr "Hiba az addrinfo létrehozásakor: %s"
+msgstr "Hiba az addrinfo lÃ©trehozÃ¡sakor: %s"
 
 #: ../common/network.c:765
 #, c-format
 msgid "Error creating listening socket: %s\n"
-msgstr "Hiba a szerver socket létrehozásakor: %s\n"
+msgstr "Hiba a szerver socket lÃ©trehozÃ¡sakor: %s\n"
 
 #: ../common/network.c:785
 #, c-format
 msgid "Error during listen on socket: %s\n"
-msgstr "Hiba a figyelõ socket végrahajtásakor: %s\n"
+msgstr "Hiba a figyelÅ‘ socket vÃ©grahajtÃ¡sakor: %s\n"
 
 #: ../common/network.c:794
 msgid "Listening not yet supported on this platform."
-msgstr "Ez a platform nem támogatja a szerver socketeket."
+msgstr "Ez a platform nem tÃ¡mogatja a szerver socketeket."
 
 #: ../common/network.c:816 ../common/network.c:817
 msgid "unknown"
@@ -2412,31 +2412,31 @@ msgstr "ismeretlen"
 #: ../common/network.c:823
 #, c-format
 msgid "Error getting peer name: %s"
-msgstr "Hiba a látható név kérésekor: %s"
+msgstr "Hiba a lÃ¡thatÃ³ nÃ©v kÃ©rÃ©sekor: %s"
 
 #: ../common/network.c:836
 #, c-format
 msgid "Error resolving address: %s"
-msgstr "Hiba a címfeloldáskor: %s"
+msgstr "Hiba a cÃ­mfeloldÃ¡skor: %s"
 
 #: ../common/network.c:850
 msgid "Net_get_peer_name not yet supported on this platform."
-msgstr "Ez a platform nem támogatja a net_get_peer_name függvényt."
+msgstr "Ez a platform nem tÃ¡mogatja a net_get_peer_name fÃ¼ggvÃ©nyt."
 
 #: ../common/network.c:865
 #, c-format
 msgid "Error accepting connection: %s"
-msgstr "Hiba csatlakozás elfogadásakor: %s"
+msgstr "Hiba csatlakozÃ¡s elfogadÃ¡sakor: %s"
 
 #: ../common/state.c:166
 #, c-format
 msgid "Connecting to %s, port %s\n"
-msgstr "Kapcsolódás: %s , port: %s\n"
+msgstr "KapcsolÃ³dÃ¡s: %s , port: %s\n"
 
 #: ../common/state.c:503
 msgid "State stack overflow. Stack dump sent to standard error.\n"
 msgstr ""
-"Állapot verem túlcsordulás. A verem tartalmát elküldtem a standard hiba "
+"Ãllapot verem tÃºlcsordulÃ¡s. A verem tartalmÃ¡t elkÃ¼ldtem a standard hiba "
 "kimenetre.\n"
 
 #. Use an unique shortcut key for each resource
@@ -2447,7 +2447,7 @@ msgstr "_Domb"
 #. Use an unique shortcut key for each resource
 #: ../editor/gtk/editor.c:75
 msgid "_Field"
-msgstr "_Szántóföld"
+msgstr "_SzÃ¡ntÃ³fÃ¶ld"
 
 #. Use an unique shortcut key for each resource
 #: ../editor/gtk/editor.c:77
@@ -2457,12 +2457,12 @@ msgstr "_Hegy"
 #. Use an unique shortcut key for each resource
 #: ../editor/gtk/editor.c:79
 msgid "_Pasture"
-msgstr "_Legelõ"
+msgstr "_LegelÅ‘"
 
 #. Use an unique shortcut key for each resource
 #: ../editor/gtk/editor.c:81
 msgid "F_orest"
-msgstr "_Erdõ"
+msgstr "_ErdÅ‘"
 
 #. Use an unique shortcut key for each resource
 #: ../editor/gtk/editor.c:83
@@ -2488,7 +2488,7 @@ msgstr "Se_mmi"
 #. Use an unique shortcut key for each port type
 #: ../editor/gtk/editor.c:94
 msgid "_Brick (2:1)"
-msgstr "Té_gla (2:1)"
+msgstr "TÃ©_gla (2:1)"
 
 #. Use an unique shortcut key for each port type
 #: ../editor/gtk/editor.c:96
@@ -2498,22 +2498,22 @@ msgstr "_Gabona (2:1)"
 #. Use an unique shortcut key for each port type
 #: ../editor/gtk/editor.c:98
 msgid "_Ore (2:1)"
-msgstr "É_rc (2:1)"
+msgstr "Ã‰_rc (2:1)"
 
 #. Use an unique shortcut key for each port type
 #: ../editor/gtk/editor.c:100
 msgid "_Wool (2:1)"
-msgstr "Gy_apjú (2:1)"
+msgstr "Gy_apjÃº (2:1)"
 
 #. Use an unique shortcut key for each port type
 #: ../editor/gtk/editor.c:102
 msgid "_Lumber (2:1)"
-msgstr "Rö_nk (2:1)"
+msgstr "RÃ¶_nk (2:1)"
 
 #. Use an unique shortcut key for each port type
 #: ../editor/gtk/editor.c:106
 msgid "_Any (3:1)"
-msgstr "_Bármi (3:1)"
+msgstr "_BÃ¡rmi (3:1)"
 
 #. East
 #: ../editor/gtk/editor.c:111
@@ -2523,12 +2523,12 @@ msgstr "Kelet|K"
 #. North east
 #: ../editor/gtk/editor.c:113
 msgid "North East|NE"
-msgstr "Észak Kelet|ÉK"
+msgstr "Ã‰szak Kelet|Ã‰K"
 
 #. North west
 #: ../editor/gtk/editor.c:115
 msgid "North West|NW"
-msgstr "Észak Nyugat|ÉNY"
+msgstr "Ã‰szak Nyugat|Ã‰NY"
 
 #. West
 #: ../editor/gtk/editor.c:117
@@ -2538,24 +2538,24 @@ msgstr "Nyugat|W"
 #. South west
 #: ../editor/gtk/editor.c:119
 msgid "South West|SW"
-msgstr "Dél Nyugat|DNY"
+msgstr "DÃ©l Nyugat|DNY"
 
 #. South east
 #: ../editor/gtk/editor.c:121
 msgid "South East|SE"
-msgstr "Dél Kelet|DK"
+msgstr "DÃ©l Kelet|DK"
 
 #: ../editor/gtk/editor.c:564
 msgid "Shuffle"
-msgstr "Keverés"
+msgstr "KeverÃ©s"
 
 #: ../editor/gtk/editor.c:696 ../server/gtk/main.c:450
 msgid "Game Parameters"
-msgstr "Játék paraméterek"
+msgstr "JÃ¡tÃ©k paramÃ©terek"
 
 #: ../editor/gtk/editor.c:698 ../server/gtk/main.c:482
 msgid "Rules"
-msgstr "Szabályok"
+msgstr "SzabÃ¡lyok"
 
 #: ../editor/gtk/editor.c:699
 msgid "Resources"
@@ -2563,176 +2563,176 @@ msgstr "Nyersanyagok"
 
 #: ../editor/gtk/editor.c:700
 msgid "Buildings"
-msgstr "Építmények"
+msgstr "Ã‰pÃ­tmÃ©nyek"
 
 #: ../editor/gtk/editor.c:701
 msgid "Development Cards"
-msgstr "Fejlesztés kártyák"
+msgstr "FejlesztÃ©s kÃ¡rtyÃ¡k"
 
 #: ../editor/gtk/editor.c:718
 msgid "Pioneers Editor"
-msgstr "Pioneers szerkesztõ"
+msgstr "Pioneers szerkesztÅ‘"
 
 #: ../editor/gtk/editor.c:803
 #, c-format
 msgid "Failed to load '%s'"
-msgstr "Hiba a betöltékor '%s'"
+msgstr "Hiba a betÃ¶ltÃ©kor '%s'"
 
 #: ../editor/gtk/editor.c:843
 #, c-format
 msgid "Failed to save to '%s'"
-msgstr "Hiba a mentéskor '%s'"
+msgstr "Hiba a mentÃ©skor '%s'"
 
 #: ../editor/gtk/editor.c:858
 msgid "Open Game"
-msgstr "Játék megnyitása"
+msgstr "JÃ¡tÃ©k megnyitÃ¡sa"
 
 #: ../editor/gtk/editor.c:884
 msgid "Save as..."
-msgstr "Mentés másként..."
+msgstr "MentÃ©s mÃ¡skÃ©nt..."
 
 #: ../editor/gtk/editor.c:919
 msgid "Change Title"
-msgstr "Cím módosítás"
+msgstr "CÃ­m mÃ³dosÃ­tÃ¡s"
 
 #: ../editor/gtk/editor.c:941
 msgid "New Title:"
-msgstr "Új cím:"
+msgstr "Ãšj cÃ­m:"
 
 #: ../editor/gtk/editor.c:997
 msgid "Pioneers Game Editor"
-msgstr "Pioneers játék szerkesztõ"
+msgstr "Pioneers jÃ¡tÃ©k szerkesztÅ‘"
 
 #: ../editor/gtk/editor.c:1001
 msgid "_File"
-msgstr "_Fájl"
+msgstr "_FÃ¡jl"
 
 #: ../editor/gtk/editor.c:1004
 msgid "_New"
-msgstr "Ú_j"
+msgstr "Ãš_j"
 
 #: ../editor/gtk/editor.c:1005
 msgid "Create a new game"
-msgstr "Új játék létrehozása"
+msgstr "Ãšj jÃ¡tÃ©k lÃ©trehozÃ¡sa"
 
 #: ../editor/gtk/editor.c:1006
 msgid "_Open..."
-msgstr "_Megnyitás..."
+msgstr "_MegnyitÃ¡s..."
 
 #: ../editor/gtk/editor.c:1007
 msgid "Open an existing game"
-msgstr "Létezõ játék megnyitása"
+msgstr "LÃ©tezÅ‘ jÃ¡tÃ©k megnyitÃ¡sa"
 
 #: ../editor/gtk/editor.c:1008
 msgid "_Save"
-msgstr "_Mentés"
+msgstr "_MentÃ©s"
 
 #: ../editor/gtk/editor.c:1009
 msgid "Save game"
-msgstr "Játék mentése"
+msgstr "JÃ¡tÃ©k mentÃ©se"
 
 #: ../editor/gtk/editor.c:1010
 msgid "Save _As..."
-msgstr "_Men_tés másként..."
+msgstr "_Men_tÃ©s mÃ¡skÃ©nt..."
 
 #: ../editor/gtk/editor.c:1012
 msgid "Save as"
-msgstr "Mentés másként"
+msgstr "MentÃ©s mÃ¡skÃ©nt"
 
 #: ../editor/gtk/editor.c:1013
 msgid "_Change title"
-msgstr "_Cím módosítás"
+msgstr "_CÃ­m mÃ³dosÃ­tÃ¡s"
 
 #: ../editor/gtk/editor.c:1014
 msgid "Change game title"
-msgstr "Játék címének módosítása"
+msgstr "JÃ¡tÃ©k cÃ­mÃ©nek mÃ³dosÃ­tÃ¡sa"
 
 #: ../editor/gtk/editor.c:1015 ../server/gtk/main.c:100
 msgid "_Check Victory Point Target"
-msgstr "_Ellenõrizd a gyõzelemhez szükséges pontokat"
+msgstr "_EllenÅ‘rizd a gyÅ‘zelemhez szÃ¼ksÃ©ges pontokat"
 
 #: ../editor/gtk/editor.c:1017 ../server/gtk/main.c:102
 msgid "Check whether the game can be won"
-msgstr "Ellenõizd, vajon a játék megnyerhetõ-e"
+msgstr "EllenÅ‘izd, vajon a jÃ¡tÃ©k megnyerhetÅ‘-e"
 
 #: ../editor/gtk/editor.c:1019
 msgid "Quit"
-msgstr "Kilépés"
+msgstr "KilÃ©pÃ©s"
 
 #: ../editor/gtk/editor.c:1027
 msgid "_About Pioneers Editor"
-msgstr "_Pioneers szerkesztõrõl"
+msgstr "_Pioneers szerkesztÅ‘rÅ‘l"
 
 #: ../editor/gtk/editor.c:1028
 msgid "Information about Pioneers Editor"
-msgstr "Információ a Pioneers szerkesztõrõl"
+msgstr "InformÃ¡ciÃ³ a Pioneers szerkesztÅ‘rÅ‘l"
 
 #. Long help for commandline option (editor): filename
 #: ../editor/gtk/editor.c:1066
 msgid "Open this file"
-msgstr "Ennek a fájlnak a megnyitása"
+msgstr "Ennek a fÃ¡jlnak a megnyitÃ¡sa"
 
 #. Commandline option for editor: filename
 #: ../editor/gtk/editor.c:1068
 msgid "filename"
-msgstr "fájlnév"
+msgstr "fÃ¡jlnÃ©v"
 
 #: ../editor/gtk/editor.c:1100
 msgid "- Editor for games of Pioneers"
-msgstr "- Szerkesztõ a Pioneers játékokhoz"
+msgstr "- SzerkesztÅ‘ a Pioneers jÃ¡tÃ©kokhoz"
 
 #: ../editor/gtk/editor.c:1141 ../server/gtk/main.c:1035
 #, c-format
 msgid "Building menus failed: %s"
-msgstr "Hiba a menû felépítésekor: %s"
+msgstr "Hiba a menÅ± felÃ©pÃ­tÃ©sekor: %s"
 
 #: ../editor/gtk/editor.c:1169
 msgid "Settings"
-msgstr "Beállítások"
+msgstr "BeÃ¡llÃ­tÃ¡sok"
 
 #: ../editor/gtk/game-resources.c:51
 msgid "Resource Count"
-msgstr "Nyersanyagok száma"
+msgstr "Nyersanyagok szÃ¡ma"
 
 #. Commandline meta-server: daemon
 #: ../meta-server/main.c:1033
 msgid "Daemonize the metaserver on start"
-msgstr "A metaszerver démonként induljon"
+msgstr "A metaszerver dÃ©monkÃ©nt induljon"
 
 #. Commandline meta-server: redirect
 #: ../meta-server/main.c:1036
 msgid "Redirect clients to another metaserver"
-msgstr "Irányítsd a klienseket egy másik metaszeverhez"
+msgstr "IrÃ¡nyÃ­tsd a klienseket egy mÃ¡sik metaszeverhez"
 
 #. Commandline meta-server: server
 #: ../meta-server/main.c:1039
 msgid "Use this hostname when creating new games"
-msgstr "Használd ezt a host nevet új játék létrehozásához"
+msgstr "HasznÃ¡ld ezt a host nevet Ãºj jÃ¡tÃ©k lÃ©trehozÃ¡sÃ¡hoz"
 
 #. Commandline meta-server: server argument
 #: ../meta-server/main.c:1041
 msgid "hostname"
-msgstr "host név"
+msgstr "host nÃ©v"
 
 #. Commandline meta-server: port-range
 #: ../meta-server/main.c:1044
 msgid "Use this ports range when creating new games"
-msgstr "Használd ezt a port tartományt új játék létrehozásához"
+msgstr "HasznÃ¡ld ezt a port tartomÃ¡nyt Ãºj jÃ¡tÃ©k lÃ©trehozÃ¡sÃ¡hoz"
 
 #. Commandline meta-server: port-range argument
 #: ../meta-server/main.c:1046
 msgid "from-to"
-msgstr "tól-ig"
+msgstr "tÃ³l-ig"
 
 #. Commandline option of meta server: syslog-debug
 #: ../meta-server/main.c:1052
 msgid "Debug syslog messages"
-msgstr "Debug syslog üzenetek"
+msgstr "Debug syslog Ã¼zenetek"
 
 #. Long description in the commandline for server-console: help
 #: ../meta-server/main.c:1073
 msgid "- Meta server for Pioneers"
-msgstr "- Meta szerver a Pioneers játékhoz"
+msgstr "- Meta szerver a Pioneers jÃ¡tÃ©khoz"
 
 #: ../meta-server/main.c:1088
 #, c-format
@@ -2741,95 +2741,95 @@ msgstr "metaszerver protokoll:"
 
 #: ../server/gtk/main.c:105
 msgid "_About Pioneers Server"
-msgstr "_Pioneers szerverrõl"
+msgstr "_Pioneers szerverrÅ‘l"
 
 #: ../server/gtk/main.c:106
 msgid "Information about Pioneers Server"
-msgstr "Információ a Pioneers szerverrõl"
+msgstr "InformÃ¡ciÃ³ a Pioneers szerverrÅ‘l"
 
 #: ../server/gtk/main.c:222
 msgid "Stop server"
-msgstr "Szerver leállítása"
+msgstr "Szerver leÃ¡llÃ­tÃ¡sa"
 
 #: ../server/gtk/main.c:223
 msgid "Start server"
-msgstr "Szerver indítása"
+msgstr "Szerver indÃ­tÃ¡sa"
 
 #: ../server/gtk/main.c:225
 msgid "Stop the server"
-msgstr "A szerver leállítása"
+msgstr "A szerver leÃ¡llÃ­tÃ¡sa"
 
 #: ../server/gtk/main.c:226
 msgid "Start the server"
-msgstr "A szerver indítása"
+msgstr "A szerver indÃ­tÃ¡sa"
 
 #: ../server/gtk/main.c:351
 #, c-format
 msgid "Player %s from %s entered\n"
-msgstr "%s játékos belépett a következõ géprõl %s\n"
+msgstr "%s jÃ¡tÃ©kos belÃ©pett a kÃ¶vetkezÅ‘ gÃ©prÅ‘l %s\n"
 
 #: ../server/gtk/main.c:358
 #, c-format
 msgid "Player %s from %s left\n"
-msgstr "%s játékos kilépett a következõ géprõl %s\n"
+msgstr "%s jÃ¡tÃ©kos kilÃ©pett a kÃ¶vetkezÅ‘ gÃ©prÅ‘l %s\n"
 
 #: ../server/gtk/main.c:365
 #, c-format
 msgid "Player %d is now %s\n"
-msgstr "%d. játékos most %s\n"
+msgstr "%d. jÃ¡tÃ©kos most %s\n"
 
 #: ../server/gtk/main.c:554
 msgid "Game Settings"
-msgstr "Játék beállítások"
+msgstr "JÃ¡tÃ©k beÃ¡llÃ­tÃ¡sok"
 
 #: ../server/gtk/main.c:600
 msgid "Server Parameters"
-msgstr "Szerver paraméterek"
+msgstr "Szerver paramÃ©terek"
 
 #: ../server/gtk/main.c:626
 msgid "The port for the game server"
-msgstr "Port a játék szerverhez"
+msgstr "Port a jÃ¡tÃ©k szerverhez"
 
 #: ../server/gtk/main.c:629
 msgid "Register Server"
-msgstr "Szerver regisztrálás"
+msgstr "Szerver regisztrÃ¡lÃ¡s"
 
 #: ../server/gtk/main.c:637
 msgid "Register this game at the meta server"
-msgstr "Játék regisztrálása a meta szerverre"
+msgstr "JÃ¡tÃ©k regisztrÃ¡lÃ¡sa a meta szerverre"
 
 #: ../server/gtk/main.c:654
 msgid "The address of the meta server"
-msgstr "A meta szerver címe"
+msgstr "A meta szerver cÃ­me"
 
 #: ../server/gtk/main.c:656
 msgid "Reported Hostname"
-msgstr "A közölt host név"
+msgstr "A kÃ¶zÃ¶lt host nÃ©v"
 
 #: ../server/gtk/main.c:671
 msgid ""
 "The public name of this computer (needed when playing behind a firewall)"
-msgstr "A gép nyilvános neve (szükséges ha tûzfal mögül játszol)"
+msgstr "A gÃ©p nyilvÃ¡nos neve (szÃ¼ksÃ©ges ha tÅ±zfal mÃ¶gÃ¼l jÃ¡tszol)"
 
 #: ../server/gtk/main.c:675
 msgid "Random Turn Order"
-msgstr "Véletlen kör sorrend"
+msgstr "VÃ©letlen kÃ¶r sorrend"
 
 #: ../server/gtk/main.c:683
 msgid "Randomize turn order"
-msgstr "Játékosok sorrnedje véletlen"
+msgstr "JÃ¡tÃ©kosok sorrnedje vÃ©letlen"
 
 #: ../server/gtk/main.c:722
 msgid "Running Game"
-msgstr "Aktuális játék"
+msgstr "AktuÃ¡lis jÃ¡tÃ©k"
 
 #: ../server/gtk/main.c:724
 msgid "Players Connected"
-msgstr "Csatlakozott játékosok"
+msgstr "Csatlakozott jÃ¡tÃ©kosok"
 
 #: ../server/gtk/main.c:758
 msgid "Shows all players and viewers connected to the server"
-msgstr "Minden szerverhez csatlakozott játékos és szemlélõ megjelenítése"
+msgstr "Minden szerverhez csatlakozott jÃ¡tÃ©kos Ã©s szemlÃ©lÅ‘ megjelenÃ­tÃ©se"
 
 #: ../server/gtk/main.c:763
 msgid "Connected"
@@ -2837,15 +2837,15 @@ msgstr "Csatlakozva"
 
 #: ../server/gtk/main.c:770
 msgid "Is the player currently connected?"
-msgstr "A játékos jelenleg csatlakozva?"
+msgstr "A jÃ¡tÃ©kos jelenleg csatlakozva?"
 
 #: ../server/gtk/main.c:773
 msgid "Name"
-msgstr "Név"
+msgstr "NÃ©v"
 
 #: ../server/gtk/main.c:780
 msgid "Name of the player"
-msgstr "A játékos neve"
+msgstr "A jÃ¡tÃ©kos neve"
 
 #: ../server/gtk/main.c:782
 msgid "Location"
@@ -2853,76 +2853,76 @@ msgstr "Hely"
 
 #: ../server/gtk/main.c:789
 msgid "Host name of the player"
-msgstr "A játékos host neve"
+msgstr "A jÃ¡tÃ©kos host neve"
 
 #: ../server/gtk/main.c:793
 msgid "Number"
-msgstr "Szám"
+msgstr "SzÃ¡m"
 
 #: ../server/gtk/main.c:800
 msgid "Player number"
-msgstr "A játékos száma"
+msgstr "A jÃ¡tÃ©kos szÃ¡ma"
 
 #: ../server/gtk/main.c:804
 msgid "Role"
-msgstr "Szabály"
+msgstr "SzabÃ¡ly"
 
 #: ../server/gtk/main.c:808
 msgid "Player of viewer"
-msgstr "Játékos a nézõkbõl"
+msgstr "JÃ¡tÃ©kos a nÃ©zÅ‘kbÅ‘l"
 
 #: ../server/gtk/main.c:819
 msgid "Launch Pioneers Client"
-msgstr "Pioneers kliens indítása"
+msgstr "Pioneers kliens indÃ­tÃ¡sa"
 
 #: ../server/gtk/main.c:826
 msgid "Launch the Pioneers Client"
-msgstr "A Pioneers kliens indítása"
+msgstr "A Pioneers kliens indÃ­tÃ¡sa"
 
 #: ../server/gtk/main.c:828
 msgid "Computer Players"
-msgstr "Számítógép játékosok"
+msgstr "SzÃ¡mÃ­tÃ³gÃ©p jÃ¡tÃ©kosok"
 
 #: ../server/gtk/main.c:837
 msgid "Enable Chat"
-msgstr "Chat engedélyezése"
+msgstr "Chat engedÃ©lyezÃ©se"
 
 #: ../server/gtk/main.c:843
 msgid "Enable chat messages"
-msgstr "Chat üzenetek engedélyezése"
+msgstr "Chat Ã¼zenetek engedÃ©lyezÃ©se"
 
 #: ../server/gtk/main.c:850
 msgid "Add Computer Player"
-msgstr "Robot játékos hozzáadása"
+msgstr "Robot jÃ¡tÃ©kos hozzÃ¡adÃ¡sa"
 
 #: ../server/gtk/main.c:857
 msgid "Add a computer player to the game"
-msgstr "Robot játékos hozzáadása a játékhoz"
+msgstr "Robot jÃ¡tÃ©kos hozzÃ¡adÃ¡sa a jÃ¡tÃ©khoz"
 
 #: ../server/gtk/main.c:866
 msgid "Messages"
-msgstr "Üzenetek"
+msgstr "Ãœzenetek"
 
 #: ../server/gtk/main.c:884
 msgid "Messages from the server"
-msgstr "Üzenetek a szervertõl"
+msgstr "Ãœzenetek a szervertÅ‘l"
 
 #: ../server/gtk/main.c:932
 msgid "The Pioneers Game Server"
-msgstr "A pioneers játék szerver"
+msgstr "A pioneers jÃ¡tÃ©k szerver"
 
 #. Wait for all players to disconnect,
 #. * then enable the UI
 #.
 #: ../server/gtk/main.c:940
 msgid "The game is over.\n"
-msgstr "A játéknak vége.\n"
+msgstr "A jÃ¡tÃ©knak vÃ©ge.\n"
 
 #. Long description in the commandline for server-gtk: help
 #. Long description in the commandline for server-console: help
 #: ../server/gtk/main.c:994 ../server/main.c:174
 msgid "- Host a game of Pioneers"
-msgstr "- a Pioneers játékot futtató"
+msgstr "- a Pioneers jÃ¡tÃ©kot futtatÃ³"
 
 #. Name in the titlebar of the server
 #: ../server/gtk/main.c:1016
@@ -2932,12 +2932,12 @@ msgstr "Pioneers szerver"
 #. Commandline server-console: game-title
 #: ../server/main.c:75
 msgid "Game title to use"
-msgstr "Játék cím"
+msgstr "JÃ¡tÃ©k cÃ­m"
 
 #. Commandline server-console: file
 #: ../server/main.c:78
 msgid "Game file to use"
-msgstr "Játék fájl"
+msgstr "JÃ¡tÃ©k fÃ¡jl"
 
 #. Commandline server-console: port
 #: ../server/main.c:81
@@ -2947,57 +2947,57 @@ msgstr "Szzerver port"
 #. Commandline server-console: players
 #: ../server/main.c:84
 msgid "Override number of players"
-msgstr "A játékosok számánk felülbírálása"
+msgstr "A jÃ¡tÃ©kosok szÃ¡mÃ¡nk felÃ¼lbÃ­rÃ¡lÃ¡sa"
 
 #. Commandline server-console: points
 #: ../server/main.c:87
 msgid "Override number of points needed to win"
-msgstr "Gyõzelemhez szükséges pontok felülbírálása"
+msgstr "GyÅ‘zelemhez szÃ¼ksÃ©ges pontok felÃ¼lbÃ­rÃ¡lÃ¡sa"
 
 #. Commandline server-console: seven-rule
 #: ../server/main.c:90
 msgid "Override seven-rule handling"
-msgstr "Hetes szabály felülbírálása"
+msgstr "Hetes szabÃ¡ly felÃ¼lbÃ­rÃ¡lÃ¡sa"
 
 #. Commandline server-console: terrain
 #: ../server/main.c:93
 msgid "Override terrain type, 0=default 1=random"
-msgstr "Terep felülbírálása, 0=alapértelmezett 1=véletlen"
+msgstr "Terep felÃ¼lbÃ­rÃ¡lÃ¡sa, 0=alapÃ©rtelmezett 1=vÃ©letlen"
 
 #. Commandline server-console: computer-players
 #: ../server/main.c:96
 msgid "Add N computer players"
-msgstr "N db robot játékos hozzáadása"
+msgstr "N db robot jÃ¡tÃ©kos hozzÃ¡adÃ¡sa"
 
 #. Commandline server-console: register
 #: ../server/main.c:106
 msgid "Register server with meta-server"
-msgstr "Szerver regisztrálása a meta szerverre"
+msgstr "Szerver regisztrÃ¡lÃ¡sa a meta szerverre"
 
 #. Commandline server-console: meta-server
 #: ../server/main.c:109
 msgid "Register at meta-server name (implies -r)"
-msgstr "Regisztrálj a meta-szerver névre (beleértve -r)"
+msgstr "RegisztrÃ¡lj a meta-szerver nÃ©vre (beleÃ©rtve -r)"
 
 #. Commandline server-console: hostname
 #: ../server/main.c:113
 msgid "Use this hostname when registering"
-msgstr "Használd ezt a host nevet regisztráláshoz"
+msgstr "HasznÃ¡ld ezt a host nevet regisztrÃ¡lÃ¡shoz"
 
 #. Commandline server-console: auto-quit
 #: ../server/main.c:120
 msgid "Quit after a player has won"
-msgstr "Kilép miután a játékos nyert"
+msgstr "KilÃ©p miutÃ¡n a jÃ¡tÃ©kos nyert"
 
 #. Commandline server-console: empty-timeout
 #: ../server/main.c:123
 msgid "Quit after N seconds with no players"
-msgstr "Kilép N másodperc múlva, ha nincsenek játékosok"
+msgstr "KilÃ©p N mÃ¡sodperc mÃºlva, ha nincsenek jÃ¡tÃ©kosok"
 
 #. Commandline server-console: tournament
 #: ../server/main.c:126
 msgid "Tournament mode, computer players added after N minutes"
-msgstr "Verseny mód, robot játékos hozzáadása N perc elteltével"
+msgstr "Verseny mÃ³d, robot jÃ¡tÃ©kos hozzÃ¡adÃ¡sa N perc elteltÃ©vel"
 
 #. Commandline server-console: admin-port
 #: ../server/main.c:130
@@ -3006,118 +3006,118 @@ msgstr "A szerver admin portja"
 
 #: ../server/main.c:134
 msgid "Don't start game immediately, wait for a command on admin port"
-msgstr "Nem indul a játék azonnal, parancsra vár az admin porton"
+msgstr "Nem indul a jÃ¡tÃ©k azonnal, parancsra vÃ¡r az admin porton"
 
 #: ../server/main.c:140
 msgid "Give players numbers according to the order they enter the game"
-msgstr "Add meg a játékosok számát, ahányan játszanak a játékban"
+msgstr "Add meg a jÃ¡tÃ©kosok szÃ¡mÃ¡t, ahÃ¡nyan jÃ¡tszanak a jÃ¡tÃ©kban"
 
 #. Commandline server-console: Short description of meta group
 #: ../server/main.c:180
 msgid "Meta-server Options"
-msgstr "Meta szerver kapcsolók"
+msgstr "Meta szerver kapcsolÃ³k"
 
 #: ../server/main.c:183
 msgid "Options for the meta-server"
-msgstr "meta-szerver kapcsolók"
+msgstr "meta-szerver kapcsolÃ³k"
 
 #. Commandline server-console: Short description of misc group
 #: ../server/main.c:191
 msgid "Miscellaneous Options"
-msgstr "Egyéb kapcsolók"
+msgstr "EgyÃ©b kapcsolÃ³k"
 
 #. Commandline server-console: Long description of misc group
 #: ../server/main.c:193
 msgid "Miscellaneous options"
-msgstr "Egyéb kapcsolók"
+msgstr "EgyÃ©b kapcsolÃ³k"
 
 #: ../server/meta.c:193
 #, c-format
 msgid "Register with meta-server at %s, port %s\n"
-msgstr "Regisztrálás a meta szerverrel %s, port %s\n"
+msgstr "RegisztrÃ¡lÃ¡s a meta szerverrel %s, port %s\n"
 
 #: ../server/meta.c:210
 msgid "Unregister from meta-server\n"
-msgstr "Ismeretlen üzenet a metaszervertõl\n"
+msgstr "Ismeretlen Ã¼zenet a metaszervertÅ‘l\n"
 
 #: ../server/player.c:130
 msgid "chat too long"
-msgstr "túl hosszú chat"
+msgstr "tÃºl hosszÃº chat"
 
 #: ../server/player.c:147
 msgid "name too long"
-msgstr "túl hosszú név"
+msgstr "tÃºl hosszÃº nÃ©v"
 
 #: ../server/player.c:179
 msgid "ignoring unknown extension"
-msgstr "ismeretlen bõvítések figyelmen kívül hagyása"
+msgstr "ismeretlen bÅ‘vÃ­tÃ©sek figyelmen kÃ­vÃ¼l hagyÃ¡sa"
 
 #: ../server/player.c:209
 msgid "Game starts, adding computer players"
-msgstr "Játék indul, robot játékosok hozzáadva"
+msgstr "JÃ¡tÃ©k indul, robot jÃ¡tÃ©kosok hozzÃ¡adva"
 
 #: ../server/player.c:234
 #, c-format
 msgid "The game starts in %s minutes."
-msgstr "A játék %s percen belül kezdõdik."
+msgstr "A jÃ¡tÃ©k %s percen belÃ¼l kezdÅ‘dik."
 
 #: ../server/player.c:235
 #, c-format
 msgid "The game starts in %s minute."
-msgstr "A játék %s perc múlva kezdõdik."
+msgstr "A jÃ¡tÃ©k %s perc mÃºlva kezdÅ‘dik."
 
 #: ../server/player.c:280
 msgid "Sorry, game is over."
-msgstr "Bocs, a játék vége."
+msgstr "Bocs, a jÃ¡tÃ©k vÃ©ge."
 
 #: ../server/player.c:283
 #, c-format
 msgid "Player from %s is refused: game is over\n"
-msgstr "Játékos a %s géprõl visszautasíta: a játéknak vége\n"
+msgstr "JÃ¡tÃ©kos a %s gÃ©prÅ‘l visszautasÃ­ta: a jÃ¡tÃ©knak vÃ©ge\n"
 
 #: ../server/player.c:331
 msgid "This game will start soon."
-msgstr "Ez a játék hamarosan kezdõdik."
+msgstr "Ez a jÃ¡tÃ©k hamarosan kezdÅ‘dik."
 
 #: ../server/player.c:359
 msgid "Name not changed: new name is already in use"
-msgstr "Név nincs megváltoztatva: az új név már használatban"
+msgstr "NÃ©v nincs megvÃ¡ltoztatva: az Ãºj nÃ©v mÃ¡r hasznÃ¡latban"
 
 #. %s is the name of the reconnecting player
 #: ../server/player.c:648
 #, c-format
 msgid "%s has reconnected."
-msgstr "%s újra csatlakoztatva."
+msgstr "%s Ãºjra csatlakoztatva."
 
 #: ../server/player.c:776
 #, c-format
 msgid "Version mismatch: %s"
-msgstr "Verzió eltérés: %s"
+msgstr "VerziÃ³ eltÃ©rÃ©s: %s"
 
 #: ../server/server.c:47
 msgid "Was hanging around for too long without players... bye.\n"
-msgstr "Túl sokáig voltam játékosok  nélkül...viszlát.\n"
+msgstr "TÃºl sokÃ¡ig voltam jÃ¡tÃ©kosok  nÃ©lkÃ¼l...viszlÃ¡t.\n"
 
 #. Server: preparing game #.....
 #: ../server/server.c:219
 msgid "Preparing game"
-msgstr "Játék indítása"
+msgstr "JÃ¡tÃ©k indÃ­tÃ¡sa"
 
 #: ../server/server.c:337
 msgid "Missing game directory\n"
-msgstr "Hiányzó játék könyvtár\n"
+msgstr "HiÃ¡nyzÃ³ jÃ¡tÃ©k kÃ¶nyvtÃ¡r\n"
 
 #: ../server/turn.c:253
 msgid "Island Discovery Bonus"
-msgstr "Sziget felfedezés bónusz"
+msgstr "Sziget felfedezÃ©s bÃ³nusz"
 
 #: ../server/turn.c:256
 msgid "Additional Island Bonus"
-msgstr "További sziget bónusz"
+msgstr "TovÃ¡bbi sziget bÃ³nusz"
 
 #: ../server/turn.c:388
 msgid "Tried to assign resources to NULL player.\n"
-msgstr "NULL játékosnak próbált erõforrást kiosztani.\n"
+msgstr "NULL jÃ¡tÃ©kosnak prÃ³bÃ¡lt erÅ‘forrÃ¡st kiosztani.\n"
 
 #~ msgid "Continue with your turn."
-#~ msgstr "Folytatjuk a köröddel."
+#~ msgstr "Folytatjuk a kÃ¶rÃ¶ddel."

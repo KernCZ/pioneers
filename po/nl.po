@@ -14,7 +14,7 @@ msgstr ""
 "Language-Team: Bas Wijnen <shevek@fmf.nl> Roland Clobus <rclobus@bigfoot."
 "com>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #. Default name for the AI when the computer_names file
@@ -214,7 +214,7 @@ msgstr "Dat is de prijs van het rijk zijn... :-)"
 
 #: ../client/ai/greedy.c:1333
 msgid "Ey! Where's that card gone?"
-msgstr "Hé! Waar is die kaart heen?"
+msgstr "HÃ©! Waar is die kaart heen?"
 
 #: ../client/ai/greedy.c:1334
 msgid "Thieves! Thieves!!"
@@ -434,7 +434,7 @@ msgstr "Plaats de struikrover"
 
 #: ../client/common/client.c:1625
 msgid "Finish the road building action."
-msgstr "Beëindig de bouwkaart"
+msgstr "BeÃ«indig de bouwkaart"
 
 #: ../client/common/client.c:1627
 msgid "Build one road segment."
@@ -1202,11 +1202,11 @@ msgstr "Maak een nieuw spel"
 
 #: ../client/gtk/connect.c:1285
 msgid "Join private game"
-msgstr "Privé spel"
+msgstr "PrivÃ© spel"
 
 #: ../client/gtk/connect.c:1289 ../client/gtk/connect.c:1434
 msgid "Join a private game"
-msgstr "Meedoen aan een privé spel"
+msgstr "Meedoen aan een privÃ© spel"
 
 #: ../client/gtk/connect.c:1475
 msgid "Name of the host of the game"
@@ -2063,7 +2063,7 @@ msgstr "Accepteer voorstel"
 #. Button text: Trade page, finish trading
 #: ../client/gtk/trade.c:518
 msgid "_Finish Trading"
-msgstr "Beëindig handelsfase"
+msgstr "BeÃ«indig handelsfase"
 
 #: ../common/gtk/aboutbox.c:74
 msgid ""
@@ -3224,7 +3224,7 @@ msgstr "Poging om grondstoffen aan de NULL speler te geven.\n"
 #~ msgstr "Speler %d trekt een aanbod in: %s.\n"
 
 #~ msgid "Trading finished.\n"
-#~ msgstr "De handelsfase is beëindigd.\n"
+#~ msgstr "De handelsfase is beÃ«indigd.\n"
 
 #~ msgid "Cannot determine bank, expect out of resource errors\n"
 #~ msgstr "Kan de bank niet bepalen.\n"

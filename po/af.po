@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: Petri Jooste <petri.jooste@gmail.com>\n"
 "Language-Team: Afrikaans <af@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: Afrikaans\n"
 "X-Generator: KBabel 1.11.2\n"
@@ -198,7 +198,7 @@ msgstr "Hoekom altyd ek?!?"
 
 #: ../client/ai/greedy.c:1327
 msgid "Say good bye to your cards... :)"
-msgstr "Sê totsiens vir jou kaarte ... :-)"
+msgstr "SÃª totsiens vir jou kaarte ... :-)"
 
 #: ../client/ai/greedy.c:1328
 msgid "*evilgrin*"
@@ -206,7 +206,7 @@ msgstr "*grynslag*"
 
 #: ../client/ai/greedy.c:1329
 msgid "/me says farewell to your cards ;)"
-msgstr "/me sê vaarwel aan jou kaarte ;-)"
+msgstr "/me sÃª vaarwel aan jou kaarte ;-)"
 
 #: ../client/ai/greedy.c:1330
 msgid "That's the price for being rich... :)"
@@ -391,7 +391,7 @@ msgstr "Weergawes pas nie"
 #: ../client/common/client.c:894
 msgid "Version mismatch. Please make sure client and server are up to date.\n"
 msgstr ""
-"Weergawes pas nie. Maak asb. seker die kliënt en bediener is op datum.\n"
+"Weergawes pas nie. Maak asb. seker die kliÃ«nt en bediener is op datum.\n"
 
 #: ../client/common/client.c:1340
 msgid "Build two settlements, each with a connecting"
@@ -951,7 +951,7 @@ msgstr "Jy kon nie %s biep nie.\n"
 
 #: ../client/gtk/chat.c:288
 msgid " said: "
-msgstr " het gesê:"
+msgstr " het gesÃª:"
 
 #: ../client/gtk/connect.c:282
 #, c-format
@@ -1065,7 +1065,7 @@ msgstr "Betree 'n openbare spel"
 
 #: ../client/gtk/connect.c:970
 msgid "_New remote game"
-msgstr "_Nuwe afgeleë spel"
+msgstr "_Nuwe afgeleÃ« spel"
 
 #: ../client/gtk/connect.c:984
 msgid "Refresh the list of games"
@@ -1129,11 +1129,11 @@ msgstr "Punte nodig om te wen"
 
 #: ../client/gtk/connect.c:1090 ../common/gtk/game-rules.c:73
 msgid "Sevens Rule"
-msgstr "Sewes-reël"
+msgstr "Sewes-reÃ«l"
 
 #: ../client/gtk/connect.c:1096
 msgid "Sevens rule"
-msgstr "Sewes-reël"
+msgstr "Sewes-reÃ«l"
 
 #: ../client/gtk/connect.c:1100
 msgid "Host"
@@ -1267,7 +1267,7 @@ msgstr "%s het die spel gewen met %d oorwinningspunte!\n"
 #: ../client/gtk/gameover.c:58
 #, c-format
 msgid "All praise %s, Lord of the known world!"
-msgstr "Geluk aan %s, heerser van hierdie wêreld!"
+msgstr "Geluk aan %s, heerser van hierdie wÃªreld!"
 
 #: ../client/gtk/gold.c:71
 msgid "Choose resources"
@@ -1797,11 +1797,11 @@ msgstr "Die bank is leeg"
 #: ../client/gtk/quote.c:186
 #, c-format
 msgid "%s has %s, and is looking for %s"
-msgstr "%s het %s, en wil graag %s hê"
+msgstr "%s het %s, en wil graag %s hÃª"
 
 #: ../client/gtk/quote.c:287
 msgid "I Want"
-msgstr "Ek wil hê"
+msgstr "Ek wil hÃª"
 
 #: ../client/gtk/quote.c:295
 msgid "Give Them"
@@ -1884,11 +1884,11 @@ msgstr "Gekose hoeveelheid"
 #. Tooltip for the total selected amount
 #: ../client/gtk/resource-table.c:293
 msgid "Total selected amount"
-msgstr "Die huidig geselekteerde lêernaam"
+msgstr "Die huidig geselekteerde lÃªernaam"
 
 #: ../client/gtk/resource-table.c:314
 msgid "The bank cannot be emptied"
-msgstr "Die kleur kan nie geïnstalleer word nie."
+msgstr "Die kleur kan nie geÃ¯nstalleer word nie."
 
 #: ../client/gtk/settingscreen.c:74
 msgid "Yes"
@@ -1936,7 +1936,7 @@ msgstr "Aantal van elke hulpbron:"
 
 #: ../client/gtk/settingscreen.c:177
 msgid "Sevens Rule:"
-msgstr "Sewes-reël:"
+msgstr "Sewes-reÃ«l:"
 
 #: ../client/gtk/settingscreen.c:181
 msgid "Use Pirate:"
@@ -2040,12 +2040,12 @@ msgstr "gee %s vir %s"
 #: ../client/gtk/trade.c:230
 #, c-format
 msgid "I want %s, and give them %s"
-msgstr "Ek wil %s hê en sal %s gee"
+msgstr "Ek wil %s hÃª en sal %s gee"
 
 #. Frame title, trade: I want to trade these resources
 #: ../client/gtk/trade.c:427
 msgid "<b>I Want</b>"
-msgstr "<b>Ek wil hê</b>"
+msgstr "<b>Ek wil hÃª</b>"
 
 #. Frame title, trade: I want these resources in return
 #: ../client/gtk/trade.c:455
@@ -2543,7 +2543,7 @@ msgstr "Spelparameters"
 
 #: ../editor/gtk/editor.c:698 ../server/gtk/main.c:482
 msgid "Rules"
-msgstr "Reëls"
+msgstr "ReÃ«ls"
 
 #: ../editor/gtk/editor.c:699
 msgid "Resources"
@@ -2593,7 +2593,7 @@ msgstr "Pioniersspelredigeerder"
 
 #: ../editor/gtk/editor.c:1001
 msgid "_File"
-msgstr "_Lêer"
+msgstr "_LÃªer"
 
 #: ../editor/gtk/editor.c:1004
 msgid "_New"
@@ -2659,12 +2659,12 @@ msgstr "Inligting oor Pioniersredigeerder"
 #. Long help for commandline option (editor): filename
 #: ../editor/gtk/editor.c:1066
 msgid "Open this file"
-msgstr "Maak hierdie lêer oop"
+msgstr "Maak hierdie lÃªer oop"
 
 #. Commandline option for editor: filename
 #: ../editor/gtk/editor.c:1068
 msgid "filename"
-msgstr "Lêernaam"
+msgstr "LÃªernaam"
 
 #: ../editor/gtk/editor.c:1100
 msgid "- Editor for games of Pioneers"
@@ -2691,7 +2691,7 @@ msgstr "Loop die metabediener in die agtergrond wanneer dit begin"
 #. Commandline meta-server: redirect
 #: ../meta-server/main.c:1036
 msgid "Redirect clients to another metaserver"
-msgstr "Herlei kliënte na 'n ander metabediener"
+msgstr "Herlei kliÃ«nte na 'n ander metabediener"
 
 #. Commandline meta-server: server
 #: ../meta-server/main.c:1039
@@ -2930,7 +2930,7 @@ msgstr "Speltitel om te gebruik"
 #. Commandline server-console: file
 #: ../server/main.c:78
 msgid "Game file to use"
-msgstr "Spellêer om te gebruik"
+msgstr "SpellÃªer om te gebruik"
 
 #. Commandline server-console: port
 #: ../server/main.c:81
@@ -2950,7 +2950,7 @@ msgstr "Verander die aantal punte wat nodig is om die spel te wen"
 #. Commandline server-console: seven-rule
 #: ../server/main.c:90
 msgid "Override seven-rule handling"
-msgstr "Verander die sewes-reëlhantering"
+msgstr "Verander die sewes-reÃ«lhantering"
 
 #. Commandline server-console: terrain
 #: ../server/main.c:93
@@ -3043,7 +3043,7 @@ msgstr "naam te lank"
 
 #: ../server/player.c:179
 msgid "ignoring unknown extension"
-msgstr "onbekende uitbreiding word geïgnoreer"
+msgstr "onbekende uitbreiding word geÃ¯gnoreer"
 
 #: ../server/player.c:209
 msgid "Game starts, adding computer players"
