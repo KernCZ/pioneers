@@ -575,7 +575,7 @@ msgstr "新しい観戦者: %s.\n"
 #: ../client/common/player.c:215 ../client/common/player.c:231
 #, c-format
 msgid "%s is now %s.\n"
-msgstr "%s は、今 %s \n"
+msgstr "%s は、今 %s.\n"
 
 #: ../client/common/player.c:228
 #, c-format
@@ -731,7 +731,7 @@ msgstr "%s は、船を移動した。\n"
 #: ../client/common/player.c:696
 #, c-format
 msgid "%s received %s.\n"
-msgstr "%s は、%s　を受け取った。 \n"
+msgstr "%s は、%s　を受け取った。.\n"
 
 #: ../client/common/player.c:714
 msgid "server asks to lose invalid point.\n"
@@ -916,7 +916,7 @@ msgstr "%s の二重設定\n"
 #: ../client/common/turn.c:37
 #, c-format
 msgid "%s rolled %d.\n"
-msgstr "%s は、%d をだした。 \n"
+msgstr "%s は、%d をだした。.\n"
 
 #: ../client/common/turn.c:50
 #, c-format
@@ -948,7 +948,7 @@ msgstr "%s を呼び出すことができない.\n"
 
 #: ../client/gtk/chat.c:288
 msgid " said: "
-msgstr "言った:·"
+msgstr " 言った:· "
 
 #: ../client/gtk/connect.c:282
 #, c-format
@@ -966,7 +966,7 @@ msgstr "メタサーバが我々をけり出した。\n"
 
 #: ../client/gtk/connect.c:334
 msgid "Receiving game names from the meta server.\n"
-msgstr "メタサーバからゲーム名を受信中 \n"
+msgstr "メタサーバからゲーム名を受信中.\n"
 
 #: ../client/gtk/connect.c:382
 #, c-format
@@ -2230,87 +2230,87 @@ msgstr ""
 
 #: ../common/log.c:54
 msgid "*ERROR* "
-msgstr "*ERROR*·"
+msgstr "*ERROR*· "
 
 #: ../common/log.c:60
 msgid "Chat: "
-msgstr "チャット:"
+msgstr "チャット: "
 
 #: ../common/log.c:63
 msgid "Resource: "
-msgstr "資源:"
+msgstr "資源: "
 
 #: ../common/log.c:66
 msgid "Build: "
-msgstr "建設:"
+msgstr "建設: "
 
 #: ../common/log.c:69
 msgid "Dice: "
-msgstr "ダイス:"
+msgstr "ダイス: "
 
 #: ../common/log.c:72
 msgid "Steal: "
-msgstr "盗賊:"
+msgstr "盗賊: "
 
 #: ../common/log.c:75
 msgid "Trade: "
-msgstr "交易:"
+msgstr "交易: "
 
 #: ../common/log.c:78
 msgid "Development: "
-msgstr "開発:"
+msgstr "開発: "
 
 #: ../common/log.c:81
 msgid "Army: "
-msgstr "兵士:"
+msgstr "兵士: "
 
 #: ../common/log.c:84
 msgid "Road: "
-msgstr "道:·"
+msgstr "道:· "
 
 #: ../common/log.c:87
 msgid "*BEEP* "
-msgstr "*BEEP*·"
+msgstr "*BEEP*· "
 
 #: ../common/log.c:92
 msgid "Player 1: "
-msgstr "プレイヤー 1:"
+msgstr "プレイヤー 1: "
 
 #: ../common/log.c:95
 msgid "Player 2: "
-msgstr "プレイヤー 2:"
+msgstr "プレイヤー 2: "
 
 #: ../common/log.c:98
 msgid "Player 3: "
-msgstr "プレイヤー 3:"
+msgstr "プレイヤー 3: "
 
 #: ../common/log.c:101
 msgid "Player 4: "
-msgstr "プレイヤー 4:"
+msgstr "プレイヤー 4: "
 
 #: ../common/log.c:104
 msgid "Player 5: "
-msgstr "プレイヤー 5:"
+msgstr "プレイヤー 5: "
 
 #: ../common/log.c:107
 msgid "Player 6: "
-msgstr "プレイヤー 6:"
+msgstr "プレイヤー 6: "
 
 #: ../common/log.c:110
 msgid "Player 7: "
-msgstr "プレイヤー 7:"
+msgstr "プレイヤー 7: "
 
 #: ../common/log.c:113
 msgid "Player 8: "
-msgstr "プレイヤー 8:"
+msgstr "プレイヤー 8: "
 
 #: ../common/log.c:116
 msgid "Viewer: "
-msgstr "観戦者:"
+msgstr "観戦者: "
 
 #: ../common/log.c:119
 msgid "** UNKNOWN MESSAGE TYPE ** "
-msgstr "**·UNKNOWN·MESSAGE·TYPE·**·"
+msgstr "**·UNKNOWN·MESSAGE·TYPE·**· "
 
 #: ../common/network.c:281
 #, c-format
@@ -3102,12 +3102,3 @@ msgstr "島追加ボーナス"
 #: ../server/turn.c:388
 msgid "Tried to assign resources to NULL player.\n"
 msgstr "NULL プレイヤーに、資源を使わせようとした\n"
-
-#~ msgid "Continue with your turn."
-#~ msgstr "あなたの番が進行中"
-
-#~ msgid "Map Terrain"
-#~ msgstr "陸上地図"
-
-#~ msgid "Default map or a random map"
-#~ msgstr "初期地図かランダム地図"

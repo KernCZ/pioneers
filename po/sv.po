@@ -2261,7 +2261,7 @@ msgstr "Handel: "
 
 #: ../common/log.c:78
 msgid "Development: "
-msgstr "Utveckling:"
+msgstr "Utveckling: "
 
 #: ../common/log.c:81
 msgid "Army: "
@@ -2273,7 +2273,7 @@ msgstr "Väg: "
 
 #: ../common/log.c:87
 msgid "*BEEP* "
-msgstr "*PIP*"
+msgstr "*PIP* "
 
 #: ../common/log.c:92
 msgid "Player 1: "
@@ -3106,71 +3106,3 @@ msgstr "Bonus för ytterligare ö"
 #: ../server/turn.c:388
 msgid "Tried to assign resources to NULL player.\n"
 msgstr "Försökte tilldela resurser till NOLL spelare.\n"
-
-#~ msgid "Continue with your turn."
-#~ msgstr "Fortsätt med din tur."
-
-#~ msgid "Map Terrain"
-#~ msgstr "Kartterräng"
-
-#~ msgid "Default map or a random map"
-#~ msgstr "Förvald karta eller en slumpad karta"
-
-#~ msgid "%s has requested a connection check."
-#~ msgstr "%s har begärt en anslutningskontroll."
-
-#~ msgid "The metaserver has rejected the reported hostname. Try %s instead."
-#~ msgstr ""
-#~ "Metaservern har vägrat ta emot det rapporterade värdnamet. Prova %s "
-#~ "istället."
-
-#~ msgid "NOTE Expecting version %s, not %s\n"
-#~ msgstr "NOTERA Förväntade version %s, inte %s\n"
-
-#~ msgid "Pixmap not found: %s\n"
-#~ msgstr "Bild hittades inte: %s\n"
-
-#~ msgid "Only server or port set, ignoring command line"
-#~ msgstr "Endast server eller port satta, ignorerar kommandorad"
-
-#~ msgid "Could not initialize default theme."
-#~ msgstr "Kunde inte initiera förvalt tema."
-
-#~ msgid "Theme %s not loaded due to errors."
-#~ msgstr "Temat %s lästes inte in på grund av fel."
-
-#~ msgid "Could not find '%s' pixmap file in theme '%s'."
-#~ msgstr "Kunde inte hitta bildfilen \"%s\" i temat \"%s\"."
-
-#~ msgid "Could not load '%s' pixmap file in theme '%s'."
-#~ msgstr "Kunde inte läsa in bildfilen \"%s\" i temat \"%s\"."
-
-#~ msgid "Could not find default pixmap file: %s"
-#~ msgstr "Kunde inte hitta förvald bildfil: %s"
-
-#~ msgid "While reading %s at line %d:"
-#~ msgstr "Vid läsning av %s på rad %d."
-
-#~ msgid "variable name missing: %s"
-#~ msgstr "variabelnamn saknas: %s"
-
-#~ msgid "unknown config variable '%s'"
-#~ msgstr "okänd konfigurationsvariabel \"%s\"."
-
-#~ msgid "'=' missing: %s"
-#~ msgstr "'=' saknas: %s"
-
-#~ msgid "missing value"
-#~ msgstr "värde saknas"
-
-#~ msgid "invalid color: %s"
-#~ msgstr "ogiltig färg: %s"
-
-#~ msgid "unexpected rest at end of line: '%s'"
-#~ msgstr "oväntad data på slut av rad: \"%s\""
-
-#~ msgid "No usable version of WinSock was found."
-#~ msgstr "Ingen användbar version av WinSock hittades."
-
-#~ msgid "State stack overflow"
-#~ msgstr "Överflöde i statusstack"

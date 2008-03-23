@@ -1,7 +1,9 @@
-2008-03-23 Synchronisation with Launchpad.net (2008-03-13)
-	* da.po: Last translator: Carson (http://launchpad.net/~nanker)
-	* es.po: Last translator: Kiba-Kun <kibafang@gmail.com>
-	* fr.po: Last translator: Jean-Charles GRANGER <traduction@vecteur.org>
+2008-03-23 Roland Clobus <rclobus@bigfoot.com>
+	Synchronisation with Launchpad.net (2008-03-13)
+	* af.po, da.po, de.po, es.po, fr.po, hu.po, it.po, ja.po, nl.po,
+	pt.po, sv.po: Synchronisation with Launchpad.net (2008-03-13),
+	most changes are whitespaces at the end of strings.
+	* es.po: Some modifications by Kiba-Kun <kibafang@gmail.com>
 
 2008-03-23 Roland Clobus <rclobus@bigfoot.com>
 	* af.po, de.po, hu.po, nl.po, pt.po: Converted to utf-8

@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Pioneers 0.10.2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-10-07 20:33+0200\n"
-"PO-Revision-Date: 2006-11-11 01:38+0200\n"
+"PO-Revision-Date: 2007-10-15 16:31+0000\n"
 "Last-Translator: Petri Jooste <petri.jooste@gmail.com>\n"
 "Language-Team: Afrikaans <af@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -884,7 +884,7 @@ msgstr "%s, %s"
 #: ../client/common/robber.c:60
 #, fuzzy, c-format
 msgid "%s has undone the robber movement.\n"
-msgstr "%s moet die rower skuif."
+msgstr "%s moet die rower skuif.\n"
 
 #: ../client/common/robber.c:63
 #, c-format
@@ -951,7 +951,7 @@ msgstr "Jy kon nie %s biep nie.\n"
 
 #: ../client/gtk/chat.c:288
 msgid " said: "
-msgstr " het gesê:"
+msgstr " het gesê: "
 
 #: ../client/gtk/connect.c:282
 #, c-format
@@ -1377,7 +1377,7 @@ msgstr "Ruilhandel"
 
 #: ../client/gtk/gui.c:237
 msgid "Undo"
-msgstr "Herroep "
+msgstr "Herroep"
 
 #: ../client/gtk/gui.c:238 ../client/gtk/gui.c:239
 msgid "Finish"
@@ -2212,7 +2212,7 @@ msgstr "Hierdie spel gaan binnekort begin."
 #: ../common/game.c:604
 #, fuzzy
 msgid "There is no land."
-msgstr "Daar is nie 'n langste pad nie.\n"
+msgstr "Daar is nie 'n langste pad nie."
 
 #: ../common/game.c:638
 msgid "It is possible that this game cannot be won."
@@ -3111,12 +3111,3 @@ msgstr "Addisionele eilandbonus"
 #: ../server/turn.c:388
 msgid "Tried to assign resources to NULL player.\n"
 msgstr "Het probeer om hulpbronne toe te ken aan die NULL-speler.\n"
-
-#~ msgid "Continue with your turn."
-#~ msgstr "Gaan voort met jou beurt."
-
-#~ msgid "Map Terrain"
-#~ msgstr "Landkaartterrein"
-
-#~ msgid "Default map or a random map"
-#~ msgstr "Verstekkaart of ewekansige kaart"

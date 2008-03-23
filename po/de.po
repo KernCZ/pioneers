@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: Pioneers 0.11.3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-10-07 20:33+0200\n"
-"PO-Revision-Date: 2007-07-22 16:35+0000\n"
+"PO-Revision-Date: 2008-02-28 18:54+0000\n"
 "Last-Translator: Pit Garbe <piiit@gmx.de>\n"
 "Language-Team: Pit Garbe <piiit@gmx.de>, Roman Hodek <roman@hodek.net>, de "
 "<de@li.org>\n"
@@ -2237,7 +2237,7 @@ msgstr ""
 
 #: ../common/log.c:54
 msgid "*ERROR* "
-msgstr "*FEHLER*"
+msgstr "*FEHLER* "
 
 #: ../common/log.c:60
 msgid "Chat: "
@@ -2249,15 +2249,15 @@ msgstr "Rohstoff: "
 
 #: ../common/log.c:66
 msgid "Build: "
-msgstr "Bauen:"
+msgstr "Bauen: "
 
 #: ../common/log.c:69
 msgid "Dice: "
-msgstr "Würfeln:"
+msgstr "Würfeln: "
 
 #: ../common/log.c:72
 msgid "Steal: "
-msgstr "Stehlen:"
+msgstr "Stehlen: "
 
 #: ../common/log.c:75
 msgid "Trade: "
@@ -2269,7 +2269,7 @@ msgstr "Entwicklung: "
 
 #: ../common/log.c:81
 msgid "Army: "
-msgstr "Ritter:"
+msgstr "Ritter: "
 
 #: ../common/log.c:84
 msgid "Road: "
@@ -2277,7 +2277,7 @@ msgstr "Straße: "
 
 #: ../common/log.c:87
 msgid "*BEEP* "
-msgstr "*PIEP*"
+msgstr "*PIEP* "
 
 #: ../common/log.c:92
 msgid "Player 1: "
@@ -2809,7 +2809,7 @@ msgstr "Zufällige Rundenreihenfolge"
 
 #: ../server/gtk/main.c:683
 msgid "Randomize turn order"
-msgstr "Rundenreihenfilge mischen"
+msgstr "Rundenreihenfolge mischen"
 
 #: ../server/gtk/main.c:722
 msgid "Running Game"
@@ -2905,7 +2905,7 @@ msgstr "Der Pioneers-Spielserver"
 
 #. Wait for all players to disconnect,
 #. * then enable the UI
-#.
+#. 
 #: ../server/gtk/main.c:940
 msgid "The game is over.\n"
 msgstr "Ende des Spiels.\n"
@@ -3112,60 +3112,3 @@ msgstr "Extra Insel-Bonus"
 #: ../server/turn.c:388
 msgid "Tried to assign resources to NULL player.\n"
 msgstr "Versuchte Ressourcen NULL Spieler zuzuteilen.\n"
-
-#~ msgid "Continue with your turn."
-#~ msgstr "Fahre mit deinem Zug fort."
-
-#~ msgid "Map Terrain"
-#~ msgstr "Geländeverteilung"
-
-#~ msgid "Default map or a random map"
-#~ msgstr "Standardkarte oder Zufallskarte"
-
-#~ msgid "NOTE Expecting version %s, not %s\n"
-#~ msgstr "NOTE Erwarte Version %s, nicht %s\n"
-
-#~ msgid "Pixmap not found: %s\n"
-#~ msgstr "Pixmap nicht gefunden: %s\n"
-
-#~ msgid "Only server or port set, ignoring command line"
-#~ msgstr "Nur Server oder Port eingestellt, ignoriere Kommandozeile"
-
-#~ msgid "Could not initialize default theme."
-#~ msgstr "Konnte das Standard-Thema nicht initialisieren"
-
-#~ msgid "Theme %s not loaded due to errors."
-#~ msgstr "Thema %s nicht geladen auf Grund von Fehlern."
-
-#~ msgid "Could not find '%s' pixmap file in theme '%s'."
-#~ msgstr "Bilddatei %s (Thema %s) nicht gefunden."
-
-#~ msgid "Could not load '%s' pixmap file in theme '%s'."
-#~ msgstr "Bilddatei %s (Thema %s) konnte nicht geladen werden."
-
-#~ msgid "Could not find default pixmap file: %s"
-#~ msgstr "Standard Bilddatei %s nicht gefunden."
-
-#~ msgid "While reading %s at line %d:"
-#~ msgstr "Während des Lesens von %s in Zeile %d:"
-
-#~ msgid "variable name missing: %s"
-#~ msgstr "Variablenname fehlt: %s"
-
-#~ msgid "unknown config variable '%s'"
-#~ msgstr "Unbekannte Konfugurationsvariable '%s'"
-
-#~ msgid "'=' missing: %s"
-#~ msgstr "'=' fehlt: %s"
-
-#~ msgid "missing value"
-#~ msgstr "fehlender Wert"
-
-#~ msgid "invalid color: %s"
-#~ msgstr "unzulässige Farbe: %s"
-
-#~ msgid "unexpected rest at end of line: '%s'"
-#~ msgstr "Unerwarteter Rest am Zeilenende: '%s'"
-
-#~ msgid "No usable version of WinSock was found."
-#~ msgstr "Keine brauchbare Version von WinSock gefunden."
