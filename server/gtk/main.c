@@ -218,8 +218,8 @@ static void gui_set_server_state(gboolean running)
 	gtk_notebook_set_current_page(GTK_NOTEBOOK(settings_notebook),
 				      running ? 1 : 0);
 	gtk_button_set_label(GTK_BUTTON(start_btn),
-			     running ? _("Stop server") :
-			     _("Start server"));
+			     running ? _("Stop Server") :
+			     _("Start Server"));
 	gtk_widget_set_tooltip_text(start_btn,
 				    running ? _("Stop the server") :
 				    _("Start the server"));

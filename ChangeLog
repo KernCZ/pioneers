@@ -23,6 +23,8 @@
 	present.
 	* editor/gtk/game-devcards.c: Remove some warnings when all warnings
 	are turned on.
+	* server/gtk/main.c: Use consistent capitalisation for Start/Stop
+	Server.
 
 2008-03-12  Roland Clobus <rclobus@bigfoot.com>
 	* server/gtk/main.c, server/player.c, server/server.c, server/server.h,
