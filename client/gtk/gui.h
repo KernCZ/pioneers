@@ -25,8 +25,6 @@
 #include "guimap.h"
 
 void set_color_summary(gboolean flag);
-gboolean get_announce_player(void);
-void set_announce_player(gboolean announce);
 
 GtkWidget *gui_get_dialog_button(GtkDialog * dlg, gint button);
 

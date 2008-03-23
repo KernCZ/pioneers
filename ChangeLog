@@ -8,6 +8,10 @@
 	the language.
 	* client/common/i18n.c: No longer in use.
 	* common/state.c: Removed compiler warning.
+	* client/gtk/interface.c, client/gtk/player.c, client/gtk/audio.c,
+	client/gtk/audio.h, client/gtk/chat.c, client/gtk/gui.c,
+	client/gtk/Makefile.am, client/gtk/gui.h: Added silent mode, as
+	requested by Mike Pater (SF #1655951)
 
 2008-03-12  Roland Clobus <rclobus@bigfoot.com>
 	* server/gtk/main.c, server/player.c, server/server.c, server/server.h,

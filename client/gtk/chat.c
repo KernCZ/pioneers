@@ -22,6 +22,7 @@
 #include "config.h"
 #include "frontend.h"
 #include "common_gtk.h"
+#include "audio.h"
 
 static GtkWidget *chat_entry;	/* messages text widget */
 static GtkListStore *chat_completion_model = NULL;
@@ -225,7 +226,7 @@ static void beep_player(gint beeping_player, const gchar * name)
 	gint beeped_player = find_player_by_name(name);
 	if (beeped_player != -1) {
 		if (beeped_player == my_player_num()) {
-			gdk_beep();
+			play_sound(SOUND_BEEP);
 			frontend_gui_update();
 			if (beeping_player == my_player_num())
 				log_message(MSG_BEEP, _("Beeper test.\n"));

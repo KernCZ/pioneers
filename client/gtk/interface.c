@@ -24,6 +24,7 @@
 #include "frontend.h"
 #include "cost.h"
 #include "histogram.h"
+#include "audio.h"
 
 /* local functions */
 static void frontend_state_turn(GuiEvent event);
@@ -405,7 +406,7 @@ void frontend_turn(void)
 		return;
 	}
 	set_gui_state(frontend_state_turn);
-	gdk_beep();
+	play_sound(SOUND_TURN);
 }
 
 /* development card actions */
@@ -879,5 +880,5 @@ void frontend_setup(G_GNUC_UNUSED unsigned num_settlements,
 		return;
 	}
 	set_gui_state(frontend_mode_setup);
-	gdk_beep();
+	play_sound(SOUND_TURN);
 }

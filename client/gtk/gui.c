@@ -38,6 +38,7 @@
 #include "theme.h"
 #include "config-gnome.h"
 #include "gtkbugs.h"
+#include "audio.h"
 
 static GtkWidget *preferences_dlg;
 GtkWidget *app_window;		/* main application window */
@@ -825,6 +826,19 @@ static void summary_color_cb(GtkToggleButton * widget,
 	set_color_summary(color_summary);
 }
 
+static void silent_mode_cb(GtkToggleButton * widget,
+			   G_GNUC_UNUSED gpointer user_data)
+{
+	GtkToggleButton *announce_button = user_data;
+
+	gboolean silent_mode = gtk_toggle_button_get_active(widget);
+	config_set_int("settings/silent_mode", silent_mode);
+	set_silent_mode(silent_mode);
+	gtk_toggle_button_set_inconsistent(announce_button, silent_mode);
+	gtk_widget_set_sensitive(GTK_WIDGET(announce_button),
+				 !silent_mode);
+}
+
 static void announce_player_cb(GtkToggleButton * widget,
 			       G_GNUC_UNUSED gpointer user_data)
 {
@@ -853,6 +867,7 @@ static void toolbar_shortcuts_cb(void)
 
 static void preferences_cb(void)
 {
+	GtkWidget *silent_mode_widget;
 	GtkWidget *widget;
 	GtkWidget *dlg_vbox;
 	GtkWidget *theme_label;
@@ -986,8 +1001,8 @@ static void preferences_cb(void)
 				    _("Use colors in the player summary"));
 	row++;
 
-	/* Label for the option to display keyboard accelerators in the toolbar */
 	widget =
+	    /* Label for the option to display keyboard accelerators in the toolbar */
 	    gtk_check_button_new_with_label(_("Toolbar with shortcuts"));
 	gtk_widget_show(widget);
 	gtk_table_attach_defaults(GTK_TABLE(layout), widget,
@@ -1002,8 +1017,20 @@ static void preferences_cb(void)
 				      "Show keyboard shortcuts in the toolbar"));
 	row++;
 
-	/* Label for the option to announce when players/viewer enter */
+	silent_mode_widget =
+	    /* Label for the option to disable all sounds */
+	    gtk_check_button_new_with_label(_("Silent mode"));
+	gtk_widget_show(silent_mode_widget);
+	gtk_table_attach_defaults(GTK_TABLE(layout), silent_mode_widget,
+				  0, 2, row, row + 1);
+	gtk_widget_set_tooltip_text(silent_mode_widget,
+				    /* Tooltip for the option to disable all sounds */
+				    _(""
+				      "In silent mode no sounds are made"));
+	row++;
+
 	widget =
+	    /* Label for the option to announce when players/viewers enter */
 	    gtk_check_button_new_with_label(_("Announce new players"));
 	gtk_widget_show(widget);
 	gtk_table_attach_defaults(GTK_TABLE(layout), widget,
@@ -1013,10 +1040,16 @@ static void preferences_cb(void)
 	g_signal_connect(G_OBJECT(widget), "toggled",
 			 G_CALLBACK(announce_player_cb), NULL);
 	gtk_widget_set_tooltip_text(widget,
-				    /* Tooltip for the option to use sound */
+				    /* Tooltip for the option to use sound when players/viewers enter */
 				    _(""
 				      "Make a sound when a new player or viewer enters the game"));
 	row++;
+
+	/* Silent mode widget is connected an initialized after the announce button */
+	g_signal_connect(G_OBJECT(silent_mode_widget), "toggled",
+			 G_CALLBACK(silent_mode_cb), widget);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(silent_mode_widget),
+				     get_silent_mode());
 
 	/* Label for the option to use the 16:9 layout. */
 	widget = gtk_check_button_new_with_label(_("Use 16:9 layout"));
@@ -1510,6 +1543,8 @@ GtkWidget *gui_build_interface(void)
 	set_color_summary(config_get_int_with_default
 			  ("settings/color_summary", TRUE));
 
+	set_silent_mode(config_get_int_with_default
+			("settings/silent_mode", FALSE));
 	set_announce_player(config_get_int_with_default
 			    ("settings/announce_player", TRUE));
 

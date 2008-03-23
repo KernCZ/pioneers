@@ -40,9 +40,11 @@ EXTRA_pioneers_SOURCES = $(ADMIN_GTK_FILES_INACTIVE)
 pioneers_SOURCES = \
 	$(ADMIN_GTK_FILES_ACTIVE) \
 	client/callback.h \
+	client/gtk/audio.h \
 	client/gtk/frontend.h \
 	client/gtk/gui.h \
 	client/gtk/histogram.h \
+	client/gtk/audio.c \
 	client/gtk/callbacks.c \
 	client/gtk/chat.c \
 	client/gtk/connect.c \
