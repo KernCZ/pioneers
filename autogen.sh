@@ -6,7 +6,9 @@ test -z "$srcdir" && srcdir=.
 
 PKG_NAME="Pioneers"
 
+REQUIRED_AUTOCONF_VERSION="2.61"
 REQUIRED_AUTOMAKE_VERSION="1.9"
+REQUIRED_INTLTOOL_VERSION="0.35"
 
 (test -f $srcdir/configure.ac \
   && test -f $srcdir/ChangeLog \

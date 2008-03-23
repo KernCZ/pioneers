@@ -273,20 +273,6 @@ struct callbacks {
 	void (*quit) (void);
 };
 
-#if ENABLE_NLS
-typedef struct {
-	const char *code;
-	const char *name;
-	const char *localedef;
-	gboolean supported;
-	void *widget;
-} lang_desc;
-
-void init_nls(void);
-gboolean change_nls(lang_desc * ld);
-lang_desc *find_lang_desc(const gchar * code);
-#endif
-
 extern struct callbacks callbacks;
 extern enum callback_mode callback_mode;
 /* It seems this should be part of the gui, but it is in fact part of the log,

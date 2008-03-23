@@ -49,7 +49,12 @@ int main(int argc, char *argv[])
 	callbacks.quit = &quit;
 
 #if ENABLE_NLS
-	init_nls();
+	setlocale(LC_ALL, "");
+	bindtextdomain(PACKAGE, LOCALEDIR);
+	textdomain(PACKAGE);
+
+	/* have gettext return strings in UTF-8 */
+	bind_textdomain_codeset(PACKAGE, "UTF-8");
 #endif
 
 	frontend_set_callbacks();

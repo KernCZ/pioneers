@@ -42,9 +42,6 @@ static const gchar *port = NULL;
 static const gchar *meta_server = NULL;
 static gboolean server_from_commandline = FALSE;
 static gboolean quit_when_offline = FALSE;
-#ifdef ENABLE_NLS
-static const gchar *override_language = NULL;
-#endif
 static gboolean enable_debug = FALSE;
 static gboolean show_version = FALSE;
 
@@ -64,11 +61,6 @@ static GOptionEntry commandline_entries[] = {
 	/* Commandline option of client: hostname of the meta-server */
 	{"meta-server", 'm', 0, G_OPTION_ARG_STRING, &meta_server,
 	 N_("Meta-server Host"), PIONEERS_DEFAULT_META_SERVER},
-#ifdef ENABLE_NLS
-	/* Commandline option of client: override the language */
-	{"language", '\0', 0, G_OPTION_ARG_STRING, &override_language,
-	 N_("Override the language of the system"), "en " ALL_LINGUAS},
-#endif
 	{"debug", '\0', 0, G_OPTION_ARG_NONE, &enable_debug,
 	 /* Commandline option of client: enable debug logging */
 	 N_("Enable debug messages"), NULL},
@@ -158,9 +150,6 @@ void frontend_init(int argc, char **argv)
 {
 	GtkWidget *app;
 	gboolean default_returned;
-#if ENABLE_NLS
-	lang_desc *ld;
-#endif
 	GOptionContext *context;
 	GError *error = NULL;
 	gchar *style;
@@ -204,10 +193,6 @@ void frontend_init(int argc, char **argv)
 	bindtextdomain(PACKAGE, LOCALEDIR);
 	textdomain(PACKAGE);
 	bind_textdomain_codeset(PACKAGE, "UTF-8");
-
-	/* Override the language if it is set in the command line */
-	if (override_language && (ld = find_lang_desc(override_language)))
-		change_nls(ld);
 #endif
 
 	/* Create the application window

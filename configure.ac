@@ -19,12 +19,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-AC_PREREQ(2.53)
+AC_PREREQ(2.61)
 AC_INIT([pioneers],[0.11.4],[pio-develop@lists.sourceforge.net])
 AC_CONFIG_AUX_DIR([.])
 AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
 AC_CONFIG_SRCDIR([client])
-AM_CONFIG_HEADER(config.h)
+AC_CONFIG_HEADERS([config.h])
  
 PROTOCOL_VERSION=0.11
 META_PROTOCOL_VERSION=1.3
@@ -87,7 +87,7 @@ if test "$pngtopnm" = ""; then
 	AC_SUBST(pngtopnm, [false])
 fi
 
-AC_ARG_ENABLE([warnings], AC_HELP_STRING([--enable-warnings],
+AC_ARG_ENABLE([warnings], AS_HELP_STRING([--enable-warnings],
 	[Compile with check for compiler warnings (gcc-only).]),
 [case "${enableval}" in
   full) pioneers_warnings=full;;
@@ -96,7 +96,7 @@ AC_ARG_ENABLE([warnings], AC_HELP_STRING([--enable-warnings],
   *)    pioneers_warnings=no  ;;
 esac])
 
-AC_ARG_ENABLE([debug], AC_HELP_STRING([--enable-debug],
+AC_ARG_ENABLE([debug], AS_HELP_STRING([--enable-debug],
 	[Enable debug information.]),
 [case "${enableval}" in
   yes)  pioneers_debug=yes ;;
@@ -105,7 +105,7 @@ AC_ARG_ENABLE([debug], AC_HELP_STRING([--enable-debug],
 esac])
 
 AC_ARG_ENABLE([deprecation-checks],
-	AC_HELP_STRING([--enable-deprecation-checks],
+	AS_HELP_STRING([--enable-deprecation-checks],
 		[Enable strict deprecation checks.]),
 [case "${enableval}" in
   yes)  pioneers_deprecationChecks=yes ;;
@@ -147,9 +147,7 @@ if test "x$GCC" = xyes; then
 			SAVE_CFLAGS="$CFLAGS"
 			CFLAGS="$CFLAGS $option"
 			AC_MSG_CHECKING([whether gcc understands $option])
-			AC_TRY_COMPILE([], [],
-				has_option=yes,
-				has_option=no,)
+			AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[]], [[]])],[has_option=yes],[has_option=no])
 			CFLAGS="$SAVE_CFLAGS"
 			AC_MSG_RESULT($has_option)
 			if test $has_option = yes; then
@@ -247,7 +245,7 @@ AM_CONDITIONAL(HAVE_GNOME, [test "$have_graphical" = "yes"])
 
 AM_CONDITIONAL(HAVE_SCROLLKEEPER, [test "$have_scrollkeeper" = "yes"])
 
-AC_ARG_ENABLE([admin-gtk], AC_HELP_STRING([--enable-admin-gtk],
+AC_ARG_ENABLE([admin-gtk], AS_HELP_STRING([--enable-admin-gtk],
 	[Turn on (unstable) network administration support.]),
 [case "${enableval}" in
   yes) admin_gtk_support=yes  ;;
@@ -364,14 +362,12 @@ AC_DEFINE_UNQUOTED(PIONEERS_DEFAULT_META_SERVER,
 		   "$PIONEERS_DEFAULT_META_SERVER", [The default meta server])
 
 ## internationalization support
-ALL_LINGUAS="af da de es fr hu it ja nl pt sv"
-AC_PROG_INTLTOOL([0.23])
+IT_PROG_INTLTOOL([0.35])
 
 GETTEXT_PACKAGE=pioneers
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE", [The gettext package name])
 AM_GLIB_GNU_GETTEXT
-AC_DEFINE_UNQUOTED(ALL_LINGUAS, "$ALL_LINGUAS", [Available languages])
 
 # All checks are completed.
 # Determine which executables cannot be built

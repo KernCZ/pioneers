@@ -29,7 +29,6 @@ libpioneersclient_a_SOURCES = \
 	client/common/client.c \
 	client/common/client.h \
 	client/common/develop.c \
-	client/common/i18n.c \
 	client/common/main.c \
 	client/common/player.c \
 	client/common/resource.c \

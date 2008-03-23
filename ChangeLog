@@ -1,4 +1,13 @@
 
+2008-03-23  Roland Clobus <rclobus@bigfoot.com>
+	* configure.ac, autogen.sh: After running autoupdate, the minimum
+	version for autoconf is 2.61, and intltool 0.35.
+	* configure.ac, po/LINGUAS: Upgrade intltool to 0.35.
+	* client/callback.h, client/gtk/offline.c, client/common/main.c,
+	client/common/Makefile.am: Removed commandline argument to override
+	the language.
+	* client/common/i18n.c: No longer in use.
+
 2008-03-12  Roland Clobus <rclobus@bigfoot.com>
 	* server/gtk/main.c, server/player.c, server/server.c, server/server.h,
 	server/main.c, server/admin.c, client/ai/ai.c: Make all names for the
