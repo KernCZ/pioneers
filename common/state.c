@@ -540,7 +540,7 @@ static void do_goto(StateMachine * sm, StateFunc new_state, gboolean enter)
 	sm_dec_use_count(sm);
 }
 
-void sm_debug(const gchar * function, const gchar * state)
+void sm_debug(G_GNUC_UNUSED const gchar * function, G_GNUC_UNUSED const gchar * state)
 {
 #ifdef STACK_DEBUG
 	debug("Call %s with %s\n", function, state);

@@ -7,6 +7,7 @@
 	client/common/Makefile.am: Removed commandline argument to override
 	the language.
 	* client/common/i18n.c: No longer in use.
+	* common/state.c: Removed compiler warning.
 
 2008-03-12  Roland Clobus <rclobus@bigfoot.com>
 	* server/gtk/main.c, server/player.c, server/server.c, server/server.h,
