@@ -467,7 +467,7 @@ static void client_create_new_server(Client * client, gchar * line)
 	GList *list;
 	GSpawnFlags spawn_flags = G_SPAWN_STDOUT_TO_DEV_NULL |
 	    G_SPAWN_STDERR_TO_DEV_NULL;
-	gchar *child_argv[32];
+	gchar *child_argv[34];
 	gchar *port;
 	GError *error = NULL;
 
@@ -588,9 +588,11 @@ static void client_create_new_server(Client * client, gchar * line)
 	child_argv[n++] = g_strdup("-n");
 	child_argv[n++] = g_strdup(myhostname);
 	child_argv[n++] = g_strdup("-x");
+	child_argv[n++] = g_strdup("-t");
+	child_argv[n++] = g_strdup("1");
 	child_argv[n++] = g_strdup("-r");
 	child_argv[n] = NULL;
-	g_assert(n < 32);
+	g_assert(n < 34);
 
 	if (!g_spawn_async(NULL, child_argv, NULL, spawn_flags, NULL, NULL,
 			   NULL, &error)) {

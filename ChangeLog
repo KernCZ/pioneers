@@ -17,6 +17,8 @@
 	Easier selection for meta servers (by using a combo box)
 	* docs/pioneers-meta-server.6, meta-server/main.c: When -p is not
 	specified, the meta server will not be able to create games.
+	* meta-server/main.c: Add tournament mode to games created on the
+	meta server.
 
 2008-03-12  Roland Clobus <rclobus@bigfoot.com>
 	* server/gtk/main.c, server/player.c, server/server.c, server/server.h,
