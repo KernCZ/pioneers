@@ -12,6 +12,9 @@
 	client/gtk/audio.h, client/gtk/chat.c, client/gtk/gui.c,
 	client/gtk/Makefile.am, client/gtk/gui.h: Added silent mode, as
 	requested by Mike Pater (SF #1655951)
+	* common/gtk/metaserver.c, common/gtk/metaserver.h,
+	common/gtk/Makefile.am, server/gtk/main.c, client/gtk/connect.c:
+	Easier selection for meta servers (by using a combo box)
 
 2008-03-12  Roland Clobus <rclobus@bigfoot.com>
 	* server/gtk/main.c, server/player.c, server/server.c, server/server.h,

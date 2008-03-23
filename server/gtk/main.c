@@ -42,6 +42,7 @@
 #include "game-settings.h"	/* Custom widget */
 #include "game-rules.h"
 #include "theme.h"
+#include "metaserver.h"		/* Custom widget */
 
 #define MAINICON_FILE	"pioneers-server.png"
 
@@ -70,7 +71,6 @@ static Game *game = NULL;	/* the current game */
 static gchar *overridden_hostname;	/* override reported hostname */
 static gchar *server_port = NULL;	/* port of the game */
 static gboolean register_server = TRUE;	/* Register at the meta server */
-static const gchar *meta_server_name = NULL;	/* hostname of the meta server */
 static gboolean want_ai_chat = TRUE;
 static gboolean random_order = TRUE;	/* random seating order */
 static gboolean enable_debug = FALSE;
@@ -242,6 +242,7 @@ static void start_clicked_cb(G_GNUC_UNUSED GtkButton * start_btn,
 	} else {		/* not running */
 		const gchar *title;
 		GameParams *params;
+		gchar *meta_server_name;
 
 		title = select_game_get_active(SELECTGAME(select_game));
 		params = params_copy(game_list_find_item(title));
@@ -267,6 +268,8 @@ static void start_clicked_cb(G_GNUC_UNUSED GtkButton * start_btn,
 		params->domestic_trade =
 		    game_rules_get_domestic_trade(GAMERULES(game_rules));
 		update_game_settings(params);
+
+		meta_server_name = metaserver_get(METASERVER(meta_entry));
 
 		g_assert(server_port != NULL);
 
@@ -307,6 +310,7 @@ static void start_clicked_cb(G_GNUC_UNUSED GtkButton * start_btn,
 				       params->domestic_trade);
 		}
 		params_free(params);
+		g_free(meta_server_name);
 	}
 }
 
@@ -438,13 +442,6 @@ static void overridden_hostname_changed_cb(GtkEntry * widget,
 	overridden_hostname = g_strdup(text);
 }
 
-static void meta_server_changed_cb(GtkWidget * widget,
-				   G_GNUC_UNUSED gpointer user_data)
-{
-	meta_server_name =
-	    g_strstrip(g_strdup(gtk_entry_get_text(GTK_ENTRY(widget))));
-}
-
 static GtkWidget *build_game_settings(GtkWidget * parent,
 				      GtkWindow * main_window)
 {
@@ -528,6 +525,7 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 	GtkWidget *message_text;
 	gint novar;
 	gboolean default_returned;
+	gchar *meta_server_name;
 	gchar *gamename;
 	gint temp;
 	GameParams *params;
@@ -647,15 +645,11 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 
-	meta_entry = gtk_entry_new();
-	g_signal_connect(G_OBJECT(meta_entry), "changed",
-			 G_CALLBACK(meta_server_changed_cb), NULL);
+	meta_entry = metaserver_new();
 	gtk_widget_show(meta_entry);
 	gtk_table_attach(GTK_TABLE(table), meta_entry, 1, 2, 2, 3,
 			 GTK_EXPAND | GTK_FILL, GTK_EXPAND | GTK_FILL, 0,
 			 0);
-	gtk_widget_set_tooltip_text(meta_entry,
-				    _("The address of the meta server"));
 
 	label = gtk_label_new(_("Reported Hostname"));
 	gtk_widget_show(label);
@@ -698,7 +692,8 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 	    || !strncmp(meta_server_name, "gnocatan.debian.net",
 			strlen(meta_server_name) + 1))
 		meta_server_name = get_meta_server_name(TRUE);
-	gtk_entry_set_text(GTK_ENTRY(meta_entry), meta_server_name);
+	metaserver_add(METASERVER(meta_entry), meta_server_name);
+	g_free(meta_server_name);
 
 	novar = 0;
 	overridden_hostname =

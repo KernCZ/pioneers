@@ -33,6 +33,7 @@
 #include "select-game.h"
 #include "game-settings.h"
 #include "game-rules.h"
+#include "metaserver.h"
 
 const int PRIVATE_GAME_HISTORY_SIZE = 10;
 
@@ -200,23 +201,18 @@ void connect_set_server(const gchar * server)
 	connect_set_field(&connect_server, server);
 }
 
-static const gchar *connect_get_meta_server(void)
+static gchar *connect_get_meta_server(void)
 {
-	const gchar *text;
-
 	if (meta_server_entry == NULL)
 		return NULL;
-	text = gtk_entry_get_text(GTK_ENTRY(meta_server_entry));
-	while (*text != '\0' && isspace(*text))
-		text++;
-	return text;
+	return metaserver_get(METASERVER(meta_server_entry));
 }
 
 void connect_set_meta_server(const gchar * meta_server)
 {
 	connect_set_field(&metaserver_info.server, meta_server);
 	if (meta_server_entry != NULL)
-		gtk_entry_set_text(GTK_ENTRY(meta_server_entry),
+		metaserver_add(METASERVER(meta_server_entry),
 				   metaserver_info.server);
 }
 
@@ -246,6 +242,8 @@ static void connect_close_all(gboolean user_pressed_ok,
 {
 	connect_viewer_allowed = can_be_viewer;
 	if (user_pressed_ok) {
+		gchar *meta_server;
+
 		connect_set_field(&connect_name,
 				  gtk_entry_get_text(GTK_ENTRY
 						     (name_entry)));
@@ -253,8 +251,9 @@ static void connect_close_all(gboolean user_pressed_ok,
 		    gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON
 						 (viewer_toggle));
 		/* Save connect dialogue entries */
-		config_set_string("connect/meta-server",
-				  connect_get_meta_server());
+		meta_server = connect_get_meta_server();
+		config_set_string("connect/meta-server", meta_server);
+		g_free(meta_server);
 		config_set_string("connect/name", connect_name);
 		config_set_int("connect/viewer", connect_viewer);
 
@@ -918,13 +917,7 @@ static void set_meta_serverinfo(void)
 {
 	gchar *meta_tmp;
 
-	meta_tmp =
-	    g_strdup(gtk_entry_get_text(GTK_ENTRY(meta_server_entry)));
-	if (meta_tmp[0] == '\0') {
-		g_free(meta_tmp);
-		meta_tmp = get_meta_server_name(TRUE);
-		gtk_entry_set_text(GTK_ENTRY(meta_server_entry), meta_tmp);
-	}
+	meta_tmp = metaserver_get(METASERVER(meta_server_entry));
 	metaserver_info.server = meta_tmp;	/* Take-over of the pointer */
 	if (!metaserver_info.port)
 		metaserver_info.port =
@@ -1226,16 +1219,13 @@ void connect_create_dlg(void)
 			 (GtkAttachOptions) GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(lbl), 0, 0.5);
 
-	meta_server_entry = gtk_entry_new();
+	meta_server_entry = metaserver_new();
 	gtk_widget_show(meta_server_entry);
 	gtk_table_attach(GTK_TABLE(table), meta_server_entry, 1, 3, 2, 3,
 			 (GtkAttachOptions) GTK_EXPAND | GTK_FILL,
 			 (GtkAttachOptions) GTK_EXPAND | GTK_FILL, 0, 0);
-	gtk_entry_set_text(GTK_ENTRY(meta_server_entry),
+	metaserver_add(METASERVER(meta_server_entry),
 			   metaserver_info.server);
-	gtk_widget_set_tooltip_text(meta_server_entry,
-				    _(""
-				      "Leave empty for the default meta server"));
 
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_widget_show(hbox);

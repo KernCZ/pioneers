@@ -39,6 +39,8 @@ libpioneers_gtk_a_SOURCES = \
 	common/gtk/gtkbugs.h \
 	common/gtk/guimap.c \
 	common/gtk/guimap.h \
+	common/gtk/metaserver.c \
+	common/gtk/metaserver.h \
 	common/gtk/player-icon.c \
 	common/gtk/player-icon.h \
 	common/gtk/polygon.c \
