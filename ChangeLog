@@ -21,6 +21,8 @@
 	meta server.
 	* configure.ac: No need to attempt to create MS icons when Gtk+ is not
 	present.
+	* editor/gtk/game-devcards.c: Remove some warnings when all warnings
+	are turned on.
 
 2008-03-12  Roland Clobus <rclobus@bigfoot.com>
 	* server/gtk/main.c, server/player.c, server/server.c, server/server.h,

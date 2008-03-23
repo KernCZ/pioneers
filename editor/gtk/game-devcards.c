@@ -48,7 +48,7 @@ static void game_devcards_init(GameDevCards * gd)
 	GtkWidget *label;
 	GtkWidget *spin;
 	GtkObject *adjustment;
-	gint row;
+	guint row;
 
 	gtk_table_resize(GTK_TABLE(gd), NUM_DEVEL_TYPES, 2);
 	gtk_table_set_row_spacings(GTK_TABLE(gd), 3);
@@ -85,5 +85,5 @@ void game_devcards_set_num_cards(GameDevCards * gd, gint type, gint num)
 
 gint game_devcards_get_num_cards(GameDevCards * gd, gint type)
 {
-	return gtk_spin_button_get_value(gd->num_cards[type]);
+	return gtk_spin_button_get_value_as_int(gd->num_cards[type]);
 }
