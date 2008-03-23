@@ -25,6 +25,8 @@
 	are turned on.
 	* server/gtk/main.c: Use consistent capitalisation for Start/Stop
 	Server.
+	* client/help/C/pioneers.xml: Use menuchoice tags, update for the meta
+	server combo.
 
 2008-03-12  Roland Clobus <rclobus@bigfoot.com>
 	* server/gtk/main.c, server/player.c, server/server.c, server/server.h,

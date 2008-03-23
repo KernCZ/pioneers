@@ -619,8 +619,9 @@
           you wish to join. This dialog is automatically invoked when
           you start Pioneers. If the initial
           connection fails, you can invoke the dialog from the
-          <guimenu>Game</guimenu>/<guimenuitem>New game</guimenuitem>
-          menu, or by using the
+          <menuchoice><guimenu>Game</guimenu>
+	  <guimenuitem>New game</guimenuitem></menuchoice>
+	  menu, or by using the
           <keycombo><keycap>Ctrl</keycap><keycap>N</keycap></keycombo>
           keyboard shortcut.</para>
 
@@ -1383,8 +1384,8 @@
       </para></question>
       <answer><para>
         One person has to create a new game. If it is set up, you can leave
-	the lobby, and join that game (<guimenu>Game</guimenu>-&gt;
-	<guimenuitem>Leave game</guimenuitem>).
+	the lobby, and join that game (<menuchoice><guimenu>Game</guimenu>
+	<guimenuitem>Leave game</guimenuitem></menuchoice>).
       </para></answer>
       </qandaentry>
     </qandadiv>
@@ -1407,11 +1408,10 @@
 	    can find the game
           </para></listitem>
           <listitem><para>
-            Leave <guilabel>Meta Server</guilabel> empty, 
-            or use 'pioneers.debian.net'
+            Select a <guilabel>Meta Server</guilabel>
           </para></listitem>
           <listitem><para>
-            <guilabel>Reported hostname</guilabel> can be left empty
+            Leave <guilabel>Reported hostname</guilabel> empty
           </para></listitem>
           <listitem><para>
             Select a game of your liking, and click on 
