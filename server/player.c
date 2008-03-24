@@ -36,6 +36,7 @@ static void player_setup(Player * player, int playernum,
 			 const gchar * name, gboolean force_viewer);
 static Player *player_by_name(Game * game, char *name);
 
+#define tournament_minute 1000 * 1
 
 /** Find a free number for a connecting player.
  * The number has not been used before.
@@ -195,16 +196,27 @@ static gboolean mode_unhandled(Player * player, gint event)
 static gboolean tournament_start_cb(gpointer data)
 {
 	int i;
-	Player *player = (Player *) data;
-	Game *game = player->game;
+	Game *game = (Game *) data;
 
 	/* if game already started */
 	if (game->num_players == game->params->num_players)
 		return FALSE;
 
-	player_broadcast(player, PB_SILENT, FIRST_VERSION, LATEST_VERSION,
-			 "NOTE %s\n",
-			 N_("Game starts, adding computer players"));
+	if (game->num_players == 0) {
+		player_broadcast(player_none(game), PB_SILENT,
+				 FIRST_VERSION, LATEST_VERSION,
+				 "NOTE %s\n",
+				 N_
+				 ("The last player left, the "
+				  "tournament timer is reset."));
+		game->tournament_countdown = game->params->tournament_time;
+	}
+
+	player_broadcast(player_none(game), PB_SILENT, FIRST_VERSION,
+			 LATEST_VERSION, "NOTE %s\n",
+			 N_("Game starts, adding computer players."));
+	game->tournament_timer = 0;
+
 	/* add computer players to start game */
 	for (i = game->num_players; i < game->params->num_players; i++) {
 		add_computer_player(game, TRUE);
@@ -219,27 +231,43 @@ static gboolean tournament_start_cb(gpointer data)
  */
 static gboolean talk_about_tournament_cb(gpointer data)
 {
-	Player *player = (Player *) data;
-	Game *game = player->game;
+	Game *game = (Game *) data;
 	const gchar *message;
 
 	/* if game already started */
 	if (game->num_players == game->params->num_players)
 		return FALSE;
 
-	/* FIXME: Use ngettext here? */
-	message = game->params->tournament_time != 1 ?
+	if (game->num_players == 0) {
+		if (game->tournament_timer != 0) {
+			player_broadcast(player_none(game), PB_SILENT,
+					 FIRST_VERSION, LATEST_VERSION,
+					 "NOTE %s\n",
+					 N_
+					 ("The last player left, the "
+					  "tournament timer is reset."));
+			game->tournament_countdown =
+			    game->params->tournament_time;
+			g_source_remove(game->tournament_timer);
+			game->tournament_timer = 0;
+		}
+		return FALSE;
+	}
+
+	/* ngettext can not be used here,
+	 * because the string must be sent untranslated */
+	message = game->tournament_countdown != 1 ?
 	    N_("The game starts in %s minutes.") :
 	    N_("The game starts in %s minute.");
 
-	player_broadcast(player, PB_SILENT, FIRST_VERSION, LATEST_VERSION,
-			 "NOTE1 %d|%s\n",
-			 game->params->tournament_time, message);
-	game->params->tournament_time--;
+	player_broadcast(player_none(game), PB_SILENT, FIRST_VERSION,
+			 LATEST_VERSION, "NOTE1 %d|%s\n",
+			 game->tournament_countdown, message);
+	game->tournament_countdown--;
 
-	if (game->params->tournament_time > 0)
-		g_timeout_add(1000 * 60,
-			      &talk_about_tournament_cb, player);
+	if (game->tournament_countdown > 0)
+		g_timeout_add(tournament_minute,
+			      &talk_about_tournament_cb, game);
 
 	return FALSE;
 }
@@ -404,21 +432,6 @@ Player *player_new_connection(Game * game, int fd, const gchar * location)
 	 */
 	sm_set_use_cache(sm, TRUE);
 
-	if (game->params->tournament_time > 0) {
-		/* if first player in and this is a tournament start the timer */
-		if (game->num_players == 0) {
-			g_timeout_add(game->params->tournament_time * 60 *
-				      1000 + 500, &tournament_start_cb,
-				      player);
-			g_timeout_add(1000, &talk_about_tournament_cb,
-				      player);
-		} else {
-			player_send_uncached(player, FIRST_VERSION,
-					     LATEST_VERSION, "NOTE %s\n",
-					     N_(""
-						"This game will start soon."));
-		}
-	}
 
 	sm_goto(sm, (StateFunc) mode_check_version);
 
@@ -890,6 +903,32 @@ static gboolean mode_check_version(Player * player, gint event)
 	return FALSE;
 }
 
+static void start_tournament_mode(Player * player)
+{
+	Game *game = player->game;
+
+	if (game->params->tournament_time > 0) {
+		/* if first player in and this is a tournament start the timer */
+		if (game->num_players == 1) {
+			game->tournament_countdown =
+			    game->params->tournament_time;
+			game->tournament_timer =
+			    g_timeout_add(game->tournament_countdown *
+					  tournament_minute + 500,
+					  &tournament_start_cb, game);
+			g_timeout_add(1000, &talk_about_tournament_cb,
+				      game);
+		} else {
+			if (game->tournament_timer != 0) {
+				player_send(player, FIRST_VERSION,
+					    LATEST_VERSION, "NOTE %s\n",
+					    N_
+					    ("This game will start soon."));
+			}
+		}
+	}
+}
+
 static gboolean mode_check_status(Player * player, gint event)
 {
 	StateMachine *sm = player->sm;
@@ -905,12 +944,14 @@ static gboolean mode_check_status(Player * player, gint event)
 	case SM_RECV:
 		if (sm_recv(sm, "status newplayer")) {
 			player_setup(player, -1, NULL, FALSE);
+			start_tournament_mode(player);
 			return TRUE;
 		}
 		if (sm_recv(sm, "status reconnect %S", &playername)) {
 			/* if possible, try to revive the player */
 			player_revive(player, playername);
 			g_free(playername);
+			start_tournament_mode(player);
 			return TRUE;
 		}
 		if (sm_recv(sm, "status newviewer")) {

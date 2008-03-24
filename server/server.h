@@ -96,6 +96,9 @@ struct Game {
 	gint player_list_use_count;	/* # functions is in use by */
 	gint num_players;	/* current number of players in the game */
 
+	gint tournament_countdown;	/* number of remaining minutes before AIs are added */
+	guint tournament_timer;	/* timer id */
+
 	gboolean double_setup;
 	gboolean reverse_setup;
 	GList *setup_player;

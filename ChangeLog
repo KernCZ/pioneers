@@ -1,4 +1,9 @@
 
+2008-03-24  Roland CLobus <rclobus@bigfoot.com>
+	* server/player.c, server/server.h: Tournament timer improvements:
+	Only start the timer on players, not viewers, reset the time when the
+	last player left.
+
 2008-03-23  Roland Clobus <rclobus@bigfoot.com>
 	* configure.ac, autogen.sh: After running autoupdate, the minimum
 	version for autoconf is 2.61, and intltool 0.35.
