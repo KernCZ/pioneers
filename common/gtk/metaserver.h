@@ -49,7 +49,7 @@ struct _MetaServerClass {
 
 GType metaserver_get_type(void);
 GtkWidget *metaserver_new(void);
-void metaserver_add(MetaServer *ms, const gchar *text);
+void metaserver_add(MetaServer * ms, const gchar * text);
 gchar *metaserver_get(MetaServer * ms);
 
 G_END_DECLS

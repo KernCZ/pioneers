@@ -213,7 +213,7 @@ void connect_set_meta_server(const gchar * meta_server)
 	connect_set_field(&metaserver_info.server, meta_server);
 	if (meta_server_entry != NULL)
 		metaserver_add(METASERVER(meta_server_entry),
-				   metaserver_info.server);
+			       metaserver_info.server);
 }
 
 const gchar *connect_get_port(void)
@@ -1225,7 +1225,7 @@ void connect_create_dlg(void)
 			 (GtkAttachOptions) GTK_EXPAND | GTK_FILL,
 			 (GtkAttachOptions) GTK_EXPAND | GTK_FILL, 0, 0);
 	metaserver_add(METASERVER(meta_server_entry),
-			   metaserver_info.server);
+		       metaserver_info.server);
 
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_widget_show(hbox);

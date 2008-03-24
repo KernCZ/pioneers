@@ -106,15 +106,16 @@ static void metaserver_init(MetaServer * ms)
 	g_free(default_metaserver_name);
 
 	/* Custom meta server */
-	custom_meta_server_name = config_get_string("server/custom-meta-server=pioneers.game-host.org", &novar);
+	custom_meta_server_name =
+	    config_get_string
+	    ("server/custom-meta-server=pioneers.game-host.org", &novar);
 	metaserver_add(ms, custom_meta_server_name);
 	g_free(custom_meta_server_name);
 
 	/* Select the first item.
 	 * When later metaserver_add is called, it will set the current meta server */
 	gtk_tree_model_get_iter_first(GTK_TREE_MODEL(ms->data), &iter);
-	gtk_combo_box_set_active_iter(GTK_COMBO_BOX(ms->combo_box),
-				 &iter);
+	gtk_combo_box_set_active_iter(GTK_COMBO_BOX(ms->combo_box), &iter);
 }
 
 /* Create a new instance of the widget */
@@ -123,7 +124,7 @@ GtkWidget *metaserver_new(void)
 	return GTK_WIDGET(g_object_new(metaserver_get_type(), NULL));
 }
 
-void metaserver_add(MetaServer *ms, const gchar *text)
+void metaserver_add(MetaServer * ms, const gchar * text)
 {
 	GtkTreeIter iter;
 	if (gtk_tree_model_get_iter_first(GTK_TREE_MODEL(ms->data), &iter)) {
@@ -131,23 +132,26 @@ void metaserver_add(MetaServer *ms, const gchar *text)
 		gboolean found = FALSE;
 		gboolean atend = FALSE;
 		do {
-			gtk_tree_model_get(GTK_TREE_MODEL(ms->data), &iter, 0, &old, -1);
+			gtk_tree_model_get(GTK_TREE_MODEL(ms->data), &iter,
+					   0, &old, -1);
 			if (!strcmp(text, old))
 				found = TRUE;
 			else
-				atend = !gtk_tree_model_iter_next(GTK_TREE_MODEL(ms->data), &iter);
+				atend =
+				    !gtk_tree_model_iter_next
+				    (GTK_TREE_MODEL(ms->data), &iter);
 			g_free(old);
 		} while (!found && !atend);
 		if (!found)
-			gtk_list_store_insert_with_values(ms->data, &iter, 999,
-					  0, text, -1);
+			gtk_list_store_insert_with_values(ms->data, &iter,
+							  999, 0, text,
+							  -1);
 	} else {
 		/* Was empty */
 		gtk_list_store_insert_with_values(ms->data, &iter, 999,
-					  0, text, -1);
+						  0, text, -1);
 	}
-	gtk_combo_box_set_active_iter(GTK_COMBO_BOX(ms->combo_box),
-				 &iter);
+	gtk_combo_box_set_active_iter(GTK_COMBO_BOX(ms->combo_box), &iter);
 }
 
 gchar *metaserver_get(MetaServer * ms)
@@ -155,7 +159,7 @@ gchar *metaserver_get(MetaServer * ms)
 	GtkTreeIter iter;
 	gchar *text;
 	gtk_combo_box_get_active_iter(GTK_COMBO_BOX(ms->combo_box), &iter);
-	
+
 	gtk_tree_model_get(GTK_TREE_MODEL(ms->data), &iter, 0, &text, -1);
 	return text;
 }
