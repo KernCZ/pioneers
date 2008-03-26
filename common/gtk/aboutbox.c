@@ -27,6 +27,7 @@
 #include "config.h"
 
 #include <gtk/gtk.h>
+#include <string.h>
 
 #include "aboutbox.h"
 #include "game.h"
@@ -74,26 +75,51 @@ void aboutbox_display(const gchar * title, const gchar ** authors)
 			       _("Pioneers is based upon the excellent\n"
 				 "Settlers of Catan board game.\n"), -1);
 	gtk_text_buffer_insert_with_tags_by_name(buffer, &iter,
-						 _("Version"), -1,
+						 _("Version:"), -1,
 						 "bold", NULL);
-	gtk_text_buffer_insert(buffer, &iter, ": ", -1);
+	gtk_text_buffer_insert(buffer, &iter, " ", -1);
 	gtk_text_buffer_insert(buffer, &iter, FULL_VERSION, -1);
 	gtk_text_buffer_insert(buffer, &iter, "\n", -1);
 	gtk_text_buffer_insert_with_tags_by_name(buffer, &iter,
-						 _("Homepage"), -1,
+						 _("Homepage:"), -1,
 						 "bold", NULL);
 	gtk_text_buffer_insert(buffer, &iter,
-			       ": http://pio.sourceforge.net\n", -1);
+			       " http://pio.sourceforge.net\n", -1);
 	gtk_text_buffer_insert_with_tags_by_name(buffer, &iter,
-						 _("Authors"), -1, "bold",
+						 _("Authors:"), -1, "bold",
 						 NULL);
-	gtk_text_buffer_insert(buffer, &iter, ":\n", -1);
+	gtk_text_buffer_insert(buffer, &iter, "\n", -1);
 
 	for (i = 0; authors[i] != NULL; i++) {
 		if (i != 0)
-			gtk_text_buffer_insert(buffer, &iter, "\n", 1);
-		gtk_text_buffer_insert(buffer, &iter, "  ", 2);
+			gtk_text_buffer_insert(buffer, &iter, "\n", -1);
+		gtk_text_buffer_insert(buffer, &iter, "  ", -1);
 		gtk_text_buffer_insert(buffer, &iter, authors[i], -1);
+	}
+
+	/* Translators: add your name here. Keep the list alphabetically,
+	 * do not remove any names, and add \n after your name (except the last name).
+	 */
+	if (strcmp(_("translator_credits"), "translator_credits")) {
+		gchar **translators;
+
+		gtk_text_buffer_insert(buffer, &iter, "\n", -1);
+		gtk_text_buffer_insert_with_tags_by_name(buffer, &iter,
+							 /* Header for the translator_credits. Use your own language name */
+							 _(""
+							   "Pioneers is translated to"
+							   " <your language here> by:\n"),
+							 -1, "bold", NULL);
+
+		translators = g_strsplit(_("translator_credits"), "\n", 0);
+		for (i = 0; translators[i] != NULL; i++) {
+			if (i != 0)
+				gtk_text_buffer_insert(buffer, &iter, "\n",
+						       -1);
+			gtk_text_buffer_insert(buffer, &iter, "  ", -1);
+			gtk_text_buffer_insert(buffer, &iter,
+					       translators[i], -1);
+		}
 	}
 
 	gtk_text_buffer_get_start_iter(buffer, &iter);

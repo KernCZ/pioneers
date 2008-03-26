@@ -1,5 +1,8 @@
 
-2008-03-24  Roland CLobus <rclobus@bigfoot.com>
+2008-03-26  Roland Clobus <rclobus@bigfoot.com>
+	* common/gtk/aboutbox.c: Add translator_credits.
+
+2008-03-24  Roland Clobus <rclobus@bigfoot.com>
 	* server/player.c, server/server.h: Tournament timer improvements:
 	Only start the timer on players, not viewers, reset the time when the
 	last player left.
