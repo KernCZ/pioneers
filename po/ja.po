@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 0.11.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-25 07:26+0100\n"
+"POT-Creation-Date: 2008-03-26 22:35+0100\n"
 "PO-Revision-Date: 2007-07-20 05:45+0900\n"
 "Last-Translator: Yasuhiko Takasugi <takasugi@flcl.org>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -1152,7 +1152,7 @@ msgstr "ポート"
 msgid "Port of the the game"
 msgstr "ゲームサーバのポート"
 
-#: ../client/gtk/connect.c:1101 ../common/gtk/aboutbox.c:77
+#: ../client/gtk/connect.c:1101
 msgid "Version"
 msgstr "バージョン"
 
@@ -2125,7 +2125,7 @@ msgstr ""
 "最大島数発見ボーナス: %d\n"
 "合計: %d"
 
-#: ../common/gtk/aboutbox.c:74
+#: ../common/gtk/aboutbox.c:75
 msgid ""
 "Pioneers is based upon the excellent\n"
 "Settlers of Catan board game.\n"
@@ -2133,13 +2133,32 @@ msgstr ""
 "パイオニアは、カタンの植民　という\n"
 "すばらしいボードゲームが元になっています.\n"
 
-#: ../common/gtk/aboutbox.c:83
-msgid "Homepage"
+#: ../common/gtk/aboutbox.c:78
+#, fuzzy
+msgid "Version:"
+msgstr "バージョン"
+
+#: ../common/gtk/aboutbox.c:84
+#, fuzzy
+msgid "Homepage:"
 msgstr "ホームページ"
 
-#: ../common/gtk/aboutbox.c:88
-msgid "Authors"
+#: ../common/gtk/aboutbox.c:89
+#, fuzzy
+msgid "Authors:"
 msgstr "著者"
+
+#. Translators: add your name here. Keep the list alphabetically,
+#. * do not remove any names, and add \n after your name (except the last name).
+#.
+#: ../common/gtk/aboutbox.c:103 ../common/gtk/aboutbox.c:114
+msgid "translator_credits"
+msgstr ""
+
+#. Header for the translator_credits. Use your own language name
+#: ../common/gtk/aboutbox.c:109
+msgid "Pioneers is translated to <your language here> by:\n"
+msgstr ""
 
 #. Tooltip for sevens rule normal
 #: ../common/gtk/game-rules.c:98

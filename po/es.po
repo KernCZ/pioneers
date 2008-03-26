@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 0.10.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-25 07:26+0100\n"
+"POT-Creation-Date: 2008-03-26 22:35+0100\n"
 "PO-Revision-Date: 2008-02-04 22:04+0000\n"
 "Last-Translator: Kiba-Kun <kibafang@gmail.com>\n"
 "Language-Team: Spanish <debian-l10n-spanish@lists.debian.org>\n"
@@ -1155,7 +1155,7 @@ msgstr "Puerto"
 msgid "Port of the the game"
 msgstr "Puerto del juego"
 
-#: ../client/gtk/connect.c:1101 ../common/gtk/aboutbox.c:77
+#: ../client/gtk/connect.c:1101
 msgid "Version"
 msgstr "Versión"
 
@@ -2126,7 +2126,7 @@ msgid ""
 "Total: %d"
 msgstr ""
 
-#: ../common/gtk/aboutbox.c:74
+#: ../common/gtk/aboutbox.c:75
 msgid ""
 "Pioneers is based upon the excellent\n"
 "Settlers of Catan board game.\n"
@@ -2134,13 +2134,32 @@ msgstr ""
 "Pioneers está basado en el excelente\n"
 "juego de mesa 'Los fundadores de Catán'.\n"
 
-#: ../common/gtk/aboutbox.c:83
-msgid "Homepage"
+#: ../common/gtk/aboutbox.c:78
+#, fuzzy
+msgid "Version:"
+msgstr "Versión"
+
+#: ../common/gtk/aboutbox.c:84
+#, fuzzy
+msgid "Homepage:"
 msgstr "Pagina principal"
 
-#: ../common/gtk/aboutbox.c:88
-msgid "Authors"
+#: ../common/gtk/aboutbox.c:89
+#, fuzzy
+msgid "Authors:"
 msgstr "Autores"
+
+#. Translators: add your name here. Keep the list alphabetically,
+#. * do not remove any names, and add \n after your name (except the last name).
+#.
+#: ../common/gtk/aboutbox.c:103 ../common/gtk/aboutbox.c:114
+msgid "translator_credits"
+msgstr ""
+
+#. Header for the translator_credits. Use your own language name
+#: ../common/gtk/aboutbox.c:109
+msgid "Pioneers is translated to <your language here> by:\n"
+msgstr ""
 
 #. Tooltip for sevens rule normal
 #: ../common/gtk/game-rules.c:98

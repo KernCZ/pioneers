@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 0.11.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-25 07:26+0100\n"
+"POT-Creation-Date: 2008-03-26 22:35+0100\n"
 "PO-Revision-Date: 2007-07-12 22:00+0200\n"
 "Last-Translator: Roland Clobus <rclobus@bigfoot.com>\n"
 "Language-Team: Bas Wijnen <shevek@fmf.nl> Roland Clobus <rclobus@bigfoot."
@@ -1155,7 +1155,7 @@ msgstr "Poort"
 msgid "Port of the the game"
 msgstr "Poort van het spel"
 
-#: ../client/gtk/connect.c:1101 ../common/gtk/aboutbox.c:77
+#: ../client/gtk/connect.c:1101
 msgid "Version"
 msgstr "Versie"
 
@@ -2130,7 +2130,7 @@ msgstr ""
 "Hoogste aantal ontdekkingspunten: %d\n"
 "Totaal: %d"
 
-#: ../common/gtk/aboutbox.c:74
+#: ../common/gtk/aboutbox.c:75
 msgid ""
 "Pioneers is based upon the excellent\n"
 "Settlers of Catan board game.\n"
@@ -2138,13 +2138,32 @@ msgstr ""
 "Pioniers is gebaseerd op\n"
 "het bordspel \"de kolonisten van Catan\".\n"
 
-#: ../common/gtk/aboutbox.c:83
-msgid "Homepage"
+#: ../common/gtk/aboutbox.c:78
+#, fuzzy
+msgid "Version:"
+msgstr "Versie"
+
+#: ../common/gtk/aboutbox.c:84
+#, fuzzy
+msgid "Homepage:"
 msgstr "Homepage"
 
-#: ../common/gtk/aboutbox.c:88
-msgid "Authors"
+#: ../common/gtk/aboutbox.c:89
+#, fuzzy
+msgid "Authors:"
 msgstr "Geschreven door"
+
+#. Translators: add your name here. Keep the list alphabetically,
+#. * do not remove any names, and add \n after your name (except the last name).
+#.
+#: ../common/gtk/aboutbox.c:103 ../common/gtk/aboutbox.c:114
+msgid "translator_credits"
+msgstr ""
+
+#. Header for the translator_credits. Use your own language name
+#: ../common/gtk/aboutbox.c:109
+msgid "Pioneers is translated to <your language here> by:\n"
+msgstr ""
 
 #. Tooltip for sevens rule normal
 #: ../common/gtk/game-rules.c:98

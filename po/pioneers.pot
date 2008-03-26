@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-25 07:26+0100\n"
+"POT-Creation-Date: 2008-03-26 22:35+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1141,7 +1141,7 @@ msgstr ""
 msgid "Port of the the game"
 msgstr ""
 
-#: ../client/gtk/connect.c:1101 ../common/gtk/aboutbox.c:77
+#: ../client/gtk/connect.c:1101
 msgid "Version"
 msgstr ""
 
@@ -2105,18 +2105,34 @@ msgid ""
 "Total: %d"
 msgstr ""
 
-#: ../common/gtk/aboutbox.c:74
+#: ../common/gtk/aboutbox.c:75
 msgid ""
 "Pioneers is based upon the excellent\n"
 "Settlers of Catan board game.\n"
 msgstr ""
 
-#: ../common/gtk/aboutbox.c:83
-msgid "Homepage"
+#: ../common/gtk/aboutbox.c:78
+msgid "Version:"
 msgstr ""
 
-#: ../common/gtk/aboutbox.c:88
-msgid "Authors"
+#: ../common/gtk/aboutbox.c:84
+msgid "Homepage:"
+msgstr ""
+
+#: ../common/gtk/aboutbox.c:89
+msgid "Authors:"
+msgstr ""
+
+#. Translators: add your name here. Keep the list alphabetically,
+#. * do not remove any names, and add \n after your name (except the last name).
+#.
+#: ../common/gtk/aboutbox.c:103 ../common/gtk/aboutbox.c:114
+msgid "translator_credits"
+msgstr ""
+
+#. Header for the translator_credits. Use your own language name
+#: ../common/gtk/aboutbox.c:109
+msgid "Pioneers is translated to <your language here> by:\n"
 msgstr ""
 
 #. Tooltip for sevens rule normal

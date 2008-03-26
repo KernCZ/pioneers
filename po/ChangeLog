@@ -1,3 +1,7 @@
+2008-03-26 Roland Clobus <rclobus@bigfoot.com>
+	* all: Updated for the string freeze of 0.11.4 (added
+	translator_credits), this is the 'real' string freeze.
+	
 2008-03-25 Roland Clobus <rclobus@bigfoot.com>
 	* all: String freeze for 0.11.4
 	
