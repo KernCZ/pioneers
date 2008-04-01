@@ -2151,7 +2151,8 @@ msgstr "Geschreven door:"
 #.
 #: ../common/gtk/aboutbox.c:103 ../common/gtk/aboutbox.c:114
 msgid "translator_credits"
-msgstr "Roland Clobus\n"
+msgstr ""
+"Roland Clobus\n"
 "Bas Wijnen"
 
 #. Header for the translator_credits. Use your own language name
@@ -3102,8 +3103,9 @@ msgstr "Kan de parameters van het spel niet laden\n"
 #: ../server/main.c:274
 #, c-format
 msgid "Admin port is not set, cannot disable game start too\n"
-msgstr "De administratie poort is niet ingesteld, het is mogelijk om de start"
-" van het spel uit te stellen\n"
+msgstr ""
+"De administratie poort is niet ingesteld, het is mogelijk om de start van "
+"het spel uit te stellen\n"
 
 #: ../server/meta.c:192
 #, c-format
