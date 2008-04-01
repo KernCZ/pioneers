@@ -1,15 +1,15 @@
 # Swedish translation of pioneers.
-# Copyright (C) 2005-2007 Daniel Nylander <po@danielnylander.se>
+# Copyright (C) 2005-2008 Daniel Nylander <po@danielnylander.se>
 # This file is distributed under the same license as the pioneers package.
 #
 # vim::set fileencoding=utf8
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Pioneers 0.11.3\n"
+"Project-Id-Version: Pioneers 0.11.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-03-26 22:35+0100\n"
-"PO-Revision-Date: 2007-07-16 20:54+0100\n"
+"PO-Revision-Date: 2008-03-30 19:20+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "MIME-Version: 1.0\n"
@@ -32,9 +32,8 @@ msgstr "Serverport"
 
 #. Commandline pioneersai: name
 #: ../client/ai/ai.c:70
-#, fuzzy
 msgid "Computer name (mandatory)"
-msgstr "Datornamn (lämna blank för slumpmässigt namn)"
+msgstr "Datornamn (obligatoriskt)"
 
 #. Commandline pioneersai: time
 #: ../client/ai/ai.c:73
@@ -87,7 +86,7 @@ msgstr "Pioneers version:"
 #: ../client/ai/ai.c:126
 #, c-format
 msgid "A name must be provided.\n"
-msgstr ""
+msgstr "Ett namn måste anges.\n"
 
 #: ../client/ai/ai.c:140
 #, c-format
@@ -1586,14 +1585,13 @@ msgstr "Visa tangentbordsgenvägar i verktygsraden"
 
 #. Label for the option to disable all sounds
 #: ../client/gtk/gui.c:1022
-#, fuzzy
 msgid "Silent mode"
-msgstr "filnamn"
+msgstr "Tyst läge"
 
 #. Tooltip for the option to disable all sounds
 #: ../client/gtk/gui.c:1028
 msgid "In silent mode no sounds are made"
-msgstr ""
+msgstr "I tyst läge kommer inga ljud att spelas upp"
 
 #. Label for the option to announce when players/viewers enter
 #: ../client/gtk/gui.c:1034
@@ -1733,9 +1731,8 @@ msgid "- Play a game of Pioneers"
 msgstr "- Spela en omgång av Pioneers"
 
 #: ../client/gtk/pioneers.desktop.in.h:2
-#, fuzzy
 msgid "Play a game of Pioneers"
-msgstr "- Spela en omgång av Pioneers"
+msgstr "Spela en omgång av Pioneers"
 
 #: ../client/gtk/player.c:53
 msgid "Settlements"
@@ -1952,9 +1949,8 @@ msgid "Trading allowed only before build/buy?"
 msgstr "Handel tillåtet endast före byggnation/köp?"
 
 #: ../client/gtk/settingscreen.c:170
-#, fuzzy
 msgid "Check Victory Only At End Of Turn?"
-msgstr "_Kontrollera poängmål för vinst"
+msgstr "Kontrollera seger endast vid turens slut?"
 
 #: ../client/gtk/settingscreen.c:175
 msgid "Amount of Each Resource:"
@@ -2137,31 +2133,28 @@ msgstr ""
 "brädspelet Settlers of Catan.\n"
 
 #: ../common/gtk/aboutbox.c:78
-#, fuzzy
 msgid "Version:"
-msgstr "Version"
+msgstr "Version:"
 
 #: ../common/gtk/aboutbox.c:84
-#, fuzzy
 msgid "Homepage:"
-msgstr "Hemsida"
+msgstr "Webbplats:"
 
 #: ../common/gtk/aboutbox.c:89
-#, fuzzy
 msgid "Authors:"
-msgstr "Upphovsmän"
+msgstr "Upphovsmän:"
 
 #. Translators: add your name here. Keep the list alphabetically,
 #. * do not remove any names, and add \n after your name (except the last name).
 #.
 #: ../common/gtk/aboutbox.c:103 ../common/gtk/aboutbox.c:114
 msgid "translator_credits"
-msgstr ""
+msgstr "Daniel Nylander <po@danielnylander.se>"
 
 #. Header for the translator_credits. Use your own language name
 #: ../common/gtk/aboutbox.c:109
 msgid "Pioneers is translated to <your language here> by:\n"
-msgstr ""
+msgstr "Pioneers har översatts till svenska av:\n"
 
 #. Tooltip for sevens rule normal
 #: ../common/gtk/game-rules.c:98
@@ -2212,11 +2205,11 @@ msgstr "Tillåt handel mellan spelare"
 
 #: ../common/gtk/game-rules.c:126
 msgid "Victory At End Of Turn"
-msgstr ""
+msgstr "Seger vid turens slut"
 
 #: ../common/gtk/game-rules.c:127
 msgid "Check for victory only at end of turn"
-msgstr ""
+msgstr "Kontrollera seger endast vid turens slut"
 
 #. Label text for customising a game
 #: ../common/gtk/game-settings.c:114
@@ -2281,9 +2274,8 @@ msgstr "Ti"
 
 #. Tooltip for the list of meta servers
 #: ../common/gtk/metaserver.c:98
-#, fuzzy
 msgid "Select a meta server"
-msgstr "Starta server"
+msgstr "Välj en metaserver"
 
 #. Tooltip for the list of games
 #: ../common/gtk/select-game.c:108
@@ -2745,9 +2737,8 @@ msgid "Resource Count"
 msgstr "Resurser"
 
 #: ../editor/gtk/pioneers-editor.desktop.in.h:1
-#, fuzzy
 msgid "Create your own game for Pioneers"
-msgstr "- Redigerare för Pioneers-spel"
+msgstr "Skapa ett egna spel för Pioneers"
 
 #. Commandline meta-server: daemon
 #: ../meta-server/main.c:1035
@@ -2771,7 +2762,6 @@ msgstr "värdnamn"
 
 #. Commandline meta-server: port-range
 #: ../meta-server/main.c:1046
-#, fuzzy
 msgid "Use this port range when creating new games"
 msgstr "Använd det här portintervallet när nya spel skapas"
 
@@ -2804,12 +2794,10 @@ msgid "Information about Pioneers Server"
 msgstr "Information om Pioneers Server"
 
 #: ../server/gtk/main.c:221
-#, fuzzy
 msgid "Stop Server"
 msgstr "Stoppa server"
 
 #: ../server/gtk/main.c:222
-#, fuzzy
 msgid "Start Server"
 msgstr "Starta server"
 
@@ -2985,9 +2973,8 @@ msgid "Pioneers Server"
 msgstr "Pioneers-server"
 
 #: ../server/gtk/pioneers-server.desktop.in.h:1
-#, fuzzy
 msgid "Host a game of Pioneers"
-msgstr "- Stå värd för en omgång av Pioneers"
+msgstr "Stå värd för en omgång av Pioneers"
 
 #. Commandline server-console: game-title
 #: ../server/main.c:75
@@ -3099,19 +3086,21 @@ msgstr "Diverse alternativ"
 #: ../server/main.c:224
 #, c-format
 msgid "Cannot set game title and filename at the same time\n"
-msgstr ""
+msgstr "Kan inte ställa in speltitel och filnamn på samma gång\n"
 
 #. server-console commandline error
 #: ../server/main.c:239
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot load the parameters for the game\n"
-msgstr "Port på värden som kör spelet"
+msgstr "Kan inte läsa in parametrarna för spelet\n"
 
 #. server-console commandline error
 #: ../server/main.c:274
 #, c-format
 msgid "Admin port is not set, cannot disable game start too\n"
 msgstr ""
+"Administrationsporten är inte inställd, kan inte inaktivera spelstart "
+"heller\n"
 
 #: ../server/meta.c:192
 #, c-format
@@ -3136,12 +3125,11 @@ msgstr "ignorerar okänd utökning"
 
 #: ../server/player.c:210 ../server/player.c:247
 msgid "The last player left, the tournament timer is reset."
-msgstr ""
+msgstr "Sista spelaren kvar, turneringens tidtagare nollställs."
 
 #: ../server/player.c:217
-#, fuzzy
 msgid "Game starts, adding computer players."
-msgstr "Spelet startar, lägger till datorspelare"
+msgstr "Spelet startar, lägger till datorspelare."
 
 #: ../server/player.c:260
 #, c-format
@@ -3216,7 +3204,7 @@ msgstr "Försökte tilldela resurser till NOLL spelare.\n"
 #. Cheat mode has been activated
 #: ../server/turn.c:497
 msgid "The dice roll has been determined by the administrator."
-msgstr ""
+msgstr "Tärningskastet har bestämts av administratören."
 
 #~ msgid "Leave empty for the default meta server"
 #~ msgstr "Lämna blank för den förvalda metaservern"
