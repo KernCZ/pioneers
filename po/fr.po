@@ -7,10 +7,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Pioneers 0.11.3\n"
+"Project-Id-Version: Pioneers 0.11.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-03-26 22:35+0100\n"
-"PO-Revision-Date: 2008-03-28 18:01+0100\n"
+"PO-Revision-Date: 2008-04-03 09:47+0100\n"
 "Last-Translator: Jean-Charles GRANGER <traduction@vecteur.org>\n"
 "Language-Team: Français <LL@li.org>, LT-P <LT-P@LT-P.net>, Yusei "
 "<yusei@ragondux.com>, Arnaud MALON <moko@geumeuleu.com>, Jean-Charles "
@@ -38,9 +38,8 @@ msgstr "Port du serveur"
 
 #. Commandline pioneersai: name
 #: ../client/ai/ai.c:70
-#, fuzzy
 msgid "Computer name (mandatory)"
-msgstr "Nom de l'AI (laisser vide pour un nom aléatoire)"
+msgstr "Nom de l'AI (obligatoire)"
 
 #. Commandline pioneersai: time
 #: ../client/ai/ai.c:73
@@ -1596,9 +1595,8 @@ msgstr "Afficher les raccourcis clavier dans la barre d'outils"
 
 #. Label for the option to disable all sounds
 #: ../client/gtk/gui.c:1022
-#, fuzzy
 msgid "Silent mode"
-msgstr "nom de fichier"
+msgstr "Mode silencieux"
 
 #. Tooltip for the option to disable all sounds
 #: ../client/gtk/gui.c:1028
@@ -1744,9 +1742,8 @@ msgid "- Play a game of Pioneers"
 msgstr "- Jouer à une partie de Pionneers"
 
 #: ../client/gtk/pioneers.desktop.in.h:2
-#, fuzzy
 msgid "Play a game of Pioneers"
-msgstr "- Jouer à une partie de Pionneers"
+msgstr "Jouer à une partie de Pioneers"
 
 #: ../client/gtk/player.c:53
 msgid "Settlements"
@@ -1963,9 +1960,8 @@ msgid "Trading allowed only before build/buy?"
 msgstr "Autoriser les échanges avant de construire ?"
 
 #: ../client/gtk/settingscreen.c:170
-#, fuzzy
 msgid "Check Victory Only At End Of Turn?"
-msgstr "Vérifier les points de vi_ctoire requis"
+msgstr "Vérifier la victoire uniquement à la fin du tour ?"
 
 #: ../client/gtk/settingscreen.c:175
 msgid "Amount of Each Resource:"
@@ -2148,19 +2144,16 @@ msgstr ""
 "jeu de plateau 'Les colons de Catan'.\n"
 
 #: ../common/gtk/aboutbox.c:78
-#, fuzzy
 msgid "Version:"
-msgstr "Version"
+msgstr "Version :"
 
 #: ../common/gtk/aboutbox.c:84
-#, fuzzy
 msgid "Homepage:"
-msgstr "Page d'accueil"
+msgstr "Page d'accueil :"
 
 #: ../common/gtk/aboutbox.c:89
-#, fuzzy
 msgid "Authors:"
-msgstr "Écrit par"
+msgstr "Auteurs :"
 
 #. Translators: add your name here. Keep the list alphabetically,
 #. * do not remove any names, and add \n after your name (except the last name).
@@ -2296,9 +2289,8 @@ msgstr "Bo"
 
 #. Tooltip for the list of meta servers
 #: ../common/gtk/metaserver.c:98
-#, fuzzy
 msgid "Select a meta server"
-msgstr "Démarrer le serveur"
+msgstr "Choisir un meta-serveur"
 
 #. Tooltip for the list of games
 #: ../common/gtk/select-game.c:108
@@ -2761,9 +2753,8 @@ msgid "Resource Count"
 msgstr "Nombre de ressources"
 
 #: ../editor/gtk/pioneers-editor.desktop.in.h:1
-#, fuzzy
 msgid "Create your own game for Pioneers"
-msgstr "- Editeur de parties pour Pioneers"
+msgstr "Créez votre propre partie de Pioneers"
 
 #. Commandline meta-server: daemon
 #: ../meta-server/main.c:1035
@@ -2787,7 +2778,6 @@ msgstr "nom d'hôte"
 
 #. Commandline meta-server: port-range
 #: ../meta-server/main.c:1046
-#, fuzzy
 msgid "Use this port range when creating new games"
 msgstr "Utiliser cette plage de ports lors de la création de nouvelles parties"
 
@@ -2820,12 +2810,10 @@ msgid "Information about Pioneers Server"
 msgstr "Information sur le serveur de Pioneers"
 
 #: ../server/gtk/main.c:221
-#, fuzzy
 msgid "Stop Server"
 msgstr "Arrêter le serveur"
 
 #: ../server/gtk/main.c:222
-#, fuzzy
 msgid "Start Server"
 msgstr "Démarrer le serveur"
 
@@ -3001,9 +2989,8 @@ msgid "Pioneers Server"
 msgstr "Serveur Pioneers"
 
 #: ../server/gtk/pioneers-server.desktop.in.h:1
-#, fuzzy
 msgid "Host a game of Pioneers"
-msgstr "- Héberger une partie de Pioneers"
+msgstr "Héberger une partie de Pioneers"
 
 #. Commandline server-console: game-title
 #: ../server/main.c:75
@@ -3122,9 +3109,9 @@ msgstr ""
 
 #. server-console commandline error
 #: ../server/main.c:239
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot load the parameters for the game\n"
-msgstr "Port du serveur hébergeant la partie"
+msgstr "Impossible de charger les paramètres de la partie\n"
 
 #. server-console commandline error
 #: ../server/main.c:274
@@ -3160,9 +3147,8 @@ msgid "The last player left, the tournament timer is reset."
 msgstr "Le dernier joueur est parti, le timer du tournoi a été réinitialisé."
 
 #: ../server/player.c:217
-#, fuzzy
 msgid "Game starts, adding computer players."
-msgstr "La partie démarre, ajout des IA"
+msgstr "La partie démarre, ajout des IA."
 
 #: ../server/player.c:260
 #, c-format
