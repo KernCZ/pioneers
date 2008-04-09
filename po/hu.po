@@ -7,18 +7,16 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Pioneers 0.11.3\n"
+"Project-Id-Version: Pioneers 0.11.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-03-26 22:35+0100\n"
-"PO-Revision-Date: 2007-07-20 05:47+0100\n"
+"PO-Revision-Date: 2008-04-05 15:37+0200\n"
 "Last-Translator: Ferenc Bánhidi <bferike@mailbox.hu>\n"
 "Language-Team: Hungarian <bferike@mailbox.hu>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Poedit-Language: Hungarian\n"
-"X-Poedit-Country: HUNGARY\n"
 
 #. Commandline pioneersai: server
 #. Commandline option of client: hostname of the server
@@ -36,9 +34,8 @@ msgstr "Szerver port"
 
 #. Commandline pioneersai: name
 #: ../client/ai/ai.c:70
-#, fuzzy
 msgid "Computer name (mandatory)"
-msgstr "Játékos neve (véletlen névhez hagyd üresen)"
+msgstr "Gép név (kötelező)"
 
 #. Commandline pioneersai: time
 #: ../client/ai/ai.c:73
@@ -91,7 +88,7 @@ msgstr "Pioneers verzió"
 #: ../client/ai/ai.c:126
 #, c-format
 msgid "A name must be provided.\n"
-msgstr ""
+msgstr "Meg kell adni egy nevet.\n"
 
 #: ../client/ai/ai.c:140
 #, c-format
@@ -1596,14 +1593,13 @@ msgstr "Gyorsbillentyűk megjelenítése az eszköztáron"
 
 #. Label for the option to disable all sounds
 #: ../client/gtk/gui.c:1022
-#, fuzzy
 msgid "Silent mode"
-msgstr "fájlnév"
+msgstr "Csendes mód"
 
 #. Tooltip for the option to disable all sounds
 #: ../client/gtk/gui.c:1028
 msgid "In silent mode no sounds are made"
-msgstr ""
+msgstr "Csendes módban nincsenek hangok"
 
 #. Label for the option to announce when players/viewers enter
 #: ../client/gtk/gui.c:1034
@@ -1744,16 +1740,15 @@ msgstr "Kapcsolódás"
 #. Long description in the commandline for pioneers: help
 #: ../client/gtk/offline.c:164
 msgid "- Play a game of Pioneers"
-msgstr "- Játzs egy játékot a  Pioneers-vel"
+msgstr "- Játsz egy játékot a Pioneersszal"
 
 #: ../client/gtk/pioneers.desktop.in.h:2
-#, fuzzy
 msgid "Play a game of Pioneers"
-msgstr "- Játzs egy játékot a  Pioneers-vel"
+msgstr "Játsz egy játékot a Pioneersszal"
 
 #: ../client/gtk/player.c:53
 msgid "Settlements"
-msgstr "Falu"
+msgstr "Falvak"
 
 #: ../client/gtk/player.c:54
 msgid "Cities"
@@ -1963,12 +1958,11 @@ msgstr "Játékosok közötti üzlet engedélyezett?"
 
 #: ../client/gtk/settingscreen.c:165
 msgid "Trading allowed only before build/buy?"
-msgstr "Kereskedés csak építkezés / vásálás előtt?"
+msgstr "Kereskedés csak építkezés / vásárlás előtt?"
 
 #: ../client/gtk/settingscreen.c:170
-#, fuzzy
 msgid "Check Victory Only At End Of Turn?"
-msgstr "_Ellenőrizd a győzelemhez szükséges pontokat"
+msgstr "Győzelem ellenőrzése csak a kör végén?"
 
 #: ../client/gtk/settingscreen.c:175
 msgid "Amount of Each Resource:"
@@ -2149,31 +2143,28 @@ msgstr ""
 "Catan telepesei alapján készült.\n"
 
 #: ../common/gtk/aboutbox.c:78
-#, fuzzy
 msgid "Version:"
-msgstr "Verzió"
+msgstr "Verzió:"
 
 #: ../common/gtk/aboutbox.c:84
-#, fuzzy
 msgid "Homepage:"
-msgstr "Honlap"
+msgstr "Honlap:"
 
 #: ../common/gtk/aboutbox.c:89
-#, fuzzy
 msgid "Authors:"
-msgstr "Szerzők"
+msgstr "Szerzők:"
 
 #. Translators: add your name here. Keep the list alphabetically,
 #. * do not remove any names, and add \n after your name (except the last name).
 #.
 #: ../common/gtk/aboutbox.c:103 ../common/gtk/aboutbox.c:114
 msgid "translator_credits"
-msgstr ""
+msgstr "Ferenc Bánhidi"
 
 #. Header for the translator_credits. Use your own language name
 #: ../common/gtk/aboutbox.c:109
 msgid "Pioneers is translated to <your language here> by:\n"
-msgstr ""
+msgstr "A Pioneerst magyarra fordította:\n"
 
 #. Tooltip for sevens rule normal
 #: ../common/gtk/game-rules.c:98
@@ -2224,11 +2215,11 @@ msgstr "Engedélyezett játékosok közötti kereskedés"
 
 #: ../common/gtk/game-rules.c:126
 msgid "Victory At End Of Turn"
-msgstr ""
+msgstr "Győzelem a kör végén"
 
 #: ../common/gtk/game-rules.c:127
 msgid "Check for victory only at end of turn"
-msgstr ""
+msgstr "Csak a kör végén ellenőrizd a győzelmet"
 
 #. Label text for customising a game
 #: ../common/gtk/game-settings.c:114
@@ -2293,9 +2284,8 @@ msgstr "R"
 
 #. Tooltip for the list of meta servers
 #: ../common/gtk/metaserver.c:98
-#, fuzzy
 msgid "Select a meta server"
-msgstr "Szerver indítása"
+msgstr "Válassz egy meta szervert"
 
 #. Tooltip for the list of games
 #: ../common/gtk/select-game.c:108
@@ -2759,9 +2749,8 @@ msgid "Resource Count"
 msgstr "Nyersanyagok száma"
 
 #: ../editor/gtk/pioneers-editor.desktop.in.h:1
-#, fuzzy
 msgid "Create your own game for Pioneers"
-msgstr "- Szerkesztő a Pioneers játékokhoz"
+msgstr "Készíts saját játékot a Pioneershoz"
 
 #. Commandline meta-server: daemon
 #: ../meta-server/main.c:1035
@@ -2785,7 +2774,6 @@ msgstr "host név"
 
 #. Commandline meta-server: port-range
 #: ../meta-server/main.c:1046
-#, fuzzy
 msgid "Use this port range when creating new games"
 msgstr "Használd ezt a port tartományt új játék létrehozásához"
 
@@ -2818,12 +2806,10 @@ msgid "Information about Pioneers Server"
 msgstr "Információ a Pioneers szerverről"
 
 #: ../server/gtk/main.c:221
-#, fuzzy
 msgid "Stop Server"
 msgstr "Szerver leállítása"
 
 #: ../server/gtk/main.c:222
-#, fuzzy
 msgid "Start Server"
 msgstr "Szerver indítása"
 
@@ -2998,9 +2984,8 @@ msgid "Pioneers Server"
 msgstr "Pioneers szerver"
 
 #: ../server/gtk/pioneers-server.desktop.in.h:1
-#, fuzzy
 msgid "Host a game of Pioneers"
-msgstr "- a Pioneers játékot futtató"
+msgstr "Üzemeltess Pioneers játékot"
 
 #. Commandline server-console: game-title
 #: ../server/main.c:75
@@ -3080,7 +3065,7 @@ msgstr "A szerver admin portja"
 #. Commandline server-console: admin-wait
 #: ../server/main.c:133
 msgid "Don't start game immediately, wait for a command on admin port"
-msgstr "Nem indul a játék azonnal, parancsra vár az admin porton"
+msgstr "A játék nem azonnal,hanem az admin porton érkező parancsra indul"
 
 #. Commandline server-console: fixed-seating-order
 #: ../server/main.c:139
@@ -3111,19 +3096,19 @@ msgstr "Egyéb kapcsolók"
 #: ../server/main.c:224
 #, c-format
 msgid "Cannot set game title and filename at the same time\n"
-msgstr ""
+msgstr "Fájlnév és játéknév nem adható meg egyszerre\n"
 
 #. server-console commandline error
 #: ../server/main.c:239
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot load the parameters for the game\n"
-msgstr "A játékot futtató gép portja"
+msgstr "A játék paramétereit nem lehet betölteni\n"
 
 #. server-console commandline error
 #: ../server/main.c:274
 #, c-format
 msgid "Admin port is not set, cannot disable game start too\n"
-msgstr ""
+msgstr "Admin port nincs beállítva, így a játék kezdés nem lehet tiltva\n"
 
 #: ../server/meta.c:192
 #, c-format
@@ -3148,12 +3133,11 @@ msgstr "ismeretlen bővítések figyelmen kívül hagyása"
 
 #: ../server/player.c:210 ../server/player.c:247
 msgid "The last player left, the tournament timer is reset."
-msgstr ""
+msgstr "Az utolsó játékos is elment, a parti időzítője újraindítva."
 
 #: ../server/player.c:217
-#, fuzzy
 msgid "Game starts, adding computer players."
-msgstr "Játék indul, robot játékosok hozzáadva"
+msgstr "Játék indul, computer játékosok hozzáadása."
 
 #: ../server/player.c:260
 #, c-format
@@ -3228,7 +3212,7 @@ msgstr "NULL játékosnak próbált erőforrást kiosztani.\n"
 #. Cheat mode has been activated
 #: ../server/turn.c:497
 msgid "The dice roll has been determined by the administrator."
-msgstr ""
+msgstr "A kockadobást az adminisztrátor határozta meg"
 
 #~ msgid "Leave empty for the default meta server"
 #~ msgstr "Hagyd üresen az alapértelmezett meta szerverhez"
