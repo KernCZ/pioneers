@@ -8,6 +8,8 @@
 	this fixes a bug that could overflow the stack when a client did not
 	acknowledge that the trade has ended.
 	* configure.ac: Protocol to 0.12.1, due to the change in trade.
+	* server/south_africa.game: New map, created by Petri Jooste
+	<Petri.Jooste@nwu.ac.za>
 
 2008-03-26  Roland Clobus <rclobus@bigfoot.com>
 	* common/gtk/aboutbox.c: Add translator_credits.

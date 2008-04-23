@@ -81,4 +81,5 @@ config_DATA += \
 	server/Mini_another_swimming_pool_in_the_wall.game \
 	server/henjes.game \
 	server/lorindol.game \
-	server/lobby.game
+	server/lobby.game \
+	server/south_africa.game
