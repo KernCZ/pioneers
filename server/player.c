@@ -584,9 +584,8 @@ void player_archive(Player * player)
 	/* If the player was in the middle of a trade, pop the state
 	   machine and inform others as necessary */
 	state = sm_current(player->sm);
-	if (state == (StateFunc) mode_wait_quote_exit) {
-		/* Fake the acknowledgement */
-		sm_pop(player->sm);
+	if (state == (StateFunc) mode_domestic_quote_rejected) {
+		/* No special actions needed */
 	} else if (state == (StateFunc) mode_domestic_quote) {
 		/* Retract all quotes */
 		for (;;) {

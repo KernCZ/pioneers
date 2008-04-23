@@ -3,7 +3,7 @@
 #
 # Copyright (C) 1999 Dave Cole
 # Copyright (C) 2003-2007 Bas Wijnen <shevek@fmf.nl>
-# Copyright (C) 2004-2007 Roland Clobus <rclobus@bigfoot.com>
+# Copyright (C) 2004-2008 Roland Clobus <rclobus@bigfoot.com>
 # 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,13 +20,13 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 AC_PREREQ(2.61)
-AC_INIT([pioneers],[0.11.4translator-preview],[pio-develop@lists.sourceforge.net])
+AC_INIT([pioneers],[0.12.1],[pio-develop@lists.sourceforge.net])
 AC_CONFIG_AUX_DIR([.])
 AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
 AC_CONFIG_SRCDIR([client])
 AC_CONFIG_HEADERS([config.h])
  
-PROTOCOL_VERSION=0.11
+PROTOCOL_VERSION=0.12
 META_PROTOCOL_VERSION=1.3
 PIONEERS_DEFAULT_GAME_PORT=5556
 PIONEERS_DEFAULT_GAME_HOST=localhost

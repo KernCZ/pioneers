@@ -2273,7 +2273,6 @@ static gboolean check_quoting(StateMachine * sm, gint exitdepth,
 	if (sm_recv(sm, "domestic-trade finish")) {
 		callback_mode = previous_mode;
 		callbacks.quote_end();
-		sm_send(sm, "domestic-quote exit\n");
 		sm_multipop(sm, exitdepth);
 		return TRUE;
 	}

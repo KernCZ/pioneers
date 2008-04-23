@@ -2,6 +2,12 @@
 2008-04-23  Roland Clobus <rclobus@bigfoot.com>
 	* configure.ac, README.subversion, common/network.c: Specify IPv4 or
 	IPv6 for sockets.
+	* server/turn.c, server/player.c, server/trade.c, server/server.h,
+	server/pregame.c, client/common/client.c, client/common/callback.c,
+	docs/server_states_trade.dot: Simplified the state machine for trade,
+	this fixes a bug that could overflow the stack when a client did not
+	acknowledge that the trade has ended.
+	* configure.ac: Protocol to 0.12.1, due to the change in trade.
 
 2008-03-26  Roland Clobus <rclobus@bigfoot.com>
 	* common/gtk/aboutbox.c: Add translator_credits.

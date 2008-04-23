@@ -89,28 +89,15 @@ void trade_perform_maritime(Player * player,
 			 ratio, supply, receive);
 }
 
-/* Trade initiating player has ended trading, wait for client to
- * acknowledge.
+/* The current player has rejected the trade,
+ * wait for the initiating player to make a new request.
  */
-gboolean mode_wait_quote_exit(Player * player, gint event)
+gboolean mode_domestic_quote_rejected(Player * player,
+				      G_GNUC_UNUSED gint event)
 {
 	StateMachine *sm = player->sm;
 
-	sm_state_name(sm, "mode_wait_quote_exit");
-	if (event != SM_RECV)
-		return FALSE;
-
-	if (sm_recv(sm, "domestic-quote exit")) {
-		sm_pop(sm);
-		return TRUE;
-	}
-	if (sm_recv(sm, "domestic-quote finish")) {
-		/* Trap race condition where initiating player and
-		 * quoting player both finish at the same time.
-		 */
-		sm_pop(sm);
-		return TRUE;
-	}
+	sm_state_name(sm, "mode_domestic_quote_rejected");
 	return FALSE;
 }
 
@@ -146,7 +133,7 @@ gboolean mode_domestic_quote(Player * player, gint event)
 				 LATEST_VERSION,
 				 "domestic-quote finish\n");
 
-		sm_goto(sm, (StateFunc) mode_wait_quote_exit);
+		sm_goto(sm, (StateFunc) mode_domestic_quote_rejected);
 		return TRUE;
 	}
 
@@ -213,8 +200,7 @@ void trade_finish_domestic(Player * player)
 	     list != NULL; list = player_next_real(list)) {
 		Player *scan = list->data;
 		if (scan != player && !player_is_viewer(game, scan->num))
-			sm_goto(scan->sm,
-				(StateFunc) mode_wait_quote_exit);
+			sm_pop(scan->sm);
 	}
 	quotelist_free(&game->quotes);
 }
@@ -314,8 +300,7 @@ static void process_call_domestic(Player * player, gint * supply,
 	     list = player_next_real(list)) {
 		Player *scan = list->data;
 		if (!player_is_viewer(game, scan->num) && scan != player) {
-			sm_pop(scan->sm);
-			sm_push(scan->sm, (StateFunc) mode_domestic_quote);
+			sm_goto(scan->sm, (StateFunc) mode_domestic_quote);
 		}
 	}
 }

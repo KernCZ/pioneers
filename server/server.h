@@ -268,7 +268,7 @@ void request_server_stop(Game * game);
 /* trade.c */
 void trade_perform_maritime(Player * player,
 			    gint ratio, Resource supply, Resource receive);
-gboolean mode_wait_quote_exit(Player * player, gint event);
+gboolean mode_domestic_quote_rejected(Player * player, gint event);
 gboolean mode_domestic_quote(Player * player, gint event);
 void trade_finish_domestic(Player * player);
 void trade_accept_domestic(Player * player,

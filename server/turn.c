@@ -450,7 +450,7 @@ gboolean mode_turn(Player * player, gint event)
 	BuildType build_type;
 	DevelType devel_type;
 	gint x, y, pos;
-	gint quote_num, partner_num, idx, ratio;
+	gint idx, ratio;
 	Resource supply_type, receive_type;
 	gint supply[NO_RESOURCE], receive[NO_RESOURCE];
 	gint sx, sy, spos, dx, dy, dpos;
@@ -556,14 +556,6 @@ gboolean mode_turn(Player * player, gint event)
 		if (!game->params->domestic_trade)
 			return FALSE;
 		trade_begin_domestic(player, supply, receive);
-		return TRUE;
-	}
-	if (sm_recv
-	    (sm,
-	     "domestic-trade accept player %d quote %d supply %R receive %R",
-	     &partner_num, &quote_num, supply, receive)) {
-		trade_accept_domestic(player, partner_num, quote_num,
-				      supply, receive);
 		return TRUE;
 	}
 	if (sm_recv(sm, "build %B %d %d %d", &build_type, &x, &y, &pos)) {

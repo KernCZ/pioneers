@@ -900,18 +900,13 @@ gboolean mode_pre_game(Player * player, gint event)
 				}
 				/* The player already rejected all quotes,
 				 * send reject again */
-				if (state !=
-				    (StateFunc) mode_domestic_quote) {
+				if (state == (StateFunc)
+				    mode_domestic_quote_rejected) {
 					player_send_uncached(player,
 							     FIRST_VERSION,
 							     LATEST_VERSION,
 							     "player %d domestic-quote finish\n",
 							     player->num);
-					/* Restore the stack */
-					sm_goto_noenter(sm, (StateFunc)
-							mode_wait_quote_exit);
-					sm_push_noenter(sm, (StateFunc)
-							mode_pre_game);
 				}
 			}
 			sm_set_use_cache(sm, FALSE);
