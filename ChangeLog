@@ -1,4 +1,8 @@
 
+2008-04-23  Roland Clobus <rclobus@bigfoot.com>
+	* configure.ac, README.subversion, common/network.c: Specify IPv4 or
+	IPv6 for sockets.
+
 2008-03-26  Roland Clobus <rclobus@bigfoot.com>
 	* common/gtk/aboutbox.c: Add translator_credits.
 	* String freeze for 0.11.4

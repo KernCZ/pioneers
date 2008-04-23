@@ -255,6 +255,17 @@ AC_ARG_ENABLE([admin-gtk], AS_HELP_STRING([--enable-admin-gtk],
 esac], [admin_gtk_support=no])
 AM_CONDITIONAL(ADMIN_GTK_SUPPORT, [test x$admin_gtk_support = xyes])
 
+AC_ARG_ENABLE([protocol],
+	AS_HELP_STRING([--enable-protocol],
+	[Specify the network protocol (IPv4/IPv6)]),
+[case "${enableval}" in
+  IPv4)        pioneers_network_protocol=AF_INET;;
+  IPv6)        pioneers_network_protocol=AF_INET6;;
+  *)           pioneers_network_protocol=AF_INET6;;
+esac], [pioneers_network_protocol=AF_UNSPEC])
+AC_DEFINE_UNQUOTED([NETWORK_PROTOCOL],[$pioneers_network_protocol],
+	[The network protocol value])
+
 AC_CHECK_HEADERS([netdb.h fcntl.h netinet/in.h sys/socket.h])
 AC_CHECK_HEADERS([limits.h])
 AC_CHECK_HEADERS([syslog.h],

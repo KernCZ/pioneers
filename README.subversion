@@ -100,6 +100,10 @@ Interesting options are:
 --enable-admin-gtk
     This will turn on very old, unmaintained code.
     Turn on at your own risk.
+--enable-protocol=[IPv4|IPv6 (default)]
+    This will force the network code to create sockets for IPv4 or IPv6.
+    Some operating systems do bridge incoming IPv4 connections to IPv6 and
+    should use IPv4 here.
 --without-gtk
     Turn off the building of the (graphical) executables that depend on Gtk+.
     Even when the library is present, those executables will not be built.

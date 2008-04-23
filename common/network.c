@@ -71,6 +71,9 @@ static gboolean debug_enabled = FALSE;
  * (in the absence of other network activity).  */
 static const int PING_PERIOD = 30;
 
+#undef NETWORK_PROTOCOL
+#define NETWORK_PROTOCOL AF_INET6
+
 void set_enable_debug(gboolean enabled)
 {
 	debug_enabled = enabled;
@@ -566,7 +569,7 @@ gboolean net_connect(Session * ses, const gchar * host, const gchar * port)
 
 #ifdef HAVE_GETADDRINFO_ET_AL
 	memset(&hints, 0, sizeof(hints));
-	hints.ai_family = AF_UNSPEC;
+	hints.ai_family = NETWORK_PROTOCOL;
 	hints.ai_socktype = SOCK_STREAM;
 	hints.ai_protocol = IPPROTO_TCP;
 
@@ -724,7 +727,7 @@ int net_open_listening_socket(const gchar * port, gchar ** error_message)
 
 	memset(&hints, 0, sizeof(hints));
 
-	hints.ai_family = AF_UNSPEC;
+	hints.ai_family = NETWORK_PROTOCOL;
 	hints.ai_socktype = SOCK_STREAM;
 	hints.ai_protocol = IPPROTO_TCP;
 	hints.ai_flags = AI_PASSIVE;
