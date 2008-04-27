@@ -1,6 +1,7 @@
 
 2008-04-27  Roland Clobus <rclobus@bigfoot.com>
 	* server/player.c, server/server.h: Added version 0.12.
+	* client/gtk/data/splash.svg: Version 0.12.
 	* docs/README.release: Added note for protocol changes.
 
 2008-04-23  Roland Clobus <rclobus@bigfoot.com>
