@@ -1585,9 +1585,8 @@ msgstr "Mostrar atalhos directos do teclado na barra de ferramentas"
 
 #. Label for the option to disable all sounds
 #: ../client/gtk/gui.c:1022
-#, fuzzy
 msgid "Silent mode"
-msgstr "Nome de ficheiro"
+msgstr ""
 
 #. Tooltip for the option to disable all sounds
 #: ../client/gtk/gui.c:1028
@@ -1951,9 +1950,8 @@ msgid "Trading allowed only before build/buy?"
 msgstr "Trocas permitidas apenas antes de construir/comprar?"
 
 #: ../client/gtk/settingscreen.c:170
-#, fuzzy
 msgid "Check Victory Only At End Of Turn?"
-msgstr "Verificar objectivo dos Pontos de victória"
+msgstr ""
 
 #: ../client/gtk/settingscreen.c:175
 msgid "Amount of Each Resource:"
@@ -2134,19 +2132,16 @@ msgstr ""
 "jogo de tabuleiro 'Os Descobridores de Catan'.\n"
 
 #: ../common/gtk/aboutbox.c:78
-#, fuzzy
 msgid "Version:"
-msgstr "Versão"
+msgstr "Versão:"
 
 #: ../common/gtk/aboutbox.c:84
-#, fuzzy
 msgid "Homepage:"
-msgstr "Página Principal"
+msgstr "Página Principal:"
 
 #: ../common/gtk/aboutbox.c:89
-#, fuzzy
 msgid "Authors:"
-msgstr "Autores"
+msgstr "Autores:"
 
 #. Translators: add your name here. Keep the list alphabetically,
 #. * do not remove any names, and add \n after your name (except the last name).
@@ -3139,9 +3134,8 @@ msgid "The last player left, the tournament timer is reset."
 msgstr ""
 
 #: ../server/player.c:217
-#, fuzzy
 msgid "Game starts, adding computer players."
-msgstr "O jogo começa, adicionar adversários electrónicos"
+msgstr "O jogo começa, adicionar adversários electrónicos."
 
 #: ../server/player.c:260
 #, c-format
