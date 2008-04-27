@@ -1,3 +1,27 @@
+Subversion Snapshot release 0.12.1
+* Removed double menu entries
+* New feature: the moment of checking for victory can be influenced. With
+  thanks to Lalo Martins.
+* Use scrollbars, so Pioneers will work correctly on smaller screens.
+* Fixes for DoS that could stop the server.
+* The computer player will not attempt to buy development cards when none are
+  available.
+* Changed the order of distributing player numbers when (re)connecting.
+* Fixes for the new OpenBSD port.
+* All names of the computer players are unique. With thanks to
+  chrysn@users.sourceforge.net
+* Easier selection of meta servers.
+* Games created by the meta server will automatically add computer players
+  after a minute.
+* Tournament mode: the timer will only be started when a player enters the
+  game, and the timer will be reset when the last player leaves before the time
+  has elapsed.
+* Fixed a crash that could occur after many trades.
+* A new command line option to ./configure: '--enable-protocol=IPv4'. When
+  this is given (needed for the *BSD ports), only connections on IPv4 are made.
+* New language: Czech
+* New board: South Africa
+
 Subversion Snapshot release 0.11.3
 * Update for the server only: resolved issues for servers that run for a long
   time.

@@ -7,6 +7,7 @@
 	options are now 'IPv4' and 'unspecified'. IPv6 does not work, the name
 	'localhost' is not a IPv6 name.
 	* common/network.c: Remove debug code from previous commit.
+	* NEWS: Release notes for 0.12.1
 
 2008-04-23  Roland Clobus <rclobus@bigfoot.com>
 	* configure.ac, README.subversion, common/network.c: Specify IPv4 or
