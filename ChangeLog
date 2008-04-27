@@ -3,6 +3,10 @@
 	* server/player.c, server/server.h: Added version 0.12.
 	* client/gtk/data/splash.svg: Version 0.12.
 	* docs/README.release: Added note for protocol changes.
+	* configure.ac, README.subversion: Fix for previous change, the
+	options are now 'IPv4' and 'unspecified'. IPv6 does not work, the name
+	'localhost' is not a IPv6 name.
+	* common/network.c: Remove debug code from previous commit.
 
 2008-04-23  Roland Clobus <rclobus@bigfoot.com>
 	* configure.ac, README.subversion, common/network.c: Specify IPv4 or

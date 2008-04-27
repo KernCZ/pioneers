@@ -71,9 +71,6 @@ static gboolean debug_enabled = FALSE;
  * (in the absence of other network activity).  */
 static const int PING_PERIOD = 30;
 
-#undef NETWORK_PROTOCOL
-#define NETWORK_PROTOCOL AF_INET6
-
 void set_enable_debug(gboolean enabled)
 {
 	debug_enabled = enabled;

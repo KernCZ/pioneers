@@ -257,11 +257,10 @@ AM_CONDITIONAL(ADMIN_GTK_SUPPORT, [test x$admin_gtk_support = xyes])
 
 AC_ARG_ENABLE([protocol],
 	AS_HELP_STRING([--enable-protocol],
-	[Specify the network protocol (IPv4/IPv6)]),
+	[Specify the network protocol (IPv4/unspecified)]),
 [case "${enableval}" in
   IPv4)        pioneers_network_protocol=AF_INET;;
-  IPv6)        pioneers_network_protocol=AF_INET6;;
-  *)           pioneers_network_protocol=AF_INET6;;
+  *)           pioneers_network_protocol=AF_UNSPEC;;
 esac], [pioneers_network_protocol=AF_UNSPEC])
 AC_DEFINE_UNQUOTED([NETWORK_PROTOCOL],[$pioneers_network_protocol],
 	[The network protocol value])
