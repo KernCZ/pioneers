@@ -68,7 +68,7 @@ msgstr "Activar mensagens para depuração"
 #: ../client/ai/ai.c:85 ../client/gtk/offline.c:69 ../editor/gtk/editor.c:1068
 #: ../meta-server/main.c:1057 ../server/gtk/main.c:953 ../server/main.c:99
 msgid "Show version information"
-msgstr "Mostrar informação da versão"
+msgstr "Mostrar a versão"
 
 #: ../client/ai/ai.c:96
 msgid "- Computer player for Pioneers"
@@ -98,7 +98,7 @@ msgstr "O jogo já está cheio. Estou a sair"
 
 #: ../client/ai/greedy.c:948
 msgid "No settlements in stock to use for setup"
-msgstr "Sem estabelecimentos no estoque para usar na construção"
+msgstr "Sem mais estabelecimentos para usar na construção"
 
 #: ../client/ai/greedy.c:955
 msgid "There is no place to setup a settlement"
@@ -106,7 +106,7 @@ msgstr "Não existe um lugar para construir um estabelecimento"
 
 #: ../client/ai/greedy.c:979
 msgid "No roads in stock to use for setup"
-msgstr "Sem estradas no estoque para usar na construção"
+msgstr "Sem mais estradas para usar na construção"
 
 #: ../client/ai/greedy.c:996
 msgid "There is no place to setup a road"

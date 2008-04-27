@@ -22,14 +22,14 @@ msgstr ""
 #: ../client/ai/ai.c:64 ../client/gtk/connect.c:1430
 #: ../client/gtk/offline.c:50
 msgid "Server Host"
-msgstr "Computer"
+msgstr "Server Host"
 
 #. Commandline pioneersai: port
 #. Commandline option of client: port of the server
 #: ../client/ai/ai.c:67 ../client/gtk/connect.c:1446
 #: ../client/gtk/offline.c:53 ../server/gtk/main.c:614
 msgid "Server Port"
-msgstr "Poort"
+msgstr "Server Poort"
 
 #. Commandline pioneersai: name
 #: ../client/ai/ai.c:70
@@ -70,7 +70,7 @@ msgstr "Toon debug boodschappen"
 #: ../client/ai/ai.c:85 ../client/gtk/offline.c:69 ../editor/gtk/editor.c:1068
 #: ../meta-server/main.c:1057 ../server/gtk/main.c:953 ../server/main.c:99
 msgid "Show version information"
-msgstr "Toon versie informatie"
+msgstr "Versie-informatie weergeven"
 
 #: ../client/ai/ai.c:96
 msgid "- Computer player for Pioneers"
@@ -3151,7 +3151,7 @@ msgstr "Het spel start over %s minuut"
 #.
 #: ../server/player.c:319 ../server/player.c:325
 msgid "Computer Player"
-msgstr "Computer speler"
+msgstr "Computerspeler"
 
 #: ../server/player.c:414
 msgid "Sorry, game is over."
