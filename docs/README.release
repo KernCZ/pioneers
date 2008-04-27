@@ -15,6 +15,7 @@ Before a release:
 If the protocol has changed:
 * Check configure.ac, AC_INIT and PROTOCOL_VERSION
 * If the protocol is backwards compatible, adjust the version checks
+* Update server/player.c and server/server.h
 * Update client/gtk/data/splash.svg
 
 At release time:

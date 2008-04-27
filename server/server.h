@@ -38,8 +38,9 @@
 typedef enum {
 	V0_10, /**< Lowest supported version */
 	V0_11, /**< City walls, player style, robber undo */
+	V0_12, /**< Trade protocol simplified */
 	FIRST_VERSION = V0_10,
-	LATEST_VERSION = V0_11
+	LATEST_VERSION = V0_12
 } ClientVersionType;
 
 #define TERRAIN_DEFAULT	0

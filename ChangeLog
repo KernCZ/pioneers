@@ -1,4 +1,8 @@
 
+2008-04-27  Roland Clobus <rclobus@bigfoot.com>
+	* server/player.c, server/server.h: Added version 0.12.
+	* docs/README.release: Added note for protocol changes.
+
 2008-04-23  Roland Clobus <rclobus@bigfoot.com>
 	* configure.ac, README.subversion, common/network.c: Specify IPv4 or
 	IPv6 for sockets.

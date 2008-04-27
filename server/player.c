@@ -835,6 +835,8 @@ static const gchar *client_version_type_to_string(ClientVersionType cvt)
 		return "0.10";
 	case V0_11:
 		return "0.11";
+	case V0_12:
+		return "0.12";
 	}
 	g_return_val_if_reached("");
 }
