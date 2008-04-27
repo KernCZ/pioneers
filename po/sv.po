@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 0.12.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-26 22:35+0100\n"
+"POT-Creation-Date: 2008-04-27 22:41+0200\n"
 "PO-Revision-Date: 2008-03-30 19:20+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
@@ -357,7 +357,7 @@ msgid "%s receives %s.\n"
 msgstr "%s tar emot %s.\n"
 
 #. Year of Plenty
-#: ../client/common/client.c:645 ../client/common/client.c:2594
+#: ../client/common/client.c:645 ../client/common/client.c:2593
 #, c-format
 msgid "%s takes %s.\n"
 msgstr "%s tar %s.\n"
@@ -451,7 +451,7 @@ msgstr "Det är din tur."
 msgid "Sorry, %s available.\n"
 msgstr "Tyvärr, %s tillgänglig.\n"
 
-#: ../client/common/client.c:2413
+#: ../client/common/client.c:2412
 msgid "The game is over."
 msgstr "Spelet är slut."
 
@@ -3162,17 +3162,17 @@ msgid "Name not changed: new name is already in use"
 msgstr "Namn inte ändrat: nytt namn används redan"
 
 #. %s is the name of the reconnecting player
-#: ../server/player.c:762
+#: ../server/player.c:761
 #, c-format
 msgid "%s has reconnected."
 msgstr "%s har återanslutit."
 
-#: ../server/player.c:891
+#: ../server/player.c:892
 #, c-format
 msgid "Version mismatch: %s"
 msgstr "Versionen stämmer inte: %s"
 
-#: ../server/player.c:926
+#: ../server/player.c:927
 msgid "This game will start soon."
 msgstr "Detta spel kommer strax att startas."
 

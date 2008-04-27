@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 0.10.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-26 22:35+0100\n"
+"POT-Creation-Date: 2008-04-27 22:41+0200\n"
 "PO-Revision-Date: 2007-10-15 16:31+0000\n"
 "Last-Translator: Petri Jooste <petri.jooste@gmail.com>\n"
 "Language-Team: Afrikaans <af@li.org>\n"
@@ -360,7 +360,7 @@ msgid "%s receives %s.\n"
 msgstr "%s ontvang %s.\n"
 
 #. Year of Plenty
-#: ../client/common/client.c:645 ../client/common/client.c:2594
+#: ../client/common/client.c:645 ../client/common/client.c:2593
 #, c-format
 msgid "%s takes %s.\n"
 msgstr "%s vat %s.\n"
@@ -454,7 +454,7 @@ msgstr "Dit is jou beurt."
 msgid "Sorry, %s available.\n"
 msgstr "Jammer, %s is beskikbaar.\n"
 
-#: ../client/common/client.c:2413
+#: ../client/common/client.c:2412
 msgid "The game is over."
 msgstr "Die spel is verby."
 
@@ -3169,17 +3169,17 @@ msgid "Name not changed: new name is already in use"
 msgstr "Naam is nie verander nie: nuwe naam word reeds gebruik"
 
 #. %s is the name of the reconnecting player
-#: ../server/player.c:762
+#: ../server/player.c:761
 #, c-format
 msgid "%s has reconnected."
 msgstr "%s het weer gekonnekteer."
 
-#: ../server/player.c:891
+#: ../server/player.c:892
 #, c-format
 msgid "Version mismatch: %s"
 msgstr "Weergawes pas nie: %s"
 
-#: ../server/player.c:926
+#: ../server/player.c:927
 msgid "This game will start soon."
 msgstr "Hierdie spel gaan binnekort begin."
 

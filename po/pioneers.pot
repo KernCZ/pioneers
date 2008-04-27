@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-26 22:35+0100\n"
+"POT-Creation-Date: 2008-04-27 22:41+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -350,7 +350,7 @@ msgid "%s receives %s.\n"
 msgstr ""
 
 #. Year of Plenty
-#: ../client/common/client.c:645 ../client/common/client.c:2594
+#: ../client/common/client.c:645 ../client/common/client.c:2593
 #, c-format
 msgid "%s takes %s.\n"
 msgstr ""
@@ -443,7 +443,7 @@ msgstr ""
 msgid "Sorry, %s available.\n"
 msgstr ""
 
-#: ../client/common/client.c:2413
+#: ../client/common/client.c:2412
 msgid "The game is over."
 msgstr ""
 
@@ -3137,17 +3137,17 @@ msgid "Name not changed: new name is already in use"
 msgstr ""
 
 #. %s is the name of the reconnecting player
-#: ../server/player.c:762
+#: ../server/player.c:761
 #, c-format
 msgid "%s has reconnected."
 msgstr ""
 
-#: ../server/player.c:891
+#: ../server/player.c:892
 #, c-format
 msgid "Version mismatch: %s"
 msgstr ""
 
-#: ../server/player.c:926
+#: ../server/player.c:927
 msgid "This game will start soon."
 msgstr ""
 

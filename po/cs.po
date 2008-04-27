@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 0.11.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-26 22:35+0100\n"
+"POT-Creation-Date: 2008-04-27 22:41+0200\n"
 "PO-Revision-Date: 2008-02-02 16:45+0100\n"
 "Last-Translator: Ladislav Dobias <lada-preklad@dobias.info>\n"
 "Language-Team: \n"
@@ -353,7 +353,7 @@ msgid "%s receives %s.\n"
 msgstr "%s obdržel: %s.\n"
 
 #. Year of Plenty
-#: ../client/common/client.c:645 ../client/common/client.c:2594
+#: ../client/common/client.c:645 ../client/common/client.c:2593
 #, c-format
 msgid "%s takes %s.\n"
 msgstr "%s bere: %s.\n"
@@ -447,7 +447,7 @@ msgstr "Jste na tahu."
 msgid "Sorry, %s available.\n"
 msgstr "Promiňte, dostupno je pouze %s.\n"
 
-#: ../client/common/client.c:2413
+#: ../client/common/client.c:2412
 msgid "The game is over."
 msgstr "Tato hra skončila."
 
@@ -3165,17 +3165,17 @@ msgid "Name not changed: new name is already in use"
 msgstr "Jméno nebylo změněno: nové jméno se již používá jinde"
 
 #. %s is the name of the reconnecting player
-#: ../server/player.c:762
+#: ../server/player.c:761
 #, c-format
 msgid "%s has reconnected."
 msgstr "%s se znovu připojil."
 
-#: ../server/player.c:891
+#: ../server/player.c:892
 #, c-format
 msgid "Version mismatch: %s"
 msgstr "Verze nesouhlasí: %s"
 
-#: ../server/player.c:926
+#: ../server/player.c:927
 msgid "This game will start soon."
 msgstr "Tato hra začne již brzy."
 

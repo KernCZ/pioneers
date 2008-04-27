@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 0.11.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-26 22:35+0100\n"
+"POT-Creation-Date: 2008-04-27 22:41+0200\n"
 "PO-Revision-Date: 2007-11-11 08:34+0000\n"
 "Last-Translator: Filipe Rogue <flip.roque@gmail.com>\n"
 "Language-Team: Portuguese <pt@li.org>\n"
@@ -356,7 +356,7 @@ msgid "%s receives %s.\n"
 msgstr "%s recebe %s.\n"
 
 #. Year of Plenty
-#: ../client/common/client.c:645 ../client/common/client.c:2594
+#: ../client/common/client.c:645 ../client/common/client.c:2593
 #, c-format
 msgid "%s takes %s.\n"
 msgstr "%s tira %s.\n"
@@ -451,7 +451,7 @@ msgstr "É o teu turno."
 msgid "Sorry, %s available.\n"
 msgstr "Desculpa, %s disponível.\n"
 
-#: ../client/common/client.c:2413
+#: ../client/common/client.c:2412
 msgid "The game is over."
 msgstr "Fim do jogo."
 
@@ -3168,17 +3168,17 @@ msgid "Name not changed: new name is already in use"
 msgstr "Nome não mudado: novo nome está já em uso"
 
 #. %s is the name of the reconnecting player
-#: ../server/player.c:762
+#: ../server/player.c:761
 #, c-format
 msgid "%s has reconnected."
 msgstr "%s reconectou-se."
 
-#: ../server/player.c:891
+#: ../server/player.c:892
 #, c-format
 msgid "Version mismatch: %s"
 msgstr "Versão não coincide: %s"
 
-#: ../server/player.c:926
+#: ../server/player.c:927
 msgid "This game will start soon."
 msgstr "Este jogo começará em breve"
 
