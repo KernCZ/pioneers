@@ -1590,9 +1590,8 @@ msgstr "Wys sleutelbordkortpaaie in die nutsbalk"
 
 #. Label for the option to disable all sounds
 #: ../client/gtk/gui.c:1022
-#, fuzzy
 msgid "Silent mode"
-msgstr "Lêernaam"
+msgstr ""
 
 #. Tooltip for the option to disable all sounds
 #: ../client/gtk/gui.c:1028
@@ -1956,9 +1955,8 @@ msgid "Trading allowed only before build/buy?"
 msgstr "Word ruilhandel slegs toegelaat voor bou/koop?"
 
 #: ../client/gtk/settingscreen.c:170
-#, fuzzy
 msgid "Check Victory Only At End Of Turn?"
-msgstr "Wenpuntteiken"
+msgstr ""
 
 #: ../client/gtk/settingscreen.c:175
 msgid "Amount of Each Resource:"
@@ -2098,14 +2096,12 @@ msgid "_Finish Trading"
 msgstr "Stop met ruilhandel"
 
 #: ../common/game.c:604 ../common/game.c:634
-#, fuzzy
 msgid "This game cannot be won."
-msgstr "Hierdie spel gaan binnekort begin."
+msgstr ""
 
 #: ../common/game.c:605
-#, fuzzy
 msgid "There is no land."
-msgstr "Daar is nie 'n langste pad nie."
+msgstr ""
 
 #: ../common/game.c:638
 msgid "It is possible that this game cannot be won."
@@ -2135,19 +2131,16 @@ msgstr ""
 "bordspel \"Settlers of Catan\".\n"
 
 #: ../common/gtk/aboutbox.c:78
-#, fuzzy
 msgid "Version:"
-msgstr "Weergawe"
+msgstr "Weergawe:"
 
 #: ../common/gtk/aboutbox.c:84
-#, fuzzy
 msgid "Homepage:"
-msgstr "Tuisblad"
+msgstr "Tuisblad:"
 
 #: ../common/gtk/aboutbox.c:89
-#, fuzzy
 msgid "Authors:"
-msgstr "Outeurs"
+msgstr "Outeurs:"
 
 #. Translators: add your name here. Keep the list alphabetically,
 #. * do not remove any names, and add \n after your name (except the last name).
@@ -2241,9 +2234,8 @@ msgstr "Die punte wat nodig is om die spel te wen"
 
 #. Tooltip for the check button
 #: ../common/gtk/game-settings.c:169
-#, fuzzy
 msgid "Is it possible to win this game?"
-msgstr "Die punte wat nodig is om die spel te wen"
+msgstr ""
 
 #. Port indicator for a resource: trade 2 for 1
 #: ../common/gtk/guimap.c:750
@@ -2700,9 +2692,8 @@ msgid "Change game title"
 msgstr "Verander die spel se titel"
 
 #: ../editor/gtk/editor.c:1012 ../server/gtk/main.c:98
-#, fuzzy
 msgid "_Check Victory Point Target"
-msgstr "Wenpuntteiken"
+msgstr ""
 
 #: ../editor/gtk/editor.c:1014 ../server/gtk/main.c:100
 msgid "Check whether the game can be won"
@@ -3108,9 +3099,9 @@ msgstr ""
 
 #. server-console commandline error
 #: ../server/main.c:239
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot load the parameters for the game\n"
-msgstr "Poort van die gasheer van die spel"
+msgstr ""
 
 #. server-console commandline error
 #: ../server/main.c:274
@@ -3144,9 +3135,8 @@ msgid "The last player left, the tournament timer is reset."
 msgstr ""
 
 #: ../server/player.c:217
-#, fuzzy
 msgid "Game starts, adding computer players."
-msgstr "Die spel begin, robotspelers word bygevoeg"
+msgstr "Die spel begin, robotspelers word bygevoeg."
 
 #: ../server/player.c:260
 #, c-format
