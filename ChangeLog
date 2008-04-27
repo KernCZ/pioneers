@@ -1,5 +1,11 @@
 
 2008-04-27  Roland Clobus <rclobus@bigfoot.com>
+	* configure.ac: Work version is 0.12.2
+
+2008-04-27  Roland Clobus <rclobus@bigfoot.com>
+	* Released version 0.12.1
+
+2008-04-27  Roland Clobus <rclobus@bigfoot.com>
 	* server/player.c, server/server.h: Added version 0.12.
 	* client/gtk/data/splash.svg: Version 0.12.
 	* docs/README.release: Added note for protocol changes.
