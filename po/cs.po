@@ -1581,9 +1581,8 @@ msgstr "Ukázat klávesové zkratky v nástrojové liště"
 
 #. Label for the option to disable all sounds
 #: ../client/gtk/gui.c:1022
-#, fuzzy
 msgid "Silent mode"
-msgstr "soubor"
+msgstr ""
 
 #. Tooltip for the option to disable all sounds
 #: ../client/gtk/gui.c:1028
@@ -2130,19 +2129,16 @@ msgstr ""
 "deskové hře Osadníci z Katanu.\n"
 
 #: ../common/gtk/aboutbox.c:78
-#, fuzzy
 msgid "Version:"
-msgstr "Verze"
+msgstr "Verze:"
 
 #: ../common/gtk/aboutbox.c:84
-#, fuzzy
 msgid "Homepage:"
-msgstr "Domácí stránka"
+msgstr "Domácí stránka:"
 
 #: ../common/gtk/aboutbox.c:89
-#, fuzzy
 msgid "Authors:"
-msgstr "Autoři"
+msgstr "Autoři:"
 
 #. Translators: add your name here. Keep the list alphabetically,
 #. * do not remove any names, and add \n after your name (except the last name).
@@ -2291,87 +2287,87 @@ msgstr "chybný režim škálování '%s'"
 
 #: ../common/log.c:54
 msgid "*ERROR* "
-msgstr "*CHYBA*"
+msgstr "*CHYBA* "
 
 #: ../common/log.c:60
 msgid "Chat: "
-msgstr "Chat:"
+msgstr "Chat: "
 
 #: ../common/log.c:63
 msgid "Resource: "
-msgstr "Suroviny:"
+msgstr "Suroviny: "
 
 #: ../common/log.c:66
 msgid "Build: "
-msgstr "Stavět:"
+msgstr "Stavět: "
 
 #: ../common/log.c:69
 msgid "Dice: "
-msgstr "Kostky:"
+msgstr "Kostky: "
 
 #: ../common/log.c:72
 msgid "Steal: "
-msgstr "Ukrást:"
+msgstr "Ukrást: "
 
 #: ../common/log.c:75
 msgid "Trade: "
-msgstr "Obchod:"
+msgstr "Obchod: "
 
 #: ../common/log.c:78
 msgid "Development: "
-msgstr "Pokrok:"
+msgstr "Pokrok: "
 
 #: ../common/log.c:81
 msgid "Army: "
-msgstr "Vojsko:"
+msgstr "Vojsko: "
 
 #: ../common/log.c:84
 msgid "Road: "
-msgstr "Silnice:"
+msgstr "Silnice: "
 
 #: ../common/log.c:87
 msgid "*BEEP* "
-msgstr "*PÍP*"
+msgstr "*PÍP* "
 
 #: ../common/log.c:92
 msgid "Player 1: "
-msgstr "Hráč 1:"
+msgstr "Hráč 1: "
 
 #: ../common/log.c:95
 msgid "Player 2: "
-msgstr "Hráč 2:"
+msgstr "Hráč 2: "
 
 #: ../common/log.c:98
 msgid "Player 3: "
-msgstr "Hráč 3:"
+msgstr "Hráč 3: "
 
 #: ../common/log.c:101
 msgid "Player 4: "
-msgstr "Hráč 4:"
+msgstr "Hráč 4: "
 
 #: ../common/log.c:104
 msgid "Player 5: "
-msgstr "Hráč 5:"
+msgstr "Hráč 5: "
 
 #: ../common/log.c:107
 msgid "Player 6: "
-msgstr "Hráč 6:"
+msgstr "Hráč 6: "
 
 #: ../common/log.c:110
 msgid "Player 7: "
-msgstr "Hráč 7:"
+msgstr "Hráč 7: "
 
 #: ../common/log.c:113
 msgid "Player 8: "
-msgstr "Hráč 8:"
+msgstr "Hráč 8: "
 
 #: ../common/log.c:116
 msgid "Viewer: "
-msgstr "Pozorovatel:"
+msgstr "Pozorovatel: "
 
 #: ../common/log.c:119
 msgid "** UNKNOWN MESSAGE TYPE ** "
-msgstr "** NEZNÁMÝ TYP HLÁŠENÍ **"
+msgstr "** NEZNÁMÝ TYP HLÁŠENÍ ** "
 
 #: ../common/network.c:280
 #, c-format
