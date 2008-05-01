@@ -36,7 +36,7 @@ static void player_setup(Player * player, int playernum,
 			 const gchar * name, gboolean force_viewer);
 static Player *player_by_name(Game * game, char *name);
 
-#define tournament_minute 1000 * 1
+#define tournament_minute 1000 * 60
 
 /** Find a free number for a connecting player.
  * The number has not been used before.
