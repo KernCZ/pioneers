@@ -285,6 +285,7 @@ void cb_end_quote(void)
 {
 	/* stop trading */
 	g_assert(callback_mode == MODE_QUOTE);
+	sm_send(SM(), "domestic-quote finish\n");
 	sm_push(SM(), mode_quote_finish_response);
 }
 
