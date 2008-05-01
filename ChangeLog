@@ -1,5 +1,11 @@
 
 2008-05-01  Roland Clobus <rclobus@bigfoot.com>
+	* configure.ac: Work version is 0.12.3
+
+2008-05-01  Roland Clobus <rclobus@bigfoot.com>
+	* Released version 0.12.2
+
+2008-05-01  Roland Clobus <rclobus@bigfoot.com>
 	* server/player.c: The tournament minute has 60 seconds again, instead
 	of only one. (Fix for 2008-03-24)
 	* client/common/callback.c: Client send rejected quote again. (Fix for
