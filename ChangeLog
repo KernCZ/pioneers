@@ -4,6 +4,8 @@
 	of only one. (Fix for 2008-03-24)
 	* client/common/callback.c: Client send rejected quote again. (Fix for
 	2008-04-23)
+	* NEWS: Release notes for 0.12.2
+	* client/ai/lobbybot.c: Mention 0.12.2
 
 2008-04-27  Roland Clobus <rclobus@bigfoot.com>
 	* configure.ac: Work version is 0.12.2
@@ -21,7 +23,7 @@
 	* common/network.c: Remove debug code from previous commit.
 	* NEWS: Release notes for 0.12.1
 	* docs/README.release: Updated the release notes
-	* client/ai/lobbybot.sh: Mention 0.12.1
+	* client/ai/lobbybot.c: Mention 0.12.1
 
 2008-04-23  Roland Clobus <rclobus@bigfoot.com>
 	* configure.ac, README.subversion, common/network.c: Specify IPv4 or
