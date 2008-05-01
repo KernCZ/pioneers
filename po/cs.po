@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 0.11.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-04-27 22:41+0200\n"
+"POT-Creation-Date: 2008-05-01 20:41+0200\n"
 "PO-Revision-Date: 2008-02-02 16:45+0100\n"
 "Last-Translator: Ladislav Dobias <lada-preklad@dobias.info>\n"
 "Language-Team: \n"
@@ -2470,12 +2470,12 @@ msgstr "Net_get_peer_name není ještě podporováno na této platformě."
 msgid "Error accepting connection: %s"
 msgstr "Chyba při potvrzení spojení: %s"
 
-#: ../common/state.c:173
+#: ../common/state.c:175
 #, c-format
 msgid "Connecting to %s, port %s\n"
 msgstr "Připojování k %s, port %s\n"
 
-#: ../common/state.c:509
+#: ../common/state.c:511
 msgid "State stack overflow. Stack dump sent to standard error.\n"
 msgstr ""
 "Přetečení zásobníku stavů. Obsah zásobníku poslán na standardní chybový "

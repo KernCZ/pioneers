@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-04-27 22:41+0200\n"
+"POT-Creation-Date: 2008-05-01 20:41+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2451,12 +2451,12 @@ msgstr ""
 msgid "Error accepting connection: %s"
 msgstr ""
 
-#: ../common/state.c:173
+#: ../common/state.c:175
 #, c-format
 msgid "Connecting to %s, port %s\n"
 msgstr ""
 
-#: ../common/state.c:509
+#: ../common/state.c:511
 msgid "State stack overflow. Stack dump sent to standard error.\n"
 msgstr ""
 

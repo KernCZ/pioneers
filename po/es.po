@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 0.10.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-04-27 22:41+0200\n"
-"PO-Revision-Date: 2008-02-04 22:04+0000\n"
+"POT-Creation-Date: 2008-05-01 20:41+0200\n"
+"PO-Revision-Date: 2008-04-27 21:10+0000\n"
 "Last-Translator: Kiba-Kun <kibafang@gmail.com>\n"
 "Language-Team: Spanish <debian-l10n-spanish@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -2155,6 +2155,10 @@ msgstr "Autores"
 #: ../common/gtk/aboutbox.c:103 ../common/gtk/aboutbox.c:114
 msgid "translator_credits"
 msgstr ""
+"Marco Antonio Giraldo\n"
+"Launchpad Contributions:\n"
+"  Kiba-Kun https://launchpad.net/~kiba-kun\n"
+"  skarevoluti https://launchpad.net/~garciamanu49"
 
 #. Header for the translator_credits. Use your own language name
 #: ../common/gtk/aboutbox.c:109
@@ -2482,12 +2486,12 @@ msgstr "Net_get_peer_name no soportada aun en esta plataforma"
 msgid "Error accepting connection: %s"
 msgstr "Error aceptando coneccion: %s"
 
-#: ../common/state.c:173
+#: ../common/state.c:175
 #, c-format
 msgid "Connecting to %s, port %s\n"
 msgstr "Conectando a %s, puert %s\n"
 
-#: ../common/state.c:509
+#: ../common/state.c:511
 msgid "State stack overflow. Stack dump sent to standard error.\n"
 msgstr "State stack overflow. Stack dump sent to standard error.\n"
 
@@ -3112,7 +3116,7 @@ msgstr ""
 #: ../server/main.c:239
 #, fuzzy, c-format
 msgid "Cannot load the parameters for the game\n"
-msgstr "Puerto del anfitrion del juego"
+msgstr "Puerto del anfitrion del juego\n"
 
 #. server-console commandline error
 #: ../server/main.c:274
@@ -3224,12 +3228,3 @@ msgstr "Tried to assign resources to NULL player.\n"
 #: ../server/turn.c:497
 msgid "The dice roll has been determined by the administrator."
 msgstr ""
-
-#~ msgid "Leave empty for the default meta server"
-#~ msgstr "Dejar vacio para el Meta-servidor por defecto"
-
-#~ msgid "Override the language of the system"
-#~ msgstr "Invalidar el lenguaje del sistema"
-
-#~ msgid "The address of the meta server"
-#~ msgstr "La dirección de un metaservidor"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 0.12.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-04-27 22:41+0200\n"
+"POT-Creation-Date: 2008-05-01 20:41+0200\n"
 "PO-Revision-Date: 2008-03-30 19:20+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
@@ -2472,12 +2472,12 @@ msgstr "Net_get_peer_name stöds ännu inte på denna plattform."
 msgid "Error accepting connection: %s"
 msgstr "Fel vid mottagning av anslutning: %s"
 
-#: ../common/state.c:173
+#: ../common/state.c:175
 #, c-format
 msgid "Connecting to %s, port %s\n"
 msgstr "Ansluter till %s, port %s\n"
 
-#: ../common/state.c:509
+#: ../common/state.c:511
 msgid "State stack overflow. Stack dump sent to standard error.\n"
 msgstr "Överflöde i statusstack. Stackdump skickar till standard fel.\n"
 

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 0.12.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-04-27 22:41+0200\n"
+"POT-Creation-Date: 2008-05-01 20:41+0200\n"
 "PO-Revision-Date: 2008-04-03 09:47+0100\n"
 "Last-Translator: Jean-Charles GRANGER <traduction@vecteur.org>\n"
 "Language-Team: Français <LL@li.org>, LT-P <LT-P@LT-P.net>, Yusei "
@@ -27,14 +27,14 @@ msgstr ""
 #: ../client/ai/ai.c:64 ../client/gtk/connect.c:1430
 #: ../client/gtk/offline.c:50
 msgid "Server Host"
-msgstr "Adresse du serveur"
+msgstr "Hôte Serveur"
 
 #. Commandline pioneersai: port
 #. Commandline option of client: port of the server
 #: ../client/ai/ai.c:67 ../client/gtk/connect.c:1446
 #: ../client/gtk/offline.c:53 ../server/gtk/main.c:614
 msgid "Server Port"
-msgstr "Port du serveur"
+msgstr "Port du Serveur"
 
 #. Commandline pioneersai: name
 #: ../client/ai/ai.c:70
@@ -44,7 +44,7 @@ msgstr "Nom de l'AI (obligatoire)"
 #. Commandline pioneersai: time
 #: ../client/ai/ai.c:73
 msgid "Time to wait between turns (in milliseconds)"
-msgstr "Intervalle entre chaque tour (en millisecondes)"
+msgstr "Teamps d'attente entre les tours (en millisecondes)"
 
 #. Commandline pioneersai: chat-free
 #: ../client/ai/ai.c:76
@@ -101,11 +101,11 @@ msgstr "Type d'AI : %s\n"
 
 #: ../client/ai/ai.c:169
 msgid "The game is already full. I'm leaving."
-msgstr "Tous les joueurs sont déjà présents. On arrête."
+msgstr "La partie est déjà pleine. Je pars."
 
 #: ../client/ai/greedy.c:948
 msgid "No settlements in stock to use for setup"
-msgstr "Il n'y a plus de colonie en réserve pour le placement"
+msgstr "Plus de colonies en stock pour configuration"
 
 #: ../client/ai/greedy.c:955
 msgid "There is no place to setup a settlement"
@@ -113,7 +113,7 @@ msgstr "Il n'y a plus de place pour fonder une colonie"
 
 #: ../client/ai/greedy.c:979
 msgid "No roads in stock to use for setup"
-msgstr "Il n'y a pas de route en réserve pour le placement"
+msgstr "Plus de routes en stock pour configuration"
 
 #: ../client/ai/greedy.c:996
 msgid "There is no place to setup a road"
@@ -133,7 +133,7 @@ msgstr "Essayons encore..."
 
 #: ../client/ai/greedy.c:1304
 msgid "At least I get something..."
-msgstr "Enfin, je reçois quelque chose..."
+msgstr "Au moins je reçois quelque-chose..."
 
 #: ../client/ai/greedy.c:1305
 msgid "One is better than none..."
@@ -2164,7 +2164,10 @@ msgstr ""
 "LT-P\n"
 "Arnaud MALON\n"
 "Yusei\n"
-"Jean-Charles GRANGER"
+"Jean-Charles GRANGER\n"
+"\n"
+"Launchpad Contributions:\n"
+"  Clément Lorteau https://launchpad.net/~northern-lights"
 
 #. Header for the translator_credits. Use your own language name
 #: ../common/gtk/aboutbox.c:109
@@ -2487,12 +2490,12 @@ msgstr "Net_get_peer_name n'est pas encore supporté sur cette plate-forme."
 msgid "Error accepting connection: %s"
 msgstr "Erreur en acceptant la connexion : %s"
 
-#: ../common/state.c:173
+#: ../common/state.c:175
 #, c-format
 msgid "Connecting to %s, port %s\n"
 msgstr "Connexion à %s, port %s\n"
 
-#: ../common/state.c:509
+#: ../common/state.c:511
 msgid "State stack overflow. Stack dump sent to standard error.\n"
 msgstr ""
 "Débordement de la pile d'état. Copie de la pile sur la sortie d'erreur.\n"
@@ -3226,12 +3229,3 @@ msgstr "tentative d'attribuer des ressources au joueur NULL.\n"
 #: ../server/turn.c:497
 msgid "The dice roll has been determined by the administrator."
 msgstr "Le jet du dé a été défini par l'administrateur."
-
-#~ msgid "Leave empty for the default meta server"
-#~ msgstr "Laissez vide pour le meta-serveur par défaut"
-
-#~ msgid "Override the language of the system"
-#~ msgstr "Passer outre le language défini dans le système"
-
-#~ msgid "The address of the meta server"
-#~ msgstr "L'adresse du meta-serveur"

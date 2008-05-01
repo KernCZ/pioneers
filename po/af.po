@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 0.10.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-04-27 22:41+0200\n"
+"POT-Creation-Date: 2008-05-01 20:41+0200\n"
 "PO-Revision-Date: 2007-10-15 16:31+0000\n"
 "Last-Translator: Petri Jooste <petri.jooste@gmail.com>\n"
 "Language-Team: Afrikaans <af@li.org>\n"
@@ -2474,12 +2474,12 @@ msgstr "\"Net_get_peer_name\" word nog nie op hierdie platform ondersteun nie."
 msgid "Error accepting connection: %s"
 msgstr "Kon nie die konneksie aanvaar nie: %s"
 
-#: ../common/state.c:173
+#: ../common/state.c:175
 #, c-format
 msgid "Connecting to %s, port %s\n"
 msgstr "Konnekteer aan %s, poort %s\n"
 
-#: ../common/state.c:509
+#: ../common/state.c:511
 msgid "State stack overflow. Stack dump sent to standard error.\n"
 msgstr "Statusstapel loop oor.  Stapel word gestort op standaardfoutafvoer.\n"
 
