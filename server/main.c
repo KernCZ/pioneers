@@ -226,7 +226,6 @@ int main(int argc, char *argv[])
 		return 2;
 	}
 	if (game_file == NULL) {
-		load_game_types(get_pioneers_dir());
 		if (game_title == NULL)
 			params = cfg_set_game("Default");
 		else
@@ -305,7 +304,6 @@ int main(int argc, char *argv[])
 	g_free(admin_port);
 	g_option_context_free(context);
 	params_free(params);
-	server_cleanup_static_data();
 	return 0;
 }
 

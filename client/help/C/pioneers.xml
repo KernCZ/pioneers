@@ -1604,11 +1604,14 @@
 		<entry>Player name</entry>
 	      </row>
 	      <row>
-	        <entry/>
-		<entry>--language</entry>
-		<entry>Override the language as set in the environment.
-		  Valid choices: de en es fr hu it nl sv
-		</entry>
+	        <entry>-v</entry>
+		<entry>--viewer</entry>
+		<entry>Connect as a viewer</entry>
+	      </row>
+	      <row>
+	        <entry>-m</entry>
+		<entry>--meta-server</entry>
+		<entry>Meta-server host</entry>
 	      </row>
 	    </tbody>
 	  </tgroup>
@@ -1623,7 +1626,7 @@
 	  Server and port need both to be set, or not at all.
 	</para>
 	<table id="configuration-client-settingsfile">
-	  <title>Settings file <application>~/.config/pioneers</application></title>
+	  <title>Settings file <application>$XDG_CONFIG_HOME/pioneers</application></title>
 	  <tgroup cols="2">
 	    <thead>
 	      <row>
@@ -1914,7 +1917,7 @@
 	    <tbody>
               <row>
                 <entry>PIONEERS_DIR</entry>
-                <entry>The location of the *.game files</entry>
+                <entry>The location of the *.game files and the computer_names file</entry>
               </row>
 	      <row>
 	        <entry>PIONEERS_META_SERVER</entry>
@@ -1991,6 +1994,10 @@
               </row>
               <row>
                 <entry><userinput>admin info</userinput></entry>
+                <entry>none</entry>
+              </row>
+              <row>
+                <entry><userinput>admin fix-dice</userinput></entry>
                 <entry>none</entry>
               </row>
            </tbody>

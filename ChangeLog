@@ -1,4 +1,10 @@
 
+2008-05-04  Roland Clobus <rclobus@bigfoot.com>
+	* docs/pioneers-server-gtk.6, docs/pioneers-server-console.6,
+	server/gtk/main.c, server/server.c, server/server.h, server/main.c,
+	client/help/C/pioneers.xml: Use less memory for server-console. Add
+	support for games in $XDG_DATA_HOME/pioneers.
+
 2008-05-01  Roland Clobus <rclobus@bigfoot.com>
 	* configure.ac: Work version is 0.12.3
 

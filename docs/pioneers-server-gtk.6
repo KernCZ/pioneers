@@ -1,4 +1,4 @@
-.TH pioneers-server-gtk 6 "April 9, 2006" "pioneers"
+.TH pioneers-server-gtk 6 "May 2, 2008" "pioneers"
 .SH NAME
 pioneers-server-gtk \- graphical game server for Pioneers
 
@@ -21,7 +21,7 @@ from
 itself.
 
 .SH OPTIONS
-Pioneers accepts the standard GTK+/GNOME commandline options.
+Pioneers accepts the standard GTK+ commandline options.
 
 .SH ENVIRONMENT
 The default settings of the server can be influenced with the
@@ -43,6 +43,8 @@ If it is not set, the default installation path will be used.
 
 .SH FILES
 .B /usr/share/games/pioneers/*.game
+and
+.B $XDG_DATA_HOME/pioneers/*.game
 .RS
 Game definitions
 .RE
@@ -50,7 +52,7 @@ Game definitions
 .RS
 Game icon
 .RE
-.B $HOME/.config/pioneers-server
+.B $XDG_CONFIG_HOME/pioneers-server
 .RS
 Saved settings
 .RE

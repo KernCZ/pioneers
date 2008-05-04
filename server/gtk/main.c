@@ -559,7 +559,6 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 	/* Fill the GUI with the saved settings */
 	gamename =
 	    config_get_string("game/name=Default", &default_returned);
-	load_game_types(get_pioneers_dir());
 	params = cfg_set_game(gamename);
 	if (params == NULL)
 		params = cfg_set_game("Default");
@@ -1038,6 +1037,7 @@ int main(int argc, char *argv[])
 	config_init("pioneers-server");
 
 	themes_init();
+	game_list_prepare();
 
 	icon_file =
 	    g_build_filename(DATADIR, "pixmaps", MAINICON_FILE, NULL);
@@ -1069,5 +1069,6 @@ int main(int argc, char *argv[])
 	config_finish();
 	net_finish();
 	g_option_context_free(context);
+	game_list_cleanup();
 	return 0;
 }
