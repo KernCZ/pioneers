@@ -1,0 +1,36 @@
+#!/bin/sh -e
+
+CONFFILE=/etc/default/pioneers-console
+
+. /usr/share/debconf/confmodule
+
+# Get current values of the settings.
+test ! -r "$CONFFILE" || . "$CONFFILE"
+
+# This function will change variable $1 to the result of debconf question $2.
+# If it already had the right setting, the file is not touched.
+function conffile_edit
+{
+	variable="$1"
+	question="$2"
+	# Get the answer to the debconf question.
+	db_get "$question" || return 0
+	# Do nothing if the value hasn't changed.
+	test "$RET" != "`eval 'echo $'"$variable"`" || return 0
+
+	# If the setting isn't in the conffile yet, add it.
+	if [ ! -r "$CONFFILE" ] || ! grep -q "^$variable=" "$CONFFILE" ; then
+		echo "$variable='$RET'" >> "$CONFFILE"
+		return 0
+	fi
+
+	# Otherwise, edit the conffile to contain the new setting.
+	sed -i "s/^\($variable=\).*\$/\\1'$RET'/" "$CONFFILE"
+}
+
+conffile_edit RUN_META_SERVER pioneers-console/run-meta-server
+conffile_edit PORT_RANGE pioneers-console/meta-server-ports
+conffile_edit META_SERVER_NAME pioneers-console/meta-server-name
+conffile_edit META_SERVER_ARGS pioneers-console/meta-server-args
+
+#DEBHELPER#

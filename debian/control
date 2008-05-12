@@ -3,69 +3,110 @@ Section: games
 Priority: optional
 Maintainer: Bas Wijnen <wijnen@debian.org>
 Uploaders: Steve Langasek <vorlon@debian.org>, Roman Hodek <roman@debian.org>
-Build-Depends: debhelper (>= 5.0.0), libgnome2-dev, scrollkeeper, gnome-common, imagemagick, librsvg2-bin, netpbm, libgtk2.0-dev, automake1.9, autoconf (>= 2.53)
-Standards-Version: 3.7.2
+Build-Depends: debhelper (>= 5.0.0), libgnome2-dev, scrollkeeper, gnome-common, imagemagick, librsvg2-bin, netpbm, libgtk2.0-dev, automake1.10, autoconf (>= 2.60), po-debconf
+Standards-Version: 3.7.3
 Homepage: http://pio.sourceforge.net/
-XS-Vcs-Svn: https://pio.svn.sourceforge.net/svnroot/pio/trunk/pioneers
-XS-Vcs-Browser: http://pio.svn.sourceforge.net/viewvc/pio/trunk/pioneers/
+Vcs-Svn: https://pio.svn.sourceforge.net/svnroot/pio/trunk/pioneers
+Vcs-Browser: http://pio.svn.sourceforge.net/viewvc/pio/trunk/pioneers/
 
 Package: pioneers
 Architecture: any
 Depends: pioneers-console (=${binary:Version}), pioneers-data (=${source:Version}), ${shlibs:Depends}, ${misc:Depends}
 Recommends: yelp
 Provides: pioneers-server-gtk, pioneers-client, pioneers-help
-Conflicts: pioneers-server-gtk, pioneers-client, pioneers-help
-Replaces: pioneers-server-gtk, pioneers-client, pioneers-help
+Conflicts: pioneers-server-gtk (<< 0.12), pioneers-client (<< 0.12), pioneers-help (<< 0.12)
+Replaces: pioneers-server-gtk (<< 0.12), pioneers-client (<< 0.12), pioneers-help (<< 0.12)
 Description: the Settlers of Catan board game
  Pioneers is a computer implementation of the Settlers of Catan board game.
  It can be played over the internet.
  .
  The game includes a server, a client, a computer player, an editor and a
  meta-server (for locating running servers).
- .
-  Homepage: http://pio.sourceforge.net/
 
 Package: pioneers-console
 Architecture: any
 Depends: pioneers-console-data (=${source:Version}), ${shlibs:Depends}, ${misc:Depends}
 Suggests: pioneers
 Provides: pioneers-ai, pioneers-meta-server, pioneers-server-console
-Conflicts: pioneers-ai, pioneers-meta-server, pioneers-server-console
-Replaces: pioneers-ai, pioneers-meta-server, pioneers-server-console
+Conflicts: pioneers-ai (<< 0.12), pioneers-meta-server (<< 0.12), pioneers-server-console (<< 0.12)
+Replaces: pioneers-ai (<< 0.12), pioneers-meta-server (<< 0.12), pioneers-server-console (<< 0.12)
 Description: the Settlers of Catan board game - console parts
  Pioneers is a computer implementation of the Settlers of Catan board game.
  It can be played over the internet.
  .
  This package contains the console-parts of the game: the computer player, the
  console server and the meta-server.
- .
-  Homepage: http://pio.sourceforge.net/
 
 Package: pioneers-data
 Architecture: all
 Depends: ${misc:Depends}
 Recommends: pioneers
-Conflicts: pioneers-server-data
-Replaces: pioneers-server-data
+Conflicts: pioneers-server-data (<< 0.12)
+Replaces: pioneers-server-data (<< 0.12)
 Description: the Settlers of Catan board game - data files
  Pioneers is a computer implementation of the Settlers of Catan board game.
  It can be played over the internet.
  .
  This package contains architecture independent data for the game.
- .
-  Homepage: http://pio.sourceforge.net/
 
 Package: pioneers-console-data
 Architecture: all
 Depends: ${misc:Depends}
 Recommends: pioneers-console
-Conflicts: pioneers-server-data, pioneers-console (<< 0.11.2)
-Replaces: pioneers-server-data, pioneers-console (<< 0.11.2)
+Conflicts: pioneers-server-data (<< 0.12), pioneers-console (<< 0.11.2)
+Replaces: pioneers-server-data (<< 0.12), pioneers-console (<< 0.11.2)
 Description: the Settlers of Catan board game - data files
  Pioneers is a computer implementation of the Settlers of Catan board game.
  It can be played over the internet.
  .
  This package contains architecture independent data for the console parts
  of the game.
- .
-  Homepage: http://pio.sourceforge.net/
+
+Package: pioneers-ai
+Architecture: all
+Depends: pioneers-console (>= ${source:Version})
+Description: pioneers transitional package
+ This package helps upgrading the pioneers packages to their new names.
+ It can safely be removed.
+
+Package: pioneers-client
+Architecture: all
+Depends: pioneers (>= ${source:Version})
+Description: pioneers transitional package
+ This package helps upgrading the pioneers packages to their new names.
+ It can safely be removed.
+
+Package: pioneers-help
+Architecture: all
+Depends: pioneers-data (>= ${source:Version})
+Description: pioneers transitional package
+ This package helps upgrading the pioneers packages to their new names.
+ It can safely be removed.
+
+Package: pioneers-meta-server
+Architecture: all
+Depends: pioneers-console (>= ${source:Version})
+Description: pioneers transitional package
+ This package helps upgrading the pioneers packages to their new names.
+ It can safely be removed.
+
+Package: pioneers-server-console
+Architecture: all
+Depends: pioneers-console (>= ${source:Version})
+Description: pioneers transitional package
+ This package helps upgrading the pioneers packages to their new names.
+ It can safely be removed.
+
+Package: pioneers-server-data
+Architecture: all
+Depends: pioneers-console-data (>= ${source:Version})
+Description: pioneers transitional package
+ This package helps upgrading the pioneers packages to their new names.
+ It can safely be removed.
+
+Package: pioneers-server-gtk
+Architecture: all
+Depends: pioneers (>= ${source:Version})
+Description: pioneers transitional package
+ This package helps upgrading the pioneers packages to their new names.
+ It can safely be removed.

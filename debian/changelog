@@ -1,3 +1,23 @@
+pioneers (0.12.2-1) unstable; urgency=low
+
+  * New upstream release. (closes: #480527)
+  * Let init script depend on $syslog. (closes: #472336)
+  * Add dummy packages for easy upgrading. (closes: #466387)
+  * Add debconf questions to edit /etc/default/pioneers-console.
+
+ -- Bas Wijnen <wijnen@debian.org>  Sun, 11 May 2008 15:49:58 +0200
+
+pioneers (0.11.4-1) unstable; urgency=low
+
+  * New upstream release.
+  * Use automake 1.10, upgrade autoconf dependency to >= 2.60 for that.
+  * Upgraded to standards version 3.7.3 (no changes needed).
+  * Add transitional packages for upgrades from Etch. (closes: #466387)
+  * Remove XS- prefix from Vcs fields in debian/control.
+  * Add $network as requirement for meta-server init script. (closes: #472336)
+
+ -- Bas Wijnen <wijnen@debian.org>  Wed, 02 Apr 2008 20:31:03 +0200
+
 pioneers (0.11.3-1) unstable; urgency=low
 
   * New upstream security release (Closes: #449541).

@@ -4,14 +4,14 @@
 # Uncomment this to turn on verbose mode. 
 #export DH_VERBOSE=1
 
-export AUTOMAKE=automake-1.9
-export ACLOCAL=aclocal-1.9
+export AUTOMAKE = automake-1.10
+export ACLOCAL = aclocal-1.10
 
 LIBFLAGS = GNOME2_LIBS=-lgnome-2 GTK2_LIBS=-lgtk-x11-2.0 GLIB2_LIBS=-lglib-2.0
 
 # Hack workaround for bashism in gnome-autogen.sh.  Can be removed when it is
 # fixed.
-export AUTOMAKE_VERSION=1.9
+export AUTOMAKE_VERSION = 1.10
 
 CFLAGS = -Wall -g
 
@@ -47,6 +47,7 @@ build-stamp:
 		exit 1 ; \
 	fi
 	# Commands to compile the package.
+	debconf-updatepo
 	# --enable-maintainer-mode is implicit for autogen.sh
 	# So don't run configure from it.
 	NOCONFIGURE=true ./autogen.sh
@@ -68,7 +69,7 @@ build-stamp:
 clean:
 	dh_testdir
 	dh_testroot
-	rm -f build-stamp install-stamp pioneers.xpm pioneers-server.xpm
+	rm -f build-stamp install-stamp pioneers.xpm pioneers-server.xpm pioneers-editor.xpm debian/po/templates.pot
 	# Commands to clean up after the build process.
 ifneq ($(wildcard Makefile),)
 	$(MAKE) maintainer-clean
@@ -104,6 +105,7 @@ binary-indep: build install
 	dh_scrollkeeper -v --package=pioneers-help ../client/help
 	dh_installmenu -i
 	dh_installchangelogs -i ChangeLog
+	dh_installdebconf -i
 	dh_link -i
 	dh_compress -i
 	dh_fixperms -i
@@ -121,6 +123,7 @@ binary-arch: build install
 	dh_installexamples -a
 	dh_installmenu -a
 	dh_installchangelogs -a ChangeLog
+	dh_installdebconf -a
 	dh_strip -a
 	dh_link -a
 	dh_compress -a
