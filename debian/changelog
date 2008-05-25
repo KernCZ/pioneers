@@ -3,9 +3,11 @@ pioneers (0.12.2-1) unstable; urgency=low
   * New upstream release. (closes: #480527)
   * Let init script depend on $syslog. (closes: #472336)
   * Add dummy packages for easy upgrading. (closes: #466387)
-  * Add debconf questions to edit /etc/default/pioneers-console.
+  * Add debconf questions to edit /etc/default/pioneers-console
+    (closes: #480963, #481023, #481475, #482451, #482603, #482452, #482802).
+    This caused a new lintian warning, for which a bug is filed (#482795).
 
- -- Bas Wijnen <wijnen@debian.org>  Sun, 11 May 2008 15:49:58 +0200
+ -- Bas Wijnen <wijnen@debian.org>  Sun, 25 May 2008 10:34:21 +0200
 
 pioneers (0.11.4-1) unstable; urgency=low
 

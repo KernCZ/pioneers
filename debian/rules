@@ -9,10 +9,6 @@ export ACLOCAL = aclocal-1.10
 
 LIBFLAGS = GNOME2_LIBS=-lgnome-2 GTK2_LIBS=-lgtk-x11-2.0 GLIB2_LIBS=-lglib-2.0
 
-# Hack workaround for bashism in gnome-autogen.sh.  Can be removed when it is
-# fixed.
-export AUTOMAKE_VERSION = 1.10
-
 CFLAGS = -Wall -g
 
 ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
