@@ -1,11 +1,24 @@
+pioneers (0.12.2-2) unstable; urgency=low
+
+  * Add Russion debconf translation. (closes: #484332)
+
+ -- Bas Wijnen <wijnen@debian.org>  Wed, 04 Jun 2008 13:13:33 +0200
+
 pioneers (0.12.2-1) unstable; urgency=low
 
   * New upstream release. (closes: #480527)
   * Let init script depend on $syslog. (closes: #472336)
   * Add dummy packages for easy upgrading. (closes: #466387)
-  * Add debconf questions to edit /etc/default/pioneers-console
-    (closes: #480963, #481023, #481475, #482451, #482603, #482452, #482802).
-    This caused a new lintian warning, for which a bug is filed (#482795).
+  * Add debconf questions to edit /etc/default/pioneers-console for
+    Galician (closes: #480963),
+    Basque (closes: #481023),
+    Vietnamese (closes: #481475),
+    German (closes: #482451),
+    Portuguese (closes: #482603),
+    Czech (closes: #482802),
+  * Improved debconf template, thanks to Helge Kreutzmann (closes: #482452).
+  * The debconf questions caused a new lintian warning, for which a bug is
+    filed (#482795).
 
  -- Bas Wijnen <wijnen@debian.org>  Sun, 25 May 2008 10:34:21 +0200
 
