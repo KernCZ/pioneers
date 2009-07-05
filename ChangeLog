@@ -1,3 +1,6 @@
+2008-06-27  Bas Wijnen <shevek@fmf.nl>
+	* docs/pioneers-editor.6, docs/Makefile.am: Add manual page for
+	pioneers-editor.
 
 2008-05-04  Roland Clobus <rclobus@bigfoot.com>
 	* docs/pioneers-server-gtk.6, docs/pioneers-server-console.6,

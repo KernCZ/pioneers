@@ -17,4 +17,4 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-man_MANS += docs/pioneers.6 docs/pioneers-server-gtk.6 docs/pioneers-server-console.6 docs/pioneersai.6 docs/pioneers-meta-server.6
+man_MANS += docs/pioneers.6 docs/pioneers-server-gtk.6 docs/pioneers-server-console.6 docs/pioneersai.6 docs/pioneers-meta-server.6 docs/pioneers-editor.6
