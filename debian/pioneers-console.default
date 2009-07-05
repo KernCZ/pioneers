@@ -1,5 +1,0 @@
-# This file contains the settings for the pioneers meta-server.
-# It is used by /etc/init.d/pioneers-console, for starting and stopping
-#  the meta-server.
-# See /etc/init.d/pioneers-console for possible variables to assign.
-# If no value is given here, the default from that file is used.

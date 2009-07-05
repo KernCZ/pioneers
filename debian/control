@@ -3,8 +3,8 @@ Section: games
 Priority: optional
 Maintainer: Bas Wijnen <wijnen@debian.org>
 Uploaders: Steve Langasek <vorlon@debian.org>, Roman Hodek <roman@debian.org>
-Build-Depends: debhelper (>= 5.0.0), libgnome2-dev, scrollkeeper, gnome-common, imagemagick, librsvg2-bin, netpbm, libgtk2.0-dev, automake1.10, autoconf (>= 2.60), po-debconf
-Standards-Version: 3.7.3
+Build-Depends: debhelper (>= 7.0.0), libgnome2-dev, scrollkeeper, gnome-common, imagemagick, librsvg2-bin, netpbm, libgtk2.0-dev, automake1.10, autoconf (>= 2.60), po-debconf
+Standards-Version: 3.8.2
 Homepage: http://pio.sourceforge.net/
 Vcs-Svn: https://pio.svn.sourceforge.net/svnroot/pio/trunk/pioneers
 Vcs-Browser: http://pio.svn.sourceforge.net/viewvc/pio/trunk/pioneers/
@@ -61,52 +61,3 @@ Description: the Settlers of Catan board game - data files
  .
  This package contains architecture independent data for the console parts
  of the game.
-
-Package: pioneers-ai
-Architecture: all
-Depends: pioneers-console (>= ${source:Version})
-Description: pioneers transitional package
- This package helps upgrading the pioneers packages to their new names.
- It can safely be removed.
-
-Package: pioneers-client
-Architecture: all
-Depends: pioneers (>= ${source:Version})
-Description: pioneers transitional package
- This package helps upgrading the pioneers packages to their new names.
- It can safely be removed.
-
-Package: pioneers-help
-Architecture: all
-Depends: pioneers-data (>= ${source:Version})
-Description: pioneers transitional package
- This package helps upgrading the pioneers packages to their new names.
- It can safely be removed.
-
-Package: pioneers-meta-server
-Architecture: all
-Depends: pioneers-console (>= ${source:Version})
-Description: pioneers transitional package
- This package helps upgrading the pioneers packages to their new names.
- It can safely be removed.
-
-Package: pioneers-server-console
-Architecture: all
-Depends: pioneers-console (>= ${source:Version})
-Description: pioneers transitional package
- This package helps upgrading the pioneers packages to their new names.
- It can safely be removed.
-
-Package: pioneers-server-data
-Architecture: all
-Depends: pioneers-console-data (>= ${source:Version})
-Description: pioneers transitional package
- This package helps upgrading the pioneers packages to their new names.
- It can safely be removed.
-
-Package: pioneers-server-gtk
-Architecture: all
-Depends: pioneers (>= ${source:Version})
-Description: pioneers transitional package
- This package helps upgrading the pioneers packages to their new names.
- It can safely be removed.

@@ -1,3 +1,31 @@
+pioneers (0.12.2-5) unstable; urgency=low
+
+  * Don't ship non-conffile configuration file /etc/default/pioneers-console.
+    Generate it if it doesn't exist (closes: #533597).
+  * Stop generating transitional packages.
+  * Make meta-server init script more verbose; don't restart meta-server when
+    it's already running.
+  * Update standards version to 3.8.2.
+  * Remove long-obsolete source and diff targets from debian/rules.
+
+ -- Bas Wijnen <wijnen@debian.org>  Thu, 25 Jun 2009 15:59:08 +0200
+
+pioneers (0.12.2-4) unstable; urgency=low
+
+  * Add French translation. (closes: #486075)
+  * Add manual page for pioneers-editor.
+  * Updated standards version to 3.8.0 (no changes needed).
+
+ -- Bas Wijnen <wijnen@debian.org>  Fri, 27 Jun 2008 18:46:13 +0200
+
+pioneers (0.12.2-3) unstable; urgency=low
+
+  * Put templates.pot in source package, because translators don't want it any
+    other way.
+  * Fix bashisms in maintainer scripts. (closes: 485511)
+
+ -- Bas Wijnen <wijnen@debian.org>  Tue, 10 Jun 2008 20:05:41 +0200
+
 pioneers (0.12.2-2) unstable; urgency=low
 
   * Add Russion debconf translation. (closes: #484332)

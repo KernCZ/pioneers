@@ -1,15 +1,28 @@
 #!/bin/sh -e
 
-CONFFILE=/etc/default/pioneers-console
+CONFIG_FILE=/etc/default/pioneers-console
 
 . /usr/share/debconf/confmodule
 
 # Get current values of the settings.
-test ! -r "$CONFFILE" || . "$CONFFILE"
+if test -e "$CONFIG_FILE" ; then
+	. "$CONFIG_FILE"
+else
+	cat > "$CONFIG_FILE" << EOF
+# This file contains the settings for the pioneers meta-server.
+# It is used by /etc/init.d/pioneers-console, for starting and stopping
+#  the meta-server.
+# See /etc/init.d/pioneers-console for possible variables to assign.
+# If no value is given here, the default from that file is used.
+#
+# This file is sourced as a shell script, so no spaces are allowed
+# around the = sign.
+EOF
+fi
 
 # This function will change variable $1 to the result of debconf question $2.
 # If it already had the right setting, the file is not touched.
-function conffile_edit
+conffile_edit ()
 {
 	variable="$1"
 	question="$2"
@@ -19,13 +32,13 @@ function conffile_edit
 	test "$RET" != "`eval 'echo $'"$variable"`" || return 0
 
 	# If the setting isn't in the conffile yet, add it.
-	if [ ! -r "$CONFFILE" ] || ! grep -q "^$variable=" "$CONFFILE" ; then
-		echo "$variable='$RET'" >> "$CONFFILE"
+	if [ ! -r "$CONFIG_FILE" ] || ! grep -q "^$variable=" "$CONFIG_FILE" ; then
+		echo "$variable='$RET'" >> "$CONFIG_FILE"
 		return 0
 	fi
 
 	# Otherwise, edit the conffile to contain the new setting.
-	sed -i "s/^\($variable=\).*\$/\\1'$RET'/" "$CONFFILE"
+	sed -i "s/^\($variable=\).*\$/\\1'$RET'/" "$CONFIG_FILE"
 }
 
 conffile_edit RUN_META_SERVER pioneers-console/run-meta-server

@@ -43,7 +43,6 @@ build-stamp:
 		exit 1 ; \
 	fi
 	# Commands to compile the package.
-	debconf-updatepo
 	# --enable-maintainer-mode is implicit for autogen.sh
 	# So don't run configure from it.
 	NOCONFIGURE=true ./autogen.sh
@@ -63,10 +62,10 @@ build-stamp:
 	touch build-stamp
 
 clean:
+	# Commands to clean up after the build process.
 	dh_testdir
 	dh_testroot
 	rm -f build-stamp install-stamp pioneers.xpm pioneers-server.xpm pioneers-editor.xpm debian/po/templates.pot
-	# Commands to clean up after the build process.
 ifneq ($(wildcard Makefile),)
 	$(MAKE) maintainer-clean
 endif
@@ -74,13 +73,16 @@ ifneq ($(wildcard ${AUTO_JUNK}),)
 	rm $(wildcard ${AUTO_JUNK})
 endif
 	find . -name Makefile.in -exec rm {} \;
-	dh_clean
+	dh clean
+	# Translators insist on having templates.pot in the source package,
+	# so it must be created during clean.
+	debconf-updatepo
 
 install: install-stamp
 install-stamp: build-stamp
 	dh_testdir
 	dh_testroot
-	dh_clean -k
+	dh_prep
 	dh_installdirs
 	# Commands to install the package into debian/tmp.
 	$(MAKE) DESTDIR=$(CURDIR)/debian/tmp install $(LIBFLAGS)
@@ -88,50 +90,13 @@ install-stamp: build-stamp
 	install -D -m644 pioneers.xpm debian/tmp/usr/share/pixmaps/pioneers-client.xpm
 	install -D -m644 pioneers-server.xpm debian/tmp/usr/share/pixmaps/pioneers-server.xpm
 	install -D -m644 pioneers-editor.xpm debian/tmp/usr/share/pixmaps/pioneers-editor.xpm
-	install -D -m644 debian/pioneers-console.default debian/tmp/etc/default/pioneers-console
-	dh_install --fail-missing -X usr/share/man/man6/ -X etc/default/
+	dh_install --fail-missing -X usr/share/man/man6/
 	dh_installman
+	dh_installdocs -A README
 	touch install-stamp
 
 # Build architecture-independent files here.
-binary-indep: build install
-	dh_testdir -i
-	dh_testroot -i
-	dh_installdocs -i -A README
-	dh_scrollkeeper -v --package=pioneers-help ../client/help
-	dh_installmenu -i
-	dh_installchangelogs -i ChangeLog
-	dh_installdebconf -i
-	dh_link -i
-	dh_compress -i
-	dh_fixperms -i
-	dh_installdeb -i
-	dh_gencontrol -i
-	dh_md5sums -i
-	dh_builddeb -i
+binary-indep binary-arch binary: build install
+	dh $@
 
-# Build architecture-dependent files here.
-binary-arch: build install
-	dh_testdir -a
-	dh_testroot -a
-	dh_installdocs -a -A README
-	dh_installinit -a
-	dh_installexamples -a
-	dh_installmenu -a
-	dh_installchangelogs -a ChangeLog
-	dh_installdebconf -a
-	dh_strip -a
-	dh_link -a
-	dh_compress -a
-	dh_fixperms -a
-	dh_installdeb -a
-	dh_shlibdeps -a
-	dh_gencontrol -a
-	dh_md5sums -a
-	dh_builddeb -a
-
-source diff:
-	@echo >&2 'source and diff are obsolete - use dpkg-source -b'; false
-
-binary: binary-indep binary-arch
-.PHONY: configure build clean binary-indep binary-arch binary install source diff
+.PHONY: build clean binary-indep binary-arch binary install

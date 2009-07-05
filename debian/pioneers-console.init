@@ -11,9 +11,10 @@
 #			clients to find servers.
 ### END INIT INFO
 
-# These defaults can be overridden in /etc/default/pioneers-console
+# The defaults below can be overridden in /etc/default/pioneers-console
+CONFIG_FILE=/etc/default/pioneers-console
 
-# Set this to "true" (in /etc/default) to actually run the meta-server
+# Set this to "true" (in $CONFIG_FILE) to actually run the meta-server
 RUN_META_SERVER="false"
 
 # Port range
@@ -26,20 +27,16 @@ META_SERVER_ARGS=""
 META_SERVER_NAME="`dnsdomainname --fqdn`"
 
 # Arguments to start-stop-daemon.
-ARGS="--quiet --chuid nobody:nogroup"
+ARGS="--make-pidfile --quiet --chuid nobody:nogroup"
 
 # File for storing the pid.  You probably don't need to change this.
 PIDFILE=/var/run/pioneers-meta-server.pid
 
 # End of variable list.
 
-test -x "$DAEMON" || exit 0
-
-if test -r /etc/default/pioneers-console ; then
-	. /etc/default/pioneers-console
+if test -r $CONFIG_FILE; then
+	. $CONFIG_FILE
 fi
-
-test "$RUN_META_SERVER" = "yes" || exit 0
 
 test -z "$PORT_RANGE" || PORT_RANGE="--port-range $PORT_RANGE"
 test -z "$META_SERVER_NAME" || META_SERVER_NAME="`dnsdomainname --fqdn`"
@@ -47,31 +44,53 @@ test -z "$META_SERVER_NAME" || META_SERVER_NAME="`dnsdomainname --fqdn`"
 export PIONEERS_META_SERVER
 NAME="Pioneers meta-server"
 DAEMON=/usr/games/pioneers-meta-server
-START_ARGS="--pidfile $PIDFILE --start $ARGS --exec "$DAEMON" -- --daemon $PORT_RANGE $META_SERVER_ARGS --servername $META_SERVER_NAME"
+ARGS="--pidfile $PIDFILE --exec $DAEMON $ARGS"
+START_ARGS="--start $ARGS -- --daemon $PORT_RANGE $META_SERVER_ARGS --servername $META_SERVER_NAME"
+STOP_ARGS="--stop $ARGS"
+
+if test ! -x "$DAEMON"; then
+	echo "$DAEMON does not exist"
+	exit 0
+fi
 
 case "$1" in
 	start)
-		echo -n "Starting $NAME: pioneers-meta-server..."
-		if start-stop-daemon $START_ARGS; then
-			echo "done."
+		if test ! "$RUN_META_SERVER" = "true"; then
+			echo "Pioneers meta server is disabled in $CONFIG_FILE."
+			exit 0
+		fi
+		if start-stop-daemon --test $START_ARGS; then
+			echo -n "Starting $NAME..."
+			if start-stop-daemon $START_ARGS; then
+				echo "done."
+			else
+				echo "failed."
+			fi
 		else
-			echo "failed."
+			echo "Not starting $NAME: already running"
 		fi
 		;;
 	stop)
 		echo -n "Stopping $NAME: pioneers-meta-server..."
-		if start-stop-daemon --pidfile $PIDFILE --stop $ARGS --exec "$DAEMON" ; then
+		if start-stop-daemon $STOP_ARGS ; then
 			echo "done."
 		else
 			echo "failed."
 		fi
 		;;
 	restart|force-reload)
-		echo -n "Restarting $NAME: pioneers-meta-server..."
-		start-stop-daemon --pidfile $PIDFILE --stop $ARGS --exec $DAEMON --oknodo
-		sleep 2
-		if start-stop-daemon $START_ARGS; then
-			echo "done."
+		if test ! "$RUN_META_SERVER" = "true"; then
+			echo "Pioneers meta server is disabled in $CONFIG_FILE."
+			exit 0
+		fi
+		echo -n "Restarting $NAME..."
+		if start-stop-daemon $STOP_ARGS --oknodo ; then
+			sleep 2
+			if start-stop-daemon $START_ARGS; then
+				echo "done."
+			else
+				echo "failed."
+			fi
 		else
 			echo "failed."
 		fi
@@ -85,7 +104,7 @@ case "$1" in
 			else
 				exit 3 # not running
 			fi
-		elif start-stop-daemon --test --pidfile $PIDFILE --stop $ARGS --exec "$DAEMON" >/dev/null ; then
+		elif start-stop-daemon --test $STOP_ARGS >/dev/null ; then
 			echo "$NAME is running."
 			exit 0 # running
 		else
