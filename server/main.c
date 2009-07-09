@@ -226,9 +226,12 @@ int main(int argc, char *argv[])
 		return 2;
 	}
 	if (game_file == NULL) {
-		if (game_title == NULL)
-			params = cfg_set_game("Default");
-		else
+		if (game_title == NULL) {
+			if (num_players > 4)
+				params = cfg_set_game("5/6-player");
+			else
+				params = cfg_set_game("Default");
+		} else
 			params = cfg_set_game(game_title);
 	} else {
 		params = cfg_set_game_file(game_file);
