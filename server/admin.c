@@ -229,19 +229,17 @@ void admin_run_command(Session * admin_session, const gchar * line)
 			for (command_number = 1;
 			     command_number < G_N_ELEMENTS(admin_commands);
 			     ++command_number) {
-				if (admin_commands[command_number].
-				    need_argument) {
+				if (admin_commands
+				    [command_number].need_argument) {
 					net_printf(admin_session,
 						   "INFO %s argument\n",
 						   admin_commands
-						   [command_number].
-						   command);
+						   [command_number].command);
 				} else {
 					net_printf(admin_session,
 						   "INFO %s\n",
 						   admin_commands
-						   [command_number].
-						   command);
+						   [command_number].command);
 				}
 			}
 			break;

@@ -119,8 +119,7 @@ void guimap_delete(GuiMap * gmap)
 
 		if (gmap->initial_font_size != -1) {
 			pango_font_description_set_size(pfd,
-							gmap->
-							initial_font_size);
+							gmap->initial_font_size);
 		}
 
 		g_object_unref(gmap->layout);
@@ -235,29 +234,36 @@ static GdkPoint settlement_points[] = {
 	{20, 20}, {20, -8}, {0, -28}, {-20, -8},
 	{-20, 20}, {20, 20}
 };
+
 static Polygon settlement_poly = {
 	settlement_points,
 	G_N_ELEMENTS(settlement_points)
 };
+
 static GdkPoint city_points[] = {
 	{40, 20}, {40, -16}, {2, -16}, {2, -28},
 	{-19, -48}, {-40, -28}, {-40, 20}, {40, 20}
 };
+
 static Polygon city_poly = {
 	city_points,
 	G_N_ELEMENTS(city_points)
 };
+
 static GdkPoint city_wall_points[] = {
 	{50, 36}, {50, -64}, {-50, -64}, {-50, 36}
 };
+
 static Polygon city_wall_poly = {
 	city_wall_points,
 	G_N_ELEMENTS(city_wall_points)
 };
+
 static GdkPoint nosetup_points[] = {
 	{0, 30}, {26, 15}, {26, -15}, {0, -30},
 	{-26, -15}, {-26, 15}, {0, 30}
 };
+
 static Polygon nosetup_poly = {
 	nosetup_points,
 	G_N_ELEMENTS(nosetup_points)
@@ -275,33 +281,40 @@ static GdkPoint largest_node_points[] = {
 	{NODE_MAX_X, NODE_MAX_Y},
 	{NODE_MAX_X, NODE_MIN_Y}
 };
+
 static Polygon largest_node_poly = {
 	largest_node_points,
 	G_N_ELEMENTS(largest_node_points)
 };
+
 static GdkPoint road_points[] = {
 	{10, 40}, {10, -40}, {-10, -40}, {-10, 40},
 	{10, 40}
 };
+
 static Polygon road_poly = {
 	road_points,
 	G_N_ELEMENTS(road_points)
 };
+
 static GdkPoint ship_points[] = {
 	{10, 32}, {10, 8}, {24, 18}, {42, 8},
 	{48, 0}, {50, -12}, {10, -12}, {10, -32},
 	{2, -32}, {-6, -26}, {-10, -16}, {-10, 16},
 	{-6, 26}, {2, 32}, {10, 32}
 };
+
 static Polygon ship_poly = {
 	ship_points,
 	G_N_ELEMENTS(ship_points)
 };
+
 static GdkPoint bridge_points[] = {
 	{13, 40}, {-14, 40}, {-14, 30}, {-1, 15},
 	{-1, -15}, {-14, -30}, {-14, -40}, {13, -40},
 	{13, 40}
 };
+
 static Polygon bridge_poly = {
 	bridge_points,
 	G_N_ELEMENTS(bridge_points)
@@ -319,6 +332,7 @@ static GdkPoint largest_edge_points[] = {
 	{EDGE_MAX_X, EDGE_MAX_Y},
 	{EDGE_MAX_X, EDGE_MIN_Y}
 };
+
 static Polygon largest_edge_poly = {
 	largest_edge_points,
 	G_N_ELEMENTS(largest_edge_points)
@@ -331,16 +345,19 @@ static GdkPoint robber_points[] = {
 	{-22, -15}, {-28, -6}, {-30, 4}, {-30, 60},
 	{30, 60}
 };
+
 static Polygon robber_poly = {
 	robber_points,
 	G_N_ELEMENTS(robber_points)
 };
+
 static GdkPoint pirate_points[] = {
 	{42, 15}, {18, 15}, {28, 1}, {18, -17},
 	{10, -23}, {-2, -25}, {-2, 15}, {-22, 15},
 	{-22, 23}, {-16, 31}, {-6, 35}, {26, 35},
 	{36, 31}, {42, 23}, {42, 15}
 };
+
 static Polygon pirate_poly = {
 	pirate_points,
 	G_N_ELEMENTS(pirate_points)
@@ -700,19 +717,18 @@ static gboolean display_hex(const Hex * hex, gpointer closure)
 					theme->port_tiles[tileno]);
 			gdk_gc_set_ts_origin(gmap->gc,
 					     x_offset -
-					     theme->
-					     port_tiles_width[tileno] / 2,
+					     theme->port_tiles_width
+					     [tileno] / 2,
 					     y_offset -
-					     theme->
-					     port_tiles_height[tileno] /
-					     2);
+					     theme->port_tiles_height
+					     [tileno] / 2);
 			typeind = TRUE;
 			drawit = TRUE;
 		} else if (!theme->colors[TC_PORT_BG].transparent) {
 			gdk_gc_set_fill(gmap->gc, GDK_SOLID);
 			gdk_gc_set_foreground(gmap->gc,
-					      &theme->colors[TC_PORT_BG].
-					      color);
+					      &theme->
+					      colors[TC_PORT_BG].color);
 			typeind = FALSE;
 			drawit = TRUE;
 		} else {
@@ -734,8 +750,8 @@ static gboolean display_hex(const Hex * hex, gpointer closure)
 						   GDK_CAP_BUTT,
 						   GDK_JOIN_MITER);
 			gdk_gc_set_foreground(gmap->gc,
-					      &theme->colors[TC_PORT_BD].
-					      color);
+					      &theme->
+					      colors[TC_PORT_BD].color);
 			gdk_draw_arc(gmap->pixmap, gmap->gc, FALSE,
 				     x_offset - gmap->chit_radius,
 				     y_offset - gmap->chit_radius,
@@ -783,8 +799,8 @@ static gboolean display_hex(const Hex * hex, gpointer closure)
 			pango_layout_get_pixel_size(gmap->layout, &width,
 						    &height);
 			gdk_gc_set_foreground(gmap->gc,
-					      &theme->colors[TC_PORT_FG].
-					      color);
+					      &theme->
+					      colors[TC_PORT_FG].color);
 			gdk_draw_layout(gmap->pixmap, gmap->gc,
 					x_offset - width / 2,
 					y_offset - height / 2,
@@ -868,14 +884,14 @@ static gboolean display_hex(const Hex * hex, gpointer closure)
 					   GDK_CAP_BUTT, GDK_JOIN_MITER);
 		if (!theme->colors[TC_ROBBER_FG].transparent) {
 			gdk_gc_set_foreground(gmap->gc,
-					      &theme->colors[TC_ROBBER_FG].
-					      color);
+					      &theme->
+					      colors[TC_ROBBER_FG].color);
 			poly_draw(gmap->pixmap, gmap->gc, TRUE, &poly);
 		}
 		if (!theme->colors[TC_ROBBER_BD].transparent) {
 			gdk_gc_set_foreground(gmap->gc,
-					      &theme->colors[TC_ROBBER_BD].
-					      color);
+					      &theme->
+					      colors[TC_ROBBER_BD].color);
 			poly_draw(gmap->pixmap, gmap->gc, FALSE, &poly);
 		}
 	}
@@ -888,14 +904,14 @@ static gboolean display_hex(const Hex * hex, gpointer closure)
 					   GDK_CAP_BUTT, GDK_JOIN_MITER);
 		if (!theme->colors[TC_ROBBER_FG].transparent) {
 			gdk_gc_set_foreground(gmap->gc,
-					      &theme->colors[TC_ROBBER_FG].
-					      color);
+					      &theme->
+					      colors[TC_ROBBER_FG].color);
 			poly_draw(gmap->pixmap, gmap->gc, TRUE, &poly);
 		}
 		if (!theme->colors[TC_ROBBER_BD].transparent) {
 			gdk_gc_set_foreground(gmap->gc,
-					      &theme->colors[TC_ROBBER_BD].
-					      color);
+					      &theme->
+					      colors[TC_ROBBER_BD].color);
 			poly_draw(gmap->pixmap, gmap->gc, FALSE, &poly);
 		}
 	}
@@ -1793,8 +1809,7 @@ void guimap_cursor_move(GuiMap * gmap, gint x, gint y,
 		if (element->pointer) {
 			can_build_settlement = (settlementM
 						&& settlementF(*element,
-							       gmap->
-							       player_num,
+							       gmap->player_num,
 							       dummyElement));
 			can_build_city = (cityM
 					  && cityF(*element,
@@ -1802,8 +1817,7 @@ void guimap_cursor_move(GuiMap * gmap, gint x, gint y,
 						   dummyElement));
 			can_build_city_wall = (cityWallM
 					       && cityWallF(*element,
-							    gmap->
-							    player_num,
+							    gmap->player_num,
 							    dummyElement));
 			can_build_node = can_build_settlement
 			    || can_build_city || can_build_city_wall;

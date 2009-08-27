@@ -212,6 +212,7 @@ static HexOffset even_offsets[6] = {
 	{-1, 1},		/* 4 */
 	{0, 1}			/* 5 */
 };
+
 static HexOffset odd_offsets[6] = {
 	{1, 0},			/* 0 */
 	{1, -1},		/* 1 */

@@ -1310,51 +1310,62 @@ static const char *chat_receive_many[] = {
 	N_("Ey, I'm becoming rich ;)"),
 	N_("This is really a good year!"),
 };
+
 static const char *chat_other_receive_many[] = {
 	N_("You really don't deserve that much!"),
 	N_("You don't know what to do with that many resources ;)"),
 	N_("Ey, wait for my robber and lose all this again!"),
 };
+
 static const char *chat_self_moved_robber[] = {
 	N_("Hehe!"),
 	N_("Go, robber, go!"),
 };
+
 static const char *chat_moved_robber_to_me[] = {
 	N_("You bastard!"),
 	N_("Can't you move that robber somewhere else?!"),
 	N_("Why always me??"),
 };
+
 static const char *chat_discard_self[] = {
 	N_("Oh no!"),
 	N_("Grrr!"),
 	N_("Who the hell rolled that 7??"),
 	N_("Why always me?!?"),
 };
+
 static const char *chat_discard_other[] = {
 	N_("Say good bye to your cards... :)"),
 	N_("*evilgrin*"),
 	N_("/me says farewell to your cards ;)"),
 	N_("That's the price for being rich... :)"),
 };
+
 static const char *chat_stole_from_me[] = {
 	N_("Ey! Where's that card gone?"),
 	N_("Thieves! Thieves!!"),
 	N_("Wait for my revenge..."),
 };
+
 static const char *chat_monopoly_other[] = {
 	N_("Oh no :("),
 	N_("Must this happen NOW??"),
 	N_("Args"),
 };
+
 static const char *chat_largestarmy_self[] = {
 	N_("Hehe, my soldiers rule!"),
 };
+
 static const char *chat_largestarmy_other[] = {
 	N_("First robbing us, then grabbing the points..."),
 };
+
 static const char *chat_longestroad_self[] = {
 	N_("See that road!"),
 };
+
 static const char *chat_longestroad_other[] = {
 	N_("Pf, you won't win with roads alone..."),
 };

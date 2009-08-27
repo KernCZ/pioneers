@@ -199,17 +199,16 @@ static GtkWidget *settings_create_content(void)
 		gint idx;
 		island_bonus =
 		    g_strdup_printf("%d",
-				    g_array_index(game_params->
-						  island_discovery_bonus,
-						  gint, 0));
+				    g_array_index
+				    (game_params->island_discovery_bonus,
+				     gint, 0));
 		for (idx = 1;
 		     idx < game_params->island_discovery_bonus->len;
 		     idx++) {
 			gchar *old = island_bonus;
 			gchar *number = g_strdup_printf("%d",
 							g_array_index
-							(game_params->
-							 island_discovery_bonus,
+							(game_params->island_discovery_bonus,
 							 gint, idx));
 			island_bonus =
 			    g_strconcat(island_bonus, ", ", number, NULL);
@@ -321,22 +320,20 @@ static GtkWidget *settings_create_content(void)
 			NULL, TRUE);
 	add_setting_desc(table, 2, 0, _("Year of Plenty Cards:"));
 	add_setting_val(table, 2, 1, TYPE_NUM,
-			game_params->
-			num_develop_type[DEVEL_YEAR_OF_PLENTY], NULL,
-			TRUE);
+			game_params->num_develop_type
+			[DEVEL_YEAR_OF_PLENTY], NULL, TRUE);
 	add_setting_desc(table, 3, 0, _("Chapel Cards:"));
 	add_setting_val(table, 3, 1, TYPE_NUM,
 			game_params->num_develop_type[DEVEL_CHAPEL], NULL,
 			TRUE);
 	add_setting_desc(table, 4, 0, _("Pioneer University Cards:"));
 	add_setting_val(table, 4, 1, TYPE_NUM,
-			game_params->
-			num_develop_type[DEVEL_UNIVERSITY], NULL, TRUE);
+			game_params->num_develop_type[DEVEL_UNIVERSITY],
+			NULL, TRUE);
 	add_setting_desc(table, 5, 0, _("Governor's House Cards:"));
 	add_setting_val(table, 5, 1, TYPE_NUM,
-			game_params->
-			num_develop_type[DEVEL_GOVERNORS_HOUSE], NULL,
-			TRUE);
+			game_params->num_develop_type
+			[DEVEL_GOVERNORS_HOUSE], NULL, TRUE);
 	add_setting_desc(table, 6, 0, _("Library Cards:"));
 	add_setting_val(table, 6, 1, TYPE_NUM,
 			game_params->num_develop_type[DEVEL_LIBRARY], NULL,

@@ -290,9 +290,8 @@ static gint button_press_map_cb(GtkWidget * area, GdkEventButton * event,
 			gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM
 						       (port_directions
 							[i]),
-						       current_hex->
-						       facing == i
-						       && port_ok);
+						       current_hex->facing
+						       == i && port_ok);
 		}
 
 		if (num_ports > 0)
@@ -373,8 +372,8 @@ static void change_height(G_GNUC_UNUSED GtkWidget * menu,
 	if (GPOINTER_TO_INT(user_data) < 0) {
 		gint x;
 		for (x = 0; x < gmap->map->x_size; x++)
-			clear_hex(gmap->map->
-				  grid[gmap->map->y_size - 1][x]);
+			clear_hex(gmap->
+				  map->grid[gmap->map->y_size - 1][x]);
 	}
 	post_change(&gmap->map->y_size, vresize_buttons,
 		    GPOINTER_TO_INT(user_data));
@@ -744,8 +743,8 @@ static void apply_params(GameParams * params)
 
 	for (i = 1; i < NUM_BUILD_TYPES; i++)
 		game_buildings_set_num_buildings(game_buildings, i,
-						 params->
-						 num_build_type[i]);
+						 params->num_build_type
+						 [i]);
 
 	gmap->map = params->map;
 

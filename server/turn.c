@@ -238,23 +238,22 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 			 * or the current island
 			 */
 			points =
-			    g_array_index(game->params->
-					  island_discovery_bonus, gint,
-					  MIN(game->params->
-					      island_discovery_bonus->len -
-					      1,
+			    g_array_index(game->
+					  params->island_discovery_bonus,
+					  gint,
+					  MIN(game->
+					      params->island_discovery_bonus->
+					      len - 1,
 					      player->islands_discovered));
 
 			if (points != 0)
 				special_points =
-				    points_new(player->
-					       special_points_next_id++,
-					       first_island ?
-					       N_("Island Discovery Bonus")
-					       :
-					       N_(""
-						  "Additional Island Bonus"),
-					       points);
+				    points_new
+				    (player->special_points_next_id++,
+				     first_island ?
+				     N_("Island Discovery Bonus")
+				     : N_("" "Additional Island Bonus"),
+				     points);
 			player->islands_discovered++;
 		}
 	}

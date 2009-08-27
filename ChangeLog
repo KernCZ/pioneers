@@ -3,6 +3,14 @@
 	scrollbars when it is shown as a separate window.
 	* macros/gnome-autogen.sh: Synchronized with gnome-common, to add
 	support for automake-1.10.
+	* editor/gtk/editor.c, common/gtk/game-rules.c, common/gtk/theme.c,
+	common/gtk/guimap.c, common/game.c, common/map.c, server/gtk/main.c,
+	server/meta.c, server/turn.c, server/pregame.c, server/admin.c,
+	server/buildutil.c, client/gtk/player.c, client/gtk/legend.c,
+	client/gtk/trade.c, client/gtk/quote-view.c,
+	client/gtk/settingscreen.c, client/gtk/gui.c, client/gtk/connect.c,
+	client/common/client.c, client/ai/greedy.c, client/ai/ai.c:
+	make reindent
 
 2009-07-08  Steve Langasek <vorlon@debian.org>
 	* server/main.c: If no game file is specified and there are more

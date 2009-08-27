@@ -461,8 +461,8 @@ gboolean perform_undo(Player * player)
 				 rec->special_points_id);
 		points =
 		    g_list_find_custom(player->special_points,
-				       GINT_TO_POINTER(rec->
-						       special_points_id),
+				       GINT_TO_POINTER
+				       (rec->special_points_id),
 				       find_points_by_id);
 		if (points != NULL) {
 			points_free(points->data);

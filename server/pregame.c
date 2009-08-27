@@ -681,8 +681,8 @@ gboolean mode_pre_game(Player * player, gint event)
 				player_send_uncached(player, FIRST_VERSION,
 						     LATEST_VERSION,
 						     "playerinfo: numdevcards: %d\n",
-						     player->devel->
-						     num_cards);
+						     player->
+						     devel->num_cards);
 				for (i = 0; i < player->devel->num_cards;
 				     i++) {
 					player_send_uncached(player,
@@ -690,13 +690,10 @@ gboolean mode_pre_game(Player * player, gint event)
 							     LATEST_VERSION,
 							     "playerinfo: devcard: %d %d\n",
 							     (gint)
-							     player->
-							     devel->
-							     cards[i].type,
-							     player->
-							     devel->
-							     cards[i].
-							     turn_bought);
+							     player->devel->cards
+							     [i].type,
+							     player->devel->cards
+							     [i].turn_bought);
 				}
 				player_send_uncached(player, FIRST_VERSION,
 						     LATEST_VERSION,
@@ -704,8 +701,7 @@ gboolean mode_pre_game(Player * player, gint event)
 						     player->num_roads,
 						     player->num_bridges,
 						     player->num_ships,
-						     player->
-						     num_settlements,
+						     player->num_settlements,
 						     player->num_cities,
 						     player->num_soldiers,
 						     player->road_len,
@@ -729,8 +725,7 @@ gboolean mode_pre_game(Player * player, gint event)
 							     "get-point %d %d %d %s\n",
 							     player->num,
 							     points->id,
-							     points->
-							     points,
+							     points->points,
 							     points->name);
 					list = g_list_next(list);
 				}
@@ -772,8 +767,7 @@ gboolean mode_pre_game(Player * player, gint event)
 							     "get-point %d %d %d %s\n",
 							     p->num,
 							     points->id,
-							     points->
-							     points,
+							     points->points,
 							     points->name);
 					list = g_list_next(list);
 				}
@@ -805,8 +799,8 @@ gboolean mode_pre_game(Player * player, gint event)
 			    && (Player *) game->setup_player->data !=
 			    player) {
 				gint num =
-				    ((Player *) (game->setup_player->
-						 data))->num;
+				    ((Player *) (game->
+						 setup_player->data))->num;
 				if (game->double_setup)
 					player_send_uncached(player,
 							     FIRST_VERSION,
@@ -819,8 +813,7 @@ gboolean mode_pre_game(Player * player, gint event)
 							     LATEST_VERSION,
 							     "player %d setup %d\n",
 							     num,
-							     game->
-							     reverse_setup);
+							     game->reverse_setup);
 			}
 
 			if (recover_from_plenty) {
@@ -841,8 +834,7 @@ gboolean mode_pre_game(Player * player, gint event)
 							     LATEST_VERSION,
 							     "player %d must-discard %d\n",
 							     p->num,
-							     p->
-							     discard_num);
+							     p->discard_num);
 				}
 				if (p->gold > 0) {
 					player_send_uncached(player,
@@ -889,10 +881,10 @@ gboolean mode_pre_game(Player * player, gint event)
 						    (player, FIRST_VERSION,
 						     LATEST_VERSION,
 						     "player %d domestic-quote quote %d supply %R receive %R\n",
-						     quote->var.d.
-						     player_num,
-						     quote->var.d.
-						     quote_num,
+						     quote->var.
+						     d.player_num,
+						     quote->var.
+						     d.quote_num,
 						     quote->var.d.supply,
 						     quote->var.d.receive);
 					}

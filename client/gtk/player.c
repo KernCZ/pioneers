@@ -289,16 +289,15 @@ void frontend_new_statistics(gint player_num, StatisticType type,
 			if (statistics[type].plural != NULL)
 				desc = g_strdup_printf("%d %s", value,
 						       gettext(statistics
-							       [type].
-							       singular));
+							       [type].singular));
 			else
 				desc = g_strdup(gettext
-						(statistics[type].
-						 singular));
+						(statistics
+						 [type].singular));
 		} else
 			desc = g_strdup_printf("%d %s", value,
-					       gettext(statistics[type].
-						       plural));
+					       gettext(statistics
+						       [type].plural));
 		if (stat_get_vp_value(type) > 0)
 			sprintf(points, "%d",
 				value * stat_get_vp_value(type));

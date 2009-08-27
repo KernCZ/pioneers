@@ -54,6 +54,7 @@ static const struct algorithm_info {
 	{ "lobbybot", &lobbybot_init, FALSE, TRUE},
 /* *INDENT-ON* */
 };
+
 static int active_algorithm = 0;
 
 UIDriver Glib_Driver;

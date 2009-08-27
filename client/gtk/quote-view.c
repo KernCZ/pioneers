@@ -533,10 +533,10 @@ static gboolean check_valid_trade(GtkTreeModel * model,
 		if (quote->is_domestic) {
 			gtk_list_store_set(quoteview->store, iter,
 					   TRADE_COLUMN_POSSIBLE,
-					   quoteview->
-					   check_quote_func(quote) ?
-					   quoteview->true_pixbuf :
-					   quoteview->false_pixbuf, -1);
+					   quoteview->check_quote_func
+					   (quote) ? quoteview->
+					   true_pixbuf : quoteview->
+					   false_pixbuf, -1);
 		}
 	return FALSE;
 }
@@ -576,10 +576,10 @@ void quote_view_add_quote(QuoteView * qv, gint player_num,
 	pixbuf = player_create_icon(GTK_WIDGET(qv), player_num, TRUE);
 	gtk_list_store_set(qv->store, &iter, TRADE_COLUMN_PLAYER, pixbuf,
 			   TRADE_COLUMN_POSSIBLE,
-			   qv->check_quote_func(quote) ? qv->
-			   true_pixbuf : qv->false_pixbuf,
-			   TRADE_COLUMN_DESCRIPTION, quote_desc,
-			   TRADE_COLUMN_QUOTE, quote,
+			   qv->
+			   check_quote_func(quote) ? qv->true_pixbuf : qv->
+			   false_pixbuf, TRADE_COLUMN_DESCRIPTION,
+			   quote_desc, TRADE_COLUMN_QUOTE, quote,
 			   TRADE_COLUMN_PLAYER_NUM, player_num, -1);
 	g_object_unref(pixbuf);
 }

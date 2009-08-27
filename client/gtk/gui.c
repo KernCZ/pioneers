@@ -609,10 +609,12 @@ static GtkWidget *build_map_panel(void)
 				       GTK_POLICY_AUTOMATIC,
 				       GTK_POLICY_AUTOMATIC);
 	gtk_scrolled_window_set_shadow_type(GTK_SCROLLED_WINDOW
-					    (legend_page), GTK_SHADOW_NONE);
+					    (legend_page),
+					    GTK_SHADOW_NONE);
 	gtk_widget_show(legend_page);
 	gtk_scrolled_window_add_with_viewport(GTK_SCROLLED_WINDOW
-					      (legend_page), legend_content);
+					      (legend_page),
+					      legend_content);
 
 	gtk_notebook_insert_page(GTK_NOTEBOOK(map_notebook),
 				 legend_page, lbl, LEGEND_PAGE);
@@ -1246,8 +1248,8 @@ static void gui_toolbar_show_accelerators(gboolean show_accelerators)
 					gchar *label;
 
 					if (entries[j].accelerator == NULL
-					    || strlen(entries[j].
-						      accelerator)
+					    ||
+					    strlen(entries[j].accelerator)
 					    == 0)
 						label =
 						    g_strdup_printf("%s\n",
@@ -1258,8 +1260,8 @@ static void gui_toolbar_show_accelerators(gboolean show_accelerators)
 						GdkModifierType
 						    accelerator_mods;
 						gtk_accelerator_parse
-						    (entries[j].
-						     accelerator,
+						    (entries
+						     [j].accelerator,
 						     &accelerator_key,
 						     &accelerator_mods);
 						accelerator_text =
@@ -1278,8 +1280,7 @@ static void gui_toolbar_show_accelerators(gboolean show_accelerators)
 				} else {
 					gtk_tool_button_set_label(tbtn,
 								  _(entries
-								    [j].
-								    label));
+								    [j].label));
 				}
 				break;
 			}
@@ -1469,14 +1470,14 @@ static void register_pixmaps(void)
 								  128);
 				resource_pixmap[idx].gcb =
 				    gdk_gc_new(resource_pixmap[idx].b);
-				gdk_gc_set_function(resource_pixmap[idx].
-						    gcb, GDK_OR);
+				gdk_gc_set_function(resource_pixmap
+						    [idx].gcb, GDK_OR);
 				resource_pixmap[idx].gcp =
 				    gdk_gc_new(resource_pixmap[idx].p);
-				gdk_gc_set_clip_mask(resource_pixmap[idx].
-						     gcp,
-						     resource_pixmap[idx].
-						     b);
+				gdk_gc_set_clip_mask(resource_pixmap
+						     [idx].gcp,
+						     resource_pixmap
+						     [idx].b);
 				if (!resource_pixmap_res)
 					resource_pixmap_res =
 					    gdk_pixbuf_get_width(pixbuf);

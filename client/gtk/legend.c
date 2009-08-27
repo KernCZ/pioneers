@@ -65,9 +65,9 @@ static gint expose_legend_cb(GtkWidget * area,
 	gdk_gc_set_tile(legend_gc, guimap_terrain(terrain));
 
 	height = area->allocation.width / theme->scaledata[terrain].aspect;
-	p = gdk_pixbuf_scale_simple(theme->scaledata[terrain].
-				    native_image, area->allocation.width,
-				    height, GDK_INTERP_BILINEAR);
+	p = gdk_pixbuf_scale_simple(theme->scaledata[terrain].native_image,
+				    area->allocation.width, height,
+				    GDK_INTERP_BILINEAR);
 
 	/* Center the image in the available space */
 	gdk_draw_pixbuf(area->window, legend_gc, p,

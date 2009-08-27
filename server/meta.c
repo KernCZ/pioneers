@@ -94,15 +94,15 @@ void meta_send_details(Game * game)
 			   game->params->sevens_rule == 0 ? "normal" :
 			   game->params->sevens_rule ==
 			   1 ? "reroll first 2" : "reroll all",
-			   game->params->
-			   random_terrain ? "random" : "default",
+			   game->
+			   params->random_terrain ? "random" : "default",
 			   game->params->title);
 	} else {
 		net_printf(ses,
 			   "map=%s\n"
 			   "comment=%s\n",
-			   game->params->
-			   random_terrain ? "random" : "default",
+			   game->
+			   params->random_terrain ? "random" : "default",
 			   game->params->title);
 	}
 }

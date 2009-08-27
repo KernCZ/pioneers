@@ -476,22 +476,21 @@ static void meta_notify(NetEvent event, G_GNUC_UNUSED void *user_data,
 				g_assert(!strcmp(split_result[0], "goto"));
 				if (split_result[1]) {
 					if (metaserver_info.server)
-						g_free(metaserver_info.
-						       server);
+						g_free
+						    (metaserver_info.server);
 					metaserver_info.server =
 					    g_strdup(split_result[1]);
 					if (metaserver_info.port)
-						g_free(metaserver_info.
-						       port);
+						g_free
+						    (metaserver_info.port);
 					port = PIONEERS_DEFAULT_META_PORT;
 					if (split_result[2])
 						port = split_result[2];
 					metaserver_info.port =
 					    g_strdup(port);
-					query_meta_server(metaserver_info.
-							  server,
-							  metaserver_info.
-							  port);
+					query_meta_server
+					    (metaserver_info.server,
+					     metaserver_info.port);
 				} else {
 					log_message(MSG_ERROR,
 						    _(""
@@ -513,9 +512,8 @@ static void meta_notify(NetEvent event, G_GNUC_UNUSED void *user_data,
 					    atoi(p);
 					p += strspn(p, "0123456789");
 					if (*p == '.')
-						metaserver_info.
-						    version_minor =
-						    atoi(p + 1);
+						metaserver_info.version_minor
+						    = atoi(p + 1);
 				}
 			}
 			if (metaserver_info.version_major < 1) {

@@ -547,8 +547,8 @@ static void trade_update(void)
 	for (idx = 0; idx < G_N_ELEMENTS(we_supply_rows); idx++) {
 		if (resource_asset(idx) == 0) {
 			gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
-						     (we_supply_rows[idx].
-						      chk), FALSE);
+						     (we_supply_rows
+						      [idx].chk), FALSE);
 			we_supply_rows[idx].enabled = FALSE;
 		}
 		set_row_sensitive(we_supply_rows + idx);

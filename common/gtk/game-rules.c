@@ -78,15 +78,15 @@ static void game_rules_init(GameRules * gr)
 							      _("Normal"));
 	gr->radio_sevens[1] =
 	    gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON
-							(gr->
-							 radio_sevens[0]),
+							(gr->radio_sevens
+							 [0]),
 							/* Sevens rule: reroll on 1st 2 turns */
 							_(""
 							  "Reroll on 1st 2 turns"));
 	gr->radio_sevens[2] =
 	    gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON
-							(gr->
-							 radio_sevens[0]),
+							(gr->radio_sevens
+							 [0]),
 							/* Sevens rule: reroll all 7s */
 							_(""
 							  "Reroll all 7s"));
@@ -249,6 +249,5 @@ gboolean game_rules_get_victory_at_end_of_turn(GameRules * gr)
 {
 	return
 	    gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON
-					 (gr->
-					  check_victory_at_end_of_turn));
+					 (gr->check_victory_at_end_of_turn));
 }

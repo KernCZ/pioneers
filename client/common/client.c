@@ -110,132 +110,168 @@ static void waiting_for_network(gboolean is_waiting)
 static void dummy_init(G_GNUC_UNUSED int argc, G_GNUC_UNUSED char **argv)
 {;
 }
+
 static void dummy_network_status(G_GNUC_UNUSED const gchar * description)
 {;
 }
+
 static void dummy_instructions(G_GNUC_UNUSED const gchar * message)
 {;
 }
+
 static void dummy_network_wait(G_GNUC_UNUSED gboolean is_waiting)
 {;
 }
+
 static void dummy_offline(void)
 {;
 }
+
 static void dummy_discard(void)
 {;
 }
+
 static void dummy_discard_add(G_GNUC_UNUSED gint player_num,
 			      G_GNUC_UNUSED gint discard_num)
 {;
 }
+
 static void dummy_discard_remove(G_GNUC_UNUSED gint player_num)
 {;
 }
+
 static void dummy_discard_done(void)
 {;
 }
+
 static void dummy_gold(void)
 {;
 }
+
 static void dummy_gold_add(G_GNUC_UNUSED gint player_num,
 			   G_GNUC_UNUSED gint gold_num)
 {;
 }
+
 static void dummy_gold_remove(G_GNUC_UNUSED gint player_num,
 			      G_GNUC_UNUSED gint * resources)
 {;
 }
+
 static void dummy_gold_choose(G_GNUC_UNUSED gint gold_num,
 			      G_GNUC_UNUSED const gint * bank)
 {;
 }
+
 static void dummy_gold_done(void)
 {;
 }
+
 static void dummy_game_over(G_GNUC_UNUSED gint player_num,
 			    G_GNUC_UNUSED gint points)
 {;
 }
+
 static void dummy_init_game(void)
 {;
 }
+
 static void dummy_start_game(void)
 {;
 }
+
 static void dummy_setup(G_GNUC_UNUSED unsigned num_settlements,
 			G_GNUC_UNUSED unsigned num_roads)
 {;
 }
+
 static void dummy_quote(G_GNUC_UNUSED gint player_num,
 			G_GNUC_UNUSED gint * they_supply,
 			G_GNUC_UNUSED gint * they_receive)
 {;
 }
+
 static void dummy_roadbuilding(G_GNUC_UNUSED gint num_roads)
 {;
 }
+
 static void dummy_monopoly(void)
 {;
 }
+
 static void dummy_plenty(G_GNUC_UNUSED const gint * bank)
 {;
 }
+
 static void dummy_turn(void)
 {;
 }
+
 static void dummy_player_turn(G_GNUC_UNUSED gint player_num)
 {;
 }
+
 static void dummy_trade(void)
 {;
 }
+
 static void dummy_trade_player_end(G_GNUC_UNUSED gint player_num)
 {;
 }
+
 static void dummy_trade_add_quote(G_GNUC_UNUSED gint player_num,
 				  G_GNUC_UNUSED gint quote_num,
 				  G_GNUC_UNUSED const gint * they_supply,
 				  G_GNUC_UNUSED const gint * they_receive)
 {;
 }
+
 static void dummy_trade_remove_quote(G_GNUC_UNUSED gint player_num,
 				     G_GNUC_UNUSED gint quote_num)
 {;
 }
+
 static void dummy_trade_domestic(G_GNUC_UNUSED gint partner_num,
 				 G_GNUC_UNUSED gint quote_num,
 				 G_GNUC_UNUSED const gint * we_supply,
 				 G_GNUC_UNUSED const gint * we_receive)
 {;
 }
+
 static void dummy_trade_maritime(G_GNUC_UNUSED gint ratio,
 				 G_GNUC_UNUSED Resource we_supply,
 				 G_GNUC_UNUSED Resource we_receive)
 {;
 }
+
 static void dummy_quote_player_end(G_GNUC_UNUSED gint player_num)
 {;
 }
+
 static void dummy_quote_add(G_GNUC_UNUSED gint player_num,
 			    G_GNUC_UNUSED gint quote_num,
 			    G_GNUC_UNUSED const gint * they_supply,
 			    G_GNUC_UNUSED const gint * they_receive)
 {;
 }
+
 static void dummy_quote_remove(G_GNUC_UNUSED gint player_num,
 			       G_GNUC_UNUSED gint quote_num)
 {;
 }
+
 static void dummy_quote_start(void)
 {;
 }
+
 static void dummy_quote_end(void)
 {;
 }
+
 static void dummy_quote_monitor(void)
 {;
 }
+
 static void dummy_quote_trade(G_GNUC_UNUSED gint player_num,
 			      G_GNUC_UNUSED gint partner_num,
 			      G_GNUC_UNUSED gint quote_num,
@@ -243,104 +279,131 @@ static void dummy_quote_trade(G_GNUC_UNUSED gint player_num,
 			      G_GNUC_UNUSED const gint * they_receive)
 {;
 }
+
 static void dummy_rolled_dice(G_GNUC_UNUSED gint die1,
 			      G_GNUC_UNUSED gint die2,
 			      G_GNUC_UNUSED gint player_num)
 {;
 }
+
 static void dummy_draw_edge(G_GNUC_UNUSED Edge * edge)
 {;
 }
+
 static void dummy_draw_node(G_GNUC_UNUSED Node * node)
 {;
 }
+
 static void dummy_bought_develop(G_GNUC_UNUSED DevelType type)
 {;
 }
+
 static void dummy_played_develop(G_GNUC_UNUSED gint player_num,
 				 G_GNUC_UNUSED gint card_idx,
 				 G_GNUC_UNUSED DevelType type)
 {;
 }
+
 static void dummy_resource_change(G_GNUC_UNUSED Resource type,
 				  G_GNUC_UNUSED gint num)
 {;
 }
+
 static void dummy_draw_hex(G_GNUC_UNUSED Hex * hex)
 {;
 }
+
 static void dummy_update_stock(void)
 {;
 }
+
 static void dummy_robber(void)
 {;
 }
+
 static void dummy_robber_moved(G_GNUC_UNUSED Hex * old,
 			       G_GNUC_UNUSED Hex * new)
 {
 };
+
 static void dummy_steal_building(void)
 {;
 }
+
 static void dummy_steal_ship(void)
 {;
 }
+
 static void dummy_robber_done(void)
 {;
 }
+
 static void dummy_player_robbed(G_GNUC_UNUSED gint robber_num,
 				G_GNUC_UNUSED gint victim_num,
 				G_GNUC_UNUSED Resource resource)
 {;
 }
+
 static void dummy_get_rolled_resources(G_GNUC_UNUSED gint player_num,
 				       G_GNUC_UNUSED const gint *
 				       resources,
 				       G_GNUC_UNUSED const gint * wanted)
 {;
 }
+
 static void dummy_new_statistics(G_GNUC_UNUSED gint player_num,
 				 G_GNUC_UNUSED StatisticType type,
 				 G_GNUC_UNUSED gint num)
 {;
 }
+
 static void dummy_new_points(G_GNUC_UNUSED gint player_num,
 			     G_GNUC_UNUSED Points * points,
 			     G_GNUC_UNUSED gboolean added)
 {
 }
+
 static void dummy_viewer_name(G_GNUC_UNUSED gint viewer_num,
 			      G_GNUC_UNUSED const gchar * name)
 {;
 }
+
 static void dummy_player_name(G_GNUC_UNUSED gint player_num,
 			      G_GNUC_UNUSED const gchar * name)
 {;
 }
+
 static void dummy_player_style(G_GNUC_UNUSED gint player_num,
 			       G_GNUC_UNUSED const gchar * style)
 {;
 }
+
 static void dummy_player_quit(G_GNUC_UNUSED gint player_num)
 {;
 }
+
 static void dummy_viewer_quit(G_GNUC_UNUSED gint player_num)
 {;
 }
+
 static void dummy_incoming_chat(G_GNUC_UNUSED gint player_num,
 				G_GNUC_UNUSED const gchar * chat)
 {;
 }
+
 static void dummy_new_bank(G_GNUC_UNUSED const gint * new_bank)
 {;
 }
+
 static void dummy_error(G_GNUC_UNUSED const gchar * message)
 {;
 }
+
 static Map *dummy_get_map(void)
 {
 	return NULL;
 }
+
 static void dummy_set_map(G_GNUC_UNUSED Map * map)
 {;
 }
@@ -1472,8 +1535,8 @@ static gboolean mode_robber_steal_building(StateMachine * sm, gint event)
 	switch (event) {
 	case SM_ENTER:
 		callback_mode = MODE_ROB;
-		callbacks.
-		    instructions(_("Select the building to steal from."));
+		callbacks.instructions(_
+				       ("Select the building to steal from."));
 		callbacks.steal_building();
 		break;
 	case SM_RECV:
@@ -1494,8 +1557,8 @@ static gboolean mode_robber_steal_ship(StateMachine * sm, gint event)
 	switch (event) {
 	case SM_ENTER:
 		callback_mode = MODE_ROB;
-		callbacks.
-		    instructions(_("Select the ship to steal from."));
+		callbacks.instructions(_
+				       ("Select the ship to steal from."));
 		callbacks.steal_ship();
 		break;
 	case SM_RECV:
@@ -1659,8 +1722,8 @@ static gboolean mode_road_building(StateMachine * sm, gint event)
 		/* Now determine the amount of segments left to play */
 		build_amount = MIN(build_amount, 2 - build_count_edges());
 		callbacks.roadbuilding(build_amount);
-		callbacks.
-		    instructions(road_building_message(build_amount));
+		callbacks.instructions(road_building_message
+				       (build_amount));
 		break;
 	case SM_RECV:
 		if (check_other_players(sm))
