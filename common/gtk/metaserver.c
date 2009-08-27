@@ -25,20 +25,9 @@
 #include <string.h>
 #include "network.h"
 #include "config-gnome.h"
-
-#include "metaserver.h"
-/*
-#include "game.h"
-#include <gtk/gtksignal.h>
-#include <gtk/gtkmenu.h>
-#include <gtk/gtkmenuitem.h>
-#include <gtk/gtklabel.h>
-#include <string.h>
-#include "guimap.h"
 #include "gtkbugs.h"
 
-#include "select-game.h"
-*/
+#include "metaserver.h"
 
 static void metaserver_class_init(MetaServerClass * klass);
 static void metaserver_init(MetaServer * ms);
