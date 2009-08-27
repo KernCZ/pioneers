@@ -571,6 +571,7 @@ static GtkWidget *splash_build_page(void)
 static GtkWidget *build_map_panel(void)
 {
 	GtkWidget *lbl;
+	GtkWidget *legend_content;
 
 	map_notebook = gtk_notebook_new();
 	gtk_notebook_set_tab_pos(GTK_NOTEBOOK(map_notebook), GTK_POS_TOP);
@@ -601,7 +602,18 @@ static GtkWidget *build_map_panel(void)
 	/* Tab page name */
 	lbl = gtk_label_new(_("Legend"));
 	gtk_widget_show(lbl);
-	legend_page = legend_create_content();
+	legend_content = legend_create_content();
+
+	legend_page = gtk_scrolled_window_new(NULL, NULL);
+	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(legend_page),
+				       GTK_POLICY_AUTOMATIC,
+				       GTK_POLICY_AUTOMATIC);
+	gtk_scrolled_window_set_shadow_type(GTK_SCROLLED_WINDOW
+					    (legend_page), GTK_SHADOW_NONE);
+	gtk_widget_show(legend_page);
+	gtk_scrolled_window_add_with_viewport(GTK_SCROLLED_WINDOW
+					      (legend_page), legend_content);
+
 	gtk_notebook_insert_page(GTK_NOTEBOOK(map_notebook),
 				 legend_page, lbl, LEGEND_PAGE);
 	if (!legend_page_enabled)
