@@ -372,8 +372,8 @@ static void change_height(G_GNUC_UNUSED GtkWidget * menu,
 	if (GPOINTER_TO_INT(user_data) < 0) {
 		gint x;
 		for (x = 0; x < gmap->map->x_size; x++)
-			clear_hex(gmap->
-				  map->grid[gmap->map->y_size - 1][x]);
+			clear_hex(gmap->map->
+				  grid[gmap->map->y_size - 1][x]);
 	}
 	post_change(&gmap->map->y_size, vresize_buttons,
 		    GPOINTER_TO_INT(user_data));

@@ -1280,7 +1280,8 @@ static void gui_toolbar_show_accelerators(gboolean show_accelerators)
 				} else {
 					gtk_tool_button_set_label(tbtn,
 								  _(entries
-								    [j].label));
+								    [j].
+								    label));
 				}
 				break;
 			}

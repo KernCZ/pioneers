@@ -208,7 +208,8 @@ static GtkWidget *settings_create_content(void)
 			gchar *old = island_bonus;
 			gchar *number = g_strdup_printf("%d",
 							g_array_index
-							(game_params->island_discovery_bonus,
+							(game_params->
+							 island_discovery_bonus,
 							 gint, idx));
 			island_bonus =
 			    g_strconcat(island_bonus, ", ", number, NULL);

@@ -245,7 +245,8 @@ void params_write_lines(GameParams * params, gboolean write_secrets,
 			buff = g_strdup_printf("%s %d", param->name,
 					       G_STRUCT_MEMBER(gint,
 							       params,
-							       param->offset));
+							       param->
+							       offset));
 			func(user_data, buff);
 			g_free(buff);
 			break;
@@ -260,7 +261,8 @@ void params_write_lines(GameParams * params, gboolean write_secrets,
 			    format_int_list(param->name,
 					    G_STRUCT_MEMBER(GArray *,
 							    params,
-							    param->offset));
+							    param->
+							    offset));
 			/* Don't send empty intlists */
 			if (buff != NULL) {
 				func(user_data, buff);
@@ -496,7 +498,8 @@ GameParams *params_copy(const GameParams * params)
 			    format_int_list("",
 					    G_STRUCT_MEMBER(GArray *,
 							    &nonconst,
-							    param->offset));
+							    param->
+							    offset));
 			if (buff != NULL) {
 				G_STRUCT_MEMBER(GArray *, copy,
 						param->offset) =
@@ -616,8 +619,9 @@ WinnableState params_check_winnable_state(const GameParams * params,
 			    g_array_index(params->island_discovery_bonus,
 					  gint,
 					  MIN
-					  (params->island_discovery_bonus->
-					   len - 1, i));
+					  (params->
+					   island_discovery_bonus->len - 1,
+					   i));
 			/* The island score can be negative */
 			if (max_island < total_island)
 				max_island = total_island;

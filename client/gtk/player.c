@@ -289,7 +289,8 @@ void frontend_new_statistics(gint player_num, StatisticType type,
 			if (statistics[type].plural != NULL)
 				desc = g_strdup_printf("%d %s", value,
 						       gettext(statistics
-							       [type].singular));
+							       [type].
+							       singular));
 			else
 				desc = g_strdup(gettext
 						(statistics

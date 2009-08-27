@@ -234,12 +234,14 @@ void admin_run_command(Session * admin_session, const gchar * line)
 					net_printf(admin_session,
 						   "INFO %s argument\n",
 						   admin_commands
-						   [command_number].command);
+						   [command_number].
+						   command);
 				} else {
 					net_printf(admin_session,
 						   "INFO %s\n",
 						   admin_commands
-						   [command_number].command);
+						   [command_number].
+						   command);
 				}
 			}
 			break;

@@ -317,16 +317,18 @@ static gboolean theme_initialize(MapTheme * t, const gchar * subdir)
 						NULL);
 		else
 			file = g_build_filename(THEMEDIR,
-						default_theme.terrain_tile_names
-						[i], NULL);
+						default_theme.
+						terrain_tile_names[i],
+						NULL);
 		if (!theme_load_pixmap
 		    (file, t->name, &pixbuf, &(t->terrain_tiles[i]),
 		     NULL)) {
 			/* Fall back to default theme images */
 			g_free(file);
 			file = g_build_filename(THEMEDIR,
-						default_theme.terrain_tile_names
-						[i], NULL);
+						default_theme.
+						terrain_tile_names[i],
+						NULL);
 			if (!theme_load_pixmap
 			    (file, t->name, &pixbuf,
 			     &(t->terrain_tiles[i]), NULL)) {
@@ -377,16 +379,20 @@ static gboolean theme_initialize(MapTheme * t, const gchar * subdir)
 				/* Fall back on the default port tile */
 				g_free(fname);
 				fname = g_build_filename(THEMEDIR,
-							 default_theme.port_tile_names
+							 default_theme.
+							 port_tile_names
 							 [i], NULL);
 				if (theme_load_pixmap
 				    (fname, t->name, &pixbuf,
 				     &(t->port_tiles[i]), NULL)) {
-					gdk_drawable_get_size(t->port_tiles
+					gdk_drawable_get_size(t->
+							      port_tiles
 							      [i],
-							      &t->port_tiles_width
+							      &t->
+							      port_tiles_width
 							      [i],
-							      &t->port_tiles_height
+							      &t->
+							      port_tiles_height
 							      [i]);
 					g_object_unref(pixbuf);
 				}
@@ -464,9 +470,9 @@ void theme_rescale(int new_width)
 		/* rescale the pixbuf */
 		gdk_pixbuf_unref(current_theme->scaledata[i].image);
 		current_theme->scaledata[i].image =
-		    gdk_pixbuf_scale_simple(current_theme->
-					    scaledata[i].native_image,
-					    new_width, new_height,
+		    gdk_pixbuf_scale_simple(current_theme->scaledata[i].
+					    native_image, new_width,
+					    new_height,
 					    GDK_INTERP_BILINEAR);
 
 		/* render a new pixmap */
@@ -474,8 +480,9 @@ void theme_rescale(int new_width)
 		gdk_pixbuf_render_pixmap_and_mask(current_theme->scaledata
 						  [i].image,
 						  &
-						  (current_theme->terrain_tiles
-						   [i]), NULL, 1);
+						  (current_theme->
+						   terrain_tiles[i]), NULL,
+						  1);
 	}
 }
 

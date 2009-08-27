@@ -119,7 +119,8 @@ void guimap_delete(GuiMap * gmap)
 
 		if (gmap->initial_font_size != -1) {
 			pango_font_description_set_size(pfd,
-							gmap->initial_font_size);
+							gmap->
+							initial_font_size);
 		}
 
 		g_object_unref(gmap->layout);
@@ -727,8 +728,8 @@ static gboolean display_hex(const Hex * hex, gpointer closure)
 		} else if (!theme->colors[TC_PORT_BG].transparent) {
 			gdk_gc_set_fill(gmap->gc, GDK_SOLID);
 			gdk_gc_set_foreground(gmap->gc,
-					      &theme->
-					      colors[TC_PORT_BG].color);
+					      &theme->colors[TC_PORT_BG].
+					      color);
 			typeind = FALSE;
 			drawit = TRUE;
 		} else {
@@ -750,8 +751,8 @@ static gboolean display_hex(const Hex * hex, gpointer closure)
 						   GDK_CAP_BUTT,
 						   GDK_JOIN_MITER);
 			gdk_gc_set_foreground(gmap->gc,
-					      &theme->
-					      colors[TC_PORT_BD].color);
+					      &theme->colors[TC_PORT_BD].
+					      color);
 			gdk_draw_arc(gmap->pixmap, gmap->gc, FALSE,
 				     x_offset - gmap->chit_radius,
 				     y_offset - gmap->chit_radius,
@@ -799,8 +800,8 @@ static gboolean display_hex(const Hex * hex, gpointer closure)
 			pango_layout_get_pixel_size(gmap->layout, &width,
 						    &height);
 			gdk_gc_set_foreground(gmap->gc,
-					      &theme->
-					      colors[TC_PORT_FG].color);
+					      &theme->colors[TC_PORT_FG].
+					      color);
 			gdk_draw_layout(gmap->pixmap, gmap->gc,
 					x_offset - width / 2,
 					y_offset - height / 2,
@@ -884,14 +885,14 @@ static gboolean display_hex(const Hex * hex, gpointer closure)
 					   GDK_CAP_BUTT, GDK_JOIN_MITER);
 		if (!theme->colors[TC_ROBBER_FG].transparent) {
 			gdk_gc_set_foreground(gmap->gc,
-					      &theme->
-					      colors[TC_ROBBER_FG].color);
+					      &theme->colors[TC_ROBBER_FG].
+					      color);
 			poly_draw(gmap->pixmap, gmap->gc, TRUE, &poly);
 		}
 		if (!theme->colors[TC_ROBBER_BD].transparent) {
 			gdk_gc_set_foreground(gmap->gc,
-					      &theme->
-					      colors[TC_ROBBER_BD].color);
+					      &theme->colors[TC_ROBBER_BD].
+					      color);
 			poly_draw(gmap->pixmap, gmap->gc, FALSE, &poly);
 		}
 	}
@@ -904,14 +905,14 @@ static gboolean display_hex(const Hex * hex, gpointer closure)
 					   GDK_CAP_BUTT, GDK_JOIN_MITER);
 		if (!theme->colors[TC_ROBBER_FG].transparent) {
 			gdk_gc_set_foreground(gmap->gc,
-					      &theme->
-					      colors[TC_ROBBER_FG].color);
+					      &theme->colors[TC_ROBBER_FG].
+					      color);
 			poly_draw(gmap->pixmap, gmap->gc, TRUE, &poly);
 		}
 		if (!theme->colors[TC_ROBBER_BD].transparent) {
 			gdk_gc_set_foreground(gmap->gc,
-					      &theme->
-					      colors[TC_ROBBER_BD].color);
+					      &theme->colors[TC_ROBBER_BD].
+					      color);
 			poly_draw(gmap->pixmap, gmap->gc, FALSE, &poly);
 		}
 	}
@@ -1809,7 +1810,8 @@ void guimap_cursor_move(GuiMap * gmap, gint x, gint y,
 		if (element->pointer) {
 			can_build_settlement = (settlementM
 						&& settlementF(*element,
-							       gmap->player_num,
+							       gmap->
+							       player_num,
 							       dummyElement));
 			can_build_city = (cityM
 					  && cityF(*element,
@@ -1817,7 +1819,8 @@ void guimap_cursor_move(GuiMap * gmap, gint x, gint y,
 						   dummyElement));
 			can_build_city_wall = (cityWallM
 					       && cityWallF(*element,
-							    gmap->player_num,
+							    gmap->
+							    player_num,
 							    dummyElement));
 			can_build_node = can_build_settlement
 			    || can_build_city || can_build_city_wall;

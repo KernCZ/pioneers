@@ -249,5 +249,6 @@ gboolean game_rules_get_victory_at_end_of_turn(GameRules * gr)
 {
 	return
 	    gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON
-					 (gr->check_victory_at_end_of_turn));
+					 (gr->
+					  check_victory_at_end_of_turn));
 }

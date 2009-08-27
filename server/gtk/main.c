@@ -175,7 +175,8 @@ static void update_game_settings(const GameParams * params)
 	game_settings_set_victory_points(GAMESETTINGS(game_settings),
 					 params->victory_points);
 	game_rules_set_victory_at_end_of_turn(GAMERULES(game_rules),
-					      params->check_victory_at_end_of_turn);
+					      params->
+					      check_victory_at_end_of_turn);
 	game_rules_set_random_terrain(GAMERULES(game_rules),
 				      params->random_terrain);
 	game_rules_set_sevens_rule(GAMERULES(game_rules),
@@ -297,7 +298,8 @@ static void start_clicked_cb(G_GNUC_UNUSED GtkButton * start_btn,
 			config_set_int("game/victory-points",
 				       params->victory_points);
 			config_set_int("game/check-victory-at-end-of-turn",
-				       params->check_victory_at_end_of_turn);
+				       params->
+				       check_victory_at_end_of_turn);
 			config_set_int("game/sevens-rule",
 				       params->sevens_rule);
 			config_set_int("game/use-pirate",

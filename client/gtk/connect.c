@@ -477,7 +477,8 @@ static void meta_notify(NetEvent event, G_GNUC_UNUSED void *user_data,
 				if (split_result[1]) {
 					if (metaserver_info.server)
 						g_free
-						    (metaserver_info.server);
+						    (metaserver_info.
+						     server);
 					metaserver_info.server =
 					    g_strdup(split_result[1]);
 					if (metaserver_info.port)
@@ -512,8 +513,9 @@ static void meta_notify(NetEvent event, G_GNUC_UNUSED void *user_data,
 					    atoi(p);
 					p += strspn(p, "0123456789");
 					if (*p == '.')
-						metaserver_info.version_minor
-						    = atoi(p + 1);
+						metaserver_info.
+						    version_minor =
+						    atoi(p + 1);
 				}
 			}
 			if (metaserver_info.version_major < 1) {
