@@ -12,6 +12,7 @@
 	client/common/client.c, client/ai/greedy.c, client/ai/ai.c:
 	make reindent
 	* common/gtk/metaserver.c: Reenable support for Gtk 2.6.
+	* configure.ac, pioneers.nsi.in: Fixes for Windows.
 
 2009-07-08  Steve Langasek <vorlon@debian.org>
 	* server/main.c: If no game file is specified and there are more

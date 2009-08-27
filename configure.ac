@@ -317,35 +317,6 @@ if test "$pioneers_have_non_blocking_sockets" = "no"; then
 fi
 AC_DEFINE_UNQUOTED(GETSOCKOPT_ARG3, $getsockopt_arg3, [The type of the third argument of getsockopt])
 
-if test $pioneers_is_mingw_port = yes; then
-	# The check for WSACleanup in ws2_32 needs an include of ws2tcpip.h
-	# This is not possible with the AC_CHECK_LIB macro
-	# AC_CHECK_LIB(ws2_32, WSACleanup)
-	# Just add ws2_32 to the list of libraries
-	AC_SUBST(LIBS, "-lws2_32 $LIBS")
-	AC_SUBST(AM_CFLAGS, "-mms-bitfields $AM_CFLAGS")
-	AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -DWIN32_LEAN_AND_MEAN")
-	# No console window for the graphical applications
-	AC_SUBST(GTK2_LIBS, "$GTK2_LIBS -mwindows")
-	# Don't use bin, lib and share subdirectories
-	datadir='${prefix}'
-	bindir='${prefix}'
-	libdir='${prefix}'
-	pioneers_datadir=.
-	pioneers_themedir=$datadir/themes
-	pioneers_themedir_embed=themes
-	pioneers_localedir=locale
-else
-	pioneers_datadir=$datadir
-	pioneers_themedir=$datadir/games/pioneers/themes
-	pioneers_themedir_embed=$pioneers_themedir
-	pioneers_localedir=$datadir/locale
-fi
-AC_SUBST(pioneers_datadir)
-AC_SUBST(pioneers_themedir)
-AC_SUBST(pioneers_themedir_embed)
-AC_SUBST(pioneers_localedir)
-
 # Functions needed for the hack to override the language
 AC_CHECK_FUNCS([setlocale])
 
@@ -379,6 +350,36 @@ GETTEXT_PACKAGE=pioneers
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE", [The gettext package name])
 AM_GLIB_GNU_GETTEXT
+
+if test $pioneers_is_mingw_port = yes; then
+	# The check for WSACleanup in ws2_32 needs an include of ws2tcpip.h
+	# This is not possible with the AC_CHECK_LIB macro
+	# AC_CHECK_LIB(ws2_32, WSACleanup)
+	# Just add ws2_32 to the list of libraries
+	AC_SUBST(LIBS, "-lws2_32 $LIBS")
+	AC_SUBST(AM_CFLAGS, "-mms-bitfields $AM_CFLAGS")
+	AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -DWIN32_LEAN_AND_MEAN")
+	# No console window for the graphical applications
+	AC_SUBST(GTK2_LIBS, "$GTK2_LIBS -mwindows")
+	# Don't use bin, lib and share subdirectories
+	datadir='${prefix}'
+	bindir='${prefix}'
+	libdir='${prefix}'
+	pioneers_datadir=.
+	pioneers_themedir=$datadir/themes
+	pioneers_themedir_embed=themes
+	pioneers_localedir=locale
+	DATADIRNAME=.
+else
+	pioneers_datadir=$datadir
+	pioneers_themedir=$datadir/games/pioneers/themes
+	pioneers_themedir_embed=$pioneers_themedir
+	pioneers_localedir=$datadir/locale
+fi
+AC_SUBST(pioneers_datadir)
+AC_SUBST(pioneers_themedir)
+AC_SUBST(pioneers_themedir_embed)
+AC_SUBST(pioneers_localedir)
 
 # All checks are completed.
 # Determine which executables cannot be built
