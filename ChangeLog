@@ -11,6 +11,7 @@
 	client/gtk/quote-view.h, client/gtk/settingscreen.c, client/gtk/chat.c,
 	client/gtk/gui.c, client/gtk/connect.c: Prepare for GTK3 by
 	implementing more stricy deprecation rules.
+	* po/fr.po: Fixed a typo (thanks to Olivier Berger for reporting)
 
 2009-08-27  Roland <rclobus@bigfoot.com>
 	* client/gtk/gui.c, client/gtk/legend.c: Show legend dialog without

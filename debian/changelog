@@ -5,6 +5,7 @@ pioneers (0.12.2-6unreleased) unstable; urgency=low
   * Add Finnish translation. (closes: #535213)
   * Add Spanish translation. (closes: #520210)
   * Add Swedish translation. (closes: #506597)
+  * Fixed a typo in the About dialog for the Frech translation (closes: 510611)
 
  -- Roland Clobus <rclobus@bigfoot.com>  Thu, 27 Aug 2009 18:50:00 +0200
 

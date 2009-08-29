@@ -2141,7 +2141,7 @@ msgid ""
 "Settlers of Catan board game.\n"
 msgstr ""
 "Pioneers est basé sur l'excellent\n"
-"jeu de plateau 'Les colons de Catan'.\n"
+"jeu de plateau 'Les colons de Catane'.\n"
 
 #: ../common/gtk/aboutbox.c:78
 msgid "Version:"
