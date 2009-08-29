@@ -78,7 +78,7 @@ GtkWidget *chat_build_panel(void)
 	g_signal_connect(G_OBJECT(chat_entry), "activate",
 			 G_CALLBACK(chat_cb), NULL);
 	gtk_widget_show(chat_entry);
-	gtk_box_pack_start_defaults(GTK_BOX(hbox), chat_entry);
+	gtk_box_pack_start(GTK_BOX(hbox), chat_entry, TRUE, TRUE, 0);
 
 	completion = gtk_entry_completion_new();
 	gtk_entry_set_completion(GTK_ENTRY(chat_entry), completion);

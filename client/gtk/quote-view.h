@@ -22,8 +22,7 @@
 #ifndef __quoteview_h
 #define __quoteview_h
 
-#include <gtk/gtkscrolledwindow.h>
-#include <gtk/gtkliststore.h>
+#include <gtk/gtk.h>
 #include "map.h"		/* For NO_RESOURCE */
 #include "quoteinfo.h"
 

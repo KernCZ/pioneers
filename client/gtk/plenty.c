@@ -62,8 +62,7 @@ void plenty_create_dlg(const gint * bank)
 						 GTK_STOCK_OK,
 						 GTK_RESPONSE_OK, NULL);
 	g_signal_connect(GTK_OBJECT(plenty.dlg), "destroy",
-			 GTK_SIGNAL_FUNC(gtk_widget_destroyed),
-			 &plenty.dlg);
+			 G_CALLBACK(gtk_widget_destroyed), &plenty.dlg);
 	gtk_widget_realize(plenty.dlg);
 	/* Disable close */
 	gdk_window_set_functions(plenty.dlg->window,

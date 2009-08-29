@@ -4,7 +4,7 @@
 
 #include <glib.h>
 #include <glib-object.h>
-#include <gtk/gtktable.h>
+#include <gtk/gtk.h>
 
 G_BEGIN_DECLS
 #define GAMERESOURCES_TYPE            (game_resources_get_type ())

@@ -386,8 +386,7 @@ GtkWidget *settings_create_dlg(void)
 					GTK_STOCK_CLOSE,
 					GTK_RESPONSE_CLOSE, NULL);
 	g_signal_connect(GTK_OBJECT(settings_dlg), "destroy",
-			 GTK_SIGNAL_FUNC(gtk_widget_destroyed),
-			 &settings_dlg);
+			 G_CALLBACK(gtk_widget_destroyed), &settings_dlg);
 
 	dlg_vbox = GTK_DIALOG(settings_dlg)->vbox;
 	gtk_widget_show(dlg_vbox);

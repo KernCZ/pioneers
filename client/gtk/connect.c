@@ -710,7 +710,7 @@ static GtkWidget *build_create_interface(void)
 				       "\tThe metaserver does not send information about the games.\n"
 				       "\tPlease set appropriate values yourself."));
 		gtk_widget_show(label);
-		gtk_box_pack_start_defaults(GTK_BOX(vbox), label);
+		gtk_box_pack_start(GTK_BOX(vbox), label, TRUE, TRUE, 0);
 	}
 
 	game_settings = game_settings_new(FALSE);
@@ -998,7 +998,7 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
 	gtk_scrolled_window_set_shadow_type(GTK_SCROLLED_WINDOW
 					    (scroll_win), GTK_SHADOW_IN);
 	gtk_widget_show(scroll_win);
-	gtk_box_pack_start_defaults(GTK_BOX(vbox), scroll_win);
+	gtk_box_pack_start(GTK_BOX(vbox), scroll_win, TRUE, TRUE, 0);
 
 	meta_games_model = gtk_list_store_new(META_N_COLUMNS,
 					      G_TYPE_STRING, G_TYPE_STRING,
@@ -1234,7 +1234,7 @@ void connect_create_dlg(void)
 
 	btn = gtk_button_new_with_label(_("Join public game"));
 	gtk_widget_show(btn);
-	gtk_box_pack_start_defaults(GTK_BOX(hbox), btn);
+	gtk_box_pack_start(GTK_BOX(hbox), btn, TRUE, TRUE, 0);
 	g_signal_connect(G_OBJECT(btn), "clicked",
 			 G_CALLBACK(create_meta_dlg), app_window);
 	gtk_widget_set_tooltip_text(btn, _("Join a public game"));
@@ -1243,7 +1243,7 @@ void connect_create_dlg(void)
 
 	btn = gtk_button_new_with_label(_("Create game"));
 	gtk_widget_show(btn);
-	gtk_box_pack_start_defaults(GTK_BOX(hbox), btn);
+	gtk_box_pack_start(GTK_BOX(hbox), btn, TRUE, TRUE, 0);
 	gtk_widget_set_tooltip_text(btn, _("Create a game"));
 	g_signal_connect(G_OBJECT(btn), "clicked",
 			 G_CALLBACK(launch_server_gtk), app_window);
@@ -1256,7 +1256,7 @@ void connect_create_dlg(void)
 
 	btn = gtk_button_new_with_label(_("Join private game"));
 	gtk_widget_show(btn);
-	gtk_box_pack_start_defaults(GTK_BOX(hbox), btn);
+	gtk_box_pack_start(GTK_BOX(hbox), btn, TRUE, TRUE, 0);
 	gtk_widget_set_tooltip_text(btn, _("Join a private game"));
 	g_signal_connect(G_OBJECT(btn), "clicked",
 			 G_CALLBACK(connect_private_dialog), app_window);

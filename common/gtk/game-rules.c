@@ -1,11 +1,6 @@
 #include "config.h"
 #include "game.h"
-#include <gtk/gtksignal.h>
-#include <gtk/gtktable.h>
-#include <gtk/gtklabel.h>
-#include <gtk/gtkcheckbutton.h>
-#include <gtk/gtkradiobutton.h>
-#include <gtk/gtkvbox.h>
+#include <gtk/gtk.h>
 #include <string.h>
 #include <glib.h>
 
@@ -107,8 +102,8 @@ static void game_rules_init(GameRules * gr)
 
 	for (idx = 0; idx < 3; ++idx) {
 		gtk_widget_show(gr->radio_sevens[idx]);
-		gtk_box_pack_start_defaults(GTK_BOX(vbox_sevens),
-					    gr->radio_sevens[idx]);
+		gtk_box_pack_start(GTK_BOX(vbox_sevens),
+				   gr->radio_sevens[idx], TRUE, TRUE, 0);
 	}
 	gtk_table_attach(GTK_TABLE(gr), vbox_sevens, 1, 2, row, row + 1,
 			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);

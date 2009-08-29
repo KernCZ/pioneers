@@ -20,8 +20,7 @@
 
 #include "config.h"
 #include <glib/gi18n.h>
-#include <gtk/gtktable.h>
-#include <gtk/gtkcombobox.h>
+#include <gtk/gtk.h>
 #include <string.h>
 #include "network.h"
 #include "config-gnome.h"

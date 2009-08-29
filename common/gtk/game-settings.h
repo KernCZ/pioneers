@@ -12,7 +12,7 @@
 
 #include <glib.h>
 #include <glib-object.h>
-#include <gtk/gtktable.h>
+#include <gtk/gtk.h>
 
 G_BEGIN_DECLS
 #define GAMESETTINGS_TYPE            (game_settings_get_type ())

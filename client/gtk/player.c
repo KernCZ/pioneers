@@ -606,7 +606,7 @@ GtkWidget *player_build_summary(void)
 	gtk_scrolled_window_set_shadow_type(GTK_SCROLLED_WINDOW
 					    (scroll_win), GTK_SHADOW_IN);
 	gtk_widget_show(scroll_win);
-	gtk_box_pack_start_defaults(GTK_BOX(vbox), scroll_win);
+	gtk_box_pack_start(GTK_BOX(vbox), scroll_win, TRUE, TRUE, 0);
 	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scroll_win),
 				       GTK_POLICY_AUTOMATIC,
 				       GTK_POLICY_AUTOMATIC);

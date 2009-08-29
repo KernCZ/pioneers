@@ -9,12 +9,7 @@
 
 #include "config.h"
 #include "game.h"
-#include <gtk/gtksignal.h>
-#include <gtk/gtktable.h>
-#include <gtk/gtkcombobox.h>
-#include <gtk/gtkmenu.h>
-#include <gtk/gtkmenuitem.h>
-#include <gtk/gtklabel.h>
+#include <gtk/gtk.h>
 #include <string.h>
 #include "guimap.h"
 #include "gtkbugs.h"

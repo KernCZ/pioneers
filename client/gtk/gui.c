@@ -461,7 +461,7 @@ static GtkWidget *build_messages_panel(void)
 	scroll_win = gtk_scrolled_window_new(NULL, NULL);
 	gtk_widget_set_size_request(scroll_win, -1, 80);
 	gtk_widget_show(scroll_win);
-	gtk_box_pack_start_defaults(GTK_BOX(vbox), scroll_win);
+	gtk_box_pack_start(GTK_BOX(vbox), scroll_win, TRUE, TRUE, 0);
 	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scroll_win),
 				       GTK_POLICY_AUTOMATIC,
 				       GTK_POLICY_AUTOMATIC);

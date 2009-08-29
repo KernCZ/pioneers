@@ -1,3 +1,17 @@
+2009-08-29  Roland Clobus <rclobus@bigfoot.com>
+	* editor/gtk/game-resources.c, editor/gtk/game-devcards.c,
+	editor/gtk/game-resources.h, editor/gtk/game-buildings.c,
+	editor/gtk/game-devcards.h, editor/gtk/game-buildings.h,
+	common/gtk/game-rules.c, common/gtk/game-rules.h,
+	common/gtk/game-settings.c, common/gtk/game-settings.h,
+	common/gtk/metaserver.c, common/gtk/metaserver.h,
+	common/gtk/select-game.c, common/gtk/select-game.h, configure.ac,
+	client/gtk/plenty.c, client/gtk/resource-table.c,
+	client/gtk/resource-table.h, client/gtk/player.c,
+	client/gtk/quote-view.h, client/gtk/settingscreen.c, client/gtk/chat.c,
+	client/gtk/gui.c, client/gtk/connect.c: Prepare for GTK3 by
+	implementing more stricy deprecation rules.
+
 2009-08-27  Roland <rclobus@bigfoot.com>
 	* client/gtk/gui.c, client/gtk/legend.c: Show legend dialog without
 	scrollbars when it is shown as a separate window.

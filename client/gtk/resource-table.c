@@ -9,12 +9,7 @@
  */
 
 #include "config.h"
-#include <gtk/gtksignal.h>
-#include <gtk/gtktable.h>
-#include <gtk/gtklabel.h>
-#include <gtk/gtkentry.h>
-#include <gtk/gtkbutton.h>
-#include <gtk/gtkspinbutton.h>
+#include <gtk/gtk.h>
 #include <string.h>
 #include <stdio.h>
 #include <glib.h>
