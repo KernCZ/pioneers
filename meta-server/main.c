@@ -120,7 +120,7 @@ static void my_syslog(gint type, const gchar * fmt, ...)
 	buff = g_strdup_vprintf(fmt, ap);
 	va_end(ap);
 
-	syslog(type, buff);
+	syslog(type, "%s", buff);
 
 	if (enable_syslog_debug)
 		g_print("Syslog %d: %s\n", type, buff);
