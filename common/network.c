@@ -3,7 +3,7 @@
  *
  * Copyright (C) 1999 Dave Cole
  * Copyright (C) 2003, 2006 Bas Wijnen <shevek@fmf.nl>
- * Copyright (C) 2005-2007 Roland Clobus <rclobus@bigfoot.com>
+ * Copyright (C) 2005-2009 Roland Clobus <rclobus@bigfoot.com>
  * Copyright (C) 2005 Keishi Suenaga
  *
  * This program is free software; you can redistribute it and/or modify
@@ -66,6 +66,8 @@ typedef union {
 } sockaddr_t;
 
 static gboolean debug_enabled = FALSE;
+
+static void net_attempt_to_connect(Session * ses);
 
 /* Number of seconds between pings
  * (in the absence of other network activity).  */
@@ -206,6 +208,14 @@ gboolean net_close(Session * ses)
 			g_free(data);
 		}
 	}
+#ifdef HAVE_GETADDRINFO_ET_AL
+	if (ses->base_ai) {
+		freeaddrinfo(ses->base_ai);
+		ses->base_ai = NULL;
+		ses->current_ai = NULL;
+	}
+#endif				/* HAVE_GETADDRINFO_ET_AL */
+
 	return !ses->entered;
 }
 
@@ -282,7 +292,18 @@ static void write_ready(Session * ses)
 				    net_errormsg());
 			net_close(ses);
 		} else if (error != 0) {
-			notify(ses, NET_CONNECT_FAIL, NULL);
+#ifdef HAVE_GETADDRINFO_ET_AL
+			if (ses->current_ai && ses->current_ai->ai_next) {
+				// There are some protocols left to try
+				ses->current_ai = ses->current_ai->ai_next;
+				listen_read(ses, FALSE);
+				listen_write(ses, FALSE);
+				net_closesocket(ses->fd);
+				ses->fd = -1;
+				net_attempt_to_connect(ses);
+				return;
+			}
+#endif
 			log_message(MSG_ERROR,
 				    _(""
 				      "Error connecting to host '%s': %s\n"),
@@ -545,13 +566,86 @@ static gboolean net_is_connection_in_progress(void)
 #endif
 }
 
+/**
+ * Attempt to connect the session.
+ * @param ses Session
+ */
+static void net_attempt_to_connect(Session * ses)
+{
+#ifdef HAVE_GETADDRINFO_ET_AL
+	struct addrinfo *aip;
+#else
+	struct hostent *he;
+	struct sockaddr_in addr;
+#endif				/* HAVE_GETADDRINFO_ET_AL */
+
+#ifdef HAVE_GETADDRINFO_ET_AL
+	aip = ses->current_ai;
+	g_return_if_fail(aip != NULL);
+
+	ses->fd = socket(aip->ai_family, SOCK_STREAM, 0);
+#else				/* HAVE_GETADDRINFO_ET_AL */
+	ses->fd = socket(AF_INET, SOCK_STREAM, 0);
+#endif				/* HAVE_GETADDRINFO_ET_AL */
+	if (ses->fd < 0) {
+		log_message(MSG_ERROR,
+			    _("Error creating socket: %s\n"),
+			    net_errormsg());
+		return;
+	}
+#ifdef HAVE_FCNTL
+	if (fcntl(ses->fd, F_SETFD, 1) < 0) {
+		log_message(MSG_ERROR,
+			    _("Error setting socket close-on-exec: %s\n"),
+			    net_errormsg());
+		net_closesocket(ses->fd);
+		ses->fd = -1;
+		return;
+	}
+#endif
+	if (net_set_socket_non_blocking(ses->fd)) {
+		log_message(MSG_ERROR,
+			    _("Error setting socket non-blocking: %s\n"),
+			    net_errormsg());
+		net_closesocket(ses->fd);
+		ses->fd = -1;
+		return;
+	}
+#ifdef HAVE_GETADDRINFO_ET_AL
+	if (connect(ses->fd, aip->ai_addr, aip->ai_addrlen) < 0) {
+#else				/* HAVE_GETADDRINFO_ET_AL */
+	he = gethostbyname(host);
+	addr.sin_family = AF_INET;
+	addr.sin_port = htons(atoi(port));
+	addr.sin_addr = *((struct in_addr *) he->h_addr);
+	memset(&addr.sin_zero, 0, 8);
+	if (connect(ses->fd, (struct sockaddr *) &addr,
+		    sizeof(struct sockaddr)) < 0) {
+#endif				/* HAVE_GETADDRINFO_ET_AL */
+		if (net_is_connection_in_progress()) {
+			ses->connect_in_progress = TRUE;
+			listen_write(ses, TRUE);
+			return;
+		} else {
+			log_message(MSG_ERROR,
+				    _("Error connecting to %s: %s\n"),
+				    ses->host, net_errormsg());
+			net_closesocket(ses->fd);
+			ses->fd = -1;
+			return;
+		}
+	} else
+		listen_read(ses, TRUE);
+	return;
+}
+
 gboolean net_connect(Session * ses, const gchar * host, const gchar * port)
 {
 #ifdef HAVE_GETADDRINFO_ET_AL
 	int err;
-	struct addrinfo hints, *ai, *aip;
+	struct addrinfo hints;
+	struct addrinfo *ai;
 #else
-	gint iii;
 	struct hostent *he;
 	struct sockaddr_in addr;
 #endif				/* HAVE_GETADDRINFO_ET_AL */
@@ -583,78 +677,13 @@ gboolean net_connect(Session * ses, const gchar * host, const gchar * port)
 			    host, port);
 		return FALSE;
 	}
+	ses->base_ai = ai;
+	ses->current_ai = ai;
 #endif				/* HAVE_GETADDRINFO_ET_AL */
 
-#ifdef HAVE_GETADDRINFO_ET_AL
-	for (aip = ai; aip; aip = aip->ai_next) {
-		ses->fd = socket(aip->ai_family, SOCK_STREAM, 0);
-#else				/* HAVE_GETADDRINFO_ET_AL */
-	for (iii = 0; iii < 1; ++iii) {	/* Loop only once */
-		ses->fd = socket(AF_INET, SOCK_STREAM, 0);
-#endif				/* HAVE_GETADDRINFO_ET_AL */
-		if (ses->fd < 0) {
-			log_message(MSG_ERROR,
-				    _("Error creating socket: %s\n"),
-				    net_errormsg());
-			continue;
-		}
-#ifdef HAVE_FCNTL
-		if (fcntl(ses->fd, F_SETFD, 1) < 0) {
-			log_message(MSG_ERROR,
-				    _(""
-				      "Error setting socket close-on-exec: %s\n"),
-				    net_errormsg());
-			net_closesocket(ses->fd);
-			ses->fd = -1;
-			continue;
-		}
-#endif
-		if (net_set_socket_non_blocking(ses->fd)) {
-			log_message(MSG_ERROR,
-				    _(""
-				      "Error setting socket non-blocking: %s\n"),
-				    net_errormsg());
-			net_closesocket(ses->fd);
-			ses->fd = -1;
-			continue;
-		}
-#ifdef HAVE_GETADDRINFO_ET_AL
-		if (connect(ses->fd, aip->ai_addr, aip->ai_addrlen) < 0) {
-#else				/* HAVE_GETADDRINFO_ET_AL */
-		he = gethostbyname(host);
-		addr.sin_family = AF_INET;
-		addr.sin_port = htons(atoi(port));
-		addr.sin_addr = *((struct in_addr *) he->h_addr);
-		memset(&addr.sin_zero, 0, 8);
-		if (connect
-		    (ses->fd, (struct sockaddr *) &addr,
-		     sizeof(struct sockaddr)) < 0) {
-#endif				/* HAVE_GETADDRINFO_ET_AL */
-			if (net_is_connection_in_progress()) {
-				ses->connect_in_progress = TRUE;
-				listen_write(ses, TRUE);
-				break;
-			} else {
-				log_message(MSG_ERROR,
-					    _(""
-					      "Error connecting to %s: %s\n"),
-					    host, net_errormsg());
-				net_closesocket(ses->fd);
-				ses->fd = -1;
-				continue;
-			}
-		} else
-			listen_read(ses, TRUE);
-	}
+	net_attempt_to_connect(ses);
 
-#ifdef HAVE_GETADDRINFO_ET_AL
-	freeaddrinfo(ai);
-#endif				/* HAVE_GETADDRINFO_ET_AL */
-
-	if (ses->fd >= 0)
-		return TRUE;
-	else
-		return FALSE;
+	return (ses->fd >= 0);
 }
 
 /* Free and NULL-ify the session *ses */

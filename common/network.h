@@ -44,6 +44,10 @@ struct _Session {
 
 	gboolean connect_in_progress;
 	gboolean waiting_for_close;
+#ifdef HAVE_GETADDRINFO_ET_AL
+	struct addrinfo *base_ai;	/* Base addrinfo, to free later. */
+	struct addrinfo *current_ai;	/* Current connection method. */
+#endif
 	char *host;
 	char *port;
 

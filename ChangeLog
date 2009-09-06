@@ -1,3 +1,7 @@
+2009-09-06  Roland Clobus <rclobus@bigfoot.com>
+	* common/network.c, common/network.h: Use all available protocols when
+	connecting to a server. Fixes Debian bug #530032, Ubuntu bug #375745.
+
 2009-08-29  Roland Clobus <rclobus@bigfoot.com>
 	* editor/gtk/game-resources.c, editor/gtk/game-devcards.c,
 	editor/gtk/game-resources.h, editor/gtk/game-buildings.c,
