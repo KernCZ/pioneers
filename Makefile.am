@@ -61,7 +61,7 @@ pixmapdir = $(datadir)/pixmaps/pioneers
 desktopdir = $(datadir)/applications
 
 # Let object files be generated in their own subdirectories
-AUTOMAKE_OPTIONS = subdir-objects
+AUTOMAKE_OPTIONS = subdir-objects foreign
 
 # set up these variables so the included Makefile.ams can use +=
 SUBDIRS =
