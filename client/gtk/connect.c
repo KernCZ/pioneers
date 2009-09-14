@@ -1303,20 +1303,24 @@ static void update_recent_servers_list(void)
 			config_set_string(keyname1, temp_name);
 			config_set_string(keyname2, temp_port);
 		} else {
+			g_free(cur_name);
+			g_free(cur_port);
 			break;
 		}
 
 		if (strlen(cur_name) == 0) {
+			g_free(cur_name);
+			g_free(cur_port);
 			break;
 		}
 
+		g_free(temp_name);
+		g_free(temp_port);
 		if (!strcmp(cur_name, conn_name)
 		    && !strcmp(cur_port, conn_port)) {
 			temp_name = NULL;
 			temp_port = NULL;
 		} else {
-			g_free(temp_name);
-			g_free(temp_port);
 			temp_name = g_strdup(cur_name);
 			temp_port = g_strdup(cur_port);
 		}
@@ -1328,8 +1332,6 @@ static void update_recent_servers_list(void)
 		g_free(cur_name);
 		g_free(cur_port);
 	} while (!done);
-	g_free(cur_name);
-	g_free(cur_port);
 	g_free(temp_name);
 	g_free(temp_port);
 	g_free(conn_name);

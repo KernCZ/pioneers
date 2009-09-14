@@ -1,3 +1,7 @@
+2009-09-14  Roland Clobus <rclobus@bigfoot.com>
+	* client/gtk/connect.c: Fixed a memory leak that was reported by
+	cppcheck.
+
 2009-09-13  Bas Wijnen <shevek@fmf.nl>
 	* Makefile.am: Suppress GNU make specific warnings.
 
