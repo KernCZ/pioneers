@@ -1,3 +1,8 @@
+2009-09-16  Roland Clobus <rclobus@bigfoot.com>
+	* common/gtk/theme.c, docs/pioneers.6: Scan for user themes in 
+	$XDG_DATA_HOME/pioneers/themes, based on patch #1939885 written by
+	Aaron (hasqldiesel@users.sourceforge.net)
+
 2009-09-14  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/connect.c: Fixed a memory leak that was reported by
 	cppcheck.

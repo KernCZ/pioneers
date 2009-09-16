@@ -141,6 +141,7 @@ static MapTheme *current_theme = NULL;
 static GList *callback_list = NULL;
 
 static gboolean theme_initialize(MapTheme * t, const gchar * subdir);
+static void theme_scan_dir(const gchar * themes_path);
 static struct tvars *getvar(char **p, const gchar * filename, int lno);
 static char *getval(char **p, const gchar * filename, int lno);
 static gboolean parsecolor(char *p, TColor * tc, const gchar * filename,
@@ -171,9 +172,6 @@ static gint theme_insert_sorted(gconstpointer new, gconstpointer first)
 
 void themes_init(void)
 {
-	GDir *dir;
-	const gchar *dirname;
-	gchar *fname;
 	gchar *path;
 	MapTheme *t;
 	gint novar;
@@ -186,15 +184,48 @@ void themes_init(void)
 	g_assert(theme_list == NULL);
 	theme_list = g_list_append(NULL, &default_theme);
 
+	/* scan global theme directory */
+	theme_scan_dir(THEMEDIR);
+
+	/* scan user theme directory */
+	path =
+	    g_build_filename(g_get_user_data_dir(), "pioneers", "themes",
+			     NULL);
+	theme_scan_dir(path);
+	g_free(path);
+
+	t = NULL;
+	user_theme = config_get_string("settings/theme=Tiny", &novar);
+	if (!(!user_theme || !*user_theme)) {
+		GList *result = g_list_find_custom(theme_list, user_theme,
+						   theme_list_locate);
+		if (result)
+			t = result->data;
+	}
+	g_free(user_theme);
+	if (!t) {
+		t = &default_theme;
+	}
+	current_theme = t;
+}
+
+void theme_scan_dir(const gchar * themes_path)
+{
+	GDir *dir;
+	const gchar *dirname;
+	gchar *fname;
+	gchar *path;
+	MapTheme *t;
+
 	/* scan image dir for theme descriptor files */
-	if (!(dir = g_dir_open(THEMEDIR, 0, NULL)))
+	if (!(dir = g_dir_open(themes_path, 0, NULL)))
 		return;
 	while ((dirname = g_dir_read_name(dir))) {
-		fname = g_build_filename(THEMEDIR, dirname, NULL);
+		fname = g_build_filename(themes_path, dirname, NULL);
 		if (g_file_test(fname, G_FILE_TEST_IS_DIR)) {
 			path = g_build_filename(fname, "theme.cfg", NULL);
 			if ((t = theme_config_parse(dirname, path))) {
-				if (theme_initialize(t, dirname)) {
+				if (theme_initialize(t, fname)) {
 					theme_list =
 					    g_list_insert_sorted
 					    (theme_list, t,
@@ -215,19 +246,6 @@ void themes_init(void)
 	}
 	g_dir_close(dir);
 
-	t = NULL;
-	user_theme = config_get_string("settings/theme=Tiny", &novar);
-	if (!(!user_theme || !*user_theme)) {
-		GList *result = g_list_find_custom(theme_list, user_theme,
-						   theme_list_locate);
-		if (result)
-			t = result->data;
-	}
-	g_free(user_theme);
-	if (!t) {
-		t = &default_theme;
-	}
-	current_theme = t;
 }
 
 void theme_set_current(MapTheme * t)
@@ -312,7 +330,7 @@ static gboolean theme_initialize(MapTheme * t, const gchar * subdir)
 		/* if a theme doesn't define a terrain tile, use the default
 		 * one */
 		if (t->terrain_tile_names[i])
-			file = g_build_filename(THEMEDIR, subdir,
+			file = g_build_filename(subdir,
 						t->terrain_tile_names[i],
 						NULL);
 		else
@@ -320,9 +338,9 @@ static gboolean theme_initialize(MapTheme * t, const gchar * subdir)
 						default_theme.
 						terrain_tile_names[i],
 						NULL);
-		if (!theme_load_pixmap
-		    (file, t->name, &pixbuf, &(t->terrain_tiles[i]),
-		     NULL)) {
+		if (t->name == default_theme.name
+		    || !theme_load_pixmap(file, t->name, &pixbuf,
+					  &(t->terrain_tiles[i]), NULL)) {
 			/* Fall back to default theme images */
 			g_free(file);
 			file = g_build_filename(THEMEDIR,
@@ -362,13 +380,14 @@ static gboolean theme_initialize(MapTheme * t, const gchar * subdir)
 		 * its resource letter instead */
 		if (t->port_tile_names[i]) {
 			GdkPixbuf *pixbuf;
-			gchar *fname = g_build_filename(THEMEDIR, subdir,
+			gchar *fname = g_build_filename(subdir,
 							t->port_tile_names
 							[i],
 							NULL);
-			if (theme_load_pixmap
-			    (fname, t->name, &pixbuf, &(t->port_tiles[i]),
-			     NULL)) {
+			if (t->name != default_theme.name
+			    && theme_load_pixmap(fname, t->name, &pixbuf,
+						 &(t->port_tiles[i]),
+						 NULL)) {
 				gdk_drawable_get_size(t->port_tiles[i],
 						      &t->port_tiles_width
 						      [i],
