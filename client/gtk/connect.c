@@ -733,7 +733,7 @@ static GtkWidget *build_create_interface(void)
 				 0,
 				 game_settings_get_players(GAMESETTINGS
 							   (game_settings))
-				 - 1, 1, 1, 1);
+				 - 1, 1, 4, 0);
 	aiplayers_spin = gtk_spin_button_new(GTK_ADJUSTMENT(adj), 1, 0);
 	gtk_spin_button_set_numeric(GTK_SPIN_BUTTON(aiplayers_spin), TRUE);
 	gtk_widget_show(aiplayers_spin);

@@ -109,7 +109,7 @@ static void game_settings_init(GameSettings * gs)
 			 GTK_FILL, GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 
-	adj = gtk_adjustment_new(0, 2, MAX_PLAYERS, 1, 1, 1);
+	adj = gtk_adjustment_new(0, 2, MAX_PLAYERS, 1, 4, 0);
 	gs->players_spin = gtk_spin_button_new(GTK_ADJUSTMENT(adj), 1, 0);
 	gtk_entry_set_alignment(GTK_ENTRY(gs->players_spin), 1.0);
 	gtk_widget_show(gs->players_spin);
@@ -132,7 +132,7 @@ static void game_settings_init(GameSettings * gs)
 
 	hbox = gtk_hbox_new(FALSE, 3);
 
-	adj = gtk_adjustment_new(10, 3, 99, 1, 1, 1);
+	adj = gtk_adjustment_new(10, 3, 99, 1, 5, 0);
 	gs->victory_spin = gtk_spin_button_new(GTK_ADJUSTMENT(adj), 1, 0);
 	gtk_entry_set_alignment(GTK_ENTRY(gs->victory_spin), 1.0);
 	gtk_widget_show(gs->victory_spin);

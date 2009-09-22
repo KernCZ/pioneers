@@ -284,7 +284,7 @@ GtkWidget *build_admin_interface(GtkWidget * vbox)
 			 (GtkAttachOptions) GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 
-	adj = gtk_adjustment_new(0, 2, MAX_PLAYERS, 1, 1, 1);
+	adj = gtk_adjustment_new(0, 2, MAX_PLAYERS, 1, 1, 0);
 	players_spin = gtk_spin_button_new(GTK_ADJUSTMENT(adj), 1, 0);
 	gtk_widget_show(players_spin);
 	gtk_table_attach(GTK_TABLE(table), players_spin, 1, 2, 2, 3,
@@ -300,7 +300,7 @@ GtkWidget *build_admin_interface(GtkWidget * vbox)
 			 (GtkAttachOptions) GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 
-	adj = gtk_adjustment_new(10, 5, 20, 1, 1, 1);
+	adj = gtk_adjustment_new(10, 5, 20, 1, 5, 0);
 	victory_spin = gtk_spin_button_new(GTK_ADJUSTMENT(adj), 1, 0);
 	gtk_widget_show(victory_spin);
 	gtk_table_attach(GTK_TABLE(table), victory_spin, 1, 2, 3, 4,
@@ -334,7 +334,7 @@ GtkWidget *build_admin_interface(GtkWidget * vbox)
 			 (GtkAttachOptions) GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 
-	adj = gtk_adjustment_new(server_port_int, 1024, 32767, 1, 1, 1);
+	adj = gtk_adjustment_new(server_port_int, 1024, 32767, 1, 10, 0);
 	port_spin = gtk_spin_button_new(GTK_ADJUSTMENT(adj), 1, 0);
 	gtk_widget_show(port_spin);
 	gtk_table_attach(GTK_TABLE(table), port_spin, 1, 2, 5, 6,

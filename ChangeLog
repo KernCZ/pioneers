@@ -1,3 +1,10 @@
+2009-09-22  Roland Clobus <rclobus@bigfoot.com>
+	* editor/gtk/game-resources.c, editor/gtk/game-devcards.c,
+	editor/gtk/game-buildings.c, common/gtk/game-settings.c,
+	client/gtk/admin-gtk.c, client/gtk/connect.c: Set sensible page
+	increment and set page_size to zero for all GtkAdjustments, to avoid
+	warnings on the console.
+
 2009-09-16  Roland Clobus <rclobus@bigfoot.com>
 	* common/gtk/theme.c, docs/pioneers.6: Scan for user themes in 
 	$XDG_DATA_HOME/pioneers/themes, based on patch #1939885 written by

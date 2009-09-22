@@ -57,7 +57,7 @@ static void game_buildings_init(GameBuildings * gb)
 		gtk_table_attach_defaults(GTK_TABLE(gb), label,
 					  0, 1, row - 1, row);
 
-		adjustment = gtk_adjustment_new(0, 0, 100, 1, 1, 1);
+		adjustment = gtk_adjustment_new(0, 0, 100, 1, 5, 0);
 		spin =
 		    gtk_spin_button_new(GTK_ADJUSTMENT(adjustment), 1, 0);
 		gtk_entry_set_alignment(GTK_ENTRY(spin), 1.0);
