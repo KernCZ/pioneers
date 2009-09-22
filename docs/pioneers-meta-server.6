@@ -1,4 +1,4 @@
-.TH pioneers-meta-server 6 "May 9, 2006" "pioneers"
+.TH pioneers-meta-server 6 "September 19, 2009" "pioneers"
 .SH NAME
 pioneers-meta-server \- meta game server for Pioneers
 
@@ -17,27 +17,43 @@ program.
 .SH OPTIONS
 
 .TP
-.B \-h
+.B \-?, \-\-help
 Print a short help text and exit.
 
 .TP
-.B \-d
+.B \-d, \-\-daemon
 Run in daemon mode.
 
 .TP
-.BI \-r " location"
-.RI "Redirect to " location "."
+.BI "\-P, \-\-pidfile" " pidfile"
+.RI "Write the pid to " pidfile " (implies -d)"
 
 .TP
-.BI \-s " hostname"
+.BI "\-r, \-\-redirect" " location"
+.RI "Redirect to another meta-server running at " location "."
+
+.TP
+.BI "\-s, \-\-servername" " hostname"
 .RI "Use " hostname " as hostname when creating servers."
 
 .TP
-.BI \-p " from" \- "to"
-.RI "Use ports in the range " from "-" to " (inclusive) for started servers."
-It is advised not to include port 5555 in the range.  (See BUGS below.)
+.BI "\-p, \-\-port\-range" " from" \- "to"
+.RI "Use ports in the range " from "-" to " (inclusive) to start servers."
+It is advised not to include port 5557 in the range.  (See BUGS below.)
 When this range is not specified, the meta-server will not be able to create
 new games.
+
+.TP
+.B \-\-debug
+Enable debug messages.
+
+.TP
+.B \-\-syslog-debug
+Duplicate the messages of the syslog to the console.
+
+.TP
+.B \-\-version
+Show version information.
 
 .SH ENVIRONMENT
 The default settings of the meta-server can be influenced with the
@@ -62,11 +78,9 @@ Game definitions
 .RE
 
 .SH BUGS
-.I pioneers-server-console
-uses port 5555 for its admin connection.  This means that only the first server
-started from the meta-server will actually succeed in binding to that.  For all
-subsequent servers, the admin socket fails to open, and thus cannot be
-connected to.
+Do not include port 5557 in the
+.I \-\-port\-range
+argument because the meta-server uses this port.
 
 .SH AUTHOR
 This manual page was written by Jeff Breidenbach <jab@debian.org>,

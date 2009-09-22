@@ -2,7 +2,7 @@
  *   Go buy a copy.
  *
  * Copyright (C) 1999 Dave Cole
- * Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
+ * Copyright (C) 2003-2009 Bas Wijnen <wijnen@debian.org>
  * Copyright (C) 2006 Roland Clobus <rclobus@bigfoot.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -97,7 +97,8 @@ static gint max_fd;
 
 /* Command line data */
 static gboolean make_daemon = FALSE;
-static gchar *port_range = NULL;
+static const gchar *pidfile = NULL;
+static const gchar *port_range = NULL;
 static gboolean enable_debug = FALSE;
 static gboolean enable_syslog_debug = FALSE;
 static gboolean show_version = FALSE;
@@ -437,7 +438,7 @@ static void client_list_capability(Client * client)
 	if (can_create_games) {
 		client_printf(client, "create games\n");
 	}
-	/** @todo RC 2005-01-30 Implement this in the metaserver */
+	/** @todo RC 2005-01-30 Implement this in the meta-server */
 	if (FALSE)
 		client_printf(client, "send game settings\n");
 	client_printf(client, "deregister dead connections\n");
@@ -1008,11 +1009,31 @@ static void convert_to_daemon(void)
 			  g_strerror(errno));
 		exit(1);
 	}
-	if (pid != 0)
+	if (pid != 0) {
+		/* Write the pidfile if required.
+		 */
+		if (pidfile) {
+			FILE *f = fopen(pidfile, "w");
+			if (!f) {
+				fprintf(stderr,
+					"Unable to open pidfile '%s': %s\n",
+					pidfile, strerror(errno));
+			} else {
+				int r = fprintf(f, "%d\n", pid);
+				if (r <= 0) {
+					fprintf(stderr,
+						"Unable to write to pidfile "
+						"'%s': %s\n", pidfile,
+						strerror(errno));
+				}
+				fclose(f);
+			}
+		}
 		/* I am the parent, if I exit then init(8) will become
-		 * my the parent of the child process
+		 * the parent of the child process
 		 */
 		exit(0);
+	}
 
 	/* Create a new session to become a process group leader
 	 */
@@ -1032,10 +1053,15 @@ static void convert_to_daemon(void)
 static GOptionEntry commandline_entries[] = {
 	{"daemon", 'd', 0, G_OPTION_ARG_NONE, &make_daemon,
 	 /* Commandline meta-server: daemon */
-	 N_("Daemonize the metaserver on start"), NULL},
+	 N_("Daemonize the meta-server on start"), NULL},
+	{"pidfile", 'P', 0, G_OPTION_ARG_STRING, &pidfile,
+	 /* Commandline meta-server: pidfile */
+	 N_("Pidfile to create when daemonizing (implies -d)"),
+	 /* Commandline meta-server: pidfile argument */
+	 N_("filename")},
 	{"redirect", 'r', 0, G_OPTION_ARG_STRING, &redirect_location,
 	 /* Commandline meta-server: redirect */
-	 N_("Redirect clients to another metaserver"), NULL},
+	 N_("Redirect clients to another meta-server"), NULL},
 	{"servername", 's', 0, G_OPTION_ARG_STRING, &myhostname,
 	 /* Commandline meta-server: server */
 	 N_("Use this hostname when creating new games"),
@@ -1087,7 +1113,7 @@ int main(int argc, char *argv[])
 		g_print(" ");
 		g_print(FULL_VERSION);
 		g_print(", ");
-		g_print(_("metaserver protocol:"));
+		g_print(_("meta-server protocol:"));
 		g_print(" ");
 		g_print(META_PROTOCOL_VERSION);
 		g_print("\n");
@@ -1109,7 +1135,7 @@ int main(int argc, char *argv[])
 
 	net_init();
 	openlog("pioneers-meta", LOG_PID, LOG_USER);
-	if (make_daemon)
+	if (make_daemon || pidfile)
 		convert_to_daemon();
 
 	can_create_games = FALSE;

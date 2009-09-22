@@ -4,6 +4,10 @@
 	client/gtk/admin-gtk.c, client/gtk/connect.c: Set sensible page
 	increment and set page_size to zero for all GtkAdjustments, to avoid
 	warnings on the console.
+	* docs/pioneers-meta-server.6: Added all commandline options, updated
+	the BUGS section.
+	* meta-server/main.c: Write a pid file, based on patch #2813162,
+	written by Bas Wijnen.
 
 2009-09-16  Roland Clobus <rclobus@bigfoot.com>
 	* common/gtk/theme.c, docs/pioneers.6: Scan for user themes in 
