@@ -17,18 +17,18 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-icelandthemedir = $(pioneers_themedir)/Iceland
+classicthemedir = $(pioneers_themedir)/Classic
 
-icelandtheme_DATA = \
-	client/gtk/data/themes/Iceland/desert.png \
-	client/gtk/data/themes/Iceland/field_grain.png \
-	client/gtk/data/themes/Iceland/forest_lumber.png \
-	client/gtk/data/themes/Iceland/gold.png \
-	client/gtk/data/themes/Iceland/hill_brick.png \
-	client/gtk/data/themes/Iceland/mountain_ore.png \
-	client/gtk/data/themes/Iceland/pasture_wool.png \
-	client/gtk/data/themes/Iceland/sea.png \
-	client/gtk/data/themes/Iceland/board.png \
-	client/gtk/data/themes/Iceland/theme.cfg
+classictheme_DATA = \
+	client/gtk/data/themes/Classic/board.png \
+	client/gtk/data/themes/Classic/desert.png \
+	client/gtk/data/themes/Classic/field.png \
+	client/gtk/data/themes/Classic/forest.png \
+	client/gtk/data/themes/Classic/gold.png \
+	client/gtk/data/themes/Classic/hill.png \
+	client/gtk/data/themes/Classic/mountain.png \
+	client/gtk/data/themes/Classic/pasture.png \
+	client/gtk/data/themes/Classic/sea.png \
+	client/gtk/data/themes/Classic/theme.cfg
 
-EXTRA_DIST += $(icelandtheme_DATA)
+EXTRA_DIST += $(classictheme_DATA)

@@ -17,6 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+include client/gtk/data/themes/Classic/Makefile.am
 include client/gtk/data/themes/FreeCIV-like/Makefile.am
 include client/gtk/data/themes/Iceland/Makefile.am
 include client/gtk/data/themes/Tiny/Makefile.am

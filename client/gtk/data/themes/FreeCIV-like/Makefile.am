@@ -28,6 +28,7 @@ freecivtheme_DATA = \
 	client/gtk/data/themes/FreeCIV-like/field.png \
 	client/gtk/data/themes/FreeCIV-like/hill.png \
 	client/gtk/data/themes/FreeCIV-like/pasture.png \
+	client/gtk/data/themes/FreeCIV-like/gold.png \
 	client/gtk/data/themes/FreeCIV-like/theme.cfg
 
 EXTRA_DIST += $(freecivtheme_DATA)

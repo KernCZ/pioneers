@@ -182,7 +182,6 @@ void themes_init(void)
 		g_error("Could not initialize default theme.");
 	}
 	g_assert(theme_list == NULL);
-	theme_list = g_list_append(NULL, &default_theme);
 
 	/* scan global theme directory */
 	theme_scan_dir(THEMEDIR);
@@ -193,6 +192,10 @@ void themes_init(void)
 			     NULL);
 	theme_scan_dir(path);
 	g_free(path);
+
+	if (theme_list == NULL) {
+		theme_list = g_list_append(NULL, &default_theme);
+	}
 
 	t = NULL;
 	user_theme = config_get_string("settings/theme=Tiny", &novar);

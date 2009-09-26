@@ -1,3 +1,16 @@
+2009-09-26  Roland Clobus <rclobus@bigfoot.com>
+	* common/gtk/theme.c: Only add the default theme when no other theme
+	has been added.
+	* client/gtk/data/themes/FreeCIV-like/Makefile.am,
+	client/gtk/data/themes/FreeCIV-like/gold.png,
+	client/gtk/data/themes/Iceland.am,
+	client/gtk/data/themes/Iceland/board.png,
+	client/gtk/data/themes/Iceland/sea.png: Add and mention the images
+	that are shared from the (old) default theme.
+	* client/gtk/data/themes/Makefile.am: Mention the Classic theme.
+	* client/gtk/data/themes/Classic/*: Added the Classic theme (the
+	images are from client/gtk/data/themes) 
+
 2009-09-22  Roland Clobus <rclobus@bigfoot.com>
 	* editor/gtk/game-resources.c, editor/gtk/game-devcards.c,
 	editor/gtk/game-buildings.c, common/gtk/game-settings.c,
