@@ -1,3 +1,6 @@
+2009-09-30  Roland Clobus <rclobus@bigfoot.com>
+	* client/gtk/gui.h: Add extra debug information.
+
 2009-09-26  Roland Clobus <rclobus@bigfoot.com>
 	* common/gtk/theme.c: Only add the default theme when no other theme
 	has been added.
