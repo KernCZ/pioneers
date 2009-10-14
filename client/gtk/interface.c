@@ -27,6 +27,7 @@
 #include "audio.h"
 
 /* local functions */
+static void frontend_state_robber(GuiEvent event);
 static void frontend_state_turn(GuiEvent event);
 static void build_road_cb(MapElement edge, MapElement extra);
 static void build_ship_cb(MapElement edge, MapElement extra);
@@ -399,7 +400,8 @@ void frontend_turn(void)
 	/* if it already is our turn, just update the gui (maybe something
 	 * happened), but don't beep */
 	if (get_gui_state() == frontend_state_turn
-	    || get_gui_state() == frontend_state_trade) {
+	    || get_gui_state() == frontend_state_trade
+	    || get_gui_state() == frontend_state_robber) {
 		/* this is in the if, because it gets called from set_gui_state
 		 * anyway. */
 		frontend_gui_update();
