@@ -1467,11 +1467,11 @@ msgstr "アプリケーション設定"
 #: ../client/gtk/gui.c:263 ../client/gtk/gui.c:267 ../editor/gtk/editor.c:998
 #: ../server/gtk/main.c:97
 msgid "_Help"
-msgstr "_Help"
+msgstr "ヘルプ(_H)"
 
 #: ../client/gtk/gui.c:264
 msgid "_About Pioneers"
-msgstr "_About·Pioneers"
+msgstr "パイオニアについて(_A)"
 
 #: ../client/gtk/gui.c:265
 msgid "Information about Pioneers"
@@ -2155,6 +2155,9 @@ msgstr "著者"
 #: ../common/gtk/aboutbox.c:103 ../common/gtk/aboutbox.c:114
 msgid "translator_credits"
 msgstr ""
+"Launchpad Contributions:\n"
+"  Nazo https://launchpad.net/~lovesyao\n"
+"  Yasuhiko Takasugi https://launchpad.net/~takasugi"
 
 #. Header for the translator_credits. Use your own language name
 #: ../common/gtk/aboutbox.c:109
