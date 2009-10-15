@@ -3,7 +3,7 @@
  *
  * Copyright (C) 1999 Dave Cole
  * Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
- * Copyright (C) 2005 Roland Clobus <rclobus@bigfoot.com>
+ * Copyright (C) 2005, 2009 Roland Clobus <rclobus@bigfoot.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -85,69 +85,32 @@
 #define TCOL_UNSET()		{ FALSE, FALSE, FALSE, { 0, 0, 0, 0 } }
 #define TSCALE				{ NULL, NULL, 0, 0.0 }
 
-static gchar default_name[] = "Classic";
-
-static MapTheme default_theme = {
-	default_name,
-	NEVER,
-	/* terrain tile names */
-	{"hill.png", "field.png", "mountain.png", "pasture.png",
-	 "forest.png",
-	 "desert.png", "sea.png", "gold.png", "board.png"},
-	/* port tile names */
-	{"hill.png", "field.png", "mountain.png", "pasture.png",
-	 "forest.png",
-	 NULL},
-	/* terrain tile pixmaps */
-	{NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
-	/* port tile pixmaps */
-	{NULL, NULL, NULL, NULL, NULL, NULL},
-	/* port tile width */
-	{0, 0, 0, 0, 0, 0},
-	/* port tile height */
-	{0, 0, 0, 0, 0, 0},
-	/* terrain tile scale data */
-	{TSCALE, TSCALE, TSCALE, TSCALE, TSCALE, TSCALE, TSCALE, TSCALE,
-	 TSCALE},
-	/* colours */
-	{
-	 TCOL_INIT(0xff00, 0xda00, 0xb900),
-	 TCOL_INIT(0, 0, 0),
-	 TCOL_INIT(0, 0, 0),
-	 TCOL_INIT(0, 0xff00, 0),
-	 TCOL_INIT(0xff00, 0, 0),
-	 TCOL_INIT(0, 0, 0xff00),
-	 TCOL_INIT(0xff00, 0xff00, 0xff00),
-	 TCOL_INIT(0, 0, 0),
-	 TCOL_INIT(0, 0, 0),
-	 TCOL_INIT(0xff00, 0xff00, 0xff00),
-	 TCOL_INIT(0xff00, 0xda00, 0xb900),
-	 },
-	/* colours per tile */
-	{
-	 {TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET()},	/* Hill */
-	 {TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET()},	/* Field */
-	 {TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET()},	/* Mountain */
-	 {TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET()},	/* Pasture */
-	 {TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET()},	/* Forest */
-	 {TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET()},	/* unused: desert */
-	 {TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET()},	/* unused: sea */
-	 {TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET(), TCOL_UNSET()}	/* Gold */
-	 }
+static TColor default_colors[] = {
+	TCOL_INIT(0xff00, 0xda00, 0xb900),
+	TCOL_INIT(0, 0, 0),
+	TCOL_INIT(0, 0, 0),
+	TCOL_INIT(0, 0xff00, 0),
+	TCOL_INIT(0xff00, 0, 0),
+	TCOL_INIT(0, 0, 0xff00),
+	TCOL_INIT(0xff00, 0xff00, 0xff00),
+	TCOL_INIT(0, 0, 0),
+	TCOL_INIT(0, 0, 0),
+	TCOL_INIT(0xff00, 0xff00, 0xff00),
+	TCOL_INIT(0xff00, 0xda00, 0xb900)
 };
 
 static GList *theme_list = NULL;
 static MapTheme *current_theme = NULL;
 static GList *callback_list = NULL;
 
-static gboolean theme_initialize(MapTheme * t, const gchar * subdir);
+static gboolean theme_initialize(MapTheme * t);
 static void theme_scan_dir(const gchar * themes_path);
-static struct tvars *getvar(char **p, const gchar * filename, int lno);
+static gint getvar(gchar ** p, const gchar * filename, gint lno);
 static char *getval(char **p, const gchar * filename, int lno);
 static gboolean parsecolor(char *p, TColor * tc, const gchar * filename,
 			   int lno);
 static MapTheme *theme_config_parse(const gchar * themename,
-				    const gchar * filename);
+				    const gchar * subdir);
 static gboolean theme_load_pixmap(const gchar * file,
 				  const gchar * themename,
 				  GdkPixbuf ** pixbuf,
@@ -177,10 +140,6 @@ void themes_init(void)
 	gint novar;
 	gchar *user_theme;
 
-	/* initialize default theme */
-	if (!theme_initialize(&default_theme, "")) {
-		g_error("Could not initialize default theme.");
-	}
 	g_assert(theme_list == NULL);
 
 	/* scan global theme directory */
@@ -191,11 +150,11 @@ void themes_init(void)
 	    g_build_filename(g_get_user_data_dir(), "pioneers", "themes",
 			     NULL);
 	theme_scan_dir(path);
-	g_free(path);
 
 	if (theme_list == NULL) {
-		theme_list = g_list_append(NULL, &default_theme);
+		g_error("No theme found: %s or %s", THEMEDIR, path);
 	}
+	g_free(path);
 
 	t = NULL;
 	user_theme = config_get_string("settings/theme=Tiny", &novar);
@@ -207,7 +166,7 @@ void themes_init(void)
 	}
 	g_free(user_theme);
 	if (!t) {
-		t = &default_theme;
+		t = g_list_first(theme_list)->data;
 	}
 	current_theme = t;
 }
@@ -217,7 +176,6 @@ void theme_scan_dir(const gchar * themes_path)
 	GDir *dir;
 	const gchar *dirname;
 	gchar *fname;
-	gchar *path;
 	MapTheme *t;
 
 	/* scan image dir for theme descriptor files */
@@ -226,9 +184,8 @@ void theme_scan_dir(const gchar * themes_path)
 	while ((dirname = g_dir_read_name(dir))) {
 		fname = g_build_filename(themes_path, dirname, NULL);
 		if (g_file_test(fname, G_FILE_TEST_IS_DIR)) {
-			path = g_build_filename(fname, "theme.cfg", NULL);
-			if ((t = theme_config_parse(dirname, path))) {
-				if (theme_initialize(t, fname)) {
+			if ((t = theme_config_parse(dirname, fname))) {
+				if (theme_initialize(t)) {
 					theme_list =
 					    g_list_insert_sorted
 					    (theme_list, t,
@@ -243,7 +200,6 @@ void theme_scan_dir(const gchar * themes_path)
 				    ("Theme %s not loaded due to errors.",
 				     dirname);
 			}
-			g_free(path);
 		}
 		g_free(fname);
 	}
@@ -318,10 +274,9 @@ gboolean theme_load_pixmap(const gchar * file, const gchar * themename,
 }
 
 /** Initialize the theme.
- *  Revert to pixmaps from the default theme if loading fails
  *  @return TRUE if succesful
  */
-static gboolean theme_initialize(MapTheme * t, const gchar * subdir)
+static gboolean theme_initialize(MapTheme * t)
 {
 	int i, j;
 	GdkColormap *cmap;
@@ -329,38 +284,12 @@ static gboolean theme_initialize(MapTheme * t, const gchar * subdir)
 	/* load terrain tiles */
 	for (i = 0; i < G_N_ELEMENTS(t->terrain_tiles); ++i) {
 		GdkPixbuf *pixbuf, *pixbuf_copy;
-		gchar *file;
-		/* if a theme doesn't define a terrain tile, use the default
-		 * one */
-		if (t->terrain_tile_names[i])
-			file = g_build_filename(subdir,
-						t->terrain_tile_names[i],
-						NULL);
-		else
-			file = g_build_filename(THEMEDIR,
-						default_theme.
-						terrain_tile_names[i],
-						NULL);
-		if (t->name == default_theme.name
-		    || !theme_load_pixmap(file, t->name, &pixbuf,
-					  &(t->terrain_tiles[i]), NULL)) {
-			/* Fall back to default theme images */
-			g_free(file);
-			file = g_build_filename(THEMEDIR,
-						default_theme.
-						terrain_tile_names[i],
-						NULL);
-			if (!theme_load_pixmap
-			    (file, t->name, &pixbuf,
-			     &(t->terrain_tiles[i]), NULL)) {
-				g_error
-				    ("Could not find default pixmap file: %s",
-				     file);
-				g_free(file);
-				exit(1);
-			}
+		if (!theme_load_pixmap
+		    (t->terrain_tile_names[i], t->name, &pixbuf,
+		     &(t->terrain_tiles[i]), NULL)) {
+			g_error("Could not find pixmap file: %s",
+				t->terrain_tile_names[i]);
 		};
-		g_free(file);
 		pixbuf_copy = gdk_pixbuf_copy(pixbuf);
 		if (pixbuf_copy == NULL) {
 			return FALSE;
@@ -383,43 +312,16 @@ static gboolean theme_initialize(MapTheme * t, const gchar * subdir)
 		 * its resource letter instead */
 		if (t->port_tile_names[i]) {
 			GdkPixbuf *pixbuf;
-			gchar *fname = g_build_filename(subdir,
-							t->port_tile_names
-							[i],
-							NULL);
-			if (t->name != default_theme.name
-			    && theme_load_pixmap(fname, t->name, &pixbuf,
-						 &(t->port_tiles[i]),
-						 NULL)) {
+			if (theme_load_pixmap
+			    (t->port_tile_names[i], t->name, &pixbuf,
+			     &(t->port_tiles[i]), NULL)) {
 				gdk_drawable_get_size(t->port_tiles[i],
 						      &t->port_tiles_width
 						      [i],
 						      &t->port_tiles_height
 						      [i]);
 				g_object_unref(pixbuf);
-			} else {
-				/* Fall back on the default port tile */
-				g_free(fname);
-				fname = g_build_filename(THEMEDIR,
-							 default_theme.
-							 port_tile_names
-							 [i], NULL);
-				if (theme_load_pixmap
-				    (fname, t->name, &pixbuf,
-				     &(t->port_tiles[i]), NULL)) {
-					gdk_drawable_get_size(t->
-							      port_tiles
-							      [i],
-							      &t->
-							      port_tiles_width
-							      [i],
-							      &t->
-							      port_tiles_height
-							      [i]);
-					g_object_unref(pixbuf);
-				}
 			}
-			g_free(fname);
 		} else
 			t->port_tiles[i] = NULL;
 	}
@@ -430,7 +332,7 @@ static gboolean theme_initialize(MapTheme * t, const gchar * subdir)
 	for (i = 0; i < G_N_ELEMENTS(t->colors); ++i) {
 		TColor *tc = &(t->colors[i]);
 		if (!tc->set)
-			*tc = default_theme.colors[i];
+			*tc = default_colors[i];
 		else if (!tc->transparent && !tc->allocated) {
 			gdk_colormap_alloc_color(cmap, &(tc->color), FALSE,
 						 TRUE);
@@ -511,57 +413,63 @@ void theme_rescale(int new_width)
 #define offs(elem)           ((size_t)(&(((MapTheme *)0)->elem)))
 #define telem(type,theme,tv) (*((type *)((char *)theme + tv->offset)))
 
-typedef enum { STR, COL, SCMODE } vartype;
+typedef enum { FNAME, STR, COL, SCMODE } vartype;
 
 static struct tvars {
 	const char *name;
+	gboolean optional;
 	vartype type;
 	int override;
 	size_t offset;
 } theme_vars[] = {
 	{
-	"name", STR, -1, offs(name)}, {
-	"hill-tile", STR, HILL_TILE, offs(terrain_tile_names[HILL_TILE])},
-	{
-	"field-tile", STR, FIELD_TILE,
+	"name", TRUE, STR, -1, offs(name)}, {
+	"hill-tile", FALSE, FNAME, HILL_TILE,
+		    offs(terrain_tile_names[HILL_TILE])}, {
+	"field-tile", FALSE, FNAME, FIELD_TILE,
 		    offs(terrain_tile_names[FIELD_TILE])}, {
-	"mountain-tile", STR, MOUNTAIN_TILE,
+	"mountain-tile", FALSE, FNAME, MOUNTAIN_TILE,
 		    offs(terrain_tile_names[MOUNTAIN_TILE])}, {
-	"pasture-tile", STR, PASTURE_TILE,
+	"pasture-tile", FALSE, FNAME, PASTURE_TILE,
 		    offs(terrain_tile_names[PASTURE_TILE])}, {
-	"forest-tile", STR, FOREST_TILE,
+	"forest-tile", FALSE, FNAME, FOREST_TILE,
 		    offs(terrain_tile_names[FOREST_TILE])}, {
-	"desert-tile", STR, -1, offs(terrain_tile_names[DESERT_TILE])},
+	"desert-tile", FALSE, FNAME, -1,
+		    offs(terrain_tile_names[DESERT_TILE])}, {
+	"sea-tile", FALSE, FNAME, -1, offs(terrain_tile_names[SEA_TILE])},
 	{
-	"sea-tile", STR, -1, offs(terrain_tile_names[SEA_TILE])}, {
-	"gold-tile", STR, GOLD_TILE, offs(terrain_tile_names[GOLD_TILE])},
-	{
-	"board-tile", STR, -1, offs(terrain_tile_names[BOARD_TILE])}, {
-	"brick-port-tile", STR, -1, offs(port_tile_names[HILL_PORT_TILE])},
-	{
-	"grain-port-tile", STR, -1,
+	"gold-tile", FALSE, FNAME, GOLD_TILE,
+		    offs(terrain_tile_names[GOLD_TILE])}, {
+	"board-tile", FALSE, FNAME, -1,
+		    offs(terrain_tile_names[BOARD_TILE])}, {
+	"brick-port-tile", TRUE, FNAME, -1,
+		    offs(port_tile_names[HILL_PORT_TILE])}, {
+	"grain-port-tile", TRUE, FNAME, -1,
 		    offs(port_tile_names[FIELD_PORT_TILE])}, {
-	"ore-port-tile", STR, -1,
+	"ore-port-tile", TRUE, FNAME, -1,
 		    offs(port_tile_names[MOUNTAIN_PORT_TILE])}, {
-	"wool-port-tile", STR, -1,
+	"wool-port-tile", TRUE, FNAME, -1,
 		    offs(port_tile_names[PASTURE_PORT_TILE])}, {
-	"lumber-port-tile", STR, -1,
+	"lumber-port-tile", TRUE, FNAME, -1,
 		    offs(port_tile_names[FOREST_PORT_TILE])}, {
-	"nores-port-tile", STR, -1, offs(port_tile_names[ANY_PORT_TILE])},
+	"nores-port-tile", TRUE, FNAME, -1,
+		    offs(port_tile_names[ANY_PORT_TILE])}, {
+	"chip-bg-color", TRUE, COL, -1, offs(colors[TC_CHIP_BG])}, {
+	"chip-fg-color", TRUE, COL, -1, offs(colors[TC_CHIP_FG])}, {
+	"chip-bd-color", TRUE, COL, -1, offs(colors[TC_CHIP_BD])}, {
+	"chip-hi-bg-color", TRUE, COL, -1, offs(colors[TC_CHIP_H_BG])},
 	{
-	"chip-bg-color", COL, -1, offs(colors[TC_CHIP_BG])}, {
-	"chip-fg-color", COL, -1, offs(colors[TC_CHIP_FG])}, {
-	"chip-bd-color", COL, -1, offs(colors[TC_CHIP_BD])}, {
-	"chip-hi-bg-color", COL, -1, offs(colors[TC_CHIP_H_BG])}, {
-	"chip-hi-fg-color", COL, -1, offs(colors[TC_CHIP_H_FG])}, {
-	"port-bg-color", COL, -1, offs(colors[TC_PORT_BG])}, {
-	"port-fg-color", COL, -1, offs(colors[TC_PORT_FG])}, {
-	"port-bd-color", COL, -1, offs(colors[TC_PORT_BD])}, {
-	"robber-fg-color", COL, -1, offs(colors[TC_ROBBER_FG])}, {
-	"robber-bd-color", COL, -1, offs(colors[TC_ROBBER_BD])}, {
-	"hex-bd-color", COL, -1, offs(colors[TC_HEX_BD])}, {
-	"scaling", SCMODE, -1, offs(scaling)}, {
-	NULL, 0, -1, 0}
+	"chip-hi-fg-color", TRUE, COL, -1, offs(colors[TC_CHIP_H_FG])},
+	{
+	"port-bg-color", TRUE, COL, -1, offs(colors[TC_PORT_BG])}, {
+	"port-fg-color", TRUE, COL, -1, offs(colors[TC_PORT_FG])}, {
+	"port-bd-color", TRUE, COL, -1, offs(colors[TC_PORT_BD])}, {
+	"robber-fg-color", TRUE, COL, -1, offs(colors[TC_ROBBER_FG])},
+	{
+	"robber-bd-color", TRUE, COL, -1, offs(colors[TC_ROBBER_BD])},
+	{
+	"hex-bd-color", TRUE, COL, -1, offs(colors[TC_HEX_BD])}, {
+	"scaling", FALSE, SCMODE, -1, offs(scaling)}
 };
 
 #define ERR1(formatstring, argument) \
@@ -570,30 +478,43 @@ static struct tvars {
 #define ERR0(string) \
 	ERR1("%s", string);
 
-static struct tvars *getvar(char **p, const gchar * filename, int lno)
+/**
+ * Find a variable name in the file.
+ * @retval p The line to parse (returns the remainder)
+ * @param filename Filename for the error message
+ * @param lno Line number for the error message
+ * @return -1 on error, otherwise the index in theme_vars
+*/
+static gint getvar(gchar ** p, const gchar * filename, int lno)
 {
 	char *q, qsave;
 	struct tvars *tv;
+	gint idx;
+	gboolean found;
 
 	*p += strspn(*p, " \t");
 	if (!**p || **p == '\n')
-		return NULL;	/* empty line */
+		return -1;	/* empty line */
 
 	q = *p + strcspn(*p, " \t=\n");
 	if (q == *p) {
 		ERR1("variable name missing: %s", *p);
-		return NULL;
+		return -1;
 	}
 	qsave = *q;
 	*q++ = '\0';
 
-	for (tv = theme_vars; tv->name; ++tv) {
-		if (strcmp(*p, tv->name) == 0)
+	idx = 0;
+	found = FALSE;
+	for (tv = theme_vars; idx < G_N_ELEMENTS(theme_vars); ++tv, ++idx) {
+		if (strcmp(*p, tv->name) == 0) {
+			found = TRUE;
 			break;
+		}
 	}
-	if (!tv->name) {
+	if (!found) {
 		ERR1("unknown config variable '%s'", *p);
-		return NULL;
+		return -1;
 	}
 
 	*p = q;
@@ -601,13 +522,13 @@ static struct tvars *getvar(char **p, const gchar * filename, int lno)
 		*p += strspn(*p, " \t");
 		if (**p != '=') {
 			ERR1("'=' missing: %s", *p);
-			return NULL;
+			return -1;
 		}
 		++*p;
 	}
 	*p += strspn(*p, " \t");
 
-	return tv;
+	return idx;
 }
 
 static char *getval(char **p, const gchar * filename, int lno)
@@ -652,22 +573,31 @@ static gboolean parsecolor(char *p, TColor * tc, const gchar * filename,
 }
 
 static MapTheme *theme_config_parse(const gchar * themename,
-				    const gchar * filename)
+				    const gchar * subdir)
 {
 	FILE *f;
-	gchar *line = NULL;
-	char *p, *q;
-	int lno;
+	char *line = NULL;
+	gchar *p, *q;
+	gint lno;
 	MapTheme *t;
 	struct tvars *tv;
 	gboolean ok = TRUE;
+	gboolean *used;
+	gint idx;
+	gchar *filename;
 
-	if (!(f = fopen(filename, "r")))
+	filename = g_build_filename(subdir, "theme.cfg", NULL);
+	if (!(f = fopen(filename, "r"))) {
+		g_warning("could not open '%s'", filename);
+		g_free(filename);
 		return NULL;
+	}
 
 	t = g_malloc0(sizeof(MapTheme));
 	/* Initially the theme name is equal to the directory name */
 	t->name = g_filename_to_utf8(themename, -1, NULL, NULL, NULL);
+
+	used = g_malloc0(G_N_ELEMENTS(theme_vars) * sizeof(gboolean));
 
 	lno = 0;
 	while (read_line_from_file(&line, f)) {
@@ -677,16 +607,21 @@ static MapTheme *theme_config_parse(const gchar * themename,
 			continue;
 		}
 		p = line;
-		if (!(tv = getvar(&p, filename, lno)) ||
-		    !(q = getval(&p, filename, lno))) {
+		idx = getvar(&p, filename, lno);
+		if ((idx == -1) || !(q = getval(&p, filename, lno))) {
 			ok = FALSE;
 			g_free(line);
 			continue;
 		}
+		tv = &theme_vars[idx];
 
 		switch (tv->type) {
 		case STR:
 			telem(char *, t, tv) = g_strdup(q);
+			break;
+		case FNAME:
+			telem(char *, t, tv) =
+			    g_build_filename(subdir, q, NULL);
 			if (tv->override >= 0 && !checkend(p)) {
 				int terrain = tv->override;
 				int i;
@@ -728,11 +663,13 @@ static MapTheme *theme_config_parse(const gchar * themename,
 			else if (strcmp(q, "only-upscale") == 0)
 				t->scaling = ONLY_UPSCALE;
 			else {
-				ERR1(_("bad scaling mode '%s'"), q);
+				ERR1("bad scaling mode '%s'", q);
 				ok = FALSE;
 			}
 			break;
 		}
+		used[idx] = TRUE;
+
 		if (!checkend(p)) {
 			ERR1("unexpected rest at end of line: '%s'", p);
 			ok = FALSE;
@@ -740,6 +677,16 @@ static MapTheme *theme_config_parse(const gchar * themename,
 		g_free(line);
 	}
 	fclose(f);
+
+	for (idx = 0; idx < G_N_ELEMENTS(theme_vars); idx++) {
+		if (!used[idx] && !theme_vars[idx].optional) {
+			ERR1("option '%s' missing", theme_vars[idx].name);
+			ok = FALSE;
+		}
+	};
+
+	g_free(used);
+	g_free(filename);
 
 	if (ok)
 		return t;

@@ -22,19 +22,3 @@ include client/gtk/data/themes/FreeCIV-like/Makefile.am
 include client/gtk/data/themes/Iceland/Makefile.am
 include client/gtk/data/themes/Tiny/Makefile.am
 include client/gtk/data/themes/Wesnoth-like/Makefile.am
-
-defaultthemedir = $(pioneers_themedir)
-
-defaulttheme_DATA = \
-	client/gtk/data/themes/board.png \
-	client/gtk/data/themes/desert.png \
-	client/gtk/data/themes/field.png \
-	client/gtk/data/themes/forest.png \
-	client/gtk/data/themes/hill.png \
-	client/gtk/data/themes/mountain.png \
-	client/gtk/data/themes/pasture.png \
-	client/gtk/data/themes/plain.png \
-	client/gtk/data/themes/sea.png \
-	client/gtk/data/themes/gold.png
-
-EXTRA_DIST += $(defaulttheme_DATA)

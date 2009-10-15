@@ -1,6 +1,11 @@
 2009-10-15  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/interface.c: No beep after the robber has moved.
 	* client/gtk/gui.c: Fix double keyboard shortcut in Game menu.
+	* common/gtk/theme.c, client/gtk/data/themes/Iceland/theme.cfg,
+	client/gtk/data/themes/FreeCIV-like/theme.cfg,
+	client/gtk/data/themes/Makefile.am: Remove special handling of old
+	default theme.
+	* client/gtk/data/themes/*.png: Removed, because not used anymore.
 
 2009-09-30  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/gui.h: Add extra debug information.
