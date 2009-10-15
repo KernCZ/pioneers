@@ -223,7 +223,7 @@ static GtkActionEntry entries[] = {
 #endif
 	{"PlayerName", NULL, N_("_Player name"), "<control>P",
 	 N_("Change your player name"), playername_cb},
-	{"Legend", GTK_STOCK_DIALOG_INFO, N_("_Legend"), NULL,
+	{"Legend", GTK_STOCK_DIALOG_INFO, N_("L_egend"), NULL,
 	 N_("Terrain legend and building costs"), game_legend_cb},
 	{"GameSettings", GTK_STOCK_DIALOG_INFO, N_("_Game Settings"), NULL,
 	 N_("Settings for the current game"), game_settings_cb},
