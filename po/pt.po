@@ -1934,7 +1934,7 @@ msgstr "Número de jogadores:"
 
 #: ../client/gtk/settingscreen.c:152
 msgid "Victory Point Target:"
-msgstr "Ponto de Victória:"
+msgstr "Ponto de Vitória:"
 
 #: ../client/gtk/settingscreen.c:156
 msgid "Random Terrain?"
@@ -1950,7 +1950,7 @@ msgstr "Trocas permitidas apenas antes de construir/comprar?"
 
 #: ../client/gtk/settingscreen.c:170
 msgid "Check Victory Only At End Of Turn?"
-msgstr "Verificar victória apenas no final do turno?"
+msgstr "Verificar vitória apenas no final do turno?"
 
 #: ../client/gtk/settingscreen.c:175
 msgid "Amount of Each Resource:"
@@ -2203,7 +2203,7 @@ msgstr "Permitir trocas entre jogadores"
 
 #: ../common/gtk/game-rules.c:121
 msgid "Victory At End Of Turn"
-msgstr "Victória no fim do turno"
+msgstr "Vitória no fim do turno"
 
 #: ../common/gtk/game-rules.c:122
 msgid "Check for victory only at end of turn"
@@ -2222,7 +2222,7 @@ msgstr "Número de jogadores"
 #. Label for customising a game
 #: ../common/gtk/game-settings.c:127
 msgid "Victory Point Target"
-msgstr "Ponto de Victória"
+msgstr "Ponto de Vitória"
 
 #. Tooltip for Victory Point Target
 #: ../common/gtk/game-settings.c:147
@@ -2684,7 +2684,7 @@ msgstr "Mudar título do jogo"
 
 #: ../editor/gtk/editor.c:1011 ../server/gtk/main.c:98
 msgid "_Check Victory Point Target"
-msgstr "Verificar objectivo dos Pontos de victória"
+msgstr "Verificar objectivo dos Pontos de vitória"
 
 #: ../editor/gtk/editor.c:1013 ../server/gtk/main.c:100
 msgid "Check whether the game can be won"

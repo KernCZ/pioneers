@@ -2,6 +2,7 @@
 	* all: Line number update for 0.12.3
 	* nl.po: Updated to 0.12.3, fixed a typo
 	* ja.po: Synchronisation with Launchpad.net
+	* pt:po: Synchronisation with Launchpad.net
 
 2008-05-01 Roland Clobus <rclobus@bigfoot.com>
 	* fr.po, hu.po, it.po, nl.po, sv.po: Update 0.12.1 to 0.12.2
