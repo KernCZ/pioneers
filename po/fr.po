@@ -113,7 +113,7 @@ msgstr "Il n'y a plus de place pour fonder une colonie"
 
 #: ../client/ai/greedy.c:979
 msgid "No roads in stock to use for setup"
-msgstr "Plus de routes en stock pour configuration"
+msgstr "Il n'y a plus de routes en stock pour configuration"
 
 #: ../client/ai/greedy.c:996
 msgid "There is no place to setup a road"
@@ -163,7 +163,7 @@ msgstr "Et vous savez quoi faire avec toutes ces ressources ? ;)"
 msgid "Ey, wait for my robber and lose all this again!"
 msgstr ""
 "Hé, attendez un peu que je vous présente mon voleur et que vous perdiez "
-"tout !"
+"tout, encore !"
 
 #: ../client/ai/greedy.c:1321
 msgid "Hehe!"
