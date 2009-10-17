@@ -39,13 +39,13 @@ if test -r $CONFIG_FILE; then
 fi
 
 test -z "$PORT_RANGE" || PORT_RANGE="--port-range $PORT_RANGE"
-test -z "$META_SERVER_NAME" || META_SERVER_NAME="`dnsdomainname --fqdn`"
+test -z "$META_SERVER_NAME" || META_SERVER_NAME="--servername $META_SERVER_NAME"
 
 export PIONEERS_META_SERVER
 NAME="Pioneers meta-server"
 DAEMON=/usr/games/pioneers-meta-server
 ARGS="--pidfile $PIDFILE --exec $DAEMON $ARGS"
-START_ARGS="--start $ARGS -- --daemon $PORT_RANGE $META_SERVER_ARGS --servername $META_SERVER_NAME"
+START_ARGS="--start $ARGS -- --daemon $PORT_RANGE $META_SERVER_ARGS $META_SERVER_NAME"
 STOP_ARGS="--stop $ARGS"
 
 if test ! -x "$DAEMON"; then
