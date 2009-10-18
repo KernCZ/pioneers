@@ -1,3 +1,9 @@
+2009-10-18 Jean-Charles GRANGER <traduction@vecteur.org>
+	* fr.po: Updated to 0.12.3
+
+2009-10-18 Roland Clobus <rclobus@bigfoot.com>
+	* fr.po: Fixed some double keyboard shortcuts
+
 2009-10-16 Roland Clobus <rclobus@bigfoot.com>
 	* fr.po: Synchronisation with Launchpad.net
 

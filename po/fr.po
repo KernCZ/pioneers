@@ -7,10 +7,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Pioneers 0.12.2\n"
+"Project-Id-Version: Pioneers 0.12.3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-10-15 21:14+0200\n"
-"PO-Revision-Date: 2008-04-03 09:47+0100\n"
+"PO-Revision-Date: 2009-10-18 14:28+0100\n"
 "Last-Translator: Jean-Charles GRANGER <traduction@vecteur.org>\n"
 "Language-Team: Français <LL@li.org>, LT-P <LT-P@LT-P.net>, Yusei "
 "<yusei@ragondux.com>, Arnaud MALON <moko@geumeuleu.com>, Jean-Charles "
@@ -1334,9 +1334,8 @@ msgid "Change your player name"
 msgstr "Changer de pseudonyme"
 
 #: ../client/gtk/gui.c:226
-#, fuzzy
 msgid "L_egend"
-msgstr "Légende"
+msgstr "Lég_ende"
 
 #: ../client/gtk/gui.c:227
 msgid "Terrain legend and building costs"
@@ -1344,7 +1343,7 @@ msgstr "Légende des terrains et des coûts de construction"
 
 #: ../client/gtk/gui.c:228
 msgid "_Game Settings"
-msgstr "_Paramètres de la partie"
+msgstr "P_aramètres de la partie"
 
 #: ../client/gtk/gui.c:229
 msgid "Settings for the current game"
@@ -1477,11 +1476,11 @@ msgstr "Configurer l'application"
 #: ../client/gtk/gui.c:263 ../client/gtk/gui.c:267 ../editor/gtk/editor.c:998
 #: ../server/gtk/main.c:97
 msgid "_Help"
-msgstr "_Aide"
+msgstr "A_ide"
 
 #: ../client/gtk/gui.c:264
 msgid "_About Pioneers"
-msgstr "_À propos de Pioneers"
+msgstr "À _propos de Pioneers"
 
 #: ../client/gtk/gui.c:265
 msgid "Information about Pioneers"
@@ -2758,18 +2757,16 @@ msgstr "Créez votre propre partie de Pioneers"
 
 #. Commandline meta-server: daemon
 #: ../meta-server/main.c:1056
-#, fuzzy
 msgid "Daemonize the meta-server on start"
 msgstr "Démoniser le meta-serveur au démarrage"
 
 #. Commandline meta-server: pidfile
 #: ../meta-server/main.c:1059
 msgid "Pidfile to create when daemonizing (implies -d)"
-msgstr ""
+msgstr "Fichier PID à créer lors de la démonisation (implique -d)"
 
 #. Commandline meta-server: redirect
 #: ../meta-server/main.c:1064
-#, fuzzy
 msgid "Redirect clients to another meta-server"
 msgstr "Rediriger les clients vers un autre meta-serveur"
 
@@ -2804,9 +2801,9 @@ msgid "- Meta server for Pioneers"
 msgstr "- Meta-serveur pour Pioneers"
 
 #: ../meta-server/main.c:1116
-#, fuzzy, c-format
+#, c-format
 msgid "meta-server protocol:"
-msgstr "protocole du meta-serveur"
+msgstr "protocole du meta-serveur :"
 
 #: ../server/gtk/main.c:103
 msgid "_About Pioneers Server"
@@ -3216,12 +3213,12 @@ msgstr "Préparation de la partie"
 #: ../server/server.c:380 ../server/server.c:469
 #, c-format
 msgid "Looking for games in '%s'\n"
-msgstr ""
+msgstr "Recherche de parties sur '%s'\n"
 
 #: ../server/server.c:382 ../server/server.c:471
 #, c-format
 msgid "Game directory '%s' not found\n"
-msgstr ""
+msgstr "Répertoire de parties '%s' introuvable\n"
 
 #: ../server/turn.c:253
 msgid "Island Discovery Bonus"
