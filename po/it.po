@@ -6,10 +6,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Pioneers 0.12.2\n"
+"Project-Id-Version: Pioneers 0.12.3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-10-15 21:14+0200\n"
-"PO-Revision-Date: 2008-03-31 11:28:21+0200\n"
+"PO-Revision-Date: 2009-10-19 09:12:00+0200\n"
 "Last-Translator: Giancarlo Capella <giancarlo@comm.cc>\n"
 "Language-Team: it <it@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1325,9 +1325,8 @@ msgid "Change your player name"
 msgstr "Cambia il tuo nome di giocatore"
 
 #: ../client/gtk/gui.c:226
-#, fuzzy
 msgid "L_egend"
-msgstr "Legenda"
+msgstr "Le_genda"
 
 #: ../client/gtk/gui.c:227
 msgid "Terrain legend and building costs"
@@ -2744,20 +2743,18 @@ msgstr "Creal la tua partita di Pioneers"
 
 #. Commandline meta-server: daemon
 #: ../meta-server/main.c:1056
-#, fuzzy
 msgid "Daemonize the meta-server on start"
-msgstr "Demonizza il metaserver all'avvio"
+msgstr "Demonizza il meta-server all'avvio"
 
 #. Commandline meta-server: pidfile
 #: ../meta-server/main.c:1059
 msgid "Pidfile to create when daemonizing (implies -d)"
-msgstr ""
+msgstr "Pidfile per la demonizzazione (implica -d)"
 
 #. Commandline meta-server: redirect
 #: ../meta-server/main.c:1064
-#, fuzzy
 msgid "Redirect clients to another meta-server"
-msgstr "Redirigi i client ad un altro metaserver"
+msgstr "Redirigi i client ad un altro meta-server"
 
 #. Commandline meta-server: server
 #: ../meta-server/main.c:1067
@@ -2790,9 +2787,9 @@ msgid "- Meta server for Pioneers"
 msgstr "- Meta server per Pioneers"
 
 #: ../meta-server/main.c:1116
-#, fuzzy, c-format
+#, c-format
 msgid "meta-server protocol:"
-msgstr "protocollo metaserver:"
+msgstr "protocollo meta-server:"
 
 #: ../server/gtk/main.c:103
 msgid "_About Pioneers Server"
@@ -3201,12 +3198,12 @@ msgstr "Partita in preparazione"
 #: ../server/server.c:380 ../server/server.c:469
 #, c-format
 msgid "Looking for games in '%s'\n"
-msgstr ""
+msgstr "Ricerca partite in '%s'\n"
 
 #: ../server/server.c:382 ../server/server.c:471
 #, c-format
 msgid "Game directory '%s' not found\n"
-msgstr ""
+msgstr "Directory '%s' non trovata\n"
 
 #: ../server/turn.c:253
 msgid "Island Discovery Bonus"
