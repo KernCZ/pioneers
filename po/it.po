@@ -1326,7 +1326,7 @@ msgstr "Cambia il tuo nome di giocatore"
 
 #: ../client/gtk/gui.c:226
 msgid "L_egend"
-msgstr "Le_genda"
+msgstr "Legen_da"
 
 #: ../client/gtk/gui.c:227
 msgid "Terrain legend and building costs"
