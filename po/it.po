@@ -1467,7 +1467,7 @@ msgstr "Configura l'applicazione"
 #: ../client/gtk/gui.c:263 ../client/gtk/gui.c:267 ../editor/gtk/editor.c:998
 #: ../server/gtk/main.c:97
 msgid "_Help"
-msgstr "_Aiuto"
+msgstr "Ai_uto"
 
 #: ../client/gtk/gui.c:264
 msgid "_About Pioneers"
