@@ -1,3 +1,7 @@
+2009-10-25  Roland Clobus <rclobus@bigfoot.com>
+	* xmldocs.make, omf.make: Synchronized with gnome-common, to remove
+	warnings.
+
 2009-10-15  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/interface.c: No beep after the robber has moved.
 	* client/gtk/gui.c: Fix double keyboard shortcut in Game menu.
