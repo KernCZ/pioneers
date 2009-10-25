@@ -44,7 +44,7 @@ msgstr "Nom de l'AI (obligatoire)"
 #. Commandline pioneersai: time
 #: ../client/ai/ai.c:74
 msgid "Time to wait between turns (in milliseconds)"
-msgstr "Teamps d'attente entre les tours (en millisecondes)"
+msgstr "Temps d'attente entre les tours (en millisecondes)"
 
 #. Commandline pioneersai: chat-free
 #: ../client/ai/ai.c:77
