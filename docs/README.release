@@ -8,8 +8,8 @@ Before a release:
   The mailing list is pio-develop@lists.sourceforge.net
 * Write an email to the (last) translators
   The mailing list is pio-i18n@lists.sourceforge.net
-* Check the pioneers.spec file
-* Check the pioneers.nsi file
+* Check the pioneers.spec.in file
+* Check the pioneers.nsi.in file
 * Check the Debian files
 * Update the manual where needed (including the screenshots)
 

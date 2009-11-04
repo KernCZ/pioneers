@@ -1,3 +1,9 @@
+Subversion release 0.12.3
+* New feature: Look in $XDG_DATA_HOME/pioneers/themes for themes
+* New feature: Look in $XDG_DATA_HOME/pioneers for games
+* Fixed IPv4 vs IPv6 connection issues when adding local computer players
+* Some cosmetic changes
+
 Subversion Snapshot release 0.12.2
 * Bugfix: Rejected trade was not sent
 * Bugfix: Tournament mode used seconds instead of minutes
