@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 0.11.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-15 21:14+0200\n"
+"POT-Creation-Date: 2009-11-04 11:30+0100\n"
 "PO-Revision-Date: 2008-04-29 09:36+0000\n"
 "Last-Translator: carson\n"
 "Language-Team: Danish <da@li.org>\n"
@@ -428,7 +428,7 @@ msgstr "Vælg en bygning at stjæle fra."
 msgid "Select the ship to steal from."
 msgstr "Vælg et skib at stjæle fra."
 
-#: ../client/common/client.c:1646 ../client/gtk/interface.c:783
+#: ../client/common/client.c:1646 ../client/gtk/interface.c:785
 msgid "Place the robber"
 msgstr "Placér en røver"
 
@@ -1634,19 +1634,19 @@ msgstr "Pioneers"
 msgid "Dice Histogram"
 msgstr "Ternings histogram"
 
-#: ../client/gtk/interface.c:93
+#: ../client/gtk/interface.c:94
 msgid "Ship movement canceled."
 msgstr "Bevægelse af skib annulleret"
 
-#: ../client/gtk/interface.c:101 ../client/gtk/interface.c:102
+#: ../client/gtk/interface.c:102 ../client/gtk/interface.c:103
 msgid "Select a new location for the ship."
 msgstr "Vælg en ny lokation for skibet."
 
-#: ../client/gtk/interface.c:741
+#: ../client/gtk/interface.c:743
 msgid "Select the ship to steal from"
 msgstr "Vælg hvilket skib, der skal stjæles fra"
 
-#: ../client/gtk/interface.c:751
+#: ../client/gtk/interface.c:753
 msgid "Select the building to steal from"
 msgstr "Vælg en bygning at stjæle fra"
 

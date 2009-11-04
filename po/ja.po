@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 0.11.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-15 21:14+0200\n"
+"POT-Creation-Date: 2009-11-04 11:30+0100\n"
 "PO-Revision-Date: 2007-07-20 05:45+0900\n"
 "Last-Translator: Yasuhiko Takasugi <takasugi@flcl.org>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -426,7 +426,7 @@ msgstr "強奪する建築物を選択"
 msgid "Select the ship to steal from."
 msgstr "強奪する船を選択"
 
-#: ../client/common/client.c:1646 ../client/gtk/interface.c:783
+#: ../client/common/client.c:1646 ../client/gtk/interface.c:785
 msgid "Place the robber"
 msgstr "盗賊配置"
 
@@ -1633,19 +1633,19 @@ msgstr "パイオニア"
 msgid "Dice Histogram"
 msgstr "ダイスヒストグラム"
 
-#: ../client/gtk/interface.c:93
+#: ../client/gtk/interface.c:94
 msgid "Ship movement canceled."
 msgstr "船移動を取り消し"
 
-#: ../client/gtk/interface.c:101 ../client/gtk/interface.c:102
+#: ../client/gtk/interface.c:102 ../client/gtk/interface.c:103
 msgid "Select a new location for the ship."
 msgstr "船の新しい配置を選択"
 
-#: ../client/gtk/interface.c:741
+#: ../client/gtk/interface.c:743
 msgid "Select the ship to steal from"
 msgstr "強奪する船を選択"
 
-#: ../client/gtk/interface.c:751
+#: ../client/gtk/interface.c:753
 msgid "Select the building to steal from"
 msgstr "強奪する建築物を選択"
 

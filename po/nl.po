@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 0.12.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-15 21:14+0200\n"
+"POT-Creation-Date: 2009-11-04 11:30+0100\n"
 "PO-Revision-Date: 2008-03-27 07:53+0100\n"
 "Last-Translator: Roland Clobus <rclobus@bigfoot.com>\n"
 "Language-Team: Bas Wijnen <shevek@fmf.nl> Roland Clobus <rclobus@bigfoot."
@@ -427,7 +427,7 @@ msgstr "Kies een gebouw om te bestelen."
 msgid "Select the ship to steal from."
 msgstr "Kies een schip om te bestelen."
 
-#: ../client/common/client.c:1646 ../client/gtk/interface.c:783
+#: ../client/common/client.c:1646 ../client/gtk/interface.c:785
 msgid "Place the robber"
 msgstr "Plaats de struikrover"
 
@@ -1633,19 +1633,19 @@ msgstr "Pioniers"
 msgid "Dice Histogram"
 msgstr "Dobbelsteenhistogram"
 
-#: ../client/gtk/interface.c:93
+#: ../client/gtk/interface.c:94
 msgid "Ship movement canceled."
 msgstr "Verplaatsen van het schip is geannuleerd."
 
-#: ../client/gtk/interface.c:101 ../client/gtk/interface.c:102
+#: ../client/gtk/interface.c:102 ../client/gtk/interface.c:103
 msgid "Select a new location for the ship."
 msgstr "Selecteer een nieuwe plek voor het schip."
 
-#: ../client/gtk/interface.c:741
+#: ../client/gtk/interface.c:743
 msgid "Select the ship to steal from"
 msgstr "Kies een schip om te bestelen"
 
-#: ../client/gtk/interface.c:751
+#: ../client/gtk/interface.c:753
 msgid "Select the building to steal from"
 msgstr "Kies een gebouw om te bestelen"
 

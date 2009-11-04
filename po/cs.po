@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 0.11.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-15 21:14+0200\n"
+"POT-Creation-Date: 2009-11-04 11:30+0100\n"
 "PO-Revision-Date: 2008-02-02 16:45+0100\n"
 "Last-Translator: Ladislav Dobias <lada-preklad@dobias.info>\n"
 "Language-Team: \n"
@@ -422,7 +422,7 @@ msgstr "Zvolte stavbu, ze které se bude krást."
 msgid "Select the ship to steal from."
 msgstr "Zvolte loď, ze které se bude krást."
 
-#: ../client/common/client.c:1646 ../client/gtk/interface.c:783
+#: ../client/common/client.c:1646 ../client/gtk/interface.c:785
 msgid "Place the robber"
 msgstr "Přemístěte zloděje"
 
@@ -1628,19 +1628,19 @@ msgstr "Pioneers"
 msgid "Dice Histogram"
 msgstr "Histogram hodů"
 
-#: ../client/gtk/interface.c:93
+#: ../client/gtk/interface.c:94
 msgid "Ship movement canceled."
 msgstr "Pohyb lodi zrušen."
 
-#: ../client/gtk/interface.c:101 ../client/gtk/interface.c:102
+#: ../client/gtk/interface.c:102 ../client/gtk/interface.c:103
 msgid "Select a new location for the ship."
 msgstr "Zvolit novou pozici pro loď."
 
-#: ../client/gtk/interface.c:741
+#: ../client/gtk/interface.c:743
 msgid "Select the ship to steal from"
 msgstr "Zvolte loď ze které se bude krást"
 
-#: ../client/gtk/interface.c:751
+#: ../client/gtk/interface.c:753
 msgid "Select the building to steal from"
 msgstr "Zvolte budovu - odkud krást"
 

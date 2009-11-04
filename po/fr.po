@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 0.12.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-15 21:14+0200\n"
+"POT-Creation-Date: 2009-11-04 11:30+0100\n"
 "PO-Revision-Date: 2009-10-18 14:28+0100\n"
 "Last-Translator: Jean-Charles GRANGER <traduction@vecteur.org>\n"
 "Language-Team: Français <LL@li.org>, LT-P <LT-P@LT-P.net>, Yusei "
@@ -435,7 +435,7 @@ msgstr "Choisissez la construction à voler."
 msgid "Select the ship to steal from."
 msgstr "Choisissez le navire à voler."
 
-#: ../client/common/client.c:1646 ../client/gtk/interface.c:783
+#: ../client/common/client.c:1646 ../client/gtk/interface.c:785
 msgid "Place the robber"
 msgstr "Déplacez le voleur"
 
@@ -1642,19 +1642,19 @@ msgstr "Pioneers"
 msgid "Dice Histogram"
 msgstr "Histogramme des lancers de dés"
 
-#: ../client/gtk/interface.c:93
+#: ../client/gtk/interface.c:94
 msgid "Ship movement canceled."
 msgstr "Déplacement du navire annulé"
 
-#: ../client/gtk/interface.c:101 ../client/gtk/interface.c:102
+#: ../client/gtk/interface.c:102 ../client/gtk/interface.c:103
 msgid "Select a new location for the ship."
 msgstr "Choisissez un nouvel emplacement pour le navire"
 
-#: ../client/gtk/interface.c:741
+#: ../client/gtk/interface.c:743
 msgid "Select the ship to steal from"
 msgstr "Choisissez le navire à voler."
 
-#: ../client/gtk/interface.c:751
+#: ../client/gtk/interface.c:753
 msgid "Select the building to steal from"
 msgstr "Choisissez la construction à voler."
 
