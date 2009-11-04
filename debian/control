@@ -3,7 +3,7 @@ Section: games
 Priority: optional
 Maintainer: Bas Wijnen <wijnen@debian.org>
 Uploaders: Steve Langasek <vorlon@debian.org>, Roman Hodek <roman@debian.org>
-Build-Depends: debhelper (>= 7.0.0), libgnome2-dev, scrollkeeper, gnome-common, imagemagick, librsvg2-bin, netpbm, libgtk2.0-dev, automake1.10, autoconf (>= 2.60), po-debconf
+Build-Depends: debhelper, libgnome2-dev, scrollkeeper, gnome-common, imagemagick, librsvg2-bin, netpbm, libgtk2.0-dev, automake, autoconf, po-debconf, intltool, libtool
 Standards-Version: 3.8.2
 Homepage: http://pio.sourceforge.net/
 Vcs-Svn: https://pio.svn.sourceforge.net/svnroot/pio/trunk/pioneers

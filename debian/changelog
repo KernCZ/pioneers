@@ -1,8 +1,9 @@
 pioneers (0.12.2-6unreleased1) unstable; urgency=low
 
   * Use the configured hostname. (closes: 546643)
+  * Updated build dependencies
  
- -- Roland Clobus <rclobus@bigfoot.com>  Sat, 17 Oct 2009 13:33:00 +0200
+ -- Roland Clobus <rclobus@bigfoot.com>  Wed, 4 Nov 2009 11:33:00 +0200
 
 pioneers (0.12.2-6unreleased) unstable; urgency=low
 
