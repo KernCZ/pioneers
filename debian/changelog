@@ -1,3 +1,9 @@
+pioneers (0.12.2-6unreleased2) unstable; urgency=low
+
+  * Undo the change to the watch file from 0.12.2-6unreleased
+
+ -- Roland Clobus <rclobus@bigfoot.com>  Fri, 13 Nov 2009 20:46:00 +0200
+
 pioneers (0.12.2-6unreleased1) unstable; urgency=low
 
   * Use the configured hostname. (closes: 546643)
