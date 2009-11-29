@@ -261,9 +261,34 @@ static gint button_press_map_cb(GtkWidget * area, GdkEventButton * event,
 		return TRUE;
 
 	menu = NULL;
-	if (event->button == 1)
-		menu = terrain_menu;
-	else if (current_hex->roll > 0) {
+	if (event->button == 1) {
+		MapElement element;
+		Node *current_node;
+		gint distance_node;
+		gint distance_hex;
+
+		current_node = guimap_find_node(gmap, event->x, event->y);
+		element.node = current_node;
+		distance_node =
+		    guimap_distance_cursor(gmap, &element, MAP_NODE,
+					   event->x, event->y);
+		element.hex = current_hex;
+		distance_hex =
+		    guimap_distance_cursor(gmap, &element, MAP_HEX,
+					   event->x, event->y);
+
+		if (distance_node < distance_hex) {
+			current_node->no_setup = !current_node->no_setup;
+			for (i = 0; i < G_N_ELEMENTS(current_node->hexes);
+			     i++) {
+				guimap_draw_hex(gmap,
+						current_node->hexes[i]);
+			}
+			return TRUE;
+		} else {
+			menu = terrain_menu;
+		}
+	} else if (current_hex->roll > 0) {
 		menu = roll_menu;
 		for (i = 2; i <= 12; i++) {
 			if (roll_numbers[i] != NULL)

@@ -42,6 +42,12 @@ typedef enum {
 	ROBBER_CURSOR
 } CursorType;
 
+typedef enum {
+	MAP_EDGE,
+	MAP_NODE,
+	MAP_HEX
+} MapElementType;
+
 typedef union {
 	const Hex *hex;
 	const Node *node;
@@ -125,7 +131,13 @@ void guimap_draw_edge(GuiMap * gmap, const Edge * edge);
 void guimap_draw_node(GuiMap * gmap, const Node * node);
 void guimap_draw_hex(GuiMap * gmap, const Hex * hex);
 
+Node *guimap_find_node(GuiMap * gmap, gint x, gint y);
 Hex *guimap_find_hex(GuiMap * gmap, gint x, gint y);
+
+gint guimap_distance_cursor(const GuiMap * gmap,
+			    const MapElement * element,
+			    MapElementType type, gint cursor_x,
+			    gint cursor_y);
 
 void guimap_cursor_set(GuiMap * gmap, CursorType cursor_type, gint owner,
 		       CheckFunc check_func, SelectFunc select_func,
