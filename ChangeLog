@@ -1,3 +1,7 @@
+2009-11-29  Roland Clobus <rclobus@bigfoot.com>
+	* editor/gtk/editor.c: Use the correct size for the icons in the
+	context menu.
+
 2009-11-04  Roland Clobus <rclobus@bigfoot.com>
 	* configure.ac: Work version is 0.12.4
 

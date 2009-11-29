@@ -473,8 +473,10 @@ static GtkWidget *build_terrain_menu(void)
 	gint i;
 	GtkWidget *menu;
 	GtkWidget *item;
-	GdkPixmap *pixmap;
+	GdkPixbuf *pixbuf;
 	GtkWidget *image;
+	gint width;
+	gint height;
 	MapTheme *theme = theme_get_current();
 
 	menu = gtk_menu_new();
@@ -490,11 +492,24 @@ static GtkWidget *build_terrain_menu(void)
 				 G_CALLBACK(select_terrain_cb),
 				 GINT_TO_POINTER(i));
 
-		pixmap = theme->terrain_tiles[i];
-		if (i == LAST_TERRAIN || pixmap == NULL)
+		if (i == LAST_TERRAIN)
 			continue;
 
-		image = gtk_image_new_from_pixmap(pixmap, NULL);
+		/* Use the default size, or smaller */
+		gtk_icon_size_lookup(GTK_ICON_SIZE_MENU, &width, &height);
+		if (height > width / theme->scaledata[i].aspect) {
+			height = width / theme->scaledata[i].aspect;
+		} else if (width > height * theme->scaledata[i].aspect) {
+			width = height * theme->scaledata[i].aspect;
+		}
+
+		pixbuf =
+		    gdk_pixbuf_scale_simple(theme->
+					    scaledata[i].native_image,
+					    width, height,
+					    GDK_INTERP_BILINEAR);
+
+		image = gtk_image_new_from_pixbuf(pixbuf);
 		gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(item),
 					      image);
 	}
