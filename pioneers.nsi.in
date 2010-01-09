@@ -1,13 +1,6 @@
 ; Script generated with the aid of the HM NIS Edit Script Wizard.
 ; Adapted for Pioneers by Roland Clobus <rclobus@bigfoot.com>
 
-;Global Variables
-Var FOUND_GTK_VERSION
-
-!define GTK_VERSION "@GTK_REQUIRED_VERSION@"
-!define GTK_UPGRADE_TEXT "(Minimum version: ${GTK_VERSION}, current version: $FOUND_GTK_VERSION)"
-!define GTK_NOT_FOUND_TEXT "(Minimum version: ${GTK_VERSION}) If you just installed the runtime, try to reboot first."
-
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "Pioneers"
 !define PRODUCT_VERSION "@VERSION@"
@@ -19,8 +12,7 @@ Var FOUND_GTK_VERSION
 
 SetCompressor bzip2
 
-; MUI 1.67 compatible ------
-!include "MUI.nsh"
+!include "MUI2.nsh"
 
 ; MUI Settings
 !define MUI_ABORTWARNING
@@ -28,12 +20,11 @@ SetCompressor bzip2
 !define MUI_UNICON "${NSISDIR}\Contrib\Graphics\Icons\modern-uninstall.ico"
 
 ; Language Selection Dialog Settings
+!define MUI_LANGDLL_ALLLANGUAGES
 !define MUI_LANGDLL_REGISTRY_ROOT "${PRODUCT_UNINST_ROOT_KEY}"
 !define MUI_LANGDLL_REGISTRY_KEY "${PRODUCT_UNINST_KEY}"
 !define MUI_LANGDLL_REGISTRY_VALUENAME "NSIS:Language"
 
-; Check whether the Gtk+ runtime is installed
-!define MUI_PAGE_CUSTOMFUNCTION_PRE		preWelcomePage
 ; Welcome page
 !insertmacro MUI_PAGE_WELCOME
 ; License page
@@ -57,22 +48,31 @@ var ICONS_GROUP
 !insertmacro MUI_PAGE_FINISH
 
 ; Uninstaller pages
+!insertmacro MUI_UNPAGE_CONFIRM
 !insertmacro MUI_UNPAGE_INSTFILES
 
 ; Language files
+!insertmacro MUI_LANGUAGE "English" ;first language is the default
+!insertmacro MUI_LANGUAGE "Afrikaans"
 !insertmacro MUI_LANGUAGE "Czech"
 !insertmacro MUI_LANGUAGE "Danish"
 !insertmacro MUI_LANGUAGE "Dutch"
-!insertmacro MUI_LANGUAGE "English"
 !insertmacro MUI_LANGUAGE "French"
 !insertmacro MUI_LANGUAGE "German"
 !insertmacro MUI_LANGUAGE "Hungarian"
+!insertmacro MUI_LANGUAGE "Italian"
 !insertmacro MUI_LANGUAGE "Japanese"
+!insertmacro MUI_LANGUAGE "Portuguese"
 !insertmacro MUI_LANGUAGE "Spanish"
 !insertmacro MUI_LANGUAGE "Swedish"
 
-; Reserve files
-!insertmacro MUI_RESERVEFILE_INSTALLOPTIONS
+;Reserve Files
+  
+;If you are using solid compression, files that are required before
+;the actual installation should be stored first in the data block,
+;because this will make your installer start faster.
+!insertmacro MUI_RESERVEFILE_LANGDLL
+
 
 ; MUI end ------
 
@@ -83,6 +83,9 @@ InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
 ShowInstDetails show
 ShowUnInstDetails show
 
+;Request application privileges for Windows Vista
+RequestExecutionLevel user
+
 Function .onInit
   !insertmacro MUI_LANGDLL_DISPLAY
 FunctionEnd
@@ -91,6 +94,30 @@ Section "!Minimal install" SEC01
   SetOutPath "$INSTDIR"
   SetOverwrite ifnewer
   File "..\..\..\local\pioneers.exe"
+  File "..\..\..\local\freetype6.dll"
+  File "..\..\..\local\libatk-1.0-0.dll"
+  File "..\..\..\local\libcairo-2.dll"
+  File "..\..\..\local\libexpat-1.dll"
+  File "..\..\..\local\libfontconfig-1.dll"
+  File "..\..\..\local\libgdk-win32-2.0-0.dll"
+  File "..\..\..\local\libgdk_pixbuf-2.0-0.dll"
+  File "..\..\..\local\libgio-2.0-0.dll"
+  File "..\..\..\local\libglib-2.0-0.dll"
+  File "..\..\..\local\libgmodule-2.0-0.dll"
+  File "..\..\..\local\libgobject-2.0-0.dll"
+  File "..\..\..\local\libgtk-win32-2.0-0.dll"
+  File "..\..\..\local\libiconv-2.dll"
+  File "..\..\..\local\libintl-8.dll"
+  File "..\..\..\local\libpango-1.0-0.dll"
+  File "..\..\..\local\libpangocairo-1.0-0.dll"
+  File "..\..\..\local\libpangoft2-1.0-0.dll"
+  File "..\..\..\local\libpangowin32-1.0-0.dll"
+  File "..\..\..\local\libpixbufloader-png.dll"
+  File "..\..\..\local\libpng12-0.dll"
+  File "..\..\..\local\zlib1.dll"
+
+  SetOutPath "$INSTDIR\etc\gtk-2.0"
+  File "..\..\..\local\etc\gtk-2.0\gdk-pixbuf.loaders"
 
   SetOverwrite TRY
 ; Translations
@@ -164,7 +191,6 @@ Section "!Minimal install" SEC01
   File "..\..\..\local\themes\Classic\hill.png"
   File "..\..\..\local\themes\Classic\mountain.png"
   File "..\..\..\local\themes\Classic\pasture.png"
-  File "..\..\..\local\themes\Classic\plain.png"
   File "..\..\..\local\themes\Classic\sea.png"
   File "..\..\..\local\themes\Classic\theme.cfg"
   SetOutPath "$INSTDIR\themes\FreeCIV-like"
@@ -314,16 +340,28 @@ Section Uninstall
   Delete "$INSTDIR\pioneers-editor.exe"
   Delete "$INSTDIR\pioneersai.exe"
   Delete "$INSTDIR\pioneers.exe"
-  Delete "$INSTDIR\themes\sea.png"
-  Delete "$INSTDIR\themes\plain.png"
-  Delete "$INSTDIR\themes\pasture.png"
-  Delete "$INSTDIR\themes\mountain.png"
-  Delete "$INSTDIR\themes\hill.png"
-  Delete "$INSTDIR\themes\gold.png"
-  Delete "$INSTDIR\themes\forest.png"
-  Delete "$INSTDIR\themes\field.png"
-  Delete "$INSTDIR\themes\desert.png"
-  Delete "$INSTDIR\themes\board.png"
+  Delete "$INSTDIR\freetype6.dll"
+  Delete "$INSTDIR\libatk-1.0-0.dll"
+  Delete "$INSTDIR\libcairo-2.dll"
+  Delete "$INSTDIR\libexpat-1.dll"
+  Delete "$INSTDIR\libfontconfig-1.dll"
+  Delete "$INSTDIR\libgdk-win32-2.0-0.dll"
+  Delete "$INSTDIR\libgdk_pixbuf-2.0-0.dll"
+  Delete "$INSTDIR\libgio-2.0-0.dll"
+  Delete "$INSTDIR\libglib-2.0-0.dll"
+  Delete "$INSTDIR\libgmodule-2.0-0.dll"
+  Delete "$INSTDIR\libgobject-2.0-0.dll"
+  Delete "$INSTDIR\libgtk-win32-2.0-0.dll"
+  Delete "$INSTDIR\libiconv-2.dll"
+  Delete "$INSTDIR\libintl-8.dll"
+  Delete "$INSTDIR\libpango-1.0-0.dll"
+  Delete "$INSTDIR\libpangocairo-1.0-0.dll"
+  Delete "$INSTDIR\libpangoft2-1.0-0.dll"
+  Delete "$INSTDIR\libpangowin32-1.0-0.dll"
+  Delete "$INSTDIR\libpixbufloader-png.dll"
+  Delete "$INSTDIR\libpng12-0.dll"
+  Delete "$INSTDIR\zlib1.dll"
+  Delete "$INSTDIR\etc\gtk-2.0\gdk-pixbuf.loaders"
   Delete "$INSTDIR\themes\Wesnoth-like\theme.cfg"
   Delete "$INSTDIR\themes\Wesnoth-like\sea.png"
   Delete "$INSTDIR\themes\Wesnoth-like\pasture.png"
@@ -369,6 +407,16 @@ Section Uninstall
   Delete "$INSTDIR\themes\FreeCIV-like\field.png"
   Delete "$INSTDIR\themes\FreeCIV-like\desert.png"
   Delete "$INSTDIR\themes\FreeCIV-like\board.png"
+  Delete "$INSTDIR\themes\Classic\theme.cfg"
+  Delete "$INSTDIR\themes\Classic\sea.png"
+  Delete "$INSTDIR\themes\Classic\pasture.png"
+  Delete "$INSTDIR\themes\Classic\mountain.png"
+  Delete "$INSTDIR\themes\Classic\hill.png"
+  Delete "$INSTDIR\themes\Classic\gold.png"
+  Delete "$INSTDIR\themes\Classic\forest.png"
+  Delete "$INSTDIR\themes\Classic\field.png"
+  Delete "$INSTDIR\themes\Classic\desert.png"
+  Delete "$INSTDIR\themes\Classic\board.png"
   Delete "$INSTDIR\pixmaps\pioneers\style-human-7.png"
   Delete "$INSTDIR\pixmaps\pioneers\style-human-6.png"
   Delete "$INSTDIR\pixmaps\pioneers\style-human-5.png"
@@ -451,6 +499,7 @@ Section Uninstall
   RMDir "$INSTDIR\themes\Tiny"
   RMDir "$INSTDIR\themes\Iceland"
   RMDir "$INSTDIR\themes\FreeCIV-like"
+  RMDir "$INSTDIR\themes\Classic"
   RMDir "$INSTDIR\themes"
   RMDir "$INSTDIR\pixmaps\pioneers"
   RMDir "$INSTDIR\pixmaps"
@@ -481,106 +530,12 @@ Section Uninstall
   RMDir "$INSTDIR\locale"
   RMDir "$INSTDIR\games\pioneers"
   RMDir "$INSTDIR\games"
+  RMDir "$INSTDIR\games"
+  RMDIR "$INSTDIR\etc\gtk-2.0"
+  RMDIR "$INSTDIR\etc"
   RMDir "$INSTDIR"
 
   DeleteRegKey ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}"
   DeleteRegKey HKLM "${PRODUCT_DIR_REGKEY}"
   SetAutoClose true
 SectionEnd
-
-!include "WordFunc.nsh"
-!insertMacro VersionCompare
-;
-; Usage:
-; Call DoWeNeedGtk
-; First Pop:
-;   0 - We have the correct version
-;       Second Pop: Current version
-;   1 - We have an old version that needs to be upgraded
-;       Second Pop: Current version
-;   2 - We don't have Gtk+ at all
-;       Second Pop: "GTK+ not found"
-;
-; The version of the Gtk dll will be checked.
-; This means that the DLL must be found in the path,
-; using the default DLL location functions that Pioneers uses.
-;
-Function DoWeNeedGtk
-  Push $0
-  Push $2
-  Push $3
-  Push $4
-  Push $5
-
-  GetDllVersion "libgtk-win32-2.0-0.dll" $R0 $R1
-  IfErrors no_gtk
-  IntOp $R2 $R0 / 0x00010000
-  IntOp $R3 $R0 & 0x0000FFFF
-  IntOp $R4 $R1 / 0x00010000
-  IntOp $R5 $R1 & 0x0000FFFF
-  StrCpy $0 "$R2.$R3.$R4.$R5"
-
-  ; GTK+ is already installed.. check version.
-  ${VersionCompare} ${GTK_VERSION} $0 $2
-  StrCmp $2 "1" bad_version good_version
-  bad_version:
-    StrCpy $2 "1"
-    Push $0
-    Push $2
-    Goto done
-
-  good_version:
-    StrCpy $2 "0"
-    Push $0
-    Push $2
-    Goto done
-
-  no_gtk:
-    StrCpy $2 "2"
-    StrCpy $0 "GTK not found"
-    Push $0
-    Push $2
-    Goto done
-
-  done:
-  ; The top two items on the stack are what we want to return
-  Exch 5
-  Pop $0
-  Exch 5
-  Pop $2
-  Pop $5
-  Pop $4
-  Pop $3
-FunctionEnd
-
-Function preWelcomePage
-  ; If this installer doesn't have GTK, check whether we need it.
-  ; We do this here an not in .onInit because language change in
-  ; .onInit doesn't take effect until it is finished.
-    Push $R0
-    Push $R1
-    Call DoWeNeedGtk
-    Pop $R0
-    Pop $R1
-    StrCpy $FOUND_GTK_VERSION "$R1"
-
-    StrCmp $R0 "0" have_gtk might_need_gtk
-    might_need_gtk:
-     StrCmp $R0 "1" upgrade_gtk need_gtk
-    upgrade_gtk:
-      StrCpy $R0 "${GTK_UPGRADE_TEXT}"
-      Goto gtk_display_message
-    need_gtk:
-      StrCpy $R0 "${GTK_NOT_FOUND_TEXT}"
-      Goto gtk_display_message
-    gtk_display_message:
-      Push $R2
-      StrCpy $R2 "You need to the Gtk+ runtime first.$\n$R0$\n$\nThe runtime can be downloaded from$\nhttp://gimp-win.sourceforge.net/stable.html$\n$\nDo you want to continue anyway?"
-      MessageBox MB_ICONQUESTION|MB_YESNO "$R2" IDYES have_gtk IDNO no_gtk
-      Pop $R2
-    no_gtk:
-      Quit
-    have_gtk:
-    Pop $R1
-    Pop $R0
-FunctionEnd
