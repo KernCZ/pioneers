@@ -189,6 +189,7 @@ distuninstallcheck_listfiles = find . -type f -print | grep -v '^\./var/scrollke
 # Reformat the code.
 reindent:
 	find . -name '*.[ch]' -exec indent -kr -i8 '{}' ';'
+	find . -name '*.[ch]' -exec indent -kr -i8 '{}' ';'
 
 restorepo:
 	svn revert po/*.po po/pioneers.pot

@@ -1,5 +1,6 @@
 2010-01-10  Roland Clobus <rclobus@bigfoot.com>
 	* pioneers.nsi.in: Update the Windows installer to include all DLLs.
+	* Makefile.am: Invoke indent twice to fix unstable reindents.
 
 2009-12-31  Roland Clobus <rclobus@bigfoot.com>
 	* common/network.c: Fix FTBFS for Windows.
