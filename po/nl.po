@@ -2931,7 +2931,7 @@ msgstr "Start Pioniers"
 
 #: ../server/gtk/main.c:822
 msgid "Computer Players"
-msgstr "Computer spelers"
+msgstr "Computerspelers"
 
 #: ../server/gtk/main.c:831
 msgid "Enable Chat"
@@ -2939,7 +2939,7 @@ msgstr "Chat mogelijk"
 
 #: ../server/gtk/main.c:837
 msgid "Enable chat messages"
-msgstr "De computer speler mag chat boodschappen versturen"
+msgstr "De computerspeler mag chat-boodschappen versturen"
 
 #: ../server/gtk/main.c:844
 msgid "Add Computer Player"
@@ -3131,11 +3131,11 @@ msgstr "onbekende extensie genegeerd"
 
 #: ../server/player.c:210 ../server/player.c:247
 msgid "The last player left, the tournament timer is reset."
-msgstr "De laatste speler is vertrokken, de teller wordt opgenieuw ingesteld."
+msgstr "De laatste speler is vertrokken, de teller wordt opnieuw ingesteld."
 
 #: ../server/player.c:217
 msgid "Game starts, adding computer players."
-msgstr "Het spel gaat beginnen, computer spelers worden toegevoegd."
+msgstr "Het spel gaat beginnen, computerspelers worden toegevoegd."
 
 #: ../server/player.c:260
 #, c-format
