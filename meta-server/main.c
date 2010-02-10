@@ -565,6 +565,8 @@ static void client_create_new_server(Client * client, gchar * line)
 	}
 	port = g_strdup_printf("%d", sa.sin_port);
 
+	net_closesocket(fd);
+
 	n = 0;
 	child_argv[n++] = g_strdup(console_server);
 	child_argv[n++] = g_strdup(console_server);

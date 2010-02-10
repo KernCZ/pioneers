@@ -1,5 +1,7 @@
 2010-02-10  Roland Clobus <rclobus@rclobus.nl>
 	* getVersions.sh: Update for many distributors
+	* meta-server/main.c: Fix a resource leak which would cause the meta-
+	server to stop sending the names of the games eventually.
 
 2010-01-10  Roland Clobus <rclobus@bigfoot.com>
 	* pioneers.nsi.in: Update the Windows installer to include all DLLs.
