@@ -1,5 +1,10 @@
 2010-02-16  Roland Clobus <rclobus@rclobus.nl>
 	* kill-game.sh: Added maintenance script for the meta-server.
+	* server/player.c: Stop and deregister the tournament timer when the
+	time has passed. Cleanup all players that disconnected during the
+	registration persiod, to fix the bug that the added computer players
+	would leave the game thinking that they are viewers. With the timer
+	still running, and even restarting this would cause a fork bomb.
 
 2010-02-10  Roland Clobus <rclobus@rclobus.nl>
 	* getVersions.sh: Update for many distributors

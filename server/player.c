@@ -102,7 +102,8 @@ static gboolean mode_global(Player * player, gint event)
 		if (player->devel != NULL)
 			deck_free(player->devel);
 		if (player->num >= 0
-		    && !player_is_viewer(game, player->num)) {
+		    && !player_is_viewer(game, player->num)
+		    && !player->disconnected) {
 			game->num_players--;
 			meta_report_num_players(game->num_players);
 		}
@@ -197,6 +198,10 @@ static gboolean tournament_start_cb(gpointer data)
 {
 	int i;
 	Game *game = (Game *) data;
+	GList *player;
+
+	g_source_remove(game->tournament_timer);
+	game->tournament_timer = 0;
 
 	/* if game already started */
 	if (game->num_players == game->params->num_players)
@@ -210,12 +215,23 @@ static gboolean tournament_start_cb(gpointer data)
 				 ("The last player left, the "
 				  "tournament timer is reset."));
 		game->tournament_countdown = game->params->tournament_time;
+		return FALSE;
 	}
 
 	player_broadcast(player_none(game), PB_SILENT, FIRST_VERSION,
 			 LATEST_VERSION, "NOTE %s\n",
 			 N_("Game starts, adding computer players."));
-	game->tournament_timer = 0;
+
+	/* remove all disconnected players */
+	playerlist_inc_use_count(game);
+	for (player = game->player_list; player != NULL;
+	     player = g_list_next(player)) {
+		Player *p = player->data;
+		if (p->disconnected && !p->sm->use_cache) {
+			player_free(p);
+		}
+	}
+	playerlist_dec_use_count(game);
 
 	/* add computer players to start game */
 	for (i = game->num_players; i < game->params->num_players; i++) {
@@ -337,6 +353,8 @@ gchar *player_new_computer_player(Game * game)
 	Player *player;
 	gchar *name;
 
+	/* Reserve the name, so the names of the computer players will
+	   be unique */
 	name = generate_name_for_computer_player(game);
 	player = player_new(game, name, "square");
 	player->disconnected = TRUE;
