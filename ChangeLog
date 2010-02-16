@@ -1,3 +1,6 @@
+2010-02-16  Roland Clobus <rclobus@rclobus.nl>
+	* kill-game.sh: Added maintenance script for the meta-server.
+
 2010-02-10  Roland Clobus <rclobus@rclobus.nl>
 	* getVersions.sh: Update for many distributors
 	* meta-server/main.c: Fix a resource leak which would cause the meta-
