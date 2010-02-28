@@ -97,8 +97,8 @@ static gint max_fd;
 
 /* Command line data */
 static gboolean make_daemon = FALSE;
-static const gchar *pidfile = NULL;
-static const gchar *port_range = NULL;
+static gchar *pidfile = NULL;
+static gchar *port_range = NULL;
 static gboolean enable_debug = FALSE;
 static gboolean enable_syslog_debug = FALSE;
 static gboolean show_version = FALSE;
@@ -386,6 +386,7 @@ static GList *load_game_desc(gchar * fname, GList * titles)
 			titles =
 			    g_list_insert_sorted(titles, g_strdup(title),
 						 (GCompareFunc) strcmp);
+			g_free(line);
 			break;
 		}
 		g_free(line);
@@ -429,6 +430,7 @@ static void client_list_types(Client * client)
 
 	for (; list != NULL; list = g_list_next(list)) {
 		client_printf(client, "title=%s\n", list->data);
+		g_free(list->data);
 	}
 	g_list_free(list);
 }
@@ -1104,6 +1106,7 @@ int main(int argc, char *argv[])
 	g_option_context_add_main_entries(context,
 					  commandline_entries, PACKAGE);
 	g_option_context_parse(context, &argc, &argv, &error);
+	g_option_context_free(context);
 	if (error != NULL) {
 		g_print("%s\n", error->message);
 		g_error_free(error);
@@ -1144,7 +1147,11 @@ int main(int argc, char *argv[])
 	game_list = load_game_types();
 	if (game_list) {
 		gchar *server_name;
-		g_list_free(game_list);
+		while (game_list) {
+			gpointer data = game_list->data;
+			game_list = g_list_remove(game_list, data);
+			g_free(data);
+		}
 		server_name = g_find_program_in_path(get_server_path());
 		if (server_name) {
 			g_free(server_name);
@@ -1162,6 +1169,12 @@ int main(int argc, char *argv[])
 
 	my_syslog(LOG_INFO, "Pioneers meta server started.");
 	select_loop();
+
+	g_thread_exit(0);
+	g_free(pidfile);
+	g_free(redirect_location);
+	g_free(myhostname);
+	g_free(port_range);
 
 	net_finish();
 	return 0;
