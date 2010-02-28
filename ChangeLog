@@ -1,6 +1,7 @@
 2010-02-28  Roland Clobus <rclobus@rclobus.nl>
 	* meta-server/main.c: Fix some memory leaks.
-	* common/Makefile.am: Use variables for sed and echo.
+	* common/Makefile.am: Use variables for sed and echo. (Thanks to Hans
+	Frugal who wrote the initial patch)
 
 2010-02-16  Roland Clobus <rclobus@rclobus.nl>
 	* kill-game.sh: Added maintenance script for the meta-server.
