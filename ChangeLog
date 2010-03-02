@@ -1,3 +1,6 @@
+2010-03-02  Roland Clobus <rclobus@rclobus.nl>
+	* client/ai/greedy.c: Let the AI select only available resources.
+
 2010-02-28  Roland Clobus <rclobus@rclobus.nl>
 	* meta-server/main.c: Fix some memory leaks.
 	* common/Makefile.am: Use variables for sed and echo. (Thanks to Hans

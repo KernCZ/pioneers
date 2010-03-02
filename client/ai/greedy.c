@@ -1905,6 +1905,14 @@ static void greedy_gold_choose(gint gold_num, const gint * bank)
 	for (i = 0; i < gold_num; i++) {
 		reevaluate_resources(&resval);
 
+		/* If the bank has been emptied, don't desire it */
+		gint j;
+		for (j = 0; j < NO_RESOURCE; j++) {
+			if (my_bank[j] == 0) {
+				resval.value[j] = 0;
+			}
+		}
+
 		r1 = resource_desire(assets, &resval);
 		/* If we don't want anything, start emptying the bank */
 		if (r1 == NO_RESOURCE) {
