@@ -55,23 +55,23 @@ libpioneers_a_SOURCES = \
 
 common/authors.h: AUTHORS
 	@mkdir_p@ common
-	$(lt_ECHO) $(ECHO_N) "#define AUTHORLIST " > $@
+	$(ECHO) $(ECHO_N) "#define AUTHORLIST " > $@
 	$(SED) -e's/ <.*//; s/$$/", \\/; s/^/"/; /^"[[:space:]]*", \\$$/d' $< >> $@
-	$(lt_ECHO) "NULL" >> $@
+	$(ECHO) "NULL" >> $@
 
 # This target is not called common/version.h (although it builds that file),
 # because it must be PHONY, but should only be rebuilt once.
 build_version:
 	@mkdir_p@ common
-	$(lt_ECHO) $(ECHO_N) '#define FULL_VERSION "$(VERSION)' > common/version.new
+	$(ECHO) $(ECHO_N) '#define FULL_VERSION "$(VERSION)' > common/version.new
 	if svn info > /dev/null 2>&1; then				\
-		$(lt_ECHO) $(ECHO_N) ".r`svn info | grep Revision | cut -f2 -d\ `"	\
+		$(ECHO) $(ECHO_N) ".r`svn info | grep Revision | cut -f2 -d\ `"	\
 			>> common/version.new				;\
 		if svn status | grep -vq ^\? ; then			\
-			$(lt_ECHO) $(ECHO_N) '.M' >> common/version.new		;\
+			$(ECHO) $(ECHO_N) '.M' >> common/version.new		;\
 		fi							;\
 	fi
-	$(lt_ECHO) '"' >> common/version.new
+	$(ECHO) '"' >> common/version.new
 	if diff common/version.h common/version.new > /dev/null 2>&1; then \
 		rm common/version.new					;\
 	else								\

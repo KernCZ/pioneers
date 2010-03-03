@@ -1,6 +1,9 @@
 2010-03-02  Roland Clobus <rclobus@rclobus.nl>
 	* client/ai/greedy.c: Let the AI select only available resources.
 	* configure.ac: Upgrade to GTK+ to 2.12 and glib to 2.16.
+	* configure.ac, common/Makefile.am: Fixes the previous patch to
+	common/Makefile.am. The newest version of libtool.m4 did not publish
+	ECHO.
 
 2010-02-28  Roland Clobus <rclobus@rclobus.nl>
 	* meta-server/main.c: Fix some memory leaks.
