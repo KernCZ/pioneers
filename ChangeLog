@@ -1,3 +1,11 @@
+2010-03-09  Roland Clobus <rclobus@rclobus.nl>
+	* editor/gtk/game-devcards.c, editor/gtk/game-devcards.h,
+	common/cards.h, common/cards.c, po/POTFILES.in, client/callback.h,
+	client/gtk/develop.c, client/common/develop.c: Add tooltip with
+	description of the development cards. (Many thanks to
+	aaron@copiesofcopies.org who wrote the basis for the patch
+	2008-04-12)
+
 2010-03-02  Roland Clobus <rclobus@rclobus.nl>
 	* client/ai/greedy.c: Let the AI select only available resources.
 	* configure.ac: Upgrade to GTK+ to 2.12 and glib to 2.16.

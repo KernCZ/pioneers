@@ -30,6 +30,7 @@ client/gtk/resource.c
 client/gtk/resource-table.c
 client/gtk/settingscreen.c
 client/gtk/trade.c
+common/cards.c
 common/game.c
 common/gtk/aboutbox.c
 common/gtk/game-rules.c

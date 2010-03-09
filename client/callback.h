@@ -396,7 +396,6 @@ int pirate_count_victims(const Hex * hex, gint * victim_list);
 int robber_count_victims(const Hex * hex, gint * victim_list);
 const gint *get_bank(void);
 const DevelDeck *get_devel_deck(void);
-const gchar *get_devel_name(DevelType type);
 
 /** Returns instructions for the user */
 const gchar *road_building_message(gint build_amount);

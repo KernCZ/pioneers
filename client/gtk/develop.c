@@ -61,6 +61,7 @@ static gint develtype_to_sortorder(DevelType type)
 enum {
 	DEVELOP_COLUMN_TYPE, /**< Development card type */
 	DEVELOP_COLUMN_ORDER, /**< Sort order */
+	DEVELOP_COLUMN_NAME, /**< Name of the card */
 	DEVELOP_COLUMN_DESCRIPTION, /**< Description of the card */
 	DEVELOP_COLUMN_AMOUNT, /**< Amount of the cards */
 	DEVELOP_COLUMN_LAST
@@ -135,7 +136,8 @@ GtkWidget *develop_build_page(void)
 	store = gtk_list_store_new(DEVELOP_COLUMN_LAST,
 				   G_TYPE_INT,
 				   G_TYPE_INT,
-				   G_TYPE_STRING, G_TYPE_STRING);
+				   G_TYPE_STRING, G_TYPE_STRING,
+				   G_TYPE_STRING);
 
 	scroll_win = gtk_scrolled_window_new(NULL, NULL);
 	gtk_widget_set_size_request(scroll_win, -1, 100);
@@ -149,6 +151,8 @@ GtkWidget *develop_build_page(void)
 
 	/* Create graphical representation of the model */
 	develop_list = gtk_tree_view_new_with_model(GTK_TREE_MODEL(store));
+	gtk_tree_view_set_tooltip_column(GTK_TREE_VIEW(develop_list),
+					 DEVELOP_COLUMN_DESCRIPTION);
 	gtk_tree_view_set_headers_visible(GTK_TREE_VIEW(develop_list),
 					  FALSE);
 	gtk_container_add(GTK_CONTAINER(scroll_win), develop_list);
@@ -175,7 +179,7 @@ GtkWidget *develop_build_page(void)
 								 gtk_cell_renderer_text_new
 								 (),
 								 "text",
-								 DEVELOP_COLUMN_DESCRIPTION,
+								 DEVELOP_COLUMN_NAME,
 								 NULL);
 	gtk_tree_view_column_set_sizing(column,
 					GTK_TREE_VIEW_COLUMN_AUTOSIZE);
@@ -224,9 +228,12 @@ static void update_model(GtkTreeIter * iter, DevelType type)
 			 amount);
 
 	gtk_list_store_set(store, iter,
+			   DEVELOP_COLUMN_NAME,
+			   get_devel_name(type),
 			   DEVELOP_COLUMN_DESCRIPTION,
-			   get_devel_name(type), DEVELOP_COLUMN_AMOUNT,
-			   amount_string, DEVELOP_COLUMN_TYPE, type,
+			   get_devel_description(type),
+			   DEVELOP_COLUMN_AMOUNT, amount_string,
+			   DEVELOP_COLUMN_TYPE, type,
 			   DEVELOP_COLUMN_ORDER,
 			   develtype_to_sortorder(type), -1);
 }

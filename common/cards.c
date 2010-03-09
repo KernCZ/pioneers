@@ -113,3 +113,71 @@ gint deck_card_oldest_card(const DevelDeck * deck, DevelType type)
 			return idx;
 	return -1;
 }
+
+const gchar *get_devel_name(DevelType type)
+{
+	switch (type) {
+	case DEVEL_ROAD_BUILDING:
+		/* Name of the development card */
+		return _("Road Building");
+	case DEVEL_MONOPOLY:
+		/* Name of the development card */
+		return _("Monopoly");
+	case DEVEL_YEAR_OF_PLENTY:
+		/* Name of the development card */
+		return _("Year of Plenty");
+	case DEVEL_CHAPEL:
+		/* Name of the development card */
+		return _("Chapel");
+	case DEVEL_UNIVERSITY:
+		/* Name of the development card */
+		return _("Pioneer University");
+	case DEVEL_GOVERNORS_HOUSE:
+		/* Name of the development card */
+		return _("Governor's House");
+	case DEVEL_LIBRARY:
+		/* Name of the development card */
+		return _("Library");
+	case DEVEL_MARKET:
+		/* Name of the development card */
+		return _("Market");
+	case DEVEL_SOLDIER:
+		/* Name of the development card */
+		return _("Soldier");
+	}
+	g_assert_not_reached();
+	return "";
+}
+
+const gchar *get_devel_description(DevelType type)
+{
+	switch (type) {
+	case DEVEL_ROAD_BUILDING:
+		/* Description of the 'Road Building' development card */
+		return _("Build two new roads");
+	case DEVEL_MONOPOLY:
+		/* Description of the 'Monopoly' development card */
+		return _("Select a resource type and take every card of "
+			 "that type held by all other players");
+	case DEVEL_YEAR_OF_PLENTY:
+		/* Description of the 'Year of Plenty' development card */
+		return
+		    _("Take two resource cards of any type from the bank "
+		      "(cards may be of the same or different types)");
+	case DEVEL_CHAPEL:
+	case DEVEL_UNIVERSITY:
+	case DEVEL_GOVERNORS_HOUSE:
+	case DEVEL_LIBRARY:
+	case DEVEL_MARKET:
+		/* Description of a development card of 1 victory point */
+		return _("One victory point");
+	case DEVEL_SOLDIER:
+		/* Description of the 'Soldier' development card */
+		return
+		    _("Move the robber to a different space and take one "
+		      "resource card from another player adjacent to that "
+		      "space");
+	}
+	g_assert_not_reached();
+	return "";
+}

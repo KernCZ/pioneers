@@ -5,6 +5,7 @@
 #include <glib.h>
 #include <glib-object.h>
 #include <gtk/gtk.h>
+#include "cards.h"
 
 G_BEGIN_DECLS
 #define GAMEDEVCARDS_TYPE            (game_devcards_get_type ())
@@ -28,8 +29,9 @@ struct _GameDevCardsClass {
 GType game_devcards_get_type(void);
 GtkWidget *game_devcards_new(void);
 
-void game_devcards_set_num_cards(GameDevCards * gd, gint type, gint num);
-gint game_devcards_get_num_cards(GameDevCards * gd, gint type);
+void game_devcards_set_num_cards(GameDevCards * gd, DevelType type,
+				 gint num);
+gint game_devcards_get_num_cards(GameDevCards * gd, DevelType type);
 
 G_END_DECLS
 #endif				/* __GAMEDEVCARDS_H__ */

@@ -6,13 +6,6 @@
 
 #include "game-devcards.h"
 
-static const gchar *devcard_names[NUM_DEVEL_TYPES] = {
-	N_("Road Building"), N_("Monopoly"), N_("Year of Plenty"),
-	N_("Chapel"), N_("Pioneer University"),
-	N_("Governor's House"), N_("Library"), N_("Market"),
-	N_("Soldier")
-};
-
 static void game_devcards_init(GameDevCards * gd);
 
 /* Register the class */
@@ -54,7 +47,7 @@ static void game_devcards_init(GameDevCards * gd)
 	gtk_table_set_homogeneous(GTK_TABLE(gd), TRUE);
 
 	for (row = 0; row < NUM_DEVEL_TYPES; row++) {
-		label = gtk_label_new(gettext(devcard_names[row]));
+		label = gtk_label_new(get_devel_name(row));
 		gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 		gtk_table_attach_defaults(GTK_TABLE(gd), label,
 					  0, 1, row, row + 1);
@@ -62,6 +55,8 @@ static void game_devcards_init(GameDevCards * gd)
 		adjustment = gtk_adjustment_new(0, 0, 100, 1, 5, 0);
 		spin =
 		    gtk_spin_button_new(GTK_ADJUSTMENT(adjustment), 1, 0);
+		gtk_widget_set_tooltip_text(spin,
+					    get_devel_description(row));
 		gtk_entry_set_alignment(GTK_ENTRY(spin), 1.0);
 		gtk_table_attach_defaults(GTK_TABLE(gd), spin,
 					  1, 2, row, row + 1);
@@ -76,12 +71,13 @@ GtkWidget *game_devcards_new(void)
 	return GTK_WIDGET(g_object_new(game_devcards_get_type(), NULL));
 }
 
-void game_devcards_set_num_cards(GameDevCards * gd, gint type, gint num)
+void game_devcards_set_num_cards(GameDevCards * gd, DevelType type,
+				 gint num)
 {
 	gtk_spin_button_set_value(gd->num_cards[type], num);
 }
 
-gint game_devcards_get_num_cards(GameDevCards * gd, gint type)
+gint game_devcards_get_num_cards(GameDevCards * gd, DevelType type)
 {
 	return gtk_spin_button_get_value_as_int(gd->num_cards[type]);
 }

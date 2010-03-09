@@ -38,6 +38,8 @@ typedef struct {
 } DevelDeck;
 
 gboolean is_victory_card(DevelType type);
+const gchar *get_devel_name(DevelType type);
+const gchar *get_devel_description(DevelType description);
 
 DevelDeck *deck_new(GameParams * params);
 void deck_free(DevelDeck * deck);
