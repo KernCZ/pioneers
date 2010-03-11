@@ -2115,7 +2115,7 @@ msgstr "Es ist möglich, dass dieses Spiel unentschieden endet."
 #: ../common/game.c:645
 msgid "This game can be won by only building all settlements and cities."
 msgstr ""
-"Dieses Spiel kann nur noch durch das Bauen aller Siedlungen und Städte "
+"Dieses Spiel kann allein durch das Bauen aller Siedlungen und Städte "
 "gewonnen werden."
 
 #: ../common/game.c:651
