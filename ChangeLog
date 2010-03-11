@@ -2,6 +2,8 @@
 	* client/gtk/data/themes/FreeCIV-like/theme.cfg,
 	client/gtk/data/themes/Wesnoth-like/theme.cfg: Fix the themes to avoid
 	drawing black letters on a black background. (Fixes Ubuntu bug #530988)
+	* client/gtk/data/themes/ccFlickr: Added a new theme written by Aaron
+	Williamson <aaron@copiesofcopies.org>
 
 2010-03-09  Roland Clobus <rclobus@rclobus.nl>
 	* editor/gtk/game-devcards.c, editor/gtk/game-devcards.h,
