@@ -3,7 +3,7 @@ pioneers (0.12.3-1unreleased1) unstable; urgency=low
   * Update release-checklist for svn repository
   * Refer to pioneers-meta-server instead of pioneers-console in the init
     scripts
-  * Fix meta-server pidfile ussue again. (closes: #567994) 
+  * Fix meta-server pidfile issue again. (closes: #567994) 
 
  -- Roland Clobus <rclobus@rclobus.nl>  Thu, 18 Mar 2010 10:16:26 +0100
 
