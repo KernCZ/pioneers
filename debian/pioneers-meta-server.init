@@ -27,7 +27,7 @@ META_SERVER_NAME="`dnsdomainname --fqdn`"
 ARGS="--make-pidfile --quiet --chuid nobody:nogroup"
 
 # File for storing the pid.  You probably don't need to change this.
-PIDFILE=/var/run/pioneers/meta-server.pid
+PIDFILE=/var/run/pioneers-meta-server.pid
 
 # End of variable list.
 
@@ -42,19 +42,12 @@ export PIONEERS_META_SERVER
 NAME="Pioneers meta-server"
 DAEMON=/usr/games/pioneers-meta-server
 ARGS="--pidfile $PIDFILE --exec $DAEMON $ARGS"
-START_ARGS="--start $ARGS -- --daemon $PORT_RANGE $META_SERVER_ARGS $META_SERVER_NAME"
+START_ARGS="--background --start $ARGS -- $PORT_RANGE $META_SERVER_ARGS $META_SERVER_NAME"
 STOP_ARGS="--stop $ARGS"
 
 if test ! -x "$DAEMON"; then
 	echo "$DAEMON does not exist"
 	exit 0
-fi
-
-pidfile_dir="`dirname "$PIDFILE"`"
-if test ! -d "$pidfile_dir" ; then
-	mkdir -p "$pidfile_dir"
-	chown nobody:nogroup "$pidfile_dir"
-	chmod 755 "$pidfile_dir"
 fi
 
 case "$1" in
