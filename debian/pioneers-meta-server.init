@@ -11,8 +11,8 @@
 #			clients to find servers.
 ### END INIT INFO
 
-# The defaults below can be overridden in /etc/default/pioneers-console
-CONFIG_FILE=/etc/default/pioneers-console
+# The defaults below can be overridden in /etc/default/pioneers-meta-server
+CONFIG_FILE=/etc/default/pioneers-meta-server
 
 # Port range
 PORT_RANGE="5560-5569"
@@ -109,7 +109,7 @@ case "$1" in
 		fi
 		;;
 	*)
-		echo "Usage: /etc/init.d/pioneers-console {start|stop|restart|force-reload|status}"
+		echo "Usage: /etc/init.d/pioneers-meta-server {start|stop|restart|force-reload|status}"
 		exit 1
 		;;
 esac
