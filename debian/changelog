@@ -1,10 +1,12 @@
 pioneers (0.12.3-1unreleased1) unstable; urgency=low
 
-  * Update release-checklist for svn repository
+  * Update release-checklist for svn repository.
   * Refer to pioneers-meta-server instead of pioneers-console in the init
-    scripts
+    scripts.
   * Fix meta-server pidfile issue again. (closes: #567994) 
-  * Fix bug number in changelog 'Link to all gtk libraries' (closes #556063)
+  * Fix bug number in changelog 'Link to all gtk libraries'. (closes #556063)
+    Bug already closed by an e-mail to 556063-done@bugs.debian.org
+  * Fix lintian error init.d-script-missing-dependency-on_remote_fs.
 
  -- Roland Clobus <rclobus@rclobus.nl>  Thu, 18 Mar 2010 10:16:26 +0100
 
