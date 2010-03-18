@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pioneers-eu\n"
 "Report-Msgid-Bugs-To: pioneers@packages.debian.org\n"
-"POT-Creation-Date: 2008-05-25 08:09+0200\n"
+"POT-Creation-Date: 2009-11-25 13:11+0100\n"
 "PO-Revision-Date: 2008-05-13 10:09+0200\n"
 "Last-Translator: Piarres Beobide <pi@beobide.net>\n"
 "Language-Team: Euskara <debian-l10n-basque@lists.debian.org>\n"
@@ -16,36 +16,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
 
-#. Type: boolean
-#. Description
-#: ../pioneers-console.templates:1001
-msgid "Run the pioneers meta-server?"
-msgstr "Exekutatu pioneers meta-zerbitzaria?"
-
-#. Type: boolean
-#. Description
-#: ../pioneers-console.templates:1001
-msgid ""
-"Pioneers contains a meta-server, which can be used to find networked games. "
-"The meta-server needs to run in a central location, so that all players can "
-"find it. There is a public meta-server at pioneers.debian.net. Most people "
-"do not need to run a meta-server on their computer."
-msgstr ""
-"Sare bidezko jokoak aurkitzeko erabili daitekeen meta-zerbitzari bat du "
-"pioneers-ek. Meta-zerbitzari hau kokaleku zentralizatu batetan exekutatu "
-"behar da, honela jokalariak aurkitzeko gai izan daitezen. Meta-zerbitzari "
-"publiko bat dago pioneers.debian.net-en. Jende gehienak ez du meta-"
-"zerbitzaria bere ordenagailuan exekutatzeko beharrik."
-
 #. Type: string
 #. Description
-#: ../pioneers-console.templates:2001
+#: ../pioneers-meta-server.templates:1001
 msgid "Port range for creating new games on the meta-server:"
 msgstr "Meta-zerbitzarian joko berriak sortzeko ataka bitartea:"
 
 #. Type: string
 #. Description
-#: ../pioneers-console.templates:2001
+#: ../pioneers-meta-server.templates:1001
 msgid ""
 "The meta-server can create new games, so players don't need to install and "
 "run the pioneers server. The ports which are used for these games can be "
@@ -59,7 +38,7 @@ msgstr ""
 
 #. Type: string
 #. Description
-#: ../pioneers-console.templates:2001
+#: ../pioneers-meta-server.templates:1001
 msgid ""
 "If the value is not empty, it must be two port numbers, separated by a minus "
 "sign."
@@ -69,13 +48,13 @@ msgstr ""
 
 #. Type: string
 #. Description
-#: ../pioneers-console.templates:3001
+#: ../pioneers-meta-server.templates:2001
 msgid "Server name for created games:"
 msgstr "Sorturiko jokoen zerbitzari izena:"
 
 #. Type: string
 #. Description
-#: ../pioneers-console.templates:3001
+#: ../pioneers-meta-server.templates:2001
 msgid ""
 "In some cases, the name the meta-server uses for itself when creating new "
 "games is incorrect. If this field is not left empty, it is used to override "
@@ -87,13 +66,13 @@ msgstr ""
 
 #. Type: string
 #. Description
-#: ../pioneers-console.templates:4001
+#: ../pioneers-meta-server.templates:3001
 msgid "Extra arguments to pass to the meta-server:"
 msgstr "Meta-zerbitzarira bidaltzeko argumentu gehigarriak:"
 
 #. Type: string
 #. Description
-#: ../pioneers-console.templates:4001
+#: ../pioneers-meta-server.templates:3001
 msgid ""
 "These arguments are passed to the meta-server. There are only two sensible "
 "arguments:\n"
@@ -104,3 +83,18 @@ msgstr ""
 "bakarrik daude:\n"
 " * --syslog-debug: Bidali arazpen irteera syslog-era\n"
 " * --redirect: Birbidali bezeroak beste meta-zerbitzari batetara"
+
+#~ msgid "Run the pioneers meta-server?"
+#~ msgstr "Exekutatu pioneers meta-zerbitzaria?"
+
+#~ msgid ""
+#~ "Pioneers contains a meta-server, which can be used to find networked "
+#~ "games. The meta-server needs to run in a central location, so that all "
+#~ "players can find it. There is a public meta-server at pioneers.debian."
+#~ "net. Most people do not need to run a meta-server on their computer."
+#~ msgstr ""
+#~ "Sare bidezko jokoak aurkitzeko erabili daitekeen meta-zerbitzari bat du "
+#~ "pioneers-ek. Meta-zerbitzari hau kokaleku zentralizatu batetan exekutatu "
+#~ "behar da, honela jokalariak aurkitzeko gai izan daitezen. Meta-zerbitzari "
+#~ "publiko bat dago pioneers.debian.net-en. Jende gehienak ez du meta-"
+#~ "zerbitzaria bere ordenagailuan exekutatzeko beharrik."

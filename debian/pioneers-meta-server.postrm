@@ -1,6 +1,6 @@
 #!/bin/sh -e
 
-CONFIG_FILE=/etc/default/pioneers-console
+CONFIG_FILE=/etc/default/pioneers-meta-server
 
 if test "$1" = "purge" ; then
 	rm -f "$CONFIG_FILE"

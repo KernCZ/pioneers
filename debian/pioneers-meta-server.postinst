@@ -1,6 +1,6 @@
 #!/bin/sh -e
 
-CONFIG_FILE=/etc/default/pioneers-console
+CONFIG_FILE=/etc/default/pioneers-meta-server
 
 . /usr/share/debconf/confmodule
 
@@ -31,19 +31,18 @@ conffile_edit ()
 	# Do nothing if the value hasn't changed.
 	test "$RET" != "`eval 'echo $'"$variable"`" || return 0
 
-	# If the setting isn't in the conffile yet, add it.
-	if [ ! -r "$CONFIG_FILE" ] || ! grep -q "^$variable=" "$CONFIG_FILE" ; then
+	if grep -q "^$variable=" "$CONFIG_FILE" ; then
+		# Edit the conffile to contain the new setting.
+		sed -i "s/^\($variable=\).*\$/\\1'$RET'/" "$CONFIG_FILE"
+	else
+		# Or if the setting isn't in the conffile yet, add it.
 		echo "$variable='$RET'" >> "$CONFIG_FILE"
-		return 0
 	fi
-
-	# Otherwise, edit the conffile to contain the new setting.
-	sed -i "s/^\($variable=\).*\$/\\1'$RET'/" "$CONFIG_FILE"
+	return 0
 }
 
-conffile_edit RUN_META_SERVER pioneers-console/run-meta-server
-conffile_edit PORT_RANGE pioneers-console/meta-server-ports
-conffile_edit META_SERVER_NAME pioneers-console/meta-server-name
-conffile_edit META_SERVER_ARGS pioneers-console/meta-server-args
+conffile_edit PORT_RANGE pioneers-meta-server/ports
+conffile_edit META_SERVER_NAME pioneers-meta-server/name
+conffile_edit META_SERVER_ARGS pioneers-meta-server/arguments
 
 #DEBHELPER#

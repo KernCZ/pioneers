@@ -1,13 +1,4 @@
-Template: pioneers-console/run-meta-server
-Type: boolean
-Default: false
-_Description: Run the pioneers meta-server?
- Pioneers contains a meta-server, which can be used to find networked games.
- The meta-server needs to run in a central location, so that all players can
- find it. There is a public meta-server at pioneers.debian.net. Most people
- do not need to run a meta-server on their computer.
-
-Template: pioneers-console/meta-server-ports
+Template: pioneers-meta-server/ports
 Type: string
 Default: 5560-5569
 _Description: Port range for creating new games on the meta-server:
@@ -19,7 +10,7 @@ _Description: Port range for creating new games on the meta-server:
  If the value is not empty, it must be two port numbers, separated by a minus
  sign.
 
-Template: pioneers-console/meta-server-name
+Template: pioneers-meta-server/name
 Type: string
 Default:
 _Description: Server name for created games:
@@ -27,7 +18,7 @@ _Description: Server name for created games:
  games is incorrect. If this field is not left empty, it is used to override
  the detected hostname.
 
-Template: pioneers-console/meta-server-arguments
+Template: pioneers-meta-server/arguments
 Type: string
 Default:
 _Description: Extra arguments to pass to the meta-server:

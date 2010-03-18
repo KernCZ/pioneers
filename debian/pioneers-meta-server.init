@@ -1,7 +1,7 @@
 #! /bin/sh
 
 ### BEGIN INIT INFO
-# Provides:		pioneers-console
+# Provides:		pioneers-meta-server
 # Required-Start:	$syslog $network
 # Required-Stop:	$syslog $network
 # Default-Start:	2 3 4 5
@@ -13,9 +13,6 @@
 
 # The defaults below can be overridden in /etc/default/pioneers-console
 CONFIG_FILE=/etc/default/pioneers-console
-
-# Set this to "true" (in $CONFIG_FILE) to actually run the meta-server
-RUN_META_SERVER="false"
 
 # Port range
 PORT_RANGE="5560-5569"
@@ -30,7 +27,7 @@ META_SERVER_NAME="`dnsdomainname --fqdn`"
 ARGS="--make-pidfile --quiet --chuid nobody:nogroup"
 
 # File for storing the pid.  You probably don't need to change this.
-PIDFILE=/var/run/pioneers-meta-server.pid
+PIDFILE=/var/run/pioneers/meta-server.pid
 
 # End of variable list.
 
@@ -53,12 +50,15 @@ if test ! -x "$DAEMON"; then
 	exit 0
 fi
 
+pidfile_dir="`dirname "$PIDFILE"`"
+if test ! -d "$pidfile_dir" ; then
+	mkdir -p "$pidfile_dir"
+	chown nobody:nogroup "$pidfile_dir"
+	chmod 755 "$pidfile_dir"
+fi
+
 case "$1" in
 	start)
-		if test ! "$RUN_META_SERVER" = "true"; then
-			echo "Pioneers meta server is disabled in $CONFIG_FILE."
-			exit 0
-		fi
 		if start-stop-daemon --test $START_ARGS; then
 			echo -n "Starting $NAME..."
 			if start-stop-daemon $START_ARGS; then
@@ -79,10 +79,6 @@ case "$1" in
 		fi
 		;;
 	restart|force-reload)
-		if test ! "$RUN_META_SERVER" = "true"; then
-			echo "Pioneers meta server is disabled in $CONFIG_FILE."
-			exit 0
-		fi
 		echo -n "Restarting $NAME..."
 		if start-stop-daemon $STOP_ARGS --oknodo ; then
 			sleep 2

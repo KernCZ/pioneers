@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pioneers\n"
 "Report-Msgid-Bugs-To: pioneers@packages.debian.org\n"
-"POT-Creation-Date: 2008-07-01 19:06+0200\n"
+"POT-Creation-Date: 2009-11-25 13:11+0100\n"
 "PO-Revision-Date: 2009-06-30 22:03+0300\n"
 "Last-Translator: Esko Arajärvi <edu@iki.fi>\n"
 "Language-Team: Finnish <debian-l10n-finnish@lists.debian.org>\n"
@@ -16,36 +16,15 @@ msgstr ""
 "X-Generator: Lokalize 0.3\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#. Type: boolean
-#. Description
-#: ../pioneers-console.templates:1001
-msgid "Run the pioneers meta-server?"
-msgstr "Ajetaanko pioneersin meta-palvelinta?"
-
-#. Type: boolean
-#. Description
-#: ../pioneers-console.templates:1001
-msgid ""
-"Pioneers contains a meta-server, which can be used to find networked games. "
-"The meta-server needs to run in a central location, so that all players can "
-"find it. There is a public meta-server at pioneers.debian.net. Most people "
-"do not need to run a meta-server on their computer."
-msgstr ""
-"Pioneers sisältää meta-palvelimen, jonka avulla voidaan etsiä verkon kautta "
-"pelattavia pelejä. Meta-palvelimen täytyy olla keskeisessä paikassa, jotta "
-"kaikki pelaajat löytävät sen. Osoitteessa pioneers.debian.org on julkinen "
-"meta-palvelin. Useimpien käyttäjien ei tarvitse ajaa meta-palvelinta "
-"koneellaan."
-
 #. Type: string
 #. Description
-#: ../pioneers-console.templates:2001
+#: ../pioneers-meta-server.templates:1001
 msgid "Port range for creating new games on the meta-server:"
 msgstr "Porttialue uusien pelien luomiseen meta-palvelimelle:"
 
 #. Type: string
 #. Description
-#: ../pioneers-console.templates:2001
+#: ../pioneers-meta-server.templates:1001
 msgid ""
 "The meta-server can create new games, so players don't need to install and "
 "run the pioneers server. The ports which are used for these games can be "
@@ -59,7 +38,7 @@ msgstr ""
 
 #. Type: string
 #. Description
-#: ../pioneers-console.templates:2001
+#: ../pioneers-meta-server.templates:1001
 msgid ""
 "If the value is not empty, it must be two port numbers, separated by a minus "
 "sign."
@@ -69,13 +48,13 @@ msgstr ""
 
 #. Type: string
 #. Description
-#: ../pioneers-console.templates:3001
+#: ../pioneers-meta-server.templates:2001
 msgid "Server name for created games:"
 msgstr "Palvelimen nimi luotuja pelejä varten:"
 
 #. Type: string
 #. Description
-#: ../pioneers-console.templates:3001
+#: ../pioneers-meta-server.templates:2001
 msgid ""
 "In some cases, the name the meta-server uses for itself when creating new "
 "games is incorrect. If this field is not left empty, it is used to override "
@@ -87,13 +66,13 @@ msgstr ""
 
 #. Type: string
 #. Description
-#: ../pioneers-console.templates:4001
+#: ../pioneers-meta-server.templates:3001
 msgid "Extra arguments to pass to the meta-server:"
 msgstr "Meta-palvelimelle annettavat lisäargumentit:"
 
 #. Type: string
 #. Description
-#: ../pioneers-console.templates:4001
+#: ../pioneers-meta-server.templates:3001
 msgid ""
 "These arguments are passed to the meta-server. There are only two sensible "
 "arguments:\n"
@@ -104,3 +83,18 @@ msgstr ""
 "olemassa vain kaksi järkevää argumenttia:\n"
 " * --syslog-debug: Lähetä virheidenjäljitystuloste syslogille\n"
 " * --redirect:     Ohjaa asiakkaat toiselle meta-palvelimelle"
+
+#~ msgid "Run the pioneers meta-server?"
+#~ msgstr "Ajetaanko pioneersin meta-palvelinta?"
+
+#~ msgid ""
+#~ "Pioneers contains a meta-server, which can be used to find networked "
+#~ "games. The meta-server needs to run in a central location, so that all "
+#~ "players can find it. There is a public meta-server at pioneers.debian."
+#~ "net. Most people do not need to run a meta-server on their computer."
+#~ msgstr ""
+#~ "Pioneers sisältää meta-palvelimen, jonka avulla voidaan etsiä verkon "
+#~ "kautta pelattavia pelejä. Meta-palvelimen täytyy olla keskeisessä "
+#~ "paikassa, jotta kaikki pelaajat löytävät sen. Osoitteessa pioneers.debian."
+#~ "org on julkinen meta-palvelin. Useimpien käyttäjien ei tarvitse ajaa meta-"
+#~ "palvelinta koneellaan."

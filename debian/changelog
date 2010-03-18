@@ -1,26 +1,28 @@
-pioneers (0.12.2-6unreleased2) unstable; urgency=low
+pioneers (0.12.3-1) unstable; urgency=low
 
-  * Undo the change to the watch file from 0.12.2-6unreleased
+  [ Roland Clobus ]
 
- -- Roland Clobus <rclobus@bigfoot.com>  Fri, 13 Nov 2009 20:46:00 +0200
-
-pioneers (0.12.2-6unreleased1) unstable; urgency=low
-
-  * Use the configured hostname. (closes: 546643)
-  * Updated build dependencies
- 
- -- Roland Clobus <rclobus@bigfoot.com>  Wed, 4 Nov 2009 11:33:00 +0200
-
-pioneers (0.12.2-6unreleased) unstable; urgency=low
-
-  * Fix watch file to use the directory structure on SF.net.
+  * Use the configured hostname. (closes: #546643)
+  * Updated build dependencies.
   * Add Italian translation. (closes: #544160)
   * Add Finnish translation. (closes: #535213)
   * Add Spanish translation. (closes: #520210)
   * Add Swedish translation. (closes: #506597)
-  * Fixed a typo in the About dialog for the Frech translation (closes: 510611)
+  * Fixed a typo in the About dialog for the Frech translation.
+    (closes: #510611)
 
- -- Roland Clobus <rclobus@bigfoot.com>  Thu, 27 Aug 2009 18:50:00 +0200
+  [ Bas Wijnen ]
+
+  * New upstream release.
+  * Remove Roman Hodek from Uploaders. (closes: #507403)
+  * Split meta-server back into its own package. (closes: #540695)
+  * Fix meta-server pidfile issue. (closes: #534634)
+  * Add japanese translation. (closes: #547205)
+  * Make clients try all socket types when connecting. (closes: #530032)
+  * Link to all gtk libraries. (closes: 530032)
+  * Update standards version (no changes needed).
+
+ -- Bas Wijnen <wijnen@debian.org>  Wed, 25 Nov 2009 13:41:40 +0100
 
 pioneers (0.12.2-5) unstable; urgency=low
 
