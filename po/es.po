@@ -7,9 +7,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Pioneers 0.10.1\n"
+"Project-Id-Version: Pioneers 0.12.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-04 11:30+0100\n"
+"POT-Creation-Date: 2010-03-18 08:58+0100\n"
 "PO-Revision-Date: 2009-11-23 22:19+0000\n"
 "Last-Translator: DiegoJ <diegojromerolopez@gmail.com>\n"
 "Language-Team: Spanish <debian-l10n-spanish@lists.debian.org>\n"
@@ -389,8 +389,7 @@ msgid "Version mismatch"
 msgstr "Versión no coincide"
 
 #: ../client/common/client.c:965
-msgid ""
-"Version mismatch. Please make sure client and server are up to date.\n"
+msgid "Version mismatch. Please make sure client and server are up to date.\n"
 msgstr ""
 "Versión no coincide, Por favor asegúrese de que el cliente y el servidor "
 "están actualizados.\n"
@@ -536,14 +535,14 @@ msgid "You have run out of road segments.\n"
 msgstr "Has gastado todos los segmentos de camino.\n"
 
 #. I get the cards!
-#. 
+#.
 #: ../client/common/develop.c:187
 #, c-format
 msgid "You get %s from %s.\n"
 msgstr "Recibes %s de %s.\n"
 
 #. I lose the cards!
-#. 
+#.
 #: ../client/common/develop.c:193
 #, c-format
 msgid "%s took %s from you.\n"
@@ -2151,7 +2150,7 @@ msgstr "Autores:"
 
 #. Translators: add your name here. Keep the list alphabetically,
 #. * do not remove any names, and add \n after your name (except the last name).
-#. 
+#.
 #: ../common/gtk/aboutbox.c:103 ../common/gtk/aboutbox.c:114
 msgid "translator_credits"
 msgstr ""
@@ -2971,7 +2970,7 @@ msgstr "El servidor del Juego Pionners"
 
 #. Wait for all players to disconnect,
 #. * then enable the UI
-#. 
+#.
 #: ../server/gtk/main.c:937
 msgid "The game is over.\n"
 msgstr "El juego ha terminado.\n"
@@ -3059,8 +3058,7 @@ msgstr "Salir luego de N segundos sin jugadores"
 #. Commandline server-console: tournament
 #: ../server/main.c:126
 msgid "Tournament mode, computer players added after N minutes"
-msgstr ""
-"Modo de torneo, adversarios electrónicos agregados luego de N minutos"
+msgstr "Modo de torneo, adversarios electrónicos agregados luego de N minutos"
 
 #. Commandline server-console: admin-port
 #: ../server/main.c:130
@@ -3162,7 +3160,7 @@ msgstr "El juego comienza en %s minutos."
 
 #. Default name for the AI when the computer_names file
 #. * is not found or empty.
-#. 
+#.
 #: ../server/player.c:319 ../server/player.c:325
 msgid "Computer Player"
 msgstr "Adversario electrónico"
@@ -3234,7 +3232,6 @@ msgstr "El rol del dado ha sido determinado por el administrador."
 #~ msgid "_Legend"
 #~ msgstr "_Leyenda"
 
-#, c-format
 #~ msgid "bad scaling mode '%s'"
 #~ msgstr "Mal modo de escala '%s'"
 
