@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 0.12.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-04 11:30+0100\n"
-"PO-Revision-Date: 2008-03-27 07:53+0100\n"
-"Last-Translator: Roland Clobus <rclobus@bigfoot.com>\n"
+"POT-Creation-Date: 2010-03-18 08:56+0100\n"
+"PO-Revision-Date: 2010-03-18 08:55+0100\n"
+"Last-Translator: Roland Clobus <rclobus@rclobus.nl>\n"
 "Language-Team: Bas Wijnen <shevek@fmf.nl> Roland Clobus <rclobus@bigfoot."
 "com>\n"
 "MIME-Version: 1.0\n"
@@ -317,7 +317,7 @@ msgstr "Het spel begint. Ik ben niet meer nodig. Tot ziens."
 
 #: ../client/common/client.c:102
 msgid "Waiting"
-msgstr "Wachten op reaktie van de server."
+msgstr "Wachten op reactie van de server."
 
 #: ../client/common/client.c:104 ../client/common/client.c:1312
 msgid "Idle"
@@ -2687,7 +2687,7 @@ msgstr "_Verander titel"
 
 #: ../editor/gtk/editor.c:1010
 msgid "Change game title"
-msgstr "Verander de title van het spel"
+msgstr "Verander de titel van het spel"
 
 #: ../editor/gtk/editor.c:1011 ../server/gtk/main.c:98
 msgid "_Check Victory Point Target"
@@ -2722,7 +2722,7 @@ msgstr "bestandsnaam"
 
 #: ../editor/gtk/editor.c:1096
 msgid "- Editor for games of Pioneers"
-msgstr "- Editor for spellen Pioniers"
+msgstr "- Editor voor spellen Pioniers"
 
 #: ../editor/gtk/editor.c:1137 ../server/gtk/main.c:1032
 #, c-format
@@ -2972,7 +2972,7 @@ msgstr "Het spel is afgelopen.\n"
 #. Long description in the commandline for server-console: help
 #: ../server/gtk/main.c:991 ../server/main.c:175
 msgid "- Host a game of Pioneers"
-msgstr "- Creeer een spel Pioniers"
+msgstr "- Creëer een spel Pioniers"
 
 #. Name in the titlebar of the server
 #: ../server/gtk/main.c:1013 ../server/gtk/pioneers-server.desktop.in.h:2
@@ -2981,7 +2981,7 @@ msgstr "Pioniers Server"
 
 #: ../server/gtk/pioneers-server.desktop.in.h:1
 msgid "Host a game of Pioneers"
-msgstr "Creeer een spel Pioniers"
+msgstr "Creëer een spel Pioniers"
 
 #. Commandline server-console: game-title
 #: ../server/main.c:75
@@ -3092,7 +3092,7 @@ msgstr "Diverse opties"
 #: ../server/main.c:224
 #, c-format
 msgid "Cannot set game title and filename at the same time\n"
-msgstr "Kan niet èn de titel èn de bestandsnaam tegelijkertijd instellen\n"
+msgstr "Kan niet én de titel én de bestandsnaam tegelijkertijd instellen\n"
 
 #. server-console commandline error
 #: ../server/main.c:241
