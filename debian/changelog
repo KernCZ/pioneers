@@ -1,3 +1,9 @@
+pioneers (0.12.3-1unreleased1) unstable; urgency=low
+
+  * Update release-checklist for svn repository
+
+ -- Roland Clobus <rclobus@rclobus.nl>  Thu, 18 Mar 2010 10:16:26 +0100
+
 pioneers (0.12.3-1) unstable; urgency=low
 
   [ Roland Clobus ]
