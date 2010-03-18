@@ -4,6 +4,7 @@ pioneers (0.12.3-1unreleased1) unstable; urgency=low
   * Refer to pioneers-meta-server instead of pioneers-console in the init
     scripts
   * Fix meta-server pidfile issue again. (closes: #567994) 
+  * Fix bug number in changelog 'Link to all gtk libraries' (closes #556063)
 
  -- Roland Clobus <rclobus@rclobus.nl>  Thu, 18 Mar 2010 10:16:26 +0100
 
@@ -28,7 +29,7 @@ pioneers (0.12.3-1) unstable; urgency=low
   * Fix meta-server pidfile issue. (closes: #534634)
   * Add japanese translation. (closes: #547205)
   * Make clients try all socket types when connecting. (closes: #530032)
-  * Link to all gtk libraries. (closes: 530032)
+  * Link to all gtk libraries. (closes: #556063)
   * Update standards version (no changes needed).
 
  -- Bas Wijnen <wijnen@debian.org>  Wed, 25 Nov 2009 13:41:40 +0100
