@@ -274,7 +274,7 @@ msgid ""
 "Hello, welcome to the lobby. I am a simple robot. Type '/help' in the chat "
 "to see the list of commands I know."
 msgstr ""
-"Hallo, welkom in the ontvangstruimte. Ik ben een eenvoudige robot. Typ '/"
+"Hallo, welkom in de ontvangstruimte. Ik ben een eenvoudige robot. Typ '/"
 "help' in de chat om de lijst van commando's te zien."
 
 #. Translators: don't translate '/help'
@@ -1799,7 +1799,7 @@ msgstr "Ontwikkelingskaarten"
 #. Caption for the overview of the points and card of other players
 #: ../client/gtk/player.c:551
 msgid "<b>Player Summary</b>"
-msgstr "<b>Speleroverzicht</b>"
+msgstr "<b>Spelersoverzicht</b>"
 
 #: ../client/gtk/plenty.c:86
 msgid "Please choose one resource from the bank"
