@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 0.11.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-04 11:30+0100\n"
+"POT-Creation-Date: 2010-03-27 20:34+0100\n"
 "PO-Revision-Date: 2008-02-02 16:45+0100\n"
 "Last-Translator: Ladislav Dobias <lada-preklad@dobias.info>\n"
 "Language-Team: \n"
@@ -717,7 +717,7 @@ msgstr "%s odstranil most.\n"
 
 #: ../client/common/player.c:673
 #, c-format
-msgid "%s has cancelled a ship's movement.\n"
+msgid "%s has canceled a ship's movement.\n"
 msgstr "%s zrušil pohyb lodi.\n"
 
 #: ../client/common/player.c:676
@@ -1685,7 +1685,7 @@ msgid "Development Card"
 msgstr "Akční karta"
 
 #: ../client/gtk/monopoly.c:104
-msgid "Select the resource you wish to monopolise."
+msgid "Select the resource you wish to monopolize."
 msgstr "Zvolte surovinu, kterou chcete monopolizovat"
 
 #: ../client/gtk/name.c:123

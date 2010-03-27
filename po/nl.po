@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 0.12.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-18 08:56+0100\n"
+"POT-Creation-Date: 2010-03-27 20:34+0100\n"
 "PO-Revision-Date: 2010-03-18 08:55+0100\n"
 "Last-Translator: Roland Clobus <rclobus@rclobus.nl>\n"
 "Language-Team: Bas Wijnen <shevek@fmf.nl> Roland Clobus <rclobus@bigfoot."
@@ -722,7 +722,7 @@ msgstr "%s heeft een brug weggehaald.\n"
 
 #: ../client/common/player.c:673
 #, c-format
-msgid "%s has cancelled a ship's movement.\n"
+msgid "%s has canceled a ship's movement.\n"
 msgstr "%s laat het schip toch maar niet varen.\n"
 
 #: ../client/common/player.c:676
@@ -1690,7 +1690,7 @@ msgid "Development Card"
 msgstr "Ontwikkelingskaart"
 
 #: ../client/gtk/monopoly.c:104
-msgid "Select the resource you wish to monopolise."
+msgid "Select the resource you wish to monopolize."
 msgstr "Kies de grondstof waar je een monopolie op wilt."
 
 #: ../client/gtk/name.c:123

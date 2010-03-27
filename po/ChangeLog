@@ -1,3 +1,7 @@
+2010-03-27  Roland Clobus <rclobus@rclobus.nl>
+	* all: Based on svn 1488 (branch 0.12.3) and 1524: Use en_US spelling
+	(canceled and monopolize)
+
 2010-03-25  Roland Clobus <rclobus@rclobus.nl>
 	* nl.po: Another round of spell checking
 

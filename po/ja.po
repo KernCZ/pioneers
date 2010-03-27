@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 0.11.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-04 11:30+0100\n"
+"POT-Creation-Date: 2010-03-27 20:34+0100\n"
 "PO-Revision-Date: 2007-07-20 05:45+0900\n"
 "Last-Translator: Yasuhiko Takasugi <takasugi@flcl.org>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -721,7 +721,7 @@ msgstr "%s は、橋を取り除いた。\n"
 
 #: ../client/common/player.c:673
 #, c-format
-msgid "%s has cancelled a ship's movement.\n"
+msgid "%s has canceled a ship's movement.\n"
 msgstr "%s は、船の移動を取り消した。\n"
 
 #: ../client/common/player.c:676
@@ -1690,7 +1690,7 @@ msgid "Development Card"
 msgstr "開発カード"
 
 #: ../client/gtk/monopoly.c:104
-msgid "Select the resource you wish to monopolise."
+msgid "Select the resource you wish to monopolize."
 msgstr "集めたい資源を選択"
 
 #: ../client/gtk/name.c:123
