@@ -670,7 +670,7 @@ void player_build_move(gint player_num, gint sx, gint sy, gint spos,
 	callbacks.draw_edge(to);
 	if (isundo)
 		log_message(MSG_BUILD,
-			    _("%s has cancelled a ship's movement.\n"),
+			    _("%s has canceled a ship's movement.\n"),
 			    player_name(player_num, TRUE));
 	else
 		log_message(MSG_BUILD, _("%s moved a ship.\n"),

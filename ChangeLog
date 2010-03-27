@@ -1,3 +1,6 @@
+2010-03-27  Roland Clobus <rclobus@rclobus.nl>
+	* client/gtk/monopoly.c, client/common/player.c: Use en_US spelling
+
 2010-03-11  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/data/themes/FreeCIV-like/theme.cfg,
 	client/gtk/data/themes/Wesnoth-like/theme.cfg: Fix the themes to avoid
