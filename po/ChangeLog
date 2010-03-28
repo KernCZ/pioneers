@@ -4,6 +4,7 @@
 	* en_GB.po: Imported from Launchpad, thanks to Philipp Kleinhenz.
 	This translation inspired the spelling correction to en_US in the
 	source code.
+	* check-spelling.sh: Script to check the spelling of a language.
 
 2010-03-25  Roland Clobus <rclobus@rclobus.nl>
 	* nl.po: Another round of spell checking
