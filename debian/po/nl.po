@@ -62,7 +62,7 @@ msgid ""
 msgstr ""
 "In sommige gevallen is de naam die de meta-server zichzelf geeft bij het "
 "starten van nieuwe spellen incorrect. Als dit veld niet leeg is, wordt de "
-"waarde gebruikt in plaats van de gedetecteede computernaam."
+"waarde gebruikt in plaats van de gedetecteerde computernaam."
 
 #. Type: string
 #. Description
