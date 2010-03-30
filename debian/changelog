@@ -9,6 +9,7 @@ pioneers (0.12.3-1unreleased1) unstable; urgency=low
   * Fix lintian error init.d-script-missing-dependency-on_remote_fs.
   * Fixed typo in Dutch translation.
   * Added British translation.
+  * Recoded German translation to UTF-8.
 
  -- Roland Clobus <rclobus@rclobus.nl>  Thu, 18 Mar 2010 10:16:26 +0100
 

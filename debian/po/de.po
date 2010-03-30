@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: Helge Kreutzmann <debian@helgefjell.de>\n"
 "Language-Team: de <debian-l10n-german@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-15\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #. Type: string
@@ -29,10 +29,10 @@ msgid ""
 "specified. If this field is left empty, the meta-server will disable its "
 "game creation functionality."
 msgstr ""
-"Der Meta-Server kann neue Spiele erstellen, daher müssen die Spieler den "
-"Pioneers-Server nicht installieren und ausführen. Die für diese Spiele zu "
-"verwendenden Ports können angegeben werden. Falls dieses Feld leer bleibt, "
-"wird der Meta-Server seine Funktionalität zum Erstellen von Spielen "
+"Der Meta-Server kann neue Spiele erstellen, daher mÃ¼ssen die Spieler den "
+"Pioneers-Server nicht installieren und ausfÃ¼hren. Die fÃ¼r diese Spiele zu "
+"verwendenden Ports kÃ¶nnen angegeben werden. Falls dieses Feld leer bleibt, "
+"wird der Meta-Server seine FunktionalitÃ¤t zum Erstellen von Spielen "
 "deaktivieren."
 
 #. Type: string
@@ -49,7 +49,7 @@ msgstr ""
 #. Description
 #: ../pioneers-meta-server.templates:2001
 msgid "Server name for created games:"
-msgstr "Servername für erstellte Spiele:"
+msgstr "Servername fÃ¼r erstellte Spiele:"
 
 #. Type: string
 #. Description
@@ -59,15 +59,15 @@ msgid ""
 "games is incorrect. If this field is not left empty, it is used to override "
 "the detected hostname."
 msgstr ""
-"In einigen Fällen ist der Name, den der Meta-Server für sich beim Erstellen "
+"In einigen FÃ¤llen ist der Name, den der Meta-Server fÃ¼r sich beim Erstellen "
 "von Spielen verwendet, falsch. Falls dieses Feld nicht leer gelassen wird, "
-"überschreibt der Wert den erkannten Namen des Rechners."
+"Ã¼berschreibt der Wert den erkannten Namen des Rechners."
 
 #. Type: string
 #. Description
 #: ../pioneers-meta-server.templates:3001
 msgid "Extra arguments to pass to the meta-server:"
-msgstr "Zusätzliche Argumente, die an den Meta-Server übergeben werden sollen:"
+msgstr "ZusÃ¤tzliche Argumente, die an den Meta-Server Ã¼bergeben werden sollen:"
 
 #. Type: string
 #. Description
@@ -78,13 +78,13 @@ msgid ""
 " * --syslog-debug: Send debugging output to syslog\n"
 " * --redirect: Redirect clients to another meta-server"
 msgstr ""
-"Diese Argumente werden an den Meta-Server übergeben. Es gibt nur zwei "
+"Diese Argumente werden an den Meta-Server Ã¼bergeben. Es gibt nur zwei "
 "sinnvolle Argumente:\n"
 " * --syslog-debug: Schicke Debugging-Ausgaben an Syslog\n"
 " * --redirect: Leite Clients an einen anderen Meta-Server weiter"
 
 #~ msgid "Run the pioneers meta-server?"
-#~ msgstr "Soll der Meta-Server von Pioneers ausgeführt werden?"
+#~ msgstr "Soll der Meta-Server von Pioneers ausgefÃ¼hrt werden?"
 
 #~ msgid ""
 #~ "Pioneers contains a meta-server, which can be used to find networked "
@@ -92,8 +92,8 @@ msgstr ""
 #~ "players can find it. There is a public meta-server at pioneers.debian."
 #~ "net. Most people do not need to run a meta-server on their computer."
 #~ msgstr ""
-#~ "Pioneers enthält einen Meta-Server, der zum Auffinden von vernetzten "
+#~ "Pioneers enthÃ¤lt einen Meta-Server, der zum Auffinden von vernetzten "
 #~ "Spielen verwendet werden kann. Der Meta-Server muss an einem zentralen "
-#~ "Ort ausgeführt werden, so dass ihn alle Spieler finden können. Es gibt "
-#~ "unter pioneers.debian.net. einen öffentlichen Meta-Server. Die meisten "
-#~ "Leute werden keinen Meta-Server auf ihrem Rechner ausführen müssen."
+#~ "Ort ausgefÃ¼hrt werden, so dass ihn alle Spieler finden kÃ¶nnen. Es gibt "
+#~ "unter pioneers.debian.net. einen Ã¶ffentlichen Meta-Server. Die meisten "
+#~ "Leute werden keinen Meta-Server auf ihrem Rechner ausfÃ¼hren mÃ¼ssen."
