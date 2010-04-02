@@ -46,3 +46,5 @@ conffile_edit META_SERVER_NAME pioneers-meta-server/name
 conffile_edit META_SERVER_ARGS pioneers-meta-server/arguments
 
 #DEBHELPER#
+
+exit 0
