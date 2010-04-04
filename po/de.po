@@ -36,9 +36,8 @@ msgstr "Serverport"
 
 #. Commandline pioneersai: name
 #: ../client/ai/ai.c:71
-#, fuzzy
 msgid "Computer name (mandatory)"
-msgstr "Computername (frei lassen für zufälligen Namen)"
+msgstr "Computername (erforderlich)"
 
 #. Commandline pioneersai: time
 #: ../client/ai/ai.c:74
@@ -1330,9 +1329,8 @@ msgid "Change your player name"
 msgstr "Ändern des Spielernamens"
 
 #: ../client/gtk/gui.c:226
-#, fuzzy
 msgid "L_egend"
-msgstr "Erklärung"
+msgstr "_Erklärung"
 
 #: ../client/gtk/gui.c:227
 msgid "Terrain legend and building costs"
@@ -1592,14 +1590,13 @@ msgstr "Tastatur-Shortcuts in der Werkzeugleiste zeigen"
 
 #. Label for the option to disable all sounds
 #: ../client/gtk/gui.c:1036
-#, fuzzy
 msgid "Silent mode"
-msgstr "Dateiname"
+msgstr "Stummschaltung"
 
 #. Tooltip for the option to disable all sounds
 #: ../client/gtk/gui.c:1042
 msgid "In silent mode no sounds are made"
-msgstr ""
+msgstr "Bei Stummschaltung werden keine Klänge abgespielt"
 
 #. Label for the option to announce when players/viewers enter
 #: ../client/gtk/gui.c:1048
@@ -1740,9 +1737,8 @@ msgid "- Play a game of Pioneers"
 msgstr "- Spiel ein Spiel Pioneers"
 
 #: ../client/gtk/pioneers.desktop.in.h:2
-#, fuzzy
 msgid "Play a game of Pioneers"
-msgstr "- Spiel ein Spiel Pioneers"
+msgstr "Spiele ein Pioneers-Spiel"
 
 #: ../client/gtk/player.c:53
 msgid "Settlements"
@@ -1959,9 +1955,8 @@ msgid "Trading allowed only before build/buy?"
 msgstr "Handel nur vor dem Bauen erlaubt?"
 
 #: ../client/gtk/settingscreen.c:170
-#, fuzzy
 msgid "Check Victory Only At End Of Turn?"
-msgstr "Zeige die Anzahl der benötigten Siegpunkte"
+msgstr "Sieg nur am Ende einer Runde überprüfen?"
 
 #: ../client/gtk/settingscreen.c:175
 msgid "Amount of Each Resource:"
@@ -2144,19 +2139,16 @@ msgstr ""
 "Brettspiel 'Die Siedler von Catan'.\n"
 
 #: ../common/gtk/aboutbox.c:78
-#, fuzzy
 msgid "Version:"
-msgstr "Version"
+msgstr "Version:"
 
 #: ../common/gtk/aboutbox.c:84
-#, fuzzy
 msgid "Homepage:"
-msgstr "Homepage"
+msgstr "Homepage:"
 
 #: ../common/gtk/aboutbox.c:89
-#, fuzzy
 msgid "Authors:"
-msgstr "Autoren"
+msgstr "Autoren:"
 
 #. Translators: add your name here. Keep the list alphabetically,
 #. * do not remove any names, and add \n after your name (except the last name).
@@ -2171,7 +2163,7 @@ msgstr ""
 #. Header for the translator_credits. Use your own language name
 #: ../common/gtk/aboutbox.c:109
 msgid "Pioneers is translated to <your language here> by:\n"
-msgstr ""
+msgstr "Pioneers wird auf Deutsch übersetzt von:\n"
 
 #. Tooltip for sevens rule normal
 #: ../common/gtk/game-rules.c:93
@@ -2226,7 +2218,7 @@ msgstr "Sieg am Ende des Zuges"
 
 #: ../common/gtk/game-rules.c:122
 msgid "Check for victory only at end of turn"
-msgstr ""
+msgstr "Sieg nur am Ende einer Runde überprüfen"
 
 #. Label text for customising a game
 #: ../common/gtk/game-settings.c:106
@@ -2291,9 +2283,8 @@ msgstr "H"
 
 #. Tooltip for the list of meta servers
 #: ../common/gtk/metaserver.c:86
-#, fuzzy
 msgid "Select a meta server"
-msgstr "Server starten"
+msgstr "Einen Metaserver auswählen"
 
 #. Tooltip for the list of games
 #: ../common/gtk/select-game.c:103
@@ -2751,26 +2742,25 @@ msgid "Resource Count"
 msgstr "Rohstoffe"
 
 #: ../editor/gtk/pioneers-editor.desktop.in.h:1
-#, fuzzy
 msgid "Create your own game for Pioneers"
-msgstr "- Editor für Pioneers-Spiele"
+msgstr "Erstelle dein eigenes Pioneers-Spiel"
 
 #. Commandline meta-server: daemon
 #: ../meta-server/main.c:1056
-#, fuzzy
 msgid "Daemonize the meta-server on start"
-msgstr "Metaserver als Daemon starten"
+msgstr "Starte Meta-Server beim Programmstart als eigenständigen Prozess"
 
 #. Commandline meta-server: pidfile
 #: ../meta-server/main.c:1059
 msgid "Pidfile to create when daemonizing (implies -d)"
 msgstr ""
+"Zu erstellende Pid-Datei, wenn Meta-Server als eigenständiger Prozess "
+"gestartet wird (bewirkt -d)"
 
 #. Commandline meta-server: redirect
 #: ../meta-server/main.c:1064
-#, fuzzy
 msgid "Redirect clients to another meta-server"
-msgstr "Leitet Spieler auf einen anderen Metaserver um"
+msgstr "Verbinde Clients mit anderem Meta-Server"
 
 #. Commandline meta-server: server
 #: ../meta-server/main.c:1067
@@ -2784,9 +2774,8 @@ msgstr "Hostname"
 
 #. Commandline meta-server: port-range
 #: ../meta-server/main.c:1072
-#, fuzzy
 msgid "Use this port range when creating new games"
-msgstr "Diese Ports beim Erstellen neuer Spiele benutzen"
+msgstr "Diesen Port-Bereich für neu erstellte Spiele verwenden"
 
 #. Commandline meta-server: port-range argument
 #: ../meta-server/main.c:1074
@@ -2804,9 +2793,9 @@ msgid "- Meta server for Pioneers"
 msgstr "- Metaserver für Pioneers"
 
 #: ../meta-server/main.c:1116
-#, fuzzy, c-format
+#, c-format
 msgid "meta-server protocol:"
-msgstr "Metaserver Protokoll:"
+msgstr "Protokoll des Meta-Servers:"
 
 #: ../server/gtk/main.c:103
 msgid "_About Pioneers Server"
@@ -2817,12 +2806,10 @@ msgid "Information about Pioneers Server"
 msgstr "Informationen über den Pioneers-Server"
 
 #: ../server/gtk/main.c:221
-#, fuzzy
 msgid "Stop Server"
 msgstr "Server stoppen"
 
 #: ../server/gtk/main.c:222
-#, fuzzy
 msgid "Start Server"
 msgstr "Server starten"
 
@@ -2999,9 +2986,8 @@ msgid "Pioneers Server"
 msgstr "Pioneers-Server"
 
 #: ../server/gtk/pioneers-server.desktop.in.h:1
-#, fuzzy
 msgid "Host a game of Pioneers"
-msgstr "- Einen Pioneerserver betreiben"
+msgstr "Ein Pioneers-Spiel bereitstellen"
 
 #. Commandline server-console: game-title
 #: ../server/main.c:75
@@ -3128,6 +3114,7 @@ msgstr "Port des Spiel-Hosts\n"
 #, c-format
 msgid "Admin port is not set, cannot disable game start too\n"
 msgstr ""
+"Admin-Port ist nicht festgelegt, kann Spielstart auch nicht deaktivieren\n"
 
 #: ../server/meta.c:192
 #, c-format
@@ -3153,11 +3140,11 @@ msgstr "ignoriere unbekannte Erweiterung"
 #: ../server/player.c:210 ../server/player.c:247
 msgid "The last player left, the tournament timer is reset."
 msgstr ""
+"Der letzte Spieler ist gegangen, der Turnier-Timer wird zurückgesetzt."
 
 #: ../server/player.c:217
-#, fuzzy
 msgid "Game starts, adding computer players."
-msgstr "Das Spiel beginnt, füge Computerspieler hinzu"
+msgstr "Spiel beginnt, füge Computerspieler hinzu."
 
 #: ../server/player.c:260
 #, c-format
@@ -3216,12 +3203,12 @@ msgstr "Bereite Spiel vor"
 #: ../server/server.c:380 ../server/server.c:469
 #, c-format
 msgid "Looking for games in '%s'\n"
-msgstr ""
+msgstr "Suche Spielstände in '%s'\n"
 
 #: ../server/server.c:382 ../server/server.c:471
 #, c-format
 msgid "Game directory '%s' not found\n"
-msgstr ""
+msgstr "Spielverzeichnis '%s' nicht gefunden\n"
 
 #: ../server/turn.c:253
 msgid "Island Discovery Bonus"
@@ -3237,8 +3224,9 @@ msgstr "Versuchte Ressourcen NULL Spieler zuzuteilen.\n"
 
 #. Cheat mode has been activated
 #: ../server/turn.c:495
+#, fuzzy
 msgid "The dice roll has been determined by the administrator."
-msgstr ""
+msgstr "Das Würfeln wurde vom Administrator beendet."
 
 #~ msgid "_Legend"
 #~ msgstr "_Erklärung"
