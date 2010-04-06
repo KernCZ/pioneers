@@ -4,15 +4,17 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Pioneers 0.11.3\n"
+"Project-Id-Version: Pioneers 0.12.3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-03-27 20:34+0100\n"
-"PO-Revision-Date: 2007-11-11 08:34+0000\n"
+"PO-Revision-Date: 2010-03-28 01:27+0000\n"
 "Last-Translator: Filipe Roque <flip.roque@gmail.com>\n"
 "Language-Team: Portuguese <pt@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2010-04-06 06:08+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
 
 #. Commandline pioneersai: server
 #. Commandline option of client: hostname of the server
@@ -1323,9 +1325,8 @@ msgid "Change your player name"
 msgstr "Escolhe o teu nome de jogador"
 
 #: ../client/gtk/gui.c:226
-#, fuzzy
 msgid "L_egend"
-msgstr "Legenda"
+msgstr "L_egenda"
 
 #: ../client/gtk/gui.c:227
 msgid "Terrain legend and building costs"
@@ -2147,7 +2148,12 @@ msgstr "Autores:"
 #.
 #: ../common/gtk/aboutbox.c:103 ../common/gtk/aboutbox.c:114
 msgid "translator_credits"
-msgstr "Filipe Roque"
+msgstr ""
+"Filipe Roque\n"
+"\n"
+"Launchpad Contributions:\n"
+"  Filipe Roque https://launchpad.net/~flip-roque\n"
+"  Proxess https://launchpad.net/~yuusouoribeira"
 
 #. Header for the translator_credits. Use your own language name
 #: ../common/gtk/aboutbox.c:109
@@ -2736,20 +2742,18 @@ msgstr "Crie o seu jogo de Pioneers"
 
 #. Commandline meta-server: daemon
 #: ../meta-server/main.c:1056
-#, fuzzy
 msgid "Daemonize the meta-server on start"
-msgstr "Colocar o Meta-servidor como deamon ao ínicio"
+msgstr "Processificar o meta-servidor ao arrancar"
 
 #. Commandline meta-server: pidfile
 #: ../meta-server/main.c:1059
 msgid "Pidfile to create when daemonizing (implies -d)"
-msgstr ""
+msgstr "Pidfile a criar quando processificando (implica -d)"
 
 #. Commandline meta-server: redirect
 #: ../meta-server/main.c:1064
-#, fuzzy
 msgid "Redirect clients to another meta-server"
-msgstr "Redireccionar clientes para outro Meta-servidor"
+msgstr "Redirecionar clientes para outro meta-servidor"
 
 #. Commandline meta-server: server
 #: ../meta-server/main.c:1067
@@ -2782,9 +2786,9 @@ msgid "- Meta server for Pioneers"
 msgstr "- Meta server para Pioneers"
 
 #: ../meta-server/main.c:1116
-#, fuzzy, c-format
+#, c-format
 msgid "meta-server protocol:"
-msgstr "protocolo Meta-servidor :"
+msgstr "protocolo meta-servidor:"
 
 #: ../server/gtk/main.c:103
 msgid "_About Pioneers Server"
@@ -3193,12 +3197,12 @@ msgstr "Preparando jogo"
 #: ../server/server.c:380 ../server/server.c:469
 #, c-format
 msgid "Looking for games in '%s'\n"
-msgstr ""
+msgstr "Procurando jogos em '%s'\n"
 
 #: ../server/server.c:382 ../server/server.c:471
 #, c-format
 msgid "Game directory '%s' not found\n"
-msgstr ""
+msgstr "Directório de jogos '%s' não encontrado\n"
 
 #: ../server/turn.c:253
 msgid "Island Discovery Bonus"
