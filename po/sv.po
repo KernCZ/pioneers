@@ -6,15 +6,17 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Pioneers 0.12.2\n"
+"Project-Id-Version: Pioneers 0.12.3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-03-27 20:34+0100\n"
-"PO-Revision-Date: 2008-03-30 19:20+0100\n"
-"Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
+"PO-Revision-Date: 2010-03-28 01:26+0000\n"
+"Last-Translator: Daniel Nylander <yeager@ubuntu.com>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2010-04-06 06:08+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
 
 #. Commandline pioneersai: server
 #. Commandline option of client: hostname of the server
@@ -1324,9 +1326,8 @@ msgid "Change your player name"
 msgstr "Ändra ditt spelarnamn"
 
 #: ../client/gtk/gui.c:226
-#, fuzzy
 msgid "L_egend"
-msgstr "Förklaring"
+msgstr "_Förklaring"
 
 #: ../client/gtk/gui.c:227
 msgid "Terrain legend and building costs"
@@ -2150,7 +2151,8 @@ msgstr "Upphovsmän:"
 #.
 #: ../common/gtk/aboutbox.c:103 ../common/gtk/aboutbox.c:114
 msgid "translator_credits"
-msgstr "Daniel Nylander <po@danielnylander.se>"
+msgstr ""
+"Daniel Nylander <po@danielnylander.se>"
 
 #. Header for the translator_credits. Use your own language name
 #: ../common/gtk/aboutbox.c:109
@@ -2739,20 +2741,18 @@ msgstr "Skapa ett egna spel för Pioneers"
 
 #. Commandline meta-server: daemon
 #: ../meta-server/main.c:1056
-#, fuzzy
 msgid "Daemonize the meta-server on start"
-msgstr "Kör metaservern i bakgrunden vid uppstart"
+msgstr "Kör metaserver som bakgrundsprocess vid start"
 
 #. Commandline meta-server: pidfile
 #: ../meta-server/main.c:1059
 msgid "Pidfile to create when daemonizing (implies -d)"
-msgstr ""
+msgstr "Pid-fil att skapa vid bakgrundsprocess (betyder -d)"
 
 #. Commandline meta-server: redirect
 #: ../meta-server/main.c:1064
-#, fuzzy
 msgid "Redirect clients to another meta-server"
-msgstr "Omdirigera klienter till en annan metaserver"
+msgstr "Omdirigerar klienter till en annan metaserver"
 
 #. Commandline meta-server: server
 #: ../meta-server/main.c:1067
@@ -2785,7 +2785,7 @@ msgid "- Meta server for Pioneers"
 msgstr "- Metaserver för Pioneers"
 
 #: ../meta-server/main.c:1116
-#, fuzzy, c-format
+#, c-format
 msgid "meta-server protocol:"
 msgstr "protokoll för metaserver:"
 
@@ -3192,12 +3192,12 @@ msgstr "Förbereder spel"
 #: ../server/server.c:380 ../server/server.c:469
 #, c-format
 msgid "Looking for games in '%s'\n"
-msgstr ""
+msgstr "Letar efter spel i '%s'\n"
 
 #: ../server/server.c:382 ../server/server.c:471
 #, c-format
 msgid "Game directory '%s' not found\n"
-msgstr ""
+msgstr "Spelkatalogen \"%s\" hittades inte\n"
 
 #: ../server/turn.c:253
 msgid "Island Discovery Bonus"
