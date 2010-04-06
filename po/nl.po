@@ -2079,17 +2079,17 @@ msgstr "<b>Ik geef</b>"
 #. Button text, trade: call for quotes from other players
 #: ../client/gtk/trade.c:495
 msgid "_Call for Quotes"
-msgstr "Vraag om voorstellen"
+msgstr "_Vraag om voorstellen"
 
 #. Button text: Trade page, accept selected quote
 #: ../client/gtk/trade.c:523
 msgid "_Accept Quote"
-msgstr "Accepteer voorstel"
+msgstr "_Accepteer voorstel"
 
 #. Button text: Trade page, finish trading
 #: ../client/gtk/trade.c:529
 msgid "_Finish Trading"
-msgstr "Beëindig handelsfase"
+msgstr "_Beëindig handelsfase"
 
 #: ../common/game.c:604 ../common/game.c:635
 msgid "This game cannot be won."

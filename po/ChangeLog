@@ -1,6 +1,7 @@
 2010-04-06  Roland Clobus <rclobus@rclobus.nl>
 	* LINGUAS, gl.po: Added translation to Galician by
 	Indalecio Freiría Santos.
+	* nl.po: Added missing keyboard shortcuts.
 
 2010-04-04  Roland Clobus <rclobus@rclobus.nl>
 	* de.po: Updated from Launchpad.net
