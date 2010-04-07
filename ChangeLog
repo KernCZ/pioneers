@@ -1,3 +1,7 @@
+2010-04-07  Roland Clobus <rclobus@rclobus.nl>
+	* client/ai/greedy.c: Play soldier before starting the turn when own
+	resource is blocked.
+
 2010-03-27  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/monopoly.c, client/common/player.c: Use en_US spelling
 
