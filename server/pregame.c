@@ -340,6 +340,10 @@ static void try_start_game(Game * game)
 
 	/* All players have connected, and are ready to begin
 	 */
+	if (game->tournament_timer != 0) {
+		g_source_remove(game->tournament_timer);
+		game->tournament_timer = 0;
+	}
 	meta_start_game();
 	game->setup_player = player_first_real(game);
 	while (((Player *) game->setup_player->data)->num < 0)

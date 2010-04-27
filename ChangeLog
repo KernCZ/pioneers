@@ -1,3 +1,9 @@
+2010-04-27  Roland Clobus <rclobus@rclobus.nl>
+	* server/player.c: Don't show 'This game starts soon' for the last
+	player to enter the game.
+	* server/pregame.c: When all players are present, stop the tournament
+	timer.
+
 2010-04-07  Roland Clobus <rclobus@rclobus.nl>
 	* client/ai/greedy.c: Play soldier before starting the turn when own
 	resource is blocked.

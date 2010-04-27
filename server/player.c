@@ -938,7 +938,9 @@ static void start_tournament_mode(Player * player)
 			g_timeout_add(1000, &talk_about_tournament_cb,
 				      game);
 		} else {
-			if (game->tournament_timer != 0) {
+			if (game->tournament_timer != 0
+			    && game->num_players !=
+			    game->params->num_players) {
 				player_send(player, FIRST_VERSION,
 					    LATEST_VERSION, "NOTE %s\n",
 					    N_
