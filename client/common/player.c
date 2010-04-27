@@ -264,8 +264,8 @@ void player_has_quit(gint player_num)
 	}
 	callbacks.player_quit(player_num);
 	player = player_get(player_num);
-	log_message(MSG_INFO, _("%s has quit\n"), player_name(player_num,
-							      TRUE));
+	log_message(MSG_INFO, _("%s has quit.\n"), player_name(player_num,
+							       TRUE));
 }
 
 void player_largest_army(gint player_num)
