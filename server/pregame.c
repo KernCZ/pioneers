@@ -550,6 +550,8 @@ gboolean mode_pre_game(Player * player, gint event)
 			return TRUE;
 		}
 		if (sm_recv(sm, "gameinfo")) {
+			GSList *list;
+
 			player_send_uncached(player, FIRST_VERSION,
 					     LATEST_VERSION, "gameinfo\n");
 			map_traverse_const(map, send_gameinfo_uncached,
@@ -669,77 +671,67 @@ gboolean mode_pre_game(Player * player, gint event)
 					     "development-bought %d\n",
 					     game->develop_next);
 
-			/* send player info about what he has:
+			/* Send player info about what he has:
 			   resources, dev cards, roads, # roads,
 			   # bridges, # ships, # settles, # cities,
 			   # soldiers, road len, dev points,
-			   who has longest road/army */
-			/* Only send this when the player is not a viewer */
-			if (!player_is_viewer(game, player->num)) {
-				GList *list;
-
-				player_send_uncached(player, FIRST_VERSION,
+			   who has longest road/army,
+			   viewers will receive an empty list */
+			player_send_uncached(player, FIRST_VERSION,
+					     LATEST_VERSION,
+					     "playerinfo: resources: %R\n",
+					     player->assets);
+			player_send_uncached(player, FIRST_VERSION,
+					     LATEST_VERSION,
+					     "playerinfo: numdevcards: %d\n",
+					     player->devel->num_cards);
+			for (i = 0; i < player->devel->num_cards; i++) {
+				player_send_uncached(player,
+						     FIRST_VERSION,
 						     LATEST_VERSION,
-						     "playerinfo: resources: %R\n",
-						     player->assets);
-				player_send_uncached(player, FIRST_VERSION,
-						     LATEST_VERSION,
-						     "playerinfo: numdevcards: %d\n",
-						     player->devel->
-						     num_cards);
-				for (i = 0; i < player->devel->num_cards;
-				     i++) {
-					player_send_uncached(player,
-							     FIRST_VERSION,
-							     LATEST_VERSION,
-							     "playerinfo: devcard: %d %d\n",
-							     (gint)
-							     player->
-							     devel->
-							     cards[i].type,
-							     player->
-							     devel->
-							     cards[i].
-							     turn_bought);
-				}
-				player_send_uncached(player, FIRST_VERSION,
-						     LATEST_VERSION,
-						     "playerinfo: %d %d %d %d %d %d %d %d %d %d %d %d %d %d\n",
-						     player->num_roads,
-						     player->num_bridges,
-						     player->num_ships,
+						     "playerinfo: devcard: %d %d\n",
+						     (gint) player->
+						     devel->cards[i].type,
 						     player->
-						     num_settlements,
-						     player->num_cities,
-						     player->num_soldiers,
-						     player->road_len,
-						     player->chapel_played,
-						     player->univ_played,
-						     player->gov_played,
-						     player->libr_played,
-						     player->market_played,
-						     (player->num ==
-						      longestroadpnum),
-						     (player->num ==
-						      largestarmypnum));
-
-				/* Send special points */
-				list = player->special_points;
-				while (list) {
-					Points *points = list->data;
-					player_send_uncached(player,
-							     FIRST_VERSION,
-							     LATEST_VERSION,
-							     "get-point %d %d %d %s\n",
-							     player->num,
-							     points->id,
-							     points->
-							     points,
-							     points->name);
-					list = g_list_next(list);
-				}
+						     devel->cards[i].
+						     turn_bought);
 			}
-			/* send info about other players */
+			player_send_uncached(player, FIRST_VERSION,
+					     LATEST_VERSION,
+					     "playerinfo: %d %d %d %d %d %d %d %d %d %d %d %d %d %d\n",
+					     player->num_roads,
+					     player->num_bridges,
+					     player->num_ships,
+					     player->num_settlements,
+					     player->num_cities,
+					     player->num_soldiers,
+					     player->road_len,
+					     player->chapel_played,
+					     player->univ_played,
+					     player->gov_played,
+					     player->libr_played,
+					     player->market_played,
+					     (player->num ==
+					      longestroadpnum),
+					     (player->num ==
+					      largestarmypnum));
+
+			/* Send special points */
+			list = player->special_points;
+			while (list) {
+				Points *points = list->data;
+				player_send_uncached(player,
+						     FIRST_VERSION,
+						     LATEST_VERSION,
+						     "get-point %d %d %d %s\n",
+						     player->num,
+						     points->id,
+						     points->points,
+						     points->name);
+				list = g_list_next(list);
+			}
+
+			/* Send info about other players */
 			for (next = player_first_real(game); next != NULL;
 			     next = player_next_real(next)) {
 				Player *p = (Player *) next->data;
@@ -783,7 +775,7 @@ gboolean mode_pre_game(Player * player, gint event)
 				}
 			}
 
-			/* send build info for the current player
+			/* Send build info for the current player
 			   - what builds the player was in the process
 			   of building when he disconnected */
 			for (next = player->build_list;

@@ -3,6 +3,7 @@
 	player to enter the game.
 	* server/pregame.c: When all players are present, stop the tournament
 	timer.
+	* server/pregame.c: Reset the statistics for viewers.
 
 2010-04-07  Roland Clobus <rclobus@rclobus.nl>
 	* client/ai/greedy.c: Play soldier before starting the turn when own
