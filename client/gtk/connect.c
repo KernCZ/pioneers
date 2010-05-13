@@ -3,7 +3,7 @@
  *
  * Copyright (C) 1999 Dave Cole
  * Copyright (C) 2003,2006 Bas Wijnen <shevek@fmf.nl>
- * Copyright (C) 2004 Roland Clobus <rclobus@bigfoot.com>
+ * Copyright (C) 2004,2010 Roland Clobus <rclobus@rclobus.nl>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -63,6 +63,7 @@ enum {
 enum {				/* The columns of the meta_games_model */
 	C_META_HOST,
 	C_META_PORT,
+	C_META_HOST_SORTABLE,	/* Invisible, used for sorting */
 	C_META_VERSION,
 	C_META_MAX,
 	C_META_CUR,
@@ -427,13 +428,16 @@ static void server_end(void)
 		gtk_list_store_set(meta_games_model, &iter,
 				   C_META_HOST, server_host,
 				   C_META_PORT, server_port,
+				   C_META_HOST_SORTABLE,
+				   g_strdup_printf("%s:%s", server_host,
+						   server_port),
 				   C_META_VERSION, server_version,
-				   C_META_MAX, server_max,
-				   C_META_CUR, server_curr,
-				   C_META_TERRAIN, server_terrain,
-				   C_META_VICTORY, server_vpoints,
-				   C_META_SEVENS, server_sevenrule,
-				   C_META_MAP, server_title, -1);
+				   C_META_MAX, server_max, C_META_CUR,
+				   server_curr, C_META_TERRAIN,
+				   server_terrain, C_META_VICTORY,
+				   server_vpoints, C_META_SEVENS,
+				   server_sevenrule, C_META_MAP,
+				   server_title, -1);
 	}
 }
 
@@ -1005,6 +1009,7 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
 					      G_TYPE_STRING, G_TYPE_STRING,
 					      G_TYPE_STRING, G_TYPE_STRING,
 					      G_TYPE_STRING, G_TYPE_STRING,
+					      G_TYPE_STRING,
 					      G_TYPE_STRING);
 
 	meta_games_view =
@@ -1032,6 +1037,7 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
 						     NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(meta_games_view),
 				    column);
+	gtk_tree_view_column_set_sort_column_id(column, C_META_CUR);
 	gtk_widget_set_tooltip_text(column->button,
 				    _("Number of players in the game"));
 
@@ -1043,6 +1049,7 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
 						     NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(meta_games_view),
 				    column);
+	gtk_tree_view_column_set_sort_column_id(column, C_META_MAX);
 	gtk_widget_set_tooltip_text(column->button,
 				    _("Maximum players for the game"));
 
@@ -1053,6 +1060,7 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
 						     C_META_TERRAIN, NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(meta_games_view),
 				    column);
+	gtk_tree_view_column_set_sort_column_id(column, C_META_TERRAIN);
 	gtk_widget_set_tooltip_text(column->button,
 				    _("Random of default terrain"));
 
@@ -1064,6 +1072,7 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
 						     C_META_VICTORY, NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(meta_games_view),
 				    column);
+	gtk_tree_view_column_set_sort_column_id(column, C_META_VICTORY);
 	gtk_widget_set_tooltip_text(column->button,
 				    _("Points needed to win"));
 
@@ -1074,6 +1083,7 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
 						     C_META_SEVENS, NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(meta_games_view),
 				    column);
+	gtk_tree_view_column_set_sort_column_id(column, C_META_SEVENS);
 	gtk_widget_set_tooltip_text(column->button, _("Sevens rule"));
 
 	column =
@@ -1083,7 +1093,8 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
 						     C_META_HOST, NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(meta_games_view),
 				    column);
-	gtk_tree_view_column_set_sort_column_id(column, C_META_HOST);
+	gtk_tree_view_column_set_sort_column_id(column,
+						C_META_HOST_SORTABLE);
 	gtk_widget_set_tooltip_text(column->button, _("Host of the game"));
 
 	renderer = gtk_cell_renderer_text_new();
@@ -1094,6 +1105,8 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
 						     NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(meta_games_view),
 				    column);
+	gtk_tree_view_column_set_sort_column_id(column,
+						C_META_HOST_SORTABLE);
 	gtk_widget_set_tooltip_text(column->button,
 				    _("Port of the the game"));
 
@@ -1104,8 +1117,13 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
 						     C_META_VERSION, NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(meta_games_view),
 				    column);
+	gtk_tree_view_column_set_sort_column_id(column, C_META_VERSION);
 	gtk_widget_set_tooltip_text(column->button,
 				    _("Version of the host"));
+	gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE
+					     (meta_games_model),
+					     C_META_HOST_SORTABLE,
+					     GTK_SORT_ASCENDING);
 
 	/* Register double-click */
 	g_signal_connect(G_OBJECT(meta_games_view), "button_press_event",
