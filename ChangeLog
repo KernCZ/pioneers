@@ -5,6 +5,7 @@
 	server/player.c, server/server.h, client/gtk/name.c,
 	client/gtk/offline.c, client/common/player.c: Add function
 	determine_player_type and variable default_player_style.
+	* client/gtk/offline.c: Show better message when not connected.
 
 2010-04-27  Roland Clobus <rclobus@rclobus.nl>
 	* server/player.c: Don't show 'This game starts soon' for the last

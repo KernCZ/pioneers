@@ -74,6 +74,7 @@ static void frontend_offline_start_connect_cb(void)
 {
 	connect_create_dlg();
 	have_dlg = TRUE;
+	gui_set_instructions(_("Select a game to join."));
 	frontend_gui_update();
 }
 
@@ -103,6 +104,7 @@ static void frontend_offline_gui(GuiEvent event)
 		break;
 	case GUI_CONNECT_CANCEL:
 		have_dlg = FALSE;
+		gui_set_instructions(_("Welcome to Pioneers!"));
 		frontend_gui_update();
 		break;
 	default:
