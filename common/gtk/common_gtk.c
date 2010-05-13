@@ -315,7 +315,9 @@ void check_victory_points(GameParams * params, GtkWindow * main_window)
 	dialog = gtk_message_dialog_new(main_window,
 					GTK_DIALOG_DESTROY_WITH_PARENT,
 					message_type,
-					GTK_BUTTONS_OK, win_message);
+					GTK_BUTTONS_OK, "%s", win_message);
+	/* Caption for result of checking victory points */
+	gtk_window_set_title(GTK_WINDOW(dialog), _("Victory Point Analysis"));
 
 	gtk_message_dialog_format_secondary_text
 	    (GTK_MESSAGE_DIALOG(dialog), "%s", point_specification);

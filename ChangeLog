@@ -16,6 +16,7 @@
 	client/gtk/legend.c, client/gtk/trade.c, client/gtk/gameover.c,
 	client/gtk/discard.c, client/gtk/settingscreen.c, client/gtk/offline.c,
 	client/gtk/gui.c, client/gtk/connect.c: Adjust capitalization.
+	* common/gtk/common_gtk.c: Add caption to dialog.
 
 2010-04-27  Roland Clobus <rclobus@rclobus.nl>
 	* server/player.c: Don't show 'This game starts soon' for the last
