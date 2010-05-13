@@ -550,7 +550,7 @@ gboolean mode_pre_game(Player * player, gint event)
 			return TRUE;
 		}
 		if (sm_recv(sm, "gameinfo")) {
-			GSList *list;
+			GList *list;
 
 			player_send_uncached(player, FIRST_VERSION,
 					     LATEST_VERSION, "gameinfo\n");

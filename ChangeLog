@@ -1,5 +1,6 @@
 2010-05-13  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/connect.c: Add ordering to connect dialog.
+	* server/pregame.c: Fix compiler warning.
 
 2010-04-27  Roland Clobus <rclobus@rclobus.nl>
 	* server/player.c: Don't show 'This game starts soon' for the last
