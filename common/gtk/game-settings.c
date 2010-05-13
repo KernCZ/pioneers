@@ -103,7 +103,7 @@ static void game_settings_init(GameSettings * gs)
 	gtk_table_set_col_spacings(GTK_TABLE(gs), 5);
 
 	/* Label text for customising a game */
-	label = gtk_label_new(_("Number of Players"));
+	label = gtk_label_new(_("Number of players"));
 	gtk_widget_show(label);
 	gtk_table_attach(GTK_TABLE(gs), label, 0, 1, 1, 2,
 			 GTK_FILL, GTK_FILL, 0, 0);
@@ -124,7 +124,7 @@ static void game_settings_init(GameSettings * gs)
 				    _("The number of players"));
 
 	/* Label for customising a game */
-	label = gtk_label_new(_("Victory Point Target"));
+	label = gtk_label_new(_("Victory point target"));
 	gtk_widget_show(label);
 	gtk_table_attach(GTK_TABLE(gs), label, 0, 1, 2, 3,
 			 GTK_FILL, GTK_FILL, 0, 0);

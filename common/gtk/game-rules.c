@@ -62,7 +62,7 @@ static void game_rules_init(GameRules * gr)
 
 	row = 0;
 
-	label = gtk_label_new(_("Sevens Rule"));
+	label = gtk_label_new(_("Sevens rule"));
 	gtk_widget_show(label);
 	gtk_table_attach(GTK_TABLE(gr), label, 0, 1, row, row + 1,
 			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
@@ -109,16 +109,16 @@ static void game_rules_init(GameRules * gr)
 			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
 
 	row++;
-	add_row(gr, _("Randomize Terrain"), _("Randomize the terrain"),
+	add_row(gr, _("Randomize terrain"), _("Randomize the terrain"),
 		row++, &gr->random_terrain);
-	add_row(gr, _("Use Pirate"), _("Use the pirate to block ships"),
+	add_row(gr, _("Use pirate"), _("Use the pirate to block ships"),
 		row++, &gr->use_pirate);
-	add_row(gr, _("Strict Trade"),
+	add_row(gr, _("Strict trade"),
 		_("Allow trade only before building or buying"), row++,
 		&gr->strict_trade);
-	add_row(gr, _("Domestic Trade"), _("Allow trade between players"),
+	add_row(gr, _("Domestic trade"), _("Allow trade between players"),
 		row++, &gr->domestic_trade);
-	add_row(gr, _("Victory At End Of Turn"),
+	add_row(gr, _("Victory at end of turn"),
 		_("Check for victory only at end of turn"),
 		row++, &gr->check_victory_at_end_of_turn);
 }

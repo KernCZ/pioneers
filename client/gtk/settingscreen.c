@@ -128,7 +128,7 @@ static GtkWidget *settings_create_content(void)
 
 	label = gtk_label_new(NULL);
 	gtk_label_set_markup(GTK_LABEL(label),
-			     _("<b>General Settings</b>"));
+			     _("<b>General settings</b>"));
 	gtk_widget_show(label);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 	gtk_box_pack_start(GTK_BOX(dlg_vbox), label, FALSE, TRUE, 0);
@@ -149,15 +149,15 @@ static GtkWidget *settings_create_content(void)
 	add_setting_val(table, row, 1, TYPE_NUM, game_params->num_players,
 			NULL, FALSE);
 	row++;
-	add_setting_desc(table, row, 0, _("Victory Point Target:"));
+	add_setting_desc(table, row, 0, _("Victory point target:"));
 	add_setting_val(table, row, 1, TYPE_NUM,
 			game_params->victory_points, NULL, FALSE);
 	row++;
-	add_setting_desc(table, row, 0, _("Random Terrain?"));
+	add_setting_desc(table, row, 0, _("Random terrain?"));
 	add_setting_val(table, row, 1, TYPE_BOOL,
 			game_params->random_terrain, NULL, FALSE);
 	row++;
-	add_setting_desc(table, row, 0, _("Interplayer Trading Allowed?"));
+	add_setting_desc(table, row, 0, _("Interplayer trading allowed?"));
 	add_setting_val(table, row, 1, TYPE_BOOL,
 			game_params->domestic_trade, NULL, FALSE);
 	row++;
@@ -167,12 +167,12 @@ static GtkWidget *settings_create_content(void)
 			game_params->strict_trade, NULL, FALSE);
 	row++;
 	add_setting_desc(table, row, 0,
-			 _("Check Victory Only At End Of Turn?"));
+			 _("Check victory only at end of turn?"));
 	add_setting_val(table, row, 1, TYPE_BOOL,
 			game_params->check_victory_at_end_of_turn, NULL,
 			FALSE);
 	row++;
-	add_setting_desc(table, row, 0, _("Amount of Each Resource:"));
+	add_setting_desc(table, row, 0, _("Amount of each resource:"));
 	add_setting_val(table, row, 1, TYPE_NUM,
 			game_params->resource_count, NULL, FALSE);
 
@@ -186,12 +186,12 @@ static GtkWidget *settings_create_content(void)
 		sevens_desc = g_strdup(_("Unknown"));
 	}
 	row++;
-	add_setting_desc(table, row, 0, _("Sevens Rule:"));
+	add_setting_desc(table, row, 0, _("Sevens rule:"));
 	add_setting_val(table, row, 1, TYPE_STRING, 0, sevens_desc, FALSE);
 	g_free(sevens_desc);
 
 	row++;
-	add_setting_desc(table, row, 0, _("Use Pirate:"));
+	add_setting_desc(table, row, 0, _("Use pirate:"));
 	add_setting_val(table, row, 1, TYPE_BOOL, game_params->use_pirate,
 			NULL, FALSE);
 
@@ -220,7 +220,7 @@ static GtkWidget *settings_create_content(void)
 		island_bonus = g_strdup(_("No"));
 	}
 	row++;
-	add_setting_desc(table, row, 0, _("Island Discovery Bonuses:"));
+	add_setting_desc(table, row, 0, _("Island discovery bonuses:"));
 	add_setting_val(table, row, 1, TYPE_STRING, 0, island_bonus,
 			FALSE);
 	g_free(island_bonus);
@@ -236,7 +236,7 @@ static GtkWidget *settings_create_content(void)
 
 	label = gtk_label_new(NULL);
 	gtk_label_set_markup(GTK_LABEL(label),
-			     _("<b>Building Quotas</b>"));
+			     _("<b>Building quotas</b>"));
 	gtk_widget_show(label);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 	gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, TRUE, 0);
@@ -271,7 +271,7 @@ static GtkWidget *settings_create_content(void)
 			game_params->num_build_type[BUILD_CITY], NULL,
 			TRUE);
 	row++;
-	add_setting_desc_with_image(table, row, 0, _("City Walls:"),
+	add_setting_desc_with_image(table, row, 0, _("City walls:"),
 				    PIONEERS_PIXMAP_CITY_WALL);
 	add_setting_val(table, row, 2, TYPE_NUM,
 			game_params->num_build_type[BUILD_CITY_WALL], NULL,
@@ -295,7 +295,7 @@ static GtkWidget *settings_create_content(void)
 
 	label = gtk_label_new(NULL);
 	gtk_label_set_markup(GTK_LABEL(label),
-			     _("<b>Development Card Deck</b>"));
+			     _("<b>Development card deck</b>"));
 	gtk_widget_show(label);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 	gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, TRUE, 0);
@@ -311,39 +311,39 @@ static GtkWidget *settings_create_content(void)
 	gtk_table_set_row_spacings(GTK_TABLE(table), 3);
 	gtk_table_set_col_spacings(GTK_TABLE(table), 6);
 
-	add_setting_desc(table, 0, 0, _("Road Building Cards:"));
+	add_setting_desc(table, 0, 0, _("Road building cards:"));
 	add_setting_val(table, 0, 1, TYPE_NUM,
 			game_params->num_develop_type[DEVEL_ROAD_BUILDING],
 			NULL, TRUE);
-	add_setting_desc(table, 1, 0, _("Monopoly Cards:"));
+	add_setting_desc(table, 1, 0, _("Monopoly cards:"));
 	add_setting_val(table, 1, 1, TYPE_NUM,
 			game_params->num_develop_type[DEVEL_MONOPOLY],
 			NULL, TRUE);
-	add_setting_desc(table, 2, 0, _("Year of Plenty Cards:"));
+	add_setting_desc(table, 2, 0, _("Year of plenty cards:"));
 	add_setting_val(table, 2, 1, TYPE_NUM,
 			game_params->num_develop_type
 			[DEVEL_YEAR_OF_PLENTY], NULL, TRUE);
-	add_setting_desc(table, 3, 0, _("Chapel Cards:"));
+	add_setting_desc(table, 3, 0, _("Chapel cards:"));
 	add_setting_val(table, 3, 1, TYPE_NUM,
 			game_params->num_develop_type[DEVEL_CHAPEL], NULL,
 			TRUE);
-	add_setting_desc(table, 4, 0, _("Pioneer University Cards:"));
+	add_setting_desc(table, 4, 0, _("Pioneer university cards:"));
 	add_setting_val(table, 4, 1, TYPE_NUM,
 			game_params->num_develop_type[DEVEL_UNIVERSITY],
 			NULL, TRUE);
-	add_setting_desc(table, 5, 0, _("Governor's House Cards:"));
+	add_setting_desc(table, 5, 0, _("Governor's house cards:"));
 	add_setting_val(table, 5, 1, TYPE_NUM,
 			game_params->num_develop_type
 			[DEVEL_GOVERNORS_HOUSE], NULL, TRUE);
-	add_setting_desc(table, 6, 0, _("Library Cards:"));
+	add_setting_desc(table, 6, 0, _("Library cards:"));
 	add_setting_val(table, 6, 1, TYPE_NUM,
 			game_params->num_develop_type[DEVEL_LIBRARY], NULL,
 			TRUE);
-	add_setting_desc(table, 7, 0, _("Market Cards:"));
+	add_setting_desc(table, 7, 0, _("Market cards:"));
 	add_setting_val(table, 7, 1, TYPE_NUM,
 			game_params->num_develop_type[DEVEL_MARKET], NULL,
 			TRUE);
-	add_setting_desc(table, 8, 0, _("Soldier Cards:"));
+	add_setting_desc(table, 8, 0, _("Soldier cards:"));
 	add_setting_val(table, 8, 1, TYPE_NUM,
 			game_params->num_develop_type[DEVEL_SOLDIER], NULL,
 			TRUE);

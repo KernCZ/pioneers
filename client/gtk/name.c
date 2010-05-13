@@ -120,7 +120,7 @@ void name_create_dlg(void)
 	};
 
 	name_dialog.dlg =
-	    gtk_dialog_new_with_buttons(_("Change player name"),
+	    gtk_dialog_new_with_buttons(_("Change Player Name"),
 					GTK_WINDOW(app_window),
 					GTK_DIALOG_DESTROY_WITH_PARENT,
 					GTK_STOCK_CANCEL,
@@ -143,7 +143,7 @@ void name_create_dlg(void)
 	gtk_box_pack_start(GTK_BOX(dlg_vbox), hbox, FALSE, TRUE, 0);
 	gtk_container_set_border_width(GTK_CONTAINER(hbox), 5);
 
-	lbl = gtk_label_new(_("Player Name:"));
+	lbl = gtk_label_new(_("Player name:"));
 	gtk_widget_show(lbl);
 	gtk_box_pack_start(GTK_BOX(hbox), lbl, FALSE, TRUE, 0);
 	gtk_misc_set_alignment(GTK_MISC(lbl), 1, 0.5);

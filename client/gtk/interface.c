@@ -740,7 +740,7 @@ void frontend_steal_ship(void)
 
 	gui_cursor_set(STEAL_SHIP_CURSOR, can_edge_be_robbed, rob_edge,
 		       NULL, &hex);
-	gui_prompt_show(_("Select the ship to steal from"));
+	gui_prompt_show(_("Select the ship to steal from."));
 }
 
 void frontend_steal_building(void)
@@ -750,7 +750,7 @@ void frontend_steal_building(void)
 
 	gui_cursor_set(STEAL_BUILDING_CURSOR, can_building_be_robbed,
 		       rob_building, NULL, &hex);
-	gui_prompt_show(_("Select the building to steal from"));
+	gui_prompt_show(_("Select the building to steal from."));
 }
 
 void frontend_robber_done(void)
@@ -782,7 +782,7 @@ void frontend_robber(void)
 	set_gui_state(frontend_state_robber);
 	gui_cursor_set(ROBBER_CURSOR, check_move_robber_or_pirate,
 		       place_robber_or_pirate_cb, NULL, NULL);
-	gui_prompt_show(_("Place the robber"));
+	gui_prompt_show(_("Place the robber."));
 	frontend_gui_update();
 }
 

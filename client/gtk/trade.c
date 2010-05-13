@@ -435,7 +435,7 @@ GtkWidget *trade_build_page(void)
 
 	label = gtk_label_new(NULL);
 	/* Frame title, trade: I want to trade these resources */
-	gtk_label_set_markup(GTK_LABEL(label), _("<b>I Want</b>"));
+	gtk_label_set_markup(GTK_LABEL(label), _("<b>I want</b>"));
 	gtk_widget_show(label);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 	gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, TRUE, 0);
@@ -463,7 +463,7 @@ GtkWidget *trade_build_page(void)
 
 	label = gtk_label_new(NULL);
 	/* Frame title, trade: I want these resources in return */
-	gtk_label_set_markup(GTK_LABEL(label), _("<b>Give Them</b>"));
+	gtk_label_set_markup(GTK_LABEL(label), _("<b>Give them</b>"));
 	gtk_widget_show(label);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 	gtk_box_pack_start(GTK_BOX(we_receive_frame), label, FALSE, TRUE,

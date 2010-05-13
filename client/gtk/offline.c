@@ -47,10 +47,10 @@ static gboolean show_version = FALSE;
 
 static GOptionEntry commandline_entries[] = {
 	/* Commandline option of client: hostname of the server */
-	{"server", 's', 0, G_OPTION_ARG_STRING, &server, N_("Server Host"),
+	{"server", 's', 0, G_OPTION_ARG_STRING, &server, N_("Server host"),
 	 PIONEERS_DEFAULT_GAME_HOST},
 	/* Commandline option of client: port of the server */
-	{"port", 'p', 0, G_OPTION_ARG_STRING, &port, N_("Server Port"),
+	{"port", 'p', 0, G_OPTION_ARG_STRING, &port, N_("Server port"),
 	 PIONEERS_DEFAULT_GAME_PORT},
 	/* Commandline option of client: name of the player */
 	{"name", 'n', 0, G_OPTION_ARG_STRING, &name, N_("Player name"),

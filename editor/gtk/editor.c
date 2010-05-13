@@ -729,12 +729,12 @@ static GtkWidget *build_settings(GtkWindow * main_window)
 	game_devcards = GAMEDEVCARDS(game_devcards_new());
 	game_buildings = GAMEBUILDINGS(game_buildings_new());
 
-	build_frame(lvbox, _("Game Parameters"),
+	build_frame(lvbox, _("Game parameters"),
 		    GTK_WIDGET(game_settings));
 	build_frame(lvbox, _("Rules"), GTK_WIDGET(game_rules));
 	build_frame(lvbox, _("Resources"), GTK_WIDGET(game_resources));
 	build_frame(rvbox, _("Buildings"), GTK_WIDGET(game_buildings));
-	build_frame(rvbox, _("Development Cards"),
+	build_frame(rvbox, _("Development cards"),
 		    GTK_WIDGET(game_devcards));
 
 	g_signal_connect(G_OBJECT(game_settings), "check",
@@ -917,7 +917,7 @@ static void save_as_menu_cb(void)
 {
 	GtkWidget *dialog;
 
-	dialog = gtk_file_chooser_dialog_new(_("Save as..."),
+	dialog = gtk_file_chooser_dialog_new(_("Save As..."),
 					     GTK_WINDOW(toplevel),
 					     GTK_FILE_CHOOSER_ACTION_SAVE,
 					     GTK_STOCK_CANCEL,
@@ -974,7 +974,7 @@ static void change_title_menu_cb(void)
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);
 	gtk_container_set_border_width(GTK_CONTAINER(hbox), 5);
 
-	label = gtk_label_new(_("New Title:"));
+	label = gtk_label_new(_("New title:"));
 	gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, TRUE, 0);
 	gtk_misc_set_alignment(GTK_MISC(label), 1, 0.5);
 
@@ -1034,24 +1034,48 @@ static void about_menu_cb(void)
 }
 
 static GtkActionEntry entries[] = {
-	{"FileMenu", NULL, N_("_File"), NULL, NULL, NULL},
-	{"HelpMenu", NULL, N_("_Help"), NULL, NULL, NULL},
+	{"FileMenu", NULL,
+	 /* Menu entry */
+	 N_("_File"), NULL, NULL, NULL},
+	{"HelpMenu", NULL,
+	 /* Menu entry */
+	 N_("_Help"), NULL, NULL, NULL},
 
-	{"New", GTK_STOCK_NEW, N_("_New"), "<control>N",
+	{"New", GTK_STOCK_NEW,
+	 /* Menu entry */
+	 N_("_New"), "<control>N",
 	 N_("Create a new game"), new_game_menu_cb},
-	{"Open", GTK_STOCK_OPEN, N_("_Open..."), "<control>O",
+	{"Open", GTK_STOCK_OPEN,
+	 /* Menu entry */
+	 N_("_Open..."), "<control>O",
+	 /* Tooltip for Open menu entry */
 	 N_("Open an existing game"), load_game_menu_cb},
-	{"Save", GTK_STOCK_SAVE, N_("_Save"), "<control>S",
+	{"Save", GTK_STOCK_SAVE,
+	 /* Menu entry */
+	 N_("_Save"), "<control>S",
+	 /* Tooltip for Save menu entry */
 	 N_("Save game"), save_game_menu_cb},
-	{"SaveAs", GTK_STOCK_SAVE_AS, N_("Save _As..."),
+	{"SaveAs", GTK_STOCK_SAVE_AS,
+	 /* Menu entry */
+	 N_("Save _As..."),
 	 "<control><shift>S",
+	 /* Tooltip for Save As menu entry */
 	 N_("Save as"), save_as_menu_cb},
-	{"ChangeTitle", NULL, N_("_Change title"), "<control>T",
+	{"ChangeTitle", NULL,
+	 /* Menu entry */
+	 N_("_Change Title"), "<control>T",
+	 /* Tooltip for Change Title menu entry */
 	 N_("Change game title"), change_title_menu_cb},
-	{"CheckVP", GTK_STOCK_APPLY, N_("_Check Victory Point Target"),
+	{"CheckVP", GTK_STOCK_APPLY,
+	 /* Menu entry */
+	 N_("_Check Victory Point Target"),
 	 NULL,
+	 /* Tooltip for Check Victory Point Target menu entry */
 	 N_("Check whether the game can be won"), G_CALLBACK(check_vp_cb)},
-	{"Quit", GTK_STOCK_QUIT, N_("_Quit"), "<control>Q",
+	{"Quit", GTK_STOCK_QUIT,
+	 /* Menu entry */
+	 N_("_Quit"), "<control>Q",
+	 /* Tooltip for Quit menu entry */
 	 N_("Quit"), exit_cb},
 
 #ifdef HAVE_HELP
@@ -1060,7 +1084,10 @@ static GtkActionEntry entries[] = {
 	   N_("Contents"), contents_menu_cb},
 	 */
 #endif
-	{"About", NULL, N_("_About Pioneers Editor"), NULL,
+	{"About", NULL,
+	 /* Menu entry */
+	 N_("_About Pioneers Editor"), NULL,
+	 /* Tooltip for About Pioneers Editor menu entry */
 	 N_("Information about Pioneers Editor"), about_menu_cb}
 };
 

@@ -127,7 +127,7 @@ GtkWidget *develop_build_page(void)
 	label = gtk_label_new(NULL);
 	/* Caption for list of bought development cards */
 	gtk_label_set_markup(GTK_LABEL(label),
-			     _("<b>Development Cards</b>"));
+			     _("<b>Development cards</b>"));
 	gtk_widget_show(label);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 	gtk_container_add(GTK_CONTAINER(alignment), label);

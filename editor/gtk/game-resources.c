@@ -45,7 +45,7 @@ static void game_resources_init(GameResources * gr)
 	gtk_table_set_col_spacings(GTK_TABLE(gr), 5);
 	gtk_table_set_homogeneous(GTK_TABLE(gr), TRUE);
 
-	label = gtk_label_new(_("Resource Count"));
+	label = gtk_label_new(_("Resource count"));
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 	gtk_table_attach_defaults(GTK_TABLE(gr), label, 0, 1, 0, 1);
 

@@ -727,7 +727,7 @@ static GtkWidget *build_create_interface(void)
 			 G_CALLBACK(player_change_cb), NULL);
 
 	row = GTK_TABLE(game_settings)->nrows;
-	label = gtk_label_new(_("Number of AI Players"));
+	label = gtk_label_new(_("Number of computer players"));
 	gtk_widget_show(label);
 	gtk_table_attach(GTK_TABLE(game_settings), label, 0, 1, row,
 			 row + 1, GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
@@ -746,7 +746,7 @@ static GtkWidget *build_create_interface(void)
 			 1, 2, row, row + 1,
 			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_widget_set_tooltip_text(aiplayers_spin,
-				    _("The number of AI players"));
+				    _("The number of computer players"));
 
 	game_rules = game_rules_new_metaserver();
 	gtk_widget_show(game_rules);
@@ -958,7 +958,7 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
 					       0,
 					       GTK_STOCK_REFRESH,
 					       META_RESPONSE_REFRESH,
-					       _("_New remote game"),
+					       _("_New Remote Game"),
 					       META_RESPONSE_NEW,
 					       GTK_STOCK_CANCEL,
 					       GTK_RESPONSE_CANCEL,
@@ -1200,7 +1200,7 @@ void connect_create_dlg(void)
 	gtk_table_set_row_spacings(GTK_TABLE(table), 3);
 	gtk_table_set_col_spacings(GTK_TABLE(table), 5);
 
-	lbl = gtk_label_new(_("Player Name"));
+	lbl = gtk_label_new(_("Player name"));
 	gtk_widget_show(lbl);
 	gtk_table_attach(GTK_TABLE(table), lbl, 0, 1, 0, 1,
 			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
@@ -1230,7 +1230,7 @@ void connect_create_dlg(void)
 	gtk_table_attach(GTK_TABLE(table), sep, 0, 3, 1, 2,
 			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 6);
 
-	lbl = gtk_label_new(_("Meta Server"));
+	lbl = gtk_label_new(_("Meta server"));
 	gtk_widget_show(lbl);
 	gtk_table_attach(GTK_TABLE(table), lbl, 0, 1, 2, 3,
 			 (GtkAttachOptions) GTK_FILL,
@@ -1447,7 +1447,7 @@ static void connect_private_dialog(G_GNUC_UNUSED GtkWidget * widget,
 	gtk_table_set_row_spacings(GTK_TABLE(table), 3);
 	gtk_table_set_col_spacings(GTK_TABLE(table), 5);
 
-	lbl = gtk_label_new(_("Server Host"));
+	lbl = gtk_label_new(_("Server host"));
 	gtk_widget_show(lbl);
 	gtk_table_attach(GTK_TABLE(table), lbl, 0, 1, 0, 1,
 			 GTK_FILL, GTK_EXPAND, 0, 0);
@@ -1463,7 +1463,7 @@ static void connect_private_dialog(G_GNUC_UNUSED GtkWidget * widget,
 				    _("Name of the host of the game"));
 	connect_set_field(&connect_server, connect_server);
 
-	lbl = gtk_label_new(_("Server Port"));
+	lbl = gtk_label_new(_("Server port"));
 	gtk_widget_show(lbl);
 	gtk_table_attach(GTK_TABLE(table), lbl, 0, 1, 1, 2,
 			 GTK_FILL, GTK_EXPAND, 0, 0);
@@ -1521,7 +1521,7 @@ static void connect_private_dialog(G_GNUC_UNUSED GtkWidget * widget,
 			 GTK_FILL, GTK_FILL, 0, 0);
 	gtk_widget_set_tooltip_text(host_list, _("Recent games"));
 
-	lbl = gtk_label_new(_("Recent Games"));
+	lbl = gtk_label_new(_("Recent games"));
 	gtk_widget_show(lbl);
 	gtk_table_attach(GTK_TABLE(table), lbl, 0, 1, 2, 3,
 			 GTK_FILL, GTK_EXPAND, 0, 0);

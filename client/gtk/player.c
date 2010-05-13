@@ -52,13 +52,13 @@ typedef struct {
 static Statistic statistics[] = {
 	{N_("Settlement"), N_("Settlements"), &ps_settlement},
 	{N_("City"), N_("Cities"), &ps_city},
-	{N_("City Wall"), N_("City Walls"), &ps_city_wall},
-	{N_("Largest Army"), NULL, &ps_largest},
-	{N_("Longest Road"), NULL, &ps_largest},
+	{N_("City wall"), N_("City walls"), &ps_city_wall},
+	{N_("Largest army"), NULL, &ps_largest},
+	{N_("Longest road"), NULL, &ps_largest},
 	{N_("Chapel"), N_("Chapels"), &ps_building},
-	{N_("Pioneer University"), N_("Pioneer Universities"),
+	{N_("Pioneer university"), N_("Pioneer universities"),
 	 &ps_building},
-	{N_("Governor's House"), N_("Governor's Houses"), &ps_building},
+	{N_("Governor's house"), N_("Governor's houses"), &ps_building},
 	{N_("Library"), N_("Libraries"), &ps_building},
 	{N_("Market"), N_("Markets"), &ps_building},
 	{N_("Soldier"), N_("Soldiers"), &ps_soldier},
@@ -548,7 +548,7 @@ GtkWidget *player_build_summary(void)
 
 	label = gtk_label_new(NULL);
 	/* Caption for the overview of the points and card of other players */
-	gtk_label_set_markup(GTK_LABEL(label), _("<b>Player Summary</b>"));
+	gtk_label_set_markup(GTK_LABEL(label), _("<b>Player summary</b>"));
 	gtk_widget_show(label);
 	gtk_misc_set_alignment(GTK_MISC(label), 0.0, 0.5);
 	gtk_container_add(GTK_CONTAINER(alignment), label);

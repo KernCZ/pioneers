@@ -295,7 +295,7 @@ GtkWidget *quote_build_page(void)
 	gtk_box_pack_start(GTK_BOX(hbox), vbox, FALSE, TRUE, 0);
 
 	want_table =
-	    resource_table_new(_("I Want"), RESOURCE_TABLE_MORE_IN_HAND,
+	    resource_table_new(_("I want"), RESOURCE_TABLE_MORE_IN_HAND,
 			       FALSE, FALSE);
 	gtk_widget_show(want_table);
 	gtk_box_pack_start(GTK_BOX(vbox), want_table, FALSE, TRUE, 0);
@@ -303,7 +303,7 @@ GtkWidget *quote_build_page(void)
 			 G_CALLBACK(amount_changed_cb), NULL);
 
 	give_table =
-	    resource_table_new(_("Give Them"), RESOURCE_TABLE_LESS_IN_HAND,
+	    resource_table_new(_("Give them"), RESOURCE_TABLE_LESS_IN_HAND,
 			       FALSE, FALSE);
 	gtk_widget_show(give_table);
 	gtk_box_pack_start(GTK_BOX(vbox), give_table, FALSE, TRUE, 0);

@@ -119,22 +119,22 @@ const gchar *get_devel_name(DevelType type)
 	switch (type) {
 	case DEVEL_ROAD_BUILDING:
 		/* Name of the development card */
-		return _("Road Building");
+		return _("Road building");
 	case DEVEL_MONOPOLY:
 		/* Name of the development card */
 		return _("Monopoly");
 	case DEVEL_YEAR_OF_PLENTY:
 		/* Name of the development card */
-		return _("Year of Plenty");
+		return _("Year of plenty");
 	case DEVEL_CHAPEL:
 		/* Name of the development card */
 		return _("Chapel");
 	case DEVEL_UNIVERSITY:
 		/* Name of the development card */
-		return _("Pioneer University");
+		return _("Pioneer university");
 	case DEVEL_GOVERNORS_HOUSE:
 		/* Name of the development card */
-		return _("Governor's House");
+		return _("Governor's house");
 	case DEVEL_LIBRARY:
 		/* Name of the development card */
 		return _("Library");

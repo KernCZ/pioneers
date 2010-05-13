@@ -73,7 +73,7 @@ static GtkWidget *discard_create_dlg(gint num)
 	GtkWidget *vbox;
 	char buff[128];
 
-	discard.dlg = gtk_dialog_new_with_buttons(_("Discard resources"),
+	discard.dlg = gtk_dialog_new_with_buttons(_("Discard Resources"),
 						  GTK_WINDOW(app_window),
 						  GTK_DIALOG_DESTROY_WITH_PARENT,
 						  GTK_STOCK_OK,

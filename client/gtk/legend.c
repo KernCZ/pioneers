@@ -166,7 +166,7 @@ GtkWidget *legend_create_content(void)
 	gtk_container_set_border_width(GTK_CONTAINER(vbox), 6);
 
 	label = gtk_label_new(NULL);
-	gtk_label_set_markup(GTK_LABEL(label), _("<b>Terrain Yield</b>"));
+	gtk_label_set_markup(GTK_LABEL(label), _("<b>Terrain yield</b>"));
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 	gtk_widget_show(label);
 	gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, TRUE, 0);
@@ -198,7 +198,7 @@ GtkWidget *legend_create_content(void)
 	add_legend_terrain(table, 3, 5, SEA_TERRAIN, NO_RESOURCE);
 
 	label = gtk_label_new(NULL);
-	gtk_label_set_markup(GTK_LABEL(label), _("<b>Building Costs</b>"));
+	gtk_label_set_markup(GTK_LABEL(label), _("<b>Building costs</b>"));
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 	gtk_widget_show(label);
 	gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, TRUE, 0);
@@ -236,10 +236,10 @@ GtkWidget *legend_create_content(void)
 			cost_upgrade_settlement());
 	if (have_city_walls())
 		add_legend_cost(table, num_rows++,
-				PIONEERS_PIXMAP_CITY_WALL, _("City Wall"),
+				PIONEERS_PIXMAP_CITY_WALL, _("City wall"),
 				cost_city_wall());
 	add_legend_cost(table, num_rows++, PIONEERS_PIXMAP_DEVELOP,
-			_("Development Card"), cost_development());
+			_("Development card"), cost_development());
 
 	gtk_widget_show(vbox);
 	gtk_box_pack_start(GTK_BOX(hbox), vbox, FALSE, FALSE, 0);
