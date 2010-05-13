@@ -6,6 +6,8 @@
 	client/gtk/offline.c, client/common/player.c: Add function
 	determine_player_type and variable default_player_style.
 	* client/gtk/offline.c: Show better message when not connected.
+	* client/common/client.c: Don't show 'Waiting for your turn' for
+	viewers. Added full stop for several instructions.
 
 2010-04-27  Roland Clobus <rclobus@rclobus.nl>
 	* server/player.c: Don't show 'This game starts soon' for the last

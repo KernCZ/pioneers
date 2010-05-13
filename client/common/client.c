@@ -960,7 +960,7 @@ gboolean mode_start(StateMachine * sm, gint event)
 	if (sm_recv(sm, "ERR sorry, version conflict")) {
 		sm_pop_all_and_goto(sm, mode_offline);
 		callbacks.network_status(_("Offline"));
-		callbacks.instructions(_("Version mismatch"));
+		callbacks.instructions(_("Version mismatch."));
 		log_message(MSG_ERROR,
 			    _("Version mismatch. Please make sure client "
 			      "and server are up to date.\n"));
@@ -1435,7 +1435,7 @@ static char *setup_msg(void)
 			}
 		}
 		old = msg;
-		msg = g_strdup_printf("%s %s", msg, parts[idx]);
+		msg = g_strdup_printf("%s %s.", msg, parts[idx]);
 		g_free(old);
 	}
 
@@ -1483,8 +1483,11 @@ static gboolean mode_idle(StateMachine * sm, gint event)
 	switch (event) {
 	case SM_ENTER:
 		callback_mode = MODE_WAIT_TURN;
-		if (!player_is_viewer(my_player_num()))
-			callbacks.instructions(_("Waiting for your turn"));
+		if (player_is_viewer(my_player_num()))
+			callbacks.instructions("");
+		else
+			callbacks.instructions(_
+					       ("Waiting for your turn."));
 		break;
 	case SM_RECV:
 		if (sm_recv(sm, "setup %d", &backwards)) {
@@ -1643,7 +1646,7 @@ static gboolean mode_robber(StateMachine * sm, gint event)
 	switch (event) {
 	case SM_ENTER:
 		callback_mode = MODE_ROBBER;
-		callbacks.instructions(_("Place the robber"));
+		callbacks.instructions(_("Place the robber."));
 		robber_begin_move(my_player_num());
 		callbacks.robber();
 		break;
