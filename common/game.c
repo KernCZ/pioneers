@@ -31,6 +31,8 @@
 #include "game.h"
 #include "cards.h"
 
+const gchar *default_player_style = "square";
+
 typedef enum {
 	PARAM_STRING,
 	PARAM_INT,
@@ -659,6 +661,27 @@ WinnableState params_check_winnable_state(const GameParams * params,
 			    building + development + road + army +
 			    max_island);
 	return return_value;
+}
+
+PlayerType determine_player_type(const gchar * style)
+{
+	gchar **style_parts;
+	PlayerType type;
+
+	if (style == NULL)
+		return PLAYER_UNKNOWN;
+
+	style_parts = g_strsplit(style, " ", 0);
+	if (!strcmp(style_parts[0], "ai")) {
+		type = PLAYER_COMPUTER;
+	} else if (!strcmp(style_parts[0], "human")
+		   || !strcmp(style, default_player_style)) {
+		type = PLAYER_HUMAN;
+	} else {
+		type = PLAYER_UNKNOWN;
+	}
+	g_strfreev(style_parts);
+	return type;
 }
 
 Points *points_new(gint id, const gchar * name, gint points)

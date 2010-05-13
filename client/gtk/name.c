@@ -88,7 +88,7 @@ static void change_style_cb(G_GNUC_UNUSED GtkWidget * widget,
 		dialog->current_style =
 		    playericon_create_human_style(&c1, variant, &c2);
 	} else {
-		dialog->current_style = g_strdup("square");
+		dialog->current_style = g_strdup(default_player_style);
 	}
 	icon = create_icon(dialog->image, dialog->current_style);
 	gtk_image_set_from_pixbuf(GTK_IMAGE(dialog->image), icon);

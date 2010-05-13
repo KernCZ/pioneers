@@ -203,7 +203,7 @@ void player_change_name(gint player_num, const gchar * name)
 			viewers = g_list_prepend(viewers, viewer);
 			viewer->num = player_num;
 			viewer->name = NULL;
-			viewer->style = g_strdup("square");
+			viewer->style = g_strdup(default_player_style);
 			old_name = NULL;
 		} else {
 			old_name = viewer->name;
@@ -776,7 +776,7 @@ const gchar *player_get_style(gint player_num)
 		Player *player = player_get(player_num);
 		style = player->style;
 	}
-	return style == NULL ? "square" : style;
+	return style == NULL ? default_player_style : style;
 }
 
 gint current_player(void)

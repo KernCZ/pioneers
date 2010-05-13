@@ -356,7 +356,7 @@ gchar *player_new_computer_player(Game * game)
 	/* Reserve the name, so the names of the computer players will
 	   be unique */
 	name = generate_name_for_computer_player(game);
-	player = player_new(game, name, "square");
+	player = player_new(game, name);
 	player->disconnected = TRUE;
 	sm_goto(player->sm, (StateFunc) mode_idle);
 	return name;
@@ -365,7 +365,7 @@ gchar *player_new_computer_player(Game * game)
 /** Allocate a new Player struct.
  *  The StateMachine is not initialized.
  *   */
-Player *player_new(Game * game, const gchar * name, const gchar * style)
+Player *player_new(Game * game, const gchar * name)
 {
 	Player *player;
 	StateMachine *sm;
@@ -389,7 +389,7 @@ Player *player_new(Game * game, const gchar * name, const gchar * style)
 	player->islands_discovered = 0;
 	player->disconnected = FALSE;
 	player->name = g_strdup(name);
-	player->style = g_strdup(style);
+	player->style = NULL;
 	player->special_points = NULL;
 	player->special_points_next_id = 0;
 
@@ -439,7 +439,7 @@ Player *player_new_connection(Game * game, int fd, const gchar * location)
 		return NULL;
 	}
 
-	player = player_new(game, name, "square");
+	player = player_new(game, name);
 	sm = player->sm;
 	sm_use_fd(sm, fd, TRUE);
 	g_free(player->location);

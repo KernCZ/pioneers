@@ -22,6 +22,7 @@
 #include "config.h"
 #include "colors.h"
 #include "player-icon.h"
+#include "game.h"
 #include <gtk/gtk.h>
 #include <string.h>
 #include <stdlib.h>
@@ -134,11 +135,7 @@ GdkPixbuf *playericon_create_icon(GtkWidget * widget, const gchar * style,
 {
 	gint width, height;
 	GdkPixbuf *basic_image, *overlay_image, *scaled_image;
-	gchar **style_parts;
 	gboolean basic_substitute;
-
-	/* Determine the style for the player/viewer */
-	style_parts = g_strsplit(style, " ", 0);
 
 	gtk_icon_size_lookup(GTK_ICON_SIZE_MENU, &width, &height);
 	if (double_size) {
@@ -147,83 +144,96 @@ GdkPixbuf *playericon_create_icon(GtkWidget * widget, const gchar * style,
 	}
 	basic_image = NULL;
 	overlay_image = NULL;
-	if (!strcmp(style_parts[0], "ai")) {
+	switch (determine_player_type(style)) {
+	case PLAYER_COMPUTER:
 		/* This is an AI */
 		basic_image = gdk_pixbuf_copy(ai_avatar);
 		basic_substitute = TRUE;
 		/** @todo RC 2007-07-17 For now, the AI does not have different appearances */
-	} else if (!strcmp(style_parts[0], "human")) {
-		/* Draw a bust */
-		gint variant;
-		GdkColor face_color, variant_color;
+		break;
+	case PLAYER_HUMAN:{
+			/* Draw a bust */
+			gint variant;
+			GdkColor face_color, variant_color;
 
-		playericon_parse_human_style(style, &face_color, &variant,
-					     &variant_color);
-		basic_image = gdk_pixbuf_copy(player_avatar.base);
-		basic_substitute = TRUE;
+			playericon_parse_human_style(style, &face_color,
+						     &variant,
+						     &variant_color);
+			basic_image = gdk_pixbuf_copy(player_avatar.base);
+			basic_substitute = TRUE;
 
-		/* Substitute the pure red face with the face color */
-		replace_colors(basic_image, &red, &face_color);
+			/* Substitute the pure red face with the face color */
+			replace_colors(basic_image, &red, &face_color);
 
-		/* Substitute the pure blue base with the variant color */
-		overlay_image =
-		    gdk_pixbuf_copy(g_slist_nth
-				    (player_avatar.variation,
-				     variant)->data);
-		replace_colors(overlay_image, &blue, &variant_color);
-	} else {
-		/* Unknown or square */
-		GdkGC *gc;
-		GdkPixmap *pixmap;
-
-		pixmap =
-		    gdk_pixmap_new(widget->window, width, height,
-				   gdk_visual_get_system()->depth);
-		gc = gdk_gc_new(pixmap);
-		if (viewer) {
-			GdkPixbuf *tmp;
-			/* Viewers have a transparent icon */
-			gdk_gc_set_foreground(gc, &black);
-			gdk_draw_rectangle(pixmap, gc, TRUE, 0, 0, width,
-					   height);
-
-			tmp =
-			    gdk_pixbuf_get_from_drawable(NULL, pixmap,
-							 NULL, 0, 0, 0, 0,
-							 -1, -1);
-			basic_image =
-			    gdk_pixbuf_add_alpha(tmp, TRUE, 0, 0, 0);
-		} else {
-			gdk_gc_set_foreground(gc, &black);
-			gdk_draw_rectangle(pixmap, gc, TRUE, 0, 0, width,
-					   height);
-
-			gdk_gc_set_foreground(gc, color);
-			gdk_draw_rectangle(pixmap, gc, TRUE, 1, 1,
-					   width - 2, height - 2);
-
-			if (!connected) {
-				gdk_gc_set_foreground(gc, &black);
-				gdk_draw_rectangle(pixmap, gc, FALSE,
-						   3, 3, width - 7,
-						   height - 7);
-				gdk_draw_rectangle(pixmap, gc, FALSE, 6, 6,
-						   width - 13,
-						   height - 13);
-				/* Don't draw the other emblem */
-				connected = TRUE;
-			}
-
-			basic_image =
-			    gdk_pixbuf_get_from_drawable(NULL, pixmap,
-							 NULL, 0, 0, 0, 0,
-							 -1, -1);
+			/* Substitute the pure blue base with the variant color */
+			overlay_image =
+			    gdk_pixbuf_copy(g_slist_nth
+					    (player_avatar.variation,
+					     variant)->data);
+			replace_colors(overlay_image, &blue,
+				       &variant_color);
+			break;
 		}
-		basic_substitute = FALSE;
-		g_object_unref(gc);
-		g_object_unref(pixmap);
+	default:{
+			/* Unknown or square */
+			GdkGC *gc;
+			GdkPixmap *pixmap;
+
+			pixmap =
+			    gdk_pixmap_new(widget->window, width, height,
+					   gdk_visual_get_system()->depth);
+			gc = gdk_gc_new(pixmap);
+			if (viewer) {
+				GdkPixbuf *tmp;
+				/* Viewers have a transparent icon */
+				gdk_gc_set_foreground(gc, &black);
+				gdk_draw_rectangle(pixmap, gc, TRUE, 0, 0,
+						   width, height);
+
+				tmp =
+				    gdk_pixbuf_get_from_drawable(NULL,
+								 pixmap,
+								 NULL, 0,
+								 0, 0, 0,
+								 -1, -1);
+				basic_image =
+				    gdk_pixbuf_add_alpha(tmp, TRUE, 0, 0,
+							 0);
+			} else {
+				gdk_gc_set_foreground(gc, &black);
+				gdk_draw_rectangle(pixmap, gc, TRUE, 0, 0,
+						   width, height);
+
+				gdk_gc_set_foreground(gc, color);
+				gdk_draw_rectangle(pixmap, gc, TRUE, 1, 1,
+						   width - 2, height - 2);
+
+				if (!connected) {
+					gdk_gc_set_foreground(gc, &black);
+					gdk_draw_rectangle(pixmap, gc,
+							   FALSE, 3, 3,
+							   width - 7,
+							   height - 7);
+					gdk_draw_rectangle(pixmap, gc,
+							   FALSE, 6, 6,
+							   width - 13,
+							   height - 13);
+					/* Don't draw the other emblem */
+					connected = TRUE;
+				}
+
+				basic_image =
+				    gdk_pixbuf_get_from_drawable(NULL,
+								 pixmap,
+								 NULL, 0,
+								 0, 0, 0,
+								 -1, -1);
+			}
+			basic_substitute = FALSE;
+			g_object_unref(gc);
+			g_object_unref(pixmap);
+		}
 	}
-	g_strfreev(style_parts);
 
 	if (basic_image && basic_substitute) {
 		/* Substitute the pure blue base with the player color */

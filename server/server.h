@@ -172,7 +172,7 @@ typedef enum {
 	PB_OTHERS
 } BroadcastType;
 gchar *player_new_computer_player(Game * game);
-Player *player_new(Game * game, const gchar * name, const gchar * style);
+Player *player_new(Game * game, const gchar * name);
 Player *player_new_connection(Game * game, int fd, const gchar * location);
 Player *player_by_num(Game * game, gint num);
 void player_set_name(Player * player, gchar * name);

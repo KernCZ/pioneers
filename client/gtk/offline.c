@@ -227,7 +227,7 @@ void frontend_init(int argc, char **argv)
 	}
 	style = config_get_string("connect/style", &default_returned);
 	if (default_returned) {
-		style = g_strdup("square");
+		style = g_strdup(default_player_style);
 	}
 
 	connect_set_name(name);

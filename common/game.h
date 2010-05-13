@@ -87,7 +87,17 @@ typedef enum {
 	PARAMS_NO_WIN		/* the game cannot be won */
 } WinnableState;
 
+typedef enum {
+	PLAYER_HUMAN,		/* the player is a human */
+	PLAYER_COMPUTER,	/* the player is a computer player */
+	PLAYER_UNKNOWN		/* it is unknown who is controlling the player */
+} PlayerType;
+#define NUM_PLAYER_TYPES (PLAYER_UNKNOWN + 1)
+
 typedef void (*WriteLineFunc) (gpointer user_data, const gchar *);
+
+/** Default style for a player. */
+const gchar *default_player_style;
 
 GameParams *params_new(void);
 GameParams *params_copy(const GameParams * params);
@@ -108,6 +118,9 @@ gboolean read_line_from_file(gchar ** line, FILE * f);
 WinnableState params_check_winnable_state(const GameParams * params,
 					  gchar ** win_message,
 					  gchar ** point_specification);
+
+/** Determine the type of the player, by analysing the style. */
+PlayerType determine_player_type(const gchar * style);
 
 Points *points_new(gint id, const gchar * name, gint points);
 void points_free(Points * points);
