@@ -953,7 +953,7 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
 		return;
 	}
 
-	meta_dlg = gtk_dialog_new_with_buttons(_("Join a public game"),
+	meta_dlg = gtk_dialog_new_with_buttons(_("Join a Public Game"),
 					       GTK_WINDOW(parent),
 					       0,
 					       GTK_STOCK_REFRESH,
@@ -1175,7 +1175,7 @@ void connect_create_dlg(void)
 		return;
 	}
 
-	connect_dlg = gtk_dialog_new_with_buttons(_("Start a new game"),
+	connect_dlg = gtk_dialog_new_with_buttons(_("Start a New Game"),
 						  GTK_WINDOW(app_window),
 						  0,
 						  GTK_STOCK_CANCEL,
@@ -1250,7 +1250,7 @@ void connect_create_dlg(void)
 	gtk_table_attach(GTK_TABLE(table), hbox, 0, 3, 3, 4,
 			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 3);
 
-	btn = gtk_button_new_with_label(_("Join public game"));
+	btn = gtk_button_new_with_label(_("Join Public Game"));
 	gtk_widget_show(btn);
 	gtk_box_pack_start(GTK_BOX(hbox), btn, TRUE, TRUE, 0);
 	g_signal_connect(G_OBJECT(btn), "clicked",
@@ -1259,7 +1259,7 @@ void connect_create_dlg(void)
 	GTK_WIDGET_SET_FLAGS(btn, GTK_CAN_DEFAULT);
 	gtk_widget_grab_default(btn);
 
-	btn = gtk_button_new_with_label(_("Create game"));
+	btn = gtk_button_new_with_label(_("Create Game"));
 	gtk_widget_show(btn);
 	gtk_box_pack_start(GTK_BOX(hbox), btn, TRUE, TRUE, 0);
 	gtk_widget_set_tooltip_text(btn, _("Create a game"));
@@ -1272,7 +1272,7 @@ void connect_create_dlg(void)
 		gtk_widget_set_sensitive(GTK_WIDGET(btn), FALSE);
 	}
 
-	btn = gtk_button_new_with_label(_("Join private game"));
+	btn = gtk_button_new_with_label(_("Join Private Game"));
 	gtk_widget_show(btn);
 	gtk_box_pack_start(GTK_BOX(hbox), btn, TRUE, TRUE, 0);
 	gtk_widget_set_tooltip_text(btn, _("Join a private game"));
