@@ -1,3 +1,6 @@
+2010-05-25  Roland Clobus <rclobus@rclobus.nl>
+	* server/server.c, server/meta.c: Fill Game.hostname at the right place.
+
 2010-05-14  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/connect.c: Fix capitalization again.
 

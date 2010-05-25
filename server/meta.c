@@ -75,12 +75,7 @@ void meta_send_details(Game * game)
 		   "curr=%d\n",
 		   game->server_port, PROTOCOL_VERSION,
 		   game->params->num_players, game->num_players);
-	/* Hostname is empty */
-	if (game->hostname && !strlen(game->hostname)) {
-		g_free(game->hostname);
-		game->hostname = NULL;
-	}
-	/* No hostname set, let the metaserver figure out our name */
+	/* If no hostname is set, let the metaserver figure out our name */
 	if (game->hostname) {
 		net_printf(ses, "host=%s\n", game->hostname);
 	}
