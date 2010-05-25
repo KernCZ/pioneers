@@ -239,7 +239,7 @@ Game *server_start(const GameParams * params, const gchar * hostname,
 	g_assert(game->server_port == NULL);
 	game->server_port = g_strdup(port);
 	g_assert(game->hostname == NULL);
-	if (hostname && !strlen(hostname)) {
+	if (hostname && strlen(hostname) > 0) {
 		game->hostname = g_strdup(hostname);
 	}
 	game->random_order = random_order;
