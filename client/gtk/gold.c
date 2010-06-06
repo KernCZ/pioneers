@@ -66,7 +66,7 @@ void gold_choose_player_must(gint num, const gint * bank)
 {
 	GtkWidget *dlg_vbox;
 	GtkWidget *vbox;
-	char buff[128];
+	gchar *text;
 
 	gold.dlg = gtk_dialog_new_with_buttons(_("Choose Resources"),
 					       GTK_WINDOW(app_window),
@@ -88,13 +88,13 @@ void gold_choose_player_must(gint num, const gint * bank)
 	gtk_box_pack_start(GTK_BOX(dlg_vbox), vbox, FALSE, TRUE, 0);
 	gtk_container_set_border_width(GTK_CONTAINER(vbox), 5);
 
-	sprintf(buff,
-		ngettext("You may choose 1 resource",
-			 "You may choose %d resources", num));
-
+	text = g_strdup_printf(ngettext("You may choose %d resource",
+					"You may choose %d resources",
+					num), num);
 	gold.resource_widget =
-	    resource_table_new(buff, RESOURCE_TABLE_MORE_IN_HAND, TRUE,
+	    resource_table_new(text, RESOURCE_TABLE_MORE_IN_HAND, TRUE,
 			       TRUE);
+	g_free(text);
 	resource_table_set_total(RESOURCETABLE(gold.resource_widget),
 				 /* Text for total in choose gold dialog */
 				 _("Total resources"), num);

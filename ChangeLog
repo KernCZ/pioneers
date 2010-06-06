@@ -1,3 +1,7 @@
+2010-06-06  Roland Clobus <rclobus@rclobus.nl>
+	* client/gtk/discard.c, client/gtk/gold.c: Replace fixes size buffer,
+	use ngettext.
+
 2010-05-25  Roland Clobus <rclobus@rclobus.nl>
 	* server/server.c, server/meta.c: Fill Game.hostname at the right place.
 

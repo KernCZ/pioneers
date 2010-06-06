@@ -71,7 +71,7 @@ static GtkWidget *discard_create_dlg(gint num)
 {
 	GtkWidget *dlg_vbox;
 	GtkWidget *vbox;
-	char buff[128];
+	gchar *text;
 
 	discard.dlg = gtk_dialog_new_with_buttons(_("Discard Resources"),
 						  GTK_WINDOW(app_window),
@@ -93,10 +93,13 @@ static GtkWidget *discard_create_dlg(gint num)
 	gtk_box_pack_start(GTK_BOX(dlg_vbox), vbox, FALSE, TRUE, 0);
 	gtk_container_set_border_width(GTK_CONTAINER(vbox), 6);
 
-	sprintf(buff, _("You must discard %d resources"), num);
+	text = g_strdup_printf(ngettext("You must discard %d resource",
+					"You must discard %d resources",
+					num), num);
 	discard.resource_widget =
-	    resource_table_new(buff, RESOURCE_TABLE_LESS_IN_HAND, FALSE,
+	    resource_table_new(text, RESOURCE_TABLE_LESS_IN_HAND, FALSE,
 			       TRUE);
+	g_free(text);
 	resource_table_set_total(RESOURCETABLE(discard.resource_widget),
 				 _("Total discards"), num);
 	gtk_widget_show(discard.resource_widget);
