@@ -78,7 +78,9 @@ static void avahibrowser_init(AvahiBrowser * ab)
 				       cell, "text", 5, NULL);
 
 	gtk_widget_show(ab->combo_box);
-	gtk_widget_set_tooltip_text(ab->combo_box, _("Select an automatically discovered game"));
+	gtk_widget_set_tooltip_text(ab->combo_box,
+				    _
+				    ("Select an automatically discovered game"));
 	gtk_table_resize(GTK_TABLE(ab), 1, 1);
 	gtk_table_attach_defaults(GTK_TABLE(ab), ab->combo_box, 0, 1, 0,
 				  1);

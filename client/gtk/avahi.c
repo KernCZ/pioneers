@@ -61,11 +61,12 @@ static void resolve_callback(AvahiServiceResolver * r,
 	/* Called whenever a service has been resolved successfully or timed out */
 	switch (event) {
 	case AVAHI_RESOLVER_FAILURE:
-		debug("Avahi: Failed to resolve service '%s' of type '%s' in domain '%s': %s",
-			    name, type, domain,
-			    avahi_strerror(avahi_client_errno
-					   (avahi_service_resolver_get_client
-					    (r))));
+		debug
+		    ("Avahi: Failed to resolve service '%s' of type '%s' in domain '%s': %s",
+		     name, type, domain,
+		     avahi_strerror(avahi_client_errno
+				    (avahi_service_resolver_get_client
+				     (r))));
 		break;
 
 	case AVAHI_RESOLVER_FOUND:{
@@ -75,10 +76,13 @@ static void resolve_callback(AvahiServiceResolver * r,
 			// Parse the text part
 			AvahiStringList *iter = txt;
 			while (iter != NULL) {
-				gchar *text = g_strdup((gchar*)avahi_string_list_get_text(iter));
+				gchar *text = g_strdup((gchar *)
+						       avahi_string_list_get_text
+						       (iter));
 				if (g_str_has_prefix(text, "version=")) {
 					version = g_strdup(text + 8);
-				} else if (g_str_has_prefix(text, "title=")) {
+				} else
+				    if (g_str_has_prefix(text, "title=")) {
 					title = g_strdup(text + 6);
 				}
 				g_free(text);
@@ -90,7 +94,8 @@ static void resolve_callback(AvahiServiceResolver * r,
 				    g_strdup_printf("%" G_GUINT16_FORMAT,
 						    port);
 				avahibrowser_add(zcsptr, name,
-						 host_name, sport, version,  title);
+						 host_name, sport, version,
+						 title);
 				g_free(sport);
 			}
 			g_free(version);
@@ -119,9 +124,9 @@ static void browse_callback(AvahiServiceBrowser * b,
 	switch (event) {
 	case AVAHI_BROWSER_FAILURE:
 		debug("Avahi browser: failure %s",
-			    avahi_strerror(avahi_client_errno
-					   (avahi_service_browser_get_client
-					    (b))));
+		      avahi_strerror(avahi_client_errno
+				     (avahi_service_browser_get_client
+				      (b))));
 		return;
 
 	case AVAHI_BROWSER_NEW:
@@ -134,9 +139,9 @@ static void browse_callback(AvahiServiceBrowser * b,
 		    (avahi_service_resolver_new
 		     (c, interface, protocol, name, type, domain,
 		      AVAHI_PROTO_UNSPEC, 0, resolve_callback, c)))
-			debug("Avahi browser: Failed to resolve service '%s': %s",
-				    name,
-				    avahi_strerror(avahi_client_errno(c)));
+			debug
+			    ("Avahi browser: Failed to resolve service '%s': %s",
+			     name, avahi_strerror(avahi_client_errno(c)));
 		break;
 
 	case AVAHI_BROWSER_REMOVE:
@@ -157,7 +162,7 @@ static void client_callback(AvahiClient * c, AvahiClientState state,
 	/* Called whenever the client or server state changes */
 	if (state == AVAHI_CLIENT_FAILURE) {
 		debug("Avahi server connection failure: %s",
-			    avahi_strerror(avahi_client_errno(c)));
+		      avahi_strerror(avahi_client_errno(c)));
 	}
 }
 
@@ -185,7 +190,7 @@ void avahi_register(AvahiBrowser * widget)
 	/* Check wether creating the client object succeeded */
 	if (!client) {
 		debug("Avahi: Failed to create client: %s",
-			    avahi_strerror(error));
+		      avahi_strerror(error));
 		avahi_unregister();
 	}
 
@@ -197,7 +202,7 @@ void avahi_register(AvahiBrowser * widget)
 				       AVAHI_ANNOUNCE_NAME, NULL, 0,
 				       browse_callback, client))) {
 		debug("Failed to create service browser: %s"),
-			    avahi_strerror(avahi_client_errno(client));
+		    avahi_strerror(avahi_client_errno(client));
 		avahi_unregister();
 	}
 }
@@ -222,4 +227,3 @@ void avahi_unregister(void)
 
 }
 #endif
-
