@@ -93,7 +93,14 @@ static void resolve_callback(AvahiServiceResolver * r,
 				gchar *sport =
 				    g_strdup_printf("%" G_GUINT16_FORMAT,
 						    port);
+				char resolved_hostname
+				    [AVAHI_ADDRESS_STR_MAX];
+				avahi_address_snprint(resolved_hostname,
+						      sizeof
+						      (resolved_hostname),
+						      address);
 				avahibrowser_add(zcsptr, name,
+						 resolved_hostname,
 						 host_name, sport, version,
 						 title);
 				g_free(sport);

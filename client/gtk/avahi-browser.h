@@ -51,7 +51,7 @@ GType avahibrowser_get_type(void);
 GtkWidget *avahibrowser_new(GtkWidget * connect_button);
 void avahibrowser_refresh(AvahiBrowser * ab);
 void avahibrowser_add(AvahiBrowser * ab, const char *service_name,
-		      const char *host_name,
+		      const char *resolved_hostname, const char *host_name,
 		      const gchar * port, const char *version,
 		      const char *title);
 void avahibrowser_del(AvahiBrowser * ab, const char *service_name);

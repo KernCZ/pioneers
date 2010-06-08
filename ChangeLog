@@ -7,6 +7,8 @@
 	client/gtk/avahi-browser.h, client/gtk/Makefile.am,
 	client/gtk/connect.c: Added Avahi support. Many thanks to Andreas
 	Steinel <lnxbil@users.sourceforge.net> who provided the ground work.
+	* client/gtk/avahi.c, client/gtk/avahi-browser.c, 
+	client/gtk/avahi-browser.h: Use resolved IP-address for Avahi.
 
 2010-06-06  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/discard.c, client/gtk/gold.c: Replace fixes size buffer,

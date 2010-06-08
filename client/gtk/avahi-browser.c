@@ -65,9 +65,9 @@ static void avahibrowser_init(AvahiBrowser * ab)
 
 	/* Create model */
 	ab->data =
-	    gtk_list_store_new(6, G_TYPE_STRING, G_TYPE_STRING,
+	    gtk_list_store_new(7, G_TYPE_STRING, G_TYPE_STRING,
 			       G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING,
-			       G_TYPE_STRING);
+			       G_TYPE_STRING, G_TYPE_STRING);
 	ab->combo_box =
 	    gtk_combo_box_new_with_model(GTK_TREE_MODEL(ab->data));
 
@@ -75,7 +75,7 @@ static void avahibrowser_init(AvahiBrowser * ab)
 	gtk_cell_layout_pack_start(GTK_CELL_LAYOUT(ab->combo_box), cell,
 				   TRUE);
 	gtk_cell_layout_set_attributes(GTK_CELL_LAYOUT(ab->combo_box),
-				       cell, "text", 5, NULL);
+				       cell, "text", 6, NULL);
 
 	gtk_widget_show(ab->combo_box);
 	gtk_widget_set_tooltip_text(ab->combo_box,
@@ -97,7 +97,7 @@ GtkWidget *avahibrowser_new(GtkWidget * connect_button)
 }
 
 void avahibrowser_add(AvahiBrowser * ab, const char *service_name,
-		      const char *host_name,
+		      const char *resolved_hostname, const char *host_name,
 		      const gchar * port, const char *version,
 		      const char *title)
 {
@@ -132,9 +132,9 @@ void avahibrowser_add(AvahiBrowser * ab, const char *service_name,
 	gchar *nice_text =
 	    g_strdup_printf(_("%s (%s) on %s:%s"), title, version,
 			    host_name, port);
-	gtk_list_store_set(ab->data, &iter, 0, service_name, 1, host_name,
-			   2, port, 3, version, 4, title, 5, nice_text,
-			   -1);
+	gtk_list_store_set(ab->data, &iter, 0, service_name, 1,
+			   resolved_hostname, 2, host_name, 3, port, 4,
+			   version, 5, title, 6, nice_text, -1);
 	g_free(nice_text);
 	gtk_widget_set_sensitive(GTK_WIDGET(ab->connect_button), TRUE);
 }
@@ -189,6 +189,6 @@ gchar *avahibrowser_get_port(AvahiBrowser * ab)
 	gchar *text;
 	gtk_combo_box_get_active_iter(GTK_COMBO_BOX(ab->combo_box), &iter);
 
-	gtk_tree_model_get(GTK_TREE_MODEL(ab->data), &iter, 2, &text, -1);
+	gtk_tree_model_get(GTK_TREE_MODEL(ab->data), &iter, 3, &text, -1);
 	return text;
 }
