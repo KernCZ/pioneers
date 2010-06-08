@@ -1,5 +1,12 @@
 2010-06-08  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/connect.c: Use row variable to add elements to the table.
+	* debian/control, debian/changelog, configure.ac, server/gtk/main.c,
+	server/gtk/Makefile.am, server/avahi.c, server/avahi.h, server/main.c,
+	server/Makefile.am, Makefile.am, po/POTFILES.in, client/gtk/avahi.c,
+	client/gtk/avahi.h, client/gtk/avahi-browser.c, 
+	client/gtk/avahi-browser.h, client/gtk/Makefile.am,
+	client/gtk/connect.c: Added Avahi support. Many thanks to Andreas
+	Steinel <lnxbil@users.sourceforge.net> who provided the ground work.
 
 2010-06-06  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/discard.c, client/gtk/gold.c: Replace fixes size buffer,

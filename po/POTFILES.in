@@ -8,6 +8,7 @@ client/common/resource.c
 client/common/robber.c
 client/common/setup.c
 client/common/turn.c
+client/gtk/avahi-browser.c
 client/gtk/chat.c
 client/gtk/connect.c
 client/gtk/develop.c
@@ -49,6 +50,7 @@ editor/gtk/game-resources.c
 editor/gtk/pioneers-editor.desktop.in
 meta-server/main.c
 server/admin.c
+server/avahi.c
 server/gtk/main.c
 server/gtk/pioneers-server.desktop.in
 server/main.c

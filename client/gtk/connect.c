@@ -34,6 +34,8 @@
 #include "game-settings.h"
 #include "game-rules.h"
 #include "metaserver.h"
+#include "avahi.h"
+#include "avahi-browser.h"
 
 const int PRIVATE_GAME_HISTORY_SIZE = 10;
 
@@ -1160,6 +1162,26 @@ static void connect_dlg_cb(G_GNUC_UNUSED GtkDialog * dlg,
 	connect_close_all(FALSE, FALSE);
 }
 
+#ifdef HAVE_AVAHI
+static void connect_avahi_cb(G_GNUC_UNUSED GtkWidget * widget,
+			     GtkWidget * avahibrowser_entry)
+{
+	gchar *server =
+	    avahibrowser_get_server(AVAHIBROWSER(avahibrowser_entry));
+	gchar *port =
+	    avahibrowser_get_port(AVAHIBROWSER(avahibrowser_entry));
+
+	connect_set_field(&connect_server, server);
+	connect_set_field(&connect_port, port);
+
+	g_free(server);
+	g_free(port);
+
+	// connect
+	connect_close_all(TRUE, TRUE);
+}
+#endif
+
 void connect_create_dlg(void)
 {
 	GtkWidget *dlg_vbox;
@@ -1168,6 +1190,9 @@ void connect_create_dlg(void)
 	GtkWidget *hbox;
 	GtkWidget *btn;
 	GtkWidget *sep;
+#ifdef HAVE_AVAHI
+	GtkWidget *avahibrowser_entry;
+#endif				// HAVE_AVAHI
 	gchar *fullname;
 	gint row;
 
@@ -1233,6 +1258,42 @@ void connect_create_dlg(void)
 	gtk_table_attach(GTK_TABLE(table), sep, 0, 3, row, row + 1,
 			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 6);
 	row++;
+
+#ifdef HAVE_AVAHI
+	lbl = gtk_label_new(_("Avahi"));
+	gtk_widget_show(lbl);
+	gtk_table_attach(GTK_TABLE(table), lbl, 0, 1, row, row + 1,
+			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_misc_set_alignment(GTK_MISC(lbl), 0, 0.5);
+
+	btn = gtk_button_new_with_label(_("Join"));
+	gtk_widget_show(btn);
+	gtk_widget_set_tooltip_text(btn,
+				    _
+				    ("Join an automatically discovered game"));
+	gtk_table_attach(GTK_TABLE(table), btn, 2, 3, row, row + 1,
+			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
+
+	avahibrowser_entry = avahibrowser_new(btn);
+	gtk_widget_show(avahibrowser_entry);
+	gtk_table_attach(GTK_TABLE(table), avahibrowser_entry, 1, 2, row,
+			 row + 1, GTK_EXPAND | GTK_FILL,
+			 GTK_EXPAND | GTK_FILL, 0, 0);
+	row++;
+
+	g_signal_connect(G_OBJECT(btn), "clicked",
+			 G_CALLBACK(connect_avahi_cb), avahibrowser_entry);
+
+	// enable avahi
+	// storing the pointer to this widget for later use
+	avahi_register(AVAHIBROWSER(avahibrowser_entry));
+
+	sep = gtk_hseparator_new();
+	gtk_widget_show(sep);
+	gtk_table_attach(GTK_TABLE(table), sep, 0, 3, row, row + 1,
+			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 6);
+	row++;
+#endif				// HAVE_AVAHI
 
 	lbl = gtk_label_new(_("Meta server"));
 	gtk_widget_show(lbl);

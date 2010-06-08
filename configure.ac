@@ -250,6 +250,22 @@ AM_CONDITIONAL(HAVE_GNOME, [test "$have_graphical" = "yes"])
 
 AM_CONDITIONAL(HAVE_SCROLLKEEPER, [test "$have_scrollkeeper" = "yes"])
 
+# Avahi support
+if test x$with_avahi = xno; then
+	have_avahi="no, disabled in configure"
+else
+	PKG_CHECK_MODULES(AVAHI_CLIENT, avahi-client,
+		[PKG_CHECK_MODULES(AVAHI_GLIB, avahi-glib,
+			[have_avahi="yes"
+			AC_DEFINE(HAVE_AVAHI, [1], [Define if AVAHI available])
+			AC_DEFINE(AVAHI_ANNOUNCE_NAME, ["_pioneers._tcp"], [The name of the Avahi service])],
+			[have_avahi="no, avahi-glib is missing"
+			AC_MSG_RESULT($have_avahi)])],
+		[have_avahi="no, avahi-client is missing"
+		AC_MSG_RESULT($have_avahi)])
+
+fi
+
 AC_ARG_ENABLE([admin-gtk], AS_HELP_STRING([--enable-admin-gtk],
 	[Turn on (unstable) network administration support.]),
 [case "${enableval}" in
@@ -263,11 +279,15 @@ AC_ARG_ENABLE([protocol],
 	AS_HELP_STRING([--enable-protocol],
 	[Specify the network protocol (IPv4/unspecified)]),
 [case "${enableval}" in
-  IPv4)        pioneers_network_protocol=AF_INET;;
-  *)           pioneers_network_protocol=AF_UNSPEC;;
-esac], [pioneers_network_protocol=AF_UNSPEC])
+  IPv4)        pioneers_network_protocol=AF_INET;
+               avahi_network_protocol=AVAHI_PROTO_INET;;
+  *)           pioneers_network_protocol=AF_UNSPEC;
+               avahi_network_protocol=AVAHI_PROTO_UNSPEC;;
+esac], [pioneers_network_protocol=AF_UNSPEC; avahi_network_protocol=AVAHI_PROTO_UNSPEC])
 AC_DEFINE_UNQUOTED([NETWORK_PROTOCOL],[$pioneers_network_protocol],
 	[The network protocol value])
+AC_DEFINE_UNQUOTED([AVAHI_NETWORK_PROTOCOL],[$avahi_network_protocol],
+	[The Avahi network protocol value])
 
 AC_CHECK_HEADERS([netdb.h fcntl.h netinet/in.h sys/socket.h])
 AC_CHECK_HEADERS([limits.h])
@@ -475,6 +495,7 @@ $PACKAGE v$VERSION configuration:
         Build console server               $pioneers_build_server_console
         Build metaserver                   $pioneers_build_metaserver
         Build help                         $pioneers_help
+        AVAHI support                      $have_avahi
     Developers only:
         Use compiler warnings              $pioneers_warnings
         Add debug information              $pioneers_debug

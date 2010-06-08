@@ -28,11 +28,13 @@ bin_PROGRAMS += pioneers-server-console
 noinst_LIBRARIES += libpioneers_server.a
 
 pioneers_server_console_CPPFLAGS = $(console_cflags)
-libpioneers_server_a_CPPFLAGS = $(console_cflags)
+libpioneers_server_a_CPPFLAGS = $(console_cflags) $(avahi_cflags)
 
 libpioneers_server_a_SOURCES = \
 	server/admin.c \
 	server/admin.h \
+	server/avahi.c \
+	server/avahi.h \
 	server/buildutil.c \
 	server/develop.c \
 	server/discard.c \
@@ -52,7 +54,7 @@ pioneers_server_console_SOURCES = \
 	server/glib-driver.c \
 	server/glib-driver.h
 
-pioneers_server_console_LDADD = libpioneers_server.a $(console_libs)
+pioneers_server_console_LDADD = libpioneers_server.a $(console_libs) $(avahi_libs)
 
 endif # BUILD_SERVER
 
