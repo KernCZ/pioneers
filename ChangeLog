@@ -1,3 +1,6 @@
+2010-06-08  Roland Clobus <rclobus@rclobus.nl>
+	* client/gtk/connect.c: Use row variable to add elements to the table.
+
 2010-06-06  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/discard.c, client/gtk/gold.c: Replace fixes size buffer,
 	use ngettext.

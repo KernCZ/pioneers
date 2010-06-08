@@ -1169,6 +1169,7 @@ void connect_create_dlg(void)
 	GtkWidget *btn;
 	GtkWidget *sep;
 	gchar *fullname;
+	gint row;
 
 	if (connect_dlg) {
 		gtk_window_present(GTK_WINDOW(connect_dlg));
@@ -1194,6 +1195,7 @@ void connect_create_dlg(void)
 	gtk_widget_show(dlg_vbox);
 
 	table = gtk_table_new(4, 3, FALSE);
+	row = 0;
 	gtk_widget_show(table);
 	gtk_box_pack_start(GTK_BOX(dlg_vbox), table, FALSE, TRUE, 0);
 	gtk_container_set_border_width(GTK_CONTAINER(table), 5);
@@ -1202,7 +1204,7 @@ void connect_create_dlg(void)
 
 	lbl = gtk_label_new(_("Player name"));
 	gtk_widget_show(lbl);
-	gtk_table_attach(GTK_TABLE(table), lbl, 0, 1, 0, 1,
+	gtk_table_attach(GTK_TABLE(table), lbl, 0, 1, row, row + 1,
 			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(lbl), 0, 0.5);
 
@@ -1211,7 +1213,7 @@ void connect_create_dlg(void)
 	gtk_widget_show(name_entry);
 	gtk_entry_set_text(GTK_ENTRY(name_entry), connect_name);
 
-	gtk_table_attach(GTK_TABLE(table), name_entry, 1, 2, 0, 1,
+	gtk_table_attach(GTK_TABLE(table), name_entry, 1, 2, row, row + 1,
 			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_widget_set_tooltip_text(name_entry, _("Enter your name"));
 
@@ -1220,35 +1222,38 @@ void connect_create_dlg(void)
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(viewer_toggle),
 				     connect_viewer);
 
-	gtk_table_attach(GTK_TABLE(table), viewer_toggle, 2, 3, 0, 1, 0,
-			 GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_table_attach(GTK_TABLE(table), viewer_toggle, 2, 3, row,
+			 row + 1, 0, GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_widget_set_tooltip_text(viewer_toggle,
 				    _("Do you want to be a viewer?"));
+	row++;
 
 	sep = gtk_hseparator_new();
 	gtk_widget_show(sep);
-	gtk_table_attach(GTK_TABLE(table), sep, 0, 3, 1, 2,
+	gtk_table_attach(GTK_TABLE(table), sep, 0, 3, row, row + 1,
 			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 6);
+	row++;
 
 	lbl = gtk_label_new(_("Meta server"));
 	gtk_widget_show(lbl);
-	gtk_table_attach(GTK_TABLE(table), lbl, 0, 1, 2, 3,
-			 (GtkAttachOptions) GTK_FILL,
-			 (GtkAttachOptions) GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_table_attach(GTK_TABLE(table), lbl, 0, 1, row, row + 1,
+			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(lbl), 0, 0.5);
 
 	meta_server_entry = metaserver_new();
 	gtk_widget_show(meta_server_entry);
-	gtk_table_attach(GTK_TABLE(table), meta_server_entry, 1, 3, 2, 3,
-			 (GtkAttachOptions) GTK_EXPAND | GTK_FILL,
-			 (GtkAttachOptions) GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_table_attach(GTK_TABLE(table), meta_server_entry, 1, 3, row,
+			 row + 1, GTK_EXPAND | GTK_FILL,
+			 GTK_EXPAND | GTK_FILL, 0, 0);
 	metaserver_add(METASERVER(meta_server_entry),
 		       metaserver_info.server);
+	row++;
 
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_widget_show(hbox);
-	gtk_table_attach(GTK_TABLE(table), hbox, 0, 3, 3, 4,
+	gtk_table_attach(GTK_TABLE(table), hbox, 0, 3, row, row + 1,
 			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 3);
+	row++;
 
 	btn = gtk_button_new_with_label(_("Join Public Game"));
 	gtk_widget_show(btn);
