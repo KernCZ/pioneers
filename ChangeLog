@@ -1,3 +1,6 @@
+2010-06-12  Roland Clobus <rclobus@rclobus.nl>
+	* bash_completion: Completion rules for bash.
+
 2010-06-08  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/connect.c: Use row variable to add elements to the table.
 	* debian/control, debian/changelog, configure.ac, server/gtk/main.c,
