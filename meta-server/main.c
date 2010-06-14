@@ -524,6 +524,7 @@ static void client_create_new_server(Client * client, gchar * line)
 	    0) {
 		client_printf(client, "Setting socket reuse failed: %s\n",
 			      g_strerror(errno));
+		net_closesocket(fd);
 		return;
 	}
 	sa.sin_family = AF_INET;
@@ -549,6 +550,7 @@ static void client_create_new_server(Client * client, gchar * line)
 		if (found_used == TRUE) {
 			client_printf(client,
 				      "Starting server failed: no port available\n");
+			net_closesocket(fd);
 			return;
 		}
 	}
@@ -556,6 +558,7 @@ static void client_create_new_server(Client * client, gchar * line)
 	if (bind(fd, (struct sockaddr *) &sa, sizeof(sa)) < 0) {
 		client_printf(client, "Binding socket failed: %s\n",
 			      g_strerror(errno));
+		net_closesocket(fd);
 		return;
 	}
 	yes = sizeof(sa);
@@ -563,6 +566,7 @@ static void client_create_new_server(Client * client, gchar * line)
 		client_printf(client,
 			      "Getting socket address failed: %s\n",
 			      g_strerror(errno));
+		net_closesocket(fd);
 		return;
 	}
 	port = g_strdup_printf("%d", sa.sin_port);

@@ -1,3 +1,6 @@
+2010-06-14  Roland Clobus <rclobus@rclobus.nl>
+	* meta-server/main.c: Fixed leak of open sockets when out of games.
+
 2010-06-12  Roland Clobus <rclobus@rclobus.nl>
 	* bash_completion: Completion rules for bash.
 
