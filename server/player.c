@@ -199,6 +199,7 @@ static gboolean tournament_start_cb(gpointer data)
 	int i;
 	Game *game = (Game *) data;
 	GList *player;
+	gboolean human_player_present;
 
 	g_source_remove(game->tournament_timer);
 	game->tournament_timer = 0;
@@ -218,10 +219,6 @@ static gboolean tournament_start_cb(gpointer data)
 		return FALSE;
 	}
 
-	player_broadcast(player_none(game), PB_SILENT, FIRST_VERSION,
-			 LATEST_VERSION, "NOTE %s\n",
-			 N_("Game starts, adding computer players."));
-
 	/* remove all disconnected players */
 	playerlist_inc_use_count(game);
 	for (player = game->player_list; player != NULL;
@@ -232,6 +229,32 @@ static gboolean tournament_start_cb(gpointer data)
 		}
 	}
 	playerlist_dec_use_count(game);
+
+	/* if no human players are present, quit */
+	playerlist_inc_use_count(game);
+	human_player_present = FALSE;
+	for (player = game->player_list;
+	     player != NULL && !human_player_present;
+	     player = g_list_next(player)) {
+		Player *p = player->data;
+		if (!player_is_viewer(game, p->num)
+		    && determine_player_type(p->style) == PLAYER_HUMAN) {
+			human_player_present = TRUE;
+		}
+	}
+	playerlist_dec_use_count(game);
+	if (!human_player_present) {
+		player_broadcast(player_none(game), PB_SILENT,
+				 FIRST_VERSION, LATEST_VERSION,
+				 "NOTE %s\n",
+				 N_("No human players present. Bye."));
+		request_server_stop(game);
+		return FALSE;
+	}
+
+	player_broadcast(player_none(game), PB_SILENT, FIRST_VERSION,
+			 LATEST_VERSION, "NOTE %s\n",
+			 N_("Game starts, adding computer players."));
 
 	/* add computer players to start game */
 	for (i = game->num_players; i < game->params->num_players; i++) {

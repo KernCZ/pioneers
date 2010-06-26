@@ -1,6 +1,7 @@
 2010-06-26  Roland Clobus <rclobus@rclobus.nl>
 	* server/main.c, server/admin.c, server/admin.h: Quit when socket is
 	not available.
+	* server/player.c: Quit when only computer players are present.
 
 2010-06-14  Roland Clobus <rclobus@rclobus.nl>
 	* meta-server/main.c: Fixed leak of open sockets when out of games.
