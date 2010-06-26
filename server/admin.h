@@ -44,7 +44,10 @@ void admin_event(NetEvent event, Session * admin_session,
 /* accept a connection made to the admin port */
 void admin_connect(comm_info * admin_info);
 
-/* set up the administration port */
-void admin_listen(const gchar * port);
+/** set up the administration port
+ * @param port Port to listen on
+ * @return TRUE on success
+ */
+gboolean admin_listen(const gchar * port);
 
 #endif				/* __admin_h */

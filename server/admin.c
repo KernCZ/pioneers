@@ -370,7 +370,7 @@ void admin_connect(comm_info * admin_info)
 }
 
 /* set up the administration port */
-void admin_listen(const gchar * port)
+gboolean admin_listen(const gchar * port)
 {
 	gchar *error_message;
 
@@ -383,7 +383,7 @@ void admin_listen(const gchar * port)
 	if (_accept_info->fd == -1) {
 		log_message(MSG_ERROR, "%s\n", error_message);
 		g_free(error_message);
-		return;
+		return FALSE;
 	}
 #ifdef PRINT_INFO
 	g_print("admin_listen: fd = %d\n", _accept_info->fd);
@@ -394,4 +394,5 @@ void admin_listen(const gchar * port)
 	    driver->input_add_read(_accept_info->fd,
 				   (InputFunc) admin_connect,
 				   _accept_info);
+	return TRUE;
 }

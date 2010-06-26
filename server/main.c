@@ -269,8 +269,13 @@ int main(int argc, char *argv[])
 
 	net_init();
 
-	if (admin_port != NULL)
-		admin_listen(admin_port);
+	if (admin_port != NULL) {
+		if (!admin_listen(admin_port)) {
+			/* Error message */
+			g_print(_("Admin port not available.\n"));
+			return 5;
+		}
+	}
 
 	if (disable_game_start && admin_port == NULL) {
 		/* server-console commandline error */
@@ -286,23 +291,26 @@ int main(int argc, char *argv[])
 		    server_start(params, hostname, server_port,
 				 register_server, meta_server_name,
 				 !fixed_seating_order);
+		if (game != NULL) {
+			game->no_player_timeout = timeout;
+			num_ai_players =
+			    CLAMP(num_ai_players, 0,
+				  game->params->num_players);
+			for (i = 0; i < num_ai_players; ++i)
+				add_computer_player(game, TRUE);
+			avahi_register_game(game);
+		}
 	}
-	if (game != NULL) {
-		game->no_player_timeout = timeout;
-		num_ai_players =
-		    CLAMP(num_ai_players, 0, game->params->num_players);
-		for (i = 0; i < num_ai_players; ++i)
-			add_computer_player(game, TRUE);
-		avahi_register_game(game);
+	if (disable_game_start || game != NULL) {
+		event_loop = g_main_loop_new(NULL, FALSE);
+		g_main_loop_run(event_loop);
+		g_main_loop_unref(event_loop);
+		game_free(game);
+		game = NULL;
+
+		avahi_unregister_game();
 	}
 
-	event_loop = g_main_loop_new(NULL, FALSE);
-	g_main_loop_run(event_loop);
-	g_main_loop_unref(event_loop);
-	game_free(game);
-	game = NULL;
-
-	avahi_unregister_game();
 	net_finish();
 
 	g_free(hostname);
