@@ -187,6 +187,7 @@ void avahi_register(AvahiBrowser * widget)
 	if (!poll_api) {
 		debug("Avahi: Failed to create glib poll object.");
 		avahi_unregister();
+		return;
 	}
 
 
@@ -199,6 +200,7 @@ void avahi_register(AvahiBrowser * widget)
 		debug("Avahi: Failed to create client: %s",
 		      avahi_strerror(error));
 		avahi_unregister();
+		return;
 	}
 
 	/* Create the service browser */

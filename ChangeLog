@@ -1,3 +1,6 @@
+2010-09-01  Roland Clobus <rclobus@rclobus.nl>
+	* client/gtk/avahi.c: Stop attempt to register Avahi on error.
+
 2010-06-26  Roland Clobus <rclobus@rclobus.nl>
 	* server/main.c, server/admin.c, server/admin.h: Quit when socket is
 	not available.
