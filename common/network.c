@@ -308,6 +308,7 @@ static void write_ready(Session * ses)
 				    _(""
 				      "Error connecting to host '%s': %s\n"),
 				    ses->host, net_errormsg_nr(error));
+			notify(ses, NET_CONNECT_FAIL, NULL);
 			net_close(ses);
 		} else {
 			ses->connect_in_progress = FALSE;

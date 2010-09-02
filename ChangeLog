@@ -1,3 +1,6 @@
+2010-09-02  Roland Clobus <rclobus@rclobus.nl>
+	* common/network.c: Return CONNECT_FAIL when connection fails.
+
 2010-09-01  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/avahi.c: Stop attempt to register Avahi on error.
 
