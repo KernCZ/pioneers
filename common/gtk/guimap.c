@@ -146,7 +146,7 @@ static gint expose_map_cb(GtkWidget * area, GdkEventExpose * event,
 	}
 
 	gdk_draw_drawable(area->window,
-			  area->style->fg_gc[GTK_WIDGET_STATE(area)],
+			  area->style->fg_gc[GTK_STATE_NORMAL],
 			  gmap->pixmap,
 			  event->area.x, event->area.y,
 			  event->area.x, event->area.y,

@@ -2,7 +2,7 @@
  *   Go buy a copy.
  *
  * Copyright (C) 1999 Dave Cole
- * Copyright (C) 2005 Roland Clobus <rclobus@bigfoot.com>
+ * Copyright (C) 2005-2010 Roland Clobus <rclobus@bigfoot.com>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -61,15 +61,20 @@ void action_set_sensitive(GtkAction * action, gboolean sensitive)
 
 void widget_set_sensitive(GtkWidget * widget, gboolean sensitive)
 {
+#if (GTK_MAJOR_VERSION <= 2 && GTK_MINOR_VERSION <= 18 && GTK_MICRO_VERSION < 2)
 	GtkWidget *button;
+#endif
 
 	gtk_widget_set_sensitive(widget, sensitive);
 
+#if (GTK_MAJOR_VERSION <= 2 && GTK_MINOR_VERSION <= 18 && GTK_MICRO_VERSION < 2)
 	/** @bug Gtk bug 56070. If the mouse is over a toolbar button that
 	 *  becomes sensitive, one can't click it without moving the mouse out
 	 *  and in again. This bug is registered in Bugzilla as a Gtk bug. The
 	 *  workaround tests if the mouse is inside the currently sensitivized
 	 *  button, and if yes call button_enter()
+	 *
+         *  Fixed in Gtk 2.18.2
 	 */
 	if (!GTK_IS_BIN(widget))
 		return;
@@ -88,6 +93,7 @@ void widget_set_sensitive(GtkWidget * widget, gboolean sensitive)
 			gtk_widget_set_state(widget, GTK_STATE_PRELIGHT);
 		}
 	}
+#endif
 }
 
 #if (GTK_MAJOR_VERSION == 2 && GTK_MINOR_VERSION < 12)

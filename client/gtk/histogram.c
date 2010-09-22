@@ -50,7 +50,7 @@ void histogram_dice_rolled(gint roll, G_GNUC_UNUSED gint playernum)
 	g_assert(roll >= 2 && roll <= 12);
 
 	++histogram[roll];
-	if (histogram_dlg && GTK_WIDGET_VISIBLE(histogram_dlg))
+	if (histogram_dlg)
 		histogram_update(roll);
 }
 
@@ -237,8 +237,8 @@ static gboolean expose_histogram_cb(GtkWidget * area,
 
 static void histogram_destroyed_cb(GtkWidget * widget, gpointer arg)
 {
-	gtk_widget_destroyed(widget, arg);
 	gtk_widget_destroyed(histogram_area, &histogram_area);
+	gtk_widget_destroyed(widget, arg);
 }
 
 GtkWidget *histogram_create_dlg(void)
@@ -288,7 +288,7 @@ static void histogram_update(gint roll)
 
 static void histogram_theme_changed(void)
 {
-	if (histogram_dlg && GTK_WIDGET_VISIBLE(histogram_dlg))
+	if (histogram_dlg)
 		gtk_widget_queue_draw(histogram_area);
 }
 
@@ -302,6 +302,6 @@ void histogram_reset(void)
 	gint i;
 	for (i = 2; i <= 12; ++i)
 		histogram[i] = 0;
-	if (histogram_dlg && GTK_WIDGET_VISIBLE(histogram_dlg))
+	if (histogram_dlg)
 		histogram_update(0);
 }
