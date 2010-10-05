@@ -1,3 +1,9 @@
+2010-10-05  Roland Clobus <rclobus@rclobus.nl>
+	* client/gtk/gui.c, server/gtk/main.c, common/gtk/common_gtk.c,
+	common/gtk/common_gtk.h: Added a close button on tab pages.
+	Based on a patch by Anti Sullin <anti.sullin@gmail.com> and
+	layout suggestions from http://www.gtkforums.com/about4027.html
+
 2010-09-22  Roland Clobus <rclobus@rclobus.nl>
 	* common/gtk/gtkbugs.c, common/gtk/guimap.c, client/gtk/histogram.c:
 	Build with full deprecation checks on Gtk+ 2.20.1

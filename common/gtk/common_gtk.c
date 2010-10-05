@@ -328,3 +328,43 @@ void check_victory_points(GameParams * params, GtkWindow * main_window)
 	g_free(win_message);
 	g_free(point_specification);
 }
+
+void prepare_gtk_for_close_button_on_tab(void)
+{
+	gtk_rc_parse_string("style \"tab-with-close-button-style\"\n"
+			    "{\n"
+			    "  GtkWidget::focus-padding = 0\n"
+			    "  GtkWidget::focus-line-width = 0\n"
+			    "  xthickness = 0\n"
+			    "  ythickness = 0\n"
+			    "}\n"
+			    "widget \"*.tab-with-close-button\" style \"tab-with-close-button-style\"");
+}
+
+GtkWidget *create_label_with_close_button(const gchar * label_text,
+					  const gchar * tooltip_text,
+					  GtkWidget ** button)
+{
+	GtkWidget *hbox;
+	GtkWidget *lbl;
+	GtkWidget *close_image;
+
+	hbox = gtk_hbox_new(FALSE, 4);
+	lbl = gtk_label_new(label_text);
+	gtk_box_pack_start(GTK_BOX(hbox), lbl, FALSE, FALSE, 0);
+
+	close_image =
+	    gtk_image_new_from_stock(GTK_STOCK_CLOSE, GTK_ICON_SIZE_MENU);
+	*button = gtk_button_new();
+	gtk_button_set_relief(GTK_BUTTON(*button), GTK_RELIEF_NONE);
+	gtk_button_set_focus_on_click(GTK_BUTTON(*button), FALSE);
+	gtk_container_add(GTK_CONTAINER(*button), close_image);
+	gtk_widget_set_tooltip_text(*button, tooltip_text);
+	gtk_box_pack_start(GTK_BOX(hbox), *button, FALSE, FALSE, 0);
+
+	/* Set buttons name so the style will affect it */
+	gtk_widget_set_name(*button, "tab-with-close-button");
+
+	gtk_widget_show_all(hbox);
+	return hbox;
+}

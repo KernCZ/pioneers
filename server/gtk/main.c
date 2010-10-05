@@ -546,6 +546,8 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 	gchar *gamename;
 	gint temp;
 	GameParams *params;
+	GtkWidget *stop_game_button_on_tab;
+	GtkWidget *label_with_close_button;
 
 	GtkCellRenderer *renderer;
 	GtkTreeViewColumn *column;
@@ -731,10 +733,16 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(random_toggle),
 				     random_order);
 
+	label_with_close_button =
+	    create_label_with_close_button(_("Running game"),
+					   _("Stop the server"),
+					   &stop_game_button_on_tab);
+	g_signal_connect(G_OBJECT(stop_game_button_on_tab), "clicked",
+			 G_CALLBACK(start_clicked_cb), NULL);
+
 	vbox_settings = gtk_vbox_new(FALSE, 5);
 	gtk_notebook_append_page(GTK_NOTEBOOK(settings_notebook),
-				 vbox_settings,
-				 gtk_label_new(_("Running game")));
+				 vbox_settings, label_with_close_button);
 
 	frame = gtk_frame_new(_("Players connected"));
 	gtk_widget_show(frame);
@@ -1025,6 +1033,8 @@ int main(int argc, char *argv[])
 	}
 
 	set_enable_debug(enable_debug);
+
+	prepare_gtk_for_close_button_on_tab();
 
 	window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	/* Name in the titlebar of the server */

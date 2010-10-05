@@ -655,6 +655,8 @@ static GtkWidget *build_map_panel(void)
 {
 	GtkWidget *lbl;
 	GtkWidget *legend_content;
+	GtkWidget *hbox;
+	GtkWidget *close_button;
 
 	map_notebook = gtk_notebook_new();
 	gtk_notebook_set_tab_pos(GTK_NOTEBOOK(map_notebook), GTK_POS_TOP);
@@ -666,20 +668,29 @@ static GtkWidget *build_map_panel(void)
 	gtk_notebook_insert_page(GTK_NOTEBOOK(map_notebook),
 				 build_map_area(), lbl, MAP_PAGE);
 
-	/* Tab page name */
-	lbl = gtk_label_new(_("Trade"));
-	gtk_widget_show(lbl);
+	hbox = create_label_with_close_button(
+						     /* Tab page name */
+						     _("Trade"),
+						     /* Tooltip */
+						     _("Finish trading"),
+						     &close_button);
+	frontend_gui_register(close_button, GUI_TRADE_FINISH, "clicked");
 	trade_page = trade_build_page();
 	gtk_notebook_insert_page(GTK_NOTEBOOK(map_notebook),
-				 trade_page, lbl, TRADE_PAGE);
+				 trade_page, hbox, TRADE_PAGE);
 	gtk_widget_hide(trade_page);
 
-	/* Tab page name */
-	lbl = gtk_label_new(_("Quote"));
-	gtk_widget_show(lbl);
+	hbox = create_label_with_close_button(
+						     /* Tab page name */
+						     _("Quote"),
+						     /* Tooltip */
+						     _(""
+						       "Reject domestic trade"),
+						     &close_button);
+	frontend_gui_register(close_button, GUI_QUOTE_REJECT, "clicked");
 	quote_page = quote_build_page();
 	gtk_notebook_insert_page(GTK_NOTEBOOK(map_notebook),
-				 quote_page, lbl, QUOTE_PAGE);
+				 quote_page, hbox, QUOTE_PAGE);
 	gtk_widget_hide(quote_page);
 
 	/* Tab page name */
@@ -1593,6 +1604,8 @@ GtkWidget *gui_build_interface(void)
 	app_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	/* The name of the application */
 	gtk_window_set_title(GTK_WINDOW(app_window), _("Pioneers"));
+
+	prepare_gtk_for_close_button_on_tab();
 
 	vbox = gtk_vbox_new(FALSE, 0);
 	gtk_widget_show(vbox);
