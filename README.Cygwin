@@ -1,43 +1,31 @@
 Short guide to install Pioneers in Cygwin
 
-Install a minimal setup
-=======================
+Install Cygwin
+==============
 1) Get 'setup.exe' from the Cygwin site (www.cygwin.com)
 2) Select (additional packages will automatically be selected):
-   Category Gnome:
-      libgnome2
-   Category X11:
-      xorg-x11-fscl
-      xorg-x11-fsrv
-   Category Devel:
-      atk-devel
-      gcc
-      gettext-devel
-      gtk-x11-devel
-      intltool
-      libXft-devel
-      libtool1.5
-      make
-      pango-devel
-      pkgconfig
-You now have a minimal setup needed to build and run Pioneers.
+	gcc4
+	gettext-devel
+	gnome-common
+	gvim
+	intltool
+	libgtk2.0-devel
+	libtool
+	make
+	netpbm
+	patch
+	patchutils
+	rsvg
+	subversion
+	twm
+	xinit
+
+You now have the setup needed to build and run Pioneers.
 
 Build Pioneers from the repository
 ==================================
 If you only want to use released versions, skip to the 'Install Pioneers'
 section.
-
-To compile Pioneers from the Subversion repository,
-you need some extra packages:
-   Category devel:
-      subversion
-      gnome-common
-   Category graphics:
-      ImageMagick
-      ghostscript-base
-      netpbm (10.30-1 does not work, 10.29-1 works ok)
-   Category net:
-      openssh
 
 1) Get the code from the Subversion repository
    svn checkout https://svn.sourceforge.net/svnroot/pio/trunk/pioneers pioneers
@@ -60,8 +48,8 @@ Install Pioneers
      make
      make install
 
-Start Pioneers
-==============
+Play Pioneers
+=============
 6) Start the X server (startx)
 7) Start Pioneers from the XTerm (pioneers)
 
@@ -69,14 +57,7 @@ Known limitations
 =================
 * The help is not built
 * The server will not create new games
-* The metaserver does not work
-
-Miscellaneous
-=============
-I've added the Cygwin Ports project (cygwinports.dotsrc.org)
-URL: ftp://sunsite.dk/projects/cygwinports 
-It adds rsvg and newer versions of Gtk+.
-More news later...
+* The metaserver does not work (not ported to MS Windows)
 
 Roland Clobus
-2006-08-31 (Pioneers 0.10.1)
+2010-10-06 (Pioneers 0.12.4)

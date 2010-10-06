@@ -1,5 +1,6 @@
 2010-10-06  Roland Clobus <rclobus@rclobus.nl>
 	* configure.ac: Make $(ECHO) work on Cygwin too
+	* README.Cygwin: Updated to match Cygwin 1.7
 
 2010-10-05  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/gui.c, server/gtk/main.c, common/gtk/common_gtk.c,
