@@ -430,10 +430,13 @@ if test "$pioneers_have_non_blocking_sockets" = "no"; then
 	pioneers_build_metaserver=no;
 fi
 
-# The server functionality is not ported to MS Windows
+# The server functionality is not ported to MinGW yet
+if test "$pioneers_is_mingw_port" = "yes"; then
+	pioneers_build_server_console="no, not implemented for MinGW";
+	pioneers_build_server_gtk="no, not implemented for MinGW";
+fi
+# The metaserver functionality is not ported to MS Windows
 if test "$pioneers_is_windows_port" = "yes"; then
-	pioneers_build_server_console="no, not implemented for MS Windows";
-	pioneers_build_server_gtk="no, not implemented for MS Windows";
 	pioneers_build_metaserver="no, not implemented for MS Windows";
 fi
 
