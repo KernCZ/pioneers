@@ -89,6 +89,12 @@ BUILT_SOURCES =
 windows_resources_input =
 windows_resources_output =
 
+# Use GOB to create new classes
+%.gob.stamp: %.gob
+	@mkdir_p@ $(dir $@)
+	$(GOB2) --no-touch --output-dir $(dir $@) $<
+	touch $@
+
 # creating icons
 %.png: %.svg
 	@mkdir_p@ $(dir $@)

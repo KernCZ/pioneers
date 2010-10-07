@@ -3,7 +3,7 @@
 #
 # Copyright (C) 1999 Dave Cole
 # Copyright (C) 2003, 2006 Bas Wijnen <shevek@fmf.nl>
-# Copyright (C) 2004 Roland Clobus <rclobus@bigfoot.com>
+# Copyright (C) 2004, 2010 Roland Clobus <rclobus@rclobus.nl>
 # 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -48,6 +48,11 @@ libpioneers_a_SOURCES = \
 	common/map_query.c \
 	common/network.c \
 	common/network.h \
+	common/notifying-string.gob \
+	common/notifying-string.gob.stamp \
+	common/notifying-string.c \
+	common/notifying-string.h \
+	common/notifying-string-private.h \
 	common/quoteinfo.c \
 	common/quoteinfo.h \
 	common/state.c \
@@ -78,8 +83,18 @@ build_version:
 		mv common/version.new common/version.h			;\
 	fi
 
-BUILT_SOURCES += common/authors.h build_version
+BUILT_SOURCES += \
+	build_version \
+	common/authors.h \
+	common/notifying-string.gob.stamp
+
 CLEANFILES += common/authors.h common/version.h
+
+MAINTAINERCLEANFILES += \
+	common/notifying-string.gob.stamp \
+	common/notifying-string.c \
+	common/notifying-string.h \
+	common/notifying-string-private.h
 
 # always try to rebuild version.h
 .PHONY: build_version

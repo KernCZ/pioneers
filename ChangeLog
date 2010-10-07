@@ -1,3 +1,9 @@
+2010-10-07  Roland Clobus <rclobus@rclobus.nl>
+	* common/notifying-string.gob, common/Makefile.am, configure.ac,
+	Makefile.am, client/gtk/name.c, client/gtk/frontend.h,
+	client/gtk/offline.c, client/gtk/connect.c: Ensure that the name of the
+	player is always up to date in any view.
+
 2010-10-06  Roland Clobus <rclobus@rclobus.nl>
 	* configure.ac: Make $(ECHO) work on Cygwin too
 	* README.Cygwin: Updated to match Cygwin 1.7

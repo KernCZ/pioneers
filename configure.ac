@@ -51,6 +51,7 @@ AM_PROG_MKDIR_P
 AC_HEADER_STDC
 
 if test $USE_MAINTAINER_MODE = yes; then
+	GOB2_CHECK([2.0.0])
 	pioneers_warnings=yes;
 	pioneers_debug=yes;
 	pioneers_deprecationChecks=yes;

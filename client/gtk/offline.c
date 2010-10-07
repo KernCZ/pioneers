@@ -95,8 +95,8 @@ static void frontend_offline_gui(GuiEvent event)
 		connectable = FALSE;
 		have_dlg = FALSE;
 		cb_connect(connect_get_server(), connect_get_port(),
-			   connect_get_name(), connect_get_viewer(),
-			   connect_get_style());
+			   name_get_name(), connect_get_viewer(),
+			   name_get_style());
 		frontend_gui_update();
 		break;
 	case GUI_CONNECT:
@@ -197,6 +197,8 @@ void frontend_init(int argc, char **argv)
 	bind_textdomain_codeset(PACKAGE, "UTF-8");
 #endif
 
+	name_init();
+
 	/* Create the application window
 	 */
 	themes_init();
@@ -232,9 +234,9 @@ void frontend_init(int argc, char **argv)
 		style = g_strdup(default_player_style);
 	}
 
-	connect_set_name(name);
+	name_set_name(name);
 	connect_set_viewer(viewer);
-	connect_set_style(style);
+	name_set_style(style);
 	g_free(style);
 
 	if (server && port) {

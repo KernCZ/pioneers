@@ -39,12 +39,10 @@
 
 const int PRIVATE_GAME_HISTORY_SIZE = 10;
 
-static gchar *connect_name;	/* Name of the player */
 static gboolean connect_viewer;	/* Prefer to be a viewer */
 static gboolean connect_viewer_allowed;	/* Viewer allowed */
 static gchar *connect_server;	/* Name of the server */
 static gchar *connect_port;	/* Port of the server */
-static gchar *connect_style = NULL;	/* Style of the player */
 
 static GtkWidget *connect_dlg;	/* Dialog for starting a new game */
 static GtkWidget *name_entry;	/* Name of the player */
@@ -166,19 +164,15 @@ static void connect_set_field(gchar ** field, const gchar * value)
 	g_free(temp);
 }
 
-/* Public functions */
-const gchar *connect_get_name(void)
+static void connect_name_change_cb(G_GNUC_UNUSED gpointer ns)
 {
-	return connect_name;
-}
-
-void connect_set_name(const gchar * name)
-{
-	connect_set_field(&connect_name, name);
+	gchar *name = name_get_name();
 	if (name_entry != NULL)
-		gtk_entry_set_text(GTK_ENTRY(name_entry), connect_name);
+		gtk_entry_set_text(GTK_ENTRY(name_entry), name);
+	g_free(name);
 }
 
+/* Public functions */
 gboolean connect_get_viewer(void)
 {
 	return connect_viewer && connect_viewer_allowed;
@@ -229,17 +223,6 @@ void connect_set_port(const gchar * port)
 	connect_set_field(&connect_port, port);
 }
 
-const gchar *connect_get_style(void)
-{
-	return connect_style;
-}
-
-void connect_set_style(const gchar * style)
-{
-	g_free(connect_style);
-	connect_style = g_strdup(style);
-}
-
 static void connect_close_all(gboolean user_pressed_ok,
 			      gboolean can_be_viewer)
 {
@@ -247,9 +230,7 @@ static void connect_close_all(gboolean user_pressed_ok,
 	if (user_pressed_ok) {
 		gchar *meta_server;
 
-		connect_set_field(&connect_name,
-				  gtk_entry_get_text(GTK_ENTRY
-						     (name_entry)));
+		name_set_name(gtk_entry_get_text(GTK_ENTRY(name_entry)));
 		connect_viewer =
 		    gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON
 						 (viewer_toggle));
@@ -257,8 +238,6 @@ static void connect_close_all(gboolean user_pressed_ok,
 		meta_server = connect_get_meta_server();
 		config_set_string("connect/meta-server", meta_server);
 		g_free(meta_server);
-		config_set_string("connect/name", connect_name);
-		config_set_int("connect/viewer", connect_viewer);
 
 		frontend_gui_register_destroy(connect_dlg,
 					      GUI_CONNECT_TRY);
@@ -1194,12 +1173,15 @@ void connect_create_dlg(void)
 	GtkWidget *avahibrowser_entry;
 #endif				// HAVE_AVAHI
 	gchar *fullname;
+	gchar *name;
 	gint row;
 
 	if (connect_dlg) {
 		gtk_window_present(GTK_WINDOW(connect_dlg));
 		return;
 	}
+
+	name_add_callback_for_name(G_CALLBACK(connect_name_change_cb));
 
 	connect_dlg = gtk_dialog_new_with_buttons(_("Start a New Game"),
 						  GTK_WINDOW(app_window),
@@ -1233,10 +1215,14 @@ void connect_create_dlg(void)
 			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(lbl), 0, 0.5);
 
+	name = name_get_name();
 	name_entry = gtk_entry_new();
 	gtk_entry_set_max_length(GTK_ENTRY(name_entry), MAX_NAME_LENGTH);
 	gtk_widget_show(name_entry);
-	gtk_entry_set_text(GTK_ENTRY(name_entry), connect_name);
+	gtk_entry_set_text(GTK_ENTRY(name_entry), name);
+	g_free(name);
+	g_signal_connect(G_OBJECT(name_entry), "destroy",
+			 G_CALLBACK(gtk_widget_destroyed), &name_entry);
 
 	gtk_table_attach(GTK_TABLE(table), name_entry, 1, 2, row, row + 1,
 			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);

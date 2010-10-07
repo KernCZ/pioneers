@@ -3,6 +3,7 @@
  *
  * Copyright (C) 1999 Dave Cole
  * Copyright (C) 2003,2006 Bas Wijnen <shevek@fmf.nl>
+ * Copyright (C) 2010 Roland Clobus <rclobus@rclobus.nl>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +25,7 @@
 #include "frontend.h"
 #include "player-icon.h"
 #include "config-gnome.h"
+#include "notifying-string.h"
 
 typedef struct {
 	GtkWidget *dlg;
@@ -41,7 +43,39 @@ typedef struct {
 
 static DialogData name_dialog;
 
+static NotifyingString *name_name = NULL;
+static NotifyingString *name_style = NULL;
+
 static GdkPixbuf *create_icon(GtkWidget * widget, const gchar * style);
+
+static void name_change_name_cb(NotifyingString * name)
+{
+	gchar *nm = notifying_string_get(name);
+	if (name_dialog.name_entry != NULL) {
+		gtk_entry_set_text(GTK_ENTRY(name_dialog.name_entry), nm);
+	}
+	if (callback_mode != MODE_INIT) {
+		cb_name_change(nm);
+	}
+	config_set_string("connect/name", nm);
+	g_free(nm);
+}
+
+static void name_change_style_cb(NotifyingString * style)
+{
+	gchar *st = notifying_string_get(style);
+	config_set_string("connect/style", st);
+	g_free(st);
+}
+
+void name_init(void)
+{
+	name_name = NOTIFYING_STRING(notifying_string_new());
+	name_add_callback_for_name(G_CALLBACK(name_change_name_cb));
+
+	name_style = NOTIFYING_STRING(notifying_string_new());
+	name_add_callback_for_style(G_CALLBACK(name_change_style_cb));
+}
 
 static void change_name_cb(G_GNUC_UNUSED GtkDialog * dlg, int response_id,
 			   gpointer user_data)
@@ -52,12 +86,10 @@ static void change_name_cb(G_GNUC_UNUSED GtkDialog * dlg, int response_id,
 		    gtk_entry_get_text(GTK_ENTRY(dialog->name_entry));
 		const gchar *new_style = dialog->current_style;
 		if (0 != strcmp(new_name, dialog->original_name)) {
-			cb_name_change(new_name);
-			config_set_string("connect/name", new_name);
+			name_set_name(new_name);
 		}
 		if (0 != strcmp(new_style, dialog->original_style)) {
-			cb_style_change(new_style);
-			config_set_string("connect/style", new_style);
+			name_set_style(new_style);
 		}
 	}
 	g_free(dialog->original_name);
@@ -156,15 +188,19 @@ void name_create_dlg(void)
 			   TRUE, 0);
 	gtk_entry_set_width_chars(GTK_ENTRY(name_dialog.name_entry),
 				  MAX_NAME_LENGTH);
-	name_dialog.original_name = g_strdup(my_player_name());
+	name_dialog.original_name = name_get_name();
 	gtk_entry_set_text(GTK_ENTRY(name_dialog.name_entry),
 			   name_dialog.original_name);
 
 	gtk_entry_set_activates_default(GTK_ENTRY(name_dialog.name_entry),
 					TRUE);
+	g_signal_connect(G_OBJECT(name_dialog.name_entry), "destroy",
+			 G_CALLBACK(gtk_widget_destroyed),
+			 &name_dialog.name_entry);
 
-	name_dialog.original_style = g_strdup(my_player_style());
-	name_dialog.current_style = g_strdup(my_player_style());
+
+	name_dialog.original_style = name_get_style();
+	name_dialog.current_style = name_get_style();
 	parse_ok =
 	    playericon_parse_human_style(name_dialog.current_style,
 					 &face_color, &variant,
@@ -258,4 +294,35 @@ GdkPixbuf *create_icon(GtkWidget * widget, const gchar * style)
 				      player_or_viewer_color(my_player_num
 							     ()),
 				      my_player_viewer(), TRUE, TRUE);
+}
+
+gchar *name_get_name(void)
+{
+	return notifying_string_get(name_name);
+}
+
+void name_set_name(const gchar * name)
+{
+	notifying_string_set(name_name, name);
+}
+
+void name_add_callback_for_name(GCallback callback)
+{
+	g_signal_connect(name_name, "changed", G_CALLBACK(callback), NULL);
+}
+
+gchar *name_get_style(void)
+{
+	return notifying_string_get(name_style);
+}
+
+void name_set_style(const gchar * style)
+{
+	notifying_string_set(name_style, style);
+}
+
+void name_add_callback_for_style(GCallback callback)
+{
+	g_signal_connect(name_style, "changed", G_CALLBACK(callback),
+			 NULL);
 }
