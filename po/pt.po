@@ -6,14 +6,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 0.12.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-27 20:34+0100\n"
-"PO-Revision-Date: 2010-03-28 01:27+0000\n"
-"Last-Translator: Filipe Roque <flip.roque@gmail.com>\n"
+"POT-Creation-Date: 2010-09-27 08:02+0200\n"
+"PO-Revision-Date: 2010-06-05 16:17+0000\n"
+"Last-Translator: Tiago Silva <Unknown>\n"
 "Language-Team: Portuguese <pt@li.org>\n"
+"Language: pt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-04-06 06:08+0000\n"
+"X-Launchpad-Export-Date: 2010-09-26 08:28+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #. Commandline pioneersai: server
@@ -28,7 +29,7 @@ msgstr "Servidor"
 #: ../client/ai/ai.c:68 ../client/gtk/connect.c:1448
 #: ../client/gtk/offline.c:53 ../server/gtk/main.c:613
 msgid "Server Port"
-msgstr "Porta do Servidor"
+msgstr "Porto do Servidor"
 
 #. Commandline pioneersai: name
 #: ../client/ai/ai.c:71
@@ -2152,8 +2153,9 @@ msgstr ""
 "Filipe Roque\n"
 "\n"
 "Launchpad Contributions:\n"
+"  André Oliveira https://launchpad.net/~andreoliveira\n"
 "  Filipe Roque https://launchpad.net/~flip-roque\n"
-"  Proxess https://launchpad.net/~yuusouoribeira"
+"  Tiago Silva https://launchpad.net/~tiagosilva"
 
 #. Header for the translator_credits. Use your own language name
 #: ../common/gtk/aboutbox.c:109
@@ -2213,17 +2215,17 @@ msgstr "Vitória no fim do turno"
 
 #: ../common/gtk/game-rules.c:122
 msgid "Check for victory only at end of turn"
-msgstr "Verificar a victória apenas no fim do turno"
+msgstr "Verificar a vitória apenas no fim do turno"
 
 #. Label text for customising a game
 #: ../common/gtk/game-settings.c:106
 msgid "Number of Players"
-msgstr "Número de jogadores"
+msgstr "Número de Jogadores"
 
 #. Tooltip for 'Number of Players'
 #: ../common/gtk/game-settings.c:124
 msgid "The number of players"
-msgstr "Número de jogadores"
+msgstr "O número de jogadores"
 
 #. Label for customising a game
 #: ../common/gtk/game-settings.c:127
@@ -2233,7 +2235,7 @@ msgstr "Ponto de Vitória"
 #. Tooltip for Victory Point Target
 #: ../common/gtk/game-settings.c:147
 msgid "The points needed to win the game"
-msgstr "Pontos necessários para ganhar o jogo"
+msgstr "Os pontos necessários para ganhar o jogo"
 
 #. Tooltip for the check button
 #: ../common/gtk/game-settings.c:161

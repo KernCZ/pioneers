@@ -7,10 +7,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 0.12.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-27 20:34+0100\n"
+"POT-Creation-Date: 2010-09-27 08:02+0200\n"
 "PO-Revision-Date: 2010-04-05 08:14+0000\n"
 "Last-Translator: Indalecio Freiría Santos <ifreiria@gmail.com>\n"
 "Language-Team: Galician <gl@li.org>\n"
+"Language: gl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -387,8 +388,7 @@ msgid "Version mismatch"
 msgstr "Versión incompatíbel"
 
 #: ../client/common/client.c:965
-msgid ""
-"Version mismatch. Please make sure client and server are up to date.\n"
+msgid "Version mismatch. Please make sure client and server are up to date.\n"
 msgstr ""
 "Versión é incompatíbel, Asegúrese de que o cliente e o servidor están "
 "actualizados.\n"
@@ -534,14 +534,14 @@ msgid "You have run out of road segments.\n"
 msgstr "Gastaches todos os tramos para o camiño.\n"
 
 #. I get the cards!
-#. 
+#.
 #: ../client/common/develop.c:187
 #, c-format
 msgid "You get %s from %s.\n"
 msgstr "Recibes %s de %s.\n"
 
 #. I lose the cards!
-#. 
+#.
 #: ../client/common/develop.c:193
 #, c-format
 msgid "%s took %s from you.\n"
@@ -2148,7 +2148,7 @@ msgstr "Autores:"
 
 #. Translators: add your name here. Keep the list alphabetically,
 #. * do not remove any names, and add \n after your name (except the last name).
-#. 
+#.
 #: ../common/gtk/aboutbox.c:103 ../common/gtk/aboutbox.c:114
 msgid "translator_credits"
 msgstr ""
@@ -2962,7 +2962,7 @@ msgstr "O servidor do xogo Pioneiros"
 
 #. Wait for all players to disconnect,
 #. * then enable the UI
-#. 
+#.
 #: ../server/gtk/main.c:937
 msgid "The game is over.\n"
 msgstr "O xogo rematou.\n"
@@ -3050,8 +3050,7 @@ msgstr "Saír despois de N segundos sen xogadores"
 #. Commandline server-console: tournament
 #: ../server/main.c:126
 msgid "Tournament mode, computer players added after N minutes"
-msgstr ""
-"Modo de torneo, xogadores do computador engadidos despois de N minutos"
+msgstr "Modo de torneo, xogadores do computador engadidos despois de N minutos"
 
 #. Commandline server-console: admin-port
 #: ../server/main.c:130
@@ -3152,7 +3151,7 @@ msgstr "O xogo comeza en %s minutos."
 
 #. Default name for the AI when the computer_names file
 #. * is not found or empty.
-#. 
+#.
 #: ../server/player.c:319 ../server/player.c:325
 msgid "Computer Player"
 msgstr "Xogador do computador"

@@ -7,15 +7,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 0.10.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-27 20:34+0100\n"
-"PO-Revision-Date: 2007-10-15 16:31+0000\n"
-"Last-Translator: Petri Jooste <petri.jooste@gmail.com>\n"
+"POT-Creation-Date: 2010-09-27 08:02+0200\n"
+"PO-Revision-Date: 2010-07-28 18:03+0000\n"
+"Last-Translator: Arthur Rilke <Unknown>\n"
 "Language-Team: Afrikaans <af@li.org>\n"
+"Language: af\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2010-09-26 08:28+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
 "X-Poedit-Language: Afrikaans\n"
-"X-Generator: KBabel 1.11.2\n"
 
 #. Commandline pioneersai: server
 #. Commandline option of client: hostname of the server
@@ -86,9 +88,9 @@ msgstr "Pioniers weergawe:"
 
 #. ai commandline error
 #: ../client/ai/ai.c:127
-#, c-format
+#, fuzzy, c-format
 msgid "A name must be provided.\n"
-msgstr ""
+msgstr "'n Naam moet verskaf word.\n"
 
 #: ../client/ai/ai.c:141
 #, c-format
@@ -673,9 +675,9 @@ msgid "%s built a city.\n"
 msgstr "%s het 'n stad gebou.\n"
 
 #: ../client/common/player.c:533
-#, fuzzy, c-format
+#, c-format
 msgid "%s built a city wall.\n"
-msgstr "%s het 'n stad gebou.\n"
+msgstr "%s het 'n stadsmuur gebou.\n"
 
 #: ../client/common/player.c:543
 #, c-format
@@ -708,9 +710,9 @@ msgid "%s removed a city.\n"
 msgstr "%s het 'n stad weggevat.\n"
 
 #: ../client/common/player.c:624
-#, fuzzy, c-format
+#, c-format
 msgid "%s removed a city wall.\n"
-msgstr "%s het 'n stad weggevat.\n"
+msgstr "%s het 'n stadsmuur verwyder.\n"
 
 #: ../client/common/player.c:633
 #, c-format
@@ -1448,14 +1450,12 @@ msgstr "Koop 'n ontwikkelingskaart"
 
 #: ../client/gtk/gui.c:256 ../client/gtk/legend.c:239
 #: ../client/gtk/player.c:55 ../editor/gtk/game-buildings.c:11
-#, fuzzy
 msgid "City Wall"
-msgstr "Stad"
+msgstr "Stadsmuur"
 
 #: ../client/gtk/gui.c:257
-#, fuzzy
 msgid "Build a city wall"
-msgstr "Bou 'n stad"
+msgstr "Bou 'n stadsmuur"
 
 #: ../client/gtk/gui.c:259
 msgid "_Settings"
@@ -1612,12 +1612,12 @@ msgstr "Maak 'n geluid wanner 'n nuwe speler of toeskouer die spel betree"
 #. Label for the option to use the 16:9 layout.
 #: ../client/gtk/gui.c:1069
 msgid "Use 16:9 layout"
-msgstr ""
+msgstr "Gebruik 16:9 uitleg"
 
 #. Tooltip for 16:9 option.
 #: ../client/gtk/gui.c:1079
 msgid "Use a 16:9 friendly layout for the window"
-msgstr ""
+msgstr "Gebruik 'n 16:9-vriendelike uitleg vir die venster"
 
 #: ../client/gtk/gui.c:1090
 msgid "The Pioneers Game"
@@ -1708,7 +1708,7 @@ msgstr "Spelernaam:"
 #. Set icon preferences
 #: ../client/gtk/name.c:202
 msgid "Face:"
-msgstr ""
+msgstr "Gesig:"
 
 #: ../client/gtk/name.c:217
 msgid "Variant:"
@@ -1750,7 +1750,7 @@ msgstr "Stede"
 
 #: ../client/gtk/player.c:55
 msgid "City Walls"
-msgstr ""
+msgstr "Stadsmure"
 
 #: ../client/gtk/player.c:56
 msgid "Largest Army"
@@ -1992,7 +1992,7 @@ msgstr "Stede:"
 
 #: ../client/gtk/settingscreen.c:274
 msgid "City Walls:"
-msgstr ""
+msgstr "Stadsmure:"
 
 #: ../client/gtk/settingscreen.c:280
 msgid "Ships:"
@@ -2097,7 +2097,7 @@ msgstr "Stop met ruilhandel"
 
 #: ../common/game.c:604 ../common/game.c:635
 msgid "This game cannot be won."
-msgstr ""
+msgstr "Hierdie spel kan nie gewen word nie."
 
 #: ../common/game.c:605
 msgid "There is no land."
@@ -2105,7 +2105,7 @@ msgstr ""
 
 #: ../common/game.c:639
 msgid "It is possible that this game cannot be won."
-msgstr ""
+msgstr "Dit is moontlik dat hierdie spel nie gewen kan word nie."
 
 #: ../common/game.c:645
 msgid "This game can be won by only building all settlements and cities."
@@ -2148,6 +2148,9 @@ msgstr "Outeurs:"
 #: ../common/gtk/aboutbox.c:103 ../common/gtk/aboutbox.c:114
 msgid "translator_credits"
 msgstr ""
+"Launchpad Contributions:\n"
+"  Arthur Rilke https://launchpad.net/~arthurrilke\n"
+"  petri.jooste https://launchpad.net/~petri-jooste"
 
 #. Header for the translator_credits. Use your own language name
 #: ../common/gtk/aboutbox.c:109
@@ -2174,9 +2177,8 @@ msgid "Randomize Terrain"
 msgstr "Geskommelde verstekterrein"
 
 #: ../common/gtk/game-rules.c:112
-#, fuzzy
 msgid "Randomize the terrain"
-msgstr "Geskommelde verstekterrein"
+msgstr "Verewekansig die terrein"
 
 #: ../common/gtk/game-rules.c:114
 msgid "Use Pirate"
@@ -2234,7 +2236,7 @@ msgstr "Die punte wat nodig is om die spel te wen"
 #. Tooltip for the check button
 #: ../common/gtk/game-settings.c:161
 msgid "Is it possible to win this game?"
-msgstr ""
+msgstr "Is dit moontlik om hierdie spel te wen?"
 
 #. Port indicator for a resource: trade 2 for 1
 #: ../common/gtk/guimap.c:767
@@ -2274,9 +2276,8 @@ msgstr "Houthawe"
 
 #. Tooltip for the list of meta servers
 #: ../common/gtk/metaserver.c:86
-#, fuzzy
 msgid "Select a meta server"
-msgstr "Begin bediener"
+msgstr "Kies 'n meta-bediener"
 
 #. Tooltip for the list of games
 #: ../common/gtk/select-game.c:103
@@ -2691,7 +2692,7 @@ msgstr ""
 
 #: ../editor/gtk/editor.c:1013 ../server/gtk/main.c:100
 msgid "Check whether the game can be won"
-msgstr ""
+msgstr "Kontrolleer of die spel gewen kan word"
 
 #: ../editor/gtk/editor.c:1015
 msgid "Quit"
@@ -2734,9 +2735,8 @@ msgid "Resource Count"
 msgstr "Aantal hulpbronne"
 
 #: ../editor/gtk/pioneers-editor.desktop.in.h:1
-#, fuzzy
 msgid "Create your own game for Pioneers"
-msgstr "- Redigeerder vir Pioniersspelle"
+msgstr "Skep u eie spel vir Pioneers"
 
 #. Commandline meta-server: daemon
 #: ../meta-server/main.c:1056
@@ -2798,12 +2798,10 @@ msgid "Information about Pioneers Server"
 msgstr "Inligting oor Pioniersbediener"
 
 #: ../server/gtk/main.c:221
-#, fuzzy
 msgid "Stop Server"
 msgstr "Stop bediener"
 
 #: ../server/gtk/main.c:222
-#, fuzzy
 msgid "Start Server"
 msgstr "Begin bediener"
 
@@ -2922,14 +2920,12 @@ msgid "Player of viewer"
 msgstr "Speler van toeskouer"
 
 #: ../server/gtk/main.c:813
-#, fuzzy
 msgid "Launch Pioneers Client"
-msgstr "Die Pioniers-spel"
+msgstr "Lanseer Pioneers-kliënt"
 
 #: ../server/gtk/main.c:820
-#, fuzzy
 msgid "Launch the Pioneers Client"
-msgstr "Die Pioniers-spel"
+msgstr "Lanseer die Pioneers-kliënt"
 
 #: ../server/gtk/main.c:822
 msgid "Computer Players"
@@ -2982,9 +2978,8 @@ msgid "Pioneers Server"
 msgstr "Pioniersbediener"
 
 #: ../server/gtk/pioneers-server.desktop.in.h:1
-#, fuzzy
 msgid "Host a game of Pioneers"
-msgstr "- Skep 'n Pioniersspel"
+msgstr "Speel gasheer vir 'n spel Pioneers"
 
 #. Commandline server-console: game-title
 #: ../server/main.c:75
@@ -3101,7 +3096,7 @@ msgstr ""
 #: ../server/main.c:241
 #, c-format
 msgid "Cannot load the parameters for the game\n"
-msgstr ""
+msgstr "Kan die spel-parameters nie laai nie\n"
 
 #. server-console commandline error
 #: ../server/main.c:276
@@ -3200,7 +3195,7 @@ msgstr ""
 #: ../server/server.c:382 ../server/server.c:471
 #, c-format
 msgid "Game directory '%s' not found\n"
-msgstr ""
+msgstr "Spel gids '%s' nie gevind nie\n"
 
 #: ../server/turn.c:253
 msgid "Island Discovery Bonus"
