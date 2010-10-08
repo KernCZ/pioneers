@@ -1,3 +1,6 @@
+2010-10-08  Roland Clobus <rclobus@rclobus.nl>
+	* POTFILES.in: Added common/gtk/common_gtk.c
+
 2010-04-06  Roland Clobus <rclobus@rclobus.nl>
 	* LINGUAS, gl.po: Added translation to Galician by
 	Indalecio Freiría Santos.
