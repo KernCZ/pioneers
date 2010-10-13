@@ -1,6 +1,7 @@
 2010-10-13  Roland Clobus <rclobus@rclobus.nl>
 	* server/player.c, server/server.h, server/main.c: Automatically quit a game that is started on the
 	metaserver that has no human player for 30 minutes.
+	* pioneers.nsi.in: Adding en_GB and gl.
 
 2010-10-07  Roland Clobus <rclobus@rclobus.nl>
 	* common/notifying-string.gob, common/Makefile.am, configure.ac,
