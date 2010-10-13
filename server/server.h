@@ -130,6 +130,8 @@ struct Game {
 
 	gint no_player_timeout;	/* time to wait for players */
 	guint no_player_timer;	/* glib timer identifier */
+
+	guint no_humans_timer;	/* timer id: no human players are present */
 };
 
 /**** global variables ****/

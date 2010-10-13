@@ -338,8 +338,6 @@ void game_is_over(Game * game)
 void request_server_stop(Game * game)
 {
 	if (server_stop(game)) {
-		game_free(game);
-		game = NULL;
 		g_main_loop_quit(event_loop);
 	}
 }

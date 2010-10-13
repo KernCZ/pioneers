@@ -3,7 +3,7 @@
  *
  * Copyright (C) 1999 Dave Cole
  * Copyright (C) 2003-2007 Bas Wijnen <shevek@fmf.nl>
- * Copyright (C) 2005,2006 Roland Clobus <rclobus@bigfoot.com>
+ * Copyright (C) 2005-2010 Roland Clobus <rclobus@rclobus.nl>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,6 +37,16 @@ static void player_setup(Player * player, int playernum,
 static Player *player_by_name(Game * game, char *name);
 
 #define tournament_minute 1000 * 60
+#define time_to_wait_for_players 30 * 60 * 1000
+
+/** Is the game a tournament game?
+ *  @param game The game
+ *  @return TRUE if this game is a tournament game
+*/
+static gboolean is_tournament_game(const Game * game)
+{
+	return game->params->tournament_time > 0;
+}
 
 /** Find a free number for a connecting player.
  * The number has not been used before.
@@ -611,6 +621,20 @@ void player_free(Player * player)
 	sm_free(player->sm);
 }
 
+static gboolean timed_out(gpointer data)
+{
+	Game *game = data;
+	log_message(MSG_INFO,
+		    _(""
+		      "Was hanging around for too long without players... bye.\n"));
+	player_broadcast(player_none(game), PB_SILENT,
+			 FIRST_VERSION, LATEST_VERSION,
+			 "NOTE %s\n",
+			 N_("No human players present. Bye."));
+	request_server_stop(game);
+	return FALSE;
+}
+
 void player_archive(Player * player)
 {
 	StateFunc state;
@@ -656,6 +680,32 @@ void player_archive(Player * player)
 	player->disconnected = TRUE;
 	game->num_players--;
 	meta_report_num_players(game->num_players);
+
+	/* if no human players are present, start timer */
+	playerlist_inc_use_count(game);
+	gboolean human_player_present = FALSE;
+	GList *pl = game->player_list;
+	for (pl = game->player_list;
+	     pl != NULL && !human_player_present; pl = g_list_next(pl)) {
+		Player *p = pl->data;
+		if (!player_is_viewer(game, p->num)
+		    && !p->disconnected
+		    && determine_player_type(p->style) == PLAYER_HUMAN) {
+			human_player_present = TRUE;
+		}
+	}
+	playerlist_dec_use_count(game);
+	if (!human_player_present && game->no_humans_timer == 0
+	    && is_tournament_game(game)) {
+		game->no_humans_timer =
+		    g_timeout_add(time_to_wait_for_players, timed_out,
+				  game);
+		player_broadcast(player_none(game), PB_SILENT,
+				 FIRST_VERSION, LATEST_VERSION,
+				 "NOTE %s\n",
+				 N_
+				 ("The last human player left. Waiting for the return of a player."));
+	}
 }
 
 /* Try to revive the player
@@ -669,6 +719,14 @@ void player_revive(Player * newp, char *name)
 	Player *p = NULL;
 	gboolean reviving_player_in_setup;
 	gchar *safe_name;
+
+	if (game->no_humans_timer != 0) {
+		g_source_remove(game->no_humans_timer);
+		game->no_humans_timer = 0;
+		player_broadcast(player_none(game), PB_SILENT,
+				 FIRST_VERSION, LATEST_VERSION,
+				 "NOTE %s\n", N_("Resuming the game."));
+	}
 
 	/* first see if a player with the given name exists */
 	if (name) {
@@ -949,7 +1007,7 @@ static void start_tournament_mode(Player * player)
 {
 	Game *game = player->game;
 
-	if (game->params->tournament_time > 0) {
+	if (is_tournament_game(game)) {
 		/* if first player in and this is a tournament start the timer */
 		if (game->num_players == 1) {
 			game->tournament_countdown =
