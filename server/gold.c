@@ -132,6 +132,7 @@ static void distribute_next(GList * list)
 					--game->bank_deck[idx];
 					--totalbank;
 				}
+				scan->gold = 0;
 				player_broadcast(scan, PB_ALL,
 						 FIRST_VERSION,
 						 LATEST_VERSION,
