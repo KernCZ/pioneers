@@ -1,3 +1,6 @@
+2010-10-15  Roland Clobus <rclobus@rclobus.nl>
+	* configure.ac: Extra quotes for GOB2 check, needed for Debian Stable.
+
 2010-10-14  Roland Clobus <rclobus@rclobus.nl>
 	* server/gold.c: Set gold counter to zero after automatic distribution
 	of gold.
