@@ -124,4 +124,51 @@ PlayerType determine_player_type(const gchar * style);
 
 Points *points_new(gint id, const gchar * name, gint points);
 void points_free(Points * points);
+
+/* Communication format
+ *
+ * The commands sent to and from the server use the following
+ * format specifiers:
+ *	%S - string from current position to end of line
+ *		this takes a gchar ** argument, in which an allocated buffer
+ *		is returned.  It must be freed by the caller.
+ *	%d - integer
+ *	%B - build type:
+ *		'road' = BUILD_ROAD
+ *		'ship' = BUILD_SHIP
+ *		'bridge' = BUILD_BRIDGE
+ *		'settlement' = BUILD_SETTLEMENT
+ *		'city' = BUILD_CITY
+ *	%R - list of 5 integer resource counts:
+ *		brick, grain, ore, wool, lumber
+ *	%D - development card type:
+ *		0 = DEVEL_ROAD_BUILDING
+ *		1 = DEVEL_MONOPOLY
+ *		2 = DEVEL_YEAR_OF_PLENTY
+ *		3 = DEVEL_CHAPEL
+ *		4 = DEVEL_UNIVERSITY
+ *		5 = DEVEL_GOVERNORS_HOUSE
+ *		6 = DEVEL_LIBRARY
+ *		7 = DEVEL_MARKET
+ *		8 = DEVEL_SOLDIER
+ *	%r - resource type:
+ *		'brick' = BRICK_RESOURCE
+ *		'grain' = GRAIN_RESOURCE
+ *		'ore' = ORE_RESOURCE
+ *		'wool' = WOOL_RESOURCE
+ *		'lumber' = LUMBER_RESOURCE
+ */
+/** Parse a line.
+ * @param line Line to parse
+ * @param fmt Format of the line, see communication format
+ * @retval ap Result of the parse
+ * @return -1 if the line could not be parsed, otherwise the offset in the line
+*/
+gint game_scanf(const gchar *line, const gchar * fmt, va_list ap);
+/** Print a line.
+ * @param fmt Format of the line, see communication format
+ * @param ap Arguments to the format
+ * @return A string (you must use g_free to free the string)
+*/
+gchar *game_printf(const gchar * fmt, va_list ap);
 #endif

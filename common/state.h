@@ -28,36 +28,8 @@
  *
  * The server output is handled one line at a time.  For each line
  * received, the current state is called with the SM_RECV event.  The
- * [fmt] format string is modelled on the printf format string.  It
- * understands the following types:
- *	%S - string from current position to end of line
- *		this takes a gchar ** argument, in which an allocated buffer
- *		is returned.  It must be freed by the caller.
- *	%d - integer
- *	%B - build type;
- *		'road' = BUILD_ROAD,
- *		'ship' = BUILD_SHIP,
- *		'bridge' = BUILD_BRIDGE,
- *		'settlement' = BUILD_SETTLEMENT
- *		'city' = BUILD_CITY
- *	%R - list of 5 integer resource counts;
- *		brick, grain, ore, wool, lumber
- *	%D - development card type;
- *		0 = DEVEL_ROAD_BUILDING,
- *		1 = DEVEL_MONOPOLY,
- *		2 = DEVEL_YEAR_OF_PLENTY,
- *		3 = DEVEL_CHAPEL,
- *		4 = DEVEL_UNIVERSITY,
- *		5 = DEVEL_GOVERNORS_HOUSE,
- *		6 = DEVEL_LIBRARY,
- *		7 = DEVEL_MARKET,
- *		8 = DEVEL_SOLDIER
- *	%r - resource type;
- *		'brick' = BRICK_RESOURCE,
- *		'grain' = GRAIN_RESOURCE,
- *		'ore' = ORE_RESOURCE,
- *		'wool' = WOOL_RESOURCE,
- *		'lumber' = LUMBER_RESOURCE,
+ * [fmt] format string is modelled on the printf format string,
+ * see game_printf and game_scanf for details.
  *
  * sm_recv(fmt, ...)
  *	Match the entire current line from the start position.
@@ -152,7 +124,6 @@ void sm_state_name(StateMachine * sm, const gchar * name);
 gboolean sm_recv(StateMachine * sm, const gchar * fmt, ...);
 gboolean sm_recv_prefix(StateMachine * sm, const gchar * fmt, ...);
 void sm_cancel_prefix(StateMachine * sm);
-gchar *sm_vformat(const gchar * fmt, va_list ap);
 void sm_write(StateMachine * sm, const gchar * str);
 /** Send the data, even when caching is turned on */
 void sm_write_uncached(StateMachine * sm, const gchar * str);

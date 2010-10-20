@@ -1245,7 +1245,7 @@ void player_broadcast_extension(Player * player, BroadcastType type,
 	va_list ap;
 
 	va_start(ap, fmt);
-	buff = sm_vformat(fmt, ap);
+	buff = game_printf(fmt, ap);
 	va_end(ap);
 
 	player_broadcast_internal(player, type, buff, TRUE,
@@ -1264,7 +1264,7 @@ void player_broadcast(Player * player, BroadcastType type,
 	va_list ap;
 
 	va_start(ap, fmt);
-	buff = sm_vformat(fmt, ap);
+	buff = game_printf(fmt, ap);
 	va_end(ap);
 
 	player_broadcast_internal(player, type, buff, FALSE,
@@ -1287,7 +1287,7 @@ void player_send(Player * player,
 		return;
 
 	va_start(ap, fmt);
-	buff = sm_vformat(fmt, ap);
+	buff = game_printf(fmt, ap);
 	va_end(ap);
 
 	sm_write(player->sm, buff);
@@ -1308,7 +1308,7 @@ void player_send_uncached(Player * player,
 		return;
 
 	va_start(ap, fmt);
-	buff = sm_vformat(fmt, ap);
+	buff = game_printf(fmt, ap);
 	va_end(ap);
 
 	sm_write_uncached(player->sm, buff);

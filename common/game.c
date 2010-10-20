@@ -697,3 +697,218 @@ void points_free(Points * points)
 {
 	g_free(points->name);
 }
+
+/* Not translated, these strings are parts of the communication protocol */
+static const gchar *resource_types[] = {
+	"brick",
+	"grain",
+	"ore",
+	"wool",
+	"lumber"
+};
+
+static gint get_num(const gchar * str, gint * num)
+{
+	gint len = 0;
+	gboolean is_negative = FALSE;
+
+	if (*str == '-') {
+		is_negative = TRUE;
+		str++;
+		len++;
+	}
+	*num = 0;
+	while (isdigit(*str)) {
+		*num = *num * 10 + *str++ - '0';
+		len++;
+	}
+	if (is_negative)
+		*num = -*num;
+	return len;
+}
+
+gint game_scanf(const gchar *line, const gchar * fmt, va_list ap)
+{
+	gint offset = 0;
+
+	while (*fmt != '\0' && line[offset] != '\0') {
+		gchar **str;
+		gint *num;
+		gint idx;
+		gint len;
+		BuildType *build_type;
+		Resource *resource;
+
+		if (*fmt != '%') {
+			if (line[offset] != *fmt)
+				return -1;
+			fmt++;
+			offset++;
+			continue;
+		}
+		fmt++;
+
+		switch (*fmt++) {
+		case 'S':	/* string from current position to end of line */
+			str = va_arg(ap, gchar **);
+			*str = g_strdup(line + offset);
+			offset += strlen(*str);
+			break;
+		case 'd':	/* integer */
+			num = va_arg(ap, gint *);
+			len = get_num(line + offset, num);
+			if (len == 0)
+				return -1;
+			offset += len;
+			break;
+		case 'B':	/* build type */
+			build_type = va_arg(ap, BuildType *);
+			if (strncmp(line + offset, "road", 4) == 0) {
+				*build_type = BUILD_ROAD;
+				offset += 4;
+			} else if (strncmp(line + offset, "bridge", 6) ==
+				   0) {
+				*build_type = BUILD_BRIDGE;
+				offset += 6;
+			} else if (strncmp(line + offset, "ship", 4) == 0) {
+				*build_type = BUILD_SHIP;
+				offset += 4;
+			} else if (strncmp(line + offset, "settlement", 10)
+				   == 0) {
+				*build_type = BUILD_SETTLEMENT;
+				offset += 10;
+			} else if (strncmp(line + offset, "city_wall", 9)
+				   == 0) {
+				*build_type = BUILD_CITY_WALL;
+				offset += 9;
+			} else if (strncmp(line + offset, "city", 4) == 0) {
+				*build_type = BUILD_CITY;
+				offset += 4;
+			} else
+				return -1;
+			break;
+		case 'R':	/* list of 5 integer resource counts */
+			num = va_arg(ap, gint *);
+			for (idx = 0; idx < NO_RESOURCE; idx++) {
+				while (line[offset] == ' ')
+					offset++;
+				len = get_num(line + offset, num);
+				if (len == 0)
+					return -1;
+				offset += len;
+				num++;
+			}
+			break;
+		case 'D':	/* development card type */
+			num = va_arg(ap, gint *);
+			len = get_num(line + offset, num);
+			if (len == 0)
+				return -1;
+			offset += len;
+			break;
+		case 'r':	/* resource type */
+			resource = va_arg(ap, Resource *);
+			for (idx = 0; idx < NO_RESOURCE; idx++) {
+				const gchar *type = resource_types[idx];
+				len = strlen(type);
+				if (strncmp(line + offset, type, len) == 0) {
+					offset += len;
+					*resource = idx;
+					break;
+				}
+			}
+			if (idx == NO_RESOURCE)
+				return -1;
+			break;
+		}
+	}
+	if (*fmt != '\0')
+		return -1;
+	return offset;
+}
+
+#define buff_append(result, format, value) \
+	do { \
+		gchar *old = result; \
+		result = g_strdup_printf("%s" format, result, value); \
+		g_free(old); \
+	} while (0)
+
+gchar *game_printf(const gchar * fmt, va_list ap)
+{
+	/* initialize result to an allocated empty string */
+	gchar *result = g_strdup("");
+
+	while (*fmt != '\0') {
+		gchar *pos = strchr(fmt, '%');
+		if (pos == NULL) {
+			buff_append(result, "%s", fmt);
+			break;
+		}
+		/* add format until next % to result */
+		result = g_realloc(result, strlen(result) + pos - fmt + 1);
+		result[strlen(result) + pos - fmt] = '\0';
+		memcpy(&result[strlen(result)], fmt, pos - fmt);
+		fmt = pos + 1;
+
+		switch (*fmt++) {
+			BuildType build_type;
+			const gint *num;
+			gint idx;
+		case 's':	/* string */
+			buff_append(result, "%s", va_arg(ap, gchar *));
+			break;
+		case 'd':	/* integer */
+		case 'D':	/* development card type */
+			buff_append(result, "%d", va_arg(ap, gint));
+			break;
+		case 'B':	/* build type */
+			build_type = va_arg(ap, BuildType);
+			switch (build_type) {
+			case BUILD_ROAD:
+				buff_append(result, "%s", "road");
+				break;
+			case BUILD_BRIDGE:
+				buff_append(result, "%s", "bridge");
+				break;
+			case BUILD_SHIP:
+				buff_append(result, "%s", "ship");
+				break;
+			case BUILD_SETTLEMENT:
+				buff_append(result, "%s", "settlement");
+				break;
+			case BUILD_CITY:
+				buff_append(result, "%s", "city");
+				break;
+			case BUILD_CITY_WALL:
+				buff_append(result, "%s", "city_wall");
+				break;
+			case BUILD_NONE:
+				g_error("BUILD_NONE passed to game_printf");
+				break;
+			case BUILD_MOVE_SHIP:
+				g_error
+				    ("BUILD_MOVE_SHIP passed to game_printf");
+				break;
+			}
+			break;
+		case 'R':	/* list of 5 integer resource counts */
+			num = va_arg(ap, gint *);
+			for (idx = 0; idx < NO_RESOURCE; idx++) {
+				if (idx > 0)
+					buff_append(result, " %d",
+						    num[idx]);
+				else
+					buff_append(result, "%d",
+						    num[idx]);
+			}
+			break;
+		case 'r':	/* resource type */
+			buff_append(result, "%s",
+				    resource_types[va_arg(ap, Resource)]);
+			break;
+		}
+	}
+	return result;
+}
+
