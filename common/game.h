@@ -164,11 +164,22 @@ void points_free(Points * points);
  * @retval ap Result of the parse
  * @return -1 if the line could not be parsed, otherwise the offset in the line
 */
-gint game_scanf(const gchar *line, const gchar * fmt, va_list ap);
+gint game_vscanf(const gchar * line, const gchar * fmt, va_list ap);
+/** Parse a line.
+ * @param line Line to parse
+ * @param fmt Format of the line, see communication format
+ * @return -1 if the line could not be parsed, otherwise the offset in the line
+*/
+gint game_scanf(const gchar * line, const gchar * fmt, ...);
 /** Print a line.
  * @param fmt Format of the line, see communication format
  * @param ap Arguments to the format
  * @return A string (you must use g_free to free the string)
 */
-gchar *game_printf(const gchar * fmt, va_list ap);
+gchar *game_vprintf(const gchar * fmt, va_list ap);
+/** Print a line.
+ * @param fmt Format of the line, see communication format
+ * @return A string (you must use g_free to free the string)
+*/
+gchar *game_printf(const gchar * fmt, ...);
 #endif

@@ -727,7 +727,19 @@ static gint get_num(const gchar * str, gint * num)
 	return len;
 }
 
-gint game_scanf(const gchar *line, const gchar * fmt, va_list ap)
+gint game_scanf(const gchar * line, const gchar * fmt, ...)
+{
+	va_list ap;
+	gint offset;
+
+	va_start(ap, fmt);
+	offset = game_vscanf(line, fmt, ap);
+	va_end(ap);
+
+	return offset;
+}
+
+gint game_vscanf(const gchar * line, const gchar * fmt, va_list ap)
 {
 	gint offset = 0;
 
@@ -834,7 +846,19 @@ gint game_scanf(const gchar *line, const gchar * fmt, va_list ap)
 		g_free(old); \
 	} while (0)
 
-gchar *game_printf(const gchar * fmt, va_list ap)
+gchar *game_printf(const gchar * fmt, ...)
+{
+	va_list ap;
+	gchar *result;
+
+	va_start(ap, fmt);
+	result = game_vprintf(fmt, ap);
+	va_end(ap);
+
+	return result;
+}
+
+gchar *game_vprintf(const gchar * fmt, va_list ap)
 {
 	/* initialize result to an allocated empty string */
 	gchar *result = g_strdup("");
@@ -884,7 +908,8 @@ gchar *game_printf(const gchar * fmt, va_list ap)
 				buff_append(result, "%s", "city_wall");
 				break;
 			case BUILD_NONE:
-				g_error("BUILD_NONE passed to game_printf");
+				g_error
+				    ("BUILD_NONE passed to game_printf");
 				break;
 			case BUILD_MOVE_SHIP:
 				g_error
@@ -911,4 +936,3 @@ gchar *game_printf(const gchar * fmt, va_list ap)
 	}
 	return result;
 }
-
