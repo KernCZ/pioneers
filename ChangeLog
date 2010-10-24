@@ -1,5 +1,6 @@
 2010-10-24  Roland Clobus <rclobus@rclobus.nl>
 	* common/state.c: Fix bug introduced on 2010-10-20
+	* common/state.c: g_return_if_fail was not required.
 
 2010-10-20  Roland Clobus <rclobus@rclobus.nl>
 	* common/game.c, common/game.h, common/state.c, common/state.h,
