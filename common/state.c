@@ -189,7 +189,7 @@ gboolean sm_recv(StateMachine * sm, const gchar * fmt, ...)
 	gint offset;
 
 	va_start(ap, fmt);
-	offset = game_scanf(sm->line + sm->line_offset, fmt, ap);
+	offset = game_vscanf(sm->line + sm->line_offset, fmt, ap);
 	va_end(ap);
 
 	return offset > 0 && sm->line[sm->line_offset + offset] == '\0';
@@ -201,7 +201,7 @@ gboolean sm_recv_prefix(StateMachine * sm, const gchar * fmt, ...)
 	gint offset;
 
 	va_start(ap, fmt);
-	offset = game_scanf(sm->line + sm->line_offset, fmt, ap);
+	offset = game_vscanf(sm->line + sm->line_offset, fmt, ap);
 	va_end(ap);
 
 	if (offset < 0)
@@ -242,7 +242,7 @@ void sm_send(StateMachine * sm, const gchar * fmt, ...)
 		return;
 
 	va_start(ap, fmt);
-	buff = game_printf(fmt, ap);
+	buff = game_vprintf(fmt, ap);
 	va_end(ap);
 
 	sm_write(sm, buff);
