@@ -1,3 +1,7 @@
+2010-10-25  Roland Clobus <rclobus@rclobus.nl>
+	* admin-scripts: Added various scripts to automate the meta-server.
+	* getVersions.sh, kill-game.sh: Moved to admin-scripts.
+
 2010-10-24  Roland Clobus <rclobus@rclobus.nl>
 	* common/state.c: Fix bug introduced on 2010-10-20
 	* common/state.c: g_return_if_fail was not required.
