@@ -115,6 +115,7 @@ static void lobbybot_chat_parser(gint player_num, const gchar * chat)
 	}
 
 	if (!strncmp(chat, "/why", 4)) {
+		/* AI chat that explains '/why' */
 		ai_chat(N_("This board is not intended to be a game that "
 			   "can be played. Instead, players can find "
 			   "eachother here, and decide which board they "

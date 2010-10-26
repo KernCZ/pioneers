@@ -1316,78 +1316,112 @@ static void greedy_turn(void)
 	} while(0)
 
 static const char *chat_turn_start[] = {
+	/* AI chat at the start of the turn */
 	N_("Ok, let's go!"),
+	/* AI chat at the start of the turn */
 	N_("I'll beat you all now! ;)"),
+	/* AI chat at the start of the turn */
 	N_("Now for another try..."),
 };
 
 static const char *chat_receive_one[] = {
+	/* AI chat when one resource is received */
 	N_("At least I get something..."),
+	/* AI chat when one resource is received */
 	N_("One is better than none..."),
 };
 
 static const char *chat_receive_many[] = {
+	/* AI chat when more than one resource is received */
 	N_("Wow!"),
+	/* AI chat when more than one resource is received */
 	N_("Ey, I'm becoming rich ;)"),
+	/* AI chat when more than one resource is received */
 	N_("This is really a good year!"),
 };
 
 static const char *chat_other_receive_many[] = {
+	/* AI chat when other players receive more than one resource */
 	N_("You really don't deserve that much!"),
+	/* AI chat when other players receive more than one resource */
 	N_("You don't know what to do with that many resources ;)"),
+	/* AI chat when other players receive more than one resource */
 	N_("Ey, wait for my robber and lose all this again!"),
 };
 
 static const char *chat_self_moved_robber[] = {
+	/* AI chat when it moves the robber */
 	N_("Hehe!"),
+	/* AI chat when it moves the robber */
 	N_("Go, robber, go!"),
 };
 
 static const char *chat_moved_robber_to_me[] = {
+	/* AI chat when the robber is moved to it */
 	N_("You bastard!"),
+	/* AI chat when the robber is moved to it */
 	N_("Can't you move that robber somewhere else?!"),
+	/* AI chat when the robber is moved to it */
 	N_("Why always me??"),
 };
 
 static const char *chat_discard_self[] = {
+	/* AI chat when it must discard resources */
 	N_("Oh no!"),
+	/* AI chat when it must discard resources */
 	N_("Grrr!"),
+	/* AI chat when it must discard resources */
 	N_("Who the hell rolled that 7??"),
+	/* AI chat when it must discard resources */
 	N_("Why always me?!?"),
 };
 
 static const char *chat_discard_other[] = {
+	/* AI chat when other players must discard */
 	N_("Say good bye to your cards... :)"),
+	/* AI chat when other players must discard */
 	N_("*evilgrin*"),
+	/* AI chat when other players must discard */
 	N_("/me says farewell to your cards ;)"),
+	/* AI chat when other players must discard */
 	N_("That's the price for being rich... :)"),
 };
 
 static const char *chat_stole_from_me[] = {
+	/* AI chat when someone steals from it */
 	N_("Ey! Where's that card gone?"),
+	/* AI chat when someone steals from it */
 	N_("Thieves! Thieves!!"),
+	/* AI chat when someone steals from it */
 	N_("Wait for my revenge..."),
 };
 
 static const char *chat_monopoly_other[] = {
+	/* AI chat when someone plays the monopoly card */
 	N_("Oh no :("),
+	/* AI chat when someone plays the monopoly card */
 	N_("Must this happen NOW??"),
+	/* AI chat when someone plays the monopoly card */
 	N_("Args"),
 };
 
 static const char *chat_largestarmy_self[] = {
+	/* AI chat when it has the largest army */
 	N_("Hehe, my soldiers rule!"),
 };
 
 static const char *chat_largestarmy_other[] = {
+	/* AI chat when another player that the largest army */
 	N_("First robbing us, then grabbing the points..."),
 };
 
 static const char *chat_longestroad_self[] = {
+	/* AI chat when it has the longest road */
 	N_("See that road!"),
 };
 
 static const char *chat_longestroad_other[] = {
+	/* AI chat when another player has the longest road */
 	N_("Pf, you won't win with roads alone..."),
 };
 
@@ -1965,10 +1999,13 @@ static void greedy_error(const gchar * message)
 
 static void greedy_game_over(gint player_num, G_GNUC_UNUSED gint points)
 {
-	if (player_num == my_player_num())
+	if (player_num == my_player_num()) {
+		/* AI chat when it wins */
 		ai_chat(N_("Yippie!"));
-	else
+	} else {
+		/* AI chat when another player wins */
 		ai_chat(N_("My congratulations"));
+	}
 	cb_disconnect();
 }
 

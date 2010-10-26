@@ -251,7 +251,7 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 				    (player->special_points_next_id++,
 				     first_island ?
 				     N_("Island Discovery Bonus")
-				     : N_("" "Additional Island Bonus"),
+				     : N_("Additional Island Bonus"),
 				     points);
 			player->islands_discovered++;
 		}

@@ -598,6 +598,7 @@ static GtkWidget *build_roll_menu(void)
 	gtk_menu_shell_append(GTK_MENU_SHELL(menu),
 			      gtk_separator_menu_item_new());
 
+	/* Menu item */
 	item = gtk_check_menu_item_new_with_label(_("Shuffle"));
 	gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
 	g_signal_connect(G_OBJECT(item), "toggled",
@@ -729,11 +730,16 @@ static GtkWidget *build_settings(GtkWindow * main_window)
 	game_devcards = GAMEDEVCARDS(game_devcards_new());
 	game_buildings = GAMEBUILDINGS(game_buildings_new());
 
+	/* Caption */
 	build_frame(lvbox, _("Game parameters"),
 		    GTK_WIDGET(game_settings));
+	/* Caption */
 	build_frame(lvbox, _("Rules"), GTK_WIDGET(game_rules));
+	/* Caption */
 	build_frame(lvbox, _("Resources"), GTK_WIDGET(game_resources));
+	/* Caption */
 	build_frame(rvbox, _("Buildings"), GTK_WIDGET(game_buildings));
+	/* Caption */
 	build_frame(rvbox, _("Development cards"),
 		    GTK_WIDGET(game_devcards));
 
@@ -751,6 +757,7 @@ static void set_window_title(const gchar * title)
 		window_title = NULL;
 	} else
 		window_title = g_strdup(title);
+	/* Application caption */
 	str = g_strdup_printf("%s: %s", _("Pioneers Editor"), title);
 
 	gtk_window_set_title(GTK_WINDOW(toplevel), str);
@@ -891,13 +898,15 @@ static void load_game_menu_cb(void)
 {
 	GtkWidget *dialog;
 
-	dialog = gtk_file_chooser_dialog_new(_("Open Game"),
-					     GTK_WINDOW(toplevel),
-					     GTK_FILE_CHOOSER_ACTION_OPEN,
-					     GTK_STOCK_CANCEL,
-					     GTK_RESPONSE_CANCEL,
-					     GTK_STOCK_OPEN,
-					     GTK_RESPONSE_OK, NULL);
+	dialog = gtk_file_chooser_dialog_new(
+						    /* Dialog caption */
+						    _("Open Game"),
+						    GTK_WINDOW(toplevel),
+						    GTK_FILE_CHOOSER_ACTION_OPEN,
+						    GTK_STOCK_CANCEL,
+						    GTK_RESPONSE_CANCEL,
+						    GTK_STOCK_OPEN,
+						    GTK_RESPONSE_OK, NULL);
 	gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(dialog),
 				      default_game);
 	if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_OK) {
@@ -917,13 +926,16 @@ static void save_as_menu_cb(void)
 {
 	GtkWidget *dialog;
 
-	dialog = gtk_file_chooser_dialog_new(_("Save As..."),
-					     GTK_WINDOW(toplevel),
-					     GTK_FILE_CHOOSER_ACTION_SAVE,
-					     GTK_STOCK_CANCEL,
-					     GTK_RESPONSE_CANCEL,
-					     GTK_STOCK_SAVE,
-					     GTK_RESPONSE_ACCEPT, NULL);
+	dialog = gtk_file_chooser_dialog_new(
+						    /* Dialog caption */
+						    _("Save As..."),
+						    GTK_WINDOW(toplevel),
+						    GTK_FILE_CHOOSER_ACTION_SAVE,
+						    GTK_STOCK_CANCEL,
+						    GTK_RESPONSE_CANCEL,
+						    GTK_STOCK_SAVE,
+						    GTK_RESPONSE_ACCEPT,
+						    NULL);
 	gtk_dialog_set_default_response(GTK_DIALOG(dialog),
 					GTK_RESPONSE_ACCEPT);
 	if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
@@ -952,14 +964,16 @@ static void change_title_menu_cb(void)
 {
 	GtkWidget *dialog, *vbox, *hbox, *label, *entry;
 
-	dialog = gtk_dialog_new_with_buttons(_("Change Title"),
-					     GTK_WINDOW(toplevel),
-					     GTK_DIALOG_MODAL |
-					     GTK_DIALOG_DESTROY_WITH_PARENT,
-					     GTK_STOCK_CANCEL,
-					     GTK_RESPONSE_CANCEL,
-					     GTK_STOCK_OK,
-					     GTK_RESPONSE_OK, NULL);
+	dialog = gtk_dialog_new_with_buttons(
+						    /* Dialog caption */
+						    _("Change Title"),
+						    GTK_WINDOW(toplevel),
+						    GTK_DIALOG_MODAL |
+						    GTK_DIALOG_DESTROY_WITH_PARENT,
+						    GTK_STOCK_CANCEL,
+						    GTK_RESPONSE_CANCEL,
+						    GTK_STOCK_OK,
+						    GTK_RESPONSE_OK, NULL);
 	gtk_dialog_set_default_response(GTK_DIALOG(dialog),
 					GTK_RESPONSE_OK);
 	g_signal_connect(G_OBJECT(dialog), "destroy",
@@ -974,6 +988,7 @@ static void change_title_menu_cb(void)
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);
 	gtk_container_set_border_width(GTK_CONTAINER(hbox), 5);
 
+	/* Label */
 	label = gtk_label_new(_("New title:"));
 	gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, TRUE, 0);
 	gtk_misc_set_alignment(GTK_MISC(label), 1, 0.5);
@@ -1030,7 +1045,8 @@ static void about_menu_cb(void)
 		AUTHORLIST
 	};
 
-	aboutbox_display(_("Pioneers Game Editor"), authors);
+	/* About dialog caption */
+	aboutbox_display(_("About Pioneers Game Editor"), authors);
 }
 
 static GtkActionEntry entries[] = {
@@ -1158,8 +1174,8 @@ int main(int argc, char *argv[])
 	textdomain(PACKAGE);
 	bind_textdomain_codeset(PACKAGE, "UTF-8");
 
-	/* Long description in the command line: --help */
 	context =
+	    /* Long description in the command line: --help */
 	    g_option_context_new(_("- Editor for games of Pioneers"));
 	g_option_context_add_main_entries(context, commandline_entries,
 					  GETTEXT_PACKAGE);
@@ -1225,10 +1241,12 @@ int main(int argc, char *argv[])
 	gtk_notebook_set_tab_pos(GTK_NOTEBOOK(notebook), GTK_POS_TOP);
 
 	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), build_map(),
+				 /* Tab page name */
 				 gtk_label_new(_("Map")));
 
 	gtk_notebook_append_page(GTK_NOTEBOOK(notebook),
 				 build_settings(GTK_WINDOW(toplevel)),
+				 /* Tab page name */
 				 gtk_label_new(_("Settings")));
 
 	terrain_menu = build_terrain_menu();

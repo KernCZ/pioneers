@@ -1470,12 +1470,18 @@ static void connect_private_dialog(G_GNUC_UNUSED GtkWidget * widget,
 		return;
 	}
 
-	connect_private_dlg =
-	    gtk_dialog_new_with_buttons(_("Join a private game"),
-					GTK_WINDOW(parent), 0,
-					GTK_STOCK_CANCEL,
-					GTK_RESPONSE_CANCEL, GTK_STOCK_OK,
-					GTK_RESPONSE_OK, NULL);
+	connect_private_dlg = gtk_dialog_new_with_buttons(
+								 /* Dialog caption */
+								 _(""
+								   "Join a private game"),
+								 GTK_WINDOW
+								 (parent),
+								 0,
+								 GTK_STOCK_CANCEL,
+								 GTK_RESPONSE_CANCEL,
+								 GTK_STOCK_OK,
+								 GTK_RESPONSE_OK,
+								 NULL);
 	gtk_dialog_set_default_response(GTK_DIALOG(connect_private_dlg),
 					GTK_RESPONSE_OK);
 	g_signal_connect(G_OBJECT(connect_private_dlg), "response",
@@ -1499,6 +1505,7 @@ static void connect_private_dialog(G_GNUC_UNUSED GtkWidget * widget,
 	gtk_table_set_row_spacings(GTK_TABLE(table), 3);
 	gtk_table_set_col_spacings(GTK_TABLE(table), 5);
 
+	/* Label */
 	lbl = gtk_label_new(_("Server host"));
 	gtk_widget_show(lbl);
 	gtk_table_attach(GTK_TABLE(table), lbl, 0, 1, 0, 1,
@@ -1512,9 +1519,11 @@ static void connect_private_dialog(G_GNUC_UNUSED GtkWidget * widget,
 			 GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_entry_set_text(GTK_ENTRY(host_entry), connect_server);
 	gtk_widget_set_tooltip_text(host_entry,
+				    /* Tooltip */
 				    _("Name of the host of the game"));
 	connect_set_field(&connect_server, connect_server);
 
+	/* Label */
 	lbl = gtk_label_new(_("Server port"));
 	gtk_widget_show(lbl);
 	gtk_table_attach(GTK_TABLE(table), lbl, 0, 1, 1, 2,
@@ -1531,6 +1540,7 @@ static void connect_private_dialog(G_GNUC_UNUSED GtkWidget * widget,
 	gtk_box_pack_start(GTK_BOX(hbox), port_entry, FALSE, TRUE, 0);
 	gtk_entry_set_text(GTK_ENTRY(port_entry), connect_port);
 	gtk_widget_set_tooltip_text(port_entry,
+				    /* Tooltip */
 				    _("Port of the host of the game"));
 	connect_set_field(&connect_port, connect_port);
 
@@ -1571,8 +1581,10 @@ static void connect_private_dialog(G_GNUC_UNUSED GtkWidget * widget,
 
 	gtk_table_attach(GTK_TABLE(table), host_list, 1, 2, 2, 3,
 			 GTK_FILL, GTK_FILL, 0, 0);
+	/* Tooltip */
 	gtk_widget_set_tooltip_text(host_list, _("Recent games"));
 
+	/* Label */
 	lbl = gtk_label_new(_("Recent games"));
 	gtk_widget_show(lbl);
 	gtk_table_attach(GTK_TABLE(table), lbl, 0, 1, 2, 3,

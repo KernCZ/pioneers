@@ -359,12 +359,14 @@ void player_stole_from(gint player_num, gint victim_num, Resource resource)
 		if (player_num == my_player_num()) {
 			/* We stole a card :-) */
 			log_message(MSG_STEAL,
+				    /* $1=resource, $2=player name */
 				    _("You stole %s from %s.\n"), buf,
 				    player_name(victim_num, FALSE));
 			resource_modify(resource, 1);
 		} else {
 			/* Someone stole our card :-( */
 			log_message(MSG_STEAL,
+				    /* $1=player name, $2=resource */
 				    _("%s stole %s from you.\n"),
 				    player_name(player_num, TRUE), buf);
 			resource_modify(resource, -1);
@@ -405,6 +407,7 @@ void player_domestic_trade(gint player_num, gint partner_num,
 		} else {
 			receive_desc = resource_format_num(receive);
 			log_message(MSG_TRADE,
+				    /* $1=giving player, $2=receiving player, $3=resources */
 				    _("%s gave %s %s for free.\n"),
 				    player_name(player_num, TRUE),
 				    player_name(partner_num, FALSE),
@@ -413,7 +416,9 @@ void player_domestic_trade(gint player_num, gint partner_num,
 		}
 	} else if (!resource_count(receive)) {
 		supply_desc = resource_format_num(supply);
-		log_message(MSG_TRADE, _("%s gave %s %s for free.\n"),
+		log_message(MSG_TRADE,
+			    /* $1=giving player, $2=receiving player, $3=resources */
+			    _("%s gave %s %s for free.\n"),
 			    player_name(partner_num, TRUE),
 			    player_name(player_num, FALSE), supply_desc);
 		g_free(supply_desc);
@@ -540,6 +545,7 @@ void player_build_add(gint player_num,
 
 	case BUILD_NONE:
 		log_message(MSG_ERROR,
+			    /* Error message */
 			    _(""
 			      "player_build_add called with BUILD_NONE for user %s\n"),
 			    player_name(player_num, TRUE));
@@ -630,6 +636,7 @@ void player_build_remove(gint player_num,
 
 	case BUILD_NONE:
 		log_message(MSG_ERROR,
+			    /* Error message */
 			    _(""
 			      "player_build_remove called with BUILD_NONE for user %s\n"),
 			    player_name(player_num, TRUE));

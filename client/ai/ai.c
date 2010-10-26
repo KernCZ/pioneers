@@ -92,8 +92,8 @@ static void ai_init(int argc, char **argv)
 	GOptionContext *context;
 	GError *error = NULL;
 
-	/* Long description in the commandline for pioneersai: help */
 	context =
+	    /* Long description in the commandline for pioneersai: help */
 	    g_option_context_new(_("- Computer player for Pioneers"));
 	g_option_context_add_main_entries(context, commandline_entries,
 					  PACKAGE);

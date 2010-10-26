@@ -181,6 +181,7 @@ GtkWidget *resource_table_new(const gchar * title,
 
 		rt->row[i].hand = resource_asset(i);
 		widget = rt->row[i].less_widget =
+		    /* Button for decreasing the selected amount */
 		    gtk_button_new_with_label(_("<less"));
 		gtk_widget_set_sensitive(widget, FALSE);
 		g_signal_connect(G_OBJECT(widget), "clicked",
@@ -209,6 +210,7 @@ GtkWidget *resource_table_new(const gchar * title,
 						      "Amount in the bank"));
 		}
 		widget = rt->row[i].more_widget =
+		    /* Button for increasing the selected amount */
 		    gtk_button_new_with_label(_("more>"));
 		gtk_widget_set_sensitive(widget, FALSE);
 		g_signal_connect(G_OBJECT(widget), "clicked",

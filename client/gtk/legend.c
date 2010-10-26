@@ -166,6 +166,7 @@ GtkWidget *legend_create_content(void)
 	gtk_container_set_border_width(GTK_CONTAINER(vbox), 6);
 
 	label = gtk_label_new(NULL);
+	/* Label */
 	gtk_label_set_markup(GTK_LABEL(label), _("<b>Terrain yield</b>"));
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 	gtk_widget_show(label);
@@ -198,6 +199,7 @@ GtkWidget *legend_create_content(void)
 	add_legend_terrain(table, 3, 5, SEA_TERRAIN, NO_RESOURCE);
 
 	label = gtk_label_new(NULL);
+	/* Label */
 	gtk_label_set_markup(GTK_LABEL(label), _("<b>Building costs</b>"));
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 	gtk_widget_show(label);
@@ -257,6 +259,7 @@ GtkWidget *legend_create_dlg(void)
 		return legend_dlg;
 	}
 
+	/* Dialog caption */
 	legend_dlg = gtk_dialog_new_with_buttons(_("Legend"),
 						 GTK_WINDOW(app_window),
 						 GTK_DIALOG_DESTROY_WITH_PARENT,

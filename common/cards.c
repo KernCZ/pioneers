@@ -161,9 +161,9 @@ const gchar *get_devel_description(DevelType type)
 			 "that type held by all other players");
 	case DEVEL_YEAR_OF_PLENTY:
 		/* Description of the 'Year of Plenty' development card */
-		return
-		    _("Take two resource cards of any type from the bank "
-		      "(cards may be of the same or different types)");
+		return _("Take two resource cards of any type from the "
+			 "bank (cards may be of the same or different "
+			 "types)");
 	case DEVEL_CHAPEL:
 	case DEVEL_UNIVERSITY:
 	case DEVEL_GOVERNORS_HOUSE:
@@ -173,10 +173,9 @@ const gchar *get_devel_description(DevelType type)
 		return _("One victory point");
 	case DEVEL_SOLDIER:
 		/* Description of the 'Soldier' development card */
-		return
-		    _("Move the robber to a different space and take one "
-		      "resource card from another player adjacent to that "
-		      "space");
+		return _("Move the robber to a different space and take "
+			 "one resource card from another player adjacent "
+			 "to that space");
 	}
 	g_assert_not_reached();
 	return "";

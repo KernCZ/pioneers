@@ -80,6 +80,7 @@ void monopoly_create_dlg(void)
 		return;
 	};
 
+	/* Dialog caption */
 	monop_dlg = gtk_dialog_new_with_buttons(_("Monopoly"),
 						GTK_WINDOW(app_window),
 						GTK_DIALOG_DESTROY_WITH_PARENT,
@@ -100,9 +101,9 @@ void monopoly_create_dlg(void)
 	gtk_box_pack_start(GTK_BOX(dlg_vbox), vbox, FALSE, TRUE, 0);
 	gtk_container_set_border_width(GTK_CONTAINER(vbox), 5);
 
-	lbl =
-	    gtk_label_new(_(""
-			    "Select the resource you wish to monopolize."));
+	/* Label */
+	lbl = gtk_label_new(_("Select the resource you wish to "
+			      "monopolize."));
 	gtk_widget_show(lbl);
 	gtk_box_pack_start(GTK_BOX(vbox), lbl, TRUE, TRUE, 0);
 	gtk_misc_set_alignment(GTK_MISC(lbl), 0, 0.5);

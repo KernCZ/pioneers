@@ -294,17 +294,21 @@ GtkWidget *quote_build_page(void)
 	gtk_widget_show(vbox);
 	gtk_box_pack_start(GTK_BOX(hbox), vbox, FALSE, TRUE, 0);
 
-	want_table =
-	    resource_table_new(_("I want"), RESOURCE_TABLE_MORE_IN_HAND,
-			       FALSE, FALSE);
+	want_table = resource_table_new(
+					       /* Label */
+					       _("I want"),
+					       RESOURCE_TABLE_MORE_IN_HAND,
+					       FALSE, FALSE);
 	gtk_widget_show(want_table);
 	gtk_box_pack_start(GTK_BOX(vbox), want_table, FALSE, TRUE, 0);
 	g_signal_connect(G_OBJECT(want_table), "change",
 			 G_CALLBACK(amount_changed_cb), NULL);
 
-	give_table =
-	    resource_table_new(_("Give them"), RESOURCE_TABLE_LESS_IN_HAND,
-			       FALSE, FALSE);
+	give_table = resource_table_new(
+					       /* Label */
+					       _("Give them"),
+					       RESOURCE_TABLE_LESS_IN_HAND,
+					       FALSE, FALSE);
 	gtk_widget_show(give_table);
 	gtk_box_pack_start(GTK_BOX(vbox), give_table, FALSE, TRUE, 0);
 	g_signal_connect(G_OBJECT(give_table), "change",
@@ -314,11 +318,13 @@ GtkWidget *quote_build_page(void)
 	gtk_widget_show(bbox);
 	gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, TRUE, 0);
 
+	/* Button text */
 	submit_btn = gtk_button_new_with_label(_("Quote"));
 	frontend_gui_register(submit_btn, GUI_QUOTE_SUBMIT, "clicked");
 	gtk_widget_show(submit_btn);
 	gtk_container_add(GTK_CONTAINER(bbox), submit_btn);
 
+	/* Button text */
 	delete_btn = gtk_button_new_with_label(_("Delete"));
 	frontend_gui_register(delete_btn, GUI_QUOTE_DELETE, "clicked");
 	gtk_widget_show(delete_btn);
@@ -343,6 +349,7 @@ GtkWidget *quote_build_page(void)
 	gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox),
 				  GTK_BUTTONBOX_SPREAD);
 
+	/* Button text */
 	reject_btn = gtk_button_new_with_label(_("Reject Domestic Trade"));
 	frontend_gui_register(reject_btn, GUI_QUOTE_REJECT, "clicked");
 	gtk_widget_show(reject_btn);

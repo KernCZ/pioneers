@@ -167,20 +167,20 @@ void monopoly_player(gint player_num, gint victim_num, gint num,
 
 	buf = resource_cards(num, type);
 	if (player_num == my_player_num()) {
-		/* I get the cards!
-		 */
+		/* I get the cards */
+		/* $1=resources, $2=player that loses resources */
 		log_message(MSG_STEAL, _("You get %s from %s.\n"),
 			    buf, player_name(victim_num, FALSE));
 		resource_modify(type, num);
 	} else if (victim_num == my_player_num()) {
-		/* I lose the cards!
-		 */
+		/* I lose the cards */
+		/* $1=player that steals, $2=resources */
 		log_message(MSG_STEAL, _("%s took %s from you.\n"),
 			    player_name(player_num, TRUE), buf);
 		resource_modify(type, -num);
 	} else {
-		/* I am a bystander
-		 */
+		/* I'm a bystander */
+		/* $1=player that steals, $2=resources, $3=player that loses resources */
 		tmp = g_strdup(player_name(player_num, TRUE));
 		log_message(MSG_STEAL, _("%s took %s from %s.\n"),
 			    tmp, buf, player_name(victim_num, FALSE));

@@ -69,6 +69,7 @@ GtkWidget *chat_build_panel(void)
 	gtk_widget_show(hbox);
 
 	label = gtk_label_new(NULL);
+	/* Label text */
 	gtk_label_set_markup(GTK_LABEL(label), _("<b>Chat</b>"));
 	gtk_widget_show(label);
 	gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, FALSE, 0);

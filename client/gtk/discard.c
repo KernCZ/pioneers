@@ -73,11 +73,16 @@ static GtkWidget *discard_create_dlg(gint num)
 	GtkWidget *vbox;
 	gchar *text;
 
-	discard.dlg = gtk_dialog_new_with_buttons(_("Discard Resources"),
-						  GTK_WINDOW(app_window),
-						  GTK_DIALOG_DESTROY_WITH_PARENT,
-						  GTK_STOCK_OK,
-						  GTK_RESPONSE_OK, NULL);
+	discard.dlg = gtk_dialog_new_with_buttons(
+							 /* Dialog caption */
+							 _(""
+							   "Discard Resources"),
+							 GTK_WINDOW
+							 (app_window),
+							 GTK_DIALOG_DESTROY_WITH_PARENT,
+							 GTK_STOCK_OK,
+							 GTK_RESPONSE_OK,
+							 NULL);
 	g_signal_connect(G_OBJECT(discard.dlg), "destroy",
 			 G_CALLBACK(gtk_widget_destroyed), &discard.dlg);
 	gtk_widget_realize(discard.dlg);
@@ -101,6 +106,7 @@ static GtkWidget *discard_create_dlg(gint num)
 			       TRUE);
 	g_free(text);
 	resource_table_set_total(RESOURCETABLE(discard.resource_widget),
+				 /* Label */
 				 _("Total discards"), num);
 	gtk_widget_show(discard.resource_widget);
 	gtk_box_pack_start(GTK_BOX(vbox), discard.resource_widget, FALSE,

@@ -127,11 +127,11 @@ void avahibrowser_add(AvahiBrowser * ab, const char *service_name,
 					      &iter);
 	}
 
-	/* Note to translators: these are the arguments
-	   1: Game title, 2: version, 3: host_name, 4: port */
-	gchar *nice_text =
-	    g_strdup_printf(_("%s (%s) on %s:%s"), title, version,
-			    host_name, port);
+	gchar *nice_text = g_strdup_printf(
+						  /* $1=Game title, $2=version, $3=host_name, $4=port */
+						  _("%s (%s) on %s:%s"),
+						  title, version,
+						  host_name, port);
 	gtk_list_store_set(ab->data, &iter, 0, service_name, 1,
 			   resolved_hostname, 2, host_name, 3, port, 4,
 			   version, 5, title, 6, nice_text, -1);

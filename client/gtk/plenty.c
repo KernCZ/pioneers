@@ -56,11 +56,16 @@ void plenty_create_dlg(const gint * bank)
 	gint r;
 	gint total;
 
-	plenty.dlg = gtk_dialog_new_with_buttons(_("Year of Plenty"),
-						 GTK_WINDOW(app_window),
-						 GTK_DIALOG_DESTROY_WITH_PARENT,
-						 GTK_STOCK_OK,
-						 GTK_RESPONSE_OK, NULL);
+	plenty.dlg = gtk_dialog_new_with_buttons(
+							/* Dialog caption */
+							_(""
+							  "Year of Plenty"),
+							GTK_WINDOW
+							(app_window),
+							GTK_DIALOG_DESTROY_WITH_PARENT,
+							GTK_STOCK_OK,
+							GTK_RESPONSE_OK,
+							NULL);
 	g_signal_connect(GTK_OBJECT(plenty.dlg), "destroy",
 			 G_CALLBACK(gtk_widget_destroyed), &plenty.dlg);
 	gtk_widget_realize(plenty.dlg);

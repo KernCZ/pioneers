@@ -151,13 +151,18 @@ void name_create_dlg(void)
 		return;
 	};
 
-	name_dialog.dlg =
-	    gtk_dialog_new_with_buttons(_("Change Player Name"),
-					GTK_WINDOW(app_window),
-					GTK_DIALOG_DESTROY_WITH_PARENT,
-					GTK_STOCK_CANCEL,
-					GTK_RESPONSE_CANCEL, GTK_STOCK_OK,
-					GTK_RESPONSE_OK, NULL);
+	name_dialog.dlg = gtk_dialog_new_with_buttons(
+							     /* Dialog caption */
+							     _(""
+							       "Change Player Name"),
+							     GTK_WINDOW
+							     (app_window),
+							     GTK_DIALOG_DESTROY_WITH_PARENT,
+							     GTK_STOCK_CANCEL,
+							     GTK_RESPONSE_CANCEL,
+							     GTK_STOCK_OK,
+							     GTK_RESPONSE_OK,
+							     NULL);
 	gtk_dialog_set_default_response(GTK_DIALOG(name_dialog.dlg),
 					GTK_RESPONSE_OK);
 	g_signal_connect(G_OBJECT(name_dialog.dlg), "destroy",
@@ -175,6 +180,7 @@ void name_create_dlg(void)
 	gtk_box_pack_start(GTK_BOX(dlg_vbox), hbox, FALSE, TRUE, 0);
 	gtk_container_set_border_width(GTK_CONTAINER(hbox), 5);
 
+	/* Label */
 	lbl = gtk_label_new(_("Player name:"));
 	gtk_widget_show(lbl);
 	gtk_box_pack_start(GTK_BOX(hbox), lbl, FALSE, TRUE, 0);
@@ -234,7 +240,7 @@ void name_create_dlg(void)
 	gtk_container_set_border_width(GTK_CONTAINER
 				       (name_dialog.style_hbox), 5);
 
-	/* Set icon preferences */
+	/* Label: set player icon preferences */
 	lbl = gtk_label_new(_("Face:"));
 	gtk_widget_show(lbl);
 	gtk_box_pack_start(GTK_BOX(name_dialog.style_hbox), lbl, FALSE,
@@ -250,6 +256,7 @@ void name_create_dlg(void)
 	g_signal_connect(name_dialog.color_btn1, "color-set",
 			 G_CALLBACK(change_style_cb), &name_dialog);
 
+	/* Label: set player icon preferences */
 	lbl = gtk_label_new(_("Variant:"));
 	gtk_widget_show(lbl);
 	gtk_box_pack_start(GTK_BOX(name_dialog.style_hbox), lbl, FALSE,

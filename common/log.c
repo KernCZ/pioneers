@@ -51,71 +51,93 @@ void log_message_string_console(gint msg_type, const gchar * text)
 
 	switch (msg_type) {
 	case MSG_ERROR:
+		/* Log prefix */
 		prefix = _("*ERROR* ");
 		break;
 	case MSG_INFO:
+		/* Log prefix for info message */
 		prefix = "- ";
 		break;
 	case MSG_CHAT:
+		/* Log prefix */
 		prefix = _("Chat: ");
 		break;
 	case MSG_RESOURCE:
+		/* Log prefix */
 		prefix = _("Resource: ");
 		break;
 	case MSG_BUILD:
+		/* Log prefix */
 		prefix = _("Build: ");
 		break;
 	case MSG_DICE:
+		/* Log prefix */
 		prefix = _("Dice: ");
 		break;
 	case MSG_STEAL:
+		/* Log prefix */
 		prefix = _("Steal: ");
 		break;
 	case MSG_TRADE:
+		/* Log prefix */
 		prefix = _("Trade: ");
 		break;
 	case MSG_DEVCARD:
+		/* Log prefix */
 		prefix = _("Development: ");
 		break;
 	case MSG_LARGESTARMY:
+		/* Log prefix */
 		prefix = _("Army: ");
 		break;
 	case MSG_LONGESTROAD:
+		/* Log prefix */
 		prefix = _("Road: ");
 		break;
 	case MSG_BEEP:
+		/* Log prefix */
 		prefix = _("*BEEP* ");
 		break;
 	case MSG_TIMESTAMP:
 		break;		/* No prefix */
 	case MSG_PLAYER1:
+		/* Log prefix */
 		prefix = _("Player 1: ");
 		break;
 	case MSG_PLAYER2:
+		/* Log prefix */
 		prefix = _("Player 2: ");
 		break;
 	case MSG_PLAYER3:
+		/* Log prefix */
 		prefix = _("Player 3: ");
 		break;
 	case MSG_PLAYER4:
+		/* Log prefix */
 		prefix = _("Player 4: ");
 		break;
 	case MSG_PLAYER5:
+		/* Log prefix */
 		prefix = _("Player 5: ");
 		break;
 	case MSG_PLAYER6:
+		/* Log prefix */
 		prefix = _("Player 6: ");
 		break;
 	case MSG_PLAYER7:
+		/* Log prefix */
 		prefix = _("Player 7: ");
 		break;
 	case MSG_PLAYER8:
+		/* Log prefix */
 		prefix = _("Player 8: ");
 		break;
 	case MSG_VIEWER_CHAT:
+		/* Log prefix */
 		prefix = _("Viewer: ");
 		break;
 	default:
+		/* Log prefix */
 		prefix = _("** UNKNOWN MESSAGE TYPE ** ");
 	}
 

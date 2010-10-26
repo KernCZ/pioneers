@@ -249,6 +249,7 @@ GtkWidget *histogram_create_dlg(void)
 		return histogram_dlg;
 	}
 
+	/* Dialog caption */
 	histogram_dlg = gtk_dialog_new_with_buttons(_("Dice Histogram"),
 						    GTK_WINDOW(app_window),
 						    GTK_DIALOG_DESTROY_WITH_PARENT,

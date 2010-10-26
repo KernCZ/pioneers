@@ -125,8 +125,8 @@ GtkWidget *develop_build_page(void)
 	gtk_box_pack_start(GTK_BOX(vbox), alignment, FALSE, FALSE, 0);
 
 	label = gtk_label_new(NULL);
-	/* Caption for list of bought development cards */
 	gtk_label_set_markup(GTK_LABEL(label),
+			     /* Caption for list of bought development cards */
 			     _("<b>Development cards</b>"));
 	gtk_widget_show(label);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);

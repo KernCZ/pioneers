@@ -62,6 +62,7 @@ static void game_rules_init(GameRules * gr)
 
 	row = 0;
 
+	/* Label */
 	label = gtk_label_new(_("Sevens rule"));
 	gtk_widget_show(label);
 	gtk_table_attach(GTK_TABLE(gr), label, 0, 1, row, row + 1,

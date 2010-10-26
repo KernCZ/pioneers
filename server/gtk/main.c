@@ -733,10 +733,16 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(random_toggle),
 				     random_order);
 
-	label_with_close_button =
-	    create_label_with_close_button(_("Running game"),
-					   _("Stop the server"),
-					   &stop_game_button_on_tab);
+	label_with_close_button = create_label_with_close_button(
+									/* Tab name */
+									_
+									(""
+									 "Running game"),
+									/* Tab tooltip */
+									_
+									(""
+									 "Stop the server"),
+									&stop_game_button_on_tab);
 	g_signal_connect(G_OBJECT(stop_game_button_on_tab), "clicked",
 			 G_CALLBACK(start_clicked_cb), NULL);
 
@@ -744,6 +750,7 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 	gtk_notebook_append_page(GTK_NOTEBOOK(settings_notebook),
 				 vbox_settings, label_with_close_button);
 
+	/* Caption */
 	frame = gtk_frame_new(_("Players connected"));
 	gtk_widget_show(frame);
 	gtk_box_pack_start(GTK_BOX(vbox_settings), frame, TRUE, TRUE, 0);
@@ -776,6 +783,7 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 	/* gtk_tree_view_set_rules_hint(GTK_TREE_VIEW(label), TRUE); */
 	gtk_container_add(GTK_CONTAINER(scroll_win), label);
 	gtk_widget_set_tooltip_text(label,
+				    /* Tooltip for server connection overview */
 				    _(""
 				      "Shows all players and viewers connected to the server"));
 
@@ -788,6 +796,7 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 						     NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(label), column);
 	gtk_widget_set_tooltip_text(column->button,
+				    /* Tooltip for column Connected */
 				    _(""
 				      "Is the player currently connected?"));
 	column =
@@ -798,6 +807,7 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 						     NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(label), column);
 	gtk_widget_set_tooltip_text(column->button,
+				    /* Tooltip for column Name */
 				    _("Name of the player"));
 	column =
 	    gtk_tree_view_column_new_with_attributes(_("Location"),
@@ -807,6 +817,7 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 						     NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(label), column);
 	gtk_widget_set_tooltip_text(column->button,
+				    /* Tooltip for column Location */
 				    _("Host name of the player"));
 
 	renderer = gtk_cell_renderer_text_new();
@@ -817,6 +828,7 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 						     NULL);
 	g_object_set(renderer, "xalign", 1.0f, NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(label), column);
+	/* Tooltip for colum Number */
 	gtk_widget_set_tooltip_text(column->button, _("Player number"));
 
 	renderer = gtk_cell_renderer_text_new();
@@ -824,6 +836,7 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 	    gtk_tree_view_column_new_with_attributes(_("Role"), renderer,
 						     NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(label), column);
+	/* Tooltip for column Role */
 	gtk_widget_set_tooltip_text(column->button, _("Player or viewer"));
 
 	gtk_tree_view_column_set_cell_data_func(column, renderer,
@@ -834,16 +847,20 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 
 	gtk_widget_show(label);
 
-	launchclient_btn =
-	    gtk_button_new_with_label(_("Launch Pioneers Client"));
+	launchclient_btn = gtk_button_new_with_label(
+							    /* Button text */
+							    _(""
+							      "Launch Pioneers Client"));
 	gtk_widget_show(launchclient_btn);
 	gtk_box_pack_start(GTK_BOX(vbox_connected), launchclient_btn,
 			   FALSE, FALSE, 0);
 	g_signal_connect(G_OBJECT(launchclient_btn), "clicked",
 			 G_CALLBACK(launchclient_clicked_cb), NULL);
 	gtk_widget_set_tooltip_text(launchclient_btn,
+				    /* Tooltip */
 				    _("Launch the Pioneers client"));
 
+	/* Caption */
 	ai_frame = gtk_frame_new(_("Computer players"));
 	gtk_widget_show(ai_frame);
 	gtk_box_pack_start(GTK_BOX(vbox_settings), ai_frame, FALSE, FALSE,
@@ -853,26 +870,31 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 	gtk_container_set_border_width(GTK_CONTAINER(vbox_ai), 5);
 	gtk_container_add(GTK_CONTAINER(ai_frame), vbox_ai);
 
+	/* Label */
 	chat_toggle = gtk_check_button_new_with_label(_("Enable chat"));
 	gtk_widget_show(chat_toggle);
 	gtk_box_pack_start(GTK_BOX(vbox_ai), chat_toggle, TRUE, TRUE, 0);
 	g_signal_connect(G_OBJECT(chat_toggle), "toggled",
 			 G_CALLBACK(chat_toggle_cb), NULL);
 	gtk_widget_set_tooltip_text(chat_toggle,
+				    /* Tooltip */
 				    _("Enable chat messages"));
 
 	want_ai_chat = config_get_int_with_default("ai/enable-chat", TRUE);
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(chat_toggle),
 				     want_ai_chat);
 
-	addcomputer_btn =
-	    gtk_button_new_with_label(_("Add Computer Player"));
+	addcomputer_btn = gtk_button_new_with_label(
+							   /* Button text */
+							   _(""
+							     "Add Computer Player"));
 	gtk_widget_show(addcomputer_btn);
 	gtk_box_pack_start(GTK_BOX(vbox_ai), addcomputer_btn, FALSE, FALSE,
 			   0);
 	g_signal_connect(G_OBJECT(addcomputer_btn), "clicked",
 			 G_CALLBACK(addcomputer_clicked_cb), NULL);
 	gtk_widget_set_tooltip_text(addcomputer_btn,
+				    /* Tooltip */
 				    _(""
 				      "Add a computer player to the game"));
 
@@ -883,6 +905,7 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 	g_signal_connect(G_OBJECT(start_btn), "clicked",
 			 G_CALLBACK(start_clicked_cb), NULL);
 
+	/* Caption */
 	frame = gtk_frame_new(_("Messages"));
 	gtk_widget_show(frame);
 	gtk_box_pack_start(GTK_BOX(vbox), frame, TRUE, TRUE, 0);
@@ -901,6 +924,7 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 	gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(message_text),
 				    GTK_WRAP_WORD);
 	gtk_widget_set_tooltip_text(message_text,
+				    /* Tooltip */
 				    _("Messages from the server"));
 	message_window_set_text(message_text);
 
@@ -952,6 +976,7 @@ static void help_about_cb(void)
 	const gchar *authors[] = {
 		AUTHORLIST
 	};
+	/* Dialog caption of about box */
 	aboutbox_display(_("The Pioneers Game Server"), authors);
 }
 
@@ -1057,6 +1082,7 @@ int main(int argc, char *argv[])
 	error = NULL;
 	if (!gtk_ui_manager_add_ui_from_string
 	    (ui_manager, ui_description, -1, &error)) {
+		/* Error message */
 		g_message(_("Building menus failed: %s"), error->message);
 		g_error_free(error);
 		return 1;

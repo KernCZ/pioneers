@@ -1181,7 +1181,9 @@ static void help_about_cb(void)
 	const gchar *authors[] = {
 		AUTHORLIST
 	};
-	aboutbox_display(_("The Pioneers Game"), authors);
+	aboutbox_display(
+				/* Caption of about box */
+				_("About Pioneers"), authors);
 }
 
 static void game_legend_cb(void)

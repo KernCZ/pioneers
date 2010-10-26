@@ -128,6 +128,7 @@ static GtkWidget *settings_create_content(void)
 
 	label = gtk_label_new(NULL);
 	gtk_label_set_markup(GTK_LABEL(label),
+			     /* Label */
 			     _("<b>General settings</b>"));
 	gtk_widget_show(label);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
@@ -153,21 +154,21 @@ static GtkWidget *settings_create_content(void)
 	add_setting_val(table, row, 1, TYPE_NUM,
 			game_params->victory_points, NULL, FALSE);
 	row++;
-	add_setting_desc(table, row, 0, _("Random terrain?"));
+	add_setting_desc(table, row, 0, _("Random terrain:"));
 	add_setting_val(table, row, 1, TYPE_BOOL,
 			game_params->random_terrain, NULL, FALSE);
 	row++;
-	add_setting_desc(table, row, 0, _("Interplayer trading allowed?"));
+	add_setting_desc(table, row, 0, _("Allow trade between players:"));
 	add_setting_val(table, row, 1, TYPE_BOOL,
 			game_params->domestic_trade, NULL, FALSE);
 	row++;
 	add_setting_desc(table, row, 0,
-			 _("Trading allowed only before build/buy?"));
+			 _("Allow trade only before building or buying:"));
 	add_setting_val(table, row, 1, TYPE_BOOL,
 			game_params->strict_trade, NULL, FALSE);
 	row++;
 	add_setting_desc(table, row, 0,
-			 _("Check victory only at end of turn?"));
+			 _("Check victory only at end of turn:"));
 	add_setting_val(table, row, 1, TYPE_BOOL,
 			game_params->check_victory_at_end_of_turn, NULL,
 			FALSE);
@@ -191,7 +192,8 @@ static GtkWidget *settings_create_content(void)
 	g_free(sevens_desc);
 
 	row++;
-	add_setting_desc(table, row, 0, _("Use pirate:"));
+	add_setting_desc(table, row, 0,
+			 _("Use the pirate to block ships:"));
 	add_setting_val(table, row, 1, TYPE_BOOL, game_params->use_pirate,
 			NULL, FALSE);
 
@@ -236,6 +238,7 @@ static GtkWidget *settings_create_content(void)
 
 	label = gtk_label_new(NULL);
 	gtk_label_set_markup(GTK_LABEL(label),
+			     /* Label */
 			     _("<b>Building quotas</b>"));
 	gtk_widget_show(label);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
@@ -295,6 +298,7 @@ static GtkWidget *settings_create_content(void)
 
 	label = gtk_label_new(NULL);
 	gtk_label_set_markup(GTK_LABEL(label),
+			     /* Label */
 			     _("<b>Development card deck</b>"));
 	gtk_widget_show(label);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
@@ -379,12 +383,16 @@ GtkWidget *settings_create_dlg(void)
 	if (settings_dlg != NULL)
 		return settings_dlg;
 
-	settings_dlg =
-	    gtk_dialog_new_with_buttons(_("Current Game Settings"),
-					GTK_WINDOW(app_window),
-					GTK_DIALOG_DESTROY_WITH_PARENT,
-					GTK_STOCK_CLOSE,
-					GTK_RESPONSE_CLOSE, NULL);
+	settings_dlg = gtk_dialog_new_with_buttons(
+							  /* Dialog caption */
+							  _(""
+							    "Current Game Settings"),
+							  GTK_WINDOW
+							  (app_window),
+							  GTK_DIALOG_DESTROY_WITH_PARENT,
+							  GTK_STOCK_CLOSE,
+							  GTK_RESPONSE_CLOSE,
+							  NULL);
 	g_signal_connect(GTK_OBJECT(settings_dlg), "destroy",
 			 G_CALLBACK(gtk_widget_destroyed), &settings_dlg);
 

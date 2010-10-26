@@ -68,11 +68,16 @@ void gold_choose_player_must(gint num, const gint * bank)
 	GtkWidget *vbox;
 	gchar *text;
 
-	gold.dlg = gtk_dialog_new_with_buttons(_("Choose Resources"),
-					       GTK_WINDOW(app_window),
-					       GTK_DIALOG_DESTROY_WITH_PARENT,
-					       GTK_STOCK_OK,
-					       GTK_RESPONSE_OK, NULL);
+	gold.dlg = gtk_dialog_new_with_buttons(
+						      /* Dialog caption */
+						      _(""
+							"Choose Resources"),
+						      GTK_WINDOW
+						      (app_window),
+						      GTK_DIALOG_DESTROY_WITH_PARENT,
+						      GTK_STOCK_OK,
+						      GTK_RESPONSE_OK,
+						      NULL);
 	g_signal_connect(G_OBJECT(gold.dlg), "destroy",
 			 G_CALLBACK(gtk_widget_destroyed), &gold.dlg);
 	gtk_widget_realize(gold.dlg);
@@ -207,8 +212,8 @@ GtkWidget *gold_build_page(void)
 	gtk_box_pack_start(GTK_BOX(vbox), alignment, FALSE, FALSE, 0);
 
 	label = gtk_label_new(NULL);
-	/* Caption for list of player that must choose gold */
 	gtk_label_set_markup(GTK_LABEL(label),
+			     /* Caption for list of player that must choose gold */
 			     _("<b>Waiting for players to choose</b>"));
 	gtk_widget_show(label);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
