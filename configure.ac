@@ -305,7 +305,11 @@ AC_FUNC_FORK
 AC_FUNC_SELECT_ARGTYPES
 
 # Mathematics
-AC_CHECK_FUNCS([rint sqrt])
+AC_CHECK_FUNC(rint,
+	AC_DEFINE(HAVE_RINT, 1, [Define to 1 if you have the rint function.]),
+	AC_CHECK_LIB(m, rint, 
+		[ AC_DEFINE(HAVE_RINT) LIBS="$LIBS -lm"]))
+AC_CHECK_FUNCS([sqrt])
 # String functions
 AC_CHECK_FUNCS([strchr strspn strstr strcspn])
 AC_CHECK_FUNCS([memmove memset])

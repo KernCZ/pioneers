@@ -1,3 +1,6 @@
+2010-10-26  Roland Clobus <rclobus@rclobus.nl>
+	* configure.ac: Add -lm when needed (rint, sqrt).
+
 2010-10-25  Roland Clobus <rclobus@rclobus.nl>
 	* admin-scripts: Added various scripts to automate the meta-server.
 	* getVersions.sh, kill-game.sh: Moved to admin-scripts.
