@@ -6,11 +6,11 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Pioneers 0.12.3\n"
+"Project-Id-Version: Pioneers 0.12.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-10-26 17:42+0200\n"
-"PO-Revision-Date: 2010-01-03 06:28+0000\n"
-"Last-Translator: Philipp Kleinhenz <Unknown>\n"
+"PO-Revision-Date: 2010-10-26 18:58+0100\n"
+"Last-Translator: Roland Clobus <rclobus@rclobus.nl>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "Language: en_GB\n"
 "MIME-Version: 1.0\n"
@@ -18,6 +18,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Launchpad-Export-Date: 2010-03-11 19:44+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
+"Plural-Forms: nplurals=2; plural=(n!=1)\n"
+"X-Poedit-Language: English\n"
+"X-Poedit-Country: UNITED KINGDOM\n"
 
 #. Commandline pioneersai: server
 #: ../client/ai/ai.c:65
@@ -419,10 +422,8 @@ msgid "Loading"
 msgstr "Loading"
 
 #: ../client/common/client.c:963
-#, fuzzy
-#| msgid "Version mismatch"
 msgid "Version mismatch."
-msgstr "Version mismatch"
+msgstr "Version mismatch."
 
 #: ../client/common/client.c:965
 msgid "Version mismatch. Please make sure client and server are up to date.\n"
@@ -453,10 +454,8 @@ msgid " or"
 msgstr " or"
 
 #: ../client/common/client.c:1490
-#, fuzzy
-#| msgid "Waiting for your turn"
 msgid "Waiting for your turn."
-msgstr "Waiting for your turn"
+msgstr "Waiting for your turn."
 
 #: ../client/common/client.c:1542 ../client/gtk/interface.c:753
 msgid "Select the building to steal from."
@@ -467,10 +466,8 @@ msgid "Select the ship to steal from."
 msgstr "Select the ship to steal from."
 
 #: ../client/common/client.c:1649 ../client/gtk/interface.c:785
-#, fuzzy
-#| msgid "Place the robber"
 msgid "Place the robber."
-msgstr "Place the robber"
+msgstr "Place the robber."
 
 #: ../client/common/client.c:1699
 msgid "Finish the road building action."
@@ -583,10 +580,9 @@ msgid "Player %d is now %s.\n"
 msgstr "Player %d is now %s.\n"
 
 #: ../client/common/player.c:267
-#, fuzzy, c-format
-#| msgid "%s has quit\n"
+#, c-format
 msgid "%s has quit.\n"
-msgstr "%s has quit\n"
+msgstr "%s has quit.\n"
 
 #: ../client/common/player.c:276
 msgid "There is no largest army.\n"
@@ -931,13 +927,13 @@ msgstr "Begin turn %d for %s.\n"
 
 #: ../client/gtk/avahi-browser.c:83
 msgid "Select an automatically discovered game"
-msgstr ""
+msgstr "Select an automatically discovered game"
 
 #. $1=Game title, $2=version, $3=host_name, $4=port
 #: ../client/gtk/avahi-browser.c:132
 #, c-format
 msgid "%s (%s) on %s:%s"
-msgstr ""
+msgstr "%s (%s) on %s:%s"
 
 #. Label text
 #: ../client/gtk/chat.c:73
@@ -1056,17 +1052,13 @@ msgstr ""
 
 #. Label
 #: ../client/gtk/connect.c:712
-#, fuzzy
-#| msgid "Type of computer player"
 msgid "Number of computer players"
-msgstr "Type of computer player"
+msgstr "Number of computer players"
 
 #. Tooltip
 #: ../client/gtk/connect.c:732
-#, fuzzy
-#| msgid "The number of players"
 msgid "The number of computer players"
-msgstr "The number of players"
+msgstr "The number of computer players"
 
 #: ../client/gtk/connect.c:753
 msgid "Requesting new game server\n"
@@ -1079,24 +1071,18 @@ msgstr "Error starting %s: %s"
 
 #. Dialog caption
 #: ../client/gtk/connect.c:818
-#, fuzzy
-#| msgid "Create a public game"
 msgid "Create a Public Game"
-msgstr "Create a public game"
+msgstr "Create a Public Game"
 
 #. Dialog caption
 #: ../client/gtk/connect.c:941
-#, fuzzy
-#| msgid "Join a public game"
 msgid "Join a Public Game"
-msgstr "Join a public game"
+msgstr "Join a Public Game"
 
 #. Button text
 #: ../client/gtk/connect.c:947
-#, fuzzy
-#| msgid "_New remote game"
 msgid "_New Remote Game"
-msgstr "_New remote game"
+msgstr "_New Remote Game"
 
 #. Tooltip
 #: ../client/gtk/connect.c:961
@@ -1216,10 +1202,8 @@ msgstr "Version of the host"
 
 #. Dialog caption
 #: ../client/gtk/connect.c:1215
-#, fuzzy
-#| msgid "Start a new game"
 msgid "Start a New Game"
-msgstr "Start a new game"
+msgstr "Start a New Game"
 
 #. Label
 #. Commandline option of client: name of the player
@@ -1240,39 +1224,33 @@ msgstr "Viewer"
 
 #. Tooltip for checkbox Viewer
 #: ../client/gtk/connect.c:1272
-#, fuzzy
-#| msgid "Do you want to be a viewer?"
 msgid "Check if you want to be a viewer"
-msgstr "Do you want to be a viewer?"
+msgstr "Check if you want to be a viewer"
 
 #. Label
 #: ../client/gtk/connect.c:1283
 msgid "Avahi"
-msgstr ""
+msgstr "Avahi"
 
 #. Button
 #: ../client/gtk/connect.c:1290
 msgid "Join"
-msgstr ""
+msgstr "Join"
 
 #. Tooltip for button Join
 #: ../client/gtk/connect.c:1294
 msgid "Join an automatically discovered game"
-msgstr ""
+msgstr "Join an automatically discovered game"
 
 #. Label
 #: ../client/gtk/connect.c:1321 ../server/gtk/main.c:660
-#, fuzzy
-#| msgid "Meta Server"
 msgid "Meta server"
-msgstr "Meta Server"
+msgstr "Meta server"
 
 #. Button
 #: ../client/gtk/connect.c:1343
-#, fuzzy
-#| msgid "Join public game"
 msgid "Join Public Game"
-msgstr "Join public game"
+msgstr "Join Public Game"
 
 #. Tooltip
 #: ../client/gtk/connect.c:1349
@@ -1281,10 +1259,8 @@ msgstr "Join a public game"
 
 #. Button
 #: ../client/gtk/connect.c:1354
-#, fuzzy
-#| msgid "Create game"
 msgid "Create Game"
-msgstr "Create game"
+msgstr "Create Game"
 
 #. Tooltip
 #: ../client/gtk/connect.c:1358
@@ -1293,10 +1269,8 @@ msgstr "Create a game"
 
 #. Button
 #: ../client/gtk/connect.c:1369
-#, fuzzy
-#| msgid "Join private game"
 msgid "Join Private Game"
-msgstr "Join private game"
+msgstr "Join Private Game"
 
 #. Tooltip
 #. Dialog caption
@@ -1307,10 +1281,8 @@ msgstr "Join a private game"
 #. Label
 #. Commandline option of client: hostname of the server
 #: ../client/gtk/connect.c:1552 ../client/gtk/offline.c:50
-#, fuzzy
-#| msgid "Server Host"
 msgid "Server host"
-msgstr "Server Host"
+msgstr "Server host"
 
 #. Tooltip
 #: ../client/gtk/connect.c:1566
@@ -1321,10 +1293,8 @@ msgstr "Name of the host of the game"
 #. Commandline option of client: port of the server
 #: ../client/gtk/connect.c:1570 ../client/gtk/offline.c:53
 #: ../server/gtk/main.c:632
-#, fuzzy
-#| msgid "Server Port"
 msgid "Server port"
-msgstr "Server Port"
+msgstr "Server port"
 
 #. Tooltip
 #: ../client/gtk/connect.c:1587
@@ -1339,10 +1309,8 @@ msgstr "Recent games"
 
 #. Caption for list of bought development cards
 #: ../client/gtk/develop.c:130
-#, fuzzy
-#| msgid "<b>Development Cards</b>"
 msgid "<b>Development cards</b>"
-msgstr "<b>Development Cards</b>"
+msgstr "<b>Development cards</b>"
 
 #. Button text: play development card
 #: ../client/gtk/develop.c:163
@@ -1351,17 +1319,14 @@ msgstr "Play Card"
 
 #. Dialog caption
 #: ../client/gtk/discard.c:78
-#, fuzzy
-#| msgid "Discard resources"
 msgid "Discard Resources"
-msgstr "Discard resources"
+msgstr "Discard Resources"
 
 #: ../client/gtk/discard.c:101
-#, fuzzy, c-format
-#| msgid "You must discard %d resources"
+#, c-format
 msgid "You must discard %d resource"
 msgid_plural "You must discard %d resources"
-msgstr[0] "You must discard %d resources"
+msgstr[0] "You must discard %d resource"
 msgstr[1] "You must discard %d resources"
 
 #. Label
@@ -1376,10 +1341,8 @@ msgstr "<b>Waiting for players to discard</b>"
 
 #. Dialog caption
 #: ../client/gtk/gameover.c:34
-#, fuzzy
-#| msgid "Game over"
 msgid "Game Over"
-msgstr "Game over"
+msgstr "Game Over"
 
 #: ../client/gtk/gameover.c:51
 #, c-format
@@ -1393,17 +1356,14 @@ msgstr "All praise %s, Lord of the known world!"
 
 #. Dialog caption
 #: ../client/gtk/gold.c:73
-#, fuzzy
-#| msgid "Choose resources"
 msgid "Choose Resources"
-msgstr "Choose resources"
+msgstr "Choose Resources"
 
 #: ../client/gtk/gold.c:96
-#, fuzzy, c-format
-#| msgid "You may choose %d resources"
+#, c-format
 msgid "You may choose %d resource"
 msgid_plural "You may choose %d resources"
-msgstr[0] "You may choose %d resources"
+msgstr[0] "You may choose %d resource"
 msgstr[1] "You may choose %d resources"
 
 #. Text for total in choose gold dialog
@@ -1424,10 +1384,8 @@ msgstr "_Game"
 
 #. Menu entry
 #: ../client/gtk/gui.c:220
-#, fuzzy
-#| msgid "_New game"
 msgid "_New Game"
-msgstr "_New game"
+msgstr "_New Game"
 
 #. Tooltip for New Game menu entry
 #: ../client/gtk/gui.c:222
@@ -1436,10 +1394,8 @@ msgstr "Start a new game"
 
 #. Menu entry
 #: ../client/gtk/gui.c:225
-#, fuzzy
-#| msgid "_Leave game"
 msgid "_Leave Game"
-msgstr "_Leave game"
+msgstr "_Leave Game"
 
 #. Tooltip for Leave Game menu entry
 #: ../client/gtk/gui.c:227
@@ -1458,10 +1414,8 @@ msgstr "Administer Pioneers server"
 
 #. Menu entry
 #: ../client/gtk/gui.c:237
-#, fuzzy
-#| msgid "Player Name"
 msgid "_Player Name"
-msgstr "Player Name"
+msgstr "_Player Name"
 
 #. Tooltip for Player Name menu entry
 #: ../client/gtk/gui.c:239
@@ -1677,10 +1631,9 @@ msgstr "Show or hide the toolbar"
 
 #. Victory points target in statusbar
 #: ../client/gtk/gui.c:453
-#, fuzzy, c-format
-#| msgid "Points Needed to Win: %i"
+#, c-format
 msgid "Points needed to win: %i"
-msgstr "Points Needed to Win: %i"
+msgstr "Points needed to win: %i"
 
 #: ../client/gtk/gui.c:539
 msgid "<b>Messages</b>"
@@ -1693,10 +1646,8 @@ msgstr "Map"
 
 #. Tooltip
 #: ../client/gtk/gui.c:675
-#, fuzzy
-#| msgid "_Finish Trading"
 msgid "Finish trading"
-msgstr "_Finish Trading"
+msgstr "Finish trading"
 
 #. Tab page name
 #. Button text
@@ -1706,10 +1657,8 @@ msgstr "Quote"
 
 #. Tooltip
 #: ../client/gtk/gui.c:687
-#, fuzzy
-#| msgid "Reject Domestic Trade"
 msgid "Reject domestic trade"
-msgstr "Reject Domestic Trade"
+msgstr "Reject domestic trade"
 
 #. Tab page name
 #. Dialog caption
@@ -1819,10 +1768,8 @@ msgstr "Use a 16:9 friendly layout for the window"
 
 #. Caption of about box
 #: ../client/gtk/gui.c:1186
-#, fuzzy
-#| msgid "_About Pioneers"
 msgid "About Pioneers"
-msgstr "_About Pioneers"
+msgstr "About Pioneers"
 
 #. Initial text in status bar
 #: ../client/gtk/gui.c:1497 ../client/gtk/offline.c:107
@@ -1877,24 +1824,18 @@ msgstr "Sea"
 
 #. Label
 #: ../client/gtk/legend.c:170
-#, fuzzy
-#| msgid "<b>Terrain Yield</b>"
 msgid "<b>Terrain yield</b>"
-msgstr "<b>Terrain Yield</b>"
+msgstr "<b>Terrain yield</b>"
 
 #. Label
 #: ../client/gtk/legend.c:203
-#, fuzzy
-#| msgid "<b>Building Costs</b>"
 msgid "<b>Building costs</b>"
-msgstr "<b>Building Costs</b>"
+msgstr "<b>Building costs</b>"
 
 #: ../client/gtk/legend.c:241 ../client/gtk/player.c:55
 #: ../editor/gtk/game-buildings.c:11
-#, fuzzy
-#| msgid "City Wall"
 msgid "City wall"
-msgstr "City Wall"
+msgstr "City wall"
 
 #: ../client/gtk/legend.c:244 ../client/gtk/player.c:66
 msgid "Development card"
@@ -1913,17 +1854,13 @@ msgstr "Select the resource you wish to monopolise."
 
 #. Dialog caption
 #: ../client/gtk/name.c:156
-#, fuzzy
-#| msgid "Change player name"
 msgid "Change Player Name"
-msgstr "Change player name"
+msgstr "Change Player Name"
 
 #. Label
 #: ../client/gtk/name.c:184
-#, fuzzy
-#| msgid "Player name"
 msgid "Player name:"
-msgstr "Player name"
+msgstr "Player name:"
 
 #. Label: set player icon preferences
 #: ../client/gtk/name.c:244
@@ -1944,10 +1881,8 @@ msgid "Meta-server Host"
 msgstr "Meta-server Host"
 
 #: ../client/gtk/offline.c:77
-#, fuzzy
-#| msgid "Select a game to join"
 msgid "Select a game to join."
-msgstr "Select a game to join"
+msgstr "Select a game to join."
 
 #: ../client/gtk/offline.c:93
 msgid "Connecting"
@@ -1971,22 +1906,16 @@ msgid "Cities"
 msgstr "Cities"
 
 #: ../client/gtk/player.c:55
-#, fuzzy
-#| msgid "City Walls"
 msgid "City walls"
-msgstr "City Walls"
+msgstr "City walls"
 
 #: ../client/gtk/player.c:56
-#, fuzzy
-#| msgid "Largest Army"
 msgid "Largest army"
-msgstr "Largest Army"
+msgstr "Largest army"
 
 #: ../client/gtk/player.c:57
-#, fuzzy
-#| msgid "Longest Road"
 msgid "Longest road"
-msgstr "Longest Road"
+msgstr "Longest road"
 
 #. Name of the development card
 #: ../client/gtk/player.c:58 ../common/cards.c:131
@@ -1999,29 +1928,21 @@ msgstr "Chapels"
 
 #. Name of the development card
 #: ../client/gtk/player.c:59 ../common/cards.c:134
-#, fuzzy
-#| msgid "Pioneer University"
 msgid "Pioneer university"
-msgstr "Pioneer University"
+msgstr "Pioneer university"
 
 #: ../client/gtk/player.c:59
-#, fuzzy
-#| msgid "Pioneer Universities"
 msgid "Pioneer universities"
-msgstr "Pioneer Universities"
+msgstr "Pioneer universities"
 
 #. Name of the development card
 #: ../client/gtk/player.c:61 ../common/cards.c:137
-#, fuzzy
-#| msgid "Governor's House"
 msgid "Governor's house"
-msgstr "Governor's House"
+msgstr "Governor's house"
 
 #: ../client/gtk/player.c:61
-#, fuzzy
-#| msgid "Governor's Houses"
 msgid "Governor's houses"
-msgstr "Governor's Houses"
+msgstr "Governor's houses"
 
 #. Name of the development card
 #: ../client/gtk/player.c:62 ../common/cards.c:140
@@ -2065,10 +1986,8 @@ msgstr "Development cards"
 
 #. Caption for the overview of the points and card of other players
 #: ../client/gtk/player.c:551
-#, fuzzy
-#| msgid "<b>Player Summary</b>"
 msgid "<b>Player summary</b>"
-msgstr "<b>Player Summary</b>"
+msgstr "<b>Player summary</b>"
 
 #. Dialog caption
 #: ../client/gtk/plenty.c:61
@@ -2095,14 +2014,12 @@ msgstr "%s has %s, and is looking for %s"
 #. Label
 #: ../client/gtk/quote.c:299
 msgid "I want"
-msgstr ""
+msgstr "I want"
 
 #. Label
 #: ../client/gtk/quote.c:309
-#, fuzzy
-#| msgid "Give Them"
 msgid "Give them"
-msgstr "Give Them"
+msgstr "Give them"
 
 #. Button text
 #: ../client/gtk/quote.c:328
@@ -2211,75 +2128,53 @@ msgstr "No game in progress..."
 
 #. Label
 #: ../client/gtk/settingscreen.c:132
-#, fuzzy
-#| msgid "<b>General Settings</b>"
 msgid "<b>General settings</b>"
-msgstr "<b>General Settings</b>"
+msgstr "<b>General settings</b>"
 
 #: ../client/gtk/settingscreen.c:149
 msgid "Number of players:"
 msgstr "Number of players:"
 
 #: ../client/gtk/settingscreen.c:153
-#, fuzzy
-#| msgid "Victory Point Target:"
 msgid "Victory point target:"
-msgstr "Victory Point Target:"
+msgstr "Victory point target:"
 
 #: ../client/gtk/settingscreen.c:157
-#, fuzzy
-#| msgid "Random Terrain?"
 msgid "Random terrain:"
-msgstr "Random Terrain?"
+msgstr "Random terrain:"
 
 #: ../client/gtk/settingscreen.c:161
-#, fuzzy
-#| msgid "Allow trade between players"
 msgid "Allow trade between players:"
-msgstr "Allow trade between players"
+msgstr "Allow trade between players:"
 
 #: ../client/gtk/settingscreen.c:166
-#, fuzzy
-#| msgid "Allow trade only before building or buying"
 msgid "Allow trade only before building or buying:"
-msgstr "Allow trade only before building or buying"
+msgstr "Allow trade only before building or buying:"
 
 #: ../client/gtk/settingscreen.c:171
-#, fuzzy
-#| msgid "Check for victory only at end of turn"
 msgid "Check victory only at end of turn:"
-msgstr "Check for victory only at end of turn"
+msgstr "Check victory only at end of turn:"
 
 #: ../client/gtk/settingscreen.c:176
-#, fuzzy
-#| msgid "Amount of Each Resource:"
 msgid "Amount of each resource:"
-msgstr "Amount of Each Resource:"
+msgstr "Amount of each resource:"
 
 #: ../client/gtk/settingscreen.c:190
-#, fuzzy
-#| msgid "Sevens rule"
 msgid "Sevens rule:"
-msgstr "Sevens rule"
+msgstr "Sevens rule:"
 
 #: ../client/gtk/settingscreen.c:196
-#, fuzzy
-#| msgid "Use the pirate to block ships"
 msgid "Use the pirate to block ships:"
-msgstr "Use the pirate to block ships"
+msgstr "Use the pirate to block ships:"
 
 #: ../client/gtk/settingscreen.c:225
-#, fuzzy
-#| msgid "Island Discovery Bonuses:"
 msgid "Island discovery bonuses:"
-msgstr "Island Discovery Bonuses:"
+msgstr "Island discovery bonuses:"
 
 #. Label
 #: ../client/gtk/settingscreen.c:242
-#, fuzzy
-#| msgid "<b>Building Quotas</b>"
 msgid "<b>Building quotas</b>"
-msgstr "<b>Building Quotas</b>"
+msgstr "<b>Building quotas</b>"
 
 #: ../client/gtk/settingscreen.c:259
 msgid "Roads:"
@@ -2294,10 +2189,8 @@ msgid "Cities:"
 msgstr "Cities:"
 
 #: ../client/gtk/settingscreen.c:277
-#, fuzzy
-#| msgid "City Walls:"
 msgid "City walls:"
-msgstr "City Walls:"
+msgstr "City walls:"
 
 #: ../client/gtk/settingscreen.c:283
 msgid "Ships:"
@@ -2309,64 +2202,44 @@ msgstr "Bridges:"
 
 #. Label
 #: ../client/gtk/settingscreen.c:302
-#, fuzzy
-#| msgid "<b>Development Card Deck</b>"
 msgid "<b>Development card deck</b>"
-msgstr "<b>Development Card Deck</b>"
+msgstr "<b>Development card deck</b>"
 
 #: ../client/gtk/settingscreen.c:318
-#, fuzzy
-#| msgid "Road Building Cards:"
 msgid "Road building cards:"
-msgstr "Road Building Cards:"
+msgstr "Road building cards:"
 
 #: ../client/gtk/settingscreen.c:322
-#, fuzzy
-#| msgid "Monopoly Cards:"
 msgid "Monopoly cards:"
-msgstr "Monopoly Cards:"
+msgstr "Monopoly cards:"
 
 #: ../client/gtk/settingscreen.c:326
-#, fuzzy
-#| msgid "Year of Plenty Cards:"
 msgid "Year of plenty cards:"
-msgstr "Year of Plenty Cards:"
+msgstr "Year of plenty cards:"
 
 #: ../client/gtk/settingscreen.c:330
-#, fuzzy
-#| msgid "Chapel Cards:"
 msgid "Chapel cards:"
-msgstr "Chapel Cards:"
+msgstr "Chapel cards:"
 
 #: ../client/gtk/settingscreen.c:334
-#, fuzzy
-#| msgid "Pioneer University Cards:"
 msgid "Pioneer university cards:"
-msgstr "Pioneer University Cards:"
+msgstr "Pioneer university cards:"
 
 #: ../client/gtk/settingscreen.c:338
-#, fuzzy
-#| msgid "Governor's House Cards:"
 msgid "Governor's house cards:"
-msgstr "Governor's House Cards:"
+msgstr "Governor's house cards:"
 
 #: ../client/gtk/settingscreen.c:342
-#, fuzzy
-#| msgid "Library Cards:"
 msgid "Library cards:"
-msgstr "Library Cards:"
+msgstr "Library cards:"
 
 #: ../client/gtk/settingscreen.c:346
-#, fuzzy
-#| msgid "Market Cards:"
 msgid "Market cards:"
-msgstr "Market Cards:"
+msgstr "Market cards:"
 
 #: ../client/gtk/settingscreen.c:350
-#, fuzzy
-#| msgid "Soldier Cards:"
 msgid "Soldier cards:"
-msgstr "Soldier Cards:"
+msgstr "Soldier cards:"
 
 #. Dialog caption
 #: ../client/gtk/settingscreen.c:388
@@ -2399,17 +2272,13 @@ msgstr "I want %s, and give them %s"
 
 #. Frame title, trade: I want to trade these resources
 #: ../client/gtk/trade.c:438
-#, fuzzy
-#| msgid "<b>I Want</b>"
 msgid "<b>I want</b>"
-msgstr "<b>I Want</b>"
+msgstr "<b>I want</b>"
 
 #. Frame title, trade: I want these resources in return
 #: ../client/gtk/trade.c:466
-#, fuzzy
-#| msgid "<b>Give Them</b>"
 msgid "<b>Give them</b>"
-msgstr "<b>Give Them</b>"
+msgstr "<b>Give them</b>"
 
 #. Button text, trade: call for quotes from other players
 #: ../client/gtk/trade.c:495
@@ -2428,24 +2297,18 @@ msgstr "_Finish Trading"
 
 #. Name of the development card
 #: ../common/cards.c:122
-#, fuzzy
-#| msgid "Road Building"
 msgid "Road building"
-msgstr "Road Building"
+msgstr "Road building"
 
 #. Name of the development card
 #: ../common/cards.c:128
-#, fuzzy
-#| msgid "Year of Plenty"
 msgid "Year of plenty"
-msgstr "Year of Plenty"
+msgstr "Year of plenty"
 
 #. Description of the 'Road Building' development card
 #: ../common/cards.c:157
-#, fuzzy
-#| msgid "Build one road segment."
 msgid "Build two new roads"
-msgstr "Build one road segment."
+msgstr "Build two new roads"
 
 #. Description of the 'Monopoly' development card
 #: ../common/cards.c:160
@@ -2453,6 +2316,8 @@ msgid ""
 "Select a resource type and take every card of that type held by all other "
 "players"
 msgstr ""
+"Select a resource type and take every card of that type held by all other "
+"players"
 
 #. Description of the 'Year of Plenty' development card
 #: ../common/cards.c:164
@@ -2460,11 +2325,13 @@ msgid ""
 "Take two resource cards of any type from the bank (cards may be of the same "
 "or different types)"
 msgstr ""
+"Take two resource cards of any type from the bank (cards may be of the same "
+"or different types)"
 
 #. Description of a development card of 1 victory point
 #: ../common/cards.c:173
 msgid "One victory point"
-msgstr ""
+msgstr "One victory point"
 
 #. Description of the 'Soldier' development card
 #: ../common/cards.c:176
@@ -2472,6 +2339,8 @@ msgid ""
 "Move the robber to a different space and take one resource card from another "
 "player adjacent to that space"
 msgstr ""
+"Move the robber to a different space and take one resource card from another "
+"player adjacent to that space"
 
 #: ../common/game.c:606 ../common/game.c:637
 msgid "This game cannot be won."
@@ -2542,10 +2411,8 @@ msgstr "Pioneers is translated to British by:\n"
 
 #. Caption for result of checking victory points
 #: ../common/gtk/common_gtk.c:321
-#, fuzzy
-#| msgid "Victory Point Target"
 msgid "Victory Point Analysis"
-msgstr "Victory Point Target"
+msgstr "Victory Point Analysis"
 
 #. Tooltip for sevens rule normal
 #: ../common/gtk/game-rules.c:94
@@ -2563,50 +2430,40 @@ msgid "All sevens are rerolled"
 msgstr "All sevens are rerolled"
 
 #: ../common/gtk/game-rules.c:113
-#, fuzzy
-#| msgid "Randomize Terrain"
 msgid "Randomize terrain"
-msgstr "Randomise Terrain"
+msgstr "Randomise terrain"
 
 #: ../common/gtk/game-rules.c:113
 msgid "Randomize the terrain"
 msgstr "Randomise the terrain"
 
 #: ../common/gtk/game-rules.c:115
-#, fuzzy
-#| msgid "Use Pirate"
 msgid "Use pirate"
-msgstr "Use Pirate"
+msgstr "Use pirate"
 
 #: ../common/gtk/game-rules.c:115
 msgid "Use the pirate to block ships"
 msgstr "Use the pirate to block ships"
 
 #: ../common/gtk/game-rules.c:117
-#, fuzzy
-#| msgid "Strict Trade"
 msgid "Strict trade"
-msgstr "Strict Trade"
+msgstr "Strict trade"
 
 #: ../common/gtk/game-rules.c:118
 msgid "Allow trade only before building or buying"
 msgstr "Allow trade only before building or buying"
 
 #: ../common/gtk/game-rules.c:120
-#, fuzzy
-#| msgid "Domestic Trade"
 msgid "Domestic trade"
-msgstr "Domestic Trade"
+msgstr "Domestic trade"
 
 #: ../common/gtk/game-rules.c:120
 msgid "Allow trade between players"
 msgstr "Allow trade between players"
 
 #: ../common/gtk/game-rules.c:122
-#, fuzzy
-#| msgid "Victory At End Of Turn"
 msgid "Victory at end of turn"
-msgstr "Victory At End Of Turn"
+msgstr "Victory at end of turn"
 
 #: ../common/gtk/game-rules.c:123
 msgid "Check for victory only at end of turn"
@@ -2614,10 +2471,8 @@ msgstr "Check for victory only at end of turn"
 
 #. Label text for customising a game
 #: ../common/gtk/game-settings.c:106
-#, fuzzy
-#| msgid "Number of players:"
 msgid "Number of players"
-msgstr "Number of players:"
+msgstr "Number of players"
 
 #. Tooltip for 'Number of Players'
 #: ../common/gtk/game-settings.c:124
@@ -2626,10 +2481,8 @@ msgstr "The number of players"
 
 #. Label for customising a game
 #: ../common/gtk/game-settings.c:127
-#, fuzzy
-#| msgid "Victory Point Target"
 msgid "Victory point target"
-msgstr "Victory Point Target"
+msgstr "Victory point target"
 
 #. Tooltip for Victory Point Target
 #: ../common/gtk/game-settings.c:147
@@ -3016,10 +2869,8 @@ msgstr "Shuffle"
 
 #. Caption
 #: ../editor/gtk/editor.c:734 ../server/gtk/main.c:468
-#, fuzzy
-#| msgid "Game Parameters"
 msgid "Game parameters"
-msgstr "Game Parameters"
+msgstr "Game parameters"
 
 #. Caption
 #: ../editor/gtk/editor.c:737 ../server/gtk/main.c:498
@@ -3058,10 +2909,8 @@ msgstr "Open Game"
 
 #. Dialog caption
 #: ../editor/gtk/editor.c:931
-#, fuzzy
-#| msgid "Save _As..."
 msgid "Save As..."
-msgstr "Save _As..."
+msgstr "Save As..."
 
 #. Dialog caption
 #: ../editor/gtk/editor.c:969
@@ -3070,17 +2919,13 @@ msgstr "Change Title"
 
 #. Label
 #: ../editor/gtk/editor.c:992
-#, fuzzy
-#| msgid "New Title:"
 msgid "New title:"
-msgstr "New Title:"
+msgstr "New title:"
 
 #. About dialog caption
 #: ../editor/gtk/editor.c:1049
-#, fuzzy
-#| msgid "_About Pioneers Editor"
 msgid "About Pioneers Game Editor"
-msgstr "_About Pioneers Editor"
+msgstr "About Pioneers Game Editor"
 
 #. Menu entry
 #: ../editor/gtk/editor.c:1055
@@ -3128,10 +2973,8 @@ msgstr "Save as"
 
 #. Menu entry
 #: ../editor/gtk/editor.c:1082
-#, fuzzy
-#| msgid "Change Title"
 msgid "_Change Title"
-msgstr "Change Title"
+msgstr "_Change Title"
 
 #. Tooltip for Change Title menu entry
 #: ../editor/gtk/editor.c:1084
@@ -3192,10 +3035,8 @@ msgid "Settings"
 msgstr "Settings"
 
 #: ../editor/gtk/game-resources.c:48
-#, fuzzy
-#| msgid "Resource Count"
 msgid "Resource count"
-msgstr "Resource Count"
+msgstr "Resource count"
 
 #: ../editor/gtk/pioneers-editor.desktop.in.h:1
 msgid "Create your own game for Pioneers"
@@ -3253,35 +3094,32 @@ msgstr "meta-server protocol:"
 
 #: ../server/avahi.c:68
 msgid "Avahi registration successful.\n"
-msgstr ""
+msgstr "Avahi registration successful.\n"
 
 #: ../server/avahi.c:78
 #, c-format
 msgid "Avahi service name collision, renaming service to '%s'.\n"
-msgstr ""
+msgstr "Avahi service name collision, renaming service to '%s'.\n"
 
 #. Some kind of failure happened while we were registering
 #: ../server/avahi.c:89
 #, c-format
 msgid "Avahi error: %s\n"
-msgstr ""
+msgstr "Avahi error: %s\n"
 
 #: ../server/avahi.c:113 ../server/avahi.c:147 ../server/avahi.c:157
 #: ../server/avahi.c:193 ../server/avahi.c:214 ../server/avahi.c:228
-#, fuzzy, c-format
-#| msgid "Error (%s): %s\n"
+#, c-format
 msgid "Avahi error: %s, %s\n"
-msgstr "Error (%s): %s\n"
+msgstr "Avahi error: %s, %s\n"
 
 #: ../server/avahi.c:215 ../server/avahi.c:229
-#, fuzzy
-#| msgid "Unregister from meta-server\n"
 msgid "Unable to register Avahi server"
-msgstr "Unregister from meta-server\n"
+msgstr "Unable to register Avahi server"
 
 #: ../server/avahi.c:262
 msgid "Unregistering Avahi.\n"
-msgstr ""
+msgstr "Unregistering Avahi.\n"
 
 #. Menu entry
 #: ../server/gtk/main.c:117
@@ -3325,36 +3163,28 @@ msgid "Player %d is now %s\n"
 msgstr "Player %d is now %s\n"
 
 #: ../server/gtk/main.c:570
-#, fuzzy
-#| msgid "Game Settings"
 msgid "Game settings"
-msgstr "Game Settings"
+msgstr "Game settings"
 
 #: ../server/gtk/main.c:620
-#, fuzzy
-#| msgid "Server Parameters"
 msgid "Server parameters"
-msgstr "Server Parameters"
+msgstr "Server parameters"
 
 #: ../server/gtk/main.c:646
 msgid "The port for the game server"
 msgstr "The port for the game server"
 
 #: ../server/gtk/main.c:649
-#, fuzzy
-#| msgid "Register Server"
 msgid "Register server"
-msgstr "Register Server"
+msgstr "Register server"
 
 #: ../server/gtk/main.c:657
 msgid "Register this game at the meta server"
 msgstr "Register this game at the meta server"
 
 #: ../server/gtk/main.c:672
-#, fuzzy
-#| msgid "Reported Hostname"
 msgid "Reported hostname"
-msgstr "Reported Hostname"
+msgstr "Reported hostname"
 
 #: ../server/gtk/main.c:686
 msgid ""
@@ -3363,27 +3193,21 @@ msgstr ""
 "The public name of this computer (needed when playing behind a firewall)"
 
 #: ../server/gtk/main.c:691
-#, fuzzy
-#| msgid "Randomize turn order"
 msgid "Random turn order"
-msgstr "Randomise turn order"
+msgstr "Random turn order"
 
 #: ../server/gtk/main.c:699
 msgid "Randomize turn order"
 msgstr "Randomise turn order"
 
 #: ../server/gtk/main.c:739
-#, fuzzy
-#| msgid "Running Game"
 msgid "Running game"
-msgstr "Running Game"
+msgstr "Running game"
 
 #. Caption
 #: ../server/gtk/main.c:754
-#, fuzzy
-#| msgid "Players Connected"
 msgid "Players connected"
-msgstr "Players Connected"
+msgstr "Players connected"
 
 #. Tooltip for server connection overview
 #: ../server/gtk/main.c:787
@@ -3432,10 +3256,8 @@ msgstr "Role"
 
 #. Tooltip for column Role
 #: ../server/gtk/main.c:840
-#, fuzzy
-#| msgid "Player of viewer"
 msgid "Player or viewer"
-msgstr "Player of viewer"
+msgstr "Player or viewer"
 
 #. Button text
 #: ../server/gtk/main.c:852
@@ -3444,24 +3266,18 @@ msgstr "Launch Pioneers Client"
 
 #. Tooltip
 #: ../server/gtk/main.c:861
-#, fuzzy
-#| msgid "Launch the Pioneers Client"
 msgid "Launch the Pioneers client"
-msgstr "Launch the Pioneers Client"
+msgstr "Launch the Pioneers client"
 
 #. Caption
 #: ../server/gtk/main.c:864
-#, fuzzy
-#| msgid "Computer Players"
 msgid "Computer players"
-msgstr "Computer Players"
+msgstr "Computer players"
 
 #. Label
 #: ../server/gtk/main.c:874
-#, fuzzy
-#| msgid "Enable Chat"
 msgid "Enable chat"
-msgstr "Enable Chat"
+msgstr "Enable chat"
 
 #. Tooltip
 #: ../server/gtk/main.c:881
@@ -3634,10 +3450,9 @@ msgstr "Cannot load the parameters for the game\n"
 
 #. Error message
 #: ../server/main.c:275
-#, fuzzy, c-format
-#| msgid "Sorry, %s available.\n"
+#, c-format
 msgid "Admin port not available.\n"
-msgstr "Sorry, %s available.\n"
+msgstr "Admin port not available.\n"
 
 #. server-console commandline error
 #: ../server/main.c:282
@@ -3672,7 +3487,7 @@ msgstr "The last player left, the tournament timer is reset."
 
 #: ../server/player.c:260 ../server/player.c:633
 msgid "No human players present. Bye."
-msgstr ""
+msgstr "No human players present. Bye."
 
 #: ../server/player.c:267
 msgid "Game starts, adding computer players."
@@ -3714,13 +3529,11 @@ msgstr "Was hanging around for too long without players... bye.\n"
 
 #: ../server/player.c:707
 msgid "The last human player left. Waiting for the return of a player."
-msgstr ""
+msgstr "The last human player left. Waiting for the return of a player."
 
 #: ../server/player.c:728
-#, fuzzy
-#| msgid "Recent games"
 msgid "Resuming the game."
-msgstr "Recent games"
+msgstr "Resuming the game."
 
 #. %s is the name of the reconnecting player
 #: ../server/player.c:860
