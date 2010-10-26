@@ -18,6 +18,7 @@ msgstr ""
 "X-Launchpad-Export-Date: 2010-09-26 08:28+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 "X-Poedit-Language: Afrikaans\n"
+"Plural-Forms: nplurals=2; plural=(n!=1)\n"
 
 #. Commandline pioneersai: server
 #: ../client/ai/ai.c:65

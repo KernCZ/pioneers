@@ -1,6 +1,7 @@
 2010-10-26  Roland Clobus <rclobus@rclobus.nl>
 	* all: Updated for 0.12.4 string freeze
 	* nl.po, en_GB.po: Updated for 0.12.4
+	* all: Added rule for plurals
 
 2010-10-26  Roland Clobus <rclobus@rclobus.nl>
 	* all: Updated for 0.12.4 string freeze
