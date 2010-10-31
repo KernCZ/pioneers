@@ -3,7 +3,7 @@
  *
  * Copyright (C) 1999 Dave Cole
  * Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
- * Copyright (C) 2005 Roland Clobus <rclobus@bigfoot.com>
+ * Copyright (C) 2005,2010 Roland Clobus <rclobus@rclobus.nl>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,6 +41,7 @@
 typedef struct resource_values_s {
 	float value[NO_RESOURCE];
 	MaritimeInfo info;
+	gint ports[NO_RESOURCE];
 } resource_values_t;
 
 static int quote_num;
@@ -69,6 +70,7 @@ static Node *best_settlement_spot(gboolean during_setup,
 				  const resource_values_t * resval);
 
 static int places_can_build_settlement(void);
+static gint determine_monopoly_resource(void);
 
 /*
  * Functions to keep track of what nodes we've visited
@@ -348,6 +350,15 @@ static void reevaluate_resources(resource_values_t * outval)
 	 */
 	map_maritime_info(callbacks.get_map(), &outval->info,
 			  my_player_num());
+
+	for (i = 0; i < NO_RESOURCE; i++) {
+		if (outval->info.specific_resource[i])
+			outval->ports[i] = 2;
+		else if (outval->info.any_resource)
+			outval->ports[i] = 3;
+		else
+			outval->ports[i] = 4;
+	}
 }
 
 
@@ -1007,7 +1018,6 @@ static void greedy_setup_road(void)
  */
 static gboolean find_optimal_trade(gint assets[NO_RESOURCE],
 				   const resource_values_t * resval,
-				   gint ports[NO_RESOURCE],
 				   gint * amount,
 				   Resource * trade_away,
 				   Resource * want_resource)
@@ -1038,8 +1048,8 @@ static gboolean find_optimal_trade(gint assets[NO_RESOURCE],
 		for (temp = 0; temp < NO_RESOURCE; temp++) {
 			if (temp == res)
 				continue;
-			if (need[temp] > ports[temp]) {
-				*amount = ports[temp];
+			if (need[temp] > resval->ports[temp]) {
+				*amount = resval->ports[temp];
 				*trade_away = temp;
 				*want_resource = res;
 				return TRUE;
@@ -1063,31 +1073,18 @@ static gboolean will_do_maritime_trade(gint assets[NO_RESOURCE],
 				       Resource * trade_away,
 				       Resource * want_resource)
 {
-	MaritimeInfo info;
 	Resource res, want, discard;
-	gint ports[NO_RESOURCE];
-
-	map_maritime_info(callbacks.get_map(), &info, my_player_num());
-
-	for (res = 0; res < NO_RESOURCE; res++) {
-		if (info.specific_resource[res])
-			ports[res] = 2;
-		else if (info.any_resource)
-			ports[res] = 3;
-		else
-			ports[res] = 4;
-	}
 
 	/* See if we can trade at all. */
 	for (res = 0; res < NO_RESOURCE; res++) {
-		if (assets[res] >= ports[res])
+		if (assets[res] >= resval->ports[res])
 			break;
 	}
 	if (res == NO_RESOURCE)
 		return FALSE;
 
 	/* See if we can do a single trade that allows us to buy something. */
-	if (find_optimal_trade(assets, resval, ports, amount, trade_away,
+	if (find_optimal_trade(assets, resval, amount, trade_away,
 			       want_resource))
 		return TRUE;
 
@@ -1106,16 +1103,16 @@ static gboolean will_do_maritime_trade(gint assets[NO_RESOURCE],
 	for (res = 0; res < NO_RESOURCE; res++) {
 		if (res == want)
 			continue;
-		if (assets[res] > ports[res] &&
+		if (assets[res] > resval->ports[res] &&
 		    (discard == NO_RESOURCE
-		     || ports[discard] > ports[res]))
+		     || resval->ports[discard] > resval->ports[res]))
 			discard = res;
 	}
 
 	if (discard != NO_RESOURCE) {
 		*trade_away = discard;
 		*want_resource = want;
-		*amount = ports[discard];
+		*amount = resval->ports[discard];
 		return TRUE;
 	}
 
@@ -1128,7 +1125,7 @@ static gboolean will_do_maritime_trade(gint assets[NO_RESOURCE],
  */
 static gboolean will_play_development_card(DevelType cardtype)
 {
-	gint amount, cards, i;
+	gint amount, i;
 
 	if (is_victory_card(cardtype)) {
 		return TRUE;
@@ -1152,13 +1149,7 @@ static gboolean will_play_development_card(DevelType cardtype)
 			break;
 		return TRUE;
 	case DEVEL_MONOPOLY:
-		/* don't unless there are enough cards out */
-		for (i = 0, cards = 0; i < num_players(); i++)
-			if (i != my_player_num())
-				cards += player_get_num_resource(i);
-		if (cards >= 6)
-			return TRUE;
-		break;
+		return determine_monopoly_resource() != NO_RESOURCE;
 	default:
 		break;
 	}
@@ -1626,14 +1617,25 @@ static gint other_players_have(Resource res)
 	return game_resources() - get_bank()[res] - resource_asset(res);
 }
 
-static void greedy_monopoly(void)
+static float monopoly_wildcard_value(const resource_values_t * resval,
+				     const gint assets[NO_RESOURCE],
+				     gint resource)
+{
+	return (float) (other_players_have(resource) +
+			assets[resource]) / resval->ports[resource];
+}
+
+/** Determine the best resource to get with a monopoly card.
+ * @return the resource
+*/
+static gint determine_monopoly_resource(void)
 {
 	gint assets[NO_RESOURCE];
 	int i;
-	int r, best;
+	gint most_desired;
+	gint most_wildcards;
 	resource_values_t resval;
 
-	ai_wait();
 	for (i = 0; i < NO_RESOURCE; i++)
 		assets[i] = resource_asset(i);
 
@@ -1641,26 +1643,35 @@ static void greedy_monopoly(void)
 	reevaluate_resources(&resval);
 
 	/* try to get something we need */
-	while (TRUE) {
-		r = resource_desire(assets, &resval);
-		if (r == NO_RESOURCE)
-			break;
-		if (other_players_have(r) > 0) {
-			cb_choose_monopoly(r);
-			return;
-		}
-		resval.value[r] = 0;
+	most_desired = resource_desire(assets, &resval);
+
+	/* try to get the optimal maritime trade. */
+	most_wildcards = 0;
+	for (i = 1; i < NO_RESOURCE; i++) {
+		if (monopoly_wildcard_value(&resval, assets, i) >
+		    monopoly_wildcard_value(&resval, assets,
+					    most_wildcards))
+			most_wildcards = i;
 	}
 
-	/* there's nothing we really need, so get what we can get most of. */
-	best = 0;
-	for (r = 1; r < NO_RESOURCE; r++) {
-		if (other_players_have(r) > other_players_have(best))
-			best = r;
+	/* choose the best */
+	if (most_desired != NO_RESOURCE
+	    && other_players_have(most_desired) >
+	    monopoly_wildcard_value(&resval, assets, most_wildcards)) {
+		return most_desired;
+	} else if (monopoly_wildcard_value(&resval, assets, most_wildcards)
+		   >= 1.0) {
+		return most_wildcards;
+	} else {
+		return NO_RESOURCE;
 	}
-	cb_choose_monopoly(best);
 }
 
+static void greedy_monopoly(void)
+{
+	ai_wait();
+	cb_choose_monopoly(determine_monopoly_resource());
+}
 
 /*
  * Of these resources which is least valuable to us

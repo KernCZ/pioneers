@@ -1,3 +1,8 @@
+2010-10-31  Roland Clobus <rclobus@rclobus.nl>
+	* server/develop.c, client/ai/greedy.c: Let computer player trade after
+	playing a monopoly development card. Play development card when the
+	required resource can be got or when it can be obtained by trade.
+
 2010-10-26  Roland Clobus <rclobus@rclobus.nl>
 	* configure.ac: Add -lm when needed (rint, sqrt).
 	* editor/gtk/editor.c, common/gtk/game-rules.c, common/gtk/common_gtk.c, common/state.c, common/log.c,

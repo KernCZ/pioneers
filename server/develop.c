@@ -294,7 +294,6 @@ gboolean mode_monopoly(Player * player, gint event)
 	if (!sm_recv(sm, "monopoly %r", &type))
 		return FALSE;
 
-	player_send(player, FIRST_VERSION, LATEST_VERSION, "OK\n");
 	/* Now inform the various parties of the monopoly.
 	 */
 	for (list = player_first_real(game);
@@ -314,6 +313,7 @@ gboolean mode_monopoly(Player * player, gint event)
 		player->assets[type] += scan->assets[type];
 		scan->assets[type] = 0;
 	}
+	player_send(player, FIRST_VERSION, LATEST_VERSION, "OK\n");
 
 	sm_pop(sm);
 	return TRUE;
