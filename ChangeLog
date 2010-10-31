@@ -5,13 +5,17 @@
 
 2010-10-26  Roland Clobus <rclobus@rclobus.nl>
 	* configure.ac: Add -lm when needed (rint, sqrt).
-	* editor/gtk/editor.c, common/gtk/game-rules.c, common/gtk/common_gtk.c, common/state.c, common/log.c,
-	common/cards.c, server/gtk/main.c, server/turn.c, client/gtk/plenty.c, client/gtk/resource-table.c,
-	client/gtk/name.c, client/gtk/gold.c, client/gtk/resource.c, client/gtk/quote.c, client/gtk/develop.c,
-	client/gtk/legend.c, client/gtk/gameover.c, client/gtk/avahi-browser.c, client/gtk/discard.c,
-	client/gtk/monopoly.c, client/gtk/settingscreen.c, client/gtk/chat.c, client/gtk/gui.c,
-	client/gtk/connect.c, client/gtk/histogram.c, client/common/develop.c, client/common/player.c,
-	client/ai/greedy.c, client/ai/ai.c, client/ai/lobbybot.c: Update and reenable translator hints.
+	* editor/gtk/editor.c, common/gtk/game-rules.c,
+	common/gtk/common_gtk.c, common/state.c, common/log.c, common/cards.c,
+	server/gtk/main.c, server/turn.c, client/gtk/plenty.c,
+	client/gtk/resource-table.c, client/gtk/name.c, client/gtk/gold.c,
+	client/gtk/resource.c, client/gtk/quote.c, client/gtk/develop.c,
+	client/gtk/legend.c, client/gtk/gameover.c, client/gtk/avahi-browser.c,
+	client/gtk/discard.c, client/gtk/monopoly.c,
+	client/gtk/settingscreen.c, client/gtk/chat.c, client/gtk/gui.c,
+	client/gtk/connect.c, client/gtk/histogram.c, client/common/develop.c,
+	client/common/player.c,	client/ai/greedy.c, client/ai/ai.c,
+	client/ai/lobbybot.c: Update and reenable translator hints.
 
 2010-10-25  Roland Clobus <rclobus@rclobus.nl>
 	* admin-scripts: Added various scripts to automate the meta-server.
