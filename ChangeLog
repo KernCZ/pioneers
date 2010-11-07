@@ -1,3 +1,7 @@
+2010-11-07  Roland Clobus <rclobus@rclobus.nl>
+	* client/gtk/plenty.c: Show the right amount to select in the year of
+	plenty dialog after the dialog was closed.
+
 2010-10-31  Roland Clobus <rclobus@rclobus.nl>
 	* server/develop.c, client/ai/greedy.c: Let computer player trade after
 	playing a monopoly development card. Play development card when the

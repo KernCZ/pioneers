@@ -82,11 +82,11 @@ void plenty_create_dlg(const gint * bank)
 	gtk_container_set_border_width(GTK_CONTAINER(vbox), 5);
 
 	total = 0;
-	if (bank != NULL)
-		for (r = 0; r < NO_RESOURCE; ++r) {
+	for (r = 0; r < NO_RESOURCE; ++r) {
+		if (bank != NULL)
 			plenty.bank[r] = bank[r];
-			total += bank[r];
-		}
+		total += plenty.bank[r];
+	}
 	if (total == 1)
 		str = _("Please choose one resource from the bank");
 	else if (total >= 2) {
