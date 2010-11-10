@@ -1,3 +1,7 @@
+2010-11-10  Matt Perry <mattperry1976@gmail.com>
+	* pioneers.nsi.in, server/Makefile.am, server/ubuntuland.game: New
+	layout in the shape of the Ubuntu logo.
+
 2010-11-07  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/plenty.c: Show the right amount to select in the year of
 	plenty dialog after the dialog was closed.

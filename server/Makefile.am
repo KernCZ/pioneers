@@ -84,4 +84,5 @@ config_DATA += \
 	server/henjes.game \
 	server/lorindol.game \
 	server/lobby.game \
-	server/south_africa.game
+	server/south_africa.game \
+	server/ubuntuland.game

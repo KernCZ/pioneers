@@ -291,6 +291,7 @@ Section /o "Additional programs" SEC02
   File "..\..\..\local\games\pioneers\south_africa.game"
   File "..\..\..\local\games\pioneers\square.game"
   File "..\..\..\local\games\pioneers\star.game"
+  File "..\..\..\local\games\pioneers\ubuntuland.game"
   File "..\..\..\local\games\pioneers\x.game"
 ; Shortcuts
   SetOutPath "$INSTDIR"
@@ -467,6 +468,7 @@ Section Uninstall
   Delete "$INSTDIR\locale\cs\LC_MESSAGES\pioneers.mo"
   Delete "$INSTDIR\locale\af\LC_MESSAGES\pioneers.mo"
   Delete "$INSTDIR\games\pioneers\x.game"
+  Delete "$INSTDIR\games\pioneers\ubuntuland.game"
   Delete "$INSTDIR\games\pioneers\star.game"
   Delete "$INSTDIR\games\pioneers\square.game"
   Delete "$INSTDIR\games\pioneers\south_africa.game"
