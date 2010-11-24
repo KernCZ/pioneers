@@ -1,6 +1,7 @@
 2010-11-24  Ron Yorgason <yorgasor@cs.pdx.edu>
-	* north_america.game: After nearly six years, this map finally moved
-	from the contrib section on the website to the distributed version.
+	* pioneers.nsi.in, server/Makefile.am, server/north_america.game: After
+	nearly six years, this map finally moved from the contrib section on
+	the website to the distributed version.
 
 2010-11-10  Matt Perry <mattperry1976@gmail.com>
 	* pioneers.nsi.in, server/Makefile.am, server/ubuntuland.game: New

@@ -85,4 +85,5 @@ config_DATA += \
 	server/lorindol.game \
 	server/lobby.game \
 	server/south_africa.game \
-	server/ubuntuland.game
+	server/ubuntuland.game \
+	server/north_america.game
