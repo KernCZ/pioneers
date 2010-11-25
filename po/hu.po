@@ -419,10 +419,9 @@ msgid "Loading"
 msgstr "Betöltés"
 
 #: ../client/common/client.c:963
-#, fuzzy
 #| msgid "Version mismatch"
 msgid "Version mismatch."
-msgstr "Eltérő verzió"
+msgstr "Eltérő verzió."
 
 #: ../client/common/client.c:965
 msgid "Version mismatch. Please make sure client and server are up to date.\n"
@@ -455,7 +454,6 @@ msgid " or"
 msgstr " vagy"
 
 #: ../client/common/client.c:1490
-#, fuzzy
 #| msgid "Waiting for your turn"
 msgid "Waiting for your turn."
 msgstr "Várj a körödre."
@@ -473,10 +471,9 @@ msgstr ""
 "akitől lopni szeretnél."
 
 #: ../client/common/client.c:1649 ../client/gtk/interface.c:785
-#, fuzzy
 #| msgid "Place the robber"
 msgid "Place the robber."
-msgstr "Helyezd el a rablót"
+msgstr "Helyezd el a rablót."
 
 #: ../client/common/client.c:1699
 msgid "Finish the road building action."
@@ -589,10 +586,10 @@ msgid "Player %d is now %s.\n"
 msgstr "%d játékos %s.\n"
 
 #: ../client/common/player.c:267
-#, fuzzy, c-format
+#, c-format
 #| msgid "%s has quit\n"
 msgid "%s has quit.\n"
-msgstr "%s kilépett\n"
+msgstr "%s kilépett.\n"
 
 #: ../client/common/player.c:276
 msgid "There is no largest army.\n"
@@ -1086,21 +1083,18 @@ msgstr "Inditási hiba %s: %s"
 
 #. Dialog caption
 #: ../client/gtk/connect.c:818
-#, fuzzy
 #| msgid "Create a public game"
 msgid "Create a Public Game"
 msgstr "Új játék"
 
 #. Dialog caption
 #: ../client/gtk/connect.c:941
-#, fuzzy
 #| msgid "Join a public game"
 msgid "Join a Public Game"
 msgstr "Játékba jelentkezés"
 
 #. Button text
 #: ../client/gtk/connect.c:947
-#, fuzzy
 #| msgid "_New remote game"
 msgid "_New Remote Game"
 msgstr "Ú_j távoli játék"
@@ -1223,7 +1217,6 @@ msgstr "A host gép verziója"
 
 #. Dialog caption
 #: ../client/gtk/connect.c:1215
-#, fuzzy
 #| msgid "Start a new game"
 msgid "Start a New Game"
 msgstr "Új játék indítása"
@@ -1269,14 +1262,12 @@ msgstr ""
 
 #. Label
 #: ../client/gtk/connect.c:1321 ../server/gtk/main.c:660
-#, fuzzy
 #| msgid "Meta Server"
 msgid "Meta server"
 msgstr "Meta szerver"
 
 #. Button
 #: ../client/gtk/connect.c:1343
-#, fuzzy
 #| msgid "Join public game"
 msgid "Join Public Game"
 msgstr "Csatlakozás nyilvános játékhoz"
@@ -1288,7 +1279,6 @@ msgstr "Játékba jelentkezés"
 
 #. Button
 #: ../client/gtk/connect.c:1354
-#, fuzzy
 #| msgid "Create game"
 msgid "Create Game"
 msgstr "Játék létrehozása"
@@ -1300,7 +1290,6 @@ msgstr "Játék létrehozása"
 
 #. Button
 #: ../client/gtk/connect.c:1369
-#, fuzzy
 #| msgid "Join private game"
 msgid "Join Private Game"
 msgstr "Csatlakozás privát játékhoz"
@@ -1314,7 +1303,6 @@ msgstr "Csatlakozás egy privát játékhoz"
 #. Label
 #. Commandline option of client: hostname of the server
 #: ../client/gtk/connect.c:1552 ../client/gtk/offline.c:50
-#, fuzzy
 #| msgid "Server Host"
 msgid "Server host"
 msgstr "Szerver gép"
@@ -1328,7 +1316,6 @@ msgstr "A játékot futtató gép neve"
 #. Commandline option of client: port of the server
 #: ../client/gtk/connect.c:1570 ../client/gtk/offline.c:53
 #: ../server/gtk/main.c:632
-#, fuzzy
 #| msgid "Server Port"
 msgid "Server port"
 msgstr "Szerver port"
@@ -1346,7 +1333,6 @@ msgstr "Legutóbbi játékok"
 
 #. Caption for list of bought development cards
 #: ../client/gtk/develop.c:130
-#, fuzzy
 #| msgid "<b>Development Cards</b>"
 msgid "<b>Development cards</b>"
 msgstr "<b>Fejlesztés kátyák</b>"
@@ -1358,7 +1344,6 @@ msgstr "Kártya kijátszása"
 
 #. Dialog caption
 #: ../client/gtk/discard.c:78
-#, fuzzy
 #| msgid "Discard resources"
 msgid "Discard Resources"
 msgstr "Nyersanyagok eldobása"
@@ -1382,7 +1367,6 @@ msgstr "<b>Várunk míg dobnak a játékosok</b>"
 
 #. Dialog caption
 #: ../client/gtk/gameover.c:34
-#, fuzzy
 #| msgid "Game over"
 msgid "Game Over"
 msgstr "Játék vége"
@@ -1399,7 +1383,6 @@ msgstr "%s minden elismerésünk. Te vagy a világ ura!"
 
 #. Dialog caption
 #: ../client/gtk/gold.c:73
-#, fuzzy
 #| msgid "Choose resources"
 msgid "Choose Resources"
 msgstr "Válassz nyersanyagokat"
@@ -1429,7 +1412,6 @@ msgstr "_Játék"
 
 #. Menu entry
 #: ../client/gtk/gui.c:220
-#, fuzzy
 #| msgid "_New game"
 msgid "_New Game"
 msgstr "Új já_ték"
@@ -1441,7 +1423,6 @@ msgstr "Új játék indítása"
 
 #. Menu entry
 #: ../client/gtk/gui.c:225
-#, fuzzy
 #| msgid "_Leave game"
 msgid "_Leave Game"
 msgstr "Játék _elhagyása"
@@ -1463,10 +1444,9 @@ msgstr "Pioneers szerver adminisztrálás"
 
 #. Menu entry
 #: ../client/gtk/gui.c:237
-#, fuzzy
 #| msgid "Player Name"
 msgid "_Player Name"
-msgstr "Játékos neve"
+msgstr "Játékos _neve"
 
 #. Tooltip for Player Name menu entry
 #: ../client/gtk/gui.c:239
@@ -1477,7 +1457,7 @@ msgstr "Játékos neved módostása"
 #: ../client/gtk/gui.c:242
 #, fuzzy
 msgid "L_egend"
-msgstr "Jelmagyarázat"
+msgstr "Je_lmagyarázat"
 
 #. Tooltip for Legend menu entry
 #: ../client/gtk/gui.c:244
@@ -1683,7 +1663,7 @@ msgstr "Eszköztár megjelenítése vagy elrejtése"
 
 #. Victory points target in statusbar
 #: ../client/gtk/gui.c:453
-#, fuzzy, c-format
+#, c-format
 #| msgid "Points Needed to Win: %i"
 msgid "Points needed to win: %i"
 msgstr "Nyeréshez szükséges pontok: %i"
@@ -1699,10 +1679,9 @@ msgstr "Térkép"
 
 #. Tooltip
 #: ../client/gtk/gui.c:675
-#, fuzzy
 #| msgid "_Finish Trading"
 msgid "Finish trading"
-msgstr "_Kereskedés befejezése"
+msgstr "Kereskedés befejezése"
 
 #. Tab page name
 #. Button text
@@ -1712,7 +1691,6 @@ msgstr "Kínál"
 
 #. Tooltip
 #: ../client/gtk/gui.c:687
-#, fuzzy
 #| msgid "Reject Domestic Trade"
 msgid "Reject domestic trade"
 msgstr "Elutasított belső üzlet"
@@ -1825,10 +1803,9 @@ msgstr "Elrendezés 16:9-es ablakhoz"
 
 #. Caption of about box
 #: ../client/gtk/gui.c:1186
-#, fuzzy
 #| msgid "_About Pioneers"
 msgid "About Pioneers"
-msgstr "Pioneers _névjegy"
+msgstr "Pioneers névjegy"
 
 #. Initial text in status bar
 #: ../client/gtk/gui.c:1497 ../client/gtk/offline.c:107
@@ -1883,21 +1860,18 @@ msgstr "Tenger"
 
 #. Label
 #: ../client/gtk/legend.c:170
-#, fuzzy
 #| msgid "<b>Terrain Yield</b>"
 msgid "<b>Terrain yield</b>"
 msgstr "<b>Vidék hozama:</b>"
 
 #. Label
 #: ../client/gtk/legend.c:203
-#, fuzzy
 #| msgid "<b>Building Costs</b>"
 msgid "<b>Building costs</b>"
 msgstr "<b>Építmény árak:</b>"
 
 #: ../client/gtk/legend.c:241 ../client/gtk/player.c:55
 #: ../editor/gtk/game-buildings.c:11
-#, fuzzy
 #| msgid "City Wall"
 msgid "City wall"
 msgstr "Város fal"
@@ -1915,21 +1889,19 @@ msgstr "Monopólium"
 #. Label
 #: ../client/gtk/monopoly.c:105
 msgid "Select the resource you wish to monopolize."
-msgstr "Válassz monopól nyersanyagot"
+msgstr "Válassz monopól nyersanyagot."
 
 #. Dialog caption
 #: ../client/gtk/name.c:156
-#, fuzzy
 #| msgid "Change player name"
 msgid "Change Player Name"
 msgstr "Játékos név módosítása"
 
 #. Label
 #: ../client/gtk/name.c:184
-#, fuzzy
 #| msgid "Player name"
 msgid "Player name:"
-msgstr "Játékos neve"
+msgstr "Játékos neve:"
 
 #. Label: set player icon preferences
 #: ../client/gtk/name.c:244
@@ -1950,10 +1922,9 @@ msgid "Meta-server Host"
 msgstr "Meta-szerver host"
 
 #: ../client/gtk/offline.c:77
-#, fuzzy
 #| msgid "Select a game to join"
 msgid "Select a game to join."
-msgstr "Válassz egy játékot"
+msgstr "Válassz egy játékot."
 
 #: ../client/gtk/offline.c:93
 msgid "Connecting"
@@ -1977,19 +1948,16 @@ msgid "Cities"
 msgstr "Városok"
 
 #: ../client/gtk/player.c:55
-#, fuzzy
 #| msgid "City Walls"
 msgid "City walls"
 msgstr "Város falak"
 
 #: ../client/gtk/player.c:56
-#, fuzzy
 #| msgid "Largest Army"
 msgid "Largest army"
 msgstr "Legnagyobb hadsereg"
 
 #: ../client/gtk/player.c:57
-#, fuzzy
 #| msgid "Longest Road"
 msgid "Longest road"
 msgstr "Leghosszab út"
@@ -2005,26 +1973,22 @@ msgstr "Kápolnák"
 
 #. Name of the development card
 #: ../client/gtk/player.c:59 ../common/cards.c:134
-#, fuzzy
 #| msgid "Pioneer University"
 msgid "Pioneer university"
 msgstr "Pioneers egyetem"
 
 #: ../client/gtk/player.c:59
-#, fuzzy
 #| msgid "Pioneer Universities"
 msgid "Pioneer universities"
 msgstr "Pioneer egyetemek"
 
 #. Name of the development card
 #: ../client/gtk/player.c:61 ../common/cards.c:137
-#, fuzzy
 #| msgid "Governor's House"
 msgid "Governor's house"
 msgstr "Kormányzók háza"
 
 #: ../client/gtk/player.c:61
-#, fuzzy
 #| msgid "Governor's Houses"
 msgid "Governor's houses"
 msgstr "Kormányzó házak"
@@ -2071,7 +2035,6 @@ msgstr "Fejlesztés kártyák"
 
 #. Caption for the overview of the points and card of other players
 #: ../client/gtk/player.c:551
-#, fuzzy
 #| msgid "<b>Player Summary</b>"
 msgid "<b>Player summary</b>"
 msgstr "<b>Játékos összesítés</b>"
@@ -2101,11 +2064,10 @@ msgstr "%s kínál %s nyersanyagot, és cserébe szeretne %s nyersanyagot"
 #. Label
 #: ../client/gtk/quote.c:299
 msgid "I want"
-msgstr ""
+msgstr "Szeretnék"
 
 #. Label
 #: ../client/gtk/quote.c:309
-#, fuzzy
 #| msgid "Give Them"
 msgid "Give them"
 msgstr "Adok érte"
@@ -2217,7 +2179,6 @@ msgstr "Nincs játék folyamatban..."
 
 #. Label
 #: ../client/gtk/settingscreen.c:132
-#, fuzzy
 #| msgid "<b>General Settings</b>"
 msgid "<b>General settings</b>"
 msgstr "<b>Általános beállítások</b>"
@@ -2227,34 +2188,30 @@ msgid "Number of players:"
 msgstr "Játékosok száma:"
 
 #: ../client/gtk/settingscreen.c:153
-#, fuzzy
 #| msgid "Victory Point Target:"
 msgid "Victory point target:"
 msgstr "Nyerő pont:"
 
 #: ../client/gtk/settingscreen.c:157
-#, fuzzy
 #| msgid "Random Terrain?"
 msgid "Random terrain:"
-msgstr "Véletlen táj?"
+msgstr "Véletlen táj:"
 
 #: ../client/gtk/settingscreen.c:161
-#, fuzzy
 #| msgid "Allow trade between players"
 msgid "Allow trade between players:"
-msgstr "Engedélyezett játékosok közötti kereskedés"
+msgstr "Engedélyezett játékosok közötti kereskedés:"
 
 #: ../client/gtk/settingscreen.c:166
-#, fuzzy
 #| msgid "Allow trade only before building or buying"
 msgid "Allow trade only before building or buying:"
-msgstr "Kereskedés csak építkezés / vásárlás előtt?"
+msgstr "Kereskedés csak építkezés / vásárlás előtt:"
 
 #: ../client/gtk/settingscreen.c:171
 #, fuzzy
 #| msgid "Check for victory only at end of turn"
 msgid "Check victory only at end of turn:"
-msgstr "Csak a kör végén ellenőrizd a győzelmet"
+msgstr "Csak a kör végén ellenőrizd a győzelmet:"
 
 #: ../client/gtk/settingscreen.c:176
 #, fuzzy
@@ -2263,26 +2220,22 @@ msgid "Amount of each resource:"
 msgstr "Összes nyersanyag száma:"
 
 #: ../client/gtk/settingscreen.c:190
-#, fuzzy
 #| msgid "Sevens rule"
 msgid "Sevens rule:"
-msgstr "Hetes szabály"
+msgstr "Hetes szabály:"
 
 #: ../client/gtk/settingscreen.c:196
-#, fuzzy
 #| msgid "Use the pirate to block ships"
 msgid "Use the pirate to block ships:"
-msgstr "Használj kalózt a hajók megállítására"
+msgstr "Használj kalózt a hajók megállítására:"
 
 #: ../client/gtk/settingscreen.c:225
-#, fuzzy
 #| msgid "Island Discovery Bonuses:"
 msgid "Island discovery bonuses:"
 msgstr "Sziget felfedezés bónuszok:"
 
 #. Label
 #: ../client/gtk/settingscreen.c:242
-#, fuzzy
 #| msgid "<b>Building Quotas</b>"
 msgid "<b>Building quotas</b>"
 msgstr "<b>Épület árak</b>"
@@ -2300,7 +2253,6 @@ msgid "Cities:"
 msgstr "Városok"
 
 #: ../client/gtk/settingscreen.c:277
-#, fuzzy
 #| msgid "City Walls:"
 msgid "City walls:"
 msgstr "Város falak:"
@@ -2315,61 +2267,51 @@ msgstr "Hidak:"
 
 #. Label
 #: ../client/gtk/settingscreen.c:302
-#, fuzzy
 #| msgid "<b>Development Card Deck</b>"
 msgid "<b>Development card deck</b>"
 msgstr "<b>Fejlesztés kátyák</b>"
 
 #: ../client/gtk/settingscreen.c:318
-#, fuzzy
 #| msgid "Road Building Cards:"
 msgid "Road building cards:"
 msgstr "Útépítő kártyák:"
 
 #: ../client/gtk/settingscreen.c:322
-#, fuzzy
 #| msgid "Monopoly Cards:"
 msgid "Monopoly cards:"
 msgstr "Monopólium kártyák:"
 
 #: ../client/gtk/settingscreen.c:326
-#, fuzzy
 #| msgid "Year of Plenty Cards:"
 msgid "Year of plenty cards:"
 msgstr "Bőség éve kártyák:"
 
 #: ../client/gtk/settingscreen.c:330
-#, fuzzy
 #| msgid "Chapel Cards:"
 msgid "Chapel cards:"
 msgstr "Kápolna kártyák:"
 
 #: ../client/gtk/settingscreen.c:334
-#, fuzzy
 #| msgid "Pioneer University Cards:"
 msgid "Pioneer university cards:"
 msgstr "Pioneer egyetem kártyák:"
 
 #: ../client/gtk/settingscreen.c:338
-#, fuzzy
 #| msgid "Governor's House Cards:"
 msgid "Governor's house cards:"
 msgstr "Kormányzók háza kártyák:"
 
 #: ../client/gtk/settingscreen.c:342
-#, fuzzy
 #| msgid "Library Cards:"
 msgid "Library cards:"
 msgstr "Könyvtár kártyák:"
 
 #: ../client/gtk/settingscreen.c:346
-#, fuzzy
 #| msgid "Market Cards:"
 msgid "Market cards:"
 msgstr "Piac kártyák:"
 
 #: ../client/gtk/settingscreen.c:350
-#, fuzzy
 #| msgid "Soldier Cards:"
 msgid "Soldier cards:"
 msgstr "Katona kártyák:"
@@ -2405,14 +2347,12 @@ msgstr "Szeretnék %s nyersanyagot, cserébe adok %s nyersanyagot"
 
 #. Frame title, trade: I want to trade these resources
 #: ../client/gtk/trade.c:438
-#, fuzzy
 #| msgid "<b>I Want</b>"
 msgid "<b>I want</b>"
 msgstr "<b>Szeretnék</b>"
 
 #. Frame title, trade: I want these resources in return
 #: ../client/gtk/trade.c:466
-#, fuzzy
 #| msgid "<b>Give Them</b>"
 msgid "<b>Give them</b>"
 msgstr "<b>Adok érte</b>"
@@ -2434,24 +2374,21 @@ msgstr "_Kereskedés befejezése"
 
 #. Name of the development card
 #: ../common/cards.c:122
-#, fuzzy
 #| msgid "Road Building"
 msgid "Road building"
 msgstr "Út építés"
 
 #. Name of the development card
 #: ../common/cards.c:128
-#, fuzzy
 #| msgid "Year of Plenty"
 msgid "Year of plenty"
 msgstr "Bőség éve"
 
 #. Description of the 'Road Building' development card
 #: ../common/cards.c:157
-#, fuzzy
 #| msgid "Build one road segment."
 msgid "Build two new roads"
-msgstr "Épít egy utat."
+msgstr ""
 
 #. Description of the 'Monopoly' development card
 #: ../common/cards.c:160
@@ -2546,10 +2483,9 @@ msgstr "A Pioneerst magyarra fordította:\n"
 
 #. Caption for result of checking victory points
 #: ../common/gtk/common_gtk.c:321
-#, fuzzy
 #| msgid "Victory Point Target"
 msgid "Victory Point Analysis"
-msgstr "Győzelemhez szükséges pontok"
+msgstr ""
 
 #. Tooltip for sevens rule normal
 #: ../common/gtk/game-rules.c:94
@@ -2567,7 +2503,6 @@ msgid "All sevens are rerolled"
 msgstr "Minden hetes dobás újradobandó"
 
 #: ../common/gtk/game-rules.c:113
-#, fuzzy
 #| msgid "Randomize Terrain"
 msgid "Randomize terrain"
 msgstr "Véletlen táj?"
@@ -2577,7 +2512,6 @@ msgid "Randomize the terrain"
 msgstr "Véletlen táj?"
 
 #: ../common/gtk/game-rules.c:115
-#, fuzzy
 #| msgid "Use Pirate"
 msgid "Use pirate"
 msgstr "Kalóz használat"
@@ -2587,7 +2521,6 @@ msgid "Use the pirate to block ships"
 msgstr "Használj kalózt a hajók megállítására"
 
 #: ../common/gtk/game-rules.c:117
-#, fuzzy
 #| msgid "Strict Trade"
 msgid "Strict trade"
 msgstr "Szigorú kereskedés"
@@ -2597,7 +2530,6 @@ msgid "Allow trade only before building or buying"
 msgstr "Kereskedés csak építkezés / vásárlás előtt?"
 
 #: ../common/gtk/game-rules.c:120
-#, fuzzy
 #| msgid "Domestic Trade"
 msgid "Domestic trade"
 msgstr "Játékosok közötti kereskedés"
@@ -2607,7 +2539,6 @@ msgid "Allow trade between players"
 msgstr "Engedélyezett játékosok közötti kereskedés"
 
 #: ../common/gtk/game-rules.c:122
-#, fuzzy
 #| msgid "Victory At End Of Turn"
 msgid "Victory at end of turn"
 msgstr "Győzelem a kör végén"
@@ -2618,10 +2549,9 @@ msgstr "Csak a kör végén ellenőrizd a győzelmet"
 
 #. Label text for customising a game
 #: ../common/gtk/game-settings.c:106
-#, fuzzy
 #| msgid "Number of players:"
 msgid "Number of players"
-msgstr "Játékosok száma:"
+msgstr "Játékosok száma"
 
 #. Tooltip for 'Number of Players'
 #: ../common/gtk/game-settings.c:124
@@ -2630,7 +2560,6 @@ msgstr "A játékosok száma"
 
 #. Label for customising a game
 #: ../common/gtk/game-settings.c:127
-#, fuzzy
 #| msgid "Victory Point Target"
 msgid "Victory point target"
 msgstr "Győzelemhez szükséges pontok"
@@ -3022,7 +2951,6 @@ msgstr "Keverés"
 
 #. Caption
 #: ../editor/gtk/editor.c:734 ../server/gtk/main.c:468
-#, fuzzy
 #| msgid "Game Parameters"
 msgid "Game parameters"
 msgstr "Játék paraméterek"
@@ -3064,10 +2992,9 @@ msgstr "Játék megnyitása"
 
 #. Dialog caption
 #: ../editor/gtk/editor.c:931
-#, fuzzy
 #| msgid "Save _As..."
 msgid "Save As..."
-msgstr "_Men_tés másként..."
+msgstr "Mentés másként..."
 
 #. Dialog caption
 #: ../editor/gtk/editor.c:969
@@ -3076,17 +3003,15 @@ msgstr "Cím módosítás"
 
 #. Label
 #: ../editor/gtk/editor.c:992
-#, fuzzy
 #| msgid "New Title:"
 msgid "New title:"
 msgstr "Új cím:"
 
 #. About dialog caption
 #: ../editor/gtk/editor.c:1049
-#, fuzzy
 #| msgid "_About Pioneers Editor"
 msgid "About Pioneers Game Editor"
-msgstr "_Pioneers szerkesztőről"
+msgstr "Pioneers szerkesztőről"
 
 #. Menu entry
 #: ../editor/gtk/editor.c:1055
@@ -3125,7 +3050,7 @@ msgstr "Játék mentése"
 #. Menu entry
 #: ../editor/gtk/editor.c:1076
 msgid "Save _As..."
-msgstr "_Men_tés másként..."
+msgstr "Men_tés másként..."
 
 #. Tooltip for Save As menu entry
 #: ../editor/gtk/editor.c:1079
@@ -3134,10 +3059,9 @@ msgstr "Mentés másként"
 
 #. Menu entry
 #: ../editor/gtk/editor.c:1082
-#, fuzzy
 #| msgid "Change Title"
 msgid "_Change Title"
-msgstr "Cím módosítás"
+msgstr "_Cím módosítás"
 
 #. Tooltip for Change Title menu entry
 #: ../editor/gtk/editor.c:1084
@@ -3198,7 +3122,6 @@ msgid "Settings"
 msgstr "Beállítások"
 
 #: ../editor/gtk/game-resources.c:48
-#, fuzzy
 #| msgid "Resource Count"
 msgid "Resource count"
 msgstr "Nyersanyagok száma"
@@ -3276,16 +3199,15 @@ msgstr ""
 
 #: ../server/avahi.c:113 ../server/avahi.c:147 ../server/avahi.c:157
 #: ../server/avahi.c:193 ../server/avahi.c:214 ../server/avahi.c:228
-#, fuzzy, c-format
+#, c-format
 #| msgid "Error (%s): %s\n"
 msgid "Avahi error: %s, %s\n"
-msgstr "Hiba (%s): %s\n"
+msgstr ""
 
 #: ../server/avahi.c:215 ../server/avahi.c:229
-#, fuzzy
 #| msgid "Unregister from meta-server\n"
 msgid "Unable to register Avahi server"
-msgstr "Ismeretlen üzenet a metaszervertől\n"
+msgstr ""
 
 #: ../server/avahi.c:262
 msgid "Unregistering Avahi.\n"
@@ -3333,13 +3255,11 @@ msgid "Player %d is now %s\n"
 msgstr "%d. játékos most %s\n"
 
 #: ../server/gtk/main.c:570
-#, fuzzy
 #| msgid "Game Settings"
 msgid "Game settings"
 msgstr "Játék beállítások"
 
 #: ../server/gtk/main.c:620
-#, fuzzy
 #| msgid "Server Parameters"
 msgid "Server parameters"
 msgstr "Szerver paraméterek"
@@ -3349,7 +3269,6 @@ msgid "The port for the game server"
 msgstr "Port a játék szerverhez"
 
 #: ../server/gtk/main.c:649
-#, fuzzy
 #| msgid "Register Server"
 msgid "Register server"
 msgstr "Szerver regisztrálás"
@@ -3359,7 +3278,6 @@ msgid "Register this game at the meta server"
 msgstr "Játék regisztrálása a meta szerverre"
 
 #: ../server/gtk/main.c:672
-#, fuzzy
 #| msgid "Reported Hostname"
 msgid "Reported hostname"
 msgstr "A közölt host név"
@@ -3380,14 +3298,12 @@ msgid "Randomize turn order"
 msgstr "Játékosok sorrnedje véletlen"
 
 #: ../server/gtk/main.c:739
-#, fuzzy
 #| msgid "Running Game"
 msgid "Running game"
 msgstr "Aktuális játék"
 
 #. Caption
 #: ../server/gtk/main.c:754
-#, fuzzy
 #| msgid "Players Connected"
 msgid "Players connected"
 msgstr "Csatlakozott játékosok"
@@ -3451,21 +3367,18 @@ msgstr "Pioneers kliens indítása"
 
 #. Tooltip
 #: ../server/gtk/main.c:861
-#, fuzzy
 #| msgid "Launch the Pioneers Client"
 msgid "Launch the Pioneers client"
 msgstr "A Pioneers kliens indítása"
 
 #. Caption
 #: ../server/gtk/main.c:864
-#, fuzzy
 #| msgid "Computer Players"
 msgid "Computer players"
 msgstr "Számítógép játékosok"
 
 #. Label
 #: ../server/gtk/main.c:874
-#, fuzzy
 #| msgid "Enable Chat"
 msgid "Enable chat"
 msgstr "Chat engedélyezése"
@@ -3724,10 +3637,9 @@ msgid "The last human player left. Waiting for the return of a player."
 msgstr ""
 
 #: ../server/player.c:728
-#, fuzzy
 #| msgid "Recent games"
 msgid "Resuming the game."
-msgstr "Legutóbbi játékok"
+msgstr ""
 
 #. %s is the name of the reconnecting player
 #: ../server/player.c:860
