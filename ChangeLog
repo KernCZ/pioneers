@@ -1,3 +1,7 @@
+2010-12-07  Roland Clobus <rclobus@rclobus.nl>
+	* common/gtk/gtkbugs.c: Remove #ifdef for 2.12, because 2.12 is the
+	minimum required version in configure.ac
+
 2010-11-24  Ron Yorgason <yorgasor@cs.pdx.edu>
 	* pioneers.nsi.in, server/Makefile.am, server/north_america.game: After
 	nearly six years, this map finally moved from the contrib section on
