@@ -1,3 +1,8 @@
+2010-12-08  Roland Clobus <rclobus@rclobus.nl>
+	* common/gtk/gtkbugs.c, common/gtk/gtkbugs.h, client/gtk/gold.c,
+	client/gtk/player.c, client/gtk/discard.c: Remove code for column
+	resizing (was needed only for Gtk+ 2.6)
+
 2010-12-07  Roland Clobus <rclobus@rclobus.nl>
 	* common/gtk/gtkbugs.c, common/gtk/gtkbugs.h: Remove workaround for
 	tooltips, because 2.12 is the minimum required version in configure.ac

@@ -21,30 +21,6 @@
 
 #include "gtkbugs.h"
 
-void set_pixbuf_tree_view_column_autogrow(GtkWidget * parent_widget,
-					  GtkTreeViewColumn * column)
-{
-	if (gtk_major_version == 2
-	    && (gtk_minor_version >= 5 && gtk_minor_version <= 6)) {
-		gint horizontal_separator, focus_line_width, icon_width;
-
-		gtk_tree_view_column_set_sizing(column,
-						GTK_TREE_VIEW_COLUMN_FIXED);
-		gtk_widget_style_get(parent_widget,
-				     "horizontal_separator",
-				     &horizontal_separator,
-				     "focus-line-width", &focus_line_width,
-				     NULL);
-		gtk_icon_size_lookup(GTK_ICON_SIZE_MENU, &icon_width,
-				     NULL);
-		gtk_tree_view_column_set_fixed_width(column,
-						     icon_width +
-						     2 *
-						     horizontal_separator +
-						     focus_line_width);
-	}
-}
-
 /** Since Gtk+ 2.6 you cannot press a button twice, without moving the
  *  mouse.
  */

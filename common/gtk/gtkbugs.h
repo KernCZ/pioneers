@@ -24,13 +24,6 @@
 
 #include <gtk/gtk.h>
 
-/** @bug 2005-07-25 In Gtk+ 2.6 the pixbuf column is 
- *  one pixel too small, the focus_line_width is not used correctly.
- *  See also http://bugzilla.gnome.org/show_bug.cgi?id=147867
- */
-void set_pixbuf_tree_view_column_autogrow(GtkWidget * parent_widget,
-					  GtkTreeViewColumn * column);
-
 /** @bug 2006-01-15 In Gtk+ 2.4 it is not possible to disable actions.
  *  This will be close to its functionality, but will show -/- in the 
  *  menus for the shortcut keys.

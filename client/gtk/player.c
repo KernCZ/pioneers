@@ -570,7 +570,6 @@ GtkWidget *player_build_summary(void)
 							  NULL);
 	gtk_tree_view_column_set_sizing(column,
 					GTK_TREE_VIEW_COLUMN_GROW_ONLY);
-	set_pixbuf_tree_view_column_autogrow(summary_widget, column);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(summary_widget), column);
 
 	column = gtk_tree_view_column_new_with_attributes("",
