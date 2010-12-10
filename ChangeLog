@@ -1,3 +1,7 @@
+2010-12-10  Roland Clobus <rclobus@rclobus.nl>
+	* client/common/client.c: Don't process zero num_soldiers on
+	reconnect, to avoid setting statistics for viewers.
+
 2010-12-08  Roland Clobus <rclobus@rclobus.nl>
 	* common/gtk/gtkbugs.c, common/gtk/gtkbugs.h, client/gtk/gold.c,
 	client/gtk/player.c, client/gtk/discard.c: Remove code for column

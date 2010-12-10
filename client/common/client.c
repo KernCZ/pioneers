@@ -1177,8 +1177,11 @@ static gboolean mode_load_gameinfo(StateMachine * sm, gint event)
 	     &num_roads, &num_bridges, &num_ships, &num_settlements,
 	     &num_cities, &num_soldiers, &road_len, &pchapel, &puniv,
 	     &pgov, &plibr, &pmarket, &plongestroad, &plargestarmy)) {
-		player_modify_statistic(my_player_num(), STAT_SOLDIERS,
-					num_soldiers);
+		if (num_soldiers) {
+			player_modify_statistic(my_player_num(),
+						STAT_SOLDIERS,
+						num_soldiers);
+		}
 		if (pchapel) {
 			player_modify_statistic(my_player_num(),
 						STAT_CHAPEL, 1);
