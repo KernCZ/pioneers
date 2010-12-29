@@ -821,6 +821,9 @@ static gboolean check_other_players(StateMachine * sm)
 	}
 	if (sm_recv(sm, "won with %d", &num)) {
 		callbacks.game_over(player_num, num);
+		log_message(MSG_DICE, _("%s has won the game with %d "
+					"victory points!\n"),
+			    player_name(player_num, TRUE), num);
 		sm_pop_all_and_goto(sm, mode_game_over);
 		return TRUE;
 	}

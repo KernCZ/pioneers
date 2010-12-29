@@ -39,6 +39,8 @@ static gboolean enable_debug = FALSE;
 static gboolean show_version = FALSE;
 static Map *map = NULL;
 
+static void logbot_init(G_GNUC_UNUSED int argc, G_GNUC_UNUSED char **argv);
+
 static const struct algorithm_info {
 	/** Name of the algorithm (for commandline) */
 	const gchar *name;
@@ -52,6 +54,7 @@ static const struct algorithm_info {
 /* *INDENT-OFF* */
 	{ "greedy", &greedy_init, TRUE, TRUE},
 	{ "lobbybot", &lobbybot_init, FALSE, TRUE},
+	{ "logbot", &logbot_init, FALSE, TRUE},
 /* *INDENT-ON* */
 };
 
@@ -199,4 +202,11 @@ void frontend_set_callbacks(void)
 	callbacks.start_game = &ai_start_game;
 	callbacks.get_map = &ai_get_map;
 	callbacks.set_map = &ai_set_map;
+}
+
+/* The logbot is intended to be used as a viewer in a game, and to collect
+ * a transcript of the game in human readable form, which can be analysed
+ * using external tools. */
+void logbot_init(G_GNUC_UNUSED int argc, G_GNUC_UNUSED char **argv)
+{
 }
