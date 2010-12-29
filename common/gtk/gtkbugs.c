@@ -35,15 +35,23 @@ void action_set_sensitive(GtkAction * action, gboolean sensitive)
 	gtk_action_set_sensitive(action, sensitive);
 }
 
+/* Since 2.20 GTK_WIDGET_STATE and gtk_button_enter are deprecated.
+ * The bug below is fixed in 2.18.2
+ *
+ * When the code is built on >=2.20 and run <2.20 you might be hit by the
+ * bug, but in that case you'll be running a newer version of Pioneers with
+ * older libraries, which should not happen with many package managers.
+ * It doesn't hurt to apply this workaround for >=2.18.2
+ */
 void widget_set_sensitive(GtkWidget * widget, gboolean sensitive)
 {
-#if (GTK_MAJOR_VERSION <= 2 && GTK_MINOR_VERSION <= 18 && GTK_MICRO_VERSION < 2)
+#if (GTK_MAJOR_VERSION == 2 && GTK_MINOR_VERSION < 20)
 	GtkWidget *button;
 #endif
 
 	gtk_widget_set_sensitive(widget, sensitive);
 
-#if (GTK_MAJOR_VERSION <= 2 && GTK_MINOR_VERSION <= 18 && GTK_MICRO_VERSION < 2)
+#if (GTK_MAJOR_VERSION == 2 && GTK_MINOR_VERSION < 20)
 	/** @bug Gtk bug 56070. If the mouse is over a toolbar button that
 	 *  becomes sensitive, one can't click it without moving the mouse out
 	 *  and in again. This bug is registered in Bugzilla as a Gtk bug. The
