@@ -20,6 +20,11 @@ Install Cygwin
 	twm
 	xinit
 
+3) Download and install gob2 (at least 2.0.18)
+   http://ftp.5z.com/pub/gob
+
+   (./configure, make all install)
+
 You now have the setup needed to build and run Pioneers.
 
 Build Pioneers from the repository
@@ -56,8 +61,7 @@ Play Pioneers
 Known limitations
 =================
 * The help is not built
-* The server will not create new games
 * The metaserver does not work (not ported to MS Windows)
 
 Roland Clobus
-2010-10-06 (Pioneers 0.12.4)
+2011-01-08 (Pioneers 0.12.4)
