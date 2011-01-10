@@ -1,3 +1,8 @@
+2011-01-10  Roland Clobus <rclobus@rclobus.nl>
+	* common/Makefile.am: Fix build for Mac OSX (don't use echo -n), with
+	thanks to Camillo Lugaresi (camillol@users.sourceforge.net) for
+	reporting and testing.
+
 2011-01-08  Roland Clobus <rclobus@rclobus.nl>
 	* README.Cygwin: Added information about gob2
 
