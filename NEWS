@@ -1,3 +1,21 @@
+Subversion release 0.12.4
+* New features:
+  * Added a logbot type computer player. With thanks to Andreas Steinel
+  * New map: North Americ by Ron Yorgason
+  * New map: Ubuntuland by Matt Perry
+  * Added a close button on tab pages. With thanks to Anti Sullin
+  * Use AVAHI, With thanks to Andreas Steinel
+  * In the connect dialog, the games can be sorted
+  * Computer player uses the soldier cards and monopoly cards better
+  * New theme ccFlickr, by Aaron Williamson
+  * Tooltips for the development cards. With thanks to Aaron Williamson
+  * The editor can set/unset nosetup nodes
+* Bugfixes
+  * Fixed the FreeCIV-like and Wesnoth-like themes
+  * The computer player is more stable
+  * The meta-server is more stable
+  * Use the correct size for the icons in the context menu in the editor
+
 Subversion release 0.12.3
 * New feature: Look in $XDG_DATA_HOME/pioneers/themes for themes
 * New feature: Look in $XDG_DATA_HOME/pioneers for games
