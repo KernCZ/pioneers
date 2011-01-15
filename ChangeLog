@@ -1,5 +1,7 @@
 2011-01-15  Roland Clobus <rclobus@rclobus.nl>
 	* NEWS: Updated for release of 0.12.4
+	* Makefile.am: Remove intltool-*.in, fixes 'make distcheck' on Debian
+	stable
 
 2011-01-10  Roland Clobus <rclobus@rclobus.nl>
 	* common/Makefile.am: Fix build for Mac OSX (don't use echo -n), with

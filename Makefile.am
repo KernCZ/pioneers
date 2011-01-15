@@ -184,10 +184,7 @@ EXTRA_DIST += \
 	$(icon_DATA) \
 	$(subst png,svg,$(icon_DATA)) \
 	$(windows_resources_input) \
-	$(windows_resources_output) \
-	intltool-extract.in \
-	intltool-merge.in \
-	intltool-update.in
+	$(windows_resources_output)
 
 # po doesn't use automake, but creates its own Makefile
 SUBDIRS += po
