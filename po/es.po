@@ -3223,7 +3223,7 @@ msgstr "Registro del Meta-servidor\n"
 
 #: ../server/avahi.c:262
 msgid "Unregistering Avahi.\n"
-msgstr "Anulando el registro Avahi"
+msgstr "Anulando el registro Avahi.\n"
 
 #. Menu entry
 #: ../server/gtk/main.c:117
