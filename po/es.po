@@ -932,13 +932,13 @@ msgstr "Comienza turno %d para %s.\n"
 
 #: ../client/gtk/avahi-browser.c:83
 msgid "Select an automatically discovered game"
-msgstr ""
+msgstr "Escoger un juego descubierto automáticamente"
 
 #. $1=Game title, $2=version, $3=host_name, $4=port
 #: ../client/gtk/avahi-browser.c:132
 #, c-format
 msgid "%s (%s) on %s:%s"
-msgstr ""
+msgstr "%s (%s) en %s:%s"
 
 #. Label text
 #: ../client/gtk/chat.c:73
@@ -1245,17 +1245,17 @@ msgstr "¿Quiere tener un visor?"
 #. Label
 #: ../client/gtk/connect.c:1283
 msgid "Avahi"
-msgstr ""
+msgstr "Avahi"
 
 #. Button
 #: ../client/gtk/connect.c:1290
 msgid "Join"
-msgstr ""
+msgstr "Adherir"
 
 #. Tooltip for button Join
 #: ../client/gtk/connect.c:1294
 msgid "Join an automatically discovered game"
-msgstr ""
+msgstr "Adherir un juego descubierto automáticamente"
 
 #. Label
 #: ../client/gtk/connect.c:1321 ../server/gtk/main.c:660
@@ -2385,7 +2385,7 @@ msgstr "Año de Abundancia"
 #: ../common/cards.c:157
 #| msgid "Build one road segment."
 msgid "Build two new roads"
-msgstr ""
+msgstr "Construir dos caminos nuevos"
 
 #. Description of the 'Monopoly' development card
 #: ../common/cards.c:160
@@ -2393,6 +2393,7 @@ msgid ""
 "Select a resource type and take every card of that type held by all other "
 "players"
 msgstr ""
+"Escoger un tipo de recurso y tomar todo de lo mismo de todos jugadores"
 
 #. Description of the 'Year of Plenty' development card
 #: ../common/cards.c:164
@@ -2400,11 +2401,13 @@ msgid ""
 "Take two resource cards of any type from the bank (cards may be of the same "
 "or different types)"
 msgstr ""
+"Tomar dos cartas de recurso del banco de cualquier tipo (las pueden ser "
+"iguales or diferentes)"
 
 #. Description of a development card of 1 victory point
 #: ../common/cards.c:173
 msgid "One victory point"
-msgstr ""
+msgstr "Un punto de victoria"
 
 #. Description of the 'Soldier' development card
 #: ../common/cards.c:176
@@ -2412,6 +2415,8 @@ msgid ""
 "Move the robber to a different space and take one resource card from another "
 "player adjacent to that space"
 msgstr ""
+"Mover el ladrón al espacio diferente y robar una carta del otro jugador que "
+"está adyacente a ese espacio"
 
 #: ../common/game.c:606 ../common/game.c:637
 msgid "This game cannot be won."
@@ -2475,6 +2480,7 @@ msgstr "Autores:"
 msgid "translator_credits"
 msgstr ""
 "Marco Antonio Giraldo\n"
+"Michael Wiktowy\n"
 "Launchpad Contributions:\n"
 "  DiegoJ https://launchpad.net/~diegojromerolopez\n"
 "  Eduardo Ruiz https://launchpad.net/~eduardo-ruizcarrillo\n"
@@ -2492,7 +2498,7 @@ msgstr "Pioneers es traducido al español por:\n"
 #: ../common/gtk/common_gtk.c:321
 #| msgid "Victory Point Target"
 msgid "Victory Point Analysis"
-msgstr ""
+msgstr "Análisis de Punto de Victoria"
 
 #. Tooltip for sevens rule normal
 #: ../common/gtk/game-rules.c:94
@@ -3187,25 +3193,27 @@ msgstr "protocolo del metaservidor:"
 
 #: ../server/avahi.c:68
 msgid "Avahi registration successful.\n"
-msgstr ""
+msgstr "Registro de Avahi fue un éxito.\n"
 
 #: ../server/avahi.c:78
 #, c-format
 msgid "Avahi service name collision, renaming service to '%s'.\n"
 msgstr ""
+"Los nombres del servicio de Avahi conflicto, "
+"el nombre del servicio esta cambiando a '%s'.\n"
 
 #. Some kind of failure happened while we were registering
 #: ../server/avahi.c:89
 #, c-format
 msgid "Avahi error: %s\n"
-msgstr ""
+msgstr "Avahi error: %s\n"
 
 #: ../server/avahi.c:113 ../server/avahi.c:147 ../server/avahi.c:157
 #: ../server/avahi.c:193 ../server/avahi.c:214 ../server/avahi.c:228
 #, fuzzy, c-format
 #| msgid "Error (%s): %s\n"
 msgid "Avahi error: %s, %s\n"
-msgstr "Error (%s): %s\n"
+msgstr "Avahi Error (%s): %s\n"
 
 #: ../server/avahi.c:215 ../server/avahi.c:229
 #, fuzzy
@@ -3215,7 +3223,7 @@ msgstr "Registro del Meta-servidor\n"
 
 #: ../server/avahi.c:262
 msgid "Unregistering Avahi.\n"
-msgstr ""
+msgstr "Anulando el registro Avahi"
 
 #. Menu entry
 #: ../server/gtk/main.c:117
@@ -3604,7 +3612,7 @@ msgstr "El ultimo jugador salió, el contador del torne es restablecido."
 
 #: ../server/player.c:260 ../server/player.c:633
 msgid "No human players present. Bye."
-msgstr ""
+msgstr "No hay jugadores humanos. Chao."
 
 #: ../server/player.c:267
 msgid "Game starts, adding computer players."
@@ -3646,12 +3654,12 @@ msgstr "Ha estado esperando demasiado tiempo sin jugadores... Adiós.\n"
 
 #: ../server/player.c:707
 msgid "The last human player left. Waiting for the return of a player."
-msgstr ""
+msgstr "El último jugador humano salió. Esperando el regreso de un jugador."
 
 #: ../server/player.c:728
 #| msgid "Recent games"
 msgid "Resuming the game."
-msgstr ""
+msgstr "Reanudando el juego"
 
 #. %s is the name of the reconnecting player
 #: ../server/player.c:860
