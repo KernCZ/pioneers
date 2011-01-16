@@ -939,7 +939,7 @@ msgstr ""
 #: ../client/gtk/avahi-browser.c:132
 #, c-format
 msgid "%s (%s) on %s:%s"
-msgstr ""
+msgstr "%s (%s) auf %s:%s"
 
 #. Label text
 #: ../client/gtk/chat.c:73
@@ -1058,17 +1058,15 @@ msgstr ""
 
 #. Label
 #: ../client/gtk/connect.c:712
-#, fuzzy
 #| msgid "Type of computer player"
 msgid "Number of computer players"
-msgstr "Computerspieler-Typ"
+msgstr "Anzahl der Computerspieler"
 
 #. Tooltip
 #: ../client/gtk/connect.c:732
-#, fuzzy
 #| msgid "The number of players"
 msgid "The number of computer players"
-msgstr "Die Anzahl der Spieler"
+msgstr "Die Anzahl der Computerspieler"
 
 #: ../client/gtk/connect.c:753
 msgid "Requesting new game server\n"
@@ -1246,12 +1244,12 @@ msgstr "Willst du Zuschauer sein?"
 #. Label
 #: ../client/gtk/connect.c:1283
 msgid "Avahi"
-msgstr ""
+msgstr "Avahi"
 
 #. Button
 #: ../client/gtk/connect.c:1290
 msgid "Join"
-msgstr ""
+msgstr "Teilnehmen"
 
 #. Tooltip for button Join
 #: ../client/gtk/connect.c:1294
@@ -2064,7 +2062,7 @@ msgstr "%s hat %s und möchte %s"
 #. Label
 #: ../client/gtk/quote.c:299
 msgid "I want"
-msgstr ""
+msgstr "Ich will"
 
 #. Label
 #: ../client/gtk/quote.c:309
@@ -2406,7 +2404,7 @@ msgstr ""
 #. Description of a development card of 1 victory point
 #: ../common/cards.c:173
 msgid "One victory point"
-msgstr ""
+msgstr "Ein Siegpunkt"
 
 #. Description of the 'Soldier' development card
 #: ../common/cards.c:176
@@ -2477,8 +2475,14 @@ msgstr "Autoren:"
 msgid "translator_credits"
 msgstr ""
 "Launchpad Contributions:\n"
-"  Maximilian Reininghaus https://launchpad.net/~max-reininghaus\n"
-"  Pit Garbe <piiit@gmx.de>"
+"  Dominik R. https://launchpad.net/~visual-night\n"
+"  Jochen Kemnade https://launchpad.net/~jochenkemnade\n"
+"  Markus Groß https://launchpad.net/~mag-privat\n"
+"  Maximilian R. https://launchpad.net/~max-r\n"
+"  Philipp Kleinhenz https://launchpad.net/~lopho\n"
+"  Pit Garbe https://launchpad.net/~piiit\n"
+"  Vinzenz Vietzke https://launchpad.net/~vinzv"
+
 
 #. Header for the translator_credits. Use your own language name
 #: ../common/gtk/aboutbox.c:109
@@ -2487,10 +2491,8 @@ msgstr "Pioneers wird auf Deutsch übersetzt von:\n"
 
 #. Caption for result of checking victory points
 #: ../common/gtk/common_gtk.c:321
-#, fuzzy
-#| msgid "Victory Point Target"
 msgid "Victory Point Analysis"
-msgstr "Siegpunkte"
+msgstr "Siegpunkt-Analyse"
 
 #. Tooltip for sevens rule normal
 #: ../common/gtk/game-rules.c:94
@@ -3198,14 +3200,13 @@ msgstr ""
 #: ../server/avahi.c:89
 #, c-format
 msgid "Avahi error: %s\n"
-msgstr ""
+msgstr "Avahi-Fehler: %s\n"
 
 #: ../server/avahi.c:113 ../server/avahi.c:147 ../server/avahi.c:157
 #: ../server/avahi.c:193 ../server/avahi.c:214 ../server/avahi.c:228
-#, fuzzy, c-format
-#| msgid "Error (%s): %s\n"
+#, c-format
 msgid "Avahi error: %s, %s\n"
-msgstr "Fehler (%s): %s\n"
+msgstr "Avahi-Fehler: %s, %s\n"
 
 #: ../server/avahi.c:215 ../server/avahi.c:229
 #, fuzzy

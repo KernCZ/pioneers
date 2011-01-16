@@ -2471,6 +2471,7 @@ msgstr ""
 "Filipe Roque\n"
 "\n"
 "Launchpad Contributions:\n"
+"  Almufadado https://launchpad.net/~almufadado\n"
 "  André Oliveira https://launchpad.net/~andreoliveira\n"
 "  Filipe Roque https://launchpad.net/~flip-roque\n"
 "  Tiago Silva https://launchpad.net/~tiagosilva"
@@ -2991,12 +2992,12 @@ msgstr "Jogo aberto"
 #: ../editor/gtk/editor.c:931
 #| msgid "Save _As..."
 msgid "Save As..."
-msgstr "Gravar como..."
+msgstr "Guardar Como..."
 
 #. Dialog caption
 #: ../editor/gtk/editor.c:969
 msgid "Change Title"
-msgstr "Mudar título"
+msgstr "Mudar o Título"
 
 #. Label
 #: ../editor/gtk/editor.c:992

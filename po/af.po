@@ -86,7 +86,7 @@ msgstr "Pioniers weergawe:"
 
 #. ai commandline error
 #: ../client/ai/ai.c:127
-#, fuzzy, c-format
+#, c-format
 msgid "A name must be provided.\n"
 msgstr "'n Naam moet verskaf word.\n"
 

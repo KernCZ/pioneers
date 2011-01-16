@@ -932,7 +932,7 @@ msgstr "Comienza turno %d para %s.\n"
 
 #: ../client/gtk/avahi-browser.c:83
 msgid "Select an automatically discovered game"
-msgstr "Escoger un juego descubierto automáticamente"
+msgstr "Selecciona un juego que ha sido detectado automáticamente"
 
 #. $1=Game title, $2=version, $3=host_name, $4=port
 #: ../client/gtk/avahi-browser.c:132
@@ -1057,17 +1057,13 @@ msgstr ""
 
 #. Label
 #: ../client/gtk/connect.c:712
-#, fuzzy
-#| msgid "Type of computer player"
 msgid "Number of computer players"
-msgstr "Tipo de adversario electrónico"
+msgstr "Número de jugadores de la computador"
 
 #. Tooltip
 #: ../client/gtk/connect.c:732
-#, fuzzy
-#| msgid "The number of players"
 msgid "The number of computer players"
-msgstr "Número de jugadores"
+msgstr "El Número de jugadores de la computador"
 
 #: ../client/gtk/connect.c:753
 msgid "Requesting new game server\n"
@@ -2482,12 +2478,13 @@ msgstr ""
 "Marco Antonio Giraldo\n"
 "Michael Wiktowy\n"
 "Launchpad Contributions:\n"
+"  Braxton Schafer https://launchpad.net/~braxton-schafer\n"
 "  DiegoJ https://launchpad.net/~diegojromerolopez\n"
 "  Eduardo Ruiz https://launchpad.net/~eduardo-ruizcarrillo\n"
 "  José A. Fuentes Santiago https://launchpad.net/~joanfusan\n"
 "  Kiibakun https://launchpad.net/~kiba\n"
 "  Marco Antonio Giraldo https://launchpad.net/~m-a-giraldo\n"
-"  skarevoluti https://launchpad.net/~garciamanu49"
+"  skarevoluti https://launchpad.net/~skarevoluti"
 
 #. Header for the translator_credits. Use your own language name
 #: ../common/gtk/aboutbox.c:109

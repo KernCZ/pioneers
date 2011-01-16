@@ -29,7 +29,7 @@ msgstr "Port serveru"
 #. Commandline pioneersai: name
 #: ../client/ai/ai.c:71
 msgid "Computer name (mandatory)"
-msgstr ""
+msgstr "Název počítače (povinný)"
 
 #. Commandline pioneersai: time
 #: ../client/ai/ai.c:74
@@ -1050,17 +1050,15 @@ msgstr ""
 
 #. Label
 #: ../client/gtk/connect.c:712
-#, fuzzy
 #| msgid "Type of computer player"
 msgid "Number of computer players"
-msgstr "Typ strojového hráče"
+msgstr "Počet počítačových hráčů"
 
 #. Tooltip
 #: ../client/gtk/connect.c:732
-#, fuzzy
 #| msgid "The number of players"
 msgid "The number of computer players"
-msgstr "Počet hráčů"
+msgstr "Počet počítačových hráčů"
 
 #: ../client/gtk/connect.c:753
 msgid "Requesting new game server\n"
@@ -1243,7 +1241,7 @@ msgstr ""
 #. Button
 #: ../client/gtk/connect.c:1290
 msgid "Join"
-msgstr ""
+msgstr "Připojit se"
 
 #. Tooltip for button Join
 #: ../client/gtk/connect.c:1294
@@ -2467,6 +2465,7 @@ msgid "translator_credits"
 msgstr ""
 "Launchpad Contributions:\n"
 "  Jakub Žáček https://launchpad.net/~dawon\n"
+"  Konki https://launchpad.net/~pavel-konkol\n"
 "  Ladislav Dobias https://launchpad.net/~lada-preklad"
 
 #. Header for the translator_credits. Use your own language name
