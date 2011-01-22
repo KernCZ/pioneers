@@ -551,12 +551,12 @@ msgstr "%s toma %s de %s.\n"
 #: ../client/common/player.c:124 ../server/player.c:557
 #, c-format
 msgid "Viewer %d"
-msgstr "Visor %d"
+msgstr "Espectador %d"
 
 #: ../client/common/player.c:126
 #, c-format
 msgid "viewer %d"
-msgstr "visor %d"
+msgstr "espectador %d"
 
 #: ../client/common/player.c:134 ../server/player.c:560
 #, c-format
@@ -571,7 +571,7 @@ msgstr "jugador %d"
 #: ../client/common/player.c:212
 #, c-format
 msgid "New viewer: %s.\n"
-msgstr "Nuevo visor: %s.\n"
+msgstr "Nuevo espectador: %s.\n"
 
 #: ../client/common/player.c:215 ../client/common/player.c:231
 #, c-format
@@ -1229,14 +1229,13 @@ msgstr "Entra tu nombre de jugador"
 #. Role of the player: viewer
 #: ../client/gtk/connect.c:1263 ../server/gtk/main.c:527
 msgid "Viewer"
-msgstr "Visor"
+msgstr "Espectador"
 
 #. Tooltip for checkbox Viewer
 #: ../client/gtk/connect.c:1272
-#, fuzzy
 #| msgid "Do you want to be a viewer?"
 msgid "Check if you want to be a viewer"
-msgstr "¿Quiere tener un visor?"
+msgstr "Marque si quieres ser un espectador"
 
 #. Label
 #: ../client/gtk/connect.c:1283
@@ -1339,15 +1338,14 @@ msgstr "Carta de jeugo"
 #: ../client/gtk/discard.c:78
 #| msgid "Discard resources"
 msgid "Discard Resources"
-msgstr "Desecha recursos"
+msgstr "Deseche recursos"
 
 #: ../client/gtk/discard.c:101
-#, fuzzy, c-format
 #| msgid "You must discard %d resources"
 msgid "You must discard %d resource"
 msgid_plural "You must discard %d resources"
-msgstr[0] "Tienes que descartar %d cartas de recurso"
-msgstr[1] "Tienes que descartar %d cartas de recurso"
+msgstr[0] "Tienes que desechar %d carta de recurso"
+msgstr[1] "Tienes que desechar %d cartas de recurso"
 
 #. Label
 #: ../client/gtk/discard.c:110
@@ -1382,11 +1380,10 @@ msgid "Choose Resources"
 msgstr "Elige recursos"
 
 #: ../client/gtk/gold.c:96
-#, fuzzy, c-format
 #| msgid "You may choose %d resources"
 msgid "You may choose %d resource"
 msgid_plural "You may choose %d resources"
-msgstr[0] "Puedes escoger %d recursos"
+msgstr[0] "Puedes escoger %d recurso"
 msgstr[1] "Puedes escoger %d recursos"
 
 #. Text for total in choose gold dialog
@@ -1783,7 +1780,7 @@ msgstr "Anunciar nuevos jugadores"
 #. Tooltip for the option to use sound when players/viewers enter
 #: ../client/gtk/gui.c:1152
 msgid "Make a sound when a new player or viewer enters the game"
-msgstr "Hacer sonido cuando un nuevo jugador o visor entre al juego"
+msgstr "Hacer sonido cuando un nuevo jugador o espectador entre al juego"
 
 #. Label for the option to use the 16:9 layout.
 #: ../client/gtk/gui.c:1163
@@ -1909,7 +1906,7 @@ msgstr "Variante:"
 
 #: ../client/gtk/offline.c:60
 msgid "Connect as a viewer"
-msgstr "Conectar como visor"
+msgstr "Conectar como espectador"
 
 #: ../client/gtk/offline.c:63
 msgid "Meta-server Host"
@@ -2202,10 +2199,9 @@ msgid "Allow trade only before building or buying:"
 msgstr "Permitir comerciar sólo antes de construir o comprar:"
 
 #: ../client/gtk/settingscreen.c:171
-#, fuzzy
 #| msgid "Check for victory only at end of turn"
 msgid "Check victory only at end of turn:"
-msgstr "Revisa la victoria únicamente al terminar el turno"
+msgstr "Revisar por victoria únicamente al fin del turno"
 
 #: ../client/gtk/settingscreen.c:176
 #| msgid "Amount of Each Resource:"
@@ -2411,8 +2407,8 @@ msgid ""
 "Move the robber to a different space and take one resource card from another "
 "player adjacent to that space"
 msgstr ""
-"Mover el ladrón al espacio diferente y robar una carta del otro jugador que "
-"está adyacente a ese espacio"
+"Mover el ladrón al espacio diferente y robar una carta de recurso del otro "
+"jugador que está adyacente a ese espacio"
 
 #: ../common/game.c:606 ../common/game.c:637
 msgid "This game cannot be won."
@@ -2555,7 +2551,7 @@ msgstr "Victoria al terminar el turno"
 
 #: ../common/gtk/game-rules.c:123
 msgid "Check for victory only at end of turn"
-msgstr "Revisa la victoria únicamente al terminar el turno"
+msgstr "Revisa la victoria únicamente al fin del turno"
 
 #. Label text for customising a game
 #: ../common/gtk/game-settings.c:106
@@ -2728,7 +2724,7 @@ msgstr "Jugador 8: "
 #. Log prefix
 #: ../common/log.c:137
 msgid "Viewer: "
-msgstr "Visor: "
+msgstr "Espectador: "
 
 #. Log prefix
 #: ../common/log.c:141
@@ -3207,16 +3203,13 @@ msgstr "Avahi error: %s\n"
 
 #: ../server/avahi.c:113 ../server/avahi.c:147 ../server/avahi.c:157
 #: ../server/avahi.c:193 ../server/avahi.c:214 ../server/avahi.c:228
-#, fuzzy, c-format
-#| msgid "Error (%s): %s\n"
 msgid "Avahi error: %s, %s\n"
-msgstr "Avahi Error (%s): %s\n"
+msgstr "Avahi error: %s, %s\n"
 
 #: ../server/avahi.c:215 ../server/avahi.c:229
-#, fuzzy
 #| msgid "Unregister from meta-server\n"
 msgid "Unable to register Avahi server"
-msgstr "Registro del Meta-servidor\n"
+msgstr "No lo puede registrar el servidor Avahi"
 
 #: ../server/avahi.c:262
 msgid "Unregistering Avahi.\n"
@@ -3299,10 +3292,9 @@ msgstr ""
 "un firewall)"
 
 #: ../server/gtk/main.c:691
-#, fuzzy
 #| msgid "Randomize turn order"
 msgid "Random turn order"
-msgstr "Desordenar orden de turnos"
+msgstr "Desordenar el orden de la vuelta"
 
 #: ../server/gtk/main.c:699
 msgid "Randomize turn order"
@@ -3322,7 +3314,7 @@ msgstr "Jugadores conectados"
 #. Tooltip for server connection overview
 #: ../server/gtk/main.c:787
 msgid "Shows all players and viewers connected to the server"
-msgstr "Mostrar todos los jugadores y visores conectados al servidor"
+msgstr "Mostrar todos los jugadores y espectadores conectados al servidor"
 
 #: ../server/gtk/main.c:792
 msgid "Connected"
@@ -3366,10 +3358,9 @@ msgstr "Función"
 
 #. Tooltip for column Role
 #: ../server/gtk/main.c:840
-#, fuzzy
 #| msgid "Player of viewer"
 msgid "Player or viewer"
-msgstr "Jugador de visor"
+msgstr "Jugador o espectador"
 
 #. Button text
 #: ../server/gtk/main.c:852
@@ -3569,10 +3560,9 @@ msgstr "No se pueden cargar los parámetros de la partida\n"
 
 #. Error message
 #: ../server/main.c:275
-#, fuzzy, c-format
 #| msgid "Sorry, %s available.\n"
 msgid "Admin port not available.\n"
-msgstr "Lo siento, %s disponible.\n"
+msgstr "El Puerto de administración no es disponible.\n"
 
 #. server-console commandline error
 #: ../server/main.c:282
