@@ -1,3 +1,6 @@
+2011-01-23  Roland Clobus <rclobus@rclobus.nl>
+	* client/gtk/data/themes/ccFlickr/Makefile.am: Fix typo in path.
+
 2011-01-15  Roland Clobus <rclobus@rclobus.nl>
 	* NEWS: Updated for release of 0.12.4
 	* Makefile.am: Remove intltool-*.in, fixes 'make distcheck' on Debian
