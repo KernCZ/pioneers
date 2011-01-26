@@ -1,4 +1,7 @@
 2011-01-26  Roland Clobus <rclobus@rclobus.nl>
+	* Released 0.12.4.
+
+2011-01-26  Roland Clobus <rclobus@rclobus.nl>
 	* MinGW/gdk-pixbuf.loaders, MinGW/Makefile.am, pioneers.nsi.in,
 	macros/type_socklen_t.m4, configure.ac, Makefile.am, README.MinGW:
 	Fixed the MinGW port.
