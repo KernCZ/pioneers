@@ -2,7 +2,8 @@
 	* MinGW/gdk-pixbuf.loaders, MinGW/Makefile.am, pioneers.nsi.in,
 	macros/type_socklen_t.m4, configure.ac, Makefile.am, README.MinGW:
 	Fixed the MinGW port.
-	* client/ai/lobbybot.c: Mention 0.12.4
+	* client/ai/lobbybot.c: Mention 0.12.4.
+	* docs/README.release: Use a clean checkout for the release build.
 
 2011-01-23  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/data/themes/ccFlickr/Makefile.am: Fix typo in path.

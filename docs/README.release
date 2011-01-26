@@ -24,8 +24,10 @@ At release time:
 * Update the line numbers in the translation templates
   cd po;make update-po
 * Update: client/ai/lobbybot.c
+* Extract a clean copy
+  cd my_build_directory;svn checkout https://pio.svn.sourceforge.net/svnroot/pio/trunk
 * Create the tarball
-  make dist
+  ./autogen.sh;make dist
 * Sign the tarball
   gpg -u packager@foo.net --armor --output tarball.sig --detach-sig tarball.tar.gz
   (Verify with gpg --verify tarball.sig tarball.tar.gz)
