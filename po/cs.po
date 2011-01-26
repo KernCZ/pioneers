@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 0.12.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-26 17:42+0200\n"
+"POT-Creation-Date: 2011-01-26 11:25+0100\n"
 "PO-Revision-Date: 2010-03-28 01:29+0000\n"
 "Last-Translator: Ladislav Dobias <Unknown>\n"
 "Language-Team: \n"
@@ -17,32 +17,32 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2\n"
 
 #. Commandline pioneersai: server
-#: ../client/ai/ai.c:65
+#: ../client/ai/ai.c:68
 msgid "Server Host"
 msgstr "Adresa serveru"
 
 #. Commandline pioneersai: port
-#: ../client/ai/ai.c:68
+#: ../client/ai/ai.c:71
 msgid "Server Port"
 msgstr "Port serveru"
 
 #. Commandline pioneersai: name
-#: ../client/ai/ai.c:71
+#: ../client/ai/ai.c:74
 msgid "Computer name (mandatory)"
 msgstr "Název počítače (povinný)"
 
 #. Commandline pioneersai: time
-#: ../client/ai/ai.c:74
+#: ../client/ai/ai.c:77
 msgid "Time to wait between turns (in milliseconds)"
 msgstr "Čekací čas mezi koly (v ms)"
 
 #. Commandline pioneersai: chat-free
-#: ../client/ai/ai.c:77
+#: ../client/ai/ai.c:80
 msgid "Stop computer player from talking"
 msgstr "Zastavit povídání strojového hráče"
 
 #. Commandline pioneersai: algorithm
-#: ../client/ai/ai.c:80
+#: ../client/ai/ai.c:83
 msgid "Type of computer player"
 msgstr "Typ strojového hráče"
 
@@ -51,7 +51,7 @@ msgstr "Typ strojového hráče"
 #. Commandline option of meta server: enable debug logging
 #. Commandline option of server-gtk: enable debug logging
 #. Commandline option of server: enable debug logging
-#: ../client/ai/ai.c:83 ../client/gtk/offline.c:66 ../meta-server/main.c:1085
+#: ../client/ai/ai.c:86 ../client/gtk/offline.c:66 ../meta-server/main.c:1085
 #: ../server/gtk/main.c:1000 ../server/main.c:145
 msgid "Enable debug messages"
 msgstr "Povolit ladící hlášení"
@@ -62,17 +62,17 @@ msgstr "Povolit ladící hlášení"
 #. Commandline option of meta server: version
 #. Commandline option of server-gtk: version
 #. Commandline option of server-console: version
-#: ../client/ai/ai.c:86 ../client/gtk/offline.c:69 ../editor/gtk/editor.c:1150
+#: ../client/ai/ai.c:89 ../client/gtk/offline.c:69 ../editor/gtk/editor.c:1150
 #: ../meta-server/main.c:1091 ../server/gtk/main.c:1003 ../server/main.c:100
 msgid "Show version information"
 msgstr "Ukázat informaci o verzi"
 
 #. Long description in the commandline for pioneersai: help
-#: ../client/ai/ai.c:97
+#: ../client/ai/ai.c:100
 msgid "- Computer player for Pioneers"
 msgstr "- Strojový hráč pro Pioneers"
 
-#: ../client/ai/ai.c:107 ../client/gtk/offline.c:177
+#: ../client/ai/ai.c:110 ../client/gtk/offline.c:177
 #: ../editor/gtk/editor.c:1190 ../meta-server/main.c:1121
 #: ../server/gtk/main.c:1053 ../server/main.c:208
 #, c-format
@@ -80,222 +80,222 @@ msgid "Pioneers version:"
 msgstr "Verze Pioneers:"
 
 #. ai commandline error
-#: ../client/ai/ai.c:127
+#: ../client/ai/ai.c:130
 #, c-format
 msgid "A name must be provided.\n"
 msgstr "Jméno musí být vyplněno.\n"
 
-#: ../client/ai/ai.c:141
+#: ../client/ai/ai.c:144
 #, c-format
 msgid "Type of computer player: %s\n"
 msgstr "Typ strojového hráče: %s\n"
 
-#: ../client/ai/ai.c:170
+#: ../client/ai/ai.c:173
 msgid "The game is already full. I'm leaving."
 msgstr "Tato hra je již plná. Odcházím."
 
-#: ../client/ai/greedy.c:948
+#: ../client/ai/greedy.c:959
 msgid "No settlements in stock to use for setup"
 msgstr "Nejsou vesnice na skladě pro fázi zakládání"
 
-#: ../client/ai/greedy.c:955
+#: ../client/ai/greedy.c:966
 msgid "There is no place to setup a settlement"
 msgstr "Není již místo pro založení vesnice"
 
-#: ../client/ai/greedy.c:979
+#: ../client/ai/greedy.c:990
 msgid "No roads in stock to use for setup"
 msgstr "Nejsou silnice na skladě pro fázi zakládání"
 
-#: ../client/ai/greedy.c:996
+#: ../client/ai/greedy.c:1007
 msgid "There is no place to setup a road"
 msgstr "Není již místo pro založení silnice."
 
 #. AI chat at the start of the turn
-#: ../client/ai/greedy.c:1320
+#: ../client/ai/greedy.c:1311
 msgid "Ok, let's go!"
 msgstr "OK, tak jdem na to!"
 
 #. AI chat at the start of the turn
-#: ../client/ai/greedy.c:1322
+#: ../client/ai/greedy.c:1313
 msgid "I'll beat you all now! ;)"
 msgstr "Všechny vás pobiju! ;)"
 
 #. AI chat at the start of the turn
-#: ../client/ai/greedy.c:1324
+#: ../client/ai/greedy.c:1315
 msgid "Now for another try..."
 msgstr "Zkusím to znovu..."
 
 #. AI chat when one resource is received
-#: ../client/ai/greedy.c:1329
+#: ../client/ai/greedy.c:1320
 msgid "At least I get something..."
 msgstr "Aspoň já jsem něco dostal..."
 
 #. AI chat when one resource is received
-#: ../client/ai/greedy.c:1331
+#: ../client/ai/greedy.c:1322
 msgid "One is better than none..."
 msgstr "Něco je lepší než nic..."
 
 #. AI chat when more than one resource is received
-#: ../client/ai/greedy.c:1336
+#: ../client/ai/greedy.c:1327
 msgid "Wow!"
 msgstr "Jů!"
 
 #. AI chat when more than one resource is received
-#: ../client/ai/greedy.c:1338
+#: ../client/ai/greedy.c:1329
 msgid "Ey, I'm becoming rich ;)"
 msgstr "Hej, já bohatnu ;)"
 
 #. AI chat when more than one resource is received
-#: ../client/ai/greedy.c:1340
+#: ../client/ai/greedy.c:1331
 msgid "This is really a good year!"
 msgstr "Toto je vskutku dobrý rok!"
 
 #. AI chat when other players receive more than one resource
-#: ../client/ai/greedy.c:1345
+#: ../client/ai/greedy.c:1336
 msgid "You really don't deserve that much!"
 msgstr "Ty si určitě tolik nezasloužíš!"
 
 #. AI chat when other players receive more than one resource
-#: ../client/ai/greedy.c:1347
+#: ../client/ai/greedy.c:1338
 msgid "You don't know what to do with that many resources ;)"
 msgstr "Ty nevíš co dělat s tolika surovinami ;)"
 
 #. AI chat when other players receive more than one resource
-#: ../client/ai/greedy.c:1349
+#: ../client/ai/greedy.c:1340
 msgid "Ey, wait for my robber and lose all this again!"
 msgstr "Hej, počkej na mého zloděje a přijdeš o to všechno znova!"
 
 #. AI chat when it moves the robber
-#: ../client/ai/greedy.c:1354
+#: ../client/ai/greedy.c:1345
 msgid "Hehe!"
 msgstr "Hehe!"
 
 #. AI chat when it moves the robber
-#: ../client/ai/greedy.c:1356
+#: ../client/ai/greedy.c:1347
 msgid "Go, robber, go!"
 msgstr "Jdi, zloději, jdi!"
 
 #. AI chat when the robber is moved to it
-#: ../client/ai/greedy.c:1361
+#: ../client/ai/greedy.c:1352
 msgid "You bastard!"
 msgstr "Ty bastarde!"
 
 #. AI chat when the robber is moved to it
-#: ../client/ai/greedy.c:1363
+#: ../client/ai/greedy.c:1354
 msgid "Can't you move that robber somewhere else?!"
 msgstr "Nemůžeš toho zloděje posunout někam jinam?!"
 
 #. AI chat when the robber is moved to it
-#: ../client/ai/greedy.c:1365
+#: ../client/ai/greedy.c:1356
 msgid "Why always me??"
 msgstr "Proč vždycky já??"
 
 #. AI chat when it must discard resources
-#: ../client/ai/greedy.c:1370
+#: ../client/ai/greedy.c:1361
 msgid "Oh no!"
 msgstr "Ó, ne!"
 
 #. AI chat when it must discard resources
-#: ../client/ai/greedy.c:1372
+#: ../client/ai/greedy.c:1363
 msgid "Grrr!"
 msgstr "Vrrr!"
 
 #. AI chat when it must discard resources
-#: ../client/ai/greedy.c:1374
+#: ../client/ai/greedy.c:1365
 msgid "Who the hell rolled that 7??"
 msgstr "Kdo to sakra hodil tu 7??"
 
 #. AI chat when it must discard resources
-#: ../client/ai/greedy.c:1376
+#: ../client/ai/greedy.c:1367
 msgid "Why always me?!?"
 msgstr "Proč vždycky já?!?"
 
 #. AI chat when other players must discard
-#: ../client/ai/greedy.c:1381
+#: ../client/ai/greedy.c:1372
 msgid "Say good bye to your cards... :)"
 msgstr "Rozluč se se svými kartami... ;)"
 
 #. AI chat when other players must discard
-#: ../client/ai/greedy.c:1383
+#: ../client/ai/greedy.c:1374
 msgid "*evilgrin*"
 msgstr "*dábelský škleb*"
 
 #. AI chat when other players must discard
-#: ../client/ai/greedy.c:1385
+#: ../client/ai/greedy.c:1376
 msgid "/me says farewell to your cards ;)"
 msgstr "/me říká sbohem tvým kartám ;)"
 
 #. AI chat when other players must discard
-#: ../client/ai/greedy.c:1387
+#: ../client/ai/greedy.c:1378
 msgid "That's the price for being rich... :)"
 msgstr "To je cena za to být bohatý... :)"
 
 #. AI chat when someone steals from it
-#: ../client/ai/greedy.c:1392
+#: ../client/ai/greedy.c:1383
 msgid "Ey! Where's that card gone?"
 msgstr "Ha! Kam se ta karta poděla?"
 
 #. AI chat when someone steals from it
-#: ../client/ai/greedy.c:1394
+#: ../client/ai/greedy.c:1385
 msgid "Thieves! Thieves!!"
 msgstr "Zloděj! Zloděj!!"
 
 #. AI chat when someone steals from it
-#: ../client/ai/greedy.c:1396
+#: ../client/ai/greedy.c:1387
 msgid "Wait for my revenge..."
 msgstr "Počkej na moji pomstu..."
 
 #. AI chat when someone plays the monopoly card
-#: ../client/ai/greedy.c:1401
+#: ../client/ai/greedy.c:1392
 msgid "Oh no :("
 msgstr "Ó, ne :("
 
 #. AI chat when someone plays the monopoly card
-#: ../client/ai/greedy.c:1403
+#: ../client/ai/greedy.c:1394
 msgid "Must this happen NOW??"
 msgstr "Muselo se to stát TEĎ??"
 
 #. AI chat when someone plays the monopoly card
-#: ../client/ai/greedy.c:1405
+#: ../client/ai/greedy.c:1396
 msgid "Args"
 msgstr "Sakra"
 
 #. AI chat when it has the largest army
-#: ../client/ai/greedy.c:1410
+#: ../client/ai/greedy.c:1401
 msgid "Hehe, my soldiers rule!"
 msgstr "Haha, moje vojsko je nejlepší!"
 
 #. AI chat when another player that the largest army
-#: ../client/ai/greedy.c:1415
+#: ../client/ai/greedy.c:1406
 msgid "First robbing us, then grabbing the points..."
 msgstr "Nejdříve nás okrada, pak si nahrabe body..."
 
 #. AI chat when it has the longest road
-#: ../client/ai/greedy.c:1420
+#: ../client/ai/greedy.c:1411
 msgid "See that road!"
 msgstr "Hele, silnice!"
 
 #. AI chat when another player has the longest road
-#: ../client/ai/greedy.c:1425
+#: ../client/ai/greedy.c:1416
 msgid "Pf, you won't win with roads alone..."
 msgstr "Pchá, nevyhraješ, pokud budeš jen stavět silnice..."
 
-#: ../client/ai/greedy.c:1893
+#: ../client/ai/greedy.c:1904
 msgid "Rejecting trade.\n"
 msgstr "Obchod odmítnut.\n"
 
-#: ../client/ai/greedy.c:1992
+#: ../client/ai/greedy.c:2003
 #, c-format
 msgid "Received error from server: %s.  Quitting\n"
 msgstr "Obdržena chyba ze serveru: %s. Končím\n"
 
 #. AI chat when it wins
-#: ../client/ai/greedy.c:2004
+#: ../client/ai/greedy.c:2015
 msgid "Yippie!"
 msgstr "Hurá!"
 
 #. AI chat when another player wins
-#: ../client/ai/greedy.c:2007
+#: ../client/ai/greedy.c:2018
 msgid "My congratulations"
 msgstr "Gratuluji"
 
@@ -350,7 +350,7 @@ msgstr "Hra právě začíná. Již nejsem potřeba. Sbohem."
 msgid "Waiting"
 msgstr "Čekání"
 
-#: ../client/common/client.c:104 ../client/common/client.c:1312
+#: ../client/common/client.c:104 ../client/common/client.c:1318
 msgid "Idle"
 msgstr "Nečinný"
 
@@ -359,7 +359,7 @@ msgid "We have been kicked out of the game.\n"
 msgstr "Byl jsi vykopnut z této hry.\n"
 
 #. Network status: offline
-#: ../client/common/client.c:521 ../client/common/client.c:962
+#: ../client/common/client.c:521 ../client/common/client.c:965
 #: ../client/gtk/gui.c:1485
 msgid "Offline"
 msgstr "Nepřipojen"
@@ -390,7 +390,7 @@ msgid "%s receives %s.\n"
 msgstr "%s obdržel: %s.\n"
 
 #. Year of Plenty
-#: ../client/common/client.c:708 ../client/common/client.c:2659
+#: ../client/common/client.c:708 ../client/common/client.c:2665
 #, c-format
 msgid "%s takes %s.\n"
 msgstr "%s bere: %s.\n"
@@ -410,84 +410,86 @@ msgstr "%s je nahrazen %s.\n"
 msgid "%s discarded %s.\n"
 msgstr "%s odhodil %s.\n"
 
-#: ../client/common/client.c:920
+#: ../client/common/client.c:824
+#, c-format
+msgid "%s has won the game with %d victory points!\n"
+msgstr "%s vyhrál tuto hru s %d vítěznými body!\n"
+
+#: ../client/common/client.c:923
 msgid "Loading"
 msgstr "Náhrávání"
 
-#: ../client/common/client.c:963
-#| msgid "Version mismatch"
+#: ../client/common/client.c:966
 msgid "Version mismatch."
 msgstr "Verze nesouhlasí."
 
-#: ../client/common/client.c:965
+#: ../client/common/client.c:968
 msgid "Version mismatch. Please make sure client and server are up to date.\n"
 msgstr ""
 "Verze nesouhlasí. Ujistěte se, prosím, zda klient i server jsou aktuální.\n"
 
-#: ../client/common/client.c:1411
+#: ../client/common/client.c:1417
 msgid "Build two settlements, each with a connecting"
 msgstr "Postavte dvě vesnice, ke každé připojte"
 
-#: ../client/common/client.c:1414
+#: ../client/common/client.c:1420
 msgid "Build a settlement with a connecting"
 msgstr "Postavte vesnici, ke které připojte"
 
-#: ../client/common/client.c:1417
+#: ../client/common/client.c:1423
 msgid "road"
 msgstr "silnici"
 
-#: ../client/common/client.c:1419
+#: ../client/common/client.c:1425
 msgid "bridge"
 msgstr "most"
 
-#: ../client/common/client.c:1421
+#: ../client/common/client.c:1427
 msgid "ship"
 msgstr "loď"
 
-#: ../client/common/client.c:1429
+#: ../client/common/client.c:1435
 msgid " or"
 msgstr " nebo"
 
-#: ../client/common/client.c:1490
-#| msgid "Waiting for your turn"
+#: ../client/common/client.c:1496
 msgid "Waiting for your turn."
 msgstr "Čekání na váš tah."
 
-#: ../client/common/client.c:1542 ../client/gtk/interface.c:753
+#: ../client/common/client.c:1548 ../client/gtk/interface.c:753
 msgid "Select the building to steal from."
 msgstr "Zvolte stavbu, ze které se bude krást."
 
-#: ../client/common/client.c:1564 ../client/gtk/interface.c:743
+#: ../client/common/client.c:1570 ../client/gtk/interface.c:743
 msgid "Select the ship to steal from."
 msgstr "Zvolte loď, ze které se bude krást."
 
-#: ../client/common/client.c:1649 ../client/gtk/interface.c:785
-#| msgid "Place the robber"
+#: ../client/common/client.c:1655 ../client/gtk/interface.c:785
 msgid "Place the robber."
 msgstr "Přemístěte zloděje."
 
-#: ../client/common/client.c:1699
+#: ../client/common/client.c:1705
 msgid "Finish the road building action."
 msgstr "Ukončit akci: stavba silnice."
 
-#: ../client/common/client.c:1701
+#: ../client/common/client.c:1707
 msgid "Build one road segment."
 msgstr "Postavte jednu silnici."
 
-#: ../client/common/client.c:1703
+#: ../client/common/client.c:1709
 msgid "Build two road segments."
 msgstr "Postavte dvě silnice."
 
-#: ../client/common/client.c:1976 ../client/common/client.c:2070
+#: ../client/common/client.c:1982 ../client/common/client.c:2076
 msgid "It is your turn."
 msgstr "Jste na tahu."
 
-#: ../client/common/client.c:2164
+#: ../client/common/client.c:2170
 #, c-format
 msgid "Sorry, %s available.\n"
 msgstr "Promiňte, dostupno je pouze %s.\n"
 
-#: ../client/common/client.c:2478
+#: ../client/common/client.c:2484
 msgid "The game is over."
 msgstr "Tato hra skončila."
 
@@ -578,7 +580,6 @@ msgstr "Hráč %d je nyní %s.\n"
 
 #: ../client/common/player.c:267
 #, c-format
-#| msgid "%s has quit\n"
 msgid "%s has quit.\n"
 msgstr "%s skončil.\n"
 
@@ -1050,13 +1051,11 @@ msgstr ""
 
 #. Label
 #: ../client/gtk/connect.c:712
-#| msgid "Type of computer player"
 msgid "Number of computer players"
 msgstr "Počet počítačových hráčů"
 
 #. Tooltip
 #: ../client/gtk/connect.c:732
-#| msgid "The number of players"
 msgid "The number of computer players"
 msgstr "Počet počítačových hráčů"
 
@@ -1071,19 +1070,16 @@ msgstr "Chyba při startu %s: %s"
 
 #. Dialog caption
 #: ../client/gtk/connect.c:818
-#| msgid "Create a public game"
 msgid "Create a Public Game"
 msgstr "Vytvořit veřejnou hru"
 
 #. Dialog caption
 #: ../client/gtk/connect.c:941
-#| msgid "Join a public game"
 msgid "Join a Public Game"
 msgstr "Připojit se k veřejné hře"
 
 #. Button text
 #: ../client/gtk/connect.c:947
-#| msgid "_New remote game"
 msgid "_New Remote Game"
 msgstr "_Nová vzdálená hra"
 
@@ -1205,7 +1201,6 @@ msgstr "Verze hry na serveru"
 
 #. Dialog caption
 #: ../client/gtk/connect.c:1215
-#| msgid "Start a new game"
 msgid "Start a New Game"
 msgstr "Spustit novou hru"
 
@@ -1250,13 +1245,11 @@ msgstr ""
 
 #. Label
 #: ../client/gtk/connect.c:1321 ../server/gtk/main.c:660
-#| msgid "Meta Server"
 msgid "Meta server"
 msgstr "Meta server"
 
 #. Button
 #: ../client/gtk/connect.c:1343
-#| msgid "Join public game"
 msgid "Join Public Game"
 msgstr "Připojit k veřejné hře"
 
@@ -1267,7 +1260,6 @@ msgstr "Připojit se k veřejné hře"
 
 #. Button
 #: ../client/gtk/connect.c:1354
-#| msgid "Create game"
 msgid "Create Game"
 msgstr "Vytvořit hru"
 
@@ -1278,7 +1270,6 @@ msgstr "Vytvořit hru - nastavit a spustit vlastní server"
 
 #. Button
 #: ../client/gtk/connect.c:1369
-#| msgid "Join private game"
 msgid "Join Private Game"
 msgstr "Připojit k soukromé hře"
 
@@ -1291,7 +1282,6 @@ msgstr "Připojit k soukromé hře (která není oznámena na meta serveru)"
 #. Label
 #. Commandline option of client: hostname of the server
 #: ../client/gtk/connect.c:1552 ../client/gtk/offline.c:50
-#| msgid "Server Host"
 msgid "Server host"
 msgstr "Adresa serveru"
 
@@ -1304,7 +1294,6 @@ msgstr "Jméno počítače s hrou"
 #. Commandline option of client: port of the server
 #: ../client/gtk/connect.c:1570 ../client/gtk/offline.c:53
 #: ../server/gtk/main.c:632
-#| msgid "Server Port"
 msgid "Server port"
 msgstr "Port serveru"
 
@@ -1321,7 +1310,6 @@ msgstr "Současné hry"
 
 #. Caption for list of bought development cards
 #: ../client/gtk/develop.c:130
-#| msgid "<b>Development Cards</b>"
 msgid "<b>Development cards</b>"
 msgstr "<b>Akční karty</b>"
 
@@ -1332,7 +1320,6 @@ msgstr "Hrát kartu"
 
 #. Dialog caption
 #: ../client/gtk/discard.c:78
-#| msgid "Discard resources"
 msgid "Discard Resources"
 msgstr "Odhodit suroviny"
 
@@ -1356,7 +1343,6 @@ msgstr "<b>Čekání na odhazujícího hráče</b>"
 
 #. Dialog caption
 #: ../client/gtk/gameover.c:34
-#| msgid "Game over"
 msgid "Game Over"
 msgstr "Konec hry"
 
@@ -1372,7 +1358,6 @@ msgstr "Buď blahořečený, %s, Pane poznaného světa!"
 
 #. Dialog caption
 #: ../client/gtk/gold.c:73
-#| msgid "Choose resources"
 msgid "Choose Resources"
 msgstr "Zvolit suroviny"
 
@@ -1402,7 +1387,6 @@ msgstr "_Hra"
 
 #. Menu entry
 #: ../client/gtk/gui.c:220
-#| msgid "_New game"
 msgid "_New Game"
 msgstr "_Nová hra"
 
@@ -1413,7 +1397,6 @@ msgstr "Spustit novou hru"
 
 #. Menu entry
 #: ../client/gtk/gui.c:225
-#| msgid "_Leave game"
 msgid "_Leave Game"
 msgstr "_Opustit hru"
 
@@ -1434,7 +1417,6 @@ msgstr "Administrovat server Pioneers"
 
 #. Menu entry
 #: ../client/gtk/gui.c:237
-#| msgid "Player Name"
 msgid "_Player Name"
 msgstr "_Jméno hráče"
 
@@ -1653,7 +1635,6 @@ msgstr "Ukáže či skryje nástrojovou lištu"
 #. Victory points target in statusbar
 #: ../client/gtk/gui.c:453
 #, c-format
-#| msgid "Points Needed to Win: %i"
 msgid "Points needed to win: %i"
 msgstr "Body pro vítězství:%i"
 
@@ -1668,7 +1649,6 @@ msgstr "Mapa"
 
 #. Tooltip
 #: ../client/gtk/gui.c:675
-#| msgid "_Finish Trading"
 msgid "Finish trading"
 msgstr "Ukončit obchodování"
 
@@ -1680,7 +1660,6 @@ msgstr "Kotovat"
 
 #. Tooltip
 #: ../client/gtk/gui.c:687
-#| msgid "Reject Domestic Trade"
 msgid "Reject domestic trade"
 msgstr "Odmítnout vnitřní obchod"
 
@@ -1792,7 +1771,6 @@ msgstr "Použít rozložení vhodné pro okna v poměru 16:9"
 
 #. Caption of about box
 #: ../client/gtk/gui.c:1186
-#| msgid "_About Pioneers"
 msgid "About Pioneers"
 msgstr "O Pioneers"
 
@@ -1849,19 +1827,16 @@ msgstr "Moře"
 
 #. Label
 #: ../client/gtk/legend.c:170
-#| msgid "<b>Terrain Yield</b>"
 msgid "<b>Terrain yield</b>"
 msgstr "<b>Výnosy krajiny</b>"
 
 #. Label
 #: ../client/gtk/legend.c:203
-#| msgid "<b>Building Costs</b>"
 msgid "<b>Building costs</b>"
 msgstr "<b>Stavební náklady</b>"
 
 #: ../client/gtk/legend.c:241 ../client/gtk/player.c:55
 #: ../editor/gtk/game-buildings.c:11
-#| msgid "City Wall"
 msgid "City wall"
 msgstr "Městská zeď"
 
@@ -1882,13 +1857,11 @@ msgstr "Zvolte surovinu, kterou chcete monopolizovat"
 
 #. Dialog caption
 #: ../client/gtk/name.c:156
-#| msgid "Change player name"
 msgid "Change Player Name"
 msgstr "Změnit jméno hráče"
 
 #. Label
 #: ../client/gtk/name.c:184
-#| msgid "Player name"
 msgid "Player name:"
 msgstr "Jméno hráče:"
 
@@ -1911,7 +1884,6 @@ msgid "Meta-server Host"
 msgstr "Adresa meta serveru"
 
 #: ../client/gtk/offline.c:77
-#| msgid "Select a game to join"
 msgid "Select a game to join."
 msgstr "Zvolte hru k připojení."
 
@@ -1937,17 +1909,14 @@ msgid "Cities"
 msgstr "Města"
 
 #: ../client/gtk/player.c:55
-#| msgid "City Walls"
 msgid "City walls"
 msgstr "Městské zdi"
 
 #: ../client/gtk/player.c:56
-#| msgid "Largest Army"
 msgid "Largest army"
 msgstr "Největší vojsko"
 
 #: ../client/gtk/player.c:57
-#| msgid "Longest Road"
 msgid "Longest road"
 msgstr "Nejdelší obchodní cesta"
 
@@ -1962,23 +1931,19 @@ msgstr "Kostely"
 
 #. Name of the development card
 #: ../client/gtk/player.c:59 ../common/cards.c:134
-#| msgid "Pioneer University"
 msgid "Pioneer university"
 msgstr "Univerzita"
 
 #: ../client/gtk/player.c:59
-#| msgid "Pioneer Universities"
 msgid "Pioneer universities"
 msgstr "Univerzity"
 
 #. Name of the development card
 #: ../client/gtk/player.c:61 ../common/cards.c:137
-#| msgid "Governor's House"
 msgid "Governor's house"
 msgstr "Radnice"
 
 #: ../client/gtk/player.c:61
-#| msgid "Governor's Houses"
 msgid "Governor's houses"
 msgstr "Radnice"
 
@@ -2024,7 +1989,6 @@ msgstr "Akční karty"
 
 #. Caption for the overview of the points and card of other players
 #: ../client/gtk/player.c:551
-#| msgid "<b>Player Summary</b>"
 msgid "<b>Player summary</b>"
 msgstr "<b>Přehled o hráčích</b>"
 
@@ -2057,7 +2021,6 @@ msgstr "Já chci"
 
 #. Label
 #: ../client/gtk/quote.c:309
-#| msgid "Give Them"
 msgid "Give them"
 msgstr "Dát jim"
 
@@ -2168,7 +2131,6 @@ msgstr "Žádná hra zde neběží..."
 
 #. Label
 #: ../client/gtk/settingscreen.c:132
-#| msgid "<b>General Settings</b>"
 msgid "<b>General settings</b>"
 msgstr "<b>Obecná nastavení</b>"
 
@@ -2177,22 +2139,18 @@ msgid "Number of players:"
 msgstr "Počet hráčů:"
 
 #: ../client/gtk/settingscreen.c:153
-#| msgid "Victory Point Target:"
 msgid "Victory point target:"
 msgstr "Počet bodů pro vítězství:"
 
 #: ../client/gtk/settingscreen.c:157
-#| msgid "Random Terrain?"
 msgid "Random terrain:"
 msgstr "Náhodná krajina:"
 
 #: ../client/gtk/settingscreen.c:161
-#| msgid "Allow trade between players"
 msgid "Allow trade between players:"
 msgstr "Dovolit obchodování mezi hráči:"
 
 #: ../client/gtk/settingscreen.c:166
-#| msgid "Allow trade only before building or buying"
 msgid "Allow trade only before building or buying:"
 msgstr "Dovolit obchodovat pouze před stavěním nebo nákupem:"
 
@@ -2203,28 +2161,23 @@ msgid "Check victory only at end of turn:"
 msgstr "Kontrolovat vítězství až na konci tahu"
 
 #: ../client/gtk/settingscreen.c:176
-#| msgid "Amount of Each Resource:"
 msgid "Amount of each resource:"
 msgstr "Množství každé suroviny:"
 
 #: ../client/gtk/settingscreen.c:190
-#| msgid "Sevens rule"
 msgid "Sevens rule:"
 msgstr "Pravidlo sedmiček:"
 
 #: ../client/gtk/settingscreen.c:196
-#| msgid "Use the pirate to block ships"
 msgid "Use the pirate to block ships:"
 msgstr "Používat piráta pro blokování lodí:"
 
 #: ../client/gtk/settingscreen.c:225
-#| msgid "Island Discovery Bonuses:"
 msgid "Island discovery bonuses:"
 msgstr "Bonusy za objevení ostrova:"
 
 #. Label
 #: ../client/gtk/settingscreen.c:242
-#| msgid "<b>Building Quotas</b>"
 msgid "<b>Building quotas</b>"
 msgstr "<b>Stavební příděl</b>"
 
@@ -2241,7 +2194,6 @@ msgid "Cities:"
 msgstr "Města:"
 
 #: ../client/gtk/settingscreen.c:277
-#| msgid "City Walls:"
 msgid "City walls:"
 msgstr "Městské zdi:"
 
@@ -2255,52 +2207,42 @@ msgstr "Mosty:"
 
 #. Label
 #: ../client/gtk/settingscreen.c:302
-#| msgid "<b>Development Card Deck</b>"
 msgid "<b>Development card deck</b>"
 msgstr "<b>Balíček akčních karet</b>"
 
 #: ../client/gtk/settingscreen.c:318
-#| msgid "Road Building Cards:"
 msgid "Road building cards:"
 msgstr "Karty Pokrok - Stavba silnic:"
 
 #: ../client/gtk/settingscreen.c:322
-#| msgid "Monopoly Cards:"
 msgid "Monopoly cards:"
 msgstr "Karty Pokrok - Monopol:"
 
 #: ../client/gtk/settingscreen.c:326
-#| msgid "Year of Plenty Cards:"
 msgid "Year of plenty cards:"
 msgstr "Karty Pokrok - Vynález:"
 
 #: ../client/gtk/settingscreen.c:330
-#| msgid "Chapel Cards:"
 msgid "Chapel cards:"
 msgstr "Karty kostel:"
 
 #: ../client/gtk/settingscreen.c:334
-#| msgid "Pioneer University Cards:"
 msgid "Pioneer university cards:"
 msgstr "Karty univerzita:"
 
 #: ../client/gtk/settingscreen.c:338
-#| msgid "Governor's House Cards:"
 msgid "Governor's house cards:"
 msgstr "Karty radnice:"
 
 #: ../client/gtk/settingscreen.c:342
-#| msgid "Library Cards:"
 msgid "Library cards:"
 msgstr "Karty knihovna:"
 
 #: ../client/gtk/settingscreen.c:346
-#| msgid "Market Cards:"
 msgid "Market cards:"
 msgstr "Karty tržiště:"
 
 #: ../client/gtk/settingscreen.c:350
-#| msgid "Soldier Cards:"
 msgid "Soldier cards:"
 msgstr "Karty rytíř:"
 
@@ -2335,13 +2277,11 @@ msgstr "Já chci %s, a dám jim %s"
 
 #. Frame title, trade: I want to trade these resources
 #: ../client/gtk/trade.c:438
-#| msgid "<b>I Want</b>"
 msgid "<b>I want</b>"
 msgstr "<b>Já chci</b>"
 
 #. Frame title, trade: I want these resources in return
 #: ../client/gtk/trade.c:466
-#| msgid "<b>Give Them</b>"
 msgid "<b>Give them</b>"
 msgstr "<b>Dát jim</b>"
 
@@ -2362,19 +2302,16 @@ msgstr "Ukončit _obchodování"
 
 #. Name of the development card
 #: ../common/cards.c:122
-#| msgid "Road Building"
 msgid "Road building"
 msgstr "Pokrok - Stavba silnic"
 
 #. Name of the development card
 #: ../common/cards.c:128
-#| msgid "Year of Plenty"
 msgid "Year of plenty"
 msgstr "Pokrok - Vynález"
 
 #. Description of the 'Road Building' development card
 #: ../common/cards.c:157
-#| msgid "Build one road segment."
 msgid "Build two new roads"
 msgstr ""
 
@@ -2475,7 +2412,6 @@ msgstr "Pioneers je přeloženo do <your language here> :\n"
 
 #. Caption for result of checking victory points
 #: ../common/gtk/common_gtk.c:321
-#| msgid "Victory Point Target"
 msgid "Victory Point Analysis"
 msgstr ""
 
@@ -2495,7 +2431,6 @@ msgid "All sevens are rerolled"
 msgstr "Po sedmičkách se vždy hází znovu"
 
 #: ../common/gtk/game-rules.c:113
-#| msgid "Randomize Terrain"
 msgid "Randomize terrain"
 msgstr "Náhodná krajina"
 
@@ -2504,7 +2439,6 @@ msgid "Randomize the terrain"
 msgstr "Náhodně rozmístit díly krajiny"
 
 #: ../common/gtk/game-rules.c:115
-#| msgid "Use Pirate"
 msgid "Use pirate"
 msgstr "Používat piráta"
 
@@ -2513,7 +2447,6 @@ msgid "Use the pirate to block ships"
 msgstr "Používat piráta pro blokování lodí"
 
 #: ../common/gtk/game-rules.c:117
-#| msgid "Strict Trade"
 msgid "Strict trade"
 msgstr "Striktní obchod"
 
@@ -2522,7 +2455,6 @@ msgid "Allow trade only before building or buying"
 msgstr "Dovolit obchodovat pouze před stavěním nebo nákupem"
 
 #: ../common/gtk/game-rules.c:120
-#| msgid "Domestic Trade"
 msgid "Domestic trade"
 msgstr "Vnitřní obchod"
 
@@ -2531,7 +2463,6 @@ msgid "Allow trade between players"
 msgstr "Dovolit obchodování mezi hráči"
 
 #: ../common/gtk/game-rules.c:122
-#| msgid "Victory At End Of Turn"
 msgid "Victory at end of turn"
 msgstr "Vítězství na konci tahu"
 
@@ -2541,7 +2472,6 @@ msgstr "Kontrolovat vítězství až na konci tahu"
 
 #. Label text for customising a game
 #: ../common/gtk/game-settings.c:106
-#| msgid "Number of players:"
 msgid "Number of players"
 msgstr "Počet hráčů"
 
@@ -2552,7 +2482,6 @@ msgstr "Počet hráčů"
 
 #. Label for customising a game
 #: ../common/gtk/game-settings.c:127
-#| msgid "Victory Point Target"
 msgid "Victory point target"
 msgstr "Počet bodů pro vítězství"
 
@@ -2943,7 +2872,6 @@ msgstr "Přeházet"
 
 #. Caption
 #: ../editor/gtk/editor.c:734 ../server/gtk/main.c:468
-#| msgid "Game Parameters"
 msgid "Game parameters"
 msgstr "Parametry hry"
 
@@ -2984,7 +2912,6 @@ msgstr "Otevřít hru"
 
 #. Dialog caption
 #: ../editor/gtk/editor.c:931
-#| msgid "Save _As..."
 msgid "Save As..."
 msgstr "Uložit jako..."
 
@@ -2995,13 +2922,11 @@ msgstr "Změnit název"
 
 #. Label
 #: ../editor/gtk/editor.c:992
-#| msgid "New Title:"
 msgid "New title:"
 msgstr "Nový název:"
 
 #. About dialog caption
 #: ../editor/gtk/editor.c:1049
-#| msgid "_About Pioneers Editor"
 msgid "About Pioneers Game Editor"
 msgstr "O Pioneers Editoru"
 
@@ -3051,7 +2976,6 @@ msgstr "Uložit pod jiným jménem"
 
 #. Menu entry
 #: ../editor/gtk/editor.c:1082
-#| msgid "Change Title"
 msgid "_Change Title"
 msgstr "_Změnit název"
 
@@ -3114,7 +3038,6 @@ msgid "Settings"
 msgstr "Nastavení"
 
 #: ../editor/gtk/game-resources.c:48
-#| msgid "Resource Count"
 msgid "Resource count"
 msgstr "Počet surovin"
 
@@ -3246,12 +3169,10 @@ msgid "Player %d is now %s\n"
 msgstr "Hráč %d je nyní %s\n"
 
 #: ../server/gtk/main.c:570
-#| msgid "Game Settings"
 msgid "Game settings"
 msgstr "Herní nastavení"
 
 #: ../server/gtk/main.c:620
-#| msgid "Server Parameters"
 msgid "Server parameters"
 msgstr "Parametry serveru"
 
@@ -3260,7 +3181,6 @@ msgid "The port for the game server"
 msgstr "Port pro hrací serveru"
 
 #: ../server/gtk/main.c:649
-#| msgid "Register Server"
 msgid "Register server"
 msgstr "Registrovat server"
 
@@ -3269,7 +3189,6 @@ msgid "Register this game at the meta server"
 msgstr "Registruje server na meta serveru"
 
 #: ../server/gtk/main.c:672
-#| msgid "Reported Hostname"
 msgid "Reported hostname"
 msgstr "Nahlásit jméno počítače"
 
@@ -3290,13 +3209,11 @@ msgid "Randomize turn order"
 msgstr "Náhodně přeházet pořadí hráčů"
 
 #: ../server/gtk/main.c:739
-#| msgid "Running Game"
 msgid "Running game"
 msgstr "Spuštěná hra"
 
 #. Caption
 #: ../server/gtk/main.c:754
-#| msgid "Players Connected"
 msgid "Players connected"
 msgstr "Připojení hráči"
 
@@ -3359,19 +3276,16 @@ msgstr "Spustit Pioneers klienta"
 
 #. Tooltip
 #: ../server/gtk/main.c:861
-#| msgid "Launch the Pioneers Client"
 msgid "Launch the Pioneers client"
 msgstr "Spustí klienta hry Pioneers"
 
 #. Caption
 #: ../server/gtk/main.c:864
-#| msgid "Computer Players"
 msgid "Computer players"
 msgstr "Strojoví hráči"
 
 #. Label
 #: ../server/gtk/main.c:874
-#| msgid "Enable Chat"
 msgid "Enable chat"
 msgstr "Povolit chat"
 
@@ -3629,7 +3543,6 @@ msgid "The last human player left. Waiting for the return of a player."
 msgstr ""
 
 #: ../server/player.c:728
-#| msgid "Recent games"
 msgid "Resuming the game."
 msgstr ""
 
@@ -3688,9 +3601,6 @@ msgstr ""
 
 #~ msgid "Recent Games"
 #~ msgstr "Současné hry"
-
-#~ msgid "%s has won the game with %d victory points!\n"
-#~ msgstr "%s vyhrál tuto hru s %d vítěznými body!\n"
 
 #~ msgid "You may choose 1 resource"
 #~ msgstr "Můžete zvolit 1 surovinu"

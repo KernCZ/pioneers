@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 0.12.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-26 17:42+0200\n"
+"POT-Creation-Date: 2011-01-26 11:25+0100\n"
 "PO-Revision-Date: 2010-10-26 18:29+0100\n"
 "Last-Translator: Roland Clobus <rclobus@rclobus.nl>\n"
 "Language-Team: Bas Wijnen <shevek@fmf.nl> Roland Clobus <rclobus@rclobus."
@@ -20,32 +20,32 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n!=1)\n"
 
 #. Commandline pioneersai: server
-#: ../client/ai/ai.c:65
+#: ../client/ai/ai.c:68
 msgid "Server Host"
 msgstr "Server Host"
 
 #. Commandline pioneersai: port
-#: ../client/ai/ai.c:68
+#: ../client/ai/ai.c:71
 msgid "Server Port"
 msgstr "Server Poort"
 
 #. Commandline pioneersai: name
-#: ../client/ai/ai.c:71
+#: ../client/ai/ai.c:74
 msgid "Computer name (mandatory)"
 msgstr "Computerspelernaam (verplicht)"
 
 #. Commandline pioneersai: time
-#: ../client/ai/ai.c:74
+#: ../client/ai/ai.c:77
 msgid "Time to wait between turns (in milliseconds)"
 msgstr "Tijd tussen twee beurten (in milliseconde)"
 
 #. Commandline pioneersai: chat-free
-#: ../client/ai/ai.c:77
+#: ../client/ai/ai.c:80
 msgid "Stop computer player from talking"
 msgstr "Laat computerspeler zwijgen"
 
 #. Commandline pioneersai: algorithm
-#: ../client/ai/ai.c:80
+#: ../client/ai/ai.c:83
 msgid "Type of computer player"
 msgstr "Soort computerspeler"
 
@@ -54,7 +54,7 @@ msgstr "Soort computerspeler"
 #. Commandline option of meta server: enable debug logging
 #. Commandline option of server-gtk: enable debug logging
 #. Commandline option of server: enable debug logging
-#: ../client/ai/ai.c:83 ../client/gtk/offline.c:66 ../meta-server/main.c:1085
+#: ../client/ai/ai.c:86 ../client/gtk/offline.c:66 ../meta-server/main.c:1085
 #: ../server/gtk/main.c:1000 ../server/main.c:145
 msgid "Enable debug messages"
 msgstr "Toon debug boodschappen"
@@ -65,17 +65,17 @@ msgstr "Toon debug boodschappen"
 #. Commandline option of meta server: version
 #. Commandline option of server-gtk: version
 #. Commandline option of server-console: version
-#: ../client/ai/ai.c:86 ../client/gtk/offline.c:69 ../editor/gtk/editor.c:1150
+#: ../client/ai/ai.c:89 ../client/gtk/offline.c:69 ../editor/gtk/editor.c:1150
 #: ../meta-server/main.c:1091 ../server/gtk/main.c:1003 ../server/main.c:100
 msgid "Show version information"
 msgstr "Versie-informatie weergeven"
 
 #. Long description in the commandline for pioneersai: help
-#: ../client/ai/ai.c:97
+#: ../client/ai/ai.c:100
 msgid "- Computer player for Pioneers"
 msgstr "- Computerspeler voor Pioniers"
 
-#: ../client/ai/ai.c:107 ../client/gtk/offline.c:177
+#: ../client/ai/ai.c:110 ../client/gtk/offline.c:177
 #: ../editor/gtk/editor.c:1190 ../meta-server/main.c:1121
 #: ../server/gtk/main.c:1053 ../server/main.c:208
 #, c-format
@@ -83,223 +83,223 @@ msgid "Pioneers version:"
 msgstr "Pioniers versie:"
 
 #. ai commandline error
-#: ../client/ai/ai.c:127
+#: ../client/ai/ai.c:130
 #, c-format
 msgid "A name must be provided.\n"
 msgstr "Een naam moet gegeven worden.\n"
 
-#: ../client/ai/ai.c:141
+#: ../client/ai/ai.c:144
 #, c-format
 msgid "Type of computer player: %s\n"
 msgstr "Soort computerspeler: %s\n"
 
-#: ../client/ai/ai.c:170
+#: ../client/ai/ai.c:173
 msgid "The game is already full. I'm leaving."
 msgstr "Het spel is al vol. Ik blijf niet kijken."
 
-#: ../client/ai/greedy.c:948
+#: ../client/ai/greedy.c:959
 msgid "No settlements in stock to use for setup"
 msgstr "Er zijn geen dorpen beschikbaar om te bouwen"
 
-#: ../client/ai/greedy.c:955
+#: ../client/ai/greedy.c:966
 msgid "There is no place to setup a settlement"
 msgstr "Er is geen plek om een dorp te bouwen"
 
-#: ../client/ai/greedy.c:979
+#: ../client/ai/greedy.c:990
 msgid "No roads in stock to use for setup"
 msgstr "Er zijn geen wegen beschikbaar om te bouwen"
 
-#: ../client/ai/greedy.c:996
+#: ../client/ai/greedy.c:1007
 msgid "There is no place to setup a road"
 msgstr "Er is geen plek om een weg te bouwen"
 
 #. AI chat at the start of the turn
-#: ../client/ai/greedy.c:1320
+#: ../client/ai/greedy.c:1311
 msgid "Ok, let's go!"
 msgstr "We gaan ervoor!"
 
 #. AI chat at the start of the turn
-#: ../client/ai/greedy.c:1322
+#: ../client/ai/greedy.c:1313
 msgid "I'll beat you all now! ;)"
 msgstr "Deze keer gaat het me lukken! ;-)"
 
 #. AI chat at the start of the turn
-#: ../client/ai/greedy.c:1324
+#: ../client/ai/greedy.c:1315
 msgid "Now for another try..."
 msgstr "Nog een keer proberen..."
 
 #. AI chat when one resource is received
-#: ../client/ai/greedy.c:1329
+#: ../client/ai/greedy.c:1320
 msgid "At least I get something..."
 msgstr "Ik krijg ten minste iets..."
 
 #. AI chat when one resource is received
-#: ../client/ai/greedy.c:1331
+#: ../client/ai/greedy.c:1322
 msgid "One is better than none..."
 msgstr "Iets is beter dan niets..."
 
 #. AI chat when more than one resource is received
-#: ../client/ai/greedy.c:1336
+#: ../client/ai/greedy.c:1327
 msgid "Wow!"
 msgstr "Wauw!"
 
 #. AI chat when more than one resource is received
-#: ../client/ai/greedy.c:1338
+#: ../client/ai/greedy.c:1329
 msgid "Ey, I'm becoming rich ;)"
 msgstr "Ha, ik word rijk ;-)"
 
 #. AI chat when more than one resource is received
-#: ../client/ai/greedy.c:1340
+#: ../client/ai/greedy.c:1331
 msgid "This is really a good year!"
 msgstr "Dit is echt een goed jaar!"
 
 #. AI chat when other players receive more than one resource
-#: ../client/ai/greedy.c:1345
+#: ../client/ai/greedy.c:1336
 msgid "You really don't deserve that much!"
 msgstr "Jij zou minder moeten krijgen!"
 
 #. AI chat when other players receive more than one resource
-#: ../client/ai/greedy.c:1347
+#: ../client/ai/greedy.c:1338
 msgid "You don't know what to do with that many resources ;)"
 msgstr "Je weet niet wat je aan moet met al die grondstoffen ;-)"
 
 #. AI chat when other players receive more than one resource
-#: ../client/ai/greedy.c:1349
+#: ../client/ai/greedy.c:1340
 msgid "Ey, wait for my robber and lose all this again!"
 msgstr "Wacht maar op mijn struikrover, dan raak je het wel weer kwijt!"
 
 #. AI chat when it moves the robber
-#: ../client/ai/greedy.c:1354
+#: ../client/ai/greedy.c:1345
 msgid "Hehe!"
 msgstr "Hehe!"
 
 #. AI chat when it moves the robber
-#: ../client/ai/greedy.c:1356
+#: ../client/ai/greedy.c:1347
 msgid "Go, robber, go!"
 msgstr "Toe maar, struikrover!"
 
 #. AI chat when the robber is moved to it
-#: ../client/ai/greedy.c:1361
+#: ../client/ai/greedy.c:1352
 msgid "You bastard!"
 msgstr "Schurk!"
 
 #. AI chat when the robber is moved to it
-#: ../client/ai/greedy.c:1363
+#: ../client/ai/greedy.c:1354
 msgid "Can't you move that robber somewhere else?!"
 msgstr "Kan je die struikrover niet ergens anders neerzetten?"
 
 #. AI chat when the robber is moved to it
-#: ../client/ai/greedy.c:1365
+#: ../client/ai/greedy.c:1356
 msgid "Why always me??"
 msgstr "Waarom moet je mij altijd hebben?"
 
 #. AI chat when it must discard resources
-#: ../client/ai/greedy.c:1370
+#: ../client/ai/greedy.c:1361
 msgid "Oh no!"
 msgstr "Oh nee!"
 
 #. AI chat when it must discard resources
-#: ../client/ai/greedy.c:1372
+#: ../client/ai/greedy.c:1363
 msgid "Grrr!"
 msgstr "Grrr!"
 
 #. AI chat when it must discard resources
-#: ../client/ai/greedy.c:1374
+#: ../client/ai/greedy.c:1365
 msgid "Who the hell rolled that 7??"
 msgstr "Welke idioot rolt er nou weer een 7?"
 
 #. AI chat when it must discard resources
-#: ../client/ai/greedy.c:1376
+#: ../client/ai/greedy.c:1367
 msgid "Why always me?!?"
 msgstr "Waarom gebeurt mij dat altijd?"
 
 #. AI chat when other players must discard
-#: ../client/ai/greedy.c:1381
+#: ../client/ai/greedy.c:1372
 msgid "Say good bye to your cards... :)"
 msgstr "Zeg maar dag tegen je kaarten... :-)"
 
 #. AI chat when other players must discard
-#: ../client/ai/greedy.c:1383
+#: ../client/ai/greedy.c:1374
 msgid "*evilgrin*"
 msgstr "Haha!"
 
 #. AI chat when other players must discard
-#: ../client/ai/greedy.c:1385
+#: ../client/ai/greedy.c:1376
 msgid "/me says farewell to your cards ;)"
 msgstr "/me zegt je kaarten vaarwel ;-)"
 
 #. AI chat when other players must discard
-#: ../client/ai/greedy.c:1387
+#: ../client/ai/greedy.c:1378
 msgid "That's the price for being rich... :)"
 msgstr "Dat is de prijs van het rijk zijn... :-)"
 
 #. AI chat when someone steals from it
-#: ../client/ai/greedy.c:1392
+#: ../client/ai/greedy.c:1383
 msgid "Ey! Where's that card gone?"
 msgstr "Hé! Waar is die kaart heen?"
 
 #. AI chat when someone steals from it
-#: ../client/ai/greedy.c:1394
+#: ../client/ai/greedy.c:1385
 msgid "Thieves! Thieves!!"
 msgstr "Houd de dief!"
 
 #. AI chat when someone steals from it
-#: ../client/ai/greedy.c:1396
+#: ../client/ai/greedy.c:1387
 msgid "Wait for my revenge..."
 msgstr "Wacht maar, ik krijg je nog wel..."
 
 #. AI chat when someone plays the monopoly card
-#: ../client/ai/greedy.c:1401
+#: ../client/ai/greedy.c:1392
 msgid "Oh no :("
 msgstr "Oh nee!"
 
 #. AI chat when someone plays the monopoly card
-#: ../client/ai/greedy.c:1403
+#: ../client/ai/greedy.c:1394
 msgid "Must this happen NOW??"
 msgstr "Moet dat _nu_?"
 
 #. AI chat when someone plays the monopoly card
-#: ../client/ai/greedy.c:1405
+#: ../client/ai/greedy.c:1396
 msgid "Args"
 msgstr "Arg"
 
 #. AI chat when it has the largest army
-#: ../client/ai/greedy.c:1410
+#: ../client/ai/greedy.c:1401
 msgid "Hehe, my soldiers rule!"
 msgstr "Haha, mijn ridders zijn stoer!"
 
 #. AI chat when another player that the largest army
-#: ../client/ai/greedy.c:1415
+#: ../client/ai/greedy.c:1406
 msgid "First robbing us, then grabbing the points..."
 msgstr "Eerst worden we beroofd, en dan wil je er nog punten voor ook..."
 
 #. AI chat when it has the longest road
-#: ../client/ai/greedy.c:1420
+#: ../client/ai/greedy.c:1411
 msgid "See that road!"
 msgstr "Moet je die weg zien!"
 
 #. AI chat when another player has the longest road
-#: ../client/ai/greedy.c:1425
+#: ../client/ai/greedy.c:1416
 msgid "Pf, you won't win with roads alone..."
 msgstr "Pff, met alleen wegen win je het spel niet..."
 
-#: ../client/ai/greedy.c:1893
+#: ../client/ai/greedy.c:1904
 msgid "Rejecting trade.\n"
 msgstr "Handelsvoorstel wordt afgewezen.\n"
 
-#: ../client/ai/greedy.c:1992
+#: ../client/ai/greedy.c:2003
 #, c-format
 msgid "Received error from server: %s.  Quitting\n"
 msgstr ""
 "Foutmelding van de server ontvangen: %s. Het programma wordt afgesloten\n"
 
 #. AI chat when it wins
-#: ../client/ai/greedy.c:2004
+#: ../client/ai/greedy.c:2015
 msgid "Yippie!"
 msgstr "Hoera!"
 
 #. AI chat when another player wins
-#: ../client/ai/greedy.c:2007
+#: ../client/ai/greedy.c:2018
 msgid "My congratulations"
 msgstr "Gefeliciteerd"
 
@@ -355,7 +355,7 @@ msgstr "Het spel begint. Ik ben niet meer nodig. Tot ziens."
 msgid "Waiting"
 msgstr "Wachten op reactie van de server."
 
-#: ../client/common/client.c:104 ../client/common/client.c:1312
+#: ../client/common/client.c:104 ../client/common/client.c:1318
 msgid "Idle"
 msgstr "Klaar"
 
@@ -364,7 +364,7 @@ msgid "We have been kicked out of the game.\n"
 msgstr "De verbinding met de server is verbroken.\n"
 
 #. Network status: offline
-#: ../client/common/client.c:521 ../client/common/client.c:962
+#: ../client/common/client.c:521 ../client/common/client.c:965
 #: ../client/gtk/gui.c:1485
 msgid "Offline"
 msgstr "Er is geen verbinding met een server."
@@ -395,7 +395,7 @@ msgid "%s receives %s.\n"
 msgstr "%s krijgt %s.\n"
 
 #. Year of Plenty
-#: ../client/common/client.c:708 ../client/common/client.c:2659
+#: ../client/common/client.c:708 ../client/common/client.c:2665
 #, c-format
 msgid "%s takes %s.\n"
 msgstr "%s neemt %s.\n"
@@ -415,80 +415,85 @@ msgstr "%s krijgt %s terug.\n"
 msgid "%s discarded %s.\n"
 msgstr "%s gooit %s weg.\n"
 
-#: ../client/common/client.c:920
+#: ../client/common/client.c:824
+#, c-format
+msgid "%s has won the game with %d victory points!\n"
+msgstr "%s heeft gewonnen met %d punten!\n"
+
+#: ../client/common/client.c:923
 msgid "Loading"
 msgstr "Het spel wordt gestart"
 
-#: ../client/common/client.c:963
+#: ../client/common/client.c:966
 msgid "Version mismatch."
 msgstr "Versie verschillend."
 
-#: ../client/common/client.c:965
+#: ../client/common/client.c:968
 msgid "Version mismatch. Please make sure client and server are up to date.\n"
 msgstr "De versies van de de server en de client komen niet overeen.\n"
 
-#: ../client/common/client.c:1411
+#: ../client/common/client.c:1417
 msgid "Build two settlements, each with a connecting"
 msgstr "Bouw twee dorpen, elk met een aangesloten"
 
-#: ../client/common/client.c:1414
+#: ../client/common/client.c:1420
 msgid "Build a settlement with a connecting"
 msgstr "Bouw een dorp met een aangesloten"
 
-#: ../client/common/client.c:1417
+#: ../client/common/client.c:1423
 msgid "road"
 msgstr "straat"
 
-#: ../client/common/client.c:1419
+#: ../client/common/client.c:1425
 msgid "bridge"
 msgstr "brug"
 
-#: ../client/common/client.c:1421
+#: ../client/common/client.c:1427
 msgid "ship"
 msgstr "schip"
 
-#: ../client/common/client.c:1429
+#: ../client/common/client.c:1435
 msgid " or"
 msgstr " of"
 
-#: ../client/common/client.c:1490
+#: ../client/common/client.c:1496
 msgid "Waiting for your turn."
 msgstr "Wacht op je beurt."
 
-#: ../client/common/client.c:1542 ../client/gtk/interface.c:753
+#: ../client/common/client.c:1548 ../client/gtk/interface.c:753
 msgid "Select the building to steal from."
 msgstr "Kies een gebouw om te bestelen."
 
-#: ../client/common/client.c:1564 ../client/gtk/interface.c:743
+#: ../client/common/client.c:1570 ../client/gtk/interface.c:743
 msgid "Select the ship to steal from."
 msgstr "Kies een schip om te bestelen."
 
-#: ../client/common/client.c:1649 ../client/gtk/interface.c:785
+#: ../client/common/client.c:1655 ../client/gtk/interface.c:785
 msgid "Place the robber."
 msgstr "Plaats de struikrover."
 
-#: ../client/common/client.c:1699
+#: ../client/common/client.c:1705
 msgid "Finish the road building action."
 msgstr "Beëindig de bouwkaart"
 
-#: ../client/common/client.c:1701
+#: ../client/common/client.c:1707
 msgid "Build one road segment."
 msgstr "Bouw een straat."
 
-#: ../client/common/client.c:1703
+#: ../client/common/client.c:1709
 msgid "Build two road segments."
 msgstr "Bouw twee straten."
 
-#: ../client/common/client.c:1976 ../client/common/client.c:2070
+#: ../client/common/client.c:1982 ../client/common/client.c:2076
 msgid "It is your turn."
 msgstr "Je bent aan de beurt."
 
-#: ../client/common/client.c:2164
+#: ../client/common/client.c:2170
 #, c-format
 msgid "Sorry, %s available.\n"
 msgstr "Sorry, %s beschikbaar.\n"
 
-#: ../client/common/client.c:2478
+#: ../client/common/client.c:2484
 msgid "The game is over."
 msgstr "Het spel is afgelopen."
 
@@ -3596,9 +3601,6 @@ msgstr "De administrator heeft de dobbelsteenworp vastgesteld."
 
 #~ msgid "Recent Games"
 #~ msgstr "Recente spellen"
-
-#~ msgid "%s has won the game with %d victory points!\n"
-#~ msgstr "%s heeft gewonnen met %d punten!\n"
 
 #~ msgid "You may choose 1 resource"
 #~ msgstr "Je mag 1 grondstofkaart kiezen"

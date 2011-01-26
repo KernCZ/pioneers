@@ -1,5 +1,8 @@
+2011-01-26  Roland Clobus <rclobus@rclobus.nl>
+	* all: Adjustment of line numbers for 0.12.4 release.
+
 2011-01-22  Michael Wiktowy <michael.wiktowy@gmail.com>
-	* es.po: Also the fuzzy translations
+	* es.po: Also the fuzzy translations.
 
 2011-01-16  Roland Clobus <rclobus@rclobus.nl>
 	* af.po, cs.po, da.po, es.po, pt.po: Synchronized with Launchpad.
