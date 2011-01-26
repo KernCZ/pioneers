@@ -473,6 +473,7 @@ AM_CONDITIONAL(BUILD_CLIENT, [test "$pioneers_build_client_gtk" = "yes" -o "$pio
 AM_CONDITIONAL(BUILD_EDITOR, [test "$pioneers_build_editor" = "yes"])
 AM_CONDITIONAL(BUILD_SERVER, [test "$pioneers_build_server_gtk" = "yes" -o "$pioneers_build_server_console" = "yes"])
 AM_CONDITIONAL(BUILD_META_SERVER, [test "$pioneers_build_metaserver" = "yes"])
+AM_CONDITIONAL(IS_MINGW_PORT, [test "$pioneers_is_mingw_port" = "yes"])
 
 if test "$have_scrollkeeper" = "yes"; then
 	AC_DEFINE(HAVE_HELP, 1,

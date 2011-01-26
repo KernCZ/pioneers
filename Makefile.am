@@ -165,6 +165,7 @@ if BUILD_EDITOR
 include editor/Makefile.am
 endif
 
+include MinGW/Makefile.am
 include common/Makefile.am
 include docs/Makefile.am
 include macros/Makefile.am

@@ -1,3 +1,8 @@
+2011-01-26  Roland Clobus <rclobus@rclobus.nl>
+	* MinGW/gdk-pixbuf.loaders, MinGW/Makefile.am, pioneers.nsi.in,
+	macros/type_socklen_t.m4, configure.ac, Makefile.am, README.MinGW:
+	Fixed the MinGW port.
+
 2011-01-23  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/data/themes/ccFlickr/Makefile.am: Fix typo in path.
 
