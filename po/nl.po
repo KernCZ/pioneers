@@ -2019,7 +2019,7 @@ msgstr "%s heeft %s en zoekt %s"
 #. Label
 #: ../client/gtk/quote.c:299
 msgid "I want"
-msgstr "I wil"
+msgstr "Ik wil"
 
 #. Label
 #: ../client/gtk/quote.c:309
