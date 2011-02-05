@@ -59,6 +59,7 @@ static Param game_params[] = {
 	{PARAM_V(sevens-rule, PARAM_INT, sevens_rule)},
 	{PARAM_V(victory-points, PARAM_INT, victory_points)},
 	{PARAM_V(check-victory-at-end-of-turn, PARAM_BOOL, check_victory_at_end_of_turn)},
+	{PARAM_V(use-cities-and-knights-rules, PARAM_BOOL, use_cities_and_knights_rules)},
 	{PARAM_V(num-roads, PARAM_INT, num_build_type[BUILD_ROAD])},
 	{PARAM_V(num-bridges, PARAM_INT, num_build_type[BUILD_BRIDGE])},
 	{PARAM_V(num-ships, PARAM_INT, num_build_type[BUILD_SHIP])},

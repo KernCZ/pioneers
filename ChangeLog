@@ -1,3 +1,8 @@
+2011-02-05  Matt Zagrabelny <zagrabelny@users.sourceforge.net>
+	* common/game.c, common/game.h, common/gtk/game-rules.c,
+	common/gtk/game-rules.h: Added checkbox to enable experimental
+	Cities and Knights expansion rules.
+
 2011-01-26  Roland Clobus <rclobus@rclobus.nl>
 	* configure.ac: Work version is 0.12.5.
 

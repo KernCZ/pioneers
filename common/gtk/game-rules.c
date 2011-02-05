@@ -122,6 +122,9 @@ static void game_rules_init(GameRules * gr)
 	add_row(gr, _("Victory at end of turn"),
 		_("Check for victory only at end of turn"),
 		row++, &gr->check_victory_at_end_of_turn);
+	add_row(gr, _("Cities & Knights expansion rules **EXPERIMENTAL**"),
+		_("Enable the Cities & Knights expansion rules"),
+		row++, &gr->use_cities_and_knights_rules);
 }
 
 /* Create a new instance of the widget */
@@ -139,6 +142,7 @@ GtkWidget *game_rules_new_metaserver(void)
 	gtk_widget_hide(GTK_WIDGET(widget->strict_trade));
 	gtk_widget_hide(GTK_WIDGET(widget->domestic_trade));
 	gtk_widget_hide(GTK_WIDGET(widget->check_victory_at_end_of_turn));
+	gtk_widget_hide(GTK_WIDGET(widget->use_cities_and_knights_rules));
 	return GTK_WIDGET(widget);
 }
 
@@ -247,4 +251,19 @@ gboolean game_rules_get_victory_at_end_of_turn(GameRules * gr)
 	    gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON
 					 (gr->
 					  check_victory_at_end_of_turn));
+}
+
+void game_rules_set_use_cities_and_knights_rules(GameRules * gr, gboolean val)
+{
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
+				     (gr->use_cities_and_knights_rules),
+				     val);
+}
+
+gboolean game_rules_get_use_cities_and_knights_rules(GameRules * gr)
+{
+	return
+	    gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON
+					 (gr->
+					  use_cities_and_knights_rules));
 }

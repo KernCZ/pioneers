@@ -63,6 +63,7 @@ typedef struct {
 	 * 2 = all 7s rerolled */
 	gint victory_points;	/* target number of victory points */
 	gboolean check_victory_at_end_of_turn;	/* check victory only at end of turn */
+	gboolean use_cities_and_knights_rules;	/* enable the Cities & Knights expansion rules */
 	gint num_build_type[NUM_BUILD_TYPES];	/* number of each build type */
 	gint resource_count;	/* number of each resource */
 	gint num_develop_type[NUM_DEVEL_TYPES];	/* number of each development */
