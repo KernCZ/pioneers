@@ -31,6 +31,9 @@ GdkColor green = { 0, 0, 0xff00, 0 };
 GdkColor blue = { 0, 0, 0, 0xff00 };
 GdkColor lightblue = { 0, 0xbe00, 0xbe00, 0xff00 };
 
+GdkColor ck_die_red = { 0, 0x8800, 0x0200, 0x0200 };
+GdkColor ck_die_yellow = { 0, 0xab00, 0xbd00, 0x1300 };
+
 static GdkColor token_colors[MAX_PLAYERS] = {
 	{0, 0xCD00, 0x0000, 0x0000},	/* red */
 	{0, 0x1E00, 0x9000, 0xFF00},	/* blue */
@@ -60,6 +63,9 @@ void colors_init(void)
 	gdk_colormap_alloc_color(cmap, &green, FALSE, TRUE);
 	gdk_colormap_alloc_color(cmap, &blue, FALSE, TRUE);
 	gdk_colormap_alloc_color(cmap, &lightblue, FALSE, TRUE);
+
+	gdk_colormap_alloc_color(cmap, &ck_die_red, FALSE, TRUE);
+	gdk_colormap_alloc_color(cmap, &ck_die_yellow, FALSE, TRUE);
 }
 
 GdkColor *colors_get_player(gint player_num)

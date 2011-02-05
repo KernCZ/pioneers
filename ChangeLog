@@ -1,8 +1,13 @@
+2011-02-05  Roland Clobus <rclobus@rclobus.nl>
+	* client/gtk/identity.c: Use array for dice.
+
 2011-02-05  Matt Zagrabelny <zagrabelny@users.sourceforge.net>
 	* common/game.c, common/game.h, common/gtk/game-rules.c,
 	common/gtk/game-rules.h: Added checkbox to enable experimental
 	Cities and Knights expansion rules.
 	* server/gtk/main.c: Store the value of the checkbox.
+	* common/gtk/colors.c, common/gtk/colors.h, client/gtk/identity.c:
+	Use colored dice for Cities and Knights.
 
 2011-01-26  Roland Clobus <rclobus@rclobus.nl>
 	* configure.ac: Work version is 0.12.5.

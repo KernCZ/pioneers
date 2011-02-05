@@ -30,6 +30,9 @@ extern GdkColor green;
 extern GdkColor blue;
 extern GdkColor lightblue;
 
+extern GdkColor ck_die_red;
+extern GdkColor ck_die_yellow;
+
 void colors_init(void);
 
 GdkColor *colors_get_player(gint player_num);
