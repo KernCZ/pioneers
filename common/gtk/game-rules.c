@@ -253,7 +253,8 @@ gboolean game_rules_get_victory_at_end_of_turn(GameRules * gr)
 					  check_victory_at_end_of_turn));
 }
 
-void game_rules_set_use_cities_and_knights_rules(GameRules * gr, gboolean val)
+void game_rules_set_use_cities_and_knights_rules(GameRules * gr,
+						 gboolean val)
 {
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
 				     (gr->use_cities_and_knights_rules),

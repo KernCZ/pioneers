@@ -49,7 +49,8 @@ void game_rules_set_domestic_trade(GameRules * gr, gboolean val);
 gboolean game_rules_get_domestic_trade(GameRules * gr);
 void game_rules_set_victory_at_end_of_turn(GameRules * gr, gboolean val);
 gboolean game_rules_get_victory_at_end_of_turn(GameRules * gr);
-void game_rules_set_use_cities_and_knights_rules(GameRules * gr, gboolean val);
+void game_rules_set_use_cities_and_knights_rules(GameRules * gr,
+						 gboolean val);
 gboolean game_rules_get_use_cities_and_knights_rules(GameRules * gr);
 
 G_END_DECLS
