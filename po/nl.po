@@ -1494,7 +1494,7 @@ msgstr "Handelen"
 #. Tooltip for Undo menu entry
 #: ../client/gtk/gui.c:276 ../client/gtk/gui.c:278
 msgid "Undo"
-msgstr "Herstellen"
+msgstr "Ongedaan maken"
 
 #. Menu entry
 #. Tooltip for Finish menu entry
