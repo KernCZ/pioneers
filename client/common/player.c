@@ -700,7 +700,7 @@ void player_get_point(gint player_num, gint id, const gchar * str,
 	Points *point = points_new(id, str, num);
 	player_modify_points(player_num, point, TRUE);
 	/* tell the user that someone got something */
-	log_message(MSG_INFO, _("%s received %s.\n"), player->name, str);
+	log_message(MSG_INFO, _("%s received %s.\n"), player->name, _(str));
 }
 
 /* lose a point: noone gets it */
@@ -725,7 +725,7 @@ void player_lose_point(gint player_num, gint id)
 	player_modify_points(player_num, point, FALSE);
 	/* tell the user the point is lost */
 	log_message(MSG_INFO, _("%s lost %s.\n"), player->name,
-		    point->name);
+		    _(point->name));
 	/* free the memory */
 	points_free(point);
 	g_free(point);
@@ -755,7 +755,7 @@ void player_take_point(gint player_num, gint id, gint old_owner)
 	player->points = g_list_append(player->points, point);
 	/* tell the user someone (1) lost something (2) to someone else (3) */
 	log_message(MSG_INFO, _("%s lost %s to %s.\n"), victim->name,
-		    point->name, player->name);
+		    _(point->name), player->name);
 }
 
 void player_set_style(gint player_num, const gchar * style)

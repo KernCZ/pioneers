@@ -1,3 +1,6 @@
+2011-02-13  Roland Clobus <rclobus@rclobus.nl>
+	* client/common/player.c: Translate the name of the additional points.
+
 2011-02-05  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/identity.c: Use array for dice.
 
