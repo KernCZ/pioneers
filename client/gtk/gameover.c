@@ -50,7 +50,6 @@ GtkWidget *gameover_create_dlg(gint player_num, gint num_points)
 
 	sprintf(buff, _("%s has won the game with %d victory points!"),
 		player_name(player_num, TRUE), num_points);
-	log_message(MSG_INFO, "%s\n", buff);
 	lbl = gtk_label_new(buff);
 	gtk_widget_show(lbl);
 	gtk_box_pack_start(GTK_BOX(vbox), lbl, FALSE, TRUE, 0);

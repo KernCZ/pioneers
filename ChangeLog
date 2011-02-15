@@ -1,3 +1,6 @@
+2011-02-15  Roland Clobus <rclobus@rclobus.nl>
+	* client/gtk/gameover.c: Remove second log entry about winning.
+
 2011-02-13  Roland Clobus <rclobus@rclobus.nl>
 	* client/common/player.c: Translate the name of the additional points.
 
