@@ -809,10 +809,10 @@ gboolean map_parse_line(Map * map, const gchar * line)
 		case '\t':
 			continue;
 		}
-		--line;
 
 		if (x >= MAP_SIZE || map->y >= MAP_SIZE)
 			continue;
+		--line;
 
 		hex = g_malloc0(sizeof(*hex));
 		hex->map = map;

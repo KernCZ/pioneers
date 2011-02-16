@@ -1,3 +1,6 @@
+2011-02-16  Micah Bunting <Amnykon@gmail.com>
+	* common/map.c: Fixed infinite loop for large maps.
+
 2011-02-15  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/gameover.c: Remove second log entry about winning.
 
