@@ -1,3 +1,6 @@
+2011-02-18  Micah Bunting <Amnykon@gmail.com>
+	* common/map.c: Use new accessor functions.
+
 2011-02-16  Micah Bunting <Amnykon@gmail.com>
 	* common/map.c: Fixed infinite loop for large maps.
 
