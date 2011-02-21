@@ -195,17 +195,17 @@ void map_free(Map * map);
 
 typedef enum {
 	MAP_MODIFY_INSERT,
-        MAP_MODIFY_REMOVE
+	MAP_MODIFY_REMOVE
 } MapModify;
 
 typedef enum {
-        MAP_MODIFY_ROW_TOP,
-        MAP_MODIFY_ROW_BOTTOM
+	MAP_MODIFY_ROW_TOP,
+	MAP_MODIFY_ROW_BOTTOM
 } MapModifyRowLocation;
 
 typedef enum {
-        MAP_MODIFY_COLUMN_LEFT,
-        MAP_MODIFY_COLUMN_RIGHT
+	MAP_MODIFY_COLUMN_LEFT,
+	MAP_MODIFY_COLUMN_RIGHT
 } MapModifyColumnLocation;
 
 /** Modify the amount of rows.
@@ -213,14 +213,16 @@ typedef enum {
  * @param type Insert or delete.
  * @param location At the top or the bottom.
 */
-void map_modify_row_count(Map * map, MapModify type, MapModifyRowLocation location);
+void map_modify_row_count(Map * map, MapModify type,
+			  MapModifyRowLocation location);
 
 /** Modify the amount of columns.
  * @param map The map to modify.
  * @param type Insert or delete.
  * @param location At left or right.
 */
-void map_modify_column_count(Map * map, MapModify type, MapModifyColumnLocation location);
+void map_modify_column_count(Map * map, MapModify type,
+			     MapModifyColumnLocation location);
 /** Reset the hex to the default values.
  * @param map The map to modify.
  * @param x X coordinate.

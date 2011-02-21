@@ -700,7 +700,8 @@ void player_get_point(gint player_num, gint id, const gchar * str,
 	Points *point = points_new(id, str, num);
 	player_modify_points(player_num, point, TRUE);
 	/* tell the user that someone got something */
-	log_message(MSG_INFO, _("%s received %s.\n"), player->name, _(str));
+	log_message(MSG_INFO, _("%s received %s.\n"), player->name,
+		    _(str));
 }
 
 /* lose a point: noone gets it */

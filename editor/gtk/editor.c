@@ -163,16 +163,17 @@ static void fill_map(Map * map)
 
 	for (y = 0; y < map->y_size; y++) {
 		for (x = 0; x < map->x_size; x++) {
-                        if (x == 0 && y % 2 == 0 && map->shrink_left) {
-                                continue;
-                        }
-			if (x == map->x_size - 1 && y % 2 == 1 && map->shrink_right) {
+			if (x == 0 && y % 2 == 0 && map->shrink_left) {
 				continue;
-                        }
+			}
+			if (x == map->x_size - 1 && y % 2 == 1
+			    && map->shrink_right) {
+				continue;
+			}
 			if (map->grid[y][x] != NULL) {
 				continue;
-                        }
-                        /* Add a default hex on the empty spot */
+			}
+			/* Add a default hex on the empty spot */
 			map_reset_hex(map, x, y);
 		}
 	}
@@ -219,14 +220,17 @@ static void build_map_resize(GtkWidget * table, gint col, gint row,
 			     GCallback resize_callback)
 {
 	/* symbols[] must match order of hresize_type and vresize_type; */
-	static const gchar *symbols[] = { GTK_STOCK_ADD, GTK_STOCK_REMOVE, GTK_STOCK_ADD, GTK_STOCK_REMOVE };
-        /* The order must match hresize_type and vresize_type, and also depends on the orientation */
-        static const gchar *tooltip[] = {
-                N_("Insert a row"),
-                N_("Delete a row"),
-                N_("Insert a column"),
-                N_("Delete a column")
-        };
+	static const gchar *symbols[] =
+	    { GTK_STOCK_ADD, GTK_STOCK_REMOVE, GTK_STOCK_ADD,
+		GTK_STOCK_REMOVE
+	};
+	/* The order must match hresize_type and vresize_type, and also depends on the orientation */
+	static const gchar *tooltip[] = {
+		N_("Insert a row"),
+		N_("Delete a row"),
+		N_("Insert a column"),
+		N_("Delete a column")
+	};
 
 	GtkWidget *box;
 	gint i;
@@ -235,11 +239,16 @@ static void build_map_resize(GtkWidget * table, gint col, gint row,
 		box = gtk_vbox_new(FALSE, 0);
 	} else {
 		box = gtk_hbox_new(FALSE, 0);
-        }
+	}
 
 	for (i = 0; i < 4; i++) {
 		buttons[i] = gtk_tool_button_new_from_stock(symbols[i]);
-                gtk_tool_item_set_tooltip_text(GTK_TOOL_ITEM(buttons[i]), _(tooltip[i % 2 + (dir == GTK_ORIENTATION_VERTICAL ? 0 : 2)]));
+		gtk_tool_item_set_tooltip_text(GTK_TOOL_ITEM(buttons[i]),
+					       _(tooltip
+						 [i % 2 +
+						  (dir ==
+						   GTK_ORIENTATION_VERTICAL
+						   ? 0 : 2)]));
 
 		if (i < 2) {
 			gtk_box_pack_start(GTK_BOX(box), buttons[i],
@@ -247,7 +256,7 @@ static void build_map_resize(GtkWidget * table, gint col, gint row,
 		} else {
 			gtk_box_pack_end(GTK_BOX(box), buttons[i],
 					 FALSE, TRUE, 0);
-                }
+		}
 		g_signal_connect(G_OBJECT(buttons[i]), "clicked",
 				 resize_callback, GINT_TO_POINTER(i));
 	}
@@ -442,16 +451,20 @@ static void change_height(G_GNUC_UNUSED GtkWidget * menu,
 {
 	switch (GPOINTER_TO_INT(user_data)) {
 	case RESIZE_REMOVE_BOTTOM:
-		map_modify_row_count(gmap->map, MAP_MODIFY_REMOVE, MAP_MODIFY_ROW_BOTTOM);
+		map_modify_row_count(gmap->map, MAP_MODIFY_REMOVE,
+				     MAP_MODIFY_ROW_BOTTOM);
 		break;
 	case RESIZE_INSERT_BOTTOM:
-		map_modify_row_count(gmap->map, MAP_MODIFY_INSERT, MAP_MODIFY_ROW_BOTTOM);
+		map_modify_row_count(gmap->map, MAP_MODIFY_INSERT,
+				     MAP_MODIFY_ROW_BOTTOM);
 		break;
 	case RESIZE_REMOVE_TOP:
-		map_modify_row_count(gmap->map, MAP_MODIFY_REMOVE, MAP_MODIFY_ROW_TOP);
+		map_modify_row_count(gmap->map, MAP_MODIFY_REMOVE,
+				     MAP_MODIFY_ROW_TOP);
 		break;
 	case RESIZE_INSERT_TOP:
-		map_modify_row_count(gmap->map, MAP_MODIFY_INSERT, MAP_MODIFY_ROW_TOP);
+		map_modify_row_count(gmap->map, MAP_MODIFY_INSERT,
+				     MAP_MODIFY_ROW_TOP);
 		break;
 	}
 	update_resize_buttons();
@@ -462,16 +475,20 @@ static void change_width(G_GNUC_UNUSED GtkWidget * menu,
 {
 	switch (GPOINTER_TO_INT(user_data)) {
 	case RESIZE_REMOVE_RIGHT:
-		map_modify_column_count(gmap->map, MAP_MODIFY_REMOVE, MAP_MODIFY_COLUMN_RIGHT);
+		map_modify_column_count(gmap->map, MAP_MODIFY_REMOVE,
+					MAP_MODIFY_COLUMN_RIGHT);
 		break;
 	case RESIZE_INSERT_RIGHT:
-		map_modify_column_count(gmap->map, MAP_MODIFY_INSERT, MAP_MODIFY_COLUMN_RIGHT);
+		map_modify_column_count(gmap->map, MAP_MODIFY_INSERT,
+					MAP_MODIFY_COLUMN_RIGHT);
 		break;
 	case RESIZE_REMOVE_LEFT:
-		map_modify_column_count(gmap->map, MAP_MODIFY_REMOVE, MAP_MODIFY_COLUMN_LEFT);
+		map_modify_column_count(gmap->map, MAP_MODIFY_REMOVE,
+					MAP_MODIFY_COLUMN_LEFT);
 		break;
 	case RESIZE_INSERT_LEFT:
-		map_modify_column_count(gmap->map, MAP_MODIFY_INSERT, MAP_MODIFY_COLUMN_LEFT);
+		map_modify_column_count(gmap->map, MAP_MODIFY_INSERT,
+					MAP_MODIFY_COLUMN_LEFT);
 		break;
 	}
 	update_resize_buttons();
@@ -892,7 +909,7 @@ static void load_game(const gchar * file, gboolean is_reload)
 	const gchar *gamefile;
 	GameParams *new_params;
 	gchar *new_filename;
-        gint i;
+	gint i;
 
 	if (file == NULL)
 		gamefile = default_game;
@@ -910,12 +927,16 @@ static void load_game(const gchar * file, gboolean is_reload)
 		new_params->title = g_strdup("Untitled");
 		map_free(new_params->map);
 		new_params->map = map_new();
-                for (i = 0; i < 6; i++) {
-                        map_modify_row_count(new_params->map, MAP_MODIFY_INSERT, MAP_MODIFY_ROW_BOTTOM);
-                }
-                for (i = 0; i < 11; i++) {
-                        map_modify_column_count(new_params->map, MAP_MODIFY_INSERT, MAP_MODIFY_COLUMN_RIGHT);
-                }
+		for (i = 0; i < 6; i++) {
+			map_modify_row_count(new_params->map,
+					     MAP_MODIFY_INSERT,
+					     MAP_MODIFY_ROW_BOTTOM);
+		}
+		for (i = 0; i < 11; i++) {
+			map_modify_column_count(new_params->map,
+						MAP_MODIFY_INSERT,
+						MAP_MODIFY_COLUMN_RIGHT);
+		}
 		new_params->map->chits =
 		    g_array_new(FALSE, FALSE, sizeof(gint));
 		new_filename = NULL;
@@ -938,7 +959,7 @@ static void load_game(const gchar * file, gboolean is_reload)
 		scale_map(gmap);
 		guimap_display(gmap);
 	}
-        update_resize_buttons();
+	update_resize_buttons();
 }
 
 static void save_game(const gchar * file)

@@ -702,7 +702,7 @@ static Hex *hex_new(Map * map, gint x, gint y)
 {
 	Hex *hex;
 
-        g_assert(map != NULL);
+	g_assert(map != NULL);
 	g_assert(x >= 0);
 	g_assert(x < map->x_size);
 	g_assert(y >= 0);
@@ -1138,7 +1138,7 @@ static void hex_free(Hex * hex)
 
 static gboolean free_hex(Hex * hex, G_GNUC_UNUSED gpointer closure)
 {
-        hex_free(hex);
+	hex_free(hex);
 	return FALSE;
 }
 
