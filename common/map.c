@@ -4,6 +4,7 @@
  * Copyright (C) 1999 Dave Cole
  * Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
  * Copyright (C) 2011 Micah Bunting <Amnykon@gmail.com>
+ * Copyright (C) 2011 Roland Clobus <rclobus@rclobus.nl>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -93,6 +94,20 @@
  *      \/               \/      *      \/      \/\/      \/
  *
  */
+
+/* Function of shrink_left and shrink_right:
+ *
+ *  / \ / \       / \ / \         / \           / \
+ * | A | B |     | A | B |       | B |         | B |
+ *  \ / \ / \     \ / \ /       / \ / \       / \ /
+ *   | C | D |     | C |       | C | D |     | C |
+ *    \ / \ /       \ /         \ / \ /       \ /
+ * 2 2 F F         2 2 F T     2 2 T F       2 2 T T
+ *
+ * The numbers below the map are:
+ *  x_size, y_size, shrink_left, shrink_right
+ */
+static Hex *move_hex(Hex * hex, HexDirection direction);
 
 static Node *get_node(Hex * hex, int dir)
 {
@@ -683,6 +698,28 @@ Map *map_new(void)
 	return g_malloc0(sizeof(Map));
 }
 
+static Hex *hex_new(Map * map, gint x, gint y)
+{
+	Hex *hex;
+
+        g_assert(map != NULL);
+	g_assert(x >= 0);
+	g_assert(x < map->x_size);
+	g_assert(y >= 0);
+	g_assert(y < map->y_size);
+	g_assert(map->grid[y][x] == NULL);
+
+	hex = g_malloc0(sizeof(*hex));
+	map->grid[y][x] = hex;
+
+	hex->map = map;
+	hex->x = x;
+	hex->y = y;
+	build_network(hex, NULL);
+	connect_network(hex, NULL);
+	return hex;
+}
+
 /** Copy a hex.
  * @param map The new owner
  * @param hex The original hex
@@ -1046,7 +1083,7 @@ gboolean map_parse_finish(Map * map)
 /** Free a hex.
  * Disconnect the hex from the grid.
  */
-static gboolean free_hex(Hex * hex, G_GNUC_UNUSED gpointer closure)
+static void hex_free(Hex * hex)
 {
 	g_assert(hex != NULL);
 	gint idx;
@@ -1096,6 +1133,12 @@ static gboolean free_hex(Hex * hex, G_GNUC_UNUSED gpointer closure)
 	if (hex->map->grid[hex->y][hex->x] == hex)
 		hex->map->grid[hex->y][hex->x] = NULL;
 	g_free(hex);
+}
+
+
+static gboolean free_hex(Hex * hex, G_GNUC_UNUSED gpointer closure)
+{
+        hex_free(hex);
 	return FALSE;
 }
 
@@ -1108,18 +1151,318 @@ void map_free(Map * map)
 	g_free(map);
 }
 
-Hex *map_add_hex(Map * map, gint x, gint y)
+void map_reset_hex(Map * map, gint x, gint y)
 {
 	Hex *hex;
+	Hex *adjacent;
+	int i;
 
-	g_assert(x < map->x_size);
-	g_assert(y < map->y_size);
-	hex = g_malloc0(sizeof(*hex));
-	hex->map = map;
-	hex->y = y;
-	hex->x = x;
-	map->grid[y][x] = hex;
-	build_network(hex, NULL);
-	connect_network(hex, NULL);
-	return hex;
+	if (x < 0 || x >= map->x_size || y < 0 || y >= map->y_size) {
+		g_assert_not_reached();
+		return;
+	}
+	hex = map_hex(map, x, y);
+	if (!hex) {
+		/* Create a new hex on the previously empty place */
+		hex = hex_new(map, x, y);
+	}
+
+	g_return_if_fail(hex != NULL);
+	hex->terrain = LAST_TERRAIN;
+	hex->resource = NO_RESOURCE;
+	hex->chit_pos = -1;
+	hex->roll = 0;
+	hex->shuffle = TRUE;
+
+	/* Clear any ports that face this hex */
+	for (i = 0; i < 6; i++) {
+		adjacent = hex_in_direction(hex, i);
+		if (adjacent != NULL
+		    && adjacent->terrain == SEA_TERRAIN
+		    && adjacent->resource != NO_RESOURCE
+		    && adjacent->facing == (i + 3) % 6) {
+			adjacent->resource = NO_RESOURCE;
+			adjacent->facing = 0;
+		};
+	};
+}
+
+void map_modify_row_count(Map * map, MapModify type,
+			  MapModifyRowLocation location)
+{
+	gint x;
+	gint y;
+	gint max;
+	gint min;
+	Hex *shift_hex;
+
+	if (type == MAP_MODIFY_INSERT && location == MAP_MODIFY_ROW_TOP) {
+		/* Shift the map to the right, if needed */
+		map->shrink_left = !map->shrink_left;
+		if (map->shrink_left) {
+			map->x_size++;
+			for (y = 0; y < map->y_size; y++) {
+				shift_hex = map->grid[y][0];
+				while (shift_hex != NULL) {
+					shift_hex =
+					    move_hex(shift_hex, HEX_DIR_E);
+				};
+			};
+		};
+		map->y_size++;
+		/* Move all except the top row */
+		min = map->shrink_right ? 2 : 1;
+		for (y = min; y < map->y_size - 1; y += 2) {
+			shift_hex = map->grid[y][map->x_size - 1];
+			while (shift_hex != NULL) {
+				shift_hex =
+				    move_hex(shift_hex, HEX_DIR_SW);
+			};
+		};
+		/* Move the top row */
+		min = 1;
+		max = map->x_size;
+		for (x = min; x < max; x++) {
+			shift_hex = map->grid[0][x];
+			while (shift_hex != NULL) {
+				shift_hex =
+				    move_hex(shift_hex, HEX_DIR_SW);
+			};
+		};
+		/* Remove column, if needed */
+		if (map->shrink_right) {
+			map->x_size--;
+		}
+		map->shrink_right = !map->shrink_right;
+		/* Create the new hexes */
+		min = map->shrink_left ? 1 : 0;
+		max = map->x_size;
+		for (x = min; x < max; x++) {
+			map_reset_hex(map, x, 0);
+		};
+	} else if (type == MAP_MODIFY_INSERT
+		   && location == MAP_MODIFY_ROW_BOTTOM) {
+		map->y_size++;
+		if (map->y_size % 2 == 0) {
+			min = 0;
+			max =
+			    map->shrink_right ? map->x_size -
+			    1 : map->x_size;
+		} else {
+			min = map->shrink_left ? 1 : 0;
+			max = map->x_size;
+		};
+		for (x = min; x < max; x++) {
+			map_reset_hex(map, x, map->y_size - 1);
+		};
+	} else if (type == MAP_MODIFY_REMOVE
+		   && location == MAP_MODIFY_ROW_TOP) {
+		/* Remove the top row */
+		min = map->shrink_left ? 1 : 0;
+		max = map->x_size;
+		for (x = min; x < max; x++) {
+			map_reset_hex(map, x, 0);
+			hex_free(map->grid[0][x]);
+		};
+		/* Shift the map to the right, if needed */
+		map->shrink_left = !map->shrink_left;
+		if (map->shrink_left) {
+			map->x_size++;
+			for (y = 1; y < map->y_size; y++) {
+				shift_hex = map->grid[y][0];
+				while (shift_hex != NULL) {
+					shift_hex =
+					    move_hex(shift_hex, HEX_DIR_E);
+				};
+			};
+		};
+		/* Move all except the bottom row */
+		min = map->shrink_right ? 2 : 1;
+		for (y = min; y < map->y_size - 1; y += 2) {
+			shift_hex = map->grid[y][map->x_size - 1];
+			while (shift_hex != NULL) {
+				shift_hex =
+				    move_hex(shift_hex, HEX_DIR_NW);
+			};
+		};
+		/* Move the bottom row */
+		if (map->y_size % 2 == 0) {
+			min = 0;
+			max =
+			    map->shrink_right ? map->x_size -
+			    1 : map->x_size;
+		} else {
+			min = map->shrink_left ? 1 : 0;
+			max = map->x_size;
+		};
+		for (x = min; x < max; x++) {
+			shift_hex = map->grid[map->y_size - 1][x];
+			while (shift_hex != NULL) {
+				shift_hex =
+				    move_hex(shift_hex, HEX_DIR_NW);
+			};
+		};
+
+		/* Remove column, if needed */
+		if (map->shrink_right) {
+			map->x_size--;
+		};
+		map->shrink_right = !map->shrink_right;
+
+		map->y_size--;
+	} else {
+		if (map->y_size % 2 == 0) {
+			min = 0;
+			max =
+			    map->shrink_right ? map->x_size -
+			    1 : map->x_size;
+		} else {
+			min = map->shrink_left ? 1 : 0;
+			max = map->x_size;
+		};
+		for (x = min; x < max; x++) {
+			map_reset_hex(map, x, map->y_size - 1);
+			hex_free(map->grid[map->y_size - 1][x]);
+		};
+		map->y_size--;
+	}
+}
+
+void map_modify_column_count(Map * map, MapModify type,
+			     MapModifyColumnLocation location)
+{
+	gint x;
+	gint y;
+	Hex *shift_hex;
+
+	if (type == MAP_MODIFY_INSERT
+	    && location == MAP_MODIFY_COLUMN_LEFT) {
+		map->shrink_left = !map->shrink_left;
+		if (map->shrink_left) {
+			map->x_size++;
+			for (y = 0; y < map->y_size; y++) {
+				shift_hex = map->grid[y][0];
+				while (shift_hex != NULL) {
+					shift_hex =
+					    move_hex(shift_hex, HEX_DIR_E);
+				};
+			};
+		};
+		for (y = map->shrink_left ? 1 : 0; y < map->y_size; y += 2) {
+			map_reset_hex(map, 0, y);
+		};
+	} else if (type == MAP_MODIFY_INSERT
+		   && location == MAP_MODIFY_COLUMN_RIGHT) {
+		if (map->shrink_right) {
+			y = 1;
+		} else {
+			y = 0;
+			map->x_size++;
+		};
+		x = map->x_size - 1;
+
+		while (y < map->y_size) {
+			map_reset_hex(map, x, y);
+			y += 2;
+		};
+		map->shrink_right = !map->shrink_right;
+	} else if (type == MAP_MODIFY_REMOVE
+		   && location == MAP_MODIFY_COLUMN_LEFT) {
+		/* Clear the hexes */
+		for (y = map->shrink_left ? 1 : 0; y < map->y_size; y += 2) {
+			map_reset_hex(map, 0, y);
+			hex_free(map->grid[y][0]);
+		};
+		if (map->shrink_left) {
+			/* The map was already shrunk, so move all to the left */
+			for (y = 0; y < map->y_size; y++) {
+				x = (map->shrink_right
+				     && y % 2 ==
+				     1) ? map->x_size - 2 : map->x_size -
+				    1;
+				shift_hex = map->grid[y][x];
+				while (shift_hex != NULL) {
+					shift_hex =
+					    move_hex(shift_hex, HEX_DIR_W);
+				};
+			};
+			map->x_size--;
+		};
+		map->shrink_left = !map->shrink_left;
+	} else {
+		x = map->x_size - 1;
+		for (y = map->shrink_right ? 0 : 1; y < map->y_size;
+		     y += 2) {
+			map_reset_hex(map, x, y);
+			hex_free(map->grid[y][x]);
+		};
+		if (map->shrink_right) {
+			map->x_size--;
+		};
+		map->shrink_right = !map->shrink_right;
+	}
+}
+
+/** Move a hex in the given direction.
+ *  This function must be called for all hexes on the grid,
+ *  it cannot be use for single hexes.
+ *  All related edges and nodes are moved too.
+ *  @param hex Hex to move.
+ *  @param direction Direction to move the hex to.
+ *  @return The hex that was at the pointed position.
+ */
+static Hex *move_hex(Hex * hex, HexDirection direction)
+{
+	if (hex->map->grid[hex->y][hex->x] == hex) {
+		hex->map->grid[hex->y][hex->x] = NULL;
+	};
+	switch (direction) {
+	case HEX_DIR_E:
+		hex->x++;
+		break;
+	case HEX_DIR_NE:
+		if (hex->y % 2 == 1) {
+			hex->x++;
+		};
+		hex->y--;
+		break;
+	case HEX_DIR_NW:
+		if (hex->y % 2 == 0) {
+			hex->x--;
+		};
+		hex->y--;
+		break;
+	case HEX_DIR_W:
+		hex->x--;
+		break;
+	case HEX_DIR_SW:
+		if (hex->y % 2 == 0) {
+			hex->x--;
+		};
+		hex->y++;
+		break;
+	case HEX_DIR_SE:
+		if (hex->y % 2 == 1) {
+			hex->x++;
+		};
+		hex->y++;
+		break;
+	}
+	Hex *ret_hex = map_hex(hex->map, hex->x, hex->y);
+
+	hex->map->grid[hex->y][hex->x] = hex;
+	int idx;
+	for (idx = 0; idx < 6; idx++) {
+		Edge *edge = hex->edges[idx];
+		if (edge != NULL && edge->pos == idx) {
+			edge->x = hex->x;
+			edge->y = hex->y;
+		};
+		Node *node = hex->nodes[idx];
+		if (node != NULL && node->pos == idx) {
+			node->x = hex->x;
+			node->y = hex->y;
+		};
+	};
+	return ret_hex;
 }

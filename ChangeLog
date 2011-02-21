@@ -1,3 +1,8 @@
+2011-02-21  Micah Bunting <Amnykon@gmail.com> and
+        Roland Clobus <rclobus@rclobus.nl>
+        * editor/gtk/editor.c, common/map.c, common/map.h: Resize the map with
+        insert and remove at both ends.
+
 2011-02-18  Micah Bunting <Amnykon@gmail.com>
 	* common/map.c: Use new accessor functions.
 

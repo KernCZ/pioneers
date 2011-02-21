@@ -3,6 +3,8 @@
  *
  * Copyright (C) 1999 Dave Cole
  * Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
+ * Copyright (C) 2011 Micah Bunting <Amnykon@gmail.com>
+ * Copyright (C) 2011 Roland Clobus <rclobus@rclobus.nl>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -128,7 +130,7 @@ struct _Edge {
 };
 
 /* All of the hexes are stored in a 2 dimensional array laid out as
- * shown in grid.gif
+ * shown in map.c
  */
 #define MAP_SIZE 32		/* maximum map dimension */
 
@@ -190,7 +192,41 @@ gchar *map_format_line(Map * map, gboolean write_secrets, gint y);
 gboolean map_parse_line(Map * map, const gchar * line);
 gboolean map_parse_finish(Map * map);
 void map_free(Map * map);
-Hex *map_add_hex(Map * map, gint x, gint y);
+
+typedef enum {
+	MAP_MODIFY_INSERT,
+        MAP_MODIFY_REMOVE
+} MapModify;
+
+typedef enum {
+        MAP_MODIFY_ROW_TOP,
+        MAP_MODIFY_ROW_BOTTOM
+} MapModifyRowLocation;
+
+typedef enum {
+        MAP_MODIFY_COLUMN_LEFT,
+        MAP_MODIFY_COLUMN_RIGHT
+} MapModifyColumnLocation;
+
+/** Modify the amount of rows.
+ * @param map The map to modify.
+ * @param type Insert or delete.
+ * @param location At the top or the bottom.
+*/
+void map_modify_row_count(Map * map, MapModify type, MapModifyRowLocation location);
+
+/** Modify the amount of columns.
+ * @param map The map to modify.
+ * @param type Insert or delete.
+ * @param location At left or right.
+*/
+void map_modify_column_count(Map * map, MapModify type, MapModifyColumnLocation location);
+/** Reset the hex to the default values.
+ * @param map The map to modify.
+ * @param x X coordinate.
+ * @param y Y coordinate.
+ */
+void map_reset_hex(Map * map, gint x, gint y);
 
 /* map_query.c
  */
