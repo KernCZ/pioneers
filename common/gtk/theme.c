@@ -736,4 +736,3 @@ gint expose_terrain_cb(GtkWidget * area,
 	g_object_unref(legend_gc);
 	return FALSE;
 }
-
