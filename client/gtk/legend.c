@@ -45,38 +45,6 @@ static gboolean legend_did_connect = FALSE;
 static void legend_theme_changed(void);
 static void legend_rules_changed(void);
 
-static gint expose_legend_cb(GtkWidget * area,
-			     G_GNUC_UNUSED GdkEventExpose * event,
-			     gpointer terraindata)
-{
-	MapTheme *theme = theme_get_current();
-	static GdkGC *legend_gc;
-	GdkPixbuf *p;
-	gint height;
-	Terrain terrain = GPOINTER_TO_INT(terraindata);
-
-	if (area->window == NULL)
-		return FALSE;
-
-	if (legend_gc == NULL)
-		legend_gc = gdk_gc_new(area->window);
-
-	gdk_gc_set_fill(legend_gc, GDK_TILED);
-	gdk_gc_set_tile(legend_gc, guimap_terrain(terrain));
-
-	height = area->allocation.width / theme->scaledata[terrain].aspect;
-	p = gdk_pixbuf_scale_simple(theme->scaledata[terrain].native_image,
-				    area->allocation.width, height,
-				    GDK_INTERP_BILINEAR);
-
-	/* Center the image in the available space */
-	gdk_draw_pixbuf(area->window, legend_gc, p,
-			0, 0, 0, (area->allocation.height - height) / 2,
-			-1, -1, GDK_RGB_DITHER_NONE, 0, 0);
-	gdk_pixbuf_unref(p);
-	return FALSE;
-}
-
 static void add_legend_terrain(GtkWidget * table, guint row, guint col,
 			       Terrain terrain, Resource resource)
 {
@@ -93,7 +61,7 @@ static void add_legend_terrain(GtkWidget * table, guint row, guint col,
 			 (GtkAttachOptions) GTK_FILL, 0, 0);
 	gtk_widget_set_size_request(area, 30, 34);
 	g_signal_connect(G_OBJECT(area), "expose_event",
-			 G_CALLBACK(expose_legend_cb),
+			 G_CALLBACK(expose_terrain_cb),
 			 GINT_TO_POINTER(terrain));
 
 	label = gtk_label_new(_(terrain_names[terrain]));

@@ -699,3 +699,41 @@ void theme_register_callback(GCallback callback)
 {
 	callback_list = g_list_append(callback_list, callback);
 }
+
+GdkPixmap *theme_get_terrain_pixmap(Terrain terrain)
+{
+	return theme_get_current()->terrain_tiles[terrain];
+}
+
+gint expose_terrain_cb(GtkWidget * area,
+		       G_GNUC_UNUSED GdkEventExpose * event,
+		       gpointer terraindata)
+{
+	MapTheme *theme = theme_get_current();
+	GdkGC *legend_gc;
+	GdkPixbuf *p;
+	gint height;
+	Terrain terrain = GPOINTER_TO_INT(terraindata);
+
+	if (area->window == NULL)
+		return FALSE;
+
+	legend_gc = gdk_gc_new(area->window);
+
+	gdk_gc_set_fill(legend_gc, GDK_TILED);
+	gdk_gc_set_tile(legend_gc, theme_get_terrain_pixmap(terrain));
+
+	height = area->allocation.width / theme->scaledata[terrain].aspect;
+	p = gdk_pixbuf_scale_simple(theme->scaledata[terrain].native_image,
+				    area->allocation.width, height,
+				    GDK_INTERP_BILINEAR);
+
+	/* Center the image in the available space */
+	gdk_draw_pixbuf(area->window, legend_gc, p,
+			0, 0, 0, (area->allocation.height - height) / 2,
+			-1, -1, GDK_RGB_DITHER_NONE, 0, 0);
+	g_object_unref(p);
+	g_object_unref(legend_gc);
+	return FALSE;
+}
+

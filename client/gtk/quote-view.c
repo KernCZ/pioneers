@@ -269,7 +269,7 @@ static void load_pixmaps(QuoteView * qv)
 
 	gc = gdk_gc_new(pixmap);
 	gdk_gc_set_fill(gc, GDK_TILED);
-	gdk_gc_set_tile(gc, guimap_terrain(SEA_TERRAIN));
+	gdk_gc_set_tile(gc, theme_get_terrain_pixmap(SEA_TERRAIN));
 	gdk_gc_set_foreground(gc, &black);
 	gdk_draw_rectangle(pixmap, gc, TRUE, 0, 0, width, height);
 	maritime_pixbuf =
@@ -703,7 +703,7 @@ void quote_view_theme_changed(QuoteView * qv)
 	gdk_gc_set_foreground(gc, &black);
 	gdk_draw_rectangle(pixmap, gc, TRUE, 0, 0, width, height);
 	gdk_gc_set_fill(gc, GDK_TILED);
-	gdk_gc_set_tile(gc, guimap_terrain(SEA_TERRAIN));
+	gdk_gc_set_tile(gc, theme_get_terrain_pixmap(SEA_TERRAIN));
 	gdk_draw_rectangle(pixmap, gc, TRUE, 0, 0, width, height);
 	if (maritime_pixbuf)
 		g_object_unref(maritime_pixbuf);

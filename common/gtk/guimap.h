@@ -102,7 +102,6 @@ void guimap_delete(GuiMap * gmap);
 void guimap_reset(GuiMap * gmap);
 GtkWidget *guimap_build_drawingarea(GuiMap * gmap, gint width,
 				    gint height);
-GdkPixmap *guimap_terrain(Terrain terrain);
 
 void guimap_road_polygon(const GuiMap * gmap, const Edge * edge,
 			 Polygon * poly);

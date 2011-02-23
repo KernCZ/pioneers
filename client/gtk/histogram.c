@@ -99,7 +99,7 @@ static gboolean expose_histogram_cb(GtkWidget * area,
 	if (area->window == NULL)
 		return TRUE;
 
-	pixmap = guimap_terrain(GPOINTER_TO_INT(terrain));
+	pixmap = theme_get_terrain_pixmap(GPOINTER_TO_INT(terrain));
 
 	histogram_gc = gdk_gc_new(area->window);
 	gdk_gc_set_line_attributes(histogram_gc, 1, GDK_LINE_SOLID,

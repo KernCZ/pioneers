@@ -1,3 +1,8 @@
+2011-02-23  Roland Clobus <rclobus@rclobus.nl>
+	* common/gtk/theme.c, common/gtk/theme.h, common/gtk/guimap.c,
+	common/gtk/guimap.h, client/gtk/legend.c, client/gtk/quote-view.c,
+	client/gtk/histogram.c: Move terrain drawing code to theme.
+
 2011-02-21  Micah Bunting <Amnykon@gmail.com> and
         Roland Clobus <rclobus@rclobus.nl>
         * editor/gtk/editor.c, common/map.c, common/map.h: Resize the map with

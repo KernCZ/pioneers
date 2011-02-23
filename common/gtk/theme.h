@@ -108,4 +108,15 @@ MapTheme *theme_get_current(void);
 GList *theme_get_list(void);
 void themes_init(void);
 void theme_register_callback(GCallback callback);
+
+GdkPixmap *theme_get_terrain_pixmap(Terrain terrain);
+
+/** Callback to draw a terrain.
+ * @param area Widget to draw on.
+ * @param event Not used.
+ * @param terraindata The Terrain enumeration value.
+ */
+gint expose_terrain_cb(GtkWidget * area,
+		       G_GNUC_UNUSED GdkEventExpose * event,
+		       gpointer terraindata);
 #endif
