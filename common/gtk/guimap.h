@@ -90,6 +90,7 @@ typedef struct {
 	gint x_point;		   /**< x offset of node 0 from centre */
 	gint y_point;		   /**< y offset of node 0 from centre */
 
+	gboolean is_custom_view;   /**< false if all hexes are shown and centered */
 	gint x_margin;		   /**< margin to leave empty */
 	gint y_margin;		   /**< margin to leave empty */
 	gint width;		   /**< pixel width of map */
@@ -124,6 +125,8 @@ void draw_dice_roll(PangoLayout * layout, GdkPixmap * pixmap, GdkGC * gc,
 void guimap_scale_with_radius(GuiMap * gmap, gint radius);
 void guimap_scale_to_size(GuiMap * gmap, gint width, gint height);
 void guimap_display(GuiMap * gmap);
+void guimap_zoom_normal(GuiMap * gmap);
+void guimap_zoom_center_map(GuiMap * gmap);
 
 void guimap_highlight_chits(GuiMap * gmap, gint roll);
 void guimap_draw_edge(GuiMap * gmap, const Edge * edge);

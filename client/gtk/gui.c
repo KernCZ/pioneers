@@ -210,6 +210,16 @@ static void game_settings_cb(void);
 static void help_manual_cb(void);
 #endif
 
+static void zoom_normal_cb(void)
+{
+	guimap_zoom_normal(gmap);
+}
+
+static void zoom_center_map_cb(void)
+{
+	guimap_zoom_center_map(gmap);
+}
+
 /* Normal items */
 static GtkActionEntry entries[] = {
 	{"GameMenu", NULL,
@@ -332,6 +342,21 @@ static GtkActionEntry entries[] = {
 	 /* Tooltip for Preferences menu entry */
 	 N_("Configure the application"), preferences_cb},
 
+	{"ViewMenu", NULL,
+	 /* Menu entry */
+	 N_("_View"), NULL, NULL, NULL},
+	{"Full", GTK_STOCK_ZOOM_FIT,
+	 /* Menu entry */
+	 N_("_Reset"),
+	 "<control>0",
+	 /* Tooltip for Reset menu entry */
+	 N_("View the full map"), zoom_normal_cb},
+	{"Center", NULL,
+	 /* Menu entry */
+	 N_("_Center"), NULL,
+	 /* Tooltip for Center menu entry */
+	 N_("Center the map"), zoom_center_map_cb},
+
 	{"HelpMenu", NULL,
 	 /* Menu entry */
 	 N_("_Help"), NULL, NULL, NULL},
@@ -395,6 +420,10 @@ static const char *ui_description =
 "    <menu action='SettingsMenu'>"
 "      <menuitem action='ShowHideToolbar'/>"
 "      <menuitem action='Preferences'/>"
+"    </menu>"
+"    <menu action='ViewMenu'>"
+"      <menuitem action='Full'/>"
+"      <menuitem action='Center'/>"
 "    </menu>"
 "    <menu action='HelpMenu'>"
 "      <menuitem action='HelpAbout'/>"

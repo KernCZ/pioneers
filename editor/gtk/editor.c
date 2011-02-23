@@ -287,6 +287,9 @@ static gint button_press_map_cb(GtkWidget * area, GdkEventButton * event,
 	if (area->window == NULL || gmap->map == NULL)
 		return FALSE;
 
+	if (event->button != 1)
+		return TRUE;
+
 	current_hex = guimap_find_hex(gmap, event->x, event->y);
 	if (current_hex == NULL)
 		return TRUE;
@@ -1133,10 +1136,23 @@ static void about_menu_cb(void)
 	aboutbox_display(_("About Pioneers Game Editor"), authors);
 }
 
+static void zoom_normal_cb(void)
+{
+	guimap_zoom_normal(gmap);
+}
+
+static void zoom_center_map_cb(void)
+{
+	guimap_zoom_center_map(gmap);
+}
+
 static GtkActionEntry entries[] = {
 	{"FileMenu", NULL,
 	 /* Menu entry */
 	 N_("_File"), NULL, NULL, NULL},
+	{"ViewMenu", NULL,
+	 /* Menu entry */
+	 N_("_View"), NULL, NULL, NULL},
 	{"HelpMenu", NULL,
 	 /* Menu entry */
 	 N_("_Help"), NULL, NULL, NULL},
@@ -1178,6 +1194,18 @@ static GtkActionEntry entries[] = {
 	 /* Tooltip for Quit menu entry */
 	 N_("Quit"), exit_cb},
 
+	{"Full", GTK_STOCK_ZOOM_FIT,
+	 /* Menu entry */
+	 N_("_Reset"),
+	 "<control>0",
+	 /* Tooltip for Reset menu entry */
+	 N_("View the full map"), zoom_normal_cb},
+	{"Center", NULL,
+	 /* Menu entry */
+	 N_("_Center"), NULL,
+	 /* Tooltip for Center menu entry */
+	 N_("Center the map"), zoom_center_map_cb},
+
 #ifdef HAVE_HELP
 	/* Disable this item, until the help is written
 	   {"Contents", GTK_STOCK_HELP, N_("_Contents"), "F1",
@@ -1188,7 +1216,7 @@ static GtkActionEntry entries[] = {
 	 /* Menu entry */
 	 N_("_About Pioneers Editor"), NULL,
 	 /* Tooltip for About Pioneers Editor menu entry */
-	 N_("Information about Pioneers Editor"), about_menu_cb}
+	 N_("Information about Pioneers Editor"), about_menu_cb},
 };
 
 /* *INDENT-OFF* */
@@ -1205,6 +1233,10 @@ static const char *ui_description =
 "      <menuitem action='ChangeTitle'/>"
 "      <separator/>"
 "      <menuitem action='Quit'/>"
+"    </menu>"
+"    <menu action='ViewMenu'>"
+"      <menuitem action='Full'/>"
+"      <menuitem action='Center'/>"
 "    </menu>"
 "    <menu action='HelpMenu'>"
 #ifdef HAVE_HELP

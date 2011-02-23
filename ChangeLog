@@ -1,3 +1,7 @@
+2011-02-23  Micah Bunting <Amnykon@gmail.com>
+	* editor/gtk/editor.c, common/gtk/guimap.c, common/gtk/guimap.h,
+	client/gtk/gui.c: Add pan and zoom for the scroll wheel.
+
 2011-02-23  Roland Clobus <rclobus@rclobus.nl>
 	* common/gtk/theme.c, common/gtk/theme.h, common/gtk/guimap.c,
 	common/gtk/guimap.h, client/gtk/legend.c, client/gtk/quote-view.c,

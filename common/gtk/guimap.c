@@ -33,6 +33,8 @@
 #include "log.h"
 #include "theme.h"
 
+#define ZOOM_AMOUNT 3
+
 static gboolean single_click_build_active = FALSE;
 
 typedef struct {
@@ -170,12 +172,15 @@ static gint configure_map_cb(GtkWidget * area,
 	return FALSE;
 }
 
-static gint motion_notify_map_cb(GtkWidget * area, GdkEventMotion * event,
-				 gpointer user_data)
+static gboolean motion_notify_map_cb(GtkWidget * area,
+				     GdkEventMotion * event,
+				     gpointer user_data)
 {
 	GuiMap *gmap = user_data;
 	gint x;
 	gint y;
+	static gint last_x;
+	static gint last_y;
 	GdkModifierType state;
 	MapElement dummyElement;
 	g_assert(area != NULL);
@@ -191,10 +196,62 @@ static gint motion_notify_map_cb(GtkWidget * area, GdkEventMotion * event,
 		state = event->state;
 	}
 
+	if (state & GDK_BUTTON2_MASK) {
+		gmap->is_custom_view = TRUE;
+		gmap->x_margin += x - last_x;
+		gmap->y_margin += y - last_y;
+
+		guimap_display(gmap);
+		gtk_widget_queue_draw(gmap->area);
+	}
+	last_x = x;
+	last_y = y;
+
 	dummyElement.pointer = NULL;
 	guimap_cursor_move(gmap, x, y, &dummyElement);
 
-	return TRUE;
+	return FALSE;
+}
+
+static gboolean zoom_map_cb(GtkWidget * area, GdkEventScroll * event,
+			    gpointer user_data)
+{
+	GuiMap *gmap = user_data;
+
+	if (area->window == NULL || gmap->map == NULL)
+		return FALSE;
+
+	gint radius = gmap->hex_radius;
+	gmap->is_custom_view = TRUE;
+
+	if (event->direction == GDK_SCROLL_UP) {
+		radius += ZOOM_AMOUNT;
+
+		gmap->x_margin -= (event->x - gmap->x_margin) *
+		    ZOOM_AMOUNT / radius;
+		gmap->y_margin -= (event->y - gmap->y_margin) *
+		    ZOOM_AMOUNT / radius;
+
+	} else if (event->direction == GDK_SCROLL_DOWN) {
+		gint old_radius = radius;
+		radius -= ZOOM_AMOUNT;
+		if (radius < MIN_HEX_RADIUS)
+			radius = MIN_HEX_RADIUS;
+
+		gmap->x_margin += (event->x - gmap->x_margin) *
+		    (old_radius - radius) / radius;
+		gmap->y_margin += (event->y - gmap->y_margin) *
+		    (old_radius - radius) / radius;
+
+	}
+	gmap->hex_radius = radius;
+	guimap_scale_to_size(gmap,
+			     gmap->area->allocation.width,
+			     gmap->area->allocation.height);
+
+	guimap_display(gmap);
+	gtk_widget_queue_draw(gmap->area);
+	return FALSE;
 }
 
 GtkWidget *guimap_build_drawingarea(GuiMap * gmap, gint width, gint height)
@@ -214,6 +271,8 @@ GtkWidget *guimap_build_drawingarea(GuiMap * gmap, gint width, gint height)
 
 	g_signal_connect(G_OBJECT(gmap->area), "motion_notify_event",
 			 G_CALLBACK(motion_notify_map_cb), gmap);
+	g_signal_connect(G_OBJECT(gmap->area), "scroll_event",
+			 G_CALLBACK(zoom_map_cb), gmap);
 
 	gtk_widget_show(gmap->area);
 
@@ -962,10 +1021,21 @@ void guimap_scale_with_radius(GuiMap * gmap, gint radius)
 
 void guimap_scale_to_size(GuiMap * gmap, gint width, gint height)
 {
+	if (gmap->is_custom_view) {
+		gint x_margin = gmap->x_margin;
+		gint y_margin = gmap->y_margin;
+		guimap_scale_with_radius(gmap, gmap->hex_radius);
+		gmap->x_margin = x_margin;
+		gmap->y_margin = y_margin;
+		gmap->width = width;
+		gmap->height = height;
+		return;
+	}
 	const gint reserved_width = 0;
 	const gint reserved_height = 0;
 	gint width_radius;
 	gint height_radius;
+
 	width_radius = (width - reserved_width)
 	    / ((gmap->map->x_size * 2 + 1
 		- gmap->map->shrink_left
@@ -1096,6 +1166,38 @@ void guimap_display(GuiMap * gmap)
 	}
 
 	map_traverse_const(gmap->map, display_hex, gmap);
+}
+
+void guimap_zoom_normal(GuiMap * gmap)
+{
+	gmap->is_custom_view = FALSE;
+	guimap_scale_to_size(gmap,
+			     gmap->area->allocation.width,
+			     gmap->area->allocation.height);
+	guimap_display(gmap);
+	gtk_widget_queue_draw(gmap->area);
+}
+
+void guimap_zoom_center_map(GuiMap * gmap)
+{
+	if (!gmap->is_custom_view)
+		return;
+	gint width = gmap->map->x_size * 2 * gmap->x_point + gmap->x_point;
+	if (gmap->map->shrink_left)
+		width -= gmap->x_point;
+	if (gmap->map->shrink_right)
+		width -= gmap->x_point;
+
+	gmap->x_margin = gmap->area->allocation.width / 2 - width / 2;
+
+	gint height = (gmap->map->y_size - 1) *
+	    (gmap->hex_radius + gmap->y_point)
+	    + 2 * gmap->hex_radius;
+
+	gmap->y_margin = gmap->area->allocation.height / 2 - height / 2;
+
+	guimap_display(gmap);
+	gtk_widget_queue_draw(gmap->area);
 }
 
 static const Edge *find_hex_edge(GuiMap * gmap, const Hex * hex, gint x,
