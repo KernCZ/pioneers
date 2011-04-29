@@ -131,6 +131,7 @@ static gint expose_map_cb(GtkWidget * area, GdkEventExpose * event,
 			  gpointer user_data)
 {
 	GuiMap *gmap = user_data;
+	cairo_t *cr;
 
 	if (area->window == NULL || gmap->map == NULL)
 		return FALSE;
@@ -142,12 +143,11 @@ static gint expose_map_cb(GtkWidget * area, GdkEventExpose * event,
 		guimap_display(gmap);
 	}
 
-	gdk_draw_drawable(area->window,
-			  area->style->fg_gc[GTK_STATE_NORMAL],
-			  gmap->pixmap,
-			  event->area.x, event->area.y,
-			  event->area.x, event->area.y,
-			  event->area.width, event->area.height);
+	cr = gdk_cairo_create(area->window);
+	gdk_cairo_set_source_pixmap(cr, gmap->pixmap, 0, 0);
+	gdk_cairo_rectangle(cr, &event->area);
+	cairo_fill(cr);
+	cairo_destroy(cr);
 	return FALSE;
 }
 
