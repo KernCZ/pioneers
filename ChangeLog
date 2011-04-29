@@ -1,5 +1,6 @@
 2011-04-29  Roland Clobus <rclobus@rclobus.nl>
 	* common/gtk/guimap.c, client/gtk/resource.c: Replace gdk_draw_drawable.
+	* client/gtk/connect.c, configure.ac: Upgrade to GTK 2.24
 
 2011-02-23  Micah Bunting <Amnykon@gmail.com>
 	* editor/gtk/editor.c, common/gtk/guimap.c, common/gtk/guimap.h,

@@ -1347,7 +1347,7 @@ void connect_create_dlg(void)
 			 G_CALLBACK(create_meta_dlg), app_window);
 	/* Tooltip */
 	gtk_widget_set_tooltip_text(btn, _("Join a public game"));
-	GTK_WIDGET_SET_FLAGS(btn, GTK_CAN_DEFAULT);
+	gtk_widget_set_can_default(btn, TRUE);
 	gtk_widget_grab_default(btn);
 
 	/* Button */
@@ -1587,7 +1587,7 @@ static void connect_private_dialog(G_GNUC_UNUSED GtkWidget * widget,
 				    _("Port of the host of the game"));
 	connect_set_field(&connect_port, connect_port);
 
-	host_list = gtk_combo_box_new_text();
+	host_list = gtk_combo_box_text_new();
 	host_entries = g_ptr_array_new();
 
 	gtk_widget_show(host_list);
@@ -1614,8 +1614,9 @@ static void connect_private_dialog(G_GNUC_UNUSED GtkWidget * widget,
 		g_free(host_port);
 
 		g_ptr_array_add(host_entries, host_name_port);
-		gtk_combo_box_append_text(GTK_COMBO_BOX(host_list),
-					  host_name_port);
+		gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT
+					       (host_list),
+					       host_name_port);
 	}
 	if (i > 0)
 		gtk_combo_box_set_active(GTK_COMBO_BOX(host_list), 0);
