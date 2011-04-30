@@ -1,3 +1,7 @@
+2011-04-30  Roland Clobus <rclobus@rclobus.nl>
+	* client/gtk/resource.c, client/gtk/legend.c, client/gtk/gui.c,
+	client/gtk/gui.h: Upgrade gui.c to GTK 2.24
+
 2011-04-29  Roland Clobus <rclobus@rclobus.nl>
 	* common/gtk/guimap.c, client/gtk/resource.c: Replace gdk_draw_drawable.
 	* client/gtk/connect.c, configure.ac: Upgrade to GTK 2.24

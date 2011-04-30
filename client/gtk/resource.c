@@ -174,7 +174,6 @@ void resource_format_type_image(GtkImage * image, const gint * resources,
 
 	GdkPixmap *p, *pdest;
 	GdkBitmap *b, *bdest;
-	GdkGC *gcp, *gcb;
 	gchar *data;
 	gint size, step;
 	gint width;
@@ -227,7 +226,7 @@ void resource_format_type_image(GtkImage * image, const gint * resources,
 	for (idx = 0; idx < NO_RESOURCE; idx++) {
 		if (!resources[idx])
 			continue;
-		gui_get_resource_pixmap(idx, &p, &b, &gcp, &gcb);
+		gui_get_resource_pixmap(idx, &p, &b);
 		for (i = 0; i < resources[idx]; i++) {
 			cr = gdk_cairo_create(pdest);
 			gdk_cairo_set_source_pixmap(cr, p, pos, 0);

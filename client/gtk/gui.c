@@ -112,7 +112,6 @@ static const gchar *resources_pixmaps[] = {
 static struct {
 	GdkPixmap *p;
 	GdkBitmap *b;
-	GdkGC *gcp, *gcb;
 } resource_pixmap[NO_RESOURCE];
 static gint resource_pixmap_res = 0;
 
@@ -456,10 +455,13 @@ GtkWidget *gui_get_dialog_button(GtkDialog * dlg, gint button)
 	g_return_val_if_fail(dlg != NULL, NULL);
 	g_assert(dlg->action_area != NULL);
 
-	list = g_list_nth(GTK_BOX(dlg->action_area)->children, button);
+	list =
+	    gtk_container_get_children(GTK_CONTAINER
+				       (gtk_dialog_get_action_area(dlg)));
+	list = g_list_nth(list, button);
 	if (list != NULL) {
 		g_assert(list->data != NULL);
-		return ((GtkBoxChild *) list->data)->widget;
+		return GTK_WIDGET(list->data);
 	}
 	return NULL;
 }
@@ -1049,7 +1051,7 @@ static void preferences_cb(void)
 
 	row = 0;
 
-	theme_list = gtk_combo_box_new_text();
+	theme_list = gtk_combo_box_text_new();
 	/* Label for changing the theme, in the preferences dialog */
 	theme_label = gtk_label_new(_("Theme:"));
 	gtk_misc_set_alignment(GTK_MISC(theme_label), 0, 0.5);
@@ -1059,8 +1061,8 @@ static void preferences_cb(void)
 	for (i = 0, theme_elt = theme_get_list();
 	     theme_elt != NULL; ++i, theme_elt = g_list_next(theme_elt)) {
 		MapTheme *theme = theme_elt->data;
-		gtk_combo_box_append_text(GTK_COMBO_BOX(theme_list),
-					  theme->name);
+		gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT
+					       (theme_list), theme->name);
 		if (theme == theme_get_current())
 			gtk_combo_box_set_active(GTK_COMBO_BOX(theme_list),
 						 i);
@@ -1594,16 +1596,6 @@ static void register_pixmaps(void)
 								  &resource_pixmap
 								  [idx].b,
 								  128);
-				resource_pixmap[idx].gcb =
-				    gdk_gc_new(resource_pixmap[idx].b);
-				gdk_gc_set_function(resource_pixmap
-						    [idx].gcb, GDK_OR);
-				resource_pixmap[idx].gcp =
-				    gdk_gc_new(resource_pixmap[idx].p);
-				gdk_gc_set_clip_mask(resource_pixmap
-						     [idx].gcp,
-						     resource_pixmap
-						     [idx].b);
 				if (!resource_pixmap_res)
 					resource_pixmap_res =
 					    gdk_pixbuf_get_width(pixbuf);
@@ -1762,16 +1754,11 @@ GtkWidget *gui_build_interface(void)
 	return app_window;
 }
 
-void gui_get_resource_pixmap(gint idx, GdkPixmap ** p, GdkBitmap ** b,
-			     GdkGC ** gcp, GdkGC ** gcb)
+void gui_get_resource_pixmap(gint idx, GdkPixmap ** p, GdkBitmap ** b)
 {
 	g_assert(idx < NO_RESOURCE);
 	*p = resource_pixmap[idx].p;
 	*b = resource_pixmap[idx].b;
-	if (gcp)
-		*gcp = resource_pixmap[idx].gcp;
-	if (gcb)
-		*gcb = resource_pixmap[idx].gcb;
 }
 
 gint gui_get_resource_pixmap_res()

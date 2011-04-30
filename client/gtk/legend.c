@@ -73,7 +73,7 @@ static void add_legend_terrain(GtkWidget * table, guint row, guint col,
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 
 	if (resource < NO_RESOURCE) {
-		gui_get_resource_pixmap(resource, &p, &b, NULL, NULL);
+		gui_get_resource_pixmap(resource, &p, &b);
 		label = gtk_image_new_from_pixmap(p, b);
 		gtk_widget_show(label);
 		gtk_table_attach(GTK_TABLE(table), label,
