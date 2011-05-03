@@ -118,9 +118,9 @@ void guimap_city_wall_polygon(const GuiMap * gmap, const Node * node,
 			      Polygon * poly);
 
 gint guimap_get_chit_radius(PangoLayout * layout, gboolean show_dots);
-void draw_dice_roll(PangoLayout * layout, GdkPixmap * pixmap, GdkGC * gc,
-		    gint x_offset, gint y_offset, gint radius,
-		    gint n, gint terrain, gboolean highlight);
+void draw_dice_roll(PangoLayout * layout, cairo_t * cr, gdouble x_offset,
+		    gdouble y_offset, gdouble radius, gint n, gint terrain,
+		    gboolean highlight);
 
 void guimap_scale_with_radius(GuiMap * gmap, gint radius);
 void guimap_scale_to_size(GuiMap * gmap, gint width, gint height);

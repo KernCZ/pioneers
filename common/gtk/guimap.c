@@ -3,7 +3,7 @@
  *
  * Copyright (C) 1999 Dave Cole
  * Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
- * Copyright (C) 2004-2007 Roland Clobus <rclobus@bigfoot.com>
+ * Copyright (C) 2004-2011 Roland Clobus <rclobus@bigfoot.com>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -627,9 +627,11 @@ static void guimap_pirate_polygon(const GuiMap * gmap, const Hex * hex,
 	calc_hex_poly(gmap, hex, &pirate_poly, poly, 80.0, 0);
 }
 
-void draw_dice_roll(PangoLayout * layout, GdkPixmap * pixmap, GdkGC * gc,
-		    gint x_offset, gint y_offset, gint radius,
-		    gint n, gint terrain, gboolean highlight)
+/* @TODO Replace by draw_dice_roll when switching to cairo */
+static void draw_dice_roll_old(PangoLayout * layout, GdkPixmap * pixmap,
+			GdkGC * gc, gint x_offset, gint y_offset,
+			gint radius, gint n, gint terrain,
+			gboolean highlight)
 {
 	gchar num[10];
 	gint height;
@@ -687,6 +689,67 @@ void draw_dice_roll(PangoLayout * layout, GdkPixmap * pixmap, GdkGC * gc,
 	}
 }
 
+void draw_dice_roll(PangoLayout * layout, cairo_t * cr,
+		    gdouble x_offset, gdouble y_offset, gdouble radius,
+		    gint n, gint terrain, gboolean highlight)
+{
+	gchar num[10];
+	gint height;
+	gint width;
+	gdouble x;
+	gdouble y;
+	gint idx;
+	MapTheme *theme = theme_get_current();
+	THEME_COLOR col;
+	TColor *tcol;
+	gint width_sqr;
+
+#define col_or_ovr(ter,cno)												\
+	((terrain < TC_MAX_OVRTILE && theme->ovr_colors[ter][cno].set) ?	\
+	 &(theme->ovr_colors[ter][cno]) :									\
+	 &(theme->colors[cno]))
+
+	col = highlight ? TC_CHIP_H_BG : TC_CHIP_BG;
+	tcol = col_or_ovr(terrain, col);
+	if (!tcol->transparent) {
+		gdk_cairo_set_source_color(cr, &(tcol->color));
+		cairo_move_to(cr, x_offset + radius, y_offset);
+		cairo_arc(cr, x_offset, y_offset, radius, 0.0, 2 * M_PI);
+		cairo_fill(cr);
+	}
+	tcol = col_or_ovr(terrain, TC_CHIP_BD);
+	if (!tcol->transparent) {
+		gdk_cairo_set_source_color(cr, &(tcol->color));
+		cairo_move_to(cr, x_offset + radius, y_offset);
+		cairo_arc(cr, x_offset, y_offset, radius, 0.0, 2 * M_PI);
+		cairo_stroke(cr);
+	}
+	col = (n == 6 || n == 8) ? TC_CHIP_H_FG : TC_CHIP_FG;
+	tcol = col_or_ovr(terrain, col);
+	if (!tcol->transparent) {
+		sprintf(num, "<b>%d</b>", n);
+		pango_layout_set_markup(layout, num, -1);
+		pango_layout_get_pixel_size(layout, &width, &height);
+		gdk_cairo_set_source_color(cr, &(tcol->color));
+		cairo_move_to(cr, x_offset - width / 2,
+			      y_offset - height / 2);
+		pango_cairo_show_layout(cr, layout);
+
+		width_sqr = sqr(radius) - sqr(height / 2);
+		if (width_sqr >= sqr(6 * 2)) {
+			/* Enough space available for the dots */
+			x = x_offset - chances[n] * 4 / 2.0;
+			y = y_offset - 1 + height / 2.0;
+			for (idx = 0; idx < chances[n]; idx++) {
+				cairo_arc(cr, x + 2, y + 2, 1.0, 0.0,
+					  2 * M_PI);
+				cairo_fill(cr);
+				x += 4;
+			}
+		}
+	}
+}
+
 static gboolean display_hex(const Hex * hex, gpointer closure)
 {
 	gint x_offset, y_offset;
@@ -732,11 +795,11 @@ static gboolean display_hex(const Hex * hex, gpointer closure)
 	/* Draw the dice roll */
 	if (hex->roll > 0 && gmap->chit_radius > 0) {
 		g_assert(gmap->layout);
-		draw_dice_roll(gmap->layout, gmap->pixmap, gmap->gc,
-			       x_offset, y_offset, gmap->chit_radius,
-			       hex->roll, hex->terrain,
-			       !hex->robber
-			       && hex->roll == gmap->highlight_chit);
+		draw_dice_roll_old(gmap->layout, gmap->pixmap, gmap->gc,
+				   x_offset, y_offset, gmap->chit_radius,
+				   hex->roll, hex->terrain,
+				   !hex->robber
+				   && hex->roll == gmap->highlight_chit);
 	}
 
 	/* Draw ports */

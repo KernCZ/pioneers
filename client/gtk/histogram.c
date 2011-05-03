@@ -2,7 +2,7 @@
  *   Go buy a copy.
  *
  * Copyright (C) 1999 Dave Cole
- * Copyright (C) 2004 Roland Clobus
+ * Copyright (C) 2004,2011 Roland Clobus
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -75,36 +75,34 @@ static gboolean expose_histogram_cb(GtkWidget * area,
 	gint h;
 	gint total;
 	gint max;
-	gint le;
-	gint mi;
-	gint ri;
+	gdouble le;
+	gdouble mi;
+	gdouble ri;
 	gint grid_width;
 	gint grid_height;
 	gint grid_offset_x;
 	gint grid_offset_y;
-	float by_36;
-	gint expected_low_y, expected_high_y;
+	gdouble by_36;
+	gdouble expected_low_y, expected_high_y;
 	gint i;
 	gchar buff[30];
 	gint label_width, label_height;	/* Maximum size of the labels of the y-axis */
 	gint width, height;	/* size of the individual labels  */
-	gint bar_width;
+	gdouble bar_width;
 	PangoLayout *layout;
 	gboolean seven_thrown;
 	gboolean draw_labels_and_chits;
 	gint CHIT_RADIUS;
 	GdkPixmap *pixmap;
-	GdkGC *histogram_gc;
+	cairo_t *histogram_cr;
 
 	if (area->window == NULL)
 		return TRUE;
 
 	pixmap = theme_get_terrain_pixmap(GPOINTER_TO_INT(terrain));
 
-	histogram_gc = gdk_gc_new(area->window);
-	gdk_gc_set_line_attributes(histogram_gc, 1, GDK_LINE_SOLID,
-				   GDK_CAP_NOT_LAST, GDK_JOIN_MITER);
-	gdk_gc_set_tile(histogram_gc, pixmap);
+	histogram_cr = gdk_cairo_create(area->window);
+	cairo_set_line_width(histogram_cr, 1.0);
 
 	w = area->allocation.width;
 	h = area->allocation.height;
@@ -147,56 +145,59 @@ static gboolean expose_histogram_cb(GtkWidget * area,
 
 	/* horizontal grid */
 	for (i = 0; i <= GRID_DIVISIONS; ++i) {
-		gint y =
-		    grid_offset_y + grid_height -
-		    i * grid_height / GRID_DIVISIONS;
-		gdk_gc_set_foreground(histogram_gc, &lightblue);
-		gdk_draw_line(area->window, histogram_gc, grid_offset_x,
-			      y - 1, w - SPACING_AROUND, y - 1);
+		gdouble y =
+		    grid_offset_y + grid_height - 0.5 -
+		    (gdouble) i * grid_height / GRID_DIVISIONS;
+		gdk_cairo_set_source_color(histogram_cr, &lightblue);
+		cairo_move_to(histogram_cr, grid_offset_x, y);
+		cairo_line_to(histogram_cr, w - SPACING_AROUND, y);
+		cairo_stroke(histogram_cr);
 
 		if (draw_labels_and_chits) {
 			sprintf(buff, "%d", i * max / GRID_DIVISIONS);
 			pango_layout_set_text(layout, buff, -1);
 			pango_layout_get_pixel_size(layout, &width,
 						    &height);
-			gdk_gc_set_foreground(histogram_gc, &black);
-			gdk_draw_layout(area->window, histogram_gc,
-					label_width - width +
-					SPACING_AROUND, y - height,
-					layout);
+			gdk_cairo_set_source_color(histogram_cr, &black);
+			cairo_move_to(histogram_cr,
+				      label_width - width + SPACING_AROUND,
+				      y - height / 2.0);
+			pango_cairo_show_layout(histogram_cr, layout);
 		}
 	}
 
-	bar_width = (grid_width - 12 * BAR_SEPARATION) / 11;
+	bar_width = (grid_width - 12 * BAR_SEPARATION) / 11.0;
 	grid_offset_x += BAR_SEPARATION;
 
 	/* histogram bars */
-	gdk_gc_set_fill(histogram_gc, GDK_TILED);
-
 	for (i = 2; i <= 12; i++) {
-		gint bh =
-		    (float) grid_height * histogram_dice_retrieve(i) /
+		gdouble bh =
+		    (gdouble) grid_height * histogram_dice_retrieve(i) /
 		    max + 0.5;
-		gint x =
+		gdouble x =
 		    grid_offset_x + (i - 2) * (bar_width + BAR_SEPARATION);
-		gdk_gc_set_fill(histogram_gc, GDK_TILED);
-		gdk_draw_rectangle(area->window, histogram_gc, TRUE,
-				   x, grid_height + grid_offset_y - bh,
-				   bar_width, bh);
+		gdk_cairo_set_source_pixmap(histogram_cr, pixmap, 0.0,
+					    0.0);
+		cairo_pattern_set_extend(cairo_get_source(histogram_cr),
+					 CAIRO_EXTEND_REPEAT);
+		cairo_rectangle(histogram_cr, x,
+				grid_height + grid_offset_y - bh,
+				bar_width, bh);
+		cairo_fill(histogram_cr);
 
 		if (draw_labels_and_chits) {
-			gdk_gc_set_fill(histogram_gc, GDK_SOLID);
 			sprintf(buff, "%d", histogram_dice_retrieve(i));
 			pango_layout_set_markup(layout, buff, -1);
 			pango_layout_get_pixel_size(layout, &width,
 						    &height);
-			gdk_gc_set_foreground(histogram_gc, &black);
-			gdk_draw_layout(area->window, histogram_gc,
-					x + (bar_width - width) / 2,
-					grid_height + grid_offset_y - bh -
-					height, layout);
+			gdk_cairo_set_source_color(histogram_cr, &black);
+			cairo_move_to(histogram_cr,
+				      x + (bar_width - width) / 2,
+				      grid_height + grid_offset_y - bh -
+				      height);
+			pango_cairo_show_layout(histogram_cr, layout);
 
-			draw_dice_roll(layout, area->window, histogram_gc,
+			draw_dice_roll(layout, histogram_cr,
 				       x + bar_width / 2,
 				       h - CHIT_RADIUS - 1,
 				       CHIT_RADIUS,
@@ -217,21 +218,24 @@ static gboolean expose_histogram_cb(GtkWidget * area,
 	expected_high_y =
 	    grid_height + grid_offset_y - 1 -
 	    (seven_thrown ? 6 : 5) * by_36;
-	gdk_gc_set_fill(histogram_gc, GDK_SOLID);
-	gdk_gc_set_foreground(histogram_gc, &red);
 
 	le = grid_offset_x + bar_width / 2;
 	mi = le + 5 * (bar_width + BAR_SEPARATION);
 	ri = mi + 5 * (bar_width + BAR_SEPARATION);
-	gdk_draw_line(area->window, histogram_gc, le, expected_low_y,
+
+	gdk_cairo_set_source_color(histogram_cr, &red);
+	cairo_move_to(histogram_cr, le, expected_low_y);
+	cairo_line_to(histogram_cr,
 		      mi - (seven_thrown ? 0 : bar_width + BAR_SEPARATION),
 		      expected_high_y);
-	gdk_draw_line(area->window, histogram_gc,
+	cairo_move_to(histogram_cr,
 		      mi + (seven_thrown ? 0 : bar_width + BAR_SEPARATION),
-		      expected_high_y, ri, expected_low_y);
+		      expected_high_y);
+	cairo_line_to(histogram_cr, ri, expected_low_y);
+	cairo_stroke(histogram_cr);
 
 	g_object_unref(layout);
-	g_object_unref(histogram_gc);
+	cairo_destroy(histogram_cr);
 	return TRUE;
 }
 
