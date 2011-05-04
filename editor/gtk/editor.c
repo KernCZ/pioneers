@@ -509,7 +509,7 @@ static GtkWidget *build_map(void)
 	guimap_set_show_no_setup_nodes(gmap, TRUE);
 	area = guimap_build_drawingarea(gmap, MAP_WIDTH, MAP_HEIGHT);
 
-	GTK_WIDGET_SET_FLAGS(area, GTK_CAN_FOCUS);
+	gtk_widget_set_can_focus(area, TRUE);
 	gtk_widget_add_events(gmap->area, GDK_ENTER_NOTIFY_MASK
 			      | GDK_BUTTON_PRESS_MASK
 			      | GDK_KEY_PRESS_MASK);
