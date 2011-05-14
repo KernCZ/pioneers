@@ -1723,7 +1723,7 @@ void guimap_draw_hex(GuiMap * gmap, const Hex * hex)
 	calc_hex_pos(gmap, hex->x, hex->y, &x_offset, &y_offset);
 	poly_offset(&poly, x_offset, y_offset);
 	poly_bound_rect(&poly, 1, &rect);
-	
+
 	gdk_window_invalidate_rect(gmap->area->window, &rect, FALSE);
 }
 
