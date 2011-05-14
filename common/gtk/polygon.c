@@ -63,21 +63,37 @@ void poly_bound_rect(const Polygon * poly, int pad, GdkRectangle * rect)
 	rect->height = br.y - tl.y + pad + 1;
 }
 
-void poly_draw(GdkDrawable * drawable, GdkGC * gc, gint filled,
-	       const Polygon * poly)
+void poly_draw_old(GdkDrawable * drawable, GdkGC * gc, gint filled,
+		   const Polygon * poly)
 {
 	gdk_draw_polygon(drawable, gc, filled, poly->points,
 			 poly->num_points);
 }
 
-void poly_draw_with_border(GdkDrawable * drawable, GdkGC * gc,
-			   const GdkColor * color,
+void poly_draw(cairo_t * cr, gboolean filled, const Polygon * poly)
+{
+	gint i;
+
+	if (poly->num_points > 0) {
+		cairo_move_to(cr, poly->points[poly->num_points - 1].x,
+			      poly->points[poly->num_points - 1].y);
+		for (i = 0; i < poly->num_points; i++) {
+			cairo_line_to(cr, poly->points[i].x,
+				      poly->points[i].y);
+		}
+		if (filled) {
+			cairo_fill(cr);
+		} else {
+			cairo_stroke(cr);
+		}
+	}
+}
+
+void poly_draw_with_border(cairo_t * cr,
 			   const GdkColor * border_color,
 			   const Polygon * poly)
 {
-	gdk_gc_set_foreground(gc, color);
-	poly_draw(drawable, gc, TRUE, poly);
-
-	gdk_gc_set_foreground(gc, border_color);
-	poly_draw(drawable, gc, FALSE, poly);
+	poly_draw(cr, TRUE, poly);
+	gdk_cairo_set_source_color(cr, border_color);
+	poly_draw(cr, FALSE, poly);
 }

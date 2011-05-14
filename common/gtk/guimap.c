@@ -82,9 +82,9 @@ void guimap_delete(GuiMap * gmap)
 		g_object_unref(gmap->pixmap);
 		gmap->pixmap = NULL;
 	}
-	if (gmap->gc != NULL) {
-		g_object_unref(gmap->gc);
-		gmap->gc = NULL;
+	if (gmap->cr != NULL) {
+		cairo_destroy(gmap->cr);
+		gmap->cr = NULL;
 	}
 	if (gmap->hex_region != NULL) {
 		gdk_region_destroy(gmap->hex_region);
@@ -428,8 +428,7 @@ static void calc_hex_pos(const GuiMap * gmap,
 	    + gmap->hex_radius + y * (gmap->hex_radius + gmap->y_point);
 }
 
-static void get_hex_polygon(const GuiMap * gmap, Polygon * poly,
-			    gboolean draw)
+static void get_hex_polygon(const GuiMap * gmap, Polygon * poly)
 {
 	GdkPoint *points;
 
@@ -437,7 +436,7 @@ static void get_hex_polygon(const GuiMap * gmap, Polygon * poly,
 
 	poly->num_points = 6;
 	points = poly->points;
-	points[0].x = gmap->x_point - draw;
+	points[0].x = gmap->x_point;
 	points[0].y = -gmap->y_point;
 	points[1].x = 0;
 	points[1].y = -gmap->hex_radius;
@@ -447,7 +446,7 @@ static void get_hex_polygon(const GuiMap * gmap, Polygon * poly,
 	points[3].y = gmap->y_point;
 	points[4].x = 0;
 	points[4].y = gmap->hex_radius;
-	points[5].x = gmap->x_point - draw;
+	points[5].x = gmap->x_point;
 	points[5].y = gmap->y_point;
 }
 
@@ -627,68 +626,6 @@ static void guimap_pirate_polygon(const GuiMap * gmap, const Hex * hex,
 	calc_hex_poly(gmap, hex, &pirate_poly, poly, 80.0, 0);
 }
 
-/* @TODO Replace by draw_dice_roll when switching to cairo */
-static void draw_dice_roll_old(PangoLayout * layout, GdkPixmap * pixmap,
-			GdkGC * gc, gint x_offset, gint y_offset,
-			gint radius, gint n, gint terrain,
-			gboolean highlight)
-{
-	gchar num[10];
-	gint height;
-	gint width;
-	gint x, y;
-	gint idx;
-	MapTheme *theme = theme_get_current();
-	THEME_COLOR col;
-	TColor *tcol;
-	gint width_sqr;
-
-#define col_or_ovr(ter,cno)												\
-	((terrain < TC_MAX_OVRTILE && theme->ovr_colors[ter][cno].set) ?	\
-	 &(theme->ovr_colors[ter][cno]) :									\
-	 &(theme->colors[cno]))
-
-	gdk_gc_set_fill(gc, GDK_SOLID);
-	col = highlight ? TC_CHIP_H_BG : TC_CHIP_BG;
-	tcol = col_or_ovr(terrain, col);
-	if (!tcol->transparent) {
-		gdk_gc_set_foreground(gc, &(tcol->color));
-		gdk_draw_arc(pixmap, gc, TRUE,
-			     x_offset - radius, y_offset - radius,
-			     2 * radius, 2 * radius, 0, 360 * 64);
-	}
-	tcol = col_or_ovr(terrain, TC_CHIP_BD);
-	if (!tcol->transparent) {
-		gdk_gc_set_foreground(gc, &(tcol->color));
-		gdk_draw_arc(pixmap, gc, FALSE,
-			     x_offset - radius, y_offset - radius,
-			     2 * radius, 2 * radius, 0, 360 * 64);
-	}
-	col = (n == 6 || n == 8) ? TC_CHIP_H_FG : TC_CHIP_FG;
-	tcol = col_or_ovr(terrain, col);
-	if (!tcol->transparent) {
-		sprintf(num, "<b>%d</b>", n);
-		pango_layout_set_markup(layout, num, -1);
-		pango_layout_get_pixel_size(layout, &width, &height);
-		gdk_gc_set_foreground(gc, &(tcol->color));
-		gdk_draw_layout(pixmap, gc,
-				x_offset - width / 2,
-				y_offset - height / 2, layout);
-
-		width_sqr = sqr(radius) - sqr(height / 2);
-		if (width_sqr >= sqr(6 * 2)) {
-			/* Enough space available for the dots */
-			x = x_offset - chances[n] * 4 / 2;
-			y = y_offset - 1 + height / 2;
-			for (idx = 0; idx < chances[n]; idx++) {
-				gdk_draw_arc(pixmap, gc, TRUE,
-					     x, y, 3, 3, 0, 360 * 64);
-				x += 4;
-			}
-		}
-	}
-}
-
 void draw_dice_roll(PangoLayout * layout, cairo_t * cr,
 		    gdouble x_offset, gdouble y_offset, gdouble radius,
 		    gint n, gint terrain, gboolean highlight)
@@ -709,6 +646,7 @@ void draw_dice_roll(PangoLayout * layout, cairo_t * cr,
 	 &(theme->ovr_colors[ter][cno]) :									\
 	 &(theme->colors[cno]))
 
+	cairo_set_line_width(cr, 1.0);
 	col = highlight ? TC_CHIP_H_BG : TC_CHIP_BG;
 	tcol = col_or_ovr(terrain, col);
 	if (!tcol->transparent) {
@@ -760,46 +698,39 @@ static gboolean display_hex(const Hex * hex, gpointer closure)
 	const GuiMap *gmap = closure;
 
 	calc_hex_pos(gmap, hex->x, hex->y, &x_offset, &y_offset);
+	cairo_set_line_width(gmap->cr, 1.0);
 
 	/* Fill the hex with the nice pattern */
-	gdk_gc_set_line_attributes(gmap->gc, 1, GDK_LINE_SOLID,
-				   GDK_CAP_BUTT, GDK_JOIN_MITER);
-	gdk_region_offset(gmap->hex_region, x_offset, y_offset);
-	gdk_gc_set_clip_region(gmap->gc, gmap->hex_region);
-	gdk_gc_set_fill(gmap->gc, GDK_TILED);
-	gdk_gc_set_tile(gmap->gc, theme->terrain_tiles[hex->terrain]);
-	gdk_gc_set_ts_origin(gmap->gc,
-			     x_offset - gmap->x_point,
-			     y_offset - gmap->hex_radius);
-	gdk_draw_rectangle(gmap->pixmap, gmap->gc, TRUE,
-			   x_offset - gmap->hex_radius,
-			   y_offset - gmap->hex_radius,
-			   gmap->hex_radius * 2, gmap->hex_radius * 2);
-	gdk_region_offset(gmap->hex_region, -x_offset, -y_offset);
-	gdk_gc_set_clip_region(gmap->gc, NULL);
-
-	/* Draw border around hex */
 	poly.points = points;
 	poly.num_points = G_N_ELEMENTS(points);
-	get_hex_polygon(gmap, &poly, TRUE);
+	get_hex_polygon(gmap, &poly);
 	poly_offset(&poly, x_offset, y_offset);
 
-	gdk_gc_set_fill(gmap->gc, GDK_SOLID);
+	/* Draw the hex */
+	gdk_cairo_set_source_pixmap(gmap->cr,
+				    theme->terrain_tiles[hex->terrain],
+				    x_offset - gmap->x_point,
+				    y_offset - gmap->hex_radius);
+	cairo_pattern_set_extend(cairo_get_source(gmap->cr),
+				 CAIRO_EXTEND_REPEAT);
+	poly_draw(gmap->cr, TRUE, &poly);
+
+	/* Draw border around hex */
 	if (!theme->colors[TC_HEX_BD].transparent) {
-		gdk_gc_set_foreground(gmap->gc,
-				      &theme->colors[TC_HEX_BD].color);
-		if (hex->terrain != SEA_TERRAIN)
-			poly_draw(gmap->pixmap, gmap->gc, FALSE, &poly);
+		gdk_cairo_set_source_color(gmap->cr,
+					   &theme->
+					   colors[TC_HEX_BD].color);
+		poly_draw(gmap->cr, FALSE, &poly);
 	}
 
 	/* Draw the dice roll */
 	if (hex->roll > 0 && gmap->chit_radius > 0) {
 		g_assert(gmap->layout);
-		draw_dice_roll_old(gmap->layout, gmap->pixmap, gmap->gc,
-				   x_offset, y_offset, gmap->chit_radius,
-				   hex->roll, hex->terrain,
-				   !hex->robber
-				   && hex->roll == gmap->highlight_chit);
+		draw_dice_roll(gmap->layout, gmap->cr,
+			       x_offset, y_offset, gmap->chit_radius,
+			       hex->roll, hex->terrain,
+			       !hex->robber
+			       && hex->roll == gmap->highlight_chit);
 	}
 
 	/* Draw ports */
@@ -812,35 +743,39 @@ static gboolean display_hex(const Hex * hex, gpointer closure)
 		gboolean typeind;
 
 		/* Draw lines from port to shore */
-		gdk_gc_set_foreground(gmap->gc, &white);
-		gdk_gc_set_line_attributes(gmap->gc, 1,
-					   GDK_LINE_ON_OFF_DASH,
-					   GDK_CAP_BUTT, GDK_JOIN_MITER);
-		gdk_draw_line(gmap->pixmap, gmap->gc, x_offset, y_offset,
-			      points[(hex->facing + 5) % 6].x,
+		gdk_cairo_set_source_color(gmap->cr, &white);
+		const double dashes[] = { 4.0 };
+		cairo_set_dash(gmap->cr, dashes, G_N_ELEMENTS(dashes),
+			       0.0);
+		cairo_move_to(gmap->cr, x_offset, y_offset);
+		cairo_line_to(gmap->cr, points[(hex->facing + 5) % 6].x,
 			      points[(hex->facing + 5) % 6].y);
-		gdk_draw_line(gmap->pixmap, gmap->gc, x_offset, y_offset,
-			      points[hex->facing].x,
+		cairo_move_to(gmap->cr, x_offset, y_offset);
+		cairo_line_to(gmap->cr, points[hex->facing].x,
 			      points[hex->facing].y);
+		cairo_stroke(gmap->cr);
+		cairo_set_dash(gmap->cr, NULL, 0, 0.0);
+
 		/* Fill/tile port indicator */
 		if (theme->port_tiles[tileno]) {
-			gdk_gc_set_fill(gmap->gc, GDK_TILED);
-			gdk_gc_set_tile(gmap->gc,
-					theme->port_tiles[tileno]);
-			gdk_gc_set_ts_origin(gmap->gc,
-					     x_offset -
-					     theme->port_tiles_width
-					     [tileno] / 2,
-					     y_offset -
-					     theme->port_tiles_height
-					     [tileno] / 2);
+			gdk_cairo_set_source_pixmap(gmap->cr,
+						    theme->port_tiles
+						    [tileno],
+						    x_offset -
+						    theme->port_tiles_width
+						    [tileno] / 2,
+						    y_offset -
+						    theme->port_tiles_height
+						    [tileno] / 2);
+			cairo_pattern_set_extend(cairo_get_source
+						 (gmap->cr),
+						 CAIRO_EXTEND_REPEAT);
 			typeind = TRUE;
 			drawit = TRUE;
 		} else if (!theme->colors[TC_PORT_BG].transparent) {
-			gdk_gc_set_fill(gmap->gc, GDK_SOLID);
-			gdk_gc_set_foreground(gmap->gc,
-					      &theme->colors[TC_PORT_BG].
-					      color);
+			gdk_cairo_set_source_color(gmap->cr,
+						   &theme->colors
+						   [TC_PORT_BG].color);
 			typeind = FALSE;
 			drawit = TRUE;
 		} else {
@@ -848,27 +783,19 @@ static gboolean display_hex(const Hex * hex, gpointer closure)
 			drawit = FALSE;
 		}
 		if (drawit) {
-			gdk_draw_arc(gmap->pixmap, gmap->gc, TRUE,
-				     x_offset - gmap->chit_radius,
-				     y_offset - gmap->chit_radius,
-				     2 * gmap->chit_radius,
-				     2 * gmap->chit_radius, 0, 360 * 64);
+			cairo_arc(gmap->cr, x_offset, y_offset,
+				  gmap->chit_radius, 0.0, 2 * M_PI);
+			cairo_fill(gmap->cr);
 		}
-		gdk_gc_set_fill(gmap->gc, GDK_SOLID);
+
 		/* Outline port indicator */
 		if (!theme->colors[TC_PORT_BD].transparent) {
-			gdk_gc_set_line_attributes(gmap->gc, 1,
-						   GDK_LINE_SOLID,
-						   GDK_CAP_BUTT,
-						   GDK_JOIN_MITER);
-			gdk_gc_set_foreground(gmap->gc,
-					      &theme->colors[TC_PORT_BD].
-					      color);
-			gdk_draw_arc(gmap->pixmap, gmap->gc, FALSE,
-				     x_offset - gmap->chit_radius,
-				     y_offset - gmap->chit_radius,
-				     2 * gmap->chit_radius,
-				     2 * gmap->chit_radius, 0, 360 * 64);
+			gdk_cairo_set_source_color(gmap->cr,
+						   &theme->colors
+						   [TC_PORT_BD].color);
+			cairo_arc(gmap->cr, x_offset, y_offset,
+				  gmap->chit_radius, 0.0, 2 * M_PI);
+			cairo_stroke(gmap->cr);
 		}
 		/* Print trading ratio */
 		if (!theme->colors[TC_PORT_FG].transparent) {
@@ -910,18 +837,16 @@ static gboolean display_hex(const Hex * hex, gpointer closure)
 			pango_layout_set_markup(gmap->layout, str, -1);
 			pango_layout_get_pixel_size(gmap->layout, &width,
 						    &height);
-			gdk_gc_set_foreground(gmap->gc,
-					      &theme->colors[TC_PORT_FG].
-					      color);
-			gdk_draw_layout(gmap->pixmap, gmap->gc,
-					x_offset - width / 2,
-					y_offset - height / 2,
-					gmap->layout);
+			gdk_cairo_set_source_color(gmap->cr,
+						   &theme->colors
+						   [TC_PORT_FG].color);
+			cairo_move_to(gmap->cr, x_offset - width / 2,
+				      y_offset - height / 2);
+			pango_cairo_show_layout(gmap->cr, gmap->layout);
 		}
 	}
 
-	gdk_gc_set_line_attributes(gmap->gc, 1, GDK_LINE_SOLID,
-				   GDK_CAP_BUTT, GDK_JOIN_MITER);
+	cairo_set_line_width(gmap->cr, 1.0);
 	/* Draw all roads and ships */
 	for (idx = 0; idx < G_N_ELEMENTS(hex->edges); idx++) {
 		const Edge *edge = hex->edges[idx];
@@ -943,9 +868,9 @@ static gboolean display_hex(const Hex * hex, gpointer closure)
 			g_assert_not_reached();
 			break;
 		}
-		poly_draw_with_border(gmap->pixmap, gmap->gc,
-				      colors_get_player(edge->owner),
-				      &black, &poly);
+		gdk_cairo_set_source_color(gmap->cr,
+					   colors_get_player(edge->owner));
+		poly_draw_with_border(gmap->cr, &black, &poly);
 	}
 
 	/* Draw all buildings */
@@ -970,9 +895,10 @@ static gboolean display_hex(const Hex * hex, gpointer closure)
 				poly.num_points = G_N_ELEMENTS(points);
 				guimap_city_wall_polygon(gmap, node,
 							 &poly);
-				poly_draw_with_border(gmap->pixmap,
-						      gmap->gc, color,
-						      &black, &poly);
+				gdk_cairo_set_source_color(gmap->cr,
+							   color);
+				poly_draw_with_border(gmap->cr, &black,
+						      &poly);
 			}
 			/* Draw the building */
 			color = colors_get_player(node->owner);
@@ -983,28 +909,26 @@ static gboolean display_hex(const Hex * hex, gpointer closure)
 				guimap_settlement_polygon(gmap, node,
 							  &poly);
 		}
-
-		poly_draw_with_border(gmap->pixmap, gmap->gc, color,
-				      &black, &poly);
+		gdk_cairo_set_source_color(gmap->cr, color);
+		poly_draw_with_border(gmap->cr, &black, &poly);
 	}
 
 	/* Draw the robber */
 	if (hex->robber) {
 		poly.num_points = G_N_ELEMENTS(points);
 		guimap_robber_polygon(gmap, hex, &poly);
-		gdk_gc_set_line_attributes(gmap->gc, 1, GDK_LINE_SOLID,
-					   GDK_CAP_BUTT, GDK_JOIN_MITER);
+		cairo_set_line_width(gmap->cr, 1.0);
 		if (!theme->colors[TC_ROBBER_FG].transparent) {
-			gdk_gc_set_foreground(gmap->gc,
-					      &theme->colors[TC_ROBBER_FG].
-					      color);
-			poly_draw(gmap->pixmap, gmap->gc, TRUE, &poly);
+			gdk_cairo_set_source_color(gmap->cr,
+						   &theme->colors
+						   [TC_ROBBER_FG].color);
+			poly_draw(gmap->cr, TRUE, &poly);
 		}
 		if (!theme->colors[TC_ROBBER_BD].transparent) {
-			gdk_gc_set_foreground(gmap->gc,
-					      &theme->colors[TC_ROBBER_BD].
-					      color);
-			poly_draw(gmap->pixmap, gmap->gc, FALSE, &poly);
+			gdk_cairo_set_source_color(gmap->cr,
+						   &theme->colors
+						   [TC_ROBBER_BD].color);
+			poly_draw(gmap->cr, FALSE, &poly);
 		}
 	}
 
@@ -1012,19 +936,18 @@ static gboolean display_hex(const Hex * hex, gpointer closure)
 	if (hex == hex->map->pirate_hex) {
 		poly.num_points = G_N_ELEMENTS(points);
 		guimap_pirate_polygon(gmap, hex, &poly);
-		gdk_gc_set_line_attributes(gmap->gc, 1, GDK_LINE_SOLID,
-					   GDK_CAP_BUTT, GDK_JOIN_MITER);
+		cairo_set_line_width(gmap->cr, 1.0);
 		if (!theme->colors[TC_ROBBER_FG].transparent) {
-			gdk_gc_set_foreground(gmap->gc,
-					      &theme->colors[TC_ROBBER_FG].
-					      color);
-			poly_draw(gmap->pixmap, gmap->gc, TRUE, &poly);
+			gdk_cairo_set_source_color(gmap->cr,
+						   &theme->colors
+						   [TC_ROBBER_FG].color);
+			poly_draw(gmap->cr, TRUE, &poly);
 		}
 		if (!theme->colors[TC_ROBBER_BD].transparent) {
-			gdk_gc_set_foreground(gmap->gc,
-					      &theme->colors[TC_ROBBER_BD].
-					      color);
-			poly_draw(gmap->pixmap, gmap->gc, FALSE, &poly);
+			gdk_cairo_set_source_color(gmap->cr,
+						   &theme->colors
+						   [TC_ROBBER_BD].color);
+			poly_draw(gmap->cr, FALSE, &poly);
 		}
 	}
 
@@ -1058,10 +981,11 @@ void guimap_scale_with_radius(GuiMap * gmap, gint radius)
 	if (gmap->map->shrink_right)
 		gmap->width -= gmap->x_point;
 
-	if (gmap->gc != NULL) {
-		g_object_unref(gmap->gc);
-		gmap->gc = NULL;
+	if (gmap->cr != NULL) {
+		cairo_destroy(gmap->cr);
+		gmap->cr = NULL;
 	}
+
 	if (gmap->hex_region != NULL) {
 		gdk_region_destroy(gmap->hex_region);
 		gmap->hex_region = NULL;
@@ -1129,7 +1053,7 @@ static void build_hex_region(GuiMap * gmap)
 
 	poly.points = points;
 	poly.num_points = G_N_ELEMENTS(points);
-	get_hex_polygon(gmap, &poly, FALSE);
+	get_hex_polygon(gmap, &poly);
 	gmap->hex_region = gdk_region_polygon(points, G_N_ELEMENTS(points),
 					      GDK_EVEN_ODD_RULE);
 }
@@ -1172,19 +1096,20 @@ void guimap_display(GuiMap * gmap)
 	if (gmap->pixmap == NULL)
 		return;
 
-	if (gmap->gc != NULL) {
-		/* Unref old gc */
-		g_object_unref(gmap->gc);
+	if (gmap->cr != NULL) {
+		cairo_destroy(gmap->cr);
 	}
 
-	gmap->gc = gdk_gc_new(gmap->pixmap);
+	gmap->cr = gdk_cairo_create(gmap->pixmap);
 	build_hex_region(gmap);
 
-	gdk_gc_set_fill(gmap->gc, GDK_TILED);
-	gdk_gc_set_tile(gmap->gc,
-			theme_get_current()->terrain_tiles[BOARD_TILE]);
-	gdk_draw_rectangle(gmap->pixmap, gmap->gc, TRUE, 0, 0,
-			   gmap->width, gmap->height);
+	gdk_cairo_set_source_pixmap(gmap->cr,
+				    theme_get_current()->terrain_tiles
+				    [BOARD_TILE], 0, 0);
+	cairo_pattern_set_extend(cairo_get_source(gmap->cr),
+				 CAIRO_EXTEND_REPEAT);
+	cairo_rectangle(gmap->cr, 0, 0, gmap->width, gmap->height);
+	cairo_fill(gmap->cr);
 
 	if (gmap->layout != NULL)
 		g_object_unref(gmap->layout);
@@ -1289,7 +1214,7 @@ static void build_edge_regions(GuiMap * gmap)
 
 	poly.points = points;
 	poly.num_points = G_N_ELEMENTS(points);
-	get_hex_polygon(gmap, &poly, FALSE);
+	get_hex_polygon(gmap, &poly);
 	for (idx = 0; idx < 6; idx++) {
 		GdkPoint edge[4];
 
@@ -1490,11 +1415,14 @@ void guimap_draw_edge(GuiMap * gmap, const Edge * edge)
 	poly.points = points;
 	calc_edge_poly(gmap, edge, &largest_edge_poly, &poly);
 	poly_bound_rect(&poly, 1, &rect);
-	gdk_gc_set_fill(gmap->gc, GDK_TILED);
-	gdk_gc_set_tile(gmap->gc,
-			theme_get_current()->terrain_tiles[BOARD_TILE]);
-	gdk_draw_rectangle(gmap->pixmap, gmap->gc, TRUE,
-			   rect.x, rect.y, rect.width, rect.height);
+
+	gdk_cairo_set_source_pixmap(gmap->cr,
+				    theme_get_current()->terrain_tiles
+				    [BOARD_TILE], 0, 0);
+	cairo_pattern_set_extend(cairo_get_source(gmap->cr),
+				 CAIRO_EXTEND_REPEAT);
+	cairo_rectangle(gmap->cr, rect.x, rect.y, rect.width, rect.height);
+	cairo_fill(gmap->cr);
 
 	for (idx = 0; idx < G_N_ELEMENTS(edge->hexes); idx++)
 		if (edge->hexes[idx] != NULL)
@@ -1509,11 +1437,9 @@ static void draw_cursor(GuiMap * gmap, gint owner, const Polygon * poly)
 
 	g_return_if_fail(gmap->cursor.pointer != NULL);
 
-	gdk_gc_set_line_attributes(gmap->gc, 2, GDK_LINE_SOLID,
-				   GDK_CAP_BUTT, GDK_JOIN_MITER);
-	gdk_gc_set_fill(gmap->gc, GDK_SOLID);
-	poly_draw_with_border(gmap->pixmap, gmap->gc,
-			      colors_get_player(owner), &green, poly);
+	cairo_set_line_width(gmap->cr, 3.0);
+	gdk_cairo_set_source_color(gmap->cr, colors_get_player(owner));
+	poly_draw_with_border(gmap->cr, &green, poly);
 
 	poly_bound_rect(poly, 1, &rect);
 	gdk_window_invalidate_rect(gmap->area->window, &rect, FALSE);
@@ -1578,11 +1504,15 @@ void guimap_draw_node(GuiMap * gmap, const Node * node)
 	poly.points = points;
 	calc_node_poly(gmap, node, &largest_node_poly, &poly);
 	poly_bound_rect(&poly, 1, &rect);
-	gdk_gc_set_fill(gmap->gc, GDK_TILED);
-	gdk_gc_set_tile(gmap->gc,
-			theme_get_current()->terrain_tiles[BOARD_TILE]);
-	gdk_draw_rectangle(gmap->pixmap, gmap->gc, TRUE,
-			   rect.x, rect.y, rect.width, rect.height);
+
+	gdk_cairo_set_source_pixmap(gmap->cr,
+				    theme_get_current()->terrain_tiles
+				    [BOARD_TILE], 0, 0);
+	cairo_pattern_set_extend(cairo_get_source(gmap->cr),
+				 CAIRO_EXTEND_REPEAT);
+	cairo_rectangle(gmap->cr, rect.x, rect.y, rect.width, rect.height);
+	cairo_fill(gmap->cr);
+
 	for (idx = 0; idx < G_N_ELEMENTS(node->hexes); idx++)
 		if (node->hexes[idx] != NULL)
 			display_hex(node->hexes[idx], gmap);
@@ -1729,10 +1659,9 @@ static void draw_robber_cursor(GuiMap * gmap)
 		guimap_robber_polygon(gmap, hex, &poly);
 	poly_bound_rect(&poly, 1, &rect);
 
-	gdk_gc_set_line_attributes(gmap->gc, 2, GDK_LINE_SOLID,
-				   GDK_CAP_BUTT, GDK_JOIN_MITER);
-	gdk_gc_set_foreground(gmap->gc, &green);
-	poly_draw(gmap->pixmap, gmap->gc, FALSE, &poly);
+	cairo_set_line_width(gmap->cr, 2.0);
+	gdk_cairo_set_source_color(gmap->cr, &green);
+	poly_draw(gmap->cr, FALSE, &poly);
 
 	gdk_window_invalidate_rect(gmap->area->window, &rect, FALSE);
 }
@@ -1754,7 +1683,7 @@ static gboolean highlight_chits(const Hex * hex, gpointer closure)
 
 	poly.points = points;
 	poly.num_points = G_N_ELEMENTS(points);
-	get_hex_polygon(gmap, &poly, FALSE);
+	get_hex_polygon(gmap, &poly);
 	calc_hex_pos(gmap, hex->x, hex->y, &x_offset, &y_offset);
 	poly_offset(&poly, x_offset, y_offset);
 	poly_bound_rect(&poly, 1, &rect);
@@ -1790,11 +1719,11 @@ void guimap_draw_hex(GuiMap * gmap, const Hex * hex)
 
 	poly.points = points;
 	poly.num_points = G_N_ELEMENTS(points);
-	get_hex_polygon(gmap, &poly, FALSE);
+	get_hex_polygon(gmap, &poly);
 	calc_hex_pos(gmap, hex->x, hex->y, &x_offset, &y_offset);
 	poly_offset(&poly, x_offset, y_offset);
 	poly_bound_rect(&poly, 1, &rect);
-
+	
 	gdk_window_invalidate_rect(gmap->area->window, &rect, FALSE);
 }
 

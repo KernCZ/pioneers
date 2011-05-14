@@ -126,7 +126,7 @@ static int draw_building_and_count(GdkGC * gc, GtkWidget * area,
 	poly_offset(poly,
 		    offset - rect.x,
 		    area->allocation.height - 5 - rect.y - rect.height);
-	poly_draw(area->window, gc, FALSE, poly);
+	poly_draw_old(area->window, gc, FALSE, poly);
 
 	offset += 5 + rect.width;
 
@@ -171,9 +171,9 @@ static void show_die(GdkGC * gc, GtkWidget * area, gint x_offset, gint num,
 	poly_offset(&die_shape, x_offset, y_offset);
 
 	gdk_gc_set_foreground(gc, die_color);
-	poly_draw(area->window, gc, TRUE, &die_shape);
+	poly_draw_old(area->window, gc, TRUE, &die_shape);
 	gdk_gc_set_foreground(gc, die_border_color);
-	poly_draw(area->window, gc, FALSE, &die_shape);
+	poly_draw_old(area->window, gc, FALSE, &die_shape);
 
 	poly_offset(&die_shape, -x_offset, -y_offset);
 

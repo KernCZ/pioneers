@@ -30,11 +30,11 @@ typedef struct {
 
 void poly_offset(Polygon * poly, gint x_offset, gint y_offset);
 void poly_bound_rect(const Polygon * poly, int pad, GdkRectangle * rect);
-void poly_draw(GdkDrawable * drawable, GdkGC * gc, gint filled,
-	       const Polygon * poly);
-void poly_draw_with_border(GdkDrawable * drawable, GdkGC * gc,
-			   const GdkColor * color,
-			   const GdkColor * border_color,
+// @TODO: Will be replaced by the cairo variant...
+void poly_draw_old(GdkDrawable * drawable, GdkGC * gc, gint filled,
+		   const Polygon * poly);
+void poly_draw(cairo_t * cr, gboolean filled, const Polygon * poly);
+void poly_draw_with_border(cairo_t * cr, const GdkColor * border_color,
 			   const Polygon * poly);
 
 #endif

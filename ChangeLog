@@ -1,3 +1,7 @@
+2011-05-14  Roland Clobus <rclobus@rclobus.nl>
+	* common/gtk/guimap.c, common/gtk/guimap.h, common/gtk/polygon.c,
+	common/gtk/polygon.h, client/gtk/identity.c: Use cairo in guimap.c
+
 2011-05-04  Roland Clobus <rclobus@rclobus.nl>
 	* editor/gtk/editor.c: Upgrade to GTK 2.24
 

@@ -65,7 +65,7 @@ typedef struct _Mode Mode;
 typedef struct {
 	GtkWidget *area;	   /**< render map in this drawing area */
 	GdkPixmap *pixmap;	   /**< off screen pixmap for drawing */
-	GdkGC *gc;		   /**< gc for map drawing */
+	cairo_t *cr;		   /**< cairo for map drawing */
 	GdkRegion *hex_region;	   /**< region for filling hex */
 	GdkRegion *node_region[6]; /**< region for filling node */
 	GdkRegion *edge_region[6]; /**< regions for locating edges */
