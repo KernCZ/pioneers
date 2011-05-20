@@ -1919,10 +1919,14 @@ void guimap_cursor_move(GuiMap * gmap, gint x, gint y,
 		 * When equidistant, prefer the node.
 		 */
 		if (can_build_edge && can_build_node) {
-			if (distance_node <= distance_edge)
-				can_build_edge = FALSE;
-			else
+			if (can_build_bridge) {
+				/* Prefer bridge over node */
 				can_build_node = FALSE;
+			} else if (distance_node <= distance_edge) {
+				can_build_edge = FALSE;
+			} else {
+				can_build_node = FALSE;
+			}
 		}
 
 		/* Prefer the most special road segment, if possible */
