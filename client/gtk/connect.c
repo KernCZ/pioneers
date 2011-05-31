@@ -36,6 +36,7 @@
 #include "metaserver.h"
 #include "avahi.h"
 #include "avahi-browser.h"
+#include "gtkcompat.h"
 
 const int PRIVATE_GAME_HISTORY_SIZE = 10;
 

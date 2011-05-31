@@ -1,4 +1,8 @@
-2001-05-20  Roland Clobus <rclobus@rclobus.nl>
+2011-05-31  Roland Clobus <rclobus@rclobus.nl>
+	* common/gtk/gtkcompat.h, configure.ac, client/gtk/gui.c,
+	client/gtk/connect.c: Restore compatibility with Debian Stable.
+
+2011-05-20  Roland Clobus <rclobus@rclobus.nl>
 	* common/gtk/guimap.c: Prefer bridge over settlement.
 
 2011-05-14  Roland Clobus <rclobus@rclobus.nl>

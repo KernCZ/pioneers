@@ -3,7 +3,7 @@
 #
 # Copyright (C) 1999 Dave Cole
 # Copyright (C) 2003-2007 Bas Wijnen <shevek@fmf.nl>
-# Copyright (C) 2004-2008 Roland Clobus <rclobus@bigfoot.com>
+# Copyright (C) 2004-2011 Roland Clobus <rclobus@bigfoot.com>
 # 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -35,10 +35,8 @@ PIONEERS_DEFAULT_META_PORT=5557
 PIONEERS_DEFAULT_META_SERVER=pioneers.debian.net
 
 GLIB_REQUIRED_VERSION=2.16
-GTK_REQUIRED_VERSION=2.24
-
-AC_SUBST(GLIB_REQUIRED_VERSION)
-AC_SUBST(GTK_REQUIRED_VERSION)
+GTK_REQUIRED_VERSION=2.20
+GTK_OPTIMAL_VERSION=2.24
 
 AM_MAINTAINER_MODE
 
@@ -217,6 +215,12 @@ else
 	])
 fi
 AM_CONDITIONAL(HAVE_GTK2, [test "$have_gtk2" = "yes"])
+if test "$have_gtk2" = "yes"; then
+	PKG_CHECK_MODULES(GTK_OPTIMAL_VERSION, gtk+-2.0 >= $GTK_OPTIMAL_VERSION,
+		[],
+		AC_DEFINE(HAVE_OLD_GTK, [1],
+			[Defined if an older version of GTK is available]))
+fi
 
 # Gtk ScrollKeeper -> Test     Build
 #                     libgnome Help

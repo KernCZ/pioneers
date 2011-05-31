@@ -39,6 +39,7 @@
 #include "config-gnome.h"
 #include "gtkbugs.h"
 #include "audio.h"
+#include "gtkcompat.h"
 
 static GtkWidget *preferences_dlg;
 GtkWidget *app_window;		/* main application window */
