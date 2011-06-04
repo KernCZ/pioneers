@@ -171,6 +171,7 @@ typedef enum {
 Hex *map_hex(Map * map, gint x, gint y);
 const Hex *map_hex_const(const Map * map, gint x, gint y);
 Hex *hex_in_direction(const Hex * hex, HexDirection direction);
+void map_move_in_direction(HexDirection direction, gint * x, gint * y);
 Edge *map_edge(Map * map, gint x, gint y, gint pos);
 const Edge *map_edge_const(const Map * map, gint x, gint y, gint pos);
 Node *map_node(Map * map, gint x, gint y, gint pos);

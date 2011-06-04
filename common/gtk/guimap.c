@@ -72,8 +72,6 @@ GuiMap *guimap_new(void)
 
 void guimap_delete(GuiMap * gmap)
 {
-	gint idx;
-
 	if (gmap->area != NULL) {
 		g_object_unref(gmap->area);
 		gmap->area = NULL;
@@ -85,20 +83,6 @@ void guimap_delete(GuiMap * gmap)
 	if (gmap->cr != NULL) {
 		cairo_destroy(gmap->cr);
 		gmap->cr = NULL;
-	}
-	if (gmap->hex_region != NULL) {
-		gdk_region_destroy(gmap->hex_region);
-		gmap->hex_region = NULL;
-	}
-	for (idx = 0; idx < 6; idx++) {
-		if (gmap->edge_region[idx] != NULL) {
-			gdk_region_destroy(gmap->edge_region[idx]);
-			gmap->edge_region[idx] = NULL;
-		}
-		if (gmap->node_region[idx] != NULL) {
-			gdk_region_destroy(gmap->node_region[idx]);
-			gmap->node_region[idx] = NULL;
-		}
 	}
 	if (gmap->layout) {
 		/* Restore the font size */
@@ -415,6 +399,57 @@ static Polygon pirate_poly = {
 static gint chances[13] = {
 	0, 0, 1, 2, 3, 4, 5, 6, 5, 4, 3, 2, 1
 };
+
+static void reverse_calc_hex_pos(const GuiMap * gmap,
+				 gint x_coor, gint y_coor, gint * hex_x,
+				 gint * hex_y)
+{
+	y_coor -= gmap->y_margin + gmap->hex_radius;
+	y_coor += gmap->hex_radius;
+	*hex_y = y_coor / (gmap->hex_radius + gmap->y_point);
+
+	x_coor -=
+	    gmap->x_margin + gmap->x_point +
+	    ((*hex_y % 2) ? gmap->x_point : 0);
+	if (gmap->map->shrink_left)
+		x_coor += gmap->x_point;
+	x_coor += gmap->x_point;
+	*hex_x = x_coor / (gmap->x_point * 2);
+
+	/* The (0,0) will be on the upper left corner of the hex,
+	 * outside the hex */
+	gint relx;
+	gint rely;
+	relx = x_coor - *hex_x * (gmap->x_point * 2);
+	rely = y_coor - *hex_y * (gmap->hex_radius + gmap->y_point);
+
+	/* Choice between various hexes possible */
+	if (rely < gmap->y_point) {
+		if (relx < gmap->x_point) {
+			/* At the left side of the hex */
+			/* If point (relx, rely)) above the line from
+			 * (0, y_point) to (x_point, 0) then it is the
+			 * hex to NW, else it is the current hex
+			 */
+			if (-relx * (gdouble) gmap->y_point /
+			    gmap->x_point + gmap->y_point > rely) {
+				map_move_in_direction(HEX_DIR_NW, hex_x,
+						      hex_y);
+			}
+		} else {
+			/* At the right side of the hex */
+			/* If point (relx, rely)) above the line from
+			 * (x_point, 0) to (2*x_point, y_point) then
+			 * it is the hex to NE, else it is the current hex
+			 */
+			if (relx * (gdouble) gmap->y_point /
+			    gmap->x_point - gmap->y_point > rely) {
+				map_move_in_direction(HEX_DIR_NE, hex_x,
+						      hex_y);
+			}
+		}
+	}
+}
 
 static void calc_hex_pos(const GuiMap * gmap,
 			 gint x, gint y, gint * x_offset, gint * y_offset)
@@ -956,8 +991,6 @@ static gboolean display_hex(const Hex * hex, gpointer closure)
 
 void guimap_scale_with_radius(GuiMap * gmap, gint radius)
 {
-	int idx;
-
 	if (radius < MIN_HEX_RADIUS)
 		radius = MIN_HEX_RADIUS;
 
@@ -984,21 +1017,6 @@ void guimap_scale_with_radius(GuiMap * gmap, gint radius)
 	if (gmap->cr != NULL) {
 		cairo_destroy(gmap->cr);
 		gmap->cr = NULL;
-	}
-
-	if (gmap->hex_region != NULL) {
-		gdk_region_destroy(gmap->hex_region);
-		gmap->hex_region = NULL;
-	}
-	for (idx = 0; idx < 6; idx++) {
-		if (gmap->edge_region[idx] != NULL) {
-			gdk_region_destroy(gmap->edge_region[idx]);
-			gmap->edge_region[idx] = NULL;
-		}
-		if (gmap->node_region[idx] != NULL) {
-			gdk_region_destroy(gmap->node_region[idx]);
-			gmap->node_region[idx] = NULL;
-		}
 	}
 
 	gmap->chit_radius = 15;
@@ -1041,21 +1059,6 @@ void guimap_scale_to_size(GuiMap * gmap, gint width, gint height)
 
 	gmap->width = width;
 	gmap->height = height;
-}
-
-static void build_hex_region(GuiMap * gmap)
-{
-	GdkPoint points[6];
-	Polygon poly;
-
-	if (gmap->hex_region != NULL)
-		return;
-
-	poly.points = points;
-	poly.num_points = G_N_ELEMENTS(points);
-	get_hex_polygon(gmap, &poly);
-	gmap->hex_region = gdk_region_polygon(points, G_N_ELEMENTS(points),
-					      GDK_EVEN_ODD_RULE);
 }
 
 /** @return The radius of the chit for the current font size */
@@ -1101,7 +1104,6 @@ void guimap_display(GuiMap * gmap)
 	}
 
 	gmap->cr = gdk_cairo_create(gmap->pixmap);
-	build_hex_region(gmap);
 
 	gdk_cairo_set_source_pixmap(gmap->cr,
 				    theme_get_current()->terrain_tiles
@@ -1188,180 +1190,35 @@ void guimap_zoom_center_map(GuiMap * gmap)
 	gtk_widget_queue_draw(gmap->area);
 }
 
-static const Edge *find_hex_edge(GuiMap * gmap, const Hex * hex, gint x,
-				 gint y)
-{
-	gint x_offset, y_offset;
-	int idx;
-
-	calc_hex_pos(gmap, hex->x, hex->y, &x_offset, &y_offset);
-	x -= x_offset;
-	y -= y_offset;
-	for (idx = 0; idx < 6; idx++)
-		if (gdk_region_point_in(gmap->edge_region[idx], x, y))
-			return hex->edges[idx];
-	return NULL;
-}
-
-static void build_edge_regions(GuiMap * gmap)
-{
-	int idx;
-	GdkPoint points[6];
-	Polygon poly;
-
-	if (gmap->edge_region[0] != NULL)
-		return;
-
-	poly.points = points;
-	poly.num_points = G_N_ELEMENTS(points);
-	get_hex_polygon(gmap, &poly);
-	for (idx = 0; idx < 6; idx++) {
-		GdkPoint edge[4];
-
-		edge[0].x = edge[0].y = 0;
-		edge[1] = points[idx];
-		edge[3] = points[(idx + 5) % 6];
-		switch (idx) {
-		case 0:
-			edge[2].x = 2 * gmap->x_point;
-			edge[2].y = 0;
-			break;
-		case 1:
-			edge[2].x = gmap->x_point;
-			edge[2].y = -gmap->hex_radius - gmap->y_point;
-			break;
-		case 2:
-			edge[2].x = -gmap->x_point;
-			edge[2].y = -gmap->hex_radius - gmap->y_point;
-			break;
-		case 3:
-			edge[2].x = -2 * gmap->x_point;
-			edge[2].y = 0;
-			break;
-		case 4:
-			edge[2].x = -gmap->x_point;
-			edge[2].y = gmap->hex_radius + gmap->y_point;
-			break;
-		case 5:
-			edge[2].x = gmap->x_point;
-			edge[2].y = gmap->hex_radius + gmap->y_point;
-			break;
-		}
-		gmap->edge_region[idx]
-		    = gdk_region_polygon(edge, 4, GDK_EVEN_ODD_RULE);
-	}
-}
-
 static void find_edge(GuiMap * gmap, gint x, gint y, MapElement * element)
 {
-	gint y_hex;
-	gint x_hex;
+	Hex *hex = guimap_find_hex(gmap, x, y);
+	if (hex) {
+		gint center_x;
+		gint center_y;
+		calc_hex_pos(gmap, hex->x, hex->y, &center_x, &center_y);
 
-	build_edge_regions(gmap);
-	for (x_hex = 0; x_hex < gmap->map->x_size; x_hex++)
-		for (y_hex = 0; y_hex < gmap->map->y_size; y_hex++) {
-			const Hex *hex;
-			const Edge *edge;
-
-			hex = gmap->map->grid[y_hex][x_hex];
-			if (hex != NULL) {
-				edge = find_hex_edge(gmap, hex, x, y);
-				if (edge != NULL) {
-					element->edge = edge;
-					return;
-				}
-			}
-		}
-	element->pointer = NULL;
-}
-
-static Node *find_hex_node(GuiMap * gmap, const Hex * hex, gint x, gint y)
-{
-	gint x_offset, y_offset;
-	int idx;
-
-	calc_hex_pos(gmap, hex->x, hex->y, &x_offset, &y_offset);
-	x -= x_offset;
-	y -= y_offset;
-	for (idx = 0; idx < 6; idx++)
-		if (gdk_region_point_in(gmap->node_region[idx], x, y))
-			return hex->nodes[idx];
-	return NULL;
-}
-
-static void build_node_regions(GuiMap * gmap)
-{
-	int idx;
-
-	if (gmap->node_region[0] != NULL)
-		return;
-
-	for (idx = 0; idx < 6; idx++) {
-		GdkPoint node[3];
-
-		node[0].x = node[0].y = 0;
-		switch (idx) {
-		case 0:
-			node[1].x = 2 * gmap->x_point;
-			node[1].y = 0;
-			node[2].x = gmap->x_point;
-			node[2].y = -gmap->hex_radius - gmap->y_point;
-			break;
-		case 1:
-			node[1].x = gmap->x_point;
-			node[1].y = -gmap->hex_radius - gmap->y_point;
-			node[2].x = -gmap->x_point;
-			node[2].y = -gmap->hex_radius - gmap->y_point;
-			break;
-		case 2:
-			node[1].x = -gmap->x_point;
-			node[1].y = -gmap->hex_radius - gmap->y_point;
-			node[2].x = -2 * gmap->x_point;
-			node[2].y = 0;
-			break;
-		case 3:
-			node[1].x = -2 * gmap->x_point;
-			node[1].y = 0;
-			node[2].x = -gmap->x_point;
-			node[2].y = gmap->hex_radius + gmap->y_point;
-			break;
-		case 4:
-			node[1].x = -gmap->x_point;
-			node[1].y = gmap->hex_radius + gmap->y_point;
-			node[2].x = gmap->x_point;
-			node[2].y = gmap->hex_radius + gmap->y_point;
-			break;
-		case 5:
-			node[1].x = gmap->x_point;
-			node[1].y = gmap->hex_radius + gmap->y_point;
-			node[2].x = 2 * gmap->x_point;
-			node[2].y = 0;
-			break;
-		}
-		gmap->node_region[idx] = gdk_region_polygon(node, 3,
-							    GDK_EVEN_ODD_RULE);
+		gdouble angle = atan2(y - center_y, x - center_x);
+		gint idx =
+		    (gint) (floor(-angle / 2.0 / M_PI * 6 + 0.5) + 6) % 6;
+		element->edge = hex->edges[idx];
+	} else {
+		element->edge = NULL;
 	}
 }
 
 Node *guimap_find_node(GuiMap * gmap, gint x, gint y)
 {
-	gint y_hex;
-	gint x_hex;
+	Hex *hex = guimap_find_hex(gmap, x, y);
+	if (hex) {
+		gint center_x;
+		gint center_y;
+		calc_hex_pos(gmap, hex->x, hex->y, &center_x, &center_y);
 
-	build_node_regions(gmap);
-	for (x_hex = 0; x_hex < gmap->map->x_size; x_hex++)
-		for (y_hex = 0; y_hex < gmap->map->y_size; y_hex++) {
-			Hex *hex;
-			Node *node;
-
-			hex = gmap->map->grid[y_hex][x_hex];
-			if (hex != NULL) {
-				node = find_hex_node(gmap, hex, x, y);
-				if (node != NULL) {
-					return node;
-				}
-			}
-		}
+		gdouble angle = atan2(y - center_y, x - center_x);
+		gint idx = (gint) (floor(-angle / 2.0 / M_PI * 6) + 6) % 6;
+		return hex->nodes[idx];
+	}
 	return NULL;
 }
 
@@ -1372,28 +1229,11 @@ static void find_node(GuiMap * gmap, gint x, gint y, MapElement * element)
 
 Hex *guimap_find_hex(GuiMap * gmap, gint x, gint y)
 {
-	gint y_hex;
 	gint x_hex;
+	gint y_hex;
 
-	for (x_hex = 0; x_hex < gmap->map->x_size; x_hex++)
-		for (y_hex = 0; y_hex < gmap->map->y_size; y_hex++) {
-			Hex *hex;
-			gint x_offset, y_offset;
-
-			hex = gmap->map->grid[y_hex][x_hex];
-			if (hex == NULL)
-				continue;
-
-			calc_hex_pos(gmap, x_hex, y_hex,
-				     &x_offset, &y_offset);
-			x -= x_offset;
-			y -= y_offset;
-			if (gdk_region_point_in(gmap->hex_region, x, y))
-				return hex;
-			x += x_offset;
-			y += y_offset;
-		}
-	return NULL;
+	reverse_calc_hex_pos(gmap, x, y, &x_hex, &y_hex);
+	return map_hex(gmap->map, x_hex, y_hex);
 }
 
 static void find_hex(GuiMap * gmap, gint x, gint y, MapElement * element)

@@ -266,35 +266,46 @@ Hex *hex_in_direction(const Hex * hex, HexDirection direction)
 	gint x = hex->x;
 	gint y = hex->y;
 
+	map_move_in_direction(direction, &x, &y);
+
+	return map_hex(hex->map, x, y);
+}
+
+/** Move the hex coordinate in the given direction.
+ * @param direction Move in this direction
+ * @retval x x-coordinate of the hex to move
+ * @retval y y-coordinate of the hex to move
+*/
+void map_move_in_direction(HexDirection direction, gint * x, gint * y)
+{
 	switch (direction) {
 	case HEX_DIR_E:
-		x++;
+		(*x)++;
 		break;
 	case HEX_DIR_NE:
-		if (y % 2 == 1)
-			x++;
-		y--;
+		if (*y % 2 == 1)
+			(*x)++;
+		(*y)--;
 		break;
 	case HEX_DIR_NW:
-		if (y % 2 == 0)
-			x--;
-		y--;
+		if (*y % 2 == 0)
+			(*x)--;
+		(*y)--;
 		break;
 	case HEX_DIR_W:
-		x--;
+		(*x)--;
 		break;
 	case HEX_DIR_SW:
-		if (y % 2 == 0)
-			x--;
-		y++;
+		if (*y % 2 == 0)
+			(*x)--;
+		(*y)++;
 		break;
 	case HEX_DIR_SE:
-		if (y % 2 == 1)
-			x++;
-		y++;
+		if (*y % 2 == 1)
+			(*x)++;
+		(*y)++;
 		break;
 	}
-	return map_hex(hex->map, x, y);
 }
 
 Node *map_node(Map * map, gint x, gint y, gint pos)

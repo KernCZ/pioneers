@@ -66,9 +66,6 @@ typedef struct {
 	GtkWidget *area;	   /**< render map in this drawing area */
 	GdkPixmap *pixmap;	   /**< off screen pixmap for drawing */
 	cairo_t *cr;		   /**< cairo for map drawing */
-	GdkRegion *hex_region;	   /**< region for filling hex */
-	GdkRegion *node_region[6]; /**< region for filling node */
-	GdkRegion *edge_region[6]; /**< regions for locating edges */
 	PangoLayout *layout;	   /**< layout object for rendering text */
 	gint initial_font_size;	   /**< initial font size */
 

@@ -1,3 +1,8 @@
+2011-06-04  Roland Clobus <rclobus@rclobus.nl>
+	* common/gtk/guimap.c, common/gtk/guimap.h, common/map.c, common/map.h:
+	Replace detection of the location of the cursor on the map with
+	GdkRegion by mathematics.
+
 2011-05-31  Roland Clobus <rclobus@rclobus.nl>
 	* common/gtk/gtkcompat.h, configure.ac, client/gtk/gui.c,
 	client/gtk/connect.c: Restore compatibility with Debian Stable.
