@@ -242,7 +242,8 @@ static void build_map_resize(GtkWidget * table, gint col, gint row,
 	}
 
 	for (i = 0; i < 4; i++) {
-		buttons[i] = gtk_tool_button_new_from_stock(symbols[i]);
+		buttons[i] =
+		    GTK_WIDGET(gtk_tool_button_new_from_stock(symbols[i]));
 		gtk_tool_item_set_tooltip_text(GTK_TOOL_ITEM(buttons[i]),
 					       _(tooltip
 						 [i % 2 +

@@ -9,6 +9,7 @@
 	which whould result in a crash when the dialog was shown after a failed
 	connection. To be able to use NotifyingString, the initialisation of
 	glib is split from the other init functions.
+	* editor/gtk/editor.c: Fix compiler warning
 
 2011-06-04  Roland Clobus <rclobus@rclobus.nl>
 	* common/gtk/guimap.c, common/gtk/guimap.h, common/map.c, common/map.h:
