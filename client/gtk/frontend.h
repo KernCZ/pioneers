@@ -100,7 +100,8 @@ void frontend_gui_register(GtkWidget * widget, GuiEvent id,
 void frontend_gui_route_event(GuiEvent event);
 
 /* callbacks */
-void frontend_init(int argc, char **argv);
+void frontend_init_gtk_et_al(int argc, char **argv);
+void frontend_init(void);
 void frontend_new_statistics(gint player_num, StatisticType type,
 			     gint num);
 void frontend_new_points(gint player_num, Points * points, gboolean added);
@@ -293,21 +294,8 @@ void chat_clear_names(void);
 void chat_parser(gint player_num, const gchar * chat_str);
 
 /* name.c */
-void name_init(void);
 /** Create a dialog to change the name */
 void name_create_dlg(void);
-/** Get the name */
-gchar *name_get_name(void);
-/** Set the name */
-void name_set_name(const gchar * name);
-/** Add callback when the name changes */
-void name_add_callback_for_name(GCallback callback);
-/** Get the style */
-gchar *name_get_style(void);
-/** Set the style */
-void name_set_style(const gchar * style);
-/** Add callback when the style changes */
-void name_add_callback_for_style(GCallback callback);
 
 /* settingscreen.c */
 void settings_init(void);

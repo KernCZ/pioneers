@@ -109,6 +109,7 @@ static void frontend_new_bank(G_GNUC_UNUSED const gint * new_bank)
 /* set all the callbacks. */
 void frontend_set_callbacks(void)
 {
+	callbacks.init_glib_et_al = &frontend_init_gtk_et_al;
 	callbacks.init = &frontend_init;
 	callbacks.network_status = &frontend_network_status;
 	callbacks.instructions = &frontend_instructions;

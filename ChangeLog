@@ -1,3 +1,15 @@
+2011-06-05  Roland Clobus <rclobus@rclobus.nl>
+	* configure.ac, client/callback.h, client/gtk/callbacks.c,
+	client/gtk/name.c, client/gtk/frontend.h, client/gtk/offline.c,
+	client/gtk/Makefile.am, client/gtk/connect.c, client/common/client.c,
+	client/common/client.h, client/common/callback.c, client/ai/ai.h,
+	client/ai/greedy.c, client/ai/Makefile.am, client/ai/ai.c,
+	client/ai/lobbybot.c: Use NotifyingString as the only place to store
+	the name and style of the player. Fix a race condition in connect.c
+	which whould result in a crash when the dialog was shown after a failed
+	connection. To be able to use NotifyingString, the initialisation of
+	glib is split from the other init functions.
+
 2011-06-04  Roland Clobus <rclobus@rclobus.nl>
 	* common/gtk/guimap.c, common/gtk/guimap.h, common/map.c, common/map.h:
 	Replace detection of the location of the cursor on the map with

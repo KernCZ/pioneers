@@ -201,6 +201,7 @@ fi
 
 # glib is always needed
 PKG_CHECK_MODULES(GLIB2, glib-2.0 >= $GLIB_REQUIRED_VERSION)
+PKG_CHECK_MODULES(GOBJECT2, gobject-2.0 >= $GLIB_REQUIRED_VERSION)
 
 # Gtk+ support
 if test x$with_gtk = xno; then

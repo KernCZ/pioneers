@@ -29,29 +29,17 @@
  * It is filled in by the front end. */
 struct callbacks callbacks;
 
-/* these variables must be remembered between connect and handshake */
-gchar *requested_name = NULL;
-gboolean requested_viewer;
-gchar *requested_style = NULL;
-
 /* current callback mode */
 enum callback_mode callback_mode;
 
 /* is chat currently colourful? */
 gboolean color_chat_enabled;
 
-void cb_connect(const gchar * server, const gchar * port,
-		const gchar * name, gboolean viewer, const gchar * style)
+void cb_connect(const gchar * server, const gchar * port, gboolean viewer)
 {
 	/* connect to a server */
 	g_assert(callback_mode == MODE_INIT);
-	if (requested_name)
-		g_free(requested_name);
-	requested_name = g_strdup(name);
 	requested_viewer = viewer;
-	if (requested_style)
-		g_free(requested_style);
-	requested_style = g_strdup(style);
 	if (sm_connect(SM(), server, port)) {
 		if (sm_is_connected(SM())) {
 			sm_goto(SM(), mode_start);

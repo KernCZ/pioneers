@@ -27,7 +27,7 @@
 void ai_panic(const char *message);
 void ai_wait(void);
 void ai_chat(const char *message);
-void greedy_init(int argc, char **argv);
-void lobbybot_init(int argc, char **argv);
+void greedy_init(void);
+void lobbybot_init(void);
 
 #endif

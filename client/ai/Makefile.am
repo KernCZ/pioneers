@@ -20,7 +20,7 @@
 
 bin_PROGRAMS += pioneersai
 
-pioneersai_CPPFLAGS = -I$(top_srcdir)/client $(console_cflags)
+pioneersai_CPPFLAGS = -I$(top_srcdir)/client -I$(top_srcdir)/client/common $(console_cflags) $(GOBJECT2_CFLAGS)
 
 pioneersai_SOURCES = \
 	client/callback.h \
@@ -29,7 +29,7 @@ pioneersai_SOURCES = \
 	client/ai/greedy.c \
 	client/ai/lobbybot.c
 
-pioneersai_LDADD = libpioneersclient.a $(console_libs)
+pioneersai_LDADD = libpioneersclient.a $(console_libs) $(GOBJECT2_LIBS)
 
 config_DATA += \
 	client/ai/computer_names

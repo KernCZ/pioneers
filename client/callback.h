@@ -88,9 +88,14 @@ enum callback_mode {
 
 /* functions to be implemented by front ends */
 struct callbacks {
+	/* This function is called when the client is initializing.  The
+	 * frontend should initialize its libraries and use the command
+	 * line for the default commands. */
+	void (*init_glib_et_al) (int argc, char **argv);
 	/* This function is called when the client is initialized.  The
-	 * frontend should initialize itself now */
-	void (*init) (int argc, char **argv);
+	 * frontend should initialize itself now and process its own 
+	 * command line options. */
+	void (*init) (void);
 	/* Allows the frontend to show a message considering the network
 	 * status, probably in the status bar */
 	void (*network_status) (const gchar * description);
@@ -283,8 +288,7 @@ extern gboolean color_chat_enabled;
 /* these functions do things for the frontends, they should be used to make
  * changes to the board, etc.  The frontend should NEVER touch any game
  * structures directly (except for reading). */
-void cb_connect(const gchar * server, const gchar * port,
-		const gchar * name, gboolean viewer, const gchar * style);
+void cb_connect(const gchar * server, const gchar * port, gboolean viewer);
 void cb_disconnect(void);
 void cb_roll(void);
 void cb_build_road(const Edge * edge);

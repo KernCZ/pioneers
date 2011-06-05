@@ -31,6 +31,7 @@
 #include "theme.h"
 #include "histogram.h"
 #include "version.h"
+#include "client.h"
 
 static gboolean have_dlg = FALSE;
 static gboolean connectable = FALSE;
@@ -95,8 +96,7 @@ static void frontend_offline_gui(GuiEvent event)
 		connectable = FALSE;
 		have_dlg = FALSE;
 		cb_connect(connect_get_server(), connect_get_port(),
-			   name_get_name(), connect_get_viewer(),
-			   name_get_style());
+			   connect_get_viewer());
 		frontend_gui_update();
 		break;
 	case GUI_CONNECT:
@@ -148,13 +148,10 @@ void frontend_offline(void)
 }
 
 /* this function is called to let the frontend initialize itself. */
-void frontend_init(int argc, char **argv)
+void frontend_init_gtk_et_al(int argc, char **argv)
 {
-	GtkWidget *app;
-	gboolean default_returned;
 	GOptionContext *context;
 	GError *error = NULL;
-	gchar *style;
 
 	frontend_gui_register_init();
 
@@ -168,6 +165,8 @@ void frontend_init(int argc, char **argv)
 					  PACKAGE);
 	g_option_context_add_group(context, gtk_get_option_group(TRUE));
 	g_option_context_parse(context, &argc, &argv, &error);
+	g_option_context_free(context);
+
 	if (error != NULL) {
 		g_print("%s\n", error->message);
 		g_error_free(error);
@@ -180,10 +179,6 @@ void frontend_init(int argc, char **argv)
 		g_print("\n");
 		exit(0);
 	}
-
-
-	set_enable_debug(enable_debug);
-
 #if defined(HAVE_HELP) && defined(HAVE_LIBGNOME)
 	gnome_program_init(PACKAGE, FULL_VERSION,
 			   LIBGNOME_MODULE, argc, argv,
@@ -197,7 +192,41 @@ void frontend_init(int argc, char **argv)
 	bind_textdomain_codeset(PACKAGE, "UTF-8");
 #endif
 
-	name_init();
+	callbacks.mainloop = &gtk_main;
+	callbacks.quit = &gtk_main_quit;
+}
+
+static void frontend_change_name_cb(NotifyingString * name)
+{
+	gchar *nm = notifying_string_get(name);
+	config_set_string("connect/name", nm);
+	if (callback_mode != MODE_INIT) {
+		cb_name_change(nm);
+	}
+	g_free(nm);
+}
+
+static void frontend_change_style_cb(NotifyingString * style)
+{
+	gchar *st = notifying_string_get(style);
+	config_set_string("connect/style", st);
+	g_free(st);
+}
+
+/* this function is called to let the frontend initialize itself. */
+void frontend_init(void)
+{
+	GtkWidget *app;
+	gboolean default_returned;
+	gchar *style;
+
+	set_enable_debug(enable_debug);
+
+	/* save the new settings when changed */
+	g_signal_connect(requested_name, "changed",
+			 G_CALLBACK(frontend_change_name_cb), NULL);
+	g_signal_connect(requested_style, "changed",
+			 G_CALLBACK(frontend_change_style_cb), NULL);
 
 	/* Create the application window
 	 */
@@ -205,9 +234,6 @@ void frontend_init(int argc, char **argv)
 	settings_init();
 	histogram_init();
 	app = gui_build_interface();
-
-	callbacks.mainloop = &gtk_main;
-	callbacks.quit = &gtk_main_quit;
 
 	/* in theory, all windows are created now... 
 	 *   set logging to message window */
@@ -234,9 +260,9 @@ void frontend_init(int argc, char **argv)
 		style = g_strdup(default_player_style);
 	}
 
-	name_set_name(name);
+	notifying_string_set(requested_name, name);
 	connect_set_viewer(viewer);
-	name_set_style(style);
+	notifying_string_set(requested_style, style);
 	g_free(style);
 
 	if (server && port) {

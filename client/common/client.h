@@ -25,12 +25,13 @@
 #include "game.h"
 #include "map.h"
 #include "callback.h"
+#include "notifying-string.h"
 
 /* variables */
 extern GameParams *game_params;
-extern gchar *requested_name;
+extern NotifyingString *requested_name;
+extern NotifyingString *requested_style;
 extern gboolean requested_viewer;
-extern gchar *requested_style;
 
 /********* client.c ***********/
 /* client initialization */

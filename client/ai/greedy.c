@@ -2089,7 +2089,7 @@ static void greedy_new_statistics(gint player_num, StatisticType type,
 	}
 }
 
-void greedy_init(G_GNUC_UNUSED int argc, G_GNUC_UNUSED char **argv)
+void greedy_init(void)
 {
 	callbacks.setup = &greedy_setup;
 	callbacks.turn = &greedy_turn;

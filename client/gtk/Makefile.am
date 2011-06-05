@@ -33,7 +33,7 @@ ADMIN_GTK_FILES_ACTIVE =
 ADMIN_GTK_FILES_INACTIVE = client/gtk/admin-gtk.c
 endif
 
-pioneers_CPPFLAGS = -I$(top_srcdir)/client $(gtk_cflags) $(ADMIN_GTK) $(avahi_cflags)
+pioneers_CPPFLAGS = -I$(top_srcdir)/client -I$(top_srcdir)/client/common $(gtk_cflags) $(ADMIN_GTK) $(avahi_cflags)
 
 EXTRA_pioneers_SOURCES = $(ADMIN_GTK_FILES_INACTIVE)
 

@@ -154,7 +154,7 @@ static void lobbybot_start_game(void)
 	chatting = TRUE;
 }
 
-void lobbybot_init(G_GNUC_UNUSED int argc, G_GNUC_UNUSED char **argv)
+void lobbybot_init(void)
 {
 	g_assert(players == NULL);
 	players =

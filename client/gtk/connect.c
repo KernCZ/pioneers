@@ -36,6 +36,7 @@
 #include "metaserver.h"
 #include "avahi.h"
 #include "avahi-browser.h"
+#include "client.h"
 #include "gtkcompat.h"
 
 const int PRIVATE_GAME_HISTORY_SIZE = 10;
@@ -49,7 +50,6 @@ static GtkWidget *connect_dlg;	/* Dialog for starting a new game */
 static GtkWidget *name_entry;	/* Name of the player */
 static GtkWidget *viewer_toggle;	/* Prefer to be a viewer */
 static GtkWidget *meta_server_entry;	/* Name of the metaserver */
-
 
 static GtkWidget *meta_dlg;	/* Dialog for joining a public game */
 static GtkWidget *server_status;	/* Description of the current metaserver */
@@ -165,9 +165,19 @@ static void connect_set_field(gchar ** field, const gchar * value)
 	g_free(temp);
 }
 
+/* Reset all pointers to the destroyed children of the dialog */
+static void connect_dlg_destroyed(GtkWidget * widget,
+				  GtkWidget ** widget_pointer)
+{
+	name_entry = NULL;
+	viewer_toggle = NULL;
+	meta_server_entry = NULL;
+	gtk_widget_destroyed(widget, widget_pointer);
+}
+
 static void connect_name_change_cb(G_GNUC_UNUSED gpointer ns)
 {
-	gchar *name = name_get_name();
+	gchar *name = notifying_string_get(requested_name);
 	if (name_entry != NULL)
 		gtk_entry_set_text(GTK_ENTRY(name_entry), name);
 	g_free(name);
@@ -231,7 +241,9 @@ static void connect_close_all(gboolean user_pressed_ok,
 	if (user_pressed_ok) {
 		gchar *meta_server;
 
-		name_set_name(gtk_entry_get_text(GTK_ENTRY(name_entry)));
+		notifying_string_set(requested_name,
+				     gtk_entry_get_text(GTK_ENTRY
+							(name_entry)));
 		connect_viewer =
 		    gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON
 						 (viewer_toggle));
@@ -1210,7 +1222,8 @@ void connect_create_dlg(void)
 		return;
 	}
 
-	name_add_callback_for_name(G_CALLBACK(connect_name_change_cb));
+	g_signal_connect(requested_name, "changed",
+			 G_CALLBACK(connect_name_change_cb), NULL);
 
 	/* Dialog caption */
 	connect_dlg = gtk_dialog_new_with_buttons(_("Start a New Game"),
@@ -1222,7 +1235,7 @@ void connect_create_dlg(void)
 	g_signal_connect(G_OBJECT(connect_dlg), "response",
 			 G_CALLBACK(connect_dlg_cb), NULL);
 	g_signal_connect(G_OBJECT(connect_dlg), "destroy",
-			 G_CALLBACK(gtk_widget_destroyed), &connect_dlg);
+			 G_CALLBACK(connect_dlg_destroyed), &connect_dlg);
 
 	gtk_widget_realize(connect_dlg);
 	gdk_window_set_functions(connect_dlg->window,
@@ -1246,14 +1259,12 @@ void connect_create_dlg(void)
 			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(lbl), 0, 0.5);
 
-	name = name_get_name();
+	name = notifying_string_get(requested_name);
 	name_entry = gtk_entry_new();
 	gtk_entry_set_max_length(GTK_ENTRY(name_entry), MAX_NAME_LENGTH);
 	gtk_widget_show(name_entry);
 	gtk_entry_set_text(GTK_ENTRY(name_entry), name);
 	g_free(name);
-	g_signal_connect(G_OBJECT(name_entry), "destroy",
-			 G_CALLBACK(gtk_widget_destroyed), &name_entry);
 
 	gtk_table_attach(GTK_TABLE(table), name_entry, 1, 2, row, row + 1,
 			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
