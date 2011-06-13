@@ -54,7 +54,7 @@ static void frontend_start_game(void)
 	gui_set_game_params(get_game_params());
 	set_num_players(num_players());
 	identity_reset();
-	gui_set_show_no_setup_nodes(!player_is_viewer(my_player_num()));
+	gui_set_show_no_setup_nodes(!player_is_spectator(my_player_num()));
 	frontend_gui_update();
 }
 
@@ -162,11 +162,11 @@ void frontend_set_callbacks(void)
 	callbacks.robber_done = &frontend_robber_done;
 	callbacks.new_statistics = &frontend_new_statistics;
 	callbacks.new_points = &frontend_new_points;
-	callbacks.viewer_name = &frontend_viewer_name;
+	callbacks.spectator_name = &frontend_spectator_name;
 	callbacks.player_name = &frontend_player_name;
 	callbacks.player_style = &frontend_player_style;
 	callbacks.player_quit = &frontend_player_quit;
-	callbacks.viewer_quit = &frontend_viewer_quit;
+	callbacks.spectator_quit = &frontend_spectator_quit;
 	callbacks.incoming_chat = &chat_parser;
 	callbacks.new_bank = &frontend_new_bank;
 	callbacks.get_map = &frontend_get_map;

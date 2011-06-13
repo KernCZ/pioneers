@@ -158,8 +158,8 @@ static void distribute_next(GList * list)
 	for (list = player_first_real(game); list != NULL;
 	     list = player_next_real(list)) {
 		Player *p = list->data;
-		/* viewers were not pushed, they should not be popped */
-		if (player_is_viewer(game, p->num))
+		/* spectators were not pushed, they should not be popped */
+		if (player_is_spectator(game, p->num))
 			continue;
 		sm_pop(p->sm);
 		/* this is a hack to get the next setup player.  I'd like to
@@ -231,8 +231,8 @@ void distribute_first(GList * list)
 	for (looper = list; looper != NULL;
 	     looper = next_player_loop(looper, player)) {
 		Player *scan = looper->data;
-		/* leave the viewers out of this */
-		if (player_is_viewer(game, scan->num))
+		/* leave the spectators out of this */
+		if (player_is_spectator(game, scan->num))
 			continue;
 		if (scan->gold > 0) {
 			player_broadcast(scan, PB_ALL, FIRST_VERSION,

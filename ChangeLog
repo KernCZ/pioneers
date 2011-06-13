@@ -1,3 +1,16 @@
+2011-06-13  Roland Clobus <rclobus@rclobus.nl>
+	* common/gtk/player-icon.c, common/gtk/player-icon.h,
+	common/gtk/common_gtk.c, common/log.c, common/log.h, server/gtk/main.c,
+	server/gold.c, server/player.c, server/trade.c, server/server.h,
+	server/pregame.c, NEWS, client/callback.h, client/gtk/callbacks.c,
+	client/gtk/name.c, client/gtk/frontend.h, client/gtk/player.c,
+	client/gtk/quote.c, client/gtk/chat.c, client/gtk/offline.c,
+	client/gtk/gui.c, client/gtk/identity.c, client/gtk/connect.c,
+	client/common/client.c, client/common/client.h,
+	client/common/callback.c, client/common/player.c,
+	client/help/C/pioneers.xml, client/ai/ai.c, client/ai/lobbybot.c:
+	Change 'viewer' to 'spectator'.
+
 2011-06-05  Roland Clobus <rclobus@rclobus.nl>
 	* configure.ac, client/callback.h, client/gtk/callbacks.c,
 	client/gtk/name.c, client/gtk/frontend.h, client/gtk/offline.c,

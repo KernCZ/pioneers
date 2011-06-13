@@ -37,7 +37,7 @@ static gboolean have_dlg = FALSE;
 static gboolean connectable = FALSE;
 
 static const gchar *name = NULL;
-static gboolean viewer = FALSE;
+static gboolean spectator = FALSE;
 static const gchar *server = NULL;
 static const gchar *port = NULL;
 static const gchar *meta_server = NULL;
@@ -56,9 +56,9 @@ static GOptionEntry commandline_entries[] = {
 	/* Commandline option of client: name of the player */
 	{"name", 'n', 0, G_OPTION_ARG_STRING, &name, N_("Player name"),
 	 NULL},
-	/* Commandline option of client: do we want to be a viewer */
-	{"viewer", 'v', 0, G_OPTION_ARG_NONE, &viewer,
-	 N_("Connect as a viewer"), NULL},
+	/* Commandline option of client: do we want to be a spectator */
+	{"spectator", 'v', 0, G_OPTION_ARG_NONE, &spectator,
+	 N_("Connect as a spectator"), NULL},
 	/* Commandline option of client: hostname of the meta-server */
 	{"meta-server", 'm', 0, G_OPTION_ARG_STRING, &meta_server,
 	 N_("Meta-server Host"), PIONEERS_DEFAULT_META_SERVER},
@@ -96,7 +96,7 @@ static void frontend_offline_gui(GuiEvent event)
 		connectable = FALSE;
 		have_dlg = FALSE;
 		cb_connect(connect_get_server(), connect_get_port(),
-			   connect_get_viewer());
+			   connect_get_spectator());
 		frontend_gui_update();
 		break;
 	case GUI_CONNECT:
@@ -245,14 +245,14 @@ void frontend_init(void)
 		if (default_returned) {
 			name = g_strdup(g_get_user_name());
 		}
-		/* If --viewer is used, we are now a viewer.  If not, get the
+		/* If --spectator is used, we are now a spectator.  If not, get the
 		 * correct value from the config file.
-		 * To allow specifying "don't be a viewer", only check the
+		 * To allow specifying "don't be a spectator", only check the
 		 * config file if --name is not used.  */
-		if (!viewer) {
-			viewer =
-			    config_get_int_with_default("connect/viewer",
-							0) ? TRUE : FALSE;
+		if (!spectator) {
+			spectator =
+			    config_get_int_with_default
+			    ("connect/spectator", 0) ? TRUE : FALSE;
 		}
 	}
 	style = config_get_string("connect/style", &default_returned);
@@ -261,7 +261,7 @@ void frontend_init(void)
 	}
 
 	notifying_string_set(requested_name, name);
-	connect_set_viewer(viewer);
+	connect_set_spectator(spectator);
 	notifying_string_set(requested_style, style);
 	g_free(style);
 

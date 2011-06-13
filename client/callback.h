@@ -63,7 +63,7 @@ typedef struct {
 	gchar *name;
 	gchar *style;
 	gint num;
-} Viewer;
+} Spectator;
 
 enum callback_mode {
 	MODE_INIT,		/* not connected */
@@ -249,16 +249,16 @@ struct callbacks {
 	 * it has already been done by the client. */
 	void (*new_points) (gint player_num, Points * points,
 			    gboolean added);
-	/* a viewer changed his/her name */
-	void (*viewer_name) (gint viewer_num, const gchar * name);
+	/* a spectator changed his/her name */
+	void (*spectator_name) (gint spectator_num, const gchar * name);
 	/* a player changed his/her name */
 	void (*player_name) (gint player_num, const gchar * name);
 	/* a player changed his/her style */
 	void (*player_style) (gint player_num, const gchar * style);
 	/* a player left the game */
 	void (*player_quit) (gint player_num);
-	/* a viewer left the game */
-	void (*viewer_quit) (gint player_num);
+	/* a spectator left the game */
+	void (*spectator_quit) (gint player_num);
 	/* respond to incoming chat messages */
 	void (*incoming_chat) (gint player_num, const gchar * chat);
 	/* something changed in the bank. */
@@ -288,7 +288,8 @@ extern gboolean color_chat_enabled;
 /* these functions do things for the frontends, they should be used to make
  * changes to the board, etc.  The frontend should NEVER touch any game
  * structures directly (except for reading). */
-void cb_connect(const gchar * server, const gchar * port, gboolean viewer);
+void cb_connect(const gchar * server, const gchar * port,
+		gboolean spectator);
 void cb_disconnect(void);
 void cb_roll(void);
 void cb_build_road(const Edge * edge);
@@ -328,21 +329,21 @@ gboolean can_buy_develop(void);
 gboolean can_play_develop(int card);
 gboolean can_play_any_develop(void);
 Player *player_get(gint num);
-gboolean player_is_viewer(gint num);
-Viewer *viewer_get(gint num);
+gboolean player_is_spectator(gint num);
+Spectator *spectator_get(gint num);
 const gchar *player_name(gint player_num, gboolean word_caps);
 gint player_get_score(gint player_num);
 gint my_player_num(void);
 const gchar *my_player_name(void);
-gboolean my_player_viewer(void);
+gboolean my_player_spectator(void);
 const gchar *my_player_style(void);
 const gchar *player_get_style(gint player_num);
 void player_set_style(gint player_num, const gchar * style);
 gint num_players(void);
 gint current_player(void);
-/** Find the player or viewer with name
+/** Find the player or spectator with name
  *  @param name The name to search for
- *  @return the player/viewer number or -1 if the name was not found
+ *  @return the player/spectator number or -1 if the name was not found
  */
 gint find_player_by_name(const gchar * name);
 gint build_count_edges(void);

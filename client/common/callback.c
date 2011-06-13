@@ -35,11 +35,12 @@ enum callback_mode callback_mode;
 /* is chat currently colourful? */
 gboolean color_chat_enabled;
 
-void cb_connect(const gchar * server, const gchar * port, gboolean viewer)
+void cb_connect(const gchar * server, const gchar * port,
+		gboolean spectator)
 {
 	/* connect to a server */
 	g_assert(callback_mode == MODE_INIT);
-	requested_viewer = viewer;
+	requested_spectator = spectator;
 	if (sm_connect(SM(), server, port)) {
 		if (sm_is_connected(SM())) {
 			sm_goto(SM(), mode_start);

@@ -52,7 +52,7 @@ static struct recovery_info_t {
 
 NotifyingString *requested_name = NULL;
 NotifyingString *requested_style = NULL;
-gboolean requested_viewer;
+gboolean requested_spectator;
 
 static gboolean global_unhandled(StateMachine * sm, gint event);
 static gboolean global_filter(StateMachine * sm, gint event);
@@ -373,8 +373,8 @@ static void dummy_new_points(G_GNUC_UNUSED gint player_num,
 {
 }
 
-static void dummy_viewer_name(G_GNUC_UNUSED gint viewer_num,
-			      G_GNUC_UNUSED const gchar * name)
+static void dummy_spectator_name(G_GNUC_UNUSED gint spectator_num,
+				 G_GNUC_UNUSED const gchar * name)
 {;
 }
 
@@ -392,7 +392,7 @@ static void dummy_player_quit(G_GNUC_UNUSED gint player_num)
 {;
 }
 
-static void dummy_viewer_quit(G_GNUC_UNUSED gint player_num)
+static void dummy_spectator_quit(G_GNUC_UNUSED gint player_num)
 {;
 }
 
@@ -482,11 +482,11 @@ void client_init(void)
 	callbacks.get_rolled_resources = &dummy_get_rolled_resources;
 	callbacks.new_statistics = &dummy_new_statistics;
 	callbacks.new_points = &dummy_new_points;
-	callbacks.viewer_name = &dummy_viewer_name;
+	callbacks.spectator_name = &dummy_spectator_name;
 	callbacks.player_name = &dummy_player_name;
 	callbacks.player_style = &dummy_player_style;
 	callbacks.player_quit = &dummy_player_quit;
-	callbacks.viewer_quit = &dummy_viewer_quit;
+	callbacks.spectator_quit = &dummy_spectator_quit;
 	callbacks.incoming_chat = &dummy_incoming_chat;
 	callbacks.new_bank = &dummy_new_bank;
 	callbacks.error = &dummy_error;
@@ -949,7 +949,7 @@ gboolean mode_start(StateMachine * sm, gint event)
 	}
 	if (sm_recv(sm, "status report")) {
 		gchar *name = notifying_string_get(requested_name);
-		if (requested_viewer) {
+		if (requested_spectator) {
 			if (name && name[0] != '\0') {
 				sm_send(sm, "status viewer %s\n", name);
 			} else {
@@ -1507,7 +1507,7 @@ static gboolean mode_idle(StateMachine * sm, gint event)
 	switch (event) {
 	case SM_ENTER:
 		callback_mode = MODE_WAIT_TURN;
-		if (player_is_viewer(my_player_num()))
+		if (player_is_spectator(my_player_num()))
 			callbacks.instructions("");
 		else
 			callbacks.instructions(_

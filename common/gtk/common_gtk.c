@@ -105,7 +105,7 @@ void message_window_log_message_string(gint msg_type, const gchar * text)
 			case MSG_CHAT:
 				tagname = "chat";
 				break;
-			case MSG_VIEWER_CHAT:
+			case MSG_SPECTATOR_CHAT:
 				tagname = "chat";
 				break;
 			case MSG_RESOURCE:

@@ -33,7 +33,7 @@ static gboolean mode_bad_version(Player * player, gint event);
 static gboolean mode_global(Player * player, gint event);
 static gboolean mode_unhandled(Player * player, gint event);
 static void player_setup(Player * player, int playernum,
-			 const gchar * name, gboolean force_viewer);
+			 const gchar * name, gboolean force_spectator);
 static Player *player_by_name(Game * game, char *name);
 
 #define tournament_minute 1000 * 60
@@ -51,13 +51,13 @@ static gboolean is_tournament_game(const Game * game)
 /** Find a free number for a connecting player.
  * The number has not been used before.
  *  @param game The game
- *  @param force_viewer The connecting player must be a viewer
+ *  @param force_spectator The connecting player must be a spectator
  */
-static gint next_free_player_num(Game * game, gboolean force_viewer)
+static gint next_free_player_num(Game * game, gboolean force_spectator)
 {
 	gint idx;
 
-	if (!force_viewer) {
+	if (!force_spectator) {
 		GList *list;
 		gboolean player_taken[MAX_PLAYERS];
 		gint available = game->params->num_players;
@@ -68,7 +68,7 @@ static gint next_free_player_num(Game * game, gboolean force_viewer)
 		     list != NULL; list = g_list_next(list)) {
 			Player *player = list->data;
 			if (player->num >= 0
-			    && !player_is_viewer(game, player->num)) {
+			    && !player_is_spectator(game, player->num)) {
 				player_taken[player->num] = TRUE;
 				--available;
 			}
@@ -88,7 +88,7 @@ static gint next_free_player_num(Game * game, gboolean force_viewer)
 		}
 	}
 
-	/* No players available/wanted, look for a viewer number */
+	/* No players available/wanted, look for a spectator number */
 	idx = game->params->num_players;
 	while (player_by_num(game, idx) != NULL)
 		++idx;
@@ -112,7 +112,7 @@ static gboolean mode_global(Player * player, gint event)
 		if (player->devel != NULL)
 			deck_free(player->devel);
 		if (player->num >= 0
-		    && !player_is_viewer(game, player->num)
+		    && !player_is_spectator(game, player->num)
 		    && !player->disconnected) {
 			game->num_players--;
 			meta_report_num_players(game->num_players);
@@ -247,7 +247,7 @@ static gboolean tournament_start_cb(gpointer data)
 	     player != NULL && !human_player_present;
 	     player = g_list_next(player)) {
 		Player *p = player->data;
-		if (!player_is_viewer(game, p->num)
+		if (!player_is_spectator(game, p->num)
 		    && determine_player_type(p->style) == PLAYER_HUMAN) {
 			human_player_present = TRUE;
 		}
@@ -526,7 +526,7 @@ static void player_set_name_real(Player * player, gchar * name,
 }
 
 static void player_setup(Player * player, int playernum,
-			 const gchar * name, gboolean force_viewer)
+			 const gchar * name, gboolean force_spectator)
 {
 	gchar nm[MAX_NAME_LENGTH + 1];
 	Game *game = player->game;
@@ -535,10 +535,10 @@ static void player_setup(Player * player, int playernum,
 
 	player->num = playernum;
 	if (player->num < 0) {
-		player->num = next_free_player_num(game, force_viewer);
+		player->num = next_free_player_num(game, force_spectator);
 	}
 
-	if (!player_is_viewer(game, player->num)) {
+	if (!player_is_spectator(game, player->num)) {
 		game->num_players++;
 		meta_report_num_players(game->num_players);
 	}
@@ -551,10 +551,10 @@ static void player_setup(Player * player, int playernum,
 
 	/* give the player her new name */
 	if (name == NULL) {
-		if (player_is_viewer(game, player->num)) {
+		if (player_is_spectator(game, player->num)) {
 			gint num = 1;
 			do {
-				sprintf(nm, _("Viewer %d"), num++);
+				sprintf(nm, _("Spectator %d"), num++);
 			} while (player_by_name(game, nm) != NULL);
 		} else {
 			sprintf(nm, _("Player %d"), player->num);
@@ -640,8 +640,8 @@ void player_archive(Player * player)
 	StateFunc state;
 	Game *game = player->game;
 
-	/* If this was a viewer, forget about him */
-	if (player_is_viewer(game, player->num)) {
+	/* If this was a spectator, forget about him */
+	if (player_is_spectator(game, player->num)) {
 		player_free(player);
 		return;
 	}
@@ -688,7 +688,7 @@ void player_archive(Player * player)
 	for (pl = game->player_list;
 	     pl != NULL && !human_player_present; pl = g_list_next(pl)) {
 		Player *p = pl->data;
-		if (!player_is_viewer(game, p->num)
+		if (!player_is_spectator(game, p->num)
 		    && !p->disconnected
 		    && determine_player_type(p->style) == PLAYER_HUMAN) {
 			human_player_present = TRUE;
@@ -862,14 +862,14 @@ void player_revive(Player * newp, char *name)
 	return;
 }
 
-gboolean mode_viewer(Player * player, gint event)
+gboolean mode_spectator(Player * player, gint event)
 {
 	gint num;
 	Game *game = player->game;
 	StateMachine *sm = player->sm;
 	Player *other;
 
-	sm_state_name(sm, "mode_viewer");
+	sm_state_name(sm, "mode_spectator");
 	if (event != SM_RECV)
 		return FALSE;
 	/* first see if this is a valid event for this mode */
@@ -898,7 +898,7 @@ gboolean mode_viewer(Player * player, gint event)
 	if (other == NULL) {
 		player_send(player, FIRST_VERSION, LATEST_VERSION, "Ok\n");
 		player_broadcast(player, PB_ALL, FIRST_VERSION,
-				 LATEST_VERSION, "was viewer %d\n",
+				 LATEST_VERSION, "was spectator %d\n",
 				 player->num);
 		sm_set_use_cache(player->sm, TRUE);
 		player_setup(player, -1, player->name, FALSE);
@@ -1158,7 +1158,7 @@ Player *player_by_num(Game * game, gint num)
 	return NULL;
 }
 
-gboolean player_is_viewer(Game * game, gint player_num)
+gboolean player_is_spectator(Game * game, gint player_num)
 {
 	return game->params->num_players <= player_num;
 }
@@ -1175,7 +1175,7 @@ Player *player_none(Game * game)
 	return &player;
 }
 
-/** Broadcast a message to all players and viewers - prepend "player %d " to
+/** Broadcast a message to all players and spectators - prepend "player %d " to
  * all players except the one generating the message.
  * Also prepend 'extension' when this message is a protocol extension.
  *
@@ -1254,7 +1254,7 @@ void player_broadcast_extension(Player * player, BroadcastType type,
 	g_free(buff);
 }
 
-/** Broadcast a message to all players and viewers */
+/** Broadcast a message to all players and spectators */
 void player_broadcast(Player * player, BroadcastType type,
 		      ClientVersionType first_supported_version,
 		      ClientVersionType last_supported_version,

@@ -275,7 +275,7 @@ void name_create_dlg(void)
 GdkPixbuf *create_icon(GtkWidget * widget, const gchar * style)
 {
 	return playericon_create_icon(widget, style,
-				      player_or_viewer_color(my_player_num
-							     ()),
-				      my_player_viewer(), TRUE, TRUE);
+				      player_or_spectator_color
+				      (my_player_num()),
+				      my_player_spectator(), TRUE, TRUE);
 }

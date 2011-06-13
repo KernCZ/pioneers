@@ -199,7 +199,8 @@ void trade_finish_domestic(Player * player)
 	for (list = player_first_real(game);
 	     list != NULL; list = player_next_real(list)) {
 		Player *scan = list->data;
-		if (scan != player && !player_is_viewer(game, scan->num))
+		if (scan != player
+		    && !player_is_spectator(game, scan->num))
 			sm_pop(scan->sm);
 	}
 	quotelist_free(&game->quotes);
@@ -299,7 +300,8 @@ static void process_call_domestic(Player * player, gint * supply,
 	for (list = player_first_real(game); list != NULL;
 	     list = player_next_real(list)) {
 		Player *scan = list->data;
-		if (!player_is_viewer(game, scan->num) && scan != player) {
+		if (!player_is_spectator(game, scan->num)
+		    && scan != player) {
 			sm_goto(scan->sm, (StateFunc) mode_domestic_quote);
 		}
 	}
@@ -425,7 +427,8 @@ void trade_begin_domestic(Player * player, gint * supply, gint * receive)
 	for (list = player_first_real(game); list != NULL;
 	     list = player_next_real(list)) {
 		Player *scan = list->data;
-		if (!player_is_viewer(game, scan->num) && scan != player)
+		if (!player_is_spectator(game, scan->num)
+		    && scan != player)
 			sm_push(scan->sm, (StateFunc) mode_domestic_quote);
 	}
 

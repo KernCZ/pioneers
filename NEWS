@@ -99,7 +99,7 @@ Subversion Snapshot release 0.9.63
 
 Subversion Snapshot release 0.9.62
 * Several cosmetic changes
-* You can now choose to connect as a viewer
+* You can now choose to connect as a spectator
 * Several small fixes
 * Visual display of the resources
 * New quote tab page
@@ -227,7 +227,7 @@ What's new/fixed:
 * Added tooltips in the server-gtk
 * New image for the splash screen, provided by Tobias Jakobs
 * Fixed bugs regarding the Road Building card
-* Connection as viewer in a game with more than 8 players+viewers is possible
+* Connection as spectator in a game with more than 8 players+spectators is possible
 * Updated the log in the console
 * Minor user interface issues 
 

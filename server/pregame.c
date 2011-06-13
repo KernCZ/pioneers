@@ -513,7 +513,7 @@ gboolean mode_pre_game(Player * player, gint event)
 		/* Tell the player that he exists.  This is not done in
 		 * player_set_name, because at that point the client doesn't
 		 * know how many players are in the game, and therefore if
-		 * he is a player or a viewer. */
+		 * he is a player or a spectator. */
 		/* Tell the other players about this player */
 		player_broadcast(player, PB_OTHERS, FIRST_VERSION,
 				 LATEST_VERSION, "is %s\n", player->name);
@@ -676,7 +676,7 @@ gboolean mode_pre_game(Player * player, gint event)
 			   # bridges, # ships, # settles, # cities,
 			   # soldiers, road len, dev points,
 			   who has longest road/army,
-			   viewers will receive an empty list */
+			   spectators will receive an empty list */
 			player_send_uncached(player, FIRST_VERSION,
 					     LATEST_VERSION,
 					     "playerinfo: resources: %R\n",
@@ -913,16 +913,17 @@ gboolean mode_pre_game(Player * player, gint event)
 				if (!sm_is_connected(sm))
 					/* This happens when the connection is
 					 * dropped when the cache is sent */
-					sm_goto(sm,
-						(StateFunc) mode_viewer);
+					sm_goto(sm, (StateFunc)
+						mode_spectator);
 				else
 					sm_pop(sm);
 			} else {
-				if (!player_is_viewer(game, player->num))
+				if (!player_is_spectator
+				    (game, player->num))
 					sm_goto(sm, (StateFunc) mode_idle);
 				else
-					sm_goto(sm,
-						(StateFunc) mode_viewer);
+					sm_goto(sm, (StateFunc)
+						mode_spectator);
 			}
 			try_start_game(game);
 			return TRUE;

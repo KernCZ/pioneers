@@ -112,10 +112,10 @@ GdkColor *player_color(gint player_num)
 	return colors_get_player(player_num);
 }
 
-GdkColor *player_or_viewer_color(gint player_num)
+GdkColor *player_or_spectator_color(gint player_num)
 {
-	if (player_is_viewer(player_num)) {
-		/* viewer color is always black */
+	if (player_is_spectator(player_num)) {
+		/* spectator color is always black */
 		return &black;
 	}
 	return colors_get_player(player_num);
@@ -125,8 +125,9 @@ GdkPixbuf *player_create_icon(GtkWidget * widget, gint player_num,
 			      gboolean connected)
 {
 	return playericon_create_icon(widget, player_get_style(player_num),
-				      player_or_viewer_color(player_num),
-				      player_is_viewer(player_num),
+				      player_or_spectator_color
+				      (player_num),
+				      player_is_spectator(player_num),
 				      connected, FALSE);
 }
 
@@ -386,7 +387,7 @@ static void player_create_find_player(gint player_num, GtkTreeIter * iter)
 	GtkTreeIter found_iter;
 	enum TFindResult result;
 
-	/* Search for a place to add information about the player/viewer */
+	/* Search for a place to add information about the player/spectator */
 	result =
 	    find_integer_in_tree(GTK_TREE_MODEL(summary_store),
 				 &found_iter, SUMMARY_COLUMN_PLAYER_NUM,
@@ -439,17 +440,17 @@ void frontend_player_style(gint player_num,
 	chat_player_style(player_num);
 }
 
-void frontend_viewer_name(gint viewer_num, const gchar * name)
+void frontend_spectator_name(gint spectator_num, const gchar * name)
 {
 	GtkTreeIter iter;
 
-	player_create_find_player(viewer_num, &iter);
+	player_create_find_player(spectator_num, &iter);
 	gtk_list_store_set(summary_store, &iter,
 			   SUMMARY_COLUMN_TEXT, name, -1);
 	if (callback_mode != MODE_INIT)
 		play_sound(SOUND_ANNOUNCE);
 
-	chat_player_name(viewer_num, name);
+	chat_player_name(spectator_num, name);
 }
 
 void frontend_player_quit(gint player_num)
@@ -462,14 +463,14 @@ void frontend_player_quit(gint player_num)
 	chat_player_quit(player_num);
 }
 
-void frontend_viewer_quit(gint viewer_num)
+void frontend_spectator_quit(gint spectator_num)
 {
 	GtkTreeIter iter;
 
-	player_create_find_player(viewer_num, &iter);
+	player_create_find_player(spectator_num, &iter);
 	gtk_list_store_remove(summary_store, &iter);
 
-	chat_viewer_quit(viewer_num);
+	chat_spectator_quit(spectator_num);
 }
 
 static void player_show_connected_at_iter(gint player_num,

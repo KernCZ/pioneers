@@ -89,7 +89,7 @@ enum {
 	PLAYER_COLUMN_NAME,
 	PLAYER_COLUMN_LOCATION,
 	PLAYER_COLUMN_NUMBER,
-	PLAYER_COLUMN_ISVIEWER,
+	PLAYER_COLUMN_ISSPECTATOR,
 	PLAYER_COLUMN_LAST
 };
 
@@ -425,10 +425,10 @@ static void gui_player_change(void *data)
 	     current = g_list_next(current)) {
 		GtkTreeIter iter;
 		Player *p = current->data;
-		gboolean isViewer;
+		gboolean isSpectator;
 
-		isViewer = player_is_viewer(p->game, p->num);
-		if (!isViewer && !p->disconnected)
+		isSpectator = player_is_spectator(p->game, p->num);
+		if (!isSpectator && !p->disconnected)
 			number_of_players++;
 
 		gtk_list_store_append(store, &iter);
@@ -438,7 +438,8 @@ static void gui_player_change(void *data)
 				   PLAYER_COLUMN_NUMBER, p->num,
 				   PLAYER_COLUMN_CONNECTED,
 				   !p->disconnected,
-				   PLAYER_COLUMN_ISVIEWER, isViewer, -1);
+				   PLAYER_COLUMN_ISSPECTATOR, isSpectator,
+				   -1);
 	}
 	playerlist_dec_use_count(game);
 	if (number_of_players == 0 && game->is_game_over) {
@@ -521,10 +522,10 @@ static GtkWidget *build_game_rules(GtkWidget * parent)
 }
 
 static void
-my_cell_player_viewer_to_text(G_GNUC_UNUSED GtkTreeViewColumn *
-			      tree_column, GtkCellRenderer * cell,
-			      GtkTreeModel * tree_model,
-			      GtkTreeIter * iter, gpointer data)
+my_cell_player_spectator_to_text(G_GNUC_UNUSED GtkTreeViewColumn *
+				 tree_column, GtkCellRenderer * cell,
+				 GtkTreeModel * tree_model,
+				 GtkTreeIter * iter, gpointer data)
 {
 	gboolean b;
 
@@ -532,8 +533,8 @@ my_cell_player_viewer_to_text(G_GNUC_UNUSED GtkTreeViewColumn *
 	gtk_tree_model_get(tree_model, iter, GPOINTER_TO_INT(data), &b,
 			   -1);
 	g_object_set(cell, "text", b ?
-		     /* Role of the player: viewer */
-		     _("Viewer") :
+		     /* Role of the player: spectator */
+		     _("Spectator") :
 		     /* Role of the player: player */
 		     _("Player"), NULL);
 }
@@ -799,7 +800,7 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 	gtk_widget_set_tooltip_text(label,
 				    /* Tooltip for server connection overview */
 				    _(""
-				      "Shows all players and viewers connected to the server"));
+				      "Shows all players and spectators connected to the server"));
 
 	/* Now create columns */
 	column =
@@ -851,12 +852,13 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 						     NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(label), column);
 	/* Tooltip for column Role */
-	gtk_widget_set_tooltip_text(column->button, _("Player or viewer"));
+	gtk_widget_set_tooltip_text(column->button,
+				    _("Player or spectator"));
 
 	gtk_tree_view_column_set_cell_data_func(column, renderer,
-						my_cell_player_viewer_to_text,
+						my_cell_player_spectator_to_text,
 						GINT_TO_POINTER
-						(PLAYER_COLUMN_ISVIEWER),
+						(PLAYER_COLUMN_ISSPECTATOR),
 						NULL);
 
 	gtk_widget_show(label);

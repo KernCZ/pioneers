@@ -203,10 +203,10 @@ GList *player_first_real(Game * game);
 GList *player_next_real(GList * last);
 GList *list_from_player(Player * player);
 GList *next_player_loop(GList * current, Player * first);
-gboolean mode_viewer(Player * player, gint event);
+gboolean mode_spectator(Player * player, gint event);
 void playerlist_inc_use_count(Game * game);
 void playerlist_dec_use_count(Game * game);
-gboolean player_is_viewer(Game * game, gint player_num);
+gboolean player_is_spectator(Game * game, gint player_num);
 
 /* pregame.c */
 gboolean mode_pre_game(Player * player, gint event);

@@ -31,7 +31,7 @@
 extern GameParams *game_params;
 extern NotifyingString *requested_name;
 extern NotifyingString *requested_style;
-extern gboolean requested_viewer;
+extern gboolean requested_spectator;
 
 /********* client.c ***********/
 /* client initialization */
@@ -97,7 +97,7 @@ void player_lose_point(gint player_num, gint id);
 void player_take_point(gint player_num, gint id, gint old_owner);
 void player_change_style(gint player_num, const gchar * style);
 
-gint find_viewer_by_name(const gchar * name);
+gint find_spectator_by_name(const gchar * name);
 
 /********* build.c **********/
 void build_clear(void);

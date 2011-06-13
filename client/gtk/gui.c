@@ -1170,7 +1170,7 @@ static void preferences_cb(void)
 	row++;
 
 	widget =
-	    /* Label for the option to announce when players/viewers enter */
+	    /* Label for the option to announce when players/spectators enter */
 	    gtk_check_button_new_with_label(_("Announce new players"));
 	gtk_widget_show(widget);
 	gtk_table_attach_defaults(GTK_TABLE(layout), widget,
@@ -1180,9 +1180,9 @@ static void preferences_cb(void)
 	g_signal_connect(G_OBJECT(widget), "toggled",
 			 G_CALLBACK(announce_player_cb), NULL);
 	gtk_widget_set_tooltip_text(widget,
-				    /* Tooltip for the option to use sound when players/viewers enter */
+				    /* Tooltip for the option to use sound when players/spectators enter */
 				    _(""
-				      "Make a sound when a new player or viewer enters the game"));
+				      "Make a sound when a new player or spectator enters the game"));
 	row++;
 
 	/* Silent mode widget is connected an initialized after the announce button */

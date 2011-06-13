@@ -32,13 +32,13 @@ void playericon_init(void);
  *  @param widget  The widget that will display the icon
  *  @param style   The style of the icon
  *  @param color   The base color of the player
- *  @param viewer  TRUE if a viewer icon is requested
+ *  @param spectator  TRUE if a spectator icon is requested
  *  @param connected Is the player currently connected
  *  @param double_size Generate a double size pixmap
  *  @return THe icon for the player. Call g_object_unref() when not needed anymore.
  */
 GdkPixbuf *playericon_create_icon(GtkWidget * widget, const gchar * style,
-				  GdkColor * color, gboolean viewer,
+				  GdkColor * color, gboolean spectator,
 				  gboolean connected,
 				  gboolean double_size);
 

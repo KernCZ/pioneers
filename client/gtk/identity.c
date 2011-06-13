@@ -213,13 +213,13 @@ static gint expose_identity_area_cb(GtkWidget * area,
 	if (identity_gc == NULL)
 		identity_gc = gdk_gc_new(area->window);
 
-	colour = player_or_viewer_color(my_player_num());
+	colour = player_or_spectator_color(my_player_num());
 	gdk_gc_set_foreground(identity_gc, colour);
 	gdk_draw_rectangle(area->window, identity_gc, TRUE, 0, 0,
 			   area->allocation.width,
 			   area->allocation.height);
 
-	if (my_player_viewer())
+	if (my_player_spectator())
 		colour = &white;
 	else
 		colour = &black;

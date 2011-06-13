@@ -1605,8 +1605,8 @@
 	      </row>
 	      <row>
 	        <entry>-v</entry>
-		<entry>--viewer</entry>
-		<entry>Connect as a viewer</entry>
+		<entry>--spectator</entry>
+		<entry>Connect as a spectator</entry>
 	      </row>
 	      <row>
 	        <entry>-m</entry>

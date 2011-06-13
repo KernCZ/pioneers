@@ -200,14 +200,14 @@ void chat_player_quit(gint player_num)
 	}
 }
 
-void chat_viewer_quit(gint viewer_num)
+void chat_spectator_quit(gint spectator_num)
 {
 	GtkTreeIter iter;
 	enum TFindResult found;
 
 	found =
 	    find_integer_in_tree(GTK_TREE_MODEL(chat_completion_model),
-				 &iter, CHAT_PLAYER_NUM, viewer_num);
+				 &iter, CHAT_PLAYER_NUM, spectator_num);
 	if (found == FIND_MATCH_EXACT) {
 		gtk_list_store_remove(chat_completion_model, &iter);
 	}
@@ -292,8 +292,8 @@ void chat_parser(gint player_num, const gchar * chat)
 	}
 
 	if (color_chat_enabled) {
-		if (player_is_viewer(player_num))
-			tempchatcolor = MSG_VIEWER_CHAT;
+		if (player_is_spectator(player_num))
+			tempchatcolor = MSG_SPECTATOR_CHAT;
 		else
 			switch (player_num) {
 			case 0:

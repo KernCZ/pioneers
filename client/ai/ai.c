@@ -178,7 +178,7 @@ static void ai_offline(void)
 static void ai_start_game(void)
 {
 	if (algorithms[active_algorithm].request_player ==
-	    my_player_viewer()
+	    my_player_spectator()
 	    && algorithms[active_algorithm].quit_if_not_request) {
 		ai_panic(N_("The game is already full. I'm leaving."));
 	}
@@ -215,7 +215,7 @@ void frontend_set_callbacks(void)
 	callbacks.set_map = &ai_set_map;
 }
 
-/* The logbot is intended to be used as a viewer in a game, and to collect
+/* The logbot is intended to be used as a spectator in a game, and to collect
  * a transcript of the game in human readable form, which can be analysed
  * using external tools. */
 void logbot_init(void)

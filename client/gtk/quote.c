@@ -63,7 +63,7 @@ gboolean can_submit_quote(void)
 
 	return !quote_view_trade_exists(QUOTEVIEW(quoteview), give_quote,
 					want_quote)
-	    && !player_is_viewer(my_player_num());
+	    && !player_is_spectator(my_player_num());
 }
 
 gboolean can_delete_quote(void)
@@ -75,7 +75,7 @@ gboolean can_delete_quote(void)
 
 gboolean can_reject_quote(void)
 {
-	return !player_is_viewer(my_player_num()) &&
+	return !player_is_spectator(my_player_num()) &&
 	    !quote_view_has_reject(QUOTEVIEW(quoteview), my_player_num());
 }
 
@@ -128,7 +128,7 @@ static void lock_resource_tables(void)
 static void set_resource_tables_filter(const gint * we_receive, const gint
 				       * we_supply)
 {
-	if (player_is_viewer(my_player_num())) {
+	if (player_is_spectator(my_player_num())) {
 		lock_resource_tables();
 	} else {
 		resource_table_set_filter(RESOURCETABLE(want_table),

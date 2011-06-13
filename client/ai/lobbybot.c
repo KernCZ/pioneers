@@ -163,9 +163,9 @@ void lobbybot_init(void)
 	/* Don't chat before the rules are known */
 	chatting = FALSE;
 
-	callbacks.viewer_name = &lobbybot_player_name_changed;
+	callbacks.spectator_name = &lobbybot_player_name_changed;
 	callbacks.player_name = &lobbybot_player_name_changed;
-	callbacks.viewer_quit = &lobbybot_player_quit;
+	callbacks.spectator_quit = &lobbybot_player_quit;
 	callbacks.player_quit = &lobbybot_player_quit;
 	callbacks.incoming_chat = &lobbybot_chat_parser;
 	callbacks.player_turn = &lobbybot_turn;
