@@ -779,7 +779,6 @@ static void client_do_read(Client * client)
 {
 	int num;
 	int offset;
-	gboolean finished;
 
 	if (client->read_len == sizeof(client->read_buff)) {
 		/* We are in trouble now - something has gone
@@ -815,7 +814,6 @@ static void client_do_read(Client * client)
 
 	client->read_len += num;
 	offset = 0;
-	finished = FALSE;
 	while (offset < client->read_len) {
 		char *line = client->read_buff + offset;
 		int len = find_line(line, client->read_len - offset);

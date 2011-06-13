@@ -10,6 +10,9 @@
 	client/common/callback.c, client/common/player.c,
 	client/help/C/pioneers.xml, client/ai/ai.c, client/ai/lobbybot.c:
 	Change 'viewer' to 'spectator'.
+	* meta-server/main.c, server/pregame.c, client/gtk/offline.c,
+	client/common/player.c: Remove unused variables. Thanks to gcc-4.6 for
+	finding them.
 
 2011-06-05  Roland Clobus <rclobus@rclobus.nl>
 	* configure.ac, client/callback.h, client/gtk/callbacks.c,

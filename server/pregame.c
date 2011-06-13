@@ -254,9 +254,7 @@ void next_setup_player(Game * game)
 	} else {
 		/* First setup phase
 		 */
-		Player *player;
 		game->setup_player = player_next_real(game->setup_player);
-		player = game->setup_player->data;
 		/* Last player gets double setup
 		 */
 		game->double_setup

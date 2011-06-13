@@ -245,7 +245,6 @@ void player_change_style(gint player_num, const gchar * style)
 
 void player_has_quit(gint player_num)
 {
-	Player *player;
 	Spectator *spectator;
 
 	if (player_num < 0)
@@ -265,7 +264,6 @@ void player_has_quit(gint player_num)
 		return;
 	}
 	callbacks.player_quit(player_num);
-	player = player_get(player_num);
 	log_message(MSG_INFO, _("%s has quit.\n"), player_name(player_num,
 							       TRUE));
 }

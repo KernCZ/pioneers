@@ -216,7 +216,6 @@ static void frontend_change_style_cb(NotifyingString * style)
 /* this function is called to let the frontend initialize itself. */
 void frontend_init(void)
 {
-	GtkWidget *app;
 	gboolean default_returned;
 	gchar *style;
 
@@ -233,7 +232,7 @@ void frontend_init(void)
 	themes_init();
 	settings_init();
 	histogram_init();
-	app = gui_build_interface();
+	gui_build_interface();
 
 	/* in theory, all windows are created now... 
 	 *   set logging to message window */
