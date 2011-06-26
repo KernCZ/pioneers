@@ -39,6 +39,7 @@ install-MinGW:
 	cp /mingw/bin/libpng12-0.dll /usr/local
 	cp /mingw/bin/libpangoft2-1.0-0.dll /usr/local
 	cp /mingw/bin/libexpat-1.dll /usr/local
+	cp /mingw/bin/zlib1.dll /usr/local
 	cp /mingw/lib/gtk-2.0/2.10.0/loaders/libpixbufloader-png.dll /usr/local
 	mkdir -p /usr/local/etc/gtk-2.0
 	cp $(srcdir)/MinGW/gdk-pixbuf.loaders /usr/local/etc/gtk-2.0

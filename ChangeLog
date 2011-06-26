@@ -1,3 +1,7 @@
+2011-06-26  Roland Clobus <rclobus@rclobus.nl>
+	* MinGW/Makefile.am, pioneers.nsi.in: Fix the Windows installer.
+	(Taken from the 0.12.4 branch)
+
 2011-06-13  Roland Clobus <rclobus@rclobus.nl>
 	* common/gtk/player-icon.c, common/gtk/player-icon.h,
 	common/gtk/common_gtk.c, common/log.c, common/log.h, server/gtk/main.c,

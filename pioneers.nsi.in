@@ -85,7 +85,7 @@ ShowInstDetails show
 ShowUnInstDetails show
 
 ;Request application privileges for Windows Vista
-RequestExecutionLevel user
+RequestExecutionLevel admin
 
 Function .onInit
   !insertmacro MUI_LANGDLL_DISPLAY
@@ -114,6 +114,7 @@ Section "!Minimal install" SEC01
   File "..\..\..\local\libpangowin32-1.0-0.dll"
   File "..\..\..\local\libpixbufloader-png.dll"
   File "..\..\..\local\libpng12-0.dll"
+  File "..\..\..\local\zlib1.dll"
 
   SetOutPath "$INSTDIR\etc\gtk-2.0"
   File "..\..\..\local\etc\gtk-2.0\gdk-pixbuf.loaders"
@@ -382,6 +383,7 @@ Section Uninstall
   Delete "$INSTDIR\libpangowin32-1.0-0.dll"
   Delete "$INSTDIR\libpixbufloader-png.dll"
   Delete "$INSTDIR\libpng12-0.dll"
+  Delete "$INSTDIR\zlib1.dll"
   Delete "$INSTDIR\etc\gtk-2.0\gdk-pixbuf.loaders"
   Delete "$INSTDIR\themes\Wesnoth-like\theme.cfg"
   Delete "$INSTDIR\themes\Wesnoth-like\sea.png"
