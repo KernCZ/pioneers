@@ -315,11 +315,11 @@ static gboolean theme_initialize(MapTheme * t)
 			if (theme_load_pixmap
 			    (t->port_tile_names[i], t->name, &pixbuf,
 			     &(t->port_tiles[i]), NULL)) {
-				gdk_drawable_get_size(t->port_tiles[i],
-						      &t->port_tiles_width
-						      [i],
-						      &t->port_tiles_height
-						      [i]);
+				gdk_pixmap_get_size(t->port_tiles[i],
+						    &t->port_tiles_width
+						    [i],
+						    &t->port_tiles_height
+						    [i]);
 				g_object_unref(pixbuf);
 			}
 		} else
@@ -710,7 +710,7 @@ gint expose_terrain_cb(GtkWidget * area,
 		       gpointer terraindata)
 {
 	MapTheme *theme = theme_get_current();
-	GdkGC *legend_gc;
+	cairo_t *cr;
 	GdkPixbuf *p;
 	gint height;
 	Terrain terrain = GPOINTER_TO_INT(terraindata);
@@ -718,21 +718,18 @@ gint expose_terrain_cb(GtkWidget * area,
 	if (area->window == NULL)
 		return FALSE;
 
-	legend_gc = gdk_gc_new(area->window);
-
-	gdk_gc_set_fill(legend_gc, GDK_TILED);
-	gdk_gc_set_tile(legend_gc, theme_get_terrain_pixmap(terrain));
+	cr = gdk_cairo_create(area->window);
 
 	height = area->allocation.width / theme->scaledata[terrain].aspect;
 	p = gdk_pixbuf_scale_simple(theme->scaledata[terrain].native_image,
 				    area->allocation.width, height,
 				    GDK_INTERP_BILINEAR);
 
-	/* Center the image in the available space */
-	gdk_draw_pixbuf(area->window, legend_gc, p,
-			0, 0, 0, (area->allocation.height - height) / 2,
-			-1, -1, GDK_RGB_DITHER_NONE, 0, 0);
+	gdk_cairo_set_source_pixbuf(cr, p, 0, 0);
+	cairo_rectangle(cr, 0, 0, area->allocation.width, height);
+	cairo_fill(cr);
+
 	g_object_unref(p);
-	g_object_unref(legend_gc);
+	cairo_destroy(cr);
 	return FALSE;
 }
