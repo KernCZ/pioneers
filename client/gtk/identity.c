@@ -22,10 +22,10 @@
 
 #include "config.h"
 #include "frontend.h"
+#include <math.h>
 
 static GtkWidget *identity_area;
 static GuiMap bogus_map;
-static GdkGC *identity_gc;
 
 static int die_num[2];
 
@@ -114,7 +114,7 @@ static void calculate_optimum_size(GtkWidget * area, gint size)
 	}
 }
 
-static int draw_building_and_count(GdkGC * gc, GtkWidget * area,
+static int draw_building_and_count(cairo_t * cr, GtkWidget * area,
 				   gint offset, Polygon * poly, gint num)
 {
 	GdkRectangle rect;
@@ -123,18 +123,17 @@ static int draw_building_and_count(GdkGC * gc, GtkWidget * area,
 	PangoLayout *layout;
 
 	poly_bound_rect(poly, 0, &rect);
-	poly_offset(poly,
-		    offset - rect.x,
+	poly_offset(poly, offset - rect.x,
 		    area->allocation.height - 5 - rect.y - rect.height);
-	poly_draw_old(area->window, gc, FALSE, poly);
+	poly_draw(cr, FALSE, poly);
 
 	offset += 5 + rect.width;
 
 	sprintf(buff, "%d", num);
 	layout = gtk_widget_create_pango_layout(area, buff);
 	pango_layout_get_pixel_size(layout, &width, &height);
-	gdk_draw_layout(area->window, gc, offset,
-			area->allocation.height - height - 5, layout);
+	cairo_move_to(cr, offset, area->allocation.height - height - 5);
+	pango_cairo_show_layout(cr, layout);
 	g_object_unref(layout);
 
 	offset += 5 + width;
@@ -142,9 +141,9 @@ static int draw_building_and_count(GdkGC * gc, GtkWidget * area,
 	return offset;
 }
 
-static void show_die(GdkGC * gc, GtkWidget * area, gint x_offset, gint num,
-		     GdkColor * die_border_color, GdkColor * die_color,
-		     GdkColor * die_dots_color)
+static void show_die(cairo_t * cr, GtkWidget * area, gint x_offset,
+		     gint num, GdkColor * die_border_color,
+		     GdkColor * die_color, GdkColor * die_dots_color)
 {
 	static GdkPoint die_points[4] = {
 		{0, 0}, {30, 0}, {30, 30}, {0, 30}
@@ -170,22 +169,23 @@ static void show_die(GdkGC * gc, GtkWidget * area, gint x_offset, gint num,
 
 	poly_offset(&die_shape, x_offset, y_offset);
 
-	gdk_gc_set_foreground(gc, die_color);
-	poly_draw_old(area->window, gc, TRUE, &die_shape);
-	gdk_gc_set_foreground(gc, die_border_color);
-	poly_draw_old(area->window, gc, FALSE, &die_shape);
+	gdk_cairo_set_source_color(cr, die_color);
+	poly_draw(cr, TRUE, &die_shape);
+	gdk_cairo_set_source_color(cr, die_border_color);
+	poly_draw(cr, FALSE, &die_shape);
 
 	poly_offset(&die_shape, -x_offset, -y_offset);
 
-	gdk_gc_set_foreground(gc, die_dots_color);
+	gdk_cairo_set_source_color(cr, die_dots_color);
 	for (idx = 0; idx < 7; idx++) {
 		if (list[idx] == 0)
 			continue;
 
-		gdk_draw_arc(area->window, gc, TRUE,
-			     x_offset + dot_pos[idx].x - 3,
-			     y_offset + dot_pos[idx].y - 3,
-			     7, 7, 0, 360 * 64);
+		cairo_move_to(cr, x_offset + dot_pos[idx].x - 3,
+			      y_offset + dot_pos[idx].y - 3);
+		cairo_arc(cr, x_offset + dot_pos[idx].x,
+			  y_offset + dot_pos[idx].y, 3, 0.0, 2 * M_PI);
+		cairo_fill(cr);
 	}
 }
 
@@ -206,24 +206,28 @@ static gint expose_identity_area_cb(GtkWidget * area,
 	GdkColor *colour;
 	const GameParams *game_params;
 	gint i;
+	cairo_t *cr;
 
 	if (area->window == NULL || my_player_num() < 0)
 		return FALSE;
 
-	if (identity_gc == NULL)
-		identity_gc = gdk_gc_new(area->window);
+	cr = gdk_cairo_create(area->window);
+	cairo_set_line_join(cr, CAIRO_LINE_JOIN_ROUND);
+	cairo_set_line_cap(cr, CAIRO_LINE_CAP_ROUND);
+	cairo_set_line_width(cr, 1.0);
 
 	colour = player_or_spectator_color(my_player_num());
-	gdk_gc_set_foreground(identity_gc, colour);
-	gdk_draw_rectangle(area->window, identity_gc, TRUE, 0, 0,
-			   area->allocation.width,
-			   area->allocation.height);
+
+	gdk_cairo_set_source_color(cr, colour);
+	cairo_rectangle(cr, 0, 0, area->allocation.width,
+			area->allocation.height);
+	cairo_fill(cr);
 
 	if (my_player_spectator())
 		colour = &white;
 	else
 		colour = &black;
-	gdk_gc_set_foreground(identity_gc, colour);
+	gdk_cairo_set_source_color(cr, colour);
 
 	game_params = get_game_params();
 	if (game_params == NULL)
@@ -234,40 +238,40 @@ static gint expose_identity_area_cb(GtkWidget * area,
 	if (game_params->num_build_type[BUILD_ROAD] > 0) {
 		poly.num_points = MAX_POINTS;
 		guimap_road_polygon(&bogus_map, NULL, &poly);
-		offset = draw_building_and_count(identity_gc, area, offset,
+		offset = draw_building_and_count(cr, area, offset,
 						 &poly, stock_num_roads());
 	}
 	if (game_params->num_build_type[BUILD_SHIP] > 0) {
 		poly.num_points = MAX_POINTS;
 		guimap_ship_polygon(&bogus_map, NULL, &poly);
-		offset = draw_building_and_count(identity_gc, area, offset,
+		offset = draw_building_and_count(cr, area, offset,
 						 &poly, stock_num_ships());
 	}
 	if (game_params->num_build_type[BUILD_BRIDGE] > 0) {
 		poly.num_points = MAX_POINTS;
 		guimap_bridge_polygon(&bogus_map, NULL, &poly);
-		offset = draw_building_and_count(identity_gc, area, offset,
+		offset = draw_building_and_count(cr, area, offset,
 						 &poly,
 						 stock_num_bridges());
 	}
 	if (game_params->num_build_type[BUILD_SETTLEMENT] > 0) {
 		poly.num_points = MAX_POINTS;
 		guimap_settlement_polygon(&bogus_map, NULL, &poly);
-		offset = draw_building_and_count(identity_gc, area, offset,
+		offset = draw_building_and_count(cr, area, offset,
 						 &poly,
 						 stock_num_settlements());
 	}
 	if (game_params->num_build_type[BUILD_CITY] > 0) {
 		poly.num_points = MAX_POINTS;
 		guimap_city_polygon(&bogus_map, NULL, &poly);
-		offset = draw_building_and_count(identity_gc, area, offset,
+		offset = draw_building_and_count(cr, area, offset,
 						 &poly,
 						 stock_num_cities());
 	}
 	if (game_params->num_build_type[BUILD_CITY_WALL] > 0) {
 		poly.num_points = MAX_POINTS;
 		guimap_city_wall_polygon(&bogus_map, NULL, &poly);
-		offset = draw_building_and_count(identity_gc, area, offset,
+		offset = draw_building_and_count(cr, area, offset,
 						 &poly,
 						 stock_num_city_walls());
 	}
@@ -292,12 +296,13 @@ static gint expose_identity_area_cb(GtkWidget * area,
 			die_dots_color[1] = &black;
 		}
 		for (i = 0; i < 2; i++) {
-			show_die(identity_gc, area,
+			show_die(cr, area,
 				 area->allocation.width - 70 + 35 * i,
 				 die_num[i], die_border_color[i],
 				 die_color[i], die_dots_color[i]);
 		}
 	}
+	cairo_destroy(cr);
 
 	return TRUE;
 }
