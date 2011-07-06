@@ -1,4 +1,4 @@
-/* Pioneers - Implementation of the excellent Settlers of Catan board game.
+/* Pioneers - Implementation of the excellent Settlers of Catan board game
  *   Go buy a copy.
  *
  * Copyright (C) 2007 Giancarlo Capella <giancarlo@comm.cc>
@@ -26,6 +26,7 @@
 #include <gtk/gtk.h>
 #include <string.h>
 #include <stdlib.h>
+#include <math.h>
 
 static gboolean load_pixbuf(const gchar * name, GdkPixbuf ** pixbuf);
 static void replace_colors(GdkPixbuf * pixbuf,
@@ -136,6 +137,7 @@ GdkPixbuf *playericon_create_icon(GtkWidget * widget, const gchar * style,
 	gint width, height;
 	GdkPixbuf *basic_image, *overlay_image, *scaled_image;
 	gboolean basic_substitute;
+	PlayerType player_type;
 
 	gtk_icon_size_lookup(GTK_ICON_SIZE_MENU, &width, &height);
 	if (double_size) {
@@ -144,7 +146,14 @@ GdkPixbuf *playericon_create_icon(GtkWidget * widget, const gchar * style,
 	}
 	basic_image = NULL;
 	overlay_image = NULL;
-	switch (determine_player_type(style)) {
+	player_type = determine_player_type(style);
+	/* Human players are allowed to have the square icon */
+	if (player_type == PLAYER_HUMAN
+	    && !strcmp(style, default_player_style)) {
+		player_type = PLAYER_UNKNOWN;
+	}
+
+	switch (player_type) {
 	case PLAYER_COMPUTER:
 		/* This is an AI */
 		basic_image = gdk_pixbuf_copy(ai_avatar);
@@ -176,19 +185,19 @@ GdkPixbuf *playericon_create_icon(GtkWidget * widget, const gchar * style,
 		}
 	default:{
 			/* Unknown or square */
-			GdkGC *gc;
+			cairo_t *cr;
 			GdkPixmap *pixmap;
 
 			pixmap =
 			    gdk_pixmap_new(widget->window, width, height,
 					   gdk_visual_get_system()->depth);
-			gc = gdk_gc_new(pixmap);
+			cr = gdk_cairo_create(pixmap);
 			if (spectator) {
 				GdkPixbuf *tmp;
 				/* Spectators have a transparent icon */
-				gdk_gc_set_foreground(gc, &black);
-				gdk_draw_rectangle(pixmap, gc, TRUE, 0, 0,
-						   width, height);
+				gdk_cairo_set_source_color(cr, &black);
+				cairo_rectangle(cr, 0, 0, width, height);
+				cairo_fill(cr);
 
 				tmp =
 				    gdk_pixbuf_get_from_drawable(NULL,
@@ -200,28 +209,26 @@ GdkPixbuf *playericon_create_icon(GtkWidget * widget, const gchar * style,
 				    gdk_pixbuf_add_alpha(tmp, TRUE, 0, 0,
 							 0);
 			} else {
-				gdk_gc_set_foreground(gc, &black);
-				gdk_draw_rectangle(pixmap, gc, TRUE, 0, 0,
-						   width, height);
+				gdk_cairo_set_source_color(cr, color);
+				cairo_rectangle(cr, 0, 0, width, height);
+				cairo_fill(cr);
 
-				gdk_gc_set_foreground(gc, color);
-				gdk_draw_rectangle(pixmap, gc, TRUE, 1, 1,
-						   width - 2, height - 2);
-
+				gdk_cairo_set_source_color(cr, &black);
+				cairo_set_line_width(cr, 1.0);
+				cairo_rectangle(cr, 0.5, 0.5, width - 1,
+						height - 1);
+				cairo_stroke(cr);
 				if (!connected) {
-					gdk_gc_set_foreground(gc, &black);
-					gdk_draw_rectangle(pixmap, gc,
-							   FALSE, 3, 3,
-							   width - 7,
-							   height - 7);
-					gdk_draw_rectangle(pixmap, gc,
-							   FALSE, 6, 6,
-							   width - 13,
-							   height - 13);
+					cairo_rectangle(cr, 3.5, 3.5,
+							width - 7,
+							height - 7);
+					cairo_rectangle(cr, 6.5, 6.5,
+							width - 13,
+							height - 13);
+					cairo_stroke(cr);
 					/* Don't draw the other emblem */
 					connected = TRUE;
 				}
-
 				basic_image =
 				    gdk_pixbuf_get_from_drawable(NULL,
 								 pixmap,
@@ -230,7 +237,7 @@ GdkPixbuf *playericon_create_icon(GtkWidget * widget, const gchar * style,
 								 -1, -1);
 			}
 			basic_substitute = FALSE;
-			g_object_unref(gc);
+			cairo_destroy(cr);
 			g_object_unref(pixmap);
 		}
 	}
@@ -255,25 +262,30 @@ GdkPixbuf *playericon_create_icon(GtkWidget * widget, const gchar * style,
 	g_object_unref(basic_image);
 
 	if (!connected) {
-		GdkGC *gc;
+		cairo_t *cr;
 		GdkPixmap *pixmap;
 		GdkPixbuf *tmp1, *tmp2;
 
 		pixmap =
 		    gdk_pixmap_new(widget->window, width, height,
 				   gdk_visual_get_system()->depth);
-		gc = gdk_gc_new(pixmap);
+		cr = gdk_cairo_create(pixmap);
 
-		gdk_gc_set_foreground(gc, &black);	/* Black will become transparent */
-		gdk_draw_rectangle(pixmap, gc, TRUE, 0, 0, width, height);
+		/* Black will become transparent */
+		gdk_cairo_set_source_color(cr, &black);
+		cairo_rectangle(cr, 0, 0, width, height);
+		cairo_fill(cr);
 
-		gdk_gc_set_foreground(gc, &red);
-		gdk_draw_arc(pixmap, gc, TRUE, width / 2, 0, width / 2,
-			     height / 2, 0, 360 * 64);
-		gdk_gc_set_foreground(gc, &white);
-		gdk_draw_rectangle(pixmap, gc, TRUE,
-				   width / 2 + 2, height / 4 - 1,
-				   width / 2 - 4, height / 8);
+		gdk_cairo_set_source_color(cr, &red);
+		cairo_move_to(cr, width / 2, height / 2);
+		cairo_arc(cr, width * 3 / 4, height / 4, width / 4, 0.0,
+			  2 * M_PI);
+		cairo_fill(cr);
+		gdk_cairo_set_source_color(cr, &white);
+		cairo_rectangle(cr,
+				width / 2 + 2, height / 4 - 1,
+				width / 2 - 4, height / 8);
+		cairo_fill(cr);
 
 		tmp1 =
 		    gdk_pixbuf_get_from_drawable(NULL, pixmap, NULL, 0, 0,
@@ -284,7 +296,7 @@ GdkPixbuf *playericon_create_icon(GtkWidget * widget, const gchar * style,
 				     GDK_INTERP_NEAREST, 255);
 		g_object_unref(tmp2);
 		g_object_unref(tmp1);
-		g_object_unref(gc);
+		cairo_destroy(cr);
 		g_object_unref(pixmap);
 	}
 	return scaled_image;

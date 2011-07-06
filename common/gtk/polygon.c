@@ -20,7 +20,6 @@
  */
 
 #include <math.h>
-#include <ctype.h>
 #include <gdk/gdk.h>
 
 #include "polygon.h"
@@ -61,13 +60,6 @@ void poly_bound_rect(const Polygon * poly, int pad, GdkRectangle * rect)
 	rect->y = tl.y - pad;
 	rect->width = br.x - tl.x + pad + 1;
 	rect->height = br.y - tl.y + pad + 1;
-}
-
-void poly_draw_old(GdkDrawable * drawable, GdkGC * gc, gint filled,
-		   const Polygon * poly)
-{
-	gdk_draw_polygon(drawable, gc, filled, poly->points,
-			 poly->num_points);
 }
 
 void poly_draw(cairo_t * cr, gboolean filled, const Polygon * poly)

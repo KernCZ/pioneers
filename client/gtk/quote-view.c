@@ -257,7 +257,7 @@ static void load_pixmaps(QuoteView * qv)
 	static gboolean init = FALSE;
 	int width, height;
 	GdkPixmap *pixmap;
-	GdkGC *gc;
+	cairo_t *cr;
 
 	if (init)
 		return;
@@ -267,16 +267,23 @@ static void load_pixmaps(QuoteView * qv)
 	    gdk_pixmap_new(qv->quotes->window, width, height,
 			   gtk_widget_get_visual(qv->quotes)->depth);
 
-	gc = gdk_gc_new(pixmap);
-	gdk_gc_set_fill(gc, GDK_TILED);
-	gdk_gc_set_tile(gc, theme_get_terrain_pixmap(SEA_TERRAIN));
-	gdk_gc_set_foreground(gc, &black);
-	gdk_draw_rectangle(pixmap, gc, TRUE, 0, 0, width, height);
+	cr = gdk_cairo_create(pixmap);
+	gdk_cairo_set_source_pixmap(cr,
+				    theme_get_terrain_pixmap(SEA_TERRAIN),
+				    0.0, 0.0);
+	cairo_pattern_set_extend(cairo_get_source(cr),
+				 CAIRO_EXTEND_REPEAT);
+	cairo_rectangle(cr, 0, 0, width, height);
+	cairo_fill(cr);
+	gdk_cairo_set_source_color(cr, &black);
+	cairo_set_line_width(cr, 1.0);
+	cairo_rectangle(cr, 0.5, 0.5, width - 1, height - 1);
+	cairo_stroke(cr);
 	maritime_pixbuf =
 	    gdk_pixbuf_get_from_drawable(NULL, pixmap, NULL, 0, 0, 0, 0,
 					 -1, -1);
 	g_object_unref(pixmap);
-	g_object_unref(gc);
+	cairo_destroy(cr);
 
 	cross_pixbuf =
 	    gtk_widget_render_icon(qv->quotes, GTK_STOCK_CANCEL,
@@ -687,7 +694,7 @@ void quote_view_theme_changed(QuoteView * qv)
 {
 	int width, height;
 	GdkPixmap *pixmap;
-	GdkGC *gc;
+	cairo_t *cr;
 	QuoteInfo *quote;
 
 	if (!qv->with_maritime)
@@ -699,18 +706,24 @@ void quote_view_theme_changed(QuoteView * qv)
 	    gdk_pixmap_new(qv->quotes->window, width, height,
 			   gtk_widget_get_visual(qv->quotes)->depth);
 
-	gc = gdk_gc_new(pixmap);
-	gdk_gc_set_foreground(gc, &black);
-	gdk_draw_rectangle(pixmap, gc, TRUE, 0, 0, width, height);
-	gdk_gc_set_fill(gc, GDK_TILED);
-	gdk_gc_set_tile(gc, theme_get_terrain_pixmap(SEA_TERRAIN));
-	gdk_draw_rectangle(pixmap, gc, TRUE, 0, 0, width, height);
+	cr = gdk_cairo_create(pixmap);
+	gdk_cairo_set_source_pixmap(cr,
+				    theme_get_terrain_pixmap(SEA_TERRAIN),
+				    0.0, 0.0);
+	cairo_pattern_set_extend(cairo_get_source(cr),
+				 CAIRO_EXTEND_REPEAT);
+	cairo_rectangle(cr, 0, 0, width, height);
+	cairo_fill(cr);
+	gdk_cairo_set_source_color(cr, &black);
+	cairo_set_line_width(cr, 1.0);
+	cairo_rectangle(cr, 0.5, 0.5, width - 1, height - 1);
+	cairo_stroke(cr);
 	if (maritime_pixbuf)
 		g_object_unref(maritime_pixbuf);
 	maritime_pixbuf =
 	    gdk_pixbuf_get_from_drawable(NULL, pixmap, NULL, 0, 0, 0, 0,
 					 -1, -1);
-	g_object_unref(gc);
+	cairo_destroy(cr);
 	g_object_unref(pixmap);
 
 	/* Remove all maritime quotes */

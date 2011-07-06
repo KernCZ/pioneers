@@ -99,7 +99,10 @@ struct Player_point {
 };
 
 static GtkWidget *turn_area;	/** turn indicator in status bar */
-static const gint turn_area_icon_width = 30;
+/** Width for each icon */
+static const gint turn_area_icon_width = 28;
+/** Separation between each icon */
+static const gint turn_area_icon_separation = 2;
 
 void player_init(void)
 {
@@ -620,46 +623,39 @@ static gint expose_turn_area_cb(GtkWidget * area,
 				G_GNUC_UNUSED GdkEventExpose * event,
 				G_GNUC_UNUSED gpointer user_data)
 {
-	static GdkGC *turn_gc;
+	cairo_t *cr;
 	gint offset;
 	gint idx;
 
 	if (area->window == NULL)
 		return FALSE;
 
-	if (turn_gc == NULL)
-		turn_gc = gdk_gc_new(area->window);
+	cr = gdk_cairo_create(area->window);
 
 	offset = 0;
 	for (idx = 0; idx < num_players(); idx++) {
-		gdk_gc_set_foreground(turn_gc, player_color(idx));
-		gdk_draw_rectangle(area->window, turn_gc, TRUE,
-				   offset + 2, 2,
-				   turn_area_icon_width - 4,
-				   area->allocation.height - 4);
-		gdk_gc_set_foreground(turn_gc, &black);
-		if (idx == current_player()) {
-			gdk_gc_set_line_attributes(turn_gc, 3,
-						   GDK_LINE_SOLID,
-						   GDK_CAP_BUTT,
-						   GDK_JOIN_MITER);
-			gdk_draw_rectangle(area->window, turn_gc, FALSE,
-					   offset + 3, 3,
-					   turn_area_icon_width - 6,
-					   area->allocation.height - 6);
-		} else {
-			gdk_gc_set_line_attributes(turn_gc, 1,
-						   GDK_LINE_SOLID,
-						   GDK_CAP_BUTT,
-						   GDK_JOIN_MITER);
-			gdk_draw_rectangle(area->window, turn_gc, FALSE,
-					   offset + 2, 2,
-					   turn_area_icon_width - 4,
-					   area->allocation.height - 4);
-		}
+		gdk_cairo_set_source_color(cr, player_color(idx));
+		cairo_rectangle(cr, offset, 0, turn_area_icon_width,
+				area->allocation.height);
+		cairo_fill(cr);
 
-		offset += turn_area_icon_width;
+		gdk_cairo_set_source_color(cr, &black);
+		if (idx == current_player()) {
+			cairo_set_line_width(cr, 3.0);
+			cairo_rectangle(cr, offset + 1.5, 1.5,
+					turn_area_icon_width - 3,
+					area->allocation.height - 3);
+		} else {
+			cairo_set_line_width(cr, 1.0);
+			cairo_rectangle(cr, offset + 0.5, 0.5,
+					turn_area_icon_width - 1,
+					area->allocation.height - 1);
+		}
+		cairo_stroke(cr);
+
+		offset += turn_area_icon_width + turn_area_icon_separation;
 	}
+	cairo_destroy(cr);
 
 	return FALSE;
 }
@@ -670,8 +666,9 @@ GtkWidget *player_build_turn_area(void)
 	g_signal_connect(G_OBJECT(turn_area), "expose_event",
 			 G_CALLBACK(expose_turn_area_cb), NULL);
 	gtk_widget_set_size_request(turn_area,
-				    turn_area_icon_width * num_players(),
-				    -1);
+				    turn_area_icon_width * num_players() +
+				    turn_area_icon_separation *
+				    (num_players() - 1), -1);
 	gtk_widget_show(turn_area);
 
 	return turn_area;
@@ -679,7 +676,9 @@ GtkWidget *player_build_turn_area(void)
 
 void set_num_players(gint num)
 {
-	gtk_widget_set_size_request(turn_area, turn_area_icon_width * num,
+	gtk_widget_set_size_request(turn_area,
+				    turn_area_icon_width * num +
+				    turn_area_icon_separation * (num - 1),
 				    -1);
 }
 
