@@ -1,3 +1,7 @@
+2011-07-14  Roland Clobus <rclobus@rclobus.nl>
+	* common/gtk/theme.c, common/gtk/gtkcompat.h: Restore compatibility
+	with Debian Stable.
+
 2011-07-06  Roland Clobus <rclobus@rclobus.nl>
 	* common/gtk/player-icon.c, common/gtk/polygon.c, common/gtk/polygon.h,
 	client/gtk/player.c, client/gtk/quote-view.c: Replace GdkGC.

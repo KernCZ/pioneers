@@ -29,6 +29,7 @@
 #include "game.h"
 #include "theme.h"
 #include "config-gnome.h"
+#include "gtkcompat.h"
 
 /*
 
