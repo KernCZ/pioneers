@@ -1,3 +1,6 @@
+2011-07-20  Roland Clobus <rclobus@rclobus.nl>
+	* common/notifying-string.gob: make reindent
+
 2011-07-14  Roland Clobus <rclobus@rclobus.nl>
 	* common/gtk/theme.c, common/gtk/gtkcompat.h: Restore compatibility
 	with Debian Stable.
