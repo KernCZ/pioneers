@@ -83,8 +83,6 @@ void route_gui_event(GuiEvent event);
 
 void gui_rules_register_callback(GCallback callback);
 
-void gui_get_resource_pixmap(gint idx, GdkPixmap ** p, GdkBitmap ** b);
-gint gui_get_resource_pixmap_res(void);
 void gui_set_show_no_setup_nodes(gboolean show);
 
 #endif

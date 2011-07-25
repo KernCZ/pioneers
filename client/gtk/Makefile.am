@@ -71,6 +71,11 @@ pioneers_SOURCES = \
 	client/gtk/quote-view.c \
 	client/gtk/quote-view.h \
 	client/gtk/resource.c \
+	client/gtk/resource-view.gob \
+	client/gtk/resource-view.gob.stamp \
+	client/gtk/resource-view.c \
+	client/gtk/resource-view.h \
+	client/gtk/resource-view-private.h \
 	client/gtk/resource-table.c \
 	client/gtk/resource-table.h \
 	client/gtk/settingscreen.c \
@@ -82,3 +87,12 @@ pioneers_LDADD = libpioneersclient.a $(gtk_libs) $(avahi_libs)
 # Include the data here, not at the top,
 # it can add extra resources to the executable
 include client/gtk/data/Makefile.am
+
+BUILT_SOURCES += \
+	client/gtk/resource-view.gob.stamp
+
+MAINTAINERCLEANFILES += \
+	client/gtk/resource-view.gob.stamp \
+	client/gtk/resource-view.c \
+	client/gtk/resource-view.h \
+	client/gtk/resource-view-private.h

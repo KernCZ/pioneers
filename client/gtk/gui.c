@@ -102,20 +102,6 @@ static const gchar *pioneers_pixmaps[] = {
 	PIONEERS_PIXMAP_FINISH
 };
 
-static const gchar *resources_pixmaps[] = {
-	PIONEERS_PIXMAP_BRICK,
-	PIONEERS_PIXMAP_GRAIN,
-	PIONEERS_PIXMAP_ORE,
-	PIONEERS_PIXMAP_WOOL,
-	PIONEERS_PIXMAP_LUMBER
-};
-
-static struct {
-	GdkPixmap *p;
-	GdkBitmap *b;
-} resource_pixmap[NO_RESOURCE];
-static gint resource_pixmap_res = 0;
-
 static void gui_set_toolbar_visible(void);
 static void gui_toolbar_show_accelerators(gboolean show_accelerators);
 
@@ -1574,41 +1560,6 @@ static void register_pixmaps(void)
 
 	gtk_icon_factory_add_default(factory);
 	g_object_unref(factory);
-
-	for (idx = 0; idx < NO_RESOURCE; idx++) {
-		gchar *filename;
-
-		/* determine full path to pixmap file */
-		filename = g_build_filename(DATADIR, "pixmaps",
-					    resources_pixmaps[idx], NULL);
-		if (g_file_test(filename, G_FILE_TEST_EXISTS)) {
-			GdkPixbuf *pixbuf;
-			GError *error = NULL;
-			pixbuf =
-			    gdk_pixbuf_new_from_file(filename, &error);
-			if (error != NULL) {
-				g_warning("Error loading pixmap %s\n",
-					  filename);
-				g_error_free(error);
-			} else {
-				gdk_pixbuf_render_pixmap_and_mask(pixbuf,
-								  &resource_pixmap
-								  [idx].p,
-								  &resource_pixmap
-								  [idx].b,
-								  128);
-				if (!resource_pixmap_res)
-					resource_pixmap_res =
-					    gdk_pixbuf_get_width(pixbuf);
-				g_object_unref(pixbuf);
-			}
-		} else {
-			/* Missing pixmap */
-			g_warning("Pixmap not found: %s", filename);
-		}
-
-		g_free(filename);
-	}
 }
 
 GtkWidget *gui_build_interface(void)
@@ -1753,18 +1704,6 @@ GtkWidget *gui_build_interface(void)
 			 G_CALLBACK(quit_cb), NULL);
 
 	return app_window;
-}
-
-void gui_get_resource_pixmap(gint idx, GdkPixmap ** p, GdkBitmap ** b)
-{
-	g_assert(idx < NO_RESOURCE);
-	*p = resource_pixmap[idx].p;
-	*b = resource_pixmap[idx].b;
-}
-
-gint gui_get_resource_pixmap_res()
-{
-	return resource_pixmap_res;
 }
 
 void gui_set_show_no_setup_nodes(gboolean show)

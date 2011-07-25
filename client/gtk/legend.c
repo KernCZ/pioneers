@@ -24,6 +24,7 @@
 #include "frontend.h"
 #include "theme.h"
 #include "cost.h"
+#include "resource-view.h"
 
 /* The order of the terrain_names is EXTREMELY important!  The order
  * must match the enum Terrain.
@@ -50,8 +51,6 @@ static void add_legend_terrain(GtkWidget * table, guint row, guint col,
 {
 	GtkWidget *area;
 	GtkWidget *label;
-	GdkPixmap *p;
-	GdkBitmap *b;
 
 	area = gtk_drawing_area_new();
 	gtk_widget_show(area);
@@ -73,16 +72,14 @@ static void add_legend_terrain(GtkWidget * table, guint row, guint col,
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 
 	if (resource < NO_RESOURCE) {
-		gui_get_resource_pixmap(resource, &p, &b);
-		label = gtk_image_new_from_pixmap(p, b);
+		label = resource_view_new_single_resource(resource);
 		gtk_widget_show(label);
 		gtk_table_attach(GTK_TABLE(table), label,
 				 col + 2, col + 3, row, row + 1,
 				 (GtkAttachOptions) GTK_FILL,
 				 (GtkAttachOptions) GTK_FILL, 0, 0);
-	}
+		gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 
-	if (resource != NO_RESOURCE) {
 		label = gtk_label_new(resource_name(resource, TRUE));
 		gtk_widget_show(label);
 		gtk_table_attach(GTK_TABLE(table), label,
@@ -110,8 +107,8 @@ static void add_legend_cost(GtkWidget * table, guint row,
 			 GTK_FILL, GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 
-	label = gtk_image_new();
-	resource_format_type_image(GTK_IMAGE(label), cost, -1);
+	label = resource_view_new();
+	resource_view_set(RESOURCE_VIEW(label), cost);
 	gtk_widget_show(label);
 	gtk_table_attach(GTK_TABLE(table), label, 2, 3, row, row + 1,
 			 GTK_FILL, GTK_FILL, 0, 0);

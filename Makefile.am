@@ -90,9 +90,9 @@ windows_resources_input =
 windows_resources_output =
 
 # Use GOB to create new classes
-%.gob.stamp: %.gob
+%.gob.stamp %.c %.h %-private.h: %.gob
 	@mkdir_p@ $(dir $@)
-	$(GOB2) --no-touch --output-dir $(dir $@) $<
+	$(GOB2) --output-dir $(dir $@) $<
 	touch $@
 
 # creating icons
