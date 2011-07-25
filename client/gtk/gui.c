@@ -196,6 +196,20 @@ static void game_settings_cb(void);
 static void help_manual_cb(void);
 #endif
 
+/** Toggles full screen mode.
+ * @param GtkToggleAction The calling action.
+ * @param main_window The window to toggle full screen mode.
+*/
+static void toggle_full_screen_cb(GtkToggleAction * caller,
+				  gpointer main_window)
+{
+	if (gtk_toggle_action_get_active(caller)) {
+		gtk_window_fullscreen(GTK_WINDOW(main_window));
+	} else {
+		gtk_window_unfullscreen(GTK_WINDOW(main_window));
+	}
+}
+
 static void zoom_normal_cb(void)
 {
 	guimap_zoom_normal(gmap);
@@ -362,6 +376,14 @@ static GtkActionEntry entries[] = {
 
 /* Toggle items */
 static GtkToggleActionEntry toggle_entries[] = {
+	{"FullScreen", GTK_STOCK_FULLSCREEN,
+	 /* Menu entry */
+	 N_("_Fullscreen"),
+	 "<alt>Return",
+	 /* Tooltip for Fullscreen menu entry */
+	 N_("Set window to full screen mode"),
+	 G_CALLBACK(toggle_full_screen_cb),
+	 FALSE},
 	{"ShowHideToolbar", NULL,
 	 /* Menu entry */
 	 N_("_Toolbar"), NULL,
@@ -408,6 +430,7 @@ static const char *ui_description =
 "      <menuitem action='Preferences'/>"
 "    </menu>"
 "    <menu action='ViewMenu'>"
+"      <menuitem action='FullScreen'/>"
 "      <menuitem action='Full'/>"
 "      <menuitem action='Center'/>"
 "    </menu>"

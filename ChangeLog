@@ -1,3 +1,6 @@
+2011-07-25  Micah Bunting <Amnykon@gmail.com>
+	* editor/gtk/editor.c, client/gtk/gui.c: Add fullscreen.
+
 2011-07-25  Roland Clobus <rclobus@rclobus.nl>
 	* Makefile.am, client/gtk/frontend.h, client/gtk/resource-view.gob,
 	client/gtk/resource.c, client/gtk/legend.c, client/gtk/gui.c,

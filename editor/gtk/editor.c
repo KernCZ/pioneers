@@ -1137,6 +1137,20 @@ static void about_menu_cb(void)
 	aboutbox_display(_("About Pioneers Game Editor"), authors);
 }
 
+/** Toggles full screen mode.
+ * @param GtkToggleAction The calling action.
+ * @param main_window The window to toggle full screen mode.
+*/
+static void toggle_full_screen_cb(GtkToggleAction * caller,
+				  gpointer main_window)
+{
+	if (gtk_toggle_action_get_active(caller)) {
+		gtk_window_fullscreen(GTK_WINDOW(main_window));
+	} else {
+		gtk_window_unfullscreen(GTK_WINDOW(main_window));
+	}
+}
+
 static void zoom_normal_cb(void)
 {
 	guimap_zoom_normal(gmap);
@@ -1220,6 +1234,16 @@ static GtkActionEntry entries[] = {
 	 N_("Information about Pioneers Editor"), about_menu_cb},
 };
 
+static GtkToggleActionEntry toggle_entries[] = {
+	{"FullScreen", GTK_STOCK_FULLSCREEN,
+	 /* Menu entry */
+	 N_("_Fullscreen"),
+	 "<alt>Return",
+	 /* Tooltip for Fullscreen menu entry */
+	 N_("Set window to full screen mode"),
+	 G_CALLBACK(toggle_full_screen_cb), FALSE}
+};
+
 /* *INDENT-OFF* */
 static const char *ui_description =
 "<ui>"
@@ -1236,6 +1260,7 @@ static const char *ui_description =
 "      <menuitem action='Quit'/>"
 "    </menu>"
 "    <menu action='ViewMenu'>"
+"      <menuitem action='FullScreen'/>"
 "      <menuitem action='Full'/>"
 "      <menuitem action='Center'/>"
 "    </menu>"
@@ -1324,6 +1349,9 @@ int main(int argc, char *argv[])
 	gtk_action_group_set_translation_domain(action_group, PACKAGE);
 	gtk_action_group_add_actions(action_group, entries,
 				     G_N_ELEMENTS(entries), toplevel);
+	gtk_action_group_add_toggle_actions(action_group, toggle_entries,
+					    G_N_ELEMENTS(toggle_entries),
+					    toplevel);
 
 	ui_manager = gtk_ui_manager_new();
 	gtk_ui_manager_insert_action_group(ui_manager, action_group, 0);
