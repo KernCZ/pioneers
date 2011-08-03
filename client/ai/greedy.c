@@ -36,8 +36,6 @@
  *
  */
 
-#define DEVEL_CARD 222
-
 typedef struct resource_values_s {
 	float value[NO_RESOURCE];
 	MaritimeInfo info;
@@ -50,9 +48,13 @@ static int quote_num;
 static gboolean discard_starting;
 
 /* things we can buy, in the order that we want them. */
-static BuildType build_preferences[] = { BUILD_CITY, BUILD_SETTLEMENT,
-	BUILD_ROAD, DEVEL_CARD
-};
+typedef enum {
+	BUY_CITY,
+	BUY_SETTLEMENT,
+	BUY_ROAD,
+	BUY_DEVEL_CARD,
+	BUY_LAST
+} BuyType;
 
 /*
  * Forward declarations
@@ -162,16 +164,16 @@ static gboolean can_pay_for(const gint assets[NO_RESOURCE],
 }
 
 /* How much does this cost to build? */
-static const gint *cost_of(BuildType bt)
+static const gint *cost_of(BuyType bt)
 {
 	switch (bt) {
-	case BUILD_CITY:
+	case BUY_CITY:
 		return cost_upgrade_settlement();
-	case BUILD_SETTLEMENT:
+	case BUY_SETTLEMENT:
 		return cost_settlement();
-	case BUILD_ROAD:
+	case BUY_ROAD:
 		return cost_road();
-	case DEVEL_CARD:
+	case BUY_DEVEL_CARD:
 		return cost_development();
 	default:
 		g_assert(0);
@@ -182,7 +184,7 @@ static const gint *cost_of(BuildType bt)
 /*
  * Do I have the resources to buy this, is it available, and do I want it?
  */
-static gboolean should_buy(const gint assets[NO_RESOURCE], BuildType bt,
+static gboolean should_buy(const gint assets[NO_RESOURCE], BuyType bt,
 			   const resource_values_t * resval,
 			   gint need[NO_RESOURCE])
 {
@@ -190,19 +192,19 @@ static gboolean should_buy(const gint assets[NO_RESOURCE], BuildType bt,
 		return FALSE;
 
 	switch (bt) {
-	case BUILD_CITY:
+	case BUY_CITY:
 		return (stock_num_cities() > 0 &&
 			best_city_spot(resval) != NULL);
-	case BUILD_SETTLEMENT:
+	case BUY_SETTLEMENT:
 		return (stock_num_settlements() > 0 &&
 			best_settlement_spot(FALSE, resval) != NULL);
-	case BUILD_ROAD:
+	case BUY_ROAD:
 		/* don't sprawl :) */
 		return (stock_num_roads() > 0 &&
 			places_can_build_settlement() <= 2 &&
 			(best_road_spot(resval) != NULL ||
 			 best_road_to_road(resval) != NULL));
-	case DEVEL_CARD:
+	case BUY_DEVEL_CARD:
 		return (stock_num_develop() > 0 && can_buy_develop());
 	default:
 		/* xxx bridge, ship */
@@ -215,7 +217,7 @@ static gboolean should_buy(const gint assets[NO_RESOURCE], BuildType bt,
  * can be negative if I can't afford it.
  */
 static void leftover_resources(const gint assets[NO_RESOURCE],
-			       BuildType bt, gint need[NO_RESOURCE])
+			       BuyType bt, gint need[NO_RESOURCE])
 {
 	gint i;
 	const gint *cost = cost_of(bt);
@@ -306,7 +308,7 @@ static void reevaluate_iterator(Node * n, void *rock)
 			if (n->type == BUILD_CITY)
 				mult = 2.0;
 
-			if (h && h->terrain < NO_RESOURCE) {
+			if (h && h->terrain < DESERT_TERRAIN) {
 				produce[h->terrain] +=
 				    mult *
 				    default_score_resource(h->terrain) *
@@ -882,13 +884,14 @@ static int resource_desire(gint assets[NO_RESOURCE],
 			   const resource_values_t * resval)
 {
 	int i;
+	BuyType bt;
 	int res = NO_RESOURCE;
 	float value = 0.0;
 	gint need[NO_RESOURCE];
 
 	/* do i need just 1 more for something? */
-	for (i = 0; i < G_N_ELEMENTS(build_preferences); i++) {
-		if (should_buy(assets, build_preferences[i], resval, need))
+	for (bt = 0; bt < BUY_LAST; bt++) {
+		if (should_buy(assets, bt, resval, need))
 			continue;
 		res = which_one(need);
 		if (res == NO_RESOURCE || resval->value[res] == 0)
@@ -1022,14 +1025,12 @@ static gboolean find_optimal_trade(gint assets[NO_RESOURCE],
 				   Resource * trade_away,
 				   Resource * want_resource)
 {
-	int i;
 	Resource res = NO_RESOURCE;
 	Resource temp;
 	gint need[NO_RESOURCE];
-	BuildType bt = BUILD_NONE;
+	BuyType bt;
 
-	for (i = 0; i < G_N_ELEMENTS(build_preferences); i++) {
-		bt = build_preferences[i];
+	for (bt = 0; bt < BUY_LAST; bt++) {
 
 		/* If we should buy something, why haven't we bought it? */
 		if (should_buy(assets, bt, resval, need))
@@ -1201,7 +1202,7 @@ static void greedy_turn(void)
 	reevaluate_resources(&resval);
 
 	/* if can then buy city */
-	if (should_buy(assets, BUILD_CITY, &resval, need)) {
+	if (should_buy(assets, BUY_CITY, &resval, need)) {
 
 		Node *n = best_city_spot(&resval);
 		if (n != NULL) {
@@ -1211,7 +1212,7 @@ static void greedy_turn(void)
 	}
 
 	/* if can then buy settlement */
-	if (should_buy(assets, BUILD_SETTLEMENT, &resval, need)) {
+	if (should_buy(assets, BUY_SETTLEMENT, &resval, need)) {
 
 		Node *n = best_settlement_spot(FALSE, &resval);
 		if (n != NULL) {
@@ -1221,7 +1222,7 @@ static void greedy_turn(void)
 
 	}
 
-	if (should_buy(assets, BUILD_ROAD, &resval, need)) {
+	if (should_buy(assets, BUY_ROAD, &resval, need)) {
 
 		Edge *e = best_road_spot(&resval);
 
@@ -1236,7 +1237,7 @@ static void greedy_turn(void)
 	}
 
 	/* if we can buy a development card and there are some left */
-	if (should_buy(assets, DEVEL_CARD, &resval, need)) {
+	if (should_buy(assets, BUY_DEVEL_CARD, &resval, need)) {
 		cb_buy_develop();
 		return;
 	}
@@ -1708,7 +1709,7 @@ static int least_valuable(gint assets[NO_RESOURCE],
 static int resource_desire_least(gint my_assets[NO_RESOURCE],
 				 resource_values_t * resval)
 {
-	int i;
+	BuyType bt;
 	int res;
 	gint assets[NO_RESOURCE];
 	gint need[NO_RESOURCE];
@@ -1720,8 +1721,7 @@ static int resource_desire_least(gint my_assets[NO_RESOURCE],
 	}
 
 	/* eliminate things we need to build stuff */
-	for (i = 0; i < G_N_ELEMENTS(build_preferences); i++) {
-		BuildType bt = build_preferences[i];
+	for (bt = 0; bt < BUY_LAST; bt++) {
 		if (should_buy(assets, bt, resval, need)) {
 			cost_buy(cost_of(bt), assets);
 		}
@@ -1815,22 +1815,22 @@ static int trade_desired(gint assets[NO_RESOURCE], gint give, gint take,
 
 	for (n = 1; n <= 3; ++n) {
 		/* do i need something more for something? */
-		if (!should_buy(assets, BUILD_CITY, &resval, need)) {
+		if (!should_buy(assets, BUY_CITY, &resval, need)) {
 			if ((res = which_resource(need)) == take
 			    && need[res] == n)
 				break;
 		}
-		if (!should_buy(assets, BUILD_SETTLEMENT, &resval, need)) {
+		if (!should_buy(assets, BUY_SETTLEMENT, &resval, need)) {
 			if ((res = which_resource(need)) == take
 			    && need[res] == n)
 				break;
 		}
-		if (!should_buy(assets, BUILD_ROAD, &resval, need)) {
+		if (!should_buy(assets, BUY_ROAD, &resval, need)) {
 			if ((res = which_resource(need)) == take
 			    && need[res] == n)
 				break;
 		}
-		if (!should_buy(assets, DEVEL_CARD, &resval, need)) {
+		if (!should_buy(assets, BUY_DEVEL_CARD, &resval, need)) {
 			if ((res = which_resource(need)) == take
 			    && need[res] == n)
 				break;

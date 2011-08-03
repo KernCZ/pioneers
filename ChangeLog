@@ -1,3 +1,6 @@
+2011-08-03  Roland Clobus <rclobus@rclobus.nl>
+	* client/ai/greedy.c: Fix compiler warnings about mixed enums.
+
 2011-07-25  Micah Bunting <Amnykon@gmail.com>
 	* editor/gtk/editor.c, client/gtk/gui.c: Add fullscreen.
 
