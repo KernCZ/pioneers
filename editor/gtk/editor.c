@@ -768,40 +768,99 @@ static GtkWidget *build_port_menu(void)
 	return menu;
 }
 
-static GtkWidget *build_frame(GtkWidget * parent, const gchar * title,
-			      GtkWidget * element)
+static void build_frame(GtkWidget * parent, const gchar * title,
+			GtkWidget * element)
 {
-	GtkWidget *frame;
-	GtkWidget *vbox;
+	/* vbox */
+	/*       label */
+	/*       hbox */
+	/*              fix */
+	/*              element */
 
-	frame = gtk_frame_new(title);
-	gtk_box_pack_start(GTK_BOX(parent), frame, FALSE, TRUE, 0);
+	GtkWidget *vbox;
+	GtkWidget *label;
+	GtkWidget *hbox;
+	GtkWidget *fix;
+	gchar *title_with_markup;
 
 	vbox = gtk_vbox_new(FALSE, 3);
-	gtk_container_add(GTK_CONTAINER(frame), vbox);
-	gtk_container_set_border_width(GTK_CONTAINER(vbox), 3);
+	gtk_box_pack_start(GTK_BOX(parent), vbox, FALSE, TRUE, 0);
 
-	gtk_box_pack_start(GTK_BOX(vbox), element, FALSE, TRUE, 0);
+	/* Label */
+	label = gtk_label_new(NULL);
+	title_with_markup = g_strdup_printf("<b>%s</b>", title);
+	gtk_label_set_markup(GTK_LABEL(label), title_with_markup);
+	g_free(title_with_markup);
+	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+	gtk_widget_show(label);
+	gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, TRUE, 0);
 
-	return frame;
+	/* hbox */
+	hbox = gtk_hbox_new(FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);
+
+	/* fix */
+	fix = gtk_fixed_new();
+	gtk_box_pack_start(GTK_BOX(hbox), fix, FALSE, TRUE, 6);
+
+	/* element */
+	gtk_box_pack_start(GTK_BOX(hbox), element, TRUE, TRUE, 0);
 }
 
 static GtkWidget *build_settings(GtkWindow * main_window)
 {
-	GtkWidget *vbox, *hbox, *lvbox, *rvbox;
+	/* vbox */
+	/*      outer_hbox */
+	/*              inner_hbox */
+	/*                      lvbox */
+	/*                      fix */
+	/*              inner_hbox */
+	/*                      vsep */
+	/*                      rvbox */
 
+	GtkWidget *vbox;
+	GtkWidget *outer_hbox;
+	GtkWidget *inner_hbox;
+	GtkWidget *lvbox;
+	GtkWidget *fix;
+	GtkWidget *vsep;
+	GtkWidget *rvbox;
+
+
+	/* vbox */
 	vbox = gtk_vbox_new(FALSE, 0);
 	gtk_container_set_border_width(GTK_CONTAINER(vbox), 5);
 
-	hbox = gtk_hbox_new(TRUE, 10);
-	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);
+	/*outer_hbox */
+	outer_hbox = gtk_hbox_new(TRUE, 0);
+	gtk_box_pack_start(GTK_BOX(vbox), outer_hbox, TRUE, TRUE, 0);
 
-	lvbox = gtk_vbox_new(FALSE, 5);
-	gtk_box_pack_start(GTK_BOX(hbox), lvbox, FALSE, TRUE, 0);
+	/* inner_hbox */
+	inner_hbox = gtk_hbox_new(FALSE, 5);
+	gtk_box_pack_start(GTK_BOX(outer_hbox), inner_hbox, TRUE, TRUE, 0);
 
-	rvbox = gtk_vbox_new(FALSE, 5);
-	gtk_box_pack_start(GTK_BOX(hbox), rvbox, FALSE, TRUE, 0);
+	/* lvbox */
+	lvbox = gtk_vbox_new(FALSE, 10);
+	gtk_box_pack_start(GTK_BOX(inner_hbox), lvbox, TRUE, TRUE, 0);
 
+	/* fix */
+	fix = gtk_fixed_new();
+	gtk_box_pack_start(GTK_BOX(inner_hbox), fix, FALSE, TRUE, 0);
+
+	/* inner_hbox */
+	inner_hbox = gtk_hbox_new(FALSE, 5);
+	gtk_box_pack_start(GTK_BOX(outer_hbox), inner_hbox, TRUE, TRUE, 0);
+
+	/* vsep */
+	vsep = gtk_vseparator_new();
+	gtk_widget_show(vsep);
+	gtk_box_pack_start(GTK_BOX(inner_hbox), vsep, FALSE, FALSE, 0);
+
+	/* rvbox */
+	rvbox = gtk_vbox_new(FALSE, 10);
+	gtk_box_pack_start(GTK_BOX(inner_hbox), rvbox, TRUE, TRUE, 0);
+
+	/* get elements */
 	game_settings = GAMESETTINGS(game_settings_new(TRUE));
 	game_rules = GAMERULES(game_rules_new());
 	game_resources = GAMERESOURCES(game_resources_new());
