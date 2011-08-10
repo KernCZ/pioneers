@@ -49,21 +49,13 @@
 #define MAINICON_FILE	"pioneers-server.png"
 
 static GtkWidget *settings_notebook;	/* relevant settings */
-static GtkWidget *game_frame;	/* the frame containing all settings regarding the game */
-static GtkWidget *rules_frame;	/* the frame containing all rules regarding the game */
+
 static GtkWidget *select_game;	/* select game type */
 static GtkWidget *game_settings;	/* the settings of the game */
 static GtkWidget *game_rules;	/* the rules of the game */
-static GtkWidget *server_frame;	/* the frame containing all settings regarding the server */
-static GtkWidget *ai_frame;	/* the frame containing all settings regarding the ai */
-static GtkWidget *register_toggle;	/* register with meta server? */
-static GtkWidget *chat_toggle;	/* disable AI chatting? */
+
 static GtkWidget *meta_entry;	/* name of meta server */
 static GtkWidget *overridden_hostname_entry;	/* name of server (allows masquerading) */
-static GtkWidget *port_entry;	/* server port */
-static GtkWidget *random_toggle;	/* randomize seating order? */
-static GtkWidget *addcomputer_btn;	/* button to add computer players */
-static GtkWidget *launchclient_btn;	/* button to launch client window */
 
 static GtkWidget *start_btn;	/* start/stop the server */
 
@@ -149,10 +141,12 @@ static void port_entry_changed_cb(GtkWidget * widget,
 static void register_toggle_cb(GtkToggleButton * toggle,
 			       G_GNUC_UNUSED gpointer user_data)
 {
+
 	register_server = gtk_toggle_button_get_active(toggle);
 	gtk_widget_set_sensitive(meta_entry, register_server);
 	gtk_widget_set_sensitive(overridden_hostname_entry,
 				 register_server);
+
 }
 
 static void random_toggle_cb(GtkToggleButton * toggle,
@@ -221,9 +215,6 @@ static void game_activate(GtkWidget * widget,
 
 static void gui_set_server_state(gboolean running)
 {
-	gboolean ai_settings_enabled = TRUE;
-	gchar *fullname;
-
 	gtk_widget_set_sensitive(gtk_notebook_get_nth_page
 				 (GTK_NOTEBOOK(settings_notebook), 0),
 				 !running);
@@ -241,14 +232,6 @@ static void gui_set_server_state(gboolean running)
 	gtk_widget_set_tooltip_text(start_btn,
 				    running ? _("Stop the server") :
 				    _("Start the server"));
-
-	fullname = g_find_program_in_path(PIONEERS_AI_PATH);
-	if (fullname) {
-		g_free(fullname);
-	} else {
-		ai_settings_enabled = FALSE;
-	}
-	gtk_widget_set_sensitive(ai_frame, ai_settings_enabled);
 }
 
 static void start_clicked_cb(G_GNUC_UNUSED GtkButton * start_btn,
@@ -469,15 +452,17 @@ static void overridden_hostname_changed_cb(GtkEntry * widget,
 	overridden_hostname = g_strdup(text);
 }
 
-static GtkWidget *build_game_settings(GtkWidget * parent,
-				      GtkWindow * main_window)
+/** Builds the composite game settings frame widget.
+ *  @param main_window The top-level window.
+ *  @return Returns the composite widget.
+ */
+static GtkWidget *build_game_settings(GtkWindow * main_window)
 {
 	GtkWidget *frame;
 	GtkWidget *vbox;
 
 	frame = gtk_frame_new(_("Game parameters"));
 	gtk_widget_show(frame);
-	gtk_box_pack_start(GTK_BOX(parent), frame, FALSE, TRUE, 0);
 
 	vbox = gtk_vbox_new(FALSE, 3);
 	gtk_widget_show(vbox);
@@ -500,14 +485,16 @@ static GtkWidget *build_game_settings(GtkWidget * parent,
 	return frame;
 }
 
-static GtkWidget *build_game_rules(GtkWidget * parent)
+/** Builds the composite game rules frame widget.
+ *  @return Returns the composite widget.
+ */
+static GtkWidget *build_game_rules(void)
 {
 	GtkWidget *frame;
 	GtkWidget *vbox;
 
 	frame = gtk_frame_new(_("Rules"));
 	gtk_widget_show(frame);
-	gtk_box_pack_start(GTK_BOX(parent), frame, FALSE, TRUE, 0);
 
 	vbox = gtk_vbox_new(FALSE, 3);
 	gtk_widget_show(vbox);
@@ -517,6 +504,158 @@ static GtkWidget *build_game_rules(GtkWidget * parent)
 	game_rules = game_rules_new();
 	gtk_widget_show(game_rules);
 	gtk_box_pack_start(GTK_BOX(vbox), game_rules, TRUE, TRUE, 0);
+
+	return frame;
+}
+
+/** Builds the composite server frame widget.
+ *  @return Returns the composite widget.
+ */
+static GtkWidget *build_server_frame(void)
+{
+
+	/* server frame */
+	/*       table */
+	/*               server port label */
+	/*                - port entry */
+	/*               register toggle */
+	/*               meta server label */
+	/*                - meta entry */
+	/*               hostname label */
+	/*                - hostname entry */
+	/*               random toggle */
+
+	GtkWidget *frame;
+	GtkWidget *table;
+	GtkWidget *label;
+	GtkWidget *toggle;
+	GtkWidget *port_entry;
+
+	gint novar;
+
+	/* server frame */
+	frame = gtk_frame_new(_("Server parameters"));
+	gtk_widget_show(frame);
+
+	/* table */
+	table = gtk_table_new(6, 2, FALSE);
+	gtk_widget_show(table);
+	gtk_container_add(GTK_CONTAINER(frame), table);
+	gtk_container_set_border_width(GTK_CONTAINER(table), 3);
+	gtk_table_set_row_spacings(GTK_TABLE(table), 3);
+	gtk_table_set_col_spacings(GTK_TABLE(table), 5);
+
+	/* server port label */
+	label = gtk_label_new(_("Server port"));
+	gtk_widget_show(label);
+	gtk_table_attach(GTK_TABLE(table), label, 0, 1, 0, 1,
+			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+
+	/* port entry */
+	port_entry = gtk_entry_new();
+	g_signal_connect(G_OBJECT(port_entry), "changed",
+			 G_CALLBACK(port_entry_changed_cb), NULL);
+	gtk_widget_show(port_entry);
+	gtk_table_attach(GTK_TABLE(table), port_entry, 1, 2, 0, 1,
+			 GTK_EXPAND | GTK_FILL, GTK_EXPAND | GTK_FILL, 0,
+			 0);
+	gtk_widget_set_tooltip_text(port_entry,
+				    _("The port for the game server"));
+
+	/* initialize server port */
+	server_port = config_get_string("server/port="
+					PIONEERS_DEFAULT_GAME_PORT,
+					&novar);
+	gtk_entry_set_text(GTK_ENTRY(port_entry), server_port);
+
+	/* register_toggle */
+	toggle = gtk_check_button_new_with_label(_("Register server"));
+	gtk_widget_show(toggle);
+	gtk_table_attach(GTK_TABLE(table), toggle, 0, 2, 1, 2,
+			 GTK_EXPAND | GTK_FILL, GTK_EXPAND | GTK_FILL, 0,
+			 0);
+	g_signal_connect(G_OBJECT(toggle), "toggled",
+			 G_CALLBACK(register_toggle_cb), NULL);
+	gtk_widget_set_tooltip_text(toggle,
+				    _(""
+				      "Register this game at the meta server"));
+	register_server =
+	    config_get_int_with_default("server/register", TRUE);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(toggle),
+				     register_server);
+
+	/* meta server label */
+	label = gtk_label_new(_("Meta server"));
+	gtk_widget_show(label);
+	gtk_table_attach(GTK_TABLE(table), label, 0, 1, 2, 3,
+			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+
+	/* meta entry */
+	meta_entry = metaserver_new();
+	gtk_widget_show(meta_entry);
+	gtk_table_attach(GTK_TABLE(table), meta_entry, 1, 2, 2, 3,
+			 GTK_EXPAND | GTK_FILL, GTK_EXPAND | GTK_FILL, 0,
+			 0);
+	gtk_widget_set_sensitive(meta_entry, register_server);
+
+	/* initialize meta entry */
+	novar = 0;
+	gchar *meta_server_name;
+	meta_server_name = config_get_string("server/meta-server", &novar);
+	if (novar || !strlen(meta_server_name)
+	    || !strncmp(meta_server_name, "gnocatan.debian.net",
+			strlen(meta_server_name) + 1))
+		meta_server_name = get_meta_server_name(TRUE);
+	metaserver_add(METASERVER(meta_entry), meta_server_name);
+	g_free(meta_server_name);
+
+	/* hostname label */
+	label = gtk_label_new(_("Reported hostname"));
+	gtk_widget_show(label);
+	gtk_table_attach(GTK_TABLE(table), label, 0, 1, 3, 4,
+			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+
+	/* hostname entry */
+	overridden_hostname_entry = gtk_entry_new();
+	g_signal_connect(G_OBJECT(overridden_hostname_entry), "changed",
+			 G_CALLBACK(overridden_hostname_changed_cb), NULL);
+	gtk_widget_show(overridden_hostname_entry);
+	gtk_table_attach(GTK_TABLE(table), overridden_hostname_entry, 1, 2,
+			 3, 4, GTK_EXPAND | GTK_FILL,
+			 GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_widget_set_tooltip_text(overridden_hostname_entry,
+				    _(""
+				      "The public name of this computer "
+				      "(needed when playing behind a firewall)"));
+	gtk_widget_set_sensitive(overridden_hostname_entry,
+				 register_server);
+
+	/* initialize overridden hostname */
+	novar = 0;
+	overridden_hostname =
+	    config_get_string("server/overridden-hostname", &novar);
+	if (novar)
+		overridden_hostname = g_strdup("");
+	gtk_entry_set_text(GTK_ENTRY(overridden_hostname_entry),
+			   overridden_hostname);
+
+	/* random toggle */
+	toggle = gtk_check_button_new_with_label(_("Random turn order"));
+	gtk_widget_show(toggle);
+	gtk_table_attach(GTK_TABLE(table), toggle, 0, 2, 4, 5,
+			 GTK_EXPAND | GTK_FILL, GTK_EXPAND | GTK_FILL, 0,
+			 0);
+	g_signal_connect(G_OBJECT(toggle), "toggled",
+			 G_CALLBACK(random_toggle_cb), NULL);
+	gtk_widget_set_tooltip_text(toggle, _("Randomize turn order"));
+	random_order =
+	    config_get_int_with_default("server/random-seating-order",
+					TRUE);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(toggle),
+				     random_order);
 
 	return frame;
 }
@@ -539,33 +678,306 @@ my_cell_player_spectator_to_text(G_GNUC_UNUSED GtkTreeViewColumn *
 		     _("Player"), NULL);
 }
 
-static GtkWidget *build_interface(GtkWindow * main_window)
+/** Builds the composite player tree view widget.
+ *  @return returns the composite widget.
+ */
+static GtkWidget *build_connected_tree_view(void)
 {
-	GtkWidget *vbox;
-	GtkWidget *vbox_settings;
-	GtkWidget *vbox_connected;
-	GtkWidget *vbox_ai;
-	GtkWidget *frame;
-	GtkWidget *table;
-	GtkWidget *label;
+	/* scrolled window */
+	/*       tree_view */
+	/*               connected column */
+	/*               name column */
+	/*               location column */
+	/*               number column */
+	/*               role column */
+
 	GtkWidget *scroll_win;
-	GtkWidget *message_text;
-	gint novar;
-	gboolean default_returned;
-	gchar *meta_server_name;
-	gchar *gamename;
-	gint temp;
-	GameParams *params;
-	GtkWidget *stop_game_button_on_tab;
-	GtkWidget *label_with_close_button;
+	GtkWidget *tree_view;
 
 	GtkCellRenderer *renderer;
 	GtkTreeViewColumn *column;
 
+	/* scroll_win */
+	scroll_win = gtk_scrolled_window_new(NULL, NULL);
+	gtk_widget_show(scroll_win);
+
+	gtk_container_set_border_width(GTK_CONTAINER(scroll_win), 3);
+	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scroll_win),
+				       GTK_POLICY_NEVER,
+				       GTK_POLICY_AUTOMATIC);
+
+	/* tree_view */
+	/* Create model */
+	store = gtk_list_store_new(PLAYER_COLUMN_LAST,
+				   G_TYPE_BOOLEAN,
+				   G_TYPE_STRING,
+				   G_TYPE_STRING,
+				   G_TYPE_INT, G_TYPE_BOOLEAN);
+
+	/* Create graphical representation of the model */
+	tree_view = gtk_tree_view_new_with_model(GTK_TREE_MODEL(store));
+	/* The theme should decide if hints are used */
+	/* gtk_tree_view_set_rules_hint(GTK_TREE_VIEW(tree_view), TRUE); */
+	gtk_container_add(GTK_CONTAINER(scroll_win), tree_view);
+	gtk_widget_set_tooltip_text(tree_view,
+				    /* Tooltip for server connection overview */
+				    _(""
+				      "Shows all players and spectators connected to the server"));
+
+	/* connected column */
+	column =
+	    gtk_tree_view_column_new_with_attributes(_("Connected"),
+						     gtk_cell_renderer_toggle_new
+						     (), "active",
+						     PLAYER_COLUMN_CONNECTED,
+						     NULL);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(tree_view), column);
+	gtk_widget_set_tooltip_text(column->button,
+				    /* Tooltip for column Connected */
+				    _(""
+				      "Is the player currently connected?"));
+
+	/* name column */
+	column =
+	    gtk_tree_view_column_new_with_attributes(_("Name"),
+						     gtk_cell_renderer_text_new
+						     (), "text",
+						     PLAYER_COLUMN_NAME,
+						     NULL);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(tree_view), column);
+	gtk_widget_set_tooltip_text(column->button,
+				    /* Tooltip for column Name */
+				    _("Name of the player"));
+
+	/* location column */
+	column =
+	    gtk_tree_view_column_new_with_attributes(_("Location"),
+						     gtk_cell_renderer_text_new
+						     (), "text",
+						     PLAYER_COLUMN_LOCATION,
+						     NULL);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(tree_view), column);
+	gtk_widget_set_tooltip_text(column->button,
+				    /* Tooltip for column Location */
+				    _("Host name of the player"));
+
+	renderer = gtk_cell_renderer_text_new();
+
+	/* number column */
+	column =
+	    gtk_tree_view_column_new_with_attributes(_("Number"), renderer,
+						     "text",
+						     PLAYER_COLUMN_NUMBER,
+						     NULL);
+	g_object_set(renderer, "xalign", 1.0f, NULL);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(tree_view), column);
+	/* Tooltip for column Number */
+	gtk_widget_set_tooltip_text(column->button, _("Player number"));
+
+	renderer = gtk_cell_renderer_text_new();
+
+	/* role column */
+	column =
+	    gtk_tree_view_column_new_with_attributes(_("Role"), renderer,
+						     NULL);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(tree_view), column);
+	/* Tooltip for column Role */
+	gtk_widget_set_tooltip_text(column->button,
+				    _("Player or spectator"));
+
+	gtk_tree_view_column_set_cell_data_func(column, renderer,
+						my_cell_player_spectator_to_text,
+						GINT_TO_POINTER
+						(PLAYER_COLUMN_ISSPECTATOR),
+						NULL);
+
+	gtk_widget_show(tree_view);
+
+	return scroll_win;
+}
+
+/** Builds the composite player frame widget.
+ *  @return returns the composite widget.
+ */
+static GtkWidget *build_player_connected_frame(void)
+{
+	/* player connected frame */
+	/*       vbox */
+	/*               connected tree_view */
+	/*               launch client button */
+
+	GtkWidget *frame;
+	GtkWidget *vbox;
+	GtkWidget *button;
+
+	/* player connected frame */
+	frame = gtk_frame_new(_("Players connected"));
+	gtk_widget_show(frame);
+
+	/* vbox */
+	vbox = gtk_vbox_new(FALSE, 5);
+	gtk_widget_show(vbox);
+	gtk_container_set_border_width(GTK_CONTAINER(vbox), 5);
+	gtk_container_add(GTK_CONTAINER(frame), vbox);
+
+	/* connected tree_view */
+	gtk_box_pack_start(GTK_BOX(vbox), build_connected_tree_view(),
+			   TRUE, TRUE, 0);
+
+	/* launch client button */
+	button = gtk_button_new_with_label(
+						  /* Button text */
+						  _(""
+						    "Launch Pioneers Client"));
+	gtk_widget_show(button);
+	gtk_box_pack_start(GTK_BOX(vbox), button, FALSE, FALSE, 0);
+	g_signal_connect(G_OBJECT(button), "clicked",
+			 G_CALLBACK(launchclient_clicked_cb), NULL);
+	gtk_widget_set_tooltip_text(button,
+				    /* Tooltip */
+				    _("Launch the Pioneers client"));
+
+	return frame;
+}
+
+/** Builds the composite ai frame widget.
+ *  @return returns the composite widget.
+ */
+static GtkWidget *build_ai_frame(void)
+{
+	/* ai frame */
+	/*       ai vbox */
+	/*               ai chat toggle */
+	/*               add ai button */
+
+	GtkWidget *frame;
+	GtkWidget *vbox;
+	GtkWidget *toggle;
+	GtkWidget *button;
+
+	gchar *fullname;
+	gboolean ai_settings_enabled = TRUE;
+
+	/* ai frame */
+	frame = gtk_frame_new(_("Computer players"));
+	gtk_widget_show(frame);
+
+	fullname = g_find_program_in_path(PIONEERS_AI_PATH);
+	if (fullname) {
+		g_free(fullname);
+	} else {
+		ai_settings_enabled = FALSE;
+	}
+	gtk_widget_set_sensitive(frame, ai_settings_enabled);
+
+	/* ai vbox */
+	vbox = gtk_vbox_new(FALSE, 5);
+	gtk_widget_show(vbox);
+	gtk_container_set_border_width(GTK_CONTAINER(vbox), 5);
+	gtk_container_add(GTK_CONTAINER(frame), vbox);
+
+	/* ai chat toggle */
+	toggle = gtk_check_button_new_with_label(_("Enable chat"));
+	gtk_widget_show(toggle);
+	gtk_box_pack_start(GTK_BOX(vbox), toggle, TRUE, TRUE, 0);
+	g_signal_connect(G_OBJECT(toggle), "toggled",
+			 G_CALLBACK(chat_toggle_cb), NULL);
+	gtk_widget_set_tooltip_text(toggle,
+				    /* Tooltip */
+				    _("Enable chat messages"));
+
+	want_ai_chat = config_get_int_with_default("ai/enable-chat", TRUE);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(toggle),
+				     want_ai_chat);
+
+	/* add ai button */
+	button = gtk_button_new_with_label(
+						  /* Button text */
+						  _(""
+						    "Add Computer Player"));
+	gtk_widget_show(button);
+	gtk_box_pack_start(GTK_BOX(vbox), button, FALSE, FALSE, 0);
+	g_signal_connect(G_OBJECT(button), "clicked",
+			 G_CALLBACK(addcomputer_clicked_cb), NULL);
+	gtk_widget_set_tooltip_text(button,
+				    /* Tooltip */
+				    _(""
+				      "Add a computer player to the game"));
+
+	return frame;
+}
+
+/** Builds the composite message frame widget.
+ *  @return returns the composite widget.
+ */
+static GtkWidget *build_message_frame(void)
+{
+	/*       message frame */
+	/*               scrolled window */
+	/*                       text view */
+
+	GtkWidget *frame;
+	GtkWidget *scroll_win;
+	GtkWidget *message_text;
+
+	/* message frame */
+	frame = gtk_frame_new(_("Messages"));
+	gtk_widget_show(frame);
+
+	/* scrolled window */
+	scroll_win = gtk_scrolled_window_new(NULL, NULL);
+	gtk_widget_show(scroll_win);
+	gtk_container_add(GTK_CONTAINER(frame), scroll_win);
+	gtk_container_set_border_width(GTK_CONTAINER(scroll_win), 3);
+	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scroll_win),
+				       GTK_POLICY_AUTOMATIC,
+				       GTK_POLICY_AUTOMATIC);
+
+	/* text view */
+	message_text = gtk_text_view_new();
+	gtk_widget_show(message_text);
+	gtk_container_add(GTK_CONTAINER(scroll_win), message_text);
+	gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(message_text),
+				    GTK_WRAP_WORD);
+	gtk_widget_set_tooltip_text(message_text,
+				    /* Tooltip */
+				    _("Messages from the server"));
+	message_window_set_text(message_text);
+
+	return frame;
+}
+
+/** Builds the composite interface widget.
+ *  @param main_window The top-level window.
+ *  @return returns the composite widget.
+ */
+static GtkWidget *build_interface(GtkWindow * main_window)
+{
+	/* vbox */
+	/*       settings notebook */
+	/*               settings tab vbox */
+	/*                       Game settings frame */
+	/*                       Rules frame */
+	/*                       server frame */
+	/*               game tab label */
+	/*               game tab vbox */
+	/*                       player connected frame */
+	/*                       ai frame */
+	/*       start button */
+	/*       message frame */
+
+
+	GtkWidget *vbox;
+	GtkWidget *vbox_settings;
+	GtkWidget *stop_game_button_on_tab;
+	GtkWidget *label_with_close_button;
+
+	/* vbox */
 	vbox = gtk_vbox_new(FALSE, 5);
 	gtk_widget_show(vbox);
 	gtk_container_set_border_width(GTK_CONTAINER(vbox), 5);
 
+	/* settings_notebook */
 	settings_notebook = gtk_notebook_new();
 	gtk_widget_show(settings_notebook);
 	gtk_notebook_set_show_border(GTK_NOTEBOOK(settings_notebook),
@@ -573,6 +985,7 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 	gtk_box_pack_start(GTK_BOX(vbox), settings_notebook, FALSE, TRUE,
 			   0);
 
+	/* settings tab vbox */
 	vbox_settings = gtk_vbox_new(FALSE, 5);
 	gtk_widget_show(vbox_settings);
 	gtk_notebook_append_page(GTK_NOTEBOOK(settings_notebook),
@@ -580,12 +993,72 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 				 gtk_label_new(_("Game settings")));
 
 	/* Game settings frame */
-	game_frame = build_game_settings(vbox_settings, main_window);
+	gtk_box_pack_start(GTK_BOX(vbox_settings),
+			   build_game_settings(main_window), FALSE, TRUE,
+			   0);
 
 	/* Rules frame */
-	rules_frame = build_game_rules(vbox_settings);
+	gtk_box_pack_start(GTK_BOX(vbox_settings), build_game_rules(),
+			   FALSE, TRUE, 0);
 
+	/* server frame */
+	gtk_box_pack_start(GTK_BOX(vbox_settings), build_server_frame(),
+			   FALSE, TRUE, 0);
+
+	/* game tab label */
+	label_with_close_button = create_label_with_close_button(
+									/* Tab name */
+									_
+									(""
+									 "Running game"),
+									/* Tab tooltip */
+									_
+									(""
+									 "Stop the server"),
+									&stop_game_button_on_tab);
+	g_signal_connect(G_OBJECT(stop_game_button_on_tab), "clicked",
+			 G_CALLBACK(start_clicked_cb), NULL);
+
+	/* game tab vbox */
+	vbox_settings = gtk_vbox_new(FALSE, 5);
+	gtk_notebook_append_page(GTK_NOTEBOOK(settings_notebook),
+				 vbox_settings, label_with_close_button);
+
+	/* player connected frame */
+	gtk_box_pack_start(GTK_BOX(vbox_settings),
+			   build_player_connected_frame(), TRUE, TRUE, 0);
+
+	/* ai frame */
+	gtk_box_pack_start(GTK_BOX(vbox_settings), build_ai_frame(), FALSE,
+			   FALSE, 0);
+
+	/* start button */
+	start_btn = gtk_button_new();
+	gtk_widget_show(start_btn);
+
+	gtk_box_pack_start(GTK_BOX(vbox), start_btn, FALSE, FALSE, 0);
+	g_signal_connect(G_OBJECT(start_btn), "clicked",
+			 G_CALLBACK(start_clicked_cb), NULL);
+
+	/* message frame */
+	gtk_box_pack_start(GTK_BOX(vbox), build_message_frame(), TRUE,
+			   TRUE, 0);
+	gui_set_server_state(FALSE);
+	return vbox;
+}
+
+/** Sets the widgets in the interface to the options that were saved in the
+ *  registry the last time a game was started.
+ */
+static void load_last_game_params(void)
+{
 	/* Fill the GUI with the saved settings */
+	gchar *gamename;
+	gint temp;
+
+	gboolean default_returned;
+	GameParams *params;
+
 	gamename =
 	    config_get_string("game/name=Default", &default_returned);
 	params = cfg_set_game(gamename);
@@ -631,321 +1104,6 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 		params->domestic_trade = temp;
 	update_game_settings(params);
 	params_free(params);
-
-	server_frame = gtk_frame_new(_("Server parameters"));
-	gtk_widget_show(server_frame);
-	gtk_box_pack_start(GTK_BOX(vbox_settings), server_frame, FALSE,
-			   TRUE, 0);
-
-	table = gtk_table_new(6, 2, FALSE);
-	gtk_widget_show(table);
-	gtk_container_add(GTK_CONTAINER(server_frame), table);
-	gtk_container_set_border_width(GTK_CONTAINER(table), 3);
-	gtk_table_set_row_spacings(GTK_TABLE(table), 3);
-	gtk_table_set_col_spacings(GTK_TABLE(table), 5);
-
-	label = gtk_label_new(_("Server port"));
-	gtk_widget_show(label);
-	gtk_table_attach(GTK_TABLE(table), label, 0, 1, 0, 1,
-			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
-	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
-
-	port_entry = gtk_entry_new();
-	g_signal_connect(G_OBJECT(port_entry), "changed",
-			 G_CALLBACK(port_entry_changed_cb), NULL);
-	gtk_widget_show(port_entry);
-	gtk_table_attach(GTK_TABLE(table), port_entry, 1, 2, 0, 1,
-			 GTK_EXPAND | GTK_FILL, GTK_EXPAND | GTK_FILL, 0,
-			 0);
-	gtk_widget_set_tooltip_text(port_entry,
-				    _("The port for the game server"));
-
-	register_toggle =
-	    gtk_check_button_new_with_label(_("Register server"));
-	gtk_widget_show(register_toggle);
-	gtk_table_attach(GTK_TABLE(table), register_toggle, 0, 2, 1, 2,
-			 GTK_EXPAND | GTK_FILL, GTK_EXPAND | GTK_FILL, 0,
-			 0);
-	g_signal_connect(G_OBJECT(register_toggle), "toggled",
-			 G_CALLBACK(register_toggle_cb), NULL);
-	gtk_widget_set_tooltip_text(register_toggle,
-				    _(""
-				      "Register this game at the meta server"));
-
-	label = gtk_label_new(_("Meta server"));
-	gtk_widget_show(label);
-	gtk_table_attach(GTK_TABLE(table), label, 0, 1, 2, 3,
-			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
-	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
-
-	meta_entry = metaserver_new();
-	gtk_widget_show(meta_entry);
-	gtk_table_attach(GTK_TABLE(table), meta_entry, 1, 2, 2, 3,
-			 GTK_EXPAND | GTK_FILL, GTK_EXPAND | GTK_FILL, 0,
-			 0);
-
-	label = gtk_label_new(_("Reported hostname"));
-	gtk_widget_show(label);
-	gtk_table_attach(GTK_TABLE(table), label, 0, 1, 3, 4,
-			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
-	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
-
-	overridden_hostname_entry = gtk_entry_new();
-	g_signal_connect(G_OBJECT(overridden_hostname_entry), "changed",
-			 G_CALLBACK(overridden_hostname_changed_cb), NULL);
-	gtk_widget_show(overridden_hostname_entry);
-	gtk_table_attach(GTK_TABLE(table), overridden_hostname_entry, 1, 2,
-			 3, 4, GTK_EXPAND | GTK_FILL,
-			 GTK_EXPAND | GTK_FILL, 0, 0);
-	gtk_widget_set_tooltip_text(overridden_hostname_entry,
-				    _(""
-				      "The public name of this computer "
-				      "(needed when playing behind a firewall)"));
-
-	random_toggle =
-	    gtk_check_button_new_with_label(_("Random turn order"));
-	gtk_widget_show(random_toggle);
-	gtk_table_attach(GTK_TABLE(table), random_toggle, 0, 2, 4, 5,
-			 GTK_EXPAND | GTK_FILL, GTK_EXPAND | GTK_FILL, 0,
-			 0);
-	g_signal_connect(G_OBJECT(random_toggle), "toggled",
-			 G_CALLBACK(random_toggle_cb), NULL);
-	gtk_widget_set_tooltip_text(random_toggle,
-				    _("Randomize turn order"));
-
-	/* Initialize server-settings */
-	server_port = config_get_string("server/port="
-					PIONEERS_DEFAULT_GAME_PORT,
-					&novar);
-	gtk_entry_set_text(GTK_ENTRY(port_entry), server_port);
-
-	novar = 0;
-	meta_server_name = config_get_string("server/meta-server", &novar);
-	if (novar || !strlen(meta_server_name)
-	    || !strncmp(meta_server_name, "gnocatan.debian.net",
-			strlen(meta_server_name) + 1))
-		meta_server_name = get_meta_server_name(TRUE);
-	metaserver_add(METASERVER(meta_entry), meta_server_name);
-	g_free(meta_server_name);
-
-	novar = 0;
-	overridden_hostname =
-	    config_get_string("server/overridden-hostname", &novar);
-	if (novar)
-		overridden_hostname = g_strdup("");
-	gtk_entry_set_text(GTK_ENTRY(overridden_hostname_entry),
-			   overridden_hostname);
-
-	register_server =
-	    config_get_int_with_default("server/register", TRUE);
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(register_toggle),
-				     register_server);
-	register_toggle_cb(GTK_TOGGLE_BUTTON(register_toggle), NULL);
-
-	random_order =
-	    config_get_int_with_default("server/random-seating-order",
-					TRUE);
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(random_toggle),
-				     random_order);
-
-	label_with_close_button = create_label_with_close_button(
-									/* Tab name */
-									_
-									(""
-									 "Running game"),
-									/* Tab tooltip */
-									_
-									(""
-									 "Stop the server"),
-									&stop_game_button_on_tab);
-	g_signal_connect(G_OBJECT(stop_game_button_on_tab), "clicked",
-			 G_CALLBACK(start_clicked_cb), NULL);
-
-	vbox_settings = gtk_vbox_new(FALSE, 5);
-	gtk_notebook_append_page(GTK_NOTEBOOK(settings_notebook),
-				 vbox_settings, label_with_close_button);
-
-	/* Caption */
-	frame = gtk_frame_new(_("Players connected"));
-	gtk_widget_show(frame);
-	gtk_box_pack_start(GTK_BOX(vbox_settings), frame, TRUE, TRUE, 0);
-
-	vbox_connected = gtk_vbox_new(FALSE, 5);
-	gtk_widget_show(vbox_connected);
-	gtk_container_set_border_width(GTK_CONTAINER(vbox_connected), 5);
-	gtk_container_add(GTK_CONTAINER(frame), vbox_connected);
-
-	scroll_win = gtk_scrolled_window_new(NULL, NULL);
-	gtk_widget_show(scroll_win);
-	gtk_box_pack_start(GTK_BOX(vbox_connected), scroll_win, TRUE, TRUE,
-			   0);
-
-	gtk_container_set_border_width(GTK_CONTAINER(scroll_win), 3);
-	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scroll_win),
-				       GTK_POLICY_NEVER,
-				       GTK_POLICY_AUTOMATIC);
-
-	/* Create model */
-	store = gtk_list_store_new(PLAYER_COLUMN_LAST,
-				   G_TYPE_BOOLEAN,
-				   G_TYPE_STRING,
-				   G_TYPE_STRING,
-				   G_TYPE_INT, G_TYPE_BOOLEAN);
-
-	/* Create graphical representation of the model */
-	label = gtk_tree_view_new_with_model(GTK_TREE_MODEL(store));
-	/* The theme should decide if hints are used */
-	/* gtk_tree_view_set_rules_hint(GTK_TREE_VIEW(label), TRUE); */
-	gtk_container_add(GTK_CONTAINER(scroll_win), label);
-	gtk_widget_set_tooltip_text(label,
-				    /* Tooltip for server connection overview */
-				    _(""
-				      "Shows all players and spectators connected to the server"));
-
-	/* Now create columns */
-	column =
-	    gtk_tree_view_column_new_with_attributes(_("Connected"),
-						     gtk_cell_renderer_toggle_new
-						     (), "active",
-						     PLAYER_COLUMN_CONNECTED,
-						     NULL);
-	gtk_tree_view_append_column(GTK_TREE_VIEW(label), column);
-	gtk_widget_set_tooltip_text(column->button,
-				    /* Tooltip for column Connected */
-				    _(""
-				      "Is the player currently connected?"));
-	column =
-	    gtk_tree_view_column_new_with_attributes(_("Name"),
-						     gtk_cell_renderer_text_new
-						     (), "text",
-						     PLAYER_COLUMN_NAME,
-						     NULL);
-	gtk_tree_view_append_column(GTK_TREE_VIEW(label), column);
-	gtk_widget_set_tooltip_text(column->button,
-				    /* Tooltip for column Name */
-				    _("Name of the player"));
-	column =
-	    gtk_tree_view_column_new_with_attributes(_("Location"),
-						     gtk_cell_renderer_text_new
-						     (), "text",
-						     PLAYER_COLUMN_LOCATION,
-						     NULL);
-	gtk_tree_view_append_column(GTK_TREE_VIEW(label), column);
-	gtk_widget_set_tooltip_text(column->button,
-				    /* Tooltip for column Location */
-				    _("Host name of the player"));
-
-	renderer = gtk_cell_renderer_text_new();
-	column =
-	    gtk_tree_view_column_new_with_attributes(_("Number"), renderer,
-						     "text",
-						     PLAYER_COLUMN_NUMBER,
-						     NULL);
-	g_object_set(renderer, "xalign", 1.0f, NULL);
-	gtk_tree_view_append_column(GTK_TREE_VIEW(label), column);
-	/* Tooltip for colum Number */
-	gtk_widget_set_tooltip_text(column->button, _("Player number"));
-
-	renderer = gtk_cell_renderer_text_new();
-	column =
-	    gtk_tree_view_column_new_with_attributes(_("Role"), renderer,
-						     NULL);
-	gtk_tree_view_append_column(GTK_TREE_VIEW(label), column);
-	/* Tooltip for column Role */
-	gtk_widget_set_tooltip_text(column->button,
-				    _("Player or spectator"));
-
-	gtk_tree_view_column_set_cell_data_func(column, renderer,
-						my_cell_player_spectator_to_text,
-						GINT_TO_POINTER
-						(PLAYER_COLUMN_ISSPECTATOR),
-						NULL);
-
-	gtk_widget_show(label);
-
-	launchclient_btn = gtk_button_new_with_label(
-							    /* Button text */
-							    _(""
-							      "Launch Pioneers Client"));
-	gtk_widget_show(launchclient_btn);
-	gtk_box_pack_start(GTK_BOX(vbox_connected), launchclient_btn,
-			   FALSE, FALSE, 0);
-	g_signal_connect(G_OBJECT(launchclient_btn), "clicked",
-			 G_CALLBACK(launchclient_clicked_cb), NULL);
-	gtk_widget_set_tooltip_text(launchclient_btn,
-				    /* Tooltip */
-				    _("Launch the Pioneers client"));
-
-	/* Caption */
-	ai_frame = gtk_frame_new(_("Computer players"));
-	gtk_widget_show(ai_frame);
-	gtk_box_pack_start(GTK_BOX(vbox_settings), ai_frame, FALSE, FALSE,
-			   0);
-	vbox_ai = gtk_vbox_new(FALSE, 5);
-	gtk_widget_show(vbox_ai);
-	gtk_container_set_border_width(GTK_CONTAINER(vbox_ai), 5);
-	gtk_container_add(GTK_CONTAINER(ai_frame), vbox_ai);
-
-	/* Label */
-	chat_toggle = gtk_check_button_new_with_label(_("Enable chat"));
-	gtk_widget_show(chat_toggle);
-	gtk_box_pack_start(GTK_BOX(vbox_ai), chat_toggle, TRUE, TRUE, 0);
-	g_signal_connect(G_OBJECT(chat_toggle), "toggled",
-			 G_CALLBACK(chat_toggle_cb), NULL);
-	gtk_widget_set_tooltip_text(chat_toggle,
-				    /* Tooltip */
-				    _("Enable chat messages"));
-
-	want_ai_chat = config_get_int_with_default("ai/enable-chat", TRUE);
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(chat_toggle),
-				     want_ai_chat);
-
-	addcomputer_btn = gtk_button_new_with_label(
-							   /* Button text */
-							   _(""
-							     "Add Computer Player"));
-	gtk_widget_show(addcomputer_btn);
-	gtk_box_pack_start(GTK_BOX(vbox_ai), addcomputer_btn, FALSE, FALSE,
-			   0);
-	g_signal_connect(G_OBJECT(addcomputer_btn), "clicked",
-			 G_CALLBACK(addcomputer_clicked_cb), NULL);
-	gtk_widget_set_tooltip_text(addcomputer_btn,
-				    /* Tooltip */
-				    _(""
-				      "Add a computer player to the game"));
-
-	start_btn = gtk_button_new();
-	gtk_widget_show(start_btn);
-
-	gtk_box_pack_start(GTK_BOX(vbox), start_btn, FALSE, FALSE, 0);
-	g_signal_connect(G_OBJECT(start_btn), "clicked",
-			 G_CALLBACK(start_clicked_cb), NULL);
-
-	/* Caption */
-	frame = gtk_frame_new(_("Messages"));
-	gtk_widget_show(frame);
-	gtk_box_pack_start(GTK_BOX(vbox), frame, TRUE, TRUE, 0);
-
-	scroll_win = gtk_scrolled_window_new(NULL, NULL);
-	gtk_widget_show(scroll_win);
-	gtk_container_add(GTK_CONTAINER(frame), scroll_win);
-	gtk_container_set_border_width(GTK_CONTAINER(scroll_win), 3);
-	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scroll_win),
-				       GTK_POLICY_AUTOMATIC,
-				       GTK_POLICY_AUTOMATIC);
-
-	message_text = gtk_text_view_new();
-	gtk_widget_show(message_text);
-	gtk_container_add(GTK_CONTAINER(scroll_win), message_text);
-	gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(message_text),
-				    GTK_WRAP_WORD);
-	gtk_widget_set_tooltip_text(message_text,
-				    /* Tooltip */
-				    _("Messages from the server"));
-	message_window_set_text(message_text);
-
-	gui_set_server_state(FALSE);
-	return vbox;
 }
 
 static void check_vp_cb(G_GNUC_UNUSED GObject * caller,
@@ -1127,6 +1285,7 @@ int main(int argc, char *argv[])
 	gtk_box_pack_start(GTK_BOX(vbox),
 			   build_interface(GTK_WINDOW(window)), TRUE, TRUE,
 			   0);
+	load_last_game_params();
 
 	gtk_widget_show_all(window);
 	gui_set_server_state(FALSE);
