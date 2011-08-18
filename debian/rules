@@ -38,12 +38,10 @@ build-stamp:
 		exit 1 ; \
 	fi
 	# Commands to compile the package.
-	# --enable-maintainer-mode is implicit for autogen.sh
-	# So don't run configure from it.
-	NOCONFIGURE=true ./autogen.sh
-	./configure --prefix=/usr --bindir=/usr/games --mandir=/usr/share/man \
+	./autogen.sh --prefix=/usr --bindir=/usr/games --mandir=/usr/share/man \
 		$(CONFIGUREFLAGS) --enable-warnings \
-		CFLAGS="$(CFLAGS)" --disable-dependency-tracking
+		CFLAGS="$(CFLAGS)" --disable-dependency-tracking \
+		--disable-deprecation-checks
 	$(MAKE) $(LIBFLAGS)
 	rsvg --width 32 --height 32 client/gtk/data/pioneers.svg pioneers32.png
 	convert pioneers32.png pioneers.xpm
