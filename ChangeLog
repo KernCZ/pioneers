@@ -1,5 +1,8 @@
 2011-08-18  Micah Bunting <Amnykon@gmail.com>
 	* client/gtk/trade.c: Follow GNOME HIG (no frames)
+	* editor/gtk/editor.c, common/gtk/common_gtk.c,
+	common/gtk/common_gtk.h: Move build_frames to common location.
+	* server/gtk/main.c: Follow GNOME HIG (no frames)
 
 2011-08-10  Micah Bunting <Amnykon@gmail.com>
 	* server/gtk/main.c: Code cleanup.

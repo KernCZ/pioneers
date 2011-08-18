@@ -68,4 +68,13 @@ GtkWidget *create_label_with_close_button(const gchar * label_text,
 					  const gchar * tooltip_text,
 					  GtkWidget ** button);
 
+/** Places a title above the element and adds the title and element to parent.
+ *  @param parent The parent to add the tital and element to.
+ *  @param title The title for the element.
+ *  @param element The element to add to parent.
+ *  @param extend True if element will take remaining space in parent.
+ */
+void build_frame(GtkWidget * parent, const gchar * title,
+		 GtkWidget * element, gboolean extend);
+
 #endif				/* __common_gtk_h */

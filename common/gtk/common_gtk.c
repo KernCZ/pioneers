@@ -368,3 +368,39 @@ GtkWidget *create_label_with_close_button(const gchar * label_text,
 	gtk_widget_show_all(hbox);
 	return hbox;
 }
+
+void build_frame(GtkWidget * parent, const gchar * title,
+		 GtkWidget * element, gboolean extend)
+{
+	/* vbox */
+	/*       label */
+	/*       hbox */
+	/*              fix */
+	/*              element */
+
+	GtkWidget *vbox;
+	GtkWidget *label;
+	GtkWidget *hbox;
+	GtkWidget *fix;
+	gchar *title_with_markup;
+
+	vbox = gtk_vbox_new(FALSE, 3);
+	gtk_container_set_border_width(GTK_CONTAINER(vbox), 5);
+	gtk_box_pack_start(GTK_BOX(parent), vbox, extend, TRUE, 0);
+
+	label = gtk_label_new(NULL);
+	title_with_markup = g_strdup_printf("<b>%s</b>", title);
+	gtk_label_set_markup(GTK_LABEL(label), title_with_markup);
+	g_free(title_with_markup);
+	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+	gtk_widget_show(label);
+	gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, TRUE, 0);
+
+	hbox = gtk_hbox_new(FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(vbox), hbox, TRUE, TRUE, 0);
+
+	fix = gtk_fixed_new();
+	gtk_box_pack_start(GTK_BOX(hbox), fix, FALSE, TRUE, 6);
+
+	gtk_box_pack_start(GTK_BOX(hbox), element, TRUE, TRUE, 0);
+}

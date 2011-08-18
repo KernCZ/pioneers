@@ -768,45 +768,6 @@ static GtkWidget *build_port_menu(void)
 	return menu;
 }
 
-static void build_frame(GtkWidget * parent, const gchar * title,
-			GtkWidget * element)
-{
-	/* vbox */
-	/*       label */
-	/*       hbox */
-	/*              fix */
-	/*              element */
-
-	GtkWidget *vbox;
-	GtkWidget *label;
-	GtkWidget *hbox;
-	GtkWidget *fix;
-	gchar *title_with_markup;
-
-	vbox = gtk_vbox_new(FALSE, 3);
-	gtk_box_pack_start(GTK_BOX(parent), vbox, FALSE, TRUE, 0);
-
-	/* Label */
-	label = gtk_label_new(NULL);
-	title_with_markup = g_strdup_printf("<b>%s</b>", title);
-	gtk_label_set_markup(GTK_LABEL(label), title_with_markup);
-	g_free(title_with_markup);
-	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
-	gtk_widget_show(label);
-	gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, TRUE, 0);
-
-	/* hbox */
-	hbox = gtk_hbox_new(FALSE, 0);
-	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);
-
-	/* fix */
-	fix = gtk_fixed_new();
-	gtk_box_pack_start(GTK_BOX(hbox), fix, FALSE, TRUE, 6);
-
-	/* element */
-	gtk_box_pack_start(GTK_BOX(hbox), element, TRUE, TRUE, 0);
-}
-
 static GtkWidget *build_settings(GtkWindow * main_window)
 {
 	/* vbox */
@@ -869,16 +830,18 @@ static GtkWidget *build_settings(GtkWindow * main_window)
 
 	/* Caption */
 	build_frame(lvbox, _("Game parameters"),
-		    GTK_WIDGET(game_settings));
+		    GTK_WIDGET(game_settings), FALSE);
 	/* Caption */
-	build_frame(lvbox, _("Rules"), GTK_WIDGET(game_rules));
+	build_frame(lvbox, _("Rules"), GTK_WIDGET(game_rules), FALSE);
 	/* Caption */
-	build_frame(lvbox, _("Resources"), GTK_WIDGET(game_resources));
+	build_frame(lvbox, _("Resources"), GTK_WIDGET(game_resources),
+		    FALSE);
 	/* Caption */
-	build_frame(rvbox, _("Buildings"), GTK_WIDGET(game_buildings));
+	build_frame(rvbox, _("Buildings"), GTK_WIDGET(game_buildings),
+		    FALSE);
 	/* Caption */
 	build_frame(rvbox, _("Development cards"),
-		    GTK_WIDGET(game_devcards));
+		    GTK_WIDGET(game_devcards), FALSE);
 
 	g_signal_connect(G_OBJECT(game_settings), "check",
 			 G_CALLBACK(check_vp_cb), main_window);
