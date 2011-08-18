@@ -458,15 +458,10 @@ static void overridden_hostname_changed_cb(GtkEntry * widget,
  */
 static GtkWidget *build_game_settings(GtkWindow * main_window)
 {
-	GtkWidget *frame;
 	GtkWidget *vbox;
-
-	frame = gtk_frame_new(_("Game parameters"));
-	gtk_widget_show(frame);
 
 	vbox = gtk_vbox_new(FALSE, 3);
 	gtk_widget_show(vbox);
-	gtk_container_add(GTK_CONTAINER(frame), vbox);
 	gtk_container_set_border_width(GTK_CONTAINER(vbox), 3);
 
 	select_game = select_game_new();
@@ -482,7 +477,7 @@ static GtkWidget *build_game_settings(GtkWindow * main_window)
 	g_signal_connect(G_OBJECT(game_settings), "check",
 			 G_CALLBACK(check_vp_cb), main_window);
 
-	return frame;
+	return vbox;
 }
 
 /** Builds the composite game rules frame widget.
@@ -490,22 +485,18 @@ static GtkWidget *build_game_settings(GtkWindow * main_window)
  */
 static GtkWidget *build_game_rules(void)
 {
-	GtkWidget *frame;
 	GtkWidget *vbox;
 
-	frame = gtk_frame_new(_("Rules"));
-	gtk_widget_show(frame);
 
 	vbox = gtk_vbox_new(FALSE, 3);
 	gtk_widget_show(vbox);
-	gtk_container_add(GTK_CONTAINER(frame), vbox);
 	gtk_container_set_border_width(GTK_CONTAINER(vbox), 3);
 
 	game_rules = game_rules_new();
 	gtk_widget_show(game_rules);
 	gtk_box_pack_start(GTK_BOX(vbox), game_rules, TRUE, TRUE, 0);
 
-	return frame;
+	return vbox;
 }
 
 /** Builds the composite server frame widget.
@@ -513,19 +504,16 @@ static GtkWidget *build_game_rules(void)
  */
 static GtkWidget *build_server_frame(void)
 {
+	/* table */
+	/*       server port label */
+	/*        - port entry */
+	/*       register toggle */
+	/*       meta server label */
+	/*        - meta entry */
+	/*       hostname label */
+	/*        - hostname entry */
+	/*       random toggle */
 
-	/* server frame */
-	/*       table */
-	/*               server port label */
-	/*                - port entry */
-	/*               register toggle */
-	/*               meta server label */
-	/*                - meta entry */
-	/*               hostname label */
-	/*                - hostname entry */
-	/*               random toggle */
-
-	GtkWidget *frame;
 	GtkWidget *table;
 	GtkWidget *label;
 	GtkWidget *toggle;
@@ -533,14 +521,9 @@ static GtkWidget *build_server_frame(void)
 
 	gint novar;
 
-	/* server frame */
-	frame = gtk_frame_new(_("Server parameters"));
-	gtk_widget_show(frame);
-
 	/* table */
 	table = gtk_table_new(6, 2, FALSE);
 	gtk_widget_show(table);
-	gtk_container_add(GTK_CONTAINER(frame), table);
 	gtk_container_set_border_width(GTK_CONTAINER(table), 3);
 	gtk_table_set_row_spacings(GTK_TABLE(table), 3);
 	gtk_table_set_col_spacings(GTK_TABLE(table), 5);
@@ -657,7 +640,7 @@ static GtkWidget *build_server_frame(void)
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(toggle),
 				     random_order);
 
-	return frame;
+	return table;
 }
 
 static void
@@ -801,24 +784,16 @@ static GtkWidget *build_connected_tree_view(void)
  */
 static GtkWidget *build_player_connected_frame(void)
 {
-	/* player connected frame */
-	/*       vbox */
-	/*               connected tree_view */
-	/*               launch client button */
+	/* vbox */
+	/*       connected tree_view */
+	/*       launch client button */
 
-	GtkWidget *frame;
 	GtkWidget *vbox;
 	GtkWidget *button;
-
-	/* player connected frame */
-	frame = gtk_frame_new(_("Players connected"));
-	gtk_widget_show(frame);
 
 	/* vbox */
 	vbox = gtk_vbox_new(FALSE, 5);
 	gtk_widget_show(vbox);
-	gtk_container_set_border_width(GTK_CONTAINER(vbox), 5);
-	gtk_container_add(GTK_CONTAINER(frame), vbox);
 
 	/* connected tree_view */
 	gtk_box_pack_start(GTK_BOX(vbox), build_connected_tree_view(),
@@ -837,7 +812,7 @@ static GtkWidget *build_player_connected_frame(void)
 				    /* Tooltip */
 				    _("Launch the Pioneers client"));
 
-	return frame;
+	return vbox;
 }
 
 /** Builds the composite ai frame widget.
@@ -845,12 +820,10 @@ static GtkWidget *build_player_connected_frame(void)
  */
 static GtkWidget *build_ai_frame(void)
 {
-	/* ai frame */
-	/*       ai vbox */
-	/*               ai chat toggle */
-	/*               add ai button */
+	/* ai vbox */
+	/*       ai chat toggle */
+	/*       add ai button */
 
-	GtkWidget *frame;
 	GtkWidget *vbox;
 	GtkWidget *toggle;
 	GtkWidget *button;
@@ -858,9 +831,9 @@ static GtkWidget *build_ai_frame(void)
 	gchar *fullname;
 	gboolean ai_settings_enabled = TRUE;
 
-	/* ai frame */
-	frame = gtk_frame_new(_("Computer players"));
-	gtk_widget_show(frame);
+	/* ai vbox */
+	vbox = gtk_vbox_new(FALSE, 5);
+	gtk_widget_show(vbox);
 
 	fullname = g_find_program_in_path(PIONEERS_AI_PATH);
 	if (fullname) {
@@ -868,13 +841,7 @@ static GtkWidget *build_ai_frame(void)
 	} else {
 		ai_settings_enabled = FALSE;
 	}
-	gtk_widget_set_sensitive(frame, ai_settings_enabled);
-
-	/* ai vbox */
-	vbox = gtk_vbox_new(FALSE, 5);
-	gtk_widget_show(vbox);
-	gtk_container_set_border_width(GTK_CONTAINER(vbox), 5);
-	gtk_container_add(GTK_CONTAINER(frame), vbox);
+	gtk_widget_set_sensitive(vbox, ai_settings_enabled);
 
 	/* ai chat toggle */
 	toggle = gtk_check_button_new_with_label(_("Enable chat"));
@@ -904,7 +871,7 @@ static GtkWidget *build_ai_frame(void)
 				    _(""
 				      "Add a computer player to the game"));
 
-	return frame;
+	return vbox;
 }
 
 /** Builds the composite message frame widget.
@@ -912,22 +879,15 @@ static GtkWidget *build_ai_frame(void)
  */
 static GtkWidget *build_message_frame(void)
 {
-	/*       message frame */
-	/*               scrolled window */
-	/*                       text view */
+	/* scrolled window */
+	/*       text view */
 
-	GtkWidget *frame;
 	GtkWidget *scroll_win;
 	GtkWidget *message_text;
-
-	/* message frame */
-	frame = gtk_frame_new(_("Messages"));
-	gtk_widget_show(frame);
 
 	/* scrolled window */
 	scroll_win = gtk_scrolled_window_new(NULL, NULL);
 	gtk_widget_show(scroll_win);
-	gtk_container_add(GTK_CONTAINER(frame), scroll_win);
 	gtk_container_set_border_width(GTK_CONTAINER(scroll_win), 3);
 	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scroll_win),
 				       GTK_POLICY_AUTOMATIC,
@@ -944,7 +904,7 @@ static GtkWidget *build_message_frame(void)
 				    _("Messages from the server"));
 	message_window_set_text(message_text);
 
-	return frame;
+	return scroll_win;
 }
 
 /** Builds the composite interface widget.
@@ -988,22 +948,21 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 	/* settings tab vbox */
 	vbox_settings = gtk_vbox_new(FALSE, 5);
 	gtk_widget_show(vbox_settings);
+
 	gtk_notebook_append_page(GTK_NOTEBOOK(settings_notebook),
 				 vbox_settings,
 				 gtk_label_new(_("Game settings")));
 
 	/* Game settings frame */
-	gtk_box_pack_start(GTK_BOX(vbox_settings),
-			   build_game_settings(main_window), FALSE, TRUE,
-			   0);
+	build_frame(vbox_settings, _("Game parameters"),
+		    build_game_settings(main_window), FALSE);
 
 	/* Rules frame */
-	gtk_box_pack_start(GTK_BOX(vbox_settings), build_game_rules(),
-			   FALSE, TRUE, 0);
+	build_frame(vbox_settings, _("Rules"), build_game_rules(), FALSE);
 
 	/* server frame */
-	gtk_box_pack_start(GTK_BOX(vbox_settings), build_server_frame(),
-			   FALSE, TRUE, 0);
+	build_frame(vbox_settings, _("Server parameters"),
+		    build_server_frame(), FALSE);
 
 	/* game tab label */
 	label_with_close_button = create_label_with_close_button(
@@ -1025,12 +984,12 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 				 vbox_settings, label_with_close_button);
 
 	/* player connected frame */
-	gtk_box_pack_start(GTK_BOX(vbox_settings),
-			   build_player_connected_frame(), TRUE, TRUE, 0);
+	build_frame(vbox_settings, _("Players connected"),
+		    build_player_connected_frame(), TRUE);
 
 	/* ai frame */
-	gtk_box_pack_start(GTK_BOX(vbox_settings), build_ai_frame(), FALSE,
-			   FALSE, 0);
+	build_frame(vbox_settings, _("Computer players"),
+		    build_ai_frame(), FALSE);
 
 	/* start button */
 	start_btn = gtk_button_new();
@@ -1041,9 +1000,10 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 			 G_CALLBACK(start_clicked_cb), NULL);
 
 	/* message frame */
-	gtk_box_pack_start(GTK_BOX(vbox), build_message_frame(), TRUE,
-			   TRUE, 0);
+	build_frame(vbox, _("Messages"), build_message_frame(), TRUE);
+
 	gui_set_server_state(FALSE);
+
 	return vbox;
 }
 
