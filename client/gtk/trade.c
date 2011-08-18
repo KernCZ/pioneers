@@ -401,19 +401,84 @@ static void quote_selected_cb(G_GNUC_UNUSED QuoteView * quoteview,
 	frontend_gui_update();
 }
 
-/** Build the page */
-GtkWidget *trade_build_page(void)
+/** Build a trade resources composite widget.
+ *  @param title The title for the composite widget.
+ *  @param trade_rows Pointer to TradeRow to store each row's data.
+ *  @return Returns the composite widget.
+ */
+GtkWidget *build_trade_resources_frame(const gchar * title,
+				       TradeRow * trade_rows)
 {
-	GtkWidget *scroll_win;
-	GtkWidget *panel_mainbox;
+	/* vbox */
+	/*       label */
+	/*       alignment */
+	/*               table */
+	/*                       trade rows */
+
 	GtkWidget *vbox;
 	GtkWidget *label;
 	GtkWidget *alignment;
 	GtkWidget *table;
+
+	gchar *title_with_markup;
+	gint idx;
+
+	vbox = gtk_vbox_new(FALSE, 6);
+	gtk_widget_show(vbox);
+
+	label = gtk_label_new(NULL);
+	title_with_markup = g_strdup_printf("<b>%s</b>", title);
+	gtk_label_set_markup(GTK_LABEL(label), title_with_markup);
+	g_free(title_with_markup);
+	gtk_widget_show(label);
+	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+	gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, TRUE, 0);
+
+	alignment = gtk_alignment_new(0.0, 0.0, 0.0, 0.0);
+	gtk_alignment_set_padding(GTK_ALIGNMENT(alignment), 0, 3, 0 * 12,
+				  0);
+	gtk_widget_show(alignment);
+	gtk_box_pack_start(GTK_BOX(vbox), alignment, FALSE, FALSE, 0);
+
+	table = gtk_table_new(NO_RESOURCE, 2, FALSE);
+	gtk_widget_show(table);
+	gtk_container_add(GTK_CONTAINER(alignment), table);
+	gtk_container_set_border_width(GTK_CONTAINER(table), 0);
+	gtk_table_set_row_spacings(GTK_TABLE(table), 3);
+	gtk_table_set_col_spacings(GTK_TABLE(table), 3);
+
+	/* trade rows, one for each resource */
+	for (idx = 0; idx < NO_RESOURCE; ++idx)
+		add_trade_row(table, trade_rows + idx, idx);
+
+	return vbox;
+}
+
+/** Build the trading page.
+ *  @return Returns the composite widget.
+ */
+GtkWidget *trade_build_page(void)
+{
+	/* scroll window */
+	/*       hbox - panel_mainbox */
+	/*               vbox */
+	/*                       trade_resources_frame */
+	/*                       trade_resources_frame */
+	/*                       hbox - bbox */
+	/*                               call_btn */
+	/*               vbox */
+	/*                       active_quote_label */
+	/*                       quoteview */
+	/*                       hbox - bbox */
+	/*                               accept_btn */
+	/*                               finish_btn */
+
+	GtkWidget *scroll_win;
+	GtkWidget *panel_mainbox;
+	GtkWidget *vbox;
 	GtkWidget *bbox;
 	GtkWidget *finish_btn;
 	GtkWidget *accept_btn;
-	gint idx;
 
 	scroll_win = gtk_scrolled_window_new(NULL, NULL);
 	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scroll_win),
@@ -433,63 +498,21 @@ GtkWidget *trade_build_page(void)
 	gtk_widget_show(vbox);
 	gtk_box_pack_start(GTK_BOX(panel_mainbox), vbox, FALSE, TRUE, 0);
 
-	label = gtk_label_new(NULL);
-	/* Frame title, trade: I want to trade these resources */
-	gtk_label_set_markup(GTK_LABEL(label), _("<b>I want</b>"));
-	gtk_widget_show(label);
-	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
-	gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, TRUE, 0);
+	we_receive_frame =
+	    /* Frame title, trade: I want to trade these resources */
+	    build_trade_resources_frame(_("I want"), we_receive_rows);
+	gtk_box_pack_start(GTK_BOX(vbox), we_receive_frame,
+			   FALSE, TRUE, 0);
 
-	alignment = gtk_alignment_new(0.0, 0.0, 0.0, 0.0);
-	gtk_alignment_set_padding(GTK_ALIGNMENT(alignment), 0, 3, 0 * 12,
-				  0);
-	gtk_widget_show(alignment);
-	gtk_box_pack_start(GTK_BOX(vbox), alignment, FALSE, FALSE, 0);
-
-	table = gtk_table_new(NO_RESOURCE, 2, FALSE);
-	gtk_widget_show(table);
-	gtk_container_add(GTK_CONTAINER(alignment), table);
-	gtk_container_set_border_width(GTK_CONTAINER(table), 0);
-	gtk_table_set_row_spacings(GTK_TABLE(table), 3);
-	gtk_table_set_col_spacings(GTK_TABLE(table), 3);
-
-	for (idx = 0; idx < NO_RESOURCE; ++idx)
-		add_trade_row(table, we_receive_rows + idx, idx);
-
-	we_receive_frame = gtk_vbox_new(FALSE, 6);
-	gtk_widget_show(we_receive_frame);
-	gtk_box_pack_start(GTK_BOX(vbox), we_receive_frame, FALSE, TRUE,
-			   0);
-
-	label = gtk_label_new(NULL);
-	/* Frame title, trade: I want these resources in return */
-	gtk_label_set_markup(GTK_LABEL(label), _("<b>Give them</b>"));
-	gtk_widget_show(label);
-	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
-	gtk_box_pack_start(GTK_BOX(we_receive_frame), label, FALSE, TRUE,
-			   0);
-
-	alignment = gtk_alignment_new(0.0, 0.0, 0.0, 0.0);
-	gtk_alignment_set_padding(GTK_ALIGNMENT(alignment), 0, 3, 0 * 12,
-				  0);
-	gtk_widget_show(alignment);
-	gtk_box_pack_start(GTK_BOX(we_receive_frame), alignment, FALSE,
-			   FALSE, 0);
-
-	table = gtk_table_new(NO_RESOURCE, 2, FALSE);
-	gtk_widget_show(table);
-	gtk_container_add(GTK_CONTAINER(alignment), table);
-	gtk_container_set_border_width(GTK_CONTAINER(table), 0);
-	gtk_table_set_row_spacings(GTK_TABLE(table), 3);
-	gtk_table_set_col_spacings(GTK_TABLE(table), 3);
-
-	for (idx = 0; idx < NO_RESOURCE; ++idx)
-		add_trade_row(table, we_supply_rows + idx, idx);
+	gtk_box_pack_start(GTK_BOX(vbox),
+			   /* Frame title, trade: I want these resources in return */
+			   build_trade_resources_frame(_("Give them"),
+						       we_supply_rows),
+			   FALSE, TRUE, 0);
 
 	bbox = gtk_hbutton_box_new();
 	gtk_widget_show(bbox);
-	gtk_box_pack_start(GTK_BOX(we_receive_frame), bbox, FALSE, TRUE,
-			   0);
+	gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, TRUE, 0);
 
 	/* Button text, trade: call for quotes from other players */
 	call_btn = gtk_button_new_with_mnemonic(_("_Call for Quotes"));
