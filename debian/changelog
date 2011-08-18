@@ -4,6 +4,7 @@ pioneers (0.12.4-1) unstable; urgency=low
   * Added Avahi support.
   * Numbers on the board are visible again. (closes: #574549) (LP:#530988)
   * Add Danish debconf translation. (closes: #633905)
+  * Fix for lintian warning: debian-rules-missing-recommended-target
 
  -- Roland Clobus <rclobus@rclobus.nl>  Thu, 18 Aug 2011 17:00:00 +0200
 
