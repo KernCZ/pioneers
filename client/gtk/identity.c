@@ -277,29 +277,24 @@ static gint expose_identity_area_cb(GtkWidget * area,
 	}
 
 	if (die_num[0] > 0 && die_num[1] > 0) {
-		GdkColor *die_border_color[2];
-		GdkColor *die_color[2];
-		GdkColor *die_dots_color[2];
 		if (game_params->use_cities_and_knights_rules) {
-			die_border_color[0] = &ck_die_yellow;
-			die_color[0] = &ck_die_red;
-			die_dots_color[0] = &ck_die_yellow;
-			die_border_color[1] = &ck_die_red;
-			die_color[1] = &ck_die_yellow;
-			die_dots_color[1] = &ck_die_red;
-		} else {
-			die_border_color[0] = &black;
-			die_color[0] = &white;
-			die_dots_color[0] = &black;
-			die_border_color[1] = &black;
-			die_color[1] = &white;
-			die_dots_color[1] = &black;
-		}
-		for (i = 0; i < 2; i++) {
+			/* red die */
 			show_die(cr, area,
-				 area->allocation.width - 70 + 35 * i,
-				 die_num[i], die_border_color[i],
-				 die_color[i], die_dots_color[i]);
+				 area->allocation.width - 70,
+				 die_num[0], &ck_die_yellow,
+				 &ck_die_red, &ck_die_yellow);
+			/* yellow die */
+			show_die(cr, area,
+				 area->allocation.width - 35,
+				 die_num[1], &ck_die_red,
+				 &ck_die_yellow, &ck_die_red);
+		} else {
+			/* original dice */
+			for (i = 0; i < 2; i++)
+				show_die(cr, area,
+					 area->allocation.width - 70 +
+					 35 * i, die_num[i], &black,
+					 &white, &black);
 		}
 	}
 	cairo_destroy(cr);

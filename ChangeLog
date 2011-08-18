@@ -3,6 +3,7 @@
 	* editor/gtk/editor.c, common/gtk/common_gtk.c,
 	common/gtk/common_gtk.h: Move build_frames to common location.
 	* server/gtk/main.c: Follow GNOME HIG (no frames)
+	* client/gtk/identity.c: Code simplification.
 
 2011-08-10  Micah Bunting <Amnykon@gmail.com>
 	* server/gtk/main.c: Code cleanup.
