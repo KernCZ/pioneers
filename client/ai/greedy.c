@@ -1169,14 +1169,13 @@ static void greedy_turn(void)
 	gint need[NO_RESOURCE], assets[NO_RESOURCE];
 
 	/* play soldier card before the turn when an own resource is blocked */
-	if (!have_rolled_dice() && can_play_any_develop()) {
+	Hex *hex = map_robber_hex(callbacks.get_map());
+	if (hex && !have_rolled_dice() && can_play_any_develop()) {
 		const DevelDeck *deck = get_devel_deck();
 		for (i = 0; i < deck->num_cards; i++) {
 			DevelType cardtype = deck_card_type(deck, i);
 			if (cardtype == DEVEL_SOLDIER
 			    && can_play_develop(i)) {
-				Hex *hex =
-				    map_robber_hex(callbacks.get_map());
 				int j;
 				for (j = 0; j < 6; j++) {
 					if ((hex->nodes[j]->owner ==
