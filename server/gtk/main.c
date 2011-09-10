@@ -913,21 +913,8 @@ static GtkWidget *build_message_frame(void)
  */
 static GtkWidget *build_interface(GtkWindow * main_window)
 {
-	/* vbox */
-	/*       settings notebook */
-	/*               settings tab vbox */
-	/*                       Game settings frame */
-	/*                       Rules frame */
-	/*                       server frame */
-	/*               game tab label */
-	/*               game tab vbox */
-	/*                       player connected frame */
-	/*                       ai frame */
-	/*       start button */
-	/*       message frame */
-
-
 	GtkWidget *vbox;
+	GtkWidget *hbox_settings;
 	GtkWidget *vbox_settings;
 	GtkWidget *stop_game_button_on_tab;
 	GtkWidget *label_with_close_button;
@@ -945,24 +932,37 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 	gtk_box_pack_start(GTK_BOX(vbox), settings_notebook, FALSE, TRUE,
 			   0);
 
-	/* settings tab vbox */
+	/* settings tab hbox */
+	hbox_settings = gtk_hbox_new(FALSE, 5);
+	gtk_widget_show(hbox_settings);
+	gtk_notebook_append_page(GTK_NOTEBOOK(settings_notebook),
+				 hbox_settings,
+				 gtk_label_new(_("Game settings")));
+
+	/* left part in settings tab */
 	vbox_settings = gtk_vbox_new(FALSE, 5);
 	gtk_widget_show(vbox_settings);
-
-	gtk_notebook_append_page(GTK_NOTEBOOK(settings_notebook),
-				 vbox_settings,
-				 gtk_label_new(_("Game settings")));
 
 	/* Game settings frame */
 	build_frame(vbox_settings, _("Game parameters"),
 		    build_game_settings(main_window), FALSE);
 
-	/* Rules frame */
-	build_frame(vbox_settings, _("Rules"), build_game_rules(), FALSE);
-
 	/* server frame */
 	build_frame(vbox_settings, _("Server parameters"),
 		    build_server_frame(), FALSE);
+
+	gtk_box_pack_start(GTK_BOX(hbox_settings), vbox_settings, FALSE,
+			   FALSE, 0);
+
+	/* right part in settings tab */
+	vbox_settings = gtk_vbox_new(FALSE, 5);
+	gtk_widget_show(vbox_settings);
+
+	/* Rules frame */
+	build_frame(vbox_settings, _("Rules"), build_game_rules(), FALSE);
+
+	gtk_box_pack_start(GTK_BOX(hbox_settings), vbox_settings, TRUE,
+			   TRUE, 0);
 
 	/* game tab label */
 	label_with_close_button = create_label_with_close_button(
