@@ -120,8 +120,10 @@ static void done_robbing_pre_steal(Player * player)
 	Game *game = player->game;
 	Map *map = game->params->map;
 	Hex *hex = map_robber_hex(map);
-	player_broadcast(player, PB_RESPOND, FIRST_VERSION, V0_10,
-			 "moved-robber %d %d\n", hex->x, hex->y);
+	if (hex) {
+		player_broadcast(player, PB_RESPOND, FIRST_VERSION, V0_10,
+				 "moved-robber %d %d\n", hex->x, hex->y);
+	}
 }
 
 static void done_robbing_post_steal(Player * player)
