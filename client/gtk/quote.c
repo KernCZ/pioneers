@@ -25,6 +25,7 @@
 #include "quoteinfo.h"
 #include "resource-table.h"
 #include "quote-view.h"
+#include "notification.h"
 
 static gint trade_player;
 
@@ -199,6 +200,8 @@ static void show_quote_params(gint player_num,
 void quote_begin_again(gint player_num, const gint * we_receive,
 		       const gint * we_supply)
 {
+	gchar *msg;
+
 	/* show the new parameters */
 	show_quote_params(player_num, we_receive, we_supply);
 	/* throw out reject rows: everyone can quote again */
@@ -209,11 +212,19 @@ void quote_begin_again(gint player_num, const gint * we_receive,
 	quote_update();
 	set_resource_tables_filter(we_receive, we_supply);
 	frontend_gui_update();
+	/* Notification */
+	msg =
+	    g_strdup_printf(_("New offer from %s."),
+			    player_name(player_num, FALSE));
+	notification_send(msg);
+	g_free(msg);
 }
 
 void quote_begin(gint player_num, const gint * we_receive,
 		 const gint * we_supply)
 {
+	gchar *msg;
+
 	/* show what is asked */
 	show_quote_params(player_num, we_receive, we_supply);
 	/* reset variables */
@@ -226,6 +237,12 @@ void quote_begin(gint player_num, const gint * we_receive,
 	frontend_gui_update();
 	/* finally, show the page so the user can see it */
 	gui_show_quote_page(TRUE);
+	/* Notification */
+	msg =
+	    g_strdup_printf(_("Offer from %s."),
+			    player_name(player_num, FALSE));
+	notification_send(msg);
+	g_free(msg);
 }
 
 static void quote_selected_cb(G_GNUC_UNUSED QuoteView * quoteview,

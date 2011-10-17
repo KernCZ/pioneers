@@ -39,6 +39,7 @@
 #include "config-gnome.h"
 #include "gtkbugs.h"
 #include "audio.h"
+#include "notification.h"
 #include "gtkcompat.h"
 
 static GtkWidget *preferences_dlg;
@@ -1004,6 +1005,14 @@ static void toggle_16_9_cb(GtkToggleButton * widget,
 	set_16_9_layout(layout_16_9);
 }
 
+static void toggle_notifications_cb(GtkToggleButton * widget,
+				    G_GNUC_UNUSED gpointer user_data)
+{
+	gboolean show_notifications = gtk_toggle_button_get_active(widget);
+	config_set_int("settings/show_notifications", show_notifications);
+	set_show_notifications(show_notifications);
+}
+
 static void showhide_toolbar_cb(void)
 {
 	gui_set_toolbar_visible();
@@ -1200,6 +1209,23 @@ static void preferences_cb(void)
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(silent_mode_widget),
 				     get_silent_mode());
 
+#ifdef HAVE_NOTIFY
+	/* Label for the option to use the notifications. */
+	widget = gtk_check_button_new_with_label(_("Show notifications"));
+	gtk_widget_show(widget);
+	gtk_table_attach_defaults(GTK_TABLE(layout), widget,
+				  0, 2, row, row + 1);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget),
+				     get_show_notifications());
+	g_signal_connect(G_OBJECT(widget), "toggled",
+			 G_CALLBACK(toggle_notifications_cb), NULL);
+	gtk_widget_set_tooltip_text(widget,
+				    /* Tooltip for notifications option. */
+				    _("Show notifications when it's your "
+				      "turn or when new trade is available"));
+	row++;
+#endif
+
 	/* Label for the option to use the 16:9 layout. */
 	widget = gtk_check_button_new_with_label(_("Use 16:9 layout"));
 	gtk_widget_show(widget);
@@ -1214,7 +1240,6 @@ static void preferences_cb(void)
 				    _(""
 				      "Use a 16:9 friendly layout for the window"));
 	row++;
-
 }
 
 static void help_about_cb(void)
@@ -1655,6 +1680,8 @@ GtkWidget *gui_build_interface(void)
 			("settings/silent_mode", FALSE));
 	set_announce_player(config_get_int_with_default
 			    ("settings/announce_player", TRUE));
+	set_show_notifications(config_get_int_with_default
+			       ("settings/show_notifications", TRUE));
 
 	legend_page_enabled =
 	    config_get_int_with_default("settings/legend_page", FALSE);

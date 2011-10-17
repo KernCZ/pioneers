@@ -37,6 +37,7 @@ PIONEERS_DEFAULT_META_SERVER=pioneers.debian.net
 GLIB_REQUIRED_VERSION=2.16
 GTK_REQUIRED_VERSION=2.20
 GTK_OPTIMAL_VERSION=2.24
+LIBNOTIFY_REQUIRED_VERSION=0.7.4
 
 AM_MAINTAINER_MODE
 
@@ -202,6 +203,21 @@ fi
 # glib is always needed
 PKG_CHECK_MODULES(GLIB2, glib-2.0 >= $GLIB_REQUIRED_VERSION)
 PKG_CHECK_MODULES(GOBJECT2, gobject-2.0 >= $GLIB_REQUIRED_VERSION)
+
+#
+# Check for libnotify
+#
+PKG_CHECK_MODULES(LIBNOTIFY, libnotify >= $LIBNOTIFY_REQUIRED_VERSION,
+	have_libnotify=yes,
+	[PKG_CHECK_EXISTS(libnotify,
+		[have_libnotify="no, libnotify version too old"],
+		[have_libnotify="no, libnotify not installed"])
+		AC_MSG_RESULT($have_libnotify)
+	])
+if test "$have_libnotify" = "yes"; then
+	AC_DEFINE(HAVE_NOTIFY, 1,
+		[Defined if libnotify is present])
+fi
 
 # Gtk+ support
 if test x$with_gtk = xno; then
@@ -510,6 +526,7 @@ $PACKAGE v$VERSION configuration:
         Build metaserver                   $pioneers_build_metaserver
         Build help                         $pioneers_help
         AVAHI support                      $have_avahi
+        LIBNOTIFY support                  $have_libnotify
     Developers only:
         Use compiler warnings              $pioneers_warnings
         Add debug information              $pioneers_debug

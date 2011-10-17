@@ -31,6 +31,7 @@
 #include "theme.h"
 #include "histogram.h"
 #include "version.h"
+#include "notification.h"
 #include "client.h"
 
 static gboolean have_dlg = FALSE;
@@ -191,6 +192,8 @@ void frontend_init_gtk_et_al(int argc, char **argv)
 	textdomain(PACKAGE);
 	bind_textdomain_codeset(PACKAGE, "UTF-8");
 #endif
+	/* Name of the application */
+	g_set_application_name(_("Pioneers"));
 
 	callbacks.mainloop = &gtk_main;
 	callbacks.quit = &gtk_main_quit;
@@ -232,6 +235,7 @@ void frontend_init(void)
 	themes_init();
 	settings_init();
 	histogram_init();
+	notification_init();
 	gui_build_interface();
 
 	/* in theory, all windows are created now... 

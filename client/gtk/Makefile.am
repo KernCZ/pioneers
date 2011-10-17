@@ -33,7 +33,7 @@ ADMIN_GTK_FILES_ACTIVE =
 ADMIN_GTK_FILES_INACTIVE = client/gtk/admin-gtk.c
 endif
 
-pioneers_CPPFLAGS = -I$(top_srcdir)/client -I$(top_srcdir)/client/common $(gtk_cflags) $(ADMIN_GTK) $(avahi_cflags)
+pioneers_CPPFLAGS = -I$(top_srcdir)/client -I$(top_srcdir)/client/common $(LIBNOTIFY_CFLAGS) $(gtk_cflags) $(ADMIN_GTK) $(avahi_cflags)
 
 EXTRA_pioneers_SOURCES = $(ADMIN_GTK_FILES_INACTIVE)
 
@@ -64,6 +64,8 @@ pioneers_SOURCES = \
 	client/gtk/legend.c \
 	client/gtk/monopoly.c \
 	client/gtk/name.c \
+	client/gtk/notification.c \
+	client/gtk/notification.h \
 	client/gtk/offline.c \
 	client/gtk/plenty.c \
 	client/gtk/player.c \
@@ -82,7 +84,7 @@ pioneers_SOURCES = \
 	client/gtk/state.c \
 	client/gtk/trade.c
 
-pioneers_LDADD = libpioneersclient.a $(gtk_libs) $(avahi_libs)
+pioneers_LDADD = libpioneersclient.a $(gtk_libs) $(avahi_libs) $(LIBNOTIFY_LIBS)
 
 # Include the data here, not at the top,
 # it can add extra resources to the executable

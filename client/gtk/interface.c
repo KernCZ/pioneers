@@ -25,6 +25,7 @@
 #include "cost.h"
 #include "histogram.h"
 #include "audio.h"
+#include "notification.h"
 
 /* local functions */
 static void frontend_state_robber(GuiEvent event);
@@ -409,6 +410,8 @@ void frontend_turn(void)
 	}
 	set_gui_state(frontend_state_turn);
 	play_sound(SOUND_TURN);
+	/* Notification */
+	notification_send(_("It is your turn."));
 }
 
 /* development card actions */
@@ -883,4 +886,6 @@ void frontend_setup(G_GNUC_UNUSED unsigned num_settlements,
 	}
 	set_gui_state(frontend_mode_setup);
 	play_sound(SOUND_TURN);
+	/* Notification */
+	notification_send(_("It is your turn to setup."));
 }

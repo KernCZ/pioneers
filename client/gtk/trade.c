@@ -26,6 +26,7 @@
 #include "theme.h"
 #include "common_gtk.h"
 #include "quote-view.h"
+#include "notification.h"
 
 static void trade_update(void);
 
@@ -326,8 +327,17 @@ void trade_add_quote(gint player_num,
 		     gint quote_num, const gint * supply,
 		     const gint * receive)
 {
+	gchar *msg;
+
 	quote_view_add_quote(QUOTEVIEW(quoteview), player_num, quote_num,
 			     supply, receive);
+
+	/* Notification */
+	msg =
+	    g_strdup_printf(_("Quote received from %s."),
+			    player_name(player_num, FALSE));
+	notification_send(msg);
+	g_free(msg);
 }
 
 void trade_delete_quote(gint player_num, gint quote_num)

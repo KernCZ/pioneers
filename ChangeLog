@@ -1,4 +1,11 @@
-2011-09-18  Roland Clobus <rclobus@rclobus.nl.
+2011-10-17  Roland Clobus <rclobus@rclobus.nl>
+	* configure.ac, client/gtk/interface.c, client/gtk/notification.c,
+	client/gtk/notification.h, client/gtk/quote.c, client/gtk/trade.c,
+	client/gtk/offline.c, client/gtk/gui.c, client/gtk/Makefile.am: Added
+	notifications. Many thanks to Patrick <ppa.work@gmail.com> who wrote
+	the basis for the patch.
+
+2011-09-18  Roland Clobus <rclobus@rclobus.nl>
 	* server/robber.c: Fix a crash when moving the pirate before a robber
 	was visible.
 
