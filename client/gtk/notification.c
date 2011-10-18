@@ -31,9 +31,15 @@ void notification_send(const gchar * text)
 	if (show_notifications) {
 		NotifyNotification *notification;
 
+#ifdef HAVE_OLD_NOTIFY
+		notification =
+		    notify_notification_new(g_get_application_name(), text,
+					    NULL, NULL);
+#else
 		notification =
 		    notify_notification_new(g_get_application_name(), text,
 					    NULL);
+#endif
 
 		notify_notification_show(notification, NULL);
 	}

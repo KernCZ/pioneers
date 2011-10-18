@@ -1,6 +1,8 @@
 2011-10-18  Roland Clobus <rclobus@rclobus.nl>
 	* common/gtk/game-rules.c: Turn off pirate when there are no ships.
 	* client/gtk/trade.c: Fix compiler warning.
+	* configure.ac, client/gtk/notification.c: Backport of libnotify for
+	Debian Stable.
 
 2011-10-17  Roland Clobus <rclobus@rclobus.nl>
 	* configure.ac, client/gtk/interface.c, client/gtk/notification.c,

@@ -37,7 +37,8 @@ PIONEERS_DEFAULT_META_SERVER=pioneers.debian.net
 GLIB_REQUIRED_VERSION=2.16
 GTK_REQUIRED_VERSION=2.20
 GTK_OPTIMAL_VERSION=2.24
-LIBNOTIFY_REQUIRED_VERSION=0.7.4
+LIBNOTIFY_REQUIRED_VERSION=0.5.0
+LIBNOTIFY_OPTIMAL_VERSION=0.7.4
 
 AM_MAINTAINER_MODE
 
@@ -213,10 +214,16 @@ PKG_CHECK_MODULES(LIBNOTIFY, libnotify >= $LIBNOTIFY_REQUIRED_VERSION,
 		[have_libnotify="no, libnotify version too old"],
 		[have_libnotify="no, libnotify not installed"])
 		AC_MSG_RESULT($have_libnotify)
+	AC_MSG_RESULT($have_libnotify)
 	])
 if test "$have_libnotify" = "yes"; then
 	AC_DEFINE(HAVE_NOTIFY, 1,
 		[Defined if libnotify is present])
+	PKG_CHECK_MODULES(LIBNOTIFY_OPTIMAL_VERSION,
+		libnotify >= $LIBNOTIFY_OPTIMAL_VERSION,
+		[],
+		AC_DEFINE(HAVE_OLD_NOTIFY, [1],
+			[Defined if an older version of libnotify is available]))
 fi
 
 # Gtk+ support
