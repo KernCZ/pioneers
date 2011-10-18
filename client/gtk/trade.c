@@ -416,7 +416,7 @@ static void quote_selected_cb(G_GNUC_UNUSED QuoteView * quoteview,
  *  @param trade_rows Pointer to TradeRow to store each row's data.
  *  @return Returns the composite widget.
  */
-GtkWidget *build_trade_resources_frame(const gchar * title,
+static GtkWidget *build_trade_resources_frame(const gchar * title,
 				       TradeRow * trade_rows)
 {
 	/* vbox */
