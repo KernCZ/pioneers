@@ -208,6 +208,8 @@ void game_rules_set_use_pirate(GameRules * gr, gboolean val,
 gboolean game_rules_get_use_pirate(GameRules * gr)
 {
 	return
+	    gtk_toggle_button_get_inconsistent(GTK_TOGGLE_BUTTON
+					       (gr->use_pirate)) ? FALSE :
 	    gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON
 					 (gr->use_pirate));
 }
