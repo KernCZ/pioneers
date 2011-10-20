@@ -424,14 +424,19 @@ static GList *load_game_types(void)
 	return titles;
 }
 
+/** Send the title and free the associated memory. */
+static void client_send_type(gpointer data, gpointer user_data)
+{
+	Client *client = user_data;
+
+	client_printf(client, "title=%s\n", data);
+	g_free(data);
+}
+
 static void client_list_types(Client * client)
 {
 	GList *list = load_game_types();
-
-	for (; list != NULL; list = g_list_next(list)) {
-		client_printf(client, "title=%s\n", list->data);
-		g_free(list->data);
-	}
+	g_list_foreach(list, client_send_type, client);
 	g_list_free(list);
 }
 
@@ -1149,11 +1154,8 @@ int main(int argc, char *argv[])
 	game_list = load_game_types();
 	if (game_list) {
 		gchar *server_name;
-		while (game_list) {
-			gpointer data = game_list->data;
-			game_list = g_list_remove(game_list, data);
-			g_free(data);
-		}
+		g_list_foreach(game_list, (GFunc) g_free, NULL);
+		g_list_free(game_list);
 		server_name = g_find_program_in_path(get_server_path());
 		if (server_name) {
 			g_free(server_name);
@@ -1172,7 +1174,6 @@ int main(int argc, char *argv[])
 	my_syslog(LOG_INFO, "Pioneers meta server started.");
 	select_loop();
 
-	g_thread_exit(0);
 	g_free(pidfile);
 	g_free(redirect_location);
 	g_free(myhostname);

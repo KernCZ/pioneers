@@ -1,5 +1,6 @@
 2011-10-20  Roland Clobus <rclobus@rclobus.nl>
-	* client/gtk/trade.c: make reindent
+	* client/gtk/trade.c: make reindent.
+	* meta-server/main.c: Fixed a memory leak.
 
 2011-10-18  Roland Clobus <rclobus@rclobus.nl>
 	* common/gtk/game-rules.c: Turn off pirate when there are no ships.
