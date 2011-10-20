@@ -215,7 +215,7 @@ static gboolean terrain_has_chit(Terrain terrain)
 	return FALSE;
 }
 
-static void build_map_resize(GtkWidget * table, gint col, gint row,
+static void build_map_resize(GtkWidget * table, guint col, guint row,
 			     GtkOrientation dir, GtkWidget ** buttons,
 			     GCallback resize_callback)
 {

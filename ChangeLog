@@ -2,7 +2,10 @@
 	* client/gtk/trade.c: make reindent.
 	* meta-server/main.c: Fixed a memory leak.
 	* docs/pioneers-meta-server.6, meta-server/main.c: Allow gracefull
-	shutdown of the meta-server by sending SIGUSR1. 
+	shutdown of the meta-server by sending SIGUSR1.
+	* editor/gtk/game-resources.c, editor/gtk/editor.c,
+	editor/gtk/game-building.c: Fixed a few warnings with
+	--enable-warnings=full.
 
 2011-10-18  Roland Clobus <rclobus@rclobus.nl>
 	* common/gtk/game-rules.c: Turn off pirate when there are no ships.

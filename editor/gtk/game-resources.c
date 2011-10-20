@@ -70,5 +70,5 @@ void game_resources_set_num_resources(GameResources * gr, gint num)
 
 gint game_resources_get_num_resources(GameResources * gr)
 {
-	return gtk_spin_button_get_value(gr->num_resources);
+	return gtk_spin_button_get_value_as_int(gr->num_resources);
 }

@@ -44,7 +44,7 @@ static void game_buildings_init(GameBuildings * gb)
 	GtkWidget *label;
 	GtkWidget *spin;
 	GtkObject *adjustment;
-	gint row;
+	guint row;
 
 	gtk_table_resize(GTK_TABLE(gb), NUM_BUILD_TYPES - 1, 2);
 	gtk_table_set_row_spacings(GTK_TABLE(gb), 3);
@@ -82,5 +82,5 @@ void game_buildings_set_num_buildings(GameBuildings * gb, gint type,
 
 gint game_buildings_get_num_buildings(GameBuildings * gb, gint type)
 {
-	return gtk_spin_button_get_value(gb->num_buildings[type]);
+	return gtk_spin_button_get_value_as_int(gb->num_buildings[type]);
 }
