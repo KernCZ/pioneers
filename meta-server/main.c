@@ -40,6 +40,7 @@
 #include <sys/stat.h>
 #include <netdb.h>
 #include <time.h>
+#include <signal.h>
 
 #include <glib.h>
 #include "network.h"
@@ -85,6 +86,7 @@ struct _Client {
 static gchar *redirect_location = NULL;
 static gchar *myhostname = NULL;
 static gboolean can_create_games;
+static gboolean request_quit = FALSE;
 
 static int port_low = 0, port_high = 0;
 
@@ -935,7 +937,7 @@ static void check_timeouts(void)
 
 static void select_loop(void)
 {
-	for (;;) {
+	while (!request_quit || client_list != NULL) {
 		fd_set read_res;
 		fd_set write_res;
 		int num;
@@ -1095,6 +1097,11 @@ static GOptionEntry commandline_entries[] = {
 	{NULL, '\0', 0, 0, NULL, NULL, NULL}
 };
 
+static void handle_usr1_signal(G_GNUC_UNUSED int signal)
+{
+	request_quit = TRUE;
+}
+
 int main(int argc, char *argv[])
 {
 	GOptionContext *context;
@@ -1171,9 +1178,18 @@ int main(int argc, char *argv[])
 	if (!setup_accept_sock(PIONEERS_DEFAULT_META_PORT))
 		return 1;
 
+	struct sigaction myusr1action;
+	struct sigaction oldusr1action;
+
+	myusr1action.sa_handler = handle_usr1_signal;
+	myusr1action.sa_flags = 0;
+	sigemptyset(&myusr1action.sa_mask);
+	sigaction(SIGUSR1, &myusr1action, &oldusr1action);
+
 	my_syslog(LOG_INFO, "Pioneers meta server started.");
 	select_loop();
 
+	sigaction(SIGUSR1, &oldusr1action, NULL);
 	g_free(pidfile);
 	g_free(redirect_location);
 	g_free(myhostname);
