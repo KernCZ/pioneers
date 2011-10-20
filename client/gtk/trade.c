@@ -417,7 +417,7 @@ static void quote_selected_cb(G_GNUC_UNUSED QuoteView * quoteview,
  *  @return Returns the composite widget.
  */
 static GtkWidget *build_trade_resources_frame(const gchar * title,
-				       TradeRow * trade_rows)
+					      TradeRow * trade_rows)
 {
 	/* vbox */
 	/*       label */
