@@ -1,5 +1,5 @@
 2011-10-21  Roland Clobus <rclobus@rclobus.nl>
-	* client/gtk/quote.c, client/gtk/trade.c: Fixed comment for translators.
+	* client/gtk/quote.c, client/gtk/trade.c: Fixed comment for translators.	* client/gtk/connect.c: Fixed a typo.
 
 2011-10-20  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/trade.c: make reindent.

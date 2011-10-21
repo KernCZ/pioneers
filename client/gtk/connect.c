@@ -1128,7 +1128,7 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
 						C_META_HOST_SORTABLE);
 	gtk_widget_set_tooltip_text(column->button,
 				    /* Tooltip for column 'Port' */
-				    _("Port of the the game"));
+				    _("Port of the game"));
 
 	column =
 	    /* Column name */
