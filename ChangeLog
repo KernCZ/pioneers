@@ -1,3 +1,6 @@
+2011-10-21  Roland Clobus <rclobus@rclobus.nl>
+	* client/gtk/quote.c, client/gtk/trade.c: Fixed comment for translators.
+
 2011-10-20  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/trade.c: make reindent.
 	* meta-server/main.c: Fixed a memory leak.

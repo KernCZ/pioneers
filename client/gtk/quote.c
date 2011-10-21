@@ -212,10 +212,10 @@ void quote_begin_again(gint player_num, const gint * we_receive,
 	quote_update();
 	set_resource_tables_filter(we_receive, we_supply);
 	frontend_gui_update();
-	/* Notification */
-	msg =
-	    g_strdup_printf(_("New offer from %s."),
-			    player_name(player_num, FALSE));
+	msg = g_strdup_printf(
+				     /* Notification */
+				     _("New offer from %s."),
+				     player_name(player_num, FALSE));
 	notification_send(msg);
 	g_free(msg);
 }
@@ -237,10 +237,10 @@ void quote_begin(gint player_num, const gint * we_receive,
 	frontend_gui_update();
 	/* finally, show the page so the user can see it */
 	gui_show_quote_page(TRUE);
-	/* Notification */
-	msg =
-	    g_strdup_printf(_("Offer from %s."),
-			    player_name(player_num, FALSE));
+	msg = g_strdup_printf(
+				     /* Notification */
+				     _("Offer from %s."),
+				     player_name(player_num, FALSE));
 	notification_send(msg);
 	g_free(msg);
 }

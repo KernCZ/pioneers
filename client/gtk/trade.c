@@ -332,10 +332,10 @@ void trade_add_quote(gint player_num,
 	quote_view_add_quote(QUOTEVIEW(quoteview), player_num, quote_num,
 			     supply, receive);
 
-	/* Notification */
-	msg =
-	    g_strdup_printf(_("Quote received from %s."),
-			    player_name(player_num, FALSE));
+	msg = g_strdup_printf(
+				     /* Notification */
+				     _("Quote received from %s."),
+				     player_name(player_num, FALSE));
 	notification_send(msg);
 	g_free(msg);
 }
