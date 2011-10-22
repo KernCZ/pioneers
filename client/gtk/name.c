@@ -92,7 +92,7 @@ static void change_style_cb(G_GNUC_UNUSED GtkWidget * widget,
 					   (dialog->color_btn1), &c1);
 		gtk_color_button_get_color(GTK_COLOR_BUTTON
 					   (dialog->color_btn2), &c2);
-		variant = (int)
+		variant =
 		    gtk_range_get_value(GTK_RANGE(dialog->variant_btn)) -
 		    1;
 		dialog->current_style =

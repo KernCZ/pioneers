@@ -5,6 +5,8 @@
 	to have a last release in the 0.12-series.
 	* common/gtk/Makefile.am: Added gtkcompat.h for make distcheck.
 	* client/gtk/resource-view.gob: Removed compiler warnings.
+	* common/gtk/theme.c, client/gtk/name.c: Removed compiler warnings for
+	-Wbad-function-cast.
 
 2011-10-21  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/quote.c, client/gtk/trade.c: Fixed comment for translators.	* client/gtk/connect.c: Fixed a typo.

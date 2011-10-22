@@ -299,8 +299,8 @@ static gboolean theme_initialize(MapTheme * t)
 		t->scaledata[i].native_image = pixbuf_copy;
 		t->scaledata[i].native_width =
 		    gdk_pixbuf_get_width(pixbuf);
-		t->scaledata[i].aspect =
-		    (float) gdk_pixbuf_get_width(pixbuf) /
+		t->scaledata[i].aspect = 1.0 *
+		    gdk_pixbuf_get_width(pixbuf) /
 		    gdk_pixbuf_get_height(pixbuf);
 		gdk_pixbuf_render_pixmap_and_mask(pixbuf,
 						  &(t->terrain_tiles[i]),
