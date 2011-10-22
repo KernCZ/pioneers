@@ -1,5 +1,6 @@
 2011-10-22  Roland Clobus <rclobus@rclobus.nl>
 	* all: Updated for 0.12.5 string freeze.
+	* en_GB.po, nl.po: Updated for 0.12.5
 
 2011-02-13  Roland Clobus <rclobus@rclobus.nl>
 	* nl.po: Undo -> Ongedaan maken
