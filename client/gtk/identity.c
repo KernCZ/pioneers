@@ -277,18 +277,7 @@ static gint expose_identity_area_cb(GtkWidget * area,
 	}
 
 	if (die_num[0] > 0 && die_num[1] > 0) {
-		if (game_params->use_cities_and_knights_rules) {
-			/* red die */
-			show_die(cr, area,
-				 area->allocation.width - 70,
-				 die_num[0], &ck_die_yellow,
-				 &ck_die_red, &ck_die_yellow);
-			/* yellow die */
-			show_die(cr, area,
-				 area->allocation.width - 35,
-				 die_num[1], &ck_die_red,
-				 &ck_die_yellow, &ck_die_red);
-		} else {
+		{
 			/* original dice */
 			for (i = 0; i < 2; i++)
 				show_die(cr, area,

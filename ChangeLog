@@ -1,3 +1,9 @@
+2011-10-22  Roland Clobus <rclobus@rclobus.nl>
+	* common/gtk/game-rules.c, common/gtk/game-rules.h, common/game.c,
+	common/game.h, server/gtk/main.c, client/gtk/identify.c: Removed the
+	colored dice patch which was written early after the release of 0.12.4
+	to have a last release in the 0.12-series.
+
 2011-10-21  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/quote.c, client/gtk/trade.c: Fixed comment for translators.	* client/gtk/connect.c: Fixed a typo.
 
