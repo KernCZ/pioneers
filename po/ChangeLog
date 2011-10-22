@@ -1,3 +1,6 @@
+2011-10-22  Roland Clobus <rclobus@rclobus.nl>
+	* all: Updated for 0.12.5 string freeze.
+
 2011-02-13  Roland Clobus <rclobus@rclobus.nl>
 	* nl.po: Undo -> Ongedaan maken
 
@@ -38,60 +41,6 @@
 	* all: Updated for 0.12.4 string freeze
 	* nl.po, en_GB.po: Updated for 0.12.4
 	* all: Added rule for plurals
-
-2010-10-26  Roland Clobus <rclobus@rclobus.nl>
-	* all: Updated for 0.12.4 string freeze
-
-2010-10-26  Roland Clobus <rclobus@rclobus.nl>
-	* all: Updated for 0.12.4 string freeze
-
-2010-10-26  Roland Clobus <rclobus@rclobus.nl>
-	* all: Updated for 0.12.4 string freeze
-
-2010-10-26  Roland Clobus <rclobus@rclobus.nl>
-	* all: Updated for 0.12.4 string freeze
-
-2010-10-26  Roland Clobus <rclobus@rclobus.nl>
-	* all: Updated for 0.12.4 string freeze
-
-2010-10-26  Roland Clobus <rclobus@rclobus.nl>
-	* all: Updated for 0.12.4 string freeze
-
-2010-10-26  Roland Clobus <rclobus@rclobus.nl>
-	* all: Updated for 0.12.4 string freeze
-
-2010-10-26  Roland Clobus <rclobus@rclobus.nl>
-	* all: Updated for 0.12.4 string freeze
-
-2010-10-26  Roland Clobus <rclobus@rclobus.nl>
-	* all: Updated for 0.12.4 string freeze
-
-2010-10-26  Roland Clobus <rclobus@rclobus.nl>
-	* all: Updated for 0.12.4 string freeze
-
-2010-10-26  Roland Clobus <rclobus@rclobus.nl>
-	* all: Updated for 0.12.4 string freeze
-
-2010-10-26  Roland Clobus <rclobus@rclobus.nl>
-	* all: Updated for 0.12.4 string freeze
-
-2010-10-26  Roland Clobus <rclobus@rclobus.nl>
-	* all: Updated for 0.12.4 string freeze
-
-2010-10-26  Roland Clobus <rclobus@rclobus.nl>
-	* all: Updated for 0.12.4 string freeze
-
-2010-10-26  Roland Clobus <rclobus@rclobus.nl>
-	* all: Updated for 0.12.4 string freeze
-
-2010-10-26  Roland Clobus <rclobus@rclobus.nl>
-	* all: Updated for 0.12.4 string freeze
-
-2010-10-26  Roland Clobus <rclobus@rclobus.nl>
-	* all: Updated for 0.12.4 string freeze
-
-2010-10-26  Roland Clobus <rclobus@rclobus.nl>
-	* all: Updated for 0.12.4 string freeze
 
 2010-10-26  Roland Clobus <rclobus@rclobus.nl>
 	* all: Updated for 0.12.4 string freeze
