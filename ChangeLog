@@ -4,6 +4,7 @@
 	colored dice patch which was written early after the release of 0.12.4
 	to have a last release in the 0.12-series.
 	* common/gtk/Makefile.am: Added gtkcompat.h for make distcheck.
+	* client/gtk/resource-view.gob: Removed compiler warnings.
 
 2011-10-21  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/quote.c, client/gtk/trade.c: Fixed comment for translators.	* client/gtk/connect.c: Fixed a typo.

@@ -166,6 +166,9 @@ class Resource:View from Gtk:Misc {
 	private gboolean allocate(GtkWidget * self,
 				  GtkAllocation * allocation,
 				  gpointer user_data) {
+		/* Remove compiler warning */
+		user_data = user_data;
+
 		RESOURCE_VIEW(self)->_priv->max_width = allocation->width;
 		resource_view_calculate_size(RESOURCE_VIEW(self));
 		return FALSE;
@@ -182,6 +185,10 @@ class Resource:View from Gtk:Misc {
 		if (!gtk_widget_get_mapped(self)) {
 			return FALSE;
 		}
+
+		/* Remove compiler warnings */
+		event = event;
+		user_data = user_data;
 
 		gtk_widget_size_request(GTK_WIDGET(self), &r);
 		gtk_widget_get_allocation(GTK_WIDGET(self), &allocation);
