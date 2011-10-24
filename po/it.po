@@ -2,14 +2,14 @@
 # Copyright (C) 1999-2001 Dave Cole
 # Copyright (C) 2000-2002 Andy Heroff
 # This file is distributed under the same license as the pioneers package.
-# Giancarlo Capella <giancarlo@comm.cc>, 2005-2007.
+# Giancarlo Capella <giancarlo@comm.cc>, 2005-2011.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Pioneers 0.12.4\n"
+"Project-Id-Version: Pioneers 0.12.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-10-22 15:21+0200\n"
-"PO-Revision-Date: 2010-10-26 20:12:00+0200\n"
+"PO-Revision-Date: 2011-10-24 20:12:00+0200\n"
 "Last-Translator: Giancarlo Capella <giancarlo@comm.cc>\n"
 "Language-Team: it <it@li.org>\n"
 "Language: it\n"
@@ -552,12 +552,12 @@ msgstr "%s ha preso %s da %s.\n"
 #: ../client/common/player.c:124 ../server/player.c:557
 #, c-format
 msgid "Spectator %d"
-msgstr ""
+msgstr "Spettatore %d"
 
 #: ../client/common/player.c:127
 #, c-format
 msgid "spectator %d"
-msgstr ""
+msgstr "spettatore %d"
 
 #: ../client/common/player.c:136 ../server/player.c:560
 #, c-format
@@ -570,7 +570,7 @@ msgid "player %d"
 msgstr "giocatore %d"
 
 #: ../client/common/player.c:214
-#, fuzzy, c-format
+#, c-format
 msgid "New spectator: %s.\n"
 msgstr "Nuovo spettatore: %s.\n"
 
@@ -1192,7 +1192,6 @@ msgstr "Porta"
 
 #. Tooltip for column 'Port'
 #: ../client/gtk/connect.c:1131
-#, fuzzy
 msgid "Port of the game"
 msgstr "Porta della partita"
 
@@ -1226,10 +1225,9 @@ msgstr "Inserisci il tuo nome"
 #. Role of the player: spectator
 #: ../client/gtk/connect.c:1275 ../server/gtk/main.c:650
 msgid "Spectator"
-msgstr ""
+msgstr "Spettatore"
 
 #: ../client/gtk/connect.c:1285
-#, fuzzy
 msgid "Check if you want to be a spectator"
 msgstr "Imposta se vuoi essere uno spettatore"
 
@@ -1608,29 +1606,28 @@ msgstr "Configura l'applicazione"
 
 #. Menu entry
 #: ../client/gtk/gui.c:348 ../editor/gtk/editor.c:1192
-#, fuzzy
 msgid "_View"
-msgstr "Spettatore"
+msgstr "_Spettatore"
 
 #. Menu entry
 #: ../client/gtk/gui.c:351 ../editor/gtk/editor.c:1236
 msgid "_Reset"
-msgstr ""
+msgstr "_Azzera"
 
 #. Tooltip for Reset menu entry
 #: ../client/gtk/gui.c:354 ../editor/gtk/editor.c:1239
 msgid "View the full map"
-msgstr ""
+msgstr "Visualizza la mappa intera"
 
 #. Menu entry
 #: ../client/gtk/gui.c:357 ../editor/gtk/editor.c:1242
 msgid "_Center"
-msgstr ""
+msgstr "_Centra"
 
 #. Tooltip for Center menu entry
 #: ../client/gtk/gui.c:359 ../editor/gtk/editor.c:1244
 msgid "Center the map"
-msgstr ""
+msgstr "Centra la mappa"
 
 #. Menu entry
 #: ../client/gtk/gui.c:363 ../client/gtk/gui.c:372 ../editor/gtk/editor.c:1195
@@ -1656,12 +1653,12 @@ msgstr "Visualizza il manuale"
 #. Menu entry
 #: ../client/gtk/gui.c:382 ../editor/gtk/editor.c:1262
 msgid "_Fullscreen"
-msgstr ""
+msgstr "Schermo intero"
 
 #. Tooltip for Fullscreen menu entry
 #: ../client/gtk/gui.c:385 ../editor/gtk/editor.c:1265
 msgid "Set window to full screen mode"
-msgstr ""
+msgstr "Imposta la finestra a schermo intero"
 
 #. Menu entry
 #: ../client/gtk/gui.c:390
@@ -1691,7 +1688,7 @@ msgstr "Mappa"
 #. Tooltip
 #: ../client/gtk/gui.c:717
 msgid "Finish trading"
-msgstr "_Termina contrattazioni"
+msgstr "Termina contrattazioni"
 
 #. Tab page name
 #. Button text
@@ -1797,21 +1794,21 @@ msgstr "Annuncia nuovi giocatori"
 
 #. Tooltip for the option to use sound when players/spectators enter
 #: ../client/gtk/gui.c:1202
-#, fuzzy
 msgid "Make a sound when a new player or spectator enters the game"
 msgstr ""
 "Esegue un suono quando un nuovo giocatore o spettatore entra nella partita"
 
 #. Label for the option to use the notifications.
 #: ../client/gtk/gui.c:1214
-#, fuzzy
 msgid "Show notifications"
-msgstr "Mostra informazioni di versione"
+msgstr "Mostra notifiche"
 
 #. Tooltip for notifications option.
 #: ../client/gtk/gui.c:1224
 msgid "Show notifications when it's your turn or when new trade is available"
 msgstr ""
+"Mostra notifiche quando è il tuo turno o quando è disponibile un nuovo "
+"commercio"
 
 #. Label for the option to use the 16:9 layout.
 #: ../client/gtk/gui.c:1230
@@ -1855,9 +1852,8 @@ msgstr "Seleziona una nuova posizione per la nave."
 
 #. Notification
 #: ../client/gtk/interface.c:890
-#, fuzzy
 msgid "It is your turn to setup."
-msgstr "E' il tuo turno."
+msgstr "E' il tuo turno di posizionamento."
 
 #: ../client/gtk/legend.c:33
 msgid "Hill"
@@ -1938,7 +1934,6 @@ msgid "Variant:"
 msgstr "Variante:"
 
 #: ../client/gtk/offline.c:62
-#, fuzzy
 msgid "Connect as a spectator"
 msgstr "Connetti come spettatore"
 
@@ -2079,15 +2074,15 @@ msgstr "%s ha %s, e cerca %s"
 
 #. Notification
 #: ../client/gtk/quote.c:217
-#, fuzzy, c-format
+#, c-format
 msgid "New offer from %s."
-msgstr "Hai rubato %s da %s.\n"
+msgstr "Nuova offerta da %s."
 
 #. Notification
 #: ../client/gtk/quote.c:242
 #, c-format
 msgid "Offer from %s."
-msgstr ""
+msgstr "Offerta da %s."
 
 #. Label
 #. Frame title, trade: I want to trade these resources
@@ -2352,9 +2347,9 @@ msgstr "Io voglio %s, dai loro %s"
 
 #. Notification
 #: ../client/gtk/trade.c:337
-#, fuzzy, c-format
+#, c-format
 msgid "Quote received from %s."
-msgstr "%s ha ricevuto %s.\n"
+msgstr "Quotazione ricevuta da %s."
 
 #. Button text, trade: call for quotes from other players
 #: ../client/gtk/trade.c:528
@@ -2713,7 +2708,7 @@ msgstr "Giocatore 8: "
 #. Log prefix
 #: ../common/log.c:137
 msgid "Spectator: "
-msgstr ""
+msgstr "Spettatore: "
 
 #. Log prefix
 #: ../common/log.c:141
@@ -2941,20 +2936,19 @@ msgstr "SE"
 
 #: ../editor/gtk/editor.c:229
 msgid "Insert a row"
-msgstr ""
+msgstr "Inserisce una riga"
 
 #: ../editor/gtk/editor.c:230
-#, fuzzy
 msgid "Delete a row"
-msgstr "Cancella"
+msgstr "Cancella una riga"
 
 #: ../editor/gtk/editor.c:231
 msgid "Insert a column"
-msgstr ""
+msgstr "Inserisce una colonna"
 
 #: ../editor/gtk/editor.c:232
 msgid "Delete a column"
-msgstr ""
+msgstr "Cancella una colonna"
 
 #. Menu item
 #: ../editor/gtk/editor.c:680
@@ -3294,7 +3288,6 @@ msgstr "Rendi casuale l'ordine dei turni"
 
 #. Tooltip for server connection overview
 #: ../server/gtk/main.c:698
-#, fuzzy
 msgid "Shows all players and spectators connected to the server"
 msgstr "Visualizza tutti i giocatori e gli spettatori connessi"
 
@@ -3339,7 +3332,6 @@ msgid "Role"
 msgstr "Ruolo"
 
 #: ../server/gtk/main.c:760
-#, fuzzy
 msgid "Player or spectator"
 msgstr "Giocatore o spettatore"
 
