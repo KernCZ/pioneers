@@ -1607,7 +1607,7 @@ msgstr "Configura l'applicazione"
 #. Menu entry
 #: ../client/gtk/gui.c:348 ../editor/gtk/editor.c:1192
 msgid "_View"
-msgstr "_Spettatore"
+msgstr "_Vista"
 
 #. Menu entry
 #: ../client/gtk/gui.c:351 ../editor/gtk/editor.c:1236
@@ -1653,7 +1653,7 @@ msgstr "Visualizza il manuale"
 #. Menu entry
 #: ../client/gtk/gui.c:382 ../editor/gtk/editor.c:1262
 msgid "_Fullscreen"
-msgstr "Schermo intero"
+msgstr "_Schermo intero"
 
 #. Tooltip for Fullscreen menu entry
 #: ../client/gtk/gui.c:385 ../editor/gtk/editor.c:1265
