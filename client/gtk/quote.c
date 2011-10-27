@@ -216,7 +216,7 @@ void quote_begin_again(gint player_num, const gint * we_receive,
 				     /* Notification */
 				     _("New offer from %s."),
 				     player_name(player_num, FALSE));
-	notification_send(msg);
+	notification_send(msg, PIONEERS_PIXMAP_TRADE);
 	g_free(msg);
 }
 
@@ -241,7 +241,7 @@ void quote_begin(gint player_num, const gint * we_receive,
 				     /* Notification */
 				     _("Offer from %s."),
 				     player_name(player_num, FALSE));
-	notification_send(msg);
+	notification_send(msg, PIONEERS_PIXMAP_TRADE);
 	g_free(msg);
 }
 

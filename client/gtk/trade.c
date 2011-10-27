@@ -336,7 +336,7 @@ void trade_add_quote(gint player_num,
 				     /* Notification */
 				     _("Quote received from %s."),
 				     player_name(player_num, FALSE));
-	notification_send(msg);
+	notification_send(msg, PIONEERS_PIXMAP_TRADE);
 	g_free(msg);
 }
 

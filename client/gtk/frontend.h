@@ -308,16 +308,16 @@ gboolean plenty_can_activate(void);
 /* gameover.c */
 GtkWidget *gameover_create_dlg(gint player_num, gint num_points);
 
-#define PIONEERS_PIXMAP_DICE "pioneers/dice.png"
-#define PIONEERS_PIXMAP_TRADE "pioneers/trade.png"
-#define PIONEERS_PIXMAP_ROAD "pioneers/road.png"
-#define PIONEERS_PIXMAP_SHIP "pioneers/ship.png"
-#define PIONEERS_PIXMAP_SHIP_MOVEMENT "pioneers/ship_move.png"
-#define PIONEERS_PIXMAP_BRIDGE "pioneers/bridge.png"
-#define PIONEERS_PIXMAP_SETTLEMENT "pioneers/settlement.png"
-#define PIONEERS_PIXMAP_CITY "pioneers/city.png"
-#define PIONEERS_PIXMAP_CITY_WALL "pioneers/city_wall.png"
-#define PIONEERS_PIXMAP_DEVELOP "pioneers/develop.png"
-#define PIONEERS_PIXMAP_FINISH "pioneers/finish.png"
+#define PIONEERS_PIXMAP_DICE "pioneers/dice.svg"
+#define PIONEERS_PIXMAP_TRADE "pioneers/trade.svg"
+#define PIONEERS_PIXMAP_ROAD "pioneers/road.svg"
+#define PIONEERS_PIXMAP_SHIP "pioneers/ship.svg"
+#define PIONEERS_PIXMAP_SHIP_MOVEMENT "pioneers/ship_move.svg"
+#define PIONEERS_PIXMAP_BRIDGE "pioneers/bridge.svg"
+#define PIONEERS_PIXMAP_SETTLEMENT "pioneers/settlement.svg"
+#define PIONEERS_PIXMAP_CITY "pioneers/city.svg"
+#define PIONEERS_PIXMAP_CITY_WALL "pioneers/city_wall.svg"
+#define PIONEERS_PIXMAP_DEVELOP "pioneers/develop.svg"
+#define PIONEERS_PIXMAP_FINISH "pioneers/finish.svg"
 
 #endif

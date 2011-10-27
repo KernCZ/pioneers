@@ -24,18 +24,18 @@ include client/gtk/data/themes/Makefile.am
 icon_DATA += client/gtk/data/pioneers.png
 
 pixmap_DATA += \
-	client/gtk/data/bridge.png \
-	client/gtk/data/city.png \
-	client/gtk/data/city_wall.png \
-	client/gtk/data/develop.png \
-	client/gtk/data/dice.png \
-	client/gtk/data/finish.png \
-	client/gtk/data/road.png \
-	client/gtk/data/settlement.png \
-	client/gtk/data/ship.png \
-	client/gtk/data/ship_move.png \
+	client/gtk/data/bridge.svg \
+	client/gtk/data/city.svg \
+	client/gtk/data/city_wall.svg \
+	client/gtk/data/develop.svg \
+	client/gtk/data/dice.svg \
+	client/gtk/data/finish.svg \
+	client/gtk/data/road.svg \
+	client/gtk/data/settlement.svg \
+	client/gtk/data/ship.svg \
+	client/gtk/data/ship_move.svg \
 	client/gtk/data/splash.png \
-	client/gtk/data/trade.png \
+	client/gtk/data/trade.svg \
 	client/gtk/data/brick.png \
 	client/gtk/data/grain.png \
 	client/gtk/data/lumber.png \

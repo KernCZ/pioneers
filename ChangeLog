@@ -1,3 +1,11 @@
+2011-10-27  Roland Clobus <rclobus@rclobus.nl>
+	* client/gtk/frontend.h, client/gtk/notification.c,
+	client/gtk/notification.h, client/gtk/quote.c, client/gtk/trade.c:
+	Use the toolbar icons in the notification messages.
+	* client/gtk/data/Makefile.am, client/gtk/data/*.svg,
+	client/gtk/data/*.png: Replaced PNG bitmaps of the toolbar items byi
+	SVG vector images.
+
 2011-10-22  Roland Clobus <rclobus@rclobus.nl>
 	* common/gtk/game-rules.c, common/gtk/game-rules.h, common/game.c,
 	common/game.h, server/gtk/main.c, client/gtk/identify.c: Removed the
@@ -9,7 +17,8 @@
 	-Wbad-function-cast.
 
 2011-10-21  Roland Clobus <rclobus@rclobus.nl>
-	* client/gtk/quote.c, client/gtk/trade.c: Fixed comment for translators.	* client/gtk/connect.c: Fixed a typo.
+	* client/gtk/quote.c, client/gtk/trade.c: Fixed comment for translators.
+	* client/gtk/connect.c: Fixed a typo.
 
 2011-10-20  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/trade.c: make reindent.
