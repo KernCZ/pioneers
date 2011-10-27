@@ -6,8 +6,8 @@ num-players 4
 sevens-rule 0
 victory-points 10
 num-roads 15
-num-bridges 0
-num-ships 0
+num-bridges 4
+num-ships 4
 num-settlements 5
 num-cities 4
 num-city-walls 10
