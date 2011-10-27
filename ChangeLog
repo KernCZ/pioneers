@@ -1,7 +1,8 @@
 2011-10-27  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/frontend.h, client/gtk/notification.c,
-	client/gtk/notification.h, client/gtk/quote.c, client/gtk/trade.c:
-	Use the toolbar icons in the notification messages.
+	client/gtk/notification.h, client/gtk/quote.c, client/gtk/trade.c,
+	client/gtk/interface.c: Use the toolbar icons in the notification
+	messages.
 	* client/gtk/data/Makefile.am, client/gtk/data/*.svg,
 	client/gtk/data/*.png: Replaced PNG bitmaps of the toolbar items by
 	SVG vector images.

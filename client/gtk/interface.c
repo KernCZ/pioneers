@@ -411,7 +411,7 @@ void frontend_turn(void)
 	set_gui_state(frontend_state_turn);
 	play_sound(SOUND_TURN);
 	/* Notification */
-	notification_send(_("It is your turn."));
+	notification_send(_("It is your turn."), PIONEERS_PIXMAP_DICE);
 }
 
 /* development card actions */
@@ -887,5 +887,6 @@ void frontend_setup(G_GNUC_UNUSED unsigned num_settlements,
 	set_gui_state(frontend_mode_setup);
 	play_sound(SOUND_TURN);
 	/* Notification */
-	notification_send(_("It is your turn to setup."));
+	notification_send(_("It is your turn to setup."),
+			  PIONEERS_PIXMAP_SETTLEMENT);
 }
