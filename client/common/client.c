@@ -1644,7 +1644,6 @@ gboolean mode_robber_response(StateMachine * sm, gint event)
 	case SM_RECV:
 		if (sm_recv(sm, "robber-done")) {
 			waiting_for_network(FALSE);
-			sm_stack_dump(sm);
 			/* current state is response
 			 * parent is steal
 			 * parent is move_response

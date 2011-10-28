@@ -6,7 +6,8 @@
 	* client/gtk/data/Makefile.am, client/gtk/data/*.svg,
 	client/gtk/data/*.png: Replaced PNG bitmaps of the toolbar items by
 	SVG vector images.
-	* server/theme_preview.game: Include bridges and ship in the preview.
+	* server/theme_preview.game: Included bridges and ship in the preview.
+	* client/common/client.c: Removed old stack dump.
 
 2011-10-22  Roland Clobus <rclobus@rclobus.nl>
 	* common/gtk/game-rules.c, common/gtk/game-rules.h, common/game.c,
