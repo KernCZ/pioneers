@@ -3,6 +3,8 @@
 	Forget players in the lobby when they disconnect. Don't start the lobby
 	game.
 	* admin-scripts/meta.sh: Allow more games to be hosted.
+	* client/gtk/resource-view.gob: Don't request more space for the
+	single resource view.
 
 2011-10-27  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/frontend.h, client/gtk/notification.c,
