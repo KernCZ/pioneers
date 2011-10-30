@@ -3625,7 +3625,7 @@ msgstr "Na lang wachten zijn er nog steeds geen spelers... Doei.\n"
 #: ../server/player.c:707
 msgid "The last human player left. Waiting for the return of a player."
 msgstr ""
-"The laatste menselijke speler heeft het spel verlaten. Wacht of the "
+"The laatste menselijke speler heeft het spel verlaten. Wacht op de "
 "terugkeer van een speler."
 
 #: ../server/player.c:728
