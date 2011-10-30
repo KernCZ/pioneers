@@ -19,6 +19,7 @@
 	when the road building action was used to win the game before the dice
 	were rolled.
 	* NEWS: Release notes for 0.12.5
+	* TODO: Remove one old and one implemented feature.
 
 2011-10-27  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/frontend.h, client/gtk/notification.c,
