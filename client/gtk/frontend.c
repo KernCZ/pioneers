@@ -175,16 +175,16 @@ void frontend_gui_register_action(GtkAction * action, GuiEvent id)
 }
 
 void frontend_gui_register(GtkWidget * widget, GuiEvent id,
-			   const gchar * signal)
+			   const gchar * gui_signal)
 {
 	GuiWidgetState *gui = gui_new(widget, id);
-	gui->signal = signal;
+	gui->signal = gui_signal;
 	gui->current = TRUE;
 	gui->next = FALSE;
 	g_signal_connect(G_OBJECT(widget), "destroy",
 			 G_CALLBACK(destroy_event_cb), gui);
-	if (signal != NULL)
-		g_signal_connect(G_OBJECT(widget), signal,
+	if (gui_signal != NULL)
+		g_signal_connect(G_OBJECT(widget), gui_signal,
 				 G_CALLBACK(route_event), gui);
 }
 

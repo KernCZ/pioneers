@@ -931,8 +931,8 @@ static void quit_cb(G_GNUC_UNUSED GtkWidget * widget,
 
 static void theme_change_cb(GtkWidget * widget, G_GNUC_UNUSED void *data)
 {
-	gint index = gtk_combo_box_get_active(GTK_COMBO_BOX(widget));
-	MapTheme *theme = g_list_nth_data(theme_get_list(), index);
+	gint idx = gtk_combo_box_get_active(GTK_COMBO_BOX(widget));
+	MapTheme *theme = g_list_nth_data(theme_get_list(), idx);
 	if (theme != theme_get_current()) {
 		config_set_string("settings/theme", theme->name);
 		theme_set_current(theme);
@@ -1575,12 +1575,11 @@ static void register_pixmaps(void)
 		gchar *filename;
 		GtkIconSet *icon;
 
-		icon = gtk_icon_set_new();
+		icon = NULL;
 		/* determine full path to pixmap file */
 		filename = g_build_filename(DATADIR, "pixmaps",
 					    pioneers_pixmaps[idx], NULL);
 		if (g_file_test(filename, G_FILE_TEST_EXISTS)) {
-			GtkIconSource *source;
 			GdkPixbuf *pixbuf;
 			GError *error = NULL;
 			pixbuf =
@@ -1590,11 +1589,8 @@ static void register_pixmaps(void)
 					  filename);
 				g_error_free(error);
 			} else {
-				source = gtk_icon_source_new();
-				gtk_icon_source_set_pixbuf(source, pixbuf);
-				g_object_unref(pixbuf);
-				gtk_icon_set_add_source(icon, source);
-				gtk_icon_source_free(source);
+				icon =
+				    gtk_icon_set_new_from_pixbuf(pixbuf);
 			}
 		} else {
 			/* Missing pixmap */

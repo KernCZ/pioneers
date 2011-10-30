@@ -649,7 +649,7 @@ static gboolean check_other_players(StateMachine * sm)
 	DevelType devel_type;
 	Resource resource_type, supply_type, receive_type;
 	gint player_num, victim_num, card_idx, backwards;
-	gint turn_num, discard_num, num, ratio, die1, die2, x, y, pos;
+	gint discard_num, num, ratio, die1, die2, x, y, pos;
 	gint id;
 	gint resource_list[NO_RESOURCE], wanted_list[NO_RESOURCE];
 	gint sx, sy, spos, dx, dy, dpos;
@@ -744,8 +744,8 @@ static gboolean check_other_players(StateMachine * sm)
 		develop_played(player_num, card_idx, devel_type);
 		return TRUE;
 	}
-	if (sm_recv(sm, "turn %d", &turn_num)) {
-		turn_begin(player_num, turn_num);
+	if (sm_recv(sm, "turn %d", &num)) {
+		turn_begin(player_num, num);
 		return TRUE;
 	}
 	if (sm_recv(sm, "rolled %d %d", &die1, &die2)) {

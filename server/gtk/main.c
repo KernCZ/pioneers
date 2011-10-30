@@ -231,7 +231,7 @@ static void gui_set_server_state(gboolean running)
 				    _("Start the server"));
 }
 
-static void start_clicked_cb(G_GNUC_UNUSED GtkButton * start_btn,
+static void start_clicked_cb(G_GNUC_UNUSED GtkButton * widget,
 			     G_GNUC_UNUSED gpointer user_data)
 {
 	if (server_is_running(game)) {
@@ -314,7 +314,7 @@ static void start_clicked_cb(G_GNUC_UNUSED GtkButton * start_btn,
 	}
 }
 
-static void launchclient_clicked_cb(G_GNUC_UNUSED GtkButton * start_btn,
+static void launchclient_clicked_cb(G_GNUC_UNUSED GtkButton * widget,
 				    G_GNUC_UNUSED gpointer user_data)
 {
 	gchar *child_argv[7];
@@ -350,7 +350,7 @@ static void launchclient_clicked_cb(G_GNUC_UNUSED GtkButton * start_btn,
 	}
 }
 
-static void addcomputer_clicked_cb(G_GNUC_UNUSED GtkButton * start_btn,
+static void addcomputer_clicked_cb(G_GNUC_UNUSED GtkButton * widget,
 				   G_GNUC_UNUSED gpointer user_data)
 {
 	g_assert(server_port != NULL);

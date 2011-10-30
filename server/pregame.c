@@ -738,7 +738,6 @@ gboolean mode_pre_game(Player * player, gint event)
 			for (next = player_first_real(game); next != NULL;
 			     next = player_next_real(next)) {
 				Player *p = (Player *) next->data;
-				GList *list;
 				gint numassets = 0;
 				if (p->num == player->num)
 					continue;

@@ -1829,7 +1829,7 @@ void guimap_cursor_move(GuiMap * gmap, gint x, gint y,
 void guimap_cursor_select(GuiMap * gmap, gint x, gint y)
 {
 	MapElement cursor;
-	SelectFunc select;
+	SelectFunc check_select;
 	MapElement user_data;
 	guimap_cursor_move(gmap, x, y, &cursor);
 
@@ -1846,7 +1846,7 @@ void guimap_cursor_select(GuiMap * gmap, gint x, gint y)
 
 	if (gmap->check_select != NULL) {
 		/* Before processing the select, clear the cursor */
-		select = gmap->check_select;
+		check_select = gmap->check_select;
 		user_data.pointer = gmap->user_data.pointer;
 
 		if (gmap->cursor.pointer != NULL)
@@ -1857,7 +1857,7 @@ void guimap_cursor_select(GuiMap * gmap, gint x, gint y)
 		gmap->cursor.pointer = NULL;
 		gmap->user_data.pointer = NULL;
 		gmap->check_select = NULL;
-		select(cursor, user_data);
+		check_select(cursor, user_data);
 	}
 }
 

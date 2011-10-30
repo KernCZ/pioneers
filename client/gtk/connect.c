@@ -1467,12 +1467,12 @@ static void update_recent_servers_list(void)
 static void host_list_select_cb(GtkWidget * widget, gpointer user_data)
 {
 	GPtrArray *host_entries = user_data;
-	gint index;
+	gint idx;
 	gchar *entry;
 	gchar **strs;
 
-	index = gtk_combo_box_get_active(GTK_COMBO_BOX(widget));
-	entry = g_ptr_array_index(host_entries, index);
+	idx = gtk_combo_box_get_active(GTK_COMBO_BOX(widget));
+	entry = g_ptr_array_index(host_entries, idx);
 	strs = g_strsplit(entry, ":", 2);
 
 	connect_set_field(&connect_server, strs[0]);

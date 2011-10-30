@@ -5,6 +5,13 @@
 	* admin-scripts/meta.sh: Allow more games to be hosted.
 	* client/gtk/resource-view.gob: Don't request more space for the
 	single resource view.
+	* common/gtk/guimap.c, server/gtk/main.c, server/turn.c,
+	server/pregame.c, client/gtk/frontend.c, client/gtk/gui.c,
+	client/gtk/connect.c, client/common/client.c, client/ai/greedy.c:
+	Fixed some shadowed variable names.
+	* client/ai/greedy.c: Fixed a datatype when finding the best road.
+	* client/gtk/gui.c: Used a simpler routine to build the icons for the
+	toolbar.
 
 2011-10-27  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/frontend.h, client/gtk/notification.c,

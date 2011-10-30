@@ -625,7 +625,7 @@ static Edge *traverse_out(Node * n, node_seen_set_t * set, float *score,
 static Edge *best_road_to_road_spot(Node * n, float *score,
 				    const resource_values_t * resval)
 {
-	int bscore = -1.0;
+	float bscore = -1.0;
 	Edge *best = NULL;
 	int i, j;
 
@@ -647,14 +647,14 @@ static Edge *best_road_to_road_spot(Node * n, float *score,
 
 					if (can_road_be_built
 					    (e2, my_player_num())) {
-						float score =
+						float nscore =
 						    score_node(other_node
 							       (e2,
 								othernode),
 							       0, resval);
 
-						if (score > bscore) {
-							bscore = score;
+						if (nscore > bscore) {
+							bscore = nscore;
 							best = e;
 						}
 					}
