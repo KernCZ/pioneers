@@ -593,4 +593,3 @@ gboolean game_is_unstartable(Game * game)
 {
 	return game->params->num_build_type[BUILD_SETTLEMENT] < 2;
 }
-
