@@ -4,7 +4,7 @@
 # Uncomment this to turn on verbose mode. 
 #export DH_VERBOSE=1
 
-CFLAGS += -Wall
+CFLAGS += -Wall -Wl,--as-needed
 
 ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
 	CFLAGS += -O0
