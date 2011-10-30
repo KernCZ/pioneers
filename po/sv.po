@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Pioneers 0.12.3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-10-22 15:21+0200\n"
-"PO-Revision-Date: 2010-03-28 01:26+0000\n"
+"PO-Revision-Date: 2011-10-30 15:06+0100\n"
 "Last-Translator: Daniel Nylander <yeager@ubuntu.com>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -553,12 +553,12 @@ msgstr "%s tog %s från %s.\n"
 #: ../client/common/player.c:124 ../server/player.c:557
 #, c-format
 msgid "Spectator %d"
-msgstr ""
+msgstr "Åskådare %d"
 
 #: ../client/common/player.c:127
 #, c-format
 msgid "spectator %d"
-msgstr ""
+msgstr "åskådare %d"
 
 #: ../client/common/player.c:136 ../server/player.c:560
 #, c-format
@@ -571,7 +571,7 @@ msgid "player %d"
 msgstr "spelare %d"
 
 #: ../client/common/player.c:214
-#, fuzzy, c-format
+#, c-format
 msgid "New spectator: %s.\n"
 msgstr "Ny åskådare: %s.\n"
 
@@ -1229,7 +1229,7 @@ msgstr "Ange ditt namn"
 #. Role of the player: spectator
 #: ../client/gtk/connect.c:1275 ../server/gtk/main.c:650
 msgid "Spectator"
-msgstr ""
+msgstr "Åskådare"
 
 #: ../client/gtk/connect.c:1285
 #, fuzzy
@@ -1611,9 +1611,8 @@ msgstr "Konfigurera programmet"
 
 #. Menu entry
 #: ../client/gtk/gui.c:348 ../editor/gtk/editor.c:1192
-#, fuzzy
 msgid "_View"
-msgstr "Åskådare"
+msgstr ""
 
 #. Menu entry
 #: ../client/gtk/gui.c:351 ../editor/gtk/editor.c:1236
@@ -1800,15 +1799,13 @@ msgstr "Annonsera nya spelare"
 
 #. Tooltip for the option to use sound when players/spectators enter
 #: ../client/gtk/gui.c:1202
-#, fuzzy
 msgid "Make a sound when a new player or spectator enters the game"
 msgstr "Spela ett ljud när en ny spelare eller åskådare kommer in i spelet"
 
 #. Label for the option to use the notifications.
 #: ../client/gtk/gui.c:1214
-#, fuzzy
 msgid "Show notifications"
-msgstr "Visa versionsinformation"
+msgstr ""
 
 #. Tooltip for notifications option.
 #: ../client/gtk/gui.c:1224
@@ -1857,9 +1854,8 @@ msgstr "Välj en ny plats för skeppet."
 
 #. Notification
 #: ../client/gtk/interface.c:890
-#, fuzzy
 msgid "It is your turn to setup."
-msgstr "Det är din tur."
+msgstr ""
 
 #: ../client/gtk/legend.c:33
 msgid "Hill"
@@ -1940,7 +1936,6 @@ msgid "Variant:"
 msgstr "Variant:"
 
 #: ../client/gtk/offline.c:62
-#, fuzzy
 msgid "Connect as a spectator"
 msgstr "Anslut som en åskådare"
 
@@ -2082,9 +2077,9 @@ msgstr "%s har %s och letar efter %s"
 
 #. Notification
 #: ../client/gtk/quote.c:217
-#, fuzzy, c-format
+#, c-format
 msgid "New offer from %s."
-msgstr "Du stal %s från %s.\n"
+msgstr ""
 
 #. Notification
 #: ../client/gtk/quote.c:242
@@ -2357,9 +2352,9 @@ msgstr "Jag vill ha %s och ge dem %s"
 
 #. Notification
 #: ../client/gtk/trade.c:337
-#, fuzzy, c-format
+#, c-format
 msgid "Quote received from %s."
-msgstr "%s mottog %s.\n"
+msgstr ""
 
 #. Button text, trade: call for quotes from other players
 #: ../client/gtk/trade.c:528
@@ -2942,9 +2937,8 @@ msgid "Insert a row"
 msgstr ""
 
 #: ../editor/gtk/editor.c:230
-#, fuzzy
 msgid "Delete a row"
-msgstr "Ta bort"
+msgstr ""
 
 #: ../editor/gtk/editor.c:231
 msgid "Insert a column"
@@ -3203,14 +3197,13 @@ msgstr ""
 
 #: ../server/avahi.c:113 ../server/avahi.c:147 ../server/avahi.c:157
 #: ../server/avahi.c:193 ../server/avahi.c:214 ../server/avahi.c:228
-#, fuzzy, c-format
+#, c-format
 msgid "Avahi error: %s, %s\n"
-msgstr "Fel (%s): %s\n"
+msgstr ""
 
 #: ../server/avahi.c:215 ../server/avahi.c:229
-#, fuzzy
 msgid "Unable to register Avahi server"
-msgstr "Avregistrera från metaserver\n"
+msgstr ""
 
 #: ../server/avahi.c:262
 msgid "Unregistering Avahi.\n"
@@ -3293,7 +3286,6 @@ msgstr "Slumpa fram turordning"
 
 #. Tooltip for server connection overview
 #: ../server/gtk/main.c:698
-#, fuzzy
 msgid "Shows all players and spectators connected to the server"
 msgstr "Visar alla spelare och åskådare anslutna till servern"
 
@@ -3338,9 +3330,8 @@ msgid "Role"
 msgstr "Roll"
 
 #: ../server/gtk/main.c:760
-#, fuzzy
 msgid "Player or spectator"
-msgstr "Åskådare"
+msgstr ""
 
 #. Button text
 #: ../server/gtk/main.c:796
@@ -3552,9 +3543,9 @@ msgstr "Kan inte läsa in parametrarna för spelet\n"
 
 #. Error message
 #: ../server/main.c:275
-#, fuzzy, c-format
+#, c-format
 msgid "Admin port not available.\n"
-msgstr "Tyvärr, %s tillgänglig.\n"
+msgstr ""
 
 #. server-console commandline error
 #: ../server/main.c:282

@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Pioneers 0.10.2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-10-22 15:21+0200\n"
-"PO-Revision-Date: 2010-07-28 18:03+0000\n"
+"PO-Revision-Date: 2011-10-30 14:57+0100\n"
 "Last-Translator: Arthur Rilke <Unknown>\n"
 "Language-Team: Afrikaans <af@li.org>\n"
 "Language: af\n"
@@ -555,12 +555,12 @@ msgstr "%s het %s by %s gevat.\n"
 #: ../client/common/player.c:124 ../server/player.c:557
 #, c-format
 msgid "Spectator %d"
-msgstr ""
+msgstr "Toeskouer %d"
 
 #: ../client/common/player.c:127
 #, c-format
 msgid "spectator %d"
-msgstr ""
+msgstr "toeskouer %d"
 
 #: ../client/common/player.c:136 ../server/player.c:560
 #, c-format
@@ -573,7 +573,7 @@ msgid "player %d"
 msgstr "speler %d"
 
 #: ../client/common/player.c:214
-#, fuzzy, c-format
+#, c-format
 msgid "New spectator: %s.\n"
 msgstr "Nuwe toeskouer %s.\n"
 
@@ -1231,10 +1231,9 @@ msgstr "Tik jou naam"
 #. Role of the player: spectator
 #: ../client/gtk/connect.c:1275 ../server/gtk/main.c:650
 msgid "Spectator"
-msgstr ""
+msgstr "Toeskouer"
 
 #: ../client/gtk/connect.c:1285
-#, fuzzy
 msgid "Check if you want to be a spectator"
 msgstr "Wil jy 'n toeskouer wees?"
 
@@ -1613,9 +1612,8 @@ msgstr "Konfigureer die toepassing"
 
 #. Menu entry
 #: ../client/gtk/gui.c:348 ../editor/gtk/editor.c:1192
-#, fuzzy
 msgid "_View"
-msgstr "Toeskouer"
+msgstr ""
 
 #. Menu entry
 #: ../client/gtk/gui.c:351 ../editor/gtk/editor.c:1236
@@ -1802,15 +1800,13 @@ msgstr "Kondig nuwe spelers aan"
 
 #. Tooltip for the option to use sound when players/spectators enter
 #: ../client/gtk/gui.c:1202
-#, fuzzy
 msgid "Make a sound when a new player or spectator enters the game"
 msgstr "Maak 'n geluid wanner 'n nuwe speler of toeskouer die spel betree"
 
 #. Label for the option to use the notifications.
 #: ../client/gtk/gui.c:1214
-#, fuzzy
 msgid "Show notifications"
-msgstr "Wys weergawe-inligting"
+msgstr ""
 
 #. Tooltip for notifications option.
 #: ../client/gtk/gui.c:1224
@@ -1942,7 +1938,6 @@ msgid "Variant:"
 msgstr ""
 
 #: ../client/gtk/offline.c:62
-#, fuzzy
 msgid "Connect as a spectator"
 msgstr "Skakel in as 'n toeskouer"
 
@@ -2083,9 +2078,9 @@ msgstr "%s het %s, en wil graag %s hê"
 
 #. Notification
 #: ../client/gtk/quote.c:217
-#, fuzzy, c-format
+#, c-format
 msgid "New offer from %s."
-msgstr "Jy het %s gesteel by %s.\n"
+msgstr ""
 
 #. Notification
 #: ../client/gtk/quote.c:242
@@ -2357,9 +2352,9 @@ msgstr "Ek wil %s hê en sal %s gee"
 
 #. Notification
 #: ../client/gtk/trade.c:337
-#, fuzzy, c-format
+#, c-format
 msgid "Quote received from %s."
-msgstr "%s het %s ontvang.\n"
+msgstr ""
 
 #. Button text, trade: call for quotes from other players
 #: ../client/gtk/trade.c:528
@@ -2938,9 +2933,8 @@ msgid "Insert a row"
 msgstr ""
 
 #: ../editor/gtk/editor.c:230
-#, fuzzy
 msgid "Delete a row"
-msgstr "Vee uit"
+msgstr ""
 
 #: ../editor/gtk/editor.c:231
 msgid "Insert a column"
@@ -3205,9 +3199,8 @@ msgid "Avahi error: %s, %s\n"
 msgstr "Fout (%s): %s\n"
 
 #: ../server/avahi.c:215 ../server/avahi.c:229
-#, fuzzy
 msgid "Unable to register Avahi server"
-msgstr "Verbreek koppeling met meta-bediener\n"
+msgstr ""
 
 #: ../server/avahi.c:262
 msgid "Unregistering Avahi.\n"
@@ -3291,7 +3284,6 @@ msgstr "Maak beurtvolgorde deurmekaar"
 
 #. Tooltip for server connection overview
 #: ../server/gtk/main.c:698
-#, fuzzy
 msgid "Shows all players and spectators connected to the server"
 msgstr "Wys alle spelers en toeskouers wat aan die bediener gekoppel is"
 
@@ -3336,9 +3328,8 @@ msgid "Role"
 msgstr "Rol"
 
 #: ../server/gtk/main.c:760
-#, fuzzy
 msgid "Player or spectator"
-msgstr "Speler van toeskouer"
+msgstr "Speler of toeskouer"
 
 #. Button text
 #: ../server/gtk/main.c:796
@@ -3549,9 +3540,9 @@ msgstr "Kan die spel-parameters nie laai nie\n"
 
 #. Error message
 #: ../server/main.c:275
-#, fuzzy, c-format
+#, c-format
 msgid "Admin port not available.\n"
-msgstr "Jammer, %s is beskikbaar.\n"
+msgstr ""
 
 #. server-console commandline error
 #: ../server/main.c:282

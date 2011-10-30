@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: Pioneers 0.12.3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-10-22 15:21+0200\n"
-"PO-Revision-Date: 2008-04-27 21:11+0000\n"
+"PO-Revision-Date: 2011-10-30 15:01+0100\n"
 "Last-Translator: Pit Garbe <piiit@gmx.de>\n"
 "Language-Team: Pit Garbe <piiit@gmx.de>, Roman Hodek <roman@hodek.net>, de "
 "<de@li.org>\n"
@@ -556,12 +556,12 @@ msgstr "%s hat %s von %s genommen.\n"
 #: ../client/common/player.c:124 ../server/player.c:557
 #, c-format
 msgid "Spectator %d"
-msgstr ""
+msgstr "Zuschauer %d"
 
 #: ../client/common/player.c:127
 #, c-format
 msgid "spectator %d"
-msgstr ""
+msgstr "Zuschauer %d"
 
 #: ../client/common/player.c:136 ../server/player.c:560
 #, c-format
@@ -574,7 +574,7 @@ msgid "player %d"
 msgstr "Spieler %d"
 
 #: ../client/common/player.c:214
-#, fuzzy, c-format
+#, c-format
 msgid "New spectator: %s.\n"
 msgstr "Neue Zuschauer: %s.\n"
 
@@ -1230,7 +1230,7 @@ msgstr "Gib deinen Namen ein"
 #. Role of the player: spectator
 #: ../client/gtk/connect.c:1275 ../server/gtk/main.c:650
 msgid "Spectator"
-msgstr ""
+msgstr "Zuschauer"
 
 #: ../client/gtk/connect.c:1285
 #, fuzzy
@@ -1612,9 +1612,8 @@ msgstr "Konfiguriere die Anwendung"
 
 #. Menu entry
 #: ../client/gtk/gui.c:348 ../editor/gtk/editor.c:1192
-#, fuzzy
 msgid "_View"
-msgstr "Zuschauer"
+msgstr ""
 
 #. Menu entry
 #: ../client/gtk/gui.c:351 ../editor/gtk/editor.c:1236
@@ -1801,16 +1800,14 @@ msgstr "Neue Spieler ankündigen"
 
 #. Tooltip for the option to use sound when players/spectators enter
 #: ../client/gtk/gui.c:1202
-#, fuzzy
 msgid "Make a sound when a new player or spectator enters the game"
 msgstr ""
 "Spiele ein Geräusch, wenn ein neuer Spieler oder Zuschauer das Spiel betritt"
 
 #. Label for the option to use the notifications.
 #: ../client/gtk/gui.c:1214
-#, fuzzy
 msgid "Show notifications"
-msgstr "Versionsnummer anzeigen"
+msgstr ""
 
 #. Tooltip for notifications option.
 #: ../client/gtk/gui.c:1224
@@ -1859,9 +1856,8 @@ msgstr "Wähle die neue Position des Schiffes."
 
 #. Notification
 #: ../client/gtk/interface.c:890
-#, fuzzy
 msgid "It is your turn to setup."
-msgstr "Du bist am Zug."
+msgstr ""
 
 #: ../client/gtk/legend.c:33
 msgid "Hill"
@@ -1942,7 +1938,6 @@ msgid "Variant:"
 msgstr "Variante:"
 
 #: ../client/gtk/offline.c:62
-#, fuzzy
 msgid "Connect as a spectator"
 msgstr "Als Zuschauer verbinden"
 
@@ -2387,9 +2382,8 @@ msgstr "Erfindung"
 
 #. Description of the 'Road Building' development card
 #: ../common/cards.c:157
-#, fuzzy
 msgid "Build two new roads"
-msgstr "Baue eine Straße."
+msgstr "Baue zwei Straßen."
 
 #. Description of the 'Monopoly' development card
 #: ../common/cards.c:160
@@ -2721,7 +2715,7 @@ msgstr "Spieler 8: "
 #. Log prefix
 #: ../common/log.c:137
 msgid "Spectator: "
-msgstr ""
+msgstr "Zuschauer:"
 
 #. Log prefix
 #: ../common/log.c:141
@@ -2950,9 +2944,8 @@ msgid "Insert a row"
 msgstr ""
 
 #: ../editor/gtk/editor.c:230
-#, fuzzy
 msgid "Delete a row"
-msgstr "Löschen"
+msgstr ""
 
 #: ../editor/gtk/editor.c:231
 msgid "Insert a column"
@@ -3218,9 +3211,8 @@ msgid "Avahi error: %s, %s\n"
 msgstr "Avahi-Fehler: %s, %s\n"
 
 #: ../server/avahi.c:215 ../server/avahi.c:229
-#, fuzzy
 msgid "Unable to register Avahi server"
-msgstr "Beim Meta-Server austragen\n"
+msgstr ""
 
 #: ../server/avahi.c:262
 msgid "Unregistering Avahi.\n"
@@ -3303,7 +3295,6 @@ msgstr "Rundenreihenfolge mischen"
 
 #. Tooltip for server connection overview
 #: ../server/gtk/main.c:698
-#, fuzzy
 msgid "Shows all players and spectators connected to the server"
 msgstr "Zeigt alle Spieler und Zuschauer die zum Server verbunden sind"
 
@@ -3348,7 +3339,6 @@ msgid "Role"
 msgstr "Rolle"
 
 #: ../server/gtk/main.c:760
-#, fuzzy
 msgid "Player or spectator"
 msgstr "Spieler oder Zuschauer"
 
@@ -3564,9 +3554,9 @@ msgstr "Port des Spiel-Hosts\n"
 
 #. Error message
 #: ../server/main.c:275
-#, fuzzy, c-format
+#, c-format
 msgid "Admin port not available.\n"
-msgstr "Entschuldigung, %s verfügbar.\n"
+msgstr ""
 
 #. server-console commandline error
 #: ../server/main.c:282
@@ -3647,9 +3637,8 @@ msgid "The last human player left. Waiting for the return of a player."
 msgstr ""
 
 #: ../server/player.c:728
-#, fuzzy
 msgid "Resuming the game."
-msgstr "Zuletzt besuchte Spielserver"
+msgstr ""
 
 #. %s is the name of the reconnecting player
 #: ../server/player.c:860
