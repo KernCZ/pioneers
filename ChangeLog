@@ -2,6 +2,7 @@
 	* server/player.c, server/server.c, server/server.h, server/pregame.c:
 	Forget players in the lobby when they disconnect. Don't start the lobby
 	game.
+	* admin-scripts/meta.sh: Allow more games to be hosted.
 
 2011-10-27  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/frontend.h, client/gtk/notification.c,
