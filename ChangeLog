@@ -18,6 +18,7 @@
 	* server/develop.c: Fixed a bug that would stop the server on an assert
 	when the road building action was used to win the game before the dice
 	were rolled.
+	* NEWS: Release notes for 0.12.5
 
 2011-10-27  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/frontend.h, client/gtk/notification.c,

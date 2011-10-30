@@ -1,3 +1,15 @@
+Subversion release 0.12.5
+* New features:
+  * These features were written by Micah Bunting:
+    * The maps in the editor can be manipulated more easily
+    * The map can be zoomed
+    * Full screen mode
+  * Notifications. With thanks to Patrick
+* Bugfixes:
+  * Cosmetic fixes to the way the map is drawn
+  * Fixed some crashes involving the pirate
+  * Fixed some memory leaks in the meta server
+
 Subversion release 0.12.4
 * New features:
   * Added a logbot type computer player. With thanks to Andreas Steinel
