@@ -1,4 +1,10 @@
 2011-10-30  Roland Clobus <rclobus@rclobus.nl>
+	* configure.ac: Work version is 14.1
+
+2011-10-30  Roland Clobus <rclobus@rclobus.nl>
+	* Released 0.12.5
+
+2011-10-30  Roland Clobus <rclobus@rclobus.nl>
 	* server/player.c, server/server.c, server/server.h, server/pregame.c:
 	Forget players in the lobby when they disconnect. Don't start the lobby
 	game.
