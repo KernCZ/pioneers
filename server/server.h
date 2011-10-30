@@ -245,6 +245,7 @@ Game *server_start(const GameParams * params, const gchar * hostname,
 gboolean server_stop(Game * game);
 gboolean server_is_running(Game * game);
 gint accept_connection(gint in_fd, gchar ** location);
+gboolean game_is_unstartable(Game * game);
 
 /**** game list control functions ****/
 void game_list_prepare(void);

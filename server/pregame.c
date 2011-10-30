@@ -329,6 +329,11 @@ static void try_start_game(Game * game)
 	if (num != game->params->num_players)
 		return;
 
+	if (game_is_unstartable(game)) {
+		/* this game cannot be started, don't enter the setup phase */
+		return;
+	}
+
 	if (numturn > 0) {
 		/* someone got disconnected. Now everyone's back. Let's
 		   continue the game... */

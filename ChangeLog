@@ -1,3 +1,8 @@
+2011-10-30  Roland Clobus <rclobus@rclobus.nl>
+	* server/player.c, server/server.c, server/server.h, server/pregame.c:
+	Forget players in the lobby when they disconnect. Don't start the lobby
+	game.
+
 2011-10-27  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/frontend.h, client/gtk/notification.c,
 	client/gtk/notification.h, client/gtk/quote.c, client/gtk/trade.c,
