@@ -1,6 +1,7 @@
 2011-10-30  Roland Clobus <rclobus@rclobus.nl>
 	* af.po, de.po, sv.po: Fixed 'Spectator' translations.
 	* nl.po: Fixed a typo.
+	* all: Updated line numbers for the 0.12.5 release.
 
 2011-10-24  Giancarlo Capella <giancarlo@comm.cc>
 	* it.po: Modifications for the View menu.

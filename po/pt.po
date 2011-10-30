@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 0.12.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-22 15:21+0200\n"
+"POT-Creation-Date: 2011-10-30 20:44+0100\n"
 "PO-Revision-Date: 2010-06-05 16:17+0000\n"
 "Last-Translator: Tiago Silva <Unknown>\n"
 "Language-Team: Portuguese <pt@li.org>\n"
@@ -393,7 +393,7 @@ msgid "%s receives %s.\n"
 msgstr "%s recebe %s.\n"
 
 #. Year of Plenty
-#: ../client/common/client.c:724 ../client/common/client.c:2683
+#: ../client/common/client.c:724 ../client/common/client.c:2682
 #, c-format
 msgid "%s takes %s.\n"
 msgstr "%s tira %s.\n"
@@ -468,34 +468,34 @@ msgstr "Escolhe o edifício que queres roubar."
 msgid "Select the ship to steal from."
 msgstr "Seleccione o barco a roubar"
 
-#: ../client/common/client.c:1673 ../client/gtk/interface.c:788
+#: ../client/common/client.c:1672 ../client/gtk/interface.c:788
 msgid "Place the robber."
 msgstr "Coloca o ladrão."
 
-#: ../client/common/client.c:1723
+#: ../client/common/client.c:1722
 msgid "Finish the road building action."
 msgstr "Termina a acção de construcção do caminho"
 
-#: ../client/common/client.c:1725
+#: ../client/common/client.c:1724
 msgid "Build one road segment."
 msgstr "Construir um segmento de caminho."
 
-#: ../client/common/client.c:1727
+#: ../client/common/client.c:1726
 msgid "Build two road segments."
 msgstr "Construir dois segmentos de caminho."
 
 #. Notification
-#: ../client/common/client.c:2000 ../client/common/client.c:2094
+#: ../client/common/client.c:1999 ../client/common/client.c:2093
 #: ../client/gtk/interface.c:414
 msgid "It is your turn."
 msgstr "É o teu turno."
 
-#: ../client/common/client.c:2188
+#: ../client/common/client.c:2187
 #, c-format
 msgid "Sorry, %s available.\n"
 msgstr "Desculpa, %s disponível.\n"
 
-#: ../client/common/client.c:2502
+#: ../client/common/client.c:2501
 msgid "The game is over."
 msgstr "Fim do jogo."
 
@@ -1836,7 +1836,7 @@ msgstr "Bem-vindo ao Pioneers!"
 
 #. The name of the application
 #. Name of the application
-#: ../client/gtk/gui.c:1629 ../client/gtk/offline.c:196
+#: ../client/gtk/gui.c:1625 ../client/gtk/offline.c:196
 #: ../client/gtk/pioneers.desktop.in.h:1
 msgid "Pioneers"
 msgstr "Pioneers"
@@ -3636,26 +3636,26 @@ msgstr "Nome não mudado: novo nome está já em uso"
 msgid "Was hanging around for too long without players... bye.\n"
 msgstr "Estava à espera à muito tempo sem jogadores...Adeus.\n"
 
-#: ../server/player.c:707
+#: ../server/player.c:712
 msgid "The last human player left. Waiting for the return of a player."
 msgstr ""
 
-#: ../server/player.c:728
+#: ../server/player.c:733
 msgid "Resuming the game."
 msgstr ""
 
 #. %s is the name of the reconnecting player
-#: ../server/player.c:860
+#: ../server/player.c:865
 #, c-format
 msgid "%s has reconnected."
 msgstr "%s reconectou-se."
 
-#: ../server/player.c:991
+#: ../server/player.c:996
 #, c-format
 msgid "Version mismatch: %s"
 msgstr "Versão não coincide: %s"
 
-#: ../server/player.c:1028
+#: ../server/player.c:1033
 msgid "This game will start soon."
 msgstr "Este jogo começará em breve"
 
@@ -3687,7 +3687,7 @@ msgid "Tried to assign resources to NULL player.\n"
 msgstr "Tentativa de atribuir recursos ao jogador NULL.\n"
 
 #. Cheat mode has been activated
-#: ../server/turn.c:495
+#: ../server/turn.c:493
 msgid "The dice roll has been determined by the administrator."
 msgstr "O lançamento dos dados foi determinado pelo administrador"
 
