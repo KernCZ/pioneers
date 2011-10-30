@@ -369,7 +369,7 @@ void develop_play(Player * player, gint idx)
 	Game *game = player->game;
 	DevelType card;
 
-	if (idx >= player->devel->num_cards) {
+	if (idx >= player->devel->num_cards || idx < 0) {
 		player_send(player, FIRST_VERSION, LATEST_VERSION,
 			    "ERR no-card\n");
 		return;

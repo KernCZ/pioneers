@@ -12,6 +12,9 @@
 	* client/ai/greedy.c: Fixed a datatype when finding the best road.
 	* client/gtk/gui.c: Used a simpler routine to build the icons for the
 	toolbar.
+	* server/develop.c: Added extra check to see if the development card
+	that is being played is valid. With thanks to miton
+	<mitons@users.sourceforge.net> for reporting this issue.
 
 2011-10-27  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/frontend.h, client/gtk/notification.c,
