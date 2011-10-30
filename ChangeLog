@@ -15,6 +15,9 @@
 	* server/develop.c: Added extra check to see if the development card
 	that is being played is valid. With thanks to miton
 	<mitons@users.sourceforge.net> for reporting this issue.
+	* server/develop.c: Fixed a bug that would stop the server on an assert
+	when the road building action was used to win the game before the dice
+	were rolled.
 
 2011-10-27  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/frontend.h, client/gtk/notification.c,

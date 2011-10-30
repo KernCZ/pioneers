@@ -174,8 +174,8 @@ gboolean mode_road_building(Player * player, gint event)
 		/* Send ack to client, check for victory, and quit.
 		 */
 		player_send(player, FIRST_VERSION, LATEST_VERSION, "OK\n");
-		check_victory(player);
 		sm_pop(sm);
+		check_victory(player);
 		return TRUE;
 	}
 
