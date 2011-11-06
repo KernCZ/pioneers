@@ -1,3 +1,7 @@
+2011-11-06  Roland Clobus <rclobus@rclobus.nl>
+	* server/gtk/main.c: Removed Gtk-CRITICAL messages by setting the
+	togglebutton after the items to be disabled have been created.
+
 2011-10-30  Roland Clobus <rclobus@rclobus.nl>
 	* configure.ac: Work version is 14.1
 
