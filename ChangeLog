@@ -1,3 +1,8 @@
+2011-11-07  Roland Clobus <rclobus@rclobus.nl>
+	* editor/gtk/game-resources.c, editor/gtk/game-devcards.c,
+	editor/gtk/game-buildings.c, editor/gtk/game-settings.c,
+	common/gtk/aboutbox.c, server/gtk/main.c: Some preparation for Gtk+3.
+
 2011-11-06  Roland Clobus <rclobus@rclobus.nl>
 	* server/gtk/main.c: Removed Gtk-CRITICAL messages by setting the
 	togglebutton after the items to be disabled have been created.

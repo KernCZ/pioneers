@@ -38,7 +38,7 @@ static void game_resources_init(GameResources * gr)
 {
 	GtkWidget *label;
 	GtkWidget *spin;
-	GtkObject *adjustment;
+	GtkAdjustment *adjustment;
 
 	gtk_table_resize(GTK_TABLE(gr), 1, 2);
 	gtk_table_set_row_spacings(GTK_TABLE(gr), 3);
@@ -49,7 +49,8 @@ static void game_resources_init(GameResources * gr)
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 	gtk_table_attach_defaults(GTK_TABLE(gr), label, 0, 1, 0, 1);
 
-	adjustment = gtk_adjustment_new(0, 0, 100, 1, 5, 0);
+	adjustment =
+	    GTK_ADJUSTMENT(gtk_adjustment_new(0, 0, 100, 1, 5, 0));
 	spin = gtk_spin_button_new(GTK_ADJUSTMENT(adjustment), 1, 0);
 	gtk_entry_set_alignment(GTK_ENTRY(spin), 1.0);
 	gtk_table_attach_defaults(GTK_TABLE(gr), spin, 1, 2, 0, 1);

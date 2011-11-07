@@ -706,7 +706,8 @@ static GtkWidget *build_connected_tree_view(void)
 						     PLAYER_COLUMN_CONNECTED,
 						     NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(tree_view), column);
-	gtk_widget_set_tooltip_text(column->button,
+	gtk_widget_set_tooltip_text(gtk_tree_view_column_get_widget
+				    (column),
 				    /* Tooltip for column Connected */
 				    _(""
 				      "Is the player currently connected?"));
@@ -719,7 +720,8 @@ static GtkWidget *build_connected_tree_view(void)
 						     PLAYER_COLUMN_NAME,
 						     NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(tree_view), column);
-	gtk_widget_set_tooltip_text(column->button,
+	gtk_widget_set_tooltip_text(gtk_tree_view_column_get_widget
+				    (column),
 				    /* Tooltip for column Name */
 				    _("Name of the player"));
 
@@ -731,7 +733,8 @@ static GtkWidget *build_connected_tree_view(void)
 						     PLAYER_COLUMN_LOCATION,
 						     NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(tree_view), column);
-	gtk_widget_set_tooltip_text(column->button,
+	gtk_widget_set_tooltip_text(gtk_tree_view_column_get_widget
+				    (column),
 				    /* Tooltip for column Location */
 				    _("Host name of the player"));
 
@@ -745,8 +748,10 @@ static GtkWidget *build_connected_tree_view(void)
 						     NULL);
 	g_object_set(renderer, "xalign", 1.0f, NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(tree_view), column);
-	/* Tooltip for column Number */
-	gtk_widget_set_tooltip_text(column->button, _("Player number"));
+	gtk_widget_set_tooltip_text(gtk_tree_view_column_get_widget
+				    (column),
+				    /* Tooltip for column Number */
+				    _("Player number"));
 
 	renderer = gtk_cell_renderer_text_new();
 
@@ -755,8 +760,9 @@ static GtkWidget *build_connected_tree_view(void)
 	    gtk_tree_view_column_new_with_attributes(_("Role"), renderer,
 						     NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(tree_view), column);
-	/* Tooltip for column Role */
-	gtk_widget_set_tooltip_text(column->button,
+	gtk_widget_set_tooltip_text(gtk_tree_view_column_get_widget
+				    (column),
+				    /* Tooltip for column Role */
 				    _("Player or spectator"));
 
 	gtk_tree_view_column_set_cell_data_func(column, renderer,

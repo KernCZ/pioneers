@@ -38,7 +38,7 @@ static void game_devcards_init(GameDevCards * gd)
 {
 	GtkWidget *label;
 	GtkWidget *spin;
-	GtkObject *adjustment;
+	GtkAdjustment *adjustment;
 	guint row;
 
 	gtk_table_resize(GTK_TABLE(gd), NUM_DEVEL_TYPES, 2);
@@ -52,7 +52,8 @@ static void game_devcards_init(GameDevCards * gd)
 		gtk_table_attach_defaults(GTK_TABLE(gd), label,
 					  0, 1, row, row + 1);
 
-		adjustment = gtk_adjustment_new(0, 0, 100, 1, 5, 0);
+		adjustment =
+		    GTK_ADJUSTMENT(gtk_adjustment_new(0, 0, 100, 1, 5, 0));
 		spin =
 		    gtk_spin_button_new(GTK_ADJUSTMENT(adjustment), 1, 0);
 		gtk_widget_set_tooltip_text(spin,

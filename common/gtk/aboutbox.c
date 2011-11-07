@@ -63,8 +63,9 @@ void aboutbox_display(const gchar * title, const gchar ** authors)
 	splash = gtk_image_new_from_file(imagefile);
 	g_free(imagefile);
 
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(about)->vbox), splash, FALSE,
-			   FALSE, 0);
+	gtk_box_pack_start(GTK_BOX
+			   (gtk_dialog_get_content_area
+			    (GTK_DIALOG(about))), splash, FALSE, FALSE, 0);
 
 	buffer = gtk_text_buffer_new(NULL);
 	gtk_text_buffer_get_start_iter(buffer, &iter);
@@ -127,8 +128,9 @@ void aboutbox_display(const gchar * title, const gchar ** authors)
 
 	view = gtk_text_view_new_with_buffer(buffer);
 	gtk_text_view_set_editable(GTK_TEXT_VIEW(view), FALSE);
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(about)->vbox), view, FALSE,
-			   FALSE, 0);
+	gtk_box_pack_start(GTK_BOX
+			   (gtk_dialog_get_content_area
+			    (GTK_DIALOG(about))), view, FALSE, FALSE, 0);
 
 	/* XXX GTK+ 2.6
 	   gtk_show_about_dialog(NULL,
