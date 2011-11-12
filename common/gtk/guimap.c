@@ -117,17 +117,19 @@ static gint expose_map_cb(GtkWidget * area, GdkEventExpose * event,
 	GuiMap *gmap = user_data;
 	cairo_t *cr;
 
-	if (area->window == NULL || gmap->map == NULL)
+	if (gtk_widget_get_window(area) == NULL || gmap->map == NULL)
 		return FALSE;
 
 	if (gmap->pixmap == NULL) {
-		gmap->pixmap = gdk_pixmap_new(area->window,
-					      area->allocation.width,
-					      area->allocation.height, -1);
+		GtkAllocation allocation;
+		gtk_widget_get_allocation(area, &allocation);
+		gmap->pixmap = gdk_pixmap_new(gtk_widget_get_window(area),
+					      allocation.width,
+					      allocation.height, -1);
 		guimap_display(gmap);
 	}
 
-	cr = gdk_cairo_create(area->window);
+	cr = gdk_cairo_create(gtk_widget_get_window(area));
 	gdk_cairo_set_source_pixmap(cr, gmap->pixmap, 0, 0);
 	gdk_cairo_rectangle(cr, &event->area);
 	cairo_fill(cr);
@@ -140,17 +142,17 @@ static gint configure_map_cb(GtkWidget * area,
 			     gpointer user_data)
 {
 	GuiMap *gmap = user_data;
+	GtkAllocation allocation;
 
-	if (area->window == NULL || gmap->map == NULL)
+	if (gtk_widget_get_window(area) == NULL || gmap->map == NULL)
 		return FALSE;
 
 	if (gmap->pixmap) {
 		g_object_unref(gmap->pixmap);
 		gmap->pixmap = NULL;
 	}
-	guimap_scale_to_size(gmap,
-			     area->allocation.width,
-			     area->allocation.height);
+	gtk_widget_get_allocation(area, &allocation);
+	guimap_scale_to_size(gmap, allocation.width, allocation.height);
 
 	gtk_widget_queue_draw(area);
 	return FALSE;
@@ -169,7 +171,7 @@ static gboolean motion_notify_map_cb(GtkWidget * area,
 	MapElement dummyElement;
 	g_assert(area != NULL);
 
-	if (area->window == NULL || gmap->map == NULL)
+	if (gtk_widget_get_window(area) == NULL || gmap->map == NULL)
 		return FALSE;
 
 	if (event->is_hint)
@@ -201,8 +203,9 @@ static gboolean zoom_map_cb(GtkWidget * area, GdkEventScroll * event,
 			    gpointer user_data)
 {
 	GuiMap *gmap = user_data;
+	GtkAllocation allocation;
 
-	if (area->window == NULL || gmap->map == NULL)
+	if (gtk_widget_get_window(area) == NULL || gmap->map == NULL)
 		return FALSE;
 
 	gint radius = gmap->hex_radius;
@@ -229,9 +232,8 @@ static gboolean zoom_map_cb(GtkWidget * area, GdkEventScroll * event,
 
 	}
 	gmap->hex_radius = radius;
-	guimap_scale_to_size(gmap,
-			     gmap->area->allocation.width,
-			     gmap->area->allocation.height);
+	gtk_widget_get_allocation(gmap->area, &allocation);
+	guimap_scale_to_size(gmap, allocation.width, allocation.height);
 
 	guimap_display(gmap);
 	gtk_widget_queue_draw(gmap->area);
@@ -1160,16 +1162,19 @@ void guimap_display(GuiMap * gmap)
 
 void guimap_zoom_normal(GuiMap * gmap)
 {
+	GtkAllocation allocation;
+
 	gmap->is_custom_view = FALSE;
-	guimap_scale_to_size(gmap,
-			     gmap->area->allocation.width,
-			     gmap->area->allocation.height);
+	gtk_widget_get_allocation(gmap->area, &allocation);
+	guimap_scale_to_size(gmap, allocation.width, allocation.height);
 	guimap_display(gmap);
 	gtk_widget_queue_draw(gmap->area);
 }
 
 void guimap_zoom_center_map(GuiMap * gmap)
 {
+	GtkAllocation allocation;
+
 	if (!gmap->is_custom_view)
 		return;
 	gint width = gmap->map->x_size * 2 * gmap->x_point + gmap->x_point;
@@ -1178,13 +1183,14 @@ void guimap_zoom_center_map(GuiMap * gmap)
 	if (gmap->map->shrink_right)
 		width -= gmap->x_point;
 
-	gmap->x_margin = gmap->area->allocation.width / 2 - width / 2;
+	gtk_widget_get_allocation(gmap->area, &allocation);
+	gmap->x_margin = allocation.width / 2 - width / 2;
 
 	gint height = (gmap->map->y_size - 1) *
 	    (gmap->hex_radius + gmap->y_point)
 	    + 2 * gmap->hex_radius;
 
-	gmap->y_margin = gmap->area->allocation.height / 2 - height / 2;
+	gmap->y_margin = allocation.height / 2 - height / 2;
 
 	guimap_display(gmap);
 	gtk_widget_queue_draw(gmap->area);
@@ -1268,7 +1274,8 @@ void guimap_draw_edge(GuiMap * gmap, const Edge * edge)
 		if (edge->hexes[idx] != NULL)
 			display_hex(edge->hexes[idx], gmap);
 
-	gdk_window_invalidate_rect(gmap->area->window, &rect, FALSE);
+	gdk_window_invalidate_rect(gtk_widget_get_window(gmap->area),
+				   &rect, FALSE);
 }
 
 static void draw_cursor(GuiMap * gmap, gint owner, const Polygon * poly)
@@ -1282,7 +1289,8 @@ static void draw_cursor(GuiMap * gmap, gint owner, const Polygon * poly)
 	poly_draw_with_border(gmap->cr, &green, poly);
 
 	poly_bound_rect(poly, 1, &rect);
-	gdk_window_invalidate_rect(gmap->area->window, &rect, FALSE);
+	gdk_window_invalidate_rect(gtk_widget_get_window(gmap->area),
+				   &rect, FALSE);
 }
 
 static void erase_edge_cursor(GuiMap * gmap)
@@ -1357,7 +1365,8 @@ void guimap_draw_node(GuiMap * gmap, const Node * node)
 		if (node->hexes[idx] != NULL)
 			display_hex(node->hexes[idx], gmap);
 
-	gdk_window_invalidate_rect(gmap->area->window, &rect, FALSE);
+	gdk_window_invalidate_rect(gtk_widget_get_window(gmap->area),
+				   &rect, FALSE);
 }
 
 static void erase_node_cursor(GuiMap * gmap)
@@ -1478,7 +1487,8 @@ static void erase_robber_cursor(GuiMap * gmap)
 
 	display_hex(hex, gmap);
 
-	gdk_window_invalidate_rect(gmap->area->window, &rect, FALSE);
+	gdk_window_invalidate_rect(gtk_widget_get_window(gmap->area),
+				   &rect, FALSE);
 }
 
 static void draw_robber_cursor(GuiMap * gmap)
@@ -1503,7 +1513,8 @@ static void draw_robber_cursor(GuiMap * gmap)
 	gdk_cairo_set_source_color(gmap->cr, &green);
 	poly_draw(gmap->cr, FALSE, &poly);
 
-	gdk_window_invalidate_rect(gmap->area->window, &rect, FALSE);
+	gdk_window_invalidate_rect(gtk_widget_get_window(gmap->area),
+				   &rect, FALSE);
 }
 
 static gboolean highlight_chits(const Hex * hex, gpointer closure)
@@ -1528,7 +1539,8 @@ static gboolean highlight_chits(const Hex * hex, gpointer closure)
 	poly_offset(&poly, x_offset, y_offset);
 	poly_bound_rect(&poly, 1, &rect);
 
-	gdk_window_invalidate_rect(gmap->area->window, &rect, FALSE);
+	gdk_window_invalidate_rect(gtk_widget_get_window(gmap->area),
+				   &rect, FALSE);
 	return FALSE;
 }
 
@@ -1564,7 +1576,8 @@ void guimap_draw_hex(GuiMap * gmap, const Hex * hex)
 	poly_offset(&poly, x_offset, y_offset);
 	poly_bound_rect(&poly, 1, &rect);
 
-	gdk_window_invalidate_rect(gmap->area->window, &rect, FALSE);
+	gdk_window_invalidate_rect(gtk_widget_get_window(gmap->area),
+				   &rect, FALSE);
 }
 
 typedef struct {

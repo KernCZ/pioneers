@@ -147,10 +147,11 @@ void name_create_dlg(void)
 			 G_CALLBACK(gtk_widget_destroyed),
 			 &name_dialog.dlg);
 	gtk_widget_realize(name_dialog.dlg);
-	gdk_window_set_functions(name_dialog.dlg->window,
+	gdk_window_set_functions(gtk_widget_get_window(name_dialog.dlg),
 				 GDK_FUNC_MOVE | GDK_FUNC_CLOSE);
 
-	dlg_vbox = GTK_DIALOG(name_dialog.dlg)->vbox;
+	dlg_vbox =
+	    gtk_dialog_get_content_area(GTK_DIALOG(name_dialog.dlg));
 	gtk_widget_show(dlg_vbox);
 
 	hbox = gtk_hbox_new(FALSE, 5);

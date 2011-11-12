@@ -404,3 +404,14 @@ void build_frame(GtkWidget * parent, const gchar * title,
 
 	gtk_box_pack_start(GTK_BOX(hbox), element, TRUE, TRUE, 0);
 }
+
+void set_tooltip_on_column(GtkTreeViewColumn * column,
+			   const gchar * tooltip)
+{
+	GtkWidget *label;
+
+	label = gtk_label_new(gtk_tree_view_column_get_title(column));
+	gtk_widget_set_tooltip_text(label, tooltip);
+	gtk_widget_show(label);
+	gtk_tree_view_column_set_widget(column, label);
+}

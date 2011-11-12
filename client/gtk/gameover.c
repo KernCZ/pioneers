@@ -37,10 +37,10 @@ GtkWidget *gameover_create_dlg(gint player_num, gint num_points)
 						 GTK_STOCK_OK,
 						 GTK_RESPONSE_OK, NULL);
 	gtk_widget_realize(dlg);
-	gdk_window_set_functions(dlg->window,
+	gdk_window_set_functions(gtk_widget_get_window(dlg),
 				 GDK_FUNC_MOVE | GDK_FUNC_CLOSE);
 
-	dlg_vbox = GTK_DIALOG(dlg)->vbox;
+	dlg_vbox = gtk_dialog_get_content_area(GTK_DIALOG(dlg));
 	gtk_widget_show(dlg_vbox);
 
 	vbox = gtk_vbox_new(FALSE, 50);

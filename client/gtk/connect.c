@@ -38,6 +38,7 @@
 #include "avahi-browser.h"
 #include "client.h"
 #include "gtkcompat.h"
+#include "common_gtk.h"
 
 const int PRIVATE_GAME_HISTORY_SIZE = 10;
 
@@ -720,7 +721,7 @@ static GtkWidget *build_create_interface(void)
 			 "change-players",
 			 G_CALLBACK(player_change_cb), NULL);
 
-	row = GTK_TABLE(game_settings)->nrows;
+	gtk_table_get_size(GTK_TABLE(game_settings), &row, NULL);
 	/* Label */
 	label = gtk_label_new(_("Number of computer players"));
 	gtk_widget_show(label);
@@ -837,7 +838,7 @@ static void create_server_dlg(G_GNUC_UNUSED GtkWidget * widget,
 			 G_CALLBACK(gtk_widget_destroyed), &cserver_dlg);
 	gtk_widget_realize(cserver_dlg);
 
-	dlg_vbox = GTK_DIALOG(cserver_dlg)->vbox;
+	dlg_vbox = gtk_dialog_get_content_area(GTK_DIALOG(cserver_dlg));
 	gtk_widget_show(dlg_vbox);
 
 	vbox = build_create_interface();
@@ -986,7 +987,7 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
 				    /* Tooltip */
 				    _("Join the selected game"));
 
-	dlg_vbox = GTK_DIALOG(meta_dlg)->vbox;
+	dlg_vbox = gtk_dialog_get_content_area(GTK_DIALOG(meta_dlg));
 	gtk_widget_show(dlg_vbox);
 
 	vbox = gtk_vbox_new(FALSE, 2);
@@ -1033,7 +1034,7 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
 				    column);
 	gtk_tree_view_column_set_sort_column_id(column, C_META_MAP);
 	/* Tooltip for column 'Map Name' */
-	gtk_widget_set_tooltip_text(column->button, _("Name of the game"));
+	set_tooltip_on_column(column, _("Name of the game"));
 
 	renderer = gtk_cell_renderer_text_new();
 	g_object_set(renderer, "xalign", 1.0f, NULL);
@@ -1045,9 +1046,8 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
 	gtk_tree_view_append_column(GTK_TREE_VIEW(meta_games_view),
 				    column);
 	gtk_tree_view_column_set_sort_column_id(column, C_META_CUR);
-	gtk_widget_set_tooltip_text(column->button,
-				    /* Tooltip for column 'Curr' */
-				    _("Number of players in the game"));
+	/* Tooltip for column 'Curr' */
+	set_tooltip_on_column(column, _("Number of players in the game"));
 
 	renderer = gtk_cell_renderer_text_new();
 	g_object_set(renderer, "xalign", 1.0f, NULL);
@@ -1059,9 +1059,8 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
 	gtk_tree_view_append_column(GTK_TREE_VIEW(meta_games_view),
 				    column);
 	gtk_tree_view_column_set_sort_column_id(column, C_META_MAX);
-	gtk_widget_set_tooltip_text(column->button,
-				    /* Tooltip for column 'Max' */
-				    _("Maximum players for the game"));
+	/* Tooltip for column 'Max' */
+	set_tooltip_on_column(column, _("Maximum players for the game"));
 
 	column =
 	    /* Column name */
@@ -1072,9 +1071,8 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
 	gtk_tree_view_append_column(GTK_TREE_VIEW(meta_games_view),
 				    column);
 	gtk_tree_view_column_set_sort_column_id(column, C_META_TERRAIN);
-	gtk_widget_set_tooltip_text(column->button,
-				    /* Tooltip for column 'Terrain' */
-				    _("Random of default terrain"));
+	/* Tooltip for column 'Terrain' */
+	set_tooltip_on_column(column, _("Random of default terrain"));
 
 	renderer = gtk_cell_renderer_text_new();
 	g_object_set(renderer, "xalign", 1.0f, NULL);
@@ -1086,9 +1084,8 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
 	gtk_tree_view_append_column(GTK_TREE_VIEW(meta_games_view),
 				    column);
 	gtk_tree_view_column_set_sort_column_id(column, C_META_VICTORY);
-	gtk_widget_set_tooltip_text(column->button,
-				    /* Tooltip for column 'Vic. Points' */
-				    _("Points needed to win"));
+	/* Tooltip for column 'Vic. Points' */
+	set_tooltip_on_column(column, _("Points needed to win"));
 
 	column =
 	    /* Column name */
@@ -1100,7 +1097,7 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
 				    column);
 	gtk_tree_view_column_set_sort_column_id(column, C_META_SEVENS);
 	/* Tooltip for column 'Sevens Rule' */
-	gtk_widget_set_tooltip_text(column->button, _("Sevens rule"));
+	set_tooltip_on_column(column, _("Sevens rule"));
 
 	column =
 	    /* Column name */
@@ -1113,7 +1110,7 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
 	gtk_tree_view_column_set_sort_column_id(column,
 						C_META_HOST_SORTABLE);
 	/* Tooltip for column 'Host' */
-	gtk_widget_set_tooltip_text(column->button, _("Host of the game"));
+	set_tooltip_on_column(column, _("Host of the game"));
 
 	renderer = gtk_cell_renderer_text_new();
 	g_object_set(renderer, "xalign", 1.0f, NULL);
@@ -1126,9 +1123,8 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
 				    column);
 	gtk_tree_view_column_set_sort_column_id(column,
 						C_META_HOST_SORTABLE);
-	gtk_widget_set_tooltip_text(column->button,
-				    /* Tooltip for column 'Port' */
-				    _("Port of the game"));
+	/* Tooltip for column 'Port' */
+	set_tooltip_on_column(column, _("Port of the game"));
 
 	column =
 	    /* Column name */
@@ -1139,9 +1135,8 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
 	gtk_tree_view_append_column(GTK_TREE_VIEW(meta_games_view),
 				    column);
 	gtk_tree_view_column_set_sort_column_id(column, C_META_VERSION);
-	gtk_widget_set_tooltip_text(column->button,
-				    /* Tooltip for column 'Version' */
-				    _("Version of the host"));
+	/* Tooltip for column 'Version' */
+	set_tooltip_on_column(column, _("Version of the host"));
 	gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE
 					     (meta_games_model),
 					     C_META_HOST_SORTABLE,
@@ -1238,10 +1233,10 @@ void connect_create_dlg(void)
 			 G_CALLBACK(connect_dlg_destroyed), &connect_dlg);
 
 	gtk_widget_realize(connect_dlg);
-	gdk_window_set_functions(connect_dlg->window,
+	gdk_window_set_functions(gtk_widget_get_window(connect_dlg),
 				 GDK_FUNC_MOVE | GDK_FUNC_CLOSE);
 
-	dlg_vbox = GTK_DIALOG(connect_dlg)->vbox;
+	dlg_vbox = gtk_dialog_get_content_area(GTK_DIALOG(connect_dlg));
 	gtk_widget_show(dlg_vbox);
 
 	table = gtk_table_new(4, 3, FALSE);
@@ -1548,10 +1543,12 @@ static void connect_private_dialog(G_GNUC_UNUSED GtkWidget * widget,
 
 
 	gtk_widget_realize(connect_private_dlg);
-	gdk_window_set_functions(connect_private_dlg->window,
+	gdk_window_set_functions(gtk_widget_get_window
+				 (connect_private_dlg),
 				 GDK_FUNC_MOVE | GDK_FUNC_CLOSE);
 
-	dlg_vbox = GTK_DIALOG(connect_private_dlg)->vbox;
+	dlg_vbox =
+	    gtk_dialog_get_content_area(GTK_DIALOG(connect_private_dlg));
 	gtk_widget_show(dlg_vbox);
 
 	table = gtk_table_new(3, 2, FALSE);

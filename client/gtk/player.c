@@ -626,17 +626,19 @@ static gint expose_turn_area_cb(GtkWidget * area,
 	cairo_t *cr;
 	gint offset;
 	gint idx;
+	GtkAllocation allocation;
 
-	if (area->window == NULL)
+	if (gtk_widget_get_window(area) == NULL)
 		return FALSE;
 
-	cr = gdk_cairo_create(area->window);
+	cr = gdk_cairo_create(gtk_widget_get_window(area));
 
+	gtk_widget_get_allocation(area, &allocation);
 	offset = 0;
 	for (idx = 0; idx < num_players(); idx++) {
 		gdk_cairo_set_source_color(cr, player_color(idx));
 		cairo_rectangle(cr, offset, 0, turn_area_icon_width,
-				area->allocation.height);
+				allocation.height);
 		cairo_fill(cr);
 
 		gdk_cairo_set_source_color(cr, &black);
@@ -644,12 +646,12 @@ static gint expose_turn_area_cb(GtkWidget * area,
 			cairo_set_line_width(cr, 3.0);
 			cairo_rectangle(cr, offset + 1.5, 1.5,
 					turn_area_icon_width - 3,
-					area->allocation.height - 3);
+					allocation.height - 3);
 		} else {
 			cairo_set_line_width(cr, 1.0);
 			cairo_rectangle(cr, offset + 0.5, 0.5,
 					turn_area_icon_width - 1,
-					area->allocation.height - 1);
+					allocation.height - 1);
 		}
 		cairo_stroke(cr);
 

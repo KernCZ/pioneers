@@ -714,20 +714,22 @@ gint expose_terrain_cb(GtkWidget * area,
 	cairo_t *cr;
 	GdkPixbuf *p;
 	gint height;
+	GtkAllocation allocation;
 	Terrain terrain = GPOINTER_TO_INT(terraindata);
 
-	if (area->window == NULL)
+	if (gtk_widget_get_window(area) == NULL)
 		return FALSE;
 
-	cr = gdk_cairo_create(area->window);
+	cr = gdk_cairo_create(gtk_widget_get_window(area));
 
-	height = area->allocation.width / theme->scaledata[terrain].aspect;
+	gtk_widget_get_allocation(area, &allocation);
+	height = allocation.width / theme->scaledata[terrain].aspect;
 	p = gdk_pixbuf_scale_simple(theme->scaledata[terrain].native_image,
-				    area->allocation.width, height,
+				    allocation.width, height,
 				    GDK_INTERP_BILINEAR);
 
 	gdk_cairo_set_source_pixbuf(cr, p, 0, 0);
-	cairo_rectangle(cr, 0, 0, area->allocation.width, height);
+	cairo_rectangle(cr, 0, 0, allocation.width, height);
 	cairo_fill(cr);
 
 	g_object_unref(p);

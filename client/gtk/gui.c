@@ -464,7 +464,7 @@ GtkWidget *gui_get_dialog_button(GtkDialog * dlg, gint button)
 	GList *list;
 
 	g_return_val_if_fail(dlg != NULL, NULL);
-	g_assert(dlg->action_area != NULL);
+	g_assert(gtk_dialog_get_action_area(dlg) != NULL);
 
 	list =
 	    gtk_container_get_children(GTK_CONTAINER
@@ -546,7 +546,7 @@ void gui_highlight_chits(gint roll)
 static gint button_press_map_cb(GtkWidget * area, GdkEventButton * event,
 				G_GNUC_UNUSED gpointer user_data)
 {
-	if (area->window == NULL || gmap->map == NULL)
+	if (gtk_widget_get_window(area) == NULL || gmap->map == NULL)
 		return FALSE;
 
 	if (event->button == 1 && event->type == GDK_BUTTON_PRESS) {
@@ -1060,7 +1060,8 @@ static void preferences_cb(void)
 			 G_CALLBACK(gtk_widget_destroy), NULL);
 	gtk_widget_show(preferences_dlg);
 
-	dlg_vbox = GTK_DIALOG(preferences_dlg)->vbox;
+	dlg_vbox =
+	    gtk_dialog_get_content_area(GTK_DIALOG(preferences_dlg));
 	gtk_widget_show(dlg_vbox);
 
 	layout = gtk_table_new(6, 2, FALSE);

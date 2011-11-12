@@ -1,3 +1,14 @@
+2011-11-12  Roland Clobus <rclobus@rclobus.nl>
+	* editor/gtk/editor.c, common/gtk/gtkcompat.h, common/gtk/theme.c,
+	common/gtk/common_gtk.h, common/gtk/guimap.c, common/gtk/player-icon.c,
+	common/gtk/select-game.c, common/gtk/common_gtk.c, configure.ac,
+	server/gtk/main.c, client/gtk/plenty.c, client/gtk/name.c,
+	client/gtk/resource-view.gob, client/gtk/gold.c, client/gtk/player.c,
+	client/gtk/legend.c, client/gtk/quote-view.c, client/gtk/gameover.c,
+	client/gtk/discard.c, client/gtk/monopoly.c,
+	client/gtk/settingscreen.c, client/gtk/gui.c, client/gtk/identity.c,
+	client/gtk/connect.c, client/gtk/histogram.c: Enable GSEAL_ENABLE.
+
 2011-11-07  Roland Clobus <rclobus@rclobus.nl>
 	* editor/gtk/game-resources.c, editor/gtk/game-devcards.c,
 	editor/gtk/game-buildings.c, editor/gtk/game-settings.c,

@@ -269,9 +269,10 @@ static void build_map_resize(GtkWidget * table, guint col, guint row,
 
 static void scale_map(GuiMap * gmap)
 {
-	guimap_scale_to_size(gmap,
-			     gmap->area->allocation.width,
-			     gmap->area->allocation.height);
+	GtkAllocation allocation;
+
+	gtk_widget_get_allocation(gmap->area, &allocation);
+	guimap_scale_to_size(gmap, allocation.width, allocation.height);
 	gtk_widget_queue_draw(gmap->area);
 }
 
@@ -285,7 +286,7 @@ static gint button_press_map_cb(GtkWidget * area, GdkEventButton * event,
 	gint num_ports;
 	gint i;
 
-	if (area->window == NULL || gmap->map == NULL)
+	if (gtk_widget_get_window(area) == NULL || gmap->map == NULL)
 		return FALSE;
 
 	if (event->button != 1)
@@ -374,7 +375,7 @@ static gint key_press_map_cb(GtkWidget * area, GdkEventKey * event,
 	gint x, y;
 	gboolean plus10;
 
-	if (area->window == NULL || gmap->map == NULL)
+	if (gtk_widget_get_window(area) == NULL || gmap->map == NULL)
 		return FALSE;
 
 	gtk_widget_get_pointer(area, &x, &y);
@@ -1089,10 +1090,10 @@ static void change_title_menu_cb(void)
 	g_signal_connect(G_OBJECT(dialog), "destroy",
 			 G_CALLBACK(gtk_widget_destroyed), &dialog);
 	gtk_widget_realize(dialog);
-	gdk_window_set_functions(dialog->window,
+	gdk_window_set_functions(gtk_widget_get_window(dialog),
 				 GDK_FUNC_MOVE | GDK_FUNC_CLOSE);
 
-	vbox = GTK_DIALOG(dialog)->vbox;
+	vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
 
 	hbox = gtk_hbox_new(FALSE, 5);
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);

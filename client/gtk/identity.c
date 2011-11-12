@@ -57,6 +57,7 @@ static void calculate_optimum_size(GtkWidget * area, gint size)
 	gint new_size;
 	gint fixedwidth;	/* Size of fixed part (digits + spacing) */
 	gint variablewidth;	/* Size of variable part (polygons) */
+	GtkAllocation allocation;
 
 	if (game_params == NULL)
 		return;
@@ -107,8 +108,10 @@ static void calculate_optimum_size(GtkWidget * area, gint size)
 				&fixedwidth, &variablewidth);
 	}
 
-	new_size = bogus_map.hex_radius *
-	    (area->allocation.width - 75 - fixedwidth) / variablewidth;
+	gtk_widget_get_allocation(area, &allocation);
+	new_size =
+	    bogus_map.hex_radius * (allocation.width - 75 -
+				    fixedwidth) / variablewidth;
 	if (new_size < bogus_map.hex_radius) {
 		calculate_optimum_size(area, new_size);
 	}
@@ -121,10 +124,12 @@ static int draw_building_and_count(cairo_t * cr, GtkWidget * area,
 	char buff[10];
 	gint width, height;
 	PangoLayout *layout;
+	GtkAllocation allocation;
 
+	gtk_widget_get_allocation(area, &allocation);
 	poly_bound_rect(poly, 0, &rect);
 	poly_offset(poly, offset - rect.x,
-		    area->allocation.height - 5 - rect.y - rect.height);
+		    allocation.height - 5 - rect.y - rect.height);
 	poly_draw(cr, FALSE, poly);
 
 	offset += 5 + rect.width;
@@ -132,7 +137,7 @@ static int draw_building_and_count(cairo_t * cr, GtkWidget * area,
 	sprintf(buff, "%d", num);
 	layout = gtk_widget_create_pango_layout(area, buff);
 	pango_layout_get_pixel_size(layout, &width, &height);
-	cairo_move_to(cr, offset, area->allocation.height - height - 5);
+	cairo_move_to(cr, offset, allocation.height - height - 5);
 	pango_cairo_show_layout(cr, layout);
 	g_object_unref(layout);
 
@@ -163,10 +168,13 @@ static void show_die(cairo_t * cr, GtkWidget * area, gint x_offset,
 		{1, 1, 0, 1, 0, 1, 1},
 		{1, 1, 1, 0, 1, 1, 1}
 	};
-	gint y_offset = (area->allocation.height - 30) / 2;
+	GtkAllocation allocation;
+	gint y_offset;
 	gint *list = draw_list[num - 1];
 	gint idx;
 
+	gtk_widget_get_allocation(area, &allocation);
+	y_offset = (allocation.height - 30) / 2;
 	poly_offset(&die_shape, x_offset, y_offset);
 
 	gdk_cairo_set_source_color(cr, die_color);
@@ -207,11 +215,12 @@ static gint expose_identity_area_cb(GtkWidget * area,
 	const GameParams *game_params;
 	gint i;
 	cairo_t *cr;
+	GtkAllocation allocation;
 
-	if (area->window == NULL || my_player_num() < 0)
+	if (gtk_widget_get_window(area) == NULL || my_player_num() < 0)
 		return FALSE;
 
-	cr = gdk_cairo_create(area->window);
+	cr = gdk_cairo_create(gtk_widget_get_window(area));
 	cairo_set_line_join(cr, CAIRO_LINE_JOIN_ROUND);
 	cairo_set_line_cap(cr, CAIRO_LINE_CAP_ROUND);
 	cairo_set_line_width(cr, 1.0);
@@ -219,8 +228,8 @@ static gint expose_identity_area_cb(GtkWidget * area,
 	colour = player_or_spectator_color(my_player_num());
 
 	gdk_cairo_set_source_color(cr, colour);
-	cairo_rectangle(cr, 0, 0, area->allocation.width,
-			area->allocation.height);
+	gtk_widget_get_allocation(area, &allocation);
+	cairo_rectangle(cr, 0, 0, allocation.width, allocation.height);
 	cairo_fill(cr);
 
 	if (my_player_spectator())
@@ -281,7 +290,7 @@ static gint expose_identity_area_cb(GtkWidget * area,
 			/* original dice */
 			for (i = 0; i < 2; i++)
 				show_die(cr, area,
-					 area->allocation.width - 70 +
+					 allocation.width - 70 +
 					 35 * i, die_num[i], &black,
 					 &white, &black);
 		}

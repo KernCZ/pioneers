@@ -233,7 +233,7 @@ GtkWidget *legend_create_dlg(void)
 	g_signal_connect(G_OBJECT(legend_dlg), "destroy",
 			 G_CALLBACK(gtk_widget_destroyed), &legend_dlg);
 
-	dlg_vbox = GTK_DIALOG(legend_dlg)->vbox;
+	dlg_vbox = gtk_dialog_get_content_area(GTK_DIALOG(legend_dlg));
 	gtk_widget_show(dlg_vbox);
 
 	vbox = legend_create_content();
@@ -264,7 +264,8 @@ static void legend_theme_changed(void)
 static void legend_rules_changed(void)
 {
 	if (legend_dlg) {
-		GtkWidget *dlg_vbox = GTK_DIALOG(legend_dlg)->vbox;
+		GtkWidget *dlg_vbox =
+		    gtk_dialog_get_content_area(GTK_DIALOG(legend_dlg));
 		GtkWidget *vbox;
 		GList *list =
 		    gtk_container_get_children(GTK_CONTAINER(dlg_vbox));

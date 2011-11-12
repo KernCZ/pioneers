@@ -70,10 +70,10 @@ void plenty_create_dlg(const gint * bank)
 			 G_CALLBACK(gtk_widget_destroyed), &plenty.dlg);
 	gtk_widget_realize(plenty.dlg);
 	/* Disable close */
-	gdk_window_set_functions(plenty.dlg->window,
+	gdk_window_set_functions(gtk_widget_get_window(plenty.dlg),
 				 GDK_FUNC_ALL | GDK_FUNC_CLOSE);
 
-	dlg_vbox = GTK_DIALOG(plenty.dlg)->vbox;
+	dlg_vbox = gtk_dialog_get_content_area(GTK_DIALOG(plenty.dlg));
 	gtk_widget_show(dlg_vbox);
 
 	vbox = gtk_vbox_new(FALSE, 5);

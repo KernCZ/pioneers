@@ -31,6 +31,7 @@
 #include "frontend.h"
 #include "theme.h"
 #include "common_gtk.h"
+#include "gtkcompat.h"
 
 enum {
 	TRADE_COLUMN_PLAYER, /**< Player icon */
@@ -264,8 +265,10 @@ static void load_pixmaps(QuoteView * qv)
 
 	gtk_icon_size_lookup(GTK_ICON_SIZE_MENU, &width, &height);
 	pixmap =
-	    gdk_pixmap_new(qv->quotes->window, width, height,
-			   gtk_widget_get_visual(qv->quotes)->depth);
+	    gdk_pixmap_new(gtk_widget_get_window(qv->quotes), width,
+			   height,
+			   gdk_visual_get_depth(gtk_widget_get_visual
+						(qv->quotes)));
 
 	cr = gdk_cairo_create(pixmap);
 	gdk_cairo_set_source_pixmap(cr,
@@ -703,8 +706,10 @@ void quote_view_theme_changed(QuoteView * qv)
 	gtk_icon_size_lookup(GTK_ICON_SIZE_MENU, &width, &height);
 
 	pixmap =
-	    gdk_pixmap_new(qv->quotes->window, width, height,
-			   gtk_widget_get_visual(qv->quotes)->depth);
+	    gdk_pixmap_new(gtk_widget_get_window(qv->quotes), width,
+			   height,
+			   gdk_visual_get_depth(gtk_widget_get_visual
+						(qv->quotes)));
 
 	cr = gdk_cairo_create(pixmap);
 	gdk_cairo_set_source_pixmap(cr,

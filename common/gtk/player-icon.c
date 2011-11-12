@@ -27,6 +27,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
+#include "gtkcompat.h"
 
 static gboolean load_pixbuf(const gchar * name, GdkPixbuf ** pixbuf);
 static void replace_colors(GdkPixbuf * pixbuf,
@@ -189,8 +190,10 @@ GdkPixbuf *playericon_create_icon(GtkWidget * widget, const gchar * style,
 			GdkPixmap *pixmap;
 
 			pixmap =
-			    gdk_pixmap_new(widget->window, width, height,
-					   gdk_visual_get_system()->depth);
+			    gdk_pixmap_new(gtk_widget_get_window(widget),
+					   width, height,
+					   gdk_visual_get_depth
+					   (gdk_visual_get_system()));
 			cr = gdk_cairo_create(pixmap);
 			if (spectator) {
 				GdkPixbuf *tmp;
@@ -267,8 +270,10 @@ GdkPixbuf *playericon_create_icon(GtkWidget * widget, const gchar * style,
 		GdkPixbuf *tmp1, *tmp2;
 
 		pixmap =
-		    gdk_pixmap_new(widget->window, width, height,
-				   gdk_visual_get_system()->depth);
+		    gdk_pixmap_new(gtk_widget_get_window(widget), width,
+				   height,
+				   gdk_visual_get_depth
+				   (gdk_visual_get_system()));
 		cr = gdk_cairo_create(pixmap);
 
 		/* Black will become transparent */

@@ -77,4 +77,11 @@ GtkWidget *create_label_with_close_button(const gchar * label_text,
 void build_frame(GtkWidget * parent, const gchar * title,
 		 GtkWidget * element, gboolean extend);
 
+/** Add a tooltip to a column in a TreeView
+ *  @param column The column
+ *  @param tooltip The text in the tooltip (the result of _())
+ */
+void set_tooltip_on_column(GtkTreeViewColumn * column,
+			   const gchar * tooltip);
+
 #endif				/* __common_gtk_h */

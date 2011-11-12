@@ -87,10 +87,10 @@ static GtkWidget *discard_create_dlg(gint num)
 			 G_CALLBACK(gtk_widget_destroyed), &discard.dlg);
 	gtk_widget_realize(discard.dlg);
 	/* Disable close */
-	gdk_window_set_functions(discard.dlg->window,
+	gdk_window_set_functions(gtk_widget_get_window(discard.dlg),
 				 GDK_FUNC_ALL | GDK_FUNC_CLOSE);
 
-	dlg_vbox = GTK_DIALOG(discard.dlg)->vbox;
+	dlg_vbox = gtk_dialog_get_content_area(GTK_DIALOG(discard.dlg));
 	gtk_widget_show(dlg_vbox);
 
 	vbox = gtk_vbox_new(FALSE, 6);

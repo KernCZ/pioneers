@@ -82,10 +82,10 @@ void gold_choose_player_must(gint num, const gint * bank)
 			 G_CALLBACK(gtk_widget_destroyed), &gold.dlg);
 	gtk_widget_realize(gold.dlg);
 	/* Disable close */
-	gdk_window_set_functions(gold.dlg->window,
+	gdk_window_set_functions(gtk_widget_get_window(gold.dlg),
 				 GDK_FUNC_ALL | GDK_FUNC_CLOSE);
 
-	dlg_vbox = GTK_DIALOG(gold.dlg)->vbox;
+	dlg_vbox = gtk_dialog_get_content_area(GTK_DIALOG(gold.dlg));
 	gtk_widget_show(dlg_vbox);
 
 	vbox = gtk_vbox_new(FALSE, 5);
