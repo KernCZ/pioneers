@@ -91,6 +91,7 @@ typedef enum {
 typedef struct _MapTheme {
 	gchar *name;
 	SCALEMODE scaling;
+	gint current_width;
 	const gchar *terrain_tile_names[TERRAIN_TILE_MAX];
 	const gchar *port_tile_names[PORT_TILE_MAX];
 	GdkPixmap *terrain_tiles[TERRAIN_TILE_MAX];

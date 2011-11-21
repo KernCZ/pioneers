@@ -383,6 +383,12 @@ void theme_rescale(int new_width)
 	if (new_width <= 0)
 		new_width = 1;
 
+	/* no need to scale again */
+	if (new_width == current_theme->current_width) {
+		return;
+	}
+	current_theme->current_width = new_width;
+
 	for (i = 0; i < G_N_ELEMENTS(current_theme->terrain_tiles); ++i) {
 		int new_height;
 		if (i == BOARD_TILE)
@@ -597,6 +603,7 @@ static MapTheme *theme_config_parse(const gchar * themename,
 	t = g_malloc0(sizeof(MapTheme));
 	/* Initially the theme name is equal to the directory name */
 	t->name = g_filename_to_utf8(themename, -1, NULL, NULL, NULL);
+	t->current_width = -1;
 
 	used = g_malloc0(G_N_ELEMENTS(theme_vars) * sizeof(gboolean));
 
