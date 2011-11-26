@@ -1,3 +1,6 @@
+2011-11-26  Roland Clobus <rclobus@rclobus.nl>
+	* Makefile.am: Remove incorrect guard for BUILD_SERVER.
+
 2011-11-21  Roland Clobus <rclobus@rclobus.nl>
 	* common/gtk/theme.c, common/gtk/theme.h: Speedup of server-gtk by not
 	rescaling the theme when it is not necessary.
