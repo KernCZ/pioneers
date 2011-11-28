@@ -20,32 +20,34 @@
 if IS_MINGW_PORT
 
 install-MinGW:
-	cp /mingw/bin/libgdk-win32-2.0-0.dll /usr/local
-	cp /mingw/bin/libgdk_pixbuf-2.0-0.dll /usr/local
-	cp /mingw/bin/libglib-2.0-0.dll /usr/local
-	cp /mingw/bin/libgobject-2.0-0.dll /usr/local
-	cp /mingw/bin/libgtk-win32-2.0-0.dll /usr/local
-	cp /mingw/bin/intl.dll /usr/local
-	cp /mingw/bin/libpango-1.0-0.dll /usr/local
-	cp /mingw/bin/libcairo-2.dll /usr/local
-	cp /mingw/bin/libgio-2.0-0.dll /usr/local
-	cp /mingw/bin/libpangocairo-1.0-0.dll /usr/local
-	cp /mingw/bin/libgio-2.0-0.dll /usr/local
-	cp /mingw/bin/libgmodule-2.0-0.dll /usr/local
-	cp /mingw/bin/libatk-1.0-0.dll /usr/local
-	cp /mingw/bin/libpangowin32-1.0-0.dll /usr/local
-	cp /mingw/bin/libfontconfig-1.dll /usr/local
 	cp /mingw/bin/freetype6.dll /usr/local
-	cp /mingw/bin/libpng12-0.dll /usr/local
-	cp /mingw/bin/libpangoft2-1.0-0.dll /usr/local
+	cp /mingw/bin/intl.dll /usr/local
+	cp /mingw/bin/libatk-1.0-0.dll /usr/local
+	cp /mingw/bin/libcairo-2.dll /usr/local
+	cp /mingw/bin/libcroco-0.6-3.dll /usr/local
 	cp /mingw/bin/libexpat-1.dll /usr/local
+	cp /mingw/bin/libfontconfig-1.dll /usr/local
+	cp /mingw/bin/libgdk_pixbuf-2.0-0.dll /usr/local
+	cp /mingw/bin/libgdk-win32-2.0-0.dll /usr/local
+	cp /mingw/bin/libgio-2.0-0.dll /usr/local
+	cp /mingw/bin/libglib-2.0-0.dll /usr/local
+	cp /mingw/bin/libgmodule-2.0-0.dll /usr/local
+	cp /mingw/bin/libgobject-2.0-0.dll /usr/local
+	cp /mingw/bin/libgthread-2.0-0.dll /usr/local
+	cp /mingw/bin/libgtk-win32-2.0-0.dll /usr/local
+	cp /mingw/bin/libpango-1.0-0.dll /usr/local
+	cp /mingw/bin/libpangocairo-1.0-0.dll /usr/local
+	cp /mingw/bin/libpangoft2-1.0-0.dll /usr/local
+	cp /mingw/bin/libpangowin32-1.0-0.dll /usr/local
+	cp /mingw/lib/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-svg.dll /usr/local
+	cp /mingw/bin/libpng14-14.dll /usr/local
+	cp /mingw/bin/librsvg-2-2.dll /usr/local
+	cp /mingw/bin/libxml2-2.dll /usr/local
 	cp /mingw/bin/zlib1.dll /usr/local
-	cp /mingw/lib/gtk-2.0/2.10.0/loaders/libpixbufloader-png.dll /usr/local
-	mkdir -p /usr/local/etc/gtk-2.0
-	cp $(srcdir)/MinGW/gdk-pixbuf.loaders /usr/local/etc/gtk-2.0
-	cp /mingw/lib/gtk-2.0/2.10.0/loaders/libpixbufloader-png.dll /usr/local
+	mkdir -p /usr/local/lib/gdk-pixbuf-2.0/2.10.0
+	cp $(srcdir)/MinGW/loaders.cache /usr/local/lib/gdk-pixbuf-2.0/2.10.0
 
 endif # IS_MINGW_PORT
 
 EXTRA_DIST += \
-	$(srcdir)/MinGW/gdk-pixbuf.loaders
+	$(srcdir)/MinGW/loaders.cache

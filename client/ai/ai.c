@@ -132,8 +132,6 @@ static void ai_init(void)
 	if (port == NULL)
 		port = g_strdup(PIONEERS_DEFAULT_GAME_PORT);
 
-	printf("ai port is %s\n", port);
-
 	g_random_set_seed(time(NULL) + getpid());
 
 	if (!name) {

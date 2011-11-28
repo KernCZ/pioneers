@@ -1,3 +1,9 @@
+2011-11-28  Roland Clobus <rclobus@rclobus.nl>
+	* client/ai/ai.c: Removed old debug line.
+	* pioneers.nsi.in, MinGW/gdk-pixbuf.loaders, MinGW/Makefile.am,
+	MinGW/loaders.cache, README.MinGW: Release of 0.12.5 for Windows. Code
+	from the 0.12.5 branch.
+
 2011-11-26  Roland Clobus <rclobus@rclobus.nl>
 	* Makefile.am: Remove incorrect guard for BUILD_SERVER.
 
