@@ -1,6 +1,7 @@
 2011-11-29  Roland Clobus <rclobus@rclobus.nl>
 	* server/pregame.c, server/player.c, server/server.h, common/game.c,
 	common/game.h: Allow versioned rules.
+	* common/state.c: Easier debugging of the state machine.
 
 2011-11-28  Roland Clobus <rclobus@rclobus.nl>
 	* client/ai/ai.c: Removed old debug line.
