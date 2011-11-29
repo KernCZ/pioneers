@@ -476,6 +476,7 @@ void sm_close(StateMachine * sm)
 void sm_stack_dump(StateMachine * sm)
 {
 	gint sp;
+	fprintf(stderr, "Stack dump for %p\n", sm);
 	for (sp = 0; sp <= sm->stack_ptr; ++sp) {
 		fprintf(stderr, "Stack %2d: %s\n", sp, sm->stack_name[sp]);
 	}
