@@ -30,6 +30,7 @@
 
 #include "game.h"
 #include "cards.h"
+#include "log.h"
 
 const gchar *default_player_style = "square";
 
@@ -37,46 +38,49 @@ typedef enum {
 	PARAM_STRING,
 	PARAM_INT,
 	PARAM_BOOL,
-	PARAM_INTLIST
+	PARAM_INTLIST,
+	PARAM_OBSOLETE_DATA
 } ParamType;
 
 typedef struct {
-	const gchar *name;
-	ParamType type;
-	int offset;
+	const gchar *name; /**< Text version of the parameter */
+	ClientVersionType first_version; /**< First version with this parameter */
+	ParamType type;	/**< Data type */
+	int offset; /**< Offset in the struct */
 } Param;
 
-#define PARAM_V(name, type, var) #name, type, G_STRUCT_OFFSET(GameParams, var)
-#define PARAM(var, type) PARAM_V(var, type, var)
+#define PARAM(name, first, type, var) #name, first, type, G_STRUCT_OFFSET(GameParams, var)
+#define PARAM_OBSOLETE(var) #var, UNKNOWN_VERSION, PARAM_OBSOLETE_DATA, -1
 
 /* *INDENT-OFF* */
 static Param game_params[] = {
-	{PARAM(title, PARAM_STRING)},
-	{PARAM_V(random-terrain, PARAM_BOOL, random_terrain)},
-	{PARAM_V(strict-trade, PARAM_BOOL, strict_trade)},
-	{PARAM_V(domestic-trade, PARAM_BOOL, domestic_trade)},
-	{PARAM_V(num-players, PARAM_INT, num_players)},
-	{PARAM_V(sevens-rule, PARAM_INT, sevens_rule)},
-	{PARAM_V(victory-points, PARAM_INT, victory_points)},
-	{PARAM_V(check-victory-at-end-of-turn, PARAM_BOOL, check_victory_at_end_of_turn)},
-	{PARAM_V(num-roads, PARAM_INT, num_build_type[BUILD_ROAD])},
-	{PARAM_V(num-bridges, PARAM_INT, num_build_type[BUILD_BRIDGE])},
-	{PARAM_V(num-ships, PARAM_INT, num_build_type[BUILD_SHIP])},
-	{PARAM_V(num-settlements, PARAM_INT, num_build_type[BUILD_SETTLEMENT])},
-	{PARAM_V(num-cities, PARAM_INT, num_build_type[BUILD_CITY])},
-	{PARAM_V(num-city-walls, PARAM_INT, num_build_type[BUILD_CITY_WALL])},
-	{PARAM_V(resource-count, PARAM_INT, resource_count)},
-	{PARAM_V(develop-road, PARAM_INT, num_develop_type[DEVEL_ROAD_BUILDING])},
-	{PARAM_V(develop-monopoly, PARAM_INT, num_develop_type[DEVEL_MONOPOLY])},
-	{PARAM_V(develop-plenty, PARAM_INT, num_develop_type[DEVEL_YEAR_OF_PLENTY])},
-	{PARAM_V(develop-chapel, PARAM_INT, num_develop_type[DEVEL_CHAPEL])},
-	{PARAM_V(develop-university, PARAM_INT, num_develop_type[DEVEL_UNIVERSITY])},
-	{PARAM_V(develop-governor, PARAM_INT, num_develop_type[DEVEL_GOVERNORS_HOUSE])},
-	{PARAM_V(develop-library, PARAM_INT, num_develop_type[DEVEL_LIBRARY])},
-	{PARAM_V(develop-market, PARAM_INT, num_develop_type[DEVEL_MARKET])},
-	{PARAM_V(develop-soldier, PARAM_INT, num_develop_type[DEVEL_SOLDIER])},
-	{PARAM_V(use-pirate, PARAM_BOOL, use_pirate)},
-	{PARAM_V(island-discovery-bonus, PARAM_INTLIST, island_discovery_bonus)}
+	{PARAM(title, FIRST_VERSION, PARAM_STRING, title)},
+	{PARAM_OBSOLETE(variant)},
+	{PARAM(random-terrain, FIRST_VERSION, PARAM_BOOL, random_terrain)},
+	{PARAM(strict-trade, FIRST_VERSION, PARAM_BOOL, strict_trade)},
+	{PARAM(domestic-trade, FIRST_VERSION, PARAM_BOOL, domestic_trade)},
+	{PARAM(num-players, FIRST_VERSION, PARAM_INT, num_players)},
+	{PARAM(sevens-rule, FIRST_VERSION, PARAM_INT, sevens_rule)},
+	{PARAM(victory-points, FIRST_VERSION, PARAM_INT, victory_points)},
+	{PARAM(check-victory-at-end-of-turn, FIRST_VERSION, PARAM_BOOL, check_victory_at_end_of_turn)},
+	{PARAM(num-roads, FIRST_VERSION, PARAM_INT, num_build_type[BUILD_ROAD])},
+	{PARAM(num-bridges, FIRST_VERSION, PARAM_INT, num_build_type[BUILD_BRIDGE])},
+	{PARAM(num-ships, FIRST_VERSION, PARAM_INT, num_build_type[BUILD_SHIP])},
+	{PARAM(num-settlements, FIRST_VERSION, PARAM_INT, num_build_type[BUILD_SETTLEMENT])},
+	{PARAM(num-cities, FIRST_VERSION, PARAM_INT, num_build_type[BUILD_CITY])},
+	{PARAM(num-city-walls, V0_11, PARAM_INT, num_build_type[BUILD_CITY_WALL])},
+	{PARAM(resource-count, FIRST_VERSION, PARAM_INT, resource_count)},
+	{PARAM(develop-road, FIRST_VERSION, PARAM_INT, num_develop_type[DEVEL_ROAD_BUILDING])},
+	{PARAM(develop-monopoly, FIRST_VERSION, PARAM_INT, num_develop_type[DEVEL_MONOPOLY])},
+	{PARAM(develop-plenty, FIRST_VERSION, PARAM_INT, num_develop_type[DEVEL_YEAR_OF_PLENTY])},
+	{PARAM(develop-chapel, FIRST_VERSION, PARAM_INT, num_develop_type[DEVEL_CHAPEL])},
+	{PARAM(develop-university, FIRST_VERSION, PARAM_INT, num_develop_type[DEVEL_UNIVERSITY])},
+	{PARAM(develop-governor, FIRST_VERSION, PARAM_INT, num_develop_type[DEVEL_GOVERNORS_HOUSE])},
+	{PARAM(develop-library, FIRST_VERSION, PARAM_INT, num_develop_type[DEVEL_LIBRARY])},
+	{PARAM(develop-market, FIRST_VERSION, PARAM_INT, num_develop_type[DEVEL_MARKET])},
+	{PARAM(develop-soldier, FIRST_VERSION, PARAM_INT, num_develop_type[DEVEL_SOLDIER])},
+	{PARAM(use-pirate, FIRST_VERSION, PARAM_BOOL, use_pirate)},
+	{PARAM(island-discovery-bonus, FIRST_VERSION, PARAM_INTLIST, island_discovery_bonus)}
 };
 /* *INDENT-ON* */
 
@@ -210,27 +214,65 @@ static gboolean find_no_setup(const Hex * hex, gpointer closure)
 	return FALSE;
 }
 
-void params_write_lines(GameParams * params, gboolean write_secrets,
-			WriteLineFunc func, gpointer user_data)
+void params_write_lines(GameParams * params, ClientVersionType version,
+			gboolean write_secrets, WriteLineFunc func,
+			gpointer user_data)
 {
 	gint idx;
 	gint y;
 	gchar *buff;
 	gchar *str;
 
-	switch (params->variant) {
-	case VAR_DEFAULT:
-		func(user_data, "variant default");
-		break;
-	case VAR_ISLANDS:
-		func(user_data, "variant islands");
-		break;
-	case VAR_INTIMATE:
-		func(user_data, "variant intimate");
-		break;
-	}
 	for (idx = 0; idx < G_N_ELEMENTS(game_params); idx++) {
 		Param *param = game_params + idx;
+
+		if (param->first_version > version) {
+			/* This rule is too new for the recipient */
+			/* Only notify the recipient when the rule is not in use */
+
+			switch (param->type) {
+			case PARAM_STRING:
+				str =
+				    G_STRUCT_MEMBER(gchar *, params,
+						    param->offset);
+				if (!str || strlen(str) < 1) {
+					continue;
+				};
+				break;
+			case PARAM_INT:
+				if (G_STRUCT_MEMBER
+				    (gint, params, param->offset) < 1) {
+
+					continue;
+				};
+				break;
+			case PARAM_BOOL:
+				if (!G_STRUCT_MEMBER
+				    (gboolean, params, param->offset)) {
+					continue;
+				}
+				break;
+			case PARAM_INTLIST:
+				buff =
+				    format_int_list(param->name,
+						    G_STRUCT_MEMBER(GArray
+								    *,
+								    params,
+								    param->offset));
+				if (buff == NULL) {
+					continue;
+				};
+				g_free(buff);
+				break;
+			case PARAM_OBSOLETE_DATA:
+				/* Obsolete rule: go to the next rule */
+				continue;
+			}
+			buff = g_strdup_printf("new-rule %s", param->name);
+			func(user_data, buff);
+			g_free(buff);
+			continue;
+		}
 
 		switch (param->type) {
 		case PARAM_STRING:
@@ -270,6 +312,9 @@ void params_write_lines(GameParams * params, gboolean write_secrets,
 				func(user_data, buff);
 				g_free(buff);
 			}
+			break;
+		case PARAM_OBSOLETE_DATA:
+			/* Obsolete rule: do nothing */
 			break;
 		}
 	}
@@ -314,15 +359,6 @@ gboolean params_load_line(GameParams * params, gchar * line)
 		return TRUE;
 	if (*line == 0)
 		return TRUE;
-	if (match_word(&line, "variant")) {
-		if (match_word(&line, "islands"))
-			params->variant = VAR_ISLANDS;
-		else if (match_word(&line, "intimate"))
-			params->variant = VAR_INTIMATE;
-		else
-			params->variant = VAR_DEFAULT;
-		return TRUE;
-	}
 	if (match_word(&line, "map")) {
 		params->parsing_map = TRUE;
 		return TRUE;
@@ -394,7 +430,18 @@ gboolean params_load_line(GameParams * params, gchar * line)
 			G_STRUCT_MEMBER(GArray *, params, param->offset) =
 			    array;
 			return array != NULL;
+		case PARAM_OBSOLETE_DATA:
+			log_message(MSG_ERROR, _("Obsolete rule: '%s'\n"),
+				    param->name);
+			return TRUE;
 		}
+	}
+	if (match_word(&line, "new-rule")) {
+		log_message(MSG_INFO,
+			    _("The game uses the new rule '%s', which "
+			      "is not yet supported. "
+			      "Consider upgrading.\n"), line);
+		return TRUE;
 	}
 	g_warning("Unknown keyword: %s", line);
 	return FALSE;
@@ -473,7 +520,6 @@ GameParams *params_copy(const GameParams * params)
 	memcpy(&nonconst, params, sizeof(GameParams));
 	copy = params_new();
 	copy->map = map_copy(params->map);
-	copy->variant = params->variant;
 
 	for (idx = 0; idx < G_N_ELEMENTS(game_params); idx++) {
 		Param *param = game_params + idx;
@@ -508,6 +554,9 @@ GameParams *params_copy(const GameParams * params)
 				    build_int_list(buff);
 				g_free(buff);
 			}
+			break;
+		case PARAM_OBSOLETE_DATA:
+			/* Obsolete rule: do nothing */
 			break;
 		}
 	}
@@ -560,11 +609,47 @@ gboolean params_write_file(GameParams * params, const gchar * fname)
 		g_warning("could not open '%s'", fname);
 		return FALSE;
 	}
-	params_write_lines(params, TRUE, write_one_line, fp);
+	params_write_lines(params, LATEST_VERSION, TRUE, write_one_line,
+			   fp);
 
 	fclose(fp);
 
 	return TRUE;
+}
+
+ClientVersionType client_version_type_from_string(const gchar * cvt)
+{
+	if (!strcmp(cvt, "0.10")) {
+		return V0_10;
+	} else if (!strcmp(cvt, "0.11")) {
+		return V0_11;
+	} else if (!strcmp(cvt, "0.12")) {
+		return V0_12;
+	} else if (!strcmp(cvt, "14")) {
+		return V14;
+	} else {
+		return UNKNOWN_VERSION;
+	}
+}
+
+gboolean can_client_connect_to_server(ClientVersionType client_version,
+				      ClientVersionType server_version)
+{
+	if (client_version == UNKNOWN_VERSION) {
+		return FALSE;
+	} else if (server_version == UNKNOWN_VERSION) {
+		return FALSE;
+	} else if (client_version > server_version) {
+		/* By design the server must be the newest */
+		return FALSE;
+	} else if (client_version == server_version) {
+		return TRUE;
+	} else {
+		/* In compatibility mode */
+		/* If somehow the backwards compatibility needs to be broken,
+		   this function should return FALSE here */
+		return TRUE;
+	}
 }
 
 WinnableState params_check_winnable_state(const GameParams * params,

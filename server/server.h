@@ -28,21 +28,6 @@
 #include "quoteinfo.h"
 #include "state.h"
 
-/* Supported versions.  These are ordered, so that it is possible to see
- * if versions are greater or smaller than each other.  The actual values do
- * not matter and will change when older versions stop being supported.  No
- * part of the program may depend on their exact value, all comparisons must
- * always be done with the symbols.  */
-/* Names for the versions are defined in server/player.c, and must be
- * changed when the enum changes.  */
-typedef enum {
-	V0_10, /**< Lowest supported version */
-	V0_11, /**< City walls, player style, robber undo */
-	V0_12, /**< Trade protocol simplified */
-	FIRST_VERSION = V0_10,
-	LATEST_VERSION = V0_12
-} ClientVersionType;
-
 #define TERRAIN_DEFAULT	0
 #define TERRAIN_RANDOM	1
 

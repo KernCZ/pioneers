@@ -930,36 +930,6 @@ static gboolean mode_bad_version(Player * player, gint event)
 	return FALSE;
 }
 
-/* Supported version names.  Whenever this list changes, the enum in server.h
- * must also change.  */
-static const gchar *client_version_type_to_string(ClientVersionType cvt)
-{
-	switch (cvt) {
-	case V0_10:
-		return "0.10";
-	case V0_11:
-		return "0.11";
-	case V0_12:
-		return "0.12";
-	}
-	g_return_val_if_reached("");
-}
-
-static gboolean check_versions(const gchar * client_version,
-			       Player * client)
-{
-	ClientVersionType i;
-	for (i = FIRST_VERSION; i <= LATEST_VERSION; ++i) {
-		if (strcmp
-		    (client_version,
-		     client_version_type_to_string(i)) == 0) {
-			client->version = i;
-			return TRUE;
-		}
-	}
-	return FALSE;
-}
-
 static gboolean mode_check_version(Player * player, gint event)
 {
 	StateMachine *sm = player->sm;
@@ -968,14 +938,19 @@ static gboolean mode_check_version(Player * player, gint event)
 	sm_state_name(sm, "mode_check_version");
 	switch (event) {
 	case SM_ENTER:
-		player_send_uncached(player, FIRST_VERSION, LATEST_VERSION,
-				     "version report\n");
+		player_send_uncached(player, UNKNOWN_VERSION,
+				     UNKNOWN_VERSION, "version report\n");
 		break;
 
 	case SM_RECV:
 		if (sm_recv(sm, "version %S", &version)) {
-			gboolean result = check_versions(version, player);
-			if (result) {
+			ClientVersionType cvt =
+			    client_version_type_from_string(version);
+			player->version = cvt;
+			if (can_client_connect_to_server
+			    (cvt,
+			     client_version_type_from_string
+			     (PROTOCOL_VERSION))) {
 				sm_goto(sm, (StateFunc) mode_check_status);
 			} else {
 				/* PROTOCOL_VERSION is the current version
@@ -989,8 +964,7 @@ static gboolean mode_check_version(Player * player, gint event)
 						    version);
 				/* Make sure the argument does not contain the separator */
 				g_strdelimit(mismatch, "|", '_');
-				player_send_uncached(player, FIRST_VERSION,
-						     LATEST_VERSION,
+				player_send_uncached(player, cvt, cvt,
 						     "NOTE1 %s|%s\n",
 						     mismatch,
 						     N_(""

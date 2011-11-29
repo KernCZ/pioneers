@@ -546,8 +546,8 @@ gboolean mode_pre_game(Player * player, gint event)
 		if (sm_recv(sm, "game")) {
 			player_send_uncached(player, FIRST_VERSION,
 					     LATEST_VERSION, "game\n");
-			params_write_lines(game->params, FALSE,
-					   send_game_line, player);
+			params_write_lines(game->params, player->version,
+					   FALSE, send_game_line, player);
 			player_send_uncached(player, FIRST_VERSION,
 					     LATEST_VERSION, "end\n");
 			return TRUE;

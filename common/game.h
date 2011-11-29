@@ -45,15 +45,39 @@ typedef enum {
 				 * (512 - strlen("player 0 chat \n") - 1) */
 #define MAX_NAME_LENGTH 30	/* maximum length for the name of a player */
 
+/* Supported versions.  These are ordered, so that it is possible to see
+ * if versions are greater or smaller than each other.  The actual values do
+ * not matter and will change when older versions stop being supported.  No
+ * part of the program may depend on their exact value, all comparisons must
+ * always be done with the symbols.  */
+/* Names for the versions are defined in common/game.c, and must be
+ * changed when the enum changes.  */
 typedef enum {
-	VAR_DEFAULT,		/* plain out-of-the-box game */
-	VAR_ISLANDS,		/* Islands of Catan */
-	VAR_INTIMATE		/* Intimate Catan */
-} GameVariant;
+	UNKNOWN_VERSION, /** Unknown version */
+	V0_10, /**< Lowest supported version */
+	V0_11, /**< City walls, player style, robber undo */
+	V0_12, /**< Trade protocol simplified */
+	V14, /**< More rules */
+	FIRST_VERSION = V0_10,
+	LATEST_VERSION = V14
+} ClientVersionType;
+
+/** Convert to a ClientVersionType.
+ * @param cvt The text to analyze
+ * @return The version.
+ */
+ClientVersionType client_version_type_from_string(const gchar * cvt);
+
+/** Will it be possible for a client to connect to a server?
+ * @param client_version The version of the client
+ * @param server_version The version of the server
+ * @return TRUE when the client can connect to the server
+ */
+gboolean can_client_connect_to_server(ClientVersionType client_version,
+				      ClientVersionType server_version);
 
 typedef struct {
 	gchar *title;		/* title of the game */
-	GameVariant variant;	/* which variant is being played */
 	gboolean random_terrain;	/* shuffle terrain location? */
 	gboolean strict_trade;	/* trade only before build/buy? */
 	gboolean domestic_trade;	/* player trading allowed? */
@@ -103,8 +127,9 @@ GameParams *params_new(void);
 GameParams *params_copy(const GameParams * params);
 GameParams *params_load_file(const gchar * fname);
 void params_free(GameParams * params);
-void params_write_lines(GameParams * params, gboolean write_secrets,
-			WriteLineFunc func, gpointer user_data);
+void params_write_lines(GameParams * params, ClientVersionType version,
+			gboolean write_secrets, WriteLineFunc func,
+			gpointer user_data);
 gboolean params_write_file(GameParams * params, const gchar * fname);
 gboolean params_load_line(GameParams * params, gchar * line);
 gboolean params_load_finish(GameParams * params);
