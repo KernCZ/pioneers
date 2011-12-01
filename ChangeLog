@@ -1,3 +1,6 @@
+2011-12-01  Roland Clobus <rclobus@rclobus.nl>
+	* server/lobby.game, server/theme_preview.game: Removed obsolete rule.
+
 2011-11-29  Roland Clobus <rclobus@rclobus.nl>
 	* server/pregame.c, server/player.c, server/server.h, common/game.c,
 	common/game.h: Allow versioned rules.

@@ -1,7 +1,6 @@
 # This is the lobby
 # People can gather here to meet, and talk about games to start.
 #
-variant default
 title Lobby
 strict-trade
 domestic-trade
