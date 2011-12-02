@@ -513,7 +513,7 @@ fi
 AC_CONFIG_FILES([ \
 	Makefile \
 	pioneers.spec \
-	pioneers.nsi \
+	MinGW/pioneers.nsi \
 	po/Makefile.in \
 	client/help/C/Makefile \
 	])
