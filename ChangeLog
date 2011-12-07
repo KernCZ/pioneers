@@ -1,7 +1,13 @@
+2011-12-07  Roland Clobus <rclobus@rclobus.nl>
+	* editor/gtk/editor.c, common/gtk/scrollable-text-view.gob,
+	common/gtk/Makefile.am, common/game.c, common/game.h: Store the
+	comments in the editor. With many thanks to Micah Bunting
+	<amnykon@gmail.com> for the initial versions of this patch.
+
 2011-12-02  Roland Clobus <rclobus@rclobus.nl>
-	* pioneers.nsi.in, README.MinGW, MinGW/pioneers.nsi.in, MinGW/README.txt,
-	configure.ac: Moved MinGW related stuff to MinGW directory. New
-	instructions in the README.txt.
+	* pioneers.nsi.in, README.MinGW, MinGW/pioneers.nsi.in,
+	MinGW/README.txt, configure.ac: Moved MinGW related stuff to MinGW
+	directory. New instructions in the README.txt.
 	
 2011-12-01  Roland Clobus <rclobus@rclobus.nl>
 	* server/lobby.game, server/theme_preview.game: Removed obsolete rule.

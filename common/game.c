@@ -35,7 +35,8 @@
 const gchar *default_player_style = "square";
 
 typedef enum {
-	PARAM_STRING,
+	PARAM_SINGLE_LINE,
+	PARAM_MULTIPLE_LINES,
 	PARAM_INT,
 	PARAM_BOOL,
 	PARAM_INTLIST,
@@ -54,7 +55,7 @@ typedef struct {
 
 /* *INDENT-OFF* */
 static Param game_params[] = {
-	{PARAM(title, FIRST_VERSION, PARAM_STRING, title)},
+	{PARAM(title, FIRST_VERSION, PARAM_SINGLE_LINE, title)},
 	{PARAM_OBSOLETE(variant)},
 	{PARAM(random-terrain, FIRST_VERSION, PARAM_BOOL, random_terrain)},
 	{PARAM(strict-trade, FIRST_VERSION, PARAM_BOOL, strict_trade)},
@@ -80,7 +81,9 @@ static Param game_params[] = {
 	{PARAM(develop-market, FIRST_VERSION, PARAM_INT, num_develop_type[DEVEL_MARKET])},
 	{PARAM(develop-soldier, FIRST_VERSION, PARAM_INT, num_develop_type[DEVEL_SOLDIER])},
 	{PARAM(use-pirate, FIRST_VERSION, PARAM_BOOL, use_pirate)},
-	{PARAM(island-discovery-bonus, FIRST_VERSION, PARAM_INTLIST, island_discovery_bonus)}
+	{PARAM(island-discovery-bonus, FIRST_VERSION, PARAM_INTLIST, island_discovery_bonus)},
+	{PARAM(#, FIRST_VERSION, PARAM_MULTIPLE_LINES, comments)},
+	{PARAM(desc, V14, PARAM_MULTIPLE_LINES, description)},
 };
 /* *INDENT-ON* */
 
@@ -96,9 +99,35 @@ void params_free(GameParams * params)
 {
 	if (params == NULL)
 		return;
+	gint idx;
+	gchar *str;
+	GArray *int_list;
 
-	if (params->title != NULL)
-		g_free(params->title);
+	for (idx = 0; idx < G_N_ELEMENTS(game_params); idx++) {
+		Param *param = game_params + idx;
+
+		switch (param->type) {
+		case PARAM_SINGLE_LINE:
+		case PARAM_MULTIPLE_LINES:
+			str =
+			    G_STRUCT_MEMBER(gchar *, params,
+					    param->offset);
+			g_free(str);
+			break;
+		case PARAM_INT:
+		case PARAM_BOOL:
+			break;
+		case PARAM_INTLIST:
+			int_list = G_STRUCT_MEMBER(GArray *, params,
+						   param->offset);
+			if (int_list != NULL)
+				g_array_free(int_list, TRUE);
+			break;
+		case PARAM_OBSOLETE_DATA:
+			/* Obsolete rule: do nothing */
+			break;
+		}
+	}
 	if (params->map != NULL)
 		map_free(params->map);
 	g_free(params);
@@ -231,7 +260,8 @@ void params_write_lines(GameParams * params, ClientVersionType version,
 			/* Only notify the recipient when the rule is not in use */
 
 			switch (param->type) {
-			case PARAM_STRING:
+			case PARAM_SINGLE_LINE:
+			case PARAM_MULTIPLE_LINES:
 				str =
 				    G_STRUCT_MEMBER(gchar *, params,
 						    param->offset);
@@ -275,7 +305,7 @@ void params_write_lines(GameParams * params, ClientVersionType version,
 		}
 
 		switch (param->type) {
-		case PARAM_STRING:
+		case PARAM_SINGLE_LINE:
 			str =
 			    G_STRUCT_MEMBER(gchar *, params,
 					    param->offset);
@@ -284,6 +314,26 @@ void params_write_lines(GameParams * params, ClientVersionType version,
 			buff = g_strdup_printf("%s %s", param->name, str);
 			func(user_data, buff);
 			g_free(buff);
+		case PARAM_MULTIPLE_LINES:
+			str =
+			    G_STRUCT_MEMBER(gchar *, params,
+					    param->offset);
+			if (str) {
+				gchar **strv;
+				gchar **strv_it;
+				strv = g_strsplit(str, "\n", 0);
+				strv_it = strv;
+				while (*strv_it) {
+					buff =
+					    g_strdup_printf("%s %s",
+							    param->name,
+							    *strv_it);
+					func(user_data, buff);
+					g_free(buff);
+					strv_it++;
+				}
+				g_strfreev(strv);
+			}
 			break;
 		case PARAM_INT:
 			buff = g_strdup_printf("%s %d", param->name,
@@ -355,8 +405,6 @@ gboolean params_load_line(GameParams * params, gchar * line)
 		return TRUE;
 	}
 	line = skip_space(line);
-	if (*line == '#')
-		return TRUE;
 	if (*line == 0)
 		return TRUE;
 	if (match_word(&line, "map")) {
@@ -398,13 +446,30 @@ gboolean params_load_line(GameParams * params, gchar * line)
 		if (!match_word(&line, param->name))
 			continue;
 		switch (param->type) {
-		case PARAM_STRING:
+		case PARAM_SINGLE_LINE:
 			str =
 			    G_STRUCT_MEMBER(gchar *, params,
 					    param->offset);
 			if (str)
 				g_free(str);
 			str = g_strchomp(g_strdup(line));
+			G_STRUCT_MEMBER(gchar *, params, param->offset) =
+			    str;
+			return TRUE;
+		case PARAM_MULTIPLE_LINES:
+			str =
+			    G_STRUCT_MEMBER(gchar *, params,
+					    param->offset);
+			if (str) {
+				gchar *copy;
+				copy =
+				    g_strconcat(str, "\n",
+						g_strchomp(line), NULL);
+				g_free(str);
+				str = copy;
+			} else {
+				str = g_strchomp(g_strdup(line));
+			}
 			G_STRUCT_MEMBER(gchar *, params, param->offset) =
 			    str;
 			return TRUE;
@@ -525,7 +590,8 @@ GameParams *params_copy(const GameParams * params)
 		Param *param = game_params + idx;
 
 		switch (param->type) {
-		case PARAM_STRING:
+		case PARAM_SINGLE_LINE:
+		case PARAM_MULTIPLE_LINES:
 			G_STRUCT_MEMBER(gchar *, copy, param->offset)
 			    =
 			    g_strdup(G_STRUCT_MEMBER

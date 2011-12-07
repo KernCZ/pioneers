@@ -36,6 +36,7 @@
 #include "game-devcards.h"
 #include "game-buildings.h"
 #include "game-resources.h"
+#include "scrollable-text-view.h"
 #include "guimap.h"
 #include "theme.h"
 #include "colors.h"
@@ -57,6 +58,9 @@ static GameRules *game_rules;
 static GameDevCards *game_devcards;
 static GameBuildings *game_buildings;
 static GameResources *game_resources;
+static GtkWidget *game_title;
+static GtkWidget *game_description;
+static GtkWidget *game_comments;
 static GtkWidget *terrain_menu;
 static GtkWidget *roll_menu;
 static GtkWidget *roll_numbers[12 + 1];
@@ -533,6 +537,58 @@ static GtkWidget *build_map(void)
 	return table;
 }
 
+/** Builds the comments tab.
+ * @return The comments tab.
+ */
+static GtkWidget *build_comments(void)
+{
+	GtkWidget *vbox;
+	GtkWidget *widget;
+
+	vbox = gtk_vbox_new(FALSE, 5);
+	widget = gtk_label_new_with_mnemonic("_Title");
+	gtk_widget_show(widget);
+	gtk_misc_set_alignment(GTK_MISC(widget), 0.0, 0.5);
+	gtk_box_pack_start(GTK_BOX(vbox), widget, FALSE, FALSE, 0);
+
+	game_title = gtk_entry_new();
+	gtk_widget_show(game_title);
+	gtk_box_pack_start(GTK_BOX(vbox), game_title, FALSE, FALSE, 0);
+	gtk_label_set_mnemonic_widget(GTK_LABEL(widget), game_title);
+
+	widget = gtk_label_new_with_mnemonic("_Description");
+	gtk_widget_show(widget);
+	gtk_misc_set_alignment(GTK_MISC(widget), 0.0, 0.5);
+	gtk_box_pack_start(GTK_BOX(vbox), widget, FALSE, FALSE, 0);
+
+	game_description = scrollable_text_view_new();
+	gtk_widget_show(game_description);
+	gtk_box_pack_start(GTK_BOX(vbox), game_description, FALSE, FALSE,
+			   0);
+	gtk_label_set_mnemonic_widget(GTK_LABEL(widget),
+				      scrollable_text_view_get_for_mnemonic
+				      (SCROLLABLE_TEXT_VIEW
+				       (game_description)));
+
+	scrollable_text_view_set_text(SCROLLABLE_TEXT_VIEW
+				      (game_description), "");
+
+	widget = gtk_label_new_with_mnemonic("_Comments");
+	gtk_widget_show(widget);
+	gtk_misc_set_alignment(GTK_MISC(widget), 0.0, 0.5);
+	gtk_box_pack_start(GTK_BOX(vbox), widget, FALSE, FALSE, 0);
+
+	game_comments = scrollable_text_view_new();
+	gtk_widget_show(game_comments);
+	gtk_box_pack_start(GTK_BOX(vbox), game_comments, TRUE, TRUE, 0);
+	gtk_label_set_mnemonic_widget(GTK_LABEL(widget),
+				      scrollable_text_view_get_for_mnemonic
+				      (SCROLLABLE_TEXT_VIEW
+				       (game_comments)));
+
+	return vbox;
+}
+
 static gint select_terrain_cb(G_GNUC_UNUSED GtkWidget * menu,
 			      gpointer user_data)
 {
@@ -863,6 +919,8 @@ static void set_window_title(const gchar * title)
 
 	gtk_window_set_title(GTK_WINDOW(toplevel), str);
 	g_free(str);
+
+	gtk_entry_set_text(GTK_ENTRY(game_title), window_title);
 }
 
 static void apply_params(GameParams * params)
@@ -896,6 +954,11 @@ static void apply_params(GameParams * params)
 
 	gmap->map = params->map;
 
+	scrollable_text_view_set_text(SCROLLABLE_TEXT_VIEW(game_comments),
+				      params->comments);
+	scrollable_text_view_set_text(SCROLLABLE_TEXT_VIEW
+				      (game_description),
+				      params->description);
 }
 
 static GameParams *get_params(void)
@@ -927,6 +990,13 @@ static GameParams *get_params(void)
 		    game_buildings_get_num_buildings(game_buildings, i);
 
 	params->map = gmap->map;
+
+	params->comments =
+	    scrollable_text_view_get_text(SCROLLABLE_TEXT_VIEW
+					  (game_comments));
+	params->description =
+	    scrollable_text_view_get_text(SCROLLABLE_TEXT_VIEW
+					  (game_description));
 
 	return params;
 }
@@ -1416,6 +1486,9 @@ int main(int argc, char *argv[])
 				 build_settings(GTK_WINDOW(toplevel)),
 				 /* Tab page name */
 				 gtk_label_new(_("Settings")));
+	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), build_comments(),
+				 /* Tab page name */
+				 gtk_label_new(_("Comments")));
 
 	terrain_menu = build_terrain_menu();
 	roll_menu = build_roll_menu();

@@ -96,6 +96,8 @@ typedef struct {
 	gboolean quit_when_done;	/* server quits after someone wins *//* Not in game_params[] */
 	gboolean use_pirate;	/* is there a pirate in this game? */
 	GArray *island_discovery_bonus;	/* list of VPs for discovering an island */
+	gchar *comments;	/* information regarding the map */
+	gchar *description;	/* description of the map */
 } GameParams;
 
 typedef struct {

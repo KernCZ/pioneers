@@ -46,7 +46,21 @@ libpioneers_gtk_a_SOURCES = \
 	common/gtk/player-icon.h \
 	common/gtk/polygon.c \
 	common/gtk/polygon.h \
+	common/gtk/scrollable-text-view.gob \
+	common/gtk/scrollable-text-view.gob.stamp \
+	common/gtk/scrollable-text-view.c \
+	common/gtk/scrollable-text-view.h \
+	common/gtk/scrollable-text-view-private.h \
 	common/gtk/select-game.c \
 	common/gtk/select-game.h \
 	common/gtk/theme.c \
 	common/gtk/theme.h
+
+BUILT_SOURCES += \
+	common/gtk/scrollable-text-view.gob.stamp
+
+MAINTAINERCLEANFILES += \
+	common/gtk/scrollable-text-view.gob.stamp \
+	common/gtk/scrollable-text-view.c \
+	common/gtk/scrollable-text-view.h \
+	common/gtk/scrollable-text-view-private.h
