@@ -1030,14 +1030,14 @@ static void convert_to_daemon(void)
 			if (!f) {
 				fprintf(stderr,
 					"Unable to open pidfile '%s': %s\n",
-					pidfile, strerror(errno));
+					pidfile, g_strerror(errno));
 			} else {
 				int r = fprintf(f, "%d\n", pid);
 				if (r <= 0) {
 					fprintf(stderr,
 						"Unable to write to pidfile "
 						"'%s': %s\n", pidfile,
-						strerror(errno));
+						g_strerror(errno));
 				}
 				fclose(f);
 			}

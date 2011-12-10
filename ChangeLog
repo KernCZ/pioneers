@@ -1,3 +1,7 @@
+2011-12-10  Roland Clobus <rclobus@rclobus.nl>
+	* meta-server/main.c: Replaced strerror 2x by g_strerror, as found by
+	autoscan.
+
 2011-12-07  Roland Clobus <rclobus@rclobus.nl>
 	* editor/gtk/editor.c, common/gtk/scrollable-text-view.gob,
 	common/gtk/Makefile.am, common/game.c, common/game.h: Store the
