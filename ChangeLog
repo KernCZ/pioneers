@@ -1,3 +1,7 @@
+2011-12-11  Roland Clobus <rclobus@rclobus.nl>
+	* client/gtk/connect.c, server/gtk/main.c, server/server.c: Added
+	newline to log messages about errors starting a program.
+
 2011-12-10  Roland Clobus <rclobus@rclobus.nl>
 	* meta-server/main.c: Replaced strerror 2x by g_strerror, as found by
 	autoscan.

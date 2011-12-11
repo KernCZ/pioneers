@@ -150,7 +150,7 @@ gint add_computer_player(Game * game, gboolean want_chat)
 	if (!g_spawn_async(NULL, child_argv, NULL, 0, NULL, NULL,
 			   NULL, &error)) {
 		log_message(MSG_ERROR,
-			    _("Error starting %s: %s"),
+			    _("Error starting %s: %s\n"),
 			    PIONEERS_AI_PATH, error->message);
 		g_error_free(error);
 		ret = -1;

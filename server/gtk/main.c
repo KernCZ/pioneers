@@ -339,7 +339,7 @@ static void launchclient_clicked_cb(G_GNUC_UNUSED GtkButton * widget,
 			   NULL, NULL, NULL, &error)) {
 		/* Error message when program %1 is started, reason is %2 */
 		log_message(MSG_ERROR,
-			    _("Error starting %s: %s"),
+			    _("Error starting %s: %s\n"),
 			    PIONEERS_CLIENT_GTK_PATH, error->message);
 		g_error_free(error);
 	}
