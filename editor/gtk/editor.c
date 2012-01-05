@@ -1403,6 +1403,9 @@ int main(int argc, char *argv[])
 	default_game = g_build_filename(get_pioneers_dir(), "default.game",
 					NULL);
 
+	/* set the UI driver to GTK_Driver, since we're using gtk */
+	set_ui_driver(&GTK_Driver);
+
 	/* Gtk+ handles the locale, we must bind the translations */
 	setlocale(LC_ALL, "");
 	bindtextdomain(PACKAGE, LOCALEDIR);

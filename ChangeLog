@@ -1,3 +1,6 @@
+2012-01-05  Roland Clobus <rclobus@rclobus.nl>
+	* editor/gtk/editor.c: Fixed a crash when a game needs logging.
+
 2011-12-11  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/connect.c, server/gtk/main.c, server/server.c: Added
 	newline to log messages about errors starting a program.
