@@ -213,6 +213,9 @@ static void frontend_change_style_cb(NotifyingString * style)
 {
 	gchar *st = notifying_string_get(style);
 	config_set_string("connect/style", st);
+	if (callback_mode != MODE_INIT) {
+		cb_style_change(st);
+	}
 	g_free(st);
 }
 

@@ -1,3 +1,6 @@
+2012-01-06  Roland Clobus <rclobus@rclobus.nl>
+	* client/gtk/offline.c: Send the new avatar style.
+
 2012-01-05  Roland Clobus <rclobus@rclobus.nl>
 	* editor/gtk/editor.c: Fixed a crash when a game needs logging.
 
