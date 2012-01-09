@@ -1,46 +1,10 @@
-.TH pioneers-server-console 6 "May 2, 2008" "pioneers"
+.TH pioneers-server-console 6 "January 8, 2012" "pioneers"
 .SH NAME
 pioneers-server-console \- command-line game server for Pioneers
 
 .SH SYNOPSIS
 .B pioneers-server-console
-[
-.BI \-a " port"
-] [
-.BI \-c " AI count"
-] [
-.BI \-g " game title"
-]
-.if n .ti +5n
-[
-.BI \-k " seconds"
-] [
-.BI \-m " metaserver"
-] [
-.BI \-n " hostname"
-]
-.if n .ti +5n
-[
-.BI \-P " player count"
-] [
-.BI \-p " port"
-] [
-.BI \-R " [0|1|2]"
-] [
-.BI \-r
-] [
-.BI \-s
-]
-.if n .ti +5n
-[
-.BI \-t " minutes"
-] [
-.BI \-T " [0|1]"
-] [
-.BI \-v " points"
-] [
-.BI \-x
-]
+[ OPTIONS ]
 
 .SH DESCRIPTION
 This manual page documents briefly the
@@ -55,64 +19,79 @@ provides a console-only server that \fBpioneers\fP clients can connect
 to.
 
 .SH OPTIONS
-.TP 12
-.BI \-a " port"
-Listen for administrative commands on port \fIport\fP.
-.TP
-.BI \-c " num"
-Start up \fInum\fP computer players.
-.TP
-.BI \-g " game title"
+.SS Application options
+.BI "\-g,\-\-game\-title" " game title"
 Load the ruleset specified by \fIgame title\fP. The title can be found in
 the *.game files. You need quotes for titles with spaces.
 .TP
-.BI \-k " secs"
-Automatically stop the server if no one has connected after \fIsecs\fP
-seconds.
+.BI "\-\-file" "filename"
+Load the ruleset in the file \fIfilename\fP.
 .TP
-.BI \-m " metaserver"
-Register this server with the metaserver at the specified address. 
-.TP
-.BI \-n " hostname"
-Use this hostname instead of the hostname reported by 
-.BR hostname(1) .
-.TP
-.BI \-P " num"
-Start a game for \fInum\fP total players (including computer players).
-.TP
-.BI \-p " port"
+.BI "\-p,\-\-port" " port"
 Use port \fIport\fP for player connections.
 .TP
-.B \-R [0|1|2]
+.BI "\-P,\-\-players" " num"
+Start a game for \fInum\fP total players (including computer players).
+.TP
+.BI "\-v,\-\-points" " points"
+Specify the number of "victory points" required to win the game.
+.TP
+.BI "\-R,\-\-seven\-rule" [0|1|2]
 "Sevens rule": Specify gameplay behavior when a player rolls a seven.  A
 value of \fI0\fP (the default) means that rolling a seven always moves
 the robber.  A value of \fI1\fP requires the player to re-roll if a
 seven is rolled on the first two turns.  A value of \fI2\fP means the
 player always re-rolls.
 .TP
-.B \-r
-Register with a meta server.  The meta server to use can be overriden
+.BI "\-T,\-\-terrain" [0|1]
+Choose a terrain type: \fI0\fP for the default, or \fI1\fP for random
+terrain.
+.TP
+.BI "\-c,\-\-computer\-players" " num"
+Start up \fInum\fP computer players.
+.TP
+.BI "\-\-version"
+Show version information.
+
+.SS Meta-server options
+.TP
+.BI "\-r,\-\-register"
+Register with a meta server.  The meta server to use can be overridden
 with the
 .B \-m
 option. Default meta sever: pioneers.debian.net
 .TP
-.B \-s
+.BI "\-m,\-\-meta\-server" " metaserver"
+Register this server with the metaserver at the specified address. 
+.TP
+.BI "\-n, \-\-hostname" " hostname"
+Use this hostname instead of the hostname reported by 
+.BR hostname(1) .
+
+.SS Miscellaneous options
+.BI "\-x,\-\-auto\-quit"
+Automatically exit after a player has won.
+.TP
+.BI "\-k,\-\-empty\-timeout" " secs"
+Automatically stop the server if no one has connected after \fIsecs\fP
+seconds.
+.TP
+.BI "\-t,\-\-tournament" " mins"
+Tournament mode: add AI players after \fImins\fP minutes.
+.TP
+.BI "\-a,\-\-admin\-port" " port"
+Listen for administrative commands on port \fIport\fP.
+.TP
+.BI "\-s,\-\-admin\-wait"
 Don't start the game immediately; wait for a command on the admin port
 .RB ( \-a )
 instead.
 .TP
-.B -T [0|1]
-Choose a terrain type: \fI0\fP for the default, or \fI1\fP for random
-terrain.
+.BI "\-\-fixed\-seating\-order"
+Give players numbers according to the order they enter the game.
 .TP
-.BI \-t " mins"
-Tournament mode: add AI players after \fImins\fP minutes.
-.TP
-.BI \-v " points"
-Specify the number of "victory points" required to win the game.
-.TP
-.B \-x
-Automatically exit after a player has won.
+.BI "\-\-debug"
+Enable debug messages.
 
 .SH ENVIRONMENT
 The default settings of the server can be influenced with the
@@ -138,10 +117,14 @@ and
 .RS
 Game definitions
 .RE
+.B /usr/share/games/pioneers/computer_names
+.RS 
+A list of names the computer player can use
+.RE
 
 .SH AUTHOR
 This manual page was written by Steve Langasek <vorlon@debian.org>, 
-and updated by Roland Clobus <rclobus@bigfoot.com>.
+and updated by Roland Clobus <rclobus@rclobus.nl>.
 Pioneers was written by Dave Cole <dave@dccs.com.au>, Andy Heroff
 <aheroff@mediaone.net>, and Roman Hodek <roman@hodek.net>, with
 contributions from many other developers on the Internet; see the

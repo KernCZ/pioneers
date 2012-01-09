@@ -1,19 +1,13 @@
-.TH pioneers 6 "April 9, 2006" "pioneers"
+.TH pioneers 6 "January 8, 2012" "pioneers"
 .SH NAME
 pioneers \- network implementation of Settlers of Catan
 
 .SH SYNOPSIS
 .B pioneers
 [
-.BI \-s " server"
-] [
 .BI \-\-server " server"
 ] [
-.BI \-p " port"
-] [
 .BI \-\-port " port"
-] [
-.BI \-n " name"
 ] [
 .BI \-\-name " name"
 ]
@@ -42,10 +36,22 @@ Hostname of the server
 Portname of the server
 .TP
 .BI "\-n, \-\-name" " name"
-Name of the player
+Use this name for the player instead of the name in the settings file
+.TP
+.BI "\-v, \-\-spectator"
+Connect as spectator instead of as a player
+.TP
+.BI "\-m, \-\-meta\-server" " meta-server"
+Connect to this meta-server instead of the meta-server in the settings file
+.TP
+.BI "\-\-debug"
+Turn on debugging mode
+.TP
+.BI "\-\-version"
+Show the version and quit
 
 .PP
-When the options are provided, the client automatically quits when 
+When the server and port are both provided, the client automatically quits when 
 the connection is broken.
 
 .SH ENVIRONMENT
@@ -55,18 +61,6 @@ following environment variable:
 .B PIONEERS_META_SERVER
 The hostname of the meta-server.
 If it is not set, the default meta-server will be used.
-
-.SH DEVELOPERS AND TRANSLATORS
-With the commandline option
-.B \-\-language
-.I code
-the values of the environment variables
-.B LANGUAGE
-and
-.B LC_ALL
-can be overriden. The 
-.I code
-should be one of the 2-letter language code pioneers understands.
 
 .SH FILES
 .B /usr/share/games/pioneers/themes/*
@@ -92,7 +86,7 @@ Personal themes
 
 .SH AUTHOR
 This manual page was written by Steve Langasek <vorlon@debian.org>,
-and updated by Roland Clobus <rclobus@bigfoot.com>.
+and updated by Roland Clobus <rclobus@rclobus.nl>.
 Pioneers was written by Dave Cole <dave@dccs.com.au>, Andy Heroff
 <aheroff@mediaone.net>, and Roman Hodek <roman@hodek.net>, with
 contributions from many other developers on the Internet; see the
