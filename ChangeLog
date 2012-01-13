@@ -2,6 +2,8 @@
 	* client/gtk/trade.c: Fixed the bug introduced on 2011-08-18, which
 	broke the trade in games without interplayer trade
 	(it worked in 0.12.4).
+	* client/gtk/gui.c, client/gtk/interface.c: Remove the quote tab when
+	leaving a game.
 
 2012-01-09  Roland Clobus <rclobus@rclobus.nl>
 	* docs/pioneers-server-gtk.6, docs/pioneers-meta-server.6,

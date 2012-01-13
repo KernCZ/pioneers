@@ -113,6 +113,7 @@ static void game_new_cb(void)
 
 static void game_leave_cb(void)
 {
+	frontend_quote_end();
 	route_gui_event(GUI_DISCONNECT);
 }
 

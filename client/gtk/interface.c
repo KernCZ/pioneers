@@ -248,8 +248,10 @@ void frontend_quote_player_end(gint player_num)
 
 void frontend_quote_end(void)
 {
-	quote_finish();
-	set_gui_state(frontend_state_idle);
+	if (get_gui_state() == frontend_state_quote) {
+		quote_finish();
+		set_gui_state(frontend_state_idle);
+	}
 }
 
 void frontend_quote_start(void)
