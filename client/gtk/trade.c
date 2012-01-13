@@ -57,16 +57,27 @@ static GtkWidget *active_quote_label;
 static gboolean is_good_quote(const QuoteInfo * quote)
 {
 	gint idx;
+	gboolean interested;
+
 	g_assert(quote != NULL);
 	g_assert(quote->is_domestic);
+
+	interested = FALSE;
 	for (idx = 0; idx < NO_RESOURCE; idx++) {
 		gint we_supply = quote->var.d.receive[idx];
+		gint we_receive = quote->var.d.supply[idx];
 
+		/* Asked for too many, or we don't want to give it anymore */
 		if (we_supply > resource_asset(idx)
 		    || (we_supply > 0 && !we_supply_rows[idx].enabled))
 			return FALSE;
+
+		/* We want one of the offered resources */
+		if (we_receive > 0 && we_receive_rows[idx].enabled) {
+			interested = TRUE;
+		}
 	}
-	return TRUE;
+	return interested;
 }
 
 /** @return TRUE if at least one resource is asked/offered */

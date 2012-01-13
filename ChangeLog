@@ -4,6 +4,8 @@
 	(it worked in 0.12.4).
 	* client/gtk/gui.c, client/gtk/interface.c: Remove the quote tab when
 	leaving a game.
+	* client/gtk/trade.c: Invalidate offers that are not interesting
+	anymore.
 
 2012-01-09  Roland Clobus <rclobus@rclobus.nl>
 	* docs/pioneers-server-gtk.6, docs/pioneers-meta-server.6,
