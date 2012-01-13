@@ -508,17 +508,17 @@ GtkWidget *trade_build_page(void)
 	gtk_widget_show(vbox);
 	gtk_box_pack_start(GTK_BOX(panel_mainbox), vbox, FALSE, TRUE, 0);
 
-	we_receive_frame =
-	    /* Frame title, trade: I want to trade these resources */
-	    build_trade_resources_frame(_("I want"), we_receive_rows);
-	gtk_box_pack_start(GTK_BOX(vbox), we_receive_frame,
+	gtk_box_pack_start(GTK_BOX(vbox),
+			   /* Frame title, trade: I want to trade these resources */
+			   build_trade_resources_frame(_("I want"),
+						       we_receive_rows),
 			   FALSE, TRUE, 0);
 
-	gtk_box_pack_start(GTK_BOX(vbox),
-			   /* Frame title, trade: I want these resources in return */
-			   build_trade_resources_frame(_("Give them"),
-						       we_supply_rows),
-			   FALSE, TRUE, 0);
+	we_receive_frame =
+	    /* Frame title, trade: I want these resources in return */
+	    build_trade_resources_frame(_("Give them"), we_supply_rows);
+	gtk_box_pack_start(GTK_BOX(vbox), we_receive_frame, FALSE, TRUE,
+			   0);
 
 	bbox = gtk_hbutton_box_new();
 	gtk_widget_show(bbox);

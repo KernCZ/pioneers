@@ -1,10 +1,16 @@
+2012-01-13  Roland Clobus <rclobus@rclobus.nl>
+	* client/gtk/trade.c: Fixed the bug introduced on 2011-08-18, which
+	broke the trade in games without interplayer trade
+	(it worked in 0.12.4).
+
 2012-01-09  Roland Clobus <rclobus@rclobus.nl>
 	* docs/pioneers-server-gtk.6, docs/pioneers-meta-server.6,
 	docs/pioneersai.6, docs/pioneers.6, docs/pioneers-server-console.6,
 	docs/pioneers-editor.6: Updated man pages.
 
 2012-01-06  Roland Clobus <rclobus@rclobus.nl>
-	* client/gtk/offline.c: Send the new avatar style.
+	* client/gtk/offline.c: Send the new avatar style
+	(it worked in 0.12.3).
 
 2012-01-05  Roland Clobus <rclobus@rclobus.nl>
 	* editor/gtk/editor.c: Fixed a crash when a game needs logging.
