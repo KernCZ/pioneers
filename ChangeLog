@@ -6,6 +6,8 @@
 	leaving a game.
 	* client/gtk/trade.c: Invalidate offers that are not interesting
 	anymore.
+	* server/turn.c, server/player.c, server/server.h, server/pregame.c,
+	server/buildutil.c, client/common/client.c: Simpler longest road check.
 
 2012-01-09  Roland Clobus <rclobus@rclobus.nl>
 	* docs/pioneers-server-gtk.6, docs/pioneers-meta-server.6,

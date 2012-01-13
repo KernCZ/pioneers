@@ -341,14 +341,14 @@ static void build_move(Player * player, gint sx, gint sy, gint spos,
 	map->has_moved_ship = TRUE;
 
 	/* check the longest road while the ship is moving */
-	check_longest_road(game, FALSE);
+	check_longest_road(game);
 
 	/* administrate the arrival of the ship */
 	to->owner = player->num;
 	to->type = BUILD_SHIP;
 
 	/* check the longest road again */
-	check_longest_road(game, FALSE);
+	check_longest_road(game);
 }
 
 typedef struct {

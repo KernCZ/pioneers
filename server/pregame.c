@@ -699,8 +699,26 @@ gboolean mode_pre_game(Player * player, gint event)
 						     devel->cards[i].
 						     turn_bought);
 			}
-			player_send_uncached(player, FIRST_VERSION,
+			player_send_uncached(player, V14,
 					     LATEST_VERSION,
+					     "playerinfo: %d %d %d %d %d %d %d %d %d %d %d %d %d\n",
+					     player->num_roads,
+					     player->num_bridges,
+					     player->num_ships,
+					     player->num_settlements,
+					     player->num_cities,
+					     player->num_soldiers,
+					     player->chapel_played,
+					     player->univ_played,
+					     player->gov_played,
+					     player->libr_played,
+					     player->market_played,
+					     (player->num ==
+					      longestroadpnum),
+					     (player->num ==
+					      largestarmypnum));
+			player_send_uncached(player, FIRST_VERSION,
+					     V0_12,
 					     "playerinfo: %d %d %d %d %d %d %d %d %d %d %d %d %d %d\n",
 					     player->num_roads,
 					     player->num_bridges,
@@ -708,7 +726,7 @@ gboolean mode_pre_game(Player * player, gint event)
 					     player->num_settlements,
 					     player->num_cities,
 					     player->num_soldiers,
-					     player->road_len,
+					     0,
 					     player->chapel_played,
 					     player->univ_played,
 					     player->gov_played,

@@ -1076,7 +1076,7 @@ static gboolean mode_load_gameinfo(StateMachine * sm, gint event)
 	static gint devcardidx = -1;
 	static gint numdevcards = -1;
 	gint num_roads, num_bridges, num_ships, num_settlements,
-	    num_cities, num_soldiers, road_len;
+	    num_cities, num_soldiers;
 	gint opnum, opnassets, opncards, opnsoldiers;
 	gboolean pchapel, puniv, pgov, plibr, pmarket, plongestroad,
 	    plargestarmy;
@@ -1194,10 +1194,10 @@ static gboolean mode_load_gameinfo(StateMachine * sm, gint event)
 		return TRUE;
 	}
 	if (sm_recv
-	    (sm, "playerinfo: %d %d %d %d %d %d %d %d %d %d %d %d %d %d",
+	    (sm, "playerinfo: %d %d %d %d %d %d %d %d %d %d %d %d %d",
 	     &num_roads, &num_bridges, &num_ships, &num_settlements,
-	     &num_cities, &num_soldiers, &road_len, &pchapel, &puniv,
-	     &pgov, &plibr, &pmarket, &plongestroad, &plargestarmy)) {
+	     &num_cities, &num_soldiers, &pchapel, &puniv, &pgov, &plibr,
+	     &pmarket, &plongestroad, &plargestarmy)) {
 		if (num_soldiers) {
 			player_modify_statistic(my_player_num(),
 						STAT_SOLDIERS,

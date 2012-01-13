@@ -814,7 +814,6 @@ void player_revive(Player * newp, char *name)
 	newp->num_settlements = p->num_settlements;
 	newp->num_cities = p->num_cities;
 	newp->num_soldiers = p->num_soldiers;
-	newp->road_len = p->road_len;
 	newp->develop_points = p->develop_points;
 	newp->chapel_played = p->chapel_played;
 	newp->univ_played = p->univ_played;

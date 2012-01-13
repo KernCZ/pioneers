@@ -59,7 +59,6 @@ typedef struct {
 	gint num_city_walls;	/* city walls available */
 
 	gint num_soldiers;	/* number of soldiers played */
-	gint road_len;		/* last longest road */
 	gint develop_points;	/* number of development card victory points */
 	gint chapel_played;	/* number of Chapel cards played */
 	gint univ_played;	/* number of University cards played */
@@ -121,7 +120,7 @@ struct Game {
 
 /**** global variables ****/
 /* buildutil.c */
-void check_longest_road(Game * game, gboolean can_cut);
+void check_longest_road(Game * game);
 void node_add(Player * player,
 	      BuildType type, int x, int y, int pos, gboolean paid_for,
 	      Points * special_points);
