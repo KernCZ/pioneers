@@ -554,6 +554,9 @@ static GtkWidget *build_server_frame(void)
 	gtk_widget_set_tooltip_text(toggle,
 				    _(""
 				      "Register this game at the meta server"));
+	register_server =
+	    config_get_int_with_default("server/register", TRUE);
+
 	/* meta server label */
 	label = gtk_label_new(_("Meta server"));
 	gtk_widget_show(label);
@@ -611,8 +614,6 @@ static GtkWidget *build_server_frame(void)
 	gtk_entry_set_text(GTK_ENTRY(overridden_hostname_entry),
 			   overridden_hostname);
 
-	register_server =
-	    config_get_int_with_default("server/register", TRUE);
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(toggle),
 				     register_server);
 

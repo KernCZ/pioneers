@@ -1,7 +1,5 @@
 2012-01-17  Roland Clobus <rclobus@rclobus.nl>
 	* client/common/client.c: Fixed string building function.
-
-2012-01-14  Roland Clobus <rclobus@rclobus.nl>
 	* server/gtk/main.c: Fixed the bug introduced on 2011-11-06, which
 	did not correctly disabled the entries related to 'Register server'.
 
