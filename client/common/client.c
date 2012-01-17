@@ -1427,6 +1427,7 @@ gboolean mode_done_response(StateMachine * sm, gint event)
 static char *setup_msg(void)
 {
 	gchar *msg;
+	gchar *old;
 	const gchar *parts[3];
 	int num_parts;
 	int idx;
@@ -1445,7 +1446,6 @@ static char *setup_msg(void)
 		parts[num_parts++] = _("ship");
 
 	for (idx = 0; idx < num_parts; idx++) {
-		gchar *old;
 		if (idx > 0) {
 			if (idx == num_parts - 1) {
 				old = msg;
@@ -1459,9 +1459,12 @@ static char *setup_msg(void)
 			}
 		}
 		old = msg;
-		msg = g_strdup_printf("%s %s.", msg, parts[idx]);
+		msg = g_strdup_printf("%s %s", msg, parts[idx]);
 		g_free(old);
 	}
+	old = msg;
+	msg = g_strdup_printf("%s.", msg);
+	g_free(old);
 
 	return msg;
 }
