@@ -1989,11 +1989,11 @@ msgstr "Kapellen"
 #. Name of the development card
 #: ../client/gtk/player.c:59 ../common/cards.c:134
 msgid "Pioneer university"
-msgstr "Pioniers universiteit"
+msgstr "Pioniersuniversiteit"
 
 #: ../client/gtk/player.c:59
 msgid "Pioneer universities"
-msgstr "Pioniers universiteiten"
+msgstr "Pioniersuniversiteiten"
 
 #. Name of the development card
 #: ../client/gtk/player.c:61 ../common/cards.c:137
