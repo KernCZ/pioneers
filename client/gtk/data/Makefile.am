@@ -23,6 +23,8 @@ include client/gtk/data/themes/Makefile.am
 
 icon_DATA += client/gtk/data/pioneers.png
 
+icons += client/gtk/data/pioneers.svg
+
 pixmap_DATA += \
 	client/gtk/data/bridge.svg \
 	client/gtk/data/city.svg \

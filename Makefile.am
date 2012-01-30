@@ -88,6 +88,7 @@ EXTRA_DIST = autogen.sh pioneers.spec xmldocs.make omf.make README.Cygwin README
 BUILT_SOURCES =
 windows_resources_input =
 windows_resources_output =
+icons = 
 
 # Use GOB to create new classes
 %.gob.stamp %.c %.h %-private.h: %.gob
@@ -203,3 +204,32 @@ reindent:
 
 restorepo:
 	svn revert po/*.po po/pioneers.pot
+
+# Application icons, in various sizes
+BUILT_SOURCES += $(icons) $(subst .svg,.48x48_apps.png,$(icons))
+EXTRA_DIST += $(icons) $(subst .svg,.48x48_apps.png,$(icons))
+
+%.48x48_apps.png: %.svg
+	@mkdir_p@ $(dir $@)
+	$(svg_renderer_path) $(svg_renderer_width)48$(svg_renderer_height)48 $< $@
+
+install-icons:
+	@mkdir_p@ $(DESTDIR)$(datadir)/icons/hicolor/48x48/apps 
+	@mkdir_p@ $(DESTDIR)$(datadir)/icons/hicolor/scalable/apps
+	for icon in $(icons); do \
+		ICONNAME=`echo $$icon | $(AWK) '{ c = split($$0, a, "/"); print substr(a[c], 1, index(a[c], ".") - 1) }'`; \
+		INPUTNAME=`echo $$icon | $(AWK) '{ gsub(".svg", ""); print }'`; \
+		$(INSTALL_DATA) $(srcdir)/$$INPUTNAME.48x48_apps.png $(DESTDIR)$(datadir)/icons/hicolor/48x48/apps/$$ICONNAME.png; \
+		$(INSTALL_DATA) $(srcdir)/$$INPUTNAME.svg $(DESTDIR)$(datadir)/icons/hicolor/scalable/apps/$$ICONNAME.svg; \
+	done;
+
+uninstall-icons:
+	-for icon in $(icons); do \
+		ICONNAME=`echo $$icon | $(AWK) '{ c = split($$0, a, "/"); print substr(a[c], 1, index(a[c], ".") - 1) }'`; \
+		rm -f $(DESTDIR)$(datadir)/icons/hicolor/48x48/apps/$$ICONNAME.png; \
+		rm -f $(DESTDIR)$(datadir)/icons/hicolor/scalable/apps/$$ICONNAME.svg; \
+	done;
+
+install-data-hook: install-icons
+
+uninstall-hook: uninstall-icons

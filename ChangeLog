@@ -1,3 +1,8 @@
+2012-01-30  Roland Clobus <rclobus@rclobus.nl>
+	* editor/gtk/Makefile.am, server/gtk/Makefile.am, Makefile.am,
+	client/gtk/data/Makefile.am: Created the large icons for the GNOME 3
+	desktop.
+
 2012-01-17  Roland Clobus <rclobus@rclobus.nl>
 	* client/common/client.c: Fixed string building function.
 	* server/gtk/main.c: Fixed the bug introduced on 2011-11-06, which

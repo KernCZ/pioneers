@@ -22,6 +22,8 @@ icon_DATA += server/gtk/pioneers-server.png
 desktop_in_files += server/gtk/pioneers-server.desktop.in
 bin_PROGRAMS += pioneers-server-gtk
 
+icons += server/gtk/pioneers-server.svg
+
 pioneers_server_gtk_CPPFLAGS = $(gtk_cflags) $(avahi_cflags) -I $(srcdir)/server
 pioneers_server_gtk_LDADD = libpioneers_server.a $(gtk_libs) $(avahi_libs)
 

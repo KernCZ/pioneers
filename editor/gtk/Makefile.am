@@ -23,6 +23,8 @@ icon_DATA += editor/gtk/pioneers-editor.png
 desktop_in_files += editor/gtk/pioneers-editor.desktop.in
 bin_PROGRAMS += pioneers-editor
 
+icons += editor/gtk/pioneers-editor.svg
+
 pioneers_editor_CPPFLAGS = $(gtk_cflags)
 
 pioneers_editor_SOURCES = \
