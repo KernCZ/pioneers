@@ -206,7 +206,7 @@ restorepo:
 	svn revert po/*.po po/pioneers.pot
 
 # Application icons, in various sizes
-BUILT_SOURCES += $(icons) $(subst .svg,.48x48_apps.png,$(icons))
+BUILT_SOURCES += $(subst .svg,.48x48_apps.png,$(icons))
 EXTRA_DIST += $(icons) $(subst .svg,.48x48_apps.png,$(icons))
 
 %.48x48_apps.png: %.svg
