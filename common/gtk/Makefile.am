@@ -50,17 +50,17 @@ libpioneers_gtk_a_SOURCES = \
 	common/gtk/scrollable-text-view.gob.stamp \
 	common/gtk/scrollable-text-view.c \
 	common/gtk/scrollable-text-view.h \
-	common/gtk/scrollable-text-view-private.h \
 	common/gtk/select-game.c \
 	common/gtk/select-game.h \
 	common/gtk/theme.c \
 	common/gtk/theme.h
 
 BUILT_SOURCES += \
-	common/gtk/scrollable-text-view.gob.stamp
+	common/gtk/scrollable-text-view.gob.stamp \
+	common/gtk/scrollable-text-view.c \
+	common/gtk/scrollable-text-view.h
 
 MAINTAINERCLEANFILES += \
 	common/gtk/scrollable-text-view.gob.stamp \
 	common/gtk/scrollable-text-view.c \
-	common/gtk/scrollable-text-view.h \
-	common/gtk/scrollable-text-view-private.h
+	common/gtk/scrollable-text-view.h

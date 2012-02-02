@@ -1,5 +1,7 @@
 2012-02-02  Roland Clobus <rclobus@rclobus.nl>
 	* Makefile.am: Don't include source files in BUILT_SOURCES.
+	* common/Makefile.am, common/gtk/Makefile.am, client/gtk/Makefile.am:
+	Better marking for gob related files.
 
 2012-01-30  Roland Clobus <rclobus@rclobus.nl>
 	* editor/gtk/Makefile.am, server/gtk/Makefile.am, Makefile.am,

@@ -91,7 +91,10 @@ pioneers_LDADD = libpioneersclient.a $(gtk_libs) $(avahi_libs) $(LIBNOTIFY_LIBS)
 include client/gtk/data/Makefile.am
 
 BUILT_SOURCES += \
-	client/gtk/resource-view.gob.stamp
+	client/gtk/resource-view.gob.stamp \
+	client/gtk/resource-view.c \
+	client/gtk/resource-view.h \
+	client/gtk/resource-view-private.h
 
 MAINTAINERCLEANFILES += \
 	client/gtk/resource-view.gob.stamp \

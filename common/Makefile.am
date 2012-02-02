@@ -87,7 +87,10 @@ build_version:
 BUILT_SOURCES += \
 	build_version \
 	common/authors.h \
-	common/notifying-string.gob.stamp
+	common/notifying-string.gob.stamp \
+	common/notifying-string.c \
+	common/notifying-string.h \
+	common/notifying-string-private.h
 
 CLEANFILES += common/authors.h common/version.h
 
