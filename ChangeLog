@@ -1,3 +1,7 @@
+2012-02-09  Roland Clobus <rclobus@rclobus.nl>
+	* configure.ac: Use the same flags as for Debian hardening and also
+	use the minimal linking flags.
+
 2012-02-02  Roland Clobus <rclobus@rclobus.nl>
 	* Makefile.am: Don't include source files in BUILT_SOURCES.
 	* common/Makefile.am, common/gtk/Makefile.am, client/gtk/Makefile.am:

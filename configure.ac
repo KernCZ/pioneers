@@ -117,6 +117,18 @@ esac])
 
 ## The warnings are in the same order as in 'man gcc'
 if test "x$GCC" = xyes; then
+	# Flags from Debian hardening (dpkg-buildflags --get CFLAGS)
+	AC_SUBST(AM_CFLAGS, ["$AM_CFLAGS -g -O2 -fstack-protector --param=ssp-buffer-size=4 -Wformat -Wformat-security -Werror=format-security"])
+	AC_SUBST(AM_CFLAGS, ["$AM_CFLAGS -D_FORTIFY_SOURCE=2"])
+	AC_SUBST(AM_CFLAGS, ["$AM_CFLAGS -pie -fPIE"])
+
+	# Flags from Debian hardening (dpkg-buildflags --get LDFLAGS)
+	AC_SUBST(AM_LDFLAGS, ["$AM_LDFLAGS -Wl,-z,relro"])
+	AC_SUBST(AM_LDFLAGS, ["$AM_LDFLAGS -Wl,-z,now"])
+
+	# Only link the directly needed libraries	
+	AC_SUBST(AM_CFLAGS, ["$AM_CFLAGS -Wl,--as-needed"])
+
 	if test "$pioneers_warnings" = yes -o "$pioneers_warnings" = full; then
 		AC_SUBST(WARNINGS, "-Wall")
 		AC_SUBST(WARNINGS, "$WARNINGS -W")
