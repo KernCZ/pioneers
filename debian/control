@@ -69,7 +69,7 @@ Depends: ${misc:Depends}
 Recommends: pioneers-console
 Conflicts: pioneers-server-data (<< 0.12), pioneers-console (<< 0.11.2)
 Replaces: pioneers-server-data (<< 0.12), pioneers-console (<< 0.11.2)
-Description: Settlers of Catan board game - data files
+Description: Settlers of Catan board game - data files for console parts
  Pioneers is a computer implementation of the Settlers of Catan board game.
  It can be played over the internet.
  .

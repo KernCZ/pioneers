@@ -4,6 +4,7 @@ pioneers (14.1-1~local1) UNRELEASED; urgency=low
   * Switched to simple debhelper script.
   * Enabled hardening. (closes: #657829)
   * Added large icons for the GNOME3 desktop.
+  * Fixed duplicate-short-description lintian warning for the data packages.
 
  -- Roland Clobus <rclobus@rclobus.nl>  Tue, 31 Jan 2012 09:39:56 +0100
 
