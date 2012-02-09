@@ -1,3 +1,11 @@
+pioneers (14.1-1~local1) UNRELEASED; urgency=low
+
+  * Awaiting new upstream release.
+  * Switched to simple debhelper script.
+  * Enabled hardening. (closes: #657829)
+
+ -- Roland Clobus <rclobus@rclobus.nl>  Tue, 31 Jan 2012 09:39:56 +0100
+
 pioneers (0.12.5-1) unstable; urgency=low
 
   * New upstream release.
