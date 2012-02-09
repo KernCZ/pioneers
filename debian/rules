@@ -17,15 +17,9 @@ override_dh_auto_configure:
 		--disable-deprecation-checks
 
 override_dh_install:
-	rsvg --width 32 --height 32 client/gtk/data/pioneers.svg pioneers32.png
-	convert pioneers32.png pioneers.xpm
-	rm pioneers32.png
-	rsvg --width 32 --height 32 server/gtk/pioneers-server.svg pioneers-server32.png
-	convert pioneers-server32.png pioneers-server.xpm
-	rm pioneers-server32.png
-	rsvg --width 32 --height 32 editor/gtk/pioneers-editor.svg pioneers-editor32.png
-	convert pioneers-editor32.png pioneers-editor.xpm
-	rm pioneers-editor32.png
+	rsvg-convert --width 32 --height 32 client/gtk/data/pioneers.svg | pngtopnm | ppmtoxpm > pioneers.xpm
+	rsvg-convert --width 32 --height 32 server/gtk/pioneers-server.svg | pngtopnm | ppmtoxpm > pioneers-server.xpm
+	rsvg-convert --width 32 --height 32 editor/gtk/pioneers-editor.svg | pngtopnm | ppmtoxpm > pioneers-editor.xpm
 	install -D -m644 pioneers.xpm debian/tmp/usr/share/pixmaps/pioneers-client.xpm
 	install -D -m644 pioneers-server.xpm debian/tmp/usr/share/pixmaps/pioneers-server.xpm
 	install -D -m644 pioneers-editor.xpm debian/tmp/usr/share/pixmaps/pioneers-editor.xpm
