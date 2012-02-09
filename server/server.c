@@ -308,6 +308,11 @@ static gboolean game_list_add_item(GameParams * item)
 		gchar *nt;
 		gint i;
 
+		if (params_is_equal
+		    (item, game_list_find_item(item->title))) {
+			return FALSE;
+		}
+
 		/* append a number */
 		for (i = 1; i <= INT_MAX; i++) {
 			nt = g_strdup_printf("%s%d", item->title, i);

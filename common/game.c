@@ -632,6 +632,139 @@ GameParams *params_copy(const GameParams * params)
 	return copy;
 }
 
+static void append_to_string(gpointer base, const gchar * additional_text)
+{
+	gchar **b = base;
+	gchar *old = *b;
+	if (*b == NULL) {
+		*b = g_strdup(additional_text);
+	} else {
+		*b = g_strdup_printf("%s\n%s", old, additional_text);
+	}
+	g_free(old);
+}
+
+gboolean params_is_equal(const GameParams * params1,
+			 const GameParams * params2)
+{
+	gint idx;
+	gchar *buff1;
+	gchar *buff2;
+	gboolean is_different;
+
+	/* Compare the map */
+	if (params1->map->y_size != params2->map->y_size) {
+		return FALSE;
+	};
+	for (idx = 0; idx < params1->map->y_size; idx++) {
+		buff1 = map_format_line(params1->map, TRUE, idx);
+		buff2 = map_format_line(params2->map, TRUE, idx);
+
+		is_different = g_strcmp0(buff1, buff2) != 0;
+		g_free(buff1);
+		g_free(buff2);
+		if (is_different) {
+			return FALSE;
+		}
+	}
+
+	buff1 = format_int_list("", params1->map->chits);
+	buff2 = format_int_list("", params2->map->chits);
+	is_different = g_strcmp0(buff1, buff2) != 0;
+	g_free(buff1);
+	g_free(buff2);
+	if (is_different) {
+		return FALSE;
+	}
+
+	struct nosetup_t tmp;
+	buff1 = NULL;
+	tmp.user_data = &buff1;
+	tmp.func = append_to_string;
+	map_traverse_const(params1->map, find_no_setup, &tmp);
+	buff2 = NULL;
+	tmp.user_data = &buff2;
+	map_traverse_const(params2->map, find_no_setup, &tmp);
+
+	is_different = g_strcmp0(buff1, buff2) != 0;
+	g_free(buff1);
+	g_free(buff2);
+	if (is_different) {
+		return FALSE;
+	}
+
+	/* Compare the game parameters */
+
+	/* Copy the const parameter to a non-const version, because
+	 * G_STRUCT_MEMBER doesn't want const values.  Note that this
+	 * variable does not own its pointers, that is, they don't have to
+	 * be freed when it goes out of scope. */
+	GameParams nonconst1;
+	GameParams nonconst2;
+	memcpy(&nonconst1, params1, sizeof(GameParams));
+	memcpy(&nonconst2, params2, sizeof(GameParams));
+
+	for (idx = 0; idx < G_N_ELEMENTS(game_params); idx++) {
+		const Param *param = game_params + idx;
+
+		switch (param->type) {
+		case PARAM_SINGLE_LINE:
+		case PARAM_MULTIPLE_LINES:
+			if (g_strcmp0
+			    (G_STRUCT_MEMBER
+			     (gchar *, &nonconst1, param->offset),
+			     G_STRUCT_MEMBER(gchar *, &nonconst2,
+					     param->offset)) != 0) {
+				return FALSE;
+			}
+			break;
+		case PARAM_INT:
+			if (G_STRUCT_MEMBER
+			    (gint, &nonconst1,
+			     param->offset) != G_STRUCT_MEMBER(gint,
+							       &nonconst2,
+							       param->offset))
+			{
+				return FALSE;
+			}
+			break;
+		case PARAM_BOOL:
+			if (G_STRUCT_MEMBER
+			    (gboolean, &nonconst1,
+			     param->offset) != G_STRUCT_MEMBER(gboolean,
+							       &nonconst2,
+							       param->offset))
+			{
+				return FALSE;
+			}
+			break;
+		case PARAM_INTLIST:
+			buff1 = format_int_list("",
+						G_STRUCT_MEMBER(GArray *,
+								&nonconst1,
+								param->
+								offset));
+			buff2 =
+			    format_int_list("",
+					    G_STRUCT_MEMBER(GArray *,
+							    &nonconst2,
+							    param->offset));
+
+			is_different = g_strcmp0(buff1, buff2) != 0;
+			g_free(buff1);
+			g_free(buff2);
+			if (is_different) {
+				return FALSE;
+			}
+			break;
+		case PARAM_OBSOLETE_DATA:
+			/* Obsolete rule: do nothing */
+			break;
+		}
+	}
+	return TRUE;
+}
+
 /** Returns TRUE if the params are valid */
 gboolean params_load_finish(GameParams * params)
 {

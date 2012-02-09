@@ -128,6 +128,8 @@ const gchar *default_player_style;
 GameParams *params_new(void);
 GameParams *params_copy(const GameParams * params);
 GameParams *params_load_file(const gchar * fname);
+gboolean params_is_equal(const GameParams * params1,
+			 const GameParams * params2);
 void params_free(GameParams * params);
 void params_write_lines(GameParams * params, ClientVersionType version,
 			gboolean write_secrets, WriteLineFunc func,
