@@ -99,23 +99,23 @@ icons =
 # creating icons
 %.png: %.svg
 	@mkdir_p@ $(dir $@)
-	$(svg_renderer_path) $(svg_renderer_width)48$(svg_renderer_height)48 $< $@
+	$(svg_renderer_path) $(svg_renderer_width)48$(svg_renderer_height)48 $< $(svg_renderer_output) $@
 
 if CREATE_WINDOWS_ICON
 # Only maintainers need to do this. It is distributed in the tarball
 %.ico: %.svg
 	@mkdir_p@ $(dir $@)
-	$(svg_renderer_path) $(svg_renderer_width)16$(svg_renderer_height)16 $< $@-p16.png
+	$(svg_renderer_path) $(svg_renderer_width)16$(svg_renderer_height)16 $< $(svg_renderer_output) $@-p16.png
 	$(pngtopnm) $@-p16.png > $@-p16.pnm
 	pngtopnm -alpha $@-p16.png > $@-p16a.pnm
 	pnmcolormap 256 $@-p16.pnm > $@-p16colormap.pnm
 	pnmremap -mapfile=$@-p16colormap.pnm $@-p16.pnm > $@-p16256.pnm
-	$(svg_renderer_path) $(svg_renderer_width)32$(svg_renderer_height)32 $< $@-p32.png
+	$(svg_renderer_path) $(svg_renderer_width)32$(svg_renderer_height)32 $< $(svg_renderer_output) $@-p32.png
 	pngtopnm $@-p32.png > $@-p32.pnm
 	pngtopnm -alpha $@-p32.png > $@-p32a.pnm
 	pnmcolormap 256 $@-p32.pnm > $@-p32colormap.pnm
 	pnmremap -mapfile=$@-p32colormap.pnm $@-p32.pnm > $@-p32256.pnm
-	$(svg_renderer_path) $(svg_renderer_width)48$(svg_renderer_height)48 $< $@-p48.png
+	$(svg_renderer_path) $(svg_renderer_width)48$(svg_renderer_height)48 $< $(svg_renderer_output) $@-p48.png
 	pngtopnm $@-p48.png > $@-p48.pnm
 	pngtopnm -alpha $@-p48.png > $@-p48a.pnm
 	pnmcolormap 256 $@-p48.pnm > $@-p48colormap.pnm
@@ -211,7 +211,7 @@ EXTRA_DIST += $(icons) $(subst .svg,.48x48_apps.png,$(icons))
 
 %.48x48_apps.png: %.svg
 	@mkdir_p@ $(dir $@)
-	$(svg_renderer_path) $(svg_renderer_width)48$(svg_renderer_height)48 $< $@
+	$(svg_renderer_path) $(svg_renderer_width)48$(svg_renderer_height)48 $< $(svg_renderer_output) $@
 
 install-icons:
 	@mkdir_p@ $(DESTDIR)$(datadir)/icons/hicolor/48x48/apps 

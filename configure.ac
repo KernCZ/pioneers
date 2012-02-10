@@ -62,21 +62,30 @@ else
 fi
 
 # Try to find a suitable renderer for the svg images
-AC_PATH_PROG(svg_renderer_path, rsvg)
 AC_SUBST(whitespace_trick, [" "])
+AC_PATH_PROG(svg_renderer_path, rsvg-convert)
 if test x$svg_renderer_path != x; then
 	AC_SUBST(svg_renderer_width, ["--width \$(whitespace_trick)"])
 	AC_SUBST(svg_renderer_height, ["\$(whitespace_trick) --height \$(whitespace_trick)"])
+	AC_SUBST(svg_renderer_output, ["\$(whitespace_trick) -o \$(whitespace_trick)"])
+else
+AC_PATH_PROG(svg_renderer_path, rsvg)
+if test x$svg_renderer_path != x; then
+	AC_SUBST(svg_renderer_width, ["--width \$(whitespace_trick)"])
+	AC_SUBST(svg_renderer_height, ["\$(whitespace_trick) --height \$(whitespace_trick)"])
+	AC_SUBST(svg_renderer_output, ["\$(whitespace_trick)"])
 else
 AC_PATH_PROG(svg_renderer_path, convert)
 if test x$svg_renderer_path != x; then
 	AC_SUBST(svg_renderer_width, ["-background \"\#000001\" -transparent \"\#000001\" -resize \$(whitespace_trick)"])
 	AC_SUBST(svg_renderer_height, ["x"])
+	AC_SUBST(svg_renderer_output, ["\$(whitespace_trick)"])
 else 
 	# Add other SVG rendering programs here
 	# Don't let configure fail, in the distributed tarballs is already
 	# a current .png file
 	AC_SUBST(svg_renderer_path, [false])
+fi
 fi
 fi
 
