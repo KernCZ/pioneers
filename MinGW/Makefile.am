@@ -19,6 +19,8 @@
 
 if IS_MINGW_PORT
 
+install-exec-hook: install-MinGW
+
 install-MinGW:
 	cp /mingw/bin/freetype6.dll /usr/local
 	cp /mingw/bin/intl.dll /usr/local
@@ -42,6 +44,7 @@ install-MinGW:
 	cp /mingw/lib/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-svg.dll /usr/local
 	cp /mingw/bin/libpng14-14.dll /usr/local
 	cp /mingw/bin/librsvg-2-2.dll /usr/local
+	cp /mingw/bin/libssp-0.dll /usr/local
 	cp /mingw/bin/libxml2-2.dll /usr/local
 	cp /mingw/bin/zlib1.dll /usr/local
 	mkdir -p /usr/local/lib/gdk-pixbuf-2.0/2.10.0

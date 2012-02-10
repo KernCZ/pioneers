@@ -1,6 +1,8 @@
 2012-02-10  Roland Clobus <rclobus@rclobus.nl>
 	* configure.ac, Makefile.am, client/gtk/data/Makefile.am: The script
 	rsvg is deprecated. Using rsvg-convert which was called by rsvg.
+	* MinGW/Makefile.am: MinGW port requires libssp-0.dll too. Also use
+	the install-hook to automagically install the DLLs.
 
 2012-02-09  Roland Clobus <rclobus@rclobus.nl>
 	* configure.ac: Use the same flags as for Debian hardening and also
