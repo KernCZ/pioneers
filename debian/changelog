@@ -7,8 +7,10 @@ pioneers (14.1-1~local1) UNRELEASED; urgency=low
   * Fixed duplicate-short-description lintian warning for the data packages.
   * Removed Conflicts: en Replaces: for pre-oldstable versions to remove the
     last lintian warnings.
-  * Use rsvg-convert instead of rsvg, together with netpbm to render the xpm
+  * Used rsvg-convert instead of rsvg, together with netpbm to render the xpm
     icons. ImageMagick is not needed anymore as build dependency.
+  * Added xfonts-scalable in Build-Depends: for Bitstream Charter in the svg
+    files.
 
  -- Roland Clobus <rclobus@rclobus.nl>  Tue, 31 Jan 2012 09:39:56 +0100
 
