@@ -1,6 +1,7 @@
 2012-02-12  Roland Clobus <rclobus@rclobus.nl>
 	* Makefile.am: Added 'pristine' target to remove svn:ignore files.
 	* configure.ac: Split AC_CONFIG_FILES. Needed for MinGW builds.
+	* client/gtk/resource-view.gob: Fixed layout bug introduced 2011-11-12.
 
 2012-02-10  Roland Clobus <rclobus@rclobus.nl>
 	* configure.ac, Makefile.am, client/gtk/data/Makefile.am: The script

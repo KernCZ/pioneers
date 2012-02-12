@@ -74,13 +74,12 @@ class Resource:View from Gtk:Misc {
 	public GtkWidget *new_single_resource(Resource resource) {
 		ResourceView *rv;
 		gint width;
-		GtkRequisition requisition;
+		gint height;
 
 		rv = GET_NEW;
 		rv->_priv->resource[resource] = 1;
-		resource_view_calculate_size(rv, &width, NULL);
-		gtk_widget_size_request(GTK_WIDGET(rv), &requisition);
-		requisition.width = width;
+		resource_view_calculate_size(rv, &width, &height);
+		gtk_widget_set_size_request(GTK_WIDGET(rv), width, height);
 		gtk_widget_set_tooltip_text(GTK_WIDGET(rv),
 					    resource_name(resource, TRUE));
 		return GTK_WIDGET(rv);
@@ -89,14 +88,11 @@ class Resource:View from Gtk:Misc {
 	init(self) {
 		gint width;
 		gint height;
-		GtkRequisition requisition;
 
 		self->_priv->distance = 16;
 		self->_priv->max_width = -1;
 		resource_view_calculate_size(self, &width, &height);
-		gtk_widget_size_request(GTK_WIDGET(self), &requisition);
-		requisition.width = width;
-		requisition.height = height;
+		gtk_widget_set_size_request(GTK_WIDGET(self), width, height);
 
 		g_signal_connect(G_OBJECT(self), "expose_event",
 				 G_CALLBACK(resource_view_expose), NULL);
@@ -149,16 +145,14 @@ class Resource:View from Gtk:Misc {
 		gint i;
 		gchar *tooltip;
 		gint width;
-		GtkRequisition requisition;
+		gint height;
 
 		for (i = 0; i < NO_RESOURCE; i++) {
 			self->_priv->resource[i] = resource[i];
 		}
 
-		resource_view_calculate_size(self, &width, NULL);
-		gtk_widget_size_request(GTK_WIDGET(self), &requisition);
-		requisition.width = width;
-		gtk_widget_queue_resize(GTK_WIDGET(self));
+		resource_view_calculate_size(self, &width, &height);
+		gtk_widget_set_size_request(GTK_WIDGET(self), width, height);
 		tooltip = resource_format_num(resource);
 		gtk_widget_set_tooltip_text(GTK_WIDGET(self), tooltip);
 		g_free(tooltip);
