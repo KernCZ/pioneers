@@ -205,6 +205,10 @@ reindent:
 restorepo:
 	svn revert po/*.po po/pioneers.pot
 
+# Remove ALL generated files
+pristine: maintainer-clean
+	svn status --no-ignore | awk '$$1=="I" { print substr($$0, 9, 255) }' | tr '\n' '\0' | xargs -0 rm
+
 # Application icons, in various sizes
 BUILT_SOURCES += $(subst .svg,.48x48_apps.png,$(icons))
 EXTRA_DIST += $(icons) $(subst .svg,.48x48_apps.png,$(icons))

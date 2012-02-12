@@ -1,3 +1,6 @@
+2012-02-12  Roland Clobus <rclobus@rclobus.nl>
+	* Makefile.am: Added 'pristine' target to remove svn:ignore files.
+
 2012-02-10  Roland Clobus <rclobus@rclobus.nl>
 	* configure.ac, Makefile.am, client/gtk/data/Makefile.am: The script
 	rsvg is deprecated. Using rsvg-convert which was called by rsvg.
