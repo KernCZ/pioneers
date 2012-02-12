@@ -531,13 +531,11 @@ if test "$have_scrollkeeper" = "yes"; then
 	pioneers_help="yes, scrollkeeper";
 fi
 
-AC_CONFIG_FILES([ \
-	Makefile \
-	pioneers.spec \
-	MinGW/pioneers.nsi \
-	po/Makefile.in \
-	client/help/C/Makefile \
-	])
+AC_CONFIG_FILES([Makefile])
+AC_CONFIG_FILES([pioneers.spec])
+AC_CONFIG_FILES([MinGW/pioneers.nsi])
+AC_CONFIG_FILES([po/Makefile.in])
+AC_CONFIG_FILES([client/help/C/Makefile])
 
 AC_OUTPUT
 
