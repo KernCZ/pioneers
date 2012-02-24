@@ -128,8 +128,7 @@ void params_free(GameParams * params)
 			break;
 		}
 	}
-	if (params->map != NULL)
-		map_free(params->map);
+	map_free(params->map);
 	g_free(params);
 }
 

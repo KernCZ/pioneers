@@ -1157,6 +1157,9 @@ static gboolean free_hex(Hex * hex, G_GNUC_UNUSED gpointer closure)
  */
 void map_free(Map * map)
 {
+	if (map == NULL) {
+		return;
+	}
 	map_traverse(map, free_hex, NULL);
 	g_array_free(map->chits, TRUE);
 	g_free(map);
