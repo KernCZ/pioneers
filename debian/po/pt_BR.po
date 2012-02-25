@@ -1,0 +1,86 @@
+# Debconf translations for pioneers.
+# Copyright (C) 2012 THE pioneers COPYRIGHT HOLDER
+# This file is distributed under the same license as the pioneers package.
+# J.S.Júnior <dgjunior4@hotmail.com>, 2012.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: pioneers 0.12.5-1\n"
+"Report-Msgid-Bugs-To: pioneers@packages.debian.org\n"
+"POT-Creation-Date: 2011-11-24 10:51+0100\n"
+"PO-Revision-Date: 2012-02-20 16:23-0200\n"
+"Last-Translator: J.S.Júnior <dgjunior4@hotmail.com>\n"
+"Language-Team: Brazilian Portuguese <debian-l10n-portuguese@lists.debian."
+"org>\n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. Type: string
+#. Description
+#: ../pioneers-meta-server.templates:1001
+msgid "Port range for creating new games on the meta-server:"
+msgstr "Intervalo de portas para a criação de novos jogos no meta-servidor:"
+
+#. Type: string
+#. Description
+#: ../pioneers-meta-server.templates:1001
+msgid ""
+"The meta-server can create new games, so players don't need to install and "
+"run the pioneers server. The ports which are used for these games can be "
+"specified. If this field is left empty, the meta-server will disable its "
+"game creation functionality."
+msgstr ""
+"O meta-servidor pode criar novos jogos, por isso os jogadores não precisam "
+"instalar e executar o servidor pioneers. As portas que são utilizadas para "
+"esses jogos podem ser especificadas. Se esse campo for deixado em branco, o "
+"meta-servidor desativará a funcionalidade de criação de jogos."
+
+#. Type: string
+#. Description
+#: ../pioneers-meta-server.templates:1001
+msgid ""
+"If the value is not empty, it must be two port numbers, separated by a minus "
+"sign."
+msgstr ""
+"Se o valor não for em branco, deve conter dois números de portas, separados "
+"por um sinal de menos."
+
+#. Type: string
+#. Description
+#: ../pioneers-meta-server.templates:2001
+msgid "Server name for created games:"
+msgstr "Nome do servidor para jogos criados:"
+
+#. Type: string
+#. Description
+#: ../pioneers-meta-server.templates:2001
+msgid ""
+"In some cases, the name the meta-server uses for itself when creating new "
+"games is incorrect. If this field is not left empty, it is used to override "
+"the detected hostname."
+msgstr ""
+"Em alguns casos, o nome que o meta-servidor usa para si próprio ao criar "
+"novos jogos é incorreto. Se esse campo não é deixado em branco, ele é usado "
+"para substituir o nome de máquina detectado."
+
+#. Type: string
+#. Description
+#: ../pioneers-meta-server.templates:3001
+msgid "Extra arguments to pass to the meta-server:"
+msgstr "Argumentos extra para passar para o meta-servidor:"
+
+#. Type: string
+#. Description
+#: ../pioneers-meta-server.templates:3001
+msgid ""
+"These arguments are passed to the meta-server. There are only two sensible "
+"arguments:\n"
+" * --syslog-debug: Send debugging output to syslog\n"
+" * --redirect: Redirect clients to another meta-server"
+msgstr ""
+"Estes argumentos são passados para o meta-servidor. Há apenas dois "
+"argumentos sensíveis:\n"
+" * --syslog-debug: Envia a saída de depuração para o syslog\n"
+" * --redirect: Redireciona os clientes para outro meta-servidor"
