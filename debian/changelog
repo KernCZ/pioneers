@@ -11,7 +11,8 @@ pioneers (14.1-1~local1) UNRELEASED; urgency=low
     icons. ImageMagick is not needed anymore as build dependency.
   * Added xfonts-scalable in Build-Depends: for Bitstream Charter in the svg
     files.
-  * Added Brazilian Portuguese debconf translations (closes: #661263)
+  * Added Brazilian Portuguese debconf translations. (closes: #661263)
+  * Updated standards version to 3.9.3. (No changes needed.)
 
  -- Roland Clobus <rclobus@rclobus.nl>  Tue, 31 Jan 2012 09:39:56 +0100
 
