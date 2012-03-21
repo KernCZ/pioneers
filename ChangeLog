@@ -1,3 +1,10 @@
+2012-03-21  Roland Clobus <rclobus@rclobus.nl>
+	* editor/gtk/editor.c, common/gtk/game-rules.c,
+	common/gtk/game-rules.h, common/game.c, common/game.h,
+	server/gtk/main.c: Added island discovery bonus widget. Cleanup of
+	params in the editor (with thanks to Micah Bunting for the initial
+	version).
+
 2012-02-24  Roland Clobus <rclobus@rclobus.nl>
 	* common/game.c, common/map.c: Moved NULL check to map_free.
 

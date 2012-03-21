@@ -25,6 +25,7 @@ struct _GameRules {
 	GtkCheckButton *strict_trade;
 	GtkCheckButton *domestic_trade;
 	GtkCheckButton *check_victory_at_end_of_turn;
+	GtkEntry *island_bonus;
 };
 
 struct _GameRulesClass {
@@ -48,6 +49,8 @@ void game_rules_set_domestic_trade(GameRules * gr, gboolean val);
 gboolean game_rules_get_domestic_trade(GameRules * gr);
 void game_rules_set_victory_at_end_of_turn(GameRules * gr, gboolean val);
 gboolean game_rules_get_victory_at_end_of_turn(GameRules * gr);
+void game_rules_set_island_discovery_bonus(GameRules * gr, GArray * val);
+GArray *game_rules_get_island_discovery_bonus(GameRules * gr);
 
 G_END_DECLS
 #endif				/* __GAMERULES_H__ */

@@ -50,7 +50,6 @@
 
 static GtkWidget *toplevel;
 static gchar *default_game;
-static GameParams *params;
 static gchar *window_title;
 static gchar *open_filename;
 static GameSettings *game_settings;
@@ -185,12 +184,13 @@ static void fill_map(Map * map)
 
 static void canonicalize_map(Map * map)
 {
-	GArray *chits;
 	Hex *hex;
 	gint x, y;
 	gint sequence_number;
 
-	chits = g_array_new(FALSE, FALSE, sizeof(gint));
+	if (map->chits != NULL)
+		g_array_free(map->chits, TRUE);
+	map->chits = g_array_new(FALSE, FALSE, sizeof(gint));
 	sequence_number = 0;
 	for (y = 0; y < map->y_size; y++) {
 		for (x = 0; x < map->x_size; x++) {
@@ -198,16 +198,13 @@ static void canonicalize_map(Map * map)
 			if (hex == NULL)
 				continue;
 			if (hex->roll > 0) {
-				g_array_append_val(chits, hex->roll);
+				g_array_append_val(map->chits, hex->roll);
 				hex->chit_pos = sequence_number++;
 			} else if (hex->terrain == DESERT_TERRAIN) {
 				hex->chit_pos = sequence_number++;
 			}
 		}
 	}
-	if (map->chits != NULL)
-		g_array_free(map->chits, TRUE);
-	map->chits = chits;
 }
 
 static gboolean terrain_has_chit(Terrain terrain)
@@ -923,23 +920,24 @@ static void set_window_title(const gchar * title)
 	gtk_entry_set_text(GTK_ENTRY(game_title), window_title);
 }
 
-static void apply_params(GameParams * params)
+static void apply_params(const GameParams * params)
 {
 	gint i;
 
 	set_window_title(params->title);
 
 	game_rules_set_random_terrain(game_rules, params->random_terrain);
-	game_rules_set_sevens_rule(game_rules, params->sevens_rule);
-	/* Do not disable the pirate rule if currently no ships are present */
-	game_rules_set_use_pirate(game_rules, params->use_pirate, 1);
 	game_rules_set_strict_trade(game_rules, params->strict_trade);
 	game_rules_set_domestic_trade(game_rules, params->domestic_trade);
-
 	game_settings_set_players(game_settings, params->num_players);
+	game_rules_set_sevens_rule(game_rules, params->sevens_rule);
 	game_settings_set_victory_points(game_settings,
 					 params->victory_points);
-
+	/* check_victory_at_end_of_turn not needed in the editor */
+	for (i = 1; i < NUM_BUILD_TYPES; i++)
+		game_buildings_set_num_buildings(game_buildings, i,
+						 params->num_build_type
+						 [i]);
 	game_resources_set_num_resources(game_resources,
 					 params->resource_count);
 
@@ -947,20 +945,23 @@ static void apply_params(GameParams * params)
 		game_devcards_set_num_cards(game_devcards, i,
 					    params->num_develop_type[i]);
 
-	for (i = 1; i < NUM_BUILD_TYPES; i++)
-		game_buildings_set_num_buildings(game_buildings, i,
-						 params->num_build_type
-						 [i]);
-
-	gmap->map = params->map;
-
+	/* Do not disable the pirate rule if currently no ships are present */
+	game_rules_set_use_pirate(game_rules, params->use_pirate, 1);
+	game_rules_set_island_discovery_bonus(game_rules,
+					      params->island_discovery_bonus);
 	scrollable_text_view_set_text(SCROLLABLE_TEXT_VIEW(game_comments),
 				      params->comments);
 	scrollable_text_view_set_text(SCROLLABLE_TEXT_VIEW
 				      (game_description),
 				      params->description);
+
+	map_free(gmap->map);
+	gmap->map = map_copy(params->map);
 }
 
+/** Returns params found in game_rules, game_settings, and other settings.
+ *  @return Params found in settings.
+ */
 static GameParams *get_params(void)
 {
 	GameParams *params = params_new();
@@ -969,28 +970,25 @@ static GameParams *get_params(void)
 	params->title = g_strdup(window_title);
 
 	params->random_terrain = game_rules_get_random_terrain(game_rules);
-	params->sevens_rule = game_rules_get_sevens_rule(game_rules);
-	params->use_pirate = game_rules_get_use_pirate(game_rules);
 	params->strict_trade = game_rules_get_strict_trade(game_rules);
 	params->domestic_trade = game_rules_get_domestic_trade(game_rules);
-
 	params->num_players = game_settings_get_players(game_settings);
+	params->sevens_rule = game_rules_get_sevens_rule(game_rules);
 	params->victory_points =
 	    game_settings_get_victory_points(game_settings);
 
-	params->resource_count =
-	    game_resources_get_num_resources(game_resources);
-
-	for (i = 0; i < NUM_DEVEL_TYPES; i++)
-		params->num_develop_type[i] =
-		    game_devcards_get_num_cards(game_devcards, i);
-
+	/* check_victory_at_end_of_turn not needed in the editor */
 	for (i = 1; i < NUM_BUILD_TYPES; i++)
 		params->num_build_type[i] =
 		    game_buildings_get_num_buildings(game_buildings, i);
-
-	params->map = gmap->map;
-
+	params->resource_count =
+	    game_resources_get_num_resources(game_resources);
+	for (i = 0; i < NUM_DEVEL_TYPES; i++)
+		params->num_develop_type[i] =
+		    game_devcards_get_num_cards(game_devcards, i);
+	params->use_pirate = game_rules_get_use_pirate(game_rules);
+	params->island_discovery_bonus =
+	    game_rules_get_island_discovery_bonus(game_rules);
 	params->comments =
 	    scrollable_text_view_get_text(SCROLLABLE_TEXT_VIEW
 					  (game_comments));
@@ -998,13 +996,14 @@ static GameParams *get_params(void)
 	    scrollable_text_view_get_text(SCROLLABLE_TEXT_VIEW
 					  (game_description));
 
+	params->map = map_copy(gmap->map);
 	return params;
 }
 
 static void load_game(const gchar * file, gboolean is_reload)
 {
 	const gchar *gamefile;
-	GameParams *new_params;
+	GameParams *params;
 	gchar *new_filename;
 	gint i;
 
@@ -1013,29 +1012,29 @@ static void load_game(const gchar * file, gboolean is_reload)
 	else
 		gamefile = file;
 
-	new_params = params_load_file(gamefile);
-	if (new_params == NULL) {
+	params = params_load_file(gamefile);
+	if (params == NULL) {
 		error_dialog(_("Failed to load '%s'"), file);
 		return;
 	}
 
 	if (file == NULL) {
-		g_free(new_params->title);
-		new_params->title = g_strdup("Untitled");
-		map_free(new_params->map);
-		new_params->map = map_new();
+		g_free(params->title);
+		params->title = g_strdup("Untitled");
+		map_free(params->map);
+		params->map = map_new();
 		for (i = 0; i < 6; i++) {
-			map_modify_row_count(new_params->map,
+			map_modify_row_count(params->map,
 					     MAP_MODIFY_INSERT,
 					     MAP_MODIFY_ROW_BOTTOM);
 		}
 		for (i = 0; i < 11; i++) {
-			map_modify_column_count(new_params->map,
+			map_modify_column_count(params->map,
 						MAP_MODIFY_INSERT,
 						MAP_MODIFY_COLUMN_RIGHT);
 		}
-		new_params->map->chits =
-		    g_array_new(FALSE, FALSE, sizeof(gint));
+		/* Chits array will be constructed later */
+		params->map->chits = NULL;
 		new_filename = NULL;
 	} else {
 		new_filename = g_strdup(file);
@@ -1043,10 +1042,9 @@ static void load_game(const gchar * file, gboolean is_reload)
 	}
 
 	guimap_reset(gmap);
-	if (params != NULL)
-		params_free(params);
-	params = new_params;
 	apply_params(params);
+	params_free(params);
+
 	if (open_filename != NULL)
 		g_free(open_filename);
 	open_filename = new_filename;
@@ -1061,13 +1059,13 @@ static void load_game(const gchar * file, gboolean is_reload)
 
 static void save_game(const gchar * file)
 {
-	params = get_params();
-	canonicalize_map(gmap->map);
+	GameParams *params = get_params();
+	canonicalize_map(params->map);
 	if (!params_write_file(params, file))
 		error_dialog(_("Failed to save to '%s'"), file);
 	else
 		config_set_string("editor/last-game", file);
-	fill_map(gmap->map);
+	params_free(params);
 }
 
 static void new_game_menu_cb(void)
@@ -1195,6 +1193,7 @@ static void check_vp_cb(G_GNUC_UNUSED GObject * caller,
 
 	params = get_params();
 	check_victory_points(params, main_window);
+	params_free(params);
 }
 
 static void exit_cb(void)
@@ -1516,8 +1515,6 @@ int main(int argc, char *argv[])
 
 	load_game(filename, FALSE);
 	g_free(filename);
-	if (params == NULL)
-		return 1;
 
 	gtk_widget_show_all(toplevel);
 

@@ -197,6 +197,8 @@ static void update_game_settings(const GameParams * params)
 	game_rules_set_use_pirate(GAMERULES(game_rules),
 				  params->use_pirate,
 				  params->num_build_type[BUILD_SHIP]);
+	game_rules_set_island_discovery_bonus(GAMERULES(game_rules),
+					      params->island_discovery_bonus);
 }
 
 static void game_activate(GtkWidget * widget,
@@ -266,6 +268,12 @@ static void start_clicked_cb(G_GNUC_UNUSED GtkButton * widget,
 		    game_rules_get_use_pirate(GAMERULES(game_rules));
 		params->domestic_trade =
 		    game_rules_get_domestic_trade(GAMERULES(game_rules));
+		if (params->island_discovery_bonus) {
+			g_array_free(params->island_discovery_bonus, TRUE);
+		}
+		params->island_discovery_bonus =
+		    game_rules_get_island_discovery_bonus(GAMERULES
+							  (game_rules));
 		update_game_settings(params);
 
 		meta_server_name = metaserver_get(METASERVER(meta_entry));
@@ -1077,6 +1085,11 @@ static void check_vp_cb(G_GNUC_UNUSED GObject * caller,
 	    game_rules_get_use_pirate(GAMERULES(game_rules));
 	params->domestic_trade =
 	    game_rules_get_domestic_trade(GAMERULES(game_rules));
+	if (params->island_discovery_bonus) {
+		g_array_free(params->island_discovery_bonus, TRUE);
+	}
+	params->island_discovery_bonus =
+	    game_rules_get_island_discovery_bonus(GAMERULES(game_rules));
 	update_game_settings(params);
 
 	check_victory_points(params, main_window);

@@ -5,8 +5,11 @@
 #include <glib.h>
 
 #include "game-rules.h"
+#include "game.h"
 
-static void game_rules_init(GameRules * sg);
+static void game_rules_init(GameRules * sg, gboolean show_all_rules);
+static void verify_island_discovery_bonus(GtkButton * button,
+					  gpointer user_data);
 
 /* Register the class */
 GType game_rules_get_type(void)
@@ -23,7 +26,7 @@ GType game_rules_get_type(void)
 			NULL,	/* class_data */
 			sizeof(GameRules),
 			0,
-			(GInstanceInitFunc) game_rules_init,
+			NULL,
 			NULL
 		};
 		gp_type =
@@ -49,14 +52,16 @@ static void add_row(GameRules * gr, const gchar * name,
 }
 
 /* Build the composite widget */
-static void game_rules_init(GameRules * gr)
+static void game_rules_init(GameRules * gr, gboolean show_all_rules)
 {
 	GtkWidget *label;
 	GtkWidget *vbox_sevens;
+	GtkWidget *hbox;
+	GtkWidget *widget;
 	gint idx;
 	gint row;
 
-	gtk_table_resize(GTK_TABLE(gr), 5, 2);
+	gtk_table_resize(GTK_TABLE(gr), show_all_rules ? 7 : 2, 2);
 	gtk_table_set_row_spacings(GTK_TABLE(gr), 3);
 	gtk_table_set_col_spacings(GTK_TABLE(gr), 5);
 
@@ -112,33 +117,82 @@ static void game_rules_init(GameRules * gr)
 	row++;
 	add_row(gr, _("Randomize terrain"), _("Randomize the terrain"),
 		row++, &gr->random_terrain);
-	add_row(gr, _("Use pirate"), _("Use the pirate to block ships"),
-		row++, &gr->use_pirate);
-	add_row(gr, _("Strict trade"),
-		_("Allow trade only before building or buying"), row++,
-		&gr->strict_trade);
-	add_row(gr, _("Domestic trade"), _("Allow trade between players"),
-		row++, &gr->domestic_trade);
-	add_row(gr, _("Victory at end of turn"),
-		_("Check for victory only at end of turn"),
-		row++, &gr->check_victory_at_end_of_turn);
+	if (show_all_rules) {
+		add_row(gr, _("Use pirate"),
+			_("Use the pirate to block ships"), row++,
+			&gr->use_pirate);
+		add_row(gr, _("Strict trade"),
+			_("Allow trade only before building or buying"),
+			row++, &gr->strict_trade);
+		add_row(gr, _("Domestic trade"),
+			_("Allow trade between players"), row++,
+			&gr->domestic_trade);
+		add_row(gr, _("Victory at end of turn"),
+			_("Check for victory only at end of turn"), row++,
+			&gr->check_victory_at_end_of_turn);
+
+		/* Label */
+		label = gtk_label_new(_("Island discovery bonuses"));
+		gtk_widget_show(label);
+		gtk_table_attach(GTK_TABLE(gr), label, 0, 1, row, row + 1,
+				 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
+		gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+
+		hbox = gtk_hbox_new(FALSE, 3);
+
+		gr->island_bonus = GTK_ENTRY(gtk_entry_new());
+		gtk_widget_show(GTK_WIDGET(gr->island_bonus));
+		gtk_widget_set_tooltip_text(GTK_WIDGET(gr->island_bonus),
+					    /* Tooltip for island bonus */
+					    _(""
+					      "A comma seperated list of bonus points for discovering islands"));
+		gtk_box_pack_start(GTK_BOX(hbox),
+				   GTK_WIDGET(gr->island_bonus), TRUE,
+				   TRUE, 0);
+
+		widget = gtk_button_new();
+		gtk_button_set_image(GTK_BUTTON(widget),
+				     gtk_image_new_from_stock
+				     (GTK_STOCK_APPLY,
+				      GTK_ICON_SIZE_BUTTON));
+		g_signal_connect(G_OBJECT(widget), "clicked",
+				 G_CALLBACK(verify_island_discovery_bonus),
+				 (gpointer) gr);
+		gtk_widget_set_tooltip_text(widget,
+					    /* Tooltip for the check button */
+					    _
+					    ("Check and correct island discovery bonuses"));
+		gtk_box_pack_end(GTK_BOX(hbox), widget, FALSE, FALSE, 0);
+
+		gtk_table_attach(GTK_TABLE(gr), GTK_WIDGET(hbox), 1, 2,
+				 row, row + 1, GTK_FILL,
+				 GTK_EXPAND | GTK_FILL, 0, 0);
+		row++;
+	} else {
+		gr->use_pirate = NULL;
+		gr->strict_trade = NULL;
+		gr->domestic_trade = NULL;
+		gr->check_victory_at_end_of_turn = NULL;
+		gr->island_bonus = NULL;
+	}
 }
 
 /* Create a new instance of the widget */
 GtkWidget *game_rules_new(void)
 {
-	return GTK_WIDGET(g_object_new(game_rules_get_type(), NULL));
+	GameRules *widget =
+	    GAMERULES(g_object_new(game_rules_get_type(), NULL));
+	game_rules_init(widget, TRUE);
+	return GTK_WIDGET(widget);
 }
+
 
 /* Create a new instance with only the changes that can be applied by the metaserver */
 GtkWidget *game_rules_new_metaserver(void)
 {
 	GameRules *widget =
 	    GAMERULES(g_object_new(game_rules_get_type(), NULL));
-	gtk_widget_hide(GTK_WIDGET(widget->use_pirate));
-	gtk_widget_hide(GTK_WIDGET(widget->strict_trade));
-	gtk_widget_hide(GTK_WIDGET(widget->domestic_trade));
-	gtk_widget_hide(GTK_WIDGET(widget->check_victory_at_end_of_turn));
+	game_rules_init(widget, FALSE);
 	return GTK_WIDGET(widget);
 }
 
@@ -249,4 +303,33 @@ gboolean game_rules_get_victory_at_end_of_turn(GameRules * gr)
 	    gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON
 					 (gr->
 					  check_victory_at_end_of_turn));
+}
+
+void game_rules_set_island_discovery_bonus(GameRules * gr, GArray * val)
+{
+	gchar *text;
+
+	text = format_int_list(NULL, val);
+	if (text != NULL) {
+		gtk_entry_set_text(gr->island_bonus, text);
+	} else {
+		gtk_entry_set_text(gr->island_bonus, "");
+	}
+	g_free(text);
+}
+
+GArray *game_rules_get_island_discovery_bonus(GameRules * gr)
+{
+	return build_int_list(gtk_entry_get_text(gr->island_bonus));
+}
+
+static void verify_island_discovery_bonus(G_GNUC_UNUSED GtkButton * button,
+					  gpointer user_data)
+{
+	GameRules *gr = GAMERULES(user_data);
+	GArray *bonuses;
+
+	bonuses = game_rules_get_island_discovery_bonus(gr);
+	game_rules_set_island_discovery_bonus(gr, bonuses);
+	g_array_free(bonuses, TRUE);
 }

@@ -211,4 +211,16 @@ gchar *game_vprintf(const gchar * fmt, va_list ap);
  * @return A string (you must use g_free to free the string)
 */
 gchar *game_printf(const gchar * fmt, ...);
+
+/** Convert a string to an array of integers.
+ * @param str A comma separated list of integers
+ * @return An array of integers. If the array has length zero, NULL is returned. (you must use g_array_free to free the array) 
+ */
+GArray *build_int_list(const gchar * str);
+/** Convert an array of integers to a string.
+ * @param name Prefix before the list of integers
+ * @param array Array of integers
+ * @return A string with a comma separated list of integers and name prefixed. (you must use g_free to free the string)
+*/
+gchar *format_int_list(const gchar * name, GArray * array);
 #endif

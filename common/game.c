@@ -152,10 +152,7 @@ static gboolean match_word(gchar ** str, const gchar * word)
 	return FALSE;
 }
 
-/* Create a new array, filled with the list in str.
- * If the array has length zero, NULL is returned.
- */
-static GArray *build_int_list(const gchar * str)
+GArray *build_int_list(const gchar * str)
 {
 	GArray *array = g_array_new(FALSE, FALSE, sizeof(gint));
 	while (*str != '\0') {
@@ -189,32 +186,35 @@ static GArray *build_int_list(const gchar * str)
 	return array;
 }
 
-/* This function allocates a buffer and returns it.  It must be freed by the
- * caller.  */
-static gchar *format_int_list(const gchar * name, GArray * array)
+gchar *format_int_list(const gchar * name, GArray * array)
 {
-	gchar *old, *str = NULL;
+	gchar *old;
+	gchar *str;
 	int idx;
 
 	if (array == NULL)
 		return NULL;
 
 	if (array->len == 0) {
-		str = g_strdup(name);
-		return str;
+		return g_strdup(name);
 	}
+	if (name == NULL || strlen(name) == 0) {
+		str = g_strdup("");
+	} else {
+		str = g_strdup_printf("%s ", name);
+	};
 	for (idx = 0; idx < array->len; idx++) {
 		old = str;
 		if (idx == 0)
-			str = g_strdup_printf("%s %d", name,
-					      g_array_index(array, gint,
-							    idx));
+			str =
+			    g_strdup_printf("%s%d", str,
+					    g_array_index(array, gint,
+							  idx));
 		else
 			str = g_strdup_printf("%s,%d", str,
 					      g_array_index(array, gint,
 							    idx));
-		if (old)
-			g_free(old);
+		g_free(old);
 	}
 	return str;
 }
