@@ -1,6 +1,7 @@
 2012-03-28  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/callbacks.c, client/common/client.c: Show and hide nosetup
 	nodes for the viewer too.
+	* common/game.c: Don't send strings twice in game settings.
 
 2012-03-21  Roland Clobus <rclobus@rclobus.nl>
 	* editor/gtk/editor.c, common/gtk/game-rules.c,

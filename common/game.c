@@ -313,6 +313,7 @@ void params_write_lines(GameParams * params, ClientVersionType version,
 			buff = g_strdup_printf("%s %s", param->name, str);
 			func(user_data, buff);
 			g_free(buff);
+			break;
 		case PARAM_MULTIPLE_LINES:
 			str =
 			    G_STRUCT_MEMBER(gchar *, params,
