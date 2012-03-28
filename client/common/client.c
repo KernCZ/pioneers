@@ -61,7 +61,6 @@ static gboolean mode_players(StateMachine * sm, gint event);
 static gboolean mode_player_list(StateMachine * sm, gint event);
 static gboolean mode_load_game(StateMachine * sm, gint event);
 static gboolean mode_load_gameinfo(StateMachine * sm, gint event);
-static gboolean mode_start_response(StateMachine * sm, gint event);
 static gboolean mode_setup(StateMachine * sm, gint event);
 static gboolean mode_idle(StateMachine * sm, gint event);
 static gboolean mode_wait_for_robber(StateMachine * sm, gint event);
@@ -1109,12 +1108,7 @@ static gboolean mode_load_gameinfo(StateMachine * sm, gint event)
 	if (sm_recv(sm, "end")) {
 		callback_mode = MODE_WAIT_TURN;	/* allow chatting */
 		callbacks.start_game();
-		if (disconnected) {
-			sm_goto(sm, mode_recovery_wait_start_response);
-		} else {
-			sm_send(sm, "start\n");
-			sm_goto(sm, mode_start_response);
-		}
+		sm_goto(sm, mode_recovery_wait_start_response);
 		return TRUE;
 	}
 	if (sm_recv(sm, "bank %R", tmp_bank)) {
@@ -1322,21 +1316,6 @@ static gboolean mode_load_gameinfo(StateMachine * sm, gint event)
 		return TRUE;
 	}
 	return FALSE;
-}
-
-/* Response to the "start" command
- */
-static gboolean mode_start_response(StateMachine * sm, gint event)
-{
-	sm_state_name(sm, "mode_start_response");
-	if (event != SM_RECV)
-		return FALSE;
-	if (sm_recv(sm, "OK")) {
-		sm_goto(sm, mode_idle);
-		callbacks.network_status(_("Idle"));
-		return TRUE;
-	}
-	return check_other_players(sm);
 }
 
 /*----------------------------------------------------------------------
@@ -2526,7 +2505,7 @@ static gboolean mode_recovery_wait_start_response(StateMachine * sm,
 			recover_from_disconnect(sm, &recovery_info);
 			return TRUE;
 		}
-		break;
+		return check_other_players(sm);
 	default:
 		break;
 	}

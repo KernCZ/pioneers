@@ -1,3 +1,7 @@
+2012-0328  Roland Clobus <rclobus@rclobus.nl>
+	* client/gtk/callbacks.c, client/common/client.c: Show and hide nosetup
+	nodes for the viewer too.
+
 2012-03-21  Roland Clobus <rclobus@rclobus.nl>
 	* editor/gtk/editor.c, common/gtk/game-rules.c,
 	common/gtk/game-rules.h, common/game.c, common/game.h,
