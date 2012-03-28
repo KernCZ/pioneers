@@ -1,4 +1,4 @@
-2012-0328  Roland Clobus <rclobus@rclobus.nl>
+2012-03-28  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/callbacks.c, client/common/client.c: Show and hide nosetup
 	nodes for the viewer too.
 
