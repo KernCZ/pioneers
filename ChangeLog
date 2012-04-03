@@ -1,3 +1,7 @@
+2012-04-03  Roland Clobus <rclobus@rclobus.nl>
+	* common/network.c, common/network.h, server/admin.c: Restrict
+	knowledge of the Session struct to network.c
+
 2012-03-28  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/callbacks.c, client/common/client.c: Show and hide nosetup
 	nodes for the viewer too.

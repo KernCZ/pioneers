@@ -50,7 +50,6 @@
 #endif				/* ndef HAVE_GETADDRINFO_ET_AL */
 
 #include <time.h>
-#include "config.h"
 #include "driver.h"
 #include "game.h"
 #include "map.h"
@@ -66,6 +65,31 @@ typedef union {
 } sockaddr_t;
 
 static gboolean debug_enabled = FALSE;
+
+struct _Session {
+	int fd;
+	time_t last_response;	/* used for activity detection.  */
+	guint timer_id;
+	void *user_data;
+
+	gboolean connect_in_progress;
+	gboolean waiting_for_close;
+#ifdef HAVE_GETADDRINFO_ET_AL
+	struct addrinfo *base_ai;	/* Base addrinfo, to free later. */
+	struct addrinfo *current_ai;	/* Current connection method. */
+#endif
+	char *host;
+	char *port;
+
+	gint read_tag;
+	char read_buff[16 * 1024];
+	int read_len;
+	gboolean entered;
+	gint write_tag;
+	GList *write_queue;
+
+	NetNotifyFunc notify_func;
+};
 
 static void net_attempt_to_connect(Session * ses);
 

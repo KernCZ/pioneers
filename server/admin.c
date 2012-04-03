@@ -356,15 +356,10 @@ void admin_connect(comm_info * admin_info)
 	/* (1) create a new network session */
 	admin_session = net_new((NetNotifyFunc) admin_event, NULL);
 
-	/* (2) set the session as the session's user data, so we can free it 
-	 * later (this way we don't have to keep any globals holding all the 
-	 * sessions) */
-	admin_session->user_data = admin_session;
-
-	/* (3) accept the connection into a new file descriptor */
+	/* (2) accept the connection into a new file descriptor */
 	new_fd = accept_connection(admin_info->fd, &location);
 
-	/* (4) tie the new file descriptor to the session we created earlier.
+	/* (3) tie the new file descriptor to the session we created earlier.
 	 * Don't use keepalive pings on this connection.  */
 	net_use_fd(admin_session, new_fd, FALSE);
 }
