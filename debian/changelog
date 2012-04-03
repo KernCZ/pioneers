@@ -9,6 +9,7 @@ pioneers (14.1-1~local1) UNRELEASED; urgency=low
     last lintian warnings.
   * Used rsvg-convert instead of rsvg, together with netpbm to render the xpm
     icons. ImageMagick is not needed anymore as build dependency.
+    (closes: #666480)
   * Added xfonts-scalable in Build-Depends: for Bitstream Charter in the svg
     files.
   * Added Brazilian Portuguese debconf translations. (closes: #661263)
