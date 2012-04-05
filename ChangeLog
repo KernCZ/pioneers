@@ -1,3 +1,6 @@
+2012-04-05  Roland Clobus <rclobus@rclobus.nl>
+	* editor/gtk/editor.c: Use default folder in file dialogs.
+
 2012-04-03  Roland Clobus <rclobus@rclobus.nl>
 	* common/network.c, common/network.h, server/admin.c: Restrict
 	knowledge of the Session struct to network.c

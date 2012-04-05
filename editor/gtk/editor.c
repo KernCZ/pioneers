@@ -1076,6 +1076,7 @@ static void new_game_menu_cb(void)
 static void load_game_menu_cb(void)
 {
 	GtkWidget *dialog;
+	gchar *directory;
 
 	dialog = gtk_file_chooser_dialog_new(
 						    /* Dialog caption */
@@ -1086,6 +1087,15 @@ static void load_game_menu_cb(void)
 						    GTK_RESPONSE_CANCEL,
 						    GTK_STOCK_OPEN,
 						    GTK_RESPONSE_OK, NULL);
+	directory =
+	    g_build_filename(g_get_user_data_dir(), "pioneers", NULL);
+	gtk_file_chooser_set_current_folder(GTK_FILE_CHOOSER(dialog),
+					    directory);
+	gtk_file_chooser_add_shortcut_folder(GTK_FILE_CHOOSER(dialog),
+					     directory, NULL);
+	gtk_file_chooser_add_shortcut_folder(GTK_FILE_CHOOSER(dialog),
+					     get_pioneers_dir(), NULL);
+	g_free(directory);
 	gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(dialog),
 				      default_game);
 	if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_OK) {
@@ -1104,6 +1114,7 @@ static void load_game_menu_cb(void)
 static void save_as_menu_cb(void)
 {
 	GtkWidget *dialog;
+	gchar *directory;
 
 	dialog = gtk_file_chooser_dialog_new(
 						    /* Dialog caption */
@@ -1115,6 +1126,13 @@ static void save_as_menu_cb(void)
 						    GTK_STOCK_SAVE,
 						    GTK_RESPONSE_ACCEPT,
 						    NULL);
+	directory =
+	    g_build_filename(g_get_user_data_dir(), "pioneers", NULL);
+	gtk_file_chooser_set_current_folder(GTK_FILE_CHOOSER(dialog),
+					    directory);
+	gtk_file_chooser_add_shortcut_folder(GTK_FILE_CHOOSER(dialog),
+					     directory, NULL);
+	g_free(directory);
 	gtk_dialog_set_default_response(GTK_DIALOG(dialog),
 					GTK_RESPONSE_ACCEPT);
 	if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
