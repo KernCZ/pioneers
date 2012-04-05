@@ -1,5 +1,7 @@
 2012-04-05  Roland Clobus <rclobus@rclobus.nl>
 	* editor/gtk/editor.c: Use default folder in file dialogs.
+	* common/map.c: Correctly handle NULL for chits, as introduced on
+	2012-03-21.
 
 2012-04-03  Roland Clobus <rclobus@rclobus.nl>
 	* common/network.c, common/network.h, server/admin.c: Restrict

@@ -778,9 +778,13 @@ static gboolean set_nosetup_nodes(const Hex * hex, gpointer closure)
 
 static GArray *copy_int_list(GArray * array)
 {
-	GArray *copy = g_array_new(FALSE, FALSE, sizeof(gint));
+	GArray *copy;
 	int idx;
 
+	if (array == NULL) {
+		return NULL;
+	}
+	copy = g_array_new(FALSE, FALSE, sizeof(gint));
 	for (idx = 0; idx < array->len; idx++)
 		g_array_append_val(copy, g_array_index(array, gint, idx));
 
@@ -1161,7 +1165,9 @@ void map_free(Map * map)
 		return;
 	}
 	map_traverse(map, free_hex, NULL);
-	g_array_free(map->chits, TRUE);
+	if (map->chits != NULL) {
+		g_array_free(map->chits, TRUE);
+	}
 	g_free(map);
 }
 
