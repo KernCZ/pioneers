@@ -1,3 +1,6 @@
+2012-04-06  Roland Clobus <rclobus@rclobus.nl>
+	* editor/gtk/editor.c: Added a file filter.
+
 2012-04-05  Roland Clobus <rclobus@rclobus.nl>
 	* editor/gtk/editor.c: Use default folder in file dialogs.
 	* common/map.c: Correctly handle NULL for chits, as introduced on

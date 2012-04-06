@@ -1073,6 +1073,21 @@ static void new_game_menu_cb(void)
 	load_game(NULL, TRUE);
 }
 
+static void add_file_filter(GtkFileChooser * file_chooser)
+{
+	GtkFileFilter *filter;
+
+	filter = gtk_file_filter_new();
+	gtk_file_filter_set_name(filter, _("Games"));
+	gtk_file_filter_add_pattern(filter, "*.game");
+	gtk_file_chooser_add_filter(file_chooser, filter);
+
+	filter = gtk_file_filter_new();
+	gtk_file_filter_set_name(filter, _("Unfiltered"));
+	gtk_file_filter_add_pattern(filter, "*");
+	gtk_file_chooser_add_filter(file_chooser, filter);
+}
+
 static void load_game_menu_cb(void)
 {
 	GtkWidget *dialog;
@@ -1098,6 +1113,7 @@ static void load_game_menu_cb(void)
 	g_free(directory);
 	gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(dialog),
 				      default_game);
+	add_file_filter(GTK_FILE_CHOOSER(dialog));
 	if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_OK) {
 		char *file;
 		file =
@@ -1133,6 +1149,7 @@ static void save_as_menu_cb(void)
 	gtk_file_chooser_add_shortcut_folder(GTK_FILE_CHOOSER(dialog),
 					     directory, NULL);
 	g_free(directory);
+	add_file_filter(GTK_FILE_CHOOSER(dialog));
 	gtk_dialog_set_default_response(GTK_DIALOG(dialog),
 					GTK_RESPONSE_ACCEPT);
 	if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
