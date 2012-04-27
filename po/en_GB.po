@@ -2578,27 +2578,27 @@ msgstr "3:1"
 #. Port indicator for brick
 #: ../common/gtk/guimap.c:848
 msgid "Brick port|B"
-msgstr "Brick port|B"
+msgstr "B"
 
 #. Port indicator for grain
 #: ../common/gtk/guimap.c:852
 msgid "Grain port|G"
-msgstr "Grain port|G"
+msgstr "G"
 
 #. Port indicator for ore
 #: ../common/gtk/guimap.c:856
 msgid "Ore port|O"
-msgstr "Ore port|O"
+msgstr "O"
 
 #. Port indicator for wool
 #: ../common/gtk/guimap.c:860
 msgid "Wool port|W"
-msgstr "Wool port|W"
+msgstr "W"
 
 #. Port indicator for lumber
 #: ../common/gtk/guimap.c:864
 msgid "Lumber port|L"
-msgstr "Lumber port|L"
+msgstr "L"
 
 #. Tooltip for the list of meta servers
 #: ../common/gtk/metaserver.c:86
@@ -2905,32 +2905,32 @@ msgstr "_Any (3:1)"
 #. East
 #: ../editor/gtk/editor.c:125
 msgid "East|E"
-msgstr "East|E"
+msgstr "E"
 
 #. North east
 #: ../editor/gtk/editor.c:127
 msgid "North East|NE"
-msgstr "North East|NE"
+msgstr "NE"
 
 #. North west
 #: ../editor/gtk/editor.c:129
 msgid "North West|NW"
-msgstr "North West|NW"
+msgstr "NW"
 
 #. West
 #: ../editor/gtk/editor.c:131
 msgid "West|W"
-msgstr "West|W"
+msgstr "W"
 
 #. South west
 #: ../editor/gtk/editor.c:133
 msgid "South West|SW"
-msgstr "South West|SW"
+msgstr "SW"
 
 #. South east
 #: ../editor/gtk/editor.c:135
 msgid "South East|SE"
-msgstr "South East|SE"
+msgstr "SE"
 
 #: ../editor/gtk/editor.c:229
 msgid "Insert a row"
