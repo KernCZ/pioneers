@@ -4,6 +4,8 @@
 	* common/gtk/guimap.c, common/gtk/theme.c, common/gtk/select-game.c,
 	common/gtk/select-game.h: More cleanup for valgrind.
 	* common/gtk/theme.c: Removed double rendering.
+	* editor/gtk/editor.c: Reenabled the context menu on right-click
+	which was disabled on 2011-02-23.
 
 2012-04-06  Roland Clobus <rclobus@rclobus.nl>
 	* editor/gtk/editor.c: Added a file filter.

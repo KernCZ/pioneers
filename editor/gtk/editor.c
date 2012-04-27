@@ -290,9 +290,6 @@ static gint button_press_map_cb(GtkWidget * area, GdkEventButton * event,
 	if (gtk_widget_get_window(area) == NULL || gmap->map == NULL)
 		return FALSE;
 
-	if (event->button != 1)
-		return TRUE;
-
 	current_hex = guimap_find_hex(gmap, event->x, event->y);
 	if (current_hex == NULL)
 		return TRUE;
@@ -325,7 +322,7 @@ static gint button_press_map_cb(GtkWidget * area, GdkEventButton * event,
 		} else {
 			menu = terrain_menu;
 		}
-	} else if (current_hex->roll > 0) {
+	} else if (event->button == 3 && current_hex->roll > 0) {
 		menu = roll_menu;
 		for (i = 2; i <= 12; i++) {
 			if (roll_numbers[i] != NULL)
@@ -335,7 +332,8 @@ static gint button_press_map_cb(GtkWidget * area, GdkEventButton * event,
 		}
 		gtk_check_menu_item_set_active(shuffle_tile,
 					       current_hex->shuffle);
-	} else if (current_hex->terrain == SEA_TERRAIN) {
+	} else if (event->button == 3
+		   && current_hex->terrain == SEA_TERRAIN) {
 		num_ports = 0;
 		for (i = 0; i < 6; i++) {
 			adjacent = hex_in_direction(current_hex, i);
