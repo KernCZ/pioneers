@@ -148,6 +148,12 @@ void frontend_offline(void)
 	}
 }
 
+static void frontend_main(void)
+{
+	gtk_main();
+	themes_cleanup();
+}
+
 /* this function is called to let the frontend initialize itself. */
 void frontend_init_gtk_et_al(int argc, char **argv)
 {
@@ -195,7 +201,7 @@ void frontend_init_gtk_et_al(int argc, char **argv)
 	/* Name of the application */
 	g_set_application_name(_("Pioneers"));
 
-	callbacks.mainloop = &gtk_main;
+	callbacks.mainloop = &frontend_main;
 	callbacks.quit = &gtk_main_quit;
 }
 

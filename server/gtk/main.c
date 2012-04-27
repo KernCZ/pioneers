@@ -1255,5 +1255,6 @@ int main(int argc, char *argv[])
 	net_finish();
 	g_option_context_free(context);
 	game_list_cleanup();
+	themes_cleanup();
 	return 0;
 }

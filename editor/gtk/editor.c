@@ -1560,5 +1560,6 @@ int main(int argc, char *argv[])
 	g_free(default_game);
 
 	g_option_context_free(context);
+	themes_cleanup();
 	return 0;
 }

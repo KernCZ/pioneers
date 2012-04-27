@@ -105,6 +105,7 @@ static MapTheme *current_theme = NULL;
 static GList *callback_list = NULL;
 
 static gboolean theme_initialize(MapTheme * t);
+static void theme_cleanup(MapTheme * t);
 static void theme_scan_dir(const gchar * themes_path);
 static gint getvar(gchar ** p, const gchar * filename, gint lno);
 static char *getval(char **p, const gchar * filename, int lno);
@@ -170,6 +171,17 @@ void themes_init(void)
 		t = g_list_first(theme_list)->data;
 	}
 	current_theme = t;
+}
+
+void themes_cleanup(void)
+{
+	GList *list = theme_list;
+	while (list) {
+		theme_cleanup(list->data);
+		list = g_list_next(list);
+	}
+	g_list_free(theme_list);
+	g_list_free(callback_list);
 }
 
 void theme_scan_dir(const gchar * themes_path)
@@ -353,6 +365,24 @@ static gboolean theme_initialize(MapTheme * t)
 		}
 	}
 	return TRUE;
+}
+
+static void theme_cleanup(MapTheme * t)
+{
+	int i;
+
+	/* terrain tiles */
+	for (i = 0; i < G_N_ELEMENTS(t->terrain_tiles); ++i) {
+		g_object_unref(t->terrain_tiles[i]);
+		g_object_unref(t->scaledata[i].image);
+		g_object_unref(t->scaledata[i].native_image);
+	}
+	/* port tiles */
+	for (i = 0; i < G_N_ELEMENTS(t->port_tiles); ++i) {
+		if (t->port_tiles[i] != NULL) {
+			g_object_unref(t->port_tiles[i]);
+		}
+	}
 }
 
 void theme_rescale(int new_width)
