@@ -145,7 +145,7 @@ void select_game_add(SelectGame * sg, const gchar * game_title)
  * The default game will be the active item.
  */
 void select_game_add_with_map(SelectGame * sg, const gchar * game_title,
-			      Map * map)
+			      const Map * map)
 {
 	GtkTreeIter iter;
 	gchar *title = g_strdup(game_title);
@@ -167,7 +167,7 @@ void select_game_add_with_map(SelectGame * sg, const gchar * game_title,
 	gmap->height = height;
 	gmap->area = sg->combo_box;
 	g_object_ref(gmap->area);
-	gmap->map = map;
+	gmap->map = map_copy(map);
 	guimap_scale_to_size(gmap, width, height);
 	guimap_display(gmap);
 

@@ -100,6 +100,68 @@ static TColor default_colors[] = {
 	TCOL_INIT(0xff00, 0xda00, 0xb900)
 };
 
+#define offs(elem)           ((size_t)(&(((MapTheme *)0)->elem)))
+#define telem(type,theme,tv) (*((type *)((char *)theme + tv->offset)))
+
+typedef enum { FNAME, STR, COL, SCMODE } vartype;
+
+static struct tvars {
+	const char *name;
+	gboolean optional;
+	vartype type;
+	int override;
+	size_t offset;
+} theme_vars[] = {
+	{
+	"name", TRUE, STR, -1, offs(name)}, {
+	"hill-tile", FALSE, FNAME, HILL_TILE,
+		    offs(terrain_tile_names[HILL_TILE])}, {
+	"field-tile", FALSE, FNAME, FIELD_TILE,
+		    offs(terrain_tile_names[FIELD_TILE])}, {
+	"mountain-tile", FALSE, FNAME, MOUNTAIN_TILE,
+		    offs(terrain_tile_names[MOUNTAIN_TILE])}, {
+	"pasture-tile", FALSE, FNAME, PASTURE_TILE,
+		    offs(terrain_tile_names[PASTURE_TILE])}, {
+	"forest-tile", FALSE, FNAME, FOREST_TILE,
+		    offs(terrain_tile_names[FOREST_TILE])}, {
+	"desert-tile", FALSE, FNAME, -1,
+		    offs(terrain_tile_names[DESERT_TILE])}, {
+	"sea-tile", FALSE, FNAME, -1, offs(terrain_tile_names[SEA_TILE])},
+	{
+	"gold-tile", FALSE, FNAME, GOLD_TILE,
+		    offs(terrain_tile_names[GOLD_TILE])}, {
+	"board-tile", FALSE, FNAME, -1,
+		    offs(terrain_tile_names[BOARD_TILE])}, {
+	"brick-port-tile", TRUE, FNAME, -1,
+		    offs(port_tile_names[HILL_PORT_TILE])}, {
+	"grain-port-tile", TRUE, FNAME, -1,
+		    offs(port_tile_names[FIELD_PORT_TILE])}, {
+	"ore-port-tile", TRUE, FNAME, -1,
+		    offs(port_tile_names[MOUNTAIN_PORT_TILE])}, {
+	"wool-port-tile", TRUE, FNAME, -1,
+		    offs(port_tile_names[PASTURE_PORT_TILE])}, {
+	"lumber-port-tile", TRUE, FNAME, -1,
+		    offs(port_tile_names[FOREST_PORT_TILE])}, {
+	"nores-port-tile", TRUE, FNAME, -1,
+		    offs(port_tile_names[ANY_PORT_TILE])}, {
+	"chip-bg-color", TRUE, COL, -1, offs(colors[TC_CHIP_BG])}, {
+	"chip-fg-color", TRUE, COL, -1, offs(colors[TC_CHIP_FG])}, {
+	"chip-bd-color", TRUE, COL, -1, offs(colors[TC_CHIP_BD])}, {
+	"chip-hi-bg-color", TRUE, COL, -1, offs(colors[TC_CHIP_H_BG])},
+	{
+	"chip-hi-fg-color", TRUE, COL, -1, offs(colors[TC_CHIP_H_FG])},
+	{
+	"port-bg-color", TRUE, COL, -1, offs(colors[TC_PORT_BG])}, {
+	"port-fg-color", TRUE, COL, -1, offs(colors[TC_PORT_FG])}, {
+	"port-bd-color", TRUE, COL, -1, offs(colors[TC_PORT_BD])}, {
+	"robber-fg-color", TRUE, COL, -1, offs(colors[TC_ROBBER_FG])},
+	{
+	"robber-bd-color", TRUE, COL, -1, offs(colors[TC_ROBBER_BD])},
+	{
+	"hex-bd-color", TRUE, COL, -1, offs(colors[TC_HEX_BD])}, {
+	"scaling", FALSE, SCMODE, -1, offs(scaling)}
+};
+
 static GList *theme_list = NULL;
 static MapTheme *current_theme = NULL;
 static GList *callback_list = NULL;
@@ -383,6 +445,18 @@ static void theme_cleanup(MapTheme * t)
 			g_object_unref(t->port_tiles[i]);
 		}
 	}
+	for (i = 0; i < G_N_ELEMENTS(theme_vars); i++) {
+		switch (theme_vars[i].type) {
+		case STR:
+		case FNAME:
+			g_free(telem(char *, t, (&theme_vars[i])));
+			break;
+		default:
+			/* No action required */
+			break;
+		}
+	}
+	g_free(t);
 }
 
 void theme_rescale(int new_width)
@@ -446,68 +520,6 @@ void theme_rescale(int new_width)
 						  1);
 	}
 }
-
-#define offs(elem)           ((size_t)(&(((MapTheme *)0)->elem)))
-#define telem(type,theme,tv) (*((type *)((char *)theme + tv->offset)))
-
-typedef enum { FNAME, STR, COL, SCMODE } vartype;
-
-static struct tvars {
-	const char *name;
-	gboolean optional;
-	vartype type;
-	int override;
-	size_t offset;
-} theme_vars[] = {
-	{
-	"name", TRUE, STR, -1, offs(name)}, {
-	"hill-tile", FALSE, FNAME, HILL_TILE,
-		    offs(terrain_tile_names[HILL_TILE])}, {
-	"field-tile", FALSE, FNAME, FIELD_TILE,
-		    offs(terrain_tile_names[FIELD_TILE])}, {
-	"mountain-tile", FALSE, FNAME, MOUNTAIN_TILE,
-		    offs(terrain_tile_names[MOUNTAIN_TILE])}, {
-	"pasture-tile", FALSE, FNAME, PASTURE_TILE,
-		    offs(terrain_tile_names[PASTURE_TILE])}, {
-	"forest-tile", FALSE, FNAME, FOREST_TILE,
-		    offs(terrain_tile_names[FOREST_TILE])}, {
-	"desert-tile", FALSE, FNAME, -1,
-		    offs(terrain_tile_names[DESERT_TILE])}, {
-	"sea-tile", FALSE, FNAME, -1, offs(terrain_tile_names[SEA_TILE])},
-	{
-	"gold-tile", FALSE, FNAME, GOLD_TILE,
-		    offs(terrain_tile_names[GOLD_TILE])}, {
-	"board-tile", FALSE, FNAME, -1,
-		    offs(terrain_tile_names[BOARD_TILE])}, {
-	"brick-port-tile", TRUE, FNAME, -1,
-		    offs(port_tile_names[HILL_PORT_TILE])}, {
-	"grain-port-tile", TRUE, FNAME, -1,
-		    offs(port_tile_names[FIELD_PORT_TILE])}, {
-	"ore-port-tile", TRUE, FNAME, -1,
-		    offs(port_tile_names[MOUNTAIN_PORT_TILE])}, {
-	"wool-port-tile", TRUE, FNAME, -1,
-		    offs(port_tile_names[PASTURE_PORT_TILE])}, {
-	"lumber-port-tile", TRUE, FNAME, -1,
-		    offs(port_tile_names[FOREST_PORT_TILE])}, {
-	"nores-port-tile", TRUE, FNAME, -1,
-		    offs(port_tile_names[ANY_PORT_TILE])}, {
-	"chip-bg-color", TRUE, COL, -1, offs(colors[TC_CHIP_BG])}, {
-	"chip-fg-color", TRUE, COL, -1, offs(colors[TC_CHIP_FG])}, {
-	"chip-bd-color", TRUE, COL, -1, offs(colors[TC_CHIP_BD])}, {
-	"chip-hi-bg-color", TRUE, COL, -1, offs(colors[TC_CHIP_H_BG])},
-	{
-	"chip-hi-fg-color", TRUE, COL, -1, offs(colors[TC_CHIP_H_FG])},
-	{
-	"port-bg-color", TRUE, COL, -1, offs(colors[TC_PORT_BG])}, {
-	"port-fg-color", TRUE, COL, -1, offs(colors[TC_PORT_FG])}, {
-	"port-bd-color", TRUE, COL, -1, offs(colors[TC_PORT_BD])}, {
-	"robber-fg-color", TRUE, COL, -1, offs(colors[TC_ROBBER_FG])},
-	{
-	"robber-bd-color", TRUE, COL, -1, offs(colors[TC_ROBBER_BD])},
-	{
-	"hex-bd-color", TRUE, COL, -1, offs(colors[TC_HEX_BD])}, {
-	"scaling", FALSE, SCMODE, -1, offs(scaling)}
-};
 
 #define ERR1(formatstring, argument) \
 	g_warning("While reading %s at line %d:", filename, lno); \
@@ -632,7 +644,7 @@ static MapTheme *theme_config_parse(const gchar * themename,
 
 	t = g_malloc0(sizeof(MapTheme));
 	/* Initially the theme name is equal to the directory name */
-	t->name = g_filename_to_utf8(themename, -1, NULL, NULL, NULL);
+	t->name = g_strdup(themename);
 	t->current_width = -1;
 
 	used = g_malloc0(G_N_ELEMENTS(theme_vars) * sizeof(gboolean));
@@ -655,6 +667,9 @@ static MapTheme *theme_config_parse(const gchar * themename,
 
 		switch (tv->type) {
 		case STR:
+			if (telem(char *, t, tv)) {
+				g_free(telem(char *, t, tv));
+			}
 			telem(char *, t, tv) = g_strdup(q);
 			break;
 		case FNAME:

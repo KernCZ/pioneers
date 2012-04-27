@@ -1,6 +1,8 @@
 2012-04-27  Roland Clobus <rlobus@rclobus.nl>
 	* server/gtk/main.c, client/gtk/offline.c, editor/gtk/editor.c,
 	common/gtk/theme.c, common/gtk/theme.h: Cleanup themes for valgrind.
+	* common/gtk/guimap.c, common/gtk/theme.c, common/gtk/select-game.c,
+	common/gtk/select-game.h: More cleanup for valgrind.
 
 2012-04-06  Roland Clobus <rclobus@rclobus.nl>
 	* editor/gtk/editor.c: Added a file filter.

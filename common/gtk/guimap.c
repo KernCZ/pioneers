@@ -101,7 +101,10 @@ void guimap_delete(GuiMap * gmap)
 		g_object_unref(gmap->layout);
 		gmap->layout = NULL;
 	}
-	gmap->map = NULL;
+	if (gmap->map) {
+		map_free(gmap->map);
+		gmap->map = NULL;
+	}
 	g_free(gmap);
 }
 
