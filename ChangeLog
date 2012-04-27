@@ -3,6 +3,7 @@
 	common/gtk/theme.c, common/gtk/theme.h: Cleanup themes for valgrind.
 	* common/gtk/guimap.c, common/gtk/theme.c, common/gtk/select-game.c,
 	common/gtk/select-game.h: More cleanup for valgrind.
+	* common/gtk/theme.c: Removed double rendering.
 
 2012-04-06  Roland Clobus <rclobus@rclobus.nl>
 	* editor/gtk/editor.c: Added a file filter.
