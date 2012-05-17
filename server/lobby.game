@@ -1,6 +1,3 @@
-# This is the lobby
-# People can gather here to meet, and talk about games to start.
-#
 title Lobby
 strict-trade
 domestic-trade
@@ -12,6 +9,7 @@ num-bridges 0
 num-ships 0
 num-settlements 0
 num-cities 1
+num-city-walls 0
 resource-count 1
 develop-road 0
 develop-monopoly 0
@@ -22,6 +20,8 @@ develop-governor 0
 develop-library 0
 develop-market 0
 develop-soldier 0
+desc This is the lobby.
+desc People can gather here to meet, and to talk about games to start.	
 chits 2,2,2,2,2,2,2,2,2,2,2,4,4,4,4,4,4,4,4,4,6,6,8,6,8,6,8,6,8,9,9,9,9,9,9,9,9,12,12,12,12,12,12,12,12,12,12,12,12,12
 map
 h0,s,s,s,f1,f2,s,m3,m4,m5,s,p6,p7,p8,s,t9,s,s,t10

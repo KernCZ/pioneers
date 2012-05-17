@@ -1,3 +1,15 @@
+2012-05-17  Roland Clobus <rclobus@rclobus.nl>
+	* server/Evil_square.game, server/ubuntuland.game, server/default.game,
+	server/crane_island.game, server/GuerreDe100ans.game,
+	server/Mini_another_swimming_pool_in_the_wall.game, server/canyon.game,
+	server/archipel_gold.game, server/iles.game, server/conquest.game,
+	server/conquest+ports.game, server/small.game, server/seafarers.game,
+	server/north_america.game, server/coeur.game, server/lorindol.game,
+	server/seafarers-gold.game, server/5-6-player.game, server/lobby.game,
+	server/south_africa.game, server/Another_swimming_pool_in_the_wall.game,
+	server/henjes.game, server/Cube.game: Use the new descriptions. All
+	games are saved by the editor.
+
 2012-04-27  Roland Clobus <rlobus@rclobus.nl>
 	* server/gtk/main.c, client/gtk/offline.c, editor/gtk/editor.c,
 	common/gtk/theme.c, common/gtk/theme.h: Cleanup themes for valgrind.

@@ -2,11 +2,14 @@ title Seafarers
 strict-trade
 domestic-trade
 num-players 4
+sevens-rule 0
 victory-points 10
 num-roads 15
+num-bridges 0
 num-ships 15
 num-settlements 5
 num-cities 4
+num-city-walls 0
 resource-count 19
 develop-road 2
 develop-monopoly 2
@@ -18,7 +21,7 @@ develop-library 1
 develop-market 1
 develop-soldier 13
 use-pirate
-
+desc Two big islands
 chits 5,2,6,3,8,10,9,12,11,4,8,10,9,4,5,6,3,11,5,2,6,3,8,10,9,12,11,4,8,10,9,4,5,6,3,11,12,6
 map
 s,s,sw5,s,s,sg4,s,s?5,s

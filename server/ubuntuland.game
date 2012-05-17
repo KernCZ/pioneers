@@ -22,6 +22,29 @@ develop-market 10
 develop-soldier 30
 use-pirate
 island-discovery-bonus 3
+# created September 24, 2010
+# 
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+desc by Matt Perry <matt@1792coins.com>
+desc 
+desc This map was made to show support for Ubuntu Linux and the basic map layout
+desc was built to resemble the Ubuntu Linux 'circle of friends' logo. It is a map
+desc that supports 6 players with uneven island/port distributions and therefore
+desc requires strategy to play and succeed as it is possible that the game may
+desc not have a winner due to the reduced number of available settlement/city
+desc pieces. I hope that you enjoy this map, even if it is a frustrating one and
+desc that you try Ubuntu Linux if you do not use it already.
+desc Please provide some feedback.
 chits 2,5,4,6,3,9,8,11,11,10,6,3,8,4,8,10,11,12,8,6,10,5,4,9,5,9,12,3,2,6,6,8,6,8,6,2,5,4,6,6,8,6,6,8,3,9,8,11,8,6,11,10,6,3,8,4,8,10,11,12,10,5,4,9,5,9,12,3,2,6,2,5,4,6,3,9,8,11,11,10,6,3,8,4,8,10,11,12,10,5,4,9,5,9,12,3,2,6,2,5,4,6,3,9,8,11,11,10,6,3,8,4,8,2,10,11,12,10,5,4,9,5,9,12,6,8,10,6,8,6,8,6
 map
 s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s
@@ -119,32 +142,3 @@ nosetup 17 5 4
 nosetup 17 5 5
 nosetup 18 3 4
 nosetup 18 4 5
-
-# ubuntuland
-# created September 24, 2010
-# by Matt Perry <matt@1792coins.com>
-
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-
-
-# This map was made to show support for ubuntu linux and the basic map layout
-# was built to resemble the ubuntu linux 'circle of friends' logo. It is a map
-# that supports 6 players with uneven island/port distributions and therefore
-# requires strategy to play and succeeed as it is possible that the game may
-# not have a winner due to the reduced number of available settlement/city
-# pieces. I hope that you enjoy this map, even if it is a frustrating one and
-# that you try ubuntu linux if you do not use it already.
-
-# Please provide some feedback

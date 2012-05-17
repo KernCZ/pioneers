@@ -1,10 +1,14 @@
 title Talon Canyon
-num-players 2
-victory-points 10
 domestic-trade
+num-players 2
+sevens-rule 0
+victory-points 10
 num-roads 15
+num-bridges 0
+num-ships 0
 num-settlements 6
 num-cities 3
+num-city-walls 0
 resource-count 20
 develop-road 2
 develop-monopoly 2
@@ -15,17 +19,17 @@ develop-governor 1
 develop-library 1
 develop-market 1
 develop-soldier 13
-chits 8, 4, 9, 8, 10, 10, 6, 4, 5, 5, 3, 11, 4, 9, 6, 8, 2, 10, 3, 9, 6, 11, 12, 5, 12, 9, 11, 2, 3, 3, 4, 2, 6, 10, 8, 5, 11
+chits 8,4,9,8,10,10,6,4,5,5,3,11,4,9,6,8,2,10,3,9,6,11,12,5,12,9,11,2,3,3,4,2,6,10,8,5,11
 map
--, h0
- f1, m2
--, p3, t4,  -,  -,  -,  -, f5, p6, f7, m8
-  -, f9,h10,  -,  -,  -,h11,t12,m13,t14
--,  -,m15,t16,  -,  -,p17
-  -,  -,h18,t19,f20,h21
--,  -,  -,p22,d37+,m23,m24
-  -,  -,  -,h25,f26,t27,p28
--,  -,  -,  -,  -,t29,h30,f31
-  -,  -,  -,  -,  -,  -,m32,t33,f34
--,  -,  -,  -,  -,  -,  -,p35,h36
+-,h0,-,-,-,-,-,-,-,-,-
+f1,m2,-,-,-,-,-,-,-,-,-
+-,p3,t4,-,-,-,-,f5,p6,f7,m8
+-,f9,h10,-,-,-,h11,t12,m13,t14,-
+-,-,m15,t16,-,-,p17,-,-,-,-
+-,-,h18,t19,f20,h21,-,-,-,-,-
+-,-,-,p22,d23+,m24,m25,-,-,-,-
+-,-,-,h26,f27,t28,p29,-,-,-,-
+-,-,-,-,-,t30,h31,f32,-,-,-
+-,-,-,-,-,-,m33,t34,f35,-,-
+-,-,-,-,-,-,-,p36,h37,-,-
 .
