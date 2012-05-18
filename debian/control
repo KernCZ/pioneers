@@ -3,7 +3,7 @@ Section: games
 Priority: optional
 Maintainer: Roland Clobus <rclobus@rclobus.nl>
 Uploaders: Bas Wijnen <wijnen@debian.org>, Steve Langasek <vorlon@debian.org>
-Build-Depends: debhelper (>= 7.0.50~), libgnome2-dev, scrollkeeper, gnome-common, librsvg2-bin, netpbm, libgtk2.0-dev, automake, autoconf, po-debconf, intltool, libtool, libavahi-glib-dev, libavahi-client-dev, gob2, libnotify-dev, xfonts-scalable, lsb-base
+Build-Depends: debhelper (>= 7.0.50~), libgnome2-dev, scrollkeeper, gnome-common, librsvg2-bin, netpbm, libgtk2.0-dev, automake, autoconf, po-debconf, intltool, libtool, libavahi-glib-dev, libavahi-client-dev, gob2, libnotify-dev, xfonts-scalable
 Standards-Version: 3.9.3
 Homepage: http://pio.sourceforge.net/
 Vcs-Svn: https://pio.svn.sourceforge.net/svnroot/pio/trunk/pioneers
@@ -36,7 +36,7 @@ Description: Settlers of Catan board game - console parts
 
 Package: pioneers-meta-server
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, lsb-base
 Description: Settlers of Catan board game - meta-server
  Pioneers is a computer implementation of the Settlers of Catan board game.
  It can be played over the internet.
