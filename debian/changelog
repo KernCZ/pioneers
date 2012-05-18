@@ -14,6 +14,7 @@ pioneers (14.1-1~local1) UNRELEASED; urgency=low
     files.
   * Added Brazilian Portuguese debconf translations. (closes: #661263)
   * Updated standards version to 3.9.3. (No changes needed.)
+  * Use lsb-base for coloured messages during startup of the daemon.
 
  -- Roland Clobus <rclobus@rclobus.nl>  Tue, 31 Jan 2012 09:39:56 +0100
 

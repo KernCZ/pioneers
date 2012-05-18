@@ -39,70 +39,79 @@ test -z "$PORT_RANGE" || PORT_RANGE="--port-range $PORT_RANGE"
 test -z "$META_SERVER_NAME" || META_SERVER_NAME="--servername $META_SERVER_NAME"
 
 export PIONEERS_META_SERVER
-NAME="Pioneers meta-server"
+NAME=pioneers-meta-server
+DESC="meta-server for Pioneers"
 DAEMON=/usr/games/pioneers-meta-server
 ARGS="--pidfile $PIDFILE --exec $DAEMON $ARGS"
-START_ARGS="--background --start $ARGS -- $PORT_RANGE $META_SERVER_ARGS $META_SERVER_NAME"
-STOP_ARGS="--stop $ARGS"
+START_ARGS="--background --oknodo --start $ARGS -- $PORT_RANGE $META_SERVER_ARGS $META_SERVER_NAME"
+STOP_ARGS="--oknodo --stop $ARGS"
 
 if test ! -x "$DAEMON"; then
 	echo "$DAEMON does not exist"
 	exit 0
 fi
 
+. /lib/lsb/init-functions
+
+#
+# Start the daemon.
+#
+do_start()
+{
+	start-stop-daemon $START_ARGS
+	RETVAL="$?"
+	if [ "$RETVAL" -eq 0 ]; then
+		# It might be that the daemon is not started
+		# (see start-stop-daemon --background for explanation)
+
+		# Wait a little bit to allow the daemon to start
+		sleep 1
+		start-stop-daemon --status $ARGS
+		RETVAL="$?"
+		case "$RETVAL" in
+			0) ;;
+			*) RETVAL=1 ;;
+		esac
+	fi
+	return "$RETVAL"
+}
+
+#
+# Stop the daemon and clean up.
+#
+do_stop()
+{
+	start-stop-daemon $STOP_ARGS
+	RETVAL="$?"
+	[ "$RETVAL" -eq 0 ] && rm -f $PIDFILE
+	return "$RETVAL"
+}
+
 case "$1" in
 	start)
-		if start-stop-daemon --test $START_ARGS; then
-			echo -n "Starting $NAME..."
-			if start-stop-daemon $START_ARGS; then
-				echo "done."
-			else
-				echo "failed."
-			fi
-		else
-			echo "Not starting $NAME: already running"
-		fi
+		log_daemon_msg "Starting $DESC" "$NAME"
+		do_start
+		log_end_msg $?
 		;;
 	stop)
-		echo -n "Stopping $NAME: pioneers-meta-server..."
-		if start-stop-daemon $STOP_ARGS ; then
-			echo "done."
-		else
-			echo "failed."
-		fi
+		log_daemon_msg "Stopping $DESC" "$NAME"
+		do_stop
+		log_end_msg $?
 		;;
 	restart|force-reload)
-		echo -n "Restarting $NAME..."
-		if start-stop-daemon $STOP_ARGS --oknodo ; then
-			sleep 2
-			if start-stop-daemon $START_ARGS; then
-				echo "done."
-			else
-				echo "failed."
-			fi
+		log_daemon_msg "Restarting $DESC" "$NAME"
+		if do_stop; then
+			do_start
+			log_end_msg $?
 		else
-			echo "failed."
+			log_end_msg $?
 		fi
 		;;
 	status)
-		if start-stop-daemon --test $START_ARGS; then
-			echo "$NAME is not running."
-			# Use proper exit codes, see LSB 3.1.0
-			if [ -e $PIDFILE ] ; then
-				exit 1 # not running, but pidfile exists
-			else
-				exit 3 # not running
-			fi
-		elif start-stop-daemon --test $STOP_ARGS >/dev/null ; then
-			echo "$NAME is running."
-			exit 0 # running
-		else
-			echo "Cannot get status of $NAME."
-			exit 4 # status is unknown
-		fi
+		status_of_proc "$NAME" "$DESC"
 		;;
 	*)
-		echo "Usage: /etc/init.d/pioneers-meta-server {start|stop|restart|force-reload|status}"
+		log_success_msg "Usage: /etc/init.d/pioneers-meta-server {start|stop|restart|force-reload|status}"
 		exit 1
 		;;
 esac
