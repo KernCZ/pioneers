@@ -6,7 +6,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Pioneers 0.12.5\n"
+"Project-Id-Version: Pioneers 14.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-05-19 11:28+0200\n"
 "PO-Revision-Date: 2011-10-22 15:31+0100\n"
@@ -1072,9 +1072,9 @@ msgid "Requesting new game server\n"
 msgstr "Requesting new game server\n"
 
 #: ../client/gtk/connect.c:810 ../server/gtk/main.c:350 ../server/server.c:153
-#, fuzzy, c-format
+#, c-format
 msgid "Error starting %s: %s\n"
-msgstr "Error starting %s: %s"
+msgstr "Error starting %s: %s\n"
 
 #. Dialog caption
 #: ../client/gtk/connect.c:832
@@ -2415,7 +2415,7 @@ msgstr ""
 #: ../common/game.c:499
 #, c-format
 msgid "Obsolete rule: '%s'\n"
-msgstr ""
+msgstr "Obsolete rule: '%s'\n"
 
 #: ../common/game.c:506
 #, c-format
@@ -2423,6 +2423,8 @@ msgid ""
 "The game uses the new rule '%s', which is not yet supported. Consider "
 "upgrading.\n"
 msgstr ""
+"The game uses the new rule '%s', which is not yet supported. Consider "
+"upgrading.\n"
 
 #: ../common/game.c:890 ../common/game.c:921
 msgid "This game cannot be won."
@@ -2553,20 +2555,18 @@ msgstr "Check for victory only at end of turn"
 
 #. Label
 #: ../common/gtk/game-rules.c:135
-#, fuzzy
 msgid "Island discovery bonuses"
-msgstr "Island discovery bonuses:"
+msgstr "Island discovery bonuses"
 
 #. Tooltip for island bonus
 #: ../common/gtk/game-rules.c:147
 msgid "A comma seperated list of bonus points for discovering islands"
-msgstr ""
+msgstr "A comma seperated list of bonus points for discovering islands"
 
 #. Tooltip for the check button
 #: ../common/gtk/game-rules.c:163
-#, fuzzy
 msgid "Check and correct island discovery bonuses"
-msgstr "Island discovery bonuses:"
+msgstr "Check and correct island discovery bonuses"
 
 #. Label text for customising a game
 #: ../common/gtk/game-settings.c:106
@@ -3021,14 +3021,13 @@ msgstr "Failed to save to '%s'"
 
 #. Name of the file filter: show only games
 #: ../editor/gtk/editor.c:1080
-#, fuzzy
 msgid "Games"
-msgstr "_Game"
+msgstr "Games"
 
 #. Name of the file filter: show all files
 #: ../editor/gtk/editor.c:1086
 msgid "Unfiltered"
-msgstr ""
+msgstr "Unfiltered"
 
 #. Dialog caption
 #: ../editor/gtk/editor.c:1098
@@ -3165,7 +3164,7 @@ msgstr "Settings"
 #. Tab page name
 #: ../editor/gtk/editor.c:1528
 msgid "Comments"
-msgstr ""
+msgstr "Comments"
 
 #: ../editor/gtk/game-resources.c:48
 msgid "Resource count"

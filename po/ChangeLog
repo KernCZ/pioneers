@@ -1,5 +1,7 @@
 2012-05-19  Roland Clobus <rclobus@rclobus.nl>
 	* all: Updated for 14.1
+	* nl.po: Updated to 14.1
+	* en_GB.po: Updated to 14.1
 
 2012-04-27  Roland Clobus <rclobus@rclobus.nl>
 	* en_GB.po: Fixed the strings with |
