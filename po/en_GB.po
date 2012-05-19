@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 0.12.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-19 11:20+0200\n"
+"POT-Creation-Date: 2012-05-19 11:28+0200\n"
 "PO-Revision-Date: 2011-10-22 15:31+0100\n"
 "Last-Translator: Roland Clobus <rclobus@rclobus.nl>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
@@ -68,7 +68,7 @@ msgstr "Enable debug messages"
 #. Commandline option of meta server: version
 #. Commandline option of server-gtk: version
 #. Commandline option of server-console: version
-#: ../client/ai/ai.c:91 ../client/gtk/offline.c:71 ../editor/gtk/editor.c:1417
+#: ../client/ai/ai.c:91 ../client/gtk/offline.c:71 ../editor/gtk/editor.c:1419
 #: ../meta-server/main.c:1096 ../server/gtk/main.c:1133 ../server/main.c:100
 msgid "Show version information"
 msgstr "Show version information"
@@ -79,7 +79,7 @@ msgid "- Computer player for Pioneers"
 msgstr "- Computer player for Pioneers"
 
 #: ../client/ai/ai.c:114 ../client/gtk/offline.c:183
-#: ../editor/gtk/editor.c:1460 ../meta-server/main.c:1131
+#: ../editor/gtk/editor.c:1462 ../meta-server/main.c:1131
 #: ../server/gtk/main.c:1183 ../server/main.c:208
 #, c-format
 msgid "Pioneers version:"
@@ -1461,7 +1461,7 @@ msgid "Histogram of dice rolls"
 msgstr "Histogram of dice rolls"
 
 #. Menu entry
-#: ../client/gtk/gui.c:269 ../editor/gtk/editor.c:1333
+#: ../client/gtk/gui.c:269 ../editor/gtk/editor.c:1335
 #: ../server/gtk/main.c:104
 msgid "_Quit"
 msgstr "_Quit"
@@ -1607,32 +1607,32 @@ msgid "Configure the application"
 msgstr "Configure the application"
 
 #. Menu entry
-#: ../client/gtk/gui.c:349 ../editor/gtk/editor.c:1295
+#: ../client/gtk/gui.c:349 ../editor/gtk/editor.c:1297
 msgid "_View"
 msgstr "_View"
 
 #. Menu entry
-#: ../client/gtk/gui.c:352 ../editor/gtk/editor.c:1339
+#: ../client/gtk/gui.c:352 ../editor/gtk/editor.c:1341
 msgid "_Reset"
 msgstr "_Reset"
 
 #. Tooltip for Reset menu entry
-#: ../client/gtk/gui.c:355 ../editor/gtk/editor.c:1342
+#: ../client/gtk/gui.c:355 ../editor/gtk/editor.c:1344
 msgid "View the full map"
 msgstr "View the full map"
 
 #. Menu entry
-#: ../client/gtk/gui.c:358 ../editor/gtk/editor.c:1345
+#: ../client/gtk/gui.c:358 ../editor/gtk/editor.c:1347
 msgid "_Center"
 msgstr "_Centre"
 
 #. Tooltip for Center menu entry
-#: ../client/gtk/gui.c:360 ../editor/gtk/editor.c:1347
+#: ../client/gtk/gui.c:360 ../editor/gtk/editor.c:1349
 msgid "Center the map"
 msgstr "Centre the map"
 
 #. Menu entry
-#: ../client/gtk/gui.c:364 ../client/gtk/gui.c:373 ../editor/gtk/editor.c:1298
+#: ../client/gtk/gui.c:364 ../client/gtk/gui.c:373 ../editor/gtk/editor.c:1300
 #: ../server/gtk/main.c:95
 msgid "_Help"
 msgstr "_Help"
@@ -1653,12 +1653,12 @@ msgid "Show the manual"
 msgstr "Show the manual"
 
 #. Menu entry
-#: ../client/gtk/gui.c:383 ../editor/gtk/editor.c:1365
+#: ../client/gtk/gui.c:383 ../editor/gtk/editor.c:1367
 msgid "_Fullscreen"
 msgstr "_Fullscreen"
 
 #. Tooltip for Fullscreen menu entry
-#: ../client/gtk/gui.c:386 ../editor/gtk/editor.c:1368
+#: ../client/gtk/gui.c:386 ../editor/gtk/editor.c:1370
 msgid "Set window to full screen mode"
 msgstr "Set window to full screen mode"
 
@@ -1683,7 +1683,7 @@ msgid "<b>Messages</b>"
 msgstr "<b>Messages</b>"
 
 #. Tab page name
-#: ../client/gtk/gui.c:709 ../editor/gtk/editor.c:1518
+#: ../client/gtk/gui.c:709 ../editor/gtk/editor.c:1520
 msgid "Map"
 msgstr "Map"
 
@@ -2562,7 +2562,8 @@ msgstr "Island discovery bonuses:"
 msgid "A comma seperated list of bonus points for discovering islands"
 msgstr ""
 
-#: ../common/gtk/game-rules.c:164
+#. Tooltip for the check button
+#: ../common/gtk/game-rules.c:163
 #, fuzzy
 msgid "Check and correct island discovery bonuses"
 msgstr "Island discovery bonuses:"
@@ -3018,149 +3019,151 @@ msgstr "Failed to load '%s'"
 msgid "Failed to save to '%s'"
 msgstr "Failed to save to '%s'"
 
-#: ../editor/gtk/editor.c:1079
+#. Name of the file filter: show only games
+#: ../editor/gtk/editor.c:1080
 #, fuzzy
 msgid "Games"
 msgstr "_Game"
 
-#: ../editor/gtk/editor.c:1084
+#. Name of the file filter: show all files
+#: ../editor/gtk/editor.c:1086
 msgid "Unfiltered"
 msgstr ""
 
 #. Dialog caption
-#: ../editor/gtk/editor.c:1096
+#: ../editor/gtk/editor.c:1098
 msgid "Open Game"
 msgstr "Open Game"
 
 #. Dialog caption
-#: ../editor/gtk/editor.c:1135
+#: ../editor/gtk/editor.c:1137
 msgid "Save As..."
 msgstr "Save As..."
 
 #. Dialog caption
-#: ../editor/gtk/editor.c:1181
+#: ../editor/gtk/editor.c:1183
 msgid "Change Title"
 msgstr "Change Title"
 
 #. Label
-#: ../editor/gtk/editor.c:1204
+#: ../editor/gtk/editor.c:1206
 msgid "New title:"
 msgstr "New title:"
 
 #. About dialog caption
-#: ../editor/gtk/editor.c:1262
+#: ../editor/gtk/editor.c:1264
 msgid "About Pioneers Game Editor"
 msgstr "About Pioneers Game Editor"
 
 #. Menu entry
-#: ../editor/gtk/editor.c:1292
+#: ../editor/gtk/editor.c:1294
 msgid "_File"
 msgstr "_File"
 
 #. Menu entry
-#: ../editor/gtk/editor.c:1302
+#: ../editor/gtk/editor.c:1304
 msgid "_New"
 msgstr "_New"
 
-#: ../editor/gtk/editor.c:1303
+#: ../editor/gtk/editor.c:1305
 msgid "Create a new game"
 msgstr "Create a new game"
 
 #. Menu entry
-#: ../editor/gtk/editor.c:1306
+#: ../editor/gtk/editor.c:1308
 msgid "_Open..."
 msgstr "_Open..."
 
 #. Tooltip for Open menu entry
-#: ../editor/gtk/editor.c:1308
+#: ../editor/gtk/editor.c:1310
 msgid "Open an existing game"
 msgstr "Open an existing game"
 
 #. Menu entry
-#: ../editor/gtk/editor.c:1311
+#: ../editor/gtk/editor.c:1313
 msgid "_Save"
 msgstr "_Save"
 
 #. Tooltip for Save menu entry
-#: ../editor/gtk/editor.c:1313
+#: ../editor/gtk/editor.c:1315
 msgid "Save game"
 msgstr "Save game"
 
 #. Menu entry
-#: ../editor/gtk/editor.c:1316
+#: ../editor/gtk/editor.c:1318
 msgid "Save _As..."
 msgstr "Save _As..."
 
 #. Tooltip for Save As menu entry
-#: ../editor/gtk/editor.c:1319
+#: ../editor/gtk/editor.c:1321
 msgid "Save as"
 msgstr "Save as"
 
 #. Menu entry
-#: ../editor/gtk/editor.c:1322
+#: ../editor/gtk/editor.c:1324
 msgid "_Change Title"
 msgstr "_Change Title"
 
 #. Tooltip for Change Title menu entry
-#: ../editor/gtk/editor.c:1324
+#: ../editor/gtk/editor.c:1326
 msgid "Change game title"
 msgstr "Change game title"
 
 #. Menu entry
-#: ../editor/gtk/editor.c:1327 ../server/gtk/main.c:98
+#: ../editor/gtk/editor.c:1329 ../server/gtk/main.c:98
 msgid "_Check Victory Point Target"
 msgstr "_Check Victory Point Target"
 
 #. Tooltip for Check Victory Point Target menu entry
 #. Tooltop for Check Victory Point Target menu entry
-#: ../editor/gtk/editor.c:1330 ../server/gtk/main.c:101
+#: ../editor/gtk/editor.c:1332 ../server/gtk/main.c:101
 msgid "Check whether the game can be won"
 msgstr "Check whether the game can be won"
 
 #. Tooltip for Quit menu entry
-#: ../editor/gtk/editor.c:1335
+#: ../editor/gtk/editor.c:1337
 msgid "Quit"
 msgstr "Quit"
 
 #. Menu entry
-#: ../editor/gtk/editor.c:1357
+#: ../editor/gtk/editor.c:1359
 msgid "_About Pioneers Editor"
 msgstr "_About Pioneers Editor"
 
 #. Tooltip for About Pioneers Editor menu entry
-#: ../editor/gtk/editor.c:1359
+#: ../editor/gtk/editor.c:1361
 msgid "Information about Pioneers Editor"
 msgstr "Information about Pioneers Editor"
 
 #. Long help for commandline option (editor): filename
-#: ../editor/gtk/editor.c:1412
+#: ../editor/gtk/editor.c:1414
 msgid "Open this file"
 msgstr "Open this file"
 
 #. Commandline option for editor: filename
 #. Commandline meta-server: pidfile argument
-#: ../editor/gtk/editor.c:1414 ../meta-server/main.c:1074
+#: ../editor/gtk/editor.c:1416 ../meta-server/main.c:1074
 msgid "filename"
 msgstr "filename"
 
 #. Long description in the command line: --help
-#: ../editor/gtk/editor.c:1449
+#: ../editor/gtk/editor.c:1451
 msgid "- Editor for games of Pioneers"
 msgstr "- Editor for games of Pioneers"
 
 #. Error message
-#: ../editor/gtk/editor.c:1493 ../server/gtk/main.c:1216
+#: ../editor/gtk/editor.c:1495 ../server/gtk/main.c:1216
 #, c-format
 msgid "Building menus failed: %s"
 msgstr "Building menus failed: %s"
 
 #. Tab page name
-#: ../editor/gtk/editor.c:1523
+#: ../editor/gtk/editor.c:1525
 msgid "Settings"
 msgstr "Settings"
 
 #. Tab page name
-#: ../editor/gtk/editor.c:1526
+#: ../editor/gtk/editor.c:1528
 msgid "Comments"
 msgstr ""
 
