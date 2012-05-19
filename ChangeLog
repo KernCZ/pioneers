@@ -1,3 +1,6 @@
+2012-05-19  Roland Clobus <rclobus@rclobus.nl>
+	* editor/gtk/editor.c, common/gtk/game-rules.c: Translator hints.
+
 2012-05-17  Roland Clobus <rclobus@rclobus.nl>
 	* server/Evil_square.game, server/ubuntuland.game, server/default.game,
 	server/crane_island.game, server/GuerreDe100ans.game,

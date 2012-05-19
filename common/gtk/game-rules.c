@@ -160,8 +160,8 @@ static void game_rules_init(GameRules * gr, gboolean show_all_rules)
 				 (gpointer) gr);
 		gtk_widget_set_tooltip_text(widget,
 					    /* Tooltip for the check button */
-					    _
-					    ("Check and correct island discovery bonuses"));
+					    _("Check and correct island "
+					      "discovery bonuses"));
 		gtk_box_pack_end(GTK_BOX(hbox), widget, FALSE, FALSE, 0);
 
 		gtk_table_attach(GTK_TABLE(gr), GTK_WIDGET(hbox), 1, 2,

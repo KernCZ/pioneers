@@ -1076,11 +1076,13 @@ static void add_file_filter(GtkFileChooser * file_chooser)
 	GtkFileFilter *filter;
 
 	filter = gtk_file_filter_new();
+	/* Name of the file filter: show only games */
 	gtk_file_filter_set_name(filter, _("Games"));
 	gtk_file_filter_add_pattern(filter, "*.game");
 	gtk_file_chooser_add_filter(file_chooser, filter);
 
 	filter = gtk_file_filter_new();
+	/* Name of the file filter: show all files */
 	gtk_file_filter_set_name(filter, _("Unfiltered"));
 	gtk_file_filter_add_pattern(filter, "*");
 	gtk_file_chooser_add_filter(file_chooser, filter);
