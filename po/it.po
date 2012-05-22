@@ -2,14 +2,14 @@
 # Copyright (C) 1999-2001 Dave Cole
 # Copyright (C) 2000-2002 Andy Heroff
 # This file is distributed under the same license as the pioneers package.
-# Giancarlo Capella <giancarlo@comm.cc>, 2005-2011.
+# Giancarlo Capella <giancarlo@comm.cc>, 2005-2012.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Pioneers 0.12.5\n"
+"Project-Id-Version: Pioneers 14.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-05-19 11:28+0200\n"
-"PO-Revision-Date: 2011-10-24 20:12:00+0200\n"
+"PO-Revision-Date: 2012-05-21 14:12:00+0200\n"
 "Last-Translator: Giancarlo Capella <giancarlo@comm.cc>\n"
 "Language-Team: it <it@li.org>\n"
 "Language: it\n"
@@ -913,12 +913,12 @@ msgstr "%s deve muovere il brigante."
 #: ../client/common/setup.c:146
 #, c-format
 msgid "Setup for %s.\n"
-msgstr "Setup per %s.\n"
+msgstr "Posizionamento per %s.\n"
 
 #: ../client/common/setup.c:158
 #, c-format
 msgid "Double setup for %s.\n"
-msgstr "Doppio setup per %s.\n"
+msgstr "Doppio posizionamento per %s.\n"
 
 #: ../client/common/turn.c:37
 #, c-format
@@ -998,12 +998,12 @@ msgstr "Messaggio sconosciuto dal metaserver: %s\n"
 
 #: ../client/gtk/connect.c:469 ../server/meta.c:119
 msgid "Too many meta-server redirects\n"
-msgstr "Troppe redirezioni del metaserver\n"
+msgstr "Troppe ridirezioni del metaserver\n"
 
 #: ../client/gtk/connect.c:496 ../server/meta.c:134
 #, c-format
 msgid "Bad redirect line: %s\n"
-msgstr "Riga di redirezione errata: %s\n"
+msgstr "Riga di ridirezione errata: %s\n"
 
 #: ../client/gtk/connect.c:522
 #, c-format
@@ -1070,9 +1070,9 @@ msgid "Requesting new game server\n"
 msgstr "Richiesta nuovo server di partita\n"
 
 #: ../client/gtk/connect.c:810 ../server/gtk/main.c:350 ../server/server.c:153
-#, fuzzy, c-format
+#, c-format
 msgid "Error starting %s: %s\n"
-msgstr "Errore avviando %s: %s"
+msgstr "Errore avvio %s: %s\n"
 
 #. Dialog caption
 #: ../client/gtk/connect.c:832
@@ -2416,7 +2416,7 @@ msgstr ""
 #: ../common/game.c:499
 #, c-format
 msgid "Obsolete rule: '%s'\n"
-msgstr ""
+msgstr "Regola obsoleta: '%s'\n"
 
 #: ../common/game.c:506
 #, c-format
@@ -2424,6 +2424,8 @@ msgid ""
 "The game uses the new rule '%s', which is not yet supported. Consider "
 "upgrading.\n"
 msgstr ""
+"La partita utilizza la nuova regola '%s' che non è ancora supportata. "
+"Aggiorna il gioco.\n"
 
 #: ../common/game.c:890 ../common/game.c:921
 msgid "This game cannot be won."
@@ -2553,20 +2555,18 @@ msgstr "Verifica la vittoria solo alla fine del turno"
 
 #. Label
 #: ../common/gtk/game-rules.c:135
-#, fuzzy
 msgid "Island discovery bonuses"
-msgstr "Bonus per scoperta isole:"
+msgstr "Bonus per scoperta isole"
 
 #. Tooltip for island bonus
 #: ../common/gtk/game-rules.c:147
 msgid "A comma seperated list of bonus points for discovering islands"
-msgstr ""
+msgstr "Lista di punti bonus per la scoperta isole, separati da virgola"
 
 #. Tooltip for the check button
 #: ../common/gtk/game-rules.c:163
-#, fuzzy
 msgid "Check and correct island discovery bonuses"
-msgstr "Bonus per scoperta isole:"
+msgstr "Controlla e corregge i bonus per la scoperta isole"
 
 #. Label text for customising a game
 #: ../common/gtk/game-settings.c:106
@@ -3023,14 +3023,13 @@ msgstr "Impossibile salvare '%s'"
 
 #. Name of the file filter: show only games
 #: ../editor/gtk/editor.c:1080
-#, fuzzy
 msgid "Games"
-msgstr "_Partita"
+msgstr "Partite"
 
 #. Name of the file filter: show all files
 #: ../editor/gtk/editor.c:1086
 msgid "Unfiltered"
-msgstr ""
+msgstr "Non filtrati"
 
 #. Dialog caption
 #: ../editor/gtk/editor.c:1098
@@ -3167,7 +3166,7 @@ msgstr "Impostazioni"
 #. Tab page name
 #: ../editor/gtk/editor.c:1528
 msgid "Comments"
-msgstr ""
+msgstr "Commenti"
 
 #: ../editor/gtk/game-resources.c:48
 msgid "Resource count"
@@ -3175,7 +3174,7 @@ msgstr "Conto materie prime"
 
 #: ../editor/gtk/pioneers-editor.desktop.in.h:2
 msgid "Create your own game for Pioneers"
-msgstr "Creal la tua partita di Pioneers"
+msgstr "Crea la tua partita di Pioneers"
 
 #. Commandline meta-server: daemon
 #: ../meta-server/main.c:1069
@@ -3601,7 +3600,7 @@ msgstr "Impossibile caricare i parametri della partita\n"
 #: ../server/main.c:275
 #, c-format
 msgid "Admin port not available.\n"
-msgstr "Mi dispiace, porta di amministrazione non disponibile.\n"
+msgstr "Porta di amministrazione non disponibile.\n"
 
 #. server-console commandline error
 #: ../server/main.c:282
@@ -3630,7 +3629,7 @@ msgstr "nome troppo lungo"
 
 #: ../server/player.c:189
 msgid "ignoring unknown extension"
-msgstr "estensione sconosciuta ingorata"
+msgstr "estensione sconosciuta ignorata"
 
 #: ../server/player.c:226 ../server/player.c:296
 msgid "The last player left, the tournament timer is reset."
