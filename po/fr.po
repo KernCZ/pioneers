@@ -7,10 +7,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Pioneers 0.12.5\n"
+"Project-Id-Version: Pioneers 14.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-05-19 11:28+0200\n"
-"PO-Revision-Date: 2011-10-23 21:32+0100\n"
+"PO-Revision-Date: 2012-05-22 14:36+0100\n"
 "Last-Translator: Jean-Charles GRANGER <traduction@vecteur.org>\n"
 "Language-Team: Français <LL@li.org>, LT-P <LT-P@LT-P.net>, Yusei "
 "<yusei@ragondux.com>, Arnaud MALON <moko@geumeuleu.com>, Jean-Charles "
@@ -1079,9 +1079,9 @@ msgid "Requesting new game server\n"
 msgstr "Demander une nouvelle partie\n"
 
 #: ../client/gtk/connect.c:810 ../server/gtk/main.c:350 ../server/server.c:153
-#, fuzzy, c-format
+#, c-format
 msgid "Error starting %s: %s\n"
-msgstr "Erreur en démarrant %s : %s"
+msgstr "Erreur lors du démarrage de %s : %s\n"
 
 #. Dialog caption
 #: ../client/gtk/connect.c:832
@@ -1320,7 +1320,7 @@ msgstr "Port du serveur hébergeant la partie"
 #. Label
 #: ../client/gtk/connect.c:1639 ../client/gtk/connect.c:1642
 msgid "Recent games"
-msgstr "Serveurs récents"
+msgstr "Parties récentes"
 
 #. Caption for list of bought development cards
 #: ../client/gtk/develop.c:130
@@ -2425,7 +2425,7 @@ msgstr ""
 #: ../common/game.c:499
 #, c-format
 msgid "Obsolete rule: '%s'\n"
-msgstr ""
+msgstr "Règle obsolète : '%s'\n"
 
 #: ../common/game.c:506
 #, c-format
@@ -2433,6 +2433,8 @@ msgid ""
 "The game uses the new rule '%s', which is not yet supported. Consider "
 "upgrading.\n"
 msgstr ""
+"Cette partie utilise la nouvelle règle '%s' alors qu'elle n'est pas encore "
+"supportée. Vous devriez faire une mise à jour.\n"
 
 #: ../common/game.c:890 ../common/game.c:921
 msgid "This game cannot be won."
@@ -2570,20 +2572,20 @@ msgstr "Vérifie la victoire uniquement à la fin du tour"
 
 #. Label
 #: ../common/gtk/game-rules.c:135
-#, fuzzy
 msgid "Island discovery bonuses"
-msgstr "Bonus pour la découverte d'une île :"
+msgstr "Bonus pour la découverte d'une île"
 
 #. Tooltip for island bonus
 #: ../common/gtk/game-rules.c:147
 msgid "A comma seperated list of bonus points for discovering islands"
 msgstr ""
+"Liste des points de bonus (séparés par des virgules) pour la découverte des "
+"îles"
 
 #. Tooltip for the check button
 #: ../common/gtk/game-rules.c:163
-#, fuzzy
 msgid "Check and correct island discovery bonuses"
-msgstr "Bonus pour la découverte d'une île :"
+msgstr "Vérifiez et corrigez les bonus pour la découverte d'une île"
 
 #. Label text for customising a game
 #: ../common/gtk/game-settings.c:106
@@ -2654,7 +2656,7 @@ msgstr "Choisir un meta-serveur"
 #. Tooltip for the list of games
 #: ../common/gtk/select-game.c:104
 msgid "Select a game"
-msgstr "Serveurs récents"
+msgstr "Sélectionnez une partie"
 
 #. Log prefix
 #: ../common/log.c:55
@@ -3039,14 +3041,13 @@ msgstr "N'a pas réussi à enregistrer '%s'"
 
 #. Name of the file filter: show only games
 #: ../editor/gtk/editor.c:1080
-#, fuzzy
 msgid "Games"
-msgstr "_Partie"
+msgstr "Parties"
 
 #. Name of the file filter: show all files
 #: ../editor/gtk/editor.c:1086
 msgid "Unfiltered"
-msgstr ""
+msgstr "Non filtré"
 
 #. Dialog caption
 #: ../editor/gtk/editor.c:1098
@@ -3183,7 +3184,7 @@ msgstr "Préférences"
 #. Tab page name
 #: ../editor/gtk/editor.c:1528
 msgid "Comments"
-msgstr ""
+msgstr "Commentaires"
 
 #: ../editor/gtk/game-resources.c:48
 msgid "Resource count"
