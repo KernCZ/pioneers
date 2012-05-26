@@ -7,10 +7,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Pioneers 0.12.3\n"
+"Project-Id-Version: Pioneers 0.12.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-05-19 11:28+0200\n"
-"PO-Revision-Date: 2011-10-30 15:01+0100\n"
+"PO-Revision-Date: 2012-05-19 11:56+0000\n"
 "Last-Translator: Pit Garbe <piiit@gmx.de>\n"
 "Language-Team: Pit Garbe <piiit@gmx.de>, Roman Hodek <roman@hodek.net>, de "
 "<de@li.org>\n"
@@ -18,9 +18,9 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2008-04-29 09:36+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
-"Plural-Forms: nplurals=2; plural=(n!=1)\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Launchpad-Export-Date: 2012-05-23 05:36+0000\n"
+"X-Generator: Launchpad (build 15282)\n"
 
 #. Commandline pioneersai: server
 #: ../client/ai/ai.c:70
@@ -936,7 +936,7 @@ msgstr "Beginn Runde %d für %s.\n"
 
 #: ../client/gtk/avahi-browser.c:83
 msgid "Select an automatically discovered game"
-msgstr ""
+msgstr "Wähle ein automatisch entdecktes Spiel"
 
 #. $1=Game title, $2=version, $3=host_name, $4=port
 #: ../client/gtk/avahi-browser.c:132
@@ -1074,9 +1074,9 @@ msgid "Requesting new game server\n"
 msgstr "Anfrage für einen neuen Spielserver gesendet\n"
 
 #: ../client/gtk/connect.c:810 ../server/gtk/main.c:350 ../server/server.c:153
-#, fuzzy, c-format
+#, c-format
 msgid "Error starting %s: %s\n"
-msgstr "Fehler beim Starten von %s: %s"
+msgstr "Fehler beim Starten von %s: %s\n"
 
 #. Dialog caption
 #: ../client/gtk/connect.c:832
@@ -1196,9 +1196,8 @@ msgstr "Port"
 
 #. Tooltip for column 'Port'
 #: ../client/gtk/connect.c:1127
-#, fuzzy
 msgid "Port of the game"
-msgstr "Spielport"
+msgstr "Netzwerk-Port des Spiels"
 
 #. Column name
 #: ../client/gtk/connect.c:1131
@@ -1233,9 +1232,8 @@ msgid "Spectator"
 msgstr "Zuschauer"
 
 #: ../client/gtk/connect.c:1280
-#, fuzzy
 msgid "Check if you want to be a spectator"
-msgstr "Willst du Zuschauer sein?"
+msgstr "Anwählen falls Sie als Beobachter teilnehmen wollen"
 
 #. Label
 #: ../client/gtk/connect.c:1291
@@ -1250,7 +1248,7 @@ msgstr "Teilnehmen"
 #. Tooltip for button Join
 #: ../client/gtk/connect.c:1302
 msgid "Join an automatically discovered game"
-msgstr ""
+msgstr "Spiele ein automatisch entdecktes Spiel"
 
 #. Label
 #. meta server label
@@ -1613,27 +1611,27 @@ msgstr "Konfiguriere die Anwendung"
 #. Menu entry
 #: ../client/gtk/gui.c:349 ../editor/gtk/editor.c:1297
 msgid "_View"
-msgstr ""
+msgstr "_Ansicht"
 
 #. Menu entry
 #: ../client/gtk/gui.c:352 ../editor/gtk/editor.c:1341
 msgid "_Reset"
-msgstr ""
+msgstr "_Zurücksetzen"
 
 #. Tooltip for Reset menu entry
 #: ../client/gtk/gui.c:355 ../editor/gtk/editor.c:1344
 msgid "View the full map"
-msgstr ""
+msgstr "Zeige ganze Karte"
 
 #. Menu entry
 #: ../client/gtk/gui.c:358 ../editor/gtk/editor.c:1347
 msgid "_Center"
-msgstr ""
+msgstr "_Zentrieren"
 
 #. Tooltip for Center menu entry
 #: ../client/gtk/gui.c:360 ../editor/gtk/editor.c:1349
 msgid "Center the map"
-msgstr ""
+msgstr "Zentriert die Karte"
 
 #. Menu entry
 #: ../client/gtk/gui.c:364 ../client/gtk/gui.c:373 ../editor/gtk/editor.c:1300
@@ -1659,12 +1657,12 @@ msgstr "Das Handbuch zeigen"
 #. Menu entry
 #: ../client/gtk/gui.c:383 ../editor/gtk/editor.c:1367
 msgid "_Fullscreen"
-msgstr ""
+msgstr "_Vollbild"
 
 #. Tooltip for Fullscreen menu entry
 #: ../client/gtk/gui.c:386 ../editor/gtk/editor.c:1370
 msgid "Set window to full screen mode"
-msgstr ""
+msgstr "Umschalten in den Vollbildmodus"
 
 #. Menu entry
 #: ../client/gtk/gui.c:391
@@ -1807,12 +1805,14 @@ msgstr ""
 #. Label for the option to use the notifications.
 #: ../client/gtk/gui.c:1216
 msgid "Show notifications"
-msgstr ""
+msgstr "Zeige Benachrichtigungen"
 
 #. Tooltip for notifications option.
 #: ../client/gtk/gui.c:1226
 msgid "Show notifications when it's your turn or when new trade is available"
 msgstr ""
+"Zeigt Meldungen, wenn Sie an der Reihe sind oder wenn ein neuer Handel "
+"möglich ist"
 
 #. Label for the option to use the 16:9 layout.
 #: ../client/gtk/gui.c:1232
@@ -1857,7 +1857,7 @@ msgstr "Wähle die neue Position des Schiffes."
 #. Notification
 #: ../client/gtk/interface.c:892
 msgid "It is your turn to setup."
-msgstr ""
+msgstr "Sie sind an der Reihe mit der Startaufstellung"
 
 #: ../client/gtk/legend.c:33
 msgid "Hill"
@@ -2078,15 +2078,15 @@ msgstr "%s hat %s und möchte %s"
 
 #. Notification
 #: ../client/gtk/quote.c:217
-#, fuzzy, c-format
+#, c-format
 msgid "New offer from %s."
-msgstr "Du hast %s von %s gestohlen.\n"
+msgstr "Neues Angebot von %s."
 
 #. Notification
 #: ../client/gtk/quote.c:242
 #, c-format
 msgid "Offer from %s."
-msgstr ""
+msgstr "Angebot von %s."
 
 #. Label
 #. Frame title, trade: I want to trade these resources
@@ -2351,9 +2351,9 @@ msgstr "Ich möchte %s, und gebe dafür %s"
 
 #. Notification
 #: ../client/gtk/trade.c:348
-#, fuzzy, c-format
+#, c-format
 msgid "Quote received from %s."
-msgstr "%s hat %s bekommen.\n"
+msgstr "Angebot erhalten von %s."
 
 #. Button text, trade: call for quotes from other players
 #: ../client/gtk/trade.c:539
@@ -2391,6 +2391,8 @@ msgid ""
 "Select a resource type and take every card of that type held by all other "
 "players"
 msgstr ""
+"Wähle eine Rohstoffart und erhalte von den anderen Mitspielern alle Karten "
+"dieser Art"
 
 #. Description of the 'Year of Plenty' development card
 #: ../common/cards.c:164
@@ -2398,6 +2400,8 @@ msgid ""
 "Take two resource cards of any type from the bank (cards may be of the same "
 "or different types)"
 msgstr ""
+"Nehmen Sie 2 beliebige Rohstoffkarten von der Bank (Karten können gleich "
+"oder unterschiedlich sein)"
 
 #. Description of a development card of 1 victory point
 #: ../common/cards.c:173
@@ -2410,6 +2414,8 @@ msgid ""
 "Move the robber to a different space and take one resource card from another "
 "player adjacent to that space"
 msgstr ""
+"Setzen Sie den Räuber in ein anderes Feld und nehmen Sie eine Rohstoffkarte "
+"von einem Mitspieler, der an dieses Feld angrenzt"
 
 #: ../common/game.c:499
 #, c-format
@@ -2485,12 +2491,13 @@ msgstr "Autoren:"
 msgid "translator_credits"
 msgstr ""
 "Launchpad Contributions:\n"
+"  Daniel Winzen https://launchpad.net/~q-d\n"
 "  Dominik R. https://launchpad.net/~visual-night\n"
+"  Eberhard Allgaier https://launchpad.net/~e-allgaier\n"
 "  Jochen Kemnade https://launchpad.net/~jochenkemnade\n"
 "  Markus Groß https://launchpad.net/~mag-privat\n"
-"  Maximilian R. https://launchpad.net/~max-r\n"
 "  Philipp Kleinhenz https://launchpad.net/~lopho\n"
-"  Pit Garbe https://launchpad.net/~piiit\n"
+"  Roland Clobus https://launchpad.net/~rclobus\n"
 "  Vinzenz Vietzke https://launchpad.net/~vinzv"
 
 #. Header for the translator_credits. Use your own language name
@@ -2560,9 +2567,8 @@ msgstr "Sieg nur am Ende einer Runde überprüfen"
 
 #. Label
 #: ../common/gtk/game-rules.c:135
-#, fuzzy
 msgid "Island discovery bonuses"
-msgstr "Insel-Entdeckungs-Bonus:"
+msgstr "Insel-Entdeckungs-Bonus"
 
 #. Tooltip for island bonus
 #: ../common/gtk/game-rules.c:147
@@ -2571,9 +2577,8 @@ msgstr ""
 
 #. Tooltip for the check button
 #: ../common/gtk/game-rules.c:163
-#, fuzzy
 msgid "Check and correct island discovery bonuses"
-msgstr "Insel-Entdeckungs-Bonus:"
+msgstr ""
 
 #. Label text for customising a game
 #: ../common/gtk/game-settings.c:106
@@ -2744,7 +2749,7 @@ msgstr "Spieler 8: "
 #. Log prefix
 #: ../common/log.c:137
 msgid "Spectator: "
-msgstr "Zuschauer:"
+msgstr "Zuschauer: "
 
 #. Log prefix
 #: ../common/log.c:141
@@ -2970,19 +2975,19 @@ msgstr "SO"
 
 #: ../editor/gtk/editor.c:230
 msgid "Insert a row"
-msgstr ""
+msgstr "Reihe einfügen"
 
 #: ../editor/gtk/editor.c:231
 msgid "Delete a row"
-msgstr ""
+msgstr "Reihe löschen"
 
 #: ../editor/gtk/editor.c:232
 msgid "Insert a column"
-msgstr ""
+msgstr "Spalte einfügen"
 
 #: ../editor/gtk/editor.c:233
 msgid "Delete a column"
-msgstr ""
+msgstr "Spalte löschen"
 
 #. Menu item
 #: ../editor/gtk/editor.c:732
@@ -3028,9 +3033,8 @@ msgstr "Speichern nach '%s' fehlgeschlagen"
 
 #. Name of the file filter: show only games
 #: ../editor/gtk/editor.c:1080
-#, fuzzy
 msgid "Games"
-msgstr "_Spiel"
+msgstr ""
 
 #. Name of the file filter: show all files
 #: ../editor/gtk/editor.c:1086
@@ -3236,12 +3240,12 @@ msgstr "Protokoll des Meta-Servers:"
 
 #: ../server/avahi.c:68
 msgid "Avahi registration successful.\n"
-msgstr ""
+msgstr "Avahi Registrierung erfolgreich.\n"
 
 #: ../server/avahi.c:78
 #, c-format
 msgid "Avahi service name collision, renaming service to '%s'.\n"
-msgstr ""
+msgstr "Avahi-Dienstname Zusammenstoß, benenne Dienst um zu '%s'.\n"
 
 #. Some kind of failure happened while we were registering
 #: ../server/avahi.c:89
@@ -3257,11 +3261,11 @@ msgstr "Avahi-Fehler: %s, %s\n"
 
 #: ../server/avahi.c:215 ../server/avahi.c:229
 msgid "Unable to register Avahi server"
-msgstr ""
+msgstr "Konnte Avahi-Server nicht registrieren"
 
 #: ../server/avahi.c:262
 msgid "Unregistering Avahi.\n"
-msgstr ""
+msgstr "Lösche Avahi aus dem Register.\n"
 
 #. Menu entry
 #: ../server/gtk/main.c:109
@@ -3607,7 +3611,7 @@ msgstr "Port des Spiel-Hosts\n"
 #: ../server/main.c:275
 #, c-format
 msgid "Admin port not available.\n"
-msgstr ""
+msgstr "Administrator Port nicht verfügbar.\n"
 
 #. server-console commandline error
 #: ../server/main.c:282
@@ -3643,7 +3647,7 @@ msgstr "Der letzte Spieler ist gegangen, der Turnier-Timer wird zurückgesetzt."
 
 #: ../server/player.c:260 ../server/player.c:633
 msgid "No human players present. Bye."
-msgstr ""
+msgstr "Keine menschlichen Spieler anwesend. Tschüss."
 
 #: ../server/player.c:267
 msgid "Game starts, adding computer players."
@@ -3686,10 +3690,12 @@ msgstr "Habe zu lange auf andere Spieler gewartet... tschüss.\n"
 #: ../server/player.c:712
 msgid "The last human player left. Waiting for the return of a player."
 msgstr ""
+"Der letzte menschliche Spieler ist gegangen. Warte auf das wiederkehren "
+"eines Spielers."
 
 #: ../server/player.c:733
 msgid "Resuming the game."
-msgstr ""
+msgstr "Spiel fortsetzen."
 
 #. %s is the name of the reconnecting player
 #: ../server/player.c:864
@@ -3737,93 +3743,3 @@ msgstr "Versuchte Ressourcen NULL Spieler zuzuteilen.\n"
 #: ../server/turn.c:493
 msgid "The dice roll has been determined by the administrator."
 msgstr "Das Würfeln wurde vom Administrator bestimmt."
-
-#~ msgid "Viewer %d"
-#~ msgstr "Zuschauer %d"
-
-#~ msgid "viewer %d"
-#~ msgstr "Zuschauer %d"
-
-#~ msgid "<b>I want</b>"
-#~ msgstr "<b>Ich will</b>"
-
-#~ msgid "<b>Give them</b>"
-#~ msgstr "<b>Ich gebe dafür</b>"
-
-#~ msgid "Viewer: "
-#~ msgstr "Zuschauer: "
-
-#~ msgid "Number of AI Players"
-#~ msgstr "Anzahl Computerspieler"
-
-#~ msgid "The number of AI players"
-#~ msgstr "Anzahl der Computerspieler"
-
-#~ msgid "Recent Games"
-#~ msgstr "Zuletzt besuchte Spielserver"
-
-#~ msgid "You may choose 1 resource"
-#~ msgstr "Du mußt 1 Karte wählen"
-
-#~ msgid "_Player name"
-#~ msgstr "S_pielername"
-
-#~ msgid "The Pioneers Game"
-#~ msgstr "Das Pioneers-Spiel"
-
-#~ msgid "Select the ship to steal from"
-#~ msgstr "Wähle das Schiff, von dem gestohlen werden soll"
-
-#~ msgid "Select the building to steal from"
-#~ msgstr "Wähle das Gebäude, von dem gestohlen werden soll"
-
-#~ msgid "Development Card"
-#~ msgstr "Entwicklungskarte"
-
-#~ msgid "Player Name:"
-#~ msgstr "Spielername:"
-
-#~ msgid "I Want"
-#~ msgstr "Ich will"
-
-#~ msgid "Interplayer Trading Allowed?"
-#~ msgstr "Handel zwischen Spielern erlaubt?"
-
-#~ msgid "Trading allowed only before build/buy?"
-#~ msgstr "Handel nur vor dem Bauen erlaubt?"
-
-#~ msgid "Check Victory Only At End Of Turn?"
-#~ msgstr "Sieg nur am Ende einer Runde überprüfen?"
-
-#~ msgid "Sevens Rule:"
-#~ msgstr "7-Regel:"
-
-#~ msgid "Use Pirate:"
-#~ msgstr "Pirat verwenden:"
-
-#~ msgid "Number of Players"
-#~ msgstr "Anzahl der Spieler"
-
-#~ msgid "Development Cards"
-#~ msgstr "Entwicklungskarten"
-
-#~ msgid "Save as..."
-#~ msgstr "Speichern unter..."
-
-#~ msgid "Pioneers Game Editor"
-#~ msgstr "Pioneers Spiel-Editior"
-
-#~ msgid "_Change title"
-#~ msgstr "_Titel ändern"
-
-#~ msgid "Random Turn Order"
-#~ msgstr "Zufällige Rundenreihenfolge"
-
-#~ msgid "_Legend"
-#~ msgstr "_Erklärung"
-
-#~ msgid "bad scaling mode '%s'"
-#~ msgstr "falscher Skaliermodus '%s'"
-
-#~ msgid "Missing game directory\n"
-#~ msgstr "Spielverzeichnis fehlt\n"
