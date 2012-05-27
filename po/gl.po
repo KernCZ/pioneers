@@ -1535,7 +1535,7 @@ msgstr "Construir un barco"
 #. Menu entry
 #: ../client/gtk/gui.c:308
 msgid "Move Ship"
-msgstr "Quitar o barco"
+msgstr "Mover o barco"
 
 #. Tooltip for Move Ship menu entry
 #: ../client/gtk/gui.c:310

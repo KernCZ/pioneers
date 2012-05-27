@@ -3688,7 +3688,7 @@ msgstr ""
 
 #: ../server/player.c:733
 msgid "Resuming the game."
-msgstr ""
+msgstr "A játék folytatása."
 
 #. %s is the name of the reconnecting player
 #: ../server/player.c:864

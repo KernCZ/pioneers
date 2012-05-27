@@ -1,5 +1,6 @@
 2012-05-27  Roland Clobus <rclobus@rclobus.nl>
 	* gl.po, hu.po, pt.po: /me says ... -> use /me in all translations
+	* gl.po, hu.po: Added reviewed items of Launchpad
 
 2012-05-26  DeigoJ <diegojromerolopez@gmail.com>
 	* es.po: Updated to 0.12.5 (Import from Launchpad)
