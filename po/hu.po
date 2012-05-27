@@ -226,7 +226,7 @@ msgstr "*sátáni vigyor*"
 #. AI chat when other players must discard
 #: ../client/ai/greedy.c:1376
 msgid "/me says farewell to your cards ;)"
-msgstr "/mondtam, hogy mondj búcsút a kártyáidnak ;)"
+msgstr "/me hogy mondj búcsút a kártyáidnak ;)"
 
 #. AI chat when other players must discard
 #: ../client/ai/greedy.c:1378

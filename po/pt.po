@@ -225,7 +225,7 @@ msgstr "Diabinho!!"
 #. AI chat when other players must discard
 #: ../client/ai/greedy.c:1376
 msgid "/me says farewell to your cards ;)"
-msgstr "/eu digo adeus às tuas cartas ;)"
+msgstr "/me digo adeus às tuas cartas ;)"
 
 #. AI chat when other players must discard
 #: ../client/ai/greedy.c:1378

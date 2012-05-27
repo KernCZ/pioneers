@@ -226,7 +226,7 @@ msgstr "*Sorriso maligno*"
 #. AI chat when other players must discard
 #: ../client/ai/greedy.c:1376
 msgid "/me says farewell to your cards ;)"
-msgstr "/dime adeus ás túas cartas ;)"
+msgstr "/me adeus ás túas cartas ;)"
 
 #. AI chat when other players must discard
 #: ../client/ai/greedy.c:1378
