@@ -1,3 +1,18 @@
+Subversion release 14.1
+* New features:
+  * Added the game comments to the editor. With thanks to Micah Bunting
+  * Added island discovery bonus in the editor. With thanks to Micah Bunting
+  * Spectators see the nosetup nodes
+  * Editor uses shortcuts for games folders
+  * Large icons for the GNOME3 desktop
+
+* Bugfixes:
+  * Speedup of server-gtk
+  * Setting the avatar icon works again
+  * Trade is possible again in games without interplayer trade
+  * Right-click in the editor shows the menu again
+  * Code cleanup (Preparation for Gtk+3, hardening flags, memory leaks, ...)
+
 Subversion release 0.12.5
 * New features:
   * These features were written by Micah Bunting:

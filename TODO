@@ -1,13 +1,2 @@
- - The meta server should be somehow configurable to:
-    - start only a certain max. number of servers on the local machine
-    - if this number is reached, start servers on other machines
-      (maybe with a proxy meta server running there, or via ssh)
-      [Done]
-    - be able to restrict access in some forms, maybe based on host
-      name and/or IP, and permission to request running server data
-      and start new servers
-
- - Maybe implement ranking of players somehow: In a user's home dir,
-   the client could record how often this player won a game, was
-   second (point-wise), and so on... The server could collect these
-   data on game start, update it at the end and show some statistics.
+Feature requests are located here:
+http://sourceforge.net/tracker/?func=browse&group_id=5095&atid=355095&status=1
