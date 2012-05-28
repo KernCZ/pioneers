@@ -500,7 +500,7 @@ void theme_rescale(int new_width)
 		if (new_height <= 0)
 			new_height = 1;
 		/* rescale the pixbuf */
-		gdk_pixbuf_unref(current_theme->scaledata[i].image);
+		g_object_unref(current_theme->scaledata[i].image);
 		current_theme->scaledata[i].image =
 		    gdk_pixbuf_scale_simple(current_theme->scaledata[i].
 					    native_image, new_width,

@@ -1,3 +1,6 @@
+2012-05-28  Roland Clobus <rclobus@rclobus.nl>
+	* common/gtk/theme.c: Removed deprecated warning.
+
 2012-05-19  Roland Clobus <rclobus@rclobus.nl>
 	* editor/gtk/editor.c, common/gtk/game-rules.c: Translator hints.
 
