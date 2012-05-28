@@ -1,3 +1,6 @@
+2012-05-28  Roland Clobus <rclobus@rclobus.nl>
+	* all: Line number update for 14.1
+
 2012-05-27  Roland Clobus <rclobus@rclobus.nl>
 	* gl.po, hu.po, pt.po: /me says ... -> use /me in all translations
 	* gl.po, hu.po: Added reviewed items of Launchpad

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 0.12.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-19 11:28+0200\n"
+"POT-Creation-Date: 2012-05-28 11:51+0200\n"
 "PO-Revision-Date: 2008-04-05 15:37+0200\n"
 "Last-Translator: Ferenc Bánhidi <bferike@mailbox.hu>\n"
 "Language-Team: Hungarian <bferike@mailbox.hu>\n"
@@ -394,7 +394,7 @@ msgid "%s receives %s.\n"
 msgstr "%s kap %s.\n"
 
 #. Year of Plenty
-#: ../client/common/client.c:723 ../client/common/client.c:2664
+#: ../client/common/client.c:723 ../client/common/client.c:2659
 #, c-format
 msgid "%s takes %s.\n"
 msgstr "%s felhasznál %s.\n"
@@ -433,74 +433,74 @@ msgstr ""
 "Verzió eltérés. Kérlek ellenőrizd van-e frissítés a klienshez és a "
 "szerverhez.\n"
 
-#: ../client/common/client.c:1415
+#: ../client/common/client.c:1410
 msgid "Build two settlements, each with a connecting"
 msgstr "Építs két falut, és mindegyikhez csatlakozzon egy"
 
-#: ../client/common/client.c:1418
+#: ../client/common/client.c:1413
 msgid "Build a settlement with a connecting"
 msgstr "Építs egy falut és csatlakozzon hozzá egy"
 
-#: ../client/common/client.c:1421
+#: ../client/common/client.c:1416
 msgid "road"
 msgstr "út"
 
-#: ../client/common/client.c:1423
+#: ../client/common/client.c:1418
 msgid "bridge"
 msgstr "híd"
 
-#: ../client/common/client.c:1425
+#: ../client/common/client.c:1420
 msgid "ship"
 msgstr "hajó"
 
-#: ../client/common/client.c:1432
+#: ../client/common/client.c:1427
 msgid " or"
 msgstr " vagy"
 
-#: ../client/common/client.c:1496
+#: ../client/common/client.c:1491
 msgid "Waiting for your turn."
 msgstr "Várj a körödre."
 
-#: ../client/common/client.c:1548 ../client/gtk/interface.c:758
+#: ../client/common/client.c:1543 ../client/gtk/interface.c:758
 msgid "Select the building to steal from."
 msgstr ""
 "Válaszd ki az épüetet\n"
 "akitől lopni szeretnél."
 
-#: ../client/common/client.c:1570 ../client/gtk/interface.c:748
+#: ../client/common/client.c:1565 ../client/gtk/interface.c:748
 msgid "Select the ship to steal from."
 msgstr ""
 "Válaszd ki a hajót\n"
 "akitől lopni szeretnél."
 
-#: ../client/common/client.c:1654 ../client/gtk/interface.c:790
+#: ../client/common/client.c:1649 ../client/gtk/interface.c:790
 msgid "Place the robber."
 msgstr "Helyezd el a rablót."
 
-#: ../client/common/client.c:1704
+#: ../client/common/client.c:1699
 msgid "Finish the road building action."
 msgstr "Vége az útépítésnek."
 
-#: ../client/common/client.c:1706
+#: ../client/common/client.c:1701
 msgid "Build one road segment."
 msgstr "Épít egy utat."
 
-#: ../client/common/client.c:1708
+#: ../client/common/client.c:1703
 msgid "Build two road segments."
 msgstr "Épít két utat."
 
 #. Notification
-#: ../client/common/client.c:1981 ../client/common/client.c:2075
+#: ../client/common/client.c:1976 ../client/common/client.c:2070
 #: ../client/gtk/interface.c:416
 msgid "It is your turn."
 msgstr "Ez a te köröd."
 
-#: ../client/common/client.c:2169
+#: ../client/common/client.c:2164
 #, c-format
 msgid "Sorry, %s available.\n"
 msgstr "Bocs, %s használható.\n"
 
-#: ../client/common/client.c:2483
+#: ../client/common/client.c:2478
 msgid "The game is over."
 msgstr "A játéknak vége."
 
@@ -554,7 +554,7 @@ msgstr "%s elvesz tőled %s.\n"
 msgid "%s took %s from %s.\n"
 msgstr "%s elvesz %s játékostól %s.\n"
 
-#: ../client/common/player.c:124 ../server/player.c:557
+#: ../client/common/player.c:124 ../server/player.c:561
 #, c-format
 msgid "Spectator %d"
 msgstr ""
@@ -564,7 +564,7 @@ msgstr ""
 msgid "spectator %d"
 msgstr ""
 
-#: ../client/common/player.c:136 ../server/player.c:560
+#: ../client/common/player.c:136 ../server/player.c:564
 #, c-format
 msgid "Player %d"
 msgstr "Játékos %d"
@@ -2750,103 +2750,103 @@ msgstr ""
 msgid "** UNKNOWN MESSAGE TYPE ** "
 msgstr "** ISMERETLEN ÜZENET TÍPUS ** "
 
-#: ../common/network.c:314
+#: ../common/network.c:315
 #, c-format
 msgid "Error checking connect status: %s\n"
 msgstr "Hiba csatlakozás státusz vizsgálat: %s\n"
 
-#: ../common/network.c:332
+#: ../common/network.c:333
 #, c-format
 msgid "Error connecting to host '%s': %s\n"
 msgstr "Hiba a csatlakozáskor '%s': %s\n"
 
-#: ../common/network.c:359
+#: ../common/network.c:360
 #, c-format
 msgid "Error writing socket: %s\n"
 msgstr "Hiba socket írásakor: %s\n"
 
-#: ../common/network.c:410
+#: ../common/network.c:411
 #, c-format
 msgid "Error writing to socket: %s\n"
 msgstr "Hiba socket írásakor: %s\n"
 
-#: ../common/network.c:464
+#: ../common/network.c:465
 msgid "Read buffer overflow - disconnecting\n"
 msgstr "Olvasási tároló túlcsordulás - kapcsolat bontás\n"
 
-#: ../common/network.c:474
+#: ../common/network.c:475
 #, c-format
 msgid "Error reading socket: %s\n"
 msgstr "Hiba socket olvasáskor: %s\n"
 
-#: ../common/network.c:617
+#: ../common/network.c:618
 #, c-format
 msgid "Error creating socket: %s\n"
 msgstr "Hiba a socket létrehozásakor: %s\n"
 
-#: ../common/network.c:624
+#: ../common/network.c:625
 #, c-format
 msgid "Error setting socket close-on-exec: %s\n"
 msgstr "Hiba a socket beállításakor 'close-on-exec': %s\n"
 
-#: ../common/network.c:633 ../common/network.c:829
+#: ../common/network.c:634 ../common/network.c:830
 #, c-format
 msgid "Error setting socket non-blocking: %s\n"
 msgstr "Hiba a socket beállításakor 'non-blocking': %s\n"
 
-#: ../common/network.c:656
+#: ../common/network.c:657
 #, c-format
 msgid "Error connecting to %s: %s\n"
 msgstr "Hiba a csatlakozáskor %s: %s\n"
 
-#: ../common/network.c:694
+#: ../common/network.c:695
 #, c-format
 msgid "Cannot resolve %s port %s: %s\n"
 msgstr "Nem lehet feloldani %s port %s: %s\n"
 
-#: ../common/network.c:700
+#: ../common/network.c:701
 #, c-format
 msgid "Cannot resolve %s port %s: host not found\n"
 msgstr "Nem lehet feloldni %s port %s: gép nem található\n"
 
-#: ../common/network.c:788
+#: ../common/network.c:789
 #, c-format
 msgid "Error creating struct addrinfo: %s"
 msgstr "Hiba az addrinfo létrehozásakor: %s"
 
-#: ../common/network.c:818
+#: ../common/network.c:819
 #, c-format
 msgid "Error creating listening socket: %s\n"
 msgstr "Hiba a szerver socket létrehozásakor: %s\n"
 
-#: ../common/network.c:838
+#: ../common/network.c:839
 #, c-format
 msgid "Error during listen on socket: %s\n"
 msgstr "Hiba a figyelő socket végrahajtásakor: %s\n"
 
-#: ../common/network.c:848
+#: ../common/network.c:849
 msgid "Listening not yet supported on this platform."
 msgstr "Ez a platform nem támogatja a szerver socketeket."
 
-#: ../common/network.c:870 ../common/network.c:871
+#: ../common/network.c:871 ../common/network.c:872
 msgid "unknown"
 msgstr "ismeretlen"
 
-#: ../common/network.c:877
+#: ../common/network.c:878
 #, c-format
 msgid "Error getting peer name: %s"
 msgstr "Hiba a látható név kérésekor: %s"
 
-#: ../common/network.c:889
+#: ../common/network.c:890
 #, c-format
 msgid "Error resolving address: %s"
 msgstr "Hiba a címfeloldáskor: %s"
 
-#: ../common/network.c:903
+#: ../common/network.c:904
 msgid "Net_get_peer_name not yet supported on this platform."
 msgstr "Ez a platform nem támogatja a net_get_peer_name függvényt."
 
-#: ../common/network.c:919
+#: ../common/network.c:920
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "Hiba csatlakozás elfogadásakor: %s"
@@ -3640,7 +3640,7 @@ msgstr "ismeretlen bővítések figyelmen kívül hagyása"
 msgid "The last player left, the tournament timer is reset."
 msgstr "Az utolsó játékos is elment, a parti időzítője újraindítva."
 
-#: ../server/player.c:260 ../server/player.c:633
+#: ../server/player.c:260 ../server/player.c:637
 msgid "No human players present. Bye."
 msgstr ""
 
@@ -3665,43 +3665,43 @@ msgstr "A játék %s perc múlva kezdődik."
 msgid "Computer Player"
 msgstr "Számítógép játékos"
 
-#: ../server/player.c:465
+#: ../server/player.c:469
 msgid "Sorry, game is over."
 msgstr "Bocs, a játék vége."
 
-#: ../server/player.c:468
+#: ../server/player.c:472
 #, c-format
 msgid "Player from %s is refused: game is over\n"
 msgstr "Játékos a %s gépről visszautasíta: a játéknak vége\n"
 
-#: ../server/player.c:510
+#: ../server/player.c:514
 msgid "Name not changed: new name is already in use"
 msgstr "Név nincs megváltoztatva: az új név már használatban"
 
-#: ../server/player.c:628 ../server/server.c:43
+#: ../server/player.c:632 ../server/server.c:43
 msgid "Was hanging around for too long without players... bye.\n"
 msgstr "Túl sokáig voltam játékosok  nélkül...viszlát.\n"
 
-#: ../server/player.c:712
+#: ../server/player.c:716
 msgid "The last human player left. Waiting for the return of a player."
 msgstr ""
 
-#: ../server/player.c:733
+#: ../server/player.c:737
 msgid "Resuming the game."
 msgstr "A játék folytatása."
 
 #. %s is the name of the reconnecting player
-#: ../server/player.c:864
+#: ../server/player.c:868
 #, c-format
 msgid "%s has reconnected."
 msgstr "%s újra csatlakoztatva."
 
-#: ../server/player.c:969
+#: ../server/player.c:973
 #, c-format
 msgid "Version mismatch: %s"
 msgstr "Verzió eltérés: %s"
 
-#: ../server/player.c:1006
+#: ../server/player.c:1010
 msgid "This game will start soon."
 msgstr "Ez a játék hamarosan kezdődik."
 

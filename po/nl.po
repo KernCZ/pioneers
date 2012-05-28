@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 14.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-19 11:28+0200\n"
+"POT-Creation-Date: 2012-05-28 11:51+0200\n"
 "PO-Revision-Date: 2011-10-22 15:36+0100\n"
 "Last-Translator: Roland Clobus <rclobus@rclobus.nl>\n"
 "Language-Team: Bas Wijnen <shevek@fmf.nl> Roland Clobus <rclobus@rclobus."
@@ -395,7 +395,7 @@ msgid "%s receives %s.\n"
 msgstr "%s krijgt %s.\n"
 
 #. Year of Plenty
-#: ../client/common/client.c:723 ../client/common/client.c:2664
+#: ../client/common/client.c:723 ../client/common/client.c:2659
 #, c-format
 msgid "%s takes %s.\n"
 msgstr "%s neemt %s.\n"
@@ -432,70 +432,70 @@ msgstr "Versie verschillend."
 msgid "Version mismatch. Please make sure client and server are up to date.\n"
 msgstr "De versies van de de server en de client komen niet overeen.\n"
 
-#: ../client/common/client.c:1415
+#: ../client/common/client.c:1410
 msgid "Build two settlements, each with a connecting"
 msgstr "Bouw twee dorpen, elk met een aangesloten"
 
-#: ../client/common/client.c:1418
+#: ../client/common/client.c:1413
 msgid "Build a settlement with a connecting"
 msgstr "Bouw een dorp met een aangesloten"
 
-#: ../client/common/client.c:1421
+#: ../client/common/client.c:1416
 msgid "road"
 msgstr "straat"
 
-#: ../client/common/client.c:1423
+#: ../client/common/client.c:1418
 msgid "bridge"
 msgstr "brug"
 
-#: ../client/common/client.c:1425
+#: ../client/common/client.c:1420
 msgid "ship"
 msgstr "schip"
 
-#: ../client/common/client.c:1432
+#: ../client/common/client.c:1427
 msgid " or"
 msgstr " of"
 
-#: ../client/common/client.c:1496
+#: ../client/common/client.c:1491
 msgid "Waiting for your turn."
 msgstr "Wacht op je beurt."
 
-#: ../client/common/client.c:1548 ../client/gtk/interface.c:758
+#: ../client/common/client.c:1543 ../client/gtk/interface.c:758
 msgid "Select the building to steal from."
 msgstr "Kies een gebouw om te bestelen."
 
-#: ../client/common/client.c:1570 ../client/gtk/interface.c:748
+#: ../client/common/client.c:1565 ../client/gtk/interface.c:748
 msgid "Select the ship to steal from."
 msgstr "Kies een schip om te bestelen."
 
-#: ../client/common/client.c:1654 ../client/gtk/interface.c:790
+#: ../client/common/client.c:1649 ../client/gtk/interface.c:790
 msgid "Place the robber."
 msgstr "Plaats de struikrover."
 
-#: ../client/common/client.c:1704
+#: ../client/common/client.c:1699
 msgid "Finish the road building action."
 msgstr "Beëindig de bouwkaart"
 
-#: ../client/common/client.c:1706
+#: ../client/common/client.c:1701
 msgid "Build one road segment."
 msgstr "Bouw een straat."
 
-#: ../client/common/client.c:1708
+#: ../client/common/client.c:1703
 msgid "Build two road segments."
 msgstr "Bouw twee straten."
 
 #. Notification
-#: ../client/common/client.c:1981 ../client/common/client.c:2075
+#: ../client/common/client.c:1976 ../client/common/client.c:2070
 #: ../client/gtk/interface.c:416
 msgid "It is your turn."
 msgstr "Je bent aan de beurt."
 
-#: ../client/common/client.c:2169
+#: ../client/common/client.c:2164
 #, c-format
 msgid "Sorry, %s available.\n"
 msgstr "Sorry, %s beschikbaar.\n"
 
-#: ../client/common/client.c:2483
+#: ../client/common/client.c:2478
 msgid "The game is over."
 msgstr "Het spel is afgelopen."
 
@@ -549,7 +549,7 @@ msgstr "Je geeft %s %s.\n"
 msgid "%s took %s from %s.\n"
 msgstr "%3$s geeft %2$s aan %1$s.\n"
 
-#: ../client/common/player.c:124 ../server/player.c:557
+#: ../client/common/player.c:124 ../server/player.c:561
 #, c-format
 msgid "Spectator %d"
 msgstr "Toeschouwer %d"
@@ -559,7 +559,7 @@ msgstr "Toeschouwer %d"
 msgid "spectator %d"
 msgstr "toeschouwer %d"
 
-#: ../client/common/player.c:136 ../server/player.c:560
+#: ../client/common/player.c:136 ../server/player.c:564
 #, c-format
 msgid "Player %d"
 msgstr "Speler %d"
@@ -2745,103 +2745,103 @@ msgstr "Toeschouwer: "
 msgid "** UNKNOWN MESSAGE TYPE ** "
 msgstr "** ONBEKEND BERICHTTYPE ** "
 
-#: ../common/network.c:314
+#: ../common/network.c:315
 #, c-format
 msgid "Error checking connect status: %s\n"
 msgstr "Fout bij het controleren van verbinding: %s\n"
 
-#: ../common/network.c:332
+#: ../common/network.c:333
 #, c-format
 msgid "Error connecting to host '%s': %s\n"
 msgstr "Kan geen verbinding maken met computer \"%s\": %s\n"
 
-#: ../common/network.c:359
+#: ../common/network.c:360
 #, c-format
 msgid "Error writing socket: %s\n"
 msgstr "Fout bij het schrijven naar netwerk: %s\n"
 
-#: ../common/network.c:410
+#: ../common/network.c:411
 #, c-format
 msgid "Error writing to socket: %s\n"
 msgstr "Fout bij het schrijven naar netwerk: %s\n"
 
-#: ../common/network.c:464
+#: ../common/network.c:465
 msgid "Read buffer overflow - disconnecting\n"
 msgstr "Leesbuffer is vol - de verbinding wordt verbroken\n"
 
-#: ../common/network.c:474
+#: ../common/network.c:475
 #, c-format
 msgid "Error reading socket: %s\n"
 msgstr "Fout bij het lezen van netwerk: %s\n"
 
-#: ../common/network.c:617
+#: ../common/network.c:618
 #, c-format
 msgid "Error creating socket: %s\n"
 msgstr "Fout bij het maken van een netwerkverbinding: %s\n"
 
-#: ../common/network.c:624
+#: ../common/network.c:625
 #, c-format
 msgid "Error setting socket close-on-exec: %s\n"
 msgstr "Fout bij het instellen van netwerkverbinding op close-on-exec: %s\n"
 
-#: ../common/network.c:633 ../common/network.c:829
+#: ../common/network.c:634 ../common/network.c:830
 #, c-format
 msgid "Error setting socket non-blocking: %s\n"
 msgstr "Fout bij het instellen van netwerkverbinding op non-blocking: %s\n"
 
-#: ../common/network.c:656
+#: ../common/network.c:657
 #, c-format
 msgid "Error connecting to %s: %s\n"
 msgstr "Fout bij het verbinden naar %s: %s\n"
 
-#: ../common/network.c:694
+#: ../common/network.c:695
 #, c-format
 msgid "Cannot resolve %s port %s: %s\n"
 msgstr "Onbekende computer %s (poort %s): %s\n"
 
-#: ../common/network.c:700
+#: ../common/network.c:701
 #, c-format
 msgid "Cannot resolve %s port %s: host not found\n"
 msgstr "Computer %s (poort %s) kan niet gevonden worden\n"
 
-#: ../common/network.c:788
+#: ../common/network.c:789
 #, c-format
 msgid "Error creating struct addrinfo: %s"
 msgstr "Fout bij het maken van struct addrinfo: %s"
 
-#: ../common/network.c:818
+#: ../common/network.c:819
 #, c-format
 msgid "Error creating listening socket: %s\n"
 msgstr "Fout bij het opzetten van de netwerkverbinding: %s\n"
 
-#: ../common/network.c:838
+#: ../common/network.c:839
 #, c-format
 msgid "Error during listen on socket: %s\n"
 msgstr "Fout bij het wachten op verbindingen: %s\n"
 
-#: ../common/network.c:848
+#: ../common/network.c:849
 msgid "Listening not yet supported on this platform."
 msgstr "Luisterende verbindingen nog niet ondersteund op dit platform."
 
-#: ../common/network.c:870 ../common/network.c:871
+#: ../common/network.c:871 ../common/network.c:872
 msgid "unknown"
 msgstr "onbekend"
 
-#: ../common/network.c:877
+#: ../common/network.c:878
 #, c-format
 msgid "Error getting peer name: %s"
 msgstr "Fout bij het opzoeken van de computernaam: %s"
 
-#: ../common/network.c:889
+#: ../common/network.c:890
 #, c-format
 msgid "Error resolving address: %s"
 msgstr "Fout bij het opzoeken van de computernaam: %s"
 
-#: ../common/network.c:903
+#: ../common/network.c:904
 msgid "Net_get_peer_name not yet supported on this platform."
 msgstr "De functie Net_get_peer_name is nog niet ondersteund op dit platform."
 
-#: ../common/network.c:919
+#: ../common/network.c:920
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "Fout bij het accepteren van een verbinding: %s"
@@ -3631,7 +3631,7 @@ msgstr "onbekende extensie genegeerd"
 msgid "The last player left, the tournament timer is reset."
 msgstr "De laatste speler is vertrokken, de teller wordt opnieuw ingesteld."
 
-#: ../server/player.c:260 ../server/player.c:633
+#: ../server/player.c:260 ../server/player.c:637
 msgid "No human players present. Bye."
 msgstr "Geen mensen gevonden. Doei."
 
@@ -3656,45 +3656,45 @@ msgstr "Het spel start over %s minuut"
 msgid "Computer Player"
 msgstr "Computerspeler"
 
-#: ../server/player.c:465
+#: ../server/player.c:469
 msgid "Sorry, game is over."
 msgstr "Helaas, het spel is al afgelopen."
 
-#: ../server/player.c:468
+#: ../server/player.c:472
 #, c-format
 msgid "Player from %s is refused: game is over\n"
 msgstr "Speler vanaf %s geweigerd: het spel is afgelopen\n"
 
-#: ../server/player.c:510
+#: ../server/player.c:514
 msgid "Name not changed: new name is already in use"
 msgstr "Naam niet veranderd: de nieuwe naam is al in gebruik"
 
-#: ../server/player.c:628 ../server/server.c:43
+#: ../server/player.c:632 ../server/server.c:43
 msgid "Was hanging around for too long without players... bye.\n"
 msgstr "Na lang wachten zijn er nog steeds geen spelers... Doei.\n"
 
-#: ../server/player.c:712
+#: ../server/player.c:716
 msgid "The last human player left. Waiting for the return of a player."
 msgstr ""
 "The laatste menselijke speler heeft het spel verlaten. Wacht op de terugkeer "
 "van een speler."
 
-#: ../server/player.c:733
+#: ../server/player.c:737
 msgid "Resuming the game."
 msgstr "Het spel wordt hervat."
 
 #. %s is the name of the reconnecting player
-#: ../server/player.c:864
+#: ../server/player.c:868
 #, c-format
 msgid "%s has reconnected."
 msgstr "%s is weer terug."
 
-#: ../server/player.c:969
+#: ../server/player.c:973
 #, c-format
 msgid "Version mismatch: %s"
 msgstr "De versies van de server en de client komen niet overeen: %s"
 
-#: ../server/player.c:1006
+#: ../server/player.c:1010
 msgid "This game will start soon."
 msgstr "Dit spel start binnenkort."
 

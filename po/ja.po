@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 0.11.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-19 11:28+0200\n"
+"POT-Creation-Date: 2012-05-28 11:51+0200\n"
 "PO-Revision-Date: 2007-07-20 05:45+0900\n"
 "Last-Translator: Yasuhiko Takasugi <takasugi@flcl.org>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -394,7 +394,7 @@ msgid "%s receives %s.\n"
 msgstr "%s は、 %s を受けとった。\n"
 
 #. Year of Plenty
-#: ../client/common/client.c:723 ../client/common/client.c:2664
+#: ../client/common/client.c:723 ../client/common/client.c:2659
 #, c-format
 msgid "%s takes %s.\n"
 msgstr "%s は、%s　をとる。\n"
@@ -431,70 +431,70 @@ msgstr "バージョン不整合."
 msgid "Version mismatch. Please make sure client and server are up to date.\n"
 msgstr "バージョン不整合。クライアントをチェックしてください。\n"
 
-#: ../client/common/client.c:1415
+#: ../client/common/client.c:1410
 msgid "Build two settlements, each with a connecting"
 msgstr "２つの植民地を建てとそれらをつなぐ"
 
-#: ../client/common/client.c:1418
+#: ../client/common/client.c:1413
 msgid "Build a settlement with a connecting"
 msgstr "接続した植民地を建築"
 
-#: ../client/common/client.c:1421
+#: ../client/common/client.c:1416
 msgid "road"
 msgstr "道"
 
-#: ../client/common/client.c:1423
+#: ../client/common/client.c:1418
 msgid "bridge"
 msgstr "橋"
 
-#: ../client/common/client.c:1425
+#: ../client/common/client.c:1420
 msgid "ship"
 msgstr "船"
 
-#: ../client/common/client.c:1432
+#: ../client/common/client.c:1427
 msgid " or"
 msgstr " または"
 
-#: ../client/common/client.c:1496
+#: ../client/common/client.c:1491
 msgid "Waiting for your turn."
 msgstr "あなたの順番待ち."
 
-#: ../client/common/client.c:1548 ../client/gtk/interface.c:758
+#: ../client/common/client.c:1543 ../client/gtk/interface.c:758
 msgid "Select the building to steal from."
 msgstr "強奪する建築物を選択"
 
-#: ../client/common/client.c:1570 ../client/gtk/interface.c:748
+#: ../client/common/client.c:1565 ../client/gtk/interface.c:748
 msgid "Select the ship to steal from."
 msgstr "強奪する船を選択"
 
-#: ../client/common/client.c:1654 ../client/gtk/interface.c:790
+#: ../client/common/client.c:1649 ../client/gtk/interface.c:790
 msgid "Place the robber."
 msgstr "盗賊配置."
 
-#: ../client/common/client.c:1704
+#: ../client/common/client.c:1699
 msgid "Finish the road building action."
 msgstr "道建設終了"
 
-#: ../client/common/client.c:1706
+#: ../client/common/client.c:1701
 msgid "Build one road segment."
 msgstr "道１つ建築"
 
-#: ../client/common/client.c:1708
+#: ../client/common/client.c:1703
 msgid "Build two road segments."
 msgstr "道２つ建築"
 
 #. Notification
-#: ../client/common/client.c:1981 ../client/common/client.c:2075
+#: ../client/common/client.c:1976 ../client/common/client.c:2070
 #: ../client/gtk/interface.c:416
 msgid "It is your turn."
 msgstr "あなたの番"
 
-#: ../client/common/client.c:2169
+#: ../client/common/client.c:2164
 #, c-format
 msgid "Sorry, %s available.\n"
 msgstr "すみません、 %s 使用可能\n"
 
-#: ../client/common/client.c:2483
+#: ../client/common/client.c:2478
 msgid "The game is over."
 msgstr "ゲーム終了"
 
@@ -548,7 +548,7 @@ msgstr "%s は、あなたから %s を奪った\n"
 msgid "%s took %s from %s.\n"
 msgstr "%s は、%s を %sからとった。\n"
 
-#: ../client/common/player.c:124 ../server/player.c:557
+#: ../client/common/player.c:124 ../server/player.c:561
 #, c-format
 msgid "Spectator %d"
 msgstr ""
@@ -558,7 +558,7 @@ msgstr ""
 msgid "spectator %d"
 msgstr ""
 
-#: ../client/common/player.c:136 ../server/player.c:560
+#: ../client/common/player.c:136 ../server/player.c:564
 #, c-format
 msgid "Player %d"
 msgstr "プレイヤー %d"
@@ -2753,104 +2753,104 @@ msgstr ""
 msgid "** UNKNOWN MESSAGE TYPE ** "
 msgstr "**·UNKNOWN·MESSAGE·TYPE·**· "
 
-#: ../common/network.c:314
+#: ../common/network.c:315
 #, c-format
 msgid "Error checking connect status: %s\n"
 msgstr "接続状態検査エラー: %s\n"
 
-#: ../common/network.c:332
+#: ../common/network.c:333
 #, c-format
 msgid "Error connecting to host '%s': %s\n"
 msgstr "ホスト %sへの接続エラー: %s\n"
 
-#: ../common/network.c:359
+#: ../common/network.c:360
 #, c-format
 msgid "Error writing socket: %s\n"
 msgstr "ソケット書き込みエラー: %s\n"
 
-#: ../common/network.c:410
+#: ../common/network.c:411
 #, c-format
 msgid "Error writing to socket: %s\n"
 msgstr "ソケット書き込エラー: %s\n"
 
-#: ../common/network.c:464
+#: ../common/network.c:465
 msgid "Read buffer overflow - disconnecting\n"
 msgstr "Read·buffer·overflow·-·disconnecting\n"
 
-#: ../common/network.c:474
+#: ../common/network.c:475
 #, c-format
 msgid "Error reading socket: %s\n"
 msgstr "ソケット読み込みエラー: %s\n"
 
-#: ../common/network.c:617
+#: ../common/network.c:618
 #, c-format
 msgid "Error creating socket: %s\n"
 msgstr "ソケット作成エラー: %s\n"
 
-#: ../common/network.c:624
+#: ../common/network.c:625
 #, c-format
 msgid "Error setting socket close-on-exec: %s\n"
 msgstr "Error·setting·socket·close-on-exec:·%s\n"
 
-#: ../common/network.c:633 ../common/network.c:829
+#: ../common/network.c:634 ../common/network.c:830
 #, c-format
 msgid "Error setting socket non-blocking: %s\n"
 msgstr "Error·setting·socket·non-blocking:·%s\n"
 
-#: ../common/network.c:656
+#: ../common/network.c:657
 #, c-format
 msgid "Error connecting to %s: %s\n"
 msgstr "%s への接続エラー: %s\n"
 
-#: ../common/network.c:694
+#: ../common/network.c:695
 #, c-format
 msgid "Cannot resolve %s port %s: %s\n"
 msgstr "%s ポート %s を解決できない: %s\n"
 
-#: ../common/network.c:700
+#: ../common/network.c:701
 #, c-format
 msgid "Cannot resolve %s port %s: host not found\n"
 msgstr "%s ポート %s を解決できない: ホストが見つからない\n"
 
-#: ../common/network.c:788
+#: ../common/network.c:789
 #, c-format
 msgid "Error creating struct addrinfo: %s"
 msgstr "Error·creating·struct·addrinfo:·%s"
 
-#: ../common/network.c:818
+#: ../common/network.c:819
 #, c-format
 msgid "Error creating listening socket: %s\n"
 msgstr "リスニングソケット作成エラー: %s\n"
 
-#: ../common/network.c:838
+#: ../common/network.c:839
 #, c-format
 msgid "Error during listen on socket: %s\n"
 msgstr "ソケットを聞いている最中のエラー: %s\n"
 
-#: ../common/network.c:848
+#: ../common/network.c:849
 msgid "Listening not yet supported on this platform."
 msgstr "リスニングはこのプラットフォームではまだサポートされていない"
 
-#: ../common/network.c:870 ../common/network.c:871
+#: ../common/network.c:871 ../common/network.c:872
 msgid "unknown"
 msgstr "不明"
 
-#: ../common/network.c:877
+#: ../common/network.c:878
 #, c-format
 msgid "Error getting peer name: %s"
 msgstr "peer 名の取得エラー: %s"
 
-#: ../common/network.c:889
+#: ../common/network.c:890
 #, c-format
 msgid "Error resolving address: %s"
 msgstr "アドレス解決エラー: %s"
 
-#: ../common/network.c:903
+#: ../common/network.c:904
 msgid "Net_get_peer_name not yet supported on this platform."
 msgstr ""
 "Net_get_peer_name は、このプラットフォームではまだサポートされていない。"
 
-#: ../common/network.c:919
+#: ../common/network.c:920
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "接続受付エラー: %s"
@@ -3648,7 +3648,7 @@ msgstr "不明な拡張子を無視"
 msgid "The last player left, the tournament timer is reset."
 msgstr ""
 
-#: ../server/player.c:260 ../server/player.c:633
+#: ../server/player.c:260 ../server/player.c:637
 msgid "No human players present. Bye."
 msgstr ""
 
@@ -3674,43 +3674,43 @@ msgstr "%s 分以内にゲーム開始"
 msgid "Computer Player"
 msgstr "コンピュータ プレイヤー"
 
-#: ../server/player.c:465
+#: ../server/player.c:469
 msgid "Sorry, game is over."
 msgstr "すみません、ゲーム終了"
 
-#: ../server/player.c:468
+#: ../server/player.c:472
 #, c-format
 msgid "Player from %s is refused: game is over\n"
 msgstr "%s のプレイヤーは拒否:　ゲーム終了\n"
 
-#: ../server/player.c:510
+#: ../server/player.c:514
 msgid "Name not changed: new name is already in use"
 msgstr "変更不可能な名前: 新しい名前は既に使用されてる"
 
-#: ../server/player.c:628 ../server/server.c:43
+#: ../server/player.c:632 ../server/server.c:43
 msgid "Was hanging around for too long without players... bye.\n"
 msgstr "プレイヤーなしで長くとまりすぎ....ばい.\n"
 
-#: ../server/player.c:712
+#: ../server/player.c:716
 msgid "The last human player left. Waiting for the return of a player."
 msgstr ""
 
-#: ../server/player.c:733
+#: ../server/player.c:737
 msgid "Resuming the game."
 msgstr ""
 
 #. %s is the name of the reconnecting player
-#: ../server/player.c:864
+#: ../server/player.c:868
 #, c-format
 msgid "%s has reconnected."
 msgstr "%s は、再接続。"
 
-#: ../server/player.c:969
+#: ../server/player.c:973
 #, c-format
 msgid "Version mismatch: %s"
 msgstr "バージョン不整合: %s"
 
-#: ../server/player.c:1006
+#: ../server/player.c:1010
 msgid "This game will start soon."
 msgstr "このゲームは直ぐに始まる"
 
