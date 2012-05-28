@@ -2,6 +2,8 @@
 	* common/gtk/theme.c: Removed deprecated warning.
 	* common/gtk/config-gnome.c, server/player.c: Suppress warnings for
 	the use of write.
+	* server/pregame.c, client/common/client.c: Deprecated the
+	'player disconnected' message.
 
 2012-05-19  Roland Clobus <rclobus@rclobus.nl>
 	* editor/gtk/editor.c, common/gtk/game-rules.c: Translator hints.

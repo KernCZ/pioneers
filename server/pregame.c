@@ -609,7 +609,7 @@ gboolean mode_pre_game(Player * player, gint event)
 			}
 			if (player->disconnected) {
 				player_send_uncached(player, FIRST_VERSION,
-						     LATEST_VERSION,
+						     V0_12,
 						     "player disconnected\n");
 			}
 			stack_offset = 1;

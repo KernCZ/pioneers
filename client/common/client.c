@@ -1070,7 +1070,6 @@ static gboolean mode_load_game(StateMachine * sm, gint event)
 static gboolean mode_load_gameinfo(StateMachine * sm, gint event)
 {
 	gint x, y, pos, owner;
-	static gboolean disconnected = FALSE;
 	static gboolean have_bank = FALSE;
 	static gint devcardidx = -1;
 	static gint numdevcards = -1;
@@ -1149,10 +1148,6 @@ static gboolean mode_load_gameinfo(StateMachine * sm, gint event)
 	}
 	if (sm_recv(sm, "bought develop")) {
 		recovery_info.bought_develop = TRUE;
-		return TRUE;
-	}
-	if (sm_recv(sm, "player disconnected")) {
-		disconnected = TRUE;
 		return TRUE;
 	}
 	if (sm_recv(sm, "state %S", &recovery_info.prevstate)) {
