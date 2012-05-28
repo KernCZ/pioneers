@@ -41,8 +41,9 @@ At release time:
   The lists to use: pio-announce@lists.sourceforge.net, and
   pio-general@lists.sourceforge.net
 * Update the homepage
+  ssh -t USERNAME,PROJECT@shell.sourceforge.net create
 * Update the screenshots page
-* Update the released information at freshmeat.net and tucows
+* Update the released information at freecode.com and tucows
 * Reboot to Windows
 * Download the tarball
 * Create the installer under MinGW

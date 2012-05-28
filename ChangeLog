@@ -1,5 +1,6 @@
 2012-05-28  Roland Clobus <rclobus.nl>
 	* configure.ac: Work version is 14.2.
+	* docs/README.release: Updated release script.
 
 2012-05-28  Roland Clobus <rclobus.nl>
 	* Released 14.1.
