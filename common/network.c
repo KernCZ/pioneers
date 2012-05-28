@@ -143,6 +143,7 @@ void debug(const gchar * fmt, ...)
 			}
 	}
 	g_print("\n");
+	g_free(buff);
 }
 
 static void read_ready(Session * ses);
