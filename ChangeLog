@@ -1,3 +1,9 @@
+2012-05-28  Roland Clobus <rclobus.nl>
+	* configure.ac: Work version is 14.2.
+
+2012-05-28  Roland Clobus <rclobus.nl>
+	* Released 14.1.
+
 2012-05-28  Roland Clobus <rclobus@rclobus.nl>
 	* common/gtk/theme.c: Removed deprecated warning.
 	* common/gtk/config-gnome.c, server/player.c: Suppress warnings for
