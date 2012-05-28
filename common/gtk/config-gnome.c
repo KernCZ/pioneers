@@ -104,7 +104,8 @@ static void config_sync(void)
 		};
 		if (f != -1) {
 			if (write(f, data, length) < length) {
-				g_warning("Incomplete settings file written");
+				g_warning
+				    ("Incomplete settings file written");
 			}
 			close(f);
 		} else {

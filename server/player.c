@@ -449,7 +449,8 @@ Player *player_new_connection(Game * game, int fd, const gchar * location)
 	if (i == G_N_ELEMENTS(name) - 1) {
 		/* there are too many pending connections */
 		ssize_t bytes_written;
-		bytes_written = write(fd, "ERR Too many connections\n", 25);
+		bytes_written =
+		    write(fd, "ERR Too many connections\n", 25);
 		/* This ugly construction is to suppress a compiler warning */
 		bytes_written = bytes_written;
 		net_closesocket(fd);
