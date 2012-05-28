@@ -6,6 +6,7 @@
 	'player disconnected' message.
 	* common/network.c: Fixed memory leak in debug code.
 	* docs/README.release: Updated location of ClientVersionType.
+	* client/gtk/data/splash.svg: Updated for protocol 14.
 
 2012-05-19  Roland Clobus <rclobus@rclobus.nl>
 	* editor/gtk/editor.c, common/gtk/game-rules.c: Translator hints.
