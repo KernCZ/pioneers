@@ -5,6 +5,7 @@
 	* server/pregame.c, client/common/client.c: Deprecated the
 	'player disconnected' message.
 	* common/network.c: Fixed memory leak in debug code.
+	* docs/README.release: Updated location of ClientVersionType.
 
 2012-05-19  Roland Clobus <rclobus@rclobus.nl>
 	* editor/gtk/editor.c, common/gtk/game-rules.c: Translator hints.
