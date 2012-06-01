@@ -145,7 +145,9 @@ static void game_rules_init(GameRules * gr, gboolean show_all_rules)
 		gtk_widget_set_tooltip_text(GTK_WIDGET(gr->island_bonus),
 					    /* Tooltip for island bonus */
 					    _(""
-					      "A comma seperated list of bonus points for discovering islands"));
+					      "A comma separated list of "
+					      "bonus points for discovering "
+					      "islands"));
 		gtk_box_pack_start(GTK_BOX(hbox),
 				   GTK_WIDGET(gr->island_bonus), TRUE,
 				   TRUE, 0);

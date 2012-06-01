@@ -2577,7 +2577,7 @@ msgstr "Bonus pour la découverte d'une île"
 
 #. Tooltip for island bonus
 #: ../common/gtk/game-rules.c:147
-msgid "A comma seperated list of bonus points for discovering islands"
+msgid "A comma separated list of bonus points for discovering islands"
 msgstr ""
 "Liste des points de bonus (séparés par des virgules) pour la découverte des "
 "îles"
