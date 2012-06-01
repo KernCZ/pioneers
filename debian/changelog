@@ -1,6 +1,6 @@
-pioneers (14.1-1~local1) UNRELEASED; urgency=low
+pioneers (14.1-1) unstable; urgency=low
 
-  * Awaiting new upstream release.
+  * New upstream release.
   * Switched to simple debhelper script.
   * Enabled hardening. (closes: #657829)
   * Added large icons for the GNOME3 desktop.
@@ -16,7 +16,7 @@ pioneers (14.1-1~local1) UNRELEASED; urgency=low
   * Updated standards version to 3.9.3. (No changes needed.)
   * Use lsb-base for coloured messages during startup of the daemon.
 
- -- Roland Clobus <rclobus@rclobus.nl>  Tue, 31 Jan 2012 09:39:56 +0100
+ -- Roland Clobus <rclobus@rclobus.nl>  Tue, 29 May 2012 06:59:30 +0200
 
 pioneers (0.12.5-1) unstable; urgency=low
 
