@@ -117,6 +117,7 @@ Section "!Minimal install" SEC01
   File "..\..\..\..\local\libpixbufloader-svg.dll"
   File "..\..\..\..\local\libpng14-14.dll"
   File "..\..\..\..\local\librsvg-2-2.dll"
+  File "..\..\..\..\local\libssp-0.dll"
   File "..\..\..\..\local\libxml2-2.dll"
   File "..\..\..\..\local\zlib1.dll"
 
@@ -390,6 +391,7 @@ Section Uninstall
   Delete "$INSTDIR\libpixbufloader-svg.dll"
   Delete "$INSTDIR\libpng14-14.dll"
   Delete "$INSTDIR\librsvg-2-2.dll"
+  Delete "$INSTDIR\libssp-0.dll"
   Delete "$INSTDIR\libxml2-2.dll"
   Delete "$INSTDIR\zlib1.dll"
   Delete "$INSTDIR\lib\gdk-pixbuf-2.0\2.10.0\loaders.cache"

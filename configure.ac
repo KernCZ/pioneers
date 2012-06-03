@@ -50,6 +50,18 @@ AM_PROG_CC_C_O
 AM_PROG_MKDIR_P
 AC_HEADER_STDC
 
+# The Windows ports (Cygwin and MinGW) are client-only
+pioneers_is_mingw_port=no;
+case $host in
+	*-*-cygwin*)
+		pioneers_is_windows_port=yes;;
+	*-*-mingw*)
+		pioneers_is_windows_port=yes;
+		pioneers_is_mingw_port=yes;;
+	*)
+		pioneers_is_windows_port=no;;
+esac
+
 if test $USE_MAINTAINER_MODE = yes; then
 	GOB2_CHECK([[2.0.0]])
 	pioneers_warnings=yes;
@@ -131,9 +143,11 @@ if test "x$GCC" = xyes; then
 	AC_SUBST(AM_CFLAGS, ["$AM_CFLAGS -D_FORTIFY_SOURCE=2"])
 	AC_SUBST(AM_CFLAGS, ["$AM_CFLAGS -pie -fPIE"])
 
-	# Flags from Debian hardening (dpkg-buildflags --get LDFLAGS)
-	AC_SUBST(AM_LDFLAGS, ["$AM_LDFLAGS -Wl,-z,relro"])
-	AC_SUBST(AM_LDFLAGS, ["$AM_LDFLAGS -Wl,-z,now"])
+	if test "$pioneers_is_mingw_port" = "no"; then
+	 	# Flags from Debian hardening (dpkg-buildflags --get LDFLAGS)
+		AC_SUBST(AM_LDFLAGS, ["$AM_LDFLAGS -Wl,-z,relro"])
+		AC_SUBST(AM_LDFLAGS, ["$AM_LDFLAGS -Wl,-z,now"])
+	fi
 
 	# Only link the directly needed libraries	
 	AC_SUBST(AM_CFLAGS, ["$AM_CFLAGS -Wl,--as-needed"])
@@ -370,18 +384,6 @@ getsockopt_arg3="void *";
 AC_CHECK_FUNCS([getaddrinfo gai_strerror freeaddrinfo], 
 	AC_DEFINE_UNQUOTED(HAVE_GETADDRINFO_ET_AL, [1],
 		[Defined when getaddrinfo. gai_strerror and freeaddrinfo are present]))
-
-# The Windows ports (Cygwin and MinGW) are client-only
-pioneers_is_mingw_port=no;
-case $host in
-	*-*-cygwin*)
-		pioneers_is_windows_port=yes;;
-	*-*-mingw*)
-		pioneers_is_windows_port=yes;
-		pioneers_is_mingw_port=yes;;
-	*)
-		pioneers_is_windows_port=no;;
-esac
 
 # Can a non-blocking socket be created?
 pioneers_have_non_blocking_sockets=no;
