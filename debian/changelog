@@ -1,6 +1,8 @@
 pioneers (14.2-1~local1) UNRELEASED; urgency=low
 
   * Awaiting new upstream release.
+  * pioneers-console.preinst: Removed. The migration rules are no longer
+    required in the current stable version.
 
  -- Roland Clobus <roland@rclobus.nl>  Fri, 01 Jun 2012 13:35:53 +0200
 
