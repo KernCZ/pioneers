@@ -1,3 +1,6 @@
+2012-07-06  Roland Clobus <rclobus@rclobus.nl>
+	* MinGW/pioneers.nsi.in: Show installation size, updated homepage.
+
 2012-06-03  Roland Clobus <rclobus@rclobus.nl>
 	* Taken from the 14.1 branch (for the Windows installer):
 	  * MinGW/pioneers.nsi.in: Added missing dll.
