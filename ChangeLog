@@ -1,3 +1,7 @@
+2012-08-07  Roland Clobus <rclobus@rclobus.nl>
+	* common/gtk/config-gnome.c: Use g_open instead of open, to allow users
+	with non-ascii username under Windows to save their preferences.
+
 2012-07-06  Roland Clobus <rclobus@rclobus.nl>
 	* MinGW/pioneers.nsi.in: Show installation size, updated homepage.
 

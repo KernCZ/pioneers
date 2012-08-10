@@ -93,14 +93,14 @@ static void config_sync(void)
 	data = g_key_file_to_data(keyfile, &length, &error);
 
 	if (!error) {
-		int f = open(filename, O_WRONLY | O_CREAT | O_TRUNC,
-			     S_IRUSR | S_IWUSR);
+		int f = g_open(filename, O_WRONLY | O_CREAT | O_TRUNC,
+			       S_IRUSR | S_IWUSR);
 		if (f == -1) {
 			/* Create the config dir, if it is missing */
 			/* Access mode: 0700 (drwx------) */
 			g_mkdir(g_get_user_config_dir(), S_IRWXU);
-			f = open(filename, O_WRONLY | O_CREAT | O_TRUNC,
-				 S_IRUSR | S_IWUSR);
+			f = g_open(filename, O_WRONLY | O_CREAT | O_TRUNC,
+				   S_IRUSR | S_IWUSR);
 		};
 		if (f != -1) {
 			if (write(f, data, length) < length) {
