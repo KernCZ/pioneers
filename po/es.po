@@ -10,16 +10,16 @@ msgstr ""
 "Project-Id-Version: Pioneers 0.12.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-05-28 11:51+0200\n"
-"PO-Revision-Date: 2012-05-19 11:54+0000\n"
-"Last-Translator: DiegoJ <diegojromerolopez@gmail.com>\n"
+"PO-Revision-Date: 2012-07-08 03:34+0000\n"
+"Last-Translator: Eduardo Alberto Calvo <Unknown>\n"
 "Language-Team: Spanish <debian-l10n-spanish@lists.debian.org>\n"
-"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2012-05-23 05:36+0000\n"
-"X-Generator: Launchpad (build 15282)\n"
+"X-Launchpad-Export-Date: 2012-09-06 06:01+0000\n"
+"X-Generator: Launchpad (build 15909)\n"
+"Language: es\n"
 
 #. Commandline pioneersai: server
 #: ../client/ai/ai.c:70
@@ -1946,7 +1946,7 @@ msgstr "Meta-servidor del anfitrion"
 
 #: ../client/gtk/offline.c:79
 msgid "Select a game to join."
-msgstr "Seleccionar un juego para adherir."
+msgstr "Selecciona un juego para unirte."
 
 #: ../client/gtk/offline.c:95
 msgid "Connecting"
@@ -2417,7 +2417,7 @@ msgstr ""
 #: ../common/game.c:499
 #, c-format
 msgid "Obsolete rule: '%s'\n"
-msgstr ""
+msgstr "Regla obsoleta : '%s'\n"
 
 #: ../common/game.c:506
 #, c-format
@@ -2490,13 +2490,16 @@ msgstr ""
 "Marco Antonio Giraldo\n"
 "Michael Wiktowy\n"
 "Launchpad Contributions:\n"
+"  Adolfo Jayme Barrientos https://launchpad.net/~fitoschido\n"
 "  Braxton Schafer https://launchpad.net/~braxton-schafer\n"
+"  DiegoJ https://launchpad.net/~diegojromerolopez\n"
+"  Eduardo Alberto Calvo https://launchpad.net/~edu5800\n"
 "  Eduardo Ruiz https://launchpad.net/~eduardo-ruizcarrillo\n"
 "  Felipe Hommen https://launchpad.net/~felibank\n"
-"  Fitoschido https://launchpad.net/~fitoschido\n"
 "  José A. Fuentes Santiago https://launchpad.net/~joanfusan\n"
 "  Kiibakun https://launchpad.net/~kiba\n"
-"  Marco Antonio Giraldo https://launchpad.net/~m-a-giraldo"
+"  Marco Antonio Giraldo https://launchpad.net/~m-a-giraldo\n"
+"  skarevoluti https://launchpad.net/~skarevoluti"
 
 #. Header for the translator_credits. Use your own language name
 #: ../common/gtk/aboutbox.c:110
@@ -3032,12 +3035,12 @@ msgstr "Falla al salvar a '%s'"
 #. Name of the file filter: show only games
 #: ../editor/gtk/editor.c:1080
 msgid "Games"
-msgstr ""
+msgstr "Juegos"
 
 #. Name of the file filter: show all files
 #: ../editor/gtk/editor.c:1086
 msgid "Unfiltered"
-msgstr ""
+msgstr "Sin filtrar"
 
 #. Dialog caption
 #: ../editor/gtk/editor.c:1098
@@ -3174,7 +3177,7 @@ msgstr "Ajustes"
 #. Tab page name
 #: ../editor/gtk/editor.c:1528
 msgid "Comments"
-msgstr ""
+msgstr "Comentarios"
 
 #: ../editor/gtk/game-resources.c:48
 msgid "Resource count"

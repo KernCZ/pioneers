@@ -10,17 +10,17 @@ msgstr ""
 "Project-Id-Version: Pioneers 0.12.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-05-28 11:51+0200\n"
-"PO-Revision-Date: 2012-05-19 11:56+0000\n"
-"Last-Translator: Pit Garbe <piiit@gmx.de>\n"
+"PO-Revision-Date: 2012-06-25 00:22+0000\n"
+"Last-Translator: Flames_in_Paradise <Unknown>\n"
 "Language-Team: Pit Garbe <piiit@gmx.de>, Roman Hodek <roman@hodek.net>, de "
 "<de@li.org>\n"
-"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2012-05-23 05:36+0000\n"
-"X-Generator: Launchpad (build 15282)\n"
+"X-Launchpad-Export-Date: 2012-09-06 06:01+0000\n"
+"X-Generator: Launchpad (build 15909)\n"
+"Language: de\n"
 
 #. Commandline pioneersai: server
 #: ../client/ai/ai.c:70
@@ -2494,9 +2494,12 @@ msgstr ""
 "  Daniel Winzen https://launchpad.net/~q-d\n"
 "  Dominik R. https://launchpad.net/~visual-night\n"
 "  Eberhard Allgaier https://launchpad.net/~e-allgaier\n"
+"  Flames_in_Paradise https://launchpad.net/~ellisistfroh\n"
 "  Jochen Kemnade https://launchpad.net/~jochenkemnade\n"
 "  Markus Groß https://launchpad.net/~mag-privat\n"
+"  Maximilian R. https://launchpad.net/~max-r\n"
 "  Philipp Kleinhenz https://launchpad.net/~lopho\n"
+"  Pit Garbe https://launchpad.net/~piiit\n"
 "  Roland Clobus https://launchpad.net/~rclobus\n"
 "  Vinzenz Vietzke https://launchpad.net/~vinzv"
 
@@ -3034,12 +3037,12 @@ msgstr "Speichern nach '%s' fehlgeschlagen"
 #. Name of the file filter: show only games
 #: ../editor/gtk/editor.c:1080
 msgid "Games"
-msgstr ""
+msgstr "Spiele"
 
 #. Name of the file filter: show all files
 #: ../editor/gtk/editor.c:1086
 msgid "Unfiltered"
-msgstr ""
+msgstr "Ungefiltert"
 
 #. Dialog caption
 #: ../editor/gtk/editor.c:1098
@@ -3176,7 +3179,7 @@ msgstr "Einstellungen"
 #. Tab page name
 #: ../editor/gtk/editor.c:1528
 msgid "Comments"
-msgstr ""
+msgstr "Kommentare"
 
 #: ../editor/gtk/game-resources.c:48
 msgid "Resource count"
