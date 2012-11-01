@@ -1,3 +1,10 @@
+2012-11-01  Roland Clobus <rclobus@rclobus.nl>
+	* admin-scripts/list.sh, admin-scripts/kill-game.sh, 
+	admin-scripts/locallobby.sh, admin-scripts/remotelobby.sh,
+	admin-scripts/meta.sh, admin-scripts/locallobbybot.sh,
+	admin-scripts/remotelobbybot.sh: Use #!/bin/sh instead of dash.
+	* admin-scripts/list.sh: Better display.
+
 2012-08-07  Roland Clobus <rclobus@rclobus.nl>
 	* common/gtk/config-gnome.c: Use g_open instead of open, to allow users
 	with non-ascii username under Windows to save their preferences.

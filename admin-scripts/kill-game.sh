@@ -1,4 +1,4 @@
-#/bin/sh
+#!/bin/sh
 #
 # Kill the game with the given port number
 #
