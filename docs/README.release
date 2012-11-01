@@ -24,8 +24,11 @@ At release time:
 * Update the line numbers in the translation templates
   cd po;make update-po
 * Update: client/ai/lobbybot.c
+* Add an entry of the release to the ChangeLog
+  * Released X_Y_Z.
 * Create a tag in the Subversion repository
   svn copy https://pio.svn.sourceforge.net/svnroot/pio/trunk https://pio.svn.sourceforge.net/svnroot/pio/tags/Build_X_Y_Z
+* Update the version number in configure.ac
 * Extract a clean copy
   cd my_build_directory;svn export https://pio.svn.sourceforge.net/svnroot/pio/tags/Build_X_Y_Z
 * Create the tarball
@@ -33,7 +36,6 @@ At release time:
 * Sign the tarball
   gpg -u packager@foo.net --armor --output tarball.sig --detach-sig tarball.tar.gz
   (Verify with gpg --verify tarball.sig tarball.tar.gz)
-* Update the version number in configure.ac
 * Upload the tarball to upload.sourceforge.net
 * Update the Files section at SourceForge
 * Write a news item

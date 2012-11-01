@@ -4,6 +4,7 @@
 	admin-scripts/meta.sh, admin-scripts/locallobbybot.sh,
 	admin-scripts/remotelobbybot.sh: Use #!/bin/sh instead of dash.
 	* admin-scripts/list.sh: Better display.
+	* docs/README.release: No gaps in time for the version numbers.
 
 2012-08-07  Roland Clobus <rclobus@rclobus.nl>
 	* common/gtk/config-gnome.c: Use g_open instead of open, to allow users
@@ -17,11 +18,14 @@
 	  * MinGW/pioneers.nsi.in: Added missing dll.
 	  * configure.ac: LDFLAGS for hardening don't work under Windows.
 
-2012-05-28  Roland Clobus <rclobus.nl>
+2012-06-01  Roland Clobus <rclobus@rclobus.nl>
+	* commmon/gtk/game-rules.c, po/*: Fixed typo.
+
+2012-05-28  Roland Clobus <rclobus@rclobus.nl>
 	* configure.ac: Work version is 14.2.
 	* docs/README.release: Updated release script.
 
-2012-05-28  Roland Clobus <rclobus.nl>
+2012-05-28  Roland Clobus <rclobus@rclobus.nl>
 	* Released 14.1.
 
 2012-05-28  Roland Clobus <rclobus@rclobus.nl>
