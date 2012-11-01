@@ -2,7 +2,7 @@ This package was first debianized by Dave Cole dave@dccs.com.au on
 Sat,  8 May 1999 20:35:36 +1000.
 
 It was downloaded from 
-  http://sourceforge.net/project/showfiles.php?group_id=5095
+  http://sourceforge.net/projects/pio/files/
 
 Although the debian packaging is not in the release tarball, it is part of the
 upstream source, and is covered by the same license.  Copyright holders of the
@@ -11,8 +11,9 @@ Dave Cole
 Andy Heroff
 Jeff Breidenbach
 Bas Wijnen
+Roland Clobus
 
-This software is copyright (c) 2000-2009 by:
+This software is copyright (c) 2000-2012 by:
 Dave Cole <dave@dccs.com.au>
 Andy Heroff <aheroff@mediaone.net>
 Roman Hodek <roman@hodek.net>
@@ -46,7 +47,6 @@ On Debian systems, the complete text of the GNU General Public
 License can be found in the following files:
 Version 2: /usr/share/common-licenses/GPL-2
 Version 3: /usr/share/common-licenses/GPL-3
-The latest version: /usr/share/common-licenses/GPL
 
 Note that you can choose any version later than 3 as well once they are
 released.  The above links are only provided for your convenience, not to

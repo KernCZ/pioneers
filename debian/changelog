@@ -4,6 +4,7 @@ pioneers (14.2-1~local1) UNRELEASED; urgency=low
   * pioneers-console.preinst: Removed. The migration rules are no longer
     required in the current stable version.
   * Use 'set -e' in pioneers-meta-server scripts to remove the lintian warnings.
+  * copyright: Updated information and removed extra link to the GPL licenses.
 
  -- Roland Clobus <roland@rclobus.nl>  Fri, 01 Jun 2012 13:35:53 +0200
 
