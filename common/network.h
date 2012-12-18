@@ -36,9 +36,6 @@ typedef void (*NetNotifyFunc) (NetEvent event, void *user_data,
 
 typedef struct _Session Session;
 
-void set_enable_debug(gboolean enabled);
-void debug(const gchar * fmt, ...);
-
 /** Initialize the network drivers */
 void net_init(void);
 

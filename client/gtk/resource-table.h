@@ -60,7 +60,7 @@ struct _ResourceTable {
 	gboolean limit_bank;
 	gboolean with_bank;
 	gboolean with_total;
-	gint bank_offset;
+	guint bank_offset;
 	ResourceTableDirection direction;
 };
 

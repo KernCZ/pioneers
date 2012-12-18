@@ -31,6 +31,33 @@
 #include "game.h"
 #include "log.h"
 #include "state.h"
+#include "network.h"
+
+struct StateMachine {
+	gpointer user_data;	/* parameter for mode functions */
+	/* FIXME RC 2004-11-13 in practice: 
+	 * it is NULL or a Player*
+	 * the value is set by sm_new.
+	 * Why? Can the player not be bound to a 
+	 * StateMachine otherwise? */
+
+	StateFunc global;	/* global state - test after current state */
+	StateFunc unhandled;	/* global state - process unhandled states */
+	StateFunc stack[16];	/* handle sm_push() to save context */
+	const gchar *stack_name[16];	/* state names used for a stack dump */
+	gint stack_ptr;		/* stack index */
+	const gchar *current_state;	/* name of current state */
+
+	gchar *line;		/* line passed in from network event */
+	size_t line_offset;	/* line prefix handling */
+
+	Session *ses;		/* network session feeding state machine */
+	gint use_count;		/* # functions is in use by */
+	gboolean is_dead;	/* is this machine waiting to be killed? */
+
+	gboolean use_cache;	/* cache the data that is sent */
+	GList *cache;		/* cache for the delayed data */
+};
 
 static void route_event(StateMachine * sm, gint event);
 
@@ -186,19 +213,20 @@ void sm_use_fd(StateMachine * sm, gint fd, gboolean do_ping)
 gboolean sm_recv(StateMachine * sm, const gchar * fmt, ...)
 {
 	va_list ap;
-	gint offset;
+	ssize_t offset;
 
 	va_start(ap, fmt);
 	offset = game_vscanf(sm->line + sm->line_offset, fmt, ap);
 	va_end(ap);
 
-	return offset > 0 && sm->line[sm->line_offset + offset] == '\0';
+	return offset > 0
+	    && sm->line[sm->line_offset + (size_t) offset] == '\0';
 }
 
 gboolean sm_recv_prefix(StateMachine * sm, const gchar * fmt, ...)
 {
 	va_list ap;
-	gint offset;
+	ssize_t offset;
 
 	va_start(ap, fmt);
 	offset = game_vscanf(sm->line + sm->line_offset, fmt, ap);
@@ -206,7 +234,7 @@ gboolean sm_recv_prefix(StateMachine * sm, const gchar * fmt, ...)
 
 	if (offset < 0)
 		return FALSE;
-	sm->line_offset += offset;
+	sm->line_offset += (size_t) offset;
 	return TRUE;
 }
 
@@ -269,6 +297,11 @@ void sm_set_use_cache(StateMachine * sm, gboolean use_cache)
 		g_assert(!sm->cache);
 	}
 	sm->use_cache = use_cache;
+}
+
+gboolean sm_get_use_cache(const StateMachine * sm)
+{
+	return sm->use_cache;
 }
 
 void sm_global_set(StateMachine * sm, StateFunc state)
@@ -417,7 +450,7 @@ void sm_pop_all_and_goto(StateMachine * sm, StateFunc new_state)
 StateFunc sm_stack_inspect(const StateMachine * sm, guint offset)
 {
 	if (sm->stack_ptr >= offset)
-		return sm->stack[sm->stack_ptr - offset];
+		return sm->stack[(guint) sm->stack_ptr - offset];
 	else
 		return NULL;
 }
@@ -473,10 +506,19 @@ void sm_close(StateMachine * sm)
 	}
 }
 
-void sm_stack_dump(StateMachine * sm)
+void sm_copy_stack(StateMachine * dest, const StateMachine * src)
+{
+	memcpy(dest->stack, src->stack, sizeof(dest->stack));
+	memcpy(dest->stack_name, src->stack_name,
+	       sizeof(dest->stack_name));
+	dest->stack_ptr = src->stack_ptr;
+	dest->current_state = src->current_state;
+}
+
+void sm_stack_dump(const StateMachine * sm)
 {
 	gint sp;
-	fprintf(stderr, "Stack dump for %p\n", sm);
+	fprintf(stderr, "Stack dump for %p\n", (const void *) sm);
 	for (sp = 0; sp <= sm->stack_ptr; ++sp) {
 		fprintf(stderr, "Stack %2d: %s\n", sp, sm->stack_name[sp]);
 	}

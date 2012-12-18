@@ -508,11 +508,11 @@ static gboolean connect_network(Hex * hex, G_GNUC_UNUSED gpointer closure)
 static gboolean layout_chits(Map * map)
 {
 	Hex **hexes;
-	gint num_chits;
+	guint num_chits;
 	gint x, y;
 	gint idx;
 	gint chit_idx;
-	gint num_deserts;
+	guint num_deserts;
 
 	g_return_val_if_fail(map != NULL, FALSE);
 	g_return_val_if_fail(map->chits != NULL, FALSE);
@@ -526,7 +526,7 @@ static gboolean layout_chits(Map * map)
 		for (y = 0; y < map->y_size; y++) {
 			Hex *hex = map->grid[y][x];
 			if (hex != NULL && hex->chit_pos >= num_chits)
-				num_chits = hex->chit_pos + 1;
+				num_chits = (guint) (hex->chit_pos + 1);
 			if (hex != NULL && hex->terrain == DESERT_TERRAIN)
 				num_deserts++;
 		}
@@ -550,7 +550,7 @@ static gboolean layout_chits(Map * map)
 
 	/* Check the number of chits */
 	if (num_chits < map->chits->len + num_deserts) {
-		g_warning("More chits (%d + %d) than available tiles (%d)",
+		g_warning("More chits (%u + %u) than available tiles (%u)",
 			  map->chits->len, num_deserts, num_chits);
 		return FALSE;
 	}
@@ -900,7 +900,7 @@ gchar *map_format_line(Map * map, gboolean write_secrets, gint y)
 				case GOLD_RESOURCE:
 					g_assert_not_reached();
 				}
-				*bufferpos++ = hex->facing + '0';
+				*bufferpos++ = (gchar) (hex->facing + '0');
 				break;
 			case LAST_TERRAIN:
 				*bufferpos++ = '-';
@@ -1100,8 +1100,9 @@ gboolean map_parse_finish(Map * map)
  */
 static void hex_free(Hex * hex)
 {
-	g_assert(hex != NULL);
 	gint idx;
+
+	g_assert(hex != NULL);
 	/* Transfer ownership of edges to adjacent hexes. */
 	for (idx = 0; idx < 6; idx++) {
 		Edge *edge = get_edge(hex, idx);
@@ -1433,6 +1434,9 @@ void map_modify_column_count(Map * map, MapModify type,
  */
 static Hex *move_hex(Hex * hex, HexDirection direction)
 {
+	Hex *ret_hex;
+	int idx;
+
 	if (hex->map->grid[hex->y][hex->x] == hex) {
 		hex->map->grid[hex->y][hex->x] = NULL;
 	};
@@ -1468,17 +1472,16 @@ static Hex *move_hex(Hex * hex, HexDirection direction)
 		hex->y++;
 		break;
 	}
-	Hex *ret_hex = map_hex(hex->map, hex->x, hex->y);
+	ret_hex = map_hex(hex->map, hex->x, hex->y);
 
 	hex->map->grid[hex->y][hex->x] = hex;
-	int idx;
 	for (idx = 0; idx < 6; idx++) {
 		Edge *edge = hex->edges[idx];
+		Node *node = hex->nodes[idx];
 		if (edge != NULL && edge->pos == idx) {
 			edge->x = hex->x;
 			edge->y = hex->y;
 		};
-		Node *node = hex->nodes[idx];
 		if (node != NULL && node->pos == idx) {
 			node->x = hex->x;
 			node->y = hex->y;

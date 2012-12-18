@@ -879,8 +879,8 @@ static void frontend_mode_setup(GuiEvent event)
 	}
 }
 
-void frontend_setup(G_GNUC_UNUSED unsigned num_settlements,
-		    G_GNUC_UNUSED unsigned num_roads)
+void frontend_setup(G_GNUC_UNUSED gint num_settlements,
+		    G_GNUC_UNUSED gint num_roads)
 {
 	if (get_gui_state() == frontend_mode_setup) {
 		frontend_gui_update();

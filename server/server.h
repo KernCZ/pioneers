@@ -65,7 +65,7 @@ typedef struct {
 	gint gov_played;	/* number of Governors cards played */
 	gint libr_played;	/* number of Library cards played */
 	gint market_played;	/* number of Market cards played */
-	gint islands_discovered;	/* number of islands discovered */
+	guint islands_discovered;	/* number of islands discovered */
 	gboolean disconnected;
 } Player;
 
@@ -73,15 +73,15 @@ struct Game {
 	GameParams *params;	/* game parameters */
 	gchar *hostname;	/* reported hostname */
 
-	int accept_fd;		/* socket for accepting new clients */
-	int accept_tag;		/* Gdk event tag for accept socket */
+	gint accept_fd;		/* socket for accepting new clients */
+	guint accept_tag;	/* Gdk event tag for accept socket */
 
 	GList *player_list;	/* all players in the game */
 	GList *dead_players;	/* all players that should be removed when player_list_use_count == 0 */
 	gint player_list_use_count;	/* # functions is in use by */
-	gint num_players;	/* current number of players in the game */
+	guint num_players;	/* current number of players in the game */
 
-	gint tournament_countdown;	/* number of remaining minutes before AIs are added */
+	guint tournament_countdown;	/* number of remaining minutes before AIs are added */
 	guint tournament_timer;	/* timer id */
 
 	gboolean double_setup;
@@ -112,7 +112,7 @@ struct Game {
 	gchar *server_port;	/* port to run game on */
 	gboolean random_order;	/* is turn order randomized? */
 
-	gint no_player_timeout;	/* time to wait for players */
+	guint no_player_timeout;	/* time to wait for players */
 	guint no_player_timer;	/* glib timer identifier */
 
 	guint no_humans_timer;	/* timer id: no human players are present */
@@ -131,7 +131,7 @@ gboolean perform_undo(Player * player);
 /* develop.c */
 void develop_shuffle(Game * game);
 void develop_buy(Player * player);
-void develop_play(Player * player, gint idx);
+void develop_play(Player * player, guint idx);
 gboolean mode_road_building(Player * player, gint event);
 gboolean mode_plenty_resources(Player * player, gint event);
 gboolean mode_monopoly(Player * player, gint event);
@@ -147,7 +147,7 @@ gchar *get_server_name(void);
 void meta_register(const gchar * server, const gchar * port, Game * game);
 void meta_unregister(void);
 void meta_start_game(void);
-void meta_report_num_players(gint num_players);
+void meta_report_num_players(guint num_players);
 void meta_send_details(Game * game);
 
 /* player.c */

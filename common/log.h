@@ -76,4 +76,8 @@ void log_message(gint msg_type, const gchar * fmt, ...);
 void log_message_chat(const gchar * player_name,
 		      const gchar * joining_text, gint msg_type,
 		      const gchar * chat);
+
+void set_enable_debug(gboolean enabled);
+void debug(const gchar * fmt, ...);
+
 #endif				/* __log_h */

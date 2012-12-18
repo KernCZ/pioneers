@@ -21,10 +21,11 @@
 
 #include "config.h"
 #include <locale.h>
+#include <glib.h>
 
 #include "client.h"
 #include "callback.h"
-#include <glib.h>
+#include "network.h"
 
 static GMainLoop *loop;
 

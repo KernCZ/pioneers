@@ -22,7 +22,7 @@
 #ifndef __state_h
 #define __state_h
 
-#include "network.h"
+#include <glib.h>
 
 /* sm_ API:
  *
@@ -90,35 +90,15 @@ typedef struct StateMachine StateMachine;
  */
 typedef gboolean(*StateFunc) (StateMachine * sm, gint event);
 
-struct StateMachine {
-	gpointer user_data;	/* parameter for mode functions */
-	/* FIXME RC 2004-11-13 in practice: 
-	 * it is NULL or a Player*
-	 * the value is set by sm_new.
-	 * Why? Can the player not be bound to a 
-	 * StateMachine otherwise? */
-
-	StateFunc global;	/* global state - test after current state */
-	StateFunc unhandled;	/* global state - process unhandled states */
-	StateFunc stack[16];	/* handle sm_push() to save context */
-	const gchar *stack_name[16];	/* state names used for a stack dump */
-	gint stack_ptr;		/* stack index */
-	const gchar *current_state;	/* name of current state */
-
-	gchar *line;		/* line passed in from network event */
-	gint line_offset;	/* line prefix handling */
-
-	Session *ses;		/* network session feeding state machine */
-	gint use_count;		/* # functions is in use by */
-	gboolean is_dead;	/* is this machine waiting to be killed? */
-
-	gboolean use_cache;	/* cache the data that is sent */
-	GList *cache;		/* cache for the delayed data */
-};
-
 StateMachine *sm_new(gpointer user_data);
 void sm_free(StateMachine * sm);
 void sm_close(StateMachine * sm);
+/** Copy the stack to another state machine.
+ * @dest Destination
+ * @src Source
+*/
+void sm_copy_stack(StateMachine * dest, const StateMachine * src);
+
 const gchar *sm_current_name(StateMachine * sm);
 void sm_state_name(StateMachine * sm, const gchar * name);
 gboolean sm_recv(StateMachine * sm, const gchar * fmt, ...);
@@ -134,6 +114,11 @@ void sm_send(StateMachine * sm, const gchar * fmt, ...);
  * @param use_cache Turn the caching on/off
  */
 void sm_set_use_cache(StateMachine * sm, gboolean use_cache);
+/** Check whether messages are cached.
+ * @param sm The statemachine
+ * @return TRUE when the caching of messages is active
+ */
+gboolean sm_get_use_cache(const StateMachine * sm);
 
 void sm_debug(const gchar * function, const gchar * state);
 #define sm_goto(a, b) do { sm_debug("sm_goto", #b); sm_goto_nomacro(a, b); } while (0)
@@ -159,5 +144,5 @@ void sm_use_fd(StateMachine * sm, gint fd, gboolean do_ping);
 void sm_dec_use_count(StateMachine * sm);
 void sm_inc_use_count(StateMachine * sm);
 /** Dump the stack */
-void sm_stack_dump(StateMachine * sm);
+void sm_stack_dump(const StateMachine * sm);
 #endif

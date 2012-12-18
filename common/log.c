@@ -23,9 +23,12 @@
 #include <stdio.h>
 #include <time.h>
 #include <string.h>
+#include <ctype.h>
 
 #include "log.h"
 #include "driver.h"
+
+static gboolean debug_enabled = FALSE;
 
 /* The default function to use to write messages, when nothing else has been
  * specified.
@@ -243,4 +246,53 @@ void log_message(gint msg_type, const gchar * fmt, ...)
 	}
 	g_free(text);
 	g_free(timestamp);
+}
+
+void set_enable_debug(gboolean enabled)
+{
+	debug_enabled = enabled;
+}
+
+void debug(const gchar * fmt, ...)
+{
+	va_list ap;
+	gchar *buff;
+	gint idx;
+	time_t t;
+	struct tm *alpha;
+
+	if (!debug_enabled)
+		return;
+
+	va_start(ap, fmt);
+	buff = g_strdup_vprintf(fmt, ap);
+	va_end(ap);
+
+	t = time(NULL);
+	alpha = localtime(&t);
+
+	g_print("%02d:%02d:%02d ", alpha->tm_hour,
+		alpha->tm_min, alpha->tm_sec);
+
+	for (idx = 0; buff[idx] != '\0'; idx++) {
+		if (isprint(buff[idx]))
+			g_print("%c", buff[idx]);
+		else
+			switch (buff[idx]) {
+			case '\n':
+				g_print("\\n");
+				break;
+			case '\r':
+				g_print("\\r");
+				break;
+			case '\t':
+				g_print("\\t");
+				break;
+			default:
+				g_print("\\x%02x", (buff[idx] & 0xff));
+				break;
+			}
+	}
+	g_print("\n");
+	g_free(buff);
 }

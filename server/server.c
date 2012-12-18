@@ -24,10 +24,14 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
-#include <time.h>
 #include <signal.h>
 
 #include "server.h"
+#include "network.h"
+
+#define PRINT_INFO
+
+
 
 static GameParams *load_game_desc(const gchar * fname);
 
@@ -161,8 +165,9 @@ gint add_computer_player(Game * game, gboolean want_chat)
 }
 
 
-static void player_connect(Game * game)
+static void player_connect(gpointer user_data)
 {
+	Game *game = (Game *) user_data;
 	gchar *location;
 	gint fd = accept_connection(game->accept_fd, &location);
 
@@ -190,7 +195,6 @@ static gboolean game_server_start(Game * game, gboolean register_server,
 	start_timeout(game);
 
 	game->accept_tag = driver->input_add_read(game->accept_fd,
-						  (InputFunc)
 						  player_connect, game);
 
 	if (register_server) {
@@ -215,22 +219,25 @@ Game *server_start(const GameParams * params, const gchar * hostname,
 		   const gchar * meta_server_name, gboolean random_order)
 {
 	Game *game;
-	guint32 randomseed = time(NULL);
+	guint32 randomseed;
 
 	g_return_val_if_fail(params != NULL, NULL);
 	g_return_val_if_fail(port != NULL, NULL);
 
 #ifdef PRINT_INFO
 	g_print("game type: %s\n", params->title);
-	g_print("num players: %d\n", params->num_players);
-	g_print("victory points: %d\n", params->victory_points);
+	g_print("num players: %u\n", params->num_players);
+	g_print("victory points: %u\n", params->victory_points);
 	g_print("terrain type: %s\n",
 		(params->random_terrain) ? "random" : "default");
-	g_print("Tournament time: %d\n", params->tournament_time);
+	g_print("Tournament time: %u\n", params->tournament_time);
 	g_print("Quit when done: %d\n", params->quit_when_done);
 #endif
 
-	g_rand_ctx = g_rand_new_with_seed(randomseed);
+	g_rand_ctx = g_rand_new();
+	/* create new random seed, to be able to reproduce games */
+	randomseed = g_rand_int(g_rand_ctx);
+	g_rand_set_seed(g_rand_ctx, randomseed);
 	log_message(MSG_INFO, "%s #%" G_GUINT32_FORMAT ".%s.%03d\n",
 		    /* Server: preparing game #..... */
 		    _("Preparing game"), randomseed, "G", get_rand(1000));
@@ -394,7 +401,7 @@ static void game_list_prepare_directory(const gchar * directory)
 
 	while ((fname = g_dir_read_name(dir))) {
 		GameParams *params;
-		gint len = strlen(fname);
+		size_t len = strlen(fname);
 
 		if (len < 6 || strcmp(fname + len - 5, ".game") != 0)
 			continue;
@@ -441,7 +448,7 @@ void cfg_set_num_players(GameParams * params, gint num_players)
 	g_print("cfg_set_num_players: %d\n", num_players);
 #endif
 	g_return_if_fail(params != NULL);
-	params->num_players = CLAMP(num_players, 2, MAX_PLAYERS);
+	params->num_players = (guint) CLAMP(num_players, 2, MAX_PLAYERS);
 }
 
 void cfg_set_sevens_rule(GameParams * params, gint sevens_rule)
@@ -459,7 +466,7 @@ void cfg_set_victory_points(GameParams * params, gint victory_points)
 	g_print("cfg_set_victory_points: %d\n", victory_points);
 #endif
 	g_return_if_fail(params != NULL);
-	params->victory_points = MAX(3, victory_points);
+	params->victory_points = (guint) MAX(3, victory_points);
 }
 
 /** Attempt to find a game with @a title in @a directory.
@@ -483,7 +490,7 @@ static GameParams *server_find_title_in_directory(const gchar * title,
 
 	while ((fname = g_dir_read_name(dir))) {
 		GameParams *params;
-		gint len = strlen(fname);
+		size_t len = strlen(fname);
 
 		if (len < 6 || strcmp(fname + len - 5, ".game") != 0)
 			continue;
@@ -559,7 +566,7 @@ void cfg_set_tournament_time(GameParams * params, gint tournament_time)
 	g_print("cfg_set_tournament_time: %d\n", tournament_time);
 #endif
 	g_return_if_fail(params != NULL);
-	params->tournament_time = tournament_time;
+	params->tournament_time = (guint) MAX(0, tournament_time);
 }
 
 void cfg_set_quit(GameParams * params, gboolean quitdone)

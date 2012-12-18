@@ -64,10 +64,10 @@ static gint sort_quotes(QuoteInfo * a, QuoteInfo * b)
 	res = a->var.m.ratio - b->var.m.ratio;
 	if (res != 0)
 		return res;
-	res = a->var.m.receive - b->var.m.receive;
+	res = (gint) a->var.m.receive - (gint) b->var.m.receive;
 	if (res != 0)
 		return res;
-	return a->var.m.supply - b->var.m.supply;
+	return (gint) a->var.m.supply - (gint) b->var.m.supply;
 }
 
 QuoteInfo *quotelist_add_maritime(QuoteList * list,

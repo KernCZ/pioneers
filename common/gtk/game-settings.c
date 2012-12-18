@@ -107,7 +107,7 @@ static void game_settings_init(GameSettings * gs)
 	gtk_widget_show(label);
 	gtk_table_attach(GTK_TABLE(gs), label, 0, 1, 1, 2,
 			 GTK_FILL, GTK_FILL, 0, 0);
-	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5f);
 
 	adj =
 	    GTK_ADJUSTMENT(gtk_adjustment_new(0, 2, MAX_PLAYERS, 1, 4, 0));
@@ -129,7 +129,7 @@ static void game_settings_init(GameSettings * gs)
 	gtk_widget_show(label);
 	gtk_table_attach(GTK_TABLE(gs), label, 0, 1, 2, 3,
 			 GTK_FILL, GTK_FILL, 0, 0);
-	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5f);
 
 	hbox = gtk_hbox_new(FALSE, 3);
 
@@ -186,7 +186,7 @@ GtkWidget *game_settings_new(gboolean with_check_button)
 static void game_settings_change_players(GtkSpinButton * widget,
 					 GameSettings * gs)
 {
-	gs->players = gtk_spin_button_get_value_as_int(widget);
+	gs->players = (guint) gtk_spin_button_get_value_as_int(widget);
 	game_settings_update(gs);
 	g_signal_emit(G_OBJECT(gs), game_settings_signals[CHANGE_PLAYERS],
 		      0);
@@ -197,7 +197,8 @@ static void game_settings_change_players(GtkSpinButton * widget,
 static void game_settings_change_victory_points(GtkSpinButton * widget,
 						GameSettings * gs)
 {
-	gs->victory_points = gtk_spin_button_get_value_as_int(widget);
+	gs->victory_points =
+	    (guint) gtk_spin_button_get_value_as_int(widget);
 	game_settings_update(gs);
 	g_signal_emit(G_OBJECT(gs), game_settings_signals[CHANGE], 0);
 }

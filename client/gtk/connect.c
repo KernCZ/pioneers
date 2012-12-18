@@ -85,7 +85,9 @@ static GtkWidget *aiplayers_spin;	/* number of AI players */
 static GtkWidget *game_rules;	/* Adjust some rules */
 
 static gboolean cfg_terrain;	/* Random terrain */
-static guint cfg_num_players, cfg_victory_points, cfg_sevens_rule;
+static guint cfg_num_players;
+static guint cfg_victory_points;
+static guint cfg_sevens_rule;
 static guint cfg_ai_players;
 static const gchar *cfg_gametype;	/* Will be set be the widget */
 
@@ -395,7 +397,7 @@ static void meta_create_notify(NetEvent event,
 static gboolean check_str_info(const gchar * line, const gchar * prefix,
 			       gchar * data)
 {
-	gint len = strlen(prefix);
+	size_t len = strlen(prefix);
 
 	if (strncmp(line, prefix, len) != 0)
 		return FALSE;
@@ -406,7 +408,7 @@ static gboolean check_str_info(const gchar * line, const gchar * prefix,
 static gboolean check_int_info(const gchar * line, const gchar * prefix,
 			       gchar * data)
 {
-	gint len = strlen(prefix);
+	size_t len = strlen(prefix);
 
 	if (strncmp(line, prefix, len) != 0)
 		return FALSE;
@@ -674,7 +676,7 @@ static void player_change_cb(GameSettings * gs,
 
 	ai_spin = GTK_SPIN_BUTTON(aiplayers_spin);
 	players = game_settings_get_players(gs);
-	ai_players = gtk_spin_button_get_value_as_int(ai_spin);
+	ai_players = (guint) gtk_spin_button_get_value_as_int(ai_spin);
 	gtk_spin_button_set_range(ai_spin, 0, players - 1);
 	if (ai_players >= players)
 		gtk_spin_button_set_value(ai_spin, players - 1);
@@ -770,7 +772,7 @@ static void create_server_dlg_cb(GtkDialog * dlg, gint arg1,
 		cfg_num_players = game_settings_get_players(gs);
 		cfg_victory_points = game_settings_get_victory_points(gs);
 		cfg_sevens_rule = game_rules_get_sevens_rule(gr);
-		cfg_ai_players =
+		cfg_ai_players = (guint)
 		    gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON
 						     (aiplayers_spin));
 		cfg_gametype = select_game_get_active(sg);
@@ -1192,7 +1194,7 @@ static void connect_avahi_cb(G_GNUC_UNUSED GtkWidget * widget,
 	g_free(server);
 	g_free(port);
 
-	// connect
+	/* connect */
 	connect_close_all(TRUE, TRUE);
 }
 #endif
@@ -1207,10 +1209,10 @@ void connect_create_dlg(void)
 	GtkWidget *sep;
 #ifdef HAVE_AVAHI
 	GtkWidget *avahibrowser_entry;
-#endif				// HAVE_AVAHI
+#endif				/* HAVE_AVAHI */
 	gchar *fullname;
 	gchar *name;
-	gint row;
+	guint row;
 
 	if (connect_dlg) {
 		gtk_window_present(GTK_WINDOW(connect_dlg));
@@ -1314,8 +1316,8 @@ void connect_create_dlg(void)
 	g_signal_connect(G_OBJECT(btn), "clicked",
 			 G_CALLBACK(connect_avahi_cb), avahibrowser_entry);
 
-	// enable avahi
-	// storing the pointer to this widget for later use
+	/* enable avahi */
+	/* storing the pointer to this widget for later use */
 	avahi_register(AVAHIBROWSER(avahibrowser_entry));
 
 	sep = gtk_hseparator_new();
@@ -1323,7 +1325,7 @@ void connect_create_dlg(void)
 	gtk_table_attach(GTK_TABLE(table), sep, 0, 3, row, row + 1,
 			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 6);
 	row++;
-#endif				// HAVE_AVAHI
+#endif				/* HAVE_AVAHI */
 
 	/* Label */
 	lbl = gtk_label_new(_("Meta server"));

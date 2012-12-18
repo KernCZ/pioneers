@@ -26,9 +26,9 @@
 void check_longest_road(Game * game)
 {
 	Map *map = game->params->map;
-	gint road_length[MAX_PLAYERS];
+	guint road_length[MAX_PLAYERS];
 	gint num_have_longest;
-	gint longest_length;
+	guint longest_length;
 	gboolean tie;
 	gint i;
 

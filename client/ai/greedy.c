@@ -230,7 +230,7 @@ static void leftover_resources(const gint assets[NO_RESOURCE],
  * Probability of a dice roll
  */
 
-static float dice_prob(int roll)
+static float dice_prob(gint roll)
 {
 	switch (roll) {
 	case 2:
@@ -263,27 +263,27 @@ static float default_score_resource(Resource resource)
 
 	switch (resource) {
 	case GOLD_TERRAIN:	/* gold */
-		score = 1.25;
+		score = 1.25f;
 		break;
 	case HILL_TERRAIN:	/* brick */
-		score = 1.1;
+		score = 1.1f;
 		break;
 	case FIELD_TERRAIN:	/* grain */
-		score = 1.0;
+		score = 1.0f;
 		break;
 	case MOUNTAIN_TERRAIN:	/* rock */
-		score = 1.05;
+		score = 1.05f;
 		break;
 	case PASTURE_TERRAIN:	/* sheep */
-		score = 1.0;
+		score = 1.0f;
 		break;
 	case FOREST_TERRAIN:	/* wood */
-		score = 1.1;
+		score = 1.1f;
 		break;
 	case DESERT_TERRAIN:
 	case SEA_TERRAIN:
 	default:
-		score = 0;
+		score = 0.0f;
 		break;
 	}
 
@@ -342,7 +342,7 @@ static void reevaluate_resources(resource_values_t * outval)
 		if (produce[i] == 0) {
 			outval->value[i] = default_score_resource(i);
 		} else {
-			outval->value[i] = 1.0 / produce[i];
+			outval->value[i] = 1.0f / produce[i];
 		}
 
 	}
@@ -396,7 +396,7 @@ static float score_hex(Hex * hex, const resource_values_t * resval)
 	/* if we don't have a 3 for 1 port yet and this is one it's valuable! */
 	if (!resval->info.any_resource) {
 		if (hex->resource == ANY_RESOURCE)
-			score += 0.5;
+			score += 0.5f;
 	}
 
 	return score;
@@ -407,7 +407,7 @@ static float score_hex(Hex * hex, const resource_values_t * resval)
  */
 static float default_score_hex(Hex * hex)
 {
-	int score;
+	float score;
 
 	if (hex == NULL)
 		return 0;
@@ -423,7 +423,7 @@ static float default_score_hex(Hex * hex)
  * Give a numerical score to how valuable putting a settlement/city on this spot is
  *
  */
-static float score_node(Node * node, int city,
+static float score_node(const Node * node, gboolean city,
 			const resource_values_t * resval)
 {
 	int i;
@@ -437,7 +437,7 @@ static float score_node(Node * node, int city,
 		return -1;
 	if (is_node_spacing_ok(node) == FALSE)
 		return -1;
-	if (city == 0) {
+	if (!city) {
 		if (node->owner != -1)
 			return -1;
 	}
@@ -499,7 +499,7 @@ static Node *best_settlement_spot(gboolean during_setup,
 						continue;
 				}
 
-				score = score_node(n, 0, resval);
+				score = score_node(n, FALSE, resval);
 				if (score > bestscore) {
 					best = n;
 					bestscore = score;
@@ -533,7 +533,7 @@ static Node *best_city_spot(const resource_values_t * resval)
 				if ((n->owner == my_player_num())
 				    && (n->type == BUILD_SETTLEMENT)) {
 					float score =
-					    score_node(n, 1, resval);
+					    score_node(n, TRUE, resval);
 
 					if (score > bestscore) {
 						best = n;
@@ -599,7 +599,7 @@ static Edge *traverse_out(Node * n, node_seen_set_t * set, float *score,
 			/* no owner, how good is the other node ? */
 			cur_e = e;
 
-			cur_score = score_node(othernode, 0, resval);
+			cur_score = score_node(othernode, FALSE, resval);
 
 			/* umm.. can we build here? */
 			/*if (!can_settlement_be_built(othernode, my_player_num ()))
@@ -651,7 +651,8 @@ static Edge *best_road_to_road_spot(Node * n, float *score,
 						    score_node(other_node
 							       (e2,
 								othernode),
-							       0, resval);
+							       FALSE,
+							       resval);
 
 						if (nscore > bscore) {
 							bscore = nscore;
@@ -1913,7 +1914,7 @@ static void greedy_consider_quote(G_GNUC_UNUSED gint partner,
 	log_message(MSG_INFO, "Quoting.\n");
 }
 
-static void greedy_setup(unsigned num_settlements, unsigned num_roads)
+static void greedy_setup(gint num_settlements, gint num_roads)
 {
 	ai_wait();
 	if (num_settlements > 0)
@@ -1968,10 +1969,11 @@ static void greedy_gold_choose(gint gold_num, const gint * bank)
 	}
 
 	for (i = 0; i < gold_num; i++) {
+		gint j;
+
 		reevaluate_resources(&resval);
 
 		/* If the bank has been emptied, don't desire it */
-		gint j;
 		for (j = 0; j < NO_RESOURCE; j++) {
 			if (my_bank[j] == 0) {
 				resval.value[j] = 0;

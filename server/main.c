@@ -54,7 +54,7 @@ static gint num_players = 0;
 static gint num_points = 0;
 static gint sevens_rule = -1;
 static gint terrain = -1;
-static gint timeout = 0;
+static guint timeout = 0;
 static gint num_ai_players = 0;
 static gchar *server_port = NULL;
 static gchar *admin_port = NULL;
@@ -256,7 +256,7 @@ int main(int argc, char *argv[])
 	if (sevens_rule != -1)
 		cfg_set_sevens_rule(params, sevens_rule);
 
-	if (num_points)
+	if (num_points > 0)
 		cfg_set_victory_points(params, num_points);
 
 	if (tournament_time != -1)

@@ -31,7 +31,7 @@ enum { TYPE_NUM,
 	TYPE_STRING
 };
 
-static void add_setting_desc(GtkWidget * table, gint row, gint col,
+static void add_setting_desc(GtkWidget * table, guint row, guint col,
 			     const gchar * desc)
 {
 	GtkWidget *label;
@@ -40,11 +40,11 @@ static void add_setting_desc(GtkWidget * table, gint row, gint col,
 	gtk_widget_show(label);
 	gtk_table_attach(GTK_TABLE(table), label, col, col + 1, row,
 			 row + 1, GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
-	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5f);
 }
 
-static void add_setting_desc_with_image(GtkWidget * table, gint row,
-					gint col, const gchar * desc,
+static void add_setting_desc_with_image(GtkWidget * table, guint row,
+					guint col, const gchar * desc,
 					const gchar * iconname)
 {
 	GtkWidget *icon;
@@ -57,7 +57,7 @@ static void add_setting_desc_with_image(GtkWidget * table, gint row,
 	add_setting_desc(table, row, col + 1, desc);
 }
 
-static void add_setting_val(GtkWidget * table, gint row, gint col,
+static void add_setting_val(GtkWidget * table, guint row, guint col,
 			    gint type, gint int_val,
 			    const gchar * char_val, gboolean right_aligned)
 {
@@ -95,7 +95,7 @@ static void add_setting_val(GtkWidget * table, gint row, gint col,
 			 col, col + 1, row, row + 1,
 			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(label),
-			       (right_aligned ? 1.0 : 0.0), 0.5);
+			       (right_aligned ? 1.0 : 0.0), 0.5f);
 }
 
 static GtkWidget *settings_create_content(void)

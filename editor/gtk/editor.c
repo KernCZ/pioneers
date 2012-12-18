@@ -42,6 +42,7 @@
 #include "colors.h"
 #include "common_gtk.h"
 #include "cards.h"
+#include "network.h"
 
 #define MAINICON_FILE "pioneers-editor.png"
 

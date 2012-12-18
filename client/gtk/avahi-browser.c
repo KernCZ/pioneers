@@ -162,12 +162,12 @@ void avahibrowser_del(AvahiBrowser * ab, const char *service_name)
 		if (found)
 			gtk_list_store_remove(ab->data, &iter);
 	}
-	// If there is more than one server available, select the first one
+	/* If there is more than one server available, select the first one */
 	if (gtk_tree_model_get_iter_first(GTK_TREE_MODEL(ab->data), &iter)) {
 		gtk_combo_box_set_active_iter(GTK_COMBO_BOX(ab->combo_box),
 					      &iter);
 	} else {
-		// if no server is available, disable the join button
+		/* if no server is available, disable the join button */
 		gtk_widget_set_sensitive(GTK_WIDGET
 					 (ab->connect_button), FALSE);
 	}

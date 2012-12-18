@@ -136,8 +136,7 @@ static void create_services(AvahiClient * c, Game * game)
 						   0,
 						   servicename,
 						   AVAHI_ANNOUNCE_NAME,
-						   NULL,
-						   NULL,
+						   NULL, NULL, (uint16_t)
 						   atoi(game->server_port),
 						   sl);
 	g_free(servicename);
@@ -199,7 +198,7 @@ static void client_callback(AvahiClient * c,
 		;
 	}
 }
-#endif				// HAVE_AVAHI
+#endif				/* HAVE_AVAHI */
 
 void avahi_register_game(Game * game)
 {
@@ -230,7 +229,7 @@ void avahi_register_game(Game * game)
 			    avahi_strerror(error));
 		avahi_unregister_game();
 	}
-#endif				// HAVE_AVAHI
+#endif				/* HAVE_AVAHI */
 }
 
 void avahi_unregister_game(void)
@@ -260,5 +259,5 @@ void avahi_unregister_game(void)
 	}
 
 	log_message(MSG_INFO, _("Unregistering Avahi.\n"));
-#endif				// HAVE_AVAHI
+#endif				/* HAVE_AVAHI */
 }

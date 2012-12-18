@@ -34,7 +34,7 @@ static gint num_bridges;	/* number of bridges available */
 static gint num_settlements;	/* settlements available */
 static gint num_cities;		/* cities available */
 static gint num_city_walls;	/* city walls available */
-static gint num_develop;	/* development cards left */
+static guint num_develop;	/* development cards left */
 
 void stock_init(void)
 {
@@ -156,7 +156,7 @@ void stock_replace_city_wall(void)
 }
 
 
-gint stock_num_develop(void)
+guint stock_num_develop(void)
 {
 	return num_develop;
 }

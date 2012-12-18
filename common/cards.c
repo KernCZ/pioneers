@@ -28,8 +28,8 @@
 DevelDeck *deck_new(GameParams * params)
 {
 	DevelDeck *deck;
-	gint num;
-	gint idx;
+	guint num;
+	guint idx;
 
 	deck = g_malloc0(sizeof(*deck));
 	for (num = idx = 0; idx < G_N_ELEMENTS(params->num_develop_type);
@@ -64,13 +64,13 @@ gboolean is_victory_card(DevelType type)
 	    || type == DEVEL_LIBRARY || type == DEVEL_MARKET;
 }
 
-DevelType deck_card_type(const DevelDeck * deck, gint idx)
+DevelType deck_card_type(const DevelDeck * deck, guint idx)
 {
 	return deck->cards[idx].type;
 }
 
 gboolean deck_card_playable(const DevelDeck * deck,
-			    gboolean played_develop, gint idx, gint turn)
+			    gboolean played_develop, guint idx, gint turn)
 {
 	if (idx >= deck->num_cards)
 		return FALSE;
@@ -82,7 +82,7 @@ gboolean deck_card_playable(const DevelDeck * deck,
 }
 
 gboolean deck_card_play(DevelDeck * deck,
-			gboolean played_develop, gint idx, gint turn)
+			gboolean played_develop, guint idx, gint turn)
 {
 	if (!deck_card_playable(deck, played_develop, idx, turn))
 		return FALSE;

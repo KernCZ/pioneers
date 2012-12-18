@@ -207,11 +207,12 @@ static gboolean zoom_map_cb(GtkWidget * area, GdkEventScroll * event,
 {
 	GuiMap *gmap = user_data;
 	GtkAllocation allocation;
+	gint radius;
 
 	if (gtk_widget_get_window(area) == NULL || gmap->map == NULL)
 		return FALSE;
 
-	gint radius = gmap->hex_radius;
+	radius = gmap->hex_radius;
 	gmap->is_custom_view = TRUE;
 
 	if (event->direction == GDK_SCROLL_UP) {
@@ -409,6 +410,9 @@ static void reverse_calc_hex_pos(const GuiMap * gmap,
 				 gint x_coor, gint y_coor, gint * hex_x,
 				 gint * hex_y)
 {
+	gint relx;
+	gint rely;
+
 	y_coor -= gmap->y_margin + gmap->hex_radius;
 	y_coor += gmap->hex_radius;
 	*hex_y = y_coor / (gmap->hex_radius + gmap->y_point);
@@ -423,8 +427,6 @@ static void reverse_calc_hex_pos(const GuiMap * gmap,
 
 	/* The (0,0) will be on the upper left corner of the hex,
 	 * outside the hex */
-	gint relx;
-	gint rely;
 	relx = x_coor - *hex_x * (gmap->x_point * 2);
 	rely = y_coor - *hex_y * (gmap->hex_radius + gmap->y_point);
 
@@ -777,14 +779,14 @@ static gboolean display_hex(const Hex * hex, gpointer closure)
 	if (hex->resource != NO_RESOURCE && gmap->chit_radius > 0) {
 		const gchar *str = "";
 		gint width, height;
-		int tileno = hex->resource == ANY_RESOURCE ?
+		gint tileno = hex->resource == ANY_RESOURCE ?
 		    ANY_PORT_TILE : hex->resource;
 		gboolean drawit;
 		gboolean typeind;
+		const double dashes[] = { 4.0 };
 
 		/* Draw lines from port to shore */
 		gdk_cairo_set_source_color(gmap->cr, &white);
-		const double dashes[] = { 4.0 };
 		cairo_set_dash(gmap->cr, dashes, G_N_ELEMENTS(dashes),
 			       0.0);
 		cairo_move_to(gmap->cr, x_offset, y_offset);
@@ -1031,6 +1033,11 @@ void guimap_scale_with_radius(GuiMap * gmap, gint radius)
 
 void guimap_scale_to_size(GuiMap * gmap, gint width, gint height)
 {
+	const gint reserved_width = 0;
+	const gint reserved_height = 0;
+	gint width_radius;
+	gint height_radius;
+
 	if (gmap->is_custom_view) {
 		gint x_margin = gmap->x_margin;
 		gint y_margin = gmap->y_margin;
@@ -1041,10 +1048,6 @@ void guimap_scale_to_size(GuiMap * gmap, gint width, gint height)
 		gmap->height = height;
 		return;
 	}
-	const gint reserved_width = 0;
-	const gint reserved_height = 0;
-	gint width_radius;
-	gint height_radius;
 
 	width_radius = (width - reserved_width)
 	    / ((gmap->map->x_size * 2 + 1
@@ -1177,10 +1180,12 @@ void guimap_zoom_normal(GuiMap * gmap)
 void guimap_zoom_center_map(GuiMap * gmap)
 {
 	GtkAllocation allocation;
+	gint width;
+	gint height;
 
 	if (!gmap->is_custom_view)
 		return;
-	gint width = gmap->map->x_size * 2 * gmap->x_point + gmap->x_point;
+	width = gmap->map->x_size * 2 * gmap->x_point + gmap->x_point;
 	if (gmap->map->shrink_left)
 		width -= gmap->x_point;
 	if (gmap->map->shrink_right)
@@ -1189,7 +1194,7 @@ void guimap_zoom_center_map(GuiMap * gmap)
 	gtk_widget_get_allocation(gmap->area, &allocation);
 	gmap->x_margin = allocation.width / 2 - width / 2;
 
-	gint height = (gmap->map->y_size - 1) *
+	height = (gmap->map->y_size - 1) *
 	    (gmap->hex_radius + gmap->y_point)
 	    + 2 * gmap->hex_radius;
 
@@ -1205,10 +1210,13 @@ static void find_edge(GuiMap * gmap, gint x, gint y, MapElement * element)
 	if (hex) {
 		gint center_x;
 		gint center_y;
+		gdouble angle;
+		gint idx;
+
 		calc_hex_pos(gmap, hex->x, hex->y, &center_x, &center_y);
 
-		gdouble angle = atan2(y - center_y, x - center_x);
-		gint idx =
+		angle = atan2(y - center_y, x - center_x);
+		idx =
 		    (gint) (floor(-angle / 2.0 / M_PI * 6 + 0.5) + 6) % 6;
 		element->edge = hex->edges[idx];
 	} else {
@@ -1222,10 +1230,13 @@ Node *guimap_find_node(GuiMap * gmap, gint x, gint y)
 	if (hex) {
 		gint center_x;
 		gint center_y;
+		gdouble angle;
+		gint idx;
+
 		calc_hex_pos(gmap, hex->x, hex->y, &center_x, &center_y);
 
-		gdouble angle = atan2(y - center_y, x - center_x);
-		gint idx = (gint) (floor(-angle / 2.0 / M_PI * 6) + 6) % 6;
+		angle = atan2(y - center_y, x - center_x);
+		idx = (gint) (floor(-angle / 2.0 / M_PI * 6) + 6) % 6;
 		return hex->nodes[idx];
 	}
 	return NULL;

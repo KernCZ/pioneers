@@ -189,8 +189,8 @@ static void dummy_start_game(void)
 {;
 }
 
-static void dummy_setup(G_GNUC_UNUSED unsigned num_settlements,
-			G_GNUC_UNUSED unsigned num_roads)
+static void dummy_setup(G_GNUC_UNUSED gint num_settlements,
+			G_GNUC_UNUSED gint num_roads)
 {;
 }
 
@@ -308,7 +308,7 @@ static void dummy_bought_develop(G_GNUC_UNUSED DevelType type)
 }
 
 static void dummy_played_develop(G_GNUC_UNUSED gint player_num,
-				 G_GNUC_UNUSED gint card_idx,
+				 G_GNUC_UNUSED guint card_idx,
 				 G_GNUC_UNUSED DevelType type)
 {;
 }
@@ -332,8 +332,8 @@ static void dummy_robber(void)
 
 static void dummy_robber_moved(G_GNUC_UNUSED Hex * old,
 			       G_GNUC_UNUSED Hex * new)
-{
-};
+{;
+}
 
 static void dummy_steal_building(void)
 {;
@@ -647,7 +647,9 @@ static gboolean check_other_players(StateMachine * sm)
 	BuildType build_type;
 	DevelType devel_type;
 	Resource resource_type, supply_type, receive_type;
-	gint player_num, victim_num, card_idx, backwards;
+	gint player_num, victim_num;
+	guint card_idx;
+	gint backwards;
 	gint discard_num, num, ratio, die1, die2, x, y, pos;
 	gint id;
 	gint resource_list[NO_RESOURCE], wanted_list[NO_RESOURCE];
@@ -739,7 +741,7 @@ static gboolean check_other_players(StateMachine * sm)
 		develop_bought(player_num);
 		return TRUE;
 	}
-	if (sm_recv(sm, "play-develop %d %D", &card_idx, &devel_type)) {
+	if (sm_recv(sm, "play-develop %u %D", &card_idx, &devel_type)) {
 		develop_played(player_num, card_idx, devel_type);
 		return TRUE;
 	}
@@ -1445,7 +1447,7 @@ static char *setup_msg(void)
 
 static gboolean mode_setup(StateMachine * sm, gint event)
 {
-	unsigned total;
+	gint total;
 	sm_state_name(sm, "mode_setup");
 	switch (event) {
 	case SM_ENTER:
@@ -1841,7 +1843,7 @@ static gboolean mode_year_of_plenty(StateMachine * sm, gint event)
  */
 gboolean mode_play_develop_response(StateMachine * sm, gint event)
 {
-	gint card_idx;
+	guint card_idx;
 	DevelType card_type;
 
 	sm_state_name(sm, "mode_play_develop_response");
@@ -1851,7 +1853,7 @@ gboolean mode_play_develop_response(StateMachine * sm, gint event)
 		break;
 	case SM_RECV:
 		if (sm_recv
-		    (sm, "play-develop %d %D", &card_idx, &card_type)) {
+		    (sm, "play-develop %u %D", &card_idx, &card_type)) {
 			build_clear();
 			waiting_for_network(FALSE);
 			develop_played(my_player_num(), card_idx,

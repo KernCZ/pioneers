@@ -22,7 +22,7 @@
 #include "config.h"
 #include <gtk/gtk.h>
 
-#include "network.h"
+#include "log.h"
 #include "avahi.h"
 
 #ifdef HAVE_AVAHI
@@ -73,7 +73,7 @@ static void resolve_callback(AvahiServiceResolver * r,
 			gchar *version = NULL;
 			gchar *title = NULL;
 
-			// Parse the text part
+			/* Parse the text part */
 			AvahiStringList *iter = txt;
 			while (iter != NULL) {
 				gchar *text = g_strdup((gchar *)

@@ -1007,10 +1007,11 @@ static gboolean zero_visited(Hex * hex, G_GNUC_UNUSED gpointer closure)
  * 1 - set the visited attribute of all edges and nodes to FALSE
  * 2 - for every edge, find the longest road using this one as a tail
  */
-void map_longest_road(Map * map, gint * lengths, gint num_players)
+void map_longest_road(Map * map, guint * lengths, guint num_players)
 {
 	g_return_if_fail(map != NULL);
 	g_return_if_fail(lengths != NULL);
+	g_return_if_fail(num_players > 0);
 
 	map_traverse(map, zero_visited, NULL);
 	memset(lengths, 0, num_players * sizeof(*lengths));

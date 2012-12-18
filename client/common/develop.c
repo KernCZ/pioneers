@@ -99,7 +99,7 @@ void develop_bought(gint player_num)
 	stock_use_develop();
 }
 
-void develop_played(gint player_num, gint card_idx, DevelType type)
+void develop_played(gint player_num, guint card_idx, DevelType type)
 {
 	if (player_num == my_player_num()) {
 		deck_card_play(develop_deck,
@@ -195,11 +195,10 @@ void develop_begin_turn(void)
 	bought_develop = FALSE;
 }
 
-gboolean can_play_develop(gint card)
+gboolean can_play_develop(guint card)
 {
-	if (card < 0
-	    || !deck_card_playable(develop_deck, played_develop, card,
-				   turn_num()))
+	if (!deck_card_playable
+	    (develop_deck, played_develop, card, turn_num()))
 		return FALSE;
 	if (deck_card_type(develop_deck, card) == DEVEL_ROAD_BUILDING
 	    && !road_building_can_build_road()
@@ -212,7 +211,7 @@ gboolean can_play_develop(gint card)
 
 gboolean can_play_any_develop(void)
 {
-	int i;
+	guint i;
 	for (i = 0; i < develop_deck->num_cards; ++i)
 		if (can_play_develop(i))
 			return TRUE;

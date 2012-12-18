@@ -45,6 +45,7 @@
 #include "metaserver.h"		/* Custom widget */
 
 #include "avahi.h"
+#include "network.h"
 
 #define MAINICON_FILE	"pioneers-server.png"
 
@@ -60,7 +61,6 @@ static GtkWidget *overridden_hostname_entry;	/* name of server (allows masquerad
 static GtkWidget *start_btn;	/* start/stop the server */
 
 static GtkListStore *store;	/* shows player connection status */
-static Game *game = NULL;	/* the current game */
 
 static gchar *overridden_hostname;	/* override reported hostname */
 static gchar *server_port = NULL;	/* port of the game */
@@ -180,16 +180,16 @@ static void update_game_settings(const GameParams * params)
 
 	/* Update the UI */
 	game_settings_set_players(GAMESETTINGS(game_settings),
-				  params->num_players);
+				  (guint) params->num_players);
 	game_settings_set_victory_points(GAMESETTINGS(game_settings),
-					 params->victory_points);
+					 (guint) params->victory_points);
 	game_rules_set_victory_at_end_of_turn(GAMERULES(game_rules),
 					      params->
 					      check_victory_at_end_of_turn);
 	game_rules_set_random_terrain(GAMERULES(game_rules),
 				      params->random_terrain);
 	game_rules_set_sevens_rule(GAMERULES(game_rules),
-				   params->sevens_rule);
+				   (guint) params->sevens_rule);
 	game_rules_set_domestic_trade(GAMERULES(game_rules),
 				      params->domestic_trade);
 	game_rules_set_strict_trade(GAMERULES(game_rules),
@@ -234,11 +234,13 @@ static void gui_set_server_state(gboolean running)
 }
 
 static void start_clicked_cb(G_GNUC_UNUSED GtkButton * widget,
-			     G_GNUC_UNUSED gpointer user_data)
+			     gpointer user_data)
 {
-	if (server_is_running(game)) {
-		server_stop(game);
-		gui_set_server_state(server_is_running(game));
+	Game **game = user_data;
+
+	if (server_is_running(*game)) {
+		server_stop(*game);
+		gui_set_server_state(server_is_running(*game));
 		avahi_unregister_game();
 	} else {		/* not running */
 		const gchar *title;
@@ -247,16 +249,16 @@ static void start_clicked_cb(G_GNUC_UNUSED GtkButton * widget,
 
 		title = select_game_get_active(SELECTGAME(select_game));
 		params = params_copy(game_list_find_item(title));
-		cfg_set_num_players(params,
+		cfg_set_num_players(params, (gint)
 				    game_settings_get_players(GAMESETTINGS
 							      (game_settings)));
-		cfg_set_victory_points(params,
+		cfg_set_victory_points(params, (gint)
 				       game_settings_get_victory_points
 				       (GAMESETTINGS(game_settings)));
 		params->check_victory_at_end_of_turn =
 		    game_rules_get_victory_at_end_of_turn(GAMERULES
 							  (game_rules));
-		cfg_set_sevens_rule(params,
+		cfg_set_sevens_rule(params, (gint)
 				    game_rules_get_sevens_rule(GAMERULES
 							       (game_rules)));
 		cfg_set_terrain_type(params,
@@ -280,14 +282,14 @@ static void start_clicked_cb(G_GNUC_UNUSED GtkButton * widget,
 
 		g_assert(server_port != NULL);
 
-		if (game != NULL)
-			game_free(game);
-		game =
+		if (*game != NULL)
+			game_free(*game);
+		*game =
 		    server_start(params, overridden_hostname, server_port,
 				 register_server, meta_server_name,
 				 random_order);
-		if (server_is_running(game)) {
-			avahi_register_game(game);
+		if (server_is_running(*game)) {
+			avahi_register_game(*game);
 			gui_set_server_state(TRUE);
 			config_set_string("server/meta-server",
 					  meta_server_name);
@@ -304,7 +306,7 @@ static void start_clicked_cb(G_GNUC_UNUSED GtkButton * widget,
 			config_set_int("game/num-players",
 				       params->num_players);
 			config_set_int("game/victory-points",
-				       params->victory_points);
+				       (gint) params->victory_points);
 			config_set_int("game/check-victory-at-end-of-turn",
 				       params->
 				       check_victory_at_end_of_turn);
@@ -359,10 +361,12 @@ static void launchclient_clicked_cb(G_GNUC_UNUSED GtkButton * widget,
 }
 
 static void addcomputer_clicked_cb(G_GNUC_UNUSED GtkButton * widget,
-				   G_GNUC_UNUSED gpointer user_data)
+				   gpointer user_data)
 {
+	Game **game = user_data;
+
 	g_assert(server_port != NULL);
-	add_computer_player(game, want_ai_chat);
+	add_computer_player(*game, want_ai_chat);
 	config_set_int("ai/enable-chat", want_ai_chat);
 }
 
@@ -388,8 +392,10 @@ static void gui_player_rename(void *data)
 		    player->name);
 }
 
-static gboolean everybody_left(G_GNUC_UNUSED gpointer data)
+static gboolean everybody_left(gpointer data)
 {
+	Game *game = data;
+
 	server_stop(game);
 	gui_set_server_state(server_is_running(game));
 	return FALSE;
@@ -425,7 +431,7 @@ static void gui_player_change(void *data)
 	}
 	playerlist_dec_use_count(game);
 	if (number_of_players == 0 && game->is_game_over) {
-		g_timeout_add(100, everybody_left, NULL);
+		g_timeout_add(100, everybody_left, game);
 	}
 }
 
@@ -519,6 +525,7 @@ static GtkWidget *build_server_frame(void)
 	GtkWidget *port_entry;
 
 	gint novar;
+	gchar *meta_server_name;
 
 	/* table */
 	table = gtk_table_new(6, 2, FALSE);
@@ -582,7 +589,6 @@ static GtkWidget *build_server_frame(void)
 
 	/* initialize meta entry */
 	novar = 0;
-	gchar *meta_server_name;
 	meta_server_name = config_get_string("server/meta-server", &novar);
 	if (novar || !strlen(meta_server_name)
 	    || !strncmp(meta_server_name, "gnocatan.debian.net",
@@ -814,7 +820,7 @@ static GtkWidget *build_player_connected_frame(void)
 /** Builds the composite ai frame widget.
  *  @return returns the composite widget.
  */
-static GtkWidget *build_ai_frame(void)
+static GtkWidget *build_ai_frame(Game ** game)
 {
 	/* ai vbox */
 	/*       ai chat toggle */
@@ -861,7 +867,7 @@ static GtkWidget *build_ai_frame(void)
 	gtk_widget_show(button);
 	gtk_box_pack_start(GTK_BOX(vbox), button, FALSE, FALSE, 0);
 	g_signal_connect(G_OBJECT(button), "clicked",
-			 G_CALLBACK(addcomputer_clicked_cb), NULL);
+			 G_CALLBACK(addcomputer_clicked_cb), game);
 	gtk_widget_set_tooltip_text(button,
 				    /* Tooltip */
 				    _(""
@@ -907,7 +913,7 @@ static GtkWidget *build_message_frame(void)
  *  @param main_window The top-level window.
  *  @return returns the composite widget.
  */
-static GtkWidget *build_interface(GtkWindow * main_window)
+static GtkWidget *build_interface(GtkWindow * main_window, Game ** game)
 {
 	GtkWidget *vbox;
 	GtkWidget *hbox_settings;
@@ -972,7 +978,7 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 									 "Stop the server"),
 									&stop_game_button_on_tab);
 	g_signal_connect(G_OBJECT(stop_game_button_on_tab), "clicked",
-			 G_CALLBACK(start_clicked_cb), NULL);
+			 G_CALLBACK(start_clicked_cb), game);
 
 	/* game tab vbox */
 	vbox_settings = gtk_vbox_new(FALSE, 5);
@@ -985,7 +991,7 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 
 	/* ai frame */
 	build_frame(vbox_settings, _("Computer players"),
-		    build_ai_frame(), FALSE);
+		    build_ai_frame(game), FALSE);
 
 	/* start button */
 	start_btn = gtk_button_new();
@@ -993,7 +999,7 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 
 	gtk_box_pack_start(GTK_BOX(vbox), start_btn, FALSE, FALSE, 0);
 	g_signal_connect(G_OBJECT(start_btn), "clicked",
-			 G_CALLBACK(start_clicked_cb), NULL);
+			 G_CALLBACK(start_clicked_cb), game);
 
 	/* message frame */
 	build_frame(vbox, _("Messages"), build_message_frame(), TRUE);
@@ -1065,18 +1071,18 @@ static void check_vp_cb(G_GNUC_UNUSED GObject * caller,
 
 	title = select_game_get_active(SELECTGAME(select_game));
 	params = params_copy(game_list_find_item(title));
-	cfg_set_num_players(params,
+	cfg_set_num_players(params, (gint)
 			    game_settings_get_players(GAMESETTINGS
 						      (game_settings)));
-	cfg_set_victory_points(params,
+	cfg_set_victory_points(params, (gint)
 			       game_settings_get_victory_points
 			       (GAMESETTINGS(game_settings)));
 	params->check_victory_at_end_of_turn =
 	    game_rules_get_victory_at_end_of_turn(GAMERULES(game_rules));
-	cfg_set_sevens_rule(params,
+	cfg_set_sevens_rule(params, (gint)
 			    game_rules_get_sevens_rule(GAMERULES
 						       (game_rules)));
-	cfg_set_terrain_type(params,
+	cfg_set_terrain_type(params, (gint)
 			     game_rules_get_random_terrain(GAMERULES
 							   (game_rules)));
 	params->strict_trade =
@@ -1145,6 +1151,7 @@ int main(int argc, char *argv[])
 	GtkAccelGroup *accel_group;
 	GError *error = NULL;
 	GOptionContext *context;
+	Game *game;
 
 	net_init();
 
@@ -1235,9 +1242,10 @@ int main(int argc, char *argv[])
 	menubar = gtk_ui_manager_get_widget(ui_manager, "/MainMenu");
 	gtk_box_pack_start(GTK_BOX(vbox), menubar, FALSE, FALSE, 0);
 
+	game = NULL;
 	gtk_box_pack_start(GTK_BOX(vbox),
-			   build_interface(GTK_WINDOW(window)), TRUE, TRUE,
-			   0);
+			   build_interface(GTK_WINDOW(window), &game),
+			   TRUE, TRUE, 0);
 	load_last_game_params();
 
 	gtk_widget_show_all(window);
@@ -1251,6 +1259,7 @@ int main(int argc, char *argv[])
 
 	gtk_main();
 
+	game_free(game);
 	config_finish();
 	net_finish();
 	g_option_context_free(context);

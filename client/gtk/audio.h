@@ -29,9 +29,9 @@ gboolean get_silent_mode(void);
 void set_silent_mode(gboolean silent);
 
 typedef enum {
-	SOUND_BEEP,		///< Some player beeps you
-	SOUND_TURN,		///< It is your turn
-	SOUND_ANNOUNCE,		///< Another player enters the game
+	SOUND_BEEP,		/**< Some player beeps you */
+	SOUND_TURN,		/**< It is your turn */
+	SOUND_ANNOUNCE		/**< Another player enters the game */
 } SoundType;
 
 void play_sound(SoundType sound);

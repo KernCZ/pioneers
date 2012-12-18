@@ -28,7 +28,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
-#include <time.h>
 #include <string.h>
 
 static char *server = NULL;
@@ -131,8 +130,6 @@ static void ai_init(void)
 		server = g_strdup(PIONEERS_DEFAULT_GAME_HOST);
 	if (port == NULL)
 		port = g_strdup(PIONEERS_DEFAULT_GAME_PORT);
-
-	g_random_set_seed(time(NULL) + getpid());
 
 	if (!name) {
 		/* ai commandline error */

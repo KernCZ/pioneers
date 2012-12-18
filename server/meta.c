@@ -23,6 +23,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "server.h"
+#include "network.h"
 
 static Session *ses;
 static enum {
@@ -56,7 +57,7 @@ void meta_start_game(void)
 #endif
 }
 
-void meta_report_num_players(gint num_players)
+void meta_report_num_players(guint num_players)
 {
 	if (ses != NULL)
 		net_printf(ses, "curr=%d\n", num_players);

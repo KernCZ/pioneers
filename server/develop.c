@@ -41,7 +41,8 @@ void develop_shuffle(Game * game)
 	if (game->develop_deck != NULL)
 		g_free(game->develop_deck);
 	game->develop_deck =
-	    g_malloc0(game->num_develop * sizeof(*game->develop_deck));
+	    g_malloc0((gsize) game->num_develop *
+		      sizeof(*game->develop_deck));
 
 	for (idx = 0; idx < game->num_develop; idx++) {
 		int card_idx;
@@ -363,13 +364,13 @@ static void check_largest_army(Game * game)
 	}
 }
 
-void develop_play(Player * player, gint idx)
+void develop_play(Player * player, guint idx)
 {
 	StateMachine *sm = player->sm;
 	Game *game = player->game;
 	DevelType card;
 
-	if (idx >= player->devel->num_cards || idx < 0) {
+	if (idx >= player->devel->num_cards) {
 		player_send(player, FIRST_VERSION, LATEST_VERSION,
 			    "ERR no-card\n");
 		return;

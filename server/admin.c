@@ -117,7 +117,7 @@ void admin_run_command(Session * admin_session, const gchar * line)
 	command_start = line;
 	while (*line && !g_ascii_isspace(*line))
 		++line;
-	command = g_strndup(command_start, line - command_start);
+	command = g_strndup(command_start, (gsize) (line - command_start));
 
 	if (*line) {
 		while (*line && g_ascii_isspace(*line))

@@ -97,11 +97,12 @@ GameParams *params_new(void)
 
 void params_free(GameParams * params)
 {
-	if (params == NULL)
-		return;
 	gint idx;
 	gchar *str;
 	GArray *int_list;
+
+	if (params == NULL)
+		return;
 
 	for (idx = 0; idx < G_N_ELEMENTS(game_params); idx++) {
 		Param *param = game_params + idx;
@@ -141,7 +142,7 @@ static gchar *skip_space(gchar * str)
 
 static gboolean match_word(gchar ** str, const gchar * word)
 {
-	gint word_len;
+	size_t word_len;
 
 	word_len = strlen(word);
 	if (strncmp(*str, word, word_len) == 0) {
@@ -517,7 +518,7 @@ gboolean params_load_line(GameParams * params, gchar * line)
 gboolean read_line_from_file(gchar ** line, FILE * f)
 {
 	gchar part[512];
-	gint len;
+	size_t len;
 
 	if (fgets(part, sizeof(part), f) == NULL)
 		return FALSE;
@@ -651,6 +652,9 @@ gboolean params_is_equal(const GameParams * params1,
 	gchar *buff1;
 	gchar *buff2;
 	gboolean is_different;
+	struct nosetup_t tmp;
+	GameParams nonconst1;
+	GameParams nonconst2;
 
 	/* Compare the map */
 	if (params1->map->y_size != params2->map->y_size) {
@@ -677,7 +681,6 @@ gboolean params_is_equal(const GameParams * params1,
 		return FALSE;
 	}
 
-	struct nosetup_t tmp;
 	buff1 = NULL;
 	tmp.user_data = &buff1;
 	tmp.func = append_to_string;
@@ -699,8 +702,6 @@ gboolean params_is_equal(const GameParams * params1,
 	 * G_STRUCT_MEMBER doesn't want const values.  Note that this
 	 * variable does not own its pointers, that is, they don't have to
 	 * be freed when it goes out of scope. */
-	GameParams nonconst1;
-	GameParams nonconst2;
 	memcpy(&nonconst1, params1, sizeof(GameParams));
 	memcpy(&nonconst2, params2, sizeof(GameParams));
 
@@ -855,9 +856,11 @@ WinnableState params_check_winnable_state(const GameParams * params,
 					  gchar ** win_message,
 					  gchar ** point_specification)
 {
-	gint target, building, development;
+	guint target;
+	gint building;
+	guint development;
 	gint road, army;
-	gint idx;
+	guint idx;
 	WinnableState return_value;
 	gint total_island, max_island;
 	guint number_of_islands;
@@ -899,7 +902,7 @@ WinnableState params_check_winnable_state(const GameParams * params,
 	    && params->island_discovery_bonus->len > 0
 	    && (params->num_build_type[BUILD_SHIP] +
 		params->num_build_type[BUILD_BRIDGE] > 0)) {
-		gint i;
+		guint i;
 		for (i = 0; i < number_of_islands - 1; i++) {
 			total_island +=
 			    g_array_index(params->island_discovery_bonus,
@@ -916,7 +919,8 @@ WinnableState params_check_winnable_state(const GameParams * params,
 
 	if (target > building) {
 		if (target >
-		    building + development + road + army + max_island) {
+		    building + (gint) development + road + army +
+		    max_island) {
 			*win_message =
 			    g_strdup(_("This game cannot be won."));
 			return_value = PARAMS_NO_WIN;
@@ -937,12 +941,12 @@ WinnableState params_check_winnable_state(const GameParams * params,
 	    g_strdup_printf(_(""
 			      "Required victory points: %d\n"
 			      "Points obtained by building all: %d\n"
-			      "Points in development cards: %d\n"
+			      "Points in development cards: %u\n"
 			      "Longest road/largest army: %d+%d\n"
 			      "Maximum island discovery bonus: %d\n"
 			      "Total: %d"), target, building, development,
 			    road, army, max_island,
-			    building + development + road + army +
+			    building + (gint) development + road + army +
 			    max_island);
 	return return_value;
 }
@@ -991,9 +995,9 @@ static const gchar *resource_types[] = {
 	"lumber"
 };
 
-static gint get_num(const gchar * str, gint * num)
+static ssize_t get_num(const gchar * str, gint * num)
 {
-	gint len = 0;
+	ssize_t len = 0;
 	gboolean is_negative = FALSE;
 
 	if (*str == '-') {
@@ -1011,10 +1015,22 @@ static gint get_num(const gchar * str, gint * num)
 	return len;
 }
 
-gint game_scanf(const gchar * line, const gchar * fmt, ...)
+static ssize_t get_unum(const gchar * str, guint * num)
+{
+	ssize_t len = 0;
+
+	*num = 0;
+	while (isdigit(*str)) {
+		*num = *num * 10 + (guint) (*str++ - '0');
+		len++;
+	}
+	return len;
+}
+
+ssize_t game_scanf(const gchar * line, const gchar * fmt, ...)
 {
 	va_list ap;
-	gint offset;
+	ssize_t offset;
 
 	va_start(ap, fmt);
 	offset = game_vscanf(line, fmt, ap);
@@ -1023,15 +1039,16 @@ gint game_scanf(const gchar * line, const gchar * fmt, ...)
 	return offset;
 }
 
-gint game_vscanf(const gchar * line, const gchar * fmt, va_list ap)
+ssize_t game_vscanf(const gchar * line, const gchar * fmt, va_list ap)
 {
-	gint offset = 0;
+	ssize_t offset = 0;
 
 	while (*fmt != '\0' && line[offset] != '\0') {
 		gchar **str;
 		gint *num;
+		guint *unum;
 		gint idx;
-		gint len;
+		ssize_t len;
 		BuildType *build_type;
 		Resource *resource;
 
@@ -1048,11 +1065,18 @@ gint game_vscanf(const gchar * line, const gchar * fmt, va_list ap)
 		case 'S':	/* string from current position to end of line */
 			str = va_arg(ap, gchar **);
 			*str = g_strdup(line + offset);
-			offset += strlen(*str);
+			offset += (ssize_t) strlen(*str);
 			break;
 		case 'd':	/* integer */
 			num = va_arg(ap, gint *);
 			len = get_num(line + offset, num);
+			if (len == 0)
+				return -1;
+			offset += len;
+			break;
+		case 'u':	/* unsigned integer */
+			unum = va_arg(ap, guint *);
+			len = get_unum(line + offset, unum);
 			if (len == 0)
 				return -1;
 			offset += len;
@@ -1106,8 +1130,10 @@ gint game_vscanf(const gchar * line, const gchar * fmt, va_list ap)
 			resource = va_arg(ap, Resource *);
 			for (idx = 0; idx < NO_RESOURCE; idx++) {
 				const gchar *type = resource_types[idx];
-				len = strlen(type);
-				if (strncmp(line + offset, type, len) == 0) {
+				len = (ssize_t) strlen(type);
+				if (strncmp
+				    (line + offset, type,
+				     (size_t) len) == 0) {
 					offset += len;
 					*resource = idx;
 					break;
@@ -1149,14 +1175,16 @@ gchar *game_vprintf(const gchar * fmt, va_list ap)
 
 	while (*fmt != '\0') {
 		gchar *pos = strchr(fmt, '%');
+		gchar *text_without_format;
+
 		if (pos == NULL) {
 			buff_append(result, "%s", fmt);
 			break;
 		}
 		/* add format until next % to result */
-		result = g_realloc(result, strlen(result) + pos - fmt + 1);
-		result[strlen(result) + pos - fmt] = '\0';
-		memcpy(&result[strlen(result)], fmt, pos - fmt);
+		text_without_format = g_strndup(fmt, (gsize) (pos - fmt));
+		buff_append(result, "%s", text_without_format);
+		g_free(text_without_format);
 		fmt = pos + 1;
 
 		switch (*fmt++) {
@@ -1169,6 +1197,9 @@ gchar *game_vprintf(const gchar * fmt, va_list ap)
 		case 'd':	/* integer */
 		case 'D':	/* development card type */
 			buff_append(result, "%d", va_arg(ap, gint));
+			break;
+		case 'u':	/* unsigned integer */
+			buff_append(result, "%u", va_arg(ap, guint));
 			break;
 		case 'B':	/* build type */
 			build_type = va_arg(ap, BuildType);

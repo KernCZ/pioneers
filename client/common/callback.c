@@ -149,11 +149,11 @@ void cb_buy_develop(void)
 	sm_push(SM(), mode_buy_develop_response);
 }
 
-void cb_play_develop(int card)
+void cb_play_develop(guint card)
 {
 	/* play development card */
 	g_assert(callback_mode == MODE_TURN && can_play_develop(card));
-	sm_send(SM(), "play-develop %d\n", card);
+	sm_send(SM(), "play-develop %u\n", card);
 	sm_push(SM(), mode_play_develop_response);
 }
 
@@ -343,7 +343,7 @@ gint game_resources(void)
 	return game_params->resource_count;
 }
 
-gint game_victory_points(void)
+guint game_victory_points(void)
 {
 	return game_params->victory_points;
 }

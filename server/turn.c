@@ -446,7 +446,8 @@ gboolean mode_turn(Player * player, gint event)
 	BuildType build_type;
 	DevelType devel_type;
 	gint x, y, pos;
-	gint idx, ratio;
+	guint idx;
+	gint ratio;
 	Resource supply_type, receive_type;
 	gint supply[NO_RESOURCE], receive[NO_RESOURCE];
 	gint sx, sy, spos, dx, dy, dpos;
@@ -535,7 +536,7 @@ gboolean mode_turn(Player * player, gint event)
 		develop_buy(player);
 		return TRUE;
 	}
-	if (sm_recv(sm, "play-develop %d", &idx, &devel_type)) {
+	if (sm_recv(sm, "play-develop %u", &idx, &devel_type)) {
 		develop_play(player, idx);
 		if (!game->params->check_victory_at_end_of_turn)
 			check_victory(player);

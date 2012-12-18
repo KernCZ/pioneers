@@ -81,18 +81,18 @@ typedef struct {
 	gboolean random_terrain;	/* shuffle terrain location? */
 	gboolean strict_trade;	/* trade only before build/buy? */
 	gboolean domestic_trade;	/* player trading allowed? */
-	gint num_players;	/* number of players in the game */
+	guint num_players;	/* number of players in the game */
 	gint sevens_rule;	/* what to do when a seven is rolled */
 	/* 0 = normal, 1 = no 7s on first 2 turns (official rule variant),
 	 * 2 = all 7s rerolled */
-	gint victory_points;	/* target number of victory points */
+	guint victory_points;	/* target number of victory points */
 	gboolean check_victory_at_end_of_turn;	/* check victory only at end of turn */
 	gint num_build_type[NUM_BUILD_TYPES];	/* number of each build type */
 	gint resource_count;	/* number of each resource */
-	gint num_develop_type[NUM_DEVEL_TYPES];	/* number of each development */
+	guint num_develop_type[NUM_DEVEL_TYPES];	/* number of each development */
 	Map *map;		/* the game map */
 	gboolean parsing_map;	/* currently parsing map? *//* Not in game_params[] */
-	gint tournament_time;	/* time to start tournament time in minutes *//* Not in game_params[] */
+	guint tournament_time;	/* time to start tournament time in minutes *//* Not in game_params[] */
 	gboolean quit_when_done;	/* server quits after someone wins *//* Not in game_params[] */
 	gboolean use_pirate;	/* is there a pirate in this game? */
 	GArray *island_discovery_bonus;	/* list of VPs for discovering an island */
@@ -193,13 +193,13 @@ void points_free(Points * points);
  * @retval ap Result of the parse
  * @return -1 if the line could not be parsed, otherwise the offset in the line
 */
-gint game_vscanf(const gchar * line, const gchar * fmt, va_list ap);
+ssize_t game_vscanf(const gchar * line, const gchar * fmt, va_list ap);
 /** Parse a line.
  * @param line Line to parse
  * @param fmt Format of the line, see communication format
  * @return -1 if the line could not be parsed, otherwise the offset in the line
 */
-gint game_scanf(const gchar * line, const gchar * fmt, ...);
+ssize_t game_scanf(const gchar * line, const gchar * fmt, ...);
 /** Print a line.
  * @param fmt Format of the line, see communication format
  * @param ap Arguments to the format

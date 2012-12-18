@@ -141,7 +141,7 @@ struct callbacks {
 	void (*start_game) (void);
 	/* You must setup.  Num_* is the number of settlements/roads that
 	 * should still be built. */
-	void (*setup) (unsigned num_settlements, unsigned num_roads);
+	void (*setup) (gint num_settlements, gint num_roads);
 	/* Someone did a call for quotes */
 	void (*quote) (gint player_num, gint * they_supply,
 		       gint * they_receive);
@@ -203,7 +203,7 @@ struct callbacks {
 	/* You bought a development card */
 	void (*bought_develop) (DevelType type);
 	/* someone played a development card */
-	void (*played_develop) (gint player_num, gint card_idx,
+	void (*played_develop) (gint player_num, guint card_idx,
 				DevelType type);
 	/* Something happened to your resources.  The frontend should not
 	 * apply the change.  When this function is called, the value is
@@ -300,7 +300,7 @@ void cb_build_settlement(const Node * node);
 void cb_build_city(const Node * node);
 void cb_build_city_wall(const Node * node);
 void cb_buy_develop(void);
-void cb_play_develop(int card);
+void cb_play_develop(guint card);
 void cb_undo(void);
 void cb_maritime(gint ratio, Resource supply, Resource receive);
 void cb_domestic(const gint * supply, const gint * receive);
@@ -326,7 +326,7 @@ void cb_choose_gold(const gint * resources);
  * information about the current state of the game. */
 gboolean have_rolled_dice(void);
 gboolean can_buy_develop(void);
-gboolean can_play_develop(int card);
+gboolean can_play_develop(guint card);
 gboolean can_play_any_develop(void);
 Player *player_get(gint num);
 gboolean player_is_spectator(gint num);
@@ -355,14 +355,14 @@ gint stock_num_bridges(void);
 gint stock_num_settlements(void);
 gint stock_num_cities(void);
 gint stock_num_city_walls(void);
-gint stock_num_develop(void);
+guint stock_num_develop(void);
 gint resource_asset(Resource which);
 gint resource_count(const gint * resources);
 gint resource_total(void);
 void resource_format_type(gchar * buffer, const gint * resources);
 const gchar *resource_name(Resource which, gboolean capital);
 gint game_resources(void);
-gint game_victory_points(void);
+guint game_victory_points(void);
 gint stat_get_vp_value(StatisticType type);
 gboolean is_setup_double(void);
 gint turn_num(void);

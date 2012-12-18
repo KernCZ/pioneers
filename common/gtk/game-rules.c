@@ -37,7 +37,7 @@ GType game_rules_get_type(void)
 }
 
 static void add_row(GameRules * gr, const gchar * name,
-		    const gchar * tooltip, gint row,
+		    const gchar * tooltip, guint row,
 		    GtkCheckButton ** check)
 {
 	GtkWidget *check_btn;
@@ -59,7 +59,7 @@ static void game_rules_init(GameRules * gr, gboolean show_all_rules)
 	GtkWidget *hbox;
 	GtkWidget *widget;
 	gint idx;
-	gint row;
+	guint row;
 
 	gtk_table_resize(GTK_TABLE(gr), show_all_rules ? 7 : 2, 2);
 	gtk_table_set_row_spacings(GTK_TABLE(gr), 3);
@@ -229,7 +229,7 @@ void game_rules_set_sevens_rule(GameRules * gr, guint sevens_rule)
 /* Get the sevens rule */
 guint game_rules_get_sevens_rule(GameRules * gr)
 {
-	gint idx;
+	guint idx;
 
 	for (idx = 0; idx < G_N_ELEMENTS(gr->radio_sevens); idx++)
 		if (gtk_toggle_button_get_active

@@ -28,7 +28,6 @@
 #ifdef HAVE_FCNTL_H
 #include <fcntl.h>
 #endif
-#include <ctype.h>
 #include <unistd.h>
 #ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
@@ -49,7 +48,6 @@
 #include <stdlib.h>		/* For atoi */
 #endif				/* ndef HAVE_GETADDRINFO_ET_AL */
 
-#include <time.h>
 #include "driver.h"
 #include "game.h"
 #include "map.h"
@@ -63,8 +61,6 @@ typedef union {
 	struct sockaddr_in6 in6;
 #endif				/* HAVE_GETADDRINFO_ET_AL */
 } sockaddr_t;
-
-static gboolean debug_enabled = FALSE;
 
 struct _Session {
 	int fd;
@@ -81,11 +77,11 @@ struct _Session {
 	char *host;
 	char *port;
 
-	gint read_tag;
+	guint read_tag;
 	char read_buff[16 * 1024];
-	int read_len;
+	size_t read_len;
 	gboolean entered;
-	gint write_tag;
+	guint write_tag;
 	GList *write_queue;
 
 	NetNotifyFunc notify_func;
@@ -97,64 +93,14 @@ static void net_attempt_to_connect(Session * ses);
  * (in the absence of other network activity).  */
 static const int PING_PERIOD = 30;
 
-void set_enable_debug(gboolean enabled)
-{
-	debug_enabled = enabled;
-}
-
-void debug(const gchar * fmt, ...)
-{
-	va_list ap;
-	gchar *buff;
-	gint idx;
-	time_t t;
-	struct tm *alpha;
-
-	if (!debug_enabled)
-		return;
-
-	va_start(ap, fmt);
-	buff = g_strdup_vprintf(fmt, ap);
-	va_end(ap);
-
-	t = time(NULL);
-	alpha = localtime(&t);
-
-	g_print("%02d:%02d:%02d ", alpha->tm_hour,
-		alpha->tm_min, alpha->tm_sec);
-
-	for (idx = 0; buff[idx] != '\0'; idx++) {
-		if (isprint(buff[idx]))
-			g_print("%c", buff[idx]);
-		else
-			switch (buff[idx]) {
-			case '\n':
-				g_print("\\n");
-				break;
-			case '\r':
-				g_print("\\r");
-				break;
-			case '\t':
-				g_print("\\t");
-				break;
-			default:
-				g_print("\\x%02x", (buff[idx] & 0xff));
-				break;
-			}
-	}
-	g_print("\n");
-	g_free(buff);
-}
-
-static void read_ready(Session * ses);
-static void write_ready(Session * ses);
+static void read_ready(gpointer user_data);
+static void write_ready(gpointer user_data);
 
 static void listen_read(Session * ses, gboolean monitor)
 {
 	if (monitor && ses->read_tag == 0)
 		ses->read_tag =
-		    driver->input_add_read(ses->fd, (InputFunc) read_ready,
-					   ses);
+		    driver->input_add_read(ses->fd, read_ready, ses);
 	if (!monitor && ses->read_tag != 0) {
 		driver->input_remove(ses->read_tag);
 		ses->read_tag = 0;
@@ -166,8 +112,7 @@ static void listen_write(Session * ses, gboolean monitor)
 {
 	if (monitor && ses->write_tag == 0)
 		ses->write_tag =
-		    driver->input_add_write(ses->fd,
-					    (InputFunc) write_ready, ses);
+		    driver->input_add_write(ses->fd, write_ready, ses);
 	if (!monitor && ses->write_tag != 0) {
 		driver->input_remove(ses->write_tag);
 		ses->write_tag = 0;
@@ -286,9 +231,10 @@ static gboolean ping_function(gpointer s)
 		    g_timeout_add(PING_PERIOD * 1000, ping_function, s);
 	} else {
 		/* Everything is fine.  Reschedule this check.  */
-		ses->timer_id =
-		    g_timeout_add((PING_PERIOD - interval) * 1000,
-				  ping_function, s);
+		ses->timer_id = g_timeout_add((guint)
+					      ((PING_PERIOD -
+						interval) * 1000),
+					      ping_function, s);
 	}
 	/* Return FALSE to not reschedule this timeout.  If it needed to be
 	 * rescheduled, it has been done explicitly above (with a different
@@ -296,8 +242,10 @@ static gboolean ping_function(gpointer s)
 	return FALSE;
 }
 
-static void write_ready(Session * ses)
+static void write_ready(gpointer user_data)
 {
+	Session *ses = (Session *) user_data;
+
 	if (!ses || ses->fd < 0)
 		return;
 	if (ses->connect_in_progress) {
@@ -319,7 +267,7 @@ static void write_ready(Session * ses)
 		} else if (error != 0) {
 #ifdef HAVE_GETADDRINFO_ET_AL
 			if (ses->current_ai && ses->current_ai->ai_next) {
-				// There are some protocols left to try
+				/* There are some protocols left to try */
 				ses->current_ai = ses->current_ai->ai_next;
 				listen_read(ses, FALSE);
 				listen_write(ses, FALSE);
@@ -345,12 +293,12 @@ static void write_ready(Session * ses)
 	}
 
 	while (ses->write_queue != NULL) {
-		int num;
+		ssize_t num;
 		char *data = ses->write_queue->data;
-		int len = strlen(data);
+		size_t len = strlen(data);
 
 		num = send(ses->fd, data, len, 0);
-		debug("write_ready: write(%d, \"%.*s\", %d) = %d",
+		debug("write_ready: write(%d, \"%.*s\", %lu) = %ld",
 		      ses->fd, len, data, len, num);
 		if (num < 0) {
 			if (net_would_block())
@@ -367,7 +315,7 @@ static void write_ready(Session * ses)
 			    = g_list_remove(ses->write_queue, data);
 			g_free(data);
 		} else {
-			memmove(data, data + num, len - num + 1);
+			memmove(data, data + num, len - (size_t) num + 1);
 			break;
 		}
 	}
@@ -393,8 +341,8 @@ void net_write(Session * ses, const gchar * data)
 		ses->write_queue =
 		    g_list_append(ses->write_queue, g_strdup(data));
 	} else {
-		int len;
-		int num;
+		size_t len;
+		ssize_t num;
 
 		len = strlen(data);
 		num = send(ses->fd, data, len, 0);
@@ -437,20 +385,21 @@ void net_printf(Session * ses, const gchar * fmt, ...)
 	g_free(buff);
 }
 
-static int find_line(char *buff, int len)
+static ssize_t find_line(char *buff, size_t len)
 {
-	int idx;
+	size_t idx;
 
 	for (idx = 0; idx < len; idx++)
 		if (buff[idx] == '\n')
-			return idx;
+			return (ssize_t) idx;
 	return -1;
 }
 
-static void read_ready(Session * ses)
+static void read_ready(gpointer user_data)
 {
-	int num;
-	int offset;
+	ssize_t num;
+	size_t offset;
+	Session *ses = (Session *) user_data;
 
 	/* There is data from this connection: record the time.  */
 	ses->last_response = time(NULL);
@@ -483,7 +432,7 @@ static void read_ready(Session * ses)
 		return;
 	}
 
-	ses->read_len += num;
+	ses->read_len += (size_t) num;
 
 	if (ses->entered)
 		return;
@@ -492,12 +441,12 @@ static void read_ready(Session * ses)
 	offset = 0;
 	while (ses->fd >= 0 && offset < ses->read_len) {
 		char *line = ses->read_buff + offset;
-		int len = find_line(line, ses->read_len - offset);
+		ssize_t len = find_line(line, ses->read_len - offset);
 
 		if (len < 0)
 			break;
 		line[len] = '\0';
-		offset += len + 1;
+		offset += (size_t) (len + 1);
 
 		if (!strcmp(line, "hello")) {
 			net_write(ses, "yes\n");

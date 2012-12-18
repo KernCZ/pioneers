@@ -132,7 +132,7 @@ GtkWidget *resource_table_new(const gchar * title,
 	gchar *temp;
 	GtkWidget *widget;
 	gint i;
-	gint row;
+	guint row;
 
 	rt = g_object_new(resource_table_get_type(), NULL);
 
@@ -259,7 +259,7 @@ void resource_table_set_total(ResourceTable * rt, const gchar * text,
 			      gint total)
 {
 	GtkWidget *widget;
-	gint row;
+	guint row;
 	gint i;
 
 	g_assert(IS_RESOURCETABLE(rt));

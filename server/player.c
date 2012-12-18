@@ -25,6 +25,7 @@
 #include <string.h>
 #include <unistd.h>
 #include "server.h"
+#include "network.h"
 
 /* Local function prototypes */
 static gboolean mode_check_version(Player * player, gint event);
@@ -32,7 +33,7 @@ static gboolean mode_check_status(Player * player, gint event);
 static gboolean mode_bad_version(Player * player, gint event);
 static gboolean mode_global(Player * player, gint event);
 static gboolean mode_unhandled(Player * player, gint event);
-static void player_setup(Player * player, int playernum,
+static void player_setup(Player * player, gint playernum,
 			 const gchar * name, gboolean force_spectator);
 static Player *player_by_name(Game * game, char *name);
 
@@ -60,7 +61,7 @@ static gint next_free_player_num(Game * game, gboolean force_spectator)
 	if (!force_spectator) {
 		GList *list;
 		gboolean player_taken[MAX_PLAYERS];
-		gint available = game->params->num_players;
+		guint available = game->params->num_players;
 
 		memset(player_taken, 0, sizeof(player_taken));
 		playerlist_inc_use_count(game);
@@ -77,7 +78,7 @@ static gint next_free_player_num(Game * game, gboolean force_spectator)
 		if (available > 0) {
 			gint skip;
 			if (game->random_order) {
-				skip = get_rand(available);
+				skip = get_rand((gint) available);
 			} else {
 				skip = 0;
 			}
@@ -89,7 +90,7 @@ static gint next_free_player_num(Game * game, gboolean force_spectator)
 	}
 
 	/* No players available/wanted, look for a spectator number */
-	idx = game->params->num_players;
+	idx = (gint) game->params->num_players;
 	while (player_by_num(game, idx) != NULL)
 		++idx;
 	return idx;
@@ -206,7 +207,7 @@ static gboolean mode_unhandled(Player * player, gint event)
  */
 static gboolean tournament_start_cb(gpointer data)
 {
-	int i;
+	guint i;
 	Game *game = (Game *) data;
 	GList *player;
 	gboolean human_player_present;
@@ -234,7 +235,7 @@ static gboolean tournament_start_cb(gpointer data)
 	for (player = game->player_list; player != NULL;
 	     player = g_list_next(player)) {
 		Player *p = player->data;
-		if (p->disconnected && !p->sm->use_cache) {
+		if (p->disconnected && !sm_get_use_cache(p->sm)) {
 			player_free(p);
 		}
 	}
@@ -434,7 +435,7 @@ Player *player_new(Game * game, const gchar * name)
 Player *player_new_connection(Game * game, int fd, const gchar * location)
 {
 	gchar name[100];
-	gint i;
+	size_t i;
 	Player *player;
 	StateMachine *sm;
 
@@ -487,7 +488,6 @@ Player *player_new_connection(Game * game, int fd, const gchar * location)
 	 */
 	sm_set_use_cache(sm, TRUE);
 
-
 	sm_goto(sm, (StateFunc) mode_check_version);
 
 	driver->player_change(game);
@@ -529,7 +529,7 @@ static void player_set_name_real(Player * player, gchar * name,
 	driver->player_change(game);
 }
 
-static void player_setup(Player * player, int playernum,
+static void player_setup(Player * player, gint playernum,
 			 const gchar * name, gboolean force_spectator)
 {
 	gchar nm[MAX_NAME_LENGTH + 1];
@@ -571,7 +571,7 @@ static void player_setup(Player * player, int playernum,
 	/* if the new name exists, try padding it with underscores */
 	other = player_by_name(game, nm);
 	if (other != player && other != NULL) {
-		gint i;
+		size_t i;
 		/* add underscores until the name is unique */
 		for (i = strlen(nm); i < G_N_ELEMENTS(nm) - 1; ++i) {
 			if (player_by_name(game, nm) == NULL)
@@ -591,7 +591,7 @@ static void player_setup(Player * player, int playernum,
 				/* Digit will be: 0..10 */
 				--i;
 				digit = g_ascii_digit_value(nm[i]) + 1;
-				nm[i] = '0' + digit % 10;
+				nm[i] = (gchar) ('0' + digit % 10);
 			}
 		}
 	}
@@ -643,6 +643,8 @@ void player_archive(Player * player)
 {
 	StateFunc state;
 	Game *game = player->game;
+	gboolean human_player_present;
+	GList *pl;
 
 	/* If this was a spectator, forget about him */
 	if (player_is_spectator(game, player->num)) {
@@ -692,8 +694,8 @@ void player_archive(Player * player)
 
 	/* if no human players are present, start timer */
 	playerlist_inc_use_count(game);
-	gboolean human_player_present = FALSE;
-	GList *pl = game->player_list;
+	human_player_present = FALSE;
+	pl = game->player_list;
 	for (pl = game->player_list;
 	     pl != NULL && !human_player_present; pl = g_list_next(pl)) {
 		Player *p = pl->data;
@@ -744,7 +746,8 @@ void player_revive(Player * newp, char *name)
 		     current = g_list_next(current)) {
 			p = current->data;
 			if (!strcmp(name, p->name))
-				if (p->disconnected && !p->sm->use_cache
+				if (p->disconnected
+				    && !sm_get_use_cache(p->sm)
 				    && p != newp)
 					break;
 		}
@@ -766,7 +769,7 @@ void player_revive(Player * newp, char *name)
 		for (current = game->player_list; current != NULL;
 		     current = g_list_next(current)) {
 			p = current->data;
-			if (p->disconnected && !p->sm->use_cache
+			if (p->disconnected && !sm_get_use_cache(p->sm)
 			    && p != newp)
 				break;
 		}
@@ -826,13 +829,7 @@ void player_revive(Player * newp, char *name)
 	newp->market_played = p->market_played;
 	/* Not copied: sm, game, location, num, client_version */
 
-	/* copy over the state */
-	memcpy(newp->sm->stack, p->sm->stack, sizeof(newp->sm->stack));
-	memcpy(newp->sm->stack_name, p->sm->stack_name,
-	       sizeof(newp->sm->stack_name));
-	newp->sm->stack_ptr = p->sm->stack_ptr;
-	newp->sm->current_state = p->sm->current_state;
-
+	sm_copy_stack(newp->sm, p->sm);
 	if (sm_current(newp->sm) != (StateFunc) mode_pre_game)
 		sm_push(newp->sm, (StateFunc) mode_pre_game);
 	else
@@ -1075,7 +1072,7 @@ GList *player_next_real(GList * last)
 {
 	Player *player;
 	Game *game;
-	gint numplayers;
+	guint numplayers;
 	gint nextnum;
 	GList *list;
 
@@ -1183,7 +1180,7 @@ static void player_broadcast_internal(Player * player, BroadcastType type,
 	for (list = game->player_list; list != NULL;
 	     list = g_list_next(list)) {
 		Player *scan = list->data;
-		if ((scan->disconnected && !scan->sm->use_cache)
+		if ((scan->disconnected && !sm_get_use_cache(scan->sm))
 		    || scan->num < 0
 		    || scan->version < first_supported_version
 		    || scan->version > last_supported_version)
