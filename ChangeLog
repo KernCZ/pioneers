@@ -1,3 +1,6 @@
+2013-01-17  Roland Clobus <rclobus@rclobus.nl>
+	* common/game.h: Fixed building due to missing ssize_t on armel.
+
 2012-12-18  Roland Clobus <rclobus@rclobus.nl>
 	* server/main.c, server/avahi.c, server/develop.c, server/meta.c,
 	server/turn.c, server/admin.c, server/player.c, server/buildutil.c,

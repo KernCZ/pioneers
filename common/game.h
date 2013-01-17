@@ -23,6 +23,10 @@
 #ifndef __game_h
 #define __game_h
 
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
+
 #include <stdio.h>
 #include "map.h"
 #include "driver.h"
