@@ -35,7 +35,7 @@ typedef struct {
 	GdkPixbuf *image;
 	GdkPixbuf *native_image;
 	gint native_width;
-	float aspect;
+	gdouble aspect;
 } TScaleData;
 
 typedef enum {

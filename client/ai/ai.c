@@ -181,7 +181,7 @@ static void ai_start_game(void)
 
 void ai_wait(void)
 {
-	g_usleep(waittime * 1000);
+	g_usleep((gulong) waittime * 1000u);
 }
 
 void ai_chat(const char *message)

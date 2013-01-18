@@ -1166,7 +1166,7 @@ static gboolean will_play_development_card(DevelType cardtype)
 static void greedy_turn(void)
 {
 	resource_values_t resval;
-	int i;
+	guint i;
 	gint need[NO_RESOURCE], assets[NO_RESOURCE];
 
 	/* play soldier card before the turn when an own resource is blocked */
@@ -2065,7 +2065,7 @@ static void greedy_get_rolled_resources(gint player_num,
 }
 
 static void greedy_played_develop(gint player_num,
-				  G_GNUC_UNUSED gint card_idx,
+				  G_GNUC_UNUSED guint card_idx,
 				  DevelType type)
 {
 	if (player_num != my_player_num() && type == DEVEL_MONOPOLY)
