@@ -941,14 +941,20 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
 
 	if (meta_dlg != NULL) {
 		if (ses == NULL) {
+			gtk_list_store_clear(meta_games_model);
 			metaserver_info.num_redirects = 0;
+			metaserver_info.version_major = 0;
+			metaserver_info.version_minor = 0;
+			metaserver_info.can_create_games = FALSE;
+			metaserver_info.can_send_game_settings = FALSE;
+			gtk_dialog_set_response_sensitive
+			    (GTK_DIALOG(meta_dlg),
+			     META_RESPONSE_NEW,
+			     metaserver_info.can_create_games);
+
 			query_meta_server(metaserver_info.server,
 					  metaserver_info.port);
 		}
-		return;
-	}
-
-	if (meta_dlg) {
 		gtk_window_present(GTK_WINDOW(meta_dlg));
 		return;
 	}
