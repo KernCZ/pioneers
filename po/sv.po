@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 0.12.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-28 11:51+0200\n"
+"POT-Creation-Date: 2013-01-22 10:11+0100\n"
 "PO-Revision-Date: 2011-10-30 15:06+0100\n"
 "Last-Translator: Daniel Nylander <yeager@ubuntu.com>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
@@ -2559,7 +2559,7 @@ msgstr "Bonusar för upptäckter av öar:"
 
 #. Tooltip for island bonus
 #: ../common/gtk/game-rules.c:147
-msgid "A comma separated list of bonus points for discovering islands"
+msgid "A comma seperated list of bonus points for discovering islands"
 msgstr ""
 
 #. Tooltip for the check button

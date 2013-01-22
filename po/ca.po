@@ -2560,7 +2560,8 @@ msgstr "Bonificacions per descobriment d'illes"
 #: ../common/gtk/game-rules.c:147
 msgid "A comma separated list of bonus points for discovering islands"
 msgstr ""
-"Una llista separada per comes de punts de bonificació per descobriment d'illes"
+"Una llista separada per comes de punts de bonificació per descobriment "
+"d'illes"
 
 #. Tooltip for the check button
 #: ../common/gtk/game-rules.c:163
@@ -3727,5 +3728,3 @@ msgstr "S'ha intentar assignar recursos al jugador NULL.\n"
 #: ../server/turn.c:493
 msgid "The dice roll has been determined by the administrator."
 msgstr "La tirada de daus ha estat determinada per l'administrador."
-
-

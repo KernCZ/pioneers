@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 14.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-28 11:51+0200\n"
+"POT-Creation-Date: 2013-01-22 10:11+0100\n"
 "PO-Revision-Date: 2011-10-22 15:31+0100\n"
 "Last-Translator: Roland Clobus <rclobus@rclobus.nl>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
@@ -2560,7 +2560,8 @@ msgstr "Island discovery bonuses"
 
 #. Tooltip for island bonus
 #: ../common/gtk/game-rules.c:147
-msgid "A comma separated list of bonus points for discovering islands"
+#, fuzzy
+msgid "A comma seperated list of bonus points for discovering islands"
 msgstr "A comma separated list of bonus points for discovering islands"
 
 #. Tooltip for the check button
