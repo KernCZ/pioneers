@@ -1,18 +1,16 @@
 # Pioneers - Settlers of Catan for GNOME.
-# Copyright (C) 1999-2001 Dave Cole
-# Copyright (C) 2000-2002 Andy Heroff
-# Copyright (C) 2006 Marco Antonio Giraldo <m.a.giraldo@rug.nl>
 # This file is distributed under the same license as the pioneers package.
 #
-# Jaume Badiella <myotis@drac.com>, 2011, 2013.
+# Copyright (C) Jaume Badiella <myotis@drac.com>, 2013
+# Jaume Badiella Aguilera <myotis@drac.com>, 2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 14.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-20 15:28+0100\n"
-"PO-Revision-Date: 2013-01-09 16:21+0100\n"
-"Last-Translator: Jaume Badiella <myotis@drac.com>\n"
-"Language-Team: Catalan <>\n"
+"POT-Creation-Date: 2012-05-28 11:51+0200\n"
+"PO-Revision-Date: 2013-01-20 20:01+0100\n"
+"Last-Translator: Jaume Badiella Aguilera <myotis@drac.com>\n"
+"Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
 "Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2417,7 +2415,7 @@ msgstr ""
 #: ../common/game.c:499
 #, c-format
 msgid "Obsolete rule: '%s'\n"
-msgstr ""
+msgstr "Regla obsoleta: '%s'\n"
 
 #: ../common/game.c:506
 #, c-format
@@ -2425,6 +2423,8 @@ msgid ""
 "The game uses the new rule '%s', which is not yet supported. Consider "
 "upgrading.\n"
 msgstr ""
+"El joc utilitza la nova regla '%s', que encara no està suportada. Pensa en "
+"actualitzar-te.\n"
 
 #: ../common/game.c:890 ../common/game.c:921
 msgid "This game cannot be won."
@@ -2558,8 +2558,9 @@ msgstr "Bonificacions per descobriment d'illes"
 
 #. Tooltip for island bonus
 #: ../common/gtk/game-rules.c:147
-msgid "A comma seperated list of bonus points for discovering islands"
+msgid "A comma separated list of bonus points for discovering islands"
 msgstr ""
+"Una llista separada per comes de punts de bonificació per descobriment d'illes"
 
 #. Tooltip for the check button
 #: ../common/gtk/game-rules.c:163
@@ -2615,7 +2616,7 @@ msgstr "G"
 #. Port indicator for ore
 #: ../common/gtk/guimap.c:861
 msgid "Ore port|O"
-msgstr "N"
+msgstr "P"
 
 #. Port indicator for wool
 #: ../common/gtk/guimap.c:865
@@ -3027,7 +3028,7 @@ msgstr "Partides"
 #. Name of the file filter: show all files
 #: ../editor/gtk/editor.c:1086
 msgid "Unfiltered"
-msgstr ""
+msgstr "Sense filtrar"
 
 #. Dialog caption
 #: ../editor/gtk/editor.c:1098
@@ -3164,7 +3165,7 @@ msgstr "Paràmetres"
 #. Tab page name
 #: ../editor/gtk/editor.c:1528
 msgid "Comments"
-msgstr ""
+msgstr "Comentaris"
 
 #: ../editor/gtk/game-resources.c:48
 msgid "Resource count"
@@ -3670,7 +3671,7 @@ msgstr "No s'ha canviat el nom: el nou nom ja està en ús"
 
 #: ../server/player.c:632 ../server/server.c:43
 msgid "Was hanging around for too long without players... bye.\n"
-msgstr "Ha estat esperant massa temps sense jugadors... siau.\n"
+msgstr "Ha estat esperant massa temps sense jugadors... Siau.\n"
 
 #: ../server/player.c:716
 msgid "The last human player left. Waiting for the return of a player."
@@ -3725,4 +3726,6 @@ msgstr "S'ha intentar assignar recursos al jugador NULL.\n"
 #. Cheat mode has been activated
 #: ../server/turn.c:493
 msgid "The dice roll has been determined by the administrator."
-msgstr "La tirada de daus ha estat determinat per l'administrador."
+msgstr "La tirada de daus ha estat determinada per l'administrador."
+
+
