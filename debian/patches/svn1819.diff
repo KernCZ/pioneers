@@ -160,17 +160,6 @@ This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
  msgstr ""
  "Een komma-gescheiden lijst van bonuspunten voor het ontdekken van eilanden"
  
---- a/po/pioneers.pot
-+++ b/po/pioneers.pot
-@@ -2528,7 +2528,7 @@
- 
- #. Tooltip for island bonus
- #: ../common/gtk/game-rules.c:147
--msgid "A comma seperated list of bonus points for discovering islands"
-+msgid "A comma separated list of bonus points for discovering islands"
- msgstr ""
- 
- #. Tooltip for the check button
 --- a/po/pt.po
 +++ b/po/pt.po
 @@ -2563,7 +2563,7 @@
