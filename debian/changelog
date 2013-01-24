@@ -1,12 +1,13 @@
-pioneers (14.2-1~local1) UNRELEASED; urgency=low
+pioneers (14.1-2~local1) UNRELEASED; urgency=low
 
   * Awaiting new upstream release.
+  * Applied translation patches from the upstream repository.
   * pioneers-console.preinst: Removed. The migration rules are no longer
     required in the current stable version.
   * Use 'set -e' in pioneers-meta-server scripts to remove the lintian warnings.
   * copyright: Updated information and removed extra link to the GPL licenses.
 
- -- Roland Clobus <roland@rclobus.nl>  Fri, 01 Jun 2012 13:35:53 +0200
+ -- Roland Clobus <roland@rclobus.nl>  Thu, 24 Jan 2013 18:00:00 +0200
 
 pioneers (14.1-1) unstable; urgency=low
 
