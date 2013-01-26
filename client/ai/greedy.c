@@ -47,6 +47,9 @@ static int quote_num;
  * must discard resources */
 static gboolean discard_starting;
 
+/* Used for random chat messages */
+GRand *chat_rand;
+
 /* things we can buy, in the order that we want them. */
 typedef enum {
 	BUY_CITY,
@@ -1301,10 +1304,9 @@ static void greedy_turn(void)
 
 #define randchat(array,nochat_percent)				\
 	do {							\
-		int p = (G_N_ELEMENTS(array)*1000/nochat_percent);	\
-		int n = (rand() % p) / 10;			\
-		if (n < G_N_ELEMENTS(array) )			\
-			ai_chat (array[n]);			\
+		if (g_rand_int_range(chat_rand, 0, 101) > nochat_percent) { \
+			ai_chat(array[g_rand_int_range(chat_rand, 0, G_N_ELEMENTS(array))]); \
+		} \
 	} while(0)
 
 static const char *chat_turn_start[] = {
@@ -2114,4 +2116,6 @@ void greedy_init(void)
 	callbacks.get_rolled_resources = &greedy_get_rolled_resources;
 	callbacks.played_develop = &greedy_played_develop;
 	callbacks.new_statistics = &greedy_new_statistics;
+
+	chat_rand = g_rand_new();
 }
