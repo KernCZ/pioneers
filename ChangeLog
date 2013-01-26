@@ -1,3 +1,6 @@
+2013-01-26  Roland Clobus <rclobus@rclobus.nl>
+	* common/map.c: Fix signed/unsigned issue resulting in crash.
+
 2013-01-19  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/connect.c: Clear the list of games and set focus to the
 	dialog with the list of games when changing the meta server.

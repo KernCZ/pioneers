@@ -510,8 +510,8 @@ static gboolean layout_chits(Map * map)
 	Hex **hexes;
 	guint num_chits;
 	gint x, y;
-	gint idx;
-	gint chit_idx;
+	guint idx;
+	guint chit_idx;
 	guint num_deserts;
 
 	g_return_val_if_fail(map != NULL, FALSE);
@@ -525,7 +525,8 @@ static gboolean layout_chits(Map * map)
 	for (x = 0; x < map->x_size; x++)
 		for (y = 0; y < map->y_size; y++) {
 			Hex *hex = map->grid[y][x];
-			if (hex != NULL && hex->chit_pos >= num_chits)
+			if (hex != NULL
+			    && hex->chit_pos >= (gint) num_chits)
 				num_chits = (guint) (hex->chit_pos + 1);
 			if (hex != NULL && hex->terrain == DESERT_TERRAIN)
 				num_deserts++;
@@ -636,7 +637,7 @@ void map_shuffle_terrain(Map * map)
 		for (y = 0; y < map->y_size; y++) {
 			Hex *hex = map->grid[y][x];
 			gint num;
-			gint idx;
+			guint idx;
 
 			if (hex == NULL || hex->shuffle == FALSE)
 				continue;
@@ -760,7 +761,7 @@ static Hex *copy_hex(Map * map, const Hex * hex)
 
 static gboolean set_nosetup_nodes(const Hex * hex, gpointer closure)
 {
-	gint idx;
+	guint idx;
 	Map *copy = closure;
 	for (idx = 0; idx < G_N_ELEMENTS(hex->nodes); ++idx) {
 		const Node *node = hex->nodes[idx];
@@ -779,7 +780,7 @@ static gboolean set_nosetup_nodes(const Hex * hex, gpointer closure)
 static GArray *copy_int_list(GArray * array)
 {
 	GArray *copy;
-	int idx;
+	guint idx;
 
 	if (array == NULL) {
 		return NULL;
