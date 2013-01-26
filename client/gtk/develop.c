@@ -262,7 +262,7 @@ void frontend_bought_develop(DevelType type)
 	update_model(&iter, type);
 }
 
-void frontend_played_develop(gint player_num, G_GNUC_UNUSED gint card_idx,
+void frontend_played_develop(gint player_num, G_GNUC_UNUSED guint card_idx,
 			     DevelType type)
 {
 	GtkTreeIter iter;

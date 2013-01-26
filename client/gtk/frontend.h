@@ -143,7 +143,7 @@ void frontend_quote_end(void);
 void frontend_quote_monitor(void);
 void frontend_rolled_dice(gint die1, gint die2, gint player_num);
 void frontend_bought_develop(DevelType type);
-void frontend_played_develop(gint player_num, gint card_idx,
+void frontend_played_develop(gint player_num, guint card_idx,
 			     DevelType type);
 void frontend_resource_change(Resource type, gint new_amount);
 void frontend_robber(void);
