@@ -12,6 +12,7 @@
 	client/common/player.c, client/ai/ai.c, client/ai/greedy.c,
 	client/callback.h: Enable -Wsign-compare, fix all warnings, resulting
 	in a working game again (was broken due to signed/unsigned issues).
+	* server/server.c: Reverted change on 2012-12-18: #define PRINT_INFO.
 
 2013-01-26  Roland Clobus <rclobus@rclobus.nl>
 	* common/map.c: Fix signed/unsigned issue resulting in crash.

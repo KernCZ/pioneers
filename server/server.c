@@ -29,10 +29,6 @@
 #include "server.h"
 #include "network.h"
 
-#define PRINT_INFO
-
-
-
 static GameParams *load_game_desc(const gchar * fname);
 
 static GSList *_game_list = NULL;	/* The list of GameParams, ordered by title */
