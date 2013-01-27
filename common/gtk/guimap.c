@@ -735,7 +735,7 @@ static gboolean display_hex(const Hex * hex, gpointer closure)
 	gint x_offset, y_offset;
 	GdkPoint points[MAX_POINTS];
 	Polygon poly;
-	int idx;
+	guint idx;
 	const MapTheme *theme = theme_get_current();
 	const GuiMap *gmap = closure;
 
@@ -1264,7 +1264,7 @@ static void find_hex(GuiMap * gmap, gint x, gint y, MapElement * element)
 void guimap_draw_edge(GuiMap * gmap, const Edge * edge)
 {
 	GdkRectangle rect;
-	gint idx;
+	guint idx;
 	Polygon poly;
 	GdkPoint points[MAX_POINTS];
 
@@ -1355,7 +1355,7 @@ static void draw_bridge_cursor(GuiMap * gmap)
 void guimap_draw_node(GuiMap * gmap, const Node * node)
 {
 	GdkRectangle rect;
-	int idx;
+	guint idx;
 	Polygon poly;
 	GdkPoint points[MAX_POINTS];
 

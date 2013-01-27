@@ -198,7 +198,7 @@ static GtkWidget *settings_create_content(void)
 			NULL, FALSE);
 
 	if (game_params->island_discovery_bonus) {
-		gint idx;
+		guint idx;
 		island_bonus =
 		    g_strdup_printf("%d",
 				    g_array_index

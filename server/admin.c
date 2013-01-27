@@ -91,7 +91,7 @@ void admin_run_command(Session * admin_session, const gchar * line)
 	const gchar *command_start;
 	gchar *command;
 	gchar *argument;
-	gint command_number;
+	guint command_number;
 
 	static gchar *server_port = NULL;
 	static gboolean register_server = TRUE;

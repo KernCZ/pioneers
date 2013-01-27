@@ -118,7 +118,7 @@ const QuoteInfo *trade_current_quote(void)
 /** Show what the resources will be if the quote is accepted */
 static void update_rows(void)
 {
-	gint idx;
+	guint idx;
 	gint amount;
 	gchar str[16];
 	const QuoteInfo *quote = trade_current_quote();
@@ -223,7 +223,7 @@ void trade_format_quote(const QuoteInfo * quote, gchar * desc)
  */
 void trade_new_trade(void)
 {
-	gint idx;
+	guint idx;
 	gchar we_supply_desc[512];
 	gchar we_receive_desc[512];
 	gchar desc[512];
@@ -375,7 +375,7 @@ void trade_finish(void)
 /** Start a new trade */
 void trade_begin(void)
 {
-	gint idx;
+	guint idx;
 
 	quote_view_begin(QUOTEVIEW(quoteview));
 
@@ -586,7 +586,7 @@ GtkWidget *trade_build_page(void)
 /** A trade is performed/a new trade is possible */
 static void trade_update(void)
 {
-	gint idx;
+	guint idx;
 
 	for (idx = 0; idx < G_N_ELEMENTS(we_supply_rows); idx++) {
 		if (resource_asset(idx) == 0) {

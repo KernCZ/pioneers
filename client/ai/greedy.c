@@ -987,7 +987,7 @@ static void greedy_setup_road(void)
 {
 	Node *node;
 	Edge *e = NULL;
-	int i;
+	guint i;
 	resource_values_t resval;
 	float tmp;
 
@@ -2032,7 +2032,7 @@ static void greedy_player_turn(gint player)
 
 static void greedy_robber_moved(G_GNUC_UNUSED Hex * old, Hex * new)
 {
-	int idx;
+	guint idx;
 	gboolean iam_affected = FALSE;
 	for (idx = 0; idx < G_N_ELEMENTS(new->nodes); idx++) {
 		if (new->nodes[idx]->owner == my_player_num())

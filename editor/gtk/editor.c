@@ -287,6 +287,7 @@ static gint button_press_map_cb(GtkWidget * area, GdkEventButton * event,
 	gboolean port_ok;
 	gint num_ports;
 	gint i;
+	guint idx;
 
 	if (gtk_widget_get_window(area) == NULL || gmap->map == NULL)
 		return FALSE;
@@ -314,10 +315,11 @@ static gint button_press_map_cb(GtkWidget * area, GdkEventButton * event,
 
 		if (distance_node < distance_hex) {
 			current_node->no_setup = !current_node->no_setup;
-			for (i = 0; i < G_N_ELEMENTS(current_node->hexes);
-			     i++) {
+			for (idx = 0;
+			     idx < G_N_ELEMENTS(current_node->hexes);
+			     idx++) {
 				guimap_draw_hex(gmap,
-						current_node->hexes[i]);
+						current_node->hexes[idx]);
 			}
 			return TRUE;
 		} else {

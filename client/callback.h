@@ -397,8 +397,8 @@ gboolean have_ships(void);
 gboolean have_bridges(void);
 gboolean have_city_walls(void);
 const GameParams *get_game_params(void);
-int pirate_count_victims(const Hex * hex, gint * victim_list);
-int robber_count_victims(const Hex * hex, gint * victim_list);
+guint pirate_count_victims(const Hex * hex, gint * victim_list);
+guint robber_count_victims(const Hex * hex, gint * victim_list);
 const gint *get_bank(void);
 const DevelDeck *get_devel_deck(void);
 

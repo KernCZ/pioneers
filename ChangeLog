@@ -1,3 +1,18 @@
+2013-01-27  Roland Clobus <rclobus@rclobus.nl>
+	* editor/gtk/editor.c, common/cards.c, common/map_query.c,
+	common/gtk/player-icon.c, common/gtk/guimap.c, common/gtk/player-icon.h,
+	common/gtk/colors.c, common/gtk/theme.c, common/gtk/config-gnome.c,
+	common/game.c, common/state.c, common/network.c, common/buildrec.c,
+	meta-server/main.c, configure.ac, server/admin.c, server/buildutil.c,
+	server/resource.c, server/turn.c, server/player.c, server/develop.c,
+	server/server.c, server/discard.c, server/robber.c, server/pregame.c,
+	server/main.c, client/gtk/trade.c, client/gtk/settingscreen.c,
+	client/gtk/name.c, client/gtk/gui.c, client/gtk/player.c,
+	client/gtk/interface.c, client/common/stock.c, client/common/callback.c,
+	client/common/player.c, client/ai/ai.c, client/ai/greedy.c,
+	client/callback.h: Enable -Wsign-compare, fix all warnings, resulting
+	in a working game again (was broken due to signed/unsigned issues).
+
 2013-01-26  Roland Clobus <rclobus@rclobus.nl>
 	* common/map.c: Fix signed/unsigned issue resulting in crash.
 	* client/gtk/develop.c, client/gtk/frontend.h: Fixed compiler warning

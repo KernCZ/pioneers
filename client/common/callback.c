@@ -469,7 +469,7 @@ gboolean turn_can_trade(void)
 
 static gboolean really_try_move_ship(const Hex * hex, gpointer closure)
 {
-	gint idx;
+	guint idx;
 	const Edge *from = closure;
 	for (idx = 0; idx < G_N_ELEMENTS(hex->edges); ++idx) {
 		const Edge *edge;
@@ -506,7 +506,7 @@ gboolean can_move_ship(const Edge * from, const Edge * to)
 static gboolean try_move_ship(const Hex * hex,
 			      G_GNUC_UNUSED gpointer closure)
 {
-	gint idx;
+	guint idx;
 	for (idx = 0; idx < G_N_ELEMENTS(hex->edges); ++idx) {
 		Edge *edge;	/* Huh? Can non-const be taken from const Hex ? */
 		edge = hex->edges[idx];
@@ -530,11 +530,11 @@ gboolean turn_can_move_ship(void)
 				  NULL);
 }
 
-int robber_count_victims(const Hex * hex, gint * victim_list)
+guint robber_count_victims(const Hex * hex, gint * victim_list)
 {
-	gint idx;
-	gint node_idx;
-	gint num_victims;
+	guint idx;
+	guint node_idx;
+	guint num_victims;
 
 	/* If there is no-one to steal from, or the players have no
 	 * resources, we do not go into steal_resource.
@@ -569,11 +569,11 @@ int robber_count_victims(const Hex * hex, gint * victim_list)
 	return num_victims;
 }
 
-int pirate_count_victims(const Hex * hex, gint * victim_list)
+guint pirate_count_victims(const Hex * hex, gint * victim_list)
 {
-	gint idx;
-	gint edge_idx;
-	gint num_victims;
+	guint idx;
+	guint edge_idx;
+	guint num_victims;
 
 	/* If there is no-one to steal from, or the players have no
 	 * resources, we do not go into steal_resource.

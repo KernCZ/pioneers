@@ -103,7 +103,7 @@ static void config_sync(void)
 				   S_IRUSR | S_IWUSR);
 		};
 		if (f != -1) {
-			if (write(f, data, length) < length) {
+			if (write(f, data, length) < (ssize_t) length) {
 				g_warning
 				    ("Incomplete settings file written");
 			}

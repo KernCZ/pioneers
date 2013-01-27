@@ -71,7 +71,7 @@ gboolean is_edge_adjacent_to_node(const Edge * edge, const Node * node)
  */
 gboolean is_edge_on_land(const Edge * edge)
 {
-	gint idx;
+	guint idx;
 
 	g_return_val_if_fail(edge != NULL, FALSE);
 
@@ -88,7 +88,7 @@ gboolean is_edge_on_land(const Edge * edge)
  */
 gboolean is_edge_on_sea(const Edge * edge)
 {
-	gint idx;
+	guint idx;
 
 	g_return_val_if_fail(edge != NULL, FALSE);
 
@@ -115,7 +115,7 @@ gboolean is_edge_on_sea(const Edge * edge)
  */
 gboolean is_node_on_land(const Node * node)
 {
-	gint idx;
+	guint idx;
 
 	g_return_val_if_fail(node != NULL, FALSE);
 
@@ -134,7 +134,7 @@ gboolean is_node_on_land(const Node * node)
 gboolean node_has_edge_owned_by(const Node * node, gint owner,
 				BuildType type)
 {
-	gint idx;
+	guint idx;
 
 	g_return_val_if_fail(node != NULL, FALSE);
 
@@ -178,12 +178,12 @@ gboolean node_has_bridge_owned_by(const Node * node, gint owner)
  */
 gboolean is_node_spacing_ok(const Node * node)
 {
-	gint idx;
+	guint idx;
 
 	g_return_val_if_fail(node != NULL, FALSE);
 	for (idx = 0; idx < G_N_ELEMENTS(node->edges); idx++) {
 		Edge *edge = node->edges[idx];
-		gint idx2;
+		guint idx2;
 
 		if (edge == NULL)
 			continue;
@@ -207,7 +207,7 @@ gboolean is_node_spacing_ok(const Node * node)
  */
 gboolean is_node_next_to_robber(const Node * node)
 {
-	gint idx;
+	guint idx;
 
 	g_return_val_if_fail(node != NULL, FALSE);
 	for (idx = 0; idx < G_N_ELEMENTS(node->hexes); idx++)
@@ -221,7 +221,7 @@ gboolean is_node_next_to_robber(const Node * node)
  */
 gboolean is_road_valid(const Edge * edge, gint owner)
 {
-	gint idx;
+	guint idx;
 
 	g_return_val_if_fail(edge != NULL, FALSE);
 
@@ -253,7 +253,7 @@ gboolean is_road_valid(const Edge * edge, gint owner)
  */
 gboolean is_ship_valid(const Edge * edge, gint owner)
 {
-	gint idx;
+	guint idx;
 
 	g_return_val_if_fail(edge != NULL, FALSE);
 
@@ -284,7 +284,7 @@ gboolean is_ship_valid(const Edge * edge, gint owner)
  */
 gboolean is_bridge_valid(const Edge * edge, gint owner)
 {
-	gint idx;
+	guint idx;
 
 	g_return_val_if_fail(edge != NULL, FALSE);
 
@@ -428,7 +428,7 @@ gboolean can_ship_be_built(const Edge * edge, gint owner)
 static gboolean can_ship_be_moved_node(const Node * node, gint owner,
 				       const Edge * not)
 {
-	gint idx;
+	guint idx;
 
 	g_return_val_if_fail(node != NULL, FALSE);
 	g_return_val_if_fail(not != NULL, FALSE);
@@ -463,7 +463,7 @@ static gboolean can_ship_be_moved_node(const Node * node, gint owner,
  */
 gboolean can_ship_be_moved(const Edge * edge, gint owner)
 {
-	gint idx;
+	guint idx;
 	g_return_val_if_fail(edge != NULL, FALSE);
 	/* edge must be a ship of the correct user */
 	if (edge->owner != owner || edge->type != BUILD_SHIP)
@@ -612,7 +612,7 @@ gboolean can_robber_or_pirate_be_moved(const Hex * hex)
  */
 static gboolean can_place_road_check(const Hex * hex, void *closure)
 {
-	gint idx;
+	guint idx;
 	gint *owner = closure;
 
 	g_return_val_if_fail(hex != NULL, FALSE);
@@ -627,7 +627,7 @@ static gboolean can_place_road_check(const Hex * hex, void *closure)
  */
 static gboolean can_place_ship_check(const Hex * hex, void *closure)
 {
-	gint idx;
+	guint idx;
 	gint *owner = closure;
 
 	g_return_val_if_fail(hex != NULL, FALSE);
@@ -642,7 +642,7 @@ static gboolean can_place_ship_check(const Hex * hex, void *closure)
  */
 static gboolean can_place_bridge_check(const Hex * hex, void *closure)
 {
-	gint idx;
+	guint idx;
 	gint *owner = closure;
 
 	g_return_val_if_fail(hex != NULL, FALSE);
@@ -690,7 +690,7 @@ gboolean map_can_place_bridge(const Map * map, gint owner)
  */
 static gboolean can_place_settlement_check(const Hex * hex, void *closure)
 {
-	gint idx;
+	guint idx;
 	gint *owner = (gint *) closure;
 
 	g_return_val_if_fail(hex != NULL, FALSE);
@@ -717,7 +717,7 @@ gboolean map_can_place_settlement(const Map * map, gint owner)
 static gboolean can_upgrade_settlement_check(const Hex * hex,
 					     void *closure)
 {
-	gint idx;
+	guint idx;
 	gint *owner = closure;
 
 	g_return_val_if_fail(hex != NULL, FALSE);
@@ -744,7 +744,7 @@ gboolean map_can_upgrade_settlement(const Map * map, gint owner)
  */
 static gboolean can_place_city_wall_check(const Hex * hex, void *closure)
 {
-	gint idx;
+	guint idx;
 	gint *owner = closure;
 
 	g_return_val_if_fail(hex != NULL, FALSE);
@@ -920,8 +920,11 @@ static BuildType bridge_as_road(BuildType type)
 static gint find_longest_road_recursive(Edge * edge)
 {
 	gint len = 0;
-	gint nodeidx, edgeidx;
+	guint nodeidx;
+	guint edgeidx;
+
 	g_return_val_if_fail(edge != NULL, 0);
+
 	edge->visited = TRUE;
 	/* check all nodes to see which one make the longer road. */
 	for (nodeidx = 0; nodeidx < G_N_ELEMENTS(edge->nodes); nodeidx++) {
@@ -965,7 +968,7 @@ static gint find_longest_road_recursive(Edge * edge)
 
 static gboolean find_longest_road(Hex * hex, gpointer closure)
 {
-	gint idx;
+	guint idx;
 	gint *lengths = closure;
 	g_return_val_if_fail(hex != NULL, FALSE);
 	g_return_val_if_fail(lengths != NULL, FALSE);
@@ -988,7 +991,7 @@ static gboolean find_longest_road(Hex * hex, gpointer closure)
  */
 static gboolean zero_visited(Hex * hex, G_GNUC_UNUSED gpointer closure)
 {
-	gint idx;
+	guint idx;
 
 	g_return_val_if_fail(hex != NULL, FALSE);
 	for (idx = 0; idx < G_N_ELEMENTS(hex->edges); idx++) {
@@ -1020,7 +1023,7 @@ void map_longest_road(Map * map, guint * lengths, guint num_players)
 
 static gboolean map_island_recursive(Map * map, Node * node, gint owner)
 {
-	gint idx;
+	guint idx;
 	gboolean discovered;
 
 	g_return_val_if_fail(map != NULL, FALSE);
@@ -1037,7 +1040,7 @@ static gboolean map_island_recursive(Map * map, Node * node, gint owner)
 	for (idx = 0; idx < G_N_ELEMENTS(node->edges) && !discovered;
 	     idx++) {
 		gint num_sea;
-		gint idx2;
+		guint idx2;
 		Edge *edge = node->edges[idx];
 		if (edge == NULL)
 			continue;

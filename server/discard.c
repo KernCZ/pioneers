@@ -112,7 +112,7 @@ void discard_resources(Game * game)
 	     list != NULL; list = player_next_real(list)) {
 		Player *scan = list->data;
 		gint num;
-		gint idx;
+		guint idx;
 		gint num_types;
 
 		num = 0;

@@ -74,7 +74,7 @@ gint get_rand(gint range)
 Game *game_new(const GameParams * params)
 {
 	Game *game;
-	gint idx;
+	guint idx;
 
 	game = g_malloc0(sizeof(*game));
 

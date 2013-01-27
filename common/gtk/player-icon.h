@@ -61,7 +61,7 @@ gchar *playericon_create_human_style(const GdkColor * face_color,
  */
 gboolean playericon_parse_human_style(const gchar * style,
 				      GdkColor * face_color,
-				      gint * variant,
+				      guint * variant,
 				      GdkColor * variant_color);
 
 /** Convert a string to a color.

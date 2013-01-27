@@ -38,7 +38,7 @@ static guint num_develop;	/* development cards left */
 
 void stock_init(void)
 {
-	int idx;
+	guint idx;
 
 	num_roads = game_params->num_build_type[BUILD_ROAD];
 	num_ships = game_params->num_build_type[BUILD_SHIP];

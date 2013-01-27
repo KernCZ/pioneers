@@ -48,7 +48,7 @@ static GdkColor token_colors[MAX_PLAYERS] = {
 void colors_init(void)
 {
 	GdkColormap *cmap;
-	gint idx;
+	guint idx;
 
 	cmap = gdk_colormap_get_system();
 	for (idx = 0; idx < G_N_ELEMENTS(token_colors); idx++) {

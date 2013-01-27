@@ -1389,7 +1389,7 @@ static void gui_toolbar_show_accelerators(gboolean show_accelerators)
 		GtkToolItem *ti;
 		GtkToolButton *tbtn;
 		gchar *text;
-		gint j;
+		guint j;
 
 		ti = gtk_toolbar_get_nth_item(tb, i);
 		tbtn = GTK_TOOL_BUTTON(ti);
@@ -1569,7 +1569,7 @@ static GtkWidget *build_status_bar(void)
 
 static void register_pixmaps(void)
 {
-	gint idx;
+	guint idx;
 
 	GtkIconFactory *factory = gtk_icon_factory_new();
 

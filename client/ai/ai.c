@@ -59,7 +59,7 @@ static const struct algorithm_info {
 /* *INDENT-ON* */
 };
 
-static int active_algorithm = 0;
+static guint active_algorithm = 0;
 
 UIDriver Glib_Driver;
 
@@ -138,7 +138,7 @@ static void ai_init(void)
 	}
 
 	if (ai != NULL) {
-		gint i;
+		guint i;
 		for (i = 0; i < G_N_ELEMENTS(algorithms); i++) {
 			if (!strcmp(algorithms[i].name, ai))
 				active_algorithm = i;

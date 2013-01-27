@@ -310,7 +310,7 @@ static void write_ready(gpointer user_data)
 					    net_errormsg());
 			close_and_callback(ses);
 			return;
-		} else if (num == len) {
+		} else if ((size_t) num == len) {
 			ses->write_queue
 			    = g_list_remove(ses->write_queue, data);
 			g_free(data);
@@ -364,7 +364,7 @@ void net_write(Session * ses, const gchar * data)
 			}
 			num = 0;
 		}
-		if (num != len) {
+		if ((size_t) num != len) {
 			ses->write_queue
 			    = g_list_append(NULL, g_strdup(data + num));
 			listen_write(ses, TRUE);

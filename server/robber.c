@@ -64,7 +64,7 @@ static void move_robber(Player * player, Hex * hex, gboolean is_undo)
 static void steal_card_from(Player * player, Player * victim)
 {
 	Game *game = player->game;
-	gint idx;
+	guint idx;
 	gint num;
 	gint steal;
 	GList *list;
@@ -137,7 +137,7 @@ static void do_select_robbed(Player * player, Hex * hex, gint victim_num)
 	Game *game = player->game;
 	Player *owner;
 	Resource resource;
-	gint idx;
+	guint idx;
 
 	/* Check if the victim has any resources
 	 */
@@ -213,7 +213,7 @@ static void do_select_pirated(Player * player, Hex * hex, gint victim_num)
 	Game *game = player->game;
 	Player *owner;
 	Resource resource;
-	gint idx;
+	guint idx;
 
 	/* Check if the victim has any resources
 	 */
@@ -292,7 +292,7 @@ gboolean mode_place_robber(Player * player, gint event)
 	Map *map = game->params->map;
 	gint x, y;
 	Hex *hex;
-	gint idx;
+	guint idx;
 	gint one_victim;
 	gint victim_num = -1;
 	gboolean old_style;

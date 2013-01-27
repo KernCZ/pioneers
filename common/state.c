@@ -318,7 +318,7 @@ static void push_new_state(StateMachine * sm)
 {
 	++sm->stack_ptr;
 	/* check for stack overflows */
-	if (sm->stack_ptr >= G_N_ELEMENTS(sm->stack)) {
+	if (sm->stack_ptr >= (gint) G_N_ELEMENTS(sm->stack)) {
 		log_message(MSG_ERROR,
 			    /* Error message */
 			    _(""
@@ -449,7 +449,7 @@ void sm_pop_all_and_goto(StateMachine * sm, StateFunc new_state)
  */
 StateFunc sm_stack_inspect(const StateMachine * sm, guint offset)
 {
-	if (sm->stack_ptr >= offset)
+	if (sm->stack_ptr >= (gint) offset)
 		return sm->stack[(guint) sm->stack_ptr - offset];
 	else
 		return NULL;

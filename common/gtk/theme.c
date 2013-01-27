@@ -353,7 +353,8 @@ gboolean theme_load_pixmap(const gchar * file, const gchar * themename,
  */
 static gboolean theme_initialize(MapTheme * t)
 {
-	int i, j;
+	guint i;
+	guint j;
 	GdkColormap *cmap;
 
 	/* load terrain tiles */
@@ -428,7 +429,7 @@ static gboolean theme_initialize(MapTheme * t)
 
 static void theme_cleanup(MapTheme * t)
 {
-	int i;
+	guint i;
 
 	/* terrain tiles */
 	for (i = 0; i < G_N_ELEMENTS(t->terrain_tiles); ++i) {
@@ -458,7 +459,7 @@ static void theme_cleanup(MapTheme * t)
 
 void theme_rescale(int new_width)
 {
-	int i;
+	guint i;
 
 	switch (current_theme->scaling) {
 	case NEVER:
@@ -535,7 +536,7 @@ static gint getvar(gchar ** p, const gchar * filename, int lno)
 {
 	char *q, qsave;
 	struct tvars *tv;
-	gint idx;
+	guint idx;
 	gboolean found;
 
 	*p += strspn(*p, " \t");
@@ -629,7 +630,8 @@ static MapTheme *theme_config_parse(const gchar * themename,
 	struct tvars *tv;
 	gboolean ok = TRUE;
 	gboolean *used;
-	gint idx;
+	guint idx;
+	gint var;
 	gchar *filename;
 
 	filename = g_build_filename(subdir, "theme.cfg", NULL);
@@ -654,12 +656,13 @@ static MapTheme *theme_config_parse(const gchar * themename,
 			continue;
 		}
 		p = line;
-		idx = getvar(&p, filename, lno);
-		if ((idx == -1) || !(q = getval(&p, filename, lno))) {
+		var = getvar(&p, filename, lno);
+		if ((var == -1) || !(q = getval(&p, filename, lno))) {
 			ok = FALSE;
 			g_free(line);
 			continue;
 		}
+		idx = var;
 		tv = &theme_vars[idx];
 
 		switch (tv->type) {

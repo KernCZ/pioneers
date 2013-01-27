@@ -30,7 +30,7 @@ void check_longest_road(Game * game)
 	gint num_have_longest;
 	guint longest_length;
 	gboolean tie;
-	gint i;
+	guint i;
 
 	map_longest_road(map, road_length, game->params->num_players);
 
@@ -46,7 +46,8 @@ void check_longest_road(Game * game)
 			} else if (road_length[i] == longest_length) {
 				tie = TRUE;
 				if (game->longest_road != NULL
-				    && i == game->longest_road->num) {
+				    && (gint) i ==
+				    game->longest_road->num) {
 					/* Current owner in the tie */
 					num_have_longest = i;
 				}

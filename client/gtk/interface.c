@@ -689,7 +689,7 @@ static gboolean can_building_be_robbed(MapElement node,
 				       G_GNUC_UNUSED int owner,
 				       MapElement robber)
 {
-	gint idx;
+	guint idx;
 
 	/* Can only steal from buildings that are not owned by me */
 	if (node.node->type == BUILD_NONE
@@ -712,7 +712,7 @@ static gboolean can_edge_be_robbed(MapElement edge,
 				   G_GNUC_UNUSED int owner,
 				   MapElement pirate)
 {
-	gint idx;
+	guint idx;
 
 	/* Can only steal from ships that are not owned by me */
 	if (edge.edge->type != BUILD_SHIP

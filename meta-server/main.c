@@ -136,8 +136,8 @@ static void meta_debug(const gchar * fmt, ...)
 	static FILE *fp;
 	va_list ap;
 	gchar *buff;
-	gint idx;
-	gint len;
+	size_t idx;
+	size_t len;
 
 	if (!enable_debug)
 		return;
@@ -283,12 +283,12 @@ static void client_do_write(Client * client)
 {
 	while (client->write_queue != NULL) {
 		char *data = client->write_queue->data;
-		guint len = strlen(data);
-		int num;
+		size_t len = strlen(data);
+		ssize_t num;
 
 		num = write(client->fd, data, len);
 		meta_debug
-		    ("client_do_write: write(%d, \"%.*s\", %d) = %d\n",
+		    ("client_do_write: write(%d, \"%.*s\", %zu) = %zd\n",
 		     client->fd, len, data, len, num);
 		if (num < 0) {
 			if (errno == EAGAIN)
@@ -297,7 +297,7 @@ static void client_do_write(Client * client)
 				  g_strerror(errno));
 			client_close(client);
 			return;
-		} else if (num == len) {
+		} else if ((size_t) num == len) {
 			client->write_queue
 			    = g_list_remove(client->write_queue, data);
 			g_free(data);

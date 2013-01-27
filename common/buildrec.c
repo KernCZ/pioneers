@@ -166,7 +166,7 @@ gboolean buildrec_is_valid(GList * list, const Map * map, gint owner)
 
 static gboolean edge_has_place_for_settlement(const Edge * edge)
 {
-	gint idx;
+	guint idx;
 
 	for (idx = 0; idx < G_N_ELEMENTS(edge->nodes); idx++) {
 		const Node *node = edge->nodes[idx];
@@ -183,7 +183,7 @@ static gboolean can_setup_edge_0(GList * list, const Edge * edge)
 {
 	BuildRec *rec = buildrec_get_edge(list, 0);
 	const Edge *other_edge;
-	int idx;
+	guint idx;
 
 	if (rec == NULL)
 		/* This is the only edge - it can only placed if one

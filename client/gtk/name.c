@@ -87,7 +87,7 @@ static void change_style_cb(G_GNUC_UNUSED GtkWidget * widget,
 	    (GTK_TOGGLE_BUTTON(dialog->check_btn))) {
 		GdkColor c1;
 		GdkColor c2;
-		gint variant;
+		guint variant;
 		gtk_color_button_get_color(GTK_COLOR_BUTTON
 					   (dialog->color_btn1), &c1);
 		gtk_color_button_get_color(GTK_COLOR_BUTTON
@@ -121,7 +121,7 @@ void name_create_dlg(void)
 	GtkWidget *lbl;
 	GdkPixbuf *icon;
 	GdkColor face_color, variant_color;
-	gint variant;
+	guint variant;
 	gboolean parse_ok;
 
 	if (name_dialog.dlg != NULL) {

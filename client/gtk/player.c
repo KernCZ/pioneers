@@ -212,7 +212,7 @@ static void refresh_victory_point_total(int player_num)
 	GtkTreeIter iter;
 	enum TFindResult found;
 
-	if (player_num < 0 || player_num >= G_N_ELEMENTS(players))
+	if (player_num < 0 || player_num >= (gint) G_N_ELEMENTS(players))
 		return;
 
 	found =

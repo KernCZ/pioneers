@@ -158,7 +158,7 @@ if test "x$GCC" = xyes; then
 		AC_SUBST(WARNINGS, "$WARNINGS -Wpointer-arith")
 		AC_SUBST(WARNINGS, "$WARNINGS -Wcast-qual")
 		AC_SUBST(WARNINGS, "$WARNINGS -Wwrite-strings")
-		AC_SUBST(WARNINGS, "$WARNINGS -Wno-sign-compare")
+		AC_SUBST(WARNINGS, "$WARNINGS -Wsign-compare")
 		AC_SUBST(WARNINGS, "$WARNINGS -Waggregate-return")
 		AC_SUBST(WARNINGS, "$WARNINGS -Wstrict-prototypes")
 		AC_SUBST(WARNINGS, "$WARNINGS -Wmissing-prototypes")

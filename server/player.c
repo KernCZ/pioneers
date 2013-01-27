@@ -758,7 +758,7 @@ void player_revive(Player * newp, char *name)
 		gint num;
 
 		num = next_free_player_num(game, FALSE);
-		if (num < game->params->num_players) {
+		if (num < (gint) game->params->num_players) {
 			player_setup(newp, -1, name, FALSE);
 			return;
 		}
@@ -881,14 +881,15 @@ gboolean mode_spectator(Player * player, gint event)
 	if (sm_recv(sm, "play")) {
 		/* try to be the first available player */
 		num = next_free_player_num(game, FALSE);
-		if (num >= game->params->num_players) {
+		if (num >= (gint) game->params->num_players) {
 			player_send(player, FIRST_VERSION, LATEST_VERSION,
 				    "ERR game-full");
 			return TRUE;
 		}
 	} else if (sm_recv(sm, "play %d", &num)) {
 		/* try to be the specified player number */
-		if (num >= game->params->num_players
+		if (num >= (gint) game->params->num_players
+		    || num < 0
 		    || !player_by_num(game, num)->disconnected) {
 			player_send(player, FIRST_VERSION, LATEST_VERSION,
 				    "ERR invalid-player");
@@ -1084,7 +1085,7 @@ GList *player_next_real(GList * last)
 	numplayers = game->params->num_players;
 	nextnum = player->num + 1;
 
-	if (nextnum >= numplayers)
+	if (nextnum >= (gint) numplayers)
 		return NULL;
 
 	playerlist_inc_use_count(game);
@@ -1139,7 +1140,7 @@ Player *player_by_num(Game * game, gint num)
 
 gboolean player_is_spectator(Game * game, gint player_num)
 {
-	return game->params->num_players <= player_num;
+	return (gint) game->params->num_players <= player_num;
 }
 
 /* Returns a player that's not part of the game.

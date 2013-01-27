@@ -295,7 +295,7 @@ int main(int argc, char *argv[])
 			game->no_player_timeout = timeout;
 			num_ai_players =
 			    CLAMP(num_ai_players, 0,
-				  game->params->num_players);
+				  (gint) game->params->num_players);
 			for (i = 0; i < num_ai_players; ++i)
 				add_computer_player(game, TRUE);
 			avahi_register_game(game);

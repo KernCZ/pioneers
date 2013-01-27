@@ -29,7 +29,7 @@ void develop_shuffle(Game * game)
 {
 	GameParams *params;
 	gint idx;
-	gint shuffle_idx;
+	guint shuffle_idx;
 	gint shuffle_counts[NUM_DEVEL_TYPES];
 
 	params = game->params;

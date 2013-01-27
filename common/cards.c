@@ -96,7 +96,7 @@ gboolean deck_card_play(DevelDeck * deck,
 
 gint deck_card_amount(const DevelDeck * deck, DevelType type)
 {
-	gint idx;
+	guint idx;
 	gint amount = 0;
 
 	for (idx = 0; idx < deck->num_cards; ++idx)
@@ -107,7 +107,7 @@ gint deck_card_amount(const DevelDeck * deck, DevelType type)
 
 gint deck_card_oldest_card(const DevelDeck * deck, DevelType type)
 {
-	gint idx;
+	guint idx;
 	for (idx = 0; idx < deck->num_cards; ++idx)
 		if (deck->cards[idx].type == type)
 			return idx;

@@ -296,7 +296,7 @@ static void build_move(Player * player, gint sx, gint sy, gint spos,
 	}
 
 	if (map->pirate_hex != NULL) {
-		gint idx;
+		guint idx;
 		/* check that the pirate is not on the from hexes */
 		for (idx = 0; idx < G_N_ELEMENTS(from->hexes); ++idx) {
 			if (map->pirate_hex == from->hexes[idx]) {
@@ -358,7 +358,7 @@ typedef struct {
 
 static gboolean distribute_resources(const Hex * hex, gpointer closure)
 {
-	int idx;
+	guint idx;
 	GameRoll *data = closure;
 
 	if (hex->roll != data->roll || hex->robber)
@@ -395,7 +395,7 @@ gboolean check_victory(Player * player)
 {
 	Game *game = player->game;
 	GList *list;
-	gint points;
+	gint points;		/* can be negative, due to island bonuses */
 
 	if (player->num != game->curr_player)
 		/* Only the player that has the turn can win */
@@ -416,7 +416,7 @@ gboolean check_victory(Player * player)
 		list = g_list_next(list);
 	}
 
-	if (points >= game->params->victory_points) {
+	if (points >= (gint) game->params->victory_points) {
 		player_broadcast(player, PB_ALL, FIRST_VERSION,
 				 LATEST_VERSION, "won with %d\n", points);
 		game->is_game_over = TRUE;

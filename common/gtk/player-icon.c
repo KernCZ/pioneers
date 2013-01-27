@@ -163,7 +163,7 @@ GdkPixbuf *playericon_create_icon(GtkWidget * widget, const gchar * style,
 		break;
 	case PLAYER_HUMAN:{
 			/* Draw a bust */
-			gint variant;
+			guint variant;
 			GdkColor face_color, variant_color;
 
 			playericon_parse_human_style(style, &face_color,
@@ -327,7 +327,7 @@ gchar *playericon_create_human_style(const GdkColor * face_color,
 
 gboolean playericon_parse_human_style(const gchar * style,
 				      GdkColor * face_color,
-				      gint * variant,
+				      guint * variant,
 				      GdkColor * variant_color)
 {
 	gchar **style_parts;

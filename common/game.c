@@ -97,7 +97,7 @@ GameParams *params_new(void)
 
 void params_free(GameParams * params)
 {
-	gint idx;
+	guint idx;
 	gchar *str;
 	GArray *int_list;
 
@@ -191,7 +191,7 @@ gchar *format_int_list(const gchar * name, GArray * array)
 {
 	gchar *old;
 	gchar *str;
-	int idx;
+	guint idx;
 
 	if (array == NULL)
 		return NULL;
@@ -227,7 +227,7 @@ struct nosetup_t {
 
 static gboolean find_no_setup(const Hex * hex, gpointer closure)
 {
-	gint idx;
+	guint idx;
 	struct nosetup_t *data = closure;
 	for (idx = 0; idx < G_N_ELEMENTS(hex->nodes); ++idx) {
 		const Node *node = hex->nodes[idx];
@@ -247,7 +247,7 @@ void params_write_lines(GameParams * params, ClientVersionType version,
 			gboolean write_secrets, WriteLineFunc func,
 			gpointer user_data)
 {
-	gint idx;
+	guint idx;
 	gint y;
 	gchar *buff;
 	gchar *str;
@@ -389,7 +389,7 @@ void params_write_lines(GameParams * params, ClientVersionType version,
 
 gboolean params_load_line(GameParams * params, gchar * line)
 {
-	gint idx;
+	guint idx;
 
 	if (params->map == NULL)
 		params->map = map_new();
@@ -577,7 +577,7 @@ GameParams *params_copy(const GameParams * params)
 	 * be freed when it goes out of scope. */
 	GameParams nonconst;
 	GameParams *copy;
-	gint idx;
+	guint idx;
 	gchar *buff;
 
 	if (params == NULL)
@@ -648,7 +648,8 @@ static void append_to_string(gpointer base, const gchar * additional_text)
 gboolean params_is_equal(const GameParams * params1,
 			 const GameParams * params2)
 {
-	gint idx;
+	gint i;
+	guint idx;
 	gchar *buff1;
 	gchar *buff2;
 	gboolean is_different;
@@ -660,9 +661,9 @@ gboolean params_is_equal(const GameParams * params1,
 	if (params1->map->y_size != params2->map->y_size) {
 		return FALSE;
 	};
-	for (idx = 0; idx < params1->map->y_size; idx++) {
-		buff1 = map_format_line(params1->map, TRUE, idx);
-		buff2 = map_format_line(params2->map, TRUE, idx);
+	for (i = 0; i < params1->map->y_size; i++) {
+		buff1 = map_format_line(params1->map, TRUE, i);
+		buff2 = map_format_line(params2->map, TRUE, i);
 
 		is_different = g_strcmp0(buff1, buff2) != 0;
 		g_free(buff1);
@@ -857,12 +858,14 @@ WinnableState params_check_winnable_state(const GameParams * params,
 					  gchar ** point_specification)
 {
 	guint target;
-	gint building;
+	guint building;
 	guint development;
-	gint road, army;
+	guint road;
+	guint army;
 	guint idx;
 	WinnableState return_value;
-	gint total_island, max_island;
+	gint total_island;
+	guint max_island;
 	guint number_of_islands;
 
 	if (params == NULL) {
@@ -912,15 +915,14 @@ WinnableState params_check_winnable_state(const GameParams * params,
 					   island_discovery_bonus->len - 1,
 					   i));
 			/* The island score can be negative */
-			if (max_island < total_island)
+			if ((gint) max_island < total_island)
 				max_island = total_island;
 		}
 	}
 
 	if (target > building) {
 		if (target >
-		    building + (gint) development + road + army +
-		    max_island) {
+		    building + development + road + army + max_island) {
 			*win_message =
 			    g_strdup(_("This game cannot be won."));
 			return_value = PARAMS_NO_WIN;

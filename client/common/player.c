@@ -41,7 +41,8 @@ static gint num_total_players = 4;	/* total number of players in the game */
  * previous game. */
 void player_reset(void)
 {
-	gint i, idx;
+	guint i;
+	guint idx;
 
 	/* remove all spectators */
 	while (spectators != NULL) {
@@ -143,7 +144,8 @@ gint player_get_score(gint player_num)
 {
 	Player *player = player_get(player_num);
 	GList *list;
-	gint i, score;
+	guint i;
+	gint score;
 
 	for (i = 0, score = 0; i < G_N_ELEMENTS(player->statistics); i++) {
 		score += stat_get_vp_value(i) * player->statistics[i];

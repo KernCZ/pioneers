@@ -163,7 +163,7 @@ static void allocate_resources(Player * player, BuildRec * rec)
 	Game *game = player->game;
 	Map *map = game->params->map;
 	Node *node;
-	gint idx;
+	guint idx;
 
 	node = map_node(map, rec->x, rec->y, rec->pos);
 
@@ -298,7 +298,7 @@ gboolean mode_setup(Player * player, gint event)
 static void try_start_game(Game * game)
 {
 	GList *list;
-	int num;
+	guint num;
 	int numturn;
 
 	num = 0;
@@ -395,7 +395,7 @@ static void send_game_line(gpointer player, const gchar * str)
 
 gboolean send_gameinfo_uncached(const Hex * hex, void *data)
 {
-	gint i;
+	guint i;
 	Player *player = data;
 
 	for (i = 0; i < G_N_ELEMENTS(hex->nodes); i++) {
@@ -490,7 +490,7 @@ gboolean mode_pre_game(Player * player, gint event)
 	Map *map = game->params->map;
 	StateFunc state;
 	const gchar *prevstate;
-	gint i;
+	guint i;
 	GList *next;
 	gint longestroadpnum = -1;
 	gint largestarmypnum = -1;

@@ -67,7 +67,7 @@ void resource_end(Game * game, const gchar * action, gint mult)
 	     list != NULL; list = player_next_real(list)) {
 		Player *player = list->data;
 		gint resource[NO_RESOURCE];
-		int idx;
+		guint idx;
 		gboolean send_message = FALSE;
 
 		for (idx = 0; idx < G_N_ELEMENTS(player->assets); idx++) {
