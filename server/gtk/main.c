@@ -241,7 +241,6 @@ static void start_clicked_cb(G_GNUC_UNUSED GtkButton * widget,
 	if (server_is_running(*game)) {
 		server_stop(*game);
 		gui_set_server_state(server_is_running(*game));
-		avahi_unregister_game();
 	} else {		/* not running */
 		const gchar *title;
 		GameParams *params;
@@ -289,7 +288,6 @@ static void start_clicked_cb(G_GNUC_UNUSED GtkButton * widget,
 				 register_server, meta_server_name,
 				 random_order);
 		if (server_is_running(*game)) {
-			avahi_register_game(*game);
 			gui_set_server_state(TRUE);
 			config_set_string("server/meta-server",
 					  meta_server_name);
@@ -1104,7 +1102,6 @@ static void check_vp_cb(G_GNUC_UNUSED GObject * caller,
 static void quit_cb(void)
 {
 	gtk_main_quit();
-	avahi_unregister_game();
 }
 
 static void help_about_cb(void)

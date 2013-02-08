@@ -46,7 +46,6 @@
 #include "glib-driver.h"
 
 #include "admin.h"
-#include "avahi.h"
 
 static GMainLoop *event_loop;
 
@@ -298,7 +297,6 @@ int main(int argc, char *argv[])
 				  (gint) game->params->num_players);
 			for (i = 0; i < num_ai_players; ++i)
 				add_computer_player(game, TRUE);
-			avahi_register_game(game);
 		}
 	}
 	if (disable_game_start || game != NULL) {
@@ -307,8 +305,6 @@ int main(int argc, char *argv[])
 		g_main_loop_unref(event_loop);
 		game_free(game);
 		game = NULL;
-
-		avahi_unregister_game();
 	}
 
 	net_finish();

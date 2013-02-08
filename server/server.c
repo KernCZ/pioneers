@@ -28,6 +28,7 @@
 
 #include "server.h"
 #include "network.h"
+#include "avahi.h"
 
 static GameParams *load_game_desc(const gchar * fname);
 
@@ -198,6 +199,7 @@ static gboolean game_server_start(Game * game, gboolean register_server,
 		meta_register(meta_server_name, PIONEERS_DEFAULT_META_PORT,
 			      game);
 	}
+	avahi_register_game(game);
 	return TRUE;
 }
 
@@ -265,6 +267,7 @@ gboolean server_stop(Game * game)
 		return FALSE;
 
 	meta_unregister();
+	avahi_unregister_game();
 
 	game->is_running = FALSE;
 	if (game->accept_tag) {

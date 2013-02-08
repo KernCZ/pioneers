@@ -1,3 +1,7 @@
+2013-02-08  Roland Clobus <rclobus@rclobus.nl>
+	* server/main.c, server/gtk/main.c, server/server.c: Moved avahi
+	related code to central location.
+
 2013-01-27  Roland Clobus <rclobus@rclobus.nl>
 	* editor/gtk/editor.c, common/cards.c, common/map_query.c,
 	common/gtk/player-icon.c, common/gtk/guimap.c, common/gtk/player-icon.h,
