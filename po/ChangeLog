@@ -1,3 +1,6 @@
+2013-02-08  Roland Clobus <rclobus@rclobus.nl>	
+	* de.po, es.po, ja.po: Fixed for 'make update-po'.
+
 2013-01-22  Jaume Badiella <myotis@drac.com>
 	* ca.po: Added missing translations, fixed copyright message.
 
