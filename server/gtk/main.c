@@ -1256,6 +1256,7 @@ int main(int argc, char *argv[])
 
 	gtk_main();
 
+	log_set_func_default();
 	game_free(game);
 	config_finish();
 	net_finish();
