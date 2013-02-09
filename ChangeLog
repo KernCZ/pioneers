@@ -1,3 +1,6 @@
+2013-02-09  Roland Clobus <rclobus@rclobus.nl>
+	* Makefile.am: Distribute pioneers.pot in the tarball again.
+
 2013-02-08  Roland Clobus <rclobus@rclobus.nl>
 	* server/main.c, server/gtk/main.c, server/server.c: Moved avahi
 	related code to central location.

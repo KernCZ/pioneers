@@ -237,3 +237,7 @@ uninstall-icons:
 install-data-hook: install-icons
 
 uninstall-hook: uninstall-icons
+
+dist-hook:
+	$(MAKE) -C "$(srcdir)/po" "${GETTEXT_PACKAGE}.pot"
+	cp "$(srcdir)/po/${GETTEXT_PACKAGE}.pot" "$(distdir)/po/"
