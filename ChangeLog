@@ -1,3 +1,6 @@
+2013-02-10  Roland Clobus <rclobus@rclobus.nl>
+	* server/buildutil.c: Fixed warning from --enable-warnings=full.
+
 2013-02-09  Roland Clobus <rclobus@rclobus.nl>
 	* Makefile.am: Distribute pioneers.pot in the tarball again.
 

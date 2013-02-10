@@ -40,7 +40,7 @@ void check_longest_road(Game * game)
 	for (i = 0; i < game->params->num_players; i++) {
 		if (road_length[i] >= 5) {
 			if (road_length[i] > longest_length) {
-				num_have_longest = i;
+				num_have_longest = (gint) i;
 				longest_length = road_length[i];
 				tie = FALSE;
 			} else if (road_length[i] == longest_length) {
@@ -49,7 +49,7 @@ void check_longest_road(Game * game)
 				    && (gint) i ==
 				    game->longest_road->num) {
 					/* Current owner in the tie */
-					num_have_longest = i;
+					num_have_longest = (gint) i;
 				}
 			}
 		}
