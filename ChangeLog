@@ -1,3 +1,7 @@
+2013-02-12  Roland Clobus <rclobus@rclobus.nl>
+	* editor/gtk/editor.c: Better logic for the +/- buttons for columns
+	when the limit is reached.
+
 2013-02-10  Roland Clobus <rclobus@rclobus.nl>
 	* server/buildutil.c: Fixed warning from --enable-warnings=full.
 

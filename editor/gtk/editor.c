@@ -421,6 +421,9 @@ static gint key_press_map_cb(GtkWidget * area, GdkEventKey * event,
 
 static void update_resize_buttons(void)
 {
+	gboolean can_insert_left;
+	gboolean can_insert_right;
+
 	gtk_widget_set_sensitive(hresize_buttons[RESIZE_REMOVE_LEFT],
 				 gmap->map->x_size > 1 ||
 				 !(gmap->map->shrink_right ||
@@ -429,12 +432,29 @@ static void update_resize_buttons(void)
 				 gmap->map->x_size > 1 ||
 				 !(gmap->map->shrink_right ||
 				   gmap->map->shrink_left));
+	/* Logic table:
+	 * x ? SIZE shrink  result
+	 *   <        X       T (not max)
+	 *   =        F       F (completely full)
+	 *   =        T       shrink (only on one side)
+	 */
+	if (gmap->map->x_size < MAP_SIZE) {
+		/* Not at maximum size */
+		can_insert_left = TRUE;
+		can_insert_right = TRUE;
+	} else if (!(gmap->map->shrink_left || gmap->map->shrink_right)) {
+		/* Completely full */
+		can_insert_left = FALSE;
+		can_insert_right = FALSE;
+	} else {
+		/* Only room on one side */
+		can_insert_left = gmap->map->shrink_left;
+		can_insert_right = gmap->map->shrink_right;
+	}
 	gtk_widget_set_sensitive(hresize_buttons[RESIZE_INSERT_LEFT],
-				 gmap->map->x_size < MAP_SIZE ||
-				 gmap->map->shrink_left);
+				 can_insert_left);
 	gtk_widget_set_sensitive(hresize_buttons[RESIZE_INSERT_RIGHT],
-				 gmap->map->x_size < MAP_SIZE ||
-				 gmap->map->shrink_right);
+				 can_insert_right);
 
 	gtk_widget_set_sensitive(vresize_buttons[RESIZE_REMOVE_TOP],
 				 gmap->map->y_size > 1 &&
