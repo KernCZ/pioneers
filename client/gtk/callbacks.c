@@ -40,15 +40,6 @@ static void frontend_network_wait(gboolean is_waiting)
 	frontend_gui_update();
 }
 
-static void frontend_init_game(void)
-{
-	player_clear_summary();
-	chat_clear_names();
-	develop_reset();
-	histogram_reset();
-	gui_reset();
-}
-
 static void frontend_start_game(void)
 {
 	gui_set_game_params(get_game_params());

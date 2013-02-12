@@ -102,6 +102,7 @@ void frontend_gui_route_event(GuiEvent event);
 /* callbacks */
 void frontend_init_gtk_et_al(int argc, char **argv);
 void frontend_init(void);
+void frontend_init_game(void);
 void frontend_new_statistics(gint player_num, StatisticType type,
 			     gint num);
 void frontend_new_points(gint player_num, Points * points, gboolean added);

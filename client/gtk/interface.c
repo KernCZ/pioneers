@@ -47,6 +47,20 @@ static GuiState previous_state = dummy_state;
 
 static gboolean discard_busy = FALSE, robber_busy = FALSE;
 
+static GtkWidget *game_over_dlg = NULL;
+
+void frontend_init_game(void)
+{
+	player_clear_summary();
+	chat_clear_names();
+	develop_reset();
+	histogram_reset();
+	gui_reset();
+	if (game_over_dlg != NULL) {
+		gtk_widget_destroy(game_over_dlg);
+	}
+}
+
 static void frontend_state_idle(G_GNUC_UNUSED GuiEvent event)
 {
 	/* don't react on any event when idle. */
@@ -646,7 +660,9 @@ void frontend_game_over(gint player, gint points)
 		robber_busy = FALSE;
 		gui_prompt_hide();
 	}
-	gameover_create_dlg(player, points);
+	game_over_dlg = gameover_create_dlg(player, points);
+	g_signal_connect(G_OBJECT(game_over_dlg), "destroy",
+			 G_CALLBACK(gtk_widget_destroyed), &game_over_dlg);
 	set_gui_state(frontend_state_idle);
 }
 

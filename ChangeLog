@@ -1,6 +1,9 @@
 2013-02-12  Roland Clobus <rclobus@rclobus.nl>
 	* editor/gtk/editor.c: Better logic for the +/- buttons for columns
 	when the limit is reached.
+	* client/gtk/frontend.h, client/gtk/interface.c,
+	client/gtk/callbacks.c: Close the game over dialog when a new game
+	starts.
 
 2013-02-10  Roland Clobus <rclobus@rclobus.nl>
 	* server/buildutil.c: Fixed warning from --enable-warnings=full.
