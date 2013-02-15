@@ -291,8 +291,8 @@ static void close_waiting_box(void)
 
 /* -------------------- get game types -------------------- */
 
-static void meta_gametype_notify(NetEvent event,
-				 G_GNUC_UNUSED void *user_data, char *line)
+static void meta_gametype_notify(NetEvent event, const gchar * line,
+				 G_GNUC_UNUSED gpointer user_data)
 {
 	switch (event) {
 	case NET_CONNECT:
@@ -341,8 +341,8 @@ static void get_meta_server_games_types(gchar * server, gchar * port)
 
 /* -------------------- create game server -------------------- */
 
-static void meta_create_notify(NetEvent event,
-			       G_GNUC_UNUSED void *user_data, char *line)
+static void meta_create_notify(NetEvent event, const gchar * line,
+			       G_GNUC_UNUSED gpointer user_data)
 {
 	switch (event) {
 	case NET_CONNECT:
@@ -438,8 +438,8 @@ static void server_end(void)
 	}
 }
 
-static void meta_notify(NetEvent event, G_GNUC_UNUSED void *user_data,
-			char *line)
+static void meta_notify(NetEvent event, const gchar * line,
+			G_GNUC_UNUSED gpointer user_data)
 {
 	gchar argument[STRARG_LEN];
 

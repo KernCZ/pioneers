@@ -103,8 +103,11 @@ void meta_send_details(Game * game)
 	}
 }
 
-static void meta_event(NetEvent event, Game * game, char *line)
+static void meta_event(NetEvent event, const gchar * line,
+		       gpointer user_data)
 {
+	Game *game = (Game *) user_data;
+
 	switch (event) {
 	case NET_READ:
 		switch (meta_mode) {
@@ -192,7 +195,7 @@ void meta_register(const gchar * server, const gchar * port, Game * game)
 	if (ses != NULL)
 		net_free(&ses);
 
-	ses = net_new((NetNotifyFunc) meta_event, game);
+	ses = net_new(meta_event, game);
 	if (net_connect(ses, server, port))
 		meta_mode = MODE_SIGNON;
 	else {

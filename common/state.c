@@ -153,8 +153,11 @@ void sm_cancel_prefix(StateMachine * sm)
 	sm->line_offset = 0;
 }
 
-static void net_event(NetEvent event, StateMachine * sm, gchar * line)
+static void net_event(NetEvent event, const gchar * line,
+		      gpointer user_data)
 {
+	StateMachine *sm = (StateMachine *) user_data;
+
 	sm_inc_use_count(sm);
 
 	switch (event) {
@@ -168,7 +171,9 @@ static void net_event(NetEvent event, StateMachine * sm, gchar * line)
 		route_event(sm, SM_NET_CLOSE);
 		break;
 	case NET_READ:
-		sm->line = line;
+		if (sm->line)
+			g_free(sm->line);
+		sm->line = g_strdup(line);
 		/* Only handle data if there is a context.  Fixes bug that
 		 * clients starting to send data immediately crash the
 		 * server */
@@ -191,7 +196,7 @@ gboolean sm_connect(StateMachine * sm, const gchar * host,
 	if (sm->ses != NULL)
 		net_free(&(sm->ses));
 
-	sm->ses = net_new((NetNotifyFunc) net_event, sm);
+	sm->ses = net_new(net_event, sm);
 	log_message(MSG_INFO, _("Connecting to %s, port %s\n"), host,
 		    port);
 	if (net_connect(sm->ses, host, port))
@@ -206,7 +211,7 @@ void sm_use_fd(StateMachine * sm, gint fd, gboolean do_ping)
 	if (sm->ses != NULL)
 		net_free(&(sm->ses));
 
-	sm->ses = net_new((NetNotifyFunc) net_event, sm);
+	sm->ses = net_new(net_event, sm);
 	net_use_fd(sm->ses, fd, do_ping);
 }
 
@@ -478,6 +483,7 @@ StateMachine *sm_new(gpointer user_data)
  */
 void sm_free(StateMachine * sm)
 {
+	g_free(sm->line);
 	if (sm->ses != NULL) {
 		net_free(&(sm->ses));
 		return;

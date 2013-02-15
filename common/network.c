@@ -66,7 +66,7 @@ struct _Session {
 	int fd;
 	time_t last_response;	/* used for activity detection.  */
 	guint timer_id;
-	void *user_data;
+	gpointer user_data;
 
 	gboolean connect_in_progress;
 	gboolean waiting_for_close;
@@ -119,10 +119,10 @@ static void listen_write(Session * ses, gboolean monitor)
 	}
 }
 
-static void notify(Session * ses, NetEvent event, gchar * line)
+static void notify(Session * ses, NetEvent event, const gchar * line)
 {
 	if (ses->notify_func != NULL)
-		ses->notify_func(event, ses->user_data, line);
+		ses->notify_func(event, line, ses->user_data);
 }
 
 static gboolean net_would_block(void)
@@ -480,7 +480,7 @@ static void read_ready(gpointer user_data)
 	}
 }
 
-Session *net_new(NetNotifyFunc notify_func, void *user_data)
+Session *net_new(NetNotifyFunc notify_func, gpointer user_data)
 {
 	Session *ses;
 

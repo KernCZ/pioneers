@@ -1,3 +1,8 @@
+2013-02-15  Roland Clobus <rclobus@rclobus.nl>
+	* server/admin.c, server/admin.h, server/meta.c, client/gtk/connect.c,
+	common/state.c, common/network.c, common/network.h: Removed function
+	casts for NetNotifyFunc.
+
 2013-02-12  Roland Clobus <rclobus@rclobus.nl>
 	* editor/gtk/editor.c: Better logic for the +/- buttons for columns
 	when the limit is reached.

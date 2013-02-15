@@ -297,10 +297,11 @@ void admin_run_command(Session * admin_session, const gchar * line)
 		g_free(argument);
 }
 
-/* network event handler, just like the one in meta.c, state.c, etc. */
-void admin_event(NetEvent event, Session * admin_session,
-		 const gchar * line)
+/* network event handler */
+static void admin_event(NetEvent event, const gchar * line,
+			gpointer user_data)
 {
+	Session *admin_session = (Session *) user_data;
 #ifdef PRINT_INFO
 	g_print
 	    ("admin_event: event = %#x, admin_session = %p, line = %s\n",
@@ -354,7 +355,7 @@ void admin_connect(comm_info * admin_info)
 	/* somebody connected to the administration port, so we... */
 
 	/* (1) create a new network session */
-	admin_session = net_new((NetNotifyFunc) admin_event, NULL);
+	admin_session = net_new(admin_event, NULL);
 
 	/* (2) accept the connection into a new file descriptor */
 	new_fd = accept_connection(admin_info->fd, &location);

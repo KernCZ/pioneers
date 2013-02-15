@@ -37,10 +37,6 @@ extern gint admin_dice_roll;
 /* parse 'line' and run the command requested */
 void admin_run_command(Session * admin_session, const gchar * line);
 
-/* network event handler, just like the one in meta.c, state.c, etc. */
-void admin_event(NetEvent event, Session * admin_session,
-		 const gchar * line);
-
 /* accept a connection made to the admin port */
 void admin_connect(comm_info * admin_info);
 

@@ -31,8 +31,8 @@ typedef enum {
 	NET_READ
 } NetEvent;
 
-typedef void (*NetNotifyFunc) (NetEvent event, void *user_data,
-			       gchar * line);
+typedef void (*NetNotifyFunc) (NetEvent event, const gchar * line,
+			       gpointer user_data);
 
 typedef struct _Session Session;
 
@@ -42,7 +42,7 @@ void net_init(void);
 /* Finish the network drivers */
 void net_finish(void);
 
-Session *net_new(NetNotifyFunc notify_func, void *user_data);
+Session *net_new(NetNotifyFunc notify_func, gpointer user_data);
 void net_free(Session ** ses);
 
 void net_use_fd(Session * ses, int fd, gboolean do_ping);
