@@ -45,6 +45,8 @@ void net_finish(void);
 Session *net_new(NetNotifyFunc notify_func, gpointer user_data);
 void net_free(Session ** ses);
 
+void net_set_user_data(Session * ses, gpointer user_data);
+
 void net_use_fd(Session * ses, int fd, gboolean do_ping);
 gboolean net_connect(Session * ses, const gchar * host,
 		     const gchar * port);

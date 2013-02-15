@@ -2,6 +2,8 @@
 	* server/admin.c, server/admin.h, server/meta.c, client/gtk/connect.c,
 	common/state.c, common/network.c, common/network.h: Removed function
 	casts for NetNotifyFunc.
+	* server/admin.c, common/network.c, common/network.h: Revert of the
+	change on 2012-04-03, now the admin interface works again.
 
 2013-02-12  Roland Clobus <rclobus@rclobus.nl>
 	* editor/gtk/editor.c: Better logic for the +/- buttons for columns

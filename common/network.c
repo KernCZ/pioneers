@@ -492,6 +492,14 @@ Session *net_new(NetNotifyFunc notify_func, gpointer user_data)
 	return ses;
 }
 
+void net_set_user_data(Session * ses, gpointer user_data)
+{
+	g_return_if_fail(ses != NULL);
+	g_return_if_fail(ses->notify_func != NULL);
+
+	ses->user_data = user_data;
+}
+
 void net_use_fd(Session * ses, int fd, gboolean do_ping)
 {
 	ses->fd = fd;
