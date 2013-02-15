@@ -269,7 +269,7 @@ int main(int argc, char *argv[])
 	net_init();
 
 	if (admin_port != NULL) {
-		if (!admin_listen(admin_port)) {
+		if (!admin_listen(admin_port, &game)) {
 			/* Error message */
 			g_print(_("Admin port not available.\n"));
 			return 5;

@@ -3,6 +3,7 @@
  *
  * Copyright (C) 1999 Dave Cole
  * Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
+ * Copyright (C) 2013 Roland Clobus <rclobus@rclobus.nl>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,28 +23,18 @@
 #ifndef __admin_h
 #define __admin_h
 
-#include "network.h"
+#include "server.h"
 
-typedef struct _comm_info {
-	gint fd;
-	guint read_tag;
-	guint write_tag;
-} comm_info;
-
-extern gint admin_dice_roll;
-
-/**** backend functions for network administration of the server ****/
-
-/* parse 'line' and run the command requested */
-void admin_run_command(Session * admin_session, const gchar * line);
-
-/* accept a connection made to the admin port */
-void admin_connect(comm_info * admin_info);
-
-/** set up the administration port
+/** Set up the administration interface.
  * @param port Port to listen on
+ * @param game The game to administrate
  * @return TRUE on success
  */
-gboolean admin_listen(const gchar * port);
+gboolean admin_listen(const gchar * port, Game ** game);
+
+/** Get the dice roll that was determined by the administrator.
+ * @return 0 when not fixed, otherwise the dice roll
+ */
+gint admin_get_dice_roll(void);
 
 #endif				/* __admin_h */

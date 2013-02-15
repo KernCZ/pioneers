@@ -3,7 +3,7 @@
  *
  * Copyright (C) 1999 Dave Cole
  * Copyright (C) 2003, 2006 Bas Wijnen <shevek@fmf.nl>
- * Copyright (C) 2007 Roland Clobus <rclobus@bigfoot.com>
+ * Copyright (C) 2007, 2013 Roland Clobus <rclobus@rclobus.nl>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,10 +34,21 @@
 #include "game.h"
 #include "server.h"
 
-/* network administration functions */
-comm_info *_accept_info = NULL;
+#include "network.h"
 
-gint admin_dice_roll = 0;
+typedef struct _comm_info {
+	gint fd;
+	guint read_tag;
+	guint write_tag;
+} comm_info;
+
+/* network administration functions */
+static Game **admin_game;
+static comm_info *_accept_info = NULL;
+static gint admin_dice_roll = 0;
+static gchar *server_port = NULL;
+static gboolean register_server = TRUE;
+static GameParams *params = NULL;
 
 typedef enum {
 	BADCOMMAND,
@@ -86,17 +97,12 @@ static AdminCommand admin_commands[] = {
 /* *INDENT-ON* */
 
 /* parse 'line' and run the command requested */
-void admin_run_command(Session * admin_session, const gchar * line)
+static void admin_run_command(Session * admin_session, const gchar * line)
 {
 	const gchar *command_start;
 	gchar *command;
 	gchar *argument;
 	guint command_number;
-
-	static gchar *server_port = NULL;
-	static gboolean register_server = TRUE;
-	static GameParams *params = NULL;
-	static Game *game = NULL;
 
 	if (!g_str_has_prefix(line, "admin")) {
 		net_printf(admin_session,
@@ -151,10 +157,10 @@ void admin_run_command(Session * admin_session, const gchar * line)
 			   command);
 	} else {
 		if (admin_commands[command_number].stop_server
-		    && server_is_running(game)) {
-			server_stop(game);
-			game_free(game);
-			game = NULL;
+		    && server_is_running(*admin_game)) {
+			server_stop(*admin_game);
+			game_free(*admin_game);
+			*admin_game = NULL;
 			net_write(admin_session, "INFO server stopped\n");
 		}
 		switch (admin_commands[command_number].type) {
@@ -176,9 +182,9 @@ void admin_run_command(Session * admin_session, const gchar * line)
 					server_port =
 					    g_strdup
 					    (PIONEERS_DEFAULT_GAME_PORT);
-				if (game != NULL)
-					game_free(game);
-				game =
+				if (*admin_game != NULL)
+					game_free(*admin_game);
+				*admin_game =
 				    server_start(params, get_server_name(),
 						 server_port,
 						 register_server,
@@ -187,7 +193,7 @@ void admin_run_command(Session * admin_session, const gchar * line)
 			}
 			break;
 		case STOPSERVER:
-			server_stop(game);
+			server_stop(*admin_game);
 			break;
 		case REGISTERSERVER:
 			register_server = atoi(argument);
@@ -217,13 +223,13 @@ void admin_run_command(Session * admin_session, const gchar * line)
 		case QUIT:
 			net_close(admin_session);
 			/* Quit the server if the admin leaves */
-			if (!server_is_running(game))
+			if (!server_is_running(*admin_game))
 				exit(0);
 			break;
 		case MESSAGE:
 			g_strdelimit(argument, "|", '_');
-			if (server_is_running(game))
-				admin_broadcast(game, argument);
+			if (server_is_running(*admin_game))
+				admin_broadcast(*admin_game, argument);
 			break;
 		case HELP:
 			for (command_number = 1;
@@ -254,7 +260,7 @@ void admin_run_command(Session * admin_session, const gchar * line)
 				   register_server);
 			net_printf(admin_session,
 				   "INFO server running %d\n",
-				   server_is_running(game));
+				   server_is_running(*admin_game));
 			if (params) {
 				net_printf(admin_session, "INFO game %s\n",
 					   params->title);
@@ -346,7 +352,7 @@ static void admin_event(NetEvent event, const gchar * line,
 }
 
 /* accept a connection made to the admin port */
-void admin_connect(comm_info * admin_info)
+static void admin_connect(comm_info * admin_info)
 {
 	Session *admin_session;
 	gint new_fd;
@@ -371,9 +377,14 @@ void admin_connect(comm_info * admin_info)
 }
 
 /* set up the administration port */
-gboolean admin_listen(const gchar * port)
+gboolean admin_listen(const gchar * port, Game ** game)
 {
 	gchar *error_message;
+
+	admin_game = game;
+	if (*admin_game != NULL) {
+		params = params_copy((*admin_game)->params);
+	}
 
 	if (!_accept_info) {
 		_accept_info = g_malloc0(sizeof(comm_info));
@@ -396,4 +407,9 @@ gboolean admin_listen(const gchar * port)
 				   (InputFunc) admin_connect,
 				   _accept_info);
 	return TRUE;
+}
+
+gint admin_get_dice_roll(void)
+{
+	return admin_dice_roll;
 }

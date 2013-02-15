@@ -465,29 +465,31 @@ gboolean mode_turn(Player * player, gint event)
 			return TRUE;
 		}
 
-		/* roll the dice until we like it */
-		while (TRUE) {
-			game->die1 = get_rand(6) + 1;
-			game->die2 = get_rand(6) + 1;
-			roll = game->die1 + game->die2;
-			game->rolled_dice = TRUE;
+		roll = admin_get_dice_roll();
+		if (roll == 0) {
+			/* roll the dice until we like it */
+			while (TRUE) {
+				game->die1 = get_rand(6) + 1;
+				game->die2 = get_rand(6) + 1;
+				roll = game->die1 + game->die2;
+				game->rolled_dice = TRUE;
 
-			/* sevens_rule == 1: reroll first two turns */
-			if (game->params->sevens_rule == 1)
-				if (roll == 7 && game->curr_turn <= 2)
-					continue;
-			/* sevens_rule == 2: reroll all sevens */
-			if (game->params->sevens_rule == 2)
-				if (roll == 7)
-					continue;
-			/* sevens_rule == 0: don't reroll anything */
-			break;
-		}
-		/* The administrator can override the dice */
-		if (admin_dice_roll >= 2) {
-			game->die1 = admin_dice_roll > 6 ? 6 : 1;
-			game->die2 = admin_dice_roll - game->die1;
-			roll = admin_dice_roll;
+				/* sevens_rule == 1: reroll first two turns */
+				if (game->params->sevens_rule == 1)
+					if (roll == 7
+					    && game->curr_turn <= 2)
+						continue;
+				/* sevens_rule == 2: reroll all sevens */
+				if (game->params->sevens_rule == 2)
+					if (roll == 7)
+						continue;
+				/* sevens_rule == 0: don't reroll anything */
+				break;
+			}
+		} else {
+			/* The administrator can override the dice */
+			game->die1 = roll > 6 ? 6 : 1;
+			game->die2 = roll - game->die1;
 			player_broadcast(player, PB_SILENT, FIRST_VERSION,
 					 LATEST_VERSION, "NOTE %s\n",
 					 /* Cheat mode has been activated */
