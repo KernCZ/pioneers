@@ -1,3 +1,6 @@
+2013-02-17  Roland Clobus <rclobus@rclobus.nl>
+	* admin-scripts/list.sh: Works for 5/6-player game too.
+
 2013-02-15  Roland Clobus <rclobus@rclobus.nl>
 	* server/admin.c, server/admin.h, server/meta.c, client/gtk/connect.c,
 	common/state.c, common/network.c, common/network.h: Removed function
