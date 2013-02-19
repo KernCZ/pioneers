@@ -1,3 +1,9 @@
+2013-02-19  Roland Clobus <rclobus@rclobus.nl>
+	* configure.ac, server/meta.c, server/avahi.c, server/player.c,
+	client/common/client.c, common/game.c, common/game.h: Moved the #define
+	of PROTOCOL_VERSION to the enum ClientVersionType for a single location
+	to keep the PROTOCOL_VERSION.
+
 2013-02-17  Roland Clobus <rclobus@rclobus.nl>
 	* admin-scripts/list.sh: Works for 5/6-player game too.
 

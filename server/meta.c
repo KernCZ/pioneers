@@ -74,7 +74,8 @@ void meta_send_details(Game * game)
 		   "version=%s\n"
 		   "max=%d\n"
 		   "curr=%d\n",
-		   game->server_port, PROTOCOL_VERSION,
+		   game->server_port,
+		   client_version_type_to_string(LATEST_VERSION),
 		   game->params->num_players, game->num_players);
 	/* If no hostname is set, let the metaserver figure out our name */
 	if (game->hostname) {

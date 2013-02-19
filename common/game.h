@@ -72,6 +72,12 @@ typedef enum {
  */
 ClientVersionType client_version_type_from_string(const gchar * cvt);
 
+/** Convert from a ClientVersionType.
+ * @param cvt The version
+ * @return The string.
+ */
+const gchar *client_version_type_to_string(ClientVersionType cvt);
+
 /** Will it be possible for a client to connect to a server?
  * @param client_version The version of the client
  * @param server_version The version of the server

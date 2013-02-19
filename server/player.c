@@ -949,19 +949,13 @@ static gboolean mode_check_version(Player * player, gint event)
 			    client_version_type_from_string(version);
 			player->version = cvt;
 			if (can_client_connect_to_server
-			    (cvt,
-			     client_version_type_from_string
-			     (PROTOCOL_VERSION))) {
+			    (cvt, LATEST_VERSION)) {
 				sm_goto(sm, (StateFunc) mode_check_status);
 			} else {
-				/* PROTOCOL_VERSION is the current version
-				 * of the client when building this server.
-				 * Although it's not the only supported
-				 * version, it's the best the user can have.
-				 */
 				gchar *mismatch =
 				    g_strdup_printf("%s <-> %s",
-						    PROTOCOL_VERSION,
+						    client_version_type_to_string
+						    (LATEST_VERSION),
 						    version);
 				/* Make sure the argument does not contain the separator */
 				g_strdelimit(mismatch, "|", '_');

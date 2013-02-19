@@ -818,19 +818,41 @@ gboolean params_write_file(GameParams * params, const gchar * fname)
 	return TRUE;
 }
 
+/* Conversions for ClientVersionType. Keep the newest version on top. */
+static struct ClientVersionTypeConversion {
+	ClientVersionType type;
+	const gchar *string;
+} client_version_type_conversions[] = {
+	{
+	V14, "14"}, {
+	V0_12, "0.12"}, {
+	V0_11, "0.11"}, {
+	V0_10, "0.10"}
+};
+
 ClientVersionType client_version_type_from_string(const gchar * cvt)
 {
-	if (!strcmp(cvt, "0.10")) {
-		return V0_10;
-	} else if (!strcmp(cvt, "0.11")) {
-		return V0_11;
-	} else if (!strcmp(cvt, "0.12")) {
-		return V0_12;
-	} else if (!strcmp(cvt, "14")) {
-		return V14;
-	} else {
-		return UNKNOWN_VERSION;
+	guint i;
+
+	for (i = 0; i < G_N_ELEMENTS(client_version_type_conversions); i++) {
+		if (!strcmp
+		    (cvt, client_version_type_conversions[i].string)) {
+			return client_version_type_conversions[i].type;
+		}
 	}
+	return UNKNOWN_VERSION;
+}
+
+const gchar *client_version_type_to_string(ClientVersionType cvt)
+{
+	guint i;
+
+	for (i = 0; i < G_N_ELEMENTS(client_version_type_conversions); i++) {
+		if (cvt == client_version_type_conversions[i].type) {
+			return client_version_type_conversions[i].string;
+		}
+	}
+	return "unknown";
 }
 
 gboolean can_client_connect_to_server(ClientVersionType client_version,

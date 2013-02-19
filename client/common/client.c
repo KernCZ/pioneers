@@ -945,7 +945,8 @@ gboolean mode_start(StateMachine * sm, gint event)
 	if (event != SM_RECV)
 		return FALSE;
 	if (sm_recv(sm, "version report")) {
-		sm_send(sm, "version %s\n", PROTOCOL_VERSION);
+		sm_send(sm, "version %s\n",
+			client_version_type_to_string(LATEST_VERSION));
 		return TRUE;
 	}
 	if (sm_recv(sm, "status report")) {

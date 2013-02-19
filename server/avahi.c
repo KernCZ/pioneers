@@ -120,7 +120,8 @@ static void create_services(AvahiClient * c, Game * game)
 
 	sl = avahi_string_list_new(NULL, NULL);
 	sl = avahi_string_list_add_printf(sl, "version=%s",
-					  PROTOCOL_VERSION);
+					  client_version_type_to_string
+					  (LATEST_VERSION));
 	sl = avahi_string_list_add_printf(sl, "title=%s",
 					  game->params->title);
 
