@@ -1,3 +1,7 @@
+2013-02-23  Roland Clobus <rclobus@rclobus.nl>
+	* server/server.c, server/admin.c, server/admin.h: Used the correct
+	port in the admin interface.
+
 2013-02-19  Roland Clobus <rclobus@rclobus.nl>
 	* configure.ac, server/meta.c, server/avahi.c, server/player.c,
 	client/common/client.c, common/game.c, common/game.h: Moved the #define

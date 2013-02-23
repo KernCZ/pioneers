@@ -377,13 +377,14 @@ static void admin_connect(comm_info * admin_info)
 }
 
 /* set up the administration port */
-gboolean admin_listen(const gchar * port, Game ** game)
+gboolean admin_init(const gchar * port, Game ** game)
 {
 	gchar *error_message;
 
 	admin_game = game;
 	if (*admin_game != NULL) {
 		params = params_copy((*admin_game)->params);
+		server_port = g_strdup((*admin_game)->server_port);
 	}
 
 	if (!_accept_info) {

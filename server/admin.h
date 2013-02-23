@@ -30,7 +30,7 @@
  * @param game The game to administrate
  * @return TRUE on success
  */
-gboolean admin_listen(const gchar * port, Game ** game);
+gboolean admin_init(const gchar * port, Game ** game);
 
 /** Get the dice roll that was determined by the administrator.
  * @return 0 when not fixed, otherwise the dice roll

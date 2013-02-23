@@ -215,10 +215,6 @@ int main(int argc, char *argv[])
 
 	if (server_port == NULL)
 		server_port = g_strdup(PIONEERS_DEFAULT_GAME_PORT);
-	if (disable_game_start)
-		if (admin_port == NULL)
-			admin_port = g_strdup(PIONEERS_DEFAULT_ADMIN_PORT);
-
 	if (game_title && game_file) {
 		/* server-console commandline error */
 		g_print(_(""
@@ -268,35 +264,38 @@ int main(int argc, char *argv[])
 
 	net_init();
 
-	if (admin_port != NULL) {
-		if (!admin_listen(admin_port, &game)) {
-			/* Error message */
-			g_print(_("Admin port not available.\n"));
-			return 5;
-		}
-	}
-
-	if (disable_game_start && admin_port == NULL) {
-		/* server-console commandline error */
-		g_print(_(""
-			  "Admin port is not set, "
-			  "cannot disable game start too\n"));
-		return 4;
-
-	}
-
 	if (!disable_game_start) {
 		game =
 		    server_start(params, hostname, server_port,
 				 register_server, meta_server_name,
 				 !fixed_seating_order);
 		if (game != NULL) {
+			if (admin_port != NULL) {
+				if (!admin_init(admin_port, &game)) {
+					/* Error message */
+					g_print(_("The network port (%s) "
+						  "for the admin "
+						  "interface is not "
+						  "available.\n"),
+						admin_port);
+				}
+			}
 			game->no_player_timeout = timeout;
 			num_ai_players =
 			    CLAMP(num_ai_players, 0,
 				  (gint) game->params->num_players);
 			for (i = 0; i < num_ai_players; ++i)
 				add_computer_player(game, TRUE);
+		}
+	} else {
+		if (admin_port == NULL)
+			admin_port = g_strdup(PIONEERS_DEFAULT_ADMIN_PORT);
+		if (!admin_init(admin_port, &game)) {
+			/* Error message */
+			g_print(_("The network port (%s) for the admin "
+				  "interface is not available.\n"),
+				admin_port);
+			return 5;
 		}
 	}
 	if (disable_game_start || game != NULL) {
