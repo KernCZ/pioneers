@@ -149,8 +149,7 @@ static void meta_event(NetEvent event, const gchar * line,
 				char *p = strstr(line, "version ");
 				if (p) {
 					p += 8;
-					metaserver_version_major =
-					    atoi(p);
+					metaserver_version_major = atoi(p);
 					p += strspn(p, "0123456789");
 					if (*p == '.')
 						metaserver_version_minor =

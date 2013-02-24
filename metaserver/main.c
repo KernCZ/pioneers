@@ -145,7 +145,8 @@ static void meta_debug(const gchar * fmt, ...)
 	if (fp == NULL) {
 		gchar *fullpath;
 		gchar *filename;
-		filename = g_strdup_printf("pioneers-metaserver.%d", getpid());
+		filename =
+		    g_strdup_printf("pioneers-metaserver.%d", getpid());
 		fullpath =
 		    g_build_filename(g_get_tmp_dir(), filename, NULL);
 		fp = fopen(fullpath, "w");

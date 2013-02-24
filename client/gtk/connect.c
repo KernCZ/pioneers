@@ -503,7 +503,7 @@ static void meta_notify(NetEvent event, const gchar * line,
 				break;
 			}
 			metaserver_info.version_major = 0;
-	    metaserver_info.version_minor = 0;
+			metaserver_info.version_minor = 0;
 			metaserver_info.can_create_games = FALSE;
 			metaserver_info.can_send_game_settings = FALSE;
 			if (strncmp(line, "welcome ", 8) == 0) {
@@ -752,7 +752,7 @@ static GtkWidget *build_create_interface(void)
 	gtk_box_pack_start(GTK_BOX(vbox), game_rules, FALSE, FALSE, 3);
 
 	get_metaserver_games_types(metaserver_info.server,
-				    metaserver_info.port);
+				   metaserver_info.port);
 
 	return vbox;
 }
@@ -886,7 +886,7 @@ static void meta_dlg_cb(GtkDialog * dlg, gint arg1,
 		gtk_list_store_clear(meta_games_model);
 		metaserver_info.num_redirects = 0;
 		query_metaserver(metaserver_info.server,
-				  metaserver_info.port);
+				 metaserver_info.port);
 		break;
 	case META_RESPONSE_NEW:	/* Add a server */
 		create_server_dlg(NULL, GTK_WINDOW(dlg));
@@ -953,7 +953,7 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
 			     metaserver_info.can_create_games);
 
 			query_metaserver(metaserver_info.server,
-					  metaserver_info.port);
+					 metaserver_info.port);
 		}
 		gtk_window_present(GTK_WINDOW(meta_dlg));
 		return;

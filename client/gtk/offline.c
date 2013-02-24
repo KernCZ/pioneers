@@ -296,7 +296,7 @@ void frontend_init(void)
 
 	if (!metaserver)
 		metaserver = config_get_string("connect/metaserver="
-						PIONEERS_DEFAULT_METASERVER,
-						&default_returned);
+					       PIONEERS_DEFAULT_METASERVER,
+					       &default_returned);
 	connect_set_metaserver(metaserver);
 }
