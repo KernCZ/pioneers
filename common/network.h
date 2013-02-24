@@ -101,15 +101,15 @@ void net_write(Session * ses, const gchar * data);
  */
 gchar *get_my_hostname(void);
 
-/** Get the name of the meta server.
- *  First the environment variable PIONEERS_META_SERVER is queried
+/** Get the name of the metaserver.
+ *  First the environment variable PIONEERS_METASERVER is queried
  *  If it is not set, the use_default flag is used.
- * @param use_default If true, return the default meta server if the
+ * @param use_default If true, return the default metaserver if the
  *                    environment variable is not set.
  *                    If false, return the hostname of this computer.
- * @return The hostname of the meta server
+ * @return The hostname of the metaserver
  */
-gchar *get_meta_server_name(gboolean use_default);
+gchar *get_metaserver_name(gboolean use_default);
 
 /** Get the directory of the game related files.
  *  First the environment variable PIONEERS_DIR is queried

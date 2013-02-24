@@ -1,9 +1,9 @@
-.TH pioneers-meta-server 6 "January 8, 2012" "pioneers"
+.TH pioneers-metaserver 6 "February 24, 2013" "pioneers"
 .SH NAME
-pioneers-meta-server \- meta game server for Pioneers
+pioneers-metaserver \- metaserver for Pioneers
 
 .SH SYNOPSIS
-.B pioneers-meta-server
+.B pioneers-metaserver
 .RI [ options ]
 
 .SH DESCRIPTION
@@ -30,7 +30,7 @@ Run in daemon mode.
 
 .TP
 .BI "\-r, \-\-redirect" " location"
-.RI "Redirect to another meta-server running at " location "."
+.RI "Redirect to another metaserver running at " location "."
 
 .TP
 .BI "\-s, \-\-servername" " hostname"
@@ -40,7 +40,7 @@ Run in daemon mode.
 .BI "\-p, \-\-port\-range" " from" \- "to"
 .RI "Use ports in the range " from "-" to " (inclusive) to start servers."
 It is advised not to include port 5557 in the range.  (See BUGS below.)
-When this range is not specified, the meta-server will not be able to create
+When this range is not specified, the metaserver will not be able to create
 new games.
 
 .TP
@@ -56,11 +56,11 @@ Duplicate the messages of the syslog to the console.
 Show version information.
 
 .SH ENVIRONMENT
-The default settings of the meta-server can be influenced with the
+The default settings of the metaserver can be influenced with the
 following three environment variables:
 .TP 
-.B PIONEERS_META_SERVER
-The hostname the meta-server will use when creating new games. This should
+.B PIONEERS_METASERVER
+The hostname the metaserver will use when creating new games. This should
 be a hostname that can be resolved by all clients that will connect.
 .TP 
 .B PIONEERS_SERVER_CONSOLE
@@ -80,13 +80,13 @@ Game definitions
 .SH SIGNALS
 .B USR1
 .RS
-Shutdown the meta-server gracefully (can be used to check for memory leaks)
+Shutdown the metaserver gracefully (can be used to check for memory leaks)
 .RE
 
 .SH BUGS
 Do not include port 5557 in the
 .I \-\-port\-range
-argument because the meta-server uses this port.
+argument because the metaserver uses this port.
 
 .SH AUTHOR
 This manual page was written by Jeff Breidenbach <jab@debian.org>,

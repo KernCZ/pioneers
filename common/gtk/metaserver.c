@@ -66,7 +66,7 @@ static void metaserver_init(MetaServer * ms)
 	GtkTreeIter iter;
 	GtkCellRenderer *cell;
 	gchar *default_metaserver_name;
-	gchar *custom_meta_server_name;
+	gchar *custom_metaserver_name;
 	gboolean novar;
 
 	/* Create model */
@@ -82,26 +82,26 @@ static void metaserver_init(MetaServer * ms)
 
 	gtk_widget_show(ms->combo_box);
 	gtk_widget_set_tooltip_text(ms->combo_box,
-				    /* Tooltip for the list of meta servers */
-				    _("Select a meta server"));
+				    /* Tooltip for the list of metaservers */
+				    _("Select a metaserver"));
 	gtk_table_resize(GTK_TABLE(ms), 1, 1);
 	gtk_table_attach_defaults(GTK_TABLE(ms), ms->combo_box,
 				  0, 1, 0, 1);
 
-	/* Default meta server */
-	default_metaserver_name = get_meta_server_name(TRUE);
+	/* Default metaserver */
+	default_metaserver_name = get_metaserver_name(TRUE);
 	metaserver_add(ms, default_metaserver_name);
 	g_free(default_metaserver_name);
 
-	/* Custom meta server */
-	custom_meta_server_name =
+	/* Custom metaserver */
+	custom_metaserver_name =
 	    config_get_string
-	    ("server/custom-meta-server=pioneers.game-host.org", &novar);
-	metaserver_add(ms, custom_meta_server_name);
-	g_free(custom_meta_server_name);
+	    ("server/custom-metaserver=pioneers.game-host.org", &novar);
+	metaserver_add(ms, custom_metaserver_name);
+	g_free(custom_metaserver_name);
 
 	/* Select the first item.
-	 * When later metaserver_add is called, it will set the current meta server */
+	 * When later metaserver_add is called, it will set the current metaserver */
 	gtk_tree_model_get_iter_first(GTK_TREE_MODEL(ms->data), &iter);
 	gtk_combo_box_set_active_iter(GTK_COMBO_BOX(ms->combo_box), &iter);
 }

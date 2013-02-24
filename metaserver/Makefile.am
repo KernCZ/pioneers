@@ -17,10 +17,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-bin_PROGRAMS += pioneers-meta-server
+bin_PROGRAMS += pioneers-metaserver
 
-pioneers_meta_server_CPPFLAGS = $(console_cflags)
-pioneers_meta_server_LDADD = $(console_libs)
+pioneers_metaserver_CPPFLAGS = $(console_cflags)
+pioneers_metaserver_LDADD = $(console_libs)
 
-pioneers_meta_server_SOURCES = \
-	meta-server/main.c
+pioneers_metaserver_SOURCES = \
+	metaserver/main.c

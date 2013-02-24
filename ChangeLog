@@ -1,3 +1,16 @@
+2013-02-24  Roland Clobus <rclobus@rclobus.nl>
+	* configure.ac, server/server.c, server/server.h, server/main.c,
+	server/admin.c, server/admin.h, server/gtk/main.c, server/meta.c,
+	Makefile.am, metaserver/README.protocol, metaserver/meta-report,
+	metaserver/main.c, metaserver/Makefile.am, client/gtk/admin-gtk.c,
+	client/gtk/frontend.h, client/gtk/offline.c, client/gtk/connect.c,
+	client/help/C/pioneers.xml, po/POTFILES.in, ChangeLog,
+	docs/pioneers-server-gtk.6, docs/pioneers-meta-server.6,
+	docs/pioneers-metaserver.6, docs/pioneers.6, docs/Makefile.am,
+	docs/pioneers-server-console.6, common/network.c, common/network.h,
+	common/gtk/metaserver.c: Fixed variants of the spelling of 
+	meta[- _]server to metaserver.
+
 2013-02-23  Roland Clobus <rclobus@rclobus.nl>
 	* server/server.c, server/admin.c, server/admin.h: Used the correct
 	port in the admin interface.
@@ -63,7 +76,7 @@
 
 2013-01-19  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/connect.c: Clear the list of games and set focus to the
-	dialog with the list of games when changing the meta server.
+	dialog with the list of games when changing the metaserver.
 
 2013-01-18  Roland Clobus <rclobus@rclobus.nl>
 	* client/ai/ai.c, client/ai/greedy.c, common/gtk/theme.h: Cleanup of
@@ -365,7 +378,7 @@
 	* client/gtk/trade.c: make reindent.
 	* meta-server/main.c: Fixed a memory leak.
 	* docs/pioneers-meta-server.6, meta-server/main.c: Allow gracefull
-	shutdown of the meta-server by sending SIGUSR1.
+	shutdown of the metaserver by sending SIGUSR1.
 	* editor/gtk/game-resources.c, editor/gtk/editor.c,
 	editor/gtk/game-building.c: Fixed a few warnings with
 	--enable-warnings=full.
@@ -614,7 +627,7 @@
 	client/ai/lobbybot.c: Update and reenable translator hints.
 
 2010-10-25  Roland Clobus <rclobus@rclobus.nl>
-	* admin-scripts: Added various scripts to automate the meta-server.
+	* admin-scripts: Added various scripts to automate the metaserver.
 	* getVersions.sh, kill-game.sh: Moved to admin-scripts.
 
 2010-10-24  Roland Clobus <rclobus@rclobus.nl>
@@ -765,7 +778,7 @@
 	Fugal who wrote the initial patch)
 
 2010-02-16  Roland Clobus <rclobus@rclobus.nl>
-	* kill-game.sh: Added maintenance script for the meta-server.
+	* kill-game.sh: Added maintenance script for the metaserver.
 	* server/player.c: Stop and deregister the tournament timer when the
 	time has passed. Cleanup all players that disconnected during the
 	registration persiod, to fix the bug that the added computer players
@@ -972,18 +985,18 @@
 	requested by Mike Pater (SF #1655951)
 	* common/gtk/metaserver.c, common/gtk/metaserver.h,
 	common/gtk/Makefile.am, server/gtk/main.c, client/gtk/connect.c:
-	Easier selection for meta servers (by using a combo box)
+	Easier selection for metaservers (by using a combo box)
 	* docs/pioneers-meta-server.6, meta-server/main.c: When -p is not
-	specified, the meta server will not be able to create games.
+	specified, the metaserver will not be able to create games.
 	* meta-server/main.c: Add tournament mode to games created on the
-	meta server.
+	metaserver.
 	* configure.ac: No need to attempt to create MS icons when Gtk+ is not
 	present.
 	* editor/gtk/game-devcards.c: Remove some warnings when all warnings
 	are turned on.
 	* server/gtk/main.c: Use consistent capitalisation for Start/Stop
 	Server.
-	* client/help/C/pioneers.xml: Use menuchoice tags, update for the meta
+	* client/help/C/pioneers.xml: Use menuchoice tags, update for the meta-
 	server combo.
 
 2008-03-12  Roland Clobus <rclobus@bigfoot.com>
@@ -1353,7 +1366,7 @@
 	cursor out and in again. The workaround depends on the runtime version
 	of Gtk+, not the version at compile time. (Refinement of the patch
 	2006-09-03)
-	* server/meta.c: Log when unknown messages are sent from the meta
+	* server/meta.c: Log when unknown messages are sent from the meta-
 	server.
 	* Makefile.am: Add 48x48 icons (for Windows XP, Thumbnail view).
 
@@ -1362,7 +1375,7 @@
 
 2006-09-12  Roland Clobus <rclobus@bigfoot.com>
 	* server/meta.c, meta-server/main.c: Meta server disconnects
-	unresponsive servers. Server shows a message when the meta server
+	unresponsive servers. Server shows a message when the metaserver
 	disconnects.
 	* client/gtk/interface.c: Don't change GUI state when a second quote
 	is issued.
@@ -1475,7 +1488,7 @@
 	help->about, and add Brian to the full list.
 
 2006-08-15  Roland Clobus <rclobus@bigfoot.com>
-	* client/gtk/connect.c: Don't connect to a new game at the meta server
+	* client/gtk/connect.c: Don't connect to a new game at the metaserver
 	as a viewer.
 	* common/network.h, common/log.c, common/network.c, README.subversion,
 	configure.ac, server/gtk/main.c, server/main.c,
@@ -1499,7 +1512,7 @@
 	* editor/gtk/Makefile.am, README.subversion, configure.ac,
 	Makefile.am, client/gtk/data/Makefile.am, client/gtk/Makefile.am:
 	Reduce the need for netpbm.
-	* client/gtk/connect.c: Translate the data from the meta server.
+	* client/gtk/connect.c: Translate the data from the metaserver.
 	* server/lobby.game: Tournament-time is not a keyword anymore.
 	* client/gtk/interface.c: No build cursor during trade.
 	* server/gtk/main.c, server/server.c, server/server.h, server/main.c,
@@ -1672,7 +1685,7 @@
 	client/common/client.h, client/common/callback.c,
 	client/common/player.c, client/ai/ai.c: Separate requested name and
 	viewerness from actual values during the game, add commandline-option
-	to select meta-server in gtk client.
+	to select metaserver in gtk client.
 
 2006-05-27  Roland Clobus <rclobus@bigfoot.com>
 	* client/gtk/gui.c: Moved legend, game settings and dice histgram from
@@ -1856,7 +1869,7 @@
 	client/common/player.c: Fixed a crash in the client when a /beep is
 	sent when not all players are present yet.
 	* server/meta.c, server/server.c, server/server.h: Unregister from the
-	meta-server when the server stops.
+	metaserver when the server stops.
 	* client/gtk/gui.c: Activate the map page when trade tabs have been
 	shown. Also hide the legend tab page after a connect (when turned off
 	in the preferences).
@@ -1870,7 +1883,7 @@
 	* server/pregame.c: Show disconnected players when reconnecting
 	
 2006-02-09  0.9.55 Roland Clobus <rclobus@bigfoot.com>
-	* configure.ac, meta-server/README.protocol: New version for the meta
+	* configure.ac, meta-server/README.protocol: New version for the meta-
 	server
 	* meta-server/main.c: Partly reverse the patch for 0.9.54, disable the
 	'create' command globally, instead of per connection.
@@ -2067,7 +2080,7 @@
 	* client/common/callback.c: Removed some debug text.
 
 2005-10-23  Roland Clobus <rclobus@bigfoot.com>
-	* Makefile.am, configure.ac: Whether the client, server, meta-server
+	* Makefile.am, configure.ac: Whether the client, server, metaserver
 	or editor are built is controlled from the configure script.
 	* Makefile.am, README.MinGW: Added README.Cygwin and README.MinGW to
 	the distributed tarball.
@@ -2532,9 +2545,9 @@
 	server/gnocatan-server.c, server/gnocatan-server.h, server/meta.c,
 	server/server.c, server/server.h, server/gtk/gnocatan-server-gtk.c:
 	Removed global variables for serverhostname and port. Moved duplicate
-	code of server and meta-server to common/network.c. All ports are now
+	code of server and metaserver to common/network.c. All ports are now
 	strings (service names), there are no conversions to integers left.
-	Upgraded meta-server protocol to 1.2.
+	Upgraded metaserver protocol to 1.2.
 	* rules.make, client/gtk/connect.c, client/gtk/plenty.c,
 	client/gtk/quote.c: Added GTK_DISABLE_DEPRECATED for developer-only
 	builds. Marked the files that still use deprecated calls.
@@ -2675,8 +2688,8 @@
 	commandline options.
 	* meta-server/gnocatan-meta-server.c (client_create_new_server): Use
 	-m and -n commandline options instead of the environment variable. The
-	server-console started from the meta-server will use the same hostname
-	as the meta-server.
+	server-console started from the metaserver will use the same hostname
+	as the metaserver.
 	* server/gnocatan-server-console.c (main): Correctly initialise
 	hostname.
 	
@@ -3583,7 +3596,7 @@
 2003-10-28  Roman Hodek  <roman@hodek.net>
 
 	* server/gnocatan-server-console.c (main): New option -n to set
-	hostname reported to meta server (analogous field in GTK server).
+	hostname reported to metaserver (analogous field in GTK server).
 	* meta-server/README.protocol: updated
 
 2003-10-26  Jeff Breidenbach  <jab@debian.org>
@@ -3661,8 +3674,8 @@
 	* client/admin_gtk.c, client/connect.c, common/network.c,
 	common/network.h, common/state.c, meta-server/gnocatan-meta-server.c,
 	server/gnocatan-server.c, server/meta.c: Changed net_free to NULLify
-	the session, changed the meta-server connection dialog, fixed bug
-	#717982, added meta-server redirections without port-number.
+	the session, changed the metaserver connection dialog, fixed bug
+	#717982, added metaserver redirections without port-number.
 
 2003-10-12  Bas Wijnen <b.wijnen@phys.rug.nl>
 	* AUTHORS: Added my name.
@@ -4353,12 +4366,12 @@
 	before you could click.
 
 	* server/gnocatan-server-console.c (main): added new option -m to
-	set meta server name
+	set metaserver name
 
 	* server/gnocatan-server-gtk.c (build_interface): added new field
-	for meta server name
+	for metaserver name
 
-	* server/meta.c: make name of meta server to connect to a global var
+	* server/meta.c: make name of metaserver to connect to a global var
 
 	* client/connect.c (create_server_dlg): remove "start server"
 	button in create server dialog, and use standard OK/Cancel buttons
@@ -4392,7 +4405,7 @@
 
 	* meta-server/gnocatan-meta-server.c (client_create_new_server):
 	Pass full hostname to created servers in environment. Otherwise
-	the server will register to the meta-server as running on
+	the server will register to the metaserver as running on
 	"localhost" and it won't be reachable from outside.
 
 	* debian/gnocatan-ai.menu: Fix typo ('-' too much again)
@@ -4495,14 +4508,14 @@
 2002-05-13  Roman Hodek  <roman@hodek.net>
 
 	* client/connect.c (show_waiting_box, close_waiting_box): new
-	dialog box indicating the we're waiting for an answer from a meta
+	dialog box indicating the we're waiting for an answer from a meta-
 	server
-	add net functions for querying meta server about game types and
+	add net functions for querying metaserver about game types and
 	creating a new server
 	(meta_notify): parse welcome line for protocol version, send own
 	version, parse proto 1.0 data
 	(create_server_dlg): new dialog for creating a new game server via
-	meta server
+	metaserver
 	(create_meta_dlg): add proto 1.0 data (victory points, sevens
 	rule) and a button to create a new server (if proto >= 1.0)
 
@@ -4579,7 +4592,7 @@
 	* Merged in latest Debian version (0.6.1-6), including:
 	   - IPv6 support by using getaddrinfo()
 	   - my connect dialog changes that add a new field for naming the
-	     meta server to contact
+	     metaserver to contact
 
 	* Added new games in server/, contributed by <piman@sacredchao.net>:
 	  canyon.game conquest.game  pond.game square.game star.game x.game
@@ -5587,8 +5600,8 @@
 1999-06-16  JT <jtraub@dragoncat.net>
 
 	* server/server.c (close_player): Fixed bug where server was
-	reporting to the meta-server, players leaving the game who had
-	never joined it.  It was possible to make the meta-server report
+	reporting to the metaserver, players leaving the game who had
+	never joined it.  It was possible to make the metaserver report
 	-ve player counts.
 	
 1999-06-08  Dave Cole <dave@dccs.com.au>

@@ -644,7 +644,7 @@
 
 	<para>The dialog displays a list of Pioneers games
           that are currently running on the Internet. The default
-	  meta server is <symbol>pioneers.debian.net</symbol></para>
+	  metaserver is <symbol>pioneers.debian.net</symbol></para>
 
 	<figure id="pioneers-FIG-servers-dialog">
 	  <title>The Join a public game dialog</title>
@@ -661,7 +661,7 @@
           one player will start the server with the game you've agreed
           upon.</para>
 
-	<para>Some meta servers also allow you to start new games
+	<para>Some metaservers also allow you to start new games
 	  on their host (e.g. <symbol>pioneers.game-host.org</symbol>).
           If this is possible, the New remote game button will be active
           and will bring you to the Create a public game dialog.</para>
@@ -673,7 +673,7 @@
 
 	<para>In this dialog, you can select various parameters for
 	  the new game: board name (available types will be retrieved
-	  from the meta-server), the number of players, victory points
+	  from the metaserver), the number of players, victory points
 	  to reach, how many computer players should join the game,
           which sevens rule to apply and whether the terrain should be
           randomized.</para>
@@ -688,7 +688,7 @@
       <para>Once you're satisfied with your choices, press the OK
         button. The game will be started once enough players have
 	entered the game. The new game will of course be 
-        registered to the meta server it was started from. Other players
+        registered to the metaserver it was started from. Other players
 	can see it in the list if they press the Join public game button,
 	or refresh the list of public games.</para>
 
@@ -697,7 +697,7 @@
         more than 20 minutes without any connected players. Please
         also note that adding computer players will silently fail if the
         <application>pioneersai</application> program is not installed
-        on the meta server.</para>
+        on the metaserver.</para>
 
       </sect2>
 
@@ -1408,7 +1408,7 @@
 	    can find the game
           </para></listitem>
           <listitem><para>
-            Select a <guilabel>Meta Server</guilabel>
+            Select a <guilabel>Metaserver</guilabel>
           </para></listitem>
           <listitem><para>
             Leave <guilabel>Reported hostname</guilabel> empty
@@ -1610,8 +1610,8 @@
 	      </row>
 	      <row>
 	        <entry>-m</entry>
-		<entry>--meta-server</entry>
-		<entry>Meta-server host</entry>
+		<entry>--metaserver</entry>
+		<entry>Metaserver host</entry>
 	      </row>
 	    </tbody>
 	  </tgroup>
@@ -1651,9 +1651,9 @@
 	      </row>
 	      <row>
 	        <entry>connect</entry>
-	        <entry>meta-server</entry>
+	        <entry>metaserver</entry>
 		<entry>string</entry>
-		<entry>Address of the meta server</entry>
+		<entry>Address of the metaserver</entry>
 	      </row>
 	      <row>
 	        <entry>connect</entry>
@@ -1729,8 +1729,8 @@
 	    </thead>
 	    <tbody>
 	      <row>
-	        <entry>PIONEERS_META_SERVER</entry>
-		<entry>The host name of the meta server</entry>
+	        <entry>PIONEERS_METASERVER</entry>
+		<entry>The host name of the metaserver</entry>
 	      </row>
 	    </tbody>
 	  </tgroup>
@@ -1769,21 +1769,21 @@
 	        <entry>-r</entry>
 	        <entry>--register</entry>
 		<entry/>
-		<entry>Register with meta-server</entry>
+		<entry>Register with metaserver</entry>
               </row>
 	      <row>
                 <entry/>
 	        <entry>-m</entry>
-	        <entry>--meta-server</entry>
+	        <entry>--metaserver</entry>
 		<entry>string</entry>
-		<entry>Register at meta-server name (implies -r)</entry>
+		<entry>Register at metaserver name (implies -r)</entry>
               </row>
 	      <row>
                 <entry/>
 	        <entry>-n</entry>
 	        <entry>--hostname</entry>
 		<entry>string</entry>
-		<entry>Use this hostname when registering at the meta-server</entry>
+		<entry>Use this hostname when registering at the metaserver</entry>
               </row>
 	      <row>
                 <entry>*</entry>
@@ -1902,7 +1902,7 @@
           </tgroup>
         </table>
         <para>
-          The column 'M' shows whether the switch is used by the meta-server
+          The column 'M' shows whether the switch is used by the metaserver
         </para>
 	<table id="configuration-server-console-environment">
 	  <title><application>pioneers-server-console</application>
@@ -1920,8 +1920,8 @@
                 <entry>The location of the *.game files and the computer_names file</entry>
               </row>
 	      <row>
-	        <entry>PIONEERS_META_SERVER</entry>
-		<entry>The host name of the meta server</entry>
+	        <entry>PIONEERS_METASERVER</entry>
+		<entry>The host name of the metaserver</entry>
 	      </row>
 	    </tbody>
 	  </tgroup>

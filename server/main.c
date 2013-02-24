@@ -64,7 +64,7 @@ static gint tournament_time = -1;
 static gboolean quit_when_done = FALSE;
 static gchar *hostname = NULL;
 static gboolean register_server = FALSE;
-static gchar *meta_server_name = NULL;
+static gchar *metaserver_name = NULL;
 static gboolean fixed_seating_order = FALSE;
 static gboolean enable_debug = FALSE;
 static gboolean show_version = FALSE;
@@ -103,11 +103,11 @@ static GOptionEntry commandline_game_entries[] = {
 static GOptionEntry commandline_meta_entries[] = {
 	{"register", 'r', 0, G_OPTION_ARG_NONE, &register_server,
 	 /* Commandline server-console: register */
-	 N_("Register server with meta-server"), NULL},
-	{"meta-server", 'm', 0, G_OPTION_ARG_STRING, &meta_server_name,
-	 /* Commandline server-console: meta-server */
-	 N_("Register at meta-server name (implies -r)"),
-	 PIONEERS_DEFAULT_META_SERVER},
+	 N_("Register server with metaserver"), NULL},
+	{"metaserver", 'm', 0, G_OPTION_ARG_STRING, &metaserver_name,
+	 /* Commandline server-console: metaserver */
+	 N_("Register at metaserver name (implies -r)"),
+	 PIONEERS_DEFAULT_METASERVER},
 	{"hostname", 'n', 0, G_OPTION_ARG_STRING, &hostname,
 	 /* Commandline server-console: hostname */
 	 N_("Use this hostname when registering"), NULL},
@@ -178,10 +178,10 @@ int main(int argc, char *argv[])
 					  PACKAGE);
 	context_group = g_option_group_new("meta",
 					   /* Commandline server-console: Short description of meta group */
-					   _("Meta-server Options"),
+					   _("Metaserver Options"),
 					   /* Commandline server-console: Long description of meta group */
 					   _(""
-					     "Options for the meta-server"),
+					     "Options for the metaserver"),
 					   NULL, NULL);
 	g_option_group_set_translation_domain(context_group, PACKAGE);
 	g_option_group_add_entries(context_group,
@@ -238,10 +238,10 @@ int main(int argc, char *argv[])
 		return 3;
 	}
 
-	if (meta_server_name != NULL)
+	if (metaserver_name != NULL)
 		register_server = TRUE;
-	if (register_server && meta_server_name == NULL)
-		meta_server_name = get_meta_server_name(TRUE);
+	if (register_server && metaserver_name == NULL)
+		metaserver_name = get_metaserver_name(TRUE);
 
 	g_assert(server_port != NULL);
 
@@ -267,7 +267,7 @@ int main(int argc, char *argv[])
 	if (!disable_game_start) {
 		game =
 		    server_start(params, hostname, server_port,
-				 register_server, meta_server_name,
+				 register_server, metaserver_name,
 				 !fixed_seating_order);
 		if (game != NULL) {
 			if (admin_port != NULL) {

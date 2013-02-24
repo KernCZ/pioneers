@@ -699,16 +699,16 @@ gchar *get_my_hostname(void)
 /* End of copy from glib-2.0 v2.8 */
 }
 
-gchar *get_meta_server_name(gboolean use_default)
+gchar *get_metaserver_name(gboolean use_default)
 {
 	gchar *temp;
 
-	temp = g_strdup(g_getenv("PIONEERS_META_SERVER"));
+	temp = g_strdup(g_getenv("PIONEERS_METASERVER"));
 	if (!temp)
 		temp = g_strdup(g_getenv("GNOCATAN_META_SERVER"));
 	if (!temp) {
 		if (use_default)
-			temp = g_strdup(PIONEERS_DEFAULT_META_SERVER);
+			temp = g_strdup(PIONEERS_DEFAULT_METASERVER);
 		else {
 			temp = get_my_hostname();
 		}

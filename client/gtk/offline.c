@@ -41,7 +41,7 @@ static const gchar *name = NULL;
 static gboolean spectator = FALSE;
 static const gchar *server = NULL;
 static const gchar *port = NULL;
-static const gchar *meta_server = NULL;
+static const gchar *metaserver = NULL;
 static gboolean server_from_commandline = FALSE;
 static gboolean quit_when_offline = FALSE;
 static gboolean enable_debug = FALSE;
@@ -60,9 +60,9 @@ static GOptionEntry commandline_entries[] = {
 	/* Commandline option of client: do we want to be a spectator */
 	{"spectator", 'v', 0, G_OPTION_ARG_NONE, &spectator,
 	 N_("Connect as a spectator"), NULL},
-	/* Commandline option of client: hostname of the meta-server */
-	{"meta-server", 'm', 0, G_OPTION_ARG_STRING, &meta_server,
-	 N_("Meta-server Host"), PIONEERS_DEFAULT_META_SERVER},
+	/* Commandline option of client: hostname of the metaserver */
+	{"metaserver", 'm', 0, G_OPTION_ARG_STRING, &metaserver,
+	 N_("Metaserver Host"), PIONEERS_DEFAULT_METASERVER},
 	{"debug", '\0', 0, G_OPTION_ARG_NONE, &enable_debug,
 	 /* Commandline option of client: enable debug logging */
 	 N_("Enable debug messages"), NULL},
@@ -294,9 +294,9 @@ void frontend_init(void)
 	connect_set_server(server);
 	connect_set_port(port);
 
-	if (!meta_server)
-		meta_server = config_get_string("connect/meta-server="
-						PIONEERS_DEFAULT_META_SERVER,
+	if (!metaserver)
+		metaserver = config_get_string("connect/metaserver="
+						PIONEERS_DEFAULT_METASERVER,
 						&default_returned);
-	connect_set_meta_server(meta_server);
+	connect_set_metaserver(metaserver);
 }

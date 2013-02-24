@@ -176,7 +176,7 @@ static void player_connect(gpointer user_data)
 }
 
 static gboolean game_server_start(Game * game, gboolean register_server,
-				  const gchar * meta_server_name)
+				  const gchar * metaserver_name)
 {
 	gchar *error_message;
 
@@ -195,8 +195,8 @@ static gboolean game_server_start(Game * game, gboolean register_server,
 						  player_connect, game);
 
 	if (register_server) {
-		g_assert(meta_server_name != NULL);
-		meta_register(meta_server_name, PIONEERS_DEFAULT_META_PORT,
+		g_assert(metaserver_name != NULL);
+		meta_register(metaserver_name, PIONEERS_DEFAULT_META_PORT,
 			      game);
 	}
 	avahi_register_game(game);
@@ -205,16 +205,16 @@ static gboolean game_server_start(Game * game, gboolean register_server,
 
 /** Try to start a new server.
  * @param params The parameters of the game
- * @param hostname The hostname that will be visible in the meta server
+ * @param hostname The hostname that will be visible in the metaserver
  * @param port The port to listen to
- * @param register_server Register at the meta server
- * @param meta_server_name The hostname of the meta server
+ * @param register_server Register at the metaserver
+ * @param metaserver_name The hostname of the metaserver
  * @param random_order Randomize the player number
  * @return A pointer to the new game, or NULL
 */
 Game *server_start(const GameParams * params, const gchar * hostname,
 		   const gchar * port, gboolean register_server,
-		   const gchar * meta_server_name, gboolean random_order)
+		   const gchar * metaserver_name, gboolean random_order)
 {
 	Game *game;
 	guint32 randomseed;
@@ -248,7 +248,7 @@ Game *server_start(const GameParams * params, const gchar * hostname,
 		game->hostname = g_strdup(hostname);
 	}
 	game->random_order = random_order;
-	if (!game_server_start(game, register_server, meta_server_name)) {
+	if (!game_server_start(game, register_server, metaserver_name)) {
 		game_free(game);
 		game = NULL;
 	}

@@ -31,7 +31,7 @@ PIONEERS_DEFAULT_GAME_PORT=5556
 PIONEERS_DEFAULT_GAME_HOST=localhost
 PIONEERS_DEFAULT_ADMIN_PORT=5555
 PIONEERS_DEFAULT_META_PORT=5557
-PIONEERS_DEFAULT_META_SERVER=pioneers.debian.net
+PIONEERS_DEFAULT_METASERVER=pioneers.debian.net
 
 GLIB_REQUIRED_VERSION=2.16
 GTK_REQUIRED_VERSION=2.20
@@ -409,7 +409,7 @@ TYPE_SOCKLEN_T
 
 # Defines, accessible for all source files
 AC_DEFINE_UNQUOTED(META_PROTOCOL_VERSION, "$META_PROTOCOL_VERSION",
-		   [Protocol version used by the meta server])
+		   [Protocol version used by the metaserver])
 AC_DEFINE_UNQUOTED(PIONEERS_DEFAULT_GAME_PORT, "$PIONEERS_DEFAULT_GAME_PORT",
 		   [The default port for a new game])
 AC_DEFINE_UNQUOTED(PIONEERS_DEFAULT_GAME_HOST, "$PIONEERS_DEFAULT_GAME_HOST",
@@ -417,9 +417,9 @@ AC_DEFINE_UNQUOTED(PIONEERS_DEFAULT_GAME_HOST, "$PIONEERS_DEFAULT_GAME_HOST",
 AC_DEFINE_UNQUOTED(PIONEERS_DEFAULT_ADMIN_PORT, "$PIONEERS_DEFAULT_ADMIN_PORT",
 		   [The default port for the admin interface])
 AC_DEFINE_UNQUOTED(PIONEERS_DEFAULT_META_PORT, "$PIONEERS_DEFAULT_META_PORT",
-		   [The port for the meta server])
-AC_DEFINE_UNQUOTED(PIONEERS_DEFAULT_META_SERVER, 
-		   "$PIONEERS_DEFAULT_META_SERVER", [The default meta server])
+		   [The port for the metaserver])
+AC_DEFINE_UNQUOTED(PIONEERS_DEFAULT_METASERVER, 
+		   "$PIONEERS_DEFAULT_METASERVER", [The default metaserver])
 
 ## internationalization support
 IT_PROG_INTLTOOL([0.35])
@@ -521,7 +521,7 @@ AM_CONDITIONAL(USE_WINDOWS_ICON, [test $pioneers_is_windows_port = yes])
 AM_CONDITIONAL(BUILD_CLIENT, [test "$pioneers_build_client_gtk" = "yes" -o "$pioneers_build_client_ai" = yes])
 AM_CONDITIONAL(BUILD_EDITOR, [test "$pioneers_build_editor" = "yes"])
 AM_CONDITIONAL(BUILD_SERVER, [test "$pioneers_build_server_gtk" = "yes" -o "$pioneers_build_server_console" = "yes"])
-AM_CONDITIONAL(BUILD_META_SERVER, [test "$pioneers_build_metaserver" = "yes"])
+AM_CONDITIONAL(BUILD_METASERVER, [test "$pioneers_build_metaserver" = "yes"])
 AM_CONDITIONAL(IS_MINGW_PORT, [test "$pioneers_is_mingw_port" = "yes"])
 
 if test "$have_scrollkeeper" = "yes"; then

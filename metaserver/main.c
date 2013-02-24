@@ -69,7 +69,7 @@ struct _Client {
 	gint protocol_major;
 	gint protocol_minor;
 
-	/* The rest of the structure is only used for META_SERVER clients
+	/* The rest of the structure is only used for METASERVER clients
 	 */
 	gchar *host;
 	gchar *port;
@@ -145,7 +145,7 @@ static void meta_debug(const gchar * fmt, ...)
 	if (fp == NULL) {
 		gchar *fullpath;
 		gchar *filename;
-		filename = g_strdup_printf("pioneers-meta.%d", getpid());
+		filename = g_strdup_printf("pioneers-metaserver.%d", getpid());
 		fullpath =
 		    g_build_filename(g_get_tmp_dir(), filename, NULL);
 		fp = fopen(fullpath, "w");
@@ -447,7 +447,7 @@ static void client_list_capability(Client * client)
 	if (can_create_games) {
 		client_printf(client, "create games\n");
 	}
-	/** @todo RC 2005-01-30 Implement this in the meta-server */
+	/** @todo RC 2005-01-30 Implement this in the metaserver */
 	if (FALSE)
 		client_printf(client, "send game settings\n");
 	client_printf(client, "deregister dead connections\n");
@@ -877,7 +877,7 @@ static void accept_new_client(void)
 		client->waiting_for_close = TRUE;
 	} else {
 		client_printf(client,
-			      "welcome to the pioneers-meta-server version %s\n",
+			      "welcome to the pioneers-metaserver version %s\n",
 			      META_PROTOCOL_VERSION);
 		FD_SET(client->fd, &read_fds);
 	}
@@ -1065,34 +1065,34 @@ static void convert_to_daemon(void)
 
 static GOptionEntry commandline_entries[] = {
 	{"daemon", 'd', 0, G_OPTION_ARG_NONE, &make_daemon,
-	 /* Commandline meta-server: daemon */
-	 N_("Daemonize the meta-server on start"), NULL},
+	 /* Commandline metaserver: daemon */
+	 N_("Daemonize the metaserver on start"), NULL},
 	{"pidfile", 'P', 0, G_OPTION_ARG_STRING, &pidfile,
-	 /* Commandline meta-server: pidfile */
+	 /* Commandline metaserver: pidfile */
 	 N_("Pidfile to create when daemonizing (implies -d)"),
-	 /* Commandline meta-server: pidfile argument */
+	 /* Commandline metaserver: pidfile argument */
 	 N_("filename")},
 	{"redirect", 'r', 0, G_OPTION_ARG_STRING, &redirect_location,
-	 /* Commandline meta-server: redirect */
-	 N_("Redirect clients to another meta-server"), NULL},
+	 /* Commandline metaserver: redirect */
+	 N_("Redirect clients to another metaserver"), NULL},
 	{"servername", 's', 0, G_OPTION_ARG_STRING, &myhostname,
-	 /* Commandline meta-server: server */
+	 /* Commandline metaserver: server */
 	 N_("Use this hostname when creating new games"),
-	 /* Commandline meta-server: server argument */
+	 /* Commandline metaserver: server argument */
 	 N_("hostname")},
 	{"port-range", 'p', 0, G_OPTION_ARG_STRING, &port_range,
-	 /* Commandline meta-server: port-range */
+	 /* Commandline metaserver: port-range */
 	 N_("Use this port range when creating new games"),
-	 /* Commandline meta-server: port-range argument */
+	 /* Commandline metaserver: port-range argument */
 	 N_("from-to")},
 	{"debug", '\0', 0, G_OPTION_ARG_NONE, &enable_debug,
-	 /* Commandline option of meta server: enable debug logging */
+	 /* Commandline option of metaserver: enable debug logging */
 	 N_("Enable debug messages"), NULL},
 	{"syslog-debug", '\0', 0, G_OPTION_ARG_NONE, &enable_syslog_debug,
-	 /* Commandline option of meta server: syslog-debug */
+	 /* Commandline option of metaserver: syslog-debug */
 	 N_("Debug syslog messages"), NULL},
 	{"version", '\0', 0, G_OPTION_ARG_NONE, &show_version,
-	 /* Commandline option of meta server: version */
+	 /* Commandline option of metaserver: version */
 	 N_("Show version information"), NULL},
 	{NULL, '\0', 0, 0, NULL, NULL, NULL}
 };
@@ -1115,8 +1115,8 @@ int main(int argc, char *argv[])
 	/* have gettext return strings in UTF-8 */
 	bind_textdomain_codeset(PACKAGE, "UTF-8");
 
-	/* Long description in the commandline for server-console: help */
-	context = g_option_context_new(_("- Meta server for Pioneers"));
+	/* Long description in the commandline for metaserver: help */
+	context = g_option_context_new(_("- Metaserver for Pioneers"));
 	g_option_context_add_main_entries(context,
 					  commandline_entries, PACKAGE);
 	g_option_context_parse(context, &argc, &argv, &error);
@@ -1132,7 +1132,7 @@ int main(int argc, char *argv[])
 		g_print(" ");
 		g_print(FULL_VERSION);
 		g_print(", ");
-		g_print(_("meta-server protocol:"));
+		g_print(_("metaserver protocol:"));
 		g_print(" ");
 		g_print(META_PROTOCOL_VERSION);
 		g_print("\n");
@@ -1153,7 +1153,7 @@ int main(int argc, char *argv[])
 	}
 
 	net_init();
-	openlog("pioneers-meta", LOG_PID, LOG_USER);
+	openlog("pioneers-metaserver", LOG_PID, LOG_USER);
 	if (make_daemon || pidfile)
 		convert_to_daemon();
 
@@ -1174,7 +1174,7 @@ int main(int argc, char *argv[])
 	can_create_games = can_create_games && (port_range != NULL);
 
 	if (!myhostname)
-		myhostname = get_meta_server_name(FALSE);
+		myhostname = get_metaserver_name(FALSE);
 	if (!setup_accept_sock(PIONEERS_DEFAULT_META_PORT))
 		return 1;
 
@@ -1186,7 +1186,7 @@ int main(int argc, char *argv[])
 	sigemptyset(&myusr1action.sa_mask);
 	sigaction(SIGUSR1, &myusr1action, &oldusr1action);
 
-	my_syslog(LOG_INFO, "Pioneers meta server started.");
+	my_syslog(LOG_INFO, "Pioneers metaserver started.");
 	select_loop();
 
 	sigaction(SIGUSR1, &oldusr1action, NULL);

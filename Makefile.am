@@ -156,8 +156,8 @@ endif
 
 include server/Makefile.am
 
-if BUILD_META_SERVER
-include meta-server/Makefile.am
+if BUILD_METASERVER
+include metaserver/Makefile.am
 endif
 
 if BUILD_EDITOR

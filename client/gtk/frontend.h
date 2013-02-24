@@ -162,7 +162,7 @@ gboolean connect_get_spectator(void);
 void connect_set_server(const gchar * server);
 void connect_set_port(const gchar * port);
 void connect_set_spectator(gboolean spectator);
-void connect_set_meta_server(const gchar * meta_server);
+void connect_set_metaserver(const gchar * metaserver);
 void connect_create_dlg(void);
 
 /* trade.c */

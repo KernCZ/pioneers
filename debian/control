@@ -14,13 +14,13 @@ Architecture: any
 Depends: pioneers-console (=${binary:Version}), pioneers-data (=${source:Version}), ${shlibs:Depends}, ${misc:Depends}
 Recommends: yelp
 Provides: pioneers-server-gtk, pioneers-client, pioneers-help
-Suggests: pioneers-meta-server
+Suggests: pioneers-metaserver
 Description: Settlers of Catan board game
  Pioneers is a computer implementation of the Settlers of Catan board game.
  It can be played over the internet.
  .
  The game includes a server, a client, a computer player, an editor and
- (in a separate package) a meta-server (for locating running servers).
+ (in a separate package) a metaserver (for locating running servers).
 
 Package: pioneers-console
 Architecture: any
@@ -36,13 +36,23 @@ Description: Settlers of Catan board game - console parts
 
 Package: pioneers-meta-server
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, lsb-base
-Description: Settlers of Catan board game - meta-server
+Depends: ${misc:Depends}, pioneers-metaserver (>= 14.2)
+Description: Transition package to pioneers-metaserver
  Pioneers is a computer implementation of the Settlers of Catan board game.
  It can be played over the internet.
  .
- This package contains a meta-server, which can be used to locate running
- servers. Most people will use a central meta-server, and do not need this
+ This package is the transition package for pioneers-metaserver. After installing
+ pioneers-metaserver, this package can safely be removed.
+
+Package: pioneers-metaserver
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, lsb-base
+Description: Settlers of Catan board game - metaserver
+ Pioneers is a computer implementation of the Settlers of Catan board game.
+ It can be played over the internet.
+ .
+ This package contains a metaserver, which can be used to locate running
+ servers. Most people will use a central metaserver, and do not need this
  package.
 
 Package: pioneers-data

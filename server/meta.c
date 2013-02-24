@@ -32,8 +32,8 @@ static enum {
 	MODE_SERVER_LIST
 } meta_mode;
 
-static gint meta_server_version_major;
-static gint meta_server_version_minor;
+static gint metaserver_version_major;
+static gint metaserver_version_minor;
 static gint num_redirects;
 
 gchar *get_server_name(void)
@@ -81,7 +81,7 @@ void meta_send_details(Game * game)
 	if (game->hostname) {
 		net_printf(ses, "host=%s\n", game->hostname);
 	}
-	if (meta_server_version_major >= 1) {
+	if (metaserver_version_major >= 1) {
 		net_printf(ses,
 			   "vpoints=%d\n"
 			   "sevenrule=%s\n"
@@ -122,7 +122,7 @@ static void meta_event(NetEvent event, const gchar * line,
 				if (num_redirects++ == 10) {
 					log_message(MSG_INFO,
 						    _(""
-						      "Too many meta-server redirects\n"));
+						      "Too many metaserver redirects\n"));
 					return;
 				}
 				split_result = g_strsplit(line, " ", 0);
@@ -143,17 +143,17 @@ static void meta_event(NetEvent event, const gchar * line,
 				g_strfreev(split_result);
 			}
 
-			meta_server_version_major =
-			    meta_server_version_minor = 0;
+			metaserver_version_major = 0;
+			metaserver_version_minor = 0;
 			if (strncmp(line, "welcome ", 8) == 0) {
 				char *p = strstr(line, "version ");
 				if (p) {
 					p += 8;
-					meta_server_version_major =
+					metaserver_version_major =
 					    atoi(p);
 					p += strspn(p, "0123456789");
 					if (*p == '.')
-						meta_server_version_minor =
+						metaserver_version_minor =
 						    atoi(p + 1);
 				}
 			}
@@ -171,7 +171,7 @@ static void meta_event(NetEvent event, const gchar * line,
 		}
 		break;
 	case NET_CLOSE:
-		log_message(MSG_ERROR, _("Meta-server kicked us off\n"));
+		log_message(MSG_ERROR, _("Metaserver kicked us off\n"));
 		net_free(&ses);
 		break;
 	case NET_CONNECT:
@@ -185,12 +185,12 @@ void meta_register(const gchar * server, const gchar * port, Game * game)
 	if (num_redirects > 0)
 		log_message(MSG_INFO,
 			    _(""
-			      "Redirected to meta-server at %s, port %s\n"),
+			      "Redirected to metaserver at %s, port %s\n"),
 			    server, port);
 	else
 		log_message(MSG_INFO,
 			    _(""
-			      "Register with meta-server at %s, port %s\n"),
+			      "Register with metaserver at %s, port %s\n"),
 			    server, port);
 
 	if (ses != NULL)
@@ -207,7 +207,7 @@ void meta_register(const gchar * server, const gchar * port, Game * game)
 void meta_unregister(void)
 {
 	if (ses != NULL) {
-		log_message(MSG_INFO, _("Unregister from meta-server\n"));
+		log_message(MSG_INFO, _("Unregister from metaserver\n"));
 		net_free(&ses);
 	}
 }

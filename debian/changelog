@@ -2,6 +2,7 @@ pioneers (14.2-1~local1) UNRELEASED; urgency=low
 
   * Awaiting new upstream release.
   * Removed translation patches for 14.1-2.
+  * Spelling correction: Renamed meta[- ]server to metaserver.
 
  -- Roland Clobus <rclobus@rclobus.nl>  Fri, 25 Jan 2013 17:05:00 +0100
 

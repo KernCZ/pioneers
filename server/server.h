@@ -225,7 +225,7 @@ void game_free(Game * game);
 gint add_computer_player(Game * game, gboolean want_chat);
 Game *server_start(const GameParams * params, const gchar * hostname,
 		   const gchar * port, gboolean register_server,
-		   const gchar * meta_server_name, gboolean random_order);
+		   const gchar * metaserver_name, gboolean random_order);
 gboolean server_stop(Game * game);
 gboolean server_is_running(Game * game);
 gint accept_connection(gint in_fd, gchar ** location);

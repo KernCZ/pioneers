@@ -49,7 +49,7 @@ editor/gtk/game-buildings.c
 editor/gtk/game-devcards.c
 editor/gtk/game-resources.c
 editor/gtk/pioneers-editor.desktop.in
-meta-server/main.c
+metaserver/main.c
 server/admin.c
 server/avahi.c
 server/gtk/main.c

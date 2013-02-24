@@ -176,8 +176,8 @@ static void admin_run_command(Session * admin_session, const gchar * line)
 			break;
 		case STARTSERVER:
 			{
-				gchar *meta_server_name =
-				    get_meta_server_name(TRUE);
+				gchar *metaserver_name =
+				    get_metaserver_name(TRUE);
 				if (!server_port)
 					server_port =
 					    g_strdup
@@ -188,8 +188,8 @@ static void admin_run_command(Session * admin_session, const gchar * line)
 				    server_start(params, get_server_name(),
 						 server_port,
 						 register_server,
-						 meta_server_name, TRUE);
-				g_free(meta_server_name);
+						 metaserver_name, TRUE);
+				g_free(metaserver_name);
 			}
 			break;
 		case STOPSERVER:

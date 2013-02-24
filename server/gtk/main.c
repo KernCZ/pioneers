@@ -55,7 +55,7 @@ static GtkWidget *select_game;	/* select game type */
 static GtkWidget *game_settings;	/* the settings of the game */
 static GtkWidget *game_rules;	/* the rules of the game */
 
-static GtkWidget *meta_entry;	/* name of meta server */
+static GtkWidget *meta_entry;	/* name of metaserver */
 static GtkWidget *overridden_hostname_entry;	/* name of server (allows masquerading) */
 
 static GtkWidget *start_btn;	/* start/stop the server */
@@ -64,7 +64,7 @@ static GtkListStore *store;	/* shows player connection status */
 
 static gchar *overridden_hostname;	/* override reported hostname */
 static gchar *server_port = NULL;	/* port of the game */
-static gboolean register_server = TRUE;	/* Register at the meta server */
+static gboolean register_server = TRUE;	/* Register at the metaserver */
 static gboolean want_ai_chat = TRUE;
 static gboolean random_order = TRUE;	/* random seating order */
 static gboolean enable_debug = FALSE;
@@ -244,7 +244,7 @@ static void start_clicked_cb(G_GNUC_UNUSED GtkButton * widget,
 	} else {		/* not running */
 		const gchar *title;
 		GameParams *params;
-		gchar *meta_server_name;
+		gchar *metaserver_name;
 
 		title = select_game_get_active(SELECTGAME(select_game));
 		params = params_copy(game_list_find_item(title));
@@ -277,7 +277,7 @@ static void start_clicked_cb(G_GNUC_UNUSED GtkButton * widget,
 							  (game_rules));
 		update_game_settings(params);
 
-		meta_server_name = metaserver_get(METASERVER(meta_entry));
+		metaserver_name = metaserver_get(METASERVER(meta_entry));
 
 		g_assert(server_port != NULL);
 
@@ -285,12 +285,12 @@ static void start_clicked_cb(G_GNUC_UNUSED GtkButton * widget,
 			game_free(*game);
 		*game =
 		    server_start(params, overridden_hostname, server_port,
-				 register_server, meta_server_name,
+				 register_server, metaserver_name,
 				 random_order);
 		if (server_is_running(*game)) {
 			gui_set_server_state(TRUE);
-			config_set_string("server/meta-server",
-					  meta_server_name);
+			config_set_string("server/metaserver",
+					  metaserver_name);
 			config_set_string("server/port", server_port);
 			config_set_int("server/register", register_server);
 			config_set_string("server/overridden-hostname",
@@ -318,7 +318,7 @@ static void start_clicked_cb(G_GNUC_UNUSED GtkButton * widget,
 				       params->domestic_trade);
 		}
 		params_free(params);
-		g_free(meta_server_name);
+		g_free(metaserver_name);
 	}
 }
 
@@ -511,7 +511,7 @@ static GtkWidget *build_server_frame(void)
 	/*       server port label */
 	/*        - port entry */
 	/*       register toggle */
-	/*       meta server label */
+	/*       metaserver label */
 	/*        - meta entry */
 	/*       hostname label */
 	/*        - hostname entry */
@@ -523,7 +523,7 @@ static GtkWidget *build_server_frame(void)
 	GtkWidget *port_entry;
 
 	gint novar;
-	gchar *meta_server_name;
+	gchar *metaserver_name;
 
 	/* table */
 	table = gtk_table_new(6, 2, FALSE);
@@ -566,12 +566,12 @@ static GtkWidget *build_server_frame(void)
 			 G_CALLBACK(register_toggle_cb), NULL);
 	gtk_widget_set_tooltip_text(toggle,
 				    _(""
-				      "Register this game at the meta server"));
+				      "Register this game at the metaserver"));
 	register_server =
 	    config_get_int_with_default("server/register", TRUE);
 
-	/* meta server label */
-	label = gtk_label_new(_("Meta server"));
+	/* metaserver label */
+	label = gtk_label_new(_("Metaserver"));
 	gtk_widget_show(label);
 	gtk_table_attach(GTK_TABLE(table), label, 0, 1, 2, 3,
 			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
@@ -587,13 +587,13 @@ static GtkWidget *build_server_frame(void)
 
 	/* initialize meta entry */
 	novar = 0;
-	meta_server_name = config_get_string("server/meta-server", &novar);
-	if (novar || !strlen(meta_server_name)
-	    || !strncmp(meta_server_name, "gnocatan.debian.net",
-			strlen(meta_server_name) + 1))
-		meta_server_name = get_meta_server_name(TRUE);
-	metaserver_add(METASERVER(meta_entry), meta_server_name);
-	g_free(meta_server_name);
+	metaserver_name = config_get_string("server/metaserver", &novar);
+	if (novar || !strlen(metaserver_name)
+	    || !strncmp(metaserver_name, "gnocatan.debian.net",
+			strlen(metaserver_name) + 1))
+		metaserver_name = get_metaserver_name(TRUE);
+	metaserver_add(METASERVER(meta_entry), metaserver_name);
+	g_free(metaserver_name);
 
 	/* hostname label */
 	label = gtk_label_new(_("Reported hostname"));

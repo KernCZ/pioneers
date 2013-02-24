@@ -38,7 +38,7 @@ static GtkWidget *game_combo;	/* select game type */
 static GtkWidget *terrain_toggle;	/* random terrain Yes/No */
 static GtkWidget *victory_spin;	/* victory point target */
 static GtkWidget *players_spin;	/* number of players */
-static GtkWidget *register_toggle;	/* register with meta server? */
+static GtkWidget *register_toggle;	/* register with metaserver? */
 static GtkWidget *port_spin;	/* server port */
 
 static GtkWidget *clist;	/* currently connected players */
