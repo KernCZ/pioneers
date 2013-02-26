@@ -31,10 +31,10 @@ typedef enum {
 	NET_READ
 } NetEvent;
 
-typedef void (*NetNotifyFunc) (NetEvent event, const gchar * line,
-			       gpointer user_data);
-
 typedef struct _Session Session;
+
+typedef void (*NetNotifyFunc) (Session * ses, NetEvent event,
+			       const gchar * line, gpointer user_data);
 
 /** Initialize the network drivers */
 void net_init(void);

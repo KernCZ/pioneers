@@ -1,3 +1,8 @@
+2013-02-26  Roland Clobus <rclobus@rclobus.nl>
+	* server/meta.c, server/admin.c, server/server.h, client/gtk/connect.c,
+	common/network.h, common/state.c, common/network.c: Added Session to
+	callbacks. Fixed handling of the metaserver protocol.
+
 2013-02-24  Roland Clobus <rclobus@rclobus.nl>
 	* configure.ac, server/server.c, server/server.h, server/main.c,
 	server/admin.c, server/admin.h, server/gtk/main.c, server/meta.c,

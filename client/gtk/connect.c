@@ -76,8 +76,6 @@ enum {				/* The columns of the meta_games_model */
 	META_N_COLUMNS
 };
 
-static Session *ses;
-
 static GtkWidget *cserver_dlg;	/* Dialog for creating a public game */
 static GtkWidget *select_game;	/* select game type */
 static GtkWidget *game_settings;	/* game settings widget */
@@ -102,18 +100,20 @@ static enum {
 
 static enum {
 	CREATE_MODE_SIGNON,
-	CREATE_MODE_WAIT_FOR_INFO
+	CREATE_MODE_WAIT_FOR_INFO,
+	CREATE_MODE_STARTING_OK,
+	CREATE_MODE_STARTING_ERROR
 } create_mode;
 
 static enum {
 	MODE_SIGNON,
 	MODE_REDIRECT,
 	MODE_LIST,
-	MODE_CAPABILITY
+	MODE_CAPABILITY,
+	MODE_REDIRECT_OVERFLOW,
+	MODE_DONE,
+	MODE_SERVER_INFO
 } meta_mode;
-
-static Session *gametype_ses;
-static Session *create_ses;
 
 /** Information about the metaserver */
 static struct {
@@ -131,8 +131,12 @@ static struct {
 	gboolean can_create_games;
 	/** The metaserver can send information about a game */
 	gboolean can_send_game_settings;
+	/** Active session */
+	Session *session;
+	/** Number of available game titles */
+	guint num_available_titles;
 } metaserver_info = {
-NULL, NULL, 0, 0, 0, FALSE, FALSE};
+NULL, NULL, 0, 0, 0, FALSE, FALSE, NULL, 0u};
 
 #define STRARG_LEN 128
 #define INTARG_LEN 16
@@ -162,9 +166,12 @@ static void connect_private_dialog(G_GNUC_UNUSED GtkWidget * widget,
 static void connect_set_field(gchar ** field, const gchar * value)
 {
 	gchar *temp = g_strdup(value);
-	if (*field)
-		g_free(*field);
-	*field = g_strdup(g_strstrip(temp));
+	g_free(*field);
+	if (temp != NULL) {
+		*field = g_strdup(g_strstrip(temp));
+	} else {
+		*field = NULL;
+	}
 	g_free(temp);
 }
 
@@ -291,80 +298,153 @@ static void close_waiting_box(void)
 
 /* -------------------- get game types -------------------- */
 
-static void meta_gametype_notify(NetEvent event, const gchar * line,
+static void meta_gametype_notify(Session * ses, NetEvent event,
+				 const gchar * line,
 				 G_GNUC_UNUSED gpointer user_data)
 {
 	switch (event) {
 	case NET_CONNECT:
+		metaserver_info.num_available_titles = 0u;
 		break;
 	case NET_CONNECT_FAIL:
-		net_free(&gametype_ses);
+		log_message(MSG_ERROR,
+			    _("The metaserver is not available "
+			      "anymore.\n"));
+		net_free(&ses);
+		metaserver_info.session = NULL;
+		if (cserver_dlg != NULL) {
+			gtk_widget_destroy(GTK_WIDGET(cserver_dlg));
+		}
 		break;
 	case NET_CLOSE:
-		if (gametype_mode == GAMETYPE_MODE_SIGNON)
+		if (gametype_mode == GAMETYPE_MODE_SIGNON) {
 			log_message(MSG_ERROR,
-				    _("Metaserver kicked us off\n"));
-		net_free(&gametype_ses);
-		close_waiting_box();
+				    _("The metaserver closed "
+				      "the connection "
+				      "unexpectedly.\n"));
+			if (cserver_dlg != NULL) {
+				gtk_widget_destroy(GTK_WIDGET
+						   (cserver_dlg));
+			}
+		} else {
+			close_waiting_box();
+		}
+		if (metaserver_info.num_available_titles > 0u) {
+			gtk_dialog_set_response_sensitive(GTK_DIALOG
+							  (cserver_dlg),
+							  GTK_RESPONSE_OK,
+							  TRUE);
+		}
+		net_free(&ses);
+		metaserver_info.session = NULL;
 		break;
 	case NET_READ:
 		switch (gametype_mode) {
 		case GAMETYPE_MODE_SIGNON:
-			net_printf(gametype_ses, "listtypes\n");
+			net_printf(ses, "listtypes\n");
 			gametype_mode = GAMETYPE_MODE_LIST;
 			break;
 		case GAMETYPE_MODE_LIST:
 			/* A server description looks like this:
 			 * title=%s\n
 			 */
-			if (strncmp(line, "title=", 6) == 0)
+			if (strncmp(line, "title=", 6) == 0) {
 				select_game_add(SELECTGAME(select_game),
 						line + 6);
+				metaserver_info.num_available_titles++;
+			}
 			break;
 		}
 		break;
 	}
 }
 
-static void get_metaserver_games_types(gchar * server, gchar * port)
+static void get_metaserver_games_types(const gchar * server,
+				       const gchar * port)
 {
 	show_waiting_box(_("Receiving game names from the metaserver.\n"),
 			 server, port);
-	gametype_ses = net_new(meta_gametype_notify, NULL);
-	if (net_connect(gametype_ses, server, port))
+	g_assert(metaserver_info.session == NULL);
+	metaserver_info.session = net_new(meta_gametype_notify, NULL);
+	if (net_connect(metaserver_info.session, server, port))
 		gametype_mode = GAMETYPE_MODE_SIGNON;
 	else {
-		net_free(&gametype_ses);
-		close_waiting_box();
+		net_free(&metaserver_info.session);
+		log_message(MSG_ERROR,
+			    _("The metaserver is not available "
+			      "anymore.\n"));
+		if (cserver_dlg != NULL) {
+			gtk_widget_destroy(GTK_WIDGET(cserver_dlg));
+		}
 	}
 }
 
 /* -------------------- create game server -------------------- */
 
-static void meta_create_notify(NetEvent event, const gchar * line,
+static void meta_create_notify(Session * ses, NetEvent event,
+			       const gchar * line,
 			       G_GNUC_UNUSED gpointer user_data)
 {
 	switch (event) {
 	case NET_CONNECT:
 		break;
 	case NET_CONNECT_FAIL:
-		net_free(&create_ses);
+		log_message(MSG_ERROR,
+			    _("The metaserver is not available "
+			      "anymore.\n"));
+		net_free(&ses);
+		metaserver_info.session = NULL;
+		if (cserver_dlg != NULL) {
+			gtk_widget_destroy(GTK_WIDGET(cserver_dlg));
+		}
 		break;
 	case NET_CLOSE:
-		if (create_mode == CREATE_MODE_SIGNON)
+		net_free(&ses);
+		metaserver_info.session = NULL;
+		switch (create_mode) {
+		case CREATE_MODE_STARTING_OK:
+			log_message(MSG_INFO,
+				    _("New game server requested "
+				      "on %s port %s.\n"),
+				    connect_server, connect_port);
+			/* The metaserver is now busy creating the new game.
+			 * UGLY FIX: Wait for some time */
+			g_usleep(500000);
+			connect_close_all(TRUE, FALSE);
+			break;
+		case CREATE_MODE_STARTING_ERROR:
 			log_message(MSG_ERROR,
-				    _("Metaserver kicked us off\n"));
-		net_free(&create_ses);
+				    _("Incomplete information about the "
+				      "new game server received.\n"));
+			gtk_dialog_set_response_sensitive(GTK_DIALOG
+							  (cserver_dlg),
+							  GTK_RESPONSE_OK,
+							  TRUE);
+			break;
+		case CREATE_MODE_SIGNON:
+		case CREATE_MODE_WAIT_FOR_INFO:
+			log_message(MSG_ERROR,
+				    _("The metaserver closed "
+				      "the connection "
+				      "unexpectedly.\n"));
+			gtk_dialog_set_response_sensitive(GTK_DIALOG
+							  (cserver_dlg),
+							  GTK_RESPONSE_OK,
+							  TRUE);
+			break;
+		}
 		break;
 	case NET_READ:
 		switch (create_mode) {
 		case CREATE_MODE_SIGNON:
-			net_printf(create_ses,
+			net_printf(ses,
 				   "create %d %d %d %d %d %s\n",
 				   cfg_terrain, cfg_num_players,
 				   cfg_victory_points, cfg_sevens_rule,
 				   cfg_ai_players, cfg_gametype);
 			create_mode = CREATE_MODE_WAIT_FOR_INFO;
+			connect_set_field(&connect_server, NULL);
+			connect_set_field(&connect_port, NULL);
 			break;
 
 		case CREATE_MODE_WAIT_FOR_INFO:
@@ -374,19 +454,26 @@ static void meta_create_notify(NetEvent event, const gchar * line,
 			else if (strncmp(line, "port=", 5) == 0)
 				connect_set_field(&connect_port, line + 5);
 			else if (strcmp(line, "started") == 0) {
-				log_message(MSG_INFO,
-					    _(""
-					      "New game server requested on %s port %s\n"),
-					    connect_server, connect_port);
-				/* The metaserver is now busy creating the new game.
-				 * UGLY FIX: Wait for some time */
-				g_usleep(500000);
-				connect_close_all(TRUE, FALSE);
+				if (connect_get_server() != NULL
+				    && connect_get_port() != NULL) {
+					create_mode =
+					    CREATE_MODE_STARTING_OK;
+				} else {
+					create_mode =
+					    CREATE_MODE_STARTING_ERROR;
+				}
+				net_free(&ses);
+				metaserver_info.session = NULL;
 			} else
 				log_message(MSG_ERROR,
-					    _(""
-					      "Unknown message from the metaserver: %s\n"),
-					    line);
+					    _("Unknown message from the "
+					      "metaserver: %s\n"), line);
+			break;
+		case CREATE_MODE_STARTING_OK:
+		case CREATE_MODE_STARTING_ERROR:
+			log_message(MSG_ERROR,
+				    _("Unknown message from the "
+				      "metaserver: %s\n"), line);
 			break;
 		}
 	}
@@ -438,53 +525,57 @@ static void server_end(void)
 	}
 }
 
-static void meta_notify(NetEvent event, const gchar * line,
+static void meta_free_session(Session * ses)
+{
+	if (ses == metaserver_info.session) {
+		metaserver_info.session = NULL;
+	}
+	net_free(&ses);
+}
+
+/* Developer note: very similar code exists in server/meta.c
+ * Keep both routines up-to-date
+ */
+static void meta_notify(Session * ses,
+			NetEvent event, const gchar * line,
 			G_GNUC_UNUSED gpointer user_data)
 {
 	gchar argument[STRARG_LEN];
-
 	switch (event) {
-	case NET_CONNECT:
-		break;
-	case NET_CONNECT_FAIL:	/* Can't connect to the metaserver, don't show the GUI */
-		if (meta_dlg)
-			gtk_widget_destroy(GTK_WIDGET(meta_dlg));	/* Close the dialog */
-		break;
-	case NET_CLOSE:
-		if (meta_mode == MODE_SIGNON)
-			log_message(MSG_ERROR,
-				    _("Metaserver kicked us off\n"));
-		close_waiting_box();
-		net_free(&ses);
-		break;
 	case NET_READ:
+		if (ses != metaserver_info.session) {
+			log_message(MSG_ERROR,
+				    _("Receiving data from inactive "
+				      "session: %s\n"), line);
+			return;
+		}
 		switch (meta_mode) {
 		case MODE_SIGNON:
 		case MODE_REDIRECT:
 			if (strncmp(line, "goto ", 5) == 0) {
 				gchar **split_result;
 				const gchar *port;
-				meta_mode = MODE_REDIRECT;
-				net_close(ses);
-				if (metaserver_info.num_redirects++ == 10) {
-					log_message(MSG_INFO,
-						    _(""
-						      "Too many metaserver redirects\n"));
+				if (metaserver_info.num_redirects++ >= 10) {
+					log_message(MSG_ERROR,
+						    _("Too many "
+						      "metaserver "
+						      "redirects.\n"));
+					meta_mode = MODE_REDIRECT_OVERFLOW;
+					net_close(ses);
 					return;
 				}
+				meta_mode = MODE_REDIRECT;
+				meta_free_session(ses);
 				split_result = g_strsplit(line, " ", 0);
 				g_assert(split_result[0] != NULL);
 				g_assert(!strcmp(split_result[0], "goto"));
 				if (split_result[1]) {
-					if (metaserver_info.server)
-						g_free
-						    (metaserver_info.
-						     server);
+					g_free(metaserver_info.server);
+					g_free(metaserver_info.port);
+
 					metaserver_info.server =
 					    g_strdup(split_result[1]);
-					if (metaserver_info.port)
-						g_free
-						    (metaserver_info.port);
+
 					port = PIONEERS_DEFAULT_META_PORT;
 					if (split_result[2])
 						port = split_result[2];
@@ -495,13 +586,13 @@ static void meta_notify(NetEvent event, const gchar * line,
 					     metaserver_info.port);
 				} else {
 					log_message(MSG_ERROR,
-						    _(""
-						      "Bad redirect line: %s\n"),
-						    line);
+						    _("Bad redirect line: "
+						      "%s\n"), line);
 				};
 				g_strfreev(split_result);
 				break;
 			}
+
 			metaserver_info.version_major = 0;
 			metaserver_info.version_minor = 0;
 			metaserver_info.can_create_games = FALSE;
@@ -521,9 +612,9 @@ static void meta_notify(NetEvent event, const gchar * line,
 			}
 			if (metaserver_info.version_major < 1) {
 				log_message(MSG_INFO,
-					    _(""
-					      "The metaserver is too old to create "
-					      "servers (version %d.%d)\n"),
+					    _("The metaserver is too old "
+					      "to create servers "
+					      "(version %d.%d)\n"),
 					    metaserver_info.version_major,
 					    metaserver_info.version_minor);
 			} else {
@@ -543,10 +634,6 @@ static void meta_notify(NetEvent event, const gchar * line,
 					   "client\n");
 				meta_mode = MODE_LIST;
 			}
-			gtk_dialog_set_response_sensitive(GTK_DIALOG
-							  (meta_dlg),
-							  META_RESPONSE_REFRESH,
-							  TRUE);
 			break;
 		case MODE_CAPABILITY:
 			if (!strcmp(line, "create games")) {
@@ -555,10 +642,6 @@ static void meta_notify(NetEvent event, const gchar * line,
 				metaserver_info.can_send_game_settings =
 				    TRUE;
 			} else if (!strcmp(line, "end")) {
-				gtk_dialog_set_response_sensitive
-				    (GTK_DIALOG(meta_dlg),
-				     META_RESPONSE_NEW,
-				     metaserver_info.can_create_games);
 				net_printf(ses,
 					   metaserver_info.version_major >=
 					   1 ? "listservers\n" :
@@ -567,9 +650,18 @@ static void meta_notify(NetEvent event, const gchar * line,
 			}
 			break;
 		case MODE_LIST:
-			if (strcmp(line, "server") == 0);	/* Information will come shortly */
-			else if (strcmp(line, "end") == 0) {
+			if (strcmp(line, "server") == 0) {
+				meta_mode = MODE_SERVER_INFO;
+			} else {
+				log_message(MSG_ERROR,
+					    _("Unexpected data from the "
+					      "metaserver: %s\n"), line);
+			}
+			break;
+		case MODE_SERVER_INFO:
+			if (strcmp(line, "end") == 0) {
 				server_end();
+				meta_mode = MODE_LIST;
 			} else
 			    if (check_str_info(line, "host=", server_host))
 				break;
@@ -639,28 +731,103 @@ static void meta_notify(NetEvent event, const gchar * line,
 			else if (check_str_info
 				 (line, "comment=", server_title))
 				break;
+			else
+				log_message(MSG_ERROR,
+					    _("Unexpected data from the "
+					      "metaserver: %s\n"), line);
+			break;
+		case MODE_DONE:
+		case MODE_REDIRECT_OVERFLOW:
+			log_message(MSG_ERROR,
+				    _("Unexpected data from the "
+				      "metaserver: %s\n"), line);
 			break;
 		}
+		break;
+	case NET_CLOSE:
+		/* During a reconnect, different sessions might co-exist */
+		if (ses == metaserver_info.session) {
+			metaserver_info.session = NULL;
+			switch (meta_mode) {
+			case MODE_SIGNON:
+			case MODE_REDIRECT:
+			case MODE_SERVER_INFO:
+			case MODE_CAPABILITY:
+				log_message(MSG_ERROR,
+					    _("The metaserver closed "
+					      "the connection "
+					      "unexpectedly.\n"));
+				break;
+			case MODE_REDIRECT_OVERFLOW:
+				if (meta_dlg)
+					gtk_widget_destroy(GTK_WIDGET(meta_dlg));	/* Close the dialog */
+				if (ses == metaserver_info.session) {
+					metaserver_info.session = NULL;
+				}
+				break;
+			case MODE_LIST:
+			case MODE_DONE:
+				close_waiting_box();
+				break;
+			}
+			if (meta_dlg) {
+				gtk_dialog_set_response_sensitive
+				    (GTK_DIALOG(meta_dlg),
+				     META_RESPONSE_NEW,
+				     metaserver_info.can_create_games);
+				gtk_dialog_set_response_sensitive
+				    (GTK_DIALOG(meta_dlg),
+				     META_RESPONSE_REFRESH, TRUE);
+			}
+		}
+		net_free(&ses);
+
+
+		break;
+	case NET_CONNECT:
+		break;
+	case NET_CONNECT_FAIL:
+		/* Can't connect to the metaserver, don't show the GUI */
+		if (meta_dlg)
+			gtk_widget_destroy(GTK_WIDGET(meta_dlg));
+		if (ses == metaserver_info.session) {
+			metaserver_info.session = NULL;
+		}
+		net_free(&ses);
 		break;
 	}
 }
 
 static void query_metaserver(const gchar * server, const gchar * port)
 {
-	if (metaserver_info.num_redirects > 0)
-		log_message(MSG_INFO,
-			    _(""
-			      "Redirected to metaserver at %s, port %s\n"),
-			    server, port);
-	show_waiting_box(_(""
-			   "Receiving a list of Pioneers servers from the metaserver.\n"),
-			 server, port);
+	gchar *message;
 
-	ses = net_new(meta_notify, NULL);
-	if (net_connect(ses, server, port))
+	if (metaserver_info.num_redirects > 0) {
+		if (strcmp(port, PIONEERS_DEFAULT_META_PORT) == 0) {
+			message =
+			    g_strdup_printf(_("Redirected to the "
+					      "metaserver at %s.\n"),
+					    server);
+		} else {
+			message =
+			    g_strdup_printf(_("Redirected to the "
+					      "metaserver at %s, port %s.\n"),
+					    server, port);
+		}
+	} else
+		message =
+		    g_strdup(_
+			     ("Receiving a list of Pioneers servers "
+			      "from the metaserver.\n"));
+	show_waiting_box(message, server, port);
+	g_free(message);
+
+	g_assert(metaserver_info.session == NULL);
+	metaserver_info.session = net_new(meta_notify, NULL);
+	if (net_connect(metaserver_info.session, server, port))
 		meta_mode = MODE_SIGNON;
 	else {
-		net_free(&ses);
+		net_free(&metaserver_info.session);
 		close_waiting_box();
 	}
 }
@@ -751,9 +918,6 @@ static GtkWidget *build_create_interface(void)
 	gtk_widget_show(game_rules);
 	gtk_box_pack_start(GTK_BOX(vbox), game_rules, FALSE, FALSE, 3);
 
-	get_metaserver_games_types(metaserver_info.server,
-				   metaserver_info.port);
-
 	return vbox;
 }
 
@@ -766,7 +930,10 @@ static void create_server_dlg_cb(GtkDialog * dlg, gint arg1,
 
 	switch (arg1) {
 	case GTK_RESPONSE_OK:
-		log_message(MSG_INFO, _("Requesting new game server\n"));
+		gtk_dialog_set_response_sensitive(dlg, GTK_RESPONSE_OK,
+						  FALSE);
+
+		log_message(MSG_INFO, _("Requesting new game server.\n"));
 
 		cfg_terrain = game_rules_get_random_terrain(gr);
 		cfg_num_players = game_settings_get_players(gs);
@@ -777,17 +944,30 @@ static void create_server_dlg_cb(GtkDialog * dlg, gint arg1,
 						     (aiplayers_spin));
 		cfg_gametype = select_game_get_active(sg);
 
-		create_ses = net_new(meta_create_notify, NULL);
+		g_assert(metaserver_info.session == NULL);
+		metaserver_info.session =
+		    net_new(meta_create_notify, NULL);
 		if (net_connect
-		    (create_ses, metaserver_info.server,
-		     metaserver_info.port))
+		    (metaserver_info.session, metaserver_info.server,
+		     metaserver_info.port)) {
 			create_mode = CREATE_MODE_SIGNON;
-		else
-			net_free(&create_ses);
+		} else {
+			log_message(MSG_ERROR,
+				    _("The metaserver is not available "
+				      "anymore.\n"));
+			net_free(&metaserver_info.session);
+			gtk_widget_destroy(GTK_WIDGET(dlg));
+		}
 		break;
 	case GTK_RESPONSE_CANCEL:
 	default:		/* For the compiler */
 		gtk_widget_destroy(GTK_WIDGET(dlg));
+		if (metaserver_info.session != NULL) {
+			net_free(&metaserver_info.session);
+			/* Canceled retrieving information 
+			 * from the metaserver */
+			log_message(MSG_INFO, _("Canceled.\n"));
+		}
 		break;
 	};
 }
@@ -848,9 +1028,15 @@ static void create_server_dlg(G_GNUC_UNUSED GtkWidget * widget,
 	gtk_box_pack_start(GTK_BOX(dlg_vbox), vbox, TRUE, TRUE, 0);
 	gtk_container_set_border_width(GTK_CONTAINER(vbox), 5);
 
+	gtk_dialog_set_response_sensitive(GTK_DIALOG(cserver_dlg),
+					  GTK_RESPONSE_OK, FALSE);
 	g_signal_connect(G_OBJECT(cserver_dlg), "response",
 			 G_CALLBACK(create_server_dlg_cb), NULL);
 	gtk_widget_show(cserver_dlg);
+
+	get_metaserver_games_types(metaserver_info.server,
+				   metaserver_info.port);
+
 }
 
 /* -------------------- select server dialog -------------------- */
@@ -913,6 +1099,12 @@ static void meta_dlg_cb(GtkDialog * dlg, gint arg1,
 	case GTK_RESPONSE_CANCEL:	/* Cancel */
 	default:
 		gtk_widget_destroy(GTK_WIDGET(dlg));
+		if (metaserver_info.session != NULL) {
+			net_free(&metaserver_info.session);
+			/* Canceled retrieving information 
+			 * from the metaserver */
+			log_message(MSG_INFO, _("Canceled.\n"));
+		}
 		break;
 	}
 }
@@ -921,11 +1113,12 @@ static void set_metaserver_info(void)
 {
 	gchar *meta_tmp;
 
+	g_free(metaserver_info.server);
+	g_free(metaserver_info.port);
+
 	meta_tmp = metaserver_get(METASERVER(metaserver_entry));
 	metaserver_info.server = meta_tmp;	/* Take-over of the pointer */
-	if (!metaserver_info.port)
-		metaserver_info.port =
-		    g_strdup(PIONEERS_DEFAULT_META_PORT);
+	metaserver_info.port = g_strdup(PIONEERS_DEFAULT_META_PORT);
 }
 
 static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
@@ -940,7 +1133,7 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
 	set_metaserver_info();
 
 	if (meta_dlg != NULL) {
-		if (ses == NULL) {
+		if (metaserver_info.session == NULL) {
 			gtk_list_store_clear(meta_games_model);
 			metaserver_info.num_redirects = 0;
 			metaserver_info.version_major = 0;

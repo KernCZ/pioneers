@@ -25,11 +25,12 @@
 #include "server.h"
 #include "network.h"
 
-static Session *ses;
+static Session *meta_session;
 static enum {
 	MODE_SIGNON,
 	MODE_REDIRECT,
-	MODE_SERVER_LIST
+	MODE_SERVER_LIST,
+	MODE_REDIRECT_OVERFLOW
 } meta_mode;
 
 static gint metaserver_version_major;
@@ -59,15 +60,12 @@ void meta_start_game(void)
 
 void meta_report_num_players(guint num_players)
 {
-	if (ses != NULL)
-		net_printf(ses, "curr=%d\n", num_players);
+	if (meta_session != NULL)
+		net_printf(meta_session, "curr=%d\n", num_players);
 }
 
-void meta_send_details(Game * game)
+static void meta_send_details(Session * ses, Game * game)
 {
-	if (ses == NULL)
-		return;
-
 	net_printf(ses,
 		   "server\n"
 		   "port=%s\n"
@@ -104,13 +102,30 @@ void meta_send_details(Game * game)
 	}
 }
 
-static void meta_event(NetEvent event, const gchar * line,
+static void meta_free_session(Session * ses)
+{
+	if (ses == meta_session) {
+		meta_session = NULL;
+	}
+	net_free(&ses);
+}
+
+/* Developer note: very similar code exists in client/gtk/connect.c
+ * Keep both routines up-to-date
+ */
+static void meta_event(Session * ses, NetEvent event, const gchar * line,
 		       gpointer user_data)
 {
 	Game *game = (Game *) user_data;
 
 	switch (event) {
 	case NET_READ:
+		if (ses != meta_session) {
+			log_message(MSG_ERROR,
+				    _("Receiving data from inactive "
+				      "session: %s\n"), line);
+			return;
+		}
 		switch (meta_mode) {
 		case MODE_SIGNON:
 		case MODE_REDIRECT:
@@ -118,11 +133,12 @@ static void meta_event(NetEvent event, const gchar * line,
 				gchar **split_result;
 				const gchar *port;
 				meta_mode = MODE_REDIRECT;
-				net_free(&ses);
-				if (num_redirects++ == 10) {
-					log_message(MSG_INFO,
+				meta_free_session(ses);
+				if (num_redirects++ >= 10) {
+					log_message(MSG_ERROR,
 						    _(""
-						      "Too many metaserver redirects\n"));
+						      "Too many metaserver redirects.\n"));
+					meta_mode = MODE_REDIRECT_OVERFLOW;
 					return;
 				}
 				split_result = g_strsplit(line, " ", 0);
@@ -141,6 +157,7 @@ static void meta_event(NetEvent event, const gchar * line,
 						    line);
 				};
 				g_strfreev(split_result);
+				break;
 			}
 
 			metaserver_version_major = 0;
@@ -159,7 +176,7 @@ static void meta_event(NetEvent event, const gchar * line,
 			net_printf(ses, "version %s\n",
 				   META_PROTOCOL_VERSION);
 			meta_mode = MODE_SERVER_LIST;
-			meta_send_details(game);
+			meta_send_details(ses, game);
 			break;
 		default:
 			log_message(MSG_ERROR,
@@ -170,11 +187,18 @@ static void meta_event(NetEvent event, const gchar * line,
 		}
 		break;
 	case NET_CLOSE:
-		log_message(MSG_ERROR, _("Metaserver kicked us off\n"));
-		net_free(&ses);
+		/* During a reconnect, different sessions might co-exist */
+		if (ses == meta_session
+		    && meta_mode != MODE_REDIRECT_OVERFLOW) {
+			log_message(MSG_ERROR,
+				    _("Metaserver kicked us off\n"));
+		}
+		meta_free_session(ses);
 		break;
 	case NET_CONNECT:
+		break;
 	case NET_CONNECT_FAIL:
+		meta_free_session(ses);
 		break;
 	}
 }
@@ -192,21 +216,21 @@ void meta_register(const gchar * server, const gchar * port, Game * game)
 			      "Register with metaserver at %s, port %s\n"),
 			    server, port);
 
-	if (ses != NULL)
-		net_free(&ses);
+	if (meta_session != NULL)
+		net_free(&meta_session);
 
-	ses = net_new(meta_event, game);
-	if (net_connect(ses, server, port))
+	meta_session = net_new(meta_event, game);
+	if (net_connect(meta_session, server, port))
 		meta_mode = MODE_SIGNON;
 	else {
-		net_free(&ses);
+		net_free(&meta_session);
 	}
 }
 
 void meta_unregister(void)
 {
-	if (ses != NULL) {
+	if (meta_session != NULL) {
 		log_message(MSG_INFO, _("Unregister from metaserver\n"));
-		net_free(&ses);
+		net_free(&meta_session);
 	}
 }

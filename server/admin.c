@@ -304,14 +304,13 @@ static void admin_run_command(Session * admin_session, const gchar * line)
 }
 
 /* network event handler */
-static void admin_event(NetEvent event, const gchar * line,
-			gpointer user_data)
+static void admin_event(Session * ses, NetEvent event, const gchar * line,
+			G_GNUC_UNUSED gpointer user_data)
 {
-	Session *admin_session = (Session *) user_data;
 #ifdef PRINT_INFO
 	g_print
 	    ("admin_event: event = %#x, admin_session = %p, line = %s\n",
-	     event, admin_session, line);
+	     event, ses, line);
 #endif
 
 	switch (event) {
@@ -321,7 +320,7 @@ static void admin_event(NetEvent event, const gchar * line,
 #ifdef PRINT_INFO
 		g_print("admin_event: NET_READ: line = '%s'\n", line);
 #endif
-		admin_run_command(admin_session, line);
+		admin_run_command(ses, line);
 		break;
 	case NET_CLOSE:
 		/* connection has been closed */
@@ -329,7 +328,7 @@ static void admin_event(NetEvent event, const gchar * line,
 #ifdef PRINT_INFO
 		g_print("admin_event: NET_CLOSE\n");
 #endif
-		net_free(&admin_session);
+		net_free(&ses);
 		break;
 	case NET_CONNECT:
 		/* connect() succeeded -- shouldn't get here */
@@ -344,9 +343,6 @@ static void admin_event(NetEvent event, const gchar * line,
 #ifdef PRINT_INFO
 		g_print("admin_event: NET_CONNECT_FAIL\n");
 #endif
-		break;
-	default:
-		/* To kill a warning... */
 		break;
 	}
 }
@@ -363,15 +359,10 @@ static void admin_connect(comm_info * admin_info)
 	/* (1) create a new network session */
 	admin_session = net_new(admin_event, NULL);
 
-	/* (2) set the session as the session's user data, so we can free it
-	 * later (this way we don't have to keep any globals holding all the    
-	 * sessions) */
-	net_set_user_data(admin_session, admin_session);
-
-	/* (3) accept the connection into a new file descriptor */
+	/* (2) accept the connection into a new file descriptor */
 	new_fd = accept_connection(admin_info->fd, &location);
 
-	/* (4) tie the new file descriptor to the session we created earlier.
+	/* (3) tie the new file descriptor to the session we created earlier.
 	 * Don't use keepalive pings on this connection.  */
 	net_use_fd(admin_session, new_fd, FALSE);
 }

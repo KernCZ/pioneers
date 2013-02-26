@@ -153,10 +153,12 @@ void sm_cancel_prefix(StateMachine * sm)
 	sm->line_offset = 0;
 }
 
-static void net_event(NetEvent event, const gchar * line,
+static void net_event(Session * ses, NetEvent event, const gchar * line,
 		      gpointer user_data)
 {
 	StateMachine *sm = (StateMachine *) user_data;
+
+	g_assert(ses == sm->ses);
 
 	sm_inc_use_count(sm);
 

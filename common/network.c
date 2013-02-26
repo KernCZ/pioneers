@@ -122,7 +122,7 @@ static void listen_write(Session * ses, gboolean monitor)
 static void notify(Session * ses, NetEvent event, const gchar * line)
 {
 	if (ses->notify_func != NULL)
-		ses->notify_func(event, line, ses->user_data);
+		ses->notify_func(ses, event, line, ses->user_data);
 }
 
 static gboolean net_would_block(void)

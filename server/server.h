@@ -148,7 +148,6 @@ void meta_register(const gchar * server, const gchar * port, Game * game);
 void meta_unregister(void);
 void meta_start_game(void);
 void meta_report_num_players(guint num_players);
-void meta_send_details(Game * game);
 
 /* player.c */
 typedef enum {
