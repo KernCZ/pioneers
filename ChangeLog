@@ -4,6 +4,8 @@
 	callbacks. Fixed handling of the metaserver protocol.
 	* common/gtk/common_gtk.c, common/gtk/common_gtk.h, server/gtk/main.c,
 	client/gtk/gui.c: Show the log when something is logged.
+	* common/state.c: Fixed the bug introduced on 2013-02-15 which crashed
+	the server when a connection was closed.
 
 2013-02-24  Roland Clobus <rclobus@rclobus.nl>
 	* configure.ac, server/server.c, server/server.h, server/main.c,

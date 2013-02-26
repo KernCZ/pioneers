@@ -486,6 +486,7 @@ StateMachine *sm_new(gpointer user_data)
 void sm_free(StateMachine * sm)
 {
 	g_free(sm->line);
+	sm->line = NULL;
 	if (sm->ses != NULL) {
 		net_free(&(sm->ses));
 		return;
