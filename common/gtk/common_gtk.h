@@ -32,7 +32,8 @@ void log_set_func_message_window(void);
 void log_set_func_message_color_enable(gboolean enable);
 
 /* set the text widget. */
-void message_window_set_text(GtkWidget * textWidget);
+void message_window_set_text(GtkWidget * textWidget,
+			     GtkWidget * container);
 
 enum TFindResult {
 	FIND_MATCH_EXACT,

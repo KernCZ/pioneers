@@ -902,7 +902,7 @@ static GtkWidget *build_message_frame(void)
 	gtk_widget_set_tooltip_text(message_text,
 				    /* Tooltip */
 				    _("Messages from the server"));
-	message_window_set_text(message_text);
+	message_window_set_text(message_text, NULL);
 
 	return scroll_win;
 }

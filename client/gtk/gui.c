@@ -599,7 +599,7 @@ static GtkWidget *build_messages_panel(void)
 	gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(messages_txt),
 				    GTK_WRAP_WORD);
 
-	message_window_set_text(messages_txt);
+	message_window_set_text(messages_txt, chat_panel);
 
 	return vbox;
 }

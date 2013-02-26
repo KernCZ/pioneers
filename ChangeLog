@@ -2,6 +2,8 @@
 	* server/meta.c, server/admin.c, server/server.h, client/gtk/connect.c,
 	common/network.h, common/state.c, common/network.c: Added Session to
 	callbacks. Fixed handling of the metaserver protocol.
+	* common/gtk/common_gtk.c, common/gtk/common_gtk.h, server/gtk/main.c,
+	client/gtk/gui.c: Show the log when something is logged.
 
 2013-02-24  Roland Clobus <rclobus@rclobus.nl>
 	* configure.ac, server/server.c, server/server.h, server/main.c,

@@ -28,6 +28,7 @@
 #include "cards.h"
 
 static GtkWidget *message_txt;
+static GtkWidget *message_container;
 static gboolean msg_colors = TRUE;
 
 /* Local function prototypes */
@@ -141,6 +142,10 @@ void message_window_log_message_string(gint msg_type, const gchar * text)
 		break;
 	}
 
+	if (message_container != NULL) {
+		gtk_widget_show(message_container);
+	}
+
 	buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(message_txt));
 
 	/* insert text at the end */
@@ -159,12 +164,13 @@ void message_window_log_message_string(gint msg_type, const gchar * text)
 }
 
 /* set the text widget. */
-void message_window_set_text(GtkWidget * textWidget)
+void message_window_set_text(GtkWidget * textWidget, GtkWidget * container)
 {
 	GtkTextBuffer *buffer;
 	GtkTextIter iter;
 
 	message_txt = textWidget;
+	message_container = container;
 
 	/* Prepare all tags */
 	buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(message_txt));
