@@ -1,3 +1,6 @@
+2013-03-07  Roland Clobus <rclobus@rclobus.nl>
+	* metaserver/main.c: Use the regular log functions.
+
 2013-02-26  Roland Clobus <rclobus@rclobus.nl>
 	* server/meta.c, server/admin.c, server/server.h, client/gtk/connect.c,
 	common/network.h, common/state.c, common/network.c: Added Session to
