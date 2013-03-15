@@ -22,7 +22,6 @@
 #ifndef __avahi_h
 #define __avahi_h
 
-#include "config.h"
 #include "server.h"
 
 /**

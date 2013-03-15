@@ -19,6 +19,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include "config.h"
 #include "gtkbugs.h"
 
 /** Since Gtk+ 2.6 you cannot press a button twice, without moving the

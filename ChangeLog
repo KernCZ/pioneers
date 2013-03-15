@@ -1,3 +1,8 @@
+2013-03-15  Roland Clobus <rclobus@rclobus.nl>
+	* common/gtk/colors.c, common/gtk/gtkbugs.c, common/gtk/polygon.c,
+	server/avahi.h: Fixed FTBFS on Debian 6 due to missing include of
+	config.h. Checked all files to include config.h in the c-file.
+
 2013-03-07  Roland Clobus <rclobus@rclobus.nl>
 	* metaserver/main.c: Use the regular log functions.
 
