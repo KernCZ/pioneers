@@ -684,21 +684,6 @@ void net_free(Session ** ses)
 	*ses = NULL;
 }
 
-gchar *get_my_hostname(void)
-{
-/* The following code fragment is taken from glib-2.0 v2.8 */
-	gchar hostname[100];
-#ifndef G_OS_WIN32
-	gboolean hostname_fail =
-	    (gethostname(hostname, sizeof(hostname)) == -1);
-#else
-	DWORD size = sizeof(hostname);
-	gboolean hostname_fail = (!GetComputerName(hostname, &size));
-#endif
-	return g_strdup(hostname_fail ? "localhost" : hostname);
-/* End of copy from glib-2.0 v2.8 */
-}
-
 gchar *get_metaserver_name(gboolean use_default)
 {
 	gchar *temp;
@@ -710,7 +695,7 @@ gchar *get_metaserver_name(gboolean use_default)
 		if (use_default)
 			temp = g_strdup(PIONEERS_DEFAULT_METASERVER);
 		else {
-			temp = get_my_hostname();
+			temp = g_strdup(g_get_host_name());
 		}
 	}
 	return temp;

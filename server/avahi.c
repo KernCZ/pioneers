@@ -97,7 +97,7 @@ static void entry_group_callback(AvahiEntryGroup * g,
 
 static void create_services(AvahiClient * c, Game * game)
 {
-	gchar *hostname;
+	const gchar *hostname;
 	gchar *servicename;
 	AvahiStringList *sl;
 	int ret;
@@ -126,11 +126,9 @@ static void create_services(AvahiClient * c, Game * game)
 					  game->params->title);
 
 	/* Add the service for IPP */
-	hostname =
-	    game->hostname ? g_strdup(game->hostname) : get_my_hostname();
+	hostname = game->hostname ? game->hostname : g_get_host_name();
 	servicename =
 	    g_strdup_printf("%s [%s]", hostname, game->server_port);
-	g_free(hostname);
 	ret = avahi_entry_group_add_service_strlst(group,
 						   AVAHI_IF_UNSPEC,
 						   AVAHI_NETWORK_PROTOCOL,

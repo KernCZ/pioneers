@@ -96,11 +96,6 @@ void net_printf(Session * ses, const gchar * fmt, ...);
  */
 void net_write(Session * ses, const gchar * data);
 
-/** Get the hostname of this computer.
- * @return "localhost" if the hostname could not be determined.
- */
-gchar *get_my_hostname(void);
-
 /** Get the name of the metaserver.
  *  First the environment variable PIONEERS_METASERVER is queried
  *  If it is not set, the use_default flag is used.

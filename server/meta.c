@@ -44,7 +44,7 @@ gchar *get_server_name(void)
 	if (!server_name)
 		server_name = g_strdup(g_getenv("GNOCATAN_SERVER_NAME"));
 	if (!server_name)
-		server_name = get_my_hostname();
+		server_name = g_strdup(g_get_host_name());
 	return server_name;
 }
 

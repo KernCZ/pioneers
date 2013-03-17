@@ -1,3 +1,7 @@
+2013-03-17  Roland Clobus <rclobus@rclobus.nl>
+	* server/avahi.c, server/meta.c, common/network.c, common/network.h:
+	Replaced copy of code from g_get_host_name by glib function.
+
 2013-03-15  Roland Clobus <rclobus@rclobus.nl>
 	* common/gtk/colors.c, common/gtk/gtkbugs.c, common/gtk/polygon.c,
 	server/avahi.h: Fixed FTBFS on Debian 6 due to missing include of
