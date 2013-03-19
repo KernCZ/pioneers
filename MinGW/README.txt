@@ -48,10 +48,16 @@ a) Start Pioneers by double clicking on the executable
     (found in C:\MinGW\msys\1.0\local)
 b) or start pioneers.exe from /usr/local in the shell
 
+Rebuild the icons
+=================
+a) Load the svg file at 768x768 in Gimp 2.8 (768=least common multiple(48,256))
+b) Execute the Script-Fu script "Iconify2.scm"
+c) Export as *.ico
+
 Known limitations
 =================
 * The online help is not built
 * The server and metaserver are not built
 
 Roland Clobus
-2011-11-27 Pioneers-0.12.5
+2013-03-18 Pioneers-14.1

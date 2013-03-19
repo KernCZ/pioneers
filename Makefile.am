@@ -101,48 +101,6 @@ icons =
 	@mkdir_p@ $(dir $@)
 	$(svg_renderer_path) $(svg_renderer_width)48$(svg_renderer_height)48 $< $(svg_renderer_output) $@
 
-if CREATE_WINDOWS_ICON
-# Only maintainers need to do this. It is distributed in the tarball
-%.ico: %.svg
-	@mkdir_p@ $(dir $@)
-	$(svg_renderer_path) $(svg_renderer_width)16$(svg_renderer_height)16 $< $(svg_renderer_output) $@-p16.png
-	$(pngtopnm) $@-p16.png > $@-p16.pnm
-	pngtopnm -alpha $@-p16.png > $@-p16a.pnm
-	pnmcolormap 256 $@-p16.pnm > $@-p16colormap.pnm
-	pnmremap -mapfile=$@-p16colormap.pnm $@-p16.pnm > $@-p16256.pnm
-	$(svg_renderer_path) $(svg_renderer_width)32$(svg_renderer_height)32 $< $(svg_renderer_output) $@-p32.png
-	pngtopnm $@-p32.png > $@-p32.pnm
-	pngtopnm -alpha $@-p32.png > $@-p32a.pnm
-	pnmcolormap 256 $@-p32.pnm > $@-p32colormap.pnm
-	pnmremap -mapfile=$@-p32colormap.pnm $@-p32.pnm > $@-p32256.pnm
-	$(svg_renderer_path) $(svg_renderer_width)48$(svg_renderer_height)48 $< $(svg_renderer_output) $@-p48.png
-	pngtopnm $@-p48.png > $@-p48.pnm
-	pngtopnm -alpha $@-p48.png > $@-p48a.pnm
-	pnmcolormap 256 $@-p48.pnm > $@-p48colormap.pnm
-	pnmremap -mapfile=$@-p48colormap.pnm $@-p48.pnm > $@-p48256.pnm
-	ppmtowinicon -andpgms $@-p48256.pnm $@-p48a.pnm $@-p32256.pnm $@-p32a.pnm $@-p16256.pnm $@-p16a.pnm > $@
-	rm $@-p16.png
-	rm $@-p16.pnm
-	rm $@-p16a.pnm
-	rm $@-p16colormap.pnm
-	rm $@-p16256.pnm
-	rm $@-p32.png
-	rm $@-p32.pnm
-	rm $@-p32a.pnm
-	rm $@-p32colormap.pnm
-	rm $@-p32256.pnm
-	rm $@-p48.png
-	rm $@-p48.pnm
-	rm $@-p48a.pnm
-	rm $@-p48colormap.pnm
-	rm $@-p48256.pnm
-else
-%.ico: %.svg
-	@$(ECHO) Microsoft Windows icons cannot be generated
-	@$(ECHO) Run configure again with --enable-maintainer-mode
-	@exit 1
-endif
-
 if USE_WINDOWS_ICON
 # Will be used in Windows builds
 %.res: %.rc %.ico

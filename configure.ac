@@ -100,15 +100,6 @@ fi
 fi
 fi
 
-# Is netpbm installed (should be needed only for maintainer builds)
-# netpbm will generate the icon for the Windows executables
-AC_PATH_PROG(pngtopnm, pngtopnm)
-if test "$pngtopnm" = ""; then
-	# Don't let configure fail, in the distributed tarballs is already
-	# a current .png file
-	AC_SUBST(pngtopnm, [false])
-fi
-
 AC_ARG_ENABLE([warnings], AS_HELP_STRING([--enable-warnings],
 	[Compile with check for compiler warnings (gcc-only).]),
 [case "${enableval}" in
@@ -291,7 +282,6 @@ if test "$have_gtk2" = "yes"; then
 	test_libgnome=$have_scrollkeeper;
 else
 	test_libgnome=no;
-	with_ms_icons=no;
 fi
 
 have_graphical=$have_gtk2;
@@ -494,28 +484,6 @@ if test "$pioneers_is_windows_port" = "yes"; then
 	pioneers_build_metaserver="no, not implemented for MS Windows";
 fi
 
-# Construct a nice text about Microsoft Windows icons
-if test $USE_MAINTAINER_MODE = yes; then
-	if test "$with_ms_icons" = "no"; then
-		if test $pioneers_is_windows_port = yes; then
-			AC_MSG_ERROR([Icons cannot be disabled in maintainermode in MS Windows])
-		fi
-		pioneers_ms_icons="Disabled, make dist is disabled too"
-	else
-		if test "$pngtopnm" = "false"; then
-			AC_MSG_ERROR([Icons cannot be generated, rerun configure with --without-ms-icons or install netpbm])
-		fi
-		pioneers_ms_icons="Icons generated"
-	fi
-else
-	if test $pioneers_is_windows_port = yes; then
-		pioneers_ms_icons="Icons are used"
-	else
-		pioneers_ms_icons="Not needed"
-	fi
-fi
-
-AM_CONDITIONAL(CREATE_WINDOWS_ICON, [test $USE_MAINTAINER_MODE = yes -a "$with_ms_icons" != "no"])
 AM_CONDITIONAL(USE_WINDOWS_ICON, [test $pioneers_is_windows_port = yes])
 
 AM_CONDITIONAL(BUILD_CLIENT, [test "$pioneers_build_client_gtk" = "yes" -o "$pioneers_build_client_ai" = yes])
@@ -557,6 +525,4 @@ $PACKAGE v$VERSION configuration:
         Use compiler warnings              $pioneers_warnings
         Add debug information              $pioneers_debug
         Enable deprecation checks          $pioneers_deprecationChecks
-   Maintainers only:
-        Microsoft Windows icons            $pioneers_ms_icons
 ])
