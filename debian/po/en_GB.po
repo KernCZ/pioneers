@@ -21,14 +21,12 @@ msgstr ""
 #. Type: string
 #. Description
 #: ../pioneers-metaserver.templates:1001
-#, fuzzy
 msgid "Port range for creating new games on the metaserver:"
 msgstr "Port range for creating new games on the metaserver:"
 
 #. Type: string
 #. Description
 #: ../pioneers-metaserver.templates:1001
-#, fuzzy
 msgid ""
 "The metaserver can create new games, so players don't need to install and "
 "run the pioneers server. The ports which are used for these games can be "
