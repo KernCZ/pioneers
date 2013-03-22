@@ -75,7 +75,6 @@ msgstr "Extra argumenten voor de metaserver:"
 #. Type: string
 #. Description
 #: ../pioneers-metaserver.templates:3001
-#, fuzzy
 msgid ""
 "These arguments are passed to the metaserver.\n"
 " * --redirect: Redirect clients to another metaserver"
