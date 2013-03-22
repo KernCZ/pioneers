@@ -22,7 +22,5 @@ Template: pioneers-metaserver/arguments
 Type: string
 Default:
 _Description: Extra arguments to pass to the metaserver:
- These arguments are passed to the metaserver. There are only two sensible
- arguments:
-  * --debug: Send debugging output to a logfile
+ These arguments are passed to the metaserver.
   * --redirect: Redirect clients to another metaserver

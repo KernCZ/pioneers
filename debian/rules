@@ -35,5 +35,6 @@ override_dh_clean:
 	-rm pioneers.xpm
 	-rm pioneers-server.xpm
 	-rm pioneers-editor.xpm
+	debconf-updatepo	
 	dh_clean
 

@@ -1,12 +1,12 @@
 # Japanese translation of pioneers debconf templates.
 # Copyright (C) 2009 Hideki Yamane <henrich@debian.or.jp>
 # This file is distributed under the same license as the pioneers package.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: pioneers 0.12.2-5\n"
 "Report-Msgid-Bugs-To: pioneers@packages.debian.org\n"
-"POT-Creation-Date: 2009-11-25 13:11+0100\n"
+"POT-Creation-Date: 2013-03-22 12:32+0100\n"
 "PO-Revision-Date: 2009-09-12 02:27+0900\n"
 "Last-Translator: Hideki Yamane (Debian-JP) <henrich@debian.or.jp>\n"
 "Language-Team: Debian JP Project <debian-doc@debian.or.jp>\n"
@@ -17,18 +17,26 @@ msgstr ""
 
 #. Type: string
 #. Description
-#: ../pioneers-meta-server.templates:1001
-msgid "Port range for creating new games on the meta-server:"
+#: ../pioneers-metaserver.templates:1001
+#, fuzzy
+#| msgid "Port range for creating new games on the meta-server:"
+msgid "Port range for creating new games on the metaserver:"
 msgstr "メタサーバ上で作成された新しいゲームのポート番号の範囲:"
 
 #. Type: string
 #. Description
-#: ../pioneers-meta-server.templates:1001
+#: ../pioneers-metaserver.templates:1001
+#, fuzzy
+#| msgid ""
+#| "The meta-server can create new games, so players don't need to install "
+#| "and run the pioneers server. The ports which are used for these games can "
+#| "be specified. If this field is left empty, the meta-server will disable "
+#| "its game creation functionality."
 msgid ""
-"The meta-server can create new games, so players don't need to install and "
+"The metaserver can create new games, so players don't need to install and "
 "run the pioneers server. The ports which are used for these games can be "
-"specified. If this field is left empty, the meta-server will disable its "
-"game creation functionality."
+"specified. If this field is left empty, the metaserver will disable its game "
+"creation functionality."
 msgstr ""
 "メタサーバは新しいゲームを作成できるので、プレイヤーは pioneers サーバをイン"
 "ストールして動作させる必要はありません。ポート番号はこれらのゲームを判別する"
@@ -37,7 +45,7 @@ msgstr ""
 
 #. Type: string
 #. Description
-#: ../pioneers-meta-server.templates:1001
+#: ../pioneers-metaserver.templates:1001
 msgid ""
 "If the value is not empty, it must be two port numbers, separated by a minus "
 "sign."
@@ -47,15 +55,20 @@ msgstr ""
 
 #. Type: string
 #. Description
-#: ../pioneers-meta-server.templates:2001
+#: ../pioneers-metaserver.templates:2001
 msgid "Server name for created games:"
 msgstr "作成されたゲームのサーバ名:"
 
 #. Type: string
 #. Description
-#: ../pioneers-meta-server.templates:2001
+#: ../pioneers-metaserver.templates:2001
+#, fuzzy
+#| msgid ""
+#| "In some cases, the name the meta-server uses for itself when creating new "
+#| "games is incorrect. If this field is not left empty, it is used to "
+#| "override the detected hostname."
 msgid ""
-"In some cases, the name the meta-server uses for itself when creating new "
+"In some cases, the name the metaserver uses for itself when creating new "
 "games is incorrect. If this field is not left empty, it is used to override "
 "the detected hostname."
 msgstr ""
@@ -64,18 +77,24 @@ msgstr ""
 
 #. Type: string
 #. Description
-#: ../pioneers-meta-server.templates:3001
-msgid "Extra arguments to pass to the meta-server:"
+#: ../pioneers-metaserver.templates:3001
+#, fuzzy
+#| msgid "Extra arguments to pass to the meta-server:"
+msgid "Extra arguments to pass to the metaserver:"
 msgstr "メタサーバに渡す追加引数:"
 
 #. Type: string
 #. Description
-#: ../pioneers-meta-server.templates:3001
+#: ../pioneers-metaserver.templates:3001
+#, fuzzy
+#| msgid ""
+#| "These arguments are passed to the meta-server. There are only two "
+#| "sensible arguments:\n"
+#| " * --syslog-debug: Send debugging output to syslog\n"
+#| " * --redirect: Redirect clients to another meta-server"
 msgid ""
-"These arguments are passed to the meta-server. There are only two sensible "
-"arguments:\n"
-" * --syslog-debug: Send debugging output to syslog\n"
-" * --redirect: Redirect clients to another meta-server"
+"These arguments are passed to the metaserver.\n"
+" * --redirect: Redirect clients to another metaserver"
 msgstr ""
 "以下の引数がメタサーバに渡されます。二つだけ重要な引数があります:\n"
 " * --syslog-debug: syslog にデバッグ出力を送る\n"

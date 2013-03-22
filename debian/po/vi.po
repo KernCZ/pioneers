@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pioneers 0.12.2-1\n"
 "Report-Msgid-Bugs-To: pioneers@packages.debian.org\n"
-"POT-Creation-Date: 2009-11-25 13:11+0100\n"
+"POT-Creation-Date: 2013-03-22 12:32+0100\n"
 "PO-Revision-Date: 2008-05-16 21:18+0930\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
@@ -19,18 +19,26 @@ msgstr ""
 
 #. Type: string
 #. Description
-#: ../pioneers-meta-server.templates:1001
-msgid "Port range for creating new games on the meta-server:"
+#: ../pioneers-metaserver.templates:1001
+#, fuzzy
+#| msgid "Port range for creating new games on the meta-server:"
+msgid "Port range for creating new games on the metaserver:"
 msgstr "Phạm vi cổng để tạo lượt chơi mới trên siêu trình phục vụ :"
 
 #. Type: string
 #. Description
-#: ../pioneers-meta-server.templates:1001
+#: ../pioneers-metaserver.templates:1001
+#, fuzzy
+#| msgid ""
+#| "The meta-server can create new games, so players don't need to install "
+#| "and run the pioneers server. The ports which are used for these games can "
+#| "be specified. If this field is left empty, the meta-server will disable "
+#| "its game creation functionality."
 msgid ""
-"The meta-server can create new games, so players don't need to install and "
+"The metaserver can create new games, so players don't need to install and "
 "run the pioneers server. The ports which are used for these games can be "
-"specified. If this field is left empty, the meta-server will disable its "
-"game creation functionality."
+"specified. If this field is left empty, the metaserver will disable its game "
+"creation functionality."
 msgstr ""
 "Siêu trình phục vụ có thể tạo các lượt chơi mới, do đó người chơi không cần "
 "cài đặt và chạy trình phục vụ pioneers. Cũng có thể ghi rõ những cổng được "
@@ -39,7 +47,7 @@ msgstr ""
 
 #. Type: string
 #. Description
-#: ../pioneers-meta-server.templates:1001
+#: ../pioneers-metaserver.templates:1001
 msgid ""
 "If the value is not empty, it must be two port numbers, separated by a minus "
 "sign."
@@ -48,15 +56,20 @@ msgstr ""
 
 #. Type: string
 #. Description
-#: ../pioneers-meta-server.templates:2001
+#: ../pioneers-metaserver.templates:2001
 msgid "Server name for created games:"
 msgstr "Tên trình phục vụ cho các lượt chơi đã tạo :"
 
 #. Type: string
 #. Description
-#: ../pioneers-meta-server.templates:2001
+#: ../pioneers-metaserver.templates:2001
+#, fuzzy
+#| msgid ""
+#| "In some cases, the name the meta-server uses for itself when creating new "
+#| "games is incorrect. If this field is not left empty, it is used to "
+#| "override the detected hostname."
 msgid ""
-"In some cases, the name the meta-server uses for itself when creating new "
+"In some cases, the name the metaserver uses for itself when creating new "
 "games is incorrect. If this field is not left empty, it is used to override "
 "the detected hostname."
 msgstr ""
@@ -66,18 +79,24 @@ msgstr ""
 
 #. Type: string
 #. Description
-#: ../pioneers-meta-server.templates:3001
-msgid "Extra arguments to pass to the meta-server:"
+#: ../pioneers-metaserver.templates:3001
+#, fuzzy
+#| msgid "Extra arguments to pass to the meta-server:"
+msgid "Extra arguments to pass to the metaserver:"
 msgstr "Các đối số thêm cần gửi cho siêu trình phục vụ :"
 
 #. Type: string
 #. Description
-#: ../pioneers-meta-server.templates:3001
+#: ../pioneers-metaserver.templates:3001
+#, fuzzy
+#| msgid ""
+#| "These arguments are passed to the meta-server. There are only two "
+#| "sensible arguments:\n"
+#| " * --syslog-debug: Send debugging output to syslog\n"
+#| " * --redirect: Redirect clients to another meta-server"
 msgid ""
-"These arguments are passed to the meta-server. There are only two sensible "
-"arguments:\n"
-" * --syslog-debug: Send debugging output to syslog\n"
-" * --redirect: Redirect clients to another meta-server"
+"These arguments are passed to the metaserver.\n"
+" * --redirect: Redirect clients to another metaserver"
 msgstr ""
 "Những đối số này được gửi cho siêu trình phục vụ. Chỉ có hai đối số hữu "
 "ích:\n"
