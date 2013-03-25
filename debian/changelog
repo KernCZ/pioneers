@@ -6,6 +6,9 @@ pioneers (14.2-1~local1) UNRELEASED; urgency=low
   * Migration of the settings for the metaserver.
   * Added debconf-updatepo in the clean target.
   * Updated the explanation for the extra arguments for the metaserver.
+  * Cleanup of Provides:-section for packaging before Debian 6.
+  * Cleanup of /etc/default/pioneers-console and /etc/init.d/pioneers-console
+    (when the installation has been upgraded from 0.11.3 or older)
 
  -- Roland Clobus <rclobus@rclobus.nl>  Fri, 25 Jan 2013 17:05:00 +0100
 
