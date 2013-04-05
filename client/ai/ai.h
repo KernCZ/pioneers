@@ -27,6 +27,7 @@
 void ai_panic(const char *message);
 void ai_wait(void);
 void ai_chat(const char *message);
+void genetic_init(void);
 void greedy_init(void);
 void lobbybot_init(void);
 

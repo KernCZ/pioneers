@@ -54,6 +54,7 @@ static const struct algorithm_info {
 } algorithms[] = {
 /* *INDENT-OFF* */
 	{ "greedy", &greedy_init, TRUE, TRUE},
+	{ "genetic", &genetic_init, TRUE, TRUE},
 	{ "lobbybot", &lobbybot_init, FALSE, TRUE},
 	{ "logbot", &logbot_init, FALSE, TRUE},
 /* *INDENT-ON* */

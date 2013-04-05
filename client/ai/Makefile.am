@@ -26,6 +26,7 @@ pioneersai_SOURCES = \
 	client/callback.h \
 	client/ai/ai.h \
 	client/ai/ai.c \
+	client/ai/genetic.c \
 	client/ai/greedy.c \
 	client/ai/lobbybot.c
 

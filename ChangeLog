@@ -1,3 +1,7 @@
+2013-04-05  Roland Clobus <rclobus@rclobus.nl>
+	* client/ai/Makefile.am, client/ai/ai.c, client/ai/ai.h,
+	client/ai/genetic.c: Added stub for a new computer player.
+
 2013-03-19  Roland Clobus <rclobus@rclobus.nl>
 	* configure.ac, Makefile.am, MinGW/README.txt, MinGW/iconify2.scm,
 	client/gtk/data/pioneers.ico, server/gtk/pioneers-server.ico,
