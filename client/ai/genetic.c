@@ -62,7 +62,8 @@ static void genetic_steal_building(void)
 /*
  * We played a year of plenty card. Pick the two resources we most need.
  */
-static void genetic_year_of_plenty(G_GNUC_UNUSED const gint bank[NO_RESOURCE])
+static void genetic_year_of_plenty(G_GNUC_UNUSED const gint
+				   bank[NO_RESOURCE])
 {
 	gint want[NO_RESOURCE];
 	guint i;
@@ -83,7 +84,7 @@ static void genetic_year_of_plenty(G_GNUC_UNUSED const gint bank[NO_RESOURCE])
 static void genetic_monopoly(void)
 {
 	ai_wait();
-	
+
 	/* TODO: Implement the choice */
 	cb_choose_monopoly(BRICK_RESOURCE);
 }
@@ -94,13 +95,16 @@ static void genetic_quote_start(void)
 }
 
 static void genetic_consider_quote(G_GNUC_UNUSED gint partner,
-				  G_GNUC_UNUSED gint we_receive[NO_RESOURCE],
-				  G_GNUC_UNUSED gint we_supply[NO_RESOURCE])
+				   G_GNUC_UNUSED gint
+				   we_receive[NO_RESOURCE],
+				   G_GNUC_UNUSED gint
+				   we_supply[NO_RESOURCE])
 {
 	/* TODO: Implement the consideration of offers */
 }
 
-static void genetic_setup(G_GNUC_UNUSED gint num_settlements, G_GNUC_UNUSED gint num_roads)
+static void genetic_setup(G_GNUC_UNUSED gint num_settlements,
+			  G_GNUC_UNUSED gint num_roads)
 {
 	ai_wait();
 
@@ -120,7 +124,8 @@ static void genetic_roadbuilding(G_GNUC_UNUSED gint num_roads)
 /*
  * A seven was rolled. we need to discard some resources :(
  */
-static void genetic_discard_add(G_GNUC_UNUSED gint player_num, G_GNUC_UNUSED gint discard_num)
+static void genetic_discard_add(G_GNUC_UNUSED gint player_num,
+				G_GNUC_UNUSED gint discard_num)
 {
 	if (player_num == my_player_num()) {
 		ai_wait();
@@ -138,13 +143,15 @@ static void genetic_discard_add(G_GNUC_UNUSED gint player_num, G_GNUC_UNUSED gin
 	}
 }
 
-static void genetic_gold_choose(G_GNUC_UNUSED gint gold_num, G_GNUC_UNUSED const gint * bank)
+static void genetic_gold_choose(G_GNUC_UNUSED gint gold_num,
+				G_GNUC_UNUSED const gint * bank)
 {
 	/* TODO: Choose the resources on the gold tiles */
 	/* cb_choose_gold(want); */
 }
 
-static void genetic_game_over(G_GNUC_UNUSED gint player_num, G_GNUC_UNUSED gint points)
+static void genetic_game_over(G_GNUC_UNUSED gint player_num,
+			      G_GNUC_UNUSED gint points)
 {
 	/* TODO: Add code here after game over */
 
