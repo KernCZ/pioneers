@@ -11,7 +11,7 @@ Vcs-Browser: http://pio.svn.sourceforge.net/viewvc/pio/trunk/pioneers/
 
 Package: pioneers
 Architecture: any
-Depends: pioneers-console (=${binary:Version}), pioneers-data (=${source:Version}), ${shlibs:Depends}, ${misc:Depends}
+Depends: pioneers-console (=${binary:Version}), pioneers-data (=${source:Version}), librsvg2-common, ${shlibs:Depends}, ${misc:Depends}
 Recommends: yelp
 Suggests: pioneers-metaserver
 Description: Settlers of Catan board game
