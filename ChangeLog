@@ -1,3 +1,7 @@
+2013-04-15  Micah Bunting <Amnykon@gmail.com>
+	* client/gtk/frontend.c, client/gtk/frontend.h, client/gtk/identity.c:
+	Resize the height of the identity panel.
+
 2013-04-05  Roland Clobus <rclobus@rclobus.nl>
 	* client/ai/Makefile.am, client/ai/ai.c, client/ai/ai.h,
 	client/ai/genetic.c: Added stub for a new computer player.

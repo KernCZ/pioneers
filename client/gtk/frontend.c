@@ -104,6 +104,22 @@ void frontend_gui_check(GuiEvent event, gboolean sensitive)
 	}
 }
 
+gboolean frontend_gui_get_sensitive(GuiEvent event)
+{
+	GuiWidgetState *gui;
+	gint i;
+	gint key = event * MAX_NUMBER_OF_WIDGETS_PER_EVENT;
+
+	/* Look at all related widgets */
+	for (i = 0; i < MAX_NUMBER_OF_WIDGETS_PER_EVENT; ++i) {
+		gui = g_hash_table_lookup(frontend_widgets,
+					  GINT_TO_POINTER(key + i));
+		if (gui != NULL)
+			return gui->current;
+	}
+	return FALSE;
+}
+
 static GuiWidgetState *gui_new(void *widget, gint id)
 {
 	gint i;

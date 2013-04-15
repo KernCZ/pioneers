@@ -83,6 +83,12 @@ void frontend_gui_update(void);
 /** program the state of a widget for when frontend_gui_update is called. */
 void frontend_gui_check(GuiEvent event, gboolean sensitive);
 
+/** are the widgets sensitive?
+ * @param event The GuiEvent.
+ * @return TRUE when the GuiEvent has widgets associated that are sensitive.
+ */
+gboolean frontend_gui_get_sensitive(GuiEvent event);
+
 /** initialise the frontend_gui_register_* functions */
 void frontend_gui_register_init(void);
 
