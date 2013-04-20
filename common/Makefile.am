@@ -55,6 +55,8 @@ libpioneers_a_SOURCES = \
 	common/notifying-string-private.h \
 	common/quoteinfo.c \
 	common/quoteinfo.h \
+	common/set.c \
+	common/set.h \
 	common/state.c \
 	common/state.h
 

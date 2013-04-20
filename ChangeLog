@@ -1,3 +1,6 @@
+2013-04-20  Roland Clobus <rclobus@rclobus.nl>
+	* common/set.c, common/set.h, common/Makefile.am: Added algorithm Set.
+
 2013-04-15  Micah Bunting <Amnykon@gmail.com>
 	* client/gtk/frontend.c, client/gtk/frontend.h, client/gtk/identity.c:
 	Resize the height of the identity panel.
