@@ -50,6 +50,11 @@ gboolean set_remove(Set * set, gpointer element)
 	return g_hash_table_remove(set->hash, element);
 }
 
+guint set_size(Set * set)
+{
+	return g_hash_table_size(set->hash);
+}
+
 void set_free(Set * set)
 {
 	g_hash_table_destroy(set->hash);
