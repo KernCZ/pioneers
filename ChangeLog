@@ -1,4 +1,7 @@
 2013-04-24  Roland Clobus <rclobus@rclobus.nl>
+	* admin-scripts/meta.sh: Use the correct name of the executable.
+
+2013-04-24  Roland Clobus <rclobus@rclobus.nl>
 	* metaserver/main.c, client/gtk/connect.c, common/state.c,
 	common/common_glib.c, common/state.h, common/network.c,
 	common/common_glib.h, common/driver.c, common/network.h,
