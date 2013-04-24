@@ -329,7 +329,8 @@ static void meta_gametype_notify(Session * ses, NetEvent event,
 		} else {
 			close_waiting_box();
 		}
-		if (metaserver_info.num_available_titles > 0u) {
+		if (cserver_dlg != NULL
+		    && metaserver_info.num_available_titles > 0u) {
 			gtk_dialog_set_response_sensitive(GTK_DIALOG
 							  (cserver_dlg),
 							  GTK_RESPONSE_OK,
@@ -416,10 +417,11 @@ static void meta_create_notify(Session * ses, NetEvent event,
 			log_message(MSG_ERROR,
 				    _("Incomplete information about the "
 				      "new game server received.\n"));
-			gtk_dialog_set_response_sensitive(GTK_DIALOG
-							  (cserver_dlg),
-							  GTK_RESPONSE_OK,
-							  TRUE);
+			if (cserver_dlg != NULL) {
+				gtk_dialog_set_response_sensitive
+				    (GTK_DIALOG(cserver_dlg),
+				     GTK_RESPONSE_OK, TRUE);
+			}
 			break;
 		case CREATE_MODE_SIGNON:
 		case CREATE_MODE_WAIT_FOR_INFO:
@@ -427,10 +429,11 @@ static void meta_create_notify(Session * ses, NetEvent event,
 				    _("The metaserver closed "
 				      "the connection "
 				      "unexpectedly.\n"));
-			gtk_dialog_set_response_sensitive(GTK_DIALOG
-							  (cserver_dlg),
-							  GTK_RESPONSE_OK,
-							  TRUE);
+			if (cserver_dlg != NULL) {
+				gtk_dialog_set_response_sensitive
+				    (GTK_DIALOG(cserver_dlg),
+				     GTK_RESPONSE_OK, TRUE);
+			}
 			break;
 		}
 		break;
@@ -462,7 +465,7 @@ static void meta_create_notify(Session * ses, NetEvent event,
 					create_mode =
 					    CREATE_MODE_STARTING_ERROR;
 				}
-				net_free(&ses);
+				net_close(ses);
 				metaserver_info.session = NULL;
 			} else
 				log_message(MSG_ERROR,
@@ -781,8 +784,6 @@ static void meta_notify(Session * ses,
 			}
 		}
 		net_free(&ses);
-
-
 		break;
 	case NET_CONNECT:
 		break;
@@ -963,7 +964,7 @@ static void create_server_dlg_cb(GtkDialog * dlg, gint arg1,
 	default:		/* For the compiler */
 		gtk_widget_destroy(GTK_WIDGET(dlg));
 		if (metaserver_info.session != NULL) {
-			net_free(&metaserver_info.session);
+			net_close(metaserver_info.session);
 			/* Canceled retrieving information 
 			 * from the metaserver */
 			log_message(MSG_INFO, _("Canceled.\n"));
@@ -1028,8 +1029,10 @@ static void create_server_dlg(G_GNUC_UNUSED GtkWidget * widget,
 	gtk_box_pack_start(GTK_BOX(dlg_vbox), vbox, TRUE, TRUE, 0);
 	gtk_container_set_border_width(GTK_CONTAINER(vbox), 5);
 
-	gtk_dialog_set_response_sensitive(GTK_DIALOG(cserver_dlg),
-					  GTK_RESPONSE_OK, FALSE);
+	if (cserver_dlg != NULL) {
+		gtk_dialog_set_response_sensitive(GTK_DIALOG(cserver_dlg),
+						  GTK_RESPONSE_OK, FALSE);
+	}
 	g_signal_connect(G_OBJECT(cserver_dlg), "response",
 			 G_CALLBACK(create_server_dlg_cb), NULL);
 	gtk_widget_show(cserver_dlg);
@@ -1100,7 +1103,7 @@ static void meta_dlg_cb(GtkDialog * dlg, gint arg1,
 	default:
 		gtk_widget_destroy(GTK_WIDGET(dlg));
 		if (metaserver_info.session != NULL) {
-			net_free(&metaserver_info.session);
+			net_close(metaserver_info.session);
 			/* Canceled retrieving information 
 			 * from the metaserver */
 			log_message(MSG_INFO, _("Canceled.\n"));

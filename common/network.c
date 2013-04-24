@@ -3,7 +3,7 @@
  *
  * Copyright (C) 1999 Dave Cole
  * Copyright (C) 2003, 2006 Bas Wijnen <shevek@fmf.nl>
- * Copyright (C) 2005-2009 Roland Clobus <rclobus@bigfoot.com>
+ * Copyright (C) 2005-2013 Roland Clobus <rclobus@rclobus.nl>
  * Copyright (C) 2005 Keishi Suenaga
  *
  * This program is free software; you can redistribute it and/or modify
@@ -48,7 +48,6 @@
 #include <stdlib.h>		/* For atoi */
 #endif				/* ndef HAVE_GETADDRINFO_ET_AL */
 
-#include "driver.h"
 #include "game.h"
 #include "map.h"
 #include "network.h"
@@ -62,11 +61,22 @@ typedef union {
 #endif				/* HAVE_GETADDRINFO_ET_AL */
 } sockaddr_t;
 
+struct _Service {
+	int fd;
+	guint read_tag;
+	NetNotifyFunc notify_func;
+	gpointer user_data;
+	GSList *sessions;
+	gboolean delayed_free;
+};
+
 struct _Session {
 	int fd;
 	time_t last_response;	/* used for activity detection.  */
 	guint timer_id;
+	gboolean timed_out;
 	gpointer user_data;
+	Service *service; /**< Associated service, when applicable */
 
 	gboolean connect_in_progress;
 	gboolean waiting_for_close;
@@ -85,24 +95,89 @@ struct _Session {
 	GList *write_queue;
 
 	NetNotifyFunc notify_func;
+	guint period; /**< Period in s for keep-alive checks */
 };
 
-static void net_attempt_to_connect(Session * ses);
+typedef void (*InputFunc) (gpointer);
 
-/* Number of seconds between pings
- * (in the absence of other network activity).  */
-static const int PING_PERIOD = 30;
+typedef struct {
+	InputFunc func;
+	gpointer param;
+	GIOChannel *channel;
+} IOChannelWrapper;
+
+static void net_attempt_to_connect(Session * ses);
+static void net_closesocket(int fd);
 
 static void read_ready(gpointer user_data);
 static void write_ready(gpointer user_data);
+
+static gboolean net_io_channel_wrapper_callback(G_GNUC_UNUSED GIOChannel *
+						source,
+						G_GNUC_UNUSED GIOCondition
+						condition, gpointer data)
+{
+	IOChannelWrapper *wrapper = data;
+
+	wrapper->func(wrapper->param);
+	return TRUE;
+}
+
+static void net_io_channel_wrapper_source_removed(gpointer data)
+{
+	IOChannelWrapper *wrapper = data;
+
+	g_io_channel_unref(wrapper->channel);
+	g_free(wrapper);
+}
+
+static guint net_io_channel_wrapper_add_watch(gint fd,
+					      GIOCondition condition,
+					      InputFunc func,
+					      gpointer param)
+{
+	GIOChannel *io_channel;
+	guint tag;
+
+	IOChannelWrapper *wrapper = g_malloc0(sizeof(IOChannelWrapper));
+	io_channel = g_io_channel_unix_new(fd);
+	wrapper->func = func;
+	wrapper->param = param;
+	wrapper->channel = io_channel;
+	tag =
+	    g_io_add_watch_full(io_channel, G_PRIORITY_DEFAULT, condition,
+				net_io_channel_wrapper_callback, wrapper,
+				net_io_channel_wrapper_source_removed);
+	return tag;
+}
+
+static guint net_io_channel_wrapper_add_read(gint fd, InputFunc func,
+					     gpointer param)
+{
+	return net_io_channel_wrapper_add_watch(fd, G_IO_IN | G_IO_HUP,
+						func, param);
+}
+
+static guint net_io_channel_wrapper_add_write(gint fd, InputFunc func,
+					      gpointer param)
+{
+	return net_io_channel_wrapper_add_watch(fd, G_IO_OUT | G_IO_HUP,
+						func, param);
+}
+
+static void net_io_channel_wrapper_remove(guint tag)
+{
+	g_source_remove(tag);
+}
 
 static void listen_read(Session * ses, gboolean monitor)
 {
 	if (monitor && ses->read_tag == 0)
 		ses->read_tag =
-		    driver->input_add_read(ses->fd, read_ready, ses);
+		    net_io_channel_wrapper_add_read(ses->fd, read_ready,
+						    ses);
 	if (!monitor && ses->read_tag != 0) {
-		driver->input_remove(ses->read_tag);
+		net_io_channel_wrapper_remove(ses->read_tag);
 		ses->read_tag = 0;
 	}
 
@@ -112,9 +187,10 @@ static void listen_write(Session * ses, gboolean monitor)
 {
 	if (monitor && ses->write_tag == 0)
 		ses->write_tag =
-		    driver->input_add_write(ses->fd, write_ready, ses);
+		    net_io_channel_wrapper_add_write(ses->fd, write_ready,
+						     ses);
 	if (!monitor && ses->write_tag != 0) {
-		driver->input_remove(ses->write_tag);
+		net_io_channel_wrapper_remove(ses->write_tag);
 		ses->write_tag = 0;
 	}
 }
@@ -157,16 +233,16 @@ static const gchar *net_errormsg(void)
 	return net_errormsg_nr(errno);
 }
 
-gboolean net_close(Session * ses)
+static gboolean net_close_internal(Session * ses)
 {
 	if (ses->timer_id != 0) {
 		g_source_remove(ses->timer_id);
 		ses->timer_id = 0;
 	}
 
+	listen_read(ses, FALSE);
+	listen_write(ses, FALSE);
 	if (ses->fd >= 0) {
-		listen_read(ses, FALSE);
-		listen_write(ses, FALSE);
 		net_closesocket(ses->fd);
 		ses->fd = -1;
 
@@ -189,24 +265,13 @@ gboolean net_close(Session * ses)
 	return !ses->entered;
 }
 
-void net_close_when_flushed(Session * ses)
+void net_close(Session * ses)
 {
 	ses->waiting_for_close = TRUE;
 	if (ses->write_queue != NULL)
 		return;
 
-	if (net_close(ses))
-		notify(ses, NET_CLOSE, NULL);
-}
-
-void net_wait_for_close(Session * ses)
-{
-	ses->waiting_for_close = TRUE;
-}
-
-static void close_and_callback(Session * ses)
-{
-	if (net_close(ses))
+	if (net_close_internal(ses))
 		notify(ses, NET_CLOSE, NULL);
 }
 
@@ -214,25 +279,26 @@ static gboolean ping_function(gpointer s)
 {
 	Session *ses = (Session *) s;
 	double interval = difftime(time(NULL), ses->last_response);
-	/* Ask for activity every PING_PERIOD seconds, but don't ask if there
+	/* Ask for activity every ses->period seconds, but don't ask if there
 	 * was activity anyway.  */
-	if (interval >= 2 * PING_PERIOD) {
+	if (interval >= 2 * ses->period) {
 		/* There was no response to the ping in time.  The connection
 		 * should be considered dead.  */
 		log_message(MSG_ERROR,
 			    "No activity and no response to ping.  Closing connection\n");
 		debug("(%d) --> %s", ses->fd, "no response");
-		close_and_callback(ses);
-	} else if (interval >= PING_PERIOD) {
+		ses->timed_out = TRUE;
+		net_close(ses);
+	} else if (interval >= ses->period) {
 		/* There was no activity.
 		 * Send a ping (but don't update activity time).  */
 		net_write(ses, "hello\n");
 		ses->timer_id =
-		    g_timeout_add(PING_PERIOD * 1000, ping_function, s);
+		    g_timeout_add(ses->period * 1000, ping_function, s);
 	} else {
 		/* Everything is fine.  Reschedule this check.  */
 		ses->timer_id = g_timeout_add((guint)
-					      ((PING_PERIOD -
+					      ((ses->period -
 						interval) * 1000),
 					      ping_function, s);
 	}
@@ -258,12 +324,12 @@ static void write_ready(gpointer user_data)
 		if (getsockopt(ses->fd, SOL_SOCKET, SO_ERROR,
 			       (GETSOCKOPT_ARG3) & error,
 			       &error_len) < 0) {
-			notify(ses, NET_CONNECT_FAIL, NULL);
 			log_message(MSG_ERROR,
 				    _(""
 				      "Error checking connect status: %s\n"),
 				    net_errormsg());
-			net_close(ses);
+			net_close_internal(ses);
+			notify(ses, NET_CONNECT_FAIL, NULL);
 		} else if (error != 0) {
 #ifdef HAVE_GETADDRINFO_ET_AL
 			if (ses->current_ai && ses->current_ai->ai_next) {
@@ -281,8 +347,8 @@ static void write_ready(gpointer user_data)
 				    _(""
 				      "Error connecting to host '%s': %s\n"),
 				    ses->host, net_errormsg_nr(error));
+			net_close_internal(ses);
 			notify(ses, NET_CONNECT_FAIL, NULL);
-			net_close(ses);
 		} else {
 			ses->connect_in_progress = FALSE;
 			notify(ses, NET_CONNECT, NULL);
@@ -308,7 +374,7 @@ static void write_ready(gpointer user_data)
 					    _(""
 					      "Error writing socket: %s\n"),
 					    net_errormsg());
-			close_and_callback(ses);
+			net_close(ses);
 			return;
 		} else if ((size_t) num == len) {
 			ses->write_queue
@@ -324,7 +390,7 @@ static void write_ready(gpointer user_data)
 	 */
 	if (ses->write_queue == NULL) {
 		if (ses->waiting_for_close)
-			close_and_callback(ses);
+			net_close(ses);
 		else
 			listen_write(ses, FALSE);
 	}
@@ -359,7 +425,7 @@ void net_write(Session * ses, const gchar * data)
 					    _(""
 					      "Error writing to socket: %s\n"),
 					    net_errormsg());
-				close_and_callback(ses);
+				net_close(ses);
 				return;
 			}
 			num = 0;
@@ -412,7 +478,7 @@ static void read_ready(gpointer user_data)
 		 */
 		log_message(MSG_ERROR,
 			    _("Read buffer overflow - disconnecting\n"));
-		close_and_callback(ses);
+		net_close(ses);
 		return;
 	}
 
@@ -423,12 +489,12 @@ static void read_ready(gpointer user_data)
 			return;
 		log_message(MSG_ERROR, _("Error reading socket: %s\n"),
 			    net_errormsg());
-		close_and_callback(ses);
+		net_close(ses);
 		return;
 	}
 
 	if (num == 0) {
-		close_and_callback(ses);
+		net_close(ses);
 		return;
 	}
 
@@ -476,7 +542,7 @@ static void read_ready(gpointer user_data)
 
 	ses->entered = FALSE;
 	if (ses->fd < 0) {
-		close_and_callback(ses);
+		net_close(ses);
 	}
 }
 
@@ -488,6 +554,7 @@ Session *net_new(NetNotifyFunc notify_func, gpointer user_data)
 	ses->notify_func = notify_func;
 	ses->user_data = user_data;
 	ses->fd = -1;
+	ses->timed_out = FALSE;
 
 	return ses;
 }
@@ -496,19 +563,39 @@ void net_set_user_data(Session * ses, gpointer user_data)
 {
 	g_return_if_fail(ses != NULL);
 	g_return_if_fail(ses->notify_func != NULL);
-
 	ses->user_data = user_data;
 }
 
-void net_use_fd(Session * ses, int fd, gboolean do_ping)
+void net_set_notify_func(Session * ses, NetNotifyFunc notify_func,
+			 gpointer user_data)
 {
-	ses->fd = fd;
-	if (do_ping) {
+	g_return_if_fail(ses != NULL);
+	ses->notify_func = notify_func;
+	ses->user_data = user_data;
+}
+
+void net_set_check_connection_alive(Session * ses, guint period)
+{
+	ses->period = period;
+	if (period > 0) {
 		ses->last_response = time(NULL);
+		if (ses->timer_id != 0) {
+			g_source_remove(ses->timer_id);
+		}
 		ses->timer_id =
-		    g_timeout_add(PING_PERIOD * 1000, ping_function, ses);
+		    g_timeout_add(period * 1000, ping_function, ses);
+	} else {
+		if (ses->timer_id != 0) {
+			g_source_remove(ses->timer_id);
+			ses->timer_id = 0;
+		}
 	}
 	listen_read(ses, TRUE);
+}
+
+gboolean net_get_connection_timed_out(Session * ses)
+{
+	return ses->timed_out;
 }
 
 gboolean net_connected(Session * ses)
@@ -633,11 +720,12 @@ gboolean net_connect(Session * ses, const gchar * host, const gchar * port)
 	struct sockaddr_in addr;
 #endif				/* HAVE_GETADDRINFO_ET_AL */
 
-	net_close(ses);
-	if (ses->host != NULL)
-		g_free(ses->host);
-	if (ses->port != NULL)
-		g_free(ses->port);
+	g_return_val_if_fail(ses->host == NULL, FALSE);
+	g_return_val_if_fail(ses->port == NULL, FALSE);
+	g_return_val_if_fail(ses->base_ai == NULL, FALSE);
+	g_return_val_if_fail(ses->current_ai == NULL, FALSE);
+	g_return_val_if_fail(ses->fd < 0, FALSE);
+
 	ses->host = g_strdup(host);
 	ses->port = g_strdup(port);
 
@@ -673,9 +761,21 @@ gboolean net_connect(Session * ses, const gchar * host, const gchar * port)
 void net_free(Session ** ses)
 {
 	/* If the sessions is still in use, do not free it */
-	if (!net_close(*ses)) {
+	if (!net_close_internal(*ses)) {
+		g_warning("Request to free session %p was denied, this "
+			  "programming error results in a memory leak\n",
+			  *ses);
 		return;
 	}
+	if ((*ses)->service != NULL) {
+		Service *service = (*ses)->service;
+		service->sessions =
+		    g_slist_remove(service->sessions, *ses);
+		if (service->delayed_free && service->sessions == NULL) {
+			g_free(service);
+		}
+	}
+
 	if ((*ses)->host != NULL)
 		g_free((*ses)->host);
 	if ((*ses)->port != NULL)
@@ -711,7 +811,8 @@ const gchar *get_pioneers_dir(void)
 	return pioneers_dir;
 }
 
-int net_open_listening_socket(const gchar * port, gchar ** error_message)
+static int net_open_listening_socket(const gchar * port,
+				     gchar ** error_message)
 {
 #ifdef HAVE_GETADDRINFO_ET_AL
 	int err;
@@ -793,6 +894,97 @@ int net_open_listening_socket(const gchar * port, gchar ** error_message)
 #endif				/* HAVE_GETADDRINFO_ET_AL */
 }
 
+/* accept a connection */
+static void net_service_connect(gpointer user_data)
+{
+	Service *service = user_data;
+	Session *ses;
+	sockaddr_t addr;
+	socklen_t addr_len;
+
+	/* create a new network session */
+	ses = net_new(service->notify_func, service->user_data);
+	ses->service = service;
+
+	service->sessions = g_slist_append(service->sessions, ses);
+
+	addr_len = sizeof(addr);
+	ses->fd = accept(service->fd, &addr.sa, &addr_len);
+	if (ses->fd < 0) {
+		log_message(MSG_ERROR,
+			    _("Error accepting connection: %s\n"),
+			    net_errormsg());
+		notify(ses, NET_CONNECT_FAIL, NULL);
+		return;
+	}
+	listen_read(ses, TRUE);
+	/* notify the event handler */
+	notify(ses, NET_CONNECT, NULL);
+}
+
+Service *net_service_new(guint16 port, NetNotifyFunc notify_func,
+			 gpointer user_data, gchar ** error_message)
+{
+	Service *service;
+	int fd;
+	gchar *s_port;
+
+	s_port = g_strdup_printf("%u", port);
+	fd = net_open_listening_socket(s_port, error_message);
+	g_free(s_port);
+	if (fd < 0) {
+		return NULL;
+	}
+
+	service = g_malloc0(sizeof(*service));
+	service->fd = fd;
+	service->notify_func = notify_func;
+	service->user_data = user_data;
+	service->sessions = NULL;
+	service->delayed_free = FALSE;
+
+	service->read_tag =
+	    net_io_channel_wrapper_add_read(service->fd,
+					    net_service_connect, service);
+	return service;
+}
+
+void net_service_free(Service * service)
+{
+	GSList *list;
+	gboolean delayed_free;
+
+	g_return_if_fail(service != NULL);
+
+	if (service->read_tag != 0) {
+		net_io_channel_wrapper_remove(service->read_tag);
+		service->read_tag = 0;
+	}
+
+	net_closesocket(service->fd);
+	service->fd = -1;
+
+	/* Make a copy of all service related data,
+	 * because net_free will remove the session
+	 * and free the service (when applicable) */
+	list = g_slist_copy(service->sessions);
+
+	/* Close all remaining sessions */
+	delayed_free = FALSE;
+	while (list != NULL) {
+		service->delayed_free = TRUE;
+		delayed_free = TRUE;
+		Session *ses = list->data;
+		net_close(ses);
+		list = g_slist_remove(list, ses);
+	}
+
+	/* Delay freeing the memory, to allow the callbacks to finish */
+	if (!delayed_free) {
+		g_free(service);
+	}
+}
+
 void net_closesocket(int fd)
 {
 #ifdef G_OS_WIN32
@@ -802,8 +994,8 @@ void net_closesocket(int fd)
 #endif				/* G_OS_WIN32 */
 }
 
-gboolean net_get_peer_name(gint fd, gchar ** hostname, gchar ** servname,
-			   gchar ** error_message)
+gboolean net_get_peer_name(Session * ses, gchar ** hostname,
+			   gchar ** servname, GError ** error)
 {
 #ifdef HAVE_GETADDRINFO_ET_AL
 	sockaddr_t peer;
@@ -815,10 +1007,13 @@ gboolean net_get_peer_name(gint fd, gchar ** hostname, gchar ** servname,
 
 #ifdef HAVE_GETADDRINFO_ET_AL
 	peer_len = sizeof(peer);
-	if (getpeername(fd, &peer.sa, &peer_len) < 0) {
-		*error_message =
-		    g_strdup_printf(_("Error getting peer name: %s"),
-				    net_errormsg());
+	if (getpeername(ses->fd, &peer.sa, &peer_len) < 0) {
+		if (error != NULL) {
+			*error = g_error_new(G_FILE_ERROR, 999,
+					     _(""
+					       "Error getting peer name: %s"),
+					     net_errormsg());
+		}
 		return FALSE;
 	} else {
 		int err;
@@ -828,10 +1023,12 @@ gboolean net_get_peer_name(gint fd, gchar ** hostname, gchar ** servname,
 		if ((err =
 		     getnameinfo(&peer.sa, peer_len, host, NI_MAXHOST,
 				 port, NI_MAXSERV, 0))) {
-			*error_message =
-			    g_strdup_printf(_(""
-					      "Error resolving address: %s"),
-					    gai_strerror(err));
+			if (error != NULL) {
+				*error = g_error_new(G_FILE_ERROR, 999,
+						     _(""
+						       "Error resolving address: %s"),
+						     gai_strerror(err));
+			}
 			return FALSE;
 		} else {
 			g_free(*hostname);
@@ -842,27 +1039,13 @@ gboolean net_get_peer_name(gint fd, gchar ** hostname, gchar ** servname,
 		}
 	}
 #else				/* HAVE_GETADDRINFO_ET_AL */
-	*error_message =
-	    g_strdup(_(""
-		       "Net_get_peer_name not yet supported on this platform."));
+	if (error != NULL) {
+		*error = g_error_new_literal(G_FILE_ERROR, 999,
+					     _(""
+					       "Net_get_peer_name not yet supported on this platform."));
+	}
 	return FALSE;
 #endif				/* HAVE_GETADDRINFO_ET_AL */
-}
-
-gint net_accept(gint accept_fd, gchar ** error_message)
-{
-	gint fd;
-	sockaddr_t addr;
-	socklen_t addr_len;
-
-	addr_len = sizeof(addr);
-	fd = accept(accept_fd, &addr.sa, &addr_len);
-	if (fd < 0) {
-		*error_message =
-		    g_strdup_printf(_("Error accepting connection: %s"),
-				    net_errormsg());
-	}
-	return fd;
 }
 
 void net_init(void)

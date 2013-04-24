@@ -236,10 +236,6 @@ UIDriver GTK_Driver = {
 	 *   the message window is created. */
 	log_message_string_console,
 
-	NULL,			/* add read input */
-	NULL,			/* add write input */
-	NULL,			/* remove input */
-
 	/* callbacks for the server; NULL for now -- let the server set them */
 	NULL,			/* player added */
 	NULL,			/* player renamed */

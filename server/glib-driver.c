@@ -20,9 +20,7 @@
  */
 
 #include "config.h"
-#include "driver.h"
 #include "server.h"
-#include "common_glib.h"
 #include "glib-driver.h"
 
 /* callbacks for the server */

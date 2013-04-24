@@ -27,6 +27,7 @@
 #include "map.h"
 #include "quoteinfo.h"
 #include "state.h"
+#include "network.h"
 
 #define TERRAIN_DEFAULT	0
 #define TERRAIN_RANDOM	1
@@ -73,8 +74,7 @@ struct Game {
 	GameParams *params;	/* game parameters */
 	gchar *hostname;	/* reported hostname */
 
-	gint accept_fd;		/* socket for accepting new clients */
-	guint accept_tag;	/* Gdk event tag for accept socket */
+	Service *service;	/* network service */
 
 	GList *player_list;	/* all players in the game */
 	GList *dead_players;	/* all players that should be removed when player_list_use_count == 0 */
@@ -158,7 +158,7 @@ typedef enum {
 } BroadcastType;
 gchar *player_new_computer_player(Game * game);
 Player *player_new(Game * game, const gchar * name);
-Player *player_new_connection(Game * game, int fd, const gchar * location);
+Player *player_new_connection(Game * game, Session * ses);
 Player *player_by_num(Game * game, gint num);
 void player_set_name(Player * player, gchar * name);
 Player *player_none(Game * game);

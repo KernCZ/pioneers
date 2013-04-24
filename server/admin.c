@@ -33,22 +33,16 @@
 #include "admin.h"
 #include "game.h"
 #include "server.h"
-
 #include "network.h"
-
-typedef struct _comm_info {
-	gint fd;
-	guint read_tag;
-	guint write_tag;
-} comm_info;
+#include "version.h"
 
 /* network administration functions */
 static Game **admin_game;
-static comm_info *_accept_info = NULL;
 static gint admin_dice_roll = 0;
 static gchar *server_port = NULL;
 static gboolean register_server = TRUE;
 static GameParams *params = NULL;
+static Service *service = NULL;
 
 typedef enum {
 	BADCOMMAND,
@@ -331,8 +325,11 @@ static void admin_event(Session * ses, NetEvent event, const gchar * line,
 		net_free(&ses);
 		break;
 	case NET_CONNECT:
-		/* connect() succeeded -- shouldn't get here */
-
+		/* new connection was made */
+		net_printf(ses,
+			   "welcome to the pioneers admin connection, "
+			   "version %s\n", FULL_VERSION);
+		net_set_check_connection_alive(ses, 0);
 #ifdef PRINT_INFO
 		g_print("admin_event: NET_CONNECT\n");
 #endif
@@ -343,28 +340,9 @@ static void admin_event(Session * ses, NetEvent event, const gchar * line,
 #ifdef PRINT_INFO
 		g_print("admin_event: NET_CONNECT_FAIL\n");
 #endif
+		net_free(&ses);
 		break;
 	}
-}
-
-/* accept a connection made to the admin port */
-static void admin_connect(comm_info * admin_info)
-{
-	Session *admin_session;
-	gint new_fd;
-	gchar *location;
-
-	/* somebody connected to the administration port, so we... */
-
-	/* (1) create a new network session */
-	admin_session = net_new(admin_event, NULL);
-
-	/* (2) accept the connection into a new file descriptor */
-	new_fd = accept_connection(admin_info->fd, &location);
-
-	/* (3) tie the new file descriptor to the session we created earlier.
-	 * Don't use keepalive pings on this connection.  */
-	net_use_fd(admin_session, new_fd, FALSE);
 }
 
 /* set up the administration port */
@@ -378,26 +356,14 @@ gboolean admin_init(const gchar * port, Game ** game)
 		server_port = g_strdup((*admin_game)->server_port);
 	}
 
-	if (!_accept_info) {
-		_accept_info = g_malloc0(sizeof(comm_info));
-	}
+	service =
+	    net_service_new(atoi(port), admin_event, NULL, &error_message);
 
-	/* open up a socket on which to listen for connections */
-	_accept_info->fd = net_open_listening_socket(port, &error_message);
-	if (_accept_info->fd == -1) {
+	if (!service) {
 		log_message(MSG_ERROR, "%s\n", error_message);
 		g_free(error_message);
 		return FALSE;
 	}
-#ifdef PRINT_INFO
-	g_print("admin_listen: fd = %d\n", _accept_info->fd);
-#endif
-
-	/* set up the callback to handle connections */
-	_accept_info->read_tag =
-	    driver->input_add_read(_accept_info->fd,
-				   (InputFunc) admin_connect,
-				   _accept_info);
 	return TRUE;
 }
 

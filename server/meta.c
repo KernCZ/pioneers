@@ -60,7 +60,7 @@ void meta_start_game(void)
 
 void meta_report_num_players(guint num_players)
 {
-	if (meta_session != NULL)
+	if (meta_session != NULL && meta_mode == MODE_SERVER_LIST)
 		net_printf(meta_session, "curr=%d\n", num_players);
 }
 
@@ -175,8 +175,8 @@ static void meta_event(Session * ses, NetEvent event, const gchar * line,
 			}
 			net_printf(ses, "version %s\n",
 				   META_PROTOCOL_VERSION);
-			meta_mode = MODE_SERVER_LIST;
 			meta_send_details(ses, game);
+			meta_mode = MODE_SERVER_LIST;
 			break;
 		default:
 			log_message(MSG_ERROR,

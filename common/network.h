@@ -31,6 +31,7 @@ typedef enum {
 	NET_READ
 } NetEvent;
 
+typedef struct _Service Service;
 typedef struct _Session Session;
 
 typedef void (*NetNotifyFunc) (Session * ses, NetEvent event,
@@ -46,48 +47,55 @@ Session *net_new(NetNotifyFunc notify_func, gpointer user_data);
 void net_free(Session ** ses);
 
 void net_set_user_data(Session * ses, gpointer user_data);
+void net_set_notify_func(Session * ses, NetNotifyFunc notify_func,
+			 gpointer user_data);
 
-void net_use_fd(Session * ses, int fd, gboolean do_ping);
 gboolean net_connect(Session * ses, const gchar * host,
 		     const gchar * port);
 gboolean net_connected(Session * ses);
 
-/** Open a socket for listening.
+/** Check whether the connection is alive by sending messages.
+ * @param ses The session
+ * @param period Interval in seconds, use 0 to stop checking
+ */
+void net_set_check_connection_alive(Session * ses, guint period);
+
+/** Check whether the connection is has timed out.
+ * @param ses The session
+ * @return TRUE when the connection timed out
+ */
+gboolean net_get_connection_timed_out(Session * ses);
+
+/** Create a service that listens on the mentioned port.
  *  @param port The port
+ *  @param notify_func The notification function for new Sessions
+ *  @param user_data The user data in new Sessions
  *  @retval error_message If opening fails, a description of the error
  *          You should g_free the error_message
- *  @return A file descriptor if succesfull, or -1 if it fails
+ *  @return The service, or NULL on error
  */
-int net_open_listening_socket(const gchar * port, gchar ** error_message);
+Service *net_service_new(guint16 port, NetNotifyFunc notify_func,
+			 gpointer user_data, gchar ** error_message);
 
-/** Close a socket
+/** Free the service that was created by net_service_new.
+ *  @param service The service to free
  */
-void net_closesocket(int fd);
+void net_service_free(Service * service);
 
 /** Get peer name
- *  @param fd File descriptor to resolve
+ *  @param ses The session
  *  @retval hostname The resolved hostname
  *  @retval servname The resolved port name/service name
- *  @retval error_message The error message when it fails
+ *  @retval error The error when it fails
  *  @return TRUE is successful
  */
-gboolean net_get_peer_name(gint fd, gchar ** hostname, gchar ** servname,
-			   gchar ** error_message);
+gboolean net_get_peer_name(Session * ses, gchar ** hostname,
+			   gchar ** servname, GError ** error);
 
-/** Accept incoming connections
- * @param accept_fd The file descriptor
- * @retval error_message The message if it fails
- * @return The file descriptor of the connection
- */
-gint net_accept(gint accept_fd, gchar ** error_message);
-
-/** Close a session
+/** Close a session after the pending data was sent.
  * @param ses The session to close
- * @return TRUE if the session can be removed
  */
-gboolean net_close(Session * ses);
-void net_close_when_flushed(Session * ses);
-void net_wait_for_close(Session * ses);
+void net_close(Session * ses);
 void net_printf(Session * ses, const gchar * fmt, ...);
 
 /** Write data.

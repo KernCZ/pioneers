@@ -432,12 +432,23 @@ Player *player_new(Game * game, const gchar * name)
 	return player;
 }
 
-Player *player_new_connection(Game * game, int fd, const gchar * location)
+Player *player_new_connection(Game * game, Session * ses)
 {
 	gchar name[100];
 	size_t i;
 	Player *player;
 	StateMachine *sm;
+	GError *error;
+	gchar *location;
+	gchar *port;
+
+	if (!net_get_peer_name(ses, &location, &port, &error)) {
+		log_message(MSG_ERROR,
+			    _("Unable to determine the "
+			      "hostname of the player: %s"),
+			    error->message);
+		g_error_free(error);
+	}
 
 	/* give player a name, some functions need it */
 	strcpy(name, "connecting");
@@ -449,37 +460,29 @@ Player *player_new_connection(Game * game, int fd, const gchar * location)
 	}
 	if (i == G_N_ELEMENTS(name) - 1) {
 		/* there are too many pending connections */
-		ssize_t bytes_written;
-		bytes_written =
-		    write(fd, "ERR Too many connections\n", 25);
-		/* This ugly construction is to suppress a compiler warning */
-		bytes_written = bytes_written;
-		net_closesocket(fd);
+		net_write(ses, "ERR Too many connections\n");
+		g_free(location);
+		g_free(port);
 		return NULL;
 	}
 
 	if (game->is_game_over) {
 		/* The game is over, don't accept new players */
-		Session *ses = net_new(NULL, NULL);
-		gchar *message;
-		net_use_fd(ses, fd, FALSE);
 		/* Message to send to the client when the game is already over
 		 * when a connection is made. */
-		message =
-		    g_strdup_printf("NOTE %s\n",
-				    N_("Sorry, game is over."));
-		net_write(ses, message);
+		net_printf(ses, "NOTE %s\n", N_("Sorry, game is over."));
 		log_message(MSG_INFO,
 			    _("Player from %s is refused: game is over\n"),
 			    location);
-		net_close_when_flushed(ses);
-		g_free(message);
+		g_free(location);
+		g_free(port);
 		return NULL;
 	}
 
 	player = player_new(game, name);
 	sm = player->sm;
-	sm_use_fd(sm, fd, TRUE);
+	sm_set_session(sm, ses);
+	net_set_check_connection_alive(ses, 30);
 	g_free(player->location);
 	player->location = g_strdup(location);
 

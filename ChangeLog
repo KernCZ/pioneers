@@ -1,3 +1,17 @@
+2013-04-24  Roland Clobus <rclobus@rclobus.nl>
+	* metaserver/main.c, client/gtk/connect.c, common/state.c,
+	common/common_glib.c, common/state.h, common/network.c,
+	common/common_glib.h, common/driver.c, common/network.h,
+	common/driver.h, common/gtk/common_gtk.c, server/server.h,
+	server/main.c, server/glib-driver.c, server/glib-driver.h,
+	server/meta.c, server/admin.c, server/player.c, server/server.c: Moved
+	all network related code to network.[ch]; fixed memory leak in
+	net_io_channel_wrapper (formerly called evl_glib_input functions);
+	the metaserver uses network.c too; fixed handling of metaserver
+	redirects; enabled the ok-button in the client dialogs only when all
+	data is available; the metaserver checks the availability of the port
+	when starting a new server.
+
 2013-04-21  Roland Clobus <rclobus@rclobus.nl>
 	* common/set.c, common/set.h: Added set_size, added documentation.
 

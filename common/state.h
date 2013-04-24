@@ -23,6 +23,7 @@
 #define __state_h
 
 #include <glib.h>
+#include "network.h"
 
 /* sm_ API:
  *
@@ -140,7 +141,7 @@ void sm_unhandled_set(StateMachine * sm, StateFunc state);
 gboolean sm_is_connected(StateMachine * sm);
 gboolean sm_connect(StateMachine * sm, const gchar * host,
 		    const gchar * port);
-void sm_use_fd(StateMachine * sm, gint fd, gboolean do_ping);
+void sm_set_session(StateMachine * sm, Session * ses);
 void sm_dec_use_count(StateMachine * sm);
 void sm_inc_use_count(StateMachine * sm);
 /** Dump the stack */

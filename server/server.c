@@ -20,11 +20,7 @@
  */
 
 #include "config.h"
-#include <fcntl.h>
 #include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
-#include <signal.h>
 
 #include "server.h"
 #include "network.h"
@@ -75,8 +71,7 @@ Game *game_new(const GameParams * params)
 
 	game = g_malloc0(sizeof(*game));
 
-	game->accept_tag = 0;
-	game->accept_fd = -1;
+	game->service = NULL;
 	game->is_running = FALSE;
 	game->is_game_over = FALSE;
 	game->params = params_copy(params);
@@ -102,29 +97,9 @@ void game_free(Game * game)
 	if (game->server_port != NULL)
 		g_free(game->server_port);
 	params_free(game->params);
+	net_service_free(game->service);
+	game->service = NULL;
 	g_free(game);
-}
-
-gint accept_connection(gint in_fd, gchar ** location)
-{
-	int fd;
-	gchar *error_message;
-	gchar *port;
-
-	fd = net_accept(in_fd, &error_message);
-	if (fd < 0) {
-		log_message(MSG_ERROR, "%s\n", error_message);
-		g_free(error_message);
-		return -1;
-	}
-
-	g_assert(location != NULL);
-	if (!net_get_peer_name(fd, location, &port, &error_message)) {
-		log_message(MSG_ERROR, "%s\n", error_message);
-		g_free(error_message);
-	}
-	g_free(port);
-	return fd;
 }
 
 gint add_computer_player(Game * game, gboolean want_chat)
@@ -161,18 +136,33 @@ gint add_computer_player(Game * game, gboolean want_chat)
 	return ret;
 }
 
-
-static void player_connect(gpointer user_data)
+static void player_connect(Session * ses, NetEvent event,
+			   G_GNUC_UNUSED const gchar * line,
+			   gpointer user_data)
 {
 	Game *game = (Game *) user_data;
-	gchar *location;
-	gint fd = accept_connection(game->accept_fd, &location);
 
-	if (fd > 0) {
-		if (player_new_connection(game, fd, location) != NULL)
+	switch (event) {
+	case NET_READ:
+		/* there is data to be read */
+		break;
+	case NET_CLOSE:
+		/* connection has been closed */
+		net_free(&ses);
+		break;
+	case NET_CONNECT:
+		/* new connection was made */
+		if (player_new_connection(game, ses) != NULL) {
 			stop_timeout(game);
+		} else {
+			net_close(ses);
+		}
+		break;
+	case NET_CONNECT_FAIL:
+		/* connect failed */
+		net_free(&ses);
+		break;
 	}
-	g_free(location);
 }
 
 static gboolean game_server_start(Game * game, gboolean register_server,
@@ -180,9 +170,11 @@ static gboolean game_server_start(Game * game, gboolean register_server,
 {
 	gchar *error_message;
 
-	game->accept_fd =
-	    net_open_listening_socket(game->server_port, &error_message);
-	if (game->accept_fd == -1) {
+	game->service =
+	    net_service_new(atoi(game->server_port), player_connect, game,
+			    &error_message);
+
+	if (game->service == NULL) {
 		log_message(MSG_ERROR, "%s\n", error_message);
 		g_free(error_message);
 		return FALSE;
@@ -190,9 +182,6 @@ static gboolean game_server_start(Game * game, gboolean register_server,
 	game->is_running = TRUE;
 
 	start_timeout(game);
-
-	game->accept_tag = driver->input_add_read(game->accept_fd,
-						  player_connect, game);
 
 	if (register_server) {
 		g_assert(metaserver_name != NULL);
@@ -270,14 +259,8 @@ gboolean server_stop(Game * game)
 	avahi_unregister_game();
 
 	game->is_running = FALSE;
-	if (game->accept_tag) {
-		driver->input_remove(game->accept_tag);
-		game->accept_tag = 0;
-	}
-	if (game->accept_fd >= 0) {
-		close(game->accept_fd);
-		game->accept_fd = -1;
-	}
+	net_service_free(game->service);
+	game->service = NULL;
 
 	playerlist_inc_use_count(game);
 	current = game->player_list;

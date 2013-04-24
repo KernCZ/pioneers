@@ -43,6 +43,7 @@
 #include "buildrec.h"
 #include "server.h"
 
+#include "common_glib.h"
 #include "glib-driver.h"
 
 #include "admin.h"

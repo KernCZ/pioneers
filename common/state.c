@@ -208,14 +208,15 @@ gboolean sm_connect(StateMachine * sm, const gchar * host,
 	return FALSE;
 }
 
-void sm_use_fd(StateMachine * sm, gint fd, gboolean do_ping)
+void sm_set_session(StateMachine * sm, Session * ses)
 {
+	sm_inc_use_count(sm);
 	if (sm->ses != NULL)
 		net_free(&(sm->ses));
-
-	sm->ses = net_new(net_event, sm);
-	net_use_fd(sm->ses, fd, do_ping);
-}
+	sm->ses = ses;
+	net_set_notify_func(sm->ses, net_event, sm);
+	sm_dec_use_count(sm);
+};
 
 gboolean sm_recv(StateMachine * sm, const gchar * fmt, ...)
 {
@@ -251,7 +252,7 @@ void sm_write(StateMachine * sm, const gchar * str)
 		/* Protect against strange/slow connects */
 		if (g_list_length(sm->cache) > 1000) {
 			net_write(sm->ses, "ERR connection too slow\n");
-			net_close_when_flushed(sm->ses);
+			net_close(sm->ses);
 		} else {
 			sm->cache =
 			    g_list_append(sm->cache, g_strdup(str));
