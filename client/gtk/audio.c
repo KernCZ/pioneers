@@ -1,7 +1,7 @@
 /* Pioneers - Implementation of the excellent Settlers of Catan board game.
  *   Go buy a copy.
  *
- * Copyright (C) 2008 Roland Clobus <rclobus@bigfoot.com>
+ * Copyright (C) 2008,2013 Roland Clobus <rclobus@rclobus.nl>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,6 +46,27 @@ void set_silent_mode(gboolean silent)
 	silent_mode = silent;
 }
 
+static void do_beep(guint frequency)
+{
+	gchar *argv[5];
+	guint i;
+
+	argv[0] = g_strdup("beep");
+	argv[1] = g_strdup("beep");
+	argv[2] = g_strdup("-f");
+	argv[3] = g_strdup_printf("%u", frequency);
+	argv[4] = NULL;
+	if (!g_spawn_async
+	    (NULL, argv, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL,
+	     NULL)) {
+		/* Use old style beep, which does not always work */
+		gdk_beep();
+	}
+	for (i = 0; i < G_N_ELEMENTS(argv); i++) {
+		g_free(argv[i]);
+	}
+}
+
 void play_sound(SoundType sound)
 {
 	if (get_silent_mode()) {
@@ -53,14 +74,14 @@ void play_sound(SoundType sound)
 	}
 	switch (sound) {
 	case SOUND_BEEP:
-		gdk_beep();
+		do_beep(440);
 		break;
 	case SOUND_TURN:
-		gdk_beep();
+		do_beep(440);
 		break;
 	case SOUND_ANNOUNCE:
 		if (get_announce_player())
-			gdk_beep();
+			do_beep(880);
 		break;
 	}
 }

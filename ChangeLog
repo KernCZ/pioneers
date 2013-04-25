@@ -1,3 +1,6 @@
+2013-04-25  Roland Clobus <rclobus@rclobus.nl>
+	* client/gtk/audio.c: The beep works again.
+
 2013-04-24  Roland Clobus <rclobus@rclobus.nl>
 	* admin-scripts/meta.sh: Use the correct name of the executable.
 	* client/ai/lobbybot.c: Corrected the version number of the release.
