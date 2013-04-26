@@ -1,6 +1,8 @@
 2013-04-26  Roland Clobus <rclobus@rclobus.nl>
 	* editor/gtk/editor.c: Fixed setting the title of the game. Fixed i18n
 	issues: double keyboard shortcut and unmarked translatable text.
+	* common/gtk/scrollable-text-view.gob: Turned off TAB. 'Fixed' click on
+	the widget to regain focus, by using a ugly hack.
 
 2013-04-25  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/audio.c: The beep works again.
