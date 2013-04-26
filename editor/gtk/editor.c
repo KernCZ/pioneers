@@ -140,6 +140,7 @@ static const gchar *port_direction_names[] = {
 };
 
 static void check_vp_cb(GObject * caller, gpointer main_window);
+static void set_window_title(const gchar * title);
 
 static void error_dialog(const char *fmt, ...)
 {
@@ -555,6 +556,14 @@ static GtkWidget *build_map(void)
 	return table;
 }
 
+static gboolean update_title(GtkWidget * widget,
+			     G_GNUC_UNUSED GdkEvent event,
+			     G_GNUC_UNUSED gpointer user_data)
+{
+	set_window_title(gtk_entry_get_text(GTK_ENTRY(widget)));
+	return FALSE;
+}
+
 /** Builds the comments tab.
  * @return The comments tab.
  */
@@ -564,7 +573,8 @@ static GtkWidget *build_comments(void)
 	GtkWidget *widget;
 
 	vbox = gtk_vbox_new(FALSE, 5);
-	widget = gtk_label_new_with_mnemonic("_Title");
+	/* Label */
+	widget = gtk_label_new_with_mnemonic(_("_Title"));
 	gtk_widget_show(widget);
 	gtk_misc_set_alignment(GTK_MISC(widget), 0.0, 0.5);
 	gtk_box_pack_start(GTK_BOX(vbox), widget, FALSE, FALSE, 0);
@@ -573,8 +583,11 @@ static GtkWidget *build_comments(void)
 	gtk_widget_show(game_title);
 	gtk_box_pack_start(GTK_BOX(vbox), game_title, FALSE, FALSE, 0);
 	gtk_label_set_mnemonic_widget(GTK_LABEL(widget), game_title);
+	g_signal_connect(G_OBJECT(game_title), "focus-out-event",
+			 G_CALLBACK(update_title), NULL);
 
-	widget = gtk_label_new_with_mnemonic("_Description");
+	/* Label */
+	widget = gtk_label_new_with_mnemonic(_("_Description"));
 	gtk_widget_show(widget);
 	gtk_misc_set_alignment(GTK_MISC(widget), 0.0, 0.5);
 	gtk_box_pack_start(GTK_BOX(vbox), widget, FALSE, FALSE, 0);
@@ -591,7 +604,8 @@ static GtkWidget *build_comments(void)
 	scrollable_text_view_set_text(SCROLLABLE_TEXT_VIEW
 				      (game_description), "");
 
-	widget = gtk_label_new_with_mnemonic("_Comments");
+	/* Label */
+	widget = gtk_label_new_with_mnemonic(_("_Comments"));
 	gtk_widget_show(widget);
 	gtk_misc_set_alignment(GTK_MISC(widget), 0.0, 0.5);
 	gtk_box_pack_start(GTK_BOX(vbox), widget, FALSE, FALSE, 0);
@@ -923,12 +937,12 @@ static GtkWidget *build_settings(GtkWindow * main_window)
 	return vbox;
 }
 
-static void set_window_title(const gchar * title)
+void set_window_title(const gchar * title)
 {
 	gchar *str;
 	g_free(window_title);
 	if (title == NULL) {
-		title = "Untitled";
+		title = _("Untitled");
 		window_title = NULL;
 	} else
 		window_title = g_strdup(title);
@@ -1230,11 +1244,13 @@ static void change_title_menu_cb(void)
 	gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, TRUE, 0);
 	gtk_misc_set_alignment(GTK_MISC(label), 1, 0.5);
 
+	/* Update the window_title before is it shown */
+	set_window_title(gtk_entry_get_text(GTK_ENTRY(game_title)));
+
 	entry = gtk_entry_new();
 	gtk_entry_set_max_length(GTK_ENTRY(entry), 60);
 	gtk_box_pack_start(GTK_BOX(hbox), entry, TRUE, TRUE, 0);
-	if (window_title != NULL)
-		gtk_entry_set_text(GTK_ENTRY(entry), window_title);
+	gtk_entry_set_text(GTK_ENTRY(entry), window_title);
 
 	gtk_entry_set_activates_default(GTK_ENTRY(entry), TRUE);
 
@@ -1344,7 +1360,7 @@ static GtkActionEntry entries[] = {
 	 N_("Save as"), save_as_menu_cb},
 	{"ChangeTitle", NULL,
 	 /* Menu entry */
-	 N_("_Change Title"), "<control>T",
+	 N_("Change _Title"), "<control>T",
 	 /* Tooltip for Change Title menu entry */
 	 N_("Change game title"), change_title_menu_cb},
 	{"CheckVP", GTK_STOCK_APPLY,

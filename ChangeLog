@@ -1,3 +1,7 @@
+2013-04-26  Roland Clobus <rclobus@rclobus.nl>
+	* editor/gtk/editor.c: Fixed setting the title of the game. Fixed i18n
+	issues: double keyboard shortcut and unmarked translatable text.
+
 2013-04-25  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/audio.c: The beep works again.
 
