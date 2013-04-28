@@ -54,25 +54,6 @@ class Scrollable:Text:View from Gtk:Scrolled:Window {
 					      FALSE);
 
 		gtk_container_add(GTK_CONTAINER(self), text_view);
-
-		g_signal_connect(G_OBJECT(text_view), "button-press-event",
-				 G_CALLBACK(scrollable_text_view_regrab),
-				 NULL);
-
-		gtk_container_set_focus_child(self, text_view);
-	}
-
-	private gboolean regrab_after_time(gpointer user_data) {
-		gtk_widget_grab_focus(GTK_WIDGET(user_data));
-		return FALSE;
-	}
-
-	private gboolean regrab(GtkWidget * widget, GdkEvent * event,
-				gpointer user_data) {
-		/* UGLY HACK The focus must be grabbed again
-		 * after a button-press-event */
-		g_timeout_add(250, self_regrab_after_time, widget);
-		return FALSE;
 	}
 
 	public void set_text(self, const gchar * text) {

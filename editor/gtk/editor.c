@@ -279,8 +279,20 @@ static void scale_map(GuiMap * gmap)
 	gtk_widget_queue_draw(gmap->area);
 }
 
-static gint button_press_map_cb(GtkWidget * area, GdkEventButton * event,
-				gpointer user_data)
+static gboolean enter_notify_map_cb(GtkWidget * widget,
+				    GdkEventCrossing * event,
+				    G_GNUC_UNUSED gpointer user_data)
+{
+	if (event->mode != GDK_CROSSING_GTK_UNGRAB) {
+		/* Do not grab the focus when a ScrollableTextView
+		 * is focussed on another tab page */
+		gtk_widget_grab_focus(widget);
+	}
+	return FALSE;
+}
+
+static gint button_press_map_cb(GtkWidget * area,
+				GdkEventButton * event, gpointer user_data)
 {
 	GuiMap *gmap = user_data;
 	GtkWidget *menu;
@@ -539,7 +551,7 @@ static GtkWidget *build_map(void)
 			      | GDK_BUTTON_PRESS_MASK
 			      | GDK_KEY_PRESS_MASK);
 	g_signal_connect(G_OBJECT(gmap->area), "enter_notify_event",
-			 G_CALLBACK(gtk_widget_grab_focus), gmap);
+			 G_CALLBACK(enter_notify_map_cb), gmap);
 	g_signal_connect(G_OBJECT(gmap->area), "button_press_event",
 			 G_CALLBACK(button_press_map_cb), gmap);
 	g_signal_connect(G_OBJECT(gmap->area), "key_press_event",

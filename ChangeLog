@@ -1,3 +1,10 @@
+2013-04-28  Roland Clobus <rclobus@rclobus.nl>
+	* editor/gtk/editor.c: Added a correct focus handler, thus removing the
+	need for the ugly hack of 2013-04-26, with thanks to Micah Bunting for
+	pointing me in the right direction.
+	* common/gtk/scrollable-text-view.gob: Reverted the ugly hack for the
+	keyboard focus.
+
 2013-04-26  Roland Clobus <rclobus@rclobus.nl>
 	* editor/gtk/editor.c: Fixed setting the title of the game. Fixed i18n
 	issues: double keyboard shortcut and unmarked translatable text.
