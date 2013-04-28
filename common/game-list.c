@@ -158,4 +158,3 @@ void game_list_cleanup(void)
 	}
 	g_slist_free(_game_list);
 }
-

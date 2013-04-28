@@ -380,4 +380,3 @@ void server_init(void)
 	sigaction(SIGPIPE, &sa, NULL);
 #endif				/* G_OS_WIN32 */
 }
-
