@@ -12,6 +12,8 @@
 	* server/server.h, server/pregame.c, server/player.c, server/server.c,
 	common/game.c, common/game.h: Move game_is_unstartable.
 	* common/game-list.c, metaserver/main.c: Don't send unstartable games.
+	* admin-scripts/locallobby.sh: Delay a bit, to allow the metaserver to
+	start.
 
 2013-04-26  Roland Clobus <rclobus@rclobus.nl>
 	* editor/gtk/editor.c: Fixed setting the title of the game. Fixed i18n
