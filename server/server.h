@@ -230,12 +230,6 @@ gboolean server_is_running(Game * game);
 gint accept_connection(gint in_fd, gchar ** location);
 gboolean game_is_unstartable(Game * game);
 
-/**** game list control functions ****/
-void game_list_prepare(void);
-const GameParams *game_list_find_item(const gchar * title);
-void game_list_foreach(GFunc func, gpointer user_data);
-void game_list_cleanup(void);
-
 /**** callbacks to set parameters ****/
 GameParams *cfg_set_game(const gchar * game);
 GameParams *cfg_set_game_file(const gchar * game_filename);

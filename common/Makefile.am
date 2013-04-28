@@ -41,6 +41,8 @@ libpioneers_a_SOURCES = \
 	common/driver.h \
 	common/game.c \
 	common/game.h \
+	common/game-list.c \
+	common/game-list.h \
 	common/log.c \
 	common/log.h \
 	common/map.c \

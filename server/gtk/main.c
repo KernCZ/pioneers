@@ -33,6 +33,7 @@
 #include "authors.h"
 #include "aboutbox.h"
 #include "game.h"
+#include "game-list.h"
 #include "common_gtk.h"
 
 #include "config-gnome.h"
@@ -43,9 +44,6 @@
 #include "game-rules.h"
 #include "theme.h"
 #include "metaserver.h"		/* Custom widget */
-
-#include "avahi.h"
-#include "network.h"
 
 #define MAINICON_FILE	"pioneers-server.png"
 

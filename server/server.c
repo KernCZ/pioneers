@@ -25,10 +25,7 @@
 #include "server.h"
 #include "network.h"
 #include "avahi.h"
-
-static GameParams *load_game_desc(const gchar * fname);
-
-static GSList *_game_list = NULL;	/* The list of GameParams, ordered by title */
+#include "game-list.h"
 
 #define TERRAIN_DEFAULT	0
 #define TERRAIN_RANDOM	1
@@ -283,146 +280,6 @@ gboolean server_is_running(Game * game)
 	return FALSE;
 }
 
-static gint sort_function(gconstpointer a, gconstpointer b)
-{
-	return (strcmp(((const GameParams *) a)->title,
-		       ((const GameParams *) b)->title));
-}
-
-static gboolean game_list_add_item(GameParams * item)
-{
-	/* check for name collisions */
-	if (item->title && game_list_find_item(item->title)) {
-
-		gchar *nt;
-		gint i;
-
-		if (params_is_equal
-		    (item, game_list_find_item(item->title))) {
-			return FALSE;
-		}
-
-		/* append a number */
-		for (i = 1; i <= INT_MAX; i++) {
-			nt = g_strdup_printf("%s%d", item->title, i);
-			if (!game_list_find_item(nt)) {
-				g_free(item->title);
-				item->title = nt;
-				break;
-			}
-			g_free(nt);
-		}
-		/* give up and skip this game */
-		if (item->title != nt) {
-			g_free(nt);
-			return FALSE;
-		}
-	}
-
-	_game_list =
-	    g_slist_insert_sorted(_game_list, item, sort_function);
-	return TRUE;
-}
-
-/** Returns TRUE if the game list is empty */
-static gboolean game_list_is_empty(void)
-{
-	return _game_list == NULL;
-}
-
-static gint game_list_locate(gconstpointer param, gconstpointer argument)
-{
-	const GameParams *data = param;
-	const gchar *title = argument;
-	return strcmp(data->title, title);
-}
-
-const GameParams *game_list_find_item(const gchar * title)
-{
-	GSList *result;
-	if (!_game_list) {
-		return NULL;
-	}
-
-	result = g_slist_find_custom(_game_list, title, game_list_locate);
-	if (result)
-		return result->data;
-	else
-		return NULL;
-}
-
-void game_list_foreach(GFunc func, gpointer user_data)
-{
-	if (_game_list) {
-		g_slist_foreach(_game_list, func, user_data);
-	}
-}
-
-GameParams *load_game_desc(const gchar * fname)
-{
-	GameParams *params;
-
-	params = params_load_file(fname);
-	if (params == NULL)
-		g_warning("Skipping: %s", fname);
-	return params;
-}
-
-static void game_list_prepare_directory(const gchar * directory)
-{
-	GDir *dir;
-	const gchar *fname;
-	gchar *fullname;
-
-	log_message(MSG_INFO, _("Looking for games in '%s'\n"), directory);
-	if ((dir = g_dir_open(directory, 0, NULL)) == NULL) {
-		log_message(MSG_INFO, _("Game directory '%s' not found\n"),
-			    directory);
-		return;
-	}
-
-	while ((fname = g_dir_read_name(dir))) {
-		GameParams *params;
-		size_t len = strlen(fname);
-
-		if (len < 6 || strcmp(fname + len - 5, ".game") != 0)
-			continue;
-		fullname = g_build_filename(directory, fname, NULL);
-		params = load_game_desc(fullname);
-		g_free(fullname);
-		if (params) {
-			if (!game_list_add_item(params))
-				params_free(params);
-		}
-	}
-	g_dir_close(dir);
-}
-
-void game_list_prepare(void)
-{
-	gchar *directory;
-
-	directory =
-	    g_build_filename(g_get_user_data_dir(), "pioneers", NULL);
-	game_list_prepare_directory(directory);
-	g_free(directory);
-
-	game_list_prepare_directory(get_pioneers_dir());
-
-	if (game_list_is_empty())
-		g_error("No games available");
-}
-
-void game_list_cleanup(void)
-{
-	GSList *games = _game_list;
-	while (games) {
-		params_free(games->data);
-		games = g_slist_next(games);
-	}
-	g_slist_free(_game_list);
-}
-
 /* game configuration functions / callbacks */
 void cfg_set_num_players(GameParams * params, gint num_players)
 {
@@ -451,75 +308,16 @@ void cfg_set_victory_points(GameParams * params, gint victory_points)
 	params->victory_points = (guint) MAX(3, victory_points);
 }
 
-/** Attempt to find a game with @a title in @a directory.
- *  @param title The game must match this title
- *  @param directory Look in this directory for *.game files
- *  @return The GameParams, or NULL if the title was not found
- */
-static GameParams *server_find_title_in_directory(const gchar * title,
-						  const gchar * directory)
-{
-	GDir *dir;
-	const gchar *fname;
-	gchar *fullname;
-
-	log_message(MSG_INFO, _("Looking for games in '%s'\n"), directory);
-	if ((dir = g_dir_open(directory, 0, NULL)) == NULL) {
-		log_message(MSG_INFO, _("Game directory '%s' not found\n"),
-			    directory);
-		return NULL;
-	}
-
-	while ((fname = g_dir_read_name(dir))) {
-		GameParams *params;
-		size_t len = strlen(fname);
-
-		if (len < 6 || strcmp(fname + len - 5, ".game") != 0)
-			continue;
-		fullname = g_build_filename(directory, fname, NULL);
-		params = load_game_desc(fullname);
-		g_free(fullname);
-		if (params) {
-			if (strcmp(params->title, title) == 0) {
-				g_dir_close(dir);
-				return params;
-			}
-			params_free(params);
-		}
-	}
-	g_dir_close(dir);
-	return NULL;
-}
-
-/** Find a game with @a title in the default locations.
- *  @param title The title of the game_new
- *  @return The GameParams or NULL if the title was not found
- */
-static GameParams *server_find_title(const gchar * title)
-{
-	GameParams *result;
-	gchar *directory;
-
-	directory =
-	    g_build_filename(g_get_user_data_dir(), "pioneers", NULL);
-	result = server_find_title_in_directory(title, directory);
-	g_free(directory);
-
-	if (result == NULL) {
-		result =
-		    server_find_title_in_directory(title,
-						   get_pioneers_dir());
-	}
-	return result;
-}
-
 GameParams *cfg_set_game(const gchar * game)
 {
 #ifdef PRINT_INFO
 	g_print("cfg_set_game: %s\n", game);
 #endif
 	if (game_list_is_empty()) {
-		return server_find_title(game);
+		game_list_prepare();
+		GameParams *param = params_copy(game_list_find_item(game));
+		game_list_cleanup();
+		return param;
 	} else {
 		return params_copy(game_list_find_item(game));
 	}
