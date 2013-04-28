@@ -1223,8 +1223,6 @@ int main(int argc, char *argv[])
 	config_init("pioneers-server");
 
 	themes_init();
-	game_list_prepare();
-
 	icon_file =
 	    g_build_filename(DATADIR, "pixmaps", MAINICON_FILE, NULL);
 	if (g_file_test(icon_file, G_FILE_TEST_EXISTS)) {
@@ -1241,16 +1239,19 @@ int main(int argc, char *argv[])
 	gtk_box_pack_start(GTK_BOX(vbox),
 			   build_interface(GTK_WINDOW(window), &game),
 			   TRUE, TRUE, 0);
+
+	/* in theory, all windows are created now...
+	 *   set logging to message window */
+	log_set_func_message_window();
+
+	game_list_prepare();
+
 	load_last_game_params();
 
 	gtk_widget_show_all(window);
 	gui_set_server_state(FALSE);
 	g_signal_connect(G_OBJECT(window), "delete_event",
 			 G_CALLBACK(quit_cb), NULL);
-
-	/* in theory, all windows are created now...
-	 *   set logging to message window */
-	log_set_func_message_window();
 
 	gtk_main();
 

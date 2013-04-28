@@ -7,6 +7,8 @@
 	* common/game-list.c, common/game-list.h, common/Makefile.am,
 	server/server.c, server/server.h, server/gtk/main.c: Moved code from
 	server to game-list.
+	* serverk/gtk/main.c: Connect the log earlier, game-list messages are
+	now shown.
 
 2013-04-26  Roland Clobus <rclobus@rclobus.nl>
 	* editor/gtk/editor.c: Fixed setting the title of the game. Fixed i18n
