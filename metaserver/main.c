@@ -37,6 +37,7 @@
 #include "version.h"
 #include "log.h"
 #include "common_glib.h"
+#include "game-list.h"
 
 typedef enum {
 	META_UNKNOWN,
@@ -180,74 +181,20 @@ static void client_list_servers(Client * client)
 	}
 }
 
-static GList *load_game_desc(gchar * fname, GList * titles)
-{
-	FILE *fp;
-	gchar *line, *title;
-
-	if ((fp = fopen(fname, "r")) == NULL) {
-		g_warning("could not open '%s'", fname);
-		return NULL;
-	}
-	while (read_line_from_file(&line, fp)) {
-		if (strncmp(line, "title ", 6) == 0) {
-			title = line + 6;
-			title += strspn(title, " \t");
-			titles =
-			    g_list_insert_sorted(titles, g_strdup(title),
-						 (GCompareFunc) strcmp);
-			g_free(line);
-			break;
-		}
-		g_free(line);
-	}
-	fclose(fp);
-	return titles;
-}
-
-static GList *load_game_types(void)
-{
-	GDir *dir;
-	GList *titles = NULL;
-	const gchar *fname;
-	gchar *fullname;
-
-	const gchar *pioneers_dir = get_pioneers_dir();
-
-	if ((dir = g_dir_open(pioneers_dir, 0, NULL)) == NULL) {
-		return NULL;
-	}
-
-	while ((fname = g_dir_read_name(dir))) {
-		gint len = strlen(fname);
-
-		if (len < 6 || strcmp(fname + len - 5, ".game") != 0)
-			continue;
-		fullname = g_build_filename(pioneers_dir, fname, NULL);
-		if (fullname) {
-			titles = load_game_desc(fullname, titles);
-			g_free(fullname);
-		};
-	}
-
-	g_dir_close(dir);
-	return titles;
-}
-
 /** Send the title and free the associated memory. */
 static void client_send_type(gpointer data, gpointer user_data)
 {
+	GameParams *params = data;
 	Session *ses = user_data;
 
-	net_printf(ses, "title=%s\n", data);
-	g_free(data);
+	if (!params_game_is_unstartable(params)) {
+		net_printf(ses, "title=%s\n", params->title);
+	}
 }
 
 static void client_list_types(Client * client)
 {
-	GList *list = load_game_types();
-	g_list_foreach(list, client_send_type, client->session);
-	g_list_free(list);
+	game_list_foreach(client_send_type, client->session);
 }
 
 static void client_list_capability(Session * ses)
@@ -701,7 +648,6 @@ int main(int argc, char *argv[])
 {
 	GOptionContext *context;
 	GError *error = NULL;
-	GList *game_list;
 	gchar *error_message;
 
 	set_ui_driver(&Glib_Driver);
@@ -757,18 +703,16 @@ int main(int argc, char *argv[])
 		convert_to_daemon();
 
 	can_create_games = FALSE;
-	game_list = load_game_types();
-	if (game_list) {
-		gchar *server_name;
-		g_list_foreach(game_list, (GFunc) g_free, NULL);
-		g_list_free(game_list);
-		server_name = g_find_program_in_path(get_server_path());
+	game_list_prepare();
+	if (!game_list_is_empty()) {
+		gchar *server_name =
+		    g_find_program_in_path(get_server_path());
 		if (server_name) {
-			g_free(server_name);
 #ifdef HAVE_GETADDRINFO_ET_AL
 			can_create_games = TRUE;
 #endif				/* HAVE_GETADDRINFO_ET_AL */
 		}
+		g_free(server_name);
 	}
 	can_create_games = can_create_games && (port_range != NULL);
 
@@ -804,6 +748,7 @@ int main(int argc, char *argv[])
 	g_free(myhostname);
 	g_free(port_range);
 	net_service_free(service);
+	game_list_cleanup();
 
 	net_finish();
 	return 0;

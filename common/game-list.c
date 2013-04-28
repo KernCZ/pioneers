@@ -127,7 +127,9 @@ static void game_list_prepare_directory(const gchar * directory)
 			if (!game_list_add_item(params))
 				params_free(params);
 		} else {
-			g_warning("Skipping: %s", fullname);
+			log_message(MSG_ERROR,
+				    _("Unable to load game: '%s'\n"),
+				    fullname);
 		}
 		g_free(fullname);
 	}
@@ -146,7 +148,7 @@ void game_list_prepare(void)
 	game_list_prepare_directory(get_pioneers_dir());
 
 	if (game_list_is_empty())
-		g_error("No games available");
+		log_message(MSG_ERROR, _("No games available\n"));
 }
 
 void game_list_cleanup(void)
