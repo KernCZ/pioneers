@@ -381,7 +381,3 @@ void server_init(void)
 #endif				/* G_OS_WIN32 */
 }
 
-gboolean game_is_unstartable(Game * game)
-{
-	return game->params->num_build_type[BUILD_SETTLEMENT] < 2;
-}

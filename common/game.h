@@ -158,6 +158,12 @@ WinnableState params_check_winnable_state(const GameParams * params,
 					  gchar ** win_message,
 					  gchar ** point_specification);
 
+/** Check whether the game cannot be started.
+ * @param params The game parameters
+ * @return TRUE if the game cannot be started
+ */
+gboolean params_game_is_unstartable(const GameParams * params);
+
 /** Determine the type of the player, by analysing the style. */
 PlayerType determine_player_type(const gchar * style);
 

@@ -228,7 +228,6 @@ Game *server_start(const GameParams * params, const gchar * hostname,
 gboolean server_stop(Game * game);
 gboolean server_is_running(Game * game);
 gint accept_connection(gint in_fd, gchar ** location);
-gboolean game_is_unstartable(Game * game);
 
 /**** callbacks to set parameters ****/
 GameParams *cfg_set_game(const gchar * game);

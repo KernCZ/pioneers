@@ -975,6 +975,11 @@ WinnableState params_check_winnable_state(const GameParams * params,
 	return return_value;
 }
 
+gboolean params_game_is_unstartable(const GameParams * params)
+{
+	return params->num_build_type[BUILD_SETTLEMENT] < 2;
+}
+
 PlayerType determine_player_type(const gchar * style)
 {
 	gchar **style_parts;

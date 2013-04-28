@@ -655,7 +655,7 @@ void player_archive(Player * player)
 		return;
 	}
 	/* If this game can't be started, forget old players */
-	if (game_is_unstartable(game)) {
+	if (params_game_is_unstartable(game->params)) {
 		player_free(player);
 		return;
 	}

@@ -329,7 +329,7 @@ static void try_start_game(Game * game)
 	if (num != game->params->num_players)
 		return;
 
-	if (game_is_unstartable(game)) {
+	if (params_game_is_unstartable(game->params)) {
 		/* this game cannot be started, don't enter the setup phase */
 		return;
 	}
