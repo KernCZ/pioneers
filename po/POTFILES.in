@@ -33,6 +33,7 @@ client/gtk/settingscreen.c
 client/gtk/trade.c
 common/cards.c
 common/game.c
+common/game-list.c
 common/gtk/aboutbox.c
 common/gtk/common_gtk.c
 common/gtk/game-rules.c
