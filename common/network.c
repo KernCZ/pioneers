@@ -954,7 +954,9 @@ void net_service_free(Service * service)
 	GSList *list;
 	gboolean delayed_free;
 
-	g_return_if_fail(service != NULL);
+	if (service == NULL) {
+		return;
+	}
 
 	if (service->read_tag != 0) {
 		net_io_channel_wrapper_remove(service->read_tag);

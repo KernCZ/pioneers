@@ -1,6 +1,7 @@
 2013-04-30  Roland Clobus <rclobus@rclobus.nl>
 	* docs/README.server_protocol_version: Instructions how the server
 	protocol versioning works.
+	* common/network.c: net_service_free is allowed to be called with null.
 
 2013-04-28  Roland Clobus <rclobus@rclobus.nl>
 	* editor/gtk/editor.c: Added a correct focus handler, thus removing the
