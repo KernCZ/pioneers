@@ -21,6 +21,9 @@ struct _GameRules {
 
 	GtkCheckButton *random_terrain;
 	GtkWidget *radio_sevens[3];	/* radio buttons for sevens rules */
+	GtkCheckButton *use_dice_deck;
+	GtkSpinButton *num_dice_decks;
+	GtkSpinButton *num_removed_dice_cards;
 	GtkCheckButton *use_pirate;
 	GtkCheckButton *strict_trade;
 	GtkCheckButton *domestic_trade;
@@ -40,6 +43,12 @@ void game_rules_set_random_terrain(GameRules * gr, gboolean val);
 gboolean game_rules_get_random_terrain(GameRules * gr);
 void game_rules_set_sevens_rule(GameRules * gr, guint sevens_rule);
 guint game_rules_get_sevens_rule(GameRules * gr);
+void game_rules_set_use_dice_deck(GameRules * gr, gboolean val);
+gboolean game_rules_get_use_dice_deck(GameRules * gr);
+void game_rules_set_num_dice_decks(GameRules * gr, guint val);
+guint game_rules_get_num_dice_decks(GameRules * gr);
+void game_rules_set_num_removed_dice_cards(GameRules * gr, guint val);
+guint game_rules_get_num_removed_dice_cards(GameRules * gr);
 void game_rules_set_use_pirate(GameRules * gr, gboolean val,
 			       gint num_ships);
 gboolean game_rules_get_use_pirate(GameRules * gr);

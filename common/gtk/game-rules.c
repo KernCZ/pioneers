@@ -11,6 +11,16 @@ static void game_rules_init(GameRules * sg, gboolean show_all_rules);
 static void verify_island_discovery_bonus(GtkButton * button,
 					  gpointer user_data);
 
+static void dice_deck_toggled_callback(GtkToggleButton * dice_deck,
+				       gpointer user_data)
+{
+	GameRules *gr = user_data;
+	gtk_widget_set_sensitive(GTK_WIDGET(gr->num_dice_decks),
+				 gtk_toggle_button_get_active(dice_deck));
+	gtk_widget_set_sensitive(GTK_WIDGET(gr->num_removed_dice_cards),
+				 gtk_toggle_button_get_active(dice_deck));
+}
+
 /* Register the class */
 GType game_rules_get_type(void)
 {
@@ -61,7 +71,7 @@ static void game_rules_init(GameRules * gr, gboolean show_all_rules)
 	gint idx;
 	guint row;
 
-	gtk_table_resize(GTK_TABLE(gr), show_all_rules ? 7 : 2, 2);
+	gtk_table_resize(GTK_TABLE(gr), show_all_rules ? 6 : 3, 2);
 	gtk_table_set_row_spacings(GTK_TABLE(gr), 3);
 	gtk_table_set_col_spacings(GTK_TABLE(gr), 5);
 
@@ -72,7 +82,7 @@ static void game_rules_init(GameRules * gr, gboolean show_all_rules)
 	gtk_widget_show(label);
 	gtk_table_attach(GTK_TABLE(gr), label, 0, 1, row, row + 1,
 			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
-	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+	gtk_misc_set_alignment(GTK_MISC(label), 0, 0);
 
 	gr->radio_sevens[0] = gtk_radio_button_new_with_label(NULL,
 							      /* Sevens rule: normal */
@@ -131,6 +141,63 @@ static void game_rules_init(GameRules * gr, gboolean show_all_rules)
 			_("Check for victory only at end of turn"), row++,
 			&gr->check_victory_at_end_of_turn);
 
+		add_row(gr, _("Use dice deck"),
+			_
+			("Use a deck of 36 dice cards instead of real dice"),
+			row++, &gr->use_dice_deck);
+		g_signal_connect(G_OBJECT(gr->use_dice_deck), "toggled",
+				 G_CALLBACK(dice_deck_toggled_callback),
+				 gr);
+
+
+		/* Label */
+		label = gtk_label_new(_("Number of dice decks"));
+		gtk_widget_show(label);
+		gtk_table_attach(GTK_TABLE(gr), label, 0, 1, row, row + 1,
+				 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
+		gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+		gr->num_dice_decks =
+		    GTK_SPIN_BUTTON(gtk_spin_button_new_with_range
+				    (1, 5, 1));
+		gtk_widget_show(GTK_WIDGET(gr->num_dice_decks));
+		gtk_widget_set_sensitive(GTK_WIDGET(gr->num_dice_decks),
+					 gtk_toggle_button_get_active
+					 (GTK_TOGGLE_BUTTON
+					  (gr->use_dice_deck)));
+		gtk_widget_set_tooltip_text(GTK_WIDGET(gr->num_dice_decks),
+					    _
+					    ("The number of dice decks (of 36 cards each)"));
+		gtk_table_attach(GTK_TABLE(gr),
+				 GTK_WIDGET(gr->num_dice_decks), 1, 2, row,
+				 row + 1, GTK_FILL, GTK_EXPAND | GTK_FILL,
+				 0, 0);
+
+		row++;
+		/* Label */
+		label = gtk_label_new(_("Number of removed dice cards"));
+		gtk_widget_show(label);
+		gtk_table_attach(GTK_TABLE(gr), label, 0, 1, row, row + 1,
+				 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
+		gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+		gr->num_removed_dice_cards =
+		    GTK_SPIN_BUTTON(gtk_spin_button_new_with_range
+				    (0, 30, 1));
+		gtk_widget_show(GTK_WIDGET(gr->num_removed_dice_cards));
+		gtk_widget_set_sensitive(GTK_WIDGET
+					 (gr->num_removed_dice_cards),
+					 gtk_toggle_button_get_active
+					 (GTK_TOGGLE_BUTTON
+					  (gr->use_dice_deck)));
+		gtk_widget_set_tooltip_text(GTK_WIDGET
+					    (gr->num_removed_dice_cards),
+					    _
+					    ("The number of dice cards that are removed after shuffling the deck"));
+		gtk_table_attach(GTK_TABLE(gr),
+				 GTK_WIDGET(gr->num_removed_dice_cards), 1,
+				 2, row, row + 1, GTK_FILL,
+				 GTK_EXPAND | GTK_FILL, 0, 0);
+
+		row++;
 		/* Label */
 		label = gtk_label_new(_("Island discovery bonuses"));
 		gtk_widget_show(label);
@@ -238,6 +305,39 @@ guint game_rules_get_sevens_rule(GameRules * gr)
 	return 0;
 }
 
+void game_rules_set_use_dice_deck(GameRules * gr, gboolean val)
+{
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(gr->use_dice_deck),
+				     val);
+}
+
+gboolean game_rules_get_use_dice_deck(GameRules * gr)
+{
+	return
+	    gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON
+					 (gr->use_dice_deck));
+}
+
+void game_rules_set_num_dice_decks(GameRules * gr, guint val)
+{
+	gtk_spin_button_set_value(gr->num_dice_decks, val);
+}
+
+guint game_rules_get_num_dice_decks(GameRules * gr)
+{
+	return gtk_spin_button_get_value_as_int(gr->num_dice_decks);
+}
+
+void game_rules_set_num_removed_dice_cards(GameRules * gr, guint val)
+{
+	gtk_spin_button_set_value(gr->num_removed_dice_cards, val);
+}
+
+guint game_rules_get_num_removed_dice_cards(GameRules * gr)
+{
+	return
+	    gtk_spin_button_get_value_as_int(gr->num_removed_dice_cards);
+}
 
 void game_rules_set_use_pirate(GameRules * gr, gboolean val,
 			       gint num_ships)

@@ -139,7 +139,7 @@ static GtkWidget *settings_create_content(void)
 	gtk_widget_show(alignment);
 	gtk_box_pack_start(GTK_BOX(dlg_vbox), alignment, FALSE, FALSE, 0);
 
-	table = gtk_table_new(10, 2, FALSE);
+	table = gtk_table_new(13, 2, FALSE);
 	gtk_widget_show(table);
 	gtk_container_add(GTK_CONTAINER(alignment), table);
 	gtk_table_set_row_spacings(GTK_TABLE(table), 3);
@@ -190,6 +190,24 @@ static GtkWidget *settings_create_content(void)
 	add_setting_desc(table, row, 0, _("Sevens rule:"));
 	add_setting_val(table, row, 1, TYPE_STRING, 0, sevens_desc, FALSE);
 	g_free(sevens_desc);
+
+	row++;
+	add_setting_desc(table, row, 0,
+			 _("Use dice deck instead of dice:"));
+	add_setting_val(table, row, 1, TYPE_BOOL,
+			game_params->use_dice_deck, NULL, FALSE);
+
+	row++;
+	add_setting_desc(table, row, 0, _("Number of dice decks:"));
+	add_setting_val(table, row, 1, TYPE_NUM,
+			game_params->num_dice_decks, NULL, FALSE);
+
+	row++;
+	add_setting_desc(table, row, 0,
+			 _(""
+			   "Number of dice cards removed after shuffling:"));
+	add_setting_val(table, row, 1, TYPE_NUM,
+			game_params->num_removed_dice_cards, NULL, FALSE);
 
 	row++;
 	add_setting_desc(table, row, 0,

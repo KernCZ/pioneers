@@ -436,13 +436,116 @@ gboolean check_victory(Player * player)
 	return FALSE;
 }
 
+/** Rolls the dice.
+ * @param player The player who rolled the dice.
+ */
+static void roll_dice(Player * player)
+{
+	Game *game = player->game;
+	const Map *map = game->params->map;
+	GameRoll data;
+	gint roll;
+
+	if (game->rolled_dice) {
+		player_send(player, FIRST_VERSION, LATEST_VERSION,
+			    "ERR already-rolled\n");
+		return;
+	}
+
+	roll = admin_get_dice_roll();
+	if (roll == 0) {
+		/* roll the dice until we like it */
+		while (TRUE) {
+			if (game->params->use_dice_deck) {
+				/* dice deck */
+				gint i;
+				gint card;
+				if (game->num_dice_cards <=
+				    game->params->num_removed_dice_cards) {
+					/* shuffle deck */
+					for (i = 0; i < 36; i++) {
+						game->dice_cards[i] =
+						    game->
+						    params->num_dice_decks;
+					}
+					game->num_dice_cards =
+					    game->params->num_dice_decks *
+					    36;
+
+					player_broadcast(player, PB_ALL,
+							 V15,
+							 LATEST_VERSION,
+							 "shuffled-dice-deck\n");
+				}
+				card = get_rand(game->num_dice_cards);
+
+				i = -1;
+				while (card >= 0) {
+					i++;
+					card -= game->dice_cards[i];
+				}
+				game->dice_cards[i]--;
+				game->num_dice_cards--;
+				game->die1 = i % 6 + 1;
+				game->die2 = i / 6 + 1;
+			} else {
+				/* two dice */
+				game->die1 = get_rand(6) + 1;
+				game->die2 = get_rand(6) + 1;
+			}
+			roll = game->die1 + game->die2;
+			game->rolled_dice = TRUE;
+			/* sevens_rule == 1: reroll first two turns */
+			if (game->params->sevens_rule == 1)
+				if (roll == 7 && game->curr_turn <= 2)
+					continue;
+			/* sevens_rule == 2: reroll all sevens */
+			if (game->params->sevens_rule == 2)
+				if (roll == 7)
+					continue;
+			/* sevens_rule == 0: don't reroll anything */
+			break;
+		}
+	} else {
+		/* The administrator can override the dice */
+		game->die1 = roll > 6 ? 6 : 1;
+		game->die2 = roll - game->die1;
+		player_broadcast(player, PB_SILENT, FIRST_VERSION,
+				 LATEST_VERSION, "NOTE %s\n",
+				 /* Cheat mode has been activated */
+				 N_(""
+				    "The dice roll has been determined by the administrator."));
+	}
+
+	/* let people know what we rolled */
+	player_broadcast(player, PB_RESPOND, FIRST_VERSION,
+			 LATEST_VERSION, "rolled %d %d\n",
+			 game->die1, game->die2);
+
+	if (roll == 7) {
+		/* Find all players with more than 7 cards -
+		 * they must discard half (rounded down)
+		 */
+		discard_resources(game);
+		/* there are no resources to distribute on a 7 */
+		return;
+	}
+	resource_start(game);
+	data.game = game;
+	data.roll = roll;
+	map_traverse_const(map, distribute_resources, &data);
+	/* distribute resources and gold (includes resource_end) */
+	distribute_first(list_from_player(player));
+	return;
+
+}
+
 /* Handle all actions that a player may perform in a turn
  */
 gboolean mode_turn(Player * player, gint event)
 {
 	StateMachine *sm = player->sm;
 	Game *game = player->game;
-	const Map *map = game->params->map;
 	BuildType build_type;
 	DevelType devel_type;
 	gint x, y, pos;
@@ -456,66 +559,7 @@ gboolean mode_turn(Player * player, gint event)
 	if (event != SM_RECV)
 		return FALSE;
 	if (sm_recv(sm, "roll")) {
-		GameRoll data;
-		gint roll;
-
-		if (game->rolled_dice) {
-			player_send(player, FIRST_VERSION, LATEST_VERSION,
-				    "ERR already-rolled\n");
-			return TRUE;
-		}
-
-		roll = admin_get_dice_roll();
-		if (roll == 0) {
-			/* roll the dice until we like it */
-			while (TRUE) {
-				game->die1 = get_rand(6) + 1;
-				game->die2 = get_rand(6) + 1;
-				roll = game->die1 + game->die2;
-				game->rolled_dice = TRUE;
-
-				/* sevens_rule == 1: reroll first two turns */
-				if (game->params->sevens_rule == 1)
-					if (roll == 7
-					    && game->curr_turn <= 2)
-						continue;
-				/* sevens_rule == 2: reroll all sevens */
-				if (game->params->sevens_rule == 2)
-					if (roll == 7)
-						continue;
-				/* sevens_rule == 0: don't reroll anything */
-				break;
-			}
-		} else {
-			/* The administrator can override the dice */
-			game->die1 = roll > 6 ? 6 : 1;
-			game->die2 = roll - game->die1;
-			player_broadcast(player, PB_SILENT, FIRST_VERSION,
-					 LATEST_VERSION, "NOTE %s\n",
-					 /* Cheat mode has been activated */
-					 N_(""
-					    "The dice roll has been determined by the administrator."));
-		}
-
-		/* let people know what we rolled */
-		player_broadcast(player, PB_RESPOND, FIRST_VERSION,
-				 LATEST_VERSION, "rolled %d %d\n",
-				 game->die1, game->die2);
-
-		if (roll == 7) {
-			/* Find all players with more than 7 cards -
-			 * they must discard half (rounded down)
-			 */
-			discard_resources(game);
-			/* there are no resources to distribute on a 7 */
-			return TRUE;
-		}
-		resource_start(game);
-		data.game = game;
-		data.roll = roll;
-		map_traverse_const(map, distribute_resources, &data);
-		/* distribute resources and gold (includes resource_end) */
-		distribute_first(list_from_player(player));
+		roll_dice(player);
 		return TRUE;
 	}
 	/* try to end a turn */

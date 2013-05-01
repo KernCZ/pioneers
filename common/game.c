@@ -62,6 +62,9 @@ static Param game_params[] = {
 	{PARAM(domestic-trade, FIRST_VERSION, PARAM_BOOL, domestic_trade)},
 	{PARAM(num-players, FIRST_VERSION, PARAM_INT, num_players)},
 	{PARAM(sevens-rule, FIRST_VERSION, PARAM_INT, sevens_rule)},
+	{PARAM(use-dice-deck, V15, PARAM_BOOL, use_dice_deck)},
+	{PARAM(num-dice-decks, V15, PARAM_INT, num_dice_decks)},
+	{PARAM(num-removed-dice-cards, V15, PARAM_INT, num_removed_dice_cards)},
 	{PARAM(victory-points, FIRST_VERSION, PARAM_INT, victory_points)},
 	{PARAM(check-victory-at-end-of-turn, FIRST_VERSION, PARAM_BOOL, check_victory_at_end_of_turn)},
 	{PARAM(num-roads, FIRST_VERSION, PARAM_INT, num_build_type[BUILD_ROAD])},
@@ -92,6 +95,9 @@ GameParams *params_new(void)
 	GameParams *params;
 
 	params = g_malloc0(sizeof(*params));
+	params->num_dice_decks = 2;
+	params->num_removed_dice_cards = 5;
+
 	return params;
 }
 
@@ -824,6 +830,7 @@ static struct ClientVersionTypeConversion {
 	const gchar *string;
 } client_version_type_conversions[] = {
 	{
+	V15, "15"}, {
 	V14, "14"}, {
 	V0_12, "0.12"}, {
 	V0_11, "0.11"}, {

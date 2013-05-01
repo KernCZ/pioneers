@@ -53,6 +53,9 @@ static GMainLoop *event_loop;
 static gint num_players = 0;
 static gint num_points = 0;
 static gint sevens_rule = -1;
+static gint use_dice_deck = -1;
+static gint num_dice_decks = -1;
+static gint num_removed_dice_cards = -1;
 static gint terrain = -1;
 static guint timeout = 0;
 static gint num_ai_players = 0;
@@ -89,6 +92,16 @@ static GOptionEntry commandline_game_entries[] = {
 	{"seven-rule", 'R', 0, G_OPTION_ARG_INT, &sevens_rule,
 	 /* Commandline server-console: seven-rule */
 	 N_("Override seven-rule handling"), "0|1|2"},
+	{"use-dice-deck", 'd', 0, G_OPTION_ARG_INT, &use_dice_deck,
+	 /* Commandline server-console: dice-deck */
+	 N_("Override dice-deck handling"), "0|1"},
+	{"dice-deck", 'D', 0, G_OPTION_ARG_INT, &num_dice_decks,
+	 /* Commandline server-console: num-dice-decks */
+	 N_("Override num-dice-decks handling"), "0|1"},
+	{"num-removed-dice-cards", 'C', 0, G_OPTION_ARG_INT,
+	 &num_removed_dice_cards,
+	 /* Commandline server-console: num-removed-dice-cards */
+	 N_("Override num-removed-dice-cards handling"), NULL},
 	{"terrain", 'T', 0, G_OPTION_ARG_INT, &terrain,
 	 /* Commandline server-console: terrain */
 	 N_("Override terrain type, 0=default 1=random"), "0|1"},
@@ -251,6 +264,16 @@ int main(int argc, char *argv[])
 
 	if (sevens_rule != -1)
 		cfg_set_sevens_rule(params, sevens_rule);
+
+	if (use_dice_deck != -1)
+		cfg_set_use_dice_deck(params, use_dice_deck);
+
+	if (num_dice_decks != -1)
+		cfg_set_num_dice_decks(params, num_dice_decks);
+
+	if (num_removed_dice_cards != -1)
+		cfg_set_num_removed_dice_cards(params,
+					       num_removed_dice_cards);
 
 	if (num_points > 0)
 		cfg_set_victory_points(params, num_points);

@@ -1,3 +1,12 @@
+2013-05-01  Micah Bunting <amnykon@gmail.com>
+	* server/admin.c, server/gtk/main.c server/server.c, server/server.h,
+	server/turn.c, server/main.c, editor/gtk/editor.c,
+	common/gtk/game-rules.c, common/gtk/game-rules.h, common/game.c,
+	common/game.h, client/gtk/settingscreen.c, client/common/client.c:
+	Added option to use a deck of 36 cards instead of the dice.
+	* configure.ac, common/game.c, common/game.h: Incremented protocol
+	version to V15.
+
 2013-04-30  Roland Clobus <rclobus@rclobus.nl>
 	* docs/README.server_protocol_version: Instructions how the server
 	protocol versioning works.

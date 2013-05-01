@@ -188,6 +188,12 @@ static void update_game_settings(const GameParams * params)
 				      params->random_terrain);
 	game_rules_set_sevens_rule(GAMERULES(game_rules),
 				   (guint) params->sevens_rule);
+	game_rules_set_use_dice_deck(GAMERULES(game_rules),
+				     params->use_dice_deck);
+	game_rules_set_num_dice_decks(GAMERULES(game_rules),
+				      params->num_dice_decks);
+	game_rules_set_num_removed_dice_cards(GAMERULES(game_rules),
+					      params->num_removed_dice_cards);
 	game_rules_set_domestic_trade(GAMERULES(game_rules),
 				      params->domestic_trade);
 	game_rules_set_strict_trade(GAMERULES(game_rules),
@@ -258,6 +264,15 @@ static void start_clicked_cb(G_GNUC_UNUSED GtkButton * widget,
 		cfg_set_sevens_rule(params, (gint)
 				    game_rules_get_sevens_rule(GAMERULES
 							       (game_rules)));
+		cfg_set_use_dice_deck(params,
+				      game_rules_get_use_dice_deck
+				      (GAMERULES(game_rules)));
+		cfg_set_num_dice_decks(params,
+				       game_rules_get_num_dice_decks
+				       (GAMERULES(game_rules)));
+		cfg_set_num_removed_dice_cards(params,
+					       game_rules_get_num_removed_dice_cards
+					       (GAMERULES(game_rules)));
 		cfg_set_terrain_type(params,
 				     game_rules_get_random_terrain
 				     (GAMERULES(game_rules)));
@@ -308,6 +323,12 @@ static void start_clicked_cb(G_GNUC_UNUSED GtkButton * widget,
 				       check_victory_at_end_of_turn);
 			config_set_int("game/sevens-rule",
 				       params->sevens_rule);
+			config_set_int("game/use_dice-deck",
+				       params->use_dice_deck);
+			config_set_int("game/num-dice-decks",
+				       params->num_dice_decks);
+			config_set_int("game/num-removed_cards",
+				       params->num_removed_dice_cards);
 			config_set_int("game/use-pirate",
 				       params->use_pirate);
 			config_set_int("game/strict-trade",
@@ -1046,6 +1067,15 @@ static void load_last_game_params(void)
 	temp = config_get_int("game/sevens-rule", &default_returned);
 	if (!default_returned)
 		cfg_set_sevens_rule(params, temp);
+	temp = config_get_int("game/use-dice-deck", &default_returned);
+	if (!default_returned)
+		cfg_set_use_dice_deck(params, temp);
+	temp = config_get_int("game/num-dice-decks", &default_returned);
+	if (!default_returned)
+		cfg_set_num_dice_decks(params, temp);
+	temp = config_get_int("game/num-removed_cards", &default_returned);
+	if (!default_returned)
+		cfg_set_num_removed_dice_cards(params, temp);
 	temp = config_get_int("game/use-pirate", &default_returned);
 	if (!default_returned)
 		params->use_pirate = temp;
@@ -1078,6 +1108,15 @@ static void check_vp_cb(G_GNUC_UNUSED GObject * caller,
 	cfg_set_sevens_rule(params, (gint)
 			    game_rules_get_sevens_rule(GAMERULES
 						       (game_rules)));
+	cfg_set_use_dice_deck(params,
+			      game_rules_get_use_dice_deck(GAMERULES
+							   (game_rules)));
+	cfg_set_num_dice_decks(params,
+			       game_rules_get_num_dice_decks(GAMERULES
+							     (game_rules)));
+	cfg_set_num_removed_dice_cards(params,
+				       game_rules_get_num_removed_dice_cards
+				       (GAMERULES(game_rules)));
 	cfg_set_terrain_type(params, (gint)
 			     game_rules_get_random_terrain(GAMERULES
 							   (game_rules)));

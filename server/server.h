@@ -100,6 +100,8 @@ struct Game {
 	gint curr_turn;		/* current turn number */
 	gboolean rolled_dice;	/* has dice been rolled in turn yet? */
 	gint die1, die2;	/* latest dice values */
+	guint dice_cards[36];	/* remaining dice cards */
+	guint num_dice_cards;	/* total remaining dice cards */
 	gboolean played_develop;	/* has devel. card been played in turn? */
 	gboolean bought_develop;	/* has devel. card been bought in turn? */
 
@@ -234,6 +236,10 @@ GameParams *cfg_set_game(const gchar * game);
 GameParams *cfg_set_game_file(const gchar * game_filename);
 void cfg_set_num_players(GameParams * params, gint num_players);
 void cfg_set_sevens_rule(GameParams * params, gint sevens_rule);
+void cfg_set_use_dice_deck(GameParams * params, gboolean use_dice_deck);
+void cfg_set_num_dice_decks(GameParams * params, gint num_dice_decks);
+void cfg_set_num_removed_dice_cards(GameParams * params,
+				    gint num_removed_dice_cards);
 void cfg_set_victory_points(GameParams * params, gint victory_points);
 void cfg_set_terrain_type(GameParams * params, gint terrain_type);
 void cfg_set_tournament_time(GameParams * params, gint tournament_time);

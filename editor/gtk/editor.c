@@ -978,6 +978,10 @@ static void apply_params(const GameParams * params)
 	game_rules_set_domestic_trade(game_rules, params->domestic_trade);
 	game_settings_set_players(game_settings, params->num_players);
 	game_rules_set_sevens_rule(game_rules, params->sevens_rule);
+	game_rules_set_use_dice_deck(game_rules, params->use_dice_deck);
+	game_rules_set_num_dice_decks(game_rules, params->num_dice_decks);
+	game_rules_set_num_removed_dice_cards(game_rules,
+					      params->num_removed_dice_cards);
 	game_settings_set_victory_points(game_settings,
 					 params->victory_points);
 	/* check_victory_at_end_of_turn not needed in the editor */
@@ -1021,6 +1025,10 @@ static GameParams *get_params(void)
 	params->domestic_trade = game_rules_get_domestic_trade(game_rules);
 	params->num_players = game_settings_get_players(game_settings);
 	params->sevens_rule = game_rules_get_sevens_rule(game_rules);
+	params->use_dice_deck = game_rules_get_use_dice_deck(game_rules);
+	params->num_dice_decks = game_rules_get_num_dice_decks(game_rules);
+	params->num_removed_dice_cards =
+	    game_rules_get_num_removed_dice_cards(game_rules);
 	params->victory_points =
 	    game_settings_get_victory_points(game_settings);
 

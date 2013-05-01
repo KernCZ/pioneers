@@ -62,8 +62,9 @@ typedef enum {
 	V0_11, /**< City walls, player style, robber undo */
 	V0_12, /**< Trade protocol simplified */
 	V14, /**< More rules */
+	V15, /**< Dice deck */
 	FIRST_VERSION = V0_10,
-	LATEST_VERSION = V14
+	LATEST_VERSION = V15
 } ClientVersionType;
 
 /** Convert to a ClientVersionType.
@@ -95,6 +96,9 @@ typedef struct {
 	gint sevens_rule;	/* what to do when a seven is rolled */
 	/* 0 = normal, 1 = no 7s on first 2 turns (official rule variant),
 	 * 2 = all 7s rerolled */
+	gboolean use_dice_deck;	/* use dice deck instead of dice */
+	guint num_dice_decks;	/* amount of dice decks to use */
+	guint num_removed_dice_cards;	/* minimum amount of dice cards before reshuffling */
 	guint victory_points;	/* target number of victory points */
 	gboolean check_victory_at_end_of_turn;	/* check victory only at end of turn */
 	gint num_build_type[NUM_BUILD_TYPES];	/* number of each build type */

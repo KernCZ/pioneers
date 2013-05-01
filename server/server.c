@@ -299,6 +299,35 @@ void cfg_set_sevens_rule(GameParams * params, gint sevens_rule)
 	params->sevens_rule = CLAMP(sevens_rule, 0, 2);
 }
 
+void cfg_set_use_dice_deck(GameParams * params, gboolean use_dice_deck)
+{
+#ifdef PRINT_INFO
+	g_print("cfg_set_dice_deck: %d\n", use_dice_deck);
+#endif
+	g_return_if_fail(params != NULL);
+	params->use_dice_deck = use_dice_deck;
+}
+
+void cfg_set_num_dice_decks(GameParams * params, gint num_dice_decks)
+{
+#ifdef PRINT_INFO
+	g_print("cfg_set_num-dice-decks: %d\n", num_dice_decks);
+#endif
+	g_return_if_fail(params != NULL);
+	params->num_dice_decks = CLAMP(num_dice_decks, 1, 5);
+}
+
+void cfg_set_num_removed_dice_cards(GameParams * params,
+				    gint num_removed_dice_cards)
+{
+#ifdef PRINT_INFO
+	g_print("cfg_set_dice_deck: %d\n", num_removed_dice_cards);
+#endif
+	g_return_if_fail(params != NULL);
+	params->num_removed_dice_cards =
+	    CLAMP(num_removed_dice_cards, 0, 30);
+}
+
 void cfg_set_victory_points(GameParams * params, gint victory_points)
 {
 #ifdef PRINT_INFO

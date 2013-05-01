@@ -52,6 +52,9 @@ typedef enum {
 	REGISTERSERVER,
 	NUMPLAYERS,
 	SEVENSRULE,
+	DICEDECK,
+	NUMDICEDECKS,
+	NUMREMOVEDDICECARDS,
 	VICTORYPOINTS,
 	RANDOMTERRAIN,
 	SETGAME,
@@ -72,21 +75,25 @@ typedef struct {
 
 /* *INDENT-OFF* */
 static AdminCommand admin_commands[] = {
-	{ BADCOMMAND,     "",                    FALSE, FALSE, FALSE },
-	{ SETPORT,        "set-port",            TRUE,  TRUE,  TRUE  },
-	{ STARTSERVER,    "start-server",        FALSE, TRUE,  TRUE  },
-	{ STOPSERVER,     "stop-server",         FALSE, TRUE,  FALSE },
-	{ REGISTERSERVER, "set-register-server", TRUE,  TRUE,  FALSE },
-	{ NUMPLAYERS,     "set-num-players",     TRUE,  TRUE,  TRUE  },
-	{ SEVENSRULE,     "set-sevens-rule",     TRUE,  TRUE,  TRUE  },
-	{ VICTORYPOINTS,  "set-victory-points",  TRUE,  TRUE,  TRUE  },
-	{ RANDOMTERRAIN,  "set-random-terrain",  TRUE,  TRUE,  TRUE  },
-	{ SETGAME,        "set-game",            TRUE,  TRUE,  FALSE },
-	{ QUIT,           "quit",                FALSE, FALSE, FALSE },
-	{ MESSAGE,        "send-message",        TRUE,  FALSE, TRUE  },
-	{ HELP,           "help",                FALSE, FALSE, FALSE },
-	{ INFO,           "info",                FALSE, FALSE, FALSE },
-	{ FIXDICE,        "fix-dice",            TRUE,  FALSE, FALSE },
+	{ BADCOMMAND,          "",                    FALSE, FALSE, FALSE },
+	{ SETPORT,             "set-port",            TRUE,  TRUE,  TRUE  },
+	{ STARTSERVER,         "start-server",        FALSE, TRUE,  TRUE  },
+	{ STOPSERVER,          "stop-server",         FALSE, TRUE,  FALSE },
+	{ REGISTERSERVER,      "set-register-server", TRUE,  TRUE,  FALSE },
+	{ NUMPLAYERS,          "set-num-players",     TRUE,  TRUE,  TRUE  },
+	{ SEVENSRULE,          "set-sevens-rule",     TRUE,  TRUE,  TRUE  },
+	{ DICEDECK,            "set-dice-deck",       TRUE,  TRUE,  TRUE  },
+	{ NUMDICEDECKS,        "set-num-dice-decks",  TRUE,  TRUE,  TRUE  },
+	{ NUMREMOVEDDICECARDS, "set-num-removed-dice-cards",
+	                                              TRUE,  TRUE,  TRUE  },
+	{ VICTORYPOINTS,       "set-victory-points",  TRUE,  TRUE,  TRUE  },
+	{ RANDOMTERRAIN,       "set-random-terrain",  TRUE,  TRUE,  TRUE  },
+	{ SETGAME,             "set-game",            TRUE,  TRUE,  FALSE },
+	{ QUIT,                "quit",                FALSE, FALSE, FALSE },
+	{ MESSAGE,             "send-message",        TRUE,  FALSE, TRUE  },
+	{ HELP,                "help",                FALSE, FALSE, FALSE },
+	{ INFO,                "info",                FALSE, FALSE, FALSE },
+	{ FIXDICE,             "fix-dice",            TRUE,  FALSE, FALSE },
 };
 /* *INDENT-ON* */
 
@@ -197,6 +204,16 @@ static void admin_run_command(Session * admin_session, const gchar * line)
 			break;
 		case SEVENSRULE:
 			cfg_set_sevens_rule(params, atoi(argument));
+			break;
+		case DICEDECK:
+			cfg_set_use_dice_deck(params, atoi(argument));
+			break;
+		case NUMDICEDECKS:
+			cfg_set_num_dice_decks(params, atoi(argument));
+			break;
+		case NUMREMOVEDDICECARDS:
+			cfg_set_num_removed_dice_cards(params,
+						       atoi(argument));
 			break;
 		case VICTORYPOINTS:
 			cfg_set_victory_points(params, atoi(argument));
