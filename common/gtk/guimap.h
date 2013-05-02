@@ -130,6 +130,7 @@ void guimap_draw_edge(GuiMap * gmap, const Edge * edge);
 void guimap_draw_node(GuiMap * gmap, const Node * node);
 void guimap_draw_hex(GuiMap * gmap, const Hex * hex);
 
+Edge *guimap_find_edge(GuiMap * gmap, gint x, gint y);
 Node *guimap_find_node(GuiMap * gmap, gint x, gint y);
 Hex *guimap_find_hex(GuiMap * gmap, gint x, gint y);
 

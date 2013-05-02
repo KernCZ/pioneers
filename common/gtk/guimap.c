@@ -1204,7 +1204,7 @@ void guimap_zoom_center_map(GuiMap * gmap)
 	gtk_widget_queue_draw(gmap->area);
 }
 
-static void find_edge(GuiMap * gmap, gint x, gint y, MapElement * element)
+Edge *guimap_find_edge(GuiMap * gmap, gint x, gint y)
 {
 	Hex *hex = guimap_find_hex(gmap, x, y);
 	if (hex) {
@@ -1218,10 +1218,15 @@ static void find_edge(GuiMap * gmap, gint x, gint y, MapElement * element)
 		angle = atan2(y - center_y, x - center_x);
 		idx =
 		    (gint) (floor(-angle / 2.0 / M_PI * 6 + 0.5) + 6) % 6;
-		element->edge = hex->edges[idx];
+		return hex->edges[idx];
 	} else {
-		element->edge = NULL;
+		return NULL;
 	}
+}
+
+static void find_edge(GuiMap * gmap, gint x, gint y, MapElement * element)
+{
+	element->edge = guimap_find_edge(gmap, x, y);
 }
 
 Node *guimap_find_node(GuiMap * gmap, gint x, gint y)
