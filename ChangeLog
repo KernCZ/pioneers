@@ -1,3 +1,7 @@
+2013-05-02  Roland Clobus <rclobus@rclobus.nl>
+	* common/game.c: Don't complain about dice deck related parameters in
+	clients before V15.
+
 2013-05-01  Micah Bunting <amnykon@gmail.com>
 	* server/admin.c, server/gtk/main.c server/server.c, server/server.h,
 	server/turn.c, server/main.c, editor/gtk/editor.c,

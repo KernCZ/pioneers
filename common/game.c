@@ -281,6 +281,14 @@ void params_write_lines(GameParams * params, ClientVersionType version,
 
 					continue;
 				};
+				/* Sub-parameters to use-dice-deck need never
+				 * to be sent to older clients, the message
+				 * about use-dice-deck will suffice */
+				if (!strcmp(param->name, "num-dice-decks")
+				    || !strcmp(param->name,
+					       "num-removed-dice-cards")) {
+					continue;
+				}
 				break;
 			case PARAM_BOOL:
 				if (!G_STRUCT_MEMBER
