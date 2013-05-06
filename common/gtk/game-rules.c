@@ -159,6 +159,8 @@ static void game_rules_init(GameRules * gr, gboolean show_all_rules)
 		gr->num_dice_decks =
 		    GTK_SPIN_BUTTON(gtk_spin_button_new_with_range
 				    (1, 5, 1));
+		gtk_entry_set_alignment(GTK_ENTRY(gr->num_dice_decks),
+					1.0);
 		gtk_widget_show(GTK_WIDGET(gr->num_dice_decks));
 		gtk_widget_set_sensitive(GTK_WIDGET(gr->num_dice_decks),
 					 gtk_toggle_button_get_active
@@ -182,6 +184,8 @@ static void game_rules_init(GameRules * gr, gboolean show_all_rules)
 		gr->num_removed_dice_cards =
 		    GTK_SPIN_BUTTON(gtk_spin_button_new_with_range
 				    (0, 30, 1));
+		gtk_entry_set_alignment(GTK_ENTRY
+					(gr->num_removed_dice_cards), 1.0);
 		gtk_widget_show(GTK_WIDGET(gr->num_removed_dice_cards));
 		gtk_widget_set_sensitive(GTK_WIDGET
 					 (gr->num_removed_dice_cards),

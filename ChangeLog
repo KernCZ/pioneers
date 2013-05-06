@@ -1,3 +1,6 @@
+2013-05-06  Micah Bunting <amnykon@gmail.com>
+	* common/gtk/game-rules.c: Right aligns the dice deck spin buttons.
+
 2013-05-02  Micah Bunting <amnykon@gmail.com>
 	* common/gtk/guimap.c, common/gtk/guimap.h: Added guimap_find_edge()
 	to have access to find_edge() outside of guimap.c.
