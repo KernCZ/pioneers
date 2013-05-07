@@ -1,3 +1,7 @@
+2013-05-07  Roland Clobus <rclobus@rclobus.nl>
+	* docs/README.message_flow: Description of the message flow between the
+	programs, along with proposals for modification.
+
 2013-05-06  Micah Bunting <amnykon@gmail.com>
 	* common/gtk/game-rules.c: Right aligns the dice deck spin buttons.
 
