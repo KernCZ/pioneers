@@ -20,6 +20,9 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+/** @file guimap.c
+ */
+
 #include "config.h"
 #include <math.h>
 #include <stdio.h>
@@ -59,6 +62,9 @@ static gint sqr(gint a)
 	return a * a;
 }
 
+/** Creates a new GuiMap.
+ * @return A newly allocated GuiMap.
+ */
 GuiMap *guimap_new(void)
 {
 	GuiMap *gmap;
@@ -70,6 +76,9 @@ GuiMap *guimap_new(void)
 	return gmap;
 }
 
+/** Frees a GuiMap.
+ * @param gmap The GuiMap to free.
+ */
 void guimap_delete(GuiMap * gmap)
 {
 	if (gmap->area != NULL) {
@@ -107,6 +116,7 @@ void guimap_delete(GuiMap * gmap)
 	}
 	g_free(gmap);
 }
+
 
 void guimap_reset(GuiMap * gmap)
 {
@@ -244,6 +254,12 @@ static gboolean zoom_map_cb(GtkWidget * area, GdkEventScroll * event,
 	return FALSE;
 }
 
+/** Builds the drawing area for gmap.
+ * @param gmap The GuiMap to build the drawing area for.
+ * @param width The requested width of the drawing area.
+ * @param Height The requested height of the drawing area.
+ * @return The newly created drawing area for gmap.
+ */
 GtkWidget *guimap_build_drawingarea(GuiMap * gmap, gint width, gint height)
 {
 	gmap->area = gtk_drawing_area_new();
@@ -1203,7 +1219,11 @@ void guimap_zoom_center_map(GuiMap * gmap)
 	guimap_display(gmap);
 	gtk_widget_queue_draw(gmap->area);
 }
-
+/** Finds the closest edge to (x,y).
+ * @param gmap The GuiMap containing the edge.
+ * @param x,y The coordinate.
+ * @return The closest edge.
+ */
 Edge *guimap_find_edge(GuiMap * gmap, gint x, gint y)
 {
 	Hex *hex = guimap_find_hex(gmap, x, y);
@@ -1224,11 +1244,21 @@ Edge *guimap_find_edge(GuiMap * gmap, gint x, gint y)
 	}
 }
 
+/** Finds the closest edge to (x,y).
+ * @param gmap The GuiMap containing the edge.
+ * @param x,y The coordinate.
+ * @param[out] element The MapElement to return the edge in.
+ */
 static void find_edge(GuiMap * gmap, gint x, gint y, MapElement * element)
 {
 	element->edge = guimap_find_edge(gmap, x, y);
 }
 
+/** Finds the closest node to (x,y).
+ * @param gmap The GuiMap containing the node.
+ * @param x,y The coordinate.
+ * @return The closest node.
+ */
 Node *guimap_find_node(GuiMap * gmap, gint x, gint y)
 {
 	Hex *hex = guimap_find_hex(gmap, x, y);
@@ -1247,11 +1277,21 @@ Node *guimap_find_node(GuiMap * gmap, gint x, gint y)
 	return NULL;
 }
 
+/** Finds the closest node to (x,y).
+ * @param gmap The GuiMap containing the node.
+ * @param x,y The coordinate.
+ * @param[out] element The MapElement to return the node in.
+ */
 static void find_node(GuiMap * gmap, gint x, gint y, MapElement * element)
 {
 	element->node = guimap_find_node(gmap, x, y);
 }
 
+/** Finds the closest hex to (x,y).
+ * @param gmap The GuiMap containing the hex.
+ * @param x,y The coordinate.
+ * @return The closest hex.
+ */
 Hex *guimap_find_hex(GuiMap * gmap, gint x, gint y)
 {
 	gint x_hex;
@@ -1261,6 +1301,11 @@ Hex *guimap_find_hex(GuiMap * gmap, gint x, gint y)
 	return map_hex(gmap->map, x_hex, y_hex);
 }
 
+/** Finds the closest hex to (x,y).
+ * @param gmap The GuiMap containing the hex.
+ * @param x,y The coordinate.
+ * @param[out] element The MapElement to return the hex in.
+ */
 static void find_hex(GuiMap * gmap, gint x, gint y, MapElement * element)
 {
 	element->hex = guimap_find_hex(gmap, x, y);
