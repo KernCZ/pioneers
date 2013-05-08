@@ -1,4 +1,5 @@
 2013-05-08  Micah Bunting <amnykon@gmail.com>
+	* docs/README.server_protocol_version: Clarifies and fixes spelling.
 	* common/gtk/guimap.c: Adds some doxegen comments to guimap.c.
 	
 2013-05-07  Roland Clobus <rclobus@rclobus.nl>

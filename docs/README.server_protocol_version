@@ -3,7 +3,7 @@ How to modify the server protocol version
 
 Protocol version handling
 -------------------------
-When a new feature is introduced in the server, the procotol version must be incremented. Per release cycle only one increment is necessary.
+When a new feature is introduced in the server, the protocol version must be incremented. Per release cycle only one increment is necessary.
 The client exchanges the protocol version it knows with the server. The server can then determine whether it needs to send backwards compatible messages to the client.
 
 The protocol version in the server must be at least the protocol version in the client. (Newer clients will be rejected by older servers).
@@ -12,13 +12,13 @@ Servers with the newer protocol can already be running on the metaserver at pion
 Adjust code
 -----------
 configure.ac:
-Modify the line AC_INIT. The first number must be incremented, the second number must be one (1).
+Modify the line AC_INIT. The format of second argument of this line is [protocol.release]. If only a release change, add one (1) to the release value. Nothing else needs to be changed. If the change is a protocol change, add one (1) to the protocol, and set the release to one (1).
 common/game.h:
 Insert before the link FIRST_VERSION a new enum value. Place in the comment a short description of the type of protocol change. Modify the assignment to LATEST_VERSION.
 common/game.c:
 Extend client_version_type_conversions to included the enum and a string. The string must be unique. Place a new version on the top of the array.
 
-It the change is a game rule, add the parameter to game_params. When the parameter is an integer, try to use zero as a default value and FALSE for a boolean. When an older client connects to a game that has these new rules inactive, it will not receive messages that a certain rule is unknown. (E.g. when city walls are zero, a 0.10 client would not be notified). In the client the rule should be shown in the 'Current Game Settings' dialog.
+If the change is a game rule, add the parameter to game_params. When the parameter is an integer, try to use zero as a default value and FALSE for a boolean. When an older client connects to a game that has these new rules inactive, it will not receive messages that a certain rule is unknown. (E.g. when city walls are zero, a 0.10 client would not be notified). In the client the rule should be shown in the 'Current Game Settings' dialog.
 
 In the following section convention is used:
 V_PREV: The protocol version of the last release
