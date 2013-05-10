@@ -1,5 +1,6 @@
 2013-05-10  Roland Clobus <rclobus@rclobus.nl>
 	* common/gtk/select-game.c: Fixed some memory leaks.
+	* client/ai/greedy.c: Fixed some warnings when compiling with clang.
 
 2013-05-08  Micah Bunting <amnykon@gmail.com>
 	* docs/README.server_protocol_version: Clarifies and fixes spelling.

@@ -1182,8 +1182,8 @@ static void greedy_turn(void)
 			    && can_play_develop(i)) {
 				int j;
 				for (j = 0; j < 6; j++) {
-					if ((hex->nodes[j]->owner ==
-					     my_player_num())) {
+					if (hex->nodes[j]->owner ==
+					    my_player_num()) {
 						cb_play_develop(i);
 						return;
 					}
