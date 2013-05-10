@@ -25,6 +25,7 @@ enum {
 
 static void select_game_class_init(SelectGameClass * klass);
 static void select_game_init(SelectGame * sg);
+static void select_game_finalize(GObject * object);
 static void select_game_item_changed(GtkWidget * widget, SelectGame * sg);
 
 /* All signals */
@@ -55,12 +56,25 @@ GType select_game_get_type(void)
 	return sg_type;
 }
 
+/* Clean up after the widget is no longer in use */
+static void select_game_finalize(GObject * object)
+{
+	SelectGame *sg = SELECTGAME(object);
+
+	/* sg->combo_box is already handled */
+	gtk_list_store_clear(sg->data);
+	g_ptr_array_unref(sg->game_names);
+	g_free(sg->default_game);
+}
+
 /* Register the signals.
  * SelectGame will emit one signal: 'activate' with the text of the 
  *    active game in user_data
  */
 static void select_game_class_init(SelectGameClass * klass)
 {
+	GObjectClass *object_class = G_OBJECT_CLASS(klass);
+
 	select_game_signals[ACTIVATE] = g_signal_new("activate",
 						     G_TYPE_FROM_CLASS
 						     (klass),
@@ -72,6 +86,7 @@ static void select_game_class_init(SelectGameClass * klass)
 						     NULL,
 						     g_cclosure_marshal_VOID__VOID,
 						     G_TYPE_NONE, 0);
+	object_class->finalize = select_game_finalize;
 }
 
 /* Build the composite widget */
@@ -96,7 +111,7 @@ static void select_game_init(SelectGame * sg)
 	gtk_cell_layout_set_attributes(GTK_CELL_LAYOUT(sg->combo_box),
 				       cell, "pixbuf", 1, NULL);
 
-	sg->game_names = g_ptr_array_new();
+	sg->game_names = g_ptr_array_new_with_free_func(g_free);
 
 	gtk_widget_show(sg->combo_box);
 	gtk_widget_set_tooltip_text(sg->combo_box,
