@@ -1,3 +1,6 @@
+2013-05-13  Roland Clobus <rclobus@rclobus.nl>
+	* common/network.c: Fixed FTBFS on Windows, introduced on 2013-04-24.
+
 2013-05-10  Roland Clobus <rclobus@rclobus.nl>
 	* common/gtk/select-game.c: Fixed some memory leaks.
 	* client/ai/greedy.c: Fixed some warnings when compiling with clang.

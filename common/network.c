@@ -722,8 +722,10 @@ gboolean net_connect(Session * ses, const gchar * host, const gchar * port)
 
 	g_return_val_if_fail(ses->host == NULL, FALSE);
 	g_return_val_if_fail(ses->port == NULL, FALSE);
+#ifdef HAVE_GETADDRINFO_ET_AL
 	g_return_val_if_fail(ses->base_ai == NULL, FALSE);
 	g_return_val_if_fail(ses->current_ai == NULL, FALSE);
+#endif
 	g_return_val_if_fail(ses->fd < 0, FALSE);
 
 	ses->host = g_strdup(host);
