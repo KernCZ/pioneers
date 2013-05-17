@@ -4,6 +4,7 @@
  * Copyright (C) 1999 Dave Cole
  * Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
  * Copyright (C) 2004-2007 Roland Clobus <rclobus@bigfoot.com>
+ * Copyright (C) 2013 Micah Bunting <Amnykon@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -115,6 +116,9 @@ void guimap_city_wall_polygon(const GuiMap * gmap, const Node * node,
 			      Polygon * poly);
 
 gint guimap_get_chit_radius(PangoLayout * layout, gboolean show_dots);
+void draw_port_indicator(PangoLayout * layout, cairo_t * cr,
+			 gdouble x_offset, gdouble y_offset,
+			 gdouble chit_radius, gint resource);
 void draw_dice_roll(PangoLayout * layout, cairo_t * cr, gdouble x_offset,
 		    gdouble y_offset, gdouble radius, gint n, gint terrain,
 		    gboolean highlight);

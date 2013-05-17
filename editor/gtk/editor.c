@@ -2,8 +2,9 @@
  *   Go buy a copy.
  *
  * Copyright (C) 2005 Brian Wellington
- * Copyright (C) 2005,2006 Roland Clobus
+ * Copyright (C) 2005,2011 Roland Clobus
  * Copyright (C) 2005,2006 Bas Wijnen
+ * Copyright (C) 2011-2013 Micah Bunting <Amnykon@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,6 +50,9 @@
 #define MAP_WIDTH 550		/* default map width */
 #define MAP_HEIGHT 400		/* default map height */
 
+#define BUTTON_HEIGHT 24	/* height of the toolbar buttons */
+#define TERRAIN_BUTTON_WIDTH 27	/* width of the terrain toolbar buttons */
+
 static GtkWidget *toplevel;
 static gchar *default_game;
 static gchar *window_title;
@@ -85,6 +89,24 @@ typedef enum {
 
 static GuiMap *gmap;
 static Hex *current_hex;
+
+typedef enum {
+	TERRAIN_TOOLBAR_BUTTON_TYPE,
+	CHIT_TOOLBAR_BUTTON_TYPE,
+	PORT_TOOLBAR_BUTTON_TYPE,
+	NO_TOOLBAR_BUTTON_TYPE
+} ToolbarButtonType;
+
+typedef struct {
+	ToolbarButtonType type;
+	union {
+		Terrain terrain;
+		gint chit;
+		Resource port;
+	} element;
+} ToolbarButtonData;
+
+static ToolbarButtonData selected_toolbar_button;
 
 static const gchar *terrain_names[] = {
 	/* Use an unique shortcut key for each resource */
@@ -218,6 +240,359 @@ static gboolean terrain_has_chit(Terrain terrain)
 	return FALSE;
 }
 
+/** Changes the terrain of a hex to terrain.
+ * @param hex The hex to change the terrain of.
+ * @param terrain The terrain to change the hex terrain to.
+ */
+static void change_terrain(Hex * hex, Terrain terrain)
+{
+	Hex *adjacent;
+	gint i;
+
+	if (terrain == hex->terrain)
+		return;
+
+	hex->terrain = terrain;
+	if (terrain_has_chit(terrain)) {
+		if (hex->roll == 0)
+			hex->roll = 2;
+	} else
+		hex->roll = 0;
+
+	if (terrain != SEA_TERRAIN)
+		hex->resource = NO_RESOURCE;
+
+	/* If terrain is not land,
+	 * remove all ports on adjacent hexes that point to hex */
+	if (terrain == SEA_TERRAIN || terrain == LAST_TERRAIN) {
+		for (i = 0; i < 6; i++) {
+			adjacent = hex_in_direction(hex, i);
+			if (adjacent != NULL
+			    && adjacent->resource != NO_RESOURCE
+			    && adjacent->facing == (i + 3) % 6) {
+				adjacent->resource = NO_RESOURCE;
+				adjacent->facing = 0;
+				guimap_draw_hex(gmap, adjacent);
+			}
+		}
+	}
+	guimap_draw_hex(gmap, hex);
+	return;
+}
+
+/** Draws the chit in the exposed area.
+ * @param area The area to draw in.
+ * @param event Not used.
+ * @param chip_number The chit number of the hex.
+ * @return TRUE if event is handled.
+ */
+static gboolean expose_chit_cb(GtkWidget * area,
+			       G_GNUC_UNUSED GdkEventExpose * event,
+			       gpointer chip_number)
+{
+	cairo_t *cr;
+	PangoLayout *layout;
+
+	if (gtk_widget_get_window(area) == NULL)
+		return FALSE;
+
+	cr = gdk_cairo_create(gtk_widget_get_window(area));
+
+	layout = gtk_widget_create_pango_layout(gmap->area, "");
+
+	draw_dice_roll(layout, cr,
+		       12, 10, 15, GPOINTER_TO_INT(chip_number),
+		       GOLD_TERRAIN, FALSE);
+	g_object_unref(layout);
+	cairo_destroy(cr);
+
+	return TRUE;
+}
+
+/** Draws the port in the exposed area.
+ * @param area The area to draw in.
+ * @param event Not used.
+ * @param port_type The type of the port.
+ * @return TRUE if event is handled.
+ */
+static gboolean expose_port_cb(GtkWidget * area,
+			       G_GNUC_UNUSED GdkEventExpose * event,
+			       gpointer port_type)
+{
+	cairo_t *cr;
+	PangoLayout *layout;
+	MapTheme *theme;
+	gint width;
+	gint height;
+
+	if (gtk_widget_get_window(area) == NULL)
+		return FALSE;
+
+	cr = gdk_cairo_create(gtk_widget_get_window(area));
+	layout = gtk_widget_create_pango_layout(gmap->area, "");
+
+	theme = theme_get_current();
+	gdk_pixmap_get_size(theme->terrain_tiles[SEA_TERRAIN], &width,
+			    &height);
+	gdk_cairo_set_source_pixmap(cr, theme->terrain_tiles[SEA_TERRAIN],
+				    BUTTON_HEIGHT / 2 - width / 2,
+				    BUTTON_HEIGHT / 2 - height / 2);
+	cairo_pattern_set_extend(cairo_get_source(cr),
+				 CAIRO_EXTEND_REPEAT);
+	cairo_paint(cr);
+
+	draw_port_indicator(layout, cr, BUTTON_HEIGHT / 2,
+			    BUTTON_HEIGHT / 2, 11,
+			    GPOINTER_TO_INT(port_type));
+	g_object_unref(layout);
+	cairo_destroy(cr);
+
+	return TRUE;
+}
+
+/** Draws the unselect button exposed area.
+ * @param area The area to draw in.
+ * @param event Not used.
+ * @param user_data Not used.
+ * @return TRUE if event is handled.
+ */
+static gboolean expose_unselect_cb(GtkWidget * area,
+				   G_GNUC_UNUSED GdkEventExpose * event,
+				   G_GNUC_UNUSED gpointer user_data)
+{
+	cairo_t *cr;
+
+	if (gtk_widget_get_window(area) == NULL)
+		return FALSE;
+
+	cr = gdk_cairo_create(gtk_widget_get_window(area));
+
+	gdk_cairo_set_source_color(cr, &white);
+	cairo_paint(cr);
+
+	cairo_destroy(cr);
+
+	return TRUE;
+}
+
+/** Selects the toolbar button that was clicked.
+ * @param button The GtkButton that was clicked.
+ * @param user_data A ToolbarButtonData to set selected_toolbar_button to.
+ * @return TRUE if event is handled.
+ */
+static gboolean toolbar_click(G_GNUC_UNUSED GtkButton * button,
+			      G_GNUC_UNUSED gpointer user_data)
+{
+	ToolbarButtonData *toolbar_data = user_data;
+	selected_toolbar_button = *toolbar_data;
+	return TRUE;
+}
+
+/** The tooltips for the terrain toolbar buttons.
+ */
+static const gchar *TERRAIN_TOOLBAR_TOOLTIP[] = {
+	N_("Place a hill hex"),
+	N_("Place a field hex"),
+	N_("Place a mountain hex"),
+	N_("Place a pasture hex"),
+	N_("Place a forest hex"),
+	N_("Place a desert hex"),
+	N_("Place a sea hex"),
+	N_("Place a gold hex"),
+	N_("Clear the hex")
+};
+
+/** The tooltips for the chit toolbar buttons.
+ */
+static const gchar *CHIT_TOOLBAR_TOOLTIP[] = {
+	NULL,
+	NULL,
+	N_("Place a 2 chit"),
+	N_("Place a 3 chit"),
+	N_("Place a 4 chit"),
+	N_("Place a 5 chit"),
+	N_("Place a 6 chit"),
+	NULL,
+	N_("Place a 8 chit"),
+	N_("Place a 9 chit"),
+	N_("Place a 10 chit"),
+	N_("Place a 11 chit"),
+	N_("Place a 12 chit")
+};
+
+/** The tooltips for the port toolbar buttons.
+ */
+static const gchar *PORT_TOOLBAR_TOOLTIP[] = {
+	N_("Place a brick 2:1 port"),
+	N_("Place a grain 2:1 port"),
+	N_("Place a ore 2:1 port"),
+	N_("Place a wool 2:1 port"),
+	N_("Place a lumber 2:1 port"),
+	N_("Remove a port"),
+	N_("Place a 3:1 port")
+};
+
+/** Builds toolbars for selecting terrains, chits, and ports. Places toolbar in 
+ * the table at the top.
+ * @param table The table to place toolbar in.
+ */
+static void build_select_bars(GtkWidget * table)
+{
+	GtkWidget *box;
+	GtkWidget *area;
+	GtkWidget *button;
+	GSList *group;
+	GtkWidget *vsep;
+	gint i;
+	ToolbarButtonData *toolbar_button_data;
+
+	box = gtk_hbox_new(FALSE, 0);	/* upper bar */
+
+	area = gtk_drawing_area_new();
+	gtk_widget_show(area);
+	gtk_widget_set_size_request(area, BUTTON_HEIGHT,
+				    TERRAIN_BUTTON_WIDTH);
+	g_signal_connect(G_OBJECT(area), "expose_event",
+			 G_CALLBACK(expose_unselect_cb),
+			 GINT_TO_POINTER(1));
+	button = GTK_WIDGET(gtk_radio_tool_button_new(NULL));
+	gtk_tool_button_set_icon_widget(GTK_TOOL_BUTTON(button), area);
+	gtk_box_pack_start(GTK_BOX(box), button, FALSE, TRUE, 0);
+	gtk_tool_item_set_tooltip_text(GTK_TOOL_ITEM(button), _
+				       ("Select the terrain type with the context "
+					"menu on the left click or toggle a node to "
+					"exclude it from being used during the setup "
+					"phase"));
+
+	toolbar_button_data = g_malloc(sizeof(toolbar_button_data));
+	toolbar_button_data->type = NO_TOOLBAR_BUTTON_TYPE;
+
+	g_signal_connect(G_OBJECT(button), "clicked",
+			 G_CALLBACK(toolbar_click), toolbar_button_data);
+
+	/* initialize selected toolbar button to not selected. */
+	selected_toolbar_button.type = NO_TOOLBAR_BUTTON_TYPE;
+	gtk_toggle_tool_button_set_active(GTK_TOGGLE_TOOL_BUTTON(button),
+					  TRUE);
+
+	/* Line between unselect and terrains */
+	vsep = gtk_vseparator_new();
+	gtk_widget_show(vsep);
+	gtk_widget_set_size_request(vsep, 10, 0);
+	gtk_box_pack_start(GTK_BOX(box), vsep, FALSE, TRUE, 0);
+
+	/* terrain toolbar buttons */
+	for (i = 0; i <= LAST_TERRAIN; i++) {
+
+		area = gtk_drawing_area_new();
+		gtk_widget_show(area);
+		gtk_widget_set_size_request(area, BUTTON_HEIGHT,
+					    TERRAIN_BUTTON_WIDTH);
+		g_signal_connect(G_OBJECT(area), "expose_event",
+				 G_CALLBACK(expose_terrain_cb),
+				 GINT_TO_POINTER(i));
+
+		group =
+		    gtk_radio_tool_button_get_group(GTK_RADIO_TOOL_BUTTON
+						    (button));
+		button = GTK_WIDGET(gtk_radio_tool_button_new(group));
+		gtk_tool_button_set_icon_widget(GTK_TOOL_BUTTON(button),
+						area);
+		gtk_box_pack_start(GTK_BOX(box), button, FALSE, TRUE, 0);
+		gtk_tool_item_set_tooltip_text(GTK_TOOL_ITEM(button),
+					       _(TERRAIN_TOOLBAR_TOOLTIP
+						 [i]));
+
+		toolbar_button_data =
+		    g_malloc(sizeof(toolbar_button_data));
+		toolbar_button_data->type = TERRAIN_TOOLBAR_BUTTON_TYPE;
+		toolbar_button_data->element.terrain = i;
+
+		g_signal_connect(G_OBJECT(button), "clicked",
+				 G_CALLBACK(toolbar_click),
+				 toolbar_button_data);
+
+	}
+
+	gtk_table_attach(GTK_TABLE(table), box, 0, 2, 0, 1,
+			 GTK_FILL, GTK_FILL, 0, 0);
+
+	box = gtk_hbox_new(FALSE, 0);	/* lower bar */
+
+	/* chit toolbar buttons */
+	for (i = 2; i <= 12; i++) {
+		if (i == 7) {
+			continue;
+		}
+		area = gtk_drawing_area_new();
+		gtk_widget_show(area);
+		gtk_widget_set_size_request(area, BUTTON_HEIGHT,
+					    BUTTON_HEIGHT);
+		g_signal_connect(G_OBJECT(area), "expose_event",
+				 G_CALLBACK(expose_chit_cb),
+				 GINT_TO_POINTER(i));
+
+		group =
+		    gtk_radio_tool_button_get_group(GTK_RADIO_TOOL_BUTTON
+						    (button));
+		button = GTK_WIDGET(gtk_radio_tool_button_new(group));
+		gtk_tool_button_set_icon_widget(GTK_TOOL_BUTTON(button),
+						area);
+		gtk_box_pack_start(GTK_BOX(box), button, FALSE, TRUE, 0);
+		gtk_tool_item_set_tooltip_text(GTK_TOOL_ITEM(button),
+					       _(CHIT_TOOLBAR_TOOLTIP[i]));
+
+		toolbar_button_data =
+		    g_malloc(sizeof(toolbar_button_data));
+		toolbar_button_data->type = CHIT_TOOLBAR_BUTTON_TYPE;
+		toolbar_button_data->element.chit = i;
+
+		g_signal_connect(G_OBJECT(button), "clicked",
+				 G_CALLBACK(toolbar_click),
+				 toolbar_button_data);
+	}
+
+	/* Line between chit and port */
+	vsep = gtk_vseparator_new();
+	gtk_widget_show(vsep);
+	gtk_widget_set_size_request(vsep, 10, 0);
+	gtk_box_pack_start(GTK_BOX(box), vsep, FALSE, TRUE, 0);
+
+	/* port toolbar buttons */
+	for (i = 0; i <= ANY_RESOURCE; i++) {
+		area = gtk_drawing_area_new();
+
+		gtk_widget_show(area);
+		gtk_widget_set_size_request(area, BUTTON_HEIGHT,
+					    BUTTON_HEIGHT);
+		g_signal_connect(G_OBJECT(area), "expose_event",
+				 G_CALLBACK(expose_port_cb),
+				 GINT_TO_POINTER(i));
+
+		group =
+		    gtk_radio_tool_button_get_group(GTK_RADIO_TOOL_BUTTON
+						    (button));
+		button = GTK_WIDGET(gtk_radio_tool_button_new(group));
+		gtk_tool_button_set_icon_widget(GTK_TOOL_BUTTON(button),
+						area);
+		gtk_box_pack_start(GTK_BOX(box), button, FALSE, TRUE, 0);
+		gtk_tool_item_set_tooltip_text(GTK_TOOL_ITEM(button),
+					       _(PORT_TOOLBAR_TOOLTIP[i]));
+
+		toolbar_button_data =
+		    g_malloc(sizeof(toolbar_button_data));
+		toolbar_button_data->type = PORT_TOOLBAR_BUTTON_TYPE;
+		toolbar_button_data->element.port = i;
+
+		g_signal_connect(G_OBJECT(button), "clicked",
+				 G_CALLBACK(toolbar_click),
+				 toolbar_button_data);
+	}
+
+	gtk_table_attach(GTK_TABLE(table), box, 0, 2, 1, 2,
+			 GTK_FILL, GTK_FILL, 0, 0);
+}
+
 static void build_map_resize(GtkWidget * table, guint col, guint row,
 			     GtkOrientation dir, GtkWidget ** buttons,
 			     GCallback resize_callback)
@@ -315,6 +690,63 @@ static gint button_press_map_cb(GtkWidget * area,
 		Node *current_node;
 		gint distance_node;
 		gint distance_hex;
+
+		switch (selected_toolbar_button.type) {
+		case TERRAIN_TOOLBAR_BUTTON_TYPE:
+			change_terrain(current_hex,
+				       selected_toolbar_button.
+				       element.terrain);
+			return TRUE;
+		case CHIT_TOOLBAR_BUTTON_TYPE:
+			if (terrain_has_chit(current_hex->terrain)) {
+				current_hex->roll =
+				    selected_toolbar_button.element.chit;
+				guimap_draw_hex(gmap, current_hex);
+			}
+			return TRUE;
+		case PORT_TOOLBAR_BUTTON_TYPE:
+			if (current_hex->terrain == SEA_TERRAIN) {
+				/* If selected resource is NO_RESOURCE, 
+				 * remove port from hex regardless of 
+				 * nearest edge.
+				 */
+				if (selected_toolbar_button.element.port ==
+				    NO_RESOURCE) {
+					current_hex->resource =
+					    NO_RESOURCE;
+					guimap_draw_hex(gmap, current_hex);
+					return TRUE;
+				}
+
+				/* Find nearest edge. This determines the
+				 * direction of the port. 
+				 */
+				const Edge *edge;
+				edge = guimap_find_edge(gmap, event->x,
+							event->y);
+				gint i;
+				for (i = 0; i < 6; i++)
+					if (current_hex->edges[i] == edge)
+						break;
+
+				/* Verify adjacent hex is a land hex */
+				adjacent =
+				    hex_in_direction(current_hex, i);
+				if (adjacent != NULL
+				    && adjacent->terrain != LAST_TERRAIN
+				    && adjacent->terrain != SEA_TERRAIN) {
+					/* change hex resources and direction */
+					current_hex->facing = i;
+					current_hex->resource =
+					    selected_toolbar_button.
+					    element.port;
+					guimap_draw_hex(gmap, current_hex);
+				}
+			}
+			return TRUE;
+		case NO_TOOLBAR_BUTTON_TYPE:
+			break;
+		}
 
 		current_node = guimap_find_node(gmap, event->x, event->y);
 		element.node = current_node;
@@ -560,6 +992,7 @@ static GtkWidget *build_map(void)
 			 GTK_EXPAND | GTK_FILL, GTK_EXPAND | GTK_FILL, 0,
 			 0);
 
+	build_select_bars(table);
 	build_map_resize(table, 1, 2, GTK_ORIENTATION_VERTICAL,
 			 vresize_buttons, G_CALLBACK(change_height));
 	build_map_resize(table, 0, 3, GTK_ORIENTATION_HORIZONTAL,
@@ -637,38 +1070,7 @@ static gint select_terrain_cb(G_GNUC_UNUSED GtkWidget * menu,
 			      gpointer user_data)
 {
 	Terrain terrain = GPOINTER_TO_INT(user_data);
-	Hex *adjacent;
-	gint i;
-
-	if (terrain == current_hex->terrain)
-		return TRUE;
-
-	current_hex->terrain = terrain;
-	if (terrain_has_chit(terrain)) {
-		if (current_hex->roll == 0)
-			current_hex->roll = 2;
-	} else
-		current_hex->roll = 0;
-
-	if (terrain != SEA_TERRAIN)
-		current_hex->resource = NO_RESOURCE;
-	if (terrain == SEA_TERRAIN || terrain == LAST_TERRAIN) {
-		for (i = 0; i < 6; i++) {
-			adjacent = hex_in_direction(current_hex, i);
-			if (adjacent != NULL
-			    && adjacent->resource != NO_RESOURCE
-			    && adjacent->facing == (i + 3) % 6) {
-				adjacent->resource = NO_RESOURCE;
-				adjacent->facing = 0;
-				guimap_draw_hex(gmap, adjacent);
-			}
-		}
-	}
-	guimap_draw_hex(gmap, current_hex);
-
-	/* XXX Since some edges may have changed, we need to redisplay */
-	guimap_display(gmap);
-
+	change_terrain(current_hex, terrain);
 	return TRUE;
 }
 

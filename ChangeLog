@@ -1,3 +1,7 @@
+2013-05-08  Micah Bunting <amnykon@gmail.com>
+	* editor/gtk/editor.c, common/gtk/guimap.c, common/gtk/guimap.h:
+	Added a toolbar to the map editor.
+
 2013-05-13  Roland Clobus <rclobus@rclobus.nl>
 	* common/network.c: Fixed FTBFS on Windows, introduced on 2013-04-24.
 

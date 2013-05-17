@@ -4,6 +4,7 @@
  * Copyright (C) 1999 Dave Cole
  * Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
  * Copyright (C) 2004-2011 Roland Clobus <rclobus@bigfoot.com>
+ * Copyright (C) 2013 Micah Bunting <Amnykon@gmail.com>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -684,6 +685,110 @@ static void guimap_pirate_polygon(const GuiMap * gmap, const Hex * hex,
 	calc_hex_poly(gmap, hex, &pirate_poly, poly, 80.0, 0);
 }
 
+void draw_port_indicator(PangoLayout * layout, cairo_t * cr,
+			 gdouble x_offset, gdouble y_offset,
+			 gdouble chit_radius, gint resource)
+{
+	MapTheme *theme = theme_get_current();
+
+	if (resource != NO_RESOURCE && chit_radius > 0) {
+		const gchar *str = "";
+		gint width, height;
+		gint tileno = resource == ANY_RESOURCE ?
+		    ANY_PORT_TILE : resource;
+		gboolean drawit;
+		gboolean typeind;
+
+		/* Fill/tile port indicator */
+		if (theme->port_tiles[tileno]) {
+			gdk_cairo_set_source_pixmap(cr,
+						    theme->port_tiles
+						    [tileno],
+						    x_offset -
+						    theme->port_tiles_width
+						    [tileno] / 2,
+						    y_offset -
+						    theme->port_tiles_height
+						    [tileno] / 2);
+			cairo_pattern_set_extend(cairo_get_source(cr),
+						 CAIRO_EXTEND_REPEAT);
+			typeind = TRUE;
+			drawit = TRUE;
+		} else if (!theme->colors[TC_PORT_BG].transparent) {
+			gdk_cairo_set_source_color(cr,
+						   &theme->colors
+						   [TC_PORT_BG].color);
+			typeind = FALSE;
+			drawit = TRUE;
+		} else {
+			typeind = FALSE;
+			drawit = FALSE;
+		}
+		if (drawit) {
+			cairo_arc(cr, x_offset, y_offset,
+				  chit_radius, 0.0, 2 * M_PI);
+			cairo_fill(cr);
+		}
+
+		/* Outline port indicator */
+		if (!theme->colors[TC_PORT_BD].transparent) {
+			gdk_cairo_set_source_color(cr,
+						   &theme->colors
+						   [TC_PORT_BD].color);
+			cairo_arc(cr, x_offset, y_offset,
+				  chit_radius, 0.0, 2 * M_PI);
+			cairo_stroke(cr);
+		}
+		/* Print trading ratio */
+		if (!theme->colors[TC_PORT_FG].transparent) {
+			if (typeind) {
+				if (resource < NO_RESOURCE)
+					/* Port indicator for a resource: trade 2 for 1 */
+					str = _("2:1");
+				else
+					/* Port indicator: trade 3 for 1 */
+					str = _("3:1");
+			} else {
+				switch (resource) {
+				case BRICK_RESOURCE:
+					/* Port indicator for brick */
+					str = Q_("Brick port|B");
+					break;
+				case GRAIN_RESOURCE:
+					/* Port indicator for grain */
+					str = Q_("Grain port|G");
+					break;
+				case ORE_RESOURCE:
+					/* Port indicator for ore */
+					str = Q_("Ore port|O");
+					break;
+				case WOOL_RESOURCE:
+					/* Port indicator for wool */
+					str = Q_("Wool port|W");
+					break;
+				case LUMBER_RESOURCE:
+					/* Port indicator for lumber */
+					str = Q_("Lumber port|L");
+					break;
+				default:
+					/* General port indicator */
+					str = _("3:1");
+					break;
+				}
+			}
+			pango_layout_set_markup(layout, str, -1);
+			pango_layout_get_pixel_size(layout, &width,
+						    &height);
+			gdk_cairo_set_source_color(cr,
+						   &theme->colors
+						   [TC_PORT_FG].color);
+			cairo_move_to(cr, x_offset - width / 2,
+				      y_offset - height / 2);
+			pango_cairo_show_layout(cr, layout);
+		}
+	}
+}
+
 void draw_dice_roll(PangoLayout * layout, cairo_t * cr,
 		    gdouble x_offset, gdouble y_offset, gdouble radius,
 		    gint n, gint terrain, gboolean highlight)
@@ -793,12 +898,6 @@ static gboolean display_hex(const Hex * hex, gpointer closure)
 
 	/* Draw ports */
 	if (hex->resource != NO_RESOURCE && gmap->chit_radius > 0) {
-		const gchar *str = "";
-		gint width, height;
-		gint tileno = hex->resource == ANY_RESOURCE ?
-		    ANY_PORT_TILE : hex->resource;
-		gboolean drawit;
-		gboolean typeind;
 		const double dashes[] = { 4.0 };
 
 		/* Draw lines from port to shore */
@@ -814,94 +913,9 @@ static gboolean display_hex(const Hex * hex, gpointer closure)
 		cairo_stroke(gmap->cr);
 		cairo_set_dash(gmap->cr, NULL, 0, 0.0);
 
-		/* Fill/tile port indicator */
-		if (theme->port_tiles[tileno]) {
-			gdk_cairo_set_source_pixmap(gmap->cr,
-						    theme->port_tiles
-						    [tileno],
-						    x_offset -
-						    theme->port_tiles_width
-						    [tileno] / 2,
-						    y_offset -
-						    theme->port_tiles_height
-						    [tileno] / 2);
-			cairo_pattern_set_extend(cairo_get_source
-						 (gmap->cr),
-						 CAIRO_EXTEND_REPEAT);
-			typeind = TRUE;
-			drawit = TRUE;
-		} else if (!theme->colors[TC_PORT_BG].transparent) {
-			gdk_cairo_set_source_color(gmap->cr,
-						   &theme->colors
-						   [TC_PORT_BG].color);
-			typeind = FALSE;
-			drawit = TRUE;
-		} else {
-			typeind = FALSE;
-			drawit = FALSE;
-		}
-		if (drawit) {
-			cairo_arc(gmap->cr, x_offset, y_offset,
-				  gmap->chit_radius, 0.0, 2 * M_PI);
-			cairo_fill(gmap->cr);
-		}
-
-		/* Outline port indicator */
-		if (!theme->colors[TC_PORT_BD].transparent) {
-			gdk_cairo_set_source_color(gmap->cr,
-						   &theme->colors
-						   [TC_PORT_BD].color);
-			cairo_arc(gmap->cr, x_offset, y_offset,
-				  gmap->chit_radius, 0.0, 2 * M_PI);
-			cairo_stroke(gmap->cr);
-		}
-		/* Print trading ratio */
-		if (!theme->colors[TC_PORT_FG].transparent) {
-			if (typeind) {
-				if (hex->resource < NO_RESOURCE)
-					/* Port indicator for a resource: trade 2 for 1 */
-					str = _("2:1");
-				else
-					/* Port indicator: trade 3 for 1 */
-					str = _("3:1");
-			} else {
-				switch (hex->resource) {
-				case BRICK_RESOURCE:
-					/* Port indicator for brick */
-					str = Q_("Brick port|B");
-					break;
-				case GRAIN_RESOURCE:
-					/* Port indicator for grain */
-					str = Q_("Grain port|G");
-					break;
-				case ORE_RESOURCE:
-					/* Port indicator for ore */
-					str = Q_("Ore port|O");
-					break;
-				case WOOL_RESOURCE:
-					/* Port indicator for wool */
-					str = Q_("Wool port|W");
-					break;
-				case LUMBER_RESOURCE:
-					/* Port indicator for lumber */
-					str = Q_("Lumber port|L");
-					break;
-				default:
-					/* General port indicator */
-					str = _("3:1");
-					break;
-				}
-			}
-			pango_layout_set_markup(gmap->layout, str, -1);
-			pango_layout_get_pixel_size(gmap->layout, &width,
-						    &height);
-			gdk_cairo_set_source_color(gmap->cr,
-						   &theme->colors
-						   [TC_PORT_FG].color);
-			cairo_move_to(gmap->cr, x_offset - width / 2,
-				      y_offset - height / 2);
-			pango_cairo_show_layout(gmap->cr, gmap->layout);
-		}
+		draw_port_indicator(gmap->layout, gmap->cr,
+				    x_offset, y_offset, gmap->chit_radius,
+				    hex->resource);
 	}
 
 	cairo_set_line_width(gmap->cr, 1.0);
