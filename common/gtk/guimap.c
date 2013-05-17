@@ -1219,6 +1219,7 @@ void guimap_zoom_center_map(GuiMap * gmap)
 	guimap_display(gmap);
 	gtk_widget_queue_draw(gmap->area);
 }
+
 /** Finds the closest edge to (x,y).
  * @param gmap The GuiMap containing the edge.
  * @param x,y The coordinate.
