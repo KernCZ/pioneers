@@ -1,3 +1,6 @@
+2013-05-20  Roland Clobus <rclobus@rclobus.nl>
+	* MinGW/README.txt: The MinGW build works from a clean svn checkout.
+
 2013-05-19  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/quote-view.c, client/gtk/histogram.c, editor/gtk/editor.c,
 	common/gtk/theme.h, common/gtk/guimap.c, common/gtk/theme.c: Removed

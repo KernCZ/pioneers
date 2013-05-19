@@ -10,13 +10,18 @@ Prepare the build environment
   - Extract to C:\MinGW
 * Download from http://ftp.gnome.org/pub/GNOME/binaries/win32:
   - From the folder intltool: intltool_0.40.4-1_win32.zip
-  - From the folder librsvg: librsvg_2.32.1-1_win32.zip and
-    svg-gdk-pixbuf-loader_2.32.1-1_win32.zip
+  - From the folder librsvg: librsvg_2.32.1-1_win32.zip, 
+    svg-gdk-pixbuf-loader_2.32.1-1_win32.zip and
+    librsvg-dev_2.32.1-1_win32.zip
   - From the folder libcroco: libcroco_0.6.2-1_win32.zip
   - From the folder dependencies: libxml2_2.7.7-1_win32.zip
   - From the folder gdk-pixbuf: gdk-pixbuf_2.24.0-1_win32.zip
   - Extract all to C:\MinGW
-
+* Download the GOB2 tarball from http://www.jirka.org/gob.html
+  - ./configure --prefix=/mingw
+  - make
+  - make install
+  
 * In MSYS shell:
   - vim /MinGW/bin/intltool-*
     - Adjust all first lines to point to /bin/perl instead of
