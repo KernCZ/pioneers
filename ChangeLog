@@ -1,4 +1,9 @@
-2013-05-08  Micah Bunting <amnykon@gmail.com>
+2013-05-19  Roland Clobus <rclobus@rclobus.nl>
+	* client/gtk/quote-view.c, client/gtk/histogram.c, editor/gtk/editor.c,
+	common/gtk/theme.h, common/gtk/guimap.c, common/gtk/theme.c: Removed
+	the use of GdkPixmap in theme.c (needed for Gtk+3).
+
+2013-05-18  Micah Bunting <amnykon@gmail.com>
 	* editor/gtk/editor.c, common/gtk/guimap.c, common/gtk/guimap.h:
 	Added a toolbar to the map editor.
 

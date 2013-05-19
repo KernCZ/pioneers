@@ -271,8 +271,8 @@ static void load_pixmaps(QuoteView * qv)
 						(qv->quotes)));
 
 	cr = gdk_cairo_create(pixmap);
-	gdk_cairo_set_source_pixmap(cr,
-				    theme_get_terrain_pixmap(SEA_TERRAIN),
+	gdk_cairo_set_source_pixbuf(cr,
+				    theme_get_terrain_pixbuf(SEA_TERRAIN),
 				    0.0, 0.0);
 	cairo_pattern_set_extend(cairo_get_source(cr),
 				 CAIRO_EXTEND_REPEAT);
@@ -712,8 +712,8 @@ void quote_view_theme_changed(QuoteView * qv)
 						(qv->quotes)));
 
 	cr = gdk_cairo_create(pixmap);
-	gdk_cairo_set_source_pixmap(cr,
-				    theme_get_terrain_pixmap(SEA_TERRAIN),
+	gdk_cairo_set_source_pixbuf(cr,
+				    theme_get_terrain_pixbuf(SEA_TERRAIN),
 				    0.0, 0.0);
 	cairo_pattern_set_extend(cairo_get_source(cr),
 				 CAIRO_EXTEND_REPEAT);

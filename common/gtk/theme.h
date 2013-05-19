@@ -32,7 +32,6 @@ typedef struct {
 } TColor;
 
 typedef struct {
-	GdkPixbuf *image;
 	GdkPixbuf *native_image;
 	gint native_width;
 	gdouble aspect;
@@ -94,8 +93,8 @@ typedef struct _MapTheme {
 	gint current_width;
 	const gchar *terrain_tile_names[TERRAIN_TILE_MAX];
 	const gchar *port_tile_names[PORT_TILE_MAX];
-	GdkPixmap *terrain_tiles[TERRAIN_TILE_MAX];
-	GdkPixmap *port_tiles[PORT_TILE_MAX];
+	GdkPixbuf *terrain_tiles[TERRAIN_TILE_MAX];
+	GdkPixbuf *port_tiles[PORT_TILE_MAX];
 	gint port_tiles_width[PORT_TILE_MAX];
 	gint port_tiles_height[PORT_TILE_MAX];
 	TScaleData scaledata[TERRAIN_TILE_MAX];
@@ -111,7 +110,7 @@ void themes_init(void);
 void theme_register_callback(GCallback callback);
 void themes_cleanup(void);
 
-GdkPixmap *theme_get_terrain_pixmap(Terrain terrain);
+GdkPixbuf *theme_get_terrain_pixbuf(Terrain terrain);
 
 /** Callback to draw a terrain.
  * @param area Widget to draw on.

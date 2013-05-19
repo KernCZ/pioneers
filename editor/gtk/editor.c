@@ -332,9 +332,9 @@ static gboolean expose_port_cb(GtkWidget * area,
 	layout = gtk_widget_create_pango_layout(gmap->area, "");
 
 	theme = theme_get_current();
-	gdk_pixmap_get_size(theme->terrain_tiles[SEA_TERRAIN], &width,
-			    &height);
-	gdk_cairo_set_source_pixmap(cr, theme->terrain_tiles[SEA_TERRAIN],
+	width = gdk_pixbuf_get_width(theme->terrain_tiles[SEA_TERRAIN]);
+	height = gdk_pixbuf_get_height(theme->terrain_tiles[SEA_TERRAIN]);
+	gdk_cairo_set_source_pixbuf(cr, theme->terrain_tiles[SEA_TERRAIN],
 				    BUTTON_HEIGHT / 2 - width / 2,
 				    BUTTON_HEIGHT / 2 - height / 2);
 	cairo_pattern_set_extend(cairo_get_source(cr),
@@ -1226,7 +1226,7 @@ static GtkWidget *build_port_menu(void)
 {
 	gint i;
 	GtkWidget *item;
-	GdkPixmap *pixmap;
+	GdkPixbuf *pixbuf;
 	GtkWidget *image;
 	GtkWidget *menu;
 	MapTheme *theme = theme_get_current();
@@ -1243,11 +1243,11 @@ static GtkWidget *build_port_menu(void)
 				 G_CALLBACK(select_port_resource_cb),
 				 GINT_TO_POINTER(i));
 
-		pixmap = theme->port_tiles[i];
-		if (i >= NO_RESOURCE || pixmap == NULL)
+		pixbuf = theme->port_tiles[i];
+		if (i >= NO_RESOURCE || pixbuf == NULL)
 			continue;
 
-		image = gtk_image_new_from_pixmap(pixmap, NULL);
+		image = gtk_image_new_from_pixbuf(pixbuf);
 		gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(item),
 					      image);
 	}

@@ -175,11 +175,9 @@ static gboolean parsecolor(char *p, TColor * tc, const gchar * filename,
 			   int lno);
 static MapTheme *theme_config_parse(const gchar * themename,
 				    const gchar * subdir);
-static gboolean theme_load_pixmap(const gchar * file,
+static gboolean theme_load_pixbuf(const gchar * file,
 				  const gchar * themename,
-				  GdkPixbuf ** pixbuf,
-				  GdkPixmap ** pixmap_return,
-				  GdkBitmap ** mask_return);
+				  GdkPixbuf ** pixbuf);
 
 /** Find a theme with the given name */
 static gint theme_list_locate(gconstpointer item, gconstpointer data)
@@ -302,22 +300,18 @@ GList *theme_get_list(void)
 	return theme_list;
 }
 
-/** Load a pixbuf, its pixmap and its mask.
+/** Load a pixbuf.
  *  If loading fails, no objects need to be freed.
  *  @return TRUE if succesful
  */
-gboolean theme_load_pixmap(const gchar * file, const gchar * themename,
-			   GdkPixbuf ** pixbuf,
-			   GdkPixmap ** pixmap_return,
-			   GdkBitmap ** mask_return)
+gboolean theme_load_pixbuf(const gchar * file, const gchar * themename,
+			   GdkPixbuf ** pixbuf)
 {
 	g_return_val_if_fail(themename != NULL, FALSE);
 	g_return_val_if_fail(pixbuf != NULL, FALSE);
 	g_return_val_if_fail(file != NULL, FALSE);
-	g_return_val_if_fail(pixmap_return != NULL, FALSE);
 
 	*pixbuf = NULL;
-	*pixmap_return = NULL;
 
 	/* check that file exists */
 	if (!g_file_test(file, G_FILE_TEST_EXISTS)) {
@@ -329,17 +323,9 @@ gboolean theme_load_pixmap(const gchar * file, const gchar * themename,
 
 	/* load pixmap/mask */
 	*pixbuf = gdk_pixbuf_new_from_file(file, NULL);
-	*pixmap_return = NULL;
-	if (*pixbuf != NULL) {
-		gdk_pixbuf_render_pixmap_and_mask(*pixbuf,
-						  pixmap_return,
-						  mask_return, 1);
-	}
 
 	/* check result */
-	if (*pixmap_return == NULL) {
-		if (*pixbuf)
-			g_object_unref(*pixbuf);
+	if (*pixbuf == NULL) {
 		g_warning
 		    ("Could not load \'%s\' pixmap file in theme \'%s\'.",
 		     file, themename);
@@ -359,18 +345,18 @@ static gboolean theme_initialize(MapTheme * t)
 
 	/* load terrain tiles */
 	for (i = 0; i < G_N_ELEMENTS(t->terrain_tiles); ++i) {
-		GdkPixbuf *pixbuf, *pixbuf_copy;
-		if (!theme_load_pixmap
-		    (t->terrain_tile_names[i], t->name, &pixbuf,
-		     &(t->terrain_tiles[i]), NULL)) {
+		GdkPixbuf *pixbuf;
+		GdkPixbuf *pixbuf_copy;
+		if (!theme_load_pixbuf
+		    (t->terrain_tile_names[i], t->name, &pixbuf)) {
 			g_error("Could not find pixmap file: %s",
 				t->terrain_tile_names[i]);
 		};
+		t->terrain_tiles[i] = pixbuf;
 		pixbuf_copy = gdk_pixbuf_copy(pixbuf);
 		if (pixbuf_copy == NULL) {
 			return FALSE;
 		}
-		t->scaledata[i].image = pixbuf;
 		t->scaledata[i].native_image = pixbuf_copy;
 		t->scaledata[i].native_width =
 		    gdk_pixbuf_get_width(pixbuf);
@@ -384,16 +370,14 @@ static gboolean theme_initialize(MapTheme * t)
 		/* if a theme doesn't define a port tile, it will be drawn with
 		 * its resource letter instead */
 		if (t->port_tile_names[i]) {
-			GdkPixbuf *pixbuf;
-			if (theme_load_pixmap
-			    (t->port_tile_names[i], t->name, &pixbuf,
-			     &(t->port_tiles[i]), NULL)) {
-				gdk_pixmap_get_size(t->port_tiles[i],
-						    &t->port_tiles_width
-						    [i],
-						    &t->port_tiles_height
-						    [i]);
-				g_object_unref(pixbuf);
+			if (theme_load_pixbuf
+			    (t->port_tile_names[i], t->name,
+			     &(t->port_tiles[i]))) {
+				t->port_tiles_width[i] =
+				    gdk_pixbuf_get_width(t->port_tiles[i]);
+				t->port_tiles_height[i] =
+				    gdk_pixbuf_get_height(t->port_tiles
+							  [i]);
 			}
 		} else
 			t->port_tiles[i] = NULL;
@@ -434,7 +418,6 @@ static void theme_cleanup(MapTheme * t)
 	/* terrain tiles */
 	for (i = 0; i < G_N_ELEMENTS(t->terrain_tiles); ++i) {
 		g_object_unref(t->terrain_tiles[i]);
-		g_object_unref(t->scaledata[i].image);
 		g_object_unref(t->scaledata[i].native_image);
 	}
 	/* port tiles */
@@ -501,21 +484,12 @@ void theme_rescale(int new_width)
 		if (new_height <= 0)
 			new_height = 1;
 		/* rescale the pixbuf */
-		g_object_unref(current_theme->scaledata[i].image);
-		current_theme->scaledata[i].image =
+		g_object_unref(current_theme->terrain_tiles[i]);
+		current_theme->terrain_tiles[i] =
 		    gdk_pixbuf_scale_simple(current_theme->scaledata[i].
 					    native_image, new_width,
 					    new_height,
 					    GDK_INTERP_BILINEAR);
-
-		/* render a new pixmap */
-		g_object_unref(current_theme->terrain_tiles[i]);
-		gdk_pixbuf_render_pixmap_and_mask(current_theme->scaledata
-						  [i].image,
-						  &
-						  (current_theme->
-						   terrain_tiles[i]), NULL,
-						  1);
 	}
 }
 
@@ -753,7 +727,7 @@ void theme_register_callback(GCallback callback)
 	callback_list = g_list_append(callback_list, callback);
 }
 
-GdkPixmap *theme_get_terrain_pixmap(Terrain terrain)
+GdkPixbuf *theme_get_terrain_pixbuf(Terrain terrain)
 {
 	return theme_get_current()->terrain_tiles[terrain];
 }

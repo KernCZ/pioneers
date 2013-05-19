@@ -93,14 +93,14 @@ static gboolean expose_histogram_cb(GtkWidget * area,
 	gboolean seven_thrown;
 	gboolean draw_labels_and_chits;
 	gint CHIT_RADIUS;
-	GdkPixmap *pixmap;
+	GdkPixbuf *pixbuf;
 	cairo_t *histogram_cr;
 	GtkAllocation allocation;
 
 	if (gtk_widget_get_window(area) == NULL)
 		return TRUE;
 
-	pixmap = theme_get_terrain_pixmap(GPOINTER_TO_INT(terrain));
+	pixbuf = theme_get_terrain_pixbuf(GPOINTER_TO_INT(terrain));
 
 	histogram_cr = gdk_cairo_create(gtk_widget_get_window(area));
 	cairo_set_line_width(histogram_cr, 1.0);
@@ -178,7 +178,7 @@ static gboolean expose_histogram_cb(GtkWidget * area,
 		    max + 0.5;
 		gdouble x =
 		    grid_offset_x + (i - 2) * (bar_width + BAR_SEPARATION);
-		gdk_cairo_set_source_pixmap(histogram_cr, pixmap, 0.0,
+		gdk_cairo_set_source_pixbuf(histogram_cr, pixbuf, 0.0,
 					    0.0);
 		cairo_pattern_set_extend(cairo_get_source(histogram_cr),
 					 CAIRO_EXTEND_REPEAT);

@@ -701,7 +701,7 @@ void draw_port_indicator(PangoLayout * layout, cairo_t * cr,
 
 		/* Fill/tile port indicator */
 		if (theme->port_tiles[tileno]) {
-			gdk_cairo_set_source_pixmap(cr,
+			gdk_cairo_set_source_pixbuf(cr,
 						    theme->port_tiles
 						    [tileno],
 						    x_offset -
@@ -870,8 +870,8 @@ static gboolean display_hex(const Hex * hex, gpointer closure)
 	poly_offset(&poly, x_offset, y_offset);
 
 	/* Draw the hex */
-	gdk_cairo_set_source_pixmap(gmap->cr,
-				    theme->terrain_tiles[hex->terrain],
+	gdk_cairo_set_source_pixbuf(gmap->cr,
+				    theme_get_terrain_pixbuf(hex->terrain),
 				    x_offset - gmap->x_point,
 				    y_offset - gmap->hex_radius);
 	cairo_pattern_set_extend(cairo_get_source(gmap->cr),
@@ -1143,7 +1143,7 @@ void guimap_display(GuiMap * gmap)
 
 	gmap->cr = gdk_cairo_create(gmap->pixmap);
 
-	gdk_cairo_set_source_pixmap(gmap->cr,
+	gdk_cairo_set_source_pixbuf(gmap->cr,
 				    theme_get_current()->terrain_tiles
 				    [BOARD_TILE], 0, 0);
 	cairo_pattern_set_extend(cairo_get_source(gmap->cr),
@@ -1341,7 +1341,7 @@ void guimap_draw_edge(GuiMap * gmap, const Edge * edge)
 	calc_edge_poly(gmap, edge, &largest_edge_poly, &poly);
 	poly_bound_rect(&poly, 1, &rect);
 
-	gdk_cairo_set_source_pixmap(gmap->cr,
+	gdk_cairo_set_source_pixbuf(gmap->cr,
 				    theme_get_current()->terrain_tiles
 				    [BOARD_TILE], 0, 0);
 	cairo_pattern_set_extend(cairo_get_source(gmap->cr),
@@ -1432,7 +1432,7 @@ void guimap_draw_node(GuiMap * gmap, const Node * node)
 	calc_node_poly(gmap, node, &largest_node_poly, &poly);
 	poly_bound_rect(&poly, 1, &rect);
 
-	gdk_cairo_set_source_pixmap(gmap->cr,
+	gdk_cairo_set_source_pixbuf(gmap->cr,
 				    theme_get_current()->terrain_tiles
 				    [BOARD_TILE], 0, 0);
 	cairo_pattern_set_extend(cairo_get_source(gmap->cr),
