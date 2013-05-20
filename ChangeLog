@@ -1,5 +1,9 @@
 2013-05-20  Roland Clobus <rclobus@rclobus.nl>
 	* MinGW/README.txt: The MinGW build works from a clean svn checkout.
+	* client/gtk/data/pioneers.svg, server/gtk/pioneers-server.svg,
+	editor/gtk/pioneers-editor.svg: Resized to 48x48, thicker lines,
+	refreshed computer icon, added attribution for the selections of the
+	Gorilla theme by Jakub Steiner.
 
 2013-05-19  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/quote-view.c, client/gtk/histogram.c, editor/gtk/editor.c,
