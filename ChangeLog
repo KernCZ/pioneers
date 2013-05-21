@@ -1,3 +1,6 @@
+2013-05-21  Roland Clobus <rclobus@rclobus.nl>
+	* Makefile.am: Use icons of 256x256, to show sharp icons on Alt-Tab.
+
 2013-05-20  Roland Clobus <rclobus@rclobus.nl>
 	* MinGW/README.txt: The MinGW build works from a clean svn checkout.
 	* client/gtk/data/pioneers.svg, server/gtk/pioneers-server.svg,

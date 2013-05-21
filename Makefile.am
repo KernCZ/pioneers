@@ -99,7 +99,7 @@ icons =
 # creating icons
 %.png: %.svg
 	@mkdir_p@ $(dir $@)
-	$(svg_renderer_path) $(svg_renderer_width)48$(svg_renderer_height)48 $< $(svg_renderer_output) $@
+	$(svg_renderer_path) $(svg_renderer_width)256$(svg_renderer_height)256 $< $(svg_renderer_output) $@
 
 if USE_WINDOWS_ICON
 # Will be used in Windows builds
