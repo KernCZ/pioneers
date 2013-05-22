@@ -20,6 +20,9 @@ svn export debian "$dir/$pdir/debian"
 
 cd "$dir/$pdir"
 
+#- update the version number in the builddep package
+vim debian/pioneers-builddep
+
 #- dch, mark bugs as closed
 dch -i
 
