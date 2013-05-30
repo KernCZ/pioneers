@@ -1,3 +1,8 @@
+2013-05-30  Roland Clobus <rclobus@rclobus.nl>
+	* editor/gtk/Makefile.am, server/gtk/Makefile.am, Makefile.am,
+	client/gtk/data/Makefile.am: Don't remove the *.ico files in the
+	make maintainer-clean target.
+
 2013-05-21  Roland Clobus <rclobus@rclobus.nl>
 	* Makefile.am: Use icons of 256x256, to show sharp icons on Alt-Tab.
 
