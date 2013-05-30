@@ -86,8 +86,6 @@ DISTCLEANFILES =
 MAINTAINERCLEANFILES =
 EXTRA_DIST = autogen.sh pioneers.spec xmldocs.make omf.make README.Cygwin README.MinGW
 BUILT_SOURCES =
-windows_resources_input =
-windows_resources_output =
 icons = 
 
 # Use GOB to create new classes
@@ -132,7 +130,7 @@ desktop_DATA = $(desktop_in_files:.desktop.in=.desktop)
 
 # Make use of some of the variables that were filled in by the included
 # Makefile.ams
-MAINTAINERCLEANFILES += $(icon_DATA) $(windows_resources_output)
+MAINTAINERCLEANFILES += $(icon_DATA)
 DISTCLEANFILES += $(desktop_in_files:.desktop.in=.desktop) intltool-extract intltool-merge intltool-update
 EXTRA_DIST += \
 	$(man_MANS) \
@@ -140,9 +138,7 @@ EXTRA_DIST += \
 	$(config_DATA) \
 	$(pixmap_DATA) \
 	$(icon_DATA) \
-	$(subst png,svg,$(icon_DATA)) \
-	$(windows_resources_input) \
-	$(windows_resources_output)
+	$(subst png,svg,$(icon_DATA))
 
 # po doesn't use automake, but creates its own Makefile
 SUBDIRS += po

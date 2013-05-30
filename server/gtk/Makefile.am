@@ -28,12 +28,11 @@ pioneers_server_gtk_CPPFLAGS = $(gtk_cflags) $(avahi_cflags) -I $(srcdir)/server
 pioneers_server_gtk_LDADD = libpioneers_server.a $(gtk_libs) $(avahi_libs)
 
 pioneers_server_gtk_SOURCES = \
-	server/gtk/main.c
+	server/gtk/main.c \
+	server/gtk/pioneers-server.ico \
+	server/gtk/pioneers-server.rc
 
 if USE_WINDOWS_ICON
 pioneers_server_gtk_LDADD += server/gtk/pioneers-server.res
 CLEANFILES += server/gtk/pioneers-server.res
 endif
-
-windows_resources_output += server/gtk/pioneers-server.ico
-windows_resources_input += server/gtk/pioneers-server.rc
