@@ -126,7 +126,7 @@ The implementation of GP6) can be done independently of other changes. It signif
 The implementation of GP7) can be done independently of other changes. GP8) can replace GP7) eventually.
 
 The following modifications can be done, in chronological order:
-1) Replace GP1) by GP5) in the metaserver. This will allow the client to start a board with the number of players and victory points as determined by the designer of a board layout.
+1) Replace GP1) by GP5) in the metaserver. This will allow the client to start a board with the number of players and victory points as determined by the designer of a board layout. -> NOT NEEDED ANYMORE
 2) The client sends GP5) instead of GP2). The metaserver can save a file with the GP5) information from the client to start C).
 
 Then the development can be split in independent changes a and b:

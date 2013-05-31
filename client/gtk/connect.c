@@ -39,6 +39,7 @@
 #include "client.h"
 #include "gtkcompat.h"
 #include "common_gtk.h"
+#include "game-list.h"
 
 const int PRIVATE_GAME_HISTORY_SIZE = 10;
 
@@ -129,14 +130,14 @@ static struct {
 	gint num_redirects;
 	/** The metaserver can create remote games */
 	gboolean can_create_games;
-	/** The metaserver can send information about a game */
-	gboolean can_send_game_settings;
 	/** Active session */
 	Session *session;
 	/** Number of available game titles */
 	guint num_available_titles;
+	/** The settings of a game */
+	GameParams *params;
 } metaserver_info = {
-NULL, NULL, 0, 0, 0, FALSE, FALSE, NULL, 0u};
+NULL, NULL, 0, 0, 0, FALSE, NULL, 0u, NULL};
 
 #define STRARG_LEN 128
 #define INTARG_LEN 16
@@ -350,8 +351,22 @@ static void meta_gametype_notify(Session * ses, NetEvent event,
 			 * title=%s\n
 			 */
 			if (strncmp(line, "title=", 6) == 0) {
-				select_game_add(SELECTGAME(select_game),
-						line + 6);
+				const GameParams *params;
+
+				line += 6;
+				if (game_list_is_empty()) {
+					game_list_prepare();
+				}
+				params = game_list_find_item(line);
+				if (params != NULL) {
+					select_game_add_details(SELECTGAME
+								(select_game),
+								params);
+				} else {
+					select_game_add(SELECTGAME
+							(select_game),
+							line);
+				}
 				metaserver_info.num_available_titles++;
 			}
 			break;
@@ -599,7 +614,6 @@ static void meta_notify(Session * ses,
 			metaserver_info.version_major = 0;
 			metaserver_info.version_minor = 0;
 			metaserver_info.can_create_games = FALSE;
-			metaserver_info.can_send_game_settings = FALSE;
 			if (strncmp(line, "welcome ", 8) == 0) {
 				char *p = strstr(line, "version ");
 				if (p) {
@@ -641,9 +655,6 @@ static void meta_notify(Session * ses,
 		case MODE_CAPABILITY:
 			if (!strcmp(line, "create games")) {
 				metaserver_info.can_create_games = TRUE;
-			} else if (!strcmp(line, "send game settings")) {
-				metaserver_info.can_send_game_settings =
-				    TRUE;
 			} else if (!strcmp(line, "end")) {
 				net_printf(ses,
 					   metaserver_info.version_major >=
@@ -850,6 +861,27 @@ static void player_change_cb(GameSettings * gs,
 		gtk_spin_button_set_value(ai_spin, players - 1);
 }
 
+static void game_select_cb(SelectGame * sg,
+			   G_GNUC_UNUSED gpointer user_data)
+{
+	const GameParams *params;
+
+	params = select_game_get_active_game(sg);
+
+	if (params != NULL) {
+		game_settings_set_players(GAMESETTINGS(game_settings),
+					  params->num_players);
+		game_settings_set_victory_points(GAMESETTINGS
+						 (game_settings),
+						 params->victory_points);
+		game_rules_set_random_terrain(GAMERULES(game_rules),
+					      params->random_terrain);
+		game_rules_set_sevens_rule(GAMERULES(game_rules),
+					   params->sevens_rule);
+
+		player_change_cb(GAMESETTINGS(game_settings), NULL);
+	}
+}
 
 static GtkWidget *build_create_interface(void)
 {
@@ -865,22 +897,9 @@ static GtkWidget *build_create_interface(void)
 	select_game = select_game_new();
 	gtk_widget_show(select_game);
 	gtk_box_pack_start(GTK_BOX(vbox), select_game, FALSE, FALSE, 3);
-	/* The meta server does not send information about the game,
-	 * so don't adjust the game settings when another game is chosen.
-	 g_signal_connect(G_OBJECT(select_game),
-	 "activate",
-	 G_CALLBACK(game_select_cb), NULL);
-	 */
 
-	if (!metaserver_info.can_send_game_settings) {
-		label = gtk_label_new(NULL);
-		gtk_label_set_markup(GTK_LABEL(label),
-				     _("<b>Note</b>:\n"
-				       "\tThe metaserver does not send information about the games.\n"
-				       "\tPlease set appropriate values yourself."));
-		gtk_widget_show(label);
-		gtk_box_pack_start(GTK_BOX(vbox), label, TRUE, TRUE, 0);
-	}
+	g_signal_connect(G_OBJECT(select_game), "activate",
+			 G_CALLBACK(game_select_cb), NULL);
 
 	game_settings = game_settings_new(FALSE);
 	gtk_widget_show(game_settings);
@@ -934,6 +953,10 @@ static void create_server_dlg_cb(GtkDialog * dlg, gint arg1,
 		gtk_dialog_set_response_sensitive(dlg, GTK_RESPONSE_OK,
 						  FALSE);
 
+		if (metaserver_info.session != NULL) {
+			log_message(MSG_INFO, _("Canceled.\n"));
+			net_close(metaserver_info.session);
+		}
 		log_message(MSG_INFO, _("Requesting new game server.\n"));
 
 		cfg_terrain = game_rules_get_random_terrain(gr);
@@ -943,9 +966,8 @@ static void create_server_dlg_cb(GtkDialog * dlg, gint arg1,
 		cfg_ai_players = (guint)
 		    gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON
 						     (aiplayers_spin));
-		cfg_gametype = select_game_get_active(sg);
+		cfg_gametype = select_game_get_active_title(sg);
 
-		g_assert(metaserver_info.session == NULL);
 		metaserver_info.session =
 		    net_new(meta_create_notify, NULL);
 		if (net_connect
@@ -1142,7 +1164,6 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
 			metaserver_info.version_major = 0;
 			metaserver_info.version_minor = 0;
 			metaserver_info.can_create_games = FALSE;
-			metaserver_info.can_send_game_settings = FALSE;
 			gtk_dialog_set_response_sensitive
 			    (GTK_DIALOG(meta_dlg),
 			     META_RESPONSE_NEW,

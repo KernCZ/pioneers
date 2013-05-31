@@ -33,6 +33,7 @@
 #include "version.h"
 #include "notification.h"
 #include "client.h"
+#include "game-list.h"
 
 static gboolean have_dlg = FALSE;
 static gboolean connectable = FALSE;
@@ -152,6 +153,7 @@ static void frontend_main(void)
 {
 	gtk_main();
 	themes_cleanup();
+	game_list_cleanup();
 }
 
 /* this function is called to let the frontend initialize itself. */

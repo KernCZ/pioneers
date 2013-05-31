@@ -202,9 +202,6 @@ static void client_list_capability(Session * ses)
 	if (can_create_games) {
 		net_printf(ses, "create games\n");
 	}
-	/** @todo RC 2005-01-30 Implement this in the metaserver */
-	if (FALSE)
-		net_printf(ses, "send game settings\n");
 	net_printf(ses, "deregister dead connections\n");
 	net_printf(ses, "end\n");
 }

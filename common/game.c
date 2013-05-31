@@ -32,6 +32,14 @@
 #include "cards.h"
 #include "log.h"
 
+/* The macro is a modification of the macro in the glib source
+ * The modification allows for const pointers
+ */
+#ifndef G_STRUCT_MEMBER_CONST
+#define G_STRUCT_MEMBER_CONST(member_type, struct_p, struct_offset)   \
+    (*(member_type const *) ((gconstpointer) ((const guint8*) (struct_p) + (glong) (struct_offset))))
+#endif
+
 const gchar *default_player_style = "square";
 
 typedef enum {
@@ -139,14 +147,14 @@ void params_free(GameParams * params)
 	g_free(params);
 }
 
-static gchar *skip_space(gchar * str)
+static const gchar *skip_space(const gchar * str)
 {
 	while (isspace(*str))
 		str++;
 	return str;
 }
 
-static gboolean match_word(gchar ** str, const gchar * word)
+static gboolean match_word(const gchar ** str, const gchar * word)
 {
 	size_t word_len;
 
@@ -249,14 +257,14 @@ static gboolean find_no_setup(const Hex * hex, gpointer closure)
 	return FALSE;
 }
 
-void params_write_lines(GameParams * params, ClientVersionType version,
-			gboolean write_secrets, WriteLineFunc func,
-			gpointer user_data)
+void params_write_lines(const GameParams * params,
+			ClientVersionType version, gboolean write_secrets,
+			WriteLineFunc func, gpointer user_data)
 {
 	guint idx;
 	gint y;
 	gchar *buff;
-	gchar *str;
+	const gchar *str;
 
 	for (idx = 0; idx < G_N_ELEMENTS(game_params); idx++) {
 		Param *param = game_params + idx;
@@ -269,14 +277,14 @@ void params_write_lines(GameParams * params, ClientVersionType version,
 			case PARAM_SINGLE_LINE:
 			case PARAM_MULTIPLE_LINES:
 				str =
-				    G_STRUCT_MEMBER(gchar *, params,
-						    param->offset);
+				    G_STRUCT_MEMBER_CONST(gchar *, params,
+							  param->offset);
 				if (!str || strlen(str) < 1) {
 					continue;
 				};
 				break;
 			case PARAM_INT:
-				if (G_STRUCT_MEMBER
+				if (G_STRUCT_MEMBER_CONST
 				    (gint, params, param->offset) < 1) {
 
 					continue;
@@ -291,7 +299,7 @@ void params_write_lines(GameParams * params, ClientVersionType version,
 				}
 				break;
 			case PARAM_BOOL:
-				if (!G_STRUCT_MEMBER
+				if (!G_STRUCT_MEMBER_CONST
 				    (gboolean, params, param->offset)) {
 					continue;
 				}
@@ -299,10 +307,9 @@ void params_write_lines(GameParams * params, ClientVersionType version,
 			case PARAM_INTLIST:
 				buff =
 				    format_int_list(param->name,
-						    G_STRUCT_MEMBER(GArray
-								    *,
-								    params,
-								    param->offset));
+						    G_STRUCT_MEMBER_CONST
+						    (GArray *, params,
+						     param->offset));
 				if (buff == NULL) {
 					continue;
 				};
@@ -321,8 +328,8 @@ void params_write_lines(GameParams * params, ClientVersionType version,
 		switch (param->type) {
 		case PARAM_SINGLE_LINE:
 			str =
-			    G_STRUCT_MEMBER(gchar *, params,
-					    param->offset);
+			    G_STRUCT_MEMBER_CONST(gchar *, params,
+						  param->offset);
 			if (!str)
 				continue;
 			buff = g_strdup_printf("%s %s", param->name, str);
@@ -331,8 +338,8 @@ void params_write_lines(GameParams * params, ClientVersionType version,
 			break;
 		case PARAM_MULTIPLE_LINES:
 			str =
-			    G_STRUCT_MEMBER(gchar *, params,
-					    param->offset);
+			    G_STRUCT_MEMBER_CONST(gchar *, params,
+						  param->offset);
 			if (str) {
 				gchar **strv;
 				gchar **strv_it;
@@ -352,15 +359,15 @@ void params_write_lines(GameParams * params, ClientVersionType version,
 			break;
 		case PARAM_INT:
 			buff = g_strdup_printf("%s %d", param->name,
-					       G_STRUCT_MEMBER(gint,
-							       params,
-							       param->
-							       offset));
+					       G_STRUCT_MEMBER_CONST(gint,
+								     params,
+								     param->
+								     offset));
 			func(user_data, buff);
 			g_free(buff);
 			break;
 		case PARAM_BOOL:
-			if (G_STRUCT_MEMBER
+			if (G_STRUCT_MEMBER_CONST
 			    (gboolean, params, param->offset)) {
 				func(user_data, param->name);
 			}
@@ -368,10 +375,10 @@ void params_write_lines(GameParams * params, ClientVersionType version,
 		case PARAM_INTLIST:
 			buff =
 			    format_int_list(param->name,
-					    G_STRUCT_MEMBER(GArray *,
-							    params,
-							    param->
-							    offset));
+					    G_STRUCT_MEMBER_CONST(GArray *,
+								  params,
+								  param->
+								  offset));
 			/* Don't send empty intlists */
 			if (buff != NULL) {
 				func(user_data, buff);
@@ -401,7 +408,7 @@ void params_write_lines(GameParams * params, ClientVersionType version,
 	}
 }
 
-gboolean params_load_line(GameParams * params, gchar * line)
+gboolean params_load_line(GameParams * params, const gchar * line)
 {
 	guint idx;
 
@@ -477,9 +484,11 @@ gboolean params_load_line(GameParams * params, gchar * line)
 					    param->offset);
 			if (str) {
 				gchar *copy;
+				gchar *line2 = g_strdup(line);
 				copy =
 				    g_strconcat(str, "\n",
-						g_strchomp(line), NULL);
+						g_strchomp(line2), NULL);
+				g_free(line2);
 				g_free(str);
 				str = copy;
 			} else {
@@ -585,11 +594,6 @@ GameParams *params_load_file(const gchar * fname)
 
 GameParams *params_copy(const GameParams * params)
 {
-	/* Copy the const parameter to a non-const version, because
-	 * G_STRUCT_MEMBER doesn't want const values.  Note that this
-	 * variable does not own its pointers, that is, they don't have to
-	 * be freed when it goes out of scope. */
-	GameParams nonconst;
 	GameParams *copy;
 	guint idx;
 	gchar *buff;
@@ -597,7 +601,6 @@ GameParams *params_copy(const GameParams * params)
 	if (params == NULL)
 		return NULL;
 
-	memcpy(&nonconst, params, sizeof(GameParams));
 	copy = params_new();
 	copy->map = map_copy(params->map);
 
@@ -609,26 +612,26 @@ GameParams *params_copy(const GameParams * params)
 		case PARAM_MULTIPLE_LINES:
 			G_STRUCT_MEMBER(gchar *, copy, param->offset)
 			    =
-			    g_strdup(G_STRUCT_MEMBER
-				     (gchar *, &nonconst, param->offset));
+			    g_strdup(G_STRUCT_MEMBER_CONST
+				     (gchar *, params, param->offset));
 			break;
 		case PARAM_INT:
 			G_STRUCT_MEMBER(gint, copy, param->offset)
-			    = G_STRUCT_MEMBER(gint, &nonconst,
-					      param->offset);
+			    = G_STRUCT_MEMBER_CONST(gint, params,
+						    param->offset);
 			break;
 		case PARAM_BOOL:
 			G_STRUCT_MEMBER(gboolean, copy, param->offset)
-			    = G_STRUCT_MEMBER(gboolean, &nonconst,
-					      param->offset);
+			    = G_STRUCT_MEMBER_CONST(gboolean, params,
+						    param->offset);
 			break;
 		case PARAM_INTLIST:
 			buff =
 			    format_int_list("",
-					    G_STRUCT_MEMBER(GArray *,
-							    &nonconst,
-							    param->
-							    offset));
+					    G_STRUCT_MEMBER_CONST(GArray *,
+								  params,
+								  param->
+								  offset));
 			if (buff != NULL) {
 				G_STRUCT_MEMBER(GArray *, copy,
 						param->offset) =
@@ -668,8 +671,6 @@ gboolean params_is_equal(const GameParams * params1,
 	gchar *buff2;
 	gboolean is_different;
 	struct nosetup_t tmp;
-	GameParams nonconst1;
-	GameParams nonconst2;
 
 	/* Compare the map */
 	if (params1->map->y_size != params2->map->y_size) {
@@ -712,14 +713,6 @@ gboolean params_is_equal(const GameParams * params1,
 	}
 
 	/* Compare the game parameters */
-
-	/* Copy the const parameter to a non-const version, because
-	 * G_STRUCT_MEMBER doesn't want const values.  Note that this
-	 * variable does not own its pointers, that is, they don't have to
-	 * be freed when it goes out of scope. */
-	memcpy(&nonconst1, params1, sizeof(GameParams));
-	memcpy(&nonconst2, params2, sizeof(GameParams));
-
 	for (idx = 0; idx < G_N_ELEMENTS(game_params); idx++) {
 		const Param *param = game_params + idx;
 
@@ -727,44 +720,42 @@ gboolean params_is_equal(const GameParams * params1,
 		case PARAM_SINGLE_LINE:
 		case PARAM_MULTIPLE_LINES:
 			if (g_strcmp0
-			    (G_STRUCT_MEMBER
-			     (gchar *, &nonconst1, param->offset),
-			     G_STRUCT_MEMBER(gchar *, &nonconst2,
-					     param->offset)) != 0) {
+			    (G_STRUCT_MEMBER_CONST
+			     (gchar *, params1, param->offset),
+			     G_STRUCT_MEMBER_CONST(gchar *, params2,
+						   param->offset)) != 0) {
 				return FALSE;
 			}
 			break;
 		case PARAM_INT:
-			if (G_STRUCT_MEMBER
-			    (gint, &nonconst1,
-			     param->offset) != G_STRUCT_MEMBER(gint,
-							       &nonconst2,
-							       param->offset))
+			if (G_STRUCT_MEMBER_CONST
+			    (gint, params1,
+			     param->offset) != G_STRUCT_MEMBER_CONST(gint,
+								     params2,
+								     param->offset))
 			{
 				return FALSE;
 			}
 			break;
 		case PARAM_BOOL:
-			if (G_STRUCT_MEMBER
-			    (gboolean, &nonconst1,
-			     param->offset) != G_STRUCT_MEMBER(gboolean,
-							       &nonconst2,
-							       param->offset))
-			{
+			if (G_STRUCT_MEMBER_CONST
+			    (gboolean, params1,
+			     param->offset) !=
+			    G_STRUCT_MEMBER_CONST(gboolean, params2,
+						  param->offset)) {
 				return FALSE;
 			}
 			break;
 		case PARAM_INTLIST:
 			buff1 = format_int_list("",
-						G_STRUCT_MEMBER(GArray *,
-								&nonconst1,
-								param->
-								offset));
+						G_STRUCT_MEMBER_CONST
+						(GArray *, params1,
+						 param->offset));
 			buff2 =
 			    format_int_list("",
-					    G_STRUCT_MEMBER(GArray *,
-							    &nonconst2,
-							    param->offset));
+					    G_STRUCT_MEMBER_CONST(GArray *,
+								  params2,
+								  param->offset));
 
 			is_different = g_strcmp0(buff1, buff2) != 0;
 			g_free(buff1);
@@ -816,7 +807,7 @@ static void write_one_line(gpointer user_data, const gchar * line)
 	fprintf(fp, "%s\n", line);
 }
 
-gboolean params_write_file(GameParams * params, const gchar * fname)
+gboolean params_write_file(const GameParams * params, const gchar * fname)
 {
 	FILE *fp;
 

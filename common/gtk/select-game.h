@@ -42,9 +42,9 @@ GType select_game_get_type(void);
 GtkWidget *select_game_new(void);
 void select_game_set_default(SelectGame * sg, const gchar * game_title);
 void select_game_add(SelectGame * sg, const gchar * game_title);
-void select_game_add_with_map(SelectGame * sg, const gchar * game_title,
-			      const Map * map);
-const gchar *select_game_get_active(SelectGame * sg);
+void select_game_add_details(SelectGame * sg, const GameParams * params);
+const gchar *select_game_get_active_title(SelectGame * sg);
+const GameParams *select_game_get_active_game(SelectGame * sg);
 
 G_END_DECLS
 #endif				/* __SELECTGAME_H__ */

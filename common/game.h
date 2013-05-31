@@ -145,11 +145,11 @@ GameParams *params_load_file(const gchar * fname);
 gboolean params_is_equal(const GameParams * params1,
 			 const GameParams * params2);
 void params_free(GameParams * params);
-void params_write_lines(GameParams * params, ClientVersionType version,
-			gboolean write_secrets, WriteLineFunc func,
-			gpointer user_data);
-gboolean params_write_file(GameParams * params, const gchar * fname);
-gboolean params_load_line(GameParams * params, gchar * line);
+void params_write_lines(const GameParams * params,
+			ClientVersionType version, gboolean write_secrets,
+			WriteLineFunc func, gpointer user_data);
+gboolean params_write_file(const GameParams * params, const gchar * fname);
+gboolean params_load_line(GameParams * params, const gchar * line);
 gboolean params_load_finish(GameParams * params);
 gboolean read_line_from_file(gchar ** line, FILE * f);
 /** Check whether, in theory, the game could be won by a player.

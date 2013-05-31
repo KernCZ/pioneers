@@ -1,3 +1,11 @@
+2013-05-31  Roland Clobus <rclobus@rclobus.nl>
+	* docs/README.message_flow, common/gtk/select-game.c,
+	common/gtk/select-game.h, common/game.c, common/game.h,
+	server/gtk/main.c, metaserver/main.c, metaserver/README.protocol,
+	client/gtk/offline.c, client/gtk/connect.c: Show game details in the
+	client for games from the metaserver. Updated documentation of the
+	metaserver protocol.
+
 2013-05-30  Roland Clobus <rclobus@rclobus.nl>
 	* editor/gtk/Makefile.am, server/gtk/Makefile.am, Makefile.am,
 	client/gtk/data/Makefile.am: Don't remove the *.ico files in the

@@ -23,6 +23,9 @@ enum {
 	LAST_SIGNAL
 };
 
+static const gint MAP_WIDTH = 64;
+static const gint MAP_HEIGHT = 48;
+
 static void select_game_class_init(SelectGameClass * klass);
 static void select_game_init(SelectGame * sg);
 static void select_game_finalize(GObject * object);
@@ -95,7 +98,9 @@ static void select_game_init(SelectGame * sg)
 	GtkCellRenderer *cell;
 
 	/* Create model */
-	sg->data = gtk_list_store_new(2, G_TYPE_STRING, GDK_TYPE_PIXBUF);
+	sg->data =
+	    gtk_list_store_new(3, G_TYPE_STRING, GDK_TYPE_PIXBUF,
+			       G_TYPE_POINTER);
 	sg->combo_box =
 	    gtk_combo_box_new_with_model(GTK_TREE_MODEL(sg->data));
 
@@ -139,51 +144,61 @@ void select_game_set_default(SelectGame * sg, const gchar * game_title)
 	sg->default_game = g_strdup(game_title);
 }
 
-/* Add a game title to the list.
- * The default game will be the active item.
+/** Add a game title to the list. The default game will be the active item.
+ * @param sg The SelectGame
+ * @param game_title Title
+ * @param[out] iter The iter for the new entry
+ */
+static void select_game_add_internal(SelectGame * sg,
+				     const gchar * game_title,
+				     GtkTreeIter * iter)
+{
+	g_ptr_array_add(sg->game_names, g_strdup(game_title));
+	gtk_list_store_append(sg->data, iter);
+	gtk_list_store_set(sg->data, iter, 0, game_title, 1, NULL, 2,
+			   NULL, -1);
+
+	if (!strcmp(game_title, sg->default_game)) {
+		gtk_combo_box_set_active(GTK_COMBO_BOX(sg->combo_box),
+					 sg->game_names->len - 1);
+	} else if (sg->game_names->len == 1) {
+		/* Activate the first item */
+		gtk_combo_box_set_active(GTK_COMBO_BOX(sg->combo_box), 0);
+	}
+}
+
+/** Add a game title to the list. The default game will be the active item.
+ * @param sg The SelectGame
+ * @param game_title Title
  */
 void select_game_add(SelectGame * sg, const gchar * game_title)
 {
 	GtkTreeIter iter;
-	gchar *title = g_strdup(game_title);
 
-	g_ptr_array_add(sg->game_names, title);
-	gtk_list_store_insert_with_values(sg->data, &iter, 999,
-					  0, game_title, -1);
-
-	if (!strcmp(game_title, sg->default_game))
-		gtk_combo_box_set_active(GTK_COMBO_BOX(sg->combo_box),
-					 sg->game_names->len - 1);
+	select_game_add_internal(sg, game_title, &iter);
 }
 
-/* Add a game title to the list, and add the map.
- * The default game will be the active item.
+/** Render the map.
+ * @param base_widget Base widget
+ * @param map The map
+ * @return A GdkPixbuf with ref count = 1
  */
-void select_game_add_with_map(SelectGame * sg, const gchar * game_title,
-			      const Map * map)
+static GdkPixbuf *render_map(GtkWidget * base_widget, const Map * map)
 {
-	GtkTreeIter iter;
-	gchar *title = g_strdup(game_title);
-
-	int width, height;
 	GdkPixbuf *pixbuf;
-
 	GuiMap *gmap;
-
-	width = 64;
-	height = 48;
 
 	gmap = guimap_new();
 	gmap->pixmap =
-	    gdk_pixmap_new(gtk_widget_get_window(sg->combo_box), width,
-			   height,
+	    gdk_pixmap_new(gtk_widget_get_window(base_widget), MAP_WIDTH,
+			   MAP_HEIGHT,
 			   gdk_visual_get_depth(gdk_visual_get_system()));
-	gmap->width = width;
-	gmap->height = height;
-	gmap->area = sg->combo_box;
+	gmap->width = MAP_WIDTH;
+	gmap->height = MAP_HEIGHT;
+	gmap->area = base_widget;
 	g_object_ref(gmap->area);
 	gmap->map = map_copy(map);
-	guimap_scale_to_size(gmap, width, height);
+	guimap_scale_to_size(gmap, MAP_WIDTH, MAP_HEIGHT);
 	guimap_display(gmap);
 
 	pixbuf =
@@ -191,14 +206,7 @@ void select_game_add_with_map(SelectGame * sg, const gchar * game_title,
 					 0, -1, -1);
 	guimap_delete(gmap);
 
-	g_ptr_array_add(sg->game_names, title);
-	gtk_list_store_insert_with_values(sg->data, &iter, 999,
-					  0, game_title, 1, pixbuf, -1);
-	g_object_unref(pixbuf);
-
-	if (!strcmp(game_title, sg->default_game))
-		gtk_combo_box_set_active(GTK_COMBO_BOX(sg->combo_box),
-					 sg->game_names->len - 1);
+	return pixbuf;
 }
 
 static void select_game_item_changed(G_GNUC_UNUSED GtkWidget * widget,
@@ -207,8 +215,139 @@ static void select_game_item_changed(G_GNUC_UNUSED GtkWidget * widget,
 	g_signal_emit(G_OBJECT(sg), select_game_signals[ACTIVATE], 0);
 }
 
-const gchar *select_game_get_active(SelectGame * sg)
+/** Locate a title.
+ * @param sg The SelectGame
+ * @param title The title to locate
+ * @param[out] iter The iter (when found), only valid when found
+ * @return TRUE if found
+ */
+static gboolean select_game_locate_title(SelectGame * sg,
+					 const gchar * locate_title,
+					 GtkTreeIter * iter)
+{
+	gboolean valid;
+	gboolean found;
+
+	valid =
+	    gtk_tree_model_get_iter_first(GTK_TREE_MODEL(sg->data), iter);
+	found = FALSE;
+	while (valid && !found) {
+		gchar *title;
+
+		gtk_tree_model_get(GTK_TREE_MODEL(sg->data), iter, 0,
+				   &title, -1);
+
+		if (!strcmp(title, locate_title)) {
+			found = TRUE;
+		} else {
+			valid =
+			    gtk_tree_model_iter_next(GTK_TREE_MODEL
+						     (sg->data), iter);
+		}
+		g_free(title);
+	}
+	return found;
+}
+
+struct TMapRenderer {
+	SelectGame *sg;
+	GameParams *params;
+};
+
+/** Render a map during the idle loop.
+ * @param user_data Information about the map to render
+ * @return FALSE to automatically remove the GSource.
+ */
+static gboolean select_game_render_map(gpointer user_data)
+{
+	GtkTreeIter iter;
+	struct TMapRenderer *map_render_data;
+	SelectGame *sg;
+	GdkPixbuf *pixbuf;
+
+	map_render_data = user_data;
+	sg = map_render_data->sg;
+	g_return_val_if_fail(select_game_locate_title
+			     (sg, map_render_data->params->title, &iter),
+			     FALSE);
+
+	pixbuf = render_map(sg->combo_box, map_render_data->params->map);
+	gtk_list_store_set(sg->data, &iter, 1, pixbuf, -1);
+	g_object_unref(pixbuf);
+
+	g_free(map_render_data);
+
+	return FALSE;
+}
+
+/** Add a detailed entry.
+ * @param sg SelectGame
+ * @param params The full parameters of the game
+ */
+void select_game_add_details(SelectGame * sg, const GameParams * params)
+{
+	GtkTreeIter iter;
+	gboolean found;
+	struct TMapRenderer *map_render_data;
+
+	found = select_game_locate_title(sg, params->title, &iter);
+	if (!found) {
+		select_game_add_internal(sg, params->title, &iter);
+	}
+
+	map_render_data = g_malloc(sizeof(*map_render_data));
+	map_render_data->sg = sg;
+	map_render_data->params = params_copy(params);
+
+	if (strcmp(select_game_get_active_title(sg), params->title)) {
+		/* Inactive item */
+		GdkPixbuf *pixbuf;
+
+		/* Create a placeholder of the right size */
+		pixbuf =
+		    gdk_pixbuf_new(GDK_COLORSPACE_RGB, FALSE, 8, MAP_WIDTH,
+				   MAP_HEIGHT);
+		gtk_list_store_set(sg->data, &iter, 1, pixbuf, 2,
+				   map_render_data->params, -1);
+		g_object_unref(pixbuf);
+
+		/* Render later */
+		g_idle_add(select_game_render_map, map_render_data);
+	} else {
+		/* Send an update when the details are known for
+		 * the active item */
+		gtk_list_store_set(sg->data, &iter, 2,
+				   map_render_data->params, -1);
+		select_game_render_map(map_render_data);
+		select_game_item_changed(NULL, sg);
+	}
+}
+
+/** Return the selected title.
+ * @param sg SelectGame
+ * @return The title, or NULL when nothing is selected
+ */
+const gchar *select_game_get_active_title(SelectGame * sg)
 {
 	gint idx = gtk_combo_box_get_active(GTK_COMBO_BOX(sg->combo_box));
 	return g_ptr_array_index(sg->game_names, idx);
+}
+
+/** Return the details of the game.
+ * @param sg SelectGame
+ * @return The details game description, or NULL when nothing is selected
+ */
+const GameParams *select_game_get_active_game(SelectGame * sg)
+{
+	GtkTreeIter iter;
+	GameParams *params;
+
+	if (gtk_combo_box_get_active_iter
+	    (GTK_COMBO_BOX(sg->combo_box), &iter)) {
+		gtk_tree_model_get(GTK_TREE_MODEL(sg->data), &iter, 2,
+				   &params, -1);
+		return params;
+	} else {
+		return NULL;
+	}
 }

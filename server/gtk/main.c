@@ -174,7 +174,9 @@ static void game_settings_change_cb(GameSettings *gs, G_GNUC_UNUSED gpointer use
 
 static void update_game_settings(const GameParams * params)
 {
-	g_return_if_fail(params != NULL);
+	if (params == NULL) {
+		return;
+	}
 
 	/* Update the UI */
 	game_settings_set_players(GAMESETTINGS(game_settings),
@@ -208,11 +210,9 @@ static void update_game_settings(const GameParams * params)
 static void game_activate(GtkWidget * widget,
 			  G_GNUC_UNUSED gpointer user_data)
 {
-	const gchar *title;
 	const GameParams *params;
 
-	title = select_game_get_active(SELECTGAME(widget));
-	params = game_list_find_item(title);
+	params = select_game_get_active_game(SELECTGAME(widget));
 	update_game_settings(params);
 }
 
@@ -246,12 +246,12 @@ static void start_clicked_cb(G_GNUC_UNUSED GtkButton * widget,
 		server_stop(*game);
 		gui_set_server_state(server_is_running(*game));
 	} else {		/* not running */
-		const gchar *title;
 		GameParams *params;
 		gchar *metaserver_name;
 
-		title = select_game_get_active(SELECTGAME(select_game));
-		params = params_copy(game_list_find_item(title));
+		params =
+		    params_copy(select_game_get_active_game
+				(SELECTGAME(select_game)));
 		cfg_set_num_players(params, (gint)
 				    game_settings_get_players(GAMESETTINGS
 							      (game_settings)));
@@ -456,8 +456,7 @@ static void add_game_to_list(gpointer name,
 			     G_GNUC_UNUSED gpointer user_data)
 {
 	GameParams *a = (GameParams *) name;
-	select_game_add_with_map(SELECTGAME(select_game), a->title,
-				 a->map);
+	select_game_add_details(SELECTGAME(select_game), a);
 }
 
 static void overridden_hostname_changed_cb(GtkEntry * widget,
@@ -1092,11 +1091,11 @@ static void load_last_game_params(void)
 static void check_vp_cb(G_GNUC_UNUSED GObject * caller,
 			gpointer main_window)
 {
-	const gchar *title;
 	GameParams *params;
 
-	title = select_game_get_active(SELECTGAME(select_game));
-	params = params_copy(game_list_find_item(title));
+	params =
+	    params_copy(select_game_get_active_game
+			(SELECTGAME(select_game)));
 	cfg_set_num_players(params, (gint)
 			    game_settings_get_players(GAMESETTINGS
 						      (game_settings)));
