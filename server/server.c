@@ -107,8 +107,8 @@ gint add_computer_player(Game * game, gboolean want_chat)
 	gint n = 0;
 	gint i;
 
-	child_argv[n++] = g_strdup(PIONEERS_AI_PATH);
-	child_argv[n++] = g_strdup(PIONEERS_AI_PATH);
+	child_argv[n++] = g_strdup(PIONEERS_AI_PROGRAM_NAME);
+	child_argv[n++] = g_strdup(PIONEERS_AI_PROGRAM_NAME);
 	child_argv[n++] = g_strdup("-s");
 	child_argv[n++] = g_strdup(PIONEERS_DEFAULT_GAME_HOST);
 	child_argv[n++] = g_strdup("-p");
@@ -120,11 +120,11 @@ gint add_computer_player(Game * game, gboolean want_chat)
 	child_argv[n] = NULL;
 	g_assert(n < 10);
 
-	if (!g_spawn_async(NULL, child_argv, NULL, 0, NULL, NULL,
-			   NULL, &error)) {
-		log_message(MSG_ERROR,
-			    _("Error starting %s: %s\n"),
-			    PIONEERS_AI_PATH, error->message);
+	if (!g_spawn_async
+	    (NULL, child_argv, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL,
+	     &error)) {
+		log_message(MSG_ERROR, _("Error starting %s: %s\n"),
+			    child_argv[0], error->message);
 		g_error_free(error);
 		ret = -1;
 	}

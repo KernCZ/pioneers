@@ -1001,19 +1001,19 @@ static void launch_server_gtk(G_GNUC_UNUSED GtkWidget * widget,
 {
 	gchar *child_argv[3];
 	GSpawnFlags flags = G_SPAWN_STDOUT_TO_DEV_NULL |
-	    G_SPAWN_STDERR_TO_DEV_NULL;
+	    G_SPAWN_STDERR_TO_DEV_NULL | G_SPAWN_SEARCH_PATH;
 	GError *error = NULL;
 	gint i;
 
-	child_argv[0] = g_strdup(PIONEERS_SERVER_GTK_PATH);
-	child_argv[1] = g_strdup(PIONEERS_SERVER_GTK_PATH);
+	child_argv[0] = g_strdup(PIONEERS_SERVER_GTK_PROGRAM_NAME);
+	child_argv[1] = g_strdup(PIONEERS_SERVER_GTK_PROGRAM_NAME);
 	child_argv[2] = NULL;
 	if (!g_spawn_async(NULL, child_argv, NULL, flags, NULL, NULL, NULL,
 			   &error)) {
 		/* Error message when program %1 is started, reason is %2 */
 		log_message(MSG_ERROR,
 			    _("Error starting %s: %s\n"),
-			    PIONEERS_SERVER_GTK_PATH, error->message);
+			    child_argv[0], error->message);
 		g_error_free(error);
 	}
 	for (i = 0; child_argv[i] != NULL; i++)
@@ -1591,12 +1591,10 @@ void connect_create_dlg(void)
 	gtk_widget_set_tooltip_text(btn, _("Create a game"));
 	g_signal_connect(G_OBJECT(btn), "clicked",
 			 G_CALLBACK(launch_server_gtk), app_window);
-	fullname = g_find_program_in_path(PIONEERS_SERVER_GTK_PATH);
-	if (fullname) {
-		g_free(fullname);
-	} else {
-		gtk_widget_set_sensitive(GTK_WIDGET(btn), FALSE);
-	}
+	fullname =
+	    g_find_program_in_path(PIONEERS_SERVER_GTK_PROGRAM_NAME);
+	gtk_widget_set_sensitive(GTK_WIDGET(btn), fullname != NULL);
+	g_free(fullname);
 
 	/* Button */
 	btn = gtk_button_new_with_label(_("Join Private Game"));

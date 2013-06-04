@@ -31,10 +31,10 @@ console_cflags = \
 	-DTHEMEDIR=\""$(pioneers_themedir_embed)"\" \
 	-DLOCALEDIR=\""$(pioneers_localedir)"\" \
 	-DPIONEERS_DIR_DEFAULT=\""$(pioneers_datadir)/games/pioneers"\" \
-	-DPIONEERS_SERVER_CONSOLE_PATH=\""$(bindir)/pioneers-server-console"\" \
-	-DPIONEERS_SERVER_GTK_PATH=\""$(bindir)/pioneers-server-gtk"\" \
-	-DPIONEERS_CLIENT_GTK_PATH=\""$(bindir)/pioneers"\" \
-	-DPIONEERS_AI_PATH=\""$(bindir)/pioneersai"\"
+	-DPIONEERS_SERVER_CONSOLE_PROGRAM_NAME=\""pioneers-server-console$(EXEEXT)"\" \
+	-DPIONEERS_SERVER_GTK_PROGRAM_NAME=\""pioneers-server-gtk$(EXEEXT)"\" \
+	-DPIONEERS_CLIENT_GTK_PROGRAM_NAME=\""pioneers$(EXEEXT)"\" \
+	-DPIONEERS_AI_PROGRAM_NAME=\""pioneersai$(EXEEXT)"\"
 
 avahi_cflags = \
 	$(AVAHI_CLIENT_CFLAGS) \

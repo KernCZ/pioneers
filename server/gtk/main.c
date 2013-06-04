@@ -346,15 +346,15 @@ static void launchclient_clicked_cb(G_GNUC_UNUSED GtkButton * widget,
 {
 	gchar *child_argv[7];
 	GSpawnFlags child_flags = G_SPAWN_STDOUT_TO_DEV_NULL |
-	    G_SPAWN_STDERR_TO_DEV_NULL;
+	    G_SPAWN_STDERR_TO_DEV_NULL | G_SPAWN_SEARCH_PATH;
 	GError *error = NULL;
 	gint i;
 
 	g_assert(server_port != NULL);
 
 	/* Populate argv. */
-	child_argv[0] = g_strdup(PIONEERS_CLIENT_GTK_PATH);
-	child_argv[1] = g_strdup(PIONEERS_CLIENT_GTK_PATH);
+	child_argv[0] = g_strdup(PIONEERS_CLIENT_GTK_PROGRAM_NAME);
+	child_argv[1] = g_strdup(PIONEERS_CLIENT_GTK_PROGRAM_NAME);
 	child_argv[2] = g_strdup("-s");
 	child_argv[3] = g_strdup("localhost");
 	child_argv[4] = g_strdup("-p");
@@ -367,7 +367,7 @@ static void launchclient_clicked_cb(G_GNUC_UNUSED GtkButton * widget,
 		/* Error message when program %1 is started, reason is %2 */
 		log_message(MSG_ERROR,
 			    _("Error starting %s: %s\n"),
-			    PIONEERS_CLIENT_GTK_PATH, error->message);
+			    child_argv[0], error->message);
 		g_error_free(error);
 	}
 
@@ -808,6 +808,7 @@ static GtkWidget *build_player_connected_frame(void)
 
 	GtkWidget *vbox;
 	GtkWidget *button;
+	gchar *fullname;
 
 	/* vbox */
 	vbox = gtk_vbox_new(FALSE, 5);
@@ -823,6 +824,12 @@ static GtkWidget *build_player_connected_frame(void)
 						  _(""
 						    "Launch Pioneers Client"));
 	gtk_widget_show(button);
+
+	fullname =
+	    g_find_program_in_path(PIONEERS_CLIENT_GTK_PROGRAM_NAME);
+	gtk_widget_set_sensitive(button, fullname != NULL);
+	g_free(fullname);
+
 	gtk_box_pack_start(GTK_BOX(vbox), button, FALSE, FALSE, 0);
 	g_signal_connect(G_OBJECT(button), "clicked",
 			 G_CALLBACK(launchclient_clicked_cb), NULL);
@@ -847,19 +854,14 @@ static GtkWidget *build_ai_frame(Game ** game)
 	GtkWidget *button;
 
 	gchar *fullname;
-	gboolean ai_settings_enabled = TRUE;
 
 	/* ai vbox */
 	vbox = gtk_vbox_new(FALSE, 5);
 	gtk_widget_show(vbox);
 
-	fullname = g_find_program_in_path(PIONEERS_AI_PATH);
-	if (fullname) {
-		g_free(fullname);
-	} else {
-		ai_settings_enabled = FALSE;
-	}
-	gtk_widget_set_sensitive(vbox, ai_settings_enabled);
+	fullname = g_find_program_in_path(PIONEERS_AI_PROGRAM_NAME);
+	gtk_widget_set_sensitive(vbox, fullname != NULL);
+	g_free(fullname);
 
 	/* ai chat toggle */
 	toggle = gtk_check_button_new_with_label(_("Enable chat"));

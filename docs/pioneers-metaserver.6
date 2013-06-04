@@ -64,8 +64,9 @@ The hostname the metaserver will use when creating new games. This should
 be a hostname that can be resolved by all clients that will connect.
 .TP 
 .B PIONEERS_SERVER_CONSOLE
-.RB "The path to " pioneers-server-console "."
-If it is not set, the default installation path will be used.
+.RB "The path (including the filename) to " pioneers-server-console "."
+If it contains only a filename and no path or if it is not set, the PATH
+variable in the environment is used to locate the program.
 .TP
 .B PIONEERS_DIR
 The path to the game definition files.

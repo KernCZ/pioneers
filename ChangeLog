@@ -1,3 +1,8 @@
+2013-06-04  Roland Clobus <rclobus@rclobus.nl>
+	* server/gtk/main.c, server/server.c, Makefile.am, metaserver/main.c,
+	client/gtk/connect.c, docs/pioneers-metaserver.6: Use $PATH to locate
+	the programs instead of hardcoded paths.
+
 2013-05-31  Roland Clobus <rclobus@rclobus.nl>
 	* docs/README.message_flow, common/gtk/select-game.c,
 	common/gtk/select-game.h, common/game.c, common/game.h,

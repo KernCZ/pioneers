@@ -212,7 +212,8 @@ static const gchar *get_server_path(void)
 	if (!(console_server = g_getenv("PIONEERS_SERVER_CONSOLE")))
 		if (!
 		    (console_server = g_getenv("GNOCATAN_SERVER_CONSOLE")))
-			console_server = PIONEERS_SERVER_CONSOLE_PATH;
+			console_server =
+			    PIONEERS_SERVER_CONSOLE_PROGRAM_NAME;
 	return console_server;
 }
 
@@ -224,7 +225,7 @@ static void client_create_new_server(Client * client, const gchar * line)
 	unsigned int n;
 	GList *list;
 	GSpawnFlags spawn_flags = G_SPAWN_STDOUT_TO_DEV_NULL |
-	    G_SPAWN_STDERR_TO_DEV_NULL;
+	    G_SPAWN_STDERR_TO_DEV_NULL | G_SPAWN_SEARCH_PATH;
 	gchar *child_argv[34];
 	GError *error = NULL;
 	gchar **split;
@@ -319,7 +320,7 @@ static void client_create_new_server(Client * client, const gchar * line)
 	if (!g_spawn_async(NULL, child_argv, NULL, spawn_flags, NULL, NULL,
 			   NULL, &error)) {
 		log_message(MSG_ERROR, "cannot exec %s: %s",
-			    console_server, error->message);
+			    child_argv[0], error->message);
 		g_error_free(error);
 	}
 	for (n = 0; child_argv[n] != NULL; n++)
