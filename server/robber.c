@@ -21,6 +21,7 @@
 
 #include "config.h"
 #include "server.h"
+#include "random.h"
 
 static Hex *previous_robber_hex;
 
@@ -82,7 +83,7 @@ static void steal_card_from(Player * player, Player * victim)
 
 	/* Work out which card to steal from the victim
 	 */
-	steal = get_rand(num);
+	steal = random_guint(num);
 	for (idx = 0; idx < G_N_ELEMENTS(victim->assets); idx++) {
 		steal -= victim->assets[idx];
 		if (steal < 0)

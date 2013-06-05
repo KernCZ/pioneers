@@ -26,6 +26,7 @@
 #include "network.h"
 #include "avahi.h"
 #include "game-list.h"
+#include "random.h"
 
 #define TERRAIN_DEFAULT	0
 #define TERRAIN_RANDOM	1
@@ -54,11 +55,6 @@ void stop_timeout(Game * game)
 		g_source_remove(game->no_player_timer);
 		game->no_player_timer = 0;
 	}
-}
-
-gint get_rand(gint range)
-{
-	return g_rand_int_range(g_rand_ctx, 0, range);
 }
 
 Game *game_new(const GameParams * params)
@@ -218,13 +214,12 @@ Game *server_start(const GameParams * params, const gchar * hostname,
 	g_print("Quit when done: %d\n", params->quit_when_done);
 #endif
 
-	g_rand_ctx = g_rand_new();
 	/* create new random seed, to be able to reproduce games */
-	randomseed = g_rand_int(g_rand_ctx);
-	g_rand_set_seed(g_rand_ctx, randomseed);
-	log_message(MSG_INFO, "%s #%" G_GUINT32_FORMAT ".%s.%03d\n",
+	randomseed = random_init();
+	log_message(MSG_INFO, "%s #%" G_GUINT32_FORMAT ".%s.%03u\n",
 		    /* Server: preparing game #..... */
-		    _("Preparing game"), randomseed, "G", get_rand(1000));
+		    _("Preparing game"), randomseed, "G",
+		    random_guint(1000));
 
 	game = game_new(params);
 	g_assert(game->server_port == NULL);

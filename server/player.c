@@ -26,6 +26,7 @@
 #include <unistd.h>
 #include "server.h"
 #include "network.h"
+#include "random.h"
 
 /* Local function prototypes */
 static gboolean mode_check_version(Player * player, gint event);
@@ -76,9 +77,9 @@ static gint next_free_player_num(Game * game, gboolean force_spectator)
 		}
 		playerlist_dec_use_count(game);
 		if (available > 0) {
-			gint skip;
+			guint skip;
 			if (game->random_order) {
-				skip = get_rand((gint) available);
+				skip = random_guint(available);
 			} else {
 				skip = 0;
 			}

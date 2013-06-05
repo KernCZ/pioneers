@@ -1,3 +1,10 @@
+2013-06-05  Micah Bunting <amnykon@gmail.com>
+        * server/player.c, server/robber.c, server/develop.c, server/gold.c,
+        server/turn.c, server/server.c, server/server.h, server/discard.c,
+        common/map.c, common/map.h, common/random.c, common/random.h,
+        common/Makefile.am: Moved random functions to common/random.c and
+        common/random.h.
+
 2013-06-05  Roland Clobus <rclobus@rclobus.nl>
 	* admin-scripts/meta.sh: Updated to set the PATH variable.
 

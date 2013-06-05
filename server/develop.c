@@ -24,6 +24,7 @@
 #include "buildrec.h"
 #include "cost.h"
 #include "server.h"
+#include "random.h"
 
 void develop_shuffle(Game * game)
 {
@@ -45,9 +46,9 @@ void develop_shuffle(Game * game)
 		      sizeof(*game->develop_deck));
 
 	for (idx = 0; idx < game->num_develop; idx++) {
-		int card_idx;
+		gint card_idx;
 
-		card_idx = get_rand(game->num_develop - idx);
+		card_idx = random_guint(game->num_develop - idx);
 		for (shuffle_idx = 0;
 		     shuffle_idx < G_N_ELEMENTS(shuffle_counts);
 		     shuffle_idx++) {

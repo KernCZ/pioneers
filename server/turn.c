@@ -26,6 +26,7 @@
 #include "cost.h"
 #include "server.h"
 #include "admin.h"
+#include "random.h"
 
 static void build_add(Player * player, BuildType type, gint x, gint y,
 		      gint pos)
@@ -477,7 +478,7 @@ static void roll_dice(Player * player)
 							 LATEST_VERSION,
 							 "shuffled-dice-deck\n");
 				}
-				card = get_rand(game->num_dice_cards);
+				card = random_guint(game->num_dice_cards);
 
 				i = -1;
 				while (card >= 0) {
@@ -490,8 +491,8 @@ static void roll_dice(Player * player)
 				game->die2 = i / 6 + 1;
 			} else {
 				/* two dice */
-				game->die1 = get_rand(6) + 1;
-				game->die2 = get_rand(6) + 1;
+				game->die1 = random_guint(6) + 1;
+				game->die2 = random_guint(6) + 1;
 			}
 			roll = game->die1 + game->die2;
 			game->rolled_dice = TRUE;

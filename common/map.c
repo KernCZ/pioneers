@@ -27,6 +27,7 @@
 #include <glib.h>
 
 #include "game.h"
+#include "random.h"
 #include "map.h"
 
 /* The numbering of the hexes, nodes and edges:
@@ -240,8 +241,6 @@ static void set_edge_hex(Hex * hex, int dir, Hex * new_hex)
 	g_assert(get_edge(hex, dir) != NULL);
 	get_edge(hex, dir)->hexes[(dir + 3) / 3 % 2] = new_hex;
 }
-
-GRand *g_rand_ctx = NULL;
 
 Hex *map_hex(Map * map, gint x, gint y)
 {
@@ -644,9 +643,7 @@ void map_shuffle_terrain(Map * map)
 			if (hex->terrain == SEA_TERRAIN) {
 				if (hex->resource == NO_RESOURCE)
 					continue;
-				num =
-				    g_rand_int_range(g_rand_ctx, 0,
-						     num_port);
+				num = random_guint(num_port);
 				for (idx = 0;
 				     idx < G_N_ELEMENTS(port_count);
 				     idx++) {
@@ -658,8 +655,7 @@ void map_shuffle_terrain(Map * map)
 				num_port--;
 				hex->resource = idx;
 			} else {
-				num = g_rand_int_range(g_rand_ctx, 0,
-						       num_terrain);
+				num = random_guint(num_terrain);
 				for (idx = 0;
 				     idx < G_N_ELEMENTS(terrain_count);
 				     idx++) {

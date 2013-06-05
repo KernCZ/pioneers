@@ -22,6 +22,7 @@
 #include "config.h"
 #include "cost.h"
 #include "server.h"
+#include "random.h"
 
 static void check_finished_discard(Game * game, gboolean was_discard)
 {
@@ -133,7 +134,7 @@ void discard_resources(Game * game)
 					total += scan->assets[idx];
 				}
 				while (scan->discard_num) {
-					gint choice = get_rand(total);
+					gint choice = random_guint(total);
 					for (idx = 0; idx < NO_RESOURCE;
 					     idx++) {
 						choice -=

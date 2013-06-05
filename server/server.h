@@ -220,7 +220,6 @@ void robber_undo(Player * player);
 /* server.c */
 void start_timeout(Game * game);
 void stop_timeout(Game * game);
-gint get_rand(gint range);
 Game *game_new(const GameParams * params);
 void game_free(Game * game);
 gint add_computer_player(Game * game, gboolean want_chat);

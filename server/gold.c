@@ -21,6 +21,7 @@
 
 #include "config.h"
 #include "server.h"
+#include "random.h"
 
 /* Player should be idle - I will tell them when to do something
  */
@@ -116,7 +117,7 @@ static void distribute_next(GList * list)
 				}
 				while ((scan->gold > 0) && (totalbank > 0)) {
 					/* choose one of them */
-					choice = get_rand(totalbank);
+					choice = random_guint(totalbank);
 					/* find out which resource it is */
 					for (idx = 0; idx < NO_RESOURCE;
 					     ++idx) {

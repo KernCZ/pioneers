@@ -287,6 +287,4 @@ gboolean map_is_island_discovered(Map * map, Node * node, gint owner);
 void map_maritime_info(const Map * map, MaritimeInfo * info, gint owner);
 guint map_count_islands(const Map * map);
 
-extern GRand *g_rand_ctx;
-
 #endif
