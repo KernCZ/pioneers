@@ -1,3 +1,6 @@
+2013-06-05  Roland Clobus <rclobus@rclobus.nl>
+	* admin-scripts/meta.sh: Updated to set the PATH variable.
+
 2013-06-04  Roland Clobus <rclobus@rclobus.nl>
 	* server/gtk/main.c, server/server.c, Makefile.am, metaserver/main.c,
 	client/gtk/connect.c, docs/pioneers-metaserver.6: Use $PATH to locate
