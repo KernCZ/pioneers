@@ -257,14 +257,14 @@ static float dice_prob(gint roll)
 }
 
 /*
- * By default how valuable is this resource?
+ * By default how valuable is this terrain?
  */
 
-static float default_score_resource(Resource resource)
+static float default_score_terrain(Terrain terrain)
 {
 	float score;
 
-	switch (resource) {
+	switch (terrain) {
 	case GOLD_TERRAIN:	/* gold */
 		score = 1.25f;
 		break;
@@ -314,7 +314,7 @@ static void reevaluate_iterator(Node * n, void *rock)
 			if (h && h->terrain < DESERT_TERRAIN) {
 				produce[h->terrain] +=
 				    mult *
-				    default_score_resource(h->terrain) *
+				    default_score_terrain(h->terrain) *
 				    dice_prob(h->roll);
 			}
 
@@ -343,7 +343,8 @@ static void reevaluate_resources(resource_values_t * outval)
 	 */
 	for (i = 0; i < NO_RESOURCE; i++) {
 		if (produce[i] == 0) {
-			outval->value[i] = default_score_resource(i);
+			outval->value[i] =
+			    default_score_terrain(resource_to_terrain(i));
 		} else {
 			outval->value[i] = 1.0f / produce[i];
 		}
@@ -376,7 +377,7 @@ static float resource_value(Resource resource,
 	if (resource < NO_RESOURCE)
 		return resval->value[resource];
 	else if (resource == GOLD_RESOURCE)
-		return default_score_resource(resource);
+		return default_score_terrain(GOLD_TERRAIN);
 	else
 		return 0.0;
 }
@@ -394,7 +395,8 @@ static float score_hex(Hex * hex, const resource_values_t * resval)
 
 	/* multiple resource value by dice probability */
 	score =
-	    resource_value(hex->terrain, resval) * dice_prob(hex->roll);
+	    resource_value(terrain_to_resource(hex->terrain),
+			   resval) * dice_prob(hex->roll);
 
 	/* if we don't have a 3 for 1 port yet and this is one it's valuable! */
 	if (!resval->info.any_resource) {
@@ -416,8 +418,7 @@ static float default_score_hex(Hex * hex)
 		return 0;
 
 	/* multiple resource value by dice probability */
-	score =
-	    default_score_resource(hex->terrain) * dice_prob(hex->roll);
+	score = default_score_terrain(hex->terrain) * dice_prob(hex->roll);
 
 	return score;
 }

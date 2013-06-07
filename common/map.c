@@ -242,6 +242,54 @@ static void set_edge_hex(Hex * hex, int dir, Hex * new_hex)
 	get_edge(hex, dir)->hexes[(dir + 3) / 3 % 2] = new_hex;
 }
 
+Resource terrain_to_resource(Terrain terrain)
+{
+	switch (terrain) {
+	case HILL_TERRAIN:
+		return BRICK_RESOURCE;
+	case FIELD_TERRAIN:
+		return GRAIN_RESOURCE;
+	case MOUNTAIN_TERRAIN:
+		return ORE_RESOURCE;
+	case PASTURE_TERRAIN:
+		return WOOL_RESOURCE;
+	case FOREST_TERRAIN:
+		return LUMBER_RESOURCE;
+	case DESERT_TERRAIN:
+		return NO_RESOURCE;
+	case SEA_TERRAIN:
+		return NO_RESOURCE;
+	case GOLD_TERRAIN:
+		return GOLD_RESOURCE;
+	case LAST_TERRAIN:
+		return NO_RESOURCE;
+	}
+	g_assert_not_reached();
+}
+
+Terrain resource_to_terrain(Resource resource)
+{
+	switch (resource) {
+	case BRICK_RESOURCE:
+		return HILL_TERRAIN;
+	case GRAIN_RESOURCE:
+		return FIELD_TERRAIN;
+	case ORE_RESOURCE:
+		return MOUNTAIN_TERRAIN;
+	case WOOL_RESOURCE:
+		return PASTURE_TERRAIN;
+	case LUMBER_RESOURCE:
+		return FOREST_TERRAIN;
+	case NO_RESOURCE:
+		return SEA_TERRAIN;
+	case ANY_RESOURCE:
+		return SEA_TERRAIN;
+	case GOLD_RESOURCE:
+		return GOLD_TERRAIN;
+	}
+	g_assert_not_reached();
+}
+
 Hex *map_hex(Map * map, gint x, gint y)
 {
 	if (x < 0 || x >= map->x_size || y < 0 || y >= map->y_size)

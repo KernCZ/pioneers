@@ -57,6 +57,19 @@ typedef enum {
 	GOLD_RESOURCE		/* Gold */
 } Resource;
 
+/** Maps a Terrain to a Resource.
+ * This does not take ports into account.
+ * @param terrain The terrain
+ * @return The resource the terrain produces
+ */
+Resource terrain_to_resource(Terrain terrain);
+
+/** Maps a Resource to a Terrain.
+ * @param resource The resource
+ * @return The terrain that produces this resource
+ */
+Terrain resource_to_terrain(Resource resource);
+
 /* Types of structure that can be built
  */
 typedef enum {
