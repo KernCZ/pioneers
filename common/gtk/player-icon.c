@@ -37,31 +37,34 @@ static void replace_colors(GdkPixbuf * pixbuf,
 GdkColor default_face_color = { 0, 0xd500, 0x7f00, 0x2000 };
 GdkColor default_variant_color = { 0, 0, 0, 0 };
 
-typedef struct PlayerAvatar {
-	GdkPixbuf *base;
-	GSList *variation;
-} PlayerAvatar;
+GSList *player_avatar;
+gpointer ai_avatar_data;
+gsize ai_avatar_size;
 
-PlayerAvatar player_avatar;
-GdkPixbuf *ai_avatar;
+static gchar *build_image_filename(const gchar * name)
+{
+	return g_build_filename(DATADIR, "pixmaps", "pioneers", name,
+				NULL);
+}
 
 static gboolean load_pixbuf(const gchar * name, GdkPixbuf ** pixbuf)
 {
 	gchar *filename;
 
-	/* determine full path to pixmap file */
-	filename =
-	    g_build_filename(DATADIR, "pixmaps", "pioneers", name, NULL);
+	filename = build_image_filename(name);
 	if (g_file_test(filename, G_FILE_TEST_EXISTS)) {
 		GError *error = NULL;
 		*pixbuf = gdk_pixbuf_new_from_file(filename, &error);
 		if (error != NULL) {
-			g_warning("Error loading pixmap %s\n", filename);
+			g_warning("Error loading image %s\n", filename);
 			g_error_free(error);
+			g_free(filename);
 			return FALSE;
 		}
+		g_free(filename);
 		return TRUE;
 	} else {
+		g_free(filename);
 		return FALSE;
 	}
 }
@@ -71,14 +74,14 @@ void playericon_init(void)
 	GdkColormap *cmap;
 	gint idx;
 	gboolean good;
+	gchar *filename;
 
 	cmap = gdk_colormap_get_system();
 	gdk_colormap_alloc_color(cmap, &default_face_color, FALSE, TRUE);
 	gdk_colormap_alloc_color(cmap, &default_variant_color, FALSE,
 				 TRUE);
 
-	load_pixbuf("style-human.png", &player_avatar.base);
-	player_avatar.variation = NULL;
+	player_avatar = NULL;
 	idx = 1;
 	do {
 		gchar *name;
@@ -87,15 +90,92 @@ void playericon_init(void)
 		name = g_strdup_printf("style-human-%d.png", idx);
 		good = load_pixbuf(name, &pixbuf);
 		if (good) {
-			player_avatar.variation =
-			    g_slist_append(player_avatar.variation,
-					   pixbuf);
+			player_avatar =
+			    g_slist_append(player_avatar, pixbuf);
 		}
 		++idx;
 		g_free(name);
 	} while (good);
 
-	load_pixbuf("style-ai.png", &ai_avatar);
+	filename = build_image_filename("style-ai.svg");
+	if (g_file_test(filename, G_FILE_TEST_EXISTS)) {
+		GError *error = NULL;
+		GFile *file;
+		GMemoryOutputStream *os;
+		GFileInputStream *is;
+
+		os = G_MEMORY_OUTPUT_STREAM(g_memory_output_stream_new
+					    (NULL, 0, g_realloc, g_free));
+		file = g_file_new_for_path(filename);
+		is = g_file_read(file, NULL, &error);
+
+		g_output_stream_splice(G_OUTPUT_STREAM(os),
+				       G_INPUT_STREAM(is),
+				       G_OUTPUT_STREAM_SPLICE_NONE, NULL,
+				       &error);
+		g_input_stream_close(G_INPUT_STREAM(is), NULL, &error);
+		g_output_stream_close(G_OUTPUT_STREAM(os), NULL, &error);
+
+		ai_avatar_data = g_memory_output_stream_get_data(os);
+		ai_avatar_size = g_memory_output_stream_get_data_size(os);
+		g_object_unref(is);
+		g_object_unref(os);
+		g_object_unref(file);
+	}
+	g_free(filename);
+}
+
+guint playericon_human_style_count(void)
+{
+	return g_slist_length(player_avatar);
+}
+
+/** Replace colours in SVG data.
+ * @param original_data The SVG data stream
+ * @param size The size of the data stream
+ * @param replace_this The old colour
+ * @param replace_with The new colour
+ * @return Newly allocated data, with the colour replaced. Free with g_free()
+ */
+static gchar *replace_colors_in_svg_data(gconstpointer original_data,
+					 gsize size,
+					 const GdkColor * replace_this,
+					 const GdkColor * replace_with)
+{
+	gchar *replace_here;
+	gchar *data;
+	gchar *color_old;
+	gchar *color_new;
+	gsize counter;
+
+	data = g_malloc(size);
+	memcpy(data, original_data, size);
+
+	color_old = g_strdup_printf("fill:#%02x%02x%02x",
+				    (replace_this->red >> 8) & 0xFF,
+				    (replace_this->green >> 8) & 0xFF,
+				    (replace_this->blue >> 8) & 0xFF);
+	color_new = g_strdup_printf("fill:#%02x%02x%02x",
+				    (replace_with->red >> 8) & 0xFF,
+				    (replace_with->green >> 8) & 0xFF,
+				    (replace_with->blue >> 8) & 0xFF);
+
+	g_assert(strlen(color_old) == 12);
+	g_assert(strlen(color_new) == 12);
+
+	replace_here = data;
+	counter = 0;
+	while (counter < size) {
+		if (strncmp(replace_here, color_old, 12) == 0) {
+			memcpy(replace_here, color_new, 12);
+		} else {
+			counter++;
+			replace_here++;
+		}
+	}
+	g_free(color_old);
+	g_free(color_new);
+	return data;
 }
 
 static void replace_colors(GdkPixbuf * pixbuf,
@@ -131,180 +211,165 @@ static void replace_colors(GdkPixbuf * pixbuf,
 	}
 }
 
-GdkPixbuf *playericon_create_icon(GtkWidget * widget, const gchar * style,
-				  GdkColor * color, gboolean spectator,
-				  gboolean connected, gboolean double_size)
+cairo_surface_t *playericon_create_icon(GtkWidget * widget,
+					const gchar * style,
+					GdkColor * color,
+					gboolean spectator,
+					gboolean connected, gint width,
+					gint height)
 {
-	gint width, height;
-	GdkPixbuf *basic_image, *overlay_image, *scaled_image;
-	gboolean basic_substitute;
 	PlayerType player_type;
+	cairo_surface_t *surface;
+	cairo_t *cr;
 
-	gtk_icon_size_lookup(GTK_ICON_SIZE_MENU, &width, &height);
-	if (double_size) {
-		width *= 2;
-		height *= 2;
-	}
-	basic_image = NULL;
-	overlay_image = NULL;
 	player_type = determine_player_type(style);
+
 	/* Human players are allowed to have the square icon */
 	if (player_type == PLAYER_HUMAN
 	    && !strcmp(style, default_player_style)) {
 		player_type = PLAYER_UNKNOWN;
 	}
 
+	surface =
+	    gdk_window_create_similar_surface(gtk_widget_get_window
+					      (widget),
+					      CAIRO_CONTENT_COLOR_ALPHA,
+					      width, height);
+	cr = cairo_create(surface);
 	switch (player_type) {
-	case PLAYER_COMPUTER:
-		/* This is an AI */
-		basic_image = gdk_pixbuf_copy(ai_avatar);
-		basic_substitute = TRUE;
-		/** @todo RC 2007-07-17 For now, the AI does not have different appearances */
+	case PLAYER_COMPUTER:{
+			/* This is an AI */
+			GError *error;
+			GInputStream *is;
+			GdkPixbuf *pixbuf;
+			gchar *data;
+
+			/* Replace the chromakey color with the player color */
+			data =
+			    replace_colors_in_svg_data(ai_avatar_data,
+						       ai_avatar_size,
+						       &blue, color);
+
+			error = NULL;
+			is = g_memory_input_stream_new_from_data(data,
+								 ai_avatar_size,
+								 NULL);
+			pixbuf =
+			    gdk_pixbuf_new_from_stream_at_scale(is, width,
+								height,
+								TRUE, NULL,
+								&error);
+			g_input_stream_close(is, NULL, &error);
+			g_object_unref(is);
+
+			g_assert(pixbuf != NULL);
+			g_assert(error == NULL);
+
+			gdk_cairo_set_source_pixbuf(cr, pixbuf, 0.0, 0.0);
+			cairo_rectangle(cr, 0, 0, width, height);
+			cairo_fill(cr);
+			g_object_unref(pixbuf);
+			g_free(data);
+		}
 		break;
 	case PLAYER_HUMAN:{
 			/* Draw a bust */
 			guint variant;
-			GdkColor face_color, variant_color;
+			GdkColor face_color;
+			gdouble face_radius;
+			GdkColor variant_color;
+			GdkPixbuf *pixbuf;
+			GdkPixbuf *pixbuf_scaled;
 
 			playericon_parse_human_style(style, &face_color,
 						     &variant,
 						     &variant_color);
-			basic_image = gdk_pixbuf_copy(player_avatar.base);
-			basic_substitute = TRUE;
+			gdk_cairo_set_source_color(cr, color);
+			cairo_set_line_width(cr, 1.0);
+			cairo_arc_negative(cr, width / 2, height,
+					   width / 2, 0.0, M_PI);
+			cairo_fill(cr);
+			gdk_cairo_set_source_color(cr, &black);
+			cairo_arc_negative(cr, width / 2, height,
+					   width / 2, 0.0, M_PI);
+			cairo_move_to(cr, 0.0, height - 0.5);
+			cairo_line_to(cr, width, height - 0.5);
+			cairo_stroke(cr);
+			gdk_cairo_set_source_color(cr, &face_color);
+			face_radius = 25.0 / 64.0 * height / 2.0;
+			cairo_arc(cr, width / 2 + 0.5,
+				  height / 2 - face_radius, face_radius,
+				  0.0, 2 * M_PI);
+			cairo_fill(cr);
+			gdk_cairo_set_source_color(cr, &black);
+			cairo_arc(cr, width / 2 + 0.5,
+				  height / 2 - face_radius, face_radius,
+				  0.0, 2 * M_PI);
+			cairo_stroke(cr);
 
-			/* Substitute the pure red face with the face color */
-			replace_colors(basic_image, &red, &face_color);
-
-			/* Substitute the pure blue base with the variant color */
-			overlay_image =
+			pixbuf =
 			    gdk_pixbuf_copy(g_slist_nth
-					    (player_avatar.variation,
+					    (player_avatar,
 					     variant)->data);
-			replace_colors(overlay_image, &blue,
-				       &variant_color);
-			break;
+
+			replace_colors(pixbuf, &blue, &variant_color);
+			pixbuf_scaled =
+			    gdk_pixbuf_scale_simple(pixbuf, width, height,
+						    GDK_INTERP_BILINEAR);
+
+			gdk_cairo_set_source_pixbuf(cr, pixbuf_scaled, 0.0,
+						    0.0);
+			cairo_rectangle(cr, 0.0, 0.0, width, height);
+			cairo_fill(cr);
+			g_object_unref(pixbuf_scaled);
+			g_object_unref(pixbuf);
 		}
-	default:{
-			/* Unknown or square */
-			cairo_t *cr;
-			GdkPixmap *pixmap;
+		break;
+	default:
+		/* Unknown or square */
+		if (spectator) {
+			/* Spectators have a transparent icon */
+			cairo_set_source_rgba(cr, 0.0, 0.0, 0.0, 0.0);
+			cairo_rectangle(cr, 0, 0, width, height);
+			cairo_fill(cr);
+		} else {
+			gdk_cairo_set_source_color(cr, color);
+			cairo_rectangle(cr, 0, 0, width, height);
+			cairo_fill(cr);
 
-			pixmap =
-			    gdk_pixmap_new(gtk_widget_get_window(widget),
-					   width, height,
-					   gdk_visual_get_depth
-					   (gdk_visual_get_system()));
-			cr = gdk_cairo_create(pixmap);
-			if (spectator) {
-				GdkPixbuf *tmp;
-				/* Spectators have a transparent icon */
-				gdk_cairo_set_source_color(cr, &black);
-				cairo_rectangle(cr, 0, 0, width, height);
-				cairo_fill(cr);
-
-				tmp =
-				    gdk_pixbuf_get_from_drawable(NULL,
-								 pixmap,
-								 NULL, 0,
-								 0, 0, 0,
-								 -1, -1);
-				basic_image =
-				    gdk_pixbuf_add_alpha(tmp, TRUE, 0, 0,
-							 0);
-			} else {
-				gdk_cairo_set_source_color(cr, color);
-				cairo_rectangle(cr, 0, 0, width, height);
-				cairo_fill(cr);
-
-				gdk_cairo_set_source_color(cr, &black);
-				cairo_set_line_width(cr, 1.0);
-				cairo_rectangle(cr, 0.5, 0.5, width - 1,
-						height - 1);
+			gdk_cairo_set_source_color(cr, &black);
+			cairo_set_line_width(cr, 1.0);
+			cairo_rectangle(cr, 0.5, 0.5, width - 1,
+					height - 1);
+			cairo_stroke(cr);
+			if (!connected) {
+				cairo_rectangle(cr, 3.5, 3.5, width - 7,
+						height - 7);
+				cairo_rectangle(cr, 6.5, 6.5, width - 13,
+						height - 13);
 				cairo_stroke(cr);
-				if (!connected) {
-					cairo_rectangle(cr, 3.5, 3.5,
-							width - 7,
-							height - 7);
-					cairo_rectangle(cr, 6.5, 6.5,
-							width - 13,
-							height - 13);
-					cairo_stroke(cr);
-					/* Don't draw the other emblem */
-					connected = TRUE;
-				}
-				basic_image =
-				    gdk_pixbuf_get_from_drawable(NULL,
-								 pixmap,
-								 NULL, 0,
-								 0, 0, 0,
-								 -1, -1);
+				/* Don't draw the other emblem */
+				connected = TRUE;
 			}
-			basic_substitute = FALSE;
-			cairo_destroy(cr);
-			g_object_unref(pixmap);
 		}
 	}
-
-	if (basic_image && basic_substitute) {
-		/* Substitute the pure blue base with the player color */
-		replace_colors(basic_image, &blue, color);
-	}
-
-	if (overlay_image) {
-		gdk_pixbuf_composite(overlay_image, basic_image, 0, 0,
-				     gdk_pixbuf_get_width(basic_image),
-				     gdk_pixbuf_get_height(basic_image),
-				     0.0, 0.0, 1.0, 1.0,
-				     GDK_INTERP_NEAREST, 255);
-		g_object_unref(overlay_image);
-	}
-
-	scaled_image =
-	    gdk_pixbuf_scale_simple(basic_image, width, height,
-				    GDK_INTERP_BILINEAR);
-	g_object_unref(basic_image);
 
 	if (!connected) {
-		cairo_t *cr;
-		GdkPixmap *pixmap;
-		GdkPixbuf *tmp1, *tmp2;
-
-		pixmap =
-		    gdk_pixmap_new(gtk_widget_get_window(widget), width,
-				   height,
-				   gdk_visual_get_depth
-				   (gdk_visual_get_system()));
-		cr = gdk_cairo_create(pixmap);
-
-		/* Black will become transparent */
-		gdk_cairo_set_source_color(cr, &black);
-		cairo_rectangle(cr, 0, 0, width, height);
-		cairo_fill(cr);
-
-		gdk_cairo_set_source_color(cr, &red);
+		/* Slightly transparent red */
+		cairo_set_source_rgba(cr, 1.0, 0.0, 0.0, 0.8);
 		cairo_move_to(cr, width / 2, height / 2);
 		cairo_arc(cr, width * 3 / 4, height / 4, width / 4, 0.0,
 			  2 * M_PI);
 		cairo_fill(cr);
 		gdk_cairo_set_source_color(cr, &white);
 		cairo_rectangle(cr,
-				width / 2 + 2, height / 4 - 1,
+				width / 2 + 2, height / 4 - height / 16,
 				width / 2 - 4, height / 8);
 		cairo_fill(cr);
-
-		tmp1 =
-		    gdk_pixbuf_get_from_drawable(NULL, pixmap, NULL, 0, 0,
-						 0, 0, -1, -1);
-		tmp2 = gdk_pixbuf_add_alpha(tmp1, TRUE, 0, 0, 0);
-		gdk_pixbuf_composite(tmp2, scaled_image, 0, 0, width,
-				     height, 0.0, 0.0, 1.0, 1.0,
-				     GDK_INTERP_NEAREST, 255);
-		g_object_unref(tmp2);
-		g_object_unref(tmp1);
-		cairo_destroy(cr);
-		g_object_unref(pixmap);
 	}
-	return scaled_image;
+	cairo_destroy(cr);
+
+	return surface;
 }
 
 gchar *playericon_create_human_style(const GdkColor * face_color,
@@ -345,8 +410,7 @@ gboolean playericon_parse_human_style(const gchar * style,
 		if (parse_ok) {
 			*variant = atoi(style_parts[2]);
 			parse_ok =
-			    *variant <=
-			    g_slist_length(player_avatar.variation);
+			    *variant <= g_slist_length(player_avatar);
 		}
 		if (parse_ok) {
 			parse_ok = style_parts[3] != NULL

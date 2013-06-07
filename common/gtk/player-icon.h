@@ -27,20 +27,25 @@
 /** Initialize the player icons */
 void playericon_init(void);
 
-/** Create an icon for a player.
- *  The default size is suitable for a list view item.
+guint playericon_human_style_count(void);
+
+/** Create an icon to represent a player.
  *  @param widget  The widget that will display the icon
  *  @param style   The style of the icon
  *  @param color   The base color of the player
  *  @param spectator  TRUE if a spectator icon is requested
  *  @param connected Is the player currently connected
- *  @param double_size Generate a double size pixmap
- *  @return THe icon for the player. Call g_object_unref() when not needed anymore.
+ *  @param width The width
+ *  @param height The height
+ *  @return The icon for the player. Call cairo_surface_destroy()
+ *          when not needed anymore.
  */
-GdkPixbuf *playericon_create_icon(GtkWidget * widget, const gchar * style,
-				  GdkColor * color, gboolean spectator,
-				  gboolean connected,
-				  gboolean double_size);
+cairo_surface_t *playericon_create_icon(GtkWidget * widget,
+					const gchar * style,
+					GdkColor * color,
+					gboolean spectator,
+					gboolean connected, gint width,
+					gint height);
 
 /** Create a style string for the player.
  *  @param face_color    The color of the face

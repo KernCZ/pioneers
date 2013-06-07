@@ -51,7 +51,7 @@ pixmap_DATA += \
 	client/gtk/data/style-human-5.png \
 	client/gtk/data/style-human-6.png \
 	client/gtk/data/style-human-7.png \
-	client/gtk/data/style-ai.png \
+	client/gtk/data/style-ai.svg \
 	client/gtk/data/pioneers.ico \
 	client/gtk/data/pioneers.rc
 

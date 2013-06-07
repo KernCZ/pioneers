@@ -127,11 +127,20 @@ GdkColor *player_or_spectator_color(gint player_num)
 GdkPixbuf *player_create_icon(GtkWidget * widget, gint player_num,
 			      gboolean connected)
 {
-	return playericon_create_icon(widget, player_get_style(player_num),
-				      player_or_spectator_color
-				      (player_num),
-				      player_is_spectator(player_num),
-				      connected, FALSE);
+	GdkPixbuf *pixbuf;
+	gint width;
+	gint height;
+	cairo_surface_t *surface;
+
+	gtk_icon_size_lookup(GTK_ICON_SIZE_MENU, &width, &height);
+	surface =
+	    playericon_create_icon(widget, player_get_style(player_num),
+				   player_or_spectator_color(player_num),
+				   player_is_spectator(player_num),
+				   connected, width, height);
+	pixbuf = gdk_pixbuf_get_from_surface(surface, 0, 0, width, height);
+	cairo_surface_destroy(surface);
+	return pixbuf;
 }
 
 /** Locate a line suitable for the statistic */

@@ -1,6 +1,15 @@
 2013-06-07  Roland Clobus <rclobus@rclobus.nl>
 	* common/map.c, common/map.h, client/ai/greedy.c: Map the resource
 	to the terrain and vice versa.
+	* common/gtk/common_gtk.c, common/gtk/common_gtk.h: Added code from
+	Gtk+3 to make the port from Gtk+2 easier.
+	* client/gtk/data/style-ai.png, client/gtk/data/style-ai.svg,
+	client/gtk/data/Makefile.am: Replaced the png by a svg (with proper
+	credits to Jakub Steiner)
+	* common/gtk/player-icon.c, common/gtk/player-icon.h,
+	client/gtk/player.c, client/gtk/name.c: Update to the player icon code.
+	Set a minimum size on the slider in the 'Change Player Name' dialog.
+	Use a larger icon.
 
 2013-06-06  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/connect.c: Matched the tooltips to the buttons in the

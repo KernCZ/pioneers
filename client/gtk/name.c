@@ -26,6 +26,7 @@
 #include "player-icon.h"
 #include "config-gnome.h"
 #include "client.h"
+#include "common_gtk.h"
 
 typedef struct {
 	GtkWidget *dlg;
@@ -44,7 +45,7 @@ typedef struct {
 
 static DialogData name_dialog;
 
-static GdkPixbuf *create_icon(GtkWidget * widget, const gchar * style);
+static void update_icon(DialogData * data);
 
 static void name_change_name_cb(NotifyingString * name)
 {
@@ -76,10 +77,17 @@ static void change_name_cb(G_GNUC_UNUSED GtkDialog * dlg, int response_id,
 	gtk_widget_destroy(GTK_WIDGET(dialog->dlg));
 }
 
+static void realize_player_icon_cb(G_GNUC_UNUSED GtkWidget * widget,
+				   gpointer user_data)
+{
+	DialogData *dialog = user_data;
+
+	update_icon(dialog);
+}
+
 static void change_style_cb(G_GNUC_UNUSED GtkWidget * widget,
 			    gpointer user_data)
 {
-	GdkPixbuf *icon;
 	DialogData *dialog = user_data;
 
 	g_free(dialog->current_style);
@@ -100,9 +108,7 @@ static void change_style_cb(G_GNUC_UNUSED GtkWidget * widget,
 	} else {
 		dialog->current_style = g_strdup(default_player_style);
 	}
-	icon = create_icon(dialog->image, dialog->current_style);
-	gtk_image_set_from_pixbuf(GTK_IMAGE(dialog->image), icon);
-	g_object_unref(icon);
+	update_icon(dialog);
 }
 
 static void activate_style_cb(GtkWidget * widget, gpointer user_data)
@@ -119,10 +125,11 @@ void name_create_dlg(void)
 	GtkWidget *dlg_vbox;
 	GtkWidget *hbox;
 	GtkWidget *lbl;
-	GdkPixbuf *icon;
 	GdkColor face_color, variant_color;
 	guint variant;
 	gboolean parse_ok;
+	gint width;
+	gint height;
 
 	if (name_dialog.dlg != NULL) {
 		gtk_window_present(GTK_WINDOW(name_dialog.dlg));
@@ -205,12 +212,14 @@ void name_create_dlg(void)
 	g_signal_connect(name_dialog.check_btn, "toggled",
 			 G_CALLBACK(activate_style_cb), &name_dialog);
 
-	icon = create_icon(hbox, name_dialog.original_style);
-	name_dialog.image = gtk_image_new_from_pixbuf(icon);
-	g_object_unref(icon);
+	name_dialog.image = gtk_image_new();
+	gtk_icon_size_lookup(GTK_ICON_SIZE_DIALOG, &width, &height);
+	gtk_widget_set_size_request(name_dialog.image, width, height);
 	gtk_widget_show(name_dialog.image);
 	gtk_box_pack_start(GTK_BOX(hbox), name_dialog.image, FALSE, TRUE,
 			   0);
+	g_signal_connect(G_OBJECT(name_dialog.image), "realize",
+			 G_CALLBACK(realize_player_icon_cb), &name_dialog);
 
 	gtk_widget_show(name_dialog.style_hbox);
 	gtk_box_pack_start(GTK_BOX(hbox), name_dialog.style_hbox, TRUE,
@@ -251,7 +260,10 @@ void name_create_dlg(void)
 	g_signal_connect(name_dialog.color_btn2, "color-set",
 			 G_CALLBACK(change_style_cb), &name_dialog);
 
-	name_dialog.variant_btn = gtk_hscale_new_with_range(1.0, 7.0, 1.0);
+	name_dialog.variant_btn =
+	    gtk_hscale_new_with_range(1.0, playericon_human_style_count(),
+				      1.0);
+	gtk_widget_set_size_request(name_dialog.variant_btn, width, -1);
 	gtk_scale_set_digits(GTK_SCALE(name_dialog.variant_btn), 0);
 	gtk_scale_set_value_pos(GTK_SCALE(name_dialog.variant_btn),
 				GTK_POS_LEFT);
@@ -273,10 +285,26 @@ void name_create_dlg(void)
 	gtk_widget_grab_focus(name_dialog.name_entry);
 }
 
-GdkPixbuf *create_icon(GtkWidget * widget, const gchar * style)
+void update_icon(DialogData * data)
 {
-	return playericon_create_icon(widget, style,
-				      player_or_spectator_color
-				      (my_player_num()),
-				      my_player_spectator(), TRUE, TRUE);
+	GdkPixbuf *pixbuf;
+	cairo_surface_t *surface;
+	GtkAllocation allocation;
+
+	if (!gtk_widget_get_realized(data->image)) {
+		return;
+	}
+	gtk_widget_get_allocation(data->image, &allocation);
+	surface = playericon_create_icon(data->image, data->current_style,
+					 player_or_spectator_color
+					 (my_player_num()), FALSE, TRUE,
+					 allocation.width,
+					 allocation.height);
+	pixbuf =
+	    gdk_pixbuf_get_from_surface(surface, 0, 0, allocation.width,
+					allocation.height);
+	cairo_surface_destroy(surface);
+
+	gtk_image_set_from_pixbuf(GTK_IMAGE(data->image), pixbuf);
+	g_object_unref(pixbuf);
 }

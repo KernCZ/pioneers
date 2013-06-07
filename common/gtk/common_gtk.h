@@ -85,4 +85,12 @@ void build_frame(GtkWidget * parent, const gchar * title,
 void set_tooltip_on_column(GtkTreeViewColumn * column,
 			   const gchar * tooltip);
 
+#if GTK_MAJOR_VERSION > 2
+#error The embedded copy of gdk_pixbuf_get_from_surface must be removed
+#else
+GdkPixbuf *gdk_pixbuf_get_from_surface(cairo_surface_t * surface,
+				       gint src_x, gint src_y, gint width,
+				       gint height);
+#endif
+
 #endif				/* __common_gtk_h */
