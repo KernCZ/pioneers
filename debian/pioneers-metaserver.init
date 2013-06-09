@@ -58,6 +58,8 @@ fi
 #
 do_start()
 {
+	PIONEERS_SERVER_CONSOLE=/usr/games/pioneers-server-console
+	export PIONEERS_SERVER_CONSOLE
 	start-stop-daemon $START_ARGS
 	RETVAL="$?"
 	if [ "$RETVAL" -eq 0 ]; then
