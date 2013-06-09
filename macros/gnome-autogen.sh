@@ -265,7 +265,30 @@ want_gtk_doc=false
 want_gnome_doc_utils=false
 want_maintainer_mode=false
 
-configure_files="`find $srcdir -name '{arch}' -prune -o -name '_darcs' -prune -o -name '.??*' -prune -o -name configure.ac -print -o -name configure.in -print`"
+#tell Mandrake autoconf wrapper we want autoconf 2.5x, not 2.13
+WANT_AUTOCONF_2_5=1
+export WANT_AUTOCONF_2_5
+version_check autoconf AUTOCONF 'autoconf2.50 autoconf autoconf-2.53' $REQUIRED_AUTOCONF_VERSION \
+    "http://ftp.gnu.org/pub/gnu/autoconf/autoconf-$REQUIRED_AUTOCONF_VERSION.tar.gz"
+AUTOHEADER=`echo $AUTOCONF | sed s/autoconf/autoheader/`
+
+find_configure_files() {
+    configure_ac=
+    if test -f "$1/configure.ac"; then
+	configure_ac="$1/configure.ac"
+    elif test -f "$1/configure.in"; then
+	configure_ac="$1/configure.in"
+    fi
+    if test "x$configure_ac" != x; then
+	echo "$configure_ac"
+	$AUTOCONF -t 'AC_CONFIG_SUBDIRS:$1' "$configure_ac" | while read dir; do
+	    find_configure_files "$1/$dir"
+	done
+    fi
+}
+
+configure_files="`find_configure_files $srcdir`"
+
 for configure_ac in $configure_files; do
     dirname=`dirname $configure_ac`
     if [ -f $dirname/NO-AUTO-GEN ]; then
@@ -315,31 +338,29 @@ for configure_ac in $configure_files; do
        grep "^GNOME_CXX_WARNINGS" $configure_ac >/dev/null; then
         require_m4macro gnome-compiler-flags.m4
     fi
+    if grep "^GNOME_CODE_COVERAGE" $configure_ac >/dev/null; then
+        require_m4macro gnome-code-coverage.m4
+    fi
 done
-
-#tell Mandrake autoconf wrapper we want autoconf 2.5x, not 2.13
-WANT_AUTOCONF_2_5=1
-export WANT_AUTOCONF_2_5
-version_check autoconf AUTOCONF 'autoconf2.50 autoconf autoconf-2.53' $REQUIRED_AUTOCONF_VERSION \
-    "http://ftp.gnu.org/pub/gnu/autoconf/autoconf-$REQUIRED_AUTOCONF_VERSION.tar.gz"
-AUTOHEADER=`echo $AUTOCONF | sed s/autoconf/autoheader/`
 
 case $REQUIRED_AUTOMAKE_VERSION in
     1.4*) automake_progs="automake-1.4" ;;
-    1.5*) automake_progs="automake-1.11 automake-1.10 automake-1.9 automake-1.8 automake-1.7 automake-1.6 automake-1.5" ;;
-    1.6*) automake_progs="automake-1.11 automake-1.10 automake-1.9 automake-1.8 automake-1.7 automake-1.6" ;;
-    1.7*) automake_progs="automake-1.11 automake-1.10 automake-1.9 automake-1.8 automake-1.7" ;;
-    1.8*) automake_progs="automake-1.11 automake-1.10 automake-1.9 automake-1.8" ;;
-    1.9*) automake_progs="automake-1.11 automake-1.10 automake-1.9" ;;
-    1.10*) automake_progs="automake-1.11 automake-1.10" ;;
-    1.11*) automake_progs="automake-1.11" ;;
+    1.5*) automake_progs="automake-1.13 automake-1.12 automake-1.11 automake-1.10 automake-1.9 automake-1.8 automake-1.7 automake-1.6 automake-1.5" ;;
+    1.6*) automake_progs="automake-1.13 automake-1.12 automake-1.11 automake-1.10 automake-1.9 automake-1.8 automake-1.7 automake-1.6" ;;
+    1.7*) automake_progs="automake-1.13 automake-1.12 automake-1.11 automake-1.10 automake-1.9 automake-1.8 automake-1.7" ;;
+    1.8*) automake_progs="automake-1.13 automake-1.12 automake-1.11 automake-1.10 automake-1.9 automake-1.8" ;;
+    1.9*) automake_progs="automake-1.13 automake-1.12 automake-1.11 automake-1.10 automake-1.9" ;;
+    1.10*) automake_progs="automake-1.13 automake-1.12 automake-1.11 automake-1.10" ;;
+    1.11*) automake_progs="automake-1.13 automake-1.12 automake-1.11" ;;
+    1.12*) automake_progs="automake-1.13 automake-1.12" ;;
+    1.13*) automake_progs="automake-1.13" ;;
 esac
 version_check automake AUTOMAKE "$automake_progs" $REQUIRED_AUTOMAKE_VERSION \
     "http://ftp.gnu.org/pub/gnu/automake/automake-$REQUIRED_AUTOMAKE_VERSION.tar.gz"
 ACLOCAL=`echo $AUTOMAKE | sed s/automake/aclocal/`
 
 if $want_libtool; then
-    version_check libtool LIBTOOLIZE libtoolize $REQUIRED_LIBTOOL_VERSION \
+    version_check libtool LIBTOOLIZE "libtoolize glibtoolize" $REQUIRED_LIBTOOL_VERSION \
         "http://ftp.gnu.org/pub/gnu/libtool/libtool-$REQUIRED_LIBTOOL_VERSION.tar.gz"
     require_m4macro libtool.m4
 fi
@@ -484,7 +505,7 @@ for configure_ac in $configure_files; do
           cp -pf INSTALL INSTALL.autogen_bak
         fi
 	if [ $REQUIRED_AUTOMAKE_VERSION != 1.4 ]; then
-	    $AUTOMAKE --gnu --add-missing --force --copy -Wno-portability || exit 1
+	    $AUTOMAKE --gnu --add-missing --copy -Wno-portability || exit 1
 	else
 	    $AUTOMAKE --gnu --add-missing --copy || exit 1
 	fi
