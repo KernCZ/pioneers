@@ -77,7 +77,6 @@ enum {
 	SUMMARY_COLUMN_LAST
 };
 
-static Player players[MAX_PLAYERS];
 static GtkListStore *summary_store; /**< the player summary data */
 static GtkWidget *summary_widget; /**< the player summary widget */
 static gboolean summary_color_enabled = TRUE;
@@ -221,8 +220,7 @@ static void refresh_victory_point_total(int player_num)
 	GtkTreeIter iter;
 	enum TFindResult found;
 
-	if (player_num < 0 || player_num >= (gint) G_N_ELEMENTS(players))
-		return;
+	g_return_if_fail(player_num >= 0 && player_num < num_players());
 
 	found =
 	    find_integer_in_tree(GTK_TREE_MODEL(summary_store), &iter,

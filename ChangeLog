@@ -8,6 +8,7 @@
 	notification.
 	* Doxyfile.in, configure.ac, Makefile.am: Added Doxygen support.
 	* common/set.h, common/set.c: Doxygen documentation.
+	* client/gtk/player.c: Removed unused array.
 
 2013-06-09  Roland Clobus <rclobus@rclobus.nl>
 	* omf.make, macros/gnome-autogen.sh: Synchronised from gnome-common
