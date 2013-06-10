@@ -1,6 +1,11 @@
 2013-06-10  Roland Clobus <rclobus@rclobus.nl>
 	* configure.ac, common/gtk/player-icon.c: Take ownership of the pointer
 	to fix the bug introduced on 2013-06-07.
+	* client/gtk/notification.c, client/gtk/notification.h,
+	client/gtk/offline.c, client/gtk/interface.c, configure.ac: Show at
+	most one message in the notification area. Support for old versions of
+	libnotify is no longer required. Fixed memory leak for each
+	notification.
 
 2013-06-09  Roland Clobus <rclobus@rclobus.nl>
 	* omf.make, macros/gnome-autogen.sh: Synchronised from gnome-common

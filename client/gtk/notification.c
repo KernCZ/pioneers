@@ -8,11 +8,22 @@
 #endif
 
 static gboolean show_notifications = TRUE;
+#ifdef HAVE_NOTIFY
+static NotifyNotification *notification = NULL;
+#endif
 
 void notification_init(void)
 {
 #ifdef HAVE_NOTIFY
 	notify_init(g_get_application_name());
+#endif
+}
+
+void notification_cleanup(void)
+{
+#ifdef HAVE_NOTIFY
+	notification_close();
+	notify_uninit();
 #endif
 }
 
@@ -29,27 +40,30 @@ void set_show_notifications(gboolean notify)
 void notification_send(const gchar * text, const gchar * icon)
 {
 #ifdef HAVE_NOTIFY
+	notification_close();
 	if (show_notifications) {
-		NotifyNotification *notification;
 		gchar *filename;
 
 		filename =
 		    g_build_filename(DATADIR, "pixmaps", icon, NULL);
-#ifdef HAVE_OLD_NOTIFY
-		notification =
-		    notify_notification_new(g_get_application_name(), text,
-					    filename, NULL);
-#else
-
 		notification =
 		    notify_notification_new(g_get_application_name(), text,
 					    filename);
 		g_free(filename);
-#endif
-
 		notify_notification_set_urgency(notification,
 						NOTIFY_URGENCY_LOW);
 		notify_notification_show(notification, NULL);
+	}
+#endif
+}
+
+void notification_close(void)
+{
+#ifdef HAVE_NOTIFY
+	if (notification != NULL) {
+		notify_notification_close(notification, NULL);
+		g_object_unref(notification);
+		notification = NULL;
 	}
 #endif
 }

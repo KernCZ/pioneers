@@ -51,6 +51,7 @@ static GtkWidget *game_over_dlg = NULL;
 
 void frontend_init_game(void)
 {
+	notification_close();
 	player_clear_summary();
 	chat_clear_names();
 	develop_reset();
@@ -663,6 +664,7 @@ void frontend_game_over(gint player, gint points)
 	game_over_dlg = gameover_create_dlg(player, points);
 	g_signal_connect(G_OBJECT(game_over_dlg), "destroy",
 			 G_CALLBACK(gtk_widget_destroyed), &game_over_dlg);
+	notification_close();
 	set_gui_state(frontend_state_idle);
 }
 
@@ -671,6 +673,7 @@ void frontend_rolled_dice(gint die1, gint die2, gint player_num)
 	histogram_dice_rolled(die1 + die2, player_num);
 	identity_set_dice(die1, die2);
 	gui_highlight_chits(die1 + die2);
+	notification_close();
 	frontend_gui_update();
 }
 
@@ -889,6 +892,7 @@ static void frontend_mode_setup(GuiEvent event)
 		cb_end_turn();
 		gui_cursor_none();	/* Finish single click build */
 		set_gui_state(frontend_state_idle);
+		notification_close();
 		return;
 	default:
 		break;

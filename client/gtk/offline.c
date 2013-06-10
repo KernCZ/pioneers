@@ -152,6 +152,7 @@ void frontend_offline(void)
 static void frontend_main(void)
 {
 	gtk_main();
+	notification_cleanup();
 	themes_cleanup();
 	game_list_cleanup();
 }

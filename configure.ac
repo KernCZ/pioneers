@@ -36,8 +36,7 @@ PIONEERS_DEFAULT_METASERVER=pioneers.debian.net
 GLIB_REQUIRED_VERSION=2.26
 GTK_REQUIRED_VERSION=2.20
 GTK_OPTIMAL_VERSION=2.24
-LIBNOTIFY_REQUIRED_VERSION=0.5.0
-LIBNOTIFY_OPTIMAL_VERSION=0.7.4
+LIBNOTIFY_REQUIRED_VERSION=0.7.4
 
 AM_MAINTAINER_MODE
 
@@ -235,21 +234,11 @@ PKG_CHECK_MODULES(GOBJECT2, gobject-2.0 >= $GLIB_REQUIRED_VERSION)
 # Check for libnotify
 #
 PKG_CHECK_MODULES(LIBNOTIFY, libnotify >= $LIBNOTIFY_REQUIRED_VERSION,
-	have_libnotify=yes,
-	[PKG_CHECK_EXISTS(libnotify,
-		[have_libnotify="no, libnotify version too old"],
-		[have_libnotify="no, libnotify not installed"])
-		AC_MSG_RESULT($have_libnotify)
-	AC_MSG_RESULT($have_libnotify)
-	])
+	[have_libnotify=yes],
+	[have_libnotify="no, libnotify not installed or too old"])
 if test "$have_libnotify" = "yes"; then
 	AC_DEFINE(HAVE_NOTIFY, 1,
 		[Defined if libnotify is present])
-	PKG_CHECK_MODULES(LIBNOTIFY_OPTIMAL_VERSION,
-		libnotify >= $LIBNOTIFY_OPTIMAL_VERSION,
-		[],
-		AC_DEFINE(HAVE_OLD_NOTIFY, [1],
-			[Defined if an older version of libnotify is available]))
 fi
 
 # Gtk+ support
@@ -509,20 +498,20 @@ AC_OUTPUT
 AC_MSG_NOTICE([
 $PACKAGE v$VERSION configuration:
 
-        Source code location:              ${srcdir}
-        Install location:                  ${prefix}
-        Compiler:                          ${CC}
-        Build graphical client             $pioneers_build_client_gtk
-        Build computer player              $pioneers_build_client_ai
-        Build game editor                  $pioneers_build_editor
-        Build graphical server             $pioneers_build_server_gtk
-        Build console server               $pioneers_build_server_console
-        Build metaserver                   $pioneers_build_metaserver
-        Build help                         $pioneers_help
-        AVAHI support                      $have_avahi
-        LIBNOTIFY support                  $have_libnotify
+        Source code location:     ${srcdir}
+        Install location:         ${prefix}
+        Compiler:                 ${CC}
+        Build graphical client    $pioneers_build_client_gtk
+        Build computer player     $pioneers_build_client_ai
+        Build game editor         $pioneers_build_editor
+        Build graphical server    $pioneers_build_server_gtk
+        Build console server      $pioneers_build_server_console
+        Build metaserver          $pioneers_build_metaserver
+        Build help                $pioneers_help
+        AVAHI support             $have_avahi
+        LIBNOTIFY support         $have_libnotify
     Developers only:
-        Use compiler warnings              $pioneers_warnings
-        Add debug information              $pioneers_debug
-        Enable deprecation checks          $pioneers_deprecationChecks
+        Use compiler warnings     $pioneers_warnings
+        Add debug information     $pioneers_debug
+        Enable deprecation checks $pioneers_deprecationChecks
 ])
