@@ -84,7 +84,7 @@ desktop_in_files =
 CLEANFILES =
 DISTCLEANFILES =
 MAINTAINERCLEANFILES =
-EXTRA_DIST = autogen.sh pioneers.spec xmldocs.make omf.make README.Cygwin README.MinGW
+EXTRA_DIST = autogen.sh pioneers.spec xmldocs.make omf.make README.Cygwin README.MinGW Doxyfile
 BUILT_SOURCES =
 icons = 
 

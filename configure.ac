@@ -489,6 +489,7 @@ fi
 
 AC_CONFIG_FILES([Makefile])
 AC_CONFIG_FILES([pioneers.spec])
+AC_CONFIG_FILES([Doxyfile])
 AC_CONFIG_FILES([MinGW/pioneers.nsi])
 AC_CONFIG_FILES([po/Makefile.in])
 AC_CONFIG_FILES([client/help/C/Makefile])
