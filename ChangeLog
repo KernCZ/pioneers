@@ -1,3 +1,7 @@
+2013-06-10  Roland Clobus <rclobus@rclobus.nl>
+	* configure.ac, common/gtk/player-icon.c: Take ownership of the pointer
+	to fix the bug introduced on 2013-06-07.
+
 2013-06-09  Roland Clobus <rclobus@rclobus.nl>
 	* omf.make, macros/gnome-autogen.sh: Synchronised from gnome-common
 	3.7.4-1, which adds support for automake 1.13.

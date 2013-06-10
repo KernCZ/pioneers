@@ -116,8 +116,8 @@ void playericon_init(void)
 		g_input_stream_close(G_INPUT_STREAM(is), NULL, &error);
 		g_output_stream_close(G_OUTPUT_STREAM(os), NULL, &error);
 
-		ai_avatar_data = g_memory_output_stream_get_data(os);
 		ai_avatar_size = g_memory_output_stream_get_data_size(os);
+		ai_avatar_data = g_memory_output_stream_steal_data(os);
 		g_object_unref(is);
 		g_object_unref(os);
 		g_object_unref(file);
