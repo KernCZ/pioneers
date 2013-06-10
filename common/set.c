@@ -22,7 +22,7 @@
 #include "set.h"
 
 struct _Set {
-	GHashTable *hash;
+	GHashTable *hash; /**< @private A Set is implemented by a hash table */
 };
 
 Set *set_new(GHashFunc hash_func, GEqualFunc equal_func,
@@ -61,11 +61,15 @@ void set_free(Set * set)
 	g_free(set);
 }
 
+/** Data for the g_hash_table_foreach function */
 struct SetForEachData {
-	SetForEachFunc func;
-	gpointer user_data;
+	SetForEachFunc func; /**< The function to call */
+	gpointer user_data; /**< The argument to that function */
 };
 
+/** Invoke the foreach function.
+ * @private @memberof _Set
+ */
 static void set_foreach_func(gpointer key, G_GNUC_UNUSED gpointer value,
 			     gpointer user_data)
 {

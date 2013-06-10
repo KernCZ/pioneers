@@ -25,9 +25,13 @@
 
 #include <glib.h>
 
+/** An unordered collection of elements.
+ * Each element occurs only once.
+ */
 typedef struct _Set Set;
 
 /** Create a new Set.
+ * @memberof _Set
  * @param hash_func a function to create a hash value from the element
  * @param equal_func a function to check two elements for equality
  * @param destroy a function to free the memory allocated for the element,
@@ -38,12 +42,14 @@ Set *set_new(GHashFunc hash_func, GEqualFunc equal_func,
 	     GDestroyNotify destroy);
 
 /** Add a new element to the Set.
+ * @memberof _Set
  * @param set a Set
  * @param element the element to add
  */
 void set_add(Set * set, gpointer element);
 
 /** Check whether an element is in the Set.
+ * @memberof _Set
  * @param set a Set
  * @param element the element to check
  * @return TRUE if the element is in the Set
@@ -51,6 +57,7 @@ void set_add(Set * set, gpointer element);
 gboolean set_contains(Set * set, gpointer element);
 
 /** Remove an element from the Set.
+ * @memberof _Set
  * @param set a Set
  * @param element the element to remove
  * @return TRUE if the element was in the Set
@@ -58,12 +65,14 @@ gboolean set_contains(Set * set, gpointer element);
 gboolean set_remove(Set * set, gpointer element);
 
 /** Returns the number of elements in the Set.
+ * @memberof _Set
  * @param set a Set
  * @return The number of elements in the Set.
  */
 guint set_size(Set * set);
 
 /** Free the memory associated with the Set.
+ * @memberof _Set
  * @param set a Set
  */
 void set_free(Set * set);
@@ -71,6 +80,7 @@ void set_free(Set * set);
 typedef void (*SetForEachFunc) (gpointer element, gpointer user_data);
 
 /** Iterate through all elements in the Set.
+ * @memberof _Set
  * @param set a Set
  * @param func a function to call for each element
  * @param user_data the argument to the function func
