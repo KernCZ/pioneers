@@ -143,6 +143,10 @@ EXTRA_DIST += \
 # po doesn't use automake, but creates its own Makefile
 SUBDIRS += po
 
+clean-local:
+	find $(top_srcdir) -name "*~" -type f -delete
+	rm -rf html
+
 distclean-local:
 	rm -f *~
 	rm -rf autom4te.cache

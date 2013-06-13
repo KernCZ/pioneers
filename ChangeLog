@@ -1,5 +1,6 @@
 2013-06-13  Roland Clobus <rclobus@rclobus.nl>
 	* server/server.c: Don't log about leaving players twice.
+	* Makefile.am: Make clean cleans results of make reindent and doxygen.
 
 2013-06-10  Roland Clobus <rclobus@rclobus.nl>
 	* configure.ac, common/gtk/player-icon.c: Take ownership of the pointer
