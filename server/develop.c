@@ -371,13 +371,13 @@ void develop_play(Player * player, guint idx)
 	Game *game = player->game;
 	DevelType card;
 
-	if (idx >= player->devel->num_cards) {
+	if (idx >= devel_deck_count(player->devel)) {
 		player_send(player, FIRST_VERSION, LATEST_VERSION,
 			    "ERR no-card\n");
 		return;
 	}
 
-	card = player->devel->cards[idx].type;
+	card = devel_deck_get_card(player->devel, idx)->type;
 	if (!deck_card_play(player->devel,
 			    game->played_develop, idx, game->curr_turn)) {
 		player_send(player, FIRST_VERSION, LATEST_VERSION,

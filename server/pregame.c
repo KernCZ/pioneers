@@ -687,17 +687,20 @@ gboolean mode_pre_game(Player * player, gint event)
 			player_send_uncached(player, FIRST_VERSION,
 					     LATEST_VERSION,
 					     "playerinfo: numdevcards: %d\n",
-					     player->devel->num_cards);
-			for (i = 0; i < player->devel->num_cards; i++) {
-				player_send_uncached(player,
-						     FIRST_VERSION,
+					     devel_deck_count
+					     (player->devel));
+			for (i = 0; i < devel_deck_count(player->devel);
+			     i++) {
+				player_send_uncached(player, FIRST_VERSION,
 						     LATEST_VERSION,
 						     "playerinfo: devcard: %d %d\n",
-						     (gint) player->
-						     devel->cards[i].type,
-						     player->
-						     devel->cards[i].
-						     turn_bought);
+						     (gint)
+						     devel_deck_get_card
+						     (player->devel,
+						      i)->type,
+						     devel_deck_get_card
+						     (player->devel,
+						      i)->turn_bought);
 			}
 			player_send_uncached(player, V14,
 					     LATEST_VERSION,
@@ -766,7 +769,8 @@ gboolean mode_pre_game(Player * player, gint event)
 						     LATEST_VERSION,
 						     "otherplayerinfo: %d %d %d %d %d %d %d %d %d %d %d\n",
 						     p->num, numassets,
-						     p->devel->num_cards,
+						     devel_deck_count
+						     (p->devel),
 						     p->num_soldiers,
 						     p->chapel_played,
 						     p->univ_played,

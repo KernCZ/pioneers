@@ -25,6 +25,12 @@
 #include "game.h"
 #include "cards.h"
 
+struct _DevelDeck {
+	DevelCard *cards;
+	guint num_cards;
+	guint max_cards;
+};
+
 DevelDeck *deck_new(GameParams * params)
 {
 	DevelDeck *deck;
@@ -54,6 +60,16 @@ void deck_card_add(DevelDeck * deck, DevelType type, gint turn_bought)
 	deck->cards[deck->num_cards].type = type;
 	deck->cards[deck->num_cards].turn_bought = turn_bought;
 	deck->num_cards++;
+}
+
+const DevelCard *devel_deck_get_card(const DevelDeck * deck, guint index)
+{
+	return &deck->cards[index];
+}
+
+guint devel_deck_count(const DevelDeck * deck)
+{
+	return deck->num_cards;
 }
 
 gboolean is_victory_card(DevelType type)

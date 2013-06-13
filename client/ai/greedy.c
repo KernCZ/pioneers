@@ -1177,7 +1177,7 @@ static void greedy_turn(void)
 	Hex *hex = map_robber_hex(callbacks.get_map());
 	if (hex && !have_rolled_dice() && can_play_any_develop()) {
 		const DevelDeck *deck = get_devel_deck();
-		for (i = 0; i < deck->num_cards; i++) {
+		for (i = 0; i < devel_deck_count(deck); i++) {
 			DevelType cardtype = deck_card_type(deck, i);
 			if (cardtype == DEVEL_SOLDIER
 			    && can_play_develop(i)) {
@@ -1267,7 +1267,7 @@ static void greedy_turn(void)
 		gint num_victory_cards = 0;
 		gint victory_point_target, my_points;
 
-		for (i = 0; i < deck->num_cards; i++) {
+		for (i = 0; i < devel_deck_count(deck); i++) {
 			DevelType cardtype = deck_card_type(deck, i);
 
 			/* if it's a vp card, note this for later */
@@ -1289,7 +1289,7 @@ static void greedy_turn(void)
 		victory_point_target = game_victory_points();
 		my_points = player_get_score(my_player_num());
 		if (num_victory_cards + my_points >= victory_point_target) {
-			for (i = 0; i < deck->num_cards; i++) {
+			for (i = 0; i < devel_deck_count(deck); i++) {
 				DevelType cardtype =
 				    deck_card_type(deck, i);
 

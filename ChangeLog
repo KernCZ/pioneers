@@ -1,3 +1,8 @@
+2013-06-13  Micah Bunting <amnykon@gmail.com>
+        * client/common/develop.c client/ai/greedy.c server/pregame.c
+        server/develop.c common/cards.c common/cards.h: Hides the DevelDeck
+        structure and adds accessor functions.
+
 2013-06-13  Roland Clobus <rclobus@rclobus.nl>
 	* server/server.c: Don't log about leaving players twice.
 	* Makefile.am: Make clean cleans results of make reindent and doxygen.

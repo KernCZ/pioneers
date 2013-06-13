@@ -212,7 +212,7 @@ gboolean can_play_develop(guint card)
 gboolean can_play_any_develop(void)
 {
 	guint i;
-	for (i = 0; i < develop_deck->num_cards; ++i)
+	for (i = 0; i < devel_deck_count(develop_deck); ++i)
 		if (can_play_develop(i))
 			return TRUE;
 	return FALSE;
