@@ -258,7 +258,9 @@ gboolean server_stop(Game * game)
 	current = game->player_list;
 	while (current != NULL) {
 		Player *player = current->data;
-		player_remove(player);
+		if (!player->disconnected) {
+			player_remove(player);
+		}
 		player_free(player);
 		current = g_list_next(current);
 	}
