@@ -1105,7 +1105,7 @@ static GtkWidget *build_terrain_menu(void)
 		gtk_icon_size_lookup(GTK_ICON_SIZE_MENU, &width, &height);
 		if (height > width / theme->scaledata[i].aspect) {
 			height = width / theme->scaledata[i].aspect;
-		} else if (width > height * theme->scaledata[i].aspect) {
+		} else {
 			width = height * theme->scaledata[i].aspect;
 		}
 

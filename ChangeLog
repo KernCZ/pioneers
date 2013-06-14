@@ -1,3 +1,6 @@
+2013-06-14  Micah Bunting <amnykon@gmail.com>
+        * editor/gtk/editor.c: Removed extra if statement in build_terrain_menu.
+
 2013-06-13  Micah Bunting <amnykon@gmail.com>
         * client/common/develop.c client/ai/greedy.c server/pregame.c
         server/develop.c common/cards.c common/cards.h: Hides the DevelDeck
