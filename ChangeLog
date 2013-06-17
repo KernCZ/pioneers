@@ -1,3 +1,8 @@
+2013-06-17  Micah Bunting <amnykon@gmail.com>
+        * client/gtk/legend.c, editor/gtk/editor.c, common/gtk/theme.h,
+        common/gtk/map-icons.c, common/gtk/Makefile.am, common/gtk/theme.c: Moved
+        terrain icon functions to common/gtk/map-icons.c.
+        
 2013-06-14  Micah Bunting <amnykon@gmail.com>
         * editor/gtk/editor.c: Removed extra if statement in build_terrain_menu.
 

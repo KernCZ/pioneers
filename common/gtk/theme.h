@@ -112,12 +112,4 @@ void themes_cleanup(void);
 
 GdkPixbuf *theme_get_terrain_pixbuf(Terrain terrain);
 
-/** Callback to draw a terrain.
- * @param area Widget to draw on.
- * @param event Not used.
- * @param terraindata The Terrain enumeration value.
- */
-gint expose_terrain_cb(GtkWidget * area,
-		       G_GNUC_UNUSED GdkEventExpose * event,
-		       gpointer terraindata);
 #endif

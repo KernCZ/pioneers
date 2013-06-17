@@ -40,6 +40,7 @@
 #include "scrollable-text-view.h"
 #include "guimap.h"
 #include "theme.h"
+#include "map-icons.h"
 #include "colors.h"
 #include "common_gtk.h"
 #include "cards.h"
@@ -483,15 +484,7 @@ static void build_select_bars(GtkWidget * table)
 
 	/* terrain toolbar buttons */
 	for (i = 0; i <= LAST_TERRAIN; i++) {
-
-		area = gtk_drawing_area_new();
-		gtk_widget_show(area);
-		gtk_widget_set_size_request(area, BUTTON_HEIGHT,
-					    TERRAIN_BUTTON_WIDTH);
-		g_signal_connect(G_OBJECT(area), "expose_event",
-				 G_CALLBACK(expose_terrain_cb),
-				 GINT_TO_POINTER(i));
-
+		area = terrain_icon_new(i);
 		group =
 		    gtk_radio_tool_button_get_group(GTK_RADIO_TOOL_BUTTON
 						    (button));

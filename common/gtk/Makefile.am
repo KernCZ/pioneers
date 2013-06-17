@@ -40,6 +40,8 @@ libpioneers_gtk_a_SOURCES = \
 	common/gtk/gtkcompat.h \
 	common/gtk/guimap.c \
 	common/gtk/guimap.h \
+	common/gtk/map-icons.c \
+	common/gtk/map-icons.h \
 	common/gtk/metaserver.c \
 	common/gtk/metaserver.h \
 	common/gtk/player-icon.c \

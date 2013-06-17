@@ -731,34 +731,3 @@ GdkPixbuf *theme_get_terrain_pixbuf(Terrain terrain)
 {
 	return theme_get_current()->terrain_tiles[terrain];
 }
-
-gint expose_terrain_cb(GtkWidget * area,
-		       G_GNUC_UNUSED GdkEventExpose * event,
-		       gpointer terraindata)
-{
-	MapTheme *theme = theme_get_current();
-	cairo_t *cr;
-	GdkPixbuf *p;
-	gint height;
-	GtkAllocation allocation;
-	Terrain terrain = GPOINTER_TO_INT(terraindata);
-
-	if (gtk_widget_get_window(area) == NULL)
-		return FALSE;
-
-	cr = gdk_cairo_create(gtk_widget_get_window(area));
-
-	gtk_widget_get_allocation(area, &allocation);
-	height = allocation.width / theme->scaledata[terrain].aspect;
-	p = gdk_pixbuf_scale_simple(theme->scaledata[terrain].native_image,
-				    allocation.width, height,
-				    GDK_INTERP_BILINEAR);
-
-	gdk_cairo_set_source_pixbuf(cr, p, 0, 0);
-	cairo_rectangle(cr, 0, 0, allocation.width, height);
-	cairo_fill(cr);
-
-	g_object_unref(p);
-	cairo_destroy(cr);
-	return FALSE;
-}

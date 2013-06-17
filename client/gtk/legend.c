@@ -23,6 +23,7 @@
 #include "config.h"
 #include "frontend.h"
 #include "theme.h"
+#include "map-icons.h"
 #include "cost.h"
 #include "resource-view.h"
 
@@ -49,19 +50,12 @@ static void legend_rules_changed(void);
 static void add_legend_terrain(GtkWidget * table, guint row, guint col,
 			       Terrain terrain, Resource resource)
 {
-	GtkWidget *area;
 	GtkWidget *label;
 
-	area = gtk_drawing_area_new();
-	gtk_widget_show(area);
-	gtk_table_attach(GTK_TABLE(table), area,
+	gtk_table_attach(GTK_TABLE(table), terrain_icon_new(terrain),
 			 col, col + 1, row, row + 1,
 			 (GtkAttachOptions) GTK_FILL,
 			 (GtkAttachOptions) GTK_FILL, 0, 0);
-	gtk_widget_set_size_request(area, 30, 34);
-	g_signal_connect(G_OBJECT(area), "expose_event",
-			 G_CALLBACK(expose_terrain_cb),
-			 GINT_TO_POINTER(terrain));
 
 	label = gtk_label_new(_(terrain_names[terrain]));
 	gtk_widget_show(label);
