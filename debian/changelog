@@ -15,6 +15,7 @@ pioneers (15.1-1~local1) UNRELEASED; urgency=low
   * Explicitly set the path to the server in the metaserver init script.
   * Cleanup of /etc/init.d/pioneers-meta-server.
   * Updated Vcs-* fields to point to the repository that moved on SourceForge.
+  * Added Depends on initscripts (>= 2.88dsf-13.3) to ensure /run is usable.
 
  -- Roland Clobus <rclobus@rclobus.nl>  Fri, 25 Jan 2013 17:05:00 +0100
 

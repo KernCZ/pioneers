@@ -27,7 +27,7 @@ METASERVER_NAME="`dnsdomainname --fqdn`"
 ARGS="--make-pidfile --quiet --chuid nobody:nogroup"
 
 # File for storing the pid.  You probably don't need to change this.
-PIDFILE=/var/run/pioneers-metaserver.pid
+PIDFILE=/run/pioneers-metaserver.pid
 
 # End of variable list.
 

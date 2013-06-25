@@ -47,7 +47,7 @@ Package: pioneers-metaserver
 Replaces: pioneers-meta-server (<< 14.2-1~)
 Breaks: pioneers-meta-server (<< 14.2-1~)
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, lsb-base
+Depends: ${shlibs:Depends}, ${misc:Depends}, lsb-base, initscripts (>= 2.88dsf-13.3)
 Description: Settlers of Catan board game - metaserver
  Pioneers is a computer implementation of the Settlers of Catan board game.
  It can be played over the internet.
