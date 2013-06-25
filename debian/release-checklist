@@ -1,5 +1,9 @@
 #!/bin/sh -ex
 # What to do for a release of a new version in Debian:
+
+#- Read about the changes in the policy
+sensible-browser file:///usr/share/doc/debian-policy/upgrading-checklist-1.html
+
 #- Get released tarball
 cd "`dirname "$0"`"/..
 uscan
