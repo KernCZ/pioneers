@@ -2,6 +2,7 @@
 Version=1.0
 _Name=Pioneers Editor
 _Comment=Create your own game for Pioneers
+_Keywords=game;board;create;edit;layout;Pioneers;Settlers;Catan;
 Exec=pioneers-editor
 Icon=pioneers-editor
 Terminal=false

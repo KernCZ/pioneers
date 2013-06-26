@@ -12,6 +12,8 @@
 	TYPE_SOCKLEN_T is no longer required due to GIO.
 	* MinGW/pioneers.nsi.in, MinGW/Makefile.am: Activated the server.
 	* README.Cygwin: Updated building instructions.
+	* server/gtk/pioneers-server.desktop.in, client/gtk/pioneers.desktop.in,
+	editor/gtk/pioneers-editor.desktop.in: Added the field Keywords.
 
 2013-06-17  Micah Bunting <amnykon@gmail.com>
         * client/gtk/legend.c, editor/gtk/editor.c, common/gtk/theme.h,
