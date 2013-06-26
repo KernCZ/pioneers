@@ -47,6 +47,8 @@ install-MinGW:
 	cp /mingw/bin/libssp-0.dll /usr/local
 	cp /mingw/bin/libxml2-2.dll /usr/local
 	cp /mingw/bin/zlib1.dll /usr/local
+	cp /mingw/bin/gspawn-win32-helper.exe /usr/local
+	cp /mingw/bin/gspawn-win32-helper-console.exe /usr/local
 	mkdir -p /usr/local/lib/gdk-pixbuf-2.0/2.10.0
 	cp $(srcdir)/MinGW/loaders.cache /usr/local/lib/gdk-pixbuf-2.0/2.10.0
 

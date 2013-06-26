@@ -33,6 +33,7 @@
 #include <unistd.h>
 #include <limits.h>
 #include <glib.h>
+#include <glib-object.h>
 
 #include "driver.h"
 #include "game.h"
@@ -175,6 +176,8 @@ int main(int argc, char *argv[])
 	driver->player_removed = srv_player_removed;
 
 	driver->player_change = srv_player_change;
+
+	g_type_init();
 
 	setlocale(LC_ALL, "");
 	bindtextdomain(PACKAGE, LOCALEDIR);

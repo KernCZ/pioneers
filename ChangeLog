@@ -2,7 +2,16 @@
 	* configure.ac, Makefile.am, autogen.sh, client/gtk/data/Makefile.am,
 	common/Makefile.am: Minimum required version for automake is 1.11,
 	fixed warnings for automake 1.13.
-	* common/network.h, server/player.c: Initialised GError.
+	* common/network.h, server/player.c, metaserver/main.c:
+	Initialised GError for net_get_peer_name.
+	* configure.ac, server/main.c, Makefile.am, metaserver/main.c,
+	common/network.c: Switched from POSIX to GIO for the network
+	communication, which adds full IPv6 support.
+	* docs/pioneers-metaserver.6: The metaserver checks for used ports.
+	* autogen.sh, macros/Makefile.am, macros/type_socklen_t.m4:
+	TYPE_SOCKLEN_T is no longer required due to GIO.
+	* MinGW/pioneers.nsi.in, MinGW/Makefile.am: Activated the server.
+	* README.Cygwin: Updated building instructions.
 
 2013-06-17  Micah Bunting <amnykon@gmail.com>
         * client/gtk/legend.c, editor/gtk/editor.c, common/gtk/theme.h,

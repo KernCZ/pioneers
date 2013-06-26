@@ -19,11 +19,12 @@ Install Cygwin
 	subversion
 	twm
 	xinit
+	gdk-pixbuf2.0-svg
 
 3) Download and install gob2 (at least 2.0.18)
    http://ftp.5z.com/pub/gob
 
-   (./configure, make all install)
+   (./configure --prefix=/usr; make all install)
 
 You now have the setup needed to build and run Pioneers.
 
@@ -33,7 +34,7 @@ If you only want to use released versions, skip to the 'Install Pioneers'
 section.
 
 1) Get the code from the Subversion repository
-   svn checkout https://svn.sourceforge.net/svnroot/pio/trunk/pioneers pioneers
+   svn checkout svn://svn.code.sf.net/p/pio/code/trunk/pioneers pioneers
 2) Go to the pioneers directory
 3) Run automake, build and install
      ./autogen.sh
@@ -64,4 +65,4 @@ Known limitations
 * The metaserver does not work (not ported to MS Windows)
 
 Roland Clobus
-2011-01-08 (Pioneers 0.12.4)
+2013-06-17 (Pioneers 15.1)

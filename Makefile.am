@@ -24,6 +24,7 @@ console_cflags = \
 	-I$(top_builddir)/common \
 	-I$(includedir) \
 	$(GLIB2_CFLAGS) \
+	$(GIO2_CFLAGS) \
 	$(WARNINGS) \
 	$(DEBUGGING) \
 	$(GLIB_DEPRECATION) \
@@ -51,7 +52,8 @@ gtk_cflags = \
 console_libs = \
 	libpioneers.a \
 	$(top_builddir)/common/libpioneers_a-driver.o \
-	$(GLIB2_LIBS)
+	$(GLIB2_LIBS) \
+	$(GIO2_LIBS)
 
 avahi_libs = \
 	$(AVAHI_CLIENT_LIBS) \

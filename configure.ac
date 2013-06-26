@@ -34,6 +34,7 @@ PIONEERS_DEFAULT_META_PORT=5557
 PIONEERS_DEFAULT_METASERVER=pioneers.debian.net
 
 GLIB_REQUIRED_VERSION=2.26
+GIO_REQUIRED_VERSION=2.28
 GTK_REQUIRED_VERSION=2.20
 GTK_OPTIMAL_VERSION=2.24
 LIBNOTIFY_REQUIRED_VERSION=0.7.4
@@ -132,7 +133,7 @@ if test "x$GCC" = xyes; then
 	AC_SUBST(AM_CFLAGS, ["$AM_CFLAGS -D_FORTIFY_SOURCE=2"])
 	AC_SUBST(AM_CFLAGS, ["$AM_CFLAGS -pie -fPIE"])
 
-	if test "$pioneers_is_mingw_port" = "no"; then
+	if test "$pioneers_is_windows_port" = "no"; then
 	 	# Flags from Debian hardening (dpkg-buildflags --get LDFLAGS)
 		AC_SUBST(AM_LDFLAGS, ["$AM_LDFLAGS -Wl,-z,relro"])
 		AC_SUBST(AM_LDFLAGS, ["$AM_LDFLAGS -Wl,-z,now"])
@@ -229,6 +230,7 @@ fi
 # glib is always needed
 PKG_CHECK_MODULES(GLIB2, glib-2.0 >= $GLIB_REQUIRED_VERSION)
 PKG_CHECK_MODULES(GOBJECT2, gobject-2.0 >= $GLIB_REQUIRED_VERSION)
+PKG_CHECK_MODULES(GIO2, gio-2.0 >= $GIO_REQUIRED_VERSION)
 
 #
 # Check for libnotify
@@ -320,31 +322,24 @@ AM_CONDITIONAL(ADMIN_GTK_SUPPORT, [test x$admin_gtk_support = xyes])
 
 AC_ARG_ENABLE([protocol],
 	AS_HELP_STRING([--enable-protocol],
-	[Specify the network protocol (IPv4/unspecified)]),
+	[Specify the network protocol for Avahi (IPv4/unspecified)]),
 [case "${enableval}" in
-  IPv4)        pioneers_network_protocol=AF_INET;
-               avahi_network_protocol=AVAHI_PROTO_INET;;
-  *)           pioneers_network_protocol=AF_UNSPEC;
-               avahi_network_protocol=AVAHI_PROTO_UNSPEC;;
-esac], [pioneers_network_protocol=AF_UNSPEC; avahi_network_protocol=AVAHI_PROTO_UNSPEC])
-AC_DEFINE_UNQUOTED([NETWORK_PROTOCOL],[$pioneers_network_protocol],
-	[The network protocol value])
+  IPv4)        avahi_network_protocol=AVAHI_PROTO_INET;;
+  *)           avahi_network_protocol=AVAHI_PROTO_UNSPEC;;
+esac], [avahi_network_protocol=AVAHI_PROTO_UNSPEC])
 AC_DEFINE_UNQUOTED([AVAHI_NETWORK_PROTOCOL],[$avahi_network_protocol],
 	[The Avahi network protocol value])
 
-AC_CHECK_HEADERS([netdb.h fcntl.h netinet/in.h sys/socket.h])
-AC_CHECK_HEADERS([limits.h])
+AC_CHECK_HEADERS([fcntl.h])
 AC_CHECK_HEADERS([syslog.h],
 	[pioneers_have_syslog=yes;],
 	[pioneers_have_syslog=no;])
-AC_HEADER_SYS_WAIT
 AC_HEADER_TIME
 
 AC_C_CONST
 
 # Functions
 AC_FUNC_FORK
-AC_FUNC_SELECT_ARGTYPES
 
 # Mathematics
 AC_CHECK_FUNC(rint,
@@ -355,26 +350,6 @@ AC_CHECK_FUNCS([sqrt])
 # String functions
 AC_CHECK_FUNCS([strchr strspn strstr strcspn])
 AC_CHECK_FUNCS([memmove memset])
-# Network and I/O functions
-AC_CHECK_FUNCS([gethostname gethostbyname select socket])
-getsockopt_arg3="void *";
-# getaddrinfo and friends
-AC_CHECK_FUNCS([getaddrinfo gai_strerror freeaddrinfo], 
-	AC_DEFINE_UNQUOTED(HAVE_GETADDRINFO_ET_AL, [1],
-		[Defined when getaddrinfo. gai_strerror and freeaddrinfo are present]))
-
-# Can a non-blocking socket be created?
-pioneers_have_non_blocking_sockets=no;
-AC_CHECK_FUNCS([fcntl],[pioneers_have_non_blocking_sockets=yes])
-if test "$pioneers_have_non_blocking_sockets" = "no"; then
-	# Only check for ws2tcpip now,
-	# because it will cause problems under Cygwin
-	AC_CHECK_HEADERS([ws2tcpip.h],
-		[pioneers_have_non_blocking_sockets=yes;
-		 getsockopt_arg3="char *";
-		])
-fi
-AC_DEFINE_UNQUOTED(GETSOCKOPT_ARG3, $getsockopt_arg3, [The type of the third argument of getsockopt])
 
 # Functions needed for the hack to override the language
 AC_CHECK_FUNCS([setlocale])
@@ -383,8 +358,6 @@ AC_CHECK_FUNCS([setlocale])
 AC_STRUCT_TM
 AC_TYPE_PID_T
 AC_TYPE_SIZE_T
-# Check if socklen_t is present
-TYPE_SOCKLEN_T
 
 # Defines, accessible for all source files
 AC_DEFINE_UNQUOTED(META_PROTOCOL_VERSION, "$META_PROTOCOL_VERSION",
@@ -409,13 +382,7 @@ AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE", [The gettext package nam
 AM_GLIB_GNU_GETTEXT
 
 if test $pioneers_is_mingw_port = yes; then
-	# The check for WSACleanup in ws2_32 needs an include of ws2tcpip.h
-	# This is not possible with the AC_CHECK_LIB macro
-	# AC_CHECK_LIB(ws2_32, WSACleanup)
-	# Just add ws2_32 to the list of libraries
-	AC_SUBST(LIBS, "-lws2_32 $LIBS")
 	AC_SUBST(AM_CFLAGS, "-mms-bitfields $AM_CFLAGS")
-	AC_SUBST(AM_CFLAGS, "$AM_CFLAGS -DWIN32_LEAN_AND_MEAN")
 	# No console window for the graphical applications
 	AC_SUBST(GTK2_LIBS, "$GTK2_LIBS -mwindows")
 	# Don't use bin, lib and share subdirectories
@@ -455,19 +422,7 @@ if test "$have_graphical" != "yes"; then
 	pioneers_build_editor=$have_graphical;
 	pioneers_build_server_gtk=$have_graphical;
 fi
-if test "$pioneers_have_non_blocking_sockets" = "no"; then
-	pioneers_build_client_ai=no;
-	pioneers_build_client_gtk=no;
-	pioneers_build_server_console=no;
-	pioneers_build_server_gtk=no;
-	pioneers_build_metaserver=no;
-fi
 
-# The server functionality is not ported to MinGW yet
-if test "$pioneers_is_mingw_port" = "yes"; then
-	pioneers_build_server_console="no, not implemented for MinGW";
-	pioneers_build_server_gtk="no, not implemented for MinGW";
-fi
 # The metaserver functionality is not ported to MS Windows
 if test "$pioneers_is_windows_port" = "yes"; then
 	pioneers_build_metaserver="no, not implemented for MS Windows";

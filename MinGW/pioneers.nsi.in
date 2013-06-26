@@ -121,6 +121,8 @@ Section "!Minimal install" SEC01
   File "..\..\..\..\local\libssp-0.dll"
   File "..\..\..\..\local\libxml2-2.dll"
   File "..\..\..\..\local\zlib1.dll"
+  File "..\..\..\..\local\gspawn-win32-helper.exe"
+  File "..\..\..\..\local\gspawn-win32-helper-console.exe"
 
   SetOutPath "$INSTDIR\lib\gdk-pixbuf-2.0\2.10.0"
   File "..\..\..\..\local\lib\gdk-pixbuf-2.0\2.10.0\loaders.cache"
@@ -285,6 +287,8 @@ Section /o "Additional programs" SEC02
   SetOverwrite ifnewer
   File "..\..\..\..\local\pioneersai.exe"
   File "..\..\..\..\local\pioneers-editor.exe"
+  File "..\..\..\..\local\pioneers-server-console.exe"
+  File "..\..\..\..\local\pioneers-server-gtk.exe"
 
   SetOverwrite TRY
   SetOutPath "$INSTDIR\games\pioneers"
@@ -324,6 +328,7 @@ Section /o "Additional programs" SEC02
   CreateDirectory "$SMPROGRAMS\$ICONS_GROUP"
   CreateShortCut "$SMPROGRAMS\$ICONS_GROUP\Pioneers Editor.lnk" "$INSTDIR\pioneers-editor.exe"
   CreateShortCut "$DESKTOP\Pioneers Editor.lnk" "$INSTDIR\pioneers-editor.exe"
+  CreateShortCut "$SMPROGRAMS\$ICONS_GROUP\Pioneers Server.lnk" "$INSTDIR\pioneers-server-gtk.exe"
   !insertmacro MUI_STARTMENU_WRITE_END
 SectionEnd
 
@@ -354,7 +359,7 @@ SectionEnd
 ; Section descriptions
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
   !insertmacro MUI_DESCRIPTION_TEXT ${SEC01} "Play games of Pioneers"
-  !insertmacro MUI_DESCRIPTION_TEXT ${SEC02} "Install a game editor and a computer player"
+  !insertmacro MUI_DESCRIPTION_TEXT ${SEC02} "Install a server, a game editor and a computer player"
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 
@@ -373,6 +378,8 @@ Section Uninstall
   !insertmacro MUI_STARTMENU_GETFOLDER "Application" $ICONS_GROUP
   Delete "$INSTDIR\${PRODUCT_NAME}.url"
   Delete "$INSTDIR\uninst.exe"
+  Delete "$INSTDIR\pioneers-server-gtk.exe"
+  Delete "$INSTDIR\pioneers-server-console.exe"
   Delete "$INSTDIR\pioneers-editor.exe"
   Delete "$INSTDIR\pioneersai.exe"
   Delete "$INSTDIR\pioneers.exe"
@@ -401,6 +408,8 @@ Section Uninstall
   Delete "$INSTDIR\libssp-0.dll"
   Delete "$INSTDIR\libxml2-2.dll"
   Delete "$INSTDIR\zlib1.dll"
+  Delete "$INSTDIR\gspawn-win32-helper.exe"
+  Delete "$INSTDIR\gspawn-win32-helper-console.exe"
   Delete "$INSTDIR\lib\gdk-pixbuf-2.0\2.10.0\loaders.cache"
   Delete "$INSTDIR\themes\Wesnoth-like\theme.cfg"
   Delete "$INSTDIR\themes\Wesnoth-like\sea.png"
@@ -554,6 +563,7 @@ Section Uninstall
   Delete "$DESKTOP\Pioneers Editor.lnk"
   Delete "$SMPROGRAMS\$ICONS_GROUP\Pioneers.lnk"
   Delete "$SMPROGRAMS\$ICONS_GROUP\Pioneers Editor.lnk"
+  Delete "$SMPROGRAMS\$ICONS_GROUP\Pioneers Server.lnk"
 
   RMDir "$SMPROGRAMS\$ICONS_GROUP"
   RMDir "$INSTDIR\themes\Wesnoth-like"

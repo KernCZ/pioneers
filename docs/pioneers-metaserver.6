@@ -39,7 +39,6 @@ Run in daemon mode.
 .TP
 .BI "\-p, \-\-port\-range" " from" \- "to"
 .RI "Use ports in the range " from "-" to " (inclusive) to start servers."
-It is advised not to include port 5557 in the range.  (See BUGS below.)
 When this range is not specified, the metaserver will not be able to create
 new games.
 
@@ -83,11 +82,6 @@ Game definitions
 .RS
 Shutdown the metaserver gracefully (can be used to check for memory leaks)
 .RE
-
-.SH BUGS
-Do not include port 5557 in the
-.I \-\-port\-range
-argument because the metaserver uses this port.
 
 .SH AUTHOR
 This manual page was written by Jeff Breidenbach <jab@debian.org>,

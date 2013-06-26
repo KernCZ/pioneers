@@ -19,9 +19,6 @@ REQUIRED_INTLTOOL_VERSION="0.35"
     exit 1
 }
 
-# Create acinclude.m4 from the extra macro
-cp macros/type_socklen_t.m4 acinclude.m4
-
 which gnome-autogen.sh || {
     echo "gnome-common not found, using the included version"
     . $srcdir/macros/gnome-autogen.sh

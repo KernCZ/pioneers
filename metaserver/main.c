@@ -32,6 +32,7 @@
 #include <signal.h>
 
 #include <glib.h>
+#include <glib-object.h>
 #include "network.h"
 #include "game.h"
 #include "version.h"
@@ -404,7 +405,7 @@ static void try_make_server_complete(Client * client)
 
 static void client_process_line(Client * client, const gchar * line)
 {
-	GError *error;
+	GError *error = NULL;
 
 	switch (client->type) {
 	case META_UNKNOWN:
@@ -649,6 +650,7 @@ int main(int argc, char *argv[])
 	gchar *error_message;
 
 	set_ui_driver(&Glib_Driver);
+	g_type_init();
 
 	setlocale(LC_ALL, "");
 	bindtextdomain(PACKAGE, LOCALEDIR);
@@ -706,9 +708,7 @@ int main(int argc, char *argv[])
 		gchar *server_name =
 		    g_find_program_in_path(get_server_path());
 		if (server_name) {
-#ifdef HAVE_GETADDRINFO_ET_AL
 			can_create_games = TRUE;
-#endif				/* HAVE_GETADDRINFO_ET_AL */
 		}
 		g_free(server_name);
 	}
