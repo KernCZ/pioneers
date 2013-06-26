@@ -59,7 +59,7 @@ EXTRA_DIST += client/gtk/data/splash.svg
 MAINTAINERCLEANFILES += client/gtk/data/splash.png
 
 client/gtk/data/splash.png: client/gtk/data/splash.svg
-	@mkdir_p@ $(dir $@)
+	$(MKDIR_P) $(dir $@)
 	$(svg_renderer_path) $(svg_renderer_width)400$(svg_renderer_height)400 $< $(svg_renderer_output) $@
 
 if USE_WINDOWS_ICON

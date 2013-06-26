@@ -19,10 +19,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-AC_PREREQ(2.61)
+AC_PREREQ([2.69])
 AC_INIT([pioneers],[15.1],[pio-develop@lists.sourceforge.net])
 AC_CONFIG_AUX_DIR([.])
-AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
+AM_INIT_AUTOMAKE
 AC_CONFIG_SRCDIR([client])
 AC_CONFIG_HEADERS([config.h])
  
@@ -40,12 +40,12 @@ LIBNOTIFY_REQUIRED_VERSION=0.7.4
 
 AM_MAINTAINER_MODE
 
-AC_PROG_LIBTOOL
+LT_INIT
 AC_PATH_PROG(ECHO, echo)
 
 AC_PROG_CC
 AM_PROG_CC_C_O
-AM_PROG_MKDIR_P
+AC_PROG_MKDIR_P
 AC_HEADER_STDC
 
 # The Windows ports (Cygwin and MinGW) are client-only

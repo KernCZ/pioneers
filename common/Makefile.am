@@ -65,7 +65,7 @@ libpioneers_a_SOURCES = \
 	common/state.h
 
 common/authors.h: AUTHORS
-	@mkdir_p@ common
+	$(MKDIR_P) common
 	printf '#define AUTHORLIST ' > $@
 	$(SED) -e's/ <.*//; s/$$/", \\/; s/^/"/; /^"[[:space:]]*", \\$$/d' $< >> $@
 	printf 'NULL\n' >> $@
@@ -73,7 +73,7 @@ common/authors.h: AUTHORS
 # This target is not called common/version.h (although it builds that file),
 # because it must be PHONY, but should only be rebuilt once.
 build_version:
-	@mkdir_p@ common
+	$(MKDIR_P) common
 	printf '#define FULL_VERSION "$(VERSION)' > common/version.new
 	if svn info > /dev/null 2>&1; then				\
 		svn info |                                              \
