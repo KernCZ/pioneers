@@ -1,6 +1,6 @@
 pioneers (15.1-1~local1) UNRELEASED; urgency=low
 
-  * Awaiting new upstream release.
+  * Awaiting new upstream release. (closes: #551341)
   * Removed translation patches for 14.1-2.
   * Spelling correction: Renamed meta[- ]server to metaserver.
   * Migration of the settings for the metaserver.
