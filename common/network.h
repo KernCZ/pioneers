@@ -84,9 +84,9 @@ void net_service_free(Service * service);
 
 /** Get peer name
  *  @param ses The session
- *  @retval hostname The resolved hostname
- *  @retval servname The resolved port name/service name
- *  @retval error The error when it fails
+ *  @retval hostname The resolved hostname (free with g_free)
+ *  @retval servname The resolved port name/service name (free with g_free)
+ *  @retval error The error when it fails, or NULL to ignore
  *  @return TRUE is successful
  */
 gboolean net_get_peer_name(Session * ses, gchar ** hostname,

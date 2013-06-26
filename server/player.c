@@ -443,6 +443,7 @@ Player *player_new_connection(Game * game, Session * ses)
 	gchar *location;
 	gchar *port;
 
+	error = NULL;
 	if (!net_get_peer_name(ses, &location, &port, &error)) {
 		log_message(MSG_ERROR,
 			    _("Unable to determine the "
