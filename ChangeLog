@@ -1,3 +1,7 @@
+2013-06-27  Roland Clobus <rclobus@rclobus.nl>
+	* autogen.sh, configure.ac: Set required version of autoconf back to
+	2.68, to build on Ubuntu Precise again.
+
 2013-06-26  Roland Clobus <rclobus@rclobus.nl>
 	* configure.ac, Makefile.am, autogen.sh, client/gtk/data/Makefile.am,
 	common/Makefile.am: Minimum required version for automake is 1.11,
