@@ -1,3 +1,6 @@
+2013-06-28  Roland Clobus <rclobus@rclobus.nl>
+	* server/meta.c: Check whether the metaserver is still alive.
+
 2013-06-27  Roland Clobus <rclobus@rclobus.nl>
 	* autogen.sh, configure.ac: Set required version of autoconf back to
 	2.68, to build on Ubuntu Precise again.

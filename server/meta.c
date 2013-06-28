@@ -196,6 +196,7 @@ static void meta_event(Session * ses, NetEvent event, const gchar * line,
 		meta_free_session(ses);
 		break;
 	case NET_CONNECT:
+		net_set_check_connection_alive(ses, 480u);
 		break;
 	case NET_CONNECT_FAIL:
 		meta_free_session(ses);
