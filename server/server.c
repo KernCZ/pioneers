@@ -178,8 +178,7 @@ static gboolean game_server_start(Game * game, gboolean register_server,
 
 	if (register_server) {
 		g_assert(metaserver_name != NULL);
-		meta_register(metaserver_name, PIONEERS_DEFAULT_META_PORT,
-			      game);
+		meta_register(metaserver_name, game);
 	}
 	avahi_register_game(game);
 	return TRUE;

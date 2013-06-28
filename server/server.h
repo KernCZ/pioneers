@@ -146,7 +146,7 @@ gboolean mode_discard_resources_place_robber(Player * player, gint event);
 
 /* meta.c */
 gchar *get_server_name(void);
-void meta_register(const gchar * server, const gchar * port, Game * game);
+void meta_register(const gchar * server, Game * game);
 void meta_unregister(void);
 void meta_start_game(void);
 void meta_report_num_players(guint num_players);

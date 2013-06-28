@@ -1,5 +1,7 @@
 2013-06-28  Roland Clobus <rclobus@rclobus.nl>
 	* server/meta.c: Check whether the metaserver is still alive.
+	* server/meta.c, server/server.c, server/server.h: Reconnect to the
+	metaserver when the connection is broken.
 
 2013-06-27  Roland Clobus <rclobus@rclobus.nl>
 	* autogen.sh, configure.ac: Set required version of autoconf back to

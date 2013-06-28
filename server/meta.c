@@ -36,6 +36,57 @@ static enum {
 static gint metaserver_version_major;
 static gint metaserver_version_minor;
 static gint num_redirects;
+/** TRUE when the server disconnects, FALSE when the other end disconnects */
+static gboolean disconnect_initiated;
+/** GSource identifier for the reconnect timer */
+static guint reconnect_timer = 0;
+/** Reconnect interval in seconds */
+static guint reconnect_interval;
+static gchar *reconnect_server;
+static gchar *reconnect_port;
+
+static gboolean timed_out(gpointer data);
+static gboolean meta_connect(Game * game);
+static void meta_redirect(const gchar * server, const gchar * port,
+			  Game * game);
+
+static void start_reconnect_timer(Game * game)
+{
+	if (reconnect_timer == 0) {
+		/* Only the first time */
+		log_message(MSG_ERROR,
+			    _(""
+			      "The connection to the metaserver is lost.\n"));
+	}
+	log_message(MSG_INFO,
+		    ngettext
+		    ("An attempt to reconnect is scheduled in %u second.\n",
+		     "An attempt to reconnect is scheduled in %u seconds.\n",
+		     reconnect_interval), reconnect_interval);
+	reconnect_timer =
+	    g_timeout_add(reconnect_interval * 1000, timed_out, game);
+}
+
+static void stop_reconnect_timer(void)
+{
+	if (reconnect_timer != 0) {
+		g_source_remove(reconnect_timer);
+	}
+	reconnect_timer = 0;
+}
+
+static gboolean timed_out(gpointer data)
+{
+	Game *game = data;
+	log_message(MSG_INFO,
+		    _("Attempting to reconnect to the metaserver.\n"));
+	reconnect_interval *= 2;
+	if (!meta_connect(game)) {
+		start_reconnect_timer(game);
+	}
+	disconnect_initiated = FALSE;
+	return FALSE;
+}
 
 gchar *get_server_name(void)
 {
@@ -104,6 +155,7 @@ static void meta_send_details(Session * ses, Game * game)
 
 static void meta_free_session(Session * ses)
 {
+	disconnect_initiated = TRUE;
 	if (ses == meta_session) {
 		meta_session = NULL;
 	}
@@ -148,7 +200,7 @@ static void meta_event(Session * ses, NetEvent event, const gchar * line,
 					port = PIONEERS_DEFAULT_META_PORT;
 					if (split_result[2])
 						port = split_result[2];
-					meta_register(split_result[1],
+					meta_redirect(split_result[1],
 						      port, game);
 				} else {
 					log_message(MSG_ERROR,
@@ -160,6 +212,9 @@ static void meta_event(Session * ses, NetEvent event, const gchar * line,
 				break;
 			}
 
+			disconnect_initiated = FALSE;
+			reconnect_interval = 5;
+			stop_reconnect_timer();
 			metaserver_version_major = 0;
 			metaserver_version_minor = 0;
 			if (strncmp(line, "welcome ", 8) == 0) {
@@ -190,8 +245,9 @@ static void meta_event(Session * ses, NetEvent event, const gchar * line,
 		/* During a reconnect, different sessions might co-exist */
 		if (ses == meta_session
 		    && meta_mode != MODE_REDIRECT_OVERFLOW) {
-			log_message(MSG_ERROR,
-				    _("Metaserver kicked us off\n"));
+			if (!disconnect_initiated) {
+				start_reconnect_timer(game);
+			}
 		}
 		meta_free_session(ses);
 		break;
@@ -199,39 +255,71 @@ static void meta_event(Session * ses, NetEvent event, const gchar * line,
 		net_set_check_connection_alive(ses, 480u);
 		break;
 	case NET_CONNECT_FAIL:
+		if (!disconnect_initiated) {
+			start_reconnect_timer(game);
+		};
 		meta_free_session(ses);
 		break;
 	}
 }
 
-void meta_register(const gchar * server, const gchar * port, Game * game)
+static gboolean meta_connect(Game * game)
 {
-	if (num_redirects > 0)
-		log_message(MSG_INFO,
-			    _(""
-			      "Redirected to metaserver at %s, port %s\n"),
-			    server, port);
-	else
-		log_message(MSG_INFO,
-			    _(""
-			      "Register with metaserver at %s, port %s\n"),
-			    server, port);
-
 	if (meta_session != NULL)
 		net_free(&meta_session);
 
 	meta_session = net_new(meta_event, game);
-	if (net_connect(meta_session, server, port))
+	if (net_connect(meta_session, reconnect_server, reconnect_port)) {
 		meta_mode = MODE_SIGNON;
-	else {
+		return TRUE;
+	} else {
 		net_free(&meta_session);
+		return FALSE;
 	}
+}
+
+static void meta_prepare_connection(const gchar * server,
+				    const gchar * port, Game * game)
+{
+	g_free(reconnect_server);
+	g_free(reconnect_port);
+
+	reconnect_server = g_strdup(server);
+	reconnect_port = g_strdup(port);
+
+	disconnect_initiated = TRUE;
+	meta_connect(game);
+}
+
+static void meta_redirect(const gchar * server, const gchar * port,
+			  Game * game)
+{
+	if (strcmp(port, PIONEERS_DEFAULT_META_PORT) == 0) {
+		log_message(MSG_INFO, _("Redirected to the "
+					"metaserver at %s.\n"), server);
+	} else {
+		log_message(MSG_INFO, _("Redirected to the "
+					"metaserver at %s, port %s.\n"),
+			    server, port);
+	}
+	meta_prepare_connection(server, port, game);
+}
+
+void meta_register(const gchar * server, Game * game)
+{
+	log_message(MSG_INFO, _("Register with the metaserver at %s.\n"),
+		    server);
+	num_redirects = 0;
+	meta_prepare_connection(server, PIONEERS_DEFAULT_META_PORT, game);
 }
 
 void meta_unregister(void)
 {
+	disconnect_initiated = TRUE;
 	if (meta_session != NULL) {
-		log_message(MSG_INFO, _("Unregister from metaserver\n"));
+		log_message(MSG_INFO,
+			    _("Unregister from the metaserver.\n"));
 		net_free(&meta_session);
+		stop_reconnect_timer();
 	}
 }
