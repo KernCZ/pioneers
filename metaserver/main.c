@@ -638,9 +638,19 @@ static GOptionEntry commandline_entries[] = {
 	{NULL, '\0', 0, 0, NULL, NULL, NULL}
 };
 
-static void handle_usr1_signal(G_GNUC_UNUSED int signal)
+static gboolean handle_usr1_quit_request(G_GNUC_UNUSED gpointer user_data)
 {
 	g_main_loop_quit(event_loop);
+	return FALSE;
+}
+
+static void handle_usr1_signal(G_GNUC_UNUSED int signal)
+{
+	/* Cancelling the service is asynchronous, the event queue must be
+	 * processed before g_main_loop_quit can be called. */
+	net_service_free(service);
+	service = NULL;
+	g_idle_add(handle_usr1_quit_request, NULL);
 }
 
 int main(int argc, char *argv[])

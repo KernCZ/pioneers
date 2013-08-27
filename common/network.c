@@ -41,7 +41,7 @@ struct _Service {
 
 struct _Session {
 	GSocketConnection *connection;
-	GSource *input_source;
+	GCancellable *input_cancel;
 	time_t last_response;	/* used for activity detection.  */
 	guint timer_id;
 	gboolean timed_out;
@@ -72,9 +72,9 @@ static gboolean net_close_internal(Session * ses)
 		ses->timer_id = 0;
 	}
 
-	if (ses->input_source != NULL) {
-		g_source_destroy(ses->input_source);
-		ses->input_source = NULL;
+	if (ses->input_cancel != NULL
+	    && !g_cancellable_is_cancelled(ses->input_cancel)) {
+		g_cancellable_cancel(ses->input_cancel);
 	}
 
 	if (ses->connection != NULL) {
@@ -211,7 +211,13 @@ static gboolean input_ready(GObject * pollable_stream, gpointer user_data)
 	    g_pollable_input_stream_read_nonblocking
 	    (G_POLLABLE_INPUT_STREAM(pollable_stream),
 	     ses->read_buff + ses->read_len,
-	     sizeof(ses->read_buff) - ses->read_len, NULL, &error);
+	     sizeof(ses->read_buff) - ses->read_len, ses->input_cancel,
+	     &error);
+
+	if (g_cancellable_is_cancelled(ses->input_cancel)) {
+		g_error_free(error);
+		return FALSE;
+	}
 
 	if (num == 0) {
 		net_close(ses);
@@ -228,8 +234,9 @@ static gboolean input_ready(GObject * pollable_stream, gpointer user_data)
 
 	ses->read_len += (size_t) num;
 
-	if (ses->entered)
+	if (ses->entered) {
 		return TRUE;
+	}
 	ses->entered = TRUE;
 
 	offset = 0;
@@ -332,12 +339,31 @@ gboolean net_connected(Session * ses)
 	return (ses->connection != NULL);
 }
 
+/** Start listening on the connection in the session */
+static void net_start_listening(Session * ses)
+{
+	GSource *input_source;
+
+	g_assert(ses->connection != NULL);
+
+	ses->input_cancel = g_cancellable_new();
+	input_source =
+	    g_pollable_input_stream_create_source(G_POLLABLE_INPUT_STREAM
+						  (g_io_stream_get_input_stream
+						   (G_IO_STREAM
+						    (ses->connection))),
+						  ses->input_cancel);
+	g_source_set_callback(input_source, (GSourceFunc) input_ready, ses,
+			      NULL);
+	g_source_attach(input_source, NULL);
+	g_source_unref(input_source);
+}
+
 gboolean net_connect(Session * ses, const gchar * host, const gchar * port)
 {
 	GSocketClient *client;
 	GError *error;
 
-	client = g_socket_client_new();
 	g_return_val_if_fail(ses->host == NULL, FALSE);
 	g_return_val_if_fail(ses->connection == NULL, FALSE);
 
@@ -356,17 +382,15 @@ gboolean net_connect(Session * ses, const gchar * host, const gchar * port)
 		g_error_free(error);
 		return FALSE;
 	}
-	ses->input_source =
-	    g_pollable_input_stream_create_source(G_POLLABLE_INPUT_STREAM
-						  (g_io_stream_get_input_stream
-						   (G_IO_STREAM
-						    (ses->connection))),
-						  NULL);
-	g_source_set_callback(ses->input_source, (GSourceFunc) input_ready,
-			      ses, NULL);
-	g_source_attach(ses->input_source, NULL);
-
+	net_start_listening(ses);
 	return TRUE;
+}
+
+static gboolean net_delayed_free(gpointer user_data)
+{
+	Session *ses = user_data;
+	g_free(ses);
+	return FALSE;
 }
 
 /* Free and NULL-ify the session *ses */
@@ -390,9 +414,14 @@ void net_free(Session ** ses)
 		}
 	}
 
-	if ((*ses)->host != NULL)
-		g_free((*ses)->host);
-	g_free(*ses);
+	g_free((*ses)->host);
+
+	if ((*ses)->input_cancel != NULL) {
+		g_object_unref((*ses)->input_cancel);
+		g_idle_add(net_delayed_free, *ses);
+	} else {
+		g_free(*ses);
+	}
 	*ses = NULL;
 }
 
@@ -438,10 +467,10 @@ static void net_service_incoming(GObject * object, GAsyncResult * result,
 	if (error) {
 		if (g_error_matches
 		    (error, G_IO_ERROR, G_IO_ERROR_CANCELLED)) {
+			g_error_free(error);
 			return;
-		} else {
-			g_warning("fail: %s", error->message);
 		}
+		g_warning("fail: %s", error->message);
 		g_error_free(error);
 	} else {
 		g_assert(service->listener == listener);
@@ -451,16 +480,7 @@ static void net_service_incoming(GObject * object, GAsyncResult * result,
 		ses->connection = connection;
 		service->sessions = g_slist_append(service->sessions, ses);
 
-		ses->input_source =
-		    g_pollable_input_stream_create_source
-		    (G_POLLABLE_INPUT_STREAM
-		     (g_io_stream_get_input_stream
-		      (G_IO_STREAM(connection))), NULL);
-		g_source_set_callback(ses->input_source,
-				      (GSourceFunc) input_ready, ses,
-				      NULL);
-		g_source_attach(ses->input_source, NULL);
-
+		net_start_listening(ses);
 		notify(ses, NET_CONNECT, NULL);
 	}
 
