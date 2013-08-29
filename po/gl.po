@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 0.12.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-28 11:51+0200\n"
+"POT-Creation-Date: 2013-08-29 13:30+0200\n"
 "PO-Revision-Date: 2010-04-05 08:14+0000\n"
 "Last-Translator: Indalecio Freiría Santos <ifreiria@gmail.com>\n"
 "Language-Team: Galician <gl@li.org>\n"
@@ -553,12 +553,12 @@ msgstr "%s toma %s de %s.\n"
 #: ../client/common/player.c:124 ../server/player.c:561
 #, c-format
 msgid "Spectator %d"
-msgstr ""
+msgstr "Espectador %d"
 
 #: ../client/common/player.c:127
 #, c-format
 msgid "spectator %d"
-msgstr ""
+msgstr "espectador %d"
 
 #: ../client/common/player.c:136 ../server/player.c:564
 #, c-format
@@ -571,9 +571,9 @@ msgid "player %d"
 msgstr "Xogador %d"
 
 #: ../client/common/player.c:214
-#, fuzzy, c-format
+#, c-format
 msgid "New spectator: %s.\n"
-msgstr "Novo visualizador: %s.\n"
+msgstr "Novo espectador: %s.\n"
 
 #: ../client/common/player.c:217 ../client/common/player.c:233
 #, c-format
@@ -1058,24 +1058,22 @@ msgstr ""
 
 #. Label
 #: ../client/gtk/connect.c:726
-#, fuzzy
 msgid "Number of computer players"
-msgstr "Tipo de xogador do computador"
+msgstr ""
 
 #. Tooltip
 #: ../client/gtk/connect.c:746
-#, fuzzy
 msgid "The number of computer players"
-msgstr "Número de xogadores"
+msgstr ""
 
 #: ../client/gtk/connect.c:767
 msgid "Requesting new game server\n"
 msgstr "Pidindo un novo servidor de xogo\n"
 
 #: ../client/gtk/connect.c:810 ../server/gtk/main.c:350 ../server/server.c:153
-#, fuzzy, c-format
+#, c-format
 msgid "Error starting %s: %s\n"
-msgstr "Erro ao empezar %s: %s"
+msgstr ""
 
 #. Dialog caption
 #: ../client/gtk/connect.c:832
@@ -1245,7 +1243,7 @@ msgstr ""
 #. Button
 #: ../client/gtk/connect.c:1298
 msgid "Join"
-msgstr ""
+msgstr "Unirse"
 
 #. Tooltip for button Join
 #: ../client/gtk/connect.c:1302
@@ -1612,29 +1610,28 @@ msgstr "Configurar o aplicativo"
 
 #. Menu entry
 #: ../client/gtk/gui.c:349 ../editor/gtk/editor.c:1297
-#, fuzzy
 msgid "_View"
-msgstr "Visor"
+msgstr "_Ver"
 
 #. Menu entry
 #: ../client/gtk/gui.c:352 ../editor/gtk/editor.c:1341
 msgid "_Reset"
-msgstr ""
+msgstr "_Restabelecer"
 
 #. Tooltip for Reset menu entry
 #: ../client/gtk/gui.c:355 ../editor/gtk/editor.c:1344
 msgid "View the full map"
-msgstr ""
+msgstr "Ve-lo mapa completo"
 
 #. Menu entry
 #: ../client/gtk/gui.c:358 ../editor/gtk/editor.c:1347
 msgid "_Center"
-msgstr ""
+msgstr "_Centrar"
 
 #. Tooltip for Center menu entry
 #: ../client/gtk/gui.c:360 ../editor/gtk/editor.c:1349
 msgid "Center the map"
-msgstr ""
+msgstr "Centra-lo mapa"
 
 #. Menu entry
 #: ../client/gtk/gui.c:364 ../client/gtk/gui.c:373 ../editor/gtk/editor.c:1300
@@ -1660,7 +1657,7 @@ msgstr "Amosar o manual"
 #. Menu entry
 #: ../client/gtk/gui.c:383 ../editor/gtk/editor.c:1367
 msgid "_Fullscreen"
-msgstr ""
+msgstr "_Pantalla Completa"
 
 #. Tooltip for Fullscreen menu entry
 #: ../client/gtk/gui.c:386 ../editor/gtk/editor.c:1370
@@ -1803,13 +1800,12 @@ msgstr "Anunciar novos xogadores"
 #: ../client/gtk/gui.c:1204
 #, fuzzy
 msgid "Make a sound when a new player or spectator enters the game"
-msgstr "Facer un  son cando un xogador novo ou visor entre ao xogo"
+msgstr "Facer un son cando un xogador novo ou visor entre ao xogo"
 
 #. Label for the option to use the notifications.
 #: ../client/gtk/gui.c:1216
-#, fuzzy
 msgid "Show notifications"
-msgstr "Amosar información da versión"
+msgstr "Mostrar notificacións"
 
 #. Tooltip for notifications option.
 #: ../client/gtk/gui.c:1226
@@ -1858,9 +1854,8 @@ msgstr "Seleccione unha localización nova para o barco"
 
 #. Notification
 #: ../client/gtk/interface.c:892
-#, fuzzy
 msgid "It is your turn to setup."
-msgstr "Tócache."
+msgstr ""
 
 #: ../client/gtk/legend.c:33
 msgid "Hill"
@@ -2082,9 +2077,9 @@ msgstr "%s ten %s e quere %s"
 
 #. Notification
 #: ../client/gtk/quote.c:217
-#, fuzzy, c-format
+#, c-format
 msgid "New offer from %s."
-msgstr "Roubas %s a %s.\n"
+msgstr "Nova oferta desde %s."
 
 #. Notification
 #: ../client/gtk/quote.c:242
@@ -2235,9 +2230,8 @@ msgid "Allow trade only before building or buying:"
 msgstr "Permitir comerciar só antes de construír ou mercar:"
 
 #: ../client/gtk/settingscreen.c:171
-#, fuzzy
 msgid "Check victory only at end of turn:"
-msgstr "Revisa a vitoria unicamente ao rematar a quenda"
+msgstr ""
 
 #: ../client/gtk/settingscreen.c:176
 msgid "Amount of each resource:"
@@ -2356,9 +2350,9 @@ msgstr "Quero %s, e darlles %s"
 
 #. Notification
 #: ../client/gtk/trade.c:348
-#, fuzzy, c-format
+#, c-format
 msgid "Quote received from %s."
-msgstr "%s recibe %s.\n"
+msgstr ""
 
 #. Button text, trade: call for quotes from other players
 #: ../client/gtk/trade.c:539
@@ -2489,7 +2483,8 @@ msgstr "Autores:"
 msgid "translator_credits"
 msgstr ""
 "Launchpad Contributions:\n"
-"  Indalecio Freiría Santos https://launchpad.net/~ifreiria"
+"  Indalecio Freiría Santos https://launchpad.net/~ifreiria\n"
+"  ghas https://launchpad.net/~agghas"
 
 #. Header for the translator_credits. Use your own language name
 #: ../common/gtk/aboutbox.c:110
@@ -2558,9 +2553,8 @@ msgstr "Revisa a vitoria unicamente ao rematar a quenda"
 
 #. Label
 #: ../common/gtk/game-rules.c:135
-#, fuzzy
 msgid "Island discovery bonuses"
-msgstr "Bonificacións por descubrimento de illas:"
+msgstr ""
 
 #. Tooltip for island bonus
 #: ../common/gtk/game-rules.c:147
@@ -2569,9 +2563,8 @@ msgstr ""
 
 #. Tooltip for the check button
 #: ../common/gtk/game-rules.c:163
-#, fuzzy
 msgid "Check and correct island discovery bonuses"
-msgstr "Bonificacións por descubrimento de illas:"
+msgstr ""
 
 #. Label text for customising a game
 #: ../common/gtk/game-settings.c:106
@@ -2969,20 +2962,19 @@ msgstr "Sureste|SE"
 
 #: ../editor/gtk/editor.c:230
 msgid "Insert a row"
-msgstr ""
+msgstr "Insertar unha fila"
 
 #: ../editor/gtk/editor.c:231
-#, fuzzy
 msgid "Delete a row"
-msgstr "Eliminar"
+msgstr "Borrar unha fila"
 
 #: ../editor/gtk/editor.c:232
 msgid "Insert a column"
-msgstr ""
+msgstr "Insertar unha columna"
 
 #: ../editor/gtk/editor.c:233
 msgid "Delete a column"
-msgstr ""
+msgstr "Borrar unha columna"
 
 #. Menu item
 #: ../editor/gtk/editor.c:732
@@ -3028,9 +3020,8 @@ msgstr "Falla ao gardar a '%s'"
 
 #. Name of the file filter: show only games
 #: ../editor/gtk/editor.c:1080
-#, fuzzy
 msgid "Games"
-msgstr "_Xogo"
+msgstr ""
 
 #. Name of the file filter: show all files
 #: ../editor/gtk/editor.c:1086
@@ -3172,7 +3163,7 @@ msgstr "Axustes"
 #. Tab page name
 #: ../editor/gtk/editor.c:1528
 msgid "Comments"
-msgstr ""
+msgstr "Comentarios"
 
 #: ../editor/gtk/game-resources.c:48
 msgid "Resource count"
@@ -3249,14 +3240,13 @@ msgstr ""
 
 #: ../server/avahi.c:113 ../server/avahi.c:147 ../server/avahi.c:157
 #: ../server/avahi.c:193 ../server/avahi.c:214 ../server/avahi.c:228
-#, fuzzy, c-format
+#, c-format
 msgid "Avahi error: %s, %s\n"
-msgstr "Erro(%s): %s\n"
+msgstr ""
 
 #: ../server/avahi.c:215 ../server/avahi.c:229
-#, fuzzy
 msgid "Unable to register Avahi server"
-msgstr "Darse de baixa do metaservidor\n"
+msgstr ""
 
 #: ../server/avahi.c:262
 msgid "Unregistering Avahi.\n"
@@ -3390,9 +3380,8 @@ msgstr "Rol"
 
 #. Tooltip for column Role
 #: ../server/gtk/main.c:765
-#, fuzzy
 msgid "Player or spectator"
-msgstr "Xogador de visor"
+msgstr "Xogador ou espectador"
 
 #. Button text
 #: ../server/gtk/main.c:801
@@ -3606,9 +3595,9 @@ msgstr "Non se poden cargar os parámetros da partida\n"
 
 #. Error message
 #: ../server/main.c:275
-#, fuzzy, c-format
+#, c-format
 msgid "Admin port not available.\n"
-msgstr "Sintoo, %s dispoñíbel.\n"
+msgstr ""
 
 #. server-console commandline error
 #: ../server/main.c:282
@@ -3739,84 +3728,3 @@ msgstr "Tentouse asignar recursos para un xogador nulo.\n"
 #: ../server/turn.c:493
 msgid "The dice roll has been determined by the administrator."
 msgstr "O rol do dado foi determinado polo administrador."
-
-#~ msgid "Viewer %d"
-#~ msgstr "Visualizador %d"
-
-#~ msgid "viewer %d"
-#~ msgstr "Visualizador %d"
-
-#~ msgid "<b>I want</b>"
-#~ msgstr "<b>Quero...</b>"
-
-#~ msgid "<b>Give them</b>"
-#~ msgstr "<b>Dalles...</b>"
-
-#~ msgid "Viewer: "
-#~ msgstr "Visor: "
-
-#~ msgid "Number of AI Players"
-#~ msgstr "Número de xogadores do computador"
-
-#~ msgid "The number of AI players"
-#~ msgstr "Número de xogadores do computador"
-
-#~ msgid "Recent Games"
-#~ msgstr "Xogos recentes"
-
-#~ msgid "You may choose 1 resource"
-#~ msgstr "Podes elixir 1 recurso"
-
-#~ msgid "_Player name"
-#~ msgstr "Nome do _xogador"
-
-#~ msgid "The Pioneers Game"
-#~ msgstr "O xogo de Pioneiros"
-
-#~ msgid "Select the ship to steal from"
-#~ msgstr "Seleccione o barco a roubar"
-
-#~ msgid "Select the building to steal from"
-#~ msgstr "Elixe o edificio que queres roubar"
-
-#~ msgid "Development Card"
-#~ msgstr "Carta de desenvolvemento"
-
-#~ msgid "Player Name:"
-#~ msgstr "Nome do xogador:"
-
-#~ msgid "I Want"
-#~ msgstr "Quero..."
-
-#~ msgid "Interplayer Trading Allowed?"
-#~ msgstr "Permítese comercio entre os xogadores?"
-
-#~ msgid "Trading allowed only before build/buy?"
-#~ msgstr "Comercio permitido só antes de construír/mercar?"
-
-#~ msgid "Check Victory Only At End Of Turn?"
-#~ msgstr "Comprobar victoria só ao final da quenda?"
-
-#~ msgid "Sevens Rule:"
-#~ msgstr "Regra dos setes:"
-
-#~ msgid "Use Pirate:"
-#~ msgstr "Use Pirata:"
-
-#~ msgid "Number of Players"
-#~ msgstr "Número de xogadores"
-
-#~ msgid "Development Cards"
-#~ msgstr "Carta de desenvolvemento"
-
-#~ msgid "Save as..."
-#~ msgstr "Gardar como..."
-
-#~ msgid "Pioneers Game Editor"
-#~ msgstr "Editor do xogo Pioneiros"
-
-#~ msgid "_Change title"
-#~ msgstr "Cambiar _titulo"
-
-#~ msgid "Random Turn Order"
-#~ msgstr "Orde de quendas ao chou"

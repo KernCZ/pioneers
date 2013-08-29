@@ -1,3 +1,7 @@
+2013-08-29  Roland Clobus <rclobus@rclobus.nl>
+	* ca.po, da.po, sv.po, de.po, ja.po, gl.po, cs.po, fr.po, es.po, nl.po,
+	hu.po: Import from Launchpad
+
 2013-02-08  Roland Clobus <rclobus@rclobus.nl>	
 	* de.po, es.po, ja.po: Fixed for 'make update-po'.
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 14.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-28 11:51+0200\n"
+"POT-Creation-Date: 2013-08-29 13:30+0200\n"
 "PO-Revision-Date: 2012-11-02 10:52+0100\n"
 "Last-Translator: Roland Clobus <rclobus@rclobus.nl>\n"
 "Language-Team: Bas Wijnen <shevek@fmf.nl> Roland Clobus <rclobus@rclobus."
@@ -3729,93 +3729,3 @@ msgstr "Poging om grondstoffen aan de NULL speler te geven.\n"
 #: ../server/turn.c:493
 msgid "The dice roll has been determined by the administrator."
 msgstr "De administrator heeft de dobbelsteenworp vastgesteld."
-
-#~ msgid "Viewer %d"
-#~ msgstr "Toeschouwer %d"
-
-#~ msgid "viewer %d"
-#~ msgstr "toeschouwer %d"
-
-#~ msgid "<b>I want</b>"
-#~ msgstr "<b>Ik wil</b>"
-
-#~ msgid "<b>Give them</b>"
-#~ msgstr "<b>Ik geef</b>"
-
-#~ msgid "Viewer: "
-#~ msgstr "Toeschouwer: "
-
-#~ msgid "Number of AI Players"
-#~ msgstr "Aantal computerspelers"
-
-#~ msgid "The number of AI players"
-#~ msgstr "Aantal computerspelers"
-
-#~ msgid "Recent Games"
-#~ msgstr "Recente spellen"
-
-#~ msgid "You may choose 1 resource"
-#~ msgstr "Je mag 1 grondstofkaart kiezen"
-
-#~ msgid "_Player name"
-#~ msgstr "_Verander naam"
-
-#~ msgid "The Pioneers Game"
-#~ msgstr "Pioniers"
-
-#~ msgid "Select the ship to steal from"
-#~ msgstr "Kies een schip om te bestelen"
-
-#~ msgid "Select the building to steal from"
-#~ msgstr "Kies een gebouw om te bestelen"
-
-#~ msgid "Development Card"
-#~ msgstr "Ontwikkelingskaart"
-
-#~ msgid "Player Name:"
-#~ msgstr "Naam:"
-
-#~ msgid "I Want"
-#~ msgstr "Ik wil"
-
-#~ msgid "Interplayer Trading Allowed?"
-#~ msgstr "Handel tussen spelers toegestaan?"
-
-#~ msgid "Trading allowed only before build/buy?"
-#~ msgstr "Handelen alleen toegestaan voor het bouwen?"
-
-#~ msgid "Check Victory Only At End Of Turn?"
-#~ msgstr "Controleer winstpunten aan eind van de beurt?"
-
-#~ msgid "Sevens Rule:"
-#~ msgstr "Zevensregel:"
-
-#~ msgid "Use Pirate:"
-#~ msgstr "Gebruik piraat:"
-
-#~ msgid "Number of Players"
-#~ msgstr "Aantal spelers"
-
-#~ msgid "Development Cards"
-#~ msgstr "Ontwikkelingskaarten"
-
-#~ msgid "Save as..."
-#~ msgstr "Opslaan als..."
-
-#~ msgid "Pioneers Game Editor"
-#~ msgstr "Pioniers Spel Editor"
-
-#~ msgid "_Change title"
-#~ msgstr "_Verander titel"
-
-#~ msgid "Random Turn Order"
-#~ msgstr "Volgorde willekeurig"
-
-#~ msgid "_Legend"
-#~ msgstr "_Legenda"
-
-#~ msgid "bad scaling mode '%s'"
-#~ msgstr "Ongeldig schaaltype \"%s\""
-
-#~ msgid "Missing game directory\n"
-#~ msgstr "Spellenmap niet gevonden\n"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 0.11.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-28 11:51+0200\n"
+"POT-Creation-Date: 2013-08-29 13:30+0200\n"
 "PO-Revision-Date: 2008-04-29 09:36+0000\n"
 "Last-Translator: carson\n"
 "Language-Team: Danish <da@li.org>\n"
@@ -1612,9 +1612,8 @@ msgstr "Konfigurér applikationen"
 
 #. Menu entry
 #: ../client/gtk/gui.c:349 ../editor/gtk/editor.c:1297
-#, fuzzy
 msgid "_View"
-msgstr "Tilskuer"
+msgstr ""
 
 #. Menu entry
 #: ../client/gtk/gui.c:352 ../editor/gtk/editor.c:1341
@@ -1807,9 +1806,8 @@ msgstr "Lav en lyd når en ny spiller eller seer ankommer til spillet"
 
 #. Label for the option to use the notifications.
 #: ../client/gtk/gui.c:1216
-#, fuzzy
 msgid "Show notifications"
-msgstr "Vis versionsinformation"
+msgstr ""
 
 #. Tooltip for notifications option.
 #: ../client/gtk/gui.c:1226
@@ -1858,9 +1856,8 @@ msgstr "Vælg en ny lokation for skibet."
 
 #. Notification
 #: ../client/gtk/interface.c:892
-#, fuzzy
 msgid "It is your turn to setup."
-msgstr "Det er din tur."
+msgstr ""
 
 #: ../client/gtk/legend.c:33
 msgid "Hill"
@@ -2082,9 +2079,9 @@ msgstr "%s har %s, og er på udkig efter %s"
 
 #. Notification
 #: ../client/gtk/quote.c:217
-#, fuzzy, c-format
+#, c-format
 msgid "New offer from %s."
-msgstr "Du stjal %s fra %s.\n"
+msgstr ""
 
 #. Notification
 #: ../client/gtk/quote.c:242
@@ -2356,9 +2353,9 @@ msgstr "Jeg ønsker %s, og giver dem %s"
 
 #. Notification
 #: ../client/gtk/trade.c:348
-#, fuzzy, c-format
+#, c-format
 msgid "Quote received from %s."
-msgstr "%s modtog %s.\n"
+msgstr ""
 
 #. Button text, trade: call for quotes from other players
 #: ../client/gtk/trade.c:539
@@ -2488,7 +2485,7 @@ msgstr "Forfattere:"
 msgid "translator_credits"
 msgstr ""
 "Launchpad Contributions:\n"
-"  carson https://launchpad.net/~nanker"
+"  nanker https://launchpad.net/~nanker"
 
 #. Header for the translator_credits. Use your own language name
 #: ../common/gtk/aboutbox.c:110
@@ -2970,9 +2967,8 @@ msgid "Insert a row"
 msgstr ""
 
 #: ../editor/gtk/editor.c:231
-#, fuzzy
 msgid "Delete a row"
-msgstr "Slet"
+msgstr ""
 
 #: ../editor/gtk/editor.c:232
 msgid "Insert a column"
@@ -3026,9 +3022,8 @@ msgstr "Kunne ikke gemme '%s'"
 
 #. Name of the file filter: show only games
 #: ../editor/gtk/editor.c:1080
-#, fuzzy
 msgid "Games"
-msgstr "_Spil"
+msgstr ""
 
 #. Name of the file filter: show all files
 #: ../editor/gtk/editor.c:1086
@@ -3249,9 +3244,9 @@ msgstr ""
 
 #: ../server/avahi.c:113 ../server/avahi.c:147 ../server/avahi.c:157
 #: ../server/avahi.c:193 ../server/avahi.c:214 ../server/avahi.c:228
-#, fuzzy, c-format
+#, c-format
 msgid "Avahi error: %s, %s\n"
-msgstr "Fejl (%s): %s\n"
+msgstr ""
 
 #: ../server/avahi.c:215 ../server/avahi.c:229
 msgid "Unable to register Avahi server"
@@ -3390,9 +3385,8 @@ msgstr "Rolle"
 
 #. Tooltip for column Role
 #: ../server/gtk/main.c:765
-#, fuzzy
 msgid "Player or spectator"
-msgstr "Tilskuere"
+msgstr ""
 
 #. Button text
 #: ../server/gtk/main.c:801
@@ -3604,9 +3598,9 @@ msgstr "Kan ikke indlæse parametre for spillet\n"
 
 #. Error message
 #: ../server/main.c:275
-#, fuzzy, c-format
+#, c-format
 msgid "Admin port not available.\n"
-msgstr "Beklager, %s tilgængelig.\n"
+msgstr ""
 
 #. server-console commandline error
 #: ../server/main.c:282
@@ -3735,87 +3729,3 @@ msgstr "Forsøgte at tildele ressourcer til NUL spiller.\n"
 #: ../server/turn.c:493
 msgid "The dice roll has been determined by the administrator."
 msgstr ""
-
-#~ msgid "Viewer %d"
-#~ msgstr "Seer %d"
-
-#~ msgid "viewer %d"
-#~ msgstr "seer %d"
-
-#~ msgid "<b>I want</b>"
-#~ msgstr "<b>Jeg ønsker</b>"
-
-#~ msgid "<b>Give them</b>"
-#~ msgstr "<b>Giv dem</b>"
-
-#~ msgid "Viewer: "
-#~ msgstr "Tilskuer: "
-
-#~ msgid "Number of AI Players"
-#~ msgstr "Antal spillere"
-
-#~ msgid "The number of AI players"
-#~ msgstr "Antallet af spillere"
-
-#~ msgid "Recent Games"
-#~ msgstr "Seneste spil"
-
-#~ msgid "You may choose 1 resource"
-#~ msgstr "Du kan vælge en ressource"
-
-#~ msgid "_Player name"
-#~ msgstr "_Spillernavn"
-
-#~ msgid "The Pioneers Game"
-#~ msgstr "Pioneer spillet"
-
-#~ msgid "Select the ship to steal from"
-#~ msgstr "Vælg hvilket skib, der skal stjæles fra"
-
-#~ msgid "Select the building to steal from"
-#~ msgstr "Vælg en bygning at stjæle fra"
-
-#~ msgid "Development Card"
-#~ msgstr "Udviklingskort"
-
-#~ msgid "Player Name:"
-#~ msgstr "Spiller navn:"
-
-#~ msgid "I Want"
-#~ msgstr "Jeg ønsker"
-
-#~ msgid "Interplayer Trading Allowed?"
-#~ msgstr "Handel mellem spillere tilladt?"
-
-#~ msgid "Trading allowed only before build/buy?"
-#~ msgstr "Handel kun tilladt før bygning/indkøb?"
-
-#~ msgid "Sevens Rule:"
-#~ msgstr "7'er regel:"
-
-#~ msgid "Use Pirate:"
-#~ msgstr "Brug pirat:"
-
-#~ msgid "Number of Players"
-#~ msgstr "Antal spillere"
-
-#~ msgid "Development Cards"
-#~ msgstr "Udviklingskort"
-
-#~ msgid "Save as..."
-#~ msgstr "Gem som ..."
-
-#~ msgid "Pioneers Game Editor"
-#~ msgstr "Pioneers spil editor"
-
-#~ msgid "_Change title"
-#~ msgstr "_Ændre titel"
-
-#~ msgid "Random Turn Order"
-#~ msgstr "Tilfældig rækkefølge"
-
-#~ msgid "_Legend"
-#~ msgstr "_Forklaring"
-
-#~ msgid "Missing game directory\n"
-#~ msgstr "Mangler spil katalog\n"

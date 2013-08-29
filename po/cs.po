@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 0.12.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-28 11:51+0200\n"
+"POT-Creation-Date: 2013-08-29 13:30+0200\n"
 "PO-Revision-Date: 2010-03-28 01:29+0000\n"
 "Last-Translator: Ladislav Dobias <Unknown>\n"
 "Language-Team: \n"
@@ -1604,9 +1604,8 @@ msgstr "Konfigurovat aplikaci"
 
 #. Menu entry
 #: ../client/gtk/gui.c:349 ../editor/gtk/editor.c:1297
-#, fuzzy
 msgid "_View"
-msgstr "Pozorovatel"
+msgstr ""
 
 #. Menu entry
 #: ../client/gtk/gui.c:352 ../editor/gtk/editor.c:1341
@@ -2348,9 +2347,9 @@ msgstr "Já chci %s, a dám jim %s"
 
 #. Notification
 #: ../client/gtk/trade.c:348
-#, fuzzy, c-format
+#, c-format
 msgid "Quote received from %s."
-msgstr "%s obdržel %s.\n"
+msgstr ""
 
 #. Button text, trade: call for quotes from other players
 #: ../client/gtk/trade.c:539
@@ -2553,7 +2552,7 @@ msgstr "Kontrolovat vítězství až na konci tahu"
 #: ../common/gtk/game-rules.c:135
 #, fuzzy
 msgid "Island discovery bonuses"
-msgstr "Bonusy za objevení ostrova:"
+msgstr "Bonusy za objevení ostrova"
 
 #. Tooltip for island bonus
 #: ../common/gtk/game-rules.c:147
@@ -2562,9 +2561,8 @@ msgstr ""
 
 #. Tooltip for the check button
 #: ../common/gtk/game-rules.c:163
-#, fuzzy
 msgid "Check and correct island discovery bonuses"
-msgstr "Bonusy za objevení ostrova:"
+msgstr ""
 
 #. Label text for customising a game
 #: ../common/gtk/game-settings.c:106
@@ -2966,9 +2964,8 @@ msgid "Insert a row"
 msgstr ""
 
 #: ../editor/gtk/editor.c:231
-#, fuzzy
 msgid "Delete a row"
-msgstr "Smazat"
+msgstr ""
 
 #: ../editor/gtk/editor.c:232
 msgid "Insert a column"
@@ -3022,9 +3019,8 @@ msgstr "Nepodařilo se uložit do '%s'"
 
 #. Name of the file filter: show only games
 #: ../editor/gtk/editor.c:1080
-#, fuzzy
 msgid "Games"
-msgstr "_Hra"
+msgstr ""
 
 #. Name of the file filter: show all files
 #: ../editor/gtk/editor.c:1086
@@ -3243,14 +3239,13 @@ msgstr ""
 
 #: ../server/avahi.c:113 ../server/avahi.c:147 ../server/avahi.c:157
 #: ../server/avahi.c:193 ../server/avahi.c:214 ../server/avahi.c:228
-#, fuzzy, c-format
+#, c-format
 msgid "Avahi error: %s, %s\n"
-msgstr "Chyba (%s): %s\n"
+msgstr ""
 
 #: ../server/avahi.c:215 ../server/avahi.c:229
-#, fuzzy
 msgid "Unable to register Avahi server"
-msgstr "Odregistrovat od meta serveru\n"
+msgstr ""
 
 #: ../server/avahi.c:262
 msgid "Unregistering Avahi.\n"
@@ -3323,9 +3318,8 @@ msgstr ""
 
 #. random toggle
 #: ../server/gtk/main.c:629
-#, fuzzy
 msgid "Random turn order"
-msgstr "Náhodně přeházet pořadí hráčů"
+msgstr ""
 
 #: ../server/gtk/main.c:636
 msgid "Randomize turn order"
@@ -3384,7 +3378,6 @@ msgstr "Role"
 
 #. Tooltip for column Role
 #: ../server/gtk/main.c:765
-#, fuzzy
 msgid "Player or spectator"
 msgstr "Hráč nebo pozorovatel"
 
@@ -3597,9 +3590,9 @@ msgstr "Nelze načíst parametry hry\n"
 
 #. Error message
 #: ../server/main.c:275
-#, fuzzy, c-format
+#, c-format
 msgid "Admin port not available.\n"
-msgstr "Promiňte, dostupno je pouze %s.\n"
+msgstr ""
 
 #. server-console commandline error
 #: ../server/main.c:282
@@ -3728,102 +3721,3 @@ msgstr "Pokus o přiřazení surovin hráči NULL.\n"
 #: ../server/turn.c:493
 msgid "The dice roll has been determined by the administrator."
 msgstr ""
-
-#~ msgid "Viewer %d"
-#~ msgstr "Pozorovatel %d"
-
-#~ msgid "viewer %d"
-#~ msgstr "pozorovatel %d"
-
-#~ msgid "<b>I want</b>"
-#~ msgstr "<b>Já chci</b>"
-
-#~ msgid "<b>Give them</b>"
-#~ msgstr "<b>Dát jim</b>"
-
-#~ msgid "Viewer: "
-#~ msgstr "Pozorovatel: "
-
-#~ msgid "Number of AI Players"
-#~ msgstr "Počet strojových hráčů"
-
-#~ msgid "The number of AI players"
-#~ msgstr "Počet hráčů hraných počítačem"
-
-#~ msgid "Recent Games"
-#~ msgstr "Současné hry"
-
-#~ msgid "You may choose 1 resource"
-#~ msgstr "Můžete zvolit 1 surovinu"
-
-#~ msgid "_Player name"
-#~ msgstr "_Jméno hráče"
-
-#~ msgid "The Pioneers Game"
-#~ msgstr "Hra Pioneers"
-
-#~ msgid "Select the ship to steal from"
-#~ msgstr "Zvolte loď ze které se bude krást"
-
-#~ msgid "Select the building to steal from"
-#~ msgstr "Zvolte budovu - odkud krást"
-
-#~ msgid "Development Card"
-#~ msgstr "Akční karta"
-
-#~ msgid "Player Name:"
-#~ msgstr "Jméno hráče:"
-
-#~ msgid "I Want"
-#~ msgstr "Já chci"
-
-#~ msgid "Interplayer Trading Allowed?"
-#~ msgstr "Dovolit obchod mezi hráči?"
-
-#~ msgid "Trading allowed only before build/buy?"
-#~ msgstr "Dovolit obchod pouze před stavěním/obchodem?"
-
-#~ msgid "Check Victory Only At End Of Turn?"
-#~ msgstr "Kontrolovat vítězství až na konci tahu?"
-
-#~ msgid "Sevens Rule:"
-#~ msgstr "Pravidlo sedmiček:"
-
-#~ msgid "Use Pirate:"
-#~ msgstr "Použít piráta:"
-
-#~ msgid "Number of Players"
-#~ msgstr "Počet hráčů"
-
-#~ msgid "Development Cards"
-#~ msgstr "Akční karty"
-
-#~ msgid "Save as..."
-#~ msgstr "Uložit jako..."
-
-#~ msgid "Pioneers Game Editor"
-#~ msgstr "Editor hry Pioneers"
-
-#~ msgid "_Change title"
-#~ msgstr "_Změnit název"
-
-#~ msgid "Random Turn Order"
-#~ msgstr "Náhodné pořadí"
-
-#~ msgid "_Legend"
-#~ msgstr "_Legenda"
-
-#~ msgid "bad scaling mode '%s'"
-#~ msgstr "chybný režim škálování '%s'"
-
-#~ msgid "Missing game directory\n"
-#~ msgstr "Chybí adresář hry\n"
-
-#~ msgid "Leave empty for the default meta server"
-#~ msgstr "Necháte-li prázdné, použije se standardní meta server."
-
-#~ msgid "Override the language of the system"
-#~ msgstr "Potlačit jazyk systému"
-
-#~ msgid "The address of the meta server"
-#~ msgstr "Adresa meta serveru"

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 0.12.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-28 11:51+0200\n"
+"POT-Creation-Date: 2013-08-29 13:30+0200\n"
 "PO-Revision-Date: 2008-04-05 15:37+0200\n"
 "Last-Translator: Ferenc Bánhidi <bferike@mailbox.hu>\n"
 "Language-Team: Hungarian <bferike@mailbox.hu>\n"
@@ -575,9 +575,9 @@ msgid "player %d"
 msgstr "játékos %d"
 
 #: ../client/common/player.c:214
-#, fuzzy, c-format
+#, c-format
 msgid "New spectator: %s.\n"
-msgstr "Új szemlélő: %s.\n"
+msgstr ""
 
 #: ../client/common/player.c:217 ../client/common/player.c:233
 #, c-format
@@ -1063,24 +1063,22 @@ msgstr ""
 
 #. Label
 #: ../client/gtk/connect.c:726
-#, fuzzy
 msgid "Number of computer players"
-msgstr "A játékos típusa"
+msgstr ""
 
 #. Tooltip
 #: ../client/gtk/connect.c:746
-#, fuzzy
 msgid "The number of computer players"
-msgstr "A játékosok száma"
+msgstr ""
 
 #: ../client/gtk/connect.c:767
 msgid "Requesting new game server\n"
 msgstr "Új játékszerver kérés\n"
 
 #: ../client/gtk/connect.c:810 ../server/gtk/main.c:350 ../server/server.c:153
-#, fuzzy, c-format
+#, c-format
 msgid "Error starting %s: %s\n"
-msgstr "Inditási hiba %s: %s"
+msgstr ""
 
 #. Dialog caption
 #: ../client/gtk/connect.c:832
@@ -1615,9 +1613,8 @@ msgstr "Program konfigurálás"
 
 #. Menu entry
 #: ../client/gtk/gui.c:349 ../editor/gtk/editor.c:1297
-#, fuzzy
 msgid "_View"
-msgstr "Szemlélő"
+msgstr ""
 
 #. Menu entry
 #: ../client/gtk/gui.c:352 ../editor/gtk/editor.c:1341
@@ -1810,9 +1807,8 @@ msgstr "Hangjelzés, amikor egy új játékos vagy szemlélő belép a játékba
 
 #. Label for the option to use the notifications.
 #: ../client/gtk/gui.c:1216
-#, fuzzy
 msgid "Show notifications"
-msgstr "Verzió információ"
+msgstr ""
 
 #. Tooltip for notifications option.
 #: ../client/gtk/gui.c:1226
@@ -1861,9 +1857,8 @@ msgstr "Válaszd ki a hajó új helyét."
 
 #. Notification
 #: ../client/gtk/interface.c:892
-#, fuzzy
 msgid "It is your turn to setup."
-msgstr "Ez a te köröd."
+msgstr ""
 
 #: ../client/gtk/legend.c:33
 msgid "Hill"
@@ -1944,9 +1939,8 @@ msgid "Variant:"
 msgstr "Változat:"
 
 #: ../client/gtk/offline.c:62
-#, fuzzy
 msgid "Connect as a spectator"
-msgstr "Csatlakozás szemlélőként"
+msgstr ""
 
 #: ../client/gtk/offline.c:65
 msgid "Meta-server Host"
@@ -2085,9 +2079,9 @@ msgstr "%s kínál %s nyersanyagot, és cserébe szeretne %s nyersanyagot"
 
 #. Notification
 #: ../client/gtk/quote.c:217
-#, fuzzy, c-format
+#, c-format
 msgid "New offer from %s."
-msgstr "Lopsz %s %s játékostól.\n"
+msgstr ""
 
 #. Notification
 #: ../client/gtk/quote.c:242
@@ -2360,9 +2354,9 @@ msgstr "Szeretnék %s nyersanyagot, cserébe adok %s nyersanyagot"
 
 #. Notification
 #: ../client/gtk/trade.c:348
-#, fuzzy, c-format
+#, c-format
 msgid "Quote received from %s."
-msgstr "%s kap %s.\n"
+msgstr ""
 
 #. Button text, trade: call for quotes from other players
 #: ../client/gtk/trade.c:539
@@ -2490,7 +2484,12 @@ msgstr "Szerzők:"
 #.
 #: ../common/gtk/aboutbox.c:104 ../common/gtk/aboutbox.c:115
 msgid "translator_credits"
-msgstr "Ferenc Bánhidi"
+msgstr ""
+"Ferenc Bánhidi\n"
+"\n"
+"Launchpad Contributions:\n"
+"  Ferenc Bánhidi https://launchpad.net/~bferike\n"
+"  Krasznecz Zoltán https://launchpad.net/~krasznecz-zoltan"
 
 #. Header for the translator_credits. Use your own language name
 #: ../common/gtk/aboutbox.c:110
@@ -2570,9 +2569,8 @@ msgstr ""
 
 #. Tooltip for the check button
 #: ../common/gtk/game-rules.c:163
-#, fuzzy
 msgid "Check and correct island discovery bonuses"
-msgstr "Sziget felfedezés bónuszok:"
+msgstr ""
 
 #. Label text for customising a game
 #: ../common/gtk/game-settings.c:106
@@ -2974,9 +2972,8 @@ msgid "Insert a row"
 msgstr ""
 
 #: ../editor/gtk/editor.c:231
-#, fuzzy
 msgid "Delete a row"
-msgstr "Törlés"
+msgstr ""
 
 #: ../editor/gtk/editor.c:232
 msgid "Insert a column"
@@ -3030,9 +3027,8 @@ msgstr "Hiba a mentéskor '%s'"
 
 #. Name of the file filter: show only games
 #: ../editor/gtk/editor.c:1080
-#, fuzzy
 msgid "Games"
-msgstr "_Játék"
+msgstr ""
 
 #. Name of the file filter: show all files
 #: ../editor/gtk/editor.c:1086
@@ -3605,9 +3601,9 @@ msgstr "A játék paramétereit nem lehet betölteni\n"
 
 #. Error message
 #: ../server/main.c:275
-#, fuzzy, c-format
+#, c-format
 msgid "Admin port not available.\n"
-msgstr "Bocs, %s használható.\n"
+msgstr ""
 
 #. server-console commandline error
 #: ../server/main.c:282
@@ -3736,97 +3732,3 @@ msgstr "NULL játékosnak próbált erőforrást kiosztani.\n"
 #: ../server/turn.c:493
 msgid "The dice roll has been determined by the administrator."
 msgstr "A kockadobást az adminisztrátor határozta meg"
-
-#~ msgid "Viewer %d"
-#~ msgstr "Szemlélő %d"
-
-#~ msgid "viewer %d"
-#~ msgstr "szemlélő %d"
-
-#~ msgid "<b>I want</b>"
-#~ msgstr "<b>Szeretnék</b>"
-
-#~ msgid "<b>Give them</b>"
-#~ msgstr "<b>Adok érte</b>"
-
-#~ msgid "Viewer: "
-#~ msgstr "Szemlélő: "
-
-#~ msgid "Number of AI Players"
-#~ msgstr "Robot játékosok száma"
-
-#~ msgid "The number of AI players"
-#~ msgstr "A robot játékosok száma"
-
-#~ msgid "Recent Games"
-#~ msgstr "Legutóbbi játékok"
-
-#~ msgid "You may choose 1 resource"
-#~ msgstr "Választhatsz egy nyersanyagot"
-
-#~ msgid "_Player name"
-#~ msgstr "Játékos _neve"
-
-#~ msgid "The Pioneers Game"
-#~ msgstr "Pioneers"
-
-#~ msgid "Select the ship to steal from"
-#~ msgstr ""
-#~ "Válaszd ki a hajót\n"
-#~ "akitől lopni szeretnél"
-
-#~ msgid "Select the building to steal from"
-#~ msgstr ""
-#~ "Válaszd ki az épületet\n"
-#~ "akitől lopni szeretnél"
-
-#~ msgid "Development Card"
-#~ msgstr "Fejlesztés kártya"
-
-#~ msgid "Player Name:"
-#~ msgstr "Játékos neve:"
-
-#~ msgid "I Want"
-#~ msgstr "Szeretnék"
-
-#~ msgid "Interplayer Trading Allowed?"
-#~ msgstr "Játékosok közötti üzlet engedélyezett?"
-
-#~ msgid "Trading allowed only before build/buy?"
-#~ msgstr "Kereskedés csak építkezés / vásárlás előtt?"
-
-#~ msgid "Check Victory Only At End Of Turn?"
-#~ msgstr "Győzelem ellenőrzése csak a kör végén?"
-
-#~ msgid "Sevens Rule:"
-#~ msgstr "Hetes szabály:"
-
-#~ msgid "Use Pirate:"
-#~ msgstr "Kalóz használat:"
-
-#~ msgid "Number of Players"
-#~ msgstr "Játékosok száma"
-
-#~ msgid "Development Cards"
-#~ msgstr "Fejlesztés kártyák"
-
-#~ msgid "Save as..."
-#~ msgstr "Mentés másként..."
-
-#~ msgid "Pioneers Game Editor"
-#~ msgstr "Pioneers játék szerkesztő"
-
-#~ msgid "_Change title"
-#~ msgstr "_Cím módosítás"
-
-#~ msgid "Random Turn Order"
-#~ msgstr "Véletlen kör sorrend"
-
-#~ msgid "_Legend"
-#~ msgstr "_Jelmagyarázat"
-
-#~ msgid "bad scaling mode '%s'"
-#~ msgstr "Hibás mérték '%s'"
-
-#~ msgid "Missing game directory\n"
-#~ msgstr "Hiányzó játék könyvtár\n"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 0.12.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-28 11:51+0200\n"
+"POT-Creation-Date: 2013-08-29 13:30+0200\n"
 "PO-Revision-Date: 2011-10-30 15:06+0100\n"
 "Last-Translator: Daniel Nylander <yeager@ubuntu.com>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
@@ -1058,15 +1058,13 @@ msgstr ""
 
 #. Label
 #: ../client/gtk/connect.c:726
-#, fuzzy
 msgid "Number of computer players"
-msgstr "Typ av datorspelare"
+msgstr ""
 
 #. Tooltip
 #: ../client/gtk/connect.c:746
-#, fuzzy
 msgid "The number of computer players"
-msgstr "Antalet spelare"
+msgstr ""
 
 #: ../client/gtk/connect.c:767
 msgid "Requesting new game server\n"
@@ -1075,7 +1073,7 @@ msgstr "Begär en ny spelserver\n"
 #: ../client/gtk/connect.c:810 ../server/gtk/main.c:350 ../server/server.c:153
 #, fuzzy, c-format
 msgid "Error starting %s: %s\n"
-msgstr "Fel vid start av %s: %s"
+msgstr "Fel vid start av %s: %s\n"
 
 #. Dialog caption
 #: ../client/gtk/connect.c:832
@@ -1977,7 +1975,6 @@ msgid "Largest army"
 msgstr "Största armé"
 
 #: ../client/gtk/player.c:57
-#, fuzzy
 msgid "Longest road"
 msgstr "Längsta väg"
 
@@ -2553,9 +2550,8 @@ msgstr "Kontrollera seger endast vid turens slut"
 
 #. Label
 #: ../common/gtk/game-rules.c:135
-#, fuzzy
 msgid "Island discovery bonuses"
-msgstr "Bonusar för upptäckter av öar:"
+msgstr ""
 
 #. Tooltip for island bonus
 #: ../common/gtk/game-rules.c:147
@@ -2564,9 +2560,8 @@ msgstr ""
 
 #. Tooltip for the check button
 #: ../common/gtk/game-rules.c:163
-#, fuzzy
 msgid "Check and correct island discovery bonuses"
-msgstr "Bonusar för upptäckter av öar:"
+msgstr ""
 
 #. Label text for customising a game
 #: ../common/gtk/game-settings.c:106
@@ -3021,9 +3016,8 @@ msgstr "Misslyckades att spara till \"%s"
 
 #. Name of the file filter: show only games
 #: ../editor/gtk/editor.c:1080
-#, fuzzy
 msgid "Games"
-msgstr "_Spel"
+msgstr ""
 
 #. Name of the file filter: show all files
 #: ../editor/gtk/editor.c:1086
@@ -3727,102 +3721,3 @@ msgstr "Försökte tilldela resurser till NOLL spelare.\n"
 #: ../server/turn.c:493
 msgid "The dice roll has been determined by the administrator."
 msgstr "Tärningskastet har bestämts av administratören."
-
-#~ msgid "Viewer %d"
-#~ msgstr "Åskådare %d"
-
-#~ msgid "viewer %d"
-#~ msgstr "åskådare %d"
-
-#~ msgid "<b>I want</b>"
-#~ msgstr "<b>Jag vill ha</b>"
-
-#~ msgid "<b>Give them</b>"
-#~ msgstr "<b>Ge dem</b>"
-
-#~ msgid "Viewer: "
-#~ msgstr "Åskådare: "
-
-#~ msgid "Number of AI Players"
-#~ msgstr "Antal AI-spelare"
-
-#~ msgid "The number of AI players"
-#~ msgstr "Antalet AI-spelare"
-
-#~ msgid "Recent Games"
-#~ msgstr "Tidigare spel"
-
-#~ msgid "You may choose 1 resource"
-#~ msgstr "Du får välja 1 resurs"
-
-#~ msgid "_Player name"
-#~ msgstr "_Spelarnamn"
-
-#~ msgid "The Pioneers Game"
-#~ msgstr "Spelet Pioneers"
-
-#~ msgid "Select the ship to steal from"
-#~ msgstr "Välj det skepp du vill stjäla från"
-
-#~ msgid "Select the building to steal from"
-#~ msgstr "Välj den byggnad du vill stjäla från"
-
-#~ msgid "Development Card"
-#~ msgstr "Utvecklingskort"
-
-#~ msgid "Player Name:"
-#~ msgstr "Spelarnamn:"
-
-#~ msgid "I Want"
-#~ msgstr "Jag vill ha"
-
-#~ msgid "Interplayer Trading Allowed?"
-#~ msgstr "Tillåta handel mellan spelare?"
-
-#~ msgid "Trading allowed only before build/buy?"
-#~ msgstr "Handel tillåtet endast före byggnation/köp?"
-
-#~ msgid "Check Victory Only At End Of Turn?"
-#~ msgstr "Kontrollera seger endast vid turens slut?"
-
-#~ msgid "Sevens Rule:"
-#~ msgstr "Regel för 7:an:"
-
-#~ msgid "Use Pirate:"
-#~ msgstr "Använd pirat:"
-
-#~ msgid "Number of Players"
-#~ msgstr "Antal spelare"
-
-#~ msgid "Development Cards"
-#~ msgstr "Utvecklingskort"
-
-#~ msgid "Save as..."
-#~ msgstr "Spara som..."
-
-#~ msgid "Pioneers Game Editor"
-#~ msgstr "Spelredigerare för Pioneers"
-
-#~ msgid "_Change title"
-#~ msgstr "Ändra tit_el"
-
-#~ msgid "Random Turn Order"
-#~ msgstr "Slumpad turordning"
-
-#~ msgid "_Legend"
-#~ msgstr "_Förklaring"
-
-#~ msgid "bad scaling mode '%s'"
-#~ msgstr "fel skalläge \"%s\""
-
-#~ msgid "Missing game directory\n"
-#~ msgstr "Saknar spelkatalog\n"
-
-#~ msgid "Leave empty for the default meta server"
-#~ msgstr "Lämna blank för den förvalda metaservern"
-
-#~ msgid "Override the language of the system"
-#~ msgstr "Ställ in språk"
-
-#~ msgid "The address of the meta server"
-#~ msgstr "Adressen för metaservern"

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 0.12.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-28 11:51+0200\n"
+"POT-Creation-Date: 2013-08-29 13:30+0200\n"
 "PO-Revision-Date: 2012-07-08 03:34+0000\n"
 "Last-Translator: Eduardo Alberto Calvo <Unknown>\n"
 "Language-Team: Spanish <debian-l10n-spanish@lists.debian.org>\n"
@@ -1856,7 +1856,7 @@ msgstr "Seleccione una nueva locacion para el barco"
 #. Notification
 #: ../client/gtk/interface.c:892
 msgid "It is your turn to setup."
-msgstr ""
+msgstr "Es tu turno de configurar."
 
 #: ../client/gtk/legend.c:33
 msgid "Hill"
@@ -2425,6 +2425,8 @@ msgid ""
 "The game uses the new rule '%s', which is not yet supported. Consider "
 "upgrading.\n"
 msgstr ""
+"El juego utiliza la nueva regla '%s', que todavía no está soportado. "
+"Considere actualizar.\n"
 
 #: ../common/game.c:890 ../common/game.c:921
 msgid "This game cannot be won."
@@ -2495,10 +2497,12 @@ msgstr ""
 "  DiegoJ https://launchpad.net/~diegojromerolopez\n"
 "  Eduardo Alberto Calvo https://launchpad.net/~edu5800\n"
 "  Eduardo Ruiz https://launchpad.net/~eduardo-ruizcarrillo\n"
-"  Felipe Hommen https://launchpad.net/~felibank\n"
+"  Felipe Hommen https://launchpad.net/~felihommen\n"
 "  José A. Fuentes Santiago https://launchpad.net/~joanfusan\n"
 "  Kiibakun https://launchpad.net/~kiba\n"
 "  Marco Antonio Giraldo https://launchpad.net/~m-a-giraldo\n"
+"  Roland Clobus https://launchpad.net/~rclobus\n"
+"  Ubuntu https://launchpad.net/~invrom\n"
 "  skarevoluti https://launchpad.net/~skarevoluti"
 
 #. Header for the translator_credits. Use your own language name

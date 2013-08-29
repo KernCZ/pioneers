@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 14.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-28 11:51+0200\n"
+"POT-Creation-Date: 2013-08-29 13:30+0200\n"
 "PO-Revision-Date: 2012-09-05 02:27+0000\n"
 "Last-Translator: KAMO Tomoyuki <kto@miomio.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -18,8 +18,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2012-09-06 06:00+0000\n"
-"X-Generator: Launchpad (build 15909)\n"
+"X-Launchpad-Export-Date: 2013-08-29 09:56+0000\n"
+"X-Generator: Launchpad (build 16738)\n"
 
 #. Commandline pioneersai: server
 #: ../client/ai/ai.c:70
@@ -44,7 +44,7 @@ msgstr "ターン間の待ち時間 (ミリ秒単位)"
 #. Commandline pioneersai: chat-free
 #: ../client/ai/ai.c:82
 msgid "Stop computer player from talking"
-msgstr "会話からコンピュータプレイヤーを停止"
+msgstr "コンピュータプレイヤーにチャットでしゃべらせない"
 
 #. Commandline pioneersai: algorithm
 #: ../client/ai/ai.c:85
@@ -70,7 +70,7 @@ msgstr "デバッグメッセージを有効にする"
 #: ../client/ai/ai.c:91 ../client/gtk/offline.c:71 ../editor/gtk/editor.c:1419
 #: ../meta-server/main.c:1096 ../server/gtk/main.c:1133 ../server/main.c:100
 msgid "Show version information"
-msgstr "バージョン情報を表示"
+msgstr "バージョン情報を表示する"
 
 #. Long description in the commandline for pioneersai: help
 #: ../client/ai/ai.c:102
@@ -358,7 +358,7 @@ msgstr "待機中"
 
 #: ../client/common/client.c:108
 msgid "Idle"
-msgstr "待機"
+msgstr "アイドル"
 
 #: ../client/common/client.c:533
 msgid "We have been kicked out of the game.\n"
@@ -601,7 +601,7 @@ msgstr "%s が最大兵力を持った。\n"
 
 #: ../client/common/player.c:300
 msgid "There is no longest road.\n"
-msgstr "最長交易路なし。\n"
+msgstr "最長交易路はなくなった。\n"
 
 #: ../client/common/player.c:303
 #, c-format

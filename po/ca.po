@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 14.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-28 11:51+0200\n"
+"POT-Creation-Date: 2013-08-29 13:30+0200\n"
 "PO-Revision-Date: 2013-01-20 20:01+0100\n"
 "Last-Translator: Jaume Badiella Aguilera <myotis@drac.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
@@ -2617,7 +2617,7 @@ msgstr "G"
 #. Port indicator for ore
 #: ../common/gtk/guimap.c:861
 msgid "Ore port|O"
-msgstr "P"
+msgstr "N"
 
 #. Port indicator for wool
 #: ../common/gtk/guimap.c:865

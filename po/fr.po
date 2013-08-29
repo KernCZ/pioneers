@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 14.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-28 11:51+0200\n"
+"POT-Creation-Date: 2013-08-29 13:30+0200\n"
 "PO-Revision-Date: 2012-05-22 14:36+0100\n"
 "Last-Translator: Jean-Charles GRANGER <traduction@vecteur.org>\n"
 "Language-Team: Français <LL@li.org>, LT-P <LT-P@LT-P.net>, Yusei "
@@ -2503,7 +2503,10 @@ msgstr ""
 "Jean-Charles GRANGER\n"
 "\n"
 "Launchpad Contributions:\n"
-"  Clément Lorteau https://launchpad.net/~northern-lights"
+"  Clément Lorteau https://launchpad.net/~northern-lights\n"
+"  JiCe https://launchpad.net/~traduction\n"
+"  LEROY Jean-Christophe https://launchpad.net/~celtic2-deactivatedaccount\n"
+"  agentcobra https://launchpad.net/~agentcobra57"
 
 #. Header for the translator_credits. Use your own language name
 #: ../common/gtk/aboutbox.c:110
@@ -2756,7 +2759,7 @@ msgstr "Joueur 8 : "
 #. Log prefix
 #: ../common/log.c:137
 msgid "Spectator: "
-msgstr "Spectateur :"
+msgstr "Spectateur : "
 
 #. Log prefix
 #: ../common/log.c:141
@@ -3751,93 +3754,3 @@ msgstr "tentative d'attribuer des ressources au joueur NULL.\n"
 #: ../server/turn.c:493
 msgid "The dice roll has been determined by the administrator."
 msgstr "Le jet du dé a été défini par l'administrateur."
-
-#~ msgid "Viewer %d"
-#~ msgstr "Spectateur %d"
-
-#~ msgid "viewer %d"
-#~ msgstr "spectateur %d"
-
-#~ msgid "<b>I want</b>"
-#~ msgstr "<b>Je voudrais</b>"
-
-#~ msgid "<b>Give them</b>"
-#~ msgstr "<b>Accepter</b>"
-
-#~ msgid "Viewer: "
-#~ msgstr "Spectateur : "
-
-#~ msgid "Number of AI Players"
-#~ msgstr "Nombre d'IA"
-
-#~ msgid "The number of AI players"
-#~ msgstr "Nombre d'IA"
-
-#~ msgid "Recent Games"
-#~ msgstr "Serveurs récents"
-
-#~ msgid "You may choose 1 resource"
-#~ msgstr "Vous pouvez choisir 1 ressource"
-
-#~ msgid "_Player name"
-#~ msgstr "_Pseudonyme du joueur"
-
-#~ msgid "The Pioneers Game"
-#~ msgstr "Pioneers"
-
-#~ msgid "Select the ship to steal from"
-#~ msgstr "Choisissez le navire à voler."
-
-#~ msgid "Select the building to steal from"
-#~ msgstr "Choisissez la construction à voler."
-
-#~ msgid "Development Card"
-#~ msgstr "Carte de développement"
-
-#~ msgid "Player Name:"
-#~ msgstr "Nom du joueur :"
-
-#~ msgid "I Want"
-#~ msgstr "Je voudrais"
-
-#~ msgid "Interplayer Trading Allowed?"
-#~ msgstr "Autoriser les échanges entre joueurs ?"
-
-#~ msgid "Trading allowed only before build/buy?"
-#~ msgstr "Autoriser les échanges avant de construire ?"
-
-#~ msgid "Check Victory Only At End Of Turn?"
-#~ msgstr "Vérifier la victoire uniquement à la fin du tour ?"
-
-#~ msgid "Sevens Rule:"
-#~ msgstr "Règle des sept :"
-
-#~ msgid "Use Pirate:"
-#~ msgstr "Jouer avec le pirate :"
-
-#~ msgid "Number of Players"
-#~ msgstr "Nombre de joueurs"
-
-#~ msgid "Development Cards"
-#~ msgstr "Cartes de développement"
-
-#~ msgid "Save as..."
-#~ msgstr "Enregistrer sous..."
-
-#~ msgid "Pioneers Game Editor"
-#~ msgstr "Éditeur de partie"
-
-#~ msgid "_Change title"
-#~ msgstr "_Changer le nom"
-
-#~ msgid "Random Turn Order"
-#~ msgstr "Tour de jeu aléatoire"
-
-#~ msgid "_Legend"
-#~ msgstr "_Légende"
-
-#~ msgid "bad scaling mode '%s'"
-#~ msgstr "mauvais mode scalaire '%s'"
-
-#~ msgid "Missing game directory\n"
-#~ msgstr "Répertoire du jeu absent\n"
