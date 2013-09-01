@@ -1,3 +1,7 @@
+2013-09-01  Roland Clobus <rclobus@rclobus.nl>
+	* all: msguntypot for metaserver spelling issues.
+	* en_GB.po: Updated for metaserver spelling.
+
 2013-08-29  Roland Clobus <rclobus@rclobus.nl>
 	* ca.po, da.po, sv.po, de.po, ja.po, gl.po, cs.po, fr.po, es.po, nl.po,
 	hu.po: Import from Launchpad
