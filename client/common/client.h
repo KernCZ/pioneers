@@ -118,10 +118,12 @@ gboolean build_can_setup_settlement(const Node * node,
 
 /********** develop.c **********/
 void develop_init(void);
-void develop_bought_card_turn(DevelType type, gint turnbought);
+void develop_bought_card_turn(DevelType type, gboolean bought_this_turn);
 void develop_bought_card(DevelType type);
-void develop_reset_have_played_bought(gboolean played_develop,
-				      gboolean bought_develop);
+guint get_num_playable_cards(void);
+void develop_reset_have_played_bought(gboolean have_played,
+				      gboolean have_bought,
+				      guint number_playable_cards);
 void develop_bought(gint player_num);
 void develop_played(gint player_num, guint card_idx, DevelType type);
 void monopoly_player(gint player_num, gint victim_num, gint num,

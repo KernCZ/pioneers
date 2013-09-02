@@ -107,7 +107,7 @@ void develop_buy(Player * player)
 	game->bought_develop = TRUE;
 
 	card = game->develop_deck[game->develop_next++];
-	deck_card_add(player->devel, card, game->curr_turn);
+	deck_card_add(player->devel, card);
 	player_send(player, FIRST_VERSION, LATEST_VERSION,
 		    "bought-develop %d\n", card);
 }
@@ -378,8 +378,8 @@ void develop_play(Player * player, guint idx)
 	}
 
 	card = devel_deck_get_card(player->devel, idx)->type;
-	if (!deck_card_play(player->devel,
-			    game->played_develop, idx, game->curr_turn)) {
+	if (!deck_card_play(player->devel, game->played_develop,
+			    game->num_playable_cards, idx)) {
 		player_send(player, FIRST_VERSION, LATEST_VERSION,
 			    "ERR wrong-time\n");
 		return;

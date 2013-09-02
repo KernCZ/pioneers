@@ -53,12 +53,11 @@ void deck_free(DevelDeck * deck)
 	g_free(deck);
 }
 
-void deck_card_add(DevelDeck * deck, DevelType type, gint turn_bought)
+void deck_card_add(DevelDeck * deck, DevelType type)
 {
 	if (deck->num_cards >= deck->max_cards)
 		return;
 	deck->cards[deck->num_cards].type = type;
-	deck->cards[deck->num_cards].turn_bought = turn_bought;
 	deck->num_cards++;
 }
 
@@ -86,7 +85,8 @@ DevelType deck_card_type(const DevelDeck * deck, guint idx)
 }
 
 gboolean deck_card_playable(const DevelDeck * deck,
-			    gboolean played_develop, guint idx, gint turn)
+			    gboolean played_develop,
+			    guint num_playable_cards, guint idx)
 {
 	if (idx >= deck->num_cards)
 		return FALSE;
@@ -94,14 +94,16 @@ gboolean deck_card_playable(const DevelDeck * deck,
 	if (is_victory_card(deck->cards[idx].type))
 		return TRUE;
 
-	return !played_develop && deck->cards[idx].turn_bought < turn;
+	return !played_develop && idx < num_playable_cards;
 }
 
-gboolean deck_card_play(DevelDeck * deck,
-			gboolean played_develop, guint idx, gint turn)
+gboolean deck_card_play(DevelDeck * deck, gboolean played_develop,
+			guint num_playable_cards, guint idx)
 {
-	if (!deck_card_playable(deck, played_develop, idx, turn))
+	if (!deck_card_playable
+	    (deck, played_develop, num_playable_cards, idx)) {
 		return FALSE;
+	}
 
 	deck->num_cards--;
 	memmove(deck->cards + idx, deck->cards + idx + 1,

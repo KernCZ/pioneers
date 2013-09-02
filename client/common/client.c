@@ -1182,7 +1182,9 @@ static gboolean mode_load_gameinfo(StateMachine * sm, gint event)
 			return FALSE;
 		}
 
-		develop_bought_card_turn(devcard, devcardturnbought);
+		develop_bought_card_turn(devcard,
+					 devcardturnbought ==
+					 recovery_info.turnnum);
 
 		devcardidx++;
 		if (devcardidx >= numdevcards) {
@@ -2526,6 +2528,7 @@ static void recover_from_disconnect(StateMachine * sm,
 {
 	StateFunc modeturn;
 	GList *next;
+	guint num_playable_cards = get_num_playable_cards();
 
 	callbacks.start_game();
 	if (rinfo->turnnum > 0)
@@ -2545,7 +2548,8 @@ static void recover_from_disconnect(StateMachine * sm,
 
 	if (rinfo->played_develop || rinfo->bought_develop) {
 		develop_reset_have_played_bought(rinfo->played_develop,
-						 rinfo->bought_develop);
+						 rinfo->bought_develop,
+						 num_playable_cards);
 	}
 
 	/* setup_begin must be called before the build list is created,

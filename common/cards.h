@@ -23,12 +23,8 @@
 
 #include "game.h"
 
-/* It is important to know which turn a development card was bought
- * in.  You cannot play a card in the same turn that it was bought.
- */
 typedef struct {
 	DevelType type;
-	gint turn_bought;
 } DevelCard;
 
 typedef struct _DevelDeck DevelDeck;
@@ -39,7 +35,7 @@ const gchar *get_devel_description(DevelType description);
 
 DevelDeck *deck_new(GameParams * params);
 void deck_free(DevelDeck * deck);
-void deck_card_add(DevelDeck * deck, DevelType type, gint turn_bought);
+void deck_card_add(DevelDeck * deck, DevelType type);
 
 /** Gets the card at position index in the deck.
  * @param deck The DevelDeck containing the card.
@@ -55,9 +51,10 @@ const DevelCard *devel_deck_get_card(const DevelDeck * deck, guint index);
 guint devel_deck_count(const DevelDeck * deck);
 
 gboolean deck_card_playable(const DevelDeck * deck,
-			    gboolean played_develop, guint idx, gint turn);
-gboolean deck_card_play(DevelDeck * deck,
-			gboolean played_develop, guint idx, gint turn);
+			    gboolean played_develop,
+			    guint num_playable_cards, guint idx);
+gboolean deck_card_play(DevelDeck * deck, gboolean played_develop,
+			guint num_playable_cards, guint idx);
 DevelType deck_card_type(const DevelDeck * deck, guint idx);
 
 gint deck_card_amount(const DevelDeck * deck, DevelType type);

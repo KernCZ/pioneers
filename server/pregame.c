@@ -698,9 +698,10 @@ gboolean mode_pre_game(Player * player, gint event)
 						     devel_deck_get_card
 						     (player->devel,
 						      i)->type,
-						     devel_deck_get_card
-						     (player->devel,
-						      i)->turn_bought);
+						     i <
+						     game->num_playable_cards
+						     ? 0 : game->
+						     curr_turn);
 			}
 			player_send_uncached(player, V14,
 					     LATEST_VERSION,

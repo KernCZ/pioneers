@@ -104,6 +104,7 @@ struct Game {
 	guint num_dice_cards;	/* total remaining dice cards */
 	gboolean played_develop;	/* has devel. card been played in turn? */
 	gboolean bought_develop;	/* has devel. card been bought in turn? */
+	guint num_playable_cards;	/* number of playable development cards */
 
 	gint bank_deck[NO_RESOURCE];	/* resource card bank */
 	gint num_develop;	/* number of development cards */

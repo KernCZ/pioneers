@@ -34,6 +34,7 @@
 
 static gboolean played_develop;	/* already played a non-victory card? */
 static gboolean bought_develop;	/* have we bought a development card? */
+static guint num_playable_cards;	/* number of playable development cards */
 
 static gboolean is_unique[NUM_DEVEL_TYPES];	/* is each card unique? */
 
@@ -45,14 +46,15 @@ void develop_init(void)
 	if (develop_deck != NULL)
 		deck_free(develop_deck);
 	develop_deck = deck_new(game_params);
+	num_playable_cards = 0;
 	for (idx = 0; idx < NUM_DEVEL_TYPES; idx++)
 		is_unique[idx] = game_params->num_develop_type[idx] == 1;
 }
 
-void develop_bought_card_turn(DevelType type, gint turnbought)
+void develop_bought_card_turn(DevelType type, gboolean bought_this_turn)
 {
-	deck_card_add(develop_deck, type, turnbought);
-	if (turnbought == turn_num()) {
+	deck_card_add(develop_deck, type);
+	if (bought_this_turn) {
 		/* Cannot undo build after buying a development card
 		 */
 		build_clear();
@@ -72,7 +74,9 @@ void develop_bought_card_turn(DevelType type, gint turnbought)
 				    _(""
 				      "You bought a %s development card.\n"),
 				    get_devel_name(type));
-	};
+	} else {
+		num_playable_cards++;
+	}
 	player_modify_statistic(my_player_num(), STAT_DEVELOPMENT, 1);
 	stock_use_develop();
 	callbacks.bought_develop(type);
@@ -80,14 +84,21 @@ void develop_bought_card_turn(DevelType type, gint turnbought)
 
 void develop_bought_card(DevelType type)
 {
-	develop_bought_card_turn(type, turn_num());
+	develop_bought_card_turn(type, TRUE);
+}
+
+guint get_num_playable_cards(void)
+{
+	return num_playable_cards;
 }
 
 void develop_reset_have_played_bought(gboolean have_played,
-				      gboolean have_bought)
+				      gboolean have_bought,
+				      guint number_playable_cards)
 {
 	played_develop = have_played;
 	bought_develop = have_bought;
+	num_playable_cards = number_playable_cards;
 }
 
 void develop_bought(gint player_num)
@@ -102,8 +113,8 @@ void develop_bought(gint player_num)
 void develop_played(gint player_num, guint card_idx, DevelType type)
 {
 	if (player_num == my_player_num()) {
-		deck_card_play(develop_deck,
-			       played_develop, card_idx, turn_num());
+		deck_card_play(develop_deck, played_develop,
+			       num_playable_cards, card_idx);
 		if (!is_victory_card(type))
 			played_develop = TRUE;
 	}
@@ -193,12 +204,13 @@ void develop_begin_turn(void)
 {
 	played_develop = FALSE;
 	bought_develop = FALSE;
+	num_playable_cards = devel_deck_count(develop_deck);
 }
 
 gboolean can_play_develop(guint card)
 {
 	if (!deck_card_playable
-	    (develop_deck, played_develop, card, turn_num()))
+	    (develop_deck, played_develop, num_playable_cards, card))
 		return FALSE;
 	if (deck_card_type(develop_deck, card) == DEVEL_ROAD_BUILDING
 	    && !road_building_can_build_road()
