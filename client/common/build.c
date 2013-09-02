@@ -31,7 +31,7 @@
 #include "buildrec.h"
 
 static GList *build_list;
-static gboolean built;		/* have we buld road / settlement / city? */
+static gboolean built;		/* have we build road / settlement / city? */
 static gint num_edges, num_settlements;
 
 void build_clear(void)
