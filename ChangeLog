@@ -1,6 +1,8 @@
 2013-09-03  Roland Clobus <rclobus@rclobus.nl>
 	* docs/pioneers-metaserver.6, metaserver/main.c: Use Ctrl-C instead of
 	SIGUSR1 to stop the metaserver.
+	* configure.ac: Substitute all variables in pioneers.spec.in. Fixes
+	the building of rpm on openSUSE.
 
 2013-09-02  Micah Bunting <amnykon@gmail.com>
         * server/develop.c, server/server.h, server/turn.c, server/pregame.c,
