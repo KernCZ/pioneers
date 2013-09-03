@@ -638,19 +638,19 @@ static GOptionEntry commandline_entries[] = {
 	{NULL, '\0', 0, 0, NULL, NULL, NULL}
 };
 
-static gboolean handle_usr1_quit_request(G_GNUC_UNUSED gpointer user_data)
+static gboolean handle_break_quit_request(G_GNUC_UNUSED gpointer user_data)
 {
 	g_main_loop_quit(event_loop);
 	return FALSE;
 }
 
-static void handle_usr1_signal(G_GNUC_UNUSED int signal)
+static void handle_break_signal(G_GNUC_UNUSED int signal)
 {
 	/* Cancelling the service is asynchronous, the event queue must be
 	 * processed before g_main_loop_quit can be called. */
 	net_service_free(service);
 	service = NULL;
-	g_idle_add(handle_usr1_quit_request, NULL);
+	g_idle_add(handle_break_quit_request, NULL);
 }
 
 int main(int argc, char *argv[])
@@ -736,13 +736,13 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	struct sigaction myusr1action;
-	struct sigaction oldusr1action;
+	struct sigaction break_action;
+	struct sigaction old_break_action;
 
-	myusr1action.sa_handler = handle_usr1_signal;
-	myusr1action.sa_flags = 0;
-	sigemptyset(&myusr1action.sa_mask);
-	sigaction(SIGUSR1, &myusr1action, &oldusr1action);
+	break_action.sa_handler = handle_break_signal;
+	break_action.sa_flags = 0;
+	sigemptyset(&break_action.sa_mask);
+	sigaction(SIGINT, &break_action, &old_break_action);
 
 	log_message(MSG_INFO, "Pioneers metaserver started.");
 
@@ -750,7 +750,7 @@ int main(int argc, char *argv[])
 	g_main_loop_run(event_loop);
 	g_main_loop_unref(event_loop);
 
-	sigaction(SIGUSR1, &oldusr1action, NULL);
+	sigaction(SIGINT, &old_break_action, NULL);
 	g_free(pidfile);
 	g_free(redirect_location);
 	g_free(myhostname);

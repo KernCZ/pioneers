@@ -1,8 +1,13 @@
+2013-09-03  Roland Clobus <rclobus@rclobus.nl>
+	* docs/pioneers-metaserver.6, metaserver/main.c: Use Ctrl-C instead of
+	SIGUSR1 to stop the metaserver.
+
 2013-09-02  Micah Bunting <amnykon@gmail.com>
         * server/develop.c, server/server.h, server/turn.c, server/pregame.c,
         common/cards.c, common/cards.h, client/common/client.c,
-        client/common/client.h, client/common/develop.c: Removes gint turn_bought
-        from DevelCard and replaces it with two guint num_playable_cards.
+        client/common/client.h, client/common/develop.c: Removes gint
+	turn_bought from DevelCard and replaces it with two guint
+	num_playable_cards.
 
 2013-08-27  Roland Clobus <rclobus@rclobus.nl>
 	* metaserver/main.c, common/network.c: Fixed memory leaks in the
