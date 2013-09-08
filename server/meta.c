@@ -59,6 +59,7 @@ static void start_reconnect_timer(Game * game)
 			      "The connection to the metaserver is lost.\n"));
 	}
 	log_message(MSG_INFO,
+		    /* The connection to the metaserver was lost */
 		    ngettext
 		    ("An attempt to reconnect is scheduled in %u second.\n",
 		     "An attempt to reconnect is scheduled in %u seconds.\n",

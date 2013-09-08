@@ -445,6 +445,7 @@ Player *player_new_connection(Game * game, Session * ses)
 
 	error = NULL;
 	if (!net_get_peer_name(ses, &location, &port, &error)) {
+		/* %s = error message */
 		log_message(MSG_ERROR,
 			    _("Unable to determine the "
 			      "hostname of the player: %s"),

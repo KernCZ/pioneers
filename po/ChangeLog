@@ -1,3 +1,6 @@
+2013-09-08  Roland Clobus <rclobus@rclobus.nl>
+	* all: Added some translation hints and performed a line number update.
+
 2013-09-01  Roland Clobus <rclobus@rclobus.nl>
 	* all: msguntypot for metaserver spelling issues.
 	* en_GB.po: Updated for metaserver spelling.

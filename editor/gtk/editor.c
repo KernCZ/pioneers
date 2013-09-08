@@ -429,6 +429,7 @@ static const gchar *PORT_TOOLBAR_TOOLTIP[] = {
 	N_("Place a ore 2:1 port"),
 	N_("Place a wool 2:1 port"),
 	N_("Place a lumber 2:1 port"),
+	/* Tooltip to remove a port tile in the editor */
 	N_("Remove a port"),
 	N_("Place a 3:1 port")
 };
@@ -1349,6 +1350,7 @@ void set_window_title(const gchar * title)
 	gchar *str;
 	g_free(window_title);
 	if (title == NULL) {
+		/* The game in the editor does not have a name yet */
 		title = _("Untitled");
 		window_title = NULL;
 	} else

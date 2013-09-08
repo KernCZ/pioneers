@@ -750,6 +750,7 @@ static gboolean check_other_players(StateMachine * sm)
 		return TRUE;
 	}
 	if (sm_recv(sm, "shuffled-dice-deck")) {
+		/* %s = Player name */
 		log_message(MSG_DICE, _("%s shuffled the dice deck.\n"),
 			    player_name(player_num, TRUE));
 		return TRUE;
