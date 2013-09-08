@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 14.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-08 17:04+0200\n"
-"PO-Revision-Date: 2013-09-08 16:51+0100\n"
+"POT-Creation-Date: 2013-09-08 17:12+0200\n"
+"PO-Revision-Date: 2013-09-08 17:12+0100\n"
 "Last-Translator: Roland Clobus <rclobus@rclobus.nl>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "Language: en_GB\n"
@@ -998,13 +998,13 @@ msgid "Receiving game names from the metaserver.\n"
 msgstr "Receiving game names from the metaserver.\n"
 
 #: ../client/gtk/connect.c:423
-#, fuzzy, c-format
+#, c-format
 msgid "New game server requested on %s port %s.\n"
-msgstr "New game server requested on %s port %s\n"
+msgstr "New game server requested on %s port %s.\n"
 
 #: ../client/gtk/connect.c:433
 msgid "Incomplete information about the new game server received.\n"
-msgstr ""
+msgstr "Incomplete information about the new game server received.\n"
 
 #: ../client/gtk/connect.c:487 ../client/gtk/connect.c:493
 #: ../server/meta.c:239
@@ -1015,7 +1015,7 @@ msgstr "Unknown message from the metaserver: %s\n"
 #: ../client/gtk/connect.c:566 ../server/meta.c:178
 #, c-format
 msgid "Receiving data from inactive session: %s\n"
-msgstr ""
+msgstr "Receiving data from inactive session: %s\n"
 
 #: ../client/gtk/connect.c:578 ../server/meta.c:192
 msgid "Too many metaserver redirects.\n"
@@ -1095,9 +1095,8 @@ msgid "Canceled.\n"
 msgstr "Cancelled.\n"
 
 #: ../client/gtk/connect.c:960
-#, fuzzy
 msgid "Requesting new game server.\n"
-msgstr "Requesting new game server\n"
+msgstr "Requesting new game server.\n"
 
 #: ../client/gtk/connect.c:1015 ../server/gtk/main.c:369
 #: ../server/server.c:122
@@ -1987,9 +1986,8 @@ msgid "Play a game of Pioneers"
 msgstr "Play a game of Pioneers"
 
 #: ../client/gtk/pioneers.desktop.in.h:3
-#, fuzzy
 msgid "game;board;play;Pioneers;Settlers;"
-msgstr "game;board;play;Pioneers;Settlers;Catan;"
+msgstr "game;board;play;Pioneers;Settlers;"
 
 #: ../client/gtk/player.c:53
 msgid "Settlements"
@@ -2273,16 +2271,15 @@ msgstr "Sevens rule:"
 
 #: ../client/gtk/settingscreen.c:196
 msgid "Use dice deck instead of dice:"
-msgstr ""
+msgstr "Use dice deck instead of dice:"
 
 #: ../client/gtk/settingscreen.c:201
-#, fuzzy
 msgid "Number of dice decks:"
-msgstr "Number of players:"
+msgstr "Number of dice decks:"
 
 #: ../client/gtk/settingscreen.c:207
 msgid "Number of dice cards removed after shuffling:"
-msgstr ""
+msgstr "Number of dice cards removed after shuffling:"
 
 #: ../client/gtk/settingscreen.c:214
 msgid "Use the pirate to block ships:"
@@ -2490,7 +2487,7 @@ msgid "This game can be won by only building all settlements and cities."
 msgstr "This game can be won by only building all settlements and cities."
 
 #: ../common/game.c:971
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Required victory points: %d\n"
 "Points obtained by building all: %d\n"
@@ -2501,7 +2498,7 @@ msgid ""
 msgstr ""
 "Required victory points: %d\n"
 "Points obtained by building all: %d\n"
-"Points in development cards: %d\n"
+"Points in development cards: %u\n"
 "Longest road/largest army: %d+%d\n"
 "Maximum island discovery bonus: %d\n"
 "Total: %d"
@@ -2517,14 +2514,13 @@ msgid "Game directory '%s' not found\n"
 msgstr "Game directory '%s' not found\n"
 
 #: ../common/game-list.c:131
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to load game: '%s'\n"
-msgstr "Failed to load '%s'"
+msgstr "Unable to load game: '%s'\n"
 
 #: ../common/game-list.c:151
-#, fuzzy
 msgid "No games available\n"
-msgstr "Sorry, %s available.\n"
+msgstr "No games available\n"
 
 #: ../common/gtk/aboutbox.c:76
 msgid ""
@@ -2622,30 +2618,29 @@ msgstr "Check for victory only at end of turn"
 
 #: ../common/gtk/game-rules.c:144
 msgid "Use dice deck"
-msgstr ""
+msgstr "Use dice deck"
 
 #: ../common/gtk/game-rules.c:146
 msgid "Use a deck of 36 dice cards instead of real dice"
-msgstr ""
+msgstr "Use a deck of 36 dice cards instead of real dice"
 
 #. Label
 #: ../common/gtk/game-rules.c:154
-#, fuzzy
 msgid "Number of dice decks"
-msgstr "Number of computer players"
+msgstr "Number of dice decks"
 
 #: ../common/gtk/game-rules.c:171
 msgid "The number of dice decks (of 36 cards each)"
-msgstr ""
+msgstr "The number of dice decks (of 36 cards each)"
 
 #. Label
 #: ../common/gtk/game-rules.c:179
 msgid "Number of removed dice cards"
-msgstr ""
+msgstr "Number of removed dice cards"
 
 #: ../common/gtk/game-rules.c:198
 msgid "The number of dice cards that are removed after shuffling the deck"
-msgstr ""
+msgstr "The number of dice cards that are removed after shuffling the deck"
 
 #. Label
 #: ../common/gtk/game-rules.c:206
@@ -2857,9 +2852,9 @@ msgid "Error reading socket: %s\n"
 msgstr "Error reading socket: %s\n"
 
 #: ../common/network.c:380
-#, fuzzy, c-format
+#, c-format
 msgid "Error connection to %s: %s\n"
-msgstr "Error connecting to %s: %s\n"
+msgstr "Error connection to %s: %s\n"
 
 #: ../common/network.c:568 ../common/network.c:569
 msgid "unknown"
@@ -2983,35 +2978,35 @@ msgstr "SE"
 
 #: ../editor/gtk/editor.c:395
 msgid "Place a hill hex"
-msgstr ""
+msgstr "Place a hill hex"
 
 #: ../editor/gtk/editor.c:396
 msgid "Place a field hex"
-msgstr ""
+msgstr "Place a field hex"
 
 #: ../editor/gtk/editor.c:397
 msgid "Place a mountain hex"
-msgstr ""
+msgstr "Place a mountain hex"
 
 #: ../editor/gtk/editor.c:398
 msgid "Place a pasture hex"
-msgstr ""
+msgstr "Place a pasture hex"
 
 #: ../editor/gtk/editor.c:399
 msgid "Place a forest hex"
-msgstr ""
+msgstr "Place a forest hex"
 
 #: ../editor/gtk/editor.c:400
 msgid "Place a desert hex"
-msgstr ""
+msgstr "Place a desert hex"
 
 #: ../editor/gtk/editor.c:401
 msgid "Place a sea hex"
-msgstr ""
+msgstr "Place a sea hex"
 
 #: ../editor/gtk/editor.c:402
 msgid "Place a gold hex"
-msgstr ""
+msgstr "Place a gold hex"
 
 #: ../editor/gtk/editor.c:403
 msgid "Clear the hex"
@@ -3019,79 +3014,80 @@ msgstr "Clear the hex"
 
 #: ../editor/gtk/editor.c:411
 msgid "Place a 2 chit"
-msgstr ""
+msgstr "Place a 2 chit"
 
 #: ../editor/gtk/editor.c:412
 msgid "Place a 3 chit"
-msgstr ""
+msgstr "Place a 3 chit"
 
 #: ../editor/gtk/editor.c:413
 msgid "Place a 4 chit"
-msgstr ""
+msgstr "Place a 4 chit"
 
 #: ../editor/gtk/editor.c:414
 msgid "Place a 5 chit"
-msgstr ""
+msgstr "Place a 5 chit"
 
 #: ../editor/gtk/editor.c:415
 msgid "Place a 6 chit"
-msgstr ""
+msgstr "Place a 6 chit"
 
 #: ../editor/gtk/editor.c:417
-msgid "Place a 8 chit"
-msgstr ""
+msgid "Place an 8 chit"
+msgstr "Place an 8 chit"
 
 #: ../editor/gtk/editor.c:418
 msgid "Place a 9 chit"
-msgstr ""
+msgstr "Place a 9 chit"
 
 #: ../editor/gtk/editor.c:419
 msgid "Place a 10 chit"
-msgstr ""
+msgstr "Place a 10 chit"
 
 #: ../editor/gtk/editor.c:420
-msgid "Place a 11 chit"
-msgstr ""
+msgid "Place an 11 chit"
+msgstr "Place an 11 chit"
 
 #: ../editor/gtk/editor.c:421
 msgid "Place a 12 chit"
-msgstr ""
+msgstr "Place a 12 chit"
 
 #: ../editor/gtk/editor.c:427
 msgid "Place a brick 2:1 port"
-msgstr ""
+msgstr "Place a brick 2:1 port"
 
 #: ../editor/gtk/editor.c:428
 msgid "Place a grain 2:1 port"
-msgstr ""
+msgstr "Place a grain 2:1 port"
 
 #: ../editor/gtk/editor.c:429
-msgid "Place a ore 2:1 port"
-msgstr ""
+msgid "Place an ore 2:1 port"
+msgstr "Place an ore 2:1 port"
 
 #: ../editor/gtk/editor.c:430
 msgid "Place a wool 2:1 port"
-msgstr ""
+msgstr "Place a wool 2:1 port"
 
 #: ../editor/gtk/editor.c:431
 msgid "Place a lumber 2:1 port"
-msgstr ""
+msgstr "Place a lumber 2:1 port"
 
 #. Tooltip to remove a port tile in the editor
 #: ../editor/gtk/editor.c:433
-#, fuzzy
 msgid "Remove a port"
-msgstr "Server port"
+msgstr "Remove a port"
 
 #: ../editor/gtk/editor.c:434
 msgid "Place a 3:1 port"
-msgstr ""
+msgstr "Place a 3:1 port"
 
 #: ../editor/gtk/editor.c:464
 msgid ""
 "Select the terrain type with the context menu on the left click or toggle a "
 "node to exclude it from being used during the setup phase"
 msgstr ""
+"Select the terrain type with the context menu on the left click or toggle a "
+"node to exclude it from being used during the setup phase"
 
 #: ../editor/gtk/editor.c:601
 msgid "Insert a row"
@@ -3111,21 +3107,18 @@ msgstr "Delete a column"
 
 #. Label
 #: ../editor/gtk/editor.c:1016
-#, fuzzy
 msgid "_Title"
-msgstr "_Change Title"
+msgstr "_Title"
 
 #. Label
 #: ../editor/gtk/editor.c:1029
-#, fuzzy
 msgid "_Description"
-msgstr "_Desert"
+msgstr "_Description"
 
 #. Label
 #: ../editor/gtk/editor.c:1047
-#, fuzzy
 msgid "_Comments"
-msgstr "Comments"
+msgstr "_Comments"
 
 #. Menu item
 #: ../editor/gtk/editor.c:1177
@@ -3157,7 +3150,7 @@ msgstr "Buildings"
 #. The game in the editor does not have a name yet
 #: ../editor/gtk/editor.c:1354
 msgid "Untitled"
-msgstr ""
+msgstr "Untitled"
 
 #. Application caption
 #: ../editor/gtk/editor.c:1359 ../editor/gtk/pioneers-editor.desktop.in.h:1
@@ -3255,9 +3248,8 @@ msgstr "Save as"
 
 #. Menu entry
 #: ../editor/gtk/editor.c:1780
-#, fuzzy
 msgid "Change _Title"
-msgstr "Change Title"
+msgstr "Change _Title"
 
 #. Tooltip for Change Title menu entry
 #: ../editor/gtk/editor.c:1782
@@ -3331,9 +3323,8 @@ msgid "Create your own game for Pioneers"
 msgstr "Create your own game for Pioneers"
 
 #: ../editor/gtk/pioneers-editor.desktop.in.h:3
-#, fuzzy
 msgid "game;board;create;edit;layout;Pioneers;Settlers;"
-msgstr "game;board;create;edit;layout;Pioneers;Settlers;Catan;"
+msgstr "game;board;create;edit;layout;Pioneers;Settlers;"
 
 #. Commandline metaserver: daemon
 #: ../metaserver/main.c:610
@@ -3634,9 +3625,8 @@ msgid "Host a game of Pioneers"
 msgstr "Host a game of Pioneers"
 
 #: ../server/gtk/pioneers-server.desktop.in.h:3
-#, fuzzy
 msgid "game;board;server;host;Pioneers;Settlers;"
-msgstr "game;board;play;Pioneers;Settlers;Catan;"
+msgstr "game;board;server;host;Pioneers;Settlers;"
 
 #. Commandline server-console: game-title
 #: ../server/main.c:80
@@ -3670,21 +3660,18 @@ msgstr "Override seven-rule handling"
 
 #. Commandline server-console: dice-deck
 #: ../server/main.c:98
-#, fuzzy
 msgid "Override dice-deck handling"
-msgstr "Override seven-rule handling"
+msgstr "Override dice-deck handling"
 
 #. Commandline server-console: num-dice-decks
 #: ../server/main.c:101
-#, fuzzy
 msgid "Override num-dice-decks handling"
-msgstr "Override seven-rule handling"
+msgstr "Override num-dice-decks handling"
 
 #. Commandline server-console: num-removed-dice-cards
 #: ../server/main.c:105
-#, fuzzy
 msgid "Override num-removed-dice-cards handling"
-msgstr "Override seven-rule handling"
+msgstr "Override num-removed-dice-cards handling"
 
 #. Commandline server-console: terrain
 #: ../server/main.c:108
@@ -3777,7 +3764,7 @@ msgstr "Cannot load the parameters for the game\n"
 #: ../server/main.c:303 ../server/main.c:322
 #, c-format
 msgid "The network port (%s) for the admin interface is not available.\n"
-msgstr ""
+msgstr "The network port (%s) for the admin interface is not available.\n"
 
 #: ../server/meta.c:58
 msgid "The connection to the metaserver is lost.\n"
@@ -3847,7 +3834,7 @@ msgstr "Computer Player"
 #: ../server/player.c:450
 #, c-format
 msgid "Unable to determine the hostname of the player: %s"
-msgstr ""
+msgstr "Unable to determine the hostname of the player: %s"
 
 #. The game is over, don't accept new players
 #. Message to send to the client when the game is already over

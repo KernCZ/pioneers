@@ -5,6 +5,7 @@
 	client/gtk/pioneers.desktop.in,
 	editor/gtk/pioneers-editor.desktop.in: Removed trademarked word.
 	* pioneers.spec.in: Make more similar to Redhat version.
+	* editor/gtk/editor.c: Fixed spelling a/an in tooltips.
 
 2013-09-03  Roland Clobus <rclobus@rclobus.nl>
 	* docs/pioneers-metaserver.6, metaserver/main.c: Use Ctrl-C instead of

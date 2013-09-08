@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 0.12.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-08 17:04+0200\n"
+"POT-Creation-Date: 2013-09-08 17:12+0200\n"
 "PO-Revision-Date: 2010-03-28 01:29+0000\n"
 "Last-Translator: Ladislav Dobias <Unknown>\n"
 "Language-Team: \n"
@@ -3041,7 +3041,7 @@ msgid "Place a 6 chit"
 msgstr ""
 
 #: ../editor/gtk/editor.c:417
-msgid "Place a 8 chit"
+msgid "Place an 8 chit"
 msgstr ""
 
 #: ../editor/gtk/editor.c:418
@@ -3053,7 +3053,7 @@ msgid "Place a 10 chit"
 msgstr ""
 
 #: ../editor/gtk/editor.c:420
-msgid "Place a 11 chit"
+msgid "Place an 11 chit"
 msgstr ""
 
 #: ../editor/gtk/editor.c:421
@@ -3069,7 +3069,7 @@ msgid "Place a grain 2:1 port"
 msgstr ""
 
 #: ../editor/gtk/editor.c:429
-msgid "Place a ore 2:1 port"
+msgid "Place an ore 2:1 port"
 msgstr ""
 
 #: ../editor/gtk/editor.c:430

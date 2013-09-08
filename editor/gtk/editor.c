@@ -414,10 +414,10 @@ static const gchar *CHIT_TOOLBAR_TOOLTIP[] = {
 	N_("Place a 5 chit"),
 	N_("Place a 6 chit"),
 	NULL,
-	N_("Place a 8 chit"),
+	N_("Place an 8 chit"),
 	N_("Place a 9 chit"),
 	N_("Place a 10 chit"),
-	N_("Place a 11 chit"),
+	N_("Place an 11 chit"),
 	N_("Place a 12 chit")
 };
 
@@ -426,7 +426,7 @@ static const gchar *CHIT_TOOLBAR_TOOLTIP[] = {
 static const gchar *PORT_TOOLBAR_TOOLTIP[] = {
 	N_("Place a brick 2:1 port"),
 	N_("Place a grain 2:1 port"),
-	N_("Place a ore 2:1 port"),
+	N_("Place an ore 2:1 port"),
 	N_("Place a wool 2:1 port"),
 	N_("Place a lumber 2:1 port"),
 	/* Tooltip to remove a port tile in the editor */
