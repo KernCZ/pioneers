@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-08 16:47+0200\n"
+"POT-Creation-Date: 2013-09-08 17:04+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1977,7 +1977,7 @@ msgid "Play a game of Pioneers"
 msgstr ""
 
 #: ../client/gtk/pioneers.desktop.in.h:3
-msgid "game;board;play;Pioneers;Settlers;Catan;"
+msgid "game;board;play;Pioneers;Settlers;"
 msgstr ""
 
 #: ../client/gtk/player.c:53
@@ -3294,7 +3294,7 @@ msgid "Create your own game for Pioneers"
 msgstr ""
 
 #: ../editor/gtk/pioneers-editor.desktop.in.h:3
-msgid "game;board;create;edit;layout;Pioneers;Settlers;Catan;"
+msgid "game;board;create;edit;layout;Pioneers;Settlers;"
 msgstr ""
 
 #. Commandline metaserver: daemon
@@ -3595,7 +3595,7 @@ msgid "Host a game of Pioneers"
 msgstr ""
 
 #: ../server/gtk/pioneers-server.desktop.in.h:3
-msgid "game;board;server;host;Pioneers;Settlers;Catan;"
+msgid "game;board;server;host;Pioneers;Settlers;"
 msgstr ""
 
 #. Commandline server-console: game-title

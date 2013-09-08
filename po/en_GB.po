@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 14.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-08 16:47+0200\n"
-"PO-Revision-Date: 2013-09-01 16:08+0100\n"
+"POT-Creation-Date: 2013-09-08 17:04+0200\n"
+"PO-Revision-Date: 2013-09-08 16:51+0100\n"
 "Last-Translator: Roland Clobus <rclobus@rclobus.nl>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "Language: en_GB\n"
@@ -414,7 +414,7 @@ msgstr "%s is refunded %s.\n"
 #: ../client/common/client.c:754 ../client/common/client.c:1965
 #, c-format
 msgid "%s shuffled the dice deck.\n"
-msgstr ""
+msgstr "%s shuffled the dice deck.\n"
 
 #: ../client/common/client.c:773
 #, c-format
@@ -1092,7 +1092,7 @@ msgstr "The number of computer players"
 #: ../client/gtk/connect.c:957 ../client/gtk/connect.c:992
 #: ../client/gtk/connect.c:1131
 msgid "Canceled.\n"
-msgstr ""
+msgstr "Cancelled.\n"
 
 #: ../client/gtk/connect.c:960
 #, fuzzy
@@ -1987,8 +1987,9 @@ msgid "Play a game of Pioneers"
 msgstr "Play a game of Pioneers"
 
 #: ../client/gtk/pioneers.desktop.in.h:3
-msgid "game;board;play;Pioneers;Settlers;Catan;"
-msgstr ""
+#, fuzzy
+msgid "game;board;play;Pioneers;Settlers;"
+msgstr "game;board;play;Pioneers;Settlers;Catan;"
 
 #: ../client/gtk/player.c:53
 msgid "Settlements"
@@ -2844,7 +2845,7 @@ msgstr "Error writing to socket: %s\n"
 
 #: ../common/network.c:156
 msgid "Could not send all data\n"
-msgstr ""
+msgstr "Could not send all data\n"
 
 #: ../common/network.c:204
 msgid "Read buffer overflow - disconnecting\n"
@@ -3014,7 +3015,7 @@ msgstr ""
 
 #: ../editor/gtk/editor.c:403
 msgid "Clear the hex"
-msgstr ""
+msgstr "Clear the hex"
 
 #: ../editor/gtk/editor.c:411
 msgid "Place a 2 chit"
@@ -3330,8 +3331,9 @@ msgid "Create your own game for Pioneers"
 msgstr "Create your own game for Pioneers"
 
 #: ../editor/gtk/pioneers-editor.desktop.in.h:3
-msgid "game;board;create;edit;layout;Pioneers;Settlers;Catan;"
-msgstr ""
+#, fuzzy
+msgid "game;board;create;edit;layout;Pioneers;Settlers;"
+msgstr "game;board;create;edit;layout;Pioneers;Settlers;Catan;"
 
 #. Commandline metaserver: daemon
 #: ../metaserver/main.c:610
@@ -3632,8 +3634,9 @@ msgid "Host a game of Pioneers"
 msgstr "Host a game of Pioneers"
 
 #: ../server/gtk/pioneers-server.desktop.in.h:3
-msgid "game;board;server;host;Pioneers;Settlers;Catan;"
-msgstr ""
+#, fuzzy
+msgid "game;board;server;host;Pioneers;Settlers;"
+msgstr "game;board;play;Pioneers;Settlers;Catan;"
 
 #. Commandline server-console: game-title
 #: ../server/main.c:80
@@ -3784,8 +3787,8 @@ msgstr "The connection to the metaserver is lost.\n"
 #, c-format
 msgid "An attempt to reconnect is scheduled in %u second.\n"
 msgid_plural "An attempt to reconnect is scheduled in %u seconds.\n"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "An attempt to reconnect is scheduled in %u second.\n"
+msgstr[1] "An attempt to reconnect is scheduled in %u seconds.\n"
 
 #: ../server/meta.c:83
 msgid "Attempting to reconnect to the metaserver.\n"

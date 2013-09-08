@@ -14,9 +14,9 @@ BuildRequires:	glib2-devel >= @GLIB_REQUIRED_VERSION@
 Requires(post):	scrollkeeper
 
 %description 
-Pioneers is an Internet playable implementation of the Settlers of
-Catan board game.  The aim is to remain as faithful to the board game
-as is possible.
+Pioneers is a computerized version of a well known strategy board game. The
+goal of the game is to colonize an island. The players play the first
+colonists, hence the name Pioneers.
 
 This is the client software to play the game.
 
@@ -25,9 +25,9 @@ Summary:	Pioneers AI Player
 Group:		Amusements/Games
 
 %description 	ai
-Pioneers is an Internet playable implementation of the Settlers of
-Catan board game.  The aim is to remain as faithful to the board game
-as is possible.
+Pioneers is a computerized version of a well known strategy board game. The
+goal of the game is to colonize an island. The players play the first
+colonists, hence the name Pioneers.
 
 This package contains a computer player that can take part in Pioneers games.
 
@@ -37,9 +37,11 @@ Group:		Amusements/Games
 Requires:	pioneers-server-data
 
 %description 	server-console
-Pioneers is an Internet playable implementation of the Settlers of
-Catan board game.  The aim is to remain as faithful to the board game
-as is possible.
+Pioneers is a computerized version of a well known strategy board game. The
+goal of the game is to colonize an island. The players play the first
+colonists, hence the name Pioneers.
+
+The packages contains the server.
 
 %package 	server-gtk
 Summary:	Pioneers GTK Server
@@ -47,37 +49,35 @@ Group:		Amusements/Games
 Requires:	pioneers, pioneers-server-data
 
 %description 	server-gtk
-Pioneers is an Internet playable implementation of the Settlers of
-Catan board game.  The aim is to remain as faithful to the board game
-as is possible.
+Pioneers is a computerized version of a well known strategy board game. The
+goal of the game is to colonize an island. The players play the first
+colonists, hence the name Pioneers.
 
 The server has a user interface in which you can customise the game
-parameters.  Customisation is fairly limited at the moment, but this
-should change in later versions.  Once you are happy with the game
-parameters, press the Start Server button, and the server will start
-listening for client connections.
+parameters.  Once you are happy with the game parameters, press the Start
+Server button, and the server will start listening for client connections.
 
 %package 	server-data
 Summary: 	Pioneers Data
 Group: 		Amusements/Games
 
 %description 	server-data
-Pioneers is an Internet playable implementation of the Settlers of
-Catan board game.  The aim is to remain as faithful to the board game
-as is possible.
+Pioneers is a computerized version of a well known strategy board game. The
+goal of the game is to colonize an island. The players play the first
+colonists, hence the name Pioneers.
 
 This package contains the data files for a game server.
 
-%package 	meta-server
-Summary:	Pioneers Meta Server
+%package 	metaserver
+Summary:	Pioneers Metaserver
 Group:		Amusements/Games
 
-%description 	meta-server
-Pioneers is an Internet playable implementation of the Settlers of
-Catan board game.  The aim is to remain as faithful to the board game
-as is possible.
+%description 	metaserver
+Pioneers is a computerized version of a well known strategy board game. The
+goal of the game is to colonize an island. The players play the first
+colonists, hence the name Pioneers.
 
-The meta server registers available game servers and offers them to new
+The metaserver registers available game servers and offers them to new
 players. It can also create new servers on client request.
 
 %package	editor
@@ -86,9 +86,9 @@ Group:		Amusements/Games
 Requires:	pioneers, pioneers-server-data
 
 %description	editor
-Pioneers is an Internet playable implementation of the Settlers of
-Catan board game.  The aim is to remain as faithful to the board game
-as is possible.
+Pioneers is a computerized version of a well known strategy board game. The
+goal of the game is to colonize an island. The players play the first
+colonists, hence the name Pioneers.
 
 The game editor allows maps and game descriptions to be created and edited
 graphically.
@@ -153,11 +153,11 @@ scrollkeeper-update -q
 %doc AUTHORS COPYING ChangeLog INSTALL README NEWS 
 %{_datadir}/games/pioneers/*.game
 
-%files meta-server
+%files metaserver
 %defattr(-,root,root)
-%doc %_mandir/man6/pioneers-meta-server.6.gz
+%doc %_mandir/man6/pioneers-metaserver.6.gz
 %doc AUTHORS COPYING ChangeLog INSTALL README NEWS 
-%{_bindir}/pioneers-meta-server
+%{_bindir}/pioneers-metaserver
 
 %files editor
 %defattr(-,root,root)

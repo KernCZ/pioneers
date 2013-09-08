@@ -1,6 +1,10 @@
 2013-09-08  Roland Clobus <rclobus@rclobus.nl>
 	* server/meta.c, server/player.c, client/common/client.c,
 	editor/gtk/editor.c: Added hints for translators.
+	* server/gtk/pioneers-server.desktop.in,
+	client/gtk/pioneers.desktop.in,
+	editor/gtk/pioneers-editor.desktop.in: Removed trademarked word.
+	* pioneers.spec.in: Make more similar to Redhat version.
 
 2013-09-03  Roland Clobus <rclobus@rclobus.nl>
 	* docs/pioneers-metaserver.6, metaserver/main.c: Use Ctrl-C instead of
