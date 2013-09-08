@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 15.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-08 17:12+0200\n"
+"POT-Creation-Date: 2013-09-08 18:03+0200\n"
 "PO-Revision-Date: 2013-09-08 17:12+0100\n"
 "Last-Translator: Roland Clobus <rclobus@rclobus.nl>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
@@ -2853,8 +2853,8 @@ msgstr "Error reading socket: %s\n"
 
 #: ../common/network.c:380
 #, c-format
-msgid "Error connection to %s: %s\n"
-msgstr "Error connection to %s: %s\n"
+msgid "Error connecting to %s: %s\n"
+msgstr "Error connecting to %s: %s\n"
 
 #: ../common/network.c:568 ../common/network.c:569
 msgid "unknown"

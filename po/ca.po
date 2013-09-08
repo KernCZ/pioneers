@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 14.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-08 17:12+0200\n"
+"POT-Creation-Date: 2013-09-08 18:03+0200\n"
 "PO-Revision-Date: 2013-01-20 20:01+0100\n"
 "Last-Translator: Jaume Badiella Aguilera <myotis@drac.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
@@ -2861,7 +2861,7 @@ msgstr "Error en llegit el sòcol: %s\n"
 
 #: ../common/network.c:380
 #, fuzzy, c-format
-msgid "Error connection to %s: %s\n"
+msgid "Error connecting to %s: %s\n"
 msgstr "Error en connectar amb %s: %s\n"
 
 #: ../common/network.c:568 ../common/network.c:569

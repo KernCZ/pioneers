@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 0.11.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-08 17:12+0200\n"
+"POT-Creation-Date: 2013-09-08 18:03+0200\n"
 "PO-Revision-Date: 2008-04-29 09:36+0000\n"
 "Last-Translator: carson\n"
 "Language-Team: Danish <da@li.org>\n"
@@ -2865,7 +2865,7 @@ msgstr ""
 
 #: ../common/network.c:380
 #, fuzzy, c-format
-msgid "Error connection to %s: %s\n"
+msgid "Error connecting to %s: %s\n"
 msgstr "Fejl ved tilslutning til %s: %s\n"
 
 #: ../common/network.c:568 ../common/network.c:569

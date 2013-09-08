@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 0.12.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-08 17:12+0200\n"
+"POT-Creation-Date: 2013-09-08 18:03+0200\n"
 "PO-Revision-Date: 2008-04-05 15:37+0200\n"
 "Last-Translator: Ferenc Bánhidi <bferike@mailbox.hu>\n"
 "Language-Team: Hungarian <bferike@mailbox.hu>\n"
@@ -2869,7 +2869,7 @@ msgstr "Hiba socket olvasáskor: %s\n"
 
 #: ../common/network.c:380
 #, fuzzy, c-format
-msgid "Error connection to %s: %s\n"
+msgid "Error connecting to %s: %s\n"
 msgstr "Hiba a csatlakozáskor %s: %s\n"
 
 #: ../common/network.c:568 ../common/network.c:569

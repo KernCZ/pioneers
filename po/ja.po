@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 14.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-08 17:12+0200\n"
+"POT-Creation-Date: 2013-09-08 18:03+0200\n"
 "PO-Revision-Date: 2012-09-05 02:27+0000\n"
 "Last-Translator: KAMO Tomoyuki <kto@miomio.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -2859,7 +2859,7 @@ msgstr "ソケット読み込み時にエラー: %s\n"
 
 #: ../common/network.c:380
 #, fuzzy, c-format
-msgid "Error connection to %s: %s\n"
+msgid "Error connecting to %s: %s\n"
 msgstr "%s への接続時にエラー: %s\n"
 
 #: ../common/network.c:568 ../common/network.c:569

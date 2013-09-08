@@ -377,7 +377,7 @@ gboolean net_connect(Session * ses, const gchar * host, const gchar * port)
 	    g_socket_client_connect_to_host(client, host, ses->port, NULL,
 					    &error);
 	if (ses->connection == NULL) {
-		log_message(MSG_ERROR, _("Error connection to %s: %s\n"),
+		log_message(MSG_ERROR, _("Error connecting to %s: %s\n"),
 			    host, error->message);
 		g_error_free(error);
 		return FALSE;

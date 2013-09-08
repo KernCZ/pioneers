@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 0.12.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-08 17:12+0200\n"
+"POT-Creation-Date: 2013-09-08 18:03+0200\n"
 "PO-Revision-Date: 2012-06-25 00:22+0000\n"
 "Last-Translator: Flames_in_Paradise <Unknown>\n"
 "Language-Team: Pit Garbe <piiit@gmx.de>, Roman Hodek <roman@hodek.net>, de "
@@ -2876,7 +2876,7 @@ msgstr "Fehler beim Lesen des Sockets: %s\n"
 
 #: ../common/network.c:380
 #, fuzzy, c-format
-msgid "Error connection to %s: %s\n"
+msgid "Error connecting to %s: %s\n"
 msgstr "Fehler beim Verbinden zu %s: %s\n"
 
 #: ../common/network.c:568 ../common/network.c:569

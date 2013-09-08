@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 0.12.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-08 17:12+0200\n"
+"POT-Creation-Date: 2013-09-08 18:03+0200\n"
 "PO-Revision-Date: 2010-04-05 08:14+0000\n"
 "Last-Translator: Indalecio Freiría Santos <ifreiria@gmail.com>\n"
 "Language-Team: Galician <gl@li.org>\n"
@@ -2866,7 +2866,7 @@ msgstr "Erro lendo conectador: %s\n"
 
 #: ../common/network.c:380
 #, fuzzy, c-format
-msgid "Error connection to %s: %s\n"
+msgid "Error connecting to %s: %s\n"
 msgstr "Erro conectando a %s: %s\n"
 
 #: ../common/network.c:568 ../common/network.c:569

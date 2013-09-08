@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 0.12.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-08 17:12+0200\n"
+"POT-Creation-Date: 2013-09-08 18:03+0200\n"
 "PO-Revision-Date: 2010-03-28 01:29+0000\n"
 "Last-Translator: Ladislav Dobias <Unknown>\n"
 "Language-Team: \n"
@@ -2859,7 +2859,7 @@ msgstr "Chyba při čtení socketu: %s\n"
 
 #: ../common/network.c:380
 #, fuzzy, c-format
-msgid "Error connection to %s: %s\n"
+msgid "Error connecting to %s: %s\n"
 msgstr "Chyba při spojování k %s: %s\n"
 
 #: ../common/network.c:568 ../common/network.c:569

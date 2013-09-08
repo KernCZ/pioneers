@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 0.12.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-08 17:12+0200\n"
+"POT-Creation-Date: 2013-09-08 18:03+0200\n"
 "PO-Revision-Date: 2012-07-08 03:34+0000\n"
 "Last-Translator: Eduardo Alberto Calvo <Unknown>\n"
 "Language-Team: Spanish <debian-l10n-spanish@lists.debian.org>\n"
@@ -2874,7 +2874,7 @@ msgstr "Error leyendo conector: %s\n"
 
 #: ../common/network.c:380
 #, fuzzy, c-format
-msgid "Error connection to %s: %s\n"
+msgid "Error connecting to %s: %s\n"
 msgstr "Error conectando a %s: %s\n"
 
 #: ../common/network.c:568 ../common/network.c:569
