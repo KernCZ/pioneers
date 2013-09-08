@@ -6,10 +6,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Pioneers 14.1\n"
+"Project-Id-Version: Pioneers 15.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-09-08 18:03+0200\n"
-"PO-Revision-Date: 2012-11-02 10:52+0100\n"
+"PO-Revision-Date: 2013-09-08 18:00+0100\n"
 "Last-Translator: Roland Clobus <rclobus@rclobus.nl>\n"
 "Language-Team: Bas Wijnen <shevek@fmf.nl> Roland Clobus <rclobus@rclobus."
 "nl>\n"
@@ -17,7 +17,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n!=1)\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"X-Generator: Poedit 1.5.4\n"
 
 #. Commandline pioneersai: server
 #: ../client/ai/ai.c:70
@@ -414,7 +415,7 @@ msgstr "%s krijgt %s terug.\n"
 #: ../client/common/client.c:754 ../client/common/client.c:1965
 #, c-format
 msgid "%s shuffled the dice deck.\n"
-msgstr ""
+msgstr "%s heeft de dobbelsteenstapel geschud.\n"
 
 #: ../client/common/client.c:773
 #, c-format
@@ -987,25 +988,25 @@ msgstr "Klaar.\n"
 #: ../client/gtk/connect.c:312 ../client/gtk/connect.c:390
 #: ../client/gtk/connect.c:409 ../client/gtk/connect.c:979
 msgid "The metaserver is not available anymore.\n"
-msgstr ""
+msgstr "De metaserver is niet meer beschikbaar.\n"
 
 #: ../client/gtk/connect.c:323 ../client/gtk/connect.c:444
 #: ../client/gtk/connect.c:771
 msgid "The metaserver closed the connection unexpectedly.\n"
-msgstr ""
+msgstr "De metaserver heeft de verbinding onverwacht gesloten.\n"
 
 #: ../client/gtk/connect.c:381
 msgid "Receiving game names from the metaserver.\n"
 msgstr "De metaserver stuurt de spelnamen door.\n"
 
 #: ../client/gtk/connect.c:423
-#, fuzzy, c-format
+#, c-format
 msgid "New game server requested on %s port %s.\n"
-msgstr "Er is een nieuwe server gestart op %s, poort %s.\n"
+msgstr "Er is een nieuwe server aangevraagd op %s poort %s.\n"
 
 #: ../client/gtk/connect.c:433
 msgid "Incomplete information about the new game server received.\n"
-msgstr ""
+msgstr "Onvolledige informatie over de nieuwe spelserver ontvangen.\n"
 
 #: ../client/gtk/connect.c:487 ../client/gtk/connect.c:493
 #: ../server/meta.c:239
@@ -1016,10 +1017,9 @@ msgstr "Onbekende gegevens ontvangen van de metaserver: %s\n"
 #: ../client/gtk/connect.c:566 ../server/meta.c:178
 #, c-format
 msgid "Receiving data from inactive session: %s\n"
-msgstr ""
+msgstr "Ontvangen gegevens van een inactieve sessie: %s\n"
 
 #: ../client/gtk/connect.c:578 ../server/meta.c:192
-#, fuzzy
 msgid "Too many metaserver redirects.\n"
 msgstr "Teveel metaserver omleidingen.\n"
 
@@ -1035,9 +1035,9 @@ msgstr "De metaserver is te oud om servers te starten (versie %d.%d)\n"
 
 #: ../client/gtk/connect.c:671 ../client/gtk/connect.c:750
 #: ../client/gtk/connect.c:756
-#, fuzzy, c-format
+#, c-format
 msgid "Unexpected data from the metaserver: %s\n"
-msgstr "Onbekende gegevens ontvangen van de metaserver: %s\n"
+msgstr "Onverwachte gegevens van de metaserver: %s\n"
 
 #. Sevens rule: normal
 #: ../client/gtk/connect.c:702 ../client/gtk/settingscreen.c:181
@@ -1066,12 +1066,12 @@ msgid "Random"
 msgstr "Willekeurig"
 
 #: ../client/gtk/connect.c:820 ../server/meta.c:299
-#, fuzzy, c-format
+#, c-format
 msgid "Redirected to the metaserver at %s.\n"
-msgstr "We worden doorgestuurd naar de metaserver op %s, poort %s.\n"
+msgstr "We worden doorgestuurd naar de metaserver op %s.\n"
 
 #: ../client/gtk/connect.c:825 ../server/meta.c:302
-#, fuzzy, c-format
+#, c-format
 msgid "Redirected to the metaserver at %s, port %s.\n"
 msgstr "We worden doorgestuurd naar de metaserver op %s, poort %s.\n"
 
@@ -1094,12 +1094,11 @@ msgstr "Het aantal computerspelers"
 #: ../client/gtk/connect.c:957 ../client/gtk/connect.c:992
 #: ../client/gtk/connect.c:1131
 msgid "Canceled.\n"
-msgstr ""
+msgstr "Geannuleerd.\n"
 
 #: ../client/gtk/connect.c:960
-#, fuzzy
 msgid "Requesting new game server.\n"
-msgstr "Een nieuwe server wordt aangevraagd.\n"
+msgstr "Een nieuwe spelserver wordt aangevraagd.\n"
 
 #: ../client/gtk/connect.c:1015 ../server/gtk/main.c:369
 #: ../server/server.c:122
@@ -1991,7 +1990,7 @@ msgstr "Speel een spel Pioniers"
 
 #: ../client/gtk/pioneers.desktop.in.h:3
 msgid "game;board;play;Pioneers;Settlers;"
-msgstr ""
+msgstr "spel;bord;spelen;layout;Pioneers;Settlers;"
 
 #: ../client/gtk/player.c:53
 msgid "Settlements"
@@ -2275,16 +2274,15 @@ msgstr "Regel voor zevens:"
 
 #: ../client/gtk/settingscreen.c:196
 msgid "Use dice deck instead of dice:"
-msgstr ""
+msgstr "Gebruik dobbelsteenkaarten in plaats van dobbelstenen:"
 
 #: ../client/gtk/settingscreen.c:201
-#, fuzzy
 msgid "Number of dice decks:"
-msgstr "Aantal spelers:"
+msgstr "Aantal pakken dobbelsteenkaarten:"
 
 #: ../client/gtk/settingscreen.c:207
 msgid "Number of dice cards removed after shuffling:"
-msgstr ""
+msgstr "Aantal kaarten dat verwijderd wordt na het schudden:"
 
 #: ../client/gtk/settingscreen.c:214
 msgid "Use the pirate to block ships:"
@@ -2492,7 +2490,7 @@ msgstr ""
 "bouwen."
 
 #: ../common/game.c:971
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Required victory points: %d\n"
 "Points obtained by building all: %d\n"
@@ -2503,7 +2501,7 @@ msgid ""
 msgstr ""
 "Benodigd aantal overwinningspunten: %d\n"
 "Punten door alles te bouwen: %d\n"
-"Punten in ontwikkelingskaarten: %d\n"
+"Punten in ontwikkelingskaarten: %u\n"
 "Langste handelsroute/grootste riddermacht: %d+%d\n"
 "Hoogste aantal ontdekkingspunten: %d\n"
 "Totaal: %d"
@@ -2519,14 +2517,13 @@ msgid "Game directory '%s' not found\n"
 msgstr "Spellenmap '%s' niet gevonden\n"
 
 #: ../common/game-list.c:131
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to load game: '%s'\n"
-msgstr "Kan '%s' niet openen"
+msgstr "Kan het spel '%s' niet openen\n"
 
 #: ../common/game-list.c:151
-#, fuzzy
 msgid "No games available\n"
-msgstr "Sorry, %s beschikbaar.\n"
+msgstr "Geen spellen beschikbaar\n"
 
 #: ../common/gtk/aboutbox.c:76
 msgid ""
@@ -2625,30 +2622,31 @@ msgstr "Controleer op winst alleen aan het einde van de beurt"
 
 #: ../common/gtk/game-rules.c:144
 msgid "Use dice deck"
-msgstr ""
+msgstr "Gebruik dobbelsteenkaarten"
 
 #: ../common/gtk/game-rules.c:146
 msgid "Use a deck of 36 dice cards instead of real dice"
 msgstr ""
+"Gebruik een pak van 36 dobbelsteenkaarten in plaats van echte dobbelstenen"
 
 #. Label
 #: ../common/gtk/game-rules.c:154
-#, fuzzy
 msgid "Number of dice decks"
-msgstr "Aantal computerspelers"
+msgstr "Aantal pakken dobbelsteenkaarten"
 
 #: ../common/gtk/game-rules.c:171
 msgid "The number of dice decks (of 36 cards each)"
-msgstr ""
+msgstr "The aantal pakken dobbelsteenkaarten (van elk 36 kaarten)"
 
 #. Label
 #: ../common/gtk/game-rules.c:179
 msgid "Number of removed dice cards"
-msgstr ""
+msgstr "Aantal verwijderde kaarten"
 
 #: ../common/gtk/game-rules.c:198
 msgid "The number of dice cards that are removed after shuffling the deck"
 msgstr ""
+"Het aantal dobbelsteenkaarten dat wordt verwijderd nadat de stapel is geschud"
 
 #. Label
 #: ../common/gtk/game-rules.c:206
@@ -2849,7 +2847,7 @@ msgstr "Fout bij het schrijven naar netwerk: %s\n"
 
 #: ../common/network.c:156
 msgid "Could not send all data\n"
-msgstr ""
+msgstr "Kon niet alle gegevens versturen\n"
 
 #: ../common/network.c:204
 msgid "Read buffer overflow - disconnecting\n"
@@ -2861,7 +2859,7 @@ msgid "Error reading socket: %s\n"
 msgstr "Fout bij het lezen van netwerk: %s\n"
 
 #: ../common/network.c:380
-#, fuzzy, c-format
+#, c-format
 msgid "Error connecting to %s: %s\n"
 msgstr "Fout bij het verbinden naar %s: %s\n"
 
@@ -2988,115 +2986,116 @@ msgstr "ZO"
 
 #: ../editor/gtk/editor.c:395
 msgid "Place a hill hex"
-msgstr ""
+msgstr "Een heuveltegel plaatsen"
 
 #: ../editor/gtk/editor.c:396
 msgid "Place a field hex"
-msgstr ""
+msgstr "Een akkertegel plaatsen"
 
 #: ../editor/gtk/editor.c:397
 msgid "Place a mountain hex"
-msgstr ""
+msgstr "Een bergtegel plaatsen"
 
 #: ../editor/gtk/editor.c:398
 msgid "Place a pasture hex"
-msgstr ""
+msgstr "Een weidetegel plaatsen"
 
 #: ../editor/gtk/editor.c:399
 msgid "Place a forest hex"
-msgstr ""
+msgstr "Een bostegel plaatsen"
 
 #: ../editor/gtk/editor.c:400
 msgid "Place a desert hex"
-msgstr ""
+msgstr "Een woestijntegel plaatsen"
 
 #: ../editor/gtk/editor.c:401
 msgid "Place a sea hex"
-msgstr ""
+msgstr "Een zeetegel plaatsen"
 
 #: ../editor/gtk/editor.c:402
 msgid "Place a gold hex"
-msgstr ""
+msgstr "Een goudtegel plaatsen"
 
 #: ../editor/gtk/editor.c:403
 msgid "Clear the hex"
-msgstr ""
+msgstr "Tegel leegmaken"
 
 #: ../editor/gtk/editor.c:411
 msgid "Place a 2 chit"
-msgstr ""
+msgstr "Een 2 op de tegel plaatsen"
 
 #: ../editor/gtk/editor.c:412
 msgid "Place a 3 chit"
-msgstr ""
+msgstr "Een 3 op de tegel plaatsen"
 
 #: ../editor/gtk/editor.c:413
 msgid "Place a 4 chit"
-msgstr ""
+msgstr "Een 4 op de tegel plaatsen"
 
 #: ../editor/gtk/editor.c:414
 msgid "Place a 5 chit"
-msgstr ""
+msgstr "Een 5 op de tegel plaatsen"
 
 #: ../editor/gtk/editor.c:415
 msgid "Place a 6 chit"
-msgstr ""
+msgstr "Een 6 op de tegel plaatsen"
 
 #: ../editor/gtk/editor.c:417
 msgid "Place an 8 chit"
-msgstr ""
+msgstr "Een 8 op de tegel plaatsen"
 
 #: ../editor/gtk/editor.c:418
 msgid "Place a 9 chit"
-msgstr ""
+msgstr "Een 9 op de tegel plaatsen"
 
 #: ../editor/gtk/editor.c:419
 msgid "Place a 10 chit"
-msgstr ""
+msgstr "Een 10 op de tegel plaatsen"
 
 #: ../editor/gtk/editor.c:420
 msgid "Place an 11 chit"
-msgstr ""
+msgstr "Een 11 op de tegel plaatsen"
 
 #: ../editor/gtk/editor.c:421
 msgid "Place a 12 chit"
-msgstr ""
+msgstr "Een 12 op de tegel plaatsen"
 
 #: ../editor/gtk/editor.c:427
 msgid "Place a brick 2:1 port"
-msgstr ""
+msgstr "Een baksteenhaven 2:1 op de tegel plaatsen"
 
 #: ../editor/gtk/editor.c:428
 msgid "Place a grain 2:1 port"
-msgstr ""
+msgstr "Een graanhaven 2:1 op de tegel plaatsen"
 
 #: ../editor/gtk/editor.c:429
 msgid "Place an ore 2:1 port"
-msgstr ""
+msgstr "Een ertshaven 2:1 op de tegel plaatsen"
 
 #: ../editor/gtk/editor.c:430
 msgid "Place a wool 2:1 port"
-msgstr ""
+msgstr "Een houthaven 2:1 op de tegel plaatsen"
 
 #: ../editor/gtk/editor.c:431
 msgid "Place a lumber 2:1 port"
-msgstr ""
+msgstr "Een houthaven 2:1 op de tegel plaatsen"
 
 #. Tooltip to remove a port tile in the editor
 #: ../editor/gtk/editor.c:433
-#, fuzzy
 msgid "Remove a port"
-msgstr "Server poort"
+msgstr "Een haven verwijderen"
 
 #: ../editor/gtk/editor.c:434
 msgid "Place a 3:1 port"
-msgstr ""
+msgstr "Een 3 op 1 haven op de tegel plaatsen"
 
 #: ../editor/gtk/editor.c:464
 msgid ""
 "Select the terrain type with the context menu on the left click or toggle a "
 "node to exclude it from being used during the setup phase"
 msgstr ""
+"Het type terrein kiezen met het contextmenu op de linkermuisklik of een "
+"knooppunt omschakelen om deze gedurende het opzetten te mogen gebruiken"
 
 #: ../editor/gtk/editor.c:601
 msgid "Insert a row"
@@ -3116,21 +3115,18 @@ msgstr "Een kolom verwijderen"
 
 #. Label
 #: ../editor/gtk/editor.c:1016
-#, fuzzy
 msgid "_Title"
-msgstr "_Titel veranderen"
+msgstr "_Titel"
 
 #. Label
 #: ../editor/gtk/editor.c:1029
-#, fuzzy
 msgid "_Description"
-msgstr "Woes_tijn"
+msgstr "Om_schrijving"
 
 #. Label
 #: ../editor/gtk/editor.c:1047
-#, fuzzy
 msgid "_Comments"
-msgstr "Opmerkingen"
+msgstr "_Opmerkingen"
 
 #. Menu item
 #: ../editor/gtk/editor.c:1177
@@ -3162,7 +3158,7 @@ msgstr "Gebouwen"
 #. The game in the editor does not have a name yet
 #: ../editor/gtk/editor.c:1354
 msgid "Untitled"
-msgstr ""
+msgstr "Naamloos"
 
 #. Application caption
 #: ../editor/gtk/editor.c:1359 ../editor/gtk/pioneers-editor.desktop.in.h:1
@@ -3260,9 +3256,8 @@ msgstr "Het spel onder een andere naam opslaan"
 
 #. Menu entry
 #: ../editor/gtk/editor.c:1780
-#, fuzzy
 msgid "Change _Title"
-msgstr "Titel veranderen"
+msgstr "_Titel veranderen"
 
 #. Tooltip for Change Title menu entry
 #: ../editor/gtk/editor.c:1782
@@ -3337,7 +3332,7 @@ msgstr "Ontwerp je eigen spel voor Pioniers"
 
 #: ../editor/gtk/pioneers-editor.desktop.in.h:3
 msgid "game;board;create;edit;layout;Pioneers;Settlers;"
-msgstr ""
+msgstr "spel;bord;maken;bewerken;layout;Pioneers;Settlers;"
 
 #. Commandline metaserver: daemon
 #: ../metaserver/main.c:610
@@ -3641,7 +3636,7 @@ msgstr "Creëer een spel Pioniers"
 
 #: ../server/gtk/pioneers-server.desktop.in.h:3
 msgid "game;board;server;host;Pioneers;Settlers;"
-msgstr ""
+msgstr "spel;bord;server;host;gastheer;layout;Pioneers;Settlers;"
 
 #. Commandline server-console: game-title
 #: ../server/main.c:80
@@ -3675,21 +3670,18 @@ msgstr "Zeven regel"
 
 #. Commandline server-console: dice-deck
 #: ../server/main.c:98
-#, fuzzy
 msgid "Override dice-deck handling"
-msgstr "Zeven regel"
+msgstr "Dobbelsteenkaarten"
 
 #. Commandline server-console: num-dice-decks
 #: ../server/main.c:101
-#, fuzzy
 msgid "Override num-dice-decks handling"
-msgstr "Zeven regel"
+msgstr "Aantal pakken dobbelsteenkaarten"
 
 #. Commandline server-console: num-removed-dice-cards
 #: ../server/main.c:105
-#, fuzzy
 msgid "Override num-removed-dice-cards handling"
-msgstr "Zeven regel"
+msgstr "Aantal dobbelsteenkaarten dat verwijderd wordt"
 
 #. Commandline server-console: terrain
 #: ../server/main.c:108
@@ -3782,34 +3774,31 @@ msgstr "Kan de parameters van het spel niet laden\n"
 #: ../server/main.c:303 ../server/main.c:322
 #, c-format
 msgid "The network port (%s) for the admin interface is not available.\n"
-msgstr ""
+msgstr "De netwerkpoort (%s) voor de beheerderstoegang is niet beschikbaar.\n"
 
 #: ../server/meta.c:58
-#, fuzzy
 msgid "The connection to the metaserver is lost.\n"
-msgstr "Opties voor de metaserver"
+msgstr "De connectie met de metaserver is verbroken.\n"
 
 #: ../server/meta.c:64
 #, c-format
 msgid "An attempt to reconnect is scheduled in %u second.\n"
 msgid_plural "An attempt to reconnect is scheduled in %u seconds.\n"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Een nieuwe verbindingspoging wordt ondernomen in %u seconde.\n"
+msgstr[1] "Een nieuwe verbindingspoging wordt ondernomen in %u seconden.\n"
 
 #: ../server/meta.c:83
-#, fuzzy
 msgid "Attempting to reconnect to the metaserver.\n"
-msgstr "Opties voor de metaserver"
+msgstr "Probeert opnieuw contact te maken met de metaserver.\n"
 
 #: ../server/meta.c:311
-#, fuzzy, c-format
+#, c-format
 msgid "Register with the metaserver at %s.\n"
-msgstr "Bezig te verbinden met metaserver op %s, poort %s\n"
+msgstr "Aanmelden bij de metaserver op %s.\n"
 
 #: ../server/meta.c:322
-#, fuzzy
 msgid "Unregister from the metaserver.\n"
-msgstr "Verbreek de verbinding met de metaserver\n"
+msgstr "Afmelden bij de metaserver: %s\n"
 
 #: ../server/player.c:142
 msgid "chat too long"
@@ -3856,7 +3845,7 @@ msgstr "Computerspeler"
 #: ../server/player.c:450
 #, c-format
 msgid "Unable to determine the hostname of the player: %s"
-msgstr ""
+msgstr "Kan de computernaam van de speler niet bepalen: %s"
 
 #. The game is over, don't accept new players
 #. Message to send to the client when the game is already over

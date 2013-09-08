@@ -1,6 +1,7 @@
 2013-09-08  Roland Clobus <rclobus@rclobus.nl>
 	* all: Added some translation hints and performed a line number update.
 	* en_GB.po: Updated to 15.1
+	* nl.po: Updated to 15.1
 
 2013-09-01  Roland Clobus <rclobus@rclobus.nl>
 	* all: msguntypot for metaserver spelling issues.
