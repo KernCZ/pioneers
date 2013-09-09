@@ -44,7 +44,6 @@ static struct recovery_info_t {
 	gint numdiscards;
 	gboolean rolled_dice;
 	gint die1, die2;
-	gboolean played_develop;
 	gboolean bought_develop;
 	GList *build_list;
 	gboolean ship_moved;
@@ -1055,7 +1054,6 @@ static gboolean mode_load_game(StateMachine * sm, gint event)
 		recovery_info.rolled_dice = FALSE;
 		recovery_info.die1 = -1;
 		recovery_info.die2 = -1;
-		recovery_info.played_develop = FALSE;
 		recovery_info.bought_develop = FALSE;
 		recovery_info.build_list = NULL;
 		recovery_info.ship_moved = FALSE;
@@ -1145,10 +1143,6 @@ static gboolean mode_load_gameinfo(StateMachine * sm, gint event)
 	if (sm_recv
 	    (sm, "dice value: %d %d", &recovery_info.die1,
 	     &recovery_info.die2)) {
-		return TRUE;
-	}
-	if (sm_recv(sm, "played develop")) {
-		recovery_info.played_develop = TRUE;
 		return TRUE;
 	}
 	if (sm_recv(sm, "moved ship")) {
@@ -2547,9 +2541,8 @@ static void recover_from_disconnect(StateMachine * sm,
 	else
 		modeturn = mode_turn;
 
-	if (rinfo->played_develop || rinfo->bought_develop) {
-		develop_reset_have_played_bought(rinfo->played_develop,
-						 rinfo->bought_develop,
+	if (rinfo->bought_develop) {
+		develop_reset_have_played_bought(rinfo->bought_develop,
 						 num_playable_cards);
 	}
 

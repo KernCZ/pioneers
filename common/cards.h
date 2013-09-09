@@ -51,10 +51,9 @@ const DevelCard *devel_deck_get_card(const DevelDeck * deck, guint index);
 guint devel_deck_count(const DevelDeck * deck);
 
 gboolean deck_card_playable(const DevelDeck * deck,
-			    gboolean played_develop,
 			    guint num_playable_cards, guint idx);
-gboolean deck_card_play(DevelDeck * deck, gboolean played_develop,
-			guint num_playable_cards, guint idx);
+gboolean deck_card_play(DevelDeck * deck, guint num_playable_cards,
+			guint idx);
 DevelType deck_card_type(const DevelDeck * deck, guint idx);
 
 gint deck_card_amount(const DevelDeck * deck, DevelType type);

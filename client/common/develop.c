@@ -32,7 +32,6 @@
 #include "state.h"
 #include "callback.h"
 
-static gboolean played_develop;	/* already played a non-victory card? */
 static gboolean bought_develop;	/* have we bought a development card? */
 static guint num_playable_cards;	/* number of playable development cards */
 
@@ -92,11 +91,9 @@ guint get_num_playable_cards(void)
 	return num_playable_cards;
 }
 
-void develop_reset_have_played_bought(gboolean have_played,
-				      gboolean have_bought,
+void develop_reset_have_played_bought(gboolean have_bought,
 				      guint number_playable_cards)
 {
-	played_develop = have_played;
 	bought_develop = have_bought;
 	num_playable_cards = number_playable_cards;
 }
@@ -113,10 +110,9 @@ void develop_bought(gint player_num)
 void develop_played(gint player_num, guint card_idx, DevelType type)
 {
 	if (player_num == my_player_num()) {
-		deck_card_play(develop_deck, played_develop,
-			       num_playable_cards, card_idx);
+		deck_card_play(develop_deck, num_playable_cards, card_idx);
 		if (!is_victory_card(type))
-			played_develop = TRUE;
+			num_playable_cards = 0;
 	}
 	callbacks.played_develop(player_num, card_idx, type);
 
@@ -202,15 +198,13 @@ void monopoly_player(gint player_num, gint victim_num, gint num,
 
 void develop_begin_turn(void)
 {
-	played_develop = FALSE;
 	bought_develop = FALSE;
 	num_playable_cards = devel_deck_count(develop_deck);
 }
 
 gboolean can_play_develop(guint card)
 {
-	if (!deck_card_playable
-	    (develop_deck, played_develop, num_playable_cards, card))
+	if (!deck_card_playable(develop_deck, num_playable_cards, card))
 		return FALSE;
 	if (deck_card_type(develop_deck, card) == DEVEL_ROAD_BUILDING
 	    && !road_building_can_build_road()

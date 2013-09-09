@@ -378,15 +378,14 @@ void develop_play(Player * player, guint idx)
 	}
 
 	card = devel_deck_get_card(player->devel, idx)->type;
-	if (!deck_card_play(player->devel, game->played_develop,
-			    game->num_playable_cards, idx)) {
+	if (!deck_card_play(player->devel, game->num_playable_cards, idx)) {
 		player_send(player, FIRST_VERSION, LATEST_VERSION,
 			    "ERR wrong-time\n");
 		return;
 	}
 
 	if (!is_victory_card(card))
-		game->played_develop = TRUE;
+		game->num_playable_cards = 0;
 
 	/* Cannot undo after playing development card
 	 */

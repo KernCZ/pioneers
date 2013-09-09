@@ -663,7 +663,6 @@ void turn_next_player(Game * game)
 	/* reset variables */
 	game->curr_player = player->num;
 	game->rolled_dice = FALSE;
-	game->played_develop = FALSE;
 	game->bought_develop = FALSE;
 	game->num_playable_cards = devel_deck_count(player->devel);
 	player->build_list = buildrec_free(player->build_list);

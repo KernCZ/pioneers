@@ -597,11 +597,6 @@ gboolean mode_pre_game(Player * player, gint event)
 						     game->die1,
 						     game->die2);
 			}
-			if (game->played_develop) {
-				player_send_uncached(player, FIRST_VERSION,
-						     LATEST_VERSION,
-						     "played develop\n");
-			}
 			if (game->bought_develop) {
 				player_send_uncached(player, FIRST_VERSION,
 						     LATEST_VERSION,

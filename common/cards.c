@@ -85,7 +85,6 @@ DevelType deck_card_type(const DevelDeck * deck, guint idx)
 }
 
 gboolean deck_card_playable(const DevelDeck * deck,
-			    gboolean played_develop,
 			    guint num_playable_cards, guint idx)
 {
 	if (idx >= deck->num_cards)
@@ -94,14 +93,13 @@ gboolean deck_card_playable(const DevelDeck * deck,
 	if (is_victory_card(deck->cards[idx].type))
 		return TRUE;
 
-	return !played_develop && idx < num_playable_cards;
+	return idx < num_playable_cards;
 }
 
-gboolean deck_card_play(DevelDeck * deck, gboolean played_develop,
-			guint num_playable_cards, guint idx)
+gboolean deck_card_play(DevelDeck * deck, guint num_playable_cards,
+			guint idx)
 {
-	if (!deck_card_playable
-	    (deck, played_develop, num_playable_cards, idx)) {
+	if (!deck_card_playable(deck, num_playable_cards, idx)) {
 		return FALSE;
 	}
 
