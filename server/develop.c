@@ -377,7 +377,7 @@ void develop_play(Player * player, guint idx)
 		return;
 	}
 
-	card = devel_deck_get_card(player->devel, idx)->type;
+	card = devel_deck_get_card(player->devel, idx);
 	if (!deck_card_play(player->devel, game->num_playable_cards, idx)) {
 		player_send(player, FIRST_VERSION, LATEST_VERSION,
 			    "ERR wrong-time\n");

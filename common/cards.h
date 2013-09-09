@@ -23,10 +23,6 @@
 
 #include "game.h"
 
-typedef struct {
-	DevelType type;
-} DevelCard;
-
 typedef struct _DevelDeck DevelDeck;
 
 gboolean is_victory_card(DevelType type);
@@ -42,7 +38,7 @@ void deck_card_add(DevelDeck * deck, DevelType type);
  * @param index The position of the card in the deck.
  * @return The card in the deck at position index.
  */
-const DevelCard *devel_deck_get_card(const DevelDeck * deck, guint index);
+DevelType devel_deck_get_card(const DevelDeck * deck, guint index);
 
 /** Gets the number of cards in a deck.
  * @param deck The DevelDeck to return the count of. 
@@ -54,7 +50,6 @@ gboolean deck_card_playable(const DevelDeck * deck,
 			    guint num_playable_cards, guint idx);
 gboolean deck_card_play(DevelDeck * deck, guint num_playable_cards,
 			guint idx);
-DevelType deck_card_type(const DevelDeck * deck, guint idx);
 
 gint deck_card_amount(const DevelDeck * deck, DevelType type);
 gint deck_card_oldest_card(const DevelDeck * deck, DevelType type);

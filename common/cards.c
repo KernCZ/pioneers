@@ -26,7 +26,7 @@
 #include "cards.h"
 
 struct _DevelDeck {
-	DevelCard *cards;
+	DevelType *cards;
 	guint num_cards;
 	guint max_cards;
 };
@@ -57,13 +57,13 @@ void deck_card_add(DevelDeck * deck, DevelType type)
 {
 	if (deck->num_cards >= deck->max_cards)
 		return;
-	deck->cards[deck->num_cards].type = type;
+	deck->cards[deck->num_cards] = type;
 	deck->num_cards++;
 }
 
-const DevelCard *devel_deck_get_card(const DevelDeck * deck, guint index)
+DevelType devel_deck_get_card(const DevelDeck * deck, guint index)
 {
-	return &deck->cards[index];
+	return deck->cards[index];
 }
 
 guint devel_deck_count(const DevelDeck * deck)
@@ -79,18 +79,13 @@ gboolean is_victory_card(DevelType type)
 	    || type == DEVEL_LIBRARY || type == DEVEL_MARKET;
 }
 
-DevelType deck_card_type(const DevelDeck * deck, guint idx)
-{
-	return deck->cards[idx].type;
-}
-
 gboolean deck_card_playable(const DevelDeck * deck,
 			    guint num_playable_cards, guint idx)
 {
 	if (idx >= deck->num_cards)
 		return FALSE;
 
-	if (is_victory_card(deck->cards[idx].type))
+	if (is_victory_card(deck->cards[idx]))
 		return TRUE;
 
 	return idx < num_playable_cards;
@@ -116,7 +111,7 @@ gint deck_card_amount(const DevelDeck * deck, DevelType type)
 	gint amount = 0;
 
 	for (idx = 0; idx < deck->num_cards; ++idx)
-		if (deck->cards[idx].type == type)
+		if (deck->cards[idx] == type)
 			++amount;
 	return amount;
 }
@@ -125,7 +120,7 @@ gint deck_card_oldest_card(const DevelDeck * deck, DevelType type)
 {
 	guint idx;
 	for (idx = 0; idx < deck->num_cards; ++idx)
-		if (deck->cards[idx].type == type)
+		if (deck->cards[idx] == type)
 			return idx;
 	return -1;
 }

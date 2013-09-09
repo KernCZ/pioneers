@@ -691,8 +691,7 @@ gboolean mode_pre_game(Player * player, gint event)
 						     "playerinfo: devcard: %d %d\n",
 						     (gint)
 						     devel_deck_get_card
-						     (player->devel,
-						      i)->type,
+						     (player->devel, i),
 						     i <
 						     game->num_playable_cards
 						     ? 0 : game->

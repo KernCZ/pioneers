@@ -206,7 +206,7 @@ gboolean can_play_develop(guint card)
 {
 	if (!deck_card_playable(develop_deck, num_playable_cards, card))
 		return FALSE;
-	if (deck_card_type(develop_deck, card) == DEVEL_ROAD_BUILDING
+	if (devel_deck_get_card(develop_deck, card) == DEVEL_ROAD_BUILDING
 	    && !road_building_can_build_road()
 	    && !road_building_can_build_ship()
 	    && !road_building_can_build_bridge())

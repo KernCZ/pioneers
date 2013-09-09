@@ -1,3 +1,12 @@
+2013-09-08  Micah Bunting <amnykon@gmail.com>
+	* server/turn.c, server/server.h, server/pregame.c, server/develop.c,
+	common/cards.c, common/cards.h, client/common/develop.c,
+	client/common/client.c, client/common/client.h: Removed the variable
+	played_develop and the corresponding protocol.
+	* client/common/develop.c, client/ai/greedy.c, server/pregame.c,
+	server/develop.c, common/cards.c, common/cards.h: Removed struct
+	DevelCard and replaced with enum DevelType.
+	
 2013-09-08  Roland Clobus <rclobus@rclobus.nl>
 	* server/meta.c, server/player.c, client/common/client.c,
 	editor/gtk/editor.c: Added hints for translators.
