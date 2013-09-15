@@ -995,7 +995,7 @@ msgstr "Il metaserver ha chiuso la connessione inaspettatamente.\n"
 
 #: ../client/gtk/connect.c:381
 msgid "Receiving game names from the metaserver.\n"
-msgstr "Ricezione dei nomi partita dal meta server.\n"
+msgstr "Ricezione dei nomi partita dal metaserver.\n"
 
 #: ../client/gtk/connect.c:423
 #, c-format
@@ -1029,7 +1029,7 @@ msgstr "Riga di ridirezione errata: %s\n"
 #: ../client/gtk/connect.c:632
 #, c-format
 msgid "The metaserver is too old to create servers (version %d.%d)\n"
-msgstr "Meta server troppo vecchio per creare server (versione %d.%d)\n"
+msgstr "Metaserver troppo vecchio per creare server (versione %d.%d)\n"
 
 #: ../client/gtk/connect.c:671 ../client/gtk/connect.c:750
 #: ../client/gtk/connect.c:756
@@ -1075,7 +1075,7 @@ msgstr "Rediretto sul metaserver %s, porta %s.\n"
 
 #: ../client/gtk/connect.c:832
 msgid "Receiving a list of Pioneers servers from the metaserver.\n"
-msgstr "Ricezione della lista dei server Pioneers dal meta server.\n"
+msgstr "Ricezione della lista dei server Pioneers dal metaserver.\n"
 
 #. Label
 #: ../client/gtk/connect.c:915
@@ -1132,7 +1132,7 @@ msgstr "Non unirti a partita pubblica"
 #. Tooltip
 #: ../client/gtk/connect.c:1208
 msgid "Create a new public game at the metaserver"
-msgstr "Registra questa partita sul meta server"
+msgstr "Registra questa partita sul metaserver"
 
 #. Tooltip
 #: ../client/gtk/connect.c:1213
@@ -1990,7 +1990,7 @@ msgstr "Gioca una partita a Pioneers"
 
 #: ../client/gtk/pioneers.desktop.in.h:3
 msgid "game;board;play;Pioneers;Settlers;"
-msgstr ""
+msgstr "partita;gioco;Pioneers;Coloni;"
 
 #: ../client/gtk/player.c:53
 msgid "Settlements"
@@ -2724,7 +2724,7 @@ msgstr "Le"
 #. Tooltip for the list of metaservers
 #: ../common/gtk/metaserver.c:86
 msgid "Select a metaserver"
-msgstr "Seleziona un meta server"
+msgstr "Seleziona un metaserver"
 
 #. Tooltip for the list of games
 #: ../common/gtk/select-game.c:124
@@ -3092,7 +3092,7 @@ msgid ""
 "node to exclude it from being used during the setup phase"
 msgstr ""
 "Seleziona il tipo di terreno con il menù contestuale sul tasto sinistro o "
-"seleziona un nodo da escludere durante la fase di preparazione"
+"modifica la disponibilità di un nodo durante la fase di preparazione"
 
 #: ../editor/gtk/editor.c:601
 msgid "Insert a row"
@@ -3329,7 +3329,7 @@ msgstr "Crea la tua partita di Pioneers"
 
 #: ../editor/gtk/pioneers-editor.desktop.in.h:3
 msgid "game;board;create;edit;layout;Pioneers;Settlers;"
-msgstr ""
+msgstr "partita;gioco;crea;modifica;disposizione;Pioneers;Coloni;"
 
 #. Commandline metaserver: daemon
 #: ../metaserver/main.c:610
@@ -3374,7 +3374,7 @@ msgstr "Messaggi di debug su syslog"
 #. Long description in the commandline for metaserver: help
 #: ../metaserver/main.c:673
 msgid "- Metaserver for Pioneers"
-msgstr "- Meta server per Pioneers"
+msgstr "- Metaserver per Pioneers"
 
 #: ../metaserver/main.c:689
 #, c-format
@@ -3462,7 +3462,7 @@ msgstr "Registra server"
 
 #: ../server/gtk/main.c:586
 msgid "Register this game at the metaserver"
-msgstr "Registra questa partita sul meta server"
+msgstr "Registra questa partita sul metaserver"
 
 #. hostname label
 #: ../server/gtk/main.c:617
@@ -3633,7 +3633,7 @@ msgstr "Ospita una partita di Pioneers"
 
 #: ../server/gtk/pioneers-server.desktop.in.h:3
 msgid "game;board;server;host;Pioneers;Settlers;"
-msgstr ""
+msgstr "partita;gioco;server;host;Pioneers;Coloni;"
 
 #. Commandline server-console: game-title
 #: ../server/main.c:80
@@ -3693,7 +3693,7 @@ msgstr "Aggiungi N giocatori AI"
 #. Commandline server-console: register
 #: ../server/main.c:121
 msgid "Register server with metaserver"
-msgstr "Registra il server sul meta server"
+msgstr "Registra il server sul metaserver"
 
 #. Commandline server-console: metaserver
 #: ../server/main.c:124
@@ -3914,172 +3914,3 @@ msgstr "Si è cercato di assegnare le materie prime al giocatore NULL\n"
 #: ../server/turn.c:517
 msgid "The dice roll has been determined by the administrator."
 msgstr "Il tiro dei dadi è stato determinato dall'amministratore."
-
-#~ msgid "Metaserver kicked us off\n"
-#~ msgstr "Il metaserver ci ha buttati fuori\n"
-
-#~ msgid ""
-#~ "<b>Note</b>:\n"
-#~ "\tThe metaserver does not send information about the games.\n"
-#~ "\tPlease set appropriate values yourself."
-#~ msgstr ""
-#~ "<b>Nota</b>:\n"
-#~ "\tIl metaserver non invia informazioni relative alle partite.\n"
-#~ "\tImposta i valori appropriati."
-
-#~ msgid "Error checking connect status: %s\n"
-#~ msgstr "Errore verifica stato connessione: %s\n"
-
-#~ msgid "Error connecting to host '%s': %s\n"
-#~ msgstr "Errore connessione a host '%s': %s\n"
-
-#~ msgid "Error writing socket: %s\n"
-#~ msgstr "Errore scrittura socket: %s\n"
-
-#~ msgid "Error creating socket: %s\n"
-#~ msgstr "Errore creazione socket: %s\n"
-
-#~ msgid "Error setting socket close-on-exec: %s\n"
-#~ msgstr "Errore nell'impostazione close-on-exec per il socket: %s\n"
-
-#~ msgid "Error setting socket non-blocking: %s\n"
-#~ msgstr "Errore nell'impostazione non-blocking per il socket: %s\n"
-
-#~ msgid "Cannot resolve %s port %s: %s\n"
-#~ msgstr "Impossibile risolvere %s porta %s: %s\n"
-
-#~ msgid "Cannot resolve %s port %s: host not found\n"
-#~ msgstr "Impossibile risolvere %s porta %s: host non trovato\n"
-
-#~ msgid "Error creating struct addrinfo: %s"
-#~ msgstr "Errore nella creazione della struct addrinfo: %s"
-
-#~ msgid "Error creating listening socket: %s\n"
-#~ msgstr "Errore nella creazione del socket di ascolto: %s\n"
-
-#~ msgid "Error during listen on socket: %s\n"
-#~ msgstr "Errore di ascolto sul socket: %s\n"
-
-#~ msgid "Listening not yet supported on this platform."
-#~ msgstr "Ascolto non ancora supportato su questa piattaforma."
-
-#~ msgid "Error getting peer name: %s"
-#~ msgstr "Errore recupero nome: %s"
-
-#~ msgid "Error resolving address: %s"
-#~ msgstr "Errore in risoluzione dell'indirizzo: %s"
-
-#~ msgid "Net_get_peer_name not yet supported on this platform."
-#~ msgstr "Net_get_peer_name non ancora supportato su questa piattaforma."
-
-#~ msgid "Error accepting connection: %s"
-#~ msgstr "Errore accettando la connessione: %s"
-
-#~ msgid "Admin port not available.\n"
-#~ msgstr "Porta di amministrazione non disponibile.\n"
-
-#~ msgid "Admin port is not set, cannot disable game start too\n"
-#~ msgstr ""
-#~ "Porta di amministrazione non impostata, impossibile disabilitare l'inizio "
-#~ "della partita\n"
-
-#~ msgid "Viewer %d"
-#~ msgstr "Spettatore %d"
-
-#~ msgid "viewer %d"
-#~ msgstr "spettatore %d"
-
-#~ msgid "<b>I want</b>"
-#~ msgstr "<b>Voglio</b>"
-
-#~ msgid "<b>Give them</b>"
-#~ msgstr "<b>Dai loro</b>"
-
-#~ msgid "Viewer: "
-#~ msgstr "Spettatore: "
-
-#~ msgid "Number of AI Players"
-#~ msgstr "Numero di Giocatori AI"
-
-#~ msgid "The number of AI players"
-#~ msgstr "Numero di Giocatori AI"
-
-#~ msgid "Recent Games"
-#~ msgstr "Partite Recenti"
-
-#~ msgid "You may choose 1 resource"
-#~ msgstr "Puoi scegliere 1 materia prima"
-
-#~ msgid "_Player name"
-#~ msgstr "Nome _Giocatore"
-
-#~ msgid "The Pioneers Game"
-#~ msgstr "Pioneers - Il gioco"
-
-#~ msgid "Select the ship to steal from"
-#~ msgstr "Seleziona la nave da cui rubare"
-
-#~ msgid "Select the building to steal from"
-#~ msgstr ""
-#~ "Seleziona la costruzione\n"
-#~ "da cui rubare"
-
-#~ msgid "Development Card"
-#~ msgstr "Carta Sviluppo"
-
-#~ msgid "Player Name:"
-#~ msgstr "Nome Giocatore:"
-
-#~ msgid "I Want"
-#~ msgstr "Voglio"
-
-#~ msgid "Interplayer Trading Allowed?"
-#~ msgstr "Commercio tra giocatori?"
-
-#~ msgid "Trading allowed only before build/buy?"
-#~ msgstr "Commercio permesso solo prima di costruire/comprare?"
-
-#~ msgid "Check Victory Only At End Of Turn?"
-#~ msgstr "Verifica la vittoria solo alla fine del turno?"
-
-#~ msgid "Sevens Rule:"
-#~ msgstr "Regola Sette:"
-
-#~ msgid "Use Pirate:"
-#~ msgstr "Usa i pirati:"
-
-#~ msgid "Number of Players"
-#~ msgstr "Numero di Giocatori"
-
-#~ msgid "Development Cards"
-#~ msgstr "Carte Sviluppo"
-
-#~ msgid "Save as..."
-#~ msgstr "Salva come..."
-
-#~ msgid "Pioneers Game Editor"
-#~ msgstr "Editor Pioneers"
-
-#~ msgid "_Change title"
-#~ msgstr "_Cambia titolo"
-
-#~ msgid "Random Turn Order"
-#~ msgstr "Ordine casuale dei turni"
-
-#~ msgid "_Legend"
-#~ msgstr "_Legenda"
-
-#~ msgid "bad scaling mode '%s'"
-#~ msgstr "modo '%s' non riconosciuto"
-
-#~ msgid "Missing game directory\n"
-#~ msgstr "Manca la directory di partita\n"
-
-#~ msgid "Leave empty for the default meta server"
-#~ msgstr "Lascia vuoti per il meta server di default"
-
-#~ msgid "Override the language of the system"
-#~ msgstr "Scavalca la lingua del sistema"
-
-#~ msgid "The address of the meta server"
-#~ msgstr "L'indirizzo del meta server"
