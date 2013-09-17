@@ -5,10 +5,10 @@
 # Jaume Badiella Aguilera <myotis@drac.com>, 2013.
 msgid ""
 msgstr ""
-"Project-Id-Version: Pioneers 14.1\n"
+"Project-Id-Version: Pioneers 15.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-09-08 18:03+0200\n"
-"PO-Revision-Date: 2013-01-20 20:01+0100\n"
+"PO-Revision-Date: 2013-09-15 18:04+0200\n"
 "Last-Translator: Jaume Badiella Aguilera <myotis@drac.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
 "Language: ca\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Launchpad-Export-Date: 2010-03-11 19:48+0000\n"
-"X-Generator: Lokalize 1.4\n"
+"X-Generator: Lokalize 1.5\n"
 "Plural-Forms: nplurals=2; plural=(n!=1)\n"
 
 #. Commandline pioneersai: server
@@ -37,7 +37,7 @@ msgstr "Nom de l'ordinador (obligatori)"
 #. Commandline pioneersai: time
 #: ../client/ai/ai.c:79
 msgid "Time to wait between turns (in milliseconds)"
-msgstr "Temps d'espera entre torns (en milisegons)"
+msgstr "Temps d'espera entre torns (en mil·lisegons)"
 
 #. Commandline pioneersai: chat-free
 #: ../client/ai/ai.c:82
@@ -136,7 +136,7 @@ msgstr "Almenys n'he tret alguna cosa..."
 #. AI chat when one resource is received
 #: ../client/ai/greedy.c:1326
 msgid "One is better than none..."
-msgstr "Un millor que cap..."
+msgstr "Una millor que cap..."
 
 #. AI chat when more than one resource is received
 #: ../client/ai/greedy.c:1331
@@ -171,7 +171,7 @@ msgstr "Ei, espera que vingui el meu lladre i ho tornaràs a perdre tot!"
 #. AI chat when it moves the robber
 #: ../client/ai/greedy.c:1349
 msgid "Hehe!"
-msgstr "Hehe!"
+msgstr "He he!"
 
 #. AI chat when it moves the robber
 #: ../client/ai/greedy.c:1351
@@ -308,8 +308,8 @@ msgid ""
 "Hello, welcome to the lobby. I am a simple robot. Type '/help' in the chat "
 "to see the list of commands I know."
 msgstr ""
-"Hola, benvingut/da a la sala. Sóc un simple robot. Escriu '/help' al xat per "
-"veure la llista d'ordres que conec."
+"Hola, benvingut/da a la sala. Sóc un simple robot. Escriu '/help' a la "
+"conversa per veure la llista d'ordres que conec."
 
 #. Translators: don't translate '/help'
 #: ../client/ai/lobbybot.c:107
@@ -324,7 +324,7 @@ msgstr "'/why' explica el propòsit d'aquest estrany arranjament del tauler"
 #. Translators: don't translate '/news'
 #: ../client/ai/lobbybot.c:113
 msgid "'/news' tells the last released version"
-msgstr "'/news' quina és la darrera versió apareguda"
+msgstr "'/news' explica quina és la darrera versió apareguda"
 
 #. AI chat that explains '/why'
 #: ../client/ai/lobbybot.c:119
@@ -407,23 +407,23 @@ msgstr "%s gasta %s.\n"
 #: ../client/common/client.c:736
 #, c-format
 msgid "%s is refunded %s.\n"
-msgstr "Es retorna %2s a %1s.\n"
+msgstr "A %s, li retornen %s.\n"
 
 #. %s = Player name
 #: ../client/common/client.c:754 ../client/common/client.c:1965
 #, c-format
 msgid "%s shuffled the dice deck.\n"
-msgstr ""
+msgstr "%s ha barrejat la baralla de daus.\n"
 
 #: ../client/common/client.c:773
 #, c-format
 msgid "%s discarded %s.\n"
-msgstr "%s descarta %s.\n"
+msgstr "%s ha descartat %s.\n"
 
 #: ../client/common/client.c:847
 #, c-format
 msgid "%s has won the game with %d victory points!\n"
-msgstr "%s ha guanyat la partida amb %d punts!\n"
+msgstr "%s ha guanyat la partida amb %d punts de victòria!\n"
 
 #: ../client/common/client.c:946
 msgid "Loading"
@@ -436,12 +436,12 @@ msgstr "La versió no coincideix."
 #: ../client/common/client.c:994
 msgid "Version mismatch. Please make sure client and server are up to date.\n"
 msgstr ""
-"La versió no coincideix, assegura't que tant el client com el servidor estan "
+"La versió no coincideix. Assegura't que tant el client com el servidor estan "
 "actualitzats, si et plau.\n"
 
 #: ../client/common/client.c:1421
 msgid "Build two settlements, each with a connecting"
-msgstr "Construeix dos pobles, cadascun connectats amb un"
+msgstr "Construeix dos pobles, connectats cadascun amb un"
 
 #: ../client/common/client.c:1424
 msgid "Build a settlement with a connecting"
@@ -465,7 +465,7 @@ msgstr " o"
 
 #: ../client/common/client.c:1502
 msgid "Waiting for your turn."
-msgstr "Esperant el teu torn."
+msgstr "S'està esperant el teu torn."
 
 #: ../client/common/client.c:1554 ../client/gtk/interface.c:777
 msgid "Select the building to steal from."
@@ -617,20 +617,20 @@ msgstr "%s té el camí més llarg.\n"
 #: ../client/common/player.c:326
 #, c-format
 msgid "Waiting for %s."
-msgstr "Esperant %s."
+msgstr "S'està esperant %s."
 
 #. We are not in on the action
 #. someone stole a resource from someone else
 #: ../client/common/player.c:354
 #, c-format
 msgid "%s stole a resource from %s.\n"
-msgstr "%s li ha robat un recurs a %s.\n"
+msgstr "%s ha robat un recurs a %s.\n"
 
 #. $1=resource, $2=player name
 #: ../client/common/player.c:365
 #, c-format
 msgid "You stole %s from %s.\n"
-msgstr "Li has robat %s a %s.\n"
+msgstr "Has robat %s a %s.\n"
 
 #. $1=player name, $2=resource
 #: ../client/common/player.c:372
@@ -641,18 +641,18 @@ msgstr "%s t'ha robat %s.\n"
 #: ../client/common/player.c:406
 #, c-format
 msgid "%s gave %s nothing!?\n"
-msgstr "%s no li ha donat res a %s!?\n"
+msgstr "%s no ha donat res a %s!?\n"
 
 #. $1=giving player, $2=receiving player, $3=resources
 #: ../client/common/player.c:413 ../client/common/player.c:423
 #, c-format
 msgid "%s gave %s %s for free.\n"
-msgstr "%1s li ha donat %3s a %2s de franc.\n"
+msgstr "%s ha donat %s a %s de franc.\n"
 
 #: ../client/common/player.c:431
 #, c-format
 msgid "%s gave %s %s in exchange for %s.\n"
-msgstr "%1s li ha donat %3s a %2s a canvi de %4s.\n"
+msgstr "%s ha donat %s a %s a canvi de %s.\n"
 
 #: ../client/common/player.c:462
 #, c-format
@@ -838,7 +838,7 @@ msgstr "una carta de maó"
 #: ../client/common/resource.c:47
 #, c-format
 msgid "%d brick cards"
-msgstr "%d cartes de maons"
+msgstr "%d cartes de maó"
 
 #: ../client/common/resource.c:48
 msgid "a grain card"
@@ -987,25 +987,25 @@ msgstr "Acabat.\n"
 #: ../client/gtk/connect.c:312 ../client/gtk/connect.c:390
 #: ../client/gtk/connect.c:409 ../client/gtk/connect.c:979
 msgid "The metaserver is not available anymore.\n"
-msgstr ""
+msgstr "El metaservidor ja no està disponible.\n"
 
 #: ../client/gtk/connect.c:323 ../client/gtk/connect.c:444
 #: ../client/gtk/connect.c:771
 msgid "The metaserver closed the connection unexpectedly.\n"
-msgstr ""
+msgstr "El metaservidor ha tancat la connexió inesperadament.\n"
 
 #: ../client/gtk/connect.c:381
 msgid "Receiving game names from the metaserver.\n"
 msgstr "S'estan rebent noms de partides del metaservidor.\n"
 
 #: ../client/gtk/connect.c:423
-#, fuzzy, c-format
+#, c-format
 msgid "New game server requested on %s port %s.\n"
-msgstr "S?ha requerit un nou servidor de joc a %s, port %s.\n"
+msgstr "S'ha requerit un nou servidor de joc a %s, port %s.\n"
 
 #: ../client/gtk/connect.c:433
 msgid "Incomplete information about the new game server received.\n"
-msgstr ""
+msgstr "S'ha rebut informació incompleta quant al nou servidor de joc.\n"
 
 #: ../client/gtk/connect.c:487 ../client/gtk/connect.c:493
 #: ../server/meta.c:239
@@ -1016,12 +1016,11 @@ msgstr "Missatge desconegut del metaservidor: %s\n"
 #: ../client/gtk/connect.c:566 ../server/meta.c:178
 #, c-format
 msgid "Receiving data from inactive session: %s\n"
-msgstr ""
+msgstr "S'estan rebent dades de la sessió inactiva: %s\n"
 
 #: ../client/gtk/connect.c:578 ../server/meta.c:192
-#, fuzzy
 msgid "Too many metaserver redirects.\n"
-msgstr "Massa redireccions del meta-servidor\n"
+msgstr "Massa redireccions del metaservidor\n"
 
 #: ../client/gtk/connect.c:607 ../server/meta.c:208
 #, c-format
@@ -1035,9 +1034,9 @@ msgstr "El meta servidor és massa vell per crear servidors (versió %d.%d)\n"
 
 #: ../client/gtk/connect.c:671 ../client/gtk/connect.c:750
 #: ../client/gtk/connect.c:756
-#, fuzzy, c-format
+#, c-format
 msgid "Unexpected data from the metaserver: %s\n"
-msgstr "Missatge desconegut del metaservidor: %s\n"
+msgstr "Dades inesperades del metaservidor: %s\n"
 
 #. Sevens rule: normal
 #: ../client/gtk/connect.c:702 ../client/gtk/settingscreen.c:181
@@ -1066,14 +1065,14 @@ msgid "Random"
 msgstr "A l'atzar"
 
 #: ../client/gtk/connect.c:820 ../server/meta.c:299
-#, fuzzy, c-format
+#, c-format
 msgid "Redirected to the metaserver at %s.\n"
-msgstr "S'ha redireccionat al meta-servidor a %s, port %s\n"
+msgstr "S'ha redireccionat al metaservidor a %s.\n"
 
 #: ../client/gtk/connect.c:825 ../server/meta.c:302
-#, fuzzy, c-format
+#, c-format
 msgid "Redirected to the metaserver at %s, port %s.\n"
-msgstr "S'ha redireccionat al meta-servidor a %s, port %s\n"
+msgstr "S'ha redireccionat al metaservidor a %s, port %s.\n"
 
 #: ../client/gtk/connect.c:832
 msgid "Receiving a list of Pioneers servers from the metaserver.\n"
@@ -1094,12 +1093,11 @@ msgstr "El nombre de jugadors artificials"
 #: ../client/gtk/connect.c:957 ../client/gtk/connect.c:992
 #: ../client/gtk/connect.c:1131
 msgid "Canceled.\n"
-msgstr ""
+msgstr "S'ha cancel·lat.\n"
 
 #: ../client/gtk/connect.c:960
-#, fuzzy
 msgid "Requesting new game server.\n"
-msgstr "S'està demanant un nou servidor de joc\n"
+msgstr "S'està demanant un nou servidor de joc.\n"
 
 #: ../client/gtk/connect.c:1015 ../server/gtk/main.c:369
 #: ../server/server.c:122
@@ -1970,7 +1968,7 @@ msgstr "Connecta't com a espectador"
 
 #: ../client/gtk/offline.c:66
 msgid "Metaserver Host"
-msgstr "Servidor meta-servidor"
+msgstr "Servidor metaservidor"
 
 #: ../client/gtk/offline.c:80
 msgid "Select a game to join."
@@ -1991,7 +1989,7 @@ msgstr "Juga una Partida de Pioneers"
 
 #: ../client/gtk/pioneers.desktop.in.h:3
 msgid "game;board;play;Pioneers;Settlers;"
-msgstr ""
+msgstr "partida;taulell;joc;Pioneers;Colons;"
 
 #: ../client/gtk/player.c:53
 msgid "Settlements"
@@ -2275,16 +2273,15 @@ msgstr "Regla dels sets:"
 
 #: ../client/gtk/settingscreen.c:196
 msgid "Use dice deck instead of dice:"
-msgstr ""
+msgstr "Utilitza baralles de daus en lloc de daus:"
 
 #: ../client/gtk/settingscreen.c:201
-#, fuzzy
 msgid "Number of dice decks:"
-msgstr "Nombre de jugadors:"
+msgstr "Nombre de baralles de daus:"
 
 #: ../client/gtk/settingscreen.c:207
 msgid "Number of dice cards removed after shuffling:"
-msgstr ""
+msgstr "Nombre de cartes de daus eliminades després de remenar:"
 
 #: ../client/gtk/settingscreen.c:214
 msgid "Use the pirate to block ships:"
@@ -2492,7 +2489,7 @@ msgid "This game can be won by only building all settlements and cities."
 msgstr "Aquesta partida es pot guanyar només construint pobles i ciutats."
 
 #: ../common/game.c:971
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Required victory points: %d\n"
 "Points obtained by building all: %d\n"
@@ -2503,7 +2500,7 @@ msgid ""
 msgstr ""
 "Punts de victòria necessaris: %d\n"
 "Punts obtinguts per construccions: %d\n"
-"Punts per cartes de desenvolupament: %d\n"
+"Punts per cartes de desenvolupament: %u\n"
 "Camí més llarg/Exèrcit més gran: %d+%d\n"
 "Bonificació màxima per descobriment d'illes: %d\n"
 "Total: %d"
@@ -2519,14 +2516,13 @@ msgid "Game directory '%s' not found\n"
 msgstr "No s'ha trobat el directori de partides '%s'\n"
 
 #: ../common/game-list.c:131
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to load game: '%s'\n"
-msgstr "La càrrega de '%s' ha fallat"
+msgstr "No es pot carregar el joc: '%s'\n"
 
 #: ../common/game-list.c:151
-#, fuzzy
 msgid "No games available\n"
-msgstr "Ho sento, %s disponible.\n"
+msgstr "No hi ha partides disponibles.\n"
 
 #: ../common/gtk/aboutbox.c:76
 msgid ""
@@ -2623,30 +2619,30 @@ msgstr "Comprova la victòria només al final del torn"
 
 #: ../common/gtk/game-rules.c:144
 msgid "Use dice deck"
-msgstr ""
+msgstr "Utilitza una baralla de daus"
 
 #: ../common/gtk/game-rules.c:146
 msgid "Use a deck of 36 dice cards instead of real dice"
-msgstr ""
+msgstr "Utilitza una baralla de 36 daus en lloc de daus de debò"
 
 #. Label
 #: ../common/gtk/game-rules.c:154
-#, fuzzy
 msgid "Number of dice decks"
-msgstr "Nombre de jugadors artificials"
+msgstr "Nombre de baralles de daus"
 
 #: ../common/gtk/game-rules.c:171
 msgid "The number of dice decks (of 36 cards each)"
-msgstr ""
+msgstr "El nombre de baralles de daus (de 36 cartes cadascuna)"
 
 #. Label
 #: ../common/gtk/game-rules.c:179
 msgid "Number of removed dice cards"
-msgstr ""
+msgstr "Nombre de cartes de daus eliminades"
 
 #: ../common/gtk/game-rules.c:198
 msgid "The number of dice cards that are removed after shuffling the deck"
 msgstr ""
+"El nombre de cartes de daus que s'eliminen després de remenar la baralla"
 
 #. Label
 #: ../common/gtk/game-rules.c:206
@@ -2848,7 +2844,7 @@ msgstr "Error en escriure al sòcol: %s\n"
 
 #: ../common/network.c:156
 msgid "Could not send all data\n"
-msgstr ""
+msgstr "No s'han pogut enviar totes les dades\n"
 
 #: ../common/network.c:204
 msgid "Read buffer overflow - disconnecting\n"
@@ -2860,7 +2856,7 @@ msgid "Error reading socket: %s\n"
 msgstr "Error en llegit el sòcol: %s\n"
 
 #: ../common/network.c:380
-#, fuzzy, c-format
+#, c-format
 msgid "Error connecting to %s: %s\n"
 msgstr "Error en connectar amb %s: %s\n"
 
@@ -2988,115 +2984,117 @@ msgstr "SE"
 
 #: ../editor/gtk/editor.c:395
 msgid "Place a hill hex"
-msgstr ""
+msgstr "Posa un hexàgon de pujol"
 
 #: ../editor/gtk/editor.c:396
 msgid "Place a field hex"
-msgstr ""
+msgstr "Posa un hexàgon de camp"
 
 #: ../editor/gtk/editor.c:397
 msgid "Place a mountain hex"
-msgstr ""
+msgstr "Posa un hexàgon de muntanya"
 
 #: ../editor/gtk/editor.c:398
 msgid "Place a pasture hex"
-msgstr ""
+msgstr "Posa un hexàgon de pastura"
 
 #: ../editor/gtk/editor.c:399
 msgid "Place a forest hex"
-msgstr ""
+msgstr "Posa un hexàgon de bosc"
 
 #: ../editor/gtk/editor.c:400
 msgid "Place a desert hex"
-msgstr ""
+msgstr "Posa un hexàgon de desert"
 
 #: ../editor/gtk/editor.c:401
 msgid "Place a sea hex"
-msgstr ""
+msgstr "Posa un hexàgon de mar"
 
 #: ../editor/gtk/editor.c:402
 msgid "Place a gold hex"
-msgstr ""
+msgstr "Posa un hexàgon d'or"
 
 #: ../editor/gtk/editor.c:403
 msgid "Clear the hex"
-msgstr ""
+msgstr "Esborra l'hexàgon"
 
 #: ../editor/gtk/editor.c:411
 msgid "Place a 2 chit"
-msgstr ""
+msgstr "Posa una etiqueta de 2"
 
 #: ../editor/gtk/editor.c:412
 msgid "Place a 3 chit"
-msgstr ""
+msgstr "Posa una etiqueta de 3"
 
 #: ../editor/gtk/editor.c:413
 msgid "Place a 4 chit"
-msgstr ""
+msgstr "Posa una etiqueta de 4"
 
 #: ../editor/gtk/editor.c:414
 msgid "Place a 5 chit"
-msgstr ""
+msgstr "Posa una etiqueta de 5"
 
 #: ../editor/gtk/editor.c:415
 msgid "Place a 6 chit"
-msgstr ""
+msgstr "Posa una etiqueta de 6"
 
 #: ../editor/gtk/editor.c:417
 msgid "Place an 8 chit"
-msgstr ""
+msgstr "Posa una etiqueta de 8"
 
 #: ../editor/gtk/editor.c:418
 msgid "Place a 9 chit"
-msgstr ""
+msgstr "Posa una etiqueta de 9"
 
 #: ../editor/gtk/editor.c:419
 msgid "Place a 10 chit"
-msgstr ""
+msgstr "Posa una etiqueta de 10"
 
 #: ../editor/gtk/editor.c:420
 msgid "Place an 11 chit"
-msgstr ""
+msgstr "Posa una etiqueta de 11"
 
 #: ../editor/gtk/editor.c:421
 msgid "Place a 12 chit"
-msgstr ""
+msgstr "Posa una etiqueta de 12"
 
 #: ../editor/gtk/editor.c:427
 msgid "Place a brick 2:1 port"
-msgstr ""
+msgstr "Posa un port de maó 2:1"
 
 #: ../editor/gtk/editor.c:428
 msgid "Place a grain 2:1 port"
-msgstr ""
+msgstr "Posa un port de gra 2:1"
 
 #: ../editor/gtk/editor.c:429
 msgid "Place an ore 2:1 port"
-msgstr ""
+msgstr "Posa un port de minerals 2:1"
 
 #: ../editor/gtk/editor.c:430
 msgid "Place a wool 2:1 port"
-msgstr ""
+msgstr "Posa un port de llana 2:1"
 
 #: ../editor/gtk/editor.c:431
 msgid "Place a lumber 2:1 port"
-msgstr ""
+msgstr "Posa un port de fusta 2:1"
 
 #. Tooltip to remove a port tile in the editor
 #: ../editor/gtk/editor.c:433
-#, fuzzy
 msgid "Remove a port"
-msgstr "Port"
+msgstr "Elimina un port"
 
 #: ../editor/gtk/editor.c:434
 msgid "Place a 3:1 port"
-msgstr ""
+msgstr "Posa un port 3:1"
 
 #: ../editor/gtk/editor.c:464
 msgid ""
 "Select the terrain type with the context menu on the left click or toggle a "
 "node to exclude it from being used during the setup phase"
 msgstr ""
+"Selecciona el tipus de terreny amb el menú de context del clic-esquerra o bé "
+"canvia l'estat d'un node per excloure'l de ser usat durant la fase de "
+"configuració"
 
 #: ../editor/gtk/editor.c:601
 msgid "Insert a row"
@@ -3116,21 +3114,18 @@ msgstr "Suprimeix una columna"
 
 #. Label
 #: ../editor/gtk/editor.c:1016
-#, fuzzy
 msgid "_Title"
-msgstr "_Canvia el Títol"
+msgstr "_Títol"
 
 #. Label
 #: ../editor/gtk/editor.c:1029
-#, fuzzy
 msgid "_Description"
-msgstr "_Desert"
+msgstr "_Descripció"
 
 #. Label
 #: ../editor/gtk/editor.c:1047
-#, fuzzy
 msgid "_Comments"
-msgstr "Comentaris"
+msgstr "_Comentaris"
 
 #. Menu item
 #: ../editor/gtk/editor.c:1177
@@ -3162,7 +3157,7 @@ msgstr "Construccions"
 #. The game in the editor does not have a name yet
 #: ../editor/gtk/editor.c:1354
 msgid "Untitled"
-msgstr ""
+msgstr "Sense títol"
 
 #. Application caption
 #: ../editor/gtk/editor.c:1359 ../editor/gtk/pioneers-editor.desktop.in.h:1
@@ -3260,9 +3255,8 @@ msgstr "Anomena i desa"
 
 #. Menu entry
 #: ../editor/gtk/editor.c:1780
-#, fuzzy
 msgid "Change _Title"
-msgstr "Canvi de Títol"
+msgstr "Canvia el _Títol"
 
 #. Tooltip for Change Title menu entry
 #: ../editor/gtk/editor.c:1782
@@ -3337,12 +3331,12 @@ msgstr "Crea el teu propi joc de Pioneers"
 
 #: ../editor/gtk/pioneers-editor.desktop.in.h:3
 msgid "game;board;create;edit;layout;Pioneers;Settlers;"
-msgstr ""
+msgstr "partida;taulell;crea;edita;disposició;Pioneers;Colons;"
 
 #. Commandline metaserver: daemon
 #: ../metaserver/main.c:610
 msgid "Daemonize the metaserver on start"
-msgstr "Demonitza el meta-servidor en iniciar"
+msgstr "Demonitza el metaservidor en iniciar"
 
 #. Commandline metaserver: pidfile
 #: ../metaserver/main.c:613
@@ -3352,7 +3346,7 @@ msgstr "Fitxer de PID a crear en demonitzar (implica -d)"
 #. Commandline metaserver: redirect
 #: ../metaserver/main.c:618
 msgid "Redirect clients to another metaserver"
-msgstr "Redirecciona els clients a un altre meta-servidor"
+msgstr "Redirecciona els clients a un altre metaservidor"
 
 #. Commandline metaserver: server
 #: ../metaserver/main.c:621
@@ -3387,7 +3381,7 @@ msgstr "- Meta servidor de Pioneers"
 #: ../metaserver/main.c:689
 #, c-format
 msgid "metaserver protocol:"
-msgstr "protocol del meta-servidor:"
+msgstr "protocol del metaservidor:"
 
 #: ../server/avahi.c:68
 msgid "Avahi registration successful.\n"
@@ -3641,7 +3635,7 @@ msgstr "Hostatja una partida de Pioneers"
 
 #: ../server/gtk/pioneers-server.desktop.in.h:3
 msgid "game;board;server;host;Pioneers;Settlers;"
-msgstr ""
+msgstr "partida;taulell;servidor;host;Pioneers;Colons"
 
 #. Commandline server-console: game-title
 #: ../server/main.c:80
@@ -3675,21 +3669,19 @@ msgstr "Obviar la regla dels sets"
 
 #. Commandline server-console: dice-deck
 #: ../server/main.c:98
-#, fuzzy
 msgid "Override dice-deck handling"
-msgstr "Obviar la regla dels sets"
+msgstr "Obvia la gestió de baralles de daus"
 
 #. Commandline server-console: num-dice-decks
 #: ../server/main.c:101
-#, fuzzy
 msgid "Override num-dice-decks handling"
-msgstr "Obviar la regla dels sets"
+msgstr "Obvia la gestió del nombre de les baralles de daus"
 
 #. Commandline server-console: num-removed-dice-cards
 #: ../server/main.c:105
-#, fuzzy
 msgid "Override num-removed-dice-cards handling"
-msgstr "Obviar la regla dels sets"
+msgstr ""
+"Obvia la gestió del nombre de cartes eliminades de les baralles de daus"
 
 #. Commandline server-console: terrain
 #: ../server/main.c:108
@@ -3704,12 +3696,12 @@ msgstr "Afegeix N jugadors artificials"
 #. Commandline server-console: register
 #: ../server/main.c:121
 msgid "Register server with metaserver"
-msgstr "Registra el servidor amb el meta-servidor"
+msgstr "Registra el servidor amb el metaservidor"
 
 #. Commandline server-console: metaserver
 #: ../server/main.c:124
 msgid "Register at metaserver name (implies -r)"
-msgstr "Registra't al nom del meta-servidor (implica -r)"
+msgstr "Registra't al nom del metaservidor (implica -r)"
 
 #. Commandline server-console: hostname
 #: ../server/main.c:128
@@ -3755,7 +3747,7 @@ msgstr "Opcions del Meta-servidor"
 #. Commandline server-console: Long description of meta group
 #: ../server/main.c:200
 msgid "Options for the metaserver"
-msgstr "Opcions del el meta-servidor"
+msgstr "Opcions del el metaservidor"
 
 #. Commandline server-console: Short description of misc group
 #: ../server/main.c:209
@@ -3784,33 +3776,31 @@ msgstr "No es poden carregar els paràmetres de la partida\n"
 #, c-format
 msgid "The network port (%s) for the admin interface is not available.\n"
 msgstr ""
+"El port de xarxa (%s) de la interfície d'administració no està disponible.\n"
 
 #: ../server/meta.c:58
-#, fuzzy
 msgid "The connection to the metaserver is lost.\n"
-msgstr "Opcions del el meta-servidor"
+msgstr "S'ha perdut la connexió amb el metaservidor.\n"
 
 #: ../server/meta.c:64
 #, c-format
 msgid "An attempt to reconnect is scheduled in %u second.\n"
 msgid_plural "An attempt to reconnect is scheduled in %u seconds.\n"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "S'ha programat un intent de reconnexió d'aquí a %u segon.\n"
+msgstr[1] "S'ha programat un intent de reconnexió d'aquí a %u segons.\n"
 
 #: ../server/meta.c:83
-#, fuzzy
 msgid "Attempting to reconnect to the metaserver.\n"
-msgstr "Opcions del el meta-servidor"
+msgstr "S'està intentant la reconnexió amb el metaservidor.\n"
 
 #: ../server/meta.c:311
-#, fuzzy, c-format
+#, c-format
 msgid "Register with the metaserver at %s.\n"
-msgstr "Registra't amb el meta-servidor a %s, port %s\n"
+msgstr "Registra't amb el metaservidor a %s.\n"
 
 #: ../server/meta.c:322
-#, fuzzy
 msgid "Unregister from the metaserver.\n"
-msgstr "Desregistra't del meta-servidor\n"
+msgstr "Desregistra't del metaservidor\n"
 
 #: ../server/player.c:142
 msgid "chat too long"
@@ -3857,7 +3847,7 @@ msgstr "Jugador Artificial"
 #: ../server/player.c:450
 #, c-format
 msgid "Unable to determine the hostname of the player: %s"
-msgstr ""
+msgstr "No es pot determinar el nom de host del jugador: %s"
 
 #. The game is over, don't accept new players
 #. Message to send to the client when the game is already over
@@ -3923,71 +3913,3 @@ msgstr "S'ha intentar assignar recursos al jugador NULL.\n"
 #: ../server/turn.c:517
 msgid "The dice roll has been determined by the administrator."
 msgstr "La tirada de daus ha estat determinada per l'administrador."
-
-#~ msgid "Metaserver kicked us off\n"
-#~ msgstr "El Meta-servidor ens ha expulsat\n"
-
-#~ msgid ""
-#~ "<b>Note</b>:\n"
-#~ "\tThe metaserver does not send information about the games.\n"
-#~ "\tPlease set appropriate values yourself."
-#~ msgstr ""
-#~ "<b>Nota</b>:\n"
-#~ "\tEl metaservidor no envia informació de les partides.\n"
-#~ "\tPosa-hi valors apropiats tu mateix/a, si et plau."
-
-#~ msgid "Error checking connect status: %s\n"
-#~ msgstr "Error en comprovar l'estat de la connexió: %s\n"
-
-#~ msgid "Error connecting to host '%s': %s\n"
-#~ msgstr "Error en connectar amb el servidor '%s': %s\n"
-
-#~ msgid "Error writing socket: %s\n"
-#~ msgstr "Error en escriure al sòcol: %s\n"
-
-#~ msgid "Error creating socket: %s\n"
-#~ msgstr "Error en crear el sòcol: %s\n"
-
-#~ msgid "Error setting socket close-on-exec: %s\n"
-#~ msgstr "Error en ajustar el sòcol 'close-on-exec': %s\n"
-
-#~ msgid "Error setting socket non-blocking: %s\n"
-#~ msgstr "Error en establir el sòcol a no blocant: %s\n"
-
-#~ msgid "Cannot resolve %s port %s: %s\n"
-#~ msgstr "No es pot resoldre %s, port %s: %s\n"
-
-#~ msgid "Cannot resolve %s port %s: host not found\n"
-#~ msgstr "No es pot resoldre %s, port %s: no s'ha trobat el servidor\n"
-
-#~ msgid "Error creating struct addrinfo: %s"
-#~ msgstr "Error en crear l'estructura addrinfo: %s"
-
-#~ msgid "Error creating listening socket: %s\n"
-#~ msgstr "Error en crear el sòcol d'escolta: %s\n"
-
-#~ msgid "Error during listen on socket: %s\n"
-#~ msgstr "Error durant l'escolta al sòcol: %s\n"
-
-#~ msgid "Listening not yet supported on this platform."
-#~ msgstr "L'escolta encara no està suportada en aquesta plataforma."
-
-#~ msgid "Error getting peer name: %s"
-#~ msgstr "Error en obtenir el nom del parell: %s"
-
-#~ msgid "Error resolving address: %s"
-#~ msgstr "Error en resoldre l'adreça: %s"
-
-#~ msgid "Net_get_peer_name not yet supported on this platform."
-#~ msgstr "Net_get_peer_name encara no està suportat en aquesta plataforma."
-
-#~ msgid "Error accepting connection: %s"
-#~ msgstr "Error en acceptar connexió: %s"
-
-#~ msgid "Admin port not available.\n"
-#~ msgstr "El port d'administració no està disponible.\n"
-
-#~ msgid "Admin port is not set, cannot disable game start too\n"
-#~ msgstr ""
-#~ "El port d'administració no està establert, tampoc es pot desactivar "
-#~ "l'inici de la partida\n"
