@@ -7,10 +7,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Pioneers 14.1\n"
+"Project-Id-Version: Pioneers 15.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-09-08 18:03+0200\n"
-"PO-Revision-Date: 2012-09-05 02:27+0000\n"
+"PO-Revision-Date: 2013-09-16 02:46+0000\n"
 "Last-Translator: KAMO Tomoyuki <kto@miomio.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "Language: ja\n"
@@ -18,8 +18,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2012-09-06 06:00+0000\n"
-"X-Generator: Launchpad (build 15909)\n"
+"X-Launchpad-Export-Date: 2013-09-18 06:12+0000\n"
+"X-Generator: Launchpad (build 16765)\n"
 
 #. Commandline pioneersai: server
 #: ../client/ai/ai.c:70
@@ -34,7 +34,7 @@ msgstr "サーバポート"
 #. Commandline pioneersai: name
 #: ../client/ai/ai.c:76
 msgid "Computer name (mandatory)"
-msgstr "コンピュータ名 (必須)"
+msgstr "コンピュータプレイヤーの名前 (必須)"
 
 #. Commandline pioneersai: time
 #: ../client/ai/ai.c:79
@@ -44,7 +44,7 @@ msgstr "ターン間の待ち時間 (ミリ秒単位)"
 #. Commandline pioneersai: chat-free
 #: ../client/ai/ai.c:82
 msgid "Stop computer player from talking"
-msgstr "会話からコンピュータプレイヤーを停止"
+msgstr "コンピュータプレイヤーにチャットでしゃべらせない"
 
 #. Commandline pioneersai: algorithm
 #: ../client/ai/ai.c:85
@@ -70,7 +70,7 @@ msgstr "デバッグメッセージを有効にする"
 #: ../client/ai/ai.c:91 ../client/gtk/offline.c:72 ../editor/gtk/editor.c:1875
 #: ../metaserver/main.c:637 ../server/gtk/main.c:1174 ../server/main.c:114
 msgid "Show version information"
-msgstr "バージョン情報を表示"
+msgstr "バージョン情報を表示する"
 
 #. Long description in the commandline for pioneersai: help
 #: ../client/ai/ai.c:102
@@ -337,7 +337,7 @@ msgid ""
 "registers it at the metaserver. The other players can subsequently "
 "disconnect from the lobby, and enter that game."
 msgstr ""
-"このボートはゲームを遊ぶためのものではありません。その代わりに、プレイヤーは"
+"このボードはゲームを遊ぶためのものではありません。その代わりに、プレイヤーは"
 "ここで他のプレイヤーを見つけ、どのボードで遊びたいかを決めます。そして、プレ"
 "イヤーの一人がサーバを開始して提案されたゲームのホストとなり、ゲームをメタ"
 "サーバに登録します。続いて他のプレイヤーはロビーから切断し、ゲームに参加しま"
@@ -358,7 +358,7 @@ msgstr "待機中"
 
 #: ../client/common/client.c:108
 msgid "Idle"
-msgstr "待機"
+msgstr "アイドル"
 
 #: ../client/common/client.c:533
 msgid "We have been kicked out of the game.\n"
@@ -415,12 +415,12 @@ msgstr "%s は %s を払い戻した。\n"
 #: ../client/common/client.c:754 ../client/common/client.c:1965
 #, c-format
 msgid "%s shuffled the dice deck.\n"
-msgstr ""
+msgstr "%s はサイコロデッキをシャッフルした。\n"
 
 #: ../client/common/client.c:773
 #, c-format
 msgid "%s discarded %s.\n"
-msgstr "%s は %s を失った。\n"
+msgstr "%s は %s を捨てた。\n"
 
 #: ../client/common/client.c:847
 #, c-format
@@ -500,7 +500,7 @@ msgstr "あなたのターンです。"
 #: ../client/common/client.c:2181
 #, c-format
 msgid "Sorry, %s available.\n"
-msgstr "すみません、%s 使用可能。\n"
+msgstr "すみません、%s 利用可能。\n"
 
 #: ../client/common/client.c:2495
 msgid "The game is over."
@@ -607,7 +607,7 @@ msgstr "%s が最大兵力を持った。\n"
 
 #: ../client/common/player.c:302
 msgid "There is no longest road.\n"
-msgstr "最長交易路なし。\n"
+msgstr "最長交易路はなくなった。\n"
 
 #: ../client/common/player.c:305
 #, c-format
@@ -667,7 +667,7 @@ msgstr "%s は街道を敷設した。\n"
 #: ../client/common/player.c:494
 #, c-format
 msgid "%s built a ship.\n"
-msgstr "%s は船を造船した。\n"
+msgstr "%s は船を製造した。\n"
 
 #: ../client/common/player.c:507
 #, c-format
@@ -987,25 +987,25 @@ msgstr "終了。\n"
 #: ../client/gtk/connect.c:312 ../client/gtk/connect.c:390
 #: ../client/gtk/connect.c:409 ../client/gtk/connect.c:979
 msgid "The metaserver is not available anymore.\n"
-msgstr ""
+msgstr "メタサーバはもう利用できない。\n"
 
 #: ../client/gtk/connect.c:323 ../client/gtk/connect.c:444
 #: ../client/gtk/connect.c:771
 msgid "The metaserver closed the connection unexpectedly.\n"
-msgstr ""
+msgstr "メタサーバは予期せず接続を閉じた。\n"
 
 #: ../client/gtk/connect.c:381
 msgid "Receiving game names from the metaserver.\n"
 msgstr "メタサーバからゲーム名を受信中。\n"
 
 #: ../client/gtk/connect.c:423
-#, fuzzy, c-format
+#, c-format
 msgid "New game server requested on %s port %s.\n"
-msgstr "新しいゲームサーバが %s のポート %s で要求されている\n"
+msgstr "新しいゲームサーバが %s のポート %s で要求されている。\n"
 
 #: ../client/gtk/connect.c:433
 msgid "Incomplete information about the new game server received.\n"
-msgstr ""
+msgstr "新しいゲームについて不完全な情報を受信した。\n"
 
 #: ../client/gtk/connect.c:487 ../client/gtk/connect.c:493
 #: ../server/meta.c:239
@@ -1016,12 +1016,11 @@ msgstr "メタサーバからの不明なメッセージ: %s\n"
 #: ../client/gtk/connect.c:566 ../server/meta.c:178
 #, c-format
 msgid "Receiving data from inactive session: %s\n"
-msgstr ""
+msgstr "非アクティブなセッションからデータを受信: %s\n"
 
 #: ../client/gtk/connect.c:578 ../server/meta.c:192
-#, fuzzy
 msgid "Too many metaserver redirects.\n"
-msgstr "メタサーバのリダイレクトが多すぎる\n"
+msgstr "メタサーバのリダイレクトが多すぎる。\n"
 
 #: ../client/gtk/connect.c:607 ../server/meta.c:208
 #, c-format
@@ -1035,9 +1034,9 @@ msgstr "メタサーバが古すぎてサーバを作ることができない (�
 
 #: ../client/gtk/connect.c:671 ../client/gtk/connect.c:750
 #: ../client/gtk/connect.c:756
-#, fuzzy, c-format
+#, c-format
 msgid "Unexpected data from the metaserver: %s\n"
-msgstr "メタサーバからの不明なメッセージ: %s\n"
+msgstr "メタサーバからの不明なデータ: %s\n"
 
 #. Sevens rule: normal
 #: ../client/gtk/connect.c:702 ../client/gtk/settingscreen.c:181
@@ -1066,14 +1065,14 @@ msgid "Random"
 msgstr "ランダム"
 
 #: ../client/gtk/connect.c:820 ../server/meta.c:299
-#, fuzzy, c-format
+#, c-format
 msgid "Redirected to the metaserver at %s.\n"
-msgstr "%s のポート %s のメタサーバにリダイレクト\n"
+msgstr "%s のメタサーバにリダイレクト。\n"
 
 #: ../client/gtk/connect.c:825 ../server/meta.c:302
-#, fuzzy, c-format
+#, c-format
 msgid "Redirected to the metaserver at %s, port %s.\n"
-msgstr "%s のポート %s のメタサーバにリダイレクト\n"
+msgstr "%s のポート %s のメタサーバにリダイレクト。\n"
 
 #: ../client/gtk/connect.c:832
 msgid "Receiving a list of Pioneers servers from the metaserver.\n"
@@ -1094,12 +1093,11 @@ msgstr "コンピュータプレイヤーの数"
 #: ../client/gtk/connect.c:957 ../client/gtk/connect.c:992
 #: ../client/gtk/connect.c:1131
 msgid "Canceled.\n"
-msgstr ""
+msgstr "取り消した。\n"
 
 #: ../client/gtk/connect.c:960
-#, fuzzy
 msgid "Requesting new game server.\n"
-msgstr "新しいゲームサーバを要求中\n"
+msgstr "新しいゲームサーバを要求中。\n"
 
 #: ../client/gtk/connect.c:1015 ../server/gtk/main.c:369
 #: ../server/server.c:122
@@ -1241,7 +1239,7 @@ msgstr "ホストのバージョン"
 #. Dialog caption
 #: ../client/gtk/connect.c:1449
 msgid "Start a New Game"
-msgstr "新ゲーム開始"
+msgstr "新しいゲームを開始"
 
 #. Label
 #. Commandline option of client: name of the player
@@ -1298,12 +1296,12 @@ msgstr "公開ゲームに参加する"
 #. Button
 #: ../client/gtk/connect.c:1587
 msgid "Create Game"
-msgstr "公開ゲーム作成"
+msgstr "ゲーム作成"
 
 #. Tooltip
 #: ../client/gtk/connect.c:1591
 msgid "Create a game"
-msgstr "公開ゲームを作成する"
+msgstr "ゲームを作成する"
 
 #. Button
 #: ../client/gtk/connect.c:1600
@@ -1314,7 +1312,7 @@ msgstr "非公開ゲームに参加"
 #. Dialog caption
 #: ../client/gtk/connect.c:1604 ../client/gtk/connect.c:1749
 msgid "Join a private game"
-msgstr "非公開公開ゲームに参加する"
+msgstr "非公開ゲームに参加する"
 
 #. Label
 #. Commandline option of client: hostname of the server
@@ -1365,8 +1363,7 @@ msgstr "資源廃棄"
 #, c-format
 msgid "You must discard %d resource"
 msgid_plural "You must discard %d resources"
-msgstr[0] ""
-msgstr[1] "資源を %d 枚捨てなければならない。"
+msgstr[0] "資源を %d 枚捨てなければならない"
 
 #. Label
 #: ../client/gtk/discard.c:110
@@ -1402,8 +1399,7 @@ msgstr "資源選択"
 #, c-format
 msgid "You may choose %d resource"
 msgid_plural "You may choose %d resources"
-msgstr[0] ""
-msgstr[1] "資源を %d 枚選択してください"
+msgstr[0] "資源を %d 枚選択してください"
 
 #. Text for total in choose gold dialog
 #. Text for total in year of plenty dialog
@@ -1501,7 +1497,7 @@ msgstr "終了(_Q)"
 #. Tooltop for Quit menu entry
 #: ../client/gtk/gui.c:271 ../server/gtk/main.c:104
 msgid "Quit the program"
-msgstr "プログラム終了"
+msgstr "プログラムを終了"
 
 #. Menu entry
 #: ../client/gtk/gui.c:274
@@ -1557,7 +1553,7 @@ msgstr "船"
 #. Tooltip for Ship menu entry
 #: ../client/gtk/gui.c:305
 msgid "Build a ship"
-msgstr "船を造船する"
+msgstr "船を製造する"
 
 #. Menu entry
 #: ../client/gtk/gui.c:308
@@ -1681,7 +1677,7 @@ msgstr "Pioneers についての情報"
 #. Tooltip for Help menu entry
 #: ../client/gtk/gui.c:375 ../client/gtk/gui.c:1278
 msgid "Show the manual"
-msgstr "マニュアルを見る"
+msgstr "マニュアルを表示する"
 
 #. Menu entry
 #: ../client/gtk/gui.c:383 ../editor/gtk/editor.c:1823
@@ -1990,7 +1986,7 @@ msgstr "Pioneers のゲームを遊ぶ"
 
 #: ../client/gtk/pioneers.desktop.in.h:3
 msgid "game;board;play;Pioneers;Settlers;"
-msgstr ""
+msgstr "ゲーム;ボード;プレイ;Pioneers;開拓者;"
 
 #: ../client/gtk/player.c:53
 msgid "Settlements"
@@ -2274,16 +2270,15 @@ msgstr "7の目のルール:"
 
 #: ../client/gtk/settingscreen.c:196
 msgid "Use dice deck instead of dice:"
-msgstr ""
+msgstr "サイコロの代わりにサイコロデッキを使う:"
 
 #: ../client/gtk/settingscreen.c:201
-#, fuzzy
 msgid "Number of dice decks:"
-msgstr "プレイヤーの番号:"
+msgstr "サイコロデッキの数:"
 
 #: ../client/gtk/settingscreen.c:207
 msgid "Number of dice cards removed after shuffling:"
-msgstr ""
+msgstr "シャッフル後に取り除くサイコロカードの数:"
 
 #: ../client/gtk/settingscreen.c:214
 msgid "Use the pirate to block ships:"
@@ -2488,7 +2483,7 @@ msgid "This game can be won by only building all settlements and cities."
 msgstr "このゲームはすべての開拓地と都市を建設するだけで勝つことができる。"
 
 #: ../common/game.c:971
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Required victory points: %d\n"
 "Points obtained by building all: %d\n"
@@ -2499,7 +2494,7 @@ msgid ""
 msgstr ""
 "必要な勝利ポイント: %d\n"
 "すべて建設したときの獲得ポイント: %d\n"
-"発展カードによるポイント: %d\n"
+"発展カードによるポイント: %u\n"
 "最長交易路/最大兵力: %d+%d\n"
 "最大島発見ボーナス: %d\n"
 "合計: %d"
@@ -2515,14 +2510,13 @@ msgid "Game directory '%s' not found\n"
 msgstr "ゲームディレクトリ '%s' が見つからない\n"
 
 #: ../common/game-list.c:131
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to load game: '%s'\n"
-msgstr "'%s' をロードできない"
+msgstr "以下のゲームをロードできない: '%s'\n"
 
 #: ../common/game-list.c:151
-#, fuzzy
 msgid "No games available\n"
-msgstr "すみません、%s 使用可能。\n"
+msgstr "利用可能なゲームがない\n"
 
 #: ../common/gtk/aboutbox.c:76
 msgid ""
@@ -2544,7 +2538,6 @@ msgstr "ホームページ:"
 msgid "Authors:"
 msgstr "作者:"
 
-#
 #. Translators: add your name here. Keep the list alphabetically,
 #. * do not remove any names, and add \n after your name (except the last name).
 #.
@@ -2623,30 +2616,29 @@ msgstr "ターンの最後にのみ勝利判定をする"
 
 #: ../common/gtk/game-rules.c:144
 msgid "Use dice deck"
-msgstr ""
+msgstr "サイコロデッキを使う"
 
 #: ../common/gtk/game-rules.c:146
 msgid "Use a deck of 36 dice cards instead of real dice"
-msgstr ""
+msgstr "実際のサイコロの代わりに36枚のサイコロカードのデッキを使う"
 
 #. Label
 #: ../common/gtk/game-rules.c:154
-#, fuzzy
 msgid "Number of dice decks"
-msgstr "コンピュータプレイヤーの数"
+msgstr "サイコロデッキの数"
 
 #: ../common/gtk/game-rules.c:171
 msgid "The number of dice decks (of 36 cards each)"
-msgstr ""
+msgstr "サイコロデッキの数 (それぞれのデッキはカード36枚)"
 
 #. Label
 #: ../common/gtk/game-rules.c:179
 msgid "Number of removed dice cards"
-msgstr ""
+msgstr "取り除くサイコロカードの数"
 
 #: ../common/gtk/game-rules.c:198
 msgid "The number of dice cards that are removed after shuffling the deck"
-msgstr ""
+msgstr "シャッフル後に取り除くサイコロカードの数"
 
 #. Label
 #: ../common/gtk/game-rules.c:206
@@ -2846,7 +2838,7 @@ msgstr "ソケットへの書き込み時にエラー: %s\n"
 
 #: ../common/network.c:156
 msgid "Could not send all data\n"
-msgstr ""
+msgstr "すべてのデータを送信しきれなかった\n"
 
 #: ../common/network.c:204
 msgid "Read buffer overflow - disconnecting\n"
@@ -2858,7 +2850,7 @@ msgid "Error reading socket: %s\n"
 msgstr "ソケット読み込み時にエラー: %s\n"
 
 #: ../common/network.c:380
-#, fuzzy, c-format
+#, c-format
 msgid "Error connecting to %s: %s\n"
 msgstr "%s への接続時にエラー: %s\n"
 
@@ -2960,139 +2952,140 @@ msgstr "東"
 #. North east
 #: ../editor/gtk/editor.c:154
 msgid "North East|NE"
-msgstr "北東"
+msgstr "北東|NE"
 
 #. North west
 #: ../editor/gtk/editor.c:156
 msgid "North West|NW"
-msgstr "北西"
+msgstr "北西|NW"
 
 #. West
 #: ../editor/gtk/editor.c:158
 msgid "West|W"
-msgstr "西"
+msgstr "西|W"
 
 #. South west
 #: ../editor/gtk/editor.c:160
 msgid "South West|SW"
-msgstr "南西"
+msgstr "南西|SW"
 
 #. South east
 #: ../editor/gtk/editor.c:162
 msgid "South East|SE"
-msgstr "南東"
+msgstr "南東|SE"
 
 #: ../editor/gtk/editor.c:395
 msgid "Place a hill hex"
-msgstr ""
+msgstr "丘陵タイルを配置"
 
 #: ../editor/gtk/editor.c:396
 msgid "Place a field hex"
-msgstr ""
+msgstr "畑タイルを配置"
 
 #: ../editor/gtk/editor.c:397
 msgid "Place a mountain hex"
-msgstr ""
+msgstr "山地タイルを配置"
 
 #: ../editor/gtk/editor.c:398
 msgid "Place a pasture hex"
-msgstr ""
+msgstr "牧草地タイルを配置"
 
 #: ../editor/gtk/editor.c:399
 msgid "Place a forest hex"
-msgstr ""
+msgstr "森林タイルを配置"
 
 #: ../editor/gtk/editor.c:400
 msgid "Place a desert hex"
-msgstr ""
+msgstr "砂漠タイルを配置"
 
 #: ../editor/gtk/editor.c:401
 msgid "Place a sea hex"
-msgstr ""
+msgstr "海タイルを配置"
 
 #: ../editor/gtk/editor.c:402
 msgid "Place a gold hex"
-msgstr ""
+msgstr "金タイルを配置"
 
 #: ../editor/gtk/editor.c:403
 msgid "Clear the hex"
-msgstr ""
+msgstr "タイルを消去"
 
 #: ../editor/gtk/editor.c:411
 msgid "Place a 2 chit"
-msgstr ""
+msgstr "2 のトークンを配置"
 
 #: ../editor/gtk/editor.c:412
 msgid "Place a 3 chit"
-msgstr ""
+msgstr "3 のトークンを配置"
 
 #: ../editor/gtk/editor.c:413
 msgid "Place a 4 chit"
-msgstr ""
+msgstr "4 のトークンを配置"
 
 #: ../editor/gtk/editor.c:414
 msgid "Place a 5 chit"
-msgstr ""
+msgstr "5 のトークンを配置"
 
 #: ../editor/gtk/editor.c:415
 msgid "Place a 6 chit"
-msgstr ""
+msgstr "6 のトークンを配置"
 
 #: ../editor/gtk/editor.c:417
 msgid "Place an 8 chit"
-msgstr ""
+msgstr "8 のトークンを配置"
 
 #: ../editor/gtk/editor.c:418
 msgid "Place a 9 chit"
-msgstr ""
+msgstr "9 のトークンを配置"
 
 #: ../editor/gtk/editor.c:419
 msgid "Place a 10 chit"
-msgstr ""
+msgstr "10 のトークンを配置"
 
 #: ../editor/gtk/editor.c:420
 msgid "Place an 11 chit"
-msgstr ""
+msgstr "11 のトークンを配置"
 
 #: ../editor/gtk/editor.c:421
 msgid "Place a 12 chit"
-msgstr ""
+msgstr "12 のトークンを配置"
 
 #: ../editor/gtk/editor.c:427
 msgid "Place a brick 2:1 port"
-msgstr ""
+msgstr "レンガ 2:1 の港を配置"
 
 #: ../editor/gtk/editor.c:428
 msgid "Place a grain 2:1 port"
-msgstr ""
+msgstr "小麦 2:1 の港を配置"
 
 #: ../editor/gtk/editor.c:429
 msgid "Place an ore 2:1 port"
-msgstr ""
+msgstr "鉱石 2:1 の港を配置"
 
 #: ../editor/gtk/editor.c:430
 msgid "Place a wool 2:1 port"
-msgstr ""
+msgstr "羊毛 2:1 の港を配置"
 
 #: ../editor/gtk/editor.c:431
 msgid "Place a lumber 2:1 port"
-msgstr ""
+msgstr "木材 2:1 の港を配置"
 
 #. Tooltip to remove a port tile in the editor
 #: ../editor/gtk/editor.c:433
-#, fuzzy
 msgid "Remove a port"
-msgstr "サーバポート"
+msgstr "港を除去"
 
 #: ../editor/gtk/editor.c:434
 msgid "Place a 3:1 port"
-msgstr ""
+msgstr "3:1 の港を配置"
 
 #: ../editor/gtk/editor.c:464
 msgid ""
 "Select the terrain type with the context menu on the left click or toggle a "
 "node to exclude it from being used during the setup phase"
 msgstr ""
+"左クリックコンテクストメニューから地形を選択、もしくはノードを配置フェイズで"
+"使用するかしないかの切り替え"
 
 #: ../editor/gtk/editor.c:601
 msgid "Insert a row"
@@ -3112,21 +3105,18 @@ msgstr "一列削除"
 
 #. Label
 #: ../editor/gtk/editor.c:1016
-#, fuzzy
 msgid "_Title"
-msgstr "タイトルを変更(_C)"
+msgstr "タイトル(_T)"
 
 #. Label
 #: ../editor/gtk/editor.c:1029
-#, fuzzy
 msgid "_Description"
-msgstr "砂漠(_D)"
+msgstr "説明(_D)"
 
 #. Label
 #: ../editor/gtk/editor.c:1047
-#, fuzzy
 msgid "_Comments"
-msgstr "コメント"
+msgstr "コメント(_C)"
 
 #. Menu item
 #: ../editor/gtk/editor.c:1177
@@ -3158,7 +3148,7 @@ msgstr "建設"
 #. The game in the editor does not have a name yet
 #: ../editor/gtk/editor.c:1354
 msgid "Untitled"
-msgstr ""
+msgstr "無題"
 
 #. Application caption
 #: ../editor/gtk/editor.c:1359 ../editor/gtk/pioneers-editor.desktop.in.h:1
@@ -3222,7 +3212,7 @@ msgstr "新規作成(_N)"
 
 #: ../editor/gtk/editor.c:1761
 msgid "Create a new game"
-msgstr "新ゲーム作成"
+msgstr "新しいゲームを作成"
 
 #. Menu entry
 #: ../editor/gtk/editor.c:1764
@@ -3232,7 +3222,7 @@ msgstr "開く(_O)..."
 #. Tooltip for Open menu entry
 #: ../editor/gtk/editor.c:1766
 msgid "Open an existing game"
-msgstr "存在するゲームを開く"
+msgstr "既存のゲームを開く"
 
 #. Menu entry
 #: ../editor/gtk/editor.c:1769
@@ -3256,9 +3246,8 @@ msgstr "名前をつけて保存"
 
 #. Menu entry
 #: ../editor/gtk/editor.c:1780
-#, fuzzy
 msgid "Change _Title"
-msgstr "タイトルを変更"
+msgstr "タイトルを変更(_T)"
 
 #. Tooltip for Change Title menu entry
 #: ../editor/gtk/editor.c:1782
@@ -3333,7 +3322,7 @@ msgstr "Pioneers のゲームを自作する"
 
 #: ../editor/gtk/pioneers-editor.desktop.in.h:3
 msgid "game;board;create;edit;layout;Pioneers;Settlers;"
-msgstr ""
+msgstr "ゲーム;ボード;作成;編集;レイアウト;Pioneers;開拓者;"
 
 #. Commandline metaserver: daemon
 #: ../metaserver/main.c:610
@@ -3611,7 +3600,6 @@ msgstr "メッセージ"
 msgid "The Pioneers Game Server"
 msgstr "Pioneers ゲームサーバ"
 
-#
 #. Wait for all players to disconnect,
 #. * then enable the UI
 #.
@@ -3636,7 +3624,7 @@ msgstr "Pioneers のゲームをホストする"
 
 #: ../server/gtk/pioneers-server.desktop.in.h:3
 msgid "game;board;server;host;Pioneers;Settlers;"
-msgstr ""
+msgstr "ゲーム;ボード;サーバ;ホスト;Pioneers;開拓者;"
 
 #. Commandline server-console: game-title
 #: ../server/main.c:80
@@ -3670,21 +3658,18 @@ msgstr "7の目ルールの扱いを上書きする"
 
 #. Commandline server-console: dice-deck
 #: ../server/main.c:98
-#, fuzzy
 msgid "Override dice-deck handling"
-msgstr "7の目ルールの扱いを上書きする"
+msgstr "サイコロデッキの扱いを上書きする"
 
 #. Commandline server-console: num-dice-decks
 #: ../server/main.c:101
-#, fuzzy
 msgid "Override num-dice-decks handling"
-msgstr "7の目ルールの扱いを上書きする"
+msgstr "サイコロデッキの数の扱いを上書きする"
 
 #. Commandline server-console: num-removed-dice-cards
 #: ../server/main.c:105
-#, fuzzy
 msgid "Override num-removed-dice-cards handling"
-msgstr "7の目ルールの扱いを上書きする"
+msgstr "取り除くサイコロカードの数の扱いを上書きする"
 
 #. Commandline server-console: terrain
 #: ../server/main.c:108
@@ -3749,7 +3734,7 @@ msgstr "メタサーバオプション"
 #. Commandline server-console: Long description of meta group
 #: ../server/main.c:200
 msgid "Options for the metaserver"
-msgstr "メタサーバへのオプション"
+msgstr "メタサーバのオプション"
 
 #. Commandline server-console: Short description of misc group
 #: ../server/main.c:209
@@ -3777,33 +3762,30 @@ msgstr "ゲームのパラメータを読み込めない\n"
 #: ../server/main.c:303 ../server/main.c:322
 #, c-format
 msgid "The network port (%s) for the admin interface is not available.\n"
-msgstr ""
+msgstr "管理インタフェースのネットワークポート (%s) が利用不可。\n"
 
 #: ../server/meta.c:58
-#, fuzzy
 msgid "The connection to the metaserver is lost.\n"
-msgstr "メタサーバへのオプション"
+msgstr "メタサーバへの接続が失われた。\n"
 
 #: ../server/meta.c:64
 #, c-format
 msgid "An attempt to reconnect is scheduled in %u second.\n"
 msgid_plural "An attempt to reconnect is scheduled in %u seconds.\n"
-msgstr[0] ""
+msgstr[0] "再接続は %u 秒後に試行する予定。\n"
 
 #: ../server/meta.c:83
-#, fuzzy
 msgid "Attempting to reconnect to the metaserver.\n"
-msgstr "メタサーバへのオプション"
+msgstr "メタサーバに再接続試行中。\n"
 
 #: ../server/meta.c:311
-#, fuzzy, c-format
+#, c-format
 msgid "Register with the metaserver at %s.\n"
-msgstr "%s のポート %s でメタサーバに登録\n"
+msgstr "%s のメタサーバに登録。\n"
 
 #: ../server/meta.c:322
-#, fuzzy
 msgid "Unregister from the metaserver.\n"
-msgstr "メタサーバから登録解除\n"
+msgstr "メタサーバから登録解除。\n"
 
 #: ../server/player.c:142
 msgid "chat too long"
@@ -3839,7 +3821,6 @@ msgstr "%s 分以内にゲーム開始。"
 msgid "The game starts in %s minute."
 msgstr "%s 分以内にゲーム開始。"
 
-#
 #. Default name for the AI when the computer_names file
 #. * is not found or empty.
 #.
@@ -3850,7 +3831,7 @@ msgstr "コンピュータプレイヤー"
 #: ../server/player.c:450
 #, c-format
 msgid "Unable to determine the hostname of the player: %s"
-msgstr ""
+msgstr "以下のプレイヤーのホスト名を決定できない: %s"
 
 #. The game is over, don't accept new players
 #. Message to send to the client when the game is already over
@@ -3916,70 +3897,3 @@ msgstr "NULL プレイヤーに、資源を使わせようとした。\n"
 #: ../server/turn.c:517
 msgid "The dice roll has been determined by the administrator."
 msgstr "サイコロの目は管理者が決定した。"
-
-#~ msgid "Metaserver kicked us off\n"
-#~ msgstr "メタサーバが我々を蹴り出した。\n"
-
-#~ msgid ""
-#~ "<b>Note</b>:\n"
-#~ "\tThe metaserver does not send information about the games.\n"
-#~ "\tPlease set appropriate values yourself."
-#~ msgstr ""
-#~ "<b>注意</b>:\n"
-#~ "\tメタサーバはゲームについての情報を送りません。\n"
-#~ "\t自分で適切な値を設定してください。"
-
-#~ msgid "Error checking connect status: %s\n"
-#~ msgstr "接続状態検査時にエラー: %s\n"
-
-#~ msgid "Error connecting to host '%s': %s\n"
-#~ msgstr "ホスト '%s' への接続時にエラー: %s\n"
-
-#~ msgid "Error writing socket: %s\n"
-#~ msgstr "ソケット書き込み時にエラー: %s\n"
-
-#~ msgid "Error creating socket: %s\n"
-#~ msgstr "ソケット作成時にエラー: %s\n"
-
-#~ msgid "Error setting socket close-on-exec: %s\n"
-#~ msgstr "ソケットの close-on-exec 設定時にエラー: %s\n"
-
-#~ msgid "Error setting socket non-blocking: %s\n"
-#~ msgstr "ソケットの non-blocking 設定時にエラー: %s\n"
-
-#~ msgid "Cannot resolve %s port %s: %s\n"
-#~ msgstr "%s ポート %s を解決できない: %s\n"
-
-#~ msgid "Cannot resolve %s port %s: host not found\n"
-#~ msgstr "%s ポート %s を解決できない: ホストが見つからない\n"
-
-#~ msgid "Error creating struct addrinfo: %s"
-#~ msgstr "addrinfo 構造体作成時にエラー: %s"
-
-#~ msgid "Error creating listening socket: %s\n"
-#~ msgstr "リスニングソケット作成時にエラー: %s\n"
-
-#~ msgid "Error during listen on socket: %s\n"
-#~ msgstr "ソケットリッスン時にエラー: %s\n"
-
-#~ msgid "Listening not yet supported on this platform."
-#~ msgstr "リスニングはこのプラットフォームではまだサポートされていない。"
-
-#~ msgid "Error getting peer name: %s"
-#~ msgstr "peer 名の取得時にエラー: %s"
-
-#~ msgid "Error resolving address: %s"
-#~ msgstr "アドレス解決時にエラー: %s"
-
-#~ msgid "Net_get_peer_name not yet supported on this platform."
-#~ msgstr ""
-#~ "Net_get_peer_name はこのプラットフォームではまだサポートされていない。"
-
-#~ msgid "Error accepting connection: %s"
-#~ msgstr "接続受付時にエラー: %s"
-
-#~ msgid "Admin port not available.\n"
-#~ msgstr "管理ポートが利用できない。\n"
-
-#~ msgid "Admin port is not set, cannot disable game start too\n"
-#~ msgstr "管理ポートが設定されておらず、ゲーム開始を無効にもできない\n"
