@@ -978,7 +978,7 @@ msgstr " diu: "
 #: ../client/gtk/connect.c:287
 #, c-format
 msgid "Metaserver at %s, port %s"
-msgstr "Meta-servidor a %s, port %s"
+msgstr "Metaservidor a %s, port %s"
 
 #: ../client/gtk/connect.c:297
 msgid "Finished.\n"
@@ -1030,7 +1030,7 @@ msgstr "Línia de redirecció incorrecta: %s\n"
 #: ../client/gtk/connect.c:632
 #, c-format
 msgid "The metaserver is too old to create servers (version %d.%d)\n"
-msgstr "El meta servidor és massa vell per crear servidors (versió %d.%d)\n"
+msgstr "El metaservidor és massa vell per crear servidors (versió %d.%d)\n"
 
 #: ../client/gtk/connect.c:671 ../client/gtk/connect.c:750
 #: ../client/gtk/connect.c:756
@@ -1076,7 +1076,7 @@ msgstr "S'ha redireccionat al metaservidor a %s, port %s.\n"
 
 #: ../client/gtk/connect.c:832
 msgid "Receiving a list of Pioneers servers from the metaserver.\n"
-msgstr "S'està rebent una llista de servidors Pioneers del meta servidor.\n"
+msgstr "S'està rebent una llista de servidors Pioneers del metaservidor.\n"
 
 #. Label
 #: ../client/gtk/connect.c:915
@@ -1133,7 +1133,7 @@ msgstr "No t'apuntis a una partida pública"
 #. Tooltip
 #: ../client/gtk/connect.c:1208
 msgid "Create a new public game at the metaserver"
-msgstr "Crea una nova partida pública al meta servidor"
+msgstr "Crea una nova partida pública al metaservidor"
 
 #. Tooltip
 #: ../client/gtk/connect.c:1213
@@ -1281,7 +1281,7 @@ msgstr "Apunta't a una partida descoberta automàticament"
 #. metaserver label
 #: ../client/gtk/connect.c:1554 ../server/gtk/main.c:592
 msgid "Metaserver"
-msgstr "Meta servidor"
+msgstr "Metaservidor"
 
 #. Button
 #: ../client/gtk/connect.c:1576
@@ -2725,7 +2725,7 @@ msgstr "F"
 #. Tooltip for the list of metaservers
 #: ../common/gtk/metaserver.c:86
 msgid "Select a metaserver"
-msgstr "Selecciona un meta servidor"
+msgstr "Selecciona un metaservidor"
 
 #. Tooltip for the list of games
 #: ../common/gtk/select-game.c:124
@@ -3376,7 +3376,7 @@ msgstr "Depura els missatges de registre del sistema"
 #. Long description in the commandline for metaserver: help
 #: ../metaserver/main.c:673
 msgid "- Metaserver for Pioneers"
-msgstr "- Meta servidor de Pioneers"
+msgstr "- Metaservidor de Pioneers"
 
 #: ../metaserver/main.c:689
 #, c-format
@@ -3464,7 +3464,7 @@ msgstr "Registra el servidor"
 
 #: ../server/gtk/main.c:586
 msgid "Register this game at the metaserver"
-msgstr "Registra aquesta partida al meta servidor"
+msgstr "Registra aquesta partida al metaservidor"
 
 #. hostname label
 #: ../server/gtk/main.c:617
@@ -3742,7 +3742,7 @@ msgstr "Dóna números als jugadors d'acord amb l'ordre d'entrada a la partida"
 #. Commandline server-console: Short description of meta group
 #: ../server/main.c:198
 msgid "Metaserver Options"
-msgstr "Opcions del Meta-servidor"
+msgstr "Opcions del Metaservidor"
 
 #. Commandline server-console: Long description of meta group
 #: ../server/main.c:200
