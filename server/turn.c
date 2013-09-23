@@ -495,7 +495,6 @@ static void roll_dice(Player * player)
 				game->die2 = random_guint(6) + 1;
 			}
 			roll = game->die1 + game->die2;
-			game->rolled_dice = TRUE;
 			/* sevens_rule == 1: reroll first two turns */
 			if (game->params->sevens_rule == 1)
 				if (roll == 7 && game->curr_turn <= 2)
@@ -517,6 +516,8 @@ static void roll_dice(Player * player)
 				 N_(""
 				    "The dice roll has been determined by the administrator."));
 	}
+	game->rolled_dice = TRUE;
+	g_assert(roll == game->die1 + game->die2);
 
 	/* let people know what we rolled */
 	player_broadcast(player, PB_RESPOND, FIRST_VERSION,

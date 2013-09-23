@@ -1,3 +1,6 @@
+2013-09-23  Roland Clobus <rclobus@rclobus.nl>
+	* server/turn.c: Fixed 'admin fix-dice' command.
+
 2013-09-08  Micah Bunting <amnykon@gmail.com>
 	* server/turn.c, server/server.h, server/pregame.c, server/develop.c,
 	common/cards.c, common/cards.h, client/common/develop.c,
