@@ -686,7 +686,8 @@ gboolean mode_pre_game(Player * player, gint event)
 					     (player->devel));
 			for (i = 0; i < devel_deck_count(player->devel);
 			     i++) {
-				player_send_uncached(player, FIRST_VERSION,
+				player_send_uncached(player, FIRST_VERSION, V14, "playerinfo: devcard: %d %d\n", (gint)devel_deck_get_card(player->devel, i), i < game->num_playable_cards ? -1 : game->curr_turn);
+				player_send_uncached(player, V15,
 						     LATEST_VERSION,
 						     "playerinfo: devcard: %d %d\n",
 						     (gint)
