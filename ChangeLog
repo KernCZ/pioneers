@@ -1,3 +1,7 @@
+2013-09-24  Micah Bunting <amnykon@gmail.com>
+	* client/common/client.c, server/pregame.c: Simplified the "devcard"
+	protocol.
+
 2013-09-23  Roland Clobus <rclobus@rclobus.nl>
 	* server/turn.c: Fixed 'admin fix-dice' command.
 	* server/pregame.c: Fixed protocol incompatibility during reconnect.

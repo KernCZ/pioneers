@@ -1177,9 +1177,7 @@ static gboolean mode_load_gameinfo(StateMachine * sm, gint event)
 			return FALSE;
 		}
 
-		develop_bought_card_turn(devcard,
-					 devcardturnbought ==
-					 recovery_info.turnnum);
+		develop_bought_card_turn(devcard, devcardturnbought != 0);
 
 		devcardidx++;
 		if (devcardidx >= numdevcards) {
