@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: Pioneers 0.12.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-09-08 18:03+0200\n"
-"PO-Revision-Date: 2012-06-25 00:22+0000\n"
-"Last-Translator: Flames_in_Paradise <Unknown>\n"
+"PO-Revision-Date: 2013-09-29 09:39+0100\n"
+"Last-Translator: Roland Clobus <rclobus@rclobus.nl>\n"
 "Language-Team: Pit Garbe <piiit@gmx.de>, Roman Hodek <roman@hodek.net>, de "
 "<de@li.org>\n"
 "Language: de\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Launchpad-Export-Date: 2012-09-06 06:01+0000\n"
-"X-Generator: Launchpad (build 15909)\n"
+"X-Generator: Poedit 1.5.4\n"
 
 #. Commandline pioneersai: server
 #: ../client/ai/ai.c:70
@@ -990,7 +990,7 @@ msgstr "Fertig.\n"
 #: ../client/gtk/connect.c:312 ../client/gtk/connect.c:390
 #: ../client/gtk/connect.c:409 ../client/gtk/connect.c:979
 msgid "The metaserver is not available anymore.\n"
-msgstr ""
+msgstr "Der Metaserver ist nicht mehr verfügbar.\n"
 
 #: ../client/gtk/connect.c:323 ../client/gtk/connect.c:444
 #: ../client/gtk/connect.c:771
@@ -1002,9 +1002,9 @@ msgid "Receiving game names from the metaserver.\n"
 msgstr "Empfange Spielenamen vom Metaserver.\n"
 
 #: ../client/gtk/connect.c:423
-#, fuzzy, c-format
+#, c-format
 msgid "New game server requested on %s port %s.\n"
-msgstr "Neuer Spielserver angefordert auf %s port %s\n"
+msgstr "Neuer Spielserver angefordert auf %s Port %s.\n"
 
 #: ../client/gtk/connect.c:433
 msgid "Incomplete information about the new game server received.\n"
@@ -1022,9 +1022,8 @@ msgid "Receiving data from inactive session: %s\n"
 msgstr ""
 
 #: ../client/gtk/connect.c:578 ../server/meta.c:192
-#, fuzzy
 msgid "Too many metaserver redirects.\n"
-msgstr "Zu viele Metaserver-Weiterleitungen\n"
+msgstr "Zu viele Metaserver-Weiterleitungen.\n"
 
 #: ../client/gtk/connect.c:607 ../server/meta.c:208
 #, c-format
@@ -1038,7 +1037,7 @@ msgstr "Metaserver zu alt, um Spielserver zu starten (Version %d.%d)\n"
 
 #: ../client/gtk/connect.c:671 ../client/gtk/connect.c:750
 #: ../client/gtk/connect.c:756
-#, fuzzy, c-format
+#, c-format
 msgid "Unexpected data from the metaserver: %s\n"
 msgstr "Unbekannte Nachricht vom Metaserver: %s\n"
 
@@ -1069,14 +1068,14 @@ msgid "Random"
 msgstr "Zufällig"
 
 #: ../client/gtk/connect.c:820 ../server/meta.c:299
-#, fuzzy, c-format
+#, c-format
 msgid "Redirected to the metaserver at %s.\n"
-msgstr "Weitergeleitet zu Metaserver auf %s, Port %s\n"
+msgstr "Weitergeleitet zu Metaserver auf %s.\n"
 
 #: ../client/gtk/connect.c:825 ../server/meta.c:302
-#, fuzzy, c-format
+#, c-format
 msgid "Redirected to the metaserver at %s, port %s.\n"
-msgstr "Weitergeleitet zu Metaserver auf %s, Port %s\n"
+msgstr "Weitergeleitet zu Metaserver auf %s, Port %s.\n"
 
 #: ../client/gtk/connect.c:832
 msgid "Receiving a list of Pioneers servers from the metaserver.\n"
@@ -1100,9 +1099,8 @@ msgid "Canceled.\n"
 msgstr ""
 
 #: ../client/gtk/connect.c:960
-#, fuzzy
 msgid "Requesting new game server.\n"
-msgstr "Anfrage für einen neuen Spielserver gesendet\n"
+msgstr "Anfrage für einen neuen Spielserver gesendet.\n"
 
 #: ../client/gtk/connect.c:1015 ../server/gtk/main.c:369
 #: ../server/server.c:122
@@ -1996,7 +1994,7 @@ msgstr "Spiele ein Pioneers-Spiel"
 
 #: ../client/gtk/pioneers.desktop.in.h:3
 msgid "game;board;play;Pioneers;Settlers;"
-msgstr ""
+msgstr "Spiel;Brett;spielen;Pioneers;Siedler;"
 
 #: ../client/gtk/player.c:53
 msgid "Settlements"
@@ -2283,9 +2281,8 @@ msgid "Use dice deck instead of dice:"
 msgstr ""
 
 #: ../client/gtk/settingscreen.c:201
-#, fuzzy
 msgid "Number of dice decks:"
-msgstr "Anzahl Spieler:"
+msgstr ""
 
 #: ../client/gtk/settingscreen.c:207
 msgid "Number of dice cards removed after shuffling:"
@@ -2469,7 +2466,7 @@ msgstr ""
 #: ../common/game.c:523
 #, c-format
 msgid "Obsolete rule: '%s'\n"
-msgstr ""
+msgstr "Veraltete Regel: '%s'\n"
 
 #: ../common/game.c:530
 #, c-format
@@ -2477,6 +2474,8 @@ msgid ""
 "The game uses the new rule '%s', which is not yet supported. Consider "
 "upgrading.\n"
 msgstr ""
+"Das Spiel verwendet die neue Regel '%s', die noch nicht unterstützt ist. "
+"Aktualisierung ist empfohlen.\n"
 
 #: ../common/game.c:924 ../common/game.c:955
 msgid "This game cannot be won."
@@ -2497,7 +2496,7 @@ msgstr ""
 "gewonnen werden."
 
 #: ../common/game.c:971
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Required victory points: %d\n"
 "Points obtained by building all: %d\n"
@@ -2508,7 +2507,7 @@ msgid ""
 msgstr ""
 "Benötigte Siegpunkte: %d\n"
 "Punkte durch Gebäude: %d\n"
-"Punkte durch Entwicklungskarten: %d\n"
+"Punkte durch Entwicklungskarten: %u\n"
 "Längste Straße/Stärkste Rittermacht: %d+%d\n"
 "Größter Insel-Entdeckungs-Bonus: %d\n"
 "Gesamt: %d"
@@ -2524,14 +2523,13 @@ msgid "Game directory '%s' not found\n"
 msgstr "Spielverzeichnis '%s' nicht gefunden\n"
 
 #: ../common/game-list.c:131
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to load game: '%s'\n"
-msgstr "Laden von '%s' fehlgeschlagen"
+msgstr "Laden von '%s' fehlgeschlagen\n"
 
 #: ../common/game-list.c:151
-#, fuzzy
 msgid "No games available\n"
-msgstr "Entschuldigung, %s verfügbar.\n"
+msgstr "Keine Spiele verfügbar\n"
 
 #: ../common/gtk/aboutbox.c:76
 msgid ""
@@ -2648,9 +2646,8 @@ msgstr ""
 
 #. Label
 #: ../common/gtk/game-rules.c:154
-#, fuzzy
 msgid "Number of dice decks"
-msgstr "Anzahl der Computerspieler"
+msgstr ""
 
 #: ../common/gtk/game-rules.c:171
 msgid "The number of dice decks (of 36 cards each)"
@@ -2875,7 +2872,7 @@ msgid "Error reading socket: %s\n"
 msgstr "Fehler beim Lesen des Sockets: %s\n"
 
 #: ../common/network.c:380
-#, fuzzy, c-format
+#, c-format
 msgid "Error connecting to %s: %s\n"
 msgstr "Fehler beim Verbinden zu %s: %s\n"
 
@@ -3097,9 +3094,8 @@ msgstr ""
 
 #. Tooltip to remove a port tile in the editor
 #: ../editor/gtk/editor.c:433
-#, fuzzy
 msgid "Remove a port"
-msgstr "Serverport"
+msgstr ""
 
 #: ../editor/gtk/editor.c:434
 msgid "Place a 3:1 port"
@@ -3129,21 +3125,18 @@ msgstr "Spalte löschen"
 
 #. Label
 #: ../editor/gtk/editor.c:1016
-#, fuzzy
 msgid "_Title"
-msgstr "_Titel ändern"
+msgstr "_Titel"
 
 #. Label
 #: ../editor/gtk/editor.c:1029
-#, fuzzy
 msgid "_Description"
-msgstr "Wü_ste"
+msgstr "_Umschreibung"
 
 #. Label
 #: ../editor/gtk/editor.c:1047
-#, fuzzy
 msgid "_Comments"
-msgstr "Kommentare"
+msgstr "_Kommentare"
 
 #. Menu item
 #: ../editor/gtk/editor.c:1177
@@ -3175,7 +3168,7 @@ msgstr "Gebäude"
 #. The game in the editor does not have a name yet
 #: ../editor/gtk/editor.c:1354
 msgid "Untitled"
-msgstr ""
+msgstr "Ohne Titel"
 
 #. Application caption
 #: ../editor/gtk/editor.c:1359 ../editor/gtk/pioneers-editor.desktop.in.h:1
@@ -3273,9 +3266,8 @@ msgstr "Speichern unter"
 
 #. Menu entry
 #: ../editor/gtk/editor.c:1780
-#, fuzzy
 msgid "Change _Title"
-msgstr "Titel ändern"
+msgstr "_Titel ändern"
 
 #. Tooltip for Change Title menu entry
 #: ../editor/gtk/editor.c:1782
@@ -3350,24 +3342,24 @@ msgstr "Erstelle dein eigenes Pioneers-Spiel"
 
 #: ../editor/gtk/pioneers-editor.desktop.in.h:3
 msgid "game;board;create;edit;layout;Pioneers;Settlers;"
-msgstr ""
+msgstr "Spiel;Brett;Entwurf;bearbeiten;Layout;Pioneers;Siedler;"
 
 #. Commandline metaserver: daemon
 #: ../metaserver/main.c:610
 msgid "Daemonize the metaserver on start"
-msgstr "Starte Meta-Server beim Programmstart als eigenständigen Prozess"
+msgstr "Starte Metaserver beim Programmstart als eigenständigen Prozess"
 
 #. Commandline metaserver: pidfile
 #: ../metaserver/main.c:613
 msgid "Pidfile to create when daemonizing (implies -d)"
 msgstr ""
-"Zu erstellende Pid-Datei, wenn Meta-Server als eigenständiger Prozess "
+"Zu erstellende Pid-Datei, wenn Metaserver als eigenständiger Prozess "
 "gestartet wird (bewirkt -d)"
 
 #. Commandline metaserver: redirect
 #: ../metaserver/main.c:618
 msgid "Redirect clients to another metaserver"
-msgstr "Verbinde Clients mit anderem Meta-Server"
+msgstr "Verbinde Clients mit anderem Metaserver"
 
 #. Commandline metaserver: server
 #: ../metaserver/main.c:621
@@ -3402,7 +3394,7 @@ msgstr "- Metaserver für Pioneers"
 #: ../metaserver/main.c:689
 #, c-format
 msgid "metaserver protocol:"
-msgstr "Protokoll des Meta-Servers:"
+msgstr "Protokoll des Metaservers:"
 
 #: ../server/avahi.c:68
 msgid "Avahi registration successful.\n"
@@ -3656,7 +3648,7 @@ msgstr "Ein Pioneers-Spiel bereitstellen"
 
 #: ../server/gtk/pioneers-server.desktop.in.h:3
 msgid "game;board;server;host;Pioneers;Settlers;"
-msgstr ""
+msgstr "Spiel;Brett;Server;Host;Pioneers;Siedler;"
 
 #. Commandline server-console: game-title
 #: ../server/main.c:80
@@ -3690,21 +3682,18 @@ msgstr "Überschreibe die 7-Regel"
 
 #. Commandline server-console: dice-deck
 #: ../server/main.c:98
-#, fuzzy
 msgid "Override dice-deck handling"
-msgstr "Überschreibe die 7-Regel"
+msgstr ""
 
 #. Commandline server-console: num-dice-decks
 #: ../server/main.c:101
-#, fuzzy
 msgid "Override num-dice-decks handling"
-msgstr "Überschreibe die 7-Regel"
+msgstr ""
 
 #. Commandline server-console: num-removed-dice-cards
 #: ../server/main.c:105
-#, fuzzy
 msgid "Override num-removed-dice-cards handling"
-msgstr "Überschreibe die 7-Regel"
+msgstr ""
 
 #. Commandline server-console: terrain
 #: ../server/main.c:108
@@ -3803,9 +3792,8 @@ msgid "The network port (%s) for the admin interface is not available.\n"
 msgstr ""
 
 #: ../server/meta.c:58
-#, fuzzy
 msgid "The connection to the metaserver is lost.\n"
-msgstr "Optionen für den Metaserver"
+msgstr "Die Verbindung mit dem Metaserver ist verbrochen.\n"
 
 #: ../server/meta.c:64
 #, c-format
@@ -3815,19 +3803,17 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: ../server/meta.c:83
-#, fuzzy
 msgid "Attempting to reconnect to the metaserver.\n"
-msgstr "Optionen für den Metaserver"
+msgstr "Versuch die Verbindung zum Metaserver wieder zu stellen.\n"
 
 #: ../server/meta.c:311
-#, fuzzy, c-format
+#, c-format
 msgid "Register with the metaserver at %s.\n"
-msgstr "Registriere bei Metaserver %s Port %s\n"
+msgstr "Registriere bei Metaserver auf %s.\n"
 
 #: ../server/meta.c:322
-#, fuzzy
 msgid "Unregister from the metaserver.\n"
-msgstr "Beim Meta-Server austragen\n"
+msgstr "Beim Metaserver austragen.\n"
 
 #: ../server/player.c:142
 msgid "chat too long"
