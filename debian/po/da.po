@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: pioneers 0.12.4-1\n"
+"Project-Id-Version: Pioneers 15.1-1\n"
 "Report-Msgid-Bugs-To: pioneers@packages.debian.org\n"
 "POT-Creation-Date: 2013-03-22 12:32+0100\n"
 "PO-Revision-Date: 2011-07-14 12:42+0000\n"
@@ -19,20 +19,12 @@ msgstr ""
 #. Type: string
 #. Description
 #: ../pioneers-metaserver.templates:1001
-#, fuzzy
-#| msgid "Port range for creating new games on the meta-server:"
 msgid "Port range for creating new games on the metaserver:"
 msgstr "Portinterval for oprettelse af nye spil på metaserveren:"
 
 #. Type: string
 #. Description
 #: ../pioneers-metaserver.templates:1001
-#, fuzzy
-#| msgid ""
-#| "The meta-server can create new games, so players don't need to install "
-#| "and run the pioneers server. The ports which are used for these games can "
-#| "be specified. If this field is left empty, the meta-server will disable "
-#| "its game creation functionality."
 msgid ""
 "The metaserver can create new games, so players don't need to install and "
 "run the pioneers server. The ports which are used for these games can be "
@@ -63,11 +55,6 @@ msgstr "Servernavn for oprettede spil:"
 #. Type: string
 #. Description
 #: ../pioneers-metaserver.templates:2001
-#, fuzzy
-#| msgid ""
-#| "In some cases, the name the meta-server uses for itself when creating new "
-#| "games is incorrect. If this field is not left empty, it is used to "
-#| "override the detected hostname."
 msgid ""
 "In some cases, the name the metaserver uses for itself when creating new "
 "games is incorrect. If this field is not left empty, it is used to override "
@@ -80,25 +67,15 @@ msgstr ""
 #. Type: string
 #. Description
 #: ../pioneers-metaserver.templates:3001
-#, fuzzy
-#| msgid "Extra arguments to pass to the meta-server:"
 msgid "Extra arguments to pass to the metaserver:"
 msgstr "Ekstra argumenter at videresende til metaserveren:"
 
 #. Type: string
 #. Description
 #: ../pioneers-metaserver.templates:3001
-#, fuzzy
-#| msgid ""
-#| "These arguments are passed to the meta-server. There are only two "
-#| "sensible arguments:\n"
-#| " * --syslog-debug: Send debugging output to syslog\n"
-#| " * --redirect: Redirect clients to another meta-server"
 msgid ""
 "These arguments are passed to the metaserver.\n"
 " * --redirect: Redirect clients to another metaserver"
 msgstr ""
-"Disse argumenter videresendes til metaserveren. Der er kun to fornuftige "
-"argumenter:\n"
-" * --syslog-debug: Send fejlsøgningsuddata til syslog\n"
+"Disse argumenter videresendes til metaserveren.\n"
 " * --redirect: Videresend klienter til en anden metaserver"

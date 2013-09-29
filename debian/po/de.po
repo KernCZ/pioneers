@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: pioneers 0.12.2-1\n"
+"Project-Id-Version: Pioneers 15.1-1\n"
 "Report-Msgid-Bugs-To: pioneers@packages.debian.org\n"
 "POT-Creation-Date: 2013-03-22 12:32+0100\n"
 "PO-Revision-Date: 2008-05-22 22:42+0200\n"
@@ -18,30 +18,22 @@ msgstr ""
 #. Type: string
 #. Description
 #: ../pioneers-metaserver.templates:1001
-#, fuzzy
-#| msgid "Port range for creating new games on the meta-server:"
 msgid "Port range for creating new games on the metaserver:"
-msgstr "Port-Bereich, um neue Spiele auf dem Meta-Server zu erstellen:"
+msgstr "Port-Bereich, um neue Spiele auf dem Metaserver zu erstellen:"
 
 #. Type: string
 #. Description
 #: ../pioneers-metaserver.templates:1001
-#, fuzzy
-#| msgid ""
-#| "The meta-server can create new games, so players don't need to install "
-#| "and run the pioneers server. The ports which are used for these games can "
-#| "be specified. If this field is left empty, the meta-server will disable "
-#| "its game creation functionality."
 msgid ""
 "The metaserver can create new games, so players don't need to install and "
 "run the pioneers server. The ports which are used for these games can be "
 "specified. If this field is left empty, the metaserver will disable its game "
 "creation functionality."
 msgstr ""
-"Der Meta-Server kann neue Spiele erstellen, daher müssen die Spieler den "
+"Der Metaserver kann neue Spiele erstellen, daher müssen die Spieler den "
 "Pioneers-Server nicht installieren und ausführen. Die für diese Spiele zu "
 "verwendenden Ports können angegeben werden. Falls dieses Feld leer bleibt, "
-"wird der Meta-Server seine Funktionalität zum Erstellen von Spielen "
+"wird der Metaserver seine Funktionalität zum Erstellen von Spielen "
 "deaktivieren."
 
 #. Type: string
@@ -63,57 +55,27 @@ msgstr "Servername für erstellte Spiele:"
 #. Type: string
 #. Description
 #: ../pioneers-metaserver.templates:2001
-#, fuzzy
-#| msgid ""
-#| "In some cases, the name the meta-server uses for itself when creating new "
-#| "games is incorrect. If this field is not left empty, it is used to "
-#| "override the detected hostname."
 msgid ""
 "In some cases, the name the metaserver uses for itself when creating new "
 "games is incorrect. If this field is not left empty, it is used to override "
 "the detected hostname."
 msgstr ""
-"In einigen Fällen ist der Name, den der Meta-Server für sich beim Erstellen "
+"In einigen Fällen ist der Name, den der Metaserver für sich beim Erstellen "
 "von Spielen verwendet, falsch. Falls dieses Feld nicht leer gelassen wird, "
 "überschreibt der Wert den erkannten Namen des Rechners."
 
 #. Type: string
 #. Description
 #: ../pioneers-metaserver.templates:3001
-#, fuzzy
-#| msgid "Extra arguments to pass to the meta-server:"
 msgid "Extra arguments to pass to the metaserver:"
-msgstr "Zusätzliche Argumente, die an den Meta-Server übergeben werden sollen:"
+msgstr "Zusätzliche Argumente, die an den Metaserver übergeben werden sollen:"
 
 #. Type: string
 #. Description
 #: ../pioneers-metaserver.templates:3001
-#, fuzzy
-#| msgid ""
-#| "These arguments are passed to the meta-server. There are only two "
-#| "sensible arguments:\n"
-#| " * --syslog-debug: Send debugging output to syslog\n"
-#| " * --redirect: Redirect clients to another meta-server"
 msgid ""
 "These arguments are passed to the metaserver.\n"
 " * --redirect: Redirect clients to another metaserver"
 msgstr ""
-"Diese Argumente werden an den Meta-Server übergeben. Es gibt nur zwei "
-"sinnvolle Argumente:\n"
-" * --syslog-debug: Schicke Debugging-Ausgaben an Syslog\n"
-" * --redirect: Leite Clients an einen anderen Meta-Server weiter"
-
-#~ msgid "Run the pioneers meta-server?"
-#~ msgstr "Soll der Meta-Server von Pioneers ausgeführt werden?"
-
-#~ msgid ""
-#~ "Pioneers contains a meta-server, which can be used to find networked "
-#~ "games. The meta-server needs to run in a central location, so that all "
-#~ "players can find it. There is a public meta-server at pioneers.debian."
-#~ "net. Most people do not need to run a meta-server on their computer."
-#~ msgstr ""
-#~ "Pioneers enthält einen Meta-Server, der zum Auffinden von vernetzten "
-#~ "Spielen verwendet werden kann. Der Meta-Server muss an einem zentralen "
-#~ "Ort ausgeführt werden, so dass ihn alle Spieler finden können. Es gibt "
-#~ "unter pioneers.debian.net. einen öffentlichen Meta-Server. Die meisten "
-#~ "Leute werden keinen Meta-Server auf ihrem Rechner ausführen müssen."
+"Diese Argumente werden an den Metaserver übergeben.\n"
+" * --redirect: Leite Clients an einen anderen Metaserver weiter"
