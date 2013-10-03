@@ -136,7 +136,7 @@ void discard_get_list(gint * discards)
 					  (discard.resource_widget),
 					  discards);
 	else
-		memset(discards, 0, sizeof(discards));
+		memset(discards, 0, NO_RESOURCE * sizeof(*discards));
 }
 
 void discard_player_did(gint player_num)

@@ -1,3 +1,6 @@
+2013-10-03  Roland Clobus <rclobus@rclobus.nl>
+	* client/gtk/discard.c: Fixed compiler warning.
+
 2013-09-24  Micah Bunting <amnykon@gmail.com>
 	* client/common/client.c, server/pregame.c: Simplified the "devcard"
 	protocol.
