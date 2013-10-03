@@ -5,6 +5,8 @@
 	* autogen.sh: Added --fhs command line option to set the FHS paths.
 	* client/help/C/Makefile.am: Updated the targets to build and clean the
 	help files (simplehtml and yelphtml).
+	* client/help/C/pioneers.xml: Updated Q&A section. Updated admin
+	protocol.
 
 2013-09-24  Micah Bunting <amnykon@gmail.com>
 	* client/common/client.c, server/pregame.c: Simplified the "devcard"

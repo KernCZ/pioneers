@@ -26,7 +26,7 @@
       <year>2000</year> <holder>Andy Heroff</holder>
     </copyright>
     <copyright>
-      <year>2004, 2006</year> <holder>Roland Clobus</holder>
+      <year>2004-2013</year> <holder>Roland Clobus</holder>
     </copyright>
     &legal;
   </bookinfo>
@@ -1363,6 +1363,17 @@
 	is available on this metaserver.
       </para></answer>
       </qandaentry>
+      <qandaentry>
+      <question><para>
+        The dice are unfair, a twelve was rolled three times in a row!
+      </para></question>
+      <answer><para>
+        The dice have been tested. They are fair, but there is always a chance
+	that you'll roll a twelve three times in a row. When you've started a
+	server, you can choose to use several dice decks (each of 36 cards)
+	instead of regular dice.
+      </para></answer>
+      </qandaentry>
     </qandadiv>
     <qandadiv id="faq_lobby">
       <title>The Lobby</title>
@@ -1438,16 +1449,6 @@
 	 <para>In all other cases, you are advised to keep it
 	   <emphasis>empty</emphasis>.</para>
 	 </answer>
-      </qandaentry>
-      <qandaentry>
-      <question><para>
-        How do I configure my router?
-      </para></question>
-      <answer><para>
-        Henner Ke&szlig;ler wrote a small 
-	<ulink url="http://people.freenet.de/aitsch/pio/howto.htm">HOWTO</ulink>
-        describing a possible way to configure your router, using dyndns.
-      </para></answer>
       </qandaentry>
       <qandaentry>
       <question><para>
@@ -1945,8 +1946,16 @@
             </thead>
             <tbody>
               <row>
-                <entry><userinput>admin set-game</userinput></entry>
-                <entry>string</entry>
+                <entry><userinput>admin set-port</userinput></entry>
+                <entry>integer</entry>
+              </row>
+              <row>
+                <entry><userinput>admin start-server</userinput></entry>
+                <entry>none</entry>
+              </row>
+              <row>
+                <entry><userinput>admin stop-server</userinput></entry>
+                <entry>none</entry>
               </row>
               <row>
                 <entry><userinput>admin set-register-server</userinput></entry>
@@ -1961,6 +1970,18 @@
                 <entry>integer</entry>
               </row>
               <row>
+                <entry><userinput>admin set-dice-deck</userinput></entry>
+                <entry>boolean (0/1)</entry>
+              </row>
+              <row>
+                <entry><userinput>admin set-num-dice-decks</userinput></entry>
+                <entry>integer</entry>
+              </row>
+              <row>
+                <entry><userinput>admin set-num-removed-dice-cards</userinput></entry>
+                <entry>integer</entry>
+              </row>
+              <row>
                 <entry><userinput>admin set-victory-points</userinput></entry>
                 <entry>integer</entry>
               </row>
@@ -1969,16 +1990,8 @@
                 <entry>integer</entry>
               </row>
               <row>
-                <entry><userinput>admin set-port</userinput></entry>
-                <entry>integer</entry>
-              </row>
-              <row>
-                <entry><userinput>admin start-server</userinput></entry>
-                <entry>none</entry>
-              </row>
-              <row>
-                <entry><userinput>admin stop-server</userinput></entry>
-                <entry>none</entry>
+                <entry><userinput>admin set-game</userinput></entry>
+                <entry>string</entry>
               </row>
               <row>
                 <entry><userinput>admin quit</userinput></entry>
