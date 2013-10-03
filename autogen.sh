@@ -24,4 +24,8 @@ which gnome-autogen.sh || {
     . $srcdir/macros/gnome-autogen.sh
     exit 0
 }
-. gnome-autogen.sh
+if test "X$1" = "X--fhs"; then
+	. gnome-autogen.sh --prefix=/usr --bindir=/usr/games --mandir=/usr/share/man
+else
+	. gnome-autogen.sh
+fi
