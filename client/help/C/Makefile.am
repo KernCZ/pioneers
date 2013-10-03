@@ -27,6 +27,8 @@ entities = legal.xml
 include $(top_srcdir)/xmldocs.make
 dist-hook: app-dist-hook
 
+CLEANFILES += *.html pioneers.proc
+
 # HTMLHelp is the compressed help format for Microsoft Windows
 htmlhelp: pioneers.xml
 	xmlto -m custom.xsl htmlhelp pioneers.xml
@@ -38,6 +40,5 @@ htmlhelp: pioneers.xml
 simplehtml: pioneers.xml
 	xmlto -m custom.xsl html pioneers.xml
 
-html: pioneers.xml
-	xsltproc /usr/share/xml/gnome/xslt/docbook/html/db2html.xsl pioneers.xml > index.html
-	cp /usr/share/gnome-doc-utils/icons/hicolor/48x48/admon-note.png  .
+yelphtml: pioneers.xml
+	xsltproc /usr/share/yelp-xsl/xslt/docbook/html/db2html.xsl pioneers.xml
