@@ -8,8 +8,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 15.1\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-08 18:03+0200\n"
+"Report-Msgid-Bugs-To: pio-i18n@lists.sourceforge.net\n"
+"POT-Creation-Date: 2013-10-12 21:28+0200\n"
 "PO-Revision-Date: 2013-09-16 02:46+0000\n"
 "Last-Translator: KAMO Tomoyuki <kto@miomio.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -352,206 +352,206 @@ msgstr "Pioneers の最新バージョンは"
 msgid "The game is starting. I'm not needed anymore. Goodbye."
 msgstr "ゲームを開始します。私の仕事はここでおしまいです。では。"
 
-#: ../client/common/client.c:106
+#: ../client/common/client.c:105
 msgid "Waiting"
 msgstr "待機中"
 
-#: ../client/common/client.c:108
+#: ../client/common/client.c:107
 msgid "Idle"
 msgstr "アイドル"
 
-#: ../client/common/client.c:533
+#: ../client/common/client.c:532
 msgid "We have been kicked out of the game.\n"
 msgstr "ゲームから蹴り出された。\n"
 
 #. Network status: offline
-#: ../client/common/client.c:536 ../client/common/client.c:991
+#: ../client/common/client.c:535 ../client/common/client.c:990
 #: ../client/gtk/gui.c:1553
 msgid "Offline"
 msgstr "オフライン"
 
-#: ../client/common/client.c:557
+#: ../client/common/client.c:556
 #, c-format
 msgid "Error (%s): %s\n"
 msgstr "エラー (%s): %s\n"
 
-#: ../client/common/client.c:566 ../client/common/client.c:577
+#: ../client/common/client.c:565 ../client/common/client.c:576
 #, c-format
 msgid "Notice: %s\n"
 msgstr "注意: %s\n"
 
-#: ../client/common/client.c:694
+#: ../client/common/client.c:693
 #, c-format
 msgid "%s does not receive any %s, because the bank is empty.\n"
 msgstr "山に資源がないため、%s は %s を受け取れない。\n"
 
-#: ../client/common/client.c:707
+#: ../client/common/client.c:706
 #, c-format
 msgid "%s only receives %s, because the bank didn't have any more.\n"
 msgstr "山に資源が足りないため、%s は %s だけ受け取る。\n"
 
-#: ../client/common/client.c:717
+#: ../client/common/client.c:716
 #, c-format
 msgid "%s receives %s.\n"
 msgstr "%s は %s を受け取った。\n"
 
 #. Year of Plenty
-#: ../client/common/client.c:725 ../client/common/client.c:2678
+#: ../client/common/client.c:724 ../client/common/client.c:2669
 #, c-format
 msgid "%s takes %s.\n"
 msgstr "%s は %s を取る。\n"
 
-#: ../client/common/client.c:730
+#: ../client/common/client.c:729
 #, c-format
 msgid "%s spent %s.\n"
 msgstr "%s は %s を使った。\n"
 
-#: ../client/common/client.c:736
+#: ../client/common/client.c:735
 #, c-format
 msgid "%s is refunded %s.\n"
 msgstr "%s は %s を払い戻した。\n"
 
 #. %s = Player name
-#: ../client/common/client.c:754 ../client/common/client.c:1965
+#: ../client/common/client.c:753 ../client/common/client.c:1957
 #, c-format
 msgid "%s shuffled the dice deck.\n"
 msgstr "%s はサイコロデッキをシャッフルした。\n"
 
-#: ../client/common/client.c:773
+#: ../client/common/client.c:772
 #, c-format
 msgid "%s discarded %s.\n"
 msgstr "%s は %s を捨てた。\n"
 
-#: ../client/common/client.c:847
+#: ../client/common/client.c:846
 #, c-format
 msgid "%s has won the game with %d victory points!\n"
 msgstr "%s は勝利ポイント %d で勝利した!\n"
 
-#: ../client/common/client.c:946
+#: ../client/common/client.c:945
 msgid "Loading"
 msgstr "ロード中"
 
-#: ../client/common/client.c:992
+#: ../client/common/client.c:991
 msgid "Version mismatch."
 msgstr "バージョン不整合。"
 
-#: ../client/common/client.c:994
+#: ../client/common/client.c:993
 msgid "Version mismatch. Please make sure client and server are up to date.\n"
 msgstr "バージョン不整合。クライアントとサーバが最新か確認してください。\n"
 
-#: ../client/common/client.c:1421
+#: ../client/common/client.c:1413
 msgid "Build two settlements, each with a connecting"
 msgstr "以下を建設してください: 開拓地2つと、それぞれにつなげた"
 
-#: ../client/common/client.c:1424
+#: ../client/common/client.c:1416
 msgid "Build a settlement with a connecting"
 msgstr "以下を建設してください: 開拓地1つと、それにつなげた"
 
-#: ../client/common/client.c:1427
+#: ../client/common/client.c:1419
 msgid "road"
 msgstr "街道"
 
-#: ../client/common/client.c:1429
+#: ../client/common/client.c:1421
 msgid "bridge"
 msgstr "橋"
 
-#: ../client/common/client.c:1431
+#: ../client/common/client.c:1423
 msgid "ship"
 msgstr "船"
 
-#: ../client/common/client.c:1438
+#: ../client/common/client.c:1430
 msgid " or"
 msgstr " または"
 
-#: ../client/common/client.c:1502
+#: ../client/common/client.c:1494
 msgid "Waiting for your turn."
 msgstr "あなたのターンを待っている。"
 
-#: ../client/common/client.c:1554 ../client/gtk/interface.c:777
+#: ../client/common/client.c:1546 ../client/gtk/interface.c:777
 msgid "Select the building to steal from."
 msgstr "強奪する建築物を選択してください。"
 
-#: ../client/common/client.c:1576 ../client/gtk/interface.c:767
+#: ../client/common/client.c:1568 ../client/gtk/interface.c:767
 msgid "Select the ship to steal from."
 msgstr "強奪する船を選択してください。"
 
-#: ../client/common/client.c:1660 ../client/gtk/interface.c:809
+#: ../client/common/client.c:1652 ../client/gtk/interface.c:809
 msgid "Place the robber."
 msgstr "盗賊を配置してください。"
 
-#: ../client/common/client.c:1710
+#: ../client/common/client.c:1702
 msgid "Finish the road building action."
 msgstr "街道の敷設を終了してください。"
 
-#: ../client/common/client.c:1712
+#: ../client/common/client.c:1704
 msgid "Build one road segment."
 msgstr "街道を1つ敷設してください。"
 
-#: ../client/common/client.c:1714
+#: ../client/common/client.c:1706
 msgid "Build two road segments."
 msgstr "街道を2つ敷設してください。"
 
 #. Notification
-#: ../client/common/client.c:1993 ../client/common/client.c:2087
+#: ../client/common/client.c:1985 ../client/common/client.c:2079
 #: ../client/gtk/interface.c:431
 msgid "It is your turn."
 msgstr "あなたのターンです。"
 
-#: ../client/common/client.c:2181
+#: ../client/common/client.c:2173
 #, c-format
 msgid "Sorry, %s available.\n"
 msgstr "すみません、%s 利用可能。\n"
 
-#: ../client/common/client.c:2495
+#: ../client/common/client.c:2487
 msgid "The game is over."
 msgstr "ゲーム終了。"
 
 #. This development card is unique
-#: ../client/common/develop.c:68
+#: ../client/common/develop.c:67
 #, c-format
 msgid "You bought the %s development card.\n"
 msgstr "あなたは %s 発展カードを買った。\n"
 
 #. This development card is not unique
-#: ../client/common/develop.c:74
+#: ../client/common/develop.c:73
 #, c-format
 msgid "You bought a %s development card.\n"
 msgstr "あなたは %s 発展カードを買った。\n"
 
-#: ../client/common/develop.c:106
+#: ../client/common/develop.c:103
 #, c-format
 msgid "%s bought a development card.\n"
 msgstr "%s は発展カードを買った。\n"
 
-#: ../client/common/develop.c:125
+#: ../client/common/develop.c:121
 #, c-format
 msgid "%s played the %s development card.\n"
 msgstr "%s は %s 発展カードを使った。\n"
 
-#: ../client/common/develop.c:130
+#: ../client/common/develop.c:126
 #, c-format
 msgid "%s played a %s development card.\n"
 msgstr "%s は %s 発展カードを使った。\n"
 
-#: ../client/common/develop.c:142
+#: ../client/common/develop.c:138
 msgid "You have run out of road segments.\n"
 msgstr "手持ちの街道がなくなった。\n"
 
 #. I get the cards
 #. $1=resources, $2=player that loses resources
-#: ../client/common/develop.c:183
+#: ../client/common/develop.c:179
 #, c-format
 msgid "You get %s from %s.\n"
 msgstr "あなたは %s を %s から得た。\n"
 
 #. I lose the cards
 #. $1=player that steals, $2=resources
-#: ../client/common/develop.c:189
+#: ../client/common/develop.c:185
 #, c-format
 msgid "%s took %s from you.\n"
 msgstr "%s は %s をあなたから奪った。\n"
 
-#: ../client/common/develop.c:196
+#: ../client/common/develop.c:192
 #, c-format
 msgid "%s took %s from %s.\n"
 msgstr "%s は %s を %s から奪った。\n"
@@ -1930,7 +1930,7 @@ msgstr "発展カード"
 
 #. Dialog caption
 #. Name of the development card
-#: ../client/gtk/monopoly.c:84 ../common/cards.c:143
+#: ../client/gtk/monopoly.c:84 ../common/cards.c:136
 msgid "Monopoly"
 msgstr "独占"
 
@@ -2009,7 +2009,7 @@ msgid "Longest road"
 msgstr "最長交易路"
 
 #. Name of the development card
-#: ../client/gtk/player.c:58 ../common/cards.c:149
+#: ../client/gtk/player.c:58 ../common/cards.c:142
 msgid "Chapel"
 msgstr "教会"
 
@@ -2018,7 +2018,7 @@ msgid "Chapels"
 msgstr "教会"
 
 #. Name of the development card
-#: ../client/gtk/player.c:59 ../common/cards.c:152
+#: ../client/gtk/player.c:59 ../common/cards.c:145
 msgid "Pioneer university"
 msgstr "パイオニア大学"
 
@@ -2027,7 +2027,7 @@ msgid "Pioneer universities"
 msgstr "パイオニア大学"
 
 #. Name of the development card
-#: ../client/gtk/player.c:61 ../common/cards.c:155
+#: ../client/gtk/player.c:61 ../common/cards.c:148
 msgid "Governor's house"
 msgstr "官舎"
 
@@ -2036,7 +2036,7 @@ msgid "Governor's houses"
 msgstr "官舎"
 
 #. Name of the development card
-#: ../client/gtk/player.c:62 ../common/cards.c:158
+#: ../client/gtk/player.c:62 ../common/cards.c:151
 msgid "Library"
 msgstr "図書館"
 
@@ -2045,7 +2045,7 @@ msgid "Libraries"
 msgstr "図書館"
 
 #. Name of the development card
-#: ../client/gtk/player.c:63 ../common/cards.c:161
+#: ../client/gtk/player.c:63 ../common/cards.c:154
 msgid "Market"
 msgstr "市場"
 
@@ -2054,7 +2054,7 @@ msgid "Markets"
 msgstr "市場"
 
 #. Name of the development card
-#: ../client/gtk/player.c:64 ../common/cards.c:164
+#: ../client/gtk/player.c:64 ../common/cards.c:157
 msgid "Soldier"
 msgstr "騎士"
 
@@ -2409,22 +2409,22 @@ msgid "_Finish Trading"
 msgstr "交易終了(_F)"
 
 #. Name of the development card
-#: ../common/cards.c:140
+#: ../common/cards.c:133
 msgid "Road building"
 msgstr "街道敷設"
 
 #. Name of the development card
-#: ../common/cards.c:146
+#: ../common/cards.c:139
 msgid "Year of plenty"
 msgstr "収穫"
 
 #. Description of the 'Road Building' development card
-#: ../common/cards.c:175
+#: ../common/cards.c:168
 msgid "Build two new roads"
 msgstr "街道を2つ新しく敷設する"
 
 #. Description of the 'Monopoly' development card
-#: ../common/cards.c:178
+#: ../common/cards.c:171
 msgid ""
 "Select a resource type and take every card of that type held by all other "
 "players"
@@ -2432,19 +2432,19 @@ msgstr ""
 "資源を1種類指定し、他のプレイヤー全員からその種類のカードをすべてもらう"
 
 #. Description of the 'Year of Plenty' development card
-#: ../common/cards.c:182
+#: ../common/cards.c:175
 msgid ""
 "Take two resource cards of any type from the bank (cards may be of the same "
 "or different types)"
 msgstr "山から資源カードをどれか2枚取る (2枚は同じ種類でも違う種類でもいい)"
 
 #. Description of a development card of 1 victory point
-#: ../common/cards.c:191
+#: ../common/cards.c:184
 msgid "One victory point"
 msgstr "勝利ポイントを1点得る"
 
 #. Description of the 'Soldier' development card
-#: ../common/cards.c:194
+#: ../common/cards.c:187
 msgid ""
 "Move the robber to a different space and take one resource card from another "
 "player adjacent to that space"
@@ -3894,6 +3894,6 @@ msgid "Tried to assign resources to NULL player.\n"
 msgstr "NULL プレイヤーに、資源を使わせようとした。\n"
 
 #. Cheat mode has been activated
-#: ../server/turn.c:517
+#: ../server/turn.c:516
 msgid "The dice roll has been determined by the administrator."
 msgstr "サイコロの目は管理者が決定した。"

@@ -8,8 +8,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 0.12.5\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-08 18:03+0200\n"
+"Report-Msgid-Bugs-To: pio-i18n@lists.sourceforge.net\n"
+"POT-Creation-Date: 2013-10-12 21:28+0200\n"
 "PO-Revision-Date: 2013-09-29 09:39+0100\n"
 "Last-Translator: Roland Clobus <rclobus@rclobus.nl>\n"
 "Language-Team: Pit Garbe <piiit@gmx.de>, Roman Hodek <roman@hodek.net>, de "
@@ -353,208 +353,208 @@ msgstr "Die zuletzt veröffentlichte Version von Pioneers ist"
 msgid "The game is starting. I'm not needed anymore. Goodbye."
 msgstr "Das Spiel beginnt. Ich werde nicht mehr benötigt. Auf Wiedersehen."
 
-#: ../client/common/client.c:106
+#: ../client/common/client.c:105
 msgid "Waiting"
 msgstr "Warte"
 
-#: ../client/common/client.c:108
+#: ../client/common/client.c:107
 msgid "Idle"
 msgstr "Untätig"
 
-#: ../client/common/client.c:533
+#: ../client/common/client.c:532
 msgid "We have been kicked out of the game.\n"
 msgstr "Du wurdest aus dem Spiel geworfen.\n"
 
 #. Network status: offline
-#: ../client/common/client.c:536 ../client/common/client.c:991
+#: ../client/common/client.c:535 ../client/common/client.c:990
 #: ../client/gtk/gui.c:1553
 msgid "Offline"
 msgstr "Offline"
 
-#: ../client/common/client.c:557
+#: ../client/common/client.c:556
 #, c-format
 msgid "Error (%s): %s\n"
 msgstr "Fehler (%s): %s\n"
 
-#: ../client/common/client.c:566 ../client/common/client.c:577
+#: ../client/common/client.c:565 ../client/common/client.c:576
 #, c-format
 msgid "Notice: %s\n"
 msgstr "Mitteilung: %s\n"
 
-#: ../client/common/client.c:694
+#: ../client/common/client.c:693
 #, c-format
 msgid "%s does not receive any %s, because the bank is empty.\n"
 msgstr "%s bekommt kein %s, weil die Bank leer is.\n"
 
-#: ../client/common/client.c:707
+#: ../client/common/client.c:706
 #, c-format
 msgid "%s only receives %s, because the bank didn't have any more.\n"
 msgstr "%s bekommt nur %s, weil die Bank nicht mehr davon hat.\n"
 
-#: ../client/common/client.c:717
+#: ../client/common/client.c:716
 #, c-format
 msgid "%s receives %s.\n"
 msgstr "%s bekommt %s.\n"
 
 #. Year of Plenty
-#: ../client/common/client.c:725 ../client/common/client.c:2678
+#: ../client/common/client.c:724 ../client/common/client.c:2669
 #, c-format
 msgid "%s takes %s.\n"
 msgstr "%s nimmt %s.\n"
 
-#: ../client/common/client.c:730
+#: ../client/common/client.c:729
 #, c-format
 msgid "%s spent %s.\n"
 msgstr "%s zahlt %s.\n"
 
-#: ../client/common/client.c:736
+#: ../client/common/client.c:735
 #, c-format
 msgid "%s is refunded %s.\n"
 msgstr "%s erhält %s zurück.\n"
 
 #. %s = Player name
-#: ../client/common/client.c:754 ../client/common/client.c:1965
+#: ../client/common/client.c:753 ../client/common/client.c:1957
 #, c-format
 msgid "%s shuffled the dice deck.\n"
 msgstr ""
 
-#: ../client/common/client.c:773
+#: ../client/common/client.c:772
 #, c-format
 msgid "%s discarded %s.\n"
 msgstr "%s hat %s abgelegt.\n"
 
-#: ../client/common/client.c:847
+#: ../client/common/client.c:846
 #, c-format
 msgid "%s has won the game with %d victory points!\n"
 msgstr "%s hat das Spiel mit %d Punkten gewonnen!\n"
 
-#: ../client/common/client.c:946
+#: ../client/common/client.c:945
 msgid "Loading"
 msgstr "Lade"
 
-#: ../client/common/client.c:992
+#: ../client/common/client.c:991
 msgid "Version mismatch."
 msgstr "Versionsunterschied."
 
-#: ../client/common/client.c:994
+#: ../client/common/client.c:993
 msgid "Version mismatch. Please make sure client and server are up to date.\n"
 msgstr ""
 "Versionsunterschied. Bitte stelle sicher, dass der Client und der Server auf "
 "dem neuesten Stand sind.\n"
 
-#: ../client/common/client.c:1421
+#: ../client/common/client.c:1413
 msgid "Build two settlements, each with a connecting"
 msgstr "Baue zwei Siedlungen mit je einer verbundenen"
 
-#: ../client/common/client.c:1424
+#: ../client/common/client.c:1416
 msgid "Build a settlement with a connecting"
 msgstr "Baue eine Siedlung mit einer verbundenen"
 
-#: ../client/common/client.c:1427
+#: ../client/common/client.c:1419
 msgid "road"
 msgstr "Straße"
 
-#: ../client/common/client.c:1429
+#: ../client/common/client.c:1421
 msgid "bridge"
 msgstr "Brücke"
 
-#: ../client/common/client.c:1431
+#: ../client/common/client.c:1423
 msgid "ship"
 msgstr "Schiff"
 
-#: ../client/common/client.c:1438
+#: ../client/common/client.c:1430
 msgid " or"
 msgstr " oder"
 
-#: ../client/common/client.c:1502
+#: ../client/common/client.c:1494
 msgid "Waiting for your turn."
 msgstr "Warte auf deinen Zug."
 
-#: ../client/common/client.c:1554 ../client/gtk/interface.c:777
+#: ../client/common/client.c:1546 ../client/gtk/interface.c:777
 msgid "Select the building to steal from."
 msgstr "Wähle das Gebäude, von dem gestohlen werden soll."
 
-#: ../client/common/client.c:1576 ../client/gtk/interface.c:767
+#: ../client/common/client.c:1568 ../client/gtk/interface.c:767
 msgid "Select the ship to steal from."
 msgstr "Wähle das Schiff, von dem du stehlen willst."
 
-#: ../client/common/client.c:1660 ../client/gtk/interface.c:809
+#: ../client/common/client.c:1652 ../client/gtk/interface.c:809
 msgid "Place the robber."
 msgstr "Setze den Räuber."
 
-#: ../client/common/client.c:1710
+#: ../client/common/client.c:1702
 msgid "Finish the road building action."
 msgstr "Beende die Straßenbauaktion."
 
-#: ../client/common/client.c:1712
+#: ../client/common/client.c:1704
 msgid "Build one road segment."
 msgstr "Baue eine Straße."
 
-#: ../client/common/client.c:1714
+#: ../client/common/client.c:1706
 msgid "Build two road segments."
 msgstr "Baue zwei Straßen."
 
 #. Notification
-#: ../client/common/client.c:1993 ../client/common/client.c:2087
+#: ../client/common/client.c:1985 ../client/common/client.c:2079
 #: ../client/gtk/interface.c:431
 msgid "It is your turn."
 msgstr "Du bist am Zug."
 
-#: ../client/common/client.c:2181
+#: ../client/common/client.c:2173
 #, c-format
 msgid "Sorry, %s available.\n"
 msgstr "Entschuldigung, %s verfügbar.\n"
 
-#: ../client/common/client.c:2495
+#: ../client/common/client.c:2487
 msgid "The game is over."
 msgstr "Das Spiel ist beendet."
 
 #. This development card is unique
-#: ../client/common/develop.c:68
+#: ../client/common/develop.c:67
 #, c-format
 msgid "You bought the %s development card.\n"
 msgstr "Du hast die %s-Entwicklungskarte gekauft.\n"
 
 #. This development card is not unique
-#: ../client/common/develop.c:74
+#: ../client/common/develop.c:73
 #, c-format
 msgid "You bought a %s development card.\n"
 msgstr "Du hast eine %s-Entwicklungskarte gekauft.\n"
 
-#: ../client/common/develop.c:106
+#: ../client/common/develop.c:103
 #, c-format
 msgid "%s bought a development card.\n"
 msgstr "%s hat eine Entwicklungskarte gekauft.\n"
 
-#: ../client/common/develop.c:125
+#: ../client/common/develop.c:121
 #, c-format
 msgid "%s played the %s development card.\n"
 msgstr "%s hat die %s-Entwicklungskarte ausgespielt.\n"
 
-#: ../client/common/develop.c:130
+#: ../client/common/develop.c:126
 #, c-format
 msgid "%s played a %s development card.\n"
 msgstr "%s hat eine %s-Entwicklungskarte ausgespielt.\n"
 
-#: ../client/common/develop.c:142
+#: ../client/common/develop.c:138
 msgid "You have run out of road segments.\n"
 msgstr "Du hast keine Straßensegmente mehr.\n"
 
 #. I get the cards
 #. $1=resources, $2=player that loses resources
-#: ../client/common/develop.c:183
+#: ../client/common/develop.c:179
 #, c-format
 msgid "You get %s from %s.\n"
 msgstr "Du bekommst %s von %s.\n"
 
 #. I lose the cards
 #. $1=player that steals, $2=resources
-#: ../client/common/develop.c:189
+#: ../client/common/develop.c:185
 #, c-format
 msgid "%s took %s from you.\n"
 msgstr "%s hat %s von dir genommen.\n"
 
-#: ../client/common/develop.c:196
+#: ../client/common/develop.c:192
 #, c-format
 msgid "%s took %s from %s.\n"
 msgstr "%s hat %s von %s genommen.\n"
@@ -1938,7 +1938,7 @@ msgstr "Entwicklungskarte"
 
 #. Dialog caption
 #. Name of the development card
-#: ../client/gtk/monopoly.c:84 ../common/cards.c:143
+#: ../client/gtk/monopoly.c:84 ../common/cards.c:136
 msgid "Monopoly"
 msgstr "Monopol"
 
@@ -2017,7 +2017,7 @@ msgid "Longest road"
 msgstr "Längste Handelsstraße"
 
 #. Name of the development card
-#: ../client/gtk/player.c:58 ../common/cards.c:149
+#: ../client/gtk/player.c:58 ../common/cards.c:142
 msgid "Chapel"
 msgstr "Kathedrale"
 
@@ -2026,7 +2026,7 @@ msgid "Chapels"
 msgstr "Kathedralen"
 
 #. Name of the development card
-#: ../client/gtk/player.c:59 ../common/cards.c:152
+#: ../client/gtk/player.c:59 ../common/cards.c:145
 msgid "Pioneer university"
 msgstr "Pioneer Universität"
 
@@ -2035,7 +2035,7 @@ msgid "Pioneer universities"
 msgstr "Pioneer Universitäten"
 
 #. Name of the development card
-#: ../client/gtk/player.c:61 ../common/cards.c:155
+#: ../client/gtk/player.c:61 ../common/cards.c:148
 msgid "Governor's house"
 msgstr "Regierungsgebäude"
 
@@ -2044,7 +2044,7 @@ msgid "Governor's houses"
 msgstr "Regierungsgebäude"
 
 #. Name of the development card
-#: ../client/gtk/player.c:62 ../common/cards.c:158
+#: ../client/gtk/player.c:62 ../common/cards.c:151
 msgid "Library"
 msgstr "Bibliothek"
 
@@ -2053,7 +2053,7 @@ msgid "Libraries"
 msgstr "Bibliotheken"
 
 #. Name of the development card
-#: ../client/gtk/player.c:63 ../common/cards.c:161
+#: ../client/gtk/player.c:63 ../common/cards.c:154
 msgid "Market"
 msgstr "Marktplatz"
 
@@ -2062,7 +2062,7 @@ msgid "Markets"
 msgstr "Marktplätze"
 
 #. Name of the development card
-#: ../client/gtk/player.c:64 ../common/cards.c:164
+#: ../client/gtk/player.c:64 ../common/cards.c:157
 msgid "Soldier"
 msgstr "Ritter"
 
@@ -2417,22 +2417,22 @@ msgid "_Finish Trading"
 msgstr "Handel beenden"
 
 #. Name of the development card
-#: ../common/cards.c:140
+#: ../common/cards.c:133
 msgid "Road building"
 msgstr "Straßenbau"
 
 #. Name of the development card
-#: ../common/cards.c:146
+#: ../common/cards.c:139
 msgid "Year of plenty"
 msgstr "Erfindung"
 
 #. Description of the 'Road Building' development card
-#: ../common/cards.c:175
+#: ../common/cards.c:168
 msgid "Build two new roads"
 msgstr "Baue zwei Straßen."
 
 #. Description of the 'Monopoly' development card
-#: ../common/cards.c:178
+#: ../common/cards.c:171
 msgid ""
 "Select a resource type and take every card of that type held by all other "
 "players"
@@ -2441,7 +2441,7 @@ msgstr ""
 "dieser Art"
 
 #. Description of the 'Year of Plenty' development card
-#: ../common/cards.c:182
+#: ../common/cards.c:175
 msgid ""
 "Take two resource cards of any type from the bank (cards may be of the same "
 "or different types)"
@@ -2450,12 +2450,12 @@ msgstr ""
 "oder unterschiedlich sein)"
 
 #. Description of a development card of 1 victory point
-#: ../common/cards.c:191
+#: ../common/cards.c:184
 msgid "One victory point"
 msgstr "Ein Siegpunkt"
 
 #. Description of the 'Soldier' development card
-#: ../common/cards.c:194
+#: ../common/cards.c:187
 msgid ""
 "Move the robber to a different space and take one resource card from another "
 "player adjacent to that space"
@@ -3925,7 +3925,7 @@ msgid "Tried to assign resources to NULL player.\n"
 msgstr "Versuchte Ressourcen NULL Spieler zuzuteilen.\n"
 
 #. Cheat mode has been activated
-#: ../server/turn.c:517
+#: ../server/turn.c:516
 msgid "The dice roll has been determined by the administrator."
 msgstr "Das Würfeln wurde vom Administrator bestimmt."
 

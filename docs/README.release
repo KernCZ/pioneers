@@ -2,7 +2,7 @@ Before a release:
 * Check whether 'make distcheck' still is ok
   ./autogen.sh --enable-warnings --enable-deprecation-checks;make clean distcheck 2> err
 * Update the translation templates
-  cd po;make update-po
+  cd po;intltool-update -r
 * Fix fuzzy translations only due to layout changes
 * Announce that a release is pending, and announce a string freeze
   The mailing list is pio-develop@lists.sourceforge.net
@@ -22,7 +22,7 @@ If the protocol has changed:
 At release time:
 * Update (if needed): NEWS, README, README.Cygwin, README.MinGW, TODO
 * Update the line numbers in the translation templates
-  cd po;make update-po
+  cd po;intltool-update -r
 * Update: client/ai/lobbybot.c
 * Add an entry of the release to the ChangeLog
   * Released X_Y_Z.

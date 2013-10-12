@@ -1,3 +1,13 @@
+Subversion release 15.1
+* Full IPv6 support
+* More graphics are in vector format instead of bitmaps
+* A map preview is shown when creating a game from the client
+* A toolbar is added to the editor
+* Added a dice deck instead of rolling the dice completely randomly
+* The computer player uses more various chat messages
+* Code cleanup, including fixed memory leaks
+* The Microsoft Windows port now also has a server
+
 Subversion release 14.1
 * New features:
   * Added the game comments to the editor. With thanks to Micah Bunting

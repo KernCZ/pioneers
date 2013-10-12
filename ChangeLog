@@ -1,10 +1,15 @@
 2013-10-12  Roland Clobus <rclobus@rclobus.nl>
+	* Released 15.1.
+
+2013-10-12  Roland Clobus <rclobus@rclobus.nl>
 	* client/help/C/Makefile.am, client/help/C/pioneers.xml: Use xmllint to
 	reformat the xml help file.
 	* client/help/C/pioneers.xml: Updated the sections about:
 	    - Port forwarding
             - The computer player
 	    - The server
+	* NEWS, client/ai/lobbybot.c, docs/README.release: Prepare for the
+	release.
 
 2013-10-03  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/discard.c: Fixed compiler warning.

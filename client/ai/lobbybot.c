@@ -129,7 +129,7 @@ static void lobbybot_chat_parser(gint player_num, const gchar * chat)
 	if (!strncmp(chat, "/news", 5)) {
 		ai_chat(N_("The last released version of Pioneers is"));
 		/* Update this string when releasing a new version */
-		ai_chat("14.1");
+		ai_chat("15.1");
 		return;
 	}
 }
