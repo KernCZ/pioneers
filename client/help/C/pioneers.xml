@@ -1368,6 +1368,50 @@
   </part>
   <part id="gamemasters">
     <title>For game masters</title>
+    <chapter id="server">
+      <title>The Server</title>
+      <para>Pioneers comes with two servers,
+	<application>pioneers-server-console</application> and
+	<application>pioneers-server-gtk</application>. Some options are
+	highlighted here.</para>
+      <variablelist>
+        <title>Some options</title>
+        <varlistentry>
+          <term>Domestic trade</term>
+          <listitem>
+            <para>If this option is disabled, the players cannot trade with
+	each other.</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>Reported hostname</term>
+          <listitem>
+            <para>Leave empty. It should only be filled when you've set up port
+	forwarding. Then it should contain the hostname that is accessible from
+	the Internet side.</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>Strict trade</term>
+          <listitem>
+            <para>After you have bought or built something, you may not trade
+	any more.</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>Use dice deck</term>
+          <listitem>
+            <para>In some games it might happen that the dice rolls are
+	distributed unevenly (five times a twelve, no six). A number of decks
+	of cards, each deck containing 36 cards (each card representing a dice
+	roll), can be used instead of the dice. However, this might lead to
+	predictable results when the dice deck has almost been drawn empty.
+	The number of removed dice cards specifies the number of cards that are
+	removed when the pile of dice cards is shuffled.</para>
+          </listitem>
+        </varlistentry>
+      </variablelist>
+    </chapter>
     <chapter id="ai">
       <title>The Computer Player</title>
       <para>

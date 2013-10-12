@@ -4,6 +4,7 @@
 	* client/help/C/pioneers.xml: Updated the sections about:
 	    - Port forwarding
             - The computer player
+	    - The server
 
 2013-10-03  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/discard.c: Fixed compiler warning.
