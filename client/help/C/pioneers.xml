@@ -435,20 +435,62 @@
 	like "<computeroutput>player1 needs more
 	lumber</computeroutput>".</para>
         <para>The chat also knows some special commands that start with
-      "<userinput>/</userinput>". The commands currently defined are:
-      <table id="pioneers-TBL-chatcommands"><title>Chat Commands</title><tgroup cols="3"><thead><row><entry>Command</entry><entry>Arguments</entry><entry>Description</entry></row></thead><tbody><row><entry><userinput>;</userinput></entry><entry>chat message</entry><entry>The chat message is added directly behind the name of
+      "<userinput>/</userinput>". The commands currently defined are:</para>
+        <table id="pioneers-TBL-chatcommands">
+          <title>Chat Commands</title>
+          <tgroup cols="3">
+            <thead>
+              <row>
+                <entry>Command</entry>
+                <entry>Arguments</entry>
+                <entry>Description</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>
+                  <userinput>;</userinput>
+                </entry>
+                <entry>chat message</entry>
+                <entry>The chat message is added directly behind the name of
 	        the player.
 		Example: <userinput>;'s victory is imminent</userinput>
 		will become <quote>player name's victory is imminent</quote>
-	      </entry></row><row><entry><userinput>:</userinput></entry><entry>chat message</entry><entry>The chat message is added after the name of the player
+	      </entry>
+              </row>
+              <row>
+                <entry>
+                  <userinput>:</userinput>
+                </entry>
+                <entry>chat message</entry>
+                <entry>The chat message is added after the name of the player
 	        with a space in between.
 		Example: <userinput>:needs lumber</userinput> will become
 		<quote>player name needs lumber</quote>
-	      </entry></row><row><entry><userinput>/me</userinput></entry><entry>chat message</entry><entry>This is the same as the
+	      </entry>
+              </row>
+              <row>
+                <entry>
+                  <userinput>/me</userinput>
+                </entry>
+                <entry>chat message</entry>
+                <entry>This is the same as the
 	      "<userinput>:</userinput>" described above, but IRC
-	      addicts might prefer this variant.</entry></row><row><entry><userinput>/beep</userinput></entry><entry><replaceable>player name</replaceable></entry><entry>Let <replaceable>player name</replaceable>'s client
-	      beep.</entry></row></tbody></tgroup></table>
-      </para>
+	      addicts might prefer this variant.</entry>
+              </row>
+              <row>
+                <entry>
+                  <userinput>/beep</userinput>
+                </entry>
+                <entry>
+                  <replaceable>player name</replaceable>
+                </entry>
+                <entry>Let <replaceable>player name</replaceable>'s client
+	      beep.</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
         <para>If you want to send a smiley that starts with a <symbol>:</symbol>
         or <symbol>;</symbol>, type a <symbol>space</symbol> before the smiley.
       </para>
@@ -1311,17 +1353,67 @@
       <application>pioneersai</application>.
       This player isn't too bad at the moment, but
       not finished yet. Most notably, it cannot initiate domestic
-      trade, and use the maritime rules yet.
-    </para>
+      trade, and use the maritime rules yet.</para>
       <para><application>pioneersai</application> is a terminal application
-      without GUI. Its command line options are:
-
-      <table id="pioneers-TBL-ai-options"><title><application>pioneersai</application> command line options
-	</title><tgroup cols="3"><thead><row><entry>Option</entry><entry>Arguments</entry><entry>Description</entry></row></thead><tbody><row><entry>-s</entry><entry><replaceable>servername</replaceable></entry><entry>Connect to <replaceable>servername</replaceable></entry></row><row><entry>-p</entry><entry><replaceable>port</replaceable></entry><entry>Connect to port <replaceable>port</replaceable></entry></row><row><entry>-n</entry><entry><replaceable>name</replaceable></entry><entry>Set the player name. If this option is absent, a
-	      random name will be choosen.</entry></row><row><entry>-a</entry><entry><replaceable>playertype</replaceable></entry><entry>Choose the type of computer player. Currently, there is
+      without GUI. Its command line options are:</para>
+      <table id="pioneers-TBL-ai-options">
+        <title><application>pioneersai</application> command line options
+	</title>
+        <tgroup cols="3">
+          <thead>
+            <row>
+              <entry>Option</entry>
+              <entry>Arguments</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>-s</entry>
+              <entry>
+                <replaceable>servername</replaceable>
+              </entry>
+              <entry>Connect to <replaceable>servername</replaceable></entry>
+            </row>
+            <row>
+              <entry>-p</entry>
+              <entry>
+                <replaceable>port</replaceable>
+              </entry>
+              <entry>Connect to port <replaceable>port</replaceable></entry>
+            </row>
+            <row>
+              <entry>-n</entry>
+              <entry>
+                <replaceable>name</replaceable>
+              </entry>
+              <entry>Set the player name. If this option is absent, a
+	      random name will be choosen.</entry>
+            </row>
+            <row>
+              <entry>-a</entry>
+              <entry>
+                <replaceable>playertype</replaceable>
+              </entry>
+              <entry>Choose the type of computer player. Currently, there is
 	      only one type <userinput>greedy</userinput>, which is
-	      obviously also the default.</entry></row><row><entry>-t</entry><entry><replaceable>milliseconds</replaceable></entry><entry>Set time to wait between turns.</entry></row><row><entry>-c</entry><entry/><entry>Stop the computer player from giving comments.</entry></row></tbody></tgroup></table>
-    </para>
+	      obviously also the default.</entry>
+            </row>
+            <row>
+              <entry>-t</entry>
+              <entry>
+                <replaceable>milliseconds</replaceable>
+              </entry>
+              <entry>Set time to wait between turns.</entry>
+            </row>
+            <row>
+              <entry>-c</entry>
+              <entry/>
+              <entry>Stop the computer player from giving comments.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
       <para>
       However, most of the time you won't start
       <application>pioneersai</application> manually. Both game
@@ -1334,9 +1426,21 @@
         This chapter is included for the people who wish to control
         exactly the way <symbol>Pioneers</symbol> is running.
       </para>
-      <para>The extra configuration options are processed in this order:
-        <orderedlist><listitem><para>Command line</para></listitem><listitem><para>Settings file</para></listitem><listitem><para>Environment</para></listitem><listitem><para>Built-in settings</para></listitem></orderedlist>
-	</para>
+      <para>The extra configuration options are processed in this order:</para>
+      <orderedlist>
+        <listitem>
+          <para>Command line</para>
+        </listitem>
+        <listitem>
+          <para>Settings file</para>
+        </listitem>
+        <listitem>
+          <para>Environment</para>
+        </listitem>
+        <listitem>
+          <para>Built-in settings</para>
+        </listitem>
+      </orderedlist>
       <sect1 id="configuration-client">
         <title>
           <application>pioneers</application>
