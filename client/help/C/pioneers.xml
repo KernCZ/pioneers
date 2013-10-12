@@ -23,8 +23,8 @@
         <title>Reporting Bugs</title>
         <para>
         If you encounter a bug, report it with the bug tracker on SourceForge. 
-        (<ulink url="https://sourceforge.net/tracker/?group_id=5095&amp;atid=105095">
-         https://sourceforge.net/tracker/?group_id=5095&amp;atid=105095
+        (<ulink url="http://sourceforge.net/p/pio/bugs/">
+         http://sourceforge.net/p/pio/bugs/
         </ulink>). Please check first if you have the latest version.
       </para>
       </simplesect>
@@ -317,6 +317,11 @@
         <table id="pioneers-TBL-terrain-types">
           <title>Pioneers terrain types</title>
           <tgroup cols="5">
+            <colspec colnum="1" align="center"/>
+            <colspec colnum="2" align="left"/>
+            <colspec colnum="3" align="center"/>
+            <colspec colnum="4" align="left"/>
+            <colspec colnum="5" align="left"/>
             <thead>
               <row>
                 <entry>Graphic</entry>
@@ -913,7 +918,9 @@
           <title>Development cards</title>
           <tgroup cols="4">
             <colspec colnum="1" align="right"/>
+            <colspec colnum="2" align="left"/>
             <colspec colnum="3" align="right"/>
+            <colspec colnum="4" align="left"/>
             <thead>
               <row>
                 <entry>VP</entry>
@@ -1305,6 +1312,21 @@
           <qandaentry>
             <question>
               <para>
+        How do I configure my router?
+      </para>
+            </question>
+            <answer>
+              <para>
+        You'll need to set up port forwarding and you might want to use a dns
+	service like DynDNS. Use a search engine like
+	<ulink url="https://duckduckgo.com/?q=configure+router+port+forwarding+dyndns">DuckDuckGo</ulink>
+	to see examples.
+      </para>
+            </answer>
+          </qandaentry>
+          <qandaentry>
+            <question>
+              <para>
         What if I only want to play against the computer players?
       </para>
             </question>
@@ -1351,9 +1373,10 @@
       <para>
       Pioneers comes with a computer player, 
       <application>pioneersai</application>.
-      This player isn't too bad at the moment, but
-      not finished yet. Most notably, it cannot initiate domestic
-      trade, and use the maritime rules yet.</para>
+      This player isn't too bad at the moment, but doesn't know all game rules.
+      Most notably, it cannot initiate domestic trade, and use the maritime
+      rules such as ships and bridges.
+    </para>
       <para><application>pioneersai</application> is a terminal application
       without GUI. Its command line options are:</para>
       <table id="pioneers-TBL-ai-options">
@@ -1373,31 +1396,28 @@
               <entry>
                 <replaceable>servername</replaceable>
               </entry>
-              <entry>Connect to <replaceable>servername</replaceable></entry>
+              <entry>Connect to <replaceable>servername</replaceable>.</entry>
             </row>
             <row>
               <entry>-p</entry>
               <entry>
                 <replaceable>port</replaceable>
               </entry>
-              <entry>Connect to port <replaceable>port</replaceable></entry>
+              <entry>Connect to port <replaceable>port</replaceable>.</entry>
             </row>
             <row>
               <entry>-n</entry>
               <entry>
                 <replaceable>name</replaceable>
               </entry>
-              <entry>Set the player name. If this option is absent, a
-	      random name will be choosen.</entry>
+              <entry>Set the player name.</entry>
             </row>
             <row>
               <entry>-a</entry>
               <entry>
-                <replaceable>playertype</replaceable>
+                <replaceable>player type</replaceable>
               </entry>
-              <entry>Choose the type of computer player. Currently, there is
-	      only one type <userinput>greedy</userinput>, which is
-	      obviously also the default.</entry>
+              <entry>Choose the type of computer player.</entry>
             </row>
             <row>
               <entry>-t</entry>
@@ -1410,6 +1430,33 @@
               <entry>-c</entry>
               <entry/>
               <entry>Stop the computer player from giving comments.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+      <para>
+The following player types are available:</para>
+      <table id="computer-player-types">
+        <title>Computer player types</title>
+        <tgroup cols="2">
+          <thead>
+            <row>
+              <entry>Player type</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>greedy</entry>
+              <entry>The default. This computer player will play against you.</entry>
+            </row>
+            <row>
+              <entry>lobbybot</entry>
+              <entry>This computer player is present in the lobby to greet you and provide some help. It will not play.</entry>
+            </row>
+            <row>
+              <entry>logbot</entry>
+              <entry>This computer player can be added to games to collect statistics about the game. It will not play.</entry>
             </row>
           </tbody>
         </tgroup>
@@ -1802,143 +1849,143 @@
           </tgroup>
         </table>
       </sect1>
-      <sect1 id="server-admin-interface">
-        <title>Server admin interface protocol</title>
-        <para>
+    </chapter>
+    <chapter id="server-admin-interface">
+      <title>Server admin interface protocol</title>
+      <para>
           When the server is started with the command line switch 
           <userinput>-a</userinput>, the following commands can be
           sent to that port:
         </para>
-        <table id="configuration-server-console-admin">
-          <title>Admin interface commands</title>
-          <tgroup cols="2">
-            <thead>
-              <row>
-                <entry>Command</entry>
-                <entry>Argument type</entry>
-              </row>
-            </thead>
-            <tbody>
-              <row>
-                <entry>
-                  <userinput>admin set-port</userinput>
-                </entry>
-                <entry>integer</entry>
-              </row>
-              <row>
-                <entry>
-                  <userinput>admin start-server</userinput>
-                </entry>
-                <entry>none</entry>
-              </row>
-              <row>
-                <entry>
-                  <userinput>admin stop-server</userinput>
-                </entry>
-                <entry>none</entry>
-              </row>
-              <row>
-                <entry>
-                  <userinput>admin set-register-server</userinput>
-                </entry>
-                <entry>integer</entry>
-              </row>
-              <row>
-                <entry>
-                  <userinput>admin set-num-players</userinput>
-                </entry>
-                <entry>integer</entry>
-              </row>
-              <row>
-                <entry>
-                  <userinput>admin set-sevens-rule</userinput>
-                </entry>
-                <entry>integer</entry>
-              </row>
-              <row>
-                <entry>
-                  <userinput>admin set-dice-deck</userinput>
-                </entry>
-                <entry>boolean (0/1)</entry>
-              </row>
-              <row>
-                <entry>
-                  <userinput>admin set-num-dice-decks</userinput>
-                </entry>
-                <entry>integer</entry>
-              </row>
-              <row>
-                <entry>
-                  <userinput>admin set-num-removed-dice-cards</userinput>
-                </entry>
-                <entry>integer</entry>
-              </row>
-              <row>
-                <entry>
-                  <userinput>admin set-victory-points</userinput>
-                </entry>
-                <entry>integer</entry>
-              </row>
-              <row>
-                <entry>
-                  <userinput>admin set-random-terrain</userinput>
-                </entry>
-                <entry>integer</entry>
-              </row>
-              <row>
-                <entry>
-                  <userinput>admin set-game</userinput>
-                </entry>
-                <entry>string</entry>
-              </row>
-              <row>
-                <entry>
-                  <userinput>admin quit</userinput>
-                </entry>
-                <entry>none</entry>
-              </row>
-              <row>
-                <entry>
-                  <userinput>admin send-message</userinput>
-                </entry>
-                <entry>string</entry>
-              </row>
-              <row>
-                <entry>
-                  <userinput>admin help</userinput>
-                </entry>
-                <entry>none</entry>
-              </row>
-              <row>
-                <entry>
-                  <userinput>admin info</userinput>
-                </entry>
-                <entry>none</entry>
-              </row>
-              <row>
-                <entry>
-                  <userinput>admin fix-dice</userinput>
-                </entry>
-                <entry>none</entry>
-              </row>
-            </tbody>
-          </tgroup>
-        </table>
-        <para><userinput>admin set-game</userinput> should be used before the
+      <table id="configuration-server-console-admin">
+        <title>Admin interface commands</title>
+        <tgroup cols="2">
+          <thead>
+            <row>
+              <entry>Command</entry>
+              <entry>Argument type</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>
+                <userinput>admin set-port</userinput>
+              </entry>
+              <entry>integer</entry>
+            </row>
+            <row>
+              <entry>
+                <userinput>admin start-server</userinput>
+              </entry>
+              <entry>none</entry>
+            </row>
+            <row>
+              <entry>
+                <userinput>admin stop-server</userinput>
+              </entry>
+              <entry>none</entry>
+            </row>
+            <row>
+              <entry>
+                <userinput>admin set-register-server</userinput>
+              </entry>
+              <entry>integer</entry>
+            </row>
+            <row>
+              <entry>
+                <userinput>admin set-num-players</userinput>
+              </entry>
+              <entry>integer</entry>
+            </row>
+            <row>
+              <entry>
+                <userinput>admin set-sevens-rule</userinput>
+              </entry>
+              <entry>integer</entry>
+            </row>
+            <row>
+              <entry>
+                <userinput>admin set-dice-deck</userinput>
+              </entry>
+              <entry>boolean (0/1)</entry>
+            </row>
+            <row>
+              <entry>
+                <userinput>admin set-num-dice-decks</userinput>
+              </entry>
+              <entry>integer</entry>
+            </row>
+            <row>
+              <entry>
+                <userinput>admin set-num-removed-dice-cards</userinput>
+              </entry>
+              <entry>integer</entry>
+            </row>
+            <row>
+              <entry>
+                <userinput>admin set-victory-points</userinput>
+              </entry>
+              <entry>integer</entry>
+            </row>
+            <row>
+              <entry>
+                <userinput>admin set-random-terrain</userinput>
+              </entry>
+              <entry>integer</entry>
+            </row>
+            <row>
+              <entry>
+                <userinput>admin set-game</userinput>
+              </entry>
+              <entry>string</entry>
+            </row>
+            <row>
+              <entry>
+                <userinput>admin quit</userinput>
+              </entry>
+              <entry>none</entry>
+            </row>
+            <row>
+              <entry>
+                <userinput>admin send-message</userinput>
+              </entry>
+              <entry>string</entry>
+            </row>
+            <row>
+              <entry>
+                <userinput>admin help</userinput>
+              </entry>
+              <entry>none</entry>
+            </row>
+            <row>
+              <entry>
+                <userinput>admin info</userinput>
+              </entry>
+              <entry>none</entry>
+            </row>
+            <row>
+              <entry>
+                <userinput>admin fix-dice</userinput>
+              </entry>
+              <entry>none</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+      <para><userinput>admin set-game</userinput> should be used before the
           other game parameters are changed, because it changes all game
           parameters.
         </para>
-        <note>
-          <para>
+      <note>
+        <para>
           If a game was running while a game parameter is changed,
           it will be aborted.
         </para>
-        </note>
-        <para>
+      </note>
+      <para>
           When no game is running when <userinput>admin quit</userinput>
           is issued, the server will quit.
         </para>
-      </sect1>
     </chapter>
   </part>
 </book>
