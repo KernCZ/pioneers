@@ -27,7 +27,7 @@ At release time:
 * Add an entry of the release to the ChangeLog
   * Released X_Y_Z.
 * Create a tag in the Subversion repository
-  svn copy svn+ssh://svn.code.sf.net/code/trunk svn+ssh://svn.code.sf.net/code/tags/Build_X_Y_Z
+  svn copy svn+ssh://svn.code.sf.net/p/pio/code/trunk svn+ssh://svn.code.sf.net/p/pio/code/tags/Build_X_Y_Z
 * Update the version number in configure.ac
 * Extract a clean copy
   cd my_build_directory;svn export svn://svn.code.sf.net/p/pio/code/tags/Build_X_Y_Z
