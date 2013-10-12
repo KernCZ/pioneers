@@ -43,3 +43,7 @@ simplehtml: pioneers.xml
 yelphtml: pioneers.xml
 	xsltproc /usr/share/yelp-xsl/xslt/docbook/html/db2html.xsl pioneers.xml
 	cp /usr/share/yelp-xsl/icons/hicolor/24x24/status/yelp-note*.png .
+
+xmllint: pioneers.xml
+	xmllint --format pioneers.xml -o pioneers.xml.good
+	mv pioneers.xml.good pioneers.xml

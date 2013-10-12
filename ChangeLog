@@ -1,3 +1,7 @@
+2013-10-12  Roland Clobus <rclobus@rclobus.nl>
+	* client/help/C/Makefile.am, client/help/C/pioneers.xml: Use xmllint to
+	reformat the xml help file.
+
 2013-10-03  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/discard.c: Fixed compiler warning.
 	* macros/gnome-autogen.sh: Synchronised from gnome-common 3.10.0-1,
