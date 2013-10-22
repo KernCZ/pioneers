@@ -11,7 +11,7 @@ Priority: optional
 Standards-Version: 3.9.4
 
 Package: pioneers-builddep
-Version: 15.1-1~local1
+Version: 15.1-1
 Maintainer: Roland Clobus <rclobus@rclobus.nl>
 # Suggests: <comma-separated list of packages>
 # Provides: <comma-separated list of packages>
