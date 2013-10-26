@@ -1,3 +1,6 @@
+2013-10-26  Roland Clobus <rclobus@rclobus.nl>
+	* autogen.sh: Fixed --fhs argument handling.
+
 2013-10-12  Roland Clobus <rclobus@rclobus.nl>
 	* configure.ac: Work version is 15.2
 

@@ -21,11 +21,13 @@ REQUIRED_INTLTOOL_VERSION="0.35"
 
 which gnome-autogen.sh || {
     echo "gnome-common not found, using the included version"
-    . $srcdir/macros/gnome-autogen.sh
+    $srcdir/macros/gnome-autogen.sh
     exit 0
 }
+
 if test "X$1" = "X--fhs"; then
-	. gnome-autogen.sh --prefix=/usr --bindir=/usr/games --mandir=/usr/share/man
+	shift
+	gnome-autogen.sh --prefix=/usr --bindir=/usr/games --mandir=/usr/share/man "$@"
 else
-	. gnome-autogen.sh
+	gnome-autogen.sh "$@"
 fi
