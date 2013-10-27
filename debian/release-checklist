@@ -59,6 +59,6 @@ piuparts *deb
 
 #- upload
 #- update subversion debian directory
-#- svn copy https://pio.svn.sourceforge.net/svnroot/pio/trunk/pioneers/debian \
-#  https://pio.svn.sourceforge.net/svnroot/pio/tags/debian-release-X.XX.XX-1 \
+#- svn copy https://svn.code.sf.net/p/pio/code/trunk/pioneers/debian \
+#  https://svn.code.sf.net/p/pio/code/tags/debian-release-15.1-1 \
 #  -m "tag debian release"
