@@ -1,3 +1,9 @@
+pioneers (15.2-1~local1) UNRELEASED; urgency=low
+
+  * Awaiting upstream release.
+
+ -- Roland Clobus <rclobus@rclobus.nl>  Wed, 30 Oct 2013 08:22:43 +0100
+
 pioneers (15.1-1) unstable; urgency=low
 
   * New upstream release. (closes: #551341)
