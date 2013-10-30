@@ -183,7 +183,7 @@ Section "!Minimal install" SEC01
   File "..\..\..\..\local\pixmaps\pioneers\ore.png"
   File "..\..\..\..\local\pixmaps\pioneers\wool.png"
   File "..\..\..\..\local\pixmaps\pioneers\lumber.png"
-  File "..\..\..\..\local\pixmaps\pioneers\style-ai.png"
+  File "..\..\..\..\local\pixmaps\pioneers\style-ai.svg"
   File "..\..\..\..\local\pixmaps\pioneers\style-human.png"
   File "..\..\..\..\local\pixmaps\pioneers\style-human-1.png"
   File "..\..\..\..\local\pixmaps\pioneers\style-human-2.png"
