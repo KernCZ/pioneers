@@ -3,7 +3,7 @@
 #
 # Copyright (C) 1999 Dave Cole
 # Copyright (C) 2003-2007 Bas Wijnen <shevek@fmf.nl>
-# Copyright (C) 2004-2011 Roland Clobus <rclobus@bigfoot.com>
+# Copyright (C) 2004-2013 Roland Clobus <rclobus@rclobus.nl>
 # 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -129,6 +129,16 @@ AC_ARG_ENABLE([deprecation-checks],
   *)    pioneers_deprecationChecks=no  ;;
 esac])
 
+AC_ARG_ENABLE([gtk3],
+	AS_HELP_STRING([--enable-gtk3],
+		[Enable (experimental GTK3 support.]),
+[case "${enableval}" in
+  yes)  GTK_REQUIRED_VERSION=3.4.2
+	AC_SUBST(AM_CFLAGS, ["$AM_CFLAGS -Wno-deprecated-declarations"])
+	pioneers_deprecationChecks=no;;
+  *) ;;
+esac])
+
 ## The warnings are in the same order as in 'man gcc'
 if test "x$GCC" = xyes; then
 	# Flags from Debian hardening (dpkg-buildflags --get CFLAGS)
@@ -247,19 +257,26 @@ if test "$have_libnotify" = "yes"; then
 fi
 
 # Gtk+ support
+#
+# Prefer Gtk+2 over Gtk+3 during the migration
+#
 if test x$with_gtk = xno; then
-	have_gtk2="no, disabled in configure"
+	have_gtk="no, disabled in configure"
 else
 	PKG_CHECK_MODULES(GTK2, gtk+-2.0 >= $GTK_REQUIRED_VERSION,
-	have_gtk2=yes, 
-	[PKG_CHECK_EXISTS(gtk+-2.0,
-		[have_gtk2="no, Gtk+ version too old"],
-		[have_gtk2="no, Gtk+ not installed"])
-	AC_MSG_RESULT($have_gtk2)
+		have_gtk=yes, 
+		[PKG_CHECK_MODULES(GTK2, gtk+-3.0 >= $GTK_REQUIRED_VERSION,
+			AC_DEFINE(HAVE_GTK3, [1],
+				[Defined when Gtk+ 3 is present]) 
+			have_gtk=yes, 
+			[PKG_CHECK_EXISTS(gtk+-2.0,
+				[have_gtk="no, Gtk+ version too old"],
+				[have_gtk="no, Gtk+ not installed"])
+			AC_MSG_RESULT($have_gtk)
+		])
 	])
 fi
-AM_CONDITIONAL(HAVE_GTK2, [test "$have_gtk2" = "yes"])
-if test "$have_gtk2" = "yes"; then
+if test "$have_gtk" = "yes"; then
 	PKG_CHECK_MODULES(GTK_OPTIMAL_VERSION, gtk+-2.0 >= $GTK_OPTIMAL_VERSION,
 		[],
 		AC_DEFINE(HAVE_OLD_GTK, [1],
@@ -272,13 +289,13 @@ fi
 #  Y       N           N        N
 #  Y       Y           Y        if have libgnome
 # libgnome is only needed for help
-if test "$have_gtk2" = "yes"; then
+if test "$have_gtk" = "yes"; then
 	test_libgnome=$have_scrollkeeper;
 else
 	test_libgnome=no;
 fi
 
-have_graphical=$have_gtk2;
+have_graphical=$have_gtk;
 if test "$test_libgnome" = "yes"; then
 	# libgnome-2.0 support
 	PKG_CHECK_MODULES(GNOME2, libgnome-2.0,
