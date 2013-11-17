@@ -27,7 +27,9 @@
 typedef struct {
 	gboolean set;
 	gboolean transparent;
+#ifndef HAVE_GTK3
 	gboolean allocated;
+#endif				/* not HAVE_GTK3 */
 	GdkColor color;
 } TColor;
 

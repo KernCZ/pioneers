@@ -1,5 +1,8 @@
 2013-11-17  Roland Clobus <rclobus@rclobus.nl>
 	* configure.ac: Enable (experimental) support for Gtk+3.
+	* client/gtk/frontend.c, common/gtk/colors.c, common/gtk/common_gtk.h,
+	common/gtk/player-icon.c, common/gtk/theme.c, common/gtk/theme.h:
+	Ported colormap to Gtk+3. Fixed a keycode.
 
 2013-10-30  Roland Clobus <rclobus@rclobus.nl>
 	* MinGW/pioneers.nsi.in: Fixed installing style-ai.svg, see 2013-06-07.

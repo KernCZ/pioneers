@@ -71,15 +71,19 @@ static gboolean load_pixbuf(const gchar * name, GdkPixbuf ** pixbuf)
 
 void playericon_init(void)
 {
+#ifndef HAVE_GTK3
 	GdkColormap *cmap;
+#endif				/* not HAVE_GTK3 */
 	gint idx;
 	gboolean good;
 	gchar *filename;
 
+#ifndef HAVE_GTK3
 	cmap = gdk_colormap_get_system();
 	gdk_colormap_alloc_color(cmap, &default_face_color, FALSE, TRUE);
 	gdk_colormap_alloc_color(cmap, &default_variant_color, FALSE,
 				 TRUE);
+#endif				/* not HAVE_GTK3 */
 
 	player_avatar = NULL;
 	idx = 1;
@@ -433,15 +437,19 @@ gboolean playericon_parse_human_style(const gchar * style,
 gboolean string_to_color(const gchar * spec, GdkColor * color)
 {
 	PangoColor pango_color;
+#ifndef HAVE_GTK3
 	GdkColormap *cmap;
+#endif				/* not HAVE_GTK3 */
 
 	if (pango_color_parse(&pango_color, spec)) {
 		color->red = pango_color.red;
 		color->green = pango_color.green;
 		color->blue = pango_color.blue;
 
+#ifndef HAVE_GTK3
 		cmap = gdk_colormap_get_system();
 		gdk_colormap_alloc_color(cmap, color, FALSE, TRUE);
+#endif				/* not HAVE_GTK3 */
 		return TRUE;
 	}
 	return FALSE;

@@ -81,10 +81,17 @@
   
 */
 
+#ifdef HAVE_GTK3
+#define TCOL_INIT(r,g,b)	{ TRUE, FALSE, { 0, r, g, b } }
+#define TCOL_TRANSP()		{ TRUE, TRUE, { 0, 0, 0, 0 } }
+#define TCOL_UNSET()		{ FALSE, FALSE, { 0, 0, 0, 0 } }
+#define TSCALE				{ NULL, NULL, 0, 0.0 }
+#else				/* HAVE_GTK3 */
 #define TCOL_INIT(r,g,b)	{ TRUE, FALSE, FALSE, { 0, r, g, b } }
 #define TCOL_TRANSP()		{ TRUE, TRUE, FALSE, { 0, 0, 0, 0 } }
 #define TCOL_UNSET()		{ FALSE, FALSE, FALSE, { 0, 0, 0, 0 } }
 #define TSCALE				{ NULL, NULL, 0, 0.0 }
+#endif				/* HAVE_GTK3 */
 
 static TColor default_colors[] = {
 	TCOL_INIT(0xff00, 0xda00, 0xb900),
@@ -341,7 +348,9 @@ static gboolean theme_initialize(MapTheme * t)
 {
 	guint i;
 	guint j;
+#ifndef HAVE_GTK3
 	GdkColormap *cmap;
+#endif				/* not HAVE_GTK3 */
 
 	/* load terrain tiles */
 	for (i = 0; i < G_N_ELEMENTS(t->terrain_tiles); ++i) {
@@ -383,20 +392,25 @@ static gboolean theme_initialize(MapTheme * t)
 			t->port_tiles[i] = NULL;
 	}
 
+#ifndef HAVE_GTK3
 	/* allocate defined colors */
 	cmap = gdk_colormap_get_system();
+#endif				/* not HAVE_GTK3 */
 
 	for (i = 0; i < G_N_ELEMENTS(t->colors); ++i) {
 		TColor *tc = &(t->colors[i]);
 		if (!tc->set)
 			*tc = default_colors[i];
+#ifndef HAVE_GTK3
 		else if (!tc->transparent && !tc->allocated) {
 			gdk_colormap_alloc_color(cmap, &(tc->color), FALSE,
 						 TRUE);
 			tc->allocated = TRUE;
 		}
+#endif				/* not HAVE_GTK3 */
 	}
 
+#ifndef HAVE_GTK3
 	for (i = 0; i < TC_MAX_OVRTILE; ++i) {
 		for (j = 0; j < TC_MAX_OVERRIDE; ++j) {
 			TColor *tc = &(t->ovr_colors[i][j]);
@@ -408,6 +422,7 @@ static gboolean theme_initialize(MapTheme * t)
 			}
 		}
 	}
+#endif				/* not HAVE_GTK3 */
 	return TRUE;
 }
 

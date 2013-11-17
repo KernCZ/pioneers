@@ -210,7 +210,11 @@ gint hotkeys_handler(G_GNUC_UNUSED GtkWidget * w, GdkEvent * e,
 	GuiWidgetState *gui;
 	GuiEvent arg;
 	switch (e->key.keyval) {
+#ifdef HAVE_GTK3
+	case GDK_KEY_Escape:
+#else
 	case GDK_Escape:
+#endif
 		arg = GUI_QUOTE_REJECT;
 		break;
 	default:
