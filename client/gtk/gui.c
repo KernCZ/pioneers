@@ -523,19 +523,19 @@ void gui_cursor_set(CursorType type,
 
 void gui_draw_hex(const Hex * hex)
 {
-	if (gmap->pixmap != NULL)
+	if (gmap->surface != NULL)
 		guimap_draw_hex(gmap, hex);
 }
 
 void gui_draw_edge(const Edge * edge)
 {
-	if (gmap->pixmap != NULL)
+	if (gmap->surface != NULL)
 		guimap_draw_edge(gmap, edge);
 }
 
 void gui_draw_node(const Node * node)
 {
-	if (gmap->pixmap != NULL)
+	if (gmap->surface != NULL)
 		guimap_draw_node(gmap, node);
 }
 
@@ -937,9 +937,9 @@ static void theme_change_cb(GtkWidget * widget, G_GNUC_UNUSED void *data)
 	if (theme != theme_get_current()) {
 		config_set_string("settings/theme", theme->name);
 		theme_set_current(theme);
-		if (gmap->pixmap != NULL) {
-			g_object_unref(gmap->pixmap);
-			gmap->pixmap = NULL;
+		if (gmap->surface != NULL) {
+			cairo_surface_destroy(gmap->surface);
+			gmap->surface = NULL;
 		}
 		theme_rescale(2 * gmap->x_point);
 	}

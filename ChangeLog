@@ -3,6 +3,8 @@
 	* client/gtk/frontend.c, common/gtk/colors.c, common/gtk/common_gtk.h,
 	common/gtk/player-icon.c, common/gtk/theme.c, common/gtk/theme.h:
 	Ported colormap to Gtk+3. Fixed a keycode.
+	* client/gtk/gui.c, common/gtk/guimap.c, common/gtk/guimap.h,
+	common/gtk/select-game.c: Replaced pixmap in guimap.
 
 2013-10-30  Roland Clobus <rclobus@rclobus.nl>
 	* MinGW/pioneers.nsi.in: Fixed installing style-ai.svg, see 2013-06-07.

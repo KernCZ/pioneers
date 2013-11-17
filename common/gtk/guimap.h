@@ -65,7 +65,7 @@ typedef void (*CancelFunc) (void);
 typedef struct _Mode Mode;
 typedef struct {
 	GtkWidget *area;	   /**< render map in this drawing area */
-	GdkPixmap *pixmap;	   /**< off screen pixmap for drawing */
+	cairo_surface_t *surface;  /**< off screen surface for drawing */
 	cairo_t *cr;		   /**< cairo for map drawing */
 	PangoLayout *layout;	   /**< layout object for rendering text */
 	gint initial_font_size;	   /**< initial font size */

@@ -14,6 +14,7 @@
 #include "guimap.h"
 #include "gtkbugs.h"
 #include "gtkcompat.h"
+#include "common_gtk.h"
 
 #include "select-game.h"
 
@@ -189,10 +190,10 @@ static GdkPixbuf *render_map(GtkWidget * base_widget, const Map * map)
 	GuiMap *gmap;
 
 	gmap = guimap_new();
-	gmap->pixmap =
-	    gdk_pixmap_new(gtk_widget_get_window(base_widget), MAP_WIDTH,
-			   MAP_HEIGHT,
-			   gdk_visual_get_depth(gdk_visual_get_system()));
+	cairo_rectangle_t extent = { 0.0, 0.0, MAP_WIDTH, MAP_HEIGHT };
+	gmap->surface =
+	    cairo_recording_surface_create(CAIRO_CONTENT_COLOR_ALPHA,
+					   &extent);
 	gmap->width = MAP_WIDTH;
 	gmap->height = MAP_HEIGHT;
 	gmap->area = base_widget;
@@ -202,8 +203,8 @@ static GdkPixbuf *render_map(GtkWidget * base_widget, const Map * map)
 	guimap_display(gmap);
 
 	pixbuf =
-	    gdk_pixbuf_get_from_drawable(NULL, gmap->pixmap, NULL, 0, 0, 0,
-					 0, -1, -1);
+	    gdk_pixbuf_get_from_surface(gmap->surface, 0, 0, gmap->width,
+					gmap->height);
 	guimap_delete(gmap);
 
 	return pixbuf;

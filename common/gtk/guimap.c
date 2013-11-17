@@ -86,9 +86,9 @@ void guimap_delete(GuiMap * gmap)
 		g_object_unref(gmap->area);
 		gmap->area = NULL;
 	}
-	if (gmap->pixmap != NULL) {
-		g_object_unref(gmap->pixmap);
-		gmap->pixmap = NULL;
+	if (gmap->surface != NULL) {
+		cairo_surface_destroy(gmap->surface);
+		gmap->surface = NULL;
 	}
 	if (gmap->cr != NULL) {
 		cairo_destroy(gmap->cr);
@@ -125,31 +125,53 @@ void guimap_reset(GuiMap * gmap)
 	gmap->player_num = -1;
 }
 
-static gint expose_map_cb(GtkWidget * area, GdkEventExpose * event,
-			  gpointer user_data)
+static gboolean draw_map_cb(GtkWidget * area, cairo_t * cr,
+			    gpointer user_data)
 {
 	GuiMap *gmap = user_data;
-	cairo_t *cr;
+	GtkAllocation allocation;
 
-	if (gtk_widget_get_window(area) == NULL || gmap->map == NULL)
+	if (gmap->map == NULL) {
 		return FALSE;
+	}
 
-	if (gmap->pixmap == NULL) {
-		GtkAllocation allocation;
-		gtk_widget_get_allocation(area, &allocation);
-		gmap->pixmap = gdk_pixmap_new(gtk_widget_get_window(area),
-					      allocation.width,
-					      allocation.height, -1);
+	gtk_widget_get_allocation(area, &allocation);
+	if (gmap->surface == NULL) {
+		gmap->surface =
+		    gdk_window_create_similar_surface(gtk_widget_get_window
+						      (area),
+						      CAIRO_CONTENT_COLOR_ALPHA,
+						      allocation.width,
+						      allocation.height);
 		guimap_display(gmap);
 	}
 
-	cr = gdk_cairo_create(gtk_widget_get_window(area));
-	gdk_cairo_set_source_pixmap(cr, gmap->pixmap, 0, 0);
-	gdk_cairo_rectangle(cr, &event->area);
+
+	cairo_set_source_surface(cr, gmap->surface, 0.0, 0.0);
+	cairo_rectangle(cr, 0.0, 0.0, allocation.width, allocation.height);
 	cairo_fill(cr);
+
+	return FALSE;
+}
+
+#ifndef HAVE_GTK3
+static gboolean expose_map_cb(GtkWidget * area,
+			      G_GNUC_UNUSED GdkEventExpose * event,
+			      gpointer user_data)
+{
+	cairo_t *cr;
+
+	if (gtk_widget_get_window(area) == NULL)
+		return FALSE;
+
+	cr = gdk_cairo_create(gtk_widget_get_window(area));
+
+	draw_map_cb(area, cr, user_data);
+
 	cairo_destroy(cr);
 	return FALSE;
 }
+#endif				/* not HAVE_GTK3 */
 
 static gint configure_map_cb(GtkWidget * area,
 			     G_GNUC_UNUSED GdkEventConfigure * event,
@@ -161,9 +183,9 @@ static gint configure_map_cb(GtkWidget * area,
 	if (gtk_widget_get_window(area) == NULL || gmap->map == NULL)
 		return FALSE;
 
-	if (gmap->pixmap) {
-		g_object_unref(gmap->pixmap);
-		gmap->pixmap = NULL;
+	if (gmap->surface != NULL) {
+		cairo_surface_destroy(gmap->surface);
+		gmap->surface = NULL;
 	}
 	gtk_widget_get_allocation(area, &allocation);
 	guimap_scale_to_size(gmap, allocation.width, allocation.height);
@@ -271,8 +293,13 @@ GtkWidget *guimap_build_drawingarea(GuiMap * gmap, gint width, gint height)
 			      | GDK_POINTER_MOTION_HINT_MASK);
 
 	gtk_widget_set_size_request(gmap->area, width, height);
+#ifdef HAVE_GTK3
+	g_signal_connect(G_OBJECT(gmap->area), "draw",
+			 G_CALLBACK(draw_map_cb), gmap);
+#else
 	g_signal_connect(G_OBJECT(gmap->area), "expose_event",
 			 G_CALLBACK(expose_map_cb), gmap);
+#endif
 	g_signal_connect(G_OBJECT(gmap->area), "configure_event",
 			 G_CALLBACK(configure_map_cb), gmap);
 
@@ -1134,14 +1161,14 @@ void guimap_display(GuiMap * gmap)
 	PangoFontDescription *pfd;
 	gint font_size;
 
-	if (gmap->pixmap == NULL)
+	if (gmap->surface == NULL)
 		return;
 
 	if (gmap->cr != NULL) {
 		cairo_destroy(gmap->cr);
 	}
 
-	gmap->cr = gdk_cairo_create(gmap->pixmap);
+	gmap->cr = cairo_create(gmap->surface);
 
 	gdk_cairo_set_source_pixbuf(gmap->cr,
 				    theme_get_current()->terrain_tiles
@@ -1334,7 +1361,7 @@ void guimap_draw_edge(GuiMap * gmap, const Edge * edge)
 	GdkPoint points[MAX_POINTS];
 
 	g_return_if_fail(edge != NULL);
-	g_return_if_fail(gmap->pixmap != NULL);
+	g_return_if_fail(gmap->surface != NULL);
 
 	poly.num_points = G_N_ELEMENTS(points);
 	poly.points = points;
@@ -1425,7 +1452,7 @@ void guimap_draw_node(GuiMap * gmap, const Node * node)
 	GdkPoint points[MAX_POINTS];
 
 	g_return_if_fail(node != NULL);
-	g_return_if_fail(gmap->pixmap != NULL);
+	g_return_if_fail(gmap->surface != NULL);
 
 	poly.num_points = G_N_ELEMENTS(points);
 	poly.points = points;
@@ -1632,7 +1659,7 @@ void guimap_highlight_chits(GuiMap * gmap, gint roll)
 	closure.gmap = gmap;
 	closure.old_highlight = gmap->highlight_chit;
 	gmap->highlight_chit = roll;
-	if (gmap->pixmap != NULL)
+	if (gmap->surface != NULL)
 		map_traverse_const(gmap->map, highlight_chits, &closure);
 }
 
