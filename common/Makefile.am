@@ -62,13 +62,17 @@ libpioneers_a_SOURCES = \
 	common/set.c \
 	common/set.h \
 	common/state.c \
-	common/state.h
+	common/state.h \
+	common/version.h
 
 common/authors.h: AUTHORS
 	$(MKDIR_P) common
 	printf '#define AUTHORLIST ' > $@
 	$(SED) -e's/ <.*//; s/$$/", \\/; s/^/"/; /^"[[:space:]]*", \\$$/d' $< >> $@
 	printf 'NULL\n' >> $@
+
+common/version.h: build_version
+
 
 # This target is not called common/version.h (although it builds that file),
 # because it must be PHONY, but should only be rebuilt once.
@@ -91,12 +95,12 @@ build_version:
 	fi
 
 BUILT_SOURCES += \
-	build_version \
 	common/authors.h \
 	common/notifying-string.gob.stamp \
 	common/notifying-string.c \
 	common/notifying-string.h \
-	common/notifying-string-private.h
+	common/notifying-string-private.h \
+	common/version.h
 
 CLEANFILES += common/authors.h common/version.h
 
