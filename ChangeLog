@@ -1,6 +1,7 @@
 2013-11-19  Roland Clobus <rclobus@rclobus.nl>
 	* common/Makefile.am: Build version.h when needed.
 	* client/gtk/connect.c: GtkObject->GtkAdjustment (for Gtk+3).
+	* common/gtk/theme.c: Fixed compiler warning (due to Gtk+3 port).
 
 2013-11-17  Roland Clobus <rclobus@rclobus.nl>
 	* configure.ac: Enable (experimental) support for Gtk+3.

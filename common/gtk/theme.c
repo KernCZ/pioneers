@@ -347,8 +347,8 @@ gboolean theme_load_pixbuf(const gchar * file, const gchar * themename,
 static gboolean theme_initialize(MapTheme * t)
 {
 	guint i;
-	guint j;
 #ifndef HAVE_GTK3
+	guint j;
 	GdkColormap *cmap;
 #endif				/* not HAVE_GTK3 */
 
