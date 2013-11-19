@@ -887,7 +887,7 @@ static GtkWidget *build_create_interface(void)
 {
 	GtkWidget *vbox;
 	GtkWidget *label;
-	GtkObject *adj;
+	GtkAdjustment *adj;
 	guint row;
 
 	vbox = gtk_vbox_new(FALSE, 0);
@@ -918,12 +918,13 @@ static GtkWidget *build_create_interface(void)
 			 row + 1, GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 
-	adj = gtk_adjustment_new(0,
-				 0,
-				 game_settings_get_players(GAMESETTINGS
-							   (game_settings))
-				 - 1, 1, 4, 0);
-	aiplayers_spin = gtk_spin_button_new(GTK_ADJUSTMENT(adj), 1, 0);
+	adj = GTK_ADJUSTMENT(gtk_adjustment_new(0,
+						0,
+						game_settings_get_players
+						(GAMESETTINGS
+						 (game_settings))
+						- 1, 1, 4, 0));
+	aiplayers_spin = gtk_spin_button_new(adj, 1, 0);
 	gtk_spin_button_set_numeric(GTK_SPIN_BUTTON(aiplayers_spin), TRUE);
 	gtk_widget_show(aiplayers_spin);
 	gtk_entry_set_alignment(GTK_ENTRY(aiplayers_spin), 1.0);
