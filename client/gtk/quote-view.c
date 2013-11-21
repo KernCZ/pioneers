@@ -257,20 +257,21 @@ static void load_pixmaps(QuoteView * qv)
 {
 	static gboolean init = FALSE;
 	int width, height;
-	GdkPixmap *pixmap;
+	cairo_surface_t *surface;
 	cairo_t *cr;
+	cairo_rectangle_t extent;
 
 	if (init)
 		return;
 
 	gtk_icon_size_lookup(GTK_ICON_SIZE_MENU, &width, &height);
-	pixmap =
-	    gdk_pixmap_new(gtk_widget_get_window(qv->quotes), width,
-			   height,
-			   gdk_visual_get_depth(gtk_widget_get_visual
-						(qv->quotes)));
+	extent.width = width;
+	extent.height = height;
 
-	cr = gdk_cairo_create(pixmap);
+	surface =
+	    cairo_recording_surface_create(CAIRO_CONTENT_COLOR_ALPHA,
+					   &extent);
+	cr = cairo_create(surface);
 	gdk_cairo_set_source_pixbuf(cr,
 				    theme_get_terrain_pixbuf(SEA_TERRAIN),
 				    0.0, 0.0);
@@ -283,10 +284,9 @@ static void load_pixmaps(QuoteView * qv)
 	cairo_rectangle(cr, 0.5, 0.5, width - 1, height - 1);
 	cairo_stroke(cr);
 	maritime_pixbuf =
-	    gdk_pixbuf_get_from_drawable(NULL, pixmap, NULL, 0, 0, 0, 0,
-					 -1, -1);
-	g_object_unref(pixmap);
+	    gdk_pixbuf_get_from_surface(surface, 0, 0, width, height);
 	cairo_destroy(cr);
+	cairo_surface_destroy(surface);
 
 	cross_pixbuf =
 	    gtk_widget_render_icon(qv->quotes, GTK_STOCK_CANCEL,
@@ -696,22 +696,22 @@ void quote_view_set_maritime_filters(QuoteView * qv,
 void quote_view_theme_changed(QuoteView * qv)
 {
 	int width, height;
-	GdkPixmap *pixmap;
+	cairo_surface_t *surface;
 	cairo_t *cr;
+	cairo_rectangle_t extent;
 	QuoteInfo *quote;
 
 	if (!qv->with_maritime)
 		return;
 
 	gtk_icon_size_lookup(GTK_ICON_SIZE_MENU, &width, &height);
+	extent.width = width;
+	extent.height = height;
 
-	pixmap =
-	    gdk_pixmap_new(gtk_widget_get_window(qv->quotes), width,
-			   height,
-			   gdk_visual_get_depth(gtk_widget_get_visual
-						(qv->quotes)));
-
-	cr = gdk_cairo_create(pixmap);
+	surface =
+	    cairo_recording_surface_create(CAIRO_CONTENT_COLOR_ALPHA,
+					   &extent);
+	cr = cairo_create(surface);
 	gdk_cairo_set_source_pixbuf(cr,
 				    theme_get_terrain_pixbuf(SEA_TERRAIN),
 				    0.0, 0.0);
@@ -726,10 +726,9 @@ void quote_view_theme_changed(QuoteView * qv)
 	if (maritime_pixbuf)
 		g_object_unref(maritime_pixbuf);
 	maritime_pixbuf =
-	    gdk_pixbuf_get_from_drawable(NULL, pixmap, NULL, 0, 0, 0, 0,
-					 -1, -1);
+	    gdk_pixbuf_get_from_surface(surface, 0, 0, width, height);
 	cairo_destroy(cr);
-	g_object_unref(pixmap);
+	cairo_surface_destroy(surface);
 
 	/* Remove all maritime quotes */
 	quote = quotelist_first(qv->quote_list);
