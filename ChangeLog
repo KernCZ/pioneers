@@ -2,6 +2,7 @@
 	* client/gtk/quote-view.c: Replaced GdkPixmap by cairo_surface_t.
 	* client/gtk/settingscreen.c, client/gtk/plenty.c: Replaced GTK_OBJECT
 	by G_OBJECT for signal handlers.
+	* client/gtk/gui.c: Gtk+3 does not require resize grips.
 
 2013-11-19  Roland Clobus <rclobus@rclobus.nl>
 	* common/Makefile.am: Build version.h when needed.
