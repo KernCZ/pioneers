@@ -412,7 +412,7 @@ GtkWidget *settings_create_dlg(void)
 							  GTK_STOCK_CLOSE,
 							  GTK_RESPONSE_CLOSE,
 							  NULL);
-	g_signal_connect(GTK_OBJECT(settings_dlg), "destroy",
+	g_signal_connect(G_OBJECT(settings_dlg), "destroy",
 			 G_CALLBACK(gtk_widget_destroyed), &settings_dlg);
 
 	dlg_vbox = gtk_dialog_get_content_area(GTK_DIALOG(settings_dlg));
@@ -421,7 +421,7 @@ GtkWidget *settings_create_dlg(void)
 	vbox = settings_create_content();
 	gtk_box_pack_start(GTK_BOX(dlg_vbox), vbox, FALSE, FALSE, 0);
 
-	g_signal_connect(settings_dlg, "response",
+	g_signal_connect(G_OBJECT(settings_dlg), "response",
 			 G_CALLBACK(gtk_widget_destroy), NULL);
 
 	gtk_widget_show(settings_dlg);
