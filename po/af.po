@@ -336,10 +336,10 @@ msgid ""
 msgstr ""
 "Hierdie bord word nie bedoel as 'n spel wat gespeel moet word nie. Spelers "
 "kan mekaar hier ontmoet en dan besluit watter bord hulle wil speel. Dan moet "
-"een van die spelers die voorgestelde spel opstel en aanbied deur 'n "
-"bediener daarvoor aan die gang te sit en dit by 'n metabediener te "
-"registreer. Die ander spelers kan daarna die voorportaal verlaat en by die "
-"nuwe spel aansluit."
+"een van die spelers die voorgestelde spel opstel en aanbied deur 'n bediener "
+"daarvoor aan die gang te sit en dit by 'n metabediener te registreer. Die "
+"ander spelers kan daarna die voorportaal verlaat en by die nuwe spel "
+"aansluit."
 
 #: ../client/ai/lobbybot.c:130
 msgid "The last released version of Pioneers is"
@@ -435,7 +435,8 @@ msgstr "Weergawes pas nie."
 
 #: ../client/common/client.c:993
 msgid "Version mismatch. Please make sure client and server are up to date.\n"
-msgstr "Weergawes pas nie. Maak asb. seker die kliënt en bediener is op datum.\n"
+msgstr ""
+"Weergawes pas nie. Maak asb. seker die kliënt en bediener is op datum.\n"
 
 #: ../client/common/client.c:1413
 msgid "Build two settlements, each with a connecting"
@@ -891,7 +892,7 @@ msgid "%s, %s"
 msgstr "%s, %s"
 
 #: ../client/common/robber.c:62
-#, c-format, c-format
+#, c-format
 msgid "%s has undone the robber movement.\n"
 msgstr "%s het die rowerskuif gekanselleer.\n"
 
@@ -901,7 +902,7 @@ msgid "%s moved the robber.\n"
 msgstr "%s het die rower geskuif.\n"
 
 #: ../client/common/robber.c:75
-#, c-format, c-format
+#, c-format
 msgid "%s has undone the pirate movement.\n"
 msgstr "%s het die seerowerskuif gekanselleer.\n"
 
@@ -997,7 +998,7 @@ msgid "Receiving game names from the metaserver.\n"
 msgstr "Besig om name te kry vanaf metabediener.\n"
 
 #: ../client/gtk/connect.c:423
-#, c-format, c-format
+#, c-format
 msgid "New game server requested on %s port %s.\n"
 msgstr "Nuwe spelbediener aangevra op %s poort %s.\n"
 
@@ -1032,7 +1033,7 @@ msgstr "Metabediener te oud om nuwe bedieners te skep (weergawe %d.%d)\n"
 
 #: ../client/gtk/connect.c:671 ../client/gtk/connect.c:750
 #: ../client/gtk/connect.c:756
-#, c-format, c-format
+#, c-format
 msgid "Unexpected data from the metaserver: %s\n"
 msgstr "Onverwagte data vanaf die metabediener: %s\n"
 
@@ -1063,12 +1064,12 @@ msgid "Random"
 msgstr "Ewekansig"
 
 #: ../client/gtk/connect.c:820 ../server/meta.c:299
-#, c-format, c-format
+#, c-format
 msgid "Redirected to the metaserver at %s.\n"
 msgstr "Herlei na die metabediener by %s.\n"
 
 #: ../client/gtk/connect.c:825 ../server/meta.c:302
-#, c-format, c-format
+#, c-format
 msgid "Redirected to the metaserver at %s, port %s.\n"
 msgstr "Herlei na die metabediener by %s, poort %s.\n"
 
@@ -1099,7 +1100,7 @@ msgstr "Nuwe spelbediener word aangevra.\n"
 
 #: ../client/gtk/connect.c:1015 ../server/gtk/main.c:369
 #: ../server/server.c:122
-#, c-format, c-format
+#, c-format
 msgid "Error starting %s: %s\n"
 msgstr "Fout tydens begin van %s: %s\n"
 
@@ -1358,7 +1359,7 @@ msgid "Discard Resources"
 msgstr "Gooi hulpbronne weg"
 
 #: ../client/gtk/discard.c:101
-#, c-format, c-format
+#, c-format
 msgid "You must discard %d resource"
 msgid_plural "You must discard %d resources"
 msgstr[0] "Jy moet %d hulpbron weggooi"
@@ -1395,7 +1396,7 @@ msgid "Choose Resources"
 msgstr "Kies hulpbronne"
 
 #: ../client/gtk/gold.c:96
-#, c-format, c-format
+#, c-format
 msgid "You may choose %d resource"
 msgid_plural "You may choose %d resources"
 msgstr[0] "Jy mag %d hulpbron kies"
@@ -2466,7 +2467,8 @@ msgstr "Verouderde reël: '%s'\n"
 msgid ""
 "The game uses the new rule '%s', which is not yet supported. Consider "
 "upgrading.\n"
-msgstr "Die spel gebruik die nuwe reël '%s', wat nog nie ondersteun word nie. "
+msgstr ""
+"Die spel gebruik die nuwe reël '%s', wat nog nie ondersteun word nie. "
 "Oorweeg dit om op te gradeer.\n"
 
 #: ../common/game.c:924 ../common/game.c:955
@@ -2513,7 +2515,7 @@ msgid "Game directory '%s' not found\n"
 msgstr "Spel gids '%s' nie gevind nie\n"
 
 #: ../common/game-list.c:131
-#, c-format, c-format
+#, c-format
 msgid "Unable to load game: '%s'\n"
 msgstr "Kon nie spel laai nie: '%s'\n"
 
@@ -2854,7 +2856,7 @@ msgid "Error reading socket: %s\n"
 msgstr "Fout tydens lees van sok: %s\n"
 
 #: ../common/network.c:380
-#, c-format, c-format
+#, c-format
 msgid "Error connecting to %s: %s\n"
 msgstr "Kon nie aan %s koppel nie: %s\n"
 
@@ -3395,7 +3397,7 @@ msgstr "Avahi fout: %s\n"
 
 #: ../server/avahi.c:113 ../server/avahi.c:145 ../server/avahi.c:155
 #: ../server/avahi.c:191 ../server/avahi.c:212 ../server/avahi.c:226
-#, c-format, c-format
+#, c-format
 msgid "Avahi error: %s, %s\n"
 msgstr "Avahi fout: %s, %s\n"
 
@@ -3768,7 +3770,8 @@ msgstr "Kan die spel-parameters nie laai nie\n"
 #: ../server/main.c:303 ../server/main.c:322
 #, c-format
 msgid "The network port (%s) for the admin interface is not available.\n"
-msgstr "Die netwerkpoort (%s) vir die admin-koppelvlak is nie beskikbaar nie.\n"
+msgstr ""
+"Die netwerkpoort (%s) vir die admin-koppelvlak is nie beskikbaar nie.\n"
 
 #: ../server/meta.c:58
 msgid "The connection to the metaserver is lost.\n"
@@ -3786,7 +3789,7 @@ msgid "Attempting to reconnect to the metaserver.\n"
 msgstr "Probeer tans om weer aan die metabediener te verbind.\n"
 
 #: ../server/meta.c:311
-#, c-format, c-format
+#, c-format
 msgid "Register with the metaserver at %s.\n"
 msgstr "Registreer by die metabediener by %s.\n"
 
