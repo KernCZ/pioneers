@@ -1,9 +1,3 @@
-pioneers (15.2-1~local1) UNRELEASED; urgency=low
-
-  * Awaiting upstream release.
-
- -- Roland Clobus <rclobus@rclobus.nl>  Wed, 30 Oct 2013 08:22:43 +0100
-
 pioneers (15.1-1) unstable; urgency=low
 
   * New upstream release. (closes: #551341)
@@ -23,8 +17,9 @@ pioneers (15.1-1) unstable; urgency=low
   * Updated Vcs-* fields to point to the repository that moved on SourceForge.
   * Added Depends on initscripts (>= 2.88dsf-13.3) to ensure /run is usable.
   * Updated standards version to 3.9.4, no changes required.
+  * Changed compat level to 9, so hardening is enabled without additional code.
 
- -- Roland Clobus <rclobus@rclobus.nl>  Tue, 22 Oct 2013 23:04:00 +0200
+ -- Roland Clobus <rclobus@rclobus.nl>  Sun, 08 Dec 2013 17:08:02 +0100
 
 pioneers (14.1-2) unstable; urgency=low
 

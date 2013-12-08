@@ -5,8 +5,6 @@
 
 export DH_OPTIONS
 
-export DEB_BUILD_HARDENING=1
-
 %:
 	dh $@
 
