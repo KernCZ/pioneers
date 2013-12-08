@@ -21,37 +21,18 @@
 #ifndef __cards_h
 #define __cards_h
 
+#include "deck.h"
 #include "game.h"
-
-typedef struct _DevelDeck DevelDeck;
 
 gboolean is_victory_card(DevelType type);
 const gchar *get_devel_name(DevelType type);
 const gchar *get_devel_description(DevelType description);
 
-DevelDeck *deck_new(GameParams * params);
-void deck_free(DevelDeck * deck);
-void deck_card_add(DevelDeck * deck, DevelType type);
+gboolean deck_card_playable(const Deck * deck, guint num_playable_cards,
+			    guint idx);
+gboolean deck_card_play(Deck * deck, guint num_playable_cards, guint idx);
 
-/** Gets the card at position index in the deck.
- * @param deck The DevelDeck containing the card.
- * @param index The position of the card in the deck.
- * @return The card in the deck at position index.
- */
-DevelType devel_deck_get_card(const DevelDeck * deck, guint index);
-
-/** Gets the number of cards in a deck.
- * @param deck The DevelDeck to return the count of. 
- * @return The number of the cards in the deck.
- */
-guint devel_deck_count(const DevelDeck * deck);
-
-gboolean deck_card_playable(const DevelDeck * deck,
-			    guint num_playable_cards, guint idx);
-gboolean deck_card_play(DevelDeck * deck, guint num_playable_cards,
-			guint idx);
-
-gint deck_card_amount(const DevelDeck * deck, DevelType type);
-gint deck_card_oldest_card(const DevelDeck * deck, DevelType type);
+gint deck_card_amount(const Deck * deck, DevelType type);
+gint deck_card_oldest_card(const Deck * deck, DevelType type);
 
 #endif

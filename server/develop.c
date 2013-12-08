@@ -107,7 +107,7 @@ void develop_buy(Player * player)
 	game->bought_develop = TRUE;
 
 	card = game->develop_deck[game->develop_next++];
-	deck_card_add(player->devel, card);
+	deck_add_guint(player->devel, card);
 	player_send(player, FIRST_VERSION, LATEST_VERSION,
 		    "bought-develop %d\n", card);
 }
@@ -371,13 +371,13 @@ void develop_play(Player * player, guint idx)
 	Game *game = player->game;
 	DevelType card;
 
-	if (idx >= devel_deck_count(player->devel)) {
+	if (idx >= deck_count(player->devel)) {
 		player_send(player, FIRST_VERSION, LATEST_VERSION,
 			    "ERR no-card\n");
 		return;
 	}
 
-	card = devel_deck_get_card(player->devel, idx);
+	card = deck_get_guint(player->devel, idx);
 	if (!deck_card_play(player->devel, game->num_playable_cards, idx)) {
 		player_send(player, FIRST_VERSION, LATEST_VERSION,
 			    "ERR wrong-time\n");

@@ -1,3 +1,10 @@
+2013-12-08  Micah Bunting <amnykon@gmail.com>
+	* common/deck.h, common/deck.c, common/cards.h, common/cards.c,
+	common/Makefile.am, server/turn.c, server/pregame.c, server/server.h,
+	server/player.c, server/develop.c, client/ai/greedy.c,
+	client/common/develop.c, client/callback.h: Changed deck data structure
+	to have a faster algorithm, encapsulation, and storage of gpointer.
+
 2013-11-21  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/quote-view.c: Replaced GdkPixmap by cairo_surface_t.
 	* client/gtk/settingscreen.c, client/gtk/plenty.c: Replaced GTK_OBJECT

@@ -1176,9 +1176,9 @@ static void greedy_turn(void)
 	/* play soldier card before the turn when an own resource is blocked */
 	Hex *hex = map_robber_hex(callbacks.get_map());
 	if (hex && !have_rolled_dice() && can_play_any_develop()) {
-		const DevelDeck *deck = get_devel_deck();
-		for (i = 0; i < devel_deck_count(deck); i++) {
-			DevelType cardtype = devel_deck_get_card(deck, i);
+		const Deck *deck = get_devel_deck();
+		for (i = 0; i < deck_count(deck); i++) {
+			DevelType cardtype = deck_get_guint(deck, i);
 			if (cardtype == DEVEL_SOLDIER
 			    && can_play_develop(i)) {
 				int j;
@@ -1263,12 +1263,12 @@ static void greedy_turn(void)
 
 	/* play development cards */
 	if (can_play_any_develop()) {
-		const DevelDeck *deck = get_devel_deck();
+		const Deck *deck = get_devel_deck();
 		gint num_victory_cards = 0;
 		gint victory_point_target, my_points;
 
-		for (i = 0; i < devel_deck_count(deck); i++) {
-			DevelType cardtype = devel_deck_get_card(deck, i);
+		for (i = 0; i < deck_count(deck); i++) {
+			DevelType cardtype = deck_get_guint(deck, i);
 
 			/* if it's a vp card, note this for later */
 			if (is_victory_card(cardtype)) {
@@ -1289,9 +1289,9 @@ static void greedy_turn(void)
 		victory_point_target = game_victory_points();
 		my_points = player_get_score(my_player_num());
 		if (num_victory_cards + my_points >= victory_point_target) {
-			for (i = 0; i < devel_deck_count(deck); i++) {
+			for (i = 0; i < deck_count(deck); i++) {
 				DevelType cardtype =
-				    devel_deck_get_card(deck, i);
+				    deck_get_guint(deck, i);
 
 				if (is_victory_card(cardtype)) {
 					cb_play_develop(i);

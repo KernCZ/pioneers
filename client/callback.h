@@ -400,7 +400,7 @@ const GameParams *get_game_params(void);
 guint pirate_count_victims(const Hex * hex, gint * victim_list);
 guint robber_count_victims(const Hex * hex, gint * victim_list);
 const gint *get_bank(void);
-const DevelDeck *get_devel_deck(void);
+const Deck *get_devel_deck(void);
 
 /** Returns instructions for the user */
 const gchar *road_building_message(gint build_amount);

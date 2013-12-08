@@ -37,6 +37,8 @@ libpioneers_a_SOURCES = \
 	common/common_glib.h \
 	common/cost.c \
 	common/cost.h \
+	common/deck.c \
+	common/deck.h \
 	common/driver.c \
 	common/driver.h \
 	common/game.c \

@@ -37,14 +37,14 @@ static guint num_playable_cards;	/* number of playable development cards */
 
 static gboolean is_unique[NUM_DEVEL_TYPES];	/* is each card unique? */
 
-static DevelDeck *develop_deck;	/* our deck of development cards */
+static Deck *develop_deck;	/* our deck of development cards */
 
 void develop_init(void)
 {
 	int idx;
 	if (develop_deck != NULL)
-		deck_free(develop_deck);
-	develop_deck = deck_new(game_params);
+		deck_free(develop_deck, NULL);
+	develop_deck = deck_new();
 	num_playable_cards = 0;
 	for (idx = 0; idx < NUM_DEVEL_TYPES; idx++)
 		is_unique[idx] = game_params->num_develop_type[idx] == 1;
@@ -52,7 +52,7 @@ void develop_init(void)
 
 void develop_bought_card_turn(DevelType type, gboolean bought_this_turn)
 {
-	deck_card_add(develop_deck, type);
+	deck_add_guint(develop_deck, type);
 	if (bought_this_turn) {
 		/* Cannot undo build after buying a development card
 		 */
@@ -199,14 +199,14 @@ void monopoly_player(gint player_num, gint victim_num, gint num,
 void develop_begin_turn(void)
 {
 	bought_develop = FALSE;
-	num_playable_cards = devel_deck_count(develop_deck);
+	num_playable_cards = deck_count(develop_deck);
 }
 
 gboolean can_play_develop(guint card)
 {
 	if (!deck_card_playable(develop_deck, num_playable_cards, card))
 		return FALSE;
-	if (devel_deck_get_card(develop_deck, card) == DEVEL_ROAD_BUILDING
+	if (deck_get_guint(develop_deck, card) == DEVEL_ROAD_BUILDING
 	    && !road_building_can_build_road()
 	    && !road_building_can_build_ship()
 	    && !road_building_can_build_bridge())
@@ -218,7 +218,7 @@ gboolean can_play_develop(guint card)
 gboolean can_play_any_develop(void)
 {
 	guint i;
-	for (i = 0; i < devel_deck_count(develop_deck); ++i)
+	for (i = 0; i < deck_count(develop_deck); ++i)
 		if (can_play_develop(i))
 			return TRUE;
 	return FALSE;
@@ -235,7 +235,7 @@ gboolean have_bought_develop(void)
 	return bought_develop;
 }
 
-const DevelDeck *get_devel_deck(void)
+const Deck *get_devel_deck(void)
 {
 	return develop_deck;
 }

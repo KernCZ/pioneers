@@ -112,7 +112,7 @@ static gboolean mode_global(Player * player, gint event)
 		if (player->location != NULL)
 			g_free(player->location);
 		if (player->devel != NULL)
-			deck_free(player->devel);
+			deck_free(player->devel, NULL);
 		if (player->num >= 0
 		    && !player_is_spectator(game, player->num)
 		    && !player->disconnected) {
@@ -413,7 +413,7 @@ Player *player_new(Game * game, const gchar * name)
 
 	player->game = game;
 	player->location = g_strdup("not connected");
-	player->devel = deck_new(game->params);
+	player->devel = deck_new();
 	game->player_list = g_list_append(game->player_list, player);
 	player->num = -1;
 	player->chapel_played = 0;
@@ -812,7 +812,7 @@ void player_revive(Player * newp, char *name)
 	memcpy(newp->assets, p->assets, sizeof(newp->assets));
 	newp->gold = p->gold;
 	/* take over the development deck */
-	deck_free(newp->devel);
+	deck_free(newp->devel, NULL);
 	newp->devel = p->devel;
 	p->devel = NULL;
 

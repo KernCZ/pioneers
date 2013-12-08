@@ -25,52 +25,6 @@
 #include "game.h"
 #include "cards.h"
 
-struct _DevelDeck {
-	DevelType *cards;
-	guint num_cards;
-	guint max_cards;
-};
-
-DevelDeck *deck_new(GameParams * params)
-{
-	DevelDeck *deck;
-	guint num;
-	guint idx;
-
-	deck = g_malloc0(sizeof(*deck));
-	for (num = idx = 0; idx < G_N_ELEMENTS(params->num_develop_type);
-	     idx++)
-		num += params->num_develop_type[idx];
-	deck->max_cards = num;
-	deck->cards = g_malloc0(deck->max_cards * sizeof(*deck->cards));
-	return deck;
-}
-
-void deck_free(DevelDeck * deck)
-{
-	if (deck->cards != NULL)
-		g_free(deck->cards);
-	g_free(deck);
-}
-
-void deck_card_add(DevelDeck * deck, DevelType type)
-{
-	if (deck->num_cards >= deck->max_cards)
-		return;
-	deck->cards[deck->num_cards] = type;
-	deck->num_cards++;
-}
-
-DevelType devel_deck_get_card(const DevelDeck * deck, guint index)
-{
-	return deck->cards[index];
-}
-
-guint devel_deck_count(const DevelDeck * deck)
-{
-	return deck->num_cards;
-}
-
 gboolean is_victory_card(DevelType type)
 {
 	return type == DEVEL_CHAPEL
@@ -79,48 +33,44 @@ gboolean is_victory_card(DevelType type)
 	    || type == DEVEL_LIBRARY || type == DEVEL_MARKET;
 }
 
-gboolean deck_card_playable(const DevelDeck * deck,
-			    guint num_playable_cards, guint idx)
+gboolean deck_card_playable(const Deck * deck, guint num_playable_cards,
+			    guint idx)
 {
-	if (idx >= deck->num_cards)
+	if (idx >= deck_count(deck))
 		return FALSE;
 
-	if (is_victory_card(deck->cards[idx]))
+	if (is_victory_card(deck_get_guint(deck, idx)))
 		return TRUE;
 
 	return idx < num_playable_cards;
 }
 
-gboolean deck_card_play(DevelDeck * deck, guint num_playable_cards,
-			guint idx)
+gboolean deck_card_play(Deck * deck, guint num_playable_cards, guint idx)
 {
 	if (!deck_card_playable(deck, num_playable_cards, idx)) {
 		return FALSE;
 	}
-
-	deck->num_cards--;
-	memmove(deck->cards + idx, deck->cards + idx + 1,
-		(deck->num_cards - idx) * sizeof(*deck->cards));
+	deck_remove(deck, idx);
 
 	return TRUE;
 }
 
-gint deck_card_amount(const DevelDeck * deck, DevelType type)
+gint deck_card_amount(const Deck * deck, DevelType type)
 {
 	guint idx;
 	gint amount = 0;
 
-	for (idx = 0; idx < deck->num_cards; ++idx)
-		if (deck->cards[idx] == type)
+	for (idx = 0; idx < deck_count(deck); ++idx)
+		if (deck_get_guint(deck, idx) == type)
 			++amount;
 	return amount;
 }
 
-gint deck_card_oldest_card(const DevelDeck * deck, DevelType type)
+gint deck_card_oldest_card(const Deck * deck, DevelType type)
 {
 	guint idx;
-	for (idx = 0; idx < deck->num_cards; ++idx)
-		if (deck->cards[idx] == type)
+	for (idx = 0; idx < deck_count(deck); ++idx)
+		if (deck_get_guint(deck, idx) == type)
 			return idx;
 	return -1;
 }
