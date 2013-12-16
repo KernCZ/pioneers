@@ -86,7 +86,7 @@ gpointer deck_remove(Deck * deck, guint index)
 	g_return_val_if_fail(deck != NULL, NULL);
 	g_return_val_if_fail(deck_count(deck) != 0, NULL);
 
-	return g_ptr_array_remove_index_fast(deck->array, index);
+	return g_ptr_array_remove_index(deck->array, index);
 }
 
 guint deck_remove_guint(Deck * deck, guint index)
