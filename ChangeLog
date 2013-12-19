@@ -1,3 +1,8 @@
+201312-19  Roland Clobus <rclobus@rclobus.nl>
+	* client/gtk/histogram.c, client/gtk/identity.c, client/gtk/player.c,
+	client/gtk/resource-view.gob, common/gtk/map-icons.c,
+	editor/gtk/editor.c: Added support for the Gtk+3 'draw' event.
+
 2013-12-16  Micah Bunting <amnykon@gmail.com>
 	* common/deck.c: Maintains deck order by using
 	g_ptr_array_remove_index() instead of g_ptr_array_remove_index_fast().

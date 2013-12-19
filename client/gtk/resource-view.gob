@@ -92,10 +92,16 @@ class Resource:View from Gtk:Misc {
 		self->_priv->distance = 16;
 		self->_priv->max_width = -1;
 		resource_view_calculate_size(self, &width, &height);
-		gtk_widget_set_size_request(GTK_WIDGET(self), width, height);
+		gtk_widget_set_size_request(GTK_WIDGET(self), width,
+					    height);
 
+#ifdef HAVE_GTK3
+		g_signal_connect(G_OBJECT(self), "draw",
+				 G_CALLBACK(resource_view_draw), NULL);
+#else
 		g_signal_connect(G_OBJECT(self), "expose_event",
 				 G_CALLBACK(resource_view_expose), NULL);
+#endif				/* HAVE_GTK3 */
 		g_signal_connect(G_OBJECT(self), "size_allocate",
 				 G_CALLBACK(resource_view_allocate), NULL);
 	}
@@ -153,7 +159,8 @@ class Resource:View from Gtk:Misc {
 		}
 
 		resource_view_calculate_size(self, &width, &height);
-		gtk_widget_set_size_request(GTK_WIDGET(self), width, height);
+		gtk_widget_set_size_request(GTK_WIDGET(self), width,
+					    height);
 		tooltip = resource_format_num(resource);
 		gtk_widget_set_tooltip_text(GTK_WIDGET(self), tooltip);
 		g_free(tooltip);
@@ -190,10 +197,8 @@ class Resource:View from Gtk:Misc {
 		return FALSE;
 	}
 
-
-	private gboolean expose(GtkWidget * self, GdkEvent * event,
-				gpointer user_data) {
-		cairo_t *cr;
+	private gboolean draw(GtkWidget * self, cairo_t * cr,
+			      gpointer user_data) {
 		gint i;
 		GtkRequisition r;
 		GtkAllocation allocation;
@@ -202,12 +207,7 @@ class Resource:View from Gtk:Misc {
 		gdouble xoffset;
 		gdouble yoffset;
 
-		if (!gtk_widget_get_mapped(self)) {
-			return FALSE;
-		}
-
 		/* Remove compiler warnings */
-		event = event;
 		user_data = user_data;
 
 		gtk_widget_size_request(GTK_WIDGET(self), &r);
@@ -215,7 +215,7 @@ class Resource:View from Gtk:Misc {
 
 		gtk_misc_get_alignment(GTK_MISC(self), &xalign, &yalign);
 
-		yoffset = (gfloat)(allocation.height - r.height) * yalign;
+		yoffset = (gfloat) (allocation.height - r.height) * yalign;
 
 		if (allocation.width != -1) {
 			r.width = allocation.width;
@@ -223,9 +223,6 @@ class Resource:View from Gtk:Misc {
 		if (allocation.height != -1) {
 			r.height = allocation.height;
 		}
-
-		cr = gdk_cairo_create(gtk_widget_get_window
-				      (GTK_WIDGET(self)));
 
 		xoffset = 0;
 		for (i = 0; i < NO_RESOURCE; i++) {
@@ -246,7 +243,24 @@ class Resource:View from Gtk:Misc {
 			}
 		};
 
+		return TRUE;
+	}
+
+	private gboolean expose(GtkWidget * self, GdkEvent * event,
+				gpointer user_data) {
+		cairo_t *cr;
+
+		if (!gtk_widget_get_mapped(self)) {
+			return FALSE;
+		}
+
+		/* Remove compiler warnings */
+		event = event;
+
+		cr = gdk_cairo_create(gtk_widget_get_window
+				      (GTK_WIDGET(self)));
+		self_draw(self, cr, user_data);
 		cairo_destroy(cr);
-		return FALSE;
+		return TRUE;
 	}
 }

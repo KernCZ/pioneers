@@ -251,24 +251,24 @@ static void identity_resize_cb(GtkWidget * area,
 	calculate_identity_positions(area);
 }
 
-static gint expose_identity_area_cb(GtkWidget * area,
-				    G_GNUC_UNUSED GdkEventExpose * event,
-				    G_GNUC_UNUSED gpointer user_data)
+static gint draw_identity_area_cb(GtkWidget * widget, cairo_t * cr,
+				  G_GNUC_UNUSED gpointer user_data)
 {
 	GdkColor *colour;
 	const GameParams *game_params;
 	gint i;
-	cairo_t *cr;
 	GtkAllocation allocation;
-	if (gtk_widget_get_window(area) == NULL || my_player_num() < 0)
+	BuildType build_type;
+
+	if (my_player_num() < 0)
 		return FALSE;
-	cr = gdk_cairo_create(gtk_widget_get_window(area));
+
 	cairo_set_line_join(cr, CAIRO_LINE_JOIN_ROUND);
 	cairo_set_line_cap(cr, CAIRO_LINE_CAP_ROUND);
 	cairo_set_line_width(cr, 1.0);
 	colour = player_or_spectator_color(my_player_num());
 	gdk_cairo_set_source_color(cr, colour);
-	gtk_widget_get_allocation(area, &allocation);
+	gtk_widget_get_allocation(widget, &allocation);
 	cairo_rectangle(cr, 0, 0, allocation.width, allocation.height);
 	cairo_fill(cr);
 	if (my_player_spectator())
@@ -279,10 +279,9 @@ static gint expose_identity_area_cb(GtkWidget * area,
 	game_params = get_game_params();
 	if (game_params == NULL)
 		return TRUE;
-	BuildType build_type;
 	for (build_type = FIRST_BUILD_TYPE; build_type <= LAST_BUILD_TYPE;
 	     build_type++) {
-		draw_building_and_count(cr, area, build_type);
+		draw_building_and_count(cr, widget, build_type);
 	}
 
 	if (die_num[0] > 0 && die_num[1] > 0) {
@@ -295,9 +294,25 @@ static gint expose_identity_area_cb(GtkWidget * area,
 					 &white, &black);
 		}
 	}
+	return TRUE;
+}
+
+#ifndef HAVE_GTK3
+static gint expose_identity_area_cb(GtkWidget * area,
+				    G_GNUC_UNUSED GdkEventExpose * event,
+				    gpointer user_data)
+{
+	cairo_t *cr;
+
+	if (gtk_widget_get_window(area) == NULL)
+		return TRUE;
+
+	cr = gdk_cairo_create(gtk_widget_get_window(area));
+	draw_identity_area_cb(area, cr, user_data);
 	cairo_destroy(cr);
 	return TRUE;
 }
+#endif				/* not HAVE_GTK3 */
 
 void identity_draw(void)
 {
@@ -346,8 +361,13 @@ static gint button_press_identity_cb(G_GNUC_UNUSED GtkWidget * area,
 GtkWidget *identity_build_panel(void)
 {
 	identity_area = gtk_drawing_area_new();
+#ifdef HAVE_GTK3
+	g_signal_connect(G_OBJECT(identity_area), "draw",
+			 G_CALLBACK(draw_identity_area_cb), NULL);
+#else
 	g_signal_connect(G_OBJECT(identity_area), "expose_event",
 			 G_CALLBACK(expose_identity_area_cb), NULL);
+#endif				/* HAVE_GTK3 */
 	g_signal_connect(G_OBJECT(identity_area), "size-allocate",
 			 G_CALLBACK(identity_resize_cb), NULL);
 	gtk_widget_add_events(identity_area, GDK_BUTTON_PRESS_MASK);
