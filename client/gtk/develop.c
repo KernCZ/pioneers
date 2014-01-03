@@ -274,10 +274,14 @@ void frontend_played_develop(gint player_num, G_GNUC_UNUSED guint card_idx,
 					 DEVELOP_COLUMN_ORDER,
 					 develtype_to_sortorder(type));
 		g_assert(found == FIND_MATCH_EXACT);
-		if (deck_card_amount(get_devel_deck(), type) == 0)
+		if (deck_card_amount(get_devel_deck(), type) == 0) {
 			gtk_list_store_remove(store, &iter);
-		else
+			selected_card_idx = -1;
+		} else {
 			update_model(&iter, type);
+			selected_card_idx =
+			    deck_card_oldest_card(get_devel_deck(), type);
+		}
 	};
 }
 

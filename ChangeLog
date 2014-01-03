@@ -1,4 +1,8 @@
-201312-19  Roland Clobus <rclobus@rclobus.nl>
+2014-01-03  Roland Clobus <rclobus@rclobus.nl>
+	* client/gtk/develop.c: Play more than one development card of the same
+	type.
+
+2013-12-19  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/histogram.c, client/gtk/identity.c, client/gtk/player.c,
 	client/gtk/resource-view.gob, common/gtk/map-icons.c,
 	editor/gtk/editor.c: Added support for the Gtk+3 'draw' event.
