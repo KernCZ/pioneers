@@ -4,7 +4,7 @@
  * Copyright (C) 2000 Dave Cole
  * Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
  * Copyright (C) 2005 Roland Clobus <rclobus@bigfoot.com>
- * Copyright (C) 2005 Ferenc Bánhidi <banhidi@inf.elte.hu>
+ * Copyright (C) 2005 Ferenc BÃ¡nhidi <banhidi@inf.elte.hu>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
