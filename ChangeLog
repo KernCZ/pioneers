@@ -1,3 +1,14 @@
+2014-01-11  Roland Clobus <rclobus@rclobus.nl>
+	* client/gtk/chat.c, client/gtk/connect.c, client/gtk/develop.c,
+	client/gtk/discard.c, client/gtk/gameover.c, client/gtk/gold.c,
+	client/gtk/gui.c, client/gtk/legend.c, client/gtk/monopoly.c,
+	client/gtk/name.c, client/gtk/player.c, client/gtk/plenty.c,
+	client/gtk/quote.c, client/gtk/resource.c, client/gtk/settingscreen.c,
+	client/gtk/trade.c, common/gtk/common_gtk.c, common/gtk/game-rules.c,
+	common/gtk/game-settings.c, common/gtk/gtkcompat.h, configure.ac,
+	editor/gtk/editor.c, server/gtk/main.c: Fixed GTK3 deprecation warnings
+	for [hv]box and similar functions.
+
 2014-01-10  Roland Clobus <rclobus@rclobus.nl>
 	* common/gtk/config-gnome.c: Recoded to UTF8.
 

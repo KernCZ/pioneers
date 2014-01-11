@@ -25,6 +25,9 @@
 #include "resource-table.h"
 #include "gtkbugs.h"
 #include "common_gtk.h"
+#ifndef HAVE_GTK3
+#include "gtkcompat.h"
+#endif				/* not HAVE_GTK3 */
 
 enum {
 	GOLD_COLUMN_PLAYER_ICON, /**< Player icon */
@@ -88,7 +91,7 @@ void gold_choose_player_must(gint num, const gint * bank)
 	dlg_vbox = gtk_dialog_get_content_area(GTK_DIALOG(gold.dlg));
 	gtk_widget_show(dlg_vbox);
 
-	vbox = gtk_vbox_new(FALSE, 5);
+	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
 	gtk_widget_show(vbox);
 	gtk_box_pack_start(GTK_BOX(dlg_vbox), vbox, FALSE, TRUE, 0);
 	gtk_container_set_border_width(GTK_CONTAINER(vbox), 5);
@@ -203,7 +206,7 @@ GtkWidget *gold_build_page(void)
 	GtkCellRenderer *renderer;
 	GtkTreeViewColumn *column;
 
-	vbox = gtk_vbox_new(FALSE, 5);
+	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
 	gtk_widget_show(vbox);
 
 	alignment = gtk_alignment_new(0.0, 0.0, 1.0, 1.0);

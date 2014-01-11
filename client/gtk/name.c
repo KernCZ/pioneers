@@ -27,6 +27,9 @@
 #include "config-gnome.h"
 #include "client.h"
 #include "common_gtk.h"
+#ifndef HAVE_GTK3
+#include "gtkcompat.h"
+#endif				/* not HAVE_GTK3 */
 
 typedef struct {
 	GtkWidget *dlg;
@@ -161,7 +164,7 @@ void name_create_dlg(void)
 	    gtk_dialog_get_content_area(GTK_DIALOG(name_dialog.dlg));
 	gtk_widget_show(dlg_vbox);
 
-	hbox = gtk_hbox_new(FALSE, 5);
+	hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
 	gtk_widget_show(hbox);
 	gtk_box_pack_start(GTK_BOX(dlg_vbox), hbox, FALSE, TRUE, 0);
 	gtk_container_set_border_width(GTK_CONTAINER(hbox), 5);
@@ -197,12 +200,13 @@ void name_create_dlg(void)
 					 &face_color, &variant,
 					 &variant_color);
 
-	hbox = gtk_hbox_new(FALSE, 5);
+	hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
 	gtk_widget_show(hbox);
 	gtk_box_pack_start(GTK_BOX(dlg_vbox), hbox, FALSE, TRUE, 0);
 	gtk_container_set_border_width(GTK_CONTAINER(hbox), 5);
 
-	name_dialog.style_hbox = gtk_hbox_new(FALSE, 5);
+	name_dialog.style_hbox =
+	    gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
 	gtk_widget_set_sensitive(name_dialog.style_hbox, FALSE);
 
 	name_dialog.check_btn = gtk_check_button_new();
@@ -261,8 +265,8 @@ void name_create_dlg(void)
 			 G_CALLBACK(change_style_cb), &name_dialog);
 
 	name_dialog.variant_btn =
-	    gtk_hscale_new_with_range(1.0, playericon_human_style_count(),
-				      1.0);
+	    gtk_scale_new_with_range(GTK_ORIENTATION_HORIZONTAL, 1.0,
+				     playericon_human_style_count(), 1.0);
 	gtk_widget_set_size_request(name_dialog.variant_btn, width, -1);
 	gtk_scale_set_digits(GTK_SCALE(name_dialog.variant_btn), 0);
 	gtk_scale_set_value_pos(GTK_SCALE(name_dialog.variant_btn),

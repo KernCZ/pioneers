@@ -23,6 +23,9 @@
 #include "config.h"
 #include "frontend.h"
 #include "gui.h"
+#ifndef HAVE_GTK3
+#include "gtkcompat.h"
+#endif				/* not HAVE_GTK3 */
 
 static GtkWidget *settings_dlg = NULL;
 
@@ -112,7 +115,7 @@ static GtkWidget *settings_create_content(void)
 	guint row;
 
 	/* Create some space inside the dialog */
-	dlg_vbox = gtk_vbox_new(FALSE, 6);
+	dlg_vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 6);
 	gtk_container_set_border_width(GTK_CONTAINER(dlg_vbox), 6);
 	gtk_widget_show(dlg_vbox);
 
@@ -246,11 +249,11 @@ static GtkWidget *settings_create_content(void)
 	g_free(island_bonus);
 
 	/* Double space, otherwise the columns are too close */
-	hbox = gtk_hbox_new(FALSE, 24);
+	hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 24);
 	gtk_widget_show(hbox);
 	gtk_box_pack_start(GTK_BOX(dlg_vbox), hbox, TRUE, FALSE, 0);
 
-	vbox = gtk_vbox_new(FALSE, 6);
+	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 6);
 	gtk_widget_show(vbox);
 	gtk_box_pack_start(GTK_BOX(hbox), vbox, FALSE, FALSE, 0);
 
@@ -310,7 +313,7 @@ static GtkWidget *settings_create_content(void)
 			game_params->num_build_type[BUILD_BRIDGE], NULL,
 			TRUE);
 
-	vbox = gtk_vbox_new(FALSE, 6);
+	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 6);
 	gtk_widget_show(vbox);
 	gtk_box_pack_start(GTK_BOX(hbox), vbox, FALSE, TRUE, 0);
 

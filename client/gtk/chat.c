@@ -23,6 +23,9 @@
 #include "frontend.h"
 #include "common_gtk.h"
 #include "audio.h"
+#ifndef HAVE_GTK3
+#include "gtkcompat.h"
+#endif				/* not HAVE_GTK3 */
 
 static GtkWidget *chat_entry;	/* messages text widget */
 static GtkListStore *chat_completion_model = NULL;
@@ -65,7 +68,7 @@ GtkWidget *chat_build_panel(void)
 	GtkEntryCompletion *completion;
 	GtkCellRenderer *cell;
 
-	hbox = gtk_hbox_new(FALSE, 5);
+	hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
 	gtk_widget_show(hbox);
 
 	label = gtk_label_new(NULL);

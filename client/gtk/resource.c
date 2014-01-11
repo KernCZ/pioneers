@@ -25,6 +25,9 @@
 #include "frontend.h"
 #include "gtkbugs.h"
 #include "resource-view.h"
+#ifndef HAVE_GTK3
+#include "gtkcompat.h"
+#endif				/* not HAVE_GTK3 */
 
 /* 'total' label widget */
 static GtkWidget *asset_total_label;
@@ -80,7 +83,7 @@ GtkWidget *resource_build_panel(void)
 	create_resource_image(GTK_TABLE(table), WOOL_RESOURCE, 1, 1);
 	create_resource_image(GTK_TABLE(table), LUMBER_RESOURCE, 1, 2);
 
-	total = gtk_hbox_new(FALSE, 0);
+	total = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 	gtk_widget_show(total);
 
 	/* Label */

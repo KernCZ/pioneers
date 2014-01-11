@@ -27,6 +27,9 @@
 #include "common_gtk.h"
 #include "quote-view.h"
 #include "notification.h"
+#ifndef HAVE_GTK3
+#include "gtkcompat.h"
+#endif				/* not HAVE_GTK3 */
 
 static void trade_update(void);
 
@@ -444,7 +447,7 @@ static GtkWidget *build_trade_resources_frame(const gchar * title,
 	gchar *title_with_markup;
 	gint idx;
 
-	vbox = gtk_vbox_new(FALSE, 6);
+	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 6);
 	gtk_widget_show(vbox);
 
 	label = gtk_label_new(NULL);
@@ -509,13 +512,13 @@ GtkWidget *trade_build_page(void)
 					    (scroll_win), GTK_SHADOW_NONE);
 	gtk_widget_show(scroll_win);
 
-	panel_mainbox = gtk_hbox_new(FALSE, 6);
+	panel_mainbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 6);
 	gtk_widget_show(panel_mainbox);
 	gtk_container_set_border_width(GTK_CONTAINER(panel_mainbox), 6);
 	gtk_scrolled_window_add_with_viewport(GTK_SCROLLED_WINDOW
 					      (scroll_win), panel_mainbox);
 
-	vbox = gtk_vbox_new(FALSE, 6);
+	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 6);
 	gtk_widget_show(vbox);
 	gtk_box_pack_start(GTK_BOX(panel_mainbox), vbox, FALSE, TRUE, 0);
 
@@ -531,7 +534,7 @@ GtkWidget *trade_build_page(void)
 	gtk_box_pack_start(GTK_BOX(vbox), we_receive_frame, FALSE, TRUE,
 			   0);
 
-	bbox = gtk_hbutton_box_new();
+	bbox = gtk_button_box_new(GTK_ORIENTATION_HORIZONTAL);
 	gtk_widget_show(bbox);
 	gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, TRUE, 0);
 
@@ -541,7 +544,7 @@ GtkWidget *trade_build_page(void)
 	gtk_widget_show(call_btn);
 	gtk_container_add(GTK_CONTAINER(bbox), call_btn);
 
-	vbox = gtk_vbox_new(FALSE, 6);
+	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 6);
 	gtk_widget_show(vbox);
 	gtk_box_pack_start(GTK_BOX(panel_mainbox), vbox, TRUE, TRUE, 0);
 
@@ -558,7 +561,7 @@ GtkWidget *trade_build_page(void)
 	g_signal_connect(QUOTEVIEW(quoteview), "selection-changed",
 			 G_CALLBACK(quote_selected_cb), NULL);
 
-	bbox = gtk_hbutton_box_new();
+	bbox = gtk_button_box_new(GTK_ORIENTATION_HORIZONTAL);
 	gtk_widget_show(bbox);
 	gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, TRUE, 0);
 	gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox), GTK_BUTTONBOX_END);

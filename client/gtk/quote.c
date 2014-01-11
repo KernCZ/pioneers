@@ -26,6 +26,9 @@
 #include "resource-table.h"
 #include "quote-view.h"
 #include "notification.h"
+#ifndef HAVE_GTK3
+#include "gtkcompat.h"
+#endif				/* not HAVE_GTK3 */
 
 static gint trade_player;
 
@@ -284,13 +287,13 @@ GtkWidget *quote_build_page(void)
 					    (scroll_win), GTK_SHADOW_NONE);
 	gtk_widget_show(scroll_win);
 
-	panel_vbox = gtk_vbox_new(FALSE, 3);
+	panel_vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 3);
 	gtk_widget_show(panel_vbox);
 	gtk_container_set_border_width(GTK_CONTAINER(panel_vbox), 6);
 	gtk_scrolled_window_add_with_viewport(GTK_SCROLLED_WINDOW
 					      (scroll_win), panel_vbox);
 
-	hbox = gtk_hbox_new(FALSE, 6);
+	hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 6);
 	gtk_widget_show(hbox);
 	gtk_box_pack_start(GTK_BOX(panel_vbox), hbox, FALSE, TRUE, 0);
 
@@ -303,11 +306,11 @@ GtkWidget *quote_build_page(void)
 	gtk_box_pack_start(GTK_BOX(hbox), desc_lbl, TRUE, TRUE, 0);
 	gtk_misc_set_alignment(GTK_MISC(desc_lbl), 0, 0.5);
 
-	hbox = gtk_hbox_new(FALSE, 6);
+	hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 6);
 	gtk_widget_show(hbox);
 	gtk_box_pack_start(GTK_BOX(panel_vbox), hbox, TRUE, TRUE, 0);
 
-	vbox = gtk_vbox_new(FALSE, 3);
+	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 3);
 	gtk_widget_show(vbox);
 	gtk_box_pack_start(GTK_BOX(hbox), vbox, FALSE, TRUE, 0);
 
@@ -331,7 +334,7 @@ GtkWidget *quote_build_page(void)
 	g_signal_connect(G_OBJECT(give_table), "change",
 			 G_CALLBACK(amount_changed_cb), NULL);
 
-	bbox = gtk_hbutton_box_new();
+	bbox = gtk_button_box_new(GTK_ORIENTATION_HORIZONTAL);
 	gtk_widget_show(bbox);
 	gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, TRUE, 0);
 
@@ -347,7 +350,7 @@ GtkWidget *quote_build_page(void)
 	gtk_widget_show(delete_btn);
 	gtk_container_add(GTK_CONTAINER(bbox), delete_btn);
 
-	vbox = gtk_vbox_new(FALSE, 3);
+	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 3);
 	gtk_widget_show(vbox);
 	gtk_box_pack_start(GTK_BOX(hbox), vbox, TRUE, TRUE, 0);
 
@@ -360,7 +363,7 @@ GtkWidget *quote_build_page(void)
 	g_signal_connect(G_OBJECT(quoteview), "selection-activated",
 			 G_CALLBACK(quote_dblclick_cb), delete_btn);
 
-	bbox = gtk_hbutton_box_new();
+	bbox = gtk_button_box_new(GTK_ORIENTATION_HORIZONTAL);
 	gtk_widget_show(bbox);
 	gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, TRUE, 0);
 	gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox),

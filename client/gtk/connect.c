@@ -890,7 +890,7 @@ static GtkWidget *build_create_interface(void)
 	GtkAdjustment *adj;
 	guint row;
 
-	vbox = gtk_vbox_new(FALSE, 0);
+	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
 	gtk_widget_show(vbox);
 	gtk_container_set_border_width(GTK_CONTAINER(vbox), 3);
 
@@ -1216,7 +1216,7 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
 	dlg_vbox = gtk_dialog_get_content_area(GTK_DIALOG(meta_dlg));
 	gtk_widget_show(dlg_vbox);
 
-	vbox = gtk_vbox_new(FALSE, 2);
+	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 2);
 	gtk_widget_show(vbox);
 	gtk_box_pack_start(GTK_BOX(dlg_vbox), vbox, TRUE, TRUE, 0);
 	gtk_container_set_border_width(GTK_CONTAINER(vbox), 5);
@@ -1506,7 +1506,7 @@ void connect_create_dlg(void)
 				    ("Check if you want to be a spectator"));
 	row++;
 
-	sep = gtk_hseparator_new();
+	sep = gtk_separator_new(GTK_ORIENTATION_HORIZONTAL);
 	gtk_widget_show(sep);
 	gtk_table_attach(GTK_TABLE(table), sep, 0, 3, row, row + 1,
 			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 6);
@@ -1544,7 +1544,7 @@ void connect_create_dlg(void)
 	/* storing the pointer to this widget for later use */
 	avahi_register(AVAHIBROWSER(avahibrowser_entry));
 
-	sep = gtk_hseparator_new();
+	sep = gtk_separator_new(GTK_ORIENTATION_HORIZONTAL);
 	gtk_widget_show(sep);
 	gtk_table_attach(GTK_TABLE(table), sep, 0, 3, row, row + 1,
 			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 6);
@@ -1567,7 +1567,7 @@ void connect_create_dlg(void)
 		       metaserver_info.server);
 	row++;
 
-	hbox = gtk_hbox_new(FALSE, 3);
+	hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 3);
 	gtk_widget_show(hbox);
 	gtk_table_attach(GTK_TABLE(table), hbox, 0, 3, row, row + 1,
 			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 3);
@@ -1807,7 +1807,7 @@ static void connect_private_dialog(G_GNUC_UNUSED GtkWidget * widget,
 			 GTK_FILL, GTK_EXPAND, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(lbl), 0, 0.5);
 
-	hbox = gtk_hbox_new(FALSE, 0);
+	hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 	gtk_widget_show(hbox);
 	gtk_table_attach(GTK_TABLE(table), hbox, 1, 2, 1, 2,
 			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);

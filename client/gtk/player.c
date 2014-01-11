@@ -29,6 +29,9 @@
 #include "common_gtk.h"
 #include "player-icon.h"
 #include "audio.h"
+#ifndef HAVE_GTK3
+#include "gtkcompat.h"
+#endif				/* not HAVE_GTK3 */
 
 static void player_show_connected_at_iter(gint player_num,
 					  gboolean connected,
@@ -549,7 +552,7 @@ GtkWidget *player_build_summary(void)
 	GtkCellRenderer *renderer;
 	GtkTreeViewColumn *column;
 
-	vbox = gtk_vbox_new(FALSE, 5);
+	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
 	gtk_widget_show(vbox);
 
 	alignment = gtk_alignment_new(0.0, 0.0, 1.0, 1.0);

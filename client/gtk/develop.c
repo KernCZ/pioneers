@@ -23,6 +23,9 @@
 #include "config.h"
 #include "frontend.h"
 #include "common_gtk.h"
+#ifndef HAVE_GTK3
+#include "gtkcompat.h"
+#endif				/* not HAVE_GTK3 */
 
 /** Reorder the development types:
  *  Road building
@@ -116,7 +119,7 @@ GtkWidget *develop_build_page(void)
 	GtkWidget *play_develop_btn;
 	GtkWidget *develop_list;
 
-	vbox = gtk_vbox_new(FALSE, 5);
+	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
 	gtk_widget_show(vbox);
 
 	alignment = gtk_alignment_new(0.0, 0.0, 1.0, 1.0);
@@ -201,7 +204,7 @@ GtkWidget *develop_build_page(void)
 
 	gtk_widget_show(develop_list);
 
-	bbox = gtk_hbutton_box_new();
+	bbox = gtk_button_box_new(GTK_ORIENTATION_HORIZONTAL);
 	gtk_widget_show(bbox);
 	gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, TRUE, 0);
 

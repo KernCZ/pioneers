@@ -14,6 +14,9 @@
 #include "game-settings.h"
 #include "game.h"
 #include "gtkbugs.h"
+#ifndef HAVE_GTK3
+#include "gtkcompat.h"
+#endif				/* not HAVE_GTK3 */
 
 /* The signals */
 enum {
@@ -131,7 +134,7 @@ static void game_settings_init(GameSettings * gs)
 			 GTK_FILL, GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5f);
 
-	hbox = gtk_hbox_new(FALSE, 3);
+	hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 3);
 
 	adj = GTK_ADJUSTMENT(gtk_adjustment_new(10, 3, 99, 1, 5, 0));
 	gs->victory_spin = gtk_spin_button_new(GTK_ADJUSTMENT(adj), 1, 0);

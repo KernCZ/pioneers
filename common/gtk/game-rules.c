@@ -6,6 +6,9 @@
 
 #include "game-rules.h"
 #include "game.h"
+#ifndef HAVE_GTK3
+#include "gtkcompat.h"
+#endif				/* not HAVE_GTK3 */
 
 static void game_rules_init(GameRules * sg, gboolean show_all_rules);
 static void verify_island_discovery_bonus(GtkButton * button,
@@ -102,7 +105,8 @@ static void game_rules_init(GameRules * gr, gboolean show_all_rules)
 							_(""
 							  "Reroll all 7s"));
 
-	vbox_sevens = gtk_vbox_new(TRUE, 2);
+	vbox_sevens = gtk_box_new(GTK_ORIENTATION_VERTICAL, 2);
+	gtk_box_set_homogeneous(GTK_BOX(vbox_sevens), TRUE);
 	gtk_widget_show(vbox_sevens);
 	gtk_widget_set_tooltip_text(gr->radio_sevens[0],
 				    /* Tooltip for sevens rule normal */
@@ -209,7 +213,7 @@ static void game_rules_init(GameRules * gr, gboolean show_all_rules)
 				 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
 		gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 
-		hbox = gtk_hbox_new(FALSE, 3);
+		hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 3);
 
 		gr->island_bonus = GTK_ENTRY(gtk_entry_new());
 		gtk_widget_show(GTK_WIDGET(gr->island_bonus));

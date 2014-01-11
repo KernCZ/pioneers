@@ -131,11 +131,9 @@ esac])
 
 AC_ARG_ENABLE([gtk3],
 	AS_HELP_STRING([--enable-gtk3],
-		[Enable (experimental GTK3 support.]),
+		[Enable (experimental) GTK3 support.]),
 [case "${enableval}" in
-  yes)  GTK_REQUIRED_VERSION=3.4.2
-	AC_SUBST(AM_CFLAGS, ["$AM_CFLAGS -Wno-deprecated-declarations"])
-	pioneers_deprecationChecks=no;;
+  yes)  GTK_REQUIRED_VERSION=3.4.2;;
   *) ;;
 esac])
 

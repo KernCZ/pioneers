@@ -20,6 +20,9 @@
 
 #include "config.h"
 #include "frontend.h"
+#ifndef HAVE_GTK3
+#include "gtkcompat.h"
+#endif				/* not HAVE_GTK3 */
 
 GtkWidget *gameover_create_dlg(gint player_num, gint num_points)
 {
@@ -43,7 +46,7 @@ GtkWidget *gameover_create_dlg(gint player_num, gint num_points)
 	dlg_vbox = gtk_dialog_get_content_area(GTK_DIALOG(dlg));
 	gtk_widget_show(dlg_vbox);
 
-	vbox = gtk_vbox_new(FALSE, 50);
+	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 50);
 	gtk_widget_show(vbox);
 	gtk_box_pack_start(GTK_BOX(dlg_vbox), vbox, FALSE, TRUE, 0);
 	gtk_container_set_border_width(GTK_CONTAINER(vbox), 20);

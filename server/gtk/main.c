@@ -44,6 +44,9 @@
 #include "game-rules.h"
 #include "theme.h"
 #include "metaserver.h"		/* Custom widget */
+#ifndef HAVE_GTK3
+#include "gtkcompat.h"
+#endif				/* not HAVE_GTK3 */
 
 #define MAINICON_FILE	"pioneers-server.png"
 
@@ -481,7 +484,7 @@ static GtkWidget *build_game_settings(GtkWindow * main_window)
 {
 	GtkWidget *vbox;
 
-	vbox = gtk_vbox_new(FALSE, 3);
+	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 3);
 	gtk_widget_show(vbox);
 	gtk_container_set_border_width(GTK_CONTAINER(vbox), 3);
 
@@ -509,7 +512,7 @@ static GtkWidget *build_game_rules(void)
 	GtkWidget *vbox;
 
 
-	vbox = gtk_vbox_new(FALSE, 3);
+	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 3);
 	gtk_widget_show(vbox);
 	gtk_container_set_border_width(GTK_CONTAINER(vbox), 3);
 
@@ -811,7 +814,7 @@ static GtkWidget *build_player_connected_frame(void)
 	gchar *fullname;
 
 	/* vbox */
-	vbox = gtk_vbox_new(FALSE, 5);
+	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
 	gtk_widget_show(vbox);
 
 	/* connected tree_view */
@@ -856,7 +859,7 @@ static GtkWidget *build_ai_frame(Game ** game)
 	gchar *fullname;
 
 	/* ai vbox */
-	vbox = gtk_vbox_new(FALSE, 5);
+	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
 	gtk_widget_show(vbox);
 
 	fullname = g_find_program_in_path(PIONEERS_AI_PROGRAM_NAME);
@@ -940,7 +943,7 @@ static GtkWidget *build_interface(GtkWindow * main_window, Game ** game)
 	GtkWidget *label_with_close_button;
 
 	/* vbox */
-	vbox = gtk_vbox_new(FALSE, 5);
+	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
 	gtk_widget_show(vbox);
 	gtk_container_set_border_width(GTK_CONTAINER(vbox), 5);
 
@@ -953,14 +956,14 @@ static GtkWidget *build_interface(GtkWindow * main_window, Game ** game)
 			   0);
 
 	/* settings tab hbox */
-	hbox_settings = gtk_hbox_new(FALSE, 5);
+	hbox_settings = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
 	gtk_widget_show(hbox_settings);
 	gtk_notebook_append_page(GTK_NOTEBOOK(settings_notebook),
 				 hbox_settings,
 				 gtk_label_new(_("Game settings")));
 
 	/* left part in settings tab */
-	vbox_settings = gtk_vbox_new(FALSE, 5);
+	vbox_settings = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
 	gtk_widget_show(vbox_settings);
 
 	/* Game settings frame */
@@ -975,7 +978,7 @@ static GtkWidget *build_interface(GtkWindow * main_window, Game ** game)
 			   FALSE, 0);
 
 	/* right part in settings tab */
-	vbox_settings = gtk_vbox_new(FALSE, 5);
+	vbox_settings = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
 	gtk_widget_show(vbox_settings);
 
 	/* Rules frame */
@@ -999,7 +1002,7 @@ static GtkWidget *build_interface(GtkWindow * main_window, Game ** game)
 			 G_CALLBACK(start_clicked_cb), game);
 
 	/* game tab vbox */
-	vbox_settings = gtk_vbox_new(FALSE, 5);
+	vbox_settings = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
 	gtk_notebook_append_page(GTK_NOTEBOOK(settings_notebook),
 				 vbox_settings, label_with_close_button);
 
@@ -1237,7 +1240,7 @@ int main(int argc, char *argv[])
 	/* Name in the titlebar of the server */
 	gtk_window_set_title(GTK_WINDOW(window), _("Pioneers Server"));
 
-	vbox = gtk_vbox_new(FALSE, 0);
+	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
 	gtk_container_add(GTK_CONTAINER(window), vbox);
 
 	action_group = gtk_action_group_new("MenuActions");

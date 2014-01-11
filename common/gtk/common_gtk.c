@@ -26,6 +26,9 @@
 #include "state.h"
 #include "common_gtk.h"
 #include "cards.h"
+#ifndef HAVE_GTK3
+#include "gtkcompat.h"
+#endif				/* not HAVE_GTK3 */
 
 static GtkWidget *message_txt;
 static GtkWidget *message_container;
@@ -351,7 +354,7 @@ GtkWidget *create_label_with_close_button(const gchar * label_text,
 	GtkWidget *lbl;
 	GtkWidget *close_image;
 
-	hbox = gtk_hbox_new(FALSE, 4);
+	hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 4);
 	lbl = gtk_label_new(label_text);
 	gtk_box_pack_start(GTK_BOX(hbox), lbl, FALSE, FALSE, 0);
 
@@ -386,7 +389,7 @@ void build_frame(GtkWidget * parent, const gchar * title,
 	GtkWidget *fix;
 	gchar *title_with_markup;
 
-	vbox = gtk_vbox_new(FALSE, 3);
+	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 3);
 	gtk_container_set_border_width(GTK_CONTAINER(vbox), 5);
 	gtk_box_pack_start(GTK_BOX(parent), vbox, extend, TRUE, 0);
 
@@ -398,7 +401,7 @@ void build_frame(GtkWidget * parent, const gchar * title,
 	gtk_widget_show(label);
 	gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, TRUE, 0);
 
-	hbox = gtk_hbox_new(FALSE, 0);
+	hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, TRUE, TRUE, 0);
 
 	fix = gtk_fixed_new();

@@ -26,6 +26,9 @@
 #include "map-icons.h"
 #include "cost.h"
 #include "resource-view.h"
+#ifndef HAVE_GTK3
+#include "gtkcompat.h"
+#endif				/* not HAVE_GTK3 */
 
 /* The order of the terrain_names is EXTREMELY important!  The order
  * must match the enum Terrain.
@@ -119,9 +122,9 @@ GtkWidget *legend_create_content(void)
 	GtkWidget *alignment;
 	guint num_rows;
 
-	hbox = gtk_hbox_new(FALSE, 6);
+	hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 6);
 
-	vbox = gtk_vbox_new(FALSE, 6);
+	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 6);
 	gtk_container_set_border_width(GTK_CONTAINER(vbox), 6);
 
 	label = gtk_label_new(NULL);
@@ -147,7 +150,7 @@ GtkWidget *legend_create_content(void)
 	add_legend_terrain(table, 2, 0, MOUNTAIN_TERRAIN, ORE_RESOURCE);
 	add_legend_terrain(table, 3, 0, PASTURE_TERRAIN, WOOL_RESOURCE);
 
-	vsep = gtk_vseparator_new();
+	vsep = gtk_separator_new(GTK_ORIENTATION_VERTICAL);
 	gtk_widget_show(vsep);
 	gtk_table_attach(GTK_TABLE(table), vsep, 4, 5, 0, 4,
 			 GTK_FILL, GTK_FILL, 0, 0);

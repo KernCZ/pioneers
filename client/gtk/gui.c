@@ -574,7 +574,7 @@ static GtkWidget *build_messages_panel(void)
 	GtkWidget *label;
 	GtkWidget *scroll_win;
 
-	vbox = gtk_vbox_new(FALSE, 5);
+	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
 	gtk_widget_show(vbox);
 
 	/* Label for messages log */
@@ -881,10 +881,10 @@ static GtkWidget *build_main_interface(void)
 	GtkWidget *vpaned;
 	GtkWidget *panel;
 
-	hpaned = gtk_hpaned_new();
+	hpaned = gtk_paned_new(GTK_ORIENTATION_HORIZONTAL);
 	gtk_widget_show(hpaned);
 
-	vbox = gtk_vbox_new(FALSE, 3);
+	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 3);
 	gtk_widget_show(vbox);
 	gtk_paned_pack1(GTK_PANED(hpaned), vbox, FALSE, TRUE);
 
@@ -897,17 +897,17 @@ static GtkWidget *build_main_interface(void)
 	gtk_box_pack_start(GTK_BOX(vbox),
 			   player_build_summary(), TRUE, TRUE, 0);
 
-	main_paned = gtk_hpaned_new();
+	main_paned = gtk_paned_new(GTK_ORIENTATION_HORIZONTAL);
 	gtk_widget_show(main_paned);
 
-	vpaned = gtk_vpaned_new();
+	vpaned = gtk_paned_new(GTK_ORIENTATION_VERTICAL);
 	gtk_widget_show(vpaned);
 
 	gtk_paned_pack1(GTK_PANED(main_paned), vpaned, TRUE, TRUE);
 
 	gtk_paned_pack1(GTK_PANED(vpaned), build_map_panel(), TRUE, TRUE);
 
-	chat_panel = gtk_vbox_new(FALSE, 0);
+	chat_panel = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
 	gui_show_splash_page(TRUE, chat_panel);
 
 	panel = chat_build_panel();
@@ -1547,7 +1547,7 @@ static GtkWidget *build_status_bar(void)
 	gtk_box_pack_start(GTK_BOX(app_bar), vp_target_status, FALSE, TRUE,
 			   0);
 
-	vsep = gtk_vseparator_new();
+	vsep = gtk_separator_new(GTK_ORIENTATION_VERTICAL);
 	gtk_widget_show(vsep);
 	gtk_box_pack_start(GTK_BOX(app_bar), vsep, FALSE, TRUE, 0);
 
@@ -1556,7 +1556,7 @@ static GtkWidget *build_status_bar(void)
 	gtk_widget_show(net_status);
 	gtk_box_pack_start(GTK_BOX(app_bar), net_status, FALSE, TRUE, 0);
 
-	vsep = gtk_vseparator_new();
+	vsep = gtk_separator_new(GTK_ORIENTATION_VERTICAL);
 	gtk_widget_show(vsep);
 	gtk_box_pack_start(GTK_BOX(app_bar), vsep, FALSE, TRUE, 0);
 
@@ -1630,7 +1630,7 @@ GtkWidget *gui_build_interface(void)
 
 	prepare_gtk_for_close_button_on_tab();
 
-	vbox = gtk_vbox_new(FALSE, 0);
+	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
 	gtk_widget_show(vbox);
 	gtk_container_add(GTK_CONTAINER(app_window), vbox);
 

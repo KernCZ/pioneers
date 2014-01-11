@@ -45,6 +45,9 @@
 #include "common_gtk.h"
 #include "cards.h"
 #include "network.h"
+#ifndef HAVE_GTK3
+#include "gtkcompat.h"
+#endif				/* not HAVE_GTK3 */
 
 #define MAINICON_FILE "pioneers-editor.png"
 
@@ -494,7 +497,7 @@ static void build_select_bars(GtkWidget * table)
 	gint i;
 	ToolbarButtonData *toolbar_button_data;
 
-	box = gtk_hbox_new(FALSE, 0);	/* upper bar */
+	box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);	/* upper bar */
 
 	area = gtk_drawing_area_new();
 	gtk_widget_show(area);
@@ -529,7 +532,7 @@ static void build_select_bars(GtkWidget * table)
 					  TRUE);
 
 	/* Line between unselect and terrains */
-	vsep = gtk_vseparator_new();
+	vsep = gtk_separator_new(GTK_ORIENTATION_VERTICAL);
 	gtk_widget_show(vsep);
 	gtk_widget_set_size_request(vsep, 10, 0);
 	gtk_box_pack_start(GTK_BOX(box), vsep, FALSE, TRUE, 0);
@@ -562,7 +565,7 @@ static void build_select_bars(GtkWidget * table)
 	gtk_table_attach(GTK_TABLE(table), box, 0, 2, 0, 1,
 			 GTK_FILL, GTK_FILL, 0, 0);
 
-	box = gtk_hbox_new(FALSE, 0);	/* lower bar */
+	box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);	/* lower bar */
 
 	/* chit toolbar buttons */
 	for (i = 2; i <= 12; i++) {
@@ -604,7 +607,7 @@ static void build_select_bars(GtkWidget * table)
 	}
 
 	/* Line between chit and port */
-	vsep = gtk_vseparator_new();
+	vsep = gtk_separator_new(GTK_ORIENTATION_VERTICAL);
 	gtk_widget_show(vsep);
 	gtk_widget_set_size_request(vsep, 10, 0);
 	gtk_box_pack_start(GTK_BOX(box), vsep, FALSE, TRUE, 0);
@@ -670,12 +673,7 @@ static void build_map_resize(GtkWidget * table, guint col, guint row,
 	GtkWidget *box;
 	gint i;
 
-	if (dir == GTK_ORIENTATION_VERTICAL) {
-		box = gtk_vbox_new(FALSE, 0);
-	} else {
-		box = gtk_hbox_new(FALSE, 0);
-	}
-
+	box = gtk_box_new(dir, 0);
 	for (i = 0; i < 4; i++) {
 		buttons[i] =
 		    GTK_WIDGET(gtk_tool_button_new_from_stock(symbols[i]));
@@ -1074,7 +1072,7 @@ static GtkWidget *build_comments(void)
 	GtkWidget *vbox;
 	GtkWidget *widget;
 
-	vbox = gtk_vbox_new(FALSE, 5);
+	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
 	/* Label */
 	widget = gtk_label_new_with_mnemonic(_("_Title"));
 	gtk_widget_show(widget);
@@ -1349,19 +1347,20 @@ static GtkWidget *build_settings(GtkWindow * main_window)
 
 
 	/* vbox */
-	vbox = gtk_vbox_new(FALSE, 0);
+	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
 	gtk_container_set_border_width(GTK_CONTAINER(vbox), 5);
 
 	/*outer_hbox */
-	outer_hbox = gtk_hbox_new(TRUE, 0);
+	outer_hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+	gtk_box_set_homogeneous(GTK_BOX(outer_hbox), TRUE);
 	gtk_box_pack_start(GTK_BOX(vbox), outer_hbox, TRUE, TRUE, 0);
 
 	/* inner_hbox */
-	inner_hbox = gtk_hbox_new(FALSE, 5);
+	inner_hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
 	gtk_box_pack_start(GTK_BOX(outer_hbox), inner_hbox, TRUE, TRUE, 0);
 
 	/* lvbox */
-	lvbox = gtk_vbox_new(FALSE, 10);
+	lvbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
 	gtk_box_pack_start(GTK_BOX(inner_hbox), lvbox, TRUE, TRUE, 0);
 
 	/* fix */
@@ -1369,16 +1368,16 @@ static GtkWidget *build_settings(GtkWindow * main_window)
 	gtk_box_pack_start(GTK_BOX(inner_hbox), fix, FALSE, TRUE, 0);
 
 	/* inner_hbox */
-	inner_hbox = gtk_hbox_new(FALSE, 5);
+	inner_hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
 	gtk_box_pack_start(GTK_BOX(outer_hbox), inner_hbox, TRUE, TRUE, 0);
 
 	/* vsep */
-	vsep = gtk_vseparator_new();
+	vsep = gtk_separator_new(GTK_ORIENTATION_VERTICAL);
 	gtk_widget_show(vsep);
 	gtk_box_pack_start(GTK_BOX(inner_hbox), vsep, FALSE, FALSE, 0);
 
 	/* rvbox */
-	rvbox = gtk_vbox_new(FALSE, 10);
+	rvbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
 	gtk_box_pack_start(GTK_BOX(inner_hbox), rvbox, TRUE, TRUE, 0);
 
 	/* get elements */
@@ -1715,7 +1714,7 @@ static void change_title_menu_cb(void)
 
 	vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
 
-	hbox = gtk_hbox_new(FALSE, 5);
+	hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);
 	gtk_container_set_border_width(GTK_CONTAINER(hbox), 5);
 
@@ -2050,7 +2049,7 @@ int main(int argc, char *argv[])
 	roll_menu = build_roll_menu();
 	port_menu = build_port_menu();
 
-	vbox = gtk_vbox_new(FALSE, 0);
+	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
 	gtk_container_add(GTK_CONTAINER(toplevel), vbox);
 
 	menubar = gtk_ui_manager_get_widget(ui_manager, "/MainMenu");

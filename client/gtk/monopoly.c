@@ -22,6 +22,9 @@
 
 #include "config.h"
 #include "frontend.h"
+#ifndef HAVE_GTK3
+#include "gtkcompat.h"
+#endif				/* not HAVE_GTK3 */
 
 static GtkWidget *monop_dlg;
 static Resource monop_type;
@@ -96,7 +99,7 @@ void monopoly_create_dlg(void)
 	dlg_vbox = gtk_dialog_get_content_area(GTK_DIALOG(monop_dlg));
 	gtk_widget_show(dlg_vbox);
 
-	vbox = gtk_vbox_new(FALSE, 0);
+	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
 	gtk_widget_show(vbox);
 	gtk_box_pack_start(GTK_BOX(dlg_vbox), vbox, FALSE, TRUE, 0);
 	gtk_container_set_border_width(GTK_CONTAINER(vbox), 5);
