@@ -1,3 +1,6 @@
+2014-01-13  Roland Clobus <rclobus@rclobus.nl>
+	* Makefile.am: Added new tool, codespell, to fix common misspellings.
+
 2014-01-11  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/chat.c, client/gtk/connect.c, client/gtk/develop.c,
 	client/gtk/discard.c, client/gtk/gameover.c, client/gtk/gold.c,

@@ -165,6 +165,10 @@ reindent:
 restorepo:
 	svn revert po/*.po po/pioneers.pot
 
+# Find and fix common misspellings in the code
+codespell:
+	find . -name '*.[ch]' -exec codespell -d -i3 -w '{}' ';'
+
 # Remove ALL generated files
 pristine: maintainer-clean
 	svn status --no-ignore | awk '$$1=="I" { print substr($$0, 9, 255) }' | tr '\n' '\0' | xargs -0 rm
