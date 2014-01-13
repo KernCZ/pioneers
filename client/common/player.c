@@ -706,7 +706,7 @@ void player_get_point(gint player_num, gint id, const gchar * str,
 		    _(str));
 }
 
-/* lose a point: noone gets it */
+/* lose a point: no one gets it */
 void player_lose_point(gint player_num, gint id)
 {
 	Player *player = player_get(player_num);

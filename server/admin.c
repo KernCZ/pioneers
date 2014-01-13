@@ -20,7 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-/* Pioneers Console Server Adminstrator interface
+/* Pioneers Console Server Administrator interface
  *
  * The strings in the admin interface are intentionally not translated.
  * They would otherwise reflect the language of the server that is

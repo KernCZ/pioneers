@@ -46,7 +46,7 @@ typedef struct {
 	GList *build_list;	/* list of building that can be undone */
 	gint prev_assets[NO_RESOURCE];	/* remember previous resources */
 	gint assets[NO_RESOURCE];	/* our resources */
-	gint gold;		/* how much gold will we recieve? */
+	gint gold;		/* how much gold will we receive? */
 	Deck *devel;		/* development cards we own */
 	GList *special_points;	/* points from special actions */
 	gint special_points_next_id;	/* Next id for the special points */

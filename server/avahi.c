@@ -5,7 +5,7 @@
  * Copyright (C) 2010 Andreas Steinel <lnxbil@users.sourceforge.net>
  * Copyright (C) 2010 Roland Clobus <rclobus@rclobus.nl>
  *
- * This file is originally based on client-publish-service.c last commited on
+ * This file is originally based on client-publish-service.c last committed on
  * 2006-01-27 20:34:22Z by lennart.
  * It got adapted to glib instead from pure avahi
  * 

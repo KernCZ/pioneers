@@ -489,7 +489,7 @@ Player *player_new_connection(Game * game, Session * ses)
 	g_free(player->location);
 	player->location = g_strdup(location);
 
-	/* Cache messages of the game in progress until all intial 
+	/* Cache messages of the game in progress until all initial 
 	 * messages have been sent
 	 */
 	sm_set_use_cache(sm, TRUE);

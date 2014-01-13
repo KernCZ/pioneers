@@ -309,7 +309,7 @@ GList *theme_get_list(void)
 
 /** Load a pixbuf.
  *  If loading fails, no objects need to be freed.
- *  @return TRUE if succesful
+ *  @return TRUE if successful
  */
 gboolean theme_load_pixbuf(const gchar * file, const gchar * themename,
 			   GdkPixbuf ** pixbuf)
@@ -342,7 +342,7 @@ gboolean theme_load_pixbuf(const gchar * file, const gchar * themename,
 }
 
 /** Initialize the theme.
- *  @return TRUE if succesful
+ *  @return TRUE if successful
  */
 static gboolean theme_initialize(MapTheme * t)
 {

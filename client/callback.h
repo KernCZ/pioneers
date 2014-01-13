@@ -224,7 +224,7 @@ struct callbacks {
 	/* You should steal something from a ship */
 	void (*steal_ship) (void);
 	/* Someone has been robbed.  The frontend should allow player_num to
-	 * be negative, meaning noone was robbed.  This is not implemented
+	 * be negative, meaning no one was robbed.  This is not implemented
 	 * yet. */
 	void (*player_robbed) (gint robber_num, gint victim_num,
 			       Resource resource);

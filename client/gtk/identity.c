@@ -100,7 +100,7 @@ static gint calculate_width(GtkWidget * area, BuildType build_type)
 	if (game_params->num_build_type[build_type] <= 0) {
 		return 0;
 	}
-	/* calulate poly width */
+	/* calculate poly width */
 	GdkPoint points[MAX_POINTS];
 	Polygon poly;
 	GdkRectangle rect;
