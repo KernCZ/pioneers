@@ -1,3 +1,7 @@
+2014-0208  Roland Clobus <rclobus@rclobus.nl>
+	* autogen.sh: Pass along the arguments when the embedded copy of
+	gnome-common is used.
+
 2014-01-13  Roland Clobus <rclobus@rclobus.nl>
 	* client/callback.h, client/common/player.c, client/gtk/identity.c,
 	common/gtk/theme.c, server/admin.c, server/avahi.c, server/player.c,
