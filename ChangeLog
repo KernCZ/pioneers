@@ -1,6 +1,10 @@
 2014-02-09  Roland Clobus <rclobus@rclobus.nl>
 	* client/common/main.c: Do not start the main loop when the
 	computer player cannot connect to the given port.
+	* client/gtk/frontend.h, client/gtk/gui.c, client/gtk/offline.c,
+	client/gtk/state.c: Do not quit when the client cannot connect to
+	the given port.
+	* client/ai/Makefile.am, client/ai/genetic_core.c: Basic integration.
 
 2014-02-08  Roland Clobus <rclobus@rclobus.nl>
 	* autogen.sh: Pass along the arguments when the embedded copy of
