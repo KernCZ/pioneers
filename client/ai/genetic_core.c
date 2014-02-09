@@ -539,7 +539,7 @@ int checkRoadNow(enum action oneAction, struct gameState_t myGameState)
 
 
 
-
+#ifndef INTEGRATE_GENETIC_ALGORITHM
 int main(int argc, char **argv)
 {
 	float max_profit_returned;
@@ -645,3 +645,5 @@ int main(int argc, char **argv)
 	}
 	return 0;
 }
+#endif /* not INTEGRATE_GENETIC_ALGORITHM */
+

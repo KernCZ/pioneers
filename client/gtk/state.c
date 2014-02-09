@@ -51,7 +51,7 @@ void route_gui_event(GuiEvent event)
 		return;
 	case GUI_QUIT:
 		debug("quitting");
-		gtk_main_quit();
+		frontend_quit();
 		return;
 	default:
 		break;

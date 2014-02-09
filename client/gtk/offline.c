@@ -45,6 +45,7 @@ static const gchar *port = NULL;
 static const gchar *metaserver = NULL;
 static gboolean server_from_commandline = FALSE;
 static gboolean quit_when_offline = FALSE;
+static gboolean mainloop_started = FALSE;
 static gboolean enable_debug = FALSE;
 static gboolean show_version = FALSE;
 
@@ -151,10 +152,22 @@ void frontend_offline(void)
 
 static void frontend_main(void)
 {
+	mainloop_started = TRUE;
 	gtk_main();
 	notification_cleanup();
 	themes_cleanup();
 	game_list_cleanup();
+}
+
+void frontend_quit(void)
+{
+	if (mainloop_started) {
+		gtk_main_quit();
+	} else {
+		/* The main loop did not start yet.
+		 * Do not quit, so the user can read the log */
+		quit_when_offline = FALSE;
+	}
 }
 
 /* this function is called to let the frontend initialize itself. */
@@ -205,7 +218,7 @@ void frontend_init_gtk_et_al(int argc, char **argv)
 	g_set_application_name(_("Pioneers"));
 
 	callbacks.mainloop = &frontend_main;
-	callbacks.quit = &gtk_main_quit;
+	callbacks.quit = &frontend_quit;
 }
 
 static void frontend_change_name_cb(NotifyingString * name)

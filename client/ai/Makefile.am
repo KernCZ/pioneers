@@ -20,13 +20,14 @@
 
 bin_PROGRAMS += pioneersai
 
-pioneersai_CPPFLAGS = -I$(top_srcdir)/client -I$(top_srcdir)/client/common $(console_cflags) $(GOBJECT2_CFLAGS)
+pioneersai_CPPFLAGS = -I$(top_srcdir)/client -I$(top_srcdir)/client/common $(console_cflags) $(GOBJECT2_CFLAGS) -DINTEGRATE_GENETIC_ALGORITHM
 
 pioneersai_SOURCES = \
 	client/callback.h \
 	client/ai/ai.h \
 	client/ai/ai.c \
 	client/ai/genetic.c \
+	client/ai/genetic_core.c \
 	client/ai/greedy.c \
 	client/ai/lobbybot.c
 

@@ -38,7 +38,10 @@ static void run_main(void)
 
 static void quit(void)
 {
-	g_main_loop_quit(loop);
+	if (loop != NULL) {
+		g_main_loop_quit(loop);
+	}
+	callbacks.mainloop = NULL;
 }
 
 int main(int argc, char *argv[])
@@ -48,6 +51,7 @@ int main(int argc, char *argv[])
 	client_init();
 	callbacks.mainloop = &run_main;
 	callbacks.quit = &quit;
+	loop = NULL;
 
 #if ENABLE_NLS
 	setlocale(LC_ALL, "");
@@ -64,7 +68,9 @@ int main(int argc, char *argv[])
 	 * mode to offline, which means a callback is called. */
 	client_start(argc, argv);
 
-	callbacks.mainloop();
+	if (callbacks.mainloop != NULL) {
+		callbacks.mainloop();
+	}
 
 	net_finish();
 	return 0;
