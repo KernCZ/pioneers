@@ -1,7 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
+/*#include <math.h>*/
 #include <time.h>
+#include <glib.h>
+
+
+
 
 #define MAX_SIMS 1000
 /*Number of simulations, could be raised to achieve better accuracy if computing time allows it*/
@@ -12,40 +16,35 @@
 
 enum action { SET, CIT, DEV, RSET, RRSET };	/*Possible individual actions: Settlement, City, Development Card, Road+Settlement, Road+Road+Settlement */
 typedef enum action strategy_t[2];	/*Pair of preferred actions to carry out in the next turns, possibly the first (or even the second) right now */
-typedef int tradingMatrix_t[5][5];	/*If it is set to 1 it means that I am interested in trading i resource in exchange of j resource */
+typedef float tradingMatrix_t[5][5];	/*If it is set to a positive number it means that I am interested in trading i resource in exchange of j resource */
 int resourcesNeededForAction[NUM_ACTIONS][5] = {
 	/*Resources of every type needed to perform every action possible */
-	{1, 1, 1, 1, 0}, /*SET*/ 
-	{0, 0, 2, 0, 3}, /*CIT*/ 
-	{0, 0, 1, 1, 1}, /*DEV*/ 
-	{2, 2, 1, 1, 0}, /*RSET*/ 
-	{3, 3, 1, 1, 0}, /*RRSET*/ 
-	
-	{2, 2, 2, 2, 0},	/*SET+SET */
-	{1, 1, 3, 1, 3},	/*SET+CIT */
-	{1, 1, 2, 2, 1},	/*SET+DEV */
-	{3, 3, 2, 2, 0},	/*SET+RSET */
-	{4, 4, 2, 2, 0},	/*SET+RRSET */
+	{1, 1, 0, 1, 1}, /*SET*/ {0, 2, 3, 0, 0}, /*CIT*/ {0, 1, 1, 1, 0}, /*DEV*/ {2, 1, 0, 1, 2}, /*RSET*/ {3, 1, 0, 1, 3}, /*RRSET*/ {2, 2, 0, 2, 2},	/*SET+SET */
+	{1, 3, 3, 1, 1},	/*SET+CIT */
+	{1, 2, 1, 2, 1},	/*SET+DEV */
+	{3, 2, 0, 2, 3},	/*SET+RSET */
+	{4, 2, 0, 2, 4},	/*SET+RRSET */
 
-	{0, 0, 4, 0, 6},	/*CIT+CIT */
-	{0, 0, 3, 1, 4},	/*CIT+DEV */
-	{2, 2, 3, 1, 3},	/*CIT+RSET */
+	{0, 4, 6, 0, 0},	/*CIT+CIT */
+	{0, 3, 4, 1, 0},	/*CIT+DEV */
+	{2, 3, 3, 1, 2},	/*CIT+RSET */
 	{3, 3, 3, 1, 3},	/*CIT+RRSET */
 
-	{0, 0, 2, 2, 2},	/*DEV+DEV */
-	{2, 2, 2, 2, 1},	/*DEV+RSET */
-	{3, 3, 2, 2, 1},	/*DEV+RRSET */
+	{0, 2, 2, 2, 0},	/*DEV+DEV */
+	{2, 2, 1, 2, 2},	/*DEV+RSET */
+	{3, 2, 1, 2, 3},	/*DEV+RRSET */
 
-	{4, 4, 2, 2, 0},	/*RSET+RSET */
-	{5, 5, 2, 2, 0},	/*RSET+RRSET */
+	{4, 2, 0, 2, 4},	/*RSET+RSET */
+	{5, 2, 0, 2, 5},	/*RSET+RRSET */
 
-	{6, 6, 2, 2, 0}/*RRSET+RRSET */
+	{6, 2, 0, 2, 6}		/*RRSET+RRSET */
 };				/*First index is the action, second index the kind of resource */
 
 struct tradingMatrixes_t {
-	tradingMatrix_t internalTrade;
-	tradingMatrix_t bankTrade;
-	/*tradingMatrix_t maritimeTrade; */
+	tradingMatrix_t internalTrade;	/*1:1 trade with other players */
+	tradingMatrix_t bankTrade;	/*4:1 trade with the bank */
+	tradingMatrix_t specificResource;	/*2:1 trade through a port */
+	tradingMatrix_t genericResource;	/*3:1 trade through generic port */
 };
 
 /*A structure of type simulationsData will be used to hold the data of the MAX_SIMS simulations*/
@@ -69,6 +68,116 @@ struct gameState_t {
 	int resourcesAlreadyHave[5];	/*Resources I already have of Brick, Lumber, Grain, Wool and Ore */
 	float actionValue[5];	/*Benefit of doing best SET, best CIT, pick DEV, best RSET and best RRSET */
 };
+
+struct chromosome_t {		/* Will hold the values of the chromosome that dictate how certain algorithm plays. They are fixed throughout the whole game */
+	float resourcesValueMatrix[10][7];	/* value of Brick Lumber, Grain, Wool, Ore, Development Card and City depending on my Victory Points (from 0 to 9) */
+	float depreciation_constant;	/*the higher the depreciation_constant k is the more value it will give to resources it does not have at the moment, 0<=k<=1 */
+	float turn;		/*the turn at which it will calculate the profit of following a particular strategy, 0<=turn<25 */
+	float probability;	/*it will calculate how many turns it needs to perform something with this level of confidence, 0<probability<1 */
+};
+
+int actualAverageResourcesSupply(int resource,
+				 const struct gameState_t *myGameState);
+float depreciationFunction(float k, int actualARS, int port);
+float resourcesIncrementValue(int increment, int resource,
+			      int VictoryPoints,
+			      const struct chromosome_t *chromosome,
+			      const struct gameState_t *myGameState,
+			      int port);
+
+void printAction(enum action oneAction);
+void printResource(int resource);
+int enoughResources(int sim, int act, struct simulationsData_t *Data);
+void updateSimulation(int sim, float probability,
+		      struct simulationsData_t *Data);
+void updateConditionsMet(float probability,
+			 struct simulationsData_t *Data);
+void updateTurnsToAction(float probability, int currentTurn,
+			 struct simulationsData_t *Data);
+void outputSims(int number, int turn, struct simulationsData_t *Data);
+void set_timeCombinedAction(struct simulationsData_t *Data);
+void numberOfTurnsForProbability(float probability,
+				 struct simulationsData_t *Data,
+				 struct gameState_t myGameState,
+				 int showSimulation);
+float strategyProfit(float time_a, float time_b, float turn,
+		     strategy_t oneStrategy,
+		     struct gameState_t myGameState);
+float bestStrategy(float turn, float probability,
+		   struct simulationsData_t *Data, strategy_t myStrategy,
+		   struct gameState_t myGameState, int showSimulation);
+
+int checkRoadNow(enum action oneAction, struct gameState_t myGameState);
+
+int actualAverageResourcesSupply(int resource,
+				 const struct gameState_t *myGameState)
+{
+	/*returns the ARS of a particular resource looking at resourcesSupply matrix */
+	int i, total, multiplier;
+	total = 0;
+	for (i = 0; i <= 10; i++) {	/*possible dice rolls */
+		switch (i) {
+		case 0:	/*rolls 2 or 12, the odds are 1 each 36 turns */
+		case 10:
+			multiplier = 1;
+			break;
+		case 1:	/*rolls 3 or 11, the odds are 2 each 36 turns, etc. */
+		case 9:
+			multiplier = 2;
+			break;
+		case 2:
+		case 8:
+			multiplier = 3;
+			break;
+		case 3:
+		case 7:
+			multiplier = 4;
+			break;
+		case 4:
+		case 6:
+			multiplier = 5;
+			break;
+		case 5:
+			multiplier = 0;
+			break;
+		}
+		total +=
+		    (myGameState->resourcesSupply[i][resource]) *
+		    multiplier;
+	}
+	return (total);
+}
+
+float depreciationFunction(float k, int actualARS, int port)
+/*depreciation of the value of a resource depending on genetic value k and my actual supply of that resource
+ * k=0 means no depreciation at all no matter my actualARS, and the higher the k and my actualARS the closer it will get to 0.25 (for port=4, bank trade)
+ * It considers that this should be the maximum depreciation a resource could suffer
+ * having in mind that you could always trade any resource on a 4:1 basis
+    port is the trading ratio I have for that resource, and marks the maximum depreciation a resource could suffer not matter the amount of it I aleady have*/
+{
+	return ((k * actualARS + 1) / (port * k * actualARS + 1));
+}
+
+
+float resourcesIncrementValue(int increment, int resource,
+			      int VictoryPoints,
+			      const struct chromosome_t *chromosome,
+			      const struct gameState_t *myGameState,
+			      int port)
+/*return the value it gives to an increment in the supply a particular resource, that depends on the increment itself, my actual supplies
+ *of it and values determined by the chromosome*/
+{
+	float value, weight;
+	int actualARS;
+	float depreciation;
+	actualARS = actualAverageResourcesSupply(resource, myGameState);
+	depreciation = depreciationFunction(chromosome->depreciation_constant, actualARS, port);	/*Its values go from (0.25..1] */
+	weight = chromosome->resourcesValueMatrix[VictoryPoints][resource];	/*value given by the chromosome to that resource at this point in the game */
+	value = increment * depreciation * weight;
+	return (value);
+
+}
+
 
 void printAction(enum action oneAction)
 {
@@ -98,16 +207,16 @@ void printResource(int resource)
 		printf("Brick");
 		break;
 	case 1:
-		printf("Lumber");
+		printf("Grain");
 		break;
 	case 2:
-		printf("Grain");
+		printf("Ore");
 		break;
 	case 3:
 		printf("Wool");
 		break;
 	case 4:
-		printf("Ore");
+		printf("Lumber");
 		break;
 	}
 }
@@ -166,11 +275,15 @@ void updateTurnsToAction(float probability, int currentTurn,
 	}
 }
 
+#if 0
+
+/*This should ne rewriten in orden to take acount of the order change in resources (Now it should go Br,Gr,Or,Wo and Lu)*/
+
 void outputSims(int number, int turn, struct simulationsData_t *Data)
 {
 	int resource, act, simulation;
 
-	system("clear");
+	//system("clear");
 	printf
 	    ("BRICK\tLUMBER\tGRAIN\tWOOL\tORE\t\tSET\tCIT\tDEV\tRSET\tRRSET\tS+SET\tS+CIT\tS+DEV\tS+RSET\tS+RRSET\tC+CIT\tC+DEV\tC+RSET\tC+RRSET\tD+DEV\tD+RSET\tD+RRSET\tR+RSET\tR+RRSET\tRR+RRSET\n");
 	for (simulation = 0; simulation < number; simulation++) {
@@ -198,6 +311,7 @@ void outputSims(int number, int turn, struct simulationsData_t *Data)
 	printf("\n");
 	printf("Turn %d\n", turn);
 }
+#endif
 
 void set_timeCombinedAction(struct simulationsData_t *Data)
 {
@@ -272,20 +386,23 @@ void numberOfTurnsForProbability(float probability,
 	updateConditionsMet(probability, Data);	/*Some conditions could already be met at the beginning */
 	updateTurnsToAction(probability, currentTurn, Data);
 	if (showSimulation) {
-		outputSims(30, currentTurn, Data);
-		printf("Press any key to run the simulation");
-		getchar();
+		/*
+		   outputSims(30, currentTurn, Data);
+		   printf("Press any key to run the simulation");
+		   getchar();
+		 */
 	}
-	srandom(time(NULL));
+
+	/*Just to avoid the warning */
+	/*srandom(time(NULL)); */
 	while (currentTurn < MAX_TURNS) {	/*It will simulate up to MAX_TURNS-1 for simplicity sake. */
 		/*Should it be optimized? What is the chance of being able to perform everything in a number of turns before the maximum? Maybe with a very low level of probability and under
 		 *certain circumstances, but very uncommon in any case.*/
 		currentTurn++;
 		for (simulation = 0; simulation < MAX_SIMS; simulation++) {
-			/* For every simulation it rolls the dice and increases its resources accordingly
-			 * CHECK THIS PART, THIS IS NOT A VERY GOOD RANDOM DICE ROLL*/
-			dice_roll1 = (random() % 6) + 1;
-			dice_roll2 = (random() % 6) + 1;
+			/* For every simulation it rolls the dice and increases its resources accordingly */
+			dice_roll1 = g_random_int_range(1, 7);	/*(random() % 6) + 1; */
+			dice_roll2 = g_random_int_range(1, 7);	/*(random() % 6) + 1; */
 			dice_roll = dice_roll1 + dice_roll2;
 			/*printf("\n(%d+%d)=%d\n ",dice_roll1,dice_roll2,dice_roll); */
 			/*updates resourcesPool for this simulation */
@@ -302,11 +419,11 @@ void numberOfTurnsForProbability(float probability,
 		updateConditionsMet(probability, Data);
 		/*Check for every action if it is OK enough times and update turnsToAction for that action to turn if needed */
 		updateTurnsToAction(probability, currentTurn, Data);
-		if (showSimulation) {
-			outputSims(30, currentTurn, Data);
-			/*printf("Press any key to next turn");
-			   getchar(); */
-		}
+		/*
+		   if (showSimulation) {
+		   outputSims(30, currentTurn, Data);
+
+		   } */
 	}			/*while */
 	set_timeCombinedAction(Data);
 	return;
@@ -321,6 +438,8 @@ float strategyProfit(float time_a, float time_b, float turn,
 	float firstActionValue = myGameState.actionValue[oneStrategy[0]];
 	float secondActionValue = myGameState.actionValue[oneStrategy[1]];
 	float m1, m2;
+	if (firstActionValue == 0)
+		return 0;	/*It is impossible to do first action (not enough tokens, no place to it, etc.), so this strategy is worthless */
 	if (turn < time_a) {	/*so time_a is not 0 */
 		if (time_a == time_b) {
 			return (((firstActionValue +
@@ -391,143 +510,26 @@ float bestStrategy(float turn, float probability,
 	return (max_profit);
 }
 
-void updateTradingMatrix(float turn, float prob, float profit,
-			 struct tradingMatrixes_t *tradeThisForThat,
-			 struct gameState_t myGameState)
-{
-	/*It will check if any resource trade will improve my maxprofit in a given turn and update the trading matrix consequently.
-	 * At this point it will only check whether any one resource by one resource trading is beneficial to me, and will not consider wich of those beneficial
-	 * tradings is the most beneficial in case there was more than one.
-	 * If a 4:1 trading is beneficial it will set tradeThisForThat to 4, if it is a 1:1 it will set to 1
-	 * IMPROVEMENT: Use a constant k[1..2] so that I am only interested in trading if profitAfterTrade is k times higher than profit.
-	 * That k could improve when Im trading with "winning" adversaries.*/
-	int give, take;		/*I give resource give, I get resource take */
-	float profitAfterTrade;
-	struct simulationsData_t thisSimulation;
-	strategy_t thisStrategy;
 
-	for (give = 0; give <= 4; give++) {
-		for (take = 0; take <= 4; take++) {
-			tradeThisForThat->bankTrade[give][take] = 0;
-			tradeThisForThat->internalTrade[give][take] = 0;
-		}
-	}
-	for (give = 0; give <= 4; give++) {
-		if (myGameState.resourcesAlreadyHave[give] >= 4) {	/*I have at least 4 of this resource, I could do 4:1 trade */
-			for (take = 0; take <= 4; take++) {
-				if (give != take) {	/*There is no point in trading the same resource */
-					myGameState.resourcesAlreadyHave
-					    [give] =
-					    myGameState.
-					    resourcesAlreadyHave[give] - 4;
-					myGameState.
-					    resourcesAlreadyHave[take]++;
-					profitAfterTrade =
-					    bestStrategy(turn, prob,
-							 &thisSimulation,
-							 thisStrategy,
-							 myGameState, 0);
-					if (profitAfterTrade > profit) {
-						tradeThisForThat->
-						    bankTrade[give]
-						    [take] = 1;
-						printf
-						    ("\t\tI could be interested in trading 4 ");
-						printResource(give);
-						printf
-						    (" in exchange of 1 ");
-						printResource(take);
-						printf
-						    (", because that would raise my expected profit to %f ",
-						     profitAfterTrade);
-						printf("[By doing ");
-						printAction(thisStrategy
-							    [0]);
-						printf(" at time %d",
-						       thisSimulation.turnsToAction
-						       [thisStrategy[0]]);
-						printf(" and ");
-						printAction(thisStrategy
-							    [1]);
-						printf(" at time %d]\n",
-						       thisSimulation.timeCombinedAction
-						       [thisStrategy[0]]
-						       [thisStrategy[1]]);
-					}
-					myGameState.resourcesAlreadyHave
-					    [give] =
-					    myGameState.
-					    resourcesAlreadyHave[give] + 4;
-					myGameState.
-					    resourcesAlreadyHave[take]--;
-				}
-			}
-		}
-		if (myGameState.resourcesAlreadyHave[give]) {	/*I cannot trade something I dont have */
-			for (take = 0; take <= 4; take++) {
-				if (give != take) {	/*There is no point in trading the same resource */
-					myGameState.resourcesAlreadyHave
-					    [give]--;
-					myGameState.resourcesAlreadyHave
-					    [take]++;
-					profitAfterTrade =
-					    bestStrategy(turn, prob,
-							 &thisSimulation,
-							 thisStrategy,
-							 myGameState, 0);
-					if (profitAfterTrade > profit) {
-						tradeThisForThat->
-						    internalTrade[give]
-						    [take] = 1;
-						printf
-						    ("\t\tIm interested in giving ");
-						printResource(give);
-						printf(" in exchange of ");
-						printResource(take);
-						printf
-						    (", because that would raise my expected profit to %f ",
-						     profitAfterTrade);
-						printf("[By doing ");
-						printAction(thisStrategy
-							    [0]);
-						printf(" at time %d",
-						       thisSimulation.turnsToAction
-						       [thisStrategy[0]]);
-						printf(" and ");
-						printAction(thisStrategy
-							    [1]);
-						printf(" at time %d]\n",
-						       thisSimulation.timeCombinedAction
-						       [thisStrategy[0]]
-						       [thisStrategy[1]]);
-					}
-					myGameState.resourcesAlreadyHave
-					    [give]++;
-					myGameState.resourcesAlreadyHave
-					    [take]--;
-				}
-			}
-		}
-	}
-}
 
 int checkRoadNow(enum action oneAction, struct gameState_t myGameState)
 {
-	/*Returns TRUE if action involves building a Road and it is possible to build it now */
+	/*Returns TRUE if action involves building a Road (RSET or RRSET) and it is possible to build it now, or if action is City (that uses completely different resources than road)  and I can build road */
 	switch (oneAction) {
+	case CIT:
 	case RSET:
 		if ((myGameState.resourcesAlreadyHave[0] >= 1)
-		    && (myGameState.resourcesAlreadyHave[1] >= 1))
+		    && (myGameState.resourcesAlreadyHave[4] >= 1))
 			return (1);
 		else
 			return (0);
 		break;
 	case RRSET:
 		if ((myGameState.resourcesAlreadyHave[0] >= 2)
-		    && (myGameState.resourcesAlreadyHave[1] >= 2))
+		    && (myGameState.resourcesAlreadyHave[4] >= 2))
 			return (2);
 		else if ((myGameState.resourcesAlreadyHave[0] >= 1)
-			 && (myGameState.resourcesAlreadyHave[1] >= 1))
+			 && (myGameState.resourcesAlreadyHave[4] >= 1))
 			return (1);
 		else
 			return (0);
@@ -536,114 +538,3 @@ int checkRoadNow(enum action oneAction, struct gameState_t myGameState)
 		return (0);
 	}
 }
-
-
-
-#ifndef INTEGRATE_GENETIC_ALGORITHM
-int main(int argc, char **argv)
-{
-	float max_profit_returned;
-	float time_a, time_b, prob, turn;
-	int roadsNow, verbose;
-	char option;
-	struct simulationsData_t oneSimulation;
-	struct gameState_t oneState;
-	strategy_t oneStrategy;
-	struct tradingMatrixes_t tradeThisForThat;
-	oneState = (struct gameState_t) {	/*Depends on my location on the map */
-		{
-			{0, 0, 0, 0, 1},	/*Rolls 2 */
-			{1, 0, 0, 0, 0},	/*Rolls 3 */
-			{1, 1, 0, 0, 0},	/*Rolls 4 */
-			{0, 0, 0, 0, 0},	/*Rolls 5 */
-			{0, 0, 0, 1, 0},	/*Rolls 6 */
-			{0, 0, 0, 0, 0},	/*Rolls 7, always 0 resources */
-			{0, 0, 3, 0, 0},	/*Rolls 8 */
-			{0, 0, 0, 0, 1},	/*Rolls 9 */
-			{0, 0, 0, 2, 0},	/*Rolls 10 */
-			{0, 0, 0, 0, 0},	/*Rolls 11 */
-			{0, 0, 1, 0, 0},	/*Rolls 12 */
-		},		/*Represents the eleven different dice outcomes (2-12) crossed with the amount of resources they produce (of Brick, Lumber, Grain, Wool and Ore) */
-		{3, 3, 1, 0, 4},	/*Resources I already have of Brick, Lumber, Grain, Wool and Ore */
-		{10, 14, 5, 12, 14}	/*Benefit of doing best SET, best CIT, pick DEV, best RSET and best RRSET */
-	};
-	/*prob and turn are values that are fixed for every Genetic Player (and evolved by the Genetic Algorithm). For a certain player those values will be fixed for the whole game.
-	 * Other values that will be set for a particular player will be a resourcesValueMatrix, that will give a certain weight to every kind of resource
-	 * at every point in the game, and a depreciation constant k, that will decrease the value given to resources I have as opposite to resources I dont have.
-	 * Those resourcesValueMatrix and constant k, in combination with the game situation, will basically influence how actionValue is set at a particular point in the game
-	 * At this point of the program actionValue is set arbitrarily to the values I chose*/
-	system("clear");
-	prob = 0.5001;		/*in case is not set */
-	verbose = 0;		/*if it is set to 1 it will output the simulations */
-
-	printf
-	    ("This piece of code outputs the preferred action to be taken in a given turn according to the values passed to it.\n");
-	printf
-	    ("Resource Values Matrix and depreciation constant k are ignored in this test for simplicity sake, as they only affect how actionValue values are calculated.\n");
-	printf
-	    ("Enter actionValue values for Settlement, City, Development, Road to Settlement and Long Road to Settlement separated by blank spaces:\n");
-	scanf("%f %f %f %f %f", &(oneState.actionValue[0]),
-	      &(oneState.actionValue[1]), &(oneState.actionValue[2]),
-	      &(oneState.actionValue[3]), &(oneState.actionValue[4]));
-	printf
-	    ("Enter actual resources pool of Wood, Lumber, Grain, Wool and Ore separated by blank spaces (integers):\n");
-	scanf("%d %d %d %d %d", &(oneState.resourcesAlreadyHave[0]),
-	      &(oneState.resourcesAlreadyHave[1]),
-	      &(oneState.resourcesAlreadyHave[2]),
-	      &(oneState.resourcesAlreadyHave[3]),
-	      &(oneState.resourcesAlreadyHave[4]));
-	printf
-	    ("Enter value for probability (this represents the level of certainty the AI requires to assert it will get the resources needed) (0..1):\n");
-	scanf("%f", &prob);
-	printf("Do you want to see how the simulation is working?(s/n)");
-	while (((option = getchar()) != EOF) & (option != '\n'))	/* This will eat up all other char other characters*/
-		;
-	option = getchar();
-	switch (option) {
-	case 'S':
-	case 's':
-		verbose = 1;
-		break;
-	default:
-		verbose = 0;
-	}
-	printf("Calculations made using a probability of %f\n", prob);
-	printf
-	    ("The best strategy according to the profit calculated when I look up to certain turn is to do:\n\n");
-	for (turn = 4; turn < 20; turn++) {	/*In a real game it will use a fixed value for turn */
-		max_profit_returned =
-		    bestStrategy(turn, prob, &oneSimulation, oneStrategy,
-				 oneState, verbose);
-		time_a = oneSimulation.turnsToAction[oneStrategy[0]];
-		time_b = oneSimulation.timeCombinedAction[oneStrategy[0]]
-		    [oneStrategy[1]];
-		printf("Turn %.2f >>\t", turn);
-		printAction(oneStrategy[0]);
-		printf(" at time %.2f (%.2f pts.) and then ", time_a,
-		       oneState.actionValue[oneStrategy[0]]);
-		printAction(oneStrategy[1]);
-		printf
-		    (" at time %.2f (%.2f pts.) [Expected profit at turn %.2f=%.2f]\n",
-		     time_b, oneState.actionValue[oneStrategy[1]], turn,
-		     max_profit_returned);
-		roadsNow = checkRoadNow(oneStrategy[0], oneState);
-		switch (roadsNow) {
-		case 1:
-			printf("\t\tDoing Road right now!\n");
-			break;
-		case 2:
-			printf("\t\tDoing 2 Roads right now!\n");
-			break;
-		}
-		updateTradingMatrix(turn, prob, max_profit_returned,
-				    &tradeThisForThat, oneState);
-		if (verbose) {
-			printf("Press any key to make another simulation");
-			getchar();
-		}
-		printf("\n");
-	}
-	return 0;
-}
-#endif /* not INTEGRATE_GENETIC_ALGORITHM */
-
