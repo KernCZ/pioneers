@@ -1,4 +1,5 @@
 client/ai/ai.c
+client/ai/genetic.c
 client/ai/greedy.c
 client/ai/lobbybot.c
 client/common/client.c

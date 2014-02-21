@@ -1,3 +1,7 @@
+2014-02-21  Roland Clobus <rclobus@rclobus.nl>
+	* client/ai/Makefile.am: Treat genetic_core as a 'header'.
+	* po/POTFILES.in: Added genetic.c, because it contains texts.
+
 2014-02-09  Roland Clobus <rclobus@rclobus.nl>
 	* client/common/main.c: Do not start the main loop when the
 	computer player cannot connect to the given port.

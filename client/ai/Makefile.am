@@ -27,11 +27,11 @@ pioneersai_SOURCES = \
 	client/ai/ai.h \
 	client/ai/ai.c \
 	client/ai/genetic.c \
-	client/ai/genetic_core.c \
 	client/ai/greedy.c \
 	client/ai/lobbybot.c
 
 pioneersai_LDADD = libpioneersclient.a $(console_libs) $(GOBJECT2_LIBS)
 
 config_DATA += \
-	client/ai/computer_names
+	client/ai/computer_names \
+	client/ai/genetic_core.c
