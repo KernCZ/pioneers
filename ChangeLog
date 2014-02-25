@@ -14,8 +14,10 @@
 	common/gtk/player-icon.c, common/gtk/select-game.c, common/gtk/theme.c,
 	common/gtk/theme.h, configure.ac, editor/gtk/editor.c,
 	server/gtk/main.c: Only use GTK+3 instead of GTK+2.
-	common/gtk/gtkbugs.c, common/gtk/gtkbugs.h, common/gtk/gtkcompat.h:
+	* common/gtk/gtkbugs.c, common/gtk/gtkbugs.h, common/gtk/gtkcompat.h:
 	Removed, because they are GTK+2-only.
+	* MinGW/Makefile.am, MinGW/README.txt, MinGW/loaders.cache,
+	MinGW/pioneers.nsi.in: Updated the MinGW port for GTK+3.
 
 2014-02-21  Roland Clobus <rclobus@rclobus.nl>
 	* client/ai/Makefile.am: Treat genetic_core as a 'header'.

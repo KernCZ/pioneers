@@ -2,21 +2,18 @@ Short guide to build Pioneers from source in MinGW
 
 Prepare the build environment
 =============================
-* Download mingw-get-inst from http://www.mingw.org/wiki/Getting_Started
-  - Install with the following settings:
-    - Use pre-packaged repository catalogues (20111118)
-    - Selected: C compiler, MSYS basic system, MinGW developer toolkit
+* Download mingw-get-setup.exe from http://www.mingw.org/wiki/Getting_Started
+  - Install with the default settings
+  - In the MinGW Installation Manager, select:
+    - mingw-developer-toolkit, mingw32-base
+	- Installation | Apply
 * Download the all-in-one bundle from http://www.gtk.org/download/win32.php
   - Extract to C:\MinGW
 * Download from http://ftp.gnome.org/pub/GNOME/binaries/win32:
   - From the folder intltool: intltool_0.40.4-1_win32.zip
-  - From the folder librsvg: librsvg_2.32.1-1_win32.zip, 
-    svg-gdk-pixbuf-loader_2.32.1-1_win32.zip and
+  - From the folder librsvg: librsvg_2.32.1-1_win32.zip and
     librsvg-dev_2.32.1-1_win32.zip
-  - From the folder libcroco: libcroco_0.6.2-1_win32.zip
-  - From the folder dependencies: libxml2_2.7.7-1_win32.zip
-  - From the folder gdk-pixbuf: gdk-pixbuf_2.24.0-1_win32.zip
-  - Extract all to C:\MinGW
+  - Extract all to C:\MinGW and overwrite existing files
 * Download the GOB2 tarball from http://www.jirka.org/gob.html
   - ./configure --prefix=/mingw
   - make
@@ -29,7 +26,7 @@ Prepare the build environment
   - gdk-pixbuf-query-loaders --update-cache
   - cp /MinGW/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache MinGW/loaders.cache
   - vim MinGW/loaders.cache
-    - Remove all directories before the filename part of the DLL
+  - Remove all directories before the filename part of the DLL
 
 If any of the downloads cannot be found, a newer version will probably work.
 
@@ -62,7 +59,7 @@ c) Export as *.ico
 Known limitations
 =================
 * The online help is not built
-* The server and metaserver are not built
+* The metaserver is not built. It is recommended to use the existing metaservers
 
 Roland Clobus
-2013-03-18 Pioneers-14.1
+2014-03-07 Pioneers-15.2

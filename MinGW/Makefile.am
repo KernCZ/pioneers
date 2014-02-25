@@ -22,30 +22,35 @@ if IS_MINGW_PORT
 install-exec-hook: install-MinGW
 
 install-MinGW:
-	cp /mingw/bin/freetype6.dll /usr/local
-	cp /mingw/bin/intl.dll /usr/local
 	cp /mingw/bin/libatk-1.0-0.dll /usr/local
 	cp /mingw/bin/libcairo-2.dll /usr/local
+	cp /mingw/bin/libcairo-gobject-2.dll /usr/local
 	cp /mingw/bin/libcroco-0.6-3.dll /usr/local
-	cp /mingw/bin/libexpat-1.dll /usr/local
+	cp /mingw/bin/libffi-6.dll /usr/local
 	cp /mingw/bin/libfontconfig-1.dll /usr/local
+	cp /mingw/bin/libfreetype-6.dll /usr/local
+	cp /mingw/bin/libgcc_s_dw2-1.dll /usr/local
+	cp /mingw/bin/libgdk-3-0.dll /usr/local
 	cp /mingw/bin/libgdk_pixbuf-2.0-0.dll /usr/local
-	cp /mingw/bin/libgdk-win32-2.0-0.dll /usr/local
 	cp /mingw/bin/libgio-2.0-0.dll /usr/local
 	cp /mingw/bin/libglib-2.0-0.dll /usr/local
 	cp /mingw/bin/libgmodule-2.0-0.dll /usr/local
 	cp /mingw/bin/libgobject-2.0-0.dll /usr/local
-	cp /mingw/bin/libgthread-2.0-0.dll /usr/local
-	cp /mingw/bin/libgtk-win32-2.0-0.dll /usr/local
+	cp /mingw/bin/libgtk-3-0.dll /usr/local
+	cp /mingw/bin/libiconv-2.dll /usr/local
+	cp /mingw/bin/libintl-8.dll /usr/local
+	cp /mingw/bin/liblzma-5.dll /usr/local
 	cp /mingw/bin/libpango-1.0-0.dll /usr/local
 	cp /mingw/bin/libpangocairo-1.0-0.dll /usr/local
 	cp /mingw/bin/libpangoft2-1.0-0.dll /usr/local
 	cp /mingw/bin/libpangowin32-1.0-0.dll /usr/local
 	cp /mingw/lib/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-svg.dll /usr/local
-	cp /mingw/bin/libpng14-14.dll /usr/local
+	cp /mingw/bin/libpixman-1-0.dll /usr/local
+	cp /mingw/bin/libpng15-15.dll /usr/local
 	cp /mingw/bin/librsvg-2-2.dll /usr/local
 	cp /mingw/bin/libssp-0.dll /usr/local
 	cp /mingw/bin/libxml2-2.dll /usr/local
+	cp /mingw/bin/pthreadGC2.dll /usr/local
 	cp /mingw/bin/zlib1.dll /usr/local
 	cp /mingw/bin/gspawn-win32-helper.exe /usr/local
 	cp /mingw/bin/gspawn-win32-helper-console.exe /usr/local

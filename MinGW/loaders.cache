@@ -6,7 +6,7 @@
 #
 "libpixbufloader-svg.dll"
 "svg" 2 "gdk-pixbuf" "Scalable Vector Graphics" "LGPL"
-"image/svg+xml" "image/svg" "image/svg-xml" "image/vnd.adobe.svg+xml" "text/xml-svg" ""
+"image/svg+xml" "image/svg" "image/svg-xml" "image/vnd.adobe.svg+xml" "text/xml-svg" "image/svg+xml-compressed" ""
 "svg" ""
 " <svg" "*    " 100
 " <!DOCTYPE svg" "*             " 100
