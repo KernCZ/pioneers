@@ -44,9 +44,6 @@
 #include "game-rules.h"
 #include "theme.h"
 #include "metaserver.h"		/* Custom widget */
-#ifndef HAVE_GTK3
-#include "gtkcompat.h"
-#endif				/* not HAVE_GTK3 */
 
 #define MAINICON_FILE	"pioneers-server.png"
 

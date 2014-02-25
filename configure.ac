@@ -35,8 +35,8 @@ PIONEERS_DEFAULT_METASERVER=pioneers.debian.net
 
 GLIB_REQUIRED_VERSION=2.26
 GIO_REQUIRED_VERSION=2.28
-GTK_REQUIRED_VERSION=2.20
-GTK_OPTIMAL_VERSION=2.24
+GTK_REQUIRED_VERSION=3.4
+GTK_OPTIMAL_VERSION=3.4
 LIBNOTIFY_REQUIRED_VERSION=0.7.4
 
 AC_SUBST(GLIB_REQUIRED_VERSION)
@@ -129,22 +129,14 @@ AC_ARG_ENABLE([deprecation-checks],
   *)    pioneers_deprecationChecks=no  ;;
 esac])
 
-AC_ARG_ENABLE([gtk3],
-	AS_HELP_STRING([--enable-gtk3],
-		[Enable (experimental) GTK3 support.]),
-[case "${enableval}" in
-  yes)  GTK_REQUIRED_VERSION=3.4.2;;
-  *) ;;
-esac])
-
 ## The warnings are in the same order as in 'man gcc'
 if test "x$GCC" = xyes; then
-	# Flags from Debian hardening (dpkg-buildflags --get CFLAGS)
-	AC_SUBST(AM_CFLAGS, ["$AM_CFLAGS -g -O2 -fstack-protector --param=ssp-buffer-size=4 -Wformat -Wformat-security -Werror=format-security"])
-	AC_SUBST(AM_CFLAGS, ["$AM_CFLAGS -D_FORTIFY_SOURCE=2"])
-	AC_SUBST(AM_CFLAGS, ["$AM_CFLAGS -pie -fPIE"])
-
 	if test "$pioneers_is_windows_port" = "no"; then
+		# Flags from Debian hardening (dpkg-buildflags --get CFLAGS)
+		AC_SUBST(AM_CFLAGS, ["$AM_CFLAGS -g -O2 -fstack-protector --param=ssp-buffer-size=4 -Wformat -Wformat-security -Werror=format-security"])
+		AC_SUBST(AM_CFLAGS, ["$AM_CFLAGS -D_FORTIFY_SOURCE=2"])
+		AC_SUBST(AM_CFLAGS, ["$AM_CFLAGS -pie -fPIE"])
+
 	 	# Flags from Debian hardening (dpkg-buildflags --get LDFLAGS)
 		AC_SUBST(AM_LDFLAGS, ["$AM_LDFLAGS -Wl,-z,relro"])
 		AC_SUBST(AM_LDFLAGS, ["$AM_LDFLAGS -Wl,-z,now"])
@@ -167,6 +159,9 @@ if test "x$GCC" = xyes; then
 		AC_SUBST(WARNINGS, "$WARNINGS -Wredundant-decls")
 		AC_SUBST(WARNINGS, "$WARNINGS -Wnested-externs")
 		AC_SUBST(WARNINGS, "$WARNINGS -O")
+		if test "$pioneers_deprecationChecks" = no; then
+			AC_SUBST(WARNINGS, "$WARNINGS -Wno-deprecated-declarations")
+		fi
 	fi
 	if test "$pioneers_warnings" = full; then
 		flags="-Wfloat-equal"
@@ -256,26 +251,19 @@ fi
 
 # Gtk+ support
 #
-# Prefer Gtk+2 over Gtk+3 during the migration
-#
 if test x$with_gtk = xno; then
 	have_gtk="no, disabled in configure"
 else
-	PKG_CHECK_MODULES(GTK2, gtk+-2.0 >= $GTK_REQUIRED_VERSION,
+	PKG_CHECK_MODULES(GTK, gtk+-3.0 >= $GTK_REQUIRED_VERSION,
 		have_gtk=yes, 
-		[PKG_CHECK_MODULES(GTK2, gtk+-3.0 >= $GTK_REQUIRED_VERSION,
-			AC_DEFINE(HAVE_GTK3, [1],
-				[Defined when Gtk+ 3 is present]) 
-			have_gtk=yes, 
-			[PKG_CHECK_EXISTS(gtk+-2.0,
-				[have_gtk="no, Gtk+ version too old"],
-				[have_gtk="no, Gtk+ not installed"])
-			AC_MSG_RESULT($have_gtk)
-		])
+		[PKG_CHECK_EXISTS(gtk+-3.0,
+			[have_gtk="no, Gtk+ version too old"],
+			[have_gtk="no, Gtk+ not installed"])
+		AC_MSG_RESULT($have_gtk)
 	])
 fi
 if test "$have_gtk" = "yes"; then
-	PKG_CHECK_MODULES(GTK_OPTIMAL_VERSION, gtk+-2.0 >= $GTK_OPTIMAL_VERSION,
+	PKG_CHECK_MODULES(GTK_OPTIMAL_VERSION, gtk+-3.0 >= $GTK_OPTIMAL_VERSION,
 		[],
 		AC_DEFINE(HAVE_OLD_GTK, [1],
 			[Defined if an older version of GTK is available]))
@@ -400,9 +388,8 @@ AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE", [The gettext package nam
 AM_GLIB_GNU_GETTEXT
 
 if test $pioneers_is_mingw_port = yes; then
-	AC_SUBST(AM_CFLAGS, "-mms-bitfields $AM_CFLAGS")
 	# No console window for the graphical applications
-	AC_SUBST(GTK2_LIBS, "$GTK2_LIBS -mwindows")
+	AC_SUBST(GTK_LIBS, "$GTK_LIBS -mwindows")
 	# Don't use bin, lib and share subdirectories
 	datadir='${prefix}'
 	bindir='${prefix}'

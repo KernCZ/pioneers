@@ -48,27 +48,6 @@ static GdkColor token_colors[MAX_PLAYERS] = {
 
 void colors_init(void)
 {
-#ifndef HAVE_GTK3
-	GdkColormap *cmap;
-	guint idx;
-
-	cmap = gdk_colormap_get_system();
-	for (idx = 0; idx < G_N_ELEMENTS(token_colors); idx++) {
-		/* allocate colours for the players */
-		gdk_colormap_alloc_color(cmap, &token_colors[idx], FALSE,
-					 TRUE);
-	}
-
-	gdk_colormap_alloc_color(cmap, &black, FALSE, TRUE);
-	gdk_colormap_alloc_color(cmap, &white, FALSE, TRUE);
-	gdk_colormap_alloc_color(cmap, &red, FALSE, TRUE);
-	gdk_colormap_alloc_color(cmap, &green, FALSE, TRUE);
-	gdk_colormap_alloc_color(cmap, &blue, FALSE, TRUE);
-	gdk_colormap_alloc_color(cmap, &lightblue, FALSE, TRUE);
-
-	gdk_colormap_alloc_color(cmap, &ck_die_red, FALSE, TRUE);
-	gdk_colormap_alloc_color(cmap, &ck_die_yellow, FALSE, TRUE);
-#endif				/* not HAVE_GTK3 */
 }
 
 GdkColor *colors_get_player(gint player_num)

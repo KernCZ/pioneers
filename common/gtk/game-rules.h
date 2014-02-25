@@ -5,7 +5,6 @@
 #include <glib.h>
 #include <glib-object.h>
 #include <gtk/gtk.h>
-#include "gtkbugs.h"
 
 G_BEGIN_DECLS
 #define GAMERULES_TYPE            (game_rules_get_type ())

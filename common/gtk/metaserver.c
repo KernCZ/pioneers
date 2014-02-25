@@ -24,7 +24,6 @@
 #include <string.h>
 #include "network.h"
 #include "config-gnome.h"
-#include "gtkbugs.h"
 
 #include "metaserver.h"
 

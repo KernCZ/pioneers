@@ -26,9 +26,6 @@
 #include "map-icons.h"
 #include "cost.h"
 #include "resource-view.h"
-#ifndef HAVE_GTK3
-#include "gtkcompat.h"
-#endif				/* not HAVE_GTK3 */
 
 /* The order of the terrain_names is EXTREMELY important!  The order
  * must match the enum Terrain.

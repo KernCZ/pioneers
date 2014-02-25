@@ -13,10 +13,6 @@
 
 #include "game-settings.h"
 #include "game.h"
-#include "gtkbugs.h"
-#ifndef HAVE_GTK3
-#include "gtkcompat.h"
-#endif				/* not HAVE_GTK3 */
 
 /* The signals */
 enum {

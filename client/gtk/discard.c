@@ -23,11 +23,7 @@
 #include "config.h"
 #include "frontend.h"
 #include "resource-table.h"
-#include "gtkbugs.h"
 #include "common_gtk.h"
-#ifndef HAVE_GTK3
-#include "gtkcompat.h"
-#endif				/* not HAVE_GTK3 */
 
 enum {
 	DISCARD_COLUMN_PLAYER_ICON, /**< Player icon */

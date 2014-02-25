@@ -25,13 +25,9 @@
 #include "colors.h"
 #include "frontend.h"
 #include "log.h"
-#include "gtkbugs.h"
 #include "common_gtk.h"
 #include "player-icon.h"
 #include "audio.h"
-#ifndef HAVE_GTK3
-#include "gtkcompat.h"
-#endif				/* not HAVE_GTK3 */
 
 static void player_show_connected_at_iter(gint player_num,
 					  gboolean connected,
@@ -663,34 +659,11 @@ static gboolean draw_turn_area_cb(GtkWidget * widget, cairo_t * cr,
 	return TRUE;
 }
 
-#ifndef HAVE_GTK3
-static gint expose_turn_area_cb(GtkWidget * area,
-				G_GNUC_UNUSED GdkEventExpose * event,
-				gpointer user_data)
-{
-	cairo_t *cr;
-
-	if (gtk_widget_get_window(area) == NULL)
-		return TRUE;
-
-	cr = gdk_cairo_create(gtk_widget_get_window(area));
-	draw_turn_area_cb(area, cr, user_data);
-	cairo_destroy(cr);
-
-	return TRUE;
-}
-#endif				/* not HAVE_GTK3 */
-
 GtkWidget *player_build_turn_area(void)
 {
 	turn_area = gtk_drawing_area_new();
-#ifdef HAVE_GTK3
 	g_signal_connect(G_OBJECT(turn_area), "draw",
 			 G_CALLBACK(draw_turn_area_cb), NULL);
-#else
-	g_signal_connect(G_OBJECT(turn_area), "expose_event",
-			 G_CALLBACK(expose_turn_area_cb), NULL);
-#endif				/* HAVE_GTK3 */
 	gtk_widget_set_size_request(turn_area,
 				    turn_area_icon_width * num_players() +
 				    turn_area_icon_separation *

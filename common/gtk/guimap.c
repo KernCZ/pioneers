@@ -154,25 +154,6 @@ static gboolean draw_map_cb(GtkWidget * area, cairo_t * cr,
 	return FALSE;
 }
 
-#ifndef HAVE_GTK3
-static gboolean expose_map_cb(GtkWidget * area,
-			      G_GNUC_UNUSED GdkEventExpose * event,
-			      gpointer user_data)
-{
-	cairo_t *cr;
-
-	if (gtk_widget_get_window(area) == NULL)
-		return FALSE;
-
-	cr = gdk_cairo_create(gtk_widget_get_window(area));
-
-	draw_map_cb(area, cr, user_data);
-
-	cairo_destroy(cr);
-	return FALSE;
-}
-#endif				/* not HAVE_GTK3 */
-
 static gint configure_map_cb(GtkWidget * area,
 			     G_GNUC_UNUSED GdkEventConfigure * event,
 			     gpointer user_data)
@@ -293,13 +274,8 @@ GtkWidget *guimap_build_drawingarea(GuiMap * gmap, gint width, gint height)
 			      | GDK_POINTER_MOTION_HINT_MASK);
 
 	gtk_widget_set_size_request(gmap->area, width, height);
-#ifdef HAVE_GTK3
 	g_signal_connect(G_OBJECT(gmap->area), "draw",
 			 G_CALLBACK(draw_map_cb), gmap);
-#else
-	g_signal_connect(G_OBJECT(gmap->area), "expose_event",
-			 G_CALLBACK(expose_map_cb), gmap);
-#endif
 	g_signal_connect(G_OBJECT(gmap->area), "configure_event",
 			 G_CALLBACK(configure_map_cb), gmap);
 

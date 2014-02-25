@@ -6,9 +6,6 @@
 
 #include "game-rules.h"
 #include "game.h"
-#ifndef HAVE_GTK3
-#include "gtkcompat.h"
-#endif				/* not HAVE_GTK3 */
 
 static void game_rules_init(GameRules * sg, gboolean show_all_rules);
 static void verify_island_discovery_bonus(GtkButton * button,

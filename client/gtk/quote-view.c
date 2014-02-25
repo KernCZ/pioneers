@@ -31,7 +31,6 @@
 #include "frontend.h"
 #include "theme.h"
 #include "common_gtk.h"
-#include "gtkcompat.h"
 
 enum {
 	TRADE_COLUMN_PLAYER, /**< Player icon */

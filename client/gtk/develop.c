@@ -23,9 +23,6 @@
 #include "config.h"
 #include "frontend.h"
 #include "common_gtk.h"
-#ifndef HAVE_GTK3
-#include "gtkcompat.h"
-#endif				/* not HAVE_GTK3 */
 
 /** Reorder the development types:
  *  Road building

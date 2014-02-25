@@ -20,7 +20,6 @@
 
 #include "config.h"
 #include "frontend.h"
-#include "gtkbugs.h"
 #include <gdk/gdkkeysyms.h>
 
 static const int MAX_NUMBER_OF_WIDGETS_PER_EVENT = 2;
@@ -41,10 +40,10 @@ static void set_sensitive(G_GNUC_UNUSED void *key, GuiWidgetState * gui,
 
 	if (gui->widget != NULL && gui->next != gui->current) {
 		if (GTK_IS_ACTION(gui->widget))
-			action_set_sensitive(GTK_ACTION(gui->widget),
-					     gui->next);
+			gtk_action_set_sensitive(GTK_ACTION(gui->widget),
+						 gui->next);
 		else
-			widget_set_sensitive(gui->widget, gui->next);
+			gtk_widget_set_sensitive(gui->widget, gui->next);
 	}
 	if (gui->next != gui->current) {
 		switch (gui->id) {
@@ -210,11 +209,7 @@ gint hotkeys_handler(G_GNUC_UNUSED GtkWidget * w, GdkEvent * e,
 	GuiWidgetState *gui;
 	GuiEvent arg;
 	switch (e->key.keyval) {
-#ifdef HAVE_GTK3
 	case GDK_KEY_Escape:
-#else
-	case GDK_Escape:
-#endif
 		arg = GUI_QUOTE_REJECT;
 		break;
 	default:

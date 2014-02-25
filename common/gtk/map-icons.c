@@ -54,28 +54,6 @@ static gboolean draw_terrain_cb(GtkWidget * widget, cairo_t * cr,
 	return TRUE;
 }
 
-#ifndef HAVE_GTK3
-/** Callback to draw a terrain.
- * @param area Widget to draw on.
- * @param event Not used.
- * @param terrain_data The Terrain enumeration value.
- */
-static gboolean expose_terrain_cb(GtkWidget * area,
-				  G_GNUC_UNUSED GdkEventExpose * event,
-				  gpointer terrain_data)
-{
-	cairo_t *cr;
-
-	if (gtk_widget_get_window(area) == NULL)
-		return FALSE;
-
-	cr = gdk_cairo_create(gtk_widget_get_window(area));
-	draw_terrain_cb(area, cr, terrain_data);
-	cairo_destroy(cr);
-	return TRUE;
-}
-#endif				/* not HAVE_GTK3 */
-
 GtkWidget *terrain_icon_new(Terrain terrain)
 {
 	GtkWidget *area;
@@ -93,14 +71,8 @@ GtkWidget *terrain_icon_new(Terrain terrain)
 	area = gtk_drawing_area_new();
 	gtk_widget_show(area);
 	gtk_widget_set_size_request(area, width, height);
-#ifdef HAVE_GTK3
 	g_signal_connect(G_OBJECT(area), "draw",
 			 G_CALLBACK(draw_terrain_cb),
 			 GINT_TO_POINTER(terrain));
-#else
-	g_signal_connect(G_OBJECT(area), "expose_event",
-			 G_CALLBACK(expose_terrain_cb),
-			 GINT_TO_POINTER(terrain));
-#endif				/* HAVE_GTK3 */
 	return area;
 }

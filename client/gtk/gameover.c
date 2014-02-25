@@ -20,9 +20,6 @@
 
 #include "config.h"
 #include "frontend.h"
-#ifndef HAVE_GTK3
-#include "gtkcompat.h"
-#endif				/* not HAVE_GTK3 */
 
 GtkWidget *gameover_create_dlg(gint player_num, gint num_points)
 {

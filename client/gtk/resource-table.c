@@ -15,8 +15,8 @@
 #include <glib.h>
 
 #include "resource-table.h"
-#include "gtkbugs.h"
 #include "callback.h"
+
 /* The signals */
 enum {
 	CHANGE,

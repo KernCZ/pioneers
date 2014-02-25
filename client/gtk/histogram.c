@@ -230,24 +230,6 @@ static gboolean draw_histogram_cb(GtkWidget * widget, cairo_t * cr,
 	return TRUE;
 }
 
-#ifndef HAVE_GTK3
-/* Draw the histogram */
-static gboolean expose_histogram_cb(GtkWidget * area,
-				    G_GNUC_UNUSED GdkEventExpose * event,
-				    gpointer terrain)
-{
-	cairo_t *cr;
-
-	if (gtk_widget_get_window(area) == NULL)
-		return TRUE;
-
-	cr = gdk_cairo_create(gtk_widget_get_window(area));
-	draw_histogram_cb(area, cr, terrain);
-	cairo_destroy(cr);
-	return TRUE;
-}
-#endif				/* not HAVE_GTK3 */
-
 static void histogram_destroyed_cb(GtkWidget * widget, gpointer arg)
 {
 	gtk_widget_destroyed(histogram_area, &histogram_area);
@@ -278,15 +260,9 @@ GtkWidget *histogram_create_dlg(void)
 	dlg_vbox = gtk_dialog_get_content_area(GTK_DIALOG(histogram_dlg));
 
 	histogram_area = gtk_drawing_area_new();
-#ifdef HAVE_GTK3
 	g_signal_connect(G_OBJECT(histogram_area), "draw",
 			 G_CALLBACK(draw_histogram_cb),
 			 GINT_TO_POINTER(SEA_TERRAIN));
-#else
-	g_signal_connect(G_OBJECT(histogram_area), "expose_event",
-			 G_CALLBACK(expose_histogram_cb),
-			 GINT_TO_POINTER(SEA_TERRAIN));
-#endif				/* HAVE_GTK3 */
 	gtk_box_pack_start(GTK_BOX(dlg_vbox), histogram_area, TRUE, TRUE,
 			   SPACING_AROUND);
 	gtk_widget_show(histogram_area);

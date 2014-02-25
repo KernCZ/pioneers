@@ -37,7 +37,6 @@
 #include "avahi.h"
 #include "avahi-browser.h"
 #include "client.h"
-#include "gtkcompat.h"
 #include "common_gtk.h"
 #include "game-list.h"
 

@@ -37,10 +37,8 @@
 #include "histogram.h"
 #include "theme.h"
 #include "config-gnome.h"
-#include "gtkbugs.h"
 #include "audio.h"
 #include "notification.h"
-#include "gtkcompat.h"
 
 static GtkWidget *preferences_dlg;
 GtkWidget *app_window;		/* main application window */
@@ -1537,9 +1535,6 @@ static GtkWidget *build_status_bar(void)
 	GtkWidget *vsep;
 
 	app_bar = gtk_statusbar_new();
-#ifndef HAVE_GTK3
-	gtk_statusbar_set_has_resize_grip(GTK_STATUSBAR(app_bar), TRUE);
-#endif				/* not HAVE_GTK3 */
 	gtk_widget_show(app_bar);
 
 	vp_target_status = gtk_label_new("");

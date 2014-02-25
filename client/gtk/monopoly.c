@@ -22,9 +22,6 @@
 
 #include "config.h"
 #include "frontend.h"
-#ifndef HAVE_GTK3
-#include "gtkcompat.h"
-#endif				/* not HAVE_GTK3 */
 
 static GtkWidget *monop_dlg;
 static Resource monop_type;

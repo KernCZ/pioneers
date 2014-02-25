@@ -23,11 +23,7 @@
 
 #include "config.h"
 #include "frontend.h"
-#include "gtkbugs.h"
 #include "resource-view.h"
-#ifndef HAVE_GTK3
-#include "gtkcompat.h"
-#endif				/* not HAVE_GTK3 */
 
 /* 'total' label widget */
 static GtkWidget *asset_total_label;

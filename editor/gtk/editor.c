@@ -45,9 +45,6 @@
 #include "common_gtk.h"
 #include "cards.h"
 #include "network.h"
-#ifndef HAVE_GTK3
-#include "gtkcompat.h"
-#endif				/* not HAVE_GTK3 */
 
 #define MAINICON_FILE "pioneers-editor.png"
 
@@ -303,30 +300,6 @@ static gboolean draw_chit_cb(GtkWidget * widget, cairo_t * cr,
 	return TRUE;
 }
 
-#ifndef HAVE_GTK3
-/** Draws the chit in the exposed area.
- * @param area The area to draw in.
- * @param event Not used.
- * @param chip_number The chit number of the hex.
- * @return TRUE if event is handled.
- */
-static gboolean expose_chit_cb(GtkWidget * area,
-			       G_GNUC_UNUSED GdkEventExpose * event,
-			       gpointer chip_number)
-{
-	cairo_t *cr;
-
-	if (gtk_widget_get_window(area) == NULL)
-		return FALSE;
-
-	cr = gdk_cairo_create(gtk_widget_get_window(area));
-	draw_chit_cb(area, cr, chip_number);
-	cairo_destroy(cr);
-
-	return TRUE;
-}
-#endif				/* not HAVE_GTK3 */
-
 /** Draws the port in the exposed area.
  * @param widget The widget to draw on
  * @param cr The cairo context
@@ -361,30 +334,6 @@ static gboolean draw_port_cb(GtkWidget * widget, cairo_t * cr,
 	return TRUE;
 }
 
-#ifndef HAVE_GTK3
-/** Draws the port in the exposed area.
- * @param area The area to draw in.
- * @param event Not used.
- * @param port_type The type of the port.
- * @return TRUE if event is handled.
- */
-static gboolean expose_port_cb(GtkWidget * area,
-			       G_GNUC_UNUSED GdkEventExpose * event,
-			       gpointer port_type)
-{
-	cairo_t *cr;
-
-	if (gtk_widget_get_window(area) == NULL)
-		return FALSE;
-
-	cr = gdk_cairo_create(gtk_widget_get_window(area));
-	draw_port_cb(area, cr, port_type);
-	cairo_destroy(cr);
-
-	return TRUE;
-}
-#endif				/* not HAVE_GTK3 */
-
 /** Draws the unselect button.
  * @param widget The widget to draw on
  * @param cr The cairo context
@@ -400,30 +349,6 @@ static gboolean draw_unselect_cb(G_GNUC_UNUSED GtkWidget * widget,
 
 	return TRUE;
 }
-
-#ifndef HAVE_GTK3
-/** Draws the unselect button exposed area.
- * @param area The area to draw in.
- * @param event Not used.
- * @param user_data Not used.
- * @return TRUE if event is handled.
- */
-static gboolean expose_unselect_cb(GtkWidget * area,
-				   G_GNUC_UNUSED GdkEventExpose * event,
-				   gpointer user_data)
-{
-	cairo_t *cr;
-
-	if (gtk_widget_get_window(area) == NULL)
-		return FALSE;
-
-	cr = gdk_cairo_create(gtk_widget_get_window(area));
-	draw_unselect_cb(area, cr, user_data);
-	cairo_destroy(cr);
-
-	return TRUE;
-}
-#endif				/* not HAVE_GTK3 */
 
 /** Selects the toolbar button that was clicked.
  * @param button The GtkButton that was clicked.
@@ -503,14 +428,9 @@ static void build_select_bars(GtkWidget * table)
 	gtk_widget_show(area);
 	gtk_widget_set_size_request(area, BUTTON_HEIGHT,
 				    TERRAIN_BUTTON_WIDTH);
-#ifdef HAVE_GTK3
 	g_signal_connect(G_OBJECT(area), "draw",
 			 G_CALLBACK(draw_unselect_cb), GINT_TO_POINTER(1));
-#else
-	g_signal_connect(G_OBJECT(area), "expose_event",
-			 G_CALLBACK(expose_unselect_cb),
-			 GINT_TO_POINTER(1));
-#endif				/* HAVE_GTK3 */
+
 	button = GTK_WIDGET(gtk_radio_tool_button_new(NULL));
 	gtk_tool_button_set_icon_widget(GTK_TOOL_BUTTON(button), area);
 	gtk_box_pack_start(GTK_BOX(box), button, FALSE, TRUE, 0);
@@ -576,15 +496,9 @@ static void build_select_bars(GtkWidget * table)
 		gtk_widget_show(area);
 		gtk_widget_set_size_request(area, BUTTON_HEIGHT,
 					    BUTTON_HEIGHT);
-#ifdef HAVE_GTK3
 		g_signal_connect(G_OBJECT(area), "draw",
 				 G_CALLBACK(draw_chit_cb),
 				 GINT_TO_POINTER(i));
-#else
-		g_signal_connect(G_OBJECT(area), "expose_event",
-				 G_CALLBACK(expose_chit_cb),
-				 GINT_TO_POINTER(i));
-#endif				/* HAVE_GTK3 */
 
 		group =
 		    gtk_radio_tool_button_get_group(GTK_RADIO_TOOL_BUTTON
@@ -619,15 +533,9 @@ static void build_select_bars(GtkWidget * table)
 		gtk_widget_show(area);
 		gtk_widget_set_size_request(area, BUTTON_HEIGHT,
 					    BUTTON_HEIGHT);
-#ifdef HAVE_GTK3
 		g_signal_connect(G_OBJECT(area), "draw",
 				 G_CALLBACK(draw_port_cb),
 				 GINT_TO_POINTER(i));
-#else
-		g_signal_connect(G_OBJECT(area), "expose_event",
-				 G_CALLBACK(expose_port_cb),
-				 GINT_TO_POINTER(i));
-#endif				/* HAVE_GTK3 */
 
 		group =
 		    gtk_radio_tool_button_get_group(GTK_RADIO_TOOL_BUTTON

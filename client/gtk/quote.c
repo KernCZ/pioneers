@@ -26,9 +26,6 @@
 #include "resource-table.h"
 #include "quote-view.h"
 #include "notification.h"
-#ifndef HAVE_GTK3
-#include "gtkcompat.h"
-#endif				/* not HAVE_GTK3 */
 
 static gint trade_player;
 

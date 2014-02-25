@@ -12,8 +12,6 @@
 #include <gtk/gtk.h>
 #include <string.h>
 #include "guimap.h"
-#include "gtkbugs.h"
-#include "gtkcompat.h"
 #include "common_gtk.h"
 
 #include "select-game.h"

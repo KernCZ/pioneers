@@ -27,9 +27,6 @@
 #include "common_gtk.h"
 #include "quote-view.h"
 #include "notification.h"
-#ifndef HAVE_GTK3
-#include "gtkcompat.h"
-#endif				/* not HAVE_GTK3 */
 
 static void trade_update(void);
 

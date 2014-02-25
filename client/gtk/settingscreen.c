@@ -23,9 +23,6 @@
 #include "config.h"
 #include "frontend.h"
 #include "gui.h"
-#ifndef HAVE_GTK3
-#include "gtkcompat.h"
-#endif				/* not HAVE_GTK3 */
 
 static GtkWidget *settings_dlg = NULL;
 

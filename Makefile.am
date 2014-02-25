@@ -45,7 +45,7 @@ gtk_cflags = \
 	$(console_cflags) \
 	-I$(top_srcdir)/common/gtk \
 	$(GNOME2_CFLAGS) \
-	$(GTK2_CFLAGS) \
+	$(GTK_CFLAGS) \
 	$(GTK_DEPRECATION)
 
 # The Fink port needs an explicit reference to driver.o
@@ -63,7 +63,7 @@ gtk_libs = \
 	$(console_libs) \
 	libpioneers_gtk.a \
 	$(GNOME2_LIBS) \
-	$(GTK2_LIBS)
+	$(GTK_LIBS)
 
 configdir = $(datadir)/games/pioneers
 icondir = $(datadir)/pixmaps

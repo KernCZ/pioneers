@@ -1,3 +1,22 @@
+2014-02-25  Roland Clobus <rclobus@rclobus.nl>
+	* Makefile.am, client/gtk/chat.c, client/gtk/connect.c,
+	client/gtk/develop.c, client/gtk/discard.c, client/gtk/frontend.c,
+	client/gtk/gameover.c, client/gtk/gold.c, client/gtk/gui.c,
+	client/gtk/histogram.c, client/gtk/identity.c, client/gtk/legend.c,
+	client/gtk/monopoly.c, client/gtk/name.c, client/gtk/player.c,
+	client/gtk/plenty.c, client/gtk/quote-view.c, client/gtk/quote.c,
+	client/gtk/resource-table.c, client/gtk/resource-view.gob,
+	client/gtk/resource.c, client/gtk/settingscreen.c, client/gtk/trade.c,
+	common/gtk/Makefile.am, common/gtk/colors.c, common/gtk/common_gtk.c,
+	common/gtk/common_gtk.h, common/gtk/game-rules.c,
+	common/gtk/game-rules.h, common/gtk/game-settings.c,
+	common/gtk/guimap.c, common/gtk/map-icons.c, common/gtk/metaserver.c,
+	common/gtk/player-icon.c, common/gtk/select-game.c, common/gtk/theme.c,
+	common/gtk/theme.h, configure.ac, editor/gtk/editor.c,
+	server/gtk/main.c: Only use GTK+3 instead of GTK+2.
+	common/gtk/gtkbugs.c, common/gtk/gtkbugs.h, common/gtk/gtkcompat.h:
+	Removed, because they are GTK+2-only.
+
 2014-02-21  Roland Clobus <rclobus@rclobus.nl>
 	* client/ai/Makefile.am: Treat genetic_core as a 'header'.
 	* po/POTFILES.in: Added genetic.c, because it contains texts.

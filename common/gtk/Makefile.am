@@ -35,9 +35,6 @@ libpioneers_gtk_a_SOURCES = \
 	common/gtk/game-rules.h \
 	common/gtk/game-settings.c \
 	common/gtk/game-settings.h \
-	common/gtk/gtkbugs.c \
-	common/gtk/gtkbugs.h \
-	common/gtk/gtkcompat.h \
 	common/gtk/guimap.c \
 	common/gtk/guimap.h \
 	common/gtk/map-icons.c \
