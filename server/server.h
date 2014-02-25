@@ -113,6 +113,7 @@ struct Game {
 	gboolean is_running;	/* is the server currently running? */
 	gchar *server_port;	/* port to run game on */
 	gboolean random_order;	/* is turn order randomized? */
+	gboolean is_manipulated;	/* has the game been manipulated by the admin? */
 
 	guint no_player_timeout;	/* time to wait for players */
 	guint no_player_timer;	/* glib timer identifier */

@@ -62,38 +62,53 @@ typedef enum {
 	MESSAGE,
 	HELP,
 	INFO,
-	FIXDICE
+	FIXDICE,
+	GETBANK,
+	SETBANK,
+	GETASSETS,
+	SETASSETS
 } AdminCommandType;
+
+typedef enum {
+	NONEED,
+	NEEDPARAMS,
+	NEEDGAME
+} AdminRequirementType;
 
 typedef struct {
 	AdminCommandType type;
 	const gchar *command;
 	gboolean need_argument;
 	gboolean stop_server;
-	gboolean need_gameparam;
+	AdminRequirementType requirement;
 } AdminCommand;
 
 /* *INDENT-OFF* */
 static AdminCommand admin_commands[] = {
-	{ BADCOMMAND,          "",                    FALSE, FALSE, FALSE },
-	{ SETPORT,             "set-port",            TRUE,  TRUE,  TRUE  },
-	{ STARTSERVER,         "start-server",        FALSE, TRUE,  TRUE  },
-	{ STOPSERVER,          "stop-server",         FALSE, TRUE,  FALSE },
-	{ REGISTERSERVER,      "set-register-server", TRUE,  TRUE,  FALSE },
-	{ NUMPLAYERS,          "set-num-players",     TRUE,  TRUE,  TRUE  },
-	{ SEVENSRULE,          "set-sevens-rule",     TRUE,  TRUE,  TRUE  },
-	{ DICEDECK,            "set-dice-deck",       TRUE,  TRUE,  TRUE  },
-	{ NUMDICEDECKS,        "set-num-dice-decks",  TRUE,  TRUE,  TRUE  },
+	{ BADCOMMAND,          "",                    FALSE, FALSE, NONEED     },
+	{ SETPORT,             "set-port",            TRUE,  TRUE,  NEEDPARAMS },
+	{ STARTSERVER,         "start-server",        FALSE, TRUE,  NEEDPARAMS },
+	{ STOPSERVER,          "stop-server",         FALSE, TRUE,  NONEED },
+	{ REGISTERSERVER,      "set-register-server", TRUE,  TRUE,  NONEED },
+	{ NUMPLAYERS,          "set-num-players",     TRUE,  TRUE,  NEEDPARAMS },
+	{ SEVENSRULE,          "set-sevens-rule",     TRUE,  TRUE,  NEEDPARAMS },
+	{ DICEDECK,            "set-dice-deck",       TRUE,  TRUE,  NEEDPARAMS },
+	{ NUMDICEDECKS,        "set-num-dice-decks",  TRUE,  TRUE,  NEEDPARAMS },
 	{ NUMREMOVEDDICECARDS, "set-num-removed-dice-cards",
-	                                              TRUE,  TRUE,  TRUE  },
-	{ VICTORYPOINTS,       "set-victory-points",  TRUE,  TRUE,  TRUE  },
-	{ RANDOMTERRAIN,       "set-random-terrain",  TRUE,  TRUE,  TRUE  },
-	{ SETGAME,             "set-game",            TRUE,  TRUE,  FALSE },
-	{ QUIT,                "quit",                FALSE, FALSE, FALSE },
-	{ MESSAGE,             "send-message",        TRUE,  FALSE, TRUE  },
-	{ HELP,                "help",                FALSE, FALSE, FALSE },
-	{ INFO,                "info",                FALSE, FALSE, FALSE },
-	{ FIXDICE,             "fix-dice",            TRUE,  FALSE, FALSE },
+	                                              TRUE,  TRUE,  NEEDPARAMS },
+
+	{ VICTORYPOINTS,       "set-victory-points",  TRUE,  TRUE,  NEEDPARAMS },
+	{ RANDOMTERRAIN,       "set-random-terrain",  TRUE,  TRUE,  NEEDPARAMS },
+	{ SETGAME,             "set-game",            TRUE,  TRUE,  NONEED     },
+	{ QUIT,                "quit",                FALSE, FALSE, NONEED     },
+	{ MESSAGE,             "send-message",        TRUE,  FALSE, NEEDGAME   },
+	{ HELP,                "help",                FALSE, FALSE, NONEED     },
+	{ INFO,                "info",                FALSE, FALSE, NONEED     },
+	{ FIXDICE,             "fix-dice",            TRUE,  FALSE, NEEDGAME   },
+	{ GETBANK,             "get-bank",            FALSE, FALSE, NEEDGAME   },
+	{ SETBANK,             "set-bank",            TRUE,  FALSE, NEEDGAME   },
+	{ GETASSETS,           "get-assets",          TRUE,  FALSE, NEEDGAME   },
+	{ SETASSETS,           "set-assets",          TRUE,  FALSE, NEEDGAME   },
 };
 /* *INDENT-ON* */
 
@@ -151,8 +166,14 @@ static void admin_run_command(Session * admin_session, const gchar * line)
 		net_printf(admin_session,
 			   "ERROR command '%s' needs an argument\n",
 			   command);
-	} else if (admin_commands[command_number].need_gameparam
+	} else if (admin_commands[command_number].requirement == NEEDPARAMS
 		   && NULL == params) {
+		net_printf(admin_session,
+			   "ERROR command '%s' needs valid game parameters\n",
+			   command);
+	} else if (admin_commands[command_number].requirement == NEEDGAME
+		   && (NULL == *admin_game
+		       || !server_is_running(*admin_game))) {
 		net_printf(admin_session,
 			   "ERROR command '%s' needs a valid game\n",
 			   command);
@@ -287,6 +308,42 @@ static void admin_run_command(Session * admin_session, const gchar * line)
 				net_printf(admin_session,
 					   "INFO sevens-rule %d\n",
 					   params->sevens_rule);
+				if (server_is_running(*admin_game)) {
+					gchar *s =
+					    game_printf("INFO bank %R\n",
+							(*admin_game)->bank_deck);
+					net_printf(admin_session, "%s", s);
+					g_free(s);
+
+					playerlist_inc_use_count
+					    (*admin_game);
+					GList *player =
+					    player_first_real(*admin_game);
+					while (player) {
+						Player *p = (Player *)
+						    player->data;
+						if (player_is_spectator
+						    (*admin_game,
+						     p->num)) {
+							s = game_printf
+							    ("INFO spectator %d\n",
+							     p->num);
+						} else {
+							s = game_printf
+							    ("INFO player %d assets %R\n",
+							     p->num,
+							     p->assets);
+						}
+						net_printf(admin_session,
+							   "%s", s);
+						g_free(s);
+						player =
+						    player_next_real
+						    (player);
+					}
+					playerlist_dec_use_count
+					    (*admin_game);
+				}
 			} else {
 				net_printf(admin_session,
 					   "INFO no game set\n");
@@ -300,13 +357,87 @@ static void admin_run_command(Session * admin_session, const gchar * line)
 			admin_dice_roll = CLAMP(atoi(argument), 0, 12);
 			if (admin_dice_roll == 1)
 				admin_dice_roll = 0;
-			if (admin_dice_roll != 0)
+			if (admin_dice_roll != 0) {
+				(*admin_game)->is_manipulated = TRUE;
 				net_printf(admin_session,
 					   "INFO dice fixed to %d\n",
 					   admin_dice_roll);
-			else
+			} else
 				net_printf(admin_session,
 					   "INFO dice rolled normally\n");
+			break;
+		case SETBANK:
+			{
+				game_scanf(argument, "%R",
+					   &(*admin_game)->bank_deck);
+				(*admin_game)->is_manipulated = TRUE;
+			}
+			// FALL THROUGH
+		case GETBANK:
+			{
+				gchar *s = game_printf("INFO bank %R\n",
+						       (*admin_game)->bank_deck);
+				net_printf(admin_session, "%s", s);
+				g_free(s);
+			}
+			break;
+		case SETASSETS:
+			{
+				gint player_num;
+				gint assets[NO_RESOURCE];
+				Player *player;
+				gint i;
+
+				game_scanf(argument, "%d %R", &player_num,
+					   &assets);
+				player =
+				    player_by_num(*admin_game, player_num);
+				if (player != NULL
+				    && !player_is_spectator(*admin_game,
+							    player_num)) {
+					for (i = 0; i < NO_RESOURCE; i++) {
+						(*admin_game)->bank_deck[i]
+						    +=
+						    player->assets[i] -
+						    assets[i];
+						player->assets[i] =
+						    assets[i];
+					}
+				}
+				(*admin_game)->is_manipulated = TRUE;
+			}
+			// FALL THROUGH
+		case GETASSETS:
+			{
+				gint player_num;
+				Player *player;
+				game_scanf(argument, "%d", &player_num);
+				player =
+				    player_by_num(*admin_game, player_num);
+				if (player != NULL) {
+					if (player_is_spectator
+					    (*admin_game, player_num)) {
+						net_printf(admin_session,
+							   "INFO player %d is spectator\n",
+							   player_num);
+					} else {
+						gchar *s =
+						    game_printf
+						    ("INFO player %d assets %R\n",
+						     player_num,
+						     player->assets);
+						net_printf(admin_session,
+							   "%s", s);
+						g_free(s);
+					}
+				} else {
+					net_printf(admin_session,
+						   "INFO player %d not found\n",
+						   player_num);
+				}
+
+			}
+			break;
 		}
 	}
 	g_free(command);

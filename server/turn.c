@@ -672,6 +672,11 @@ void turn_next_player(Game * game)
 	/* tell everyone what's happening */
 	player_broadcast(player, PB_RESPOND, FIRST_VERSION, LATEST_VERSION,
 			 "turn %d\n", game->curr_turn);
+	if (game->is_manipulated) {
+		/* Intentionally not translated */
+		admin_broadcast(game, "The administrator has "
+				"manipulated this game.");
+	}
 
 	/* put the player in the right state */
 	sm_push(player->sm, (StateFunc) mode_turn);

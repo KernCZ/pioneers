@@ -67,6 +67,7 @@ Game *game_new(const GameParams * params)
 	game->service = NULL;
 	game->is_running = FALSE;
 	game->is_game_over = FALSE;
+	game->is_manipulated = FALSE;
 	game->params = params_copy(params);
 	game->curr_player = -1;
 
