@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-/*#include <math.h>*/
+#include <math.h>
 #include <time.h>
 #include <glib.h>
 
@@ -70,14 +70,19 @@ struct gameState_t {
 };
 
 struct chromosome_t {		/* Will hold the values of the chromosome that dictate how certain algorithm plays. They are fixed throughout the whole game */
-	float resourcesValueMatrix[10][7];	/* value of Brick Lumber, Grain, Wool, Ore, Development Card and City depending on my Victory Points (from 0 to 9) */
+	float resourcesValueMatrix[10][8];	/* value of Brick Lumber, Grain, Wool, Ore, Development Card, City and Port depending on my Victory Points (from 0 to 9) */
 	float depreciation_constant;	/*the higher the depreciation_constant k is the more value it will give to resources it does not have at the moment, 0<=k<=1 */
 	float turn;		/*the turn at which it will calculate the profit of following a particular strategy, 0<=turn<25 */
 	float probability;	/*it will calculate how many turns it needs to perform something with this level of confidence, 0<probability<1 */
 };
 
+int totalResources(const struct gameState_t *myGameState);
 int actualAverageResourcesSupply(int resource,
 				 const struct gameState_t *myGameState);
+float totalAverageResourceSupplyPerTurn(const struct gameState_t
+					*myGameState);
+float depreciateStrategyValue(int num_resources, int num_players,
+			      float ARSperTurn);
 float depreciationFunction(float k, int actualARS, int port);
 float resourcesIncrementValue(int increment, int resource,
 			      int VictoryPoints,
@@ -102,12 +107,25 @@ void numberOfTurnsForProbability(float probability,
 				 int showSimulation);
 float strategyProfit(float time_a, float time_b, float turn,
 		     strategy_t oneStrategy,
-		     struct gameState_t myGameState);
+		     struct gameState_t myGameState, int myTurn);
 float bestStrategy(float turn, float probability,
 		   struct simulationsData_t *Data, strategy_t myStrategy,
-		   struct gameState_t myGameState, int showSimulation);
+		   struct gameState_t myGameState, int showSimulation,
+		   int myTurn);
 
-int checkRoadNow(enum action oneAction, struct gameState_t myGameState);
+int checkRoadNow(enum action firstAction, enum action secondAction,
+		 struct gameState_t myGameState);
+
+int totalResources(const struct gameState_t *myGameState)
+{
+	int i, total;
+	total = 0;
+	for (i = 0; i < 5; i++) {
+		total += myGameState->resourcesAlreadyHave[i];
+	}
+	return (total);
+}
+
 
 int actualAverageResourcesSupply(int resource,
 				 const struct gameState_t *myGameState)
@@ -148,12 +166,51 @@ int actualAverageResourcesSupply(int resource,
 	return (total);
 }
 
+float totalAverageResourceSupplyPerTurn(const struct gameState_t
+					*myGameState)
+{
+	int i;
+	int totalActualARS = 0;
+	float total;
+	for (i = 0; i < 5; i++) {
+		totalActualARS +=
+		    actualAverageResourcesSupply(i, myGameState);
+	}
+	total = totalActualARS / 36.0;
+	return (total);
+}
+
+float depreciateStrategyValue(int num_resources, int num_players,
+			      float ARSperTurn)
+{
+	/*If a strategy requires ending my turn with too many resources, the risk of being affected by the thief has to be taken in account. */
+	/*If I already have 8 or more resources, the thief could affect me num_players times. But if I am close to that limit there is also a chance tto be affected too */
+	int thief_oportunity = 0;	/*number of times the apparition of the thief could catch me with too many resources in my hand */
+	float probabilityNoThief;
+	int i;
+	for (i = 0; i < num_players; i++) {
+		if ((num_resources + (i * ARSperTurn)) >= 8) {
+			thief_oportunity = num_players - i;
+			break;
+		}
+	}
+	/*Alternate way:
+	 * thief_oportunity=floor((8-num_resources)/ARSperTurn)
+	 */
+	probabilityNoThief = pow(5.0 / 6.0, thief_oportunity);
+	/*I will assume for simplicity that the best strategy I would be able to do with half my resources has half the value. */
+	return ((1 * probabilityNoThief) +
+		(0.5 * (1 - probabilityNoThief)));
+	/*For a typical 4 player game, ending my turn having 8 or more resources means a depreciation of  1*0.482 + 0.5*0.517 = 0.741 of the calculated strategy */
+}
+
+
 float depreciationFunction(float k, int actualARS, int port)
 /*depreciation of the value of a resource depending on genetic value k and my actual supply of that resource
  * k=0 means no depreciation at all no matter my actualARS, and the higher the k and my actualARS the closer it will get to 0.25 (for port=4, bank trade)
  * It considers that this should be the maximum depreciation a resource could suffer
- * having in mind that you could always trade any resource on a 4:1 basis
-    port is the trading ratio I have for that resource, and marks the maximum depreciation a resource could suffer not matter the amount of it I aleady have*/
+ * having in mind that you could always trade any resource on a 4:1 basis.
+    port is the trading ratio I have for that resource, and marks the maximum depreciation a resource could suffer no matter the amount of it I already have*/
 {
 	return ((k * actualARS + 1) / (port * k * actualARS + 1));
 }
@@ -431,30 +488,71 @@ void numberOfTurnsForProbability(float probability,
 
 float strategyProfit(float time_a, float time_b, float turn,
 		     strategy_t oneStrategy,
-		     struct gameState_t myGameState)
+		     struct gameState_t myGameState, int myTurn)
 {
 	/*Returns the benefit I get in a given turn if I try to do firstAction ending at time_a and then secondAction ending at time_b
 	 * time_a, time_b and turn should be possitive numbers, turn>=0, time_b>=time_a>=0*/
+	float profit;
 	float firstActionValue = myGameState.actionValue[oneStrategy[0]];
 	float secondActionValue = myGameState.actionValue[oneStrategy[1]];
 	float m1, m2;
+	float tooManyResDepreciation = 1;
+	float ARSperTurn;
+	int endOfTurnResources;	/*With how many resources I am gonna finish my turn with? */
+	int roadsWillBuild;
 	if (firstActionValue == 0)
-		return 0;	/*It is impossible to do first action (not enough tokens, no place to it, etc.), so this strategy is worthless */
+		return 0;	/*It is impossible to do first action (not enough tokens, no place for it, etc.), so this strategy is worthless */
+	/*If this strategy requires doing nothing now, the amount of resources I finsh the turn with can decrease this strategy value depending on the risk of being affected by the thief */
+	if ((time_a != 0) && (myTurn)) {	/*I am waiting to do something, will I finish my turn with a "risky" amount of resources? */
+		endOfTurnResources = totalResources(&myGameState);
+		roadsWillBuild =
+		    checkRoadNow(oneStrategy[0], oneStrategy[1],
+				 myGameState);
+		endOfTurnResources -= roadsWillBuild * 2;	/*If I am gonna build some road in this turn substract those resources */
+		ARSperTurn =
+		    totalAverageResourceSupplyPerTurn(&myGameState);
+		tooManyResDepreciation =
+		    depreciateStrategyValue(endOfTurnResources,
+					    num_players(), ARSperTurn);
+		printf
+		    ("My estimation is that I WILL BUILD %d ROADS at this turn as part of the following strategy:\n",
+		     roadsWillBuild);
+		if (tooManyResDepreciation < 1) {
+			printf("Strategy waiting to do ");
+			printAction(oneStrategy[0]);
+			printf(" at turn %.2f and then ", time_a);
+			printAction(oneStrategy[1]);
+			printf
+			    (" ends turn with too many resources (%d and ARSperTurn of %.2f), so suffers a depreciation of %.3f\n",
+			     endOfTurnResources, ARSperTurn,
+			     tooManyResDepreciation);
+		} else {
+			printf("Strategy waiting to do ");
+			printAction(oneStrategy[0]);
+			printf(" at turn %.2f and then ", time_a);
+			printAction(oneStrategy[1]);
+			printf
+			    (" ends turn unaffected (%d and ARSperTurn of %.2f), so suffers no depreciation\n",
+			     endOfTurnResources, ARSperTurn);
+		}
+	}
+
 	if (turn < time_a) {	/*so time_a is not 0 */
 		if (time_a == time_b) {
-			return (((firstActionValue +
-				  secondActionValue) / time_a) * turn);
+			profit = (((firstActionValue +
+				    secondActionValue) / time_a) * turn);
 		} else {
 			m1 = (firstActionValue / time_a);
-			return (m1 * turn);
+			profit = (m1 * turn);
 		}
 	} else if (turn < time_b) {	/*So time_b is not 0, although time_a could be */
 		m2 = (secondActionValue / (time_b - time_a));
-		return (firstActionValue + m2 * (turn - time_a));
+		profit = (firstActionValue + m2 * (turn - time_a));
 	} else if (turn >= time_b) {
-		return (firstActionValue + secondActionValue);
+		profit = (firstActionValue + secondActionValue);
 	} else
-		return (0);	/*It should never get here */
+		profit = (0);	/*It should never get here */
+	return (profit * tooManyResDepreciation);
 
 	/*Notice how extreme cases are handled:
 	   If a=b=0 it means I can do both actions at the same time right now and it will go through the third branch no matter the turn.
@@ -465,9 +563,11 @@ float strategyProfit(float time_a, float time_b, float turn,
 
 float bestStrategy(float turn, float probability,
 		   struct simulationsData_t *Data, strategy_t myStrategy,
-		   struct gameState_t myGameState, int showSimulation)
+		   struct gameState_t myGameState, int showSimulation,
+		   int myTurn)
 {
 	/*Updates myStrategy[] with the pair of preferred actions to be performed in the present/future as their profit is considered when we look up to turn in the future
+	 * If myTurn is 1 it means that I'm doing that calculations during my turn
 	 * It returns that maximum profit*/
 	float time_a, time_b, time_best_firstAction,
 	    time_best_secondAction;
@@ -479,6 +579,7 @@ float bestStrategy(float turn, float probability,
 	time_best_firstAction = MAX_TURNS;
 	time_best_secondAction = MAX_TURNS;
 	max_profit = 0;
+	printf("\n\nBeginning the bestStrategy loop...\n");
 	for (firstAction = SET; firstAction <= 4; firstAction++) {	/*First five actions of turnsToAction are individual actions SET, CIT, DEV, RSET and RRSET */
 		time_a = Data->turnsToAction[firstAction];
 		for (secondAction = SET; secondAction <= 4; secondAction++) {
@@ -488,7 +589,8 @@ float bestStrategy(float turn, float probability,
 			oneStrategy[1] = secondAction;
 			profit =
 			    strategyProfit(time_a, time_b, turn,
-					   oneStrategy, myGameState);
+					   oneStrategy, myGameState,
+					   myTurn);
 			if ((profit > max_profit)
 			    || ((profit == max_profit)
 				&& (time_a < time_best_firstAction))
@@ -507,32 +609,63 @@ float bestStrategy(float turn, float probability,
 			}
 		}
 	}
+	printf("Finishing the bestStrategy loop...\n\n");
 	return (max_profit);
 }
 
 
 
-int checkRoadNow(enum action oneAction, struct gameState_t myGameState)
+int checkRoadNow(enum action firstAction, enum action secondAction,
+		 struct gameState_t myGameState)
 {
-	/*Returns TRUE if action involves building a Road (RSET or RRSET) and it is possible to build it now, or if action is City (that uses completely different resources than road)  and I can build road */
-	switch (oneAction) {
-	case CIT:
-	case RSET:
-		if ((myGameState.resourcesAlreadyHave[0] >= 1)
-		    && (myGameState.resourcesAlreadyHave[4] >= 1))
+	/*Returns TRUE if  I should build road now, that is, if I have the resources needed, and it does not affect negatively my planned strategy, what is basically:
+	 * firstAction involves building a Road (RSET or RRSET) OR
+	 *firstAction is City or Development Card (that uses completely different resources than road)  and secondAction is not SET (that will need them).
+	 *It does not take into account if there is actually enough roads (tokens)to do it */
+	int roadsPossible = 0;
+	if ((myGameState.resourcesAlreadyHave[0] >= 1)
+	    && (myGameState.resourcesAlreadyHave[4] >= 1))
+		roadsPossible = 1;
+	if ((myGameState.resourcesAlreadyHave[0] >= 2)
+	    && (myGameState.resourcesAlreadyHave[4] >= 2))
+		roadsPossible = 2;
+	if (!roadsPossible)
+		return (0);
+
+	switch (firstAction) {
+	case SET:
+		/*If I have enough resources for two roads and secondAction is not another SET, I can build one road without affecting my strategy */
+		if ((roadsPossible == 2) && (secondAction != SET))
 			return (1);
 		else
 			return (0);
 		break;
-	case RRSET:
-		if ((myGameState.resourcesAlreadyHave[0] >= 2)
-		    && (myGameState.resourcesAlreadyHave[4] >= 2))
-			return (2);
-		else if ((myGameState.resourcesAlreadyHave[0] >= 1)
-			 && (myGameState.resourcesAlreadyHave[4] >= 1))
+	case CIT:
+	case DEV:
+		switch (secondAction) {
+		case SET:
+			/*If I have enough resources for two roads, I still can build one and have enough resources for the SET */
+			if (roadsPossible == 2)
+				return (1);
+			else
+				return (0);
+			break;
+		case RSET:
+			/*Even if I can do two roads now, I should not use the resources I will need for the settlement of RSET */
 			return (1);
-		else
-			return (0);
+			break;
+		case CIT:
+		case DEV:
+		case RRSET:
+			return (roadsPossible);
+			break;
+		}
+	case RSET:
+		/*Even if I can do two roads now, I should not use the resources I will need for the settlement of RSET */
+		return (1);
+		break;
+	case RRSET:
+		return (roadsPossible);
 		break;
 	default:
 		return (0);
