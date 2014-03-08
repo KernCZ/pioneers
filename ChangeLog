@@ -1,5 +1,6 @@
 2014-03-08  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/resource-view.gob: Replaced deprecated function.
+	* common/gtk/guimap.c: Simplified event arguments.
 
 2014-02-25  Roland Clobus <rclobus@rclobus.nl>
 	* Makefile.am, client/gtk/chat.c, client/gtk/connect.c,

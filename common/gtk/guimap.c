@@ -191,13 +191,9 @@ static gboolean motion_notify_map_cb(GtkWidget * area,
 	if (gtk_widget_get_window(area) == NULL || gmap->map == NULL)
 		return FALSE;
 
-	if (event->is_hint)
-		gdk_window_get_pointer(event->window, &x, &y, &state);
-	else {
-		x = event->x;
-		y = event->y;
-		state = event->state;
-	}
+	x = event->x;
+	y = event->y;
+	state = event->state;
 
 	if (state & GDK_BUTTON2_MASK) {
 		gmap->is_custom_view = TRUE;
