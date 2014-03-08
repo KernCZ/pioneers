@@ -1,3 +1,6 @@
+2014-03-08  Roland Clobus <rclobus@rclobus.nl>
+	* client/gtk/resource-view.gob: Replaced deprecated function.
+
 2014-02-25  Roland Clobus <rclobus@rclobus.nl>
 	* Makefile.am, client/gtk/chat.c, client/gtk/connect.c,
 	client/gtk/develop.c, client/gtk/discard.c, client/gtk/frontend.c,

@@ -196,6 +196,7 @@ class Resource:View from Gtk:Misc {
 			      gpointer user_data) {
 		gint i;
 		GtkRequisition r;
+		GtkRequisition r2;
 		GtkAllocation allocation;
 		gfloat xalign;
 		gfloat yalign;
@@ -205,7 +206,7 @@ class Resource:View from Gtk:Misc {
 		/* Remove compiler warnings */
 		user_data = user_data;
 
-		gtk_widget_size_request(GTK_WIDGET(self), &r);
+		gtk_widget_get_preferred_size(GTK_WIDGET(self), &r, &r2);
 		gtk_widget_get_allocation(GTK_WIDGET(self), &allocation);
 
 		gtk_misc_get_alignment(GTK_MISC(self), &xalign, &yalign);
