@@ -3,7 +3,7 @@
  *
  * Copyright (C) 1999 Dave Cole
  * Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
- * Copyright (C) 2004-2011 Roland Clobus <rclobus@bigfoot.com>
+ * Copyright (C) 2004-2014 Roland Clobus <rclobus@rclobus.nl>
  * Copyright (C) 2013 Micah Bunting <Amnykon@gmail.com>
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -54,8 +54,7 @@ static void calc_node_poly(const GuiMap * gmap, const Node * node,
 static void calc_hex_poly(const GuiMap * gmap, const Hex * hex,
 			  const Polygon * shape, Polygon * poly,
 			  double scale_factor, gint x_shift);
-static void guimap_cursor_move(GuiMap * gmap, gint x, gint y,
-			       MapElement * element);
+static void guimap_cursor_move(GuiMap * gmap, MapElement * element);
 
 /* Square */
 static gint sqr(gint a)
@@ -180,10 +179,8 @@ static gboolean motion_notify_map_cb(GtkWidget * area,
 				     gpointer user_data)
 {
 	GuiMap *gmap = user_data;
-	gint x;
-	gint y;
-	static gint last_x;
-	static gint last_y;
+	gdouble x;
+	gdouble y;
 	GdkModifierType state;
 	MapElement dummyElement;
 	g_assert(area != NULL);
@@ -197,17 +194,17 @@ static gboolean motion_notify_map_cb(GtkWidget * area,
 
 	if (state & GDK_BUTTON2_MASK) {
 		gmap->is_custom_view = TRUE;
-		gmap->x_margin += x - last_x;
-		gmap->y_margin += y - last_y;
+		gmap->x_margin += x - gmap->last_x;
+		gmap->y_margin += y - gmap->last_y;
 
 		guimap_display(gmap);
 		gtk_widget_queue_draw(gmap->area);
 	}
-	last_x = x;
-	last_y = y;
+	gmap->last_x = x;
+	gmap->last_y = y;
 
 	dummyElement.pointer = NULL;
-	guimap_cursor_move(gmap, x, y, &dummyElement);
+	guimap_cursor_move(gmap, &dummyElement);
 
 	return FALSE;
 }
@@ -1233,14 +1230,13 @@ void guimap_zoom_center_map(GuiMap * gmap)
 	gtk_widget_queue_draw(gmap->area);
 }
 
-/** Finds the closest edge to (x,y).
+/** Finds the closest edge to the last known cursor position.
  * @param gmap The GuiMap containing the edge.
- * @param x,y The coordinate.
  * @return The closest edge.
  */
-Edge *guimap_find_edge(GuiMap * gmap, gint x, gint y)
+Edge *guimap_get_current_edge(GuiMap * gmap)
 {
-	Hex *hex = guimap_find_hex(gmap, x, y);
+	Hex *hex = guimap_get_current_hex(gmap);
 	if (hex) {
 		gint center_x;
 		gint center_y;
@@ -1249,7 +1245,9 @@ Edge *guimap_find_edge(GuiMap * gmap, gint x, gint y)
 
 		calc_hex_pos(gmap, hex->x, hex->y, &center_x, &center_y);
 
-		angle = atan2(y - center_y, x - center_x);
+		angle =
+		    atan2(gmap->last_y - center_y,
+			  gmap->last_x - center_x);
 		idx =
 		    (gint) (floor(-angle / 2.0 / M_PI * 6 + 0.5) + 6) % 6;
 		return hex->edges[idx];
@@ -1258,24 +1256,22 @@ Edge *guimap_find_edge(GuiMap * gmap, gint x, gint y)
 	}
 }
 
-/** Finds the closest edge to (x,y).
+/** Finds the closest edge to the last known cursor position.
  * @param gmap The GuiMap containing the edge.
- * @param x,y The coordinate.
  * @param[out] element The MapElement to return the edge in.
  */
-static void find_edge(GuiMap * gmap, gint x, gint y, MapElement * element)
+static void find_edge(GuiMap * gmap, MapElement * element)
 {
-	element->edge = guimap_find_edge(gmap, x, y);
+	element->edge = guimap_get_current_edge(gmap);
 }
 
-/** Finds the closest node to (x,y).
+/** Finds the closest node to the last known cursor position.
  * @param gmap The GuiMap containing the node.
- * @param x,y The coordinate.
  * @return The closest node.
  */
-Node *guimap_find_node(GuiMap * gmap, gint x, gint y)
+Node *guimap_get_current_node(GuiMap * gmap)
 {
-	Hex *hex = guimap_find_hex(gmap, x, y);
+	Hex *hex = guimap_get_current_hex(gmap);
 	if (hex) {
 		gint center_x;
 		gint center_y;
@@ -1284,45 +1280,45 @@ Node *guimap_find_node(GuiMap * gmap, gint x, gint y)
 
 		calc_hex_pos(gmap, hex->x, hex->y, &center_x, &center_y);
 
-		angle = atan2(y - center_y, x - center_x);
+		angle =
+		    atan2(gmap->last_y - center_y,
+			  gmap->last_x - center_x);
 		idx = (gint) (floor(-angle / 2.0 / M_PI * 6) + 6) % 6;
 		return hex->nodes[idx];
 	}
 	return NULL;
 }
 
-/** Finds the closest node to (x,y).
+/** Finds the closest node to the last known cursor position.
  * @param gmap The GuiMap containing the node.
- * @param x,y The coordinate.
  * @param[out] element The MapElement to return the node in.
  */
-static void find_node(GuiMap * gmap, gint x, gint y, MapElement * element)
+static void find_node(GuiMap * gmap, MapElement * element)
 {
-	element->node = guimap_find_node(gmap, x, y);
+	element->node = guimap_get_current_node(gmap);
 }
 
-/** Finds the closest hex to (x,y).
+/** Finds the closest hex to the last known cursor position.
  * @param gmap The GuiMap containing the hex.
- * @param x,y The coordinate.
  * @return The closest hex.
  */
-Hex *guimap_find_hex(GuiMap * gmap, gint x, gint y)
+Hex *guimap_get_current_hex(GuiMap * gmap)
 {
 	gint x_hex;
 	gint y_hex;
 
-	reverse_calc_hex_pos(gmap, x, y, &x_hex, &y_hex);
+	reverse_calc_hex_pos(gmap, gmap->last_x, gmap->last_y, &x_hex,
+			     &y_hex);
 	return map_hex(gmap->map, x_hex, y_hex);
 }
 
-/** Finds the closest hex to (x,y).
+/** Finds the closest hex to the last known cursor position.
  * @param gmap The GuiMap containing the hex.
- * @param x,y The coordinate.
  * @param[out] element The MapElement to return the hex in.
  */
-static void find_hex(GuiMap * gmap, gint x, gint y, MapElement * element)
+static void find_hex(GuiMap * gmap, MapElement * element)
 {
-	element->hex = guimap_find_hex(gmap, x, y);
+	element->hex = guimap_get_current_hex(gmap);
 }
 
 void guimap_draw_edge(GuiMap * gmap, const Edge * edge)
@@ -1659,7 +1655,7 @@ void guimap_draw_hex(GuiMap * gmap, const Hex * hex)
 }
 
 typedef struct {
-	void (*find) (GuiMap * gmap, gint x, gint y, MapElement * element);
+	void (*find) (GuiMap * gmap, MapElement * element);
 	void (*erase_cursor) (GuiMap * gmap);
 	void (*draw_cursor) (GuiMap * gmap);
 } ModeCursor;
@@ -1683,18 +1679,16 @@ CheckFunc roadF, shipF, bridgeF, settlementF, cityF, cityWallF, shipMoveF;
 SelectFunc roadS, shipS, bridgeS, settlementS, cityS, cityWallS, shipMoveS;
 CancelFunc shipMoveC;
 
-/** Calculate the distance between the element and the cursor.
+/** Calculate the distance between the element and the last known position
+ *  of the cursor.
  *  @param gmap The GuiMap
- *  @param element An Edge or a Node
- *  @param isEdge TRUE if element is an Edge
- *  @param cursor_x X position of the cursor
- *  @param cursor_y Y position of the cursor
+ *  @param element A MapElement
+ *  @param type The type of the MapElement
  *  @return The square of the distance
  */
 gint guimap_distance_cursor(const GuiMap * gmap,
 			    const MapElement * element,
-			    MapElementType type, gint cursor_x,
-			    gint cursor_y)
+			    MapElementType type)
 {
 	static GdkPoint single_point = { 0, 0 };
 	static const Polygon simple_poly = { &single_point, 1 };
@@ -1714,12 +1708,12 @@ gint guimap_distance_cursor(const GuiMap * gmap,
 			      120.0, 0);
 		break;
 	}
-	return sqr(cursor_x - poly.points[0].x) + sqr(cursor_y -
-						      poly.points[0].y);
+	return sqr(gmap->last_x - poly.points[0].x) + sqr(gmap->last_y -
+							  poly.
+							  points[0].y);
 }
 
-void guimap_cursor_move(GuiMap * gmap, gint x, gint y,
-			MapElement * element)
+void guimap_cursor_move(GuiMap * gmap, MapElement * element)
 {
 	ModeCursor *mode;
 
@@ -1738,7 +1732,7 @@ void guimap_cursor_move(GuiMap * gmap, gint x, gint y,
 		gint distance_node = 0;
 
 		dummyElement.pointer = NULL;
-		find_edge(gmap, x, y, element);
+		find_edge(gmap, element);
 		if (element->pointer) {
 			can_build_road = (roadM
 					  && roadF(*element,
@@ -1768,10 +1762,10 @@ void guimap_cursor_move(GuiMap * gmap, gint x, gint y,
 				hex2.hex = element->edge->hexes[1];
 				distance1 =
 				    guimap_distance_cursor(gmap, &hex1,
-							   MAP_HEX, x, y);
+							   MAP_HEX);
 				distance2 =
 				    guimap_distance_cursor(gmap, &hex2,
-							   MAP_HEX, x, y);
+							   MAP_HEX);
 				if (distance1 == distance2)
 					can_build_ship = FALSE;
 				else {
@@ -1799,14 +1793,13 @@ void guimap_cursor_move(GuiMap * gmap, gint x, gint y,
 				node2.node = element->edge->nodes[1];
 				distanceNode =
 				    MIN(guimap_distance_cursor
-					(gmap, &node1, MAP_NODE, x, y),
+					(gmap, &node1, MAP_NODE),
 					guimap_distance_cursor(gmap,
 							       &node2,
-							       MAP_NODE, x,
-							       y));
+							       MAP_NODE));
 				distanceEdge =
 				    guimap_distance_cursor(gmap, element,
-							   MAP_EDGE, x, y);
+							   MAP_EDGE);
 				if (distanceNode < distanceEdge)
 					can_build_ship = FALSE;
 				else
@@ -1818,10 +1811,10 @@ void guimap_cursor_move(GuiMap * gmap, gint x, gint y,
 			if (can_build_edge)
 				distance_edge =
 				    guimap_distance_cursor(gmap, element,
-							   MAP_EDGE, x, y);
+							   MAP_EDGE);
 		}
 
-		find_node(gmap, x, y, element);
+		find_node(gmap, element);
 		if (element->pointer) {
 			can_build_settlement = (settlementM
 						&& settlementF(*element,
@@ -1842,7 +1835,7 @@ void guimap_cursor_move(GuiMap * gmap, gint x, gint y,
 			if (can_build_node)
 				distance_node =
 				    guimap_distance_cursor(gmap, element,
-							   MAP_NODE, x, y);
+							   MAP_NODE);
 		}
 
 		/* When both edge and node can be built,
@@ -1901,7 +1894,7 @@ void guimap_cursor_move(GuiMap * gmap, gint x, gint y,
 	}
 
 	mode = cursors + gmap->cursor_type;
-	mode->find(gmap, x, y, element);
+	mode->find(gmap, element);
 	if (element->pointer != gmap->cursor.pointer) {
 		if (gmap->cursor.pointer != NULL)
 			mode->erase_cursor(gmap);
@@ -1917,12 +1910,13 @@ void guimap_cursor_move(GuiMap * gmap, gint x, gint y,
 	}
 }
 
-void guimap_cursor_select(GuiMap * gmap, gint x, gint y)
+/** Select the active cursor */
+void guimap_cursor_select(GuiMap * gmap)
 {
 	MapElement cursor;
 	SelectFunc check_select;
 	MapElement user_data;
-	guimap_cursor_move(gmap, x, y, &cursor);
+	guimap_cursor_move(gmap, &cursor);
 
 	if (cursor.pointer == NULL)
 		return;

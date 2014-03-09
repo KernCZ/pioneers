@@ -1,6 +1,9 @@
 2014-03-08  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/resource-view.gob: Replaced deprecated function.
 	* common/gtk/guimap.c: Simplified event arguments.
+	* client/gtk/gui.c, common/gtk/common_gtk.c, common/gtk/common_gtk.h,
+	common/gtk/guimap.c, common/gtk/guimap.h, editor/gtk/editor.c: The
+	GuiMap widget maintains the last known mouse pointer position.
 
 2014-02-25  Roland Clobus <rclobus@rclobus.nl>
 	* Makefile.am, client/gtk/chat.c, client/gtk/connect.c,

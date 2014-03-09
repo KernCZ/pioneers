@@ -3,7 +3,7 @@
  *
  * Copyright (C) 1999 Dave Cole
  * Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
- * Copyright (C) 2004-2007 Roland Clobus <rclobus@bigfoot.com>
+ * Copyright (C) 2004-2014 Roland Clobus <rclobus@rclobus.nl>
  * Copyright (C) 2013 Micah Bunting <Amnykon@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -80,6 +80,8 @@ typedef struct {
 	CancelFunc check_cancel;   /**< when user clicks in illegal position */
 	MapElement user_data;	   /**< passed to callback functions */
 	MapElement cursor;	   /**< current GUI mode edge/node/hex cursor */
+	gdouble last_x;		   /**< last known cursor position */
+	gdouble last_y;		   /**< last known cursor position */
 
 	gint highlight_chit;	   /**< chit number to highlight */
 	gint chit_radius;	   /**< radius of the chit */
@@ -134,14 +136,13 @@ void guimap_draw_edge(GuiMap * gmap, const Edge * edge);
 void guimap_draw_node(GuiMap * gmap, const Node * node);
 void guimap_draw_hex(GuiMap * gmap, const Hex * hex);
 
-Edge *guimap_find_edge(GuiMap * gmap, gint x, gint y);
-Node *guimap_find_node(GuiMap * gmap, gint x, gint y);
-Hex *guimap_find_hex(GuiMap * gmap, gint x, gint y);
+Edge *guimap_get_current_edge(GuiMap * gmap);
+Node *guimap_get_current_node(GuiMap * gmap);
+Hex *guimap_get_current_hex(GuiMap * gmap);
 
 gint guimap_distance_cursor(const GuiMap * gmap,
 			    const MapElement * element,
-			    MapElementType type, gint cursor_x,
-			    gint cursor_y);
+			    MapElementType type);
 
 void guimap_cursor_set(GuiMap * gmap, CursorType cursor_type, gint owner,
 		       CheckFunc check_func, SelectFunc select_func,
@@ -185,6 +186,6 @@ void guimap_single_click_set_city_mask(gboolean mask);
 void guimap_single_click_set_city_wall_mask(gboolean mask);
 void guimap_single_click_set_ship_move_mask(gboolean mask);
 
-void guimap_cursor_select(GuiMap * gmap, gint x, gint y);
+void guimap_cursor_select(GuiMap * gmap);
 void guimap_set_show_no_setup_nodes(GuiMap * gmap, gboolean show);
 #endif

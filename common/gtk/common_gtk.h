@@ -85,4 +85,11 @@ void build_frame(GtkWidget * parent, const gchar * title,
 void set_tooltip_on_column(GtkTreeViewColumn * column,
 			   const gchar * tooltip);
 
+/** Get the current mouse position of a widget
+ *  @param widget The widget
+ *  @param[out] x The x-coordinate
+ *  @param[out] y The y-coordinate
+ */
+void get_mouse_position(GtkWidget * widget, gdouble * x, gdouble * y);
+
 #endif				/* __common_gtk_h */

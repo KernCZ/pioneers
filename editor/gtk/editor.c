@@ -643,7 +643,7 @@ static gint button_press_map_cb(GtkWidget * area,
 	if (gtk_widget_get_window(area) == NULL || gmap->map == NULL)
 		return FALSE;
 
-	current_hex = guimap_find_hex(gmap, event->x, event->y);
+	current_hex = guimap_get_current_hex(gmap);
 	if (current_hex == NULL)
 		return TRUE;
 
@@ -685,8 +685,7 @@ static gint button_press_map_cb(GtkWidget * area,
 				 * direction of the port. 
 				 */
 				const Edge *edge;
-				edge = guimap_find_edge(gmap, event->x,
-							event->y);
+				edge = guimap_get_current_edge(gmap);
 				gint i;
 				for (i = 0; i < 6; i++)
 					if (current_hex->edges[i] == edge)
@@ -711,15 +710,13 @@ static gint button_press_map_cb(GtkWidget * area,
 			break;
 		}
 
-		current_node = guimap_find_node(gmap, event->x, event->y);
+		current_node = guimap_get_current_node(gmap);
 		element.node = current_node;
 		distance_node =
-		    guimap_distance_cursor(gmap, &element, MAP_NODE,
-					   event->x, event->y);
+		    guimap_distance_cursor(gmap, &element, MAP_NODE);
 		element.hex = current_hex;
 		distance_hex =
-		    guimap_distance_cursor(gmap, &element, MAP_HEX,
-					   event->x, event->y);
+		    guimap_distance_cursor(gmap, &element, MAP_HEX);
 
 		if (distance_node < distance_hex) {
 			current_node->no_setup = !current_node->no_setup;
@@ -779,22 +776,22 @@ static gint button_press_map_cb(GtkWidget * area,
 static gint key_press_map_cb(GtkWidget * area, GdkEventKey * event,
 			     gpointer user_data)
 {
-	static gint last_x, last_y;
+	static Hex *last_hex = NULL;
 	static gchar *last_key;
 	GuiMap *gmap = user_data;
-	gint x, y;
 	gboolean plus10;
 
 	if (gtk_widget_get_window(area) == NULL || gmap->map == NULL)
 		return FALSE;
 
-	gtk_widget_get_pointer(area, &x, &y);
+	get_mouse_position(area, &gmap->last_x, &gmap->last_y);
 
-	current_hex = guimap_find_hex(gmap, x, y);
+	last_hex = current_hex;
+	current_hex = guimap_get_current_hex(gmap);
 	if (current_hex == NULL || !terrain_has_chit(current_hex->terrain))
 		return TRUE;
 
-	if (last_x == x && last_y == y && strcmp(last_key, "1") == 0)
+	if (last_hex == current_hex && strcmp(last_key, "1") == 0)
 		plus10 = TRUE;
 	else
 		plus10 = FALSE;
@@ -820,8 +817,6 @@ static gint key_press_map_cb(GtkWidget * area, GdkEventKey * event,
 	else if (plus10 && strcmp(event->string, "2") == 0)
 		current_hex->roll = 12;
 	guimap_draw_hex(gmap, current_hex);
-	last_x = x;
-	last_y = y;
 	g_free(last_key);
 	last_key = g_strdup(event->string);
 	return TRUE;

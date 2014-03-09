@@ -549,7 +549,7 @@ static gint button_press_map_cb(GtkWidget * area, GdkEventButton * event,
 		return FALSE;
 
 	if (event->button == 1 && event->type == GDK_BUTTON_PRESS) {
-		guimap_cursor_select(gmap, event->x, event->y);
+		guimap_cursor_select(gmap);
 		return TRUE;
 	}
 	return FALSE;

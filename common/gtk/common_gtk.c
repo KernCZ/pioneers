@@ -417,3 +417,31 @@ void set_tooltip_on_column(GtkTreeViewColumn * column,
 	gtk_widget_show(label);
 	gtk_tree_view_column_set_widget(column, label);
 }
+
+/* Code based on gtk_widget_get_pointer in gtkwidget.c */
+void get_mouse_position(GtkWidget * widget, gdouble * x, gdouble * y)
+{
+	gint xi;
+	gint yi;
+
+	g_return_if_fail(GTK_IS_WIDGET(widget));
+
+	xi = -1;
+	yi = -1;
+
+	if (gtk_widget_get_realized(widget)) {
+		gdk_window_get_device_position(gtk_widget_get_window
+					       (widget),
+					       gdk_device_manager_get_client_pointer
+					       (gdk_display_get_device_manager
+						(gtk_widget_get_display
+						 (widget))), &xi, &yi,
+					       NULL);
+
+	}
+
+	if (x)
+		*x = xi;
+	if (y)
+		*y = yi;
+}
