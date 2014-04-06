@@ -1,3 +1,7 @@
+2014-04-06  Roland Clobus <rclobus@rclobus.nl>
+	* common/gtk/common_gtk.c: Ported the button on the notebook page to
+	GTK+3.
+
 2014-03-08  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/resource-view.gob: Replaced deprecated function.
 	* common/gtk/guimap.c: Simplified event arguments.

@@ -27,6 +27,7 @@
 #include "common_gtk.h"
 #include "cards.h"
 
+static GtkCssProvider *small_button_style_provider;
 static GtkWidget *message_txt;
 static GtkWidget *message_container;
 static gboolean msg_colors = TRUE;
@@ -333,14 +334,19 @@ void check_victory_points(GameParams * params, GtkWindow * main_window)
 
 void prepare_gtk_for_close_button_on_tab(void)
 {
-	gtk_rc_parse_string("style \"tab-with-close-button-style\"\n"
-			    "{\n"
-			    "  GtkWidget::focus-padding = 0\n"
-			    "  GtkWidget::focus-line-width = 0\n"
-			    "  xthickness = 0\n"
-			    "  ythickness = 0\n"
-			    "}\n"
-			    "widget \"*.tab-with-close-button\" style \"tab-with-close-button-style\"");
+	/* The code for adding the button is based on the code on
+	 * http://www.micahcarrick.com/gtk-notebook-tabs-with-close-button.html
+	 * by Micah Carrick
+	 */
+	const gchar *data = ".button {\n"
+	    "-GtkButton-default-border : 0px;\n"
+	    "-GtkButton-default-outside-border : 0px;\n"
+	    "-GtkButton-inner-border: 0px;\n"
+	    "-GtkWidget-focus-line-width : 0px;\n"
+	    "-GtkWidget-focus-padding : 0px;\n" "padding: 0px;\n" "}";
+	small_button_style_provider = gtk_css_provider_new();
+	gtk_css_provider_load_from_data(small_button_style_provider, data,
+					-1, NULL);
 }
 
 GtkWidget *create_label_with_close_button(const gchar * label_text,
@@ -364,8 +370,12 @@ GtkWidget *create_label_with_close_button(const gchar * label_text,
 	gtk_widget_set_tooltip_text(*button, tooltip_text);
 	gtk_box_pack_start(GTK_BOX(hbox), *button, FALSE, FALSE, 0);
 
-	/* Set buttons name so the style will affect it */
-	gtk_widget_set_name(*button, "tab-with-close-button");
+	/* Apply the style, to make the button smaller */
+	gtk_style_context_add_provider(gtk_widget_get_style_context
+				       (*button),
+				       GTK_STYLE_PROVIDER
+				       (small_button_style_provider),
+				       GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 
 	gtk_widget_show_all(hbox);
 	return hbox;

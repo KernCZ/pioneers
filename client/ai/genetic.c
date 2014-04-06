@@ -1396,7 +1396,7 @@ void updateTradingMatrix(const struct chromosome_t *myChromosome,
 	for (give = 0; give <= 4; give++) {
 		if ((myGameState.resourcesAlreadyHave[give] >= 2) && (info.specific_resource[give])) {	/*I have a specific port to export give */
 			for (take = 0; take <= 4; take++) {
-				if ((give != take)&&(get_bank()[take])) {	/*There is no point in trading the same resource */
+				if ((give != take) && (get_bank()[take])) {	/*There is no point in trading the same resource */
 					myGameState.resourcesAlreadyHave
 					    [give] -= 2;
 					myGameState.resourcesAlreadyHave
@@ -1423,7 +1423,7 @@ void updateTradingMatrix(const struct chromosome_t *myChromosome,
 		/*It will check this only if it is not possible to do 2:1 trade */
 		else if ((myGameState.resourcesAlreadyHave[give] >= 3) && (info.any_resource)) {	/*I have a generic port to export any resource */
 			for (take = 0; take <= 4; take++) {
-				if ((give != take)&&(get_bank()[take])) {	/*There is no point in trading the same resource */
+				if ((give != take) && (get_bank()[take])) {	/*There is no point in trading the same resource */
 					myGameState.resourcesAlreadyHave
 					    [give] -= 3;
 					myGameState.resourcesAlreadyHave
@@ -1450,7 +1450,7 @@ void updateTradingMatrix(const struct chromosome_t *myChromosome,
 		/*It will check this only if it is neither possible to do 2:1 nor 3:1 trade */
 		else if (myGameState.resourcesAlreadyHave[give] >= 4) {	/*I have at least 4 of this resource, I could do 4:1 trade */
 			for (take = 0; take <= 4; take++) {
-				if ((give != take)&&(get_bank()[take])) {	/*There is no point in trading the same resource */
+				if ((give != take) && (get_bank()[take])) {	/*There is no point in trading the same resource */
 					myGameState.resourcesAlreadyHave
 					    [give] -= 4;
 					myGameState.resourcesAlreadyHave
@@ -1785,7 +1785,8 @@ static void genetic_turn(void)
 	    && stock_num_settlements()) {
 		thisGameState.actionValue[RSET] = destinationRoadScore;
 	}
-	if (destinationRoadScore<0) destinationRoadScore=0;
+	if (destinationRoadScore < 0)
+		destinationRoadScore = 0;
 
 	/*Best Long Road to Settlement, this is, best destination to build a Settlement after building two Roads */
 	long_road_edge =
@@ -1796,7 +1797,8 @@ static void genetic_turn(void)
 		thisGameState.actionValue[RRSET] =
 		    destinationLongRoadScore;
 	}
-	if (destinationLongRoadScore<0) destinationLongRoadScore=0;
+	if (destinationLongRoadScore < 0)
+		destinationLongRoadScore = 0;
 
 	/*value of buying Development Card is fixed in the chromosome */
 	if (stock_num_develop() > 0)
