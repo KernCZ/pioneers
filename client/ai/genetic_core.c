@@ -7,7 +7,7 @@
 
 
 
-#define MAX_SIMS 1000
+#define MAX_SIMS 100
 /*Number of simulations, could be raised to achieve better accuracy if computing time allows it*/
 #define NUM_ACTIONS 20
 /*Number of possible actions, single or paired -> 5 individual (SET,CIT,DEV, RSET RRSET) + 5*5 combined (SET+CIT,SET+DEV,etc) -10 of which are redundant (SET+CIT=CIT+SET) = 20*/
@@ -183,6 +183,7 @@ float totalAverageResourceSupplyPerTurn(const struct gameState_t
 float depreciateStrategyValue(int num_resources, int num_players,
 			      float ARSperTurn)
 {
+  
 	/*If a strategy requires ending my turn with too many resources, the risk of being affected by the thief has to be taken in account. */
 	/*If I already have 8 or more resources, the thief could affect me num_players times. But if I am close to that limit there is also a chance tto be affected too */
 	int thief_oportunity = 0;	/*number of times the apparition of the thief could catch me with too many resources in my hand */
@@ -514,6 +515,8 @@ float strategyProfit(float time_a, float time_b, float turn,
 		tooManyResDepreciation =
 		    depreciateStrategyValue(endOfTurnResources,
 					    num_players(), ARSperTurn);
+		    
+#if 0
 		printf
 		    ("My estimation is that I WILL BUILD %d ROADS at this turn as part of the following strategy:\n",
 		     roadsWillBuild);
@@ -535,6 +538,7 @@ float strategyProfit(float time_a, float time_b, float turn,
 			    (" ends turn unaffected (%d and ARSperTurn of %.2f), so suffers no depreciation\n",
 			     endOfTurnResources, ARSperTurn);
 		}
+#endif
 	}
 
 	if (turn < time_a) {	/*so time_a is not 0 */
@@ -579,7 +583,7 @@ float bestStrategy(float turn, float probability,
 	time_best_firstAction = MAX_TURNS;
 	time_best_secondAction = MAX_TURNS;
 	max_profit = 0;
-	printf("\n\nBeginning the bestStrategy loop...\n");
+	/*printf("\n\nBeginning the bestStrategy loop...\n");*/
 	for (firstAction = SET; firstAction <= 4; firstAction++) {	/*First five actions of turnsToAction are individual actions SET, CIT, DEV, RSET and RRSET */
 		time_a = Data->turnsToAction[firstAction];
 		for (secondAction = SET; secondAction <= 4; secondAction++) {
@@ -609,7 +613,7 @@ float bestStrategy(float turn, float probability,
 			}
 		}
 	}
-	printf("Finishing the bestStrategy loop...\n\n");
+	/*printf("Finishing the bestStrategy loop...\n\n");*/
 	return (max_profit);
 }
 
@@ -622,6 +626,7 @@ int checkRoadNow(enum action firstAction, enum action secondAction,
 	 * firstAction involves building a Road (RSET or RRSET) OR
 	 *firstAction is City or Development Card (that uses completely different resources than road)  and secondAction is not SET (that will need them).
 	 *It does not take into account if there is actually enough roads (tokens)to do it */
+	
 	int roadsPossible = 0;
 	if ((myGameState.resourcesAlreadyHave[0] >= 1)
 	    && (myGameState.resourcesAlreadyHave[4] >= 1))

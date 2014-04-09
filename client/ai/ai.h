@@ -23,6 +23,7 @@
 
 #include <glib.h>
 #include "callback.h"
+extern char *chromosomeFile;
 
 void ai_panic(const char *message);
 void ai_wait(void);
