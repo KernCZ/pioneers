@@ -109,7 +109,8 @@ static void add_legend_cost(GtkWidget * table, guint row,
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 }
 
-GtkWidget *legend_create_content_with_scrolling(gboolean enable_scrolling)
+static GtkWidget *legend_create_content_with_scrolling(gboolean
+						       enable_scrolling)
 {
 	GtkWidget *hbox;
 	GtkWidget *vbox;
