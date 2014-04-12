@@ -44,21 +44,21 @@ static Map *map = NULL;
 static void logbot_init(void);
 
 static const struct algorithm_info {
-    /** Name of the algorithm (for commandline) */
-    const gchar *name;
-    /** Init function */
-    void (*init_func) (void);
-    /** Request to be a player? */
-    gboolean request_player;
-    /** Quit if request not honoured */
-    gboolean quit_if_not_request;
+	/** Name of the algorithm (for commandline) */
+	const gchar *name;
+	/** Init function */
+	void (*init_func) (void);
+	/** Request to be a player? */
+	gboolean request_player;
+	/** Quit if request not honoured */
+	gboolean quit_if_not_request;
 } algorithms[] = {
-    /* *INDENT-OFF* */
-    { "greedy", &greedy_init, TRUE, TRUE},
-    { "genetic", &genetic_init, TRUE, TRUE},
-    { "lobbybot", &lobbybot_init, FALSE, TRUE},
-    { "logbot", &logbot_init, FALSE, TRUE},
-    /* *INDENT-ON* */
+/* *INDENT-OFF* */
+	{ "greedy", &greedy_init, TRUE, TRUE},
+	{ "genetic", &genetic_init, TRUE, TRUE},
+	{ "lobbybot", &lobbybot_init, FALSE, TRUE},
+	{ "logbot", &logbot_init, FALSE, TRUE},
+/* *INDENT-ON* */
 };
 
 static guint active_algorithm = 0;
@@ -66,160 +66,152 @@ static guint active_algorithm = 0;
 UIDriver Glib_Driver;
 
 static GOptionEntry commandline_entries[] = {
-    {"chromosome-file", '\0', 0, G_OPTION_ARG_STRING, &chromosomeFile, N_("Chromosome File"), NULL},
-    {   "server", 's', 0, G_OPTION_ARG_STRING, &server,
-        /* Commandline pioneersai: server */
-        N_("Server Host"), PIONEERS_DEFAULT_GAME_HOST
-    },
-    {   "port", 'p', 0, G_OPTION_ARG_STRING, &port,
-        /* Commandline pioneersai: port */
-        N_("Server Port"), PIONEERS_DEFAULT_GAME_PORT
-    },
-    {   "name", 'n', 0, G_OPTION_ARG_STRING, &name,
-        /* Commandline pioneersai: name */
-        N_("Computer name (mandatory)"), NULL
-    },
-    {   "time", 't', 0, G_OPTION_ARG_INT, &waittime,
-        /* Commandline pioneersai: time */
-        N_("Time to wait between turns (in milliseconds)"), "1000"
-    },
-    {   "chat-free", 'c', 0, G_OPTION_ARG_NONE, &silent,
-        /* Commandline pioneersai: chat-free */
-        N_("Stop computer player from talking"), NULL
-    },
-    {   "algorithm", 'a', 0, G_OPTION_ARG_STRING, &ai,
-        /* Commandline pioneersai: algorithm */
-        N_("Type of computer player"), "greedy"
-    },
-    {   "debug", '\0', 0, G_OPTION_ARG_NONE, &enable_debug,
-        /* Commandline option of ai: enable debug logging */
-        N_("Enable debug messages"), NULL
-    },
-    {   "version", '\0', 0, G_OPTION_ARG_NONE, &show_version,
-        /* Commandline option of ai: version */
-        N_("Show version information"), NULL
-    },
-    {NULL, '\0', 0, 0, NULL, NULL, NULL}
-
+	{"chromosome-file", '\0', 0, G_OPTION_ARG_STRING, &chromosomeFile,
+	 N_("Chromosome File"), NULL},
+	{"server", 's', 0, G_OPTION_ARG_STRING, &server,
+	 /* Commandline pioneersai: server */
+	 N_("Server Host"), PIONEERS_DEFAULT_GAME_HOST},
+	{"port", 'p', 0, G_OPTION_ARG_STRING, &port,
+	 /* Commandline pioneersai: port */
+	 N_("Server Port"), PIONEERS_DEFAULT_GAME_PORT},
+	{"name", 'n', 0, G_OPTION_ARG_STRING, &name,
+	 /* Commandline pioneersai: name */
+	 N_("Computer name (mandatory)"), NULL},
+	{"time", 't', 0, G_OPTION_ARG_INT, &waittime,
+	 /* Commandline pioneersai: time */
+	 N_("Time to wait between turns (in milliseconds)"), "1000"},
+	{"chat-free", 'c', 0, G_OPTION_ARG_NONE, &silent,
+	 /* Commandline pioneersai: chat-free */
+	 N_("Stop computer player from talking"), NULL},
+	{"algorithm", 'a', 0, G_OPTION_ARG_STRING, &ai,
+	 /* Commandline pioneersai: algorithm */
+	 N_("Type of computer player"), "greedy"},
+	{"debug", '\0', 0, G_OPTION_ARG_NONE, &enable_debug,
+	 /* Commandline option of ai: enable debug logging */
+	 N_("Enable debug messages"), NULL},
+	{"version", '\0', 0, G_OPTION_ARG_NONE, &show_version,
+	 /* Commandline option of ai: version */
+	 N_("Show version information"), NULL},
+	{NULL, '\0', 0, 0, NULL, NULL, NULL}
 };
 
 static void ai_init_glib_et_al(int argc, char **argv)
 {
-    GOptionContext *context;
-    GError *error = NULL;
+	GOptionContext *context;
+	GError *error = NULL;
 
-    context =
-        /* Long description in the commandline for pioneersai: help */
-        g_option_context_new(_("- Computer player for Pioneers"));
-    g_option_context_add_main_entries(context, commandline_entries,
-                                      PACKAGE);
-    g_option_context_parse(context, &argc, &argv, &error);
-    g_option_context_free(context);
+	context =
+	    /* Long description in the commandline for pioneersai: help */
+	    g_option_context_new(_("- Computer player for Pioneers"));
+	g_option_context_add_main_entries(context, commandline_entries,
+					  PACKAGE);
+	g_option_context_parse(context, &argc, &argv, &error);
+	g_option_context_free(context);
 
-    if (error != NULL) {
-        g_print("%s\n", error->message);
-        g_error_free(error);
-        exit(1);
-    }
-    if (show_version) {
-        g_print(_("Pioneers version:"));
-        g_print(" ");
-        g_print(FULL_VERSION);
-        g_print("\n");
-        exit(0);
-    }
+	if (error != NULL) {
+		g_print("%s\n", error->message);
+		g_error_free(error);
+		exit(1);
+	}
+	if (show_version) {
+		g_print(_("Pioneers version:"));
+		g_print(" ");
+		g_print(FULL_VERSION);
+		g_print("\n");
+		exit(0);
+	}
 
-    g_type_init();
-    set_ui_driver(&Glib_Driver);
-    log_set_func_default();
+	g_type_init();
+	set_ui_driver(&Glib_Driver);
+	log_set_func_default();
 }
 
 static void ai_init(void)
 {
-    set_enable_debug(enable_debug);
+	set_enable_debug(enable_debug);
 
-    if (server == NULL)
-        server = g_strdup(PIONEERS_DEFAULT_GAME_HOST);
-    if (port == NULL)
-        port = g_strdup(PIONEERS_DEFAULT_GAME_PORT);
+	if (server == NULL)
+		server = g_strdup(PIONEERS_DEFAULT_GAME_HOST);
+	if (port == NULL)
+		port = g_strdup(PIONEERS_DEFAULT_GAME_PORT);
 
-    if (!name) {
-        /* ai commandline error */
-        g_print(_("A name must be provided.\n"));
-        exit(0);
-    }
+	if (!name) {
+		/* ai commandline error */
+		g_print(_("A name must be provided.\n"));
+		exit(0);
+	}
 
-    if (ai != NULL) {
-        guint i;
-        for (i = 0; i < G_N_ELEMENTS(algorithms); i++) {
-            if (!strcmp(algorithms[i].name, ai))
-                active_algorithm = i;
-        }
-    }
-    log_message(MSG_INFO, _("Type of computer player: %s\n"),
-                algorithms[active_algorithm].name);
-    algorithms[active_algorithm].init_func();
+	if (ai != NULL) {
+		guint i;
+		for (i = 0; i < G_N_ELEMENTS(algorithms); i++) {
+			if (!strcmp(algorithms[i].name, ai))
+				active_algorithm = i;
+		}
+	}
+	log_message(MSG_INFO, _("Type of computer player: %s\n"),
+		    algorithms[active_algorithm].name);
+	algorithms[active_algorithm].init_func();
 }
 
 void ai_panic(const char *message)
 {
-    cb_chat(message);
-    callbacks.quit();
+	cb_chat(message);
+	callbacks.quit();
 }
 
 static void ai_offline(void)
 {
-    gchar *style;
+	gchar *style;
 
-    callbacks.offline = callbacks.quit;
-    notifying_string_set(requested_name, name);
-    style =
-        g_strdup_printf("ai %s", algorithms[active_algorithm].name);
-    notifying_string_set(requested_style, style);
-    cb_connect(server, port,
-               !algorithms[active_algorithm].request_player);
-    g_free(style);
-    g_free(name);
+	callbacks.offline = callbacks.quit;
+	notifying_string_set(requested_name, name);
+	style =
+	    g_strdup_printf("ai %s", algorithms[active_algorithm].name);
+	notifying_string_set(requested_style, style);
+	cb_connect(server, port,
+		   !algorithms[active_algorithm].request_player);
+	g_free(style);
+	g_free(name);
 }
 
 static void ai_start_game(void)
 {
-    if (algorithms[active_algorithm].request_player ==
-            my_player_spectator()
-            && algorithms[active_algorithm].quit_if_not_request) {
-        ai_panic(N_("The game is already full. I'm leaving."));
-    }
+	if (algorithms[active_algorithm].request_player ==
+	    my_player_spectator()
+	    && algorithms[active_algorithm].quit_if_not_request) {
+		ai_panic(N_("The game is already full. I'm leaving."));
+	}
 }
 
 void ai_wait(void)
 {
-    g_usleep((gulong) waittime * 1000u);
+	g_usleep((gulong) waittime * 1000u);
 }
 
 void ai_chat(const char *message)
 {
-    if (!silent)
-        cb_chat(message);
+	if (!silent)
+		cb_chat(message);
 }
 
 static Map *ai_get_map(void)
 {
-    return map;
+	return map;
 }
 
 static void ai_set_map(Map * new_map)
 {
-    map = new_map;
+	map = new_map;
 }
 
 void frontend_set_callbacks(void)
 {
-    callbacks.init_glib_et_al = &ai_init_glib_et_al;
-    callbacks.init = &ai_init;
-    callbacks.offline = &ai_offline;
-    callbacks.start_game = &ai_start_game;
-    callbacks.get_map = &ai_get_map;
-    callbacks.set_map = &ai_set_map;
+	callbacks.init_glib_et_al = &ai_init_glib_et_al;
+	callbacks.init = &ai_init;
+	callbacks.offline = &ai_offline;
+	callbacks.start_game = &ai_start_game;
+	callbacks.get_map = &ai_get_map;
+	callbacks.set_map = &ai_set_map;
 }
 
 /* The logbot is intended to be used as a spectator in a game, and to collect
