@@ -109,7 +109,7 @@ static void add_legend_cost(GtkWidget * table, guint row,
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 }
 
-GtkWidget *legend_create_content(void)
+GtkWidget *legend_create_content_with_scrolling(gboolean enable_scrolling)
 {
 	GtkWidget *hbox;
 	GtkWidget *vbox;
@@ -118,6 +118,8 @@ GtkWidget *legend_create_content(void)
 	GtkWidget *vsep;
 	GtkWidget *alignment;
 	guint num_rows;
+	GtkWidget *viewport;
+	GtkWidget *scrolled_window;
 
 	hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 6);
 
@@ -205,7 +207,30 @@ GtkWidget *legend_create_content(void)
 	gtk_widget_show(vbox);
 	gtk_box_pack_start(GTK_BOX(hbox), vbox, FALSE, FALSE, 0);
 	gtk_widget_show(hbox);
-	return hbox;
+
+	if (!enable_scrolling) {
+		return hbox;
+	}
+
+	viewport = gtk_viewport_new(NULL, NULL);
+	gtk_widget_show(viewport);
+	gtk_container_add(GTK_CONTAINER(viewport), hbox);
+
+	scrolled_window = gtk_scrolled_window_new(NULL, NULL);
+	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrolled_window),
+				       GTK_POLICY_AUTOMATIC,
+				       GTK_POLICY_AUTOMATIC);
+	gtk_scrolled_window_set_shadow_type(GTK_SCROLLED_WINDOW
+					    (scrolled_window),
+					    GTK_SHADOW_NONE);
+	gtk_widget_show(scrolled_window);
+	gtk_container_add(GTK_CONTAINER(scrolled_window), viewport);
+	return scrolled_window;
+}
+
+GtkWidget *legend_create_content(void)
+{
+	return legend_create_content_with_scrolling(TRUE);
 }
 
 GtkWidget *legend_create_dlg(void)
@@ -230,7 +255,7 @@ GtkWidget *legend_create_dlg(void)
 	dlg_vbox = gtk_dialog_get_content_area(GTK_DIALOG(legend_dlg));
 	gtk_widget_show(dlg_vbox);
 
-	vbox = legend_create_content();
+	vbox = legend_create_content_with_scrolling(FALSE);
 	gtk_box_pack_start(GTK_BOX(dlg_vbox), vbox, TRUE, TRUE, 0);
 
 	gtk_widget_show(legend_dlg);
