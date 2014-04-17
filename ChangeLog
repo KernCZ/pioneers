@@ -2,9 +2,18 @@
 	* client/gtk/gui.c, client/gtk/legend.c: Fixed the sizing of the legend
 	tab page in 4:3 mode, which could hide the tabs.
 
+2014-04-09  Rodrigo Espiga Gómez <rodrigoespiga@hotmail.com>
+	* client/ai/ai.h, client/ai/ai.c, client/ai/genetic.c,
+	client/ai/genetic_core.c: Accept a chromosome file from the command
+	line. Updated the default chromosome.
+	
 2014-04-06  Roland Clobus <rclobus@rclobus.nl>
 	* common/gtk/common_gtk.c: Ported the button on the notebook page to
 	GTK+3.
+
+2014-03-11  Rodrigo Espiga Gómez <rodrigoespiga@hotmail.com>
+	* client/ai/genetic.c: Corrected some bugs that made it, under certain
+	circumstances, try to get resources not available in the bank.
 
 2014-03-08  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/resource-view.gob: Replaced deprecated function.
@@ -12,6 +21,11 @@
 	* client/gtk/gui.c, common/gtk/common_gtk.c, common/gtk/common_gtk.h,
 	common/gtk/guimap.c, common/gtk/guimap.h, editor/gtk/editor.c: The
 	GuiMap widget maintains the last known mouse pointer position.
+
+2014-03-07  Rodrigo Espiga Gómez <rodrigoespiga@hotmail.com>
+	* client/ai/genetic.c, client/ai/genetic_core.c: Genetic Player, now
+	it values ports and depreciates strategies that let it ending the turn
+	with too many resources.
 
 2014-02-25  Roland Clobus <rclobus@rclobus.nl>
 	* Makefile.am, client/gtk/chat.c, client/gtk/connect.c,
@@ -40,6 +54,10 @@
 	* client/ai/Makefile.am: Treat genetic_core as a 'header'.
 	* po/POTFILES.in: Added genetic.c, because it contains texts.
 
+2014-02-17  Rodrigo Espiga Gómez <rodrigoespiga@hotmail.com>
+	* client/ai/genetic.c, client/ai/genetic_core.c: Working genetic player
+	with testing chromosome.
+	
 2014-02-09  Roland Clobus <rclobus@rclobus.nl>
 	* client/common/main.c: Do not start the main loop when the
 	computer player cannot connect to the given port.
