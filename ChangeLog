@@ -1,3 +1,7 @@
+2014-04-18  Roland Clobus <rclobus@rclobus.nl>
+	* client/ai/genetic.c: Replaced sleep(1) by ai_wait(). This fixes the
+	Windows build.
+
 2014-04-12  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/gui.c, client/gtk/legend.c: Fixed the sizing of the legend
 	tab page in 4:3 mode, which could hide the tabs.

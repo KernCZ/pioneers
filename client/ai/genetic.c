@@ -1839,7 +1839,7 @@ static void genetic_turn(void)
 	thisStrategyProfit =
 	    bestStrategy(turn, probability, &thisSimulation, thisStrategy,
 			 thisGameState, 0, 1);
-	sleep(1);
+	ai_wait();
 	printf
 	    ("\t\t\t\tSET\tCIT\tDEV\tRSET\tRRSET\tS+SET\tS+CIT\tS+DEV\tS+RSET\tS+RRSET\tC+CIT\tC+DEV\tC+RSET\tC+RRSET\tD+DEV\tD+RSET\tD+RRSET\tR+RSET\tR+RRSET\tRR+RRSET\n");
 	printf("\t\tTime to Action:\t");
@@ -1856,7 +1856,7 @@ static void genetic_turn(void)
 	printf("Updating trading matrixes...\n");
 	updateTradingMatrix(&thisChromosome, thisStrategyProfit,
 			    &thisTradingMatrixes, thisGameState, 1);
-	/*sleep(1); */
+	/* ai_wait(); */
 	if (best_maritime_trade
 	    (thisTradingMatrixes, &amount, &trade_away, &want_resource)
 	    && can_trade_maritime()) {
