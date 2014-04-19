@@ -122,8 +122,7 @@ GdkColor *player_or_spectator_color(gint player_num)
 	return colors_get_player(player_num);
 }
 
-GdkPixbuf *player_create_icon(GtkWidget * widget, gint player_num,
-			      gboolean connected)
+GdkPixbuf *player_create_icon(gint player_num, gboolean connected)
 {
 	GdkPixbuf *pixbuf;
 	gint width;
@@ -132,7 +131,7 @@ GdkPixbuf *player_create_icon(GtkWidget * widget, gint player_num,
 
 	gtk_icon_size_lookup(GTK_ICON_SIZE_MENU, &width, &height);
 	surface =
-	    playericon_create_icon(widget, player_get_style(player_num),
+	    playericon_create_icon(player_get_style(player_num),
 				   player_or_spectator_color(player_num),
 				   player_is_spectator(player_num),
 				   connected, width, height);
@@ -486,8 +485,7 @@ static void player_show_connected_at_iter(gint player_num,
 					  gboolean connected,
 					  GtkTreeIter * iter)
 {
-	GdkPixbuf *pixbuf =
-	    player_create_icon(summary_widget, player_num, connected);
+	GdkPixbuf *pixbuf = player_create_icon(player_num, connected);
 
 	gtk_list_store_set(summary_store, iter,
 			   SUMMARY_COLUMN_PLAYER_ICON, pixbuf, -1);

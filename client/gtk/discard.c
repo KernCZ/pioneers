@@ -180,7 +180,7 @@ void discard_player_must(gint player_num, gint num)
 		g_error("unknown case in discard_player_must");
 	};
 
-	pixbuf = player_create_icon(discard_widget, player_num, TRUE);
+	pixbuf = player_create_icon(player_num, TRUE);
 	gtk_list_store_set(discard_store, &iter,
 			   DISCARD_COLUMN_PLAYER_ICON, pixbuf,
 			   DISCARD_COLUMN_PLAYER_NUM, player_num,

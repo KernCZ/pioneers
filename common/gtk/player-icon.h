@@ -30,7 +30,6 @@ void playericon_init(void);
 guint playericon_human_style_count(void);
 
 /** Create an icon to represent a player.
- *  @param widget  The widget that will display the icon
  *  @param style   The style of the icon
  *  @param color   The base color of the player
  *  @param spectator  TRUE if a spectator icon is requested
@@ -40,8 +39,7 @@ guint playericon_human_style_count(void);
  *  @return The icon for the player. Call cairo_surface_destroy()
  *          when not needed anymore.
  */
-cairo_surface_t *playericon_create_icon(GtkWidget * widget,
-					const gchar * style,
+cairo_surface_t *playericon_create_icon(const gchar * style,
 					GdkColor * color,
 					gboolean spectator,
 					gboolean connected, gint width,

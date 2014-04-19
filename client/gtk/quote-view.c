@@ -433,7 +433,7 @@ void quote_view_reject(QuoteView * qv, gint player_num)
 		gtk_list_store_insert_before(qv->store, &iter, &iter);
 	else
 		gtk_list_store_append(qv->store, &iter);
-	pixbuf = player_create_icon(GTK_WIDGET(qv), player_num, TRUE);
+	pixbuf = player_create_icon(player_num, TRUE);
 	gtk_list_store_set(qv->store, &iter, TRADE_COLUMN_PLAYER, pixbuf,
 			   TRADE_COLUMN_POSSIBLE, cross_pixbuf,
 			   /* Trade: a player has rejected trade */
@@ -581,7 +581,7 @@ void quote_view_add_quote(QuoteView * qv, gint player_num,
 		gtk_list_store_insert_before(qv->store, &iter, &iter);
 	else
 		gtk_list_store_append(qv->store, &iter);
-	pixbuf = player_create_icon(GTK_WIDGET(qv), player_num, TRUE);
+	pixbuf = player_create_icon(player_num, TRUE);
 	gtk_list_store_set(qv->store, &iter, TRADE_COLUMN_PLAYER, pixbuf,
 			   TRADE_COLUMN_POSSIBLE,
 			   qv->check_quote_func(quote) ? qv->

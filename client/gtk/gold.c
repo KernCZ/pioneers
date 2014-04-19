@@ -147,7 +147,7 @@ void gold_choose_player_prepare(gint player_num, gint num)
 		g_error("unknown case in gold_choose_player_prepare");
 	};
 
-	pixbuf = player_create_icon(gold_widget, player_num, TRUE);
+	pixbuf = player_create_icon(player_num, TRUE);
 	gtk_list_store_set(gold_store, &iter,
 			   GOLD_COLUMN_PLAYER_ICON, pixbuf,
 			   GOLD_COLUMN_PLAYER_NUM, player_num,

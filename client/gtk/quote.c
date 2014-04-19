@@ -189,7 +189,7 @@ static void show_quote_params(gint player_num,
 		   we_supply_desc);
 	gtk_label_set_text(GTK_LABEL(desc_lbl), desc);
 
-	icon = player_create_icon(player_icon, player_num, TRUE);
+	icon = player_create_icon(player_num, TRUE);
 	gtk_image_set_from_pixbuf(GTK_IMAGE(player_icon), icon);
 	g_object_unref(icon);
 

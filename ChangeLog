@@ -1,3 +1,12 @@
+2014-04-19  Roland Clobus <rclobus@rclobus.nl>
+	* client/gtk/chat.c, client/gtk/discard.c, client/gtk/frontend.h,
+	client/gtk/gold.c, client/gtk/name.c, client/gtk/player.c,
+	client/gtk/quote-view.c, client/gtk/quote.c, common/gtk/guimap.c,
+	common/gtk/player-icon.c, common/gtk/player-icon.h: Use
+	cairo_recording_surface_create instead of
+	gdk_window_create_similar_surface to avoid crashes in the client due
+	to preparing images for widgets that were not fully shown.
+
 2014-04-18  Roland Clobus <rclobus@rclobus.nl>
 	* client/ai/genetic.c: Replaced sleep(1) by ai_wait(). This fixes the
 	Windows build.

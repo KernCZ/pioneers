@@ -136,12 +136,11 @@ static gboolean draw_map_cb(GtkWidget * area, cairo_t * cr,
 
 	gtk_widget_get_allocation(area, &allocation);
 	if (gmap->surface == NULL) {
+		cairo_rectangle_t extent =
+		    { 0.0, 0.0, allocation.width, allocation.height };
 		gmap->surface =
-		    gdk_window_create_similar_surface(gtk_widget_get_window
-						      (area),
-						      CAIRO_CONTENT_COLOR_ALPHA,
-						      allocation.width,
-						      allocation.height);
+		    cairo_recording_surface_create
+		    (CAIRO_CONTENT_COLOR_ALPHA, &extent);
 		guimap_display(gmap);
 	}
 

@@ -204,8 +204,7 @@ static void replace_colors(GdkPixbuf * pixbuf,
 	}
 }
 
-cairo_surface_t *playericon_create_icon(GtkWidget * widget,
-					const gchar * style,
+cairo_surface_t *playericon_create_icon(const gchar * style,
 					GdkColor * color,
 					gboolean spectator,
 					gboolean connected, gint width,
@@ -223,11 +222,10 @@ cairo_surface_t *playericon_create_icon(GtkWidget * widget,
 		player_type = PLAYER_UNKNOWN;
 	}
 
+	cairo_rectangle_t extent = { 0.0, 0.0, width, height };
 	surface =
-	    gdk_window_create_similar_surface(gtk_widget_get_window
-					      (widget),
-					      CAIRO_CONTENT_COLOR_ALPHA,
-					      width, height);
+	    cairo_recording_surface_create(CAIRO_CONTENT_COLOR_ALPHA,
+					   &extent);
 	cr = cairo_create(surface);
 	switch (player_type) {
 	case PLAYER_COMPUTER:{

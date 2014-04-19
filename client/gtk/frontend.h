@@ -265,12 +265,10 @@ void player_init(void);
 GdkColor *player_or_spectator_color(gint player_num);
 /** The colour of the player */
 GdkColor *player_color(gint player_num);
-/** Create an icon of the player, suitable for display on widget,
- *  for player_num, who is connected.
+/** Create an icon of the player, for player_num, who is connected.
  *  You should unref the pixbuf when it is no longer needed
  */
-GdkPixbuf *player_create_icon(GtkWidget * widget, gint player_num,
-			      gboolean connected);
+GdkPixbuf *player_create_icon(gint player_num, gboolean connected);
 void player_show_current(gint player_num);
 void set_num_players(gint num);
 

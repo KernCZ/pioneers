@@ -296,7 +296,7 @@ void update_icon(DialogData * data)
 		return;
 	}
 	gtk_widget_get_allocation(data->image, &allocation);
-	surface = playericon_create_icon(data->image, data->current_style,
+	surface = playericon_create_icon(data->current_style,
 					 player_or_spectator_color
 					 (my_player_num()), FALSE, TRUE,
 					 allocation.width,

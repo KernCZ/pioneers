@@ -153,7 +153,7 @@ void chat_player_name(gint player_num, const gchar * name)
 	};
 
 	/* connected icon */
-	pixbuf = player_create_icon(chat_entry, player_num, TRUE);
+	pixbuf = player_create_icon(player_num, TRUE);
 	gtk_list_store_set(chat_completion_model, &iter,
 			   CHAT_PLAYER_NUM, player_num,
 			   CHAT_PLAYER_ICON, pixbuf,
@@ -175,7 +175,7 @@ void chat_player_style(gint player_num)
 	g_return_if_fail(found == FIND_MATCH_EXACT);
 
 	/* connected icon */
-	pixbuf = player_create_icon(chat_entry, player_num, TRUE);
+	pixbuf = player_create_icon(player_num, TRUE);
 	gtk_list_store_set(chat_completion_model, &iter,
 			   CHAT_PLAYER_ICON, pixbuf, -1);
 	g_object_unref(pixbuf);
@@ -191,8 +191,7 @@ void chat_player_quit(gint player_num)
 				 &iter, CHAT_PLAYER_NUM, player_num);
 	if (found == FIND_MATCH_EXACT) {
 		/* not connected icon */
-		GdkPixbuf *pixbuf =
-		    player_create_icon(chat_entry, player_num, FALSE);
+		GdkPixbuf *pixbuf = player_create_icon(player_num, FALSE);
 
 		gtk_list_store_set(chat_completion_model,
 				   &iter, CHAT_PLAYER_ICON, pixbuf, -1);
