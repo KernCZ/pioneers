@@ -6,6 +6,7 @@
 	cairo_recording_surface_create instead of
 	gdk_window_create_similar_surface to avoid crashes in the client due
 	to preparing images for widgets that were not fully shown.
+	* server/pregame.c: Fixed a possible DoS route.
 
 2014-04-18  Roland Clobus <rclobus@rclobus.nl>
 	* client/ai/genetic.c: Replaced sleep(1) by ai_wait(). This fixes the

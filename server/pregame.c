@@ -940,8 +940,19 @@ gboolean mode_pre_game(Player * player, gint event)
 					 * dropped when the cache is sent */
 					sm_goto(sm, (StateFunc)
 						mode_spectator);
-				else
-					sm_pop(sm);
+				else {
+					if (sm_stack_inspect(sm, 1) !=
+					    NULL) {
+						sm_pop(sm);
+					} else {
+						/* During the previous
+						 * connection attempt, the
+						 * connection was lost too
+						 * soon */
+						sm_goto(sm, (StateFunc)
+							mode_idle);
+					}
+				}
 			} else {
 				if (!player_is_spectator
 				    (game, player->num))
