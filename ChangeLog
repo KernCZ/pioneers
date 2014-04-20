@@ -1,3 +1,6 @@
+2014-04-20  Roland Clobus <rclobus@rclobus.nl>
+	* MinGW/README.txt: Added instructions for GNU indent.
+
 2014-04-19  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/chat.c, client/gtk/discard.c, client/gtk/frontend.h,
 	client/gtk/gold.c, client/gtk/name.c, client/gtk/player.c,

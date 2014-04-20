@@ -14,6 +14,12 @@ Prepare the build environment
   - From the folder librsvg: librsvg_2.32.1-1_win32.zip and
     librsvg-dev_2.32.1-1_win32.zip
   - Extract all to C:\MinGW and overwrite existing files
+* Download GNU Indent from ftp://ftp.gnu.org/gnu/indent/
+  - In src/Makefile.in add 'wildexp.${OBJEXT)' to the variable
+    am_indent_OBJECTS (line 62)
+  - ./configure --prefix=/MinGW
+  - make
+  - make install
 * Download the GOB2 tarball from http://www.jirka.org/gob.html
   - ./configure --prefix=/mingw
   - make
