@@ -1,3 +1,4 @@
+#!/usr/bin/equivs-build
 # Build the package with equivs-build <this file>
 # Install with dpkg -i pioneers-builddep*.deb
 # Install the dependencies with aptitude install pioneers-builddep
