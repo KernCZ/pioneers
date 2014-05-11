@@ -1,3 +1,7 @@
+2014-05-11  Roland Clobus <rclobus@rclobus.nl>
+	* configure.ac: Removed override for scrollkeeper. The successor,
+	rarian, behaves correctly. 'automake -Wall' is now empty.
+
 2014-04-20  Roland Clobus <rclobus@rclobus.nl>
 	* MinGW/README.txt: Added instructions for GNU indent.
 
