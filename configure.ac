@@ -3,7 +3,7 @@
 #
 # Copyright (C) 1999 Dave Cole
 # Copyright (C) 2003-2007 Bas Wijnen <shevek@fmf.nl>
-# Copyright (C) 2004-2013 Roland Clobus <rclobus@rclobus.nl>
+# Copyright (C) 2004-2014 Roland Clobus <rclobus@rclobus.nl>
 # 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -66,13 +66,6 @@ esac
 
 if test $USE_MAINTAINER_MODE = yes; then
 	GOB2_CHECK([[2.0.0]])
-	pioneers_warnings=yes;
-	pioneers_debug=yes;
-	pioneers_deprecationChecks=yes;
-else
-	pioneers_warnings=no;
-	pioneers_debug=no;
-	pioneers_deprecationChecks=no;
 fi
 
 # Try to find a suitable renderer for the svg images
@@ -110,7 +103,8 @@ AC_ARG_ENABLE([warnings], AS_HELP_STRING([--enable-warnings],
   yes)  pioneers_warnings=yes ;;
   "")   pioneers_warnings=yes ;;
   *)    pioneers_warnings=no  ;;
-esac])
+esac],
+	[pioneers_warnings=$USE_MAINTAINER_MODE])
 
 AC_ARG_ENABLE([debug], AS_HELP_STRING([--enable-debug],
 	[Enable debug information.]),
@@ -118,7 +112,8 @@ AC_ARG_ENABLE([debug], AS_HELP_STRING([--enable-debug],
   yes)  pioneers_debug=yes ;;
   "")   pioneers_debug=yes ;;
   *)    pioneers_debug=no  ;;
-esac])
+esac],
+	[pioneers_debug=$USE_MAINTAINER_MODE])
 
 AC_ARG_ENABLE([deprecation-checks],
 	AS_HELP_STRING([--enable-deprecation-checks],
@@ -127,10 +122,60 @@ AC_ARG_ENABLE([deprecation-checks],
   yes)  pioneers_deprecationChecks=yes ;;
   "")   pioneers_deprecationChecks=yes ;;
   *)    pioneers_deprecationChecks=no  ;;
-esac])
+esac],
+	[pioneers_deprecationChecks=$USE_MAINTAINER_MODE])
 
-## The warnings are in the same order as in 'man gcc'
-if test "x$GCC" = xyes; then
+AC_ARG_ENABLE([help],
+	AS_HELP_STRING([--enable-help],
+		[Enable help in the programs that support it.]),
+[case "${enableval}" in
+  yes)  enable_help=yes ;;
+  "")   enable_help=yes ;;
+  *)    enable_help=no  ;;
+esac],
+	[enable_help=yes])
+
+AC_ARG_ENABLE([hardening],
+	AS_HELP_STRING([--enable-hardening],
+		[Enable hardening compiler options.]),
+[case "${enableval}" in
+  yes)  enable_hardening=yes ;;
+  "")   enable_hardening=yes ;;
+  *)    enable_hardening=no  ;;
+esac],
+	[enable_hardening=$USE_MAINTAINER_MODE])
+
+AC_ARG_WITH([gtk],
+	AS_HELP_STRING([--with-gtk],
+		[Use GTK+ for the graphical programs.]),
+[case "${withval}" in
+  yes)  with_gtk=yes ;;
+  "")   with_gtk=yes ;;
+  *)    with_gtk=no  ;;
+esac],
+	[with_gtk=yes])
+
+AC_ARG_WITH([avahi],
+	AS_HELP_STRING([--with-avahi],
+		[Use AVAHI for discovering games.]),
+[case "${withval}" in
+  yes)  with_avahi=yes ;;
+  "")   with_avahi=yes ;;
+  *)    with_avahi=no  ;;
+esac],
+	[with_avahi=yes])
+
+AC_ARG_WITH([notify],
+	AS_HELP_STRING([--with-notify],
+		[Use LIBNOTIFY to notify the player during the game.]),
+[case "${withval}" in
+  yes)  with_notify=yes ;;
+  "")   with_notify=yes ;;
+  *)    with_notify=no  ;;
+esac],
+	[with_notify=yes])
+
+if test "x$GCC" = xyes && test $enable_hardening = yes; then
 	if test "$pioneers_is_windows_port" = "no"; then
 		# Flags from Debian hardening (dpkg-buildflags --get CFLAGS)
 		AC_SUBST(AM_CFLAGS, ["$AM_CFLAGS -g -O2 -fstack-protector --param=ssp-buffer-size=4 -Wformat -Wformat-security -Werror=format-security"])
@@ -140,8 +185,13 @@ if test "x$GCC" = xyes; then
 	 	# Flags from Debian hardening (dpkg-buildflags --get LDFLAGS)
 		AC_SUBST(AM_LDFLAGS, ["$AM_LDFLAGS -Wl,-z,relro"])
 		AC_SUBST(AM_LDFLAGS, ["$AM_LDFLAGS -Wl,-z,now"])
+	else
+		enable_hardening="no, disabled for MS Windows"
 	fi
+fi
 
+## The warnings are in the same order as in 'man gcc'
+if test "x$GCC" = xyes; then
 	# Only link the directly needed libraries	
 	AC_SUBST(AM_CFLAGS, ["$AM_CFLAGS -Wl,--as-needed"])
 
@@ -213,7 +263,7 @@ fi
 AC_SUBST(GLIB_DEPRECATION)
 AC_SUBST(GTK_DEPRECATION)
 
-if test "$with_help" = no; then
+if test "$enable_help" = no; then
 	pioneers_help="no, disabled in configure"
 	have_scrollkeeper=no
 else
@@ -241,24 +291,28 @@ PKG_CHECK_MODULES(GIO2, gio-2.0 >= $GIO_REQUIRED_VERSION)
 #
 # Check for libnotify
 #
-PKG_CHECK_MODULES(LIBNOTIFY, libnotify >= $LIBNOTIFY_REQUIRED_VERSION,
-	[have_libnotify=yes],
-	[have_libnotify="no, libnotify not installed or too old"])
-if test "$have_libnotify" = "yes"; then
-	AC_DEFINE(HAVE_NOTIFY, 1,
-		[Defined if libnotify is present])
+if test $with_notify = no; then
+	have_libnotify="no, disabled in configure"
+else
+	PKG_CHECK_MODULES(LIBNOTIFY, libnotify >= $LIBNOTIFY_REQUIRED_VERSION,
+		[have_libnotify=yes],
+		[have_libnotify="no, libnotify not installed or too old"])
+	if test "$have_libnotify" = "yes"; then
+		AC_DEFINE(HAVE_NOTIFY, 1,
+			[Defined if libnotify is present])
+	fi
 fi
 
-# Gtk+ support
+# GTK+ support
 #
-if test x$with_gtk = xno; then
+if test $with_gtk = no; then
 	have_gtk="no, disabled in configure"
 else
 	PKG_CHECK_MODULES(GTK, gtk+-3.0 >= $GTK_REQUIRED_VERSION,
 		have_gtk=yes, 
 		[PKG_CHECK_EXISTS(gtk+-3.0,
-			[have_gtk="no, Gtk+ version too old"],
-			[have_gtk="no, Gtk+ not installed"])
+			[have_gtk="no, GTK+ version too old"],
+			[have_gtk="no, GTK+ not installed"])
 		AC_MSG_RESULT($have_gtk)
 	])
 fi
@@ -266,10 +320,10 @@ if test "$have_gtk" = "yes"; then
 	PKG_CHECK_MODULES(GTK_OPTIMAL_VERSION, gtk+-3.0 >= $GTK_OPTIMAL_VERSION,
 		[],
 		AC_DEFINE(HAVE_OLD_GTK, [1],
-			[Defined if an older version of GTK is available]))
+			[Defined if an older version of GTK+ is available]))
 fi
 
-# Gtk ScrollKeeper -> Test     Build
+# GTK ScrollKeeper -> Test     Build
 #                     libgnome Help
 #  N       X           N        N
 #  Y       N           N        N
@@ -302,7 +356,7 @@ AM_CONDITIONAL(HAVE_GNOME, [test "$have_graphical" = "yes"])
 AM_CONDITIONAL(HAVE_SCROLLKEEPER, [test "$have_scrollkeeper" = "yes"])
 
 # Avahi support
-if test x$with_avahi = xno; then
+if test $with_avahi = no; then
 	have_avahi="no, disabled in configure"
 else
 	PKG_CHECK_MODULES(AVAHI_CLIENT, avahi-client,
@@ -475,4 +529,5 @@ $PACKAGE v$VERSION configuration:
         Use compiler warnings     $pioneers_warnings
         Add debug information     $pioneers_debug
         Enable deprecation checks $pioneers_deprecationChecks
+        Hardening compiler flags  $enable_hardening
 ])
