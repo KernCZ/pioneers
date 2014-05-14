@@ -23,6 +23,8 @@
 
 #include <glib.h>
 #include "callback.h"
+
+/** Filename for the chromosome of the genetic player */
 extern char *chromosomeFile;
 
 void ai_panic(const char *message);
@@ -32,4 +34,8 @@ void genetic_init(void);
 void greedy_init(void);
 void lobbybot_init(void);
 
+/** Chat when a player must discard resources */
+void ai_chat_discard(gint player_num, gint discard_num);
+/** Chat when the computer player moved the robber */
+void ai_chat_self_moved_robber(void);
 #endif

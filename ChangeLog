@@ -1,3 +1,7 @@
+2014-05-14  Roland Clobus <rclobus@rclobus.nl>
+	* client/ai/ai.c, client/ai/ai.h, client/ai/genetic.c,
+	client/ai/greedy.c: Moved the duplicated chat code to ai.c.
+
 2014-05-11  Roland Clobus <rclobus@rclobus.nl>
 	* configure.ac: Removed override for scrollkeeper. The successor,
 	rarian, behaves correctly. 'automake -Wall' is now empty.
