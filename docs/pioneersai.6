@@ -1,4 +1,4 @@
-.TH pioneersai 6 "January 8, 2012" "pioneers"
+.TH pioneersai 6 "May 20, 2014" "pioneers"
 .SH NAME
 pioneersai \- Computer player for Pioneers
 
@@ -42,8 +42,13 @@ Specify \fIname\fP of the computer player.
 .TP
 .BI "\-a,\-\-algorithm" " algorithm"
 Specify \fIalgorithm\fP of the computer player.
-The only algorithm for an active partipant in a game is "greedy".
+The algorithms for active partipants in a game are "greedy" and "genetic".
+The default algorithm is "greedy".
 Other allowed values are: lobbybot, logbot.
+.TP
+.BI "\-\-chromosome\-file" " filename"
+The filename for the file that contains the chromosome for the "genetic"
+algorithm. When not specified, the default chromosome is used.
 .TP
 .BI "\-t,\-\-time" " milliseconds"
 Time to wait between turns, in \fImilliseconds\fP. Default is 1000.

@@ -1495,6 +1495,10 @@ The following player types are available:</para>
               <entry>The default. This computer player will play against you.</entry>
             </row>
             <row>
+              <entry>genetic</entry>
+              <entry>This computer player will play against you. It is a stronger opponent than 'greedy'.</entry>
+            </row>
+            <row>
               <entry>lobbybot</entry>
               <entry>This computer player is present in the lobby to greet you and provide some help. It will not play.</entry>
             </row>

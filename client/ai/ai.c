@@ -86,6 +86,7 @@ UIDriver Glib_Driver;
 
 static GOptionEntry commandline_entries[] = {
 	{"chromosome-file", '\0', 0, G_OPTION_ARG_STRING, &chromosomeFile,
+	 /* Commandline pioneersai: chromosome-file */
 	 N_("Chromosome File"), NULL},
 	{"server", 's', 0, G_OPTION_ARG_STRING, &server,
 	 /* Commandline pioneersai: server */

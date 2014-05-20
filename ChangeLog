@@ -1,3 +1,8 @@
+2014-05-20  Roland Clobus <rclobus@rclobus.nl>
+	* client/ai/ai.c: Added translator comment.
+	* client/help/C/pioneers.xml, docs/pioneersai.6: Documented the new
+	algorithm.
+
 2014-05-14  Roland Clobus <rclobus@rclobus.nl>
 	* client/ai/ai.c, client/ai/ai.h, client/ai/genetic.c,
 	client/ai/greedy.c: Moved the duplicated chat code to ai.c.
