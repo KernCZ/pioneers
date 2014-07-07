@@ -2,7 +2,7 @@
 # What to do for a release of a new version in Debian:
 
 #- Read about the changes in the policy
-sensible-browser file:///usr/share/doc/debian-policy/upgrading-checklist-1.html
+sensible-browser file:///usr/share/doc/debian-policy/upgrading-checklist.html/ch2.html
 
 #- Get released tarball
 cd "`dirname "$0"`"/..
@@ -60,5 +60,5 @@ piuparts *deb
 #- upload
 #- update subversion debian directory
 #- svn copy https://svn.code.sf.net/p/pio/code/trunk/pioneers/debian \
-#  https://svn.code.sf.net/p/pio/code/tags/debian-release-15.1-1 \
+#  https://svn.code.sf.net/p/pio/code/tags/debian-release-15.2-1 \
 #  -m "tag debian release"
