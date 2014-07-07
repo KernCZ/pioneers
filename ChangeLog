@@ -1,4 +1,7 @@
 2014-07-07  Roland Clobus <rclobus@rclobus.nl>
+	* Released 15.2.
+
+2014-07-07  Roland Clobus <rclobus@rclobus.nl>
 	* NEWS, client/ai/lobbybot.c: Prepare for the release of 15.2.
 
 2014-05-20  Roland Clobus <rclobus@rclobus.nl>
