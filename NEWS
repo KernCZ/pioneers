@@ -1,3 +1,8 @@
+Subversion release 15.2
+
+* Ported from GTK+2 to GTK+3
+* A new computer player, by Rodrigo Espiga Gómez
+
 Subversion release 15.1
 * Full IPv6 support
 * More graphics are in vector format instead of bitmaps
