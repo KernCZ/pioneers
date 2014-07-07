@@ -1,3 +1,8 @@
+2014-07-07  Roland Clobus <rclobus@rclobus.nl>
+	* all: Line number update for 15.2
+	* en_GB.po: Updated to 15.2
+	* nl.po: Updated to 15.2, fixed the desktop files
+
 2014-05-05  Gerald <gera2ld@163.com>
 	* zh_CN.po: New translation. Simplified Chinese.
 
