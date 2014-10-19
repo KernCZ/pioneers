@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Roland Clobus <rclobus@rclobus.nl>
 Uploaders: Bas Wijnen <wijnen@debian.org>, Steve Langasek <vorlon@debian.org>
 Build-Depends: debhelper (>= 9), libgnome2-dev, scrollkeeper, gnome-common, librsvg2-bin, netpbm, libgtk-3-dev, automake, autoconf, po-debconf, intltool, libtool, libavahi-glib-dev, libavahi-client-dev, gob2, libnotify-dev, xfonts-scalable
-Standards-Version: 3.9.4
+Standards-Version: 3.9.6
 Homepage: http://pio.sourceforge.net/
 Vcs-Svn: svn://svn.code.sf.net/p/pio/code/trunk/pioneers
 Vcs-Browser: https://sourceforge.net/p/pio/code/HEAD/tree/trunk/pioneers/

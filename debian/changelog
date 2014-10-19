@@ -1,4 +1,12 @@
-pioneers (15.2-1) unstable; urgency=low
+pioneers (15.2-1) unstable; urgency=medium
+
+  * New upstream release.
+  * Upgrade dependencies to Gtk 3.
+  * Upgrade standards version to 3.9.6.  (No changes needed.)
+
+ -- Bas Wijnen <wijnen@debian.org>  Mon, 13 Oct 2014 11:15:59 -0400
+
+pioneers (15.1-1) unstable; urgency=low
 
   * New upstream release. (closes: #551341)
   * Removed translation patches for 14.1-2.
@@ -18,9 +26,8 @@ pioneers (15.2-1) unstable; urgency=low
   * Added Depends on initscripts (>= 2.88dsf-13.3) to ensure /run is usable.
   * Updated standards version to 3.9.4, no changes required.
   * Changed compat level to 9, so hardening is enabled without additional code.
-  * Upstream upgraded from GTK+2 to GTK+3.
 
- -- Roland Clobus <rclobus@rclobus.nl>  Tue, 25 Feb 2014 12:00:00 +0200
+ -- Roland Clobus <rclobus@rclobus.nl>  Sun, 08 Dec 2013 17:08:02 +0100
 
 pioneers (14.1-2) unstable; urgency=low
 
