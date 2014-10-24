@@ -1,3 +1,10 @@
+2014-10-24  Roland Clobus <rclobus@rclobus.nl>
+	* docs/Relicense question about icons from the Gorilla theme.eml:
+	Email about the relicensing of derived work from the Gorilla theme.
+	* client/gtk/data/style-ai.svg, server/gtk/pioneers-server.svg,
+	editor/gtk/pioneers-editor.svg, client/gtk/data/pioneers.svg:
+	Relicensed as CC-BY-SA 4.0
+
 2014-07-07  Roland Clobus <rclobus@rclobus.nl>
 	* configure.ac: Work version is 15.3.
 
