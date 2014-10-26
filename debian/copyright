@@ -104,6 +104,9 @@ License: CC-BY-SA-4.0
  Commons, 171 Second Street, Suite 300, San Francisco, California 94105, USA.
 
 Files: client/gtk/data/themes/ccFlickr/*
-Comment:
- See client/gtk/data/themes/ccFlickr/ATTRIB for the details.
+Copyright: Aaron Williamson <aaron@copiesofcopies.org>
 License: CC-BY-SA
+ The images in this theme are licensed under the terms of Creative Commons
+ Attribution-Share Alike License.
+ .
+ See client/gtk/data/themes/ccFlickr/ATTRIB for the details.

@@ -1,11 +1,11 @@
-pioneers (15.3-1~local1) UNRELEASED; urgency=medium
+pioneers (15.3-1) unstable; urgency=medium
 
-  * Waiting for an upstream release.
+  * New upstream release.
   * Updated copyright which clarifies the license for the images.
     (closes: #765319)
   * Applied 'wrap-and-sort' to all debian/* files.
 
- -- Roland Clobus <rclobus@rclobus.nl>  Sat, 18 Oct 2014 15:47:53 +0200
+ -- Roland Clobus <rclobus@rclobus.nl>  Sun, 26 Oct 2014 15:30:00 +0100
 
 pioneers (15.2-1) unstable; urgency=medium
 

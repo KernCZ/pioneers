@@ -8,10 +8,10 @@
 Section: misc
 Priority: optional
 # Homepage: <enter URL here; no default>
-Standards-Version: 3.9.4
+Standards-Version: 3.9.6
 
 Package: pioneers-builddep
-Version: 15.1-1
+Version: 15.3-1
 Maintainer: Roland Clobus <rclobus@rclobus.nl>
 # Suggests: <comma-separated list of packages>
 # Provides: <comma-separated list of packages>
