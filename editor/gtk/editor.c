@@ -1201,8 +1201,10 @@ static GtkWidget *build_port_menu(void)
 				 G_CALLBACK(select_port_resource_cb),
 				 GINT_TO_POINTER(i));
 
+		if (i >= NO_RESOURCE)
+			continue;
 		pixbuf = theme->port_tiles[i];
-		if (i >= NO_RESOURCE || pixbuf == NULL)
+		if (pixbuf == NULL)
 			continue;
 
 		image = gtk_image_new_from_pixbuf(pixbuf);

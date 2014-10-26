@@ -1,6 +1,11 @@
+2014-10-26  Roland Clobus <rclobus@rclobus.nl>
+	* editor/gtk/editor.c: Fixed a read beyond the array size.
+
 2014-10-24  Roland Clobus <rclobus@rclobus.nl>
 	* docs/Relicense question about icons from the Gorilla theme.eml:
 	Email about the relicensing of derived work from the Gorilla theme.
+        With many thanks to Jakub Steiner for allowing his work to be
+	relicensed.
 	* client/gtk/data/style-ai.svg, server/gtk/pioneers-server.svg,
 	editor/gtk/pioneers-editor.svg, client/gtk/data/pioneers.svg:
 	Relicensed as CC-BY-SA 4.0
