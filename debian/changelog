@@ -1,6 +1,8 @@
 pioneers (15.3-1~local1) UNRELEASED; urgency=medium
 
   * Waiting for an upstream release.
+  * Updated copyright which clarifies the license for the images
+    (closes: #765319)
 
  -- Roland Clobus <rclobus@rclobus.nl>  Sat, 18 Oct 2014 15:47:53 +0200
 
