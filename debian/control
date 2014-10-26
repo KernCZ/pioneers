@@ -3,7 +3,23 @@ Section: games
 Priority: optional
 Maintainer: Roland Clobus <rclobus@rclobus.nl>
 Uploaders: Bas Wijnen <wijnen@debian.org>, Steve Langasek <vorlon@debian.org>
-Build-Depends: debhelper (>= 9), libgnome2-dev, scrollkeeper, gnome-common, librsvg2-bin, netpbm, libgtk-3-dev, automake, autoconf, po-debconf, intltool, libtool, libavahi-glib-dev, libavahi-client-dev, gob2, libnotify-dev, xfonts-scalable
+Build-Depends: autoconf,
+               automake,
+               debhelper (>= 9),
+               gnome-common,
+               gob2,
+               intltool,
+               libavahi-client-dev,
+               libavahi-glib-dev,
+               libgnome2-dev,
+               libgtk-3-dev,
+               libnotify-dev,
+               librsvg2-bin,
+               libtool,
+               netpbm,
+               po-debconf,
+               scrollkeeper,
+               xfonts-scalable
 Standards-Version: 3.9.6
 Homepage: http://pio.sourceforge.net/
 Vcs-Svn: svn://svn.code.sf.net/p/pio/code/trunk/pioneers
@@ -11,8 +27,12 @@ Vcs-Browser: https://sourceforge.net/p/pio/code/HEAD/tree/trunk/pioneers/
 
 Package: pioneers
 Architecture: any
-Depends: pioneers-console (=${binary:Version}), pioneers-data (=${source:Version}), librsvg2-common, ${shlibs:Depends}, ${misc:Depends}
-Recommends: yelp, beep
+Depends: librsvg2-common,
+         pioneers-console (=${binary:Version}),
+         pioneers-data (=${source:Version}),
+         ${misc:Depends},
+         ${shlibs:Depends}
+Recommends: beep, yelp
 Suggests: pioneers-metaserver
 Description: Settlers of Catan board game
  Pioneers is a computer implementation of the Settlers of Catan board game.
@@ -23,7 +43,9 @@ Description: Settlers of Catan board game
 
 Package: pioneers-console
 Architecture: any
-Depends: pioneers-console-data (=${source:Version}), ${shlibs:Depends}, ${misc:Depends}
+Depends: pioneers-console-data (=${source:Version}),
+         ${misc:Depends},
+         ${shlibs:Depends}
 Suggests: pioneers
 Description: Settlers of Catan board game - console parts
  Pioneers is a computer implementation of the Settlers of Catan board game.
@@ -34,7 +56,7 @@ Description: Settlers of Catan board game - console parts
 
 Package: pioneers-meta-server
 Architecture: all
-Depends: ${misc:Depends}, pioneers-metaserver (>= 14.2-1~)
+Depends: pioneers-metaserver (>= 14.2-1~), ${misc:Depends}
 Description: Transitional dummy package to pioneers-metaserver
  Pioneers is a computer implementation of the Settlers of Catan board game.
  It can be played over the internet.
@@ -46,7 +68,10 @@ Package: pioneers-metaserver
 Replaces: pioneers-meta-server (<< 14.2-1~)
 Breaks: pioneers-meta-server (<< 14.2-1~)
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, lsb-base, initscripts (>= 2.88dsf-13.3)
+Depends: initscripts (>= 2.88dsf-13.3),
+         lsb-base,
+         ${misc:Depends},
+         ${shlibs:Depends}
 Description: Settlers of Catan board game - metaserver
  Pioneers is a computer implementation of the Settlers of Catan board game.
  It can be played over the internet.
