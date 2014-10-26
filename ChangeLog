@@ -1,4 +1,10 @@
 2014-10-26  Roland Clobus <rclobus@rclobus.nl>
+	* configure.ac: Work version is 15.4.
+
+2014-10-26  Roland Clobus <rclobus@rclobus.nl>
+	* Released 15.3.
+
+2014-10-26  Roland Clobus <rclobus@rclobus.nl>
 	* editor/gtk/editor.c: Fixed a read beyond the array size.
 	* NEWS, client/ai/lobbybot.c: Prepare for the release of 15.2.
 
