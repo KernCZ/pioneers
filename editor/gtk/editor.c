@@ -440,7 +440,7 @@ static void build_select_bars(GtkWidget * table)
 					"exclude it from being used during the setup "
 					"phase"));
 
-	toolbar_button_data = g_malloc(sizeof(toolbar_button_data));
+	toolbar_button_data = g_malloc(sizeof(*toolbar_button_data));
 	toolbar_button_data->type = NO_TOOLBAR_BUTTON_TYPE;
 
 	g_signal_connect(G_OBJECT(button), "clicked",
@@ -472,7 +472,7 @@ static void build_select_bars(GtkWidget * table)
 						 [i]));
 
 		toolbar_button_data =
-		    g_malloc(sizeof(toolbar_button_data));
+		    g_malloc(sizeof(*toolbar_button_data));
 		toolbar_button_data->type = TERRAIN_TOOLBAR_BUTTON_TYPE;
 		toolbar_button_data->element.terrain = i;
 
@@ -511,7 +511,7 @@ static void build_select_bars(GtkWidget * table)
 					       _(CHIT_TOOLBAR_TOOLTIP[i]));
 
 		toolbar_button_data =
-		    g_malloc(sizeof(toolbar_button_data));
+		    g_malloc(sizeof(*toolbar_button_data));
 		toolbar_button_data->type = CHIT_TOOLBAR_BUTTON_TYPE;
 		toolbar_button_data->element.chit = i;
 
@@ -548,7 +548,7 @@ static void build_select_bars(GtkWidget * table)
 					       _(PORT_TOOLBAR_TOOLTIP[i]));
 
 		toolbar_button_data =
-		    g_malloc(sizeof(toolbar_button_data));
+		    g_malloc(sizeof(*toolbar_button_data));
 		toolbar_button_data->type = PORT_TOOLBAR_BUTTON_TYPE;
 		toolbar_button_data->element.port = i;
 
