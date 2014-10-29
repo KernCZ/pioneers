@@ -2802,6 +2802,7 @@ static void genetic_init_game(void)
 		if (fgets(line, 80, chromFilePointer) == NULL) {
 			printf
 			    ("Some values in the chromosome are missing! Using default then...\n");
+			fclose(chromFilePointer);
 			return;
 		}
 		if (sscanf
@@ -2816,20 +2817,23 @@ static void genetic_init_game(void)
 		     &tempChromosome.resourcesValueMatrix[i][7]) != 8) {
 			printf
 			    ("Some values in the chromosome are missing! Using default then...\n");
+			fclose(chromFilePointer);
 			return;
 		}
 		printf("%s", line);
 	}
 	if (fgets(line, 80, chromFilePointer) == NULL) {
-		return;
 		printf
 		    ("Some values in the chromosome are missing! Using default then...\n");
+		fclose(chromFilePointer);
+		return;
 	}
 	if (sscanf
 	    (line, "%f %f %f", &(tempChromosome.depreciation_constant),
 	     &(tempChromosome.turn), &(tempChromosome.probability)) != 3) {
 		printf
 		    ("Some values in the chromosome are missing! Using default then...\n");
+		fclose(chromFilePointer);
 		return;
 	}
 	printf("%s", line);

@@ -1,6 +1,10 @@
 2014-10-26  Roland Clobus <rclobus@rclobus.nl>
-	* editor/gtk/editor.c: Fix for Coverity CID 74390: Use the
+	* editor/gtk/editor.c: Fix for Coverity CID 74389: Use the
 	right size for the ToolbarButtonData element.
+	* client/ai/genetic.c: Fix for Coverity CID 74390: Close the
+	chromosome file when an error occurs.
+	* client/ai/genetic.c: Fix for Coverity CID 74383: Report the
+	warning before returning from the function.
 
 2014-10-26  Roland Clobus <rclobus@rclobus.nl>
 	* configure.ac: Work version is 15.4.
