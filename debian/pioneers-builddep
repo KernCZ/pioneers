@@ -1,3 +1,4 @@
+#!/usr/bin/equivs-build
 # Build the package with equivs-build <this file>
 # Install with dpkg -i pioneers-builddep*.deb
 # Install the dependencies with aptitude install pioneers-builddep
@@ -7,26 +8,72 @@
 # Source: <source package name; defaults to package name>
 Section: misc
 Priority: optional
-# Homepage: <enter URL here; no default>
+Homepage: http://pio.sourceforge.net/
+Vcs-Svn: svn://svn.code.sf.net/p/pio/code/trunk/pioneers
+Vcs-Browser: https://sourceforge.net/p/pio/code/HEAD/tree/trunk/pioneers/
 Standards-Version: 3.9.6
 
 Package: pioneers-builddep
-Version: 15.3-1
+Version: 15.4-1~local1
 Maintainer: Roland Clobus <rclobus@rclobus.nl>
-# Suggests: <comma-separated list of packages>
 # Provides: <comma-separated list of packages>
 # Replaces: <comma-separated list of packages>
-# Architecture: all
+Architecture: all
 # Copyright: <copyright file; defaults to GPL2>
 # Changelog: <changelog file; defaults to a generic changelog>
 # Readme: <README.Debian file; defaults to a generic one>
 # Extra-Files: <comma-separated list of additional files for the doc directory>
 # Files: <pair of space-separated paths; First is file to include, second is destination>
 #  <more pairs, if there's more than one file to include. Notice the starting space>
-Description: Build dependency for Pioneers
+Description: Build dependencies for Pioneers
  Install this package if you want to build Pioneers
-
-Pre-Depends: equivs
-Depends: debhelper (>= 8.1.0~), libgnome2-dev, scrollkeeper, gnome-common, librsvg2-bin, netpbm, libgtk2.0-dev, automake, autoconf, po-debconf, intltool, libtool, libavahi-glib-dev, libavahi-client-dev, gob2, libnotify-dev, xfonts-scalable
-Recommends: libc6-dbg, libglib2.0-0-dbg, libgnomeui-0-dbg, libgtk2.0-0-dbg, libpango1.0-0-dbg, doxygen, hardening-wrapper, piuparts, valgrind, debian-policy, doc-debian, harden-doc, imagemagick-doc, libcairo2-doc, libgdk-pixbuf2.0-doc, libgnome2-doc, libnotify-doc, exuberant-ctags, inkscape, imagemagick, gawk, netcat-openbsd, nmap, subversion
-Suggests: libgtk-3-dev, libgtk-3-doc
+ .
+  Depends:    The minimal set of dependencies
+              Suitable for a non-GUI build environment
+              Sufficient to build from a fresh checkout
+  Recommends: Additional dependencies, to build the GUI as well
+  Suggests:   A full development environment, suitable for building releases
+Depends: autoconf,
+         automake,
+         gob2,
+         intltool,
+         libavahi-client-dev,
+         libavahi-glib-dev,
+         libtool,
+         subversion
+Recommends: libgnome2-dev,
+            libgtk-3-dev,
+            libnotify-dev,
+            librsvg2-bin,
+            netpbm,
+            scrollkeeper,
+            xfonts-scalable
+Suggests: debhelper (>= 9),
+          debian-policy,
+          doc-debian,
+          doxygen,
+          equivs,
+          exuberant-ctags,
+          gawk,
+          gnome-common,
+          harden-doc,
+          hardening-wrapper,
+          imagemagick,
+          imagemagick-doc,
+          inkscape,
+          libc6-dbg,
+          libcairo2-doc,
+          libgdk-pixbuf2.0-doc,
+          libglib2.0-0-dbg,
+          libgnome2-doc,
+          libgnomeui-0-dbg,
+          libgtk-3-0-dbg,
+          libgtk-3-doc,
+          libnotify-doc,
+          libpango1.0-0-dbg,
+          netcat-openbsd,
+          nmap,
+          patchutils,
+          piuparts,
+          po-debconf,
+          valgrind
