@@ -1230,12 +1230,9 @@ static void preferences_cb(void)
 
 static void help_about_cb(void)
 {
-	const gchar *authors[] = {
-		AUTHORLIST
-	};
-	aboutbox_display(
-				/* Caption of about box */
-				_("About Pioneers"), authors);
+	aboutbox_display(GTK_WINDOW(app_window),
+			 /* Caption of about box */
+			 _("About Pioneers"));
 }
 
 static void game_legend_cb(void)

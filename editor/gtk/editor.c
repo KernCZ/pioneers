@@ -28,7 +28,6 @@
 #endif
 
 #include <string.h>
-#include "authors.h"
 #include "aboutbox.h"
 #include "config-gnome.h"
 #include "game.h"
@@ -1679,12 +1678,9 @@ static void contents_menu_cb(void)
 
 static void about_menu_cb(void)
 {
-	const gchar *authors[] = {
-		AUTHORLIST
-	};
-
-	/* About dialog caption */
-	aboutbox_display(_("About Pioneers Game Editor"), authors);
+	aboutbox_display(GTK_WINDOW(toplevel),
+			 /* Caption of about box */
+			 _("About Pioneers Game Editor"));
 }
 
 /** Toggles full screen mode.

@@ -32,7 +32,6 @@ void frontend_set_callbacks(void);
 #include <glib.h>		/* for gboolean, and probably many other things */
 #include "map.h"		/* for Edge, Node and Hex */
 #include "game.h"		/* for DevelType */
-#include "authors.h"		/* defines AUTHORLIST, as a char **, NULL-ended  */
 #include "cards.h"
 
 /* types */

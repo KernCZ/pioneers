@@ -30,7 +30,6 @@
 #include <gtk/gtk.h>
 #include <string.h>
 
-#include "authors.h"
 #include "aboutbox.h"
 #include "game.h"
 #include "game-list.h"
@@ -46,6 +45,8 @@
 #include "metaserver.h"		/* Custom widget */
 
 #define MAINICON_FILE	"pioneers-server.png"
+
+static GtkWidget *toplevel;	/* top level window */
 
 static GtkWidget *settings_notebook;	/* relevant settings */
 
@@ -1144,11 +1145,9 @@ static void quit_cb(void)
 
 static void help_about_cb(void)
 {
-	const gchar *authors[] = {
-		AUTHORLIST
-	};
-	/* Dialog caption of about box */
-	aboutbox_display(_("The Pioneers Game Server"), authors);
+	aboutbox_display(GTK_WINDOW(toplevel),
+			 /* Caption of about box */
+			 _("About the Pioneers Game Server"));
 }
 
 void game_is_over(G_GNUC_UNUSED Game * game)
@@ -1178,7 +1177,6 @@ static GOptionEntry commandline_entries[] = {
 int main(int argc, char *argv[])
 {
 	gchar *icon_file;
-	GtkWidget *window;
 	GtkWidget *vbox;
 	GtkWidget *menubar;
 	GtkActionGroup *action_group;
@@ -1233,23 +1231,23 @@ int main(int argc, char *argv[])
 
 	prepare_gtk_for_close_button_on_tab();
 
-	window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+	toplevel = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	/* Name in the titlebar of the server */
-	gtk_window_set_title(GTK_WINDOW(window), _("Pioneers Server"));
+	gtk_window_set_title(GTK_WINDOW(toplevel), _("Pioneers Server"));
 
 	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-	gtk_container_add(GTK_CONTAINER(window), vbox);
+	gtk_container_add(GTK_CONTAINER(toplevel), vbox);
 
 	action_group = gtk_action_group_new("MenuActions");
 	gtk_action_group_set_translation_domain(action_group, PACKAGE);
 	gtk_action_group_add_actions(action_group, entries,
-				     G_N_ELEMENTS(entries), window);
+				     G_N_ELEMENTS(entries), toplevel);
 
 	ui_manager = gtk_ui_manager_new();
 	gtk_ui_manager_insert_action_group(ui_manager, action_group, 0);
 
 	accel_group = gtk_ui_manager_get_accel_group(ui_manager);
-	gtk_window_add_accel_group(GTK_WINDOW(window), accel_group);
+	gtk_window_add_accel_group(GTK_WINDOW(toplevel), accel_group);
 
 	error = NULL;
 	if (!gtk_ui_manager_add_ui_from_string
@@ -1277,7 +1275,7 @@ int main(int argc, char *argv[])
 
 	game = NULL;
 	gtk_box_pack_start(GTK_BOX(vbox),
-			   build_interface(GTK_WINDOW(window), &game),
+			   build_interface(GTK_WINDOW(toplevel), &game),
 			   TRUE, TRUE, 0);
 
 	/* in theory, all windows are created now...
@@ -1288,9 +1286,9 @@ int main(int argc, char *argv[])
 
 	load_last_game_params();
 
-	gtk_widget_show_all(window);
+	gtk_widget_show_all(toplevel);
 	gui_set_server_state(FALSE);
-	g_signal_connect(G_OBJECT(window), "delete_event",
+	g_signal_connect(G_OBJECT(toplevel), "delete_event",
 			 G_CALLBACK(quit_cb), NULL);
 
 	gtk_main();

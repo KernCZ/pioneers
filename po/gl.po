@@ -2562,12 +2562,12 @@ msgstr "Autores:"
 #. * do not remove any names, and add \n after your name (except the last name).
 #.
 #: ../common/gtk/aboutbox.c:104 ../common/gtk/aboutbox.c:115
-msgid "translator_credits"
+msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
 "  Indalecio Freiría Santos https://launchpad.net/~ifreiria"
 
-#. Header for the translator_credits. Use your own language name
+#. Header for the translator-credits. Use your own language name
 #: ../common/gtk/aboutbox.c:110
 msgid "Pioneers is translated to <your language here> by:\n"
 msgstr "Pioneiros tradúcese ao galego por:\n"

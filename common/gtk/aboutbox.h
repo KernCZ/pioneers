@@ -1,8 +1,7 @@
 /* Pioneers - Implementation of the excellent Settlers of Catan board game.
  *   Go buy a copy.
  *
- * Copyright (C) 2005 Brian Wellington <bwelling@xbill.org>
- * Copyright (C) 2005 Roland Clobus <rclobus@bigfoot.com>
+ * Copyright (C) 2015 Roland Clobus <rclobus@rclobus.nl>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,14 +21,11 @@
 /*
  * Common code for displaying an about box.
  */
-#ifndef __ABOUTBOX_H__
-#define __ABOUTBOX_H__
-
+#ifndef PIONEERS_ABOUTBOX_H
+#define PIONEERS_ABOUTBOX_H
 
 #include <gtk/gtk.h>
 
-G_BEGIN_DECLS
-    void aboutbox_display(const gchar * title, const gchar ** authors);
+void aboutbox_display(GtkWindow * parent, const gchar * title);
 
-G_END_DECLS
-#endif				/* __ABOUTBOX_H__ */
+#endif				/* PIONEERS_ABOUTBOX_H */

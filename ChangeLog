@@ -1,3 +1,10 @@
+2015-03-11  Roland Clobus <rclobus.nl>
+	* client/callback.h, client/gtk/gui.c, common/gtk/aboutbox.c,
+	common/gtk/aboutbox.h, editor/gtk/editor.c, server/gtk/main.c:
+	Use the about dialog from Gtk+3.
+	* common/gtk/aboutbox.c: Translation update: use translator-credits
+        instead of translator_credits.
+
 2014-10-26  Roland Clobus <rclobus@rclobus.nl>
 	* editor/gtk/editor.c: Fix for Coverity CID 74389: Use the
 	right size for the ToolbarButtonData element.

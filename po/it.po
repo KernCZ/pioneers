@@ -2557,10 +2557,10 @@ msgstr "Autori:"
 #. * do not remove any names, and add \n after your name (except the last name).
 #.
 #: ../common/gtk/aboutbox.c:104 ../common/gtk/aboutbox.c:115
-msgid "translator_credits"
+msgid "translator-credits"
 msgstr "Giancarlo Capella"
 
-#. Header for the translator_credits. Use your own language name
+#. Header for the translator-credits. Use your own language name
 #: ../common/gtk/aboutbox.c:110
 msgid "Pioneers is translated to <your language here> by:\n"
 msgstr "Pioneers è stato tradotto in italiano da:\n"
