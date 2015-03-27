@@ -1,4 +1,10 @@
-2015-03-11  Roland Clobus <rclobus.nl>
+2015-03-27  Roland Clobus <rclobus@rclobus.nl>
+	* client/gtk/develop.c: Fix for bug #285 part 2, when the selection in
+	the combobox changes to another development card type because the
+	currently selected development card is not available any more,
+	correctly update the 'Play Development Card' button status.
+
+2015-03-11  Roland Clobus <rclobus@rclobus.nl>
 	* client/callback.h, client/gtk/gui.c, common/gtk/aboutbox.c,
 	common/gtk/aboutbox.h, editor/gtk/editor.c, server/gtk/main.c:
 	Use the about dialog from Gtk+3.

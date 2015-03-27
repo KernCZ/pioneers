@@ -276,7 +276,8 @@ void frontend_played_develop(gint player_num, G_GNUC_UNUSED guint card_idx,
 		g_assert(found == FIND_MATCH_EXACT);
 		if (deck_card_amount(get_devel_deck(), type) == 0) {
 			gtk_list_store_remove(store, &iter);
-			selected_card_idx = -1;
+			/* Do not update selected_card_idx, it was updated
+			 * by the callback develop_select_cb */
 		} else {
 			update_model(&iter, type);
 			selected_card_idx =
