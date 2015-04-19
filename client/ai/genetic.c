@@ -1855,13 +1855,13 @@ static void genetic_turn(void)
 	    (thisTradingMatrixes, &amount, &trade_away, &want_resource)
 	    && can_trade_maritime()) {
 		printf
-		    ("Acording to trading matrixes I will trade %d of %d for 1 of %d\n",
+		    ("According to trading matrixes I will trade %d of %d for 1 of %d\n",
 		     amount, trade_away, want_resource);
 		cb_maritime(amount, trade_away, want_resource);
 		return;
 	} else
 		printf
-		    ("Acording to trading matrixes there is no favorable trade possible\n");
+		    ("According to trading matrixes there is no favorable trade possible\n");
 
 
 

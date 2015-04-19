@@ -300,7 +300,7 @@ void updateSimulation(int sim, float probability,
 		if ((Data->numberOfSimulationsOK[act] <
 		     (MAX_SIMS * probability))
 		    && (Data->conditionsMet[sim][act] != 1)) {
-			/*If there already are enough simulations OK for this action or conditions were already met it doesnt need to check again */
+			/*If there already are enough simulations OK for this action or conditions were already met it doesn't need to check again */
 			if (enoughResources(sim, act, Data)) {
 				Data->conditionsMet[sim][act] = 1;
 				Data->numberOfSimulationsOK[act]++;
@@ -414,10 +414,10 @@ void numberOfTurnsForProbability(float probability,
 				 int showSimulation)
 {
 	/* Sets turnsToAction values to the number of turns needed to have a certain probability to get the resources needed to perform each NUM_ACTIONS possible actions
-	 * It does so by simulating MAX_SIMS times the dice outcomes of a single turn and checking how many of those simulations would fullfill the requirements of
+	 * It does so by simulating MAX_SIMS times the dice outcomes of a single turn and checking how many of those simulations would fulfill the requirements of
 	 * resourcesNeededForAction of every action, and updating numberOfSimulationsOK and conditionsMet matrix consequently
 	 * When the percentage of simulations that meet the requirements for a certain action is over probability, then it means that given that amount of turns,
-	 * then that percentage of simulations would fullfill those requirements, and it will set that number of turns for that action in turnsToAction.
+	 * then that percentage of simulations would fulfill those requirements, and it will set that number of turns for that action in turnsToAction.
 	 * At the end of the process turnsToAction will hold the number of turns needed for every possible action to be performed with the required probability.
 	 * The number of simulations MAX_SIMS could be easily increased in order to get a more accurate simulation process*/
 
@@ -509,7 +509,7 @@ float strategyProfit(float time_a, float time_b, float turn,
 		roadsWillBuild =
 		    checkRoadNow(oneStrategy[0], oneStrategy[1],
 				 myGameState);
-		endOfTurnResources -= roadsWillBuild * 2;	/*If I am gonna build some road in this turn substract those resources */
+		endOfTurnResources -= roadsWillBuild * 2;	/*If I am gonna build some road in this turn subtract those resources */
 		ARSperTurn =
 		    totalAverageResourceSupplyPerTurn(&myGameState);
 		tooManyResDepreciation =

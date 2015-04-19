@@ -1,3 +1,8 @@
+2015-04-19  Roland Clobus <rclobus@rclobus.nl>
+	* ChangeLog, client/ai/genetic.c, client/ai/genetic_core.c,
+	debian/changelog, debian/copyright, debian/po/pt.po: Fixed spelling
+	mistakes that were found by 'codespell'.
+
 2015-03-27  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/develop.c: Fix for bug #285 part 2, when the selection in
 	the combobox changes to another development card type because the
@@ -691,7 +696,7 @@
 	* docs/README.release: Updated location of ClientVersionType.
 	* client/gtk/data/splash.svg: Updated for protocol 14.
 	* NEWS: Release notes for 14.1.
-	* TODO: Refered to the Feature Request page on SourceForge.
+	* TODO: Referred to the Feature Request page on SourceForge.
 	* client/ai/lobbybot.c: Mentioned 14.1.
 
 2012-05-19  Roland Clobus <rclobus@rclobus.nl>
@@ -921,7 +926,7 @@
 2011-10-20  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/trade.c: make reindent.
 	* meta-server/main.c: Fixed a memory leak.
-	* docs/pioneers-meta-server.6, meta-server/main.c: Allow gracefull
+	* docs/pioneers-meta-server.6, meta-server/main.c: Allow graceful
 	shutdown of the metaserver by sending SIGUSR1.
 	* editor/gtk/game-resources.c, editor/gtk/editor.c,
 	editor/gtk/game-building.c: Fixed a few warnings with
@@ -3056,7 +3061,7 @@
 	was introduced in 0.9.6
 	* common/game.c (params_copy), common/map.c (disconnect_hex),
 	server/square.game: Fixed the core dump which resulted in the
-	imcomplete file. Added some descriptions of the errors.
+	incomplete file. Added some descriptions of the errors.
 	* client/ai/greedy.c (greedy_turn): Fix for bug introduced in 0.9.6.
 	* client/ai/greedy.c (trade_desired, greedy_consider_quote): Let the
 	AI accept free offers during trade.
@@ -3631,7 +3636,7 @@
 	* ai/greedy.c, client/ai/greedy.c, client/common/chat.c, TODO:
 	Enabled translated chats for the AI
 	* client/gtk/legend.c, client/gtk/theme.c: Fixed display of tiles in
-	the legend dialog/tabpage. (Foundation layed by Giancarlo Capella)
+	the legend dialog/tabpage. (Foundation laid by Giancarlo Capella)
 	Replaced deprecated function calls.
 	* client/gtk/theme.c: Fixed crash on theme change before a game is
 	started.
@@ -4043,7 +4048,7 @@
 	client/gtk/player.c, client/gtk/quote.c, client/gtk/resource.c,
 	client/gtk/settingscreen.c, client/gtk/state.c, client/gtk/theme.c,
 	client/gtk/trade.c: Added.
-	Seperated gui from network in client as a preparation to other
+	Separated gui from network in client as a preparation to other
 	clients, including the AI.
 
 2003-12-02  Roland Clobus <rclobus@bigfoot.com>
@@ -4722,7 +4727,7 @@
 	
 	* client/gui.c (menu_settings_cb): use GTK_EXPAND attribute in x
 	dir (looks better). Delay signal_connect calls for language
-	buttons to avoid gtk assertation failures.
+	buttons to avoid gtk assertion failures.
 
 	* client/Makefile.am: omit CVS dirs for theme file installing and
 	exporting
@@ -4807,7 +4812,7 @@
 	* client/client.c (check_other_players): when receiving game won
 	message, use sm_pop_all_and_goto(), otherwise it can happen that
 	the NET_CLOSE event is already received during processing of the
-	sm_goto() and the state is undefined and an assertation fails.
+	sm_goto() and the state is undefined and an assertion fails.
 
 	* server/gnocatan-server.c (cfg_set_*): check for params != NULL.
 
@@ -5501,7 +5506,7 @@
 2000-06-06  Andy Heroff <aheroff@mediaone.net>
 
 	* Changed version number to 0.5.5 to prevent CVS users from using
-	  incompatable versions.
+	  incompatible versions.
 
 2000-06-06  Roderick Schertler <roderick@argon.org>
 
@@ -6030,10 +6035,10 @@
 	
 1999-09-03  Dave Cole <dave@dccs.com.au>
 
-	* common/game.[ch]: Added params_copy() to create an independant
+	* common/game.[ch]: Added params_copy() to create an independent
 	copy of a GameParams structure.
 
-	* common/map.[ch]: Added map_copy() to create an independant copy
+	* common/map.[ch]: Added map_copy() to create an independent copy
 	of a Map structure.
 
 	* server/buildutil.c, server/develop.c, server/player.c,
@@ -6242,7 +6247,7 @@
 
 	* server/trade.c (domestic_initiate_mode): After a domestic trade
 	has been performed, remove all trades that the quoting player can
-	no longer accomodate.
+	no longer accommodate.
 	
 1999-05-23  Thomas Koester <Thomas.Koester@rz.Uni-Osnabrueck.DE>
 

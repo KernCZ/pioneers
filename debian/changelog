@@ -315,7 +315,7 @@ pioneers (0.9.55-1) unstable; urgency=high
 
 pioneers (0.9.49-1) unstable; urgency=high
 
-  * Moved maintainance address to Debian games team.
+  * Moved maintenance address to Debian games team.
   * New upstream url in copyright file. (Closes: #346472)
   * New location for desktop files.
   * Extra icons and descriptions for menus.
@@ -599,7 +599,7 @@ gnocatan (0.6.1-4) unstable; urgency=low
 
   * Added IPv6 patch from Guus Sliepen
 
-  * Consolodated maintainer email address (for spam prevention)
+  * Consolidated maintainer email address (for spam prevention)
 
   * Referenced modern policy to make lintian shut up
 
