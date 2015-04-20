@@ -1,6 +1,7 @@
 pioneers (15.4-1~local1) UNRELEASED; urgency=medium
 
   * Waiting for new upstream release.
+  * Watch file checks for OpenPGP signature.
 
  -- Roland Clobus <rclobus@rclobus.nl>  Sun, 26 Oct 2014 18:04:57 +0100
 
