@@ -64,6 +64,18 @@ static void select_game_finalize(GObject * object)
 	SelectGame *sg = SELECTGAME(object);
 
 	/* sg->combo_box is already handled */
+
+	GtkTreeIter iter;
+	gtk_tree_model_get_iter_first(GTK_TREE_MODEL(sg->data), &iter);
+	do {
+		GameParams *params;
+		GdkPixbuf *pixbuf;
+		gtk_tree_model_get(GTK_TREE_MODEL(sg->data), &iter, 2,
+				   &params, 1, &pixbuf, -1);
+		g_object_unref(pixbuf);
+		params_free(params);
+	} while (gtk_list_store_remove(sg->data, &iter));
+
 	gtk_list_store_clear(sg->data);
 	g_ptr_array_unref(sg->game_names);
 	g_free(sg->default_game);
