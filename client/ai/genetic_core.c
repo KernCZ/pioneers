@@ -18,11 +18,10 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-//#include <stdio.h>
-//#include <stdlib.h>
-//#include <math.h>
-//#include <time.h>
-//#include <glib.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <glib.h>
 #include "genetic_core.h"
 
 static int totalResources(const struct gameState_t *myGameState);
