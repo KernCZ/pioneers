@@ -226,8 +226,8 @@ static void game_rules_init(GameRules * gr, gboolean show_all_rules)
 
 		widget = gtk_button_new();
 		gtk_button_set_image(GTK_BUTTON(widget),
-				     gtk_image_new_from_stock
-				     (GTK_STOCK_APPLY,
+				     gtk_image_new_from_icon_name
+				     ("pioneers-checkmark",
 				      GTK_ICON_SIZE_BUTTON));
 		g_signal_connect(G_OBJECT(widget), "clicked",
 				 G_CALLBACK(verify_island_discovery_bonus),

@@ -248,7 +248,8 @@ GtkWidget *histogram_create_dlg(void)
 	histogram_dlg = gtk_dialog_new_with_buttons(_("Dice Histogram"),
 						    GTK_WINDOW(app_window),
 						    GTK_DIALOG_DESTROY_WITH_PARENT,
-						    GTK_STOCK_CLOSE,
+						    /* Button text */
+						    _("_Close"),
 						    GTK_RESPONSE_CLOSE,
 						    NULL);
 	g_signal_connect(G_OBJECT(histogram_dlg), "destroy",

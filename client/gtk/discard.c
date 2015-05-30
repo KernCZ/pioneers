@@ -79,7 +79,8 @@ static GtkWidget *discard_create_dlg(gint num)
 							 GTK_WINDOW
 							 (app_window),
 							 GTK_DIALOG_DESTROY_WITH_PARENT,
-							 GTK_STOCK_OK,
+							 /* Button text */
+							 _("_OK"),
 							 GTK_RESPONSE_OK,
 							 NULL);
 	g_signal_connect(G_OBJECT(discard.dlg), "destroy",

@@ -551,8 +551,9 @@ GtkWidget *trade_build_page(void)
 	gtk_box_pack_start(GTK_BOX(vbox), active_quote_label,
 			   FALSE, FALSE, 0);
 
-	quoteview = quote_view_new(TRUE, is_good_quote, GTK_STOCK_APPLY,
-				   GTK_STOCK_CANCEL);
+	quoteview =
+	    quote_view_new(TRUE, is_good_quote, "pioneers-checkmark",
+			   "pioneers-cross");
 	gtk_widget_show(quoteview);
 	gtk_box_pack_start(GTK_BOX(vbox), quoteview, TRUE, TRUE, 0);
 	g_signal_connect(QUOTEVIEW(quoteview), "selection-changed",

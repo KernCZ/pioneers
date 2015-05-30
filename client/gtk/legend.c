@@ -249,7 +249,8 @@ GtkWidget *legend_create_dlg(void)
 	legend_dlg = gtk_dialog_new_with_buttons(_("Legend"),
 						 GTK_WINDOW(app_window),
 						 GTK_DIALOG_DESTROY_WITH_PARENT,
-						 GTK_STOCK_CLOSE,
+						 /* Button text */
+						 _("_Close"),
 						 GTK_RESPONSE_CLOSE, NULL);
 	g_signal_connect(G_OBJECT(legend_dlg), "destroy",
 			 G_CALLBACK(gtk_widget_destroyed), &legend_dlg);

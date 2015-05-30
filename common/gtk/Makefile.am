@@ -63,3 +63,7 @@ MAINTAINERCLEANFILES += \
 	common/gtk/scrollable-text-view.gob.stamp \
 	common/gtk/scrollable-text-view.c \
 	common/gtk/scrollable-text-view.h
+
+actions_DATA += \
+	common/gtk/pioneers-checkmark.svg \
+	common/gtk/pioneers-cross.svg

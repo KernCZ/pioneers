@@ -92,13 +92,13 @@ static GtkActionEntry entries[] = {
 	{"HelpMenu", NULL,
 	 /* Menu entry */
 	 N_("_Help"), NULL, NULL, NULL},
-	{"GameCheckVP", GTK_STOCK_APPLY,
+	{"GameCheckVP", NULL,
 	 /* Menu entry */
 	 N_("_Check Victory Point Target"),
 	 NULL,
 	 /* Tooltop for Check Victory Point Target menu entry */
 	 N_("Check whether the game can be won"), G_CALLBACK(check_vp_cb)},
-	{"GameQuit", GTK_STOCK_QUIT,
+	{"GameQuit", NULL,
 	 /* Menu entry */
 	 N_("_Quit"), "<control>Q",
 	 /* Tooltop for Quit menu entry */

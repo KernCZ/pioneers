@@ -1,3 +1,17 @@
+2015-05-30  Roland Clobus <rclobus@rclobus.nl>
+	* Makefile.am, client/gtk/connect.c, client/gtk/discard.c,
+	client/gtk/gameover.c, client/gtk/gold.c, client/gtk/gui.c,
+	client/gtk/histogram.c, client/gtk/legend.c, client/gtk/monopoly.c,
+	client/gtk/name.c, client/gtk/plenty.c, client/gtk/quote-view.c,
+	client/gtk/quote.c, client/gtk/settingscreen.c, client/gtk/trade.c,
+	common/gtk/Makefile.am, common/gtk/common_gtk.c,
+	common/gtk/game-rules.c, common/gtk/game-settings.c,
+	common/gtk/pioneers-checkmark.svg, common/gtk/pioneers-cross.svg,
+	editor/gtk/editor.c, server/gtk/main.c: Replaced all GTK_STOCK_* items.
+	This make the code build without compiler warings when the deprecation
+	checks are turned off, on Debian 8. Two new icons were added to
+	replace GTK_STOCK_APPLY and GTK_STOCK_CANCEL.
+
 2015-04-26  Roland Clobus <rclobus@rclobus.nl>
 	* common/gtk/select-game.c: Fixed a memory leak.
 

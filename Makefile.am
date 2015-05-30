@@ -68,6 +68,7 @@ gtk_libs = \
 configdir = $(datadir)/games/pioneers
 icondir = $(datadir)/pixmaps
 pixmapdir = $(datadir)/pixmaps/pioneers
+actionsdir = $(datadir)/icons/hicolor/scalable/actions
 desktopdir = $(datadir)/applications
 
 # Let object files be generated in their own subdirectories
@@ -82,6 +83,7 @@ man_MANS =
 config_DATA =
 icon_DATA =
 pixmap_DATA =
+actions_DATA =
 desktop_in_files =
 CLEANFILES =
 DISTCLEANFILES =
@@ -140,7 +142,8 @@ EXTRA_DIST += \
 	$(config_DATA) \
 	$(pixmap_DATA) \
 	$(icon_DATA) \
-	$(subst png,svg,$(icon_DATA))
+	$(subst png,svg,$(icon_DATA)) \
+	$(actions_DATA)
 
 # po doesn't use automake, but creates its own Makefile
 SUBDIRS += po

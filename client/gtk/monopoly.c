@@ -84,7 +84,8 @@ void monopoly_create_dlg(void)
 	monop_dlg = gtk_dialog_new_with_buttons(_("Monopoly"),
 						GTK_WINDOW(app_window),
 						GTK_DIALOG_DESTROY_WITH_PARENT,
-						GTK_STOCK_OK,
+						/* Button text */
+						_("_OK"),
 						GTK_RESPONSE_OK, NULL);
 	g_signal_connect(G_OBJECT(monop_dlg), "destroy",
 			 G_CALLBACK(gtk_widget_destroyed), &monop_dlg);

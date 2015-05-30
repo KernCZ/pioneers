@@ -225,12 +225,12 @@ static GtkActionEntry entries[] = {
 	{"GameMenu", NULL,
 	 /* Menu entry */
 	 N_("_Game"), NULL, NULL, NULL},
-	{"GameNew", GTK_STOCK_NEW,
+	{"GameNew", NULL,
 	 /* Menu entry */
 	 N_("_New Game"), "<control>N",
 	 /* Tooltip for New Game menu entry */
 	 N_("Start a new game"), game_new_cb},
-	{"GameLeave", GTK_STOCK_STOP,
+	{"GameLeave", NULL,
 	 /* Menu entry */
 	 N_("_Leave Game"), NULL,
 	 /* Tooltip for Leave Game menu entry */
@@ -247,22 +247,22 @@ static GtkActionEntry entries[] = {
 	 N_("_Player Name"), "<control>P",
 	 /* Tooltip for Player Name menu entry */
 	 N_("Change your player name"), playername_cb},
-	{"Legend", GTK_STOCK_DIALOG_INFO,
+	{"Legend", NULL,
 	 /* Menu entry */
 	 N_("L_egend"), NULL,
 	 /* Tooltip for Legend menu entry */
 	 N_("Terrain legend and building costs"), game_legend_cb},
-	{"GameSettings", GTK_STOCK_DIALOG_INFO,
+	{"GameSettings", NULL,
 	 /* Menu entry */
 	 N_("_Game Settings"), NULL,
 	 /* Tooltip for Game Settings menu entry */
 	 N_("Settings for the current game"), game_settings_cb},
-	{"DiceHistogram", GTK_STOCK_DIALOG_INFO,
+	{"DiceHistogram", NULL,
 	 /* Menu entry */
 	 N_("_Dice Histogram"), NULL,
 	 /* Tooltip for Dice Histogram menu entry */
 	 N_("Histogram of dice rolls"), game_histogram_cb},
-	{"GameQuit", GTK_STOCK_QUIT,
+	{"GameQuit", NULL,
 	 /* Menu entry */
 	 N_("_Quit"), "<control>Q",
 	 /* Tooltip for Quit menu entry */
@@ -281,7 +281,7 @@ static GtkActionEntry entries[] = {
 	 /* Tooltip for Trade menu entry */
 	 N_("Trade"),
 	 trade_cb},
-	{"Undo", GTK_STOCK_UNDO,
+	{"Undo", "edit-undo",
 	 /* Menu entry */
 	 N_("Undo"), "F3",
 	 /* Tooltip for Undo menu entry */
@@ -336,7 +336,7 @@ static GtkActionEntry entries[] = {
 	{"SettingsMenu", NULL,
 	 /* Menu entry */
 	 N_("_Settings"), NULL, NULL, NULL},
-	{"Preferences", GTK_STOCK_PREFERENCES,
+	{"Preferences", NULL,
 	 /* Menu entry */
 	 N_("Prefere_nces"), NULL,
 	 /* Tooltip for Preferences menu entry */
@@ -345,7 +345,7 @@ static GtkActionEntry entries[] = {
 	{"ViewMenu", NULL,
 	 /* Menu entry */
 	 N_("_View"), NULL, NULL, NULL},
-	{"Full", GTK_STOCK_ZOOM_FIT,
+	{"Full", NULL,
 	 /* Menu entry */
 	 N_("_Reset"),
 	 "<control>0",
@@ -366,7 +366,7 @@ static GtkActionEntry entries[] = {
 	 /* Tooltip for About Pioneers menu entry */
 	 N_("Information about Pioneers"), help_about_cb},
 #ifdef HAVE_HELP
-	{"HelpManual", GTK_STOCK_HELP,
+	{"HelpManual", NULL,
 	 /* Menu entry */
 	 N_("_Help"), "<control>H",
 	 /* Tooltip for Help menu entry */
@@ -376,7 +376,7 @@ static GtkActionEntry entries[] = {
 
 /* Toggle items */
 static GtkToggleActionEntry toggle_entries[] = {
-	{"FullScreen", GTK_STOCK_FULLSCREEN,
+	{"FullScreen", NULL,
 	 /* Menu entry */
 	 N_("_Fullscreen"),
 	 "<alt>Return",
@@ -1033,7 +1033,8 @@ static void preferences_cb(void)
 						      GTK_WINDOW
 						      (app_window),
 						      GTK_DIALOG_DESTROY_WITH_PARENT,
-						      GTK_STOCK_CLOSE,
+						      /* Button text */
+						      _("_Close"),
 						      GTK_RESPONSE_CLOSE,
 						      NULL);
 	gtk_dialog_set_default_response(GTK_DIALOG(preferences_dlg),

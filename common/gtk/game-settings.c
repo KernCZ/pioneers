@@ -149,8 +149,8 @@ static void game_settings_init(GameSettings * gs)
 
 	gs->check_button = gtk_button_new();
 	gtk_button_set_image(GTK_BUTTON(gs->check_button),
-			     gtk_image_new_from_stock(GTK_STOCK_APPLY,
-						      GTK_ICON_SIZE_BUTTON));
+			     gtk_image_new_from_icon_name
+			     ("pioneers-checkmark", GTK_ICON_SIZE_BUTTON));
 	gtk_widget_show(gs->check_button);
 	gtk_box_pack_start(GTK_BOX(hbox), gs->check_button, FALSE, FALSE,
 			   0);

@@ -143,9 +143,11 @@ void name_create_dlg(void)
 							     GTK_WINDOW
 							     (app_window),
 							     GTK_DIALOG_DESTROY_WITH_PARENT,
-							     GTK_STOCK_CANCEL,
+							     /* Button text */
+							     _("_Cancel"),
 							     GTK_RESPONSE_CANCEL,
-							     GTK_STOCK_OK,
+							     /* Button text */
+							     _("_OK"),
 							     GTK_RESPONSE_OK,
 							     NULL);
 	gtk_dialog_set_default_response(GTK_DIALOG(name_dialog.dlg),

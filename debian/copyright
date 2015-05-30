@@ -93,7 +93,10 @@ License: CC-BY-SA-4.0
  http://creativecommons.org/licenses/by-sa/4.0/ or send a letter to Creative
  Commons, 171 Second Street, Suite 300, San Francisco, California 94105, USA.
 
-Files: client/gtk/data/pioneers.svg
+Files:
+ client/gtk/data/pioneers.svg
+ common/gtk/pioneers-checkmark.svg
+ common/gtk/pioneers-cross.svg
 Copyright: Roland Clobus <rclobus@rclobus.nl>
 License: CC-BY-SA-4.0
  This desktop icon is licensed under the terms of Creative Commons

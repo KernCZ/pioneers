@@ -566,9 +566,7 @@ static void build_map_resize(GtkWidget * table, guint col, guint row,
 {
 	/* symbols[] must match order of hresize_type and vresize_type; */
 	static const gchar *symbols[] =
-	    { GTK_STOCK_ADD, GTK_STOCK_REMOVE, GTK_STOCK_ADD,
-		GTK_STOCK_REMOVE
-	};
+	    { "list-add", "list-remove", "list-add", "list-remove" };
 	/* The order must match hresize_type and vresize_type, and also depends on the orientation */
 	static const gchar *tooltip[] = {
 		N_("Insert a row"),
@@ -582,8 +580,9 @@ static void build_map_resize(GtkWidget * table, guint col, guint row,
 
 	box = gtk_box_new(dir, 0);
 	for (i = 0; i < 4; i++) {
-		buttons[i] =
-		    GTK_WIDGET(gtk_tool_button_new_from_stock(symbols[i]));
+		buttons[i] = GTK_WIDGET(gtk_tool_button_new(NULL, NULL));
+		gtk_tool_button_set_icon_name(GTK_TOOL_BUTTON(buttons[i]),
+					      symbols[i]);
 		gtk_tool_item_set_tooltip_text(GTK_TOOL_ITEM(buttons[i]),
 					       _(tooltip
 						 [i % 2 +
@@ -1518,9 +1517,11 @@ static void load_game_menu_cb(void)
 						    _("Open Game"),
 						    GTK_WINDOW(toplevel),
 						    GTK_FILE_CHOOSER_ACTION_OPEN,
-						    GTK_STOCK_CANCEL,
+						    /* Button text */
+						    _("_Cancel"),
 						    GTK_RESPONSE_CANCEL,
-						    GTK_STOCK_OPEN,
+						    /* Button text */
+						    _("_Open"),
 						    GTK_RESPONSE_OK, NULL);
 	directory =
 	    g_build_filename(g_get_user_data_dir(), "pioneers", NULL);
@@ -1557,9 +1558,11 @@ static void save_as_menu_cb(void)
 						    _("Save As..."),
 						    GTK_WINDOW(toplevel),
 						    GTK_FILE_CHOOSER_ACTION_SAVE,
-						    GTK_STOCK_CANCEL,
+						    /* Button text */
+						    _("_Cancel"),
 						    GTK_RESPONSE_CANCEL,
-						    GTK_STOCK_SAVE,
+						    /* Button text */
+						    _("Save _As"),
 						    GTK_RESPONSE_ACCEPT,
 						    NULL);
 	directory =
@@ -1604,9 +1607,11 @@ static void change_title_menu_cb(void)
 						    GTK_WINDOW(toplevel),
 						    GTK_DIALOG_MODAL |
 						    GTK_DIALOG_DESTROY_WITH_PARENT,
-						    GTK_STOCK_CANCEL,
+						    /* Button text */
+						    _("_Cancel"),
 						    GTK_RESPONSE_CANCEL,
-						    GTK_STOCK_OK,
+						    /* Button text */
+						    _("_OK"),
 						    GTK_RESPONSE_OK, NULL);
 	gtk_dialog_set_default_response(GTK_DIALOG(dialog),
 					GTK_RESPONSE_OK);
@@ -1718,21 +1723,21 @@ static GtkActionEntry entries[] = {
 	 /* Menu entry */
 	 N_("_Help"), NULL, NULL, NULL},
 
-	{"New", GTK_STOCK_NEW,
+	{"New", NULL,
 	 /* Menu entry */
 	 N_("_New"), "<control>N",
 	 N_("Create a new game"), new_game_menu_cb},
-	{"Open", GTK_STOCK_OPEN,
+	{"Open", NULL,
 	 /* Menu entry */
 	 N_("_Open..."), "<control>O",
 	 /* Tooltip for Open menu entry */
 	 N_("Open an existing game"), load_game_menu_cb},
-	{"Save", GTK_STOCK_SAVE,
+	{"Save", NULL,
 	 /* Menu entry */
 	 N_("_Save"), "<control>S",
 	 /* Tooltip for Save menu entry */
 	 N_("Save game"), save_game_menu_cb},
-	{"SaveAs", GTK_STOCK_SAVE_AS,
+	{"SaveAs", NULL,
 	 /* Menu entry */
 	 N_("Save _As..."),
 	 "<control><shift>S",
@@ -1743,19 +1748,19 @@ static GtkActionEntry entries[] = {
 	 N_("Change _Title"), "<control>T",
 	 /* Tooltip for Change Title menu entry */
 	 N_("Change game title"), change_title_menu_cb},
-	{"CheckVP", GTK_STOCK_APPLY,
+	{"CheckVP", NULL,
 	 /* Menu entry */
 	 N_("_Check Victory Point Target"),
 	 NULL,
 	 /* Tooltip for Check Victory Point Target menu entry */
 	 N_("Check whether the game can be won"), G_CALLBACK(check_vp_cb)},
-	{"Quit", GTK_STOCK_QUIT,
+	{"Quit", NULL,
 	 /* Menu entry */
 	 N_("_Quit"), "<control>Q",
 	 /* Tooltip for Quit menu entry */
 	 N_("Quit"), exit_cb},
 
-	{"Full", GTK_STOCK_ZOOM_FIT,
+	{"Full", NULL,
 	 /* Menu entry */
 	 N_("_Reset"),
 	 "<control>0",
@@ -1769,7 +1774,7 @@ static GtkActionEntry entries[] = {
 
 #ifdef HAVE_HELP
 	/* Disable this item, until the help is written
-	   {"Contents", GTK_STOCK_HELP, N_("_Contents"), "F1",
+	   {"Contents", NULL, N_("_Contents"), "F1",
 	   N_("Contents"), contents_menu_cb},
 	 */
 #endif
@@ -1781,7 +1786,7 @@ static GtkActionEntry entries[] = {
 };
 
 static GtkToggleActionEntry toggle_entries[] = {
-	{"FullScreen", GTK_STOCK_FULLSCREEN,
+	{"FullScreen", NULL,
 	 /* Menu entry */
 	 N_("_Fullscreen"),
 	 "<alt>Return",

@@ -409,7 +409,8 @@ GtkWidget *settings_create_dlg(void)
 							  GTK_WINDOW
 							  (app_window),
 							  GTK_DIALOG_DESTROY_WITH_PARENT,
-							  GTK_STOCK_CLOSE,
+							  /* Button text */
+							  _("_Close"),
 							  GTK_RESPONSE_CLOSE,
 							  NULL);
 	g_signal_connect(G_OBJECT(settings_dlg), "destroy",

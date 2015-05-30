@@ -1036,9 +1036,11 @@ static void create_server_dlg(G_GNUC_UNUSED GtkWidget * widget,
 	    /* Dialog caption */
 	    gtk_dialog_new_with_buttons(_("Create a Public Game"), parent,
 					GTK_DIALOG_DESTROY_WITH_PARENT,
-					GTK_STOCK_CANCEL,
-					GTK_RESPONSE_CANCEL, GTK_STOCK_OK,
-					GTK_RESPONSE_OK, NULL);
+					/* Button text */
+					_("_Cancel"), GTK_RESPONSE_CANCEL,
+					/* Button text */
+					_("C_reate"), GTK_RESPONSE_OK,
+					NULL);
 	g_signal_connect(G_OBJECT(cserver_dlg), "destroy",
 			 G_CALLBACK(gtk_widget_destroyed), &cserver_dlg);
 	gtk_widget_realize(cserver_dlg);
@@ -1178,16 +1180,18 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
 
 	/* Dialog caption */
 	meta_dlg = gtk_dialog_new_with_buttons(_("Join a Public Game"),
-					       GTK_WINDOW(parent),
-					       0,
-					       GTK_STOCK_REFRESH,
+					       GTK_WINDOW(parent), 0,
+					       /* Button text */
+					       _("_Refresh"),
 					       META_RESPONSE_REFRESH,
 					       /* Button text */
 					       _("_New Remote Game"),
 					       META_RESPONSE_NEW,
-					       GTK_STOCK_CANCEL,
+					       /* Button text */
+					       _("_Cancel"),
 					       GTK_RESPONSE_CANCEL,
-					       GTK_STOCK_OK,
+					       /* Button text */
+					       _("_Join"),
 					       GTK_RESPONSE_OK, NULL);
 	g_signal_connect(G_OBJECT(meta_dlg), "destroy",
 			 G_CALLBACK(gtk_widget_destroyed), &meta_dlg);
@@ -1449,7 +1453,8 @@ void connect_create_dlg(void)
 	connect_dlg = gtk_dialog_new_with_buttons(_("Start a New Game"),
 						  GTK_WINDOW(app_window),
 						  0,
-						  GTK_STOCK_CANCEL,
+						  /* Button text */
+						  _("_Cancel"),
 						  GTK_RESPONSE_CANCEL,
 						  NULL);
 	g_signal_connect(G_OBJECT(connect_dlg), "response",
@@ -1751,9 +1756,13 @@ static void connect_private_dialog(G_GNUC_UNUSED GtkWidget * widget,
 								 GTK_WINDOW
 								 (parent),
 								 0,
-								 GTK_STOCK_CANCEL,
+								 /* Button text */
+								 _
+								 ("_Cancel"),
 								 GTK_RESPONSE_CANCEL,
-								 GTK_STOCK_OK,
+								 /* Button text */
+								 _
+								 ("_Join"),
 								 GTK_RESPONSE_OK,
 								 NULL);
 	gtk_dialog_set_default_response(GTK_DIALOG(connect_private_dlg),

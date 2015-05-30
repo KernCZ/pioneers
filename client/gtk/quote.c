@@ -352,7 +352,7 @@ GtkWidget *quote_build_page(void)
 	gtk_box_pack_start(GTK_BOX(hbox), vbox, TRUE, TRUE, 0);
 
 	quoteview = quote_view_new(FALSE, can_delete_this_quote,
-				   GTK_STOCK_DELETE, NULL);
+				   "edit-delete", NULL);
 	gtk_widget_show(quoteview);
 	gtk_box_pack_start(GTK_BOX(vbox), quoteview, TRUE, TRUE, 0);
 	g_signal_connect(QUOTEVIEW(quoteview), "selection-changed",

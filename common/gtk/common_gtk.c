@@ -362,7 +362,8 @@ GtkWidget *create_label_with_close_button(const gchar * label_text,
 	gtk_box_pack_start(GTK_BOX(hbox), lbl, FALSE, FALSE, 0);
 
 	close_image =
-	    gtk_image_new_from_stock(GTK_STOCK_CLOSE, GTK_ICON_SIZE_MENU);
+	    gtk_image_new_from_icon_name("window-close",
+					 GTK_ICON_SIZE_MENU);
 	*button = gtk_button_new();
 	gtk_button_set_relief(GTK_BUTTON(*button), GTK_RELIEF_NONE);
 	gtk_button_set_focus_on_click(GTK_BUTTON(*button), FALSE);

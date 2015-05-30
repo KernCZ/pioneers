@@ -203,22 +203,24 @@ GtkWidget *quote_view_new(gboolean with_maritime,
 			  const gchar * false_pixbuf_id)
 {
 	QuoteView *qv;
+	GtkIconTheme *theme;
 
 	qv = g_object_new(quote_view_get_type(), NULL);
 	qv->with_maritime = with_maritime;
 	qv->check_quote_func = check_quote_func;
 
+	theme = gtk_icon_theme_get_default();
 	if (true_pixbuf_id)
 		qv->true_pixbuf =
-		    gtk_widget_render_icon(qv->quotes, true_pixbuf_id,
-					   GTK_ICON_SIZE_MENU, NULL);
+		    gtk_icon_theme_load_icon(theme, true_pixbuf_id, 16, 0,
+					     NULL);
 	else
 		qv->true_pixbuf = NULL;
 
 	if (false_pixbuf_id)
 		qv->false_pixbuf =
-		    gtk_widget_render_icon(qv->quotes, false_pixbuf_id,
-					   GTK_ICON_SIZE_MENU, NULL);
+		    gtk_icon_theme_load_icon(theme, false_pixbuf_id, 16, 0,
+					     NULL);
 	else
 		qv->false_pixbuf = NULL;
 
@@ -288,8 +290,8 @@ static void load_pixmaps(QuoteView * qv)
 	cairo_surface_destroy(surface);
 
 	cross_pixbuf =
-	    gtk_widget_render_icon(qv->quotes, GTK_STOCK_CANCEL,
-				   GTK_ICON_SIZE_MENU, NULL);
+	    gtk_widget_render_icon_pixbuf(qv->quotes, "pioneers-cross",
+					  GTK_ICON_SIZE_MENU);
 
 	init = TRUE;
 }

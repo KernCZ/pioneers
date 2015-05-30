@@ -34,7 +34,8 @@ GtkWidget *gameover_create_dlg(gint player_num, gint num_points)
 						 _("Game Over"),
 						 GTK_WINDOW(app_window),
 						 GTK_DIALOG_DESTROY_WITH_PARENT,
-						 GTK_STOCK_OK,
+						 /* Button text */
+						 _("_OK"),
 						 GTK_RESPONSE_OK, NULL);
 	gtk_widget_realize(dlg);
 	gdk_window_set_functions(gtk_widget_get_window(dlg),

@@ -3,8 +3,9 @@ pioneers (15.4-1~local1) UNRELEASED; urgency=medium
   * Waiting for new upstream release.
   * Watch file checks for OpenPGP signature.
   * pioneers-builddep updated.
+  * Updated copyright to add the new icon files.
 
- -- Roland Clobus <rclobus@rclobus.nl>  Sun, 26 Oct 2014 18:04:57 +0100
+ -- Roland Clobus <rclobus@rclobus.nl>  Sat, 30 May 2015 17:00:00 +0200
 
 pioneers (15.3-1) unstable; urgency=medium
 
