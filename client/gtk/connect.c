@@ -1198,23 +1198,6 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
 	g_signal_connect(G_OBJECT(meta_dlg), "response",
 			 G_CALLBACK(meta_dlg_cb), NULL);
 	gtk_widget_realize(meta_dlg);
-	gtk_widget_set_tooltip_text(gui_get_dialog_button
-				    (GTK_DIALOG(meta_dlg), 0),
-				    /* Tooltip */
-				    _("Join the selected game"));
-	gtk_widget_set_tooltip_text(gui_get_dialog_button
-				    (GTK_DIALOG(meta_dlg), 1),
-				    /* Tooltip */
-				    _("Don't join a public game"));
-	gtk_widget_set_tooltip_text(gui_get_dialog_button
-				    (GTK_DIALOG(meta_dlg), 2),
-				    /* Tooltip */
-				    _(""
-				      "Create a new public game at the metaserver"));
-	gtk_widget_set_tooltip_text(gui_get_dialog_button
-				    (GTK_DIALOG(meta_dlg), 3),
-				    /* Tooltip */
-				    _("Refresh the list of games"));
 
 	dlg_vbox = gtk_dialog_get_content_area(GTK_DIALOG(meta_dlg));
 	gtk_widget_show(dlg_vbox);

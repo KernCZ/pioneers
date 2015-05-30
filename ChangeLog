@@ -1,4 +1,6 @@
 2015-05-30  Roland Clobus <rclobus@rclobus.nl>
+	* client/gtk/connect.c: Removed the tooltips on the buttons, they were
+	in the wrong order again. (See r1935, 2013-06-06)
 	* Makefile.am, client/gtk/connect.c, client/gtk/discard.c,
 	client/gtk/gameover.c, client/gtk/gold.c, client/gtk/gui.c,
 	client/gtk/histogram.c, client/gtk/legend.c, client/gtk/monopoly.c,
