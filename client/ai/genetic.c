@@ -20,37 +20,33 @@
 
 #include "config.h"
 #include "ai.h"
-#include "genetic_core.c"
+#include "genetic_core.h"
 #include "cost.h"
 #include <stdio.h>
 #include <stdlib.h>
 
 /*
- * This is computer players for Pioneers based on a genetic algorithm.
+ * This is computer a player for Pioneers based on a genetic algorithm.
  */
 
-
-
+/** default chromosome */
 struct chromosome_t thisChromosome = (struct chromosome_t) {
 	{
 	 {1.371242, 1.984368, 1.336144, 1.111876, 1.206090, 0.052862,
 	  1.506242, 1.684672},
-	 /*weight of every resource, value of Development Card, relative value of City (compared to equivalen Settlement) and Ports, when I have 0 Victory Points */
-	 {1.262966, 1.813653, 1.542921, 1.117926, 1.338699, 3.004164, 1.682371, 3.554963},	/*when I have 1 */
-	 {1.770271, 1.405915, 1.947900, 1.267916, 1.645481, 0.266591, 1.194223, 9.644183},	/*2 */
-	 {1.371931, 1.962052, 1.071650, 1.335991, 1.076773, 3.367637, 1.703712, 6.706741},	/*3 */
-	 {1.680568, 1.306249, 1.743218, 1.761761, 1.025129, 1.121913, 0.284101, 1.559953},	/*4 */
-	 {1.674057, 1.994260, 1.067930, 1.046954, 1.594052, 3.381377, 0.250717, 4.673997},	/*5 */
-	 {1.116162, 1.225133, 1.141381, 1.093680, 1.976306, 3.066351, 0.672955, 9.152541},	/*6 */
-	 {1.402262, 1.515350, 1.835050, 1.781056, 1.091004, 4.470943, 0.112013, 9.202737},	/*7 */
-	 {1.009420, 1.065439, 1.938907, 1.966596, 1.279951, 0.777970, 1.659520, 3.782044},	/*8 */
-	 {1.828237, 1.597190, 1.909004, 1.690179, 1.643655, 2.087759, 1.848852, 2.809332},	/*9 */
+	 /* weight of every resource, value of Development Card, relative value of City (compared to equivalen Settlement) and Ports, when I have 0 Victory Points */
+	 {1.262966, 1.813653, 1.542921, 1.117926, 1.338699, 3.004164, 1.682371, 3.554963},	/* when I have 1 */
+	 {1.770271, 1.405915, 1.947900, 1.267916, 1.645481, 0.266591, 1.194223, 9.644183},	/* 2 */
+	 {1.371931, 1.962052, 1.071650, 1.335991, 1.076773, 3.367637, 1.703712, 6.706741},	/* 3 */
+	 {1.680568, 1.306249, 1.743218, 1.761761, 1.025129, 1.121913, 0.284101, 1.559953},	/* 4 */
+	 {1.674057, 1.994260, 1.067930, 1.046954, 1.594052, 3.381377, 0.250717, 4.673997},	/* 5 */
+	 {1.116162, 1.225133, 1.141381, 1.093680, 1.976306, 3.066351, 0.672955, 9.152541},	/* 6 */
+	 {1.402262, 1.515350, 1.835050, 1.781056, 1.091004, 4.470943, 0.112013, 9.202737},	/* 7 */
+	 {1.009420, 1.065439, 1.938907, 1.966596, 1.279951, 0.777970, 1.659520, 3.782044},	/* 8 */
+	 {1.828237, 1.597190, 1.909004, 1.690179, 1.643655, 2.087759, 1.848852, 2.809332},	/* 9 */
 	 },
-	1.714336, 0.580583, 0.265190	/*depreciation, turn and probability */
-};				/*default chromosome */
-
-
-
+	1.714336, 0.580583, 0.265190	/* depreciation, turn and probability */
+};
 
 typedef struct resource_values_s {
 	float value[NO_RESOURCE];
@@ -387,7 +383,7 @@ static float default_score_terrain(Terrain terrain)
 }
 
 /* For each node I own update the matrix resourcesSupply accordingly*/
-/*Remember that resourcesSupply[11][5] row index represents different dice outcomes from 2 to 12
+/* Remember that resourcesSupply[11][5] row index represents different dice outcomes from 2 to 12
  */
 
 static void genetic_reevaluate_iterator(Node * n, void *rock)
@@ -405,7 +401,7 @@ static void genetic_reevaluate_iterator(Node * n, void *rock)
 				supply = 2;
 
 			if (h && h->terrain < DESERT_TERRAIN) {
-				int i = (h->roll) - 2;	/*rolls 2 to 12 map as 0 to 10 row indexes */
+				int i = (h->roll) - 2;	/* rolls 2 to 12 map as 0 to 10 row indexes */
 				int j = terrain_to_resource(h->terrain);
 				myGameState->resourcesSupply[i][j] +=
 				    supply;
@@ -417,10 +413,10 @@ static void genetic_reevaluate_iterator(Node * n, void *rock)
 
 }
 
+/* Updates the information in struct gameState_t pointed by myGameState*/
 static void reevaluate_gameState_supply_matrix_and_resources(struct
 							     gameState_t
 							     *myGameState)
-/*Updates the information in struct gameState_t pointed by myGameState*/
 {
 	int i, j;
 	node_seen_set_t nodesSeen;
@@ -447,7 +443,6 @@ static void reevaluate_gameState_supply_matrix_and_resources(struct
 /* For each node I own see how much i produce with it. keep a
  * tally with 'produce'
  */
-
 static void reevaluate_iterator(Node * n, void *rock)
 {
 	float *produce = (float *) rock;
@@ -479,7 +474,6 @@ static void reevaluate_iterator(Node * n, void *rock)
 /*
  * Reevaluate the value of all the resources to us
  */
-
 static void reevaluate_resources(resource_values_t * outval)
 {
 	float produce[NO_RESOURCE];
@@ -580,9 +574,9 @@ float bestActualAverageResourcesSupply(const struct gameState_t
 
 
 
+/* Given a maritime hex with port and a not NULL node, returns TRUE if that port is facing to the node, thus granting access to port to the node */
 static int facingOK(const Node * node, Hex * hex)
 {
-	/*Given a maritime hex with port and a not NULL node, returns TRUE if that port is facing to the node, thus granting access to port to the node */
 	Node *nodeOne, *nodeTwo;
 	nodeOne = hex->nodes[hex->facing];
 	if (hex->facing != 0)
@@ -590,54 +584,54 @@ static int facingOK(const Node * node, Hex * hex)
 	else
 		nodeTwo = hex->nodes[5];
 	if ((nodeOne == node) || (nodeTwo == node))
-		return (1);	/*This node is one of the two nodes affected by this hex's port */
+		return (1);	/* This node is one of the two nodes affected by this hex's port */
 	else
 		return (0);
 }
 
 
 
+/* It returns the value given to an hex surrounding a node. We also need to know the node to check (for maritime hexes) if it has acces to the port */
 static float genetic_score_hex(const Node * node, Hex * hex,
 			       const struct chromosome_t *myChromosome,
 			       const struct gameState_t *myGameState)
-/*It returns the value given to an hex surrounding a node. We also need to know the node to check (for maritime hexes) if it has acces to the port*/
 {
 	Resource resrc;
 	int victoryPoints = player_get_score(my_player_num());
 	if (victoryPoints > 9)
-		victoryPoints = 9;	/*max index in chromosome */
+		victoryPoints = 9;	/* max index in chromosome */
 	MaritimeInfo info;
 	float value = 0;
-	float port_bonus = 0;	/*bonus for being a port */
+	float port_bonus = 0;	/* bonus for being a port */
 	float port_constant =
 	    myChromosome->resourcesValueMatrix[victoryPoints][7];
-	int port = 4;		/*Bank trade, used to calculate depreciation of resources */
-	int nodeHasPort = 0;	/*Does it actually have access to the port or is just close to it? */
+	int port = 4;		/* Bank trade, used to calculate depreciation of resources */
+	int nodeHasPort = 0;	/* Does it actually have access to the port or is just close to it? */
 	if (hex == NULL)
 		return 0;
 	int increment = dice_AVR(hex->roll);	/* Average resources supply each 36 turns given by that number */
 	resrc = terrain_to_resource(hex->terrain);
 	map_maritime_info(callbacks.get_map(), &info, my_player_num());
-	/*I want to decrease the devaluation the hex resource suffers (increase the hex value) if a I have a generic port or a specific port to export that resource */
+	/* I want to decrease the devaluation the hex resource suffers (increase the hex value) if a I have a generic port or a specific port to export that resource */
 	if (info.any_resource)
-		port = 3;	/*I have a generic port, depreciation will be less */
+		port = 3;	/* I have a generic port, depreciation will be less */
 	else if (info.specific_resource[resrc])
-		port = 2;	/*I have a port to export this resource, depreciation will be even less */
+		port = 2;	/* I have a port to export this resource, depreciation will be even less */
 	nodeHasPort = facingOK(node, hex);
 	if (resrc < NO_RESOURCE) {
-		/*Normal hex, its value depends on its resource supply */
+		/* Normal hex, its value depends on its resource supply */
 		value =
 		    resourcesIncrementValue(increment, resrc,
 					    victoryPoints, myChromosome,
 					    myGameState, port);
 	} else if ((hex->resource == ANY_RESOURCE) && (!info.any_resource)) {
-		/*This is a generic port and I do not have one, its value depends on my best supplied resource */
+		/* This is a generic port and I do not have one, its value depends on my best supplied resource */
 		port_bonus =
 		    bestActualAverageResourcesSupply(myGameState) / 36.0;
 		port_bonus = port_bonus * port_constant * nodeHasPort;
 	} else if ((hex->terrain == SEA_TERRAIN)
 		   && (hex->resource < NO_RESOURCE)) {
-		/*This hex has a specific port, the better the supply I have of that resource, the most valuable will be the port */
+		/* This hex has a specific port, the better the supply I have of that resource, the most valuable will be the port */
 		port_bonus =
 		    actualAverageResourcesSupply(hex->resource,
 						 myGameState) / 24.0;
@@ -645,7 +639,7 @@ static float genetic_score_hex(const Node * node, Hex * hex,
 	} else if (resrc == GOLD_RESOURCE)
 		value = 5;
 	return (value + port_bonus);
-	/*It will return either value (for normal hexes) or port_bonus (for a maritime hex with port, if the node I am calculating this hex for, has access to that port) */
+	/* It will return either value (for normal hexes) or port_bonus (for a maritime hex with port, if the node I am calculating this hex for, has access to that port) */
 }
 
 /*
@@ -712,7 +706,7 @@ static float genetic_score_node(const Node * node, gboolean city,
 	if (is_node_spacing_ok(node) == FALSE)
 		return -1;
 	if (!city) {
-		if (node->owner != -1)	/*I want a settlement, and this is already occupied */
+		if (node->owner != -1)	/* I want a settlement, and this is already occupied */
 			return -1;
 	}
 
@@ -781,7 +775,7 @@ static Node *best_settlement_spot(gboolean during_setup,
 						       myChromosome,
 						       myGameState);
 
-				/*If another player can already build in this node, give it a score bonus so I try harder to build there before another player does it */
+				/* If another player can already build in this node, give it a score bonus so I try harder to build there before another player does it */
 				if (score > 0) {
 					for (l = 0; l < 3; l++) {
 						if (n->edges[l]) {
@@ -1209,7 +1203,7 @@ static int resource_desire(gint assets[NO_RESOURCE],
 	int res = NO_RESOURCE;
 	gint need[NO_RESOURCE];
 
-	/*This code is temporary, it should use bestStrategy to find out which one resource increments its expected profit the most */
+	/* This code is temporary, it should use bestStrategy to find out which one resource increments its expected profit the most */
 
 	/* do i need just 1 more for something? */
 	for (bt = 0; bt < BUY_LAST; bt++) {
@@ -1274,7 +1268,7 @@ static void genetic_setup_house(void)
 
 	   reevaluate_resources(&resval); */
 
-	/*myGameState->resourcesSupply matrix will be used to value hexes by genetic_score_hex, we need to update it */
+	/* myGameState->resourcesSupply matrix will be used to value hexes by genetic_score_hex, we need to update it */
 	reevaluate_gameState_supply_matrix_and_resources(&myGameState);
 
 
@@ -1291,7 +1285,7 @@ static void genetic_setup_house(void)
 		return;
 	}
 
-	/*node_add(player, BUILD_SETTLEMENT, node->x, node->y, node->pos, FALSE); */
+	/* node_add(player, BUILD_SETTLEMENT, node->x, node->y, node->pos, FALSE); */
 	cb_build_settlement(node);
 }
 
@@ -1307,10 +1301,10 @@ static void genetic_setup_road(void)
 	guint i;
 	float tmp;
 	struct gameState_t myGameState;
-	/*resource_values_t resval;
+	/* resource_values_t resval;
 	   reevaluate_resources(&resval); */
 
-	/*myGameState->resourcesSupply matrix will be used to value hexes by genetic_score_hex, we need to update it */
+	/* myGameState->resourcesSupply matrix will be used to value hexes by genetic_score_hex, we need to update it */
 	reevaluate_gameState_supply_matrix_and_resources(&myGameState);
 
 	if (stock_num_roads() == 0) {
@@ -1367,12 +1361,12 @@ void updateTradingMatrix(const struct chromosome_t *myChromosome,
 			 struct tradingMatrixes_t *tradeThisForThat,
 			 struct gameState_t myGameState, int myTurn)
 {
-	/*It will check if any resource trade will improve profit in a given turn and will update the trading matrix consequently.
+	/* It will check if any resource trade will improve profit in a given turn and will update the trading matrix consequently.
 	 * At this point it will only check whether any one resource by one resource trading is beneficial to me.
 	 * If a 4:1, 3:1 or 2:1 trading is possible and beneficial it will set according matrix to that profit too
 	 * IMPROVEMENT: You can use a constant k[1..2] so that I am only interested in trading if profitAfterTrade is k times higher than profit.
 	 * That k could improve when Im trading with "winning" adversaries.*/
-	int give, take;		/*I give resource give, I get resource take */
+	int give, take;		/* I give resource give, I get resource take */
 	float profitAfterTrade;
 	struct simulationsData_t thisSimulation;
 	strategy_t thisStrategy;
@@ -1392,9 +1386,9 @@ void updateTradingMatrix(const struct chromosome_t *myChromosome,
 		}
 	}
 	for (give = 0; give <= 4; give++) {
-		if ((myGameState.resourcesAlreadyHave[give] >= 2) && (info.specific_resource[give])) {	/*I have a specific port to export give */
+		if ((myGameState.resourcesAlreadyHave[give] >= 2) && (info.specific_resource[give])) {	/* I have a specific port to export give */
 			for (take = 0; take <= 4; take++) {
-				if ((give != take) && (get_bank()[take])) {	/*There is no point in trading the same resource */
+				if ((give != take) && (get_bank()[take])) {	/* There is no point in trading the same resource */
 					myGameState.resourcesAlreadyHave
 					    [give] -= 2;
 					myGameState.resourcesAlreadyHave
@@ -1404,7 +1398,8 @@ void updateTradingMatrix(const struct chromosome_t *myChromosome,
 							 &thisSimulation,
 							 thisStrategy,
 							 myGameState, 0,
-							 myTurn);
+							 myTurn,
+							 num_players());
 					if (profitAfterTrade > profit) {
 						tradeThisForThat->specificResource
 						    [give]
@@ -1418,10 +1413,10 @@ void updateTradingMatrix(const struct chromosome_t *myChromosome,
 				}
 			}
 		}
-		/*It will check this only if it is not possible to do 2:1 trade */
-		else if ((myGameState.resourcesAlreadyHave[give] >= 3) && (info.any_resource)) {	/*I have a generic port to export any resource */
+		/* It will check this only if it is not possible to do 2:1 trade */
+		else if ((myGameState.resourcesAlreadyHave[give] >= 3) && (info.any_resource)) {	/* I have a generic port to export any resource */
 			for (take = 0; take <= 4; take++) {
-				if ((give != take) && (get_bank()[take])) {	/*There is no point in trading the same resource */
+				if ((give != take) && (get_bank()[take])) {	/* There is no point in trading the same resource */
 					myGameState.resourcesAlreadyHave
 					    [give] -= 3;
 					myGameState.resourcesAlreadyHave
@@ -1431,7 +1426,8 @@ void updateTradingMatrix(const struct chromosome_t *myChromosome,
 							 &thisSimulation,
 							 thisStrategy,
 							 myGameState, 0,
-							 myTurn);
+							 myTurn,
+							 num_players());
 					if (profitAfterTrade > profit) {
 						tradeThisForThat->genericResource
 						    [give]
@@ -1445,10 +1441,10 @@ void updateTradingMatrix(const struct chromosome_t *myChromosome,
 				}
 			}
 		}
-		/*It will check this only if it is neither possible to do 2:1 nor 3:1 trade */
-		else if (myGameState.resourcesAlreadyHave[give] >= 4) {	/*I have at least 4 of this resource, I could do 4:1 trade */
+		/* It will check this only if it is neither possible to do 2:1 nor 3:1 trade */
+		else if (myGameState.resourcesAlreadyHave[give] >= 4) {	/* I have at least 4 of this resource, I could do 4:1 trade */
 			for (take = 0; take <= 4; take++) {
-				if ((give != take) && (get_bank()[take])) {	/*There is no point in trading the same resource */
+				if ((give != take) && (get_bank()[take])) {	/* There is no point in trading the same resource */
 					myGameState.resourcesAlreadyHave
 					    [give] -= 4;
 					myGameState.resourcesAlreadyHave
@@ -1458,7 +1454,8 @@ void updateTradingMatrix(const struct chromosome_t *myChromosome,
 							 &thisSimulation,
 							 thisStrategy,
 							 myGameState, 0,
-							 myTurn);
+							 myTurn,
+							 num_players());
 					if (profitAfterTrade > profit) {
 						tradeThisForThat->bankTrade
 						    [give][take] =
@@ -1471,14 +1468,14 @@ void updateTradingMatrix(const struct chromosome_t *myChromosome,
 				}
 			}
 		}
-		/*At this point the highest value of these 3 matrixes represents the most beneficial trade of all */
+		/* At this point the highest value of these 3 matrixes represents the most beneficial trade of all */
 
-		/*It will always check all possible trades with other players */
+		/* It will always check all possible trades with other players */
 #if 0
 
-		if (myGameState.resourcesAlreadyHave[give]) {	/*I cannot trade something I dont have */
+		if (myGameState.resourcesAlreadyHave[give]) {	/* I cannot trade something I dont have */
 			for (take = 0; take <= 4; take++) {
-				if (give != take) {	/*There is no point in trading the same resource */
+				if (give != take) {	/* There is no point in trading the same resource */
 					myGameState.resourcesAlreadyHave
 					    [give]--;
 					myGameState.resourcesAlreadyHave
@@ -1487,7 +1484,8 @@ void updateTradingMatrix(const struct chromosome_t *myChromosome,
 					    bestStrategy(turn, prob,
 							 &thisSimulation,
 							 thisStrategy,
-							 myGameState, 0);
+							 myGameState, 0,
+							 num_players());
 					if (profitAfterTrade > profit) {
 						tradeThisForThat->
 						    internalTrade[give]
@@ -1508,7 +1506,7 @@ void updateTradingMatrix(const struct chromosome_t *myChromosome,
 float best_maritime_trade(const struct tradingMatrixes_t
 			  thisTradingMatrixes, int *amount,
 			  Resource * trade_away, Resource * want_resource)
-/*Inspects thisTradingMatrixes and outputs the most favorable maritime trade*/
+/* Inspects thisTradingMatrixes and outputs the most favorable maritime trade */
 {
 	float best = 0;
 	int portType = 0;
@@ -1665,9 +1663,9 @@ void outputStrategy(strategy_t myStrategy,
 
 }
 
+/* Returns TRUE if I am at 1 point from winning the game */
 static int lastMinute(void)
 {
-	/*Returns TRUE if I am at 1 point from winning the game */
 	const Deck *deck = get_devel_deck();
 	gint num_victory_cards = 0;
 	gint victory_point_target, my_points;
@@ -1699,7 +1697,7 @@ static int lastMinute(void)
 
 static void genetic_turn(void)
 {
-	/*resource_values_t resval; */
+	/* resource_values_t resval; */
 	struct gameState_t thisGameState;
 	struct simulationsData_t thisSimulation;
 	guint i;
@@ -1715,7 +1713,7 @@ static void genetic_turn(void)
 
 	int time_a;
 	float thisStrategyProfit;
-	/*int assets[5],need[5]; */
+	/* int assets[5],need[5]; */
 	struct tradingMatrixes_t thisTradingMatrixes;
 	Resource trade_away, want_resource;
 	int amount;
@@ -1724,7 +1722,7 @@ static void genetic_turn(void)
 	int victoryPoints = player_get_score(my_player_num());
 
 	if (victoryPoints > 9)
-		victoryPoints = 9;	/*Maximum index in the chromosome */
+		victoryPoints = 9;	/* Maximum index in the chromosome */
 
 
 
@@ -1755,14 +1753,14 @@ static void genetic_turn(void)
 
 	/* Don't wait before the dice roll, that will take too long */
 	ai_wait();
-	/*reevaluate_resources(&resval); */
+	/* reevaluate_resources(&resval); */
 
-	/*This is were I should read the chromosome, now it is using the default */
+	/* This is were I should read the chromosome, now it is using the default */
 
-	/*I set myGameState with the information needed */
+	/* I set myGameState with the information needed */
 	reevaluate_gameState_supply_matrix_and_resources(&thisGameState);
-	/*I need to know the value of the best possible Settlement, City, Road to Settlement and Long Road to Settlement to set thisGameState.actionValue for each of them */
-	/*Note that even though I am passing thisGameState to should_buy it does not need to access thisGameState.actionValue */
+	/* I need to know the value of the best possible Settlement, City, Road to Settlement and Long Road to Settlement to set thisGameState.actionValue for each of them */
+	/* Note that even though I am passing thisGameState to should_buy it does not need to access thisGameState.actionValue */
 
 	/*Best City */
 	city_node = best_city_spot(&thisChromosome, &thisGameState);
@@ -1770,12 +1768,12 @@ static void genetic_turn(void)
 		thisGameState.actionValue[CIT] =
 		    genetic_score_node(city_node, TRUE, &thisChromosome,
 				       &thisGameState)
-		    * (thisChromosome.resourcesValueMatrix[victoryPoints][6]);	/*The relative value of city at this point in the game */
+		    * (thisChromosome.resourcesValueMatrix[victoryPoints][6]);	/* The relative value of city at this point in the game */
 	} else
 		thisGameState.actionValue[CIT] = 0;
 
 
-	/*Best Settlement */
+	/* Best Settlement */
 	sett_node =
 	    best_settlement_spot(FALSE, &thisChromosome, &thisGameState);
 	if ((sett_node != NULL) && stock_num_settlements()) {
@@ -1785,7 +1783,7 @@ static void genetic_turn(void)
 	} else
 		thisGameState.actionValue[SET] = 0;
 
-	/*Best Road to Settlement, that is, best destination to build a Settlement after building a Road */
+	/* Best Road to Settlement, that is, best destination to build a Settlement after building a Road */
 	road_edge =
 	    best_road_spot(&thisChromosome, &thisGameState,
 			   &destinationRoadScore);
@@ -1796,7 +1794,7 @@ static void genetic_turn(void)
 	if (destinationRoadScore < 0)
 		destinationRoadScore = 0;
 
-	/*Best Long Road to Settlement, this is, best destination to build a Settlement after building two Roads */
+	/* Best Long Road to Settlement, this is, best destination to build a Settlement after building two Roads */
 	long_road_edge =
 	    best_road_to_road(&thisChromosome, &thisGameState,
 			      &destinationLongRoadScore);
@@ -1808,16 +1806,16 @@ static void genetic_turn(void)
 	if (destinationLongRoadScore < 0)
 		destinationLongRoadScore = 0;
 
-	/*value of buying Development Card is fixed in the chromosome */
+	/* value of buying Development Card is fixed in the chromosome */
 	if (stock_num_develop() > 0)
 		thisGameState.actionValue[DEV] =
 		    thisChromosome.resourcesValueMatrix[victoryPoints][5];
 	else
 		thisGameState.actionValue[DEV] = 0;
 
-	/*Check if I am close to the end of the game */
-	if (lastMinute()) {	/*Am I at the end of the game? */
-		/*If so, the fastest I can do becomes the best right now. Every action has the same value and turn is close to 0 */
+	/* Check if I am close to the end of the game */
+	if (lastMinute()) {	/* Am I at the end of the game? */
+		/* If so, the fastest I can do becomes the best right now. Every action has the same value and turn is close to 0 */
 		for (i = SET; i <= RRSET; i++) {
 			if (thisGameState.actionValue[i])
 				thisGameState.actionValue[i] = 10;
@@ -1832,7 +1830,7 @@ static void genetic_turn(void)
 	printf("Calculating best strategy...\n");
 	thisStrategyProfit =
 	    bestStrategy(turn, probability, &thisSimulation, thisStrategy,
-			 thisGameState, 0, 1);
+			 thisGameState, 0, 1, num_players());
 	ai_wait();
 	printf
 	    ("\t\t\t\tSET\tCIT\tDEV\tRSET\tRRSET\tS+SET\tS+CIT\tS+DEV\tS+RSET\tS+RRSET\tC+CIT\tC+DEV\tC+RSET\tC+RRSET\tD+DEV\tD+RSET\tD+RRSET\tR+RSET\tR+RRSET\tRR+RRSET\n");
@@ -1846,7 +1844,7 @@ static void genetic_turn(void)
 	    ("Will I do it? Lets see if I can trade to do something better...\n");
 
 
-	/*Trading code should go here. Now that I know my expected profit, I can see if there is a way to improve it trading */
+	/* Trading code should go here. Now that I know my expected profit, I can see if there is a way to improve it trading */
 	printf("Updating trading matrixes...\n");
 	updateTradingMatrix(&thisChromosome, thisStrategyProfit,
 			    &thisTradingMatrixes, thisGameState, 1);
@@ -1868,8 +1866,8 @@ static void genetic_turn(void)
 
 
 	time_a = thisSimulation.turnsToAction[thisStrategy[0]];
-	if (time_a == 0) {	/*I can do what I want NOW */
-		/*Under certain uncommon circumstances is possible for bestStrategy to choose an strategy whose first action yields profit 0,
+	if (time_a == 0) {	/* I can do what I want NOW */
+		/* Under certain uncommon circumstances is possible for bestStrategy to choose an strategy whose first action yields profit 0,
 		 * so we should check that there is in fact possible to do what I want to do before trying to do it*/
 		printf("Resources:");
 		for (i = 0; i < 5; i++)
@@ -1925,7 +1923,7 @@ static void genetic_turn(void)
 			}
 		}
 	}
-	/*Even if it is not possible to do anything completely now now, maybe I can build road anyway, if that does not affect my chosen strategy
+	/* Even if it is not possible to do anything completely now now, maybe I can build road anyway, if that does not affect my chosen strategy
 	   In that case, I will do it in the best place possible, influenced by my strategy */
 	else if ((checkRoadNow
 		  (thisStrategy[0], thisStrategy[1], thisGameState))
@@ -1969,7 +1967,7 @@ static void genetic_turn(void)
 				}
 				break;
 			}
-			/*IMPROVEMENT: Instead of building the best road, If thisStrategy[1] is RSET or RRSET it should chose that road to build
+			/* IMPROVEMENT: Instead of building the best road, If thisStrategy[1] is RSET or RRSET it should chose that road to build
 			   if ((destinationRoadScore)&&(destinationRoadScore>=destinationLongRoadScore)) {
 			   cb_build_road(road_edge);
 			   return;
@@ -2200,7 +2198,7 @@ static void genetic_year_of_plenty(const gint bank[NO_RESOURCE])
 	gint assets[NO_RESOURCE];
 	int i;
 	int r1, r2;
-	/*resource_values_t resval; */
+	/* resource_values_t resval; */
 	struct gameState_t myGameState;
 
 	ai_wait();
@@ -2211,7 +2209,7 @@ static void genetic_year_of_plenty(const gint bank[NO_RESOURCE])
 
 
 	/* what two resources do we desire most */
-	/*reevaluate_resources(&resval); */
+	/* reevaluate_resources(&resval); */
 	reevaluate_gameState_supply_matrix_and_resources(&myGameState);
 
 	r1 = resource_desire(assets, &thisChromosome, &myGameState);
@@ -2224,7 +2222,7 @@ static void genetic_year_of_plenty(const gint bank[NO_RESOURCE])
 
 	assets[r1]++;
 
-	/*reevaluate_resources(&resval); */
+	/* reevaluate_resources(&resval); */
 	reevaluate_gameState_supply_matrix_and_resources(&myGameState);
 
 	r2 = resource_desire(assets, &thisChromosome, &myGameState);
@@ -2352,11 +2350,11 @@ static int least_valuable(gint assets[NO_RESOURCE],
  * Which resource do we desire the least?
  */
 
+/** Calculates the value of every possible action and sets them in myGameState->actionValues */
 static void reevaluate_gameState_actionValues(const struct chromosome_t
 					      *myChromosome, struct gameState_t
 					      *myGameState)
 {
-	/*Calculates the value of every possible action and sets them in myGameState->actionValues */
 	Node *city_node;
 	Node *sett_node;
 	Edge *road_edge;
@@ -2366,10 +2364,10 @@ static void reevaluate_gameState_actionValues(const struct chromosome_t
 	if (victoryPoints > 9)
 		victoryPoints = 9;
 
-	/*I need to know the value of the best possible Settlement, City, Road to Settlement and Long Road to Settlement to set thisGameState.actionValue for each of them */
+	/* I need to know the value of the best possible Settlement, City, Road to Settlement and Long Road to Settlement to set thisGameState.actionValue for each of them */
 
 
-	/*Best City */
+	/* Best City */
 	city_node = best_city_spot(myChromosome, myGameState);
 	if ((city_node != NULL) && (stock_num_cities())) {
 		myGameState->actionValue[CIT] =
@@ -2379,7 +2377,7 @@ static void reevaluate_gameState_actionValues(const struct chromosome_t
 		myGameState->actionValue[CIT] = 0;
 
 
-	/*Best Settlement */
+	/* Best Settlement */
 	sett_node = best_settlement_spot(FALSE, myChromosome, myGameState);
 	if ((sett_node != NULL) && stock_num_settlements()) {
 		myGameState->actionValue[SET] =
@@ -2388,7 +2386,7 @@ static void reevaluate_gameState_actionValues(const struct chromosome_t
 	} else
 		myGameState->actionValue[SET] = 0;
 
-	/*Best Road to Settlement, that is, best destination to build a Settlement after building a Road */
+	/* Best Road to Settlement, that is, best destination to build a Settlement after building a Road */
 	road_edge =
 	    best_road_spot(myChromosome, myGameState,
 			   &destinationRoadScore);
@@ -2398,7 +2396,7 @@ static void reevaluate_gameState_actionValues(const struct chromosome_t
 	} else
 		myGameState->actionValue[RSET] = 0;
 
-	/*Best Long Road to Settlement, this is, best destination to build a Settlement after building two Roads */
+	/* Best Long Road to Settlement, this is, best destination to build a Settlement after building two Roads */
 	long_road_edge =
 	    best_road_to_road(myChromosome, myGameState,
 			      &destinationLongRoadScore);
@@ -2408,18 +2406,18 @@ static void reevaluate_gameState_actionValues(const struct chromosome_t
 	} else
 		myGameState->actionValue[RRSET] = 0;
 
-	/*value of buying Development Card is fixed in the chromosome */
+	/* value of buying Development Card is fixed in the chromosome */
 	myGameState->actionValue[DEV] =
 	    myChromosome->resourcesValueMatrix[victoryPoints][5];
 	return;
 
 }
 
+/* given totalDiscards resources I should discard it sets the array todiscard to that resources */
 static int update_todiscard_resources(int totalDiscards, const struct chromosome_t
 				      *myChromosome,
 				      struct gameState_t *myGameState,
 				      gint todiscard[NO_RESOURCE])
-/*given totalDiscards resources I should discard it sets the array todiscard to that resources*/
 {
 
 	int giveaway, give, i;
@@ -2442,18 +2440,18 @@ static int update_todiscard_resources(int totalDiscards, const struct chromosome
 		todiscard[i] = 0;
 	}
 
-	reevaluate_gameState_supply_matrix_and_resources(myGameState);	/*Also set resourcesAlreadyHave to the real values */
+	reevaluate_gameState_supply_matrix_and_resources(myGameState);	/* Also set resourcesAlreadyHave to the real values */
 	reevaluate_gameState_actionValues(myChromosome, myGameState);
 
 
 	while (discards < totalDiscards) {
-		/*First I calculate the best that I could do with my resources, before giving anything away */
+		/* First I calculate the best that I could do with my resources, before giving anything away */
 		minimumProfitLoss = 999;
 		actualProfit =
 		    bestStrategy(turn, prob, &thisSimulation, thisStrategy,
-				 *myGameState, 0, 1);
-		for (give = 0; give <= 4; give++) {	/*which resource is the best to get rid of it? */
-			if (myGameState->resourcesAlreadyHave[give] >= 1) {	/*I have something to discard */
+				 *myGameState, 0, 1, num_players());
+		for (give = 0; give <= 4; give++) {	/* which resource is the best to get rid of it? */
+			if (myGameState->resourcesAlreadyHave[give] >= 1) {	/* I have something to discard */
 				/*printf("Testing resource %d on discard %d\n", give,discards+1); */
 				myGameState->resourcesAlreadyHave[give]--;
 				profitLossAfterDiscard =
@@ -2461,8 +2459,10 @@ static int update_todiscard_resources(int totalDiscards, const struct chromosome
 								&thisSimulation,
 								thisStrategy,
 								*myGameState,
-								0, 0);
-				if (profitLossAfterDiscard < minimumProfitLoss) {	/*this discard is the best so far */
+								0, 0,
+								num_players
+								());
+				if (profitLossAfterDiscard < minimumProfitLoss) {	/* this discard is the best so far */
 					minimumProfitLoss =
 					    profitLossAfterDiscard;
 					giveaway = give;
@@ -2539,7 +2539,7 @@ static int trade_desired(gint assets[NO_RESOURCE], gint give, gint take,
 	gint need[NO_RESOURCE];
 	struct gameState_t myGameState;
 
-	/*This code is temporary, it should use bestStrategy to find out if the expected profit is higher with the new resources */
+	/* This code is temporary, it should use bestStrategy to find out if the expected profit is higher with the new resources */
 	reevaluate_gameState_supply_matrix_and_resources(&myGameState);
 
 	if (!free_offer) {
@@ -2854,11 +2854,6 @@ static void genetic_init_game(void)
 
 	return;
 }
-
-
-
-
-
 
 void genetic_init(void)
 {

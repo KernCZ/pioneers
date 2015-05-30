@@ -1,4 +1,8 @@
 2015-05-30  Roland Clobus <rclobus@rclobus.nl>
+	* client/ai/Makefile.am, client/ai/genetic.c, client/ai/genetic_core.c,
+	client/ai/genetic_core.h: Created a header file for genetic_core.h. The
+	core does not depend on functionality from Pioneers any more. Some
+	whitespace changes.
 	* client/gtk/connect.c: Removed the tooltips on the buttons, they were
 	in the wrong order again. (See r1935, 2013-06-06)
 	* Makefile.am, client/gtk/connect.c, client/gtk/discard.c,
