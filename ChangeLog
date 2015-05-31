@@ -1,3 +1,6 @@
+2015-05-31  Roland Clobus <rclobus@rclobus.nl>
+	* Doxyfile.in: Fixed typo, as found by codespell.
+
 2015-05-30  Roland Clobus <rclobus@rclobus.nl>
 	* client/ai/Makefile.am, client/ai/genetic.c, client/ai/genetic_core.c,
 	client/ai/genetic_core.h: Created a header file for genetic_core.h. The
