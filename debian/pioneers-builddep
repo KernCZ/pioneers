@@ -50,6 +50,7 @@ Recommends: libgnome2-dev,
             xfonts-scalable
 Suggests: debhelper (>= 9),
           debian-policy,
+          devscripts,
           doc-debian,
           doxygen,
           equivs,
