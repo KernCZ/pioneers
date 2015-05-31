@@ -3641,7 +3641,7 @@ msgstr "Hostatja una partida de Pioneers"
 
 #: ../server/gtk/pioneers-server.desktop.in.h:3
 msgid "game;board;server;host;Pioneers;Settlers;"
-msgstr "partida;taulell;servidor;host;Pioneers;Colons"
+msgstr "partida;taulell;servidor;host;Pioneers;Colons;"
 
 #. Commandline server-console: game-title
 #: ../server/main.c:80

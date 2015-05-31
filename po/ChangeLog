@@ -1,3 +1,6 @@
+2015-05-31  Roland Clobus <rclobus@rclobus.nl>
+	* ca.po: Added a missing semicolon
+
 2014-07-07  Roland Clobus <rclobus@rclobus.nl>
 	* all: Line number update for 15.2
 	* en_GB.po: Updated to 15.2
