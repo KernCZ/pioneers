@@ -1,5 +1,7 @@
 2015-05-31  Roland Clobus <rclobus@rclobus.nl>
 	* Doxyfile.in: Fixed typo, as found by codespell.
+	* client/gtk/data/themes/ccFlickr/board.png: Fixed rendering issues by adding an
+	alpha layer to the image.
 
 2015-05-30  Roland Clobus <rclobus@rclobus.nl>
 	* client/ai/Makefile.am, client/ai/genetic.c, client/ai/genetic_core.c,
