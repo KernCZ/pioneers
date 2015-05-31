@@ -4,6 +4,7 @@ pioneers (15.4-1~local1) UNRELEASED; urgency=medium
   * Watch file checks for OpenPGP signature.
   * pioneers-builddep updated.
   * Updated copyright to add the new icon files.
+  * Updated debconf translations. (closes: #767637, #776128, #781676)
 
  -- Roland Clobus <rclobus@rclobus.nl>  Sat, 30 May 2015 17:00:00 +0200
 

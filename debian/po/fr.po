@@ -2,13 +2,13 @@
 # Copyright 2008 Christian Perrier <bubulle@debian.org>.
 # This file is distributed under the same license as the pioneers package.
 #
-# Christian Perrier <bubulle@debian.org>, 2008.
+# Christian Perrier <bubulle@debian.org>, 2008, 2014.
 msgid ""
 msgstr ""
 "Project-Id-Version: Pionees 15.1-1\n"
 "Report-Msgid-Bugs-To: pioneers@packages.debian.org\n"
 "POT-Creation-Date: 2013-03-22 12:32+0100\n"
-"PO-Revision-Date: 2008-05-13 08:04+0200\n"
+"PO-Revision-Date: 2014-11-01 16:35+0100\n"
 "Last-Translator: Christian Perrier <bubulle@debian.org>\n"
 "Language-Team: French <debian-l10n-french@lists.debian.org>\n"
 "Language: fr\n"
@@ -16,7 +16,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Lanugage: fr\n"
-"X-Generator: KBabel 1.11.4\n"
+"X-Generator: Lokalize 1.5\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #. Type: string
 #. Description
@@ -76,7 +77,6 @@ msgstr "Paramètres supplémentaires à utiliser avec le métaserveur :"
 #. Type: string
 #. Description
 #: ../pioneers-metaserver.templates:3001
-#, fuzzy
 msgid ""
 "These arguments are passed to the metaserver.\n"
 " * --redirect: Redirect clients to another metaserver"
@@ -84,3 +84,4 @@ msgstr ""
 "Veuillez indiquer les paramètres supplémentaires que vous souhaitez utiliser "
 "avec le métaserveur.\n"
 " --redirect     : redirection des clients vers un autre métaserveur."
+
