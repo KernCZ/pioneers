@@ -775,7 +775,7 @@ static gint key_press_map_cb(GtkWidget * area, GdkEventKey * event,
 			     gpointer user_data)
 {
 	static Hex *last_hex = NULL;
-	static gchar *last_key;
+	static gchar *last_key = NULL;
 	GuiMap *gmap = user_data;
 	gboolean plus10;
 
@@ -789,7 +789,7 @@ static gint key_press_map_cb(GtkWidget * area, GdkEventKey * event,
 	if (current_hex == NULL || !terrain_has_chit(current_hex->terrain))
 		return TRUE;
 
-	if (last_hex == current_hex && strcmp(last_key, "1") == 0)
+	if (last_hex == current_hex && g_strcmp0(last_key, "1") == 0)
 		plus10 = TRUE;
 	else
 		plus10 = FALSE;
