@@ -113,7 +113,7 @@ void monopoly_create_dlg(void)
 	monop_grp = add_resource_btn(vbox, monop_grp, GRAIN_RESOURCE);
 	monop_grp = add_resource_btn(vbox, monop_grp, ORE_RESOURCE);
 	monop_grp = add_resource_btn(vbox, monop_grp, WOOL_RESOURCE);
-	monop_grp = add_resource_btn(vbox, monop_grp, LUMBER_RESOURCE);
+	add_resource_btn(vbox, monop_grp, LUMBER_RESOURCE);
 
 	frontend_gui_register(gui_get_dialog_button
 			      (GTK_DIALOG(monop_dlg), 0), GUI_MONOPOLY,

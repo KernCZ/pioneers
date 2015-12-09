@@ -701,7 +701,6 @@ void player_archive(Player * player)
 	/* if no human players are present, start timer */
 	playerlist_inc_use_count(game);
 	human_player_present = FALSE;
-	pl = game->player_list;
 	for (pl = game->player_list;
 	     pl != NULL && !human_player_present; pl = g_list_next(pl)) {
 		Player *p = pl->data;

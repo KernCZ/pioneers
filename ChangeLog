@@ -1,5 +1,6 @@
 2015-12-09  Roland Clobus <rclobus@rclobus.nl>
 	* editor/gtk/editor.c: Fixed a message shown by scan-build (clang). The variable 'last_key' could be NULL.
+	* client/gtk/monopoly.c, server/player.c: Fixed a message shown by scan-build (clang). The value stored in the variable was never read.
 
 2015-05-31  Roland Clobus <rclobus@rclobus.nl>
 	* Doxyfile.in: Fixed typo, as found by codespell.
