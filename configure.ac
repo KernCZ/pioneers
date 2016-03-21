@@ -199,7 +199,6 @@ if test "x$GCC" = xyes; then
 		AC_SUBST(WARNINGS, "-Wall")
 		AC_SUBST(WARNINGS, "$WARNINGS -W")
 		AC_SUBST(WARNINGS, "$WARNINGS -Wpointer-arith")
-		AC_SUBST(WARNINGS, "$WARNINGS -Wcast-qual")
 		AC_SUBST(WARNINGS, "$WARNINGS -Wwrite-strings")
 		AC_SUBST(WARNINGS, "$WARNINGS -Wsign-compare")
 		AC_SUBST(WARNINGS, "$WARNINGS -Waggregate-return")
@@ -223,6 +222,7 @@ if test "x$GCC" = xyes; then
 		flags="$flags -Wconversion"
 		flags="$flags -Wold-style-definition"
 		flags="$flags -Wunreachable-code"
+		flags="$flags -Wcast-qual"
 		flags="$flags -pedantic"
 
 		# This for loop comes from gnome-compiler-flags.m4
