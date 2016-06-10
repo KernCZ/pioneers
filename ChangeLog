@@ -2,6 +2,7 @@
 	* server/turn.c: Apply patch #679 which fixes #290: Check for the
 	winning condition at the beginning of the turn. This way to win will
 	only occur when someone cuts the longest road in your favour.
+	* macros/gnome-autogen.sh: MinGW requires automake 1.11.1
 
 2016-03-21  Roland Clobus <rclobus@rclobus.nl>
 	* Moved compiler warnings -Wcast-qual to --enable-warnings=full, because
