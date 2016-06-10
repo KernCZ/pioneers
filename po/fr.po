@@ -56,7 +56,7 @@ msgstr "Empêcher l'AI de parler"
 #. Commandline pioneersai: algorithm
 #: ../client/ai/ai.c:108
 msgid "Type of computer player"
-msgstr "Type d'AI"
+msgstr "Type d'IA"
 
 #. Commandline option of ai: enable debug logging
 #. Commandline option of client: enable debug logging
@@ -82,7 +82,7 @@ msgstr "Voir les informations de version"
 #. Long description in the commandline for pioneersai: help
 #: ../client/ai/ai.c:125
 msgid "- Computer player for Pioneers"
-msgstr "- AI pour Pioneers"
+msgstr "- IA pour Pioneers"
 
 #: ../client/ai/ai.c:137 ../client/gtk/offline.c:199
 #: ../editor/gtk/editor.c:1886 ../metaserver/main.c:685
@@ -100,7 +100,7 @@ msgstr "Un nom doit être indiqué.\n"
 #: ../client/ai/ai.c:171
 #, c-format
 msgid "Type of computer player: %s\n"
-msgstr "Type d'AI : %s\n"
+msgstr "Type d'IA : %s\n"
 
 #: ../client/ai/ai.c:202
 msgid "The game is already full. I'm leaving."
@@ -109,7 +109,7 @@ msgstr "La partie est déjà pleine. Je pars."
 #. AI chat at the start of the turn
 #: ../client/ai/ai.c:230
 msgid "Ok, let's go!"
-msgstr "Ok, allons-y !"
+msgstr "OK, allons-y !"
 
 #. AI chat at the start of the turn
 #: ../client/ai/ai.c:232
@@ -295,7 +295,7 @@ msgstr "Félicitations"
 
 #: ../client/ai/genetic.c:1277 ../client/ai/greedy.c:961
 msgid "No settlements in stock to use for setup"
-msgstr "Plus de colonies en stock pour configuration"
+msgstr "Il n'y a plus de colonies en stock pour construire"
 
 #: ../client/ai/genetic.c:1284 ../client/ai/greedy.c:968
 msgid "There is no place to setup a settlement"
@@ -303,7 +303,7 @@ msgstr "Il n'y a plus de place pour fonder une colonie"
 
 #: ../client/ai/genetic.c:1311 ../client/ai/greedy.c:992
 msgid "No roads in stock to use for setup"
-msgstr "Il n'y a plus de routes en stock pour configuration"
+msgstr "Il n'y a plus de routes en stock pour construire"
 
 #: ../client/ai/genetic.c:1329 ../client/ai/greedy.c:1009
 msgid "There is no place to setup a road"
@@ -311,7 +311,7 @@ msgstr "Il n'y a plus de place pour construire une route"
 
 #: ../client/ai/genetic.c:2651 ../client/ai/greedy.c:1784
 msgid "Rejecting trade.\n"
-msgstr "Echange rejeté.\n"
+msgstr "Échange rejeté.\n"
 
 #. Translators: don't translate '/help'
 #: ../client/ai/lobbybot.c:80
@@ -350,7 +350,7 @@ msgstr ""
 "Ce plateau n'est pas une partie où l'on peut jouer : c'est un lieu où l'on "
 "peut rencontrer d'autres joueurs et décider quel plateau jouer. L'un des "
 "joueurs hébergera la partie choisie en démarrant un serveur et en "
-"l'enregistrant sur le meta-serveur. Les autres joueurs pourront ensuite se "
+"l'enregistrant sur le méta-serveur. Les autres joueurs pourront ensuite se "
 "déconnecter du Hall d'Accueil, et entrer dans la partie."
 
 #: ../client/ai/lobbybot.c:130
@@ -430,7 +430,7 @@ msgstr "%s a mélangé le paquet de cartes-dé.\n"
 #: ../client/common/client.c:772
 #, c-format
 msgid "%s discarded %s.\n"
-msgstr "%s jete %s.\n"
+msgstr "%s jette %s.\n"
 
 #: ../client/common/client.c:846
 #, c-format
@@ -628,7 +628,7 @@ msgstr "%s a la route la plus longue.\n"
 #: ../client/common/player.c:326
 #, c-format
 msgid "Waiting for %s."
-msgstr "En attende de %s."
+msgstr "En attente de %s."
 
 #. We are not in on the action
 #. someone stole a resource from someone else
@@ -678,7 +678,7 @@ msgstr "%s construit une route.\n"
 #: ../client/common/player.c:494
 #, c-format
 msgid "%s built a ship.\n"
-msgstr "%s construire un navire.\n"
+msgstr "%s construit un navire.\n"
 
 #: ../client/common/player.c:507
 #, c-format
@@ -699,7 +699,7 @@ msgstr "%s construit un rempart.\n"
 #: ../client/common/player.c:551
 #, c-format
 msgid "player_build_add called with BUILD_NONE for user %s\n"
-msgstr "player_build_add est appellé avec BUILD_NONE pour le joueur %s\n"
+msgstr "player_build_add est appelé avec BUILD_NONE pour le joueur %s\n"
 
 #: ../client/common/player.c:561
 #, c-format
@@ -735,7 +735,7 @@ msgstr "%s supprime un rempart.\n"
 #: ../client/common/player.c:642
 #, c-format
 msgid "player_build_remove called with BUILD_NONE for user %s\n"
-msgstr "player_build_remove est appellé avec BUILD_NONE pour le joueur %s\n"
+msgstr "player_build_remove est appelé avec BUILD_NONE pour le joueur %s\n"
 
 #: ../client/common/player.c:651
 #, c-format
@@ -858,7 +858,7 @@ msgstr "une carte de blé"
 #: ../client/common/resource.c:48
 #, c-format
 msgid "%d grain cards"
-msgstr "%d cartes de blés"
+msgstr "%d cartes de blé"
 
 #: ../client/common/resource.c:49
 msgid "an ore card"
@@ -980,7 +980,7 @@ msgstr "Vous bipez %s.\n"
 #: ../client/gtk/chat.c:245
 #, c-format
 msgid "You could not beep %s.\n"
-msgstr "Vous ne pouved pas biper %s.\n"
+msgstr "Vous ne pouvez pas biper %s.\n"
 
 #: ../client/gtk/chat.c:289
 msgid " said: "
@@ -989,7 +989,7 @@ msgstr " a dit : "
 #: ../client/gtk/connect.c:286
 #, c-format
 msgid "Metaserver at %s, port %s"
-msgstr "Meta-serveur à l'adresse %s, port %s"
+msgstr "Méta-serveur à l'adresse %s, port %s"
 
 #: ../client/gtk/connect.c:296
 msgid "Finished.\n"
@@ -998,16 +998,16 @@ msgstr "Terminé.\n"
 #: ../client/gtk/connect.c:311 ../client/gtk/connect.c:389
 #: ../client/gtk/connect.c:408 ../client/gtk/connect.c:979
 msgid "The metaserver is not available anymore.\n"
-msgstr "Le meta-serveur n'est plus disponible.\n"
+msgstr "Le méta-serveur n'est plus disponible.\n"
 
 #: ../client/gtk/connect.c:322 ../client/gtk/connect.c:443
 #: ../client/gtk/connect.c:770
 msgid "The metaserver closed the connection unexpectedly.\n"
-msgstr "Le meta-serveur a terminé la connexion de manière inattendue.\n"
+msgstr "Le méta-serveur a terminé la connexion de manière inattendue.\n"
 
 #: ../client/gtk/connect.c:380
 msgid "Receiving game names from the metaserver.\n"
-msgstr "Reception du nom des parties du meta-serveur.\n"
+msgstr "Réception du nom des parties du méta-serveur.\n"
 
 #: ../client/gtk/connect.c:422
 #, c-format
@@ -1021,7 +1021,7 @@ msgstr "Le nouveau serveur a envoyé des informations incomplètes.\n"
 #: ../client/gtk/connect.c:486 ../client/gtk/connect.c:492 ../server/meta.c:239
 #, c-format
 msgid "Unknown message from the metaserver: %s\n"
-msgstr "Message inconnu du meta-serveur : %s\n"
+msgstr "Message inconnu du méta-serveur : %s\n"
 
 #: ../client/gtk/connect.c:565 ../server/meta.c:178
 #, c-format
@@ -1030,7 +1030,7 @@ msgstr "Réception de données depuis une session inactive : %s\n"
 
 #: ../client/gtk/connect.c:577 ../server/meta.c:192
 msgid "Too many metaserver redirects.\n"
-msgstr "Trop de redirections du meta-serveur.\n"
+msgstr "Trop de redirections du méta-serveur.\n"
 
 #: ../client/gtk/connect.c:606 ../server/meta.c:208
 #, c-format
@@ -1041,13 +1041,13 @@ msgstr "Mauvaise redirection ligne %s\n"
 #, c-format
 msgid "The metaserver is too old to create servers (version %d.%d)\n"
 msgstr ""
-"Le meta-serveur est trop vieux pour créer des parties (version %d.%d)\n"
+"Le méta-serveur est trop vieux pour créer des parties (version %d.%d)\n"
 
 #: ../client/gtk/connect.c:670 ../client/gtk/connect.c:749
 #: ../client/gtk/connect.c:755
 #, c-format
 msgid "Unexpected data from the metaserver: %s\n"
-msgstr "Données inconnues reçues du meta-serveur : %s\n"
+msgstr "Données inconnues reçues du méta-serveur : %s\n"
 
 #. Sevens rule: normal
 #: ../client/gtk/connect.c:701 ../client/gtk/settingscreen.c:181
@@ -1078,26 +1078,26 @@ msgstr "Aléatoire"
 #: ../client/gtk/connect.c:819 ../server/meta.c:299
 #, c-format
 msgid "Redirected to the metaserver at %s.\n"
-msgstr "Redirection vers le meta-serveur %s.\n"
+msgstr "Redirection vers le méta-serveur %s.\n"
 
 #: ../client/gtk/connect.c:824 ../server/meta.c:302
 #, c-format
 msgid "Redirected to the metaserver at %s, port %s.\n"
-msgstr "Redirection vers le meta-serveur %s, port %s.\n"
+msgstr "Redirection vers le méta-serveur %s, port %s.\n"
 
 #: ../client/gtk/connect.c:831
 msgid "Receiving a list of Pioneers servers from the metaserver.\n"
-msgstr "Réception d'une liste de serveurs Pioneers depuis le meta-serveur.\n"
+msgstr "Réception d'une liste de serveurs Pioneers depuis le méta-serveur.\n"
 
 #. Label
 #: ../client/gtk/connect.c:914
 msgid "Number of computer players"
-msgstr "Type d'AI"
+msgstr "Type d'IA"
 
 #. Tooltip
 #: ../client/gtk/connect.c:935
 msgid "The number of computer players"
-msgstr "Nombre de joueurs AI"
+msgstr "Nombre de joueurs IA"
 
 #. Canceled retrieving information
 #. * from the metaserver
@@ -1297,7 +1297,7 @@ msgstr "Rejoindre une partie découverte automatiquement"
 #. metaserver label
 #: ../client/gtk/connect.c:1542 ../server/gtk/main.c:593
 msgid "Metaserver"
-msgstr "Meta-serveur"
+msgstr "Méta-serveur"
 
 #. Button
 #: ../client/gtk/connect.c:1564
@@ -1829,7 +1829,7 @@ msgstr "Utiliser des couleurs pour afficher les joueurs"
 #. Label for the option to display keyboard accelerators in the toolbar
 #: ../client/gtk/gui.c:1151
 msgid "Toolbar with shortcuts"
-msgstr "Barre d'outils avec ses raccorucis"
+msgstr "Barre d'outils avec ses raccourcis"
 
 #. Tooltip for the option to display keyboard accelerators in the toolbar
 #: ../client/gtk/gui.c:1161
@@ -1998,7 +1998,7 @@ msgstr "Se connecter en tant que spectateur"
 
 #: ../client/gtk/offline.c:67
 msgid "Metaserver Host"
-msgstr "Hôte du meta-serveur"
+msgstr "Hôte du méta-serveur"
 
 #: ../client/gtk/offline.c:81
 msgid "Select a game to join."
@@ -2534,7 +2534,7 @@ msgstr ""
 "Points obtenus en construisant tout : %d\n"
 "Points dans les cartes de développement : %u\n"
 "Route la plus longue / chevalier le plus puissant : %d+%d\n"
-"Bonus maximum pour la découverte d'iles : %d\n"
+"Bonus maximum pour la découverte d'îles : %d\n"
 "Total : %d"
 
 #: ../common/game-list.c:111
@@ -2747,7 +2747,7 @@ msgstr "Bo"
 #. Tooltip for the list of metaservers
 #: ../common/gtk/metaserver.c:85
 msgid "Select a metaserver"
-msgstr "Choisir un meta-serveur"
+msgstr "Choisir un méta-serveur"
 
 #. Tooltip for the list of games
 #: ../common/gtk/select-game.c:135
@@ -2787,7 +2787,7 @@ msgstr "Vole : "
 #. Log prefix
 #: ../common/log.c:86
 msgid "Trade: "
-msgstr "Echanges : "
+msgstr "Échanges : "
 
 #. Log prefix
 #: ../common/log.c:90
@@ -3102,7 +3102,7 @@ msgstr "Placez un port 2:1 \"bois\""
 #. Tooltip to remove a port tile in the editor
 #: ../editor/gtk/editor.c:406
 msgid "Remove a port"
-msgstr "Supprimer le port"
+msgstr "Supprimer un port"
 
 #: ../editor/gtk/editor.c:407
 msgid "Place a 3:1 port"
@@ -3114,7 +3114,7 @@ msgid ""
 "node to exclude it from being used during the setup phase"
 msgstr ""
 "Sélectionnez le type de terrain avec le menu contextuel du clic gauche, ou "
-"permuttez un sommet pour ne pas l'utiliser pendant la phase de paramétrage"
+"permutez un sommet pour ne pas l'utiliser pendant la phase de paramétrage"
 
 #: ../editor/gtk/editor.c:572
 msgid "Insert a row"
@@ -3335,7 +3335,7 @@ msgstr "nom de fichier"
 #. Long description in the command line: --help
 #: ../editor/gtk/editor.c:1875
 msgid "- Editor for games of Pioneers"
-msgstr "- Editeur de parties pour Pioneers"
+msgstr "- Éditeur de parties pour Pioneers"
 
 #. Error message
 #: ../editor/gtk/editor.c:1919 ../server/gtk/main.c:1256
@@ -3368,7 +3368,7 @@ msgstr "jeu;plateau;créer;éditer;carte;Pioneers;Colons;"
 #. Commandline metaserver: daemon
 #: ../metaserver/main.c:610
 msgid "Daemonize the metaserver on start"
-msgstr "Démoniser le meta-serveur au démarrage"
+msgstr "Démoniser le méta-serveur au démarrage"
 
 #. Commandline metaserver: pidfile
 #: ../metaserver/main.c:613
@@ -3378,7 +3378,7 @@ msgstr "Fichier PID à créer lors de la démonisation (implique -d)"
 #. Commandline metaserver: redirect
 #: ../metaserver/main.c:618
 msgid "Redirect clients to another metaserver"
-msgstr "Rediriger les clients vers un autre meta-serveur"
+msgstr "Rediriger les clients vers un autre méta-serveur"
 
 #. Commandline metaserver: server
 #: ../metaserver/main.c:621
@@ -3408,12 +3408,12 @@ msgstr "Messages de débogage système (syslog)"
 #. Long description in the commandline for metaserver: help
 #: ../metaserver/main.c:673
 msgid "- Metaserver for Pioneers"
-msgstr "- Meta-serveur pour Pioneers"
+msgstr "- Méta-serveur pour Pioneers"
 
 #: ../metaserver/main.c:689
 #, c-format
 msgid "metaserver protocol:"
-msgstr "protocole du meta-serveur :"
+msgstr "protocole du méta-serveur :"
 
 #: ../server/avahi.c:68
 msgid "Avahi registration successful.\n"
@@ -3497,7 +3497,7 @@ msgstr "Annoncer le serveur"
 
 #: ../server/gtk/main.c:587
 msgid "Register this game at the metaserver"
-msgstr "Annoncer cette partie sur le meta-serveur"
+msgstr "Annoncer cette partie sur le méta-serveur"
 
 #. hostname label
 #: ../server/gtk/main.c:618
@@ -3607,7 +3607,7 @@ msgstr "Ajouter une IA"
 #. Tooltip
 #: ../server/gtk/main.c:925
 msgid "Messages from the server"
-msgstr "Messaage du serveur"
+msgstr "Messages du serveur"
 
 #: ../server/gtk/main.c:961
 msgid "Game settings"
@@ -3729,12 +3729,12 @@ msgstr "Ajouter N joueurs IA"
 #. Commandline server-console: register
 #: ../server/main.c:121
 msgid "Register server with metaserver"
-msgstr "Annoncer cette partie sur le meta-serveur"
+msgstr "Annoncer cette partie sur le méta-serveur"
 
 #. Commandline server-console: metaserver
 #: ../server/main.c:124
 msgid "Register at metaserver name (implies -r)"
-msgstr "Nom du meta-serveur d'enregistrement (implique -r)"
+msgstr "Nom du méta-serveur d'enregistrement (implique -r)"
 
 #. Commandline server-console: hostname
 #: ../server/main.c:128
@@ -3754,7 +3754,7 @@ msgstr "Quitter après N secondes sans joueurs"
 #. Commandline server-console: tournament
 #: ../server/main.c:141
 msgid "Tournament mode, computer players added after N minutes"
-msgstr "Mode tournoi, joueurs AI ajoutés après N minutes"
+msgstr "Mode tournoi, joueurs IA ajoutés après N minutes"
 
 #. Commandline server-console: admin-port
 #: ../server/main.c:145
@@ -3777,17 +3777,17 @@ msgstr ""
 #. Commandline server-console: Short description of meta group
 #: ../server/main.c:198
 msgid "Metaserver Options"
-msgstr "Options du meta-serveur"
+msgstr "Options du méta-serveur"
 
 #. Commandline server-console: Long description of meta group
 #: ../server/main.c:200
 msgid "Options for the metaserver"
-msgstr "Options du meta-serveur"
+msgstr "Options du méta-serveur"
 
 #. Commandline server-console: Short description of misc group
 #: ../server/main.c:209
 msgid "Miscellaneous Options"
-msgstr "Options Diverses"
+msgstr "Options diverses"
 
 #. Commandline server-console: Long description of misc group
 #: ../server/main.c:211
@@ -3816,7 +3816,7 @@ msgstr ""
 
 #: ../server/meta.c:58
 msgid "The connection to the metaserver is lost.\n"
-msgstr "La connexion au meta-serveur a été perdue.\n"
+msgstr "La connexion au méta-serveur a été perdue.\n"
 
 #: ../server/meta.c:64
 #, c-format
@@ -3827,16 +3827,16 @@ msgstr[1] "Une tentative de reconnexion est planifiée dans %u secondes.\n"
 
 #: ../server/meta.c:83
 msgid "Attempting to reconnect to the metaserver.\n"
-msgstr "Tentative de reconnexion au meta-serveur.\n"
+msgstr "Tentative de reconnexion au méta-serveur.\n"
 
 #: ../server/meta.c:311
 #, c-format
 msgid "Register with the metaserver at %s.\n"
-msgstr "Enregistrement sur le meta-serveur %s.\n"
+msgstr "Enregistrement sur le méta-serveur %s.\n"
 
 #: ../server/meta.c:322
 msgid "Unregister from the metaserver.\n"
-msgstr "Se désinscrire du meta-serveur.\n"
+msgstr "Se désinscrire du méta-serveur.\n"
 
 #: ../server/player.c:142
 msgid "chat too long"
@@ -3852,7 +3852,7 @@ msgstr "ignorer les extensions inconnues"
 
 #: ../server/player.c:228 ../server/player.c:298
 msgid "The last player left, the tournament timer is reset."
-msgstr "Le dernier joueur est parti, le timer du tournoi a été réinitialisé."
+msgstr "Le dernier joueur est parti, le sablier du tournoi a été réinitialisé."
 
 #: ../server/player.c:262 ../server/player.c:643
 msgid "No human players present. Bye."
@@ -3941,7 +3941,7 @@ msgstr "Bonus de découverte d'île"
 
 #: ../server/turn.c:255
 msgid "Additional Island Bonus"
-msgstr "Bonus dîle supplémentaire"
+msgstr "Bonus d'île supplémentaire"
 
 #: ../server/turn.c:386
 msgid "Tried to assign resources to NULL player.\n"
@@ -3959,7 +3959,7 @@ msgstr "Le jet du dé a été défini par l'administrateur."
 #~ msgstr "Ne pas rejoindre une partie publique"
 
 #~ msgid "Create a new public game at the metaserver"
-#~ msgstr "Créer une nouvelle partie publique sur le meta-serveur"
+#~ msgstr "Créer une nouvelle partie publique sur le méta-serveur"
 
 #~ msgid "Refresh the list of games"
 #~ msgstr "Rafraîchir la liste des parties"
@@ -3977,7 +3977,7 @@ msgstr "Le jet du dé a été défini par l'administrateur."
 #~ msgstr "Pioneers a été traduit en français par :\n"
 
 #~ msgid "Metaserver kicked us off\n"
-#~ msgstr "Le meta-serveur nous a expulsé\n"
+#~ msgstr "Le méta-serveur nous a expulsé\n"
 
 #~ msgid ""
 #~ "<b>Note</b>:\n"
