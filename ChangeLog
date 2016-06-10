@@ -1,15 +1,22 @@
-2016-03-21  Roland Clobus <rclobus@rclobus.nl
+2016-06-10  Roland Clobus <rclobus@rclobus.nl>
+	* server/turn.c: Apply patch #679 which fixes #290: Check for the
+	winning condition at the beginning of the turn. This way to win will
+	only occur when someone cuts the longest road in your favour.
+
+2016-03-21  Roland Clobus <rclobus@rclobus.nl>
 	* Moved compiler warnings -Wcast-qual to --enable-warnings=full, because
 	the GTK library issues this warning a lot.
 
 2015-12-09  Roland Clobus <rclobus@rclobus.nl>
-	* editor/gtk/editor.c: Fixed a message shown by scan-build (clang). The variable 'last_key' could be NULL.
-	* client/gtk/monopoly.c, server/player.c: Fixed a message shown by scan-build (clang). The value stored in the variable was never read.
+	* editor/gtk/editor.c: Fixed a message shown by scan-build (clang).
+	The variable 'last_key' could be NULL.
+	* client/gtk/monopoly.c, server/player.c: Fixed a message shown by
+	scan-build (clang). The value stored in the variable was never read.
 
 2015-05-31  Roland Clobus <rclobus@rclobus.nl>
 	* Doxyfile.in: Fixed typo, as found by codespell.
-	* client/gtk/data/themes/ccFlickr/board.png: Fixed rendering issues by adding an
-	alpha layer to the image.
+	* client/gtk/data/themes/ccFlickr/board.png: Fixed rendering issues by
+	adding an alpha layer to the image.
 
 2015-05-30  Roland Clobus <rclobus@rclobus.nl>
 	* client/ai/Makefile.am, client/ai/genetic.c, client/ai/genetic_core.c,

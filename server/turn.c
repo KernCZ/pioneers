@@ -558,6 +558,11 @@ gboolean mode_turn(Player * player, gint event)
 	gint sx, sy, spos, dx, dy, dpos;
 
 	sm_state_name(sm, "mode_turn");
+	if (event == SM_INIT) {
+		if (!game->params->check_victory_at_end_of_turn)
+			check_victory(player);
+		return TRUE;
+	}
 	if (event != SM_RECV)
 		return FALSE;
 	if (sm_recv(sm, "roll")) {
