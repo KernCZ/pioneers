@@ -1,6 +1,7 @@
 2016-06-10  Roland Clobus <rclobus@rclobus.nl>
 	* all: Line number update for 15.4. Some button texts were previously
 	in Gtk (OK, Cancel,...)
+	* en_GB.po, nl.po: Updated to 15.4
 
 2015-05-31  Roland Clobus <rclobus@rclobus.nl>
 	* ca.po: Added a missing semicolon

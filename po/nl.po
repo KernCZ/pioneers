@@ -2,14 +2,14 @@
 # Copyright (C) 2003 Bas Wijnen
 # This file is distributed under the same license as the pioneers package.
 # Bas Wijnen <b.wijnen@phys.rug.nl>, 2003-2004
-# Roland Clobus <rclobus@rclobus.nl>, 2005-2014
+# Roland Clobus <rclobus@rclobus.nl>, 2005-2016
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Pioneers 15.3\n"
+"Project-Id-Version: Pioneers 15.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-06-10 18:20+0200\n"
-"PO-Revision-Date: 2013-09-08 18:00+0100\n"
+"PO-Revision-Date: 2016-06-10 18:27+0200\n"
 "Last-Translator: Roland Clobus <rclobus@rclobus.nl>\n"
 "Language-Team: Bas Wijnen <shevek@fmf.nl> Roland Clobus <rclobus@rclobus."
 "nl>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 1.8.8\n"
 
 #. Commandline pioneersai: chromosome-file
 #: ../client/ai/ai.c:90
@@ -1119,15 +1119,13 @@ msgstr "Nieuw openbaar spel aanmaken"
 #: ../client/gtk/connect.c:1440 ../client/gtk/connect.c:1744
 #: ../client/gtk/name.c:147 ../editor/gtk/editor.c:1521
 #: ../editor/gtk/editor.c:1562 ../editor/gtk/editor.c:1611
-#, fuzzy
 msgid "_Cancel"
-msgstr "Geannuleerd.\n"
+msgstr "_Annuleren"
 
 #. Button text
 #: ../client/gtk/connect.c:1042
-#, fuzzy
 msgid "C_reate"
-msgstr "Nieuw spel aanmaken"
+msgstr "_Aanmaken"
 
 #. Dialog caption
 #: ../client/gtk/connect.c:1182
@@ -1137,7 +1135,7 @@ msgstr "Meespelen in een openbaar spel"
 #. Button text
 #: ../client/gtk/connect.c:1185
 msgid "_Refresh"
-msgstr ""
+msgstr "_Verversen"
 
 #. Button text
 #: ../client/gtk/connect.c:1188
@@ -1146,9 +1144,8 @@ msgstr "_Nieuw spel via metaserver"
 
 #. Button text
 #: ../client/gtk/connect.c:1194 ../client/gtk/connect.c:1748
-#, fuzzy
 msgid "_Join"
-msgstr "Meespelen"
+msgstr "_Meespelen"
 
 #. Tooltip
 #: ../client/gtk/connect.c:1237
@@ -1374,7 +1371,7 @@ msgstr "Grondstoffen weggooien"
 #: ../client/gtk/gold.c:78 ../client/gtk/monopoly.c:88 ../client/gtk/name.c:150
 #: ../client/gtk/plenty.c:67 ../editor/gtk/editor.c:1614
 msgid "_OK"
-msgstr ""
+msgstr "_Ok"
 
 #: ../client/gtk/discard.c:101
 #, c-format
@@ -1768,7 +1765,7 @@ msgstr "Pioniers Voorkeuren"
 #: ../client/gtk/gui.c:1037 ../client/gtk/histogram.c:252
 #: ../client/gtk/legend.c:253 ../client/gtk/settingscreen.c:413
 msgid "_Close"
-msgstr ""
+msgstr "Sl_uiten"
 
 #. Label for changing the theme, in the preferences dialog
 #: ../client/gtk/gui.c:1062
@@ -3197,9 +3194,8 @@ msgstr "Spel openen"
 
 #. Button text
 #: ../editor/gtk/editor.c:1524
-#, fuzzy
 msgid "_Open"
-msgstr "_Openen..."
+msgstr "_Openen"
 
 #. Dialog caption
 #: ../editor/gtk/editor.c:1558
@@ -3208,9 +3204,8 @@ msgstr "Opslaan als..."
 
 #. Button text
 #: ../editor/gtk/editor.c:1565
-#, fuzzy
 msgid "Save _As"
-msgstr "Opslaan _als..."
+msgstr "Opslaan _als"
 
 #. Dialog caption
 #: ../editor/gtk/editor.c:1606
@@ -3625,9 +3620,8 @@ msgstr "Berichten"
 
 #. Caption of about box
 #: ../server/gtk/main.c:1150
-#, fuzzy
 msgid "About the Pioneers Game Server"
-msgstr "De Pioniers server"
+msgstr "Over de Pioniers server"
 
 #
 #. Wait for all players to disconnect,

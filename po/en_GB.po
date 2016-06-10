@@ -2,14 +2,14 @@
 # Copyright (c) 2010 Rosetta Contributors and Canonical Ltd 2010
 # This file is distributed under the same license as the pioneers package.
 # Philipp Kleinherz <Unknown>, 2010.
-# Roland Clobus <rclobus@rclobus.nl>, 2010
+# Roland Clobus <rclobus@rclobus.nl>, 2010-2016
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Pioneers 15.3\n"
+"Project-Id-Version: Pioneers 15.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-06-10 18:20+0200\n"
-"PO-Revision-Date: 2013-09-08 17:12+0100\n"
+"PO-Revision-Date: 2016-06-10 18:23+0200\n"
 "Last-Translator: Roland Clobus <rclobus@rclobus.nl>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "Language: en_GB\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Launchpad-Export-Date: 2010-03-11 19:44+0000\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 1.8.8\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
 #. Commandline pioneersai: chromosome-file
@@ -1117,15 +1117,13 @@ msgstr "Create a Public Game"
 #: ../client/gtk/connect.c:1440 ../client/gtk/connect.c:1744
 #: ../client/gtk/name.c:147 ../editor/gtk/editor.c:1521
 #: ../editor/gtk/editor.c:1562 ../editor/gtk/editor.c:1611
-#, fuzzy
 msgid "_Cancel"
-msgstr "Cancelled.\n"
+msgstr "_Cancel"
 
 #. Button text
 #: ../client/gtk/connect.c:1042
-#, fuzzy
 msgid "C_reate"
-msgstr "Create Game"
+msgstr "C_reate"
 
 #. Dialog caption
 #: ../client/gtk/connect.c:1182
@@ -1135,7 +1133,7 @@ msgstr "Join a Public Game"
 #. Button text
 #: ../client/gtk/connect.c:1185
 msgid "_Refresh"
-msgstr ""
+msgstr "_Refresh"
 
 #. Button text
 #: ../client/gtk/connect.c:1188
@@ -1144,9 +1142,8 @@ msgstr "_New Remote Game"
 
 #. Button text
 #: ../client/gtk/connect.c:1194 ../client/gtk/connect.c:1748
-#, fuzzy
 msgid "_Join"
-msgstr "Join"
+msgstr "_Join"
 
 #. Tooltip
 #: ../client/gtk/connect.c:1237
@@ -1372,7 +1369,7 @@ msgstr "Discard Resources"
 #: ../client/gtk/gold.c:78 ../client/gtk/monopoly.c:88 ../client/gtk/name.c:150
 #: ../client/gtk/plenty.c:67 ../editor/gtk/editor.c:1614
 msgid "_OK"
-msgstr ""
+msgstr "_OK"
 
 #: ../client/gtk/discard.c:101
 #, c-format
@@ -1766,7 +1763,7 @@ msgstr "Pioneers Preferences"
 #: ../client/gtk/gui.c:1037 ../client/gtk/histogram.c:252
 #: ../client/gtk/legend.c:253 ../client/gtk/settingscreen.c:413
 msgid "_Close"
-msgstr ""
+msgstr "_Close"
 
 #. Label for changing the theme, in the preferences dialog
 #: ../client/gtk/gui.c:1062
@@ -3189,9 +3186,8 @@ msgstr "Open Game"
 
 #. Button text
 #: ../editor/gtk/editor.c:1524
-#, fuzzy
 msgid "_Open"
-msgstr "_Open..."
+msgstr "_Open"
 
 #. Dialog caption
 #: ../editor/gtk/editor.c:1558
@@ -3200,9 +3196,8 @@ msgstr "Save As..."
 
 #. Button text
 #: ../editor/gtk/editor.c:1565
-#, fuzzy
 msgid "Save _As"
-msgstr "Save _As..."
+msgstr "Save _As"
 
 #. Dialog caption
 #: ../editor/gtk/editor.c:1606
@@ -3616,9 +3611,8 @@ msgstr "Messages"
 
 #. Caption of about box
 #: ../server/gtk/main.c:1150
-#, fuzzy
 msgid "About the Pioneers Game Server"
-msgstr "The Pioneers Game Server"
+msgstr "About the Pioneers Game Server"
 
 #. Wait for all players to disconnect,
 #. * then enable the UI
@@ -3918,174 +3912,3 @@ msgstr "Tried to assign resources to NULL player.\n"
 #: ../server/turn.c:516
 msgid "The dice roll has been determined by the administrator."
 msgstr "The dice roll has been determined by the administrator."
-
-#~ msgid "Join the selected game"
-#~ msgstr "Join the selected game"
-
-#~ msgid "Don't join a public game"
-#~ msgstr "Don't join a public game"
-
-#~ msgid "Create a new public game at the metaserver"
-#~ msgstr "Create a new public game at the metaserver"
-
-#~ msgid "Refresh the list of games"
-#~ msgstr "Refresh the list of games"
-
-#~ msgid "Version:"
-#~ msgstr "Version:"
-
-#~ msgid "Homepage:"
-#~ msgstr "Homepage:"
-
-#~ msgid "Authors:"
-#~ msgstr "Authors:"
-
-#~ msgid "Pioneers is translated to <your language here> by:\n"
-#~ msgstr "Pioneers is translated to British by:\n"
-
-#~ msgid "Meta-server kicked us off\n"
-#~ msgstr "Meta-server kicked us off\n"
-
-#~ msgid ""
-#~ "<b>Note</b>:\n"
-#~ "\tThe metaserver does not send information about the games.\n"
-#~ "\tPlease set appropriate values yourself."
-#~ msgstr ""
-#~ "<b>Note</b>:\n"
-#~ "\tThe metaserver does not send information about the games.\n"
-#~ "\tPlease set appropriate values yourself."
-
-#~ msgid "Error checking connect status: %s\n"
-#~ msgstr "Error checking connect status: %s\n"
-
-#~ msgid "Error connecting to host '%s': %s\n"
-#~ msgstr "Error connecting to host '%s': %s\n"
-
-#~ msgid "Error writing socket: %s\n"
-#~ msgstr "Error writing socket: %s\n"
-
-#~ msgid "Error creating socket: %s\n"
-#~ msgstr "Error creating socket: %s\n"
-
-#~ msgid "Error setting socket close-on-exec: %s\n"
-#~ msgstr "Error setting socket close-on-exec: %s\n"
-
-#~ msgid "Error setting socket non-blocking: %s\n"
-#~ msgstr "Error setting socket non-blocking: %s\n"
-
-#~ msgid "Cannot resolve %s port %s: %s\n"
-#~ msgstr "Cannot resolve %s port %s: %s\n"
-
-#~ msgid "Cannot resolve %s port %s: host not found\n"
-#~ msgstr "Cannot resolve %s port %s: host not found\n"
-
-#~ msgid "Error creating struct addrinfo: %s"
-#~ msgstr "Error creating struct addrinfo: %s"
-
-#~ msgid "Error creating listening socket: %s\n"
-#~ msgstr "Error creating listening socket: %s\n"
-
-#~ msgid "Error during listen on socket: %s\n"
-#~ msgstr "Error during listen on socket: %s\n"
-
-#~ msgid "Listening not yet supported on this platform."
-#~ msgstr "Listening not yet supported on this platform."
-
-#~ msgid "Error getting peer name: %s"
-#~ msgstr "Error getting peer name: %s"
-
-#~ msgid "Error resolving address: %s"
-#~ msgstr "Error resolving address: %s"
-
-#~ msgid "Net_get_peer_name not yet supported on this platform."
-#~ msgstr "Net_get_peer_name not yet supported on this platform."
-
-#~ msgid "Error accepting connection: %s"
-#~ msgstr "Error accepting connection: %s"
-
-#~ msgid "Admin port not available.\n"
-#~ msgstr "Admin port not available.\n"
-
-#~ msgid "Admin port is not set, cannot disable game start too\n"
-#~ msgstr "Admin port is not set, cannot disable game start too\n"
-
-#~ msgid "Viewer %d"
-#~ msgstr "Viewer %d"
-
-#~ msgid "viewer %d"
-#~ msgstr "viewer %d"
-
-#~ msgid "<b>I want</b>"
-#~ msgstr "<b>I want</b>"
-
-#~ msgid "<b>Give them</b>"
-#~ msgstr "<b>Give them</b>"
-
-#~ msgid "Viewer: "
-#~ msgstr "Viewer: "
-
-#~ msgid "Number of AI Players"
-#~ msgstr "Number of AI Players"
-
-#~ msgid "The number of AI players"
-#~ msgstr "The number of AI players"
-
-#~ msgid "Recent Games"
-#~ msgstr "Recent Games"
-
-#~ msgid "You may choose 1 resource"
-#~ msgstr "You may choose 1 resource"
-
-#~ msgid "_Player name"
-#~ msgstr "_Player name"
-
-#~ msgid "The Pioneers Game"
-#~ msgstr "The Pioneers Game"
-
-#~ msgid "Select the ship to steal from"
-#~ msgstr "Select the ship to steal from"
-
-#~ msgid "Select the building to steal from"
-#~ msgstr "Select the building to steal from"
-
-#~ msgid "Development Card"
-#~ msgstr "Development Card"
-
-#~ msgid "Player Name:"
-#~ msgstr "Player Name:"
-
-#~ msgid "I Want"
-#~ msgstr "I Want"
-
-#~ msgid "Interplayer Trading Allowed?"
-#~ msgstr "Interplayer Trading Allowed?"
-
-#~ msgid "Trading allowed only before build/buy?"
-#~ msgstr "Trading allowed only before build/buy?"
-
-#~ msgid "Check Victory Only At End Of Turn?"
-#~ msgstr "Check Victory Only At End Of Turn?"
-
-#~ msgid "Sevens Rule:"
-#~ msgstr "Sevens Rule:"
-
-#~ msgid "Use Pirate:"
-#~ msgstr "Use Pirate:"
-
-#~ msgid "Number of Players"
-#~ msgstr "Number of Players"
-
-#~ msgid "Development Cards"
-#~ msgstr "Development Cards"
-
-#~ msgid "Save as..."
-#~ msgstr "Save as..."
-
-#~ msgid "Pioneers Game Editor"
-#~ msgstr "Pioneers Game Editor"
-
-#~ msgid "_Change title"
-#~ msgstr "_Change title"
-
-#~ msgid "Random Turn Order"
-#~ msgstr "Random Turn Order"
