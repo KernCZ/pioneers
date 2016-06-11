@@ -1,3 +1,6 @@
+2016-06-11  Jean-Charles GRANGER <traduction@vecteur.org>
+	* fr.po: Updated to 15.4
+
 2016-06-10  Roland Clobus <rclobus@rclobus.nl>
 	* all: Line number update for 15.4. Some button texts were previously
 	in Gtk (OK, Cancel,...)

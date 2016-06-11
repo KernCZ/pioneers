@@ -7,10 +7,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Pioneers 15.1\n"
+"Project-Id-Version: Pioneers 15.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-06-10 18:20+0200\n"
-"PO-Revision-Date: 2013-09-15 20:05+0100\n"
+"PO-Revision-Date: 2016-06-11 16:40+0200\n"
 "Last-Translator: Jean-Charles GRANGER <traduction@vecteur.org>\n"
 "Language-Team: Français <LL@li.org>, LT-P <LT-P@LT-P.net>, Yusei "
 "<yusei@ragondux.com>, Arnaud MALON <moko@geumeuleu.com>, Jean-Charles "
@@ -19,14 +19,14 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
-"X-Generator: Poedit 1.5.7\n"
+"X-Generator: Poedit 1.8.8\n"
 
 #. Commandline pioneersai: chromosome-file
 #: ../client/ai/ai.c:90
 msgid "Chromosome File"
-msgstr ""
+msgstr "Fichier chromosome"
 
 #. Commandline pioneersai: server
 #: ../client/ai/ai.c:93
@@ -1125,15 +1125,13 @@ msgstr "Créer une partie publique"
 #: ../client/gtk/connect.c:1440 ../client/gtk/connect.c:1744
 #: ../client/gtk/name.c:147 ../editor/gtk/editor.c:1521
 #: ../editor/gtk/editor.c:1562 ../editor/gtk/editor.c:1611
-#, fuzzy
 msgid "_Cancel"
-msgstr "Annulé.\n"
+msgstr "Annuler"
 
 #. Button text
 #: ../client/gtk/connect.c:1042
-#, fuzzy
 msgid "C_reate"
-msgstr "Créer une partie"
+msgstr "C_réer"
 
 #. Dialog caption
 #: ../client/gtk/connect.c:1182
@@ -1143,7 +1141,7 @@ msgstr "Rejoindre une partie publique"
 #. Button text
 #: ../client/gtk/connect.c:1185
 msgid "_Refresh"
-msgstr ""
+msgstr "Actualiser"
 
 #. Button text
 #: ../client/gtk/connect.c:1188
@@ -1152,9 +1150,8 @@ msgstr "_Nouvelle partie distante"
 
 #. Button text
 #: ../client/gtk/connect.c:1194 ../client/gtk/connect.c:1748
-#, fuzzy
 msgid "_Join"
-msgstr "Rejoindre"
+msgstr "Re_joindre"
 
 #. Tooltip
 #: ../client/gtk/connect.c:1237
@@ -1380,7 +1377,7 @@ msgstr "Jeter les ressources"
 #: ../client/gtk/gold.c:78 ../client/gtk/monopoly.c:88 ../client/gtk/name.c:150
 #: ../client/gtk/plenty.c:67 ../editor/gtk/editor.c:1614
 msgid "_OK"
-msgstr ""
+msgstr "_Ok"
 
 #: ../client/gtk/discard.c:101
 #, c-format
@@ -1774,7 +1771,7 @@ msgstr "Préférences de Pioneers"
 #: ../client/gtk/gui.c:1037 ../client/gtk/histogram.c:252
 #: ../client/gtk/legend.c:253 ../client/gtk/settingscreen.c:413
 msgid "_Close"
-msgstr ""
+msgstr "Fermer"
 
 #. Label for changing the theme, in the preferences dialog
 #: ../client/gtk/gui.c:1062
@@ -3211,9 +3208,8 @@ msgstr "Ouvrir une partie"
 
 #. Button text
 #: ../editor/gtk/editor.c:1524
-#, fuzzy
 msgid "_Open"
-msgstr "_Ouvrir..."
+msgstr "_Ouvrir"
 
 #. Dialog caption
 #: ../editor/gtk/editor.c:1558
@@ -3222,7 +3218,6 @@ msgstr "Enregistrer sous..."
 
 #. Button text
 #: ../editor/gtk/editor.c:1565
-#, fuzzy
 msgid "Save _As"
 msgstr "Enregistrer sous..."
 
@@ -3639,9 +3634,8 @@ msgstr "Messages"
 
 #. Caption of about box
 #: ../server/gtk/main.c:1150
-#, fuzzy
 msgid "About the Pioneers Game Server"
-msgstr "Le serveur Pioneers"
+msgstr "A propos du serveur de parties Pioneers"
 
 #
 #. Wait for all players to disconnect,
