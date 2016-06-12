@@ -68,7 +68,7 @@ gtk_libs = \
 configdir = $(datadir)/games/pioneers
 icondir = $(datadir)/pixmaps
 pixmapdir = $(datadir)/pixmaps/pioneers
-actionsdir = $(datadir)/icons/hicolor/scalable/actions
+actionsdir = $(pioneers_iconthemedir)/scalable/actions
 desktopdir = $(datadir)/applications
 
 # Let object files be generated in their own subdirectories
@@ -181,20 +181,20 @@ EXTRA_DIST += $(icons) $(subst .svg,.48x48_apps.png,$(icons))
 	$(svg_renderer_path) $(svg_renderer_width)48$(svg_renderer_height)48 $< $(svg_renderer_output) $@
 
 install-icons:
-	$(MKDIR_P) $(DESTDIR)$(datadir)/icons/hicolor/48x48/apps 
-	$(MKDIR_P) $(DESTDIR)$(datadir)/icons/hicolor/scalable/apps
+	$(MKDIR_P) $(DESTDIR)$(pioneers_iconthemedir)/48x48/apps 
+	$(MKDIR_P) $(DESTDIR)$(pioneers_iconthemedir)/scalable/apps
 	for icon in $(icons); do \
 		ICONNAME=`echo $$icon | $(AWK) '{ c = split($$0, a, "/"); print substr(a[c], 1, index(a[c], ".") - 1) }'`; \
 		INPUTNAME=`echo $$icon | $(AWK) '{ gsub(".svg", ""); print }'`; \
-		$(INSTALL_DATA) $(srcdir)/$$INPUTNAME.48x48_apps.png $(DESTDIR)$(datadir)/icons/hicolor/48x48/apps/$$ICONNAME.png; \
-		$(INSTALL_DATA) $(srcdir)/$$INPUTNAME.svg $(DESTDIR)$(datadir)/icons/hicolor/scalable/apps/$$ICONNAME.svg; \
+		$(INSTALL_DATA) $(srcdir)/$$INPUTNAME.48x48_apps.png $(DESTDIR)$(pioneers_iconthemedir)/48x48/apps/$$ICONNAME.png; \
+		$(INSTALL_DATA) $(srcdir)/$$INPUTNAME.svg $(DESTDIR)$(pioneers_iconthemedir)/scalable/apps/$$ICONNAME.svg; \
 	done;
 
 uninstall-icons:
 	-for icon in $(icons); do \
 		ICONNAME=`echo $$icon | $(AWK) '{ c = split($$0, a, "/"); print substr(a[c], 1, index(a[c], ".") - 1) }'`; \
-		rm -f $(DESTDIR)$(datadir)/icons/hicolor/48x48/apps/$$ICONNAME.png; \
-		rm -f $(DESTDIR)$(datadir)/icons/hicolor/scalable/apps/$$ICONNAME.svg; \
+		rm -f $(DESTDIR)$(pioneers_iconthemedir)/48x48/apps/$$ICONNAME.png; \
+		rm -f $(DESTDIR)$(pioneers_iconthemedir)/scalable/apps/$$ICONNAME.svg; \
 	done;
 
 install-data-hook: install-icons

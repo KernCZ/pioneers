@@ -1,3 +1,8 @@
+2016-06-11  Roland Clobus <rclobus@rclobus.nl>
+	* Makefile.am, MinGW/Makefile.am, MinGW/pioneers.nsi.in, configure.ac:
+	Fixed missing icons for the MinGW port. Fixed File|Open crash in the
+	editor for the MinGW port.
+
 2016-06-10  Roland Clobus <rclobus@rclobus.nl>
 	* server/turn.c: Apply patch #679 which fixes #290: Check for the
 	winning condition at the beginning of the turn. This way to win will

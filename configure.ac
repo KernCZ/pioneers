@@ -449,17 +449,20 @@ if test $pioneers_is_mingw_port = yes; then
 	bindir='${prefix}'
 	libdir='${prefix}'
 	pioneers_datadir=.
+	pioneers_iconthemedir=$datadir/share/icons/hicolor
 	pioneers_themedir=$datadir/themes
 	pioneers_themedir_embed=themes
 	pioneers_localedir=locale
 	DATADIRNAME=.
 else
 	pioneers_datadir=$datadir
+	pioneers_iconthemedir=$datadir/icons/hicolor
 	pioneers_themedir=$datadir/games/pioneers/themes
 	pioneers_themedir_embed=$pioneers_themedir
 	pioneers_localedir=$datadir/locale
 fi
 AC_SUBST(pioneers_datadir)
+AC_SUBST(pioneers_iconthemedir)
 AC_SUBST(pioneers_themedir)
 AC_SUBST(pioneers_themedir_embed)
 AC_SUBST(pioneers_localedir)

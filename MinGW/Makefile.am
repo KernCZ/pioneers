@@ -56,6 +56,12 @@ install-MinGW:
 	cp /mingw/bin/gspawn-win32-helper-console.exe /usr/local
 	mkdir -p /usr/local/lib/gdk-pixbuf-2.0/2.10.0
 	cp $(srcdir)/MinGW/loaders.cache /usr/local/lib/gdk-pixbuf-2.0/2.10.0
+	mkdir -p /usr/local/share/icons/hicolor
+	cp /mingw/share/icons/hicolor/index.theme /usr/local/share/icons/hicolor
+	mkdir -p /usr/local/share/icons/hicolor/24x24/actions
+	cp /mingw/share/gtk-doc/html/gtk3/edit-undo-ltr.png /usr/local/share/icons/hicolor/24x24/actions/edit-undo.png
+	mkdir -p /usr/local/share/glib-2.0/schemas
+	cp /mingw/share/glib-2.0/schemas/gschemas.compiled /usr/local/share/glib-2.0/schemas
 
 endif # IS_MINGW_PORT
 
