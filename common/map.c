@@ -867,8 +867,6 @@ Map *map_copy(const Map * map)
 	copy->has_moved_ship = map->has_moved_ship;
 	copy->have_bridges = map->have_bridges;
 	copy->has_pirate = map->has_pirate;
-	copy->shrink_left = map->shrink_left;
-	copy->shrink_right = map->shrink_right;
 	copy->chits = copy_int_list(map->chits);
 
 	return copy;
