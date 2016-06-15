@@ -2,27 +2,26 @@
 # This file is distributed under the same license as the pioneers package.
 #
 # Copyright (C) Jaume Badiella <myotis@drac.com>, 2013
-# Jaume Badiella Aguilera <myotis@drac.com>, 2013.
+# Jaume Badiella Aguilera <myotis@drac.com>, 2013-2016.
 msgid ""
 msgstr ""
-"Project-Id-Version: Pioneers 15.1\n"
+"Project-Id-Version: Pioneers 15.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-06-10 18:20+0200\n"
-"PO-Revision-Date: 2013-09-15 18:04+0200\n"
-"Last-Translator: Jaume Badiella Aguilera <myotis@drac.com>\n"
-"Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
+"PO-Revision-Date: 2016-06-15 20:08+0100\n"
+"Last-Translator: Jaume Badiella <myotis@drac.com>\n"
+"Language-Team: Catalan <>\n"
 "Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-03-11 19:48+0000\n"
 "X-Generator: Lokalize 1.5\n"
 "Plural-Forms: nplurals=2; plural=(n!=1)\n"
 
 #. Commandline pioneersai: chromosome-file
 #: ../client/ai/ai.c:90
 msgid "Chromosome File"
-msgstr ""
+msgstr "Fitxer de Cromosoma"
 
 #. Commandline pioneersai: server
 #: ../client/ai/ai.c:93
@@ -983,7 +982,7 @@ msgstr " diu: "
 #: ../client/gtk/connect.c:286
 #, c-format
 msgid "Metaserver at %s, port %s"
-msgstr "Metaservidor a %s, port %s"
+msgstr "Meta-servidor a %s, port %s"
 
 #: ../client/gtk/connect.c:296
 msgid "Finished.\n"
@@ -1034,7 +1033,7 @@ msgstr "Línia de redirecció incorrecta: %s\n"
 #: ../client/gtk/connect.c:631
 #, c-format
 msgid "The metaserver is too old to create servers (version %d.%d)\n"
-msgstr "El metaservidor és massa vell per crear servidors (versió %d.%d)\n"
+msgstr "El meta servidor és massa vell per crear servidors (versió %d.%d)\n"
 
 #: ../client/gtk/connect.c:670 ../client/gtk/connect.c:749
 #: ../client/gtk/connect.c:755
@@ -1080,7 +1079,7 @@ msgstr "S'ha redireccionat al metaservidor a %s, port %s.\n"
 
 #: ../client/gtk/connect.c:831
 msgid "Receiving a list of Pioneers servers from the metaserver.\n"
-msgstr "S'està rebent una llista de servidors Pioneers del metaservidor.\n"
+msgstr "S'està rebent una llista de servidors Pioneers del meta servidor.\n"
 
 #. Label
 #: ../client/gtk/connect.c:914
@@ -1118,15 +1117,13 @@ msgstr "Crea una Partida Pública"
 #: ../client/gtk/connect.c:1440 ../client/gtk/connect.c:1744
 #: ../client/gtk/name.c:147 ../editor/gtk/editor.c:1521
 #: ../editor/gtk/editor.c:1562 ../editor/gtk/editor.c:1611
-#, fuzzy
 msgid "_Cancel"
-msgstr "S'ha cancel·lat.\n"
+msgstr "_Cancel·la"
 
 #. Button text
 #: ../client/gtk/connect.c:1042
-#, fuzzy
 msgid "C_reate"
-msgstr "Crea una Partida"
+msgstr "C_rea"
 
 #. Dialog caption
 #: ../client/gtk/connect.c:1182
@@ -1136,7 +1133,7 @@ msgstr "Apunta't a una Partida Pública"
 #. Button text
 #: ../client/gtk/connect.c:1185
 msgid "_Refresh"
-msgstr ""
+msgstr "_Refresca"
 
 #. Button text
 #: ../client/gtk/connect.c:1188
@@ -1145,9 +1142,8 @@ msgstr "_Nova Partida Remota"
 
 #. Button text
 #: ../client/gtk/connect.c:1194 ../client/gtk/connect.c:1748
-#, fuzzy
 msgid "_Join"
-msgstr "Apunta-t'hi"
+msgstr "Apunta-t'_hi"
 
 #. Tooltip
 #: ../client/gtk/connect.c:1237
@@ -1290,7 +1286,7 @@ msgstr "Apunta't a una partida descoberta automàticament"
 #. metaserver label
 #: ../client/gtk/connect.c:1542 ../server/gtk/main.c:593
 msgid "Metaserver"
-msgstr "Metaservidor"
+msgstr "Meta servidor"
 
 #. Button
 #: ../client/gtk/connect.c:1564
@@ -1373,7 +1369,7 @@ msgstr "Descarta Recursos"
 #: ../client/gtk/gold.c:78 ../client/gtk/monopoly.c:88 ../client/gtk/name.c:150
 #: ../client/gtk/plenty.c:67 ../editor/gtk/editor.c:1614
 msgid "_OK"
-msgstr ""
+msgstr "_Bé"
 
 #: ../client/gtk/discard.c:101
 #, c-format
@@ -1767,7 +1763,7 @@ msgstr "Preferències de Pioneers"
 #: ../client/gtk/gui.c:1037 ../client/gtk/histogram.c:252
 #: ../client/gtk/legend.c:253 ../client/gtk/settingscreen.c:413
 msgid "_Close"
-msgstr ""
+msgstr "Tan_ca"
 
 #. Label for changing the theme, in the preferences dialog
 #: ../client/gtk/gui.c:1062
@@ -2730,7 +2726,7 @@ msgstr "F"
 #. Tooltip for the list of metaservers
 #: ../common/gtk/metaserver.c:85
 msgid "Select a metaserver"
-msgstr "Selecciona un metaservidor"
+msgstr "Selecciona un meta servidor"
 
 #. Tooltip for the list of games
 #: ../common/gtk/select-game.c:135
@@ -3196,7 +3192,6 @@ msgstr "Partida Oberta"
 
 #. Button text
 #: ../editor/gtk/editor.c:1524
-#, fuzzy
 msgid "_Open"
 msgstr "_Obre"
 
@@ -3207,9 +3202,8 @@ msgstr "Anomena i Desa..."
 
 #. Button text
 #: ../editor/gtk/editor.c:1565
-#, fuzzy
 msgid "Save _As"
-msgstr "_Anomena i Desa..."
+msgstr "_Anomena i Desa"
 
 #. Dialog caption
 #: ../editor/gtk/editor.c:1606
@@ -3393,7 +3387,7 @@ msgstr "Depura els missatges de registre del sistema"
 #. Long description in the commandline for metaserver: help
 #: ../metaserver/main.c:673
 msgid "- Metaserver for Pioneers"
-msgstr "- Metaservidor de Pioneers"
+msgstr "- Meta servidor de Pioneers"
 
 #: ../metaserver/main.c:689
 #, c-format
@@ -3481,7 +3475,7 @@ msgstr "Registra el servidor"
 
 #: ../server/gtk/main.c:587
 msgid "Register this game at the metaserver"
-msgstr "Registra aquesta partida al metaservidor"
+msgstr "Registra aquesta partida al meta servidor"
 
 #. hostname label
 #: ../server/gtk/main.c:618
@@ -3624,9 +3618,8 @@ msgstr "Missatges"
 
 #. Caption of about box
 #: ../server/gtk/main.c:1150
-#, fuzzy
 msgid "About the Pioneers Game Server"
-msgstr "El Servidor de Joc de Pioneers"
+msgstr "Quant al Servidor de Joc de Pioneers"
 
 #
 #. Wait for all players to disconnect,
@@ -3760,7 +3753,7 @@ msgstr "Dóna números als jugadors d'acord amb l'ordre d'entrada a la partida"
 #. Commandline server-console: Short description of meta group
 #: ../server/main.c:198
 msgid "Metaserver Options"
-msgstr "Opcions del Metaservidor"
+msgstr "Opcions del Meta-servidor"
 
 #. Commandline server-console: Long description of meta group
 #: ../server/main.c:200
@@ -3939,7 +3932,7 @@ msgstr "La tirada de daus ha estat determinada per l'administrador."
 #~ msgstr "No t'apuntis a una partida pública"
 
 #~ msgid "Create a new public game at the metaserver"
-#~ msgstr "Crea una nova partida pública al metaservidor"
+#~ msgstr "Crea una nova partida pública al meta servidor"
 
 #~ msgid "Refresh the list of games"
 #~ msgstr "Refresca la llista de partides"
