@@ -3219,7 +3219,7 @@ msgstr "Enregistrer sous..."
 #. Button text
 #: ../editor/gtk/editor.c:1565
 msgid "Save _As"
-msgstr "Enregistrer sous..."
+msgstr "Enregistrer sous"
 
 #. Dialog caption
 #: ../editor/gtk/editor.c:1606
