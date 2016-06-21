@@ -1562,7 +1562,7 @@ static void greedy_monopoly(void)
  */
 
 static int least_valuable(gint assets[NO_RESOURCE],
-			  resource_values_t * resval)
+			  const resource_values_t * resval)
 {
 	int ret = NO_RESOURCE;
 	int res;
@@ -1587,7 +1587,7 @@ static int least_valuable(gint assets[NO_RESOURCE],
  */
 
 static int resource_desire_least(gint my_assets[NO_RESOURCE],
-				 resource_values_t * resval)
+				 const resource_values_t * resval)
 {
 	BuyType bt;
 	int res;
@@ -1693,6 +1693,7 @@ static int trade_desired(gint assets[NO_RESOURCE], gint give, gint take,
 		assets[give] -= 1;
 	}
 
+	reevaluate_resources(&resval);
 	for (n = 1; n <= 3; ++n) {
 		/* do i need something more for something? */
 		if (!should_buy(assets, BUY_CITY, &resval, need)) {
@@ -1722,7 +1723,6 @@ static int trade_desired(gint assets[NO_RESOURCE], gint give, gint take,
 		return n;
 
 	/* desire the one we don't produce the most */
-	reevaluate_resources(&resval);
 	for (i = 0; i < NO_RESOURCE; i++) {
 		if ((resval.value[i] > value) && (assets[i] < 2)) {
 			res = i;
