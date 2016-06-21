@@ -1,3 +1,6 @@
+2016-06-21  Roland Clobus <rclobus@rclobus.nl>
+	* client/gtk/chat.c: Removed unnecessary NULL check, found by cppcheck.
+
 2016-06-13  Roland Clobus <rclobus@rclobus.nl>
 	* common/map.c: Removed double assignment, found by cppcheck.
 

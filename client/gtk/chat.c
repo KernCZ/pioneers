@@ -264,9 +264,7 @@ void chat_parser(gint player_num, const gchar * chat)
 	if (!strncmp(chat_str, "/beep", 5)) {
 		chat_str += 5;
 		chat_str += strspn(chat_str, " \t");
-		if (chat_str != NULL) {
-			beep_player(player_num, chat_str);
-		}
+		beep_player(player_num, chat_str);
 		g_free(chat_alloc);
 		return;
 	} else if (!strncmp(chat_str, "/me", 3)) {
