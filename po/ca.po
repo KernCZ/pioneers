@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Pioneers 15.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-06-10 18:20+0200\n"
-"PO-Revision-Date: 2016-06-15 20:08+0100\n"
+"PO-Revision-Date: 2016-06-23 20:08+0100\n"
 "Last-Translator: Jaume Badiella <myotis@drac.com>\n"
 "Language-Team: Catalan <>\n"
 "Language: ca\n"
@@ -982,7 +982,7 @@ msgstr " diu: "
 #: ../client/gtk/connect.c:286
 #, c-format
 msgid "Metaserver at %s, port %s"
-msgstr "Meta-servidor a %s, port %s"
+msgstr "Metaservidor a %s, port %s"
 
 #: ../client/gtk/connect.c:296
 msgid "Finished.\n"
@@ -1033,7 +1033,7 @@ msgstr "Línia de redirecció incorrecta: %s\n"
 #: ../client/gtk/connect.c:631
 #, c-format
 msgid "The metaserver is too old to create servers (version %d.%d)\n"
-msgstr "El meta servidor és massa vell per crear servidors (versió %d.%d)\n"
+msgstr "El metaservidor és massa vell per crear servidors (versió %d.%d)\n"
 
 #: ../client/gtk/connect.c:670 ../client/gtk/connect.c:749
 #: ../client/gtk/connect.c:755
@@ -1079,7 +1079,7 @@ msgstr "S'ha redireccionat al metaservidor a %s, port %s.\n"
 
 #: ../client/gtk/connect.c:831
 msgid "Receiving a list of Pioneers servers from the metaserver.\n"
-msgstr "S'està rebent una llista de servidors Pioneers del meta servidor.\n"
+msgstr "S'està rebent una llista de servidors Pioneers del metaservidor.\n"
 
 #. Label
 #: ../client/gtk/connect.c:914
@@ -1286,7 +1286,7 @@ msgstr "Apunta't a una partida descoberta automàticament"
 #. metaserver label
 #: ../client/gtk/connect.c:1542 ../server/gtk/main.c:593
 msgid "Metaserver"
-msgstr "Meta servidor"
+msgstr "Metaservidor"
 
 #. Button
 #: ../client/gtk/connect.c:1564
@@ -2726,7 +2726,7 @@ msgstr "F"
 #. Tooltip for the list of metaservers
 #: ../common/gtk/metaserver.c:85
 msgid "Select a metaserver"
-msgstr "Selecciona un meta servidor"
+msgstr "Selecciona un metaservidor"
 
 #. Tooltip for the list of games
 #: ../common/gtk/select-game.c:135
@@ -3387,7 +3387,7 @@ msgstr "Depura els missatges de registre del sistema"
 #. Long description in the commandline for metaserver: help
 #: ../metaserver/main.c:673
 msgid "- Metaserver for Pioneers"
-msgstr "- Meta servidor de Pioneers"
+msgstr "- Metaservidor de Pioneers"
 
 #: ../metaserver/main.c:689
 #, c-format
@@ -3475,7 +3475,7 @@ msgstr "Registra el servidor"
 
 #: ../server/gtk/main.c:587
 msgid "Register this game at the metaserver"
-msgstr "Registra aquesta partida al meta servidor"
+msgstr "Registra aquesta partida al metaservidor"
 
 #. hostname label
 #: ../server/gtk/main.c:618
@@ -3753,7 +3753,7 @@ msgstr "Dóna números als jugadors d'acord amb l'ordre d'entrada a la partida"
 #. Commandline server-console: Short description of meta group
 #: ../server/main.c:198
 msgid "Metaserver Options"
-msgstr "Opcions del Meta-servidor"
+msgstr "Opcions del Metaservidor"
 
 #. Commandline server-console: Long description of meta group
 #: ../server/main.c:200
@@ -3925,26 +3925,3 @@ msgstr "S'ha intentar assignar recursos al jugador NULL.\n"
 msgid "The dice roll has been determined by the administrator."
 msgstr "La tirada de daus ha estat determinada per l'administrador."
 
-#~ msgid "Join the selected game"
-#~ msgstr "Apunta't a la partida seleccionada"
-
-#~ msgid "Don't join a public game"
-#~ msgstr "No t'apuntis a una partida pública"
-
-#~ msgid "Create a new public game at the metaserver"
-#~ msgstr "Crea una nova partida pública al meta servidor"
-
-#~ msgid "Refresh the list of games"
-#~ msgstr "Refresca la llista de partides"
-
-#~ msgid "Version:"
-#~ msgstr "Versió:"
-
-#~ msgid "Homepage:"
-#~ msgstr "Pàgina arrel:"
-
-#~ msgid "Authors:"
-#~ msgstr "Autors:"
-
-#~ msgid "Pioneers is translated to <your language here> by:\n"
-#~ msgstr "Pioneers ha estat traduït al català per:\n"
