@@ -1,6 +1,6 @@
 pioneers (15.4-1~local1) UNRELEASED; urgency=medium
 
-  * Waiting for new upstream release.
+  * Waiting for new upstream release. (closed: #798521)
   * Watch file checks for OpenPGP signature.
   * pioneers-builddep updated.
   * Updated copyright to add the new icon files.
