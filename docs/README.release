@@ -3,8 +3,6 @@ Before a release:
   ./autogen.sh --enable-warnings --enable-deprecation-checks;make clean distcheck 2> err
 * Update the translation templates
   cd po;intltool-update -r
-* Alert the Debian debconf translators
-  podebconf-report-po
 * Fix fuzzy translations only due to layout changes
 * Announce that a release is pending, and announce a string freeze
   The mailing list is pio-develop@lists.sourceforge.net
