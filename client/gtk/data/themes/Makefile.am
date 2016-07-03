@@ -21,5 +21,6 @@ include client/gtk/data/themes/ccFlickr/Makefile.am
 include client/gtk/data/themes/Classic/Makefile.am
 include client/gtk/data/themes/FreeCIV-like/Makefile.am
 include client/gtk/data/themes/Iceland/Makefile.am
+include client/gtk/data/themes/Nouvellia/Makefile.am
 include client/gtk/data/themes/Tiny/Makefile.am
 include client/gtk/data/themes/Wesnoth-like/Makefile.am
