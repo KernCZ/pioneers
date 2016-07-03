@@ -68,8 +68,7 @@ Package: pioneers-metaserver
 Replaces: pioneers-meta-server (<< 14.2-1~)
 Breaks: pioneers-meta-server (<< 14.2-1~)
 Architecture: any
-Depends: initscripts (>= 2.88dsf-13.3),
-         lsb-base,
+Depends: lsb-base,
          ${misc:Depends},
          ${shlibs:Depends}
 Description: Settlers of Catan board game - metaserver

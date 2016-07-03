@@ -10,6 +10,16 @@ pioneers (15.4-1~local1) UNRELEASED; urgency=medium
 
  -- Roland Clobus <rclobus@rclobus.nl>  Sat, 30 May 2015 17:00:00 +0200
 
+pioneers (15.3-2.1) unstable; urgency=medium
+
+  * Non-maintainer upload.
+
+  [ Martin Pitt ]
+  * Drop obsolete initscripts dependency. This was only added for the /run
+    transition, but this only affected pre-wheezy upgrades. (Closes: #804987)
+
+ -- Christian Hofstaedtler <zeha@debian.org>  Sat, 02 Jul 2016 10:17:12 +0200
+
 pioneers (15.3-1) unstable; urgency=medium
 
   * New upstream release.
