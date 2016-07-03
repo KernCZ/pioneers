@@ -5,7 +5,7 @@
 # Christian Perrier <bubulle@debian.org>, 2008, 2014.
 msgid ""
 msgstr ""
-"Project-Id-Version: Pionees 15.1-1\n"
+"Project-Id-Version: Pioneers 15.4-1\n"
 "Report-Msgid-Bugs-To: pioneers@packages.debian.org\n"
 "POT-Creation-Date: 2013-03-22 12:32+0100\n"
 "PO-Revision-Date: 2014-11-01 16:35+0100\n"

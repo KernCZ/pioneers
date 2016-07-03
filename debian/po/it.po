@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Pioneers 15.1-1\n"
+"Project-Id-Version: Pioneers 15.4-1\n"
 "Report-Msgid-Bugs-To: pioneers@packages.debian.org\n"
 "POT-Creation-Date: 2013-03-22 12:32+0100\n"
 "PO-Revision-Date: 2009-08-28 21:16+0200\n"
