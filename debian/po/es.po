@@ -27,8 +27,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 15.4-1\n"
-"Report-Msgid-Bugs-To: pioneers@packages.debian.org\n"
-"POT-Creation-Date: 2013-03-22 12:32+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-07-03 13:00+0200\n"
 "PO-Revision-Date: 2009-03-08 12:35+0100\n"
 "Last-Translator: Francisco Javier Cuadrado <fcocuadrado@gmail.com>\n"
 "Language-Team: Debian l10n Spanish <debian-l10n-spanish@lists.debian.org>\n"
@@ -37,15 +37,13 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#. Type: string
 #. Description
-#: ../pioneers-metaserver.templates:1001
+#: ../pioneers-metaserver.templates:4
 msgid "Port range for creating new games on the metaserver:"
 msgstr "Rango de puertos para crear juegos nuevos en el meta-servidor:"
 
-#. Type: string
 #. Description
-#: ../pioneers-metaserver.templates:1001
+#: ../pioneers-metaserver.templates:4
 msgid ""
 "The metaserver can create new games, so players don't need to install and "
 "run the pioneers server. The ports which are used for these games can be "
@@ -57,9 +55,8 @@ msgstr ""
 "utilizan para estos juegos se pueden especificar. Si deja este campo en "
 "blanco, el meta-servidor desactivará la funcionalidad de creación de juegos."
 
-#. Type: string
 #. Description
-#: ../pioneers-metaserver.templates:1001
+#: ../pioneers-metaserver.templates:4
 msgid ""
 "If the value is not empty, it must be two port numbers, separated by a minus "
 "sign."
@@ -67,15 +64,13 @@ msgstr ""
 "Si este valor no está vacío, debe ser dos números de puerto, separados por "
 "un guión."
 
-#. Type: string
 #. Description
-#: ../pioneers-metaserver.templates:2001
+#: ../pioneers-metaserver.templates:16
 msgid "Server name for created games:"
 msgstr "El nombre del servidor para los juegos creados:"
 
-#. Type: string
 #. Description
-#: ../pioneers-metaserver.templates:2001
+#: ../pioneers-metaserver.templates:16
 msgid ""
 "In some cases, the name the metaserver uses for itself when creating new "
 "games is incorrect. If this field is not left empty, it is used to override "
@@ -85,15 +80,13 @@ msgstr ""
 "cuando crea juegos nuevos es incorrecto. Si no deja este campo vacío, se "
 "utilizará para sobrescribir el nombre de la máquina detectado."
 
-#. Type: string
 #. Description
-#: ../pioneers-metaserver.templates:3001
+#: ../pioneers-metaserver.templates:24
 msgid "Extra arguments to pass to the metaserver:"
 msgstr "Los argumentos extras para pasar al meta-servidor:"
 
-#. Type: string
 #. Description
-#: ../pioneers-metaserver.templates:3001
+#: ../pioneers-metaserver.templates:24
 msgid ""
 "These arguments are passed to the metaserver.\n"
 " * --redirect: Redirect clients to another metaserver"

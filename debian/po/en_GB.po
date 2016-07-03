@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 15.4-1\n"
-"Report-Msgid-Bugs-To: pioneers@packages.debian.org\n"
-"POT-Creation-Date: 2013-03-22 12:32+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-07-03 13:00+0200\n"
 "PO-Revision-Date: 2010-01-03 05:53+0000\n"
 "Last-Translator: Philipp Kleinhenz <Unknown>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
@@ -18,15 +18,13 @@ msgstr ""
 "X-Launchpad-Export-Date: 2010-03-28 01:32+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
-#. Type: string
 #. Description
-#: ../pioneers-metaserver.templates:1001
+#: ../pioneers-metaserver.templates:4
 msgid "Port range for creating new games on the metaserver:"
 msgstr "Port range for creating new games on the metaserver:"
 
-#. Type: string
 #. Description
-#: ../pioneers-metaserver.templates:1001
+#: ../pioneers-metaserver.templates:4
 msgid ""
 "The metaserver can create new games, so players don't need to install and "
 "run the pioneers server. The ports which are used for these games can be "
@@ -38,9 +36,8 @@ msgstr ""
 "specified. If this field is left empty, the metaserver will disable its game "
 "creation functionality."
 
-#. Type: string
 #. Description
-#: ../pioneers-metaserver.templates:1001
+#: ../pioneers-metaserver.templates:4
 msgid ""
 "If the value is not empty, it must be two port numbers, separated by a minus "
 "sign."
@@ -48,15 +45,13 @@ msgstr ""
 "If the value is not empty, it must be two port numbers, separated by a minus "
 "sign."
 
-#. Type: string
 #. Description
-#: ../pioneers-metaserver.templates:2001
+#: ../pioneers-metaserver.templates:16
 msgid "Server name for created games:"
 msgstr "Server name for created games:"
 
-#. Type: string
 #. Description
-#: ../pioneers-metaserver.templates:2001
+#: ../pioneers-metaserver.templates:16
 msgid ""
 "In some cases, the name the metaserver uses for itself when creating new "
 "games is incorrect. If this field is not left empty, it is used to override "
@@ -66,15 +61,13 @@ msgstr ""
 "games is incorrect. If this field is not left empty, it is used to override "
 "the detected hostname."
 
-#. Type: string
 #. Description
-#: ../pioneers-metaserver.templates:3001
+#: ../pioneers-metaserver.templates:24
 msgid "Extra arguments to pass to the metaserver:"
 msgstr "Extra arguments to pass to the metaserver:"
 
-#. Type: string
 #. Description
-#: ../pioneers-metaserver.templates:3001
+#: ../pioneers-metaserver.templates:24
 msgid ""
 "These arguments are passed to the metaserver.\n"
 " * --redirect: Redirect clients to another metaserver"
