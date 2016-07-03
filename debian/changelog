@@ -7,6 +7,7 @@ pioneers (15.4-1~local1) UNRELEASED; urgency=medium
   * Updated debconf translations. (closes: #767637, #776128, #781676)
   * Updated copyright to fix the lintian warning
     dep5-copyright-license-name-not-unique.
+  * Upgrade standards version to 3.9.8.  (No changes needed.)
 
  -- Roland Clobus <rclobus@rclobus.nl>  Sat, 30 May 2015 17:00:00 +0200
 

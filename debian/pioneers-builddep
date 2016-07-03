@@ -11,7 +11,7 @@ Priority: optional
 Homepage: http://pio.sourceforge.net/
 Vcs-Svn: svn://svn.code.sf.net/p/pio/code/trunk/pioneers
 Vcs-Browser: https://sourceforge.net/p/pio/code/HEAD/tree/trunk/pioneers/
-Standards-Version: 3.9.6
+Standards-Version: 3.9.8
 
 Package: pioneers-builddep
 Version: 15.4-1~local1

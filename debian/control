@@ -20,7 +20,7 @@ Build-Depends: autoconf,
                po-debconf,
                scrollkeeper,
                xfonts-scalable
-Standards-Version: 3.9.6
+Standards-Version: 3.9.8
 Homepage: http://pio.sourceforge.net/
 Vcs-Svn: svn://svn.code.sf.net/p/pio/code/trunk/pioneers
 Vcs-Browser: https://sourceforge.net/p/pio/code/HEAD/tree/trunk/pioneers/
