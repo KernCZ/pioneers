@@ -2,11 +2,11 @@
 # Copyright (C) 1999-2001 Dave Cole
 # Copyright (C) 2000-2002 Andy Heroff
 # This file is distributed under the same license as the pioneers package.
-# Giancarlo Capella <giancarlo@comm.cc>, 2005-2013.
+# Giancarlo Capella <giancarlo@comm.cc>, 2005-2016.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Pioneers 15.1\n"
+"Project-Id-Version: Pioneers 15.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-06-10 18:20+0200\n"
 "PO-Revision-Date: 2013-09-11 20:12:00+0200\n"
@@ -21,7 +21,7 @@ msgstr ""
 #. Commandline pioneersai: chromosome-file
 #: ../client/ai/ai.c:90
 msgid "Chromosome File"
-msgstr ""
+msgstr "File Cromosoma"
 
 #. Commandline pioneersai: server
 #: ../client/ai/ai.c:93
@@ -1117,15 +1117,13 @@ msgstr "Crea una Partita Pubblica"
 #: ../client/gtk/connect.c:1440 ../client/gtk/connect.c:1744
 #: ../client/gtk/name.c:147 ../editor/gtk/editor.c:1521
 #: ../editor/gtk/editor.c:1562 ../editor/gtk/editor.c:1611
-#, fuzzy
 msgid "_Cancel"
-msgstr "Annullato.\n"
+msgstr "_Annulla"
 
 #. Button text
 #: ../client/gtk/connect.c:1042
-#, fuzzy
 msgid "C_reate"
-msgstr "Crea Partita"
+msgstr "C_rea"
 
 #. Dialog caption
 #: ../client/gtk/connect.c:1182
@@ -1135,7 +1133,7 @@ msgstr "Unisciti a Partita Pubblica"
 #. Button text
 #: ../client/gtk/connect.c:1185
 msgid "_Refresh"
-msgstr ""
+msgstr "A_ggiorna"
 
 #. Button text
 #: ../client/gtk/connect.c:1188
@@ -1144,9 +1142,8 @@ msgstr "_Nuova Partita Remota"
 
 #. Button text
 #: ../client/gtk/connect.c:1194 ../client/gtk/connect.c:1748
-#, fuzzy
 msgid "_Join"
-msgstr "Unisciti"
+msgstr "_Unisciti"
 
 #. Tooltip
 #: ../client/gtk/connect.c:1237
@@ -1372,7 +1369,7 @@ msgstr "Scarta Materie prime"
 #: ../client/gtk/gold.c:78 ../client/gtk/monopoly.c:88 ../client/gtk/name.c:150
 #: ../client/gtk/plenty.c:67 ../editor/gtk/editor.c:1614
 msgid "_OK"
-msgstr ""
+msgstr "_OK"
 
 #: ../client/gtk/discard.c:101
 #, c-format
@@ -1766,7 +1763,7 @@ msgstr "Preferenze Pioneers"
 #: ../client/gtk/gui.c:1037 ../client/gtk/histogram.c:252
 #: ../client/gtk/legend.c:253 ../client/gtk/settingscreen.c:413
 msgid "_Close"
-msgstr ""
+msgstr "_Chiudi"
 
 #. Label for changing the theme, in the preferences dialog
 #: ../client/gtk/gui.c:1062
@@ -3194,9 +3191,8 @@ msgstr "Carica partita"
 
 #. Button text
 #: ../editor/gtk/editor.c:1524
-#, fuzzy
 msgid "_Open"
-msgstr "_Apri..."
+msgstr "_Apri"
 
 #. Dialog caption
 #: ../editor/gtk/editor.c:1558
@@ -3205,9 +3201,8 @@ msgstr "Salva come..."
 
 #. Button text
 #: ../editor/gtk/editor.c:1565
-#, fuzzy
 msgid "Save _As"
-msgstr "S_alva come..."
+msgstr "S_alva come"
 
 #. Dialog caption
 #: ../editor/gtk/editor.c:1606
@@ -3622,9 +3617,8 @@ msgstr "Messaggi"
 
 #. Caption of about box
 #: ../server/gtk/main.c:1150
-#, fuzzy
 msgid "About the Pioneers Game Server"
-msgstr "Server della partita di Pioneers"
+msgstr "Info sul Server di Pioneers"
 
 #
 #. Wait for all players to disconnect,
