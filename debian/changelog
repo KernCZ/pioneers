@@ -1,10 +1,15 @@
 pioneers (15.4-1~local1) UNRELEASED; urgency=medium
 
-  * Waiting for new upstream release. (closed: #798521)
+  * Waiting for new upstream release.
+  * Bugfix for playing the last development card. (closes: #798521)
   * Watch file checks for OpenPGP signature.
   * pioneers-builddep updated.
   * Updated copyright to add the new icon files.
-  * Updated debconf translations. (closes: #767637, #776128, #781676)
+  * Updated debconf translations:
+    cs: (closes: #829455)
+    fr: (closes: #767637)
+    ru: (closes: #776128)
+    sv: (closes: #781676)
   * Updated copyright to fix the lintian warning
     dep5-copyright-license-name-not-unique.
   * Upgrade standards version to 3.9.8.  (No changes needed.)
