@@ -42,8 +42,8 @@ guint playericon_human_style_count(void);
 cairo_surface_t *playericon_create_icon(const gchar * style,
 					GdkColor * color,
 					gboolean spectator,
-					gboolean connected, gint width,
-					gint height);
+					gboolean connected, gdouble width,
+					gdouble height);
 
 /** Create a style string for the player.
  *  @param face_color    The color of the face

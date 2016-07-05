@@ -1,3 +1,7 @@
+2016-07-05  Roland Clobus <rclobus@rclobus.nl>
+	* common/gtk/playericon.c, common/gtk/playericon.h: Fixed CID74385
+	by using gdouble instead of gint for cairo_arc.
+
 2016-07-03  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/data/themes/Makefile.am,
 	client/gtk/data/themes/Nouvellia: Added new theme by

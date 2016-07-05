@@ -207,8 +207,8 @@ static void replace_colors(GdkPixbuf * pixbuf,
 cairo_surface_t *playericon_create_icon(const gchar * style,
 					GdkColor * color,
 					gboolean spectator,
-					gboolean connected, gint width,
-					gint height)
+					gboolean connected, gdouble width,
+					gdouble height)
 {
 	PlayerType player_type;
 	cairo_surface_t *surface;
