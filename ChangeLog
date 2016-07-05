@@ -1,5 +1,5 @@
 2016-07-05  Roland Clobus <rclobus@rclobus.nl>
-	* common/gtk/playericon.c, common/gtk/playericon.h: Fixed CID74385
+	* common/gtk/player-icon.c, common/gtk/player-icon.h: Fixed CID74385
 	by using gdouble instead of gint for cairo_arc.
 
 2016-07-03  Roland Clobus <rclobus@rclobus.nl>
