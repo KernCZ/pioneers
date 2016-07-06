@@ -139,6 +139,7 @@ static void route_event(StateMachine * sm, gint event)
 		break;
 	case SM_NET_CLOSE:
 		sm_close(sm);
+		/* fall through */
 	default:
 		if (curr_state != NULL)
 			curr_state(user_data, event);

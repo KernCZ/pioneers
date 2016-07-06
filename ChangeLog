@@ -1,3 +1,7 @@
+2016-07-06  Roland Clobus <rclobus@rclobus.nl>
+	* common/state.c: Fixed CID55644 by adding fall through clarification
+	in switch statement.
+
 2016-07-05  Roland Clobus <rclobus@rclobus.nl>
 	* common/gtk/player-icon.c, common/gtk/player-icon.h: Fixed CID74385
 	by using gdouble instead of gint for cairo_arc.
