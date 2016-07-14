@@ -8,6 +8,7 @@ pioneers (15.4-1~local1) UNRELEASED; urgency=medium
   * Updated debconf translations:
     cs: (closes: #829455)
     fr: (closes: #767637)
+    pt_BR: (closes: #831012)
     ru: (closes: #776128)
     sv: (closes: #781676)
   * Updated copyright to fix the lintian warning

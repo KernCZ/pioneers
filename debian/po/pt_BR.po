@@ -2,14 +2,15 @@
 # Copyright (C) 2012 THE pioneers COPYRIGHT HOLDER
 # This file is distributed under the same license as the pioneers package.
 # J.S.Júnior <dgjunior4@hotmail.com>, 2012.
+# Adriano Rafael Gomes <adrianorg@arg.eti.br>, 2016.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: pioneers 0.12.5-1\n"
+"Project-Id-Version: Pioneers 15.4-1\n"
 "Report-Msgid-Bugs-To: pioneers@packages.debian.org\n"
 "POT-Creation-Date: 2013-03-22 12:32+0100\n"
-"PO-Revision-Date: 2012-02-20 16:23-0200\n"
-"Last-Translator: J.S.Júnior <dgjunior4@hotmail.com>\n"
+"PO-Revision-Date: 2016-07-08 14:59-0300\n"
+"Last-Translator: Adriano Rafael Gomes <adrianorg@arg.eti.br>\n"
 "Language-Team: Brazilian Portuguese <debian-l10n-portuguese@lists.debian."
 "org>\n"
 "Language: pt_BR\n"
@@ -20,15 +21,13 @@ msgstr ""
 #. Type: string
 #. Description
 #: ../pioneers-metaserver.templates:1001
-#, fuzzy
 #| msgid "Port range for creating new games on the meta-server:"
 msgid "Port range for creating new games on the metaserver:"
-msgstr "Intervalo de portas para a criação de novos jogos no meta-servidor:"
+msgstr "Intervalo de portas para a criação de novos jogos no metasservidor:"
 
 #. Type: string
 #. Description
 #: ../pioneers-metaserver.templates:1001
-#, fuzzy
 #| msgid ""
 #| "The meta-server can create new games, so players don't need to install "
 #| "and run the pioneers server. The ports which are used for these games can "
@@ -40,10 +39,10 @@ msgid ""
 "specified. If this field is left empty, the metaserver will disable its game "
 "creation functionality."
 msgstr ""
-"O meta-servidor pode criar novos jogos, por isso os jogadores não precisam "
+"O metasservidor pode criar novos jogos, por isso os jogadores não precisam "
 "instalar e executar o servidor pioneers. As portas que são utilizadas para "
 "esses jogos podem ser especificadas. Se esse campo for deixado em branco, o "
-"meta-servidor desativará a funcionalidade de criação de jogos."
+"metasservidor desativará a funcionalidade de criação de jogos."
 
 #. Type: string
 #. Description
@@ -64,7 +63,6 @@ msgstr "Nome do servidor para jogos criados:"
 #. Type: string
 #. Description
 #: ../pioneers-metaserver.templates:2001
-#, fuzzy
 #| msgid ""
 #| "In some cases, the name the meta-server uses for itself when creating new "
 #| "games is incorrect. If this field is not left empty, it is used to "
@@ -74,22 +72,20 @@ msgid ""
 "games is incorrect. If this field is not left empty, it is used to override "
 "the detected hostname."
 msgstr ""
-"Em alguns casos, o nome que o meta-servidor usa para si próprio ao criar "
+"Em alguns casos, o nome que o metasservidor usa para si próprio ao criar "
 "novos jogos é incorreto. Se esse campo não é deixado em branco, ele é usado "
 "para substituir o nome de máquina detectado."
 
 #. Type: string
 #. Description
 #: ../pioneers-metaserver.templates:3001
-#, fuzzy
 #| msgid "Extra arguments to pass to the meta-server:"
 msgid "Extra arguments to pass to the metaserver:"
-msgstr "Argumentos extra para passar para o meta-servidor:"
+msgstr "Argumentos extra para passar para o metasservidor:"
 
 #. Type: string
 #. Description
 #: ../pioneers-metaserver.templates:3001
-#, fuzzy
 #| msgid ""
 #| "These arguments are passed to the meta-server. There are only two "
 #| "sensible arguments:\n"
@@ -99,7 +95,5 @@ msgid ""
 "These arguments are passed to the metaserver.\n"
 " * --redirect: Redirect clients to another metaserver"
 msgstr ""
-"Estes argumentos são passados para o meta-servidor. Há apenas dois "
-"argumentos sensíveis:\n"
-" * --syslog-debug: Envia a saída de depuração para o syslog\n"
-" * --redirect: Redireciona os clientes para outro meta-servidor"
+"Estes argumentos são passados para o metasservidor.\n"
+" * --redirect: Redireciona os clientes para outro metasservidor"
