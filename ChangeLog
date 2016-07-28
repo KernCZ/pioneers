@@ -1,3 +1,6 @@
+2016-07-28  Roland Clobus <rclobus@rclobus.nl>
+	* editor/gtk/editor.c: Corrected the define for the translation domain.
+
 2016-07-06  Roland Clobus <rclobus@rclobus.nl>
 	* common/state.c: Fixed CID55644 by adding fall through clarification
 	in switch statement.

@@ -1874,7 +1874,7 @@ int main(int argc, char *argv[])
 	    /* Long description in the command line: --help */
 	    g_option_context_new(_("- Editor for games of Pioneers"));
 	g_option_context_add_main_entries(context, commandline_entries,
-					  GETTEXT_PACKAGE);
+					  PACKAGE);
 	g_option_context_add_group(context, gtk_get_option_group(TRUE));
 	g_option_context_parse(context, &argc, &argv, &error);
 	if (error != NULL) {
