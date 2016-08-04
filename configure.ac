@@ -21,8 +21,9 @@
 
 AC_PREREQ([2.68])
 AC_INIT([pioneers],[15.4],[pio-develop@lists.sourceforge.net])
+AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_AUX_DIR([.])
-AM_INIT_AUTOMAKE
+AM_INIT_AUTOMAKE([1.11])
 AC_CONFIG_SRCDIR([client])
 AC_CONFIG_HEADERS([config.h])
  
@@ -439,7 +440,6 @@ IT_PROG_INTLTOOL([0.35])
 GETTEXT_PACKAGE=pioneers
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE", [The gettext package name])
-AM_GLIB_GNU_GETTEXT
 
 if test $pioneers_is_mingw_port = yes; then
 	# No console window for the graphical applications

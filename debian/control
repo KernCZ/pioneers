@@ -6,7 +6,6 @@ Uploaders: Bas Wijnen <wijnen@debian.org>, Steve Langasek <vorlon@debian.org>
 Build-Depends: autoconf,
                automake,
                debhelper (>= 9),
-               gnome-common,
                gob2,
                intltool,
                libavahi-client-dev,

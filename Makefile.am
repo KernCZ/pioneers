@@ -127,7 +127,6 @@ endif
 include MinGW/Makefile.am
 include common/Makefile.am
 include docs/Makefile.am
-include macros/Makefile.am
 
 desktop_DATA = $(desktop_in_files:.desktop.in=.desktop)
 @INTLTOOL_DESKTOP_RULE@
@@ -170,6 +169,7 @@ codespell:
 
 # Remove ALL generated files
 pristine: maintainer-clean
+	rm -fr m4
 	svn status --no-ignore | awk '$$1=="I" { print substr($$0, 9, 255) }' | tr '\n' '\0' | xargs -0 rm
 
 # Application icons, in various sizes

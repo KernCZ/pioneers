@@ -1,3 +1,7 @@
+2016-08-04  Roland Clobus <rclobus@rclobus.nl>
+	* macros, configure.ac, Makefile.am, autogen.sh: Replaced embedded
+	copy of th gnome-autogen.sh, because 'gnome-common' will be deprecated.
+
 2016-07-28  Roland Clobus <rclobus@rclobus.nl>
 	* editor/gtk/editor.c: Corrected the define for the translation domain.
 
