@@ -412,7 +412,7 @@ AC_CHECK_FUNCS([sqrt])
 AC_CHECK_FUNCS([strchr strspn strstr strcspn])
 AC_CHECK_FUNCS([memmove memset])
 
-# Functions needed for the hack to override the language
+# Functions needed to support NLS
 AC_CHECK_FUNCS([setlocale])
 
 # Data types
@@ -436,6 +436,10 @@ AC_DEFINE_UNQUOTED(PIONEERS_DEFAULT_METASERVER,
 
 ## internationalization support
 IT_PROG_INTLTOOL([0.35])
+AM_NLS
+if test $USE_NLS = yes; then
+	AC_DEFINE(ENABLE_NLS, 1, [Enable NLS])
+fi
 
 GETTEXT_PACKAGE=pioneers
 AC_SUBST(GETTEXT_PACKAGE)

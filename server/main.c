@@ -179,12 +179,14 @@ int main(int argc, char *argv[])
 
 	g_type_init();
 
+#ifdef ENABLE_NLS
 	setlocale(LC_ALL, "");
 	bindtextdomain(PACKAGE, LOCALEDIR);
 	textdomain(PACKAGE);
 
 	/* have gettext return strings in UTF-8 */
 	bind_textdomain_codeset(PACKAGE, "UTF-8");
+#endif
 
 	server_init();
 

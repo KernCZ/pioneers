@@ -662,12 +662,14 @@ int main(int argc, char *argv[])
 	set_ui_driver(&Glib_Driver);
 	g_type_init();
 
+#ifdef ENABLE_NLS
 	setlocale(LC_ALL, "");
 	bindtextdomain(PACKAGE, LOCALEDIR);
 	textdomain(PACKAGE);
 
 	/* have gettext return strings in UTF-8 */
 	bind_textdomain_codeset(PACKAGE, "UTF-8");
+#endif
 
 	/* Long description in the commandline for metaserver: help */
 	context = g_option_context_new(_("- Metaserver for Pioneers"));

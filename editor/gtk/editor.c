@@ -1864,11 +1864,13 @@ int main(int argc, char *argv[])
 	/* set the UI driver to GTK_Driver, since we're using gtk */
 	set_ui_driver(&GTK_Driver);
 
+#if ENABLE_NLS
 	/* Gtk+ handles the locale, we must bind the translations */
 	setlocale(LC_ALL, "");
 	bindtextdomain(PACKAGE, LOCALEDIR);
 	textdomain(PACKAGE);
 	bind_textdomain_codeset(PACKAGE, "UTF-8");
+#endif
 
 	context =
 	    /* Long description in the command line: --help */
