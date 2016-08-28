@@ -1122,7 +1122,7 @@ msgstr "Ein öffentliches Spiel erstellen"
 #: ../client/gtk/name.c:147 ../editor/gtk/editor.c:1521
 #: ../editor/gtk/editor.c:1562 ../editor/gtk/editor.c:1611
 msgid "_Cancel"
-msgstr ""
+msgstr "_Abbrechen"
 
 #. Button text
 #: ../client/gtk/connect.c:1042
@@ -1138,7 +1138,7 @@ msgstr "An einem öffentlichen Spiel teilnehmen"
 #. Button text
 #: ../client/gtk/connect.c:1185
 msgid "_Refresh"
-msgstr ""
+msgstr "_Aktualisieren"
 
 #. Button text
 #: ../client/gtk/connect.c:1188
@@ -1147,9 +1147,8 @@ msgstr "_Neues Netzwerkspiel"
 
 #. Button text
 #: ../client/gtk/connect.c:1194 ../client/gtk/connect.c:1748
-#, fuzzy
 msgid "_Join"
-msgstr "Teilnehmen"
+msgstr "_Teilnehmen"
 
 #. Tooltip
 #: ../client/gtk/connect.c:1237
@@ -1375,7 +1374,7 @@ msgstr "Karten ablegen"
 #: ../client/gtk/gold.c:78 ../client/gtk/monopoly.c:88 ../client/gtk/name.c:150
 #: ../client/gtk/plenty.c:67 ../editor/gtk/editor.c:1614
 msgid "_OK"
-msgstr ""
+msgstr "_OK"
 
 #: ../client/gtk/discard.c:101
 #, c-format
@@ -1769,7 +1768,7 @@ msgstr "Pioneers Einstellungen"
 #: ../client/gtk/gui.c:1037 ../client/gtk/histogram.c:252
 #: ../client/gtk/legend.c:253 ../client/gtk/settingscreen.c:413
 msgid "_Close"
-msgstr ""
+msgstr "S_chließen"
 
 #. Label for changing the theme, in the preferences dialog
 #: ../client/gtk/gui.c:1062
