@@ -1,3 +1,15 @@
+Subversion release 15.4
+
+* New theme Nouvellia, by Brian Mansberger
+* Fixed rendering issues in ccFlickr theme
+* Improvements for the MinGW port
+* Fix for #290: check for the winning condiation at the beginning of the turn
+* Fix for #285part2: Fixed unplayable development card
+* Use the default about dialog
+* Framework change: replaced glib-gettextize by intltool
+* GTK+3 deprecation checks are turned off per default
+* Minor code quality improvements
+
 Subversion release 15.3
 
 * Relicense of the desktop icons to CC-BY-SA-4.0

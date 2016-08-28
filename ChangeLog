@@ -2,6 +2,7 @@
 	* configure.ac, editor/gtk/editor.c, metaserver/main.c,
 	server/main.c: Use and obey ENABLE_NLS, for all remaining executables.
 	* autogen.sh: Per default, no deprecation checks should be run.
+	* NEWS, client/ai/lobbybot.c: Prepare for the release of 15.4.
 
 2016-08-04  Roland Clobus <rclobus@rclobus.nl>
 	* macros, configure.ac, Makefile.am, autogen.sh: Replaced embedded
@@ -119,7 +120,7 @@
 
 2014-10-26  Roland Clobus <rclobus@rclobus.nl>
 	* editor/gtk/editor.c: Fixed a read beyond the array size.
-	* NEWS, client/ai/lobbybot.c: Prepare for the release of 15.2.
+	* NEWS, client/ai/lobbybot.c: Prepare for the release of 15.3.
 
 2014-10-24  Roland Clobus <rclobus@rclobus.nl>
 	* docs/Relicense question about icons from the Gorilla theme.eml:
