@@ -33,9 +33,9 @@ cd "$olddir"
 if [ "$NOCONFIGURE" = "" ]; then
 	if test "X$1" = "X--fhs"; then
 		shift
-        	$srcdir/configure --enable-maintainer-mode --prefix=/usr --bindir=/usr/games --mandir=/usr/share/man "$@" || exit 1
+        	$srcdir/configure --enable-maintainer-mode --disable-deprecation-checks --prefix=/usr --bindir=/usr/games --mandir=/usr/share/man "$@" || exit 1
 	else
-        	$srcdir/configure --enable-maintainer-mode "$@" || exit 1
+        	$srcdir/configure --enable-maintainer-mode --disable-deprecation-checks "$@" || exit 1
 	fi
 
         if [ "$1" = "--help" ]; then exit 0 else

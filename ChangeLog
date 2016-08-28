@@ -1,6 +1,7 @@
 2016-08-28  Roland Clobus <rclobus@rclobus.nl>
 	* configure.ac, editor/gtk/editor.c, metaserver/main.c,
 	server/main.c: Use and obey ENABLE_NLS, for all remaining executables.
+	* autogen.sh: Per default, no deprecation checks should be run.
 
 2016-08-04  Roland Clobus <rclobus@rclobus.nl>
 	* macros, configure.ac, Makefile.am, autogen.sh: Replaced embedded
