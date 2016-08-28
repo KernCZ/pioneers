@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 0.12.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-10 18:20+0200\n"
+"POT-Creation-Date: 2016-08-28 17:28+0200\n"
 "PO-Revision-Date: 2010-04-05 08:14+0000\n"
 "Last-Translator: Indalecio Freiría Santos <ifreiria@gmail.com>\n"
 "Language-Team: Galician <gl@li.org>\n"
@@ -81,8 +81,8 @@ msgid "- Computer player for Pioneers"
 msgstr "Xogador do computador para Pioneiros"
 
 #: ../client/ai/ai.c:137 ../client/gtk/offline.c:199
-#: ../editor/gtk/editor.c:1886 ../metaserver/main.c:685
-#: ../server/gtk/main.c:1223 ../server/main.c:224
+#: ../editor/gtk/editor.c:1888 ../metaserver/main.c:687
+#: ../server/gtk/main.c:1223 ../server/main.c:226
 #, c-format
 msgid "Pioneers version:"
 msgstr "Versión de Pioneiros:"
@@ -976,7 +976,7 @@ msgstr "Pitaches a %s.\n"
 msgid "You could not beep %s.\n"
 msgstr "Non puideches pitar a %s.\n"
 
-#: ../client/gtk/chat.c:289
+#: ../client/gtk/chat.c:287
 msgid " said: "
 msgstr " di: "
 
@@ -1733,7 +1733,7 @@ msgid "<b>Messages</b>"
 msgstr "<b>Mensaxes</b>"
 
 #. Tab page name
-#: ../client/gtk/gui.c:706 ../editor/gtk/editor.c:1944
+#: ../client/gtk/gui.c:706 ../editor/gtk/editor.c:1946
 msgid "Map"
 msgstr "Mapa"
 
@@ -2876,13 +2876,13 @@ msgstr "Erro conectando a %s: %s\n"
 msgid "unknown"
 msgstr "descoñecido"
 
-#: ../common/state.c:202
+#: ../common/state.c:203
 #, c-format
 msgid "Connecting to %s, port %s\n"
 msgstr "Conectando a %s, porto %s\n"
 
 #. Error message
-#: ../common/state.c:332
+#: ../common/state.c:333
 msgid "State stack overflow. Stack dump sent to standard error.\n"
 msgstr ""
 "Estado de desbordamento de pila. Volteado de pila enviado a erro estándar.\n"
@@ -3327,23 +3327,23 @@ msgid "filename"
 msgstr "nome de ficheiro"
 
 #. Long description in the command line: --help
-#: ../editor/gtk/editor.c:1875
+#: ../editor/gtk/editor.c:1877
 msgid "- Editor for games of Pioneers"
 msgstr "- Editor para xogos de Pioneiros"
 
 #. Error message
-#: ../editor/gtk/editor.c:1919 ../server/gtk/main.c:1256
+#: ../editor/gtk/editor.c:1921 ../server/gtk/main.c:1256
 #, c-format
 msgid "Building menus failed: %s"
 msgstr "Construción menús fallada: %s"
 
 #. Tab page name
-#: ../editor/gtk/editor.c:1949
+#: ../editor/gtk/editor.c:1951
 msgid "Settings"
 msgstr "Axustes"
 
 #. Tab page name
-#: ../editor/gtk/editor.c:1952
+#: ../editor/gtk/editor.c:1954
 msgid "Comments"
 msgstr ""
 
@@ -3400,11 +3400,11 @@ msgid "Debug syslog messages"
 msgstr "Depurar mensaxes do log do sistema"
 
 #. Long description in the commandline for metaserver: help
-#: ../metaserver/main.c:673
+#: ../metaserver/main.c:675
 msgid "- Metaserver for Pioneers"
 msgstr "- Meta Servidor para Pioneiros"
 
-#: ../metaserver/main.c:689
+#: ../metaserver/main.c:691
 #, c-format
 msgid "metaserver protocol:"
 msgstr "protocolo do meta-servidor:"
@@ -3650,7 +3650,7 @@ msgstr "O xogo rematou.\n"
 
 #. Long description in the commandline for server-gtk: help
 #. Long description in the commandline for server-console: help
-#: ../server/gtk/main.c:1212 ../server/main.c:192
+#: ../server/gtk/main.c:1212 ../server/main.c:194
 msgid "- Host a game of Pioneers"
 msgstr "- Organice un xogo de Pioneiros"
 
@@ -3772,27 +3772,27 @@ msgid "Give players numbers according to the order they enter the game"
 msgstr "Dar números de xogadores de acordo á orde na que entren no xogo"
 
 #. Commandline server-console: Short description of meta group
-#: ../server/main.c:198
+#: ../server/main.c:200
 msgid "Metaserver Options"
 msgstr "Opción do metaservidor"
 
 #. Commandline server-console: Long description of meta group
-#: ../server/main.c:200
+#: ../server/main.c:202
 msgid "Options for the metaserver"
 msgstr "Opción para o metaservidor"
 
 #. Commandline server-console: Short description of misc group
-#: ../server/main.c:209
+#: ../server/main.c:211
 msgid "Miscellaneous Options"
 msgstr "Opcións varias"
 
 #. Commandline server-console: Long description of misc group
-#: ../server/main.c:211
+#: ../server/main.c:213
 msgid "Miscellaneous options"
 msgstr "Opcións varias"
 
 #. server-console commandline error
-#: ../server/main.c:237
+#: ../server/main.c:239
 #, c-format
 msgid "Cannot set game title and filename at the same time\n"
 msgstr ""
@@ -3800,13 +3800,13 @@ msgstr ""
 "tempo\n"
 
 #. server-console commandline error
-#: ../server/main.c:254
+#: ../server/main.c:256
 #, c-format
 msgid "Cannot load the parameters for the game\n"
 msgstr "Non se poden cargar os parámetros da partida\n"
 
 #. Error message
-#: ../server/main.c:303 ../server/main.c:322
+#: ../server/main.c:305 ../server/main.c:324
 #, c-format
 msgid "The network port (%s) for the admin interface is not available.\n"
 msgstr ""

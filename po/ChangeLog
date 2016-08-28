@@ -1,5 +1,6 @@
 2016-08-28  Roland Clobus <rclobus@rclobus.nl>
 	* de.po: Copied strings from the Gtk code
+	* all: Line number update for 15.4
 
 2016-07-04  Giancarlo Capella <giancarlo@comm.cc>
 	* it.po: Updated to 15.4

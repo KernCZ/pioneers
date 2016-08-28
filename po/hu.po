@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 0.12.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-10 18:20+0200\n"
+"POT-Creation-Date: 2016-08-28 17:28+0200\n"
 "PO-Revision-Date: 2008-04-05 15:37+0200\n"
 "Last-Translator: Ferenc Bánhidi <bferike@mailbox.hu>\n"
 "Language-Team: Hungarian <bferike@mailbox.hu>\n"
@@ -81,8 +81,8 @@ msgid "- Computer player for Pioneers"
 msgstr "- Robot játékos a Pioneers játékhoz"
 
 #: ../client/ai/ai.c:137 ../client/gtk/offline.c:199
-#: ../editor/gtk/editor.c:1886 ../metaserver/main.c:685
-#: ../server/gtk/main.c:1223 ../server/main.c:224
+#: ../editor/gtk/editor.c:1888 ../metaserver/main.c:687
+#: ../server/gtk/main.c:1223 ../server/main.c:226
 #, c-format
 msgid "Pioneers version:"
 msgstr "Pioneers verzió"
@@ -981,7 +981,7 @@ msgstr "Te sípoltál %s.\n"
 msgid "You could not beep %s.\n"
 msgstr "Te nem tudsz sípolni %s.\n"
 
-#: ../client/gtk/chat.c:289
+#: ../client/gtk/chat.c:287
 msgid " said: "
 msgstr " mondja: "
 
@@ -1738,7 +1738,7 @@ msgid "<b>Messages</b>"
 msgstr "<b>Üzenetek</b>"
 
 #. Tab page name
-#: ../client/gtk/gui.c:706 ../editor/gtk/editor.c:1944
+#: ../client/gtk/gui.c:706 ../editor/gtk/editor.c:1946
 msgid "Map"
 msgstr "Térkép"
 
@@ -2879,13 +2879,13 @@ msgstr "Hiba a csatlakozáskor %s: %s\n"
 msgid "unknown"
 msgstr "ismeretlen"
 
-#: ../common/state.c:202
+#: ../common/state.c:203
 #, c-format
 msgid "Connecting to %s, port %s\n"
 msgstr "Kapcsolódás: %s , port: %s\n"
 
 #. Error message
-#: ../common/state.c:332
+#: ../common/state.c:333
 msgid "State stack overflow. Stack dump sent to standard error.\n"
 msgstr ""
 "Állapot verem túlcsordulás. A verem tartalmát elküldtem a standard hiba "
@@ -3331,23 +3331,23 @@ msgid "filename"
 msgstr "fájlnév"
 
 #. Long description in the command line: --help
-#: ../editor/gtk/editor.c:1875
+#: ../editor/gtk/editor.c:1877
 msgid "- Editor for games of Pioneers"
 msgstr "- Szerkesztő a Pioneers játékokhoz"
 
 #. Error message
-#: ../editor/gtk/editor.c:1919 ../server/gtk/main.c:1256
+#: ../editor/gtk/editor.c:1921 ../server/gtk/main.c:1256
 #, c-format
 msgid "Building menus failed: %s"
 msgstr "Hiba a menű felépítésekor: %s"
 
 #. Tab page name
-#: ../editor/gtk/editor.c:1949
+#: ../editor/gtk/editor.c:1951
 msgid "Settings"
 msgstr "Beállítások"
 
 #. Tab page name
-#: ../editor/gtk/editor.c:1952
+#: ../editor/gtk/editor.c:1954
 msgid "Comments"
 msgstr ""
 
@@ -3406,11 +3406,11 @@ msgid "Debug syslog messages"
 msgstr "Debug syslog üzenetek"
 
 #. Long description in the commandline for metaserver: help
-#: ../metaserver/main.c:673
+#: ../metaserver/main.c:675
 msgid "- Metaserver for Pioneers"
 msgstr "- Meta szerver a Pioneers játékhoz"
 
-#: ../metaserver/main.c:689
+#: ../metaserver/main.c:691
 #, fuzzy, c-format
 msgid "metaserver protocol:"
 msgstr "metaszerver protokoll:"
@@ -3654,7 +3654,7 @@ msgstr "A játéknak vége.\n"
 
 #. Long description in the commandline for server-gtk: help
 #. Long description in the commandline for server-console: help
-#: ../server/gtk/main.c:1212 ../server/main.c:192
+#: ../server/gtk/main.c:1212 ../server/main.c:194
 msgid "- Host a game of Pioneers"
 msgstr "- a Pioneers játékot futtató"
 
@@ -3775,39 +3775,39 @@ msgid "Give players numbers according to the order they enter the game"
 msgstr "Add meg a játékosok számát, ahányan játszanak a játékban"
 
 #. Commandline server-console: Short description of meta group
-#: ../server/main.c:198
+#: ../server/main.c:200
 msgid "Metaserver Options"
 msgstr "Meta szerver kapcsolók"
 
 #. Commandline server-console: Long description of meta group
-#: ../server/main.c:200
+#: ../server/main.c:202
 msgid "Options for the metaserver"
 msgstr "meta-szerver kapcsolók"
 
 #. Commandline server-console: Short description of misc group
-#: ../server/main.c:209
+#: ../server/main.c:211
 msgid "Miscellaneous Options"
 msgstr "Egyéb kapcsolók"
 
 #. Commandline server-console: Long description of misc group
-#: ../server/main.c:211
+#: ../server/main.c:213
 msgid "Miscellaneous options"
 msgstr "Egyéb kapcsolók"
 
 #. server-console commandline error
-#: ../server/main.c:237
+#: ../server/main.c:239
 #, c-format
 msgid "Cannot set game title and filename at the same time\n"
 msgstr "Fájlnév és játéknév nem adható meg egyszerre\n"
 
 #. server-console commandline error
-#: ../server/main.c:254
+#: ../server/main.c:256
 #, c-format
 msgid "Cannot load the parameters for the game\n"
 msgstr "A játék paramétereit nem lehet betölteni\n"
 
 #. Error message
-#: ../server/main.c:303 ../server/main.c:322
+#: ../server/main.c:305 ../server/main.c:324
 #, c-format
 msgid "The network port (%s) for the admin interface is not available.\n"
 msgstr ""

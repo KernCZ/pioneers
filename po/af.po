@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 15.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-10 18:20+0200\n"
+"POT-Creation-Date: 2016-08-28 17:28+0200\n"
 "PO-Revision-Date: 2013-11-19 16:16+0200\n"
 "Last-Translator: Petri Jooste <petri.jooste@gmail.com>\n"
 "Language-Team: Afrikaans\n"
@@ -80,8 +80,8 @@ msgid "- Computer player for Pioneers"
 msgstr "- Robotspeler vir Pioniers"
 
 #: ../client/ai/ai.c:137 ../client/gtk/offline.c:199
-#: ../editor/gtk/editor.c:1886 ../metaserver/main.c:685
-#: ../server/gtk/main.c:1223 ../server/main.c:224
+#: ../editor/gtk/editor.c:1888 ../metaserver/main.c:687
+#: ../server/gtk/main.c:1223 ../server/main.c:226
 #, c-format
 msgid "Pioneers version:"
 msgstr "Pioniers weergawe:"
@@ -975,7 +975,7 @@ msgstr "Jy het %s gebiep.\n"
 msgid "You could not beep %s.\n"
 msgstr "Jy kon nie %s biep nie.\n"
 
-#: ../client/gtk/chat.c:289
+#: ../client/gtk/chat.c:287
 msgid " said: "
 msgstr " het gesê: "
 
@@ -1726,7 +1726,7 @@ msgid "<b>Messages</b>"
 msgstr "<b>Boodskappe</b>"
 
 #. Tab page name
-#: ../client/gtk/gui.c:706 ../editor/gtk/editor.c:1944
+#: ../client/gtk/gui.c:706 ../editor/gtk/editor.c:1946
 msgid "Map"
 msgstr "Landkaart"
 
@@ -2869,13 +2869,13 @@ msgstr "Kon nie aan %s koppel nie: %s\n"
 msgid "unknown"
 msgstr "onbekend"
 
-#: ../common/state.c:202
+#: ../common/state.c:203
 #, c-format
 msgid "Connecting to %s, port %s\n"
 msgstr "Konnekteer aan %s, poort %s\n"
 
 #. Error message
-#: ../common/state.c:332
+#: ../common/state.c:333
 msgid "State stack overflow. Stack dump sent to standard error.\n"
 msgstr "Statusstapel loop oor. Stapel word gestort op standaardfoutafvoer.\n"
 
@@ -3315,23 +3315,23 @@ msgid "filename"
 msgstr "lêernaam"
 
 #. Long description in the command line: --help
-#: ../editor/gtk/editor.c:1875
+#: ../editor/gtk/editor.c:1877
 msgid "- Editor for games of Pioneers"
 msgstr "- Redigeerder vir Pioniersspelle"
 
 #. Error message
-#: ../editor/gtk/editor.c:1919 ../server/gtk/main.c:1256
+#: ../editor/gtk/editor.c:1921 ../server/gtk/main.c:1256
 #, c-format
 msgid "Building menus failed: %s"
 msgstr "Bou van kieslyste het misluk: %s"
 
 #. Tab page name
-#: ../editor/gtk/editor.c:1949
+#: ../editor/gtk/editor.c:1951
 msgid "Settings"
 msgstr "Instellings"
 
 #. Tab page name
-#: ../editor/gtk/editor.c:1952
+#: ../editor/gtk/editor.c:1954
 msgid "Comments"
 msgstr "Kommentaar"
 
@@ -3388,11 +3388,11 @@ msgid "Debug syslog messages"
 msgstr "Ontfout syslog-boodskappe"
 
 #. Long description in the commandline for metaserver: help
-#: ../metaserver/main.c:673
+#: ../metaserver/main.c:675
 msgid "- Metaserver for Pioneers"
 msgstr "- Metabediener vir Pioniers"
 
-#: ../metaserver/main.c:689
+#: ../metaserver/main.c:691
 #, c-format
 msgid "metaserver protocol:"
 msgstr "metabediener protokol:"
@@ -3635,7 +3635,7 @@ msgstr "Die spel is verby.\n"
 
 #. Long description in the commandline for server-gtk: help
 #. Long description in the commandline for server-console: help
-#: ../server/gtk/main.c:1212 ../server/main.c:192
+#: ../server/gtk/main.c:1212 ../server/main.c:194
 msgid "- Host a game of Pioneers"
 msgstr "- Skep 'n Pioniersspel"
 
@@ -3753,39 +3753,39 @@ msgid "Give players numbers according to the order they enter the game"
 msgstr "Gee nommers aan spelers soos wat hulle die spel betree"
 
 #. Commandline server-console: Short description of meta group
-#: ../server/main.c:198
+#: ../server/main.c:200
 msgid "Metaserver Options"
 msgstr "Opsies vir die metabediener"
 
 #. Commandline server-console: Long description of meta group
-#: ../server/main.c:200
+#: ../server/main.c:202
 msgid "Options for the metaserver"
 msgstr "Opsies vir die metabediener"
 
 #. Commandline server-console: Short description of misc group
-#: ../server/main.c:209
+#: ../server/main.c:211
 msgid "Miscellaneous Options"
 msgstr "Verskeie opsies"
 
 #. Commandline server-console: Long description of misc group
-#: ../server/main.c:211
+#: ../server/main.c:213
 msgid "Miscellaneous options"
 msgstr "Verskeie opsies"
 
 #. server-console commandline error
-#: ../server/main.c:237
+#: ../server/main.c:239
 #, c-format
 msgid "Cannot set game title and filename at the same time\n"
 msgstr "Kan nie die speltitel en lêernaam terselfdertyd verander nie\n"
 
 #. server-console commandline error
-#: ../server/main.c:254
+#: ../server/main.c:256
 #, c-format
 msgid "Cannot load the parameters for the game\n"
 msgstr "Kan die spel-parameters nie laai nie\n"
 
 #. Error message
-#: ../server/main.c:303 ../server/main.c:322
+#: ../server/main.c:305 ../server/main.c:324
 #, c-format
 msgid "The network port (%s) for the admin interface is not available.\n"
 msgstr ""
