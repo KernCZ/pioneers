@@ -1,6 +1,6 @@
-pioneers (15.4-1~local1) UNRELEASED; urgency=medium
+pioneers (15.4-1) unstable; urgency=medium
 
-  * Waiting for new upstream release.
+  * New upstream release.
   * Bugfix for playing the last development card. (closes: #798521)
   * Watch file checks for OpenPGP signature.
   * pioneers-builddep updated.
@@ -16,7 +16,7 @@ pioneers (15.4-1~local1) UNRELEASED; urgency=medium
   * Upgrade standards version to 3.9.8.  (No changes needed.)
   * Removed embedded copy of gnome-autogen.sh. (closes: #829826)
 
- -- Roland Clobus <rclobus@rclobus.nl>  Sat, 30 May 2015 17:00:00 +0200
+ -- Roland Clobus <rclobus@rclobus.nl>  Sun, 11 Sep 2016 14:52:23 +0200
 
 pioneers (15.3-2.1) unstable; urgency=medium
 
