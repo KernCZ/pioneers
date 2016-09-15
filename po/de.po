@@ -1138,7 +1138,7 @@ msgstr "An einem öffentlichen Spiel teilnehmen"
 #. Button text
 #: ../client/gtk/connect.c:1185
 msgid "_Refresh"
-msgstr "_Aktualisieren"
+msgstr "A_ktualisieren"
 
 #. Button text
 #: ../client/gtk/connect.c:1188
@@ -1469,7 +1469,7 @@ msgstr "Pioneers-Server verwalten"
 #. Menu entry
 #: ../client/gtk/gui.c:247
 msgid "_Player Name"
-msgstr "Spielername"
+msgstr "S_pielername"
 
 #. Tooltip for Player Name menu entry
 #: ../client/gtk/gui.c:249
@@ -1509,7 +1509,7 @@ msgstr "Histogramm der Würfelergebnisse"
 #. Menu entry
 #: ../client/gtk/gui.c:267 ../editor/gtk/editor.c:1759 ../server/gtk/main.c:103
 msgid "_Quit"
-msgstr "_Quit"
+msgstr "_Beenden"
 
 #. Tooltip for Quit menu entry
 #. Tooltop for Quit menu entry
@@ -1669,7 +1669,7 @@ msgstr "Zeige ganze Karte"
 #. Menu entry
 #: ../client/gtk/gui.c:356 ../editor/gtk/editor.c:1771
 msgid "_Center"
-msgstr "_Zentrieren"
+msgstr "Z_entrieren"
 
 #. Tooltip for Center menu entry
 #: ../client/gtk/gui.c:358 ../editor/gtk/editor.c:1773
