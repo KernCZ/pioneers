@@ -66,4 +66,5 @@ install-MinGW:
 endif # IS_MINGW_PORT
 
 EXTRA_DIST += \
-	$(srcdir)/MinGW/loaders.cache
+	$(srcdir)/MinGW/loaders.cache \
+	$(srcdir)/MinGW/README.txt
